@@ -140,7 +140,7 @@ class Potentials extends CRMEntity {
 		}
 		$relModule = getSalesEntityType($this->column_fields['related_to']);
 		if ($relModule == "Contacts") {
-			if ($this->column_fields['campaignid'] != null && $this->column_fields['campaignid'] !=  0) {
+			if (isset($this->column_fields['campaignid']) && $this->column_fields['campaignid'] != null && $this->column_fields['campaignid'] !=  0) {
 				$res_cnt = $adb->pquery(
 					'SELECT COUNT(*) as num FROM vtiger_campaigncontrel WHERE (contactid = ? AND campaignid = ?)',
 					array($this->column_fields['related_to'],$this->column_fields['campaignid'])
@@ -152,7 +152,7 @@ class Potentials extends CRMEntity {
 				}
 			}
 		} else {
-			if ($this->column_fields['campaignid'] != null && $this->column_fields['campaignid'] !=  0) {
+			if (isset($this->column_fields['campaignid']) && $this->column_fields['campaignid'] != null && $this->column_fields['campaignid'] !=  0) {
 				$res_acc = $adb->pquery(
 					'SELECT COUNT(*) as num FROM vtiger_campaignaccountrel WHERE (accountid = ? AND campaignid = ?)',
 					array($this->column_fields['related_to'],$this->column_fields['campaignid'])
