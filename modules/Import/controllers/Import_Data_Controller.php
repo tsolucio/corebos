@@ -548,8 +548,7 @@ class Import_Data_Controller {
 		$tableName = Import_Utils::getDbTableName($this->user);
 		$result = $adb->query('SELECT status FROM '.$tableName);
 
-		$statusCount = array('TOTAL' => 0, 'IMPORTED' => 0, 'FAILED' => 0, 'PENDING' => 0,
-								'CREATED' => 0, 'SKIPPED' => 0, 'UPDATED' => 0, 'MERGED' => 0);
+		$statusCount = array('TOTAL' => 0, 'IMPORTED' => 0, 'FAILED' => 0, 'PENDING' => 0, 'CREATED' => 0, 'SKIPPED' => 0, 'UPDATED' => 0, 'MERGED' => 0);
 
 		if ($result) {
 			$noOfRows = $adb->num_rows($result);
@@ -609,8 +608,8 @@ class Import_Data_Controller {
 			$importResult = $viewer->fetch('Import_Result_Details.tpl');
 			$importResult = str_replace('align="center"', '', $importResult);
 			$emailData = $coreBOS_uiapp_name . ' has just completed your import process. <br/><br/>' .
-							$importResult . '<br/><br/>'.
-							'We recommend you to login and check a few records to confirm that the import has been successful.';
+				$importResult . '<br/><br/>'.
+				'We recommend you to login and check a few records to confirm that the import has been successful.';
 
 			$userName = getFullNameFromArray('Users', $importDataController->user->column_fields);
 			$userEmail = $importDataController->user->email1;
@@ -622,7 +621,6 @@ class Import_Data_Controller {
 	}
 
 	public static function getScheduledImport() {
-
 		$scheduledImports = array();
 		$importQueue = Import_Queue_Controller::getAll(Import_Queue_Controller::$IMPORT_STATUS_SCHEDULED);
 		foreach ($importQueue as $importId => $importInfo) {
