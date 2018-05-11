@@ -36,7 +36,6 @@ if (!empty($deletecheck) && $adb->query_result($deletecheck, 0, 'deleted') == 1)
 		header("Cache-Control: private");
 		header("Content-Description: File Transfer");
 		header("Content-length: ".$disk_file_size);
-		header("Content-type: ".$fileType);
 		header("Content-Transfer-Encoding: binary");
 		header("Content-Disposition: attachment; filename=\"$name\"");
 		echo $fileContent;
