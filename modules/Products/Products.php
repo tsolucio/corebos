@@ -1143,16 +1143,11 @@ class Products extends CRMEntity {
 		return $ismember;
 	}
 
-	/**
-	 * Move the related records of the specified list of id's to the given record.
-	 * @param String This module name
-	 * @param Array List of Entity Id's from which related records need to be transfered
-	 * @param Integer Id of the the Record to which the related records are to be moved
-	 */
+
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
 		$log->debug("Entering function transferRelatedRecords ($module, $transferEntityIds, $entityId)");
-
+		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$rel_table_arr = array('HelpDesk'=>'vtiger_troubletickets','Products'=>'vtiger_seproductsrel','Attachments'=>'vtiger_seattachmentsrel',
 			'Quotes'=>'vtiger_inventoryproductrel','PurchaseOrder'=>'vtiger_inventoryproductrel','SalesOrder'=>'vtiger_inventoryproductrel',
 			'Invoice'=>'vtiger_inventoryproductrel','PriceBooks'=>'vtiger_pricebookproductrel','Leads'=>'vtiger_seproductsrel',

@@ -2438,6 +2438,39 @@ class CRMEntity {
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb, $log;
 		$log->debug("Entering function transferRelatedRecords ($module, ".print_r($transferEntityIds, true).", $entityId)");
+
+		$rel_table_arr = array("Emails"=>"vtiger_seactivityrel");
+
+		$tbl_field_arr = array("vtiger_seactivityrel"=>"activityid");
+
+		$entity_tbl_field_arr = array("vtiger_seactivityrel"=>"crmid");
+
+		foreach ($transferEntityIds as $transferId) {
+			foreach ($rel_table_arr as $rel_table) {
+				
+				$id_field = $tbl_field_arr[$rel_table];
+				$entity_id_field = $entity_tbl_field_arr[$rel_table];
+
+
+				// IN clause to avoid duplicate entries
+				$sel_result = $adb->pquery(
+					"select $id_field from $rel_table where $entity_id_field=? " .
+						" and $id_field not in (select $id_field from $rel_table where $entity_id_field=?)",
+					array($transferId,$entityId)
+				);
+				echo $res_cnt = $adb->num_rows($sel_result);
+				if ($res_cnt > 0) {
+					for ($i=0; $i<$res_cnt; $i++) {
+						$id_field_value = $adb->query_result($sel_result, $i, $id_field);
+						$adb->pquery(
+							"update $rel_table set $entity_id_field=? where $entity_id_field=? and $id_field=?",
+							array($entityId,$transferId,$id_field_value)
+						);
+					}
+				}
+			}
+		}
+		
 		foreach ($transferEntityIds as $transferId) {
 			// Pick the records related to the entity to be transfered, but do not pick the once which are already related to the current entity.
 			$relatedRecords = $adb->pquery("SELECT relcrmid, relmodule FROM vtiger_crmentityrel WHERE crmid=? AND module=?" .
