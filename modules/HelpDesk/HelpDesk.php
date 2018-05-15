@@ -475,7 +475,7 @@ class HelpDesk extends CRMEntity {
 		$updatelog .= ' -- '.date("l dS F Y h:i:s A").' by '.$current_user->user_name.'--//--';
 		return $updatelog;
 	}
-	
+
 	/**
 	 * Move the related records of the specified list of id's to the given record.
 	 * @param String This module name

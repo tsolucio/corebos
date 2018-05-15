@@ -2439,11 +2439,11 @@ class CRMEntity {
 		global $adb, $log;
 		$log->debug("Entering function transferRelatedRecords ($module, ".print_r($transferEntityIds, true).", $entityId)");
 
-		$rel_table_arr = array("Activities"=>"vtiger_seactivityrel");
+		$rel_table_arr = array('Activities'=>'vtiger_seactivityrel');
 
-		$tbl_field_arr = array("vtiger_seactivityrel"=>"activityid");
+		$tbl_field_arr = array('vtiger_seactivityrel'=>'activityid');
 
-		$entity_tbl_field_arr = array("vtiger_seactivityrel"=>"crmid");
+		$entity_tbl_field_arr = array('vtiger_seactivityrel'=>'crmid');
 		
 		foreach ($transferEntityIds as $transferId) {
 
@@ -2452,14 +2452,13 @@ class CRMEntity {
 				$id_field = $tbl_field_arr[$rel_table];
 				$entity_id_field = $entity_tbl_field_arr[$rel_table];
 
-
 				// IN clause to avoid duplicate entries
 				$sel_result = $adb->pquery(
 					"select $id_field from $rel_table where $entity_id_field=? " .
 						" and $id_field not in (select $id_field from $rel_table where $entity_id_field=?)",
 					array($transferId,$entityId)
 				);
-				echo $res_cnt = $adb->num_rows($sel_result);
+				$res_cnt = $adb->num_rows($sel_result);
 				if ($res_cnt > 0) {
 					for ($i=0; $i<$res_cnt; $i++) {
 						$id_field_value = $adb->query_result($sel_result, $i, $id_field);
