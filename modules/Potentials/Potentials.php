@@ -502,18 +502,15 @@ class Potentials extends CRMEntity {
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
 		$log->debug("Entering function transferRelatedRecords ($module, $transferEntityIds, $entityId)");
+		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
+		$rel_table_arr = array("Contacts"=>"vtiger_contpotentialrel","Products"=>"vtiger_seproductsrel",
+						"Attachments"=>"vtiger_seattachmentsrel","Quotes"=>"vtiger_quotes","SalesOrder"=>"vtiger_salesorder");
 
-		$rel_table_arr = array("Activities"=>"vtiger_seactivityrel","Contacts"=>"vtiger_contpotentialrel","Products"=>"vtiger_seproductsrel",
-						"Attachments"=>"vtiger_seattachmentsrel","Quotes"=>"vtiger_quotes","SalesOrder"=>"vtiger_salesorder",
-						"Documents"=>"vtiger_senotesrel");
+		$tbl_field_arr = array("vtiger_contpotentialrel"=>"contactid","vtiger_seproductsrel"=>"productid",
+						"vtiger_seattachmentsrel"=>"attachmentsid","vtiger_quotes"=>"quoteid","vtiger_salesorder"=>"salesorderid");
 
-		$tbl_field_arr = array("vtiger_seactivityrel"=>"activityid","vtiger_contpotentialrel"=>"contactid","vtiger_seproductsrel"=>"productid",
-						"vtiger_seattachmentsrel"=>"attachmentsid","vtiger_quotes"=>"quoteid","vtiger_salesorder"=>"salesorderid",
-						"vtiger_senotesrel"=>"notesid");
-
-		$entity_tbl_field_arr = array("vtiger_seactivityrel"=>"crmid","vtiger_contpotentialrel"=>"potentialid","vtiger_seproductsrel"=>"crmid",
-						"vtiger_seattachmentsrel"=>"crmid","vtiger_quotes"=>"potentialid","vtiger_salesorder"=>"potentialid",
-						"vtiger_senotesrel"=>"crmid");
+		$entity_tbl_field_arr = array("vtiger_contpotentialrel"=>"potentialid","vtiger_seproductsrel"=>"crmid",
+						"vtiger_seattachmentsrel"=>"crmid","vtiger_quotes"=>"potentialid","vtiger_salesorder"=>"potentialid");
 
 		foreach ($transferEntityIds as $transferId) {
 			foreach ($rel_table_arr as $rel_table) {

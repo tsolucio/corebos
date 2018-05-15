@@ -687,19 +687,16 @@ class Services extends CRMEntity {
 			'SalesOrder' => 'vtiger_inventoryproductrel',
 			'Invoice' => 'vtiger_inventoryproductrel',
 			'PriceBooks' => 'vtiger_pricebookproductrel',
-			'Documents' => 'vtiger_senotesrel',
 		);
 
 		$tbl_field_arr = array(
 			'vtiger_inventoryproductrel'=>'id',
 			'vtiger_pricebookproductrel'=>'pricebookid',
-			'vtiger_senotesrel'=>'notesid',
 		);
 
 		$entity_tbl_field_arr = array(
 			'vtiger_inventoryproductrel'=>'productid',
 			'vtiger_pricebookproductrel'=>'productid',
-			'vtiger_senotesrel'=>'crmid',
 		);
 
 		foreach ($transferEntityIds as $transferId) {

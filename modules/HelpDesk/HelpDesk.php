@@ -485,12 +485,12 @@ class HelpDesk extends CRMEntity {
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
 		$log->debug("Entering function transferRelatedRecords ($module, $transferEntityIds, $entityId)");
+		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
+		$rel_table_arr = array('Attachments'=>'vtiger_seattachmentsrel');
 
-		$rel_table_arr = array('Activities'=>'vtiger_seactivityrel','Attachments'=>'vtiger_seattachmentsrel','Documents'=>'vtiger_senotesrel');
+		$tbl_field_arr = array('vtiger_seattachmentsrel'=>'attachmentsid');
 
-		$tbl_field_arr = array('vtiger_seactivityrel'=>'activityid','vtiger_seattachmentsrel'=>'attachmentsid','vtiger_senotesrel'=>'notesid');
-
-		$entity_tbl_field_arr = array('vtiger_seactivityrel'=>'crmid','vtiger_seattachmentsrel'=>'crmid','vtiger_senotesrel'=>'crmid');
+		$entity_tbl_field_arr = array('vtiger_seattachmentsrel'=>'crmid');
 
 		foreach ($transferEntityIds as $transferId) {
 			foreach ($rel_table_arr as $rel_table) {

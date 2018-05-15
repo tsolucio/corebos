@@ -705,20 +705,18 @@ class Accounts extends CRMEntity {
 	function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
 		$log->debug("Entering function transferRelatedRecords ($module, $transferEntityIds, $entityId)");
-
+		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$rel_table_arr = Array("Contacts"=>"vtiger_contactdetails","Potentials"=>"vtiger_potential","Quotes"=>"vtiger_quotes",
-					"SalesOrder"=>"vtiger_salesorder","Invoice"=>"vtiger_invoice","Activities"=>"vtiger_seactivityrel",
-					"Documents"=>"vtiger_senotesrel","Attachments"=>"vtiger_seattachmentsrel","HelpDesk"=>"vtiger_troubletickets",
+					"SalesOrder"=>"vtiger_salesorder","Invoice"=>"vtiger_invoice",
+					"HelpDesk"=>"vtiger_troubletickets","Attachments"=>"vtiger_seattachmentsrel",
 					"Products"=>"vtiger_seproductsrel","Campaigns"=>"vtiger_campaignaccountrel");
 
 		$tbl_field_arr = Array("vtiger_contactdetails"=>"contactid","vtiger_potential"=>"potentialid","vtiger_quotes"=>"quoteid",
-					"vtiger_salesorder"=>"salesorderid","vtiger_invoice"=>"invoiceid","vtiger_seactivityrel"=>"activityid",
-					"vtiger_senotesrel"=>"notesid","vtiger_seattachmentsrel"=>"attachmentsid","vtiger_troubletickets"=>"ticketid",
+					"vtiger_salesorder"=>"salesorderid","vtiger_invoice"=>"invoiceid","vtiger_troubletickets"=>"ticketid","vtiger_seattachmentsrel"=>"attachmentsid",
 					"vtiger_seproductsrel"=>"productid","vtiger_campaignaccountrel"=>"campaignid");
 
 		$entity_tbl_field_arr = Array("vtiger_contactdetails"=>"accountid","vtiger_potential"=>"related_to","vtiger_quotes"=>"accountid",
-					"vtiger_salesorder"=>"accountid","vtiger_invoice"=>"accountid","vtiger_seactivityrel"=>"crmid",
-					"vtiger_senotesrel"=>"crmid","vtiger_seattachmentsrel"=>"crmid","vtiger_troubletickets"=>"parent_id",
+					"vtiger_salesorder"=>"accountid","vtiger_invoice"=>"accountid","vtiger_troubletickets"=>"parent_id","vtiger_seattachmentsrel"=>"crmid",
 					"vtiger_seproductsrel"=>"crmid","vtiger_campaignaccountrel"=>"accountid");
 
 		foreach($transferEntityIds as $transferId) {
