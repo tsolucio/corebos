@@ -313,18 +313,23 @@ class Leads extends CRMEntity {
 		return $mergeflds;
 	}
 
-
+	/**
+	 * Move the related records of the specified list of id's to the given record.
+	 * @param String This module name
+	 * @param Array List of Entity Id's from which related records need to be transfered
+	 * @param Integer Id of the the Record to which the related records are to be moved
+	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
 		$log->debug("Entering function transferRelatedRecords ($module, $transferEntityIds, $entityId)");
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
-		$rel_table_arr = array("Activities"=>"vtiger_seactivityrel","Documents"=>"vtiger_senotesrel","Attachments"=>"vtiger_seattachmentsrel",
+		$rel_table_arr = array("Attachments"=>"vtiger_seattachmentsrel",
 					"Products"=>"vtiger_seproductsrel","Campaigns"=>"vtiger_campaignleadrel");
 
-		$tbl_field_arr = array("vtiger_seactivityrel"=>"activityid","vtiger_senotesrel"=>"notesid","vtiger_seattachmentsrel"=>"attachmentsid",
+		$tbl_field_arr = array("vtiger_seattachmentsrel"=>"attachmentsid",
 					"vtiger_seproductsrel"=>"productid","vtiger_campaignleadrel"=>"campaignid");
 
-		$entity_tbl_field_arr = array("vtiger_seactivityrel"=>"crmid","vtiger_senotesrel"=>"crmid","vtiger_seattachmentsrel"=>"crmid",
+		$entity_tbl_field_arr = array("vtiger_seattachmentsrel"=>"crmid",
 					"vtiger_seproductsrel"=>"crmid","vtiger_campaignleadrel"=>"leadid");
 
 		foreach ($transferEntityIds as $transferId) {

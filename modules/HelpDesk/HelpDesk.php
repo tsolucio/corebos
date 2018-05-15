@@ -475,16 +475,22 @@ class HelpDesk extends CRMEntity {
 		$updatelog .= ' -- '.date("l dS F Y h:i:s A").' by '.$current_user->user_name.'--//--';
 		return $updatelog;
 	}
-
+	
+	/**
+	 * Move the related records of the specified list of id's to the given record.
+	 * @param String This module name
+	 * @param Array List of Entity Id's from which related records need to be transfered
+	 * @param Integer Id of the the Record to which the related records are to be moved
+	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
 		$log->debug("Entering function transferRelatedRecords ($module, $transferEntityIds, $entityId)");
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
-		$rel_table_arr = array('Activities'=>'vtiger_seactivityrel','Attachments'=>'vtiger_seattachmentsrel','Documents'=>'vtiger_senotesrel');
+		$rel_table_arr = array('Attachments'=>'vtiger_seattachmentsrel');
 
-		$tbl_field_arr = array('vtiger_seactivityrel'=>'activityid','vtiger_seattachmentsrel'=>'attachmentsid','vtiger_senotesrel'=>'notesid');
+		$tbl_field_arr = array('vtiger_seattachmentsrel'=>'attachmentsid');
 
-		$entity_tbl_field_arr = array('vtiger_seactivityrel'=>'crmid','vtiger_seattachmentsrel'=>'crmid','vtiger_senotesrel'=>'crmid');
+		$entity_tbl_field_arr = array('vtiger_seattachmentsrel'=>'crmid');
 
 		foreach ($transferEntityIds as $transferId) {
 			foreach ($rel_table_arr as $rel_table) {

@@ -2439,13 +2439,14 @@ class CRMEntity {
 		global $adb, $log;
 		$log->debug("Entering function transferRelatedRecords ($module, ".print_r($transferEntityIds, true).", $entityId)");
 
-		$rel_table_arr = array("Emails"=>"vtiger_seactivityrel");
+		$rel_table_arr = array("Activities"=>"vtiger_seactivityrel");
 
 		$tbl_field_arr = array("vtiger_seactivityrel"=>"activityid");
 
 		$entity_tbl_field_arr = array("vtiger_seactivityrel"=>"crmid");
-
+		
 		foreach ($transferEntityIds as $transferId) {
+
 			foreach ($rel_table_arr as $rel_table) {
 				
 				$id_field = $tbl_field_arr[$rel_table];
@@ -2469,9 +2470,7 @@ class CRMEntity {
 					}
 				}
 			}
-		}
-		
-		foreach ($transferEntityIds as $transferId) {
+
 			// Pick the records related to the entity to be transfered, but do not pick the once which are already related to the current entity.
 			$relatedRecords = $adb->pquery("SELECT relcrmid, relmodule FROM vtiger_crmentityrel WHERE crmid=? AND module=?" .
 					" AND relcrmid NOT IN (SELECT relcrmid FROM vtiger_crmentityrel WHERE crmid=? AND module=?)", array($transferId, $module, $entityId, $module));

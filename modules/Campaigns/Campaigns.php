@@ -602,24 +602,29 @@ class Campaigns extends CRMEntity {
 		}
 	}
 
-
+	/**
+	 * Move the related records of the specified list of id's to the given record.
+	 * @param String This module name
+	 * @param Array List of Entity Id's from which related records need to be transfered
+	 * @param Integer Id of the the Record to which the related records are to be moved
+	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
 		$log->debug("Entering function transferRelatedRecords ($module, $transferEntityIds, $entityId)");
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$rel_table_arr = array("Contacts"=>"vtiger_campaigncontrel","Potentials"=>"vtiger_potential",
-					"Leads"=>"vtiger_campaignleadrel","Activities"=>"vtiger_seactivityrel",
-					"Documents"=>"vtiger_senotesrel","Attachments"=>"vtiger_seattachmentsrel",
+					"Leads"=>"vtiger_campaignleadrel",
+					"Attachments"=>"vtiger_seattachmentsrel",
 					"Campaigns"=>"vtiger_campaignaccountrel","CobroPago"=>"vtiger_cobropago");
 
 		$tbl_field_arr = array("vtiger_campaigncontrel"=>"contactid","vtiger_potential"=>"potentialid",
-					"vtiger_campaignleadrel"=>"leadid","vtiger_seactivityrel"=>"activityid",
-					"vtiger_senotesrel"=>"notesid","vtiger_seattachmentsrel"=>"attachmentsid",
+					"vtiger_campaignleadrel"=>"leadid",
+					"vtiger_seattachmentsrel"=>"attachmentsid",
 					"vtiger_campaignaccountrel"=>"accountid","vtiger_cobropago"=>"cobropagoid");
 
 		$entity_tbl_field_arr = array("vtiger_campaigncontrel"=>"campaignid","vtiger_potential"=>"campaignid",
-					"vtiger_campaignleadrel"=>"campaignid","vtiger_seactivityrel"=>"crmid",
-					"vtiger_senotesrel"=>"crmid","vtiger_seattachmentsrel"=>"crmid",
+					"vtiger_campaignleadrel"=>"campaignid",
+					"vtiger_seattachmentsrel"=>"crmid",
 					"vtiger_campaignaccountrel"=>"campaignid","vtiger_cobropago"=>"related_id");
 
 		foreach ($transferEntityIds as $transferId) {
