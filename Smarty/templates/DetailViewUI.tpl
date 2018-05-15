@@ -17,7 +17,7 @@
 				{/if}
 
 				{if $keyid eq 11 && $USE_ASTERISK eq 'true'}
-					&nbsp;&nbsp;<span id="dtlview_{$keyfldname}"><a href='javascript:;' onclick='startCall("{$keyval}", "{$ID}")'>{$keyval}</a></span>
+					&nbsp;&nbsp;<span id="dtlview_{$keyfldname}"><a href='javascript:;' onclick='startCall("{$keyval}", "{$ID}");event.stopPropagation();'>{$keyval}</a></span>
 				{else}
 					&nbsp;&nbsp;<span id="dtlview_{$keyfldname}">{$keyval}</span>
 				{/if}
