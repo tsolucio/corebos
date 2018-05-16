@@ -30,7 +30,7 @@ class MailManager_UploadFile {
 	function createDocument() {
 		global $current_user, $adb, $currentModule;
 
-		if (!MailManager::checkModuleWriteAccessForCurrentUser('Documents')) {
+		if (!MailManager::checkModuleCreateAccessForCurrentUser('Documents')) {
 			$errorMessage = getTranslatedString('LBL_WRITE_ACCESS_FOR', $currentModule)." ".getTranslatedString('Documents')." ".getTranslatedString('LBL_MODULE_DENIED', $currentModule);
 			return array('success'=>true, 'error'=>$errorMessage);
 		}
@@ -221,13 +221,13 @@ class MailManager_Uploader {
 	* @return Array
 	*/
 	function handleUpload($uploadDirectory, $replaceOldFile = FALSE) {
-		if (!isPermitted('Documents', 'EditView')) {
+		if (isPermitted('Documents', 'CreateView')=='no') {
 			return array('error' => "Permission not available");
 		}
 		if (!is_writable($uploadDirectory)) {
 			return array('error' => "Server error. Upload directory isn't writable.");
 		}
-		if	(!$this->file) {
+		if (!$this->file) {
 			return array('error' => 'No files were uploaded.');
 		}
 		$size = $this->file->getSize();
