@@ -248,7 +248,7 @@ function patternValidateObject(fldObject, fldLabel, type) {
 		}
 	}
 	if (typeof(re) != 'undefined' && !re.test(checkval)) {
-		alert(alert_arr.ENTER_VALID + fldLabel + ' ('+type+')');
+		alert(alert_arr.ENTER_VALID + fldLabel);
 		try {
 			fldObject.focus();
 		} catch(error) {
