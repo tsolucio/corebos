@@ -6,10 +6,10 @@
 * Portions created by IT-Solutions4You s.r.o. are Copyright(C) IT-Solutions4You s.r.o.
 * All Rights Reserved.
 ********************************************************************************/
-require_once('include/fields/DateTimeField.php');
-include_once("modules/Calendar4You/GoogleSync4You.php");
-require_once("modules/Calendar4You/Calendar4You.php");
-require_once("modules/Calendar4You/CalendarUtils.php");
+require_once 'include/fields/DateTimeField.php';
+include_once 'modules/Calendar4You/GoogleSync4You.php';
+require_once 'modules/Calendar4You/Calendar4You.php';
+require_once 'modules/Calendar4You/CalendarUtils.php';
 
 global $adb, $current_user, $default_timezone, $default_theme, $default_language;
 
@@ -67,7 +67,7 @@ if ($num_rows1 > 0) {
 					$geventid = $row2['geventid'];
 					$cal=$row2['calendar'];
 					$event = $GoogleSync4You->getGoogleCalEventfromcron($geventid,$cal);
-					if($event != false){
+					if ($event != false) {
 					if ($event->getStatus()=='cancelled') {
 						$sql3 = 'DELETE FROM its4you_googlesync4you_events WHERE id = ?';
 						$adb->pquery($sql3,array($eventid));
@@ -75,20 +75,30 @@ if ($num_rows1 > 0) {
 						if ($lastmodified != $event->getUpdated()) {
 							$record = $row2['crmid'];
 							$activitytype = $row2['activitytype'];
-							if( $activitytype == 'Task')
+							if ( $activitytype == 'Task') {
 								$tab_type = 'Calendar';
-							else
+							} else {
 								$tab_type = 'Events';
+							}
 							$focus = CRMEntity::getInstance($currentModule);
 							$focus->retrieve_entity_info($record,$tab_type);
 							$focus->id = $record;
-                                                        //getting all invitees
-                                                        $invite=$adb->pquery("select GROUP_CONCAT(inviteeid SEPARATOR \";\") as invitee from vtiger_invitees join vtiger_users on id=inviteeid and deleted=0 where activityid=?",array($record));
-                                                        if($adb->num_rows($invite)>0)
-                                                        $_REQUEST["inviteesid"]=$adb->query_result($invite,0,0);
+							//getting all invitees
+							$invite=$adb->pquery(
+								'select GROUP_CONCAT(inviteeid SEPARATOR ";") as invitee
+									from vtiger_invitees
+									join vtiger_users on id=inviteeid and deleted=0
+									where activityid=?',
+								array($record)
+							);
+							if ($adb->num_rows($invite)>0) {
+								$_REQUEST['inviteesid']=$adb->query_result($invite,0,0);
+							}
 							$focus->mode = 'edit';
 							$focus->column_fields['subject'] = $event->getSummary();
-							if (empty($focus->column_fields['subject'])) continue; // we don't update events with no subject
+							if (empty($focus->column_fields['subject'])) {
+								continue; // we don't update events with no subject
+							}
 							$focus->column_fields['description'] = $event->getDescription();
 							$focus->column_fields['location'] = $event->getLocation();
 							$recurrence = $event->getRecurrence();
@@ -97,26 +107,29 @@ if ($num_rows1 > 0) {
 								$evdtst = (empty($event->getStart()->dateTime) ? $event->getStart()->date : $event->getStart()->dateTime);
 								$evdted = (empty($event->getEnd()->dateTime) ? $event->getEnd()->date : $event->getEnd()->dateTime);
 								$start_time_length = strlen($evdtst);
-								if ($start_time_length == 10)
+								if ($start_time_length == 10) {
 									$is_full_day_event = true;
-								else
+								} else {
 									$is_full_day_event = false;
+								}
 								$startdatetime = new DateTime($evdtst);
 								$startdatetime->setTimeZone($c_time_zone);
 								$new_time_start_time = $startdatetime->format('U');
 								$user_date_start = DateTimeField::convertToUserFormat($startdatetime->format('Y-m-d'));
-								if (!$is_full_day_event)
+								if (!$is_full_day_event) {
 									$user_time_start = $startdatetime->format('H:i');
-								else
+								} else {
 									$user_time_start = '00:00';
+								}
 								$enddatetime = new DateTime($evdted);
 								$enddatetime->setTimeZone($c_time_zone);
 								$new_time_end_time = $enddatetime->format('U');
 								$user_date_end = DateTimeField::convertToUserFormat($enddatetime->format('Y-m-d'));
-								if (!$is_full_day_event)
+								if (!$is_full_day_event) {
 									$user_time_end = $enddatetime->format('H:i');
-								else
+								} else {
 									$user_time_end = '00:00';
+								}
 								$focus->column_fields['date_start'] = $user_date_start;
 								$focus->column_fields['due_date'] = $user_date_end;
 								$focus->column_fields['time_start'] = $user_time_start;
@@ -132,7 +145,7 @@ if ($num_rows1 > 0) {
 							$adb->pquery($sql3,array($event->getUpdated(),$eventid));
 						}
 					}
-                                }}
+				}}
 			}
 		}
 	}
