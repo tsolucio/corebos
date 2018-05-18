@@ -18,7 +18,6 @@ require_once 'VTWorkflowTemplateManager.inc';
 require_once 'VTWorkflowUtils.php';
 
 function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_strings) {
-
 	global $theme, $current_user;
 	$util = new VTWorkflowUtils();
 
@@ -94,12 +93,10 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	$smarty->assign('newTaskReturnUrl', vtlib_purify($requestUrl));
 	$dayrange = array();
 	$intervalrange=array();
-	for ($d=1; $d<=31;
-	$d++) {
+	for ($d=1; $d<=31; $d++) {
 		$dayrange[$d] = $d;
 	}
-	for ($interval=5; $interval<=50;
-	$interval+=5) {
+	for ($interval=5; $interval<=50; $interval+=5) {
 		$intervalrange[$interval]=$interval;
 	}
 	$smarty->assign('days1_31', $dayrange);
