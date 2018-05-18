@@ -40,16 +40,18 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 		$tm = new VTWorkflowTemplateManager($adb);
 		$template = $tm->retrieveTemplate($request['template_id']);
 		$workflow = $tm->createWorkflow($template);
+		$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getMaxAllowedScheduledWorkflows());
 	} else {
 		if (isset($request['workflow_id'])) {
 			$workflow = $wfs->retrieve($request['workflow_id']);
+			$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getScheduledWorkflowsCount());
 		} else {
 			$moduleName=$request['module_name'];
 			$workflow = $wfs->newWorkflow($moduleName);
+			$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getMaxAllowedScheduledWorkflows());
 		}
 	}
 	$smarty->assign('ScheduledWorkflowsCount', $wfs->getScheduledWorkflowsCount());
-	$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getMaxAllowedScheduledWorkflows());
 	if (empty($workflow->schtime)) {
 		$smarty->assign('schdtime_12h', date('h:ia'));
 	} else {
