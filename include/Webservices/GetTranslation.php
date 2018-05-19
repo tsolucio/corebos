@@ -14,7 +14,7 @@
 *************************************************************************************************/
 
 function vtws_gettranslation($totranslate, $portal_language, $module, $user){
-	global $log,$adb,$default_language;
+	global $log, $adb, $default_language, $current_language;
 	$log->debug("Entering function vtws_gettranslation");
 	$language = $portal_language;
 	$totranslate=(array)$totranslate;
@@ -52,8 +52,13 @@ function vtws_gettranslation($totranslate, $portal_language, $module, $user){
 	if (!$applanguage_used and !$modlanguage_used)
 		return $totranslate;  // We can't find language file so we return what we are given
 
+	$default_language = $current_language = $language;
 	$translated=array();
 	foreach ($totranslate as $key=>$str) {
+		$ismodule = vtlib_isModuleActive($key);
+		if ($ismodule) {
+			$i18nMod = getTranslatedString($key, $key);
+		}
 		if (!empty($mod_strings[$str]))
 			$tr = $mod_strings[$str];
 		elseif (!empty($app_strings[$str]))
@@ -62,8 +67,10 @@ function vtws_gettranslation($totranslate, $portal_language, $module, $user){
 			$tr = $mod_strings[$key];
 		elseif (!empty($app_strings[$key]))
 			$tr = $app_strings[$key];
+		elseif ($ismodule && $i18nMod != $key)
+			$tr = $i18nMod;
 		else
-			$tr = $str;
+			$tr = getTranslatedString($str, $module);
 		$translated[$key] = $tr;
 	}
 
