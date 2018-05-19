@@ -102,8 +102,8 @@ function vtws_getAssignedUserList($module, $user) {
 	$log->debug('Entering getAssignedUserList function with parameter modulename: '.$module);
 	$hcuser = $current_user;
 	$current_user = $user;
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
+	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 	$tabid=getTabid($module);
 	if (!is_admin($user) && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabid] == 3 || $defaultOrgSharingPermission[$tabid] == 0)) {
 		$users = get_user_array(false, 'Active', $user->id, 'private');
@@ -230,8 +230,8 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 	}
 	// connected user must have access to account and contact > this will be restricted by the coreBOS system and the rest of the code
 	// start work
-	require_once('modules/CustomView/CustomView.php');
-	require_once('include/utils/utils.php');
+	require_once 'modules/CustomView/CustomView.php';
+	require_once 'include/utils/utils.php';
 	// Was the search limited by user for specific modules?
 	$search_onlyin = (empty($search_onlyin) ? array() : explode(',', $search_onlyin));
 	$object_array = getSearchModules($search_onlyin);
@@ -279,7 +279,7 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 		$listview_entries = getSearchingListViewEntries($focus, $module, $list_result, $navigation_array, '', '', '', '', $oCustomView, '', '', '', true);
 		$total_record_count = $total_record_count + $noofrows;
 		if (!empty($listview_entries)) {
-			foreach ($listview_entries as $key => $element) {
+			foreach ($listview_entries as $element) {
 				$res[$j]=$element;
 				$j++;
 			}
@@ -366,15 +366,11 @@ function getSearchModules($filter = array()) {
 }
 
 function getSearchingListViewEntries($focus, $module, $list_result, $navigation_array, $relatedlist = '', $returnset = '', $edit_action = 'EditView', $del_action = 'Delete', $oCv = '', $page = '', $selectedfields = '', $contRelatedfields = '', $skipActions = false, $linksallowed = false) {
-	global $log, $mod_strings, $adb, $current_user, $app_strings, $theme;
+	global $log, $adb, $current_user, $theme;
 	$log->debug('Entering getSearchingListViewEntries in CPWS('.get_class($focus).','. $module.') method ...');
-	$tabname = getParentTab();
 	$noofrows = $adb->num_rows($list_result);
 	$list_block = array();
-	$evt_status = '';
-	$theme_path="themes/".$theme."/";
-	$image_path=$theme_path."images/";
-	//getting the vtiger_fieldtable entries from database
+	//getting the field table entries from database
 	$tabid = getTabid($module);
 
 	if ($oCv) {
@@ -391,7 +387,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 
 	//Added to reduce the no. of queries logging for non-admin user -- by minnie-start
 	$field_list = array();
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 	foreach ($focus->list_fields as $name => $tableinfo) {
 		$fieldname = $focus->list_fields_name[$name];
 		if ($oCv) {
@@ -469,14 +465,14 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 		$tempArr[$uitype]=$columnname;
 		$ui_col_array[$field_name]=$tempArr;
 	}
-	//end
+
 	if ($navigation_array['start'] !=0) {
 		for ($i=1; $i<=$noofrows; $i++) {
 			$list_header =array();
 			//Getting the entityid
 			if ($module != 'Users') {
 				$entity_id = $adb->query_result($list_result, $i-1, 'crmid');
-				$owner_id = $adb->query_result($list_result, $i-1, 'smownerid');
+				//$owner_id = $adb->query_result($list_result, $i-1, 'smownerid');
 			} else {
 				$entity_id = $adb->query_result($list_result, $i-1, 'id');
 			}
@@ -626,7 +622,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 
 								$file_name = $adb->query_result($list_result, $i-1, 'filename');
 								$notes_id = $adb->query_result($list_result, $i-1, 'crmid');
-								$folder_id = $adb->query_result($list_result, $i-1, 'folderid');
+								//$folder_id = $adb->query_result($list_result, $i-1, 'folderid');
 								$download_type = $adb->query_result($list_result, $i-1, 'filelocationtype');
 								$file_status = $adb->query_result($list_result, $i-1, 'filestatus');
 								$fileidQuery = 'select attachmentsid from vtiger_seattachmentsrel where crmid=?';
@@ -879,7 +875,7 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
  * @return Array values found: crmid => array($returnfields)
  */
 function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnfields, $limit, $user) {
-	global $current_user,$log,$adb,$default_charset;
+	global $current_user, $adb, $default_charset;
 
 	$respuesta=array();
 	if (empty($searchinmodule) || empty($fields)) {

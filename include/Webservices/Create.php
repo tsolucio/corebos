@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************ */
+require_once 'include/Webservices/SetRelation.php';
 
-require_once('include/Webservices/SetRelation.php');
 function vtws_create($elementType, $element, $user) {
 	global $root_directory;
 	$types = vtws_listtypes(null, $user);
@@ -39,7 +39,7 @@ function vtws_create($elementType, $element, $user) {
 
 	// Cache the instance for re-use
 	if (!isset($vtws_create_cache[$elementType]['webserviceobject'])) {
-		$webserviceObject = VtigerWebserviceObject::fromName($adb,$elementType);
+		$webserviceObject = VtigerWebserviceObject::fromName($adb, $elementType);
 		$vtws_create_cache[$elementType]['webserviceobject'] = $webserviceObject;
 	} else {
 		$webserviceObject = $vtws_create_cache[$elementType]['webserviceobject'];
@@ -53,7 +53,7 @@ function vtws_create($elementType, $element, $user) {
 	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 	$meta = $handler->getMeta();
 	if ($meta->hasWriteAccess() !== true) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to write is denied");
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to write is denied');
 	}
 
 	$referenceFields = $meta->getReferenceFieldDetails();
@@ -61,20 +61,19 @@ function vtws_create($elementType, $element, $user) {
 		if (isset($element[$fieldName]) && strlen($element[$fieldName]) > 0) {
 			$ids = vtws_getIdComponents($element[$fieldName]);
 			$elemTypeId = $ids[0];
-			$elemId = $ids[1];
 			$referenceObject = VtigerWebserviceObject::fromId($adb, $elemTypeId);
 			if (!in_array($referenceObject->getEntityName(), $details)) {
 				throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, "Invalid reference specified for $fieldName");
 			}
 			if ($referenceObject->getEntityName() == 'Users') {
-				if(!$meta->hasAssignPrivilege($element[$fieldName])) {
-					throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Cannot assign record to the given user");
+				if (!$meta->hasAssignPrivilege($element[$fieldName])) {
+					throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Cannot assign record to the given user');
 				}
 			}
 			if (!in_array($referenceObject->getEntityName(), $types['types']) && $referenceObject->getEntityName() != 'Users') {
-				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to access reference type is denied" . $referenceObject->getEntityName());
+				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to access reference type is denied' . $referenceObject->getEntityName());
 			}
-		} else if (isset($element[$fieldName]) && $element[$fieldName] !== NULL) {
+		} elseif (isset($element[$fieldName]) && $element[$fieldName] !== null) {
 			unset($element[$fieldName]);
 		}
 	}
@@ -84,7 +83,7 @@ function vtws_create($elementType, $element, $user) {
 		if (is_array($ownerFields)) {
 			foreach ($ownerFields as $ownerField) {
 				if (isset($element[$ownerField]) && $element[$ownerField] !== null && !$meta->hasAssignPrivilege($element[$ownerField])) {
-					throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Cannot assign record to the given user");
+					throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Cannot assign record to the given user');
 				}
 			}
 		}
@@ -97,7 +96,7 @@ function vtws_create($elementType, $element, $user) {
 		if ($elementType == 'HelpDesk') {
 			//Added to construct the update log for Ticket history
 			$colflds = $element;
-			list($void,$colflds['assigned_user_id']) = explode('x', $colflds['assigned_user_id']);
+			list($void, $colflds['assigned_user_id']) = explode('x', $colflds['assigned_user_id']);
 			$grp_name = fetchGroupName($colflds['assigned_user_id']);
 			$assigntype = ($grp_name != '') ? 'T' : 'U';
 			$updlog = HelpDesk::getUpdateLogCreateMessage($colflds, $grp_name, $assigntype);
