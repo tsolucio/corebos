@@ -406,7 +406,16 @@ class Import_Data_Controller {
 						&& (!empty($referenceModuleName) && !in_array($referenceModuleName, getInventoryModules()) && $referenceModuleName!='Users')
 					) {
 						if (isPermitted($referenceModuleName, 'CreateView') == 'yes') {
-							$wsEntityIdInfo = $this->createEntityRecord($referenceModuleName, $entityLabel);
+							try {
+								$wsEntityIdInfo = $this->createEntityRecord($referenceModuleName, $entityLabel);
+							} catch (WebServiceException $e) {
+								echo '<br><br>';
+								$smarty = new vtigerCRM_Smarty();
+								$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
+								$smarty->assign('ERROR_MESSAGE', getTranslatedString('ERR_CREATING_TABLE')." $referenceModuleName $entityLabel : ".$e->message);
+								$smarty->display('applicationmessage.tpl');
+								die();
+							}
 							$wsEntityId = $wsEntityIdInfo['id'];
 							$entityIdComponents = vtws_getIdComponents($wsEntityId);
 							$entityId = $entityIdComponents[1];
