@@ -188,7 +188,7 @@ class Import_Data_Controller {
 			$entityInfo = null;
 			$fieldData = array();
 			foreach ($fieldMapping as $fieldName => $index) {
-				$fieldData[$fieldName] = $row[$fieldName];
+				$fieldData[$fieldName] = (isset($row[$fieldName]) ? $row[$fieldName] : '');
 			}
 
 			$mergeType = $this->mergeType;
@@ -388,8 +388,7 @@ class Import_Data_Controller {
 							$referenceModuleName = $referenceModule;
 							if ($referenceModule == 'Users') {
 								$referenceEntityId = getUserId_Ol($entityLabel);
-								if (empty($referenceEntityId) ||
-										!Import_Utils::hasAssignPrivilege($moduleMeta->getEntityName(), $referenceEntityId)) {
+								if (empty($referenceEntityId) || !Import_Utils::hasAssignPrivilege($moduleMeta->getEntityName(), $referenceEntityId)) {
 									$referenceEntityId = $this->user->id;
 								}
 							} elseif ($referenceModule == 'Currency') {
@@ -420,8 +419,7 @@ class Import_Data_Controller {
 						if (isset($defaultFieldValues[$fieldName])) {
 							$fieldData[$fieldName] = $defaultFieldValues[$fieldName];
 						}
-						if (empty($fieldData[$fieldName]) ||
-								!Import_Utils::hasAssignPrivilege($moduleMeta->getEntityName(), $fieldData[$fieldName])) {
+						if (empty($fieldData[$fieldName]) || !Import_Utils::hasAssignPrivilege($moduleMeta->getEntityName(), $fieldData[$fieldName])) {
 							$fieldData[$fieldName] = $this->user->id;
 						}
 					} else {
@@ -611,7 +609,7 @@ class Import_Data_Controller {
 				$importResult . '<br/><br/>'.
 				'We recommend you to login and check a few records to confirm that the import has been successful.';
 
-			$userName = getFullNameFromArray('Users', $importDataController->user->column_fields);
+			//$userName = getFullNameFromArray('Users', $importDataController->user->column_fields);
 			$userEmail = $importDataController->user->email1;
 
 			send_mail('Emails', $userEmail, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_ID, $emailSubject, $emailData, '', '');
