@@ -944,7 +944,7 @@ function getPricesForProducts($currencyid, $product_ids, $module = 'Products', $
 					$product_base_conv_rate = getBaseConversionRateForProduct($product_id, 'edit', $module);
 					$conversion_rate = $product_conv_rate * $product_base_conv_rate;
 
-					$actual_price = $unit_price * $conversion_rate;
+					$actual_price = (float)$unit_price * (float)$conversion_rate;
 				}
 				$price_list[$product_id] = $actual_price;
 			} else {

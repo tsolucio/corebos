@@ -164,7 +164,7 @@ class Mapping extends processcbMap {
 		return $tfields;
 	}
 
-	private function convertMap2Array() {
+	public function convertMap2Array() {
 		$xml = $this->getXMLContent();
 		$mapping=$target_fields=array();
 		$mapping['origin'] = (String)$xml->originmodule->originname;
