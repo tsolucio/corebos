@@ -388,26 +388,26 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		}else{
 			$profileList = getCurrentUserProfileList();
 			if (count($profileList) > 0) {
-				$sql = "SELECT distinct vtiger_field.*, vtiger_profile2field.readonly
-						FROM vtiger_field LEFT JOIN vtiger_blocks ON vtiger_field.block=vtiger_blocks.blockid
-						INNER JOIN vtiger_profile2field
-						ON vtiger_profile2field.fieldid = vtiger_field.fieldid
-						INNER JOIN vtiger_def_org_field
-						ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
+				$sql = "SELECT distinct vtiger_field.*, vtiger_profile2field.readonly, vtiger_blocks.sequence
+						FROM vtiger_field
+						LEFT JOIN vtiger_blocks ON vtiger_field.block=vtiger_blocks.blockid
+						INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
+						INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
 						WHERE ".$condition." AND vtiger_profile2field.visible = 0
 						AND vtiger_profile2field.profileid IN (". generateQuestionMarks($profileList) .")
-						AND vtiger_def_org_field.visible = 0 and vtiger_field.block in (".generateQuestionMarks($block).") and vtiger_field.displaytype in (1,2,3,4) and vtiger_field.presence in (0,2) ORDER BY vtiger_blocks.sequence ASC, vtiger_field.sequence ASC";
+						AND vtiger_def_org_field.visible = 0 and vtiger_field.block in (".generateQuestionMarks($block).") and vtiger_field.displaytype in (1,2,3,4)
+						AND vtiger_field.presence in (0,2) ORDER BY vtiger_blocks.sequence ASC, vtiger_field.sequence ASC";
 				$params = array($tabid, $profileList, $block);
 			} else {
-				$sql = "SELECT distinct vtiger_field.*, vtiger_profile2field.readonly
-						FROM vtiger_field LEFT JOIN vtiger_blocks ON vtiger_field.block=vtiger_blocks.blockid
-						INNER JOIN vtiger_profile2field
-						ON vtiger_profile2field.fieldid = vtiger_field.fieldid
-						INNER JOIN vtiger_def_org_field
-						ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
+				$sql = "SELECT distinct vtiger_field.*, vtiger_profile2field.readonly, vtiger_blocks.sequence
+						FROM vtiger_field
+						LEFT JOIN vtiger_blocks ON vtiger_field.block=vtiger_blocks.blockid
+						INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
+						INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
 						WHERE ".$condition."
 						AND vtiger_profile2field.visible = 0
-						AND vtiger_def_org_field.visible = 0 and vtiger_field.block in (".generateQuestionMarks($block).") and vtiger_field.displaytype in (1,2,3,4) and vtiger_field.presence in (0,2) ORDER BY vtiger_blocks.sequence ASC, vtiger_field.sequence ASC";
+						AND vtiger_def_org_field.visible = 0 and vtiger_field.block in (".generateQuestionMarks($block).") and vtiger_field.displaytype in (1,2,3,4)
+						AND vtiger_field.presence in (0,2) ORDER BY vtiger_blocks.sequence ASC, vtiger_field.sequence ASC";
 				$params = array($tabid, $block);
 			}
 		}
