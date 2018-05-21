@@ -158,18 +158,6 @@ function showMandatoryFieldsAndValues($entityValues) {
 		$entityObjectValues['assigned_user_id'] = $entityValues['assignedTo'];
 		$entityObjectValues = vtws_populateConvertLeadEntities($entityvalue, $entityObjectValues, $entityHandler, $leadHandler, $leadInfo);
 
-		if ($entityvalue['name'] == 'Potentials') {
-			if (!empty($entityIds['Accounts'])) {
-				$entityObjectValues['related_to'] = $entityIds['Accounts'];
-			} else {
-				$entityObjectValues['related_to'] = $entityIds['Contacts'];
-			}
-		}
-		if ($entityvalue['name'] == 'Contacts') {
-			if (!empty($entityIds['Accounts'])) {
-				$entityObjectValues['account_id'] = $entityIds['Accounts'];
-			}
-		}
 		echo "<tr><td colspan=3><b>".getTranslatedString($entityvalue['name'], $entityvalue['name'])."</b></td></tr>";
 		echo "<tr><td><b>".getTranslatedString('FieldName', 'Settings').
 			"</b></td><td><b>".getTranslatedString('LBL_MANDATORY_FIELD', 'Settings').
