@@ -9,6 +9,7 @@
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese | 13/04/2012 |Curitiba/Paraná/Brasil.| www.ttcasolucoes.com.br
  * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 15/01/2018 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
  * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 13/05/2018 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 21/05/2018 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
  ********************************************************************************/
 $app_strings = array (
 'LBL_BROWSER_TITLE' => 'coreBOS',
@@ -1123,10 +1124,10 @@ $app_strings = array (
 //added for asterisk integration
 'CallHistory'=>'Histórico chamada',
 'PBXManager'=>'Administrador iPBX',
-'LBL_OUTGOING_CALL_MESSAGE'=>'Levante o guancho do telefone para discar o número',
-'LBL_OUTGOING_CALL'=>'Saída chamada',
-'LBL_OPERATION_NOT_SUPPORTED'=>'Esta Operação não é suportada atualmente',
-'LBL_ASTERISK_SET_ERROR'=>'Os detalhes do Servidor iPBX não estão configurados. Configure primeiro.',
+'LBL_OUTGOING_CALL_MESSAGE'=>'Atenda seu ramal para completar a ligação',
+'LBL_OUTGOING_CALL'=>'Ligação iniciada',
+'LBL_OPERATION_NOT_SUPPORTED'=>'Esta operação não é suportada atualmente',
+'LBL_ASTERISK_SET_ERROR'=>'Os detalhes do servidor iPBX não estão configurados. Configure primeiro.',
 'LBL_CREATE_LEAD'=>'Criar lead',
 'LBL_CREATE_CONTACT'=>'Criar contato',
 'LBL_CREATE_ACCOUNT'=>'Criar conta',
