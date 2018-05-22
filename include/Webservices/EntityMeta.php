@@ -154,17 +154,12 @@ abstract class EntityMeta{
 	}
 
 	function hasMandatoryFields($row){
-		global $adb;
-
 		$mandatoryFields = $this->getMandatoryFields();
 		$hasMandatory = true;
 		foreach($mandatoryFields as $ind=>$field){
-			// dont use empty API as '0'(zero) is a valid value.
 			if( !isset($row[$field]) || $row[$field] === "" || $row[$field] === null ){
-				// Fetching field label.
-				$query = $adb->pquery('select fieldlabel from vtiger_field where fieldname=?', array($field));
-				$result = $adb->fetch_array($query);
-				$label = getTranslatedString($result['fieldlabel']);
+				// Field label.
+				$label = $this->moduleFields[$field]->getFieldLabelKey();
 
 				throw new WebServiceException(WebServiceErrorCode::$MANDFIELDSMISSING, "$label ($field) does not have a value");
 			}
@@ -173,8 +168,6 @@ abstract class EntityMeta{
 	}
 
 	public function isUpdateMandatoryFields($element){
-		global $adb;
-		
 		if(!is_array($element)){
 			throw new WebServiceException(WebServiceErrorCode::$MANDFIELDSMISSING, "Mandatory field does not have a value");
 		}
@@ -186,10 +179,8 @@ abstract class EntityMeta{
 			foreach($updateMandatoryFields as $ind=>$field){
 				// dont use empty API as '0'(zero) is a valid value.
 				if( !isset($element[$field]) || $element[$field] === "" || $element[$field] === null ){
-					// Fetching field label.
-					$query = $adb->pquery('select fieldlabel from vtiger_field where fieldname=?', array($field));
-					$result = $adb->fetch_array($query);
-					$label = getTranslatedString($result['fieldlabel']);
+					// Field label.
+					$label = $this->moduleFields[$field]->getFieldLabelKey();
 
 					throw new WebServiceException(WebServiceErrorCode::$MANDFIELDSMISSING, "$label ($field) does not have a value");
 				}
