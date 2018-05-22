@@ -157,9 +157,13 @@ abstract class EntityMeta{
 		$mandatoryFields = $this->getMandatoryFields();
 		$hasMandatory = true;
 		foreach($mandatoryFields as $ind=>$field){
-			// dont use empty API as '0'(zero) is a valid value.
 			if( !isset($row[$field]) || $row[$field] === "" || $row[$field] === null ){
-				throw new WebServiceException(WebServiceErrorCode::$MANDFIELDSMISSING, "$field does not have a value");
+				// Getting Field label.
+				$fieldLabelKey = $this->moduleFields[$field]->getFieldLabelKey();
+				$tabId = $this->moduleFields[$field]->getTabId();
+				$label = getTranslatedString($fieldLabelKey,getTabModuleName($tabId));
+
+				throw new WebServiceException(WebServiceErrorCode::$MANDFIELDSMISSING, "$label ($field) does not have a value");
 			}
 		}
 		return $hasMandatory;
@@ -177,7 +181,12 @@ abstract class EntityMeta{
 			foreach($updateMandatoryFields as $ind=>$field){
 				// dont use empty API as '0'(zero) is a valid value.
 				if( !isset($element[$field]) || $element[$field] === "" || $element[$field] === null ){
-					throw new WebServiceException(WebServiceErrorCode::$MANDFIELDSMISSING, "$field does not have a value");
+					// Getting Field label.
+					$fieldLabelKey = $this->moduleFields[$field]->getFieldLabelKey();
+					$tabId = $this->moduleFields[$field]->getTabId();
+					$label = getTranslatedString($fieldLabelKey,getTabModuleName($tabId));
+
+					throw new WebServiceException(WebServiceErrorCode::$MANDFIELDSMISSING, "$label ($field) does not have a value");
 				}
 			}
 		}
