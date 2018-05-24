@@ -19,7 +19,7 @@ function send_message($id, $message, $progress, $processed, $total) {
 	ob_flush();
 	flush();
 }
-$params = json_decode(vtlib_purify($_REQUEST['params']),true);
+$params = json_decode(vtlib_purify($_REQUEST['params']), true);
 
 global $currentModule, $rstart;
 $nonSupportedMassEdit = array('Emails');
@@ -38,10 +38,9 @@ if (isset($params['start']) && $params['start']!='') {
 }
 
 if (isset($idlist)) {
-
 	$recordids = explode(';', $idlist);
-        $recordcount = count($recordids)-1;
-        $id = 1;
+		$recordcount = count($recordids)-1;
+		$id = 1;
 	for ($index = 0; $index < $recordcount; ++$index) {
 		$recordid = $recordids[$index];
 		if ($recordid == '' || in_array(getSalesEntityType($recordid), $nonSupportedMassEdit)) {
@@ -53,7 +52,7 @@ if (isset($idlist)) {
 			$focus->mode = 'edit';
 			$focus->id = $recordid;
 			foreach ($focus->column_fields as $fieldname => $val) {
-                                $fldname = $fieldname.'_mass_edit_check';
+								$fldname = $fieldname.'_mass_edit_check';
 				if (isset($params[$fldname])) {
 					if ($fieldname == 'assigned_user_id') {
 						if ($params['assigntype'] == 'U') {
@@ -77,16 +76,15 @@ if (isset($idlist)) {
 			}
 			list($saveerror,$errormessage,$error_action,$returnvalues) = $focus->preSaveCheck($params);
 			if (!$saveerror) { // if there is an error we ignore this record
-                                $msg = 'Record '.$recordid.' saved';
+								$msg = 'Record '.$recordid.' saved';
 				$focus->save($currentModule);
+			} else {
+				$msg = 'Record '.$recordid.' not saved '.$errormessage;
 			}
-                        else {
-                        $msg = 'Record '.$recordid.' not saved '.$errormessage;    
-                        }
 		}
-        $recordprocessed++;
-	$progress = $recordprocessed / $recordcount * 100;
-	send_message($id++, $msg, $progress, $recordprocessed, $recordcount);
+		$recordprocessed++;
+		$progress = $recordprocessed / $recordcount * 100;
+		send_message($id++, $msg, $progress, $recordprocessed, $recordcount);
 	}
 }
 send_message('CLOSE', 'Process complete', 100, $recordcount, $recordcount);
