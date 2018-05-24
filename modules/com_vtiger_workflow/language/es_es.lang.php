@@ -71,7 +71,6 @@ $mod_strings = array(
 'LBL_AttachmentInField' => 'Adjunto en campo',
 'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Nota: Todas las fechas, horas e información recurrente configurada para el evento,
 											serán respecto a la zona horaria por defecto, configurada en config.inc.php',
-
 'Select Meta Variables' => 'Selecciona Meta Variables',
 'Current Date' => 'Fecha Actual',
 'Current Time' => 'Hora Actual',
