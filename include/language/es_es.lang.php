@@ -1273,6 +1273,7 @@ $app_strings = array (
 	'Subscribe' => 'Suscribir',
 	'View History' => 'Ver Histórico',
 	'SYNCH_NOW' => 'Sincroniza Ahora',
+        'Updated' => 'Updated',
 );
 
 // Translation for currency names

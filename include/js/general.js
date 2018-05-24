@@ -1045,6 +1045,65 @@ function massEditFormValidate(){
 	return doModuleValidation('mass_edit');
 }
 
+function run_massedit(){
+        var me = massEditFormValidate();
+        if (me==true){
+        var myFields = document.forms['massedit_form'];
+        var sentForm = new Object();
+        for (f=0; f<myFields.length; f++){
+                if (myFields[f].type == 'checkbox') {
+                            if(myFields[f].checked != false){
+                            var checked = 'on';
+                            sentForm[myFields[f].name] = checked;
+                            }
+                }
+                else if (myFields[f].type == 'radio' && myFields[f].checked){
+                            sentForm[myFields[f].name] = myFields[f].value;
+                }
+                else if (myFields[f].type != 'radio' && myFields[f].type != 'button'){
+                            sentForm[myFields[f].name] = myFields[f].value;
+                }
+        }
+
+        var rdo = document.getElementById('relresultssection');
+	rdo.style.visibility = 'visible';
+        rdo.style.display = 'block';
+        document.getElementById('massedit').style.display = 'none';
+        
+        var worker  = new Worker('massedit-worker.js');
+	//a message is received
+        worker.postMessage(sentForm);
+	worker.addEventListener('message', function(e) {
+		var message = event.data;
+		if (e.data == 'CLOSE') {
+			__addLog('<br><b>' + alert_arr.ProcessFINISHED + '!</b>');
+			var pBar = document.getElementById('progressor');
+			pBar.value = pBar.max; //max out the progress bar
+            	} else {
+                        __addLog(message.message);
+			var pBar = document.getElementById('progressor');
+			pBar.value = message.progress;
+			var perc = document.getElementById('percentage');
+			perc.innerHTML   = message.progress  + "% &nbsp;&nbsp;" + message.processed + '/' + message.total;
+			perc.style.width = (Math.floor(pBar.clientWidth * (message.progress/100)) + 15) + 'px';
+		}
+        }, false);
+
+        worker.postMessage(true);
+    }
+}
+
+function stopTask() {
+	cbierels_es.close();
+	__addLog(mod_alert_arr.Interrupted);
+}
+
+function __addLog(message) {
+	var r = document.getElementById('relresults');
+	r.innerHTML += message + '<br>';
+	r.scrollTop = r.scrollHeight;
+}
+
 function doModuleValidation(edit_type,editForm,callback) {
 	if (editForm == undefined) {
 		var formName = 'EditView';
@@ -1056,9 +1115,12 @@ function doModuleValidation(edit_type,editForm,callback) {
 	} else {
 		var isvalid = doformValidation(edit_type);
 	}
-	if (isvalid) {
+	if (isvalid && edit_type!='mass_edit') {
 		doServerValidation(edit_type,formName,callback);
 	}
+        else {
+            return isvalid;
+        }
 	return false;
 }
 

@@ -8074,6 +8074,13 @@ th.slds-is-sortable:hover .slds-button {
   text-decoration: none;
   padding: 0.75rem; }
 
+.slds-masseditprogress {
+    z-index:1000000000000000; 
+    position:absolute;
+    top:30%;
+    left:60%;
+    width:40%;
+}
 @media (min-width: 48em) {
   .slds-has-inline-block-links--space a {
     padding: 0.5rem; } }

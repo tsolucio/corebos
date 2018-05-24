@@ -138,6 +138,36 @@
 <div id="massedit_form_div"></div>
 
 </div>
+<div id="relresultssection" style="visibility:hidden;display:none;" class="slds-masseditprogress">
+<div class="slds-grid">
+<div class="slds-col">
+	<div class="slds-page-header" role="banner">
+		<div class="slds-col slds-has-flexi-truncate">
+			<div class="slds-media slds-no-space slds-grow">
+				<div class="slds-media__figure">
+					<svg aria-hidden="true" class="slds-icon slds-icon-standard-user">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#relate"></use>
+					</svg>
+				</div>
+				<div class="slds-media__body">
+					<h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate"
+						title="{$APP.Updated}">{$APP.Updated}...</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="slds-col slds-page-header" style="width:60%;">
+<progress id='progressor' value="0" max='100' style="width:90%;height:14px;"></progress>
+<span id="percentage" style="text-align:left; display:block; margin-top:5px;">0</span>
+</div>
+</div>
+<div class="slds-grid">
+<div class="slds-col">
+<div id="relresults" style="border:1px solid #000; padding:10px; width:90%; height:450px; overflow:auto; background:#eee; margin:auto; margin-top:10px;"></div>
+</div>
+</div>
+</div>
 <!-- END -->
 {if $MODULE|hasEmailField}
 <form name="SendMail" method="post"><div id="sendmail_cont" style="z-index:100001;position:absolute;"></div></form>

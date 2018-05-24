@@ -1179,6 +1179,7 @@ $app_strings = array (
 'Subscribe' => 'Subscribe',
 'View History' => 'Visualizza Storico',
 'SYNCH_NOW' => 'Sincronizza ora',
+'Updated' => 'Aggiornati',
 );
 
 // Translation for currency names

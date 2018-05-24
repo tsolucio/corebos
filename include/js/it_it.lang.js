@@ -396,5 +396,7 @@ var alert_arr = {
 	'JSLBL_PAGINATION': 'Paginazione',
 	'JSLBL_FINISH': 'Fine',
 	'SHOWING' : 'Mostrando',
-	'OF' : 'di'
+	'OF' : 'di',
+        'ERR_Massedit' : 'Errorre di Mass Edit',
+        'ProcessFINISHED' : 'Process Finished'
 };

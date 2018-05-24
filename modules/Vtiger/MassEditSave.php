@@ -7,25 +7,42 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
+header('Content-Type: text/event-stream');
+header('Cache-Control: no-cache'); // recommended to prevent caching of event data.
+set_time_limit(0);
+
+function send_message($id, $message, $progress, $processed, $total) {
+	$d = array('message' => $message , 'progress' => $progress, 'processed' => $processed, 'total' => $total);
+	echo "id: $id" . PHP_EOL;
+	echo "data: " . json_encode($d) . PHP_EOL;
+	echo PHP_EOL;
+	ob_flush();
+	flush();
+}
+$params = json_decode(vtlib_purify($_REQUEST['params']),true);
+
 global $currentModule, $rstart;
 $nonSupportedMassEdit = array('Emails');
 
 $focus = CRMEntity::getInstance($currentModule);
 
-$idlist= vtlib_purify($_REQUEST['massedit_recordids']);
-$viewid = isset($_REQUEST['viewname']) ? vtlib_purify($_REQUEST['viewname']) : '';
-$return_module = urlencode(vtlib_purify($_REQUEST['massedit_module']));
+$idlist= vtlib_purify($params['massedit_recordids']);
+$viewid = isset($params['viewname']) ? vtlib_purify($params['viewname']) : '';
+$return_module = urlencode(vtlib_purify($params['massedit_module']));
 $return_action = 'index';
 
 $url = getBasic_Advance_SearchURL();
 
-if (isset($_REQUEST['start']) && $_REQUEST['start']!='') {
-	$rstart = '&start=' . urlencode(vtlib_purify($_REQUEST['start']));
+if (isset($params['start']) && $params['start']!='') {
+	$rstart = '&start=' . urlencode(vtlib_purify($params['start']));
 }
 
 if (isset($idlist)) {
+
 	$recordids = explode(';', $idlist);
-	for ($index = 0; $index < count($recordids); ++$index) {
+        $recordcount = count($recordids)-1;
+        $id = 1;
+	for ($index = 0; $index < $recordcount; ++$index) {
 		$recordid = $recordids[$index];
 		if ($recordid == '' || in_array(getSalesEntityType($recordid), $nonSupportedMassEdit)) {
 			continue;
@@ -36,20 +53,21 @@ if (isset($idlist)) {
 			$focus->mode = 'edit';
 			$focus->id = $recordid;
 			foreach ($focus->column_fields as $fieldname => $val) {
-				if (isset($_REQUEST[$fieldname.'_mass_edit_check'])) {
+                                $fldname = $fieldname.'_mass_edit_check';
+				if (isset($params[$fldname])) {
 					if ($fieldname == 'assigned_user_id') {
-						if ($_REQUEST['assigntype'] == 'U') {
-							$value = vtlib_purify($_REQUEST['assigned_user_id']);
-						} elseif ($_REQUEST['assigntype'] == 'T') {
-							$value = vtlib_purify($_REQUEST['assigned_group_id']);
+						if ($params['assigntype'] == 'U') {
+							$value = vtlib_purify($params['assigned_user_id']);
+						} elseif ($params['assigntype'] == 'T') {
+							$value = vtlib_purify($params['assigned_group_id']);
 						}
 					} else {
-						if (!isset($_REQUEST[$fieldname])) {
+						if (!isset($params[$fieldname])) {
 							$value = '';
-						} elseif (is_array($_REQUEST[$fieldname])) {
-							$value = vtlib_purify($_REQUEST[$fieldname]);
+						} elseif (is_array($params[$fieldname])) {
+							$value = vtlib_purify($params[$fieldname]);
 						} else {
-							$value = trim(vtlib_purify($_REQUEST[$fieldname]));
+							$value = trim(vtlib_purify($params[$fieldname]));
 						}
 					}
 					$focus->column_fields[$fieldname] = $value;
@@ -57,13 +75,19 @@ if (isset($idlist)) {
 					$focus->column_fields[$fieldname] = decode_html($focus->column_fields[$fieldname]);
 				}
 			}
-			list($saveerror,$errormessage,$error_action,$returnvalues) = $focus->preSaveCheck($_REQUEST);
+			list($saveerror,$errormessage,$error_action,$returnvalues) = $focus->preSaveCheck($params);
 			if (!$saveerror) { // if there is an error we ignore this record
+                                $msg = 'Record '.$recordid.' saved';
 				$focus->save($currentModule);
 			}
+                        else {
+                        $msg = 'Record '.$recordid.' not saved '.$errormessage;    
+                        }
 		}
+        $recordprocessed++;
+	$progress = $recordprocessed / $recordcount * 100;
+	send_message($id++, $msg, $progress, $recordprocessed, $recordcount);
 	}
 }
-
-header("Location: index.php?module=$return_module&action=$return_action$rstart");
+send_message('CLOSE', 'Process complete', 100, $recordcount, $recordcount);
 ?>
