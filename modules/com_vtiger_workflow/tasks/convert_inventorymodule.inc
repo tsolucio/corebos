@@ -35,10 +35,8 @@ class ConvertInventoryModule extends VTTask {
 		$from_wf = true;
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
-
 		// Get the origin record in question
 		$wsso = vtws_retrieve($entity->getId(), $current_user);
-
 		// Start with the inventory module values and overwrite what's needed to overwrite
 		$data = $wsso;
 		$cbfrommodule = $entity->getModuleName();
@@ -63,13 +61,94 @@ class ConvertInventoryModule extends VTTask {
 			$toEntity->column_fields = $data;
 			$result = getConvertSoToInvoice($toEntity, $fromEntity, $entity->getId());
 			$data = $result->column_fields;
-		} else {
+		} elseif (in_array($cbfrommodule, getInventoryModules())) {
 			$bmapname = $cbfrommodule.'2'.$this->convertto;
 			$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 			if ($cbMapid) {
 				$cbMap = cbMap::getMapByID($cbMapid);
 				$data = $cbMap->Mapping($data, $data);
 			}
+		} else {
+			$fromEntity = CRMEntity::getInstance($cbfrommodule);
+			$record = preg_replace('/[^0-9]/', '', substr($entity->data['id'], strpos($entity->data['id'], 'x')));
+			$associated_prod = getAssociatedProducts($cbfrommodule, $fromEntity, $record);
+
+			if (empty($associated_prod[1]['entityType1'])) {
+				$from_wf = false;
+				$util->revertUser();
+				$logbg->debug('ConvertInventoryModule: converting from {$cbfrommodule} to {$this->convertto} failed because there is no related products');
+				return;
+			}
+			$toEntity = CRMEntity::getInstance($this->convertto);
+			$data = $toEntity->column_fields;
+			//$data['created_user_id'] = $current_user->id;
+			$data['assigned_user_id'] = $current_user->id;
+			$data['account_id'] = getRelatedAccountContact($record, 'Accounts');
+			$data['contact_id'] = getRelatedAccountContact($record, 'Contacts');
+			$data['subject'] = 'subject';
+			$data['quotestage'] = 'quotestage';
+			if (GlobalVariable::getVariable('Application_B2B', '1')) {
+				require_once 'modules/Accounts/Accounts.php';
+				$acct_focus = new Accounts();
+				$acct_focus->retrieve_entity_info($data['account_id'], 'Accounts');
+				$data['bill_city'] = $acct_focus->column_fields['bill_city'];
+				$data['ship_city'] = $acct_focus->column_fields['ship_city'];
+				$data['bill_street'] = $acct_focus->column_fields['bill_street'];
+				$data['ship_street'] = $acct_focus->column_fields['ship_street'];
+				$data['bill_state'] = $acct_focus->column_fields['bill_state'];
+				$data['ship_state'] = $acct_focus->column_fields['ship_state'];
+				$data['bill_code'] = $acct_focus->column_fields['bill_code'];
+				$data['ship_code'] = $acct_focus->column_fields['ship_code'];
+				$data['bill_country'] = $acct_focus->column_fields['bill_country'];
+				$data['ship_country'] = $acct_focus->column_fields['ship_country'];
+				$data['bill_pobox'] = $acct_focus->column_fields['bill_pobox'];
+				$data['ship_pobox'] = $acct_focus->column_fields['ship_pobox'];
+			} else {
+				require_once 'modules/Contacts/Contacts.php';
+				$cto_focus = new Contacts();
+				$cto_focus->retrieve_entity_info($data['contact_id'], 'Contacts');
+				$data['bill_city'] = $cto_focus->column_fields['mailingcity'];
+				$data['ship_city'] = $cto_focus->column_fields['othercity'];
+				$data['bill_street'] = $cto_focus->column_fields['mailingstreet'];
+				$data['ship_street'] = $cto_focus->column_fields['otherstreet'];
+				$data['bill_state'] = $cto_focus->column_fields['mailingstate'];
+				$data['ship_state'] = $cto_focus->column_fields['otherstate'];
+				$data['bill_code'] = $cto_focus->column_fields['mailingzip'];
+				$data['ship_code'] = $cto_focus->column_fields['otherzip'];
+				$data['bill_country'] = $cto_focus->column_fields['mailingcountry'];
+				$data['ship_country'] = $cto_focus->column_fields['othercountry'];
+				$data['bill_pobox'] = $cto_focus->column_fields['mailingpobox'];
+				$data['ship_pobox'] = $cto_focus->column_fields['otherpobox'];
+			}
+			$data['hdnTaxType'] = GlobalVariable::getVariable('Inventory_Tax_Type_Default', 'individual', $this->convertto);
+			$data['conversion_rate'] = 1;
+			$data['currency_id'] = vtws_getEntityId('Currency').'x'.$current_user->id;
+			$bmapname = $cbfrommodule.'2'.$this->convertto;
+			$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+			if ($cbMapid) {
+				$cbMap = cbMap::getMapByID($cbMapid);
+				$data = $cbMap->Mapping($data, $data);
+			}
+			$handler = vtws_getModuleHandlerFromName($cbfrommodule, $current_user);
+			$meta = $handler->getMeta();
+			$data = DataTransform::sanitizeRetrieveEntityInfo($data, $meta);
+			$data = DataTransform::sanitizeData($data, $meta);
+			$related = array();
+			$list_price_sum;
+			for ($i = 1; $i<=count($associated_prod); $i++) {
+				$related['productid'] = $associated_prod[$i]['hdnProductId'.$i];
+				$related['comment'] = '';
+				$related['qty'] = $associated_prod[$i]['qty'.$i];
+				$related['listprice'] = $associated_prod[$i]['listPrice'.$i];
+				$list_price_sum += $related['listprice'];
+				$related['discount'] = 0 ;
+				$related['discount_type'] = 0;
+				$related['discount_percentage'] = 0;
+				$related['discount_amount'] = 0;
+				$data['pdoInformation'][] = $related;
+			}
+			$data['hdnGrandTotal']= $list_price_sum;
+			$data['hdnSubTotal']= $list_price_sum;
 		}
 
 		$holdaction = $_REQUEST['action'];

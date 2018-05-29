@@ -43,9 +43,9 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	} else {
 		if (isset($request['workflow_id'])) {
 			$workflow = $wfs->retrieve($request['workflow_id']);
-			if($workflow->executionCondition!=6){
+			if ($workflow->executionCondition!=6) {
 				$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getMaxAllowedScheduledWorkflows());
-			}else{
+			} else {
 				$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getScheduledWorkflowsCount());
 			}
 		} else {
