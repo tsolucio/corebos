@@ -12,8 +12,7 @@ require_once 'modules/Contacts/controllers/SyncServer.php';
 
 class Google_VtigerSync_Handler extends WSAPP_VtigerSyncEventHandler {
 
-	public function getSyncServerInstance(){
+	public function getSyncServerInstance() {
 		return new Google_SyncServer_Controller();
 	}
-
 }

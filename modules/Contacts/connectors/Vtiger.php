@@ -17,9 +17,9 @@ class Google_Vtiger_Connector extends WSAPP_VtigerConnector {
 
 	/**
 	 * function to push data to vtiger
-	 * @param type $recordList
-	 * @param type $syncStateModel
-	 * @return type
+	 * @param array $recordList
+	 * @param object $syncStateModel
+	 * @return array
 	 */
 	public function push($recordList, $syncStateModel) {
 		return parent::push($recordList, $syncStateModel);
@@ -27,8 +27,8 @@ class Google_Vtiger_Connector extends WSAPP_VtigerConnector {
 
 	/**
 	 * function to get data from vtiger
-	 * @param type $syncStateModel
-	 * @return type
+	 * @param object $syncStateModel
+	 * @return object
 	 */
 	public function pull(WSAPP_SyncStateModel $syncStateModel) {
 		return parent::pull($syncStateModel);
@@ -41,5 +41,4 @@ class Google_Vtiger_Connector extends WSAPP_VtigerConnector {
 	public function getSyncTrackerHandlerName() {
 		return 'Google_vtigerSyncHandler';
 	}
-
 }

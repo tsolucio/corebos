@@ -23,7 +23,7 @@ global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log,$
 $listFocus=new Google_SaveSettings_Action();
 $listFocus->process($_REQUEST);
 $req = new Vtiger_Request();
-$req->setDefault('return_module','Contacts');
-$req->set('return_action','index');
-header('Location: index.php?' . $req->getReturnURL() );
+$req->setDefault('return_module', 'Contacts');
+$req->set('return_action', 'index');
+header('Location: index.php?' . $req->getReturnURL());
 ?>
