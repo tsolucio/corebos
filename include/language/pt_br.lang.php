@@ -1283,6 +1283,13 @@ $app_strings = array (
 'Subscribe' => 'Subscrever',
 'View History' => 'Ver histórico',
 'SYNCH_NOW' => 'Sincronizar agora',
+'Updated' => 'Updated',
+'id' => 'id',
+'data' => 'data',
+'record' => 'Record',
+'saved' => 'saved',
+'notsaved' => 'notsaved',
+'processcomplete' => 'Process Complete',
 );
 
 // Translation for currency names
