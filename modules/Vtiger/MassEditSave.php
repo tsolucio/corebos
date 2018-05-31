@@ -7,9 +7,12 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
+require_once("modules/Vtiger/ExecuteFunctionsfromphp.php");
+
 header('Content-Type: text/event-stream');
 header('Cache-Control: no-cache'); // recommended to prevent caching of event data.
 set_time_limit(0);
+
 global $app_strings;
 
 function send_message($id, $message, $progress, $processed, $total, $app_strings) {
@@ -78,7 +81,19 @@ if (isset($idlist)) {
 			list($saveerror,$errormessage,$error_action,$returnvalues) = $focus->preSaveCheck($params);
 			if (!$saveerror) { // if there is an error we ignore this record
 				$msg = $app_strings['record'].' '.$recordid.' '.$app_strings['saved'];
+                                $exists = executefunctionsvalidate('ValidationExists',$currentModule);
+                                if($exists == 'yes'){
+                                $validation = executefunctionsvalidate('ValidationLoad',$currentModule,vtlib_purify($_REQUEST['params']));
+                                if($validation == '%%%OK%%%'){
+                                $focus->save($currentModule);   
+                                }
+                                else {
+                                $msg = $app_strings['record'].' '.$recordid.' '.$validation;  
+                                }
+                                }
+                                else{
 				$focus->save($currentModule);
+                                }
 			} else {
 				$msg = $app_strings['record'].' '.$recordid.' '.$app_strings['notsaved'].$errormessage;
 			}
