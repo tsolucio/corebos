@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once("modules/Vtiger/ExecuteFunctionsfromphp.php");
+require_once "modules/Vtiger/ExecuteFunctionsfromphp.php";
 
 header('Content-Type: text/event-stream');
 header('Cache-Control: no-cache'); // recommended to prevent caching of event data.
@@ -40,7 +40,12 @@ $url = getBasic_Advance_SearchURL();
 if (isset($params['start']) && $params['start']!='') {
 	$rstart = '&start=' . urlencode(vtlib_purify($params['start']));
 }
-
+$exists = executefunctionsvalidate('ValidationExists', $currentModule);
+if ($exists == 'yes') {
+	$validation = executefunctionsvalidate('ValidationLoad', $currentModule, vtlib_purify($_REQUEST['params']));
+} else {
+	$validation == '%%%OK%%%';
+}
 if (isset($idlist)) {
 	$recordids = explode(';', $idlist);
 		$recordcount = count($recordids)-1;
@@ -81,19 +86,11 @@ if (isset($idlist)) {
 			list($saveerror,$errormessage,$error_action,$returnvalues) = $focus->preSaveCheck($params);
 			if (!$saveerror) { // if there is an error we ignore this record
 				$msg = $app_strings['record'].' '.$recordid.' '.$app_strings['saved'];
-                                $exists = executefunctionsvalidate('ValidationExists',$currentModule);
-                                if($exists == 'yes'){
-                                $validation = executefunctionsvalidate('ValidationLoad',$currentModule,vtlib_purify($_REQUEST['params']));
-                                if($validation == '%%%OK%%%'){
-                                $focus->save($currentModule);   
-                                }
-                                else {
-                                $msg = $app_strings['record'].' '.$recordid.' '.$validation;  
-                                }
-                                }
-                                else{
-				$focus->save($currentModule);
-                                }
+				if ($validation == '%%%OK%%%') {
+					$focus->save($currentModule);
+				} else {
+					$msg = $app_strings['record'].' '.$recordid.' '.$validation;
+				}
 			} else {
 				$msg = $app_strings['record'].' '.$recordid.' '.$app_strings['notsaved'].$errormessage;
 			}
