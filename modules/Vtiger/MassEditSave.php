@@ -41,11 +41,6 @@ if (isset($params['start']) && $params['start']!='') {
 	$rstart = '&start=' . urlencode(vtlib_purify($params['start']));
 }
 $exists = executefunctionsvalidate('ValidationExists', $currentModule);
-if ($exists == 'yes') {
-	$validation = executefunctionsvalidate('ValidationLoad', $currentModule, vtlib_purify($_REQUEST['params']));
-} else {
-	$validation == '%%%OK%%%';
-}
 if (isset($idlist)) {
 	$recordids = explode(';', $idlist);
 		$recordcount = count($recordids)-1;
@@ -85,11 +80,17 @@ if (isset($idlist)) {
 			}
 			list($saveerror,$errormessage,$error_action,$returnvalues) = $focus->preSaveCheck($params);
 			if (!$saveerror) { // if there is an error we ignore this record
-				$msg = $app_strings['record'].' '.$recordid.' '.$app_strings['saved'];
-				if ($validation == '%%%OK%%%') {
-					$focus->save($currentModule);
+				if ($exists == 'yes') {
+					$validation = executefunctionsvalidate('ValidationLoad', $currentModule, vtlib_purify($_REQUEST['params']));
+					if ($validation == '%%%OK%%%') {
+						$msg = $app_strings['record'].' '.$recordid.' '.$app_strings['saved'];
+						$focus->save($currentModule);
+					} else {
+							$msg = $app_strings['record'].' '.$recordid.' '.$validation;
+					}
 				} else {
-					$msg = $app_strings['record'].' '.$recordid.' '.$validation;
+					$msg = $app_strings['record'].' '.$recordid.' '.$app_strings['saved'];
+					$focus->save($currentModule);
 				}
 			} else {
 				$msg = $app_strings['record'].' '.$recordid.' '.$app_strings['notsaved'].$errormessage;
