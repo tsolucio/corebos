@@ -58,7 +58,7 @@ function vtws_gettranslation($totranslate, $portal_language, $module, $user) {
 	$default_language = $current_language = $language;
 	$translated=array();
 	foreach ($totranslate as $key => $str) {
-		$ismodule = vtlib_isModuleActive($key);
+		$ismodule = vtlib_isModuleActive($key) && $key!='Events';
 		if ($ismodule) {
 			$i18nMod = getTranslatedString($key, $key);
 		}
@@ -72,8 +72,10 @@ function vtws_gettranslation($totranslate, $portal_language, $module, $user) {
 			$tr = $app_strings[$key];
 		} elseif ($ismodule && $i18nMod != $key) {
 			$tr = $i18nMod;
-		} else {
+		} elseif ($ismodule) {
 			$tr = getTranslatedString($str, $module);
+		} else {
+			$tr = $str;
 		}
 		$translated[$key] = $tr;
 	}
