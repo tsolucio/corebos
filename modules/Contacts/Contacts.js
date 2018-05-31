@@ -115,13 +115,6 @@ function set_return_specific(product_id, product_name) {
 	fldName.value = product_name;
 	fldId.value = product_id;
 }
-//only for Todo
-function set_return_toDospecific(product_id, product_name) {
-	var fldName = getOpenerObj('task_contact_name');
-	var fldId = getOpenerObj('task_contact_id');
-	fldName.value = product_name;
-	fldId.value = product_id;
-}
 
 function submitform(id){
 	document.massdelete.entityid.value=id;
