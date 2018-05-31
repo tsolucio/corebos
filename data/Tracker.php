@@ -68,9 +68,7 @@ class Tracker {
 			$query1 = "select $fieldsname as entityname from $tablename where $entityidfield = ?";
 			$result = $adb->pquery($query1, array($item_id));
 			$item_summary = html_entity_decode($adb->query_result($result, 0, 'entityname'), ENT_QUOTES, $default_charset);
-			if (strlen($item_summary) > 30) {
-				$item_summary=substr($item_summary, 0, 30).'...';
-			}
+			$item_summary = textlength_check($item_summary);
 		}
 		#if condition added to skip faq in last viewed history
 		$query = "INSERT into $this->table_name (user_id, module_name, item_id, item_summary) values (?,?,?,?)";

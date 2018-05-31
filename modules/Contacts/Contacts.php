@@ -161,34 +161,34 @@ class Contacts extends CRMEntity {
 		}
 
 		$result = &$this->db->query($query, true, "Error retrieving $currentModule list: ");
-		$list = Array();
+		$list = array();
 		$rows_found = $this->db->getRowCount($result);
 		if ($rows_found != 0) {
 			for ($index = 0, $row = $this->db->fetchByAssoc($result, $index); $row && $index < $rows_found; $index++, $row = $this->db->fetchByAssoc($result, $index)) {
-				$contact = Array();
+				$contact = array();
 
-				$contact[lastname] = in_array("lastname", $permitted_field_lists) ? $row[lastname] : "";
-				$contact[firstname] = in_array("firstname", $permitted_field_lists) ? $row[firstname] : "";
-				$contact[email] = in_array("email", $permitted_field_lists) ? $row[email] : "";
+				$contact['lastname'] = in_array('lastname', $permitted_field_lists) ? $row['lastname'] : '';
+				$contact['firstname'] = in_array('firstname', $permitted_field_lists) ? $row['firstname'] : '';
+				$contact['email'] = in_array('email', $permitted_field_lists) ? $row['email'] : '';
 
-				if (in_array("accountid", $permitted_field_lists)) {
-					$contact[accountname] = $row[accountname];
-					$contact[account_id] = $row[accountid];
+				if (in_array('accountid', $permitted_field_lists)) {
+					$contact['accountname'] = $row['accountname'];
+					$contact['account_id'] = $row['accountid'];
 				} else {
-					$contact[accountname] = "";
-					$contact[account_id] = "";
+					$contact['accountname'] = '';
+					$contact['account_id'] = '';
 				}
-				$contact[contactid] = $row[contactid];
+				$contact['contactid'] = $row[contactid];
 				$list[] = $contact;
 			}
 		}
 
-		$response = Array();
+		$response = array();
 		$response['list'] = $list;
 		$response['row_count'] = $rows_found;
 		$response['next_offset'] = $next_offset;
 		$response['previous_offset'] = $previous_offset;
-		$log->debug("Exiting plugin_process_list_query method ...");
+		$log->debug('Exiting plugin_process_list_query method ...');
 		return $response;
 	}
 
@@ -733,14 +733,13 @@ function getColumnNames()
 }
 
 /** Function to get the Contacts assigned to a user with a valid email address.
-* @param varchar $username - User Name
-* @param varchar $emailaddress - Email Addr for each contact.
+* @param string $username - User Name
+* @param string $emailaddress - Email Addr for each contact.
 * Used By vtigerCRM Outlook Plugin
 * Returns the Query
 */
-function get_searchbyemailid($username,$emailaddress)
-{
-	global $log, $current_user;
+function get_searchbyemailid($username, $emailaddress) {
+	global $log, $current_user, $adb;
 	require_once("modules/Users/Users.php");
 	$seed_user=new Users();
 	$user_id=$seed_user->retrieve_user_id($username);
@@ -748,11 +747,10 @@ function get_searchbyemailid($username,$emailaddress)
 	$current_user->retrieve_entity_info($user_id, 'Users');
 	$log->debug("Entering get_searchbyemailid(".$username.",".$emailaddress.") method ...");
 	//get users group ID's
-	$gquery = 'SELECT groupid FROM vtiger_users2group WHERE userid=?';
-	$gresult = $adb->pquery($gquery, array($user_id));
+	$gresult = $adb->pquery('SELECT groupid FROM vtiger_users2group WHERE userid=?', array($user_id));
 	$groupidlist = '';
-	for($j=0;$j < $adb->num_rows($gresult);$j++) {
-		$groupidlist.=",".$adb->query_result($gresult,$j,'groupid');
+	for ($j=0; $j < $adb->num_rows($gresult); $j++) {
+		$groupidlist .= ','.$adb->query_result($gresult, $j, 'groupid');
 	}
 	//crm-now changed query to search in groups too and make only owned contacts available
 	$query = "select vtiger_contactdetails.lastname,vtiger_contactdetails.firstname,
@@ -898,17 +896,17 @@ function get_contactsforol($user_name)
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$rel_table_arr = Array("Potentials"=>"vtiger_contpotentialrel","Activities"=>"vtiger_cntactivityrel","Emails"=>"vtiger_seactivityrel",
 				"HelpDesk"=>"vtiger_troubletickets","Quotes"=>"vtiger_quotes","PurchaseOrder"=>"vtiger_purchaseorder",
-				"SalesOrder"=>"vtiger_salesorder","Products"=>"vtiger_seproductsrel","Documents"=>"vtiger_senotesrel",
+				"SalesOrder"=>"vtiger_salesorder","Products"=>"vtiger_seproductsrel",
 				"Attachments"=>"vtiger_seattachmentsrel","Campaigns"=>"vtiger_campaigncontrel");
 
 		$tbl_field_arr = Array("vtiger_contpotentialrel"=>"potentialid","vtiger_cntactivityrel"=>"activityid","vtiger_seactivityrel"=>"activityid",
 				"vtiger_troubletickets"=>"ticketid","vtiger_quotes"=>"quoteid","vtiger_purchaseorder"=>"purchaseorderid",
-				"vtiger_salesorder"=>"salesorderid","vtiger_seproductsrel"=>"productid","vtiger_senotesrel"=>"notesid",
+				"vtiger_salesorder"=>"salesorderid","vtiger_seproductsrel"=>"productid",
 				"vtiger_seattachmentsrel"=>"attachmentsid","vtiger_campaigncontrel"=>"campaignid");
 
 		$entity_tbl_field_arr = Array("vtiger_contpotentialrel"=>"contactid","vtiger_cntactivityrel"=>"contactid","vtiger_seactivityrel"=>"crmid",
 				"vtiger_troubletickets"=>"parent_id","vtiger_quotes"=>"contactid","vtiger_purchaseorder"=>"contactid",
-				"vtiger_salesorder"=>"contactid","vtiger_seproductsrel"=>"crmid","vtiger_senotesrel"=>"crmid",
+				"vtiger_salesorder"=>"contactid","vtiger_seproductsrel"=>"crmid",
 				"vtiger_seattachmentsrel"=>"crmid","vtiger_campaigncontrel"=>"contactid");
 
 		foreach($transferEntityIds as $transferId) {

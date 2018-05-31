@@ -356,7 +356,7 @@ $taskManager->saveTask($task);
 putMsg('Workflow "'.$helpDeskWorkflow->description.'" created!');
 
 $delmods = array(
-	'EmailTemplates','Google'
+	'EmailTemplates','Google','ExtensionStore'
 );
 
 foreach ($delmods as $module) {
@@ -389,7 +389,4 @@ foreach ($insmods as $module) {
 
 $mod = Vtiger_Module::getInstance('ModTracker');
 $mod->addLink('HEADERSCRIPT', 'ModTrackerCommon_JS', 'modules/ModTracker/ModTrackerCommon.js');
-
-
-
 ?>

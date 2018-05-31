@@ -380,6 +380,10 @@ class ListViewController {
 					}
 				} elseif ($field->getFieldDataType() == 'currency') {
 					if ($value != '') {
+						if (!isset($totals[$fieldName])) {
+							$totals[$fieldName]=0;
+						}
+						$totals[$fieldName] = $totals[$fieldName] + $value;
 						if ($field->getUIType() == 72) {
 							if ($fieldName == 'unit_price') {
 								$currencyId = getProductBaseCurrency($recordId, $module);
@@ -389,10 +393,6 @@ class ListViewController {
 								$currencyInfo = getInventoryCurrencyInfo($module, $recordId);
 								$currencySymbol = $currencyInfo['currency_symbol'];
 							}
-							if (!isset($totals[$fieldName])) {
-								$totals[$fieldName]=0;
-							}
-							$totals[$fieldName] = $totals[$fieldName] + $value;
 							$currencyValue = CurrencyField::convertToUserFormat($value, null, true);
 							$value = CurrencyField::appendCurrencySymbol($currencyValue, $currencySymbol);
 						} else {

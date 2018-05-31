@@ -1049,7 +1049,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$value = vtlib_purify($_REQUEST['vendor_id']);
 			$vendor_name = getVendorName($value);
 		} else {
-			$value = 0;
+			$value = '';
 			$vendor_name = '';
 		}
 		$pop_type = 'specific';

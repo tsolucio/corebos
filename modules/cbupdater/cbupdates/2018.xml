@@ -63,4 +63,11 @@
 	<classname>addFinancialFields</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Calendar action permissions: Merge, Import, Export, DuplicatesHandling</description>
+	<filename>build/changeSets/2018/cbcalendaractionpermissions.php</filename>
+	<classname>cbcalendaractionpermissions</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

@@ -19,15 +19,15 @@ class MailManager_SettingsController extends MailManager_MainUIController {
 	* @param MailManager_Request $request
 	* @return MailManager_Response
 	*/
-	function process(MailManager_Request $request) {
+	public function process(MailManager_Request $request) {
 		$response = new MailManager_Response();
 		if ('edit' == $request->getOperationArg()) {
 			$model = $this->getMailBoxModel();
 			$serverName = $model->serverName();
 			$viewer = $this->getViewer();
 			$viewer->assign('SERVERNAME', $serverName);
-			$response->setResult( $viewer->fetch( $this->getModuleTpl( 'Settings.tpl' ) ) );
-		} else if ('save' == $request->getOperationArg()) {
+			$response->setResult($viewer->fetch($this->getModuleTpl('Settings.tpl')));
+		} elseif ('save' == $request->getOperationArg()) {
 			$model = $this->getMailBoxModel();
 			$model->setServer($request->get('_mbox_server'));
 			$model->setUsername($request->get('_mbox_user'));
@@ -41,15 +41,15 @@ class MailManager_SettingsController extends MailManager_MainUIController {
 				$model->save();
 				$request->set('_operation', 'mainui');
 				return parent::process($request);
-			} else if ($connector->hasError()) {
+			} elseif ($connector->hasError()) {
 				$response->isJSON(true);
-				$response->setError( 101, $connector->lastError());
+				$response->setError(101, $connector->lastError());
 			}
-		} else if ('remove' == $request->getOperationArg()) {
+		} elseif ('remove' == $request->getOperationArg()) {
 			$model = $this->getMailBoxModel();
 			$model->delete();
 			$response->isJSON(true);
-			$response->setResult( array ('status' => true) );
+			$response->setResult(array('status' => true));
 		}
 		return $response;
 	}

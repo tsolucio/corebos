@@ -8,13 +8,13 @@
  * All Rights Reserved.
  *************************************************************************************/
 
-class State{
+class State {
 
-	var $success;
-	var $result;
-	var $error;
+	public $success;
+	public $result;
+	public $error;
 
-	function __construct(){
+	public function __construct() {
 		$this->success = false;
 		$this->result = array();
 		$this->error = array();

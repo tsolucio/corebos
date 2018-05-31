@@ -123,7 +123,7 @@ class CommonTokenStream implements TokenStream {
 	 *  Walk past any token not on the channel the parser is listening to.
 	 */
 	public function consume() {
-		if ( $this->p<sizeof($this->tokens)) {
+		if ( $this->p<count($this->tokens)) {
             $this->p++;
 			$this->p = $this->skipOffTokenChannels($this->p); // leave p on valid token
         }
@@ -133,7 +133,7 @@ class CommonTokenStream implements TokenStream {
 	 *  token.
 	 */
 	protected function skipOffTokenChannels($i) {
-		$n = sizeof($this->tokens);
+		$n = count($this->tokens);
 		while ( $i<$n && $this->tokens[$i]->getChannel()!=$this->channel ) {
 			$i++;
 		}
@@ -190,8 +190,8 @@ class CommonTokenStream implements TokenStream {
 		if ( $p == -1 ) {
 			fillBuffer();
 		}
-		if ( $stop>=sizeof($this->tokens)) {
-			$stop=sizeof($this->tokens) - 1;
+		if ( $stop>=count($this->tokens)) {
+			$stop=count($this->tokens) - 1;
 		}
 		if ( $start<0 ) {
 			$start=0;
@@ -208,7 +208,7 @@ class CommonTokenStream implements TokenStream {
 				$filteredTokens->add($t);
 			}
 		}
-		if ( sizeof($filteredTokens)==0 ) {
+		if ( count($filteredTokens)==0 ) {
 			$filteredTokens = null;
 		}
 		return $filteredTokens;
@@ -236,7 +236,7 @@ class CommonTokenStream implements TokenStream {
 			return $this->LB(-$k);
 		}
 		//System.out.print("LT(p="+p+","+k+")=");
-		if ( ($this->p+$k-1) >= sizeof($this->tokens)) {
+		if ( ($this->p+$k-1) >= count($this->tokens)) {
 			return TokenConst::$EOF_TOKEN;
 		}
 		//System.out.println(tokens.get(p+k-1));
@@ -248,7 +248,7 @@ class CommonTokenStream implements TokenStream {
 			$i = $this->skipOffTokenChannels($i+1); // leave p on valid token
 			$n++;
 		}
-		if ( $i>=sizeof($this->tokens)) {
+		if ( $i>=count($this->tokens)) {
 			return TokenConst::$EOF_TOKEN;
 		}
         return $this->tokens[$i];
@@ -307,7 +307,7 @@ class CommonTokenStream implements TokenStream {
 	}
 
 	public function size() {
-		return sizeof($this->tokens);
+		return count($this->tokens);
 	}
 
     public function index() {
@@ -343,7 +343,7 @@ class CommonTokenStream implements TokenStream {
 		if ( $this->p == -1 ) {
 			$this->fillBuffer();
 		}
-		return $this->toStringBetween(0, sizeof($this->tokens)-1);
+		return $this->toStringBetween(0, count($this->tokens)-1);
 	}
 
 	public function toStringBetween($start, $stop) {
@@ -353,8 +353,8 @@ class CommonTokenStream implements TokenStream {
 		if ( $this->p == -1 ) {
 			$this->fillBuffer();
 		}
-		if ( $stop>=sizeof($this->tokens)) {
-			$stop = sizeof($this->tokens)-1;
+		if ( $stop>=count($this->tokens)) {
+			$stop = count($this->tokens)-1;
 		}
 		$buf = "";
 		for ($i = $start; $i <= $stop; $i++) {

@@ -18,7 +18,6 @@ require_once 'VTWorkflowTemplateManager.inc';
 require_once 'VTWorkflowUtils.php';
 
 function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_strings) {
-
 	global $theme, $current_user;
 	$util = new VTWorkflowUtils();
 
@@ -40,16 +39,22 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 		$tm = new VTWorkflowTemplateManager($adb);
 		$template = $tm->retrieveTemplate($request['template_id']);
 		$workflow = $tm->createWorkflow($template);
+		$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getMaxAllowedScheduledWorkflows());
 	} else {
 		if (isset($request['workflow_id'])) {
 			$workflow = $wfs->retrieve($request['workflow_id']);
+			if ($workflow->executionCondition!=VTWorkflowManager::$ON_SCHEDULE) {
+				$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getMaxAllowedScheduledWorkflows());
+			} else {
+				$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getScheduledWorkflowsCount());
+			}
 		} else {
 			$moduleName=$request['module_name'];
 			$workflow = $wfs->newWorkflow($moduleName);
+			$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getMaxAllowedScheduledWorkflows());
 		}
 	}
 	$smarty->assign('ScheduledWorkflowsCount', $wfs->getScheduledWorkflowsCount());
-	$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getMaxAllowedScheduledWorkflows());
 	if (empty($workflow->schtime)) {
 		$smarty->assign('schdtime_12h', date('h:ia'));
 	} else {
@@ -92,12 +97,10 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	$smarty->assign('newTaskReturnUrl', vtlib_purify($requestUrl));
 	$dayrange = array();
 	$intervalrange=array();
-	for ($d=1; $d<=31;
-	$d++) {
+	for ($d=1; $d<=31; $d++) {
 		$dayrange[$d] = $d;
 	}
-	for ($interval=5; $interval<=50;
-	$interval+=5) {
+	for ($interval=5; $interval<=50; $interval+=5) {
 		$intervalrange[$interval]=$interval;
 	}
 	$smarty->assign('days1_31', $dayrange);

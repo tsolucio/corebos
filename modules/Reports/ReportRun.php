@@ -424,7 +424,7 @@ class ReportRun extends CRMEntity {
 		if ($datatype=='C') {
 			$value = str_replace("yes", "1", str_replace("no", "0", $value));
 		}
-
+		$rtvalue = ' = ';
 		if ($is_field==true) {
 			$value = $this->getFilterComparedField($temp);
 		}
@@ -462,29 +462,29 @@ class ReportRun extends CRMEntity {
 		if ($comparator == "k") {
 			$rtvalue = " not like '". formatForSqlLike($value, 0, $is_field) ."'";
 		}
-		if ($comparator == "l") {
-			$rtvalue = " < ".$adb->quote($value);
+		if ($comparator == 'l') {
+			$rtvalue = ' < '.$adb->quote($value);
 		}
-		if ($comparator == "g") {
-			$rtvalue = " > ".$adb->quote($value);
+		if ($comparator == 'g') {
+			$rtvalue = ' > '.$adb->quote($value);
 		}
-		if ($comparator == "m") {
-			$rtvalue = " <= ".$adb->quote($value);
+		if ($comparator == 'm') {
+			$rtvalue = ' <= '.$adb->quote($value);
 		}
-		if ($comparator == "h") {
-			$rtvalue = " >= ".$adb->quote($value);
+		if ($comparator == 'h') {
+			$rtvalue = ' >= '.$adb->quote($value);
 		}
-		if ($comparator == "b") {
-			$rtvalue = " < ".$adb->quote($value);
+		if ($comparator == 'b') {
+			$rtvalue = ' < '.$adb->quote($value);
 		}
-		if ($comparator == "a") {
-			$rtvalue = " > ".$adb->quote($value);
+		if ($comparator == 'a') {
+			$rtvalue = ' > '.$adb->quote($value);
 		}
 		if ($is_field==true) {
-			$rtvalue = str_replace("'", "", $rtvalue);
-			$rtvalue = str_replace("\\", "", $rtvalue);
+			$rtvalue = str_replace("'", '', $rtvalue);
+			$rtvalue = str_replace("\\", '', $rtvalue);
 		}
-		$log->info("ReportRun :: Successfully returned getAdvComparator");
+		$log->info('ReportRun :: Successfully returned getAdvComparator');
 		return $rtvalue;
 	}
 

@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('modules/Webforms/Webforms.php');
-require_once('modules/Webforms/model/WebformsModel.php');
+require_once 'modules/Webforms/Webforms.php';
+require_once 'modules/Webforms/model/WebformsModel.php';
 
 global $current_user,$log;
 Webforms::checkAdminAccess($current_user);
@@ -16,6 +16,5 @@ Webforms::checkAdminAccess($current_user);
 $webform=Webforms_Model::retrieveWithId(vtlib_purify($_REQUEST['id']));
 $webform->delete();
 
-$listURL='index.php?module=Webforms&action=WebformsListView';
-header(sprintf("Location: %s",$listURL));
+header(sprintf('Location: %s', 'index.php?module=Webforms&action=WebformsListView'));
 ?>

@@ -41,7 +41,7 @@ $current_user = new Users();
 
 if(isset($_SESSION['authenticated_user_id']))
 {
-	$result = $current_user->retrieveCurrentUserInfoFromFile($_SESSION['authenticated_user_id'],"Users");
+	$result = $current_user->retrieveCurrentUserInfoFromFile($_SESSION['authenticated_user_id']);
 	if($result == null)
 	{
 		coreBOS_Session::destroy();

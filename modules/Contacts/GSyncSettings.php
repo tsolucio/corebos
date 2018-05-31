@@ -24,11 +24,10 @@ include_once 'modules/Contacts/connectors/Contacts.php';
 include_once 'modules/Contacts/connectors/Vtiger.php';
 include_once 'modules/Contacts/models/Contacts.php';
 include_once 'modules/Contacts/helpers/Utils.php';
-include_once('Smarty_setup.php');
+include_once 'Smarty_setup.php';
 
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
 $listFocus=new Google_Setting_View();
 $listFocus->process($_REQUEST);
-
 ?>

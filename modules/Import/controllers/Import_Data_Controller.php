@@ -188,7 +188,7 @@ class Import_Data_Controller {
 			$entityInfo = null;
 			$fieldData = array();
 			foreach ($fieldMapping as $fieldName => $index) {
-				$fieldData[$fieldName] = $row[$fieldName];
+				$fieldData[$fieldName] = (isset($row[$fieldName]) ? $row[$fieldName] : '');
 			}
 
 			$mergeType = $this->mergeType;
@@ -388,8 +388,7 @@ class Import_Data_Controller {
 							$referenceModuleName = $referenceModule;
 							if ($referenceModule == 'Users') {
 								$referenceEntityId = getUserId_Ol($entityLabel);
-								if (empty($referenceEntityId) ||
-										!Import_Utils::hasAssignPrivilege($moduleMeta->getEntityName(), $referenceEntityId)) {
+								if (empty($referenceEntityId) || !Import_Utils::hasAssignPrivilege($moduleMeta->getEntityName(), $referenceEntityId)) {
 									$referenceEntityId = $this->user->id;
 								}
 							} elseif ($referenceModule == 'Currency') {
@@ -407,7 +406,16 @@ class Import_Data_Controller {
 						&& (!empty($referenceModuleName) && !in_array($referenceModuleName, getInventoryModules()) && $referenceModuleName!='Users')
 					) {
 						if (isPermitted($referenceModuleName, 'CreateView') == 'yes') {
-							$wsEntityIdInfo = $this->createEntityRecord($referenceModuleName, $entityLabel);
+							try {
+								$wsEntityIdInfo = $this->createEntityRecord($referenceModuleName, $entityLabel);
+							} catch (WebServiceException $e) {
+								echo '<br><br>';
+								$smarty = new vtigerCRM_Smarty();
+								$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
+								$smarty->assign('ERROR_MESSAGE', getTranslatedString('ERR_CREATING_TABLE')." $referenceModuleName $entityLabel : ".$e->message);
+								$smarty->display('applicationmessage.tpl');
+								die();
+							}
 							$wsEntityId = $wsEntityIdInfo['id'];
 							$entityIdComponents = vtws_getIdComponents($wsEntityId);
 							$entityId = $entityIdComponents[1];
@@ -420,8 +428,7 @@ class Import_Data_Controller {
 						if (isset($defaultFieldValues[$fieldName])) {
 							$fieldData[$fieldName] = $defaultFieldValues[$fieldName];
 						}
-						if (empty($fieldData[$fieldName]) ||
-								!Import_Utils::hasAssignPrivilege($moduleMeta->getEntityName(), $fieldData[$fieldName])) {
+						if (empty($fieldData[$fieldName]) || !Import_Utils::hasAssignPrivilege($moduleMeta->getEntityName(), $fieldData[$fieldName])) {
 							$fieldData[$fieldName] = $this->user->id;
 						}
 					} else {
@@ -548,8 +555,7 @@ class Import_Data_Controller {
 		$tableName = Import_Utils::getDbTableName($this->user);
 		$result = $adb->query('SELECT status FROM '.$tableName);
 
-		$statusCount = array('TOTAL' => 0, 'IMPORTED' => 0, 'FAILED' => 0, 'PENDING' => 0,
-								'CREATED' => 0, 'SKIPPED' => 0, 'UPDATED' => 0, 'MERGED' => 0);
+		$statusCount = array('TOTAL' => 0, 'IMPORTED' => 0, 'FAILED' => 0, 'PENDING' => 0, 'CREATED' => 0, 'SKIPPED' => 0, 'UPDATED' => 0, 'MERGED' => 0);
 
 		if ($result) {
 			$noOfRows = $adb->num_rows($result);
@@ -609,10 +615,10 @@ class Import_Data_Controller {
 			$importResult = $viewer->fetch('Import_Result_Details.tpl');
 			$importResult = str_replace('align="center"', '', $importResult);
 			$emailData = $coreBOS_uiapp_name . ' has just completed your import process. <br/><br/>' .
-							$importResult . '<br/><br/>'.
-							'We recommend you to login and check a few records to confirm that the import has been successful.';
+				$importResult . '<br/><br/>'.
+				'We recommend you to login and check a few records to confirm that the import has been successful.';
 
-			$userName = getFullNameFromArray('Users', $importDataController->user->column_fields);
+			//$userName = getFullNameFromArray('Users', $importDataController->user->column_fields);
 			$userEmail = $importDataController->user->email1;
 
 			send_mail('Emails', $userEmail, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_ID, $emailSubject, $emailData, '', '');
@@ -622,7 +628,6 @@ class Import_Data_Controller {
 	}
 
 	public static function getScheduledImport() {
-
 		$scheduledImports = array();
 		$importQueue = Import_Queue_Controller::getAll(Import_Queue_Controller::$IMPORT_STATUS_SCHEDULED);
 		foreach ($importQueue as $importId => $importInfo) {

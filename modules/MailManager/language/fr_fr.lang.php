@@ -2,20 +2,20 @@
 /***********************************************************
 *  Module       : MailManager
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
 $mod_strings = array (
 	'MailManager' => 'Mail Manager',
-	
+
 	// Translations for JS (please use the prefix JSLBL in key)
 	'JSLBL_Loading_Please_Wait'  => 'Chargement, Patientez',
 	'JSLBL_Loading'              => 'Chargement',
 	'JSLBL_Settings'             => 'Configuration',
 	'JSLBL_Opening'              => 'Ouverture',
-	'JSLBL_Deleting'              => 'Suppression',  
+	'JSLBL_Deleting'              => 'Suppression',
 	'JSLBL_Updating'             => 'Mise à jour',
 	'JSLBL_Associating'          => 'En association',
 	'JSLBL_Saving_And_Verifying' => 'Sauvez & Verifiez',
@@ -70,13 +70,13 @@ $mod_strings = array (
 	'JSLBL_MOVING'=>'Message(s) en déplacement',
 	'JSLBL_LOADING_FOLDERS' => 'Chargement des dossiers..',
 	'JSLBL_ADD_COMMENT'=>'Ajouter Commentaire',
-    'JSLBL_Yahoo'=>'Yahoo',
-    'JSLBL_CANNOT_ADD_EMPTY_COMMENT' => 'Le commentaire ne peut être vide',
-    'JSLBL_NO_EMAILS_SELECTED' => 'Aucun email sélectionné.',
-    'JSLBL_ENTER_SOME_VALUE' => 'Saisir une chaine à rechercher',
-    'JSLBL_DRAFT_MAIL_SAVED'=>'Message sauvé dans les brouillons',
-    
-	// General translations
+	'JSLBL_Yahoo'=>'Yahoo',
+	'JSLBL_CANNOT_ADD_EMPTY_COMMENT' => 'Le commentaire ne peut être vide',
+	'JSLBL_NO_EMAILS_SELECTED' => 'Aucun email sélectionné.',
+	'JSLBL_ENTER_SOME_VALUE' => 'Saisir une chaine à rechercher',
+	'JSLBL_DRAFT_MAIL_SAVED'=>'Message sauvé dans les brouillons',
+
+		// General translations
 	'LBL_Folders'         => 'Dossiers',
 	'LBL_Newer'           => 'Nouveau',
 	'LBL_Older'           => 'Ancien',
@@ -119,7 +119,7 @@ $mod_strings = array (
 	'LBL_Validate_Cert'           => 'Valider certificat',
 	'LBL_Do_Not_Validate_Cert'    => 'Ne pas valider certificat',
 	'LBL_SELECT_ACCOUNT_TYPE'     => 'Choisir un type de compte',
-	
+
 	'LBL_FROM'        => 'De',
 	'LBL_TO'          => 'À',
 	'LBL_CC'          => 'CC',
@@ -149,17 +149,17 @@ $mod_strings = array (
 	'LBL_5_MIN' => '5 Minutes',
 	'LBL_10_MIN' => '10 Minutes',
 	'LBL_MOVE_TO'=>'Déplacer vers...',
-    'LBL_MAILMANAGER_ADD_Contacts' => 'Ajouter Contact',
-    'LBL_MAILMANAGER_ADD_Accounts' => 'Ajouter Compte',
-    'LBL_MAILMANAGER_ADD_Leads' => 'Ajouter Prospect',
-    'LBL_MAILMANAGER_ADD_Calendar' => 'Ajouter Tâche',
-    'LBL_MAILMANAGER_ADD_HelpDesk' => 'Ajouter Ticket',
-    'LBL_MAILMANAGER_ADD_Emails' => 'Attacher le message',
-    'LBL_MAILMANAGER_ADD_ModComments' => 'Ajouter Commentaire',
-    'LBL_MAILMANAGER_ADD_Potentials' => 'Add Potentiel',
-    'LBL_MAILMANAGER_ADD_Project' => 'Ajouter Projet',
-    'LBL_MAILMANAGER_ADD_ProjectTask' => 'Ajouter Tâche Projet',
-    'LBL_ADD' => 'Ajouter',
+	'LBL_MAILMANAGER_ADD_Contacts' => 'Ajouter Contact',
+	'LBL_MAILMANAGER_ADD_Accounts' => 'Ajouter Compte',
+	'LBL_MAILMANAGER_ADD_Leads' => 'Ajouter Prospect',
+	'LBL_MAILMANAGER_ADD_Calendar' => 'Ajouter Tâche',
+	'LBL_MAILMANAGER_ADD_HelpDesk' => 'Ajouter Ticket',
+	'LBL_MAILMANAGER_ADD_Emails' => 'Attacher le message',
+	'LBL_MAILMANAGER_ADD_ModComments' => 'Ajouter Commentaire',
+	'LBL_MAILMANAGER_ADD_Potentials' => 'Add Potentiel',
+	'LBL_MAILMANAGER_ADD_Project' => 'Ajouter Projet',
+	'LBL_MAILMANAGER_ADD_ProjectTask' => 'Ajouter Tâche Projet',
+	'LBL_ADD' => 'Ajouter',
 	'JSLBL_SendWith_EmptyText' => 'Envoyer avec le corps vide?',
 	'LBL_ALLMAILS' => 'Tous les Emails',
 	'LBL_TO_CONTACTS' => 'Aux Contacts',

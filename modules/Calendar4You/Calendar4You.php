@@ -203,8 +203,9 @@ public function setgoogleaccessparams($userid){
      * @param type $event_type
      */
     function vtlib_handler($modulename, $event_type) {
-        if ($modulename == '')
-            $modulename = self::MODULE_NAME;
+		if ($modulename == '') {
+			$modulename = 'Calendar4You';
+		}
         switch ($event_type) {
             case 'module.postinstall':
                 $this->actualizeOrgShareAction2Tab();

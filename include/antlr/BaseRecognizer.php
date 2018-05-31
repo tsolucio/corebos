@@ -642,7 +642,7 @@ abstract class BaseRecognizer{
 
 	/** Push a rule's follow set using our own hardcoded stack */
 	protected function pushFollow($fset) {
-		// if ( ($this->state->_fsp +1)>=sizeof($this->state->following) ) {
+		// if ( ($this->state->_fsp +1)>=count($this->state->following) ) {
 		// 			$f = array();
 		// 			System.arraycopy(state.following, 0, f, 0, state.following.length-1);
 		// 			$this->state->following = f;
@@ -781,8 +781,8 @@ abstract class BaseRecognizer{
 		if ( $this->state->ruleMemo==null ) {
 			echo("!!!!!!!!! memo array is null for ". getGrammarFileName());
 		}
-		if ( $ruleIndex >= sizeof($this->state->ruleMemo) ) {
-			echo("!!!!!!!!! memo size is ".sizeof($this->state->ruleMemo).", but rule index is ".$ruleIndex);
+		if ( $ruleIndex >= count($this->state->ruleMemo) ) {
+			echo("!!!!!!!!! memo size is ".count($this->state->ruleMemo).", but rule index is ".$ruleIndex);
 		}
 		if ( $this->state->ruleMemo[$ruleIndex]!=null ) {
 			$this->state->ruleMemo[$ruleIndex][$ruleStartIndex] = $stopTokenIndex;
@@ -794,10 +794,10 @@ abstract class BaseRecognizer{
 	 */
 	public function getRuleMemoizationCacheSize() {
 		$n = 0;
-		for ($i = 0; $this->state->ruleMemo!=null && $i < sizeof($this->state->ruleMemo); $i++) {
+		for ($i = 0; $this->state->ruleMemo!=null && $i < count($this->state->ruleMemo); $i++) {
 			$ruleMap = $this->state->ruleMemo[$i];
 			if ( $ruleMap!=null ) {
-				$n += sizeof($ruleMap); // how many input indexes are recorded?
+				$n += count($ruleMap); // how many input indexes are recorded?
 			}
 		}
 		return $n;

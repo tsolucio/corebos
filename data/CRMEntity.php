@@ -797,12 +797,12 @@ class CRMEntity {
 		if ($insertion_mode == 'edit') {
 			// If update is empty the query fails
 			if (count($update) > 0) {
-				$sql1 = "update $table_name set " . implode(",", $update) . " where " . $this->tab_name_index[$table_name] . "=?";
+				$sql1 = "update $table_name set " . implode(',', $update) . ' where ' . $this->tab_name_index[$table_name] . '=?';
 				$update_params[] = $this->id;
 				$adb->pquery($sql1, $update_params);
 			}
 		} else {
-			$sql1 = "insert into $table_name(" . implode(",", $column) . ") values(" . generateQuestionMarks($value) . ")";
+			$sql1 = "insert into $table_name(" . implode(',', $column) . ') values(' . generateQuestionMarks($value) . ')';
 			$adb->pquery($sql1, $value);
 		}
 	}
@@ -811,7 +811,7 @@ class CRMEntity {
 	 * @param $fieldname currency field name
 	 * @param $fldvalue currency value they want to save
 	 * @param $tabid tabID of the module the field is on
-	 * @returns field value from database with maximum decimals if it is the same as value being saved
+	 * @return field value from database with maximum decimals if it is the same as value being saved
 	 */
 	public function adjustCurrencyField($fieldname, $fldvalue, $tabid) {
 		global $adb, $log, $current_user;
@@ -867,16 +867,15 @@ class CRMEntity {
 	 */
 	public function getOldFileName($notesid) {
 		global $log, $adb;
-		$log->info("in getOldFileName " . $notesid);
-		$query1 = 'select * from vtiger_seattachmentsrel where crmid=?';
-		$result = $adb->pquery($query1, array($notesid));
+		$log->info('in getOldFileName ' . $notesid);
+		$result = $adb->pquery('select * from vtiger_seattachmentsrel where crmid=?', array($notesid));
 		$noofrows = $adb->num_rows($result);
 		if ($noofrows != 0) {
 			$attachmentid = $adb->query_result($result, 0, 'attachmentsid');
 		}
 		if ($attachmentid != '') {
-			$query2 = 'select * from vtiger_attachments where attachmentsid=?';
-			$filename = $adb->query_result($adb->pquery($query2, array($attachmentid)), 0, 'name');
+			$rs = $adb->pquery('select * from vtiger_attachments where attachmentsid=?', array($attachmentid));
+			$filename = $adb->query_result($rs, 0, 'name');
 		}
 		return $filename;
 	}
@@ -1027,11 +1026,11 @@ class CRMEntity {
 	}
 
 	/** Function to saves the values in all the tables mentioned in the class variable $tab_name for the specified module
-	 * @param $module -- module:: Type varchar
+	 * @param $module_name -- module:: Type varchar
 	 */
 	public function save($module_name, $fileid = '') {
 		global $log;
-		$log->debug("module name is " . $module_name);
+		$log->debug('module name is ' . $module_name);
 
 		//Check if assigned_user_id is empty for assign the current user.
 		if (empty($this->column_fields['assigned_user_id'])) {
@@ -1333,6 +1332,7 @@ class CRMEntity {
 			" WHERE uitype='10' AND vtiger_fieldmodulerel.module=?", array($thismodule));
 		$linkedFieldsCount = $this->db->num_rows($linkedModulesQuery);
 
+		$rel_mods = array();
 		$rel_mods[$this->table_name] = 1;
 		for ($i=0; $i<$linkedFieldsCount; $i++) {
 			$related_module = $this->db->query_result($linkedModulesQuery, $i, 'relmodule');
@@ -1571,7 +1571,7 @@ class CRMEntity {
 
 	/** Function to restore a deleted record of specified module with given crmid
 	 * @param $module -- module name:: Type varchar
-	 * @param $entity_ids -- list of crmids :: Array
+	 * @param $id -- list of crmids :: Array
 	 */
 	public function restore($module, $id) {
 		global $current_user, $adb;
@@ -1579,15 +1579,14 @@ class CRMEntity {
 		$this->db->println("TRANS restore starts $module");
 		$this->db->startTransaction();
 
-		$date_var = date("Y-m-d H:i:s");
+		$date_var = date('Y-m-d H:i:s');
 		$query = 'UPDATE vtiger_crmentity SET deleted=0,modifiedtime=?,modifiedby=? WHERE crmid = ?';
-		$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, "Error restoring records :");
+		$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, 'Error restoring records :');
 		//Restore related entities/records
 		$this->restoreRelatedRecords($module, $id);
 
 		//Event triggering code
 		require_once 'include/events/include.inc';
-		global $adb;
 		$em = new VTEventsManager($adb);
 
 		// Initialize Event trigger cache
@@ -2438,7 +2437,38 @@ class CRMEntity {
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb, $log;
 		$log->debug("Entering function transferRelatedRecords ($module, ".print_r($transferEntityIds, true).", $entityId)");
+
+		$rel_table_arr = array('Activities'=>'vtiger_seactivityrel');
+
+		$tbl_field_arr = array('vtiger_seactivityrel'=>'activityid');
+
+		$entity_tbl_field_arr = array('vtiger_seactivityrel'=>'crmid');
+		
 		foreach ($transferEntityIds as $transferId) {
+
+			foreach ($rel_table_arr as $rel_table) {
+				
+				$id_field = $tbl_field_arr[$rel_table];
+				$entity_id_field = $entity_tbl_field_arr[$rel_table];
+
+				// IN clause to avoid duplicate entries
+				$sel_result = $adb->pquery(
+					"select $id_field from $rel_table where $entity_id_field=? " .
+						" and $id_field not in (select $id_field from $rel_table where $entity_id_field=?)",
+					array($transferId,$entityId)
+				);
+				$res_cnt = $adb->num_rows($sel_result);
+				if ($res_cnt > 0) {
+					for ($i=0; $i<$res_cnt; $i++) {
+						$id_field_value = $adb->query_result($sel_result, $i, $id_field);
+						$adb->pquery(
+							"update $rel_table set $entity_id_field=? where $entity_id_field=? and $id_field=?",
+							array($entityId,$transferId,$id_field_value)
+						);
+					}
+				}
+			}
+
 			// Pick the records related to the entity to be transfered, but do not pick the once which are already related to the current entity.
 			$relatedRecords = $adb->pquery("SELECT relcrmid, relmodule FROM vtiger_crmentityrel WHERE crmid=? AND module=?" .
 					" AND relcrmid NOT IN (SELECT relcrmid FROM vtiger_crmentityrel WHERE crmid=? AND module=?)", array($transferId, $module, $entityId, $module));

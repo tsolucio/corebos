@@ -2309,16 +2309,6 @@ function selectContact(check,type,frmName)
 				popuptype='&popuptype=specific';
 			}
 		}
-		else
-		{
-			if(document.getElementById('task_parent_type'))
-			{
-				task_parent_module = frmName.task_parent_type.value;
-				task_recordid = frmName.task_parent_id.value;
-				task_module = task_parent_module.split('&');
-				popuptype='&popuptype=toDospecific';
-			}
-		}
 		if(task_recordid != '' && task_module[0] == 'Leads' )
 		{
 			alert(alert_arr.CANT_SELECT_CONTACTS);

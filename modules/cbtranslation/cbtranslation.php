@@ -679,7 +679,7 @@ class cbtranslation extends CRMEntity {
 		}
 	}
 
-	public static function getWeekName($week, $language = '') {
+	public static function getDayOfWeekName($week, $language = '') {
 		if ($language=='') {
 			global $current_language;
 			$language = $current_language;

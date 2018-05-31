@@ -35,7 +35,7 @@
 		{elseif $_FIELD_TYPE eq 'date'}
 			<input type="text" id="{$_FIELD_NAME}_defaultvalue" name="{$_FIELD_NAME}_defaultvalue" class="small" value="" />
 			<img border=0 src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$_FIELD_NAME}"
-				 alt="{'LBL_SET_DATE'|@getTranslatedString:$FOR_MODULE}" title="{'LBL_SET_DATE'|@getTranslatedString:$FOR_MODULE}" />
+				 alt="{'LBL_SET_DATE'|@getTranslatedString:'cbCalendar'}" title="{'LBL_SET_DATE'|@getTranslatedString:'cbCalendar'}" />
 			<script type="text/javascript">
 			Calendar.setup (
 				{ldelim}
@@ -50,7 +50,7 @@
 		{elseif $_FIELD_TYPE eq 'datetime'}
 			<input type="text" id="{$_FIELD_NAME}_defaultvalue" name="{$_FIELD_NAME}_defaultvalue" class="small" value="" />
 			<img border=0 src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$_FIELD_NAME}"
-				 alt="{'LBL_SET_DATE_TIME'|@getTranslatedString:$FOR_MODULE}" title="{'LBL_SET_DATE_TIME'|@getTranslatedString:$FOR_MODULE}" />
+				 alt="{'LBL_SET_DATE_TIME'|@getTranslatedString:'cbCalendar'}" title="{'LBL_SET_DATE_TIME'|@getTranslatedString:'cbCalendar'}" />
 			<script type="text/javascript">
 			Calendar.setup (
 				{ldelim}
