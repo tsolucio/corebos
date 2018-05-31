@@ -10,11 +10,12 @@
 header('Content-Type: text/event-stream');
 header('Cache-Control: no-cache'); // recommended to prevent caching of event data.
 set_time_limit(0);
+global $app_strings;
 
-function send_message($id, $message, $progress, $processed, $total) {
+function send_message($id, $message, $progress, $processed, $total, $app_strings) {
 	$d = array('message' => $message , 'progress' => $progress, 'processed' => $processed, 'total' => $total);
-	echo "id: $id" . PHP_EOL;
-	echo "data: " . json_encode($d) . PHP_EOL;
+	echo $app_strings['id'].": $id" . PHP_EOL;
+	echo $app_strings['data'].":". json_encode($d) . PHP_EOL;
 	echo PHP_EOL;
 	ob_flush();
 	flush();
@@ -76,16 +77,16 @@ if (isset($idlist)) {
 			}
 			list($saveerror,$errormessage,$error_action,$returnvalues) = $focus->preSaveCheck($params);
 			if (!$saveerror) { // if there is an error we ignore this record
-								$msg = 'Record '.$recordid.' saved';
+				$msg = $app_strings['record'].' '.$recordid.' '.$app_strings['saved'];
 				$focus->save($currentModule);
 			} else {
-				$msg = 'Record '.$recordid.' not saved '.$errormessage;
+				$msg = $app_strings['record'].' '.$recordid.' '.$app_strings['notsaved'].$errormessage;
 			}
 		}
 		$recordprocessed++;
 		$progress = $recordprocessed / $recordcount * 100;
-		send_message($id++, $msg, $progress, $recordprocessed, $recordcount);
+		send_message($id++, $msg, $progress, $recordprocessed, $recordcount, $app_strings);
 	}
 }
-send_message('CLOSE', 'Process complete', 100, $recordcount, $recordcount);
+send_message('CLOSE', $app_strings['processcomplete'], 100, $recordcount, $recordcount, $app_strings);
 ?>
