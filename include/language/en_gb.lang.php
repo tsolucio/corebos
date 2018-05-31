@@ -1173,13 +1173,13 @@ $app_strings = array(
 	'Subscribe' => 'Subscribe',
 	'View History' => 'View History',
 	'SYNCH_NOW' => 'Sync Now',
-        'Updated' => 'Updated',
-        'id' => 'id',
-        'data' => 'data',
-        'record' => 'Record',
-        'saved' => 'saved',
-        'notsaved' => 'notsaved',
-        'processcomplete' => 'Process Complete',
+	'Updated' => 'Updated',
+	'id' => 'id',
+	'data' => 'data',
+	'record' => 'Record',
+	'saved' => 'saved',
+	'notsaved' => 'notsaved',
+	'processcomplete' => 'Process Complete',
 );
 
 $app_currency_strings = array(

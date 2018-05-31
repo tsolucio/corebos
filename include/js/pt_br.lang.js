@@ -414,6 +414,6 @@ var alert_arr = {
 	'JSLBL_FINISH': 'Finalização',
 	'SHOWING' : 'Exibindo',
 	'OF' : 'de',
-        'ERR_Massedit' : 'Error on Mass Edit',
-        'ProcessFINISHED' : 'Process Finished'
+	'ERR_Massedit' : 'Error on Mass Edit',
+	'ProcessFINISHED' : 'Process Finished'
 };
