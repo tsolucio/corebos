@@ -101,6 +101,7 @@ class VTExpressionsManager {
 			'ceil' => 'ceil(numericfield)',
 			'floor' => 'floor(numericfield)',
 			'modulo' => 'modulo(numericfield)',
+			'hash' => 'hash(field, method)',
 			'aggregation'=>'aggregation(operation,RelatedModule,relatedFieldToAggregate,conditions)',
 			'aggregation_fields_operation'=>'aggregation_fields_operation(operation,RelatedModule,relatedFieldsToAggregateWithOperation,conditions)',
 			'getCurrentUserID' => 'getCurrentUserID()',
