@@ -1,5 +1,8 @@
 
 export function jslog(connection, level, message) {
+	if (!jslog.active) {
+		return;
+	}
 	if (level=='fatal' || level=='trace' || level=='error' || level=='warn' || level=='debug' || level=='info') {
 		sendJSLogToWebservice(connection, level, message);
 	}
@@ -32,6 +35,7 @@ export function jslog(connection, level, message) {
 }
 
 jslog.jslog2console = false;
+jslog.active = true;
 
 jslog.fatal = function(connection, message) {
 	jslog(connection, 'fatal', message);
