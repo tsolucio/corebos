@@ -15,10 +15,10 @@ set_time_limit(0);
 
 global $app_strings;
 
-function send_message($id, $message, $progress, $processed, $total, $app_strings) {
+function send_message($id, $message, $progress, $processed, $total) {
 	$d = array('message' => $message , 'progress' => $progress, 'processed' => $processed, 'total' => $total);
-	echo $app_strings['id'].": $id" . PHP_EOL;
-	echo $app_strings['data'].":". json_encode($d) . PHP_EOL;
+	echo "id: $id" . PHP_EOL;
+	echo 'data:'. json_encode($d) . PHP_EOL;
 	echo PHP_EOL;
 	ob_flush();
 	flush();
@@ -43,8 +43,9 @@ if (isset($params['start']) && $params['start']!='') {
 $exists = executefunctionsvalidate('ValidationExists', $currentModule);
 if (isset($idlist)) {
 	$recordids = explode(';', $idlist);
-		$recordcount = count($recordids)-1;
-		$id = 1;
+	$recordcount = count($recordids)-1;
+	$id = 1;
+	$recordprocessed = 0;
 	for ($index = 0; $index < $recordcount; ++$index) {
 		$recordid = $recordids[$index];
 		if ($recordid == '' || in_array(getSalesEntityType($recordid), $nonSupportedMassEdit)) {
@@ -56,7 +57,7 @@ if (isset($idlist)) {
 			$focus->mode = 'edit';
 			$focus->id = $recordid;
 			foreach ($focus->column_fields as $fieldname => $val) {
-								$fldname = $fieldname.'_mass_edit_check';
+				$fldname = $fieldname.'_mass_edit_check';
 				if (isset($params[$fldname])) {
 					if ($fieldname == 'assigned_user_id') {
 						if ($params['assigntype'] == 'U') {
@@ -86,7 +87,7 @@ if (isset($idlist)) {
 						$msg = $app_strings['record'].' '.$recordid.' '.$app_strings['saved'];
 						$focus->save($currentModule);
 					} else {
-							$msg = $app_strings['record'].' '.$recordid.' '.$validation;
+						$msg = $app_strings['record'].' '.$recordid.' '.$validation;
 					}
 				} else {
 					$msg = $app_strings['record'].' '.$recordid.' '.$app_strings['saved'];
@@ -98,8 +99,8 @@ if (isset($idlist)) {
 		}
 		$recordprocessed++;
 		$progress = $recordprocessed / $recordcount * 100;
-		send_message($id++, $msg, $progress, $recordprocessed, $recordcount, $app_strings);
+		send_message($id++, $msg, $progress, $recordprocessed, $recordcount);
 	}
 }
-send_message('CLOSE', $app_strings['processcomplete'], 100, $recordcount, $recordcount, $app_strings);
+send_message('CLOSE', $app_strings['processcomplete'], 100, $recordcount, $recordcount);
 ?>

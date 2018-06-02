@@ -38,14 +38,16 @@ function executefunctionsvalidate($functiontocall, $module, $structure = null) {
 			$valmod = vtlib_purify($module);
 			include_once 'modules/cbMap/processmap/Validations.php';
 			if (Validations::ValidationsExist($valmod)) {
-						$_REQUEST['structure'] = $structure;
+				$_REQUEST['structure'] = $structure;
 				$validation = Validations::processAllValidationsFor($valmod);
 				if ($validation!==true) {
 					return Validations::formatValidationErrors($validation, $valmod);
 				}
 			}
 			if (file_exists("modules/{$valmod}/{$valmod}Validation.php")) {
+				ob_start();
 				include "modules/{$valmod}/{$valmod}Validation.php";
+				return ob_get_clean();
 			} else {
 				return '%%%OK%%%';
 			}
