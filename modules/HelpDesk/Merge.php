@@ -11,7 +11,6 @@ require_once 'include/database/PearDatabase.php';
 require_once 'include/utils/MergeUtils.php';
 global $app_strings, $default_charset;
 
-// Fix For: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/2107
 $randomfilename = 'vt_' . str_replace(array('.',' '), '', microtime());
 
 $templateid = $_REQUEST['mergefile'];
@@ -26,13 +25,14 @@ $temparray = $adb->fetch_array($result);
 $fileContent = $temparray['data'];
 $filename=html_entity_decode($temparray['filename'], ENT_QUOTES, $default_charset);
 $extension=GetFileExtension($filename);
-// Fix For: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/2107
 $filename= $randomfilename . "_mmrg.$extension";
 
 $filesize=$temparray['filesize'];
-$wordtemplatedownloadpath =$root_directory ."/cache/wordtemplatedownload/";
-
-$handle = fopen($wordtemplatedownloadpath.$filename, "wb");
+$wordtemplatedownloadpath =$root_directory .'/cache/wordtemplatedownload/';
+if (!is_dir($wordtemplatedownloadpath)) {
+	@mkdir($wordtemplatedownloadpath);
+}
+$handle = fopen($wordtemplatedownloadpath.$filename, 'wb');
 fwrite($handle, base64_decode($fileContent), $filesize);
 fclose($handle);
 
@@ -246,7 +246,6 @@ if (count($querycolumns) > 0) {
 }
 echo '<br><br><br>';
 if ($extension == 'doc') {
-	// Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/2107
 	$datafilename = $randomfilename . '_data.csv';
 	$handle = fopen($wordtemplatedownloadpath.$datafilename, 'wb');
 	fwrite($handle, $csvheader."\r\n");
