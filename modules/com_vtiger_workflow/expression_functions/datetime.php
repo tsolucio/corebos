@@ -115,6 +115,38 @@ function __vt_sub_days($arr) {
 	return $date;
 }
 
+function __vt_add_months($arr) {
+	if (count($arr) > 1) {
+		$baseDate = $arr[0];
+		$noOfMonths = $arr[1];
+	} else {
+		$noOfMonths = $arr[0];
+	}
+	if (empty($baseDate)) {
+		$baseDate = date('Y-m-d'); // Current date
+	}
+	preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
+	$baseDate = strtotime("+$noOfMonths months", strtotime($match[0]));
+	$date = strftime('%Y-%m-%d', $baseDate);
+	return $date;
+}
+
+function __vt_sub_months($arr) {
+	if (count($arr) > 1) {
+		$baseDate = $arr[0];
+		$noOfMonths = $arr[1];
+	} else {
+		$noOfMonths = $arr[0];
+	}
+	if (empty($baseDate)) {
+		$baseDate = date('Y-m-d'); // Current date
+	}
+	preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
+	$baseDate = strtotime("-$noOfMonths months", strtotime($match[0]));
+	$date = strftime('%Y-%m-%d', $baseDate);
+	return $date;
+}
+
 function __vt_get_date($arr) {
 	switch (strtolower($arr[0])) {
 		case 'today':
