@@ -89,8 +89,6 @@ function __vt_add_days($arr) {
 		$noOfDays = $arr[1];
 	} else {
 		$noOfDays = $arr[0];
-	}
-	if (empty($baseDate)) {
 		$baseDate = date('Y-m-d'); // Current date
 	}
 	preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
@@ -105,8 +103,6 @@ function __vt_sub_days($arr) {
 		$noOfDays = $arr[1];
 	} else {
 		$noOfDays = $arr[0];
-	}
-	if (empty($baseDate)) {
 		$baseDate = date('Y-m-d'); // Current date
 	}
 	preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
@@ -121,8 +117,6 @@ function __vt_add_months($arr) {
 		$noOfMonths = $arr[1];
 	} else {
 		$noOfMonths = $arr[0];
-	}
-	if (empty($baseDate)) {
 		$baseDate = date('Y-m-d'); // Current date
 	}
 	preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
@@ -137,8 +131,6 @@ function __vt_sub_months($arr) {
 		$noOfMonths = $arr[1];
 	} else {
 		$noOfMonths = $arr[0];
-	}
-	if (empty($baseDate)) {
 		$baseDate = date('Y-m-d'); // Current date
 	}
 	preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
