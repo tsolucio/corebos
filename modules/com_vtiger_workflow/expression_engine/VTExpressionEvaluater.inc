@@ -37,8 +37,6 @@ class VTFieldExpressionEvaluater {
 			'time_diffweekdays' => '__cb_getWeekdayDifference',
 			'add_days' => '__vt_add_days',
 			'sub_days' => '__vt_sub_days',
-			'add_months' => '__vt_add_months',
-			'sub_months' => '__vt_sub_months',
 			'get_date' => '__vt_get_date',
 			'get_nextdate' => '__cb_next_date',
 			'get_nextdatelaborable' => '__cb_next_dateLaborable',
