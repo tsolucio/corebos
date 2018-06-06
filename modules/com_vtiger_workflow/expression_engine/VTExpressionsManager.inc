@@ -77,6 +77,8 @@ class VTExpressionsManager {
 			'time_diff(a)' => 'time_diff(a)',
 			'add_days' => 'add_days(datefield, noofdays)',
 			'sub_days' => 'sub_days(datefield, noofdays)',
+			'add_months' => 'add_months(datefield, noofmonths)',
+			'sub_months' => 'sub_months(datefield, noofmonths)',
 			'add_time(timefield, minutes)' => 'add_time(timefield, minutes)',
 			'sub_time(timefield, minutes)' => 'sub_time(timefield, minutes)',
 			'today' => "get_date('today')",
