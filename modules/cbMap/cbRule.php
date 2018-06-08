@@ -20,7 +20,7 @@
 
 class coreBOS_Rule {
 
-	public static $supportedBusinessMaps = array('Condition Query','Condition Expression');
+	private static $supportedBusinessMaps = array('Condition Query', 'Condition Expression');
 
 	public static function evaluate($conditionid, $context) {
 		global $log,$adb,$current_user;
