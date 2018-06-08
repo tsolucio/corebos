@@ -310,6 +310,11 @@ $dat_fmt = $current_user->date_format;
 if ($dat_fmt == '') {
 	$dat_fmt = 'dd-mm-yyyy';
 }
+
+// Calculating week numbers
+$date = new DateTime();
+$week_number = $date->format("W");
+
 $smarty->assign('USER_LANGUAGE', substr($current_language, 0, 2));
 $dat_fmt = str_replace("mm","MM",$dat_fmt);
 $smarty->assign('USER_DATE_FORMAT', $dat_fmt);
@@ -317,5 +322,6 @@ $smarty->assign('Calendar_Slot_Minutes', "00:".GlobalVariable::getVariable('Cale
 $smarty->assign('Calendar_Slot_Event_Overlap', (GlobalVariable::getVariable('Calendar_Slot_Event_Overlap', 1) ? 'true' : 'false'));
 $smarty->assign('Calendar_Modules_Panel_Visible', GlobalVariable::getVariable('Calendar_Modules_Panel_Visible', 1));
 $smarty->assign('Calendar_Other_Default_Duration', GlobalVariable::getVariable('calendar_other_default_duration', 1));
+$smarty->assign('Calendar_Show_WeekNumber', GlobalVariable::getVariable('Calendar_Show_WeekNumber', 1));
 
 $smarty->display('modules/Calendar4You/CalendarView.tpl');

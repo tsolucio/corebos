@@ -429,6 +429,12 @@ jQuery(document).ready(function(){
                 }
             });
         },
+
+        views: {
+            week: {
+                titleFormat: 'D MMMM YYYY',
+            }
+        },
  }
 
 	jQuery('#calendar_div').fullCalendar(config);
