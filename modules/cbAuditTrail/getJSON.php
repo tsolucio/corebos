@@ -34,6 +34,11 @@ if (isset($_REQUEST['user_list']) && is_numeric($_REQUEST['user_list'])) {
 } else {
 	$userid = 0;
 }
+if (isset($_REQUEST['action_search'])) {
+	$action_search = vtlib_purify($_REQUEST['action_search']);
+} else {
+	$action_search = '';
+}
 if (isset($_REQUEST['order_by']) && is_numeric($_REQUEST['order_by'])) {
 	$order_by = vtlib_purify($_REQUEST['order_by']);
 	switch ($order_by) {
@@ -62,5 +67,5 @@ if (isset($_REQUEST['order_rule'])) {
 } else {
 	$sorder = 'DESC';
 }
-$response = $focus->getAuditJSON($userid, $page, $order_by, $sorder);
+$response = $focus->getAuditJSON($userid, $page, $order_by, $sorder, $action_search);
 echo $response;

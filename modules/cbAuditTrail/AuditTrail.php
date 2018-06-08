@@ -112,16 +112,19 @@ class AuditTrail {
 		}
 	}
 
-	public function getAuditJSON($userid, $page, $order_by = 'actiondate', $sorder = 'DESC') {
+	public function getAuditJSON($userid, $page, $order_by = 'actiondate', $sorder = 'DESC', $action_search = '') {
 		global $log, $adb;
 		$log->debug('Entering getAuditJSON() method ...');
 
-		if (empty($userid)) {
-			$where = '';
-			$params = array();
-		} else {
-			$where = 'where userid=?';
-			$params = array($userid);
+		$where = ' where 1 ';
+		$params = array();
+		if (!empty($userid)) {
+			$where .= ' and userid = ? ';
+			array_push($params, $userid);
+		}
+		if (!empty($action_search)) {
+			$where .= " and action like ? ";
+			array_push($params, "%" . $action_search . "%");
 		}
 		if ($sorder != '' && $order_by != '') {
 			$list_query = "Select * from vtiger_audit_trial $where order by $order_by $sorder";
