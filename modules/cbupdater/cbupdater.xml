@@ -1256,4 +1256,11 @@
 	<classname>addNewReportTypeColumn</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mikelkasneci</author>
+	<description>Make ConvertInventoryModule to appear and on non inventory modules</description>
+	<filename>build/changeSets/2018/modifyConvertInventoryModuleTask.php</filename>
+	<classname>modifyConvertInventoryModuleTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
