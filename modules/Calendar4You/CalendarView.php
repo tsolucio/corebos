@@ -310,11 +310,6 @@ $dat_fmt = $current_user->date_format;
 if ($dat_fmt == '') {
 	$dat_fmt = 'dd-mm-yyyy';
 }
-
-// Calculating week numbers
-$date = new DateTime();
-$week_number = $date->format("W");
-
 $smarty->assign('USER_LANGUAGE', substr($current_language, 0, 2));
 $dat_fmt = str_replace("mm","MM",$dat_fmt);
 $smarty->assign('USER_DATE_FORMAT', $dat_fmt);
