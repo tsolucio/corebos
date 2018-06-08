@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2016 MajorLabel -- This file is a part of MajorLabel coreBOS Customizations.
+ * Copyright 2018 MajorLabel -- This file is a part of MajorLabel coreBOS Customizations.
  * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
  * file except in compliance with the License. You can redistribute it and/or modify it
  * under the terms of the License. MajorLabel reserves all rights not expressly
@@ -35,10 +35,8 @@ class ConvertInventoryModule extends VTTask {
 		$from_wf = true;
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
-
 		// Get the origin record in question
 		$wsso = vtws_retrieve($entity->getId(), $current_user);
-
 		// Start with the inventory module values and overwrite what's needed to overwrite
 		$data = $wsso;
 		$cbfrommodule = $entity->getModuleName();
@@ -95,34 +93,34 @@ class ConvertInventoryModule extends VTTask {
 				require_once 'modules/Accounts/Accounts.php';
 				$acct_focus = new Accounts();
 				$acct_focus->retrieve_entity_info($data['account_id'], 'Accounts');
-				$data['bill_city'] = $acct_focus->column_fields['bill_city'];
-				$data['ship_city'] = $acct_focus->column_fields['ship_city'];
-				$data['bill_street'] = $acct_focus->column_fields['bill_street'];
-				$data['ship_street'] = $acct_focus->column_fields['ship_street'];
-				$data['bill_state'] = $acct_focus->column_fields['bill_state'];
-				$data['ship_state'] = $acct_focus->column_fields['ship_state'];
-				$data['bill_code'] = $acct_focus->column_fields['bill_code'];
-				$data['ship_code'] = $acct_focus->column_fields['ship_code'];
-				$data['bill_country'] = $acct_focus->column_fields['bill_country'];
-				$data['ship_country'] = $acct_focus->column_fields['ship_country'];
-				$data['bill_pobox'] = $acct_focus->column_fields['bill_pobox'];
-				$data['ship_pobox'] = $acct_focus->column_fields['ship_pobox'];
+				$data['bill_city'] =  isset($acct_focus->column_fields['bill_city']) ? $acct_focus->column_fields['bill_city'] : '';
+				$data['ship_city'] =  isset($acct_focus->column_fields['ship_city']) ? $acct_focus->column_fields['ship_city'] : '';
+				$data['bill_street'] = isset($acct_focus->column_fields['bill_street']) ? $acct_focus->column_fields['bill_street'] : '';
+				$data['ship_street'] = isset($acct_focus->column_fields['ship_street']) ? $acct_focus->column_fields['ship_street'] : '';
+				$data['bill_state'] = isset($acct_focus->column_fields['bill_state']) ? $acct_focus->column_fields['bill_state'] : '';
+				$data['ship_state'] = isset($acct_focus->column_fields['ship_state']) ? $acct_focus->column_fields['ship_state'] : '';
+				$data['bill_code'] = isset($acct_focus->column_fields['bill_code']) ? $acct_focus->column_fields['bill_code'] : '';
+				$data['ship_code'] = isset($acct_focus->column_fields['ship_code']) ? $acct_focus->column_fields['ship_code'] : '';
+				$data['bill_country'] = isset($acct_focus->column_fields['bill_country']) ? $acct_focus->column_fields['bill_country'] : '';
+				$data['ship_country'] = isset($acct_focus->column_fields['ship_country']) ? $acct_focus->column_fields['ship_country'] : '';
+				$data['bill_pobox'] = isset($acct_focus->column_fields['bill_pobox']) ? $acct_focus->column_fields['bill_pobox'] : '';
+				$data['ship_pobox'] = isset($acct_focus->column_fields['ship_pobox']) ? $acct_focus->column_fields['ship_pobox'] : '';
 			} else {
 				require_once 'modules/Contacts/Contacts.php';
 				$cto_focus = new Contacts();
 				$cto_focus->retrieve_entity_info($data['contact_id'], 'Contacts');
-				$data['bill_city'] = $cto_focus->column_fields['mailingcity'];
-				$data['ship_city'] = $cto_focus->column_fields['othercity'];
-				$data['bill_street'] = $cto_focus->column_fields['mailingstreet'];
-				$data['ship_street'] = $cto_focus->column_fields['otherstreet'];
-				$data['bill_state'] = $cto_focus->column_fields['mailingstate'];
-				$data['ship_state'] = $cto_focus->column_fields['otherstate'];
-				$data['bill_code'] = $cto_focus->column_fields['mailingzip'];
-				$data['ship_code'] = $cto_focus->column_fields['otherzip'];
-				$data['bill_country'] = $cto_focus->column_fields['mailingcountry'];
-				$data['ship_country'] = $cto_focus->column_fields['othercountry'];
-				$data['bill_pobox'] = $cto_focus->column_fields['mailingpobox'];
-				$data['ship_pobox'] = $cto_focus->column_fields['otherpobox'];
+				$data['bill_city'] = isset($cto_focus->column_fields['bill_city']) ? $cto_focus->column_fields['bill_city'] : '';
+				$data['ship_city'] = isset($cto_focus->column_fields['ship_city']) ? $cto_focus->column_fields['ship_city'] : '';
+				$data['bill_street'] = isset($cto_focus->column_fields['bill_street']) ? $cto_focus->column_fields['bill_street'] : '';
+				$data['ship_street'] = isset($cto_focus->column_fields['ship_street']) ? $cto_focus->column_fields['ship_street'] : '';
+				$data['bill_state'] = isset($cto_focus->column_fields['bill_state']) ? $cto_focus->column_fields['bill_state'] : '';
+				$data['ship_state'] = isset($cto_focus->column_fields['ship_state']) ? $cto_focus->column_fields['ship_state'] : '';
+				$data['bill_code'] = isset($cto_focus->column_fields['bill_code']) ? $cto_focus->column_fields['bill_code'] : '';
+				$data['ship_code'] = isset($cto_focus->column_fields['ship_code']) ? $cto_focus->column_fields['ship_code'] : '';
+				$data['bill_country'] = isset($cto_focus->column_fields['bill_country']) ? $cto_focus->column_fields['bill_country'] : '';
+				$data['ship_country'] = isset($cto_focus->column_fields['ship_country']) ? $cto_focus->column_fields['ship_country'] : '';
+				$data['bill_pobox'] = isset($cto_focus->column_fields['bill_pobox']) ? $cto_focus->column_fields['bill_pobox'] : '';
+				$data['ship_pobox'] = isset($cto_focus->column_fields['ship_pobox']) ? $cto_focus->column_fields['ship_pobox'] : '';
 			}
 			$data['hdnTaxType'] = GlobalVariable::getVariable('Inventory_Tax_Type_Default', 'individual', $this->convertto);
 			$data['conversion_rate'] = 1;
@@ -154,9 +152,8 @@ class ConvertInventoryModule extends VTTask {
 			$data['hdnGrandTotal']= $list_price_sum;
 			$data['hdnSubTotal']= $list_price_sum;
 		}
-
-		$holdaction = $_REQUEST['action'];
-		$holdajxaction = $_REQUEST['ajxaction'];
+		$holdaction = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+		$holdajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 		$_REQUEST['action'] = '';
 		$_REQUEST['ajxaction'] = '';
 

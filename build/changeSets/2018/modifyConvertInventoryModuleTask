@@ -16,19 +16,20 @@
 
 class modifyConvertInventoryModuleTask extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$task_modules = '{"include":[],"exclude":[]}';
 			$task_name = 'ConvertInventoryModule';
-			$this->ExecuteQuery("update com_vtiger_workflow_tasktypes set modules=? where tasktypename=?",
-				array($task_modules,$task_name));
+			$this->ExecuteQuery("update com_vtiger_workflow_tasktypes set modules=? where tasktypename=?", array($task_modules, $task_name));
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
-			}
-			$this->finishExecution();
 		}
+			$this->finishExecution();
+	}
 }
