@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2016 MajorLabel -- This file is a part of MajorLabel coreBOS Customizations.
+ * Copyright 2018 MajorLabel -- This file is a part of MajorLabel coreBOS Customizations.
  * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
  * file except in compliance with the License. You can redistribute it and/or modify it
  * under the terms of the License. MajorLabel reserves all rights not expressly
@@ -81,12 +81,14 @@ class ConvertInventoryModule extends VTTask {
 			}
 			$toEntity = CRMEntity::getInstance($this->convertto);
 			$data = $toEntity->column_fields;
-			//$data['created_user_id'] = $current_user->id;
 			$data['assigned_user_id'] = $current_user->id;
 			$data['account_id'] = getRelatedAccountContact($record, 'Accounts');
 			$data['contact_id'] = getRelatedAccountContact($record, 'Contacts');
-			$data['subject'] = 'subject';
-			$data['quotestage'] = 'quotestage';
+			$data['subject'] = $cbfrommodule.'2'.$this->convertto;
+			$data['quotestage'] = 'AutoCreated';
+			$data['invoicestatus'] = 'AutoCreated';
+			$data['sostatus'] = 'AutoCreated';
+			$data['postatus'] = 'AutoCreated';
 			if (GlobalVariable::getVariable('Application_B2B', '1')) {
 				require_once 'modules/Accounts/Accounts.php';
 				$acct_focus = new Accounts();
@@ -122,7 +124,7 @@ class ConvertInventoryModule extends VTTask {
 			}
 			$data['hdnTaxType'] = GlobalVariable::getVariable('Inventory_Tax_Type_Default', 'individual', $this->convertto);
 			$data['conversion_rate'] = 1;
-			$data['currency_id'] = vtws_getEntityId('Currency').'x'.$current_user->id;
+			$data['currency_id'] = vtws_getEntityId('Currency').'x1';
 			$bmapname = $cbfrommodule.'2'.$this->convertto;
 			$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 			if ($cbMapid) {
@@ -134,13 +136,13 @@ class ConvertInventoryModule extends VTTask {
 			$data = DataTransform::sanitizeRetrieveEntityInfo($data, $meta);
 			$data = DataTransform::sanitizeData($data, $meta);
 			$related = array();
-			$list_price_sum;
+			$list_price_sum = 0;
 			for ($i = 1; $i<=count($associated_prod); $i++) {
 				$related['productid'] = $associated_prod[$i]['hdnProductId'.$i];
 				$related['comment'] = '';
 				$related['qty'] = $associated_prod[$i]['qty'.$i];
 				$related['listprice'] = $associated_prod[$i]['listPrice'.$i];
-				$list_price_sum += $related['listprice'];
+				$list_price_sum += ($related['qty'] * $related['listprice']);
 				$related['discount'] = 0 ;
 				$related['discount_type'] = 0;
 				$related['discount_percentage'] = 0;
