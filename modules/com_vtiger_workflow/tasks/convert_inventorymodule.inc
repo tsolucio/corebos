@@ -82,6 +82,7 @@ class ConvertInventoryModule extends VTTask {
 			$toEntity = CRMEntity::getInstance($this->convertto);
 			$data = $toEntity->column_fields;
 			$data['assigned_user_id'] = $current_user->id;
+			$data['created_user_id'] = $current_user->id;
 			$data['account_id'] = getRelatedAccountContact($record, 'Accounts');
 			$data['contact_id'] = getRelatedAccountContact($record, 'Contacts');
 			$data['subject'] = $cbfrommodule.'2'.$this->convertto;
@@ -131,7 +132,7 @@ class ConvertInventoryModule extends VTTask {
 				$cbMap = cbMap::getMapByID($cbMapid);
 				$data = $cbMap->Mapping($data, $data);
 			}
-			$handler = vtws_getModuleHandlerFromName($cbfrommodule, $current_user);
+			$handler = vtws_getModuleHandlerFromName($this->convertto, $current_user);
 			$meta = $handler->getMeta();
 			$data = DataTransform::sanitizeRetrieveEntityInfo($data, $meta);
 			$data = DataTransform::sanitizeData($data, $meta);
