@@ -430,6 +430,8 @@ jQuery(document).ready(function(){
             });
         },
 
+        weekNumbers: {/literal}{$Calendar_Show_WeekNumber}{literal},
+
         views: {
             week: {
                 titleFormat: 'D MMMM YYYY',
