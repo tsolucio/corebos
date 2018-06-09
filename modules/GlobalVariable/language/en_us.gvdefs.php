@@ -1145,7 +1145,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Boolean',
 	'category' => 'Module Functionality',
 	'values' => '0 | 1',
-	'definition' => 'When the Calendar_Show_WeekNunber is active, it displays the total number of the weeks on the Calendar Title.',
+	'definition' => 'When Calendar_Show_WeekNumber is active, the week numbers will appear on the Calendar.',
 ),
 );
 

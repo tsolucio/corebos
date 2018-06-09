@@ -1140,6 +1140,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'MailManager shows, by default, on the left panel a set of links to filter emails related to Accounts, Contacts and some other modules. Setting this variable to 0 will hide those quick actions.',
 ),
+'Calendar_Show_WeekNumber' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Module Functionality',
+	'values' => '0 | 1',
+	'definition' => 'When Calendar_Show_WeekNumber is active, the week numbers will appear on the Calendar.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php', GLOB_BRACE) as $tcode) {

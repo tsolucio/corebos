@@ -1135,10 +1135,17 @@ $GlobalVariableDefinitons = array(
 ),
 'MailManager_Show_SentTo_Links' => array(
 	'status' => 'Implementada',
-	'valuetype' => 'Boolean',
+	'valuetype' => 'Booleano',
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'MailManager muestra, de manera predeterminada, en el panel izquierdo un conjunto de enlaces para filtrar los correos electrónicos relacionados con Cuentas, Contactos y algunos otros módulos. Establecer esta variable a 0 ocultará esas acciones rápidas.',
+),
+'Calendar_Show_WeekNumber' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Cuando la variable está activa se mostrará el número de semana en el calendario.',
 ),
 );
 
