@@ -270,14 +270,14 @@ if (isset($_REQUEST['year']) && is_numeric(vtlib_purify($_REQUEST['year']))) {
 	$date_data['year'] = vtlib_purify($_REQUEST['year']);
 }
 
-if(empty($date_data)) {
+if (empty($date_data)) {
 	$dateTimeField = new DateTimeField('');
 	$dateValue = $dateTimeField->getDisplayDate();
 	$timeValue = $dateTimeField->getDisplayTime();
 	$dbDateValue = DateTimeField::convertToDBFormat($dateValue);
 	$dateValueArray = explode('-', $dbDateValue);
 	$timeValueArray = explode(':', $timeValue);
-	$date_data = Array(
+	$date_data = array(
 		'day'=>$dateValueArray[2],
 		'month'=>$dateValueArray[1],
 		'fc_month'=>$dateValueArray[1] - 1,

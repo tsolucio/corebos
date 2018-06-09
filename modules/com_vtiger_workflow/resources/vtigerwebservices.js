@@ -35,7 +35,6 @@ function vtigerwebservicesproto(){
 		});
 	}
 
-
 	function get(operation, parameters, callback){
 		response = this.doGet(mergeObjects(parameters,
 			{'operation':operation, 'sessionName':this.sessionId}), function(response){
@@ -58,7 +57,6 @@ function vtigerwebservicesproto(){
 		});
 	}
 
-
 	function login(callback){
 		var self = this;
 		response = this.doGet({operation:'getchallenge', username:this.username}, function(response){
@@ -79,7 +77,6 @@ function vtigerwebservicesproto(){
 			}
 		});
 	}
-
 
 	function logout(callback){
 		this.post('logout', {}, callback);
@@ -138,7 +135,6 @@ function vtigerwebservicesproto(){
 			}else{
 				callback(false, result);
 			}
-
 		});
 	}
 
@@ -158,5 +154,3 @@ function VtigerWebservices(serviceUrl, username, accessKey){
 	this.accessKey = accessKey;
 }
 VtigerWebservices.prototype = vtigerwebservicesproto();
-
-vtInst = new VtigerWebservices("http://localhost/504/webservice.php", "admin", "u1p8CDnxtCFwBRMZ");
