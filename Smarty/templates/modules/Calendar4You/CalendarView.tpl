@@ -184,6 +184,7 @@ jQuery(document).ready(function(){
 		defaultView: '{/literal}{$DEFAULTVIEW}{literal}',
 		allDayText: {/literal}'{$MOD.LBL_ALL_DAY}'{literal},
 
+        weekNumbers: {/literal}{$Calendar_Show_WeekNumber}{literal},
 		weekends: {/literal}{$CALENDAR_SETTINGS.show_weekends}{literal},
 		minTime:  "{/literal}{$CALENDAR_SETTINGS.start_hour}{literal}",
 		maxTime:  "{/literal}{$CALENDAR_SETTINGS.end_hour}{literal}",
