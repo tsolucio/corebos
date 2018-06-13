@@ -236,7 +236,7 @@ if ($sql_error) {
 		$listview_header_search = $controller->getBasicSearchFieldInfoList();
 
 		$smarty->assign('LISTHEADER', $listview_header);
-		$smarty->assign('LISTENTITY', vtlib_purify($listview_entries));
+		$smarty->assign('LISTENTITY', $listview_entries);
 		$smarty->assign('SEARCHLISTHEADER', $listview_header_search);
 
 	// Module Search
