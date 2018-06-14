@@ -1103,6 +1103,7 @@ $app_strings = array(
 	'LBL_DUP_PERMISSION' => 'U heeft geen permissie om te wissen ',
 	'recordid' => 'Record',
 	'Entity Type' => 'Entiteit Type',
+	'RecordDuplicated'=>'Record has been duplicated. This is the new record.',
 	'LBL_GMAIL' => 'Gmail',
 	'LBL_BOOKMARKLET' => 'Bookmarklet',
 	'PRIVATE_FILTER' => 'Prive',

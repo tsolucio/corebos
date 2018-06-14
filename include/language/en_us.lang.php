@@ -1175,6 +1175,7 @@ $app_strings = array(
 'LBL_DUP_PERMISSION' => 'You are not permitted to delete ',
 'recordid' => 'Record',
 'Entity Type' => 'Entity Type',
+'RecordDuplicated'=>'Record has been duplicated. This is the new record.',
 
 // gmailbookmarklet customization
 'LBL_GMAIL'=>'Gmail',
