@@ -1145,6 +1145,7 @@ $app_strings = array (
      'LBL_DUP_PERMISSION' => 'No tienes permiso para eliminar ',
      'recordid' => 'Registro',
      'Entity Type' => 'Tipo Entidad',
+	'RecordDuplicated'=>'El registro se ha duplicado. Este es el registro nuevo.',
 
      // gmailbookmarklet customization
      'LBL_GMAIL'=>'Gmail',

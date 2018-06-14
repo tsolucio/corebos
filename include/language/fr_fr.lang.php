@@ -1108,6 +1108,7 @@ $app_strings = array(
 	'LBL_DUP_PERMISSION' => 'Vous n\'êtes pas autorisé à supprimer ',
 	'recordid' => 'recordid',
 	'Entity Type' => 'Type d\'entité',
+	'RecordDuplicated'=>'Record has been duplicated. This is the new record.',
 	'LBL_GMAIL' => 'Gmail',
 	'LBL_BOOKMARKLET' => 'Favoris',
 	'PRIVATE_FILTER' => 'Privé',

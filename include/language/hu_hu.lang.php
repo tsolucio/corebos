@@ -1091,6 +1091,7 @@ $app_strings = array(
 	'LBL_DUP_PERMISSION' => 'Nincs jogosultságod törölni ',
 	'recordid' => 'Rekord',
 	'Entity Type' => 'Entitás típus',
+	'RecordDuplicated'=>'Record has been duplicated. This is the new record.',
 	'LBL_GMAIL' => 'Gmail',
 	'LBL_BOOKMARKLET' => 'Könyvjelző',
 	'PRIVATE_FILTER' => 'Privát',

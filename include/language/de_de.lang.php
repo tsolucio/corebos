@@ -1168,6 +1168,7 @@ $app_strings = array(
 'LBL_DUP_PERMISSION' => 'Sie haben keine Löscherlaubnis für ',
 'recordid' => 'Datensatznr.',
 'Entity Type' => 'Typ',
+'RecordDuplicated'=>'Record has been duplicated. This is the new record.',
 
 // gmailbookmarklet customization
 'LBL_GMAIL'=>'Gmail',
