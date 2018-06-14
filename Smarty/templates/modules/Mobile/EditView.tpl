@@ -268,6 +268,16 @@
 										<input  type="text" name="{$_FIELD->name()}" id="{$_FIELD->label()}" value="{$_FIELD->valueLabel()}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
 								    </div>
 							    {/if}
+								{if $_FIELD->uitype() eq 26}
+									<label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
+									<select id="{$_FIELD->name()}" name="{$_FIELD->name()}" data-mini="true" class="select" data-native-menu="false">
+											{foreach item=arr from=$_FIELD->value()}
+												<option value="{$arr.value}" {if isset($arr.selected)}{$arr.selected}{/if}>
+													{$arr.label}
+												</option>
+											{/foreach}
+									</select>
+								{/if}
                           </div>
 						{/if}
 					{/foreach}

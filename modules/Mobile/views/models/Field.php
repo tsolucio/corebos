@@ -10,12 +10,12 @@
  ************************************************************************************/
 
 class crmtogo_UI_FieldModel {
-	private $data; 
-	
+	private $data;
+
 	function initData($fieldData) {
 		$this->data = $fieldData;
 	}
-	
+
 	function uitype() {
 		return $this->data['uitype'];
 	}
@@ -26,9 +26,9 @@ class crmtogo_UI_FieldModel {
 
 	function value() {
 		global $current_user;
-		if ($this->data['uitype'] == '15' || $this->data['uitype'] == '33' || ($this->data['uitype'] == '16' and $this->data['name'] !='recurringtype' and $this->data['name'] !='duration_minutes' and $this->data['name'] !='visibility' )) {  
+		if ($this->data['uitype'] == '26' || $this->data['uitype'] == '15' || $this->data['uitype'] == '33' || ($this->data['uitype'] == '16' and $this->data['name'] !='recurringtype' and $this->data['name'] !='duration_minutes' and $this->data['name'] !='visibility' )) {
 			$rawValue = $this->data['type']['value'];
-			
+
 			if (is_array($rawValue)) {
 				return $rawValue['value'];
 			}
@@ -65,7 +65,7 @@ class crmtogo_UI_FieldModel {
 	function label() {
 		return $this->data['label'];
 	}
-	
+
 	function isReferenceType() {
 		static $options = array('101', '116', '357', '51', '52', '53', '57', '66', '73', '75', '76', '77', '78', '80', '81');
 		if (isset($this->data['uitype'])) {
@@ -82,7 +82,7 @@ class crmtogo_UI_FieldModel {
 		}
 		return $this->isMultiReferenceType();
 	}
-	
+
 	function isMultiReferenceType() {
 		static $options = array('10', '68');
 		$uitype = $this->data['uitype'];
@@ -91,7 +91,7 @@ class crmtogo_UI_FieldModel {
 		}
 		return false;
 	}
-	
+
 	static function buildModelsFromResponse($fields) {
 		$instances = array();
 		foreach($fields as $fieldData) {
@@ -105,12 +105,12 @@ class crmtogo_UI_FieldModel {
 	function typeofdata() {
 		return $this->data['typeofdata'];
 	}
-	
+
 	// added for crmtogo_WS_Utils::getEntityName
 	function relatedmodule() {
 		return $this->data['relatedmodule'];
 	}
-	
+
 	function ismandatory() {
 		$type_array = explode( '~',$this->data['typeofdata']);
 		if ($type_array[1]=='M') {
