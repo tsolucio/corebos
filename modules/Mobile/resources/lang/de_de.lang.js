@@ -46,3 +46,13 @@ var cal_config_arr = {
 var cbMobile_arr = {
 		status_offline : "Du bist offline",
 	};
+var alert_arr = {
+	'LBL_FILENAME_LENGTH_EXCEED_ERR': 'Der Dateiname darf nicht mehr als 255 Zeichen haben.',
+
+	'LBL_SIZE_SHOULDNOTBE_GREATER':'Die Dateigröße sollte größer sein als ', //added for upload error message
+	'LBL_MAX_SIZE':'Maximum für Dateiupdoad beträgt', //added for display file size limit
+	'LBL_FILESIZEIN_MB':'MB', // added to show filesize limit in MB
+	'LBL_FILESIZEIN_KB':'KB', // added to show filesize limit in KB
+	'LBL_FILESIZEIN_B':'B', // added to show filesize limit in B
+};
+

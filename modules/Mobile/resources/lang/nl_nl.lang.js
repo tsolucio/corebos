@@ -47,3 +47,12 @@ var cal_config_arr = {
 var cbMobile_arr = {
 		status_offline : "You are offline",
 	};
+var alert_arr = {
+	'LBL_FILENAME_LENGTH_EXCEED_ERR': 'Bestandsnaam kan niet meer als 255 karakters bevatten',
+
+	'LBL_SIZE_SHOULDNOTBE_GREATER':'File size should not be greater than ', //added for upload error message
+	'LBL_MAX_SIZE':'Maximum upload size is', //added for display file size limit
+	'LBL_FILESIZEIN_MB':'MB', // added to show filesize limit in MB
+	'LBL_FILESIZEIN_KB':'KB', // added to show filesize limit in KB
+	'LBL_FILESIZEIN_B':'B', // added to show filesize limit in B
+};

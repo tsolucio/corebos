@@ -107,6 +107,11 @@ class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 			$viewer->assign('INVITEES',  implode(';', array_keys($invited_users)));
 			$viewer->assign('LANGUAGE', $current_language);
 
+			$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize', 3000000, $currentModule);
+			$viewer->assign('UPLOADSIZE', $upload_maxsize/1000000); //Convert to MB
+			$viewer->assign('UPLOAD_MAXSIZE', $upload_maxsize);
+			$viewer->assign('MAX_FILE_SIZE', $upload_maxsize);
+
 			//Get PanelMenu data
 			$modules = $this->sessionGet('_MODULES');
 			$viewer->assign('_MODULES', $modules);
