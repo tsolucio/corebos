@@ -18,13 +18,11 @@
 /**	function used to get the numeration of entites
  *	return array $entitynum - numertaion of entities
  */
-
-function get_maxloadsize()
-{
-	require_once('include/utils/UserInfoUtil.php');
-	require_once('modules/Users/Users.php');
-	global $adb,$log,$current_user;
-	$log->debug("Entering vtws_get_maxloadsize ()");
+function get_maxloadsize() {
+	require_once 'include/utils/UserInfoUtil.php';
+	require_once 'modules/Users/Users.php';
+	global $log;
+	$log->debug('Entering vtws_get_maxloadsize');
 
 	$max_size = parse_size(ini_get('post_max_size'));
 
@@ -35,7 +33,7 @@ function get_maxloadsize()
 		$max_size = $upload_max;
 	}
 
-	$log->debug("Exiting get_maxloadsize");
+	$log->debug('Exiting get_maxloadsize');
 	return $max_size;
 }
 
@@ -49,5 +47,4 @@ function parse_size($size) {
 		return round($size);
 	}
 }
-
 ?>

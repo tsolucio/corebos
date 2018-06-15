@@ -27,17 +27,17 @@
 *     id: image id
  *************************************************************************************************/
 
-function cbws_getrecordimageinfo($id, $user){
+function cbws_getrecordimageinfo($id, $user) {
 	global $log,$adb,$site_URL;
 	$log->debug("Entering function cbws_getrecordimageinfo($id)");
 	list($wsid,$crmid) = explode('x', $id);
-	if ((vtws_getEntityId('Calendar')==$wsid or vtws_getEntityId('Events')==$wsid) and getSalesEntityType($crmid)=='cbCalendar') {
+	if ((vtws_getEntityId('Calendar')==$wsid || vtws_getEntityId('Events')==$wsid) && getSalesEntityType($crmid)=='cbCalendar') {
 		$id = vtws_getEntityId('cbCalendar') . 'x' . $crmid;
 	}
-	if (vtws_getEntityId('cbCalendar')==$wsid and getSalesEntityType($crmid)=='Calendar') {
+	if (vtws_getEntityId('cbCalendar')==$wsid && getSalesEntityType($crmid)=='Calendar') {
 		$rs = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($crmid));
-		if ($rs and $adb->num_rows($rs)==1) {
-			if ($adb->query_result($rs,0,0)=='Task') {
+		if ($rs && $adb->num_rows($rs)==1) {
+			if ($adb->query_result($rs, 0, 0)=='Task') {
 				$id = vtws_getEntityId('Calendar') . 'x' . $crmid;
 			} else {
 				$id = vtws_getEntityId('Events') . 'x' . $crmid;
@@ -45,42 +45,41 @@ function cbws_getrecordimageinfo($id, $user){
 		}
 	}
 
-	$webserviceObject = VtigerWebserviceObject::fromId($adb,$id);
+	$webserviceObject = VtigerWebserviceObject::fromId($adb, $id);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
 
 	require_once $handlerPath;
 
-	$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
+	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 	$meta = $handler->getMeta();
 	$entityName = $meta->getObjectEntityName($id);
 	$types = vtws_listtypes(null, $user);
-	if(!in_array($entityName,$types['types'])){
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to perform the operation is denied");
+	if (!in_array($entityName, $types['types'])) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
 	}
-	if($meta->hasReadAccess()!==true){
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to read entity is denied");
+	if ($meta->hasReadAccess()!==true) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read entity is denied');
 	}
-	if($entityName !== $webserviceObject->getEntityName()){
-		throw new WebServiceException(WebServiceErrorCode::$INVALIDID,"Id specified is incorrect");
+	if ($entityName !== $webserviceObject->getEntityName()) {
+		throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
 	}
-	if(!$meta->hasPermission(EntityMeta::$RETRIEVE,$id)){
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to read given object is denied");
+	if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $id)) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
 	}
 	$idComponents = vtws_getIdComponents($id);
-	if(!$meta->exists($idComponents[1])){
-		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND,"Record you are trying to access is not found");
+	if (!$meta->exists($idComponents[1])) {
+		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
 	}
 
 	$ids = vtws_getIdComponents($id);
 	$pdoid = $ids[1];
 	$rdo = array();
 	$query = 'select vtiger_attachments.name, vtiger_attachments.type, vtiger_attachments.attachmentsid, vtiger_attachments.path
-			from vtiger_attachments
-			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
-			inner join vtiger_seattachmentsrel on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
-			where (vtiger_crmentity.setype LIKE "%Image" or vtiger_crmentity.setype LIKE "%Attachment")
-			  and deleted=0 and vtiger_seattachmentsrel.crmid=?';
+		from vtiger_attachments
+		inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
+		inner join vtiger_seattachmentsrel on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
+		where (vtiger_crmentity.setype LIKE "%Image" or vtiger_crmentity.setype LIKE "%Attachment") and deleted=0 and vtiger_seattachmentsrel.crmid=?';
 	$result_image = $adb->pquery($query, array($pdoid));
 	$rdo['results']=$adb->num_rows($result_image);
 	$rdo['images']=array();
@@ -95,8 +94,7 @@ function cbws_getrecordimageinfo($id, $user){
 	}
 
 	VTWS_PreserveGlobal::flush();
-	$log->debug("Leaving function cbws_getrecordimageinfo");
+	$log->debug('Leaving function cbws_getrecordimageinfo');
 	return $rdo;
 }
-
 ?>

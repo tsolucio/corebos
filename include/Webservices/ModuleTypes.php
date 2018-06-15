@@ -8,7 +8,7 @@
  * All Rights Reserved.
  *************************************************************************************/
 
-function vtws_listtypes($fieldTypeList, $user){
+function vtws_listtypes($fieldTypeList, $user) {
 	// Bulk Save Mode: For re-using information
 	static $webserviceEntities = false;
 	// END
@@ -31,10 +31,10 @@ function vtws_listtypes($fieldTypeList, $user){
 		 */
 		$db = PearDatabase::getInstance();
 
-		vtws_preserveGlobal('current_user',$user);
+		vtws_preserveGlobal('current_user', $user);
 		//get All the modules the current user is permitted to Access.
 		$allModuleNames = getPermittedModuleNames();
-		if (in_array('Calendar',$allModuleNames)) {
+		if (in_array('Calendar', $allModuleNames)) {
 			$allModuleNames[] = 'Events';
 		}
 
@@ -50,8 +50,9 @@ function vtws_listtypes($fieldTypeList, $user){
 					and vtiger_user2role.userid=? and fieldtype in (' . generateQuestionMarks($fieldTypeList) . ')';
 			$params = array();
 			$params[] = $user->id;
-			foreach ($fieldTypeList as $fieldType)
+			foreach ($fieldTypeList as $fieldType) {
 				$params[] = $fieldType;
+			}
 			$result = $db->pquery($sql, $params);
 			$it = new SqlResultIterator($db, $result);
 			$moduleList = array();
@@ -80,55 +81,58 @@ function vtws_listtypes($fieldTypeList, $user){
 			$webserviceEntities = vtws_getWebserviceEntities();
 		}
 
-		$accessibleModules = array_values(array_intersect($webserviceEntities['module'],$allModuleNames));
+		$accessibleModules = array_values(array_intersect($webserviceEntities['module'], $allModuleNames));
 		$entities = $webserviceEntities['entity'];
 		$accessibleEntities = array();
 		if (empty($fieldTypeList)) {
 			foreach ($entities as $entity) {
-				$webserviceObject = VtigerWebserviceObject::fromName($db,$entity);
+				$webserviceObject = VtigerWebserviceObject::fromName($db, $entity);
 				$handlerPath = $webserviceObject->getHandlerPath();
 				$handlerClass = $webserviceObject->getHandlerClass();
-
 				require_once $handlerPath;
-				$handler = new $handlerClass($webserviceObject,$user,$db,$log);
+				$handler = new $handlerClass($webserviceObject, $user, $db, $log);
 				$meta = $handler->getMeta();
 				if ($meta->hasAccess()===true) {
 					$accessibleEntities[] = $entity;
 				}
 			}
 		}
-	} catch(WebServiceException $exception) {
+	} catch (WebServiceException $exception) {
 		throw $exception;
-	} catch(Exception $exception) {
+	} catch (Exception $exception) {
 		throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, 'A Database error occured while performing the operation');
 	}
 
 	$default_language = VTWS_PreserveGlobal::getGlobal('default_language');
 	global $current_language;
-	if (empty($current_language)) $current_language = $default_language;
-	$current_language = vtws_preserveGlobal('current_language',$current_language);
+	if (empty($current_language)) {
+		$current_language = $default_language;
+	}
+	$current_language = vtws_preserveGlobal('current_language', $current_language);
 
 	$appStrings = return_application_language($current_language);
 	$appListString = return_app_list_strings_language($current_language);
-	vtws_preserveGlobal('app_strings',$appStrings);
-	vtws_preserveGlobal('app_list_strings',$appListString);
+	vtws_preserveGlobal('app_strings', $appStrings);
+	vtws_preserveGlobal('app_list_strings', $appListString);
 
 	$informationArray = array();
 	foreach ($accessibleModules as $module) {
-		$vtigerModule = ($module == 'Events')? 'Calendar':$module;
-		$informationArray[$module] = array('isEntity'=>true,'label'=>getTranslatedString($module,$vtigerModule),
-			'singular'=>getTranslatedString('SINGLE_'.$module,$vtigerModule));
+		$vtigerModule = ($module == 'Events') ? 'Calendar' : $module;
+		$informationArray[$module] = array(
+			'isEntity'=>true,
+			'label'=>getTranslatedString($module, $vtigerModule),
+			'singular'=>getTranslatedString('SINGLE_'.$module, $vtigerModule)
+		);
 	}
 
 	foreach ($accessibleEntities as $entity) {
-		$label = (isset($appStrings[$entity]))? $appStrings[$entity]:$entity;
-		$singular = (isset($appStrings['SINGLE_'.$entity]))? $appStrings['SINGLE_'.$entity]:$entity;
-		$informationArray[$entity] = array('isEntity'=>false,'label'=>$label, 'singular'=>$singular);
+		$label = (isset($appStrings[$entity])) ? $appStrings[$entity] : $entity;
+		$singular = (isset($appStrings['SINGLE_'.$entity])) ? $appStrings['SINGLE_'.$entity] : $entity;
+		$informationArray[$entity] = array('isEntity'=>false, 'label'=>$label, 'singular'=>$singular);
 	}
 
 	VTWS_PreserveGlobal::flush();
-	$types[$user->id][$fieldTypeString] = array("types"=>array_merge($accessibleModules,$accessibleEntities), 'information'=>$informationArray);
+	$types[$user->id][$fieldTypeString] = array('types'=>array_merge($accessibleModules, $accessibleEntities), 'information'=>$informationArray);
 	return $types[$user->id][$fieldTypeString];
 }
-
 ?>

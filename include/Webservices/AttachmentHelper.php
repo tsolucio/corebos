@@ -50,11 +50,11 @@ function SaveAttachmentFile($attachid, $filename, $filecontent) {
 
 	$description = $filename;
 	$filename = str_replace(' ', '_', $filename);
-	$saveasfile = "$dirname$attachid" . "_$filename";
+	$saveasfile = $dirname . $attachid . '_' . $filename;
 	if (!file_exists($saveasfile)) {
 		$fh = @fopen($saveasfile, 'wb');
 		if (!$fh) {
-			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied, could not open file to save attachment: '.$saveasfile);
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission denied, could not open file to save attachment: '.$saveasfile);
 		}
 		if (substr($filecontent, 0, strlen('data:image/png;base64,'))=='data:image/png;base64,') {
 			// Base64 Encoded HTML5 Canvas image
@@ -67,7 +67,9 @@ function SaveAttachmentFile($attachid, $filename, $filecontent) {
 
 	$mimetype = MailAttachmentMIME::detect($saveasfile);
 
-	$adb->pquery('INSERT INTO vtiger_attachments SET attachmentsid=?, name=?, description=?, type=?, path=?', array($attachid, $filename, $description, $mimetype, $dirname));
+	$adb->pquery(
+		'INSERT INTO vtiger_attachments SET attachmentsid=?, name=?, description=?, type=?, path=?',
+		array($attachid, $filename, $description, $mimetype, $dirname)
+	);
 }
-
 ?>
