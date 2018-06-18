@@ -16,6 +16,7 @@ class crmtogo_WS_getScrollContent extends crmtogo_WS_Controller {
 	}
 	
 	function getContent(crmtogo_API_Request $request) {
+		global $currentModule;
 		$db = PearDatabase::getInstance();
 		$current_user = $this->getActiveUser();	
 		
@@ -39,7 +40,11 @@ class crmtogo_WS_getScrollContent extends crmtogo_WS_Controller {
 		else {
 			$queryGenerator->initForDefaultCustomView();
 		}
+		$currentModule = $module;
+		$queryGenerator = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.before', $queryGenerator);
 		$list_query = $queryGenerator->getQuery();
+		$queryGenerator = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.after', $queryGenerator);
+		$list_query = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.query', $list_query);
 
 		//get entity fields for each module
 		$entity_sql="select fieldname,tablename,entityidfield from vtiger_entityname where modulename =?";
