@@ -274,9 +274,10 @@ class Vtiger_MailScanner {
 	}
 
 	public function getEmployeeList($crmobj) {
-		global $adb;
+		global $adb,$currentModule;
 		$retemp = array();
 		if (vtlib_isModuleActive("cbEmployee")) {
+			$currentModule = 'cbEmployee';
 			$module = get_class($crmobj);
 			$modtab = getTabid($module);
 			$emptab = getTabid('cbEmployee');
