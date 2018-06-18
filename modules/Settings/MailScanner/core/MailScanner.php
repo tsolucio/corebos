@@ -274,7 +274,11 @@ class Vtiger_MailScanner {
 	}
 
 	public function getEmployeeList($crmobj) {
-		global $adb,$currentModule;
+		global $adb,$currentModule,$current_user;
+		if(is_null($current_user)){
+			$current_user = CRMEntity::getinstance('Users');
+			$current_user->retrieve_entity_info(1,'Users');
+		}
 		$retemp = array();
 		if (vtlib_isModuleActive("cbEmployee")) {
 			$currentModule = 'cbEmployee';
