@@ -886,11 +886,19 @@ class CRMEntity {
 	 * This function retrives the information from the database and sets the value in the class columnfields array
 	 */
 	public function retrieve_entity_info($record, $module, $deleted = false) {
-		global $adb, $app_strings;
+		global $adb, $app_strings, $current_user;
 		$preFmt = '<br><br><center>';
 		$postFmt = '.</a></center>';
 		$i8nGoBack = $app_strings['LBL_GO_BACK'];
 		$result = array();
+		
+		//Here we check if user can see this record.
+		if(isPermitted($module, 'DetailView', $record) != 'yes'){
+			$this->column_fields["record_id"] = $record;
+			$this->column_fields["record_module"] = $module;
+			return;
+		}
+				
 		foreach ($this->tab_name_index as $table_name => $index) {
 			$result[$table_name] = $adb->pquery("select * from $table_name where $index=?", array($record));
 			$isRecordDeleted = $adb->query_result($result['vtiger_crmentity'], 0, 'deleted');
@@ -953,7 +961,12 @@ class CRMEntity {
 				$fieldcolname = $fieldinfo['columnname'];
 				$tablename = $fieldinfo['tablename'];
 				$fieldname = $fieldinfo['fieldname'];
-
+				//Here we check if user have the paermission to access this field.
+				//If it is allowed then it will get the actual value, otherwise it gets an empty string.
+				if(getFieldVisibilityPermission($module, $current_user->id, $fieldname) != '0'){
+					$this->column_fields[$fieldname] = '';
+					continue;
+				}
 				// To avoid ADODB execption pick the entries that are in $tablename
 				// (ex. when we don't have attachment for troubletickets, $result[vtiger_attachments]
 				// will not be set so here we should not retrieve)
