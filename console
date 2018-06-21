@@ -1,0 +1,27 @@
+#!/usr/bin/env php
+<?php
+// application.php
+require __DIR__.'/vendor/autoload.php';
+use Symfony\Component\Console\Application;
+
+$files = glob( __DIR__ . '/build/console/*.php');
+foreach ($files as $file) {
+	require_once $file;
+}
+
+$classes = get_declared_classes();
+$offset = array_search("Symfony\Component\Console\Command\Command", $classes);
+$length = count($classes);
+
+include_once('include/database/PearDatabase.php');
+include_once('include/utils/utils.php');
+
+$application = new Application("CoreBOS","1.0");
+
+for ($i = $offset + 1 ; $i < $length; $i++) {
+
+	$application->add( new $classes[$i]() );
+
+}
+
+$application->run();
