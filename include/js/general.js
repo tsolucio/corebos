@@ -5072,8 +5072,7 @@ AutocompleteRelation.prototype.buildListItem = function(item) {
 	li.setAttribute('data-label', item[this.entityName]);
 
 	for (var field in item) {
-		if(field != this.entityName)
-			li.setAttribute('data-' + field, item[field]);
+		li.setAttribute('data-' + field, item[field]);
 	}
 
 	var span = document.createElement('span');
