@@ -925,10 +925,11 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 	$flds = array_unique(array_merge($rfields, $sfields, array('id')));
 
 	$queryGenerator->setFields($flds);
+	$queryGenerator->startGroup();
 	foreach ($sfields as $sfld) {
 		$queryGenerator->addCondition($sfld, $term, $op, $queryGenerator::$OR);
 	}
-
+	$queryGenerator->endGroup();
 	$query = $queryGenerator->getQuery();
 	$rsemp=$adb->query($query);
 	$wsid = vtyiicpng_getWSEntityId($searchinmodule);
