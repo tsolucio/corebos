@@ -12,6 +12,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
+	<meta name="robots" content="noindex">
 	<title>{$USER} - {$MODULE_NAME|@getTranslatedString:$MODULE_NAME} - {$coreBOS_app_name}</title>
 	<link REL="SHORTCUT ICON" HREF="{$FAVICON}">
 	<style type="text/css">@import url("themes/{$THEME}/style.css");</style>
