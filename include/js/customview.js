@@ -368,7 +368,7 @@ function validateTypeforCFMapping(leadtype,leadtypeofdata,type,typeofdata,field_
 				var tod = typeofdata.split("~");
 				switch (lead_tod[0]) {
 					case "V"  :
-						if(lead_tod[3] <= tod[3])
+						if(lead_tod[3] <= tod[3] || tod[3] === undefined)
 							return true;
 						else
 						{
