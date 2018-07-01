@@ -19,7 +19,7 @@ function vtws_retrievedocattachment($all_ids, $returnfile, $user) {
 	$docWSId = vtws_getEntityId('Documents').'x';
 	$log->debug('Entering function vtws_retrievedocattachment');
 	$all_ids='('.str_replace($docWSId, '', $all_ids).')';
-	$query = "SELECT n.notesid, n.filename, n.filelocationtype
+	$query = "SELECT n.notesid, n.filename, n.filelocationtype, n.filetype
 		FROM vtiger_notes n
 		INNER JOIN vtiger_crmentity c ON c.crmid=n.notesid
 		WHERE n.notesid in $all_ids and n.filelocationtype in ('I','E') and c.deleted=0";
@@ -61,7 +61,7 @@ function vtws_retrievedocattachment($all_ids, $returnfile, $user) {
 		$filetype=$adb->query_result($result, $i, 'filelocationtype');
 		if ($filetype=='E') {
 			$entity['recordid'] = $adb->query_result($result, $i, 'notesid');
-			$entity['filetype'] = $fileType;
+			$entity['filetype'] = $adb->query_result($result, $i, 'filetype');
 			$entity['filename'] = $adb->query_result($result, $i, 'filename');
 			$entity['filesize'] = 0;
 			$entity['attachment'] = base64_encode('') ;
