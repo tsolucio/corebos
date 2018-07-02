@@ -358,7 +358,7 @@ function sendfile_email()
 																													{$label}
 																												{/if}
 																												{/strip}</td>
-																												{if $EDIT_PERMISSION eq 'yes' && $display_type neq '2' && $_readonly eq '0'}
+																												{if $EDIT_PERMISSION eq 'yes' && $display_type neq '2' && $display_type neq '4' && $_readonly eq '0'}
 																													{* Performance Optimization Control *}
 																													{if !empty($DETAILVIEW_AJAX_EDIT) }
 																														{include file="DetailViewUI.tpl"}
