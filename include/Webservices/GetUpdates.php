@@ -129,16 +129,16 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 		$params = array($moduleMeta->getTabName(),$datetime,$maxModifiedTime);
 
 		$queryGenerator = new QueryGenerator($elementType, $user);
-		$moduleFeilds = $moduleMeta->getModuleFields();
-		$moduleFeildNames = array_keys($moduleFeilds);
-		$moduleFeildNames[]='id';
-		$queryGenerator->setFields($moduleFeildNames);
+		$moduleFields = $moduleMeta->getModuleFields();
+		$moduleFieldNames = array_keys($moduleFields);
+		$moduleFieldNames[]='id';
+		$queryGenerator->setFields($moduleFieldNames);
 		$selectClause = "SELECT ".$queryGenerator->getSelectClauseColumnSQL();
 		// adding the fieldnames that are present in the delete condition to the select clause
 		// since not all fields present in delete condition will be present in the fieldnames of the module
 		foreach ($deleteColumnNames as $table_fieldName => $columnName) {
-			if (!in_array($columnName, $moduleFeildNames)) {
-				$selectClause .=", ".$table_fieldName;
+			if (!in_array($columnName, $moduleFieldNames)) {
+				$selectClause .= ', '.$table_fieldName;
 			}
 		}
 		if ($elementType=='Emails') {
@@ -152,7 +152,7 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 			$params = array_merge($params, $ownerIds);
 		}
 		$fromClause.= ' ) vtiger_ws_sync ON (vtiger_crmentity.crmid = vtiger_ws_sync.crmid)';
-		$q = $selectClause." ".$fromClause;
+		$q = $selectClause.' '.$fromClause;
 		$result = $adb->pquery($q, $params);
 		while ($arre = $adb->fetchByAssoc($result)) {
 			$key = $arre[$moduleMeta->getIdColumn()];
