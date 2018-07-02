@@ -352,9 +352,7 @@ class Vtiger_ModuleBasic {
 	 * Delete links information
 	 */
 	public function deleteLinks() {
-		global $adb;
-		$adb->pquery('DELETE FROM vtiger_links WHERE tabid=?', array($this->id));
-		self::log('Deleting links ... DONE');
+		Vtiger_Link::deleteAll($this->id);
 	}
 
 	/**
