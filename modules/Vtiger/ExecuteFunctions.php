@@ -197,7 +197,7 @@ switch ($functiontocall) {
 			$ret = $currencyField->getDisplayValue(null, true, true);
 		}
 		break;
-	case 'getGloalSearch':
+	case 'getGlobalSearch':
 		include_once 'include/Webservices/CustomerPortalWS.php';
 		$data = json_decode($_REQUEST['data'], true);
 		$searchin = vtlib_purify($data['searchin']);

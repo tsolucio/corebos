@@ -4997,7 +4997,7 @@ AutocompleteRelation.prototype.get = function(e) {
 		};
 		var params='data='+encodeURIComponent(JSON.stringify(this.data));
 		if (e.target.name==='query_string') {
-			r.open('POST', 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getGloalSearch', true);
+			r.open('POST', 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getGlobalSearch', true);
 			r.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 			r.send(params);
 		} else {
