@@ -3340,7 +3340,9 @@ class ReportRun extends CRMEntity {
 		}
 
 		$totalpdf = $this->GenerateReport("PRINT_TOTAL", $filterlist);
-		$html = '<table border="1"><tr>'.$headerHTML.'</tr>'.$dataHTML.'</table>';
+		$report_header = GlobalVariable::getVariable('Report_HeaderOnPDF', '');
+		($report_header == 1 ? $html = '<h1>'.getTranslatedString($this->reportname).'</h1>': $html = '');
+		$html = $html.'<table border="1"><tr>'.$headerHTML.'</tr>'.$dataHTML.'</table>';
 		$columnlength = array_sum($col_width);
 		if ($columnlength > 14400) {
 			global $log, $app_strings;
@@ -3431,6 +3433,13 @@ class ReportRun extends CRMEntity {
 			$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
 			//copy the first value details
 			$arrayFirstRowValues = $arr_val[0];
+			$report_header = GlobalVariable::getVariable('Report_HeaderOnXLS', '');
+			if ($report_header == 1) {
+				$rowcount++;
+				$worksheet->setCellValueExplicitByColumnAndRow(0, 1, getTranslatedString($this->reportname), true);
+				$worksheet->getStyleByColumnAndRow(0, 1)->applyFromArray($header_styles);
+				$worksheet->getColumnDimensionByColumn(0)->setAutoSize(true);
+			}
 			foreach ($arrayFirstRowValues as $key => $value) {
 				$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $key, true);
 				$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
