@@ -11,6 +11,7 @@ var globaleditareaspanid = "";
 var globaltxtboxid = "";
 var globalfldtimeformat = "";
 var itsonview=false;
+var clipcopyclicked=false;
 // to retain the old value if we cancel the ajax edit
 var globaltempvalue = '';
 var globaluitype = '';
@@ -92,8 +93,21 @@ function hndMouseOver(uitype,fieldLabel)
 	divObj.style.top=crmy+"px";
 }
 
-function handleEdit(event)
-{
+function handleCopyClipboard(event) {
+	clipcopyclicked = true;
+	if (globaluitype != 53) {
+		let temp = getObj(globaltxtboxid).value;
+		if (globaluitype == 56) {
+			temp = (temp ? alert_arr.YES : alert_arr.NO);
+		}
+		document.getElementById('clipcopylink').dataset.clipboardText = temp;
+	}
+	//if (event) event.stopPropagation();
+	return false;
+}
+
+function handleEdit(event) {
+	if (clipcopyclicked) return false;
 	show(globaleditareaspanid);
 	fnhide(globaldtlviewspanid);
 	if( ((globaluitype == 15 || globaluitype == 16 || globaluitype == 1613 || globaluitype == 1614 || globaluitype == 1615) && globaltempvalue == '') ||

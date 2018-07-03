@@ -9,12 +9,16 @@
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="include/js/dtlviewajax.js"></script>
-<span id="crmspanid" style="display:none;position:absolute;"  onmouseover="show('crmspanid');">
-	<a class="link" href="javascript:;">{$APP.LBL_EDIT_BUTTON}</a>
+<script type="text/javascript" src="include/js/clipboard.min.js"></script>
+<span id="crmspanid" style="display:none;position:absolute;" onmouseover="show('crmspanid');">
+	<a class="link" id="clipcopylink" href="javascript:;" onclick="handleCopyClipboard(event);" data-clipboard-text="">{$APP.LBL_COPY_BUTTON}</a>
 </span>
 <div id="convertleaddiv" style="display:block;position:absolute;left:225px;top:150px;"></div>
 <script>
 {literal}
+var clipcopyobject = new ClipboardJS('#clipcopylink');
+clipcopyobject.on('success', function(e) { clipcopyclicked = false; });
+clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
 function callConvertLeadDiv(id){
 		jQuery.ajax({
 				method:"POST",

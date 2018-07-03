@@ -39,6 +39,7 @@ $app_strings = array(
 	'LBL_CONVERTSO_BUTTON_TITLE' => 'Nouveau bon de commande',
 	'LBL_CONVERTINVOICE_BUTTON_TITLE' => 'Facturer',
 	'LBL_EDIT_BUTTON' => 'Editer',
+	'LBL_COPY_BUTTON'=>'Copier',
 	'LBL_DUPLICATE_BUTTON_TITLE' => 'Copier [Alt+U]',
 	'LBL_DUPLICATE_BUTTON' => 'Copier',
 	'LBL_TABCUSTOMISE_BUTTON_TITLE' => 'Personnaliser [Alt+C]',

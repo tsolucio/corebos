@@ -39,6 +39,7 @@ $app_strings = array(
 'LBL_CONVERTSO_BUTTON_TITLE' => 'Create Sales Order',
 'LBL_CONVERTINVOICE_BUTTON_TITLE' => 'Create Invoice',
 'LBL_EDIT_BUTTON' => 'Edit',
+'LBL_COPY_BUTTON'=>'Copy',
 'LBL_DUPLICATE_BUTTON_TITLE' => 'Duplicate [Alt+U]',
 'LBL_DUPLICATE_BUTTON' => 'Duplicate',
 'LBL_TABCUSTOMISE_BUTTON_TITLE' => 'Customise [Alt+C]',
