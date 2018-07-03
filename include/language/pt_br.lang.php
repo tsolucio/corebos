@@ -43,6 +43,7 @@ $app_strings = array (
 'LBL_CONVERTSO_BUTTON_TITLE' => 'Criar pedido venda',
 'LBL_CONVERTINVOICE_BUTTON_TITLE' => 'Criar fatura',
 'LBL_EDIT_BUTTON' => 'Editar',
+'LBL_COPY_BUTTON'=>'Copiar',
 'LBL_DUPLICATE_BUTTON_TITLE' => 'Duplicar [Alt+U]',
 'LBL_DUPLICATE_BUTTON' => 'Duplicar',
 'LBL_TABCUSTOMISE_BUTTON_TITLE' => 'Customizar [Alt+C]',

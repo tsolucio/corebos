@@ -44,6 +44,7 @@ $app_strings = array(
 	'LBL_CONVERTSO_BUTTON_TITLE' => 'Maak een verkooporder',
 	'LBL_CONVERTINVOICE_BUTTON_TITLE' => 'Maak een factuur',
 	'LBL_EDIT_BUTTON' => 'Bewerk',
+	'LBL_COPY_BUTTON'=>'Kopieren',
 	'LBL_DUPLICATE_BUTTON_TITLE' => 'Dupliceer [Alt+U]',
 	'LBL_DUPLICATE_BUTTON' => 'Dupliceer',
 	'LBL_TABCUSTOMISE_BUTTON_TITLE' => 'Wijzig [Alt+C]',

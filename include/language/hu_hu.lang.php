@@ -40,6 +40,7 @@ $app_strings = array(
 	'LBL_CONVERTSO_BUTTON_TITLE' => 'Új Rendelés',
 	'LBL_CONVERTINVOICE_BUTTON_TITLE' => 'Új Díjbekérő',
 	'LBL_EDIT_BUTTON' => 'Szerkesztés',
+	'LBL_COPY_BUTTON'=>'Másolás',
 	'LBL_DUPLICATE_BUTTON_TITLE' => 'Másolás [Alt+U]',
 	'LBL_DUPLICATE_BUTTON' => 'Másolás',
 	'LBL_TABCUSTOMISE_BUTTON_TITLE' => 'Testreszab [Alt+C]',
