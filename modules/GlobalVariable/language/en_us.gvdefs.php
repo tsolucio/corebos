@@ -1152,14 +1152,14 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
-	'definition' => 'When Report_HeaderOnXLS is active, the Header will appear on XLS Report.',
+	'definition' => 'When Report_HeaderOnXLS is active, the name of the report will appear as the header in the XLS file.',
 ),
 'Report_HeaderOnPDF' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
-	'definition' => 'When Report_HeaderOnPDF is active, the Header will appear on PDF Report.',
+	'definition' => 'When Report_HeaderOnPDF is active, the name of the report will appear as the header in the PDF file.',
 ),
 );
 
