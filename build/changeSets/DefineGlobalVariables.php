@@ -171,6 +171,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Report_ListView_PageSize',
 				'Report_MaxRows_OnScreen',
 				'Report_MaxRelated_Modules',
+				'Report_HeaderOnXLS',
+				'Report_HeaderOnPDF'
 
 				'Inventory_ListPrice_ReadOnly',
 				'Inventory_Show_ShippingHandlingCharges',
@@ -182,8 +184,6 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'CustomerPortal_PDFTemplate_SalesOrder',
 				'CustomerPortal_PDFTemplate_Invoice',
 				'CustomerPortal_PDFTemplate_PurchaseOrder',
-				'Report_HeaderOnXLS',
-				'Report_HeaderOnPDF'
 			);
 			$delete_these = array(
 				'preload_prototype',

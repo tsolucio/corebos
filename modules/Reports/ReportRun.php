@@ -3290,7 +3290,6 @@ class ReportRun extends CRMEntity {
 		require_once 'include/tcpdf/tcpdf.php';
 
 		$arr_val = $this->GenerateReport('PDF', $filterlist);
-		$report_header = GlobalVariable::getVariable('Report_HeaderOnPDF', '');
 
 		if (isset($arr_val)) {
 			foreach ($arr_val as $wkey => $warray_value) {
@@ -3341,6 +3340,7 @@ class ReportRun extends CRMEntity {
 		}
 
 		$totalpdf = $this->GenerateReport("PRINT_TOTAL", $filterlist);
+		$report_header = GlobalVariable::getVariable('Report_HeaderOnPDF', '');
 		($report_header == 1 ? $html = '<h1>'.getTranslatedString($this->reportname).'</h1>': $html = '');
 		$html = $html.'<table border="1"><tr>'.$headerHTML.'</tr>'.$dataHTML.'</table>';
 		$columnlength = array_sum($col_width);
@@ -3400,7 +3400,6 @@ class ReportRun extends CRMEntity {
 
 		require_once 'include/PHPExcel/PHPExcel.php';
 		$xlsrowheight = GlobalVariable::getVariable('Report_Excel_Export_RowHeight', 20);
-		$report_header = GlobalVariable::getVariable('Report_HeaderOnXLS', '');
 		$workbook = new PHPExcel();
 		$worksheet = $workbook->setActiveSheetIndex(0);
 		$fieldinfo = array();
@@ -3434,6 +3433,7 @@ class ReportRun extends CRMEntity {
 			$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
 			//copy the first value details
 			$arrayFirstRowValues = $arr_val[0];
+			$report_header = GlobalVariable::getVariable('Report_HeaderOnXLS', '');
 			if ($report_header == 1) {
 				$rowcount++;
 				$worksheet->setCellValueExplicitByColumnAndRow(0, 1, getTranslatedString($this->reportname), true);
