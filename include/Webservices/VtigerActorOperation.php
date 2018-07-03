@@ -143,7 +143,10 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 			throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record not found');
 		}
 		$element = $this->getElement();
-
+		if (isset($element['folderid']) && !isset($element['id'])) {
+			$element['id'] = $element['folderid'];
+			unset($element['folderid']);
+		}
 		return DataTransform::filterAndSanitize($element, $this->meta);
 	}
 
