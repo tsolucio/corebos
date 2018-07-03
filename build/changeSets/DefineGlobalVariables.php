@@ -172,7 +172,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Report_MaxRows_OnScreen',
 				'Report_MaxRelated_Modules',
 				'Report_HeaderOnXLS',
-				'Report_HeaderOnPDF'
+				'Report_HeaderOnPDF',
 
 				'Inventory_ListPrice_ReadOnly',
 				'Inventory_Show_ShippingHandlingCharges',
