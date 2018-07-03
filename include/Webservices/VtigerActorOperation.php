@@ -286,7 +286,8 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 			'mandatory' => $webserviceField->isMandatory(),
 			'type' => $typeDetails,
 			'nullable' => $webserviceField->isNullable(),
-			"editable" => $editable);
+			'editable' => $editable
+		);
 		if ($webserviceField->hasDefault()) {
 			$describeArray['default'] = $webserviceField->getDefault();
 		}
