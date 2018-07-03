@@ -767,6 +767,19 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			{elseif $uitype eq 255}
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}{if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
 			{/if}
+			</td>
+
+			<td width="30%" align=left class="dvtCellInfo">
+			{if $fldvalue neq ''}
+			<select name="salutationtype" class="small">
+				{foreach item=arr from=$fldvalue}
+				<option value="{$arr[1]}" {$arr[2]}>
+				{$arr[0]}
+				</option>
+				{/foreach}
+			</select>
+			{if $MASS_EDIT eq '1'}<br />{/if}
+			{/if}
 			{if (isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['searchfields']))}
 				{assign var="autocomp" value=$maindata['extendedfieldinfo'] }
 				<div style="position: relative;">
@@ -787,20 +800,6 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			{else}
 				<input type="text" name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" style="width:58%;" value= "{$secondvalue}" >
 			{/if}
-			</td>
-
-			<td width="30%" align=left class="dvtCellInfo">
-			{if $fldvalue neq ''}
-			<select name="salutationtype" class="small">
-				{foreach item=arr from=$fldvalue}
-				<option value="{$arr[1]}" {$arr[2]}>
-				{$arr[0]}
-				</option>
-				{/foreach}
-			</select>
-			{if $MASS_EDIT eq '1'}<br />{/if}
-			{/if}
-			<input type="text" name="{$fldname}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" style="width:58%;" value= "{$secondvalue}" >
 			</td>
 
 		{elseif $uitype eq 22}
