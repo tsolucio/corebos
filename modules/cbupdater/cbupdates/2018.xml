@@ -70,4 +70,11 @@
 	<classname>cbcalendaractionpermissions</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Webservice: support for creating document folders</description>
+	<filename>build/changeSets/2018/webservicecreatedocumentfolder.php</filename>
+	<classname>webservicecreatedocumentfolder</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
