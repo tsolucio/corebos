@@ -138,6 +138,8 @@ function __cb_aggregation_operation($arr) {
 		if (!empty($arr[3])) {
 			$query .= ' and ('.__cb_aggregation_getconditions($arr[3], $relmodule, $mainmodule, $crmid).')';
 		}
+	} elseif ($mainmodule==$relmodule) {
+		$query = __cb_aggregation_queryonsamemodule($arr[3], $mainmodule, $relfield, $crmid);
 	} else {
 		return 0; // MODULES_NOT_RELATED
 	}
