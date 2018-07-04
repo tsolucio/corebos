@@ -164,6 +164,23 @@ class VTJsonCondition {
 			}
 		}
 
+		// If both fieldValue and value are formatted as HH:mm:ss or HH:mm, convert them to a no. of seconds
+		$convert_time_conds = array('less than', 'greater than', 'less than or equal to', 'greater than or equal to');
+		if ((preg_match('/(\d{1,2}):(\d{1,2}):?(\d{1,2})?/', $fieldValue) === 1 && preg_match('/(\d{1,2}):(\d{1,2}):?(\d{1,2})?/', $value) === 1) && in_array($condition, $convert_time_conds)) {
+			preg_match('/(\d{1,2}):(\d{1,2}):?(\d{1,2})?/', $fieldValue, $fieldValue_matches);
+			preg_match('/(\d{1,2}):(\d{1,2}):?(\d{1,2})?/', $value, $value_matches);
+			if (count($fieldValue_matches) == 3) {
+				$fieldValue = (int)($fieldValue_matches[1] * 3600) + (int)($fieldValue_matches[2] * 60);
+			} elseif (count($fieldValue_matches == 4)) {
+				$fieldValue = (int)($fieldValue_matches[1] * 3600) + (int)($fieldValue_matches[2] * 60) + (int)$fieldValue_matches[3];
+			}
+			if (count($value_matches) == 3) {
+				$value = (int)($value_matches[1] * 3600) + (int)($value_matches[2] * 60);
+			} elseif (count($value_matches == 4)) {
+				$value = (int)($value_matches[1] * 3600) + (int)($value_matches[2] * 60) + (int)$value_matches[3];
+			}
+		}
+
 		switch ($condition) {
 			case 'exists':
 				global $current_user,$adb;
