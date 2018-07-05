@@ -517,6 +517,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Show or hide Shipping and Handling charges',
 ),
+'Inventory_Show_PDFLinks' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show or hide the default PDF links. Hide them when you use an alternative PDF creator',
+),
 'Application_Global_Search_Active' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',

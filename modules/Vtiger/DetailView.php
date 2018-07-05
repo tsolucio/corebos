@@ -168,4 +168,5 @@ $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtl
 $focus->markAsViewed($current_user->id);
 
 $smarty->assign('DETAILVIEW_AJAX_EDIT', GlobalVariable::getVariable('Application_DetailView_Inline_Edit', 1));
+$smarty->assign('INVENTORY_SHOW_PDF_LINKS', GlobalVariable::getVariable('Inventory_Show_PDFLinks', 1));
 ?>

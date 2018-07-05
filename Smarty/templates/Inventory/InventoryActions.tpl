@@ -239,6 +239,7 @@
    </tr>
 
 <!-- To display the Export To PDF link for PO, SO, Quotes and Invoice - starts -->
+{if $INVENTORY_SHOW_PDF_LINKS != 0}
 {if $MODULE eq 'PurchaseOrder' || $MODULE eq 'SalesOrder' || $MODULE eq 'Quotes' || $MODULE eq 'Invoice'}
 
 	{if $MODULE eq 'SalesOrder'}
@@ -261,6 +262,7 @@
 		<a href="javascript: document.DetailView.return_module.value='{$MODULE}'; document.DetailView.return_action.value='DetailView'; document.DetailView.module.value='{$MODULE}'; document.DetailView.action.value='SendPDFMail'; document.DetailView.record.value='{$ID}'; document.DetailView.return_id.value='{$ID}'; sendpdf_submit();" class="webMnu">{$APP.LBL_SEND_EMAIL_PDF}</a> 
 	</td>
    </tr>
+{/if}
 {/if}
 <!-- Above if condition is added to avoid the Tools section in Products and Vendors -->
 
