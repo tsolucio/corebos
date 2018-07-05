@@ -35,10 +35,9 @@ class VTFieldExpressionEvaluater {
 			'time_diff' => '__vt_time_diff',
 			'time_diffdays' => '__vt_time_diffdays',
 			'time_diffweekdays' => '__cb_getWeekdayDifference',
+			'aggregate_time' => '__cb_aggregate_time',
 			'add_days' => '__vt_add_days',
 			'sub_days' => '__vt_sub_days',
-			'add_months' => '__vt_add_months',
-			'sub_months' => '__vt_sub_months',
 			'get_date' => '__vt_get_date',
 			'get_nextdate' => '__cb_next_date',
 			'get_nextdatelaborable' => '__cb_next_dateLaborable',
@@ -60,7 +59,6 @@ class VTFieldExpressionEvaluater {
 			'ceil' => '__vt_ceil',
 			'floor' => '__vt_floor',
 			'modulo' => '__cb_modulo',
-			'hash' => '__cb_hash',
 			'aggregation' => '__cb_aggregation',
 			'aggregation_fields_operation' => '__cb_aggregation_operation',
 			'getimageurl' => '__cbwf_getimageurl',
@@ -99,6 +97,7 @@ class VTFieldExpressionEvaluater {
 			'__cb_aggregation',
 			'__cb_aggregation_operation',
 			'__cbwf_getimageurl',
+			'__cb_aggregate_time',
 		);
 		$wfexpfuncs = $adb->query('select expname,funcname,rawparams,needscontext from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {
