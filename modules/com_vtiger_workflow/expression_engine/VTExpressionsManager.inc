@@ -75,6 +75,7 @@ class VTExpressionsManager {
 			'time_diffweekdays(a)' => 'time_diffweekdays(a)',
 			'time_diff(a,b)' => 'time_diff(a,b)',
 			'time_diff(a)' => 'time_diff(a)',
+			'aggregate_time' => 'aggregate_time(relatedModuleName, relatedModuleField, conditions)',
 			'add_days' => 'add_days(datefield, noofdays)',
 			'sub_days' => 'sub_days(datefield, noofdays)',
 			'add_months' => 'add_months(datefield, noofmonths)',
