@@ -115,7 +115,15 @@ class cbMap extends CRMEntity {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
 		}
-	}
+		$cbmapid = $this->id;
+                //if content exists
+                if (!empty($this->column_fields['content'])){
+                    $xml = simplexml_load_string($this->column_fields['content']);
+                    $json = json_encode($xml);
+                    global $adb;
+                    $adb->pquery('update vtiger_cbmap set contentjson=? where cbmapid=?', array($json, $cbmapid));
+                }
+            }
 
 	/**
 	 * Invoked when special actions are performed on the module.
