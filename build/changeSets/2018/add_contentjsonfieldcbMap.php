@@ -25,7 +25,7 @@ class createcontentjsonfield extends cbupdaterWorker {
 		} else {
 			$modname = 'cbMap';
 			$module = Vtiger_Module::getInstance($modname);
-			$block = Vtiger_Block::getInstance('LBL_CBMAP_INFORMATION', $module);
+			$block = Vtiger_Block::getInstance('LBL_MAP_INFORMATION', $module);
 			$field = Vtiger_Field::getInstance('contentjson', $module);
 			if ($field) {
 				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?', array($field->id));
