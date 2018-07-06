@@ -112,17 +112,15 @@ class cbMap extends CRMEntity {
 	public $mandatory_fields = array('createdtime', 'modifiedtime', 'mapname');
 
 	public function save_module($module) {
-            if ($this->HasDirectImageField) {
+		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
-            }
-            $this->id;
-            //if content exists
-            if (!empty($this->column_fields['content'])) {
-                $xml = simplexml_load_string($this->column_fields['content']);
-                $json = json_encode($xml);
-                global $adb;
-                $adb->pquery('update vtiger_cbmap set contentjson=? where cbmapid=?', array($json, $this->id));
-            }
+		}
+		if (!empty($this->column_fields['content'])) {
+			$xml = simplexml_load_string($this->column_fields['content']);
+			$json = json_encode($xml);
+			global $adb;
+			$adb->pquery('update vtiger_cbmap set contentjson=? where cbmapid=?', array($json, $this->id));
+		}
 	}
 
 	/**
