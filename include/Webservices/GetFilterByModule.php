@@ -14,17 +14,15 @@
 *************************************************************************************************/
 
 function getfiltersbymodule($module, $user) {
-	global $log,$adb,$default_language;
-	$log->debug("Entering function vtws_getfiltersbymodule");
+	global $log;
+	$log->debug('Entering function vtws_getfiltersbymodule');
 
-	include_once("modules/$module/$module.php");
-	$focus = new $module();
-
+	$focus = CRMEntity::getInstance($module);
 	$linkfields=array($focus->list_link_field);
 
 	$customView = new CustomView($module);
 	$viewid = $customView->getViewId($module);
-	$customview_html = getCustomViewCombo($viewid,$module,$customView);
+	$customview_html = cbws_getCustomViewCombo($viewid, $module, $customView);
 	//getAdvFilterByCvid
 
 	return array(
@@ -38,11 +36,11 @@ function getfiltersbymodule($module, $user) {
  * $viewid will make the corresponding selected
  * @returns  $customviewCombo :: Type String
  */
-function getCustomViewCombo($viewid = '',$module,$customView, $markselected = true) {
-	global $adb, $current_user, $log, $app_strings;
+function cbws_getCustomViewCombo($viewid, $module, $customView, $markselected = true) {
+	global $adb, $current_user, $app_strings;
 	$tabid = getTabid($module);
 	$_REQUEST['action'] = '';
-	require('user_privileges/user_privileges_' . $current_user->id . '.php');
+	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
 
 	$shtml_user = '';
 	$shtml_pending = '';
@@ -50,19 +48,27 @@ function getCustomViewCombo($viewid = '',$module,$customView, $markselected = tr
 	$shtml_others = '';
 
 	$selected = 'selected';
-	if ($markselected == false)
+	if ($markselected == false) {
 		$selected = '';
+	}
 
-	$ssql = "select vtiger_customview.*, vtiger_users.first_name,vtiger_users.last_name from vtiger_customview inner join vtiger_tab on vtiger_tab.name = vtiger_customview.entitytype
-				left join vtiger_users on vtiger_customview.userid = vtiger_users.id ";
-	$ssql .= " where vtiger_tab.tabid=?";
+	$ssql = 'select vtiger_customview.*, vtiger_users.first_name,vtiger_users.last_name
+		from vtiger_customview
+		inner join vtiger_tab on vtiger_tab.name = vtiger_customview.entitytype
+		left join vtiger_users on vtiger_customview.userid = vtiger_users.id ';
+	$ssql .= ' where vtiger_tab.tabid=?';
 	$sparams = array($tabid);
 
 	if ($is_admin == false) {
-		$ssql .= " and (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status = 3 or vtiger_customview.userid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '" . $current_user_parent_role_seq . "::%'))";
+		$ssql .= " and (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status = 3 or vtiger_customview.userid in (
+			select vtiger_user2role.userid
+			from vtiger_user2role
+			inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
+			inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
+			where vtiger_role.parentrole like '" . $current_user_parent_role_seq . "::%'))";
 		$sparams[] = $current_user->id;
 	}
-	$ssql .= " ORDER BY viewname";
+	$ssql .= ' ORDER BY viewname';
 	$result = $adb->pquery($ssql, $sparams);
 	while ($cvrow = $adb->fetch_array($result)) {
 		if ($cvrow['viewname'] == 'All') {
@@ -75,35 +81,34 @@ function getCustomViewCombo($viewid = '',$module,$customView, $markselected = tr
 			$disp_viewname = $viewname;
 		} else {
 			$userName = getFullNameFromArray('Users', $cvrow);
-			$disp_viewname = $viewname . " [" . $userName . "] ";
+			$disp_viewname = $viewname . ' [' . $userName . '] ';
 		}
 
 		//$advft_criteria = json_encode($customView->getAdvFilterByCvid($cvrow['cvid']));
 		$advft_criteria = $customView->getAdvFilterByCvid($cvrow['cvid']);
 		$advft = array();
 		$groupnum = 1;
-		foreach ($advft_criteria as $groupid => $groupinfo) {
+		foreach ($advft_criteria as $groupinfo) {
 			if ($groupnum==1) {
-				$groupcolumns = $groupinfo["columns"];
-				$groupcondition = $groupinfo["condition"];
-				$advfiltergroupsql = "";
+				$groupcolumns = $groupinfo['columns'];
 				foreach ($groupcolumns as $columnindex => $columninfo) {
 					$columnname = $columninfo['columnname'];
 					$comparator = $columninfo['comparator'];
 					$value = $columninfo['value'];
 					$columncondition = $columninfo['column_condition'];
-	
+
 					$columns = explode(":", $columnname);
 					$name = $columns[1];
 
 					$advft[$columnindex]['columname'] = $name;
 					$advft[$columnindex]['comparator'] = $comparator;
-					if ($value == 'yes')
+					if ($value == 'yes') {
 						$advft[$columnindex]['value'] = 1;
-					else if ($value == 'no')
+					} elseif ($value == 'no') {
 						$advft[$columnindex]['value'] = 0;
-					else
+					} else {
 						$advft[$columnindex]['value'] = $value;
+					}
 					$advft[$columnindex]['column_condition'] = $columncondition;
 				}
 				$groupnum++;
@@ -111,8 +116,8 @@ function getCustomViewCombo($viewid = '',$module,$customView, $markselected = tr
 		}
 		$advft_criteria = json_encode($advft);
 
-		if ($advft_criteria != '' && $advft_criteria != null && $advft_criteria != '[]' ) {
-			$option = "<option value='".$advft_criteria."'>" . $disp_viewname . "</option>";
+		if ($advft_criteria != '' && $advft_criteria != null && $advft_criteria != '[]') {
+			$option = "<option value='".$advft_criteria."'>" . $disp_viewname . '</option>';
 		}
 		// Add the option to combo box at appropriate section
 		if ($option != '') {
@@ -132,5 +137,4 @@ function getCustomViewCombo($viewid = '',$module,$customView, $markselected = tr
 	$shtml = $shtml . $shtml_public . $shtml_others;
 	return $shtml;
 }
-
 ?>
