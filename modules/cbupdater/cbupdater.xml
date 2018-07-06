@@ -1265,7 +1265,7 @@
 </changeSet>
 <changeSet>
        <author>etlevabiba</author>
-       <description>Create contentjson field on cbMap Module  </description>
+       <description>Create contentjson field for cbMap Module </description>
        <filename>build/changeSets/2018/add_contentjsonfieldcbMap.php</filename>
        <classname>createcontentjsonfield</classname>
        <systemupdate>true</systemupdate>
