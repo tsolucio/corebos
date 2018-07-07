@@ -24,7 +24,6 @@ function send_message($id, $message, $progress, $processed, $total) {
 	flush();
 }
 $params = json_decode(vtlib_purify($_REQUEST['params']), true);
-
 global $currentModule, $rstart;
 $nonSupportedMassEdit = array('Emails');
 
@@ -42,6 +41,7 @@ if (isset($params['start']) && $params['start']!='') {
 }
 $exists = executefunctionsvalidate('ValidationExists', $currentModule);
 if (isset($idlist)) {
+	$_REQUEST['action'] = 'MassEditSave';
 	$recordids = explode(';', $idlist);
 	$recordcount = count($recordids)-1;
 	$id = 1;
