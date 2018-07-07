@@ -186,7 +186,7 @@ class addFinancialFields extends cbupdaterWorker {
 					$field1->typeofdata = 'NN~O';
 					$field1->displaytype = 2;
 					$field1->presence = 0;
-					$block->addField($field1); 
+					$block->addField($field1);
 				}
 				$field1 = new Vtiger_Field();
 				$field1->name = 'sum_taxtotal';
@@ -213,12 +213,16 @@ class addFinancialFields extends cbupdaterWorker {
 					INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = {$mod['table']}.{$mod['id']}
 					WHERE deleted = 0");
 				$this->sendMsg('Updating Financial fields for '.$mod['name']);
+				$haction = $_REQUEST['action'];
+				$_REQUEST['action'] = 'Save';
+				unset($_REQUEST['ajxaction']);
 				while ($ent=$adb->fetch_array($entities)) {
 					$id = $ent[$mod['id']];
 					$entity = new VTWorkflowEntity($adminUser, $invModWSID.'x'.$id);
 					$entity->moduleName = $mod['name'];
 					setVAT($entity);
 				}
+				$_REQUEST['action'] = $haction;
 			}
 			$util->revertUser();
 			$ffields = array(

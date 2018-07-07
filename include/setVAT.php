@@ -26,6 +26,9 @@ function setVAT($entity) {
 	} else {
 		list($mod,$entid) = explode('x', $entity);
 	}
+	if (!in_array($mod, getInventoryModules()) || !inventoryCanSaveProductLines($_REQUEST, $mod)) {
+		return true;
+	}
 	$modules = array(
 		'Invoice' => array(
 			'table' => 'vtiger_invoice',
