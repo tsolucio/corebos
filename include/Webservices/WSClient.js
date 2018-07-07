@@ -217,7 +217,7 @@ var Vtiger_WSClient = function(url) {
 				usethis.__performCallback(callback, result);
 			}
 		});
-	}
+	};
 
 	/**
 	 * Do Query Operation.
@@ -258,7 +258,7 @@ var Vtiger_WSClient = function(url) {
 		var columns = [];
 		if(result != null && result.length != 0) {
 			var firstrecord = result[0];
-			for(key in firstrecord) {
+			for(var key in firstrecord) {
 				columns.push(key);
 			}
 		}
@@ -442,7 +442,7 @@ var Vtiger_WSClient = function(url) {
 			'operation' : method,
 			'sessionName' : this._sessionid,
 		};
-		for(key in params) {
+		for(var key in params) {
 			if(typeof(sendata[key]) == 'undefined') {
 				sendata[key] = params[key];
 			}
@@ -531,7 +531,7 @@ var Vtiger_WSClient = function(url) {
  * Return significant message on toString.
  */
 Vtiger_WSClient.prototype.toString = function(){
-	return "[coreBOS_WSClient]";
+	return '[coreBOS_WSClient]';
 };
 
 /*******************************************************************************

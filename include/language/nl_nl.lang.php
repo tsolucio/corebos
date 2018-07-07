@@ -801,6 +801,7 @@ $app_strings = array(
 	'DUPLICATE_MAPPING_POTENTIAL' => 'Dubbele mapping voor Verkoopkansen!!',
 	'ERROR_WHILE_EDITING' => 'Foutmelding tijdens bewerken',
 	'PLEASE_ENTER_TAG' => 'Gaarne een tag ingeven',
+	'PLEASE_SELECT_LINE_ITEM' => 'Please select a line item',
 	'PLEASE_SELECT_PRODUCT' => 'a.u.b. een Product weergeven',
 	'DUPLICATE_ENTRIES_FOUND' => ' Dubbele gegevens gevonden voor waarde \\\'',
 	'ROLE_SHOULDHAVE_INFO' => 'Een rol moet minstens een profiel hebben',
