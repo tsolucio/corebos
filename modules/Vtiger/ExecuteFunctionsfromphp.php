@@ -37,8 +37,8 @@ function executefunctionsvalidate($functiontocall, $module, $structure = null) {
 		case 'ValidationLoad':
 			$valmod = vtlib_purify($module);
 			include_once 'modules/cbMap/processmap/Validations.php';
+			$_REQUEST['structure'] = $structure;
 			if (Validations::ValidationsExist($valmod)) {
-				$_REQUEST['structure'] = $structure;
 				$validation = Validations::processAllValidationsFor($valmod);
 				if ($validation!==true) {
 					return Validations::formatValidationErrors($validation, $valmod);
