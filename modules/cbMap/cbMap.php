@@ -191,6 +191,14 @@ class cbMap extends CRMEntity {
 	 */
 	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 
+	public function retrieve_entity_info($cbmapid, $mname, $deleted = false) {
+		global $current_user;
+		$holduser = $current_user;
+		$current_user = Users::getActiveAdminUser();
+		parent::retrieve_entity_info($cbmapid, $mname, $deleted);
+		$current_user = $holduser;
+	}
+
 	public function __call($name, $arguments) {
 		require_once 'modules/cbMap/processmap/'.$name.'.php';
 		$processmap = new $name($this);
