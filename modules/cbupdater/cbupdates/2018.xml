@@ -77,4 +77,11 @@
 	<classname>webservicecreatedocumentfolder</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Surveys: install 4 survey modules from coreBOSCRM</description>
+	<filename>build/changeSets/2018/installcbsurveymodules.php</filename>
+	<classname>installcbsurveymodules</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
