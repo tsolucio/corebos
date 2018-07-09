@@ -28,18 +28,20 @@ class inactiveTaxesInInventoryDetails extends cbupdaterWorker {
 			$mod = Vtiger_Module::getInstance('InventoryDetails');
 			$block = Vtiger_Block::getInstance('InventoryDetailsTaxBlock', $mod);
 
-			$r = $adb->pquery('SELECT * FROM vtiger_inventorytaxinfo WHERE deleted=?', array(1));
+			$r = $adb->pquery('SELECT * FROM vtiger_inventorytaxinfo');
 			while ($tax=$adb->fetch_array($r)) {
-				$field = new Vtiger_Field();
-				$field->label = $tax['taxlabel'];
-				$field->name = 'id_tax' . $tax['taxid'] . '_perc';
-				$field->column = 'id_tax' . $tax['taxid'] . '_perc';
-				$field->columntype = 'DECIMAL(7,3)';
-				$field->uitype = 9;
-				$field->typeofdata = 'N~O';
-				$field->presence = 1;
-				$block->addField($field);
-				$adb->query('ALTER TABLE vtiger_inventorydetails CHANGE id_tax'.$tax['taxid'].'_perc id_tax'.$tax['taxid']."_perc DECIMAL(7,3) NOT NULL DEFAULT '0'");
+				$field = Vtiger_Field::getInstance('id_tax' . $tax['taxid'] . '_perc', $mod);
+				if (!$field) {
+					$field = new Vtiger_Field();
+					$field->label = $tax['taxlabel'];
+					$field->name = 'id_tax' . $tax['taxid'] . '_perc';
+					$field->column = 'id_tax' . $tax['taxid'] . '_perc';
+					$field->columntype = 'DECIMAL(7,3)';
+					$field->uitype = 9;
+					$field->typeofdata = 'N~O';
+					$field->presence = 1;
+					$block->addField($field);
+				}
 			}
 
 			$this->markApplied();
@@ -52,14 +54,7 @@ class inactiveTaxesInInventoryDetails extends cbupdaterWorker {
 			$this->sendError();
 		}
 		if ($this->isApplied()) {
-			global $adb;
-			require_once('vtlib/Vtiger/Module.php');
 
-			$mod = Vtiger_Module::getInstance('InventoryDetails');
-			$block = Vtiger_Block::getInstance('InventoryDetailsTaxBlock', $mod);
-			$block->delete(true);
-
-			$this->markUndone(false);
 		} else {
 			$this->sendMsg('Changeset '.get_class($this).' not applied, it cannot be undone!');
 		}
