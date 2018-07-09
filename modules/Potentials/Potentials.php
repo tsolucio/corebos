@@ -125,7 +125,9 @@ class Potentials extends CRMEntity {
 		if ($this->mode=='edit' && !empty($this->sales_stage) && $this->sales_stage != $this->column_fields['sales_stage'] && $this->column_fields['sales_stage'] != '') {
 			$date_var = date("Y-m-d H:i:s");
 			$closingDateField = new DateTimeField($this->column_fields['closingdate']);
-			$closingdate = (isset($_REQUEST['ajxaction']) && $_REQUEST['ajxaction'] == 'DETAILVIEW') ? $this->column_fields['closingdate'] : $closingDateField->getDBInsertDateValue();
+			$closingdate = (isset($_REQUEST['ajxaction']) && $_REQUEST['ajxaction'] == 'DETAILVIEW' && !empty($this->column_fields['closingdate'])) ?
+				$this->column_fields['closingdate'] :
+				$closingDateField->getDBInsertDateValue();
 			$sql = 'insert into vtiger_potstagehistory (potentialid, amount, stage, probability, expectedrevenue, closedate, lastmodified) values (?,?,?,?,?,?,?)';
 			$params = array(
 				$this->id,
