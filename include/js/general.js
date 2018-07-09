@@ -1074,7 +1074,7 @@ function run_massedit(){
 		//a message is received
 		worker.postMessage(sentForm);
 		worker.addEventListener('message', function(e) {
-			var message = event.data;
+			var message = e.data;
 			if (e.data == 'CLOSE') {
 				__addLog('<br><b>' + alert_arr.ProcessFINISHED + '!</b>');
 				var pBar = document.getElementById('progressor');
