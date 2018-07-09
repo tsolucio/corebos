@@ -59,6 +59,7 @@ if (isset($idlist)) {
 			foreach ($focus->column_fields as $fieldname => $val) {
 				$fldname = $fieldname.'_mass_edit_check';
 				if (isset($params[$fldname])) {
+					$_REQUEST[$fldname] = 'on';
 					if ($fieldname == 'assigned_user_id') {
 						if ($params['assigntype'] == 'U') {
 							$value = vtlib_purify($params['assigned_user_id']);
