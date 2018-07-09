@@ -14,4 +14,11 @@
 	<classname>inventoryDetailsTaxBlockDValue</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
+<changeSet>
+	<author>MajorLabel</author>
+	<description>Also installs fields for inactive taxes</description>
+	<filename>build/changeSets/2018/inactiveTaxesInInventoryDetails.php</filename>
+	<classname>inactiveTaxesInInventoryDetails</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>
