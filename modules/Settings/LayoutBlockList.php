@@ -709,7 +709,7 @@ function updateFieldProperties() {
 		$fieldtype[1] = 'O';
 	}
 	$datatype = implode('~', $fieldtype);
-	$maxseq = '';
+	$maxseq = 0;
 	if ($oldquickcreate != 3) {
 		if (($quickcreate_checked == 'true' || $quickcreate_checked == '' )) {
 			$qcdata = 2;
