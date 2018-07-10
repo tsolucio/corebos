@@ -24,7 +24,7 @@ class inactiveTaxesInInventoryDetails extends cbupdaterWorker {
 		} else {
 			global $adb;
 
-			require_once('vtlib/Vtiger/Module.php');
+			require_once 'vtlib/Vtiger/Module.php';
 			$mod = Vtiger_Module::getInstance('InventoryDetails');
 			$block = Vtiger_Block::getInstance('InventoryDetailsTaxBlock', $mod);
 
@@ -43,20 +43,7 @@ class inactiveTaxesInInventoryDetails extends cbupdaterWorker {
 					$block->addField($field);
 				}
 			}
-
 			$this->markApplied();
-		}
-		$this->finishExecution();
-	}
-
-	public function undoChange() {
-		if ($this->hasError()) {
-			$this->sendError();
-		}
-		if ($this->isApplied()) {
-
-		} else {
-			$this->sendMsg('Changeset '.get_class($this).' not applied, it cannot be undone!');
 		}
 		$this->finishExecution();
 	}
