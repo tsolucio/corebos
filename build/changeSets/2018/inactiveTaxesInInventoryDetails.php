@@ -28,7 +28,7 @@ class inactiveTaxesInInventoryDetails extends cbupdaterWorker {
 			$mod = Vtiger_Module::getInstance('InventoryDetails');
 			$block = Vtiger_Block::getInstance('InventoryDetailsTaxBlock', $mod);
 
-			$r = $adb->pquery('SELECT * FROM vtiger_inventorytaxinfo');
+			$r = $adb->query('SELECT * FROM vtiger_inventorytaxinfo');
 			while ($tax=$adb->fetch_array($r)) {
 				$field = Vtiger_Field::getInstance('id_tax' . $tax['taxid'] . '_perc', $mod);
 				if (!$field) {
