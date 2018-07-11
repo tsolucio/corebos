@@ -1161,6 +1161,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'When Report_HeaderOnPDF is active, the name of the report will appear as the header in the PDF file.',
 ),
+'RelatedList_Activity_DefaultStatusFilter' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Any valid Activity Status',
+	'definition' => 'Initial Activity filter on Related List. Default is "all".',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php', GLOB_BRACE) as $tcode) {

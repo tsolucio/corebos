@@ -86,6 +86,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Permit_Assign_Up',
 				'Application_Permit_Assign_SameRole',
 
+				'RelatedList_Activity_DefaultStatusFilter',
+
 				'Calendar_Modules_Panel_Visible',
 				'Calendar_Default_Reminder_Minutes',
 				'Calendar_Slot_Minutes',

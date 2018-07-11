@@ -2367,9 +2367,12 @@ class CRMEntity {
 				'Ajax&file=DetailViewAjax&record='.$id.'&ajxaction=LOADRELATEDLIST&header=Activities&relation_id='.$relid.
 				'&cbcalendar_filter=\'+this.options[this.options.selectedIndex].value+\'&actions=add&parenttab=Support\',\'tbl_'.$currentModule.'_Activities\',\''.
 				$currentModule.'_Activities\');"><option value="all">'.getTranslatedString('LBL_ALL').'</option>';
+			if (!isset($_REQUEST['cbcalendar_filter'])) {
+				$_REQUEST['cbcalendar_filter'] = GlobalVariable::getVariable('RelatedList_Activity_DefaultStatusFilter', 'all', $currentModule);
+			}
 			foreach ($calStatus as $cstatkey => $cstatvalue) {
 				$button .= '<option value="'.$cstatkey.'" '.
-					((isset($_REQUEST['cbcalendar_filter']) && $_REQUEST['cbcalendar_filter']==$cstatkey) ? 'selected' : '').'>'.$cstatvalue.'</option>';
+					($_REQUEST['cbcalendar_filter']==$cstatkey ? 'selected' : '').'>'.$cstatvalue.'</option>';
 			}
 			$button .= '</select>&nbsp;';
 			if ($actions) {
@@ -2428,7 +2431,7 @@ class CRMEntity {
 				$query .= " WHERE vtiger_crmentity.deleted = 0 AND $this->table_name.$this->table_index = $id";
 			}
 			$query .= " AND vtiger_activity.activitytype != 'Emails'";
-			if (isset($_REQUEST['cbcalendar_filter']) && $_REQUEST['cbcalendar_filter'] != 'all') {
+			if ($_REQUEST['cbcalendar_filter'] != 'all') {
 				$query .= $adb->convert2Sql(' and vtiger_activity.eventstatus=? ', array(vtlib_purify($_REQUEST['cbcalendar_filter'])));
 			}
 			$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
