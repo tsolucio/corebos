@@ -156,5 +156,20 @@ $mod_strings = array(
 'Quote No'=>'Offerte Nr',
 'SINGLE_Quotes'=>'Offerte',
 'Add Service Contract'=>'Voeg Servicecontract toe',
+
+'LBL_Quotes_FINANCIALINFO' => 'Financiële informatie',
+'Gross Total' => 'Bruto totaal',
+'Total Discount' => 'Totale korting',
+'Net Total (aGD)' => 'Netto totaal na korting',
+'Net Total (bGD)' => 'Netto totaal voor korting',
+'Total Tax' => 'Totaal aan belastingen',
+'SH Total' => 'Totaal aan servicekosten',
+'SH Tax' => 'Belasting over servicekosten',
+'Final Adjustment' => 'Eindbijstelling',
+'Line Discount' => 'Regelkortingen',
+'Global Discount' => 'Totaalkorting',
+'Net Total' => 'Netto totaal voor korting',
+'VAT' => 'BTW',
+'Grand Total' => 'Eindtotaal',
 );
 ?>
