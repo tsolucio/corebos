@@ -966,14 +966,13 @@ class QueryGenerator {
 					if ($fieldName == 'birthday' && !$this->isRelativeSearchOperators($conditionInfo['operator'])) {
 						$fieldSql .= "$fieldGlue DATE_FORMAT(".$field->getTableName().'.'.$field->getColumnName().",'%m%d') ".$valueSql;
 					} else {
-                                            if($field->getUIType() == 15 || $field->getUIType() == 16){
-                                                $fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' IN (select translation_key from vtiger_cbtranslation where locale="'.$current_user->language.'" and forfield="'.$field->getColumnName().'" and i18n '.$valueSql.')'
-                                                        . ' OR '.$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
-                                            }
-                                            else {
-						$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
-                                            }
-                                        }
+						if ($field->getUIType() == 15 || $field->getUIType() == 16) {
+							$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' IN (select translation_key from vtiger_cbtranslation where locale="'.$current_user->language.'" and forfield="'.$field->getColumnName().'" and i18n '.$valueSql.')'
+									. ' OR '.$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
+						} else {
+							$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
+						}
+					}
 				}
 				if ($conditionInfo['operator'] == 'n' || $conditionInfo['operator'] == 'k' || $conditionInfo['operator'] == 'dnsw') {
 					$fieldGlue = ' AND';
