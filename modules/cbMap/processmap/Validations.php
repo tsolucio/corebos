@@ -245,7 +245,7 @@ class Validations extends processcbMap {
 			foreach ($v->validations->validation as $val) {
 				$retval = array();
 				$retval['rule'] = (String)$val->rule;
-				if (empty($rule)) {
+				if (empty($retval['rule'])) {
 					continue;
 				}
 				$rst = array();
