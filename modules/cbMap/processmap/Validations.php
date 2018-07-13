@@ -131,10 +131,12 @@ class Validations extends processcbMap {
 			$fl = $adb->pquery('select fieldlabel from vtiger_field where tabid=? and columnname=?', array($tabid,$valfield));
 			$fieldlabel = $adb->query_result($fl, 0, 0);
 			$i18n = getTranslatedString($fieldlabel, $mapping['origin']);
-			foreach ($vals as $rule => $restrictions) {
+			foreach ($vals as $val) {
 				if (isset($screen_values['action']) && $screen_values['action']=='MassEditSave' && empty($screen_values[$valfield.'_mass_edit_check'])) {
 					continue; // we are not saving this field in mass edit save so we don't have to check it
 				}
+				$rule = $val['rule'];
+				$restrictions = $val['rst'];
 				switch ($rule) {
 					case 'required':
 					case 'accepted':
@@ -241,7 +243,8 @@ class Validations extends processcbMap {
 			}
 			$allvals=array();
 			foreach ($v->validations->validation as $val) {
-				$rule = (String)$val->rule;
+				$retval = array();
+				$retval['rule'] = (String)$val->rule;
 				if (empty($rule)) {
 					continue;
 				}
@@ -251,7 +254,8 @@ class Validations extends processcbMap {
 						$rst[]=(String)$rv;
 					}
 				}
-				$allvals[$rule]=$rst;
+				$retval['rst'] = $rst;
+				$allvals[]=$retval;
 			}
 			$val_fields[$fieldname] = $allvals;
 		}
