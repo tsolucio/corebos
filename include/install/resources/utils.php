@@ -388,8 +388,10 @@ class Migration_Utils {
 		require_once 'vtlib/Vtiger/Module.php';
 		require_once 'vtlib/Vtiger/Version.php';
 
-		$customModulesResult = $adb->pquery('SELECT tabid, name FROM vtiger_tab WHERE customized=1 AND
-											name NOT IN ('. generateQuestionMarks($skipModules).')', $skipModules);
+		$customModulesResult = $adb->pquery(
+			'SELECT tabid, name FROM vtiger_tab WHERE customized=1 AND name NOT IN ('.generateQuestionMarks($skipModules).')',
+			$skipModules
+		);
 		$noOfCustomModules = $adb->num_rows($customModulesResult);
 		$customModules = array();
 		for ($i=0; $i<$noOfCustomModules; ++$i) {
