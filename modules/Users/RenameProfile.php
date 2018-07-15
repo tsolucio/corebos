@@ -7,19 +7,16 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
-require_once('include/database/PearDatabase.php');
+require_once 'include/database/PearDatabase.php';
 global $adb;
 
 $profileid = vtlib_purify($_REQUEST['profileid']);
-if($default_charset == 'UTF-8') {	
+if ($default_charset == 'UTF-8') {
 	$profilename = vtlib_purify($_REQUEST['profilename']);
 	$profileDesc = vtlib_purify($_REQUEST['description']);
 } else {
 	$profilename = utf8RawUrlDecode($_REQUEST['profilename']);
 	$profileDesc = utf8RawUrlDecode($_REQUEST['description']);
 }
-$query="UPDATE vtiger_profile set profilename=?, description=? where profileid=?";
-$adb->pquery($query, array($profilename, $profileDesc, $profileid));
-
+$adb->pquery('UPDATE vtiger_profile set profilename=?, description=? where profileid=?', array($profilename, $profileDesc, $profileid));
 ?>
