@@ -7,64 +7,57 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/utils/utils.php');
+require_once 'include/utils/utils.php';
 global $mod_strings, $app_strings, $theme;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 
 $smarty = new vtigerCRM_Smarty;
 $defSharingPermissionData = getDefaultSharingEditAction();
 
 $row=1;
-$entries = Array();
-foreach($defSharingPermissionData as $tab_id => $def_perr)
-{
+$entries = array();
+foreach ($defSharingPermissionData as $tab_id => $def_perr) {
 		$entity_name = getTabname($tab_id);
-		if($tab_id == 6)
-		{
-			$cont_name = getTabname(4);
-			$entity_name .= ' & '.$cont_name;
-		}
+	if ($tab_id == 6) {
+		$cont_name = getTabname(4);
+		$entity_name .= ' & '.$cont_name;
+	}
 		$defActionArr=getModuleSharingActionArray($tab_id);
 
 		$entries[] = $entity_name;
 
-		if($tab_id != 6)
-		{
-			$output = '<select class="detailedViewTextBox" id="'.$tab_id.'_perm_combo" name="'.$tab_id.'_per">';
-		}
-		else
-		{
-			$output = '<select class="detailedViewTextBox" id="'.$tab_id.'_perm_combo" name="'.$tab_id.'_per" onchange="checkAccessPermission(this.value)">';
-		}
+	if ($tab_id != 6) {
+		$output = '<select class="detailedViewTextBox" id="'.$tab_id.'_perm_combo" name="'.$tab_id.'_per">';
+	} else {
+		$output = '<select class="detailedViewTextBox" id="'.$tab_id.'_perm_combo" name="'.$tab_id.'_per" onchange="checkAccessPermission(this.value)">';
+	}
 		$entries[] = $tab_id;
 
-		foreach($defActionArr as $shareActId=>$shareActName)
-		{
-			$selected='';
-			if($shareActId == $def_perr)
-			{
-				$selected='selected';
-			}
-			$output .= '<option value="'.$shareActId.'" '.$selected. '>'.$mod_strings[$shareActName].'</option>';
+	foreach ($defActionArr as $shareActId => $shareActName) {
+		$selected='';
+		if ($shareActId == $def_perr) {
+			$selected='selected';
 		}
+		$output .= '<option value="'.$shareActId.'" '.$selected. '>'.$mod_strings[$shareActName].'</option>';
+	}
 
 		$output .= '</select>';
 		$entries[] = $output;
 		$row++;
 }
-$list_entries=array_chunk($entries,3);
-usort($list_entries, function($a,$b) {
+$list_entries=array_chunk($entries, 3);
+usort($list_entries, function ($a, $b) {
 	$moda=($a[0]=='Accounts & Contacts' ? 'Accounts' : $a[0]);
 	$modb=($b[0]=='Accounts & Contacts' ? 'Accounts' : $b[0]);
-	return (strtolower(getTranslatedString($moda,$moda)) < strtolower(getTranslatedString($modb,$modb))) ? -1 : 1;
+	return (strtolower(getTranslatedString($moda, $moda)) < strtolower(getTranslatedString($modb, $modb))) ? -1 : 1;
 });
-$smarty->assign("ORGINFO",$list_entries);
-$smarty->assign("MOD", return_module_language($current_language,'Settings'));
-$smarty->assign("THEME", $theme);
-$smarty->assign("IMAGE_PATH",$image_path);
-$smarty->assign("APP", $app_strings);
-$smarty->assign("CMOD", $mod_strings);
+$smarty->assign('ORGINFO', $list_entries);
+$smarty->assign('MOD', return_module_language($current_language, 'Settings'));
+$smarty->assign('THEME', $theme);
+$smarty->assign('IMAGE_PATH', $image_path);
+$smarty->assign('APP', $app_strings);
+$smarty->assign('CMOD', $mod_strings);
 
-$smarty->display("OrgSharingEditView.tpl");
+$smarty->display('OrgSharingEditView.tpl');
 ?>

@@ -286,5 +286,4 @@ if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
 } else {
 	$smarty->display('ListView.tpl');
 }
-
 ?>
