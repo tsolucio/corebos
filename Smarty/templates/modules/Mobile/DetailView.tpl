@@ -165,6 +165,7 @@
 		{if $_MODULE->name() eq "HelpDesk" && 'Timecontrol'|vtlib_isModuleActive}
 		<a href="?_operation=create&module=Timecontrol&record=''&relatedto={$_RECORD->id()}&returnto={$_RECORD->id()}" class="ui-btn ui-btn-right ui-corner-all ui-icon-clock ui-btn-icon-notext" rel="external" data-transition="slideup" data-iconpos="right">{$MOD.LBL_NEW}</a>
 		{/if}
+		<a style="right: 20%" href="?_operation=create&module=Documents&record=''&relations={$_RECORD->id()}&returnto={$_RECORD->id()}" class="ui-btn ui-btn-right ui-corner-all ui-icon-camera ui-btn-icon-notext" rel="external" data-transition="slideup" data-iconpos="right">{$MOD.LBL_NEW}</a>
 	</div>
 	{include file="modules/Mobile/PanelMenu.tpl"}
 </div>
