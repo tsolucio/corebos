@@ -26,7 +26,7 @@
 <body>
 <div data-role="page" data-theme="b" >
 	<div data-role="header" data-theme="{$COLOR_HEADER_FOOTER}"  data-position="fixed">
-		<a href="#"  onclick="window.history.back()" class="ui-btn ui-btn-left ui-corner-all ui-icon-back ui-btn-icon-notext">{$MOD.LBL_CANCEL}</a>
+		<a href="index.php?_operation=fetchRecord&record={$RECORDID}" class="ui-btn ui-btn-left ui-corner-all ui-icon-back ui-btn-icon-notext" rel="external">{$MOD.LBL_CANCEL}</a>
 		<h4>{$MOD.LBL_RELATED_LIST}</h4>
 		<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
 	</div>
