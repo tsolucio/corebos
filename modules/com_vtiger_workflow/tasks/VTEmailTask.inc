@@ -144,7 +144,6 @@ class VTEmailTask extends VTTask {
 		$ct = new VTSimpleTemplate($this->content);
 		$content = $ct->render($entityCache, $entity->getId());
 		$logo = (strpos($this->content, '(general : (__VtigerMeta__) logo)')===false) ? '' : '1';
-		$rdo = send_mail($module, $to_email, $from_name, $from_email, $subject, $content, $cc, $bcc, $this->attachmentsinfo, '', $logo, $replyto);
 		$element['saved_toid'] = $to_email;
 		$element['parent_type'] = $module;
 		$element['parent_id'] = $entity->getId();
@@ -153,7 +152,8 @@ class VTEmailTask extends VTTask {
 		$element['bccmail'] = $bcc;
 		$element['subject'] = $subject;
 		$element['description'] = $content;
-		$this->createEmailRecord($element);
+		$emailid = $this->createEmailRecord($element);
+		$rdo = send_mail($module, $to_email, $from_name, $from_email, $subject, $content, $cc, $bcc, $this->attachmentsinfo, $emailid, $logo, $replyto);
 		$logbg->debug("VTEmailTask\nTo: $to_email\nFromName: $from_name\nFromEmail: $from_email\nCC: $cc\nBCC: $bcc\nResult: $rdo");
 		$util->revertUser();
 	}
@@ -189,7 +189,9 @@ class VTEmailTask extends VTTask {
 					$adb->pquery($insrel, array($id, $adb->query_result($docrs, 0, 'attachmentsid')));
 				}
 			}
+			return $result['id'];
 		}
+		return '';
 	}
 }
 ?>

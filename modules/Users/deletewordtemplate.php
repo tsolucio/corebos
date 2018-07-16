@@ -10,10 +10,9 @@
 $idlist = vtlib_purify($_REQUEST['idlist']);
 $id_array=explode(';', $idlist);
 
-for($i=0; $i < count($id_array)-1; $i++) {
-	$sql = "delete from vtiger_wordtemplates where templateid=?";
+$sql = 'delete from vtiger_wordtemplates where templateid=?';
+for ($i=0; $i < count($id_array)-1; $i++) {
 	$adb->pquery($sql, array($id_array[$i]));
 }
-header("Location:index.php?module=Users&action=listwordtemplates&parenttab=Settings");
-
+header('Location:index.php?module=Users&action=listwordtemplates&parenttab=Settings');
 ?>

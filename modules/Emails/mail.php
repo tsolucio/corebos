@@ -20,7 +20,7 @@ require_once 'include/utils/CommonUtils.php';
   *   $cc			-- add email ids with comma seperated. - optional
   *   $bcc			-- add email ids with comma seperated. - optional.
   *   $attachment	-- whether we want to attach the currently selected file or all files.[values = current,all] - optional
-  *   $emailid		-- id of the email object which will be used to get the vtiger_attachments
+  *   $emailid		-- id of the email object which will be used to get the attachments
   */
 function send_mail($module, $to_email, $from_name, $from_email, $subject, $contents, $cc = '', $bcc = '', $attachment = '', $emailid = '', $logo = '', $replyto = '') {
 	global $adb;

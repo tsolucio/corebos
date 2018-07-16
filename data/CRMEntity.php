@@ -894,8 +894,8 @@ class CRMEntity {
 
 		//Here we check if user can see this record.
 		if (isPermitted($module, 'DetailView', $record) != 'yes') {
-			$this->column_fields["record_id"] = $record;
-			$this->column_fields["record_module"] = $module;
+			$this->column_fields['record_id'] = $record;
+			$this->column_fields['record_module'] = $module;
 			return;
 		}
 
@@ -913,7 +913,7 @@ class CRMEntity {
 			if ($adb->query_result($result[$this->table_name], 0, $mod_index_col) == '') {
 				echo $preFmt . $app_strings['LBL_RECORD_NOT_FOUND'] . ". <a href='javascript:window.history.back()'>" . $i8nGoBack . $postFmt;
 				if (GlobalVariable::getVariable('Debug_Record_Not_Found', false)) {
-					echo $preFmt . "Looking for " . $this->table_name . '.' . $mod_index_col . ' in <br>' . print_r($result[$this->table_name]->sql, true) . '</center>';
+					echo $preFmt . 'Looking for ' . $this->table_name . '.' . $mod_index_col . ' in <br>' . print_r($result[$this->table_name]->sql, true) . '</center>';
 					echo '<pre>';
 					debug_print_backtrace();
 					echo '</pre>';

@@ -20,7 +20,16 @@ class crmtogo_UI_ProcessRecordCreation  extends crmtogo_WS_SaveRecord {
 		}
 		$wsResponseResult = $wsResponse->getResult();
 		$recordid = $wsResponseResult['record']['id'];
-		header("Location:index.php?_operation=fetchRecord&record=$recordid");
+		if (isset($_REQUEST['returnto']) && isset($_REQUEST['returntomodule'])) {
+			$return_id  = $_REQUEST['returnto'];
+			$returntomodule  = $_REQUEST['returntomodule'];
+			header("Location:index.php?_operation=getrelatedlists&module=$returntomodule&record=$return_id");
+		} elseif (isset($_REQUEST['returnto'])) {
+			$return_id  = $_REQUEST['returnto'];
+			header("Location:index.php?_operation=fetchRecord&record=$return_id");
+		} else {
+			header("Location:index.php?_operation=fetchRecord&record=$recordid");
+		}
 		exit;
 	}
 }
