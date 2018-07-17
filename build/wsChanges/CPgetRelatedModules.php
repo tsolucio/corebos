@@ -1,6 +1,6 @@
 <?php
 /*********************************************************************************
- * Copyright 2012-2014 JPL TSolucio, S.L.  --  This file is a part of coreBOSCP.
+ * Copyright 2012-2018 JPL TSolucio, S.L.  --  This file is a part of coreBOSCP.
  * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
  * Vizsage Public License (the "License"). You may not use this file except in compliance with the
  * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
