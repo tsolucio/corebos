@@ -53,6 +53,12 @@ class CBDeleteRelatedTask extends VTTask {
 		$query = $queryGenerator->getQuery();
 		$updquery = 'UPDATE vtiger_crmentity set deleted=1 where crmid=?';
 		$relrecs = $adb->query($query);
+
+		// Checking related records
+		include_once 'include/Webservices/GetRelatedRecords.php';
+		$deletequery = __getRLQuery($webserviceObject->getEntityId(), $module, $relatedModule, $query->getWhereFields(), $current_user);
+		$adb->pquery(deletequery);
+
 		for ($relrec=0; $relrec<$adb->num_rows($relrecs); $relrec++) {
 			// direct delete to avoid relaunching workflows > I am not sure this is correct (!)
 			$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
