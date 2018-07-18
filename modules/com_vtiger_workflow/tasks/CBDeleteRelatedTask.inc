@@ -58,10 +58,12 @@ class CBDeleteRelatedTask extends VTTask {
 		$moduleId = getTabid($moule);
 		$relatedModuleId = getTabid($relatedModule);
 
-		$result = $adb->pquery("select name from vtiger_relatedlists where tabid = ? and related_tabid = ? and relation_type = 'N:N'", array($moduleId, $relatedModuleId));
-		if($result && count($adb->num_rows($result)) > 0){
+		$sql = "select name from vtiger_relatedlists where tabid = ? and related_tabid = ? and relation_type = 'N:N'";
+		$result = $adb->pquery($sql, array($moduleId, $relatedModuleId));
+
+		if ($result && count($adb->num_rows($result)) > 0) {
 			$relation_result_row = $adb->fetch_array($result);
-			switch($relation_result_row['name']){
+			switch ($relation_result_row['name']) {
 				case "get_related_lists":
 					$adb->pquery("delete from vtiger_crmentityrel where crmid = ? and relmodule = ?", array($masterRecord, $relatedModule));
 					break;
@@ -78,11 +80,11 @@ class CBDeleteRelatedTask extends VTTask {
 				// To do.
 					break;
 			}
-		}
-
-		for ($relrec=0; $relrec<$adb->num_rows($relrecs); $relrec++) {
-			// direct delete to avoid relaunching workflows > I am not sure this is correct (!)
-			$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
+		} else {
+			for ($relrec=0; $relrec<$adb->num_rows($relrecs); $relrec++) {
+				// direct delete to avoid relaunching workflows > I am not sure this is correct (!)
+				$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
+			}
 		}
 	}
 }
