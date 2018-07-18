@@ -12,11 +12,6 @@
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  ************************************************************************************/
-require_once 'include/database/PearDatabase.php';
-require_once 'include/ComboUtil.php';
-require_once 'include/utils/CommonUtils.php';
-require_once 'vtlib/Vtiger/Language.php';
-require_once 'modules/PickList/PickListUtils.php';
 
 function getRelatedModulesInfomation($module, $user) {
 	global $log, $adb;
@@ -39,11 +34,7 @@ function getRelatedModulesInfomation($module, $user) {
 			if (!in_array($relModuleName, $types['types'])) {
 				continue;
 			}
-			if ($is_admin || $profileTabsPermission[$rel_tab_id] == 0) {
-				if ($is_admin || $profileActionPermission[$rel_tab_id][3] == 0) {
-					$focus_list[$label] = array('related_tabid' => $rel_tab_id, 'label'=> $label, 'labeli18n' =>getTranslatedString($label, $relModuleName), 'actions' => $actions, 'relationId' => $relationId);
-				}
-			}
+			$focus_list[$label] = array('related_tabid' => $rel_tab_id, 'label'=> $label, 'labeli18n' =>getTranslatedString($label, $relModuleName), 'actions' => $actions, 'relationId' => $relationId);
 		} else {
 			$focus_list[$label] = array('related_tabid' => $rel_tab_id, 'label'=> $label, 'labeli18n' =>getTranslatedString($label, $module), 'actions' => $actions, 'relationId' => $relationId);
 		}
