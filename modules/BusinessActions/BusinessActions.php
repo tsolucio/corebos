@@ -131,7 +131,6 @@ class BusinessActions extends CRMEntity {
 	 */
 	public function vtlib_handler($modulename, $event_type) {
 		if ($event_type == 'module.postinstall') {
-			if ($event_type == 'module.postinstall') {
 			// TODO Handle post installation actions
 			$this->setModuleSeqNumber('configure', $modulename, $modulename.'bact-', '0000001');
 		} elseif ($event_type == 'module.disabled') {
