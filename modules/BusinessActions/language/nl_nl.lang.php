@@ -9,6 +9,9 @@
  ************************************************************************************/
 
 $mod_strings = array(
+'BusinessActions' => 'Business Actions',
+'SINGLE_BusinessActions' => 'Business Actions',
+'BusinessActions ID' => 'Business Actions ID',
 'LBL_BUSINESSACTIONS_SETTINGS'=>'Business Actions Settings',
 'LBL_BUSINESSACTIONS_PERMISSIONS'=>'Business Actions Permissions',
 'LBL_BUSINESSACTIONS_ACTIONS'=>'Business Actions Actions',
@@ -29,9 +32,5 @@ $mod_strings = array(
 'mandatory'=>'Mandatory',
 'brmap'=>'Brmap',
 'businessactions_no'=>'Business Actions_No',
-'created_user_id'=>'Created By',
-'createdtime'=>'Created Time',
-'modifiedtime'=>'Modified Time',
-'description'=>'Description',
 );
 ?>

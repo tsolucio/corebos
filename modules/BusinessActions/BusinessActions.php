@@ -131,13 +131,9 @@ class BusinessActions extends CRMEntity {
 	 */
 	public function vtlib_handler($modulename, $event_type) {
 		if ($event_type == 'module.postinstall') {
+			if ($event_type == 'module.postinstall') {
 			// TODO Handle post installation actions
-			$modact=Vtiger_Module::getInstance('BusinessActions');
-			$modrel=Vtiger_Module::getInstance('Documents');
-			if ($modrel) {
-				$modrel->setRelatedList($modact, 'BusinessActions', array('ADD', 'SELECT'), 'get_attachments');
-			}
-			$this->setModuleSeqNumber('configure', $modulename, 'rsgo-', '0000001');
+			$this->setModuleSeqNumber('configure', $modulename, $modulename.'bact-', '0000001');
 		} elseif ($event_type == 'module.disabled') {
 			// TODO Handle actions when this module is disabled.
 		} elseif ($event_type == 'module.enabled') {
