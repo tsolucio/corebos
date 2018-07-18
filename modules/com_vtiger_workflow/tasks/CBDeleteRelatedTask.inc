@@ -54,10 +54,31 @@ class CBDeleteRelatedTask extends VTTask {
 		$updquery = 'UPDATE vtiger_crmentity set deleted=1 where crmid=?';
 		$relrecs = $adb->query($query);
 
-		// Checking related records
-		include_once 'include/Webservices/GetRelatedRecords.php';
-		$deletequery = __getRLQuery($webserviceObject->getEntityId(), $module, $relatedModule, $query->getWhereFields(), $current_user);
-		$adb->pquery(deletequery);
+		// Checking relation
+		$moduleId = getTabid($moule);
+		$relatedModuleId = getTabid($relatedModule);
+
+		$result = $adb->query("select * from vtiger_relatedlists where tabid = ".$moduleId." and related_tabid = ".$relatedModuleId." and relation_type = 'N:N'");
+		if($result && count($adb->num_rows($result)) > 0){
+			$relation_result_row = $adb->fetch_array($result);
+			switch($relation_result_row['name']){
+				case "get_related_lists":
+					$adb->query("delete from vtiger_crmentityrel where relmodule = ".$relatedModule."");
+					break;
+
+				case "get_attachments":
+					$adb->query("delete from vtiger_senotesrel where crmid = ".$relatedModuleId."");
+					break;
+
+				case "get_activities":
+					$adb->query("delete from vtiger_seactivityrel where activityid = ".$relatedModuleId."");
+					break;
+
+				default:
+				// To do.
+					break;
+			}
+		}
 
 		for ($relrec=0; $relrec<$adb->num_rows($relrecs); $relrec++) {
 			// direct delete to avoid relaunching workflows > I am not sure this is correct (!)
