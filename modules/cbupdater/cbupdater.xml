@@ -1270,4 +1270,11 @@
        <classname>createcontentjsonfield</classname>
        <systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+       <author>etlevabiba</author>
+       <description>Create a new vtlib module : BusinessActions Module </description>
+       <filename>build/changeSets/2018/create_modBusinessActions.php</filename>
+       <classname>modbusinessactions</classname>
+       <systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
