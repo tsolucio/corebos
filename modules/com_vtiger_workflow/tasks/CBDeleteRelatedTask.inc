@@ -58,20 +58,20 @@ class CBDeleteRelatedTask extends VTTask {
 		$moduleId = getTabid($moule);
 		$relatedModuleId = getTabid($relatedModule);
 
-		$result = $adb->query("select * from vtiger_relatedlists where tabid = ".$moduleId." and related_tabid = ".$relatedModuleId." and relation_type = 'N:N'");
+		$result = $adb->pquery("select name from vtiger_relatedlists where tabid = ? and related_tabid = ? and relation_type = 'N:N'", array($moduleId, $relatedModuleId));
 		if($result && count($adb->num_rows($result)) > 0){
 			$relation_result_row = $adb->fetch_array($result);
 			switch($relation_result_row['name']){
 				case "get_related_lists":
-					$adb->query("delete from vtiger_crmentityrel where relmodule = ".$relatedModule."");
+					$adb->pquery("delete from vtiger_crmentityrel where crmid = ? and relmodule = ?", array($masterRecord, $relatedModule));
 					break;
 
 				case "get_attachments":
-					$adb->query("delete from vtiger_senotesrel where crmid = ".$relatedModuleId."");
+					$adb->pquery("delete from vtiger_senotesrel where crmid = ?", array($masterRecord));
 					break;
 
 				case "get_activities":
-					$adb->query("delete from vtiger_seactivityrel where activityid = ".$relatedModuleId."");
+					$adb->pquery("delete from vtiger_seactivityrel where crmid = ?", array($masterRecord));
 					break;
 
 				default:
