@@ -35,30 +35,12 @@ class CBDeleteRelatedTask extends VTTask {
 	public static function deleteRelatedRecords($masterRecord, $relatedModule) {
 		global $adb,$log,$current_user;
 		$module = getSalesEntityType($masterRecord);
-		$webserviceObject = VtigerWebserviceObject::fromName($adb, $relatedModule);
-		$handlerClass = $webserviceObject->getHandlerClass();
-		$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
-		$meta = $handler->getMeta();
-		$refflds = $meta->getReferenceFieldDetails();
-		$reffield = '';
-		foreach ($refflds as $reffld => $refmods) {
-			if (in_array($module, $refmods)) {
-				$reffield = $reffld;
-				break;
-			}
-		}
-		$queryGenerator = new QueryGenerator($relatedModule, $current_user);
-		$queryGenerator->setFields(array('id'));
-		$queryGenerator->addReferenceModuleFieldCondition($module, $reffield, 'id', $masterRecord, 'e');
-		$query = $queryGenerator->getQuery();
-		$updquery = 'UPDATE vtiger_crmentity set deleted=1 where crmid=?';
-		$relrecs = $adb->query($query);
-
+		
 		// Checking relation
-		$moduleId = getTabid($moule);
+		$moduleId = getTabid($module);
 		$relatedModuleId = getTabid($relatedModule);
 
-		$sql = "select name from vtiger_relatedlists where tabid = ? and related_tabid = ? and relation_type = 'N:N'";
+		$sql = "select name from vtiger_relatedlists where tabid = ? and related_tabid = ? and relationtype = 'N:N'";
 		$result = $adb->pquery($sql, array($moduleId, $relatedModuleId));
 
 		if ($result && count($adb->num_rows($result)) > 0) {
@@ -81,6 +63,25 @@ class CBDeleteRelatedTask extends VTTask {
 					break;
 			}
 		} else {
+			$webserviceObject = VtigerWebserviceObject::fromName($adb, $relatedModule);
+			$handlerClass = $webserviceObject->getHandlerClass();
+			$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
+			$meta = $handler->getMeta();
+			$refflds = $meta->getReferenceFieldDetails();
+			$reffield = '';
+			foreach ($refflds as $reffld => $refmods) {
+				if (in_array($module, $refmods)) {
+					$reffield = $reffld;
+					break;
+				}
+			}
+			$queryGenerator = new QueryGenerator($relatedModule, $current_user);
+			$queryGenerator->setFields(array('id'));
+			$queryGenerator->addReferenceModuleFieldCondition($module, $reffield, 'id', $masterRecord, 'e');
+			$query = $queryGenerator->getQuery();
+			$updquery = 'UPDATE vtiger_crmentity set deleted=1 where crmid=?';
+			$relrecs = $adb->query($query);
+
 			for ($relrec=0; $relrec<$adb->num_rows($relrecs); $relrec++) {
 				// direct delete to avoid relaunching workflows > I am not sure this is correct (!)
 				$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
