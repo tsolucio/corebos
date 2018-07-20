@@ -2153,6 +2153,12 @@ class CRMEntity {
 		$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN $userNameSql ELSE vtiger_groups.groupname END AS user_name";
 
 		$more_relation = '';
+		// Select Custom Field Table Columns if present
+		if (isset($other->customFieldTable)) {
+			$query .= ', '.$other->customFieldTable[0].'.*';
+			$more_relation .= " INNER JOIN ".$other->customFieldTable[0]." ON ".$other->customFieldTable[0].'.'.$other->customFieldTable[1] .
+				" = $other->table_name.$other->table_index";
+		}
 		if (!empty($other->related_tables)) {
 			foreach ($other->related_tables as $tname => $relmap) {
 				$query .= ", $tname.*";
