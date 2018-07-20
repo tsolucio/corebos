@@ -180,5 +180,6 @@ $mod_strings = array(
 'DIVISIBLE_WARNING' => 'kan alleen in veelvouden van een verkocht worden',
 'DIVISIBLE_WARNING_PURCHASE' => 'kan alleen in veelvouden van een ingekocht worden',
 'Cost Price' => 'Kostprijs',
+'IS_DISCONTINUED' => 'is niet langer actief',
 );
 ?>
