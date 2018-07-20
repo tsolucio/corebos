@@ -15,12 +15,12 @@
 
 // Get List of Custom Filters for a given module
 $operationInfo = array(
-	 'name'    => 'getfiltersbymodule',
-	 'include' => 'include/Webservices/GetFilterByModule.php',
-	 'handler' => 'getfiltersbymodule',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array(
-	 	array('name' => 'module','type' => 'string'),
-	 )
+	'name'    => 'getfiltersbymodule',
+	'include' => 'include/Webservices/GetFilterByModule.php',
+	'handler' => 'getfiltersbymodule',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array(
+		array('name' => 'module','type' => 'string'),
+	)
 );
