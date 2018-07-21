@@ -21,8 +21,7 @@ function getRelatedModulesInfomation($module, $user) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
 	}
 	$cur_tab_id = getTabid($module);
-	$sql1 = "select * from vtiger_relatedlists where tabid=?";
-	$result = $adb->pquery($sql1, array($cur_tab_id));
+	$result = $adb->pquery('select * from vtiger_relatedlists where tabid=?', array($cur_tab_id));
 	$num_row = $adb->num_rows($result);
 	for ($i = 0; $i < $num_row; $i++) {
 		$rel_tab_id = $adb->query_result($result, $i, 'related_tabid');
@@ -34,9 +33,23 @@ function getRelatedModulesInfomation($module, $user) {
 			if (!in_array($relModuleName, $types['types'])) {
 				continue;
 			}
-			$focus_list[$label] = array('related_tabid' => $rel_tab_id, 'label'=> $label, 'labeli18n' =>getTranslatedString($label, $relModuleName), 'actions' => $actions, 'relationId' => $relationId);
+			$focus_list[$label] = array(
+				'related_tabid' => $rel_tab_id,
+				'related_module' => $relModuleName,
+				'label'=> $label,
+				'labeli18n' =>getTranslatedString($label, $relModuleName),
+				'actions' => $actions,
+				'relationId' => $relationId
+			);
 		} else {
-			$focus_list[$label] = array('related_tabid' => $rel_tab_id, 'label'=> $label, 'labeli18n' =>getTranslatedString($label, $module), 'actions' => $actions, 'relationId' => $relationId);
+			$focus_list[$label] = array(
+				'related_tabid' => $rel_tab_id,
+				'related_module' => '',
+				'label'=> $label,
+				'labeli18n' =>getTranslatedString($label, $module),
+				'actions' => $actions,
+				'relationId' => $relationId
+			);
 		}
 	}
 	return $focus_list;
