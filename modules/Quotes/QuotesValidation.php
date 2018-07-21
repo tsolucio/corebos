@@ -24,26 +24,32 @@ foreach ($screen_values as $sv_name => $sv) {
 		$qty_i = 'qty'.$i;
 		$name_i = 'productName'.$i;
 		$type_i = 'lineItemType'.$i;
+		$deleted_i = 'deleted'.$i;
 		$products[$i]['crmid'] = $sv;
 		$products[$i]['qty'] = $screen_values[$qty_i];
 		$products[$i]['name'] = $screen_values[$name_i];
 		$products[$i]['type'] = $screen_values[$type_i];
+		$products[$i]['deleted'] = $screen_values[$deleted_i];
 	}
 }
 
 foreach ($products as $product) {
 	if ($product['type'] == 'Products') {
-		$q = $adb->pquery("SELECT divisible FROM vtiger_products WHERE productid = ?", array($product['crmid']));
+		$q = $adb->pquery('SELECT divisible, discontinued FROM vtiger_products WHERE productid = ?', array($product['crmid']));
 	} else {
 		// Was a service
-		$q = $adb->pquery("SELECT divisible FROM vtiger_service WHERE serviceid = ?", array($product['crmid']));
+		$q = $adb->pquery('SELECT divisible, discontinued FROM vtiger_service WHERE serviceid = ?', array($product['crmid']));
 	}
 	if ($adb->query_result($q, 0, 'divisible') === '0') {
 		$divisible = false;
 	} else {
 		$divisible = true;
 	}
-	if (!$divisible && floatval($product['qty']) != intval($product['qty'])) {
+	if ((int)$adb->query_result($q, 0, 'discontinued') !== 1 && (int)$product['deleted'] === 0) {
+		$message = $product['name'].' '.getTranslatedString('IS_DISCONTINUED', 'Products');
+		break;
+	}
+	if (!$divisible && (float)$product['qty'] != (int)$product['qty']) {
 		$message = $product['name'].' '.getTranslatedString('DIVISIBLE_WARNING', 'Products');
 		break;
 	}
