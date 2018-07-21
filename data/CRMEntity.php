@@ -2154,7 +2154,7 @@ class CRMEntity {
 
 		$more_relation = '';
 		// Select Custom Field Table Columns if present
-		if (isset($other->customFieldTable)) {
+		if (isset($other->customFieldTable) && empty($other->related_tables[$other->customFieldTable[0]])) {
 			$query .= ', '.$other->customFieldTable[0].'.*';
 			$more_relation .= " INNER JOIN ".$other->customFieldTable[0]." ON ".$other->customFieldTable[0].'.'.$other->customFieldTable[1] .
 				" = $other->table_name.$other->table_index";
@@ -2185,7 +2185,7 @@ class CRMEntity {
 		if (GlobalVariable::getVariable('Debug_RelatedList_Query', '0') == '1') {
 			echo '<br>'.$query.'<br>';
 		}
-
+		echo '<br>'.$query.'<br>';
 		$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
 
 		if ($return_value == null) {
