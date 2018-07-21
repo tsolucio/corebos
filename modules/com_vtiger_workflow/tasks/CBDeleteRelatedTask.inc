@@ -35,7 +35,7 @@ class CBDeleteRelatedTask extends VTTask {
 	public static function deleteRelatedRecords($masterRecord, $relatedModule) {
 		global $adb,$log,$current_user;
 		$module = getSalesEntityType($masterRecord);
-		
+
 		// Checking relation
 		$moduleId = getTabid($module);
 		$relatedModuleId = getTabid($relatedModule);
@@ -43,19 +43,22 @@ class CBDeleteRelatedTask extends VTTask {
 		$sql = "select name from vtiger_relatedlists where tabid = ? and related_tabid = ? and relationtype = 'N:N'";
 		$result = $adb->pquery($sql, array($moduleId, $relatedModuleId));
 
-		if ($result && count($adb->num_rows($result)) > 0) {
+		if ($result && $adb->num_rows($result) > 0) {
 			$relation_result_row = $adb->fetch_array($result);
 			switch ($relation_result_row['name']) {
-				case "get_related_lists":
-					$adb->pquery("delete from vtiger_crmentityrel where crmid = ? and relmodule = ?", array($masterRecord, $relatedModule));
+				case 'get_related_list':
+					$adb->pquery(
+						'delete from vtiger_crmentityrel where (crmid = ? and relmodule = ?) or (relcrmid = ? and module = ?)',
+						array($masterRecord, $relatedModule, $masterRecord, $relatedModule)
+					);
 					break;
 
-				case "get_attachments":
-					$adb->pquery("delete from vtiger_senotesrel where crmid = ?", array($masterRecord));
+				case 'get_attachments':
+					$adb->pquery('delete from vtiger_senotesrel where crmid = ?', array($masterRecord));
 					break;
 
-				case "get_activities":
-					$adb->pquery("delete from vtiger_seactivityrel where crmid = ?", array($masterRecord));
+				case 'get_activities':
+					$adb->pquery('delete from vtiger_seactivityrel where crmid = ?', array($masterRecord));
 					break;
 
 				default:
