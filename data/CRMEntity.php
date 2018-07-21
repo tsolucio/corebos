@@ -2185,7 +2185,7 @@ class CRMEntity {
 		if (GlobalVariable::getVariable('Debug_RelatedList_Query', '0') == '1') {
 			echo '<br>'.$query.'<br>';
 		}
-		echo '<br>'.$query.'<br>';
+
 		$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
 
 		if ($return_value == null) {
