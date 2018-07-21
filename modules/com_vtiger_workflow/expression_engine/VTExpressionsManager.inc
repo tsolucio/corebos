@@ -49,6 +49,9 @@ class VTExpressionsManager {
 			}
 		}
 		foreach ($referenceFieldInfoList as $mainfield => $relmodules) {
+			if (empty($reflabels[$mainfield])) {
+				continue;
+			}
 			$mainfieldi18n = getTranslatedCurrencyString($reflabels[$mainfield], $moduleName);
 			foreach ($relmodules as $relmodule) {
 				$relmodulei18n = getTranslatedCurrencyString($relmodule, $relmodule);
