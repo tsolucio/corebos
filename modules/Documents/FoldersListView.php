@@ -188,7 +188,6 @@ if ($foldercount > 0) {
 			$tablename = ($tablename != '' ? $tablename.'.' : '');
 			$query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
 			$list_query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
-			$focus->additional_query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
 		}
 		//Retreiving the no of rows
 		$count_result = $adb->query(mkCountQuery($query));

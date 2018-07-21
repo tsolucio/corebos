@@ -7,10 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/utils/utils.php');
+require_once 'include/utils/utils.php';
 
 global $app_strings, $mod_strings, $theme,$default_charset;
-$theme_path="themes/".$theme."/";
+$theme_path='themes/'.$theme.'/';
 $delete_group_id = vtlib_purify($_REQUEST['groupid']);
 $delete_group_name = fetchGroupName($delete_group_id);
 
@@ -22,7 +22,9 @@ $output = '<div id="DeleteLay" class="layerPopup" style="width:400px;">
 <table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
 <tr>
 	<td class=layerPopupHeading " align="left">'.$mod_strings['LBL_DELETE_GROUP'].'</td>
-	<td align="right" class="small"><img src="'. vtiger_imageurl('close.gif', $theme) .'" border=0 alt="'.$app_strings["LBL_CLOSE"].'" title="'.$app_strings["LBL_CLOSE"].'" style="cursor:pointer" onClick="document.getElementById(\'DeleteLay\').style.display=\'none\'";></td>
+	<td align="right" class="small">
+		<img src="'. vtiger_imageurl('close.gif', $theme) .'" border=0 alt="'.$app_strings["LBL_CLOSE"].'" title="'.$app_strings["LBL_CLOSE"].'" style="cursor:pointer" onClick="document.getElementById(\'DeleteLay\').style.display=\'none\'";>
+	</td>
 </tr>
 </table>
 <table border=0 cellspacing=0 cellpadding=5 width=95% align=center>
@@ -31,61 +33,51 @@ $output = '<div id="DeleteLay" class="layerPopup" style="width:400px;">
 	<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
 	<tr>
 		<td width="50%" class="cellLabel small"><b>'.$mod_strings['LBL_DELETE_GROUPNAME'].'</b></td>
-		<td width="50%" class="cellText small"><b>'.htmlentities($delete_group_name,ENT_QUOTES,$default_charset).'</b></td>
+		<td width="50%" class="cellText small"><b>'.htmlentities($delete_group_name, ENT_QUOTES, $default_charset).'</b></td>
 	</tr>
 	<tr>
 		<td align="left" class="cellLabel small" nowrap><b>'.$mod_strings['LBL_TRANSFER_GROUP'].'</b></td>
 		<td align="left" class="cellText small">';
 		global $adb;
-		$sql = "select groupid,groupname from vtiger_groups";
-		$result = $adb->pquery($sql, array());
+		$result = $adb->pquery('select groupid,groupname from vtiger_groups', array());
 		$num_groups = $adb->num_rows($result);
 
-		$sql1 = "select * from vtiger_users where deleted=0";
-		$result1= $adb->pquery($sql1, array());
+		$result1= $adb->pquery('select * from vtiger_users where deleted=0', array());
 		$num_users = $adb->num_rows($result1);
 
 		$output.= '<input name="assigntype" checked value="U" onclick="toggleAssignType(this.value)" type="radio">&nbsp;User';
-		if($num_groups > 1)
-		{
-			$output .= '<input name="assigntype"  value="T" onclick="toggleAssignType(this.value)" type="radio">&nbsp;Group';
+if ($num_groups > 1) {
+	$output .= '<input name="assigntype"  value="T" onclick="toggleAssignType(this.value)" type="radio">&nbsp;Group';
+}
+
+$output .= '<span id="assign_user" style="display: block;">';
+$output .= '<select class="small" name="transfer_user_id">';
+
+for ($i=0; $i<$num_users; $i++) {
+	$user_id=$adb->query_result($result1, $i, "id");
+	$output.='<option value="'.$user_id.'">'.  getFullNameFromQResult($result1, $i, 'Users').'</option>';
+}
+
+$output .='</select></span>';
+
+if ($num_groups > 1) {
+	$output .= '<span id="assign_team" style="display: none;">';
+
+	$output.='<select class="select" name="transfer_group_id">';
+
+	$temprow = $adb->fetch_array($result);
+	do {
+		$group_name= htmlentities($temprow['groupname'], ENT_QUOTES, $default_charset);
+		$group_id=$temprow['groupid'];
+		if ($delete_group_id 	!= $group_id) {
+			if (strlen($group_name)>20) {
+				$group_name=substr($group_name, 0, 20).'...';
+			}
+			$output.='<option value="'.$group_id.'">'.$group_name.'</option>';
 		}
-
-		$output .= '<span id="assign_user" style="display: block;">';
-
-		$output .= '<select class="small" name="transfer_user_id">';
-
-
-		for($i=0;$i<$num_users;$i++)
-		{
-			$user_id=$adb->query_result($result1,$i,"id");
-			$output.='<option value="'.$user_id.'">'.  getFullNameFromQResult($result1, $i, 'Users').'</option>';
-		}
-
-		$output .='</select></span>';
-
-		if($num_groups > 1)
-		{
-			$output .= '<span id="assign_team" style="display: none;">';
-
-			$output.='<select class="select" name="transfer_group_id">';
-
-			$temprow = $adb->fetch_array($result);
-			do
-			{
-				$group_name= htmlentities($temprow["groupname"],ENT_QUOTES,$default_charset);
-				$group_id=$temprow["groupid"];
-				if($delete_group_id 	!= $group_id)
-				{
-					if(strlen($group_name)>20)
-					{
-						$group_name=substr($group_name,0,20)."...";
-					}
-					$output.='<option value="'.$group_id.'">'.$group_name.'</option>';
-				}
-			}while($temprow = $adb->fetch_array($result));
-			$output.='</select></span>';
-		}
+	} while ($temprow = $adb->fetch_array($result));
+	$output.='</select></span>';
+}
 
 		$output.='</td>
 	</tr>
