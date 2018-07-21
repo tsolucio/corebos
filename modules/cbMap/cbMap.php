@@ -268,5 +268,13 @@ class cbMap extends CRMEntity {
 		}
 		return $ret;
 	}
+
+	public function getvtlib_open_popup_window_function($fieldname, $basemodule) {
+		if ($fieldname=='brmap' && $basemodule=='BusinessActions') {
+			return 'openBRMapInBA';
+		} else {
+			return 'vtlib_open_popup_window';
+		}
+	}
 }
 ?>

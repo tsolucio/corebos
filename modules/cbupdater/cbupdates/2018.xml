@@ -84,4 +84,11 @@
 	<classname>installcbsurveymodules</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Business Actions adjustments</description>
+	<filename>build/changeSets/2018/fixBAAddIndex.php</filename>
+	<classname>fixBAAddIndex</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

@@ -2,7 +2,7 @@
 <module>
   <name>BusinessActions</name>
   <label>BusinessActions</label>
-  <parent>Marketing</parent>
+  <parent>Tools</parent>
   <version>1.0</version>
   <short_description>BusinessActions module</short_description>
   <dependencies>
@@ -46,9 +46,13 @@
   `active` varchar(250) default NULL,
   `acrole` varchar(250) default NULL,
   `mandatory` varchar(250) default NULL,
-  `brmap` varchar(250) default NULL,
+  `brmap` int(11) default NULL,
   `businessactions_no` varchar(56) default NULL,
-  PRIMARY KEY (`businessactionsid`)
+  PRIMARY KEY (`businessactionsid`),
+  index (`elementtype_action`),
+  index (`module_list`),
+  index (`active`),
+  index (`acrole`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
     </table>
     <table>
@@ -172,7 +176,7 @@
           <selected>0</selected>
           <sequence>5</sequence>
           <maximumlength>25</maximumlength>
-          <typeofdata>N~O</typeofdata>
+          <typeofdata>N~O~3~0</typeofdata>
           <quickcreate>1</quickcreate>
           <quickcreatesequence>10</quickcreatesequence>
           <displaytype>1</displaytype>
@@ -384,6 +388,9 @@
           <info_type>BAS</info_type>
           <helpinfo><![CDATA[]]></helpinfo>
           <masseditable>1</masseditable>
+          <relatedmodules>
+          <relatedmodule>cbMap</relatedmodule>
+          </relatedmodules>
         </field>
       </fields>
     </block>

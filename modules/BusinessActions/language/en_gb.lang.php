@@ -10,12 +10,13 @@
 
 $mod_strings = array(
 'BusinessActions' => 'Business Actions',
-'SINGLE_BusinessActions' => 'Business Actions',
+'SINGLE_BusinessActions' => 'Business Action',
 'BusinessActions ID' => 'Business Actions ID',
-'LBL_BUSINESSACTIONS_SETTINGS'=>'Business Actions Settings',
-'LBL_BUSINESSACTIONS_PERMISSIONS'=>'Business Actions Permissions',
-'LBL_BUSINESSACTIONS_ACTIONS'=>'Business Actions Actions',
-'LBL_BUSINESSACTIONS_DESCRIPTION'=>'Business Actions Description',
+'LBL_BUSINESSACTIONS_SETTINGS'=>'Settings',
+'LBL_BUSINESSACTIONS_PERMISSIONS'=>'Permissions',
+'LBL_BUSINESSACTIONS_ACTIONS'=>'Action',
+'LBL_BUSINESSACTIONS_DESCRIPTION'=>'Description',
+'LBL_BUSINESSACTIONS_INFORMATION' => 'Information',
 'linktype'=>'Link Type',
 'linklabel'=>'Link Label',
 'linkurl'=>'Link Url',
@@ -31,6 +32,6 @@ $mod_strings = array(
 'acrole'=>'Acrole',
 'mandatory'=>'Mandatory',
 'brmap'=>'Brmap',
-'businessactions_no'=>'Business Actions_No',
+'businessactions_no'=>'Business Actions No',
 );
 ?>
