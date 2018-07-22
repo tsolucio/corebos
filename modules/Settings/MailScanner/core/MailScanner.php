@@ -307,7 +307,7 @@ class Vtiger_MailScanner {
 	 */
 	public function LookupUser($email, $checkWithId = false) {
 		global $adb;
-		if ($this->_cachedUserIds[$email]) {
+		if (isset($this->_cachedUserIds[$email])) {
 			$this->log("Reusing Cached User Id for email: $email");
 			return $this->_cachedUserIds[$email];
 		}
@@ -344,7 +344,7 @@ class Vtiger_MailScanner {
 		global $adb;
 		$empid = false;
 		if (vtlib_isModuleActive("cbEmployee")) {
-			if ($this->_cachedEmployeeIds[$email]) {
+			if (isset($this->_cachedEmployeeIds[$email])) {
 				$this->log("Reusing Cached Employee Id for email: $email");
 				return $this->_cachedEmployeeIds[$email];
 			}
