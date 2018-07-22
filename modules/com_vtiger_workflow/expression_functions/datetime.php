@@ -55,6 +55,29 @@ function __vt_time_diffdays($arr) {
 	return $days_diff;
 }
 
+function __cb_time_diffyears($arr) {
+	$time_operand1 = $time_operand2 = 0;
+	if (count($arr) > 1) {
+		$time_operand1 = $time1 = $arr[0];
+		$time_operand2 = $time2 = $arr[1];
+	} else {
+		$time_operand1 = date('Y-m-d H:i:s'); // Current time
+		$time_operand2 = $arr[0];
+	}
+
+	if (empty($time_operand1) || empty($time_operand2)) {
+		return 0;
+	}
+
+	$time_operand1 = getValidDBInsertDateTimeValue($time_operand1);
+	$time_operand2 = getValidDBInsertDateTimeValue($time_operand2);
+
+	$date1 = new DateTime($time_operand1);
+	$date2 = new DateTime($time_operand2);
+	$interval = $date2->diff($date1);
+	return $interval->y;
+}
+
 function __cb_getWeekdayDifference($arr) {
 	if (count($arr) > 1) {
 		$time_operand1 = $arr[0];

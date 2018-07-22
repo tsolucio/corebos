@@ -34,6 +34,7 @@ class VTFieldExpressionEvaluater {
 			'coalesce'=>'__cb_coalesce',
 			'time_diff' => '__vt_time_diff',
 			'time_diffdays' => '__vt_time_diffdays',
+			'time_diffyears' => '__cb_time_diffyears',
 			'time_diffweekdays' => '__cb_getWeekdayDifference',
 			'aggregate_time' => '__cb_aggregate_time',
 			'add_days' => '__vt_add_days',
