@@ -9,6 +9,7 @@
  ********************************************************************************/
 require_once 'modules/Settings/MailScanner/core/MailBox.php';
 require_once 'modules/Settings/MailScanner/core/MailAttachmentMIME.php';
+require_once 'modules/Users/Users.php';
 
 /**
  * Mail Scanner provides the ability to scan through the given mailbox
@@ -58,6 +59,11 @@ class Vtiger_MailScanner {
 	 * Start Scanning.
 	 */
 	public function performScanNow() {
+		global $current_user;
+		if (is_null($current_user)) {
+			$current_user = Users::getActiveAdminUser();
+		}
+
 		// Check if rules exists to proceed
 		$rules = $this->_scannerinfo->rules;
 
@@ -274,7 +280,6 @@ class Vtiger_MailScanner {
 	}
 
 	public function getEmployeeList($crmobj) {
-		require 'modules/Users/Users.php';
 		global $adb,$currentModule,$current_user;
 
 		if (is_null($current_user)) {
