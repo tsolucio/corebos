@@ -98,9 +98,12 @@ function handleCopyClipboard(event) {
 	if (globaluitype != 53) {
 		let temp = getObj(globaltxtboxid).value;
 		if (globaluitype == 56) {
-			temp = (temp ? alert_arr.YES : alert_arr.NO);
+			temp = (getObj(globaltxtboxid).checked ? alert_arr.YES : alert_arr.NO);
 		}
 		document.getElementById('clipcopylink').dataset.clipboardText = temp;
+	}else {
+		let assigne_value = getObj('hdtxt_assigned_user_id').value;
+		document.getElementById('clipcopylink').dataset.clipboardText = assigne_value;
 	}
 	//if (event) event.stopPropagation();
 	return false;
