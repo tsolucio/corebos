@@ -80,3 +80,5 @@
 <select id="relmodule" name="relmodule" style="display:none;">
 	<option value=''>{'LBL_SELECT_ENTITY_TYPE'|@getTranslatedString:'com_vtiger_workflow'}</option>
 </select>
+<br /><br />
+<input id="delrelrec" name="delrelrec" type="button" value="{'CBSelectcbMap'|@getTranslatedString:'com_vtiger_workflow'}" />
