@@ -15,12 +15,11 @@
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
 require_once 'Smarty_setup.php';
-require_once 'data/Tracker.php';
-require_once 'include/utils/utils.php';
-require_once 'vtigerversion.php';
-error_reporting(E_ALL);
-function get_loginpage($template, $language, $csrf) {
-	global $currentModule, $adb, $coreBOS_app_version, $current_language;
+
+function get_loginpage($template, $language, $csrf, $user) {
+	require 'vtigerversion.php';
+	require 'modules/Settings/configod.php';
+	global $currentModule, $adb, $current_language, $default_charset;
 	$image_path='include/images/';
 
 	$current_language = $language;
@@ -32,7 +31,6 @@ function get_loginpage($template, $language, $csrf) {
 	$smarty=new vtigerCRM_Smarty;
 	$smarty->assign('APP', $app_strings);
 	$smarty->assign('LBL_CHARSET', $default_charset);
-
 	$smarty->assign('IMAGE_PATH', $image_path);
 	$smarty->assign('VTIGER_VERSION', $coreBOS_app_version);
 
@@ -41,8 +39,7 @@ function get_loginpage($template, $language, $csrf) {
 	if (!in_array('faviconlogo', $cnorg)) {
 		$adb->query('ALTER TABLE `vtiger_organizationdetails` ADD `frontlogo` VARCHAR(150) NOT NULL, ADD `faviconlogo` VARCHAR(150) NOT NULL');
 	}
-	$sql="select * from vtiger_organizationdetails";
-	$result = $adb->pquery($sql, array());
+	$result = $adb->pquery('select * from vtiger_organizationdetails', array());
 	//Handle for allowed organation logo/logoname likes UTF-8 Character
 	$companyDetails = array();
 	$companyDetails['name'] = $adb->query_result($result, 0, 'organizationname');
@@ -60,9 +57,17 @@ function get_loginpage($template, $language, $csrf) {
 	$smarty->assign('LOGIN_ERROR', '');
 	$currentYear = date('Y');
 	$smarty->assign('currentYear', $currentYear);
-	$smarty->assign('LoginPage', $cbodLoginPage);
+	if (empty($template) || !file_exists('Smarty/templates/Login/'.$template.'.tpl')) {
+		$tpl2load = $cbodLoginPage;
+	} else {
+		$tpl2load = $template;
+	}
+	$smarty->assign('LoginPage', $tpl2load);
 	$smarty->assign('CAN_UNBLOCK', (empty($_SESSION['can_unblock']) ? 'false' : 'true'));
-	$template = $smarty->fetch('Login.tpl');
-	return $template;
+	if ($csrf=='1' || strtolower($csrf)=='true') {
+		//Initialise CSRFGuard library
+		include_once 'include/csrfmagic/csrf-magic.php';
+	}
+	return $smarty->fetch('Login.tpl');
 }
 ?>
