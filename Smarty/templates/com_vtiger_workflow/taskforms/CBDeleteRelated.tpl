@@ -20,6 +20,21 @@
 	var moduleName = '{$entityName}';
 	var selectedEntityType = '{if isset($task->relmodule)}{$task->relmodule}{/if}';
 {literal}
+	var searchConditions = [
+		{"groupid":"1",
+		 "columnname":"vtiger_cbmap:maptype:maptype:cbMap_Map_Type:V",
+		 "comparator":"e",
+		 "value":"Condition Expression",
+		 "columncondition":"or"},
+		{"groupid":"1",
+		 "columnname":"vtiger_cbmap:maptype:maptype:cbMap_Map_Type:V",
+		 "comparator":"e",
+		 "value":"Condition Query",
+		 "columncondition":""}
+	];
+	var advSearch = '&query=true&searchtype=advance&advft_criteria='+convertArrayOfJsonObjectsToString(searchConditions);
+	var SpecialSearch = encodeURI(advSearch);
+
 	var vtinst = new VtigerWebservices('webservice.php');
 	function errorDialog(message){
 		alert(message);
@@ -74,7 +89,6 @@
 		}));
 	});
 </script>
-var SpecialSearch = encodeURI(advSearch);
 {/literal}
 <h2>{'LBL_SELECT_MODULE'|@getTranslatedString:'Settings'}</h2>
 <span id="entity_type-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
