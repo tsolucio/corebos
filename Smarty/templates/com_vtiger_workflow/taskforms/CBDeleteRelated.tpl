@@ -74,6 +74,7 @@
 		}));
 	});
 </script>
+var SpecialSearch = encodeURI(advSearch);
 {/literal}
 <h2>{'LBL_SELECT_MODULE'|@getTranslatedString:'Settings'}</h2>
 <span id="entity_type-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
