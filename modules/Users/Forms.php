@@ -17,14 +17,13 @@
  * this function checks if the asterisk server details are set in the database or not
  * returns string "true" on success :: "false" on failure
  */
-function checkAsteriskDetails(){
-	global $adb,$current_user;
-	$sql = "select * from vtiger_asterisk";
-	$result = $adb->pquery($sql, array());
+function checkAsteriskDetails() {
+	global $adb;
+	$result = $adb->pquery('select * from vtiger_asterisk', array());
 	$count = $adb->num_rows($result);
-	if($count > 0){
+	if ($count > 0) {
 		return "true";
-	}else{
+	} else {
 		return "false";
 	}
 }
@@ -32,18 +31,18 @@ function checkAsteriskDetails(){
 /**
  * this function gets the asterisk extensions assigned
  */
-function getAsteriskExtensions(){
-	global $adb, $current_user;
+function getAsteriskExtensions() {
+	global $adb;
 	$sql = "SELECT * FROM vtiger_asteriskextensions
 		INNER JOIN vtiger_users ON vtiger_users.id = vtiger_asteriskextensions.userid
 		AND vtiger_users.deleted=0 AND status = 'Active'";
 	$result = $adb->pquery($sql, array());
 	$count = $adb->num_rows($result);
 	$data = array();
-	for($i=0;$i<$count;$i++){
-		$user = $adb->query_result($result, $i, "userid");
-		$extension = $adb->query_result($result, $i, "asterisk_extension");
-		if(!empty($extension)){
+	for ($i=0; $i<$count; $i++) {
+		$user = $adb->query_result($result, $i, 'userid');
+		$extension = $adb->query_result($result, $i, 'asterisk_extension');
+		if (!empty($extension)) {
 			$data[$user] = $extension;
 		}
 	}
@@ -53,35 +52,34 @@ function getAsteriskExtensions(){
 /**
  * Create javascript to validate the data entered into a record.
  */
-function get_validate_record_js () {
-global $mod_strings, $app_strings, $current_user;
+function get_validate_record_js() {
+	global $mod_strings, $app_strings;
 
-$lbl_last_name = $mod_strings['LBL_LIST_LAST_NAME'];
-$lbl_user_name = $mod_strings['LBL_LIST_USER_NAME'];
-$lbl_role_name = $mod_strings['LBL_ROLE_NAME'];
-$lbl_new_password = $mod_strings['LBL_LIST_PASSWORD'];
-$lbl_confirm_new_password = $mod_strings['LBL_LIST_CONFIRM_PASSWORD'];
-$lbl_user_email1 = $mod_strings['LBL_LIST_EMAIL'];
-$err_missing_required_fields = $app_strings['ERR_MISSING_REQUIRED_FIELDS'];
-$err_invalid_email_address = $app_strings['ERR_INVALID_EMAIL_ADDRESS'];
-$err_invalid_secondary_email_address = $app_strings['ERR_INVALID_SECONDARY_EMAIL_ADDRESS'];
-$lbl_user_image=$mod_strings['User Image'];
-$the_emailid = $app_strings['THE_EMAILID'];
-$email_field_is = $app_strings['EMAIL_FILED_IS'].$err_invalid_email_address;
-$other_email_field_is = $app_strings['OTHER_EMAIL_FILED_IS'].$err_invalid_email_address;
-$secondary_email_field_is = $app_strings['SECONDARY_EMAIL_FILED_IS'].$err_invalid_secondary_email_address;
-$lbl_asterisk_details_not_set = $app_strings['LBL_ASTERISK_SET_ERROR'];
-$lbl_currency_separators_incorrect = getTranslatedString('LBL_CURRENCY_SEPARATORS_INCORRECT','Users');
+	$lbl_last_name = $mod_strings['LBL_LIST_LAST_NAME'];
+	$lbl_user_name = $mod_strings['LBL_LIST_USER_NAME'];
+	$lbl_role_name = $mod_strings['LBL_ROLE_NAME'];
+	$lbl_new_password = $mod_strings['LBL_LIST_PASSWORD'];
+	$lbl_confirm_new_password = $mod_strings['LBL_LIST_CONFIRM_PASSWORD'];
+	$lbl_user_email1 = $mod_strings['LBL_LIST_EMAIL'];
+	$err_missing_required_fields = $app_strings['ERR_MISSING_REQUIRED_FIELDS'];
+	$err_invalid_email_address = $app_strings['ERR_INVALID_EMAIL_ADDRESS'];
+	$err_invalid_secondary_email_address = $app_strings['ERR_INVALID_SECONDARY_EMAIL_ADDRESS'];
+	$the_emailid = $app_strings['THE_EMAILID'];
+	$email_field_is = $app_strings['EMAIL_FILED_IS'].$err_invalid_email_address;
+	$other_email_field_is = $app_strings['OTHER_EMAIL_FILED_IS'].$err_invalid_email_address;
+	$secondary_email_field_is = $app_strings['SECONDARY_EMAIL_FILED_IS'].$err_invalid_secondary_email_address;
+	$lbl_asterisk_details_not_set = $app_strings['LBL_ASTERISK_SET_ERROR'];
+	$lbl_currency_separators_incorrect = getTranslatedString('LBL_CURRENCY_SEPARATORS_INCORRECT', 'Users');
 
 //check asteriskdetails start
-$checkAsteriskDetails = checkAsteriskDetails();
-$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : 'false'); // used to check the asterisk extension in edit mode
-$mode = (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true')?'true':'false';
-$extensions = getAsteriskExtensions();
-$extensions_list = json_encode($extensions);
+	$checkAsteriskDetails = checkAsteriskDetails();
+	$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : 'false'); // used to check the asterisk extension in edit mode
+	$mode = (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true')?'true':'false';
+	$extensions = getAsteriskExtensions();
+	$extensions_list = json_encode($extensions);
 //check asteriskdetails end
 
-$the_script = <<<EOQ
+	$the_script = <<<EOQ
 <script type="text/javascript">
 function set_fieldfocus(errorMessage,oMiss_field){
 	alert("$err_missing_required_fields" + errorMessage);
@@ -197,12 +195,8 @@ function verify_data(form) {
 		form.submit();
 	}
 }
-
 </script>
-
 EOQ;
-
-return $the_script;
+	return $the_script;
 }
-
 ?>

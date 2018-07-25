@@ -1105,28 +1105,28 @@ $GlobalVariableDefinitons = array(
 	'values' => 'ID o nombre de la plantilla a utilizar',
 	'definition' => 'Cuando la variable CustomerPortal_PDF se establece en PDFMaker o GenDoc, esta variable indica qué plantilla se debe utilizar para generar el PDF de ordenes de venta. Si está vacía, se utilizará la primera plantilla encontrada.',
 ),
-'CustomerPortal_PDFTemplate_Invoice'  => array(
+'CustomerPortal_PDFTemplate_Invoice' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Texto',
 	'category' => 'Integración',
 	'values' => 'ID o nombre de la plantilla a utilizar',
 	'definition' => 'Cuando la variable CustomerPortal_PDF se establece en PDFMaker o GenDoc, esta variable indica qué plantilla se debe utilizar para generar el PDF de facturas. Si está vacía, se utilizará la primera plantilla encontrada.',
 ),
-'CustomerPortal_PDFTemplate_PurchaseOrder'  => array(
+'CustomerPortal_PDFTemplate_PurchaseOrder' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Texto',
 	'category' => 'Integración',
 	'values' => 'ID o nombre de la plantilla a utilizar',
 	'definition' => 'Cuando la variable CustomerPortal_PDF se establece en PDFMaker o GenDoc, esta variable indica qué plantilla se debe utilizar para generar el PDF de ordenes de compra. Si está vacía, se utilizará la primera plantilla encontrada.',
 ),
-'Application_Permit_Assign_Up'  => array(
+'Application_Permit_Assign_Up' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'En módulos con privilegios de compartición privados, permite asignar el registro a cualquier usuario activo de la aplicación.',
 ),
-'Application_Permit_Assign_SameRole'  => array(
+'Application_Permit_Assign_SameRole' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
 	'category' => 'Aplicación',

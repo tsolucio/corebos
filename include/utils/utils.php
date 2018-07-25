@@ -134,7 +134,7 @@ function return_name(&$row, $first_column, $last_column) {
 		$full_name .= $last_name;
 	}
 
-	$log->debug("Exiting return_name method ...");
+	$log->debug('Exiting return_name method ...');
 	return $full_name;
 }
 
@@ -142,10 +142,8 @@ function return_name(&$row, $first_column, $last_column) {
   * @returns $languages -- languages:: Type string
 */
 function get_languages() {
-	global $log;
-	$log->debug("Entering get_languages() method ...");
-	global $languages;
-	$log->debug("Exiting get_languages method ...");
+	global $log, $languages;
+	$log->debug('Entering/Exiting get_languages() method ...');
 	return $languages;
 }
 
@@ -154,10 +152,8 @@ function get_languages() {
   * @returns $languages -- languages:: Type string
 */
 function get_language_display($key) {
-	global $log;
-	$log->debug("Entering get_language_display(".$key.") method ...");
-	global $languages;
-	$log->debug("Exiting get_language_display method ...");
+	global $log, $languages;
+	$log->debug('Entering/Exiting get_language_display('.$key.') method ...');
 	return $languages[$key];
 }
 
@@ -173,7 +169,6 @@ function get_assigned_user_name($assigned_user_id) {
 		$log->debug("Exiting get_assigned_user_name method ...");
 		return $user_list[$assigned_user_id];
 	}
-
 	$log->debug("Exiting get_assigned_user_name method ...");
 	return "";
 }
@@ -258,22 +253,21 @@ function get_user_array($add_blank = true, $status = "Active", $assigned_user = 
 }
 
 function get_group_array($add_blank = true, $status = "Active", $assigned_user = "", $private = "") {
-	global $log;
+	global $log, $current_user;
 	$log->debug("Entering get_group_array(".$add_blank.",". $status.",".$assigned_user.",".$private.") method ...");
-	global $current_user;
 	if (isset($current_user) && $current_user->id != '') {
 		require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
 		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 	}
 	static $group_array = null;
-	$module=$_REQUEST['module'];
+	$module=vtlib_purify($_REQUEST['module']);
 
 	if ($group_array == null) {
 		require_once 'include/database/PearDatabase.php';
 		$db = PearDatabase::getInstance();
 		$temp_result = array();
 		// Including deleted vtiger_users for now.
-		$log->debug('Sharing is Public. All vtiger_users should be listed');
+		$log->debug('Sharing is Public. All users should be listed');
 		$query = 'SELECT groupid, groupname from vtiger_groups';
 		$params = array();
 

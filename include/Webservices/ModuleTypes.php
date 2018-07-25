@@ -15,7 +15,7 @@ function vtws_listtypes($fieldTypeList, $user) {
 
 	static $types = array();
 	if (!empty($fieldTypeList)) {
-		$fieldTypeList = array_map(strtolower, $fieldTypeList);
+		$fieldTypeList = array_map('strtolower', $fieldTypeList);
 		sort($fieldTypeList);
 		$fieldTypeString = implode(',', $fieldTypeList);
 	} else {
@@ -26,9 +26,6 @@ function vtws_listtypes($fieldTypeList, $user) {
 	}
 	try {
 		global $log;
-		/**
-		 * @var PearDatabase
-		 */
 		$db = PearDatabase::getInstance();
 
 		vtws_preserveGlobal('current_user', $user);

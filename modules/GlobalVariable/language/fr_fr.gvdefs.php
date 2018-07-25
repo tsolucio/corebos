@@ -1105,28 +1105,28 @@ $GlobalVariableDefinitons = array(
 	'values' => 'ID or name of template to use',
 	'definition' => 'When the CustomerPortal_PDF variable is set to PDFMaker or GenDoc, this variable indicates which template should be used to generate Sales Order PDF. If it is empty the first template found will be used.',
 ),
-'CustomerPortal_PDFTemplate_Invoice'  => array(
+'CustomerPortal_PDFTemplate_Invoice' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
 	'category' => 'Integration',
 	'values' => 'ID or name of template to use',
 	'definition' => 'When the CustomerPortal_PDF variable is set to PDFMaker or GenDoc, this variable indicates which template should be used to generate Invoice PDF. If it is empty the first template found will be used.',
 ),
-'CustomerPortal_PDFTemplate_PurchaseOrder'  => array(
+'CustomerPortal_PDFTemplate_PurchaseOrder' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
 	'category' => 'Integration',
 	'values' => 'ID or name of template to use',
 	'definition' => 'When the CustomerPortal_PDF variable is set to PDFMaker or GenDoc, this variable indicates which template should be used to generate Purchase Order PDF. If it is empty the first template found will be used.',
 ),
-'Application_Permit_Assign_Up'  => array(
+'Application_Permit_Assign_Up' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'In modules with private sharing privileges, permit assigning the record to any active user in the application.',
 ),
-'Application_Permit_Assign_SameRole'  => array(
+'Application_Permit_Assign_SameRole' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
