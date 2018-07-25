@@ -1133,6 +1133,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'En módulos con privilegios de compartición privados, permite asignar el registro a cualquier usuario activo de la aplicación con el mismo rol que el usuario actual.',
 ),
+'Application_Permit_Assign_AllGroups' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'En módulos con privilegios de compartición privados, permite asignar el registro a cualquier grupo definido en la aplicación.',
+),
 'MailManager_Show_SentTo_Links' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',

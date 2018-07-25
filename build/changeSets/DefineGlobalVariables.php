@@ -85,6 +85,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_FirstTimeLogin_Template',
 				'Application_Permit_Assign_Up',
 				'Application_Permit_Assign_SameRole',
+				'Application_Permit_Assign_AllGroups',
 
 				'RelatedList_Activity_DefaultStatusFilter',
 

@@ -270,8 +270,8 @@ function get_group_array($add_blank = true, $status = "Active", $assigned_user =
 		$log->debug('Sharing is Public. All users should be listed');
 		$query = 'SELECT groupid, groupname from vtiger_groups';
 		$params = array();
-
-		if ($private == 'private') {
+		$assignAllGroups = GlobalVariable::getVariable('Application_Permit_Assign_AllGroups', 0, $module, $current_user->id);
+		if ($private == 'private' && $assignAllGroups==0) {
 			$query .= ' WHERE groupid=?';
 			$params = array( $current_user->id);
 

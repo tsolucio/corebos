@@ -1133,6 +1133,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'In modules with private sharing privileges, permit assigning the record to any active user in the application with the same role as the current user.',
 ),
+'Application_Permit_Assign_AllGroups' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'In modules with private sharing privileges, permit assigning the record to any defined group in the application.',
+),
 'MailManager_Show_SentTo_Links' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
