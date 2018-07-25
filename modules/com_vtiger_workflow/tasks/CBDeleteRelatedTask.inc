@@ -22,7 +22,7 @@ class CBDeleteRelatedTask extends VTTask {
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
-		return array('relmodule');
+		return array('relmodule', 'bmapid', 'bmapid_display');
 	}
 
 	public function doTask(&$entity) {
