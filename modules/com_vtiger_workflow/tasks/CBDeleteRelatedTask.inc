@@ -17,6 +17,7 @@
  *************************************************************************************************/
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
+require_once 'modules/cbMap/cbMap.php';
 
 class CBDeleteRelatedTask extends VTTask {
 	public $executeImmediately = true;
@@ -36,6 +37,14 @@ class CBDeleteRelatedTask extends VTTask {
 		global $adb,$log,$current_user;
 		$module = getSalesEntityType($masterRecord);
 
+		// Business Map
+		$focus = new cbMap();
+		$foucs->id = $masterRecord;
+		$foucs->mode = '';
+		$focus->retrieve_entity_info($masterRecord, $module);
+
+		$businessMap = $focus->column_fields['maptype'];
+
 		// Checking relation
 		$moduleId = getTabid($module);
 		$relatedModuleId = getTabid($relatedModule);
@@ -47,18 +56,37 @@ class CBDeleteRelatedTask extends VTTask {
 			$relation_result_row = $adb->fetch_array($result);
 			switch ($relation_result_row['name']) {
 				case 'get_related_list':
-					$adb->pquery(
-						'delete from vtiger_crmentityrel where (crmid = ? and relmodule = ?) or (relcrmid = ? and module = ?)',
-						array($masterRecord, $relatedModule, $masterRecord, $relatedModule)
-					);
+					if ($businessMap == "Condition Query") {
+						// To Do
+					} else if ($businessMap == "Condition Expression") {
+						// To Do
+					}
+					else {
+						$adb->pquery(
+							'delete from vtiger_crmentityrel where (crmid = ? and relmodule = ?) or (relcrmid = ? and module = ?)',
+							array($masterRecord, $relatedModule, $masterRecord, $relatedModule)
+						);
+					}
 					break;
 
 				case 'get_attachments':
-					$adb->pquery('delete from vtiger_senotesrel where crmid = ?', array($masterRecord));
+					if ($businessMap == "Condition Query") {
+						// To Do
+					} else if ($businessMap == "Condition Expression") {
+						// To Do
+					} else {
+						$adb->pquery('delete from vtiger_senotesrel where crmid = ?', array($masterRecord));
+					}
 					break;
 
 				case 'get_activities':
-					$adb->pquery('delete from vtiger_seactivityrel where crmid = ?', array($masterRecord));
+					if ($businessMap == "Condition Query") {
+						// To Do
+					} else if ($businessMap == "Condition Expression") {
+						// To Do
+					} else {
+						$adb->pquery('delete from vtiger_seactivityrel where crmid = ?', array($masterRecord));
+					}
 					break;
 
 				default:
