@@ -1277,4 +1277,11 @@
        <classname>modbusinessactions</classname>
        <systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mikelkasneci</author>
+	<description>Change type of setting_value column to TEXT</description>
+	<filename>build/changeSets/2018/updateSettingValueField.php</filename>
+	<classname>updateSettingValueField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
