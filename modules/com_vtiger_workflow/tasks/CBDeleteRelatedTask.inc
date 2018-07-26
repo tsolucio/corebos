@@ -45,6 +45,8 @@ class CBDeleteRelatedTask extends VTTask {
 
 		$businessMap = $focus->column_fields['maptype'];
 
+		$crmids = array();
+
 		// Checking relation
 		$moduleId = getTabid($module);
 		$relatedModuleId = getTabid($relatedModule);
@@ -57,9 +59,17 @@ class CBDeleteRelatedTask extends VTTask {
 			switch ($relation_result_row['name']) {
 				case 'get_related_list':
 					if ($businessMap == "Condition Query") {
-						// To Do
+						$crmids = $focus->ConditionQuery(74);
+						$adb->pquery(
+							'delete from vtiger_crmentityrel where (crmid in ? and relmodule = ?) or (relcrmid = ? and module = ?)',
+							array($crmids, $relatedModule, $masterRecord, $relatedModule)
+						);
 					} else if ($businessMap == "Condition Expression") {
-						// To Do
+						$crmids = $focus->ConditionExpression('11x74');
+						$adb->pquery(
+							'delete from vtiger_crmentityrel where (crmid in ? and relmodule = ?) or (relcrmid = ? and module = ?)',
+							array($crmids, $relatedModule, $masterRecord, $relatedModule)
+						);
 					}
 					else {
 						$adb->pquery(
@@ -71,9 +81,11 @@ class CBDeleteRelatedTask extends VTTask {
 
 				case 'get_attachments':
 					if ($businessMap == "Condition Query") {
-						// To Do
+						$crmids = $focus->ConditionQuery(74);
+						$adb->pquery('delete from vtiger_senotesrel where crmid in ?', array($crmids));
 					} else if ($businessMap == "Condition Expression") {
-						// To Do
+						$crmids = $focus->ConditionExpression('11x74');
+						$adb->pquery('delete from vtiger_senotesrel where crmid in ?', array($crmids));
 					} else {
 						$adb->pquery('delete from vtiger_senotesrel where crmid = ?', array($masterRecord));
 					}
@@ -81,9 +93,11 @@ class CBDeleteRelatedTask extends VTTask {
 
 				case 'get_activities':
 					if ($businessMap == "Condition Query") {
-						// To Do
+						$crmids = $focus->ConditionQuery(74);
+						$adb->pquery('delete from vtiger_seactivityrel where crmid in ?', array($crmids));
 					} else if ($businessMap == "Condition Expression") {
-						// To Do
+						$crmids = $focus->ConditionExpression('11x74');
+						$adb->pquery('delete from vtiger_seactivityrel where crmid in ?', array($crmids));
 					} else {
 						$adb->pquery('delete from vtiger_seactivityrel where crmid = ?', array($masterRecord));
 					}
