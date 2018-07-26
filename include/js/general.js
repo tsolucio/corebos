@@ -1070,6 +1070,7 @@ function run_massedit(){
 			console.log("error", error);
 		});
 		delete sentForm['massedit_recordids'];
+		delete sentForm['idstring'];
 		sentForm.corebos_browsertabID= corebos_browsertabID;
 
 		var rdo = document.getElementById('relresultssection');
