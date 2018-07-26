@@ -1065,6 +1065,13 @@ function run_massedit(){
 			}
 		}
 
+		ExecuteFunctions('setSetting', 'skey=masseditids'+corebos_browsertabID+'&svalue='+sentForm['massedit_recordids']).then(function (response) {
+		}, function (error) {
+			console.log("error", error);
+		});
+		delete sentForm['massedit_recordids'];
+		sentForm.corebos_browsertabID= corebos_browsertabID;
+
 		var rdo = document.getElementById('relresultssection');
 		rdo.style.visibility = 'visible';
 		rdo.style.display = 'block';
