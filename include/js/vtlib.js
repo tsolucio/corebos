@@ -334,9 +334,9 @@ function ExecuteFunctions(functiontocall,params) {
 
 	// Return a new promise avoiding jquery and prototype
 	return new Promise(function(resolve, reject) {
-		var url = baseurl+'&functiontocall='+functiontocall+'&'+params;
+		var url = baseurl+'&functiontocall='+functiontocall;
 		var req = new XMLHttpRequest();
-		req.open('GET', url, true);  // make call asynchronous
+		req.open('POST', url, true);  // make call asynchronous
 
 		req.onload = function() {
 			// check the status
@@ -355,6 +355,7 @@ function ExecuteFunctions(functiontocall,params) {
 		};
 
 		// Make the request
-		req.send();
+		req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		req.send(params);
 	});
 }

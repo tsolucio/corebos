@@ -238,6 +238,24 @@ switch ($functiontocall) {
 			);
 		}
 		break;
+	case 'getSetting':
+		$skey = vtlib_purify($_REQUEST['skey']);
+		if (!empty($_REQUEST['default'])) {
+			$default = vtlib_purify($_REQUEST['default']);
+			$ret = coreBOS_Settings::getSetting($skey, $default);
+		} else {
+			$ret = coreBOS_Settings::getSetting($skey, null);
+		}
+		break;
+	case 'setSetting':
+		$skey = vtlib_purify($_REQUEST['skey']);
+		$svalue = vtlib_purify($_REQUEST['svalue']);
+		$ret = coreBOS_Settings::setSetting($skey, $svalue);
+		break;
+	case 'delSetting':
+		$skey = vtlib_purify($_REQUEST['skey']);
+		$ret = coreBOS_Settings::delSetting($skey);
+		break;
 	case 'ismoduleactive':
 	default:
 		$mod = vtlib_purify($_REQUEST['checkmodule']);

@@ -45,7 +45,7 @@ foreach ($products as $product) {
 	} else {
 		$divisible = true;
 	}
-	if ((int)$adb->query_result($q, 0, 'discontinued') !== 1 && (int)$product['deleted'] === 0) {
+	if ((int)$adb->query_result($q, 0, 'discontinued') !== 1 && (int)$product['deleted'] === 0 && $screen_values['mode'] == '') {
 		$message = $product['name'].' '.getTranslatedString('IS_DISCONTINUED', 'Products');
 		break;
 	}

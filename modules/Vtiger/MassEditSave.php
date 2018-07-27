@@ -24,6 +24,7 @@ function send_message($id, $message, $progress, $processed, $total) {
 	flush();
 }
 $params = json_decode(vtlib_purify($_REQUEST['params']), true);
+$params['massedit_recordids'] = coreBOS_Settings::getSetting('masseditids'.$params['corebos_browsertabID'], null);
 global $currentModule, $rstart;
 $nonSupportedMassEdit = array('Emails');
 
@@ -104,4 +105,5 @@ if (isset($idlist)) {
 	}
 }
 send_message('CLOSE', $app_strings['processcomplete'], 100, $recordcount, $recordcount);
+coreBOS_Settings::delSetting('masseditids'.$params['corebos_browsertabID']);
 ?>
