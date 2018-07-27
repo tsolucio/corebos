@@ -454,7 +454,11 @@ function return_module_language($language, $module) {
 			@include "modules/$module/language/$default_language.lang.php";
 			$languagefound = $default_language;
 			if (!isset($mod_strings)) {
-				require "modules/$module/language/en_us.lang.php";
+				if (file_exists("modules/$module/language/en_us.lang.php")) {
+					require "modules/$module/language/en_us.lang.php";
+				} else {
+					$mod_strings = array();
+				}
 				$languagefound = 'en_us';
 			}
 		}
