@@ -92,7 +92,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 			$_REQUEST['field_lists']=getFieldid(getTabid('Accounts'), 'email1');
 			break;
 		case 'Contacts':
-			$_REQUEST['field_lists']=getFieldid(getTabid('Vendors'), 'email');
+			$_REQUEST['field_lists']=getFieldid(getTabid('Contacts'), 'email');
 			break;
 		case 'Vendors':
 			$_REQUEST['field_lists']=getFieldid(getTabid('Vendors'), 'email');
