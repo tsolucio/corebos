@@ -89,13 +89,13 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 	$pmodule = getSalesEntityType($emailcrmid);
 	switch ($pmodule) {
 		case 'Accounts':
-			$_REQUEST['field_lists']=9;
+			$_REQUEST['field_lists']=getFieldid(getTabid('Accounts'), 'email1');
 			break;
 		case 'Contacts':
-			$_REQUEST['field_lists']=80;
+			$_REQUEST['field_lists']=getFieldid(getTabid('Vendors'), 'email');
 			break;
 		case 'Vendors':
-			$_REQUEST['field_lists']=292;
+			$_REQUEST['field_lists']=getFieldid(getTabid('Vendors'), 'email');
 			break;
 	}
 	$_REQUEST['idlist']=$emailcrmid;
