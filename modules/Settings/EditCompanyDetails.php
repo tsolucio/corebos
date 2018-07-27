@@ -87,7 +87,7 @@ if (isset($organization_logoname)) {
 	$smarty->assign('ORGANIZATIONLOGONAME', $organization_logoname);
 }
 if (isset($front_logoname)) {
-	$smarty->assign('FORNTLOGONAME', $front_logoname);
+	$smarty->assign('FRONTLOGONAME', $front_logoname);
 }
 if (isset($favicon_logoname)) {
 	$smarty->assign('FAVICONLOGONAME', $favicon_logoname);
