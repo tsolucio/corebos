@@ -179,6 +179,6 @@ $mod_strings = array (
 	'Divisible' => 'Divisible',
 	'DIVISIBLE_WARNING' => 'ne peut etre vendu que par unités entières',
 	'DIVISIBLE_WARNING_PURCHASE' => 'ne peut etre acheté que par unités entières',
-	'IS_DISCONTINUED' => 'is dicontinued',
+	'IS_DISCONTINUED' => 'is discontinued',
 );
 ?>
