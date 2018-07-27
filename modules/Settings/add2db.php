@@ -39,7 +39,7 @@ if (isset($_FILES) && isset($_FILES['binFile']) && !empty($_FILES['binFile']['na
 
 	if ($filesize != 0) {
 		if (in_array($file_type_val, $image_extensions_allowed)) { //Checking whether the file is an image or not
-				$savelogo = 'true';
+			$savelogo = 'true';
 		} else {
 			$savelogo = 'false';
 			$error_flag = '1';
@@ -188,9 +188,11 @@ if ($error_flag == '') {
 	if ($org_name == '') {
 		$organizationId = $adb->getUniqueID('vtiger_organizationdetails');
 		$sql = 'INSERT INTO vtiger_organizationdetails
-				(organization_id,organizationname, address, city, state, code, country, phone, fax, website, logoname,frontlogo,faviconlogo) values (?,?,?,?,?,?,?,?,?,?,?,?,?)';
-			$params = array($organizationId, $organization_name, $organization_address, $organization_city, $organization_state, $organization_code,
-			$organization_country, $organization_phone, $organization_fax, $organization_website, $organization_logoname,$front_logoname,$favicon_logoname);
+			(organization_id,organizationname,address,city,state,code,country,phone,fax,website,logoname,frontlogo,faviconlogo) values (?,?,?,?,?,?,?,?,?,?,?,?,?)';
+		$params = array(
+			$organizationId, $organization_name, $organization_address, $organization_city, $organization_state, $organization_code,
+			$organization_country, $organization_phone, $organization_fax, $organization_website, $organization_logoname,$front_logoname,$favicon_logoname
+		);
 	} else {
 		if ($savelogo == 'true') {
 			$organization_logoname = $filename;
@@ -229,15 +231,15 @@ if ($error_flag == '') {
 			$favicon_logoname = $favicon_logo;
 		}
 		$sql = 'UPDATE vtiger_organizationdetails
-				SET organizationname = ?, address = ?, city = ?, state = ?, code = ?, country = ?,
-				phone = ?, fax = ?, website = ?, logoname = ?,frontlogo = ?,faviconlogo = ? WHERE organizationname = ?';
+			SET organizationname = ?, address = ?, city = ?, state = ?, code = ?, country = ?,
+			phone = ?, fax = ?, website = ?, logoname = ?,frontlogo = ?,faviconlogo = ? WHERE organizationname = ?';
 		$params = array(
 			$organization_name, $organization_address, $organization_city, $organization_state, $organization_code,
 			$organization_country, $organization_phone, $organization_fax, $organization_website, decode_html($organization_logoname),
 			decode_html($front_logoname), decode_html($favicon_logoname), $org_name
 		);
 	}
-		$adb->pquery($sql, $params);
+	$adb->pquery($sql, $params);
 
 	if ($savelogo == 'true') {
 		header('Location: index.php?parenttab=Settings&module=Settings&action=OrganizationConfig');
