@@ -157,11 +157,11 @@ class CBDeleteRelatedTask extends VTTask {
 				// direct delete to avoid relaunching workflows > I am not sure this is correct (!)
 				if ($businessMap == "Condition Query") {
 					$crmids = $focus->ConditionQuery($masterRecord);
-					if (in_array(array($adb->query_result($relrecs, $relrec, 0)), $crmids)) {
+					if (in_array($adb->query_result($relrecs, $relrec, 0), $crmids)) {
 						$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
 					}
 				} else if ($businessMap == "Condition Expression") {
-					if ($focus->ConditionExpression($webserviceObject->getEntityId().'x'.array($adb->query_result($relrecs, $relrec, 0)))) {
+					if ($focus->ConditionExpression($webserviceObject->getEntityId().'x'.$adb->query_result($relrecs, $relrec, 0))) {
 						$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
 					}
 				} else {
