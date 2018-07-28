@@ -151,6 +151,7 @@ class CBDeleteRelatedTask extends VTTask {
 			$queryGenerator->setFields(array('id'));
 			$queryGenerator->addReferenceModuleFieldCondition($module, $reffield, 'id', $masterRecord, 'e');
 			$query = $queryGenerator->getQuery();
+			$updquery = 'UPDATE vtiger_crmentity set deleted=1 where crmid=?';
 			$relrecs = $adb->query($query);
 
 			for ($relrec=0; $relrec<$adb->num_rows($relrecs); $relrec++) {
