@@ -112,7 +112,15 @@ global $currentModule, $adb;
 		);
 	}
 
-list($wsmod,$crmid) = explode('x', $crm_record_to_evaluate);
+if (strpos($crm_record_to_evaluate, 'x')) {
+	list($wsmod,$crmid) = explode('x', $crm_record_to_evaluate);
+	$semod = getSalesEntityType($crmid);
+} else {
+	$semod = getSalesEntityType($crm_record_to_evaluate);
+	$crmid = $crm_record_to_evaluate;
+	$wsmod = vtws_getEntityId($semod);
+	$crm_record_to_evaluate = $wsmod.'x'.$crmid;
+}
 $wsrs = $adb->pquery('select name FROM vtiger_ws_entity where id=?',array($wsmod));
 if (!$wsrs or $adb->num_rows($wsrs)==0) {
 	echo "<h2>Incorrect crmid:</h2>";
@@ -120,7 +128,6 @@ if (!$wsrs or $adb->num_rows($wsrs)==0) {
 	die();
 }
 $currentModule = $adb->query_result($wsrs, 0, 0);
-$semod = getSalesEntityType($crmid);
 if ($semod != $currentModule and ($semod!='Calendar' and $currentModule!='Events')) {
 	echo "<h2>Incorrect crmid:</h2>";
 	echo "<b>crmid</b> could not be evaluated as a valid record ID<br>";
