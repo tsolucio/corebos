@@ -151,10 +151,6 @@ class CBDeleteRelatedTask extends VTTask {
 			if ($businessMap == "Condition Query") {
 				$crmids = $focus->ConditionQuery($masterRecord);
 				$updquery = 'UPDATE vtiger_crmentity set deleted=1 where crmid in ('. generateQuestionMarks($crmids) .')';
-			} else if ($businessMap == "Condition Expression") {
-				// Get related
-				// To do.
-
 			} else {
 				$updquery = 'UPDATE vtiger_crmentity set deleted=1 where crmid=?';
 			}
@@ -162,8 +158,15 @@ class CBDeleteRelatedTask extends VTTask {
 
 			for ($relrec=0; $relrec<$adb->num_rows($relrecs); $relrec++) {
 				// direct delete to avoid relaunching workflows > I am not sure this is correct (!)
-				if ($businessMap == "Condition Query" || $businessMap == "Condition Expression") {
+				if ($businessMap == "Condition Query") {
 					$adb->pquery($updquery);
+				} else if ($businessMap == "Condition Expression") {
+					while ($related = $adb->fetch_array($query)) {
+						if ($focus->ConditionExpression($entity->getId().'x'.$related['crmid'])) {
+							$adb->pquery($updquery, array($related['crmid']));
+						}
+					}
+				}
 				} else {
 					$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
 				}
