@@ -45,7 +45,10 @@ class CBDeleteRelatedTask extends VTTask {
 
 		$businessMap = $focus->column_fields['maptype'];
 
-		$crmids = array();
+		if ($businessMap == "Condition Query") {
+			$ids = array();
+			$ids = $focus->ConditionQuery($masterRecord);
+		}
 
 		// Checking relation
 		$moduleId = getTabid($module);
@@ -62,10 +65,9 @@ class CBDeleteRelatedTask extends VTTask {
 			switch ($relation_result_row['name']) {
 				case 'get_related_list':
 					if ($businessMap == "Condition Query") {
-						$crmids = $focus->ConditionQuery($masterRecord);
 						$adb->pquery(
-							'delete from vtiger_crmentityrel where (crmid in ('. generateQuestionMarks($crmids) .') and relmodule = ?) or (relcrmid = ? and module = ?)',
-							array($crmids, $relatedModule, $masterRecord, $relatedModule)
+							'delete from vtiger_crmentityrel where (crmid in ('. generateQuestionMarks($ids) .') and relmodule = ?) or (relcrmid = ? and module = ?)',
+							array($ids, $relatedModule, $masterRecord, $relatedModule)
 						);
 					} else if ($businessMap == "Condition Expression") {
 						// Get related Modules
@@ -92,8 +94,7 @@ class CBDeleteRelatedTask extends VTTask {
 
 				case 'get_attachments':
 					if ($businessMap == "Condition Query") {
-						$crmids = $focus->ConditionQuery($masterRecord);
-						$adb->pquery('delete from vtiger_senotesrel where crmid in ('. generateQuestionMarks($crmids) .')', array($crmids));
+						$adb->pquery('delete from vtiger_senotesrel where notesid in ('. generateQuestionMarks($ids) .')', array($ids));
 					} else if ($businessMap == "Condition Expression") {
 						// Get related Documents
 						$sql = "select notesid from vtiger_senotesrel where crmid = ?";
@@ -112,8 +113,7 @@ class CBDeleteRelatedTask extends VTTask {
 
 				case 'get_activities':
 					if ($businessMap == "Condition Query") {
-						$crmids = $focus->ConditionQuery($masterRecord);
-						$adb->pquery('delete from vtiger_seactivityrel where crmid in ('. generateQuestionMarks($crmids) .')', array($crmids));
+						$adb->pquery('delete from vtiger_seactivityrel where activityid in ('. generateQuestionMarks($ids) .')', array($ids));
 					} else if ($businessMap == "Condition Expression") {
 						// Get related Activities
 						$sql = "select activityid from vtiger_seactivityrel where crmid = ?";
@@ -157,8 +157,7 @@ class CBDeleteRelatedTask extends VTTask {
 			for ($relrec=0; $relrec<$adb->num_rows($relrecs); $relrec++) {
 				// direct delete to avoid relaunching workflows > I am not sure this is correct (!)
 				if ($businessMap == "Condition Query") {
-					$crmids = $focus->ConditionQuery($masterRecord);
-					if (in_array($adb->query_result($relrecs, $relrec, 0), $crmids)) {
+					if (in_array($adb->query_result($relrecs, $relrec, 0), $ids)) {
 						$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
 					}
 				} else if ($businessMap == "Condition Expression") {
