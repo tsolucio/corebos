@@ -163,7 +163,7 @@
 </div>
 <div class="slds-col slds-page-header slds-p-top--small" style="width:10%;">
 	<div class="slds-icon_container slds-icon_container--circle slds-p-around--xx-small slds-icon-action-close">
-		<svg class="slds-icon slds-icon--xx-small" aria-hidden="true">
+		<svg class="slds-icon slds-icon--xx-small" aria-hidden="true" onClick="fninvsh('relresultssection');">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
 		</svg>
 		<span class="slds-assistive-text">Close</span>
