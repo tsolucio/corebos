@@ -166,7 +166,7 @@
 		<svg class="slds-icon slds-icon--xx-small" aria-hidden="true" onClick="fninvsh('relresultssection');">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
 		</svg>
-		<span class="slds-assistive-text">Close</span>
+		<span class="slds-assistive-text">{$APP.LBL_CLOSE}</span>
 	</div>
 </div>
 </div>
