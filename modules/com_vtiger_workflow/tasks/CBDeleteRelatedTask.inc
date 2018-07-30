@@ -17,6 +17,7 @@
  *************************************************************************************************/
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
+require_once 'modules/cbMap/cbMap.php';
 
 class CBDeleteRelatedTask extends VTTask {
 	public $executeImmediately = true;
@@ -28,17 +29,34 @@ class CBDeleteRelatedTask extends VTTask {
 	public function doTask(&$entity) {
 		list($wsid,$crmid) = explode('x', $entity->getId());
 		if (!empty($crmid) && !empty($this->relmodule)) {
-			self::deleteRelatedRecords($crmid, $this->relmodule);
+			self::deleteRelatedRecords($crmid, $this->relmodule, $this->bmapid);
 		}
 	}
 
-	public static function deleteRelatedRecords($masterRecord, $relatedModule) {
+	public static function deleteRelatedRecords($masterRecord, $relatedModule, $bmapid) {
 		global $adb,$log,$current_user;
 		$module = getSalesEntityType($masterRecord);
+		if (!empty($bmapid)) {
+			// Business Map
+			$focus = new cbMap();
+			$focus->id = $bmapid;
+			$focus->mode = '';
+			$focus->retrieve_entity_info($bmapid, 'cbMap');
+			$businessMap = $focus->column_fields['maptype'];
+		} else {
+			$businessMap = '';
+		}
+		if ($businessMap == 'Condition Query') {
+			$ids = $focus->ConditionQuery($masterRecord);
+			$ids = $ids[0];
+		}
 
 		// Checking relation
 		$moduleId = getTabid($module);
 		$relatedModuleId = getTabid($relatedModule);
+
+		// WebserviceID
+		$entityId = vtws_getEntityId($relatedModule);
 
 		$sql = "select name from vtiger_relatedlists where tabid = ? and related_tabid = ? and relationtype = 'N:N'";
 		$result = $adb->pquery($sql, array($moduleId, $relatedModuleId));
@@ -47,18 +65,70 @@ class CBDeleteRelatedTask extends VTTask {
 			$relation_result_row = $adb->fetch_array($result);
 			switch ($relation_result_row['name']) {
 				case 'get_related_list':
-					$adb->pquery(
-						'delete from vtiger_crmentityrel where (crmid = ? and relmodule = ?) or (relcrmid = ? and module = ?)',
-						array($masterRecord, $relatedModule, $masterRecord, $relatedModule)
-					);
+					if ($businessMap == 'Condition Query') {
+						$adb->pquery(
+							'delete from vtiger_crmentityrel
+								where (crmid = ? and relcrmid in ('.generateQuestionMarks($ids).')) or (relcrmid = ? and crmid in ('.generateQuestionMarks($ids).'))',
+							array($masterRecord, $ids, $masterRecord, $ids)
+						);
+					} elseif ($businessMap == 'Condition Expression') {
+						// Get related Modules
+						$sql = 'select relcrmid as id from vtiger_crmentityrel where crmid = ? and relmodule = ?
+							UNION
+							select crmid as id from vtiger_crmentityrel where relcrmid = ? and module = ?';
+						$result = $adb->pquery($sql, array($masterRecord, $relatedModule, $masterRecord, $relatedModule));
+						if ($result && $adb->num_rows($result) > 0) {
+							while ($related = $adb->fetch_array($result)) {
+								if ($focus->ConditionExpression($entityId.'x'.$related['id'])) {
+									$adb->pquery(
+										'delete from vtiger_crmentityrel where (crmid = ? and relcrmid = ?) or (crmid = ? and relcrmid = ?)',
+										array($masterRecord, $related['id'], $related['id'], $masterRecord)
+									);
+								}
+							}
+						}
+					} else {
+						$adb->pquery(
+							'delete from vtiger_crmentityrel where (crmid = ? and relmodule = ?) or (relcrmid = ? and module = ?)',
+							array($masterRecord, $relatedModule, $masterRecord, $relatedModule)
+						);
+					}
 					break;
 
 				case 'get_attachments':
-					$adb->pquery('delete from vtiger_senotesrel where crmid = ?', array($masterRecord));
+					if ($businessMap == 'Condition Query') {
+						$adb->pquery('delete from vtiger_senotesrel where notesid in ('. generateQuestionMarks($ids) .')', array($ids));
+					} elseif ($businessMap == 'Condition Expression') {
+						// Get related Documents
+						$result = $adb->pquery('select notesid from vtiger_senotesrel where crmid = ?', array($masterRecord));
+						if ($result && $adb->num_rows($result) > 0) {
+							while ($related = $adb->fetch_array($result)) {
+								if ($focus->ConditionExpression($entityId.'x'.$related['notesid'])) {
+									$adb->pquery('delete from vtiger_senotesrel where notesid = ?', array($related['notesid']));
+								}
+							}
+						}
+					} else {
+						$adb->pquery('delete from vtiger_senotesrel where crmid = ?', array($masterRecord));
+					}
 					break;
 
 				case 'get_activities':
-					$adb->pquery('delete from vtiger_seactivityrel where crmid = ?', array($masterRecord));
+					if ($businessMap == 'Condition Query') {
+						$adb->pquery('delete from vtiger_seactivityrel where activityid in ('. generateQuestionMarks($ids) .')', array($ids));
+					} elseif ($businessMap == 'Condition Expression') {
+						// Get related Activities
+						$result = $adb->pquery('select activityid from vtiger_seactivityrel where crmid = ?', array($masterRecord));
+						if ($result && $adb->num_rows($result) > 0) {
+							while ($related = $adb->fetch_array($result)) {
+								if ($focus->ConditionExpression($entityId.'x'.$related['activityid'])) {
+									$adb->pquery('delete from vtiger_seactivityrel where activityid = ?', array($related['activityid']));
+								}
+							}
+						}
+					} else {
+						$adb->pquery('delete from vtiger_seactivityrel where crmid = ?', array($masterRecord));
+					}
 					break;
 
 				default:
@@ -87,7 +157,17 @@ class CBDeleteRelatedTask extends VTTask {
 
 			for ($relrec=0; $relrec<$adb->num_rows($relrecs); $relrec++) {
 				// direct delete to avoid relaunching workflows > I am not sure this is correct (!)
-				$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
+				if ($businessMap == 'Condition Query') {
+					if (in_array($adb->query_result($relrecs, $relrec, 0), $ids)) {
+						$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
+					}
+				} elseif ($businessMap == 'Condition Expression') {
+					if ($focus->ConditionExpression($webserviceObject->getEntityId().'x'.$adb->query_result($relrecs, $relrec, 0))) {
+						$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
+					}
+				} else {
+					$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
+				}
 			}
 		}
 	}
