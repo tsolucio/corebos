@@ -36,17 +36,19 @@ class CBDeleteRelatedTask extends VTTask {
 	public static function deleteRelatedRecords($masterRecord, $relatedModule, $bmapid) {
 		global $adb,$log,$current_user;
 		$module = getSalesEntityType($masterRecord);
-
-		// Business Map
-		$focus = new cbMap();
-		$focus->id = $bmapid;
-		$focus->mode = '';
-		$focus->retrieve_entity_info($bmapid, 'cbMap');
-
-		$businessMap = $focus->column_fields['maptype'];
-
+		if (!empty($bmapid)) {
+			// Business Map
+			$focus = new cbMap();
+			$focus->id = $bmapid;
+			$focus->mode = '';
+			$focus->retrieve_entity_info($bmapid, 'cbMap');
+			$businessMap = $focus->column_fields['maptype'];
+		} else {
+			$businessMap = '';
+		}
 		if ($businessMap == 'Condition Query') {
 			$ids = $focus->ConditionQuery($masterRecord);
+			$ids = $ids[0];
 		}
 
 		// Checking relation
@@ -65,19 +67,22 @@ class CBDeleteRelatedTask extends VTTask {
 				case 'get_related_list':
 					if ($businessMap == 'Condition Query') {
 						$adb->pquery(
-							'delete from vtiger_crmentityrel where (crmid in ('. generateQuestionMarks($ids) .') and relmodule = ?) or (relcrmid = ? and module = ?)',
-							array($ids, $relatedModule, $masterRecord, $relatedModule)
+							'delete from vtiger_crmentityrel
+								where (crmid = ? and relcrmid in ('.generateQuestionMarks($ids).')) or (relcrmid = ? and crmid in ('.generateQuestionMarks($ids).'))',
+							array($masterRecord, $ids, $masterRecord, $ids)
 						);
 					} elseif ($businessMap == 'Condition Expression') {
 						// Get related Modules
-						$sql = 'select relcrmid from vtiger_crmentityrel where crmid = ? and relmodule = ?';
-						$result = $adb->pquery($sql, array($masterRecord, $relatedModule));
+						$sql = 'select relcrmid as id from vtiger_crmentityrel where crmid = ? and relmodule = ?
+							UNION
+							select crmid as id from vtiger_crmentityrel where relcrmid = ? and module = ?';
+						$result = $adb->pquery($sql, array($masterRecord, $relatedModule, $masterRecord, $relatedModule));
 						if ($result && $adb->num_rows($result) > 0) {
 							while ($related = $adb->fetch_array($result)) {
-								if ($focus->ConditionExpression($entityId.'x'.$related['relcrmid'])) {
+								if ($focus->ConditionExpression($entityId.'x'.$related['id'])) {
 									$adb->pquery(
-										'delete from vtiger_crmentityrel where relcrmid = ? and module = ?',
-										array($related['relcrmid'], $relatedModule)
+										'delete from vtiger_crmentityrel where (crmid = ? and relcrmid = ?) or (crmid = ? and relcrmid = ?)',
+										array($masterRecord, $related['id'], $related['id'], $masterRecord)
 									);
 								}
 							}
