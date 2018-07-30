@@ -1583,10 +1583,11 @@ function getDetailAssociatedProducts($module, $focus) {
  * Param $module - module name
  * Param $focus - module object
  * Return type is an array
+ * @deprecated
  */
 function getRelatedListsInformation($module, $focus) {
 	global $log, $adb, $current_user;
-	$log->debug('Entering getRelatedLists(' . $module . ',' . get_class($focus) . ') method ...');
+	$log->debug('Entering getRelatedListsInformation(' . $module . ',' . get_class($focus) . ') method ...');
 	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
 
 	$cur_tab_id = getTabid($module);
@@ -1605,8 +1606,8 @@ function getRelatedListsInformation($module, $focus) {
 		$actions = $adb->query_result($result, $i, 'actions');
 		//$relationId = $adb->query_result($result, $i, 'relation_id');
 		if ($rel_tab_id != 0) {
-			if ($profileTabsPermission[$rel_tab_id] == 0) {
-				if ($profileActionPermission[$rel_tab_id][3] == 0) {
+			if ($is_admin || $profileTabsPermission[$rel_tab_id] == 0) {
+				if ($is_admin || $profileActionPermission[$rel_tab_id][3] == 0) {
 					// vtlib customization: Send more information (from module, related module) to the callee
 					$focus_list[$label] = $focus->$function_name($focus->id, $cur_tab_id, $rel_tab_id, $actions);
 				}
@@ -1616,7 +1617,7 @@ function getRelatedListsInformation($module, $focus) {
 			$focus_list[$label] = $focus->$function_name($focus->id, $cur_tab_id, $rel_tab_id, $actions);
 		}
 	}
-	$log->debug('Exiting getRelatedLists method ...');
+	$log->debug('Exiting getRelatedListsInformation method ...');
 	return $focus_list;
 }
 
