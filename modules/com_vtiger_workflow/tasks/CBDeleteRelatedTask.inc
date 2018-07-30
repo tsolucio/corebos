@@ -45,8 +45,7 @@ class CBDeleteRelatedTask extends VTTask {
 
 		$businessMap = $focus->column_fields['maptype'];
 
-		if ($businessMap == "Condition Query") {
-			$ids = array();
+		if ($businessMap == 'Condition Query') {
 			$ids = $focus->ConditionQuery($masterRecord);
 		}
 
@@ -64,14 +63,14 @@ class CBDeleteRelatedTask extends VTTask {
 			$relation_result_row = $adb->fetch_array($result);
 			switch ($relation_result_row['name']) {
 				case 'get_related_list':
-					if ($businessMap == "Condition Query") {
+					if ($businessMap == 'Condition Query') {
 						$adb->pquery(
 							'delete from vtiger_crmentityrel where (crmid in ('. generateQuestionMarks($ids) .') and relmodule = ?) or (relcrmid = ? and module = ?)',
 							array($ids, $relatedModule, $masterRecord, $relatedModule)
 						);
-					} else if ($businessMap == "Condition Expression") {
+					} elseif ($businessMap == 'Condition Expression') {
 						// Get related Modules
-						$sql = "select relcrmid from vtiger_crmentityrel where crmid = ? and relmodule = ?";
+						$sql = 'select relcrmid from vtiger_crmentityrel where crmid = ? and relmodule = ?';
 						$result = $adb->pquery($sql, array($masterRecord, $relatedModule));
 						if ($result && $adb->num_rows($result) > 0) {
 							while ($related = $adb->fetch_array($result)) {
@@ -83,8 +82,7 @@ class CBDeleteRelatedTask extends VTTask {
 								}
 							}
 						}
-					}
-					else {
+					} else {
 						$adb->pquery(
 							'delete from vtiger_crmentityrel where (crmid = ? and relmodule = ?) or (relcrmid = ? and module = ?)',
 							array($masterRecord, $relatedModule, $masterRecord, $relatedModule)
@@ -93,12 +91,11 @@ class CBDeleteRelatedTask extends VTTask {
 					break;
 
 				case 'get_attachments':
-					if ($businessMap == "Condition Query") {
+					if ($businessMap == 'Condition Query') {
 						$adb->pquery('delete from vtiger_senotesrel where notesid in ('. generateQuestionMarks($ids) .')', array($ids));
-					} else if ($businessMap == "Condition Expression") {
+					} elseif ($businessMap == 'Condition Expression') {
 						// Get related Documents
-						$sql = "select notesid from vtiger_senotesrel where crmid = ?";
-						$result = $adb->pquery($sql, array($masterRecord));
+						$result = $adb->pquery('select notesid from vtiger_senotesrel where crmid = ?', array($masterRecord));
 						if ($result && $adb->num_rows($result) > 0) {
 							while ($related = $adb->fetch_array($result)) {
 								if ($focus->ConditionExpression($entityId.'x'.$related['notesid'])) {
@@ -112,12 +109,11 @@ class CBDeleteRelatedTask extends VTTask {
 					break;
 
 				case 'get_activities':
-					if ($businessMap == "Condition Query") {
+					if ($businessMap == 'Condition Query') {
 						$adb->pquery('delete from vtiger_seactivityrel where activityid in ('. generateQuestionMarks($ids) .')', array($ids));
-					} else if ($businessMap == "Condition Expression") {
+					} elseif ($businessMap == 'Condition Expression') {
 						// Get related Activities
-						$sql = "select activityid from vtiger_seactivityrel where crmid = ?";
-						$result = $adb->pquery($sql, array($masterRecord));
+						$result = $adb->pquery('select activityid from vtiger_seactivityrel where crmid = ?', array($masterRecord));
 						if ($result && $adb->num_rows($result) > 0) {
 							while ($related = $adb->fetch_array($result)) {
 								if ($focus->ConditionExpression($entityId.'x'.$related['activityid'])) {
@@ -156,11 +152,11 @@ class CBDeleteRelatedTask extends VTTask {
 
 			for ($relrec=0; $relrec<$adb->num_rows($relrecs); $relrec++) {
 				// direct delete to avoid relaunching workflows > I am not sure this is correct (!)
-				if ($businessMap == "Condition Query") {
+				if ($businessMap == 'Condition Query') {
 					if (in_array($adb->query_result($relrecs, $relrec, 0), $ids)) {
 						$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
 					}
-				} else if ($businessMap == "Condition Expression") {
+				} elseif ($businessMap == 'Condition Expression') {
 					if ($focus->ConditionExpression($webserviceObject->getEntityId().'x'.$adb->query_result($relrecs, $relrec, 0))) {
 						$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
 					}

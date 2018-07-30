@@ -24,7 +24,7 @@ $ids = vtlib_purify($_REQUEST['idstring']);
 
 if (!empty($ids)) {
 	// Export as Zip
-	if ($todir == '') {
+	if (empty($todir)) {
 		$todir = 'cache';
 	}
 	if (empty($xmlfilename)) {
@@ -36,7 +36,7 @@ if (!empty($ids)) {
 		$xmlfilename = 'coreBOSUpdates.xml';
 	}
 	$xmlcfn = 'cache/'.$xmlfilename;
-	$zipfilename = "$todir/cbupdates-" . date('YmdHis') . ".zip";
+	$zipfilename = "$todir/cbupdates-" . date('YmdHis') . '.zip';
 	$zip = new Vtiger_Zip($zipfilename);
 
 	$sql = 'select * from vtiger_cbupdater
@@ -53,26 +53,26 @@ if (!empty($ids)) {
 		$w->openMemory();
 		$w->setIndent(true);
 		$w->startDocument('1.0', 'UTF-8');
-		$w->startElement("updatesChangeLog");
+		$w->startElement('updatesChangeLog');
 		while ($upd = $adb->fetch_array($rs)) {
-			$w->startElement("changeSet");
+			$w->startElement('changeSet');
 			if (!empty($upd['author'])) {
-				$w->startElement("author");
+				$w->startElement('author');
 				$w->text($upd['author']);
 				$w->endElement();
 			}
 			if (!empty($upd['description'])) {
-				$w->startElement("description");
+				$w->startElement('description');
 				$w->text($upd['description']);
 				$w->endElement();
 			}
-				$w->startElement("filename");
+				$w->startElement('filename');
 				$w->text($upd['pathfilename']);
 				$w->endElement();
-				$w->startElement("classname");
+				$w->startElement('classname');
 				$w->text($upd['classname']);
 				$w->endElement();
-				$w->startElement("systemupdate");
+				$w->startElement('systemupdate');
 				$w->text($upd['systemupdate'] == '1' ? 'true' : 'false');
 				$w->endElement();
 			$w->endElement();
@@ -94,5 +94,4 @@ if (!empty($ids)) {
 } else {
 	echo getTranslatedString('LBL_RECORD_NOT_FOUND');
 }
-
 ?>
