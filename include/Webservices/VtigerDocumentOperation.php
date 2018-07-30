@@ -109,6 +109,7 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 					$filepath = @$adb->query_result($attrs, 0, 'path');
 					$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
 					$doc['_downloadurl'] = $site_URL.'/'.$filepath.$fileid.'_'.$name;
+					$doc['filename'] = $name;
 				}
 			}
 		}
