@@ -157,9 +157,17 @@
 		</div>
 	</div>
 </div>
-<div class="slds-col slds-page-header" style="width:60%;">
+<div class="slds-col slds-page-header" style="width:50%;">
 <progress id='progressor' value="0" max='100' style="width:90%;height:14px;"></progress>
 <span id="percentage" style="text-align:left; display:block; margin-top:5px;">0</span>
+</div>
+<div class="slds-col slds-page-header slds-p-top--small" style="width:10%;">
+	<div class="slds-icon_container slds-icon_container--circle slds-p-around--xx-small slds-icon-action-close">
+		<svg class="slds-icon slds-icon--xx-small" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+		</svg>
+		<span class="slds-assistive-text">Close</span>
+	</div>
 </div>
 </div>
 <div class="slds-grid">
