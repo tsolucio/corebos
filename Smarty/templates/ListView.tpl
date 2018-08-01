@@ -182,12 +182,4 @@
 {/if}
 {if (vt_hasRTE())}
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
-<script type="text/javascript" defer="1">var textAreaName = null;
-	var textAreaName = 'description';
-	CKEDITOR.replace( textAreaName,	{ldelim}
-		extraPlugins : 'uicolor',
-		uiColor: '#dfdff1'
-	{rdelim} ) ;
-	var oCKeditor = CKEDITOR.instances[textAreaName];
-</script>
 {/if}
