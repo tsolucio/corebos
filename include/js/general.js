@@ -1056,11 +1056,11 @@ function run_massedit(){
 					var checked = 'on';
 					sentForm[myFields[f].name] = checked;
 				}
-			}
-			else if (myFields[f].type == 'radio' && myFields[f].checked){
+			} else if((myFields[f].type == 'textarea') && (typeof(CKEDITOR)!=='undefined' && CKEDITOR.instances[myFields[f].name] !== undefined)) {
+				sentForm[myFields[f].name] = CKEDITOR.instances[myFields[f].name].getData();
+			} else if (myFields[f].type == 'radio' && myFields[f].checked) {
 				sentForm[myFields[f].name] = myFields[f].value;
-			}
-			else if (myFields[f].type != 'radio' && myFields[f].type != 'button'){
+			} else if (myFields[f].type != 'radio' && myFields[f].type != 'button') {
 				sentForm[myFields[f].name] = myFields[f].value;
 			}
 		}

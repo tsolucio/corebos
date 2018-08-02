@@ -91,4 +91,11 @@
 	<classname>fixBAAddIndex</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Increment size of Workflow Test field</description>
+	<filename>build/changeSets/2018/IncSizeWorkflowTestField.php</filename>
+	<classname>IncSizeWorkflowTestField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
