@@ -1492,8 +1492,7 @@ function getConvertQuoteToSoObject($focus, $quote_focus, $quoteid) {
 * Param $seid - sales entity id
 * Return type is an object array
 */
-function getAssociatedProducts($module,$focus,$seid='')
-{
+function getAssociatedProducts($module, $focus,$seid = '') {
 	global $log, $adb, $theme, $currentModule;
 	$log->debug("Entering getAssociatedProducts(".$module.",".get_class($focus).",".$seid."='') method ...");
 
@@ -1501,8 +1500,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 	$image_path=$theme_path."images/";
 	$product_Detail = Array();
 	$acvid = 0;
-	if (in_array($module, getInventoryModules()))
-	{
+	if (in_array($module, getInventoryModules())) {
 		$query="SELECT
 			case when vtiger_products.productid != '' then vtiger_products.productname else vtiger_service.servicename end as productname,
 			case when vtiger_products.productid != '' then vtiger_products.productcode else vtiger_service.service_no end as productcode,
@@ -1532,9 +1530,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 		} else {
 			$acvid = $focus->column_fields['vendor_id'];
 		}
-	}
-	elseif($module == 'Potentials')
-	{
+	} elseif ($module == 'Potentials') {
 		$query="SELECT vtiger_products.productid, vtiger_products.productname, vtiger_products.productcode,
 			vtiger_products.unit_price, vtiger_products.qtyinstock, vtiger_crmentity.description AS product_description,
 			'Products' AS entitytype
@@ -1550,9 +1546,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 			INNER JOIN vtiger_crmentityrel ON vtiger_crmentityrel.relcrmid=vtiger_service.serviceid
 			WHERE vtiger_crmentityrel.crmid=?";
 			$params = array($seid,$seid);
-	}
-	elseif($module == 'Products')
-	{
+	} elseif ($module == 'Products') {
 		$query="SELECT vtiger_products.productid, vtiger_products.productcode, vtiger_products.productname,
 			vtiger_products.unit_price, vtiger_products.qtyinstock, vtiger_crmentity.description AS product_description,
 			'Products' AS entitytype
@@ -1560,9 +1554,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
 			WHERE vtiger_crmentity.deleted=0 AND productid=?";
 			$params = array($seid);
-	}
-	elseif($module == 'Services')
-	{
+	} elseif ($module == 'Services') {
 		$query="SELECT vtiger_service.serviceid AS productid, 'NA' AS productcode, vtiger_service.servicename AS productname,
 			vtiger_service.unit_price AS unit_price, 'NA' AS qtyinstock, vtiger_crmentity.description AS product_description,
 			'Services' AS entitytype
@@ -1609,8 +1601,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 
 	$result = $adb->pquery($query, $params);
 	$num_rows=$adb->num_rows($result);
-	for($i=1;$i<=$num_rows;$i++)
-	{
+	for ($i=1;$i<=$num_rows;$i++) {
 		$hdnProductId = $adb->query_result($result,$i-1,'productid');
 		$hdnProductcode = $adb->query_result($result,$i-1,'productcode');
 		$productname=$adb->query_result($result,$i-1,'productname');
@@ -1694,8 +1685,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 			}
 		}
 
-		if($module != 'PurchaseOrder')
-		{
+		if ($module != 'PurchaseOrder') {
 			$product_Detail[$i]['qtyInStock'.$i]=$qtyinstock;
 		}
 		$qty = number_format($qty, 2,'.',''); //Convert to 2 decimals
@@ -1715,26 +1705,21 @@ function getAssociatedProducts($module,$focus,$seid='')
 		$product_Detail[$i]['discount_percent'.$i] = 0;
 		$product_Detail[$i]['discount_amount'.$i] = 0;
 
-		if($discount_percent != 'NULL' && $discount_percent != '')
-		{
+		if ($discount_percent != 'NULL' && $discount_percent != '') {
 			$product_Detail[$i]['discount_type'.$i] = "percentage";
 			$product_Detail[$i]['discount_percent'.$i] = $discount_percent;
 			$product_Detail[$i]['checked_discount_percent'.$i] = ' checked';
 			$product_Detail[$i]['style_discount_percent'.$i] = ' style="visibility:visible"';
 			$product_Detail[$i]['style_discount_amount'.$i] = ' style="visibility:hidden"';
 			$discountTotal = $productTotal*$discount_percent/100;
-		}
-		elseif($discount_amount != 'NULL' && $discount_amount != '')
-		{
+		} elseif ($discount_amount != 'NULL' && $discount_amount != '') {
 			$product_Detail[$i]['discount_type'.$i] = "amount";
 			$product_Detail[$i]['discount_amount'.$i] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($discount_amount, null, true), null, true);
 			$product_Detail[$i]['checked_discount_amount'.$i] = ' checked';
 			$product_Detail[$i]['style_discount_amount'.$i] = ' style="visibility:visible"';
 			$product_Detail[$i]['style_discount_percent'.$i] = ' style="visibility:hidden"';
 			$discountTotal = $discount_amount;
-		}
-		else
-		{
+		} else {
 			$product_Detail[$i]['checked_discount_zero'.$i] = ' checked';
 		}
 		$totalAfterDiscount = $productTotal-$discountTotal;
@@ -1747,11 +1732,9 @@ function getAssociatedProducts($module,$focus,$seid='')
 		//Calculate netprice
 		$netPrice = $totalAfterDiscount+$taxTotal;
 		//if condition is added to call this function when we create PO/SO/Quotes/Invoice from Product module
-		if(in_array($module, getInventoryModules()))
-		{
+		if (in_array($module, getInventoryModules())) {
 			$taxtype = getInventoryTaxType($module,$focus->id);
-			if($taxtype == 'individual')
-			{
+			if ($taxtype == 'individual') {
 				//Add the tax with product total and assign to netprice
 				$netPrice = $netPrice+$taxTotal;
 			}
@@ -1810,17 +1793,14 @@ function getAssociatedProducts($module,$focus,$seid='')
 	$product_Detail[1]['final_details']['discount_percentage_final'] = 0;
 	$product_Detail[1]['final_details']['discount_amount_final'] = 0;
 
-	if(!empty($focus->column_fields['hdnDiscountPercent']) and $focus->column_fields['hdnDiscountPercent'] != '0')
-	{
+	if (!empty($focus->column_fields['hdnDiscountPercent']) and $focus->column_fields['hdnDiscountPercent'] != '0') {
 		$finalDiscount = ($subTotal*$discountPercent/100);
 		$product_Detail[1]['final_details']['discount_type_final'] = 'percentage';
 		$product_Detail[1]['final_details']['discount_percentage_final'] = $discountPercent;
 		$product_Detail[1]['final_details']['checked_discount_percentage_final'] = ' checked';
 		$product_Detail[1]['final_details']['style_discount_percentage_final'] = ' style="visibility:visible"';
 		$product_Detail[1]['final_details']['style_discount_amount_final'] = ' style="visibility:hidden"';
-	}
-	elseif(!empty($focus->column_fields['hdnDiscountAmount']) and $focus->column_fields['hdnDiscountAmount'] != '0')
-	{
+	} elseif (!empty($focus->column_fields['hdnDiscountAmount']) and $focus->column_fields['hdnDiscountAmount'] != '0') {
 		$finalDiscount = $focus->column_fields['hdnDiscountAmount'];
 		$product_Detail[1]['final_details']['discount_type_final'] = 'amount';
 		$product_Detail[1]['final_details']['discount_amount_final'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($discountAmount, null, true), null, true);
@@ -1901,7 +1881,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 	$grandTotal = (!empty($focus->column_fields['hdnGrandTotal']))?$focus->column_fields['hdnGrandTotal']:'0.00';
 	$product_Detail[1]['final_details']['grandTotal'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($grandTotal, null, true), null, true);
 
-	$log->debug("Exiting getAssociatedProducts method ...");
+	$log->debug('Exiting getAssociatedProducts method ...');
 	return $product_Detail;
 }
 

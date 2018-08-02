@@ -308,29 +308,27 @@ function finishValidateInventory() {
 
 function validateInventoryLines(module) {
 	//for products, vendors and pricebook modules we won't validate the product details. here return the control
-	if(module == 'Products' || module == 'Vendors' || module == 'PriceBooks' || module == 'Services')
-	{
+	if (module == 'Products' || module == 'Vendors' || module == 'PriceBooks' || module == 'Services') {
 		return true;
 	}
 
 	var max_row_count = document.getElementById('proTab').rows.length;
 	max_row_count = eval(max_row_count)-2;//As the table has two header rows, we will reduce two from table row length
 
-	if(!FindDuplicate())
+	if (!FindDuplicate()) {
 		return false;
+	}
 
-	if(max_row_count == 0)
-	{
+	if (max_row_count == 0) {
 		alert(alert_arr.NO_LINE_ITEM_SELECTED);
 		return false;
 	}
 
-	for (var i=1;i<=max_row_count;i++) 
-	{
+	for (var i=1; i<=max_row_count; i++) {
 		//if the row is deleted then avoid validate that row values
-		if(document.getElementById("deleted"+i).value == 1)
+		if (document.getElementById("deleted"+i).value == 1) {
 			continue;
-
+		}
 		if (!emptyCheck("productName"+i,alert_arr.LINE_ITEM,"text")) return false;
 		if (!emptyCheck("qty"+i,"Qty","text")) return false;
 		if (!numValidate("qty"+i,"Qty","any",true)) return false;
@@ -349,18 +347,15 @@ function validateInventoryLines(module) {
 	//Percentage selected, so validate the percentage
 	if(discount_checks[1].checked == true)
 	{
-		temp = /^(0|[1-9]{1}\d{0,})(\.(\d{1}\d{0,}))?$/.test(document.getElementById("discount_percentage_final").value);
-		if(!temp)
-		{
+		var temp = /^(0|[1-9]{1}\d{0,})(\.(\d{1}\d{0,}))?$/.test(document.getElementById("discount_percentage_final").value);
+		if (!temp) {
 			alert(alert_arr.VALID_FINAL_PERCENT);
 			return false;
 		}
 	}
-	if(discount_checks[2].checked == true)
-	{
+	if (discount_checks[2].checked == true) {
 		temp = /^(0|[1-9]{1}\d{0,})(\.(\d{1}\d{0,}))?$/.test(document.getElementById("discount_amount_final").value);
-		if(!temp)
-		{
+		if (!temp) {
 			alert(alert_arr.VALID_FINAL_AMOUNT);
 			return false;
 		}
@@ -368,16 +363,14 @@ function validateInventoryLines(module) {
 
 	//Shipping & Handling validation - not allow negative values
 	temp = /^(0|[1-9]{1}\d{0,})(\.(\d{1}\d{0,}))?$/.test(document.getElementById("shipping_handling_charge").value);
-	if(!temp)
-	{
+	if (!temp) {
 		alert(alert_arr.VALID_SHIPPING_CHARGE);
 		return false;
 	}
 
 	//Adjustment validation - allow negative values
 	temp = /^-?(0|[1-9]{1}\d{0,})(\.(\d{1}\d{0,}))?$/.test(document.getElementById("adjustment").value);
-	if(!temp)
-	{
+	if (!temp) {
 		alert(alert_arr.VALID_ADJUSTMENT);
 		return false;
 	}
@@ -385,24 +378,21 @@ function validateInventoryLines(module) {
 	//Group - Tax Validation  - not allow negative values
 	//We need to validate group tax only if taxtype is group.
 	var taxtype=document.getElementById("taxtype").value;
-	if(taxtype=="group")
-	{
+	if (taxtype=='group') {
 		var tax_count=document.getElementById("group_tax_count").value;
-		for(var i=1;i<=tax_count;i++)
-		{
+		for (i=1;i<=tax_count;i++) {
 			temp = /^-?(0|[1-9]{1}\d{0,})(\.(\d{1}\d{0,}))?$/.test(document.getElementById("group_tax_percentage"+i).value);
-			if(!temp)
-			{
+			if (!temp) {
 				alert(alert_arr.VALID_TAX_PERCENT);
 				return false;
 			}
 		}
 	}
 
-	//Taxes for Shippring and Handling  validation - not allow negative values
+	//Taxes for Shipping and Handling  validation - not allow negative values
 	if (document.getElementById('sh_tax_count')) {
 		var shtax_count=document.getElementById('sh_tax_count').value;
-		for (var i=1; i<=shtax_count; i++) {
+		for (i=1; i<=shtax_count; i++) {
 			temp = /^(0|[1-9]{1}\d{0,})(\.(\d{1}\d{0,}))?$/.test(document.getElementById('sh_tax_percentage'+i).value);
 			if (!temp) {
 				alert(alert_arr.VALID_SH_TAX);
