@@ -215,8 +215,13 @@ if (isset($_REQUEST['opportunity_id']) && $_REQUEST['opportunity_id'] != '') {
 	$potfocus = new Potentials();
 	$potfocus->column_fields['potential_id'] = $_REQUEST['opportunity_id'];
 	$associated_prod = getAssociatedProducts('Potentials', $potfocus, $potfocus->column_fields['potential_id']);
+	if (count($associated_prod)==1 && count($associated_prod[1])==1) { // no products so we empty array to avoid warning
+		$smarty->assign('AVAILABLE_PRODUCTS', 'false');
+		$associated_prod = array();
+	} else {
+		$smarty->assign('AVAILABLE_PRODUCTS', 'true');
+	}
 	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
-	$smarty->assign('AVAILABLE_PRODUCTS', count($associated_prod)>0 ? 'true' : 'false');
 	$smarty->assign('MODE', $focus->mode);
 }
 if (isset($_REQUEST['convertfromid']) && $_REQUEST['convertfromid'] != '') {

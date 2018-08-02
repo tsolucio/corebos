@@ -108,12 +108,13 @@ if (isset($_REQUEST['potential_id']) && $_REQUEST['potential_id'] !='') {
 	}
 	$log->debug('Quotes EditView: Potential Id from the request is '.$_REQUEST['potential_id']);
 	$associated_prod = getAssociatedProducts('Potentials', $focus, $focus->column_fields['potential_id']);
-	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
-	if (count($associated_prod)==1 && count($associated_prod[1])==1) {
+	if (count($associated_prod)==1 && count($associated_prod[1])==1) { // no products so we empty array to avoid warning
 		$smarty->assign('AVAILABLE_PRODUCTS', 'false');
+		$associated_prod = array();
 	} else {
 		$smarty->assign('AVAILABLE_PRODUCTS', 'true');
 	}
+	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
 	$smarty->assign('MODE', $focus->mode);
 }
 if (isset($_REQUEST['product_id']) && $_REQUEST['product_id'] != '') {
@@ -161,6 +162,21 @@ if (isset($_REQUEST['account_id']) && $_REQUEST['account_id'] != '' && $record =
 	$focus->column_fields['bill_pobox'] = $acct_focus->column_fields['bill_pobox'];
 	$focus->column_fields['ship_pobox'] = $acct_focus->column_fields['ship_pobox'];
 	$log->debug('Accountid Id from the request is '.$_REQUEST['account_id']);
+} elseif (!empty($_REQUEST['contact_id']) && $record == '') {
+	$cto_focus = CRMEntity::getInstance('Contacts');
+	$cto_focus->retrieve_entity_info($_REQUEST['contact_id'], 'Contacts');
+	$focus->column_fields['bill_city'] = $cto_focus->column_fields['mailingcity'];
+	$focus->column_fields['ship_city'] = $cto_focus->column_fields['othercity'];
+	$focus->column_fields['bill_pobox'] = $cto_focus->column_fields['mailingpobox'];
+	$focus->column_fields['ship_pobox'] = $cto_focus->column_fields['otherpobox'];
+	$focus->column_fields['bill_street'] = $cto_focus->column_fields['mailingstreet'];
+	$focus->column_fields['ship_street'] = $cto_focus->column_fields['otherstreet'];
+	$focus->column_fields['bill_state'] = $cto_focus->column_fields['mailingstate'];
+	$focus->column_fields['ship_state'] = $cto_focus->column_fields['otherstate'];
+	$focus->column_fields['bill_code'] = $cto_focus->column_fields['mailingzip'];
+	$focus->column_fields['ship_code'] = $cto_focus->column_fields['otherzip'];
+	$focus->column_fields['bill_country'] = $cto_focus->column_fields['mailingcountry'];
+	$focus->column_fields['ship_country'] = $cto_focus->column_fields['othercountry'];
 }
 $smarty->assign('MASS_EDIT', '0');
 $disp_view = getView($focus->mode);
