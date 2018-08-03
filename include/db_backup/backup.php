@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  **********************************************************************************/
-require_once 'config.inc.php';
+require 'config.inc.php';
 require_once 'include/database/PearDatabase.php';
 define('DBSERVER', $dbconfig['db_hostname']);
 define('DBUSER', $dbconfig['db_username']);
