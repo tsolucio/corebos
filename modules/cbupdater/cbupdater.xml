@@ -1284,4 +1284,11 @@
 	<classname>updateSettingValueField</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mikelkasneci</author>
+	<description>Changeset to reduce modules and fields</description>
+	<filename>build/changeSets/2018/standAlone.php</filename>
+	<classname>StandAlone</classname>
+	<systemupdate>1</systemupdate>
+</changeSet>
 </updatesChangeLog>
