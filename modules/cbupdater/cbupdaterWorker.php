@@ -546,6 +546,16 @@ class cbupdaterWorker {
 		}
 	}
 
+	public function removeAllMenuEntries($module) {
+		global $adb;
+		$modulesToRemove = $adb->pquery('SELECT evvtmenuid from vtiger_evvtmenu where mvalue=?', array($module));
+		if ($adb->num_rows($modulesToRemove) > 0) {
+			for ($i=0; $i < $adb->num_rows($modulesToRemove); $i++) {
+				$adb->pquery('DELETE from vtiger_evvtmenu where evvtmenuid=?', array($adb->query_result($modulesToRemove, $i, 0)));
+			}
+		}
+	}
+
 	public function isModuleInstalled($module) {
 		global $adb;
 		$tabrs = $adb->pquery('select count(*) from vtiger_tab where name=?', array($module));
