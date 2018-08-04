@@ -84,6 +84,9 @@ if (isset($idlist)) {
 			list($saveerror,$errormessage,$error_action,$returnvalues) = $focus->preSaveCheck($params);
 			if (!$saveerror) { // if there is an error we ignore this record
 				if ($exists == 'yes') {
+					// Replacing action value
+					$_REQUEST['params'] = preg_replace('/"action":""/', '"action":"MassEditSave"', $_REQUEST['params']);
+					
 					$validation = executefunctionsvalidate('ValidationLoad', $currentModule, vtlib_purify($_REQUEST['params']));
 					if ($validation == '%%%OK%%%') {
 						$msg = $app_strings['record'].' '.$recordid.' '.$app_strings['saved'];
