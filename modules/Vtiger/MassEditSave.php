@@ -43,6 +43,10 @@ if (isset($params['start']) && $params['start']!='') {
 $exists = executefunctionsvalidate('ValidationExists', $currentModule);
 if (isset($idlist)) {
 	$_REQUEST['action'] = 'MassEditSave';
+
+	// Replacing params action value
+	$_REQUEST['params'] = preg_replace('/"action":""/', '"action":"MassEditSave"', $_REQUEST['params']);
+
 	$recordids = explode(';', $idlist);
 	$recordcount = count($recordids)-1;
 	$id = 1;
