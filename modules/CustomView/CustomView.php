@@ -1036,40 +1036,38 @@ class CustomView extends CRMEntity {
 		$columnslist = $this->getColumnsListByCvid($cvid);
 		if (isset($columnslist)) {
 			foreach ($columnslist as $value) {
-				$tablefield = "";
-				if ($value != "") {
-					$list = explode(":", $value);
+				$tablefield = array();
+				if ($value != '') {
+					$list = explode(':', $value);
 					//Added For getting status for Activities -Jaguar
-					if ($this->customviewmodule == "Calendar" && $list[0] == 'vtiger_cntactivityrel') {
-						$sqllist_column = "ctorel." . $list[1];
+					if ($this->customviewmodule == 'Calendar' && $list[0] == 'vtiger_cntactivityrel') {
+						$sqllist_column = 'ctorel.' . $list[1];
 					} else {
-						$sqllist_column = $list[0] . "." . $list[1];
+						$sqllist_column = $list[0] . '.' . $list[1];
 					}
-					if ($this->customviewmodule == "Calendar") {
-						if ($list[1] == "status" || $list[1] == "eventstatus") {
+					if ($this->customviewmodule == 'Calendar') {
+						if ($list[1] == 'status' || $list[1] == 'eventstatus') {
 							$sqllist_column = "case when (vtiger_activity.status not like '')
 								then vtiger_activity.status
 								else vtiger_activity.eventstatus end as activitystatus";
 						}
 					}
 					//Added for assigned to sorting
-					if ($list[1] == "smownerid") {
-						$userNameSql = getSqlForNameInDisplayFormat(array('first_name' =>
-							'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+					if ($list[1] == 'smownerid') {
+						$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 						$sqllist_column = "case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name";
 					}
-					if ($list[0] == "vtiger_contactdetails" && $list[1] == "lastname") {
-						$sqllist_column = "vtiger_contactdetails.lastname,vtiger_contactdetails.firstname";
+					if ($list[0] == 'vtiger_contactdetails' && $list[1] == 'lastname') {
+						$sqllist_column = 'vtiger_contactdetails.lastname,vtiger_contactdetails.firstname';
 					}
 					$sqllist[] = $sqllist_column;
-					//Ends
 
 					$tablefield[$list[0]] = $list[1];
 
 					//Changed as the replace of module name may replace the string if the fieldname has module name in it -- Jeri
 					$fieldinfo = explode('_', $list[3], 2);
 					$fieldlabel = $fieldinfo[1];
-					$fieldlabel = str_replace("_", " ", $fieldlabel);
+					$fieldlabel = str_replace('_', ' ', $fieldlabel);
 
 					if ($this->isFieldPresent_ByColumnTable($list[1], $list[0])) {
 						$this->list_fields[$fieldlabel] = $tablefield;
@@ -1077,7 +1075,7 @@ class CustomView extends CRMEntity {
 					}
 				}
 			}
-			$returnsql = implode(",", array_unique($sqllist));
+			$returnsql = implode(',', array_unique($sqllist));
 		}
 		return $returnsql;
 	}

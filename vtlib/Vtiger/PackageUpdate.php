@@ -15,20 +15,19 @@ include_once 'vtlib/Vtiger/PackageImport.php';
  */
 class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 
-	var $_migrationinfo = false;
+	public $_migrationinfo = false;
 
 	/**
 	 * Constructor
 	 */
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 	}
 
 	/**
 	 * Initialize Update
-	 * @access private
 	 */
-	function initUpdate($moduleInstance, $zipfile, $overwrite) {
+	public function initUpdate($moduleInstance, $zipfile, $overwrite) {
 		$module = $this->getModuleNameFromZip($zipfile);
 
 		if (!$moduleInstance || $moduleInstance->name != $module) {
@@ -70,8 +69,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 	 * @param String Zip file name
 	 * @param Boolean True for overwriting existing module
 	 */
-	function update($moduleInstance, $zipfile, $overwrite = true) {
-
+	public function update($moduleInstance, $zipfile, $overwrite = true) {
 		$module = $this->getModuleNameFromZip($zipfile);
 
 		if ($module != null) {
@@ -117,9 +115,8 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 
 	/**
 	 * Update Module
-	 * @access private
 	 */
-	function update_Module($moduleInstance) {
+	public function update_Module($moduleInstance) {
 		$tabname = $this->_modulexml->name;
 		$tablabel= $this->_modulexml->label;
 		$parenttab=$this->_modulexml->parent;
@@ -167,7 +164,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 	 * Parse migration information from manifest
 	 * @access private
 	 */
-	function parse_Migration($modulenode) {
+	private function parse_Migration($modulenode) {
 		if (empty($this->_migrations)) {
 			$this->_migrations = array();
 			if (!empty($modulenode->migrations) &&
@@ -189,7 +186,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 	 * Handle migration of the module
 	 * @access private
 	 */
-	function handle_Migration($modulenode, $moduleInstance) {
+	private function handle_Migration($modulenode, $moduleInstance) {
 		// TODO Handle module migration SQL
 		$this->parse_Migration($modulenode);
 		$cur_version = $moduleInstance->version;
@@ -222,7 +219,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 	 * Update Tables of the module
 	 * @access private
 	 */
-	function update_Tables($modulenode) {
+	private function update_Tables($modulenode) {
 		$this->import_Tables($modulenode);
 	}
 
@@ -230,7 +227,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 	 * Update Blocks of the module
 	 * @access private
 	 */
-	function update_Blocks($modulenode, $moduleInstance) {
+	private function update_Blocks($modulenode, $moduleInstance) {
 		if (empty($modulenode->blocks) || empty($modulenode->blocks->block)) {
 			return;
 		}
@@ -251,7 +248,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 	 * Update Block of the module
 	 * @access private
 	 */
-	function update_Block($modulenode, $moduleInstance, $blocknode, $blockInstance) {
+	private function update_Block($modulenode, $moduleInstance, $blocknode, $blockInstance) {
 		// TODO Handle block property update
 	}
 
@@ -259,7 +256,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 	 * Update Fields of the module
 	 * @access private
 	 */
-	function update_Fields($blocknode, $blockInstance, $moduleInstance) {
+	private function update_Fields($blocknode, $blockInstance, $moduleInstance) {
 		if (empty($blocknode->fields) || empty($blocknode->fields->field)) {
 			return;
 		}
@@ -279,7 +276,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 	 * Update Field of the module
 	 * @access private
 	 */
-	function update_Field($blocknode, $blockInstance, $moduleInstance, $fieldnode, $fieldInstance) {
+	private function update_Field($blocknode, $blockInstance, $moduleInstance, $fieldnode, $fieldInstance) {
 		// TODO Handle field property update
 
 		if (!empty($fieldnode->helpinfo)) {
@@ -294,7 +291,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 	 * Import Custom views of the module
 	 * @access private
 	 */
-	function update_CustomViews($modulenode, $moduleInstance) {
+	private function update_CustomViews($modulenode, $moduleInstance) {
 		if (empty($modulenode->customviews) || empty($modulenode->customviews->customview)) {
 			return;
 		}
@@ -312,7 +309,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 	 * Update Custom View of the module
 	 * @access private
 	 */
-	function update_CustomView($modulenode, $moduleInstance, $customviewnode, $filterInstance) {
+	private function update_CustomView($modulenode, $moduleInstance, $customviewnode, $filterInstance) {
 		// TODO Handle filter property update
 	}
 
@@ -320,7 +317,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 	 * Update Sharing Access of the module
 	 * @access private
 	 */
-	function update_SharingAccess($modulenode, $moduleInstance) {
+	private function update_SharingAccess($modulenode, $moduleInstance) {
 		if (empty($modulenode->sharingaccess)) {
 			return;
 		}
@@ -332,7 +329,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 	 * Update Events of the module
 	 * @access private
 	 */
-	function update_Events($modulenode, $moduleInstance) {
+	private function update_Events($modulenode, $moduleInstance) {
 		if (empty($modulenode->events) || empty($modulenode->events->event)) {
 			return;
 		}
@@ -348,7 +345,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 	 * Update Event of the module
 	 * @access private
 	 */
-	function update_Event($modulenode, $moduleInstance, $eventnode) {
+	private function update_Event($modulenode, $moduleInstance, $eventnode) {
 		//Vtiger_Event::register($moduleInstance, $eventnode->eventname, $eventnode->classname, $eventnode->filename);
 		// TODO Handle event property update
 	}
@@ -357,7 +354,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 	 * Update actions of the module
 	 * @access private
 	 */
-	function update_Actions($modulenode, $moduleInstance) {
+	private function update_Actions($modulenode, $moduleInstance) {
 		if (empty($modulenode->actions) || empty($modulenode->actions->action)) {
 			return;
 		}
@@ -370,7 +367,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 	 * Update action of the module
 	 * @access private
 	 */
-	function update_Action($modulenode, $moduleInstance, $actionnode) {
+	private function update_Action($modulenode, $moduleInstance, $actionnode) {
 		// TODO Handle action property update
 	}
 
@@ -378,7 +375,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 	 * Update related lists of the module
 	 * @access private
 	 */
-	function update_RelatedLists($modulenode, $moduleInstance) {
+	private function update_RelatedLists($modulenode, $moduleInstance) {
 		if (empty($modulenode->relatedlists) || empty($modulenode->relatedlists->relatedlist)) {
 			return;
 		}
@@ -392,7 +389,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 	 * Import related list of the module.
 	 * @access private
 	 */
-	function update_Relatedlist($modulenode, $moduleInstance, $relatedlistnode) {
+	private function update_Relatedlist($modulenode, $moduleInstance, $relatedlistnode) {
 		$relModuleInstance = Vtiger_Module::getInstance($relatedlistnode->relatedmodule);
 		$label = $relatedlistnode->label;
 		$actions = false;
@@ -409,7 +406,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 		return $relModuleInstance;
 	}
 
-	function update_CustomLinks($modulenode, $moduleInstance) {
+	private function update_CustomLinks($modulenode, $moduleInstance) {
 		if (empty($modulenode->customlinks) || empty($modulenode->customlinks->customlink)) {
 			return;
 		}
@@ -417,7 +414,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 		$this->import_CustomLinks($modulenode, $moduleInstance);
 	}
 
-	function update_CronTasks($modulenode) {
+	private function update_CronTasks($modulenode) {
 		if (empty($modulenode->crons) || empty($modulenode->crons->cron)) {
 			return;
 		}
