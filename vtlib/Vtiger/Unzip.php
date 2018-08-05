@@ -18,11 +18,10 @@ class Vtiger_Unzip {
 	private $zipa;
 	private static $compressedList = array();
 
-	public function __construct($filename){
+	public function __construct($filename) {
 		$this->fileName = $filename;
 		$this->zipa = new ZipArchive();
-		$ret = $this->zipa->open($filename);
-		if ($this->zipa->open($filename)!==TRUE) {
+		if ($this->zipa->open($filename)!==true) {
 			throw new Exception("cannot open <$filename>");
 		}
 	}
@@ -35,10 +34,11 @@ class Vtiger_Unzip {
 	 * Check existence of path in the given array
 	 * @access private
 	 */
-	function __checkPathInArray($path, $pathArray) {
-		foreach($pathArray as $checkPath) {
-			if(strpos($path, $checkPath) === 0)
+	private function __checkPathInArray($path, $pathArray) {
+		foreach ($pathArray as $checkPath) {
+			if (strpos($path, $checkPath) === 0) {
 				return true;
+			}
 		}
 		return false;
 	}
@@ -47,8 +47,10 @@ class Vtiger_Unzip {
 	 * Check if the file path is directory
 	 * @param String Zip file path
 	 */
-	function isdir($filepath) {
-		if(substr($filepath, -1, 1) == "/") return true;
+	public function isdir($filepath) {
+		if (substr($filepath, -1, 1) == '/') {
+			return true;
+		}
 		return false;
 	}
 
@@ -56,15 +58,18 @@ class Vtiger_Unzip {
 	 * Extended unzipAll function
 	 * Allows you to rename while unzipping and handle exclusions.
 	 */
-	public function unzipAllEx($targetDir=false, $includeExclude=false, $renamePaths=false, $ignoreFiles=false, $baseDir="", $applyChmod=0775){
+	public function unzipAllEx($targetDir = false, $includeExclude = false, $renamePaths = false, $ignoreFiles = false, $baseDir = '', $applyChmod = 0775) {
 
 		// We want to always maintain the structure
 		$maintainStructure = true;
 
-		if($targetDir === false)
-			$targetDir = __DIR__."/";
+		if ($targetDir === false) {
+			$targetDir = __DIR__.'/';
+		}
 
-		if($renamePaths === false) $renamePaths = Array();
+		if ($renamePaths === false) {
+			$renamePaths = array();
+		}
 
 		/*
 		 * Setup includeExclude parameter
@@ -77,63 +82,68 @@ class Vtiger_Unzip {
 		 * DEFAULT: If include is specified only files under the specified path will be included.
 		 * If exclude is specified folders or files will be excluded.
 		 */
-		if($includeExclude === false) $includeExclude = Array();
+		if ($includeExclude === false) {
+			$includeExclude = array();
+		}
 
 		$lista = $this->getList();
 		if (count($lista)) {
-			foreach($lista as $fileName=>$trash){
+			foreach ($lista as $fileName => $trash) {
 			// Should the file be ignored?
-			if(isset($includeExclude['include']) && $includeExclude['include'] && !$this->__checkPathInArray($fileName, $includeExclude['include'])) {
-				// Do not include something not specified in include
-				continue;
-			}
-			if(isset($includeExclude['exclude']) && $includeExclude['exclude'] && $this->__checkPathInArray($fileName, $includeExclude['exclude'])) {
-				// Do not include something not specified in include
-				continue;
-			}
+				if (isset($includeExclude['include']) && $includeExclude['include'] && !$this->__checkPathInArray($fileName, $includeExclude['include'])) {
+					// Do not include something not specified in include
+					continue;
+				}
+				if (isset($includeExclude['exclude']) && $includeExclude['exclude'] && $this->__checkPathInArray($fileName, $includeExclude['exclude'])) {
+					// Do not include something not specified in include
+					continue;
+				}
 
-			$dirname  = dirname($fileName);
+				$dirname  = dirname($fileName);
 
 			// Rename the path with the matching one (as specified)
-			if(!empty($renamePaths)) {
-				foreach($renamePaths as $lookup => $replace) {
-					if(strpos($dirname, $lookup) === 0) {
-						$dirname = substr_replace($dirname, $replace, 0, strlen($lookup));
-						break;
+				if (!empty($renamePaths)) {
+					foreach ($renamePaths as $lookup => $replace) {
+						if (strpos($dirname, $lookup) === 0) {
+							$dirname = substr_replace($dirname, $replace, 0, strlen($lookup));
+							break;
+						}
 					}
 				}
-			}
 
-			$outDN = "$targetDir/$dirname";
+				$outDN = "$targetDir/$dirname";
 
-			if(substr($dirname, 0, strlen($baseDir)) != $baseDir)
-				continue;
+				if (substr($dirname, 0, strlen($baseDir)) != $baseDir) {
+					continue;
+				}
 
-			if(!is_dir($outDN) && $maintainStructure){
-				$str = "";
-				$folders = explode("/", $dirname);
-				foreach($folders as $folder){
-					$str = $str?"$str/$folder":$folder;
-					if(!is_dir("$targetDir/$str")){
-						mkdir("$targetDir/$str");
-						if($applyChmod)
-							@chmod("$targetDir/$str", $applyChmod);
+				if (!is_dir($outDN) && $maintainStructure) {
+					$str = '';
+					$folders = explode('/', $dirname);
+					foreach ($folders as $folder) {
+						$str = $str?"$str/$folder":$folder;
+						if (!is_dir("$targetDir/$str")) {
+							mkdir("$targetDir/$str");
+							if ($applyChmod) {
+								@chmod("$targetDir/$str", $applyChmod);
+							}
+						}
 					}
 				}
-			}
-			if(substr($fileName, -1, 1) == "/")
-				continue;
+				if (substr($fileName, -1, 1) == '/') {
+					continue;
+				}
 
-			$this->unzip($fileName, "$targetDir/$dirname/".basename($fileName), 0664);
-		} // foreach
+				$this->unzip($fileName, "$targetDir/$dirname/".basename($fileName), 0664);
+			} // foreach
 		} // has list
 	}
 
-	public function getList(){
+	public function getList() {
 		if (count(self::$compressedList)) {
 			return self::$compressedList;
 		}
-		for ($f=0; $f<$this->zipa->numFiles;$f++) {
+		for ($f=0; $f<$this->zipa->numFiles; $f++) {
 			$details = $this->zipa->statIndex($f);
 			$filename = $details['name'];
 			self::$compressedList[$filename]['file_name']          = $filename;
@@ -146,30 +156,33 @@ class Vtiger_Unzip {
 		return self::$compressedList;
 	}
 
-	public function each($EachCallback){
+	public function each($EachCallback) {
 		// $EachCallback(filename, fileinfo);
-		if(!is_callable($EachCallback))
+		if (!is_callable($EachCallback)) {
 			die(get_class($this).":: You called 'each' method, but failed to provide a Callback as argument. Usage: \$zip->each(function(\$filename, \$fileinfo) use (\$zip){ ... \$zip->unzip(\$filename, 'uncompress/\$filename'); }).");
+		}
 
 		$lista = $this->getList();
-		if (count($lista)) foreach($lista as $fileName=>$fileInfo) {
-			if(false === call_user_func($EachCallback, $fileName, $fileInfo)){
-				return false;
+		if (count($lista)) {
+			foreach ($lista as $fileName => $fileInfo) {
+				if (false === call_user_func($EachCallback, $fileName, $fileInfo)) {
+					return false;
+				}
 			}
 		}
 		return true;
 	}
 
-	public function unzip($compressedFileName, $targetFileName=false, $applyChmod=0664) {
+	public function unzip($compressedFileName, $targetFileName = false, $applyChmod = 0664) {
 		if (!count(self::$compressedList)) {
 			$this->getList();
 		}
 
 		$fdetails = self::$compressedList[$compressedFileName];
-		if(!isset(self::$compressedList[$compressedFileName])){
+		if (!isset(self::$compressedList[$compressedFileName])) {
 			throw new Exception("File '$compressedFileName' is not in the zip ".$this->fileName);
 		}
-		if(substr($compressedFileName, -1) == "/"){
+		if (substr($compressedFileName, -1) == '/') {
 			throw new Exception("Trying to unzip a folder name '$compressedFileName'.");
 		}
 		$destPath = ($targetFileName ? $targetFileName : $compressedFileName);
@@ -180,16 +193,17 @@ class Vtiger_Unzip {
 		if ($destPath!=$compressedFileName) {
 			rename($destDir.'/'.$compressedFileName, $destPath);
 		}
-		if($applyChmod && $ret)
+		if ($applyChmod && $ret) {
 			@chmod($destPath, $applyChmod == 0755 ? 0664 : $applyChmod);
+		}
 		return $ret;
 	}
 
-	public function unzipAll($targetDir=false, $baseDir='', $maintainStructure=true, $applyChmod=0775) {
-		if ($targetDir === false)
+	public function unzipAll($targetDir = false, $baseDir = '', $maintainStructure = true, $applyChmod = 0775) {
+		if ($targetDir === false) {
 			$targetDir = __DIR__.'/';
+		}
 		return $this->zipa->extractTo($targetDir);
 	}
-
 }
 ?>
