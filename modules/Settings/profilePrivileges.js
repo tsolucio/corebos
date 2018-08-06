@@ -278,6 +278,9 @@ function saveprofile(frm) {
 				sentForm[fieldname] = checked;
 			}
 		}
+		if (document.profileform.elements[i].type == 'hidden' && document.profileform.elements[i].name.indexOf('_readonly')!=-1) {
+			sentForm[document.profileform.elements[i].name] = document.profileform.elements[i].value;
+		}
 	}
 	VtigerJS_DialogBox.block();
 	jQuery.ajax({
