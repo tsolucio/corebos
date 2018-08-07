@@ -1048,7 +1048,7 @@ $app_strings = array(
 'Discount'=>'Rabatt',
 'LBL_ADD_BUTTON' => 'erstelle',
 
-'LBL_GENERAL_FIELDS'=>'Allgemeine Felder', 
+'LBL_GENERAL_FIELDS'=>'Allgemeine Felder',
 //For Users fields
 'HomePhone'=>'Telefon privat',
 'Signature'=>'Signatur',
@@ -1158,7 +1158,7 @@ $app_strings = array(
 // For Privacy Policy
 'LNK_PRIVACY_POLICY'=>'Datenschutz',
 'LBL_MOVE_BLOCK_FIELD' => 'Felder verschieben',
- 
+
 //added for find duplicate
 'LBL_DUPLICATE_DATA_IN'=>'Duplikate ',
 'LBL_MERGE_SELECT'=>'ausgewählte Zusammenführen',
@@ -1182,7 +1182,7 @@ $app_strings = array(
 'PUBLIC_FILTER'=>'öffentlich',
 
 // Account Hierarchy
-'LBL_ACCOUNT_HIERARCHY' => 'Unternehmenshierarchie', 
+'LBL_ACCOUNT_HIERARCHY' => 'Unternehmenshierarchie',
 
 //Prod Bundles
 'LBL_NO_SUB_PRODUCTS'=>'kein Bündel',
@@ -1207,7 +1207,7 @@ $app_strings = array(
 
 // Unified Search extended support
 'LBL_SELECT_MODULES_FOR_SEARCH' => 'Modulauswahl zur Suche',
-'LBL_SELECT_ALL' => 'Alle auswählen', 
+'LBL_SELECT_ALL' => 'Alle auswählen',
 'LBL_UNSELECT_ALL' => 'Alle abwählen',
 'LBL_FIELD_FOR_COMPARISION' => 'Feld zum Vergleich',
 'LBL_DONE' => ' erledigt ',
@@ -1219,7 +1219,7 @@ $app_strings = array(
 // For note link on the detailview
 'LBL_ADD_NOTE'=>'erstelle Notiz',
 
-// For Layout Editor 
+// For Layout Editor
 'LBL_UNHIDE_FIELDS'=>'Felder anzeigen',
 
 // For Mass Edit

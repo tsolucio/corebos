@@ -1045,7 +1045,7 @@ $app_strings = array (
 'APP.LBL_NOW' => 'Ora',
 'LBL_NOW'=>'Ora',//BACKUP
 'LBL_MORE_CURRENCIES' => 'ulteriori valute',
-'LBL_BASE_CURRENCY' => 'Valuta Predefinita', 
+'LBL_BASE_CURRENCY' => 'Valuta Predefinita',
 'LBL_CURRENCY' => 'Valuta',
 'LBL_PRICE' => 'Prezzo',
 'LBL_CONVERSION_RATE' => 'Tasso di conversione',
@@ -1134,7 +1134,6 @@ $app_strings = array (
 'LBL_REFRESH' => 'Aggiorna',
 'LBL_Reminder' => 'Promemoria',
 'LBL_RESET_PASSWORD' => 'Reimposta Password',
-	
 'LBL_CRITERIA_AND'=>'e',
 'LBL_CRITERIA_OR'=>'o',
 'LBL_NEW_GROUP'=>'Nuovo Gruppo',
