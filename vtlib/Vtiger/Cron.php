@@ -151,7 +151,7 @@ class Vtiger_Cron {
 	public function isRunnable() {
 		$runnable = false;
 
-		if (!$this->isDisabled()) {
+		if (!$this->isDisabled() && !$this->isRunning()) {
 			// Take care of last time (end - on success, start - if timedout)
 			$lastTime = ($this->getLastEnd() > 0) ? $this->getLastEnd() : $this->getLastStart();
 			$elapsedTime = time() - $lastTime;
