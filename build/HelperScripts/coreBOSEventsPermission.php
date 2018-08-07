@@ -68,43 +68,49 @@ class coreBOSEventsPermissionExample extends VTEventHandler {
 		return $parameter;
 	}
 
-	function HelpDeskisPermitted($module, $actionname, $record_id='') {
+	public function HelpDeskisPermitted($module, $actionname, $record_id = '') {
 		global $adb, $current_user;
-		if ($record_id=='' or $this->typeOfPermissionOverride=='none') {
+		if ($record_id=='' || $this->typeOfPermissionOverride=='none') {
 			// permission on module so we just return what has already been calculated
 			return 'no';
 		}
 		$ret = 'no';
 		if ($this->typeOfPermissionOverride=='fullOverride') {
 			// check if ticket is related to account Chemex
-			$hdownerrs = $adb->pquery('select 1
+			$hdownerrs = $adb->pquery(
+				'select 1
 				from vtiger_troubletickets
 				where vtiger_troubletickets.parent_id=74 and ticketid=?',
-				array($record_id));
-			if ($hdownerrs and $adb->num_rows($hdownerrs)>0) {
+				array($record_id)
+			);
+			if ($hdownerrs && $adb->num_rows($hdownerrs)>0) {
 				$ret = 'yes';
 			}
 		} elseif ($this->typeOfPermissionOverride=='addToUserPermission') {
 			// check if ticket is owned by user or the related account or product is owned by user
-			$hdownerrs = $adb->pquery('select 1
+			$hdownerrs = $adb->pquery(
+				'select 1
 				from vtiger_troubletickets
 				inner join vtiger_crmentity as hdcrm on hdcrm.crmid = vtiger_troubletickets.ticketid
 				inner join vtiger_crmentity as acccrm on acccrm.crmid = vtiger_troubletickets.parent_id
 				inner join vtiger_crmentity as pdocrm on pdocrm.crmid = vtiger_troubletickets.product_id
 				where (hdcrm.smownerid=? or acccrm.smownerid=? or pdocrm.smownerid=?) and ticketid=?',
-				array($current_user->id,$current_user->id,$current_user->id,$record_id));
-			if ($hdownerrs and $adb->num_rows($hdownerrs)>0) {
+				array($current_user->id,$current_user->id,$current_user->id,$record_id)
+			);
+			if ($hdownerrs && $adb->num_rows($hdownerrs)>0) {
 				$ret = 'yes';
 			}
 		} else { // showTheseRecords
 			// check if the related account or product is owned by user
-			$hdownerrs = $adb->pquery('select 1
+			$hdownerrs = $adb->pquery(
+				'select 1
 				from vtiger_troubletickets
 				inner join vtiger_crmentity as acccrm on acccrm.crmid = vtiger_troubletickets.parent_id
 				inner join vtiger_crmentity as pdocrm on pdocrm.crmid = vtiger_troubletickets.product_id
 				where (acccrm.smownerid=? or pdocrm.smownerid=?) and ticketid=?',
-				array($current_user->id,$current_user->id,$record_id));
-			if ($hdownerrs and $adb->num_rows($hdownerrs)>0) {
+				array($current_user->id,$current_user->id,$record_id)
+			);
+			if ($hdownerrs && $adb->num_rows($hdownerrs)>0) {
 				$ret = 'yes';
 			}
 		}
@@ -116,7 +122,7 @@ class coreBOSEventsPermissionExample extends VTEventHandler {
 	 * permission system based on the user assigned to the related Account or Product
 	 * This query is to be used inside the getNonAdminAccessControlQuery function.
 	 */
-	function getHelpDeskAccessQuery($module, $user) {
+	public function getHelpDeskAccessQuery($module, $user) {
 		global $adb;
 		$query = "select distinct vtiger_troubletickets.ticketid as id
 			from vtiger_troubletickets
@@ -131,7 +137,7 @@ class coreBOSEventsPermissionExample extends VTEventHandler {
 	// With the two functions below you should be able to give access to a set of accounts/contacts
 	// and the user will be able to access ALL the records in the CRM that are related to them
 	// independent of who they are assigned to.
-	function AccountContactRelatedisPermitted($module, $actionname, $record_id='') {
+	public function AccountContactRelatedisPermitted($module, $actionname, $record_id = '') {
 		global $adb, $current_user;
 		if ($record_id=='') { // permission on module so we just return what has already been calculated
 			return 'no';
@@ -140,8 +146,8 @@ class coreBOSEventsPermissionExample extends VTEventHandler {
 		// get related account/contact
 		$acid = getRelatedAccountContact($record_id);
 		if (!empty($acid)) {
-			$acownerrs = $adb->pquery('select smownerid from vtiger_crmentity where crmid=? and deleted=0',array($acid));
-			if ($acownerrs and $adb->num_rows($acownerrs)>0) {
+			$acownerrs = $adb->pquery('select smownerid from vtiger_crmentity where crmid=? and deleted=0', array($acid));
+			if ($acownerrs && $adb->num_rows($acownerrs)>0) {
 				$owner = $adb->query_result($acownerrs, 0, 0);
 				if ($owner==$current_user->id) {
 					$ret = 'yes';
@@ -156,7 +162,7 @@ class coreBOSEventsPermissionExample extends VTEventHandler {
 	 * permission system based on the user assigned to the related Account/Contact.
 	 * This query is to be used inside the getNonAdminAccessControlQuery function.
 	 */
-	function getAccountContactRelatedAccessQuery($module, $user) {
+	public function getAccountContactRelatedAccessQuery($module, $user) {
 		global $adb;
 		if (GlobalVariable::getVariable('Application_B2B', '1')) {
 			$parentmodule = 'Accounts';
@@ -240,7 +246,7 @@ class coreBOSEventsPermissionExample extends VTEventHandler {
 				}
 				break;
 			case 'InventoryDetails':
-				$rspot = $adb->pquery("select account_id,contact_id from vtiger_inventorydetails where inventorydetailsid=?",array($crmid));
+				$rspot = $adb->pquery("select account_id,contact_id from vtiger_inventorydetails where inventorydetailsid=?", array($crmid));
 				if ($parentmodule=='Accounts') {
 					$query = "select vtiger_inventorydetails.inventorydetailsid as id
 						from vtiger_inventorydetails
@@ -312,9 +318,9 @@ class coreBOSEventsPermissionExample extends VTEventHandler {
 			default:  // we look for uitype 10
 				$rsfld = $adb->pquery('SELECT fieldname from vtiger_fieldmodulerel
 					INNER JOIN vtiger_field on vtiger_field.fieldid=vtiger_fieldmodulerel.fieldid
-					WHERE module=? and relmodule=?',array($module,$parentmodule));
-				if ($rsfld and $adb->num_rows($rsfld)>0) {
-					$fname = $adb->query_result($rsfld,0,'fieldname');
+					WHERE module=? and relmodule=?', array($module,$parentmodule));
+				if ($rsfld && $adb->num_rows($rsfld)>0) {
+					$fname = $adb->query_result($rsfld, 0, 'fieldname');
 					$mod = Vtiger_Module::getInstance($module);
 					$query = 'select '.$mod->basetable.'.'.$mod->basetableid.' as id
 						from '.$mod->basetable.'
@@ -324,5 +330,4 @@ class coreBOSEventsPermissionExample extends VTEventHandler {
 		}
 		return $query;
 	}
-
 }
