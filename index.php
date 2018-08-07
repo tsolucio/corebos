@@ -219,7 +219,6 @@ if (isset($action) && isset($module)) {
 		preg_match("/^redirect/", $action) ||
 		preg_match("/^webmail/", $action) ||
 		preg_match("/^download/", $action) ||
-		preg_match("/^SendMailAction/", $action) ||
 		preg_match("/^home_rss/", $action) ||
 		preg_match("/^ConvertAsFAQ/", $action) ||
 		preg_match("/^ActivityAjax/", $action) ||

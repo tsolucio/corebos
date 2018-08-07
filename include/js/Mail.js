@@ -53,33 +53,6 @@ function eMail(module,oButton) {
 	}
 }
 
-function massMail(module) {
-	var select_options = document.getElementsByName('selected_id');
-	x = select_options.length;
-	var viewid =getviewId();
-	idstring = "";
-
-	xx = 0;
-	for(i = 0; i < x ; i++)
-	{
-		if(select_options[i].checked)
-		{
-			idstring = select_options[i].value +";"+idstring;
-			xx++;
-		}
-	}
-	if (xx != 0)
-	{
-		document.getElementById('idlist').value=idstring;
-	}
-	else
-	{
-		alert(alert_arr.SELECT);
-		return false;
-	}
-	document.massdelete.action="index.php?module=CustomView&action=SendMailAction&return_module="+module+"&return_action=index&viewname="+viewid;
-}
-
 function set_return_emails(entity_id,email_id,parentname,emailadd,emailadd2,perm,emailfield){
 	if(perm == 0 || perm == 3) {
 		if(emailadd2 == '') {
