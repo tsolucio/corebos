@@ -73,9 +73,6 @@ function getSearchListHeaderValues($focus, $module, $sort_qry = '', $sorder = ''
 		if ($fieldname == 'lastname' && $module !='Leads' && $module !='Contacts') {
 			$fieldname = 'contact_id';
 		}
-		if ($fieldname == 'folderid' && $module == 'Documents') {
-			$fieldname = 'foldername';
-		}
 		$field_list[] = $fieldname;
 	}
 	//Getting the Entries from Profile2field table
