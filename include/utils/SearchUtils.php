@@ -274,7 +274,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 	if (empty($input)) {
 		$input = $_REQUEST;
 	}
-
+	$uitype = 0;
 	if ($search_field =='crmid') {
 		$column_name='crmid';
 		$table_name='vtiger_crmentity';
@@ -436,21 +436,19 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 	//uitype 10 handling
 	if ($uitype == 10) {
 		$where = array();
-		$sql = "select fieldid from vtiger_field where tabid=? and fieldname=?";
-		$result = $adb->pquery($sql, array(getTabid($module), $search_field));
+		$result = $adb->pquery('select fieldid from vtiger_field where tabid=? and fieldname=?', array(getTabid($module), $search_field));
 
 		if ($adb->num_rows($result)>0) {
-			$fieldid = $adb->query_result($result, 0, "fieldid");
-			$sql = "select * from vtiger_fieldmodulerel where fieldid=?";
-			$result = $adb->pquery($sql, array($fieldid));
+			$fieldid = $adb->query_result($result, 0, 'fieldid');
+			$result = $adb->pquery('select * from vtiger_fieldmodulerel where fieldid=?', array($fieldid));
 			$count = $adb->num_rows($result);
 			$searchString = formatForSqlLike($search_string);
 
 			for ($i=0; $i<$count; $i++) {
-				$relModule = $adb->query_result($result, $i, "relmodule");
+				$relModule = $adb->query_result($result, $i, 'relmodule');
 				$relInfo = getEntityField($relModule);
-				$relTable = $relInfo["tablename"];
-				$relField = $relInfo["fieldname"];
+				$relTable = $relInfo['tablename'];
+				$relField = $relInfo['fieldname'];
 
 				if (strpos($relField, 'concat') !== false) {
 					$where[] = "$relField like '$searchString'";
@@ -458,7 +456,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 					$where[] = "$relTable.$relField like '$searchString'";
 				}
 			}
-			$where = implode(" or ", $where);
+			$where = implode(' or ', $where);
 		}
 		$where = "($where) ";
 	}
