@@ -20,12 +20,23 @@
 
 require_once 'include/utils/utils.php';
 require_once 'include/utils/CommonUtils.php';
+require_once 'modules/cbMap/cbMap.php';
 
 function duplicaterec($currentModule, $record_id, $bmap) {
 	global $adb, $current_user;
 
 	$focus = CRMEntity::getInstance($currentModule);
 	$focus->retrieve_entity_info($record_id, $currentModule);
+
+	// Business Map
+	$focus->id = $bmap;
+	$focus->mode = '';
+	$businessMap = $focus->column_fields['maptype'];
+
+	if($businessMap == "Condition Query") {
+		$ids = array();
+		$ids = $focus->ConditionQuery($record_id);
+	}
 
 	if (is_numeric($bmap)) {
 		$cbMapid = $bmap;
@@ -45,7 +56,14 @@ function duplicaterec($currentModule, $record_id, $bmap) {
 	if ($cbMapid && $cbMap->DuplicateRelations()->DuplicateDirectRelations()) {
 		$invmods = getInventoryModules();
 		foreach ($focus->column_fields as $fieldname => $value) {
-			$sql = 'SELECT * FROM vtiger_field WHERE columnname = ? AND uitype IN (10,51,57,73,76,75,81,78,80)';
+			if ($businessMap == "Condition Query") {
+				$sql = 'SELECT * FROM vtiger_field WHERE columnname = ? AND uitype IN ($ids)';
+			} else if ($businessMap == "Condition Express") {
+				// To Do.
+			} else {
+				$sql = 'SELECT * FROM vtiger_field WHERE columnname = ? AND uitype IN (10,51,57,73,76,75,81,78,80)';
+			}
+			
 			$result = $adb->pquery($sql, array($fieldname));
 			if ($adb->num_rows($result) == 1 && !empty($value)) {
 				$module = getSalesEntityType($value);
