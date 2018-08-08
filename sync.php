@@ -47,7 +47,7 @@ if (isset($_GET['code'])) {
 	if ($token->refresh_token!='' && $token->refresh_token!=null) {
 		$adb->pquery(
 			'update its4you_googlesync4you_access set refresh_token=? where userid=? and service=?',
-		    array($token->refresh_token, $_SESSION['authenticated_user_id'],$service)
+			array($token->refresh_token, $_SESSION['authenticated_user_id'],$service)
 		);
 	}
 	header("Location: $site_URL/index.php?module=Calendar4You&action=index");

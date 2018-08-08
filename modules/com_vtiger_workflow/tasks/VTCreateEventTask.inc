@@ -34,7 +34,7 @@ class VTCreateEventTask extends VTTask {
 								 'repeatMonth','repeatMonth_date','repeatMonth_daytype','repeatMonth_day', 'assigned_user_id');
 	}
 
-	function getAdmin() {
+	public function getAdmin() {
 		$user = Users::getActiveAdminUser();
 		global $current_user;
 		$this->originalUser = $current_user;
@@ -216,7 +216,7 @@ class VTCreateEventTask extends VTTask {
 		return $date;
 	}
 
-	static function conv12to24hour($timeStr) {
+	public static function conv12to24hour($timeStr) {
 		$arr = array();
 		preg_match('/(\d{1,2}):(\d{1,2})(am|pm)/', $timeStr, $arr);
 		if ($arr[3]=='am') {

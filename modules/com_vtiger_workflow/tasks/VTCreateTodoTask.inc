@@ -28,7 +28,7 @@ class VTCreateTodoTask extends VTTask {
 		return array('todo', 'description', 'sendNotification', 'time', 'date', 'status', 'priority', 'days', 'direction', 'datefield', 'sendNotification', 'assigned_user_id');
 	}
 
-	function getAdmin() {
+	public function getAdmin() {
 		$user = Users::getActiveAdminUser();
 		global $current_user;
 		$this->originalUser = $current_user;
@@ -128,7 +128,7 @@ class VTCreateTodoTask extends VTTask {
 		$logbg->info('Exiting workflow task VTCreateTodoTask');
 	}
 
-	static function conv12to24hour($timeStr) {
+	public static function conv12to24hour($timeStr) {
 		$arr = array();
 		preg_match('/(\d{1,2}):(\d{1,2})(am|pm)/', $timeStr, $arr);
 		if ($arr[3]=='am') {

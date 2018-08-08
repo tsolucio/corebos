@@ -115,7 +115,7 @@ class ServiceContracts extends CRMEntity {
 		}
 		$return_action = isset($_REQUEST['return_action']) ? vtlib_purify($_REQUEST['return_action']) : false;
 		$for_module = isset($_REQUEST['return_module']) ? vtlib_purify($_REQUEST['return_module']) : false;
-		$for_crmid  =isset( $_REQUEST['return_id']) ? vtlib_purify($_REQUEST['return_id']) : false;
+		$for_crmid  =isset($_REQUEST['return_id']) ? vtlib_purify($_REQUEST['return_id']) : false;
 		if ($return_action && $for_module && $for_crmid) {
 			if ($for_module == 'HelpDesk') {
 				$on_focus = CRMEntity::getInstance($for_module);

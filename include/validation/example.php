@@ -21,18 +21,17 @@
   param structure array contains all the form fields current values, the ones you want to validate
   return
   %%%OK%%%  to indicate that all validations have passed correctly
-  %%%CONFIRM%%%   followed by any message to produce a screen that will ask for confirmation
-    using the text following the CONFIRM label
+  %%%CONFIRM%%%   followed by any message to produce a screen that will ask for confirmation using the text following the CONFIRM label
   Any other message will be interpreted as an error message that will be shown to user.
 ************************************************************************************/
 global $log,$currentModule,$adb;
 include_once 'include/validation/load_validations.php';
 
-$screen_values = json_decode($_REQUEST['structure'],true);
+$screen_values = json_decode($_REQUEST['structure'], true);
 $v = new cbValidator(array('iban_number' => $screen_values['iban_number']));
 $v->rule('required', 'iban_number');
 $v->rule('IBAN_BankAccount', 'iban_number');
-if($v->validate()) {
+if ($v->validate()) {
 	echo "Yay! We're all good!";
 } else {
 	// Errors

@@ -77,7 +77,7 @@ function __vt_uppercasewords($arr) {
 	if (count($arr)==0) {
 		return '';
 	} else {
-		return ucwords( strtolower($arr[0]) );
+		return ucwords(strtolower($arr[0]));
 	}
 }
 

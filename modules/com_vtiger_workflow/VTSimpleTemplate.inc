@@ -68,7 +68,7 @@ class VTSimpleTemplate {
 						} elseif ($entity->getModuleName()===$referenceModule) {
 							$data = $entity->getData();
 							if (isset($data['id']) && !isset($data['record_id']) && strpos($data['id'], 'x')) {
-								list($wsid, $data['record_id']) = explode( 'x', $data['id']);
+								list($wsid, $data['record_id']) = explode('x', $data['id']);
 								$data['record_module'] = $referenceModule;
 							}
 							if ($this->useValue($data, $fieldname)) {
