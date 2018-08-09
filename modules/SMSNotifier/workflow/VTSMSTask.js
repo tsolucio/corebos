@@ -97,8 +97,12 @@ function SMSTask($) {
 				fields
 			);
 		}
-		var parentFields = map(function (e) {
-			return[e['name'],e['label']];}, filteredFields(parent['fields']));
+		var parentFields = map(
+			function (e) {
+				return [e['name'],e['label']];
+			},
+			filteredFields(parent['fields'])
+		);
 
 		var referenceFieldTypes = filter(function (e) {
 			return (e['type']['name']=='reference');

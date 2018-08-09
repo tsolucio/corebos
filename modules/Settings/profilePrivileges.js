@@ -93,8 +93,7 @@ function unSelectCreate(id) {
 	}
 }
 function unSelectDelete(id) {
-	if (document.getElementById('tab_chk_2_'+id).checked == false) {
-	} else {
+	if (document.getElementById('tab_chk_2_'+id).checked != false) {
 		var imageid = 'img_'+id;
 		var viewid = 'tab_chk_4_'+id;
 		if (typeof(document.getElementById(imageid)) != 'undefined') {

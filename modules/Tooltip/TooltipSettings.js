@@ -10,7 +10,7 @@
 /**
  * this function takes a fieldname and returns the fields related to it
  */
-function getRelatedFieldInfo(id){
+function getRelatedFieldInfo(id) {
 	var modulename = document.getElementById('pick_module').value;
 	var fieldname = id.options[id.options.selectedIndex].value;
 	jQuery.ajax({
@@ -29,7 +29,7 @@ function getRelatedFieldInfo(id){
 /**
  * this function saves the tooltip related information in the database using an ajax call
  */
-function saveTooltipInformation(fieldid, checkedFields){
+function saveTooltipInformation(fieldid, checkedFields) {
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?module=Tooltip&action=TooltipAjax&file=SaveTooltipInformation&fieldid='+fieldid+'&checkedFields='+checkedFields+'&parenttab=Settings&ajax=true'
@@ -48,7 +48,7 @@ function saveTooltipInformation(fieldid, checkedFields){
 /**
  * this function saves the tooltip
  */
-function doSaveTooltipInfo(){
+function doSaveTooltipInfo() {
 	var fieldid = document.getElementById('fieldid').value;
 	var div = document.getElementById('fieldList');
 	var fields = div.getElementsByTagName('input');
@@ -59,14 +59,14 @@ function doSaveTooltipInfo(){
 			checkedFields[j++] = fields[i].value;
 		}
 	}
-	relatedFields = checkedFields.join(",");
+	relatedFields = checkedFields.join(',');
 	saveTooltipInformation(fieldid, relatedFields);
 }
 
 /**
  * this function takes a fieldid and displays the quick editview for that field
  */
-function displayEditView(){
+function displayEditView() {
 	var node = document.getElementById('pick_field');
 	getRelatedFieldInfo(node);
 }

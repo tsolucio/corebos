@@ -15,41 +15,43 @@
 var moveupLinkObj, moveupDisabledObj, movedownLinkObj, movedownDisabledObj;
 
 function setObjects() {
-	availListObj = getObj("availList")
-	selectedColumnsObj = getObj("selectedColumns")
+	availListObj = getObj('availList');
+	selectedColumnsObj = getObj('selectedColumns');
 }
 
 function addColumn() {
 	setObjects();
-	for (i = 0; i < selectedColumnsObj.length; i++) {
-		selectedColumnsObj.options[i].selected = false
+	for (var i = 0; i < selectedColumnsObj.length; i++) {
+		selectedColumnsObj.options[i].selected = false;
 	}
 
 	for (i = 0; i < availListObj.length; i++) {
 		if (availListObj.options[i].selected == true) {
 			var rowFound = false;
 			var existingObj = null;
-			for (j = 0; j < selectedColumnsObj.length; j++) {
+			for (var j = 0; j < selectedColumnsObj.length; j++) {
 				if (selectedColumnsObj.options[j].value == availListObj.options[i].value) {
-					rowFound = true
-					existingObj = selectedColumnsObj.options[j]
-					break
+					rowFound = true;
+					existingObj = selectedColumnsObj.options[j];
+					break;
 				}
 			}
 			if (rowFound != true) {
-				var newColObj = document.createElement("OPTION")
-				newColObj.value = availListObj.options[i].value
-				if (browser_ie)
-					newColObj.innerText = availListObj.options[i].innerText
-				else if (browser_nn4 || browser_nn6)
-					newColObj.text = availListObj.options[i].text
-				selectedColumnsObj.appendChild(newColObj)
-				availListObj.options[i].selected = false
-				newColObj.selected = true
-				rowFound = false
+				var newColObj = document.createElement('OPTION');
+				newColObj.value = availListObj.options[i].value;
+				if (browser_ie) {
+					newColObj.innerText = availListObj.options[i].innerText;
+				} else if (browser_nn4 || browser_nn6) {
+					newColObj.text = availListObj.options[i].text;
+				}
+				selectedColumnsObj.appendChild(newColObj);
+				availListObj.options[i].selected = false;
+				newColObj.selected = true;
+				rowFound = false;
 			} else {
-				if (existingObj != null)
-					existingObj.selected = true
+				if (existingObj != null) {
+					existingObj.selected = true;
+				}
 			}
 		}
 	}
@@ -57,19 +59,20 @@ function addColumn() {
 
 function delColumn() {
 	setObjects();
-	for (i = selectedColumnsObj.options.length; i > 0; i--) {
-		if (selectedColumnsObj.options.selectedIndex >= 0)
-			selectedColumnsObj.remove(selectedColumnsObj.options.selectedIndex)
+	for (var i = selectedColumnsObj.options.length; i > 0; i--) {
+		if (selectedColumnsObj.options.selectedIndex >= 0) {
+			selectedColumnsObj.remove(selectedColumnsObj.options.selectedIndex);
+		}
 	}
 }
 
 function formSelectColumnString() {
-	var selectedColStr = "";
+	var selectedColStr = '';
 	setObjects();
-	for (i = 0; i < selectedColumnsObj.options.length; i++) {
-		selectedColStr += selectedColumnsObj.options[i].value + ",";
+	for (var i = 0; i < selectedColumnsObj.options.length; i++) {
+		selectedColStr += selectedColumnsObj.options[i].value + ',';
 	}
-	if (selectedColStr == "") {
+	if (selectedColStr == '') {
 		alert(alert_arr.LBL_MERGE_SHOULDHAVE_INFO);
 		return false;
 	}

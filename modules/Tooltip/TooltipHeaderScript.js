@@ -94,7 +94,7 @@ var TOOLTIP = {
 				method: 'POST',
 				url: 'index.php?module=Tooltip&action=TooltipAjax&file=ComputeTooltip&fieldname='+fieldname+'&id='+recordid+'&modname='+module+'&ajax=true&submode=getTooltip'
 			}).done(function (response) {
-						var data = response;
+				var data = response;
 				if (data != false) {
 					TOOLTIP._cache[module][fieldname][recordid] = data;
 					TOOLTIP.show(node, module, fieldname, recordid);

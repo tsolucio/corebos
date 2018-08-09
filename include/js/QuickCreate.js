@@ -14,7 +14,7 @@ function qcemptyCheck(fldName,fldLabel, fldType) {
 			alert(fldLabel+alert_arr.CANNOT_BE_EMPTY);
 			currObj.focus();
 			return false;
-		} else{
+		} else {
 			return true;
 		}
 	} else {
@@ -78,7 +78,7 @@ function qcdateValidate(fldName,fldLabel,type) {
 	if (qcpatternValidate(fldName,fldLabel,'DATE')==false) {
 		return false;
 	}
-	dateval=window.document.QcEditView[fldName].value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	var dateval = window.document.QcEditView[fldName].value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 
 	var dateelements=splitDateVal(dateval);
 
@@ -244,8 +244,9 @@ function qcnumConstComp(fldName,fldLabel,type,constval) {
 }
 
 function qcdateTimeValidate(dateFldName,timeFldName,fldLabel,type) {
-	if(qcpatternValidate(dateFldName,fldLabel,'DATE')==false)
+	if (qcpatternValidate(dateFldName,fldLabel,'DATE')==false) {
 		return false;
+	}
 	dateval=window.document.QcEditView[dateFldName].value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 	var dateelements=splitDateVal(dateval);
 
@@ -319,14 +320,14 @@ function qcdateTimeValidate(dateFldName,timeFldName,fldLabel,type) {
 	}
 }
 
-function QCreate(qcoptions){
+function QCreate(qcoptions) {
 	var module = qcoptions.options[qcoptions.options.selectedIndex].value;
 	if (module != 'none') {
 		document.getElementById('status').style.display='inline';
 		jQuery.ajax({
 			method:'POST',
 			url:'index.php?module='+module+'&action='+module+'Ajax&file=QuickCreate'
-		}).done(function(response) {
+		}).done(function (response) {
 			document.getElementById('status').style.display='none';
 			document.getElementById('qcform').style.display='inline';
 			document.getElementById('qcform').innerHTML = response;

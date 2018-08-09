@@ -29,7 +29,7 @@ function changeEndtime_StartTime() {
 	}
 	let type = document.getElementById('activitytype').value;
 	let datetimestart = getObj('dtstart');
-	let dtarray = datetimestart.value.split(" ");
+	let dtarray = datetimestart.value.split(' ');
 	let datestart = dtarray[0];
 	let timestart = dtarray[1];
 	let dateval1 = datestart.replace(/^\s+/g, '').replace(/\s+$/g, '');
@@ -43,7 +43,7 @@ function changeEndtime_StartTime() {
 	date1.setMonth(mm1 - 1, dd1 + 1);
 	let tempdate = getdispDate(date1);
 	let date = datestart;
-	let timearray = timestart.split(":");
+	let timearray = timestart.split(':');
 	let hour = parseInt(timearray[0], 10);
 	let min = parseInt(timearray[1], 10);
 	let fmt = document.EditView.inputtimefmt_dtstart.value;
@@ -53,11 +53,11 @@ function changeEndtime_StartTime() {
 			if (hour >= day_change_hour) {
 				date = tempdate;
 				hour = hour - +day_change_hour;
-				min = min;
+				//min = min;
 				fmt = 'AM';
 			} else if (hour == 12) {
 				hour = 1;
-				min = min;
+				//min = min;
 				fmt = 'PM';
 			} else {
 				hour = +hour + +calendar_other_default_duration;
@@ -68,11 +68,11 @@ function changeEndtime_StartTime() {
 		} else if (fmt == 'AM') {
 			if (hour >= day_change_hour) {
 				hour = hour - +day_change_hour;
-				min = min;
+				//min = min;
 				fmt = 'PM';
 			} else if (hour == 12) {
 				hour = 1;
-				min = min;
+				//min = min;
 				fmt = 'AM';
 			} else {
 				hour = +hour + +calendar_other_default_duration;
@@ -182,7 +182,7 @@ function open_filtered_contactsIfAccounts(fromlink, fldname, MODULE, ID) {
 	} else {
 		rel_id_elem = document.getElementById('dtlview_rel_id');
 		if (rel_id_elem) {
-			rel_id_elem = rel_id_elem.querySelector('span[type=vtlib_metainfo]')
+			rel_id_elem = rel_id_elem.querySelector('span[type=vtlib_metainfo]');
 			if (rel_id_elem) {
 				rel_id = rel_id_elem.getAttribute('vtrecordid');
 				rel_type = rel_id_elem.getAttribute('vtmodule');
@@ -192,13 +192,13 @@ function open_filtered_contactsIfAccounts(fromlink, fldname, MODULE, ID) {
 	var valmod = (rel_type=='Accounts' || rel_type=='Potentials' || rel_type=='Quotes' || rel_type=='PurchaseOrder' || rel_type=='Vendors' || rel_type=='SalesOrder' || rel_type=='Invoice' || rel_type=='Campaigns' || rel_type=='Products');
 	if (rel_id != '' && valmod) {
 		var BasicSearch = '&parent_module='+rel_type+'&relmod_id='+rel_id; // special hard coded contact search
-		window.open("index.php?module=Contacts&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield="+fldname+"&srcmodule="+MODULE+"&forrecord="+ID+BasicSearch,"vtlibui10","width=780,height=652,resizable=0,scrollbars=0,top=150,left=200");
+		window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield='+fldname+'&srcmodule='+MODULE+'&forrecord='+ID+BasicSearch,'vtlibui10','width=780,height=652,resizable=0,scrollbars=0,top=150,left=200');
 	} else {
-		vtlib_open_popup_window("", "cto_id", "cbCalendar", "");
+		vtlib_open_popup_window('', 'cto_id', 'cbCalendar', '');
 	}
 }
 
-document.addEventListener("DOMContentLoaded", function (event) {
+document.addEventListener('DOMContentLoaded', function (event) {
 	let fldstart = document.getElementById('jscal_field_dtstart');
 	if (fldstart != undefined) {
 		fldstart.onchange = changeEndtime_StartTime;
