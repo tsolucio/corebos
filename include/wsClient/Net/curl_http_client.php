@@ -23,8 +23,8 @@
  * $post_data = array('login' => 'pera', 'password' => 'joe');
  * $html_data = $curl->send_post_data(http://www.foo.com/login.php, $post_data);
  */
-class Curl_HTTP_Client
-{
+class Curl_HTTP_Client {
+
 	/**
 	 * Curl handle
 	 * @access protected
@@ -54,8 +54,7 @@ class Curl_HTTP_Client
 	 *
 	 * @access public
 	 */
-	public function __construct()
-	{
+	public function __construct() {
 		$this->init();
 	}
 
@@ -64,8 +63,7 @@ class Curl_HTTP_Client
 	 *
 	 * @access public
 	 */
-	public function init()
-	{
+	public function init() {
 		//create new curl handle
 		$this->ch = curl_init();
 
@@ -81,8 +79,7 @@ class Curl_HTTP_Client
 	 * @param value $value
 	 * @access public
 	 */
-	public function set_custom_option($opt, $value)
-	{
+	public function set_custom_option($opt, $value) {
 		curl_setopt($this->ch, $opt, $value);
 	}
 
@@ -92,8 +89,7 @@ class Curl_HTTP_Client
 	 * @param string user agent
 	 * @access public
 	 */
-	public function set_user_agent($useragent)
-	{
+	public function set_user_agent($useragent) {
 		curl_setopt($this->ch, CURLOPT_USERAGENT, $useragent);
 	}
 
@@ -103,8 +99,7 @@ class Curl_HTTP_Client
 	 * @param string referer_url
 	 * @access public
 	 */
-	public function set_referer($referer_url)
-	{
+	public function set_referer($referer_url) {
 		curl_setopt($this->ch, CURLOPT_REFERER, $referer_url);
 	}
 
@@ -114,8 +109,7 @@ class Curl_HTTP_Client
 	 * @param boolean true to include response headers, false to suppress them
 	 * @access public
 	 */
-	public function include_response_headers($value)
-	{
+	public function include_response_headers($value) {
 		curl_setopt($this->ch, CURLOPT_HEADER, $value);
 	}
 
@@ -126,8 +120,7 @@ class Curl_HTTP_Client
 	 * @param string pass
 	 * @access public
 	 */
-	public function set_credentials($username, $password)
-	{
+	public function set_credentials($username, $password) {
 		curl_setopt($this->ch, CURLOPT_USERPWD, "$username:$password");
 	}
 
@@ -139,14 +132,12 @@ class Curl_HTTP_Client
 	 * @param enable socks5 proxy
 	 * @access public
 	 */
-	public function set_proxy($proxy_url, $socks5 = false)
-	{
+	public function set_proxy($proxy_url, $socks5 = false) {
 		curl_setopt($this->ch, CURLOPT_PROXY, $proxy_url);
 
 		//set proxy to use socks5
-		if($socks5)
-		{
-			curl_setopt ($this->ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+		if ($socks5) {
+			curl_setopt($this->ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
 		}
 	}
 
@@ -159,8 +150,7 @@ class Curl_HTTP_Client
 	 * @return mixed string data returned from url or boolean false if error occured
 	 * @access public
 	 */
-	public function fetch_url($url, $ip = null, $timeout = 10)
-	{
+	public function fetch_url($url, $ip = null, $timeout = 10) {
 		//set various curl options first
 
 		// set url to post to
@@ -173,8 +163,7 @@ class Curl_HTTP_Client
 		curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
 
 		//bind to specific ip address if it is sent trough arguments
-		if($ip)
-		{
+		if ($ip) {
 			curl_setopt($this->ch, CURLOPT_INTERFACE, $ip);
 		}
 
@@ -184,8 +173,7 @@ class Curl_HTTP_Client
 		//and finally send curl request
 		$result = curl_exec($this->ch);
 
-		if($this->has_error())
-		{
+		if ($this->has_error()) {
 			return false;
 		}
 
@@ -203,8 +191,7 @@ class Curl_HTTP_Client
 	 * @return mixed string with data returned from url or boolean false if error occured
 	 * @access public
 	 */
-	public function send_post_data($url, $postdata, $ip = null, $timeout = 10)
-	{
+	public function send_post_data($url, $postdata, $ip = null, $timeout = 10) {
 		//set various curl options first
 
 		// set url to post to
@@ -214,8 +201,7 @@ class Curl_HTTP_Client
 		curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
 
 		//bind to specific ip address if it is sent trough arguments
-		if($ip)
-		{
+		if ($ip) {
 			curl_setopt($this->ch, CURLOPT_INTERFACE, $ip);
 		}
 
@@ -225,27 +211,20 @@ class Curl_HTTP_Client
 		//set method to post
 		curl_setopt($this->ch, CURLOPT_POST, true);
 
-
 		//generate post string
-		$post_array = array();
-		if(is_array($postdata))
-		{
+		if (is_array($postdata)) {
 			$post_string = http_build_query($postdata);
-		}
-		else
-		{
+		} else {
 			$post_string = $postdata;
 		}
 
 		// set post string
 		curl_setopt($this->ch, CURLOPT_POSTFIELDS, $post_string);
 
-
 		//and finally send curl request
 		$result = curl_exec($this->ch);
 
-		if($this->has_error())
-		{
+		if ($this->has_error()) {
 			return false;
 		}
 
@@ -262,8 +241,7 @@ class Curl_HTTP_Client
 	 * @return boolean true on success false othervise
 	 * @access public
 	 */
-	public function fetch_into_file($url, $fp, $ip=null, $timeout=5)
-	{
+	public function fetch_into_file($url, $fp, $ip = null, $timeout = 5) {
 		// set url to post to
 		curl_setopt($this->ch, CURLOPT_URL, $url);
 
@@ -274,8 +252,7 @@ class Curl_HTTP_Client
 		curl_setopt($this->ch, CURLOPT_FILE, $fp);
 
 		//bind to specific ip address if it is sent trough arguments
-		if($ip)
-		{
+		if ($ip) {
 			curl_setopt($this->ch, CURLOPT_INTERFACE, $ip);
 		}
 
@@ -283,10 +260,9 @@ class Curl_HTTP_Client
 		curl_setopt($this->ch, CURLOPT_TIMEOUT, $timeout);
 
 		//and finally send curl request
-		$result = curl_exec($this->ch);
+		curl_exec($this->ch);
 
-		if($this->has_error())
-		{
+		if ($this->has_error()) {
 			return false;
 		}
 
@@ -300,15 +276,13 @@ class Curl_HTTP_Client
 	 * @param string absolute path to cookie file (must be in writable dir)
 	 * @access public
 	 */
-	public function store_cookies($cookie_file)
-	{
+	public function store_cookies($cookie_file) {
 		//make sure all cookies are stored to $cookie_file when curl handle is closed
-		curl_setopt ($this->ch, CURLOPT_COOKIEJAR, $cookie_file);
+		curl_setopt($this->ch, CURLOPT_COOKIEJAR, $cookie_file);
 
 		//The name of the file containing the cookie data
-		curl_setopt ($this->ch, CURLOPT_COOKIEFILE, $cookie_file);
+		curl_setopt($this->ch, CURLOPT_COOKIEFILE, $cookie_file);
 	}
-
 
 	/**
 	 * Set custom cookie
@@ -316,14 +290,11 @@ class Curl_HTTP_Client
 	 * @param mixed string or array with key=>value (i.e. array('foo'=>'value'))
 	 * @access public
 	 */
-	public function set_cookie($cookie)
-	{
+	public function set_cookie($cookie) {
 		//if cookie is sent as key=>value array
-		if(is_array($cookie))
-		{
+		if (is_array($cookie)) {
 			$cookies_data = array();
-			foreach($cookie as $key => $value)
-			{
+			foreach ($cookie as $key => $value) {
 				$cookies_data[] = "{$key}={$value}";
 			}
 
@@ -331,7 +302,7 @@ class Curl_HTTP_Client
 			$cookie = implode('; ', $cookies_data);
 		}
 
-		curl_setopt ($this->ch, CURLOPT_COOKIE, $cookie);
+		curl_setopt($this->ch, CURLOPT_COOKIE, $cookie);
 	}
 
 	/**
@@ -342,8 +313,7 @@ class Curl_HTTP_Client
 	 * @access protected
 	 * @return mixed array with all data or sting (depends of $opt param)
 	 */
-	public function get_info($opt = 0)
-	{
+	public function get_info($opt = 0) {
 		return curl_getinfo($this->ch, $opt);
 	}
 
@@ -353,8 +323,7 @@ class Curl_HTTP_Client
 	 * @access public
 	 * @return string url
 	 */
-	public function get_effective_url()
-	{
+	public function get_effective_url() {
 		return $this->get_info(CURLINFO_EFFECTIVE_URL);
 	}
 
@@ -364,8 +333,7 @@ class Curl_HTTP_Client
 	 * @access public
 	 * @return int
 	 */
-	public function get_http_response_code()
-	{
+	public function get_http_response_code() {
 		return $this->get_info(CURLINFO_HTTP_CODE);
 	}
 
@@ -375,16 +343,14 @@ class Curl_HTTP_Client
 	 * @access public
 	 * @return string
 	 */
-	public function get_request_headers()
-	{
+	public function get_request_headers() {
 		return $this->get_info(CURLINFO_HEADER_OUT);
 	}
 
 	/**
 	 * Total reqeust time in seconds for last transfer
 	 */
-	public function get_request_duration()
-	{
+	public function get_request_duration() {
 		return $this->get_info(CURLINFO_TOTAL_TIME);
 	}
 
@@ -394,8 +360,7 @@ class Curl_HTTP_Client
 	 * @return string error msg
 	 * @access public
 	 */
-	function get_error_msg()
-	{
+	public function get_error_msg() {
 		return "Curl error #" .curl_errno($this->ch) .": " .curl_error($this->ch);
 	}
 
@@ -405,8 +370,7 @@ class Curl_HTTP_Client
 	 * @access public
 	 * @return boolean
 	 */
-	protected function has_error()
-	{
+	protected function has_error() {
 		return (curl_errno($this->ch) != 0) ? true : false;
 	}
 
@@ -416,8 +380,7 @@ class Curl_HTTP_Client
 	 *  you'll have to call $this->init() in order to recreate curl handle
 	 * @access public
 	 */
-	public function close()
-	{
+	public function close() {
 		//close curl session and free up resources
 		curl_close($this->ch);
 	}
@@ -427,8 +390,7 @@ class Curl_HTTP_Client
 	 *
 	 * @access public
 	 */
-	public function __destruct()
-	{
+	public function __destruct() {
 		$this->close();
 	}
 }
