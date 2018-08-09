@@ -1,3 +1,4 @@
+--ignore=modules/cbMap/libs/crXml.php,*css,modules/evvtMenu/jquery.fancytree-all.min.js,modules/evvtMenu/jstree.min.js,modules/GlobalVariable/tablesorter/jquery.tablesorter.min.js,modules/MailManager/resources/jquery.tokeninput.js,modules/Project/BURAK_Gantt.class.php
 modules/Accounts
 modules/Assets
 modules/BusinessActions
@@ -182,4 +183,3 @@ include/cbmqtm/cbmqtm_manager.php
 include/cbmqtm/cbmqtm_memusage.php
 include/cbmqtm/directrun.php
 include/cbmqtm/run.php
-include/js

@@ -24,7 +24,25 @@ module.exports = {
             "error",
             "always"
         ],
-        "space-before-function-paren": [
+        "no-undef": [
+            "off"
+        ],
+        "no-unused-vars": [
+            "off"
+        ],
+        "no-useless-escape": [
+            "off"
+        ],
+        "quotes": [
+            "off"
+        ],
+        "no-redeclare": [
+            "off"
+        ],
+        "no-console": [
+            "off"
+        ],
+       "space-before-function-paren": [
             "error",
             {
                 "named": "never",
