@@ -3810,7 +3810,7 @@ function modulesWithEmailField() {
 }
 
 function getInventoryModules() {
-	return array('Invoice','Quotes','PurchaseOrder','SalesOrder','Issuecards');
+	return array('Invoice','Quotes','PurchaseOrder','SalesOrder','Issuecards', 'Receiptcards');
 }
 
 /**

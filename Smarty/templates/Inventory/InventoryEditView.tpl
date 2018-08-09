@@ -123,7 +123,7 @@
 
 
 									   <!-- Added to display the Product Details in Inventory-->
-									   {if $MODULE eq 'PurchaseOrder' || $MODULE eq 'SalesOrder' || $MODULE eq 'Quotes' || $MODULE eq 'Invoice' || $MODULE eq 'Issuecards'}
+									   {if $MODULE eq 'PurchaseOrder' || $MODULE eq 'SalesOrder' || $MODULE eq 'Quotes' || $MODULE eq 'Invoice' || $MODULE eq 'Issuecards' || $MODULE eq 'Receiptcards'}
 									   <tr>
 										<td colspan=4>
 										{if $OP_MODE eq 'create_view'}

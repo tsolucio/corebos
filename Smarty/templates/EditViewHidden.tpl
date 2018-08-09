@@ -9,7 +9,7 @@
  ********************************************************************************/
 -->*}
 {include file='applicationmessage.tpl'}
-{if $MODULE eq 'PurchaseOrder' || $MODULE eq 'SalesOrder' || $MODULE eq 'Invoice' || $MODULE eq 'Quotes' || $MODULE eq 'Issuecards'}
+{if $MODULE eq 'PurchaseOrder' || $MODULE eq 'SalesOrder' || $MODULE eq 'Invoice' || $MODULE eq 'Quotes' || $MODULE eq 'Issuecards' || $MODULE eq 'Receiptcards'}
 	<!-- (id="frmEditView") content added to form tag and new hidden field added,  -->
 	<form id="frmEditView" name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php" onSubmit="settotalnoofrows();calcTotal();">
 	<input type="hidden" name="hidImagePath" id="hidImagePath" value="{$IMAGE_PATH}"/>
