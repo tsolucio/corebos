@@ -256,6 +256,16 @@ switch ($functiontocall) {
 		$skey = vtlib_purify($_REQUEST['skey']);
 		$ret = coreBOS_Settings::delSetting($skey);
 		break;
+	case 'getTranslatedStrings':
+		global $currentModule;
+		$i18nm = empty($_REQUEST['i18nmodule']) ? $currentModule : vtlib_purify($_REQUEST['i18nmodule']);
+		$tkeys = vtlib_purify($_REQUEST['tkeys']);
+		$tkeys = explode(';', $tkeys);
+		$ret = array();
+		foreach ($tkeys as $tr) {
+			$ret[$tr] = getTranslatedString($tr, $i18nm);
+		}
+		break;
 	case 'ismoduleactive':
 	default:
 		$mod = vtlib_purify($_REQUEST['checkmodule']);
