@@ -63,9 +63,8 @@ class Vtiger_PackageExport {
 
 	/**
 	 * Set the module.xml file path for this export and return its temporary path.
-	 * @access private
 	 */
-	private function __getManifestFilePath() {
+	public function __getManifestFilePath() {
 		if (empty($this->_export_modulexml_filename)) {
 			// Set the module xml filename to be written for exporting.
 			$this->_export_modulexml_filename = "manifest-".time().".xml";
