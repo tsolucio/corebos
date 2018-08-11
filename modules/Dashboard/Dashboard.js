@@ -128,9 +128,9 @@ function DaysArray(n) {
 function isDate(dtStr) {
 	var daysInMonth = DaysArray(12);
 	var pos1=dtStr.indexOf(dtCh);
-	var pos2=dtStr.indexOf(dtCh,pos1+1);
-	var strYear=dtStr.substring(0,pos1);
-	var strMonth=dtStr.substring(pos1+1,pos2);
+	var pos2=dtStr.indexOf(dtCh, pos1+1);
+	var strYear=dtStr.substring(0, pos1);
+	var strMonth=dtStr.substring(pos1+1, pos2);
 	var strDay=dtStr.substring(pos2+1);
 	var strYr=strYear;
 	if (strDay.charAt(0)=='0' && strDay.length>1) {
@@ -163,7 +163,7 @@ function isDate(dtStr) {
 		alert(alert_arr.ERR_INVALID_YEAR);
 		return false;
 	}
-	if (dtStr.indexOf(dtCh,pos2+1)!=-1 || isInteger(stripCharsInBag(dtStr, dtCh))==false) {
+	if (dtStr.indexOf(dtCh, pos2+1)!=-1 || isInteger(stripCharsInBag(dtStr, dtCh))==false) {
 		alert(alert_arr.ERR_INVALID_DATE);
 		return false;
 	}
@@ -182,9 +182,9 @@ function verify_chart_data(form) {
 
 function chk_form(form) {
 	var a=form.date_start.value.split('-');
-	var sdate=new Date(a[0],a[1],a[2]);
+	var sdate=new Date(a[0], a[1], a[2]);
 	a=form.date_end.value.split('-');
-	var edate=new Date(a[0],a[1],a[2]);
+	var edate=new Date(a[0], a[1], a[2]);
 
 	if (sdate>edate) {
 		alert(alert_arr.STARTDATE+' '+alert_arr.SHOULDBE_LESS+' '+alert_arr.ENDDATE);

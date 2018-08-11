@@ -7,7 +7,7 @@
  * All Rights Reserved.
 ********************************************************************************/
 
-function searchshowhide(argg,argg2) {
+function searchshowhide(argg, argg2) {
 	var ele_x = document.getElementById(argg);
 	var ele_y = document.getElementById(argg2);
 	var x, y;
@@ -29,7 +29,7 @@ function searchshowhide(argg,argg2) {
 	}
 }
 
-function searchhide(argg,argg2) {
+function searchhide(argg, argg2) {
 	var ele_x = document.getElementById(argg);
 	var ele_y = document.getElementById(argg2);
 	var x, y;

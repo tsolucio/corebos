@@ -73,7 +73,8 @@ function Carousel() {
 	Car_Div.style.height = Car_Image_Height+20+'px';
 
 	for (i=0; i<C_HalfNo; i++) {
-		CW_I[i]=document.createElement('img');Car_Div.appendChild(CW_I[i]);
+		CW_I[i]=document.createElement('img');
+		Car_Div.appendChild(CW_I[i]);
 		CW_I[i].style.position='absolute';
 		CW_I[i].style.top=0+'px';
 		CW_I[i].style.height=Car_Image_Height+'px';
@@ -129,7 +130,7 @@ function CarImages() {
 			C_CrImg += 2;
 		}
 	}
-	setTimeout('CarImages()',50);
+	setTimeout('CarImages()', 50);
 }
 
 function C_LdLnk() {

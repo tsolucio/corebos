@@ -20,7 +20,7 @@ function _defAsteriskTimer() {
 				var div = popupText;
 				var Popup_vtiger = _defPopup();
 				Popup_vtiger.content = div;
-				Popup_vtiger.displayPopup(Popup_vtiger.content,ASTERISK_INCOMING_DIV_TIMEOUT);
+				Popup_vtiger.displayPopup(Popup_vtiger.content, ASTERISK_INCOMING_DIV_TIMEOUT);
 			}
 		});
 	}

@@ -1855,7 +1855,7 @@ function fnvshobj(obj, Lay) {
 		topSide = topSide - 125;
 	} else if (Lay == 'transferdiv') {
 		leftSide = leftSide - 10;
-		topSide = topSide;
+		//topSide = topSide;
 	}
 	var IE = document.all?true:false;
 	if (IE) {

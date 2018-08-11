@@ -133,7 +133,7 @@ FieldDependencies.prototype.fieldValueChange = function (sourcename, sourcevalue
 			// To maintain implementation consistency, let us keep copy of options in select node and use it for re-creation
 			if (typeof(targetnode.data('allOptions')) == 'undefined') {
 				var allOptions = [];
-				jQuery('option', targetnode).each(function (index,option) {
+				jQuery('option', targetnode).each(function (index, option) {
 					allOptions.push(option);
 				});
 				targetnode.data('allOptions', allOptions);

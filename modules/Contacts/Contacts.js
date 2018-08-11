@@ -65,7 +65,7 @@ function copyAddressLeft(form) {
 	return true;
 }
 
-function toggleDisplay(id){
+function toggleDisplay(id) {
 	if (this.document.getElementById(id).style.display=='none') {
 		this.document.getElementById(id).style.display='inline';
 		this.document.getElementById(id+'link').style.display='none';
@@ -85,8 +85,7 @@ function set_return(product_id, product_name) {
 	}
 }
 
-function add_data_to_relatedlist_incal(id,name)
-{
+function add_data_to_relatedlist_incal(id, name) {
 	var idval = window.opener.document.EditView.contactidlist.value;
 	var nameval = window.opener.document.EditView.contactlist.value;
 	if (idval != '') {
@@ -98,13 +97,13 @@ function add_data_to_relatedlist_incal(id,name)
 			if (name != '') {
 				// this has been modified to provide delete option for Contacts in Calendar
 				//this function is defined in script.js ------- Jeri
-				window.opener.addOption(id,name);
+				window.opener.addOption(id, name);
 			}
 		}
 	} else {
 		window.opener.document.EditView.contactidlist.value = id;
 		if (name != '') {
-			window.opener.addOption(id,name);
+			window.opener.addOption(id, name);
 		}
 	}
 }
@@ -116,13 +115,12 @@ function set_return_specific(product_id, product_name) {
 	fldId.value = product_id;
 }
 
-function submitform(id){
+function submitform(id) {
 	document.massdelete.entityid.value=id;
 	document.massdelete.submit();
 }
 
-function searchMapLocation(addressType)
-{
+function searchMapLocation(addressType) {
 	var mapParameter = '';
 	if (addressType == 'Main') {
 		if (fieldname.indexOf('mailingstreet') > -1) {
@@ -178,10 +176,10 @@ function searchMapLocation(addressType)
 		}
 	}
 	mapParameter = removeHTMLFormatting(mapParameter);
-	window.open('http://maps.google.com/maps?q='+mapParameter,'goolemap','height=450,width=700,resizable=no,titlebar,location,top=200,left=250');
+	window.open('http://maps.google.com/maps?q='+mapParameter, 'goolemap', 'height=450,width=700,resizable=no,titlebar,location,top=200,left=250');
 }
 
-function set_return_contact_address(contact_id,contact_name, mailingstreet, otherstreet, mailingcity, othercity, mailingstate, otherstate, mailingcode, othercode, mailingcountry, othercountry,mailingpobox,otherpobox,formName) {
+function set_return_contact_address(contact_id, contact_name, mailingstreet, otherstreet, mailingcity, othercity, mailingstate, otherstate, mailingcode, othercode, mailingcountry, othercountry, mailingpobox, otherpobox, formName) {
 	if (formName == null || formName == '') {
 		formName = 'EditView';
 	} else {
@@ -236,7 +234,7 @@ function set_return_contact_address(contact_id,contact_name, mailingstreet, othe
 	}
 }
 
-function set_return_address(contact_id,contact_name, mailingstreet, otherstreet, mailingcity, othercity, mailingstate, otherstate, mailingzip, otherzip, mailingcountry, othercountry,mailingpobox,otherpobox) {
+function set_return_address(contact_id, contact_name, mailingstreet, otherstreet, mailingcity, othercity, mailingstate, otherstate, mailingzip, otherzip, mailingcountry, othercountry, mailingpobox, otherpobox) {
 	jQuery.ajax({
 		url: 'index.php?module=Contacts&action=ContactsAjax&file=SelectContactAddress',
 		context: document.body
@@ -378,17 +376,17 @@ function setReturnAddressShip() {
 	}
 }
 
-function googleSynch(module,oButton) {
-	fnvshobj(oButton,'GoogleContacts');
+function googleSynch(module, oButton) {
+	fnvshobj(oButton, 'GoogleContacts');
 }
 
-function googleContactsSynch(module,oButton,type) {
+function googleContactsSynch(module, oButton, type) {
 	var url='index.php?module='+module+'&action='+module+'Ajax&file=List&operation=sync&sourcemodule=Contacts';
 	var opts = 'menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes';
 
 	if (type==='signin') {
 		fninvsh('GoogleContacts');
-		openPopUp('GoogleContacts',oButton,url,'createemailWin',830,662,opts);
+		openPopUp('GoogleContacts', oButton, url, 'createemailWin', 830, 662, opts);
 	} else {
 		document.getElementById('synchronize').disabled=true;
 		document.getElementById('synchronizespan').innerHTML='Synchronizing...';
@@ -399,7 +397,7 @@ function googleContactsSynch(module,oButton,type) {
 		}).done(function (response) {
 			fninvsh('GoogleContacts');
 			document.getElementById('GoogleContactsSettings').innerHTML=response;
-			fnvshobj(oButton,'GoogleContactsSettings');
+			fnvshobj(oButton, 'GoogleContactsSettings');
 			document.getElementById('synchronize').disabled=false;
 			document.getElementById('synchronizespan').innerHTML='Sync';
 			document.getElementById('syncimage').style.display='none';
@@ -407,7 +405,7 @@ function googleContactsSynch(module,oButton,type) {
 	}
 }
 
-function googleContactsSettings(module,oButton) {
+function googleContactsSettings(module, oButton) {
 	fninvsh('GoogleContacts');
 	var url='index.php?module='+module+'&action='+module+'Ajax&file=GSyncSettings&operation=getconfiggsyncsettings&sourcemodule=Contacts';
 	jQuery.ajax({
@@ -415,15 +413,15 @@ function googleContactsSettings(module,oButton) {
 		url: url
 	}).done(function (response) {
 		document.getElementById('GoogleContactsSettings').innerHTML=response;
-		fnvshobj(oButton,'GoogleContactsSettings');
+		fnvshobj(oButton, 'GoogleContactsSettings');
 	});
 }
 
-function saveSettings(){
+function saveSettings() {
 	return doSaveSettings();
 }
 
-function doSaveSettings(){
+function doSaveSettings() {
 	var container = jQuery('.googleSettings');
 	var form = container.find('form[name="contactsyncsettings"]');
 	var fieldMapping = packFieldmappingsForSubmit(container);
@@ -444,7 +442,7 @@ function doSaveSettings(){
 function packFieldmappingsForSubmit(container) {
 	var rows = container.find('div#googlesyncfieldmapping').find('table > tbody > tr');
 	var mapping = {};
-	jQuery.each(rows,function (index,row) {
+	jQuery.each(rows, function (index, row) {
 		var tr = jQuery(row);
 		var vtiger_field_name = tr.find('.vtiger_field_name').not('.select2-container').val();
 		var google_field_name = tr.find('.google_field_name').val();
@@ -468,7 +466,7 @@ function packFieldmappingsForSubmit(container) {
 	return JSON.stringify(mapping);
 }
 
-function googleContactsLogOut(module){
+function googleContactsLogOut(module) {
 	jQuery.ajax({
 		type : 'post',
 		url : 'index.php?module='+module+'&action='+module+'Ajax&file=List&operation=removeSync&sourcemodule=Contacts'

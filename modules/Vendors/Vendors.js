@@ -29,7 +29,7 @@ function set_return_specific(vendor_id, vendor_name) {
 	fldId.value = vendor_id;
 }
 
-function set_return_address(vendor_id, vendor_name, street, city, state, code, country,pobox ) {
+function set_return_address(vendor_id, vendor_name, street, city, state, code, country, pobox ) {
 	jQuery.ajax({
 		url: 'index.php?module=Vendors&action=VendorsAjax&file=SelectVendorAddress',
 		context: document.body

@@ -7,15 +7,15 @@
  * All Rights Reserved.
  *********************************************************************************/
 var typeofdata = new Array();
-typeofdata['V'] = ['e','n','s','ew','dnsw','dnew','c','k'];
-typeofdata['N'] = ['e','n','l','g','m','h'];
-typeofdata['T'] = ['e','n','l','g','m','h','bw','b','a'];
-typeofdata['I'] = ['e','n','l','g','m','h'];
-typeofdata['C'] = ['e','n'];
-typeofdata['D'] = ['e','n','l','g','m','h','bw','b','a'];
-typeofdata['DT'] = ['e','n','l','g','m','h','bw','b','a'];
-typeofdata['NN'] = ['e','n','l','g','m','h'];
-typeofdata['E'] = ['e','n','s','ew','dnsw','dnew','c','k'];
+typeofdata['V'] = ['e', 'n', 's', 'ew', 'dnsw', 'dnew', 'c', 'k'];
+typeofdata['N'] = ['e', 'n', 'l', 'g', 'm', 'h'];
+typeofdata['T'] = ['e', 'n', 'l', 'g', 'm', 'h', 'bw', 'b', 'a'];
+typeofdata['I'] = ['e', 'n', 'l', 'g', 'm', 'h'];
+typeofdata['C'] = ['e', 'n'];
+typeofdata['D'] = ['e', 'n', 'l', 'g', 'm', 'h', 'bw', 'b', 'a'];
+typeofdata['DT'] = ['e', 'n', 'l', 'g', 'm', 'h', 'bw', 'b', 'a'];
+typeofdata['NN'] = ['e', 'n', 'l', 'g', 'm', 'h'];
+typeofdata['E'] = ['e', 'n', 's', 'ew', 'dnsw', 'dnew', 'c', 'k'];
 
 var fLabels = new Array();
 fLabels['e'] = alert_arr.EQUALS;
@@ -192,7 +192,7 @@ function addRequiredElements(columnindex) {
 	var currField = colObj.options[colObj.selectedIndex];
 	var currOp = opObj.options[opObj.selectedIndex];
 
-	var fieldtype = null ;
+	var fieldtype = null;
 	if (currField.value != null && currField.value.length != 0) {
 		var fieldInfo = currField.value.split(':');
 		var tableName = fieldInfo[0];
@@ -216,11 +216,11 @@ function addRequiredElements(columnindex) {
 			}
 			if (!document.getElementById('jscal_trigger_fval'+columnindex)) {
 				var node = document.createElement('img');
-				node.setAttribute('src',document.getElementById('image_path').value+'btnL3Calendar.gif');
-				node.setAttribute('id','jscal_trigger_fval'+columnindex);
-				node.setAttribute('align','absmiddle');
-				node.setAttribute('width','20');
-				node.setAttribute('height','20');
+				node.setAttribute('src', document.getElementById('image_path').value+'btnL3Calendar.gif');
+				node.setAttribute('id', 'jscal_trigger_fval'+columnindex);
+				node.setAttribute('align', 'absmiddle');
+				node.setAttribute('width', '20');
+				node.setAttribute('height', '20');
 
 				var parentObj = valObj.parentNode;
 				var nextObj = valObj.nextSibling;
@@ -237,8 +237,8 @@ function addRequiredElements(columnindex) {
 					var node1 = document.createElement('input');
 					node1.setAttribute('class', 'repBox small');
 					node1.setAttribute('type', 'text');
-					node1.setAttribute('id','fval_ext'+columnindex);
-					node1.setAttribute('name','fval_ext'+columnindex);
+					node1.setAttribute('id', 'fval_ext'+columnindex);
+					node1.setAttribute('name', 'fval_ext'+columnindex);
 					var parentObj = valObj.parentNode;
 					parentObj.appendChild(fillernode);
 					parentObj.appendChild(node1);
@@ -246,11 +246,11 @@ function addRequiredElements(columnindex) {
 
 				if (!document.getElementById('jscal_trigger_fval_ext'+columnindex)) {
 					var node2 = document.createElement('img');
-					node2.setAttribute('src',document.getElementById('image_path').value+'btnL3Calendar.gif');
-					node2.setAttribute('id','jscal_trigger_fval_ext'+columnindex);
-					node2.setAttribute('align','absmiddle');
-					node2.setAttribute('width','20');
-					node2.setAttribute('height','20');
+					node2.setAttribute('src', document.getElementById('image_path').value+'btnL3Calendar.gif');
+					node2.setAttribute('id', 'jscal_trigger_fval_ext'+columnindex);
+					node2.setAttribute('align', 'absmiddle');
+					node2.setAttribute('width', '20');
+					node2.setAttribute('height', '20');
 
 					var parentObj = valObj.parentNode;
 					parentObj.appendChild(node2);
@@ -258,11 +258,11 @@ function addRequiredElements(columnindex) {
 
 				if (!document.getElementById('clear_text_ext'+columnindex)) {
 					var node3 = document.createElement('img');
-					node3.setAttribute('src','themes/images/clear_field.gif');
-					node3.setAttribute('id','clear_text_ext'+columnindex);
-					node3.setAttribute('align','absmiddle');
-					node3.setAttribute('width','20');
-					node3.setAttribute('height','20');
+					node3.setAttribute('src', 'themes/images/clear_field.gif');
+					node3.setAttribute('id', 'clear_text_ext'+columnindex);
+					node3.setAttribute('align', 'absmiddle');
+					node3.setAttribute('width', '20');
+					node3.setAttribute('height', '20');
 					node3.style.cursor = 'pointer';
 					node3.onclick = function () {
 						document.getElementById('fval_ext'+columnindex).value='';
@@ -308,7 +308,7 @@ function defaultRequiredElements(columnindex) {
 }
 
 function checkAdvancedFilter() {
-	var escapedOptions = new Array('account_id','contactid','contact_id','product_id','parent_id','campaignid','potential_id','assigned_user_id1','quote_id','accountname','salesorder_id','vendor_id','time_start','time_end','lastname');
+	var escapedOptions = new Array('account_id', 'contactid', 'contact_id', 'product_id', 'parent_id', 'campaignid', 'potential_id', 'assigned_user_id1', 'quote_id', 'accountname', 'salesorder_id', 'vendor_id', 'time_start', 'time_end', 'lastname');
 	var extendedValue = '';
 	var conditionColumns = vt_getElementsByName('tr', 'conditionColumn');
 	var criteriaConditions = [];
@@ -350,10 +350,10 @@ function checkAdvancedFilter() {
 			return true;
 		}
 
-		if (!emptyCheck(columnId,' Column ','text')) {
+		if (!emptyCheck(columnId, ' Column ', 'text')) {
 			return false;
 		}
-		if (!emptyCheck(comparatorId,selectedColumnLabel+' Option','text')) {
+		if (!emptyCheck(comparatorId, selectedColumnLabel+' Option', 'text')) {
 			return false;
 		}
 
@@ -363,18 +363,18 @@ function checkAdvancedFilter() {
 				var datime = specifiedValue.split(' ');
 				if (specifiedValue.charAt(0) != '$' && specifiedValue.charAt(specifiedValue.length-1) != '$') {
 					if (datime.length > 1) {
-						if (!re_dateValidate(datime[0],selectedColumnLabel+' (Current User Date Time Format)','OTH')) {
+						if (!re_dateValidate(datime[0], selectedColumnLabel+' (Current User Date Time Format)', 'OTH')) {
 							return false;
 						}
-						if (!re_patternValidate(datime[1],selectedColumnLabel+' (Time)','TIMESECONDS')) {
+						if (!re_patternValidate(datime[1], selectedColumnLabel+' (Time)', 'TIMESECONDS')) {
 							return false;
 						}
 					} else if ((col[0] == 'vtiger_activity' && col[2] == 'date_start') || col[4] == 'DT') {
-						if (!dateValidate(valueId,selectedColumnLabel+' (Current User Date Format)','OTH')) {
+						if (!dateValidate(valueId, selectedColumnLabel+' (Current User Date Format)', 'OTH')) {
 							return false;
 						}
 					} else {
-						if (!re_patternValidate(datime[0],selectedColumnLabel+' (Time)','TIMESECONDS')) {
+						if (!re_patternValidate(datime[0], selectedColumnLabel+' (Time)', 'TIMESECONDS')) {
 							return false;
 						}
 					}
@@ -384,18 +384,18 @@ function checkAdvancedFilter() {
 					var datime = extendedValue.split(' ');
 					if (extendedValue.charAt(0) != '$' && extendedValue.charAt(extendedValue.length-1) != '$') {
 						if (datime.length > 1) {
-							if (!re_dateValidate(datime[0],selectedColumnLabel+' (Current User Date Time Format)','OTH')) {
+							if (!re_dateValidate(datime[0], selectedColumnLabel+' (Current User Date Time Format)', 'OTH')) {
 								return false;
 							}
-							if (!re_patternValidate(datime[1],selectedColumnLabel+' (Time)','TIMESECONDS')) {
+							if (!re_patternValidate(datime[1], selectedColumnLabel+' (Time)', 'TIMESECONDS')) {
 								return false;
 							}
 						} else if (col[0] == 'vtiger_activity' && col[2] == 'date_start') {
-							if (!dateValidate(extValueId,selectedColumnLabel+' (Current User Date Format)','OTH')) {
+							if (!dateValidate(extValueId, selectedColumnLabel+' (Current User Date Format)', 'OTH')) {
 								return false;
 							}
 						} else {
-							if (!re_patternValidate(datime[0],selectedColumnLabel+' (Time)','TIMESECONDS')) {
+							if (!re_patternValidate(datime[0], selectedColumnLabel+' (Time)', 'TIMESECONDS')) {
 								return false;
 							}
 						}
@@ -403,29 +403,29 @@ function checkAdvancedFilter() {
 				}
 			} else if (col[4] == 'D') {
 				if (specifiedValue.charAt(0) != '$' && specifiedValue.charAt(specifiedValue.length-1) != '$') {
-					if (!dateValidate(valueId,selectedColumnLabel+' (Current User Date Format)','OTH')) {
+					if (!dateValidate(valueId, selectedColumnLabel+' (Current User Date Format)', 'OTH')) {
 						return false;
 					}
 				}
 				if (extValueObject) {
-					if (!dateValidate(extValueId,selectedColumnLabel+' (Current User Date Format)','OTH')) {
+					if (!dateValidate(extValueId, selectedColumnLabel+' (Current User Date Format)', 'OTH')) {
 						return false;
 					}
 				}
 			} else if (col[4] == 'I') {
 				if (specifiedValue.charAt(0) != '$' && specifiedValue.charAt(specifiedValue.length-1) != '$') {
-					if (!intValidate(valueId,selectedColumnLabel+' (Integer Criteria)'+i)) {
+					if (!intValidate(valueId, selectedColumnLabel+' (Integer Criteria)'+i)) {
 						return false;
 					}
 				}
 			} else if (col[4] == 'N' || col[4] == 'NN') {
 				if (specifiedValue.charAt(0) != '$' && specifiedValue.charAt(specifiedValue.length-1) != '$') {
-					if (!numValidate(valueId,selectedColumnLabel+' (Number) ','any',(col[4] == 'NN'))) {
+					if (!numValidate(valueId, selectedColumnLabel+' (Number) ', 'any', (col[4] == 'NN'))) {
 						return false;
 					}
 				}
 			} else if (col[4] == 'E') {
-				if ((comparatorValue=='e' || comparatorValue=='n') && !patternValidate(valueId,selectedColumnLabel+' (Email Id)','EMAIL')) {
+				if ((comparatorValue=='e' || comparatorValue=='n') && !patternValidate(valueId, selectedColumnLabel+' (Email Id)', 'EMAIL')) {
 					return false;
 				}
 			}

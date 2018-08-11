@@ -81,7 +81,7 @@ function callSearch(searchtype) {
 	}
 	gPopupAlphaSearchUrl = '';
 	var search_fld_val= document.basicSearch.search_field[document.basicSearch.search_field.selectedIndex].value;
-	var search_txt_val= encodeURIComponent(document.basicSearch.search_text.value.replace(/\'/,'\\\''));
+	var search_txt_val= encodeURIComponent(document.basicSearch.search_text.value.replace(/\'/, '\\\''));
 	var urlstring = '';
 	if (searchtype == 'Basic') {
 		urlstring = 'search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val;

@@ -13,7 +13,7 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 
-var moveupLinkObj,moveupDisabledObj,movedownLinkObj,movedownDisabledObj;
+var moveupLinkObj, moveupDisabledObj, movedownLinkObj, movedownDisabledObj;
 
 var wizard = $('#report-steps');
 var new_steps_count = 0;
@@ -50,7 +50,7 @@ wizard.steps({
 	onInit: function (event, currentIndex) {
 
 		// Add Cancel button
-		var cancel_button = $('<a>',{'type':'button','onclick':'self.close();','href':'#cancel'});
+		var cancel_button = $('<a>', {'type':'button', 'onclick':'self.close();', 'href':'#cancel'});
 		cancel_button.html(alert_arr.JSLBL_CANCEL);
 		var li = $('<li>');
 		li.append(cancel_button);
@@ -58,9 +58,9 @@ wizard.steps({
 
 		//Add <Save As> button
 		if ( document.NewReport.record.value !== '') {
-			var save_as_button = $('<a>',{'type':'button','onclick':'saveas();','href':'#saveas'});
+			var save_as_button = $('<a>', {'type':'button', 'onclick':'saveas();', 'href':'#saveas'});
 			save_as_button.html(alert_arr.JSLBL_SAVEAS);
-			var li = $('<li>',{'style':'display:none','id':'save_as_button'});
+			var li = $('<li>', {'style':'display:none', 'id':'save_as_button'});
 			li.append(save_as_button);
 			$('.actions ul li:nth-child(1)').after(li);
 		}
@@ -257,23 +257,23 @@ wizard.steps({
 					fillFullList(response.BLOCK3, 'Group3', true, alert_arr.LBL_NONE);
 
 					// Group By time
-					$('#Group1time').css('display',response.GRBYTIME1.display);
-					fillList(response.GRBYTIME1.options,'groupbytime1');
-					$('#Group2time').css('display',response.GRBYTIME2.display);
-					fillList(response.GRBYTIME2.options,'groupbytime2');
-					$('#Group3time').css('display',response.GRBYTIME3.display);
-					fillList(response.GRBYTIME3.options,'groupbytime3');
+					$('#Group1time').css('display', response.GRBYTIME1.display);
+					fillList(response.GRBYTIME1.options, 'groupbytime1');
+					$('#Group2time').css('display', response.GRBYTIME2.display);
+					fillList(response.GRBYTIME2.options, 'groupbytime2');
+					$('#Group3time').css('display', response.GRBYTIME3.display);
+					fillList(response.GRBYTIME3.options, 'groupbytime3');
 
 					// Group Order
-					fillList(response.ORDER1,'Sort1');
-					fillList(response.ORDER2,'Sort2');
-					fillList(response.ORDER3,'Sort3');
+					fillList(response.ORDER1, 'Sort1');
+					fillList(response.ORDER2, 'Sort2');
+					fillList(response.ORDER3, 'Sort3');
 
 				});
 
 				// Add another step
 				if (wizard.find('section').length == 8) {
-					wizard.steps('insert',4, {
+					wizard.steps('insert', 4, {
 						title: LBL_SPECIFY_GROUPING,
 						content: '<table class=\'grouping_section\'>' + $('#grouping_section').html() + '</table>'
 					});
@@ -281,7 +281,7 @@ wizard.steps({
 				}
 			} else if (document.NewReport.reportType.value =='tabular' && wizard.find('section').length == 9) {
 				// Remove step if report type is tabular
-				wizard.steps('remove',4);
+				wizard.steps('remove', 4);
 				new_steps_count--;
 			}
 		}
@@ -289,15 +289,15 @@ wizard.steps({
 		// Display <Save as> button
 		if (document.NewReport.record.value !== '') {
 			if ( currentIndex - new_steps_count >= 6) {
-				$('#save_as_button').css('display','block');
+				$('#save_as_button').css('display', 'block');
 			} else {
-				$('#save_as_button').css('display','none');
+				$('#save_as_button').css('display', 'none');
 			}
 		}
 
 	},
 
-	onFinishing: function (event,currentIndex) {
+	onFinishing: function (event, currentIndex) {
 		return ScheduleEmail();
 	},
 

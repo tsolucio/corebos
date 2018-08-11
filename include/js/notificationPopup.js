@@ -54,7 +54,7 @@ function _defPopup() {
 	 * this function is used to display the popup on screen
 	 */
 	function ShowPopup() {
-		var height = popupDiv.style.height.substring(0,popupDiv.style.height.indexOf('px'));
+		var height = popupDiv.style.height.substring(0, popupDiv.style.height.indexOf('px'));
 		if (parseInt(height) < maxheight) {
 			height = parseInt(height) + incrementHeight;
 			if (height > maxheight) {
@@ -72,7 +72,7 @@ function _defPopup() {
 	 * this function is used to hide the popup from screen
 	 */
 	function HidePopup() {
-		var height = popupDiv.style.height.substring(0,popupDiv.style.height.indexOf('px'));
+		var height = popupDiv.style.height.substring(0, popupDiv.style.height.indexOf('px'));
 		if (parseInt(height) > 0) {
 			height = parseInt(height) - incrementHeight;
 			if (height<0) {

@@ -7,7 +7,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-function updateListPrice(unitprice,fieldname, oSelect) {
+function updateListPrice(unitprice, fieldname, oSelect) {
 	if (oSelect.checked == true) {
 		document.getElementById(fieldname).style.visibility = 'visible';
 		document.getElementById(fieldname).value = unitprice;
@@ -41,17 +41,17 @@ function set_return_specific(product_id, product_name) {
 	fldId.value = product_id;
 }
 
-function set_return_formname_specific(formname,product_id, product_name) {
+function set_return_formname_specific(formname, product_id, product_name) {
 	window.opener.document.EditView1.product_name.value = product_name;
 	window.opener.document.EditView1.product_id.value = product_id;
 }
 
-function set_return_inventory(product_id,product_name,unitprice,qtyinstock,taxstr,curr_row,desc,subprod_id) {
+function set_return_inventory(product_id, product_name, unitprice, qtyinstock, taxstr, curr_row, desc, subprod_id) {
 	getOpenerObj('qtyInStock'+curr_row).innerHTML = qtyinstock;
-	set_return_inventory_po(product_id,product_name,unitprice,taxstr,curr_row,desc,subprod_id);
+	set_return_inventory_po(product_id, product_name, unitprice, taxstr, curr_row, desc, subprod_id);
 }
 
-function set_return_inventory_po(product_id,product_name,unitprice,taxstr,curr_row,desc,subprod_id) {
+function set_return_inventory_po(product_id, product_name, unitprice, taxstr, curr_row, desc, subprod_id) {
 	var subprod = subprod_id.split('::');
 	window.opener.document.EditView.elements['subproduct_ids'+curr_row].value = subprod[0];
 	window.opener.document.getElementById('subprod_names'+curr_row).innerHTML = subprod[1];
@@ -109,9 +109,9 @@ function roundPriceValue(val) {
 	if (val.indexOf('.')<0) {
 		val+='.00';
 	} else {
-		var dec=val.substring(val.indexOf('.')+1,val.length);
+		var dec=val.substring(val.indexOf('.')+1, val.length);
 		if (dec.length>2) {
-			val=val.substring(0,val.indexOf('.'))+'.'+dec.substring(0,2);
+			val=val.substring(0, val.indexOf('.'))+'.'+dec.substring(0, 2);
 		} else if (dec.length==1) {
 			val=val+'0';
 		}

@@ -100,7 +100,7 @@ function massRestore() {
 	}
 }
 
-function restore(entityid,select_module) {
+function restore(entityid, select_module) {
 	if (confirm(mod_alert_arr.MSG_RESTORE_CONFIRMATION + ' ' + select_module + '?')) {
 		document.getElementById('status').style.display='inline';
 		jQuery.ajax({
@@ -114,7 +114,7 @@ function restore(entityid,select_module) {
 	}
 }
 
-function getListViewEntries_js(module,url) {
+function getListViewEntries_js(module, url) {
 	var all_selected = document.getElementById('allselectedboxes').value;
 	var excludedRecords = document.getElementById('excludedRecords').value;
 
@@ -140,7 +140,7 @@ function getListViewEntries_js(module,url) {
 			var exculdedArray=excludedRecords.split(';');
 			var obj = document.getElementsByName('selected_id');
 			if (obj) {
-				var viewForSelectLink = showSelectAllLink(obj,exculdedArray);
+				var viewForSelectLink = showSelectAllLink(obj, exculdedArray);
 				document.getElementById('selectCurrentPageRec').checked = viewForSelectLink;
 				document.getElementById('allselectedboxes').value='all';
 				document.getElementById('excludedRecords').value = document.getElementById('excludedRecords').value+excludedRecords;
@@ -152,7 +152,7 @@ function getListViewEntries_js(module,url) {
 	});
 }
 
-function alphabetic(module,url,dataid) {
+function alphabetic(module, url, dataid) {
 	for (var i=1; i<=26; i++) {
 		var data_td_id = 'alpha_'+ eval(i);
 		getObj(data_td_id).className = 'searchAlph';

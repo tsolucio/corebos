@@ -18,18 +18,18 @@ function addtopricebook() {
 			document.addToPB.idlist.value=document.addToPB.selected_id.value;
 			var elem = document.addToPB.elements;
 			var ele_len =elem.length;
-			var i=0,j=0;
+			var i=0, j=0;
 			for (i=0; i<ele_len; i++) {
 				if (elem[i].name == yy) {
 					var val = elem[i].value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 					if (typeof userCurrencySeparator != 'undefined') {
 						while (val.indexOf(userCurrencySeparator) != -1) {
-							val = val.replace(userCurrencySeparator,'');
+							val = val.replace(userCurrencySeparator, '');
 						}
 					}
 					if (typeof userDecimalSeparator != 'undefined') {
 						if (val.indexOf(userDecimalSeparator) != -1) {
-							val = val.replace(userDecimalSeparator,'.');
+							val = val.replace(userDecimalSeparator, '.');
 						}
 					}
 					if (val.length==0) {
@@ -58,7 +58,7 @@ function addtopricebook() {
 			document.addToPB.idlist.value=idstring;
 			var elem = document.addToPB.elements;
 			var ele_len =elem.length;
-			var i=0,j=0;
+			var i=0, j=0;
 			for (i=0; i<ele_len; i++) {
 				for (j=0; j < xx; j++) {
 					var xy= prod_array[j]+'_listprice';
@@ -66,12 +66,12 @@ function addtopricebook() {
 						var val = elem[i].value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 						if (typeof userCurrencySeparator != 'undefined') {
 							while (val.indexOf(userCurrencySeparator) != -1) {
-								val = val.replace(userCurrencySeparator,'');
+								val = val.replace(userCurrencySeparator, '');
 							}
 						}
 						if (typeof userDecimalSeparator != 'undefined') {
 							if (val.indexOf(userDecimalSeparator) != -1) {
-								val = val.replace(userDecimalSeparator,'.');
+								val = val.replace(userDecimalSeparator, '.');
 							}
 						}
 						if (val.length==0) {
@@ -92,7 +92,7 @@ function addtopricebook() {
 	document.addToPB.action='index.php?module=Products&action=addPbProductRelToDB&return_module=Products&return_action=AddProductsToPriceBook';
 }
 
-function updateListPrice(unitprice,fieldname,oSelect) {
+function updateListPrice(unitprice, fieldname, oSelect) {
 	if (oSelect.checked == true) {
 		document.getElementById(fieldname).style.visibility = 'visible';
 		document.getElementById(fieldname).value = unitprice;
@@ -114,7 +114,7 @@ function set_return_inventory_pb(listprice, fldname) {
 	window.opener.document.EditView.elements[fldname].focus();
 }
 
-function deletePriceBookProductRel(id,pbid) {
+function deletePriceBookProductRel(id, pbid) {
 	document.getElementById('status').style.display='inline';
 	jQuery.ajax({
 		method: 'POST',
@@ -129,7 +129,7 @@ function verify_data() {
 	var returnValue = true;
 	var list_price = document.getElementById('list_price');
 	if (list_price.value != '' && list_price.value != 0) {
-		intval= intValidate('list_price','EditListPrice');
+		intval= intValidate('list_price', 'EditListPrice');
 		if (!intval) {
 			returnValue = false;
 		}

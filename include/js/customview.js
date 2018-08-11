@@ -241,14 +241,11 @@ function selFieldType(id, scrollLayer, bool, blockid) {
 
 function srchFieldType(ev) {
 	var keyCode='';
+	var doSearch = false;
 	if (browser_ie) {
 		keyCode=window.fieldLayer.event.keyCode;
 		var currElement=window.fieldLayer.event.srcElement;
-		if (currElement.id.indexOf('field')>=0) {
-			var doSearch=true;
-		} else {
-			var doSearch=false;
-		}
+		doSearch = (currElement.id.indexOf('field')>=0);
 		window.fieldLayer.event.cancelBubble=true;
 	} else if (browser_nn4 || browser_nn6) {
 		keyCode=ev.which;
@@ -290,10 +287,9 @@ function srchFieldType(ev) {
 		default : //Character Search
 			if (keyCode>=65 && keyCode<=90) {
 				var srchChar=String.fromCharCode(keyCode);
+				var startIdx=currFieldIdx+1;
 				if (currFieldIdx==totFieldType) {
-					var startIdx=0;
-				} else {
-					var startIdx=currFieldIdx+1;
+					startIdx=0;
 				}
 
 				var loop=1;
@@ -396,7 +392,7 @@ function validateTypeforCFMapping(leadtype, leadtypeofdata, type, typeofdata, fi
 						return false;
 					}
 					break;
-				case 'N'  :
+				case 'N':
 					if (lead_tod[2].indexOf(',')>0) {
 						var lead_dec = lead_tod[2].split(',');
 						var dec = tod[2].split(',');

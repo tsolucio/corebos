@@ -21,7 +21,7 @@ var TOOLTIP = {
 		if (TOOLTIP._status[module][recordid][fieldname]) {
 			if (TOOLTIP._cache[module][fieldname][recordid]) {
 				var tooltipdata = TOOLTIP._cache[module][fieldname][recordid];
-				tooltip.tip(node,tooltipdata,recordid,fieldname);
+				tooltip.tip(node, tooltipdata, recordid, fieldname);
 				if (!this._relinguishStatusControl) {
 					document.getElementById('status').style.display = 'none';
 				}
@@ -29,8 +29,8 @@ var TOOLTIP = {
 		}
 	},
 
-	hide : function (element,id,fieldname) {
-		tooltip.untip(element,id,fieldname);
+	hide : function (element, id, fieldname) {
+		tooltip.untip(element, id, fieldname);
 	},
 
 	_setStatus : function (module, fieldname, recordid, statusflag) {
@@ -55,7 +55,8 @@ var TOOLTIP = {
 		if (evtparams['event'] == 'cell.onmouseover' ) {
 			TOOLTIP._setStatus(module, fieldname, recordid, true);
 			_VT__TOOLTIP__TIMER = setTimeout(function () {
-				TOOLTIP._showForField(node, module, fieldname,recordid);},TOOLTIP._mouseOverTimeOut);
+				TOOLTIP._showForField(node, module, fieldname, recordid);
+			}, TOOLTIP._mouseOverTimeOut);
 		} else if (evtparams['event'] == 'cell.onmouseout' ) {
 			TOOLTIP._setStatus(module, fieldname, recordid, false);
 			TOOLTIP.hide(node, recordid, fieldname);
@@ -65,7 +66,7 @@ var TOOLTIP = {
 				TOOLTIP._setStatus(module, fieldname, recordid, false);
 				TOOLTIP.hide(node, recordid, fieldname);
 				clearTimeout(_VT__TOOLTIP__TIMER);
-			},TOOLTIP._mouseOverTimeOut*4);
+			}, TOOLTIP._mouseOverTimeOut*4);
 		}
 	},
 

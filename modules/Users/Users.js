@@ -26,7 +26,7 @@ function updateWidgetWindow() {
 	} else {
 		document.forms['addWidget'].headingNew.disabled = document.forms['addWidget'].announcement.disabled = document.forms['addWidget'].content.disabled = document.getElementById('content___Config').disabled = false;
 		document.getElementById('content___Frame').height=370;
-		document.getElementById('content___Frame').src=fckEditoFrame ;
+		document.getElementById('content___Frame').src=fckEditoFrame;
 		if (selObj.options[selIndex].value!= 'NONE') {
 			window.location.href = 'index.php?module=Users&action=UsersAjax&file=AWWidget&contentHeading='+selObj.options[selIndex].value;
 		} else {

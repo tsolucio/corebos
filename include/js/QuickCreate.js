@@ -7,7 +7,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-function qcemptyCheck(fldName,fldLabel, fldType) {
+function qcemptyCheck(fldName, fldLabel, fldType) {
 	var currObj=window.document.QcEditView[fldName];
 	if (fldType=='text') {
 		if (currObj.value.replace(/^\s+/g, '').replace(/\s+$/g, '').length==0) {
@@ -27,7 +27,7 @@ function qcemptyCheck(fldName,fldLabel, fldType) {
 	}
 }
 
-function qcpatternValidate(fldName,fldLabel,type) {
+function qcpatternValidate(fldName, fldLabel, type) {
 	var currObj=window.document.QcEditView[fldName];
 	if (type.toUpperCase()=='EMAIL') { //Email ID validation
 		/*changes made to fix -- ticket#3278 & ticket#3461
@@ -74,8 +74,8 @@ function qcpatternValidate(fldName,fldLabel,type) {
 	}
 }
 
-function qcdateValidate(fldName,fldLabel,type) {
-	if (qcpatternValidate(fldName,fldLabel,'DATE')==false) {
+function qcdateValidate(fldName, fldLabel, type) {
+	if (qcpatternValidate(fldName, fldLabel, 'DATE')==false) {
 		return false;
 	}
 	var dateval = window.document.QcEditView[fldName].value.replace(/^\s+/g, '').replace(/\s+$/g, '');
@@ -125,7 +125,7 @@ function qcdateValidate(fldName,fldLabel,type) {
 	chkdate.setDate(dd);
 
 	if (type!='OTH') {
-		if (!compareDates(chkdate,fldLabel,currdate,'current date',type)) {
+		if (!compareDates(chkdate, fldLabel, currdate, 'current date', type)) {
 			window.document.QcEditView[fldName].focus();
 			return false;
 		} else {
@@ -136,7 +136,7 @@ function qcdateValidate(fldName,fldLabel,type) {
 	}
 }
 
-function qcdateComparison(fldName1,fldLabel1,fldName2,fldLabel2,type) {
+function qcdateComparison(fldName1, fldLabel1, fldName2, fldLabel2, type) {
 	var dateval1=window.document.QcEditView[fldName1].value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 	var dateval2=window.document.QcEditView[fldName2].value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 
@@ -163,7 +163,7 @@ function qcdateComparison(fldName1,fldLabel1,fldName2,fldLabel2,type) {
 	date2.setDate(dd2);
 
 	if (type!='OTH') {
-		if (!compareDates(date1,fldLabel1,date2,fldLabel2,type)) {
+		if (!compareDates(date1, fldLabel1, date2, fldLabel2, type)) {
 			window.document.QcEditView[fldName1].focus();
 			return false;
 		} else {
@@ -174,7 +174,7 @@ function qcdateComparison(fldName1,fldLabel1,fldName2,fldLabel2,type) {
 	}
 }
 
-function qcintValidate(fldName,fldLabel) {
+function qcintValidate(fldName, fldLabel) {
 	var val=window.document.QcEditView[fldName].value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 	if (isNaN(val) || (val.indexOf('.')!=-1 && fldName != 'potential_amount')) {
 		alert(alert_arr.INVALID+fldLabel);
@@ -191,7 +191,7 @@ function qcintValidate(fldName,fldLabel) {
 	}
 }
 
-function qcnumConstComp(fldName,fldLabel,type,constval) {
+function qcnumConstComp(fldName, fldLabel, type, constval) {
 	var val=parseFloat(window.document.QcEditView[fldName].value.replace(/^\s+/g, '').replace(/\s+$/g, ''));
 	constval=parseFloat(constval);
 
@@ -243,8 +243,8 @@ function qcnumConstComp(fldName,fldLabel,type,constval) {
 	}
 }
 
-function qcdateTimeValidate(dateFldName,timeFldName,fldLabel,type) {
-	if (qcpatternValidate(dateFldName,fldLabel,'DATE')==false) {
+function qcdateTimeValidate(dateFldName, timeFldName, fldLabel, type) {
+	if (qcpatternValidate(dateFldName, fldLabel, 'DATE')==false) {
 		return false;
 	}
 	dateval=window.document.QcEditView[dateFldName].value.replace(/^\s+/g, '').replace(/\s+$/g, '');
@@ -285,12 +285,12 @@ function qcdateTimeValidate(dateFldName,timeFldName,fldLabel,type) {
 		}
 	}
 
-	if (qcpatternValidate(timeFldName,fldLabel,'TIME')==false) {
+	if (qcpatternValidate(timeFldName, fldLabel, 'TIME')==false) {
 		return false;
 	}
 	var timeval=window.document.QcEditView[timeFldName].value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-	var hourval=parseInt(timeval.substring(0,timeval.indexOf(':')));
-	var minval=parseInt(timeval.substring(timeval.indexOf(':')+1,timeval.length));
+	var hourval=parseInt(timeval.substring(0, timeval.indexOf(':')));
+	var minval=parseInt(timeval.substring(timeval.indexOf(':')+1, timeval.length));
 	var currObj=window.document.QcEditView[timeFldName];
 
 	if (hourval>23 || minval>59) {
@@ -309,7 +309,7 @@ function qcdateTimeValidate(dateFldName,timeFldName,fldLabel,type) {
 	chkdate.setMinutes(minval);
 
 	if (type!='OTH') {
-		if (!compareDates(chkdate,fldLabel,currdate,'current date & time',type)) {
+		if (!compareDates(chkdate, fldLabel, currdate, 'current date & time', type)) {
 			window.document.QcEditView[dateFldName].focus();
 			return false;
 		} else {

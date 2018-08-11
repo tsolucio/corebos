@@ -24,7 +24,7 @@ GlobalVariable_getVariable('Calendar_other_default_duration', 1, 'Calendar', gVT
 });
 
 function changeEndtime_StartTime() {
-	if (dateTimeFieldComparison('dtstart','SStart','dtend','EEnd','LE',false)) {
+	if (dateTimeFieldComparison('dtstart', 'SStart', 'dtend', 'EEnd', 'LE', false)) {
 		return true; // nothing to do
 	}
 	let type = document.getElementById('activitytype').value;
@@ -64,7 +64,7 @@ function changeEndtime_StartTime() {
 			}
 			hour = _2digit(hour);
 			min = _2digit(min);
-			setCalendarDateFields(date,hour,min,fmt);
+			setCalendarDateFields(date, hour, min, fmt);
 		} else if (fmt == 'AM') {
 			if (hour >= day_change_hour) {
 				hour = hour - +day_change_hour;
@@ -79,7 +79,7 @@ function changeEndtime_StartTime() {
 			}
 			hour = _2digit(hour);
 			min = _2digit(min);
-			setCalendarDateFields(date,hour,min,fmt);
+			setCalendarDateFields(date, hour, min, fmt);
 		} else {
 			hour = +hour + +calendar_other_default_duration;
 			if (hour >= 24) {
@@ -88,7 +88,7 @@ function changeEndtime_StartTime() {
 			}
 			hour = _2digit(hour);
 			min = _2digit(min);
-			setCalendarDateFields(date,hour,min,fmt);
+			setCalendarDateFields(date, hour, min, fmt);
 		}
 	}
 	if (type == 'Call') {
@@ -113,7 +113,7 @@ function changeEndtime_StartTime() {
 			}
 			hour = _2digit(hour);
 			min = _2digit(min);
-			setCalendarDateFields(date,hour,min,fmt);
+			setCalendarDateFields(date, hour, min, fmt);
 		} else if (fmt == 'AM') {
 			if (hour == 11 && min == hour_change_minute) {
 				hour = 12;
@@ -133,7 +133,7 @@ function changeEndtime_StartTime() {
 			}
 			hour = _2digit(hour);
 			min = _2digit(min);
-			setCalendarDateFields(date,hour,min,fmt);
+			setCalendarDateFields(date, hour, min, fmt);
 		} else {
 			if (min >= hour_change_minute) {
 				min = min - hour_change_minute;
@@ -147,14 +147,14 @@ function changeEndtime_StartTime() {
 			}
 			hour = _2digit(hour);
 			min = _2digit(min);
-			setCalendarDateFields(date,hour,min,fmt);
+			setCalendarDateFields(date, hour, min, fmt);
 		}
 	}
 }
 
 function getdispDate(tempDate) {
-	var dd = _2digit(parseInt(tempDate.getDate(),10));
-	var mm = _2digit(parseInt(tempDate.getMonth(),10)+1);
+	var dd = _2digit(parseInt(tempDate.getDate(), 10));
+	var mm = _2digit(parseInt(tempDate.getMonth(), 10)+1);
 	var yy = tempDate.getFullYear();
 	if (userDateFormat == 'dd-mm-yyyy') {
 		return dd+'-'+mm+'-'+yy;
@@ -165,7 +165,7 @@ function getdispDate(tempDate) {
 	}
 }
 
-function setCalendarDateFields(date,hour,min,fmt) {
+function setCalendarDateFields(date, hour, min, fmt) {
 	document.EditView.dtend.value = date + ' ' + hour + ':' + min;
 	document.EditView.calendar_repeat_limit_date.value = date;
 	document.EditView.inputtimefmt_dtend.value = fmt;
@@ -192,7 +192,7 @@ function open_filtered_contactsIfAccounts(fromlink, fldname, MODULE, ID) {
 	var valmod = (rel_type=='Accounts' || rel_type=='Potentials' || rel_type=='Quotes' || rel_type=='PurchaseOrder' || rel_type=='Vendors' || rel_type=='SalesOrder' || rel_type=='Invoice' || rel_type=='Campaigns' || rel_type=='Products');
 	if (rel_id != '' && valmod) {
 		var BasicSearch = '&parent_module='+rel_type+'&relmod_id='+rel_id; // special hard coded contact search
-		window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield='+fldname+'&srcmodule='+MODULE+'&forrecord='+ID+BasicSearch,'vtlibui10','width=780,height=652,resizable=0,scrollbars=0,top=150,left=200');
+		window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield='+fldname+'&srcmodule='+MODULE+'&forrecord='+ID+BasicSearch, 'vtlibui10', 'width=780,height=652,resizable=0,scrollbars=0,top=150,left=200');
 	} else {
 		vtlib_open_popup_window('', 'cto_id', 'cbCalendar', '');
 	}

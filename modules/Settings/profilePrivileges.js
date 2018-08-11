@@ -6,7 +6,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-var Imagid_array = ['img_2','img_4','img_6','img_7','img_8','img_9','img_10','img_13','img_14','img_18','img_19','img_20','img_21','img_22','img_23','img_26'];
+var Imagid_array = ['img_2', 'img_4', 'img_6', 'img_7', 'img_8', 'img_9', 'img_10', 'img_13', 'img_14', 'img_18', 'img_19', 'img_20', 'img_21', 'img_22', 'img_23', 'img_26'];
 
 function fnToggleVIew(obj) {
 	obj = '#'+obj;
@@ -154,7 +154,7 @@ function selectUnselect(oCheckbox) {
 	}
 }
 function initialiseprofile() {
-	var module_array = Array(1,2,4,6,7,8,9,10,13,14,15,17,18,19,20,21,22,23,24,25,26,27);
+	var module_array = Array(1, 2, 4, 6, 7, 8, 9, 10, 13, 14, 15, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27);
 	for (var i=0; i < module_array.length; i++) {
 		hideTab(module_array[i]);
 	}
