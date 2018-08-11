@@ -715,7 +715,7 @@ function getAllModulesWithDateTimeFields() {
 
 function getDateFieldsOfModule($tabid) {
 	global $adb;
-	$rsmwd = $adb->query('SELECT distinct fieldname FROM vtiger_field as cbfld WHERE tabid = $tabid and uitype=5');
+	$rsmwd = $adb->query("SELECT distinct fieldname FROM vtiger_field as cbfld WHERE tabid = $tabid and uitype=5");
 	$datefields = array();
 	while ($fld = $adb->fetch_array($rsmwd)) {
 		$datefields[] = $fld['fieldname'];
@@ -725,7 +725,7 @@ function getDateFieldsOfModule($tabid) {
 
 function getTimeFieldsOfModule($tabid) {
 	global $adb;
-	$rsmwd = $adb->query('SELECT distinct fieldname FROM vtiger_field as cbfld WHERE tabid = $tabid and uitype=14');
+	$rsmwd = $adb->query("SELECT distinct fieldname FROM vtiger_field as cbfld WHERE tabid = $tabid and uitype=14");
 	$datefields = array();
 	while ($fld = $adb->fetch_array($rsmwd)) {
 		$datefields[] = $fld['fieldname'];
@@ -735,7 +735,7 @@ function getTimeFieldsOfModule($tabid) {
 
 function getDateAndTimeFieldsOfModule($tabid) {
 	global $adb;
-	$rsmwd = $adb->query('SELECT distinct fieldname FROM vtiger_field as cbfld WHERE tabid = $tabid and (uitype=14 or uitype=5)');
+	$rsmwd = $adb->query("SELECT distinct fieldname FROM vtiger_field as cbfld WHERE tabid = $tabid and (uitype=14 or uitype=5)");
 	$datefields = array();
 	while ($fld = $adb->fetch_array($rsmwd)) {
 		$datefields[] = $fld['fieldname'];
@@ -747,7 +747,7 @@ function getModuleCalendarFields($module) {
 	global $adb, $current_user;
 	$rscalflds = $adb->pquery(
 		'select * from its4you_calendar_modulefields where module=? and (userid=? or userid=1) order by userid desc',
-		array($module,$current_user->id)
+		array($module, $current_user->id)
 	);
 	if ($rscalflds && $adb->num_rows($rscalflds)>0) {
 		$calflds = $adb->fetch_row($rscalflds);
