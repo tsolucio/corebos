@@ -1,4 +1,4 @@
-function VTCreateTodoTask($){
+function VTCreateTodoTask($) {
 
 	var map = fn.map;
 	var dict = fn.dict;
@@ -8,31 +8,33 @@ function VTCreateTodoTask($){
 	var contains = fn.contains;
 	var concat = fn.concat;
 
-	function errorDialog(message){
+	function errorDialog(message) {
 		alert(message);
 	}
 
-	function index(arr, field){
-		return dict(map(function(e){return [e[field], e];}, arr));
+	function index(arr, field) {
+		return dict(map(function (e) {
+			return [e[field], e];
+		}, arr));
 	}
 
-	function handleError(fn){
-		return function(status, result){
-			if(status){
+	function handleError(fn) {
+		return function (status, result) {
+			if (status) {
 				fn(result);
-			}else{
+			} else {
 				errorDialog('Failure:'+result);
 			}
-		}
+		};
 	}
 
-	var vtinst = new VtigerWebservices("webservice.php");
-	vtinst.extendSession(handleError(function(result){
-		$(document).ready(function(){
+	var vtinst = new VtigerWebservices('webservice.php');
+	vtinst.extendSession(handleError(function (result) {
+		$(document).ready(function () {
 			//Setup the validator
 			validator.mandatoryFields.push('todo');
 
-			vtinst.describeObject('Calendar', handleError(function(result){
+			vtinst.describeObject('Calendar', handleError(function (result) {
 				var fields = result['fields'];
 				var fieldsMap = index(fields, 'name');
 				var eventStatusType = fieldsMap['taskstatus'];
@@ -42,22 +44,22 @@ function VTCreateTodoTask($){
 				var taskPriorityValues = taskPriorityType['type']['picklistValues'];
 
 				var status = $('#task_status');
-				$.each(eventStatusValues, function(i, v){
+				$.each(eventStatusValues, function (i, v) {
 					status.append('<option value="'+v['value']+'">'+v['label']+'</option>');
 				});
-				if(taskStatus!=''){
+				if (taskStatus!='') {
 					status.val(taskStatus);
 				} else {
 					status.val(eventStatusValues[0]['value']);
 				}
 				$('#task_status_busyicon').hide();
 				$('#task_status').show();
-				
+
 				var priority = $('#task_priority');
-				$.each(taskPriorityValues, function(i, v){
+				$.each(taskPriorityValues, function (i, v) {
 					priority.append('<option value="'+v['value']+'">'+v['label']+'</option>');
 				});
-				if(taskPriority!=''){
+				if (taskPriority!='') {
 					priority.val(taskPriority);
 				} else {
 					priority.val(taskPriorityValues[0]['value']);
