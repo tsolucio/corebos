@@ -95,7 +95,6 @@ $mod_strings = array (
 	'LBL_THEME_COLOR_B'=>'azul',
 	'LBL_THEME_COLOR_C'=>'blanco',
 	'LBL_NAVI_SELECTION'=>'Elementos por Página:',
-
 	'LBL_COMMENTS'=>'Comentarios',
 	'LBL_SIGNATURE'=>'Firma',
 );
