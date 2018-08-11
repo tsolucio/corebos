@@ -13,42 +13,42 @@ include_once __DIR__ . '/Block.php';
 class crmtogo_UI_ModuleRecordModel {
 	private $_id;
 	private $_blocks = array();
-	
-	function initData($recordData) {
+
+	public function initData($recordData) {
 		$this->data = $recordData;
 		if (isset($recordData['blocks'])) {
 			$blocks = crmtogo_UI_BlockModel::buildModelsFromResponse($recordData['blocks']);
-			foreach($blocks as $block) {
+			foreach ($blocks as $block) {
 				$this->_blocks[$block->label()] = $block;
 			}
 		}
 	}
-	
-	function setId($newId) {
+
+	public function setId($newId) {
 		$this->_id = $newId;
 	}
-	
-	function id() {
+
+	public function id() {
 		return $this->data['id'];
 	}
-	
-	function label() {
+
+	public function label() {
 		return $this->data['label'];
 	}
-	
-	function blocks() {
+
+	public function blocks() {
 		return $this->_blocks;
 	}
-	
-	static function buildModelFromResponse($recordData) {
+
+	public static function buildModelFromResponse($recordData) {
 		$instance = new self();
 		$instance->initData($recordData);
 		return $instance;
 	}
-	
-	static function buildModelsFromResponse($records) {
+
+	public static function buildModelsFromResponse($records) {
 		$instances = array();
-		foreach($records as $recordData) {
+		foreach ($records as $recordData) {
 			$instance = new self();
 			$instance->initData($recordData);
 			$instances[] = $instance;
@@ -56,18 +56,17 @@ class crmtogo_UI_ModuleRecordModel {
 		return $instances;
 	}
 
-
-	function initCreateData($recordData) {
+	public function initCreateData($recordData) {
 		$this->data = $recordData;
 		if (isset($recordData['blocks'])) {
 			$blocks = crmtogo_UI_BlockModel::buildCreateModel($recordData['blocks']);
-			foreach($blocks as $block) {
+			foreach ($blocks as $block) {
 				$this->_blocks[$block->label()] = $block;
 			}
 		}
 	}
-	
-	static function buildModel($recordData) {
+
+	public static function buildModel($recordData) {
 		$instance = new self();
 		$instance->initCreateData($recordData);
 		return $instance;

@@ -201,8 +201,6 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 					if ($field['uitype'] == '53') {
 						//assigned user
 						$output = array_chunk($value, 1);
-						$recordarray=explode('x', $output[0][0]);
-						$recordprefix=$recordarray[0];
 						$value = $output[0][0];
 						if ($value != '' && $value != 0) {
 								$assigned_user_id = $value;
@@ -223,13 +221,13 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 						foreach ($picklistValues as $pickkey => $pickvalue) {
 							$picklistValues[$pickkey] = decode_html($pickvalue);
 						}
-						$valueArr = explode("|##|", $value);
+						$valueArr = explode('|##|', $value);
 						$pickcount = 0;
 						//get values
 						if (!empty($picklistValues)) {
-							foreach ($picklistValues as $order => $pickListValue) {
-								if (in_array(trim($pickListValue), array_map("trim", $valueArr))) {
-									$chk_val = "selected";
+							foreach ($picklistValues as $pickListValue) {
+								if (in_array(trim($pickListValue), array_map('trim', $valueArr))) {
+									$chk_val = 'selected';
 									$pickcount++;
 								} else {
 									$chk_val = '';

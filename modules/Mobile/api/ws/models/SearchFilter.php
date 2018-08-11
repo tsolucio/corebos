@@ -9,54 +9,52 @@
  ************************************************************************************/
 include_once 'include/Webservices/Query.php';
 include_once __DIR__ . '/Filter.php';
-	
+
 class crmtogo_WS_SearchFilterModel extends crmtogo_WS_FilterModel {
 	protected $criterias;
-	
-	function __construct($moduleName) {
+
+	public function __construct($moduleName) {
 		$this->moduleName = $moduleName;
 	}
-	
-	function query() {
+
+	public function query() {
 		return false;
 	}
-	
-	function queryParameters() {
+
+	public function queryParameters() {
 		return false;
 	}
-	
-	function setCriterias($criterias) {
+
+	public function setCriterias($criterias) {
 		$this->criterias = $criterias;
 	}
-	
-	function execute($fieldnames, $paging = false, $calwhere ='') {
-		$selectClause = sprintf("SELECT %s", implode(',', $fieldnames));
-		$fromClause = sprintf("FROM %s", $this->moduleName);
-		if ($this->moduleName == 'cbCalendar' and $calwhere !='') {
+
+	public function execute($fieldnames, $paging = false, $calwhere = '') {
+		$selectClause = sprintf('SELECT %s', implode(',', $fieldnames));
+		$fromClause = sprintf('FROM %s', $this->moduleName);
+		if ($this->moduleName == 'cbCalendar' && $calwhere !='') {
 			$whereClause = " WHERE date_start >= '".$calwhere['start']."' AND date_start <= '".$calwhere['end']."'";
+		} else {
+			$whereClause = '';
 		}
-		else {
-			$whereClause = "";
-		}
-		$orderClause = "";
-		$groupClause = "";
+		$orderClause = '';
+		$groupClause = '';
 		$limitClause = '';
 		if ($paging) {
 			$config = crmtogo_WS_Controller::getUserConfigSettings();
-			$limitClause = "LIMIT 0,".$config['NavigationLimit'];
+			$limitClause = 'LIMIT 0,'.$config['NavigationLimit'];
 		}
 		if (!empty($this->criterias)) {
 			$_sortCriteria = $this->criterias['_sort'];
-			if(!empty($_sortCriteria)) {
+			if (!empty($_sortCriteria)) {
 				$orderClause = $_sortCriteria;
 			}
 		}
-		 
-		$query = sprintf("%s %s %s %s %s %s;", $selectClause, $fromClause, $whereClause, $orderClause, $groupClause, $limitClause);
-		return vtws_query($query, $this->getUser()); 
+		$query = sprintf('%s %s %s %s %s %s;', $selectClause, $fromClause, $whereClause, $orderClause, $groupClause, $limitClause);
+		return vtws_query($query, $this->getUser());
 	}
-	
-	static function modelWithCriterias($moduleName, $criterias = false) {
+
+	public static function modelWithCriterias($moduleName, $criterias = false) {
 		$model = new crmtogo_WS_SearchFilterModel($moduleName);
 		$model->setCriterias($criterias);
 		return $model;
