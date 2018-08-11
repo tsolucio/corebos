@@ -101,6 +101,7 @@
 ./modules/Mobile/resources/lang/de_de.lang.js
 ./modules/Mobile/resources/crmtogo.js
 ./modules/Mobile/resources/documents.js
+./modules/Mobile/resources/getScrollcontent.js
 ./modules/VtigerBackup/VtigerBackup.js
 ./modules/cbCVManagement/cbCVManagement.js
 ./modules/com_vtiger_workflow/resources/functional.js

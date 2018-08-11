@@ -34,6 +34,7 @@ modules/InventoryDetails
 modules/Invoice
 modules/Leads
 modules/MailManager
+modules/Mobile
 modules/ModComments
 modules/ModTracker
 modules/PBXManager
