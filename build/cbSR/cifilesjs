@@ -112,7 +112,6 @@
 ./modules/com_vtiger_workflow/resources/vtigerwebservices.js
 ./modules/com_vtiger_workflow/resources/editworkflowscript.js
 ./modules/com_vtiger_workflow/resources/updatefieldstaskscript.js
-./modules/com_vtiger_workflow/resources/jquery.timepicker.js
 ./modules/com_vtiger_workflow/resources/workflowlistscript.js
 ./modules/com_vtiger_workflow/resources/emailtaskscript.js
 ./modules/com_vtiger_workflow/resources/parallelexecuter.js
