@@ -117,7 +117,6 @@
 ./modules/com_vtiger_workflow/resources/emailtaskscript.js
 ./modules/com_vtiger_workflow/resources/parallelexecuter.js
 ./modules/com_vtiger_workflow/resources/fieldvalidator.js
-./modules/com_vtiger_workflow/resources/json2.js
 ./modules/com_vtiger_workflow/resources/edittaskscript.js
 ./modules/Quotes/Quotes.js
 ./modules/GlobalVariable/GlobalVariable.js
