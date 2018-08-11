@@ -24,7 +24,36 @@ module.exports = {
             "error",
             "always"
         ],
+        "semi-spacing": [
+            "error",
+            {
+                "before": false,
+                "after": true
+            }
+        ],
+        "brace-style": [
+            "error",
+            "1tbs"
+        ],
+        "no-fallthrough": [
+            "off"
+        ],
+        "no-inner-declarations": [
+            "off"
+        ],
+        "no-trailing-spaces": [
+            2,
+            {
+                "skipBlankLines": false
+            }
+        ],
         "no-undef": [
+            "off"
+        ],
+        "no-empty": [
+            "off"
+        ],
+        "no-unreachable": [
             "off"
         ],
         "no-unused-vars": [
@@ -52,6 +81,13 @@ module.exports = {
             "error",
             {
                 "before": true,
+                "after": true
+            }
+        ],
+        "comma-spacing": [
+            "error",
+            {
+                "before": false,
                 "after": true
             }
         ],

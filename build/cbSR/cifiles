@@ -1,8 +1,7 @@
---ignore=modules/cbMap/libs/crXml.php,*css,modules/evvtMenu/jquery.fancytree-all.min.js,modules/evvtMenu/jstree.min.js,modules/GlobalVariable/tablesorter/jquery.tablesorter.min.js,modules/MailManager/resources/jquery.tokeninput.js,modules/Project/BURAK_Gantt.class.php
+--ignore=modules/cbMap/libs/crXml.php,*css,*.js,modules/Project/BURAK_Gantt.class.php,checkthese/*
 modules/Accounts
 modules/Assets
 modules/BusinessActions
-modules/Calendar
 modules/Campaigns
 modules/cbAuditTrail
 modules/cbCalendar
@@ -120,7 +119,6 @@ modules/Calendar4You/SaveEventSettings.php
 modules/Calendar4You/Save.php
 modules/Calendar4You/SaveTodo.php
 modules/Calendar4You/Settings.php
-modules/Calendar4You/UninstallModule.php
 modules/Calendar4You/updateCalendarSharing.php
 modules/Calendar4You/UpdateEvents.php
 modules/Calendar4You/updateRelations.php
