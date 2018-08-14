@@ -190,15 +190,20 @@ function displayCoords(currObj,obj,mode,curr_row)
 		<table width="100%"  border="0" cellspacing="0" cellpadding="1">
 			<tr>
 				<td class="small" valign="top">
-					<input type="text" id="{$productName}" name="{$productName}" value="{$data.$productName}" class="small" style="width: 70%;" readonly />
+					<div class="slds-combobox_container slds-has-inline-listbox cbds-product-search">
+						<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-combobox-lookup" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+							<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+								<input id="{$productName}" name="{$productName}" class="slds-input slds-combobox__input cbds-inventoryline__input--name" aria-autocomplete="list" aria-controls="listbox-unique-id" autocomplete="off" role="textbox" placeholder="{$APP.typetosearch_prodser}" value="{$data.$productName}" type="text" style="box-shadow: none;">
+								<span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right">
+								<svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+									<use xlink:href="lib/LDS/icons/utility-sprite/svg/symbols.svg#search" xmlns:xlink="http://www.w3.org/1999/xlink"></use>
+								</svg>
+								</span>
+							</div>
+						</div>
+					</div>
 					<input type="hidden" id="{$hdnProductId}" name="{$hdnProductId}" value="{$data.$hdnProductId}" />
 					<input type="hidden" id="lineItemType{$row_no}" name="lineItemType{$row_no}" value="{$entityType}" />
-					&nbsp;
-					{if $entityType eq 'Services'}
-						<img id="searchIcon{$row_no}" title="{'Services'|@getTranslatedString:'Services'}" src="{'services.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;" align="absmiddle" onclick="servicePickList(this,'{$MODULE}','{$row_no}')" />
-					{else}
-						<img id="searchIcon{$row_no}" title="{'Products'|@getTranslatedString:'Products'}" src="{'products.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;" align="absmiddle" onclick="productPickList(this,'{$MODULE}','{$row_no}')" />
-					{/if}
 				</td>
 			</tr>
 			<tr>
