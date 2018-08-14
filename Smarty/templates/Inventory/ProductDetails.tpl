@@ -149,7 +149,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 				<div class="slds-combobox_container slds-has-inline-listbox cbds-product-search">
 					<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-combobox-lookup" aria-expanded="false" aria-haspopup="listbox" role="combobox">
 						<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
-							<input id="productName1" class="slds-input slds-combobox__input cbds-inventoryline__input--name" aria-autocomplete="list" aria-controls="listbox-unique-id" autocomplete="off" role="textbox" placeholder="{$APP.typetosearch_prodser}" value="" type="text" style="box-shadow: none;">
+							<input id="productName1" class="slds-input slds-combobox__input cbds-inventoryline__input--name" aria-autocomplete="list" aria-controls="listbox-unique-id" autocomplete="off" role="textbox" placeholder="{$APP.typetosearch_prodser}" value="{if isset($PRODUCT_NAME)}{$PRODUCT_NAME}{/if}" type="text" style="box-shadow: none;">
 							<span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right">
 							<svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
 								<use xlink:href="lib/LDS/icons/utility-sprite/svg/symbols.svg#search" xmlns:xlink="http://www.w3.org/1999/xlink"></use>
