@@ -16,7 +16,7 @@ class VTUpdateFieldsTask extends VTTask {
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
-		return array('field_value_mapping');
+		return array('field_value_mapping', 'launchrelwf');
 	}
 
 	public function doTask(&$entity) {
@@ -108,7 +108,11 @@ class VTUpdateFieldsTask extends VTTask {
 			if (count($relmodule)>0 && $relId!='' && $relId!=0) {
 				foreach ($relmodule as $mod) {
 					$focusrel[$mod]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel[$mod]->column_fields, $handlerMetarel[$mod]);
-					$focusrel[$mod]->saveentity($mod);
+					if ($this->launchrelwf) {
+						$focusrel[$mod]->save($mod);
+					} else {
+						$focusrel[$mod]->saveentity($mod);
+					}
 				}
 			}
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
