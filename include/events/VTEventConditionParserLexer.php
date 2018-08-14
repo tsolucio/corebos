@@ -88,7 +88,8 @@ class VTEventConditionParserLexer extends AntlrLexer {
 	public static $STRING=6;
 
 	public function reportError($e) {
-		print_r($e);
+		global $log;
+		$log->fatal($e);
 		throw new Exception('The condition you provided is invalid');
 	}
 
