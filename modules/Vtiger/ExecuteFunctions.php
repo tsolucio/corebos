@@ -70,6 +70,11 @@ switch ($functiontocall) {
 		}
 		$ret = getReferenceAutocomplete($term, $op, $searchinmodule, $limit, $current_user);
 		break;
+	case 'getProductServiceAutocomplete':
+		include_once 'include/Webservices/CustomerPortalWS.php';
+		$limit =  isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 5;
+		$ret = getProductServiceAutocomplete($_REQUEST['term'], array(), $limit);
+		break;
 	case 'getFieldValuesFromRecord':
 		$ret = array();
 		$crmid = vtlib_purify($_REQUEST['getFieldValuesFrom']);
