@@ -46,6 +46,12 @@ if (isset($_SESSION['login_error'])) {
 	$login_error = '';
 }
 
+if (isset($_SESSION['success_message'])) {
+	$success_message = $_SESSION['success_message'];
+} else {
+	$success_message = '';
+}
+
 require_once 'Smarty_setup.php';
 require_once 'data/Tracker.php';
 require_once 'include/utils/utils.php';
@@ -89,6 +95,7 @@ $smarty->assign('COMPANY_DETAILS', $companyDetails);
 $smarty->assign('coreBOS_uiapp_name', GlobalVariable::getVariable('Application_UI_Name', $coreBOS_app_name, 'Users', Users::getActiveAdminId()));
 $smarty->assign('currentLoginIP', Vtiger_Request::get_ip());
 $smarty->assign('LOGIN_ERROR', $login_error);
+$smarty->assign('SUCCESS_MESSAGE', $success_message);
 $currentYear = date('Y');
 $smarty->assign('currentYear', $currentYear);
 $smarty->assign('LoginPage', $cbodLoginPage);
