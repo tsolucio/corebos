@@ -60,7 +60,7 @@
           <div class="panel-body" align="center">
             <div class="row">
               <div class="col-xs-6 col-sm-6 col-md-6 separator social-login-box"> <br>
-               <img alt="" class="img-thumbnail" src="avatar.png">                        
+               <img alt="" class="img-thumbnail" src="include/images/user-avatar.png">                        
              </div>
              <div style="margin-top:50px;" class="col-xs-6 col-sm-6 col-md-6 login-box">
 
