@@ -440,7 +440,6 @@ class DashboardCharts {
 		return ChartUtils::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'lead_source_by_outcome', $width, $height, 0, 0, 0, 0);
 	}
 
-
 	public static function pipeline_by_lead_source($datax, $date_start, $date_end, $user_id, $width, $height) {
 		global $log, $current_user, $adb, $mod_strings;
 		$log->debug('Entering pipeline_by_lead_source('.print_r($datax, true).','.$date_start.','.$date_end.','.print_r($user_id, true).','.$width.','.$height.')');

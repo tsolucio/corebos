@@ -107,7 +107,6 @@ $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->display('Settings/TaxConfig.tpl');
 
-
 /**	Function to update the list of Tax percentages for the passed tax types
  *	@param array $new_percentages - array of tax types and the values like [taxid]=new value ie., [1]=3.56, [2]=11.45
  *	@param string $sh - sh or empty, if sh passed then update will be done in shipping and handling related table

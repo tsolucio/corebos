@@ -1091,8 +1091,6 @@ $app_strings = array(
 	'LBL_CALLER_INFORMATION'=>'Information correspondant',
 	'LBL_CALLER_NUMBER'=>'Numéro :',
 	'LBL_CALLER_NAME'=>'Nom :',
-
-
 	'LBL_DUPLICATE' => 'Dupliquer',
 	'LBL_CLICK' => 'Clic',
 	'LBL_TO_CONFIGURE' => 'pour configurer le',

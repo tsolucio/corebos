@@ -250,7 +250,6 @@ function getAllTaxes($available = 'all', $sh = '', $mode = '', $id = '') {
 	return $taxtypes;
 }
 
-
 /**	Function used to get all the tax details which are associated to the given product
  *	@param int $productid - product id to which we want to get all the associated taxes
  *	@param string $available - available or empty or available_associated where as default is all,
@@ -626,7 +625,6 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock = 'fal
 	}
 	$log->debug("Exit from function saveInventoryProductDetails($module).");
 }
-
 
 /**	function used to get the tax type for the entity (PO, SO, Quotes or Invoice)
  *	@param string $module - module name

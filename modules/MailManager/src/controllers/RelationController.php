@@ -263,7 +263,6 @@ class MailManager_RelationController extends MailManager_Controller {
 		}
 	}
 
-
 	/**
 	* Function used to set the record fields with the information from mail.
 	* @param Array $qcreate_array

@@ -187,8 +187,6 @@ $server->register(
 	$NAMESPACE
 );
 
-
-
 $server->register(
 	'SearchContactsByEmail',
 	array('username'=>'xsd:string','session'=>'xsd:string','emailaddress'=>'xsd:string'),

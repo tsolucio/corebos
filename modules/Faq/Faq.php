@@ -110,7 +110,6 @@ class Faq extends CRMEntity {
 		}
 	}
 
-
 	/** Function to insert values in vtiger_faqcomments table for the specified module,
 	 * @param $table_name -- table name:: Type varchar
 	 * @param $module -- module:: Type varchar

@@ -211,9 +211,6 @@ $mod_strings = array(
 'LBL_TEMPLATE_MESSAGE'=>'Mensagem e-mail',
 'LBL_VIEWING'=>'Visualizando',
 'LBL_PROPERTIES'=>'Propriedade de',
-
-
-//added to fix the issue #6630
 'LBL_ASTERISKEXTENSIONS_EXIST' => 'Extensão iPBX já existe!',
 'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'Separador decimal e separador de agrupamento de dígitos não podem ser o mesmo.',
 
@@ -229,7 +226,6 @@ $mod_strings = array(
 'LBL_GROUP_MESG1'=>'Os grupos são um caminho flexivel para conceder direitos de acesso, quando complexos direitos de acesso tiver que ser definido. Você pode combinar multiplas entidades tais como Funções, Usuários, Perfís etc. em um simples Grupo.',
 'LBL_GROUP_MESG2'=>'Para adicionar, selecione os membros da Entidade da esquerda e clique no botão ">>".',
 'LBL_GROUP_MESG3'=>'Para remover, selecione os membros do grupo da direita e clique no botão "<<".',
-
 
 // Added fields in detailViewmailtemplate.html,listgroupmembers.php,listgroups.php
 'LBL_DETAIL_VIEW_OF_EMAIL_TEMPLATE'=>'Visão detalhada do modelo e-mail',
@@ -332,7 +328,6 @@ $mod_strings = array(
 'LBL_ASSOCIATED_PROFILES'=>'Perfis associados :',
 'LBL_ASSOCIATED_USERS'=>'Usuários associados :',
 
-
 //Added fields in OrgSharingDetailsView.php
 'LBL_ORG_SHARING_PRIVILEGES'=>'Privilégios compartilhados na conta',
 'LBL_EDIT_PERMISSIONS'=>'Editar permissão',
@@ -404,9 +399,6 @@ $mod_strings = array(
 'LBL_PRIVILEGES'=>'Privilégios',
 'LBL_OF'=>'de',
 
-
-
-//Added for 4.2GA support for mail server integration
 'LBL_ADD_MAILSERVER_BUTTON_TITLE'=>'Adicionar servidor de mensagem',
 'LBL_ADD_MAILSERVER_BUTTON_KEY'=>'M',
 'LBL_ADD_MAILSERVER_BUTTON_LABEL'=>'Adicionar servidor de mensagem',
@@ -418,8 +410,6 @@ $mod_strings = array(
 'INV_TANDC'=>'Prazos & Condições',
 'INV_TERMSANDCONDITIONS'=>'Prazos & Condições',
 'LBL_INV_TERMSANDCONDITIONS'=>'Gestão de estoque',
-
-
 'INVENTORYNOTIFICATION'=>'Notificações de estoque',
 'LBL_INVENTORY_NOTIFICATIONS'=>'Editar E-mail de notificações de estoque',
 'LBL_INV_NOT_DESC'=>'Esta é a lista de notificações que é enviada para o almoxarife com relação a procura e a quantidade atual em estoque durante a criação da cotação, pedido de vendas e fatura.',
@@ -513,7 +503,6 @@ $mod_strings = array(
 'LBL_MY_PHOTO'=>'Minha foto',
 'LBL_CHANGE_PHOTO'=>'Mudar foto...',
 'LBL_CHANGE'=>'Mudar',
-
 
 //Added for Access Privileges
 

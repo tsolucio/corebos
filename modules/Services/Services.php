@@ -568,7 +568,6 @@ class Services extends CRMEntity {
 		return $return_value;
 	}
 
-
 	/**	Function to display the Services which are related to the PriceBook
 	 *	@param string $query - query to get the list of products which are related to the current PriceBook
 	 *	@param object $focus - PriceBook object which contains all the information of the current PriceBook

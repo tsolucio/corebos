@@ -138,7 +138,6 @@ $server->wsdl->addComplexType(
 	)
 );
 
-
 $server->register(
 	'authenticate_user',
 	array('fieldname'=>'tns:common_array'),
@@ -690,15 +689,13 @@ function save_faq_comment($input_array) {
 
 /** function to get a list of tickets and to search tickets
  * @param array $input_array - array which contains the following values
- => 	int $id - Customer ie., Contact id
-	int $only_mine - if true it will display only tickets related to contact
-	otherwise displays tickets related to account it belongs and all the contacts that are under the same account
-	int $where - used for searching tickets
-	string $match - used for matching tickets
-	*	return array $result - This function will call get_KBase_details and return that array
-	*/
-
-
+ * int $id - Customer ie., Contact id
+ * int $only_mine - if true it will display only tickets related to contact
+ * otherwise displays tickets related to account it belongs and all the contacts that are under the same account
+ * int $where - used for searching tickets
+ * string $match - used for matching tickets
+ * return array $result - This function will call get_KBase_details and return that array
+*/
 function get_tickets_list($input_array) {
 	global $adb,$log, $current_user;
 	//To avoid SQL injection we are type casting as well as bound the id variable.

@@ -293,7 +293,6 @@ ExecuteQuery("UPDATE vtiger_blocks SET blocklabel = '' WHERE blocklabel = 'LBL_R
 ExecuteQuery("UPDATE vtiger_field SET block = '41' WHERE tabid = '16' and fieldname NOT IN('reminder_time','contact_id')");
 ExecuteQuery("UPDATE vtiger_field SET block = '19' WHERE tabid = '16' and fieldname = 'contact_id'");
 
-
 // Change HelpDesk Workflows
 global $adb;
 $workflowManager = new VTWorkflowManager($adb);

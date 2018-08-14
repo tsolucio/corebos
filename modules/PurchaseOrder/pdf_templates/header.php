@@ -75,23 +75,22 @@ $pdf->addTextBlock($app_strings["Billing Address"].":", $billText, $billPosition
 /*  ******** Begin Invoice Data ************************ */
 // issue date block
 $issueBlock=array("80","37");
-$pdf->addRecBlock(DateTimeField::convertToUserFormat(date("Y-m-d")), $app_strings["Issue Date"], $issueBlock);
+$pdf->addRecBlock(DateTimeField::convertToUserFormat(date('Y-m-d')), $app_strings["Issue Date"], $issueBlock);
 
 // due date block
 $dueBlock=array("81","52");
-$pdf->addRecBlock($valid_till, $app_strings["Due Date"], $dueBlock);
+$pdf->addRecBlock($valid_till, $app_strings['Due Date'], $dueBlock);
 
 // terms block
 $termBlock=array("10","67");
-$pdf->addRecBlock($vendor_name, $app_strings["Vendor Name"], $termBlock);
+$pdf->addRecBlock($vendor_name, $app_strings['Vendor Name'], $termBlock);
 
 // Contact Name block
 $conBlock=array("79","67");
-$pdf->addRecBlock($contact_name, $app_strings["Contact Name"], $conBlock);
-
+$pdf->addRecBlock($contact_name, $app_strings['Contact Name'], $conBlock);
 
 // invoice number block
 $invBlock=array("145","65");
-$pdf->addRecBlock($po_no, $app_strings["PO Number"], $invBlock);
+$pdf->addRecBlock($po_no, $app_strings['PO Number'], $invBlock);
 /* ************ End Invoice Data ************************ */
 ?>

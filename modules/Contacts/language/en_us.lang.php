@@ -100,9 +100,6 @@ $mod_strings = array(
 //Added for search heading
 'LBL_GENERAL_INFORMATION'=>'General Information',
 
-
-
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'New Opportunity',
 'LBL_POTENTIAL_TITLE'=>'Opportunities',
 
@@ -117,7 +114,6 @@ $mod_strings = array(
 'LBL_NEW_NOTE'=>'New Document',
 'LBL_NOTE_TITLE'=>'Documents',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Contact Tools',
 
 'Salutation'=>'Salutation',
