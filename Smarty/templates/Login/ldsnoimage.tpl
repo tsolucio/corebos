@@ -66,6 +66,9 @@ body {
 							{if $LOGIN_ERROR neq ''}
 							<div class="errorMessage">{$LOGIN_ERROR}</div>
 							{/if}
+							{if $SUCCESS_MESSAGE neq ''}
+							<div class="success-msg">{$SUCCESS_MESSAGE}</div>
+							{/if}
 							<form method="post" id="login_form" action="index.php" target="_top" autocomplete="off" novalidate="novalidate">
 								<input type="hidden" name="module" value="Users" />
 								<input type="hidden" name="action" value="Authenticate" />
