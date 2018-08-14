@@ -4,7 +4,6 @@ require_once('modules/Users/Users.php');
 require_once('include/logging.php');
 require_once('modules/Emails/mail.php');
 
-
 $user_name=vtlib_purify($_REQUEST['user_name_p']);
 
 //Check if user exists and get User's email and user_hash
@@ -12,7 +11,7 @@ $result = $adb->pquery("SELECT email1,user_hash,user_name
 	FROM vtiger_users WHERE user_name=('".$user_name."')");
 
 if ($adb->num_rows($result) > 0) {
-	global $log,$adb;
+	global $log, $adb, $site_URL;
 	$time=time();
 	$time_update = $adb->pquery("update vtiger_users set lastAskedReset=? where user_name=?",array($time, $user_name));
 
@@ -22,9 +21,9 @@ if ($adb->num_rows($result) > 0) {
 
 	$time = time();
 	$email   = $adb->query_result($result, 0, 'email1');
-	$subject = 'admin test:coreBOS CRM: Password Reset';
+	$subject = 'coreBOS CRM: Password Reset';
 	$to_email= $email1;
-	$trackURL= "http://localhost/cbdemo/resetPassword.php?user_name=".$user_name."&hash=".$hash;
+	$trackURL= $site_URL."/resetPassword.php?user_name=".$user_name."&hash=".$hash;
 
 	$content = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 	<html xmlns="http://www.w3.org/1999/xhtml">
@@ -347,7 +346,7 @@ https://litmus.com/blog/a-guide-to-bulletproof-buttons-in-email-design -->
 </body>
 </html>';
 
-send_mail('',$to_email,'Test admin','license@sdfcompass.com',$subject,$content,'','','','','','');
+send_mail('',$to_email,'Test admin','',$subject,$content,'','','','','','');
 
 	//Display successfull message on login 
 $success_message="Email has been sent successfully, please follow instructions there";
