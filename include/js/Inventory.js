@@ -1814,6 +1814,8 @@ function handleProductAutocompleteSelect(obj) {
 }
 
 window.addEventListener("load", function(){
-	var firstRow = document.getElementsByClassName("cbds-product-search")[0];
-	var test = new ProductAutocomplete(firstRow, {}, handleProductAutocompleteSelect);
+	var rows = document.getElementsByClassName("cbds-product-search");
+	for (var i = rows.length - 1; i >= 0; i--) {
+		new ProductAutocomplete(rows[i], {}, handleProductAutocompleteSelect);
+	}
 });
