@@ -242,6 +242,31 @@ class Users extends CRMEntity {
 		return crypt($user_password, $salt);
 	}
 
+	/** Function to encrypt password when user not logged in */
+	public function encrypt_password2($user_password, $crypt_type = '',$username) {
+		// encrypt the password.
+		$salt = substr($username, 0, 2);
+
+		// Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/4923
+		if ($crypt_type == '') {
+			// Try to get the crypt_type which is in database for the user
+			$crypt_type = $this->get_user_crypt_type();
+		}
+
+		// For more details on salt format look at: http://in.php.net/crypt
+		if ($crypt_type == 'MD5') {
+			$salt = '$1$' . $salt . '$';
+		} elseif ($crypt_type == 'BLOWFISH') {
+			$salt = '$2$' . $salt . '$';
+		} elseif ($crypt_type == 'PHP5.3MD5') {
+			//only change salt for php 5.3 or higher version for backward
+			//compactibility.
+			//crypt API is lot stricter in taking the value for salt.
+			$salt = '$1$' . str_pad($salt, 9, '0');
+		}
+		return crypt($user_password, $salt);
+	}
+
 	/** Function for authorization check */
 	public function authorization_check($validate, $authkey, $i) {
 		$validate = base64_decode($validate);
@@ -553,6 +578,20 @@ class Users extends CRMEntity {
 		require_once 'modules/Users/CreateUserPrivilegeFile.php';
 		createUserPrivilegesfile($this->id);
 		return true;
+	}
+
+	//Change user Password when user not logged in
+	public function resetPassword($newpassword, $username) {
+		$change_password_next_login = 0;
+		$hash=hash('MD5',$newpassword);
+		$crypt_type = $this->DEFAULT_PASSWORD_CRYPT_TYPE;
+		$encrypted_password=$this->encrypt_password2($newpassword, $crypt_type, $username);
+
+		$query=("UPDATE vtiger_users
+			SET user_password=?, confirm_password=?, user_hash=?, crypt_type=?, change_password=?, last_password_reset_date=now(), failed_login_attempts=0
+			where user_name='admin'");
+
+		$this->db->pquery($query, array($encrypted_password, $encrypted_password, $hash, $crypt_type, $change_password_next_login));
 	}
 
 	public function mustChangePassword() {
