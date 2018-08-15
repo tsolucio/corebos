@@ -1323,7 +1323,7 @@ function InventorySelectAll(mod, image_pth) {
 })(function productautocompleteFactory(){
 
 	/**
-	 * @class InventoryLine
+	 * @class ProductAutocomplete
 	 * @param {element}
 	 * @param {element}:	Root 'InventoryBlock' Object
 	 * @param {function}: 	Callback for custom implementations. Will receive an object with
