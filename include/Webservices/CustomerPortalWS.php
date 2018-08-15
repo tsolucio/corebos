@@ -917,27 +917,28 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	$ret = array();
 
 	while ($prodser = $adb->fetch_array($r)) {
-		$ret_prodser = array();
-		$ret_prodser['meta'] = array(
-			'image' => '',
-			'name' => $prodser['name'],
-			'divisible' => $prodser['divisible'],
-			'comments' => $prodser['description'],
-			'ven_no' => $prodser['ven_no'],
-			'mfr_no' => $prodser['mfr_no'],
-			'type' => $prodser['type'],
-			'id' => $prodser['id'],
-		);
-		$ret_prodser['pricing'] = array(
-			'unit_price' => number_format((float)$prodser['unit_price'], $cur_user_decimals, '.', ''),
-			'unit_cost' => number_format((float)$prodser['cost_price'], $cur_user_decimals, '.', ''),
-		);
-		$ret_prodser['logistics'] = array(
-			'qtyinstock' => number_format((float)$prodser['qtyinstock'], $cur_user_decimals, '.', ''),
-		);
-		$ret_prodser['translations'] = array(
-			'ven_no' => getTranslatedString('Mfr PartNo', 'Products'),
-			'mfr_no' => getTranslatedString('Vendor PartNo', 'Products'),
+		$ret_prodser = array(
+			'meta' => array(
+				'image' => '',
+				'name' => $prodser['name'],
+				'divisible' => $prodser['divisible'],
+				'comments' => $prodser['description'],
+				'ven_no' => $prodser['ven_no'],
+				'mfr_no' => $prodser['mfr_no'],
+				'type' => $prodser['type'],
+				'id' => $prodser['id'],
+			),
+			'pricing' => array(
+				'unit_price' => number_format((float)$prodser['unit_price'], $cur_user_decimals, '.', ''),
+				'unit_cost' => number_format((float)$prodser['cost_price'], $cur_user_decimals, '.', ''),
+			),
+			'logistics' => array(
+				'qtyinstock' => number_format((float)$prodser['qtyinstock'], $cur_user_decimals, '.', ''),
+			),
+			'translations' => array(
+				'ven_no' => getTranslatedString('Mfr PartNo', 'Products'),
+				'mfr_no' => getTranslatedString('Vendor PartNo', 'Products'),
+			),
 		);
 		$ret[] = $ret_prodser;
 	}
