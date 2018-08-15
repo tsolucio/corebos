@@ -1344,7 +1344,7 @@ function InventorySelectAll(mod, image_pth) {
 		this.callback = typeof callback === "function" ? callback : false;
 
 		/* Instance listeners */
-		this.utils.on(this.input, "keyup", this.trigger, this);
+		this.utils.on(this.input, "keyup", this.throttle, this);
 		this.utils.on(this.input, "blur", this.delayedClear, this);
 		// this.utils.on(this.input, "onkeydown", this.preventEnterSubmit, this);
 	}
@@ -1352,12 +1352,12 @@ function InventorySelectAll(mod, image_pth) {
 	ProductAutocomplete.prototype = {
 		constructor : ProductAutocomplete,
 
-		trigger 	: function(e) {
+		trigger: function(e) {
 			var isSpecialKey = this.isSpecialKey(e.keyCode);
 			var term = this.input.value;
 			
 			if (!isSpecialKey && term.length > this.threshold)
-				this.throttle(this.getResults(term));
+				this.getResults(term);
 			else if (term.length < this.threshold)
 				this.clear();
 			else if (isSpecialKey)
@@ -1369,6 +1369,10 @@ function InventorySelectAll(mod, image_pth) {
 				return this.specialKeys.indexOf(window.keycodeMap[code]) == -1 ? false : true;
 			else
 				return false;
+		},
+
+		throttle: function(e) {
+			window.setTimeout(this.trigger(e), 100);
 		},
 
 		// preventEnterSubmit: function(e) {
