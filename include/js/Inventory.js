@@ -7,6 +7,11 @@
  * All Rights Reserved.
  ********************************************************************************/
 
+var inventoryi18n = ''; 
+ExecuteFunctions('getTranslatedStrings','i18nmodule=SalesOrder&tkeys=typetosearch_prodser').then(function (data) {
+	inventoryi18n = JSON.parse(data);
+});
+
 function copyAddressRight(form) {
 	if (typeof(form.bill_street) != 'undefined' && typeof(form.ship_street) != 'undefined') {
 		form.ship_street.value = form.bill_street.value;
@@ -662,7 +667,7 @@ function fnAddProductRow(module, image_path) {
 	coltwo.innerHTML= '<table border="0" cellpadding="1" cellspacing="0" width="100%"><tr><td class="small"><div class="slds-combobox_container slds-has-inline-listbox cbds-product-search" style="width:70%;display:inline-block">'+
 					'<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-combobox-lookup" aria-expanded="false" aria-haspopup="listbox" role="combobox">'+
 					'<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none"><input id="productName'+count+'" class="slds-input slds-combobox__input '+
-					'cbds-inventoryline__input--name" aria-autocomplete="list" aria-controls="listbox-unique-id" autocomplete="off" role="textbox" placeholder="" value="" '+
+					'cbds-inventoryline__input--name" aria-autocomplete="list" aria-controls="listbox-unique-id" autocomplete="off" role="textbox" placeholder="'+inventoryi18n.typetosearch_prodser+'" value="" '+
 					'type="text" style="box-shadow: none;"></div></div></div>'+
 					'&nbsp;<img id="searchIcon'+count+'" title="'+alert_arr.Products+'" src="themes/images/products.gif" style="cursor: pointer;" onclick="productPickList(this,\''+module+'\','+count+')" align="absmiddle">'+
 					'<input id="hdnProductId'+count+'" name="hdnProductId'+count+'" value="" type="hidden"><input type="hidden" id="lineItemType'+count+'" name="lineItemType'+count+'" value="Products" />'+
