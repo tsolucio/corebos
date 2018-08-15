@@ -891,7 +891,9 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		    vtiger_products.unit_price AS unit_price 
 		    FROM vtiger_products 
 		    INNER JOIN vtiger_crmentity ON vtiger_products.productid = vtiger_crmentity.crmid 
-		    WHERE vtiger_products.productname LIKE '%{$term}%'
+		    WHERE vtiger_products.productname LIKE '%{$term}%' 
+		    OR vtiger_products.mfr_part_no LIKE '%{$term}%' 
+		    OR vtiger_products.vendor_part_no LIKE '%{$term}%' 
 		    UNION
 		SELECT
 		    vtiger_service.servicename AS name, 
