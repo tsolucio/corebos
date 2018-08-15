@@ -98,4 +98,11 @@
 	<classname>IncSizeWorkflowTestField</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>albana</author>
+	<description>add module cbCompany</description>
+	<filename>build/changeSets/2018/addModulecbCompany.php</filename>
+	<classname>addModulecbCompany</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
