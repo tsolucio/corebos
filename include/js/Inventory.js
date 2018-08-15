@@ -659,13 +659,12 @@ function fnAddProductRow(module, image_path) {
 
 	//Product Name with Popup image to select product
 	coltwo.className = 'crmTableRow small';
-	coltwo.innerHTML= '<table border="0" cellpadding="1" cellspacing="0" width="100%"><tr><td class="small"><div class="slds-combobox_container slds-has-inline-listbox cbds-product-search">'+
+	coltwo.innerHTML= '<table border="0" cellpadding="1" cellspacing="0" width="100%"><tr><td class="small"><div class="slds-combobox_container slds-has-inline-listbox cbds-product-search" style="width:70%;display:inline-block">'+
 					'<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-combobox-lookup" aria-expanded="false" aria-haspopup="listbox" role="combobox">'+
 					'<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none"><input id="productName'+count+'" class="slds-input slds-combobox__input '+
 					'cbds-inventoryline__input--name" aria-autocomplete="list" aria-controls="listbox-unique-id" autocomplete="off" role="textbox" placeholder="" value="" '+
-					'type="text" style="box-shadow: none;"><span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right"><svg class="slds-icon slds-icon '+
-					'slds-icon_x-small slds-icon-text-default" aria-hidden="true"><use xlink:href="lib/LDS/icons/utility-sprite/svg/symbols.svg#search" xmlns:xlink="http://www.w3.org/1999/xlink">'+
-					'</use></svg></span></div></div></div>'+
+					'type="text" style="box-shadow: none;"></div></div></div>'+
+					'&nbsp;<img id="searchIcon'+count+'" title="'+alert_arr.Products+'" src="themes/images/products.gif" style="cursor: pointer;" onclick="productPickList(this,\''+module+'\','+count+')" align="absmiddle">'+
 					'<input id="hdnProductId'+count+'" name="hdnProductId'+count+'" value="" type="hidden"><input type="hidden" id="lineItemType'+count+'" name="lineItemType'+count+'" value="Products" />'+
 					'</td></tr><tr><td class="small"><input type="hidden" value="" id="subproduct_ids'+count+'" name="subproduct_ids'+count+'" /><span id="subprod_names'+count+'" name="subprod_names'+count+'" style="color:#C0C0C0;font-style:italic;"> </span>'+
 					'</td></tr><tr><td class="small" id="setComment'+count+'"><textarea id="comment'+count+'" name="comment'+count+'" class=small style="width:70%;height:40px"></textarea><img src="themes/images/clear_field.gif" onClick="getObj(\'comment'+count+'\').value=\'\'"; style="cursor:pointer;" /></td></tr></tbody></table>';
