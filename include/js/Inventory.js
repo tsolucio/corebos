@@ -1813,8 +1813,8 @@ function handleProductAutocompleteSelect(obj) {
 	// document.getElementById('subprod_names'+no).innerHTML = ui.item.subprod_name;
 }
 
+window.intialProductAutocompletes = false;
 window.addEventListener("load", function(){
-	window.intialProductAutocompletes = false;
 	if (!intialProductAutocompletes) {
 		var rows = document.getElementsByClassName("cbds-product-search");
 		for (var i = rows.length - 1; i >= 0; i--) {
