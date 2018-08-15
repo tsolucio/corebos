@@ -873,6 +873,9 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
 function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 5) {
 	global $adb, $current_user;
 	$cur_user_decimals = $current_user->column_fields['no_of_currency_decimals'];
+	$term = vtlib_purify($adb->sql_escape_string($term));
+	$limit = vtlib_purify($adb->sql_escape_string($limit));
+
 	require_once 'include/fields/CurrencyField.php';
 	require_once 'include/utils/CommonUtils.php';
 
