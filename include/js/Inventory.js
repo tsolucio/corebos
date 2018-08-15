@@ -1352,12 +1352,12 @@ function InventorySelectAll(mod, image_pth) {
 	ProductAutocomplete.prototype = {
 		constructor : ProductAutocomplete,
 
-		trigger		: function(e) {
+		trigger 	: function(e) {
 			var isSpecialKey = this.isSpecialKey(e.keyCode);
 			var term = this.input.value;
 			
 			if (!isSpecialKey && term.length > this.threshold)
-				this.getResults(term);
+				this.throttle(this.getResults(term));
 			else if (term.length < this.threshold)
 				this.clear();
 			else if (isSpecialKey)
@@ -1814,8 +1814,12 @@ function handleProductAutocompleteSelect(obj) {
 }
 
 window.addEventListener("load", function(){
-	var rows = document.getElementsByClassName("cbds-product-search");
-	for (var i = rows.length - 1; i >= 0; i--) {
-		new ProductAutocomplete(rows[i], {}, handleProductAutocompleteSelect);
+	window.intialProductAutocompletes = false;
+	if (!intialProductAutocompletes) {
+		var rows = document.getElementsByClassName("cbds-product-search");
+		for (var i = rows.length - 1; i >= 0; i--) {
+			new ProductAutocomplete(rows[i], {}, handleProductAutocompleteSelect);
+		}
+		window.intialProductAutocompletes = true;
 	}
 });
