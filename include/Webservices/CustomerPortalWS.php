@@ -929,11 +929,11 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			'id' => $prodser['id'],
 		);
 		$ret_prodser['pricing'] = array(
-			'unit_price' => number_format($prodser['unit_price'], $cur_user_decimals, '.', ''),
-			'unit_cost' => number_format($prodser['cost_price'], $cur_user_decimals, '.', ''),
+			'unit_price' => number_format((float)$prodser['unit_price'], $cur_user_decimals, '.', ''),
+			'unit_cost' => number_format((float)$prodser['cost_price'], $cur_user_decimals, '.', ''),
 		);
 		$ret_prodser['logistics'] = array(
-			'qtyinstock' => number_format($prodser['qtyinstock'], $cur_user_decimals, '.', ''),
+			'qtyinstock' => number_format((float)$prodser['qtyinstock'], $cur_user_decimals, '.', ''),
 		);
 		$ret_prodser['translations'] = array(
 			'ven_no' => getTranslatedString('Mfr PartNo', 'Products'),
