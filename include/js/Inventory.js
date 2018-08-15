@@ -1338,7 +1338,7 @@ function InventorySelectAll(mod, image_pth) {
 		this.source = "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getProductServiceAutocomplete&limit=10&term=",
 		this.active = false,
 		this.resultContainer,
-		this.resultBox = false,
+		this.resultBox,
 		this.lookupContainer = this.utils.getFirstClass(el,"slds-combobox-lookup"),
 		this.currentResults = [],
 		this.callback = typeof callback === "function" ? callback : false;
@@ -1346,7 +1346,6 @@ function InventorySelectAll(mod, image_pth) {
 		/* Instance listeners */
 		this.utils.on(this.input, "keyup", this.throttle, this);
 		this.utils.on(this.input, "blur", this.delayedClear, this);
-		// this.utils.on(this.input, "onkeydown", this.preventEnterSubmit, this);
 	}
 
 	ProductAutocomplete.prototype = {
@@ -1361,7 +1360,7 @@ function InventorySelectAll(mod, image_pth) {
 			else if (term.length < this.threshold)
 				this.clear();
 			else if (isSpecialKey)
-				this.handleKeyInput(e.keyCode);
+				this.handleKeyInput(e);
 		},
 
 		isSpecialKey: function(code) {
@@ -1374,14 +1373,6 @@ function InventorySelectAll(mod, image_pth) {
 		throttle: function(e) {
 			window.setTimeout(this.trigger(e), 100);
 		},
-
-		// preventEnterSubmit: function(e) {
-		// 	e.stopPropagation();
-		// 	console.log(_getKey(e.keyCode));
-		// 	if (_getKey(e.keyCode) == "enter" && this.active) {
-		// 		e.stopPropagation();
-		// 	}
-		// },
 
 		getResults: function(term) {
 			var _this = this,
@@ -1399,12 +1390,13 @@ function InventorySelectAll(mod, image_pth) {
 		processResult: function(res) {
 			if (res.length > 0) {
 				// Build and attach container
-				if (!this.active && !this.resultBox) {
+				if (!this.active) {
 					this.resultBox = this.buildResultBox();
 					this.attachResultBox(this.resultBox);
 					this.resultContainer = this.buildResultContainer();
 					this.resultBox.appendChild(this.resultContainer);
 					this.active = true;
+					window.preventFormSubmitOnEnter = true;
 				}
 
 				// Build results
@@ -1445,7 +1437,6 @@ function InventorySelectAll(mod, image_pth) {
 			this.lookupContainer.classList.remove("slds-is-open");
 			this.lookupContainer.removeAttribute("aria-expanded", "true");
 			this.lookupContainer.removeChild(this.resultBox);
-			this.resultBox = false;
 		},
 
 		buildResults: function(results) {
@@ -1538,6 +1529,7 @@ function InventorySelectAll(mod, image_pth) {
 				this.destroyResultListeners();
 				this.currentResults = [];
 				this.active = false;
+				window.preventFormSubmitOnEnter = false;
 		},
 
 		delayedClear : function() {
@@ -1552,9 +1544,9 @@ function InventorySelectAll(mod, image_pth) {
 			}
 		},
 
-		handleKeyInput : function(keyCode) {
+		handleKeyInput : function(e) {
 			if (this.active) {
-				var key = _getKey(keyCode);
+				var key = _getKey(e.keyCode);
 				switch(key) {
 					case "up":
 						this.selectPrev();
@@ -1813,16 +1805,22 @@ function handleProductAutocompleteSelect(obj) {
 		document.getElementById('qtyInStock'+no).innerHTML = obj.result.logistics.qtyinstock;
 	}
 	document.getElementById('qty'+no).focus();
-	// document.getElementById('subproduct_ids'+no).value = ui.item.subprod_id;
-	// document.getElementById('subprod_names'+no).innerHTML = ui.item.subprod_name;
 }
 
+// Launch for the existing rows and prevent form submission when an autocomplete
+// is active and open
 window.intialProductAutocompletes = false;
 window.addEventListener("load", function(){
 	if (!intialProductAutocompletes) {
 		var rows = document.getElementsByClassName("cbds-product-search");
 		for (var i = rows.length - 1; i >= 0; i--) {
 			new ProductAutocomplete(rows[i], {}, handleProductAutocompleteSelect);
+		}
+		document.getElementById("frmEditView").onkeypress = function(e) {
+			if (e.keyCode == 13 && window.preventFormSubmitOnEnter){
+				e.preventDefault();
+				return false;
+			}
 		}
 		window.intialProductAutocompletes = true;
 	}
