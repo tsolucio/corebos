@@ -1816,10 +1816,12 @@ window.addEventListener("load", function(){
 		for (var i = rows.length - 1; i >= 0; i--) {
 			new ProductAutocomplete(rows[i], {}, handleProductAutocompleteSelect);
 		}
-		document.getElementById("frmEditView").onkeypress = function(e) {
-			if (e.keyCode == 13 && window.preventFormSubmitOnEnter){
-				e.preventDefault();
-				return false;
+		if (document.getElementById("frmEditView") !== null) {
+			document.getElementById("frmEditView").onkeypress = function(e) {
+				if (e.keyCode == 13 && window.preventFormSubmitOnEnter){
+					e.preventDefault();
+					return false;
+				}
 			}
 		}
 		window.intialProductAutocompletes = true;
