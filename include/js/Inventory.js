@@ -7,9 +7,24 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-var inventoryi18n = ''; 
+var inventoryi18n = '',
+	defaultProdQty = 1,
+	defaultSerQty = 1;
+
 ExecuteFunctions('getTranslatedStrings','i18nmodule=SalesOrder&tkeys=typetosearch_prodser').then(function (data) {
 	inventoryi18n = JSON.parse(data);
+});
+GlobalVariable_getVariable('Inventory_Product_Default_Units', 1, '', gVTUserID).then(function (response) {
+	var obj = JSON.parse(response);
+	defaultProdQty = obj.Inventory_Product_Default_Units;
+}, function (error) {
+	defaultProdQty = 1; // minutes
+});
+GlobalVariable_getVariable('Inventory_Service_Default_Units', 1, '', gVTUserID).then(function (response) {
+	var obj = JSON.parse(response);
+	defaultSerQty = obj.Inventory_Service_Default_Units;
+}, function (error) {
+	defaultSerQty = 1; // minutes
 });
 
 function copyAddressRight(form) {
@@ -1800,13 +1815,15 @@ function InventorySelectAll(mod, image_pth) {
 function handleProductAutocompleteSelect(obj) {
 	var no = obj.source.getElementsByClassName("slds-input")[0].id.replace("productName",""),
 		type = obj.result.meta.type,
-		searchIcon = document.getElementById("searchIcon" + no);
+		searchIcon = document.getElementById("searchIcon" + no),
+		qty = obj.result.meta.type == "Products" ? defaultProdQty : defaultSerQty;
 
 	document.getElementById('productName'+no).value = obj.result.meta.name;
 	document.getElementById('comment'+no).innerHTML = obj.result.meta.comments;
 	document.getElementById('listPrice'+no).value = obj.result.pricing.unit_price;
 	document.getElementById('hdnProductId'+no).value = obj.result.meta.id;
 	document.getElementById('lineItemType'+no).value = obj.result.meta.type;
+	document.getElementById('qty'+no).value = qty;
 	if(gVTModule!='PurchaseOrder'){
 		document.getElementById('qtyInStock'+no).innerHTML = obj.result.logistics.qtyinstock;
 	}
@@ -1840,4 +1857,6 @@ window.addEventListener("load", function(){
 			}
 		}
 	}
+	console.log(defaultSerQty);
+	console.log(defaultProdQty);
 });
