@@ -1793,7 +1793,9 @@ function InventorySelectAll(mod, image_pth) {
 });
 
 function handleProductAutocompleteSelect(obj) {
-	var no = obj.source.getElementsByClassName("slds-input")[0].id.replace("productName","");
+	var no = obj.source.getElementsByClassName("slds-input")[0].id.replace("productName",""),
+		type = obj.result.meta.type,
+		searchIcon = document.getElementById("searchIcon" + no);
 
 	document.getElementById('productName'+no).value = obj.result.meta.name;
 	document.getElementById('comment'+no).innerHTML = obj.result.meta.comments;
@@ -1803,26 +1805,34 @@ function handleProductAutocompleteSelect(obj) {
 	if(gVTModule!='PurchaseOrder'){
 		document.getElementById('qtyInStock'+no).innerHTML = obj.result.logistics.qtyinstock;
 	}
+
+	// Update the icon
+	switch(type) {
+		case "Products":
+			searchIcon.src = "themes/images/products.gif";
+			searchIcon.setAttribute("onclick", "productPickList(this,'"+gVTModule+"','"+no+"')");
+			break;
+		case "Services":
+			searchIcon.src = "themes/images/services.gif";
+			searchIcon.setAttribute("onclick", "servicePickList(this,'"+gVTModule+"','"+no+"')");
+			break;
+	}
 	document.getElementById('qty'+no).focus();
 }
 
 // Launch for the existing rows and prevent form submission when an autocomplete
 // is active and open
-window.intialProductAutocompletes = false;
 window.addEventListener("load", function(){
-	if (!intialProductAutocompletes) {
-		var rows = document.getElementsByClassName("cbds-product-search");
-		for (var i = rows.length - 1; i >= 0; i--) {
-			new ProductAutocomplete(rows[i], {}, handleProductAutocompleteSelect);
-		}
-		if (document.getElementById("frmEditView") !== null) {
-			document.getElementById("frmEditView").onkeypress = function(e) {
-				if (e.keyCode == 13 && window.preventFormSubmitOnEnter){
-					e.preventDefault();
-					return false;
-				}
+	var rows = document.getElementsByClassName("cbds-product-search");
+	for (var i = rows.length - 1; i >= 0; i--) {
+		new ProductAutocomplete(rows[i], {}, handleProductAutocompleteSelect);
+	}
+	if (document.getElementById("frmEditView") !== null) {
+		document.getElementById("frmEditView").onkeypress = function(e) {
+			if (e.keyCode == 13 && window.preventFormSubmitOnEnter){
+				e.preventDefault();
+				return false;
 			}
 		}
-		window.intialProductAutocompletes = true;
 	}
 });
