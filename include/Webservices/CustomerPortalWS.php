@@ -871,7 +871,7 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
  * @return Array values found
  */
 function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 5) {
-	global $adb, $current_user;
+	global $adb;
 	require_once 'include/fields/CurrencyField.php';
 	require_once 'include/utils/CommonUtils.php';
 
