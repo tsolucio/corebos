@@ -871,7 +871,8 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
  * @return Array values found
  */
 function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 5) {
-	global $adb;
+	global $adb, $current_user;
+	$cur_user_decimals = $current_user->column_fields['no_of_currency_decimals'];
 	require_once 'include/fields/CurrencyField.php';
 	require_once 'include/utils/CommonUtils.php';
 
@@ -928,11 +929,11 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			'id' => $prodser['id'],
 		);
 		$ret_prodser['pricing'] = array(
-			'unit_price' => number_format($prodser['unit_price'], 2, '.', ''),
-			'unit_cost' => number_format($prodser['cost_price'], 2, '.', ''),
+			'unit_price' => number_format($prodser['unit_price'], $cur_user_decimals, '.', ''),
+			'unit_cost' => number_format($prodser['cost_price'], $cur_user_decimals, '.', ''),
 		);
 		$ret_prodser['logistics'] = array(
-			'qtyinstock' => number_format($prodser['qtyinstock'], 2, '.', ''),
+			'qtyinstock' => number_format($prodser['qtyinstock'], $cur_user_decimals, '.', ''),
 		);
 		$ret_prodser['translations'] = array(
 			'ven_no' => getTranslatedString('Mfr PartNo', 'Products'),
