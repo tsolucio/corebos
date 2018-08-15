@@ -879,8 +879,8 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	require_once 'include/fields/CurrencyField.php';
 	require_once 'include/utils/CommonUtils.php';
 
-	$r = $adb->query("SELECT * FROM 
-		(SELECT 
+	$r = $adb->query("
+		SELECT 
 		    vtiger_products.productname AS name, 
 		    vtiger_products.divisible AS divisible, 
 		    'Products' AS type, 
@@ -898,6 +898,8 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		    WHERE vtiger_products.productname LIKE '%{$term}%' 
 		    OR vtiger_products.mfr_part_no LIKE '%{$term}%' 
 		    OR vtiger_products.vendor_part_no LIKE '%{$term}%' 
+		    AND vtiger_products.discontinued = 1 
+		    AND vtiger_crmentity.deleted = 0 
 		    UNION
 		SELECT
 		    vtiger_service.servicename AS name, 
@@ -914,9 +916,10 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		    vtiger_service.unit_price AS unit_price 
 		    FROM vtiger_service 
 		    INNER JOIN vtiger_crmentity ON vtiger_service.serviceid = vtiger_crmentity.crmid 
-		    WHERE vtiger_service.servicename LIKE '%{$term}%'
-		) AS prod_ser 
-		    WHERE prod_ser.deleted = 0 AND prod_ser.discontinued = 1 LIMIT $limit");
+		    WHERE vtiger_service.servicename LIKE '%{$term}%' 
+		    AND vtiger_service.discontinued = 1 
+		    AND vtiger_crmentity.deleted = 0
+		LIMIT $limit");
 	$ret = array();
 
 	while ($prodser = $adb->fetch_array($r)) {
