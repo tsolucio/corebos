@@ -1519,7 +1519,7 @@ function InventorySelectAll(mod, image_pth) {
 			for (var i = 0; i < this.currentResults.length; i++) {
 				this.setResultState(i,"");
 			}
-			this.setResultState(this.getResultIndexByNode(result),"slds-has-focus");
+			this.setResultState(this.getResultIndexByNode(result),"selected");
 		},
 
 		clear: function() {
