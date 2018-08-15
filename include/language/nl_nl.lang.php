@@ -1188,7 +1188,7 @@ $app_strings = array(
 	'saved' => 'saved',
 	'notsaved' => 'notsaved',
 	'processcomplete' => 'Process Complete',
-	'typetosearch_prodser' => 'Type om producten of diensnten te zoeken',
+	'typetosearch_prodser' => 'Type om producten of diensten te zoeken',
 );
 
 // Translation for currency names
