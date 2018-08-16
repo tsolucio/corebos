@@ -27,16 +27,6 @@ function duplicaterec($currentModule, $record_id, $bmap) {
 	$focus = CRMEntity::getInstance($currentModule);
 	$focus->retrieve_entity_info($record_id, $currentModule);
 
-	// Business Map
-	$focus->id = $bmap;
-	$focus->mode = '';
-	$businessMap = $focus->column_fields['maptype'];
-
-	if($businessMap == "Condition Query") {
-		$ids = array();
-		$ids = $focus->ConditionQuery($record_id);
-	}
-
 	if (is_numeric($bmap)) {
 		$cbMapid = $bmap;
 	} else {
@@ -165,11 +155,48 @@ function dup_related_lists($new_record_id, $currentModule, $related_list, $recor
 	$sql = 'INSERT INTO vtiger_crmentityrel (crmid,module,relcrmid,relmodule) SELECT ?,?,relcrmid,relmodule FROM vtiger_crmentityrel WHERE crmid=? AND relmodule=?';
 	$sqldocs = 'INSERT INTO vtiger_senotesrel (crmid,notesid) SELECT ?,notesid FROM vtiger_senotesrel WHERE crmid=?';
 	foreach ($related_list as $rel_module) {
+		// Get and check condition type
+		$condition = $maped_relations[$rel_module]["condition"];
+		
+		if (!empty($condition)) {
+			if (is_numeric($condition)) {
+				$cbmap = cbMap::getMapByID($condition);
+			} else {
+				$cbmapid = GlobalVariable::getVariable('BusinessMapping_'.$condition, cbMap::getMapIdByName($condition));
+				$cbmap = cbMap::getMapByID($cbmapid);
+			}
+		} else {
+			$cbmap = '';
+		}
+
+		// Get business map
+		if (!empty($cbmap)) {
+			$businessMap = $cbmap->column_fields['maptype'];
+		} else {
+			$businessMap = '';
+		}
+
 		if (empty($maped_relations) || isset($maped_relations[$rel_module])) {
 			if ($rel_module=='Documents') {
-				$adb->pquery($sqldocs, array($new_record_id,$record_id));
+				if ($businessMap == "Condition Query") {
+					// To Do.
+
+				} else if ($businessMap == "Condition Expression") {
+					// To Do.
+					
+				} else {
+					$adb->pquery($sqldocs, array($new_record_id,$record_id));
+				}
 			} else {
-				$adb->pquery($sql, array($new_record_id,$currentModule,$record_id,$rel_module));
+				if ($businessMap == "Condition Query") {
+					// To Do.
+
+				} else if ($businessMap == "Condition Expression") {
+					// To Do.
+					
+				} else {
+					$adb->pquery($sql, array($new_record_id,$currentModule,$record_id,$rel_module));
+				}
 			}
 		}
 	}
