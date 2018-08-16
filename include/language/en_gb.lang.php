@@ -1182,6 +1182,7 @@ $app_strings = array(
 	'saved' => 'saved',
 	'notsaved' => 'notsaved',
 	'processcomplete' => 'Process Complete',
+	'typetosearch_prodser' => 'Type to search products or services',
 );
 
 $app_currency_strings = array(
