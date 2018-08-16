@@ -873,8 +873,8 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
 function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 5) {
 	global $adb, $current_user;
 	$cur_user_decimals = $current_user->column_fields['no_of_currency_decimals'];
-	$term = vtlib_purify($adb->sql_escape_string($term));
-	$limit = vtlib_purify($adb->sql_escape_string($limit));
+	$term = $adb->sql_escape_stringvtlib_purify(($term));
+	$limit = $adb->sql_escape_string(vtlib_purify($limit));
 
 	require_once 'include/fields/CurrencyField.php';
 	require_once 'include/utils/CommonUtils.php';
@@ -888,7 +888,6 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		    vtiger_products.cost_price AS cost_price, 
 		    vtiger_products.mfr_part_no AS mfr_no, 
 		    vtiger_products.qtyinstock AS qtyinstock, 
-		    vtiger_products.discontinued AS discontinued, 
 		    vtiger_crmentity.description AS description, 
 		    vtiger_crmentity.deleted AS deleted, 
 		    vtiger_crmentity.crmid AS id, 
@@ -909,7 +908,6 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		    '' AS mfr_no,
 		    0 AS qtyinstock,
 		    '' AS cost_price,
-		    vtiger_service.discontinued AS discontinued, 
 		    vtiger_crmentity.description AS description, 
 		    vtiger_crmentity.deleted AS deleted, 
 		    vtiger_crmentity.crmid AS id, 
