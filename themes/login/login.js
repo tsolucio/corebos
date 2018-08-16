@@ -48,3 +48,13 @@ function sendnew2facode(authuserid) {
 		alert(data);
 	});
 }
+
+function forgotPassword(){
+	document.getElementById("theloginform").style.display = "none";
+	document.getElementById("forgotPasswordDiv").style.display = "block";
+}
+
+function goBack(){
+	document.getElementById("theloginform").style.display = "block";
+	document.getElementById("forgotPasswordDiv").style.display = "none";
+}
