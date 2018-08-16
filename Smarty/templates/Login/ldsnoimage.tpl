@@ -89,7 +89,7 @@ body {
 								</div>
 								<input class="button r4 wide primary" type="submit" id="Login" name="Login" value="{'StartSession'|getTranslatedString}">
 								<div><br></div>
-								<a href="#" class="forgotPasswordLink" style="color: #15c;"  onclick="forgotPassword()">{'LBL_FORGOT_PASSWORD'|getTranslatedString:'Users'}</a>
+								<a href="javascript:forgotPassword();" class="forgotPasswordLink" style="color: #15c;">{'LBL_FORGOT_PASSWORD'|getTranslatedString:'Users'}</a>
 							</form>
 						</div>
 						<div id="forgotPasswordDiv" style="display: none;">
@@ -110,7 +110,7 @@ body {
 									</div>
 									<input class="button r4 wide primary" type="submit" id="Forgot_Password" name="Forgot_Password" value="{'LBL_RESET_PASSWORD'|getTranslatedString}">
 									<div><br></div>
-									<a href="#" class="forgotPasswordLink" style="color: #15c;" onclick="goBack()">{'LBL_GO_BACK'|getTranslatedString:'Users'}</a>
+									<a href="javascript:goBack();" class="forgotPasswordLink" style="color: #15c;">{'LBL_GO_BACK'|getTranslatedString:'Users'}</a>
 								</form>
 							</div>
 					</div>
