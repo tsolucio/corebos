@@ -248,7 +248,7 @@ function fnAddServiceRow(module, image_path) {
 	decideTaxDiv();
 	calcTotal();
 
-	var newSerRow = document.getElementsByClassName("cbds-product-search")[count - 1];
+	var newSerRow = document.getElementsByClassName('cbds-product-search')[count - 1];
 	var ac = new ProductAutocomplete(newSerRow, {}, handleProductAutocompleteSelect);
 
 	return count;

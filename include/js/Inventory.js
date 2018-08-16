@@ -11,20 +11,20 @@ var inventoryi18n = '',
 	defaultProdQty = 1,
 	defaultSerQty = 1;
 
-ExecuteFunctions('getTranslatedStrings','i18nmodule=SalesOrder&tkeys=typetosearch_prodser').then(function (data) {
+ExecuteFunctions('getTranslatedStrings', 'i18nmodule=SalesOrder&tkeys=typetosearch_prodser').then(function (data) {
 	inventoryi18n = JSON.parse(data);
 });
 GlobalVariable_getVariable('Inventory_Product_Default_Units', 1, '', gVTUserID).then(function (response) {
 	var obj = JSON.parse(response);
 	defaultProdQty = obj.Inventory_Product_Default_Units;
 }, function (error) {
-	defaultProdQty = 1; // minutes
+	defaultProdQty = 1; // units
 });
 GlobalVariable_getVariable('Inventory_Service_Default_Units', 1, '', gVTUserID).then(function (response) {
 	var obj = JSON.parse(response);
 	defaultSerQty = obj.Inventory_Service_Default_Units;
 }, function (error) {
-	defaultSerQty = 1; // minutes
+	defaultSerQty = 1; // units
 });
 
 function copyAddressRight(form) {
@@ -720,7 +720,7 @@ function fnAddProductRow(module, image_path) {
 	decideTaxDiv();
 	calcTotal();
 
-	var newProdRow = document.getElementsByClassName("cbds-product-search")[count - 1];
+	var newProdRow = document.getElementsByClassName('cbds-product-search')[count - 1];
 	var ac = new ProductAutocomplete(newProdRow, {}, handleProductAutocompleteSelect);
 
 	return count;
@@ -1327,19 +1327,19 @@ function InventorySelectAll(mod, image_pth) {
 /****
 	* ProductAutocomplete
 	* @author: MajorLabel <info@majorlabel.nl>
-	* @license GNU
+	* @license VPL
 	*/
-(function productautocompleteModule(factory){
+(function productautocompleteModule(factory) {
 
-	if (typeof define === "function" && define.amd) {
+	if (typeof define === 'function' && define.amd) {
 		define(factory);
-	} else if (typeof module != "undefined" && typeof module.exports != "undefined") {
+	} else if (typeof module != 'undefined' && typeof module.exports != 'undefined') {
 		module.exports = factory();
 	} else {
-		window["ProductAutocomplete"] = factory();
+		window['ProductAutocomplete'] = factory();
 	}
 
-})(function productautocompleteFactory(){
+})(function productautocompleteFactory() {
 
 	/**
 	 * @class ProductAutocomplete
@@ -1348,65 +1348,66 @@ function InventorySelectAll(mod, image_pth) {
 	 * @param {function}: 	Callback for custom implementations. Will receive an object with
 	 *						the root autocomplete node and all the result data
 	 */
-	function ProductAutocomplete(el, parent, callback){
+	function ProductAutocomplete(el, parent, callback) {
 		this.el = el,
 		this.parent = parent,
-		this.specialKeys = ["up","down","esc","enter"],
+		this.specialKeys = ['up', 'down', 'esc', 'enter'],
 		this.threshold = 3,
-		this.input = el.getElementsByTagName("input")[0],
-		this.source = "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getProductServiceAutocomplete&limit=10&term=",
+		this.input = el.getElementsByTagName('input')[0],
+		this.source = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getProductServiceAutocomplete&limit=10&term=',
 		this.active = false,
 		this.resultContainer,
 		this.resultBox,
-		this.lookupContainer = this.utils.getFirstClass(el,"slds-combobox-lookup"),
+		this.lookupContainer = this.utils.getFirstClass(el, 'slds-combobox-lookup'),
 		this.currentResults = [],
-		this.callback = typeof callback === "function" ? callback : false;
+		this.callback = typeof callback === 'function' ? callback : false;
 
 		/* Instance listeners */
-		this.utils.on(this.input, "keyup", this.throttle, this);
-		this.utils.on(this.input, "blur", this.delayedClear, this);
+		this.utils.on(this.input, 'keyup', this.throttle, this);
+		this.utils.on(this.input, 'blur', this.delayedClear, this);
 	}
 
 	ProductAutocomplete.prototype = {
 		constructor : ProductAutocomplete,
 
-		trigger: function(e) {
+		trigger: function (e) {
 			var isSpecialKey = this.isSpecialKey(e.keyCode);
 			var term = this.input.value;
-			
-			if (!isSpecialKey && term.length > this.threshold)
+			if (!isSpecialKey && term.length > this.threshold) {
 				this.getResults(term);
-			else if (term.length < this.threshold)
+			} else if (term.length < this.threshold) {
 				this.clear();
-			else if (isSpecialKey)
+			} else if (isSpecialKey) {
 				this.handleKeyInput(e);
+			}
 		},
 
-		isSpecialKey: function(code) {
-			if (window.keycodeMap[code] !== undefined)
+		isSpecialKey: function (code) {
+			if (window.keycodeMap[code] !== undefined) {
 				return this.specialKeys.indexOf(window.keycodeMap[code]) == -1 ? false : true;
-			else
+			} else {
 				return false;
+			}
 		},
 
-		throttle: function(e) {
+		throttle: function (e) {
 			window.setTimeout(this.trigger(e), 100);
 		},
 
-		getResults: function(term) {
+		getResults: function (term) {
 			var _this = this,
 				r = new XMLHttpRequest();
-			r.onreadystatechange = function() {
+			r.onreadystatechange = function () {
 				if (this.readyState == 4 && this.status == 200) {
 					var res = JSON.parse(this.responseText);
 					_this.processResult(res);
 				}
-			}
-			r.open("GET", this.source + this.input.value, true);
+			};
+			r.open('GET', this.source + this.input.value, true);
 			r.send();
 		},
 
-		processResult: function(res) {
+		processResult: function (res) {
 			if (res.length > 0) {
 				// Build and attach container
 				if (!this.active) {
@@ -1423,44 +1424,44 @@ function InventorySelectAll(mod, image_pth) {
 			}
 		},
 
-		buildResultBox: function() {
-			var div = _createEl("div", "");
-			div.setAttribute("role", "listbox");
+		buildResultBox: function () {
+			var div = _createEl('div', '');
+			div.setAttribute('role', 'listbox');
 			// Only temp until full LDS is implemented
-			div.style.position = "relative";
+			div.style.position = 'relative';
 			// END only temp
 			return div;
 		},
 
-		buildResultContainer: function() {
-			var ul 	= _createEl("ul", "slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid");
-			ul.setAttribute("role", "presentation");
+		buildResultContainer: function () {
+			var ul 	= _createEl('ul', 'slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid');
+			ul.setAttribute('role', 'presentation');
 			// Only temp until full LDS is implemented
 			ul.style.visibility = 1;
 			ul.style.opacity = 1;
-			ul.style.transform = "none";
+			ul.style.transform = 'none';
 			ul.style.left = 0;
-			ul.style.maxWidth = "100%";
-			ul.style.width = "100%";
+			ul.style.maxWidth = '100%';
+			ul.style.width = '100%';
 			// END only temp
 			return ul;
 		},
 
-		attachResultBox: function(containerDiv) {
+		attachResultBox: function (containerDiv) {
 			this.lookupContainer.appendChild(containerDiv);
-			this.lookupContainer.classList.add("slds-is-open");
-			this.lookupContainer.setAttribute("aria-expanded", "true");
+			this.lookupContainer.classList.add('slds-is-open');
+			this.lookupContainer.setAttribute('aria-expanded', 'true');
 		},
 
-		removeResultBox: function() {
-			this.lookupContainer.classList.remove("slds-is-open");
-			this.lookupContainer.removeAttribute("aria-expanded", "true");
+		removeResultBox: function () {
+			this.lookupContainer.classList.remove('slds-is-open');
+			this.lookupContainer.removeAttribute('aria-expanded', 'true');
 			this.lookupContainer.removeChild(this.resultBox);
 		},
 
-		buildResults: function(results) {
+		buildResults: function (results) {
 			// Empty all first
-			this.resultContainer.innerHTML = "";
+			this.resultContainer.innerHTML = '';
 			this.currentResults = [];
 
 			for (var i = 0; i < results.length; i++) {
@@ -1468,35 +1469,34 @@ function InventorySelectAll(mod, image_pth) {
 			}
 
 			// Pre-select the first result
-			this.utils.getFirstClass(this.currentResults[0].node, "slds-listbox__option").classList.add("slds-has-focus");
+			this.utils.getFirstClass(this.currentResults[0].node, 'slds-listbox__option').classList.add('slds-has-focus');
 			this.currentResults[0].selected = true;
 		},
 
-		buildResult: function(result) {
+		buildResult: function (result) {
 			var media = this.buildResultMedia(result.meta.name, [
-				{"label" : result.translations.ven_no, "value" : result.meta.mfr_no},
-				{"label" : result.translations.mfr_no, "value" : result.meta.ven_no}
+				{'label' : result.translations.ven_no, 'value' : result.meta.mfr_no},
+				{'label' : result.translations.mfr_no, 'value' : result.meta.ven_no}
 			]);
 
-			var li = _createEl("li", "slds-listbox__item slds-border_bottom");
-			li.setAttribute("role", "presentation");
+			var li = _createEl('li', 'slds-listbox__item slds-border_bottom');
+			li.setAttribute('role', 'presentation');
 			li.appendChild(media);
-			
 			this.currentResults.push({
-				"obj" 		: result,
-				"node"		: li,
-				"selected"	: false
+				'obj' 		: result,
+				'node'		: li,
+				'selected'	: false
 			});
 
-			this.utils.on(li, "click", this.click, this);
-			this.utils.on(li, "mouseover", this.onResultHover, this);
+			this.utils.on(li, 'click', this.click, this);
+			this.utils.on(li, 'mouseover', this.onResultHover, this);
 
 			return li;
 		},
 
-		buildResultMedia: function(name, lines) {
-			var mediaBody = _createEl("div", "slds-media__body");
-			var listboxText = _createEl("span", "slds-listbox__option-text slds-listbox__option-text_entity slds-text-title_caps cbds-product-search-title", name);
+		buildResultMedia: function (name, lines) {
+			var mediaBody = _createEl('div', 'slds-media__body');
+			var listboxText = _createEl('span', 'slds-listbox__option-text slds-listbox__option-text_entity slds-text-title_caps cbds-product-search-title', name);
 			var listboxMetas = this.buildListboxMetas(lines);
 
 			mediaBody.appendChild(listboxText);
@@ -1504,13 +1504,13 @@ function InventorySelectAll(mod, image_pth) {
 				mediaBody.appendChild(listboxMetas[i]);
 			}
 
-			var media = _createEl("div", "slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta");
-			media.setAttribute("role", "option");
+			var media = _createEl('div', 'slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta');
+			media.setAttribute('role', 'option');
 			media.appendChild(mediaBody);
 			return media;
 		},
 
-		buildListboxMetas: function(lines) {
+		buildListboxMetas: function (lines) {
 			var returnLines = [];
 			for (var i = 0; i < lines.length; i++) {
 				returnLines.push(this.buildListboxMeta(lines[i]));
@@ -1518,14 +1518,13 @@ function InventorySelectAll(mod, image_pth) {
 			return returnLines;
 		},
 
-		buildListboxMeta: function(line) {
-			var grid = _createEl("div", "slds-grid slds-has-flexi-truncate slds-p-top_xx-small");
-			var title = _createEl("div", "slds-col slds-size_1-of-2 slds-p-left_none slds-text-title slds-truncate", line.label);
-			var value = _createEl("div", "slds-col slds-size_1-of-2 slds-p-left_none", line.value);
+		buildListboxMeta: function (line) {
+			var grid = _createEl('div', 'slds-grid slds-has-flexi-truncate slds-p-top_xx-small');
+			var title = _createEl('div', 'slds-col slds-size_1-of-2 slds-p-left_none slds-text-title slds-truncate', line.label);
+			var value = _createEl('div', 'slds-col slds-size_1-of-2 slds-p-left_none', line.value);
 			grid.appendChild(title);
 			grid.appendChild(value);
-			
-			var meta = _createEl("span", "slds-listbox__option-meta slds-listbox__option-meta_entity");
+			var meta = _createEl('span', 'slds-listbox__option-meta slds-listbox__option-meta_entity');
 			meta.appendChild(grid);
 			return meta;
 		},
@@ -1534,15 +1533,15 @@ function InventorySelectAll(mod, image_pth) {
 			this.resultContainer.appendChild(resultLi);
 		},
 
-		onResultHover : function(e) {
-			var result = this.utils.findUp(e.target, ".slds-listbox__item");
+		onResultHover : function (e) {
+			var result = this.utils.findUp(e.target, '.slds-listbox__item');
 			for (var i = 0; i < this.currentResults.length; i++) {
-				this.setResultState(i,"");
+				this.setResultState(i, '');
 			}
-			this.setResultState(this.getResultIndexByNode(result),"selected");
+			this.setResultState(this.getResultIndexByNode(result), 'selected');
 		},
 
-		clear: function() {
+		clear: function () {
 			if (this.active)
 				this.removeResultBox();
 				this.destroyResultListeners();
@@ -1551,110 +1550,120 @@ function InventorySelectAll(mod, image_pth) {
 				window.preventFormSubmitOnEnter = false;
 		},
 
-		delayedClear : function() {
+		delayedClear : function () {
 			var _this = this;
-			window.setTimeout(function(){_this.clear();},150);
+			window.setTimeout(
+				function () {
+					_this.clear();
+				},
+				150
+			);
 		},
 
-		destroyResultListeners: function() {
+		destroyResultListeners: function () {
 			for (var i = 0; i < this.currentResults.length; i++) {
-				this.utils.off(this.currentResults[i].node, "click", this.click, this);
-				this.utils.on(this.currentResults[i].node, "mouseover", this.onResultHover, this);
+				this.utils.off(this.currentResults[i].node, 'click', this.click, this);
+				this.utils.on(this.currentResults[i].node, 'mouseover', this.onResultHover, this);
 			}
 		},
 
-		handleKeyInput : function(e) {
+		handleKeyInput : function (e) {
 			if (this.active) {
 				var key = _getKey(e.keyCode);
-				switch(key) {
-					case "up":
-						this.selectPrev();
-						break;
-					case "down":
-						this.selectNext();
-						break;
-					case "enter":
-						var current = this.getCurrentSelectedResult();
-						this.select(this.currentResults[current]);
-						break;
-					case "esc":
-						this.clear();
-						break;
+				switch (key) {
+				case 'up':
+					this.selectPrev();
+					break;
+				case 'down':
+					this.selectNext();
+					break;
+				case 'enter':
+					var current = this.getCurrentSelectedResult();
+					this.select(this.currentResults[current]);
+					break;
+				case 'esc':
+					this.clear();
+					break;
 				}
 			}
 		},
 
-		selectPrev: function() {
+		selectPrev: function () {
 			var current = this.getCurrentSelectedResult();
 			if (current != 0) {
-				this.setResultState(current, "");
-				this.setResultState((current - 1), "selected");
+				this.setResultState(current, '');
+				this.setResultState((current - 1), 'selected');
 			}
 		},
 
-		selectNext: function() {
+		selectNext: function () {
 			var current = this.getCurrentSelectedResult();
 			if (current != this.currentResults.length -1) {
-				this.setResultState(current, "");
-				this.setResultState((current + 1), "selected");
+				this.setResultState(current, '');
+				this.setResultState((current + 1), 'selected');
 			}
 		},
 
-		setResultState: function(index, state) {
-			if (state == "selected") {
-				this.utils.getFirstClass(this.currentResults[index].node, "slds-listbox__option").classList.add("slds-has-focus");
+		setResultState: function (index, state) {
+			if (state == 'selected') {
+				this.utils.getFirstClass(this.currentResults[index].node, 'slds-listbox__option').classList.add('slds-has-focus');
 				this.currentResults[index].selected = true;
 			} else {
-				this.utils.getFirstClass(this.currentResults[index].node, "slds-listbox__option").classList.remove("slds-has-focus");
+				this.utils.getFirstClass(this.currentResults[index].node, 'slds-listbox__option').classList.remove('slds-has-focus');
 				this.currentResults[index].selected = false;
 			}
 		},
 
-		getCurrentSelectedResult: function() {
+		getCurrentSelectedResult: function () {
 			for (var i = 0; i < this.currentResults.length; i++) {
-				if (this.currentResults[i].selected)
+				if (this.currentResults[i].selected) {
 					return i;
+				}
 			}
 		},
 
-		click: function(e) {
-			var el = this.utils.findUp(e.target, ".slds-listbox__item"); // Click event could fire on child
+		click: function (e) {
+			var el = this.utils.findUp(e.target, '.slds-listbox__item'); // Click event could fire on child
 			if (el) {
-				result = this.getMatchingResultByNode(el);
+				var result = this.getMatchingResultByNode(el);
 				this.select(result);
 			}
 		},
 
-		getMatchingResultByNode: function(node) {
+		getMatchingResultByNode: function (node) {
 			for (var i = 0; i < this.currentResults.length; i++) {
-				if (node.isSameNode(this.currentResults[i].node)) return this.currentResults[i];
+				if (node.isSameNode(this.currentResults[i].node)) {
+					return this.currentResults[i];
+				}
 			}
 		},
 
-		getResultIndexByNode: function(node) {
+		getResultIndexByNode: function (node) {
 			for (var i = 0; i < this.currentResults.length; i++) {
-				if (node.isSameNode(this.currentResults[i].node)) return i;
+				if (node.isSameNode(this.currentResults[i].node)) {
+					return i;
+				}
 			}
 		},
 
-		select: function(result) {
+		select: function (result) {
 			this.fillLine(result);
 			this.clear(); // Clear autocomplete
 		},
 
-		fillLine: function(result) {
+		fillLine: function (result) {
 			if (!this.callback) {
-				var lineNode = this.utils.findUp(result.node, "." + this.root.lineClass),
-					usageunits = this.root.el.getElementsByClassName(this.root.lineClass + "--usageunit");
+				var lineNode = this.utils.findUp(result.node, '.' + this.root.lineClass),
+					usageunits = this.root.el.getElementsByClassName(this.root.lineClass + '--usageunit');
 
-				this.utils.getFirstClass(lineNode, "cbds-product-line-image").src = result.obj.meta.image;
+				this.utils.getFirstClass(lineNode, 'cbds-product-line-image').src = result.obj.meta.image;
 
-				this.parent.setField("cost_price", result.obj.pricing.unit_cost);
-				this.parent.setField("unit_price", result.obj.pricing.list_price);
-				this.parent.setField("qtyinstock", result.obj.logistics.qty_in_stock);
-				this.parent.setField("qtyindemand", result.obj.logistics.curr_ordered);
+				this.parent.setField('cost_price', result.obj.pricing.unit_cost);
+				this.parent.setField('unit_price', result.obj.pricing.list_price);
+				this.parent.setField('qtyinstock', result.obj.logistics.qty_in_stock);
+				this.parent.setField('qtyindemand', result.obj.logistics.curr_ordered);
 
-				this.utils.getFirstClass(lineNode, this.root.linePrefix + "--comments").innerHTML = result.obj.meta.comments;
+				this.utils.getFirstClass(lineNode, this.root.linePrefix + '--comments').innerHTML = result.obj.meta.comments;
 				this.input.value = result.obj.meta.name;
 
 				for (var i = usageunits.length - 1; i >= 0; i--) {
@@ -1664,11 +1673,11 @@ function InventorySelectAll(mod, image_pth) {
 				this.parent.expandExtra();
 				this.parent.calcLine();
 
-				this.utils.getFirstClass(this.utils.findUp(this.el, "." + this.root.lineClass), this.root.inputPrefix + "--quantity").focus();
+				this.utils.getFirstClass(this.utils.findUp(this.el, '.' + this.root.lineClass), this.root.inputPrefix + '--quantity').focus();
 			} else {
 				this.callback({
-					"result": result.obj,
-					"source": this.el
+					'result': result.obj,
+					'source': this.el
 				});
 			}
 		},
@@ -1685,12 +1694,13 @@ function InventorySelectAll(mod, image_pth) {
 			 * @param: searchterm: 	Can be a class (prefix with '.'), ID (prefix with '#')
 			 *						or an attribute (default when no prefix)
 			 */
-			findUp : function(element, searchterm) {
+			findUp : function (element, searchterm) {
 				element = element.children[0] != undefined ? element.children[0] : element; // Include the current element
 				while (element = element.parentElement) {
-					if ( (searchterm.charAt(0) === "#" && element.id === searchterm.slice(1) )
-						|| ( searchterm.charAt(0) === "." && element.classList.contains(searchterm.slice(1) ) 
-						|| ( element.hasAttribute(searchterm) ))) {
+					if ( (searchterm.charAt(0) === '#' && element.id === searchterm.slice(1))
+						|| ( searchterm.charAt(0) === '.' && element.classList.contains(searchterm.slice(1))
+						|| ( element.hasAttribute(searchterm)))
+					) {
 						return element;
 					} else if (element == document.body) {
 						break;
@@ -1705,7 +1715,7 @@ function InventorySelectAll(mod, image_pth) {
 			 * @param: root: 		the node to start from
 			 * @param: className: 	The classname to search for
 			 */
-			getFirstClass: function(root, className) {
+			getFirstClass: function (root, className) {
 				return root.getElementsByClassName(className)[0] != undefined ? root.getElementsByClassName(className)[0] : {};
 			},
 			/*
@@ -1717,12 +1727,11 @@ function InventorySelectAll(mod, image_pth) {
 			 * @param: func: 		The function to perform
 			 * @param: context: 	The context to bind the listener to
 			 */
-			on: function(el,type,func,context) {
+			on: function (el, type, func, context) {
 				try {
 					el.addEventListener(type, func.bind(context));
-				}
-				catch(e) {
-					throw e + ". Called by " + this.on.caller;
+				} catch (e) {
+					throw e + '. Called by ' + this.on.caller;
 				}
 			},
 			/*
@@ -1733,7 +1742,7 @@ function InventorySelectAll(mod, image_pth) {
 			 * @param: type: 		The type of event
 			 * @param: func: 		The function to remove
 			 */
-			off: function(el,type,func) {
+			off: function (el, type, func) {
 				el.removeEventListener(type, func);
 			},
 			/*
@@ -1743,8 +1752,8 @@ function InventorySelectAll(mod, image_pth) {
 			 * @param: referenceNode: 	The node to insert after
 			 * @param: newNode: 		The node to insert
 			 */
-			insertAfter: function(referenceNode, newNode) {
-				referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling)
+			insertAfter: function (referenceNode, newNode) {
+				referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 			},
 			/*
 			 * Util: 'deductPerc'
@@ -1753,7 +1762,7 @@ function InventorySelectAll(mod, image_pth) {
 			 * @param: base: 		The base '100%' number
 			 * @param: percentage: 	The percentage to deduct
 			 */
-			deductPerc: function(base, percentage) {
+			deductPerc: function (base, percentage) {
 				return (base * (1 - (percentage / 100)));
 			},
 			/*
@@ -1763,29 +1772,30 @@ function InventorySelectAll(mod, image_pth) {
 			 * @param: base: 		The base '100%' number
 			 * @param: percentage: 	The percentage to return
 			 */
-			getPerc: function(base, percentage) {
+			getPerc: function (base, percentage) {
 				return base * (percentage / 100);
 			}
 		}
-	}
-
+	};
 
 	/**
 	  * Section with factory tools
 	  */
 	function _createEl(elType, className, inner) {
 		var el = document.createElement(elType);
-
-		if (className.indexOf(" ") == -1 && className != undefined && className != "") {
+		if (className.indexOf(' ') == -1 && className != undefined && className != '') {
 			el.classList.add(className);
 		} else {
-			var classes = className.split(" ");
+			var classes = className.split(' ');
 			for (var i = 0; i < classes.length; i++) {
-				if (classes[i] != "") el.classList.add(classes[i]);
+				if (classes[i] != '') {
+					el.classList.add(classes[i]);
+				}
 			}
 		}
-
-		if (inner != undefined) el.innerHTML = inner;
+		if (inner != undefined) {
+			el.innerHTML = inner;
+		}
 		return el;
 	}
 
@@ -1797,15 +1807,15 @@ function InventorySelectAll(mod, image_pth) {
 	 * Globals
 	 */
 	window.keycodeMap = {
-			38: "up",
-			40: "down",
-			37: "left",
-			39: "right",
-			27: "esc",
-			9:  "tab",
-			13: "enter"
-		}
-	
+		38: 'up',
+		40: 'down',
+		37: 'left',
+		39: 'right',
+		27: 'esc',
+		9:  'tab',
+		13: 'enter'
+	};
+
 	/*
 	 * Export
 	 */
@@ -1813,10 +1823,10 @@ function InventorySelectAll(mod, image_pth) {
 });
 
 function handleProductAutocompleteSelect(obj) {
-	var no = obj.source.getElementsByClassName("slds-input")[0].id.replace("productName",""),
+	var no = obj.source.getElementsByClassName('slds-input')[0].id.replace('productName', ''),
 		type = obj.result.meta.type,
-		searchIcon = document.getElementById("searchIcon" + no),
-		qty = obj.result.meta.type == "Products" ? defaultProdQty : defaultSerQty;
+		searchIcon = document.getElementById('searchIcon' + no),
+		qty = obj.result.meta.type == 'Products' ? defaultProdQty : defaultSerQty;
 
 	document.getElementById('productName'+no).value = obj.result.meta.name;
 	document.getElementById('comment'+no).innerHTML = obj.result.meta.comments;
@@ -1824,39 +1834,36 @@ function handleProductAutocompleteSelect(obj) {
 	document.getElementById('hdnProductId'+no).value = obj.result.meta.id;
 	document.getElementById('lineItemType'+no).value = obj.result.meta.type;
 	document.getElementById('qty'+no).value = qty;
-	if(gVTModule!='PurchaseOrder'){
+	if (gVTModule!='PurchaseOrder') {
 		document.getElementById('qtyInStock'+no).innerHTML = obj.result.logistics.qtyinstock;
 	}
 
 	// Update the icon
-	switch(type) {
-		case "Products":
-			searchIcon.src = "themes/images/products.gif";
-			searchIcon.setAttribute("onclick", "productPickList(this,'"+gVTModule+"','"+no+"')");
-			break;
-		case "Services":
-			searchIcon.src = "themes/images/services.gif";
-			searchIcon.setAttribute("onclick", "servicePickList(this,'"+gVTModule+"','"+no+"')");
-			break;
+	switch (type) {
+	case 'Products':
+		searchIcon.src = 'themes/images/products.gif';
+		searchIcon.setAttribute('onclick', "productPickList(this,'"+gVTModule+"','"+no+"')");
+		break;
+	case 'Services':
+		searchIcon.src = 'themes/images/services.gif';
+		searchIcon.setAttribute('onclick', "servicePickList(this,'"+gVTModule+"','"+no+"')");
+		break;
 	}
 	document.getElementById('qty'+no).focus();
 }
 
-// Launch for the existing rows and prevent form submission when an autocomplete
-// is active and open
-window.addEventListener("load", function(){
-	var rows = document.getElementsByClassName("cbds-product-search");
+// Launch for the existing rows and prevent form submission when an autocomplete is active and open
+window.addEventListener('load', function () {
+	var rows = document.getElementsByClassName('cbds-product-search');
 	for (var i = rows.length - 1; i >= 0; i--) {
 		new ProductAutocomplete(rows[i], {}, handleProductAutocompleteSelect);
 	}
-	if (document.getElementById("frmEditView") !== null) {
-		document.getElementById("frmEditView").onkeypress = function(e) {
-			if (e.keyCode == 13 && window.preventFormSubmitOnEnter){
+	if (document.getElementById('frmEditView') !== null) {
+		document.getElementById('frmEditView').onkeypress = function (e) {
+			if (e.keyCode == 13 && window.preventFormSubmitOnEnter) {
 				e.preventDefault();
 				return false;
 			}
-		}
+		};
 	}
-	console.log(defaultSerQty);
-	console.log(defaultProdQty);
 });
