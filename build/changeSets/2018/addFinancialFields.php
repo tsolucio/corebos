@@ -278,6 +278,7 @@ class addFinancialFields extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 			coreBOS_Settings::delSetting('addFFModsDone');
+			coreBOS_Settings::delSetting('addFFcrmidDone');
 		}
 		$this->finishExecution();
 	}
