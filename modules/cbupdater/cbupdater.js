@@ -73,19 +73,19 @@ if (typeof(cbupdater) == 'undefined') {
 		},
 
 		applyselected : function () {
-			if (idstring == this.getselected()) {
+			if (idstring = this.getselected()) { // this is actually an assignment inside the condition
 				gotourl('index.php?module=cbupdater&action=dowork&idstring='+idstring);
 			}
 		},
 
 		undoselected : function () {
-			if (idstring == this.getselected()) {
+			if (idstring = this.getselected()) { // this is actually an assignment inside the condition
 				gotourl('index.php?module=cbupdater&action=dowork&doundo=1&idstring='+idstring);
 			}
 		},
 
-		exportselected : function () {
-			if (idstring == this.getselected()) {
+		exportselected : function () { // this is actually an assignment inside the condition
+			if (idstring = this.getselected()) {
 				gotourl('index.php?module=cbupdater&action=cbupdaterAjax&file=exportxml&idstring='+idstring);
 			}
 		},
