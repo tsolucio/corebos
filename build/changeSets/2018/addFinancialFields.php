@@ -250,7 +250,7 @@ class addFinancialFields extends cbupdaterWorker {
 			$ffmodsdone = coreBOS_Settings::getSetting('addFFModsDone', '');
 			$ffcrmiddone = coreBOS_Settings::getSetting('addFFcrmidDone', 0);
 			foreach ($modules as $mod) {
-				if (strpos($mod['name'], $ffmodsdone)>0) {
+				if (strpos($ffmodsdone, $mod['name'])>0) {
 					continue;
 				}
 				$invModWSID = vtws_getEntityId($mod['name']);
@@ -271,6 +271,7 @@ class addFinancialFields extends cbupdaterWorker {
 					coreBOS_Settings::setSetting('addFFcrmidDone', $id);
 				}
 				coreBOS_Settings::setSetting('addFFModsDone', $ffmodsdone.'_'.$mod['name']);
+				coreBOS_Settings::setSetting('addFFcrmidDone', 0);
 			}
 			$_REQUEST['action'] = $haction;
 			$util->revertUser();
