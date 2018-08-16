@@ -106,6 +106,7 @@ $mod_strings = array(
 'LBL_LOGIN_HISTORY_TITLE'=>'Users: Login History',
 'LBL_RESET_PREFERENCES'=>'Reset To Default Preferences',
 
+
 'LBL_CHANGE_PASSWORD'=>'Change Password',
 'LBL_OLD_PASSWORD'=>'Old Password:',
 'LBL_NEW_PASSWORD'=>'New Password:',
@@ -132,6 +133,9 @@ $mod_strings = array(
 'LBL_FAILED_LOGIN_ATTEMPTS' => 'Failed Login Attempts',
 'ERR_DELETE_RECORD'=>"A record number must be specified to delete the account.",
 'ERR_MUST_CHANGE_PASSWORD' => 'Your password has expired. You must change your password to continue.',
+'LBL_SEND_MAIL_PASSWORD'=>'We will send you an email with instructions on how to reset your password',
+'LBL_FORGOT_PASSWORD'=>'forgot password?',
+'LBL_GO_BACK'=>'Go Back',
 
 // Additional Fields for i18n --- Release vtigerCRM 3.2 Patch 2
 // Users--listroles.php , createrole.php , ListPermissions.php , editpermissions.php
