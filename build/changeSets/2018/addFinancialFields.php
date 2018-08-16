@@ -173,7 +173,6 @@ class addFinancialFields extends cbupdaterWorker {
 			$util = new VTWorkflowUtils();
 			$adminUser = $util->adminUser();
 			foreach ($modules as $mod) {
-				$invModWSID = vtws_getEntityId($mod['name']);
 				$rs = $adb->pquery(
 					"select 1 from com_vtiger_workflows
 					where (summary='Update Tax fields on every save' or summary='Update Financial fields on every save') and module_name=?",
@@ -254,6 +253,7 @@ class addFinancialFields extends cbupdaterWorker {
 				if (strpos($mod['name'], $ffmodsdone)>0) {
 					continue;
 				}
+				$invModWSID = vtws_getEntityId($mod['name']);
 				$entities=$adb->pquery(
 					"select {$mod['id']}
 						from {$mod['table']}
