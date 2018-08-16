@@ -89,13 +89,13 @@ body {
 								</div>
 								<input class="button r4 wide primary" type="submit" id="Login" name="Login" value="{'StartSession'|getTranslatedString}">
 								<div><br></div>
-								<a href="#" class="forgotPasswordLink" style="color: #15c;"  onclick="forgotPassword()">forgot password?</a>
+								<a href="#" class="forgotPasswordLink" style="color: #15c;"  onclick="forgotPassword()">{'LBL_FORGOT_PASSWORD'|getTranslatedString:'Users'}</a>
 							</form>
 						</div>
 						<div id="forgotPasswordDiv" style="display: none;">
 							<form method="POST" id="login_form" action="forgotPassword.php" target="_top" autocomplete="off" novalidate="novalidate">
 								<div>
-									<label class="label">We will send you an email with instructions on how to reset your password</label>
+									<label class="label">{'LBL_SEND_MAIL_PASSWORD'|getTranslatedString:'Users'}</label>
 									</div></br>
 									<div id="usernamegroup" class="inputgroup">
 
@@ -104,17 +104,15 @@ body {
 											<input class="input r4 wide mb16 mt8 username" type="email" value="" name="user_name_p" id="username" style="display: block;">
 										</div>
 									</div>
-
 									<div id="pwcaps" class="mb16" style="display: none">
 										<img id="pwcapsicon" alt="{'CapsLockActive'|getTranslatedString}" width="12" src="themes/login/lds/capslock_blue.png">
 										{'CapsLockActive'|getTranslatedString}
 									</div>
 									<input class="button r4 wide primary" type="submit" id="Forgot_Password" name="Forgot_Password" value="Reset Password">
 									<div><br></div>
-									<a href="#" class="forgotPasswordLink" style="color: #15c;" onclick="goBack()">Go Back</a>
+									<a href="#" class="forgotPasswordLink" style="color: #15c;" onclick="goBack()">{'LBL_GO_BACK'|getTranslatedString:'Users'}</a>
 								</form>
 							</div>
-
 					</div>
 				</div>
 			</div>
@@ -123,17 +121,4 @@ body {
 				© Powered by {$coreBOS_uiapp_name}.
 			</div>
 		</div>
-
 	</div>
-
-	<script>
-		function forgotPassword(){
-			document.getElementById("theloginform").style.display = "none";
-			document.getElementById("forgotPasswordDiv").style.display = "block";
-		}
-
-		function goBack(){
-			document.getElementById("theloginform").style.display = "block";
-			document.getElementById("forgotPasswordDiv").style.display = "none";
-		}
-	</script>
