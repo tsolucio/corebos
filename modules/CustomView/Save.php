@@ -11,9 +11,29 @@ require_once 'include/logging.php';
 require_once 'include/utils/utils.php';
 global $adb, $log, $current_user;
 
+function cvGetNewViewName() {
+	global $adb;
+	$orgviewname = vtlib_purify($_REQUEST['viewName']);
+	$viewname = $orgviewname;
+	$cvmodule = vtlib_purify($_REQUEST['cvmodule']);
+	$finished = false;
+	$i = 1;
+	while (!$finished) {
+		$rscv = $adb->pquery('select 1 from vtiger_customview where entitytype=? and viewname=?', array($cvmodule, $viewname));
+		if ($rscv && $adb->num_rows($rscv)==1) {
+			$viewname = $orgviewname . '_' . $i;
+			$i++;
+		} else {
+			$finished = true;
+		}
+	}
+	return $viewname;
+}
+
 $cvid = (int) vtlib_purify($_REQUEST['record']);
 if (!empty($_REQUEST['newsave'])) {
 	unset($cvid);
+	$_REQUEST['viewName'] = cvGetNewViewName();
 }
 $cvmodule = vtlib_purify($_REQUEST['cvmodule']);
 $parenttab = getParentTab();
