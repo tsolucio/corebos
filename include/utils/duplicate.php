@@ -20,7 +20,6 @@
 
 require_once 'include/utils/utils.php';
 require_once 'include/utils/CommonUtils.php';
-require_once 'modules/cbMap/cbMap.php';
 
 function duplicaterec($currentModule, $record_id, $bmap) {
 	global $adb, $current_user;
@@ -56,13 +55,7 @@ function duplicaterec($currentModule, $record_id, $bmap) {
 	if ($cbMapid && $cbMap->DuplicateRelations()->DuplicateDirectRelations()) {
 		$invmods = getInventoryModules();
 		foreach ($focus->column_fields as $fieldname => $value) {
-			if ($businessMap == "Condition Query") {
-				$sql = 'SELECT * FROM vtiger_field WHERE columnname = ? AND uitype IN ($ids)';
-			} else if ($businessMap == "Condition Express") {
-				// To Do.
-			} else {
-				$sql = 'SELECT * FROM vtiger_field WHERE columnname = ? AND uitype IN (10,51,57,73,76,75,81,78,80)';
-			}
+			$sql = 'SELECT * FROM vtiger_field WHERE columnname = ? AND uitype IN (10,51,57,73,76,75,81,78,80)';
 			
 			$result = $adb->pquery($sql, array($fieldname));
 			if ($adb->num_rows($result) == 1 && !empty($value)) {
