@@ -190,7 +190,13 @@ function displayCoords(currObj,obj,mode,curr_row)
 		<table width="100%"  border="0" cellspacing="0" cellpadding="1">
 			<tr>
 				<td class="small" valign="top">
-					<input type="text" id="{$productName}" name="{$productName}" value="{$data.$productName}" class="small" style="width: 70%;" readonly />
+					<div class="slds-combobox_container slds-has-inline-listbox cbds-product-search" style="width:70%;display:inline-block">
+						<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-combobox-lookup" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+							<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+								<input id="{$productName}" name="{$productName}" class="slds-input slds-combobox__input cbds-inventoryline__input--name" aria-autocomplete="list" aria-controls="listbox-unique-id" autocomplete="off" role="textbox" placeholder="{$APP.typetosearch_prodser}" value="{$data.$productName}" type="text" style="box-shadow: none;">
+							</div>
+						</div>
+					</div>
 					<input type="hidden" id="{$hdnProductId}" name="{$hdnProductId}" value="{$data.$hdnProductId}" />
 					<input type="hidden" id="lineItemType{$row_no}" name="lineItemType{$row_no}" value="{$entityType}" />
 					&nbsp;
