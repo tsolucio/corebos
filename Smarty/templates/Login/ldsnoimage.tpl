@@ -108,7 +108,7 @@ body {
 										<img id="pwcapsicon" alt="{'CapsLockActive'|getTranslatedString}" width="12" src="themes/login/lds/capslock_blue.png">
 										{'CapsLockActive'|getTranslatedString}
 									</div>
-									<input class="button r4 wide primary" type="submit" id="Forgot_Password" name="Forgot_Password" value="Reset Password">
+									<input class="button r4 wide primary" type="submit" id="Forgot_Password" name="Forgot_Password" value="{'LBL_RESET_PASSWORD'|getTranslatedString}">
 									<div><br></div>
 									<a href="#" class="forgotPasswordLink" style="color: #15c;" onclick="goBack()">{'LBL_GO_BACK'|getTranslatedString:'Users'}</a>
 								</form>
