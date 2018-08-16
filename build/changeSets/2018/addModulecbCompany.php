@@ -71,7 +71,7 @@ class addModulecbCompany extends cbupdaterWorker {
                 /*
                  * remove the company settings section
                  */
-                $adb->query('delete from vtiger_settings_field where name = "LBL_COMPANY_DETAILS" ');
+                $adb->query('update vtiger_settings_field set active = 1  where name = "LBL_COMPANY_DETAILS" ');
             }
             $this->sendMsg('Changeset '.get_class($this).' applied!');
             $this->markApplied();
@@ -80,10 +80,12 @@ class addModulecbCompany extends cbupdaterWorker {
     }
     
     function undoChange() {
+	global $adb;
         if ($this->hasError()) $this->sendError();
         if ($this->isApplied()) {
             vtlib_toggleModuleAccess('cbCompany',false);
             $this->sendMsg('cbCompany deactivated!');
+ 	    $adb->query('update vtiger_settings_field set active = 0  where name = "LBL_COMPANY_DETAILS" ')
             $this->markUndone(false);
             $this->sendMsg('Changeset '.get_class($this).' undone!');
         } else {

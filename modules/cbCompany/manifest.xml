@@ -2,7 +2,7 @@
 <module>
 <name>cbCompany</name>
 <label>cbCompany</label>
-<parent>Settings</parent>
+<parent>Sales</parent>
 <version>1.0</version>
 <short_description>coreBOS Company module</short_description>
 <dependencies>
