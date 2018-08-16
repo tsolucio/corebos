@@ -640,14 +640,16 @@ function getInventoryTaxType($module, $id) {
 		'SalesOrder' => 'vtiger_salesorder',
 		'Quotes' => 'vtiger_quotes',
 		'Invoice' => 'vtiger_invoice',
-		'Issuecards' => 'vtiger_issuecards'
+		'Issuecards' => 'vtiger_issuecards',
+		'Receiptcards' => 'vtiger_receiptcards',
 	);
 	$inv_id_array = array(
 		'PurchaseOrder' => 'purchaseorderid',
 		'SalesOrder' => 'salesorderid',
 		'Quotes' => 'quoteid',
 		'Invoice' => 'invoiceid',
-		'Issuecards' => 'issuecardid'
+		'Issuecards' => 'issuecardid',
+		'Receiptcards' => 'receiptcardid',
 	);
 
 	$res = $adb->pquery("select taxtype from $inv_table_array[$module] where $inv_id_array[$module]=?", array($id));
