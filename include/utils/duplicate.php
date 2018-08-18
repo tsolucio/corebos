@@ -183,11 +183,9 @@ function dup_related_lists($new_record_id, $currentModule, $related_list, $recor
 			if ($rel_module=='Documents') {
 				if ($businessMap == "Condition Query") {
 					$ids = $cbmap->ConditionQuery($record_id);
-					$ids = $ids[0];
 
 					$adb->pquery(
-						'INSERT INTO vtiger_senotesrel (crmid,notesid) 
-							SELECT ?,notesid FROM vtiger_senotesrel WHERE crmid= in ('.generateQuestionMarks($ids).'))',
+						'INSERT INTO vtiger_senotesrel (crmid,notesid) VALUES(?,?)',
 						array($new_record_id,$ids)
 					);
 				} else if ($businessMap == "Condition Expression") {
@@ -214,11 +212,9 @@ function dup_related_lists($new_record_id, $currentModule, $related_list, $recor
 			} else {
 				if ($businessMap == "Condition Query") {
 					$ids = $cbmap->ConditionQuery($record_id);
-					$ids = $ids[0];
 
 					$adb->pquery(
-						'INSERT INTO vtiger_crmentityrel (crmid,module,relcrmid,relmodule) 
-							SELECT ?,?,relcrmid,relmodule FROM vtiger_crmentityrel WHERE crmid= in ('.generateQuestionMarks($ids).')) AND relmodule=?',
+						'INSERT INTO vtiger_crmentityrel (crmid,module,relcrmid,relmodule) VALUES(?,?,?,?)',
 						array($new_record_id,$currentModule,$ids,$rel_module)
 					);
 				} else if ($businessMap == "Condition Expression") {
