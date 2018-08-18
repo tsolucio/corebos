@@ -870,6 +870,10 @@ $mod_strings = array (
 
 	'LBL_CRM_SETTINGS' => 'Configuración CRM',
 	// language translation strings
+	'LBL_EMAIL_SUBJECT' => 'Correo de prueba sobre la configuración del servidor de correo',
+	'LBL_BODY_MESSAGE_1' => 'Este es un correo de prueba enviado para confirmar si un correo se está enviando realmente a través del servidor smtp que ha configurado',
+	'LBL_BODY_MESSAGE_2' => 'Siéntase libre de borrar este correo',
+	'LBL_EMAIL_SALUTATION' => 'Gracias y saludos',
 	'LBL_LANGUAGES_PACKS' => 'Extensión de Idioma',
 	'LBL_EDIT_LANGUAGE_FILE' => 'Traducir etiquetas de módulo',
 	'LBL_SELECT_TRANSLATE_MODULE' => 'Selecciona un módulo para traducir :',

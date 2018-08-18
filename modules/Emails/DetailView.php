@@ -30,6 +30,7 @@ if (isset($_REQUEST['record'])) {
 	$smarty->assign('FROM_MAIL', $adb->query_result($result, 0, 'from_email'));
 	$to_email = json_decode($adb->query_result($result, 0, 'to_email'), true);
 	$cc_email = json_decode($adb->query_result($result, 0, 'cc_email'), true);
+ 
 	$smarty->assign('TO_MAIL', vt_suppressHTMLTags(@implode(',', $to_email)));
 	$smarty->assign('CC_MAIL', vt_suppressHTMLTags(@implode(',', $cc_email)));
 	$bcc_email = json_decode($adb->query_result($result, 0, 'bcc_email'), true);
@@ -115,7 +116,7 @@ if (isset($focus->name)) {
 $entries = getBlocks($currentModule, 'detail_view', '', $focus->column_fields);
 //changed this to view description in all langauge - bharath
 $smarty->assign('BLOCKS', $entries[$mod_strings['LBL_EMAIL_INFORMATION']]);
-$smarty->assign('SINGLE_MOD', 'Email');
+$smarty->assign('SINGLE_MOD', 'Emails');
 
 if (isPermitted($currentModule, 'CreateView', $record) == 'yes') {
 	$smarty->assign('CREATE_PERMISSION', 'permitted');

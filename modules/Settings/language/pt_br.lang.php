@@ -911,6 +911,10 @@ $mod_strings = array(
 'Add New'=> 'Adicionar Novo',
 'SMSNotifier'=>'Notificador SMS',
 // language translation strings
+'LBL_EMAIL_SUBJECT' => 'Testar email sobre a configuração do servidor de email',
+'LBL_BODY_MESSAGE_1' => 'Este é um e-mail de teste enviado para confirmar se um e-mail está realmente sendo enviado através do servidor smtp que você configurou',
+'LBL_BODY_MESSAGE_2' => 'Sinta-se à vontade para excluir este e-mail',
+'LBL_EMAIL_SALUTATION' => 'Obrigado e cumprimentos',
 'LBL_LANGUAGES_PACKS' => 'Extensão de Linguagem',
 'LBL_EDIT_LANGUAGE_FILE' => 'Traduzir títulos de módulos',
 'LBL_SELECT_TRANSLATE_MODULE' => 'Selecione um módulo para traduzir :',
