@@ -182,9 +182,7 @@ function dup_related_lists($new_record_id, $currentModule, $related_list, $recor
 
 			if ($rel_module=='Documents') {
 				if ($businessMap == "Condition Query") {
-					// Get crmids
-					$focus = new $cbmap;
-					$ids = $focus->ConditionQuery($record_id);
+					$ids = $cbmap->ConditionQuery($record_id);
 					$ids = $ids[0];
 
 					$adb->pquery(
@@ -203,8 +201,7 @@ function dup_related_lists($new_record_id, $currentModule, $related_list, $recor
 						while ($related = $adb->fetch_array($result)) {
 							if ($focus->ConditionExpression($entityId.'x'.$related['notesid'])) {
 								$adb->pquery(
-									'INSERT INTO vtiger_senotesrel (crmid,notesid) 
-										SELECT ?,notesid FROM vtiger_senotesrel WHERE notesid=?',
+									'INSERT INTO vtiger_senotesrel (crmid,notesid) VALUES(?,?)',
 									array($new_record_id,$related['notesid'])
 								);
 							}
@@ -216,9 +213,7 @@ function dup_related_lists($new_record_id, $currentModule, $related_list, $recor
 				}
 			} else {
 				if ($businessMap == "Condition Query") {
-					// Get crmids
-					$focus = new $cbmap;
-					$ids = $focus->ConditionQuery($record_id);
+					$ids = $cbmap->ConditionQuery($record_id);
 					$ids = $ids[0];
 
 					$adb->pquery(
@@ -237,8 +232,7 @@ function dup_related_lists($new_record_id, $currentModule, $related_list, $recor
 						while ($related = $adb->fetch_array($result)) {
 							if ($focus->ConditionExpression($entityId.'x'.$related['relcrmid'])) {
 								$adb->pquery(
-									'INSERT INTO vtiger_crmentityrel (crmid,module,relcrmid,relmodule) 
-										SELECT ?,?,relcrmid,relmodule FROM vtiger_crmentityrel WHERE relcrmid=? AND relmodule=?',
+									'INSERT INTO vtiger_crmentityrel (crmid,module,relcrmid,relmodule) VALUES(?,?,?,?)',
 									array($new_record_id,$currentModule,$related['relcrmid'],$rel_module)
 								);
 							}
