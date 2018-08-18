@@ -573,21 +573,7 @@ function DeleteTag(id,recordid)
 												{* END *}
 												<!-- Action links END -->
 
-												{if $TAG_CLOUD_DISPLAY eq 'true'}
-													<!-- Tag cloud display -->
-													<table border=0 cellspacing=0 cellpadding=0 width=100% class="tagCloud">
-														<tr>
-															<td class="tagCloudTopBg"><img src="{$IMAGE_PATH}tagCloudName.gif" border=0></td>
-														</tr>
-														<tr>
-															<td><div id="tagdiv" style="display:visible;"><form method="POST" action="javascript:void(0);" onsubmit="return tagvalidate();"><input class="textbox"  type="text" id="txtbox_tagfields" name="textbox_First Name" value="" style="width:100px;margin-left:5px;"></input>&nbsp;&nbsp;<input name="button_tagfileds" type="submit" class="crmbutton small save" value="{$APP.LBL_TAG_IT}" /></form></div></td>
-														</tr>
-														<tr>
-															<td class="tagCloudDisplay" valign=top> <span id="tagfields"></span></td>
-														</tr>
-													</table>
-													<!-- End Tag cloud display -->
-												{/if}
+												{include file="TagCloudDisplay.tpl"}
 												<!-- Mail Merge-->
 												<br>
 												{if isset($MERGEBUTTON) && $MERGEBUTTON eq 'permitted'}
@@ -696,24 +682,6 @@ function DeleteTag(id,recordid)
 							</tr>
 						</table>
 
-<script>
-
-function getTagCloud()
-{ldelim}
-	var obj = document.getElementById("tagfields");
-	if(obj != null && typeof(obj) != undefined) {ldelim}
-		jQuery.ajax({ldelim}
-				method:"POST",
-				url:'index.php?module={$MODULE}&action={$MODULE}Ajax&file=TagCloud&ajxaction=GETTAGCLOUD&recordid={$ID}',
-		{rdelim}).done(function(response) {ldelim}
-					jQuery("#tagfields").html(response);
-					jQuery("#txtbox_tagfields").val('');
-		{rdelim}
-		);
-	{rdelim}
-{rdelim}
-getTagCloud();
-</script>
 <!-- added for validation -->
 <script>
   var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});

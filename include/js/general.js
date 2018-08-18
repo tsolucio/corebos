@@ -9,6 +9,19 @@
 
 //Utility Functions
 
+function getTagCloud(crmid) {
+	var obj = document.getElementById('tagfields');
+	if (obj != null && typeof(obj) != undefined) {
+		jQuery.ajax({
+			method:'POST',
+			url:'index.php?module='+gVTModule+'&action='+gVTModule+'Ajax&file=TagCloud&ajxaction=GETTAGCLOUD&recordid='+crmid,
+		}).done(function (response) {
+			document.getElementById('tagfields').innerHTML=response;
+			document.getElementById('txtbox_tagfields').value ='';
+		});
+	}
+}
+
 function c_toggleAssignType(currType) {
 	if (currType=='U') {
 		document.getElementById('c_assign_user').style.display='block';
