@@ -47,48 +47,6 @@ function showHideStatus(sId,anchorImgId,sImagePath)
 		}
 	}
 }
-function setCoOrdinate(elemId){
-	oBtnObj = document.getElementById(elemId);
-	var tagName = document.getElementById('lstRecordLayout');
-	leftpos  = 0;
-	toppos = 0;
-	aTag = oBtnObj;
-	do {
-		leftpos += aTag.offsetLeft;
-		toppos += aTag.offsetTop;
-	} while(aTag = aTag.offsetParent);
-	tagName.style.top= toppos + 20 + 'px';
-	tagName.style.left= leftpos - 276 + 'px';
-}
-
-function getListOfRecords(obj, sModule, iId,sParentTab) {
-	jQuery.ajax({
-				method:"POST",
-				url:'index.php?module=Users&action=getListOfRecords&ajax=true&CurModule='+sModule+'&CurRecordId='+iId+'&CurParentTab='+sParentTab,
-	}).done(function(response) {
-				sResponse = response;
-				jQuery("#lstRecordLayout").html(sResponse);
-				Lay = 'lstRecordLayout';
-				var tagName = document.getElementById(Lay);
-				var leftSide = findPosX(obj);
-				var topSide = findPosY(obj);
-				var maxW = tagName.style.width;
-				var widthM = maxW.substring(0,maxW.length-2);
-				var getVal = parseInt(leftSide) + parseInt(widthM);
-				if(getVal  > document.body.clientWidth ){
-					leftSide = parseInt(leftSide) - parseInt(widthM);
-					tagName.style.left = leftSide + 230 + 'px';
-					tagName.style.top = topSide + 20 + 'px';
-				}else{
-					tagName.style.left = leftSide + 230 + 'px';
-				}
-				setCoOrdinate(obj.id);
-
-				tagName.style.display = 'block';
-				tagName.style.visibility = "visible";
-			}
-	);
-}
 {/literal}
 function tagvalidate()
 {ldelim}
