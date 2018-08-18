@@ -19,16 +19,6 @@
 var clipcopyobject = new ClipboardJS('#clipcopylink');
 clipcopyobject.on('success', function(e) { clipcopyclicked = false; });
 clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
-function callConvertLeadDiv(id){
-		jQuery.ajax({
-				method:"POST",
-				url:'index.php?module=Leads&action=LeadsAjax&file=ConvertLead&record='+id,
-		}).done(function(response) {
-				jQuery("#convertleaddiv").html(response);
-				jQuery("#conv_leadcal").html();
-			}
-		);
-}
 function showHideStatus(sId,anchorImgId,sImagePath)
 {
 	oObj = document.getElementById(sId);
