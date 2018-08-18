@@ -123,15 +123,6 @@ function DeleteTag(id,recordid)
 	{rdelim}
 	);
 {rdelim}
-
-//Added to send a file, in Documents module, as an attachment in an email
-function sendfile_email()
-{ldelim}
-	filename = document.getElementById('dldfilename').value;
-	document.DetailView.submit();
-	OpenCompose(filename,'Documents');
-{rdelim}
-
 </script>
 
 <div id="lstRecordLayout" class="layerPopup" style="display:none;width:325px;height:300px;"></div>
