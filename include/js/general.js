@@ -22,6 +22,18 @@ function getTagCloud(crmid) {
 	}
 }
 
+function DeleteTag(id, recordid) {
+	document.getElementById('vtbusy_info').style.display='inline';
+	jQuery('#tag_'+id).fadeOut();
+	jQuery.ajax({
+		method:'POST',
+		url:'index.php?file=TagCloud&module='+gVTModule+'&action='+gVTModule+'Ajax&ajxaction=DELETETAG&recordid='+recordid+'&tagid=' +id,
+	}).done(function (response) {
+		getTagCloud();
+		jQuery('#vtbusy_info').hide();
+	});
+}
+
 function c_toggleAssignType(currType) {
 	if (currType=='U') {
 		document.getElementById('c_assign_user').style.display='block';

@@ -48,28 +48,13 @@ function showHideStatus(sId,anchorImgId,sImagePath)
 	}
 }
 {/literal}
-function tagvalidate()
-{ldelim}
-	if(trim(document.getElementById('txtbox_tagfields').value) != '')
+function tagvalidate() {ldelim}
+	if (trim(document.getElementById('txtbox_tagfields').value) != '') {ldelim}
 		SaveTag('txtbox_tagfields','{$ID}','{$MODULE}');
-	else
-	{ldelim}
+	{rdelim} else {ldelim}
 		alert("{$APP.PLEASE_ENTER_TAG}");
 		return false;
 	{rdelim}
-{rdelim}
-function DeleteTag(id,recordid)
-{ldelim}
-	document.getElementById("vtbusy_info").style.display="inline";
-	jQuery('#tag_'+id).fadeOut();
-	jQuery.ajax({ldelim}
-			method:"POST",
-			url:"index.php?file=TagCloud&module={$MODULE}&action={$MODULE}Ajax&ajxaction=DELETETAG&recordid="+recordid+"&tagid=" +id,
-	{rdelim}).done(function(response) {ldelim}
-				getTagCloud();
-				jQuery("#vtbusy_info").hide();
-	{rdelim}
-	);
 {rdelim}
 </script>
 
