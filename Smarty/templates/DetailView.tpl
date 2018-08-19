@@ -19,13 +19,11 @@
 var clipcopyobject = new ClipboardJS('#clipcopylink');
 clipcopyobject.on('success', function(e) { clipcopyclicked = false; });
 clipcopyobject.on('error', function(e) { clipcopyclicked = false; });
-function showHideStatus(sId,anchorImgId,sImagePath)
-{
-	oObj = document.getElementById(sId);
-	if(oObj.style.display == 'block')
-	{
+function showHideStatus(sId,anchorImgId, sImagePath) {
+	var oObj = document.getElementById(sId);
+	if (oObj.style.display == 'block') {
 		oObj.style.display = 'none';
-		if(anchorImgId !=null){
+		if (anchorImgId !=null) {
 {/literal}
 			document.getElementById(anchorImgId).src = 'themes/images/inactivate.gif';
 			document.getElementById(anchorImgId).alt = '{'LBL_Show'|@getTranslatedString:'Settings'}';
@@ -33,11 +31,9 @@ function showHideStatus(sId,anchorImgId,sImagePath)
 			document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block activate';
 {literal}
 		}
-	}
-	else
-	{
+	} else {
 		oObj.style.display = 'block';
-		if(anchorImgId !=null){
+		if (anchorImgId !=null) {
 {/literal}
 			document.getElementById(anchorImgId).src = 'themes/images/activate.gif';
 			document.getElementById(anchorImgId).alt = '{'LBL_Hide'|@getTranslatedString:'Settings'}';
@@ -77,7 +73,6 @@ function tagvalidate() {ldelim}
 						<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation( 'Main' );" class="calMnu">{$MOD.LBL_BILLING_ADDRESS}</a>
 						<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation( 'Other' );" class="calMnu">{$MOD.LBL_SHIPPING_ADDRESS}</a>
 					{/if}
-
 					{if $MODULE eq 'Contacts'}
 						<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation( 'Main' );" class="calMnu">{$MOD.LBL_PRIMARY_ADDRESS}</a>
 						<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation( 'Other' );" class="calMnu">{$MOD.LBL_ALTERNATE_ADDRESS}</a>
@@ -88,7 +83,6 @@ function tagvalidate() {ldelim}
 		</table>
 	</div>
 {/if}
-
 
 <table width="100%" cellpadding="2" cellspacing="0" border="0" class="detailview_wrapper_table">
 	<tr>
@@ -104,13 +98,13 @@ function tagvalidate() {ldelim}
 						<!-- PUBLIC CONTENTS STARTS-->
 						<div class="small" style="padding:14px" onclick="hndCancelOutsideClick();";>
 
-							<table align="center" border="0" cellpadding="0" cellspacing="0" width="95%">
-								<tr><td>
-									{* Module Record numbering, used MOD_SEQ_ID instead of ID *}
-									{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
-									{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
-									<span class="dvHeaderText">[ {$USE_ID_VALUE} ] {$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>&nbsp;&nbsp;&nbsp;<span class="small">{$UPDATEINFO}</span>&nbsp;<span id="vtbusy_info" style="display:none;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-								</td></tr>
+						<table align="center" border="0" cellpadding="0" cellspacing="0" width="95%">
+							<tr><td>
+								{* Module Record numbering, used MOD_SEQ_ID instead of ID *}
+								{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
+								{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
+								<span class="dvHeaderText">[ {$USE_ID_VALUE} ] {$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>&nbsp;&nbsp;&nbsp;<span class="small">{$UPDATEINFO}</span>&nbsp;<span id="vtbusy_info" style="display:none;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
+							</td></tr>
 						</table>
 						<br>
 						{include file='applicationmessage.tpl'}
@@ -150,7 +144,6 @@ function tagvalidate() {ldelim}
 												{if $DELETE eq 'permitted'}
 													<input title="{$APP.LBL_DELETE_BUTTON_TITLE}" accessKey="{$APP.LBL_DELETE_BUTTON_KEY}" class="crmbutton small delete" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='index'; {if $MODULE eq 'Accounts'} var confirmMsg = '{$APP.NTC_ACCOUNT_DELETE_CONFIRMATION}' {else} var confirmMsg = '{$APP.NTC_DELETE_CONFIRMATION}' {/if}; submitFormForActionWithConfirmation('DetailView', 'Delete', confirmMsg);" type="button" name="Delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}">&nbsp;
 												{/if}
-
 												{if $privrecord neq ''}
 													<span class="detailview_utils_prev" onclick="location.href='index.php?module={$MODULE}&viewtype={if isset($VIEWTYPE)}{$VIEWTYPE}{/if}&action=DetailView&record={$privrecord}&parenttab={$CATEGORY}&start={$privrecordstart}'" title="{$APP.LNK_LIST_PREVIOUS}"><img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" accessKey="{$APP.LNK_LIST_PREVIOUS}"  name="privrecord" value="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
 												{else}
@@ -629,7 +622,7 @@ function tagvalidate() {ldelim}
 										</div>
 										<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_bottom" id="detailview_utils_table_tabactionsep_bottom"></div>
 										<div class="detailview_utils_table_actions detailview_utils_table_actions_bottom" id="detailview_utils_actions">
-												{if $EDIT_PERMISSION eq 'yes' }
+												{if $EDIT_PERMISSION eq 'yes'}
 													<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmbutton small edit" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}';submitFormForAction('DetailView','EditView');" type="submit" name="Edit" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;">&nbsp;
 												{/if}
 												{if ((isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted') || (isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes')) && $MODULE neq 'Documents'}
@@ -658,15 +651,12 @@ function tagvalidate() {ldelim}
 								</td>
 							</tr>
 						</table>
-
-<!-- added for validation -->
 <script>
-  var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
-  var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
-  var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
+	var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
+	var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
+	var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 </script>
 </td>
-
 	<td align=right valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 </tr></table>
 
