@@ -342,13 +342,6 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Si se establece en 1, se enviará un correo electrónico al propietario del ticket de HelpDesk cuando cambie, si se establece en 0, no se enviará ningún correo electrónico al propietario. Esto puede anularse con los flujos de trabajo, sólo se aplica a los flujos de trabajo predeterminados. El valor predeterminado es 1.',
 ),
-'Testing_Email_Settings' => array(
-	'status' => 'Implementada',
-	'valuetype' => 'Texto',
-	'category' => 'Email',
-	'values' => '',
-	'definition' => 'este es un correo de prueba enviado para confirma.',
-),
 'HomePage_Widget_Group_Size' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Entero',
