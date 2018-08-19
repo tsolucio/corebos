@@ -8,7 +8,6 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
 <script type="text/javascript" src="modules/Services/Services.js"></script>
 <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
 {if $PICKIST_DEPENDENCY_DATASOURCE neq ''}
@@ -48,11 +47,6 @@
 			<hr noshade size=1>
 			<br>
 			{include file='EditViewHidden.tpl'}
-			{if $OP_MODE eq 'create_view'}
-				<input type="hidden" name="convert_from" value="{$CONVERT_MODE}">
-				<input type="hidden" name="duplicate_from" value="{if isset($DUPLICATE_FROM)}{$DUPLICATE_FROM}{/if}">
-			{/if}
-			<input name='search_url' id="search_url" type='hidden' value='{$SEARCH}'>
 
 			{*<!-- Account details tabs -->*}
 			<table border=0 cellspacing=0 cellpadding=0 width=95% align=center>
@@ -73,19 +67,19 @@
 					<table border=0 cellspacing=0 cellpadding=3 width=100% class="dvtContentSpace">
 					   <tr>
 
-						<td align=left style="padding:10px;border-right:1px #CCCCCC;" width=80%>
+						<td align=left>
 							{*<!-- content cache -->*}
 							<table border=0 cellspacing=0 cellpadding=0 width=100%>
 							   <tr>
 								<td style="padding:10px">
-								<!-- General details -->
+									<!-- General details -->
 									<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small createview_table">
 									   <tr>
 										<td colspan=4 style="padding:5px">
-										   <div align="center">
-											<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save'; displaydeleted(); return validateInventory('{$MODULE}')" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
-											<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="window.history.back()" type="button" name="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}  ">
-										   </div>
+											<div align="center">
+												<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save'; displaydeleted(); return validateInventory('{$MODULE}')" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
+												<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="{if isset($smarty.request.Module_Popup_Edit)}window.close(){elseif isset($CANCELGO)}window.location.href='{$CANCELGO}'{else}window.history.back(){/if};" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
+											</div>
 										</td>
 									   </tr>
 
@@ -139,7 +133,7 @@
 										<td  colspan=4 style="padding:5px">
 											<div align="center">
 												<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save';  displaydeleted();return validateInventory('{$MODULE}')" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
-												<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="window.history.back()" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
+												<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="{if isset($smarty.request.Module_Popup_Edit)}window.close(){elseif isset($CANCELGO)}window.location.href='{$CANCELGO}'{else}window.history.back(){/if};" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
 											</div>
 										</td>
 									   </tr>
@@ -164,9 +158,9 @@
 <div id="tax_container" style="display:none; position:absolute; z-index:1px;"></div>
 
 <script>
-	var fieldname = new Array({$VALIDATION_DATA_FIELDNAME})
-	var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL})
-	var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE})
+	var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
+	var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
+	var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 	var product_labelarr = {ldelim}CLEAR_COMMENT:'{$APP.LBL_CLEAR_COMMENT}',
 				DISCOUNT:'{$APP.LBL_DISCOUNT}',
 				TOTAL_AFTER_DISCOUNT:'{$APP.LBL_TOTAL_AFTER_DISCOUNT}',
