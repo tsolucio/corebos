@@ -326,7 +326,7 @@ function getPriceBookRelatedProducts($query, $focus, $returnset = '') {
 
 	$module = 'PriceBooks';
 	$relatedmodule = 'Products';
-	if (!$_SESSION['rlvs'][$module][$relatedmodule]) {
+	if (empty($_SESSION['rlvs'][$module][$relatedmodule])) {
 		$modObj = new ListViewSession();
 		$modObj->sortby = $focus->default_order_by;
 		$modObj->sorder = $focus->default_sort_order;
