@@ -31,5 +31,5 @@ $smarty->assign('CREATEPDF', 'permitted');
 $invoice_no = getModuleSequenceNumber($currentModule, $record);
 $smarty->assign('INV_NO', $invoice_no);
 
-$smarty->display('Inventory/InventoryDetailView.tpl');
+$smarty->display('DetailView.tpl');
 ?>
