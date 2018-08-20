@@ -570,11 +570,7 @@ class ReportRun extends CRMEntity {
 				$col = explode(':', $relcriteriarow['columnname']);
 				list($module,$void) = explode('_', $col[2], 2);
 				$uitype_value = getUItypeByFieldName($module, $col[3]);
-				if ($uitype_value == '15' || $uitype_value == '16' || $uitype_value == '33') {
-					if (!isValueInPicklist($advfilterval, $col[3])) {
-						$advfilterval = getTranslationKeyFromTranslatedValue($module, $advfilterval);
-					}
-				}
+			
 				$criteria['value'] = $advfilterval;
 				$criteria['column_condition'] = $relcriteriarow['column_condition'];
 
@@ -755,7 +751,11 @@ class ReportRun extends CRMEntity {
 //							else
 //								$fieldvalue = $fieldInfo['tablename'].'.'.$fieldInfo['columnname'].$cmp;
 						} else {
+                                                    if ($fieldInfo['uitype']==15 || $fieldInfo['uitype']==16) {
+                                                        $fieldvalue = $selectedfields[0].".".$selectedfields[1].' IN (select translation_key from vtiger_cbtranslation where locale="'.$current_user->language.'" and forpicklist="'.$moduleName.'::'.$selectedfields[1].'" and i18n '.$this->getAdvComparator($comparator, trim($value), $datatype).') OR '.$selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator, trim($value), $datatype);
+                                                    }   else {
 							$fieldvalue = $selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator, trim($value), $datatype);
+                                                    }
 						}
 
 						$advfiltergroupsql .= $fieldvalue;
@@ -983,11 +983,7 @@ class ReportRun extends CRMEntity {
 					}
 					$adv_filter_value = implode(",", $val);
 				}
-				if ($fieldType=='picklist' || $fieldType=='multipicklist') {
-					if (!isValueInPicklist($adv_filter_value, $fieldName)) {
-						$adv_filter_value = getTranslationKeyFromTranslatedValue($module, $adv_filter_value);
-					}
-				}
+				
 				$criteria = array();
 				$criteria['columnname'] = $adv_filter_column;
 				$criteria['comparator'] = $adv_filter_comparator;

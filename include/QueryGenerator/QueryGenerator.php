@@ -967,7 +967,7 @@ class QueryGenerator {
 						$fieldSql .= "$fieldGlue DATE_FORMAT(".$field->getTableName().'.'.$field->getColumnName().",'%m%d') ".$valueSql;
 					} else {
 						if ($field->getUIType() == 15 || $field->getUIType() == 16) {
-							$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' IN (select translation_key from vtiger_cbtranslation where locale="'.$current_user->language.'" and forfield="'.$field->getColumnName().'" and i18n '.$valueSql.')'
+							$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' IN (select translation_key from vtiger_cbtranslation where locale="'.$current_user->language.'" and forpicklist="'.$this->getModule().'::'.$field->getColumnName().'" and i18n '.$valueSql.')'
 									. ' OR '.$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
 						} else {
 							$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
@@ -1243,11 +1243,6 @@ class QueryGenerator {
 				if (empty($value)) {
 					$sql[] = 'IS NULL or '.$field->getTableName().'.'.$field->getColumnName()." = ''";
 					return $sql;
-				}
-			} elseif ($field->getFieldDataType()=='picklist' || $field->getFieldDataType()=='multipicklist'
-					&& !in_array($field->getUIType(), array('1613','1614','1615','1024','3313','3314'))) {
-				if (!isValueInPicklist($value, $field->getFieldName())) {
-					$value = getTranslationKeyFromTranslatedValue($this->module, $value);
 				}
 			} elseif ($field->getFieldDataType() === 'currency') {
 				$uiType = $field->getUIType();
@@ -1558,12 +1553,6 @@ class QueryGenerator {
 					$value=trim($stringConvert);
 				}
 
-				if ($type == 'picklist') {
-					global $currentModule;
-					if (!isValueInPicklist($value, $field->getFieldName())) {
-						$value = getTranslationKeyFromTranslatedValue($currentModule, $value);
-					}
-				}
 				if ($type == 'currency') {
 					// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
 					if ($field->getUIType() == '72') {
