@@ -1002,6 +1002,7 @@ function getUnifiedWhere($listquery, $module, $search_val) {
 	for ($i=0; $i<$noofrows; $i++) {
 		$columnname = $adb->query_result($result, $i, 'columnname');
 		$tablename = $adb->query_result($result, $i, 'tablename');
+				$field_uitype = getUItype($module, $columnname);
 
 		// Search / Lookup customization
 		if ($module == 'Contacts' && $columnname == 'accountid') {
@@ -1033,7 +1034,11 @@ function getUnifiedWhere($listquery, $module, $search_val) {
 			if ($binary_search) {
 				$where .= 'LOWER('.$tablename.'.'.$columnname.") LIKE BINARY LOWER('". formatForSqlLike($search_val) ."')";
 			} else {
-				$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val) ."'";
+				if (is_uitype($field_uitype, '_picklist_')) {
+					$where .= '('.$tablename.".".$columnname.' IN (select translation_key from vtiger_cbtranslation where locale="'.$current_user->language.'" and forpicklist="'.$module.'::'.$columnname.'" and i18n LIKE "'.formatForSqlLike($search_val).'") OR '.$tablename.".".$columnname.' LIKE "'. formatForSqlLike($search_val).'")';
+				} else {
+					$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val) ."'";
+				}
 			}
 		}
 	}
