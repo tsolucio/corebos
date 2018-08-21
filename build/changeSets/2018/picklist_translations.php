@@ -24,27 +24,33 @@ class picklist_translations extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-						$current_user = Users::getActiveAdminUser();
-						set_time_limit(0);
-						ini_set('memory_limit', '1024M');
+			$current_user = Users::getActiveAdminUser();
+			set_time_limit(0);
+			ini_set('memory_limit', '1024M');
 
-						include_once 'include/Webservices/Create.php';
-						include_once 'modules/cbtranslation/cbtranslation.php';
-						$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
-						$default_values =  array(
-										'proofread' => '1',
-										'assigned_user_id' => $usrwsid,
-						);
-						$rec = $default_values;
-						$import_langs = array('en_us','es_es','de_de','en_gb','es_mx','fr_fr','hu_hu','it_it','nl_nl','pt_br');
-						$import_modules = getAllowedPicklistModules(1);
-						$import_modules = array_merge($import_modules, array('Rss','Recyclebin'));
+			include_once 'include/Webservices/Create.php';
+			include_once 'modules/cbtranslation/cbtranslation.php';
+			$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
+			$default_values =  array(
+				'proofread' => '1',
+				'assigned_user_id' => $usrwsid,
+			);
+			$rec = $default_values;
+			$import_langs = array('en_us','es_es','de_de','en_gb','es_mx','fr_fr','hu_hu','it_it','nl_nl','pt_br');
+			$import_modules = getAllowedPicklistModules(1);
+			$import_modules = array_merge($import_modules, array('Rss','Recyclebin'));
 			foreach ($import_modules as $impmod) {
 				set_time_limit(0);
 				foreach ($import_langs as $lang) {
 					if (file_exists('modules/' . $impmod . '/language/' . $lang . '.lang.php')) {
 						include 'modules/' . $impmod . '/language/' . $lang . '.lang.php';
-						$query = $adb->query("select columnname from vtiger_tab join vtiger_field on vtiger_tab.tabid=vtiger_field.tabid where (uitype='15' or uitype='16') and name='$impmod'");
+						$query = $adb->pquery(
+							"select columnname
+								from vtiger_tab
+								join vtiger_field on vtiger_tab.tabid=vtiger_field.tabid
+								where (uitype='15' or uitype='16') and name=?",
+							array($impmod)
+						);
 						$count = $adb->num_rows($query);
 						for ($i=0; $i<$count; $i++) {
 							$fieldname = $adb->query_result($query, $i, 0);
@@ -53,9 +59,10 @@ class picklist_translations extends cbupdaterWorker {
 							$countcol = $adb->num_rows($columns);
 							for ($j=0; $j<$countcol; $j++) {
 								$key = $adb->query_result($columns, $j, 0);
-								$value = $mod_strings["$key"];
-								if ($value=='') {
-										$value = $key;
+								if (isset($mod_strings[$key])) {
+									$value = $mod_strings[$key];
+								} else {
+									$value = $key;
 								}
 								$rec['translation_module'] = $impmod;
 								$rec['translation_key'] = $key;

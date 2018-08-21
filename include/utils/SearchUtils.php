@@ -375,7 +375,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 					$where="$table_name.$column_name = '-1'";
 				}
 			} elseif ($uitype == 15 || $uitype == 16) {
-								$currlang = $current_user->language;
+				$currlang = $current_user->language;
 				if (is_uitype($uitype, '_picklist_')) {
 					// Get all the keys for the for the Picklist value
 					$mod_keys = array_keys($mod_strings, $search_string);
@@ -997,7 +997,7 @@ function getUnifiedWhere($listquery, $module, $search_val) {
 	for ($i=0; $i<$noofrows; $i++) {
 		$columnname = $adb->query_result($result, $i, 'columnname');
 		$tablename = $adb->query_result($result, $i, 'tablename');
-				$field_uitype = getUItype($module, $columnname);
+		$field_uitype = getUItype($module, $columnname);
 
 		// Search / Lookup customization
 		if ($module == 'Contacts' && $columnname == 'accountid') {

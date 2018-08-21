@@ -77,5 +77,5 @@
 <input type="hidden" name="__cbisduplicatedfromrecordid" value="{$__cbisduplicatedfromrecordid}" />
 {/if}
 <input type="hidden" name="Module_Popup_Edit" value="{if isset($smarty.request.Module_Popup_Edit)}{$smarty.request.Module_Popup_Edit|@urlencode}{/if}" />
-<input name='search_url' id="search_url" type='hidden' value='{$SEARCH}'>
+<input name='search_url' id="search_url" type='hidden' value='{if isset($SEARCH)}{$SEARCH}{/if}'>
 
