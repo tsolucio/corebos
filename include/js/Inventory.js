@@ -1420,7 +1420,7 @@ function InventorySelectAll(mod, image_pth) {
 				}
 
 				// Build results
-				var results = this.buildResults(res);
+				this.buildResults(res);
 			}
 		},
 
@@ -1542,12 +1542,13 @@ function InventorySelectAll(mod, image_pth) {
 		},
 
 		clear: function () {
-			if (this.active)
+			if (this.active) {
 				this.removeResultBox();
 				this.destroyResultListeners();
 				this.currentResults = [];
 				this.active = false;
 				window.preventFormSubmitOnEnter = false;
+			}
 		},
 
 		delayedClear : function () {
