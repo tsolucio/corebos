@@ -1420,7 +1420,7 @@ function InventorySelectAll(mod, image_pth) {
 				}
 
 				// Build results
-				var results = this.buildResults(res);
+				this.buildResults(res);
 			}
 		},
 
