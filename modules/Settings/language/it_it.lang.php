@@ -809,6 +809,10 @@ $mod_strings = array (
 'LBL_SELECTED_MODULES' => 'Moduli selezionati',
 'LBL_CRM_SETTINGS' => 'Impostazioni CRM',
  // language translation strings
+'LBL_EMAIL_SUBJECT' => 'Testare la posta sulla configurazione del server di posta',
+'LBL_BODY_MESSAGE_1' => 'Questa è una mail di prova inviata per confermare se una mail viene effettivamente inviata attraverso il server smtp che hai configurato',
+'LBL_BODY_MESSAGE_2' => 'Sentiti libero di cancellare questa mail',
+'LBL_EMAIL_SALUTATION' => 'Grazie e saluti',
 'LBL_LANGUAGES_PACKS' => 'Editore Lingue',
 'LBL_EDIT_LANGUAGE_FILE' => 'Traduci moduli',
 'LBL_SELECT_TRANSLATE_MODULE' => 'Seleziona un modulo da tradurre :',

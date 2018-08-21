@@ -931,6 +931,11 @@ $mod_strings = array(
 'LBL_SELECTED_MODULES' => 'Geselecteerde Modules',
 
 'LBL_CRM_SETTINGS' => 'CRM Instellingen',
+//Email Settings Translation
+'LBL_EMAIL_SUBJECT' => 'Test e-mail over de configuratie van de e-mailserver',
+'LBL_BODY_MESSAGE_1' => 'Dit is een testmail die wordt verzonden om te bevestigen of een e-mail daadwerkelijk wordt verzonden via de smtp-server die u hebt geconfigureerd',
+'LBL_BODY_MESSAGE_2' => 'Voel je vrij om deze e-mail te verwijderen',
+'LBL_EMAIL_SALUTATION' => 'Bedankt en groeten',
 'LBL_LANGUAGES_PACKS' => 'Language Extension',
 'LBL_EDIT_LANGUAGE_FILE' => 'Translate modules strings',
 'LBL_SELECT_TRANSLATE_MODULE' => 'Select a module to translate :',

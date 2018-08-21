@@ -817,6 +817,11 @@ $mod_strings = array(
 	'LBL_UNSUBSCRIBE' => 'Leiratkozás',
 	'Save' => 'Módosítások mentése',
 	'Workflow' => 'Munkafolymatok',
+	//Email Settings Translation
+	'LBL_EMAIL_SUBJECT' => 'Próbálja ki a levélkiszolgáló konfigurációját',
+	'LBL_BODY_MESSAGE_1' => 'Ez egy tesztüzenet, amelyet elküldünk annak megerősítéséhez, hogy egy posta érkezik-e a konfigurált smtp kiszolgálón keresztül',
+	'LBL_BODY_MESSAGE_2' => 'Ez a levél törölhető',
+	'LBL_EMAIL_SALUTATION' => 'Köszönettel és üdvözlettel',
 	'LBL_LANGUAGES' => 'Nyelvek',
 	'LBL_LANGUAGES_DESCRIPTION' => 'Nyelvek leírása',
 	'LUpgradeBL_BIG_DEAL' => 'Nagy üzlet',

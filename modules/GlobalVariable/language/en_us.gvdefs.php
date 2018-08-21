@@ -342,6 +342,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'If set to 1 an email will be sent to the owner of the HelpDesk Ticket when it changes, if set to 0 no email will be sent to the owner. This can be overridden with workflows, it only applies to the default workflows. The default value is 1.',
 ),
+'Testing_Email_Settings' => array(
+    'status' => 'Implemented',
+	'valuetype' => 'Email',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'este es un correo de prueba enviado para confirma.',
+),
 'HomePage_Widget_Group_Size' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',

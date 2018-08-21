@@ -950,6 +950,10 @@ $mod_strings = array(
 
 	'LBL_CRM_SETTINGS' => 'CRM Einstellungen',
 	// language translation strings
+	'LBL_EMAIL_SUBJECT' => 'Testen Sie die Mail über die Mail-Server-Konfiguration',
+	'LBL_BODY_MESSAGE_1' => 'Dies ist eine Test-E-Mail, die gesendet wird, um zu bestätigen, dass eine E-Mail tatsächlich über den von Ihnen konfigurierten SMTP-Server gesendet wird',
+	'LBL_BODY_MESSAGE_2' => 'Fühlen Sie sich frei, diese Mail zu löschen',
+	'LBL_EMAIL_SALUTATION' => 'Danke und Grüße',
 	'LBL_LANGUAGES_PACKS' => 'Sprachpakete',
 	'LBL_EDIT_LANGUAGE_FILE' => 'Modul-Zeichenketten übersetzen',
 	'LBL_SELECT_TRANSLATE_MODULE' => 'Ein Modul zum übersetzen auswählen :',

@@ -120,6 +120,8 @@ $mod_strings = array(
 'LBL_IMPORT_MORE'=>'Importeer meer',
 'LBL_FINISHED'=>'Klaar',
 'LBL_UNDO_LAST_IMPORT'=>'Annuleer laatste import',
+'LBL_MESSAGE_HEADER' => 'Web heeft zojuist uw importproces voltooid',
+'LBL_MESSAGE_FOOTER' => 'We raden u aan om in te loggen en een paar records te controleren om te bevestigen dat de import succesvol is verlopen',
 
 'LBL_SUCCESS_1' => 'Aantal records succesvol geimporteerd : ',
 'LBL_SKIPPED_1' => 'Aantal records overgeslagen aangezien 1 of meer verplichte velden missen : ',
