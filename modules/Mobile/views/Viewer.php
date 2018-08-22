@@ -10,30 +10,27 @@
 include_once 'Smarty_setup.php';
 
 class crmtogo_UI_Viewer {
-	
+
 	private $parameters = array();
-	function assign($key, $value) {
+	public function assign($key, $value) {
 		$this->parameters[$key] = $value;
 	}
-	
-	function viewController() {
+
+	public function viewController() {
 		$smarty = new vtigerCRM_Smarty();
-		
-		foreach($this->parameters as $k => $v) {
+		foreach ($this->parameters as $k => $v) {
 			$smarty->assign($k, $v);
 		}
-		
-		$smarty->assign("IS_SAFARI", Mobile::isSafari());
-		$smarty->assign("SKIN", Mobile::config('Default.Skin'));
+		$smarty->assign('IS_SAFARI', Mobile::isSafari());
+		$smarty->assign('SKIN', Mobile::config('Default.Skin'));
 		return $smarty;
 	}
-	
-	function process($templateName) {
+
+	public function process($templateName) {
 		$smarty = $this->viewController();
 		$response = new crmtogo_API_Response();
 		$response->setResult($smarty->fetch(vtlib_getModuleTemplate('Mobile', $templateName)));
 		return $response;
 	}
-	
 }
 ?>

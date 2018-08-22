@@ -1354,7 +1354,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 			LEFT JOIN vtiger_service ON vtiger_service.serviceid=vtiger_inventoryproductrel.productid
 			WHERE id=? ORDER BY sequence_no";
 			$params = array($focus->id);
-		if ($module != 'PurchaseOrder') {
+		if ($module != 'PurchaseOrder' && $module != 'Receiptcards') {
 			if (GlobalVariable::getVariable('Application_B2B', '1')=='1') {
 				if ($module == 'Issuecards') {
 					$acvid = $focus->column_fields['accid'];

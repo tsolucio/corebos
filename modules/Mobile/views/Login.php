@@ -9,16 +9,16 @@
  ************************************************************************************/
 include_once __DIR__ . '/../api/ws/Login.php';
 
-class crmtogo_UI_Login  extends crmtogo_WS_Login {
+class crmtogo_UI_Login extends crmtogo_WS_Login {
 
-	function process(crmtogo_API_Request $request) {
+	public function process(crmtogo_API_Request $request) {
 		$default_config = $this->getConfigDefaults();
 		$default_lang_strings = return_module_language($default_config['language'], 'Mobile');
 		$viewer= new crmtogo_UI_Viewer();
 		$viewer->assign('MOD', $default_lang_strings);
 		$viewer->assign('COLOR_HEADER_FOOTER', $default_config['theme']);
-		$viewer->assign("COMPANY_LOGO",$default_config['company_logo']);
-		$viewer->assign("COMPANY_NAME",$default_config['company_name']);
+		$viewer->assign('COMPANY_LOGO', $default_config['company_logo']);
+		$viewer->assign('COMPANY_NAME', $default_config['company_name']);
 		return $viewer->process('Login.tpl');
 	}
 }

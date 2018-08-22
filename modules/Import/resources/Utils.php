@@ -55,7 +55,6 @@ class Import_Utils {
 		return $importDirectory. 'IMPORT_'.$user->id;
 	}
 
-
 	public static function getFileReaderInfo($type) {
 		$configReader = new ConfigReader('modules/Import/config.inc', 'ImportConfig');
 		$importTypeConfig = $configReader->getConfig('importTypes');

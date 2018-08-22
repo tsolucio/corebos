@@ -21,9 +21,9 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 
 	/**
 	 * Module Meta XML File (Parsed)
-	 * @access private
 	 */
-	private $_modulexml;
+	public $_modulexml;
+
 	/**
 	 * Module Fields mapped by [modulename][fieldname] which
 	 * will be used to create customviews.
@@ -263,17 +263,15 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 
 	/**
 	 * Cache the field instance for re-use
-	 * @access private
 	 */
-	private function __AddModuleFieldToCache($moduleInstance, $fieldname, $fieldInstance) {
+	public function __AddModuleFieldToCache($moduleInstance, $fieldname, $fieldInstance) {
 		$this->_modulefields_cache["$moduleInstance->name"]["$fieldname"] = $fieldInstance;
 	}
 
 	/**
 	 * Get field instance from cache
-	 * @access private
 	 */
-	private function __GetModuleFieldFromCache($moduleInstance, $fieldname) {
+	public function __GetModuleFieldFromCache($moduleInstance, $fieldname) {
 		return $this->_modulefields_cache["$moduleInstance->name"]["$fieldname"];
 	}
 
@@ -493,9 +491,8 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 
 	/**
 	 * Import Tables of the module
-	 * @access private
 	 */
-	private function import_Tables($modulenode) {
+	public function import_Tables($modulenode) {
 		if (empty($modulenode->tables) || empty($modulenode->tables->table)) {
 			return;
 		}

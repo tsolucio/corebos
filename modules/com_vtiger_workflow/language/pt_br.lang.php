@@ -157,6 +157,7 @@ $mod_strings = array(
 'Workflow for Calendar Todos when Send Notification is True' => 'Workflow para tarefas de calendário quando a notificação de envio é verdadeira',
 'Calculate or Update forecast amount' => 'Calcular ou atualizar o valor da previsão',
 'LBL_METHOD_NAME' => 'Nome do método',
-'NO_METHOD_AVAILABLE' => 'Nenhum método está disponível para este módulo.'
+'NO_METHOD_AVAILABLE' => 'Nenhum método está disponível para este módulo.',
+'launchrelwf' => 'Launch workflows on related updates',
 );
 ?>

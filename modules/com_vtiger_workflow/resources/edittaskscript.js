@@ -1,4 +1,4 @@
-function edittaskscript($){
+function edittaskscript($) {
 
 	function NumberBox(element) {
 		var elementId = element.prop('id');

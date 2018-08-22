@@ -8,16 +8,13 @@
  * All Rights Reserved.
  ************************************************************************************/
 include_once __DIR__ . '/Query.php';
-
 include_once 'include/Webservices/Query.php';
 
 class crmtogo_WS_QueryWithGrouping extends crmtogo_WS_Query {
-	
 	private $queryModule;
-	
-	function processQueryResultRecord(&$record, $user) {
-		parent::processQueryResultRecord($record, $user);
 
+	public function processQueryResultRecord(&$record, $user) {
+		parent::processQueryResultRecord($record, $user);
 		if ($this->cachedDescribeInfo() === false) {
 			$describeInfo = vtws_describe($this->queryModule, $user);
 			$this->cacheDescribeInfo($describeInfo);
@@ -27,8 +24,8 @@ class crmtogo_WS_QueryWithGrouping extends crmtogo_WS_Query {
 		$transformedRecord['labelFields'] = $this->cachedEntityFieldnames($this->queryModule);
 		return $transformedRecord;
 	}
-	
-	function process(crmtogo_API_Request $request) {
+
+	public function process(crmtogo_API_Request $request) {
 		$this->queryModule = $request->get('module');
 		return parent::process($request);
 	}

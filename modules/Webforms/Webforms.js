@@ -3,7 +3,7 @@ var Webforms ={
 	confirmAction:function (msg) {
 		return confirm(msg);
 	},
-	deleteForm:function (formname,id) {
+	deleteForm:function (formname, id) {
 		if (typeof webforms_alert_arr != 'undefined') {
 			var status=Webforms.confirmAction(getTranslatedString('LBL_DELETE_MSG', webforms_alert_arr));
 		} else {
@@ -18,7 +18,7 @@ var Webforms ={
 	editForm:function (id) {
 		Webforms.submitForm('action_form', 'index.php?module=Webforms&action=WebformsEditView&id='+id+'&operation=edit');
 	},
-	submitForm:function (formName,action) {
+	submitForm:function (formName, action) {
 		document.forms[formName].action=action;
 		document.forms[formName].submit();
 	},
@@ -35,7 +35,7 @@ var Webforms ={
 		}
 	},
 
-	validateForm: function (form,action) {
+	validateForm: function (form, action) {
 		var name=document.getElementById('name').value;
 		var ownerid=document.getElementById('ownerid').value;
 		var module=document.getElementById('targetmodule').value;
@@ -53,34 +53,34 @@ var Webforms ={
 		for (var i=0; i<elemNo; i++) {
 			if ((elem[i].value!='' && elem[i].value!=null) && (elem[i].getAttribute('fieldtype')!=null && elem[i].getAttribute('fieldtype')!='') && elem[i].style.display!='none' ) {
 				switch (elem[i].getAttribute('fieldtype')) {
-					case 'date':
-						if (!dateValidate(elem[i].name,elem[i].getAttribute('fieldlabel'),elem[i].getAttribute('fieldtype'))) {
-							return false;
-						}
-						break;
-					case 'time':
-						if (!timeValidate(elem[i].name,elem[i].getAttribute('fieldlabel'),elem[i].getAttribute('fieldtype'))) {
-							return false;
-						}
-						break;
-					case 'currency':
-					case 'number':
-					case 'double':
-						if (!numValidate(elem[i].name,elem[i].getAttribute('fieldlabel'),elem[i].getAttribute('fieldtype'))) {
-							return false;
-						}
-						break;
-					case 'email':
-						if (!patternValidate(elem[i].name,elem[i].getAttribute('fieldlabel'),elem[i].getAttribute('fieldtype'))) {
-							return false;
-						}
-						break;
-					default :break;
+				case 'date':
+					if (!dateValidate(elem[i].name, elem[i].getAttribute('fieldlabel'), elem[i].getAttribute('fieldtype'))) {
+						return false;
+					}
+					break;
+				case 'time':
+					if (!timeValidate(elem[i].name, elem[i].getAttribute('fieldlabel'), elem[i].getAttribute('fieldtype'))) {
+						return false;
+					}
+					break;
+				case 'currency':
+				case 'number':
+				case 'double':
+					if (!numValidate(elem[i].name, elem[i].getAttribute('fieldlabel'), elem[i].getAttribute('fieldtype'))) {
+						return false;
+					}
+					break;
+				case 'email':
+					if (!patternValidate(elem[i].name, elem[i].getAttribute('fieldlabel'), elem[i].getAttribute('fieldtype'))) {
+						return false;
+					}
+					break;
+				default :break;
 				}
 			}
 		}
 		if (mode=='save') {
-			Webforms.checkName(name,form,action);
+			Webforms.checkName(name, form, action);
 		} else {
 			Webforms.submitForm(form, action);
 		}
@@ -125,7 +125,7 @@ var Webforms ={
 			}
 		});
 	},
-	checkName: function (name,form,action) {
+	checkName: function (name, form, action) {
 		if ((name=='')||(name==null)) {
 			return;
 		}

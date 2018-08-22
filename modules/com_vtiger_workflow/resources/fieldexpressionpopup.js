@@ -42,7 +42,6 @@ function fieldExpressionPopup(moduleName, $) {
 		if (displaytype == null || displaytype == '' || displaytype == 'undefined') {
 			displaytype = 'inline';
 		}
-
 		if (typeof ele.css != 'function') {
 			ele.style.display = displaytype;
 		} else {
@@ -58,7 +57,7 @@ function fieldExpressionPopup(moduleName, $) {
 		}
 	}
 
-	function map(fn, list){
+	function map(fn, list) {
 		var out = [];
 		$.each(list, function (i, v) {
 			out[out.length]=fn(v);
@@ -97,7 +96,6 @@ function fieldExpressionPopup(moduleName, $) {
 			showElement($('#text_help'), 'block');
 			hideElement($('#editpopup_fieldnames'));
 			hideElement($('#editpopup_functions'));
-
 			var fieldType = $('#editpopup_field_type').val();
 			setFieldType(fieldType)(opType);
 		}
@@ -210,7 +208,7 @@ function fieldExpressionPopup(moduleName, $) {
 				+ 'this.form.wfrelfield_display.value=\'\'; return false;" align="absmiddle" style="cursor:hand;cursor:pointer"></span>';
 			value.replaceWith(refcode);
 		}
-		function forTimeField(opType){
+		function forTimeField(opType) {
 			var value = $('#editpopup_expression');
 			value.replaceWith('<input type="text" id="editpopup_expression" value="0" class="value">');
 		}
@@ -335,7 +333,7 @@ function fieldExpressionPopup(moduleName, $) {
 				$('#editpopup_expression_type').val('rawtext');
 			}
 			handleExpressionType(expressionTypeElement);
-			expression = expression.replace(/<br\s*\/?>/mg,'\n');  // convert <br> to \n for easy editing
+			expression = expression.replace(/<br\s*\/?>/mg, '\n'); // convert <br> to \n for easy editing
 			if (expression != '') {
 				$('#editpopup_expression').val(expression);
 			}
@@ -376,5 +374,4 @@ function com_vtiger_workflowsetValueFromCapture(recordid, value, target_fieldnam
 	$('#editpopup_expression').val(recordid);
 	document.getElementById('wfrelfield').value = recordid;
 	document.getElementById('wfrelfield_display').value = value;
-
 }

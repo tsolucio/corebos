@@ -31,7 +31,7 @@ function set_return_specific(product_id, product_name) {
 	fldId.value = product_id;
 }
 
-function set_return_formname_specific(formname,product_id, product_name) {
+function set_return_formname_specific(formname, product_id, product_name) {
 	window.opener.document.EditView1.product_name.value = product_name;
 	window.opener.document.EditView1.product_id.value = product_id;
 }
@@ -46,8 +46,8 @@ function set_return_product(product_id, product_name) {
 	}
 }
 
-function AssetssetValueFromCapture(recordid,value,target_fieldname) {
-	if (target_fieldname=="invoiceid") {
+function AssetssetValueFromCapture(recordid, value, target_fieldname) {
+	if (target_fieldname=='invoiceid') {
 		var url = 'module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getFieldValuesFromRecord';
 		url = url + '&getTheseFields=account_id,Accounts.accountname&getFieldValuesFrom='+recordid;
 		jQuery.ajax({

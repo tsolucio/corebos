@@ -3,7 +3,7 @@ function getFileNameOnly(filename) {
 	var onlyfilename = filename;
 	// Normalize the path (to make sure we use the same path separator)
 	var filename_normalized = filename.replace(/\\/g, '/');
-	if(filename_normalized.lastIndexOf('/') != -1) {
+	if (filename_normalized.lastIndexOf('/') != -1) {
 		onlyfilename = filename_normalized.substring(filename_normalized.lastIndexOf('/') + 1);
 	}
 	return onlyfilename;
@@ -11,7 +11,9 @@ function getFileNameOnly(filename) {
 
 /* Function to validate the filename */
 function validateFilename(form_ele) {
-	if (form_ele.value == '') return true;
+	if (form_ele.value == '') {
+		return true;
+	}
 	var value = getFileNameOnly(form_ele.value);
 
 	// Color highlighting logic
@@ -42,10 +44,12 @@ function validateFilename(form_ele) {
 }
 
 /* Function to validate the filsize */
-function validateFileSize(form_ele,uploadSize) {
-	if (form_ele.value == '') return true;
+function validateFileSize(form_ele, uploadSize) {
+	if (form_ele.value == '') {
+		return true;
+	}
 	var fileSize = form_ele.files[0].size;
-	if(fileSize > uploadSize) {
+	if (fileSize > uploadSize) {
 		alert(alert_arr.LBL_SIZE_SHOULDNOTBE_GREATER + uploadSize/1000000+alert_arr.LBL_FILESIZEIN_MB);
 		form_ele.value = '';
 		document.getElementById('displaySize').innerHTML= '';
@@ -59,10 +63,11 @@ function validateFileSize(form_ele,uploadSize) {
 function displayFileSize(form_ele) {
 	var fileSize = form_ele.files[0].size;
 	document.getElementById('filesize').value = fileSize;
-	if (fileSize < 1024)
+	if (fileSize < 1024) {
 		document.getElementById('displaySize').innerHTML = fileSize + alert_arr.LBL_FILESIZEIN_B;
-	else if (fileSize > 1024 && fileSize < 1048576)
+	} else if (fileSize > 1024 && fileSize < 1048576) {
 		document.getElementById('displaySize').innerHTML = Math.round(fileSize / 1024, 2) + alert_arr.LBL_FILESIZEIN_KB;
-	else if (fileSize > 1048576)
+	} else if (fileSize > 1048576) {
 		document.getElementById('displaySize').innerHTML = Math.round(fileSize / (1024 * 1024), 2) + alert_arr.LBL_FILESIZEIN_MB;
+	}
 }

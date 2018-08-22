@@ -41,5 +41,5 @@ $smarty->assign('CREATEPDF', 'permitted');
 $quote_no = getModuleSequenceNumber($currentModule, $record);
 $smarty->assign('QUO_NO', $quote_no);
 
-$smarty->display('Inventory/InventoryDetailView.tpl');
+$smarty->display('DetailView.tpl');
 ?>

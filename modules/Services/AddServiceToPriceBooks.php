@@ -107,7 +107,6 @@ $other_text .='
 
 $smarty->assign('PRICEBOOKLISTHEADER', "<img height='1' src='themes/images/blank.gif'>\n" . $other_text);
 
-
 //List View Table Header
 $list_header = '';
 $list_header .= '<tr>';

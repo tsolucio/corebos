@@ -60,7 +60,7 @@ if (typeof(MailManager) == 'undefined') {
 			if (message == '') {
 				errordiv.text('').hide();
 			} else {
-				errordiv.html('<p>' + message + '</p>').css('display','block').addClass('mm_error').removeClass('mm_message');
+				errordiv.html('<p>' + message + '</p>').css('display', 'block').addClass('mm_error').removeClass('mm_message');
 				MailManager.placeAtCenter(errordiv);
 			}
 			MailManager.hide_error();
@@ -77,7 +77,7 @@ if (typeof(MailManager) == 'undefined') {
 			if (message == '') {
 				errordiv.text('').hide();
 			} else {
-				errordiv.html('<p>' + message + '</p>').css('display','block').removeClass('mm_error').addClass('mm_message');
+				errordiv.html('<p>' + message + '</p>').css('display', 'block').removeClass('mm_error').addClass('mm_message');
 				MailManager.placeAtCenter(errordiv);
 			}
 			MailManager.hide_error();
@@ -212,7 +212,7 @@ if (typeof(MailManager) == 'undefined') {
 
 				function callbackFunction(response) {
 					for (var i = 0; i<temp.length; i++) {
-						jQuery('#_mailrow_'+temp[i]).fadeOut(1500,function () {
+						jQuery('#_mailrow_'+temp[i]).fadeOut(1500, function () {
 							jQuery('#_mailrow_'+temp[i]).remove();
 						});
 					}
@@ -228,9 +228,9 @@ if (typeof(MailManager) == 'undefined') {
 						'_operationarg' : 'move',
 						'_msgno' : encodeURIComponent(temp),
 						'_folder' : encodeURIComponent(currentFolderName),
-						'_moveFolder' : moveToFolderName.replace('�','')
+						'_moveFolder' : moveToFolderName.replace('�', '')
 					};
-					MailManager.Request('index.php?'+MailManager._baseurl() , params, callbackFunction).
+					MailManager.Request('index.php?'+MailManager._baseurl(), params, callbackFunction).
 						then(function () {
 							MailManager.folder_open(currentFolderName);
 							MailManager.progress_hide();
@@ -651,7 +651,7 @@ if (typeof(MailManager) == 'undefined') {
 				jQuery('#_relationpopupdiv_').css('visibility', '').show();
 
 				//Make it Dragable
-				jQuery('#_relationpopupdiv_').draggable().css('cursor','move');
+				jQuery('#_relationpopupdiv_').draggable().css('cursor', 'move');
 			});
 		},
 
@@ -733,7 +733,7 @@ if (typeof(MailManager) == 'undefined') {
 				// Place the popup at the center
 				MailManager.placeAtCenter(jQuery('#_relationpopupdiv_'));
 				// Make it draggable
-				jQuery('#_relationpopupdiv_').draggable().css('cursor','move');
+				jQuery('#_relationpopupdiv_').draggable().css('cursor', 'move');
 			});
 		},
 
@@ -748,7 +748,7 @@ if (typeof(MailManager) == 'undefined') {
 
 		// Place an element at the center of the page
 		placeAtCenter : function (element) {
-			element.css('position','absolute');
+			element.css('position', 'absolute');
 			element.css('top', ((jQuery(window).height() - element.outerHeight()) / 2) + jQuery(window).scrollTop() + 'px');
 			element.css('left', ((jQuery(window).width() - element.outerWidth()) / 2) + jQuery(window).scrollLeft() + 'px');
 		},
@@ -800,16 +800,17 @@ if (typeof(MailManager) == 'undefined') {
 		},
 
 		createUploader : function () {
-			var uploader = new Dropzone('#file-uploader',{
+			var uploader = new Dropzone('#file-uploader', {
 				url : function () {
-					return 'index.php?module=MailManager&action=MailManagerAjax&file=index&mode=ajax&_operation=relation&_operationarg=saveattachment&emailid='+jQuery('#emailid').val();},
+					return 'index.php?module=MailManager&action=MailManagerAjax&file=index&mode=ajax&_operation=relation&_operationarg=saveattachment&emailid='+jQuery('#emailid').val();
+				},
 				paramName: 'qqfile',
 				parallelUploads: 1,
 				addRemoveLinks: true,
 				createImageThumbnails: true,
 				dictRemoveFile: MailManager.i18n('JSLBL_Delete'),
 				uploadMultiple: false,
-				clickable: ['#file-uploader-message','#file-uploader']
+				clickable: ['#file-uploader-message', '#file-uploader']
 			});
 			uploader.on('success', function (file, response) {
 				var res = JSON.parse(response);
@@ -849,7 +850,7 @@ if (typeof(MailManager) == 'undefined') {
 				if (attachments != null) {
 					for (var i=0; i<attachments.length; i++) {
 						var fsize = MailManager.computeFileSizeToBytes(attachments[i]['size']);
-						dzelem.dropzone.emit('addedfile',{name:attachments[i]['name'],size:fsize,emailid:id,docid:attachments[i]['docid']});
+						dzelem.dropzone.emit('addedfile', {name:attachments[i]['name'], size:fsize, emailid:id, docid:attachments[i]['docid']});
 					}
 				}
 				jQuery('#attachmentCount').val(attachments.length);
@@ -1285,7 +1286,7 @@ if (typeof(MailManager) == 'undefined') {
 			MailManager.Request('index.php?'+baseurl, params, function () {
 				for (var i = 0; i<msgno.length; i++) {
 					var ele ='#_mailrow_'+msgno[i];
-					jQuery(ele).fadeOut(1500,function () {
+					jQuery(ele).fadeOut(1500, function () {
 						jQuery(ele).remove();
 					});
 				}
@@ -1338,10 +1339,10 @@ if (typeof(MailManager) == 'undefined') {
 					}
 					emailId = responseText.result.emailid;
 					jQuery('#emailid').val(emailId);
-					window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid='+emailId+'&forrecord='+emailId+'&parenttab=Marketing&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&RLparent_id='+emailId+'&parenttab=My Home Page&callback=MailManager.add_data_to_relatedlist','test','width=640,height=602,resizable=0,scrollbars=0');
+					window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid='+emailId+'&forrecord='+emailId+'&parenttab=Marketing&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&RLparent_id='+emailId+'&parenttab=My Home Page&callback=MailManager.add_data_to_relatedlist', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
 				});
 			} else {
-				window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid='+emailId+'&forrecord='+emailId+'&parenttab=Marketing&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&RLparent_id='+emailId+'&parenttab=My Home Page&callback=MailManager.add_data_to_relatedlist','test','width=640,height=602,resizable=0,scrollbars=0');
+				window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid='+emailId+'&forrecord='+emailId+'&parenttab=Marketing&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&RLparent_id='+emailId+'&parenttab=My Home Page&callback=MailManager.add_data_to_relatedlist', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
 			}
 			VtigerJS_DialogBox.unblock();
 		},
@@ -1415,7 +1416,7 @@ if (typeof(MailManager) == 'undefined') {
 				var dzelem = document.getElementById('file-uploader');
 			}
 			if (dzelem.dropzone) {
-				dzelem.dropzone.emit('addedfile',{name:res.name,size:res.size,emailid:res.emailid,docid:res.docid});
+				dzelem.dropzone.emit('addedfile', {name:res.name, size:res.size, emailid:res.emailid, docid:res.docid});
 			}
 			// Update the attachment counter
 			MailManager.uploadCountUpdater();
@@ -1623,9 +1624,9 @@ if (typeof(MailManager) == 'undefined') {
 			for (var i=0; i<elements.length; i++) {
 				var element = jQuery(elements[i]);
 				if (state) {
-					element.prop('checked',state).parent().parent().addClass('mm_lvtColDataHover').removeClass('mm_lvtColData');
+					element.prop('checked', state).parent().parent().addClass('mm_lvtColDataHover').removeClass('mm_lvtColData');
 				} else {
-					element.prop('checked',state).parent().parent().removeClass('mm_lvtColDataHover').addClass('mm_lvtColData');
+					element.prop('checked', state).parent().parent().removeClass('mm_lvtColDataHover').addClass('mm_lvtColData');
 				}
 			}
 		},
@@ -1637,7 +1638,7 @@ if (typeof(MailManager) == 'undefined') {
 				jQuery(element).parent().parent().addClass('mm_lvtColData').removeClass('mm_lvtColDataHover');
 			}
 			var	name = element.name;
-			default_togglestate(name,'parentCheckBox');
+			default_togglestate(name, 'parentCheckBox');
 		},
 
 		highLightListMail : function (element) {

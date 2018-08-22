@@ -1,4 +1,3 @@
-
 export function jslog(connection, level, message) {
 	if (!jslog.active) {
 		return;
@@ -37,26 +36,25 @@ export function jslog(connection, level, message) {
 jslog.jslog2console = false;
 jslog.active = true;
 
-jslog.fatal = function(connection, message) {
+jslog.fatal = function (connection, message) {
 	jslog(connection, 'fatal', message);
-}
-jslog.trace = function(connection, message) {
+};
+jslog.trace = function (connection, message) {
 	jslog(connection, 'trace', message);
-}
-jslog.error = function(connection, message) {
+};
+jslog.error = function (connection, message) {
 	jslog(connection, 'error', message);
-}
-jslog.warn = function(connection, message) {
+};
+jslog.warn = function (connection, message) {
 	jslog(connection, 'warn', message);
-}
-jslog.debug = function(connection, message) {
+};
+jslog.debug = function (connection, message) {
 	jslog(connection, 'debug', message);
-}
-jslog.info = function(connection, message) {
+};
+jslog.info = function (connection, message) {
 	jslog(connection, 'info', message);
-}
+};
 
 function sendJSLogToWebservice(connection, level, message) {
 	connection.doInvoke('jsLog', {'level': level, 'message': message}, 'POST');
 }
-

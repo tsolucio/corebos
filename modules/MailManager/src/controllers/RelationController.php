@@ -53,36 +53,27 @@ class MailManager_RelationController extends MailManager_Controller {
 		if ('find' == $request->getOperationArg()) {
 			$this->skipConnection = true; // No need to connect to mailbox here, improves performance
 
-			// Check if the message is already linked.
-			//$linkedto = MailManager_RelationControllerAction::associatedLink($request->get('_msguid'));
-			// If the message was not linked, lookup for matching records, using FROM address
-			//if (empty($linkedto)) {
-				$msguid = $request->get('_msguid');
-				$results = array();
-				$modules = array();
-				$allowedModules = $this->getCurrentUserMailManagerAllowedModules();
-				foreach (self::$MODULES as $MODULE) {
-					if (!in_array($MODULE, $allowedModules)) {
-						continue;
-					}
-
-					$from = $request->get('_mfrom');
-					if (empty($from)) {
-						continue;
-					}
-
-					$results[$MODULE] = $this->lookupModuleRecordsWithEmail($MODULE, $from, $msguid);
-					$describe = $this->ws_describe($MODULE);
-					$modules[$MODULE] = array('label' => $describe['label'], 'name' => textlength_check($describe['name']), 'id' => $describe['idPrefix'] );
-
-					// If look is found in a module, skip rest. - for performance
-					//if (!empty($results[$MODULE])) break;
+			$msguid = $request->get('_msguid');
+			$results = array();
+			$modules = array();
+			$allowedModules = $this->getCurrentUserMailManagerAllowedModules();
+			foreach (self::$MODULES as $MODULE) {
+				if (!in_array($MODULE, $allowedModules)) {
+					continue;
 				}
-				$viewer->assign('LOOKUPS', $results);
-				$viewer->assign('MODULES', $modules);
-			//} else {
-				$viewer->assign('LINKEDTO', array());
-			//}
+
+				$from = $request->get('_mfrom');
+				if (empty($from)) {
+					continue;
+				}
+
+				$results[$MODULE] = $this->lookupModuleRecordsWithEmail($MODULE, $from, $msguid);
+				$describe = $this->wsDescribe($MODULE);
+				$modules[$MODULE] = array('label' => $describe['label'], 'name' => textlength_check($describe['name']), 'id' => $describe['idPrefix'] );
+			}
+			$viewer->assign('LOOKUPS', $results);
+			$viewer->assign('MODULES', $modules);
+			$viewer->assign('LINKEDTO', array());
 
 			$viewer->assign('LinkToAvailableActions', $this->linkToAvailableActions());
 			$viewer->assign('AllowedModules', $allowedModules);
@@ -272,7 +263,6 @@ class MailManager_RelationController extends MailManager_Controller {
 		}
 	}
 
-
 	/**
 	* Function used to set the record fields with the information from mail.
 	* @param Array $qcreate_array
@@ -353,7 +343,7 @@ class MailManager_RelationController extends MailManager_Controller {
 	 * Helper function to scan for relations
 	 */
 	protected $wsDescribeCache = array();
-	public function ws_describe($module) {
+	public function wsDescribe($module) {
 		global $current_user;
 		if (!isset($this->wsDescribeCache[$module])) {
 			$this->wsDescribeCache[$module] = vtws_describe($module, $current_user);
@@ -369,7 +359,7 @@ class MailManager_RelationController extends MailManager_Controller {
 	* @return String
 	*/
 	public function buildSearchQuery($module, $text, $type) {
-		$describe = $this->ws_describe($module);
+		$describe = $this->wsDescribe($module);
 		$labelFields = $describe['labelFields'];
 		switch ($module) {
 			case 'HelpDesk':
@@ -399,7 +389,7 @@ class MailManager_RelationController extends MailManager_Controller {
 		global $current_user;
 		$query = $this->buildSearchQuery($module, $email, 'EMAIL');
 		$qresults = vtws_query($query, $current_user);
-		$describe = $this->ws_describe($module);
+		$describe = $this->wsDescribe($module);
 		$labelFields = $describe['labelFields'];
 		switch ($module) {
 			case 'HelpDesk':

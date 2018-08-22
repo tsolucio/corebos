@@ -33,7 +33,7 @@ $subtotal = 0;
 $totalwithtax = 0;
 $i = 0;
 $pdoInformation=$element['pdoInformation'];
-$skipCurDBConv = (isset($element['__cbws_skipcurdbconv_pdo']) && (!empty($element['__cbws_skipcurdbconv_pdo'])) ? true : false;
+$skipCurDBConv = !empty($element['__cbws_skipcurdbconv_pdo']);
 foreach ($pdoInformation as $pdoline) {
 	$i++;
 	$_REQUEST['deleted'.$i]=(isset($pdoline['deleted']) ? $pdoline['deleted'] : 0);

@@ -1,7 +1,7 @@
+--ignore=modules/cbMap/libs/crXml.php,*css,*.js,modules/Project/BURAK_Gantt.class.php,checkthese/*
 modules/Accounts
 modules/Assets
 modules/BusinessActions
-modules/Calendar
 modules/Campaigns
 modules/cbAuditTrail
 modules/cbCalendar
@@ -34,6 +34,7 @@ modules/InventoryDetails
 modules/Invoice
 modules/Leads
 modules/MailManager
+modules/Mobile
 modules/ModComments
 modules/ModTracker
 modules/PBXManager
@@ -119,7 +120,6 @@ modules/Calendar4You/SaveEventSettings.php
 modules/Calendar4You/Save.php
 modules/Calendar4You/SaveTodo.php
 modules/Calendar4You/Settings.php
-modules/Calendar4You/UninstallModule.php
 modules/Calendar4You/updateCalendarSharing.php
 modules/Calendar4You/UpdateEvents.php
 modules/Calendar4You/updateRelations.php
@@ -182,4 +182,3 @@ include/cbmqtm/cbmqtm_manager.php
 include/cbmqtm/cbmqtm_memusage.php
 include/cbmqtm/directrun.php
 include/cbmqtm/run.php
-include/js

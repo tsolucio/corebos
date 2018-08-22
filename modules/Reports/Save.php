@@ -441,7 +441,6 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 			$log->info("Reports :: Save->Successfully saved vtiger_reportsummary");
 			//<<<<step4 columnstototal>>>>>>>
 
-
 			//<<<<step5 advancedfilter>>>>>>>
 
 			$idelrelcriteriasql = "delete from vtiger_relcriteria where queryid=?";

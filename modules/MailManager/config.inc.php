@@ -20,7 +20,6 @@ $MAILMANAGER_CONFIG = array(
 	'MEMORY_LIMIT'	=> '256M'
 );
 
-
 /**
  * Manages Mail Manager configurations
  */

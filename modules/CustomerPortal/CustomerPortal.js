@@ -7,7 +7,7 @@
  * All Rights Reserved.
 ********************************************************************************/
 
-function moveUp(moduleObj,sequence) {
+function moveUp(moduleObj, sequence) {
 	var oldSequence = moduleObj[sequence]['sequence'];
 	var changeSequence  = oldSequence - 1;
 
@@ -22,7 +22,7 @@ function moveUp(moduleObj,sequence) {
 	renderModuleSettings(moduleObj);
 }
 
-function moveDown(moduleObj,sequence) {
+function moveDown(moduleObj, sequence) {
 	var oldSequence = moduleObj[sequence]['sequence'];
 	var changeSequence  = parseInt(oldSequence) + 1;
 
@@ -44,7 +44,7 @@ Object.prototype.size = function () {
 	return len;
 };
 
-function visibleValueChange(sequence,tabid,moduleObj) {
+function visibleValueChange(sequence, tabid, moduleObj) {
 	if (moduleObj[sequence]['sequence'] == sequence && moduleObj[sequence]['tabid'] == tabid) {
 		if (moduleObj[sequence]['visible'] == 1) {
 			moduleObj[sequence]['visible'] = '0';
@@ -54,7 +54,7 @@ function visibleValueChange(sequence,tabid,moduleObj) {
 	}
 }
 
-function prefValueChange(sequence,tabid,moduleObj) {
+function prefValueChange(sequence, tabid, moduleObj) {
 	if (moduleObj[sequence]['sequence'] == sequence && moduleObj[sequence]['tabid'] == tabid) {
 		if (moduleObj[sequence]['value'] == 1) {
 			moduleObj[sequence]['value'] = '0';

@@ -12,29 +12,24 @@ include_once __DIR__ . '/../api/ws/LoginAndFetchModules.php';
 include_once __DIR__ . '/../api/ws/Utils.php';
 
 class crmtogo_UI_LoginAndFetchModules extends crmtogo_WS_LoginAndFetchModules {
-	
+
 	protected function cacheModules($modules) {
-		$this->sessionSet("_MODULES", $modules);
+		$this->sessionSet('_MODULES', $modules);
 	}
-	
-	function process(crmtogo_API_Request $request) {
+
+	public function process(crmtogo_API_Request $request) {
 		$wsResponse = parent::process($request);
-		
 		$response = false;
-		if($wsResponse->hasError()) {
+		if ($wsResponse->hasError()) {
 			$response = $wsResponse;
-		} 
-		else {
+		} else {
 			$wsResponseResult = $wsResponse->getResult();
 			$modules = crmtogo_UI_ModuleModel::buildModelsFromResponse($wsResponseResult['modules']);
 			$this->cacheModules($modules);
-
-			$config = $this->getUserConfigSettings();
-
+			//$config = $this->getUserConfigSettings();
 			$module_by_default = GlobalVariable::getVariable('Mobile_Module_by_default', 'cbCalendar', 'Mobile');
-			header("Location:index.php?_operation=listModuleRecords&module=".$module_by_default);
+			header('Location:index.php?_operation=listModuleRecords&module='.$module_by_default);
 		}
 		return $response;
 	}
-
 }

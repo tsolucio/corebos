@@ -65,7 +65,6 @@ if (isset($_REQUEST['sorder']) && $_REQUEST['sorder'] != '') {
 	$sorder = $adb->sql_escape_string($_REQUEST['sorder']);
 }
 
-
 //Retreive the list of Services
 $list_query = getListQuery("Services");
 
@@ -128,7 +127,6 @@ $list_header .= '<td class="lvtCol">'.$mod_strings['LBL_PB_LIST_PRICE'].'</td>';
 $list_header .= '</tr>';
 
 $smarty->assign('LISTHEADER', $list_header);
-
 
 //if the service is not associated already then we should display that services
 $new_prod_array = array();

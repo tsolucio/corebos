@@ -18,8 +18,8 @@ function massMerge(module) {
 		return false;
 	}
 	var xx = 0;
-	for (var i = 0; i < x ; i++) {
-		if(select_options[i].checked) {
+	for (var i = 0; i < x; i++) {
+		if (select_options[i].checked) {
 			idstring = select_options[i].value + ';' + idstring;
 			xx++;
 		}
@@ -45,5 +45,7 @@ function mergeshowhide(argg) {
 
 function mergehide(argg) {
 	var x=document.getElementById(argg);
-	if (x != null) x.style.display = 'none';
+	if (x != null) {
+		x.style.display = 'none';
+	}
 }

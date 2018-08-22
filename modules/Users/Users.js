@@ -13,7 +13,7 @@ function set_return(user_id, user_name) {
 }
 
 var fckEditoFrame = '';
-function updateWidgetWindow(){
+function updateWidgetWindow() {
 	var selObj = document.getElementById('heading');
 	var selIndex = selObj.selectedIndex;
 
@@ -26,7 +26,7 @@ function updateWidgetWindow(){
 	} else {
 		document.forms['addWidget'].headingNew.disabled = document.forms['addWidget'].announcement.disabled = document.forms['addWidget'].content.disabled = document.getElementById('content___Config').disabled = false;
 		document.getElementById('content___Frame').height=370;
-		document.getElementById('content___Frame').src=fckEditoFrame ;
+		document.getElementById('content___Frame').src=fckEditoFrame;
 		if (selObj.options[selIndex].value!= 'NONE') {
 			window.location.href = 'index.php?module=Users&action=UsersAjax&file=AWWidget&contentHeading='+selObj.options[selIndex].value;
 		} else {
@@ -36,7 +36,7 @@ function updateWidgetWindow(){
 	//document.forms["addWidget"].headingNew.disabled=document.forms["addWidget"].announcement.disabled=document.forms["addWidget"].content.disabled=false;
 }
 
-function saveWidget(){
+function saveWidget() {
 	if (document.getElementById('heading').value=='Company-Logo') {
 		if (!document.getElementById('content_image').value) {
 			alert('Please upload an image file for company-logo.');
@@ -117,12 +117,12 @@ function showhide(layer_ref) {
 	}
 }
 
-function closeWindow(){
+function closeWindow() {
 	window.close(true);
 	opener.location.reload();
 }
 
-function manageWidgets(id, check){
+function manageWidgets(id, check) {
 	var str = '';
 	var checkBox = document.getElementById('VallWidgets_'+id);
 	if (checkBox.checked == true) {

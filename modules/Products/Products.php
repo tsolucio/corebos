@@ -494,7 +494,6 @@ class Products extends CRMEntity {
 		return $return_value;
 	}
 
-
 	/**	function used to get the list of potentials which are related to the product
 	 *	@param int $id - product id
 	 *	@return array - array which will be returned from the function GetRelatedList

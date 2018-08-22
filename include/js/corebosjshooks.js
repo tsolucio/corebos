@@ -13,4 +13,6 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 
-function corebosjshook_dtlViewAjaxFinishSave_moredata(data) { return data; }
+function corebosjshook_dtlViewAjaxFinishSave_moredata(data) {
+	return data;
+}

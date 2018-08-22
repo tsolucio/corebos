@@ -250,7 +250,6 @@ function getAllTaxes($available = 'all', $sh = '', $mode = '', $id = '') {
 	return $taxtypes;
 }
 
-
 /**	Function used to get all the tax details which are associated to the given product
  *	@param int $productid - product id to which we want to get all the associated taxes
  *	@param string $available - available or empty or available_associated where as default is all,
@@ -449,14 +448,20 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock = 'fal
 		}
 	}
 	$tot_no_prod = $_REQUEST['totalProductCount'];
-	if ($module != 'PurchaseOrder') {
+	if ($module != 'PurchaseOrder' && $module != 'Receiptcards') {
 		if (GlobalVariable::getVariable('Application_B2B', '1')=='1') {
-			$acvid = $focus->column_fields['account_id'];
+			$acvid = isset($focus->column_fields['account_id']) ?
+				$focus->column_fields['account_id'] :
+				isset($focus->column_fields['accid']) ? $focus->column_fields['accid'] : 0;
 		} else {
-			$acvid = $focus->column_fields['contact_id'];
+			$acvid = isset($focus->column_fields['contact_id']) ?
+			$focus->column_fields['contact_id'] :
+			isset($focus->column_fields['ctoid']) ? $focus->column_fields['ctoid'] : 0;
 		}
 	} else {
-		$acvid = $focus->column_fields['vendor_id'];
+		$acvid = isset($focus->column_fields['vendor_id']) ?
+			$focus->column_fields['vendor_id'] :
+			isset($focus->column_fields['vendorid']) ? $focus->column_fields['vendorid'] : 0;
 	}
 	//If the taxtype is group then retrieve all available taxes, else retrive associated taxes for each product inside loop
 	$prod_seq=1;
@@ -627,7 +632,6 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock = 'fal
 	$log->debug("Exit from function saveInventoryProductDetails($module).");
 }
 
-
 /**	function used to get the tax type for the entity (PO, SO, Quotes or Invoice)
  *	@param string $module - module name
  *	@param int $id - id of the PO or SO or Quotes or Invoice
@@ -642,14 +646,16 @@ function getInventoryTaxType($module, $id) {
 		'SalesOrder' => 'vtiger_salesorder',
 		'Quotes' => 'vtiger_quotes',
 		'Invoice' => 'vtiger_invoice',
-		'Issuecards' => 'vtiger_issuecards'
+		'Issuecards' => 'vtiger_issuecards',
+		'Receiptcards' => 'vtiger_receiptcards',
 	);
 	$inv_id_array = array(
 		'PurchaseOrder' => 'purchaseorderid',
 		'SalesOrder' => 'salesorderid',
 		'Quotes' => 'quoteid',
 		'Invoice' => 'invoiceid',
-		'Issuecards' => 'issuecardid'
+		'Issuecards' => 'issuecardid',
+		'Receiptcards' => 'receiptcardid',
 	);
 
 	$res = $adb->pquery("select taxtype from $inv_table_array[$module] where $inv_id_array[$module]=?", array($id));

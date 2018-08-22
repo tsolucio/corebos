@@ -499,7 +499,6 @@ class Documents extends CRMEntity {
 		$this->db->pquery($sql, $params);
 	}
 
-
 	// Function to get fieldname for uitype 27 assuming that documents have only one file type field
 	public function getFileTypeFieldName() {
 		global $adb;

@@ -51,7 +51,6 @@ $mod_strings = array(
 'LBL_CUSTOM_INFORMATION'=>'Información personalizada',
 'LBL_DESCRIPTION_INFORMATION'=>'Descripción',
 
-//New entry
 'LBL_UPLOAD'=>'Adjuntar archivo',
 
 'LBL_PRODUCT'=>'Producto',
@@ -63,8 +62,6 @@ $mod_strings = array(
 'LBL_DESCRIPTION'=>'Descripción',
 'LBL_FILE'=>'Nombre del Archivo',
 
-
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nueva Oportunidad',
 'LBL_POTENTIAL_TITLE'=>'Oportunidades',
 

@@ -136,7 +136,7 @@ class Services extends CRMEntity {
 		if ($this->mode == 'edit') {
 			$sql = 'delete from vtiger_producttaxrel where productid=? and taxid=?';
 			for ($i=0; $i<$numtaxes; $i++) {
-				$tax_checkname = $tax_details[$i]['taxname']."_check";
+				$tax_checkname = $tax_details[$i]['taxname'].'_check';
 				if ($_REQUEST['action'] == 'MassEditSave') { // then we only modify the marked taxes
 					if (isset($_REQUEST[$tax_checkname]) && ($_REQUEST[$tax_checkname] == 'on' || $_REQUEST[$tax_checkname] == 1)) {
 						$taxid = getTaxId($tax_details[$i]['taxname']);
@@ -150,12 +150,12 @@ class Services extends CRMEntity {
 		}
 		for ($i=0; $i<$numtaxes; $i++) {
 			$tax_name = $tax_details[$i]['taxname'];
-			$tax_checkname = $tax_details[$i]['taxname']."_check";
+			$tax_checkname = $tax_details[$i]['taxname'].'_check';
 			if (isset($_REQUEST[$tax_checkname]) && ($_REQUEST[$tax_checkname] == 'on' || $_REQUEST[$tax_checkname] == 1)) {
 				$taxid = getTaxId($tax_name);
 				$tax_per = $_REQUEST[$tax_name];
 				if ($tax_per == '') {
-					$log->debug("Tax selected but value not given so default value will be saved.");
+					$log->debug('Tax selected but value not given so default value will be saved.');
 					$tax_per = getTaxPercentage($tax_name);
 				}
 				$log->debug("Going to save the Product - $tax_name tax relationship");
@@ -215,11 +215,11 @@ class Services extends CRMEntity {
 	}
 
 	public function updateUnitPrice() {
-		$prod_res = $this->db->pquery("select unit_price, currency_id from vtiger_service where serviceid=?", array($this->id));
+		$prod_res = $this->db->pquery('select unit_price, currency_id from vtiger_service where serviceid=?', array($this->id));
 		$prod_unit_price = $this->db->query_result($prod_res, 0, 'unit_price');
 		$prod_base_currency = $this->db->query_result($prod_res, 0, 'currency_id');
 
-		$query = "update vtiger_productcurrencyrel set actual_price=? where productid=? and currencyid=?";
+		$query = 'update vtiger_productcurrencyrel set actual_price=? where productid=? and currencyid=?';
 		$params = array($prod_unit_price, $this->id, $prod_base_currency);
 		$this->db->pquery($query, $params);
 	}
@@ -568,7 +568,6 @@ class Services extends CRMEntity {
 		return $return_value;
 	}
 
-
 	/**	Function to display the Services which are related to the PriceBook
 	 *	@param string $query - query to get the list of products which are related to the current PriceBook
 	 *	@param object $focus - PriceBook object which contains all the information of the current PriceBook
@@ -594,7 +593,7 @@ class Services extends CRMEntity {
 		}
 		$module = 'PriceBooks';
 		$relatedmodule = 'Services';
-		if (!$_SESSION['rlvs'][$module][$relatedmodule]) {
+		if (empty($_SESSION['rlvs'][$module][$relatedmodule])) {
 			$modObj = new ListViewSession();
 			$modObj->sortby = $focus->default_order_by;
 			$modObj->sorder = $focus->default_sort_order;
@@ -620,15 +619,15 @@ class Services extends CRMEntity {
 			$header[]=$current_module_strings['LBL_SERVICE_UNIT_PRICE'];
 		}
 		$header[]=$current_module_strings['LBL_PB_LIST_PRICE'];
-		if (isPermitted("PriceBooks", "EditView", "") == 'yes' || isPermitted("PriceBooks", "Delete", "") == 'yes') {
+		if (isPermitted('PriceBooks', 'EditView', '') == 'yes' || isPermitted('PriceBooks', 'Delete', '') == 'yes') {
 			$header[]=$app_strings['LBL_ACTION'];
 		}
 
 		$currency_id = $focus->column_fields['currency_id'];
 		$numRows = $adb->num_rows($list_result);
 		for ($i=0; $i<$numRows; $i++) {
-			$entity_id = $adb->query_result($list_result, $i, "crmid");
-			$unit_price = 	$adb->query_result($list_result, $i, "unit_price");
+			$entity_id = $adb->query_result($list_result, $i, 'crmid');
+			$unit_price = 	$adb->query_result($list_result, $i, 'unit_price');
 			if ($currency_id != null) {
 				$prod_prices = getPricesForProducts($currency_id, array($entity_id), 'Services');
 				$unit_price = $prod_prices[$entity_id];
@@ -636,25 +635,25 @@ class Services extends CRMEntity {
 			$listprice = $adb->query_result($list_result, $i, 'listprice');
 
 			$entries = array();
-			$entries[] = textlength_check($adb->query_result($list_result, $i, "servicename"));
+			$entries[] = textlength_check($adb->query_result($list_result, $i, 'servicename'));
 			if (getFieldVisibilityPermission('Services', $current_user->id, 'unit_price') == '0') {
 				$entries[] = CurrencyField::convertToUserFormat($unit_price, null, true);
 			}
 
 			$entries[] = CurrencyField::convertToUserFormat($listprice, null, true);
 			$action = '';
-			if (isPermitted("PriceBooks", "EditView", "") == 'yes' && isPermitted('Services', 'EditView', $entity_id) == 'yes') {
+			if (isPermitted('PriceBooks', 'EditView', '') == 'yes' && isPermitted('Services', 'EditView', $entity_id) == 'yes') {
 				$action .= '<img style="cursor:pointer;" src="themes/images/editfield.gif" border="0" onClick="fnvshobj(this,\'editlistprice\'),editProductListPrice(\''.$entity_id.'\',\''.$pricebook_id.'\',\''.$listprice.'\')" alt="'.$app_strings["LBL_EDIT_BUTTON"].'" title="'.$app_strings["LBL_EDIT_BUTTON"].'"/>';
 			} else {
 				$action .= '<img src="'. vtiger_imageurl('blank.gif', $theme).'" border="0" />';
 			}
-			if (isPermitted("PriceBooks", "Delete", "") == 'yes' && isPermitted('Services', 'Delete', $entity_id) == 'yes') {
-				if ($action != "") {
+			if (isPermitted('PriceBooks', 'Delete', '') == 'yes' && isPermitted('Services', 'Delete', $entity_id) == 'yes') {
+				if ($action != '') {
 					$action .= '&nbsp;|&nbsp;';
 				}
 				$action .= '<img src="themes/images/delete.gif" onclick="if(confirm(\''.$app_strings['ARE_YOU_SURE'].'\')) deletePriceBookProductRel('.$entity_id.','.$pricebook_id.');" alt="'.$app_strings["LBL_DELETE"].'" title="'.$app_strings["LBL_DELETE"].'" style="cursor:pointer;" border="0">';
 			}
-			if ($action != "") {
+			if ($action != '') {
 				$entries[] = $action;
 			}
 			$entries_list[] = $entries;

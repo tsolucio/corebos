@@ -89,6 +89,11 @@ if (count($module_name) > 0) {
 		$rbfields[] = 'modifiedtime';
 		$queryGenerator->setFields($rbfields);
 	}
+	if (!in_array('modifiedby', $rbfields)) {
+		// Recycle Bin List view always shows modifiedby
+		$rbfields[] = 'modifiedby';
+		$queryGenerator->setFields($rbfields);
+	}
 	// Enabling Module Search
 	$url_string = '';
 	if (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true') {

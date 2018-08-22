@@ -7,7 +7,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 "MyExtension" => "Mon Extension",
 "Calendar4You"=>"Agenda",
 "LBL_MODULE_NAME"=>"Agenda",

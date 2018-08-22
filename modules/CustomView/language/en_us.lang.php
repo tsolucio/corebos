@@ -131,7 +131,6 @@ following values "Call","Meeting" or "Task".',
 'Shipping Country'=>'Shipping Country',
 'Billing Country'=>'Billing Country',
 
-
 //Strings added for Contacts module fields
 
 'Office Phone'=>'Office Phone',

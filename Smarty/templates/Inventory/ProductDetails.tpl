@@ -146,7 +146,13 @@ function displayCoords(currObj,obj,mode,curr_row)
 		<table width="100%"  border="0" cellspacing="0" cellpadding="1">
 			<tr>
 			<td class="small" valign="top">
-				<input type="text" id="productName1" name="productName1" class="small" style="width:70%" value="{if isset($PRODUCT_NAME)}{$PRODUCT_NAME}{/if}" readonly />
+				<div class="slds-combobox_container slds-has-inline-listbox cbds-product-search" style="width:70%;display:inline-block">
+					<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-combobox-lookup" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+						<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+							<input id="productName1" class="slds-input slds-combobox__input cbds-inventoryline__input--name" aria-autocomplete="list" aria-controls="listbox-unique-id" autocomplete="off" role="textbox" placeholder="{$APP.typetosearch_prodser}" value="{if isset($PRODUCT_NAME)}{$PRODUCT_NAME}{/if}" type="text" style="box-shadow: none;">
+						</div>
+					</div>
+				</div>
 				<input type="hidden" id="hdnProductId1" name="hdnProductId1" value="{if isset($PRODUCT_ID)}{$PRODUCT_ID}{/if}" />
 				{if $PRODUCT_OR_SERVICE eq 'Services'}
 					<input type="hidden" id="lineItemType1" name="lineItemType1" value="Services" />
@@ -175,7 +181,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 
 	<!-- column 3 - Quantity in Stock - starts -->
 	<td class="crmTableRow small lineOnTop" valign="top">
-		{if ($MODULE eq 'Quotes' || $MODULE eq 'SalesOrder' || $MODULE eq 'Invoice' || $MODULE eq 'Issuecards')  && 'Products'|vtlib_isModuleActive}
+		{if ($MODULE eq 'Quotes' || $MODULE eq 'SalesOrder' || $MODULE eq 'Invoice' || $MODULE eq 'Issuecards' || $MODULE eq 'Receiptcards')  && 'Products'|vtlib_isModuleActive}
 		{$APP.LBL_QTY_IN_STOCK}:&nbsp;<span id="qtyInStock1">{if isset($QTY_IN_STOCK)}{$QTY_IN_STOCK}{/if}</span><br>
 		{/if}
 		{if isset($ASSOCIATEDPRODUCTS.moreinfo)}

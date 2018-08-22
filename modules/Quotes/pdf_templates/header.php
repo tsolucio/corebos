@@ -85,7 +85,6 @@ $pdf->addRecBlock($account_name, $app_strings["Customer Name"], $termBlock);
 $conBlock=array("79","65");
 $pdf->addRecBlock($contact_name, $app_strings["Contact Name"], $conBlock);
 
-
 // quote number block
 $invBlock=array("147","65");
 $pdf->addRecBlock($quote_no, $app_strings["Quote Number"], $invBlock);

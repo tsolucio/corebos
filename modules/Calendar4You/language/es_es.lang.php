@@ -6,7 +6,7 @@
  * Portions created by IT-Solutions4You s.r.o. are Copyright(C) IT-Solutions4You s.r.o.
  * All Rights Reserved.
  ********************************************************************************/
- 
+
 $mod_strings = array (
 'MyExtension' => 'Mi Extensión',
 "Calendar4You"=>"Calendario",
@@ -91,6 +91,5 @@ $mod_strings = array (
 'Medium'=>'Medio',
 'Low'=>'Bajo',
 'Gmail_ChangeAccount'=>'Antes de cambiar tu Cuenta de Google limpia, los datos guardados',
-
 );
 ?>

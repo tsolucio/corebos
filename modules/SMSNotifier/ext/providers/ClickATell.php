@@ -233,7 +233,6 @@ protected function prepareParameters() {
 +$params = array('user' => $this->userName, 'password' => $this->password, 'unicode' => '1', 'concat' => '3');
 foreach (self::$REQUIRED_PARAMETERS as $key) {
 
-
 In function send($message, $toNumbers)
 
 $params = $this->prepareParameters();
