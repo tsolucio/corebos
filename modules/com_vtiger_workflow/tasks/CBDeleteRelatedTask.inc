@@ -48,7 +48,6 @@ class CBDeleteRelatedTask extends VTTask {
 		}
 		if ($businessMap == 'Condition Query') {
 			$ids = $focus->ConditionQuery($masterRecord);
-			$ids = $ids[0];
 		}
 
 		// Checking relation
