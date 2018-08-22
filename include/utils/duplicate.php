@@ -157,7 +157,7 @@ function dup_related_lists($new_record_id, $currentModule, $related_list, $recor
 	foreach ($related_list as $rel_module) {
 		// Get and check condition type
 		$condition = $maped_relations[$rel_module]["condition"];
-		
+
 		if (!empty($condition)) {
 			if (is_numeric($condition)) {
 				$cbmap = cbMap::getMapByID($condition);
@@ -201,7 +201,7 @@ function dup_related_lists($new_record_id, $currentModule, $related_list, $recor
 
 					if ($result && $adb->num_rows($result) > 0) {
 						while ($related = $adb->fetch_array($result)) {
-							if ($focus->ConditionExpression($entityId.'x'.$related['notesid'])) {
+							if ($cbmap->ConditionExpression($entityId.'x'.$related['notesid'])) {
 								$adb->pquery(
 									'INSERT INTO vtiger_senotesrel (crmid,notesid) VALUES(?,?)',
 									array($new_record_id,$related['notesid'])
@@ -234,7 +234,7 @@ function dup_related_lists($new_record_id, $currentModule, $related_list, $recor
 
 					if ($result && $adb->num_rows($result) > 0) {
 						while ($related = $adb->fetch_array($result)) {
-							if ($focus->ConditionExpression($entityId.'x'.$related['relcrmid'])) {
+							if ($cbmap->ConditionExpression($entityId.'x'.$related['relcrmid'])) {
 								$adb->pquery(
 									'INSERT INTO vtiger_crmentityrel (crmid,module,relcrmid,relmodule) VALUES(?,?,?,?)',
 									array($new_record_id,$currentModule,$related['relcrmid'],$rel_module)
