@@ -3809,38 +3809,33 @@ function textlength_check($field_val) {
 	return $temp_val;
 }
 
-/** Function to get permitted fields of current user of a particular module to find duplicate records --Pavani */
+/** Function to get permitted fields of current user of a particular module to find duplicate records */
 function getMergeFields($module, $str) {
 	global $adb, $current_user;
 	$tabid = getTabid($module);
-	if ($str == "available_fields") {
+	if ($str == 'available_fields') {
 		$result = getFieldsResultForMerge($tabid);
 	} else { //if($str == fileds_to_merge)
-		$sql = "select fieldid from vtiger_user2mergefields where tabid=? and userid=? and visible=1";
-		$result = $adb->pquery($sql, array($tabid, $current_user->id));
+		$result = $adb->pquery('select fieldid from vtiger_user2mergefields where tabid=? and userid=? and visible=1', array($tabid, $current_user->id));
 	}
-
-	$num_rows = $adb->num_rows($result);
 
 	$user_profileid = fetchUserProfileId($current_user->id);
 	$permitted_list = getProfile2FieldPermissionList($module, $user_profileid);
 
-	$sql_def_org = "select fieldid from vtiger_def_org_field where tabid=? and visible=0";
-	$result_def_org = $adb->pquery($sql_def_org, array($tabid));
-	$num_rows_org = $adb->num_rows($result_def_org);
+	$result_def_org = $adb->pquery('select fieldid from vtiger_def_org_field where tabid=? and visible=0', array($tabid));
 	$permitted_org_list = array();
-	for ($i = 0; $i < $num_rows_org; $i++) {
-		$permitted_org_list[$i] = $adb->query_result($result_def_org, $i, 'fieldid');
+	while ($row = $adb->getNextRow($result_def_org, false)) {
+		$permitted_org_list[] = $row['fieldid'];
 	}
 
 	$is_admin = is_admin($current_user);
 	$fields = '';
-	for ($i = 0; $i < $num_rows; $i++) {
-		$field_id = $adb->query_result($result, $i, 'fieldid');
+	while ($row = $adb->getNextRow($result, false)) {
+		$field_id = $row['fieldid'];
 		foreach ($permitted_list as $field => $data) {
 			if ($data[4] == $field_id && $data[1] == 0) {
 				if ($is_admin || (in_array($field_id, $permitted_org_list))) {
-					$field = "<option value=\"" . $field_id . "\">" . getTranslatedString($data[0], $module) . "</option>";
+					$field = '<option value="' . $field_id . '">' . getTranslatedString($data[0], $module) . '</option>';
 					$fields.=$field;
 					break;
 				}
