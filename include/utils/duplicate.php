@@ -46,6 +46,7 @@ function duplicaterec($currentModule, $record_id, $bmap) {
 		$invmods = getInventoryModules();
 		foreach ($focus->column_fields as $fieldname => $value) {
 			$sql = 'SELECT * FROM vtiger_field WHERE columnname = ? AND uitype IN (10,51,57,73,76,75,81,78,80)';
+			
 			$result = $adb->pquery($sql, array($fieldname));
 			if ($adb->num_rows($result) == 1 && !empty($value)) {
 				$module = getSalesEntityType($value);
@@ -154,11 +155,96 @@ function dup_related_lists($new_record_id, $currentModule, $related_list, $recor
 	$sql = 'INSERT INTO vtiger_crmentityrel (crmid,module,relcrmid,relmodule) SELECT ?,?,relcrmid,relmodule FROM vtiger_crmentityrel WHERE crmid=? AND relmodule=?';
 	$sqldocs = 'INSERT INTO vtiger_senotesrel (crmid,notesid) SELECT ?,notesid FROM vtiger_senotesrel WHERE crmid=?';
 	foreach ($related_list as $rel_module) {
-		if (empty($maped_relations) || isset($maped_relations[$rel_module])) {
-			if ($rel_module=='Documents') {
-				$adb->pquery($sqldocs, array($new_record_id,$record_id));
+		// Get and check condition type
+		$condition = $maped_relations[$rel_module]["condition"];
+
+		if (!empty($condition)) {
+			if (is_numeric($condition)) {
+				$cbmap = cbMap::getMapByID($condition);
 			} else {
-				$adb->pquery($sql, array($new_record_id,$currentModule,$record_id,$rel_module));
+				$cbmapid = GlobalVariable::getVariable('BusinessMapping_'.$condition, cbMap::getMapIdByName($condition));
+				$cbmap = cbMap::getMapByID($cbmapid);
+			}
+		} else {
+			$cbmap = '';
+		}
+
+		// Get business map
+		if (!empty($cbmap)) {
+			$businessMap = $cbmap->column_fields['maptype'];
+		} else {
+			$businessMap = '';
+		}
+
+		if (empty($maped_relations) || isset($maped_relations[$rel_module])) {
+			// WebserviceID
+			$entityId = vtws_getEntityId($rel_module);
+
+			if ($rel_module=='Documents') {
+				if ($businessMap == "Condition Query") {
+					// Get crmids
+					$ids = $cbmap->ConditionQuery($record_id);
+
+					if ($ids && count($ids) > 0) {
+						$adb->pquery(
+							'INSERT IGNORE INTO vtiger_senotesrel (crmid,notesid) 
+								SELECT ?,notesid FROM vtiger_senotesrel WHERE notesid IN ('.generateQuestionMarks($ids).')',
+							array($new_record_id,$ids)
+						);
+					}
+				} else if ($businessMap == "Condition Expression") {
+					// Get crmids
+					$result = $adb->pquery(
+						'SELECT notesid FROM vtiger_senotesrel WHERE crmid=?', 
+						array($record_id)
+					);
+
+					if ($result && $adb->num_rows($result) > 0) {
+						while ($related = $adb->fetch_array($result)) {
+							if ($cbmap->ConditionExpression($entityId.'x'.$related['notesid'])) {
+								$adb->pquery(
+									'INSERT INTO vtiger_senotesrel (crmid,notesid) VALUES(?,?)',
+									array($new_record_id,$related['notesid'])
+								);
+							}
+						}
+					}
+					
+				} else {
+					$adb->pquery($sqldocs, array($new_record_id,$record_id));
+				}
+			} else {
+				if ($businessMap == "Condition Query") {
+					// Get crmids
+					$ids = $cbmap->ConditionQuery($record_id);
+
+					if ($ids && count($ids) > 0) {
+						$adb->pquery(
+							'INSERT INTO vtiger_crmentityrel (crmid,module,relcrmid,relmodule) 
+								SELECT ?,?,relcrmid,relmodule FROM vtiger_crmentityrel WHERE relcrmid IN ('.generateQuestionMarks($ids).') AND relmodule=?',
+							array($new_record_id,$currentModule,$ids,$rel_module)
+						);
+					}
+				} else if ($businessMap == "Condition Expression") {
+					// Get crmids
+					$result = $adb->pquery(
+						'SELECT relcrmid FROM vtiger_crmentityrel WHERE crmid=? AND relmodule=?', 
+						array($record_id, $rel_module)
+					);
+
+					if ($result && $adb->num_rows($result) > 0) {
+						while ($related = $adb->fetch_array($result)) {
+							if ($cbmap->ConditionExpression($entityId.'x'.$related['relcrmid'])) {
+								$adb->pquery(
+									'INSERT INTO vtiger_crmentityrel (crmid,module,relcrmid,relmodule) VALUES(?,?,?,?)',
+									array($new_record_id,$currentModule,$related['relcrmid'],$rel_module)
+								);
+							}
+						}
+					}
+				} else {
+					$adb->pquery($sql, array($new_record_id,$currentModule,$record_id,$rel_module));
+				}
 			}
 		}
 	}
