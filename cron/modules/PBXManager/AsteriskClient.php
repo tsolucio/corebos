@@ -112,8 +112,7 @@ function asterisk_handleResponse1($mainresponse, $state, $adb) {
 		}
 		$channel = $mainresponse['Channel'];
 
-		$sql = 'INSERT INTO vtiger_asteriskincomingevents
-			(uid, channel, from_number, from_name, timer, flag) VALUES(?,?,?,?,?,?)';
+		$sql = 'INSERT INTO vtiger_asteriskincomingevents (uid, channel, from_number, from_name, timer, flag) VALUES(?,?,?,?,?,?)';
 		$adb->pquery($sql, array($uniqueid, $channel, $callerNumber, $callerName, time(), -1));
 		return false;
 	}
@@ -214,7 +213,7 @@ function asterisk_handleResponse3($mainresponse, $adb, $asterisk) {
 		$extensionCalled = false;
 	}
 	// TODO Need to detect the caller number using the Event Information
-		$callerNumberInfo = $adb->pquery('SELECT from_number,callertype FROM vtiger_asteriskincomingevents WHERE uid=? AND from_number is not NULL LIMIT 1', array($uid));
+	$callerNumberInfo = $adb->pquery('SELECT from_number,callertype FROM vtiger_asteriskincomingevents WHERE uid=? AND from_number is not NULL LIMIT 1', array($uid));
 	if ($callerNumberInfo && $adb->num_rows($callerNumberInfo)) {
 		$callerNumber = $adb->query_result($callerNumberInfo, 0, 'from_number');
 		$receiver_callerinfo = getCallerInfo($callerNumber);
