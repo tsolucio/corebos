@@ -267,7 +267,9 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 						$binFile = sanitizeUploadFileName($atResultRow['aname'], $upload_badext);
 						$saved_filename = $atResultRow['path'] . $atResultRow['attachid']. '_' .$binFile;
 						if (file_exists($saved_filename)) {
-							$fileContent = @fread(fopen($saved_filename, "r"), filesize($saved_filename));
+							$fileContent = @fread(fopen($saved_filename, 'r'), filesize($saved_filename));
+						} else {
+							$fileContent = '';
 						}
 					}
 					$this->_attachments[$atResultRow['aname']] = ($withContent? $fileContent: false);
@@ -290,7 +292,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	protected function saveToDB($uid) {
 		global $adb, $current_user;
 
-		$savedtime = strtotime("now");
+		$savedtime = strtotime('now');
 
 		$params = array($current_user->id);
 		$params[] = $uid;

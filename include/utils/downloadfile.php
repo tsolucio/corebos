@@ -29,15 +29,15 @@ if (!empty($deletecheck) && $adb->query_result($deletecheck, 0, 'deleted') == 1)
 		$disk_file_size = filesize($filepath.$saved_filename);
 		$filesize = $disk_file_size + ($disk_file_size % 1024);
 		$fileContent = fread(fopen($filepath.$saved_filename, 'r'), $filesize);
-		header("Content-type: $fileType");
-		header("Pragma: public");
-		header("Expires: ".gmdate("D, d M Y H:i:s")." GMT");
-		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-		header("Cache-Control: private");
-		header("Content-Description: File Transfer");
-		header("Content-length: ".$disk_file_size);
-		header("Content-Transfer-Encoding: binary");
-		header("Content-Disposition: attachment; filename=\"$name\"");
+		header('Content-type: '.$fileType);
+		header('Pragma: public');
+		header('Expires: '.gmdate('D, d M Y H:i:s').' GMT');
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header('Cache-Control: private');
+		header('Content-Description: File Transfer');
+		header('Content-length: '.$disk_file_size);
+		header('Content-Transfer-Encoding: binary');
+		header('Content-Disposition: attachment; filename="'.$name.'"');
 		echo $fileContent;
 		die();
 	} else {
