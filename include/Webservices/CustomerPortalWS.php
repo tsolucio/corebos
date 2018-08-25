@@ -894,12 +894,9 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		    vtiger_products.unit_price AS unit_price 
 		    FROM vtiger_products 
 		    INNER JOIN vtiger_crmentity ON vtiger_products.productid = vtiger_crmentity.crmid 
-		    WHERE vtiger_products.productname LIKE '%{$term}%' 
-		    OR vtiger_products.mfr_part_no LIKE '%{$term}%' 
-		    OR vtiger_products.vendor_part_no LIKE '%{$term}%' 
-		    AND vtiger_products.discontinued = 1 
-		    AND vtiger_crmentity.deleted = 0 
-		    UNION
+			WHERE (vtiger_products.productname LIKE '%{$term}%' OR vtiger_products.mfr_part_no LIKE '%{$term}%' OR vtiger_products.vendor_part_no LIKE '%{$term}%')
+				AND vtiger_products.discontinued = 1 AND vtiger_crmentity.deleted = 0
+		UNION
 		SELECT
 		    vtiger_service.servicename AS name, 
 		    vtiger_service.divisible AS divisible, 
@@ -914,9 +911,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		    vtiger_service.unit_price AS unit_price 
 		    FROM vtiger_service 
 		    INNER JOIN vtiger_crmentity ON vtiger_service.serviceid = vtiger_crmentity.crmid 
-		    WHERE vtiger_service.servicename LIKE '%{$term}%' 
-		    AND vtiger_service.discontinued = 1 
-		    AND vtiger_crmentity.deleted = 0
+			WHERE vtiger_service.servicename LIKE '%{$term}%' AND vtiger_service.discontinued = 1 AND vtiger_crmentity.deleted = 0
 		LIMIT $limit");
 	$ret = array();
 
