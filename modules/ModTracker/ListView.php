@@ -162,7 +162,7 @@ $smarty->assign('ALPHABETICAL', $alphabetical);
 $smarty->assign('FIELDNAMES', $fieldnames);
 
 $smarty->assign('AVALABLE_FIELDS', getMergeFields($currentModule, 'available_fields'));
-$smarty->assign('FIELDS_TO_MERGE', getMergeFields($currentModule, 'fileds_to_merge'));
+$smarty->assign('FIELDS_TO_MERGE', getMergeFields($currentModule, 'fields_to_merge'));
 
 //Added to select Multiple records in multiple pages
 $smarty->assign('SELECTEDIDS', vtlib_purify($_REQUEST['selobjs']));

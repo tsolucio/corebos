@@ -3815,7 +3815,7 @@ function getMergeFields($module, $str) {
 	$tabid = getTabid($module);
 	if ($str == 'available_fields') {
 		$result = getFieldsResultForMerge($tabid);
-	} else { //if($str == fileds_to_merge)
+	} else { //if($str == fields_to_merge)
 		$result = $adb->pquery('select fieldid from vtiger_user2mergefields where tabid=? and userid=? and visible=1', array($tabid, $current_user->id));
 	}
 
