@@ -23,14 +23,14 @@ function getTagCloud(crmid) {
 }
 
 function DeleteTag(id, recordid) {
-	document.getElementById('vtbusy_info').style.display='inline';
+	VtigerJS_DialogBox.showbusy();
 	jQuery('#tag_'+id).fadeOut();
 	jQuery.ajax({
 		method:'POST',
 		url:'index.php?file=TagCloud&module='+gVTModule+'&action='+gVTModule+'Ajax&ajxaction=DELETETAG&recordid='+recordid+'&tagid=' +id,
 	}).done(function (response) {
 		getTagCloud();
-		jQuery('#vtbusy_info').hide();
+		VtigerJS_DialogBox.hidebusy();
 	});
 }
 
@@ -3911,23 +3911,31 @@ VtigerJS_DialogBox = {
 		if (!olayer) {
 			olayer = document.createElement('div');
 			olayer.id = olayerid;
-			olayer.className = 'small veil';
-			olayer.style.zIndex = (new Date()).getTime();
+			olayer.className = 'slds-spinner_container slds-is-fixed';
 
 			// Avoid zIndex going beyond integer max
-			// http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/7146#comment:1
-			olayer.style.zIndex = parseInt((new Date()).getTime() / 1000);
+			//olayer.style.zIndex = parseInt((new Date()).getTime() / 1000);
 
 			// In case zIndex goes to negative side!
-			if (olayer.style.zIndex < 0) {
-				olayer.style.zIndex *= -1;
-			}
+			//if (olayer.style.zIndex < 0) {
+				//olayer.style.zIndex *= -1;
+			//}
 			if (browser_ie) {
 				olayer.style.height = document.body.offsetHeight + (document.body.scrollHeight - document.body.offsetHeight) + 'px';
 			} else if (browser_nn4 || browser_nn6) {
 				olayer.style.height = document.body.offsetHeight + 'px';
 			}
-			olayer.style.width = '100%';
+			//olayer.style.width = '100%';
+			var spinner = document.createElement('div');
+			spinner.role = 'status';
+			spinner.className = 'slds-spinner slds-spinner_inline slds-spinner_large slds-spinner_brand';
+			var spininside2 = document.createElement('div');
+			spininside2.className = 'slds-spinner__dot-a';
+			var spininside3 = document.createElement('div');
+			spininside3.className = 'slds-spinner__dot-b';
+			spinner.appendChild(spininside2);
+			spinner.appendChild(spininside3);
+			olayer.appendChild(spinner);
 			document.body.appendChild(olayer);
 
 			var closeimg = document.createElement('img');
@@ -3956,6 +3964,7 @@ VtigerJS_DialogBox = {
 	},
 	unblock : function () {
 		VtigerJS_DialogBox._olayer(false);
+		VtigerJS_DialogBox.hidebusy();
 	},
 	block : function (opacity) {
 		if (typeof(opactiy)=='undefined') {
@@ -3963,6 +3972,13 @@ VtigerJS_DialogBox = {
 		}
 		var olayernode = VtigerJS_DialogBox._olayer(true);
 		olayernode.style.opacity = opacity;
+		VtigerJS_DialogBox.showbusy();
+	},
+	showbusy : function () {
+		document.getElementById('status').style.display='inline';
+	},
+	hidebusy : function () {
+		document.getElementById('status').style.display='none';
 	},
 	hideprogress : function () {
 		VtigerJS_DialogBox._olayer(false);

@@ -710,7 +710,7 @@ function closeStatusPopup(elementid) {
 }
 
 function updateCampaignRelationStatus(relatedmodule, campaignid, crmid, campaignrelstatusid, campaignrelstatus) {
-	document.getElementById('vtbusy_info').style.display='inline';
+	VtigerJS_DialogBox.showbusy();
 	document.getElementById('campaignstatus_popup_' + crmid).style.display = 'none';
 	var data = 'action=updateRelationsAjax&module=Campaigns&relatedmodule=' + relatedmodule + '&campaignid=' + campaignid + '&crmid=' + crmid + '&campaignrelstatusid=' + campaignrelstatusid;
 	jQuery.ajax({
@@ -721,7 +721,7 @@ function updateCampaignRelationStatus(relatedmodule, campaignid, crmid, campaign
 			alert(alert_arr.ERROR_WHILE_EDITING);
 		} else if (response.indexOf(':#:SUCCESS')>-1) {
 			document.getElementById('campaignstatus_' + crmid).innerHTML = campaignrelstatus;
-			document.getElementById('vtbusy_info').style.display='none';
+			VtigerJS_DialogBox.hidebusy();
 		}
 	});
 }

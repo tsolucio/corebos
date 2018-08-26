@@ -159,7 +159,7 @@ function dtlViewAjaxDirectFieldSave(fieldValue, module, tableName, fieldName, cr
 		} else if (response.indexOf(':#:ERR')>-1) {
 			alert_str = response.replace(':#:ERR', '');
 			alert(alert_str);
-			document.getElementById('vtbusy_info').style.display='none';
+			VtigerJS_DialogBox.hidebusy();
 		} else if (response.indexOf(':#:SUCCESS')>-1) {
 			//For HD & FAQ - comments, we should empty the field value
 			if ((module == 'HelpDesk' || module == 'Faq') && fieldName == 'comments') {
@@ -178,7 +178,7 @@ function dtlViewAjaxDirectFieldSave(fieldValue, module, tableName, fieldName, cr
 					alert(okmsg);
 				}
 			}
-			document.getElementById('vtbusy_info').style.display='none';
+			VtigerJS_DialogBox.hidebusy();
 		}
 	});
 }
@@ -238,7 +238,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 	var popupTxt= 'popuptxt_'+ fieldLabel;
 	var hdTxt = 'hdtxt_'+ fieldLabel;
 
-	document.getElementById('vtbusy_info').style.display='inline';
+	VtigerJS_DialogBox.showbusy();
 	var isAdmin = document.getElementById('hdtxt_IsAdmin').value;
 
 	//overriden the tagValue based on UI Type for checkbox
@@ -303,7 +303,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		} else if (response.indexOf(':#:ERR')>-1) {
 			alert_str = response.replace(':#:ERR', '');
 			alert(alert_str);
-			document.getElementById('vtbusy_info').style.display='none';
+			VtigerJS_DialogBox.hidebusy();
 		} else if (response.indexOf(':#:SUCCESS')>-1) {
 			//For HD & FAQ - comments, we should empty the field value
 			if ((module == 'HelpDesk' || module == 'Faq') && fieldName == 'comments') {
@@ -321,7 +321,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 			if (typeof colorizer_after_change === 'function') {
 				colorizer_after_change(fieldName, tagValue);
 			}
-			document.getElementById('vtbusy_info').style.display='none';
+			VtigerJS_DialogBox.hidebusy();
 		}
 	});
 	tagValue = get_converted_html(tagValue);
@@ -590,7 +590,7 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 function SaveTag(tagfield, crmId, module) {
 	var tagValue = document.getElementById(tagfield).value;
 	tagValue = encodeURIComponent(tagValue);
-	document.getElementById('vtbusy_info').style.display='inline';
+	VtigerJS_DialogBox.showbusy();
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?file=TagCloud&module=' + module + '&action=' + module + 'Ajax&recordid=' + crmId + '&ajxaction=SAVETAG&tagfields=' +tagValue
@@ -601,7 +601,7 @@ function SaveTag(tagfield, crmId, module) {
 			getObj('tagfields').innerHTML = response;
 			document.getElementById(tagfield).value = '';
 		}
-		document.getElementById('vtbusy_info').style.display='none';
+		VtigerJS_DialogBox.hidebusy();
 	});
 }
 function setSelectValue(fieldLabel) {

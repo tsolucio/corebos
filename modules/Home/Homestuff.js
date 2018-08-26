@@ -12,7 +12,7 @@
  * @param string typeName - the selected option
  */
 function chooseType(typeName) {
-	document.getElementById('vtbusy_info').style.display='inline';
+	VtigerJS_DialogBox.showbusy();
 	document.getElementById('stufftype_id').value=typeName;
 
 	var typeLabel = typeName;
@@ -21,7 +21,7 @@ function chooseType(typeName) {
 	}
 	if (typeLabel == 'defaultwidget') {
 		document.getElementById('divHeader').innerHTML='<b>'+alert_arr.LBL_SELECT+'</b>';
-		document.getElementById('vtbusy_info').style.display='inline';
+		VtigerJS_DialogBox.showbusy();
 		jQuery.ajax({
 			method: 'POST',
 			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&home=homewidget'
@@ -39,7 +39,7 @@ function chooseType(typeName) {
 			document.getElementById('dashTypeRow').style.display='none';
 			document.getElementById('dashNameRow').style.display='none';
 			document.getElementById('StuffTitleId').style.display='none';
-			document.getElementById('vtbusy_info').style.display='none';
+			VtigerJS_DialogBox.hidebusy();
 			document.getElementById('reportNameRow').style.display='none';
 			document.getElementById('reportTypeRow').style.display='none';
 		});
@@ -80,7 +80,7 @@ function chooseType(typeName) {
 			document.getElementById('selDashName').innerHTML=response;
 			show('addWidgetsDiv');
 			placeAtCenter(document.getElementById('addWidgetsDiv'));
-			document.getElementById('vtbusy_info').style.display='none';
+			VtigerJS_DialogBox.hidebusy();
 		});
 	} else if (typeName=='RSS') {
 		document.getElementById('moduleNameRow').style.display='none';
@@ -92,7 +92,7 @@ function chooseType(typeName) {
 		document.getElementById('dashTypeRow').style.display='none';
 		document.getElementById('StuffTitleId').style.display='block';
 		document.getElementById('homewidget').style.display='none';
-		document.getElementById('vtbusy_info').style.display='none';
+		VtigerJS_DialogBox.hidebusy();
 		document.getElementById('reportNameRow').style.display='none';
 		document.getElementById('reportTypeRow').style.display='none';
 		//document.getElementById('homeURLField').style.display = "none";
@@ -118,7 +118,7 @@ function chooseType(typeName) {
 		document.getElementById('dashNameRow').style.display='none';
 		document.getElementById('dashTypeRow').style.display='none';
 		document.getElementById('StuffTitleId').style.display='block';
-		document.getElementById('vtbusy_info').style.display='none';
+		VtigerJS_DialogBox.hidebusy();
 		document.getElementById('homewidget').style.display='none';
 		document.getElementById('reportNameRow').style.display='none';
 		document.getElementById('reportTypeRow').style.display='none';
@@ -132,7 +132,7 @@ function chooseType(typeName) {
 		document.getElementById('StuffTitleId').style.display='block';
 		document.getElementById('reportNameRow').style.display='block';
 		document.getElementById('reportTypeRow').style.display='block';
-		document.getElementById('vtbusy_info').style.display='none';
+		VtigerJS_DialogBox.hidebusy();
 		document.getElementById('dashNameRow').style.display='none';
 		document.getElementById('dashTypeRow').style.display='none';
 		document.getElementById('homewidget').style.display='none';
@@ -143,7 +143,7 @@ function chooseType(typeName) {
 			document.getElementById('selReportName').innerHTML=response;
 			show('addWidgetsDiv');
 			placeAtCenter(document.getElementById('addWidgetsDiv'));
-			document.getElementById('vtbusy_info').style.display='none';
+			VtigerJS_DialogBox.hidebusy();
 		});
 	}
 	/*else if(typeName == 'URL'){
@@ -155,7 +155,7 @@ function chooseType(typeName) {
 		document.getElementById('dashNameRow').style.display="none";
 		document.getElementById('dashTypeRow').style.display="none";
 		document.getElementById('StuffTitleId').style.display="block";
-		document.getElementById('vtbusy_info').style.display="none";
+		VtigerJS_DialogBox.hidebusy();
 		//document.getElementById('homeURLField').style.display = "block";
 	}*/
 }
@@ -195,7 +195,7 @@ function setPrimaryFld(Primeval) {
 		var responseVal=response;
 		document.getElementById('selModPrime_id').innerHTML=response;
 		document.getElementById('selPrimeFldid').selectedIndex = 0;
-		document.getElementById('vtbusy_info').style.display='none';
+		VtigerJS_DialogBox.hidebusy();
 		document.getElementById('savebtn').disabled = false;
 	});
 }
@@ -439,7 +439,7 @@ GlobalVariable_getVariable('Application_ListView_MaxColumns', 12, 'Home', gVTUse
 function frmValidate() {
 	if (document.getElementById('stufftype_id').value=='defaultwidget') {
 		var namelist = new Array();
-		document.getElementById('vtbusy_info').style.display='block';
+		VtigerJS_DialogBox.showbusy();
 		var elem = document.getElementsByName('names');
 		for (var i = 0; i < elem.length; i++) {
 			if (elem[i].checked) {
@@ -453,7 +453,7 @@ function frmValidate() {
 			url: 'index.php?action=HomeAjax&module=Home&file=HomeWidgetsSave&values='+encodeURIComponent(values)
 		}).done(function (response) {
 			document.getElementById('addWidgetsDiv').style.display='none';
-			document.getElementById('vtbusy_info').style.display='none';
+			VtigerJS_DialogBox.hidebusy();
 			window.location.reload();
 		});
 	} else {
@@ -534,7 +534,7 @@ function frmValidate() {
 			+ encodeURIComponent(fldname)+'&txtRss='+txtRss+'&seldashbd='+seldashbd+'&seldashtype='+seldashtype+'&seldeftype='+seldeftype+'&selreport='+selreport
 			+ '&selreportcharttype='+selreportcharttype;//+'&txtURL='+txtURL;
 		var stuffarr=new Array();
-		document.getElementById('vtbusy_info').style.display='inline';
+		VtigerJS_DialogBox.showbusy();
 
 		jQuery.ajax({
 			method: 'POST',
@@ -543,13 +543,13 @@ function frmValidate() {
 			var responseVal=response;
 			if (!response) {
 				alert(alert_arr.LBL_ADD_HOME_WIDGET);
-				document.getElementById('vtbusy_info').style.display='none';
+				VtigerJS_DialogBox.hidebusy();
 				document.getElementById('stufftitle_id').value='';
 				document.getElementById('txtRss_id').value='';
 				return false;
 			} else {
 				hide('addWidgetsDiv');
-				document.getElementById('vtbusy_info').style.display='none';
+				VtigerJS_DialogBox.hidebusy();
 				document.getElementById('stufftitle_id').value='';
 				document.getElementById('txtRss_id').value='';
 				eval(response);
