@@ -245,7 +245,15 @@ function calcTotal() {
 // Function to Calculate the Total for a particular product in an Inventory
 function calcProductTotal(rowId) {
 	if (document.getElementById('deleted'+rowId) && document.getElementById('deleted'+rowId).value == 0) {
-		var total=eval(getObj('qty'+rowId).value*getObj('listPrice'+rowId).value);
+		var chknum = getObj('listPrice'+rowId).value;
+		if (chknum.indexOf(',')!=-1 || chknum.indexOf("'")!=-1) {
+			document.getElementById('listPrice'+rowId).value = standarizeFormatCurrencyValue(chknum);
+		}
+		var chknum = getObj('qty'+rowId).value;
+		if (chknum.indexOf(',')!=-1 || chknum.indexOf("'")!=-1) {
+			document.getElementById('qty'+rowId).value = standarizeFormatCurrencyValue(chknum);
+		}
+		var total=getObj('qty'+rowId).value * getObj('listPrice'+rowId).value;
 		getObj('productTotal'+rowId).innerHTML=roundValue(total.toString());
 
 		var totalAfterDiscount = eval(total-document.getElementById('discountTotal'+rowId).innerHTML);
@@ -305,23 +313,27 @@ function calcGrandTotal() {
 
 	sh_amount = getObj('shipping_handling_charge').value;
 	if (document.getElementById('shipping_handling_tax')) {
-		sh_tax = eval(document.getElementById('shipping_handling_tax').innerHTML);
+		sh_tax = parseFloat(document.getElementById('shipping_handling_tax').innerHTML);
 	}
 
 	adjustment = getObj('adjustment').value;
 
 	//Add or substract the adjustment based on selection
-	adj_type = document.getElementById('adjustmentType').value;
+	var adj_type = document.getElementById('adjustmentType').value;
 
-	grandTotal = eval(netTotal)-eval(discountTotal_final)+eval(finalTax);
-	if (sh_amount != '') {
-		grandTotal = grandTotal + eval(sh_amount) + sh_tax;
+	grandTotal = parseFloat(netTotal) - parseFloat(discountTotal_final) + parseFloat(finalTax);
+	if (sh_amount != '' && sh_amount != 0) {
+		grandTotal = grandTotal + parseFloat(sh_amount) + sh_tax;
 	}
 	if (adjustment != '') {
+		if (adjustment.indexOf(',')!=-1 || adjustment.indexOf("'")!=-1) {
+			adjustment = standarizeFormatCurrencyValue(adjustment);
+			document.getElementById('adjustment').value = adjustment;
+		}
 		if (adj_type == '+') {
-			grandTotal = grandTotal + eval(adjustment);
+			grandTotal = grandTotal + parseFloat(adjustment);
 		} else {
-			grandTotal = grandTotal - eval(adjustment);
+			grandTotal = grandTotal - parseFloat(adjustment);
 		}
 	}
 
@@ -822,6 +834,10 @@ function setDiscount(currObj, curr_row) {
 		//This is to calculate the final discount
 		if (curr_row == '_final') {
 			var discount_percentage_final_value = document.getElementById('discount_percentage'+curr_row).value;
+			if (discount_percentage_final_value.indexOf(',')!=-1 || discount_percentage_final_value.indexOf("'")!=-1) {
+				discount_percentage_final_value = standarizeFormatCurrencyValue(discount_percentage_final_value);
+				document.getElementById('discount_percentage'+curr_row).value = discount_percentage_final_value;
+			}
 			if (discount_percentage_final_value == '') {
 				discount_percentage_final_value = 0;
 			}
@@ -829,6 +845,10 @@ function setDiscount(currObj, curr_row) {
 		} else {
 			// This is to calculate the product discount
 			var discount_percentage_value = document.getElementById('discount_percentage'+curr_row).value;
+			if (discount_percentage_value.indexOf(',')!=-1 || discount_percentage_value.indexOf("'")!=-1) {
+				discount_percentage_value = standarizeFormatCurrencyValue(discount_percentage_value);
+				document.getElementById('discount_percentage'+curr_row).value = discount_percentage_value;
+			}
 			if (discount_percentage_value == '') {
 				discount_percentage_value = 0;
 			}
@@ -843,6 +863,10 @@ function setDiscount(currObj, curr_row) {
 		document.getElementById('discount_amount'+curr_row).style.visibility = 'visible';
 		//Rounded the decimal part of discount amount to two digits
 		var discount_amount_value = document.getElementById('discount_amount'+curr_row).value.toString();
+		if (discount_amount_value.indexOf(',')!=-1 || discount_amount_value.indexOf("'")!=-1) {
+			discount_amount_value = standarizeFormatCurrencyValue(discount_amount_value);
+			document.getElementById('discount_amount'+curr_row).value = discount_amount_value;
+		}
 		if (discount_amount_value == '') {
 			discount_amount_value = 0;
 		}
@@ -929,20 +953,24 @@ function calcSHTax() {
 	}
 	var sh_tax_count = document.getElementById('sh_tax_count').value;
 	var sh_charge = document.getElementById('shipping_handling_charge').value;
+	if (sh_charge.indexOf(',')!=-1 || sh_charge.indexOf("'")!=-1) {
+		sh_charge = standarizeFormatCurrencyValue(sh_charge);
+		document.getElementById('shipping_handling_charge').value = sh_charge;
+	}
+	if (sh_charge == '') {
+		sh_charge = 0;
+	}
 	var sh_tax_total = 0.00, tax_amount=0.00;
 
 	for (var i=1; i<=sh_tax_count; i++) {
-		if (sh_charge == '') {
-			sh_charge = '0';
-		}
 		var sh_tax_percentage = document.getElementById('sh_tax_percentage'+i).value;
 		if (sh_tax_percentage == '') {
-			sh_tax_percentage = '0';
+			sh_tax_percentage = 0;
 		}
-		tax_amount = eval(sh_charge)*eval(sh_tax_percentage)/eval(100);
+		tax_amount = parseFloat(sh_charge) * parseFloat(sh_tax_percentage) / 100;
 		//Rounded the decimal part of S&H Tax amount to two digits
 		document.getElementById('sh_tax_amount'+i).value = roundValue(tax_amount.toString());
-		sh_tax_total = eval(sh_tax_total) + eval(tax_amount);
+		sh_tax_total = sh_tax_total + tax_amount;
 	}
 
 	//Rounded the decimal part of Total S&H Tax amount to two digits
