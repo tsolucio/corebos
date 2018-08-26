@@ -752,7 +752,11 @@ class ReportRun extends CRMEntity {
 //								$fieldvalue = $fieldInfo['tablename'].'.'.$fieldInfo['columnname'].$cmp;
 						} else {
 							if ($fieldInfo['uitype']==15 || $fieldInfo['uitype']==16) {
-								$fieldvalue = $selectedfields[0].".".$selectedfields[1].' IN (select translation_key from vtiger_cbtranslation where locale="'.$current_user->language.'" and forpicklist="'.$moduleName.'::'.$selectedfields[1].'" and i18n '.$this->getAdvComparator($comparator, trim($value), $datatype).') OR '.$selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator, trim($value), $datatype);
+								$fieldvalue = '('.$selectedfields[0].".".$selectedfields[1].' IN (select translation_key from vtiger_cbtranslation
+									where locale="'.$current_user->language.'" and forpicklist="'.$moduleName.'::'.$selectedfields[1]
+									.'" and i18n '.$this->getAdvComparator($comparator, trim($value), $datatype).')'
+									.(in_array($comparator, array('n', 'k')) ? ' AND ' : ' OR ')
+									.$selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator, trim($value), $datatype).')';
 							} else {
 								$fieldvalue = $selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator, trim($value), $datatype);
 							}

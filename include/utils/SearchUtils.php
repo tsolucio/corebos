@@ -1382,7 +1382,11 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 			$value = '('.$tablename.".".$fieldname.' IS NULL OR '.$tablename.'.'.$fieldname.' = \'\')';
 		} else {
 			if (is_uitype($field_uitype, '_picklist_')) {
-				$value = $tablename.".".$fieldname.' IN (select translation_key from vtiger_cbtranslation where locale="'.$current_user->language.'" and forpicklist="'.$currentModule.'::'.$fieldname.'" and i18n '.getAdvancedSearchComparator($comparator, $value, $datatype).') OR '.$tablename.".".$fieldname.getAdvancedSearchComparator($comparator, $value, $datatype);
+				$value = $tablename.".".$fieldname.' IN (select translation_key from vtiger_cbtranslation
+					where locale="'.$current_user->language.'" and forpicklist="'.$currentModule.'::'.$fieldname
+					.'" and i18n '.getAdvancedSearchComparator($comparator, $value, $datatype).')'
+					.(in_array($comparator, array('n', 'k', 'dnsw', 'dnew')) ? ' AND ' : ' OR ')
+					.$tablename.'.'.$fieldname.getAdvancedSearchComparator($comparator, $value, $datatype);
 			} else {
 				$value = $tablename.".".$fieldname.getAdvancedSearchComparator($comparator, $value, $datatype);
 			}
