@@ -205,7 +205,7 @@ var vtlib_listview = {
 	/**
 	 * Trigger handler function for the event
 	 */
-	trigger  : function (evttype, node) {
+	trigger : function (evttype, node) {
 		if (evttype == 'cell.onmouseover' || evttype == 'cell.onmouseout' || evttype == 'invoiceasset.onmouseout') {
 			// Catch hold of DOM element which has meta inforamtion.
 			var innerNodes = node.getElementsByTagName('span');
