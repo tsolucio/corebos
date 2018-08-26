@@ -234,8 +234,7 @@ function deleteRow(module, i, image_path) {
 // Function to Calcuate the Inventory total including all products
 function calcTotal() {
 	var max_row_count = document.getElementById('proTab').rows.length;
-	max_row_count = eval(max_row_count)-2;//Because the table has two header rows. so we will reduce two from row length
-	var netprice = 0.00;
+	max_row_count = max_row_count-2;//Because the table has two header rows. so we will reduce two from row length
 	for (var i=1; i<=max_row_count; i++) {
 		rowId = i;
 		setDiscount(null, rowId);
@@ -260,7 +259,6 @@ function calcProductTotal(rowId) {
 		} else {
 			netprice = totalAfterDiscount;
 		}
-
 		getObj('netPrice'+rowId).innerHTML=roundValue(netprice.toString());
 	}
 }
@@ -273,7 +271,7 @@ function calcGrandTotal() {
 	var taxtype = document.getElementById('taxtype').value;
 
 	var max_row_count = document.getElementById('proTab').rows.length;
-	max_row_count = eval(max_row_count)-2;//Because the table has two header rows. so we will reduce two from row length
+	max_row_count = max_row_count-2;//Because the table has two header rows. so we will reduce two from row length
 
 	for (var i=1; i<=max_row_count; i++) {
 		if (document.getElementById('deleted'+i).value == 0) {
@@ -356,7 +354,7 @@ function validateInventoryLines(module) {
 	}
 
 	var max_row_count = document.getElementById('proTab').rows.length;
-	max_row_count = eval(max_row_count)-2;//As the table has two header rows, we will reduce two from table row length
+	max_row_count = max_row_count-2;//As the table has two header rows, we will reduce two from table row length
 
 	if (!FindDuplicate()) {
 		return false;
@@ -459,7 +457,7 @@ function validateInventoryLines(module) {
 
 function FindDuplicate() {
 	var max_row_count = document.getElementById('proTab').rows.length;
-	max_row_count = eval(max_row_count)-2;//As the table has two header rows, we will reduce two from row length
+	max_row_count = max_row_count-2;//As the table has two header rows, we will reduce two from row length
 	var duplicate = false, iposition = '', positions = '', duplicate_products = '';
 	var product_id = new Array(max_row_count-1);
 	var product_name = new Array(max_row_count-1);
@@ -544,7 +542,7 @@ function loadGlobalTaxes_Ajax() {
 // Function to retrieve and update all taxes > recalculates the whole record
 function updateAllTaxes() {
 	var max_row_count = document.getElementById('proTab').rows.length;
-	max_row_count = eval(max_row_count)-2;//Because the table has two header rows. so we will reduce two from row length
+	max_row_count = max_row_count-2;//Because the table has two header rows. so we will reduce two from row length
 	var netprice = 0.00;
 	for (var i=1; i<=max_row_count; i++) {
 		rowId = i;
@@ -860,7 +858,7 @@ function setDiscount(currObj, curr_row) {
 function callTaxCalc(curr_row) {
 	//when we change discount or list price, we have to calculate the taxes again before calculate the total
 	if (getObj('tax_table'+curr_row)) {
-		tax_count = eval(document.getElementById('tax_table'+curr_row).rows.length-1);//subtract the title tr length
+		tax_count = document.getElementById('tax_table'+curr_row).rows.length-1;//subtract the title tr length
 		for (var i=0, j=i+1; i<tax_count; i++, j++) {
 			var tax_hidden_name = 'hidden_tax'+j+'_percentage'+curr_row;
 			var tax_name = document.getElementById(tax_hidden_name).value;
@@ -955,7 +953,7 @@ function calcSHTax() {
 
 function validateProductDiscounts() {
 	var max_row_count = document.getElementById('proTab').rows.length;
-	max_row_count = eval(max_row_count)-2;//As the table has two header rows, we will reduce two from table row length
+	max_row_count = max_row_count-2;//As the table has two header rows, we will reduce two from table row length
 
 	for (var i=1; i<=max_row_count; i++) {
 		//if the row is deleted then avoid validate that row values
