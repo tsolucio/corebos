@@ -79,16 +79,26 @@ function getRelatedRecords($id, $module, $relatedModule, $queryParameters, $user
 		if (($module=='HelpDesk' || $module=='Faq') && $relatedModule=='ModComments') {
 			$records[] = $row;
 		} else {
-			if (isset($row['id']) && getSalesEntityType($row['id'])=='Services') {
-				$rec = DataTransform::sanitizeData($row, $srvmeta);
-				$rec['productid'] = $srvwsid.$row['productid'];
-				$rec['linetype'] = 'Services';
+			if ($relatedModule=='Products') {
+				if (isset($row['productid']) && isset($row['sequence_no'])) {
+					if (isset($row['productid']) && getSalesEntityType($row['productid'])=='Services') {
+						$rec = DataTransform::sanitizeData($row, $srvmeta);
+						$rec['id'] = $srvwsid.$row['productid'];
+						$rec['productid'] = $srvwsid.$row['productid'];
+						$rec['linetype'] = 'Services';
+					} else {
+						$rec = DataTransform::sanitizeData($row, $meta);
+						$rec['productid'] = $pdowsid.$row['productid'];
+						$rec['id'] = $pdowsid.$row['productid'];
+						$rec['linetype'] = 'Products';
+					}
+					$records[] = $rec;
+				} else {
+					$records[] =  DataTransform::sanitizeData($row, $meta);
+				}
 			} else {
-				$rec = DataTransform::sanitizeData($row, $meta);
-				$rec['productid'] = $pdowsid.$row['productid'];
-				$rec['linetype'] = 'Products';
+				$records[] =  DataTransform::sanitizeData($row, $meta);
 			}
-			$records[] = $rec;
 		}
 	}
 	return array ('records' => $records);
