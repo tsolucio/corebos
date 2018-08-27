@@ -73,15 +73,20 @@ function getRelatedRecords($id, $module, $relatedModule, $queryParameters, $user
 	$records = array();
 
 	// Return results
+	$pdowsid = vtws_getEntityID('Products').'x';
+	$srvwsid = vtws_getEntityID('Services').'x';
 	while ($row = $adb->fetch_array($result)) {
 		if (($module=='HelpDesk' || $module=='Faq') && $relatedModule=='ModComments') {
 			$records[] = $row;
 		} else {
 			if (isset($row['id']) && getSalesEntityType($row['id'])=='Services') {
-				$records[] = DataTransform::sanitizeData($row, $srvmeta);
+				$rec = DataTransform::sanitizeData($row, $srvmeta);
+				$rec['productid'] = $srvwsid.$row['productid'];
 			} else {
-				$records[] = DataTransform::sanitizeData($row, $meta);
+				$rec = DataTransform::sanitizeData($row, $meta);
+				$rec['productid'] = $pdowsid.$row['productid'];
 			}
+			$records[] = $rec;
 		}
 	}
 	return array ('records' => $records);
