@@ -181,7 +181,11 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 	$crmid = $idComponents[1];
 
 	// check permission on related module and pickup meta data for further processing
-	$webserviceObject = VtigerWebserviceObject::fromName($adb, $relatedModule);
+	if ($relatedModule == 'Products' && !vtlib_isModuleActive('Products') && vtlib_isModuleActive('Services')) {
+		$webserviceObject = VtigerWebserviceObject::fromName($adb, 'Services');
+	} else {
+		$webserviceObject = VtigerWebserviceObject::fromName($adb, $relatedModule);
+	}
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
 
@@ -190,7 +194,11 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 	$meta = $handler->getMeta();
 
-	if (!in_array($relatedModule, $types['types'])) {
+	if ($relatedModule == 'Products') {
+		if (!(in_array('Products', $types['types']) || in_array('Services', $types['types']))) {
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to perform the operation on module ($relatedModule) is denied");
+		}
+	} elseif (!in_array($relatedModule, $types['types'])) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to perform the operation on module ($relatedModule) is denied");
 	}
 
