@@ -207,15 +207,15 @@ startxref
 			$params = array('Quotes');
 			break;
 		case 'SalesOrder':
-			$templateid = GlobalVariable::getVariable('CustomerPortal_PDFTemplate_Quote', 0, 'SalesOrder', $user->id);
+			$templateid = GlobalVariable::getVariable('CustomerPortal_PDFTemplate_SalesOrder', 0, 'SalesOrder', $user->id);
 			$params = array('SalesOrder');
 			break;
 		case 'PurchaseOrder':
-			$templateid = GlobalVariable::getVariable('CustomerPortal_PDFTemplate_Quote', 0, 'PurchaseOrder', $user->id);
+			$templateid = GlobalVariable::getVariable('CustomerPortal_PDFTemplate_PurchaseOrder', 0, 'PurchaseOrder', $user->id);
 			$params = array('PurchaseOrder');
 			break;
 		case 'Invoice':
-			$templateid = GlobalVariable::getVariable('CustomerPortal_PDFTemplate_Quote', 0, 'Invoice', $user->id);
+			$templateid = GlobalVariable::getVariable('CustomerPortal_PDFTemplate_Invoice', 0, 'Invoice', $user->id);
 			$params = array('Invoice');
 			break;
 		default:
