@@ -82,9 +82,11 @@ function getRelatedRecords($id, $module, $relatedModule, $queryParameters, $user
 			if (isset($row['id']) && getSalesEntityType($row['id'])=='Services') {
 				$rec = DataTransform::sanitizeData($row, $srvmeta);
 				$rec['productid'] = $srvwsid.$row['productid'];
+				$rec['linetype'] = 'Services';
 			} else {
 				$rec = DataTransform::sanitizeData($row, $meta);
 				$rec['productid'] = $pdowsid.$row['productid'];
+				$rec['linetype'] = 'Products';
 			}
 			$records[] = $rec;
 		}
