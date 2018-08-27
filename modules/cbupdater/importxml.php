@@ -120,6 +120,7 @@ function cbupd_import($zipfile) {
 		}
 	}
 	echo getTranslatedString('ImportDone', 'cbupdater').'<br>';
+	include_once 'modules/cbupdater/getupdates.php';
 	if (!$csxmlfound) {
 		echo getTranslatedString('ImportError', 'cbupdater').'<br>';
 		echo getTranslatedString('CleanUp', 'cbupdater').'<br>';
