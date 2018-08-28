@@ -693,5 +693,12 @@ class cbtranslation extends CRMEntity {
 			return '';
 		}
 	}
+        
+        public function trash($module, $record) {
+		global $adb;	
+                $adb->query("Delete from vtiger_cbtranslation where cbtranslationid=$record");
+                $adb->query("Delete from vtiger_cbtranslationcf where cbtranslationid=$record");
+                $adb->query("Delete from vtiger_crmentity where crmid=$record");
+	}
 }
 ?>
