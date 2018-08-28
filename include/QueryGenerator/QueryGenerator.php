@@ -970,7 +970,7 @@ class QueryGenerator {
 							$fieldSql .= "$fieldGlue ".$field->getTableName().'.'.$field->getColumnName().' IN (
 								select translation_key
 								from vtiger_cbtranslation
-								where locale="'.$current_user->language.'" and forpicklist="'.$this->getModule().'::'.$field->getColumnName().'" and i18n '.$valueSql.')'
+								where locale="'.$current_user->language.'" and forpicklist="'.$this->getModule().'::'.$field->getFieldName().'" and i18n '.$valueSql.')'
 								.(in_array($conditionInfo['operator'], array('n', 'ni', 'nin', 'k', 'dnsw', 'dnew')) ? ' AND ' : ' OR ')
 								.$field->getTableName().'.'.$field->getColumnName().' '.$valueSql;
 						} else {

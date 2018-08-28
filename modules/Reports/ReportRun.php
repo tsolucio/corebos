@@ -753,7 +753,7 @@ class ReportRun extends CRMEntity {
 						} else {
 							if ($fieldInfo['uitype']==15 || $fieldInfo['uitype']==16) {
 								$fieldvalue = '('.$selectedfields[0].".".$selectedfields[1].' IN (select translation_key from vtiger_cbtranslation
-									where locale="'.$current_user->language.'" and forpicklist="'.$moduleName.'::'.$selectedfields[1]
+									where locale="'.$current_user->language.'" and forpicklist="'.$moduleName.'::'.$selectedfields[3]
 									.'" and i18n '.$this->getAdvComparator($comparator, trim($value), $datatype).')'
 									.(in_array($comparator, array('n', 'k')) ? ' AND ' : ' OR ')
 									.$selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator, trim($value), $datatype).')';

@@ -27,7 +27,10 @@ class picklist_translations extends cbupdaterWorker {
 			$current_user = Users::getActiveAdminUser();
 			set_time_limit(0);
 			ini_set('memory_limit', '1024M');
-
+			if (!vtlib_isModuleActive('cbtranslation')) {
+				include_once "include/utils/VtlibUtils.php";
+				vtlib_toggleModuleAccess('cbtranslation', true);
+			}
 			include_once 'include/Webservices/Create.php';
 			include_once 'modules/cbtranslation/cbtranslation.php';
 			$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
@@ -44,13 +47,14 @@ class picklist_translations extends cbupdaterWorker {
 				foreach ($import_langs as $lang) {
 					if (file_exists('modules/' . $impmod . '/language/' . $lang . '.lang.php')) {
 						include 'modules/' . $impmod . '/language/' . $lang . '.lang.php';
-						$query = $adb->pquery(
-							"select columnname
+						include 'include/language/' . $lang . '.lang.php';
+												$query = $adb->pquery(
+													"select fieldname
 								from vtiger_tab
 								join vtiger_field on vtiger_tab.tabid=vtiger_field.tabid
 								where (uitype='15' or uitype='16') and name=?",
-							array($impmod)
-						);
+													array($impmod)
+												);
 						$count = $adb->num_rows($query);
 						for ($i=0; $i<$count; $i++) {
 							$fieldname = $adb->query_result($query, $i, 0);
@@ -61,6 +65,8 @@ class picklist_translations extends cbupdaterWorker {
 								$key = $adb->query_result($columns, $j, 0);
 								if (isset($mod_strings[$key])) {
 									$value = $mod_strings[$key];
+								} elseif (isset($app_strings[$key])) {
+										$value = $app_strings[$key];
 								} else {
 									$value = $key;
 								}
