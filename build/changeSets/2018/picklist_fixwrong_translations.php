@@ -32,8 +32,8 @@ class picklist_fixwrong_translations extends cbupdaterWorker {
 				include_once "include/utils/VtlibUtils.php";
 				vtlib_toggleModuleAccess('cbtranslation', true);
 			}
-						include_once 'include/Webservices/Create.php';
-			include_once 'include/Webservices/Update.php';
+			include_once 'include/Webservices/Create.php';
+			include_once 'include/Webservices/Revise.php';
 			include_once 'modules/cbtranslation/cbtranslation.php';
 			$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
 			$default_values =  array(
@@ -42,12 +42,13 @@ class picklist_fixwrong_translations extends cbupdaterWorker {
 			);
 			$rec = $default_values;
 
-						$query = $adb->query("select * from vtiger_cbtranslation where forpicklist is not null and forpicklist<>'' and translation_module='HelpDesk'");
+						$query = $adb->query("select * from vtiger_cbtranslation join vtiger_crmentity on crmid=cbtranslationid where forpicklist is not null and forpicklist<>'' and translation_module='cbCalendar' and deleted=0");
 						$count = $adb->num_rows($query);
 						global $current_language;
 			for ($j=0; $j<$count; $j++) {
 				$impmod = $adb->query_result($query, $j, 'translation_module');
 				$lang = $adb->query_result($query, $j, 'locale');
+								$valtranslated = $adb->query_result($query, $j, 'i18n');
 				$forpicklist1 = explode("::", $adb->query_result($query, $j, 'forpicklist'));
 				$forpicklistname = $forpicklist1[1];
 				$forpicklist = $forpicklist1[0].'::'.$forpicklist1[1];
@@ -73,7 +74,8 @@ class picklist_fixwrong_translations extends cbupdaterWorker {
 						$fieldname = $adb->query_result($fname, 0, 0);
 						$adb->query("delete from vtiger_cbtranslation where forpicklist='$forpicklist'");
 						$adb->query("delete from vtiger_cbtranslationcf where cbtranslationid not in (select cbtranslationid from vtiger_cbtranslation)");
-						$table = 'vtiger_'.$fieldname;
+						$adb->query("delete from vtiger_crmentity where setype='cbtranslation' and crmid not in (select cbtranslationid from vtiger_cbtranslation)");
+												$table = 'vtiger_'.$fieldname;
 						$columns = $adb->query("select $fieldname from $table");
 						$countcol = $adb->num_rows($columns);
 						for ($i=0; $i<$countcol; $i++) {
@@ -95,9 +97,11 @@ class picklist_fixwrong_translations extends cbupdaterWorker {
 					} else {
 						$wsentity = $adb->query("select id from vtiger_ws_entity where name = 'cbtranslation'");
 						$wsentityid = $adb->query_result($wsentity, 0, 0);
-						$rec = vtws_retrieve($wsentityid.'x'.$translationid, $current_user);
-						$rec['i18n'] = $value;
-						$res=vtws_update($rec, $current_user);
+						if ($valtranslated != $value) {
+							$rec['i18n'] = $value;
+							$rec['id'] = $wsentityid.'x'.$translationid;
+							vtws_revise($rec, $current_user);
+						}
 					}
 				}
 			}
