@@ -2256,6 +2256,9 @@ function getMergedDescription($description, $id, $parent_type) {
 		$log->debug('Exiting from getMergedDescription due to no record information ...');
 		return $description;
 	}
+	if (strpos($id, 'x')>0) {
+		list($wsid, $id) = explode('x', $id);
+	}
 	if ($parent_type != 'Users') {
 		$emailTemplate = new EmailTemplate($parent_type, $description, $id, $current_user);
 		$description = $emailTemplate->getProcessedDescription();
