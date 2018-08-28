@@ -320,7 +320,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 		$noofrows = $adb->num_rows($result);
 		if ($noofrows!=0) {
 			$column_name=$adb->query_result($result, 0, 'columnname');
-                        $field_name=$adb->query_result($result, 0, 'fieldname');
+			$field_name=$adb->query_result($result, 0, 'fieldname');
 			//Check added for tickets by accounts/contacts in dashboard
 			if ($column_name == 'parent_id') {
 				if ($search_field_first	== 'account_id') {
@@ -337,21 +337,21 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 			$uitype=getUItype($module, $column_name);
 
 			//Added for Member of search in Accounts
-			if ($column_name == "parentid" && $module == "Accounts") {
-				$table_name = "vtiger_account2";
-				$column_name = "accountname";
+			if ($column_name == 'parentid' && $module == 'Accounts') {
+				$table_name = 'vtiger_account2';
+				$column_name = 'accountname';
 			}
-			if ($column_name == "parentid" && $module == "Products") {
-				$table_name = "vtiger_products2";
-				$column_name = "productname";
+			if ($column_name == 'parentid' && $module == 'Products') {
+				$table_name = 'vtiger_products2';
+				$column_name = 'productname';
 			}
-			if ($column_name == "reportsto" && $module == "Contacts") {
-				$table_name = "vtiger_contactdetails2";
-				$column_name = "lastname";
+			if ($column_name == 'reportsto' && $module == 'Contacts') {
+				$table_name = 'vtiger_contactdetails2';
+				$column_name = 'lastname';
 			}
-			if ($column_name == "inventorymanager" && $module = "Quotes") {
-				$table_name = "vtiger_usersQuotes";
-				$column_name = "user_name";
+			if ($column_name == 'inventorymanager' && $module = 'Quotes') {
+				$table_name = 'vtiger_usersQuotes';
+				$column_name = 'user_name';
 			}
 			//Added to support user date format in basic search
 			if ($uitype == 5 || $uitype == 6 || $uitype == 23 || $uitype == 70) {
@@ -997,20 +997,20 @@ function getUnifiedWhere($listquery, $module, $search_val) {
 	for ($i=0; $i<$noofrows; $i++) {
 		$columnname = $adb->query_result($result, $i, 'columnname');
 		$tablename = $adb->query_result($result, $i, 'tablename');
-                $fieldname = $adb->query_result($result, $i, 'fieldname');
+		$fieldname = $adb->query_result($result, $i, 'fieldname');
 		$field_uitype = getUItype($module, $columnname);
 
 		// Search / Lookup customization
 		if ($module == 'Contacts' && $columnname == 'accountid') {
-			$columnname = "accountname";
-			$tablename = "vtiger_account";
+			$columnname = 'accountname';
+			$tablename = 'vtiger_account';
 		}
 		if ($module == 'HelpDesk' && $columnname == 'parent_id') {
-			$columnname = "accountname";
-			$tablename = "vtiger_account";
+			$columnname = 'accountname';
+			$tablename = 'vtiger_account';
 			if (false !== strpos($listquery, $tablename)) {
 				if ($where != '') {
-					$where .= " OR ";
+					$where .= ' OR ';
 				}
 				if ($binary_search) {
 					$where .= 'LOWER('.$tablename.'.'.$columnname.") LIKE BINARY LOWER('". formatForSqlLike($search_val) ."')";
@@ -1018,20 +1018,22 @@ function getUnifiedWhere($listquery, $module, $search_val) {
 					$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val) ."'";
 				}
 			}
-			$columnname = "firstname";
-			$tablename = "vtiger_contactdetails";
+			$columnname = 'firstname';
+			$tablename = 'vtiger_contactdetails';
 		}
 
 		//Before form the where condition, check whether the table for the field has been added in the listview query
 		if (false !== strpos($listquery, $tablename)) {
 			if ($where != '') {
-				$where .= " OR ";
+				$where .= ' OR ';
 			}
 			if ($binary_search) {
 				$where .= 'LOWER('.$tablename.'.'.$columnname.") LIKE BINARY LOWER('". formatForSqlLike($search_val) ."')";
 			} else {
 				if (is_uitype($field_uitype, '_picklist_')) {
-					$where .= '('.$tablename.".".$columnname.' IN (select translation_key from vtiger_cbtranslation where locale="'.$current_user->language.'" and forpicklist="'.$module.'::'.$fieldname.'" and i18n LIKE "'.formatForSqlLike($search_val).'") OR '.$tablename.".".$columnname.' LIKE "'. formatForSqlLike($search_val).'")';
+					$where .= '('.$tablename.".".$columnname.' IN (select translation_key from vtiger_cbtranslation
+						where locale="'.$current_user->language.'" and forpicklist="'.$module.'::'.$fieldname.'" and i18n LIKE "'.formatForSqlLike($search_val).'") OR '
+						.$tablename.".".$columnname.' LIKE "'. formatForSqlLike($search_val).'")';
 				} else {
 					$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val) ."'";
 				}
@@ -1299,8 +1301,8 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 	if ($tablename == 'vtiger_contactdetails' && $fieldname == 'lastname') {
 		$fieldname = 'contactid';
 	}
-        $fldname = $adb->query("select fieldname from vtiger_field where tablename='$tablename' and columnname='$fieldname'");
-        $fld = $adb->query($fldname,0,0);
+	$fldname = $adb->pquery('select fieldname from vtiger_field where tablename=? and columnname=?', array($tablename, $fieldname));
+	$fld = $adb->query($fldname, 0, 0);
 	$contactid = 'vtiger_contactdetails.lastname';
 	if ($currentModule != 'Contacts' && $currentModule != 'Leads' && $currentModule != 'Campaigns') {
 		$contactid = getSqlForNameInDisplayFormat(array('lastname'=>'vtiger_contactdetails.lastname', 'firstname'=>'vtiger_contactdetails.firstname'), 'Contacts');
