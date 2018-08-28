@@ -42,7 +42,7 @@ class picklist_fixwrong_translations extends cbupdaterWorker {
 			);
 			$rec = $default_values;
 
-						$query = $adb->query("select * from vtiger_cbtranslation join vtiger_crmentity on crmid=cbtranslationid where forpicklist is not null and forpicklist<>'' and translation_module='cbCalendar' and deleted=0");
+						$query = $adb->query("select * from vtiger_cbtranslation join vtiger_crmentity on crmid=cbtranslationid where forpicklist is not null and forpicklist<>'' and deleted=0");
 						$count = $adb->num_rows($query);
 						global $current_language;
 			for ($j=0; $j<$count; $j++) {
