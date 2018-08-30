@@ -63,6 +63,9 @@ class picklist_translations extends cbupdaterWorker {
 							$countcol = $adb->num_rows($columns);
 							for ($j=0; $j<$countcol; $j++) {
 								$key = $adb->query_result($columns, $j, 0);
+								if (empty($key)) {
+									continue;
+								}
 								if (isset($mod_strings[$key])) {
 									$value = $mod_strings[$key];
 								} elseif (isset($app_strings[$key])) {
