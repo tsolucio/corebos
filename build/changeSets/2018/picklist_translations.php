@@ -69,7 +69,7 @@ class picklist_translations extends cbupdaterWorker {
 								if (isset($mod_strings[$key])) {
 									$value = $mod_strings[$key];
 								} elseif (isset($app_strings[$key])) {
-										$value = $app_strings[$key];
+									$value = $app_strings[$key];
 								} else {
 									$value = $key;
 								}

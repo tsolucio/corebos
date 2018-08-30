@@ -62,10 +62,13 @@ class picklist_fixwrong_translations extends cbupdaterWorker {
 					include 'include/language/' . $lang . '.lang.php';
 
 					$key = $adb->query_result($query, $j, 'translation_key');
+					if (empty($key)) {
+						continue;
+					}
 					if (isset($mod_strings[$key])) {
 						$value = $mod_strings[$key];
 					} elseif (isset($app_strings[$key])) {
-							$value = $app_strings[$key];
+						$value = $app_strings[$key];
 					} else {
 						$value = $key;
 					}
