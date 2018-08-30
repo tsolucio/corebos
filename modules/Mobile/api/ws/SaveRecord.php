@@ -94,6 +94,9 @@ class crmtogo_WS_SaveRecord extends crmtogo_WS_FetchRecord {
 						$this->recordValues['visibility'] = 'all';
 					}
 				}
+				if (isset($_REQUEST['duplicatedfrom']) && !empty($_REQUEST['duplicatedfrom'])) {
+					$this->recordValues['isduplicatedfromrecordid'] = $_REQUEST['duplicatedfrom'];
+				}
 				$this->recordValues = vtws_create($module, $this->recordValues, $current_user);
 			}
 			// Update the record id
