@@ -42,6 +42,9 @@ class picklist_translations extends cbupdaterWorker {
 			$import_langs = array('en_us','es_es','de_de','en_gb','es_mx','fr_fr','hu_hu','it_it','nl_nl','pt_br');
 			$import_modules = getAllowedPicklistModules(1);
 			$import_modules = array_merge($import_modules, array('Rss','Recyclebin'));
+			$chksql = 'select 1
+				from vtiger_cbtranslation
+				where translation_module=? and translation_key=? and forpicklist=? and locale=?';
 			foreach ($import_modules as $impmod) {
 				set_time_limit(0);
 				foreach ($import_langs as $lang) {
@@ -78,6 +81,10 @@ class picklist_translations extends cbupdaterWorker {
 								$rec['forpicklist'] = $impmod.'::'.$fieldname;
 								$rec['i18n'] = $value;
 								$rec['locale'] = $lang;
+								$rs = $adb->pquery($chksql, array($rec['translation_module'], $rec['translation_key'], $rec['forpicklist'], $rec['locale']));
+								if ($adb->num_rows($rs)>0) {
+									continue;
+								}
 								vtws_create('cbtranslation', $rec, $current_user);
 							}
 						}
