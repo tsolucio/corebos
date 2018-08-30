@@ -1296,7 +1296,7 @@ function getAdvancedSearchComparator($comparator, $value, $datatype = '') {
 function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $datatype) {
 	//we have to add the fieldname/tablename.fieldname and the corresponding value (which we want).
 	// So that when these LHS field comes then RHS value will be replaced for LHS in the where condition of the query
-	global $mod_strings, $currentModule, $current_user;
+	global $adb, $mod_strings, $currentModule, $current_user;
 	//Added for proper check of contact name in advance filter
 	if ($tablename == 'vtiger_contactdetails' && $fieldname == 'lastname') {
 		$fieldname = 'contactid';
