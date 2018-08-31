@@ -1,0 +1,253 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+  <title>bsmSelect examples</title>
+
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+
+  <link rel="stylesheet" type="text/css" href="../css/jquery.bsmselect.css" />
+  <link rel="stylesheet" type="text/css" href="example.css" />
+  <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+
+  <style type="text/css">
+    form {
+      width: 400px;
+      position: relative;
+    }
+
+    #changes3 {
+      position: absolute;
+      width: 200px;
+      left: 430px;
+      background: #fff;
+    }
+  </style>
+
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
+  <script type="text/javascript" src="../js/jquery.bsmselect.js"></script>
+  <script type="text/javascript" src="../js/jquery.bsmselect.sortable.js"></script>
+  <script type="text/javascript" src="../js/jquery.bsmselect.compatibility.js"></script>
+
+  <script type="text/javascript">//<![CDATA[
+
+    jQuery(function($) {
+
+      // Initialize options
+      var cities = ['Atlanta', 'Baltimore', 'Boston', 'BuenosAires', 'Calgary', 'Chicago', 'Denver',
+        'Dubai', 'Frankfurt', 'HongKong', 'Honolulu', 'Houston', 'KualaLumpur', 'London', 'LosAngeles',
+        'Melbourne', 'MexicoCity', 'Miami', 'Minneapolis', 'Montreal', 'NewYorkCity', 'Paris', 'Philadelphia',
+        'Rotterdam', 'SanDiego', 'SanFrancisco', 'SaoPaulo', 'Seattle', 'Seoul', 'Shanghai', 'Singapore', 'Sydney',
+        'Tokyo', 'Toronto', 'Vancouver'];
+
+      $.each(cities, function(index, city)
+      {
+        $(".sminit").each(function() {
+          $(this).append($("<option>").html(city));
+        });
+      });
+
+      $("option:nth-child(7n)").attr('selected', 'selected');
+
+      // Example 1
+      $("#cities1").bsmSelect({
+        addItemTarget: 'bottom',
+        animate: true,
+        highlight: true,
+        plugins: [
+          $.bsmSelect.plugins.sortable({ axis : 'y', opacity : 0.5 }, { listSortableClass : 'bsmListSortableCustom' }),
+          $.bsmSelect.plugins.compatibility()
+        ]
+      });
+
+      // Example 2
+      $("#cities2").bsmSelect({
+        animate: true,
+        highlight: true,
+        plugins: [$.bsmSelect.plugins.sortable(), $.bsmSelect.plugins.compatibility()]
+      });
+
+      $("#add_city_btn2").click(function() {
+
+        var city = $("#add_city2").val();
+
+        $("#cities2").append($("<option>", { text: city, selected: "selected"})).change();
+        $("#add_city2").val('');
+
+        return false;
+      });
+
+      // Example 3
+      $("#cities3").bsmSelect({
+        addItemTarget: 'top',
+        plugins: [$.bsmSelect.plugins.sortable()]
+      });
+
+      // track changes with our own event
+      $("#cities3").change(function(e, data) {
+
+        // add a little note at the top that said what was done
+        $("#changes3").prepend($("<li>").html(data.type + ": " + data.value));
+
+        // if it's a sort or an add, then give it a little color animation to highlight it
+        if(data.type != 'drop') {
+          data.item.animate({ 'backgroundColor': '#ffffcc' }, 20, 'linear', function() {
+            data.item.animate({ 'backgroundColor': '#dddddd' }, 500);
+          });
+        }
+      });
+
+      // Example 4
+      $("#cities4").bsmSelect({
+        addItemTarget: 'bottom',
+        plugins: [$.bsmSelect.plugins.sortable()]
+      }).after($("<a href='#'>Select All</a>").click(function() {
+        $("#cities4").children().attr("selected", "selected").end().change();
+        return false;
+      }));
+
+      // Example 5
+      $("#cities5").bsmSelect({
+        showEffect: function($el){ $el.fadeIn(); },
+        hideEffect: function($el){ $el.fadeOut(function(){ $(this).remove();}); },
+        plugins: [$.bsmSelect.plugins.sortable()],
+        title: 'Pick some cities',
+        highlight: 'highlight',
+        addItemTarget: 'original',
+        removeLabel: '<strong>X</strong>',
+        containerClass: 'bsmContainer',                // Class for container that wraps this widget
+        listClass: 'bsmList-custom',                   // Class for the list ($ol)
+        listItemClass: 'bsmListItem-custom',           // Class for the <li> list items
+        listItemLabelClass: 'bsmListItemLabel-custom', // Class for the label text that appears in list items
+        removeClass: 'bsmListItemRemove-custom',       // Class given to the "remove" link
+        extractLabel: function($o) {return $o.parents('optgroup').attr('label') + "&nbsp;>&nbsp;" + $o.html();}
+      });
+
+    });
+
+  //]]></script>
+
+</head>
+<body>
+  <div class="warning">
+    <p>The included version of jQuery UI makes ie6 stop working.</p>
+    <p>Try a <a href="./index_simple.html">simpler example</a> with ie6.</p>
+  </div>
+
+  <h1>Example 1: Typical Usage</h1>
+
+  <form action="./example_results.php" method="post">
+
+    <label for="cities1">What are your favorite cities?</label>
+    <select id="cities1" multiple="multiple" name="cities[]" title="Click to Select a City" class="sminit">
+      <option>Amsterdam</option>
+    </select>
+    <p><input type="submit" name="submit" value="submit" /></p>
+  </form>
+
+  <h1>Example 2: Modifying the select from jQuery</h1>
+
+  <h3>
+  This example demonstrates how you can modify the contents of the select, and how you should
+  trigger a change() event on the select after you have modified it.
+  </h3>
+
+  <form action="./example_results.php" method="post">
+
+    <label for="cities2">What are your favorite cities?</label>
+    <select id="cities2" multiple="multiple" name="cities[]" title="Please Select" class="sminit">
+      <option>Amsterdam</option>
+    </select>
+
+    <p><em>You may click and drag cities to order of preference.</em></p>
+    <p><input type="submit" name="submit" value="submit" /></p>
+  </form>
+
+  <p>
+    <label for="add_city2">add a city?</label>
+    <input type="text" id="add_city2" value="" />
+    <button type="button" id="add_city_btn2">add</button>
+  </p>
+
+  <h1>Example 3: Monitoring Changes to the Select</h1>
+
+  <h3>
+  This example demonstrates how you can catch bsmSelect events by attaching a change event to the original select.
+  In this rough example, we setup our change event to highlight manipulated items with a yellow flash of color.
+  We also record a history of changes in the right column. View the source of this page for details.
+  </h3>
+
+  <form action="./example_results.php" method="post">
+
+    <ul id="changes3">
+      <li style="display: none;">W3C conformance</li>
+    </ul>
+
+    <label for="cities3">What are your favorite cities?</label>
+    <select id="cities3" multiple="multiple" name="cities[]" title="Click to Select a City" class="sminit">
+      <option>Amsterdam</option>
+    </select>
+
+    <p><em>You may click and drag cities to order of preference.</em></p>
+    <p><input type="submit" name="submit" value="submit" /></p>
+  </form>
+
+  <h1>Example 4: Simple Manipulation</h1>
+  <h3>In this example, we add a "select all" functionality.</h3>
+
+  <form action="./example_results.php" method="post">
+
+    <label for="cities4">What are your favorite cities?</label>
+    <select id="cities4" multiple="multiple" name="cities[]" title="Click to Select a City" class="sminit">
+      <option>Amsterdam</option>
+    </select>
+    <p><input type="submit" name="submit" value="submit" /></p>
+  </form>
+
+  <h1>Example 5: bsmSelect specific options</h1>
+  <h3>Execizing the features added over asmSelect</h3>
+  <ul>
+    <li>Custom effects</li>
+    <li>Option groups</li>
+    <li>Setting the title in the configuration</li>
+    <li>Customize the way list element labels get extracted</li>
+  </ul>
+
+  <form action="./example_results.php" method="post">
+
+    <label for="cities5">What are your favorite cities?</label>
+    <select id="cities5" multiple="multiple" name="cities[]">
+      <optgroup label="Europe">
+        <option>Amsterdam</option>
+        <option>London</option>
+        <option selected="selected">Paris</option>
+      </optgroup>
+      <optgroup label="US">
+        <option>Atlanta</option>
+        <option selected="selected">Boston</option>
+        <option>Chicago</option>
+        <option>Denver</option>
+      </optgroup>
+      <optgroup label="Elsewhere" disabled="disabled">
+        <option>Seoul</option>
+        <option>Shanghai</option>
+        <option>Singapore</option>
+        <option>Sydney</option>
+      </optgroup>
+
+    </select>
+    <p style="clear:both;"><input type="submit" name="submit" value="submit" /></p>
+  </form>
+
+  <ul id='footer'>
+    <li><a href="http://github.com/vicb/bsmSelect">bsmSelect project on GitHub</a></li>
+    <li><a href="http://code.google.com/p/jquery-asmselect/">Original asmSelect homepage at Google Code</a></li>
+    <li><a href="http://www.ryancramer.com/journal/entries/select_multiple/">Article: Select multiple form fields - Finding a better solution</a></li>
+  </ul>
+
+  <p class="copyright">&copy; 2008 by <a href="http://www.ryancramer.com">Ryan Cramer</a></p>
+  <p class="copyright">&copy; 2010 by <a href="http://github.com/vicb/">Victor Berchet</a></p>
+
+</body>
+</html>
