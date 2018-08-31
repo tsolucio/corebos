@@ -48,6 +48,7 @@ class picklist_fixwrong_translations extends cbupdaterWorker {
 					where forpicklist is not null and forpicklist<>'' and deleted=0"
 			);
 			$count = $adb->num_rows($query);
+			$wsentityid = vtws_getEntityID('cbtranslation').'x';
 			for ($j=0; $j<$count; $j++) {
 				$impmod = $adb->query_result($query, $j, 'translation_module');
 				$lang = $adb->query_result($query, $j, 'locale');
@@ -103,14 +104,15 @@ class picklist_fixwrong_translations extends cbupdaterWorker {
 							$rec['forpicklist'] = $impmod.'::'.$fieldname;
 							$rec['i18n'] = $value1;
 							$rec['locale'] = $lang;
+							if (empty($key1)) {
+								continue;
+							}
 							vtws_create('cbtranslation', $rec, $current_user);
 						}
 					} else {
-						$wsentity = $adb->query("select id from vtiger_ws_entity where name = 'cbtranslation'");
-						$wsentityid = $adb->query_result($wsentity, 0, 0);
 						if ($valtranslated != $value) {
 							$rec['i18n'] = $value;
-							$rec['id'] = $wsentityid.'x'.$translationid;
+							$rec['id'] = $wsentityid.$translationid;
 							vtws_revise($rec, $current_user);
 						}
 					}
