@@ -1,0 +1,1710 @@
+/* Global */
+
+.slds-input {
+    font-size: 12px!important;
+}
+
+.text-red {
+    color: red;
+}
+
+.text-center {
+    text-align: center!important;
+}
+
+.slds-radio--faux {
+    cursor: pointer!important;
+}
+
+.subheader-image img {
+    width: 20px;
+}
+
+/*========    Header    ==========*/
+
+.headerlink img {
+    width: 25px;
+    vertical-align: text-bottom;
+}
+
+.headerlink img:hover {
+    opacity: 0.7;
+}
+
+.td-space td {
+    padding-left: 3px;
+}
+
+#qccombo {
+    cursor: pointer;
+}
+
+.quickCreateTable tr .dvtCellInfo .slds-select {
+    width: 75%;
+}
+
+/*========    Search    ==========*/
+.slds-pill__remove img{
+    width: 16px;
+    cursor: pointer;
+}
+/*========    End Search    ==========*/
+
+
+/*========    End Header    ==========*/
+.slds-table tbody tr {
+    counter-increment: row-number;
+}
+
+.dvtCellInfo img,
+.dvtCellInfo .slds-select,
+.dvtCellInfo .slds-radio--faux {
+    cursor: pointer;
+}
+
+/*=========  Button List  ==========*/
+
+#LB_buttonlist {
+    background-color: #f7f9fb;
+}
+
+
+.uiMenu {
+    position: relative;
+}
+
+.close-icon img{
+    width: 16px;
+}
+
+
+.forceHeaderMenuTrigger.uiPopupTrigger {
+    display: inline-block;
+}
+
+.forceHeaderMenuTrigger a {
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: .25rem;
+    background: transparent none;
+    text-decoration: none;
+}
+
+.forceHeaderMenuTrigger .headerTrigger {
+    display: block;
+}
+
+.uiTooltip.tooltip-trigger {
+    display: inline;
+    position: relative;
+}
+
+.forceHeaderMenuTrigger .headerTrigger {
+    display: block;
+}
+
+.oneGlobalCreate svg {
+    fill: rgb(255, 255, 255);
+    margin: 1px;
+}
+
+.slds-global-header__button_icon-actions,
+.slds-global-header__button--icon-actions {
+    background: rgb(82, 105, 141);
+    border-radius: .25rem;
+    color: rgb(255, 255, 255);
+}
+
+.slds-global-header__button_icon-actions:hover,
+.slds-global-header__button--icon-actions:hover {
+    background: rgb(102, 179, 255);
+    /*background: rgb(102, 102, 255);*/
+}
+
+.slds-table-buttons th {
+    padding-right: 0;
+}
+
+.slds-table-buttons {
+    background-color: #f7f9fb;
+}
+
+
+.LB_Button {
+    padding: .2rem;
+}
+
+.forceHeaderMenuTrigger img {
+    width: 20px;
+    -webkit-transition: -webkit-transform .5s ease-in-out;
+    transition: transform .5s ease-in-out;
+}
+
+.forceHeaderMenuTrigger img:hover {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
+
+.slds-button {
+    cursor: pointer;
+}
+
+.slds-table td.searchAlph {
+    padding: .2rem;
+}
+
+.searchAlph:hover {
+    background-color: #e2e5ff;
+    /*color: #fff;*/
+}
+
+
+.header-title-container .slds-truncate {
+    white-space: normal;
+}
+
+/*=========   END BUTTON_LIST  ==========*/
+
+.homePageButtons img {
+    height: 20px;
+    width: 20px;
+}
+
+.homePageButtons img {
+    -webkit-transition: -webkit-transform .5s ease-in-out;
+    transition: transform .5s ease-in-out;
+}
+
+.homePageButtons img:hover {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
+
+/*=========  DETAIL VIEW  ==========*/
+
+ul .slds-tabs--scoped__item {
+    border-right: 1px solid #d8dde6;
+}
+
+.detailview_utils_jumpto img,
+.calendar-icon img {
+    -webkit-transition: -webkit-transform .5s ease-in-out;
+    transition: transform .5s ease-in-out;
+}
+
+.detailview_utils_jumpto img:hover,
+.calendar-icon img:hover {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.calendar-icon img {
+    vertical-align: inherit;
+    width: 18px;
+    cursor: pointer;
+}
+
+.slds-select {
+    font-size: .8rem;
+}
+
+.detailview_utils_next:hover,
+.detailview_utils_prev:hover {
+    opacity: .7;
+}
+
+.slds-text-heading--label img {
+    width: 23px;
+}
+
+
+.slds-tabs--scoped__nav li {
+    border-right: 1px solid #d8dde6;
+    border-bottom: 1px solid #d8dde6;
+}
+
+li.active,
+.slds-tabs--scoped__nav .slds-tabs--scoped__item:focus,
+.slds-tabs--scoped__nav .slds-tabs--scoped__item:active {
+    background-color: white;
+    color: #0070d2;
+    border-bottom: 0;
+    /*border-color: #d8dde6;*/
+}
+
+.uiOutputText {
+    display: block;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow: hidden;
+    width: 850px;
+    white-space: nowrap!important;
+}
+
+
+
+/*=========  DETAIL VIEW ---HEADER---  ==========*/
+
+.s1FixedFullWidth {
+    left: 0;
+    right: 0;
+    -webkit-transition: left .25s;
+    -moz-transition: left .25s;
+    -ms-transition: left .25s;
+    -o-transition: left .25s;
+    transition: left .25s;
+}
+
+.forceHighlightsStencilSettings.s1FixedTop,
+.forceHighlightsStencilDesktop.s1FixedTop {
+    /*position: fixed;*/
+    border-top: none;
+    z-index: 7000;
+}
+
+.forceHighlightsStencilSettings,
+.forceHighlightsStencilDesktop {
+    min-height: 60px;
+}
+
+.primaryFieldRow {
+    z-index: 2;
+    position: relative;
+}
+
+.primaryFieldRow td {
+    white-space: normal;
+}
+
+.forceHighlightsStencilSettings.profilePicWrapper,
+.forceHighlightsStencilDesktop.profilePicWrapper {
+    -webkit-box-flex: 0;
+    flex: none;
+    -webkit-transform-origin: bottom left;
+    -moz-transform-origin: bottom left;
+    -ms-transform-origin: bottom left;
+    -o-transform-origin: bottom left;
+    transform-origin: bottom left;
+    align-items: flex-start;
+}
+
+.profilePicWrapper {
+    padding-bottom: .7rem;
+}
+
+.forceEntityIcon {
+    display: block;
+    -webkit-border-radius: .125rem;
+    -moz-border-radius: .125rem;
+    border-radius: .125rem;
+    height: 1.1rem;
+}
+
+.forceSocialPhoto.photoContainer {
+    float: left;
+    display: block;
+    padding-right: .25rem;
+    line-height: 1;
+    background-clip: content-box;
+}
+
+.forceHighlightsStencilSettings .photoContainer:not(.forceOutputLookup),
+.forceHighlightsStencilDesktop .photoContainer:not(.forceOutputLookup) {
+    padding-right: 0;
+}
+
+.forceEntityIcon {
+    display: block;
+    border-radius: .125rem;
+}
+
+.forceEntityIcon.small {
+    width: 2rem;
+    height: 2rem;
+}
+
+.forceEntityIcon.roundedSquare {
+    border-radius: .25rem;
+}
+
+.forceHighlightsStencilDesktop .forceEntityIcon,
+.forceHighlightsStencilDesktop .forceSocialPhoto img,
+.forceHighlightsStencilDesktop .forceSocialPhoto_v2 img {
+    width: 2rem;
+    height: 2rem;
+}
+
+.forceHighlightsStencilSettings .forceEntityIcon,
+.forceHighlightsStencilSettings .forceSocialPhoto img,
+.forceHighlightsStencilSettings .forceSocialPhoto_v2 img {
+    width: 48px;
+    height: 48px;
+}
+
+.slds-media__body p,
+.slds-media__body h1,
+.slds-media__body h2 {
+    margin: 0;
+}
+
+.forceHighlightsStencilSettings .actionsContainer,
+.forceHighlightsStencilDesktop .actionsContainer {
+    -webkit-align-items: flex-end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+    padding-top: .75rem;
+}
+
+#detailview_utils_thirdfiller {
+    display: block;
+    padding: 0;
+}
+
+.detailview_utils_prev,
+.detailview_utils_next,
+.detailview_utils_toggleactions,
+.detailview_utils_jumpto {
+    cursor: pointer;
+}
+
+.detailview_utils_jumpto img {
+    /*padding-top: 9px;*/
+}
+
+.detailview_utils_toggleactions img {
+    padding-top: 7px;
+    width: 16px;
+}
+
+.detailview_utils_prev img:hover,
+.detailview_utils_next img:hover,
+.detailview_utils_jumpto img:hover,
+.detailview_utils_toggleactions img:hover {
+    opacity: 0.5;
+}
+
+.detailview_utils_prev img[width='23']:hover,
+.detailview_utils_next img[width='23']:hover {
+    opacity: 1;
+}
+
+.uiImage img[title='Vendors'],
+.uiImage img[title='InventoryDetails'],
+.uiImage img[title='GlobalVariable'],
+.uiImage img[title='Invoice'] {
+    padding: 3px;
+}
+
+.text-left {
+    text-align: left!important;
+}
+
+.slds-width {
+    width: 100%;
+}
+
+#availableusers option:first-child,
+#selectedusers option:first-child {
+    border: none;
+}
+
+#availableusers option,
+#selectedusers option {
+    border-radius: 0;
+}
+
+.dvtCellInfo input[name="firstname"] {
+    width: 65%;
+}
+
+/*=========  END DETAIL VIEW ---HEADER---  ==========*/
+
+
+/*=========  DETAIL VIEW ---BODY---  ==========*/
+
+.detailview_table {
+    border-collapse: separate;
+    border-spacing: .2rem;
+    border: none;
+}
+
+article {
+    display: block;
+}
+
+.flexipageComponent>article {
+    border-radius: 0;
+}
+
+article.container::before,
+article.container::after {
+    content: normal;
+}
+
+@media only screen and (min-width: 768px) {
+    article.container {
+        max-width: 100%;
+    }
+}
+
+.runtime_sales_mergeMergeCandidatesPreviewCard.container {
+    background-color: rgb(244, 246, 249);
+    /*background-color: #fff;*/
+    /*margin: 1rem 0 0 0;*/
+}
+
+.runtime_sales_mergeMergeCandidatesPreviewCard .merge-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    color: rgb(255, 255, 255);
+    background-color: rgb(242, 207, 91);
+    border-radius: .125rem;
+    text-align: center;
+    display: inline-block;
+}
+
+.runtime_sales_mergeMergeCandidatesPreviewCard .forceIcon.merge-icon {
+    font-size: .845rem;
+}
+
+.forceBaseCard .header-title-container {
+    display: -webkit-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    max-width: 100%;
+}
+
+.runtime_sales_mergeMergeCandidatesPreviewCard h2.header-title-container span.slds-truncate {
+    white-space: normal;
+}
+
+.slds-card__header {
+    padding-top: .75rem;
+    margin-bottom: .75rem;
+}
+
+.flexipageComponent {
+    /*background-color: rgb(244, 246, 249);*/
+    /*padding: 1rem ;*/
+    border: 1px solid rgb(216, 221, 230);
+}
+
+.flexipageComponentComment {
+    margin-bottom: 3rem;
+}
+
+.blockStyleCss>td span,
+.blockStyleCss>td div,
+.blockStyleCss>td {
+    white-space: normal!important;
+}
+
+.runtime_sales_mergeMergeCandidatesPreviewCard .actionData,
+.runtime_sales_mergeMergeCandidatesPreviewCard .rightMailMergeData,
+.runtime_sales_mergeMergeCandidatesPreviewCard .generalData {
+    padding: .5rem 0;
+    text-align: left;
+    color: rgb(84, 105, 141);
+    font-size: .8125rem;
+}
+
+.generalData img,
+.actionData img. .noSpace {
+    margin-left: 0;
+}
+
+
+
+.slds-tabs--scoped__content {
+    padding-top: 0;
+}
+
+
+.mailMergeFont {
+    font-size: .9rem;
+}
+
+
+
+
+
+
+
+
+/*=========  END DETAIL VIEW ---BODY---  ==========*/
+
+
+/*=========  DETAIL VIEW ---Actions---  ==========*/
+
+.webMnu img {
+    border-radius: 5px;
+    width: 20px;
+    padding: .1rem;
+    margin: 0 .2rem!important;
+}
+
+.actionlink_lbl_show_contact_hierarchy img,
+.actionlink_lbl_show_account_hierarchy img {
+    background-color: #558384;
+}
+
+.actionlink_sendemail img {
+    background-color: #95bf42;
+}
+
+.actionlink_downloaddocument img {
+    background-color: #95bf42;
+    padding: .2rem;
+}
+
+.actionlink_addevent img {
+    background-color: #a25016;
+}
+
+.actionlink_addtodo img {
+    background-color: #5bd6d6;
+}
+
+.actionlink_lbl_add_note img,
+.actionlink_checkdocinteg img {
+    background-color: #daa520;
+}
+
+.actionlink_convertlead img {
+    background-color: #558384;
+}
+
+.actionGenerateInvoice img {
+    background-color: #daa520;
+}
+
+.actionGenerateQuote img {
+    background-color: #88c651;
+}
+
+.actionGeneratePurchaseOrder img {
+    background-color: #468499;
+    padding: 0;
+}
+
+.actionGenerateSalesOrder img,
+.actionListLinkedQuotes img {
+    background-color: #a0522d;
+    padding: 0;
+}
+
+.actionlink_converttoinvoice img {
+    background-color: #8ab82d;
+}
+
+.actionGenerateQuote img {}
+
+.customLinkModule img {
+    background-color: #6dc066;
+}
+
+
+
+
+
+
+
+
+
+
+/*=========  END DETAIL VIEW ---Actions-  ==========*/
+
+.slds-table-moz {
+    width: 100%;
+}
+
+tr td.detailViewContainer {
+    padding: .5rem;
+    /*border: 2px solid rgb(216, 221, 230);*/
+}
+
+.mapButton td {
+    text-align: right;
+}
+
+tr.slds-text-title--caps {
+    letter-spacing: 0.02rem;
+}
+
+.tabsTitle {
+    padding: 0.625rem 1.3rem;
+}
+
+.slds-table td {
+    position: inherit;
+}
+
+.slds-table--cell-buffer tr>td:first-child {
+    padding-left: 0.5rem;
+}
+
+input[type=button].slds-button--small {
+    font-weight: bold;
+    min-height: 1rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    border-left: 1px solid #ffffff;
+    border-top: 1px solid #ffffff;
+    border-right: 1px solid #555555;
+    border-bottom: 1px solid #555555;
+}
+
+input[type=submit].slds-button--small {
+    min-height: 1rem;
+    font-size: 11px;
+    border-left: 1px solid #ffffff;
+    border-top: 1px solid #ffffff;
+    border-right: 1px solid #555555;
+    border-bottom: 1px solid #555555;
+}
+
+tr td.action-block {
+    /*padding: 2.5rem 1rem;*/
+    padding: 0 0 0 1rem;
+    width: 22%;
+    vertical-align: top;
+}
+
+tr td.action-block-calendar {
+    padding: 0 0 0 1rem;
+    width: 20%;
+    vertical-align: top;
+}
+
+tr td.table-aside>.detailview_actionlinks {
+    margin-top: 3rem;
+}
+
+.actionLabel {
+    border-bottom: 1px solid #d4d4d4;
+}
+
+.slds-button--x-small {
+    height: 1.5rem;
+    line-height: 1.5rem;
+    margin: .2rem .6rem;
+}
+
+.dvtCellInfo input[type="radio"] {
+    margin-top: 0;
+}
+
+.dvtCellInfo select {
+    margin: .5rem 0;
+}
+
+/**
+- * Creates a green button style
+- *
+- * @selector .slds-button_success
+- * @restrict .slds-button
+- * @group theme
+- * @modifier
+- */
+
+.slds-button_success,
+.slds-button--success {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #5cb85c;
+    border: 1px solid #4cae4c;
+    color: #fff;
+    font-weight: bold;
+}
+
+.slds-button_success:hover,
+.slds-button_success:focus,
+.slds-button--success:hover,
+.slds-button--success:focus {
+    background-color: #04844b;
+    border-color: #04844b;
+    color: white;
+}
+
+.slds-button_success:active,
+.slds-button--success:active {
+    background-color: #04844b;
+    border-color: #04844b;
+}
+
+
+/** Creates an orange button style */
+.slds-button--warning {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #f0ad4e;
+    border: 1px solid #eea236;
+    color: #fff;
+    font-weight: bold;
+}
+
+.slds-button--warning:hover,
+.slds-button--warning:focus {
+    background-color: #d58512;
+    /*border-color: #985f0d;*/
+    color: #fff;
+}
+
+.slds-button--warning:active {
+    background-color: #ec971f;
+    /*border-color: #d58512;*/
+    color: #fff;
+}
+
+
+.slds-button+.slds-button {
+    margin-left: 0;
+}
+
+ul.slds-tabs--default__nav li {
+    padding-bottom: 0;
+    padding-top: 0;
+}
+
+.slds-dropdown__item>a {
+    padding: 2px 5px 2px 5px;
+}
+
+.slds-dropdown__list li.slds-dropdown__item {
+    padding: 0;
+}
+
+.assideBtn {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.tabMenuTop li {
+    border-top: 1px solid #dfdfdf;
+    border-left: 1px solid #dfdfdf;
+    border-right: 1px solid #dfdfdf;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+li[title="More Information"] {
+    margin-left: 5px;
+}
+
+li[title="More Information"] svg {
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.tabMenuBottom {
+    border-bottom: 1px solid #dfdfdf;
+    border-left: 1px solid #dfdfdf;
+    border-right: 1px solid #dfdfdf;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.slds-tabs--default__link_mod {
+    border-top: 2px solid transparent;
+    border-bottom: none;
+}
+
+.slds-checkbox--faux {
+    cursor: pointer;
+}
+
+.slds-select option {
+    background-color: #fff;
+    color: #000;
+    /*border-radius: 5px;*/
+    border-top: 1px solid #d4d4d4;
+    padding: .1rem .5rem;
+    margin: .1rem 0;
+    font-size: inherit;
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 881px) {
+    .slds-table--fixed-layout {
+        min-width: 768px;
+    }
+}
+
+.img-background {
+    background-color: cornflowerblue!important;
+}
+
+.createview_field_row tr,
+.createview_field_row td {
+    height: .1rem!important;
+}
+
+.createview_field_row .slds-select {
+    width: 75%;
+}
+
+.createview_field_row select {
+    margin: 0;
+}
+
+.createview_field_row textarea,
+.dvtCellInfo textarea {
+    min-height: 35px;
+}
+
+.createview_field_row .slds-input {
+    line-height: .875rem!important;
+    min-height: calc(1.7rem + (1px * 2)!important);
+    font-size: .875rem!important;
+    margin: 0!important;
+}
+
+/*=========   END DETAIL VIEW  ==========*/
+
+/*=========   DetailView - DetailViewUI - DetailViewUIUser  ==========*/
+
+.dvtCellInfo img {
+    width:18px;
+}
+
+/*remove dotted outline/border in Firefox*/
+
+button:focus,
+span:focus,
+a:focus,
+a:active,
+button::-moz-focus-inner,
+input[type="reset"]::-moz-focus-inner,
+input[type="button"]::-moz-focus-inner,
+input[type="radio"]::-moz-focus-inner,
+input[type="submit"]::-moz-focus-inner,
+select::-moz-focus-inner,
+input[type="file"]>input[type="button"]::-moz-focus-inner {
+    outline: none !important;
+}
+
+select:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 #000;
+}
+
+.slds-input {
+    width: 75%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
+.LD-icons {
+    width: 25px;
+    vertical-align: top;
+    -webkit-transition: -webkit-transform .5s ease-in-out;
+    transition: transform .5s ease-in-out;
+    cursor: pointer;
+}
+
+.LD-icons:hover {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
+
+#tagfields span {
+    text-decoration: underline;
+    padding: .1rem;
+}
+
+#tagfields span img {
+    width: 10px;
+}
+
+/*=========   END DetailView - DetailViewUI - DetailViewUIUser  ==========*/
+
+
+/*=========   DetailViewUtils.php  ==========*/
+
+#proTab {
+    margin-top: 40px;
+}
+
+.itemDetailsCss {
+    text-transform: uppercase;
+    letter-spacing: 0.02rem;
+}
+/*=========   END DetailViewUtils.php  ==========*/
+
+
+/*=========   HomeBlock.tpl ==========*/
+.homePageMatrixHdr .slds-radio--faux {
+    margin-right: 0!important;
+}
+
+.homePageMatrixHdr {
+    height: 35px;
+    padding: 5px;
+}
+
+.homePageMatrixHdr .slds-select{
+    width: 30%;
+}
+
+.headerrow img {
+    width: 18px;
+}
+
+.headerrow a img:hover {
+    opacity: .7;
+}
+
+/*=========   End HomeBlock.tpl ==========*/
+
+/*=========   Inventory DetailView.tpl  ==========*/
+
+.borderFix {
+    border-right: 1px solid #fff;
+    border-left: 1px solid #fff;
+}
+
+/*=========   END InventoryDetailView.tpl  ==========*/
+
+.dvtCellLabel {
+    text-align: right;
+}
+
+.dvtBottomButtons {
+    padding: .2rem 1.5rem;
+}
+
+.dvtControlsButtons {
+    padding: .1rem 1.5rem;
+}
+
+.dvtContentSpace {
+    border: none;
+}
+
+.dvtContentSpace>tr {
+    background-color: #f7f7fb;
+}
+
+
+
+
+
+
+
+/*=========   ListView.tpl  ==========*/
+
+.background {
+    background-color: #f7f9fb!important;
+}
+
+.ld-font {
+    font-family: 'Salesforce Sans';
+}
+
+.ld-font span {
+    letter-spacing: initial;
+}
+
+/*.slds-hint-parent th[scope="row"] div {
+    height: 15px;
+}*/
+
+@media screen and (max-width: 1400px) {
+    .ld-font th:nth-child(2) {
+        padding: .5rem 0;
+    }
+}
+
+.ld-font th:nth-child(4) {
+    /*padding: .5rem 0;*/
+    width: 140px;
+}
+
+.ld-font th.slds-text-title--caps span {
+    font-size: .8rem;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.navigation-arrows img {
+    width: 16px;
+}
+
+#resizableTable img {
+    width: 15px;
+    vertical-align: middle;
+}
+
+#no_entries_found {
+    z-index: 77;
+}
+
+#no_entries_found img {
+    width: auto;
+    background-color: orange;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid orange;
+}
+
+/*=========   END ListView.tpl  ==========*/
+
+
+/*=========   ListView Entries.tpl  ==========*/
+
+.layerPopupTransport td {
+    padding: 0 .5rem;
+}
+
+.layerPopupTransport img:hover {
+    opacity: .7;
+}
+
+
+
+td[role="gridcell"] {
+    width: 3.25rem;
+    padding: .2REM .5rem;
+}
+
+th[scope="row"] {
+    padding: .2rem .5rem;
+    text-align: left;
+}
+
+th[scope="col"] {
+    text-align: left;
+}
+
+
+/*=========   END ListView Entries.tpl  ==========*/
+
+
+/*========= Dashboard buttons ========*/
+
+.lds-img img {
+    width: 20px;
+}
+
+.lds-img td {
+    padding: 0!important;
+}
+
+.lds-img img:hover {
+    opacity: .7;
+}
+
+
+/*========= End Dashboard buttons ========*/
+
+
+/*===========Related List Data Content===========*/
+.slds-no-flex img,
+.rel_mod_data_row img,
+.navImgCss img {
+    width: 18px;
+}
+
+.slds-no-flex img:hover,
+.rel_mod_data_row img:hover,
+.navImgCss img:hover {
+    opacity: .7;
+    cursor: pointer;
+}
+
+/*=======CustomView.tpl=======*/
+
+.align-left td:not(:first-child) {
+    text-align: left;
+}
+
+.font-size select {
+    font-size: .8rem;
+}
+
+
+/*=======End CustomView.tpl=======*/
+
+
+/*===========END Related List Data Content===========*/
+
+
+/*=======Start Calendar Module=============*/
+
+.slds-form-element__label-custom {
+    font-size: 0.75rem;
+    line-height: 1.5;
+    margin-right: 0.75rem;
+    margin-bottom: 0.25rem;
+}
+
+.slds-line-height--reset .no-padding {
+    padding: 0!important;
+}
+
+.calendar-activity-blocks {
+    font-weight: bold;
+    margin: 3px;
+    padding: 1px;
+}
+
+.calendar-activity-module-blocks {
+    font-weight: bold;
+    border-width: 2px;
+    border-style: solid;
+    margin: 3px;
+    padding: 1px;
+    border-radius: 3px;
+}
+
+/*=======End Calendar Module=============*/
+
+/*=======Impotrt_Default_Values_widget=============*/
+#defaultValuesElementsContainer .small .slds-input,
+#defaultValuesElementsContainer .slds-select {
+    width: 25%;
+}
+
+/*======= End Import_Default_Values_widget=============*/
+
+.slds-table .globalVariableRow td {
+    white-space: normal;
+}
+
+.slds-hint-parent th .slds-truncate {
+    min-height: 13px;
+}
+
+/* Documents module */
+
+.addfolderDocuments tr td{
+    padding: 0 .5rem;
+}
+
+.delete-documents-folder {
+    width: 16px;
+    cursor: pointer;
+}
+
+.delete-documents-folder:hover {
+    opacity: .7;
+}
+
+/* RecycleBin module */
+
+.nav-recycle-bar {
+    margin: 5px 0;
+}
+
+.recycle-nav td {
+    background-color: #f7f9fb;
+    padding: .2rem;
+}
+
+
+/* Mail Manager Module */
+
+tr td.action-block-mailManager {
+    width: 20%;
+    vertical-align: top;
+    padding-left: 0;
+}
+
+.mail-action .actionData {
+    padding-left: .5rem;
+    border-radius: 5px;
+    margin: .2rem;
+}
+
+.mail-action .actionData:hover {
+    background-color: #C9E0F0;
+}
+
+.mail-action .actionData a:focus,
+.mail-action .actionData a:hover,
+.mail-action .actionData a:active,
+.mail-action .actionData a:after {
+    color: #000!important;
+}
+
+.mail-action .actionData img{
+    vertical-align: sub;
+}
+
+.actionList {
+    padding: 0 .3rem;
+    text-align: left;
+    color: rgb(84, 105, 141);
+    font-size: .8125rem;
+}
+
+.actionList li {
+    padding: .3rem;
+    border-radius: 5px;
+    margin-bottom: .1rem;
+}
+
+.actionList li:focus,
+.actionList li:hover,
+.actionList li:active,
+.actionList li:after {
+    background-color: #C9E0F0;
+}
+
+.actionList li a:focus,
+.actionList li a:hover,
+.actionList li a:active,
+.actionList li a:after {
+    color: #000!important;
+}
+
+
+/* Mail manager Settings */
+.org-type-table .slds-input,
+.org-type-table .slds-select{
+    width: 50%;
+}
+
+.org-type-table .slds-radio--faux {
+    margin-right: 0!important;
+}
+
+.org-type-table .slds-form-element__label {
+    color: #000;
+}
+
+.mail-send-table .dvtCellInfo input {
+    width: 75%;
+}
+
+.mail-send-table .dvtCellInfo img {
+    cursor: pointer;
+    width: 18px;
+    padding: 2px 0;
+}
+
+.mail-send-table .dvtCellInfo img:hover {
+    opacity: .7;
+}
+
+.mail-send-table textarea {
+    height: 100%;
+}
+
+.mail-send-table tr .textarea-template-cell {
+    padding: .5rem!important;
+}
+
+.slds-button--info {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    color: #fff;
+    font-weight: bold;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+
+.slds-button--info:hover {
+    color: #fff;
+    background-color: #46b8da;
+    border-color: #5bc0de;
+}
+
+
+/* RSS module */
+.rss-table td {
+    padding: 0;
+}
+
+.action-block-rss {
+    padding: 0 1rem 0 0;
+    width: 30%;
+    vertical-align: top;
+}
+
+/* Reports module */
+.reports-table .tools-cell img {
+    width: 14px;
+    vertical-align: bottom;
+}
+
+.reports-table .tools-cell img:hover {
+    opacity: .7;
+}
+
+.new-report-table .slds-input,
+.new-report-table .slds-select {
+    width: 100%!important;
+}
+
+.new-report-table .slds-radio--faux {
+    cursor: pointer;
+}
+
+.create-report-table tr td {
+    padding: 5px;
+}
+
+.moveTo-report-table a.drop_down {
+    width: 100%;
+}
+
+.moveTo-report-table a.drop_down:hover {
+    background-color: #f7f9fb;
+}
+
+.moveTo-report-table .slds-text-title--header {
+    border-bottom: 1px solid #d4d4d4;
+}
+
+.advancedfilter-table img {
+    width: 18px!important;
+}
+
+.advancedfilter-table img:hover {
+    opacity: .7;
+}
+
+.back-to-reports {
+    padding: .2rem 0; 
+}
+
+.report-table-icons img {
+    width: 16px;
+}
+
+.report-table-icons img:hover {
+    opacity: .7;
+}
+
+/* ======= ProductDetails.tpl ======= */
+.td-less-padding tr td{
+    padding: .1rem 0!important;
+}
+
+.td-med-padding tr td{
+    padding: .3rem!important;
+}
+
+.total-col tr:first-child td {
+    border:none!important;
+    padding: 1.2rem 0 .5rem 0;
+}
+
+.total-col tr:nth-child(2) td,
+.total-col tr:nth-child(3) td {
+    padding: .1rem 0;
+}
+
+.total-col tr:last-child td {
+    padding: .2rem 0;
+}
+
+#proTab .slds-input {
+    font-size: 11px!important;
+}
+
+#proTab tr td:nth-child(4) .slds-input {
+    width: 100%;
+}
+}
+
+.tool {
+    width: 30px;
+}
+
+.item-name {
+    width: 450px;
+}
+
+.quantity {
+    width: 100px;
+}
+
+.net-price,
+.total-price {
+    width: 160px;
+}
+.net-price-total {
+    width: 160px;
+    padding-top: 6rem!important;
+}
+
+.itemDetails-table img{
+    width: 18px;
+    margin-left: 5px;
+}
+
+/* ===== Settings SetMenu.tpl ===== */
+
+.setMenu-table tr .settingsTabHeader > div {
+    margin-top: 1rem;
+}
+
+.setMenu-table tr:first-child .settingsTabHeader > div {
+    margin-top: 0;
+}
+
+.settings-block {
+    width: 15%;
+    vertical-align: top;
+}
+
+.togglePanel img {
+    width: 18px;
+}
+
+.togglePanel img:hover {
+    opacity: .7;
+}
+
+/* ===== Settings - Users ===== */
+
+.empty-table tr td img {
+    width: 20px;
+}
+
+/* ===== Settings - Profiles ===== */
+.listTable img {
+    width: 12px;
+    vertical-align: bottom;
+    cursor: pointer;
+}
+
+.listTable img:hover {
+    opacity: .7;
+}
+
+.privilege-table tr#module-loops td {
+    padding: 0 .5rem;
+}
+
+.privilege-table tr#module-loops td p {
+    margin: 0;
+}
+
+.toggle-access img {
+    height: 18px;
+    vertical-align: middle;
+}
+
+/* ===== Settings - OrgSharingDetailView ===== */
+.sharing-rules-img img {
+    width: 12px;
+    vertical-align: middle;
+}
+/* ===== Settings - OrgSharingEditView ===== */
+.org-sharing-table select {
+    margin: 0;
+}
+
+/* ===== Settings - FieldAccess ===== */
+.slds-no-padding td {
+    padding: 0 .5rem;
+}
+
+/* ===== ModuleManagerAjax.tpl ===== */
+#modmgr_standard,
+#modmgr_custom,
+#modmgr_custom tbody tr,
+#modmgr_custom tbody tr th {
+    border-top: 0!important;
+}
+
+#modmgr_standard img:hover,
+#modmgr_custom img:hover {
+    opacity: .7;
+}
+
+.no-hover-icon:hover {
+    opacity: 1!important;
+    cursor: default;
+}
+
+/* ===== AssignPicklistValues ===== */
+#assignPicklistTable img {
+    width:16px;
+    cursor: pointer;
+}
+
+/* ===== OrderRelatedList.tpl ===== */
+#arrangeRelatedListPopup {
+    position:relative;
+    width:545px;
+    z-index:1000;
+    /*background-color: #f7f9fb;*/
+    background-color: #fff;
+}
+
+#arrangeRelatedListPopup img {
+    width: 18px;
+    cursor: pointer;
+}
+
+/* ===== LayoutBlockEntries.tpl ===== */
+.addBlockPopup {
+    z-index: 9999;
+}
+
+.layout-editor-table img {
+    width: 16px;
+    cursor :pointer;
+    opacity: 1;
+}
+
+.layout-editor-table img:hover {
+    opacity: .7;
+}
+
+.layout-editor-table .dvtCellLabel,
+.layout-editor-table .dvtCellInfo {
+    padding: 0 .5rem;
+}
+
+/* ===== LayoutBlockList.tpl ===== */
+.slds-popover_panel .slds-popover__header {
+    padding: .5rem;
+    padding-bottom: 0;
+}
+
+/*  ===== EditWorkflowTriggerTypes.tpl ===== */
+.wfslabel {
+    margin:0!important;
+}
+
+#scheduleBox .slds-select,
+#scheduleBox .slds-input {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.weekDays-table td {
+    padding: 0 .5rem 0 0;
+}
+
+.checkbox-inputs {
+    padding: 0!important;
+}
+
+/* ==== EditTasl.tpl ==== */
+.edittask-summary-table .slds-input,
+.edittask-summary-table .slds-select,
+.task-operations-table .slds-select {
+    margin-top: 0;
+    margin-bottom: 0;
+    height: 26px;
+    min-height: 26px;
+}
+
+/* ==== Popup.tpl ===== */
+.reportCreateBottom img {
+    width: 16px;
+}
+
+/*==== ConvertLead.tpl=====*/
+.convertLeads-options-table .slds-input,
+.convertLeads-options-table .slds-select {
+    width: 100%;
+    margin: 0;
+}
+
+.convertLeads-options-table .slds-radio--faux {
+    margin-right: 0!important;
+}
+
+/*==== DetailViewTemplate.tpl=====*/
+.email-body td {
+    white-space: normal!important;
+}
+
+/*==== CreateEmailTemplate.tpl=====*/
+.field-type-table .dvtCellLabel{
+    border: 0;
+}
+
+/*==== CurrencyListViewEntries.tpl=====*/
+.currencies-table th span.slds-truncate {
+    padding: .5rem 0;
+}
+
+/*==== EditCron.tpl=====*/
+.scheduler-popup .slds-input,
+.scheduler-popup .slds-select {
+    margin: 0;
+    height: 26px;
+    min-height: 26px;
+}
+
+.listRow .slds-select,
+.listRow .slds-input,
+.listTable .slds-input,
+.listTable .slds-select {
+    margin:0;
+}
+
+.listRow .slds-radio--faux {
+    margin-right: 0!important;
+}
+
+/*======= End Import_Default_Values_widget=============*/
+.JCLRgrip:hover {
+    width: .15rem;
+    background-color: #0070d2;
+}
+
+/* UserDetailView.tpl */
+.user-preferences input {
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+#miniCal img {
+    width: 15px;
+}
+
+#miniCal img:hover {
+    opacity: .7;
+}
+
+/* Dashboard */
+.description-text {
+    white-space:initial;
+    text-align: center;
+}
+
+.slds-button--x-small {
+    margin: .1rem;
+}
+
+.dash_switch img {
+    height: 22px;
+}
+
+.dash_switch img:hover {
+    opacity: .7;
+}
+
+.list-grid-view img {
+    width: 20px;
+}
+
+.list-grid-view img:hover {
+    opacity: .7;
+}
+
+.chart-numbers {
+    margin-top: 10px;
+}
+
+/* Our sites */
+.sites-settings img:hover {
+    opacity: .7;
+}

@@ -158,12 +158,6 @@ hr {
     top: -0.0625rem;
     right: -0.0625rem;
     animation-name: dotsBounceAfter-extraExtraSmall; }
-  .slds-masseditprogress {
-    z-index:1000000000000000; 
-    position:absolute;
-    top:30%;
-    left:60%;
-    width:40%;}
 
     @keyframes dotsBounceBefore-extraExtraSmall {
 60% {
