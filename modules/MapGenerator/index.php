@@ -29,7 +29,7 @@ $smarty->assign("MOD", $mod_strings);
 $smarty->assign("APP", $app_strings);
 $smarty->assign("URLAPP", $site_URL);
 $smarty->assign("currlang",$current_language);
-$smarty->assign("MapGenerator_Remove_inspectElement",$MapGenerator_Remove_inspectElement);
+$smarty->assign("MapGenerator_Remove_inspectElement",GlobalVariable::getVariable('MapGenerator_Remove_inspectElement',0));
 $smarty->assign("Allmaps",SelectallMaps());
 $smarty->display('modules/MapGenerator/template.tpl');
 

@@ -86,6 +86,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Permit_Assign_Up',
 				'Application_Permit_Assign_SameRole',
 				'Application_Permit_Assign_AllGroups',
+				'MapGenerator_Remove_inspectElement',
 
 				'RelatedList_Activity_DefaultStatusFilter',
 

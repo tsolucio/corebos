@@ -1175,6 +1175,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Any valid Activity Status',
 	'definition' => 'Initial Activity filter on Related List. Default is "all".',
 ),
+'MapGenerator_Remove_inspectElement' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'A Variable to block the inspect element if you want to block for Map Generator',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php', GLOB_BRACE) as $tcode) {
