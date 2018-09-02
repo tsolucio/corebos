@@ -7,6 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
+
+global $log;
+$log = LoggerManager::getLogger('ScheduledReports');
+
 require_once 'modules/Reports/ScheduledReports.php';
 VTScheduledReport::runScheduledReports($adb);
 ?>
