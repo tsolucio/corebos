@@ -126,7 +126,7 @@ class HelpDesk extends CRMEntity {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
 		}
-		if (!((isset($_REQUEST['mode']) && $_REQUEST['mode'] =='Import') || $_REQUEST['action'] =='MassEditSave')) {
+		if (!((isset($_REQUEST['mode']) && $_REQUEST['mode'] =='Import') || (isset($_REQUEST['action']) && $_REQUEST['action'] =='MassEditSave'))) {
 			//Inserting into Ticket Comment Table
 			$this->insertIntoTicketCommentTable();
 		}

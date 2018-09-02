@@ -183,6 +183,9 @@ function __vt_get_date($arr) {
 }
 
 function __cb_format_date($arr) {
+	if (empty($arr[0])) {
+		return '';
+	}
 	$fmt = empty($arr[1]) ? 'Y-m-d' : $arr[1];
 	if (strpos($arr[0], ' ')>0) {
 		list($dt, $ht) = explode(' ', $arr[0]);
