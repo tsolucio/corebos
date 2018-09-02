@@ -58,8 +58,7 @@ function vtRunTaskJob($adb) {
 			continue;
 		}
 		list($moduleId, $crmId) = explode('x', $entityId);
-		$query = "select deleted from vtiger_crmentity where crmid={$crmId}";
-		$res = $adb->query($query);
+		$res = $adb->pquery('select deleted from vtiger_crmentity where crmid=?', array($crmId));
 		if ($adb->num_rows($res) == 0) {
 			$logbg->debug('WF Cron:: CRMID '.$crmId.' was totally deleted');
 			continue;
@@ -68,8 +67,8 @@ function vtRunTaskJob($adb) {
 		}
 		$entity = new VTWorkflowEntity($adminUser, $entityId, $isDeleted, true);
 		$entityCache = new VTEntityCache($adminUser);
-		$wsModuleName = $util->toWSModuleName($entity);
-		$wsId = vtws_getWebserviceEntityId($wsModuleName, $entity->getId());
+		//$wsModuleName = $util->toWSModuleName($entity);
+		//$wsId = vtws_getWebserviceEntityId($wsModuleName, $entity->getId());
 		if (empty($task->test)
 			|| (isset($task->reevaluate) && $task->reevaluate==0)
 			|| ((!isset($task->reevaluate) || $task->reevaluate==1) && $task->evaluate($entityCache, $entity->getId()))
