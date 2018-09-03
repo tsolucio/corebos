@@ -77,6 +77,7 @@ function hndMouseOver(uitype, fieldLabel) {
 		}
 	} else if (globaluitype == 50) {
 		globalfldtimeformat = getObj('inputtimefmt_' + fieldLabel).value;
+		globaltxtboxid ='txtbox_' + fieldLabel;
 	} else {
 		globaltxtboxid='txtbox_'+ fieldLabel;//textboxpanid;
 	}
@@ -98,6 +99,9 @@ function handleCopyClipboard(event) {
 		let temp = getObj(globaltxtboxid).value;
 		if (globaluitype == 56) {
 			temp = (getObj(globaltxtboxid).checked ? alert_arr.YES : alert_arr.NO);
+		} else if (globaluitype == 50) {
+			let res = globaltxtboxid.split('_');
+			temp = getObj('txtbox_' + res[1]).value + ' ' + getObj('inputtimefmt_' + res[1]).value;
 		}
 		document.getElementById('clipcopylink').dataset.clipboardText = temp;
 	} else {
@@ -295,7 +299,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 	}
 	jQuery.ajax({
 		method: 'POST',
-		url: 'index.php?'+ url,
+		url: 'index.php?' + url,
 		data : data
 	}).done(function (response) {
 		if (response.indexOf(':#:FAILURE')>-1) {

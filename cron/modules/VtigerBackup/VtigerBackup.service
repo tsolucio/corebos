@@ -8,16 +8,16 @@
  * All Rights Reserved.
  *************************************************************************************/
 
-ini_set('include_path',ini_get('include_path').PATH_SEPARATOR.'../..');
+ini_set('include_path', ini_get('include_path').PATH_SEPARATOR.'../..');
 
-require_once("config.inc.php");
+require_once 'config.inc.php';
 require_once 'include/utils/utils.php';
 require_once 'modules/VtigerBackup/VtigerBackup.php';
 
-function vtiger_runBackupJob(){
+function vtiger_runBackupJob() {
 	$backup = new VtigerBackup();
 	$backup->backup();
 }
-vtiger_runBackupJob();
 
+vtiger_runBackupJob();
 ?>

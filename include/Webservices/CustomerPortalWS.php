@@ -177,7 +177,7 @@ function vtws_getUItype($module, $user) {
 	return $resp;
 }
 
-function vtws_getReferenceValue($strids) {
+function vtws_getReferenceValue($strids, $user) {
 	global $log,$adb;
 	$ids=unserialize($strids);
 	$log->debug('Entering vtws_getReferenceValue with id '.implode(',', $ids));

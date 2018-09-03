@@ -42,19 +42,22 @@ class picklist_translations extends cbupdaterWorker {
 			$import_langs = array('en_us','es_es','de_de','en_gb','es_mx','fr_fr','hu_hu','it_it','nl_nl','pt_br');
 			$import_modules = getAllowedPicklistModules(1);
 			$import_modules = array_merge($import_modules, array('Rss','Recyclebin'));
+			$chksql = 'select 1
+				from vtiger_cbtranslation
+				where translation_module=? and translation_key=? and forpicklist=? and locale=?';
 			foreach ($import_modules as $impmod) {
 				set_time_limit(0);
 				foreach ($import_langs as $lang) {
 					if (file_exists('modules/' . $impmod . '/language/' . $lang . '.lang.php')) {
 						include 'modules/' . $impmod . '/language/' . $lang . '.lang.php';
 						include 'include/language/' . $lang . '.lang.php';
-												$query = $adb->pquery(
-													"select fieldname
+						$query = $adb->pquery(
+							"select fieldname
 								from vtiger_tab
 								join vtiger_field on vtiger_tab.tabid=vtiger_field.tabid
 								where (uitype='15' or uitype='16') and name=?",
-													array($impmod)
-												);
+							array($impmod)
+						);
 						$count = $adb->num_rows($query);
 						for ($i=0; $i<$count; $i++) {
 							$fieldname = $adb->query_result($query, $i, 0);
@@ -63,10 +66,13 @@ class picklist_translations extends cbupdaterWorker {
 							$countcol = $adb->num_rows($columns);
 							for ($j=0; $j<$countcol; $j++) {
 								$key = $adb->query_result($columns, $j, 0);
+								if (empty($key)) {
+									continue;
+								}
 								if (isset($mod_strings[$key])) {
 									$value = $mod_strings[$key];
 								} elseif (isset($app_strings[$key])) {
-										$value = $app_strings[$key];
+									$value = $app_strings[$key];
 								} else {
 									$value = $key;
 								}
@@ -75,6 +81,10 @@ class picklist_translations extends cbupdaterWorker {
 								$rec['forpicklist'] = $impmod.'::'.$fieldname;
 								$rec['i18n'] = $value;
 								$rec['locale'] = $lang;
+								$rs = $adb->pquery($chksql, array($rec['translation_module'], $rec['translation_key'], $rec['forpicklist'], $rec['locale']));
+								if ($adb->num_rows($rs)>0) {
+									continue;
+								}
 								vtws_create('cbtranslation', $rec, $current_user);
 							}
 						}

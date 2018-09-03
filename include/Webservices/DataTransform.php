@@ -319,6 +319,21 @@ class DataTransform {
 		return $row;
 	}
 
+	public static function sanitizeCurrencyFieldsForDB($row, $meta) {
+		global $current_user;
+		$moduleFields = $meta->getModuleFields();
+		foreach ($moduleFields as $fieldName => $fieldObj) {
+			if (($fieldObj->getFieldDataType()=='currency' || $fieldObj->getFieldDataType()=='double') && !empty($row[$fieldName])) {
+				$uitype = $fieldObj->getUIType();
+				$cryFields = new CurrencyField($row[$fieldName]);
+				$cryFields->initialize($current_user);
+				$cryFields->setNumberofDecimals($cryFields::$maxNumberOfDecimals);
+				$row[$fieldName] = $cryFields->getDBInsertedValue($current_user, true);
+			}
+		}
+		return $row;
+	}
+
 	public static function sanitizeTextFieldsForInsert($row, $meta) {
 		global $default_charset;
 		$moduleFields = $meta->getModuleFields();

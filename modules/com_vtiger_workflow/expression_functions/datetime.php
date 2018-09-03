@@ -183,9 +183,19 @@ function __vt_get_date($arr) {
 }
 
 function __cb_format_date($arr) {
+	if (empty($arr[0])) {
+		return '';
+	}
 	$fmt = empty($arr[1]) ? 'Y-m-d' : $arr[1];
-	list($y,$m,$d) = explode('-', $arr[0]);
-	$dt = mktime(0, 0, 0, $m, $d, $y);
+	if (strpos($arr[0], ' ')>0) {
+		list($dt, $ht) = explode(' ', $arr[0]);
+		list($h, $i, $s) = explode(':', $ht);
+	} else {
+		$dt = $arr[0];
+		$h = $i = $s = 0;
+	}
+	list($y,$m,$d) = explode('-', $dt);
+	$dt = mktime($h, $i, $s, $m, $d, $y);
 	return date($fmt, $dt);
 }
 

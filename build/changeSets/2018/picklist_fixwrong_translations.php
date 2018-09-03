@@ -25,11 +25,11 @@ class picklist_fixwrong_translations extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$current_user = Users::getActiveAdminUser();
-						global $mod_strings, $app_strings;
+			global $mod_strings, $app_strings, $current_language;
 			set_time_limit(0);
 			ini_set('memory_limit', '1024M');
 			if (!vtlib_isModuleActive('cbtranslation')) {
-				include_once "include/utils/VtlibUtils.php";
+				include_once 'include/utils/VtlibUtils.php';
 				vtlib_toggleModuleAccess('cbtranslation', true);
 			}
 			include_once 'include/Webservices/Create.php';
@@ -41,15 +41,19 @@ class picklist_fixwrong_translations extends cbupdaterWorker {
 				'assigned_user_id' => $usrwsid,
 			);
 			$rec = $default_values;
-
-						$query = $adb->query("select * from vtiger_cbtranslation join vtiger_crmentity on crmid=cbtranslationid where forpicklist is not null and forpicklist<>'' and deleted=0");
-						$count = $adb->num_rows($query);
-						global $current_language;
+			$query = $adb->query(
+				"select *
+					from vtiger_cbtranslation
+					join vtiger_crmentity on crmid=cbtranslationid
+					where forpicklist is not null and forpicklist<>'' and deleted=0"
+			);
+			$count = $adb->num_rows($query);
+			$wsentityid = vtws_getEntityID('cbtranslation').'x';
 			for ($j=0; $j<$count; $j++) {
 				$impmod = $adb->query_result($query, $j, 'translation_module');
 				$lang = $adb->query_result($query, $j, 'locale');
-								$valtranslated = $adb->query_result($query, $j, 'i18n');
-				$forpicklist1 = explode("::", $adb->query_result($query, $j, 'forpicklist'));
+				$valtranslated = $adb->query_result($query, $j, 'i18n');
+				$forpicklist1 = explode('::', $adb->query_result($query, $j, 'forpicklist'));
 				$forpicklistname = $forpicklist1[1];
 				$forpicklist = $forpicklist1[0].'::'.$forpicklist1[1];
 				$current_language = $lang;
@@ -59,23 +63,31 @@ class picklist_fixwrong_translations extends cbupdaterWorker {
 					include 'include/language/' . $lang . '.lang.php';
 
 					$key = $adb->query_result($query, $j, 'translation_key');
+					if (empty($key)) {
+						continue;
+					}
 					if (isset($mod_strings[$key])) {
 						$value = $mod_strings[$key];
 					} elseif (isset($app_strings[$key])) {
-							$value = $app_strings[$key];
+						$value = $app_strings[$key];
 					} else {
 						$value = $key;
 					}
-						$fname = $adb->pquery("select fieldname from vtiger_tab join vtiger_field on vtiger_tab.tabid=vtiger_field.tabid
-                                               where columnname=? and name=? and fieldname<>columnname", array($forpicklistname,$impmod));
-						$cnt = $adb->num_rows($fname);
+					$fname = $adb->pquery(
+						'select fieldname
+							from vtiger_tab
+							join vtiger_field on vtiger_tab.tabid=vtiger_field.tabid
+							where columnname=? and name=? and fieldname<>columnname',
+						array($forpicklistname,$impmod)
+					);
+					$cnt = $adb->num_rows($fname);
 
 					if ($cnt>0) {
 						$fieldname = $adb->query_result($fname, 0, 0);
-						$adb->query("delete from vtiger_cbtranslation where forpicklist='$forpicklist'");
-						$adb->query("delete from vtiger_cbtranslationcf where cbtranslationid not in (select cbtranslationid from vtiger_cbtranslation)");
+						$adb->pquery('delete from vtiger_cbtranslation where forpicklist=?', array($forpicklist));
+						$adb->query('delete from vtiger_cbtranslationcf where cbtranslationid not in (select cbtranslationid from vtiger_cbtranslation)');
 						$adb->query("delete from vtiger_crmentity where setype='cbtranslation' and crmid not in (select cbtranslationid from vtiger_cbtranslation)");
-												$table = 'vtiger_'.$fieldname;
+						$table = 'vtiger_'.$fieldname;
 						$columns = $adb->query("select $fieldname from $table");
 						$countcol = $adb->num_rows($columns);
 						for ($i=0; $i<$countcol; $i++) {
@@ -87,19 +99,20 @@ class picklist_fixwrong_translations extends cbupdaterWorker {
 							} else {
 								$value1 = $key1;
 							}
-													$rec['translation_module'] = $impmod;
-													$rec['translation_key'] = $key1;
-													$rec['forpicklist'] = $impmod.'::'.$fieldname;
-													$rec['i18n'] = $value1;
-													$rec['locale'] = $lang;
-													vtws_create('cbtranslation', $rec, $current_user);
+							$rec['translation_module'] = $impmod;
+							$rec['translation_key'] = $key1;
+							$rec['forpicklist'] = $impmod.'::'.$fieldname;
+							$rec['i18n'] = $value1;
+							$rec['locale'] = $lang;
+							if (empty($key1)) {
+								continue;
+							}
+							vtws_create('cbtranslation', $rec, $current_user);
 						}
 					} else {
-						$wsentity = $adb->query("select id from vtiger_ws_entity where name = 'cbtranslation'");
-						$wsentityid = $adb->query_result($wsentity, 0, 0);
 						if ($valtranslated != $value) {
 							$rec['i18n'] = $value;
-							$rec['id'] = $wsentityid.'x'.$translationid;
+							$rec['id'] = $wsentityid.$translationid;
 							vtws_revise($rec, $current_user);
 						}
 					}

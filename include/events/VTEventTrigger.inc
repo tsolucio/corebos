@@ -23,12 +23,10 @@ class VTEventTrigger {
 
 		if ($name) {
 			$names = (array)$name;
-
 			$evtinfos = self::getActiveEventInfos($adb, $names);
-
 			foreach ($evtinfos as $k => $v) {
 				if (!self::isCached($k) || $force) {
-					self::$cache[$forname] = $evtinfos;
+					self::$cache[$k] = $v;
 				}
 			}
 		} else {

@@ -97,5 +97,6 @@ $mod_strings = array (
 	'LBL_NAVI_SELECTION'=>'Elementos por Página:',
 	'LBL_COMMENTS'=>'Comentarios',
 	'LBL_SIGNATURE'=>'Firma',
+	'LBL_DUPLICATE'=>'Duplicar',
 );
 ?>

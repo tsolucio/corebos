@@ -319,9 +319,15 @@ class Validations extends processcbMap {
 
 	public static function formatValidationErrors($errors, $module) {
 		$error = '';
-		foreach ($errors as $errs) {
+		foreach ($errors as $field => $errs) {
 			foreach ($errs as $err) {
 				$error.= $err . "\n";
+			}
+			if (strpos($error, "{custommsg|") > 0) {
+				preg_match_all('/{(.*)}/', $error, $match);
+				$res = explode('|', $match[1][0]);
+				include_once 'include/validation/'.$res[1].'.php';
+				$error = call_user_func(array(__NAMESPACE__ .$res[1], $res[2]), $field);
 			}
 		}
 		return $error;
