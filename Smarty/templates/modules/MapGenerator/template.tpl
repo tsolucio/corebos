@@ -1,6 +1,6 @@
-<link type="text/css" href="Smarty/templates/modules/MapGenerator/jquery-ui.css" rel="stylesheet" />
-<script type="text/javascript" src="Smarty/templates/modules/MapGenerator/jquery-1.10.2.js"></script>
-<script type="text/javascript" src="Smarty/templates/modules/MapGenerator/jquery-ui.js"></script>
+<link type="text/css" href="modules/MapGenerator/css/jquery-ui.css" rel="stylesheet" />
+<script type="text/javascript" src="include/jquery/jquery.js"></script>
+<script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
 {* <link rel="stylesheet" href="include/LD/assets/styles/all-modules.css" type="text/css" /> *}
 <link rel="stylesheet" type="text/css" href="modules/MapGenerator/css/popupNotification.css">
 <link rel="stylesheet" type="text/css" href="modules/MapGenerator/css/main.css" >
@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css" href="modules/MapGenerator/css/Loading.css" rel="stylesheet">
 <script type="text/javascript" src="modules/MapGenerator/language/{$currlang}.lang.js"></script>
 <script type="text/javascript" src="modules/MapGenerator/js/functions.js"></script>
-<script type="text/javascript" src="modules/MapGenerator/jquery/script.js"></script>
+<script type="text/javascript" src="modules/MapGenerator/js/script.js"></script>
 <script type="text/javascript" src="modules/MapGenerator/js/MapGenerator.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <div class="small">

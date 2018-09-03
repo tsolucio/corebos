@@ -1,4 +1,4 @@
-<script type="text/javascript" src="modules/MapGenerator/jquery/script.js"></script>
+<script type="text/javascript" src="modules/MapGenerator/js/script.js"></script>
 <br><br><br>
 
 <div  name="reportContainer" id ="reportContainer">

@@ -1,6 +1,6 @@
 <link type="text/css" href="Smarty/templates/modules/MapGenerator/jquery-ui.css" rel="stylesheet"/>
-<script type="text/javascript" src="Smarty/templates/modules/MapGenerator/jquery-1.10.2.js"></script>
-<script type="text/javascript" src="Smarty/templates/modules/MapGenerator/jquery-ui.js"></script>
+<script type="text/javascript" src="include/jquery/jquery.js"></script>
+<script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
 <link type="text/css" href="modules/MapGenerator/css/style.css" rel="stylesheet"/>
 <link type="text/css" href="include/LD/assets/styles/salesforce-lightning-design-system.css" rel="stylesheet"/>
 <link type="text/css" href="include/LD/assets/styles/salesforce-lightning-design-system.min.css" rel="stylesheet"/>
@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css" href="modules/MapGenerator/css/Loading.css" rel="stylesheet">
 <script type="text/javascript" src="modules/MapGenerator/language/{$currlang}.lang.js"></script>
 <script type="text/javascript" src="modules/MapGenerator/js/functions.js"></script>
-<script type="text/javascript" src="modules/MapGenerator/jquery/script.js"></script>
+<script type="text/javascript" src="modules/MapGenerator/js/script.js"></script>
 <script type="text/javascript" src="modules/MapGenerator/js/MapGenerator.js"></script>
 <script src="https://use.fontawesome.com/c74e66ed00.js"></script>
 

@@ -1,7 +1,7 @@
 <script type="text/javascript" src="modules/MapGenerator/bsmSelect/js/jquery.bsmselect.js"></script>
 <script type="text/javascript" src="modules/MapGenerator/bsmSelect/js/jquery.bsmselect.sortable.js"></script>
 <script type="text/javascript" src="modules/MapGenerator/bsmSelect/js/jquery.bsmselect.compatibility.js"></script>
-<script type="text/javascript" src="modules/MapGenerator/jquery/script.js"></script>
+<script type="text/javascript" src="modules/MapGenerator/js/script.js"></script>
 <link rel="stylesheet" type="text/css" href="modules/MapGenerator/bsmSelect/css/jquery.bsmselect.css">
 <link rel="stylesheet" type="text/css" href="modules/MapGenerator/bsmSelect/examples/example.css">
 <link rel="stylesheet" type="text/css" href="kendoui/styles/kendo.common.min.css">
