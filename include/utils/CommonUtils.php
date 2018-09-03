@@ -2538,8 +2538,8 @@ function getTicketComments($ticketid) {
  */
 function makeRandomPassword() {
 	global $log;
-	$log->debug("Entering makeRandomPassword() method ...");
-	$salt = "abcdefghijklmnopqrstuvwxyz0123456789";
+	$log->debug('Entering makeRandomPassword()');
+	$salt = 'abcdefghijklmnopqrstuvwxyz0123456789';
 	srand((double) microtime() * 1000000);
 	$i = 0;
 	$pass = '';
@@ -2549,7 +2549,7 @@ function makeRandomPassword() {
 		$pass = $pass . $tmp;
 		$i++;
 	}
-	$log->debug("Exiting makeRandomPassword method ...");
+	$log->debug('Exiting makeRandomPassword');
 	return $pass;
 }
 
@@ -2559,19 +2559,18 @@ function makeRandomPassword() {
  * returns the uitype, integer type
  */
 function getUItypeByFieldName($module, $fieldname) {
-	global $log;
-	$log->debug("Entering getUItypeByFieldName(" . $module . ") method ...");
+	global $log, $adb;
+	$log->debug('Entering getUItypeByFieldName(' . $module . ')');
 	$tabIdList = array();
 	//To find tabid for this module
 	$tabIdList[] = getTabid($module);
-	global $adb;
 	if ($module == 'Calendar') {
 		$tabIdList[] = getTabid('Events');
 	}
 	$sql = 'select uitype from vtiger_field where tabid IN (' . generateQuestionMarks($tabIdList) . ') and fieldname=?';
 	$result = $adb->pquery($sql, array($tabIdList, $fieldname));
 	$uitype = $adb->query_result($result, 0, 'uitype');
-	$log->debug('Exiting getUItypeByFieldName method ...');
+	$log->debug('Exiting getUItypeByFieldName');
 	return $uitype;
 }
 
