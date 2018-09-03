@@ -1113,43 +1113,39 @@ class CustomView extends CRMEntity {
 
 		if (isset($stdfilterlist)) {
 			$startDateTime = $endDateTime = '';
-			foreach ($stdfilterlist as $columnname => $value) {
-				if ($columnname == "columnname") {
-					$filtercolumn = $value;
-				} elseif ($columnname == "stdfilter") {
-					$filtertype = $value;
-				} elseif ($columnname == "startdate") {
-					$startDateTime = new DateTimeField($value . ' ' . date('H:i:s'));
-					$userStartDate = $startDateTime->getDisplayDate();
-					$userStartDateTime = new DateTimeField($userStartDate . ' 00:00:00');
-					$startDateTime = $userStartDateTime->getDBInsertDateTimeValue();
-				} elseif ($columnname == "enddate") {
-					$endDateTime = new DateTimeField($value . ' ' . date('H:i:s'));
-					$userEndDate = $endDateTime->getDisplayDate();
-					$userEndDateTime = new DateTimeField($userEndDate . ' 23:59:00');
-					$endDateTime = $userEndDateTime->getDBInsertDateTimeValue();
-				}
-				if ($startDateTime != "" && $endDateTime != "") {
-					$columns = explode(":", $filtercolumn);
-					// Fix for http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/5423
-					if ($columns[1] == 'birthday') {
-						$tableColumnSql = "DATE_FORMAT(" . $columns[0] . "." . $columns[1] . ", '%m%d')";
-						$startDateTime = "DATE_FORMAT('$startDateTime', '%m%d')";
-						$endDateTime = "DATE_FORMAT('$endDateTime', '%m%d')";
-						$stdfiltersql = $tableColumnSql . " BETWEEN " . $startDateTime . " and " . $endDateTime;
-					} else {
-						if ($this->customviewmodule == 'Calendar' && ($columns[1] == 'date_start' || $columns[1] == 'due_date')) {
-							$tableColumnSql = '';
-							if ($columns[1] == 'date_start') {
-								$tableColumnSql = "CAST((CONCAT(date_start,' ',time_start)) AS DATETIME)";
-							} else {
-								$tableColumnSql = "CAST((CONCAT(due_date,' ',time_end)) AS DATETIME)";
-							}
+			$filtercolumn = $stdfilterlist['columnname'];
+			//$filtertype = $stdfilterlist['stdfilter'];
+			if (!empty($stdfilterlist['startdate'])) {
+				$startDateTime = new DateTimeField($stdfilterlist['startdate'] . ' ' . date('H:i:s'));
+				$userStartDate = $startDateTime->getDisplayDate();
+				$userStartDateTime = new DateTimeField($userStartDate . ' 00:00:00');
+				$startDateTime = $userStartDateTime->getDBInsertDateTimeValue();
+			}
+			if (!empty($stdfilterlist['enddate'])) {
+				$endDateTime = new DateTimeField($stdfilterlist['enddate'] . ' ' . date('H:i:s'));
+				$userEndDate = $endDateTime->getDisplayDate();
+				$userEndDateTime = new DateTimeField($userEndDate . ' 23:59:00');
+				$endDateTime = $userEndDateTime->getDBInsertDateTimeValue();
+			}
+			if ($startDateTime != '' && $endDateTime != '') {
+				$columns = explode(':', $filtercolumn);
+				if ($columns[1] == 'birthday') {
+					$tableColumnSql = 'DATE_FORMAT(' . $columns[0] . '.' . $columns[1] . ", '%m%d')";
+					$startDateTime = "DATE_FORMAT('$startDateTime', '%m%d')";
+					$endDateTime = "DATE_FORMAT('$endDateTime', '%m%d')";
+					$stdfiltersql = $tableColumnSql . ' BETWEEN ' . $startDateTime . ' and ' . $endDateTime;
+				} else {
+					if ($this->customviewmodule == 'Calendar' && ($columns[1] == 'date_start' || $columns[1] == 'due_date')) {
+						$tableColumnSql = '';
+						if ($columns[1] == 'date_start') {
+							$tableColumnSql = "CAST((CONCAT(date_start,' ',time_start)) AS DATETIME)";
 						} else {
-							$tableColumnSql = $columns[0] . "." . $columns[1];
+							$tableColumnSql = "CAST((CONCAT(due_date,' ',time_end)) AS DATETIME)";
 						}
-						$stdfiltersql = $tableColumnSql . " BETWEEN '" . $startDateTime . "' and '" . $endDateTime . "'";
+					} else {
+						$tableColumnSql = $columns[0] . '.' . $columns[1];
 					}
+					$stdfiltersql = $tableColumnSql . " BETWEEN '" . $startDateTime . "' and '" . $endDateTime . "'";
 				}
 			}
 		}
