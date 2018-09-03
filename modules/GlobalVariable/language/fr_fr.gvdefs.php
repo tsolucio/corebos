@@ -1175,6 +1175,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Any valid Activity Status',
 	'definition' => 'Initial Activity filter on Related List. Default is "all".',
 ),
+'Zero_Bounce_API_KEY' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Any valid Zero Bounce API KEY',
+	'definition' => 'The valid Zero Bounce API KEY',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php', GLOB_BRACE) as $tcode) {
