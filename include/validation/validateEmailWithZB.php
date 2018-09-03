@@ -17,8 +17,11 @@
 class validateEmailWithZB {
 	private static $lastErrorStatus = array();
 
-	public static function validateEmail($email) {
+	public static function validateEmail($field, $email) {
 		$api_key = GlobalVariable::getVariable('Zero_Bounce_API_KEY', '');
+		if (empty($api_key)) {
+			return true;
+		}
 		$emailToValidate = $email;
 		$IPToValidate = '';
 		// use curl to make the request
@@ -43,7 +46,7 @@ class validateEmailWithZB {
 		} elseif (isset($json['error'])) {
 			$text = $json['error'];
 		}
-		self::$lastErrorStatus['email'] = $text;
+		self::$lastErrorStatus[$field] = $text;
 		return $valueToReturn;
 	}
 	public static function getLastErrorMsg($field) {
@@ -52,6 +55,5 @@ class validateEmailWithZB {
 }
 
 function validate_ZeroBounce($field, $fieldval, $params, $fields) {
-	$v = new validateEmailWithZB();
-	return $v::validateEmail($fieldval);
+	return validateEmailWithZB::validateEmail($field, $fieldval);
 }
