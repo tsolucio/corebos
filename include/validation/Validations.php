@@ -110,4 +110,11 @@ function validate_notDuplicate($field, $fieldval, $params, $fields) {
 		return false;
 	}
 }
+
+/** accept a workflow expression and evaluate it
+ * in the context of the new screen values
+ */
+function validate_expression($field, $expression, $params, $fields) {
+	// To do.
+}
 ?>
