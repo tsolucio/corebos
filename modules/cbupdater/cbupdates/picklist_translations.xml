@@ -14,4 +14,11 @@
 	<classname>picklist_fixwrong_translations</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
+<changeSet>
+	<author>loridacito</author>
+	<description>picklist fix wrong encode translations</description>
+	<filename>build/changeSets/2018/picklist_fixwrongencode_translations.php</filename>
+	<classname>picklist_fixwrongencode_translations</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>
