@@ -2863,7 +2863,7 @@ function getBasic_Advance_SearchURL() {
 	return $url;
 }
 
-/** Function To create Email template variables dynamically -- Pavani */
+/** Function To create Email template variables dynamically */
 function getEmailTemplateVariables($modules_list = null) {
 	global $adb;
 
@@ -2872,46 +2872,35 @@ function getEmailTemplateVariables($modules_list = null) {
 	}
 
 	foreach ($modules_list as $module) {
+		$allFields = array();
 		if ($module == 'Calendar') {
 			$focus = new Activity();
 		} else {
 			$focus = CRMEntity::getInstance($module);
 		}
-		$field = array();
 		$tabid = getTabid($module);
 		//many to many relation information field campaignrelstatus(this is the column name of the field) has block set to '0', which should be ignored.
 		$result = $adb->pquery(
-			'select fieldlabel,columnname,displaytype from vtiger_field where tabid=? and vtiger_field.presence in (0,2) and displaytype in (1,2,3) and block !=0',
+			'select fieldlabel,columnname from vtiger_field where tabid=? and vtiger_field.presence in (0,2) and displaytype in (1,2,3,4) and block!=0',
 			array($tabid)
 		);
 		$norows = $adb->num_rows($result);
 		if ($norows > 0) {
-			$table_index = $focus->table_index;
-			$option = array(getTranslatedString($module) . ': ' . getTranslatedString($module) . 'ID', "$" . strtolower($module) . "-" . $table_index . "$");
-			$allFields[] = $option;
+			$i18nModule = getTranslatedString($module, $module);
+			$allFields[] = array($i18nModule . ': ' . $i18nModule . 'ID', '$' . strtolower($module) . '-' . $focus->table_index . '$');
 			for ($i = 0; $i < $norows; $i++) {
-				$field = $adb->query_result($result, $i, 'fieldlabel');
-				$columnname = $adb->query_result($result, $i, 'columnname');
-				if ($columnname == 'support_start_date' || $columnname == 'support_end_date') {
-					$tabname = 'vtiger_customerdetails';
-				}
-				$option = array(
-					getTranslatedString($module) . ': ' . getTranslatedString($adb->query_result($result, $i, 'fieldlabel')),
-					'$' . strtolower($module) . '-' . $columnname . '$',
+				$allFields[] = array(
+					$i18nModule . ': ' . getTranslatedString($adb->query_result($result, $i, 'fieldlabel'), $module),
+					'$' . strtolower($module) . '-' . $adb->query_result($result, $i, 'columnname') . '$',
 				);
-				$allFields[] = $option;
 			}
 		}
-
 		$allOptions[] = $allFields;
-		$allFields = array();
 	}
-	$option = array(getTranslatedString('Current Date'), '$custom-currentdate$');
-	$allFields[] = $option;
-	$option = array(getTranslatedString('Current Time'), '$custom-currenttime$');
-	$allFields[] = $option;
-	$option = array(getTranslatedString('Image Field'), '${module}-{imagefield}_fullpath$');
-	$allFields[] = $option;
+	$allFields = array();
+	$allFields[] = array(getTranslatedString('Current Date'), '$custom-currentdate$');
+	$allFields[] = array(getTranslatedString('Current Time'), '$custom-currenttime$');
+	$allFields[] = array(getTranslatedString('Image Field'), '${module}-{imagefield}_fullpath$');
 	$allOptions[] = $allFields;
 	return $allOptions;
 }

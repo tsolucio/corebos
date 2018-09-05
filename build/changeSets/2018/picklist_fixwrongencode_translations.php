@@ -52,7 +52,7 @@ class picklist_fixwrongencode_translations extends cbupdaterWorker {
 			for ($j=0; $j<$count; $j++) {
 				$impmod = $adb->query_result($query, $j, 'translation_module');
 				$lang = $adb->query_result($query, $j, 'locale');
-				$valtranslated = $adb->query_result($query, $j, 'i18n');
+				//$valtranslated = $adb->query_result($query, $j, 'i18n');
 				$forpicklist1 = explode('::', $adb->query_result($query, $j, 'forpicklist'));
 				$forpicklistname = $forpicklist1[1];
 				$forpicklist = $forpicklist1[0].'::'.$forpicklist1[1];
