@@ -77,7 +77,7 @@ function hndMouseOver(uitype, fieldLabel) {
 		}
 	} else if (globaluitype == 50) {
 		globalfldtimeformat = getObj('inputtimefmt_' + fieldLabel).value;
-		globaltxtboxid ='txtbox_' + fieldLabel
+		globaltxtboxid ='txtbox_' + fieldLabel;
 	} else {
 		globaltxtboxid='txtbox_'+ fieldLabel;//textboxpanid;
 	}
@@ -299,7 +299,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 	}
 	jQuery.ajax({
 		method: 'POST',
-		url: 'index.php?'+ url,
+		url: 'index.php?' + url,
 		data : data
 	}).done(function (response) {
 		if (response.indexOf(':#:FAILURE')>-1) {

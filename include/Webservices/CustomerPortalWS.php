@@ -180,7 +180,7 @@ function vtws_getUItype($module, $user) {
 function vtws_getReferenceValue($strids, $user) {
 	global $log,$adb;
 	$ids=unserialize($strids);
-	$log->debug('Entering vtws_getReferenceValue with id '.implode(',', $ids));
+	$log->debug('Entering vtws_getReferenceValue with id '.$strids);
 	foreach ($ids as $id) {
 		list($wsid,$realid)=explode('x', $id);
 		$rs = $adb->pquery('select name from vtiger_ws_entity where id=?', array($wsid));
@@ -203,7 +203,7 @@ function vtws_getReferenceValue($strids, $user) {
 			$result[$id]=array('module'=>$modulename,'reference'=>$entityinfo[$realid]);
 		}
 	}
-	$log->debug('Exit vtws_getReferenceValue with'.serialize($result));
+	$log->debug('Exit vtws_getReferenceValue');
 	return serialize($result);
 }
 

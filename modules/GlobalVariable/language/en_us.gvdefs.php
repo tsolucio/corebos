@@ -1182,6 +1182,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'A Variable to block the inspect element if you want to block for Map Generator',
 ),
+'Zero_Bounce_API_KEY' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Any valid Zero Bounce API KEY',
+	'definition' => 'The valid Zero Bounce API KEY',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php', GLOB_BRACE) as $tcode) {

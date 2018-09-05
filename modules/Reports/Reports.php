@@ -600,14 +600,14 @@ class Reports extends CRMEntity {
 		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0) {
 			if ($module == 'Calendar') {
 				// calendar is special because it is two modules and has many overlapping fields so we have to filter them
-				$sql = 'select * from vtiger_field where vtiger_field.block in ('. generateQuestionMarks($block) .') and vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2) AND tablename NOT IN ('.generateQuestionMarks($skipTalbes).') ';
+				$sql = 'select * from vtiger_field where vtiger_field.block in ('. generateQuestionMarks($block) .') and vtiger_field.displaytype in (1,2,3,4) and vtiger_field.presence in (0,2) AND tablename NOT IN ('.generateQuestionMarks($skipTalbes).') ';
 				$sql.= ' and vtiger_field.fieldid in (select min(fieldid) from vtiger_field where vtiger_field.tabid in ('. generateQuestionMarks($tabid) .') group by fieldlabel) order by sequence';
 				$params = array($block, $skipTalbes, $tabid);
 			} else {
 				$sql = 'select *
 					from vtiger_field
 					where vtiger_field.tabid in ('. generateQuestionMarks($tabid) .') and vtiger_field.block in ('. generateQuestionMarks($block)
-					.') and vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2) AND tablename NOT IN ('.generateQuestionMarks($skipTalbes)
+					.') and vtiger_field.displaytype in (1,2,3,4) and vtiger_field.presence in (0,2) AND tablename NOT IN ('.generateQuestionMarks($skipTalbes)
 					.') order by sequence';
 				$params = array($tabid, $block, $skipTalbes);
 			}
@@ -619,7 +619,7 @@ class Reports extends CRMEntity {
 					inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid
 					inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid
 					where vtiger_field.block in ('. generateQuestionMarks($block)
-					.') and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)';
+					.') and vtiger_field.displaytype in (1,2,3,4) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)';
 				$params = array($block);
 			} else {
 				$sql = 'select distinct vtiger_field.*
@@ -627,7 +627,7 @@ class Reports extends CRMEntity {
 					inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid
 					inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid
 					where vtiger_field.tabid in ('. generateQuestionMarks($tabid) .') and vtiger_field.block in ('. generateQuestionMarks($block)
-					.') and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)';
+					.') and vtiger_field.displaytype in (1,2,3,4) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)';
 				$params = array($tabid, $block);
 			}
 			$profileList = getCurrentUserProfileList();
@@ -814,7 +814,7 @@ class Reports extends CRMEntity {
 			//uitype 6 and 23 added for start_date,EndDate,Expected Close Date
 			$sql = 'select *
 				from vtiger_field
-				where vtiger_field.tabid=? and (vtiger_field.uitype =5 or vtiger_field.uitype = 6 or vtiger_field.uitype = 23 or vtiger_field.displaytype=2)
+				where vtiger_field.tabid=? and (vtiger_field.uitype=5 or vtiger_field.uitype=6 or vtiger_field.uitype=23 or vtiger_field.displaytype=2 or vtiger_field.displaytype=4)
 					and vtiger_field.block in ('. generateQuestionMarks($block) .') and vtiger_field.presence in (0,2) order by vtiger_field.sequence';
 		} else {
 			$profileList = getCurrentUserProfileList();
@@ -823,7 +823,7 @@ class Reports extends CRMEntity {
 				inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid
 				inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid
 				inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid
-				where vtiger_field.tabid=? and (vtiger_field.uitype =5 or vtiger_field.displaytype=2) and vtiger_profile2field.visible=0
+				where vtiger_field.tabid=? and (vtiger_field.uitype=5 or vtiger_field.displaytype=2 or vtiger_field.displaytype=4) and vtiger_profile2field.visible=0
 					and vtiger_def_org_field.visible=0 and vtiger_field.block in ('. generateQuestionMarks($block) .') and vtiger_field.presence in (0,2)';
 			if (count($profileList) > 0) {
 				$sql .= ' and vtiger_profile2field.profileid in ('. generateQuestionMarks($profileList) .')';
@@ -1134,7 +1134,7 @@ class Reports extends CRMEntity {
 			inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where';
 		$params = array();
 		if ($module == "Calendar") {
-			$query .= " vtiger_field.tabid in (9,16) and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
+			$query .= " vtiger_field.tabid in (9,16) and vtiger_field.displaytype in (1,2,3,4) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
 			if (count($profileList) > 0) {
 				$query .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
 				$params[] = $profileList;
@@ -1145,7 +1145,7 @@ class Reports extends CRMEntity {
 			$query .= ' vtiger_field.tabid in (
 				select tabid
 				from vtiger_tab
-				where vtiger_tab.name in (?,?)) and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0
+				where vtiger_tab.name in (?,?)) and vtiger_field.displaytype in (1,2,3,4) and vtiger_profile2field.visible=0
 					and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)';
 			if (count($profileList) > 0) {
 				$query .= ' and vtiger_profile2field.profileid in ('. generateQuestionMarks($profileList) .')';
@@ -1414,11 +1414,11 @@ class Reports extends CRMEntity {
 			$ssql = 'select *
 				from vtiger_field
 				inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid
-				where vtiger_field.uitype != 50 and vtiger_field.tabid=? and vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2)';
+				where vtiger_field.uitype != 50 and vtiger_field.tabid=? and vtiger_field.displaytype in (1,2,3,4) and vtiger_field.presence in (0,2)';
 			$calcf = "select *
 				from vtiger_field
 				inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid
-				where vtiger_field.uitype!=50 and vtiger_field.tablename='vtiger_activitycf' and vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2)";
+				where vtiger_field.uitype!=50 and vtiger_field.tablename='vtiger_activitycf' and vtiger_field.displaytype in (1,2,3,4) and vtiger_field.presence in (0,2)";
 		} else {
 			$profileList = getCurrentUserProfileList();
 			$ssql = 'select *
@@ -1426,7 +1426,7 @@ class Reports extends CRMEntity {
 				inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid
 				inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid
 				inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid
-				where vtiger_field.uitype != 50 and vtiger_field.tabid=? and vtiger_field.displaytype in (1,2,3)
+				where vtiger_field.uitype != 50 and vtiger_field.tabid=? and vtiger_field.displaytype in (1,2,3,4)
 					and vtiger_def_org_field.visible=0 and vtiger_profile2field.visible=0 and vtiger_field.presence in (0,2)';
 			if (count($profileList) > 0) {
 				$ssql .= ' and vtiger_profile2field.profileid in ('. generateQuestionMarks($profileList) .')';
@@ -1437,7 +1437,7 @@ class Reports extends CRMEntity {
 				inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid inner
 				join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid
 				inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid
-				where vtiger_field.uitype != 50 and vtiger_field.tablename='vtiger_activitycf' and vtiger_field.displaytype in (1,2,3)
+				where vtiger_field.uitype != 50 and vtiger_field.tablename='vtiger_activitycf' and vtiger_field.displaytype in (1,2,3,4)
 					and vtiger_def_org_field.visible=0 and vtiger_profile2field.visible=0 and vtiger_field.presence in (0,2)";
 			if ($tabid==9 && count($profileList) > 0) {
 				$calcf .= ' and vtiger_profile2field.profileid in ('. generateQuestionMarks($profileList) .')';

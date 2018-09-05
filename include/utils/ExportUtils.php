@@ -18,7 +18,6 @@ function getPermittedBlocks($module, $disp_view) {
 	$log->debug("Entering into the function getPermittedBlocks($module, $disp_view)");
 
 	$tabid = getTabid($module);
-	$block_detail = array();
 	$query="select blockid,blocklabel,show_title from vtiger_blocks where tabid=? and $disp_view=0 and visible = 0 order by sequence";
 	$result = $adb->pquery($query, array($tabid));
 	$noofrows = $adb->num_rows($result);
@@ -29,7 +28,6 @@ function getPermittedBlocks($module, $disp_view) {
 			$blockid_list .= ', ';
 		}
 		$blockid_list .= $blockid;
-		$block_label[$blockid] = $adb->query_result($result, $i, 'blocklabel');
 	}
 	$blockid_list .= ')';
 
@@ -43,10 +41,9 @@ function getPermittedBlocks($module, $disp_view) {
  *	@return string $sql - query to get the list of fields which are permitted to the current user
  */
 function getPermittedFieldsQuery($module, $disp_view) {
-	global $adb, $log;
+	global $log, $current_user;
 	$log->debug("Entering into the function getPermittedFieldsQuery($module, $disp_view)");
 
-	global $current_user;
 	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 
 	//To get the permitted blocks
@@ -54,20 +51,20 @@ function getPermittedFieldsQuery($module, $disp_view) {
 
 	$tabid = getTabid($module);
 	if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0 || $module == 'Users') {
-		$sql = "SELECT vtiger_field.columnname, vtiger_field.fieldlabel, vtiger_field.tablename
+		$sql = 'SELECT vtiger_field.columnname, vtiger_field.fieldlabel, vtiger_field.tablename
 			FROM vtiger_field
-			WHERE vtiger_field.tabid=".$tabid." AND vtiger_field.block IN $blockid_list AND vtiger_field.displaytype IN (1,2,4) and vtiger_field.presence in (0,2)
+			WHERE vtiger_field.tabid='.$tabid." AND vtiger_field.block IN $blockid_list AND vtiger_field.displaytype IN (1,2,4) and vtiger_field.presence in (0,2)
 			ORDER BY block,sequence";
 	} else {
 		$profileList = getCurrentUserProfileList();
-		$sql = "SELECT vtiger_field.columnname, vtiger_field.fieldlabel, vtiger_field.tablename
+		$sql = 'SELECT vtiger_field.columnname, vtiger_field.fieldlabel, vtiger_field.tablename
 			FROM vtiger_field
 			INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
 			INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid
-			WHERE vtiger_field.tabid=".$tabid." AND vtiger_field.block IN ".$blockid_list." AND vtiger_field.displaytype IN (1,2,4)
-				and vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN (". implode(",", $profileList) .")
+			WHERE vtiger_field.tabid='.$tabid.' AND vtiger_field.block IN '.$blockid_list.' AND vtiger_field.displaytype IN (1,2,4)
+				and vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN ('. implode(',', $profileList) .')
 				and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid
-			ORDER BY block,sequence";
+			ORDER BY block,sequence';
 	}
 
 	$log->debug("Exit from the function getPermittedFieldsQuery($module, $disp_view). Return value = $sql");

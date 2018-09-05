@@ -19,14 +19,17 @@ function getfiltersbymodule($module, $user) {
 
 	$focus = CRMEntity::getInstance($module);
 	$linkfields=array($focus->list_link_field);
+	if ($module=='Contacts' || $module=='Leads') {
+		$linkfields=array('firstname', 'lastname');
+	}
 
 	$customView = new CustomView($module);
 	$viewid = $customView->getViewId($module);
-	$customview_html = cbws_getCustomViewCombo($viewid, $module, $customView);
-	//getAdvFilterByCvid
+	list($customviews, $customview_html) = cbws_getCustomViewCombo($viewid, $module, $customView);
 
 	return array(
 		'html'=>$customview_html,
+		'filters'=>$customviews,
 		'linkfields'=>$linkfields,
 	);
 }
@@ -46,6 +49,7 @@ function cbws_getCustomViewCombo($viewid, $module, $customView, $markselected = 
 	$shtml_pending = '';
 	$shtml_public = '';
 	$shtml_others = '';
+	$filters = array();
 
 	$selected = 'selected';
 	if ($markselected == false) {
@@ -76,6 +80,10 @@ function cbws_getCustomViewCombo($viewid, $module, $customView, $markselected = 
 		}
 
 		$option = '';
+		$filter = array(
+			'name' => $cvrow['viewname'],
+			'status' => $cvrow['status'],
+		);
 		$viewname = $cvrow['viewname'];
 		if ($cvrow['status'] == CV_STATUS_DEFAULT || $cvrow['userid'] == $current_user->id) {
 			$disp_viewname = $viewname;
@@ -115,10 +123,9 @@ function cbws_getCustomViewCombo($viewid, $module, $customView, $markselected = 
 			}
 		}
 		$advft_criteria = json_encode($advft);
-
-		if ($advft_criteria != '' && $advft_criteria != null && $advft_criteria != '[]') {
-			$option = "<option value='".$advft_criteria."'>" . $disp_viewname . '</option>';
-		}
+		$filter['advcriteria'] = $advft_criteria;
+		$filter['stdcriteria'] = $customView->getCVStdFilterSQL($cvrow['cvid']);
+		$option = "<option value='".$cvrow['cvid']."'>" . $disp_viewname . '</option>';
 		// Add the option to combo box at appropriate section
 		if ($option != '') {
 			if ($cvrow['status'] == CV_STATUS_DEFAULT || $cvrow['userid'] == $current_user->id) {
@@ -131,10 +138,11 @@ function cbws_getCustomViewCombo($viewid, $module, $customView, $markselected = 
 				$shtml_others .= $option;
 			}
 		}
+		$filters[$cvrow['cvid']] = $filter;
 	}
 	$shtml = $shtml_user;
 
 	$shtml = $shtml . $shtml_public . $shtml_others;
-	return $shtml;
+	return array($filters, $shtml);
 }
 ?>
