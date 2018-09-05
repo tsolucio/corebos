@@ -15,21 +15,22 @@ require_once 'include/Webservices/Utils.php';
 
 global $adv_filter_options;
 
-$adv_filter_options = array("e" => "" . $mod_strings['equals'] . "",
-	"n" => "" . $mod_strings['not equal to'] . "",
-	"s" => "" . $mod_strings['starts with'] . "",
-	"ew" => "" . $mod_strings['ends with'] . "",
-	"dnsw" => "" . $mod_strings['does not start with'] . "",
-	"dnew" => "" . $mod_strings['does not end with'] . "",
-	"c" => "" . $mod_strings['contains'] . "",
-	"k" => "" . $mod_strings['does not contain'] . "",
-	"l" => "" . $mod_strings['less than'] . "",
-	"g" => "" . $mod_strings['greater than'] . "",
-	"m" => "" . $mod_strings['less or equal'] . "",
-	"h" => "" . $mod_strings['greater or equal'] . "",
-	"b" => "" . $mod_strings['before'] . "",
-	"a" => "" . $mod_strings['after'] . "",
-	"bw" => "" . $mod_strings['between'] . "",
+$adv_filter_options = array(
+	'e' => $mod_strings['equals'],
+	'n' => $mod_strings['not equal to'],
+	's' => $mod_strings['starts with'],
+	'ew' => $mod_strings['ends with'],
+	'dnsw' => $mod_strings['does not start with'],
+	'dnew' => $mod_strings['does not end with'],
+	'c' => $mod_strings['contains'],
+	'k' => $mod_strings['does not contain'],
+	'l' => $mod_strings['less than'],
+	'g' => $mod_strings['greater than'],
+	'm' => $mod_strings['less or equal'],
+	'h' => $mod_strings['greater or equal'],
+	'b' => $mod_strings['before'],
+	'a' => $mod_strings['after'],
+	'bw' => $mod_strings['between'],
 );
 
 class CustomView extends CRMEntity {
@@ -925,11 +926,12 @@ class CustomView extends CRMEntity {
 			$groupId = $relcriteriagroup["groupid"];
 			$groupCondition = $relcriteriagroup["group_condition"];
 
-			$ssql = 'select vtiger_cvadvfilter.* from vtiger_customview
-						inner join vtiger_cvadvfilter on vtiger_cvadvfilter.cvid = vtiger_customview.cvid
-						left join vtiger_cvadvfilter_grouping on vtiger_cvadvfilter.cvid = vtiger_cvadvfilter_grouping.cvid
-								and vtiger_cvadvfilter.groupid = vtiger_cvadvfilter_grouping.groupid';
-			$ssql.= " where vtiger_customview.cvid = ? AND vtiger_cvadvfilter.groupid = ? order by vtiger_cvadvfilter.columnindex";
+			$ssql = 'select vtiger_cvadvfilter.*
+				from vtiger_customview
+				inner join vtiger_cvadvfilter on vtiger_cvadvfilter.cvid = vtiger_customview.cvid
+				left join vtiger_cvadvfilter_grouping on vtiger_cvadvfilter.cvid = vtiger_cvadvfilter_grouping.cvid
+					and vtiger_cvadvfilter.groupid = vtiger_cvadvfilter_grouping.groupid
+				where vtiger_customview.cvid = ? AND vtiger_cvadvfilter.groupid = ? order by vtiger_cvadvfilter.columnindex';
 
 			$result = $adb->pquery($ssql, array($cvid, $groupId));
 			$noOfColumns = $adb->num_rows($result);
@@ -939,12 +941,11 @@ class CustomView extends CRMEntity {
 
 			while ($relcriteriarow = $adb->fetch_array($result)) {
 				$criteria = array();
-				$criteria['columnname'] = html_entity_decode($relcriteriarow["columnname"], ENT_QUOTES, $default_charset);
-				$criteria['comparator'] = $relcriteriarow["comparator"];
-				$advfilterval = html_entity_decode($relcriteriarow["value"], ENT_QUOTES, $default_charset);
-				$col = explode(":", $relcriteriarow["columnname"]);
-				$uitype_value = getUItypeByFieldName($this->customviewmodule, $col[2]);
-				$temp_val = explode(",", $relcriteriarow["value"]);
+				$criteria['columnname'] = html_entity_decode($relcriteriarow['columnname'], ENT_QUOTES, $default_charset);
+				$criteria['comparator'] = $relcriteriarow['comparator'];
+				$advfilterval = html_entity_decode($relcriteriarow['value'], ENT_QUOTES, $default_charset);
+				$col = explode(':', $relcriteriarow['columnname']);
+				$temp_val = explode(',', $relcriteriarow['value']);
 				if ($col[4] == 'D' || ($col[4] == 'T' && $col[1] != 'time_start' && $col[1] != 'time_end') || ($col[4] == 'DT')) {
 					$val = array();
 					for ($x = 0; $x < count($temp_val); $x++) {
@@ -959,7 +960,7 @@ class CustomView extends CRMEntity {
 							$val[$x] = $date->getDisplayTime();
 						}
 					}
-					$advfilterval = implode(",", $val);
+					$advfilterval = implode(',', $val);
 				}
 				if (($col[1]=='smownerid' || $col[1]=='smcreatorid' || $col[1]=='modifiedby')
 					&& $advfilterval=='current_user' && $_REQUEST['action']!='CustomView' && empty($_REQUEST['record'])) {
@@ -1112,43 +1113,39 @@ class CustomView extends CRMEntity {
 
 		if (isset($stdfilterlist)) {
 			$startDateTime = $endDateTime = '';
-			foreach ($stdfilterlist as $columnname => $value) {
-				if ($columnname == "columnname") {
-					$filtercolumn = $value;
-				} elseif ($columnname == "stdfilter") {
-					$filtertype = $value;
-				} elseif ($columnname == "startdate") {
-					$startDateTime = new DateTimeField($value . ' ' . date('H:i:s'));
-					$userStartDate = $startDateTime->getDisplayDate();
-					$userStartDateTime = new DateTimeField($userStartDate . ' 00:00:00');
-					$startDateTime = $userStartDateTime->getDBInsertDateTimeValue();
-				} elseif ($columnname == "enddate") {
-					$endDateTime = new DateTimeField($value . ' ' . date('H:i:s'));
-					$userEndDate = $endDateTime->getDisplayDate();
-					$userEndDateTime = new DateTimeField($userEndDate . ' 23:59:00');
-					$endDateTime = $userEndDateTime->getDBInsertDateTimeValue();
-				}
-				if ($startDateTime != "" && $endDateTime != "") {
-					$columns = explode(":", $filtercolumn);
-					// Fix for http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/5423
-					if ($columns[1] == 'birthday') {
-						$tableColumnSql = "DATE_FORMAT(" . $columns[0] . "." . $columns[1] . ", '%m%d')";
-						$startDateTime = "DATE_FORMAT('$startDateTime', '%m%d')";
-						$endDateTime = "DATE_FORMAT('$endDateTime', '%m%d')";
-						$stdfiltersql = $tableColumnSql . " BETWEEN " . $startDateTime . " and " . $endDateTime;
-					} else {
-						if ($this->customviewmodule == 'Calendar' && ($columns[1] == 'date_start' || $columns[1] == 'due_date')) {
-							$tableColumnSql = '';
-							if ($columns[1] == 'date_start') {
-								$tableColumnSql = "CAST((CONCAT(date_start,' ',time_start)) AS DATETIME)";
-							} else {
-								$tableColumnSql = "CAST((CONCAT(due_date,' ',time_end)) AS DATETIME)";
-							}
+			$filtercolumn = $stdfilterlist['columnname'];
+			//$filtertype = $stdfilterlist['stdfilter'];
+			if (!empty($stdfilterlist['startdate'])) {
+				$startDateTime = new DateTimeField($stdfilterlist['startdate'] . ' ' . date('H:i:s'));
+				$userStartDate = $startDateTime->getDisplayDate();
+				$userStartDateTime = new DateTimeField($userStartDate . ' 00:00:00');
+				$startDateTime = $userStartDateTime->getDBInsertDateTimeValue();
+			}
+			if (!empty($stdfilterlist['enddate'])) {
+				$endDateTime = new DateTimeField($stdfilterlist['enddate'] . ' ' . date('H:i:s'));
+				$userEndDate = $endDateTime->getDisplayDate();
+				$userEndDateTime = new DateTimeField($userEndDate . ' 23:59:00');
+				$endDateTime = $userEndDateTime->getDBInsertDateTimeValue();
+			}
+			if ($startDateTime != '' && $endDateTime != '') {
+				$columns = explode(':', $filtercolumn);
+				if ($columns[1] == 'birthday') {
+					$tableColumnSql = 'DATE_FORMAT(' . $columns[0] . '.' . $columns[1] . ", '%m%d')";
+					$startDateTime = "DATE_FORMAT('$startDateTime', '%m%d')";
+					$endDateTime = "DATE_FORMAT('$endDateTime', '%m%d')";
+					$stdfiltersql = $tableColumnSql . ' BETWEEN ' . $startDateTime . ' and ' . $endDateTime;
+				} else {
+					if ($this->customviewmodule == 'Calendar' && ($columns[1] == 'date_start' || $columns[1] == 'due_date')) {
+						$tableColumnSql = '';
+						if ($columns[1] == 'date_start') {
+							$tableColumnSql = "CAST((CONCAT(date_start,' ',time_start)) AS DATETIME)";
 						} else {
-							$tableColumnSql = $columns[0] . "." . $columns[1];
+							$tableColumnSql = "CAST((CONCAT(due_date,' ',time_end)) AS DATETIME)";
 						}
-						$stdfiltersql = $tableColumnSql . " BETWEEN '" . $startDateTime . "' and '" . $endDateTime . "'";
+					} else {
+						$tableColumnSql = $columns[0] . '.' . $columns[1];
 					}
+					$stdfiltersql = $tableColumnSql . " BETWEEN '" . $startDateTime . "' and '" . $endDateTime . "'";
 				}
 			}
 		}

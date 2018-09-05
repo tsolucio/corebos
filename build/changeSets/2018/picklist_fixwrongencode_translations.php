@@ -14,7 +14,7 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-class picklist_fixwrong_translations extends cbupdaterWorker {
+class picklist_fixwrongencode_translations extends cbupdaterWorker {
 
 	public function applyChange() {
 		global $adb;
@@ -52,7 +52,7 @@ class picklist_fixwrong_translations extends cbupdaterWorker {
 			for ($j=0; $j<$count; $j++) {
 				$impmod = $adb->query_result($query, $j, 'translation_module');
 				$lang = $adb->query_result($query, $j, 'locale');
-				$valtranslated = $adb->query_result($query, $j, 'i18n');
+				//$valtranslated = $adb->query_result($query, $j, 'i18n');
 				$forpicklist1 = explode('::', $adb->query_result($query, $j, 'forpicklist'));
 				$forpicklistname = $forpicklist1[1];
 				$forpicklist = $forpicklist1[0].'::'.$forpicklist1[1];
@@ -110,11 +110,9 @@ class picklist_fixwrong_translations extends cbupdaterWorker {
 							vtws_create('cbtranslation', $rec, $current_user);
 						}
 					} else {
-						if ($valtranslated != $value) {
-							$rec['i18n'] = $value;
+							$rec['i18n'] = htmlspecialchars_decode($value);
 							$rec['id'] = $wsentityid.$translationid;
 							vtws_revise($rec, $current_user);
-						}
 					}
 				}
 			}

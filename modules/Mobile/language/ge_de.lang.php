@@ -96,5 +96,6 @@ $mod_strings = array (
 	'LBL_NAVI_SELECTION'=>'Anzahl beim Scrollen:',
 	'LBL_COMMENTS'=>'Kommentare',
 	'LBL_SIGNATURE'=>'Signature',
+	'LBL_DUPLICATE'=>'Duplicate',
 );
 ?>

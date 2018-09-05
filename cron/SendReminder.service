@@ -13,17 +13,17 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-require_once('config.inc.php');
-require_once('include/utils/utils.php');
-require_once("modules/Emails/mail.php");
-require_once('include/logging.php');
+require_once 'config.inc.php';
+require_once 'include/utils/utils.php';
+require_once 'modules/Emails/mail.php';
+require_once 'include/logging.php';
 
 $current_user = Users::getActiveAdminUser();
 // Set the default sender email id
-$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk');
-$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name','your-support name','HelpDesk');
+$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
+$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name', 'your-support name', 'HelpDesk');
 $from = $HELPDESK_SUPPORT_EMAIL_ID;
-if(empty($from)) {
+if (empty($from)) {
 	// default configuration is empty?
 	$from = "reminders@localserver.com";
 }
@@ -34,8 +34,9 @@ $log = LoggerManager::getLogger('SendReminder');
 $log->debug('invoked SendReminder');
 
 // retrieve the translated strings.
-if(empty($current_language))
+if (empty($current_language)) {
 	$current_language = 'en_us';
+}
 
 //modified query for recurring events -Jag
 $query="select vtiger_activity.activityid,vtiger_recurringevents.recurringid
@@ -51,8 +52,7 @@ $query="select vtiger_activity.activityid,vtiger_recurringevents.recurringid
 	group by vtiger_activity.activityid,vtiger_recurringevents.recurringid";
 $result = $adb->pquery($query, array());
 
-if($adb->num_rows($result) >= 1)
-{
+if ($adb->num_rows($result) >= 1) {
 	$query='select vtiger_crmentity.crmid,vtiger_seactivityrel.crmid as setype,vtiger_activity.*,vtiger_crmentity.setype as calendarsetype,
 	vtiger_activity_reminder.reminder_time,vtiger_activity_reminder.recurringid,vtiger_recurringevents.recurringdate
 	from vtiger_activity
@@ -61,13 +61,13 @@ if($adb->num_rows($result) >= 1)
 	left outer join vtiger_recurringevents on vtiger_activity.activityid=vtiger_recurringevents.activityid
 	left outer join vtiger_seactivityrel on vtiger_seactivityrel.activityid = vtiger_activity.activityid
 	where vtiger_activity.activityid = ? limit 1';
-	while($allactrs = $adb->fetch_array($result)) {
+	while ($allactrs = $adb->fetch_array($result)) {
 		$actrs = $adb->pquery($query, array($allactrs['activityid']));
 		$result_set = $adb->fetch_array($actrs);
 		$date_start = $result_set['date_start'];
 		$time_start = $result_set['time_start'];
 		$reminder_time = $result_set['reminder_time'];
-		$date = new DateTimeField( null );
+		$date = new DateTimeField(null);
 		$curr_time = strtotime($date->getDisplayDateTimeValue())/60;
 		$activity_id = $result_set['activityid'];
 		$activitymode = ($result_set['activitytype'] == 'Task')?'Task':'Events';
@@ -75,21 +75,18 @@ if($adb->num_rows($result) >= 1)
 		$activity_sub = $result_set['subject'];
 
 		$parent_content = '';
-		if(!empty($parent_type)) {
+		if (!empty($parent_type)) {
 			$parent_module = getSalesEntityType($parent_type);
 			$ename = getEntityName($parent_module, $parent_type);
-			$parent_content = getTranslatedString($parent_module,$parent_module) .' : '.$ename[$parent_type]."\n";
+			$parent_content = getTranslatedString($parent_module, $parent_module) .' : '.$ename[$parent_type]."\n";
 		}
 
 		//code included for recurring events by jaguar starts
 		$recur_id = $result_set['recurringid'];
 		$current_date=date('Y-m-d');
-		if($recur_id == 0)
-		{
+		if ($recur_id == 0) {
 			$date_start = $result_set['date_start'];
-		}
-		else
-		{
+		} else {
 			$date_start = $result_set['recurringdate'];
 		}
 		//code included for recurring events by jaguar ends
@@ -100,37 +97,42 @@ if($adb->num_rows($result) >= 1)
 			// Retrieving the Subject and message from reminder table
 			$sql = 'select active,notificationsubject,notificationbody from vtiger_notificationscheduler where schedulednotificationid=8';
 			$result_main = $adb->pquery($sql, array());
-			if ($result_main and $adb->num_rows($result_main)) {
+			if ($result_main && $adb->num_rows($result_main)) {
 				// vtiger crm notification system still in place
-				$query_user='SELECT vtiger_users.email1,vtiger_salesmanactivityrel.smid FROM vtiger_salesmanactivityrel inner join vtiger_users on vtiger_users.id=vtiger_salesmanactivityrel.smid where vtiger_salesmanactivityrel.activityid=? and vtiger_users.deleted=0';
+				$query_user='SELECT vtiger_users.email1,vtiger_salesmanactivityrel.smid
+					FROM vtiger_salesmanactivityrel
+					INNER JOIN vtiger_users on vtiger_users.id=vtiger_salesmanactivityrel.smid
+					WHERE vtiger_salesmanactivityrel.activityid=? and vtiger_users.deleted=0';
 				$user_result = $adb->pquery($query_user, array($activity_id));
-				if($adb->num_rows($user_result)>=1) {
-					while($user_result_row = $adb->fetch_array($user_result)) {
-						if($user_result_row['email1']!='' || $user_result_row['email1'] != NULL) {
+				if ($adb->num_rows($user_result)>=1) {
+					while ($user_result_row = $adb->fetch_array($user_result)) {
+						if ($user_result_row['email1']!='' || $user_result_row['email1'] != null) {
 							$user_id = $user_result_row['smid'];
 							$reminduser = new Users();
 							$reminduser->retrieveCurrentUserInfoFromFile($user_id);
 							$current_language = $reminduser->column_fields['language'];
 							$app_strings = return_application_language($current_language);
 							$stdatetime = new DateTimeField($result_set['date_start'].' '.$result_set['time_start']);
-							$subject = getTranslatedString('Reminder','Calendar').getTranslatedString($result_set['activitytype'],'Calendar').' @ '.
-								$stdatetime->getDisplayDateTimeValue($reminduser) .'] ('.$reminduser->column_fields['time_zone'].') '.
-								getTranslatedString($adb->query_result($result_main,0,'notificationsubject'),'Calendar');
+							$subject = getTranslatedString('Reminder', 'Calendar').getTranslatedString($result_set['activitytype'], 'Calendar').' @ '
+								.$stdatetime->getDisplayDateTimeValue($reminduser) .'] ('.$reminduser->column_fields['time_zone'].') '
+								.getTranslatedString($adb->query_result($result_main, 0, 'notificationsubject'), 'Calendar');
 							//Set the mail body/contents here
-							$contents = nl2br(getTranslatedString($adb->query_result($result_main,0,'notificationbody'),'Calendar')) ."\n\n ".
-								getTranslatedString('Subject','Calendar').' : '.$activity_sub."\n ". $parent_content .' '.
-								getTranslatedString('Date & Time','Calendar').' : '.$stdatetime->getDisplayDateTimeValue($reminduser).' ('. $reminduser->column_fields['time_zone'] .")\n\n ".
-								getTranslatedString('Visit_Link','Calendar')." <a href='".$site_URL."/index.php?action=DetailView&module=cbCalendar&record=".$activity_id."&activity_mode=".$activitymode."'>".getTranslatedString('Click here','Calendar').'</a>';
+							$contents = nl2br(getTranslatedString($adb->query_result($result_main, 0, 'notificationbody'), 'Calendar')) ."\n\n "
+								.getTranslatedString('Subject', 'Calendar').' : '.$activity_sub."\n ". $parent_content .' '
+								.getTranslatedString('Date & Time', 'Calendar').' : '.$stdatetime->getDisplayDateTimeValue($reminduser).' ('
+								.$reminduser->column_fields['time_zone'] .")\n\n ".getTranslatedString('Visit_Link', 'Calendar')
+								." <a href='".$site_URL."/index.php?action=DetailView&module=cbCalendar&record=".$activity_id."&activity_mode=".$activitymode."'>"
+								.getTranslatedString('Click here', 'Calendar').'</a>';
 							$sendto = $user_result_row['email1'];
-							$rdo = send_mail('Calendar',$sendto,$HELPDESK_SUPPORT_NAME,$from,$subject,nl2br($contents));
+							$rdo = send_mail('Calendar', $sendto, $HELPDESK_SUPPORT_NAME, $from, $subject, nl2br($contents));
 						}
 					}
 				}
 			} else {
 				// coreBOS workflow based notification template
 				$wfsetype = ($result_set['calendarsetype'] == 'cbCalendar' ? 'cbCalendar' : 'Events');
-				$result = $adb->pquery("select * from com_vtiger_workflows where summary='Send Reminder Template' and module_name=? limit 1",array($wfsetype));
-				if ($result and $adb->num_rows($result)>0) {
+				$result = $adb->pquery("select * from com_vtiger_workflows where summary='Send Reminder Template' and module_name=? limit 1", array($wfsetype));
+				if ($result && $adb->num_rows($result)>0) {
 					$util = new VTWorkflowUtils();
 					$adminUser = $util->adminUser();
 					$entityCache = new VTEntityCache($adminUser);
@@ -153,7 +155,7 @@ if($adb->num_rows($result) >= 1)
 
 			$upd_query = 'UPDATE vtiger_activity_reminder SET reminder_sent=1 where activity_id=?';
 			$upd_params = array($activity_id);
-			if($recur_id!=0) {
+			if ($recur_id!=0) {
 				$upd_query.=' and recurringid=?';
 				$upd_params[] = $recur_id;
 			}

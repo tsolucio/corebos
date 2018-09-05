@@ -17,8 +17,7 @@ function vtws_getfilterfields($module, $user) {
 	global $log;
 	$log->debug('Entering function vtws_getfilterfields');
 
-	include_once "modules/$module/$module.php";
-	$focus = new $module();
+	$focus = CRMEntity::getInstance($module);
 
 	$linkfields=array($focus->list_link_field);
 	if ($module=='Contacts' || $module=='Leads') {

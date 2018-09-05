@@ -49,6 +49,7 @@ class crmtogo_Index_Controller {
 		'fetchRecord' 			  => array('file' => '/views/DetailView.php', 'class' => 'crmtogo_UI_DetailView'),
 		'edit'                    => array('file' => '/views/EditView.php', 'class' => 'crmtogo_UI_EditView'),
 		'create'                  => array('file' => '/views/EditView.php', 'class' => 'crmtogo_UI_EditView'),
+		'duplicate'				  => array('file' => '/views/EditView.php', 'class' => 'crmtogo_UI_EditView'),
 		'globalsearch'            => array('file' => '/views/ListGlobalSearchResults.php', 'class' => 'crmtogo_UI_GlobalSearch'),
 		'deleteConfirmation'  	  => array('file' => '/views/deleteConfirmation.php', 'class' => 'crmtogo_UI_Delete' ),
 		'deleteRecords'  		  => array('file' => '/views/ListModuleRecords.php', 'class' => 'crmtogo_UI_ListModuleRecords'),
