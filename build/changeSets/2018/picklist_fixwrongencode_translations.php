@@ -113,7 +113,6 @@ class picklist_fixwrongencode_translations extends cbupdaterWorker {
 							$rec['i18n'] = htmlspecialchars_decode($value);
 							$rec['id'] = $wsentityid.$translationid;
 							vtws_revise($rec, $current_user);
-						
 					}
 				}
 			}
