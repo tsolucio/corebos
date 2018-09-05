@@ -53,8 +53,8 @@ function getPermittedFieldsQuery($module, $disp_view) {
 	if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0 || $module == 'Users') {
 		$sql = 'SELECT vtiger_field.columnname, vtiger_field.fieldlabel, vtiger_field.tablename
 			FROM vtiger_field
-			WHERE vtiger_field.tabid='.$tabid.' AND vtiger_field.block IN $blockid_list AND vtiger_field.displaytype IN (1,2,4) and vtiger_field.presence in (0,2)
-			ORDER BY block,sequence';
+			WHERE vtiger_field.tabid='.$tabid." AND vtiger_field.block IN $blockid_list AND vtiger_field.displaytype IN (1,2,4) and vtiger_field.presence in (0,2)
+			ORDER BY block,sequence";
 	} else {
 		$profileList = getCurrentUserProfileList();
 		$sql = 'SELECT vtiger_field.columnname, vtiger_field.fieldlabel, vtiger_field.tablename
