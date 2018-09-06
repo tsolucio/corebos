@@ -71,9 +71,8 @@ function __cbwf_getimageurl($arr) {
 function __cb_globalvariable($arr) {
 	$ret = null;
 	if (!empty($arr[0])) {
-		$ret = GlobalVariable::getVariable($arr[0],null);
+		$ret = GlobalVariable::getVariable($arr[0], null);
 	}
 	return $ret;
 }
-
 ?>
