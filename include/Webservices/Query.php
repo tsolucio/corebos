@@ -22,7 +22,7 @@ function vtws_query($q, $user) {
 		$moduleName = trim($m[1]);
 	}
 
-	if (!isset($vtws_create_cache[$moduleName]['webserviceobject'])) {
+	if (!isset($vtws_query_cache[$moduleName]['webserviceobject'])) {
 		$webserviceObject = VtigerWebserviceObject::fromQuery($adb, $q);
 		$vtws_query_cache[$moduleName]['webserviceobject'] = $webserviceObject;
 	} else {
