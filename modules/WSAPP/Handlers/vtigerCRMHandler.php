@@ -73,7 +73,7 @@ class vtigerCRMHandler extends SyncHandler {
 		$assignedRecordIds = array();
 		if ($this->isClientUserSyncType()|| $this->isClientUserAndGroupSyncType()) {
 			$assignedRecordIds = wsapp_checkIfRecordsAssignToUser($crmIds, $this->user->id);
-		// To check if the record assigned to group
+			// To check if the record assigned to group
 			if ($this->isClientUserAndGroupSyncType()) {
 				$groupIds = $this->getGroupIds($this->user->id);
 				foreach ($groupIds as $group) {
@@ -81,7 +81,6 @@ class vtigerCRMHandler extends SyncHandler {
 					$assignedRecordIds = array_merge($assignedRecordIds, $groupRecordId);
 				}
 			}
-		//  End
 		}
 		foreach ($updatedRecords as $index => $record) {
 			$webserviceRecordId = $record["id"];
@@ -110,8 +109,8 @@ class vtigerCRMHandler extends SyncHandler {
 		// To get record id's assigned to group of the current user
 		if ($this->isClientUserAndGroupSyncType()) {
 			foreach ($groupIds as $group) {
-				   $groupRecordId = wsapp_checkIfRecordsAssignToUser($deletedCrmIds, $group);
-				   $assignedDeletedRecordIds = array_merge($assignedDeletedRecordIds, $groupRecordId);
+				$groupRecordId = wsapp_checkIfRecordsAssignToUser($deletedCrmIds, $group);
+				$assignedDeletedRecordIds = array_merge($assignedDeletedRecordIds, $groupRecordId);
 			}
 		}
 
@@ -186,7 +185,7 @@ class vtigerCRMHandler extends SyncHandler {
 						} elseif (!empty($entityNameIds[$recordInfo[$referenceFieldName]])) {
 							$recordInfo[$referenceFieldName] = $entityNameIds[$recordInfo[$referenceFieldName]];
 						} else {
-							$recordInfo[$referenceFieldName] = "";
+							$recordInfo[$referenceFieldName] = '';
 						}
 					}
 					$records[$index] = $recordInfo;
@@ -266,7 +265,7 @@ class vtigerCRMHandler extends SyncHandler {
 			foreach ($mandatoryFieldsList as $fieldName) {
 				$fieldInstance = $moduleFields[$fieldName];
 				if (empty($recordDetails[$fieldName]) && ($fieldInstance->getFieldDataType() == 'multipicklist' || $fieldInstance->getFieldDataType() == 'picklist')) {
-					$pickListDetails = $fieldInstance->getPicklistDetails($webserviceField);
+					$pickListDetails = $fieldInstance->getPicklistDetails();
 					$defaultValue = $pickListDetails[0]['value'];
 					$recordDetails[$fieldName] = $defaultValue;
 				}
@@ -313,7 +312,6 @@ class vtigerCRMHandler extends SyncHandler {
 							$value = $dateObject->format('Y-m-d');
 						}
 						break;
-
 					case 'text':
 						$value = '?????';
 						if (!empty($defaultValue)) {
@@ -389,5 +387,4 @@ class vtigerCRMHandler extends SyncHandler {
 		return $this->clientSyncType == 'userandgroup';
 	}
 }
-
 ?>
