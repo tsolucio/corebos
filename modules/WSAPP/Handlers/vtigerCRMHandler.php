@@ -21,6 +21,7 @@ class vtigerCRMHandler extends SyncHandler {
 
 	private $assignToChangedRecords;
 	protected $clientSyncType = 'user';
+
 	public function __construct($appkey) {
 		$this->key = $appkey;
 		$this->assignToChangedRecords = array();
