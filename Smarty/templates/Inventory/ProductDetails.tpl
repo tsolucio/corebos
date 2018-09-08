@@ -75,9 +75,6 @@ function displayCoords(currObj,obj,mode,curr_row)
 
 {rdelim}
 
-	function doNothing(){ldelim}
-	{rdelim}
-	
 	function fnHidePopDiv(obj){ldelim}
 		document.getElementById(obj).style.display = 'none';
 	{rdelim}

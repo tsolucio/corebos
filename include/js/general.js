@@ -54,6 +54,9 @@ if (document.all) {
 
 var gBrowserAgent = navigator.userAgent.toLowerCase();
 
+function doNothing() {
+}
+
 function hideSelect() {
 	var oselect_array = document.getElementsByTagName('SELECT');
 	for (var i=0; i<oselect_array.length; i++) {
