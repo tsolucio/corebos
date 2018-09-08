@@ -72,12 +72,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 		document.getElementById(obj).style.top = document.getElementById("tax_container").top;
 	{rdelim}
 	document.getElementById(obj).style.display = "block";
-
 {rdelim}
-
-	function fnHidePopDiv(obj){ldelim}
-		document.getElementById(obj).style.display = 'none';
-	{rdelim}
 
 	var moreInfoFields = Array({$moreinfofields});
 </script>
@@ -259,7 +254,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 					<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
 					   <tr>
 						<td id="discount_div_title{$row_no}" nowrap align="left" ></td>
-						<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnHidePopDiv('discount_div{$row_no}')" style="cursor:pointer;"></td>
+						<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnhide('discount_div{$row_no}')" style="cursor:pointer;"></td>
 					   </tr>
 					   <tr>
 						<td align="left" class="lineOnTop"><input type="radio" name="discount{$row_no}" {if isset($data.$checked_discount_zero)}{$data.$checked_discount_zero}{/if} onclick="setDiscount(this,'{$row_no}'); callTaxCalc('{$row_no}');calcTotal();">&nbsp; {$APP.LBL_ZERO_DISCOUNT}</td>
@@ -291,7 +286,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 					   <tr>
 						<td id="tax_div_title{$row_no}" nowrap align="left" ><b>Set Tax for : {$data.$totalAfterDiscount}</b></td>
 						<td>&nbsp;</td>
-						<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnHidePopDiv('tax_div{$row_no}')" style="cursor:pointer;"></td>
+						<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnhide('tax_div{$row_no}')" style="cursor:pointer;"></td>
 					   </tr>
 					{if isset($data.taxes)}
 					{foreach key=tax_row_no item=tax_data from=$data.taxes}
@@ -389,7 +384,7 @@ so we will get that array, parse that array and fill the details
 			<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
 			   <tr>
 				<td id="discount_div_title_final" nowrap align="left" ></td>
-				<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnHidePopDiv('discount_div_final')" style="cursor:pointer;"></td>
+				<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnhide('discount_div_final')" style="cursor:pointer;"></td>
 			   </tr>
 			   <tr>
 				<td align="left" class="lineOnTop"><input type="radio" name="discount_final" checked onclick="setDiscount(this,'_final'); calcGroupTax(); calcTotal();">&nbsp; {$APP.LBL_ZERO_DISCOUNT}</td>
@@ -450,7 +445,7 @@ so we will get that array, parse that array and fill the details
 					<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
 					   <tr>
 						<td id="sh_tax_div_title" colspan="2" nowrap align="left" ></td>
-						<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnHidePopDiv('shipping_handling_div')" style="cursor:pointer;"></td>
+						<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnhide('shipping_handling_div')" style="cursor:pointer;"></td>
 					   </tr>
 
 					{foreach item=tax_detail name=sh_loop key=loop_count from=$FINAL.sh_taxes}

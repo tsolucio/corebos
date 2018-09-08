@@ -1,7 +1,7 @@
 <table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
 <tr>
 	<td id="group_tax_div_title" colspan="2" nowrap align="left" ></td>
-	<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnHidePopDiv('group_tax_div')" style="cursor:pointer;"></td>
+	<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnhide('group_tax_div')" style="cursor:pointer;"></td>
 </tr>
 {foreach item=tax_detail name=group_tax_loop key=loop_count from=$GROUP_TAXES}
 <tr>
