@@ -1896,7 +1896,7 @@ class ReportRun extends CRMEntity {
 		} else {
 			$columnlist = $this->getQueryColumnsList($reportid, $type);
 			$groupslist = $this->getGroupingList($reportid);
-			$groupTimeList = $this->getGroupByTimeList($reportid);
+			$this->getGroupByTimeList($reportid);
 			$stdfilterlist = $this->getStdFilterList($reportid);
 			$columnstotallist = $this->getColumnsTotal($reportid, $columnlist);
 			$advfiltersql = $this->getAdvFilterSql($reportid);
@@ -1910,9 +1910,6 @@ class ReportRun extends CRMEntity {
 		//groups list
 			if (isset($groupslist)) {
 				$groupsquery = implode(', ', $groupslist);
-			}
-			if (isset($groupTimeList)) {
-				$groupTimeQuery = implode(', ', $groupTimeList);
 			}
 
 		//standard list
