@@ -256,10 +256,9 @@ class vtigerCRMHandler extends SyncHandler {
 		foreach ($recordList as $index => $recordDetails) {
 			if (!array_key_exists($recordDetails['module'], $modulesMetaCache)) {
 				$handler = vtws_getModuleHandlerFromName($recordDetails['module'], $this->user);
-				$meta = $handler->getMeta();
-				$modulesMetaCache[$recordDetails['module']] = $meta;
+				$modulesMetaCache[$recordDetails['module']] = $handler->getMeta();
 			}
-			$moduleMeta = $modulesMetaCache[$recordDetails['module']];
+			$meta = $modulesMetaCache[$recordDetails['module']];
 			$mandatoryFieldsList = $meta->getMandatoryFields();
 			$moduleFields = $meta->getModuleFields();
 			foreach ($mandatoryFieldsList as $fieldName) {
