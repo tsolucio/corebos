@@ -386,5 +386,9 @@ class vtigerCRMHandler extends SyncHandler {
 	public function isClientUserAndGroupSyncType() {
 		return $this->clientSyncType == 'userandgroup';
 	}
+
+	public function setUser($user) {
+		$this->user = $user;
+	}
 }
 ?>
