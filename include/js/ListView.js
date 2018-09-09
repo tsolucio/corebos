@@ -135,6 +135,7 @@ function mass_edit_formload(idstring, module, parenttab) {
 		vtlib_executeJavascriptInElement(document.getElementById('massedit_form_div'));
 	});
 }
+
 function mass_edit_fieldchange(selectBox) {
 	var oldSelectedIndex = selectBox.oldSelectedIndex;
 	var selectedIndex = selectBox.selectedIndex;
@@ -526,19 +527,20 @@ function ChangeCustomViewStatus(viewid, now_status, changed_status, module, pare
 
 function getListViewCount(module, element, parentElement, url) {
 	var i=0;
+	var elementList = '';
 	if (module != 'Documents') {
-		var elementList = document.getElementsByName(module+'_listViewCountRefreshIcon');
+		elementList = document.getElementsByName(module+'_listViewCountRefreshIcon');
 		for (i=0; i<elementList.length; ++i) {
 			elementList[i].style.display = 'none';
 		}
 	} else {
 		element.style.display = 'none';
 	}
-	var elementList = document.getElementsByName(module+'_listViewCountContainerBusy');
+	elementList = document.getElementsByName(module+'_listViewCountContainerBusy');
 	for (i=0; i<elementList.length; ++i) {
 		elementList[i].style.display = '';
 	}
-	var element = document.getElementsByName('search_url')[0];
+	element = document.getElementsByName('search_url')[0];
 	var searchURL = '';
 	if (typeof element !='undefined') {
 		searchURL = element.value;
@@ -546,8 +548,7 @@ function getListViewCount(module, element, parentElement, url) {
 		element = document.getElementsByName('search_text')[0];
 		var searchField = document.getElementsByName('search_field')[0];
 		if (element.value.length > 0) {
-			searchURL = '&query=true&searchtype=BasicSearch&search_field='+
-				encodeURIComponent(searchField.value)+'&search_text='+encodeURIComponent(element.value);
+			searchURL = '&query=true&searchtype=BasicSearch&search_field='+encodeURIComponent(searchField.value)+'&search_text='+encodeURIComponent(element.value);
 		}
 	} else if (document.getElementById('globalSearchText') != null &&
 			typeof document.getElementById('globalSearchText') != 'undefined') {
@@ -596,6 +597,7 @@ function VT_disableFormSubmit(evt) {
 	}
 	return true;
 }
+
 var statusPopupTimer = null;
 function closeStatusPopup(elementid) {
 	statusPopupTimer = setTimeout('document.getElementById(\'' + elementid + '\').style.display = \'none\';', 50);
@@ -664,13 +666,11 @@ function emptyCvList(type, id) {
 	}
 }
 
-// mailer_export
 function mailer_export() {
 	var module = document.getElementById('curmodule').value;
 	gotourl('index.php?module='+module+'&action=MailerExport&from='+module+'&step=ask');
 	return false;
 }
-// end of mailer export
 
 function checkgroup() {
 	if (document.getElementById('group_checkbox').checked) {
@@ -717,6 +717,7 @@ function callSearch(searchtype) {
 	});
 	return false;
 }
+
 function alphabetic(module, url, dataid) {
 	for (var i = 1; i <= 26; i++) {
 		var data_td_id = 'alpha_' + eval(i);
@@ -737,6 +738,7 @@ function alphabetic(module, url, dataid) {
 		document.getElementById('basicsearchcolumns').innerHTML = '';
 	});
 }
+
 function modifyimage(imagename) {
 	var imgArea = getObj('dynloadarea');
 	if (!imgArea) {
