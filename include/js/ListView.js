@@ -149,45 +149,6 @@ function mass_edit_fieldchange(selectBox) {
 	selectBox.oldSelectedIndex = selectedIndex;
 }
 
-function change(obj, divid) {
-	var excludedRecords = document.getElementById('excludedRecords').value;
-	var select_options = document.getElementById('allselectedboxes').value;
-	//Added to remove the semi colen ';' at the end of the string.done to avoid error.
-	var searchurl = document.getElementById('search_url').value;
-	var numOfRows = document.getElementById('numOfRows').value;
-	var idstring = '';
-	var count = 0;
-	if (select_options == 'all') {
-		idstring = select_options;
-		document.getElementById('idlist').value = idstring;
-		count = numOfRows;
-	} else {
-		var x = select_options.split(';');
-		count = x.length;
-		if (count > 1) {
-			idstring = select_options;
-			document.getElementById('idlist').value = idstring;
-		} else {
-			alert(alert_arr.SELECT);
-			return false;
-		}
-	}
-
-	if (count > getMaxMassOperationLimit()) {
-		var confirm_str = alert_arr.MORE_THAN_500;
-		if (confirm(confirm_str)) {
-			var confirm_status = true;
-		} else {
-			return false;
-		}
-	} else {
-		confirm_status = true;
-	}
-
-	if (confirm_status) {
-		fnvshobj(obj, divid);
-	}
-}
 var gstart='';
 function massDelete(module) {
 	var searchurl = document.getElementById('search_url').value;
