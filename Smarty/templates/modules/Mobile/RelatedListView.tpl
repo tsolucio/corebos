@@ -73,9 +73,9 @@
 	<div data-role="footer" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
 		<h1></h1>
 		{if $_PARENT_MODULE eq "HelpDesk" && 'Timecontrol'|vtlib_isModuleActive}
-		<a href="?_operation=create&module=Timecontrol&record=''&relatedto={$RECORDID}&returnto={$RECORDID}&returntomodule={$_PARENT_MODULE}" class="ui-btn ui-btn-right ui-corner-all ui-icon-clock ui-btn-icon-notext" data-transition="turn" data-iconpos="right">{$MOD.LBL_NEW}</a>
+		<a href="?_operation=create&module=Timecontrol&record=''&relatedto={$RECORDID}&returnto={$RECORDID}&returntomodule={$_PARENT_MODULE}" class="ui-btn ui-btn-right ui-corner-all ui-icon-clock ui-btn-icon-notext" rel="external" data-transition="turn" data-iconpos="right">{$MOD.LBL_NEW}</a>
 		{/if}
-		<a href="?_operation=create&module=Documents&record=''&relations={$RECORDID}&returnto={$RECORDID}&returntomodule={$_PARENT_MODULE}" class="ui-btn ui-btn-left ui-corner-all ui-icon-camera ui-btn-icon-notext" data-transition="turn" data-iconpos="left">{$MOD.LBL_NEW}</a>
+		<a href="?_operation=create&module=Documents&record=''&relations={$RECORDID}&returnto={$RECORDID}&returntomodule={$_PARENT_MODULE}" class="ui-btn ui-btn-left ui-corner-all ui-icon-camera ui-btn-icon-notext" rel="external" data-transition="turn" data-iconpos="left">{$MOD.LBL_NEW}</a>
 	</div>
 	{include file="modules/Mobile/PanelMenu.tpl"}
 </div>
