@@ -37,6 +37,10 @@ class validateEmailWithZB {
 		$json = json_decode($response, true);
 		$valueToReturn = false;
 		$text = '';
+		if (curl_errno($ch)) {
+			$text = 'Curl error: ' . curl_error($ch);
+			return true;
+		}
 		if (isset($json['status'])) {
 			if ($json['status'] == 'valid') {
 				$valueToReturn = true;
@@ -45,6 +49,7 @@ class validateEmailWithZB {
 			}
 		} elseif (isset($json['error'])) {
 			$text = $json['error'];
+			return true;
 		}
 		self::$lastErrorStatus[$field] = $text;
 		return $valueToReturn;
