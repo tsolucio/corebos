@@ -194,17 +194,17 @@ if (isset($action) && isset($module)) {
 		preg_match("/^UserInfoUtil/", $action) ||
 		preg_match("/^deleteRole/", $action) ||
 		preg_match("/^minical/", $action) ||
-		preg_match("/^send_mail/", $action) ||
 		preg_match("/^populatetemplate/", $action) ||
 		preg_match("/^TemplateMerge/", $action) ||
 		preg_match("/^testemailtemplateusage/", $action) ||
 		preg_match("/^saveemailtemplate/", $action) ||
 		preg_match("/^ProcessDuplicates/", $action) ||
+		preg_match("/^deleteattachments/", $action) ||
+		preg_match("/^CreateXL/", $action) ||
 		preg_match("/^lastImport/", $action) ||
 		preg_match("/^lookupemailtemplate/", $action) ||
 		preg_match("/^deleteemailtemplate/", $action) ||
 		preg_match("/^CurrencyDelete/", $action) ||
-		preg_match("/^deleteattachments/", $action) ||
 		preg_match("/^UpdateFieldLevelAccess/", $action) ||
 		preg_match("/^UpdateDefaultFieldLevelAccess/", $action) ||
 		preg_match("/^UpdateProfile/", $action) ||
@@ -214,32 +214,25 @@ if (isset($action) && isset($module)) {
 		preg_match("/^addPbProductRelToDB/", $action) ||
 		preg_match("/^UpdateListPrice/", $action) ||
 		preg_match("/^PriceListPopup/", $action) ||
-		preg_match("/^SalesOrderPopup/", $action) ||
 		preg_match("/^CreatePDF/", $action) ||
 		preg_match("/^CreateSOPDF/", $action) ||
 		preg_match("/^redirect/", $action) ||
 		preg_match("/^webmail/", $action) ||
-		preg_match("/^folders_create/", $action) ||
-		preg_match("/^imap_general/", $action) ||
 		preg_match("/^download/", $action) ||
-		preg_match("/^SendMailAction/", $action) ||
-		preg_match("/^CreateXL/", $action) ||
 		preg_match("/^home_rss/", $action) ||
 		preg_match("/^ConvertAsFAQ/", $action) ||
 		preg_match("/^ActivityAjax/", $action) ||
 		preg_match("/^updateCalendarSharing/", $action) ||
 		preg_match("/^disable_sharing/", $action) ||
-		preg_match("/^TodoSave/", $action) ||
 		preg_match("/^RecalculateSharingRules/", $action) ||
 		preg_match("/^savewordtemplate/", $action) ||
 		preg_match("/^deletewordtemplate/", $action) ||
 		preg_match("/^mailmergedownloadfile/", $action) ||
-		preg_match("/^download/", $action) ||
 		preg_match("/^getListOfRecords/", $action) ||
 		preg_match("/^iCalExport/", $action)
 		) {
 		$skipHeaders=true;
-		//skip headers for all these invocations as they are mostly popups
+		//skip headers for all these invocations
 		if (preg_match("/^Popup/", $action) ||
 			preg_match("/^".$module."Ajax/", $action) ||
 			preg_match("/^MassEditSave/", $action) ||
@@ -248,22 +241,16 @@ if (isset($action) && isset($module)) {
 			preg_match("/^home_rss/", $action) ||
 			preg_match("/^massdelete/", $action) ||
 			preg_match("/^mailmergedownloadfile/", $action) ||
-			preg_match("/^get_img/", $action) ||
 			preg_match("/^download/", $action) ||
 			preg_match("/^ProcessDuplicates/", $action) ||
 			preg_match("/^lastImport/", $action) ||
-			preg_match("/^massdelete/", $action) ||
 			preg_match("/^getListOfRecords/", $action) ||
 			preg_match("/^iCalExport/", $action)
 			) {
 			$skipFooters=true;
 		}
-		//skip footers for all these invocations as they are mostly popups
-		if (preg_match("/^mailmergedownloadfile/", $action)
-		|| preg_match("/^get_img/", $action)
-		|| preg_match("/^dlAttachments/", $action)
-		|| preg_match("/^iCalExport/", $action)
-		) {
+		//skip footers for all these invocations
+		if (preg_match("/^mailmergedownloadfile/", $action) || preg_match("/^iCalExport/", $action)) {
 			$viewAttachment = true;
 		}
 		if ($action == ' Delete ') {

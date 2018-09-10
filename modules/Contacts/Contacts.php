@@ -897,17 +897,17 @@ function get_contactsforol($user_name)
 		$rel_table_arr = Array("Potentials"=>"vtiger_contpotentialrel","Activities"=>"vtiger_cntactivityrel","Emails"=>"vtiger_seactivityrel",
 				"HelpDesk"=>"vtiger_troubletickets","Quotes"=>"vtiger_quotes","PurchaseOrder"=>"vtiger_purchaseorder",
 				"SalesOrder"=>"vtiger_salesorder","Products"=>"vtiger_seproductsrel",
-				"Attachments"=>"vtiger_seattachmentsrel","Campaigns"=>"vtiger_campaigncontrel");
+				"Attachments"=>"vtiger_seattachmentsrel","Campaigns"=>"vtiger_campaigncontrel","ModComments"=>"vtiger_modcomments","cbCalendar"=>"vtiger_activity");
 
 		$tbl_field_arr = Array("vtiger_contpotentialrel"=>"potentialid","vtiger_cntactivityrel"=>"activityid","vtiger_seactivityrel"=>"activityid",
 				"vtiger_troubletickets"=>"ticketid","vtiger_quotes"=>"quoteid","vtiger_purchaseorder"=>"purchaseorderid",
 				"vtiger_salesorder"=>"salesorderid","vtiger_seproductsrel"=>"productid",
-				"vtiger_seattachmentsrel"=>"attachmentsid","vtiger_campaigncontrel"=>"campaignid");
+				"vtiger_seattachmentsrel"=>"attachmentsid","vtiger_campaigncontrel"=>"campaignid","vtiger_modcomments"=>"modcommentsid","vtiger_activity"=>"activityid");
 
 		$entity_tbl_field_arr = Array("vtiger_contpotentialrel"=>"contactid","vtiger_cntactivityrel"=>"contactid","vtiger_seactivityrel"=>"crmid",
 				"vtiger_troubletickets"=>"parent_id","vtiger_quotes"=>"contactid","vtiger_purchaseorder"=>"contactid",
 				"vtiger_salesorder"=>"contactid","vtiger_seproductsrel"=>"crmid",
-				"vtiger_seattachmentsrel"=>"crmid","vtiger_campaigncontrel"=>"contactid");
+				"vtiger_seattachmentsrel"=>"crmid","vtiger_campaigncontrel"=>"contactid","vtiger_modcomments"=>"related_to","vtiger_activity"=>"cto_id");
 
 		foreach($transferEntityIds as $transferId) {
 			foreach($rel_table_arr as $rel_module=>$rel_table) {
@@ -1174,7 +1174,6 @@ function get_contactsforol($user_name)
 		}
 		return $list_buttons;
 	}
-
 
 //////////////////////////////////////////////////////////////////////////
 // pag 2012-Jan-18 contacts hierarchy deducted from accounts hierarchy  //

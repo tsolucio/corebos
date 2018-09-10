@@ -26,7 +26,7 @@ class coreBOSEventsExample extends VTEventHandler {
 	 */
 	public function handleEvent($handlerType, $entityData) {
 		global $log;
-		switch($handlerType) {
+		switch ($handlerType) {
 			case 'corebos.audit.action':
 				$log->fatal('corebos.audit.action');
 				$log->fatal($entityData);
@@ -62,13 +62,13 @@ class coreBOSEventsExample extends VTEventHandler {
 			case 'corebos.header.premenu':
 				// Write something into the footer/header
 				echo "<div style='text-align:left;font-size:11px;padding:0 30px;color:rgb(153, 153, 153);'>Extended Header/Footer message</div>";
-			break;
+				break;
 		}
 	}
 
 	public function handleFilter($handlerType, $parameter) {
 		global $currentModule;
-		switch($handlerType) {
+		switch ($handlerType) {
 			case 'corebos.filter.listview.querygenerator.before':
 				// $parameter is the QueryGenerator Object
 				$fields = $parameter->getFields();
@@ -80,8 +80,8 @@ class coreBOSEventsExample extends VTEventHandler {
 				$fields = $parameter->getFields();
 				$newFields = array();
 				// remove homephone, because we don't want to have this column in the visible area
-				foreach($fields as $value) {
-					if($value != 'homephone') {
+				foreach ($fields as $value) {
+					if ($value != 'homephone') {
 						$newFields[] = $value;
 					}
 				}
@@ -108,8 +108,9 @@ class coreBOSEventsExample extends VTEventHandler {
 				}
 				break;
 			case 'corebos.filter.listview.header':
-				if ($currentModule=='Contacts')
+				if ($currentModule=='Contacts') {
 					$parameter[] = 'Home Phone Text';
+				}
 				break;
 			case 'corebos.filter.listview.filter.show':
 				$parameter = ($parameter['viewname'] != 'Contacts Address');  // do not show filter named: Contacts Address

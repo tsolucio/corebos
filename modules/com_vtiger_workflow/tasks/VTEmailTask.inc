@@ -153,7 +153,8 @@ class VTEmailTask extends VTTask {
 		$element['subject'] = $subject;
 		$element['description'] = $content;
 		$emailid = $this->createEmailRecord($element);
-		$rdo = send_mail($module, $to_email, $from_name, $from_email, $subject, $content, $cc, $bcc, $this->attachmentsinfo, $emailid, $logo, $replyto);
+		list($wsid, $crmid) = explode('x', $emailid);
+		$rdo = send_mail($module, $to_email, $from_name, $from_email, $subject, $content, $cc, $bcc, $this->attachmentsinfo, $crmid, $logo, $replyto);
 		$logbg->debug("VTEmailTask\nTo: $to_email\nFromName: $from_name\nFromEmail: $from_email\nCC: $cc\nBCC: $bcc\nResult: $rdo");
 		$util->revertUser();
 	}
@@ -189,9 +190,8 @@ class VTEmailTask extends VTTask {
 					$adb->pquery($insrel, array($id, $adb->query_result($docrs, 0, 'attachmentsid')));
 				}
 			}
-			return $result['id'];
 		}
-		return '';
+		return $result['id'];
 	}
 }
 ?>

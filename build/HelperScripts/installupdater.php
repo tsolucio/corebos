@@ -10,18 +10,18 @@
 $Vtiger_Utils_Log = true;
 
 require_once 'include/utils/utils.php';
-include_once('vtlib/Vtiger/Module.php');
+include_once 'vtlib/Vtiger/Module.php';
 require 'modules/com_vtiger_workflow/VTEntityMethodManager.inc';
 global $current_user,$adb;
 set_time_limit(0);
-ini_set('memory_limit','1024M');
+ini_set('memory_limit', '1024M');
 
 $current_user = new Users();
 $current_user->retrieveCurrentUserInfoFromFile(Users::getActiveAdminId());
-if(isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] != '') {
+if (isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] != '') {
 	$current_language = $_SESSION['authenticated_user_language'];
 } else {
-	if(!empty($current_user->language)) {
+	if (!empty($current_user->language)) {
 		$current_language = $current_user->language;
 	} else {
 		$current_language = $default_language;
@@ -41,7 +41,7 @@ function ExecuteQuery($query) {
 
 	$status = $adb->query($query);
 	$query_count++;
-	if(is_object($status)) {
+	if (is_object($status)) {
 		echo '
 		<tr width="100%">
 		<td width="10%">'.get_class($status).'</td>
@@ -73,8 +73,11 @@ $rdo = $package->importManifest("modules/cbupdater/manifest.xml");
 $out = ob_get_contents();
 ob_end_clean();
 putMsg($out);
-if ($rdo) putMsg("$module installed: <a href='index.php?module=cbupdater&action=getupdates'>proceed to the rest of the updates by clicking here</a>");
-else putMsg("ERROR installing $module!");
+if ($rdo) {
+	putMsg("$module installed: <a href='index.php?module=cbupdater&action=getupdates'>proceed to the rest of the updates by clicking here</a>");
+} else {
+	putMsg("ERROR installing $module!");
+}
 
 ?>
 </table>
@@ -82,8 +85,9 @@ else putMsg("ERROR installing $module!");
 <b style="color:#FF0000">Failed Queries Log</b>
 <div id="failedLog" style="border:1px solid #666666;width:90%;position:relative;height:200px;overflow:auto;left:5%;top:10px;">
 	<?php
-		foreach($failure_query_array as $failed_query)
-		      echo '<br><font color="red">'.$failed_query.'</font>';
+	foreach ($failure_query_array as $failed_query) {
+		  echo '<br><font color="red">'.$failed_query.'</font>';
+	}
 	?>
 </div>
 <br /><br />

@@ -6,7 +6,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-var Imagid_array = ['img_2','img_4','img_6','img_7','img_8','img_9','img_10','img_13','img_14','img_18','img_19','img_20','img_21','img_22','img_23','img_26'];
+var Imagid_array = ['img_2', 'img_4', 'img_6', 'img_7', 'img_8', 'img_9', 'img_10', 'img_13', 'img_14', 'img_18', 'img_19', 'img_20', 'img_21', 'img_22', 'img_23', 'img_26'];
 
 function fnToggleVIew(obj) {
 	obj = '#'+obj;
@@ -93,8 +93,7 @@ function unSelectCreate(id) {
 	}
 }
 function unSelectDelete(id) {
-	if (document.getElementById('tab_chk_2_'+id).checked == false) {
-	} else {
+	if (document.getElementById('tab_chk_2_'+id).checked != false) {
 		var imageid = 'img_'+id;
 		var viewid = 'tab_chk_4_'+id;
 		if (typeof(document.getElementById(imageid)) != 'undefined') {
@@ -155,7 +154,7 @@ function selectUnselect(oCheckbox) {
 	}
 }
 function initialiseprofile() {
-	var module_array = Array(1,2,4,6,7,8,9,10,13,14,15,17,18,19,20,21,22,23,24,25,26,27);
+	var module_array = Array(1, 2, 4, 6, 7, 8, 9, 10, 13, 14, 15, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27);
 	for (var i=0; i < module_array.length; i++) {
 		hideTab(module_array[i]);
 	}
@@ -277,6 +276,9 @@ function saveprofile(frm) {
 				}
 				sentForm[fieldname] = checked;
 			}
+		}
+		if (document.profileform.elements[i].type == 'hidden' && document.profileform.elements[i].name.indexOf('_readonly')!=-1) {
+			sentForm[document.profileform.elements[i].name] = document.profileform.elements[i].value;
 		}
 	}
 	VtigerJS_DialogBox.block();

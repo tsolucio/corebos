@@ -16,12 +16,12 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 
-function getMenuInfo(info){
+function getMenuInfo(info) {
 	$('#evvtmenuid').val(info['evvtmenuid']);
 	$('#mparent').val(info['mparent']);
 	$('#mtype').val(info['mtype']);
 	$('#mlabel').val(info['mlabel']);
-	document.getElementById("mvisible").checked = (info['mvisible']=='1');
+	document.getElementById('mvisible').checked = (info['mvisible']=='1');
 	if (info.mtype==='module') {
 		$('#modname').val(info['mvalue']);
 	}
@@ -32,12 +32,12 @@ function getMenuInfo(info){
 	showFormParts(info['mtype']);
 }
 
-function processTree(action){
-	document.getElementById("evvtmenudo").value = action;
-	document.getElementById("menuitemform").submit();
+function processTree(action) {
+	document.getElementById('evvtmenudo').value = action;
+	document.getElementById('menuitemform').submit();
 }
 
-function clearForm(){
+function clearForm() {
 	document.getElementById('evvtmenuid').value = '';
 	document.getElementById('mparent').value = '';
 	document.getElementById('mtype').value = '';
@@ -45,40 +45,40 @@ function clearForm(){
 	document.getElementById('mpermission').value = '';
 }
 
-function showFormParts(mtype){
+function showFormParts(mtype) {
 	var element;
 	switch (mtype) {
-		case 'module':
-			element = document.getElementById('moduleForm');
-			element.classList.remove("hide");
-			element = document.getElementById('actionForm');
-			element.classList.add("hide");
-			break;
-		case 'url':
-			element = document.getElementById('actionForm');
-			element.classList.remove("hide");
-			element = document.getElementById('moduleForm');
-			element.classList.add("hide");
-			break;
-		case 'menu':
-			element = document.getElementById('actionForm');
-			element.classList.add("hide");
-			element = document.getElementById('moduleForm');
-			element.classList.add("hide");
-			break;
-		case 'sep':
-			element = document.getElementById('actionForm');
-			element.classList.add("hide");
-			element = document.getElementById('moduleForm');
-			element.classList.add("hide");
-			break;
+	case 'module':
+		element = document.getElementById('moduleForm');
+		element.classList.remove('hide');
+		element = document.getElementById('actionForm');
+		element.classList.add('hide');
+		break;
+	case 'url':
+		element = document.getElementById('actionForm');
+		element.classList.remove('hide');
+		element = document.getElementById('moduleForm');
+		element.classList.add('hide');
+		break;
+	case 'menu':
+		element = document.getElementById('actionForm');
+		element.classList.add('hide');
+		element = document.getElementById('moduleForm');
+		element.classList.add('hide');
+		break;
+	case 'sep':
+		element = document.getElementById('actionForm');
+		element.classList.add('hide');
+		element = document.getElementById('moduleForm');
+		element.classList.add('hide');
+		break;
 	}
 }
 
 function saveTree() {
-	document.getElementById("evvtmenudo").value = 'updateTree';
-	document.getElementById("treeIds").value = ids;
-	document.getElementById("treeParents").value = parents;
-	document.getElementById("treePositions").value = positions;
-	document.getElementById("menuitemform").submit();
+	document.getElementById('evvtmenudo').value = 'updateTree';
+	document.getElementById('treeIds').value = ids;
+	document.getElementById('treeParents').value = parents;
+	document.getElementById('treePositions').value = positions;
+	document.getElementById('menuitemform').submit();
 }

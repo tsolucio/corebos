@@ -1,7 +1,6 @@
 {include file='com_vtiger_workflow/Header.tpl'}
 <script src="modules/{$module->name}/resources/jquery.timepicker.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/functional.js" type="text/javascript" charset="utf-8"></script>
-<script src="modules/{$module->name}/resources/json2.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/fieldvalidator.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/edittaskscript.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/parallelexecuter.js" type="text/javascript" charset="utf-8"></script>

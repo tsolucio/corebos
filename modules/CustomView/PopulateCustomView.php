@@ -159,7 +159,6 @@ $customviews = array(
 		'cvmodule'=>'SalesOrder','stdfilterid'=>'','advfilterid'=>'14'),
 );
 
-
 $cvcolumns = array(
 	array('vtiger_leaddetails:lead_no:lead_no:Leads_Lead_No:V',
 		'vtiger_leaddetails:lastname:lastname:Leads_Last_Name:V',

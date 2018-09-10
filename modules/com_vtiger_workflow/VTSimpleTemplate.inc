@@ -68,7 +68,7 @@ class VTSimpleTemplate {
 						} elseif ($entity->getModuleName()===$referenceModule) {
 							$data = $entity->getData();
 							if (isset($data['id']) && !isset($data['record_id']) && strpos($data['id'], 'x')) {
-								list($wsid, $data['record_id']) = explode( 'x', $data['id']);
+								list($wsid, $data['record_id']) = explode('x', $data['id']);
 								$data['record_module'] = $referenceModule;
 							}
 							if ($this->useValue($data, $fieldname)) {
@@ -307,7 +307,7 @@ class VTSimpleTemplate {
 		$current_user = new Users();
 		$current_user->retrieveCurrentUserInfoFromFile($assigned_user_id);
 		$return = preg_replace_callback(
-			'/\\$(\w+?|\(general : \(__WorkflowFunction__\) (.+?) \) |\((\w+) : \(([_\w]+)\) (.+)\))/U',
+			'/\\$(\w+?|\(general : \(__WorkflowFunction__\) (.+?) \)[ |&._\-\]}<>\/!"%ºª?,;]|\((\w+) : \(([_\w]+)\) (.+)\))/U',
 			array($this, 'matchHandler'),
 			$this->template
 		);

@@ -72,15 +72,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 		document.getElementById(obj).style.top = document.getElementById("tax_container").top;
 	{rdelim}
 	document.getElementById(obj).style.display = "block";
-
 {rdelim}
-
-	function doNothing(){ldelim}
-	{rdelim}
-	
-	function fnHidePopDiv(obj){ldelim}
-		document.getElementById(obj).style.display = 'none';
-	{rdelim}
 
 	var moreInfoFields = Array({$moreinfofields});
 </script>
@@ -146,7 +138,13 @@ function displayCoords(currObj,obj,mode,curr_row)
 		<table width="100%"  border="0" cellspacing="0" cellpadding="1">
 			<tr>
 			<td class="small" valign="top">
-				<input type="text" id="productName1" name="productName1" class="small" style="width:70%" value="{if isset($PRODUCT_NAME)}{$PRODUCT_NAME}{/if}" readonly />
+				<div class="slds-combobox_container slds-has-inline-listbox cbds-product-search" style="width:70%;display:inline-block">
+					<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-combobox-lookup" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+						<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+							<input id="productName1" name="productName1" class="slds-input slds-combobox__input cbds-inventoryline__input--name" aria-autocomplete="list" aria-controls="listbox-unique-id" autocomplete="off" role="textbox" placeholder="{$APP.typetosearch_prodser}" value="{if isset($PRODUCT_NAME)}{$PRODUCT_NAME}{/if}" type="text" style="box-shadow: none;">
+						</div>
+					</div>
+				</div>
 				<input type="hidden" id="hdnProductId1" name="hdnProductId1" value="{if isset($PRODUCT_ID)}{$PRODUCT_ID}{/if}" />
 				{if $PRODUCT_OR_SERVICE eq 'Services'}
 					<input type="hidden" id="lineItemType1" name="lineItemType1" value="Services" />
@@ -175,7 +173,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 
 	<!-- column 3 - Quantity in Stock - starts -->
 	<td class="crmTableRow small lineOnTop" valign="top">
-		{if ($MODULE eq 'Quotes' || $MODULE eq 'SalesOrder' || $MODULE eq 'Invoice' || $MODULE eq 'Issuecards')  && 'Products'|vtlib_isModuleActive}
+		{if ($MODULE eq 'Quotes' || $MODULE eq 'SalesOrder' || $MODULE eq 'Invoice' || $MODULE eq 'Issuecards' || $MODULE eq 'Receiptcards')  && 'Products'|vtlib_isModuleActive}
 		{$APP.LBL_QTY_IN_STOCK}:&nbsp;<span id="qtyInStock1">{if isset($QTY_IN_STOCK)}{$QTY_IN_STOCK}{/if}</span><br>
 		{/if}
 		{if isset($ASSOCIATEDPRODUCTS.moreinfo)}
@@ -213,7 +211,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 					<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
 					   <tr>
 						<td id="discount_div_title1" nowrap align="left" ></td>
-						<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnHidePopDiv('discount_div1')" style="cursor:pointer;"></td>
+						<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnhide('discount_div1')" style="cursor:pointer;"></td>
 					   </tr>
 					   <tr>
 						<td align="left" class="lineOnTop"><input type="radio" name="discount1" checked onclick="setDiscount(this,1); callTaxCalc(1);calcTotal();">&nbsp; {$APP.LBL_ZERO_DISCOUNT}</td>
@@ -306,7 +304,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 			<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
 			   <tr>
 				<td id="discount_div_title_final" nowrap align="left" ></td>
-				<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnHidePopDiv('discount_div_final')" style="cursor:pointer;"></td>
+				<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnhide('discount_div_final')" style="cursor:pointer;"></td>
 			   </tr>
 			   <tr>
 				<td align="left" class="lineOnTop"><input type="radio" name="discount_final" checked onclick="setDiscount(this,'_final'); calcGroupTax();calcTotal();">&nbsp; {$APP.LBL_ZERO_DISCOUNT}</td>
@@ -366,7 +364,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 					<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
 					   <tr>
 						<td id="sh_tax_div_title" colspan="2" nowrap align="left" ></td>
-						<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnHidePopDiv('shipping_handling_div')" style="cursor:pointer;"></td>
+						<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnhide('shipping_handling_div')" style="cursor:pointer;"></td>
 					   </tr>
 
 					{foreach item=tax_detail name=sh_loop key=loop_count from=$SH_TAXES}

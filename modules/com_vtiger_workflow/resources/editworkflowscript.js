@@ -7,57 +7,59 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-function editworkflowscript($, conditions){
+function editworkflowscript($, conditions) {
 	var vtinst = new VtigerWebservices('webservice.php');
 	var fieldValidator;
-	var desc = null;
 	var editpopupobj;
 
-	function id(v){
+	function id(v) {
 		return v;
 	}
 
-	function map(fn, list){
+	function map(fn, list) {
 		var out = [];
-		$.each(list, function(i, v){
+		$.each(list, function (i, v) {
 			out[out.length]=fn(v);
 		});
 		return out;
 	}
 
-	function field(name){
-		return function(object){
-			if(typeof(object) != 'undefined') {
+	function field(name) {
+		return function (object) {
+			if (typeof(object) != 'undefined') {
 				return object[name];
 			}
 		};
 	}
 
-	function zip(){
+	function zip() {
 		var out = [];
-
 		var lengths = map(field('length'), arguments);
-		var min = reduceR(function(a,b){
-			return a<b?a:b;
-		},lengths,lengths[0]);
-		for(var i=0; i<min; i++){
+		var min = reduceR(
+			function (a, b) {
+				return a<b?a:b;
+			},
+			lengths,
+			lengths[0]
+		);
+		for (var i=0; i<min; i++) {
 			out[i]=map(field(i), arguments);
 		}
 		return out;
 	}
 
-	function dict(list){
+	function dict(list) {
 		var out = {};
-		$.each(list, function(i, v){
+		$.each(list, function (i, v) {
 			out[v[0]] = v[1];
 		});
 		return out;
 	}
 
-	function filter(pred, list){
+	function filter(pred, list) {
 		var out = [];
-		$.each(list, function(i, v){
-			if(pred(v)){
+		$.each(list, function (i, v) {
+			if (pred(v)) {
 				out[out.length]=v;
 			}
 		});
@@ -66,27 +68,26 @@ function editworkflowscript($, conditions){
 
 	function diff(reflist, list) {
 		var out = [];
-		$.each(list, function(i, v) {
-			if(contains(reflist, v)) {
+		$.each(list, function (i, v) {
+			if (contains(reflist, v)) {
 				out.push(v);
 			}
 		});
 		return out;
 	}
 
-
-	function reduceR(fn, list, start){
+	function reduceR(fn, list, start) {
 		var acc = start;
-		$.each(list, function(i, v){
+		$.each(list, function (i, v) {
 			acc = fn(acc, v);
 		});
 		return acc;
 	}
 
-	function contains(list, value){
+	function contains(list, value) {
 		var ans = false;
-		$.each(list, function(i, v){
-			if(v==value){
+		$.each(list, function (i, v) {
+			if (v==value) {
 				ans = true;
 				return false;
 			}
@@ -94,47 +95,47 @@ function editworkflowscript($, conditions){
 		return ans;
 	}
 
-	function concat(lista,listb){
+	function concat(lista, listb) {
 		return lista.concat(listb);
 	}
 
-	function errorDialog(message){
+	function errorDialog(message) {
 		alert(message);
 	}
 
-	function handleError(fn){
-		return function(status, result){
-			if(status){
+	function handleError(fn) {
+		return function (status, result) {
+			if (status) {
 				fn(result);
-			}else{
+			} else {
 				errorDialog('Failure:'+result);
 			}
 		};
 	}
 
-	function implode(sep, arr){
+	function implode(sep, arr) {
 		var out = '';
-		$.each(arr, function(i, v){
+		$.each(arr, function (i, v) {
 			out+=v;
-			if(i<arr.length-1){
+			if (i<arr.length-1) {
 				out+=sep;
 			}
 		});
 		return out;
 	}
 
-	function mergeObjects(obj1, obj2){
+	function mergeObjects(obj1, obj2) {
 		var res = {};
-		for(var k in obj1){
+		for (k in obj1) {
 			res[k] = obj1[k];
 		}
-		for(var k in obj2){
+		for (var k in obj2) {
 			res[k] = obj2[k];
 		}
 		return res;
 	}
 
-	function center(el){
+	function center(el) {
 		el.css({
 			position: 'absolute'
 		});
@@ -143,13 +144,12 @@ function editworkflowscript($, conditions){
 		placeAtCenter(el.get(0));
 	}
 
-
-	function PageLoadingPopup(){
-		function show(){
+	function PageLoadingPopup() {
+		function show() {
 			$('#workflow_loading').css('display', 'block');
 			//center($('#workflow_loading'));
 		}
-		function close(){
+		function close() {
 			$('#workflow_loading').css('display', 'none');
 		}
 		return {
@@ -159,24 +159,21 @@ function editworkflowscript($, conditions){
 	}
 	var pageLoadingPopup = PageLoadingPopup();
 
-	function NewTemplatePopup(){
-		function close(){
+	function NewTemplatePopup() {
+		function close() {
 			$('#new_template_popup').css('display', 'none');
 		}
 
-		function show(module){
+		function show(module) {
 			$('#new_template_popup').css('display', 'block');
 			center($('#new_template_popup'));
 		}
 
-
-
-		$('#new_template_popup_save').click(function(){
+		$('#new_template_popup_save').click(function () {
 			var messageBoxPopup = MessageBoxPopup();
-
-			if(trim(this.form.title.value) == '') {
+			if (trim(this.form.title.value) == '') {
 				messageBoxPopup.show();
-				$('#'+ 'empty_fields_message').show();
+				$('#empty_fields_message').show();
 				return false;
 			}
 		});
@@ -190,12 +187,12 @@ function editworkflowscript($, conditions){
 	}
 	var newTemplatePopup = NewTemplatePopup();
 
-	function NewTaskPopup(){
-		function close(){
+	function NewTaskPopup() {
+		function close() {
 			$('#new_task_popup').css('display', 'none');
 		}
 
-		function show(module){
+		function show(module) {
 			$('#new_task_popup').css('display', 'block');
 			center($('#new_task_popup'));
 		}
@@ -208,13 +205,13 @@ function editworkflowscript($, conditions){
 		};
 	}
 
-	var operations = function(){
+	var operations = function () {
 		var op = {
-			string:['is', 'contains', 'does not contain', 'starts with', 'ends with', 'has changed', 'is empty', 'is not empty','exists', 'does not start with','does not end with'],
-			number:['equal to', 'less than', 'greater than', 'does not equal', 'less than or equal to', 'greater than or equal to', 'has changed','exists'],
+			string:['is', 'contains', 'does not contain', 'starts with', 'ends with', 'has changed', 'is empty', 'is not empty', 'exists', 'does not start with', 'does not end with'],
+			number:['equal to', 'less than', 'greater than', 'does not equal', 'less than or equal to', 'greater than or equal to', 'has changed', 'exists'],
 			value:['is', 'is not', 'has changed', 'has changed to', 'is empty', 'is not empty', 'exists'],
 			multipicklist:['is', 'is not'],
-			date:['is', 'is not', 'has changed', 'has changed to','between', 'before', 'after', 'is today', 'less than days ago', 'more than days ago', 'in less than', 'in more than', 'days ago', 'days later','exists'],
+			date:['is', 'is not', 'has changed', 'has changed to', 'between', 'before', 'after', 'is today', 'less than days ago', 'more than days ago', 'in less than', 'in more than', 'days ago', 'days later', 'exists'],
 			datetime:['is', 'is not', 'has changed', 'has changed to', 'less than hours before', 'less than hours later', 'more than hours before', 'more than hours later', 'equal to', 'less than', 'greater than', 'does not equal', 'less than or equal to', 'greater than or equal to', 'exists']
 		};
 		var mapping = [
@@ -227,16 +224,17 @@ function editworkflowscript($, conditions){
 		];
 
 		var out = {};
-		$.each(mapping, function(i, v){
+		$.each(mapping, function (i, v) {
 			var opName = v[0];
 			var types = v[1];
-			$.each(types, function(i, v){
+			$.each(types, function (i, v) {
 				out[v] = op[opName];
 			});
 		});
 		return out;
 	}();
-	var transOperations = function(){
+
+	var transOperations = function () {
 		var op = {
 			string:[alert_arr.LBL_IS, alert_arr.LBL_CONTAINS, alert_arr.LBL_DOES_NOT_CONTAIN, alert_arr.LBL_STARTS_WITH,
 				alert_arr.LBL_ENDS_WITH, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_IS_EMPTY, alert_arr.LBL_IS_NOT_EMPTY, alert_arr.LBL_EXISTS, alert_arr.DOES_NOT_START_WITH, alert_arr.DOES_NOT_END_WITH],
@@ -261,26 +259,27 @@ function editworkflowscript($, conditions){
 		];
 
 		var out = {};
-		$.each(mapping, function(i, v){
+		$.each(mapping, function (i, v) {
 			var opName = v[0];
 			var types = v[1];
-			$.each(types, function(i, v){
+			$.each(types, function (i, v) {
 				out[v] = op[opName];
 			});
 		});
 		return out;
 	}();
+
 	var JoinConditionOptions = {'and': alert_arr.LBL_AND, 'or': alert_arr.LBL_OR};
 	var format = fn.format;
 
-	function fillOptions(el,options){
+	function fillOptions(el, options) {
 		el.empty();
-		$.each(options, function(k, v){
+		$.each(options, function (k, v) {
 			el.append('<option value="'+k+'">'+v+'</option>');
 		});
 	}
 
-	function resetFields(opType, condno){
+	function resetFields(opType, condno) {
 		var ops = $('#save_condition_'+condno+'_operation');
 		var selOperations = operations[opType.name];
 		var selTransOperations = new Array();
@@ -290,9 +289,9 @@ function editworkflowscript($, conditions){
 		var fe = $('#save_condition_'+condno+'_fieldname');
 		var fullFieldName = fe.val();
 		var group = fullFieldName.match(/(\w+) : \((\w+)\) (\w+)/);
-		if(group != null){
-			for(var i=0; i<selOperations.length; ++i) {
-				if(selOperations[i] != 'has changed' && selOperations[i] != 'has changed to') {
+		if (group != null) {
+			for (var i=0; i<selOperations.length; ++i) {
+				if (selOperations[i] != 'has changed' && selOperations[i] != 'has changed to') {
 					selectedOperations.push(selOperations[i]);
 					selTransOperations.push(transOperations[opType.name][i]);
 				}
@@ -307,30 +306,33 @@ function editworkflowscript($, conditions){
 		defaultValue(opType.name)(opType, condno);
 	}
 
-	function defaultValue(fieldType){
+	function defaultValue(fieldType) {
 
-		function forPicklist(opType, condno){
+		function forPicklist(opType, condno) {
 			var value = $('#save_condition_'+condno+'_value');
-			var options = implode('',
-				map(function (e){
-					return '<option value="'+e.value+'">'+e.label+'</option>';
-				},
-				opType['picklistValues'])
+			var options = implode(
+				'',
+				map(
+					function (e) {
+						return '<option value="'+e.value+'">'+e.label+'</option>';
+					},
+					opType['picklistValues']
+				)
 			);
 			value.replaceWith('<select id="save_condition_'+condno+'_value" class="expressionvalue">'+options+'</select>');
 			$('#save_condition_'+condno+'_value_type').val('rawtext');
 		}
-		function forString(opType, condno){
+		function forString(opType, condno) {
 			var value = $(format('#save_condition_%s_value', condno));
-			value.replaceWith(format('<input type="text" id="save_condition_%s_value" '+'value="" class="expressionvalue" readonly />', condno));
+			value.replaceWith(format('<input type="text" id="save_condition_%s_value" value="" class="expressionvalue" readonly />', condno));
 			var fv = $('#save_condition_'+condno+'_value');
-			fv.bind('focus', function() {
+			fv.bind('focus', function () {
 				editFieldExpression($(this), opType);
 			});
-			fv.bind('click', function() {
+			fv.bind('click', function () {
 				editFieldExpression($(this), opType);
 			});
-			fv.bind('keypress', function() {
+			fv.bind('keypress', function () {
 				editFieldExpression($(this), opType);
 			});
 		}
@@ -340,35 +342,34 @@ function editworkflowscript($, conditions){
 			multipicklist:forPicklist
 		};
 		var ret = functions[fieldType];
-		if(ret==null){
+		if (ret==null) {
 			ret = functions['string'];
 		}
 		return ret;
 	}
 
-	function removeCondition(groupno, condno){
+	function removeCondition(groupno, condno) {
 		$(format('#save_condition_%s', condno)).remove();
 		resetJoinCondition(groupno, condno);
 	}
 
-	function removeConditionGroup(groupno){
+	function removeConditionGroup(groupno) {
 		$(format('#condition_group_%s', groupno)).remove();
 		$(format('#condition_group_%s_joincondition', groupno)).remove();
 		resetGroupJoinCondition(groupno);
 	}
 
 	function resetJoinCondition(groupno, condno) {
-
 		var lastCondition = $('#save_condition_group_'+groupno+' div:last');
 		lastCondition.children('.joincondition').css('visibility', 'hidden');
 
 		var previousLastCondition = lastCondition.prev();
-		if(previousLastCondition.length > 0) {
+		if (previousLastCondition.length > 0) {
 			previousLastCondition.children('.joincondition').css('visibility', 'visible');
 		}
 
 		var groupConditions = $(format('#save_condition_group_%s', groupno)).children();
-		if(groupConditions.length <= 0) {
+		if (groupConditions.length <= 0) {
 			removeConditionGroup(groupno);
 		}
 		resetGroupJoinCondition(groupno);
@@ -376,19 +377,19 @@ function editworkflowscript($, conditions){
 
 	function resetGroupJoinCondition(groupno) {
 		var firstChildNode = $('#save_conditions :first');
-		if(firstChildNode.length > 0 && firstChildNode.prop('class').indexOf('condition_group_join_block') >= 0) {
+		if (firstChildNode.length > 0 && firstChildNode.prop('class').indexOf('condition_group_join_block') >= 0) {
 			firstChildNode.remove();
 		}
 	}
 
 	//Convert user type into reference for consistency in describe objects
 	//This is done inplace
-	function referencify(desc){
+	function referencify(desc) {
 		var fields = desc['fields'];
-		for(var i=0; i<fields.length; i++){
+		for (var i=0; i<fields.length; i++) {
 			var field = fields[i];
 			var type = field['type'];
-			if(type['name']=='owner'){
+			if (type['name']=='owner') {
 				type['realname']='owner';
 				type['name']='reference';
 				type['refersTo']=['Users'];
@@ -397,21 +398,25 @@ function editworkflowscript($, conditions){
 		return desc;
 	}
 
-	function getDescribeObjects(accessibleModules, moduleName, callback){
-		vtinst.describeObject(moduleName, handleError(function(result){
+	function getDescribeObjects(accessibleModules, moduleName, callback) {
+		vtinst.describeObject(moduleName, handleError(function (result) {
 			var parent = referencify(result);
 			var fields = parent['fields'];
-			var referenceFields = filter(function(e){
-				return e['type']['name']=='reference';
-			}, fields);
-			var referenceFieldModules =
-			map(function(e){
-				return e['type']['refersTo'];
-			},
-			referenceFields
+			var referenceFields = filter(
+				function (e) {
+					return e['type']['name']=='reference';
+				},
+				fields
 			);
-			function union(a, b){
-				var newfields = filter(function(e){
+			var referenceFieldModules =
+			map(
+				function (e) {
+					return e['type']['refersTo'];
+				},
+				referenceFields
+			);
+			function union(a, b) {
+				var newfields = filter(function (e) {
 					return !contains(a, e);
 				}, b);
 				return a.concat(newfields);
@@ -421,26 +426,26 @@ function editworkflowscript($, conditions){
 			// Remove modules that is no longer accessible
 			relatedModules = diff(accessibleModules, relatedModules);
 
-			function executer(parameters){
-				var failures = filter(function(e){
+			function executer(parameters) {
+				var failures = filter(function (e) {
 					return e[0]==false;
 				}, parameters);
-				if(failures.length!=0){
+				if (failures.length!=0) {
 					var firstFailure = failures[0];
 					callback(false, firstFailure[1]);
-				}else{
-					var moduleDescriptions = map(function(e){
+				} else {
+					var moduleDescriptions = map(function (e) {
 						return e[1];
 					}, parameters);
-					var modules = dict(map(function(e){
+					var modules = dict(map(function (e) {
 						return [e['name'], referencify(e)];
 					}, moduleDescriptions));
 					callback(true, modules);
 				}
 			}
 			var p = parallelExecuter(executer, relatedModules.length);
-			$.each(relatedModules, function(i, v){
-				p(function(callback){
+			$.each(relatedModules, function (i, v) {
+				p(function (callback) {
 					vtinst.describeObject(v, callback);
 				});
 			});
@@ -451,7 +456,7 @@ function editworkflowscript($, conditions){
 		editpopupobj.edit(fieldValueNode.prop('id'), fieldValueNode.val(), fieldType);
 	}
 
-	$(document).ready(function(){
+	$(document).ready(function () {
 		fieldValidator = new VTFieldValidator($('#edit_workflow_form'));
 		fieldValidator.mandatoryFields = ['description'];
 		pageLoadingPopup.show();
@@ -460,65 +465,78 @@ function editworkflowscript($, conditions){
 		editpopupobj.setModule(moduleName);
 		editpopupobj.close();
 
-		vtinst.extendSession(handleError(function(result){
-			vtinst.listTypes(handleError(function(accessibleModules) {
-				getDescribeObjects(accessibleModules, moduleName, handleError(function(modules){
+		vtinst.extendSession(handleError(function (result) {
+			vtinst.listTypes(handleError(function (accessibleModules) {
+				getDescribeObjects(accessibleModules, moduleName, handleError(function (modules) {
 					var parent = modules[moduleName];
-					function filteredFields(fields){
+					function filteredFields(fields) {
 						return filter(
-							function(e){
+							function (e) {
 								return !contains(['autogenerated', 'owner', 'password'], e.type.name);
-							}, fields
+							},
+							fields
 						);
 					}
-					var parentFields = map(function(e){
-						return[e['name'],e['label']];
-					}, filteredFields(parent['fields']));
-					var referenceFieldTypes = filter(function(e){
-						return (e['type']['name']=='reference');
-					}, parent['fields']);
-					var moduleFieldTypes = {};
-					$.each(modules, function(k, v){
-						moduleFieldTypes[k] = dict(map(function(e){
-							return [e['name'], e['type']];
+					var parentFields = map(
+						function (e) {
+							return [e['name'], e['label']];
 						},
-						filteredFields(v['fields'])));
+						filteredFields(parent['fields'])
+					);
+					var referenceFieldTypes = filter(
+						function (e) {
+							return (e['type']['name']=='reference');
+						},
+						parent['fields']
+					);
+					var moduleFieldTypes = {};
+					$.each(modules, function (k, v) {
+						moduleFieldTypes[k] = dict(map(
+							function (e) {
+								return [e['name'], e['type']];
+							},
+							filteredFields(v['fields'])
+						));
 					});
 
-					function getFieldType(fullFieldName){
+					function getFieldType(fullFieldName) {
 						var group = fullFieldName.match(/(\w+) : \((\w+)\) (\w+)/);
-						if(group==null){
+						if (group==null) {
 							var fieldModule = moduleName;
 							var fieldName = fullFieldName;
-						}else{
+						} else {
 							var fieldModule = group[2];
 							var fieldName = group[3];
 						}
 						return moduleFieldTypes[fieldModule][fieldName];
 					}
 
-					function fieldReferenceNames(referenceField){
+					function fieldReferenceNames(referenceField) {
 						var name = referenceField['name'];
 						var label = referenceField['label'];
-						function forModule(moduleName){
+						function forModule(moduleName) {
 							// If module is not accessible return no field information
-							if(!contains(accessibleModules, moduleName)) return [];
+							if (!contains(accessibleModules, moduleName)) {
+								return [];
+							}
 
-							return map(function(field){
-								return [name+' : '+'('+moduleName+') '+field['name'], label+' : '+'('+modules[moduleName]['label']+') '+field['label']];},
-							filteredFields(modules[moduleName]['fields'])
+							return map(
+								function (field) {
+									return [name+' : ('+moduleName+') '+field['name'], label+' : ('+modules[moduleName]['label']+') '+field['label']];
+								},
+								filteredFields(modules[moduleName]['fields'])
 							);
 						}
-						return reduceR(concat, map(forModule,referenceField['type']['refersTo']),[]);
+						return reduceR(concat, map(forModule, referenceField['type']['refersTo']), []);
 					}
 
 					var referenceFields = reduceR(concat, map(fieldReferenceNames, referenceFieldTypes), []);
 					var fieldLabels = dict(parentFields.concat(referenceFields));
 
-					function addCondition(groupid, condid){
-						if($('#save_condition_group_'+groupid).length <= 0) {
+					function addCondition(groupid, condid) {
+						if ($('#save_condition_group_'+groupid).length <= 0) {
 							var group_condition_html = '';
-							if($('.condition_group_block').length > 0) {
+							if ($('.condition_group_block').length > 0) {
 								group_condition_html = '<div class="condition_group_join_block" id="condition_group_'+groupid+'_joincondition" > \
 									<select id="save_condition_group_'+groupid+'_joincondition" class="joincondition"></select></div>';
 							}
@@ -537,26 +555,26 @@ function editworkflowscript($, conditions){
 									</div> \
 								</div>'
 							);
-							if($('.condition_group_block').length > 0) {
+							if ($('.condition_group_block').length > 0) {
 								var fjgc = $('#save_condition_group_'+groupid+'_joincondition');
 								fillOptions(fjgc, JoinConditionOptions);
 							}
 							var gpcond = $('#add_group_condition_'+groupid);
-							gpcond.bind('click', function(){
+							gpcond.bind('click', function () {
 								addCondition(groupid, condno++);
 							});
 
 							var rem_group_img = $('#save_condition_group_'+groupid+'_remove');
-							rem_group_img.bind('click', function(){
+							rem_group_img.bind('click', function () {
 								removeConditionGroup(groupid);
 							});
 
 							// First set groupno to highest groupid
-							if(groupno < groupid) {
+							if (groupno < groupid) {
 								groupno = groupid;
 							}
 							// Once groupno is same as highest groupid, increment it for next group usage
-							if(groupid == groupno) {
+							if (groupid == groupno) {
 								groupno += 1;
 							}
 						}
@@ -587,11 +605,11 @@ function editworkflowscript($, conditions){
 						resetFields(getFieldType(fullFieldName), condid);
 
 						var re = $('#save_condition_'+condid+'_remove');
-						re.bind('click', function(){
+						re.bind('click', function () {
 							removeCondition(groupid, condid);
 						});
 
-						fe.bind('change', function(){
+						fe.bind('change', function () {
 							var select = $(this);
 							var condNo = select.prop('id').match(/save_condition_(\d+)_fieldname/)[1];
 							var fullFieldName = $(this).val();
@@ -599,9 +617,9 @@ function editworkflowscript($, conditions){
 						});
 
 						var condition = $('#save_condition_'+condid+'_operation');
-						condition.bind('change', function() {
+						condition.bind('change', function () {
 							var value = $(this).val();
-							if(value == 'is empty' || value == 'is not empty') {
+							if (value == 'is empty' || value == 'is not empty') {
 								$('#save_condition_'+condid+'_value').hide();
 							} else {
 								$('#save_condition_'+condid+'_value').show();
@@ -610,54 +628,58 @@ function editworkflowscript($, conditions){
 					}
 
 					var newTaskPopup = NewTaskPopup();
-					$('#new_task').click(function(){
+					$('#new_task').click(function () {
 						newTaskPopup.show();
 					});
 
 					var newTemplatePopup = NewTemplatePopup();
-					$('#new_template').click(function(){
+					$('#new_template').click(function () {
 						newTemplatePopup.show();
 					});
 
 					var groupno=0;
 					var condno=0;
-					if(conditions){
-						$.each(conditions, function(i, condition){
+					if (conditions) {
+						$.each(conditions, function (i, condition) {
 							var fieldname = condition['fieldname'];
-							if(fieldname == '') return;
+							if (fieldname == '') {
+								return;
+							}
 							var groupid = condition['groupid'];
-							if(groupid == '') groupid = 0;
+							if (groupid == '') {
+								groupid = 0;
+							}
 							addCondition(groupid, condno);
 							$(format('#save_condition_%s_fieldname', condno)).val(fieldname);
 							resetFields(getFieldType(fieldname), condno);
 							$(format('#save_condition_%s_operation', condno)).val(condition['operation']);
 							$('#dump').html(condition['value']);
 							var text = $('#dump').text();
-							if(condition['operation'] == 'is empty' || condition['operation'] == 'is not empty') {
+							if (condition['operation'] == 'is empty' || condition['operation'] == 'is not empty') {
 								$(format('#save_condition_%s_value', condno)).hide();
 							}
 							$(format('#save_condition_%s_value', condno)).val(text);
 							$(format('#save_condition_%s_value_type', condno)).val(condition['valuetype']);
-							if(condition['joincondition'] != '') {
+							if (condition['joincondition'] != '') {
 								$(format('#save_condition_%s_joincondition', condno)).val(condition['joincondition']);
 							}
-							if(condition['groupjoin'] != '') {
+							if (condition['groupjoin'] != '') {
 								$(format('#save_condition_group_%s_joincondition', groupid)).val(condition['groupjoin']);
 							}
 							condno+=1;
 						});
 					}
 
-					$('#save_conditions_add').bind('click', function(){
+					$('#save_conditions_add').bind('click', function () {
 						addCondition(groupno, condno++);
 					});
 
-					$('#save_submit').bind('click', function(){
+					$('#save_submit').bind('click', function () {
 						var conditions = [];
 						i=0;
-						$('#save_conditions').children('.condition_group_block').each(function(j, conditiongroupblock){
-							$(conditiongroupblock).children('.save_condition_group').each(function(k, conditiongroup){
-								$(conditiongroup).children().each(function(l){
+						$('#save_conditions').children('.condition_group_block').each(function (j, conditiongroupblock) {
+							$(conditiongroupblock).children('.save_condition_group').each(function (k, conditiongroup) {
+								$(conditiongroup).children().each(function (l) {
 									var fieldname = $(this).children('.fieldname').val();
 									var operation = $(this).children('.operation').val();
 									var value = $(this).children('.expressionvalue').val();
@@ -665,7 +687,9 @@ function editworkflowscript($, conditions){
 									var joincondition = $(this).children('.joincondition').val();
 									var groupid = $(this).children('.groupid').val();
 									var groupjoin = '';
-									if(groupid != '') groupjoin = $('#save_condition_group_'+groupid+'_joincondition').val();
+									if (groupid != '') {
+										groupjoin = $('#save_condition_group_'+groupid+'_joincondition').val();
+									}
 									var condition = {
 										fieldname:fieldname,
 										operation:operation,
@@ -679,9 +703,8 @@ function editworkflowscript($, conditions){
 								});
 							});
 						});
-						if(conditions.length==0){
-							var out = '';
-						}else{
+						var out = '';
+						if (conditions.length!=0) {
 							var out = JSON.stringify(conditions);
 						}
 						$('#save_conditions_json').val(out);
@@ -694,18 +717,23 @@ function editworkflowscript($, conditions){
 			}));
 		}));
 	});
-
 }
 
-function moveWorkflowTaskUpDown(direction,task_id) {
-	jQuery.get('index.php', {
-		module:'com_vtiger_workflow',
-		action:'com_vtiger_workflowAjax',
-		file:'WorkflowComponents', ajax:'true',
-		wftaskid:task_id, mode:'moveWorkflowTaskUpDown', movedirection:direction},
-	function(result){
-		location.reload();
-	}
+function moveWorkflowTaskUpDown(direction, task_id) {
+	jQuery.get(
+		'index.php',
+		{
+			module:'com_vtiger_workflow',
+			action:'com_vtiger_workflowAjax',
+			file:'WorkflowComponents',
+			ajax:'true',
+			wftaskid:task_id,
+			mode:'moveWorkflowTaskUpDown',
+			movedirection:direction
+		},
+		function (result) {
+			location.reload();
+		}
 	);
 }
 

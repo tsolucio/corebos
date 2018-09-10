@@ -7,27 +7,27 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('modules/Calendar/Activity.php');
-require_once('include/logging.php');
-require_once('include/database/PearDatabase.php');
-require_once('modules/Calendar/CalendarCommon.php');
-require_once("modules/Calendar4You/Calendar4You.php");
-require_once("modules/Calendar4You/CalendarUtils.php");
+require_once 'modules/Calendar/Activity.php';
+require_once 'include/logging.php';
+require_once 'include/database/PearDatabase.php';
+require_once 'modules/Calendar/CalendarCommon.php';
+require_once 'modules/Calendar4You/Calendar4You.php';
+require_once 'modules/Calendar4You/CalendarUtils.php';
 
-global $adb,$theme,$current_user;
+global $adb, $theme, $current_user;
 $local_log = LoggerManager::getLogger('index');
 
 $Calendar4You = new Calendar4You();
 
 $Calendar4You->GetDefPermission($current_user->id);
 
-if(isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
-	$edit_permissions = $Calendar4You->CheckPermissions('EDIT',$_REQUEST['record']);
+if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
+	$edit_permissions = $Calendar4You->CheckPermissions('EDIT', $_REQUEST['record']);
 } else {
-	$edit_permissions = $Calendar4You->CheckPermissions('CREATE',$_REQUEST['record']);
+	$edit_permissions = $Calendar4You->CheckPermissions('CREATE', $_REQUEST['record']);
 }
 
-if(!$edit_permissions) {
+if (!$edit_permissions) {
 	NOPermissionDiv();
 }
 
@@ -37,36 +37,37 @@ $tab_type = 'Calendar';
 //added to fix 4600
 $search=vtlib_purify($_REQUEST['search_url']);
 
-$focus->column_fields["activitytype"] = 'Task';
+$focus->column_fields['activitytype'] = 'Task';
 $mode = vtlib_purify($_REQUEST['mode']);
 $record=vtlib_purify($_REQUEST['record']);
-if($mode) $focus->mode = $mode;
-if($record)$focus->id  = $record;
+if ($mode) {
+	$focus->mode = $mode;
+}
+if ($record) {
+	$focus->id  = $record;
+}
 
-if((isset($_REQUEST['change_status']) && $_REQUEST['change_status']) && ($_REQUEST['status']!='' || $_REQUEST['eventstatus']!='')) {
+if ((isset($_REQUEST['change_status']) && $_REQUEST['change_status']) && ($_REQUEST['status']!='' || $_REQUEST['eventstatus']!='')) {
 	$status ='';
 	$activity_type='';
 	$return_id = $focus->id;
-	if(isset($_REQUEST['status'])) {
+	if (isset($_REQUEST['status'])) {
 		$status = $_REQUEST['status'];
-		$activity_type = "Task";
-	} elseif(isset($_REQUEST['eventstatus'])) {
+		$activity_type = 'Task';
+	} elseif (isset($_REQUEST['eventstatus'])) {
 		$status = $_REQUEST['eventstatus'];
-		$activity_type = "Events";
+		$activity_type = 'Events';
 	}
-	if(isPermitted("Calendar","EditView",$_REQUEST['record']) == 'yes')
-	{
-		ChangeStatus($status,$return_id,$activity_type);
-	}
-	else
-	{
+	if (isPermitted('Calendar', 'EditView', $_REQUEST['record']) == 'yes') {
+		ChangeStatus($status, $return_id, $activity_type);
+	} else {
 		echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";
 		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
 			<table border='0' cellpadding='5' cellspacing='0' width='98%'>
 			<tbody><tr>
 			<td rowspan='2' width='11%'><img src='".vtiger_imageurl('denied.gif', $theme)."'></td>
-			<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>".$app_strings['LBL_PERMISSION']."</span></td>
+			<td style='border-bottom: 1px solid rgb(204,204,204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>".$app_strings['LBL_PERMISSION']."</span></td>
 			</tr>
 			<tr>
 			<td class='small' align='right' nowrap='nowrap'>
@@ -74,57 +75,61 @@ if((isset($_REQUEST['change_status']) && $_REQUEST['change_status']) && ($_REQUE
 			</tr>
 			</tbody></table>
 		</div>
-		</td></tr></table>";die;
+		</td></tr></table>";
+		die;
 	}
-	$invitee_qry = "select inviteeid from vtiger_invitees where activityid=?";
+	$invitee_qry = 'select inviteeid from vtiger_invitees where activityid=?';
 	$invitee_res = $adb->pquery($invitee_qry, array($return_id));
 	$count = $adb->num_rows($invitee_res);
-	if($count != 0) {
-		for($j = 0; $j < $count; $j++) {
-			$invitees_ids[]= $adb->query_result($invitee_res,$j,"inviteeid");
+	if ($count != 0) {
+		for ($j = 0; $j < $count; $j++) {
+			$invitees_ids[]= $adb->query_result($invitee_res, $j, 'inviteeid');
 		}
-		$invitees_ids_string = implode(';',$invitees_ids);
-		sendInvitation($invitees_ids_string,$activity_type,$mail_data['subject'],$mail_data);
+		$invitees_ids_string = implode(';', $invitees_ids);
+		sendInvitation($invitees_ids_string, $activity_type, $mail_data['subject'], $mail_data);
 	}
 } else {
 	$timeFields = array('time_start', 'time_end');
 	$tabId = getTabid($tab_type);
-	foreach($focus->column_fields as $fieldname => $val) {
+	foreach ($focus->column_fields as $fieldname => $val) {
 		$fieldInfo = getFieldRelatedInfo($tabId, $fieldname);
 		$uitype = $fieldInfo['uitype'];
 		$typeofdata = $fieldInfo['typeofdata'];
-		if(isset($_REQUEST[$fieldname])) {
-			if(is_array($_REQUEST[$fieldname]))
+		if (isset($_REQUEST[$fieldname])) {
+			if (is_array($_REQUEST[$fieldname])) {
 				$value = $_REQUEST[$fieldname];
-			else
+			} else {
 				$value = trim($_REQUEST[$fieldname]);
+			}
 
-			if((($typeofdata == 'T~M') || ($typeofdata == 'T~O')) && ($uitype == 2 || $uitype == 70 )) {
-				if(!in_array($fieldname, $timeFields)) {
+			if ((($typeofdata == 'T~M') || ($typeofdata == 'T~O')) && ($uitype == 2 || $uitype == 70 )) {
+				if (!in_array($fieldname, $timeFields)) {
 					$date = DateTimeField::convertToDBTimeZone($value);
 					$value = $date->format('H:i');
 				}
 				$focus->column_fields[$fieldname] = $value;
-			}else{
+			} else {
 				$focus->column_fields[$fieldname] = $value;
 			}
-			if(($fieldname == 'notime') && ($focus->column_fields[$fieldname])) {
+			if (($fieldname == 'notime') && ($focus->column_fields[$fieldname])) {
 				$focus->column_fields['time_start'] = '';
 				$focus->column_fields['duration_hours'] = '';
 				$focus->column_fields['duration_minutes'] = '';
 			}
-			if(($fieldname == 'recurringtype') && ! isset($_REQUEST['recurringcheck']))
+			if (($fieldname == 'recurringtype') && ! isset($_REQUEST['recurringcheck'])) {
 				$focus->column_fields['recurringtype'] = '--None--';
+			}
 		}
 	}
-	if(isset($_REQUEST['visibility']) && $_REQUEST['visibility']!= '')
-	        $focus->column_fields['visibility'] = $_REQUEST['visibility'];
-	else
-	        $focus->column_fields['visibility'] = 'Private';
+	if (isset($_REQUEST['visibility']) && $_REQUEST['visibility']!= '') {
+			$focus->column_fields['visibility'] = $_REQUEST['visibility'];
+	} else {
+		$focus->column_fields['visibility'] = 'Private';
+	}
 
-	if($_REQUEST['assigntype'] == 'U') {
+	if ($_REQUEST['assigntype'] == 'U') {
 		$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_user_id'];
-	} elseif($_REQUEST['assigntype'] == 'T') {
+	} elseif ($_REQUEST['assigntype'] == 'T') {
 		$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_group_id'];
 	}
 
@@ -133,7 +138,7 @@ if((isset($_REQUEST['change_status']) && $_REQUEST['change_status']) && ($_REQUE
 	$date = new DateTimeField($_REQUEST[$dateField]. ' ' . $_REQUEST[$fieldname]);
 	$focus->column_fields[$dateField] = $date->getDBInsertDateValue();
 	$focus->column_fields[$fieldname] = $date->getDBInsertTimeValue();
-	if(empty($_REQUEST['time_end'])) {
+	if (empty($_REQUEST['time_end'])) {
 		$_REQUEST['time_end'] = date('H:i', strtotime('+10 minutes', strtotime($focus->column_fields['date_start'].' '.$_REQUEST['time_start'])));
 	}
 	$dateField = 'due_date';
@@ -144,9 +149,9 @@ if((isset($_REQUEST['change_status']) && $_REQUEST['change_status']) && ($_REQUE
 
 	$focus->save($tab_type);
 	/* For Followup START -- by Minnie */
-	if(isset($_REQUEST['followup']) && $_REQUEST['followup'] == 'on' && $activity_mode == 'Events' && isset($_REQUEST['followup_time_start']) &&  $_REQUEST['followup_time_start'] != '') {
+	if (isset($_REQUEST['followup']) && $_REQUEST['followup']=='on' && $activity_mode=='Events' && isset($_REQUEST['followup_time_start']) &&  $_REQUEST['followup_time_start']!='') {
 		$heldevent_id = $focus->id;
-		$focus->column_fields['subject'] = '['.getTranslatedString('LBL_FOLLOWUP','Calendar').'] '.$focus->column_fields['subject'];
+		$focus->column_fields['subject'] = '['.getTranslatedString('LBL_FOLLOWUP', 'Calendar').'] '.$focus->column_fields['subject'];
 		$startDate = new DateTimeField($_REQUEST['followup_date'].' '.$_REQUEST['followup_time_start']);
 		$endDate = new DateTimeField($_REQUEST['followup_due_date'].' '.$_REQUEST['followup_time_end']);
 		$focus->column_fields['date_start'] = $startDate->getDBInsertDateValue();
@@ -162,35 +167,39 @@ if((isset($_REQUEST['change_status']) && $_REQUEST['change_status']) && ($_REQUE
 	$return_id = $focus->id;
 }
 
-if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] != "")
+if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] != '') {
 	$return_module = vtlib_purify($_REQUEST['return_module']);
-else
-	$return_module = "Calendar4You";
-if(isset($_REQUEST['return_action']) && $_REQUEST['return_action'] != "")
+} else {
+	$return_module = 'Calendar4You';
+}
+if (isset($_REQUEST['return_action']) && $_REQUEST['return_action'] != '') {
 	$return_action = vtlib_purify($_REQUEST['return_action']);
-else
-	$return_action = "EventDetailView";
-if(isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != "")
+} else {
+	$return_action = 'EventDetailView';
+}
+if (isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != '') {
 	$returnid = vtlib_purify($_REQUEST['return_id']);
+}
 
-$activemode = "";
-if($activity_mode != '')
-	$activemode = "&activity_mode=".$activity_mode;
+$activemode = '';
+if ($activity_mode != '') {
+	$activemode = '&activity_mode='.$activity_mode;
+}
 
 function getRequestData($return_id) {
 	global $adb;
-	$cont_qry = "select contactid from vtiger_cntactivityrel where activityid=?";
+	$cont_qry = 'select contactid from vtiger_cntactivityrel where activityid=?';
 	$cont_res = $adb->pquery($cont_qry, array($return_id));
 	$noofrows = $adb->num_rows($cont_res);
 	$cont_id = array();
-	if($noofrows > 0) {
-		for($i=0; $i<$noofrows; $i++) {
-			$cont_id[] = $adb->query_result($cont_res,$i,"contactid");
+	if ($noofrows > 0) {
+		for ($i=0; $i<$noofrows; $i++) {
+			$cont_id[] = $adb->query_result($cont_res, $i, 'contactid');
 		}
 	}
 	$cont_name = '';
-	foreach($cont_id as $id) {
-		if($id != '') {
+	foreach ($cont_id as $id) {
+		if ($id != '') {
 			$displayValueArray = getEntityName('Contacts', $id);
 			if (!empty($displayValueArray)) {
 				foreach ($displayValueArray as $field_value) {
@@ -200,8 +209,8 @@ function getRequestData($return_id) {
 			$cont_name .= $contact_name .', ';
 		}
 	}
-	$cont_name  = trim($cont_name,', ');
-	$mail_data = Array();
+	$cont_name  = trim($cont_name, ', ');
+	$mail_data = array();
 	$mail_data['user_id'] = $_REQUEST['assigned_user_id'];
 	$mail_data['subject'] = $_REQUEST['subject'];
 	$mail_data['status'] = (($_REQUEST['activity_mode']=='Task')?($_REQUEST['taskstatus']):($_REQUEST['eventstatus']));
@@ -213,108 +222,115 @@ function getRequestData($return_id) {
 	$mail_data['assign_type'] = $_REQUEST['assigntype'];
 	$mail_data['group_name'] = getGroupName($_REQUEST['assigned_group_id']);
 	$mail_data['mode'] = $_REQUEST['mode'];
-	$value = getaddEventPopupTime($_REQUEST['time_start'],$_REQUEST['time_end'],'24');
+	$value = getaddEventPopupTime($_REQUEST['time_start'], $_REQUEST['time_end'], '24');
 	$start_hour = $value['starthour'].':'.$value['startmin'].''.$value['startfmt'];
-	if($_REQUEST['activity_mode']!='Task')
+	if ($_REQUEST['activity_mode']!='Task') {
 		$end_hour = $value['endhour'] .':'.$value['endmin'].''.$value['endfmt'];
-	$startDate = new DateTimeField($_REQUEST['date_start']." ".$start_hour);
-	$endDate = new DateTimeField($_REQUEST['due_date']." ".$end_hour);
+	}
+	$startDate = new DateTimeField($_REQUEST['date_start'].' '.$start_hour);
+	$endDate = new DateTimeField($_REQUEST['due_date'].' '.$end_hour);
 	$mail_data['st_date_time'] = $startDate->getDBInsertDateTimeValue();
 	$mail_data['end_date_time'] = $endDate->getDBInsertDateTimeValue();
 	$mail_data['location']=vtlib_purify($_REQUEST['location']);
 	return $mail_data;
 }
 
-function getFieldRelatedInfo($tabId, $fieldName){
+function getFieldRelatedInfo($tabId, $fieldName) {
 	$fieldInfo = VTCacheUtils::lookupFieldInfo($tabId, $fieldName);
-	if($fieldInfo === false) {
-		getColumnFields(getTabModuleName($tabid));
+	if ($fieldInfo === false) {
+		getColumnFields(getTabModuleName($tabId));
 		$fieldInfo = VTCacheUtils::lookupFieldInfo($tabId, $fieldName);
 	}
 	return $fieldInfo;
 }
 
-if(isset($_REQUEST['contactidlist']) && $_REQUEST['contactidlist'] != '') {
+if (isset($_REQUEST['contactidlist']) && $_REQUEST['contactidlist'] != '') {
 	//split the string and store in an array
-	$storearray = explode (";",$_REQUEST['contactidlist']);
-	$del_sql = "delete from vtiger_cntactivityrel where activityid=?";
-	$adb->pquery($del_sql, array($record));
+	$storearray = explode(';', $_REQUEST['contactidlist']);
+	$adb->pquery('delete from vtiger_cntactivityrel where activityid=?', array($record));
 	$record = $focus->id;
-	foreach($storearray as $id)	{
-		if($id != '') {
-			$sql = "insert into vtiger_cntactivityrel values (?,?)";
-			$adb->pquery($sql, array($id, $record));
-			if(!empty($heldevent_id)) {
-				$sql = "insert into vtiger_cntactivityrel values (?,?)";
-				$adb->pquery($sql, array($id, $heldevent_id));
+	foreach ($storearray as $id) {
+		if ($id != '') {
+			$adb->pquery('insert into vtiger_cntactivityrel values (?,?)', array($id, $record));
+			if (!empty($heldevent_id)) {
+				$adb->pquery('insert into vtiger_cntactivityrel values (?,?)', array($id, $heldevent_id));
 			}
 		}
 	}
 }
 
 //code added to send mail to the vtiger_invitees
-if(isset($_REQUEST['inviteesid']) && $_REQUEST['inviteesid']!='') {
+if (isset($_REQUEST['inviteesid']) && $_REQUEST['inviteesid']!='') {
 	$mail_contents = getRequestData($return_id);
-	sendInvitation($_REQUEST['inviteesid'],$_REQUEST['activity_mode'],$_REQUEST['subject'],$mail_contents);
+	sendInvitation($_REQUEST['inviteesid'], $_REQUEST['activity_mode'], $_REQUEST['subject'], $mail_contents);
 }
 
 //to delete contact account relation while editing event
-if(isset($_REQUEST['deletecntlist']) && $_REQUEST['deletecntlist'] != '' && $_REQUEST['mode'] == 'edit') {
+if (isset($_REQUEST['deletecntlist']) && $_REQUEST['deletecntlist'] != '' && $_REQUEST['mode'] == 'edit') {
 	//split the string and store it in an array
-	$storearray = explode (";",$_REQUEST['deletecntlist']);
-	foreach($storearray as $id) {
-		if($id != '') {
-			$record = $focus->id;
-			$sql = "delete from vtiger_cntactivityrel where contactid=? and activityid=?";
+	$storearray = explode(';', $_REQUEST['deletecntlist']);
+	$sql = 'delete from vtiger_cntactivityrel where contactid=? and activityid=?';
+	$record = $focus->id;
+	foreach ($storearray as $id) {
+		if ($id != '') {
 			$adb->pquery($sql, array($id, $record));
 		}
 	}
-
 }
 
 //to delete activity and its parent table relation
-if(isset($_REQUEST['del_actparent_rel']) && $_REQUEST['del_actparent_rel'] != '' && $_REQUEST['mode'] == 'edit') {
+if (isset($_REQUEST['del_actparent_rel']) && $_REQUEST['del_actparent_rel'] != '' && $_REQUEST['mode'] == 'edit') {
 	$parnt_id = $_REQUEST['del_actparent_rel'];
-	$sql= 'delete from vtiger_seactivityrel where crmid=? and activityid=?';
-	$adb->pquery($sql, array($parnt_id, $record));
+	$adb->pquery('delete from vtiger_seactivityrel where crmid=? and activityid=?', array($parnt_id, $record));
 }
 
-if(isset($_REQUEST['view']) && $_REQUEST['view']!='')
+if (isset($_REQUEST['view']) && $_REQUEST['view']!='') {
 	$view=vtlib_purify($_REQUEST['view']);
-if(isset($_REQUEST['hour']) && $_REQUEST['hour']!='')
+}
+if (isset($_REQUEST['hour']) && $_REQUEST['hour']!='') {
 	$hour=vtlib_purify($_REQUEST['hour']);
-if(isset($_REQUEST['day']) && $_REQUEST['day']!='')
+}
+if (isset($_REQUEST['day']) && $_REQUEST['day']!='') {
 	$day=vtlib_purify($_REQUEST['day']);
-if(isset($_REQUEST['month']) && $_REQUEST['month']!='')
+}
+if (isset($_REQUEST['month']) && $_REQUEST['month']!='') {
 	$month=vtlib_purify($_REQUEST['month']);
-if(isset($_REQUEST['year']) && $_REQUEST['year']!='')
+}
+if (isset($_REQUEST['year']) && $_REQUEST['year']!='') {
 	$year=vtlib_purify($_REQUEST['year']);
-if(isset($_REQUEST['viewOption']) && $_REQUEST['viewOption']!='')
+}
+if (isset($_REQUEST['viewOption']) && $_REQUEST['viewOption']!='') {
 	$viewOption=vtlib_purify($_REQUEST['viewOption']);
-if(isset($_REQUEST['subtab']) && $_REQUEST['subtab']!='')
+}
+if (isset($_REQUEST['subtab']) && $_REQUEST['subtab']!='') {
 	$subtab=vtlib_purify($_REQUEST['subtab']);
+}
 
-if($_REQUEST['recurringcheck']) {
-	include_once('modules/Calendar/RepeatEvents.php');
+if ($_REQUEST['recurringcheck']) {
+	include_once 'modules/Calendar/RepeatEvents.php';
 	Calendar_RepeatEvents::repeatFromRequest($focus);
 }
 
 //code added for returning back to the current view after edit from list view
-if($_REQUEST['return_viewname'] == '')
+if ($_REQUEST['return_viewname'] == '') {
 	$return_viewname='0';
-if($_REQUEST['return_viewname'] != '')
+}
+if ($_REQUEST['return_viewname'] != '') {
 	$return_viewname=vtlib_purify($_REQUEST['return_viewname']);
+}
 
 $parenttab=getParentTab();
 
-if(!empty($_REQUEST['start'])) {
+if (!empty($_REQUEST['start'])) {
 	$page='&start='.vtlib_purify($_REQUEST['start']);
 }
-if(!empty($_REQUEST['pagenumber'])){
-	$page = "&start=".vtlib_purify($_REQUEST['pagenumber']);
+if (!empty($_REQUEST['pagenumber'])) {
+	$page = '&start='.vtlib_purify($_REQUEST['pagenumber']);
 }
-if($_REQUEST['maintab'] == 'Calendar' or (!empty($return_id) and empty($returnid)))
-	header("Location: index.php?action=".$return_action."&module=".$return_module."&view=".$view."&hour=".$hour."&day=".$day."&month=".$month."&year=".$year."&record=".$return_id."&viewOption=".$viewOption."&subtab=".$subtab."&parenttab=$parenttab");
-else
-	header("Location: index.php?action=$return_action&module=$return_module&view=$view&hour=$hour&day=$day&month=$month&year=$year&record=$returnid$activemode&viewname=$return_viewname$page&parenttab=$parenttab$search");
+$url = 'Location: index.php?action='.$return_action.'&module='.$return_module.'&view='.$view.'&hour='.$hour.'&day='.$day.'&month='.$month.'&year='.$year;
+if ($_REQUEST['maintab'] == 'Calendar' || (!empty($return_id) && empty($returnid))) {
+	header('&record='.$return_id.'&viewOption='.$viewOption.'&subtab='.$subtab);
+} else {
+	header('&record='.$returnid . $activemode .'&viewname='.$return_viewname . $page . $search);
+}
 ?>

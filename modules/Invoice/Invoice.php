@@ -93,7 +93,6 @@ class Invoice extends CRMEntity {
 	public $record_status = '';
 	public $update_product_array = array();
 
-
 	public function save($module, $fileid = '') {
 		if ($this->mode=='edit') {
 			$this->record_status = getSingleFieldValue($this->table_name, 'invoicestatus', $this->table_index, $this->id);

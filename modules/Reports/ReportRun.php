@@ -294,22 +294,22 @@ class ReportRun extends CRMEntity {
 		$params = array();
 		if ($module == "Calendar") {
 			if (count($profileList) > 0) {
-				$query .= ' vtiger_field.tabid in (9,16) and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0
+				$query .= ' vtiger_field.tabid in (9,16) and vtiger_field.displaytype in (1,2,3,4) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0
 					and vtiger_field.presence IN (0,2) and vtiger_profile2field.profileid in ('. generateQuestionMarks($profileList) .') group by vtiger_field.fieldid order by block,sequence';
 				$params[] = $profileList;
 			} else {
-				$query .= ' vtiger_field.tabid in (9,16) and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0
+				$query .= ' vtiger_field.tabid in (9,16) and vtiger_field.displaytype in (1,2,3,4) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0
 					and vtiger_field.presence IN (0,2) group by vtiger_field.fieldid order by block,sequence';
 			}
 		} else {
 			$params[] = $module;
 			if (count($profileList) > 0) {
-				$query .= ' vtiger_field.tabid in (select tabid from vtiger_tab where vtiger_tab.name in (?)) and vtiger_field.displaytype in (1,2,3,5)
+				$query .= ' vtiger_field.tabid in (select tabid from vtiger_tab where vtiger_tab.name in (?)) and vtiger_field.displaytype in (1,2,3,4,5)
 					and vtiger_profile2field.visible=0 and vtiger_field.presence IN (0,2) and vtiger_def_org_field.visible=0
 					and vtiger_profile2field.profileid in ('. generateQuestionMarks($profileList).') group by vtiger_field.fieldid order by block,sequence';
 				$params[] = $profileList;
 			} else {
-				$query .= ' vtiger_field.tabid in (select tabid from vtiger_tab where vtiger_tab.name in (?)) and vtiger_field.displaytype in (1,2,3,5)
+				$query .= ' vtiger_field.tabid in (select tabid from vtiger_tab where vtiger_tab.name in (?)) and vtiger_field.displaytype in (1,2,3,4,5)
 					and vtiger_profile2field.visible=0 and vtiger_field.presence IN (0,2) and vtiger_def_org_field.visible=0 group by vtiger_field.fieldid
 					order by block,sequence';
 			}
@@ -570,11 +570,7 @@ class ReportRun extends CRMEntity {
 				$col = explode(':', $relcriteriarow['columnname']);
 				list($module,$void) = explode('_', $col[2], 2);
 				$uitype_value = getUItypeByFieldName($module, $col[3]);
-				if ($uitype_value == '15' || $uitype_value == '16' || $uitype_value == '33') {
-					if (!isValueInPicklist($advfilterval, $col[3])) {
-						$advfilterval = getTranslationKeyFromTranslatedValue($module, $advfilterval);
-					}
-				}
+
 				$criteria['value'] = $advfilterval;
 				$criteria['column_condition'] = $relcriteriarow['column_condition'];
 
@@ -755,7 +751,15 @@ class ReportRun extends CRMEntity {
 //							else
 //								$fieldvalue = $fieldInfo['tablename'].'.'.$fieldInfo['columnname'].$cmp;
 						} else {
-							$fieldvalue = $selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator, trim($value), $datatype);
+							if ($fieldInfo['uitype']==15 || $fieldInfo['uitype']==16) {
+								$fieldvalue = '('.$selectedfields[0].".".$selectedfields[1].' IN (select translation_key from vtiger_cbtranslation
+									where locale="'.$current_user->language.'" and forpicklist="'.$moduleName.'::'.$selectedfields[3]
+									.'" and i18n '.$this->getAdvComparator($comparator, trim($value), $datatype).')'
+									.(in_array($comparator, array('n', 'k')) ? ' AND ' : ' OR ')
+									.$selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator, trim($value), $datatype).')';
+							} else {
+								$fieldvalue = $selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator, trim($value), $datatype);
+							}
 						}
 
 						$advfiltergroupsql .= $fieldvalue;
@@ -983,11 +987,7 @@ class ReportRun extends CRMEntity {
 					}
 					$adv_filter_value = implode(",", $val);
 				}
-				if ($fieldType=='picklist' || $fieldType=='multipicklist') {
-					if (!isValueInPicklist($adv_filter_value, $fieldName)) {
-						$adv_filter_value = getTranslationKeyFromTranslatedValue($module, $adv_filter_value);
-					}
-				}
+
 				$criteria = array();
 				$criteria['columnname'] = $adv_filter_column;
 				$criteria['comparator'] = $adv_filter_comparator;
@@ -1896,7 +1896,7 @@ class ReportRun extends CRMEntity {
 		} else {
 			$columnlist = $this->getQueryColumnsList($reportid, $type);
 			$groupslist = $this->getGroupingList($reportid);
-			$groupTimeList = $this->getGroupByTimeList($reportid);
+			$this->getGroupByTimeList($reportid);
 			$stdfilterlist = $this->getStdFilterList($reportid);
 			$columnstotallist = $this->getColumnsTotal($reportid, $columnlist);
 			$advfiltersql = $this->getAdvFilterSql($reportid);
@@ -1910,9 +1910,6 @@ class ReportRun extends CRMEntity {
 		//groups list
 			if (isset($groupslist)) {
 				$groupsquery = implode(', ', $groupslist);
-			}
-			if (isset($groupTimeList)) {
-				$groupTimeQuery = implode(', ', $groupTimeList);
 			}
 
 		//standard list
@@ -3068,11 +3065,6 @@ class ReportRun extends CRMEntity {
 
 		global $adb, $log;
 		static $modulename_cache = array();
-		$query = 'select primarymodule,secondarymodules from vtiger_reportmodules where reportmodulesid=?';
-		$res = $adb->pquery($query, array($reportid));
-		$modrow = $adb->fetch_array($res);
-		$premod = $modrow['primarymodule'];
-		$secmod = $modrow['secondarymodules'];
 		$coltotalsql = 'select vtiger_reportsummary.* from vtiger_report';
 		$coltotalsql .= ' inner join vtiger_reportsummary on vtiger_report.reportid = vtiger_reportsummary.reportsummaryid';
 		$coltotalsql .= ' where vtiger_report.reportid =?';
@@ -3114,18 +3106,6 @@ class ReportRun extends CRMEntity {
 				if (CheckColumnPermission($field_tablename, $field_columnname, $module_name) != "false") {
 					$field_permitted = true;
 				}
-				/* one call to CheckColumnPermission with $module_name is better than the block below
-				if(CheckColumnPermission($field_tablename,$field_columnname,$premod) != "false"){
-					$field_permitted = true;
-				} else {
-					$mod = explode(":",$secmod);
-					foreach($mod as $key){
-						if(CheckColumnPermission($field_tablename,$field_columnname,$key) != "false"){
-							$field_permitted=true;
-						}
-					}
-				}
-				*/
 				if ($field_permitted == true) {
 					if ($field_tablename == 'vtiger_products' && $field_columnname == 'unit_price') {
 						// Query needs to be rebuild to get the value in user preferred currency. [innerProduct and actual_unit_price are table and column alias.]

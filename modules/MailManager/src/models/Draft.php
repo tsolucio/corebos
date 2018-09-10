@@ -210,7 +210,6 @@ class MailManager_Model_DraftEmail {
 		}
 	}
 
-
 	public function getFromEmailAddress() {
 		global $adb, $current_user;
 		$fromEmail = false;

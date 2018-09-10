@@ -12,21 +12,21 @@ include_once 'include/Webservices/Delete.php';
 
 class crmtogo_WS_DeleteRecords extends crmtogo_WS_Controller {
 
-	function process(crmtogo_API_Request $request) {
+	public function process(crmtogo_API_Request $request) {
 		$current_user = $this->getActiveUser();
 		$records = $request->get('records');
 		if (empty($records)) {
 			$records = array($request->get('record'));
 		} else {
-			$records = json_decode($records,true);
+			$records = json_decode($records, true);
 		}
 
 		$deleted = array();
-		foreach($records as $record) {
+		foreach ($records as $record) {
 			try {
 				vtws_delete($record, $current_user);
 				$result = true;
-			} catch(Exception $e) {
+			} catch (Exception $e) {
 				$result = false;
 			}
 			$deleted[$record] = $result;

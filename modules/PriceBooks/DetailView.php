@@ -20,5 +20,5 @@ $smarty->assign('CURRENCY_ID', $focus->column_fields['currency_id']);
 if (isPermitted($currentModule, 'DeletePriceBook', $record) == 'yes') {
 	$smarty->assign('DELETE', 'permitted');
 }
-$smarty->display('Inventory/InventoryDetailView.tpl');
+$smarty->display('DetailView.tpl');
 ?>

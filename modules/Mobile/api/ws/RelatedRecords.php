@@ -8,19 +8,18 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-
 include_once __DIR__ . '/QueryWithGrouping.php';
 
 class crmtogo_WS_RelatedRecords extends crmtogo_WS_QueryWithGrouping {
 
-	function process(crmtogo_API_Request $request) {
-		global $current_user, $adb, $currentModule;
+	public function process(crmtogo_API_Request $request) {
+		global $current_user, $currentModule;
 		$current_user = $this->getActiveUser();
 
 		$response = new crmtogo_API_Response();
 
 		$record = $request->get('record');
-		$currentPage = $request->get('page', 0);
+		//$currentPage = $request->get('page', 0);
 
 		// Input validation
 		if (empty($record)) {
@@ -36,27 +35,24 @@ class crmtogo_WS_RelatedRecords extends crmtogo_WS_QueryWithGrouping {
 
 		//related module currently supported
 		$gvRelatedModules = GlobalVariable::getVariable('Mobile_Related_Modules', 'Contacts,Potentials,HelpDesk,Documents,Timecontrol', 'Mobile');
-		$relatedmodule = explode(',',$gvRelatedModules);
+		$relatedmodule = explode(',', $gvRelatedModules);
 		$activemodule = $this->sessionGet('_MODULES');
 		$relatedRecords = array();
-		foreach($activemodule as $amodule) {
+		foreach ($activemodule as $amodule) {
 			if (in_array($amodule->name(), $relatedmodule)) {
 				if ($amodule->name() != $module) {
 					$functionHandler = crmtogo_WS_Utils::getRelatedFunctionHandler($module, $amodule->name());
-					$fieldmodel = new crmtogo_UI_FieldModel();
+					//$fieldmodel = new crmtogo_UI_FieldModel();
 					if ($functionHandler) {
 						$sourceFocus = CRMEntity::getInstance($module);
-						$relationResult = call_user_func_array(	array($sourceFocus, $functionHandler), array($recordid, getTabid($module), getTabid($amodule->name())) );
+						$relationResult = call_user_func_array(array($sourceFocus, $functionHandler), array($recordid, getTabid($module), getTabid($amodule->name())));
 						if ($relationResult['entries']) {
-							$relatedRecords[$amodule->name()] = array_keys ($relationResult['entries']);
-						}
-						else {
+							$relatedRecords[$amodule->name()] = array_keys($relationResult['entries']);
+						} else {
 							$relatedRecords[$amodule->name()] = array();
 						}
-
 					}
-				}
-				else {
+				} else {
 					$relatedRecords[$amodule->name()] = array();
 				}
 				$response->setResult($relatedRecords);

@@ -190,7 +190,6 @@ class MysqlSource extends BackupSource {
 	public static $cacheSig = 0;
 	public static $cacheCols;
 
-
 	public function getInsertNames(&$zthis, &$rs, $arrFields, $magicq = false, $force = 2) {
 		$tableName = '';
 		$recordSet = null;

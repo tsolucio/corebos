@@ -25,7 +25,7 @@ function pathify($class_name) {
 }
 
 require_once 'error_handlers.php';
-include_once('include/cbmqtm/cbmqtm_dispatcher.php');
+include_once 'include/cbmqtm/cbmqtm_dispatcher.php';
 
 // The run() method will start the daemon loop.
 coreBOS_MQTMDispatcher::getInstance()->run();

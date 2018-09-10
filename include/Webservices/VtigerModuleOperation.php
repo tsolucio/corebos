@@ -278,7 +278,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$retrieveable = $this->meta->hasReadAccess();
 		$fields = $this->getModuleFields();
 		return array(
-			'label'=>$label,'name'=>$elementType,'createable'=>$createable,'updateable'=>$updateable,
+			'label'=>$label,'label_raw'=>$elementType,'name'=>$elementType,'createable'=>$createable,'updateable'=>$updateable,
 			'deleteable'=>$deleteable,'retrieveable'=>$retrieveable,'fields'=>$fields,
 			'idPrefix'=>$this->meta->getEntityId(),'isEntity'=>$this->isEntity,'labelFields'=>$this->meta->getNameFields()
 		);
@@ -309,13 +309,8 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		if (array_key_exists($dfkey, $purified_dfcache)) {
 			return $purified_dfcache[$dfkey];
 		}
-		$default_language = isset($this->user->language) ? $this->user->language : VTWS_PreserveGlobal::getGlobal('default_language');
-
-		require 'modules/'.$this->meta->getTabName()."/language/$default_language.lang.php";
 		$fieldLabel = $webserviceField->getFieldLabelKey();
-		if (isset($mod_strings[$fieldLabel])) {
-			$fieldLabel = $mod_strings[$fieldLabel];
-		}
+		$fieldLabeli18n = getTranslatedString($fieldLabel, $this->meta->getTabName());
 		$typeDetails = $this->getFieldTypeDetails($webserviceField);
 
 		//set type name, in the type details array.
@@ -323,8 +318,8 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$editable = $this->isEditable($webserviceField);
 
 		$blkname = $webserviceField->getBlockName();
-		$describeArray = array('name'=>$webserviceField->getFieldName(),'label'=>$fieldLabel,'mandatory'=>
-			$webserviceField->isMandatory(),'type'=>$typeDetails,'nullable'=>$webserviceField->isNullable(),
+		$describeArray = array('name'=>$webserviceField->getFieldName(),'label'=>$fieldLabeli18n,'label_raw'=>$fieldLabel,
+			'mandatory'=>$webserviceField->isMandatory(),'type'=>$typeDetails,'nullable'=>$webserviceField->isNullable(),
 			"editable"=>$editable,'uitype'=>$webserviceField->getUIType(),'typeofdata'=>$webserviceField->getTypeOfData(),
 			'sequence'=>$webserviceField->getFieldSequence(),'quickcreate'=>$webserviceField->getQuickCreate(),'displaytype'=>$webserviceField->getDisplayType(),
 			'block'=>array('blockid'=>$webserviceField->getBlockId(),'blocksequence'=>$webserviceField->getBlockSequence(),

@@ -7,17 +7,17 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved. *
  ********************************************************************************/
-require_once('include/utils/utils.php');
-require_once('include/logging.php');
-require_once('modules/Settings/MailScanner/core/MailScannerInfo.php');
-require_once('modules/Settings/MailScanner/core/MailBox.php');
-require_once('modules/Settings/MailScanner/core/MailScanner.php');
+require_once 'include/utils/utils.php';
+require_once 'include/logging.php';
+require_once 'modules/Settings/MailScanner/core/MailScannerInfo.php';
+require_once 'modules/Settings/MailScanner/core/MailBox.php';
+require_once 'modules/Settings/MailScanner/core/MailScanner.php';
 
 //Added as sometimes the php.ini file used for command line php and
 //for Apache php is different.
-if(!function_exists('imap_open')) {
+if (!function_exists('imap_open')) {
 	echo $app_strings['LBL_NO'].' '.$mod_strings['LBL_IMAP_SUPPORT'];
-} elseif(!function_exists('openssl_encrypt')) {
+} elseif (!function_exists('openssl_encrypt')) {
 	echo $app_strings['LBL_NO'].' '.$mod_strings['LBL_OPENSSL_SUPPORT'];
 }
 
@@ -26,8 +26,8 @@ if(!function_exists('imap_open')) {
  */
 function service_MailScanner_performScanNow($scannerinfo, $debug) {
 	/** If the scanner is not enabled, stop. */
-	if($scannerinfo->isvalid) {
-		echo "Scanning " . $scannerinfo->server . " in progress\n";
+	if ($scannerinfo->isvalid) {
+		echo 'Scanning ' . $scannerinfo->server . " in progress\n";
 
 		/** Start the scanning. */
 		$scanner = new Vtiger_MailScanner($scannerinfo);
@@ -39,7 +39,7 @@ function service_MailScanner_performScanNow($scannerinfo, $debug) {
 	}
 }
 
-/** 
+/**
  * Execution of this is based on number of emails and connection to mailserver.
  * So setting infinite timeout.
  */
@@ -49,7 +49,7 @@ function service_MailScanner_performScanNow($scannerinfo, $debug) {
 $debug = true;
 
 /** Pick up the mail scanner for scanning. */
-if(isset($_REQUEST['scannername'])) {
+if (isset($_REQUEST['scannername'])) {
 	// Target scannername specified?
 	$scannername = vtlib_purify($_REQUEST['scannername']);
 	$scannerinfo = new Vtiger_MailScannerInfo($scannername);
@@ -57,10 +57,10 @@ if(isset($_REQUEST['scannername'])) {
 } else {
 	// Scan all the configured mailscanners?
 	$scannerinfos = Vtiger_MailScannerInfo::listAll();
-	if(empty($scannerinfos)) {
-		echo "No mailbox configured for scanning!";
+	if (empty($scannerinfos)) {
+		echo 'No mailbox configured for scanning!';
 	} else {
-		foreach($scannerinfos as $scannerinfo) {
+		foreach ($scannerinfos as $scannerinfo) {
 			service_MailScanner_performScanNow($scannerinfo, $debug);
 		}
 	}

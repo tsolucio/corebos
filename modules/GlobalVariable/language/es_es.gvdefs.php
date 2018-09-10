@@ -1175,6 +1175,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Valor válido de la lista de estados de Actividad',
 	'definition' => 'Filtro inicial de Actividades en la lista relacionada. Por defecto muestra "todos".',
 ),
+'Zero_Bounce_API_KEY' => array(
+	'status' => 'Implementeda',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'Cualquier Clave API válida de Zero Bounce',
+	'definition' => 'Una clave válida para el API de Zero Bounce para poder validar cuentas de correo.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {

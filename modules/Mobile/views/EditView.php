@@ -54,7 +54,12 @@ class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 			if ($request->getOperation()!='create') {
 				$moduleObj = $this->cachedModuleLookupWithRecordId($wsResponseResult['record']['id']);
 				$record = crmtogo_UI_ModuleRecordModel::buildModelFromResponse($wsResponseResult['record']);
-				$record->setId($wsResponseResult['record']['id']);
+				if ($request->getOperation()=='duplicate') {
+					$record->setId();
+					$wsResponseResult['record']['id'] = '';
+				} else {
+					$record->setId($wsResponseResult['record']['id']);
+				}
 			} else {
 				$moduleObj = $this->cachedModuleLookup($targetModule);
 				$record = crmtogo_UI_ModuleRecordModel::buildModel($wsResponseResult['record']);
@@ -65,9 +70,9 @@ class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 			$current_language = $this->sessionGet('language') ;
 			//generate dateformat for Smarty
 			$target_date_format = $current_user->date_format;
-			$target_date_format= str_replace("yyyy", "%Y", $target_date_format);
-			$target_date_format= str_replace("mm", "%m", $target_date_format);
-			$target_date_format= str_replace("dd", "%d", $target_date_format);
+			$target_date_format= str_replace('yyyy', '%Y', $target_date_format);
+			$target_date_format= str_replace('mm', '%m', $target_date_format);
+			$target_date_format= str_replace('dd', '%d', $target_date_format);
 			//generate language for Smarty date (like 'de')
 			$target_lang_format= substr($current_language, 3, 2);
 
@@ -84,8 +89,8 @@ class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 				$result = $adb->pquery($sql, array($recordIdComponents[1]));
 				$num_rows=$adb->num_rows($result);
 				for ($i=0; $i<$num_rows; $i++) {
-					$userid=$adb->query_result($result, $i,'inviteeid');
-					$username=$adb->query_result($result, $i,'user_name');
+					$userid=$adb->query_result($result, $i, 'inviteeid');
+					$username=$adb->query_result($result, $i, 'user_name');
 					$invited_users[$userid]=$username;
 				}
 			}
@@ -100,11 +105,11 @@ class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 			$viewer->assign('id', $wsResponseResult['record']['id']);
 			$viewer->assign('mode', $request->getOperation());
 			$viewer->assign('crmtogorecordid', $wsResponseResult['record']['id']);
-			$viewer->assign('DATEFORMAT',  $current_user->date_format);
+			$viewer->assign('DATEFORMAT', $current_user->date_format);
 			$viewer->assign('SMARTYDATEFORMAT', $target_date_format);
 			$viewer->assign('HOURFORMATFORMAT', $current_user->hour_format);
 			$viewer->assign('LANGFORMATFORMAT', $target_lang_format);
-			$viewer->assign('INVITEES',  implode(';', array_keys($invited_users)));
+			$viewer->assign('INVITEES', implode(';', array_keys($invited_users)));
 			$viewer->assign('LANGUAGE', $current_language);
 
 			$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize', 3000000, $currentModule);

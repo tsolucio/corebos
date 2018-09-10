@@ -17,29 +17,31 @@ $title='coreBOS packaging tool';
 // Turn on debugging level
 $Vtiger_Utils_Log = false;
 
-include_once('vtlib/Vtiger/Module.php');
+include_once 'vtlib/Vtiger/Module.php';
 global $current_user,$adb;
 $dl = isset($_REQUEST['download']) ? vtlib_purify($_REQUEST['download']) : '';
 $dl = !empty($dl);
 if (!$dl) {
-header('Content-Type: text/html; charset=UTF8');
+	header('Content-Type: text/html; charset=UTF8');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html><head><title><?php echo $title; ?></title>
 <style type="text/css">@import url("themes/softed/style.css");br { display: block; margin: 2px; }</style>
 </head><body class=small style="font-size: 12px; margin: 2px; padding: 2px;">
-<?php 
+<?php
 }
 set_time_limit(0);
-ini_set('memory_limit','1024M');
+ini_set('memory_limit', '1024M');
 
-if (empty($_REQUEST['languagecode']) or empty($_REQUEST['languagename'])) {
+if (empty($_REQUEST['languagecode']) || empty($_REQUEST['languagename'])) {
 	echo '<br><br><b>Necessary Parameters {languagecode} or {languagename} not present</b><br>';
 } else {
 	$languagecode = vtlib_purify($_REQUEST['languagecode']);
 	$languagename = vtlib_purify($_REQUEST['languagename']);
-	Vtiger_Package::languageFromFilesystem($languagecode,$languagename,$dl);
-	if ($dl) die();
+	Vtiger_Package::languageFromFilesystem($languagecode, $languagename, $dl);
+	if ($dl) {
+		die();
+	}
 	echo "<b>Language Package should be exported to the packages/optional directory of your install.</b><br>";
 }
 ?>

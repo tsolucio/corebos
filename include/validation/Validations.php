@@ -27,19 +27,19 @@ function validate_IBAN_BankAccount($field, $iban, $params, $fields) {
 	*/
 	// definimos un array de valores con el valor de cada letra
 	$letras = array (
-		"A" => 10,		"B" => 11,
-		"C" => 12,		"D" => 13,
-		"E" => 14,		"F" => 15,
-		"G" => 16,		"H" => 17,
-		"I" => 18,		"J" => 19,
-		"K" => 20,		"L" => 21,
-		"M" => 22,		"N" => 23,
-		"O" => 24,		"P" => 25,
-		"Q" => 26,		"R" => 27,
-		"S" => 28,		"T" => 29,
-		"U" => 30,		"V" => 31,
-		"W" => 32,		"X" => 33,
-		"Y" => 34,		"Z" => 35 
+		'A' => 10,		'B' => 11,
+		'C' => 12,		'D' => 13,
+		'E' => 14,		'F' => 15,
+		'G' => 16,		'H' => 17,
+		'I' => 18,		'J' => 19,
+		'K' => 20,		'L' => 21,
+		'M' => 22,		'N' => 23,
+		'O' => 24,		'P' => 25,
+		'Q' => 26,		'R' => 27,
+		'S' => 28,		'T' => 29,
+		'U' => 30,		'V' => 31,
+		'W' => 32,		'X' => 33,
+		'Y' => 34,		'Z' => 35,
 	);
 
 	// Eliminamos los posibles espacios al inicio y final
@@ -69,9 +69,11 @@ function validate_IBAN_BankAccount($field, $iban, $params, $fields) {
 
 // Intra-Community VAT number verification - www.bigotconsulting.fr (thanks)
 function validate_EU_VAT($field, $num_tva, $params, $fields) {
-	if ($num_tva=='') return true;
+	if ($num_tva=='') {
+		return true;
+	}
 	if (extension_loaded('soap')) {
-		ini_set("soap.wsdl_cache_enabled", "0");
+		ini_set('soap.wsdl_cache_enabled', '0');
 		$prefix = substr($num_tva, 0, 2);
 		$tva = substr($num_tva, 2);
 		$param = array('countryCode' => $prefix, 'vatNumber' => $tva);
@@ -81,7 +83,7 @@ function validate_EU_VAT($field, $num_tva, $params, $fields) {
 		} catch (Exception $e) {
 			return false;
 		}
-		return (($xml->valid)=="1");
+		return (($xml->valid)=='1');
 	}
 	return false;
 }
@@ -97,16 +99,15 @@ function validate_notDuplicate($field, $fieldval, $params, $fields) {
 	$queryGenerator = new QueryGenerator($module, $current_user);
 	$queryGenerator->setFields(array('id'));
 	$queryGenerator->addCondition($field, $fieldval, 'e');
-	if(isset($crmid) && $crmid !='') {
-		$queryGenerator->addCondition('id',$crmid,'n','and');
+	if (isset($crmid) && $crmid !='') {
+		$queryGenerator->addCondition('id', $crmid, 'n', 'and');
 	}
 	$query = $queryGenerator->getQuery();
 	$result = $adb->pquery($query, array());
-	if ($result and $adb->num_rows($result) == 0) {
+	if ($result && $adb->num_rows($result) == 0) {
 		return true;
 	} else {
 		return false;
 	}
 }
-
 ?>

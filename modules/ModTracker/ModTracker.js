@@ -45,7 +45,7 @@ function searchModTrackerResult() {
 		var modtrac_searchfieldvalue = getObj('modtrac_src_value'+i);
 
 		urlstring = urlstring+'field'+i+'='+modtrac_searchfield.value+'&';
-		urlstring = urlstring+'condition'+i+'='+modtrac_condition.value.replace(/\\'/g,'')+'&';
+		urlstring = urlstring+'condition'+i+'='+modtrac_condition.value.replace(/\\'/g, '')+'&';
 		urlstring = urlstring+'value'+i+'='+encodeURIComponent(modtrac_searchfieldvalue.value)+'&';
 	}
 	document.getElementById('status').style.display='inline';
@@ -82,7 +82,7 @@ function getFilterList() {
 				var modtrac_searchfieldvalue = getObj('modtrac_src_value'+i);
 
 				urlstring = urlstring+'field'+i+'='+modtrac_searchfield.value+'&';
-				urlstring = urlstring+'condition'+i+'='+modtrac_condition.value.replace(/\\'/g,'')+'&';
+				urlstring = urlstring+'condition'+i+'='+modtrac_condition.value.replace(/\\'/g, '')+'&';
 				urlstring = urlstring+'value'+i+'='+encodeURIComponent(modtrac_searchfieldvalue.value)+'&';
 			}
 		}

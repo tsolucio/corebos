@@ -169,6 +169,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Document_CreateSelectAccountFolder',
 				'Document_CreateSelectAccountFolderForContact',
 				'HomePage_Widget_Group_Size',
+				'Zero_Bounce_API_KEY',
 
 				'Report_Send_Scheduled_ifEmpty',
 				'Report_ListView_PageSize',

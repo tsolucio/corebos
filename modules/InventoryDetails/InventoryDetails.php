@@ -128,11 +128,14 @@ class InventoryDetails extends CRMEntity {
 	public $mandatory_fields = array('createdtime', 'modifiedtime', 'inventorydetails_no');
 
 	public function save_module($module) {
-		global $adb;
+		global $adb, $current_user;
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
 		}
-		$this->column_fields['cost_gross'] = $this->column_fields['quantity'] * (float)$this->column_fields['cost_price'];
+		$handler = vtws_getModuleHandlerFromName('InventoryDetails', $current_user);
+		$meta = $handler->getMeta();
+		$dbformat = DataTransform::sanitizeCurrencyFieldsForDB($this->column_fields, $meta);
+		$this->column_fields['cost_gross'] = $this->column_fields['quantity'] * (float)$dbformat['cost_price'];
 		$adb->pquery('update vtiger_inventorydetails set cost_gross=? where inventorydetailsid=?', array($this->column_fields['cost_gross'], $this->id));
 		if (!empty($this->column_fields['productid'])) {
 			$this->column_fields['total_stock'] = getPrdQtyInStck($this->column_fields['productid']);

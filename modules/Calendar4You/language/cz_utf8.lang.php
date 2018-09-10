@@ -7,7 +7,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 'MyExtension' => 'My Extension',
 "Calendar4You"=>"Calendar",
 "LBL_MODULE_NAME"=>"Calendar",
@@ -19,7 +19,7 @@ $mod_strings = Array (
 "LBL_EVENT_SETTINGS"=>"Event Settings",
 "LBL_COLOR_IN_CALENDAR"=>"Colors in calendar",
 "LBL_COLOR_IN_CALENDAR_BACKGROUND"=>"Background",
-"LBL_COLOR_IN_CALENDAR_TEXT"=>"Text", 
+"LBL_COLOR_IN_CALENDAR_TEXT"=>"Text",
 "LBL_DAY_EVENT_INFO"=>"Displayed info in day calendar",
 "LBL_WEEK_EVENT_INFO"=>"Displayed info in week calendar",
 "LBL_MONTH_EVENT_INFO"=>"Displayed info in month calendar",
@@ -37,9 +37,9 @@ $mod_strings = Array (
 "RESIZE_EVENT_QUESTION" => "Are you sure about this change?",
 "LBL_DEFAULT_USER_VIEW" => "Default User View",
 "LBL_ALL_USERS" => "All selected",
-"LBL_ME" => "Me", 
+"LBL_ME" => "Me",
 "LBL_EVENT_STATUS" => "Event status",
-"LBL_TASK_STATUS" => "Task status", 
+"LBL_TASK_STATUS" => "Task status",
 "LBL_DETAIL"=>"detail",
 "LBL_WEEK_STARTS_AT"=>"Week starts at",
 "LBL_INVITE"=>"Invite",
@@ -72,5 +72,6 @@ $mod_strings = Array (
 "LBL_GOOGLEINS"=>"Insert from Google?",
 'LIST_MODULES' => 'List of Modules',
 'Gmail_ChangeAccount'=>'If you want to change the Gmail Account please clear the tokens',
+'Click2PickColor' => 'Click here to pick color',
 );
 ?>

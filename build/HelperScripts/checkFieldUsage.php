@@ -9,10 +9,10 @@
 // Turn on debugging level
 $Vtiger_Utils_Log = true;
 
-include_once('vtlib/Vtiger/Module.php');
+include_once 'vtlib/Vtiger/Module.php';
 global $current_user,$adb;
 set_time_limit(0);
-ini_set('memory_limit','1024M');
+ini_set('memory_limit', '1024M');
 $fldname = empty($_REQUEST['fieldname']) ? '' : vtlib_purify($_REQUEST['fieldname']);
 $modname = empty($_REQUEST['modulename']) ? '' : vtlib_purify($_REQUEST['modulename']);
 ?>
@@ -23,16 +23,16 @@ $modname = empty($_REQUEST['modulename']) ? '' : vtlib_purify($_REQUEST['modulen
 	<input type="submit" value=" CHECK " />
 </form>
 <?php
-if (!empty($fldname) and !empty($modname)) {
+if (!empty($fldname) && !empty($modname)) {
 	$mod = Vtiger_Module::getInstance($modname);
 	if ($mod) {
-		$field = Vtiger_Field::getInstance($fldname,$mod);
+		$field = Vtiger_Field::getInstance($fldname, $mod);
 		if ($field) {
 			// Workflow Conditions
 			$crs = $adb->query("SELECT workflow_id,summary
 				FROM `com_vtiger_workflows`
 				WHERE test like '%$fldname%'");
-			if ($crs and $adb->num_rows($crs)>0) {
+			if ($crs && $adb->num_rows($crs)>0) {
 				while ($fnd=$adb->fetch_array($crs)) {
 					echo "Field found in workflow condtions: ";
 					echo $fnd['workflow_id'].' :: '.$fnd['summary'];
@@ -45,7 +45,7 @@ if (!empty($fldname) and !empty($modname)) {
 			$crs = $adb->query("SELECT workflow_id,task_id,summary
 				FROM `com_vtiger_workflowtasks`
 				WHERE task like '%$fldname%'");
-			if ($crs and $adb->num_rows($crs)>0) {
+			if ($crs && $adb->num_rows($crs)>0) {
 				while ($fnd=$adb->fetch_array($crs)) {
 					echo "Field found in workflow (".$fnd['workflow_id'].") task (".$fnd['task_id']."): ";
 					echo $fnd['summary'];
@@ -59,7 +59,7 @@ if (!empty($fldname) and !empty($modname)) {
 				FROM `vtiger_cvcolumnlist`
 				INNER JOIN vtiger_customview on vtiger_customview.cvid=vtiger_cvcolumnlist.cvid
 				WHERE columnname like '%$fldname%'");
-			if ($crs and $adb->num_rows($crs)>0) {
+			if ($crs && $adb->num_rows($crs)>0) {
 				while ($fnd=$adb->fetch_array($crs)) {
 					echo "Field found in custom view columns: ".$fnd['viewname'];
 					echo "<br>";
@@ -72,7 +72,7 @@ if (!empty($fldname) and !empty($modname)) {
 				FROM `vtiger_cvadvfilter`
 				INNER JOIN vtiger_customview on vtiger_customview.cvid=vtiger_cvadvfilter.cvid
 				WHERE columnname like '%$fldname%'");
-			if ($crs and $adb->num_rows($crs)>0) {
+			if ($crs && $adb->num_rows($crs)>0) {
 				while ($fnd=$adb->fetch_array($crs)) {
 					echo "Field found in custom view conditions: ".$fnd['viewname'];
 					echo "<br>";
@@ -85,7 +85,7 @@ if (!empty($fldname) and !empty($modname)) {
 				FROM `vtiger_cvstdfilter`
 				INNER JOIN vtiger_customview on vtiger_customview.cvid=vtiger_cvstdfilter.cvid
 				WHERE columnname like '%$fldname%'");
-			if ($crs and $adb->num_rows($crs)>0) {
+			if ($crs && $adb->num_rows($crs)>0) {
 				while ($fnd=$adb->fetch_array($crs)) {
 					echo "Field found in custom view date conditions: ".$fnd['viewname'];
 					echo "<br>";
@@ -97,7 +97,7 @@ if (!empty($fldname) and !empty($modname)) {
 			$crs = $adb->query("SELECT templateid,templatename
 				FROM `vtiger_emailtemplates`
 				WHERE subject like '%$fldname%' or body like '%$fldname%'");
-			if ($crs and $adb->num_rows($crs)>0) {
+			if ($crs && $adb->num_rows($crs)>0) {
 				while ($fnd=$adb->fetch_array($crs)) {
 					echo "Field found in Email Template: ".$fnd['templateid'].' :: '.$fnd['templatename'];
 					echo "<br>";
@@ -110,7 +110,7 @@ if (!empty($fldname) and !empty($modname)) {
 				FROM `vtiger_selectcolumn`
 				INNER JOIN vtiger_report on vtiger_report.queryid=vtiger_selectcolumn.queryid
 				WHERE columnname like '%$fldname%'");
-			if ($crs and $adb->num_rows($crs)>0) {
+			if ($crs && $adb->num_rows($crs)>0) {
 				while ($fnd=$adb->fetch_array($crs)) {
 					echo "Field found in Report (columns): ".$fnd['reportid'].' :: '.$fnd['reportname'];
 					echo "<br>";
@@ -123,7 +123,7 @@ if (!empty($fldname) and !empty($modname)) {
 				FROM `vtiger_reportdatefilter`
 				INNER JOIN vtiger_report on vtiger_report.reportid=vtiger_reportdatefilter.datefilterid
 				WHERE datecolumnname like '%$fldname%'");
-			if ($crs and $adb->num_rows($crs)>0) {
+			if ($crs && $adb->num_rows($crs)>0) {
 				while ($fnd=$adb->fetch_array($crs)) {
 					echo "Field found in Report (Date Filters): ".$fnd['reportid'].' :: '.$fnd['reportname'];
 					echo "<br>";
@@ -136,7 +136,7 @@ if (!empty($fldname) and !empty($modname)) {
 				FROM `vtiger_reportgroupbycolumn`
 				INNER JOIN vtiger_report on vtiger_report.reportid=vtiger_reportgroupbycolumn.reportid
 				WHERE sortcolname like '%$fldname%'");
-			if ($crs and $adb->num_rows($crs)>0) {
+			if ($crs && $adb->num_rows($crs)>0) {
 				while ($fnd=$adb->fetch_array($crs)) {
 					echo "Field found in Report (Group By): ".$fnd['reportid'].' :: '.$fnd['reportname'];
 					echo "<br>";
@@ -149,7 +149,7 @@ if (!empty($fldname) and !empty($modname)) {
 				FROM `vtiger_reportsortcol`
 				INNER JOIN vtiger_report on vtiger_report.reportid=vtiger_reportsortcol.reportid
 				WHERE columnname like '%$fldname%'");
-			if ($crs and $adb->num_rows($crs)>0) {
+			if ($crs && $adb->num_rows($crs)>0) {
 				while ($fnd=$adb->fetch_array($crs)) {
 					echo "Field found in Report (Sort By): ".$fnd['reportid'].' :: '.$fnd['reportname'];
 					echo "<br>";
@@ -162,7 +162,7 @@ if (!empty($fldname) and !empty($modname)) {
 				FROM `vtiger_reportsummary`
 				INNER JOIN vtiger_report on vtiger_report.reportid=vtiger_reportsummary.reportsummaryid
 				WHERE columnname like '%$fldname%'");
-			if ($crs and $adb->num_rows($crs)>0) {
+			if ($crs && $adb->num_rows($crs)>0) {
 				while ($fnd=$adb->fetch_array($crs)) {
 					echo "Field found in Report (Summary): ".$fnd['reportid'].' :: '.$fnd['reportname'];
 					echo "<br>";
@@ -171,7 +171,7 @@ if (!empty($fldname) and !empty($modname)) {
 				echo "Field not found in Report Summary<br>";
 			}
 			// Lead Mapping
-			if (in_array($modname,array('Contacts','Accounts','Potentials','Leads'))) {
+			if (in_array($modname, array('Contacts','Accounts','Potentials','Leads'))) {
 				switch ($modname) {
 					case 'Contacts':
 						$searchon = 'contactfid';
@@ -188,8 +188,8 @@ if (!empty($fldname) and !empty($modname)) {
 				}
 				$crs = $adb->pquery("SELECT 1
 					FROM `vtiger_convertleadmapping`
-					WHERE $searchon = ?",array($field->id));
-				if ($crs and $adb->num_rows($crs)>0) {
+					WHERE $searchon = ?", array($field->id));
+				if ($crs && $adb->num_rows($crs)>0) {
 					echo "Field found in Lead Conversion Mapping<br>";
 				} else {
 					echo "Field not found in Lead Conversion Mapping<br>";

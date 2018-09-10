@@ -26,6 +26,7 @@ The accepted format is:
 		<relatedmodule>
 			<module></module>
 			<relation>m:m</relation> {optional}
+			<condition></condition>	{optional}
 		</relatedmodule>
 		...
 		<relatedmodule>
@@ -82,7 +83,10 @@ class DuplicateRelations extends processcbMap {
 
 		$relativemodules = array();
 		foreach ($xml->relatedmodules->relatedmodule as $r) {
-			$relativemodules[ (string)$r->module ] = (string)$r->relation;
+			$relativemodules[ (string)$r->module ] = array(
+				'relation' => (string)$r->relation,
+				'condition' => (string)$r->condition,
+			);
 		}
 		$mapping["relatedmodules"] = $relativemodules;
 

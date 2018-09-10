@@ -70,6 +70,11 @@ switch ($functiontocall) {
 		}
 		$ret = getReferenceAutocomplete($term, $op, $searchinmodule, $limit, $current_user);
 		break;
+	case 'getProductServiceAutocomplete':
+		include_once 'include/Webservices/CustomerPortalWS.php';
+		$limit =  isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 5;
+		$ret = getProductServiceAutocomplete($_REQUEST['term'], array(), $limit);
+		break;
 	case 'getFieldValuesFromRecord':
 		$ret = array();
 		$crmid = vtlib_purify($_REQUEST['getFieldValuesFrom']);
@@ -255,6 +260,16 @@ switch ($functiontocall) {
 	case 'delSetting':
 		$skey = vtlib_purify($_REQUEST['skey']);
 		$ret = coreBOS_Settings::delSetting($skey);
+		break;
+	case 'getTranslatedStrings':
+		global $currentModule;
+		$i18nm = empty($_REQUEST['i18nmodule']) ? $currentModule : vtlib_purify($_REQUEST['i18nmodule']);
+		$tkeys = vtlib_purify($_REQUEST['tkeys']);
+		$tkeys = explode(';', $tkeys);
+		$ret = array();
+		foreach ($tkeys as $tr) {
+			$ret[$tr] = getTranslatedString($tr, $i18nm);
+		}
 		break;
 	case 'ismoduleactive':
 	default:

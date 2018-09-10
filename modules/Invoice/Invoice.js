@@ -9,7 +9,7 @@
 
 // Show stock or not
 var hide_stock = 'no';
-ExecuteFunctions('ismoduleactive','checkmodule=Products').then(function (response) {
+ExecuteFunctions('ismoduleactive', 'checkmodule=Products').then(function (response) {
 	var obj = JSON.parse(response);
 	if (obj.isactive == true) {
 		hide_stock = 'no';
@@ -38,12 +38,12 @@ function set_return_specific(product_id, product_name) {
 	fldId.value = product_id;
 }
 
-function set_return_formname_specific(formname,product_id, product_name) {
+function set_return_formname_specific(formname, product_id, product_name) {
 	window.opener.document.EditView1.product_name.value = product_name;
 	window.opener.document.EditView1.product_id.value = product_id;
 }
 
-function set_return_inventory(product_id,product_name,unitprice,qtyinstock,curr_row) {
+function set_return_inventory(product_id, product_name, unitprice, qtyinstock, curr_row) {
 	window.opener.document.EditView.elements['txtProduct'+curr_row].value = product_name;
 	window.opener.document.EditView.elements['hdnProductId'+curr_row].value = product_id;
 	window.opener.document.EditView.elements['txtListPrice'+curr_row].value = unitprice;
@@ -62,7 +62,7 @@ function set_return_todo(product_id, product_name) {
 	}
 }
 
-function InvoicesetValueFromCapture(recordid,value,target_fieldname) {
+function InvoicesetValueFromCapture(recordid, value, target_fieldname) {
 	if (target_fieldname=='tandc') {
 		var url = 'module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getFieldValuesFromRecord&getTheseFields=tandc&getFieldValuesFrom='+recordid;
 		jQuery.ajax({

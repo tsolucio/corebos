@@ -5,13 +5,11 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 -->
 <script>
-var parenttab = "{$CATEGORY}";
-function updateAllListPrice()
-{ldelim}
+var parenttab = '{$CATEGORY}';
+function updateAllListPrice() {ldelim}
 	var unitprice_array = new Array({$UNIT_PRICE_ARRAY});
 	var fieldname_array = new Array({$FIELD_NAME_ARRAY});
 
@@ -21,54 +19,36 @@ function updateAllListPrice()
 	var fieldinfo;
 	var checkid;
 
-	for(j=0; j<unitprice_array.length; j++)
-	{ldelim}
+	for (j=0; j<unitprice_array.length; j++) {ldelim}
 		fieldinfo = fieldname_array[j].split("_");
 		id = fieldinfo[0];
-		checkid = "check_"+id;
-
+		checkid = 'check_'+id;
 		unitprice=unitprice_array[j];
 		fieldname=fieldname_array[j];	
 		updateListPrice(unitprice,fieldname,document.getElementById(checkid));
 	{rdelim}
 {rdelim}
 
-function updateListPriceForField(fieldname,element)
-{ldelim}
+function updateListPriceForField(fieldname,element) {ldelim}
 	var unitprice_array = new Array({$UNIT_PRICE_ARRAY});
 	var fieldname_array = new Array({$FIELD_NAME_ARRAY});
 
 	var index = fieldname_array.indexOf(fieldname);
 	updateListPrice(unitprice_array[index],fieldname,element);
 {rdelim}
-
 </script>
 <script src="modules/PriceBooks/PriceBooks.js"></script>
 <BR>
 <BR>
 {$PRODUCTLISTHEADER}
 <table border="0" cellpadding="0" cellspacing="0" class="FormBorder" width="100%">
-  <tr height="20"> 
-    <td >
-	 <table border="0" cellpadding="0" cellspacing="0" width="100%">
-		<tr>
-			<td>&nbsp;{$RECORD_COUNTS}</td>
-			   {$NAVIGATION}
-		</tr>
-	 </table>
-    </td>
-   </tr>
-   <tr><td >
-   <table style="background-color: rgb(204, 204, 204);" class="small" border="0" cellpadding="3" cellspacing="1" width="90%" align="center">
-   {$LISTHEADER}
-   {$LISTENTITY}
-   </table>
-   </td></tr>
-   <tr><td>&nbsp;</td></tr>
-   </form>
+	<tr><td>
+	<table style="background-color: rgb(204, 204, 204);" class="small" border="0" cellpadding="3" cellspacing="1" width="90%" align="center">
+	{$LISTHEADER}
+	{$LISTENTITY}
+	</table>
+	</td></tr>
+	<tr><td>&nbsp;</td></tr>
+	</form>
 </table>
-
-</form>
-</table>
-
 

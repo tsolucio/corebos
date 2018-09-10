@@ -13,10 +13,10 @@ include_once __DIR__ . '/../api/ws/Utils.php';
 include_once __DIR__ . '/../api/ws/FetchRecordDetails.php';
 
 class crmtogo_UI_GetRelatedLists extends crmtogo_WS_RelatedRecords {
-	function process(crmtogo_API_Request $request) {
+	public function process(crmtogo_API_Request $request) {
 		$wsResponse = parent::process($request);
 		$response = false;
-		if($wsResponse->hasError()) {
+		if ($wsResponse->hasError()) {
 			$response = $wsResponse;
 		} else {
 			$wsResponseResult = $wsResponse->getResult();
@@ -26,14 +26,14 @@ class crmtogo_UI_GetRelatedLists extends crmtogo_WS_RelatedRecords {
 			$detailresponse_record = array();
 			foreach ($relatedlistsmodule as $module) {
 				$moduleWSId = crmtogo_WS_Utils::getEntityModuleWSId($module);
-				$fieldnames = crmtogo_WS_Utils::getEntityFieldnames($module);
+				//$fieldnames = crmtogo_WS_Utils::getEntityFieldnames($module);
 				foreach ($wsResponseResult[$module] as $key => $shortrecordid) {
-					if ($shortrecordid >0) {
+					if ($shortrecordid > 0) {
 						$recordid = $moduleWSId.'x'.$shortrecordid;
 						$detailrequest = new crmtogo_API_Request();
-						$detailrequest->set('record',$recordid);
-						$detailrequest->set('_operation','fetchRecord');
-						$detailrequest->set('module',$module);
+						$detailrequest->set('record', $recordid);
+						$detailrequest->set('_operation', 'fetchRecord');
+						$detailrequest->set('module', $module);
 						$detailresponse = crmtogo_WS_FetchRecordDetails::process($detailrequest);
 						$detailresponse_record[$module][$key] = $detailresponse->getResult();
 					}
@@ -43,7 +43,7 @@ class crmtogo_UI_GetRelatedLists extends crmtogo_WS_RelatedRecords {
 			$response = new crmtogo_API_Response();
 			$config = $this->getUserConfigSettings();
 			$viewer = new crmtogo_UI_Viewer();
-			$viewer->assign('RECORDID',$request->get('record'));
+			$viewer->assign('RECORDID', $request->get('record'));
 			$viewer->assign('MOD', $this->getUsersLanguage());
 			$viewer->assign('COLOR_HEADER_FOOTER', $config['theme']);
 			$viewer->assign('LANGUAGE', $current_language);

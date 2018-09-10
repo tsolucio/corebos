@@ -8,5 +8,5 @@
  * All Rights Reserved.
  ********************************************************************************/
 $_REQUEST['formodule'] = 'cbCalendar';
-include('modules/Vtiger/Settings.php');
+include 'modules/Vtiger/Settings.php';
 ?>

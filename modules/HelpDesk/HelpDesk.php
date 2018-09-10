@@ -126,7 +126,7 @@ class HelpDesk extends CRMEntity {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
 		}
-		if (!((isset($_REQUEST['mode']) && $_REQUEST['mode'] =='Import') || $_REQUEST['action'] =='MassEditSave')) {
+		if (!((isset($_REQUEST['mode']) && $_REQUEST['mode'] =='Import') || (isset($_REQUEST['action']) && $_REQUEST['action'] =='MassEditSave'))) {
 			//Inserting into Ticket Comment Table
 			$this->insertIntoTicketCommentTable();
 		}
@@ -297,7 +297,7 @@ class HelpDesk extends CRMEntity {
 		//In ajax save we should not add this div
 		$list = $enddiv = '';
 		if ($_REQUEST['action'] != 'HelpDeskAjax') {
-			$list .= '<div id="comments_div" style="overflow: auto;height:200px;width:100%;">';
+			$list .= '<div id="comments_div" style="overflow: auto; margin-bottom: 20px; width: 100%; word-break: break-all; height:200px;">';
 			$enddiv = '</div>';
 		}
 		for ($i=0; $i<$noofrows; $i++) {

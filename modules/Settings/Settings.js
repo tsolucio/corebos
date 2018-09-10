@@ -7,7 +7,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-function getData(fieldname, modulename, divid){
+function getData(fieldname, modulename, divid) {
 	jQuery.ajax({
 		url: 'index.php?module=Settings&action=SettingsAjax&file=loaddata&fieldname='+fieldname+'&modulename='+modulename,
 		success: function (html) {

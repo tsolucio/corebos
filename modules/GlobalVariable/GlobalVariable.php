@@ -123,8 +123,19 @@ class GlobalVariable extends CRMEntity {
 	private static $validationinfo = array();
 
 	public function save_module($module) {
+		global $adb;
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
+		}
+		if (!empty($this->column_fields['rolegv'])) {
+			foreach ($this->column_fields['rolegv'] as $role) {
+				$user2role_result = $adb->pquery('select userid from vtiger_user2role where roleid =?', array($role));
+				if ($adb->num_rows($user2role_result)> 0) {
+					$userid = $adb->query_result($user2role_result, 0, 0);
+					$adb->pquery('Update vtiger_crmentity set smownerid=? where crmid=?', array($userid, $this->id));
+					break;
+				}
+			}
 		}
 	}
 

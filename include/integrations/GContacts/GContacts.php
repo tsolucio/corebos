@@ -56,26 +56,26 @@ class corebos_gcontacts {
 	}
 
 	public function initGlobalScope() {
-		$this->clientId = coreBOS_Settings::getSetting(self::key_clientId,'');
-		$this->clientSecret = coreBOS_Settings::getSetting(self::key_clientSecret,'');
+		$this->clientId = coreBOS_Settings::getSetting(self::key_clientId, '');
+		$this->clientSecret = coreBOS_Settings::getSetting(self::key_clientSecret, '');
 	}
 
-	public function saveSettings($isactive,$clientId,$clientSecret) {
-		coreBOS_Settings::setSetting(self::key_isActive,$isactive);
-		coreBOS_Settings::setSetting(self::key_clientId,$clientId);
-		coreBOS_Settings::setSetting(self::key_clientSecret,$clientSecret);
+	public function saveSettings($isactive, $clientId, $clientSecret) {
+		coreBOS_Settings::setSetting(self::key_isActive, $isactive);
+		coreBOS_Settings::setSetting(self::key_clientId, $clientId);
+		coreBOS_Settings::setSetting(self::key_clientSecret, $clientSecret);
 	}
 
 	public function getSettings() {
 		return array(
-			'isActive' => coreBOS_Settings::getSetting(self::key_isActive,''),
-			'clientId' => coreBOS_Settings::getSetting(self::key_clientId,''),
-			'clientSecret' => coreBOS_Settings::getSetting(self::key_clientSecret,''),
+			'isActive' => coreBOS_Settings::getSetting(self::key_isActive, ''),
+			'clientId' => coreBOS_Settings::getSetting(self::key_clientId, ''),
+			'clientSecret' => coreBOS_Settings::getSetting(self::key_clientSecret, ''),
 		);
 	}
 
 	public function isActive() {
-		$isactive = coreBOS_Settings::getSetting(self::key_isActive,'0');
+		$isactive = coreBOS_Settings::getSetting(self::key_isActive, '0');
 		return ($isactive=='1');
 	}
 
@@ -102,7 +102,7 @@ class corebos_gcontacts {
 		$adb->query("DELETE FROM `vtiger_wsapp_handlerdetails` where `type`='vtigerSyncLib' and `handlerclass`='WSAPP_VtigerSyncEventHandler' and `handlerpath`='modules/WSAPP/synclib/handlers/VtigerSyncEventHandler.php';");
 		$adb->query("DELETE FROM `vtiger_wsapp_handlerdetails` where `type`='Google_vtigerHandler' and `handlerclass`='Google_Vtiger_Handler' and `handlerpath`='modules/Contacts/handlers/Vtiger.php';");
 		$adb->query("DELETE FROM `vtiger_wsapp_handlerdetails` where `type`='Google_vtigerSyncHandler' and `handlerclass`='Google_VtigerSync_Handler' and `handlerpath`='modules/Contacts/handlers/VtigerSync.php';");
-                $adb->query("DELETE FROM `vtiger_wsapp_sync_state`;");
+				$adb->query("DELETE FROM `vtiger_wsapp_sync_state`;");
 		$adb->query("DELETE FROM `vtiger_wsapp`;");
 		// Button on List View
 		$contactsModuleInstance = Vtiger_Module::getInstance('Contacts');
@@ -110,14 +110,12 @@ class corebos_gcontacts {
 	}
 
 	public function activateFields() {
-		global $adb;
 	}
 
 	public function deactivateFields() {
-		global $adb;
 	}
 
-	public function getIntegrationAuthorizationURL($scope='contacts automation') {
+	public function getIntegrationAuthorizationURL($scope = 'contacts automation') {
 		return self::gcontacts_appurl.'/oauth/authorize?client_id='.$this->clientId.'&scope='.urlencode($scope).'&redirect_uri='.urlencode($this->getcoreBOSAuthorizationURL());
 	}
 
@@ -125,7 +123,5 @@ class corebos_gcontacts {
 		global $site_URL;
 		return $site_URL.'/include/integrations/gcontacts/saveauth.php';
 	}
-
 }
-
 ?>

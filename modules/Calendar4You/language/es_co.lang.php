@@ -6,8 +6,8 @@
  * Portions created by IT-Solutions4You s.r.o. are Copyright(C) IT-Solutions4You s.r.o.
  * All Rights Reserved.
  ********************************************************************************/
- 
-$mod_strings = Array (
+
+$mod_strings = array (
 'MyExtension' => 'Mi Extensión',
 "Calendar4You"=>"Calendar",
 "LBL_MODULE_NAME"=>"Calendar",
@@ -32,14 +32,14 @@ $mod_strings = Array (
 "LBL_VIEW"=>"Ver",
 "LBL_DELETE"=>"Borrar",
 "LBL_LIST"=>"Lista",
-"LBL_SUCCESSFULY_CREATED"=>"Creado Correctamente", 
+"LBL_SUCCESSFULY_CREATED"=>"Creado Correctamente",
 "MOVE_EVENT_QUESTION" => "¿Seguro que quieres realizar este cambio?",
 "RESIZE_EVENT_QUESTION" => "¿Correcto?",
 "LBL_DEFAULT_USER_VIEW" => "Vista por Defecto del Usuario",
 "LBL_ALL_USERS" => "Todos seleccionados",
-"LBL_ME" => "Yo", 
+"LBL_ME" => "Yo",
 "LBL_EVENT_STATUS" => "Estado Evento",
-"LBL_TASK_STATUS" => "Estado Tarea", 
+"LBL_TASK_STATUS" => "Estado Tarea",
 "LBL_DETAIL"=>"detalle",
 "LBL_WEEK_STARTS_AT"=>"Semana empieza en",
 "LBL_INVITE"=>"Invitar",
@@ -58,7 +58,7 @@ $mod_strings = Array (
 "LBL_TO_GOOGLE_CALENDAR"=>"Sincronizar con calendario",
 "LBL_CONNECTING_WORK_CORRECT"=>"Se ha conectado con Google",
 "LBL_GOOGLE_SYNC_CONTROL_ACCESS_DATA"=>"Verificando acceso a Google",
-"LBL_CHANGE_GOOGLE_ACCOUNT"=>"Cambiar cuenta de Google", 
+"LBL_CHANGE_GOOGLE_ACCOUNT"=>"Cambiar cuenta de Google",
 "LBL_INSERT_INTO_CRM"=>"Añadir a aplicación",
 "LBL_ALL_DAY"=>"Todo el día",
 "LBL_GOOGLEAPIKEY"=>"Api Key",
@@ -72,5 +72,6 @@ $mod_strings = Array (
 "LBL_GOOGLEINS"=>"Insertar desde Google?",
 'LIST_MODULES' => 'Listado de Módulos',
 'Gmail_ChangeAccount'=>'If you want to change the Gmail Account please clear the tokens',
+'Click2PickColor' => 'Pulsa aquí para seleccionar el color',
 );
 ?>

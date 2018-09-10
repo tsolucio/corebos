@@ -6,11 +6,11 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-jQuery.Class('Contact',{
+jQuery.Class('Contact', {
 
 	_init:function () {
 		if (jQuery('#sync_button')) {
-			jQuery('#sync_button').on('click',function () {
+			jQuery('#sync_button').on('click', function () {
 				jQuery('#sync_button b').text(app.vtranslate('LBL_SYNCRONIZING'));
 				jQuery('#sync_button').prop('disabled', 'disabled');
 				jQuery('#synctime').remove();
@@ -18,7 +18,7 @@ jQuery.Class('Contact',{
 				jQuery('#sync_details').html('<img src='+imagePath+' style="margin-left:40px"/>');
 				var url = jQuery('#sync_button').data('url');
 				if (jQuery('#firsttime').val() == 'yes') {
-					var win=window.open(url,'','height=600,width=600,channelmode=1');
+					var win=window.open(url, '', 'height=600,width=600,channelmode=1');
 					//http://stackoverflow.com/questions/1777864/how-to-run-function-of-parent-window-when-child-window-closes
 					window.sync = function () {
 						jQuery('#sync_details').html('<img src='+imagePath+' style="margin-left:40px"/>');
@@ -66,7 +66,7 @@ jQuery.Class('Contact',{
 					);
 				}
 			});
-			jQuery('#remove_sync').on('click',function () {
+			jQuery('#remove_sync').on('click', function () {
 				var url = jQuery('#remove_sync').data('url');
 				AppConnector.request(url).then(
 					function (data) {
@@ -100,12 +100,12 @@ jQuery.Class('Contact',{
 	},
 	_exit:function () {
 	}
-},{
+}, {
 
 	packFieldmappingsForSubmit : function (container) {
 		var rows = container.find('div#googlesyncfieldmapping > table > tbody > tr');
 		var mapping = {};
-		jQuery.each(rows,function (index,row) {
+		jQuery.each(rows, function (index, row) {
 			var tr = jQuery(row);
 			var vtiger_field_name = tr.find('.vtiger_field_name').not('.select2-container').val();
 			var google_field_name = tr.find('.google_field_name').val();
@@ -133,10 +133,10 @@ jQuery.Class('Contact',{
 		var aDeferred = jQuery.Deferred();
 		var customMapElements = jQuery('select.vtiger_field_name');
 		var mappedCustomFields = [];
-		jQuery.each(customMapElements,function (i,elem) {
+		jQuery.each(customMapElements, function (i, elem) {
 			mappedCustomFields.push(jQuery(elem).val());
 		});
-		var customFieldLabels = jQuery('input.google-custom-label',container).filter('input:text[value=""]').filter(function () {
+		var customFieldLabels = jQuery('input.google-custom-label', container).filter('input:text[value=""]').filter(function () {
 			return jQuery(this).css('visibility') == 'visible';
 		});
 		if (customFieldLabels.length) {
@@ -149,7 +149,7 @@ jQuery.Class('Contact',{
 
 	registerSaveSettingsEvent : function (container) {
 		var thisInstance = this;
-		container.find('button#save_syncsetting').on('click',function () {
+		container.find('button#save_syncsetting').on('click', function () {
 			thisInstance.validateFieldMappings(container).then(function () {
 				var progressIndicatorElement = jQuery.progressIndicator();
 				var form = container.find('form[name="contactsyncsettings"]');
@@ -169,7 +169,7 @@ jQuery.Class('Contact',{
 
 	registerAddCustomFieldMappingEvent : function (container) {
 		var thisInstance = this;
-		jQuery('.addCustomFieldMapping',container).on('click',function (e) {
+		jQuery('.addCustomFieldMapping', container).on('click', function (e) {
 			var currentSelectionElement = jQuery(this);
 			var googleFields = JSON.parse(container.find('input#google_fields').val());
 			var selectionType = currentSelectionElement.data('type');
@@ -181,12 +181,12 @@ jQuery.Class('Contact',{
 			}
 			var customMapElements = jQuery('select.vtiger_field_name[data-category="'+selectionType+'"]');
 			var mappedCustomFields = [];
-			jQuery.each(customMapElements,function (i,elem) {
+			jQuery.each(customMapElements, function (i, elem) {
 				mappedCustomFields.push(jQuery(elem).val());
 			});
 			var numberOfOptions = 0;
-			jQuery.each(vtigerFields,function (fieldname,fieldLabel) {
-				if (jQuery.inArray(fieldname,mappedCustomFields) === -1) {
+			jQuery.each(vtigerFields, function (fieldname, fieldLabel) {
+				if (jQuery.inArray(fieldname, mappedCustomFields) === -1) {
 					numberOfOptions++;
 					var option = '<option value="'+fieldname+'">'+fieldLabel+'</option>';
 					vtigerFieldSelectElement += option;
@@ -209,7 +209,7 @@ jQuery.Class('Contact',{
 						selectedValues.push(jQuery(selectElement).val());
 					}
 				});
-				jQuery.each(googleFields[selectionType]['types'],function (index,fieldtype) {
+				jQuery.each(googleFields[selectionType]['types'], function (index, fieldtype) {
 					if (jQuery.inArray(fieldtype, selectedValues) === -1) {
 						var option = '<option value="'+fieldtype+'">'+app.vtranslate(selectionType)+' ('+app.vtranslate(fieldtype)+')</option>';
 						googleTypeSelectElement += option;
@@ -231,16 +231,16 @@ jQuery.Class('Contact',{
 			var lastRow = container.find('div#googlesyncfieldmapping > table > tbody > tr').filter(':last');
 			app.showSelect2ElementView(lastRow.find('select'));
 			thisInstance.registerDeleteCustomFieldMappingEvent(lastRow);
-			thisInstance.registerVtigerFieldSelectOnChangeEvent(container,lastRow.find('select.vtiger_field_name'));
-			thisInstance.registerGoogleTypeChangeEvent(container,lastRow.find('select.google-type'));
+			thisInstance.registerVtigerFieldSelectOnChangeEvent(container, lastRow.find('select.vtiger_field_name'));
+			thisInstance.registerGoogleTypeChangeEvent(container, lastRow.find('select.google-type'));
 			lastRow.find('select.vtiger_field_name').trigger('change');
 			lastRow.find('select.google-type').trigger('change');
-			app.showScrollBar(jQuery('div#googlesyncfieldmapping'),{'height': '350px','scroll':1000000,'railVisible': true});
+			app.showScrollBar(jQuery('div#googlesyncfieldmapping'), {'height': '350px', 'scroll':1000000, 'railVisible': true});
 		});
 	},
 
 	registerDeleteCustomFieldMappingEvent : function (container) {
-		jQuery('.deleteCustomMapping',container).on('click',function () {
+		jQuery('.deleteCustomMapping', container).on('click', function () {
 			var currentRow = jQuery(this).closest('tr');
 			var currentCategory = currentRow.find('select.vtiger_field_name').data('category');
 			currentRow.remove();
@@ -266,10 +266,10 @@ jQuery.Class('Contact',{
 		}
 	},
 
-	removeOptionFromSelectList : function (selectElement,optionValue,category) {
+	removeOptionFromSelectList : function (selectElement, optionValue, category) {
 		var sourceSelectElement = jQuery(selectElement);
 		var categorisedSelectElements = jQuery('select.vtiger_field_name[data-category="'+category+'"]');
-		jQuery.each(categorisedSelectElements,function (index,categorisedSelectElement) {
+		jQuery.each(categorisedSelectElements, function (index, categorisedSelectElement) {
 			var currentSelectElement = jQuery(categorisedSelectElement);
 			if (!currentSelectElement.is(sourceSelectElement)) {
 				var optionElement = currentSelectElement.find('option[value="'+optionValue+'"]');
@@ -281,10 +281,10 @@ jQuery.Class('Contact',{
 		});
 	},
 
-	registerVtigerFieldSelectOnChangeEvent : function (container,selectElement) {
+	registerVtigerFieldSelectOnChangeEvent : function (container, selectElement) {
 		var thisInstance = this;
 		if (typeof selectElement === 'undefined') {
-			selectElement = jQuery('select.vtiger_field_name',container);
+			selectElement = jQuery('select.vtiger_field_name', container);
 		}
 		selectElement.on('change', function (e) {
 			var element = jQuery(e.currentTarget);
@@ -303,21 +303,21 @@ jQuery.Class('Contact',{
 		});
 	},
 
-	registerGoogleTypeChangeEvent : function (container,selectElement) {
+	registerGoogleTypeChangeEvent : function (container, selectElement) {
 		var thisInstance = this;
 		if (typeof selectElement === 'undefined') {
-			selectElement = jQuery('select.google-type',container);
+			selectElement = jQuery('select.google-type', container);
 		}
 
-		selectElement.on('change',function (e) {
+		selectElement.on('change', function (e) {
 			var element = jQuery(e.currentTarget);
 			var category = element.data('category');
 			var currentTarget = element;
 			var val = currentTarget.val();
 			if (val == 'custom') {
-				currentTarget.closest('td').find('input.google-custom-label').css('visibility','visible');
+				currentTarget.closest('td').find('input.google-custom-label').css('visibility', 'visible');
 			} else {
-				currentTarget.closest('td').find('input.google-custom-label').css('visibility','hidden');
+				currentTarget.closest('td').find('input.google-custom-label').css('visibility', 'hidden');
 			}
 			var allCategorizedSelects = jQuery('select.google-type[data-category="'+category+'"]');
 			var selectedValues = [];
@@ -329,7 +329,7 @@ jQuery.Class('Contact',{
 
 			var googleFields = JSON.parse(container.find('input#google_fields').val());
 			var allValues = {};
-			jQuery.each(googleFields[category]['types'],function (index,value) {
+			jQuery.each(googleFields[category]['types'], function (index, value) {
 				allValues[value] = app.vtranslate(category)+' ('+app.vtranslate(value)+')';
 			});
 			jQuery.each(allCategorizedSelects, function (i, selectElement) {
@@ -340,21 +340,21 @@ jQuery.Class('Contact',{
 	},
 
 	registerPostSettingRenderEvents : function (container) {
-		jQuery('form[name="contactsyncsettings"]',container).validationEngine(app.validationEngineOptions);
+		jQuery('form[name="contactsyncsettings"]', container).validationEngine(app.validationEngineOptions);
 		this.registerAddCustomFieldMappingEvent(container);
 		this.registerDeleteCustomFieldMappingEvent(container);
 		this.registerSaveSettingsEvent(container);
 		this.registerVtigerFieldSelectOnChangeEvent(container);
 		this.registerGoogleTypeChangeEvent(container);
 
-		jQuery('select.vtiger_field_name',container).trigger('change');
-		jQuery('select.google-type',container).trigger('change');
+		jQuery('select.vtiger_field_name', container).trigger('change');
+		jQuery('select.google-type', container).trigger('change');
 	},
 
 	registerSyncSettingClickEvent : function () {
 		var thisInstance = this;
 		if (jQuery('a#syncSetting').length) {
-			jQuery('a#syncSetting').on('click',function () {
+			jQuery('a#syncSetting').on('click', function () {
 				var progressIndicatorElement = jQuery.progressIndicator();
 				var params = {
 					module : 'Google',
@@ -363,7 +363,7 @@ jQuery.Class('Contact',{
 				};
 				AppConnector.request(params).then(function (data) {
 					app.showModalWindow(data, function (container) {
-						app.showScrollBar(jQuery('div#googlesyncfieldmapping'),{'height': '350px'});
+						app.showScrollBar(jQuery('div#googlesyncfieldmapping'), {'height': '350px'});
 						thisInstance.registerPostSettingRenderEvents(container);
 						progressIndicatorElement.progressIndicator({mode:'hide'});
 					});

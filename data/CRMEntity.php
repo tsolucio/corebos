@@ -631,8 +631,8 @@ class CRMEntity {
 				&& isset($_REQUEST["fldName"]) && $_REQUEST["fldName"] != $fieldname)
 				|| (isset($_REQUEST['action']) && $_REQUEST['action'] == 'MassEditSave' && !isset($_REQUEST[$fieldname."_mass_edit_check"])
 				&& (!isset($_REQUEST['ajxaction']) || $_REQUEST['ajxaction'] != 'Workflow'))
-				|| (!empty($this->column_fields['__cbws_skipcurdbconv'.$fieldname]) || !empty($this->column_fields['__cbws_skipcurdbconvall'])))
-			{
+				|| (!empty($this->column_fields['__cbws_skipcurdbconv'.$fieldname]) || !empty($this->column_fields['__cbws_skipcurdbconvall']))
+			) {
 				$ajaxSave = true;
 			}
 
@@ -3179,7 +3179,7 @@ class CRMEntity {
 		//as mysql query optimizer puts crmentity on the left side and considerably slow down
 		$query = preg_replace('/\s+/', ' ', $query);
 		if (strripos($query, ' WHERE ') !== false) {
-			$query = str_ireplace(' where ', " WHERE $this->table_name.$this->table_index > 0 AND ", $query);
+			$query = preg_replace('/ where /i', " WHERE $this->table_name.$this->table_index > 0 AND ", $query, 1);
 		}
 		return $query;
 	}

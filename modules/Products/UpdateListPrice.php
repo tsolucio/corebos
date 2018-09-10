@@ -19,5 +19,5 @@ $log->debug("Update ListPrice in (modules/Products/UpdateListPrice.php): $priceb
 $query = 'update vtiger_pricebookproductrel set listprice=? where pricebookid=? and productid=?';
 $listprice = CurrencyField::convertToDBFormat($listprice, null, true);
 $adb->pquery($query, array($listprice, $pricebook_id, $product_id));
-header("Location: index.php?module=$return_module&action=".$return_module."Ajax&file=$return_action&ajax=true&record=".urlencode($record));
+header("Location: index.php?module=$return_module&action=$return_action&ajax=true&record=".urlencode($record));
 ?>

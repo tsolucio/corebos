@@ -34,19 +34,19 @@ $num_tab_per = $adb->num_rows($tab_perr_result);
 $num_act_per = $adb->num_rows($act_perr_result);
 $num_act_util_per = $adb->num_rows($act_utility_result);
 
-	//Updating vtiger_profile2global permissons vtiger_table
-	$view_all_req = (isset($_REQUEST['view_all']) ? vtlib_purify($_REQUEST['view_all']) : '');
-	$view_all = getPermissionValue($view_all_req);
+//Updating vtiger_profile2global permissons vtiger_table
+$view_all_req = (isset($_REQUEST['view_all']) ? vtlib_purify($_REQUEST['view_all']) : '');
+$view_all = getPermissionValue($view_all_req);
 
-	$edit_all_req = (isset($_REQUEST['edit_all']) ? vtlib_purify($_REQUEST['edit_all']) : '');
-	$edit_all = getPermissionValue($edit_all_req);
+$edit_all_req = (isset($_REQUEST['edit_all']) ? vtlib_purify($_REQUEST['edit_all']) : '');
+$edit_all = getPermissionValue($edit_all_req);
 
-	$update_query = 'update vtiger_profile2globalpermissions set globalactionpermission=? where globalactionid=1 and profileid=?';
-	$adb->pquery($update_query, array($view_all, $profileid));
-	$update_query = 'update vtiger_profile2globalpermissions set globalactionpermission=? where globalactionid=2 and profileid=?';
-	$adb->pquery($update_query, array($edit_all, $profileid));
+$update_query = 'update vtiger_profile2globalpermissions set globalactionpermission=? where globalactionid=1 and profileid=?';
+$adb->pquery($update_query, array($view_all, $profileid));
+$update_query = 'update vtiger_profile2globalpermissions set globalactionpermission=? where globalactionid=2 and profileid=?';
+$adb->pquery($update_query, array($edit_all, $profileid));
 
-	//profile2tab permissions
+//profile2tab permissions
 for ($i=0; $i<$num_tab_per; $i++) {
 	$tab_id = $adb->query_result($tab_perr_result, $i, 'tabid');
 	$request_var = $tab_id.'_tab';
@@ -66,7 +66,7 @@ for ($i=0; $i<$num_tab_per; $i++) {
 	}
 }
 
-	//profile2standard permissions
+//profile2standard permissions
 for ($i=0; $i<$num_act_per; $i++) {
 	$tab_id = $adb->query_result($act_perr_result, $i, 'tabid');
 	if ($tab_id != 16) {
@@ -95,7 +95,7 @@ for ($i=0; $i<$num_act_per; $i++) {
 	}
 }
 
-	//Update Profile 2 utility
+//Update Profile 2 utility
 for ($i=0; $i<$num_act_util_per; $i++) {
 	$tab_id = $adb->query_result($act_utility_result, $i, 'tabid');
 
@@ -158,11 +158,6 @@ echo $loc;
  * @returns $permission - can have value 0 or 1:: Type integer
  */
 function getPermissionValue($req_per) {
-	if ($req_per == 'on') {
-		$permission_value = 0;
-	} else {
-		$permission_value = 1;
-	}
-	return $permission_value;
+	return ($req_per == 'on' ? 0 : 1);
 }
 ?>

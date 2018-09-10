@@ -18,12 +18,11 @@
  *************************************************************************************************/
 
 $Vtiger_Utils_Log = false;
-include_once('vtlib/Vtiger/Module.php');
+include_once 'vtlib/Vtiger/Module.php';
 global $adb;
 
-$sql = 'select id,currency_code from vtiger_currency_info where defaultid=-11';
-$res = $adb->pquery($sql, array());
-if ($res and $adb->num_rows($res)==1) {
+$res = $adb->pquery('select id,currency_code from vtiger_currency_info where defaultid=-11', array());
+if ($res && $adb->num_rows($res)==1) {
 	$basecry = $adb->fetch_array($res);
 	$allcry = getAllCurrencies();
 	foreach ($allcry as $currency) {
@@ -38,10 +37,9 @@ if ($res and $adb->num_rows($res)==1) {
 			if ($handle) {
 				$result = fgetcsv($handle);
 				fclose($handle);
-				$adb->pquery('UPDATE vtiger_currency_info SET conversion_rate=? WHERE id=?',array($result[0],$currency['currency_id']));
+				$adb->pquery('UPDATE vtiger_currency_info SET conversion_rate=? WHERE id=?', array($result[0], $currency['currency_id']));
 			}
 		}
 	}
 } // else no base currency so we do nothing
-
 ?>

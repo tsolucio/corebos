@@ -49,7 +49,6 @@ if ((strlen($description) > 256) || (strlen($conditions) > 256) || $condc >6 || 
 $descBlock=array("10","160","53", $num);
 $pdf->addDescBlock($description, $app_strings["Description"], $descBlock);
 
-
 $termBlock=array("107","160","53", $num);
 $pdf->addDescBlock($conditions, $app_strings["Terms & Conditions"], $termBlock);
 /* ************** End Terms *********************** */

@@ -28,7 +28,7 @@ function getEmailContents(id) {
 	});
 }
 
-function getListViewEntries_js(module,url) {
+function getListViewEntries_js(module, url) {
 	document.getElementById('status').style.display='inline';
 	jQuery.ajax({
 		method: 'POST',
@@ -130,7 +130,7 @@ function Searchfn() {
 	});
 }
 
-function getListViewCount(module,element,parentElement,url) {
+function getListViewCount(module, element, parentElement, url) {
 	if (module != 'Documents') {
 		var elementList = document.getElementsByName(module+'_listViewCountRefreshIcon');
 		for (var i=0; i<elementList.length; ++i) {
@@ -192,7 +192,7 @@ function getListViewCount(module,element,parentElement,url) {
 }
 function searchDocuments() {
 	var emailId = 0;
-	window.open('index.php?module=Documents&return_module=Emails&action=Popup&popuptype=detailview&form=EditView&form_submit=false&parenttab=Marketing&srcmodule=Emails&popupmode=ajax&select=1','test','width=640,height=602,resizable=0,scrollbars=0');
+	window.open('index.php?module=Documents&return_module=Emails&action=Popup&popuptype=detailview&form=EditView&form_submit=false&parenttab=Marketing&srcmodule=Emails&popupmode=ajax&select=1', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
 }
 
 function addOption(id, filename) {
@@ -212,7 +212,7 @@ function addOption(id, filename) {
 	table.innerHTML += newRow;
 }
 
-function email_validate(oform,mode) {
+function email_validate(oform, mode) {
 	if (trim(mode) == '') {
 		return false;
 	}

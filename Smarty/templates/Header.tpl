@@ -301,7 +301,12 @@
 <!-- Unified Search module selection feature -->
 <div id="UnifiedSearch_moduleformwrapper" style="position:absolute;width:417px;z-index:100002;display:none;"></div>
 
-<div id="status" style="position:absolute;display:none;left:850px;top:{if $ANNOUNCEMENT}130{else}95{/if}px;height:27px;white-space:nowrap;"><img src="{'status.gif'|@vtiger_imageurl:$THEME}"></div>
+<div id="status" style="position:absolute;display:none;left:850px;top:{if $ANNOUNCEMENT}130{else}95{/if}px;height:27px;white-space:nowrap;">
+	<div role="status" class="slds-spinner slds-spinner_small slds-spinner_brand">
+		<div class="slds-spinner__dot-a"></div>
+		<div class="slds-spinner__dot-b"></div>
+	</div>
+</div>
 
 <div id="tracker" style="display:none;position:absolute;z-index:100000001;" class="layerPopup">
 	<table border="0" cellpadding="5" cellspacing="0" width="200">

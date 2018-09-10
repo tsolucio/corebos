@@ -97,17 +97,22 @@ function SMSTask($) {
 				fields
 			);
 		}
-		var parentFields = map(function (e) {
-			return[e['name'],e['label']];}, filteredFields(parent['fields']));
+		var parentFields = map(
+			function (e) {
+				return [e['name'], e['label']];
+			},
+			filteredFields(parent['fields'])
+		);
 
 		var referenceFieldTypes = filter(function (e) {
 			return (e['type']['name']=='reference');
-		},parent['fields']);
+		}, parent['fields']);
 
 		var moduleFieldTypes = {};
 		$.each(modules, function (k, v) {
 			moduleFieldTypes[k] = dict(map(function (e) {
-				return [e['name'], e['type']];},filteredFields(v['fields'])));
+				return [e['name'], e['type']];
+			}, filteredFields(v['fields'])));
 		});
 
 		function getFieldType(fullFieldName) {
@@ -133,15 +138,15 @@ function SMSTask($) {
 
 				return map(
 					function (field) {
-						return ['('+name+' : ('+moduleName+') '+field['name']+')',label+' : ('+moduleName+') '+field['label']];
+						return ['('+name+' : ('+moduleName+') '+field['name']+')', label+' : ('+moduleName+') '+field['label']];
 					},
 					filteredFields(modules[moduleName]['fields'])
 				);
 			}
-			return reduceR(concat,map(forModule,referenceField['type']['refersTo']),[]);
+			return reduceR(concat, map(forModule, referenceField['type']['refersTo']), []);
 		}
 
-		var referenceFields = reduceR(concat,map(fieldReferenceNames,referenceFieldTypes), []);
+		var referenceFields = reduceR(concat, map(fieldReferenceNames, referenceFieldTypes), []);
 		var fieldLabels = dict(parentFields.concat(referenceFields));
 		var select = $('#'+id);
 		var optionClass = id+'_option';
@@ -158,7 +163,8 @@ function SMSTask($) {
 			var parent = referencify(result);
 			var fields = parent['fields'];
 			var referenceFields = filter(function (e) {
-				return e['type']['name']=='reference';}, fields);
+				return e['type']['name']=='reference';
+			}, fields);
 			var referenceFieldModules =
 				map(
 					function (e) {
@@ -168,7 +174,8 @@ function SMSTask($) {
 				);
 			function union(a, b) {
 				var newfields = filter(function (e) {
-					return !contains(a, e);}, b);
+					return !contains(a, e);
+				}, b);
 				return a.concat(newfields);
 			}
 			var relatedModules = reduceR(union, referenceFieldModules, [parent['name']]);
@@ -178,22 +185,26 @@ function SMSTask($) {
 
 			function executer(parameters) {
 				var failures = filter(function (e) {
-					return e[0]==false;}, parameters);
+					return e[0]==false;
+				}, parameters);
 				if (failures.length!=0) {
 					var firstFailure = failures[0];
 					callback(false, firstFailure[1]);
 				} else {
 					var moduleDescriptions = map(function (e) {
-						return referencify(e[1]);}, parameters);
+						return referencify(e[1]);
+					}, parameters);
 					var modules = dict(map(function (e) {
-						return [e['name'], e];},moduleDescriptions));
+						return [e['name'], e];
+					}, moduleDescriptions));
 					callback(true, modules);
 				}
 			}
 			var p = parallelExecuter(executer, relatedModules.length);
 			$.each(relatedModules, function (i, v) {
 				p(function (callback) {
-					vtinst.describeObject(v, callback);});
+					vtinst.describeObject(v, callback);
+				});
 			});
 		}));
 	}
@@ -214,7 +225,8 @@ function SMSTask($) {
 					});
 
 					fillSelectBox('task_phonefields', modules, moduleName, function (e) {
-						return e['type']['name']=='phone';});
+						return e['type']['name']=='phone';
+					});
 					$('#task-phonefields-busyicon').hide();
 					$('#task_phonefields').show();
 					$('#task_phonefields').change(function () {

@@ -25,7 +25,7 @@
  *   this can be directly called in the SRC attribute of an <img> directive
  *************************************************************************************************/
 $Vtiger_Utils_Log = false;
-include_once('vtlib/Vtiger/Module.php');
+include_once 'vtlib/Vtiger/Module.php';
 
 $shownoimage = (empty($_REQUEST['shownoimage']) ? true : vtlib_purify($_REQUEST['shownoimage']));
 $pdoimgid = vtlib_purify($_REQUEST['imageid']);
@@ -36,7 +36,7 @@ if (!empty($pdoimgid)) {
 			 where (vtiger_crmentity.setype LIKE "%Image" or vtiger_crmentity.setype LIKE "%Attachment")
 			  and deleted=0 and vtiger_attachments.attachmentsid=?';
 	$result_image = $adb->pquery($query, array($pdoimgid));
-	if ($result_image and $adb->num_rows($result_image)==1) {
+	if ($result_image && $adb->num_rows($result_image)==1) {
 		$image_orgname = decode_html($adb->query_result($result_image, 0, 'name'));
 		$imagepath = $adb->query_result($result_image, 0, 'path');
 		$imagetype = $adb->query_result($result_image, 0, 'type');
@@ -52,7 +52,9 @@ if ($shownoimage) {
 	header("Content-Disposition: filename=noimage.png");
 	header("Content-Description: php/coreBOS Generated Data");
 	$im = @imagecreate(110, 110);
-	if (!$im) die("Cannot Initialize new GD image stream");
+	if (!$im) {
+		die("Cannot Initialize new GD image stream");
+	}
 	$background_color = imagecolorallocate($im, 255, 255, 255);
 	$text_color = imagecolorallocate($im, 0, 0, 0);
 	imagestring($im, 4, 22, 25, getTranslatedString('No Image'), $text_color);

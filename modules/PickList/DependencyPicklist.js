@@ -9,8 +9,8 @@
 
 var modifiedMappingValues = new Array();
 
-function changeDependencyPicklistModule(){
-	document.getElementById("status").style.display="inline";
+function changeDependencyPicklistModule() {
+	document.getElementById('status').style.display='inline';
 	var oModulePick = document.getElementById('pickmodule');
 	var module=oModulePick.options[oModulePick.selectedIndex].value;
 
@@ -18,8 +18,8 @@ function changeDependencyPicklistModule(){
 		method: 'POST',
 		url: 'index.php?action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&moduleName='+encodeURIComponent(module)
 	}).done(function (response) {
-		document.getElementById("status").style.display="none";
-		document.getElementById("picklist_datas").innerHTML=response;
+		document.getElementById('status').style.display='none';
+		document.getElementById('picklist_datas').innerHTML=response;
 	});
 }
 
@@ -30,20 +30,20 @@ function addNewDependencyPicklist() {
 		return false;
 	}
 
-	document.getElementById("status").style.display="inline";
+	document.getElementById('status').style.display='inline';
 
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=editdependency&moduleName='+encodeURIComponent(selectedModule)
 	}).done(function (response) {
-		document.getElementById("status").style.display="none";
+		document.getElementById('status').style.display='none';
 		modifiedMappingValues = new Array();
-		document.getElementById("picklist_datas").innerHTML=response;
+		document.getElementById('picklist_datas').innerHTML=response;
 	});
 }
 
 function editNewDependencyPicklist(module) {
-	document.getElementById("status").style.display="inline";
+	document.getElementById('status').style.display='inline';
 
 	var sourcePick = document.getElementById('sourcefield');
 	var sourceField = sourcePick.options[sourcePick.selectedIndex].value;
@@ -52,7 +52,7 @@ function editNewDependencyPicklist(module) {
 	var targetField = targetPick.options[targetPick.selectedIndex].value;
 
 	if (sourceField == targetField) {
-		document.getElementById("status").style.display="none";
+		document.getElementById('status').style.display='none';
 		alert(alert_arr.ERR_SAME_SOURCE_AND_TARGET);
 		return false;
 	}
@@ -63,13 +63,13 @@ function editNewDependencyPicklist(module) {
 		method: 'POST',
 		url: 'index.php?action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=editdependency&'+urlstring
 	}).done(function (response) {
-		document.getElementById("status").style.display="none";
-		document.getElementById("picklist_datas").innerHTML=response;
+		document.getElementById('status').style.display='none';
+		document.getElementById('picklist_datas').innerHTML=response;
 	});
 }
 
 function editDependencyPicklist(module, sourceField, targetField) {
-	document.getElementById("status").style.display="inline";
+	document.getElementById('status').style.display='inline';
 
 	var urlstring = 'moduleName='+encodeURIComponent(module)+'&sourcefield='+sourceField+'&targetfield='+targetField;
 
@@ -77,9 +77,9 @@ function editDependencyPicklist(module, sourceField, targetField) {
 		method: 'POST',
 		url: 'index.php?action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=editdependency&'+urlstring
 	}).done(function (response) {
-		document.getElementById("status").style.display="none";
+		document.getElementById('status').style.display='none';
 		modifiedMappingValues = new Array();
-		var element = document.getElementById("picklist_datas");
+		var element = document.getElementById('picklist_datas');
 		element.innerHTML=response;
 		vtlib_executeJavascriptInElement(element);
 	});
@@ -87,7 +87,7 @@ function editDependencyPicklist(module, sourceField, targetField) {
 
 function deleteDependencyPicklist(module, sourceField, targetField, msg) {
 	if (confirm(msg)) {
-		document.getElementById("status").style.display="inline";
+		document.getElementById('status').style.display='inline';
 
 		var urlstring = 'moduleName='+encodeURIComponent(module)+'&sourcefield='+sourceField+'&targetfield='+targetField;
 
@@ -95,8 +95,8 @@ function deleteDependencyPicklist(module, sourceField, targetField, msg) {
 			method: 'POST',
 			url: 'index.php?action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=deletedependency&'+urlstring
 		}).done(function (response) {
-			document.getElementById("status").style.display="none";
-			document.getElementById("picklist_datas").innerHTML=response;
+			document.getElementById('status').style.display='none';
+			document.getElementById('picklist_datas').innerHTML=response;
 		});
 	} else {
 		return false;
@@ -104,16 +104,16 @@ function deleteDependencyPicklist(module, sourceField, targetField, msg) {
 }
 
 function saveDependency(module) {
-	document.getElementById("status").style.display="inline";
+	document.getElementById('status').style.display='inline';
 
 	var dependencyMapping = serializeData();
 	if (dependencyMapping == false) {
-		document.getElementById("status").style.display="none";
+		document.getElementById('status').style.display='none';
 		return false;
 	}
 	var data = {
-		"moduleName" : module,
-		"dependencymapping" : dependencyMapping
+		'moduleName' : module,
+		'dependencymapping' : dependencyMapping
 	};
 
 	jQuery.ajax({
@@ -121,8 +121,8 @@ function saveDependency(module) {
 		url: 'index.php?action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=savedependency',
 		data : data
 	}).done(function (response) {
-		document.getElementById("status").style.display="none";
-		document.getElementById("picklist_datas").innerHTML=response;
+		document.getElementById('status').style.display='none';
+		document.getElementById('picklist_datas').innerHTML=response;
 	});
 }
 
@@ -135,7 +135,7 @@ function serializeData() {
 	for (var i=0; i<maxMappingCount; ++i) {
 		var sourceValueId = modifiedMappingValues[i];
 		var sourceValue = document.getElementById(sourceValueId).value;
-		var mappingIndex = sourceValueId.replace(sourceField,'');
+		var mappingIndex = sourceValueId.replace(sourceField, '');
 		var node = document.getElementById('valueMapping'+mappingIndex);
 		if (node != null && typeof(node) != 'undefined') {
 			var targetValueNodes = document.getElementsByName('valueMapping'+mappingIndex);
@@ -149,21 +149,21 @@ function serializeData() {
 			}
 
 			if (targetValues.length == 0) {
-				alert(alert_arr.ERR_ATLEAST_ONE_VALUE_FOR + " " + sourceValue);
+				alert(alert_arr.ERR_ATLEAST_ONE_VALUE_FOR + ' ' + sourceValue);
 				return false;
 			}
 
 			valueMapping[i] = {
-				"sourcevalue":sourceValue,
-				"targetvalues":targetValues
+				'sourcevalue':sourceValue,
+				'targetvalues':targetValues
 			};
 		}
 	}
 
 	var formData = {
-		"sourcefield": sourceField,
-		"targetfield": targetField,
-		"valuemapping": valueMapping
+		'sourcefield': sourceField,
+		'targetfield': targetField,
+		'valuemapping': valueMapping
 	};
 	return JSON.stringify(formData);
 }
@@ -179,7 +179,7 @@ function selectSourceValue(sourceValueIndex) {
 }
 
 function selectTargetValue(sourceIndex, targetValue) {
-	var targetElements = jQuery("input[name='valueMapping"+sourceIndex+"']");
+	var targetElements = jQuery('input[name=\'valueMapping'+sourceIndex+'\']');
 
 	targetElements.each(function () {
 		if (jQuery(this).val() == targetValue) {
@@ -189,7 +189,7 @@ function selectTargetValue(sourceIndex, targetValue) {
 }
 
 function unselectTargetValue(sourceIndex, targetValue) {
-	var targetElements = jQuery(document.getElementsByName("valueMapping"+sourceIndex));
+	var targetElements = jQuery(document.getElementsByName('valueMapping'+sourceIndex));
 	targetElements.each(function () {
 		if (jQuery(this).val() == targetValue) {
 			unselectCell(jQuery(this).parent());
@@ -213,12 +213,12 @@ function unselectCell(element) {
 
 function loadMappingForSelectedValues() {
 	var sourceElements = jQuery('input[name="selectedSourceValues"]:checked');
-	var classElements = jQuery(".picklistValueMapping");
+	var classElements = jQuery('.picklistValueMapping');
 	classElements.hide();
 
 	sourceElements.each(function () {
-		var selectedElementId = (((jQuery(this).val()).replace(/(\W)/gi,"\\$1")).replace(/\\\s/gi,'.'));
-		var selectedElementCells = jQuery("."+selectedElementId);
+		var selectedElementId = (((jQuery(this).val()).replace(/(\W)/gi, '\\$1')).replace(/\\\s/gi, '.'));
+		var selectedElementCells = jQuery('.'+selectedElementId);
 		selectedElementCells.show();
 	});
 }

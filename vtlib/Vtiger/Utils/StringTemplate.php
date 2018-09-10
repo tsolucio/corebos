@@ -17,33 +17,33 @@
  */
 class Vtiger_StringTemplate {
 	// Template variables set dynamically
-	var $tplvars = Array();
+	public $tplvars = array();
 
 	/**
 	 * Identify variable with the following pattern
 	 * $VARIABLE_KEY$
 	 */
-	var $_lookfor = '/\$([^\$]+)\$/';
+	public $_lookfor = '/\$([^\$]+)\$/';
 
 	/**
 	 * Constructor
 	 */
-	function __construct() {
+	public function __construct() {
 	}
 
 	/**
 	 * Assign replacement value for the variable.
 	 */
-	function assign($key, $value) {
+	public function assign($key, $value) {
 		$this->tplvars[$key] = $value;
-	}	
+	}
 
 	/**
 	 * Get replacement value for the variable.
 	 */
-	function get($key) {
+	public function get($key) {
 		$value = false;
-		if(isset($this->tplvars[$key])) {
+		if (isset($this->tplvars[$key])) {
 			$value = $this->tplvars[$key];
 		}
 		return $value;
@@ -53,17 +53,19 @@ class Vtiger_StringTemplate {
 	 * Clear all the assigned variable values.
 	 * (except the once in the given list)
 	 */
-	function clear($exceptvars=false) {
-		$restorevars = Array();
-		if($exceptvars) {
-			foreach($exceptvars as $varkey) {
+	public function clear($exceptvars = false) {
+		$restorevars = array();
+		if ($exceptvars) {
+			foreach ($exceptvars as $varkey) {
 				$restorevars[$varkey] = $this->get($varkey);
 			}
-		}		
+		}
 		unset($this->tplvars);
 
-		$this->tplvars = Array();
-		foreach($restorevars as $key=>$val) $this->assign($key, $val);
+		$this->tplvars = array();
+		foreach ($restorevars as $key => $val) {
+			$this->assign($key, $val);
+		}
 	}
 
 	/**
@@ -72,27 +74,31 @@ class Vtiger_StringTemplate {
 	 * @param $avoidLookup should be true if only verbatim file copy needs to be done
 	 * @returns merged contents
 	 */
-	function merge($instring, $avoidLookup=false) {
-		if(empty($instring)) return $instring;
+	public function merge($instring, $avoidLookup = false) {
+		if (empty($instring)) {
+			return $instring;
+		}
 
-		if(!$avoidLookup) {
-
+		if (!$avoidLookup) {
 			/** Look for variables */
-			$matches = Array();
+			$matches = array();
 			preg_match_all($this->_lookfor, $instring, $matches);
 
 			/** Replace variables found with value assigned. */
 			$matchcount = count($matches[1]);
-			for($index = 0; $index < $matchcount; ++$index) {
+			for ($index = 0; $index < $matchcount; ++$index) {
 				$matchstr = $matches[0][$index];
 				$matchkey = $matches[1][$index];
 
 				$matchstr_regex = $this->__formatAsRegex($matchstr);
 
 				$replacewith = $this->get($matchkey);
-				if($replacewith) {
+				if ($replacewith) {
 					$instring = preg_replace(
-						"/$matchstr_regex/", $replacewith, $instring);
+						"/$matchstr_regex/",
+						$replacewith,
+						$instring
+					);
 				}
 			}
 		}
@@ -103,13 +109,12 @@ class Vtiger_StringTemplate {
 	 * Clean up the input to be used as a regex
 	 * @access private
 	 */
-	function __formatAsRegex($value) {
+	private function __formatAsRegex($value) {
 		// If / is not already escaped as \/ do it now
 		$value = preg_replace('/\//', '\\/', $value);
 		// If $ is not already escaped as \$ do it now
 		$value = preg_replace('/(?<!\\\)\$/', '\\\\$', $value);
 		return $value;
 	}
-
 }
 ?>

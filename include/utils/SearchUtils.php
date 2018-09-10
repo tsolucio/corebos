@@ -73,9 +73,6 @@ function getSearchListHeaderValues($focus, $module, $sort_qry = '', $sorder = ''
 		if ($fieldname == 'lastname' && $module !='Leads' && $module !='Contacts') {
 			$fieldname = 'contact_id';
 		}
-		if ($fieldname == 'folderid' && $module == 'Documents') {
-			$fieldname = 'foldername';
-		}
 		$field_list[] = $fieldname;
 	}
 	//Getting the Entries from Profile2field table
@@ -277,7 +274,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 	if (empty($input)) {
 		$input = $_REQUEST;
 	}
-
+	$uitype = 0;
 	if ($search_field =='crmid') {
 		$column_name='crmid';
 		$table_name='vtiger_crmentity';
@@ -315,7 +312,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 			$search_field = "product_id";
 		}
 
-		$qry= 'select vtiger_field.columnname,tablename
+		$qry= 'select vtiger_field.columnname,tablename, fieldname
 			from vtiger_tab
 			inner join vtiger_field on vtiger_field.tabid=vtiger_tab.tabid
 			where vtiger_tab.name=? and (fieldname=? or columnname=?)';
@@ -323,7 +320,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 		$noofrows = $adb->num_rows($result);
 		if ($noofrows!=0) {
 			$column_name=$adb->query_result($result, 0, 'columnname');
-
+			$field_name=$adb->query_result($result, 0, 'fieldname');
 			//Check added for tickets by accounts/contacts in dashboard
 			if ($column_name == 'parent_id') {
 				if ($search_field_first	== 'account_id') {
@@ -340,21 +337,21 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 			$uitype=getUItype($module, $column_name);
 
 			//Added for Member of search in Accounts
-			if ($column_name == "parentid" && $module == "Accounts") {
-				$table_name = "vtiger_account2";
-				$column_name = "accountname";
+			if ($column_name == 'parentid' && $module == 'Accounts') {
+				$table_name = 'vtiger_account2';
+				$column_name = 'accountname';
 			}
-			if ($column_name == "parentid" && $module == "Products") {
-				$table_name = "vtiger_products2";
-				$column_name = "productname";
+			if ($column_name == 'parentid' && $module == 'Products') {
+				$table_name = 'vtiger_products2';
+				$column_name = 'productname';
 			}
-			if ($column_name == "reportsto" && $module == "Contacts") {
-				$table_name = "vtiger_contactdetails2";
-				$column_name = "lastname";
+			if ($column_name == 'reportsto' && $module == 'Contacts') {
+				$table_name = 'vtiger_contactdetails2';
+				$column_name = 'lastname';
 			}
-			if ($column_name == "inventorymanager" && $module = "Quotes") {
-				$table_name = "vtiger_usersQuotes";
-				$column_name = "user_name";
+			if ($column_name == 'inventorymanager' && $module = 'Quotes') {
+				$table_name = 'vtiger_usersQuotes';
+				$column_name = 'user_name';
 			}
 			//Added to support user date format in basic search
 			if ($uitype == 5 || $uitype == 6 || $uitype == 23 || $uitype == 70) {
@@ -378,6 +375,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 					$where="$table_name.$column_name = '-1'";
 				}
 			} elseif ($uitype == 15 || $uitype == 16) {
+				$currlang = $current_user->language;
 				if (is_uitype($uitype, '_picklist_')) {
 					// Get all the keys for the for the Picklist value
 					$mod_keys = array_keys($mod_strings, $search_string);
@@ -389,22 +387,22 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 							if ($stridx !== 0) {
 								$search_string = $mod_key;
 								if ($input['operator'] == 'e' && getFieldVisibilityPermission("Calendar", $current_user->id, 'taskstatus') == '0' && ($column_name == "status" || $column_name == "eventstatus")) {
-									$where="(vtiger_activity.status ='". $search_string ."' or vtiger_activity.eventstatus ='". $search_string ."')";
+									$where="(vtiger_activity.status IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n='". formatForSqlLike($search_string) ."') OR vtiger_activity.eventstatus IN (select translation_key from vtiger_cbtranslation where forpicklist='$module::$field_name' and i18n='". formatForSqlLike($search_string) ."') OR vtiger_activity.status ='". $search_string ."' or vtiger_activity.eventstatus ='". $search_string ."')";
 								} elseif (getFieldVisibilityPermission("Calendar", $current_user->id, 'taskstatus') == '0' && ($column_name == "status" || $column_name == "eventstatus")) {
-									$where="(vtiger_activity.status like '". formatForSqlLike($search_string) ."' or vtiger_activity.eventstatus like '". formatForSqlLike($search_string) ."')";
+									$where="(vtiger_activity.status IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR vtiger_activity.eventstatus IN (select translation_key from vtiger_cbtranslation where forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR vtiger_activity.status ='". $search_string ."' or vtiger_activity.eventstatus ='". $search_string ."')";
 								} else {
-									$where="$table_name.$column_name like '". formatForSqlLike($search_string) ."'";
+									$where="$table_name.$column_name IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR $table_name.$column_name like '". formatForSqlLike($search_string) ."'";
 								}
 								break;
 							} else { //if the mod strings cointains LBL , just return the original search string. Not the key
-								$where="$table_name.$column_name like '". formatForSqlLike($search_string) ."'";
+								$where="$table_name.$column_name IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR $table_name.$column_name like '". formatForSqlLike($search_string) ."'";
 							}
 						}
 					} else {
 						if (getFieldVisibilityPermission("Calendar", $current_user->id, 'taskstatus') == '0' && ($table_name == "vtiger_activity" && ($column_name == "status" || $column_name == "eventstatus"))) {
-							$where="(vtiger_activity.status like '". formatForSqlLike($search_string) ."' or vtiger_activity.eventstatus like '" . formatForSqlLike($search_string) ."')";
+							$where="(vtiger_activity.status IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR vtiger_activity.eventstatus IN (select translation_key from vtiger_cbtranslation where forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR vtiger_activity.status ='". $search_string ."' or vtiger_activity.eventstatus ='". $search_string ."')";
 						} else {
-							$where="$table_name.$column_name like '". formatForSqlLike($search_string) ."'";
+							$where="$table_name.$column_name IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR $table_name.$column_name like '". formatForSqlLike($search_string) ."'";
 						}
 					}
 				}
@@ -439,21 +437,19 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 	//uitype 10 handling
 	if ($uitype == 10) {
 		$where = array();
-		$sql = "select fieldid from vtiger_field where tabid=? and fieldname=?";
-		$result = $adb->pquery($sql, array(getTabid($module), $search_field));
+		$result = $adb->pquery('select fieldid from vtiger_field where tabid=? and fieldname=?', array(getTabid($module), $search_field));
 
 		if ($adb->num_rows($result)>0) {
-			$fieldid = $adb->query_result($result, 0, "fieldid");
-			$sql = "select * from vtiger_fieldmodulerel where fieldid=?";
-			$result = $adb->pquery($sql, array($fieldid));
+			$fieldid = $adb->query_result($result, 0, 'fieldid');
+			$result = $adb->pquery('select * from vtiger_fieldmodulerel where fieldid=?', array($fieldid));
 			$count = $adb->num_rows($result);
 			$searchString = formatForSqlLike($search_string);
 
 			for ($i=0; $i<$count; $i++) {
-				$relModule = $adb->query_result($result, $i, "relmodule");
+				$relModule = $adb->query_result($result, $i, 'relmodule');
 				$relInfo = getEntityField($relModule);
-				$relTable = $relInfo["tablename"];
-				$relField = $relInfo["fieldname"];
+				$relTable = $relInfo['tablename'];
+				$relField = $relInfo['fieldname'];
 
 				if (strpos($relField, 'concat') !== false) {
 					$where[] = "$relField like '$searchString'";
@@ -461,7 +457,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 					$where[] = "$relTable.$relField like '$searchString'";
 				}
 			}
-			$where = implode(" or ", $where);
+			$where = implode(' or ', $where);
 		}
 		$where = "($where) ";
 	}
@@ -982,11 +978,11 @@ function getUnifiedWhere($listquery, $module, $search_val) {
 
 	$search_val = $adb->sql_escape_string($search_val);
 	if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0) {
-		$query = 'SELECT columnname, tablename FROM vtiger_field WHERE tabid = ? and vtiger_field.presence in (0,2)';
+		$query = 'SELECT columnname, tablename, fieldname FROM vtiger_field WHERE tabid = ? and vtiger_field.presence in (0,2)';
 		$qparams = array(getTabid($module));
 	} else {
 		$profileList = getCurrentUserProfileList();
-		$query = 'SELECT columnname, tablename
+		$query = 'SELECT columnname, tablename, fieldname
 			FROM vtiger_field
 			INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
 			INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
@@ -1001,18 +997,20 @@ function getUnifiedWhere($listquery, $module, $search_val) {
 	for ($i=0; $i<$noofrows; $i++) {
 		$columnname = $adb->query_result($result, $i, 'columnname');
 		$tablename = $adb->query_result($result, $i, 'tablename');
+		$fieldname = $adb->query_result($result, $i, 'fieldname');
+		$field_uitype = getUItype($module, $columnname);
 
 		// Search / Lookup customization
 		if ($module == 'Contacts' && $columnname == 'accountid') {
-			$columnname = "accountname";
-			$tablename = "vtiger_account";
+			$columnname = 'accountname';
+			$tablename = 'vtiger_account';
 		}
 		if ($module == 'HelpDesk' && $columnname == 'parent_id') {
-			$columnname = "accountname";
-			$tablename = "vtiger_account";
+			$columnname = 'accountname';
+			$tablename = 'vtiger_account';
 			if (false !== strpos($listquery, $tablename)) {
 				if ($where != '') {
-					$where .= " OR ";
+					$where .= ' OR ';
 				}
 				if ($binary_search) {
 					$where .= 'LOWER('.$tablename.'.'.$columnname.") LIKE BINARY LOWER('". formatForSqlLike($search_val) ."')";
@@ -1020,19 +1018,25 @@ function getUnifiedWhere($listquery, $module, $search_val) {
 					$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val) ."'";
 				}
 			}
-			$columnname = "firstname";
-			$tablename = "vtiger_contactdetails";
+			$columnname = 'firstname';
+			$tablename = 'vtiger_contactdetails';
 		}
 
 		//Before form the where condition, check whether the table for the field has been added in the listview query
 		if (false !== strpos($listquery, $tablename)) {
 			if ($where != '') {
-				$where .= " OR ";
+				$where .= ' OR ';
 			}
 			if ($binary_search) {
 				$where .= 'LOWER('.$tablename.'.'.$columnname.") LIKE BINARY LOWER('". formatForSqlLike($search_val) ."')";
 			} else {
-				$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val) ."'";
+				if (is_uitype($field_uitype, '_picklist_')) {
+					$where .= '('.$tablename.".".$columnname.' IN (select translation_key from vtiger_cbtranslation
+						where locale="'.$current_user->language.'" and forpicklist="'.$module.'::'.$fieldname.'" and i18n LIKE "'.formatForSqlLike($search_val).'") OR '
+						.$tablename.".".$columnname.' LIKE "'. formatForSqlLike($search_val).'")';
+				} else {
+					$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val) ."'";
+				}
 			}
 		}
 	}
@@ -1292,12 +1296,13 @@ function getAdvancedSearchComparator($comparator, $value, $datatype = '') {
 function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $datatype) {
 	//we have to add the fieldname/tablename.fieldname and the corresponding value (which we want).
 	// So that when these LHS field comes then RHS value will be replaced for LHS in the where condition of the query
-	global $mod_strings, $currentModule, $current_user;
+	global $adb, $mod_strings, $currentModule, $current_user;
 	//Added for proper check of contact name in advance filter
 	if ($tablename == 'vtiger_contactdetails' && $fieldname == 'lastname') {
 		$fieldname = 'contactid';
 	}
-
+	$fldname = $adb->pquery('select fieldname from vtiger_field where tablename=? and columnname=?', array($tablename, $fieldname));
+	$fld = $adb->query($fldname, 0, 0);
 	$contactid = 'vtiger_contactdetails.lastname';
 	if ($currentModule != 'Contacts' && $currentModule != 'Leads' && $currentModule != 'Campaigns') {
 		$contactid = getSqlForNameInDisplayFormat(array('lastname'=>'vtiger_contactdetails.lastname', 'firstname'=>'vtiger_contactdetails.firstname'), 'Contacts');
@@ -1380,7 +1385,15 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 		} elseif ($comparator == 'e' && (trim($value) == 'NULL' || trim($value) == '')) {
 			$value = '('.$tablename.".".$fieldname.' IS NULL OR '.$tablename.'.'.$fieldname.' = \'\')';
 		} else {
-			$value = $tablename.".".$fieldname.getAdvancedSearchComparator($comparator, $value, $datatype);
+			if (is_uitype($field_uitype, '_picklist_')) {
+				$value = $tablename.".".$fieldname.' IN (select translation_key from vtiger_cbtranslation
+					where locale="'.$current_user->language.'" and forpicklist="'.$currentModule.'::'.$fld
+					.'" and i18n '.getAdvancedSearchComparator($comparator, $value, $datatype).')'
+					.(in_array($comparator, array('n', 'k', 'dnsw', 'dnew')) ? ' AND ' : ' OR ')
+					.$tablename.'.'.$fieldname.getAdvancedSearchComparator($comparator, $value, $datatype);
+			} else {
+				$value = $tablename.".".$fieldname.getAdvancedSearchComparator($comparator, $value, $datatype);
+			}
 		}
 	}
 	return $value;

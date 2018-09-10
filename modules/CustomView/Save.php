@@ -11,16 +11,36 @@ require_once 'include/logging.php';
 require_once 'include/utils/utils.php';
 global $adb, $log, $current_user;
 
-$cvid = (int) vtlib_purify($_REQUEST["record"]);
+function cvGetNewViewName() {
+	global $adb;
+	$orgviewname = vtlib_purify($_REQUEST['viewName']);
+	$viewname = $orgviewname;
+	$cvmodule = vtlib_purify($_REQUEST['cvmodule']);
+	$finished = false;
+	$i = 1;
+	while (!$finished) {
+		$rscv = $adb->pquery('select 1 from vtiger_customview where entitytype=? and viewname=?', array($cvmodule, $viewname));
+		if ($rscv && $adb->num_rows($rscv)==1) {
+			$viewname = $orgviewname . '_' . $i;
+			$i++;
+		} else {
+			$finished = true;
+		}
+	}
+	return $viewname;
+}
+
+$cvid = (int) vtlib_purify($_REQUEST['record']);
 if (!empty($_REQUEST['newsave'])) {
 	unset($cvid);
+	$_REQUEST['viewName'] = cvGetNewViewName();
 }
-$cvmodule = vtlib_purify($_REQUEST["cvmodule"]);
+$cvmodule = vtlib_purify($_REQUEST['cvmodule']);
 $parenttab = getParentTab();
-$return_action = vtlib_purify($_REQUEST["return_action"]);
-if ($cvmodule != "") {
+$return_action = vtlib_purify($_REQUEST['return_action']);
+if ($cvmodule != '') {
 	$cv_tabid = getTabid($cvmodule);
-	$viewname = vtlib_purify($_REQUEST["viewName"]);
+	$viewname = vtlib_purify($_REQUEST['viewName']);
 	if ($default_charset != 'UTF-8') {
 		$viewname = htmlentities($viewname);
 	}
@@ -148,13 +168,13 @@ if ($cvmodule != "") {
 								continue;
 							}
 
-							$adv_filter_column = $column_condition["columnname"];
-							$adv_filter_comparator = $column_condition["comparator"];
-							$adv_filter_value = $column_condition["value"];
-							$adv_filter_column_condition = $column_condition["columncondition"];
-							$adv_filter_groupid = $column_condition["groupid"];
+							$adv_filter_column = $column_condition['columnname'];
+							$adv_filter_comparator = $column_condition['comparator'];
+							$adv_filter_value = $column_condition['value'];
+							$adv_filter_column_condition = $column_condition['columncondition'];
+							$adv_filter_groupid = $column_condition['groupid'];
 
-							$column_info = explode(":", $adv_filter_column);
+							$column_info = explode(':', $adv_filter_column);
 
 							$fieldName = $column_info[2];
 							if (!empty($moduleFields[$fieldName])) {
@@ -177,8 +197,10 @@ if ($cvmodule != "") {
 								}
 							}
 
-							$temp_val = explode(",", $adv_filter_value);
-							if (($fieldType == 'date' || ($fieldType == 'time' && $fieldName != 'time_start' && $fieldName != 'time_end') || ($fieldType == 'datetime')) && ($fieldType != '' && $adv_filter_value != '' )) {
+							$temp_val = explode(',', $adv_filter_value);
+							if (($fieldType == 'date' || ($fieldType == 'time' && $fieldName != 'time_start' && $fieldName != 'time_end') || ($fieldType == 'datetime'))
+								&& ($fieldType != '' && $adv_filter_value != '')
+							) {
 								$val = array();
 								for ($x=0; $x<count($temp_val); $x++) {
 									// if date and time given then we have to convert the date and leave the time as it is
@@ -196,7 +218,7 @@ if ($cvmodule != "") {
 										}
 									}
 								}
-								$adv_filter_value = implode(",", $val);
+								$adv_filter_value = implode(',', $val);
 							}
 
 							$irelcriteriasql = 'INSERT INTO vtiger_cvadvfilter(cvid,columnindex,columnname,comparator,value,groupid,column_condition) values (?,?,?,?,?,?,?)';
@@ -292,7 +314,7 @@ if ($cvmodule != "") {
 			if ($updatecvresult) {
 				if (isset($columnslist)) {
 					for ($i=0; $i<count($columnslist); $i++) {
-						$columnsql = "INSERT INTO vtiger_cvcolumnlist (cvid, columnindex, columnname) VALUES (?,?,?)";
+						$columnsql = 'INSERT INTO vtiger_cvcolumnlist (cvid, columnindex, columnname) VALUES (?,?,?)';
 						$columnparams = array($genCVid, $i, $columnslist[$i]);
 						$columnresult = $adb->pquery($columnsql, $columnparams);
 					}
@@ -303,10 +325,11 @@ if ($cvmodule != "") {
 							$genCVid,
 							$std_filter_list['columnname'],
 							$std_filter_list['stdfilter'],
-							$adb->formatDate($std_filter_list['startdate'], true), $adb->formatDate($std_filter_list['enddate'], true),
+							$adb->formatDate($std_filter_list['startdate'], true),
+							$adb->formatDate($std_filter_list['enddate'], true),
 						);
 						$stdfilterresult = $adb->pquery($stdfiltersql, $stdfilterparams);
-						$log->info("CustomView :: Save :: vtiger_cvstdfilter update successfully".$genCVid);
+						$log->info('CustomView :: Save :: vtiger_cvstdfilter update successfully'.$genCVid);
 					}
 					if (is_array($advft_criteria)) {
 						foreach ($advft_criteria as $column_index => $column_condition) {
@@ -314,13 +337,13 @@ if ($cvmodule != "") {
 								continue;
 							}
 
-							$adv_filter_column = $column_condition["columnname"];
-							$adv_filter_comparator = $column_condition["comparator"];
-							$adv_filter_value = $column_condition["value"];
-							$adv_filter_column_condition = $column_condition["columncondition"];
-							$adv_filter_groupid = $column_condition["groupid"];
+							$adv_filter_column = $column_condition['columnname'];
+							$adv_filter_comparator = $column_condition['comparator'];
+							$adv_filter_value = $column_condition['value'];
+							$adv_filter_column_condition = $column_condition['columncondition'];
+							$adv_filter_groupid = $column_condition['groupid'];
 
-							$column_info = explode(":", $adv_filter_column);
+							$column_info = explode(':', $adv_filter_column);
 
 							$fieldName = $column_info[2];
 							if (!empty($moduleFields[$fieldName])) {
@@ -344,8 +367,10 @@ if ($cvmodule != "") {
 								}
 							}
 
-							$temp_val = explode(",", $adv_filter_value);
-							if (($fieldType == 'date' || ($fieldType == 'time' && $fieldName != 'time_start' && $fieldName != 'time_end') || ($fieldType == 'datetime')) && ($fieldType != '' && $adv_filter_value != '' )) {
+							$temp_val = explode(',', $adv_filter_value);
+							if (($fieldType == 'date' || ($fieldType == 'time' && $fieldName != 'time_start' && $fieldName != 'time_end') || ($fieldType == 'datetime'))
+								&& ($fieldType != '' && $adv_filter_value != '')
+							) {
 								$val = array();
 								for ($x=0; $x<count($temp_val); $x++) {
 									//if date and time given then we have to convert the date and
@@ -364,7 +389,7 @@ if ($cvmodule != "") {
 										}
 									}
 								}
-								$adv_filter_value = implode(",", $val);
+								$adv_filter_value = implode(',', $val);
 							}
 
 							$irelcriteriasql = 'INSERT INTO vtiger_cvadvfilter(cvid,columnindex,columnname,comparator,value,groupid,column_condition) values (?,?,?,?,?,?,?)';

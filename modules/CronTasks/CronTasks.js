@@ -17,15 +17,15 @@ function fetchSaveCron(id) {
 	} else {
 		timeValue = document.getElementById('CronTime').value;
 	}
-	var min_freq =parseInt(document.getElementById('min_freq').value,10);
-	if (!numValidate('CronTime','','any',true)) {
+	var min_freq =parseInt(document.getElementById('min_freq').value, 10);
+	if (!numValidate('CronTime', '', 'any', true)) {
 		return false;
 	}
 	if ((timeValue % 1) !=0) {
 		alert(alert_arr.INTEGERVALS);
 		return false;
 	}
-	if (((dailyTime.search(/^\d{2}:\d{2}$/) == -1) || (dailyTime.substr(0,2) < 0 || dailyTime.substr(0,2) > 24) || (dailyTime.substr(3,2) < 0 || dailyTime.substr(3,2) > 59)) && time == 'daily') {
+	if (((dailyTime.search(/^\d{2}:\d{2}$/) == -1) || (dailyTime.substr(0, 2) < 0 || dailyTime.substr(0, 2) > 24) || (dailyTime.substr(3, 2) < 0 || dailyTime.substr(3, 2) > 59)) && time == 'daily') {
 		alert(alert_arr.ERR_INVALID_TIME);
 		return false;
 	}
@@ -63,8 +63,7 @@ function fetchEditCron(id) {
 		document.getElementById('editdiv').innerHTML=response;
 	});
 }
-function move_module(tabid,move) {
-	//document.getElementById('vtbusy_info').style.display = "block";
+function move_module(tabid, move) {
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?module=CronTasks&action=CronTasksAjax&file=CronSequence&parenttab=Settings&record='+tabid+'&move='+move

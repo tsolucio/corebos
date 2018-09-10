@@ -30,21 +30,21 @@ function set_focus() {
 
 function checkCaps(b) {
 	var a=0, c=!1, a=document.all?b.keyCode:b.which, c=b.shiftKey;
-	b=document.getElementById("pwcaps");
-	var d=65<=a&&90>=a,a=97<=a&&122>=a;
+	b=document.getElementById('pwcaps');
+	var d=65<=a&&90>=a, a=97<=a&&122>=a;
 	if (d && !c || a && c) {
-		b.style.display="block";
+		b.style.display='block';
 	} else if (a && !c || d && c) {
-		b.style.display="none"
+		b.style.display='none';
 	}
 }
 
 function sendnew2facode(authuserid) {
 	fetch('index.php?module=Utilities&action=sendnew2facode&authuserid=' + authuserid, {
 		credentials: 'same-origin'
-	}).then(function(response) {
+	}).then(function (response) {
 		return response.text();
-	}).then(function(data) {
+	}).then(function (data) {
 		alert(data);
 	});
 }

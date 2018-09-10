@@ -25,7 +25,7 @@ function getUserFldArray($fld_module, $roleid) {
 
 	$query="select vtiger_field.fieldlabel,vtiger_field.columnname,vtiger_field.fieldname, vtiger_field.uitype" .
 			" FROM vtiger_field inner join vtiger_picklist on vtiger_field.fieldname = vtiger_picklist.name" .
-			" where (displaytype=1 and vtiger_field.tabid=? and vtiger_field.uitype in ('15','55','33','16') " .
+			" where (displaytype in (1,2,4) and vtiger_field.tabid=? and vtiger_field.uitype in ('15','55','33','16') " .
 			" or (vtiger_field.tabid=? and fieldname='salutationtype' and fieldname !='vendortype')) " .
 			" and vtiger_field.presence in (0,2) ORDER BY vtiger_picklist.picklistid ASC";
 
@@ -199,12 +199,11 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang = array()) {
 			. ' inner join vtiger_role2picklist on '.$tname.'.picklist_valueid=vtiger_role2picklist.picklistvalueid'
 			. ' and roleid in ('.generateQuestionMarks($roleids).') order by field(roleid,'.generateQuestionMarks($roleids).'), sortid';
 		$result = $adb->pquery($sql, array_merge($roleids, $roleids));
-		$count = $adb->num_rows($result);
 
-		if ($count) {
-			while ($resultrow = $adb->fetch_array($result)) {
-				$pick_val = decode_html($resultrow[$tableName]);
-				//$pick_val = decode_html($pick_val);  // we have to do it twice for it to work on listview!!
+		if (!empty($result)) {
+			while (!$result->EOF) {
+				$pick_val = $result->FetchRow();
+				$pick_val = $pick_val[$tableName];
 				if (isset($lang[$pick_val]) && $lang[$pick_val] != '') {
 					$arr[$pick_val] = $lang[$pick_val];
 				} else {

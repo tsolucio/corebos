@@ -23,8 +23,8 @@ $gc = new corebos_gcontacts();
 
 $isadmin = is_admin($current_user);
 
-if ($isadmin and isset($_REQUEST['clientId'])) {
-	$isActive = ((empty($_REQUEST['gcontacts_active']) or $_REQUEST['gcontacts_active']!='on') ? '0' : '1');
+if ($isadmin && isset($_REQUEST['clientId'])) {
+	$isActive = ((empty($_REQUEST['gcontacts_active']) || $_REQUEST['gcontacts_active']!='on') ? '0' : '1');
 	$clientId = (empty($_REQUEST['clientId']) ? '' : vtlib_purify($_REQUEST['clientId']));
 	$clientSecret = (empty($_REQUEST['clientSecret']) ? '' : vtlib_purify($_REQUEST['clientSecret']));
 	$gc->saveSettings($isActive, $clientId, $clientSecret);
@@ -37,20 +37,20 @@ if ($isadmin and isset($_REQUEST['clientId'])) {
 	}
 }
 
-$smarty->assign('TITLE_MESSAGE', getTranslatedString('GContacts Activation',$currentModule));
+$smarty->assign('TITLE_MESSAGE', getTranslatedString('GContacts Activation', $currentModule));
 $gcsettings = $gc->getSettings();
 $smarty->assign('isActive', $gc->isActive());
 $smarty->assign('clientId', $gcsettings['clientId']);
 $smarty->assign('clientSecret', $gcsettings['clientSecret']);
 $smarty->assign('OAUTHURL', $gc->getIntegrationAuthorizationURL());
-$smarty->assign('OAUTHURLMSG', sprintf(getTranslatedString('IntegrationAuthorizationClick',$currentModule),getTranslatedString('GOOGLE_CONTACTS','Contacts')));
+$smarty->assign('OAUTHURLMSG', sprintf(getTranslatedString('IntegrationAuthorizationClick', $currentModule), getTranslatedString('GOOGLE_CONTACTS', 'Contacts')));
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('THEME', $theme);
-include('modules/cbupdater/forcedButtons.php');
+include 'modules/cbupdater/forcedButtons.php';
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('ISADMIN', $isadmin);
 $smarty->display('modules/Utilities/gcontacts.tpl');
