@@ -19,13 +19,12 @@ class validateEmailWithZB {
 
 	public static function validateEmail($field, $email) {
 		$api_key = GlobalVariable::getVariable('Zero_Bounce_API_KEY', '');
-		if (empty($api_key)) {
+		if (empty($api_key) || empty($email)) {
 			return true;
 		}
-		$emailToValidate = $email;
 		$IPToValidate = '';
 		// use curl to make the request
-		$url = 'https://api.zerobounce.net/v2/validate?api_key='.$api_key.'&email='.urlencode($emailToValidate).'&ip_address='.urlencode($IPToValidate);
+		$url = 'https://api.zerobounce.net/v2/validate?api_key='.$api_key.'&email='.urlencode($email).'&ip_address='.urlencode($IPToValidate);
 
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_SSLVERSION, 6);
@@ -54,6 +53,7 @@ class validateEmailWithZB {
 		self::$lastErrorStatus[$field] = $text;
 		return $valueToReturn;
 	}
+
 	public static function getLastErrorMsg($field) {
 		echo self::$lastErrorStatus[$field];
 	}

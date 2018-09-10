@@ -25,7 +25,7 @@ class crmtogo_WS_FilterDetailsWithCount extends crmtogo_WS_FetchModuleFilters {
 
 	protected function getModuleFilterDetails($filterid) {
 		$db = PearDatabase::getInstance();
-		$result = $db->pquery("SELECT * FROM vtiger_customview WHERE cvid=?", array($filterid));
+		$result = $db->pquery('SELECT * FROM vtiger_customview WHERE cvid=?', array($filterid));
 		if ($result && $db->num_rows($result)) {
 			$resultrow = $db->fetch_array($result);
 			$module = $resultrow['entitytype'];

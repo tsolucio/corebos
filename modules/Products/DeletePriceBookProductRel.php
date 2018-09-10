@@ -21,5 +21,5 @@ if ($return_action !='' && $return_module == 'PriceBooks' && $return_action == '
 	$adb->pquery('delete from vtiger_pricebookproductrel where pricebookid=? and productid=?', array($record, $return_id));
 }
 
-header('Location: index.php?module='.$return_module.'&action='.$return_module."Ajax&file=$return_action&ajax=true&record=".urlencode($return_id));
+header('Location: index.php?module='.$return_module."&action=$return_action&record=".urlencode($return_id));
 ?>

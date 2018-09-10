@@ -427,7 +427,6 @@ function getcalAction(obj, Lay, id, view, hour, dateVal, type) {
 		var pending = document.getElementById('pending');
 		var postpone = document.getElementById('postpone');
 		var actdelete =	document.getElementById('actdelete');
-		var changeowner = document.getElementById('changeowner');
 		var OptionData = document.getElementById('view_Option').options[document.getElementById('view_Option').selectedIndex].value;
 	}
 	if (type == 'todo') {
@@ -438,7 +437,6 @@ function getcalAction(obj, Lay, id, view, hour, dateVal, type) {
 		var pending = document.getElementById('taskpending');
 		var postpone = document.getElementById('taskpostpone');
 		var actdelete = document.getElementById('taskactdelete');
-		var changeowner = document.getElementById('taskchangeowner');
 		var OptionData = '';
 	}
 	document.getElementById('idlist').value = id;
@@ -461,10 +459,6 @@ function getcalAction(obj, Lay, id, view, hour, dateVal, type) {
 
 	if (actdelete) {
 		actdelete.href='javascript:delActivity('+id+',\''+view+'\','+hour+','+day+','+month+','+year+',\''+type+'\')';
-	}
-
-	if (changeowner) {
-		changeowner.href='javascript:dispLayer(\'act_changeowner\');';
 	}
 }
 
@@ -630,9 +624,6 @@ function setFieldvalues(opmode, subtab, viewOption) {
 		}
 		document.getElementById('createTodo').style.display = 'block';
 	}
-}
-
-function doNothing() {
 }
 
 /** This is Javascript Function which is used to toogle between

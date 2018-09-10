@@ -129,23 +129,23 @@ if ($mode != "user" && $id != "invite") {
 			<br><table border=0 celspacing=0 cellpadding=0 width=100% align=center bgcolor=white>
 				<tr>
 					<td class="small">
-						<?php echo $mod_strings['LBL_COLOR_IN_CALENDAR_BACKGROUND'] ?>
+						<?php echo $mod_strings['LBL_COLOR_IN_CALENDAR_BACKGROUND']; ?>
 					</td>
 					<td class="small">	
-						<input style="background-color:<?php echo $Event_Colors["bg"]; ?>;" value="<?php echo $Event_Colors["bg"]; ?>" id="event_color_bg" name="event_color_bg" size="10" onblur="this.style.backgroundColor=this.value;" type="text">
+						<input style="background-color:<?php echo $Event_Colors['bg']; ?>;" value="<?php echo $Event_Colors['bg']; ?>" id="event_color_bg" name="event_color_bg" size="10" onblur="this.style.backgroundColor=this.value;" type="text">
 						<a href="javascript:C_TCP.popup(document.SettingForm.event_color_bg, 3)">
-						<img alt="Click Here to Pick up the color" src="modules/Calendar4You/images/color_picker.gif" border="0" height="13" width="15">
+						<img alt="<?php echo $mod_strings['Click2PickColor']; ?>" src="modules/Calendar4You/images/color_picker.gif" border="0" height="13" width="15">
 						</a>
 					</td>
 				</tr>
 				<tr>
 					<td class="small">
-						<?php echo $mod_strings['LBL_COLOR_IN_CALENDAR_TEXT'] ?>:
+						<?php echo $mod_strings['LBL_COLOR_IN_CALENDAR_TEXT']; ?>:
 					</td>
 					<td class="small">
-						<input style="background-color:<?php echo $Event_Colors["text"]; ?>;" value="<?php echo $Event_Colors["text"]; ?>" id="event_color_text" name="event_color_text" size="10" onblur="this.style.backgroundColor=this.value;" type="text">
+						<input style="background-color:<?php echo $Event_Colors['text']; ?>;" value="<?php echo $Event_Colors['text']; ?>" id="event_color_text" name="event_color_text" size="10" onblur="this.style.backgroundColor=this.value;" type="text">
 						<a href="javascript:C_TCP.popup(document.SettingForm.event_color_text, 3)">
-						<img alt="Click Here to Pick up the color" src="modules/Calendar4You/images/color_picker.gif" border="0" height="13" width="15">
+						<img alt="<?php echo $mod_strings['Click2PickColor']; ?>" src="modules/Calendar4You/images/color_picker.gif" border="0" height="13" width="15">
 						</a>
 					</td>
 				</tr>

@@ -45,7 +45,7 @@ class crmtogo_UI_SearchFilterModel extends crmtogo_WS_SearchFilterModel {
 			}
 
 			if (!empty($this->criterias)) {
-					$_sortCriteria = $this->criterias['_sort'];
+				$_sortCriteria = $this->criterias['_sort'];
 				if (!empty($_sortCriteria)) {
 					$orderClause = $_sortCriteria;
 				}

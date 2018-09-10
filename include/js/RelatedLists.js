@@ -31,13 +31,9 @@ if (window.cbRelatedListsLoaded == undefined) {
 		document.getElementById('status').style.display='inline';
 		document.getElementById('roleLay').style.display = 'none';
 		var listprice=document.getElementById('list_price').value;
-		jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?module=Products&action=ProductsAjax&file=UpdateListPrice&ajax=true&return_action=CallRelatedList&return_module=PriceBooks&record='+id+'&pricebook_id='+pbid+'&product_id='+proid+'&list_price='+listprice,
-		}).done(function (response) {
-			document.getElementById('status').style.display='none';
-			document.getElementById('RLContents').innerHTML= response;
-		});
+		var url = 'index.php?module=Products&action=ProductsAjax&file=UpdateListPrice&ajax=true&return_action=CallRelatedList&return_module=PriceBooks&record='+id+'&pricebook_id='+pbid+'&product_id='+proid+'&list_price='+listprice;
+		gotourl(url);
+		return false;
 	}
 
 	function OpenWindow(url) {

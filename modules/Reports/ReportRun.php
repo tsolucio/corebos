@@ -1896,7 +1896,7 @@ class ReportRun extends CRMEntity {
 		} else {
 			$columnlist = $this->getQueryColumnsList($reportid, $type);
 			$groupslist = $this->getGroupingList($reportid);
-			$groupTimeList = $this->getGroupByTimeList($reportid);
+			$this->getGroupByTimeList($reportid);
 			$stdfilterlist = $this->getStdFilterList($reportid);
 			$columnstotallist = $this->getColumnsTotal($reportid, $columnlist);
 			$advfiltersql = $this->getAdvFilterSql($reportid);
@@ -1910,9 +1910,6 @@ class ReportRun extends CRMEntity {
 		//groups list
 			if (isset($groupslist)) {
 				$groupsquery = implode(', ', $groupslist);
-			}
-			if (isset($groupTimeList)) {
-				$groupTimeQuery = implode(', ', $groupTimeList);
 			}
 
 		//standard list
@@ -3068,11 +3065,6 @@ class ReportRun extends CRMEntity {
 
 		global $adb, $log;
 		static $modulename_cache = array();
-		$query = 'select primarymodule,secondarymodules from vtiger_reportmodules where reportmodulesid=?';
-		$res = $adb->pquery($query, array($reportid));
-		$modrow = $adb->fetch_array($res);
-		$premod = $modrow['primarymodule'];
-		$secmod = $modrow['secondarymodules'];
 		$coltotalsql = 'select vtiger_reportsummary.* from vtiger_report';
 		$coltotalsql .= ' inner join vtiger_reportsummary on vtiger_report.reportid = vtiger_reportsummary.reportsummaryid';
 		$coltotalsql .= ' where vtiger_report.reportid =?';
@@ -3114,18 +3106,6 @@ class ReportRun extends CRMEntity {
 				if (CheckColumnPermission($field_tablename, $field_columnname, $module_name) != "false") {
 					$field_permitted = true;
 				}
-				/* one call to CheckColumnPermission with $module_name is better than the block below
-				if(CheckColumnPermission($field_tablename,$field_columnname,$premod) != "false"){
-					$field_permitted = true;
-				} else {
-					$mod = explode(":",$secmod);
-					foreach($mod as $key){
-						if(CheckColumnPermission($field_tablename,$field_columnname,$key) != "false"){
-							$field_permitted=true;
-						}
-					}
-				}
-				*/
 				if ($field_permitted == true) {
 					if ($field_tablename == 'vtiger_products' && $field_columnname == 'unit_price') {
 						// Query needs to be rebuild to get the value in user preferred currency. [innerProduct and actual_unit_price are table and column alias.]

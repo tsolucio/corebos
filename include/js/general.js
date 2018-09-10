@@ -54,6 +54,9 @@ if (document.all) {
 
 var gBrowserAgent = navigator.userAgent.toLowerCase();
 
+function doNothing() {
+}
+
 function hideSelect() {
 	var oselect_array = document.getElementsByTagName('SELECT');
 	for (var i=0; i<oselect_array.length; i++) {
@@ -1678,37 +1681,33 @@ function hideLocateMapMenu(ev) {
 }
 
 /*
-* javascript function to display the div tag
+* display the div tag
 * @param divId :: div tag ID
 */
 function show(divId) {
 	if (getObj(divId)) {
-		var id = document.getElementById(divId);
-		id.style.display = 'inline';
+		document.getElementById(divId).style.display = 'inline';
 	}
 }
 
 /*
-* javascript function to display the div tag
+* display the div tag
 * @param divId :: div tag ID
 */
 function showBlock(divId) {
-	var id = document.getElementById(divId);
-	id.style.display = 'block';
+	document.getElementById(divId).style.display = 'block';
 }
 
 /*
-* javascript function to hide the div tag
+* hide the div tag
 * @param divId :: div tag ID
 */
 function hide(divId) {
-	var id = document.getElementById(divId);
-	id.style.display = 'none';
+	document.getElementById(divId).style.display = 'none';
 }
 
 function fnhide(divId) {
-	var id = document.getElementById(divId);
-	id.style.display = 'none';
+	document.getElementById(divId).style.display = 'none';
 }
 
 function fnCopy(source, design) {
