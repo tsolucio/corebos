@@ -7,56 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+include 'modules/MailManager/src/helpers/Response.php';
 
-class crmtogo_API_Response {
-	private $error = null;
-	private $result = null;
+class crmtogo_API_Response extends MailManager_Response {
 
-	public function setError($code, $message) {
-		$error = array('code' => $code, 'message' => $message);
-		$this->error = $error;
-	}
-
-	public function getError() {
-		return $this->error;
-	}
-
-	public function hasError() {
-		return !is_null($this->error);
-	}
-
-	public function setResult($result) {
-		$this->result = $result;
-	}
-
-	public function getResult() {
-		return $this->result;
-	}
-
-	public function addToResult($key, $value) {
-		$this->result[$key] = $value;
-	}
-
-	public function prepareResponse() {
-		$response = array();
-		if ($this->result === null) {
-			$response['success'] = false;
-			$response['error'] = $this->error;
-		} else {
-			$response['success'] = true;
-			$response['result'] = $this->result;
-		}
-		return $response;
-	}
-
-	public function emitJSON() {
-		return json_encode($this->prepareResponse());
-	}
-
-	public function emitHTML() {
-		if ($this->result === null) {
-			return (is_string($this->error))? $this->error : var_export($this->error, true);
-		}
-		return $this->result;
-	}
 }
