@@ -57,9 +57,9 @@ class crmtogo_UI_SearchFilterModel extends crmtogo_WS_SearchFilterModel {
 			$noofrows = $db->num_rows($result);
 			$lstresult = array();
 			$entityId = vtws_getEntityId($this->moduleName)."x";
-			for($i=0;$i<$noofrows;$i++) {
-				$lstresult[$i]['firstname'] = $db->query_result($result,$i,'projectname');
-				$lstresult[$i]['id']= $entityId.$db->query_result($result,$i,'projectid');
+			for ($i=0; $i<$noofrows; $i++) {
+				$lstresult[$i]['firstname'] = $db->query_result($result, $i, 'projectname');
+				$lstresult[$i]['id']= $entityId.$db->query_result($result, $i, 'projectid');
 			}
 			return $lstresult;
 		} else {
