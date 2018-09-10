@@ -1615,7 +1615,7 @@ function updateAdvancedCriteria($reportid, $advft_criteria, $advft_criteria_grou
 	if (empty($advft_criteria)) {
 		return;
 	}
-
+	$irelcriteriasql = 'insert into vtiger_relcriteria(QUERYID,COLUMNINDEX,COLUMNNAME,COMPARATOR,VALUE,GROUPID,COLUMN_CONDITION) values (?,?,?,?,?,?,?)';
 	foreach ($advft_criteria as $column_index => $column_condition) {
 		if (empty($column_condition)) {
 			continue;
@@ -1656,9 +1656,7 @@ function updateAdvancedCriteria($reportid, $advft_criteria, $advft_criteria_grou
 				if (trim($temp_val[$x]) != '') {
 					$date = new DateTimeField(trim($temp_val[$x]));
 					if ($column_info[4] == 'D') {
-						$val[$x] = DateTimeField::convertToUserFormat(
-							trim($temp_val[$x])
-						);
+						$val[$x] = DateTimeField::convertToDBFormat(trim($temp_val[$x]));
 					} elseif ($column_info[4] == 'DT') {
 						$val[$x] = $date->getDBInsertDateTimeValue();
 					} else {
@@ -1669,7 +1667,6 @@ function updateAdvancedCriteria($reportid, $advft_criteria, $advft_criteria_grou
 			$adv_filter_value = implode(',', $val);
 		}
 
-		$irelcriteriasql = 'insert into vtiger_relcriteria(QUERYID,COLUMNINDEX,COLUMNNAME,COMPARATOR,VALUE,GROUPID,COLUMN_CONDITION) values (?,?,?,?,?,?,?)';
 		$adb->pquery(
 			$irelcriteriasql,
 			array($reportid, $column_index, $adv_filter_column, $adv_filter_comparator, $adv_filter_value, $adv_filter_groupid, $adv_filter_column_condition)
