@@ -344,6 +344,7 @@ function changeSteps1() {
 		}
 	}
 }
+
 function changeStepsback1() {
 	if (getObj('step1').style.display != 'none') {
 		document.NewReport.action.value='ReportsAjax';
@@ -930,7 +931,7 @@ function validateDate() {
 		if (!dateValidate('enddate', 'End Date', 'D')) {
 			return false;
 		}
-		if (! dateComparison('startdate', 'Start Date', 'enddate', 'End Date', 'LE')) {
+		if (!dateComparison('startdate', 'Start Date', 'enddate', 'End Date', 'LE')) {
 			return false;
 		}
 	}
@@ -1181,7 +1182,6 @@ function generateReport(id) {
 }
 
 function saveReportAdvFilter(id) {
-
 	if (!checkAdvancedFilter()) {
 		return false;
 	}

@@ -182,8 +182,6 @@ function userEventSharing(selectedusrid, selcolid) {
 function incUser(avail_users, sel_users) {
 	availListObj=getObj(avail_users);
 	selectedColumnsObj=getObj(sel_users);
-	var selectlength=selectedColumnsObj.length;
-	var availlength=availListObj.length;
 
 	for (var i=0; i<selectedColumnsObj.length; i++) {
 		selectedColumnsObj.options[i].selected=false;
