@@ -378,13 +378,17 @@ function compareDates(date1, fldLabel1, date2, fldLabel2, type, message) {
 }
 
 function dateTimeValidate(dateFldName, timeFldName, fldLabel, type) {
-	if (patternValidate(dateFldName, fldLabel, 'DATE')==false) {
+	return dateTimeValidateObject(getObj(dateFldName), getObj(timeFldName), fldLabel, type);
+}
+
+function dateTimeValidateObject(dateFldObj, timeFldObj, fldLabel, type) {
+	if (patternValidateObject(dateFldObj, fldLabel, 'DATE')==false) {
 		return false;
 	}
-	let dateval = getObj(dateFldName).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	let dateval = dateFldObj.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 
-	if (timeFldName==undefined) {
-		timeFldName = dateFldName;
+	if (timeFldObj==undefined) {
+		timeFldObj = dateFldObj;
 		let dt = dateval.split(' ');
 		dateval = dt[0];
 	}
@@ -397,7 +401,7 @@ function dateTimeValidate(dateFldName, timeFldName, fldLabel, type) {
 	if (dd<1 || dd>31 || mm<1 || mm>12 || yyyy<1 || yyyy<1000) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
-			getObj(dateFldName).focus();
+			dateFldObj.focus();
 		} catch (error) { }
 		return false;
 	}
@@ -405,7 +409,7 @@ function dateTimeValidate(dateFldName, timeFldName, fldLabel, type) {
 	if ((mm==2) && (dd>29)) {//checking of no. of days in february month
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
-			getObj(dateFldName).focus();
+			dateFldObj.focus();
 		} catch (error) { }
 		return false;
 	}
@@ -413,7 +417,7 @@ function dateTimeValidate(dateFldName, timeFldName, fldLabel, type) {
 	if ((mm==2) && (dd>28) && ((yyyy%4)!=0)) {//leap year checking
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
-			getObj(dateFldName).focus();
+			dateFldObj.focus();
 		} catch (error) { }
 		return false;
 	}
@@ -427,24 +431,24 @@ function dateTimeValidate(dateFldName, timeFldName, fldLabel, type) {
 		if (dd>30) {
 			alert(alert_arr.ENTER_VALID+fldLabel);
 			try {
-				getObj(dateFldName).focus();
+				dateFldObj.focus();
 			} catch (error) { }
 			return false;
 		}
 	}
 
-	if (patternValidate(timeFldName, fldLabel, 'TIME')==false) {
+	if (patternValidateObject(timeFldObj, fldLabel, 'TIME')==false) {
 		return false;
 	}
 
-	var timeval=getObj(timeFldName).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	var timeval=timeFldObj.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 	if (timeval.indexOf(' ')>0) {
 		let dt = timeval.split(' ');
 		timeval = dt[1];
 	}
 	var hourval=parseInt(timeval.substring(0, timeval.indexOf(':')));
 	var minval=parseInt(timeval.substring(timeval.indexOf(':')+1, timeval.length));
-	var currObj=getObj(timeFldName);
+	var currObj=timeFldObj;
 
 	if (hourval>23 || minval>59) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
@@ -466,7 +470,7 @@ function dateTimeValidate(dateFldName, timeFldName, fldLabel, type) {
 	if (type!='OTH') {
 		if (!compareDates(chkdate, fldLabel, currdate, 'current date & time', type)) {
 			try {
-				getObj(dateFldName).focus();
+				dateFldObj.focus();
 			} catch (error) { }
 			return false;
 		} else {
@@ -605,7 +609,11 @@ function dateValidate(fldName, fldLabel, type) {
 	if (patternValidate(fldName, fldLabel, 'DATE')==false) {
 		return false;
 	}
-	var dateval=getObj(fldName).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	return dateValidateObject(getObj(fldName), fldLabel, type);
+}
+
+function dateValidateObject(fldObj, fldLabel, type) {
+	var dateval=fldObj.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 
 	var dateelements=splitDateVal(dateval);
 
@@ -616,7 +624,7 @@ function dateValidate(fldName, fldLabel, type) {
 	if (dd<1 || dd>31 || mm<1 || mm>12 || yyyy<1 || yyyy<1000) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
-			getObj(fldName).focus();
+			fldObj.focus();
 		} catch (error) { }
 		return false;
 	}
@@ -624,7 +632,7 @@ function dateValidate(fldName, fldLabel, type) {
 	if ((mm==2) && (dd>29)) {//checking of no. of days in february month
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
-			getObj(fldName).focus();
+			fldObj.focus();
 		} catch (error) { }
 		return false;
 	}
@@ -632,7 +640,7 @@ function dateValidate(fldName, fldLabel, type) {
 	if ((mm==2) && (dd>28) && ((yyyy%4)!=0)) {//leap year checking
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
-			getObj(fldName).focus();
+			fldObj.focus();
 		} catch (error) { }
 		return false;
 	}
@@ -646,7 +654,7 @@ function dateValidate(fldName, fldLabel, type) {
 		if (dd>30) {
 			alert(alert_arr.ENTER_VALID+fldLabel);
 			try {
-				getObj(fldName).focus();
+				fldObj.focus();
 			} catch (error) { }
 			return false;
 		}
@@ -662,7 +670,7 @@ function dateValidate(fldName, fldLabel, type) {
 	if (type!='OTH') {
 		if (!compareDates(chkdate, fldLabel, currdate, 'current date', type)) {
 			try {
-				getObj(fldName).focus();
+				fldObj.focus();
 			} catch (error) { }
 			return false;
 		} else {
@@ -674,8 +682,12 @@ function dateValidate(fldName, fldLabel, type) {
 }
 
 function dateComparison(fldName1, fldLabel1, fldName2, fldLabel2, type) {
-	var dateval1=getObj(fldName1).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-	var dateval2=getObj(fldName2).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	return dateComparisonObject(getObj(fldName1), fldLabel1, getObj(fldName2), fldLabel2, type);
+}
+
+function dateComparisonObject(fldObj1, fldLabel1, fldObj2, fldLabel2, type) {
+	var dateval1=fldObj1.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	var dateval2=fldObj2.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 
 	var dateelements1=splitDateVal(dateval1);
 	var dateelements2=splitDateVal(dateval2);
@@ -702,7 +714,7 @@ function dateComparison(fldName1, fldLabel1, fldName2, fldLabel2, type) {
 	if (type!='OTH') {
 		if (!compareDates(date1, fldLabel1, date2, fldLabel2, type)) {
 			try {
-				getObj(fldName1).focus();
+				fldObj1.focus();
 			} catch (error) { }
 			return false;
 		} else {
@@ -987,7 +999,11 @@ function intValidate(fldName, fldLabel) {
 }
 
 function numConstComp(fldName, fldLabel, type, constval) {
-	var val=parseFloat(getObj(fldName).value.replace(/^\s+/g, '').replace(/\s+$/g, ''));
+	return numConstCompObject(getObj(fldName), fldLabel, type, constval);
+}
+
+function numConstCompObject(fldObj, fldLabel, type, constval) {
+	var val=parseFloat(fldObj.value.replace(/^\s+/g, '').replace(/\s+$/g, ''));
 	constval=parseFloat(constval);
 
 	var ret=true;
@@ -1032,7 +1048,7 @@ function numConstComp(fldName, fldLabel, type, constval) {
 
 	if (ret==false) {
 		try {
-			getObj(fldName).focus();
+			fldObj.focus();
 		} catch (error) { }
 		return false;
 	} else {
@@ -4687,7 +4703,7 @@ function QCformValidate() {
 				if (window.document.QcEditView[curr_fieldname] != null && window.document.QcEditView[curr_fieldname].value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0) {
 					if (window.document.QcEditView[curr_fieldname].value.length!=0) {
 						var etype = 'EMAIL';
-						if (!qcpatternValidate(curr_fieldname, qcfieldlabel[i], etype)) {
+						if (!patternValidateObject(window.document.QcEditView[curr_fieldname], qcfieldlabel[i], etype)) {
 							return false;
 						}
 					}
