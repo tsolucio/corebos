@@ -1049,20 +1049,21 @@ function updatePrices() {
 		if (prev_cur != null && inventory_currency != null) {
 			prev_cur.value = inventory_currency.value;
 		}
-
-		var currency_id = inventory_currency.value;
-		//Retrieve all the prices for all the products in currently selected currency
-		jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?module=Products&action=ProductsAjax&file=InventoryPriceAjax&currencyid='+currency_id+'&productsList='+products_list
-		}).done(function (response) {
-			if (trim(response).indexOf('SUCCESS') == 0) {
-				var res = trim(response).split('$');
-				updatePriceValues(res[1]);
-			} else {
-				alert(alert_arr.OPERATION_DENIED);
-			}
-		});
+		if (products_list!='') {
+			var currency_id = inventory_currency.value;
+			//Retrieve all the prices for all the products in currently selected currency
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?module=Products&action=ProductsAjax&file=InventoryPriceAjax&currencyid='+currency_id+'&productsList='+products_list
+			}).done(function (response) {
+				if (trim(response).indexOf('SUCCESS') == 0) {
+					var res = trim(response).split('$');
+					updatePriceValues(res[1]);
+				} else {
+					alert(alert_arr.OPERATION_DENIED);
+				}
+			});
+		}
 	} else {
 		if (prev_cur != null && inventory_currency != null) {
 			inventory_currency.value = prev_cur.value;
