@@ -1684,9 +1684,13 @@ function InventorySelectAll(mod, image_pth) {
 					usageunits = this.root.el.getElementsByClassName(this.root.lineClass + '--usageunit');
 
 				this.utils.getFirstClass(lineNode, 'cbds-product-line-image').src = result.obj.meta.image;
-
+				var currency = document.getElementById('inventory_currency').value;
+				if (result.obj.pricing.multicurrency[currency] != undefined) {
+					this.parent.setField('unit_price', result.obj.pricing.multicurrency[currency].actual_price);
+				} else {
+					this.parent.setField('unit_price', result.obj.pricing.unit_price);
+				}
 				this.parent.setField('cost_price', result.obj.pricing.unit_cost);
-				this.parent.setField('unit_price', result.obj.pricing.list_price);
 				this.parent.setField('qtyinstock', result.obj.logistics.qty_in_stock);
 				this.parent.setField('qtyindemand', result.obj.logistics.curr_ordered);
 
@@ -1857,7 +1861,12 @@ function handleProductAutocompleteSelect(obj) {
 
 	document.getElementById('productName'+no).value = obj.result.meta.name;
 	document.getElementById('comment'+no).innerHTML = obj.result.meta.comments;
-	document.getElementById('listPrice'+no).value = obj.result.pricing.unit_price;
+	var currency = document.getElementById('inventory_currency').value;
+	if (obj.result.pricing.multicurrency[currency] != undefined) {
+		document.getElementById('listPrice'+no).value = obj.result.pricing.multicurrency[currency].actual_price;
+	} else {
+		document.getElementById('listPrice'+no).value = obj.result.pricing.unit_price;
+	}
 	document.getElementById('hdnProductId'+no).value = obj.result.meta.id;
 	document.getElementById('lineItemType'+no).value = obj.result.meta.type;
 	document.getElementById('qty'+no).value = qty;
