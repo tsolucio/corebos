@@ -1058,20 +1058,20 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$label_fld['secid'] = $salesorder_id;
 		$label_fld['link'] = 'index.php?module=SalesOrder&action=DetailView&record=' . $salesorder_id;
 	} elseif ($uitype == 30) {
-		$rem_days = 0;
-		$rem_hrs = 0;
-		$rem_min = 0;
-		$reminder_str = "";
-		$rem_days = floor($col_fields[$fieldname] / (24 * 60));
-		$rem_hrs = floor(($col_fields[$fieldname] - $rem_days * 24 * 60) / 60);
-		$rem_min = ($col_fields[$fieldname] - $rem_days * 24 * 60) % 60;
-
-		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		if ($col_fields[$fieldname]) {
+			$rem_days = floor($col_fields[$fieldname] / (24 * 60));
+			$rem_hrs = floor(($col_fields[$fieldname] - $rem_days * 24 * 60) / 60);
+			$rem_min = ($col_fields[$fieldname] - $rem_days * 24 * 60) % 60;
 			$reminder_str = $rem_days . '&nbsp;' . getTranslatedString('LBL_DAYS', 'Calendar') . '&nbsp;' . $rem_hrs . '&nbsp;'
 				. getTranslatedString('LBL_HOURS', 'Calendar') . '&nbsp;' . $rem_min . '&nbsp;' . getTranslatedString('LBL_MINUTES', 'Calendar') . '&nbsp;&nbsp;'
 				. getTranslatedString('LBL_BEFORE_EVENT', 'Calendar');
+		} else {
+			$rem_days = 0;
+			$rem_hrs = 0;
+			$rem_min = 0;
+			$reminder_str = '';
 		}
+		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = '&nbsp;' . $reminder_str;
 	} elseif ($uitype == 98) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);

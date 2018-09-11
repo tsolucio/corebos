@@ -991,13 +991,13 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$fieldvalue[] = $salesorder_name;
 		$fieldvalue[] = $value;
 	} elseif ($uitype == 30) {
-		$rem_days = 0;
-		$rem_hrs = 0;
-		$rem_min = 0;
 		if ($value!='') {
 			$SET_REM = 'CHECKED';
 		} else {
 			$SET_REM = '';
+		}
+		if (empty($col_fields[$fieldname])) {
+			$col_fields[$fieldname] = 0;
 		}
 		$rem_days = floor($col_fields[$fieldname]/(24*60));
 		$rem_hrs = floor(($col_fields[$fieldname]-$rem_days*24*60)/60);
