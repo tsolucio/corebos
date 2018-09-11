@@ -3,15 +3,14 @@
 /**
  * @Author: edmondi kacaj
  * @Date:   2017-11-06 10:16:56
- * @Last Modified by: programim95@gmail.com
- * @Last Modified time: 2018-03-26 15:19:56
+ * @Last Modified by: edmondikacaj@gmail.com
+ * @Last Modified time: 2018-09-11 14:53:57
  */
 
 
 require_once ('include/utils/utils.php');
 require_once ('Smarty_setup.php');
 require_once ('include/database/PearDatabase.php');
-// require_once('database/DatabaseConnection.php');
 require_once ('include/CustomFieldUtil.php');
 require_once ('data/Tracker.php');
 include_once 'All_functions.php';
@@ -45,10 +44,10 @@ if ($MypType=="Mapping") {
 
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
          echo showError("An error has occurred","Something was wrong check the Exception in log file");
          LogFile($ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 	}
 
 }elseif ($MypType=="MasterDetailLayout") {
@@ -64,10 +63,10 @@ if ($MypType=="Mapping") {
 
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
 		echo showError("Something was wrong",$ex->getMessage());
 		LogFile($ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 	}
 	
 }else if ($MypType==="ListColumns") {
@@ -88,8 +87,8 @@ if ($MypType=="Mapping") {
 
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 		 echo showError("Something was wrong",$ex->getMessage());
 		 LogFile($ex);
 	}
@@ -109,8 +108,8 @@ if ($MypType=="Mapping") {
 
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 		echo showError("Something was wrong",$ex->getMessage());
 		LogFile($ex);
 	}
@@ -132,8 +131,8 @@ if ($MypType=="Mapping") {
 
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 		echo showError("Something was wrong",$ex->getMessage());
 		LogFile($ex);
 	}
@@ -152,8 +151,8 @@ if ($MypType=="Mapping") {
 
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 		echo showError("Something was wrong",$ex->getMessage());
 		LogFile($ex);
 	}
@@ -174,8 +173,8 @@ if ($MypType=="Mapping") {
 
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 		echo showError("Something was wrong",$ex->getMessage());
 		LogFile($ex);
 	}
@@ -196,8 +195,8 @@ if ($MypType=="Mapping") {
 
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 		echo showError("Something was wrong",$ex->getMessage());
 		LogFile($ex);
 	}
@@ -218,8 +217,8 @@ if ($MypType=="Mapping") {
 
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 		echo showError("Something was wrong",$ex->getMessage());
 		LogFile($ex);
 	}
@@ -239,8 +238,8 @@ if ($MypType=="Mapping") {
 
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 		echo showError("Something was wrong",$ex->getMessage());
 		LogFile($ex);
 	}
@@ -263,8 +262,8 @@ if ($MypType=="Mapping") {
 
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 		echo showError("Something was wrong",$ex->getMessage());
 		LogFile($ex);
 	}
@@ -284,8 +283,8 @@ if ($MypType=="Mapping") {
 
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 		echo showError("Something was wrong",$ex->getMessage());
 		LogFile($ex);
 	}
@@ -304,8 +303,8 @@ if ($MypType=="Mapping") {
 
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 		echo showError("Something was wrong",$ex->getMessage());
 		LogFile($ex);
 	}
@@ -325,8 +324,8 @@ if ($MypType=="Mapping") {
 
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 		echo showError("Something was wrong",$ex->getMessage());
 		LogFile($ex);
 	}
@@ -346,8 +345,8 @@ if ($MypType=="Mapping") {
 
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 		echo showError("Something was wrong",$ex->getMessage());
 		LogFile($ex);
 	}
@@ -368,8 +367,8 @@ if ($MypType=="Mapping") {
 
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 		LogFile($ex);
 		echo showError("Something was wrong",$ex->getMessage());
 	}
@@ -390,9 +389,9 @@ if ($MypType=="Mapping") {
 		
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
 		LogFile($ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 		echo showError("Something was wrong",$ex->getMessage());
 	}
 	
@@ -412,9 +411,9 @@ if ($MypType=="Mapping") {
 		
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
 		LogFile($ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 		echo showError("Something was wrong",$ex->getMessage());
 	}
 	
@@ -434,9 +433,9 @@ if ($MypType=="Mapping") {
 		
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
 		LogFile($ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 		echo showError("Something was wrong",$ex->getMessage());
 	}
 	
@@ -455,9 +454,9 @@ if ($MypType=="Mapping") {
 		
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
 		LogFile($ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 		echo showError("Something was wrong",$ex->getMessage());
 	}
 	
@@ -476,9 +475,9 @@ if ($MypType=="Mapping") {
 		
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
 		LogFile($ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 		echo showError("Something was wrong",$ex->getMessage());
 	}
 	
@@ -497,9 +496,9 @@ if ($MypType=="Mapping") {
 		
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
 		LogFile($ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 		echo showError("Something was wrong",$ex->getMessage());
 	}
 	
@@ -549,9 +548,9 @@ if ($MypType=="Mapping") {
 		
 	}catch(Exception $ex)
 	{
-		$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
+		$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
 		LogFile($ex);
-		// echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+		// echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 		echo showError("Something was wrong",$ex->getMessage());
 	}
 	
@@ -1135,7 +1134,7 @@ if ($MypType=="Mapping") {
 			}
 
 		} catch (Exception $ex) {
-			$log->debug(TypeOFErrors::ErrorLG." Something was wrong check the Exception ".$ex);
+			$log->debug(TypeOFErrors::ERRORLG." Something was wrong check the Exception ".$ex);
 			echo $ex;
 		}
 	}
@@ -3097,8 +3096,8 @@ if ($MypType=="Mapping") {
 			
 			
 		} catch (Exception $ex) {
-			$log->debug(TypeOFErrors::ErrorLG." Something was wrong check the Exception ".$ex);
-			echo TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex;
+			$log->debug(TypeOFErrors::ERRORLG." Something was wrong check the Exception ".$ex);
+			echo TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex;
 		}
 	}
 
@@ -3329,7 +3328,7 @@ if ($MypType=="Mapping") {
 			}
 
 		} catch (Exception $ex) {
-			$log->debug(TypeOFErrors::ErrorLG." Something was wrong check the Exception ".$ex);
+			$log->debug(TypeOFErrors::ERRORLG." Something was wrong check the Exception ".$ex);
 			echo $ex;
 		}
 	}
@@ -3519,7 +3518,7 @@ if ($MypType=="Mapping") {
 
 			
 		} catch (Exception $ex) {
-			$log->debug(TypeOFErrors::ErrorLG." Something was wrong check the Exception ".$ex);
+			$log->debug(TypeOFErrors::ERRORLG." Something was wrong check the Exception ".$ex);
 			LogFile($ex);
 			// echo "Missing the Id of the Map and also the Id of query history ";
 			showError("Something was wrong","Missing the Id of the Map and also the Id of query history");
@@ -3660,7 +3659,7 @@ if ($MypType=="Mapping") {
 			$result = $adb->query($q);
 			$num_rows = $adb->num_rows($result);
 			if (empty($field_take)) {
-				throw new Exception(TypeOFErrors::ErrorLG."r Missing the Filed you wat to take", 1);
+				throw new Exception(TypeOFErrors::ERRORLG."r Missing the Filed you wat to take", 1);
 			}
 
 			if ($num_rows>0) {
@@ -3669,13 +3668,13 @@ if ($MypType=="Mapping") {
 				if (!empty($Resulti)) {
 					return $Resulti;
 				} else {
-					throw new Exception(TypeOFErrors::ErrorLG." Something was wrong RESULT IS EMPTY", 1);
+					throw new Exception(TypeOFErrors::ERRORLG." Something was wrong RESULT IS EMPTY", 1);
 				}
 			} else {
-				throw new Exception(TypeOFErrors::ErrorLG."Not exist daata with this ID="+$Id_Encrypt,1);
+				throw new Exception(TypeOFErrors::ERRORLG."Not exist daata with this ID="+$Id_Encrypt,1);
 			}
 		} catch (Exception $ex) {
-			$log->debug(TypeOFErrors::ErrorLG." Something was wrong check the Exception ".$ex);
+			$log->debug(TypeOFErrors::ERRORLG." Something was wrong check the Exception ".$ex);
 			return "";
 		}
 	}
@@ -3709,7 +3708,7 @@ if ($MypType=="Mapping") {
 			$result = $adb->query($q);
 			$num_rows = $adb->num_rows($result);
 			if (empty($field_take)) {
-				throw new Exception(TypeOFErrors::ErrorLG." Missing the Filed you wnat to take", 1);
+				throw new Exception(TypeOFErrors::ERRORLG." Missing the Filed you wnat to take", 1);
 			}
 
 			if ($num_rows>0) {
@@ -3728,13 +3727,13 @@ if ($MypType=="Mapping") {
 				if (!empty($datas)) {
 					return $datas;
 				} else {
-					throw new Exception(TypeOFErrors::ErrorLG." Something was wrong RESULT IS EMPTY", 1);
+					throw new Exception(TypeOFErrors::ERRORLG." Something was wrong RESULT IS EMPTY", 1);
 				}
 			} else {
-				throw new Exception(TypeOFErrors::ErrorLG."Not exist daata with this ID="+$Id_Encrypt,1);
+				throw new Exception(TypeOFErrors::ERRORLG."Not exist daata with this ID="+$Id_Encrypt,1);
 			}
 		} catch (Exception $ex) {
-			$log->debug(TypeOFErrors::ErrorLG." Something was wrong check the Exception ".$ex);
+			$log->debug(TypeOFErrors::ERRORLG." Something was wrong check the Exception ".$ex);
 			return $ex;
 		}
 	}
@@ -3762,7 +3761,7 @@ if ($MypType=="Mapping") {
 			$result = $adb->query($q);
 			$num_rows = $adb->num_rows($result);
 			if (empty($field_take)) {
-				throw new Exception(TypeOFErrors::ErrorLG." Missing the Filed you wnat to take", 1);
+				throw new Exception(TypeOFErrors::ERRORLG." Missing the Filed you wnat to take", 1);
 			}
 
 			if ($num_rows>0) {
@@ -3771,13 +3770,13 @@ if ($MypType=="Mapping") {
 				if (!empty($Resulti)) {
 					return $Resulti;
 				} else {
-					throw new Exception(TypeOFErrors::ErrorLG." Something was wrong RESULT IS EMPTY", 1);
+					throw new Exception(TypeOFErrors::ERRORLG." Something was wrong RESULT IS EMPTY", 1);
 				}
 			} else {
-				throw new Exception(TypeOFErrors::ErrorLG."Not exist Map with this ID=".$MapID,1);
+				throw new Exception(TypeOFErrors::ERRORLG."Not exist Map with this ID=".$MapID,1);
 			}
 		} catch (Exception $ex) {
-			$log->debug(TypeOFErrors::ErrorLG." Something was wrong check the Exception ".$ex);
+			$log->debug(TypeOFErrors::ERRORLG." Something was wrong check the Exception ".$ex);
 			return "";
 		}
 	}
@@ -3806,7 +3805,7 @@ if ($MypType=="Mapping") {
 			$result = $adb->query($q);
 			$num_rows = $adb->num_rows($result);
 			if (empty($field_take)) {
-				throw new Exception(TypeOFErrors::ErrorLG." Missing the Filed you wnat to take", 1);
+				throw new Exception(TypeOFErrors::ERRORLG." Missing the Filed you wnat to take", 1);
 			}
 
 			if ($num_rows>0) {
@@ -3815,13 +3814,13 @@ if ($MypType=="Mapping") {
 				if (!empty($Resulti)) {
 					return $Resulti;
 				} else {
-					throw new Exception(TypeOFErrors::ErrorLG." Something was wrong RESULT IS EMPTY", 1);
+					throw new Exception(TypeOFErrors::ERRORLG." Something was wrong RESULT IS EMPTY", 1);
 				}
 			} else {
-				throw new Exception(TypeOFErrors::ErrorLG."Not exist Map with this ID=".$Queryid,1);
+				throw new Exception(TypeOFErrors::ERRORLG."Not exist Map with this ID=".$Queryid,1);
 			}
 		} catch (Exception $ex) {
-			$log->debug(TypeOFErrors::ErrorLG." Something was wrong check the Exception ".$ex);
+			$log->debug(TypeOFErrors::ERRORLG." Something was wrong check the Exception ".$ex);
 			return "";
 		}
 	}
@@ -3985,7 +3984,7 @@ if ($MypType=="Mapping") {
 		$returncorrectdata=explode("#", $OPTION_SET);
 
 		foreach ($returncorrectdata as $value) {
-			$log->debug(TypeOFErrors::ErrorLG." Get_Modul_fields_check_from_load #### ".$value);
+			$log->debug(TypeOFErrors::ERRORLG." Get_Modul_fields_check_from_load #### ".$value);
 			if (contains(explode(",", $value)[0],trim($checkname)) == true) {
 				return $value;
 			}
@@ -4232,7 +4231,7 @@ if ($MypType=="Mapping") {
 			(stripos($haystack, $needle) === false ? false : true);
 		}catch(Exception $ex)
 		{
-			$log->debug(TypeOFErrors::ErrorLG."Something was wrong check the Exception ".$ex);
+			$log->debug(TypeOFErrors::ERRORLG."Something was wrong check the Exception ".$ex);
 			return FALSE;
 		}
 	}
@@ -4303,7 +4302,7 @@ if ($MypType=="Mapping") {
 		$allfields='';
 		foreach ($FirstModuleSelected as $value) {
 				$field.=Get_Modul_fields_check_from_load($value,$checkname);
-				// LogFileSimple(TypeOFErrors::ErrorLG."CheckAllFirstForAllModules #### ".$field);
+				// LogFileSimple(TypeOFErrors::ERRORLG."CheckAllFirstForAllModules #### ".$field);
 				if (!empty($field)) {
 					return $field;
 				}
@@ -4335,13 +4334,13 @@ if ($MypType=="Mapping") {
 				if (!empty($Resulti)) {
 					return $Resulti;
 				} else {
-					throw new Exception(TypeOFErrors::ErrorLG." Something was wrong RESULT IS EMPTY", 1);
+					throw new Exception(TypeOFErrors::ERRORLG." Something was wrong RESULT IS EMPTY", 1);
 				}
 			} else {
-				throw new Exception(TypeOFErrors::ErrorLG."Not exist Map with this ID=".$Queryid,1);
+				throw new Exception(TypeOFErrors::ERRORLG."Not exist Map with this ID=".$Queryid,1);
 			}
 		} catch (Exception $ex) {
-			$log->debug(TypeOFErrors::ErrorLG." Something was wrong check the Exception ".$ex);
+			$log->debug(TypeOFErrors::ERRORLG." Something was wrong check the Exception ".$ex);
 			return "";
 		}
 	}

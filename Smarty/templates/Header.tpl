@@ -11,7 +11,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset={$APP.LBL_CHARSET}">
+	<meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
 	<meta name="robots" content="noindex">
 	<title>{$USER} - {$MODULE_NAME|@getTranslatedString:$MODULE_NAME} - {$coreBOS_app_name}</title>
 	<link REL="SHORTCUT ICON" HREF="{$FAVICON}">
@@ -19,13 +19,9 @@
 	{if $Application_JSCalendar_Load neq 0}<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">{/if}
 	<link rel="stylesheet" href="include/print.css" type="text/css" media="print" />
 	<link rel="stylesheet" href="include/LD/assets/styles/salesforce-lightning-design-system.css" type="text/css" />
-	 <link rel="stylesheet" href="include/LD/assets/styles/slds-combobox.css" type="text/css" />
-
+	<link rel="stylesheet" href="include/LD/assets/styles/slds-combobox.css" type="text/css" />
 	<link rel="stylesheet" href="include/LD/assets/styles/mainmenu.css" type="text/css" />
-	<link rel="stylesheet" href="include/LD/assets/styles/LoadingAll.css" type="text/css" />
-	<link rel="stylesheet" href="include/LD/assets/styles/settings.css" type="text/css" />
 	<link rel="stylesheet" href="include/LD/assets/styles/override_lds.css" type="text/css" />
-	<link rel="stylesheet" href="include/LD/assets/styles/all-modules.css" type="text/css" />
 {* vtlib customization: Inclusion of custom javascript and css as registered *}
 {if $HEADERCSS}
 	<!-- Custom Header CSS -->

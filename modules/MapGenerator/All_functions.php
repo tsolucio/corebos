@@ -1,5 +1,11 @@
-<?php 
 
+<?php 
+/*
+ * @Author: Edmond Kacaj 
+ * @Date: 2018-09-11 11:03:04 
+ * @Last Modified by: edmondikacaj@gmail.com
+ * @Last Modified time: 2018-09-11 14:55:28
+ */
 
 function GetModulRel($m)
 {
@@ -1892,7 +1898,7 @@ function CheckIfExistResponseTypeTable($tablename)
         $returvalues= 0;
        }catch(Exception $ex)
        {
-            $log->debug(TypeOFErrors::ErrorLG." Something was wrong check the Exception (for more information check the MapGeneratorLogs.txt) ".$ex->getMessage());
+            $log->debug(TypeOFErrors::ERRORLG." Something was wrong check the Exception (for more information check the MapGeneratorLogs.txt) ".$ex->getMessage());
             LogFileSimple($ex);
             return "";
        }
@@ -1914,7 +1920,7 @@ function CheckIfExistResponseTypeTable($tablename)
             }
         return $a;
     } catch (Exception $ex) {
-        $log->debug(TypeOFErrors::ErrorLG." Something was wrong check the Exception (for more information check the MapGeneratorLogs.txt) ".$ex->getMessage());
+        $log->debug(TypeOFErrors::ERRORLG." Something was wrong check the Exception (for more information check the MapGeneratorLogs.txt) ".$ex->getMessage());
         LogFileSimple($ex);
         return "";
     }
@@ -1984,13 +1990,13 @@ function getModuleID($module,$moduleName="entityidfield")
             if (!empty($Resulti)) {
                 return $Resulti;
             } else {
-                throw new Exception(TypeOFErrors::ErrorLG." Something was wrong RESULT IS EMPTY", 1);
+                throw new Exception(TypeOFErrors::ERRORLG." Something was wrong RESULT IS EMPTY", 1);
             }
         } else {
-            throw new Exception(TypeOFErrors::ErrorLG."Not exist Map with this ID=".$Queryid,1);
+            throw new Exception(TypeOFErrors::ERRORLG."Not exist Map with this ID=".$Queryid,1);
         }
     } catch (Exception $ex) {
-         $log->debug(TypeOFErrors::ErrorLG." Something was wrong check the Exception ".$ex);
+         $log->debug(TypeOFErrors::ERRORLG." Something was wrong check the Exception ".$ex);
          return "";
     }
 }
@@ -2020,13 +2026,13 @@ function SearchbyIDModule($Idmodule,$moduleName="modulename")
             if (!empty($Resulti)) {
                 return $Resulti;
             } else {
-                throw new Exception(TypeOFErrors::ErrorLG." Something was wrong RESULT IS EMPTY", 1);
+                throw new Exception(TypeOFErrors::ERRORLG." Something was wrong RESULT IS EMPTY", 1);
             }
         } else {
-            throw new Exception(TypeOFErrors::ErrorLG."Not exist Map with this ID=".$Queryid,1);
+            throw new Exception(TypeOFErrors::ERRORLG."Not exist Map with this ID=".$Queryid,1);
         }
     } catch (Exception $ex) {
-         $log->debug(TypeOFErrors::ErrorLG." Something was wrong check the Exception ".$ex);
+         $log->debug(TypeOFErrors::ERRORLG." Something was wrong check the Exception ".$ex);
          return "";
     }
 }
@@ -2240,7 +2246,7 @@ function MappingRelationFields($module)
         
     }catch(Exception $ex)
     {
-       $log->debug(TypeOFErrors::ErrorLG." Something was wrong check the Exception (for more information check the MapGeneratorLogs.txt) ".$ex->getMessage());
+       $log->debug(TypeOFErrors::ERRORLG." Something was wrong check the Exception (for more information check the MapGeneratorLogs.txt) ".$ex->getMessage());
        LogFile($ex);
        return "";
     }

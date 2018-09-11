@@ -1,11 +1,13 @@
 <link type="text/css" href="modules/MapGenerator/css/jquery-ui.css" rel="stylesheet" />
 <script type="text/javascript" src="include/jquery/jquery.js"></script>
 <script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
-{* <link rel="stylesheet" href="include/LD/assets/styles/all-modules.css" type="text/css" /> *}
 <link rel="stylesheet" type="text/css" href="modules/MapGenerator/css/popupNotification.css">
 <link rel="stylesheet" type="text/css" href="modules/MapGenerator/css/main.css" >
 <link rel="stylesheet" type="text/css" href="modules/MapGenerator/css/WSstyle.css" >
 <link rel="stylesheet" type="text/css" href="modules/MapGenerator/css/Loading.css" rel="stylesheet">
+<link rel="stylesheet" href="modules/MapGenerator/css/LoadingAll.css" type="text/css" />
+<link rel="stylesheet" href="modules/MapGenerator/css/settings.css" type="text/css" />
+<link rel="stylesheet" href="modules/MapGenerator/css/all-modules.css" type="text/css" />
 <script type="text/javascript" src="modules/MapGenerator/language/{$currlang}.lang.js"></script>
 <script type="text/javascript" src="modules/MapGenerator/js/functions.js"></script>
 <script type="text/javascript" src="modules/MapGenerator/js/script.js"></script>

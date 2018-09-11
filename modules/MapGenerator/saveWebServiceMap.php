@@ -1,112 +1,98 @@
 
 <?php
 /*
- * @Author: Edmond Kacaj 
- * @Date: 2018-03-07 15:13:39 
- * @Last Modified by: programim95@gmail.com
- * @Last Modified time: 2018-03-08 17:56:19
+ * @Author: Edmond Kacaj
+ * @Date: 2018-03-07 15:13:39
+ * @Last Modified by: edmondikacaj@gmail.com
+ * @Last Modified time: 2018-09-11 11:59:55
  */
 //saveWebServiceMap.php
 
+include_once "modules/cbMap/cbMap.php";
+require_once 'data/CRMEntity.php';
+require_once 'include/utils/utils.php';
+require_once 'All_functions.php';
+require_once 'Staticc.php';
 
-include_once ("modules/cbMap/cbMap.php");
-require_once ('data/CRMEntity.php');
-require_once ('include/utils/utils.php');
-require_once ('All_functions.php');
-require_once ('Staticc.php');
-
-
-global $root_directory, $log; 
+global $root_directory, $log;
 $Data = array();
 
 $MapName = $_POST['MapName']; // stringa con tutti i campi scelti in selField1
 $MapType = "WS"; // stringa con tutti i campi scelti in selField1
 $SaveasMapText = $_POST['SaveasMapText'];
 $Data = $_POST['ListData'];
-$MapID=explode(',', $_REQUEST['savehistory']); 
-$mapname=(!empty($SaveasMapText)? $SaveasMapText:$MapName);
-$idquery2=!empty($MapID[0])?$MapID[0]:md5(date("Y-m-d H:i:s").uniqid(rand(), true));
-
+$MapID = explode(',', $_REQUEST['savehistory']);
+$mapname = (!empty($SaveasMapText) ? $SaveasMapText : $MapName);
+$idquery2 = !empty($MapID[0]) ? $MapID[0] : md5(date("Y-m-d H:i:s") . uniqid(rand(), true));
 
 if (empty($SaveasMapText)) {
-     if (empty($MapName)) {
-            echo "Missing the name of map Can't save";
-            return;
-       }
+    if (empty($MapName)) {
+        echo "Missing the name of map Can't save";
+        return;
+    }
 }
-if (empty($MapType))
- {
+if (empty($MapType)) {
     $MapType = "WS";
 }
 
 if (!empty($Data)) {
-	
-    $jsondecodedata=json_decode($Data);	
-    // print_r($jsondecodedata);
-    //  print_r(add_content($jsondecodedata));
-    //  exit();
-    // $myDetails=array();
-	if(strlen($MapID[1]==0)){
-	   $focust = new cbMap();
-     $focust->column_fields['assigned_user_id'] = 1;
-     // $focust->column_fields['mapname'] = $jsondecodedata[0]->temparray->FirstModule."_ListColumns";
-     $focust->column_fields['mapname']=$mapname;
-     $focust->column_fields['content']=add_content($jsondecodedata);
-     $focust->column_fields['maptype'] =$MapType;
-     $focust->column_fields['targetname'] =$jsondecodedata[0]->temparray->FirstModule;
-     $focust->column_fields['description']= add_content($jsondecodedata);
-     $focust->column_fields['mvqueryid']=$idquery2;
-     $log->debug(" we inicialize value for insert in database ");
-     if (!$focust->saveentity("cbMap"))//
-      {
-      		
-          if (Check_table_if_exist(TypeOFErrors::Tabele_name)>0) {
-                 echo save_history(add_aray_for_history($jsondecodedata),$idquery2,add_content($jsondecodedata)).",".$focust->id;
-             } 
-             else{
+
+    $jsondecodedata = json_decode($Data);
+
+    if (strlen($MapID[1] == 0)) {
+        $focust = new cbMap();
+        $focust->column_fields['assigned_user_id'] = 1;
+        // $focust->column_fields['mapname'] = $jsondecodedata[0]->temparray->FirstModule."_ListColumns";
+        $focust->column_fields['mapname'] = $mapname;
+        $focust->column_fields['content'] = add_content($jsondecodedata);
+        $focust->column_fields['maptype'] = $MapType;
+        $focust->column_fields['targetname'] = $jsondecodedata[0]->temparray->FirstModule;
+        $focust->column_fields['description'] = add_content($jsondecodedata);
+        $focust->column_fields['mvqueryid'] = $idquery2;
+        $log->debug(" we inicialize value for insert in database ");
+        if (!$focust->saveentity("cbMap")) //
+        {
+
+            if (Check_table_if_exist(TypeOFErrors::Tabele_name) > 0) {
+                echo save_history(add_aray_for_history($jsondecodedata), $idquery2, add_content($jsondecodedata)) . "," . $focust->id;
+            } else {
                 echo "0,0";
-                 $log->debug("Error!! MIssing the history Table");
-             }  
-                    
-      } else 
-      {
-      	 // echo "Edmondi save in map,hghghghghgh";
-        //   exit();
-         //echo focus->id;
-         echo "Error!! something went wrong";
-         $log->debug("Error!! something went wrong");
-      }
+                $log->debug("Error!! MIssing the history Table");
+            }
 
-    }else{
+        } else {
+            echo "Error!! something went wrong";
+            $log->debug("Error!! something went wrong");
+        }
 
-     include_once ("modules/cbMap/cbMap.php");
-     $focust = new cbMap();
-     $focust->id = $MapID[1];
-     $focust->retrieve_entity_info($MapID[1],"cbMap");
-     $focust->column_fields['assigned_user_id'] = 1;
-     // $focust->column_fields['mapname'] = $MapName;
-     $focust->column_fields['content']=add_content($jsondecodedata);
-     $focust->column_fields['maptype'] =$MapType;
-     $focust->column_fields['mvqueryid']=$idquery2;
-     $focust->column_fields['targetname'] =$jsondecodedata[0]->temparray->FirstModule;
-     $focust->column_fields['description']= add_content($jsondecodedata);
-     $focust->mode = "edit";
-     $focust->save("cbMap");
+    } else {
 
-          if (Check_table_if_exist(TypeOFErrors::Tabele_name)>0) {
-                 echo save_history(add_aray_for_history($jsondecodedata),$idquery2,add_content($jsondecodedata)).",".$MapID[1];
-             } 
-             else{
-                echo "0,0";
-                 $log->debug("Error!! MIssing the history Table");
-             }
+        include_once "modules/cbMap/cbMap.php";
+        $focust = new cbMap();
+        $focust->id = $MapID[1];
+        $focust->retrieve_entity_info($MapID[1], "cbMap");
+        $focust->column_fields['assigned_user_id'] = 1;
+        // $focust->column_fields['mapname'] = $MapName;
+        $focust->column_fields['content'] = add_content($jsondecodedata);
+        $focust->column_fields['maptype'] = $MapType;
+        $focust->column_fields['mvqueryid'] = $idquery2;
+        $focust->column_fields['targetname'] = $jsondecodedata[0]->temparray->FirstModule;
+        $focust->column_fields['description'] = add_content($jsondecodedata);
+        $focust->mode = "edit";
+        $focust->save("cbMap");
+
+        if (Check_table_if_exist(TypeOFErrors::Tabele_name) > 0) {
+            echo save_history(add_aray_for_history($jsondecodedata), $idquery2, add_content($jsondecodedata)) . "," . $MapID[1];
+        } else {
+            echo "0,0";
+            $log->debug("Error!! MIssing the history Table");
+        }
     }
 
 }
 
-
 /**
- * function to convert to xml the array come from post 
+ * function to convert to xml the array come from post
  *
  * @param      <type>  $DataDecode  The data decode
  * @param      DataDecode  {Array}  {This para is a array }
@@ -115,26 +101,25 @@ if (!empty($Data)) {
  */
 function add_content($DataDecode)
 {
-    $countarray=(count($DataDecode)-1);
-    $configuration=false;
-    $Header=false;
-    $Input=false;
-    $Output=false;
-    $ValueMap=false;
-    $Errorhandler=false;
+    $countarray = (count($DataDecode) - 1);
+    $configuration = false;
+    $Header = false;
+    $Input = false;
+    $Output = false;
+    $ValueMap = false;
+    $Errorhandler = false;
     $xml = new DOMDocument("1.0");
     $root = $xml->createElement("map");
-    $xml->appendChild($root);   
-    
+    $xml->appendChild($root);
+
     // for configuration
-    $wsconfigtag=$xml->createElement("wsconfig");
+    $wsconfigtag = $xml->createElement("wsconfig");
     foreach ($DataDecode as $value) {
 
-        if($value->temparray->JsonType == "Configuration")
-        {
-            
+        if ($value->temparray->JsonType == "Configuration") {
+
             $wsurl = $xml->createElement("wsurl");
-            $wsurltext = $xml->createTextNode( $value->temparray->{'fixed-text-addon-pre'}.$value->temparray->{'url-input'});
+            $wsurltext = $xml->createTextNode($value->temparray->{'fixed-text-addon-pre'} . $value->temparray->{'url-input'});
             $wsurl->appendChild($wsurltext);
             $wsconfigtag->appendChild($wsurl);
 
@@ -152,7 +137,6 @@ function add_content($DataDecode)
             $wsuserText = $xml->createTextNode($value->temparray->{'ws-user'});
             $wsuser->appendChild($wsuserText);
             $wsconfigtag->appendChild($wsuser);
-            
 
             $wspass = $xml->createElement("wspass");
             $wspassText = $xml->createTextNode($value->temparray->{'ws-password'});
@@ -189,16 +173,15 @@ function add_content($DataDecode)
             $outputtype->appendChild($outputtypeText);
             $wsconfigtag->appendChild($outputtype);
 
-            $configuration=true;
+            $configuration = true;
         }
-       }
-     //for header
-     $wsheadertag=$xml->createElement("wsheader");
-     foreach ($DataDecode as $value) {
+    }
+    //for header
+    $wsheadertag = $xml->createElement("wsheader");
+    foreach ($DataDecode as $value) {
 
-        if($value->temparray->JsonType == "Header")
-        {
-            $headertag=$xml->createElement("header");
+        if ($value->temparray->JsonType == "Header") {
+            $headertag = $xml->createElement("header");
 
             $keyname = $xml->createElement("keyname");
             $keynameText = $xml->createTextNode($value->temparray->{'ws-key-name'});
@@ -212,43 +195,39 @@ function add_content($DataDecode)
 
             $wsheadertag->appendChild($headertag);
 
-            $Header=true;
-        }        
+            $Header = true;
+        }
     }
-    if($Header==true){$wsconfigtag->appendChild($wsheadertag); }
-    
+    if ($Header == true) {$wsconfigtag->appendChild($wsheadertag);}
 
-    // for input 
-    $inputtag=$xml->createElement("input");
-    $fieldstag=$xml->createElement("fields");
+    // for input
+    $inputtag = $xml->createElement("input");
+    $fieldstag = $xml->createElement("fields");
     foreach ($DataDecode as $value) {
 
-        if($value->temparray->JsonType == "Input")
-        {
-            $fieldtag=$xml->createElement("field");
+        if ($value->temparray->JsonType == "Input") {
+            $fieldtag = $xml->createElement("field");
 
             $fieldname = $xml->createElement("fieldname");
             $fieldnameText = $xml->createTextNode($value->temparray->{'ws-input-name'});
             $fieldname->appendChild($fieldnameText);
             $fieldtag->appendChild($fieldname);
 
-            if(strcmp($value->temparray->FirstModule,$value->temparray->{'ws-select-multipleoptionGroup'})==0)
-            {
-                $concatstring="";
-                if(!empty($value->temparray->{'ws-input-static'})){$concatstring.=$value->temparray->{'ws-input-static'}.","; }
+            if (strcmp($value->temparray->FirstModule, $value->temparray->{'ws-select-multipleoptionGroup'}) == 0) {
+                $concatstring = "";
+                if (!empty($value->temparray->{'ws-input-static'})) {$concatstring .= $value->temparray->{'ws-input-static'} . ",";}
                 foreach ($value->temparray->Anotherdata as $values) {
-                    $concatstring.=explode(":",$values->DataValues)[2].",";
+                    $concatstring .= explode(":", $values->DataValues)[2] . ",";
                 }
                 $fieldvalue = $xml->createElement("fieldvalue");
                 $fieldvalueText = $xml->createTextNode(substr($concatstring, 0, -1));
                 $fieldvalue->appendChild($fieldvalueText);
                 $fieldtag->appendChild($fieldvalue);
-            }else
-            {
-                $concatstringrel="";
-                if(!empty($value->temparray->{'ws-input-static'})){$concatstringrel.=$value->temparray->{'ws-input-static'}.","; }
+            } else {
+                $concatstringrel = "";
+                if (!empty($value->temparray->{'ws-input-static'})) {$concatstringrel .= $value->temparray->{'ws-input-static'} . ",";}
                 foreach ($value->temparray->Anotherdata as $valuea) {
-                    $concatstringrel.=explode(":",$valuea->DataValues)[2].",";
+                    $concatstringrel .= explode(":", $valuea->DataValues)[2] . ",";
                 }
                 $Relfield = $xml->createElement("Relfield");
                 $RelfieldName = $xml->createElement("RelfieldName");
@@ -270,7 +249,7 @@ function add_content($DataDecode)
                 $fieldvalue->appendChild($fieldvalueText);
                 $fieldtag->appendChild($fieldvalue);
             }
-            
+
             $attribute = $xml->createElement("attribute");
             $attributeText = $xml->createTextNode($value->temparray->{'ws-input-attribute'});
             $attribute->appendChild($attributeText);
@@ -291,52 +270,47 @@ function add_content($DataDecode)
             $default->appendChild($defaultText);
             $fieldtag->appendChild($default);
 
-            
             $fieldstag->appendChild($fieldtag);
 
-            $Input=true;
-        }        
+            $Input = true;
+        }
     }
     $inputtag->appendChild($fieldstag);
 
-    /// output tag 
+    /// output tag
 
-    $Outputtag=$xml->createElement("Output");
-    $fieldstag=$xml->createElement("fields");
+    $Outputtag = $xml->createElement("Output");
+    $fieldstag = $xml->createElement("fields");
     foreach ($DataDecode as $value) {
 
-        if($value->temparray->JsonType == "Output")
-        {
-            $fieldtag=$xml->createElement("field");
+        if ($value->temparray->JsonType == "Output") {
+            $fieldtag = $xml->createElement("field");
 
             $fieldlabel = $xml->createElement("fieldlabel");
             $fieldlabelText = $xml->createTextNode($value->temparray->{'ws-label'});
             $fieldlabel->appendChild($fieldlabelText);
             $fieldtag->appendChild($fieldlabel);
 
-
             $fieldname = $xml->createElement("fieldname");
             $fieldnameText = $xml->createTextNode($value->temparray->{'ws-output-name'});
             $fieldname->appendChild($fieldnameText);
             $fieldtag->appendChild($fieldname);
 
-            if(strcmp($value->temparray->FirstModule,$value->temparray->{'ws-output-select-multipleoptionGroup'})==0)
-            {
-                $concatstring="";
-                if(!empty($value->temparray->{'ws-output-static'})){$concatstring.=$value->temparray->{'ws-output-static'}.","; }
+            if (strcmp($value->temparray->FirstModule, $value->temparray->{'ws-output-select-multipleoptionGroup'}) == 0) {
+                $concatstring = "";
+                if (!empty($value->temparray->{'ws-output-static'})) {$concatstring .= $value->temparray->{'ws-output-static'} . ",";}
                 foreach ($value->temparray->Anotherdata as $values) {
-                    $concatstring.=explode(":",$values->DataValues)[2].",";
+                    $concatstring .= explode(":", $values->DataValues)[2] . ",";
                 }
                 $fieldvalue = $xml->createElement("fieldvalue");
                 $fieldvalueText = $xml->createTextNode(substr($concatstring, 0, -1));
                 $fieldvalue->appendChild($fieldvalueText);
                 $fieldtag->appendChild($fieldvalue);
-            }else
-            {
-                $concatstringrel="";
-                if(!empty($value->temparray->{'ws-output-static'})){$concatstringrel.=$value->temparray->{'ws-output-static'}.","; }
+            } else {
+                $concatstringrel = "";
+                if (!empty($value->temparray->{'ws-output-static'})) {$concatstringrel .= $value->temparray->{'ws-output-static'} . ",";}
                 foreach ($value->temparray->Anotherdata as $valuea) {
-                    $concatstringrel.=explode(":",$valuea->DataValues)[2].",";
+                    $concatstringrel .= explode(":", $valuea->DataValues)[2] . ",";
                 }
                 $Relfield = $xml->createElement("Relfield");
                 $RelfieldName = $xml->createElement("RelfieldName");
@@ -357,143 +331,127 @@ function add_content($DataDecode)
                 $fieldvalueText = $xml->createTextNode(substr($concatstringrel, 0, -1));
                 $fieldvalue->appendChild($fieldvalueText);
                 $fieldtag->appendChild($fieldvalue);
-            }        
+            }
 
             $attribute = $xml->createElement("attribute");
             $attributeText = $xml->createTextNode($value->temparray->{'ws-output-attribute'});
             $attribute->appendChild($attributeText);
             $fieldtag->appendChild($attribute);
-            
+
             $fieldstag->appendChild($fieldtag);
 
-            $Output=true;
-        }        
+            $Output = true;
+        }
     }
     $Outputtag->appendChild($fieldstag);
 
+    /// Value Map tag
 
-     /// Value Map tag 
+    $valuemaptag = $xml->createElement("valuemap");
+    $fieldstag = $xml->createElement("fields");
+    foreach ($DataDecode as $value) {
 
-     $valuemaptag=$xml->createElement("valuemap");
-     $fieldstag=$xml->createElement("fields");
-     foreach ($DataDecode as $value) {
- 
-         if($value->temparray->JsonType == "Value Map")
-         {
-             $fieldtag=$xml->createElement("field");
- 
-             $fieldname = $xml->createElement("fieldname");
-             $fieldnameText = $xml->createTextNode($value->temparray->{'ws-value-map-name'});
-             $fieldname->appendChild($fieldnameText);
-             $fieldtag->appendChild($fieldname);
- 
-             $fieldsrc = $xml->createElement("fieldsrc");
-             $fieldsrcText = $xml->createTextNode($value->temparray->{'ws-value-map-source-input'});
-             $fieldsrc->appendChild($fieldsrcText);
-             $fieldtag->appendChild($fieldsrc);           
- 
-             $fielddest = $xml->createElement("fielddest");
-             $fielddestText = $xml->createTextNode($value->temparray->{'ws-value-map-destinamtion'});
-             $fielddest->appendChild($fielddestText);
-             $fieldtag->appendChild($fielddest);
-             
-             $fieldstag->appendChild($fieldtag);
+        if ($value->temparray->JsonType == "Value Map") {
+            $fieldtag = $xml->createElement("field");
 
-             $ValueMap=true;
-         }        
-     }
-     $valuemaptag->appendChild($fieldstag);
-    
-     /// Error Handler tag 
+            $fieldname = $xml->createElement("fieldname");
+            $fieldnameText = $xml->createTextNode($value->temparray->{'ws-value-map-name'});
+            $fieldname->appendChild($fieldnameText);
+            $fieldtag->appendChild($fieldname);
 
-     $errorhandlertag=$xml->createElement("errorhandler");
-     foreach ($DataDecode as $value) {
- 
-         if($value->temparray->JsonType == "Error Handler")
-         {
-             $fieldtag=$xml->createElement("field");
- 
-             $fieldname = $xml->createElement("fieldname");
-             $fieldnameText = $xml->createTextNode($value->temparray->{'ws-error-name'});
-             $fieldname->appendChild($fieldnameText);
-             $fieldtag->appendChild($fieldname);
- 
-             $valueg = $xml->createElement("value");
-             $valueText = $xml->createTextNode($value->temparray->{'ws-error-value'});
-             $valueg->appendChild($valueText);
-             $fieldtag->appendChild($valueg);           
- 
-             $errormessage = $xml->createElement("errormessage");
-             $errormessageText = $xml->createTextNode($value->temparray->{'ws-error-message'});
-             $errormessage->appendChild($errormessageText);
-             $fieldtag->appendChild($errormessage);
-             
-             $errorhandlertag->appendChild($fieldtag);
-             $Errorhandler=true;
-         }  
-     }
+            $fieldsrc = $xml->createElement("fieldsrc");
+            $fieldsrcText = $xml->createTextNode($value->temparray->{'ws-value-map-source-input'});
+            $fieldsrc->appendChild($fieldsrcText);
+            $fieldtag->appendChild($fieldsrc);
+
+            $fielddest = $xml->createElement("fielddest");
+            $fielddestText = $xml->createTextNode($value->temparray->{'ws-value-map-destinamtion'});
+            $fielddest->appendChild($fielddestText);
+            $fieldtag->appendChild($fielddest);
+
+            $fieldstag->appendChild($fieldtag);
+
+            $ValueMap = true;
+        }
+    }
+    $valuemaptag->appendChild($fieldstag);
+
+    /// Error Handler tag
+
+    $errorhandlertag = $xml->createElement("errorhandler");
+    foreach ($DataDecode as $value) {
+
+        if ($value->temparray->JsonType == "Error Handler") {
+            $fieldtag = $xml->createElement("field");
+
+            $fieldname = $xml->createElement("fieldname");
+            $fieldnameText = $xml->createTextNode($value->temparray->{'ws-error-name'});
+            $fieldname->appendChild($fieldnameText);
+            $fieldtag->appendChild($fieldname);
+
+            $valueg = $xml->createElement("value");
+            $valueText = $xml->createTextNode($value->temparray->{'ws-error-value'});
+            $valueg->appendChild($valueText);
+            $fieldtag->appendChild($valueg);
+
+            $errormessage = $xml->createElement("errormessage");
+            $errormessageText = $xml->createTextNode($value->temparray->{'ws-error-message'});
+            $errormessage->appendChild($errormessageText);
+            $fieldtag->appendChild($errormessage);
+
+            $errorhandlertag->appendChild($fieldtag);
+            $Errorhandler = true;
+        }
+    }
     $root->appendChild($wsconfigtag);
-    if($Input==true){$root->appendChild($inputtag); }
-    if($Output==true){$root->appendChild($Outputtag);}
-    if($ValueMap==true){ $root->appendChild($valuemaptag);}
-    if($Errorhandler==true){$root->appendChild($errorhandlertag);}
+    if ($Input == true) {$root->appendChild($inputtag);}
+    if ($Output == true) {$root->appendChild($Outputtag);}
+    if ($ValueMap == true) {$root->appendChild($valuemaptag);}
+    if ($Errorhandler == true) {$root->appendChild($errorhandlertag);}
     $xml->formatOutput = true;
     return $xml->saveXML();
 }
 
-
-
-
-
-
-
 function add_aray_for_history($decodedata)
 {
     return array
-     (
-        'Labels'=>"",
-        'FirstModuleval'=>preg_replace('/\s+/', '',$decodedata[0]->temparray->FirstModule),
-        'FirstModuletxt'=>preg_replace('/\s+/', '',$decodedata[0]->temparray->FirstModuleText),
-        'SecondModuleval'=>"",
-        'SecondModuletxt'=>"",
-        'firstmodulelabel'=>getModuleID(preg_replace('/\s+/', '',$decodedata[0]->temparray->FirstModule)),
-        'secondmodulelabel'=>""
-     );
+        (
+        'Labels' => "",
+        'FirstModuleval' => preg_replace('/\s+/', '', $decodedata[0]->temparray->FirstModule),
+        'FirstModuletxt' => preg_replace('/\s+/', '', $decodedata[0]->temparray->FirstModuleText),
+        'SecondModuleval' => "",
+        'SecondModuletxt' => "",
+        'firstmodulelabel' => getModuleID(preg_replace('/\s+/', '', $decodedata[0]->temparray->FirstModule)),
+        'secondmodulelabel' => "",
+    );
 }
 
 /**
- * save history is a function which save in db the history of map 
- * @param  [array] $datas   array 
+ * save history is a function which save in db the history of map
+ * @param  [array] $datas   array
  * @param  [type] $queryid the id of qquery
- * @param  [type] $xmldata the xml data 
- * @return [type]          boolean true or false 
+ * @param  [type] $xmldata the xml data
+ * @return [type]          boolean true or false
  */
-function save_history($datas,$queryid,$xmldata){
-        global $adb;
-        $idquery2=$queryid;
-        $q=$adb->query("select sequence from ".TypeOFErrors::Tabele_name." where id='$idquery2' order by sequence DESC");
-             //$nr=$adb->num_rows($q);
-             // echo "q=".$q;
-             
-        $seq=$adb->query_result($q,0,0);
-      
-        if(!empty($seq))
-        {
-            $seq=$seq+1;
-             $adb->query("update ".TypeOFErrors::Tabele_name." set active=0 where id='$idquery2'");                            
-              //$seqmap=count($data);
-             $adb->pquery("insert into ".TypeOFErrors::Tabele_name." values (?,?,?,?,?,?,?,?,?,?,?)",array($idquery2,$datas["FirstModuleval"],$datas["FirstModuletxt"],$datas["SecondModuletxt"],$datas["SecondModuleval"],$xmldata,$seq,1,$datas["firstmodulelabel"],$datas["secondmodulelabel"],$datas["Labels"]));
-              //return $idquery;
-        }else 
-        {
+function save_history($datas, $queryid, $xmldata)
+{
+    global $adb;
+    $idquery2 = $queryid;
+    $q = $adb->query("select sequence from " . TypeOFErrors::Tabele_name . " where id='$idquery2' order by sequence DESC");
+    //$nr=$adb->num_rows($q);
+    // echo "q=".$q;
 
-            $adb->pquery("insert into ".TypeOFErrors::Tabele_name." values (?,?,?,?,?,?,?,?,?,?,?)",array($idquery2,$datas["FirstModuleval"],$datas["FirstModuletxt"],$datas["SecondModuletxt"],$datas["SecondModuleval"],$xmldata,1,1,$datas["firstmodulelabel"],$datas["secondmodulelabel"],$datas["Labels"]));
-        }
-        echo $idquery2;
+    $seq = $adb->query_result($q, 0, 0);
+
+    if (!empty($seq)) {
+        $seq = $seq + 1;
+        $adb->query("update " . TypeOFErrors::Tabele_name . " set active=0 where id='$idquery2'");
+        //$seqmap=count($data);
+        $adb->pquery("insert into " . TypeOFErrors::Tabele_name . " values (?,?,?,?,?,?,?,?,?,?,?)", array($idquery2, $datas["FirstModuleval"], $datas["FirstModuletxt"], $datas["SecondModuletxt"], $datas["SecondModuleval"], $xmldata, $seq, 1, $datas["firstmodulelabel"], $datas["secondmodulelabel"], $datas["Labels"]));
+        //return $idquery;
+    } else {
+
+        $adb->pquery("insert into " . TypeOFErrors::Tabele_name . " values (?,?,?,?,?,?,?,?,?,?,?)", array($idquery2, $datas["FirstModuleval"], $datas["FirstModuletxt"], $datas["SecondModuletxt"], $datas["SecondModuleval"], $xmldata, 1, 1, $datas["firstmodulelabel"], $datas["secondmodulelabel"], $datas["Labels"]));
+    }
+    echo $idquery2;
 }
-
-
-
-
-
-
