@@ -320,6 +320,12 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	} elseif ($uitype == 53) {
 		global $noof_group_rows;
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
+		// Get Group calculations > $noof_group_rows
+		if ($fieldname == 'assigned_user_id' && $is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module_name)] == 3 || $defaultOrgSharingPermission[getTabid($module_name)] == 0)) {
+			$result = get_current_user_access_groups($module_name);
+		} else {
+			$result = get_group_options();
+		}
 
 		$assigned_user_id = empty($value) ? $current_user->id : $value;
 
