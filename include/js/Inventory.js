@@ -1035,7 +1035,7 @@ function updatePrices() {
 		}
 
 		var max_row_count = productsListElem.rows.length;
-		max_row_count = eval(max_row_count)-2;//Because the table has two header rows. so we will reduce two from row length
+		max_row_count = max_row_count-2;//Because the table has two header rows. so we will reduce two from row length
 
 		var products_list = '';
 		for (var i=1; i<=max_row_count; i++) {

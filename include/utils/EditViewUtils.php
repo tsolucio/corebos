@@ -1011,18 +1011,17 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$SET_REM = '';
 	} elseif ($uitype == 115) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$pick_query="select * from vtiger_" . $adb->sql_escape_string($fieldname);
+		$pick_query='select * from vtiger_' . $adb->sql_escape_string($fieldname);
 		$pickListResult = $adb->pquery($pick_query, array());
 		$noofpickrows = $adb->num_rows($pickListResult);
 
-		//Mikecrowe fix to correctly default for custom pick lists
 		$options = array();
 		$found = false;
 		for ($j = 0; $j < $noofpickrows; $j++) {
 			$pickListValue=$adb->query_result($pickListResult, $j, strtolower($fieldname));
 
 			if ($value == $pickListValue) {
-				$chk_val = "selected";
+				$chk_val = 'selected';
 				$found = true;
 			} else {
 				$chk_val = '';
@@ -1037,14 +1036,13 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$pickListResult = $adb->pquery($pick_query, array());
 		$noofpickrows = $adb->num_rows($pickListResult);
 
-		//Mikecrowe fix to correctly default for custom pick lists
 		$options = array();
 		$found = false;
 		for ($j = 0; $j < $noofpickrows; $j++) {
 			$pickListValue=$adb->query_result($pickListResult, $j, 'currency_name');
 			$currency_id=$adb->query_result($pickListResult, $j, 'id');
 			if ($value == $currency_id) {
-				$chk_val = "selected";
+				$chk_val = 'selected';
 				$found = true;
 			} else {
 				$chk_val = '';
