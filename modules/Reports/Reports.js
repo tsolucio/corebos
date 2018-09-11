@@ -232,40 +232,13 @@ function saveas() {
 		alert(alert_arr.LBL_REPORT_NAME_ERROR);
 		return false;
 	}
-	var cbreporttype = document.getElementById('cbreporttype').value;
-	if (cbreporttype == 'external' || cbreporttype == 'directsql') {
-		document.NewReport.submit();
-		return true;
-	}
-	if (selectedColumnsObj.options.length == 0) {
-		alert(alert_arr.COLUMNS_CANNOT_BE_EMPTY);
-		return false;
-	}
-	formSelectedColumnString();
-	formSelectColumnString();
-	document.NewReport.submit();
+	saveAndRunReport();
 }
 
 function changeSteps1() {
 	if (getObj('step5').style.display != 'none') {
-		if (!checkAdvancedFilter()) {
+		if (!validateDate()) {
 			return false;
-		}
-
-		var date1=getObj('startdate');
-		var date2=getObj('enddate');
-
-		//# validation added for date field validation in final step of report creation
-		if ((date1.value != '') || (date2.value != '')) {
-			if (!dateValidate('startdate', 'Start Date', 'D')) {
-				return false;
-			}
-			if (!dateValidate('enddate', 'End Date', 'D')) {
-				return false;
-			}
-			if (!dateComparison('startdate', 'Start Date', 'enddate', 'End Date', 'LE')) {
-				return false;
-			}
 		}
 	}
 	if (getObj('step6').style.display != 'none' && document.getElementsByName('record')[0].value!='') {
@@ -273,52 +246,8 @@ function changeSteps1() {
 		id.style.display = 'inline';
 	}
 	if (getObj('step7').style.display != 'none') {
-		var isScheduledObj = getObj('isReportScheduled');
-		if (isScheduledObj.checked == true) {
-			var selectedRecipientsObj = getObj('selectedRecipients');
-
-			if (selectedRecipientsObj.options.length == 0) {
-				alert(alert_arr.RECIPIENTS_CANNOT_BE_EMPTY);
-				return false;
-			}
-
-			var selectedUsers = new Array();
-			var selectedGroups = new Array();
-			var selectedRoles = new Array();
-			var selectedRolesAndSub = new Array();
-			for (var i = 0; i < selectedRecipientsObj.options.length; i++) {
-				var selectedCol = selectedRecipientsObj.options[i].value;
-				var selectedColArr = selectedCol.split('::');
-				if (selectedColArr[0] == 'users') {
-					selectedUsers.push(selectedColArr[1]);
-				} else if (selectedColArr[0] == 'groups') {
-					selectedGroups.push(selectedColArr[1]);
-				} else if (selectedColArr[0] == 'roles') {
-					selectedRoles.push(selectedColArr[1]);
-				} else if (selectedColArr[0] == 'rs') {
-					selectedRolesAndSub.push(selectedColArr[1]);
-				}
-			}
-
-			var selectedRecipients = {
-				users : selectedUsers,
-				groups : selectedGroups,
-				roles : selectedRoles,
-				rs : selectedRolesAndSub
-			};
-			var selectedRecipientsJson = JSON.stringify(selectedRecipients);
-			document.NewReport.selectedRecipientsString.value = selectedRecipientsJson;
-
-			var scheduledInterval= {
-				scheduletype : document.NewReport.scheduledType.value,
-				month : document.NewReport.scheduledMonth.value,
-				date : document.NewReport.scheduledDOM.value,
-				day : document.NewReport.scheduledDOW.value,
-				time : document.NewReport.scheduledTime.value
-			};
-
-			var scheduledIntervalJson = JSON.stringify(scheduledInterval);
-			document.NewReport.scheduledIntervalString.value = scheduledIntervalJson;
+		if (!ScheduleEmail()) {
+			return false;
 		}
 		saveAndRunReport();
 	} else {
