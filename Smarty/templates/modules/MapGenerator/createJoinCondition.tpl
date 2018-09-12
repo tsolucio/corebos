@@ -329,7 +329,6 @@
 	<div id="generatedquery">
 		<div id="results">
 			{if $QUERY neq '' and $valueli neq ''}
-				<script src="modules/MapGenerator/js/json.js" type="text/javascript" charset="utf-8"></script>
 				<script language="JavaScript" type="text/javascript" src="include/js/advancefilter.js"></script>
 				{if $JS_DATEFORMAT eq ''}
 					{assign var="JS_DATEFORMAT" value=$APP.NTC_DATE_FORMAT|@parse_calendardate}
@@ -573,7 +572,7 @@
 				<div id="accordion" >
 				<h3>{$MOD.Query}</h3>
 					<div id="joinquery">
-						<p id="generatedjoin" style="word-break: break-all;">
+						<p id="generatedjoin" style="word-break: break-all;" >
 							{$QUERY}
 						</p>
 						<p id="generatedConditions"></p>
