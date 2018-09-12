@@ -1,10 +1,5 @@
 <?php
-/*
- * @Author: Edmond Kacaj
- * @Date: 2018-09-11 11:54:44
- * @Last Modified by: edmondikacaj@gmail.com
- * @Last Modified time: 2018-09-11 11:57:18
- */
+
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $adb, $root_directory, $current_user;
 $theme_path = "themes/" . $theme . "/";
 $image_path = $theme_path . "images/";

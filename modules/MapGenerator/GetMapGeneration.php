@@ -1,12 +1,5 @@
 <?php
 
-/**
- * @Author: edmondi kacaj
- * @Date:   2017-11-06 10:16:56
- * @Last Modified by: edmondikacaj@gmail.com
- * @Last Modified time: 2018-09-11 14:53:57
- */
-
 
 require_once ('include/utils/utils.php');
 require_once ('Smarty_setup.php');

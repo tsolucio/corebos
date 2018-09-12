@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @Author: edmondi kacaj
- * @Date:   2018-01-05 17:23:10
- * @Last Modified by: programim95@gmail.com
- * @Last Modified time: 2018-02-21 14:49:40
- */
 
 //saveImportBussinesMapping
 

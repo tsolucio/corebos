@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @Author: edmondi kacaj
- * @Date:   2017-12-12 10:07:00
- * @Last Modified by: edmondikacaj@gmail.com
- * @Last Modified time: 2018-09-11 11:56:51
- */
 include_once "modules/cbMap/cbMap.php";
 require_once 'data/CRMEntity.php';
 require_once 'include/utils/utils.php';

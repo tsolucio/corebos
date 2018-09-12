@@ -1,11 +1,6 @@
 
 <?php
-/*
- * @Author: Edmond Kacaj
- * @Date: 2018-09-11 11:41:59
- * @Last Modified by:   edmondikacaj@gmail.com
- * @Last Modified time: 2018-09-11 11:41:59
- */
+
 
 /**
  * This function is to get all maps from database a

@@ -1,11 +1,5 @@
 
 <?php 
-/*
- * @Author: Edmond Kacaj 
- * @Date: 2018-09-11 11:03:04 
- * @Last Modified by: edmondikacaj@gmail.com
- * @Last Modified time: 2018-09-11 14:55:28
- */
 
 function GetModulRel($m)
 {

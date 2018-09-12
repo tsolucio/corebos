@@ -1,12 +1,5 @@
 <?php
 
-/**
- * @Author: edmondi kacaj
- * @Date:   2017-12-18 11:32:21
- * @Last Modified by: edmondikacaj@gmail.com
- * @Last Modified time: 2018-09-11 14:59:39
- */
-
 //LoadAllMaps
 
 require_once "GetAllMaps.php";

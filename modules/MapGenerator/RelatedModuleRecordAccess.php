@@ -1,12 +1,5 @@
 <?php
 
-/**
- * @Author: edmondi kacaj
- * @Date:   2017-12-13 12:40:47
- * @Last Modified by:   edmondi kacaj
- * @Last Modified time: 2017-12-13 17:06:32
- */
-
 
 include 'All_functions.php';
 

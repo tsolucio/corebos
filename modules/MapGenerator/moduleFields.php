@@ -1,11 +1,6 @@
 
 <?php
-/*
- * @Author: Edmond Kacaj
- * @Date: 2018-09-11 10:57:57
- * @Last Modified by: programim95@gmail.com
- * @Last Modified time: 2018-09-11 10:58:23
- */
+
 global $log, $adb;
 
 include 'XmlContent.php';

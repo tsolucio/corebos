@@ -1,11 +1,6 @@
 <?php
 
-/**
- * @Author: edmondi kacaj
- * @Date:   2017-12-22 18:08:53
- * @Last Modified by: edmondikacaj@gmail.com
- * @Last Modified time: 2018-09-11 11:58:43
- */
+
 //saveRendicontaConfig
 
 include_once "modules/cbMap/cbMap.php";

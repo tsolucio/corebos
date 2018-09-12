@@ -1,10 +1,5 @@
 <?php
-/*
- * @Author: Edmond Kacaj
- * @Date: 2018-09-11 11:54:44
- * @Last Modified by: edmondikacaj@gmail.com
- * @Last Modified time: 2018-09-11 11:56:34
- */
+
 // SaveListColumns.php
 
 include_once "modules/cbMap/cbMap.php";

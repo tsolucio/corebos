@@ -1,11 +1,6 @@
 
 <?php
-/*
- * @Author: Edmond Kacaj
- * @Date: 2018-09-11 11:02:37
- * @Last Modified by:   programim95@gmail.com
- * @Last Modified time: 2018-09-11 11:02:37
- */
+
 /*************************************************************************************************
  * Copyright 2014 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
  * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this

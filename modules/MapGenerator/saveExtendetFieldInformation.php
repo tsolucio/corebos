@@ -1,11 +1,5 @@
 <?php
 
-/*
- * @Author: Edmond Kacaj
- * @Date: 2018-02-06 15:09:04
- * @Last Modified by: edmondikacaj@gmail.com
- * @Last Modified time: 2018-09-11 11:55:12
- */
 
 include_once 'All_functions.php';
 include_once "modules/cbMap/cbMap.php";

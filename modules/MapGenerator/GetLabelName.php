@@ -1,11 +1,6 @@
 
 <?php
-/*
- * @Author: Edmond Kacaj
- * @Date: 2018-09-11 11:42:13
- * @Last Modified by:   edmondikacaj@gmail.com
- * @Last Modified time: 2018-09-11 11:42:13
- */
+
 //GetLabelName.php
 
 $getValue = $_POST["DefaultValue"];

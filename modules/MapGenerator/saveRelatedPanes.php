@@ -1,12 +1,6 @@
 <?php
 //saveRelatedPanes.php
 
-/*
- * @Author: Edmond Kacaj
- * @Date: 2018-03-20 15:48:50
- * @Last Modified by: edmondikacaj@gmail.com
- * @Last Modified time: 2018-09-11 11:58:19
- */
 
 include_once "modules/cbMap/cbMap.php";
 require_once 'data/CRMEntity.php';
