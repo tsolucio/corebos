@@ -312,6 +312,14 @@ function getFieldListEntries($module) {
 					if (in_array($uitype, array('15','16','33'))) {
 						$allValues = getAllPickListValues($fieldname);
 					}
+					if ($uitype == '26') {
+						$defaultPermitted = true;
+						$res=$adb->pquery('select foldername,folderid from vtiger_attachmentsfolder order by foldername', array());
+						for ($f=0; $f<$adb->num_rows($res); $f++) {
+							$fid=$adb->query_result($res, $f, 'folderid');
+							$allValues[$fid]=$adb->query_result($res, $f, 'foldername');
+						}
+					}
 
 					if ($presence == 0 || $presence == 2) {
 						$cf_element[$count]['fieldselect']=$fieldid;
