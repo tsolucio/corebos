@@ -1086,7 +1086,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	} elseif ($uitype == 26) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$result = $adb->pquery('select foldername from vtiger_attachmentsfolder where folderid = ?', array($col_fields[$fieldname]));
-		$folder_name = $adb->query_result($result, 0, "foldername");
+		$folder_name = $adb->query_result($result, 0, 'foldername');
 		$label_fld[] = $folder_name;
 	} elseif ($uitype == 27) {
 		if ($col_fields[$fieldname] == 'I') {
