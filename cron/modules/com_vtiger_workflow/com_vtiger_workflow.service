@@ -68,7 +68,11 @@ function vtRunTaskJob($adb) {
 		}
 		$entity = new VTWorkflowEntity($adminUser, $entityId, $isDeleted, true);
 		$entityCache = new VTEntityCache($adminUser);
-		//$wsModuleName = $util->toWSModuleName($entity);
+		$wsModuleName = $util->toWSModuleName($entity);
+		if (!vtlib_isModuleActive($wsModuleName)) {
+			$logbg->debug('WF Cron:: Module is not active: '.$wsModuleName);
+			continue;
+		}
 		//$wsId = vtws_getWebserviceEntityId($wsModuleName, $entity->getId());
 		if (empty($task->test)
 			|| (isset($task->reevaluate) && $task->reevaluate==0)
