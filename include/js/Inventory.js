@@ -11,20 +11,22 @@ var inventoryi18n = '',
 	defaultProdQty = 1,
 	defaultSerQty = 1;
 
-ExecuteFunctions('getTranslatedStrings', 'i18nmodule=SalesOrder&tkeys=typetosearch_prodser').then(function (data) {
-	inventoryi18n = JSON.parse(data);
-});
-GlobalVariable_getVariable('Inventory_Product_Default_Units', 1, '', gVTUserID).then(function (response) {
-	var obj = JSON.parse(response);
-	defaultProdQty = obj.Inventory_Product_Default_Units;
-}, function (error) {
-	defaultProdQty = 1; // units
-});
-GlobalVariable_getVariable('Inventory_Service_Default_Units', 1, '', gVTUserID).then(function (response) {
-	var obj = JSON.parse(response);
-	defaultSerQty = obj.Inventory_Service_Default_Units;
-}, function (error) {
-	defaultSerQty = 1; // units
+document.addEventListener('DOMContentLoaded', function () {
+	ExecuteFunctions('getTranslatedStrings', 'i18nmodule=SalesOrder&tkeys=typetosearch_prodser').then(function (data) {
+		inventoryi18n = JSON.parse(data);
+	});
+	GlobalVariable_getVariable('Inventory_Product_Default_Units', 1, '', gVTUserID).then(function (response) {
+		var obj = JSON.parse(response);
+		defaultProdQty = obj.Inventory_Product_Default_Units;
+	}, function (error) {
+		defaultProdQty = 1; // units
+	});
+	GlobalVariable_getVariable('Inventory_Service_Default_Units', 1, '', gVTUserID).then(function (response) {
+		var obj = JSON.parse(response);
+		defaultSerQty = obj.Inventory_Service_Default_Units;
+	}, function (error) {
+		defaultSerQty = 1; // units
+	});
 });
 
 function copyAddressRight(form) {
