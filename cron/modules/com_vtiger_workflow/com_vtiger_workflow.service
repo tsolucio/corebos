@@ -53,8 +53,9 @@ function vtRunTaskJob($adb) {
 		list($taskId, $entityId) = $pair;
 		$logbg->debug('WF Cron:: Task '.$taskId.' will be executed with entityId: '.$entityId);
 		$task = $tm->retrieveTask($taskId);
-		if (empty($task)) {  //If task is not there then continue
+		if (empty($task)) { //If task is not there then continue
 			$logbg->debug('WF Cron:: Task: '.$taskId.' fail when was retrieve');
+			$adb->pquery('delete from com_vtiger_workflowtask_queue where task_id=?', array($taskId));
 			continue;
 		}
 		list($moduleId, $crmId) = explode('x', $entityId);
@@ -65,15 +66,13 @@ function vtRunTaskJob($adb) {
 		} else {
 			$isDeleted = $adb->query_result($res, 0, 0);
 		}
-		$task_res = $adb->pquery('select 1 from com_vtiger_workflowtasks where task_id=?', array($taskId));
-		if ($adb->num_rows($task_res) == 0) {
-			$logbg->debug('WF Cron:: Task '.$taskId.' was totally deleted');
-			$adb->pquery('delete from com_vtiger_workflowtask_queue where task_id=?', array($taskId));
-			continue;
-		}
 		$entity = new VTWorkflowEntity($adminUser, $entityId, $isDeleted, true);
 		$entityCache = new VTEntityCache($adminUser);
-		//$wsModuleName = $util->toWSModuleName($entity);
+		$wsModuleName = $util->toWSModuleName($entity);
+		if (!vtlib_isModuleActive($wsModuleName)) {
+			$logbg->debug('WF Cron:: Module is not active: '.$wsModuleName);
+			continue;
+		}
 		//$wsId = vtws_getWebserviceEntityId($wsModuleName, $entity->getId());
 		if (empty($task->test)
 			|| (isset($task->reevaluate) && $task->reevaluate==0)
