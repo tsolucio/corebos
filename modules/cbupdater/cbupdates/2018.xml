@@ -98,4 +98,11 @@
 	<classname>IncSizeWorkflowTestField</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>klivshapllo</author>
+	<description>Update the createdby field value for attachment folders for deleted users</description>
+	<filename>build/changeSets/2018/updateCreatedByField.php</filename>
+	<classname>updateCreatedByField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
