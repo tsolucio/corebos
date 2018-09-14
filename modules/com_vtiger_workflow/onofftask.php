@@ -12,8 +12,8 @@ require_once 'include/events/SqlResultIterator.inc';
 require_once 'VTWorkflowApplication.inc';
 require_once 'VTTaskManager.inc';
 require_once 'VTWorkflowUtils.php';
+
 function onoffTask($adb, $request) {
-	global $current_language;
 	if ($request['isactive'] == 1) {
 		$status = 0;
 	} else {
@@ -23,10 +23,10 @@ function onoffTask($adb, $request) {
 	$task = $tm->retrieveTask($request['task_id']);
 	$task->active = $status;
 	$tm->saveTask($task);
-	if (isset($request["return_url"])) {
-		$returnUrl=$request["return_url"];
+	if (isset($request['return_url'])) {
+		$returnUrl=$request['return_url'];
 	} else {
-		$returnUrl=$module->editWorkflowUrl($wfid);
+		$returnUrl='index.php';
 	}
 ?>
 	<script type="text/javascript" charset="utf-8">
