@@ -778,6 +778,7 @@ $mod_strings = array(
 'LBL_TASKS'=>'Tarefas',
 'LBL_NEW_TASK_BUTTON_LABEL'=>'Nova tarefa',
 'LBL_TASK'=>'Tarefa',
+'LBL_DELAY' => 'Delay',
 //Added for vantage customization (Mandatory fields) -- Pavani
 'LBL_MANDATORY_FIELDS'=>'Campos obrigatórios',
 'LBL_MANDATORY_FIELDS_DESCRIPTION'=>'Administrar campos obrigatórios de todos os módulos',

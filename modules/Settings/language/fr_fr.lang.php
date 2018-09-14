@@ -700,6 +700,7 @@ $mod_strings = array (
 		'LBL_TASKS' => 'Tâches',
 		'LBL_NEW_TASK_BUTTON_LABEL' => 'Nouvelle tâche',
 		'LBL_TASK' => 'Tâche',
+		'LBL_DELAY' => 'Delay',
 
 		'LBL_MANDATORY_FIELDS' => 'Champs obligatoires',
 		'LBL_MANDATORY_FIELDS_DESCRIPTION' => 'Gérer les champs obligatoires de tous les modules',
