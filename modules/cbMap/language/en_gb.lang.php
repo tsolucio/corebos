@@ -40,5 +40,6 @@ $mod_strings = array(
 	'DuplicateRelations' => 'Duplicate Relations',
 	'MasterDetailLayout' => 'Master Detail Layout',
 	'Validations' => 'Validations',
+	'Detail View Layout Mapping' => 'Detail View Layout Mapping',
 );
 ?>

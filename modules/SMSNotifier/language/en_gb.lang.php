@@ -34,5 +34,9 @@ $mod_strings = array(
 	'ServerNotConfigured' => 'Server Not Configured?',
 	'ReviewModuleSettings' => 'Please review SMS Settings.',
 	'ContactAdmin' => 'Please contact your administrator.',
-);
+	'SelectPhoneNumbers' => 'Select Phone Numbers',
+	'SelectNumberTypes' => 'Please select the number types to send the SMS',
+	'ComposeSMS' => 'Compose SMS',
+	'characters' => 'characters',
+	);
 ?>

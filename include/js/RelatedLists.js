@@ -73,7 +73,7 @@ if (window.cbRelatedListsLoaded == undefined) {
 		var indicator = 'indicator_'+imagesuffix;
 		var indicator_element = document.getElementById(indicator);
 		jQuery(indicator_element).show();
-		jQuery('#delete_'+imagesuffix).show();
+		document.getElementById('delete_'+imagesuffix).style.display='block';
 
 		var target_element = document.getElementById(target);
 		jQuery.ajax({
