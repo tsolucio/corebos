@@ -183,7 +183,10 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
 		$mail->AddEmbeddedImage('themes/images/logo_mail.jpg', 'logo', 'logo.jpg', 'base64', 'image/jpg');
 	}
 	if ($qrScan == 1) {
-		$mail->AddEmbeddedImage('cache/images/qrcode.png', 'qrcode', 'qrcode.png', "base64", "image/png");
+		preg_match_all('/<img src="cid:(qrcode.*)"/', $contents, $matches);
+		foreach ($matches[1] as $qrname) {
+			$mail->AddEmbeddedImage('cache/images/'.$qrname.'.png', $qrname, $qrname.'.png', 'base64', 'image/png');
+		}
 	}
 	$mail->Subject = $subject;
 	$mail->Body = $contents;

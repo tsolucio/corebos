@@ -419,11 +419,13 @@ class VTSimpleTemplate {
 				$focus = CRMEntity::getInstance($moduleName);
 				$focus->retrieve_entity_info($recordId, $moduleName);
 				$fieldValue = $focus->column_fields[$field];
-				$tfa = new TwoFactorAuth('coreBOSWebApp');
-				$imgSrc = $tfa->getQRCodeImageAsDataUri('coreBOSWebApp', $fieldValue);
-				$img = str_replace('data:image/png;base64,', '', $imgSrc);
-				file_put_contents('cache/images/qrcode.png', base64_decode($img));
-				return  '<img src="cid:qrcode" />';
+				$tfa = new TwoFactorAuth('emailwfqrcode');
+				$qrcodeprovider = $tfa->getQrCodeProvider();
+				$img = $qrcodeprovider->getQRCodeImage($fieldValue, 150);
+				$fname = uniqid('qrcode');
+				@unlink('cache/images/'.$fname.'.png');
+				file_put_contents('cache/images/'.$fname.'.png', $img);
+				return '<img src="cid:'.$fname.'" />';
 			default:
 				'';
 		}
