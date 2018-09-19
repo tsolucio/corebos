@@ -7,6 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+include_once 'modules/Users/authTypes/TwoFactorAuth/autoload.php';
+use \RobThree\Auth\TwoFactorAuth;
+
 class VTSimpleTemplate {
 
 	public function __construct($templateString) {
@@ -351,6 +354,10 @@ class VTSimpleTemplate {
 				$fldcomm = 'all';
 			}
 		}
+		if (substr($fieldname, 0, 10) == 'scanQRCode') {
+			$field = substr($fieldname, 16);
+			$fieldname = 'scanQRCode';
+		}
 		switch ($fieldname) {
 			case 'date':
 				return getNewDisplayDate();
@@ -404,6 +411,19 @@ class VTSimpleTemplate {
 				return $this->getGroupFieldList($groupname, 'email1');
 			case 'Events_Users_Invited':
 				return $this->getinvitedUsersList($this->parent->getId());
+			case 'scanQRCode':
+				$wsId = $this->parent->getId();
+				$parts = explode('x', $wsId);
+				$recordId = $parts[1];
+				$moduleName = $this->parent->getModuleName();
+				$focus = CRMEntity::getInstance($moduleName);
+				$focus->retrieve_entity_info($recordId, $moduleName);
+				$fieldValue = $focus->column_fields[$field];
+				$tfa = new TwoFactorAuth('coreBOSWebApp');
+				$imgSrc = $tfa->getQRCodeImageAsDataUri('coreBOSWebApp', $fieldValue);
+				$img = str_replace('data:image/png;base64,', '', $imgSrc);
+				file_put_contents('cache/images/qrcode.png', base64_decode($img));
+				return  '<img src="cid:qrcode" />';
 			default:
 				'';
 		}
