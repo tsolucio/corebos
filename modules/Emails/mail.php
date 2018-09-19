@@ -22,7 +22,7 @@ require_once 'include/utils/CommonUtils.php';
   *   $attachment	-- whether we want to attach the currently selected file or all files.[values = current,all] - optional
   *   $emailid		-- id of the email object which will be used to get the attachments
   */
-function send_mail($module, $to_email, $from_name, $from_email, $subject, $contents, $cc = '', $bcc = '', $attachment = '', $emailid = '', $logo = '', $replyto = '') {
+function send_mail($module, $to_email, $from_name, $from_email, $subject, $contents, $cc = '', $bcc = '', $attachment = '', $emailid = '', $logo = '', $replyto = '', $qrScan = '') {
 	global $adb;
 	$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
 
@@ -89,7 +89,8 @@ function send_mail($module, $to_email, $from_name, $from_email, $subject, $conte
 
 	$mail = new PHPMailer();
 
-	setMailerProperties($mail, $subject, $contents, $from_email, $from_name, trim($to_email, ','), $attachment, $emailid, $module, $logo);
+	setMailerProperties($mail, $subject, $contents, $from_email, $from_name, trim($to_email, ","), $attachment, $emailid, $module, $logo, $qrScan);
+
 	setCCAddress($mail, 'cc', $cc);
 	setCCAddress($mail, 'bcc', $bcc);
 	if (!empty($replyToEmail)) {
@@ -175,13 +176,15 @@ function addSignature($contents, $fromname) {
 				  [values = current,all] - optional
   *	$emailid	-- id of the email object which will be used to get the vtiger_attachments - optional
   */
-function setMailerProperties($mail, $subject, $contents, $from_email, $from_name, $to_email, $attachment = '', $emailid = '', $module = '', $logo = '') {
+function setMailerProperties($mail, $subject, $contents, $from_email, $from_name, $to_email, $attachment = '', $emailid = '', $module = '', $logo = '', $qrScan = '') {
 	global $adb;
 	$adb->println("Inside the function setMailerProperties");
 	if ($module == 'Support' || $logo ==1) {
 		$mail->AddEmbeddedImage('themes/images/logo_mail.jpg', 'logo', 'logo.jpg', 'base64', 'image/jpg');
 	}
-
+	if ($qrScan == 1) {
+		$mail->AddEmbeddedImage('cache/images/qrcode.png', 'qrcode', 'qrcode.png', "base64", "image/png");
+	}
 	$mail->Subject = $subject;
 	$mail->Body = $contents;
 	//$mail->Body = html_entity_decode(nl2br($contents));	//if we get html tags in mail then we will use this line
