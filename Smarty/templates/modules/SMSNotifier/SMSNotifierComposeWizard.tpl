@@ -34,8 +34,8 @@
 	<tr>
 		<td class="small" align="center">
 			<input type="hidden" name="idstring" value="{$IDSTRING}" />
-            <input type="hidden" name="excludedRecords" value="{$excludedRecords}"/>
-            <input type="hidden" name="viewid" value="{$VIEWID}"/>
+			<input type="hidden" name="excludedRecords" value="{$excludedRecords}"/>
+			<input type="hidden" name="viewid" value="{$VIEWID}"/>
 			<input type="hidden" name="searchurl" value="{$SEARCHURL}"/>
 			<input type="hidden" name="phonefields" value="{$PHONEFIELDS}" />
 			<input type="hidden" name="sourcemodule" value="{$SOURCEMODULE}" />

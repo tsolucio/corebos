@@ -13,7 +13,9 @@
 		<table width="100%" cellpadding="5" cellspacing="0" border="0" class="layerHeadingULine">
 			<tr>
 				<td class="genHeaderSmall" width="90%" align="left">Select Phone Numbers</td>
-				<td width="10%" align="right"><a href="javascript:void(0);" onclick="SMSNotifierCommon.hideSelectWizard();"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"/></a></td>
+				<td width="10%" align="right">
+					<a href="javascript:void(0);" onclick="SMSNotifierCommon.hideSelectWizard();"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"/></a>
+				</td>
 		</table>
 
 		<table width="95%" cellpadding="5" cellspacing="0" border="0" align="center">
@@ -33,7 +35,7 @@
 									<td align="right" width="15%">
 									<input type="checkbox" name="phonetype" value="{$_FIELDNAME}"/>
 									</td>
-									<td align="left"><strong>{$_FIELDLABEL}</strong> {if $FIELDVALUES.$_FIELDNAME}
+									<td align="left"><strong>{$_FIELDLABEL}</strong> {if isset($FIELDVALUES.$_FIELDNAME)}
 									<br/>
 									{$FIELDVALUES[$_FIELDNAME]}{/if}</td>
 								</tr>
