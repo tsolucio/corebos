@@ -12,7 +12,7 @@
 	<form method="POST" action="javascript:void(0);">
 		<table width="100%" cellpadding="5" cellspacing="0" border="0" class="layerHeadingULine">
 			<tr>
-				<td class="genHeaderSmall" width="90%" align="left">Select Phone Numbers</td>
+				<td class="genHeaderSmall" width="90%" align="left">{$MOD.SelectPhoneNumbers}</td>
 				<td width="10%" align="right">
 					<a href="javascript:void(0);" onclick="SMSNotifierCommon.hideSelectWizard();"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"/></a>
 				</td>
@@ -23,7 +23,7 @@
 				<td>
 				<table width="100%" cellpadding="5" cellspacing="0" border="0" align="center" bgcolor="white">
 					<tr>
-						<td align="left">Please select the number types to send the SMS
+						<td align="left">{$MOD.SelectNumberTypes}
 						<br/>
 						<br/>
 						<div align="center" style="height: 120px; overflow-y: auto; overflow-x: hidden;">
