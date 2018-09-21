@@ -2192,7 +2192,7 @@ function decideFilePath() {
 
 /**
  * 	This function is used to check whether the attached file is a image file or not
- * 	@param string $file_details  - files array which contains all the uploaded file details
+ * 	@param array $file_details  - files array which contains all the uploaded file details
  * 	return string $save_image - true or false. if the image can be uploaded then true will return otherwise false.
  */
 function validateImageFile($file_details) {
@@ -2216,6 +2216,79 @@ function validateImageFile($file_details) {
 
 	$log->debug("Exiting validateImageFile. saveimage=$saveimage");
 	return $saveimage;
+}
+
+
+/**
+ * Validate image metadata.
+ * @param mixed $data
+ * @return bool
+ */
+function validateImageMetadata($data) {
+	if (is_array($data)) {
+		foreach ($data as $value) {
+			if (!validateImageMetadata($value)) {
+				return false;
+			}
+		}
+	} else {
+		if (preg_match('/(<\?php?(.*?))/i', $data) === 1
+			|| preg_match('/(<?script(.*?)language(.*?)=(.*?)"(.*?)php(.*?)"(.*?))/i', $data) === 1
+			|| stripos($data, '<?=') !== false
+			|| stripos($data, '<%=') !== false
+			|| stripos($data, '<? ') !== false
+			|| stripos($data, '<% ') !== false) {
+			return false;
+		}
+	}
+	return true;
+}
+
+/**
+ * 	This function is used to check whether the attached file has not malicious code injected
+ * 	@param string $filename - files array which contains all the uploaded file details
+ * 	return bool - true or false. if the image can be uploaded then true will return otherwise false.
+ */
+function validateImageContents($filename) {
+
+	// Check for php code injection
+	$contents = file_get_contents($filename);
+	if (preg_match('/(<\?php?(.*?))/si', $contents) === 1
+		|| preg_match('/(<?script(.*?)language(.*?)=(.*?)"(.*?)php(.*?)"(.*?))/si', $contents) === 1
+		|| stripos($contents, '<?=') !== false
+		|| stripos($contents, '<%=') !== false
+		|| stripos($contents, '<? ') !== false
+		|| stripos($contents, '<% ') !== false) {
+		return false;
+	}
+
+	if (function_exists('mime_content_type')) {
+		$mimeType = mime_content_type($filename);
+	} elseif (function_exists('finfo_open')) {
+		$finfo = finfo_open(FILEINFO_MIME);
+		$mimeType = finfo_file($finfo, $filename);
+		finfo_close($finfo);
+	} else {
+		$mimeType = 'application/octet-stream';
+	}
+
+	if (function_exists('exif_read_data')
+		&& ($mimeType === 'image/jpeg' || $mimeType === 'image/tiff')
+		&& in_array(exif_imagetype($filename), [IMAGETYPE_JPEG, IMAGETYPE_TIFF_II, IMAGETYPE_TIFF_MM])) {
+		$imageSize = getimagesize($filename, $imageInfo);
+		if ($imageSize
+			&& (empty($imageInfo['APP1']) || strpos($imageInfo['APP1'], 'Exif') === 0)
+			&& ($exifdata = exif_read_data($filename))
+			&& !validateImageMetadata($exifdata)) {
+			return false;
+		}
+	}
+
+	if (stripos('<?xpacket', $contents) !== false) {
+		return false;
+	}
+
+	return true;
 }
 
 /**
