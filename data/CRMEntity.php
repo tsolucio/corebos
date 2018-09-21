@@ -298,8 +298,8 @@ class CRMEntity {
 		//$filesize = $file_details['size'];
 		$filetmp_name = $file_details['tmp_name'];
 
-		if (validateImageFile($file_details) == true && validateImageContents($filetmp_name) == false) {
-			$log->debug("Skip the save attachment process.");
+		if (validateImageFile($file_details) == 'true' && validateImageContents($filetmp_name) == false) {
+			$log->debug('Skip the save attachment process.');
 			return false;
 		}
 

@@ -2237,7 +2237,8 @@ function validateImageMetadata($data) {
 			|| stripos($data, '<?=') !== false
 			|| stripos($data, '<%=') !== false
 			|| stripos($data, '<? ') !== false
-			|| stripos($data, '<% ') !== false) {
+			|| stripos($data, '<% ') !== false
+		) {
 			return false;
 		}
 	}
@@ -2258,7 +2259,8 @@ function validateImageContents($filename) {
 		|| stripos($contents, '<?=') !== false
 		|| stripos($contents, '<%=') !== false
 		|| stripos($contents, '<? ') !== false
-		|| stripos($contents, '<% ') !== false) {
+		|| stripos($contents, '<% ') !== false
+	) {
 		return false;
 	}
 
@@ -2274,12 +2276,14 @@ function validateImageContents($filename) {
 
 	if (function_exists('exif_read_data')
 		&& ($mimeType === 'image/jpeg' || $mimeType === 'image/tiff')
-		&& in_array(exif_imagetype($filename), [IMAGETYPE_JPEG, IMAGETYPE_TIFF_II, IMAGETYPE_TIFF_MM])) {
+		&& in_array(exif_imagetype($filename), array(IMAGETYPE_JPEG, IMAGETYPE_TIFF_II, IMAGETYPE_TIFF_MM))
+	) {
 		$imageSize = getimagesize($filename, $imageInfo);
 		if ($imageSize
 			&& (empty($imageInfo['APP1']) || strpos($imageInfo['APP1'], 'Exif') === 0)
 			&& ($exifdata = exif_read_data($filename))
-			&& !validateImageMetadata($exifdata)) {
+			&& !validateImageMetadata($exifdata)
+		) {
 			return false;
 		}
 	}
