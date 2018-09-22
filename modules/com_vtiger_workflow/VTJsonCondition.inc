@@ -38,7 +38,7 @@ class VTJsonCondition {
 					$entity = $entityCache->forId($data[$referenceField]);
 					if ($entity->getModuleName() == $referenceModule) {
 						$cond['fieldname'] = $fieldname;
-						$expressionResults[$conditionGroup][$i]['result'] = $this->checkCondition($entity, $cond, $entityData);
+						$expressionResults[$conditionGroup][$i]['result'] = $this->checkCondition($entity, $cond, $entity);
 					} else {
 						$expressionResults[$conditionGroup][$i]['result'] = ($cond['operation'] == 'is empty' || ($cond['operation'] == 'is' && $cond['value'] == ''));
 					}
