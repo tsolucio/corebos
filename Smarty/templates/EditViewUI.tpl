@@ -339,7 +339,17 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
 			</td>
 			<td width="30%" align=left class="dvtCellInfo">
-				<select MULTIPLE name="{$fldname}[]" id="{$fldname}" size="4" style="width:280px;" tabindex="{$vt_tab}" class="small">
+				{if (isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['columns']))}
+					{assign var=mplsize value=$maindata['extendedfieldinfo']['columns']}
+				{else}
+					{assign var=mplsize value=4}
+				{/if}
+				{if (isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['width']))}
+					{assign var=mplwidth value=$maindata['extendedfieldinfo']['width']}
+				{else}
+					{assign var=mplwidth value=280}
+				{/if}
+				<select MULTIPLE name="{$fldname}[]" id="{$fldname}" size="{$mplsize}" style="width:{$mplwidth}px;" tabindex="{$vt_tab}" class="small">
 				{foreach item=arr from=$fldvalue}
 					<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
 				{/foreach}
