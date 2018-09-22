@@ -610,20 +610,20 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			{if $fldname eq 'portal'}
 				<td width="30%" align=left class="dvtCellInfo">
 					<input type="hidden" name="existing_portal" value="{$fldvalue}">
-					<input name="{$fldname}" type="checkbox" tabindex="{$vt_tab}" {if $fldvalue eq 1}checked{/if}>
+					<input name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" {if $fldvalue eq 1}checked{/if}>
 				</td>
 			{else}
 				{if $fldvalue eq 1}
 					<td width="30%" align=left class="dvtCellInfo">
-						<input name="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
+						<input name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
 					</td>
 				{elseif $fldname eq 'filestatus'&& $MODE eq 'create'}
 					<td width="30%" align=left class="dvtCellInfo">
-						<input name="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
+						<input name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
 					</td>
 				{else}
 					<td width="30%" align=left class="dvtCellInfo">
-						<input name="{$fldname}" tabindex="{$vt_tab}" type="checkbox">
+						<input name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" type="checkbox">
 					</td>
 				{/if}
 			{/if}
