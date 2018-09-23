@@ -1509,4 +1509,413 @@ function getTagWhere($search_val, $current_user_id) {
 	}
 	return $where;
 }
+
+/**
+ * This function will return the script to set the start data and end date for the standard selection criteria
+ * @returns  $jsStr : Type String
+ */
+function getCriteriaJS($formName) {
+	$todayDateTime = new DateTimeField(date('Y-m-d H:i:s'));
+
+	$tomorrow = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+1, date('Y')));
+	$tomorrowDateTime = new DateTimeField($tomorrow.' '. date('H:i:s'));
+
+	$yesterday = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-1, date('Y')));
+	$yesterdayDateTime = new DateTimeField($yesterday.' '. date('H:i:s'));
+
+	$currentmonth0 = date('Y-m-d', mktime(0, 0, 0, date('m'), '01', date('Y')));
+	$currentMonthStartDateTime = new DateTimeField($currentmonth0.' '. date('H:i:s'));
+	$currentmonth1 = date('Y-m-t');
+	$currentMonthEndDateTime = new DateTimeField($currentmonth1.' '. date('H:i:s'));
+
+	$lastmonth0 = date('Y-m-d', mktime(0, 0, 0, date('m')-1, '01', date('Y')));
+	$lastMonthStartDateTime = new DateTimeField($lastmonth0.' '. date('H:i:s'));
+	$lastmonth1 = date('Y-m-t', strtotime('-1 Month'));
+	$lastMonthEndDateTime = new DateTimeField($lastmonth1.' '. date('H:i:s'));
+
+	$nextmonth0 = date('Y-m-d', mktime(0, 0, 0, date('m')+1, '01', date('Y')));
+	$nextMonthStartDateTime = new DateTimeField($nextmonth0.' '. date('H:i:s'));
+	$nextmonth1 = date('Y-m-t', strtotime('+1 Month'));
+	$nextMonthEndDateTime = new DateTimeField($nextmonth1.' '. date('H:i:s'));
+
+	$lastweek0 = date('Y-m-d', strtotime('-2 week Sunday'));
+	$lastWeekStartDateTime = new DateTimeField($lastweek0.' '. date('H:i:s'));
+	$lastweek1 = date('Y-m-d', strtotime('-1 week Saturday'));
+	$lastWeekEndDateTime = new DateTimeField($lastweek1.' '. date('H:i:s'));
+
+	$thisweek0 = date('Y-m-d', strtotime('-1 week Sunday'));
+	$thisWeekStartDateTime = new DateTimeField($thisweek0.' '. date('H:i:s'));
+	$thisweek1 = date('Y-m-d', strtotime('this Saturday'));
+	$thisWeekEndDateTime = new DateTimeField($thisweek1.' '. date('H:i:s'));
+
+	$nextweek0 = date('Y-m-d', strtotime('this Sunday'));
+	$nextWeekStartDateTime = new DateTimeField($nextweek0.' '. date('H:i:s'));
+	$nextweek1 = date('Y-m-d', strtotime('+1 week Saturday'));
+	$nextWeekEndDateTime = new DateTimeField($nextweek1.' '. date('H:i:s'));
+
+	$next7days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+6, date('Y')));
+	$next7DaysDateTime = new DateTimeField($next7days.' '. date('H:i:s'));
+
+	$next30days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+29, date('Y')));
+	$next30DaysDateTime = new DateTimeField($next30days.' '. date('H:i:s'));
+
+	$next60days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+59, date('Y')));
+	$next60DaysDateTime = new DateTimeField($next60days.' '. date('H:i:s'));
+
+	$next90days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+89, date('Y')));
+	$next90DaysDateTime = new DateTimeField($next90days.' '. date('H:i:s'));
+
+	$next120days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+119, date('Y')));
+	$next120DaysDateTime = new DateTimeField($next120days.' '. date('H:i:s'));
+
+	$last7days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-6, date('Y')));
+	$last7DaysDateTime = new DateTimeField($last7days.' '. date('H:i:s'));
+
+	$last14days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-13, date('Y')));
+	$last14DaysDateTime = new DateTimeField($last14days.' '. date('H:i:s'));
+
+	$last30days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-29, date('Y')));
+	$last30DaysDateTime = new DateTimeField($last30days.' '. date('H:i:s'));
+
+	$last60days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-59, date('Y')));
+	$last60DaysDateTime = new DateTimeField($last60days.' '. date('H:i:s'));
+
+	$last90days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-89, date('Y')));
+	$last90DaysDateTime = new DateTimeField($last90days.' '. date('H:i:s'));
+
+	$last120days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-119, date('Y')));
+	$last120DaysDateTime = new DateTimeField($last120days.' '. date('H:i:s'));
+
+	$currentFY0 = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')));
+	$currentFYStartDateTime = new DateTimeField($currentFY0.' '. date('H:i:s'));
+	$currentFY1 = date('Y-m-t', mktime(0, 0, 0, '12', date('d'), date('Y')));
+	$currentFYEndDateTime = new DateTimeField($currentFY1.' '. date('H:i:s'));
+
+	$lastFY0 = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')-1));
+	$lastFYStartDateTime = new DateTimeField($lastFY0.' '. date('H:i:s'));
+	$lastFY1 = date('Y-m-t', mktime(0, 0, 0, '12', date('d'), date('Y')-1));
+	$lastFYEndDateTime = new DateTimeField($lastFY1.' '. date('H:i:s'));
+
+	$nextFY0 = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')+1));
+	$nextFYStartDateTime = new DateTimeField($nextFY0.' '. date('H:i:s'));
+	$nextFY1 = date('Y-m-t', mktime(0, 0, 0, '12', date('d'), date('Y')+1));
+	$nextFYEndDateTime = new DateTimeField($nextFY1.' '. date('H:i:s'));
+
+	if (date('m') <= 3) {
+		$cFq = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')));
+		$cFqStartDateTime = new DateTimeField($cFq.' '. date('H:i:s'));
+		$cFq1 = date('Y-m-d', mktime(0, 0, 0, '03', '31', date('Y')));
+		$cFqEndDateTime = new DateTimeField($cFq1.' '. date('H:i:s'));
+
+		$nFq = date('Y-m-d', mktime(0, 0, 0, '04', '01', date('Y')));
+		$nFqStartDateTime = new DateTimeField($nFq.' '. date('H:i:s'));
+		$nFq1 = date('Y-m-d', mktime(0, 0, 0, '06', '30', date('Y')));
+		$nFqEndDateTime = new DateTimeField($nFq1.' '. date('H:i:s'));
+
+		$pFq = date('Y-m-d', mktime(0, 0, 0, '10', '01', date('Y')-1));
+		$pFqStartDateTime = new DateTimeField($pFq.' '. date('H:i:s'));
+		$pFq1 = date('Y-m-d', mktime(0, 0, 0, '12', '31', date('Y')-1));
+		$pFqEndDateTime = new DateTimeField($pFq1.' '. date('H:i:s'));
+	} elseif (date('m') > 3 && date('m') <= 6) {
+		$pFq = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')));
+		$pFqStartDateTime = new DateTimeField($pFq.' '. date('H:i:s'));
+		$pFq1 = date('Y-m-d', mktime(0, 0, 0, '03', '31', date('Y')));
+		$pFqEndDateTime = new DateTimeField($pFq1.' '. date('H:i:s'));
+
+		$cFq = date('Y-m-d', mktime(0, 0, 0, '04', '01', date('Y')));
+		$cFqStartDateTime = new DateTimeField($cFq.' '. date('H:i:s'));
+		$cFq1 = date('Y-m-d', mktime(0, 0, 0, '06', '30', date('Y')));
+		$cFqEndDateTime = new DateTimeField($cFq1.' '. date('H:i:s'));
+
+		$nFq = date('Y-m-d', mktime(0, 0, 0, '07', '01', date('Y')));
+		$nFqStartDateTime = new DateTimeField($nFq.' '. date('H:i:s'));
+		$nFq1 = date('Y-m-d', mktime(0, 0, 0, '09', '30', date('Y')));
+		$nFqEndDateTime = new DateTimeField($nFq1.' '. date('H:i:s'));
+	} elseif (date('m') > 6 && date('m') <= 9) {
+		$nFq = date('Y-m-d', mktime(0, 0, 0, '10', '01', date('Y')));
+		$nFqStartDateTime = new DateTimeField($nFq.' '. date('H:i:s'));
+		$nFq1 = date('Y-m-d', mktime(0, 0, 0, '12', '31', date('Y')));
+		$nFqEndDateTime = new DateTimeField($nFq1.' '. date('H:i:s'));
+
+		$pFq = date('Y-m-d', mktime(0, 0, 0, '04', '01', date('Y')));
+		$pFqStartDateTime = new DateTimeField($pFq.' '. date('H:i:s'));
+		$pFq1 = date('Y-m-d', mktime(0, 0, 0, '06', '30', date('Y')));
+		$pFqEndDateTime = new DateTimeField($pFq1.' '. date('H:i:s'));
+
+		$cFq = date('Y-m-d', mktime(0, 0, 0, '07', '01', date('Y')));
+		$cFqStartDateTime = new DateTimeField($cFq.' '. date('H:i:s'));
+		$cFq1 = date('Y-m-d', mktime(0, 0, 0, '09', '30', date('Y')));
+		$cFqEndDateTime = new DateTimeField($cFq1.' '. date('H:i:s'));
+	} elseif (date('m') > 9 && date('m') <= 12) {
+		$nFq = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')+1));
+		$nFqStartDateTime = new DateTimeField($nFq.' '. date('H:i:s'));
+		$nFq1 = date('Y-m-d', mktime(0, 0, 0, '03', '31', date('Y')+1));
+		$nFqEndDateTime = new DateTimeField($nFq1.' '. date('H:i:s'));
+
+		$pFq = date('Y-m-d', mktime(0, 0, 0, '07', '01', date('Y')));
+		$pFqStartDateTime = new DateTimeField($pFq.' '. date('H:i:s'));
+		$pFq1 = date('Y-m-d', mktime(0, 0, 0, '09', '30', date('Y')));
+		$pFqEndDateTime = new DateTimeField($pFq1.' '. date('H:i:s'));
+
+		$cFq = date('Y-m-d', mktime(0, 0, 0, '10', '01', date('Y')));
+		$cFqStartDateTime = new DateTimeField($cFq.' '. date('H:i:s'));
+		$cFq1 = date('Y-m-d', mktime(0, 0, 0, '12', '31', date('Y')));
+		$cFqEndDateTime = new DateTimeField($cFq1.' '. date('H:i:s'));
+	}
+
+	$sjsStr = '<script type="text/javaScript">
+		function showDateRange( type ) {
+			if (type!="custom") {
+				document.'.$formName.'.startdate.readOnly=true
+				document.'.$formName.'.enddate.readOnly=true
+				getObj("jscal_trigger_date_start").style.visibility="hidden"
+				getObj("jscal_trigger_date_end").style.visibility="hidden"
+			} else {
+				document.'.$formName.'.startdate.readOnly=false
+				document.'.$formName.'.enddate.readOnly=false
+				getObj("jscal_trigger_date_start").style.visibility="visible"
+				getObj("jscal_trigger_date_end").style.visibility="visible"
+			}
+			if( type == "today" ) {
+				document.'.$formName.'.startdate.value = "'.$todayDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$todayDateTime->getDisplayDate().'";
+			} else if( type == "yesterday" ) {
+				document.'.$formName.'.startdate.value = "'.$yesterdayDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$yesterdayDateTime->getDisplayDate().'";
+			} else if( type == "tomorrow" ) {
+				document.'.$formName.'.startdate.value = "'.$tomorrowDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$tomorrowDateTime->getDisplayDate().'";
+			} else if( type == "thisweek" ) {
+				document.'.$formName.'.startdate.value = "'.$thisWeekStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$thisWeekEndDateTime->getDisplayDate().'";
+			} else if( type == "lastweek" ) {
+				document.'.$formName.'.startdate.value = "'.$lastWeekStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$lastWeekEndDateTime->getDisplayDate().'";
+			} else if( type == "nextweek" ) {
+				document.'.$formName.'.startdate.value = "'.$nextWeekStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$nextWeekEndDateTime->getDisplayDate().'";
+			} else if( type == "thismonth" ) {
+				document.'.$formName.'.startdate.value = "'.$currentMonthStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$currentMonthEndDateTime->getDisplayDate().'";
+			} else if( type == "lastmonth" ) {
+				document.'.$formName.'.startdate.value = "'.$lastMonthStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$lastMonthEndDateTime->getDisplayDate().'";
+			} else if( type == "nextmonth" ) {
+				document.'.$formName.'.startdate.value = "'.$nextMonthStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$nextMonthEndDateTime->getDisplayDate().'";
+			} else if( type == "next7days" ) {
+				document.'.$formName.'.startdate.value = "'.$todayDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$next7DaysDateTime->getDisplayDate().'";
+			} else if( type == "next30days" ) {
+				document.'.$formName.'.startdate.value = "'.$todayDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$next30DaysDateTime->getDisplayDate().'";
+			} else if( type == "next60days" ) {
+				document.'.$formName.'.startdate.value = "'.$todayDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$next60DaysDateTime->getDisplayDate().'";
+			} else if( type == "next90days" ) {
+				document.'.$formName.'.startdate.value = "'.$todayDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$next90DaysDateTime->getDisplayDate().'";
+			} else if( type == "next120days" ) {
+				document.'.$formName.'.startdate.value = "'.$todayDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$next120DaysDateTime->getDisplayDate().'";
+			} else if( type == "last7days" ) {
+				document.'.$formName.'.startdate.value = "'.$last7DaysDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$todayDateTime->getDisplayDate().'";
+			} else if( type == "last14days" ) {
+				document.'.$formName.'.startdate.value = "'.$last14DaysDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value =  "'.$todayDateTime->getDisplayDate().'";
+			} else if( type == "last30days" ) {
+				document.'.$formName.'.startdate.value = "'.$last30DaysDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$todayDateTime->getDisplayDate().'";
+			} else if( type == "last60days" ) {
+				document.'.$formName.'.startdate.value = "'.$last60DaysDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$todayDateTime->getDisplayDate().'";
+			} else if( type == "last90days" ) {
+				document.'.$formName.'.startdate.value = "'.$last90DaysDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$todayDateTime->getDisplayDate().'";
+			} else if( type == "last120days" ) {
+				document.'.$formName.'.startdate.value = "'.$last120DaysDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$todayDateTime->getDisplayDate().'";
+			} else if( type == "thisfy" ) {
+				document.'.$formName.'.startdate.value = "'.$currentFYStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$currentFYEndDateTime->getDisplayDate().'";
+			} else if( type == "prevfy" ) {
+				document.'.$formName.'.startdate.value = "'.$lastFYStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$lastFYEndDateTime->getDisplayDate().'";
+			} else if( type == "nextfy" ) {
+				document.'.$formName.'.startdate.value = "'.$nextFYStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$nextFYEndDateTime->getDisplayDate().'";
+			} else if( type == "nextfq" ) {
+				document.'.$formName.'.startdate.value = "'.$nFqStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$nFqEndDateTime->getDisplayDate().'";
+			} else if( type == "prevfq" ) {
+				document.'.$formName.'.startdate.value = "'.$pFqStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$pFqEndDateTime->getDisplayDate().'";
+			} else if( type == "thisfq" ) {
+				document.'.$formName.'.startdate.value = "'.$cFqStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$cFqEndDateTime->getDisplayDate().'";
+			} else {
+				document.'.$formName.'.startdate.value = "";
+				document.'.$formName.'.enddate.value = "";
+			}
+		}
+	</script>';
+	return $sjsStr;
+}
+
+function getDateforStdFilterBytype($type) {
+	$today = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y')));
+	$tomorrow  = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+1, date('Y')));
+	$yesterday  = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-1, date('Y')));
+
+	$currentmonth0 = date('Y-m-d', mktime(0, 0, 0, date('m'), '01', date('Y')));
+	$currentmonth1 = date('Y-m-t');
+	$lastmonth0 = date('Y-m-d', mktime(0, 0, 0, date('m')-1, '01', date('Y')));
+	$lastmonth1 = date('Y-m-t', strtotime('-1 Month'));
+	$nextmonth0 = date('Y-m-d', mktime(0, 0, 0, date('m')+1, '01', date('Y')));
+	$nextmonth1 = date('Y-m-t', strtotime('+1 Month'));
+
+	$lastweek0 = date('Y-m-d', strtotime('-2 week Sunday'));
+	$lastweek1 = date('Y-m-d', strtotime('-1 week Saturday'));
+
+	$thisweek0 = date('Y-m-d', strtotime('-1 week Sunday'));
+	$thisweek1 = date('Y-m-d', strtotime('this Saturday'));
+
+	$nextweek0 = date('Y-m-d', strtotime('this Sunday'));
+	$nextweek1 = date('Y-m-d', strtotime('+1 week Saturday'));
+
+	$next7days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+6, date('Y')));
+	$next30days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+29, date('Y')));
+	$next60days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+59, date('Y')));
+	$next90days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+89, date('Y')));
+	$next120days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+119, date('Y')));
+
+	$last7days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-6, date('Y')));
+	$last14days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-13, date('Y')));
+	$last30days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-29, date('Y')));
+	$last60days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-59, date('Y')));
+	$last90days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-89, date('Y')));
+	$last120days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-119, date('Y')));
+
+	$currentFY0 = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')));
+	$currentFY1 = date('Y-m-t', mktime(0, 0, 0, '12', date('d'), date('Y')));
+	$lastFY0 = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')-1));
+	$lastFY1 = date('Y-m-t', mktime(0, 0, 0, '12', date('d'), date('Y')-1));
+	$nextFY0 = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')+1));
+	$nextFY1 = date('Y-m-t', mktime(0, 0, 0, '12', date('d'), date('Y')+1));
+
+	if (date('m') <= 3) {
+		$cFq = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')));
+		$cFq1 = date('Y-m-d', mktime(0, 0, 0, '03', '31', date('Y')));
+		$nFq = date('Y-m-d', mktime(0, 0, 0, '04', '01', date('Y')));
+		$nFq1 = date('Y-m-d', mktime(0, 0, 0, '06', '30', date('Y')));
+		$pFq = date('Y-m-d', mktime(0, 0, 0, '10', '01', date('Y')-1));
+		$pFq1 = date('Y-m-d', mktime(0, 0, 0, '12', '31', date('Y')-1));
+	} elseif (date('m') > 3 && date('m') <= 6) {
+		$pFq = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')));
+		$pFq1 = date('Y-m-d', mktime(0, 0, 0, '03', '31', date('Y')));
+		$cFq = date('Y-m-d', mktime(0, 0, 0, '04', '01', date('Y')));
+		$cFq1 = date('Y-m-d', mktime(0, 0, 0, '06', '30', date('Y')));
+		$nFq = date('Y-m-d', mktime(0, 0, 0, '07', '01', date('Y')));
+		$nFq1 = date('Y-m-d', mktime(0, 0, 0, '09', '30', date('Y')));
+	} elseif (date('m') > 6 && date('m') <= 9) {
+		$nFq = date('Y-m-d', mktime(0, 0, 0, '10', '01', date('Y')));
+		$nFq1 = date('Y-m-d', mktime(0, 0, 0, '12', '31', date('Y')));
+		$pFq = date('Y-m-d', mktime(0, 0, 0, '04', '01', date('Y')));
+		$pFq1 = date('Y-m-d', mktime(0, 0, 0, '06', '30', date('Y')));
+		$cFq = date('Y-m-d', mktime(0, 0, 0, '07', '01', date('Y')));
+		$cFq1 = date('Y-m-d', mktime(0, 0, 0, '09', '30', date('Y')));
+	} elseif (date('m') > 9 && date('m') <= 12) {
+		$nFq = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')+1));
+		$nFq1 = date('Y-m-d', mktime(0, 0, 0, '03', '31', date('Y')+1));
+		$pFq = date('Y-m-d', mktime(0, 0, 0, '07', '01', date('Y')));
+		$pFq1 = date('Y-m-d', mktime(0, 0, 0, '09', '30', date('Y')));
+		$cFq = date('Y-m-d', mktime(0, 0, 0, '10', '01', date('Y')));
+		$cFq1 = date('Y-m-d', mktime(0, 0, 0, '12', '31', date('Y')));
+	}
+
+	if ($type == 'today') {
+		$datevalue[0] = $today;
+		$datevalue[1] = $today;
+	} elseif ($type == 'yesterday') {
+		$datevalue[0] = $yesterday;
+		$datevalue[1] = $yesterday;
+	} elseif ($type == 'tomorrow') {
+		$datevalue[0] = $tomorrow;
+		$datevalue[1] = $tomorrow;
+	} elseif ($type == 'thisweek') {
+		$datevalue[0] = $thisweek0;
+		$datevalue[1] = $thisweek1;
+	} elseif ($type == 'lastweek') {
+		$datevalue[0] = $lastweek0;
+		$datevalue[1] = $lastweek1;
+	} elseif ($type == 'nextweek') {
+		$datevalue[0] = $nextweek0;
+		$datevalue[1] = $nextweek1;
+	} elseif ($type == 'thismonth') {
+		$datevalue[0] =$currentmonth0;
+		$datevalue[1] = $currentmonth1;
+	} elseif ($type == 'lastmonth') {
+		$datevalue[0] = $lastmonth0;
+		$datevalue[1] = $lastmonth1;
+	} elseif ($type == 'nextmonth') {
+		$datevalue[0] = $nextmonth0;
+		$datevalue[1] = $nextmonth1;
+	} elseif ($type == 'next7days') {
+		$datevalue[0] = $today;
+		$datevalue[1] = $next7days;
+	} elseif ($type == 'next30days') {
+		$datevalue[0] =$today;
+		$datevalue[1] =$next30days;
+	} elseif ($type == 'next60days') {
+		$datevalue[0] = $today;
+		$datevalue[1] = $next60days;
+	} elseif ($type == 'next90days') {
+		$datevalue[0] = $today;
+		$datevalue[1] = $next90days;
+	} elseif ($type == 'next120days') {
+		$datevalue[0] = $today;
+		$datevalue[1] = $next120days;
+	} elseif ($type == 'last7days') {
+		$datevalue[0] = $last7days;
+		$datevalue[1] = $today;
+	} elseif ($type == 'last14days') {
+		$datevalue[0] = $last14days;
+		$datevalue[1] = $today;
+	} elseif ($type == 'last30days') {
+		$datevalue[0] = $last30days;
+		$datevalue[1] =  $today;
+	} elseif ($type == 'last60days') {
+		$datevalue[0] = $last60days;
+		$datevalue[1] = $today;
+	} elseif ($type == 'last90days') {
+		$datevalue[0] = $last90days;
+		$datevalue[1] = $today;
+	} elseif ($type == 'last120days') {
+		$datevalue[0] = $last120days;
+		$datevalue[1] = $today;
+	} elseif ($type == 'thisfy') {
+		$datevalue[0] = $currentFY0;
+		$datevalue[1] = $currentFY1;
+	} elseif ($type == 'prevfy') {
+		$datevalue[0] = $lastFY0;
+		$datevalue[1] = $lastFY1;
+	} elseif ($type == 'nextfy') {
+		$datevalue[0] = $nextFY0;
+		$datevalue[1] = $nextFY1;
+	} elseif ($type == 'nextfq') {
+		$datevalue[0] = $nFq;
+		$datevalue[1] = $nFq1;
+	} elseif ($type == 'prevfq') {
+		$datevalue[0] = $pFq;
+		$datevalue[1] = $pFq1;
+	} elseif ($type == 'thisfq') {
+		$datevalue[0] = $cFq;
+		$datevalue[1] = $cFq1;
+	} else {
+		$datevalue[0] = '';
+		$datevalue[1] = '';
+	}
+	return $datevalue;
+}
 ?>
