@@ -1296,13 +1296,13 @@ function getAdvancedSearchComparator($comparator, $value, $datatype = '') {
 function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $datatype) {
 	//we have to add the fieldname/tablename.fieldname and the corresponding value (which we want).
 	// So that when these LHS field comes then RHS value will be replaced for LHS in the where condition of the query
-	global $adb, $mod_strings, $currentModule, $current_user;
+	global $adb, $currentModule, $current_user;
 	//Added for proper check of contact name in advance filter
 	if ($tablename == 'vtiger_contactdetails' && $fieldname == 'lastname') {
 		$fieldname = 'contactid';
 	}
 	$fldname = $adb->pquery('select fieldname from vtiger_field where tablename=? and columnname=?', array($tablename, $fieldname));
-	$fld = $adb->query($fldname, 0, 0);
+	$fld = $adb->query_result($fldname, 0, 0);
 	$contactid = 'vtiger_contactdetails.lastname';
 	if ($currentModule != 'Contacts' && $currentModule != 'Leads' && $currentModule != 'Campaigns') {
 		$contactid = getSqlForNameInDisplayFormat(array('lastname'=>'vtiger_contactdetails.lastname', 'firstname'=>'vtiger_contactdetails.firstname'), 'Contacts');
@@ -1338,7 +1338,7 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 		);
 		$temp_value = "( trim($userNameSql)".getAdvancedSearchComparator($comparator, $value, $datatype);
 		$temp_value.= " OR vtiger_groups$tableNameSuffix.groupname".getAdvancedSearchComparator($comparator, $value, $datatype);
-		$value=$temp_value.")";
+		$value = $temp_value . ')';
 	} elseif ($fieldname == "inventorymanager") {
 		$value = $tablename.".".$fieldname.getAdvancedSearchComparator($comparator, getUserId_Ol($value), $datatype);
 	} elseif (!empty($change_table_field[$fieldname])) { //Added to handle special cases
@@ -1353,26 +1353,13 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 		//For crmentity.crmid the control should not come here. This is only to get the related to modules
 		$value = getAdvancedSearchParentEntityValue($comparator, $value, $datatype, $tablename, $fieldname);
 	} else {
-		//For checkbox type values, we have to convert yes/no as 1/0 to get the values
 		$field_uitype = getUItype($currentModule, $fieldname);
+		// For checkbox type values, we have to convert yes/no to 1/0 to get the values
 		if ($field_uitype == 56) {
 			if (strtolower($value) == 'yes') {
 				$value = 1;
 			} elseif (strtolower($value) ==  'no') {
 				$value = 0;
-			}
-		} elseif (is_uitype($field_uitype, '_picklist_')) {
-			// Get all the keys for the for the Picklist value
-			$mod_keys = array_keys($mod_strings, $value);
-
-			// Iterate on the keys, to get the first key which doesn't start with LBL_      (assuming it is not used in PickList)
-			foreach ($mod_keys as $mod_key) {
-				$stridx = strpos($mod_key, 'LBL_');
-			// Use strict type comparision, refer strpos for more details
-				if ($stridx !== 0) {
-					$value = $mod_key;
-					break;
-				}
 			}
 		}
 		if ($currentModule == "Calendar" && ($fieldname=="status" || $fieldname=="taskstatus" || $fieldname=="eventstatus")) {
