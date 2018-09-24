@@ -950,7 +950,7 @@ class Contacts extends CRMEntity {
 			$dirpermission = is_writable($upload_file_path);
 			$upload = is_uploaded_file($_FILES['imagename']['tmp_name']);
 			$ferror = (isset($_FILES['error']) ? $_FILES['error'] : $_FILES['imagename']['error']);
-			if (!$dirpermission || ($ferror!=0 && $ferror!=4) || (!$upload && $ferror!=4)) {
+			if ((!$dirpermission && ($this->mode=='' || ($this->mode!='' && $upload))) || ($ferror!=0 && $ferror!=4) || (!$upload && $ferror!=4)) {
 				$saveerror = true;
 				if ($ferror == 2) {
 					$errmsg = getTranslatedString('LBL_MAXIMUM_LIMIT_ERROR', 'Contacts');
