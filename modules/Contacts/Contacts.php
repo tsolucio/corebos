@@ -962,7 +962,7 @@ class Contacts extends CRMEntity {
 			}
 		}
 		if ($saveerror) {
-			return array($saveerror, $errmsg, 'EditView','');
+			return array($saveerror, $errmsg, 'EditView', '');
 		} else {
 			return parent::preSaveCheck($request);
 		}
