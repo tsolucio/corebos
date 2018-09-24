@@ -1186,8 +1186,8 @@ $GlobalVariableDefinitons = array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
 	'category' => 'Application',
-	'values' => 'Any field name to search',
-	'definition' => 'Returns fields name to search phone on asterisk call',
+	'values' => 'list of field names',
+	'definition' => 'List of fields to search in when we get a call from Asterisk. The first result found will be returned.',
 ),
 );
 
