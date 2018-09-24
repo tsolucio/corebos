@@ -3027,7 +3027,7 @@ function transferPriceBookCurrency($old_cur, $new_cur) {
  */
 function getCallerName($from) {
 	//information found
-	echo $callerInfo = getCallerInfo($from);
+	$callerInfo = getCallerInfo($from);
 
 	if ($callerInfo != false) {
 		$callerName = decode_html($callerInfo['name']);
@@ -3057,29 +3057,19 @@ function getCallerInfo($number) {
 	if (empty($number)) {
 		return false;
 	}
+
 	$fieldsString = GlobalVariable::getVariable('PBXManager_SearchOnlyOnTheseFields', '');
 	if ($fieldsString != '') {
 		$fieldsArray = explode(',', $fieldsString);
-		$modulesArray = array();
-		$modulesPerField = array();
 		foreach ($fieldsArray as $field) {
-			$result = $adb->pquery("SELECT tabid FROM vtiger_field WHERE columnname = ?", array($field));
+			$result = $adb->pquery("SELECT tabid, uitype FROM vtiger_field WHERE columnname = ?", array($field));
 			for ($i = 0; $i< $adb->num_rows($result); $i++) {
 				$module = vtlib_getModuleNameById($adb->query_result($result, $i, 0));
-				array_push($modulesPerField, $module);
-			}
-			$modulesArray[$field] = $modulesPerField;
-			$modulesPerField = [];
-		}
-
-		foreach ($modulesArray as $field => $modules) {
-			$result = $adb->pquery("SELECT uitype FROM vtiger_field WHERE columnname = ? ", array($field));
-			$uitype = $adb->query_result($result, 0, 0);
-			foreach ($modules as $module) {
+				$uitype = $adb->query_result($result, $i, 1);
 				$focus = CRMEntity::getInstance($module);
 				$query = $focus->buildSearchQueryForFieldTypes($uitype, $number);
 				if (empty($query)) {
-					return false;
+					continue;
 				}
 
 				$result = $adb->pquery($query, array());

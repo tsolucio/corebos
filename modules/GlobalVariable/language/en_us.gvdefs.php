@@ -1182,6 +1182,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Any valid Zero Bounce API KEY',
 	'definition' => 'The valid Zero Bounce API KEY',
 ),
+'PBXManager_SearchOnlyOnTheseFields' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Any field name to search',
+	'definition' => 'Returns fields name to search phone on asterisk call',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php', GLOB_BRACE) as $tcode) {
