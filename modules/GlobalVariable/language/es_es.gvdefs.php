@@ -1182,6 +1182,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Cualquier Clave API válida de Zero Bounce',
 	'definition' => 'Una clave válida para el API de Zero Bounce para poder validar cuentas de correo.',
 ),
+'PBXManager_SearchOnlyOnTheseFields' => array(
+	'status' => 'Implementeda',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'nombres de campos',
+	'definition' => 'Lista de campos en los que buscar al recibir una llamada de Asterisk. Se devolverá el primer resultado encontrado.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {

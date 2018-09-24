@@ -79,8 +79,13 @@ function vtRunTaskJob($adb) {
 			|| ((!isset($task->reevaluate) || $task->reevaluate==1) && $task->evaluate($entityCache, $entity->getId()))
 		) {
 			$logbg->debug('WF Cron:: Task '.$taskId.' will call function doTask with entityId: '.$entityId);
-			$task->doTask($entity);
-			$logbg->debug('WF Cron:: Task '.$taskId.' executed with success the function doTask with entityId: '.$entityId);
+			try {
+				$task->doTask($entity);
+				$logbg->debug('WF Cron:: Task '.$taskId.' executed with success the function doTask with entityId: '.$entityId);
+			} catch (Exception $e) {
+				$logbg->debug('WF Cron:: Task '.$taskId.' executed with FAILURE the function doTask with entityId: '.$entityId);
+				$logbg->debug($e->getMessage());
+			}
 		} else {
 			$logbg->debug('WF Cron:: Task '.$taskId.' was skipped due to unsatisfied conditions: '.$entityId);
 		}

@@ -1266,12 +1266,10 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 		}
 		$aBlockStatus[$sLabelVal] = $adb->query_result($result, $i, 'display_status');
 	}
-	if ($mode == 'edit') {
-		$display_type_check = 'vtiger_field.displaytype = 1';
-	} elseif ($mode == 'mass_edit') {
+	if ($mode == 'mass_edit') {
 		$display_type_check = 'vtiger_field.displaytype = 1 AND vtiger_field.masseditable NOT IN (0,2)';
 	} else {
-		$display_type_check = 'vtiger_field.displaytype in (1,4)';
+		$display_type_check = 'vtiger_field.displaytype = 1';
 	}
 
 	// Retrieve the profile list from database
@@ -1763,6 +1761,14 @@ function setObjectValuesFromRequest($focus) {
 		if ($cbMapid) {
 			$cbMap = cbMap::getMapByID($cbMapid);
 			$focus->column_fields = $cbMap->Mapping($cbfrom->column_fields, $focus->column_fields);
+
+			if (isset($focus->column_fields['cbcustominfo1'])) {
+				$_REQUEST['cbcustominfo1'] = $focus->column_fields['cbcustominfo1'];
+			}
+
+			if (isset($focus->column_fields['cbcustominfo2'])) {
+				$_REQUEST['cbcustominfo2'] = $focus->column_fields['cbcustominfo2'];
+			}
 		}
 	}
 	$focus = cbEventHandler::do_filter('corebos.filter.editview.setObjectValues', $focus);
