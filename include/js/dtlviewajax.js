@@ -102,6 +102,12 @@ function handleCopyClipboard(event) {
 		} else if (globaluitype == 50) {
 			let res = globaltxtboxid.split('_');
 			temp = getObj('txtbox_' + res[1]).value + ' ' + getObj('inputtimefmt_' + res[1]).value;
+		} else if (globaluitype == 10) {
+			let res = globaltxtboxid.substring(7);
+			let dispbox = getObj(res + '_display');
+			if (dispbox) {
+				temp = dispbox.value;
+			}
 		}
 		document.getElementById('clipcopylink').dataset.clipboardText = temp;
 	} else {
