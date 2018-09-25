@@ -1472,6 +1472,7 @@ function InventorySelectAll(mod, image_pth) {
 			ul.style.left = 0;
 			ul.style.maxWidth = '100%';
 			ul.style.width = '100%';
+			ul.style.visibility = 'visible';
 			// END only temp
 			return ul;
 		},
