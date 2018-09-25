@@ -28,11 +28,13 @@ $ftp_server=$adb->query("select * from vtiger_systems where server_type='ftp_bac
 $res_ftp=$adb->num_rows($ftp_server);
 if ($res_ftp==1) {
 	$backup_use_ftp=true;
+	$ftp_server_name=$adb->query_result($ftp_server, 0, 'server');
+	//$ftp_server_port=$adb->query_result($ftp_server,0,'server_port');
+	$ftp_server_username=$adb->query_result($ftp_server, 0, 'server_username');
+	$ftp_server_password=$adb->query_result($ftp_server, 0, 'server_password');
+} else {
+	$backup_use_ftp=false;
 }
-$ftp_server_name=$adb->query_result($ftp_server, 0, 'server');
-//$ftp_server_port=$adb->query_result($ftp_server,0,'server_port');
-$ftp_server_username=$adb->query_result($ftp_server, 0, 'server_username');
-$ftp_server_password=$adb->query_result($ftp_server, 0, 'server_password');
 
 //Dump mysql
 $dumpname=$db_name.date('YmdHi').'.sql';
