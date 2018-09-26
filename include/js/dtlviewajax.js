@@ -12,9 +12,20 @@ var globaltxtboxid = '';
 var globalfldtimeformat = '';
 var itsonview=false;
 var clipcopyclicked=false;
+var clipcopyGenDoc=false;
 // to retain the old value if we cancel the ajax edit
 var globaltempvalue = '';
 var globaluitype = '';
+
+document.addEventListener('DOMContentLoaded', function () {
+	GlobalVariable_getVariable('GenDoc_CopyLabelToClipboard', 0, '', gVTUserID).then(function (response) {
+		var obj = JSON.parse(response);
+		clipcopyGenDoc = (obj.GenDoc_CopyLabelToClipboard!='0' && obj.GenDoc_CopyLabelToClipboard!='false');
+	}, function (error) {
+		clipcopyGenDoc = false;
+	});
+});
+
 function showHide(showId, hideId) {
 	show(showId);
 	fnhide(hideId);
@@ -95,24 +106,29 @@ function hndMouseOver(uitype, fieldLabel) {
 
 function handleCopyClipboard(event) {
 	clipcopyclicked = true;
-	if (globaluitype != 53) {
-		let temp = getObj(globaltxtboxid).value;
-		if (globaluitype == 56) {
-			temp = (getObj(globaltxtboxid).checked ? alert_arr.YES : alert_arr.NO);
-		} else if (globaluitype == 50) {
-			let res = globaltxtboxid.split('_');
-			temp = getObj('txtbox_' + res[1]).value + ' ' + getObj('inputtimefmt_' + res[1]).value;
-		} else if (globaluitype == 10) {
-			let res = globaltxtboxid.substring(7);
-			let dispbox = getObj(res + '_display');
-			if (dispbox) {
-				temp = dispbox.value;
-			}
-		}
-		document.getElementById('clipcopylink').dataset.clipboardText = temp;
+	if (clipcopyGenDoc) {
+		let res = globaltxtboxid.substring(7);
+		document.getElementById('clipcopylink').dataset.clipboardText = '{' + gVTModule + '.' + res + '}';
 	} else {
-		let assigne_value = getObj('hdtxt_assigned_user_id').value;
-		document.getElementById('clipcopylink').dataset.clipboardText = assigne_value;
+		if (globaluitype != 53) {
+			let temp = getObj(globaltxtboxid).value;
+			if (globaluitype == 56) {
+				temp = (getObj(globaltxtboxid).checked ? alert_arr.YES : alert_arr.NO);
+			} else if (globaluitype == 50) {
+				let res = globaltxtboxid.split('_');
+				temp = getObj('txtbox_' + res[1]).value + ' ' + getObj('inputtimefmt_' + res[1]).value;
+			} else if (globaluitype == 10) {
+				let res = globaltxtboxid.substring(7);
+				let dispbox = getObj(res + '_display');
+				if (dispbox) {
+					temp = dispbox.value;
+				}
+			}
+			document.getElementById('clipcopylink').dataset.clipboardText = temp;
+		} else {
+			let assigne_value = getObj('hdtxt_assigned_user_id').value;
+			document.getElementById('clipcopylink').dataset.clipboardText = assigne_value;
+		}
 	}
 	//if (event) event.stopPropagation();
 	return false;
