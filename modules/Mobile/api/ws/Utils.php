@@ -368,6 +368,28 @@ class crmtogo_WS_Utils {
 				}
 				$describeInfo['fields'][$index] = $fieldInfo;
 			}
+		} elseif ($module == 'Timecontrol') {
+			if (isset($_REQUEST['_operation']) && $_REQUEST['_operation']=='create') {
+				$stdate = new DateTimeField(date('Y-m-d').' '.date('H:i'));
+				$datestoconsider ['start'] = date('Y-m-d');
+				$datestoconsider ['tstart'] = $stdate->getDisplayTime();
+			}
+			foreach ($describeInfo['fields'] as $index => $fieldInfo) {
+				if (isset($fieldInfo['uitype'])) {
+					$fieldInfo['uitype'] = self::fixUIType($module, $fieldInfo['name'], $fieldInfo['uitype']);
+				}
+				if ($fieldInfo['name'] == 'visibility') {
+					if (empty($fieldInfo['type']['picklistValues'])) {
+						$fieldInfo['type']['picklistValues'] = self::visibilityValues();
+						$fieldInfo['type']['defaultValue'] = $fieldInfo['type']['picklistValues'][0]['value'];
+					}
+				} elseif ($fieldInfo['name'] == 'date_start') {
+					$fieldInfo['default'] = $datestoconsider ['start'];
+				} elseif ($fieldInfo['name'] == 'time_start') {
+					$fieldInfo['default'] = $datestoconsider ['tstart'];
+				}
+				$describeInfo['fields'][$index] = $fieldInfo;
+			}
 		}
 	}
 
