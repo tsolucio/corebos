@@ -112,4 +112,11 @@
 	<classname>updateCityFieldType</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Eliminate UIType 116</description>
+	<filename>build/changeSets/2018/eliminateUIType116.php</filename>
+	<classname>eliminateUIType116</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

@@ -421,7 +421,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		} else {
 			getObj(dtlView).innerHTML = alert_arr.NO;
 		}
-	} else if (uitype == 116 || uitype == 117) {
+	} else if (uitype == 117) {
 		getObj(dtlView).innerHTML = document.getElementById(txtBox).options[document.getElementById(txtBox).selectedIndex].text;
 	} else if (uitype == '10') {
 		getObj(dtlView).innerHTML = '<a href="index.php?module='+document.getElementById(fieldName+'_type').value+'&action=DetailView&record='+tagValue+'">'+document.getElementById(fieldName+'_display').value+'&nbsp;</a>';

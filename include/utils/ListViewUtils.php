@@ -1657,8 +1657,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		}
 	} elseif ($uitype == 85) {
 		$value = ($temp_val != '') ? "<a href='skype:{$temp_val}?call'>{$temp_val}</a>" : '';
-	} elseif ($uitype == 116) {
-		$value = ($temp_val != '') ? getCurrencyName($temp_val) : '';
 	} elseif ($uitype == 117) {
 		// NOTE: Without symbol the value could be used for filtering/lookup hence avoiding the translation
 		$value = ($temp_val != '') ? getCurrencyName($temp_val, false) : '';

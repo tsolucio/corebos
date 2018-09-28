@@ -1030,7 +1030,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		$fieldvalue [] = $options;
 		$fieldvalue [] = is_admin($current_user);
-	} elseif ($uitype == 116 || $uitype == 117) {
+	} elseif ($uitype == 117) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$pick_query="select * from vtiger_currency_info where currency_status = 'Active' and deleted=0";
 		$pickListResult = $adb->pquery($pick_query, array());

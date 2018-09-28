@@ -79,7 +79,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		if ($fieldname == 'confirm_password') {
 			return null;
 		}
-	} elseif ($uitype == 116 || $uitype == 117) {
+	} elseif ($uitype == 117) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = getCurrencyName($col_fields[$fieldname]);
 		$pick_query = "select currency_name, id from vtiger_currency_info where currency_status = 'Active' and deleted=0";
