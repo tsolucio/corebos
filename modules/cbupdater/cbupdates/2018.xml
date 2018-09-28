@@ -105,4 +105,11 @@
 	<classname>updateCreatedByField</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Changeset to update city table fields.</description>
+	<filename>build/changeSets/2018/updateCityFieldType.php</filename>
+	<classname>updateCityFieldType</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
