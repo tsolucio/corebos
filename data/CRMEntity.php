@@ -1504,7 +1504,7 @@ class CRMEntity {
 		global $current_user, $adb;
 
 		$setype = getSalesEntityType($id);
-		if ($setype != $module && !($module == 'cbCalendar' && $setype == 'Calendar')) { // security
+		if ($setype != $module && !($module == 'cbCalendar' && $setype == 'Emails')) { // security
 			return false;
 		}
 		require_once 'include/events/include.inc';
