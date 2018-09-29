@@ -370,6 +370,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'URL for customer portal (Example: http://your_support_domain.tld/portal). Used mostly for email template communications.',
 ),
+'Application_Customer_Portal_BeingUsed' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'vtigercrmportal | coreboscp',
+	'definition' => 'Indicate the customer portal connected to this coreBOS so we can adapt outputs accordingly. Used mostly for email template communications.',
+),
 'Debug_Calculate_Response_Time' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',

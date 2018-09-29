@@ -391,7 +391,16 @@ class VTSimpleTemplate {
 					$recorIdName = 'productid';
 				}
 				$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL', 'http://your_support_domain.tld/customerportal');
-				return $PORTAL_URL.'/index.php?module='.$moduleName.'&action=index&'.$recorIdName.'='.$recordId.'&fun=detail';
+				$PORTALUSED = GlobalVariable::getVariable('Application_Customer_Portal_BeingUsed', 'vtigercrmportal');
+				switch ($PORTALUSED) {
+					case 'coreboscp':
+						$purl = $PORTAL_URL.'/index.php#vtentity/'.$moduleName.'/list/'.$wsId.'/dvcpage/0';
+						break;
+					case 'vtigercrmportal':
+					default:
+						$purl = $PORTAL_URL.'/index.php?module='.$moduleName.'&action=index&'.$recorIdName.'='.$recordId.'&fun=detail';
+				}
+				return $purl;
 			case 'siteurl':
 				return $site_URL;
 			case 'portalurl':

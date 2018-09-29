@@ -72,6 +72,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Single_Pane_View',
 				'Application_Minimum_Cron_Frequency',
 				'Application_Customer_Portal_URL',
+				'Application_Customer_Portal_BeingUsed',
 				'Application_Help_URL',
 				'Application_UI_Name',
 				'Application_UI_NameHTML',
