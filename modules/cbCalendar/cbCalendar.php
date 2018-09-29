@@ -1033,5 +1033,21 @@ class cbCalendar extends CRMEntity {
 		vtws_revise($element, $current_user);
 		$log->debug('Exiting changeStatus method');
 	}
+
+	/*
+	 * Function to get the primary query part of a report
+	 * @param - $module primary module name
+	 * returns the query string formed on fetching the related data for report for secondary module
+	 */
+	public function generateReportsQuery($module, $queryPlanner) {
+		$query = parent::generateReportsQuery($module, $queryPlanner);
+		if ($queryPlanner->requireTable('vtiger_activity_reminder')) {
+			$query .= ' left join vtiger_activity_reminder on vtiger_activity_reminder.activity_id = vtiger_activity.activityid';
+		}
+		if ($queryPlanner->requireTable('vtiger_recurringevents')) {
+			$query .= ' left join vtiger_recurringevents on vtiger_recurringevents.activityid = vtiger_activity.activityid';
+		}
+		return $query;
+	}
 }
 ?>
