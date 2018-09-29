@@ -119,4 +119,11 @@
 	<classname>eliminateUIType116</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Changeset to update user_name field type on portalinfo.</description>
+	<filename>build/changeSets/2018/updatePortalinfoUsernameFieldType.php</filename>
+	<classname>updatePortalinfoUsernameFieldType</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
