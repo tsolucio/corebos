@@ -524,7 +524,9 @@
 										<td align="left" width="70%">
 										<select id="after_blockid" name="after_blockid">
 											{foreach key=blockid item=blockname from=$BLOCKS}
+											{if !empty($blockname)}
 											<option value = {$blockid}> {$blockname} </option>
+											{/if}
 											{/foreach}
 										</select>
 										</td>
@@ -543,7 +545,11 @@
 							<select name='relatedlistblock' id='relatedlistblock' onchange="getElementById('blocklabel').value=this.value;">
 								<option value="no" selected>{'LBL_NO'|@gettranslatedString:$MODULE}</option>
 								{foreach key=rlmname item=rllabel from=$NotBlockRelatedModules}
-								<option value="{$rlmname}">{$rlmname|@gettranslatedString:$rlmname}</option>
+								{if is_numeric($rlmname)} {
+									<option value="{$rlmname}">{$rllabel|@gettranslatedString:$MODULE}</option>
+								{else}
+									<option value="{$rlmname}">{$rlmname|@gettranslatedString:$rlmname}</option>
+								{/if}}
 								{/foreach}
 							</select>
 						</td>

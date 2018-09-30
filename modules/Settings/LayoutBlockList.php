@@ -114,7 +114,11 @@ uasort($entityrelmods, function ($a, $b) {
 $smarty->assign('entityrelmods', $entityrelmods);
 $relmods = array();
 foreach ($rellistinfo as $relmod) {
-	$relmods[$relmod['name']]=$relmod['label'];
+	if (empty($relmod['name'])) {
+		$relmods[$relmod['id']]=$relmod['label'];
+	} else {
+		$relmods[$relmod['name']]=$relmod['label'];
+	}
 }
 $notRelatedModules = array_diff_key($entityrelmods, $relmods);
 $smarty->assign('NotRelatedModules', $notRelatedModules);
@@ -876,11 +880,18 @@ function addblock() {
 		if ($related_module=='no') {
 			$relatedlistid = 0;
 		} else {
-			$related_moduleid = getTabid($related_module);
-			$rlrs = $adb->pquery(
-				'select relation_id,label from vtiger_relatedlists where tabid=? and related_tabid=?',
-				array($tabid,$related_moduleid)
-			);
+			if (is_numeric($related_module)) {
+				$rlrs = $adb->pquery(
+					'select relation_id,label from vtiger_relatedlists where relation_id=?',
+					array($related_module)
+				);
+			} else {
+				$related_moduleid = getTabid($related_module);
+				$rlrs = $adb->pquery(
+					'select relation_id,label from vtiger_relatedlists where tabid=? and related_tabid=?',
+					array($tabid,$related_moduleid)
+				);
+			}
 			if ($rlrs && $adb->num_rows($rlrs)>0) {
 				$relatedlistid = $adb->query_result($rlrs, 0, 'relation_id');
 				$newblocklabel = $adb->query_result($rlrs, 0, 'label');
