@@ -828,7 +828,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 				$handlerInfo = array("$customlinknode->handler_path", "$customlinknode->handler_class", "$customlinknode->handler");
 			}
 			if (isset($customlinknode->onlyonmodule)) {
-				$onlyonmodule = empty($customlinknode->onlyonmodule);
+				$onlyonmodule = !empty($customlinknode->onlyonmodule);
 			} else {
 				$onlyonmodule = false;
 			}

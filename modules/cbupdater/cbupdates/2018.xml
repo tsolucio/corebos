@@ -98,4 +98,32 @@
 	<classname>IncSizeWorkflowTestField</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>klivshapllo</author>
+	<description>Update the createdby field value for attachment folders for deleted users</description>
+	<filename>build/changeSets/2018/updateCreatedByField.php</filename>
+	<classname>updateCreatedByField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Changeset to update city table fields.</description>
+	<filename>build/changeSets/2018/updateCityFieldType.php</filename>
+	<classname>updateCityFieldType</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Eliminate UIType 116</description>
+	<filename>build/changeSets/2018/eliminateUIType116.php</filename>
+	<classname>eliminateUIType116</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Changeset to update user_name field type on portalinfo.</description>
+	<filename>build/changeSets/2018/updatePortalinfoUsernameFieldType.php</filename>
+	<classname>updatePortalinfoUsernameFieldType</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

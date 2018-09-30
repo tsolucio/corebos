@@ -373,6 +373,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 							inner join vtiger_crmentity as crmq on crmq.crmid=vtiger_quotes.quoteid
 							left join vtiger_inventoryproductrel on vtiger_inventoryproductrel.id=vtiger_quotes.quoteid
 							inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
+							left join vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
 							left join $pstable on $pstable.$psfield = vtiger_inventoryproductrel.productid
 							where vtiger_inventoryproductrel.productid = $pstable.$psfield AND crmq.deleted=0
 							and $relatedField = $crmid";
@@ -383,6 +384,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 							inner join vtiger_crmentity as crmi on crmi.crmid=vtiger_invoice.invoiceid
 							left join vtiger_inventoryproductrel on vtiger_inventoryproductrel.id=vtiger_invoice.invoiceid
 							inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
+							left join vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid 
 							left join $pstable on $pstable.$psfield = vtiger_inventoryproductrel.productid
 							where vtiger_inventoryproductrel.productid = $pstable.$psfield AND crmi.deleted=0
 							and $relatedField = $crmid";
@@ -393,6 +395,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 						inner join vtiger_crmentity as crms on crms.crmid=vtiger_salesorder.salesorderid
 						left join vtiger_inventoryproductrel on vtiger_inventoryproductrel.id=vtiger_salesorder.salesorderid
 						inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
+						left join vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
 						left join $pstable on $pstable.$psfield = vtiger_inventoryproductrel.productid
 						where vtiger_inventoryproductrel.productid = $pstable.$psfield AND crms.deleted=0
 						and $relatedField = $crmid";

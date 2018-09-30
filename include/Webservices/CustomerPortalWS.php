@@ -939,6 +939,15 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 				'mfr_no' => getTranslatedString('Vendor PartNo', 'Products'),
 			),
 		);
+		$multic = $adb->pquery('select * from vtiger_productcurrencyrel where productid=?', array($prodser['id']));
+		$mc = array();
+		while ($mcinfo = $adb->fetch_array($multic)) {
+			$mc[$mcinfo['currencyid']] = array(
+				'converted_price' => number_format((float)$mcinfo['converted_price'], $cur_user_decimals, '.', ''),
+				'actual_price' => number_format((float)$mcinfo['actual_price'], $cur_user_decimals, '.', ''),
+			);
+		}
+		$ret_prodser['pricing']['multicurrency'] = $mc;
 		$ret[] = $ret_prodser;
 	}
 	return $ret;

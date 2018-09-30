@@ -370,6 +370,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Example:<br>http://votre_domain.tld/portail',
 	'definition' => 'URL du Portail Client utilisé essentiellement dans les modèles d\'emails à des fins de communication.',
 ),
+'Application_Customer_Portal_BeingUsed' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'vtigercrmportal | coreboscp',
+	'definition' => 'Indicate the customer portal connected to this coreBOS so we can adapt outputs accordingly. Used mostly for email template communications.',
+),
 'Debug_Calculate_Response_Time' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Booléen',
@@ -1181,6 +1188,20 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'Any valid Zero Bounce API KEY',
 	'definition' => 'The valid Zero Bounce API KEY',
+),
+'PBXManager_SearchOnlyOnTheseFields' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'list of field names',
+	'definition' => 'List of fields to search in when we get a call from Asterisk. The first result found will be returned.',
+),
+'GenDoc_CopyLabelToClipboard' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Extension',
+	'values' => '0|1',
+	'definition' => 'Make the copy links in Detail View copy GenDoc labels instead of field values. By default deactivated.',
 ),
 );
 

@@ -63,6 +63,7 @@ class VTFieldExpressionEvaluater {
 			'floor' => '__vt_floor',
 			'modulo' => '__cb_modulo',
 			'hash' => '__cb_hash',
+			'globalvariable' => '__cb_globalvariable',
 			'aggregation' => '__cb_aggregation',
 			'aggregation_fields_operation' => '__cb_aggregation_operation',
 			'getimageurl' => '__cbwf_getimageurl',

@@ -274,7 +274,7 @@ function dup_dependent_rec($record_id, $relatedModule, $new_record_id, $dependen
 	global $adb, $current_user;
 	$invmods = getInventoryModules();
 	foreach ($dependent_tables as $module => $tables) {
-		if (in_array($module, $invmods)) {
+		if (in_array($module, $invmods) || !vtlib_isModuleActive($module)) {
 			continue; // we can't duplicate these
 		}
 		if (empty($maped_relations) || isset($maped_relations[$module])) {

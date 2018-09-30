@@ -110,6 +110,7 @@ class VTExpressionsManager {
 			'floor' => 'floor(numericfield)',
 			'modulo' => 'modulo(numericfield)',
 			'hash' => 'hash(field, method)',
+			'globalvariable' => 'globalvariable(gvname)',
 			'aggregation'=>'aggregation(operation,RelatedModule,relatedFieldToAggregate,conditions)',
 			'aggregation_fields_operation'=>'aggregation_fields_operation(operation,RelatedModule,relatedFieldsToAggregateWithOperation,conditions)',
 			'getCurrentUserID' => 'getCurrentUserID()',

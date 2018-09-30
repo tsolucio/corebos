@@ -700,6 +700,8 @@ $mod_strings = array(
 	'LBL_TASKS' => 'Feladatok',
 	'LBL_NEW_TASK_BUTTON_LABEL' => 'Új Feladatok',
 	'LBL_TASK' => 'Feladat',
+	'LBL_DELAY' => 'Delay',
+
 	'LBL_MANDATORY_FIELDS' => 'Kötelező Mezők',
 	'LBL_MANDATORY_FIELDS_DESCRIPTION' => 'Kötelező Mezők Beállítása minden modulhoz',
 	'LBL_CUSTOMIZE_MODENT_NUMBER' => 'Rekord számozás beállítás',

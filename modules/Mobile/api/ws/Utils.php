@@ -117,7 +117,7 @@ class crmtogo_WS_Utils {
 		if (isset(self::$detectFieldnamesToResolveCache[$module])) {
 			return self::$detectFieldnamesToResolveCache[$module];
 		}
-		$resolveUITypes = array(10, 101, 116, 117, 26, 357, 51, 52, 53, 57, 66, 68, 73, 75, 76, 77, 78, 80, 81);
+		$resolveUITypes = array(10, 101, 117, 26, 357, 51, 52, 53, 57, 66, 68, 73, 75, 76, 77, 78, 80, 81);
 		$result = $db->pquery(
 			'SELECT fieldname FROM vtiger_field WHERE uitype IN('.generateQuestionMarks($resolveUITypes) .') AND tabid=?',
 			array($resolveUITypes, getTabid($module))
@@ -365,6 +365,28 @@ class crmtogo_WS_Utils {
 					$fieldInfo['default'] = $datestoconsider ['end'];
 				} elseif ($fieldInfo['name'] == 'time_end') {
 					$fieldInfo['default'] = $datestoconsider ['tend'];
+				}
+				$describeInfo['fields'][$index] = $fieldInfo;
+			}
+		} elseif ($module == 'Timecontrol') {
+			if (isset($_REQUEST['_operation']) && $_REQUEST['_operation']=='create') {
+				$stdate = new DateTimeField(date('Y-m-d').' '.date('H:i'));
+				$datestoconsider ['start'] = date('Y-m-d');
+				$datestoconsider ['tstart'] = $stdate->getDisplayTime();
+			}
+			foreach ($describeInfo['fields'] as $index => $fieldInfo) {
+				if (isset($fieldInfo['uitype'])) {
+					$fieldInfo['uitype'] = self::fixUIType($module, $fieldInfo['name'], $fieldInfo['uitype']);
+				}
+				if ($fieldInfo['name'] == 'visibility') {
+					if (empty($fieldInfo['type']['picklistValues'])) {
+						$fieldInfo['type']['picklistValues'] = self::visibilityValues();
+						$fieldInfo['type']['defaultValue'] = $fieldInfo['type']['picklistValues'][0]['value'];
+					}
+				} elseif ($fieldInfo['name'] == 'date_start') {
+					$fieldInfo['default'] = $datestoconsider ['start'];
+				} elseif ($fieldInfo['name'] == 'time_start') {
+					$fieldInfo['default'] = $datestoconsider ['tstart'];
 				}
 				$describeInfo['fields'][$index] = $fieldInfo;
 			}

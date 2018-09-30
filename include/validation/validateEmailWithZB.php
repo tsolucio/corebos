@@ -19,13 +19,12 @@ class validateEmailWithZB {
 
 	public static function validateEmail($field, $email) {
 		$api_key = GlobalVariable::getVariable('Zero_Bounce_API_KEY', '');
-		if (empty($api_key)) {
+		if (empty($api_key) || empty($email)) {
 			return true;
 		}
-		$emailToValidate = $email;
 		$IPToValidate = '';
 		// use curl to make the request
-		$url = 'https://api.zerobounce.net/v2/validate?api_key='.$api_key.'&email='.urlencode($emailToValidate).'&ip_address='.urlencode($IPToValidate);
+		$url = 'https://api.zerobounce.net/v2/validate?api_key='.$api_key.'&email='.urlencode($email).'&ip_address='.urlencode($IPToValidate);
 
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_SSLVERSION, 6);
@@ -37,6 +36,10 @@ class validateEmailWithZB {
 		$json = json_decode($response, true);
 		$valueToReturn = false;
 		$text = '';
+		if (curl_errno($ch)) {
+			self::$lastErrorStatus[$field] = 'Curl error: ' . curl_error($ch);
+			return true;
+		}
 		if (isset($json['status'])) {
 			if ($json['status'] == 'valid') {
 				$valueToReturn = true;
@@ -44,11 +47,13 @@ class validateEmailWithZB {
 				$text = $json['sub_status'];
 			}
 		} elseif (isset($json['error'])) {
-			$text = $json['error'];
+			self::$lastErrorStatus[$field] = $json['error'];
+			return true;
 		}
 		self::$lastErrorStatus[$field] = $text;
 		return $valueToReturn;
 	}
+
 	public static function getLastErrorMsg($field) {
 		echo self::$lastErrorStatus[$field];
 	}

@@ -1081,159 +1081,7 @@ class ReportRun extends CRMEntity {
 	 * 		$datevalue = Array(0=>$startdate,1=>$enddate)
 	 */
 	public function getStandarFiltersStartAndEndDate($type) {
-		$today = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d"), date("Y")));
-		$tomorrow  = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
-		$yesterday  = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")-1, date("Y")));
-
-		$currentmonth0 = date("Y-m-d", mktime(0, 0, 0, date("m"), "01", date("Y")));
-		$currentmonth1 = date("Y-m-t");
-		$lastmonth0 = date("Y-m-d", mktime(0, 0, 0, date("m")-1, "01", date("Y")));
-		$lastmonth1 = date("Y-m-t", strtotime("-1 Month"));
-		$nextmonth0 = date("Y-m-d", mktime(0, 0, 0, date("m")+1, "01", date("Y")));
-		$nextmonth1 = date("Y-m-t", strtotime("+1 Month"));
-
-		$lastweek0 = date("Y-m-d", strtotime("-2 week Sunday"));
-		$lastweek1 = date("Y-m-d", strtotime("-1 week Saturday"));
-
-		$thisweek0 = date("Y-m-d", strtotime("-1 week Sunday"));
-		$thisweek1 = date("Y-m-d", strtotime("this Saturday"));
-
-		$nextweek0 = date("Y-m-d", strtotime("this Sunday"));
-		$nextweek1 = date("Y-m-d", strtotime("+1 week Saturday"));
-
-		$next7days = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")+6, date("Y")));
-		$next30days = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")+29, date("Y")));
-		$next60days = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")+59, date("Y")));
-		$next90days = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")+89, date("Y")));
-		$next120days = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")+119, date("Y")));
-
-		$last7days = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")-6, date("Y")));
-		$last14days = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")-13, date("Y")));
-		$last30days = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")-29, date("Y")));
-		$last60days = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")-59, date("Y")));
-		$last90days = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")-89, date("Y")));
-		$last120days = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")-119, date("Y")));
-
-		$currentFY0 = date("Y-m-d", mktime(0, 0, 0, "01", "01", date("Y")));
-		$currentFY1 = date("Y-m-t", mktime(0, 0, 0, "12", date("d"), date("Y")));
-		$lastFY0 = date("Y-m-d", mktime(0, 0, 0, "01", "01", date("Y")-1));
-		$lastFY1 = date("Y-m-t", mktime(0, 0, 0, "12", date("d"), date("Y")-1));
-		$nextFY0 = date("Y-m-d", mktime(0, 0, 0, "01", "01", date("Y")+1));
-		$nextFY1 = date("Y-m-t", mktime(0, 0, 0, "12", date("d"), date("Y")+1));
-
-		if (date("m") <= 3) {
-			$cFq = date("Y-m-d", mktime(0, 0, 0, "01", "01", date("Y")));
-			$cFq1 = date("Y-m-d", mktime(0, 0, 0, "03", "31", date("Y")));
-			$nFq = date("Y-m-d", mktime(0, 0, 0, "04", "01", date("Y")));
-			$nFq1 = date("Y-m-d", mktime(0, 0, 0, "06", "30", date("Y")));
-			$pFq = date("Y-m-d", mktime(0, 0, 0, "10", "01", date("Y")-1));
-			$pFq1 = date("Y-m-d", mktime(0, 0, 0, "12", "31", date("Y")-1));
-		} elseif (date("m") > 3 && date("m") <= 6) {
-			$pFq = date("Y-m-d", mktime(0, 0, 0, "01", "01", date("Y")));
-			$pFq1 = date("Y-m-d", mktime(0, 0, 0, "03", "31", date("Y")));
-			$cFq = date("Y-m-d", mktime(0, 0, 0, "04", "01", date("Y")));
-			$cFq1 = date("Y-m-d", mktime(0, 0, 0, "06", "30", date("Y")));
-			$nFq = date("Y-m-d", mktime(0, 0, 0, "07", "01", date("Y")));
-			$nFq1 = date("Y-m-d", mktime(0, 0, 0, "09", "30", date("Y")));
-		} elseif (date("m") > 6 && date("m") <= 9) {
-			$nFq = date("Y-m-d", mktime(0, 0, 0, "10", "01", date("Y")));
-			$nFq1 = date("Y-m-d", mktime(0, 0, 0, "12", "31", date("Y")));
-			$pFq = date("Y-m-d", mktime(0, 0, 0, "04", "01", date("Y")));
-			$pFq1 = date("Y-m-d", mktime(0, 0, 0, "06", "30", date("Y")));
-			$cFq = date("Y-m-d", mktime(0, 0, 0, "07", "01", date("Y")));
-			$cFq1 = date("Y-m-d", mktime(0, 0, 0, "09", "30", date("Y")));
-		} elseif (date("m") > 9 && date("m") <= 12) {
-			$nFq = date("Y-m-d", mktime(0, 0, 0, "01", "01", date("Y")+1));
-			$nFq1 = date("Y-m-d", mktime(0, 0, 0, "03", "31", date("Y")+1));
-			$pFq = date("Y-m-d", mktime(0, 0, 0, "07", "01", date("Y")));
-			$pFq1 = date("Y-m-d", mktime(0, 0, 0, "09", "30", date("Y")));
-			$cFq = date("Y-m-d", mktime(0, 0, 0, "10", "01", date("Y")));
-			$cFq1 = date("Y-m-d", mktime(0, 0, 0, "12", "31", date("Y")));
-		}
-
-		if ($type == "today") {
-			$datevalue[0] = $today;
-			$datevalue[1] = $today;
-		} elseif ($type == "yesterday") {
-			$datevalue[0] = $yesterday;
-			$datevalue[1] = $yesterday;
-		} elseif ($type == "tomorrow") {
-			$datevalue[0] = $tomorrow;
-			$datevalue[1] = $tomorrow;
-		} elseif ($type == "thisweek") {
-			$datevalue[0] = $thisweek0;
-			$datevalue[1] = $thisweek1;
-		} elseif ($type == "lastweek") {
-			$datevalue[0] = $lastweek0;
-			$datevalue[1] = $lastweek1;
-		} elseif ($type == "nextweek") {
-			$datevalue[0] = $nextweek0;
-			$datevalue[1] = $nextweek1;
-		} elseif ($type == "thismonth") {
-			$datevalue[0] =$currentmonth0;
-			$datevalue[1] = $currentmonth1;
-		} elseif ($type == "lastmonth") {
-			$datevalue[0] = $lastmonth0;
-			$datevalue[1] = $lastmonth1;
-		} elseif ($type == "nextmonth") {
-			$datevalue[0] = $nextmonth0;
-			$datevalue[1] = $nextmonth1;
-		} elseif ($type == "next7days") {
-			$datevalue[0] = $today;
-			$datevalue[1] = $next7days;
-		} elseif ($type == "next30days") {
-			$datevalue[0] =$today;
-			$datevalue[1] =$next30days;
-		} elseif ($type == "next60days") {
-			$datevalue[0] = $today;
-			$datevalue[1] = $next60days;
-		} elseif ($type == "next90days") {
-			$datevalue[0] = $today;
-			$datevalue[1] = $next90days;
-		} elseif ($type == "next120days") {
-			$datevalue[0] = $today;
-			$datevalue[1] = $next120days;
-		} elseif ($type == "last7days") {
-			$datevalue[0] = $last7days;
-			$datevalue[1] = $today;
-		} elseif ($type == "last14days") {
-			$datevalue[0] = $last14days;
-			$datevalue[1] = $today;
-		} elseif ($type == "last30days") {
-			$datevalue[0] = $last30days;
-			$datevalue[1] =  $today;
-		} elseif ($type == "last60days") {
-			$datevalue[0] = $last60days;
-			$datevalue[1] = $today;
-		} elseif ($type == "last90days") {
-			$datevalue[0] = $last90days;
-			$datevalue[1] = $today;
-		} elseif ($type == "last120days") {
-			$datevalue[0] = $last120days;
-			$datevalue[1] = $today;
-		} elseif ($type == "thisfy") {
-			$datevalue[0] = $currentFY0;
-			$datevalue[1] = $currentFY1;
-		} elseif ($type == "prevfy") {
-			$datevalue[0] = $lastFY0;
-			$datevalue[1] = $lastFY1;
-		} elseif ($type == "nextfy") {
-			$datevalue[0] = $nextFY0;
-			$datevalue[1] = $nextFY1;
-		} elseif ($type == "nextfq") {
-			$datevalue[0] = $nFq;
-			$datevalue[1] = $nFq1;
-		} elseif ($type == "prevfq") {
-			$datevalue[0] = $pFq;
-			$datevalue[1] = $pFq1;
-		} elseif ($type == "thisfq") {
-			$datevalue[0] = $cFq;
-			$datevalue[1] = $cFq1;
-		} else {
-			$datevalue[0] = "";
-			$datevalue[1] = "";
-		}
-		return $datevalue;
+		return getDateforStdFilterBytype($type);
 	}
 
 	/** Function to get getGroupingList for the given reportid
@@ -1896,7 +1744,7 @@ class ReportRun extends CRMEntity {
 		} else {
 			$columnlist = $this->getQueryColumnsList($reportid, $type);
 			$groupslist = $this->getGroupingList($reportid);
-			$groupTimeList = $this->getGroupByTimeList($reportid);
+			$this->getGroupByTimeList($reportid);
 			$stdfilterlist = $this->getStdFilterList($reportid);
 			$columnstotallist = $this->getColumnsTotal($reportid, $columnlist);
 			$advfiltersql = $this->getAdvFilterSql($reportid);
@@ -1910,9 +1758,6 @@ class ReportRun extends CRMEntity {
 		//groups list
 			if (isset($groupslist)) {
 				$groupsquery = implode(', ', $groupslist);
-			}
-			if (isset($groupTimeList)) {
-				$groupTimeQuery = implode(', ', $groupTimeList);
 			}
 
 		//standard list
@@ -3068,11 +2913,6 @@ class ReportRun extends CRMEntity {
 
 		global $adb, $log;
 		static $modulename_cache = array();
-		$query = 'select primarymodule,secondarymodules from vtiger_reportmodules where reportmodulesid=?';
-		$res = $adb->pquery($query, array($reportid));
-		$modrow = $adb->fetch_array($res);
-		$premod = $modrow['primarymodule'];
-		$secmod = $modrow['secondarymodules'];
 		$coltotalsql = 'select vtiger_reportsummary.* from vtiger_report';
 		$coltotalsql .= ' inner join vtiger_reportsummary on vtiger_report.reportid = vtiger_reportsummary.reportsummaryid';
 		$coltotalsql .= ' where vtiger_report.reportid =?';
@@ -3114,18 +2954,6 @@ class ReportRun extends CRMEntity {
 				if (CheckColumnPermission($field_tablename, $field_columnname, $module_name) != "false") {
 					$field_permitted = true;
 				}
-				/* one call to CheckColumnPermission with $module_name is better than the block below
-				if(CheckColumnPermission($field_tablename,$field_columnname,$premod) != "false"){
-					$field_permitted = true;
-				} else {
-					$mod = explode(":",$secmod);
-					foreach($mod as $key){
-						if(CheckColumnPermission($field_tablename,$field_columnname,$key) != "false"){
-							$field_permitted=true;
-						}
-					}
-				}
-				*/
 				if ($field_permitted == true) {
 					if ($field_tablename == 'vtiger_products' && $field_columnname == 'unit_price') {
 						// Query needs to be rebuild to get the value in user preferred currency. [innerProduct and actual_unit_price are table and column alias.]

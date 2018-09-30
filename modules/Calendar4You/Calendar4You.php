@@ -80,10 +80,11 @@ class Calendar4You extends CRMEntity {
 			$google_apikey=$this->db->query_result($admin, 0, 'google_apikey');
 			$google_keyfile=$this->db->query_result($admin, 0, 'google_keyfile');
 			$google_clientid=$this->db->query_result($admin, 0, 'google_clientid');
+			$google_password=$this->db->query_result($admin, 0, 'google_password');
 			$this->db->pquery(
 				'INSERT INTO its4you_googlesync4you_access
-					(userid, google_login, google_password,google_apikey,google_keyfile,google_clientid,googleinsert,service) VALUES (?,?,?,?,?,?,?,?)',
-				array($userid,$google_login, $google_password,$google_apikey,$google_keyfile,$google_clientid,'1',$this->service)
+					(userid,google_login,google_password,google_apikey,google_keyfile,google_clientid,googleinsert,service) VALUES (?,?,?,?,?,?,?,?)',
+				array($userid,$google_login,$google_password,$google_apikey,$google_keyfile,$google_clientid,'1',$this->service)
 			);
 		}
 	}

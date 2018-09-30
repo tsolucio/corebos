@@ -5,12 +5,8 @@
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
- * All Rights Reserved.
- ************************************************************************************
- * $Header:  \modules\SMSNotifier\language\hu_hu.lang.php - 22:08 2011.11.11. $
- * Description:  Defines the Hungarian language pack for the SMSNotifier module vtiger 5.3.x
- *
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
+ * All Rights Reserved.
  ********************************************************************************/
 $mod_strings = array(
 	'SMSNotifier' => 'SMS Küldő',
@@ -38,5 +34,9 @@ $mod_strings = array(
 	'ServerNotConfigured' => 'Server Not Configured?',
 	'ReviewModuleSettings' => 'Please review SMS Settings.',
 	'ContactAdmin' => 'Please contact your administrator.',
+	'SelectPhoneNumbers' => 'Select Phone Numbers',
+	'SelectNumberTypes' => 'Please select the number types to send the SMS',
+	'ComposeSMS' => 'Compose SMS',
+	'characters' => 'characters',
 );
 ?>

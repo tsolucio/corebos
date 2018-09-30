@@ -311,39 +311,36 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 
 		if ($is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module_name)] == 3 || $defaultOrgSharingPermission[getTabid($module_name)] == 0)) {
-			$ua = get_user_array(false, "Active", $assigned_user_id, 'private');
+			$ua = get_user_array(false, 'Active', $assigned_user_id, 'private');
 		} else {
-			$ua = get_user_array(false, "Active", $assigned_user_id);
+			$ua = get_user_array(false, 'Active', $assigned_user_id);
 		}
 		$users_combo = get_select_options_array($ua, $assigned_user_id);
 		$fieldvalue [] = $users_combo;
 	} elseif ($uitype == 53) {
 		global $noof_group_rows;
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		//Security Checks
+		// Get Group calculations > $noof_group_rows
 		if ($fieldname == 'assigned_user_id' && $is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module_name)] == 3 || $defaultOrgSharingPermission[getTabid($module_name)] == 0)) {
-			$result=get_current_user_access_groups($module_name);
+			$result = get_current_user_access_groups($module_name);
 		} else {
 			$result = get_group_options();
-		}
-		if ($result) {
-			$nameArray = $adb->fetch_array($result);
 		}
 
 		$assigned_user_id = empty($value) ? $current_user->id : $value;
 
 		if ($fieldname == 'assigned_user_id' && $is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module_name)] == 3 || $defaultOrgSharingPermission[getTabid($module_name)] == 0)) {
-			$ua = get_user_array(false, "Active", $assigned_user_id, 'private');
+			$ua = get_user_array(false, 'Active', $assigned_user_id, 'private');
 		} else {
-			$ua = get_user_array(false, "Active", $assigned_user_id);
+			$ua = get_user_array(false, 'Active', $assigned_user_id);
 		}
 		$users_combo = get_select_options_array($ua, $assigned_user_id);
 		$groups_combo = '';
 		if ($noof_group_rows!=0) {
 			if ($fieldname == 'assigned_user_id' && $is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module_name)] == 3 || $defaultOrgSharingPermission[getTabid($module_name)] == 0)) {
-				$ga = get_group_array(false, "Active", $assigned_user_id, 'private');
+				$ga = get_group_array(false, 'Active', $assigned_user_id, 'private');
 			} else {
-				$ga = get_group_array(false, "Active", $assigned_user_id);
+				$ga = get_group_array(false, 'Active', $assigned_user_id);
 			}
 			$groups_combo = get_select_options_array($ga, $assigned_user_id);
 		}
@@ -994,13 +991,13 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$fieldvalue[] = $salesorder_name;
 		$fieldvalue[] = $value;
 	} elseif ($uitype == 30) {
-		$rem_days = 0;
-		$rem_hrs = 0;
-		$rem_min = 0;
 		if ($value!='') {
 			$SET_REM = 'CHECKED';
 		} else {
 			$SET_REM = '';
+		}
+		if (empty($col_fields[$fieldname])) {
+			$col_fields[$fieldname] = 0;
 		}
 		$rem_days = floor($col_fields[$fieldname]/(24*60));
 		$rem_hrs = floor(($col_fields[$fieldname]-$rem_days*24*60)/60);
@@ -1014,18 +1011,17 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$SET_REM = '';
 	} elseif ($uitype == 115) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$pick_query="select * from vtiger_" . $adb->sql_escape_string($fieldname);
+		$pick_query='select * from vtiger_' . $adb->sql_escape_string($fieldname);
 		$pickListResult = $adb->pquery($pick_query, array());
 		$noofpickrows = $adb->num_rows($pickListResult);
 
-		//Mikecrowe fix to correctly default for custom pick lists
 		$options = array();
 		$found = false;
 		for ($j = 0; $j < $noofpickrows; $j++) {
 			$pickListValue=$adb->query_result($pickListResult, $j, strtolower($fieldname));
 
 			if ($value == $pickListValue) {
-				$chk_val = "selected";
+				$chk_val = 'selected';
 				$found = true;
 			} else {
 				$chk_val = '';
@@ -1034,20 +1030,19 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		$fieldvalue [] = $options;
 		$fieldvalue [] = is_admin($current_user);
-	} elseif ($uitype == 116 || $uitype == 117) {
+	} elseif ($uitype == 117) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$pick_query="select * from vtiger_currency_info where currency_status = 'Active' and deleted=0";
 		$pickListResult = $adb->pquery($pick_query, array());
 		$noofpickrows = $adb->num_rows($pickListResult);
 
-		//Mikecrowe fix to correctly default for custom pick lists
 		$options = array();
 		$found = false;
 		for ($j = 0; $j < $noofpickrows; $j++) {
 			$pickListValue=$adb->query_result($pickListResult, $j, 'currency_name');
 			$currency_id=$adb->query_result($pickListResult, $j, 'id');
 			if ($value == $currency_id) {
-				$chk_val = "selected";
+				$chk_val = 'selected';
 				$found = true;
 			} else {
 				$chk_val = '';
@@ -1089,32 +1084,30 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	} elseif ($uitype == 26) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$folderid=$col_fields['folderid'];
-		$foldername_query = 'select foldername from vtiger_attachmentsfolder where folderid = ?';
-		$res = $adb->pquery($foldername_query, array($folderid));
+		$res = $adb->pquery('select foldername from vtiger_attachmentsfolder where folderid=?', array($folderid));
 		$foldername = $adb->query_result($res, 0, 'foldername');
 		if ($foldername != '' && $folderid != '') {
 			$fldr_name[$folderid]=$foldername;
 		}
-		$sql="select foldername,folderid from vtiger_attachmentsfolder order by foldername";
-		$res=$adb->pquery($sql, array());
+		$res=$adb->pquery('select foldername,folderid from vtiger_attachmentsfolder order by foldername', array());
 		for ($i=0; $i<$adb->num_rows($res); $i++) {
-			$fid=$adb->query_result($res, $i, "folderid");
-			$fldr_name[$fid]=$adb->query_result($res, $i, "foldername");
+			$fid=$adb->query_result($res, $i, 'folderid');
+			$fldr_name[$fid]=$adb->query_result($res, $i, 'foldername');
 		}
 		$fieldvalue[] = $fldr_name;
 	} elseif ($uitype == 27) {
 		if ($value == 'E') {
-			$external_selected = "selected";
+			$external_selected = 'selected';
 			$internal_selected = '';
 			$filename = $col_fields['filename'];
 		} else {
 			$external_selected = '';
-			$internal_selected = "selected";
+			$internal_selected = 'selected';
 			$filename = $col_fields['filename'];
 		}
 		$editview_label[] = array(getTranslatedString('Internal'), getTranslatedString('External'));
 		$editview_label[] = array($internal_selected, $external_selected);
-		$editview_label[] = array("I","E");
+		$editview_label[] = array('I','E');
 		$editview_label[] = getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $value;
 		$fieldvalue[] = $filename;

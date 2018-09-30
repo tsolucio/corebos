@@ -3057,21 +3057,47 @@ function getCallerInfo($number) {
 	if (empty($number)) {
 		return false;
 	}
-	$name = array('Contacts', 'Accounts', 'Leads');
-	foreach ($name as $module) {
-		$focus = CRMEntity::getInstance($module);
-		$query = $focus->buildSearchQueryForFieldTypes(11, $number);
-		if (empty($query)) {
-			return false;
-		}
 
-		$result = $adb->pquery($query, array());
-		if ($adb->num_rows($result) > 0) {
-			$callerName = $adb->query_result($result, 0, 'name');
-			$callerID = $adb->query_result($result, 0, 'id');
-			return array('name'=>$callerName, 'module'=>$module, 'id'=>$callerID);
+	$fieldsString = GlobalVariable::getVariable('PBXManager_SearchOnlyOnTheseFields', '');
+	if ($fieldsString != '') {
+		$fieldsArray = explode(',', $fieldsString);
+		foreach ($fieldsArray as $field) {
+			$result = $adb->pquery("SELECT tabid, uitype FROM vtiger_field WHERE columnname = ?", array($field));
+			for ($i = 0; $i< $adb->num_rows($result); $i++) {
+				$module = vtlib_getModuleNameById($adb->query_result($result, $i, 0));
+				$uitype = $adb->query_result($result, $i, 1);
+				$focus = CRMEntity::getInstance($module);
+				$query = $focus->buildSearchQueryForFieldTypes($uitype, $number);
+				if (empty($query)) {
+					continue;
+				}
+
+				$result = $adb->pquery($query, array());
+				if ($adb->num_rows($result) > 0) {
+					$callerName = $adb->query_result($result, 0, 'name');
+					$callerID = $adb->query_result($result, 0, 'id');
+					return array('name'=>$callerName, 'module'=>$module, 'id'=>$callerID);
+				}
+			}
+		}
+	} else {
+		$name = array('Contacts', 'Accounts', 'Leads');
+		foreach ($name as $module) {
+			$focus = CRMEntity::getInstance($module);
+			$query = $focus->buildSearchQueryForFieldTypes(11, $number);
+			if (empty($query)) {
+				return false;
+			}
+
+			$result = $adb->pquery($query, array());
+			if ($adb->num_rows($result) > 0) {
+				$callerName = $adb->query_result($result, 0, 'name');
+				$callerID = $adb->query_result($result, 0, 'id');
+				return array('name'=>$callerName, 'module'=>$module, 'id'=>$callerID);
+			}
 		}
 	}
+
 	return false;
 }
 
@@ -3414,7 +3440,7 @@ function DeleteEntity($module, $return_module, $focus, $record, $return_id) {
 	$log->debug("Entering DeleteEntity method ($module, $return_module, $record, $return_id)");
 	if (!empty($record)) {
 		$setype = getSalesEntityType($record);
-		if ($setype != $module && !($module == 'cbCalendar' && $setype == 'Calendar')) {
+		if ($setype != $module && !($module == 'cbCalendar' && $setype == 'Emails')) {
 			return array(true,getTranslatedString('LBL_PERMISSION'));
 		}
 		if ($module != $return_module && !empty($return_module) && !empty($return_id)) {
