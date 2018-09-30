@@ -116,7 +116,7 @@ class VTSimpleTemplate {
 		return $result;
 	}
 
-	private function getComments($num, $sort, $format, $field) {
+	private function getComments($num, $sort, $format, $field, $dtformat) {
 		global $adb, $current_user;
 		$wsId = $this->parent->getId();
 		if (empty($wsId)) {
@@ -131,6 +131,12 @@ class VTSimpleTemplate {
 			$format = 'html';
 		}
 		$html = ($format == 'html');
+		if (substr($field, 0, 4)=='date' && strlen($field)>4) {
+			$dateformat = substr($field, 4);
+			$field = 'date';
+		} else {
+			$dateformat = $dtformat;
+		}
 		$field = strtolower($field);
 		if ($field!='creator' && $field!='comment' && $field!='date' && $field!='all') {
 			$field = 'all';
@@ -201,8 +207,13 @@ class VTSimpleTemplate {
 						if ($html) {
 							$retcm .= '<li class="commentdate">';
 						}
-						$dt = new DateTimeField($cm['createdtime']);
-						$retcm .= $dt->getDisplayDateTimeValue($datefmtuser);
+						if ($dateformat == 'user') {
+							$dt = new DateTimeField($cm['createdtime']);
+							$retcm .= $dt->getDisplayDateTimeValue($datefmtuser);
+						} else {
+							$dt = strtotime($cm['createdtime']);
+							$retcm .= date($dateformat, $dt);
+						}
 						if (!$html && !$singlefield) {
 							$retcm .= "\n";
 						}
@@ -326,16 +337,28 @@ class VTSimpleTemplate {
 			$groupname = trim(str_replace('_', ' ', substr($fieldname, 14)));
 			$fieldname = 'groupEmailList';
 		}
-		if (substr($fieldname, 0, 8)=='comments') {
+		if (substr($fieldname, 0, 8)=='comments' || strpos($fieldname, '_comments')>0) {
 			if (strpos($fieldname, '_')>0) {
 				$commspec = explode('_', $fieldname);
-				$fieldname = 'comments';
-				$srtcomm = substr($commspec[1], -1);
-				if (is_numeric($srtcomm)) {
-					$srtcomm = 'a';
-					$numcomm = $commspec[1];
+				if ($commspec[0]!='comments') {
+					$cs = array_reverse($commspec);
+					$dtformat = array_pop($cs);
+					$commspec = array_reverse($cs);
 				} else {
-					$numcomm = substr($commspec[1], 0, strlen($commspec[1])-1);
+					$dtformat = 'user';
+				}
+				$fieldname = 'comments';
+				if (count($commspec)>1) {
+					$srtcomm = substr($commspec[1], -1);
+					if (is_numeric($srtcomm)) {
+						$srtcomm = 'a';
+						$numcomm = $commspec[1];
+					} else {
+						$numcomm = substr($commspec[1], 0, strlen($commspec[1])-1);
+					}
+				} else {
+					$numcomm = 0;
+					$srtcomm = 'a';
 				}
 				if (count($commspec)>2) {
 					$fmtcomm = $commspec[2];
@@ -352,6 +375,7 @@ class VTSimpleTemplate {
 				$srtcomm = 'a';
 				$fmtcomm = 'html';
 				$fldcomm = 'all';
+				$dtformat = 'user';
 			}
 		}
 		if (substr($fieldname, 0, 10) == 'scanQRCode') {
@@ -415,7 +439,7 @@ class VTSimpleTemplate {
 			case 'supportEmailId':
 				return GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
 			case 'comments':
-				return $this->getComments($numcomm, $srtcomm, $fmtcomm, $fldcomm);
+				return $this->getComments($numcomm, $srtcomm, $fmtcomm, $fldcomm, $dtformat);
 			case 'groupEmailList':
 				return $this->getGroupFieldList($groupname, 'email1');
 			case 'Events_Users_Invited':
