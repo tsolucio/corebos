@@ -1594,13 +1594,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		} else {
 			$value = '';
 		}
-	} elseif ($uitype == 75 || $uitype == 81) {
-		if ($temp_val != '') {
-			$vendor_name = getVendorName($temp_val);
-			$value = '<a href=index.php?module=Vendors&action=DetailView&record='.$temp_val.'&parenttab='.urlencode($tabname).'>'.textlength_check($vendor_name).'</a>';
-		} else {
-			$value = '';
-		}
 	} elseif ($uitype == 98) {
 		$value = '<a href="index.php?action=RoleDetailView&module=Settings&parenttab=Settings&roleid='.$temp_val.'">'.textlength_check(getRoleName($temp_val)).'</a>';
 	} elseif ($uitype == 33) {
@@ -2139,24 +2132,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						$count = counterValue();
 						$value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'return set_return_emails(' . $entity_id . ',' . $fieldid . ',"' . decode_html($slashes_name) . '","' . $emailaddress . '","' . $emailaddress2 . '","' . $email_check . '"'.$sre_param.'); \'id = ' . $count . '>' . textlength_check($name) . '</a>';
 					}
-				} elseif ($popuptype == "specific_vendor_address") {
-					require_once 'modules/Vendors/Vendors.php';
-					$acct_focus = new Vendors();
-					$acct_focus->retrieve_entity_info($entity_id, "Vendors");
-
-					$slashes_temp_val = popup_from_html($temp_val);
-					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
-					$xyz = array('street', 'city', 'postalcode', 'pobox', 'country', 'state');
-					for ($i = 0; $i < 6; $i++) {
-						if (getFieldVisibilityPermission($module, $current_user->id, $xyz[$i]) == '0') {
-							$acct_focus->column_fields[$xyz[$i]] = $acct_focus->column_fields[$xyz[$i]];
-						} else {
-							$acct_focus->column_fields[$xyz[$i]] = '';
-						}
-					}
-					$bill_street = str_replace(array("\r", "\n"), array('\r', '\n'), popup_decode_html($acct_focus->column_fields['street']));
-					$count = counterValue();
-					$value = '<a href="javascript:void(0);" onclick=\'set_return_address("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '", "' . $bill_street . '", "' . popup_decode_html($acct_focus->column_fields['city']) . '", "' . popup_decode_html($acct_focus->column_fields['state']) . '", "' . popup_decode_html($acct_focus->column_fields['postalcode']) . '", "' . popup_decode_html($acct_focus->column_fields['country']) . '","' . popup_decode_html($acct_focus->column_fields['pobox']) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
 				} elseif ($popuptype == "specific_campaign") {
 					$slashes_temp_val = popup_from_html($temp_val);
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);

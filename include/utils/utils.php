@@ -2331,12 +2331,6 @@ function getRecordValues($id_array, $module) {
 						}
 					}
 					$value_pair['disp_value']=$contactname;
-				} elseif ($ui_type == 75 || $ui_type ==81) {
-					$vendor_id=$field_values[$j][$fld_name];
-					if ($vendor_id != '') {
-						$vendor_name=getVendorName($vendor_id);
-					}
-					$value_pair['disp_value']=$vendor_name;
 				} elseif ($ui_type == 52) {
 					$user_id = $field_values[$j][$fld_name];
 					$user_name=getUserFullName($user_id);
@@ -2643,13 +2637,6 @@ function getDuplicateRecordsArr($module) {
 				} else {
 					$result[$col_arr[$k]]=$app_strings['yes'];
 				}
-			}
-			if ($ui_type[$fld_arr[$k]] ==75 || $ui_type[$fld_arr[$k]] ==81) {
-				$vendor_id=$result[$col_arr[$k]];
-				if ($vendor_id != '') {
-						$vendor_name=getVendorName($vendor_id);
-				}
-				$result[$col_arr[$k]]=$vendor_name;
 			}
 			if ($ui_type[$fld_arr[$k]] ==57) {
 				$contact_id= $result[$col_arr[$k]];

@@ -924,23 +924,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$currencySymbol = $currencyField->getCurrencySymbol();
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name).': ('.$currencySymbol.')';
-	} elseif ($uitype == 75 || $uitype ==81) {
-		if ($value != '') {
-			$vendor_name = getVendorName($value);
-		} elseif (isset($_REQUEST['vendor_id']) && $_REQUEST['vendor_id'] != '') {
-			$value = vtlib_purify($_REQUEST['vendor_id']);
-			$vendor_name = getVendorName($value);
-		} else {
-			$value = '';
-			$vendor_name = '';
-		}
-		$pop_type = 'specific';
-		if ($uitype == 81) {
-			$pop_type = 'specific_vendor_address';
-		}
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[] = $vendor_name;
-		$fieldvalue[] = $value;
 	} elseif ($uitype == 76) {
 		if ($value != '') {
 			$potential_name = getPotentialName($value);

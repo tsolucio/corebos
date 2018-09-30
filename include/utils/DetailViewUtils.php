@@ -1035,13 +1035,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$label_fld[] = $currencyField->getDisplayValue(null, false, true);
 			$label_fld['cursymb'] = $currencyField->getCurrencySymbol();
 		}
-	} elseif ($uitype == 75 || $uitype == 81) {
-		$label_fld[] = getTranslatedString($fieldlabel, $module);
-		$vendor_id = $col_fields[$fieldname];
-		$vendor_name = (empty($vendor_id) ? '' : getVendorName($vendor_id));
-		$label_fld[] = $vendor_name;
-		$label_fld['secid'] = $vendor_id;
-		$label_fld['link'] = 'index.php?module=Vendors&action=DetailView&record=' . $vendor_id;
 	} elseif ($uitype == 76) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$potential_id = $col_fields[$fieldname];

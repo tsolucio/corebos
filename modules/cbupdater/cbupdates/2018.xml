@@ -126,4 +126,11 @@
 	<classname>updatePortalinfoUsernameFieldType</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Eliminate UIType 75 and 81</description>
+	<filename>build/changeSets/2018/migrateUIType7581to10.php</filename>
+	<classname>migrateUIType7581to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

@@ -213,9 +213,6 @@
                                              {elseif $keyid eq '57'} <!--ContactPopup-->
 						<!-- Ajax edit link not provided for contact - Reports To -->
                                                   	<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a></td>
-                                             {elseif $keyid eq '75' || $keyid eq '81'} <!--VendorPopup-->
-                                                  <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a>
-                                                  </td>
                                              {elseif $keyid eq 76} <!--PotentialPopup-->
                                                   <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a>
                                                   </td>
