@@ -1271,7 +1271,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	} elseif ($mode == 'mass_edit') {
 		$display_type_check = 'vtiger_field.displaytype = 1 AND vtiger_field.masseditable NOT IN (0,2)';
 	} else {
-		$display_type_check = 'vtiger_field.displaytype in (1,4)';
+		$display_type_check = 'vtiger_field.displaytype in (1,5)';
 	}
 
 	// Retrieve the profile list from database
