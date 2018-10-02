@@ -13,7 +13,7 @@
 	<!-- (id="frmEditView") content added to form tag and new hidden field added,  -->
 	<form id="frmEditView" name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php" onSubmit="settotalnoofrows();calcTotal();">
 	<input type="hidden" name="hidImagePath" id="hidImagePath" value="{$IMAGE_PATH}"/>
-	{if $OP_MODE eq 'create_view'}
+	{if isset($OP_MODE) && $OP_MODE eq 'create_view'}
 		<input type="hidden" name="convert_from" value="{$CONVERT_MODE}">
 		<input type="hidden" name="duplicate_from" value="{if isset($DUPLICATE_FROM)}{$DUPLICATE_FROM}{/if}">
 	{/if}
