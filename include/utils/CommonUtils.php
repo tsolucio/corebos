@@ -1298,14 +1298,14 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 				(select max(vtiger_field.fieldid) from vtiger_field where vtiger_field.tabid=? GROUP BY vtiger_field.columnname)';
 			$sql = "SELECT distinct $selectSql, '0' as readonly
 				FROM vtiger_field WHERE $uniqueFieldsRestriction AND vtiger_field.block IN (".
-				generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4) and vtiger_field.presence in (0,2) ORDER BY block,sequence';
+				generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4,5) and vtiger_field.presence in (0,2) ORDER BY block,sequence';
 			$params = array($tabid, $blockid_list);
 		} elseif ($profileGlobalPermission[1] == 0) { // view all
 			$profileList = getCurrentUserProfileList();
 			$sql = "SELECT distinct $selectSql, vtiger_profile2field.readonly
 				FROM vtiger_field
 				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
-				WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4) and '.
+				WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4,5) and '.
 					'vtiger_field.presence in (0,2) AND vtiger_profile2field.profileid IN (' . generateQuestionMarks($profileList) . ') ORDER BY block,sequence';
 			$params = array($tabid, $blockid_list, $profileList);
 		} else {
@@ -1314,7 +1314,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 				FROM vtiger_field
 				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
 				INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid
-				WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4) and '.
+				WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4,5) and '.
 					'vtiger_field.presence in (0,2) AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN ('.
 					generateQuestionMarks($profileList) . ") ORDER BY block,sequence";
 			$params = array($tabid, $blockid_list, $profileList);

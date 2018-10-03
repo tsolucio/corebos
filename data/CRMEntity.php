@@ -541,6 +541,9 @@ class CRMEntity {
 			if ($num_rows <= 0) {
 				$insertion_mode = '';
 			}
+			$creatingdisplay = '';
+		} else {
+			$creatingdisplay = ',5';
 		}
 
 		$selectFields = 'fieldname, columnname, uitype, typeofdata';
@@ -556,10 +559,10 @@ class CRMEntity {
 			checkFileAccessForInclusion('user_privileges/user_privileges_' . $current_user->id . '.php');
 			require 'user_privileges/user_privileges_' . $current_user->id . '.php';
 			if (isset($from_wf) && $from_wf) {
-				$sql = "select $selectFields from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3,4) and presence in (0,2)";
+				$sql = "select $selectFields from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3,4$creatingdisplay) and presence in (0,2)";
 				$params = array($tabid, $table_name);
 			} elseif ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
-				$sql = "select $selectFields from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3) and presence in (0,2)";
+				$sql = "select $selectFields from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3$creatingdisplay) and presence in (0,2)";
 				$params = array($tabid, $table_name);
 			} else {
 				$profileList = getCurrentUserProfileList();
@@ -573,7 +576,7 @@ class CRMEntity {
 						WHERE $uniqueFieldsRestriction
 						AND vtiger_profile2field.visible = 0 AND vtiger_profile2field.readonly = 0
 						AND vtiger_profile2field.profileid IN (" . generateQuestionMarks($profileList) . ")
-						AND vtiger_def_org_field.visible = 0 and vtiger_field.tablename=? and vtiger_field.displaytype in (1,3) and vtiger_field.presence in (0,2)";
+						AND vtiger_def_org_field.visible = 0 and vtiger_field.tablename=? and vtiger_field.displaytype in (1,3$creatingdisplay) and vtiger_field.presence in (0,2)";
 					$params = array($tabid, $profileList, $table_name);
 				} else {
 					$sql = "SELECT distinct $selectFields
@@ -584,7 +587,7 @@ class CRMEntity {
 						ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
 						WHERE $uniqueFieldsRestriction
 						AND vtiger_profile2field.visible = 0 AND vtiger_profile2field.readonly = 0
-						AND vtiger_def_org_field.visible = 0 and vtiger_field.tablename=? and vtiger_field.displaytype in (1,3) and vtiger_field.presence in (0,2)";
+						AND vtiger_def_org_field.visible = 0 and vtiger_field.tablename=? and vtiger_field.displaytype in (1,3$creatingdisplay) and vtiger_field.presence in (0,2)";
 					$params = array($tabid, $table_name);
 				}
 			}
@@ -596,7 +599,7 @@ class CRMEntity {
 			}
 			$column = array($table_index_column);
 			$value = array($this->id);
-			$sql = "select $selectFields from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3,4) and vtiger_field.presence in (0,2)";
+			$sql = "select $selectFields from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3,4$creatingdisplay) and vtiger_field.presence in (0,2)";
 			$params = array($tabid, $table_name);
 		}
 
