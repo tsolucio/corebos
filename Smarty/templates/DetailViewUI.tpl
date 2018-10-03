@@ -288,8 +288,8 @@
                     </div>
                     </td>
 						{elseif $keyid eq '99'}<!-- Password Field-->
-						<td width=25% class="dvtCellInfo" align="left">{$CHANGE_PW_BUTTON}</td>	
-					    {elseif $keyid eq '56'} <!--CheckBox--> 
+						<td width=25% class="dvtCellInfo" align="left">{$CHANGE_PW_BUTTON}</td>
+					    {elseif $keyid eq '56'} <!--CheckBox-->
                       <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onMouseOver="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{$keyval}&nbsp;</span>
                     	<div id="editarea_{$keyfldname}" style="display:none;">
                     	{if $MODULE neq 'Documents'}
