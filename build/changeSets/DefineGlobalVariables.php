@@ -141,6 +141,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Export_RelatedField_NameForSearch',
 				'Lead_Convert_TransferToAccount',
 				'Lead_Convert_OpportunitySelected',
+				'Lead_Convert_ContactSelected',
 				'PBX_Get_Line_Prefix',
 				'PBX_Unknown_CallerID',
 				'Product_Copy_Bundle_OnDuplicate',
