@@ -10,18 +10,43 @@
 require_once 'modules/Emails/PHPMailerAutoload.php';
 require_once 'include/utils/CommonUtils.php';
 
-/**   Function used to send email
-  *   $module		-- current module
-  *   $to_email		-- to email address
-  *   $from_name	-- currently loggedin user name
-  *   $from_email	-- currently loggedin users's email id. you can give as '' if you are not in HelpDesk module
-  *   $subject		-- subject of the email you want to send
-  *   $contents		-- body of the email you want to send
-  *   $cc			-- add email ids with comma seperated. - optional
-  *   $bcc			-- add email ids with comma seperated. - optional.
-  *   $attachment	-- whether we want to attach the currently selected file or all files.[values = current,all] - optional
-  *   $emailid		-- id of the email object which will be used to get the attachments
-  */
+/** Function used to send an email
+ * $module     - module: only used to add signature if it is different than "Calendar"
+ * $to_email   - "TO" email address
+ * $from_name  - name that will be shown in the "From", it  will also  be used to search for the user signature
+ * $from_email - email address from which the email will come from, if left empty we will search for a username equal to
+					$from_name, if found that email will be used, if not we will use $HELPDESK_SUPPORT_EMAIL_ID
+					if the "FROM EMAIL" field in set in Settings Outgoing Server, that one will be used
+ * $subject    - subject of the email you want to send
+ * $contents   - body of the email you want to send
+ * $cc         - add email address with comma seperated. - optional
+ * $bcc        - add email address with comma seperated. - optional
+ * $attachment - accepted values are:
+					current: get file name from $_REQUEST['filename_hidden'] or $_FILES['filename']['name']
+					all: all files directly related with the crmid record, this is mostly only useful for email records
+					attReports: get file name from $_REQUEST['filename_hidden_pdf'] and $_REQUEST['filename_hidden_xls']
+					array of filenames or document IDs: array('themes/images/webcam.png','themes/images/Meetings.gif', 42525);
+					array of direct content:
+						array(
+							'direct' => true,
+							'files' => array(
+								array(
+									'name' => 'summarize.gif',
+									'content' => file_get_contents('themes/images/summarize.gif')
+								),
+								array(
+									'name' => 'jump_to_top_60.png',
+									'content' => file_get_contents('themes/images/jump_to_top_60.png')
+								),
+							)
+						);
+ * $emailid    - id of the email object which will be used to get the attachments when $attachment='all'
+ * $logo       - if the company logo should be added to the email, for this to work you must put
+						<img src="cid:logo" />
+					wherever you want the logo to appear
+ * $replyto    - email address that an automatic "reply to" will be sent
+ * $qrScan     - if we should load qrcode images from cache directory   <img src="cid:qrcode{$fname}" />
+ */
 function send_mail($module, $to_email, $from_name, $from_email, $subject, $contents, $cc = '', $bcc = '', $attachment = '', $emailid = '', $logo = '', $replyto = '', $qrScan = '') {
 	global $adb;
 	$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
