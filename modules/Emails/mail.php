@@ -374,6 +374,18 @@ function addAttachment($mail, $filename, $record) {
 	//This is the file which has been selected in Email EditView
 	if (is_file($root_directory.$filename) && ($root_directory.$filename) != '') {
 		$mail->AddAttachment($root_directory.$filename);
+	} elseif (is_numeric($filename)) {
+		$query = 'SELECT vtiger_attachments.path, vtiger_attachments.name, vtiger_attachments.attachmentsid
+			FROM vtiger_attachments
+			INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
+			INNER JOIN vtiger_crmentity ON vtiger_attachments.attachmentsid=vtiger_crmentity.crmid
+			WHERE deleted=0 AND vtiger_seattachmentsrel.crmid = ?';
+		$docid = $filename;
+		$docrs = $adb->pquery($query, array($docid));
+		if ($docrs && $adb->num_rows($docrs)==1) {
+			$attname = $adb->query_result($docrs, 0, 'path').$adb->query_result($docrs, 0, 'attachmentsid').'_'.$adb->query_result($docrs, 0, 'name');
+			$mail->AddAttachment($attname);
+		}
 	}
 }
 
