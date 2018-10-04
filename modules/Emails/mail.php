@@ -657,4 +657,31 @@ function getDefaultAssigneeEmailIds($groupId) {
 	}
 	return $emails;
 }
+
+function createEmailRecord($element) {
+	global $adb, $log, $current_user;
+	include_once 'include/Webservices/Create.php';
+	$elementType = 'Emails';
+	$webserviceObject = VtigerWebserviceObject::fromName($adb, $elementType);
+	$handlerPath = $webserviceObject->getHandlerPath();
+	$handlerClass = $webserviceObject->getHandlerClass();
+	require_once $handlerPath;
+	$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
+	$element['activitytype'] = 'Emails';
+	if (empty($element['assigned_user_id'])) {
+		$element['assigned_user_id'] = vtws_getEntityId('Users').'x'.$current_user->id;
+	}
+	if (empty($element['date_start'])) {
+		$date = new DateTimeField(null);
+		$element['date_start'] = $date->getDisplayDate($current_user);
+	}
+	if (empty($element['time_start'])) {
+		$element['time_start'] = date('H:i:s');
+	}
+	if (empty($element['email_flag'])) {
+		$element['email_flag'] = 'SENT';
+	}
+	$result = $handler->create($elementType, $element);
+	return $result['id'];
+}
 ?>
