@@ -174,9 +174,9 @@ function getUserEmailId($name, $val) {
   *	$fromname -- which user's signature will be added to the contents
   */
 function addSignature($contents, $fromname) {
-	global $adb, $default_charset;
+	global $adb, $default_charset, $current_user;
 	$adb->println("Inside the function addSignature");
-	$signrs = $adb->pquery('select signature from vtiger_users where user_name=?', array($fromname));
+	$signrs = $adb->pquery('select signature from vtiger_users where user_name=? or id=?', array($fromname, $current_user->id));
 	$sign = $adb->query_result($signrs, 0, 'signature');
 	if ($sign != '') {
 		$sign = html_entity_decode($sign, ENT_QUOTES, $default_charset);
