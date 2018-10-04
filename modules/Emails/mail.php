@@ -65,7 +65,6 @@ function send_mail($module, $to_email, $from_name, $from_email, $subject, $conte
 			$from_name = $adb->query_result($result, 0, 0);
 		}
 	}
-	//if module is HelpDesk then from_email will come based on support email id
 	if ($from_email == '') {
 			//if from email is not defined, then use the useremailid as the from address
 			$from_email = getUserEmailId('user_name', $from_name);
@@ -81,7 +80,7 @@ function send_mail($module, $to_email, $from_name, $from_email, $subject, $conte
 	if (empty($replyto)) {
 		if (isUserInitiated()) {
 				global $current_user;
-				$reply_to_secondary = GlobalVariable::getVariable('Users_ReplyTo_SecondEmail', 0, $module, $current_user->id);
+				$reply_to_secondary = GlobalVariable::getVariable('Users_ReplyTo_SecondEmail', 0, 'Users', $current_user->id);
 			if ($reply_to_secondary == 1) {
 				$result = $adb->pquery('select secondaryemail from vtiger_users where id=?', array($current_user->id));
 				$second_email = '';
@@ -114,7 +113,7 @@ function send_mail($module, $to_email, $from_name, $from_email, $subject, $conte
 
 	$mail = new PHPMailer();
 
-	setMailerProperties($mail, $subject, $contents, $from_email, $from_name, trim($to_email, ","), $attachment, $emailid, $module, $logo, $qrScan);
+	setMailerProperties($mail, $subject, $contents, $from_email, $from_name, trim($to_email, ','), $attachment, $emailid, $logo, $qrScan);
 
 	setCCAddress($mail, 'cc', $cc);
 	setCCAddress($mail, 'bcc', $bcc);
@@ -201,10 +200,10 @@ function addSignature($contents, $fromname) {
 				  [values = current,all] - optional
   *	$emailid	-- id of the email object which will be used to get the vtiger_attachments - optional
   */
-function setMailerProperties($mail, $subject, $contents, $from_email, $from_name, $to_email, $attachment = '', $emailid = '', $module = '', $logo = '', $qrScan = '') {
+function setMailerProperties($mail, $subject, $contents, $from_email, $from_name, $to_email, $attachment = '', $emailid = '', $logo = '', $qrScan = '') {
 	global $adb;
 	$adb->println("Inside the function setMailerProperties");
-	if ($module == 'Support' || $logo ==1) {
+	if ($logo == 1) {
 		$mail->AddEmbeddedImage('themes/images/logo_mail.jpg', 'logo', 'logo.jpg', 'base64', 'image/jpg');
 	}
 	if ($qrScan == 1) {
