@@ -512,17 +512,7 @@ class crmtogo_WS_Utils {
 
 	public static function getEntityName($fieldname, $module = '') {
 		$db = PearDatabase::getInstance();
-		// Exception for Assets Module
-		if ($module == 'Assets') {
-			switch ($fieldname) {
-				case 'account':
-					$fieldname = 'account_id';
-					break;
-				case 'product':
-					$fieldname = 'product_id';
-					break;
-			}
-		}
+
 		$result = $db->pquery('SELECT `modulename` FROM `vtiger_entityname` WHERE `entityidcolumn` = ? LIMIT 1', array($fieldname));
 		return $db->query_result($result, 0, 'modulename');
 	}
@@ -576,19 +566,6 @@ class crmtogo_WS_Utils {
 			}
 		}
 		return $where;
-	}
-
-	public static function fixReferenceIdByModule($module, $fieldid) {
-		if ($module =='Assets') {
-			if ($fieldid=='account') {
-				$fieldid='account_id';
-			} elseif ($fieldid=='product') {
-				$fieldid='product_id';
-			} elseif ($fieldid=='contact') {
-				$fieldid='contact_id';
-			}
-		}
-		return $fieldid;
 	}
 
 	public static function getContactBase64Image($contactid) {
