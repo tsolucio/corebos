@@ -66,8 +66,8 @@ function send_mail($module, $to_email, $from_name, $from_email, $subject, $conte
 		}
 	}
 	if ($from_email == '') {
-			//if from email is not defined, then use the useremailid as the from address
-			$from_email = getUserEmailId('user_name', $from_name);
+		//if from email is not defined, then use the useremailid as the from address
+		$from_email = getUserEmailId('user_name', $from_name);
 	}
 	if (empty($from_email)) {
 		$from_email = $HELPDESK_SUPPORT_EMAIL_ID;
@@ -79,13 +79,13 @@ function send_mail($module, $to_email, $from_name, $from_email, $subject, $conte
 	$from_email_field = $adb->query_result($result, 0, 'from_email_field');
 	if (empty($replyto)) {
 		if (isUserInitiated()) {
-				global $current_user;
-				$reply_to_secondary = GlobalVariable::getVariable('Users_ReplyTo_SecondEmail', 0, 'Users', $current_user->id);
+			global $current_user;
+			$reply_to_secondary = GlobalVariable::getVariable('Users_ReplyTo_SecondEmail', 0, 'Users', $current_user->id);
 			if ($reply_to_secondary == 1) {
 				$result = $adb->pquery('select secondaryemail from vtiger_users where id=?', array($current_user->id));
 				$second_email = '';
 				if ($result && $adb->num_rows($result)>0) {
-						$second_email = $adb->query_result($result, 0, 'secondaryemail');
+					$second_email = $adb->query_result($result, 0, 'secondaryemail');
 				}
 			}
 			if (!empty($second_email)) {
@@ -94,7 +94,7 @@ function send_mail($module, $to_email, $from_name, $from_email, $subject, $conte
 				$replyToEmail = $from_email;
 			}
 		} else {
-				$replyToEmail = $from_email_field;
+			$replyToEmail = $from_email_field;
 		}
 	} else {
 		$replyToEmail = $replyto;
@@ -328,11 +328,11 @@ function setMailServerProperties($mail) {
 		if ('true' != $smtp_auth) {
 			if ($smtp_auth == 'sslnc' || $smtp_auth == 'tlsnc') {
 				$mail->SMTPOptions = array(
-						'ssl' => array(
-							'verify_peer' => false,
-							'verify_peer_name' => false,
-							'allow_self_signed' => true
-						)
+					'ssl' => array(
+						'verify_peer' => false,
+						'verify_peer_name' => false,
+						'allow_self_signed' => true
+					)
 				);
 				$smtp_auth = substr($smtp_auth, 0, 3);
 			}
@@ -615,7 +615,7 @@ function parseEmailErrorString($mail_error_str) {
 
 function isUserInitiated() {
 	return (isset($_REQUEST['module']) && isset($_REQUEST['action']) && $_REQUEST['module'] == 'Emails' &&
-			($_REQUEST['action'] == 'mailsend' || $_REQUEST['action'] == 'webmailsend' || $_REQUEST['action'] == 'Save'));
+		($_REQUEST['action'] == 'mailsend' || $_REQUEST['action'] == 'webmailsend' || $_REQUEST['action'] == 'Save'));
 }
 
 /**
