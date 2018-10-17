@@ -246,10 +246,10 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 			die;
 		}
         echo '<script>
-            window.opener.location.href = '. $site_URL.
-            '/index.php?module=Reports&action=SaveAndRun&record='.$genQueryId.'&folderid='.$folderid.'";
-            window.open("index.php?module=Reports&action=ListView", "_blank")
-            self.close();';
+				window.opener.location.href =  "'. $site_URL.'/index.php?module=Reports&action=SaveAndRun&record='.$genQueryId.'&folderid='.$folderid.'";
+				window.open("index.php?module=Reports&action=ListView", "_blank");
+				self.close();
+			 </script>';
 	}
 } else {
 	if ($reportid != "") {
