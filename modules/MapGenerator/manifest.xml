@@ -1,0 +1,28 @@
+<?xml version='1.0'?>
+<module>
+<exporttime>2017-10-17 13:08:05</exporttime>
+<name>MapGenerator</name>
+<label>MapGenerator</label>
+<parent>Tools</parent>
+<type>extension</type>
+<version>1.0</version>
+<dependencies>
+<vtiger_version>5.5.0</vtiger_version>
+</dependencies>
+<tables>
+</tables>
+<customlinks>
+<customlink>
+<linktype></linktype>
+<linklabel></linklabel>
+<linkurl><![CDATA[]]></linkurl>
+<linkicon><![CDATA[]]></linkicon>
+<sequence></sequence>
+<handler_path><![CDATA[]]></handler_path>
+<handler_class><![CDATA[]]></handler_class>
+<handler><![CDATA[]]></handler>
+</customlink>
+</customlinks>
+<crons>
+</crons>
+</module>

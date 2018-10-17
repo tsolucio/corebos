@@ -1,0 +1,1809 @@
+/* General fixes */
+	.map-generator-table {
+		border-collapse:separate;
+		border-spacing: 1rem;
+	}
+
+	.map-generator-cell-container > td:first-child {
+		width: 65%;
+	}
+	.map-generator-cell-container > td:last-child {
+		width: 35%;
+		vertical-align: top;
+	}
+
+
+	header h1 {
+		margin-top: 15px;
+	}
+
+	/* Select height on all maps */
+	.slds-select_container .slds-select,
+	.slds-input {
+		height: 28px;
+		min-height: 28px;
+	}
+
+	.map-generator-table input,
+	.map-generator-table select {
+		margin: 0;
+	}
+/* End General Fixes*/
+
+/* Template.tpl */
+	.slds-tabs--scoped__nav li.active {
+		border-bottom: 1px solid #fff;
+	}
+
+	#secondTab.active {
+		border-left: 1px solid #d8dde6;
+	}
+/* Template.tpl */
+
+/* Create and Load Maps */
+	/* Create Map Tab */
+	.choose-object-type .dvtCellLabel {
+		text-transform: uppercase;
+		font-weight: bold;
+		color: #54698d;
+	}
+	.choose-object-type select {
+		height: 28px;
+		margin: 0;
+	}
+	.input-query-container {
+		position: relative!important;
+	}
+	.input-query-container span {
+		position: absolute;
+		padding: 5px;
+		font-size: 12px;
+		border-radius: 9px;
+		color: red;
+		right: 1rem;
+		top: .8rem;
+	}
+	.query-name-input input {
+		width: 100%;
+	}
+	/* End Create Map Tab */
+
+	/* Load Map Tab */
+		.load-all-maps-select-container {
+
+		}
+		#LoadMAps {
+			position: relative;
+		}
+
+		.select2-container {
+			width: 100%!important;
+		}
+
+		#select2-GetALLMaps-results {
+			overflow-x: hidden;
+		}
+
+		.forceRelatedListSingleContainer {
+			position: relative;
+		}
+	/* End Load Map Tab */
+/* End Create and Load Maps */
+
+/* IOMap */
+	.iomap-container {
+		height: 28px;
+	}
+	.iomap-input-fields,
+	.iomap-output-fields {
+		margin-top: .1rem;
+		width: 50%!important;
+		padding: 0 .5rem;
+	}
+	.iomap-input-fields #SecondDiv #firstInp input,
+	.iomap-output-fields #SecondDiv #secondOutput input {
+		width: 100%;
+		margin: 0;
+		padding: 0 .5rem;
+	}
+
+	.iomap-input-fields .slds-form-element__control > div,
+	.iomap-output-fields .slds-form-element__control > div{
+		display: inline-flex;
+	}
+
+	.iomap-container #SecondDiv {
+		width: 90%;
+		vertical-align: top;
+		position: relative;
+	}
+
+	.iomap-container .slds-combobox_container {
+		position: absolute;
+		width: 100%;
+		z-index: 2;
+		top: 0;
+	}
+
+	.iomap-container #SecondDiv select {
+		z-index: 9;
+	}
+	.iomap-container .toggle-field {
+		margin-left: .1rem;
+		width: 6%;
+	}
+
+	.iomap-container .toggle-field a {
+		margin-top: .4rem;
+	}
+
+	.iomap-container .toggle-field a .fa-2x {
+		font-size: 1.5em;
+	}
+/* End IOMap */
+
+/* Mapping */
+	.mapping-map #selJoin {
+		display: block!important;
+	}
+
+	.target-origin-container {
+		width: 100%;
+		display: inline-flex;
+		margin-top: .1rem;
+	}
+
+	.target-origin-container select {
+		height: 30px;
+	}
+
+	.mapping-target-module,
+	.mapping-origin-module {
+		display: block;
+		width: 50%!important;
+		padding: .5rem;
+		margin: 0 .5rem;
+		border: 1px solid #d4d4d4;
+	}
+
+	.mapping-target-module > .slds-form-element:first-child,
+	.mapping-origin-module > .slds-form-element:first-child {
+		margin-bottom: 1rem;
+	}
+
+	.mapping-origin-module > .slds-form-element:last-child > .slds-form-element__control > div {
+		display: inline-flex;
+	}
+
+	.mapping-origin-module > .slds-form-element:last-child > .slds-form-element__control {
+		text-align: left;
+	}
+
+	.mapping-origin-module #SecondDiv {
+		width: 90%;
+		vertical-align: top;
+		position: relative;
+	}
+	.mapping-origin-module #SecondFieldContainer {
+		width: 100%;
+	}
+
+	.mapping-origin-module #SecondDiv .slds-combobox_container {
+		position: absolute;
+		width: 100%;
+		z-index: 2;
+		top: 0;
+	}
+
+	.mapping-origin-module #SecondField {
+		z-index: 9;
+	}
+
+	.mapping-origin-module #SecondDiv #SecondInput input {
+		width: 100%;
+		margin: 0;
+		padding: 0 .5rem;
+	}
+
+	.target-origin-container .slds-dropdown-trigger {
+		position: relative!important;
+		display: inline-block!important;
+	}
+
+	.toggle-field {
+		margin-left: .1rem;
+		width: 6%;
+	}
+
+	.toggle-field a {
+		margin-top: .4rem;
+	}
+
+	.toggle-field a .fa-2x {
+		font-size: 1.5em;
+	}
+
+	@media screen and (min-width: 550px) {
+		.mapping-origin-module #SecondDiv #SecondInput input {
+			font-size: 12px!important;
+		}
+	}
+/* End Mapping */
+
+/* Create Join Condition */
+	#userorgroup {
+		position: absolute;
+		width: 300px;
+		height:110px;
+		z-index: 90000;
+		display: none;
+		height: 165px;
+	}
+
+	#contentJoinButtons #userorgroup {
+		top: 0!important;
+		left: 700px!important;
+	}
+
+	#conditionQuery .slds-form-element__label {
+		display: block!important;
+	}
+
+	.line-sep {
+		margin-top: 20px!important;
+		margin-bottom: 20px!important;
+	}
+/* End Create Join Condition */
+
+/* Condition Expression */
+	.condition-expression-container .tab-content {
+		-webkit-transition: max-height .35s;
+		-o-transition: max-height .35s;
+		transition: max-height .05s;
+		max-height: 0;
+		overflow: hidden;
+	}
+	.condition-expression-container .tab {
+		border: 1px solid #d4d4d4;
+		border-radius: 5px;
+		position: relative;
+		margin-bottom: 1px;
+		width: 100%;
+		color: #fff;
+		overflow: hidden;
+		margin-bottom: .5rem;
+	}
+	.condition-expression-container .tab input:checked ~ .tab-content {
+		max-height: 100%;
+	}
+	.condition-expression-container .tab input[type=radio] {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		opacity: 0;
+	}
+	.condition-expression-container .tab input[type=radio] + label::after {
+		content: "\25B6";
+	}
+	.condition-expression-container .tab input[type=radio]:checked + label::after {
+		transform: rotate(90deg);
+	}
+
+	.expression-label,
+	.function-label {
+		border-bottom: 1px solid #d4d4d4;
+		position: relative;
+		display: block;
+		padding: 0 0 0 1em;
+		margin-bottom: 0;
+		color: #54698d;
+		font-weight: bold;
+		line-height: 3;
+		cursor: pointer;
+		background-color: #f4f6f9;
+		font-size: 1.0rem;
+		text-align: center;
+		background-color: transparent;
+	}
+	.expression-label::after,
+	.function-label::after {
+		position: absolute;
+		right: 0;
+		top: 0;
+		display: block;
+		width: 3em;
+		height: 3em;
+		line-height: 3;
+		text-align: center;
+		-webkit-transition: all .35s;
+		-o-transition: all .35s;
+		transition: all .35s;
+	}
+
+	.exp-module-fields,
+	.func-name-module,
+	.func-select-or-write-params {
+		display: flex;
+		width: 100%;
+		margin-top: .5rem;
+	}
+	.exp-select-module,
+	.exp-select-fields,
+	.func-name-module > div,
+	.func-select-or-write-params > div {
+		width: 50%;
+		padding: 0 .5rem;
+	}
+	.exp-textarea-container {
+		margin: 1rem 0;
+		padding: 0 .5rem;
+	}
+	.exp-textarea-container textarea {
+		min-height: 32px;
+	}
+	.exp-add-button {
+		padding: 0 .5rem;
+		margin: .5rem 0;
+	}
+	.func-name-module input {
+		width: 100%;
+	}
+	.func-name-module button {
+		position: absolute;
+		top: 5px;
+	}
+	.func-name-module #help {
+		position: absolute;
+		top: 30px;
+		right: 0;
+		min-height: 1rem;
+		width: 100%;
+	}
+	.func-select-or-write-params {
+		margin-top: 1rem;
+		margin-bottom: .5rem;
+	}
+	.func-select-or-write-params input {
+		width: 100%;
+		min-height: 26px;
+		height: 26px;
+	}
+	.deleteModule {
+		margin-top: 0!important;
+		padding: 3px 0 3px 10px;
+		border: 1px solid #transparent;
+		border-radius: 5px;
+		outline: none;
+		cursor: url("https://png.icons8.com/ios/20/000000/waste-filled.png"), auto;
+	}
+	.deleteModule:hover {
+		background-color: #c23934;
+		border-color: #c23934;
+	}
+/* End Condition Expression */
+
+/* Master Detail */
+	.master-detail-content {
+		display: block!important;
+	}
+	.master-detail-container {
+		margin-top: 1rem;
+		display: flex;
+	}
+	.master-detail-container input {
+		max-height: 28px;
+	}
+
+	.master-detail-container #sel1,
+	.master-detail-container #sel2 {
+		padding: 0 .5rem;
+		width: 50%;
+	}
+	.master-detail-target-module-container > div:last-child,
+	.master-detail-origin-module-container > div:last-child {
+		margin-top: 1rem;
+		text-align: right;
+	}
+	.master-detail-target-module-container > div:last-child > div,
+	.master-detail-origin-module-container > div:last-child > div {
+		height: 28px;
+	}
+	.master-detail-target-module-container > div:last-child label,
+	.master-detail-origin-module-container > div:last-child label {
+		padding: 0;
+	}
+	.master-detail-target-module-container > div:last-child input,
+	.master-detail-origin-module-container > div:last-child input {
+		width: 86%;
+	}
+
+	.master-detail-fields-checkbox {
+		display: flex;
+	}
+	.master-detail-fields-checkbox > div {
+		width: 50%;
+		padding: 0.5rem;
+	}
+
+	.master-detail-checkbox-container {
+		display: flex;
+	}
+	.master-detail-checkbox-container > div {
+		width: 22%;
+	}
+	.master-detail-checkbox-container > div:nth-last-child(2) {
+		width: 24%;
+	}
+	.master-detail-checkbox-container > div:last-child {
+		width: 10%;
+	}
+	.master-detail-checkbox-container .slds-checkbox--on,
+	.master-detail-checkbox-container .slds-checkbox--off {
+		height: 24px;
+	}
+	.master-detail-checkbox-container label {
+		padding-left: 12px;
+	}
+	.master-detail-checkbox-container > div:nth-last-child(2) label {
+		padding-left: 5px;
+	}
+	#mandatory-checkbox .slds-checkbox--faux {
+		margin: 0 0 0 11px !important;
+	}
+	#master-detail-add-button label {
+		margin-top: 1.4rem;
+	}
+	#master-detail-add-button button {
+		margin-top: 0;
+	}
+	#master-detail-add-button button:hover {
+		opacity: 0.7;
+	}
+	#master-detail-add-button img {
+		width: 22px;
+	}
+	/* End Target Module */
+/* End Master Detail */
+
+/* List Columns */
+	.lc-target-module,
+	.lc-origin-module {
+		display: flex;
+		height: 32px;
+	}
+
+	.lc-target-module label,
+	.lc-origin-module label {
+		font-size: 15px;
+		margin-bottom: 0;
+		margin-top: .5rem;
+		height: 36px;
+		padding: 0 5px;
+	}
+
+	.lc-target-module input,
+	.lc-origin-module input {
+		height: 30px;
+		width: 100%;
+	}
+
+	.related-list-content {
+		margin-bottom: 2rem;
+	}
+
+	.related-list-line,
+	.popup-screen-line {
+		border-style: inset;
+		border-top: 2px solid #d8dde6;
+		margin-top: .5rem;
+		margin-bottom: .5rem;
+	}
+
+	.related-list-container,
+	.popup-screen-container {
+		display: flex;
+		width: 100%;
+	}
+
+	.popup-screen-container .popup-screen-select,
+	.popup-screen-container .popup-screen-field,
+	.related-list-container .slds-form-element {
+		width: 50%!important;
+		padding: 0 .5rem;
+	}
+
+	.related-list-container .slds-select_container,
+	.related-list-container #SecondField,
+	.related-list-container #SecondDiv,
+	.popup-screen-container .slds-select_container,
+	.popup-screen-container .slds-form-element,
+	.popup-screen-container #SecondField,
+	.popup-screen-container #SecondDiv {
+		width: 100%;
+	}
+
+	.related-list-container #SecondField,
+	.popup-screen-container #Firstfield {
+		height: 28px;
+	}
+
+	.related-list-container #SecondDiv input,
+	.popup-screen-container #SecondDiv input {
+		height: 26px;
+		margin: 0;
+		padding: 0 .5rem;
+		width: 100%;
+	}
+
+	.slds-button_icon {
+		margin-top: 2px;
+	}
+
+	.slds-button_icon img {
+		width: 16px;
+	}
+
+	.slds-button_icon img:hover {
+		opacity: .7;
+	}
+/* End List Columns */
+
+/* Condition Query */
+	#selJoin {
+		width: 100%;
+		display: inline-flex;
+	}
+
+	#sel1,
+	#sel2 {
+		width: 45%;
+	}
+
+	#sel1 .slds-select_container,
+	#sel2 .slds-select_container{
+		margin-bottom: 5px;
+	}
+
+	#centerJoin {
+		width: 10%;
+		padding: 0.75rem;
+	}
+
+	#centerJoin span {
+		font-size: 40px;
+		margin: 0;
+	}
+
+	#conditionQuery #contenitoreJoin {
+		height: auto!important;
+	}
+
+	#conditionQuery #contenitoreJoin > div {
+		overflow-x: initial;
+		overflow-y: initial;
+		height: auto!important;
+	}
+
+	/** Section Field **/
+		#sectionField .slds-form-element__control {
+			display: inline-flex;
+			width: 100%;
+		}
+		#sectionField input,
+		#sectionField select {
+			width: 50%;
+		}
+		#sectionField #selectableFields {
+			margin-right: 1rem;
+			height: 150px;
+		}
+		#sectionField input {
+			height: 20px;
+			margin-top: 0;
+		}
+		#sectionField .slds-select[multiple] optgroup[label],
+		#sectionField .slds-select[multiple] option {
+			padding: 2px .5rem;
+		}
+	/** End Section Field **/
+
+	/** Query zone **/
+		#generatedquery #results {
+			text-align: left;
+		}
+		#where-condition-title span {
+			vertical-align: middle;
+		}
+		.condition-groups {
+			padding: 0 .5rem;
+		}
+	/** End Query zone **/
+
+	/** Aside zone **/
+		#condition-query-aside {
+			padding: 0 .5rem!important;
+			height: 200px;
+		}
+
+		#AlertsAddDiv {
+			margin-top: 10px;
+			height: 100%;
+			overflow-y: auto;
+			overflow-x: hidden;
+		}
+
+		#AlertsAddDiv .alerts {
+			text-align: left;
+			margin: 0 0 5px 0;
+			width: 90%;
+			position: relative;
+			background-color: #54698D;
+			color: #fff;
+		}
+
+		#AlertsAddDiv .alerts .closebtns {
+			margin-bottom: 5px;
+		}
+
+		#AlertsAddDiv .alerts strong {
+			line-height: 1.1;
+		}
+
+		#AlertsAddDiv .alerts i {
+			color: #54698D;
+			font-size: 13px;
+		}
+
+		.query-icons {
+			position: absolute;
+		}
+
+		.query-icons:hover {
+			opacity: .7;
+			cursor: pointer;
+		}
+
+		.plus-icon {
+			top: 5px;
+			right: -18px;
+		}
+
+		.check-icon {
+			bottom: 25px;
+			right: -20px;
+		}
+
+		.desktop-icon {
+			bottom: 5px;
+			right: -20px;
+		}
+	/* End Aside Zone */
+/* End Condition Query */
+
+/* Field Dependency & Field Dependency Portal */
+	.field-dependency-container,
+	.field-dependency-portal-container {
+		margin-top: .5rem;
+	}
+
+	.field-dependency-module,
+	.field-dependency-portal-module {
+		margin-bottom: 1rem;
+	}
+
+	.field-dependency-module > div,
+	.field-dependency-portal-module > div {
+		padding: 0 .5rem;
+	}
+
+	.field-dependency-field,
+	.field-dependency-portal-field {
+		display: flex;
+		width: 100%;
+		margin-bottom: 1rem;
+	}
+
+	.field-dependency-field > div:first-child,
+	.field-dependency-field > div:last-child,
+	.field-dependency-portal-field > :first-child,
+	.field-dependency-portal-field > :last-child {
+		width: 40%;
+		padding: 0 .5rem;
+	}
+
+	.field-dependency-field > .operators-select,
+	.field-dependency-portal-field > .operators-select {
+		width: 20%;
+		margin-top: 1.3rem;
+		height: 28px;
+	}
+
+	.field-dependency-insert-value input,
+	.field-dependency-portal-insert-value input {
+		height: 26px;
+		margin: 0;
+		padding: 0 .5rem;
+		width: 100%;
+	}
+	.field-dependency-insert-value #SecondInput,
+	.field-dependency-portal-insert-value #SecondInput {
+		transition: .5s ease-in-out;
+	}
+	.field-dependency-insert-value button,
+	.field-dependency-portal-insert-value button {
+		opacity: 1;
+		-webkit-transition: all .25s ease-in-out;
+		   -moz-transition: all .25s ease-in-out;
+		    -ms-transition: all .25s ease-in-out;
+		     -o-transition: all .25s ease-in-out;
+		        transition: all .25s ease-in-out;
+	}
+
+	.field-dependency-insert-value button:hover,
+	.field-dependency-portal-insert-value button:hover {
+		opacity: .7;
+		-webkit-transition: all .25s ease-in-out;
+		   -moz-transition: all .25s ease-in-out;
+		    -ms-transition: all .25s ease-in-out;
+		     -o-transition: all .25s ease-in-out;
+		        transition: all .25s ease-in-out;
+	}
+
+	.add-fields-picklist-block {
+		padding: 0 .5rem;
+	}
+
+	.add-fields-picklist-block button:first-child {
+		float: left!important;
+	}
+
+	/* Add fields Modal */
+		#fields h2 {
+			margin: 0;
+		}
+		#fields h3 {
+			margin-top: 0;
+		}
+		#fields .slds-modal__close {
+			top: 1rem!important;
+			right: 1rem!important;
+			color: #313131;
+			transition: .25s ease-in-out;
+		}
+		#fields .slds-modal__close:hover {
+			color: #7B7B7B!important;
+			opacity: .7;
+			transition: .25s ease-in-out;
+		}
+		.choose-field-content {
+			margin-bottom: 2rem;
+			padding: 0 .5rem;
+		}
+		.radio-buttons-content {
+			padding: 0 .5rem;
+			margin-top: 1rem;
+		}
+		.radio-buttons-content #SecondDiv {
+			width: 100%;
+			display: inline-flex;
+		}
+		.radio-buttons-content #SecondDiv > div {
+			width: 20%;
+			margin-left: 4rem;
+		}
+		.radio-buttons-content #SecondDiv > div input {
+			width: 50px!important;
+			height: 26px!important;
+			left: 0;
+		}
+		.radio-buttons-content #SecondDiv > div .slds-checkbox--off,
+		.radio-buttons-content #SecondDiv > div .slds-checkbox--on {
+			font-size: 12px;
+		}
+		.radio-buttons-content label {
+			padding: 0;
+			margin-bottom: 0;
+			border-radius: 5px;
+			border: 1px solid transparent;
+		}
+		.radio-buttons-content .toggle-hidden {
+			width: 58%;
+		}
+		.radio-buttons-content .toggle-hidden .slds-checkbox--faux {
+			margin-left: 5px;
+		}
+		.radio-buttons-content .toggle-readonly {
+			width: 65%;
+		}
+		.radio-buttons-content .toggle-readonly .slds-checkbox--faux {
+			margin-left: 15px;
+		}
+		.radio-buttons-content .toggle-mandatory {
+			width: 75%;
+		}
+		.radio-buttons-content .toggle-mandatory .slds-checkbox--faux {
+			margin-left: 20px;
+		}
+	/* End Add fields Modal */
+
+	/* Add Picklist Modal */
+		#Picklist h2 {
+			margin: 0;
+		}
+		#Picklist .slds-modal__close {
+			top: 1rem!important;
+			right: 1rem!important;
+			color: #313131;
+			transition: .25s ease-in-out;
+		}
+		#Picklist .slds-modal__close:hover {
+			color: #7B7B7B!important;
+			opacity: .7;
+			transition: .25s ease-in-out;
+		}
+		.picklist-modal-content h3 {
+			margin-top: 0;
+		}
+		.picklist-modal-fields-content {
+			display: flex;
+		}
+		.picklist-modal-fields-content select {
+			height: 28px;
+		}
+		.picklist-modal-fields-content > div {
+			width: 50%;
+			padding: 0 .5rem;
+		}
+		.picklist-modal-fields-content #ShowmoreInput > div {
+			margin-top: 1.3rem;
+		}
+		.picklist-modal-fields-content #ShowmoreInput > div .slds-button_icon {
+			opacity: 1;
+			transition: opacity .25s ease-in-out;
+		}
+		.picklist-modal-fields-content #ShowmoreInput > div .slds-button_icon:hover {
+			opacity: .5;
+			transition: opacity .25s ease-in-out;
+		}
+		.picklist-modal-fields-content #ShowmoreInput > div:not(:first-child) {
+			margin-top: .5rem;
+		}
+		.picklist-modal-fields-content #ShowmoreInput input {
+			width: 100%;
+			margin: 0;
+			height: 26px;
+			padding: 0 .5rem;
+		}
+	/* End Add Picklist Modal */
+/* End Field Dependency & Field Dependency Portal */
+
+/* Create View Portal & Detail View Block Portal */
+	.dvbp-container,
+	.cvp-container {
+		margin-top: 1rem;
+		padding: 0 .5rem;
+	}
+	.dvbp-choose_fields-add_button,
+	.cvp-container #divForAddRows {
+		display: flex;
+		width: 100%;
+	}
+	.dvbp-choose-fields,
+	.cvp-container #divForAddRows > div:first-child {
+		width: 75%;
+	}
+	.dvbp-add-button,
+	.cvp-container #divForAddRows > div:last-child {
+		width: 25%;
+	}
+	.view-portal-choose-module .slds-select_container::before {
+		top:30px!important;
+	}
+	.dvbp-block_name,
+	.view-portal-write-block-name {
+		margin: 1rem 0;
+	}
+	.dvbp-block_name input,
+	.view-portal-write-block-name input {
+		width: 100%;
+		margin: 0;
+	}
+	.dvbp-choose-fields,
+	.view-portal-select-container {
+		padding-right: .5rem;
+	}
+	.dvbp-add-button,
+	.view-portal-buttons-container {
+		padding-left: .5rem;
+	}
+	.dvbp-add-button img,
+	.view-portal-buttons-container img {
+		height: 28px;
+		width: 28px;
+		transition: .23s ease-in-out;
+	}
+	.dvbp-add-button .slds-button_icon:hover,
+	.view-portal-buttons-container .slds-button_icon:hover {
+		transition: .23s ease-in-out;
+		opacity: .5;
+	}
+	#FieldsForRow {
+		height: 180px;
+	}
+	#FieldsForRow optgroup[label] {
+		padding: .5rem;
+	}
+	#FieldsForRow optgroup option {
+		padding: .2rem .3rem;
+	}
+	#divForAddRows label {
+		margin-top: .7rem;
+		margin-bottom: .5rem;
+	}
+	.slds-cvp--button,
+	.slds-dvbp--button {
+		background-color: #54698D!important;
+		border-color: #54698D!important;
+	}
+/* End Create View Portal & Detail View Block Portal */
+
+/* Import Business Mapping */
+	.import-business-mapping-container {
+		display: block!important;
+		width: 100%;
+	}
+
+	/* Target-Module */
+		.import-business-target-module {
+			margin-bottom: 1rem;
+		}
+		.import-business-target-module #sel1 {
+			width: 100%;
+			padding: 0 .5rem;
+		}
+	/* End Target-Module */
+
+	/* Select Fields */
+		.import-business-select-fields #sel2 {
+			display: flex;
+			width: 100%;
+			padding: 0 .5rem;
+		}
+		.import-business-select-fields #sel2 .slds-form-element {
+			width: 43%;
+		}
+		.import-business-select-fields #sel2 #sel1 {
+			width: 14%;
+			margin-top: 1.7rem;
+			text-align: center;
+		}
+		.import-business-select-fields #sel2 #sel1 label {
+			cursor: default;
+			margin: 0;
+		}
+	/* End Select Fields */
+
+	/* contenitoreJoin content */
+		.import-business-mapping-container #contenitoreJoin {
+			display: none;
+		}
+	/* End contenitoreJoin content */
+
+	/* Update Import Business */
+		.update-import-business #sel1 {
+			width: 100%;
+			padding: 0 .5rem;
+		}
+		.update-import-business .slds-form-element__control {
+			display: block!important;
+		}
+		.update-import-business .slds-form-element__control select{
+			width: 100%!important;
+		}
+	/* End Update Import Business */
+/* End Import Bussines Mapping */
+
+/* Record Set Mapping */
+	/* First input */
+		.enable-disable-id {
+			margin-bottom: .5rem;
+		}
+		.enable-disable-id > label {
+			margin-top: 4px;
+			margin-bottom: 0;
+		}
+		.enable-disable-id > div > label {
+			margin-bottom: 0;
+			padding-left: 0;
+		}
+		.record-set-mapping-container {
+			margin-top: 1rem;
+			text-align: left!important;
+			padding: 0 .5rem;
+		}
+		.enable-disable-id {
+			display: flex;
+		}
+		.insert-id-container > div {
+			width: 25%;
+			margin-top: 30px;
+		}
+		.insert-id-container > div input {
+			width: 100%;
+			height: 28px;
+			min-height: 28px;
+		}
+		.toggle-field-below {
+			margin-top: 1.6rem;
+			display: flex;
+		}
+		#record-set-mapping-entity-value {
+			width: 94%;
+		}
+		#record-set-mapping-entity-value {
+			width: 100%;
+		}
+	/* End First input */
+
+	/* Module & Entity */
+		.record-set-module-entity-container {
+			display: flex;
+			width: 100%;
+			margin-bottom: 1rem;
+		}
+		.record-set-module-entity-container > div:first-child {
+			width: 50%;
+			padding-right: .5rem;
+		}
+		.record-set-module-entity-container > div:last-child {
+			width: 50%;
+			padding-left: .5rem;
+		}
+		.record-set-module-entity-container > div:last-child input {
+			width: 100%;
+			min-height: 28px !important;
+			height: 28px;
+		}
+	/* End Module & Entity */
+
+	/* Action select */
+		.action-add-button-container {
+			display: flex;
+			width: 100%;
+		}
+		.record-set-mapping-action-select {
+			width: 25%;
+		}
+		.add-button-content {
+			text-align: center;
+			margin-top: 1rem;
+			width: 10%;
+		}
+		.add-button-content img {
+			width: 20px!important;
+		}
+	/* End Action select */
+/* End Record Set Mapping */
+
+/* Extended Field Information */
+	.extended-field-info-container {
+		margin: 1rem 0;
+	}
+	.exim-choose-module-field-content,
+	.exim-insert-name-value-content {
+		display: flex;
+		width: 100%;
+		margin: 1rem 0;
+	}
+	.exim-choose-field,
+	.first-input,
+	.second-input {
+		width: 33%;
+	}
+	.exim-insert-name-value-content .add-button-content {
+		width: 5%;
+		text-align: right;
+	}
+	.exim-insert-name-value-content .add-button-content button {
+		transition: .35s ease-in-out;
+	}
+	.exim-insert-name-value-content .add-button-content button:hover {
+		opacity: .7;
+	}
+	.first-input {
+		padding: 0 .5rem;
+	}
+	.exim-choose-module,
+	.first-input input,
+	.second-input input {
+		width: 100%;
+	}
+/* Extended Field Information */
+
+/* Module Set */
+	.module-set-container {
+		margin-top: 1rem;
+		padding: 0 .5rem;
+	}
+	.module-set-container #sel1 {
+		width: 90%;
+	}
+	.module-set-container .add-button-content {
+		margin-top: 1.2rem;
+	}
+/* End Module Set */
+
+/* Menu Structure */
+	.menu-structure-container {
+		display: block!important;
+	}
+	.menu-structure-container #sel1 {
+		width: 100%;
+		margin: 1rem 0;
+		padding: 0 .5rem;
+	}
+	.menu-structure-container input {
+		width: 100%;
+	}
+	.menu-structure-container .popover-icon {
+		position: absolute;
+		top: .4rem;
+		right: .5rem;
+	}
+	.menu-structure-container #help {
+		position: absolute;
+		top: -1rem;
+		right: 2rem;
+	}
+
+	.menu-structure-module-add {
+		padding: 0 .5rem;
+		display: flex;
+		width: 100%;
+	}
+	.menu-structure-module-add > div:first-child {
+		width: 95%;
+	}
+	.menu-structure-module-add > div:last-child {
+		width: 5%;
+		text-align: right;
+	}
+	.menu-structure-module-add > div:last-child button {
+		margin-top: 1.5rem;
+	}
+	.menu-structure-module-add > div:last-child img {
+		width: 20px;
+	}
+	.ms-conditions-container {
+		margin-top: 1rem;
+	}
+	#ms-condition-header {
+		padding: 0 .5rem;
+	}
+	#idFields {
+		height: 0;
+	}
+	.ms-conditions {
+		display: flex;
+		opacity: 0;
+		padding: 0 .5rem;
+	}
+	.ms-conditions > div {
+		width: 45%;
+	}
+	.ms-conditions > span {
+		margin-top: 1.7rem;
+		width: 5%;
+	}
+	.ms-conditions > button {
+		width: 5%;
+		margin-top: 1.5rem;
+	}
+	.ms-conditions > button img {
+		width: 20px!important;
+	}
+
+	.ms-equals img {
+		width: 20px;
+		-webkit-transform: rotate(90deg);
+		   -moz-transform: rotate(90deg);
+		    -ms-transform: rotate(90deg);
+		     -o-transform: rotate(90deg);
+		        transform: rotate(90deg);
+	}
+/* Menu Structure */
+
+/* Rendiconda Config */
+	.rc-module-fields,
+	.rc-template-fields {
+		display: flex;
+	}
+	.rc-template-fields {
+		margin: 1rem  0;
+	}
+	.rc-module-fields > div,
+	.rc-template-fields > div {
+		width: 50%;
+		padding: 0 .5rem;
+	}
+	.rc-add-button {
+		padding: 0 .5rem;
+	}
+/* End Rendiconda Config */
+
+/* Global Search Autocomplete */
+	.gsa-container {
+		margin-top: 1rem;
+		padding: 0 .5rem;
+	}
+	.gsa-fields-container {
+		display: flex;
+		margin-top: 1rem;
+	}
+	.gsa-fields-container .gsa-first-select,
+	.gsa-fields-container .gsa-second-select {
+		width: 42%;
+	}
+	.gsa-fields-container .gsa-checkbox {
+		width: 11%;
+	}
+	.gsa-fields-container .gsa-add-button {
+		width: 5%;
+	}
+	.gsa-first-select select,
+	.gsa-second-select select {
+		min-height: 180px!important;
+	}
+	.gsa-checkbox label,
+	.gsa-add-button button {
+		margin-top: 100px;
+	}
+	.gsa-checkbox label > span {
+		margin-left: 10px;
+		text-align: center;
+	}
+	.gsa-add-button button:hover {
+		opacity: .7;
+	}
+	.gsa-add-button button img {
+		width: 30px;
+	}
+/* End Global Search Autocomplete */
+
+/* Record Access Control */
+	.rac-container {
+		display: block!important;
+		padding: 0 .5rem;
+	}
+	.rac-target_module {
+		margin: 1rem 0;
+	}
+
+	.rac-lv-dv-container,
+	.rac-related_module-checkboxes {
+		display: flex;
+	}
+	.rac-lv-dv-container h5,
+	.rac-related_list-container h5 {
+		text-align: center;
+		border-bottom: 1px solid #d4d4d4;
+		margin-left: .5rem;
+		margin-right: .5rem;
+	}
+
+	.rac-lv-container,
+	.rac-dv-container {
+		width: 50%;
+	}
+	.rac-lv-container .rac-lv-checkboxes,
+	.rac-dv-container .rac-dv-checkboxes {
+		display: flex;
+	}
+	.rac-lv-checkboxes > div,
+	.rac-dv-checkboxes > div {
+		width: 22%;
+	}
+	.rac-lv-checkboxes > div:first-child,
+	.rac-dv-checkboxes > div:first-child {
+		margin-left: 21px;
+	}
+	.rac-lv-container label,
+	.rac-dv-container label {
+		display: block;
+		text-align: center;
+	}
+	.rac-lv-container label .slds-checkbox--faux,
+	.rac-dv-container label .slds-checkbox--faux {
+		margin-left: 5px;
+	}
+
+	.rac-related_list-container {
+		margin-top: 1rem;
+	}
+	.rac-related_module {
+		width: 40%;
+		padding-right: .5rem;
+	}
+	.rac-checkboxes {
+		display: flex;
+		width: 60%!important;
+		padding-left: .5rem;
+	}
+	.rac-checkboxes > div {
+		width: 16%;
+		margin-top: 12px;
+	}
+	.rac-checkboxes label {
+		text-align: center;
+	}
+	.rac-checkboxes .slds-checkbox--faux {
+		margin-left: 5px;
+	}
+	.rac-add-button label {
+		display: block;
+		text-align: right!important;
+	}
+	.rac-add-button button{
+		margin-top: 8px;
+	}
+	.rac-add-button button:hover {
+		opacity: .7;
+	}
+	.rac-add-button button img {
+		width: 24px;
+	}
+/* End Record Access Control */
+
+/* Duplicate Records */
+	.dr-container {
+		display: block;
+		margin-top: 1rem;
+		padding: 0 .5rem;
+	}
+	.dr-target_module {
+		width: 100%;
+		margin-bottom: 1rem;
+	}
+	.dr-duplicate_relations label > span {
+		text-align: center;
+	}
+	.dr-related_module-container h5 {
+		text-align: center;
+		border-bottom: 1px solid #d4d4d4;
+	}
+	.dr-related_module-container > div {
+		display: flex;
+	}
+	.dr-related_module {
+		width: 90%;
+	}
+	.dr-add-button {
+		width: 10%;
+	}
+	.dr-add-button label {
+		margin-top: 24px;
+		margin-bottom: 0;
+		padding-left: 2.5rem;
+	}
+	.dr-add-button button:hover {
+		opacity: .7;
+	}
+	.dr-add-button .slds-button_icon {
+		margin-top: 0;
+	}
+	.dr-add-button label img {
+		width: 22px;
+	}
+/* End Duplicate Records */
+
+/* New Map Modal */
+	.new-map-modal h2,
+	.insert-map-name-modal h2 {
+		margin: 0;
+	}
+	.new-map-modal .slds-input,
+	.insert-map-name-modal .slds-input {
+		width: 80%;
+	}
+	.new-map-modal .slds-modal__content,
+	.insert-map-name-modal .slds-modal__content {
+		position: relative;
+	}
+	.new-map-modal #ErrorLabelModal,
+	.insert-map-name-modal #ErrorLabelModal {
+		position: absolute;
+		bottom: 0;
+		left: 6rem;
+		margin: 0;
+	}
+/* End New Map Modal */
+
+/* Related Panes */
+	.related-panes-container {
+		margin: .5rem 0 1rem 0;
+		padding: 0 .5rem;
+	}
+	.rp-origin-module {
+		margin-bottom: .5rem;
+	}
+	.rp-panes-body,
+	.rp-blocks-body_1,
+	.rp-blocks-body_2,
+	.rp-validation-buttons {
+		display: flex;
+	}
+	.rp-validation-buttons {
+		margin-top: .5rem;
+		padding: 0 .5rem;
+	}
+	.rp-panes-body input,
+	.rp-blocks-body_1 input,
+	.rp-blocks-body_2 input {
+		width: 100%;
+	}
+	.rp-panes-body > div {
+		width: 37%;
+	}
+	.rp-blocks-body_2 {
+		margin: .5rem 0;
+	}
+	.rp-blocks-body_1 > div,
+	.rp-blocks-body_2 > div {
+		width: 50%;
+	}
+	.rp-blocks-body_1 > div:last-child,
+	.rp-blocks-body_2 > div:last-child {
+		padding-left: .5rem;
+	}
+	.rp-blocks-body_1 > div:first-child,
+	.rp-blocks-body_2 > div:first-child,
+	.rp-panes-body > div {
+		padding-right: .5rem;
+	}
+	.rp-panes-body > div:last-child {
+		 width: 26%; 
+		padding: 0;
+	}
+	.rp-panes-body > div:last-child > div {
+		margin-top: 2rem;
+	}
+	.rp-buttons-container > button:first-child {
+		float: left;
+	}
+	.rp-button-group-blocks {
+		width: 100%;
+	}
+	.rp-val-help,
+	.rp-button-group-panes {
+		width: 50%;
+	}
+	.rp-panes-container,
+	.rp-blocks-container {
+		margin-top: 1rem;
+		position: relative;
+		padding: .5rem;
+		border: 2px solid #d8dde6;
+	}
+	.rp-blocks-title,
+	.rp-panes-title {
+		margin-bottom: 0;
+		border-bottom: 0;
+		font-size: 16px;
+		font-weight: bold;
+		width: 10%;
+	}
+	.rp-val-help label {
+		margin-top: .5rem;
+	}
+	#rp-panes-sequence,
+	#rp-block-sequence {
+		padding-right: 0;
+	}
+/* End Related Panes */
+
+/* Field Set */
+	.fieldset-container {
+		position: relative;
+		padding: .5rem;
+		border: 2px solid #d8dde6;
+	}
+	.fieldset-container input {
+		width: 100%;
+	}
+
+	.fieldset-container legend {
+		margin-bottom: 0;
+		border-bottom: 0;
+		font-size: 16px;
+		font-weight: bold;
+		text-align: center;
+		width: 12%;
+	}
+	.fs-fields-information {
+		display: flex;
+		margin: 1rem 0;
+	}
+	.fs-fields-information > div {
+		width: 45%;
+		padding-right: .5rem;
+	}
+	.fs-fields-information > div:last-child {
+		width: 10%;
+		text-align: center;
+	}
+	.fs-add_button button { margin-top: 1.5rem; }
+	.fs-add_button img { width: 20px; }
+
+/* End Field Set */
+
+
+/*	#LDSstyle {
+		border: 1px solid black;
+		margin-right: 0px;
+		margin-top: 0px;
+		width: 100%;
+		height: 100%;
+	}
+
+	#LDSstyle li {
+		margin: 0px;
+		padding: 0px;
+	}
+
+	#LDSstyle a:hover {
+		background: #c3cede;
+	}
+*/
+
+	.ajax_loader {
+		background: url("modules/MapGenerator/image/spinner_squares_circle.gif") no-repeat center center transparent;
+		width: 100%;
+		height: 100%;
+	}
+
+	.blue-loader .ajax_loader {
+		background: url("modules/MapGenerator/image/ajax-loader_blue.gif") no-repeat center center transparent;
+	}
+
+/*	#feedback {
+		font-size: 1.4em;
+	}
+
+	#selectable .ui-selecting {
+		background: #FECA40;
+	}
+
+	#selectable .ui-selected {
+		background: #F39814;
+		color: white;
+	}
+
+	#selectable {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		width: 60%;
+	}
+
+	#selectable li {
+		margin: 3px;
+		padding: 0.4em;
+		font-size: 1.4em;
+		height: 18px;
+	}
+*/
+
+/*The buttonset container needs a width so we can stack them vertically.*/
+
+/*#radio {
+	width: 85%;
+}
+*/
+
+/*Make each label stack on top of one another.*/
+/*	.ui-buttonset-vertical label {
+		display: block;
+	}*/
+
+/*
+ * Handle colliding borders. Here, we"re making the bottom border
+ * of every label transparent, except for labels with the
+ * ui-state-active or ui-state-hover class, or if it"s the last label.
+ *
+ */
+
+/*	.ui-buttonset-vertical label:not(:last-of-type):not(.ui-state-hover):not(.ui-state-active) {
+		border-bottom: transparent;
+	}
+*/
+
+/*
+ * For lables in the active state, we need to make the top border of the next
+ * label transparent.
+ *
+*/
+
+/*.ui-buttonset-vertical label.ui-state-active+input+label {
+	border-top: transparent;
+}*/
+
+
+/*
+ * Oddly enough, the above style approach doesn"t work for the
+ * hover state. So we define this class that"s used by our JavaScript
+ * hack.
+ *
+ */
+
+/*.ui-buttonset-vertical label.ui-transparent-border-top {
+	border-top: transparent;
+}
+
+select {
+	width: 300px;
+}
+
+.overflow {
+	height: 200px;
+}
+
+
+.tooltip {
+	position: relative;
+	display: inline-block;
+	border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+	visibility: hidden;
+	width: 120px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px 0;
+	position: absolute;
+	z-index: 1;
+	top: -5px;
+	right: 105%;
+}
+
+.tooltip:hover .tooltiptext {
+	visibility: visible;
+}
+
+/*=============================*/
+/*
+	#LDSstyle {
+		border: 1px solid black;
+		margin-right: 0px;
+		margin-top: 0px;
+		width: 100%;
+		height: 100%;
+	}
+
+	#LDSstyle li {
+		margin: 0px;
+		padding: 0px;
+	}
+
+	#LDSstyle a:hover {
+		background: #c3cede;
+	}
+
+	.ajax_loader {
+		background: url("modules/MapGenerator/image/spinner_squares_circle.gif") no-repeat center center transparent;
+		width: 100%;
+		height: 100%;
+	}
+
+	.blue-loader .ajax_loader {
+		background: url("modules/MapGenerator/image/ajax-loader_blue.gif") no-repeat center center transparent;
+	}
+
+	#feedback {
+		font-size: 1.4em;
+	}
+
+	#selectable .ui-selecting {
+		background: #FECA40;
+	}
+
+	#selectable .ui-selected {
+		background: #F39814;
+		color: white;
+	}
+
+	#selectable {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		width: 60%;
+	}
+
+	#selectable li {
+		margin: 3px;
+		padding: 0.4em;
+		font-size: 1.4em;
+		height: 18px;
+	}*/
+	/*
+		 * The buttonset container needs a width so we can stack them vertically.
+		 *
+		 */
+
+	/*#radio {
+		width: 85%;
+	}*/
+	/*
+		 * Make each label stack on top of one another.
+		 *
+		 */
+
+/*	.ui-buttonset-vertical label {
+		display: block;
+	}*/
+	/*
+		 * Handle colliding borders. Here, we"re making the bottom border
+		 * of every label transparent, except for labels with the
+		 * ui-state-active or ui-state-hover class, or if it"s the last label.
+		 *
+		 */
+
+/*	.ui-buttonset-vertical label:not(:last-of-type):not(.ui-state-hover):not(.ui-state-active) {
+		border-bottom: transparent;
+	}*/
+	/*
+		 * For lables in the active state, we need to make the top border of the next
+		 * label transparent.
+		 *
+		 */
+
+/*	.ui-buttonset-vertical label.ui-state-active+input+label {
+		border-top: transparent;
+	}*/
+	/*
+		 * Oddly enough, the above style approach doesn"t work for the
+		 * hover state. So we define this class that"s used by our JavaScript
+		 * hack.
+		 *
+		 */
+
+/*	.ui-buttonset-vertical label.ui-transparent-border-top {
+		border-top: transparent;
+	}
+
+	select {
+		width: 300px;
+	}
+
+	.overflow {
+		height: 200px;
+	}
+
+	.tooltip {
+		position: relative;
+		display: inline-block;
+		border-bottom: 1px dotted black;
+	}
+
+	.tooltip .tooltiptext {
+		visibility: hidden;
+		width: 120px;
+		background-color: black;
+		color: #fff;
+		text-align: center;
+		border-radius: 6px;
+		padding: 5px 0;
+*/
+		/* Position the tooltip */
+	/*	position: absolute;
+		z-index: 1;
+		top: -5px;
+		right: 105%;
+	}*/
+/*
+	.tooltip:hover .tooltiptext {
+		visibility: visible;
+	}*/
+	/*========================
