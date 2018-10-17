@@ -330,14 +330,11 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 			echo $errormessage;
 			die;
 		}
-
-		$var = unserialize($minfo);
-		$var_one = $var['url'];
-		echo '<script>
-				window.opener.location.href = "'.vtlib_purify($var_one).'";
-				window.open("index.php?module=Reports&action=ListView", "_blank");
-				self.close();
-			 </script>';
+        echo '<script>
+            window.opener.location.href = '. $site_URL.
+            '/index.php?module=Reports&action=SaveAndRun&record='.$genQueryId.'&folderid='.$folderid.'";
+            window.open("index.php?module=Reports&action=ListView", "_blank")
+            self.close();';
 	}
 } else {
 	if ($reportid != "") {
@@ -561,6 +558,8 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 		echo $errormessage;
 		die;
 	}
+
 	echo '<script>window.opener.location.href = window.opener.location.href;self.close();</script>';
 }
+
 ?>
