@@ -10,23 +10,21 @@
 -->*}
 
 <div style="width: 400px;">
-
 	<form method="POST" action="javascript:void(0);">
 	
 	<table width="100%" cellpadding="5" cellspacing="0" border="0" class="small mailClient">
 	<tr>
-		<td colspan="2" class="mailClientWriteEmailHeader" width="90%" align="left">Compose SMS</td>
+		<td colspan="2" class="mailClientWriteEmailHeader" width="90%" align="left">{$MOD.ComposeSMS}</td>
 	</table>
 	
 	<table width="100%" cellpadding="5" cellspacing="0" border="0" align="center">
 	<tr>
 		<td>
-		
-			Message:<br/>
+			{$MOD.message}:<br/>
 			<textarea name="message" class="small" rows="12" cols="10" onkeyup="document.getElementById('__smsnotifer_compose_wordcount__').innerHTML=this.value.length;"></textarea>
 		</td>
 	<tr>
-		<td align="right"><span id="__smsnotifer_compose_wordcount__">0</span> characters </td>	
+		<td align="right"><span id="__smsnotifer_compose_wordcount__">0</span> {$MOD.characters} </td>
 	</tr>
 	</table>
 	
@@ -34,17 +32,15 @@
 	<tr>
 		<td class="small" align="center">
 			<input type="hidden" name="idstring" value="{$IDSTRING}" />
-            <input type="hidden" name="excludedRecords" value="{$excludedRecords}"/>
-            <input type="hidden" name="viewid" value="{$VIEWID}"/>
+			<input type="hidden" name="excludedRecords" value="{$excludedRecords}"/>
+			<input type="hidden" name="viewid" value="{$VIEWID}"/>
 			<input type="hidden" name="searchurl" value="{$SEARCHURL}"/>
 			<input type="hidden" name="phonefields" value="{$PHONEFIELDS}" />
 			<input type="hidden" name="sourcemodule" value="{$SOURCEMODULE}" />
-			
 			<input type="button" class="small crmbutton save" onclick="SMSNotifierCommon.triggerSendSMS(this.form);" value="{$APP.LBL_SEND}"/>
 			<input type="button" class="small crmbutton cancel" onclick="SMSNotifierCommon.hideComposeWizard();" value="{$APP.LBL_CANCEL_BUTTON_LABEL}"/>
 		</td>
 	</tr>
 	</table>
-
 	</form>
 </div>

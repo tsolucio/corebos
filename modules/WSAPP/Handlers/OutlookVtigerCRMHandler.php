@@ -41,7 +41,7 @@ class OutlookVtigerCRMHandler extends vtigerCRMHandler {
 							if ($recordInfo[$referenceFieldName]!=null) {
 								$element['accountname'] = $recordInfo[$referenceFieldName];
 								$element['assigned_user_id'] = vtws_getWebserviceEntityId('Users', $user->id);
-								$element['module'] = "Accounts";
+								$element['module'] = 'Accounts';
 								$createRecord= array($element);
 								$createRecord = $this->fillNonExistingMandatoryPicklistValues($createRecord);
 								$createRecord = $this->fillMandatoryFields($createRecord, $user);
@@ -50,10 +50,9 @@ class OutlookVtigerCRMHandler extends vtigerCRMHandler {
 								}
 								$entityNameIds = wsapp_getRecordEntityNameIds(array_values($recordReferenceFieldNames), $referenceModuleDetails, $user);
 								$recordInfo[$referenceFieldName] = $entityNameIds[$recordInfo[$referenceFieldName]];
-								;
 							}
 						} else {
-							$recordInfo[$referenceFieldName] = "";
+							$recordInfo[$referenceFieldName] = '';
 						}
 					}
 					$records[$index] = $recordInfo;
@@ -97,7 +96,7 @@ class OutlookVtigerCRMHandler extends vtigerCRMHandler {
 		$crmIds = array();
 
 		foreach ($updatedRecords as $index => $record) {
-			$webserviceRecordId = $record["id"];
+			$webserviceRecordId = $record['id'];
 			$recordIdComp = vtws_getIdComponents($webserviceRecordId);
 			$crmIds[] = $recordIdComp[1];
 		}
@@ -116,7 +115,7 @@ class OutlookVtigerCRMHandler extends vtigerCRMHandler {
 			}
 		}
 		foreach ($updatedRecords as $index => $record) {
-			$webserviceRecordId = $record["id"];
+			$webserviceRecordId = $record['id'];
 			$recordIdComp = vtws_getIdComponents($webserviceRecordId);
 			try {
 				if (in_array($recordIdComp[1], $assignedRecordIds)) {
@@ -177,5 +176,4 @@ class OutlookVtigerCRMHandler extends vtigerCRMHandler {
 		return $this->nativeToSyncFormat($recordDetails);
 	}
 }
-
 ?>

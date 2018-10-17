@@ -39,7 +39,7 @@ function getFieldByReportLabel($module, $label) {
 }
 
 function isReferenceUIType($uitype) {
-	static $options = array('101', '116', '117', '26', '357', '51', '52', '53', '57', '66', '73', '75', '76', '77', '78', '80', '81');
+	static $options = array('101', '117', '26', '357', '51', '52', '53', '57', '66', '73', '76', '77', '78', '80');
 	return in_array($uitype, $options);
 }
 
@@ -166,7 +166,7 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 		$date = new DateTimeField($fieldvalue);
 		$fieldvalue = $date->getDisplayDateTimeValue();
 	}
-	if ($module != 'Reports') {
+	if ($module != 'Reports' && vtlib_isModuleActive($module)) {
 		$modobj = CRMEntity::getInstance($module);
 		if (!empty($valueArray['lbl_action']) && method_exists($modobj, 'formatValueForReport')) {
 			$fieldvalue = $modobj->formatValueForReport($dbField, $fieldType, $value, $fieldvalue, $valueArray['lbl_action']);

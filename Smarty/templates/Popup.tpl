@@ -63,10 +63,10 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 <script type='text/javascript' src='include/jquery/jquery.js'></script>
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <script type="text/javascript" src="include/js/general.js"></script>
+<script type="text/javascript" src="include/js/vtlib.js"></script>
 <script type="text/javascript" src="include/js/QuickCreate.js"></script>
 <script type="text/javascript" src="include/js/Inventory.js"></script>
 <script type="text/javascript" src="include/js/search.js"></script>
-<script type="text/javascript" src="include/js/vtlib.js"></script>
 <script type="text/javascript" src="include/js/Mail.js"></script>
 <script type="text/javascript" src="modules/Tooltip/TooltipHeaderScript.js"></script>
 <script type="text/javascript" src="jscalendar/calendar.js"></script>

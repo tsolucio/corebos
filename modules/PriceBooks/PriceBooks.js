@@ -115,14 +115,9 @@ function set_return_inventory_pb(listprice, fldname) {
 }
 
 function deletePriceBookProductRel(id, pbid) {
-	document.getElementById('status').style.display='inline';
-	jQuery.ajax({
-		method: 'POST',
-		url: 'index.php?module=Products&action=ProductsAjax&file=DeletePriceBookProductRel&ajax=true&return_action=CallRelatedList&return_module=PriceBooks&record='+id+'&pricebook_id='+pbid+'&return_id='+pbid,
-	}).done(function (response) {
-		document.getElementById('status').style.display='none';
-		document.getElementById('RLContents').innerHTML=response;
-	});
+	var url = 'index.php?module=Products&action=ProductsAjax&file=DeletePriceBookProductRel&ajax=true&return_action=CallRelatedList&return_module=PriceBooks&record='+id+'&pricebook_id='+pbid+'&return_id='+pbid;
+	gotourl(url);
+	return false;
 }
 
 function verify_data() {
@@ -140,5 +135,4 @@ function verify_data() {
 		}
 	}
 	return returnValue;
-
 }

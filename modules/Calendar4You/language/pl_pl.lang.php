@@ -72,5 +72,6 @@ $mod_strings = array (
 "LBL_GOOGLEINS"=>"Insert from Google?",
 'LIST_MODULES' => 'List of Modules',
 'Gmail_ChangeAccount'=>'If you want to change the Gmail Account please clear the tokens',
+'Click2PickColor' => 'Click here to pick color',
 );
 ?>

@@ -28,8 +28,6 @@ if (isPermitted($currentModule, 'Delete', '') == 'yes') {
 }
 if (isPermitted($currentModule, 'EditView', '') == 'yes') {
 	$list_buttons['mass_edit'] = $app_strings[LBL_MASS_EDIT];
-	// Mass Edit could be used to change the owner as well!
-	//$list_buttons['c_owner'] = $app_strings[LBL_CHANGE_OWNER];
 }
 
 $focus = new $currentModule();

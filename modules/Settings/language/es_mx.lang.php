@@ -727,6 +727,7 @@ $mod_strings = array (
 	  'LBL_TASKS'=>'Tareas',
 	  'LBL_NEW_TASK_BUTTON_LABEL'=>'Nueva Tarea',
 	  'LBL_TASK'=>'Tarea',
+	  'LBL_DELAY' => 'Delay',
 	  // END
 
 	  //Added for vantage customization (Mandatory fields) -- Pavani

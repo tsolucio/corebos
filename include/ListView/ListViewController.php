@@ -187,7 +187,7 @@ class ListViewController {
 			}
 			if (!$is_admin && ($field->getFieldDataType() == 'picklist' ||
 					$field->getFieldDataType() == 'multipicklist')) {
-				$this->setupAccessiblePicklistValueList($fieldName);
+				$this->setupAccessiblePicklistValueList($field->getColumnName());
 			}
 			$idList=array();
 			if ($fieldName!='assigned_user_id' && false !== strpos($fieldName, '.assigned_user_id')) {
@@ -401,6 +401,7 @@ class ListViewController {
 								$value = CurrencyField::convertToUserFormat($value);
 							}
 						}
+						$value = '<span style="float:right">'.$value.'</span>';
 					}
 				} elseif ($field->getFieldDataType() == 'url') {
 					$matchPattern = "^[\w]+:\/\/^";
@@ -487,7 +488,7 @@ class ListViewController {
 						$tmp = '';
 						$tmpArray = array();
 						foreach ($valueArray as $val) {
-							if (!$is_admin && !in_array(trim(decode_html($val)), $this->picklistValueMap[$fieldName])) {
+							if (!$is_admin && !in_array(trim(decode_html($val)), $this->picklistValueMap[$field->getColumnName()])) {
 								continue;
 							}
 							if (!$listview_max_textlength || !(strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i", "", $tmp)) > $listview_max_textlength)) {

@@ -117,7 +117,7 @@ class crmtogo_WS_Utils {
 		if (isset(self::$detectFieldnamesToResolveCache[$module])) {
 			return self::$detectFieldnamesToResolveCache[$module];
 		}
-		$resolveUITypes = array(10, 101, 116, 117, 26, 357, 51, 52, 53, 57, 66, 68, 73, 75, 76, 77, 78, 80, 81);
+		$resolveUITypes = array(10, 101, 117, 26, 357, 51, 52, 53, 57, 66, 68, 73, 76, 77, 78, 80);
 		$result = $db->pquery(
 			'SELECT fieldname FROM vtiger_field WHERE uitype IN('.generateQuestionMarks($resolveUITypes) .') AND tabid=?',
 			array($resolveUITypes, getTabid($module))
@@ -368,6 +368,28 @@ class crmtogo_WS_Utils {
 				}
 				$describeInfo['fields'][$index] = $fieldInfo;
 			}
+		} elseif ($module == 'Timecontrol') {
+			if (isset($_REQUEST['_operation']) && $_REQUEST['_operation']=='create') {
+				$stdate = new DateTimeField(date('Y-m-d').' '.date('H:i'));
+				$datestoconsider ['start'] = date('Y-m-d');
+				$datestoconsider ['tstart'] = $stdate->getDisplayTime();
+			}
+			foreach ($describeInfo['fields'] as $index => $fieldInfo) {
+				if (isset($fieldInfo['uitype'])) {
+					$fieldInfo['uitype'] = self::fixUIType($module, $fieldInfo['name'], $fieldInfo['uitype']);
+				}
+				if ($fieldInfo['name'] == 'visibility') {
+					if (empty($fieldInfo['type']['picklistValues'])) {
+						$fieldInfo['type']['picklistValues'] = self::visibilityValues();
+						$fieldInfo['type']['defaultValue'] = $fieldInfo['type']['picklistValues'][0]['value'];
+					}
+				} elseif ($fieldInfo['name'] == 'date_start') {
+					$fieldInfo['default'] = $datestoconsider ['start'];
+				} elseif ($fieldInfo['name'] == 'time_start') {
+					$fieldInfo['default'] = $datestoconsider ['tstart'];
+				}
+				$describeInfo['fields'][$index] = $fieldInfo;
+			}
 		}
 	}
 
@@ -490,17 +512,7 @@ class crmtogo_WS_Utils {
 
 	public static function getEntityName($fieldname, $module = '') {
 		$db = PearDatabase::getInstance();
-		// Exception for Assets Module
-		if ($module == 'Assets') {
-			switch ($fieldname) {
-				case 'account':
-					$fieldname = 'account_id';
-					break;
-				case 'product':
-					$fieldname = 'product_id';
-					break;
-			}
-		}
+
 		$result = $db->pquery('SELECT `modulename` FROM `vtiger_entityname` WHERE `entityidcolumn` = ? LIMIT 1', array($fieldname));
 		return $db->query_result($result, 0, 'modulename');
 	}
@@ -554,19 +566,6 @@ class crmtogo_WS_Utils {
 			}
 		}
 		return $where;
-	}
-
-	public static function fixReferenceIdByModule($module, $fieldid) {
-		if ($module =='Assets') {
-			if ($fieldid=='account') {
-				$fieldid='account_id';
-			} elseif ($fieldid=='product') {
-				$fieldid='product_id';
-			} elseif ($fieldid=='contact') {
-				$fieldid='contact_id';
-			}
-		}
-		return $fieldid;
 	}
 
 	public static function getContactBase64Image($contactid) {

@@ -144,6 +144,7 @@ class VTEmailTask extends VTTask {
 		$ct = new VTSimpleTemplate($this->content);
 		$content = $ct->render($entityCache, $entity->getId());
 		$logo = (strpos($this->content, '(general : (__VtigerMeta__) logo)')===false) ? '' : '1';
+		$qrScan = (strpos($this->content, '(general : (__VtigerMeta__) scanQRCode')===false) ? '' : '1';
 		$element['saved_toid'] = $to_email;
 		$element['parent_type'] = $module;
 		$element['parent_id'] = $entity->getId();
@@ -154,7 +155,7 @@ class VTEmailTask extends VTTask {
 		$element['description'] = $content;
 		$emailid = $this->createEmailRecord($element);
 		list($wsid, $crmid) = explode('x', $emailid);
-		$rdo = send_mail($module, $to_email, $from_name, $from_email, $subject, $content, $cc, $bcc, $this->attachmentsinfo, $crmid, $logo, $replyto);
+		$rdo = send_mail($module, $to_email, $from_name, $from_email, $subject, $content, $cc, $bcc, $this->attachmentsinfo, $crmid, $logo, $replyto, $qrScan);
 		$logbg->debug("VTEmailTask\nTo: $to_email\nFromName: $from_name\nFromEmail: $from_email\nCC: $cc\nBCC: $bcc\nResult: $rdo");
 		$util->revertUser();
 	}

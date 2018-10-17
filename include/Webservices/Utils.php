@@ -841,6 +841,9 @@ function vtws_transferOwnership($ownerId, $newOwnerId, $delete = true) {
 	$db->pquery('update vtiger_crmentity set smownerid=? where smownerid=?', array($newOwnerId, $ownerId));
 	$db->pquery('update vtiger_crmentity set modifiedby=? where modifiedby=?', array($newOwnerId, $ownerId));
 
+	//Updating the createdby in vtiger_attachmentsfolder
+	$db->pquery('update vtiger_attachmentsfolder set createdby=? where createdby=?', array($newOwnerId, $ownerId));
+
 	//deleting from vtiger_tracker
 	if ($delete) {
 		$db->pquery('delete from vtiger_tracker where user_id=?', array($ownerId));

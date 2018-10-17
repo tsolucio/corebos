@@ -2331,12 +2331,6 @@ function getRecordValues($id_array, $module) {
 						}
 					}
 					$value_pair['disp_value']=$contactname;
-				} elseif ($ui_type == 75 || $ui_type ==81) {
-					$vendor_id=$field_values[$j][$fld_name];
-					if ($vendor_id != '') {
-						$vendor_name=getVendorName($vendor_id);
-					}
-					$value_pair['disp_value']=$vendor_name;
 				} elseif ($ui_type == 52) {
 					$user_id = $field_values[$j][$fld_name];
 					$user_name=getUserFullName($user_id);
@@ -2643,13 +2637,6 @@ function getDuplicateRecordsArr($module) {
 				} else {
 					$result[$col_arr[$k]]=$app_strings['yes'];
 				}
-			}
-			if ($ui_type[$fld_arr[$k]] ==75 || $ui_type[$fld_arr[$k]] ==81) {
-				$vendor_id=$result[$col_arr[$k]];
-				if ($vendor_id != '') {
-						$vendor_name=getVendorName($vendor_id);
-				}
-				$result[$col_arr[$k]]=$vendor_name;
 			}
 			if ($ui_type[$fld_arr[$k]] ==57) {
 				$contact_id= $result[$col_arr[$k]];
@@ -3057,21 +3044,47 @@ function getCallerInfo($number) {
 	if (empty($number)) {
 		return false;
 	}
-	$name = array('Contacts', 'Accounts', 'Leads');
-	foreach ($name as $module) {
-		$focus = CRMEntity::getInstance($module);
-		$query = $focus->buildSearchQueryForFieldTypes(11, $number);
-		if (empty($query)) {
-			return false;
-		}
 
-		$result = $adb->pquery($query, array());
-		if ($adb->num_rows($result) > 0) {
-			$callerName = $adb->query_result($result, 0, 'name');
-			$callerID = $adb->query_result($result, 0, 'id');
-			return array('name'=>$callerName, 'module'=>$module, 'id'=>$callerID);
+	$fieldsString = GlobalVariable::getVariable('PBXManager_SearchOnlyOnTheseFields', '');
+	if ($fieldsString != '') {
+		$fieldsArray = explode(',', $fieldsString);
+		foreach ($fieldsArray as $field) {
+			$result = $adb->pquery("SELECT tabid, uitype FROM vtiger_field WHERE columnname = ?", array($field));
+			for ($i = 0; $i< $adb->num_rows($result); $i++) {
+				$module = vtlib_getModuleNameById($adb->query_result($result, $i, 0));
+				$uitype = $adb->query_result($result, $i, 1);
+				$focus = CRMEntity::getInstance($module);
+				$query = $focus->buildSearchQueryForFieldTypes($uitype, $number);
+				if (empty($query)) {
+					continue;
+				}
+
+				$result = $adb->pquery($query, array());
+				if ($adb->num_rows($result) > 0) {
+					$callerName = $adb->query_result($result, 0, 'name');
+					$callerID = $adb->query_result($result, 0, 'id');
+					return array('name'=>$callerName, 'module'=>$module, 'id'=>$callerID);
+				}
+			}
+		}
+	} else {
+		$name = array('Contacts', 'Accounts', 'Leads');
+		foreach ($name as $module) {
+			$focus = CRMEntity::getInstance($module);
+			$query = $focus->buildSearchQueryForFieldTypes(11, $number);
+			if (empty($query)) {
+				return false;
+			}
+
+			$result = $adb->pquery($query, array());
+			if ($adb->num_rows($result) > 0) {
+				$callerName = $adb->query_result($result, 0, 'name');
+				$callerID = $adb->query_result($result, 0, 'id');
+				return array('name'=>$callerName, 'module'=>$module, 'id'=>$callerID);
+			}
 		}
 	}
+
 	return false;
 }
 
@@ -3414,7 +3427,7 @@ function DeleteEntity($module, $return_module, $focus, $record, $return_id) {
 	$log->debug("Entering DeleteEntity method ($module, $return_module, $record, $return_id)");
 	if (!empty($record)) {
 		$setype = getSalesEntityType($record);
-		if ($setype != $module && !($module == 'cbCalendar' && $setype == 'Calendar')) {
+		if ($setype != $module && !($module == 'cbCalendar' && $setype == 'Emails')) {
 			return array(true,getTranslatedString('LBL_PERMISSION'));
 		}
 		if ($module != $return_module && !empty($return_module) && !empty($return_id)) {
@@ -3694,7 +3707,7 @@ function getBlockName($blockid) {
 }
 
 function validateAlphaNumericInput($string) {
-	preg_match('/^[\w \-\/]+$/', $string, $matches);
+	preg_match('/^[\w _\-\/]+$/', $string, $matches);
 	return !(count($matches) == 0);
 }
 

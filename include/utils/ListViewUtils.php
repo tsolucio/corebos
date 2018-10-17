@@ -678,7 +678,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 								if ($name == 'Contact Name') {
 									$contact_id = $adb->query_result($list_result, $i - 1, "contactid");
 									$contact_name = getFullNameFromQResult($list_result, $i - 1, "Contacts");
-									$value = "";
+									$value = '';
 									//Added to get the contactname for activities custom view - t=2190
 									if ($contact_id != '' && !empty($contact_name)) {
 										$displayValueArray = getEntityName('Contacts', $contact_id);
@@ -688,7 +688,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 											}
 										}
 									}
-									if (($contact_name != "") && ($contact_id != 'NULL')) {
+									if (($contact_name != '') && ($contact_id != 'NULL')) {
 										$value = "<a href='index.php?module=Contacts&action=DetailView&record=".$contact_id."'>".textlength_check($contact_name).'</a>';
 									}
 								}
@@ -697,7 +697,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 									$value = '<a href="index.php?action=DetailView&module=' . $module . '&record=' . $entity_id . '">' . $first_name . '</a>';
 								}
 							} else {
-								$value = "";
+								$value = '';
 							}
 						} elseif ($module == "Documents" && ($fieldname == 'filelocationtype' || $fieldname == 'filename' || $fieldname == 'filesize' || $fieldname == 'filestatus' || $fieldname == 'filetype')) {
 							$value = $adb->query_result($list_result, $i - 1, $fieldname);
@@ -811,8 +811,8 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							if ($name == 'Contact Name') {
 								$contact_id = $adb->query_result($list_result, $i - 1, 'contactid');
 								$contact_name = getFullNameFromQResult($list_result, $i - 1, 'Contacts');
-								$value = "";
-								if (($contact_name != "") && ($contact_id != 'NULL')) {
+								$value = '';
+								if (($contact_name != '') && ($contact_id != 'NULL')) {
 									$value = "<a href='index.php?module=Contacts&action=DetailView&record=" . $contact_id . "'>" . textlength_check($contact_name).'</a>';
 								}
 							}
@@ -856,7 +856,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							$value = '<a href="index.php?module=Potentials&action=DetailView&record=' . $potential_id . '">' . textlength_check($potential_name) . '</a>';
 						} elseif ($module == 'Emails' && $relatedlist != '' && ($name == 'Subject' || $name == 'Date Sent' || $name == 'To')) {
 							$list_result_count = $i - 1;
-							$tmp_value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, "list", "", $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
+							$tmp_value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, "list", '', $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
 							if (Emails::EmailHasBeenSent($entity_id)) {
 								$value = '<img src="themes/images/arrow_up.png">&nbsp;';
 							} else {
@@ -875,14 +875,14 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							if ($activitytype == 'Task') {
 								if (getFieldVisibilityPermission('Calendar', $current_user->id, $fieldname) == '0') {
 									$list_result_count = $i - 1;
-									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, "list", "", $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
+									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, "list", '', $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
 								} else {
 									$value = '';
 								}
 							} else {
 								if (getFieldVisibilityPermission('Events', $current_user->id, $fieldname) == '0') {
 									$list_result_count = $i - 1;
-									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, "list", "", $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
+									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, "list", '', $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
 								} else {
 									$value = '';
 								}
@@ -892,7 +892,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							$value = $val_raw;
 						} else {
 							$list_result_count = $i - 1;
-							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, "list", "", $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
+							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, "list", '', $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
 							$uicolarr = isset($ui_col_array[$fieldname]) ? $ui_col_array[$fieldname] : array('1'=>$fieldname);
 							foreach ($uicolarr as $key => $val) {
 								$uitype = $key;
@@ -958,7 +958,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 				}
 			}
 			// END
-			if ($links_info != "" && !$skipActions) {
+			if ($links_info != '' && !$skipActions) {
 				$list_header[] = $links_info;
 			}
 			list($list_header, $unused, $unused2) = cbEventHandler::do_filter('corebos.filter.listview.render', array($list_header, $adb->query_result_rowdata($list_result, $i - 1), $entity_id));
@@ -1108,8 +1108,8 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 							if ($name == 'Contact Name') {
 								$contact_id = $adb->query_result($list_result, $i - 1, "contactid");
 								$contact_name = getFullNameFromQResult($list_result, $i - 1, "Contacts");
-								$value = "";
-								if (($contact_name != "") && ($contact_id != 'NULL')) {
+								$value = '';
+								if (($contact_name != '') && ($contact_id != 'NULL')) {
 									$value = "<a href='index.php?module=Contacts&action=DetailView&record=" . $contact_id . "'>" . $contact_name . "</a>";
 								}
 							}
@@ -1594,19 +1594,12 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		} else {
 			$value = '';
 		}
-	} elseif ($uitype == 75 || $uitype == 81) {
-		if ($temp_val != '') {
-			$vendor_name = getVendorName($temp_val);
-			$value = '<a href=index.php?module=Vendors&action=DetailView&record='.$temp_val.'&parenttab='.urlencode($tabname).'>'.textlength_check($vendor_name).'</a>';
-		} else {
-			$value = '';
-		}
 	} elseif ($uitype == 98) {
 		$value = '<a href="index.php?action=RoleDetailView&module=Settings&parenttab=Settings&roleid='.$temp_val.'">'.textlength_check(getRoleName($temp_val)).'</a>';
 	} elseif ($uitype == 33) {
-		$value = ($temp_val != "") ? str_ireplace(' |##| ', ', ', $temp_val) : "";
+		$value = ($temp_val != '') ? str_ireplace(' |##| ', ', ', $temp_val) : '';
 		if (!is_admin($current_user) && $value != '') {
-			$value = ($field_val != "") ? str_ireplace(' |##| ', ', ', $field_val) : "";
+			$value = ($field_val != '') ? str_ireplace(' |##| ', ', ', $field_val) : '';
 			if ($value != '') {
 				$value_arr = explode(',', trim($value));
 				$roleid = $current_user->roleid;
@@ -1642,7 +1635,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					if (!in_array($val, $picklistarr)) {
 						continue;
 					}
-					if (!$listview_max_textlength || !(strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i", "", $string_temp)) > $listview_max_textlength)) {
+					if (!$listview_max_textlength || !(strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i", '', $string_temp)) > $listview_max_textlength)) {
 						if ($str_c != 0) {
 							$string_temp .= ' , ';
 						}
@@ -1656,15 +1649,12 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			}
 		}
 	} elseif ($uitype == 85) {
-		$value = ($temp_val != "") ? "<a href='skype:{$temp_val}?call'>{$temp_val}</a>" : "";
-	} elseif ($uitype == 116) {
-		$value = ($temp_val != "") ? getCurrencyName($temp_val) : "";
+		$value = ($temp_val != '') ? "<a href='skype:{$temp_val}?call'>{$temp_val}</a>" : '';
 	} elseif ($uitype == 117) {
 		// NOTE: Without symbol the value could be used for filtering/lookup hence avoiding the translation
-		$value = ($temp_val != "") ? getCurrencyName($temp_val, false) : "";
+		$value = ($temp_val != '') ? getCurrencyName($temp_val, false) : '';
 	} elseif ($uitype == 26) {
-		$sql = "select foldername from vtiger_attachmentsfolder where folderid = ?";
-		$res = $adb->pquery($sql, array($temp_val));
+		$res = $adb->pquery('select foldername from vtiger_attachmentsfolder where folderid = ?', array($temp_val));
 		$foldername = $adb->query_result($res, 0, 'foldername');
 		$value = $foldername;
 	} //added for asterisk integration
@@ -1800,7 +1790,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$slashes_temp_desc = decode_html(htmlspecialchars($description, ENT_QUOTES, $default_charset));
 
 					$slashes_desc = str_replace(array("\r", "\n"), array('\r', '\n'), $slashes_temp_desc);
-					$tmp_arr = array("entityid" => $entity_id, "prodname" => "" . stripslashes(decode_html(nl2br($slashes_temp_val))) . "", "unitprice" => "$unitprice", "qtyinstk" => "$qty_stock", "taxstring" => "$tax_str", "rowid" => "$row_id", "desc" => "$slashes_desc", "subprod_ids" => "$sub_det");
+					$tmp_arr = array("entityid" => $entity_id, "prodname" => stripslashes(decode_html(nl2br($slashes_temp_val))), "unitprice" => "$unitprice", "qtyinstk" => "$qty_stock", "taxstring" => "$tax_str", "rowid" => "$row_id", "desc" => "$slashes_desc", "subprod_ids" => "$sub_det");
 					$prod_arr = json_encode($tmp_arr);
 					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $qty_stock . '","' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '","' . $sub_det . '");\' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($temp_val) . '</a>';
 				} elseif ($popuptype == "inventory_prod_po") {
@@ -1841,7 +1831,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$slashes_temp_desc = decode_html(htmlspecialchars($description, ENT_QUOTES, $default_charset));
 
 					$slashes_desc = str_replace(array("\r", "\n"), array('\r', '\n'), $slashes_temp_desc);
-					$tmp_arr = array("entityid" => $entity_id, "prodname" => "" . stripslashes(decode_html(nl2br($slashes_temp_val))) . "", "unitprice" => "$unitprice", "qtyinstk" => "0", "taxstring" => "$tax_str", "rowid" => "$row_id", "desc" => "$slashes_desc", "subprod_ids" => "$sub_det");
+					$tmp_arr = array("entityid" => $entity_id, "prodname" => stripslashes(decode_html(nl2br($slashes_temp_val))), "unitprice" => "$unitprice", "qtyinstk" => "0", "taxstring" => "$tax_str", "rowid" => "$row_id", "desc" => "$slashes_desc", "subprod_ids" => "$sub_det");
 					$prod_arr = json_encode($tmp_arr);
 					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory_po("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '","' . $sub_det . '"); \' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($temp_val) . '</a>';
 				} elseif ($popuptype == "inventory_service") {
@@ -1870,7 +1860,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$slashes_temp_desc = decode_html(htmlspecialchars($description, ENT_QUOTES, $default_charset));
 
 					$slashes_desc = str_replace(array("\r", "\n"), array('\r', '\n'), $slashes_temp_desc);
-					$tmp_arr = array("entityid" => $entity_id, "prodname" => "" . stripslashes(decode_html(nl2br($slashes_temp_val))) . "", "unitprice" => "$unitprice", "taxstring" => "$tax_str", "rowid" => "$row_id", "desc" => "$slashes_desc");
+					$tmp_arr = array("entityid" => $entity_id, "prodname" => stripslashes(decode_html(nl2br($slashes_temp_val))), "unitprice" => "$unitprice", "taxstring" => "$tax_str", "rowid" => "$row_id", "desc" => "$slashes_desc");
 					$prod_arr = json_encode($tmp_arr);
 
 					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '");\' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($temp_val) . '</a>';
@@ -2142,24 +2132,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						$count = counterValue();
 						$value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'return set_return_emails(' . $entity_id . ',' . $fieldid . ',"' . decode_html($slashes_name) . '","' . $emailaddress . '","' . $emailaddress2 . '","' . $email_check . '"'.$sre_param.'); \'id = ' . $count . '>' . textlength_check($name) . '</a>';
 					}
-				} elseif ($popuptype == "specific_vendor_address") {
-					require_once 'modules/Vendors/Vendors.php';
-					$acct_focus = new Vendors();
-					$acct_focus->retrieve_entity_info($entity_id, "Vendors");
-
-					$slashes_temp_val = popup_from_html($temp_val);
-					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
-					$xyz = array('street', 'city', 'postalcode', 'pobox', 'country', 'state');
-					for ($i = 0; $i < 6; $i++) {
-						if (getFieldVisibilityPermission($module, $current_user->id, $xyz[$i]) == '0') {
-							$acct_focus->column_fields[$xyz[$i]] = $acct_focus->column_fields[$xyz[$i]];
-						} else {
-							$acct_focus->column_fields[$xyz[$i]] = '';
-						}
-					}
-					$bill_street = str_replace(array("\r", "\n"), array('\r', '\n'), popup_decode_html($acct_focus->column_fields['street']));
-					$count = counterValue();
-					$value = '<a href="javascript:void(0);" onclick=\'set_return_address("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '", "' . $bill_street . '", "' . popup_decode_html($acct_focus->column_fields['city']) . '", "' . popup_decode_html($acct_focus->column_fields['state']) . '", "' . popup_decode_html($acct_focus->column_fields['postalcode']) . '", "' . popup_decode_html($acct_focus->column_fields['country']) . '","' . popup_decode_html($acct_focus->column_fields['pobox']) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
 				} elseif ($popuptype == "specific_campaign") {
 					$slashes_temp_val = popup_from_html($temp_val);
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
@@ -3218,7 +3190,7 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 			$query = "select parent_id from vtiger_troubletickets where ticketid =?";
 			$result = $adb->pquery($query, array($relmod_recordid));
 			$parent_id = $adb->query_result($result, 0, "parent_id");
-			if ($parent_id != "") {
+			if ($parent_id != '') {
 				$crmquery = "select setype from vtiger_crmentity where crmid=?";
 				$parentmodule_id = $adb->pquery($crmquery, array($parent_id));
 				$parent_modname = $adb->query_result($parentmodule_id, 0, "setype");
@@ -3348,7 +3320,7 @@ function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 	global $log, $adb;
 	$log->debug("Entering getRelCheckquery(" . $currentmodule . "," . $returnmodule . "," . $recordid . ") method ...");
 	$skip_id = array();
-	$where_relquery = "";
+	$where_relquery = '';
 	$params = array();
 	$reltable = null;
 	if ($currentmodule == "Contacts" && $returnmodule == "Potentials") {
@@ -3447,7 +3419,7 @@ function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 	$query = '';
 	if ($reltable != null) {
 		$query = "SELECT " . $selectfield . " FROM " . $reltable . " " . $condition;
-	} elseif ($currentmodule != $returnmodule && $returnmodule != "") { // If none of the above relation match, then the relation is assumed to be stored in crmentityrel
+	} elseif ($currentmodule != $returnmodule && $returnmodule != '') { // If none of the above relation match, then the relation is assumed to be stored in crmentityrel
 		$query = 'SELECT relcrmid AS relatedid FROM vtiger_crmentityrel WHERE crmid = ? and module = ? and relmodule = ?
 					UNION SELECT crmid AS relatedid FROM vtiger_crmentityrel WHERE relcrmid = ? and relmodule = ? and module = ?';
 		array_push($params, $recordid, $returnmodule, $currentmodule, $recordid, $returnmodule, $currentmodule);
@@ -3795,13 +3767,13 @@ function textlength_check($field_val) {
 	global $default_charset,$currentModule;
 	$listview_max_textlength = GlobalVariable::getVariable('Application_ListView_Max_Text_Length', 40, $currentModule);
 	if ($listview_max_textlength && $listview_max_textlength > 0) {
-		$temp_val = preg_replace("/(<\/?)(\w+)([^>]*>)/i", "", $field_val);
+		$temp_val = preg_replace("/(<\/?)(\w+)([^>]*>)/i", '', $field_val);
 		if (function_exists('mb_strlen')) {
 			if (mb_strlen($temp_val) > $listview_max_textlength) {
-				$temp_val = mb_substr(preg_replace("/(<\/?)(\w+)([^>]*>)/i", "", $field_val), 0, $listview_max_textlength, $default_charset) . '...';
+				$temp_val = mb_substr(preg_replace("/(<\/?)(\w+)([^>]*>)/i", '', $field_val), 0, $listview_max_textlength, $default_charset) . '...';
 			}
 		} elseif (strlen($field_val) > $listview_max_textlength) {
-			$temp_val = substr(preg_replace("/(<\/?)(\w+)([^>]*>)/i", "", $field_val), 0, $listview_max_textlength) . '...';
+			$temp_val = substr(preg_replace("/(<\/?)(\w+)([^>]*>)/i", '', $field_val), 0, $listview_max_textlength) . '...';
 		}
 	} else {
 		$temp_val = $field_val;
@@ -4073,7 +4045,7 @@ function html_strlen($str) {
 
 function html_substr($str, $start, $length = null) {
 	if ($length === 0) {
-		return "";
+		return '';
 	}
 	//check if we can simply use the built-in functions
 	if (strpos($str, '&') === false) { //No entities. Use built-in functions

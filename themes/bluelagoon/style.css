@@ -2854,6 +2854,7 @@ a.allMnu:Hover{
 
 .listview_row_total, .listview_row_sigma {
 	font-weight: bold;
+	float: right;
 }
 
 .listview_row_sigma {

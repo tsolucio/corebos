@@ -325,7 +325,8 @@ if ($cvmodule != '') {
 							$genCVid,
 							$std_filter_list['columnname'],
 							$std_filter_list['stdfilter'],
-							$adb->formatDate($std_filter_list['startdate'], true), $adb->formatDate($std_filter_list['enddate'], true),
+							$adb->formatDate($std_filter_list['startdate'], true),
+							$adb->formatDate($std_filter_list['enddate'], true),
 						);
 						$stdfilterresult = $adb->pquery($stdfiltersql, $stdfilterparams);
 						$log->info('CustomView :: Save :: vtiger_cvstdfilter update successfully'.$genCVid);

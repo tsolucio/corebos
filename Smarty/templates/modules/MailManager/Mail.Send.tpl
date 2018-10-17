@@ -57,7 +57,7 @@
 			</tr>
 			<tr>
 				<td valign="top" align="right">
-					<a href="javascript:jQuery('#file-uploader').toggle();">{'LBL_ATTACHMENTS'|getTranslatedString}</a>
+					<a href="#" onclick="jQuery('#file-uploader').toggle();">{'LBL_ATTACHMENTS'|getTranslatedString}</a>
 				</td>
 				<td width="80%">
 					<div id="file-uploader" class="dropzone mm-dz-div" style="display: none;">

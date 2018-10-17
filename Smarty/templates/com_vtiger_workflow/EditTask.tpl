@@ -70,7 +70,7 @@
 			<b>{$MOD.MSG_EXECUTE_TASK_DELAY}</b></td>
 			<td>
 				<div id="select_date" {if empty($trigger)}style="display:none;"{/if}>
-					<input type="text" name="select_date_days" value="{if isset($trigger.days)}{$trigger.days}{/if}" id="select_date_days" class="small"> days
+					<input type="text" name="select_date_days" value="{if isset($trigger.days)}{$trigger.days}{/if}" id="select_date_days" class="small"> {$MOD.LBL_DAYS}
 					<select name="select_date_direction" class="small">
 						<option {if isset($trigger.direction) && $trigger.direction eq 'after'}selected{/if} value='after'>{$MOD.LBL_AFTER}</option>
 						<option {if isset($trigger.direction) && $trigger.direction eq 'before'}selected{/if} value='before'>{$MOD.LBL_BEFORE}</option>

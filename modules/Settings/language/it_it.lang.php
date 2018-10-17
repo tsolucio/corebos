@@ -693,6 +693,8 @@ $mod_strings = array (
 'LBL_TASKS' => 'Operazioni',
 'LBL_NEW_TASK_BUTTON_LABEL' => 'Nuova Operazione',
 'LBL_TASK' => 'Operazione',
+'LBL_DELAY' => 'Delay',
+
 'LBL_MANDATORY_FIELDS' => 'Campi Obbligatori',
 'LBL_MANDATORY_FIELDS_DESCRIPTION' => 'Gestisci i campi obbligatori di tutti i moduli',
 'LBL_CUSTOMIZE_MODENT_NUMBER' => 'Personalizza Numerazione Moduli',
