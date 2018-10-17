@@ -1194,7 +1194,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
-	'definition' => 'A Variable to block the inspect element if you want to block for Map Generator',
+	'definition' => 'Blocks the inspect element option in Map Generator',
 ),
 'Zero_Bounce_API_KEY' => array(
 	'status' => 'Implemented',
