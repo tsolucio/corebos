@@ -386,8 +386,6 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 		echo $errormessage;
 		die;
 	}
-
 	echo '<script>window.opener.location.href = window.opener.location.href;self.close();</script>';
 }
-
 ?>
