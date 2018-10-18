@@ -9,8 +9,8 @@
  ************************************************************************************/
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme;
 
-require_once('Smarty_setup.php');
-require_once("modules/$currentModule/$currentModule.php");
+require_once 'Smarty_setup.php';
+require_once 'modules/$currentModule/$currentModule.php';
 
 $focus = new $currentModule();
 $smarty = new vtigerCRM_Smarty();
@@ -21,7 +21,7 @@ $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
 
-$smarty->assign('SINGLE_MOD', "CallHistory");
+$smarty->assign('SINGLE_MOD', 'CallHistory');
 $smarty->assign('CATEGORY', $category);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");

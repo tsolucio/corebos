@@ -6,30 +6,32 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-if(typeof(SMSNotifier) == 'undefined') {
+if (typeof(SMSNotifier) == 'undefined') {
 	var SMSNotifier = {
 
-		checkstatus : function(record) {
+		checkstatus : function (record) {
 			SMSNotifier.loadstatus(record, true);
 		},
 
-		loadstatus : function(record, query) {
+		loadstatus : function (record, query) {
 			var wrapper = document.getElementById('tblStatusInformation');
 
-			if(typeof(query) == 'undefined') query = false;
+			if (typeof(query) == 'undefined') {
+				query = false;
+			}
 
-			if(wrapper) {
+			if (wrapper) {
 				var url = 'module=SMSNotifier&action=SMSNotifierAjax&ajax=true&file=SMSNotifierStatusWidget&record=' + record;
-				if(query) {
+				if (query) {
 					url += '&mode=query';
 				}
-				document.getElementById('vtbusy_info').style.display="block";
+				VtigerJS_DialogBox.showbusy();
 				jQuery.ajax({
 					method: 'POST',
 					url: 'index.php?'+url,
 				}).done(function (response) {
 					wrapper.innerHTML = response;
-					document.getElementById('vtbusy_info').style.display="none";
+					VtigerJS_DialogBox.hidebusy();
 				});
 			}
 		}

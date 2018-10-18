@@ -110,12 +110,14 @@ class RelatedPanes extends processcbMap {
 							continue;
 						}
 						$rels = $this->getRelationIds($origintab, $block['loadfrom']);
-						$block['relatedid'] = $rels[$block['loadfrom']];
 						if (empty($block['label'])) {
 							$block['label'] = getTranslatedString($block['loadfrom'], $block['loadfrom']);
 						}
 						if (!empty($rels[$block['loadfrom']])) {
+							$block['relatedid'] = $rels[$block['loadfrom']];
 							$restrictedRelations[] = $rels[$block['loadfrom']];
+						} else {
+							$block['relatedid'] = 0;
 						}
 					} elseif ($block['type']=='Widget') {
 						$instance = new Vtiger_Link();

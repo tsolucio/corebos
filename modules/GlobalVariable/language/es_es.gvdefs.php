@@ -370,6 +370,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'URL del portal del cliente (Ejemplo: http://your_support_domain.tld/portal). Utilizado principalmente en las plantillas de correo.',
 ),
+'Application_Customer_Portal_BeingUsed' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'vtigercrmportal | coreboscp',
+	'definition' => 'Indica el portal de ciente conectado a este coreBOS para que podamos adaptar algunas salidas correctamente. Utilizado principalmente en las plantillas de correo.',
+),
 'Debug_Calculate_Response_Time' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -509,6 +516,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => 'individual | group',
 	'definition' => 'Establecer el modo de impuesto en módulos de inventario a línea individual o grupo de impuestos',
+),
+'Inventory_Show_ShippingHandlingCharges' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Muestra o esconde la sección de cargos de Manipulación y Transporte.',
 ),
 'Application_Global_Search_Active' => array(
 	'status' => 'Implementada',
@@ -909,6 +923,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'false | true',
 	'definition' => 'Si se establece a "true", la sección de la Oportunidad se seleccionará al convertir un PreContacto. De forma predeterminada, la sección no está activada.',
 ),
+'Lead_Convert_ContactSelected' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'false | true',
+	'definition' => 'Si se establece a "true", la sección del Contacto se seleccionará al convertir un PreContacto. De forma predeterminada, la sección está activada.',
+),
 'Product_Show_Subproducts_Popup' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -1098,33 +1119,96 @@ $GlobalVariableDefinitons = array(
 	'values' => 'ID o nombre de la plantilla a utilizar',
 	'definition' => 'Cuando la variable CustomerPortal_PDF se establece en PDFMaker o GenDoc, esta variable indica qué plantilla se debe utilizar para generar el PDF de ordenes de venta. Si está vacía, se utilizará la primera plantilla encontrada.',
 ),
-'CustomerPortal_PDFTemplate_Invoice'  => array(
+'CustomerPortal_PDFTemplate_Invoice' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Texto',
 	'category' => 'Integración',
 	'values' => 'ID o nombre de la plantilla a utilizar',
 	'definition' => 'Cuando la variable CustomerPortal_PDF se establece en PDFMaker o GenDoc, esta variable indica qué plantilla se debe utilizar para generar el PDF de facturas. Si está vacía, se utilizará la primera plantilla encontrada.',
 ),
-'CustomerPortal_PDFTemplate_PurchaseOrder'  => array(
+'CustomerPortal_PDFTemplate_PurchaseOrder' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Texto',
 	'category' => 'Integración',
 	'values' => 'ID o nombre de la plantilla a utilizar',
 	'definition' => 'Cuando la variable CustomerPortal_PDF se establece en PDFMaker o GenDoc, esta variable indica qué plantilla se debe utilizar para generar el PDF de ordenes de compra. Si está vacía, se utilizará la primera plantilla encontrada.',
 ),
-'Application_Permit_Assign_Up'  => array(
+'Application_Permit_Assign_Up' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'En módulos con privilegios de compartición privados, permite asignar el registro a cualquier usuario activo de la aplicación.',
 ),
-'Application_Permit_Assign_SameRole'  => array(
+'Application_Permit_Assign_SameRole' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'En módulos con privilegios de compartición privados, permite asignar el registro a cualquier usuario activo de la aplicación con el mismo rol que el usuario actual.',
+),
+'Application_Permit_Assign_AllGroups' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'En módulos con privilegios de compartición privados, permite asignar el registro a cualquier grupo definido en la aplicación.',
+),
+'MailManager_Show_SentTo_Links' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'MailManager muestra, de manera predeterminada, en el panel izquierdo un conjunto de enlaces para filtrar los correos electrónicos relacionados con Cuentas, Contactos y algunos otros módulos. Establecer esta variable a 0 ocultará esas acciones rápidas.',
+),
+'Calendar_Show_WeekNumber' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Cuando la variable está activa se mostrará el número de semana en el calendario.',
+),
+'Report_HeaderOnXLS' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Cuando Report_HeaderOnXLS está activo, el nombre del informe aparecerá como el encabezado en el archivo XLS.',
+),
+'Report_HeaderOnPDF' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Cuando Report_HeaderOnPDF está activo, el nombre del informe aparecerá como el encabezado en el archivo PDF.',
+),
+'RelatedList_Activity_DefaultStatusFilter' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'Valor válido de la lista de estados de Actividad',
+	'definition' => 'Filtro inicial de Actividades en la lista relacionada. Por defecto muestra "todos".',
+),
+'Zero_Bounce_API_KEY' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'Cualquier Clave API válida de Zero Bounce',
+	'definition' => 'Una clave válida para el API de Zero Bounce para poder validar cuentas de correo.',
+),
+'PBXManager_SearchOnlyOnTheseFields' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'nombres de campos',
+	'definition' => 'Lista de campos en los que buscar al recibir una llamada de Asterisk. Se devolverá el primer resultado encontrado.',
+),
+'GenDoc_CopyLabelToClipboard' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Extensión',
+	'values' => '0|1',
+	'definition' => 'Haz que los enlaces de Copiar generen las etiquetas GenDoc en vez de los valores de los campos. Por defecto desactivado.',
 ),
 );
 

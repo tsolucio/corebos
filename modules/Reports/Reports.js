@@ -81,7 +81,7 @@ function selectedColumnClick(oSel) {
 		}
 	}
 	if (error_str) {
-		error_msg = error_msg.substr(0,error_msg.length-1);
+		error_msg = error_msg.substr(0, error_msg.length-1);
 		alert(alert_arr.NOT_ALLOWED_TO_EDIT_FIELDS+'\n'+error_msg);
 		return false;
 	} else {
@@ -203,9 +203,9 @@ function hideTabs() {
 	}
 
 	if (objreportType.value == 'tabular') {
-		divarray = new Array('step1','step2','step4','step5','step6','step7');
+		divarray = new Array('step1', 'step2', 'step4', 'step5', 'step6', 'step7');
 	} else {
-		divarray = new Array('step1','step2','step3','step4','step5','step6','step7');
+		divarray = new Array('step1', 'step2', 'step3', 'step4', 'step5', 'step6', 'step7');
 	}
 }
 
@@ -232,40 +232,13 @@ function saveas() {
 		alert(alert_arr.LBL_REPORT_NAME_ERROR);
 		return false;
 	}
-	var cbreporttype = document.getElementById('cbreporttype').value;
-	if (cbreporttype == 'external' || cbreporttype == 'directsql') {
-		document.NewReport.submit();
-		return true;
-	}
-	if (selectedColumnsObj.options.length == 0) {
-		alert(alert_arr.COLUMNS_CANNOT_BE_EMPTY);
-		return false;
-	}
-	formSelectedColumnString();
-	formSelectColumnString();
-	document.NewReport.submit();
+	saveAndRunReport();
 }
 
 function changeSteps1() {
 	if (getObj('step5').style.display != 'none') {
-		if (!checkAdvancedFilter()) {
+		if (!validateDate()) {
 			return false;
-		}
-
-		var date1=getObj('startdate');
-		var date2=getObj('enddate');
-
-		//# validation added for date field validation in final step of report creation
-		if ((date1.value != '') || (date2.value != '')) {
-			if (!dateValidate('startdate','Start Date','D')) {
-				return false;
-			}
-			if (!dateValidate('enddate','End Date','D')) {
-				return false;
-			}
-			if (!dateComparison('startdate','Start Date','enddate','End Date','LE')) {
-				return false;
-			}
 		}
 	}
 	if (getObj('step6').style.display != 'none' && document.getElementsByName('record')[0].value!='') {
@@ -273,52 +246,8 @@ function changeSteps1() {
 		id.style.display = 'inline';
 	}
 	if (getObj('step7').style.display != 'none') {
-		var isScheduledObj = getObj('isReportScheduled');
-		if (isScheduledObj.checked == true) {
-			var selectedRecipientsObj = getObj('selectedRecipients');
-
-			if (selectedRecipientsObj.options.length == 0) {
-				alert(alert_arr.RECIPIENTS_CANNOT_BE_EMPTY);
-				return false;
-			}
-
-			var selectedUsers = new Array();
-			var selectedGroups = new Array();
-			var selectedRoles = new Array();
-			var selectedRolesAndSub = new Array();
-			for (var i = 0; i < selectedRecipientsObj.options.length; i++) {
-				var selectedCol = selectedRecipientsObj.options[i].value;
-				var selectedColArr = selectedCol.split('::');
-				if (selectedColArr[0] == 'users') {
-					selectedUsers.push(selectedColArr[1]);
-				} else if (selectedColArr[0] == 'groups') {
-					selectedGroups.push(selectedColArr[1]);
-				} else if (selectedColArr[0] == 'roles') {
-					selectedRoles.push(selectedColArr[1]);
-				} else if (selectedColArr[0] == 'rs') {
-					selectedRolesAndSub.push(selectedColArr[1]);
-				}
-			}
-
-			var selectedRecipients = {
-				users : selectedUsers,
-				groups : selectedGroups,
-				roles : selectedRoles,
-				rs : selectedRolesAndSub
-			};
-			var selectedRecipientsJson = JSON.stringify(selectedRecipients);
-			document.NewReport.selectedRecipientsString.value = selectedRecipientsJson;
-
-			var scheduledInterval= {
-				scheduletype : document.NewReport.scheduledType.value,
-				month : document.NewReport.scheduledMonth.value,
-				date : document.NewReport.scheduledDOM.value,
-				day : document.NewReport.scheduledDOW.value,
-				time : document.NewReport.scheduledTime.value
-			};
-
-			var scheduledIntervalJson = JSON.stringify(scheduledInterval);
-			document.NewReport.scheduledIntervalString.value = scheduledIntervalJson;
+		if (!ScheduleEmail()) {
+			return false;
 		}
 		saveAndRunReport();
 	} else {
@@ -344,6 +273,7 @@ function changeSteps1() {
 		}
 	}
 }
+
 function changeStepsback1() {
 	if (getObj('step1').style.display != 'none') {
 		document.NewReport.action.value='ReportsAjax';
@@ -430,11 +360,11 @@ function CreateReport(element) {
 }
 
 function fnPopupWin(winName) {
-	window.open(winName, 'ReportWindow','width=1020px,height=680px,scrollbars=yes');
+	window.open(winName, 'ReportWindow', 'width=1020px,height=680px,scrollbars=yes');
 }
 
-function re_dateValidate(fldval,fldLabel,type) {
-	if (re_patternValidate(fldval,fldLabel,'DATE')==false) {
+function re_dateValidate(fldval, fldLabel, type) {
+	if (re_patternValidate(fldval, fldLabel, 'DATE')==false) {
 		return false;
 	}
 	dateval=fldval.replace(/^\s+/g, '').replace(/\s+$/g, '');
@@ -461,15 +391,15 @@ function re_dateValidate(fldval,fldLabel,type) {
 	}
 
 	switch (parseInt(mm)) {
-		case 2 :
-		case 4 :
-		case 6 :
-		case 9 :
-		case 11 :
-			if (dd>30) {
-				alert(alert_arr.ENTER_VALID+fldLabel);
-				return false;
-			}
+	case 2 :
+	case 4 :
+	case 6 :
+	case 9 :
+	case 11 :
+		if (dd>30) {
+			alert(alert_arr.ENTER_VALID+fldLabel);
+			return false;
+		}
 	}
 
 	var currdate=new Date();
@@ -480,7 +410,7 @@ function re_dateValidate(fldval,fldLabel,type) {
 	chkdate.setDate(dd);
 
 	if (type!='OTH') {
-		if (!compareDates(chkdate,fldLabel,currdate,'current date',type)) {
+		if (!compareDates(chkdate, fldLabel, currdate, 'current date', type)) {
 			return false;
 		} else {
 			return true;
@@ -491,15 +421,15 @@ function re_dateValidate(fldval,fldLabel,type) {
 }
 
 //Copied from general.js and altered some lines. becos we cant send vales to function present in general.js. it accept only field names.
-function re_patternValidate(fldval,fldLabel,type) {
+function re_patternValidate(fldval, fldLabel, type) {
 	if (type.toUpperCase()=='DATE') {//DATE validation
 		switch (userDateFormat) {
-			case 'yyyy-mm-dd' :
-				var re = /^\d{4}(-)\d{1,2}\1\d{1,2}$/;
-				break;
-			case 'mm-dd-yyyy' :
-			case 'dd-mm-yyyy' :
-				var re = /^\d{1,2}(-)\d{1,2}\1\d{4}$/;
+		case 'yyyy-mm-dd' :
+			var re = /^\d{4}(-)\d{1,2}\1\d{1,2}$/;
+			break;
+		case 'mm-dd-yyyy' :
+		case 'dd-mm-yyyy' :
+			var re = /^\d{1,2}(-)\d{1,2}\1\d{4}$/;
 		}
 	}
 	if (type.toUpperCase()=='TIMESECONDS') {//TIME validation
@@ -517,7 +447,7 @@ function re_patternValidate(fldval,fldLabel,type) {
 function standardFilterDisplay() {
 	if (document.NewReport.stdDateFilterField.options.length <= 0 || (document.NewReport.stdDateFilterField.selectedIndex > -1 && document.NewReport.stdDateFilterField.options[document.NewReport.stdDateFilterField.selectedIndex].value == 'Not Accessible')) {
 		getObj('stdDateFilter').disabled = true;
-		getObj('startdate').disabled = true;getObj('enddate').disabled = true;
+		getObj('startdate').disabled = true; getObj('enddate').disabled = true;
 		getObj('jscal_trigger_date_start').style.visibility='hidden';
 		getObj('jscal_trigger_date_end').style.visibility='hidden';
 	} else {
@@ -531,7 +461,7 @@ function standardFilterDisplay() {
 
 function updateRelFieldOptions(sel, opSelName) {
 	var selObj = document.getElementById(opSelName);
-	var fieldtype = null ;
+	var fieldtype = null;
 	var currOption = selObj.options[selObj.selectedIndex];
 	var currField = sel.options[sel.selectedIndex];
 
@@ -647,37 +577,37 @@ function vt_getElementsByName(tagName, elementName) {
 function setScheduleOptions() {
 	var stid = document.getElementById('scheduledType').value;
 	switch ( stid ) {
-		case '0': // nothing choosen
-		case '1': // hourly
-			document.getElementById('scheduledMonthSpan').style.display = 'none';
-			document.getElementById('scheduledDOMSpan').style.display = 'none';
-			document.getElementById('scheduledDOWSpan').style.display = 'none';
-			document.getElementById('scheduledTimeSpan').style.display = 'none';
+	case '0': // nothing choosen
+	case '1': // hourly
+		document.getElementById('scheduledMonthSpan').style.display = 'none';
+		document.getElementById('scheduledDOMSpan').style.display = 'none';
+		document.getElementById('scheduledDOWSpan').style.display = 'none';
+		document.getElementById('scheduledTimeSpan').style.display = 'none';
 		break;
-		case '2': // daily
-			document.getElementById('scheduledMonthSpan').style.display = 'none';
-			document.getElementById('scheduledDOMSpan').style.display = 'none';
-			document.getElementById('scheduledDOWSpan').style.display = 'none';
-			document.getElementById('scheduledTimeSpan').style.display = 'inline';
+	case '2': // daily
+		document.getElementById('scheduledMonthSpan').style.display = 'none';
+		document.getElementById('scheduledDOMSpan').style.display = 'none';
+		document.getElementById('scheduledDOWSpan').style.display = 'none';
+		document.getElementById('scheduledTimeSpan').style.display = 'inline';
 		break;
-		case '3': // weekly
-		case '4': // bi-weekly
-			document.getElementById('scheduledMonthSpan').style.display = 'none';
-			document.getElementById('scheduledDOMSpan').style.display = 'none';
-			document.getElementById('scheduledDOWSpan').style.display = 'inline';
-			document.getElementById('scheduledTimeSpan').style.display = 'inline';
+	case '3': // weekly
+	case '4': // bi-weekly
+		document.getElementById('scheduledMonthSpan').style.display = 'none';
+		document.getElementById('scheduledDOMSpan').style.display = 'none';
+		document.getElementById('scheduledDOWSpan').style.display = 'inline';
+		document.getElementById('scheduledTimeSpan').style.display = 'inline';
 		break;
-		case '5': // monthly
-			document.getElementById('scheduledMonthSpan').style.display = 'none';
-			document.getElementById('scheduledDOMSpan').style.display = 'inline';
-			document.getElementById('scheduledDOWSpan').style.display = 'none';
-			document.getElementById('scheduledTimeSpan').style.display = 'inline';
+	case '5': // monthly
+		document.getElementById('scheduledMonthSpan').style.display = 'none';
+		document.getElementById('scheduledDOMSpan').style.display = 'inline';
+		document.getElementById('scheduledDOWSpan').style.display = 'none';
+		document.getElementById('scheduledTimeSpan').style.display = 'inline';
 		break;
-		case '6': // annually
-			document.getElementById('scheduledMonthSpan').style.display = 'inline';
-			document.getElementById('scheduledDOMSpan').style.display = 'inline';
-			document.getElementById('scheduledDOWSpan').style.display = 'none';
-			document.getElementById('scheduledTimeSpan').style.display = 'inline';
+	case '6': // annually
+		document.getElementById('scheduledMonthSpan').style.display = 'inline';
+		document.getElementById('scheduledDOMSpan').style.display = 'inline';
+		document.getElementById('scheduledDOWSpan').style.display = 'none';
+		document.getElementById('scheduledTimeSpan').style.display = 'inline';
 		break;
 	}
 }
@@ -692,14 +622,14 @@ function showAddChartPopup() {
 }
 
 function placeAtCenterChartPopup(element) {
-	element.css('position','absolute');
+	element.css('position', 'absolute');
 	element.css('top', (((jQuery(window).height()-800) - element.outerHeight()) / 2) + jQuery(window).scrollTop() + 'px');
 	element.css('left', ((jQuery(window).width() - element.outerWidth()) / 2) + jQuery(window).scrollLeft() + 'px');
 }
 
 function reports_goback() {
-	$('#not_premitted').css('display','none');
-	$('#example-vertical').css('display','block');
+	$('#not_premitted').css('display', 'none');
+	$('#example-vertical').css('display', 'block');
 }
 
 /**
@@ -715,7 +645,7 @@ function fillReportColumnsTotal(block) {
 			is_empty = false;
 			var obj = block[i];
 			for (var j=0; j<obj.length; j++) {
-				var tr = $('<tr>',{'class':'lvtColData','onmouseover':'this.className=\'lvtColDataHover\'','onmouseout':'this.className=\'lvtColData\'','bgcolor':'white'});
+				var tr = $('<tr>', {'class':'lvtColData', 'onmouseover':'this.className=\'lvtColDataHover\'', 'onmouseout':'this.className=\'lvtColData\'', 'bgcolor':'white'});
 				var td = $('<td>');
 				var label = obj[j].label[0];
 				var checkboxes = obj[j].checkboxes;
@@ -724,7 +654,7 @@ function fillReportColumnsTotal(block) {
 				td.append(b);
 				tr.append(td);
 				for (k=0; k<checkboxes.length; k++) {
-					var checkbox = $('<input>',{'type': 'checkbox', 'name': checkboxes[k].name, checked: checkboxes[k].hasOwnProperty('checked')});
+					var checkbox = $('<input>', {'type': 'checkbox', 'name': checkboxes[k].name, checked: checkboxes[k].hasOwnProperty('checked')});
 					var td = $('<td>');
 					td.append(checkbox);
 					tr.append(td);
@@ -734,8 +664,8 @@ function fillReportColumnsTotal(block) {
 		}
 	}
 	if (is_empty) {
-		var tr = $('<tr>',{'class':'lvtColData','bgcolor':'white'});
-		var td = $('<td>',{'colspan':5});
+		var tr = $('<tr>', {'class':'lvtColData', 'bgcolor':'white'});
+		var td = $('<td>', {'colspan':5});
 		td.append(NO_COLUMN);
 		tr.append(td);
 		tbody.append(tr);
@@ -758,15 +688,15 @@ function returnList(block) {
 	if (list_length > 0) {
 		var $html = $('<select>');
 		for (var i=0; i<list_length; i++) {
-			var option = $('<option>',{'value':list[i].value});
+			var option = $('<option>', {'value':list[i].value});
 			if (list[i].hasOwnProperty('selected') && list[i].selected == true) {
-				option.prop('selected',true);
+				option.prop('selected', true);
 			}
 			if (list[i].hasOwnProperty('permission')) {
-				option.prop('permission','yes');
+				option.prop('permission', 'yes');
 			}
 			if (list[i].hasOwnProperty('disabled')) {
-				option.prop('disabled',true);
+				option.prop('disabled', true);
 			}
 			option.append(list[i].label);
 			$html.append(option);
@@ -776,16 +706,44 @@ function returnList(block) {
 }
 
 /**
+ * loops over options and sets disabled and selected properties
+ * @param  {Object} block
+ * @param  {HTML ID} id of select box
+ * @return undefined
+ */
+function setPropertiesOnList(block, selectid) {
+	if (block == null) {
+		return;
+	}
+	var list_length = Object.keys(block).length;
+	for (var i=0; i<list_length; i++) {
+		var option = $(selectid + ' option[value="' + block[i].value + '"]');
+		if (option) {
+			if (block[i].hasOwnProperty('selected') && block[i].selected == true) {
+				option.prop('selected', true);
+			}
+			if (block[i].hasOwnProperty('permission')) {
+				option.prop('permission', 'yes');
+			}
+			if (block[i].hasOwnProperty('disabled')) {
+				option.prop('disabled', true);
+			}
+		}
+	}
+}
+
+/**
  * [fillList description]
  * @param  {Object} block
  * @param  {String} element_id
  */
-function fillList(block,element_id) {
+function fillList(block, element_id) {
 	var html = returnList(block);
 	if (html !== '') {
 		$('#'+element_id).html('');
 	}
 	$('#'+element_id).append(html);
+	setPropertiesOnList(block, '#'+element_id);
 }
 
 /**
@@ -794,25 +752,24 @@ function fillList(block,element_id) {
  * @return {HTML} Select list in HTML format
  */
 function returnFullList(block) {
-
 	if (block && block.length > 0) {
 		var $html = $('<select>');
 		for (var i=0; i<block.length; i++) {
 			var node = block[i];
-			var optgroup =  $('<optgroup>',{'class':node.class,'label':node.label,'style':block.style});
+			var optgroup =  $('<optgroup>', {'class':node.class, 'label':node.label, 'style':block.style});
 			var options_length = 0;
 			if (node.hasOwnProperty('options')) {
 				options_length = node.options.length;
 			}
 			for (var j = 0; j<options_length; j++) {
 				var option = node.options[j];
-				var option_el = $('<option>',{'value':option.value});
+				var option_el = $('<option>', {'value':option.value});
 				option_el.append(option.label);
 				if (option.hasOwnProperty('disabled')) {
-					option_el.prop('disabled',true);
+					option_el.prop('disabled', true);
 				}
 				if (option.hasOwnProperty('selected')) {
-					option_el.prop('selected',true);
+					option_el.prop('selected', true);
 				}
 				optgroup.append(option_el);
 			}
@@ -823,11 +780,41 @@ function returnFullList(block) {
 }
 
 /**
+ * loops over options and sets disabled and selected properties
+ * @param  {Object} block
+ * @param  {HTML ID} id of select box
+ * @return undefined
+ */
+function setPropertiesOnListWithOptGroup(block, selectid) {
+	if (block && block.length > 0) {
+		for (var i=0; i<block.length; i++) {
+			var node = block[i];
+			var options_length = 0;
+			if (node.hasOwnProperty('options')) {
+				options_length = node.options.length;
+			}
+			for (var j = 0; j<options_length; j++) {
+				var option = node.options[j];
+				var seloption = $(selectid + ' option[value="' + option.value + '"]');
+				if (seloption) {
+					if (option.hasOwnProperty('disabled')) {
+						seloption.prop('disabled', true);
+					}
+					if (option.hasOwnProperty('selected')) {
+						seloption.prop('selected', true);
+					}
+				}
+			}
+		}
+	}
+}
+
+/**
  * [fillList description]
  * @param  {Object} block
  * @param  {String} element_id
  */
-function fillFullList(block,element_id,has_none=false,label_none='') {
+function fillFullList(block, element_id, has_none=false, label_none='') {
 	var html = returnFullList(block);
 	if (has_none) {
 		html = '<option value=\'none\'>'+label_none+'</option>' + html;
@@ -836,6 +823,7 @@ function fillFullList(block,element_id,has_none=false,label_none='') {
 		$('#'+element_id).html('');
 	}
 	$('#'+element_id).append(html);
+	setPropertiesOnListWithOptGroup(block, '#'+element_id);
 }
 
 /**
@@ -866,13 +854,13 @@ function validateDate() {
 	var date2=getObj('enddate');
 
 	if ((date1.value != '') || (date2.value != '')) {
-		if (!dateValidate('startdate','Start Date','D')) {
+		if (!dateValidate('startdate', 'Start Date', 'D')) {
 			return false;
 		}
-		if (!dateValidate('enddate','End Date','D')) {
+		if (!dateValidate('enddate', 'End Date', 'D')) {
 			return false;
 		}
-		if (! dateComparison('startdate','Start Date','enddate','End Date','LE')) {
+		if (!dateComparison('startdate', 'Start Date', 'enddate', 'End Date', 'LE')) {
 			return false;
 		}
 	}
@@ -944,15 +932,15 @@ function setReportType(response) {
 		document.NewReport.secondarymodule.value = response.secondarymodule;
 		var selected_report_type = response.selectedreporttype;
 		if (selected_report_type == 'tabular') {
-			$('#tabular').prop('checked',true);
+			$('#tabular').prop('checked', true);
 		} else {
-			$('#summary').prop('checked',true);
+			$('#summary').prop('checked', true);
 		}
 		return true;
 	} else {
 		$('#deny_msg').html(LBL_NO_PERMISSION+' '+response.primarymodule+' '+response.secondarymodule);
-		wizard.css('display','none');
-		$('#not_premitted').css('display','block');
+		wizard.css('display', 'none');
+		$('#not_premitted').css('display', 'block');
 		return false;
 	}
 }
@@ -966,11 +954,11 @@ function fillSelectedColumns(response) {
 	if (response.permission === 1) {
 		fillFullList(response.BLOCK1, 'availList');
 		if (response.hasOwnProperty('BLOCK2') && response.BLOCK2.length > 0) {
-			fillList(response.BLOCK2,'selectedColumns');
+			fillList(response.BLOCK2, 'selectedColumns');
 		}
 		if (response.hasOwnProperty('AGGFIELDS') && response.AGGFIELDS.length > 0) {
-			fillFullList(response.BLOCK1,'aggfield');
-			fillFullList(response.AGGFIELDS,'pivotfield');
+			fillFullList(response.BLOCK1, 'aggfield');
+			fillFullList(response.AGGFIELDS, 'pivotfield');
 			document.getElementById('aggfieldtablerow').style.display = 'table-row';
 		}
 		setObjects();
@@ -989,8 +977,8 @@ function fillFilterInfo(response) {
 	FOPTION_ADV = returnList(response.FOPTION);
 	REL_FIELDS = response.REL_FIELDS;
 	rel_fields = jQuery.parseJSON(response.REL_FIELDS);
-	fillList(response.BLOCKJS,'stdDateFilterField');
-	fillList(response.BLOCKCRITERIA,'stdDateFilter');
+	fillList(response.BLOCKJS, 'stdDateFilterField');
+	fillList(response.BLOCKCRITERIA, 'stdDateFilter');
 	if (response.hasOwnProperty('CRITERIA_GROUPS') && !updated_grouping_criteria ) {
 		add_grouping_criteria(response.CRITERIA_GROUPS);
 		updated_grouping_criteria = true;
@@ -998,8 +986,8 @@ function fillFilterInfo(response) {
 	if (response.hasOwnProperty('STARTDATE') && response.hasOwnProperty('ENDDATE')) {
 		$('#jscal_field_date_start').val(response.STARTDATE);
 		$('#jscal_field_date_end').val(response.ENDDATE);
-		$('#jscal_trigger_date_start').css('visibility','visible');
-		$('#jscal_trigger_date_end').css('visibility','visible');
+		$('#jscal_trigger_date_start').css('visibility', 'visible');
+		$('#jscal_trigger_date_end').css('visibility', 'visible');
 	}
 	return true;
 }
@@ -1016,15 +1004,15 @@ function fillGroupingInfo(response) {
 	grpNameArr 	= response.GROUPNAMESTR.split(',');
 	set_Objects();
 	show_Options();
-	fillList(response.VISIBLECRITERIA,'stdtypeFilter');
+	fillList(response.VISIBLECRITERIA, 'stdtypeFilter');
 	if (response.hasOwnProperty('MEMBER')) {
-		fillList(response.MEMBER,'columnsSelected');
+		fillList(response.MEMBER, 'columnsSelected');
 		toggleAssignType('Shared');
 	}
 	return true;
 }
 
-function CrearEnlace(tipo,id) {
+function CrearEnlace(tipo, id) {
 	if (!checkAdvancedFilter()) {
 		return false;
 	}
@@ -1033,10 +1021,10 @@ function CrearEnlace(tipo,id) {
 	return 'index.php?module=Reports&action=ReportsAjax&file='+tipo+'&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups;
 }
 
-function saveReportAs(oLoc,divid) {
+function saveReportAs(oLoc, divid) {
 	document.getElementById('newreportname').value = '';
 	document.getElementById('newreportdescription').value = '';
-	fnvshobj(oLoc,divid);
+	fnvshobj(oLoc, divid);
 }
 
 function duplicateReport(id) {
@@ -1116,14 +1104,13 @@ function generateReport(id) {
 			}
 		});
 		setTimeout(function () {
-			DataTable.changePage(document.getElementById('rptDatatable'),1);
+			DataTable.changePage(document.getElementById('rptDatatable'), 1);
 		}, 500);
 		VtigerJS_DialogBox.unblock();
 	});
 }
 
 function saveReportAdvFilter(id) {
-
 	if (!checkAdvancedFilter()) {
 		return false;
 	}
@@ -1187,7 +1174,7 @@ function goToPrintReport(id) {
 	}
 	var advft_criteria = document.getElementById('advft_criteria').value;
 	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
-	window.open('index.php?module=Reports&action=ReportsAjax&file=PrintReport&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups,i18nLBL_PRINT_REPORT,'width=800,height=650,resizable=1,scrollbars=1,left=100');
+	window.open('index.php?module=Reports&action=ReportsAjax&file=PrintReport&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups, i18nLBL_PRINT_REPORT, 'width=800,height=650,resizable=1,scrollbars=1,left=100');
 }
 
 function getRandomColor() {
@@ -1204,7 +1191,7 @@ function closeEditReport() {
 	fninvsh('orgLay');
 }
 
-function stdfilterTypeDisplay(){
+function stdfilterTypeDisplay() {
 	if (document.getElementById('stdtypeFilter').value == 'Shared') {
 		document.getElementById('assign_team').style.display = 'block';
 	} else {
@@ -1226,13 +1213,13 @@ function show_Options() {
 	document.forms['NewReport'].availableList.options.length = 0;
 
 	if (selectedOption == 'groups') {
-		constructSelectOptions('groups',grpIdArr,grpNameArr);
+		constructSelectOptions('groups', grpIdArr, grpNameArr);
 	} else if (selectedOption == 'users') {
-		constructSelectOptions('users',userIdArr,userNameArr);
+		constructSelectOptions('users', userIdArr, userNameArr);
 	}
 }
 
-function constructSelectOptions(selectedMemberType,idArr,nameArr) {
+function constructSelectOptions(selectedMemberType, idArr, nameArr) {
 	var i;
 	var findStr=document.NewReport.findStr.value;
 	if (findStr.replace(/^\s+/g, '').replace(/\s+$/g, '').length !=0) {
@@ -1259,7 +1246,7 @@ function constructSelectOptions(selectedMemberType,idArr,nameArr) {
 		}
 		var nowName = nowNamePrefix + constructedOptionName[j];
 		var nowId = selectedMemberType + '::' + constructedOptionValue[j];
-		document.forms['NewReport'].availableList.options[j] = new Option(nowName,nowId);
+		document.forms['NewReport'].availableList.options[j] = new Option(nowName, nowId);
 	}
 
 	//clearing the array

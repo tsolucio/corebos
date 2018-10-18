@@ -87,7 +87,7 @@
 				<a href="javascript:void(0);" onclick="window.location.href = '#viewcharts'"><img src="{'chart_60.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{'LBL_VIEW_CHARTS'|@getTranslatedString:$MODULE}" title="{'LBL_VIEW_CHARTS'|@getTranslatedString:$MODULE}" border="0" width="24px"></a>
 				&nbsp;
 			{/if}
-			{if TRUE || $CHECK.Export eq 'yes'} {*<!-- temporarily deactivate this check: we need to add a ReportExport action on each module's preferences -->*}
+			{if $EXPORT_PERMITTED}
 			<a href="javascript:void(0);" onclick="saveReportAs(this,'duplicateReportLayout');"><img src="{'saveas.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_SAVE_REPORT_AS}" title="{$MOD.LBL_SAVE_REPORT_AS}" border="0"></a>
 			&nbsp;
 			<a href="javascript:void(0);" onclick="gotourl(CrearEnlace('CreatePDF',{$REPORTID}));"><img src="{'pdf-file.jpg'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTPDF_BUTTON}" title="{$MOD.LBL_EXPORTPDF_BUTTON}" border="0"></a>

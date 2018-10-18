@@ -110,8 +110,15 @@ class iCalendar_property {
         $valarray = explode('\\,', $this->value);
 
         // Undo transparent formatting
-        $replace_function = create_function('$a', 'return rfc2445_undo_value_formatting($a, '.$this->val_type.');');
-        $valarray = array_map($replace_function, $valarray);
+        //$replace_function = create_function('$a', 'return rfc2445_undo_value_formatting($a, '.$this->val_type.');');
+        //$valarray = array_map($replace_function, $valarray);
+        $val_type = $this->val_type;
+        $valarray = array_map(
+        	function ($a) use ($val_type) {
+        		return rfc2445_undo_value_formatting($a, $val_type);
+        	},
+        	$valarray
+        );
 
         // Now, if this property cannot have multiple values, don't return as an array
         if(!$this->val_multi) {

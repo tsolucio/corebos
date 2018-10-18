@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once('vtlib/Vtiger/Utils.php');
-include_once('vtlib/Vtiger/Utils/StringTemplate.php');
+include_once 'vtlib/Vtiger/Utils.php';
+include_once 'vtlib/Vtiger/Utils/StringTemplate.php';
 include_once 'vtlib/Vtiger/LinkData.php';
 
 /**
@@ -16,18 +16,18 @@ include_once 'vtlib/Vtiger/LinkData.php';
  * @package vtlib
  */
 class Vtiger_Link {
-	var $tabid;
-	var $linkid;
-	var $linktype;
-	var $linklabel;
-	var $linkurl;
-	var $linkicon;
-	var $sequence;
-	var $status = false;
-	var $handler_path;
-	var $handler_class;
-	var $handler;
-	var $onlyonmymodule = false;
+	public $tabid;
+	public $linkid;
+	public $linktype;
+	public $linklabel;
+	public $linkurl;
+	public $linkicon;
+	public $sequence;
+	public $status = false;
+	public $handler_path;
+	public $handler_class;
+	public $handler;
+	public $onlyonmymodule = false;
 
 	// Ignore module while selection
 	const IGNORE_MODULE = -1;
@@ -35,13 +35,13 @@ class Vtiger_Link {
 	/**
 	 * Constructor
 	 */
-	function __construct() {
+	public function __construct() {
 	}
 
 	/**
 	 * Initialize this instance.
 	 */
-	function initialize($valuemap) {
+	public function initialize($valuemap) {
 		$this->tabid          = $valuemap['tabid'];
 		$this->linkid         = $valuemap['linkid'];
 		$this->linktype       = $valuemap['linktype'];
@@ -59,8 +59,8 @@ class Vtiger_Link {
 	/**
 	 * Get module name.
 	 */
-	function module() {
-		if(!empty($this->tabid)) {
+	public function module() {
+		if (!empty($this->tabid)) {
 			return getTabModuleName($this->tabid);
 		}
 		return false;
@@ -69,27 +69,29 @@ class Vtiger_Link {
 	/**
 	 * Get unique id for the insertion
 	 */
-	static function __getUniqueId() {
+	public static function __getUniqueId() {
 		global $adb;
 		return $adb->getUniqueID('vtiger_links');
 	}
 
 	/** Cache (Record) the schema changes to improve performance */
-	static $__cacheSchemaChanges = Array();
+	private static $__cacheSchemaChanges = array();
 
 	/**
 	 * Initialize the schema (tables)
 	 */
-	static function __initSchema() {
-		if(empty(self::$__cacheSchemaChanges['vtiger_links'])) {
-			if(!Vtiger_Utils::CheckTable('vtiger_links')) {
+	private static function __initSchema() {
+		if (empty(self::$__cacheSchemaChanges['vtiger_links'])) {
+			if (!Vtiger_Utils::CheckTable('vtiger_links')) {
 				Vtiger_Utils::CreateTable(
 					'vtiger_links',
 					'(linkid INT NOT NULL PRIMARY KEY,
 					tabid INT, linktype VARCHAR(20), linklabel VARCHAR(30), linkurl VARCHAR(255), linkicon VARCHAR(100), sequence INT, status INT(1) NOT NULL DEFAULT 1)',
-					true);
+					true
+				);
 				Vtiger_Utils::ExecuteQuery(
-					'CREATE INDEX link_tabidtype_idx on vtiger_links(tabid,linktype)');
+					'CREATE INDEX link_tabidtype_idx on vtiger_links(tabid,linktype)'
+				);
 			}
 			self::$__cacheSchemaChanges['vtiger_links'] = true;
 		}
@@ -109,16 +111,18 @@ class Vtiger_Link {
 	 * @param String ICON to use on the display
 	 * @param Integer Order or sequence of displaying the link
 	 */
-	static function addLink($tabid, $type, $label, $url, $iconpath='',$sequence=0, $handlerInfo=null, $onlyonmymodule=false) {
+	public static function addLink($tabid, $type, $label, $url, $iconpath = '', $sequence = 0, $handlerInfo = null, $onlyonmymodule = false) {
 		global $adb;
 		self::__initSchema();
-		$checkres = $adb->pquery('SELECT linkid FROM vtiger_links WHERE tabid=? AND linktype=? AND linkurl=? AND linkicon=? AND linklabel=?',
-			Array($tabid, $type, $url, $iconpath, $label));
-		if(!$adb->num_rows($checkres)) {
+		$checkres = $adb->pquery(
+			'SELECT linkid FROM vtiger_links WHERE tabid=? AND linktype=? AND linkurl=? AND linkicon=? AND linklabel=?',
+			array($tabid, $type, $url, $iconpath, $label)
+		);
+		if (!$adb->num_rows($checkres)) {
 			$uniqueid = self::__getUniqueId();
 			$sql = 'INSERT INTO vtiger_links (linkid,tabid,linktype,linklabel,linkurl,linkicon,sequence';
-			$params = Array($uniqueid, $tabid, $type, $label, $url, $iconpath, (int)$sequence);
-			if(!empty($handlerInfo)) {
+			$params = array($uniqueid, $tabid, $type, $label, $url, $iconpath, (int)$sequence);
+			if (!empty($handlerInfo)) {
 				$sql .= (', handler_path, handler_class, handler');
 				$params[] = (isset($handlerInfo['path']) ? $handlerInfo['path'] : '');
 				$params[] = (isset($handlerInfo['class']) ? $handlerInfo['class'] : '');
@@ -138,16 +142,20 @@ class Vtiger_Link {
 	 * @param String Display label
 	 * @param String URL of link to lookup while deleting
 	 */
-	static function deleteLink($tabid, $type, $label, $url=false) {
+	public static function deleteLink($tabid, $type, $label, $url = false) {
 		global $adb;
 		self::__initSchema();
-		if($url) {
-			$adb->pquery('DELETE FROM vtiger_links WHERE tabid=? AND linktype=? AND linklabel=? AND linkurl=?',
-				Array($tabid, $type, $label, $url));
+		if ($url) {
+			$adb->pquery(
+				'DELETE FROM vtiger_links WHERE tabid=? AND linktype=? AND linklabel=? AND linkurl=?',
+				array($tabid, $type, $label, $url)
+			);
 			self::log("Deleting Link ($type - $label - $url) ... DONE");
 		} else {
-			$adb->pquery('DELETE FROM vtiger_links WHERE tabid=? AND linktype=? AND linklabel=?',
-				Array($tabid, $type, $label));
+			$adb->pquery(
+				'DELETE FROM vtiger_links WHERE tabid=? AND linktype=? AND linklabel=?',
+				array($tabid, $type, $label)
+			);
 			self::log("Deleting Link ($type - $label) ... DONE");
 		}
 	}
@@ -156,18 +164,18 @@ class Vtiger_Link {
 	 * Delete all links related to module
 	 * @param Integer Module ID.
 	 */
-	static function deleteAll($tabid) {
+	public static function deleteAll($tabid) {
 		global $adb;
 		self::__initSchema();
-		$adb->pquery('DELETE FROM vtiger_links WHERE tabid=?', Array($tabid));
-		self::log("Deleting Links ... DONE");
+		$adb->pquery('DELETE FROM vtiger_links WHERE tabid=?', array($tabid));
+		self::log('Deleting Links ... DONE');
 	}
 
 	/**
 	 * Get all the links related to module
 	 * @param Integer Module ID.
 	 */
-	static function getAll($tabid) {
+	public static function getAll($tabid) {
 		return self::getAllByType($tabid);
 	}
 
@@ -177,22 +185,22 @@ class Vtiger_Link {
 	 * @param mixed String or List of types to select
 	 * @param Map Key-Value pair to use for formating the link url
 	 */
-	static function getAllByType($tabid, $type=false, $parameters=false) {
+	public static function getAllByType($tabid, $type = false, $parameters = false) {
 		global $adb, $current_user, $currentModule;
 		self::__initSchema();
 
 		$multitype = false;
 		$orderby = ' order by linktype,sequence'; //MSL
-		if($type) {
+		if ($type) {
 			// Multiple link type selection?
-			if(is_array($type)) {
+			if (is_array($type)) {
 				$multitype = true;
-				if($tabid === self::IGNORE_MODULE) {
+				if ($tabid === self::IGNORE_MODULE) {
 					$sql = 'SELECT * FROM vtiger_links WHERE linktype IN ('.
 						Vtiger_Utils::implodestr('?', count($type), ',') .') ';
 					$params = $type;
 					$permittedTabIdList = getPermittedModuleIdList();
-					if(count($permittedTabIdList) > 0 && $current_user->is_admin !== 'on') {
+					if (count($permittedTabIdList) > 0 && $current_user->is_admin !== 'on') {
 						$sql .= ' and tabid IN ('.
 							Vtiger_Utils::implodestr('?', count($permittedTabIdList), ',').')';
 						$params[] = $permittedTabIdList;
@@ -201,38 +209,46 @@ class Vtiger_Link {
 						$sql .= ' and ((onlyonmymodule and tabid=?) or !onlyonmymodule) ';
 						$params[] = getTabid($currentModule);
 					}
-					$result = $adb->pquery($sql . $orderby, Array($adb->flatten_array($params)));
+					$result = $adb->pquery($sql . $orderby, array($adb->flatten_array($params)));
 				} else {
-					$result = $adb->pquery('SELECT * FROM vtiger_links WHERE tabid=? AND linktype IN ('.
+					$result = $adb->pquery(
+						'SELECT * FROM vtiger_links WHERE tabid=? AND linktype IN ('.
 						Vtiger_Utils::implodestr('?', count($type), ',') .')' . $orderby,
-							Array($tabid, $adb->flatten_array($type)));
+						array($tabid, $adb->flatten_array($type))
+					);
 				}
 			} else {
 				// Single link type selection
-				if($tabid === self::IGNORE_MODULE) {
-					$result = $adb->pquery('SELECT * FROM vtiger_links WHERE linktype=?' . $orderby, Array($type));
+				if ($tabid === self::IGNORE_MODULE) {
+					$result = $adb->pquery('SELECT * FROM vtiger_links WHERE linktype=?' . $orderby, array($type));
 				} else {
-					$result = $adb->pquery('SELECT * FROM vtiger_links WHERE tabid=? AND linktype=?' . $orderby, Array($tabid, $type));
+					$result = $adb->pquery('SELECT * FROM vtiger_links WHERE tabid=? AND linktype=?' . $orderby, array($tabid, $type));
 				}
 			}
 		} else {
-			$result = $adb->pquery('SELECT * FROM vtiger_links WHERE tabid=?' . $orderby, Array($tabid));
+			$result = $adb->pquery('SELECT * FROM vtiger_links WHERE tabid=?' . $orderby, array($tabid));
 		}
 
 		$strtemplate = new Vtiger_StringTemplate();
-		if($parameters) {
-			foreach($parameters as $key=>$value) $strtemplate->assign($key, $value);
+		if ($parameters) {
+			foreach ($parameters as $key => $value) {
+				$strtemplate->assign($key, $value);
+			}
 		}
 
-		$instances = Array();
-		if($multitype) {
-			foreach($type as $t) $instances[$t] = Array();
+		$instances = array();
+		if ($multitype) {
+			foreach ($type as $t) {
+				$instances[$t] = array();
+			}
 		}
 
-		while($row = $adb->fetch_array($result)){
+		while ($row = $adb->fetch_array($result)) {
 			/** Should the widget be shown */
 			$return = cbEventHandler::do_filter('corebos.filter.link.show', array($row, $type, $parameters));
-			if($return == false) continue;
+			if ($return == false) {
+				continue;
+			}
 			$instance = new self();
 			$instance->initialize($row);
 			if (!empty($row['handler_path']) && isInsideApplication($row['handler_path'])) {
@@ -240,16 +256,16 @@ class Vtiger_Link {
 				require_once $row['handler_path'];
 				$linkData = new Vtiger_LinkData($instance, $current_user);
 				$ignore = call_user_func(array($row['handler_class'], $row['handler']), $linkData);
-				if(!$ignore) {
+				if (!$ignore) {
 					self::log("Ignoring Link ... ".var_export($row, true));
 					continue;
 				}
 			}
-			if($parameters) {
+			if ($parameters) {
 				$instance->linkurl = $strtemplate->merge($instance->linkurl);
 				$instance->linkicon= $strtemplate->merge($instance->linkicon);
 			}
-			if($multitype) {
+			if ($multitype) {
 				$instances[$instance->linktype][] = $instance;
 			} else {
 				$instances[$instance->linktype] = $instance;
@@ -264,7 +280,7 @@ class Vtiger_Link {
 	 * @param Boolean true appends linebreak, false to avoid it
 	 * @access private
 	 */
-	static function log($message, $delimit=true) {
+	private static function log($message, $delimit = true) {
 		Vtiger_Utils::Log($message, $delimit);
 	}
 
@@ -273,7 +289,7 @@ class Vtiger_Link {
 	 * @param Vtiger_LinkData $linkData
 	 * @return Boolean
 	 */
-	static function isAdmin($linkData) {
+	public static function isAdmin($linkData) {
 		$user = $linkData->getUser();
 		return $user->is_admin == 'on' || $user->column_fields['is_admin'] == 'on';
 	}

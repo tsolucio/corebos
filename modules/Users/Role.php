@@ -15,7 +15,7 @@ class Vtiger_Role {
 	private $parentRoleSequence;
 	private $depth;
 
-	private function __construct($id,$name,$parentRole,$depth) {
+	private function __construct($id, $name, $parentRole, $depth) {
 		$this->id = $id;
 		$this->name = $name;
 		$this->parentRoleSequence = $parentRole;
@@ -60,7 +60,6 @@ class Vtiger_Role {
 		$name = $rowData['rolename'];
 		$parentRole = $rowData['parentrole'];
 		return new self($id, $name, $parentRole, $depth);
-
 	}
 
 	/**
@@ -70,9 +69,7 @@ class Vtiger_Role {
 	 */
 	public static function getInstanceById($id) {
 		$db = PearDatabase::getInstance();
-		$sql = "select * from vtiger_role where roleid=?";
-		$params = array($id);
-		$result = $db->pquery($sql, $params);
+		$result = $db->pquery('select * from vtiger_role where roleid=?', array($id));
 		return self::getInstanceByResult($result, 0);
 	}
 
@@ -81,11 +78,11 @@ class Vtiger_Role {
 	 * @param Vtiger_Role $role
 	 */
 	public function moveTo($role) {
+		global $adb;
 		//parent role has current role id in parent role sequence, remove current role id.
 		$parentRoleSequence = $role->getParentRole().'::'.$this->getId();
 		$subDepth=$role->getDepth() + 1;
-		$query="update vtiger_role set parentrole=?,depth=? where roleid=?";
-		$adb->pquery($query, array($parentRoleSequence, $subDepth, $this->getId()));
+		$adb->pquery('update vtiger_role set parentrole=?,depth=? where roleid=?', array($parentRoleSequence, $subDepth, $this->getId()));
 		$this->setDepty($subDepth);
 		$this->setParentRole($parentRoleSequence);
 	}
@@ -93,44 +90,37 @@ class Vtiger_Role {
 	public function delete($role) {
 		$db = PearDatabase::getInstance();
 		$db->dieOnError = true;
-		$sql = "update vtiger_user2role set roleid=? where roleid=?";
-		$db->pquery($sql, array($role->getId(), $this->getId()));
+		$db->pquery('update vtiger_user2role set roleid=? where roleid=?', array($role->getId(), $this->getId()));
 
 		//Deleteing from vtiger_role2profile vtiger_table
-		$sql = "delete from vtiger_role2profile where roleid=?";
-		$db->pquery($sql, array($this->getId()));
+		$db->pquery('delete from vtiger_role2profile where roleid=?', array($this->getId()));
 
 		//delete handling for vtiger_groups
-		$sql = "delete from vtiger_group2role where roleid=?";
-		$db->pquery($sql, array($this->getId()));
+		$db->pquery('delete from vtiger_group2role where roleid=?', array($this->getId()));
 
-		$sql = "delete from vtiger_group2rs where roleandsubid=?";
-		$db->pquery($sql, array($this->getId()));
+		$db->pquery('delete from vtiger_group2rs where roleandsubid=?', array($this->getId()));
 
 		//delete handling for sharing rules
 		deleteRoleRelatedSharingRules($this->getId());
-		
+
 		//delete from vtiger_role vtiger_table;
-		$sql = "delete from vtiger_role where roleid=?";
-		$db->pquery($sql, array($this->getId()));
+		$db->pquery('delete from vtiger_role where roleid=?', array($this->getId()));
 
 		$targetParentRoleSequence = $role->getParentRole();
 		$parentRoleSequence = $this->getParentRole();
 		$roleInfoList = getRoleAndSubordinatesInformation($role->getId());
+		$query='update vtiger_role set parentrole=?,depth=? where roleid=?';
 		foreach ($roleInfoList as $roleId => $roleInfo) {
 			// Invalidate any cached information
 			VTCacheUtils::clearRoleSubordinates($roleId);
-			if($roleId == $this->getId()) {
+			if ($roleId == $this->getId()) {
 				continue;
 			}
 			$currentParentRoleSequence = $roleInfo[1];
-			$currentParentRoleSequence = str_replace($parentRoleSequence,$targetParentRoleSequence,$currentParentRoleSequence);
+			$currentParentRoleSequence = str_replace($parentRoleSequence, $targetParentRoleSequence, $currentParentRoleSequence);
 			$subDepth = count(explode('::', $currentParentRoleSequence))-1;
-			$query="update vtiger_role set parentrole=?,depth=? where roleid=?";
 			$db->pquery($query, array($currentParentRoleSequence, $subDepth, $roleId));
 		}
 	}
-
 }
-
 ?>

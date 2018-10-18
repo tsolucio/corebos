@@ -72,6 +72,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Single_Pane_View',
 				'Application_Minimum_Cron_Frequency',
 				'Application_Customer_Portal_URL',
+				'Application_Customer_Portal_BeingUsed',
 				'Application_Help_URL',
 				'Application_UI_Name',
 				'Application_UI_NameHTML',
@@ -85,6 +86,9 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_FirstTimeLogin_Template',
 				'Application_Permit_Assign_Up',
 				'Application_Permit_Assign_SameRole',
+				'Application_Permit_Assign_AllGroups',
+
+				'RelatedList_Activity_DefaultStatusFilter',
 
 				'Calendar_Modules_Panel_Visible',
 				'Calendar_Default_Reminder_Minutes',
@@ -95,6 +99,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Calendar_Push_End_On_Start_Change',
 				'Calendar_PopupReminder_DaysPast',
 				'Calendar_Show_Only_My_Events',
+				'Calendar_Show_WeekNumber',
 
 				'CronTasks_cronWatcher_mailto',
 				'CronTasks_cronWatcher_TimeThreshold',
@@ -136,6 +141,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Export_RelatedField_NameForSearch',
 				'Lead_Convert_TransferToAccount',
 				'Lead_Convert_OpportunitySelected',
+				'Lead_Convert_ContactSelected',
 				'PBX_Get_Line_Prefix',
 				'PBX_Unknown_CallerID',
 				'Product_Copy_Bundle_OnDuplicate',
@@ -165,13 +171,18 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Document_CreateSelectAccountFolder',
 				'Document_CreateSelectAccountFolderForContact',
 				'HomePage_Widget_Group_Size',
+				'Zero_Bounce_API_KEY',
+				'GenDoc_CopyLabelToClipboard',
 
 				'Report_Send_Scheduled_ifEmpty',
 				'Report_ListView_PageSize',
 				'Report_MaxRows_OnScreen',
 				'Report_MaxRelated_Modules',
+				'Report_HeaderOnXLS',
+				'Report_HeaderOnPDF',
 
 				'Inventory_ListPrice_ReadOnly',
+				'Inventory_Show_ShippingHandlingCharges',
 				'GContacts_Max_Results',
 
 				'CustomerPortal_PDF_Modules',
@@ -180,6 +191,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'CustomerPortal_PDFTemplate_SalesOrder',
 				'CustomerPortal_PDFTemplate_Invoice',
 				'CustomerPortal_PDFTemplate_PurchaseOrder',
+				'PBXManager_SearchOnlyOnTheseFields',
 			);
 			$delete_these = array(
 				'preload_prototype',

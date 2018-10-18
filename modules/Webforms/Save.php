@@ -7,15 +7,15 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('modules/Webforms/Webforms.php');
-require_once('modules/Webforms/model/WebformsModel.php');
+require_once 'modules/Webforms/Webforms.php';
+require_once 'modules/Webforms/model/WebformsModel.php';
 
 global $current_user, $theme;
 
-if (isset($_REQUEST['ajax']) and $_REQUEST['ajax'] == 'true') {
-	if(Webforms_Model::existWebformWithName(vtlib_purify($_REQUEST['name']))){
+if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] == 'true') {
+	if (Webforms_Model::existWebformWithName(vtlib_purify($_REQUEST['name']))) {
 		print_r(json_encode(array('success' => false, 'result' => false)));
-	}else{
+	} else {
 		print_r(json_encode(array('success' => true, 'result' => true)));
 	}
 } else {

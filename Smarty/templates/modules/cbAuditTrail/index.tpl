@@ -95,23 +95,42 @@
 <div class="rptContainer" style="width:94%;margin:auto;">
 	<datatable url="index.php?module=cbAuditTrail&action=cbAuditTrailAjax&file=getJSON" template="report_row_template">
 		<header>
-			<div class="slds-form-element slds-lookup" data-select="single" style="width: 400px; margin-bottom: 6px;">
-				<label class="slds-form-element__label" for="lookup-339">{'LBL_SEARCH_FORM_TITLE'|getTranslatedString:'Users'}</label>
-				<div class="slds-form-element__control slds-grid slds-box--border">
-					<div class="slds-dropdown--trigger slds-dropdown-trigger--click slds-align-middle slds-m-left--xx-small slds-shrink-none">
-						<svg aria-hidden="true" class="slds-icon slds-icon-standard-account slds-icon--small">
-							<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#user"></use>
-						</svg>
+			<div class="slds-grid slds-gutters" style="width: 650px;">
+				<div class="slds-col">
+					<div class="slds-form-element slds-lookup" data-select="single" style="width: 400px; margin-bottom: 6px;">
+						<label class="slds-form-element__label" for="lookup-339">{'LBL_SEARCH_FORM_TITLE'|getTranslatedString:'Users'}</label>
+						<div class="slds-form-element__control slds-grid slds-box--border">
+							<div class="slds-dropdown--trigger slds-dropdown-trigger--click slds-align-middle slds-m-left--xx-small slds-shrink-none">
+								<svg aria-hidden="true" class="slds-icon slds-icon-standard-account slds-icon--small">
+									<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#user"></use>
+								</svg>
+							</div>
+							<div class="slds-input-has-icon slds-input-has-icon--right slds-grow">
+								<svg aria-hidden="true" class="slds-input__icon">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+								</svg>
+								<select name="user_list" id="user_list" class="slds-lookup__search-input slds-input--bare" type="search" style="height: 30px;"
+									aria-owns="user_list" role="combobox" aria-activedescendent="" aria-expanded="false" aria-autocomplete="list">
+									<option value="none" selected="true">{$APP.LBL_NONE}</option>
+									{$USERLIST}
+								</select>
+							</div>
+						</div>
 					</div>
-					<div class="slds-input-has-icon slds-input-has-icon--right slds-grow">
-						<svg aria-hidden="true" class="slds-input__icon">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
-						</svg>
-						<select name="user_list" id="user_list" class="slds-lookup__search-input slds-input--bare" type="search"
-							aria-owns="user_list" role="combobox" aria-activedescendent="" aria-expanded="false" aria-autocomplete="list">
-							<option value="none" selected="true">{$APP.LBL_NONE}</option>
-							{$USERLIST}
-						</select>
+				</div>
+				<div class="slds-col">
+					<div class="slds-form-element" style="width: 160px;">
+						<label class="slds-form-element__label" for="text-input-id-1">
+						{'LBL_ACTION'|getTranslatedString:'Reports'} {'LBL_Search'|getTranslatedString:'MailManager'}
+						</label>
+						<div class="slds-form-element__control">
+							<div class="slds-input-has-icon slds-input-has-icon--right slds-grow">
+								<svg aria-hidden="true" class="slds-input__icon">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+								</svg>
+								<input type="text"  name="action_search" id="action_search" class="slds-input" style="height: 30px;"/>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

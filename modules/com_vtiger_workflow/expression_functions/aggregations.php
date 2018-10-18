@@ -138,6 +138,8 @@ function __cb_aggregation_operation($arr) {
 		if (!empty($arr[3])) {
 			$query .= ' and ('.__cb_aggregation_getconditions($arr[3], $relmodule, $mainmodule, $crmid).')';
 		}
+	} elseif ($mainmodule==$relmodule) {
+		$query = __cb_aggregation_queryonsamemodule($arr[3], $mainmodule, $relfield, $crmid);
 	} else {
 		return 0; // MODULES_NOT_RELATED
 	}
@@ -197,6 +199,14 @@ function __cb_aggregation_queryonsamemodule($conditions, $module, $relfield, $re
 		}
 	}
 	return $qg->getQuery();
+}
+
+function __cb_aggregate_time($arr) {
+	$total_seconds = __cb_aggregation_operation(['sum', $arr[0], 'time_to_sec('. $arr[1] .')', $arr[2], $arr[3]]);
+	$hours = floor($total_seconds / 3600);
+	$minutes = floor((($total_seconds - ($hours * 3600)) / 60));
+	$seconds = (($total_seconds - ($hours * 3600)) % 60);
+	return sprintf('%03d', $hours) . ':' . sprintf('%02d', $minutes) . ':' . sprintf('%02d', $seconds);
 }
 
 ?>

@@ -13,32 +13,28 @@
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  ********************************************************************************/
 
-/**	function used to get the numeration of entities:: autonumeric field
- *	return array $entitynum - numeration of entities
+/* function used to get the numeration of entities:: autonumeric field
+ * return array $entitynum - numeration of entities
  */
 function vtws_get_entitynum() {
-	require_once('include/utils/UserInfoUtil.php');
-	require_once('modules/Users/Users.php');
-	global $adb,$log,$current_user;
-	$log->debug("Entering vtws_get_entitynum ()");
+	require_once 'include/utils/UserInfoUtil.php';
+	require_once 'modules/Users/Users.php';
+	global $adb, $log;
+	$log->debug('Entering vtws_get_entitynum');
 
-	$enumquery = "SELECT semodule, prefix FROM vtiger_modentity_num";
-	$enumres = $adb->pquery($enumquery, array());
+	$enumres = $adb->query('SELECT semodule, prefix FROM vtiger_modentity_num');
 	$no_of_cont = $adb->num_rows($enumres);
 	$entitynum = array();
-	for($i=0;$i<$no_of_cont;$i++)
-	{
-		$module = $adb->query_result($enumres,$i,'semodule');
-		$prefix = $adb->query_result($enumres,$i,'prefix');
-		if(is_null($entitynum[$module])){
+	for ($i=0; $i<$no_of_cont; $i++) {
+		$module = $adb->query_result($enumres, $i, 'semodule');
+		$prefix = $adb->query_result($enumres, $i, 'prefix');
+		if (is_null($entitynum[$module])) {
 			$entitynum[$module] = array($prefix);
-		}else{
+		} else {
 			$entitynum[$module][] = $prefix;
 		}
 	}
-
-	$log->debug("Exiting get_entitynum");
+	$log->debug('Exiting get_entitynum');
 	return array($entitynum);
 }
-
 ?>

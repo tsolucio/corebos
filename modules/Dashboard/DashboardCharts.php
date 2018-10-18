@@ -21,34 +21,36 @@ require_once 'include/utils/ChartUtils.php';
 
 class DashboardCharts {
 
-	static public function pipeline_by_sales_stage($datax, $date_start, $date_end, $user_id, $width, $height){
+	public static function pipeline_by_sales_stage($datax, $date_start, $date_end, $user_id, $width, $height) {
 		global $log, $current_user, $adb, $mod_strings;
-		$log->debug("Entering pipeline_by_sales_stage(".print_r($datax,true).",".$date_start.",".$date_end.",".print_r($user_id,true).",".$width.",".$height.") method ...");
+		$log->debug('Entering pipeline_by_sales_stage('.print_r($datax, true).','.$date_start.','.$date_end.','.print_r($user_id, true).','.$width.','.$height.')');
 
 		$where=' deleted = 0 ';
 		$labels = array();
 		//build the where clause for the query that matches $datax
 		$count = count($datax);
 		if ($count>0) {
-			$where .= " and sales_stage in ( ";
+			$where .= ' and sales_stage in ( ';
 			$ss_i = 0;
-			foreach ($datax as $key=>$value) {
-				if($ss_i != 0) {
+			foreach ($datax as $key => $value) {
+				if ($ss_i != 0) {
 					$where .= ', ';
 				}
 				$where .= "'".addslashes($key)."'";
-				$labels[] = getTranslatedString($key,'Potentials');
+				$labels[] = getTranslatedString($key, 'Potentials');
 				$ss_i++;
 			}
-			$where .= ")";
+			$where .= ')';
 		}
 
 		$count = count($user_id);
 		if ($count>0) {
 			$where .= ' and smownerid in ( ';
 			$ss_i = 0;
-			foreach ($user_id as $key=>$value) {
-				if($ss_i != 0) $where .= ", ";
+			foreach ($user_id as $key => $value) {
+				if ($ss_i != 0) {
+					$where .= ", ";
+				}
 				$where .= "'".addslashes($value)."'";
 				$ss_i++;
 			}
@@ -68,13 +70,13 @@ class DashboardCharts {
 			" WHERE $where
 			GROUP BY `sales_stage`,smownerid
 			ORDER BY sales_stage,smownerid";
-		$rs = $adb->pquery($sql,array());
+		$rs = $adb->pquery($sql, array());
 		//build pipeline by sales stage data
 		$total = 0;
 		$count = array();
 		$sum = array();
 		while ($row = $adb->fetch_array($rs)) {
-			$amount = CurrencyField::convertFromMasterCurrency($row['potsum'],$current_user->conv_rate);
+			$amount = CurrencyField::convertFromMasterCurrency($row['potsum'], $current_user->conv_rate);
 			$sum[$row['sales_stage']][$row['smownerid']] = $amount;
 			$count[$row['sales_stage']][$row['smownerid']] = $row['potcnt'];
 			$total = $total + $amount;
@@ -83,18 +85,18 @@ class DashboardCharts {
 		$datay = array();
 		$aTargets = array();
 		$aAlts = array();
-		$cvid = getCvIdOfAll("Potentials");
+		$cvid = getCvIdOfAll('Potentials');
 		$dsetidx = 0;
 		foreach ($user_id as $the_id) {
 			$the_user = getEntityName('Users', $the_id);
 			$the_user = $the_user[$the_id];
 			$dset = array(
 				'label' => $the_user,
-				'backgroundColor' => sprintf('#%02X%02X%02X', rand(50,255), rand(50,255), rand(50,255) ),
+				'backgroundColor' => sprintf('#%02X%02X%02X', rand(50, 255), rand(50, 255), rand(50, 255)),
 				'data' => array(),
 			);
 			$lnkidx = 0;
-			foreach ($datax as $stage_key=>$stage_translation) {
+			foreach ($datax as $stage_key => $stage_translation) {
 				$dset['data'][] = (isset($sum[$stage_key][$the_id]) ? $sum[$stage_key][$the_id] : 0);
 				if (!isset($aAlts[$the_id])) {
 					$aAlts[$the_id] = array();
@@ -107,7 +109,8 @@ class DashboardCharts {
 				if (!isset($aTargets[$dsetidx])) {
 					$aTargets[$dsetidx] = array();
 				}
-				$aTargets[$dsetidx][$lnkidx++] = 'index.php?module=Potentials&action=ListView&sales_stage='.urlencode($stage_key).'&closingdate_start='.urlencode($date_start).'&closingdate_end='.urlencode($date_end).'&query=true&type=dbrd&owner='.$the_user.'&viewname='.$cvid;
+				$aTargets[$dsetidx][$lnkidx++] = 'index.php?module=Potentials&action=ListView&sales_stage='.urlencode($stage_key)
+					.'&closingdate_start='.urlencode($date_start).'&closingdate_end='.urlencode($date_end).'&query=true&type=dbrd&owner='.$the_user.'&viewname='.$cvid;
 			}
 			$dsetidx++;
 			$datay[] = $dset;
@@ -138,13 +141,13 @@ class DashboardCharts {
 				)
 			)
 		);
-		$log->debug("Exiting pipeline_by_sales_stage method ...");
+		$log->debug('Exiting pipeline_by_sales_stage method ...');
 		return ChartUtils::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'pipeline_by_sales_stage', $width, $height, 0, 0, 0, 0);
 	}
 
-	static public function outcome_by_month($date_start, $date_end, $user_id, $width, $height){
+	public static function outcome_by_month($date_start, $date_end, $user_id, $width, $height) {
 		global $log, $current_user, $adb, $current_language, $mod_strings;
-		$log->debug("Entering outcome_by_month(".$date_start.",".$date_end.",".print_r($user_id,true).",".$width.",".$height.") method ...");
+		$log->debug('Entering outcome_by_month('.$date_start.','.$date_end.','.print_r($user_id, true).','.$width.','.$height.')');
 		$report_strings = return_module_language($current_language, 'Reports');
 		$months = $report_strings['MONTH_STRINGS'];
 
@@ -154,12 +157,14 @@ class DashboardCharts {
 		if ($count>0) {
 			$where .= ' and smownerid in ( ';
 			$ss_i = 0;
-			foreach ($user_id as $key=>$value) {
-				if($ss_i != 0) $where .= ", ";
+			foreach ($user_id as $value) {
+				if ($ss_i != 0) {
+					$where .= ', ';
+				}
 				$where .= "'".addslashes($value)."'";
 				$ss_i++;
 			}
-			$where .= ")";
+			$where .= ')';
 		}
 
 		$date = new DateTimeField($date_start);
@@ -177,11 +182,11 @@ class DashboardCharts {
 			" WHERE $realwhere
 			GROUP BY potmonth
 			ORDER BY potmonth";
-		$rs = $adb->pquery($sql,array());
+		$rs = $adb->pquery($sql, array());
 		$closedWon = array();
 		while ($row = $adb->fetch_array($rs)) {
 			$closedWon[$row['potmonth']]['count'] = $row['potcnt'];
-			$amount = CurrencyField::convertFromMasterCurrency($row['potsum'],$current_user->conv_rate);
+			$amount = CurrencyField::convertFromMasterCurrency($row['potsum'], $current_user->conv_rate);
 			$closedWon[$row['potmonth']]['sum'] = $amount;
 			$total = $total + $amount;
 		}
@@ -193,11 +198,11 @@ class DashboardCharts {
 			" WHERE $realwhere
 			GROUP BY potmonth
 			ORDER BY potmonth";
-		$rs = $adb->pquery($sql,array());
+		$rs = $adb->pquery($sql, array());
 		$closedLost = array();
 		while ($row = $adb->fetch_array($rs)) {
 			$closedLost[$row['potmonth']]['count'] = $row['potcnt'];
-			$amount = CurrencyField::convertFromMasterCurrency($row['potsum'],$current_user->conv_rate);
+			$amount = CurrencyField::convertFromMasterCurrency($row['potsum'], $current_user->conv_rate);
 			$closedLost[$row['potmonth']]['sum'] = $amount;
 			$total = $total + $amount;
 		}
@@ -209,12 +214,12 @@ class DashboardCharts {
 			" WHERE $realwhere
 			GROUP BY potmonth
 			ORDER BY potmonth";
-		$rs = $adb->pquery($sql,array());
+		$rs = $adb->pquery($sql, array());
 		$notClosed = array();
 		$labels = array();
 		while ($row = $adb->fetch_array($rs)) {
 			$notClosed[$row['potmonth']]['count'] = $row['potcnt'];
-			$amount = CurrencyField::convertFromMasterCurrency($row['potsum'],$current_user->conv_rate);
+			$amount = CurrencyField::convertFromMasterCurrency($row['potsum'], $current_user->conv_rate);
 			$notClosed[$row['potmonth']]['sum'] = $amount;
 			$labels[$row['potmonth']-1] = $months[$row['potmonth']-1];
 			$total = $total + $amount;
@@ -222,14 +227,13 @@ class DashboardCharts {
 
 		$titlestr = $mod_strings['LBL_TOTAL_PIPELINE'].html_to_utf8($current_user->currency_symbol).$total;
 		$datay = array();
-		$aTargets = array();
 		$aAlts = array(
 			'closedWon' => array(),
 			'closedLost' => array(),
 			'notClosed' => array(),
 		);
 		// 'Closed Won'
-		$the_state = getTranslatedString('Closed Won','Potentials');
+		$the_state = getTranslatedString('Closed Won', 'Potentials');
 		$dset = array(
 			'label' => $the_state,
 			'backgroundColor' => '#009933',
@@ -249,7 +253,7 @@ class DashboardCharts {
 		$datay[] = $dset;
 
 		// 'Closed Lost'
-		$the_state = getTranslatedString('Closed Lost','Potentials');
+		$the_state = getTranslatedString('Closed Lost', 'Potentials');
 		$dset = array(
 			'label' => $the_state,
 			'backgroundColor' => '#FF9900',
@@ -269,7 +273,7 @@ class DashboardCharts {
 		$datay[] = $dset;
 
 		// 'Not Closed'
-		$the_state = getTranslatedString('LBL_LEAD_SOURCE_OTHER','Dashboard');
+		$the_state = getTranslatedString('LBL_LEAD_SOURCE_OTHER', 'Dashboard');
 		$dset = array(
 			'label' => $the_state,
 			'backgroundColor' => '#0066CC',
@@ -314,27 +318,27 @@ class DashboardCharts {
 				)
 			)
 		);
-		$log->debug("Exiting outcome_by_month method ...");
+		$log->debug('Exiting outcome_by_month method ...');
 		return ChartUtils::getChartHTMLwithObject(json_encode($chartobject), json_encode(array()), 'outcome_by_month', $width, $height, 0, 0, 0, 0);
 	}
 
-	static public function lead_source_by_outcome($datax, $user_id, $width, $height){
+	public static function lead_source_by_outcome($datax, $user_id, $width, $height) {
 		global $log, $current_user, $adb, $mod_strings;
-		$log->debug("Entering lead_source_by_outcome(".print_r($datax,true).",".print_r($user_id,true).",".$width.",".$height.") method ...");
+		$log->debug('Entering lead_source_by_outcome('.print_r($datax, true).','.print_r($user_id, true).','.$width.','.$height.')');
 
 		$where=' deleted = 0 ';
 		$labels = array();
 		//build the where clause for the query that matches $datax
 		$count = count($datax);
 		if ($count>0) {
-			$where .= " and leadsource in ( ";
+			$where .= ' and leadsource in ( ';
 			$ss_i = 0;
-			foreach ($datax as $key=>$value) {
-				if($ss_i != 0) {
+			foreach ($datax as $key => $value) {
+				if ($ss_i != 0) {
 					$where .= ', ';
 				}
 				$where .= "'".addslashes($key)."'";
-				$labels[] = getTranslatedString($key,'Potentials');
+				$labels[] = getTranslatedString($key, 'Potentials');
 				$ss_i++;
 			}
 			$where .= ")";
@@ -344,12 +348,14 @@ class DashboardCharts {
 		if ($count>0) {
 			$where .= ' and smownerid in ( ';
 			$ss_i = 0;
-			foreach ($user_id as $key=>$value) {
-				if($ss_i != 0) $where .= ", ";
+			foreach ($user_id as $key => $value) {
+				if ($ss_i != 0) {
+					$where .= ", ";
+				}
 				$where .= "'".addslashes($value)."'";
 				$ss_i++;
 			}
-			$where .= ")";
+			$where .= ')';
 		}
 
 		$sql = 'SELECT `leadsource`,smownerid,count(*) as potcnt,sum(amount) as potsum
@@ -359,13 +365,13 @@ class DashboardCharts {
 			" WHERE $where
 			GROUP BY `leadsource`,smownerid
 			ORDER BY leadsource,smownerid";
-		$rs = $adb->pquery($sql,array());
+		$rs = $adb->pquery($sql, array());
 		//build pipeline by sales stage data
 		$total = 0;
 		$count = array();
 		$sum = array();
 		while ($row = $adb->fetch_array($rs)) {
-			$amount = CurrencyField::convertFromMasterCurrency($row['potsum'],$current_user->conv_rate);
+			$amount = CurrencyField::convertFromMasterCurrency($row['potsum'], $current_user->conv_rate);
 			$sum[$row['leadsource']][$row['smownerid']] = $amount;
 			$count[$row['leadsource']][$row['smownerid']] = $row['potcnt'];
 			$total = $total + $amount;
@@ -381,11 +387,11 @@ class DashboardCharts {
 			$the_user = $the_user[$the_id];
 			$dset = array(
 				'label' => $the_user,
-				'backgroundColor' => sprintf('#%02X%02X%02X', rand(50,255), rand(50,255), rand(50,255) ),
+				'backgroundColor' => sprintf('#%02X%02X%02X', rand(50, 255), rand(50, 255), rand(50, 255)),
 				'data' => array(),
 			);
 			$lnkidx = 0;
-			foreach ($datax as $stage_key=>$stage_translation) {
+			foreach ($datax as $stage_key => $stage_translation) {
 				$dset['data'][] = (isset($sum[$stage_key][$the_id]) ? $sum[$stage_key][$the_id] : 0);
 				if (!isset($aAlts[$the_id])) {
 					$aAlts[$the_id] = array();
@@ -398,7 +404,8 @@ class DashboardCharts {
 				if (!isset($aTargets[$dsetidx])) {
 					$aTargets[$dsetidx] = array();
 				}
-				$aTargets[$dsetidx][$lnkidx++] = 'index.php?module=Potentials&action=ListView&leadsource='.urlencode($stage_key).'&query=true&type=dbrd&owner='.$the_user.'&viewname='.$cvid;
+				$aTargets[$dsetidx][$lnkidx++] = 'index.php?module=Potentials&action=ListView&leadsource='.urlencode($stage_key)
+					.'&query=true&type=dbrd&owner='.$the_user.'&viewname='.$cvid;
 			}
 			$dsetidx++;
 			$datay[] = $dset;
@@ -429,28 +436,27 @@ class DashboardCharts {
 				)
 			)
 		);
-		$log->debug("Exiting lead_source_by_outcome method ...");
+		$log->debug('Exiting lead_source_by_outcome method ...');
 		return ChartUtils::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'lead_source_by_outcome', $width, $height, 0, 0, 0, 0);
 	}
 
-
-	static public function pipeline_by_lead_source($datax, $date_start, $date_end, $user_id, $width, $height){
+	public static function pipeline_by_lead_source($datax, $date_start, $date_end, $user_id, $width, $height) {
 		global $log, $current_user, $adb, $mod_strings;
-		$log->debug("Entering pipeline_by_lead_source(".print_r($datax,true).",".$date_start.",".$date_end.",".print_r($user_id,true).",".$width.",".$height.") method ...");
+		$log->debug('Entering pipeline_by_lead_source('.print_r($datax, true).','.$date_start.','.$date_end.','.print_r($user_id, true).','.$width.','.$height.')');
 
 		$where=' deleted = 0 ';
 		$labels = array();
 		//build the where clause for the query that matches $datax
 		$count = count($datax);
 		if ($count>0) {
-			$where .= " and leadsource in ( ";
+			$where .= ' and leadsource in ( ';
 			$ss_i = 0;
-			foreach ($datax as $key=>$value) {
-				if($ss_i != 0) {
+			foreach ($datax as $key => $value) {
+				if ($ss_i != 0) {
 					$where .= ', ';
 				}
 				$where .= "'".addslashes($key)."'";
-				$labels[] = getTranslatedString($key,'Potentials');
+				$labels[] = getTranslatedString($key, 'Potentials');
 				$ss_i++;
 			}
 			$where .= ")";
@@ -460,8 +466,10 @@ class DashboardCharts {
 		if ($count>0) {
 			$where .= ' and smownerid in ( ';
 			$ss_i = 0;
-			foreach ($user_id as $key=>$value) {
-				if($ss_i != 0) $where .= ", ";
+			foreach ($user_id as $key => $value) {
+				if ($ss_i != 0) {
+					$where .= ", ";
+				}
 				$where .= "'".addslashes($value)."'";
 				$ss_i++;
 			}
@@ -475,25 +483,25 @@ class DashboardCharts {
 			" WHERE $where
 			GROUP BY `leadsource`
 			ORDER BY leadsource";
-		$rs = $adb->pquery($sql,array());
+		$rs = $adb->pquery($sql, array());
 		//build pipeline by sales stage data
 		$total = 0;
 		$count = array();
 		$sum = array();
 		while ($row = $adb->fetch_array($rs)) {
-			$amount = CurrencyField::convertFromMasterCurrency($row['potsum'],$current_user->conv_rate);
+			$amount = CurrencyField::convertFromMasterCurrency($row['potsum'], $current_user->conv_rate);
 			$sum[$row['leadsource']] = $amount;
 			$count[$row['leadsource']] = $row['potcnt'];
 			$total = $total + $amount;
 		}
 		$titlestr = $mod_strings['LBL_TOTAL_PIPELINE'].html_to_utf8($current_user->currency_symbol).$total;
 		$aTargets = array();
-		$cvid = getCvIdOfAll("Potentials");
+		$cvid = getCvIdOfAll('Potentials');
 		$dset = array();
 		$lnkidx = 0;
-		foreach ($datax as $stage_key=>$stage_translation) {
+		foreach ($datax as $stage_key => $stage_translation) {
 			$dset['data'][] = (isset($sum[$stage_key]) ? $sum[$stage_key] : 0);
-			$dset['backgroundColor'][] = sprintf('#%02X%02X%02X', rand(50,255), rand(50,255), rand(50,255));
+			$dset['backgroundColor'][] = sprintf('#%02X%02X%02X', rand(50, 255), rand(50, 255), rand(50, 255));
 			$aTargets[$lnkidx++] = 'index.php?module=Potentials&action=ListView&leadsource='.urlencode($stage_key).'&query=true&type=dbrd&viewname='.$cvid;
 		}
 		$dataChartObject = array(
@@ -519,8 +527,7 @@ class DashboardCharts {
 				)
 			)
 		);
-		$log->debug("Exiting pipeline_by_lead_source method ...");
+		$log->debug('Exiting pipeline_by_lead_source method ...');
 		return ChartUtils::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'pipeline_by_lead_source', $width, $height, 0, 0, 0, 0);
 	}
-
 }

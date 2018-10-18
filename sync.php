@@ -23,8 +23,9 @@ global $root_directory, $adb, $site_URL;
 coreBOS_Session::init();
 set_include_path($root_directory. 'modules/Calendar4You/');
 require_once 'gcal/vendor/autoload.php';
+$service="GoogleCalendar";
 
-$q=$adb->pquery('select * from its4you_googlesync4you_access where userid=?', array($_SESSION['authenticated_user_id']));
+$q=$adb->pquery('select * from its4you_googlesync4you_access where userid=? and service=?', array($_SESSION['authenticated_user_id'],$service));
 $client_id=$adb->query_result($q, 0, 'google_clientid');
 $client_secret=$adb->query_result($q, 0, 'google_login');
 $redirect_uri=$adb->query_result($q, 0, 'google_keyfile');
@@ -45,8 +46,8 @@ if (isset($_GET['code'])) {
 	$token=json_decode(coreBOS_Session::get('token'));
 	if ($token->refresh_token!='' && $token->refresh_token!=null) {
 		$adb->pquery(
-			'update its4you_googlesync4you_access set refresh_token=? where userid=?',
-			array($token->refresh_token, $_SESSION['authenticated_user_id'])
+			'update its4you_googlesync4you_access set refresh_token=? where userid=? and service=?',
+			array($token->refresh_token, $_SESSION['authenticated_user_id'],$service)
 		);
 	}
 	header("Location: $site_URL/index.php?module=Calendar4You&action=index");

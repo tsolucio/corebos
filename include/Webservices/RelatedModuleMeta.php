@@ -51,23 +51,27 @@ class RelatedModuleMeta {
 	}
 
 	private function getRelationMetaInfo($relationId) {
-		switch($relationId) {
-			case $this->CAMPAIGNCONTACTREL: return array(
+		switch ($relationId) {
+			case $this->CAMPAIGNCONTACTREL:
+				return array(
 				'relationTable' => 'vtiger_campaigncontrel',
 				'Campaigns' => 'campaignid',
 				'Contacts' => 'contactid'
 			);
-			case $this->PRODUCTINVOICEREL: return array(
+			case $this->PRODUCTINVOICEREL:
+				return array(
 				'relationTable' => 'vtiger_inventoryproductrel',
 				'Products' => 'productid',
 				'Invoice' => 'id'
 			);
-			case $this->PRODUCTQUOTESREL: return array(
+			case $this->PRODUCTQUOTESREL:
+				return array(
 				'relationTable' => 'vtiger_inventoryproductrel',
 				'Products' => 'productid',
 				'Quotes' => 'id'
 			);
-			case $this->PRODUCTPURCHASEORDERREL: return array(
+			case $this->PRODUCTPURCHASEORDERREL:
+				return array(
 				'relationTable' => 'vtiger_inventoryproductrel',
 				'Products' => 'productid',
 				'PurchaseOrder' => 'id'

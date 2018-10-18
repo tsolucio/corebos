@@ -10,7 +10,6 @@
 -->*}
 <script src="modules/com_vtiger_workflow/resources/jquery.timepicker.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/com_vtiger_workflow/resources/functional.js" type="text/javascript" charset="utf-8"></script>
-<script src="modules/com_vtiger_workflow/resources/json2.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/com_vtiger_workflow/resources/fieldvalidator.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/com_vtiger_workflow/resources/edittaskscript.js" type="text/javascript" charset="utf-8"></script>
 {literal}

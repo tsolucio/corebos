@@ -1,5 +1,4 @@
 {include file='com_vtiger_workflow/Header.tpl'}
-<script src="modules/{$module->name}/resources/json2.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/functional.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/workflowlistscript.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">

@@ -71,7 +71,6 @@ $mod_strings = array(
 'LBL_AttachmentInField' => 'Adjunto en campo',
 'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Nota: Todas las fechas, horas e información recurrente configurada para el evento,
 											serán respecto a la zona horaria por defecto, configurada en config.inc.php',
-
 'Select Meta Variables' => 'Selecciona Meta Variables',
 'Current Date' => 'Fecha Actual',
 'Current Time' => 'Hora Actual',
@@ -154,6 +153,7 @@ $mod_strings = array(
 'Workflow for Calendar Todos when Send Notification is True' => 'Flujo de Trabajo para Tareas de Calendario cuando el Envío de Notificación está activado',
 'Calculate or Update forecast amount' => 'Calcular cantidad objetiva en oportunidad',
 'LBL_METHOD_NAME' => 'Nombre del Método',
-'NO_METHOD_AVAILABLE' => 'No hay ningún método disponible para este Módulo.'
+'NO_METHOD_AVAILABLE' => 'No hay ningún método disponible para este Módulo.',
+'launchrelwf' => 'Ejecutar flujos en actualizaciones de módulos relacionados',
 );
 ?>

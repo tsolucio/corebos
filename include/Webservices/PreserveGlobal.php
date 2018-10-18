@@ -8,16 +8,16 @@
  * All Rights Reserved.
  *************************************************************************************/
 
-class VTWS_PreserveGlobal{
+class VTWS_PreserveGlobal {
 
 	private static $globalData = array();
 
-	static function preserveGlobal($name,$value){
+	public static function preserveGlobal($name, $value) {
 		//$name store the name of the global.
 		global ${$name};
 
-		if(!empty($$name)) {
-			if(!isset(VTWS_PreserveGlobal::$globalData[$name]) or !is_array(VTWS_PreserveGlobal::$globalData[$name])){
+		if (!empty($$name)) {
+			if (!isset(VTWS_PreserveGlobal::$globalData[$name]) || !is_array(VTWS_PreserveGlobal::$globalData[$name])) {
 				VTWS_PreserveGlobal::$globalData[$name] = array();
 			}
 			VTWS_PreserveGlobal::$globalData[$name][] = $$name;
@@ -26,35 +26,34 @@ class VTWS_PreserveGlobal{
 		return $$name;
 	}
 
-	static function restore($name){
+	public static function restore($name) {
 		//$name store the name of the global.
 		global ${$name};
 
-		if(isset(VTWS_PreserveGlobal::$globalData[$name]) && is_array(VTWS_PreserveGlobal::$globalData[$name]) && count(VTWS_PreserveGlobal::$globalData[$name]) > 0){
+		if (isset(VTWS_PreserveGlobal::$globalData[$name]) && is_array(VTWS_PreserveGlobal::$globalData[$name]) && count(VTWS_PreserveGlobal::$globalData[$name]) > 0) {
 			$$name = array_pop(VTWS_PreserveGlobal::$globalData[$name]);
 			unset(VTWS_PreserveGlobal::$globalData[$name]);
 		}
 	}
 
-	static function getGlobal($name){
+	public static function getGlobal($name) {
 		global ${$name};
-		return VTWS_PreserveGlobal::preserveGlobal($name,$$name);
+		return VTWS_PreserveGlobal::preserveGlobal($name, $$name);
 	}
 
-	static function getGlobalData(){
+	public static function getGlobalData() {
 		return VTWS_PreserveGlobal::$globalData;
 	}
 
-	static function flush(){
+	public static function flush() {
 		foreach (VTWS_PreserveGlobal::$globalData as $name => $detail) {
 			//$name store the name of the global.
 			global ${$name};
-			if(is_array(VTWS_PreserveGlobal::$globalData[$name]) && count(VTWS_PreserveGlobal::$globalData[$name]) > 0) {
+			if (is_array(VTWS_PreserveGlobal::$globalData[$name]) && count(VTWS_PreserveGlobal::$globalData[$name]) > 0) {
 				$$name = array_pop(VTWS_PreserveGlobal::$globalData[$name]);
 				unset(VTWS_PreserveGlobal::$globalData[$name]);
 			}
 		}
 	}
-
 }
 ?>

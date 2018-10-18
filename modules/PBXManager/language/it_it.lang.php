@@ -8,14 +8,13 @@
 * All Rights Reserved.
 ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'Asterisk' => 'Asterisk',
 	'LBL_ASTERISK_INFORMATION' => 'Informazioni su ASTERISK',
 	'LBL_CALL_INFORMATION' => 'Informazioni chiamata',
 	'Call From'=>'Chiamata da',
 	'Call To'=>'Chiamata a',
 	'Time Of Call'=>'Durata della chiamata',
-	
 	'PBX Manager' => 'Gestore chiamate',
 	'PBXManager' => 'Gestore chiamate',
 	'SINGLE_PBXManager' => 'Gestore chiamate',
@@ -32,5 +31,4 @@ $mod_strings = Array(
 	'received' => 'Received',
 	'OutgoingCall' => 'Outgoing call from',
 );
-
 ?>

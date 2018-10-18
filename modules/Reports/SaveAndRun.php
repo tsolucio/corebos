@@ -20,12 +20,11 @@ require_once 'Smarty_setup.php';
 
 global $adb,$mod_strings,$app_strings;
 
-$reportid = vtlib_purify($_REQUEST["record"]);
+$reportid = vtlib_purify($_REQUEST['record']);
 $folderid = isset($_REQUEST['folderid']) ? vtlib_purify($_REQUEST['folderid']) : 0;
 $now_action = vtlib_purify($_REQUEST['action']);
 
-$sql = "select * from vtiger_report where reportid=?";
-$res = $adb->pquery($sql, array($reportid));
+$res = $adb->pquery('select * from vtiger_report where reportid=?', array($reportid));
 
 $Report_ID = $adb->query_result($res, 0, 'reportid');
 $cbreporttype = $adb->query_result($res, 0, 'cbreporttype');
@@ -50,7 +49,7 @@ if ($numOfRows > 0) {
 	$primarymodule = $ogReport->primodule;
 	$restrictedmodules = array();
 	if ($ogReport->secmodule!='') {
-		$rep_modules = explode(":", $ogReport->secmodule);
+		$rep_modules = explode(':', $ogReport->secmodule);
 	} else {
 		$rep_modules = array();
 	}
@@ -59,16 +58,16 @@ if ($numOfRows > 0) {
 	$modules_permitted = true;
 	$modules_export_permitted = true;
 	foreach ($rep_modules as $mod) {
-		if (isPermitted($mod, 'index')!= "yes" || vtlib_isModuleActive($mod)==false) {
+		if (isPermitted($mod, 'index')!= 'yes' || vtlib_isModuleActive($mod)==false) {
 			$modules_permitted = false;
 			$restrictedmodules[] = $mod;
 		}
-		if (isPermitted("$mod", 'Export', '')!='yes') {
+		if (isPermitted($mod, 'Export', '')!='yes') {
 			$modules_export_permitted = false;
 		}
 	}
 
-	if (isPermitted($primarymodule, 'index') == "yes" && $modules_permitted == true) {
+	if (isPermitted($primarymodule, 'index') == 'yes' && $modules_permitted == true) {
 		$oReportRun = new ReportRun($reportid);
 		$groupBy = $oReportRun->getGroupingList($reportid);
 		$showCharts = (count($groupBy) > 0);
@@ -119,7 +118,7 @@ if ($numOfRows > 0) {
 				$showCharts = false;
 			}
 		}
-		$list_report_form->assign("SHOWCHARTS", $showCharts);
+		$list_report_form->assign('SHOWCHARTS', $showCharts);
 
 		if (isset($_REQUEST['submode']) && $_REQUEST['submode'] == 'generateReport' && empty($advft_criteria)) {
 			$filtersql = '';
@@ -130,26 +129,26 @@ if ($numOfRows > 0) {
 
 		$COLUMNS_BLOCK = getPrimaryColumns_AdvFilter_HTML($ogReport->primodule, $ogReport);
 		$COLUMNS_BLOCK .= getSecondaryColumns_AdvFilter_HTML($ogReport->secmodule, $ogReport);
-		$list_report_form->assign("COLUMNS_BLOCK", $COLUMNS_BLOCK);
+		$list_report_form->assign('COLUMNS_BLOCK', $COLUMNS_BLOCK);
 
 		$FILTER_OPTION = Reports::getAdvCriteriaHTML();
-		$list_report_form->assign("FOPTION", $FILTER_OPTION);
+		$list_report_form->assign('FOPTION', $FILTER_OPTION);
 
 		$rel_fields = $ogReport->adv_rel_fields;
-		$list_report_form->assign("REL_FIELDS", json_encode($rel_fields));
+		$list_report_form->assign('REL_FIELDS', json_encode($rel_fields));
 
-		$list_report_form->assign("CRITERIA_GROUPS", $ogReport->advft_criteria);
+		$list_report_form->assign('CRITERIA_GROUPS', $ogReport->advft_criteria);
 
-		$list_report_form->assign("MOD", $mod_strings);
-		$list_report_form->assign("APP", $app_strings);
+		$list_report_form->assign('MOD', $mod_strings);
+		$list_report_form->assign('APP', $app_strings);
 		$list_report_form->assign('MODULE', $currentModule);
-		$list_report_form->assign("IMAGE_PATH", $image_path);
-		$list_report_form->assign("REPORTID", $reportid);
-		$list_report_form->assign("IS_EDITABLE", $ogReport->is_editable);
+		$list_report_form->assign('IMAGE_PATH', $image_path);
+		$list_report_form->assign('REPORTID', $reportid);
+		$list_report_form->assign('IS_EDITABLE', $ogReport->is_editable);
 
-		$list_report_form->assign("REP_FOLDERS", $ogReport->sgetRptFldr());
+		$list_report_form->assign('REP_FOLDERS', $ogReport->sgetRptFldr());
 
-		$list_report_form->assign("REPORTNAME", htmlspecialchars($ogReport->reportname, ENT_QUOTES, $default_charset));
+		$list_report_form->assign('REPORTNAME', htmlspecialchars($ogReport->reportname, ENT_QUOTES, $default_charset));
 		$jsonheaders = $oReportRun->GenerateReport('HEADERS', '');
 		$list_report_form->assign('TABLEHEADERS', $jsonheaders['i18nheaders']);
 		$list_report_form->assign('JSONHEADERS', $jsonheaders['jsonheaders']);
@@ -158,15 +157,11 @@ if ($numOfRows > 0) {
 		} else {
 			$totalhtml = '';
 		}
-		$list_report_form->assign("REPORTTOTHTML", $totalhtml);
-		$list_report_form->assign("FOLDERID", $folderid);
-		$list_report_form->assign("DATEFORMAT", $current_user->date_format);
-		$list_report_form->assign("JS_DATEFORMAT", parse_calendardate($app_strings['NTC_DATE_FORMAT']));
-		if ($modules_export_permitted==true) {
-			$list_report_form->assign("EXPORT_PERMITTED", "YES");
-		} else {
-			$list_report_form->assign("EXPORT_PERMITTED", "NO");
-		}
+		$list_report_form->assign('REPORTTOTHTML', $totalhtml);
+		$list_report_form->assign('FOLDERID', $folderid);
+		$list_report_form->assign('DATEFORMAT', $current_user->date_format);
+		$list_report_form->assign('JS_DATEFORMAT', parse_calendardate($app_strings['NTC_DATE_FORMAT']));
+		$list_report_form->assign('EXPORT_PERMITTED', $modules_export_permitted);
 		$rep_in_fldr = $ogReport->sgetRptsforFldr($folderid);
 		for ($i=0; $i<count($rep_in_fldr); $i++) {
 			$rep_id = $rep_in_fldr[$i]['reportid'];

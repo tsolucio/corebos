@@ -370,6 +370,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'URL for customer portal (Example: http://your_support_domain.tld/portal). Used mostly for email template communications.',
 ),
+'Application_Customer_Portal_BeingUsed' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'vtigercrmportal | coreboscp',
+	'definition' => 'Indicate the customer portal connected to this coreBOS so we can adapt outputs accordingly. Used mostly for email template communications.',
+),
 'Debug_Calculate_Response_Time' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
@@ -509,6 +516,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'individual | group',
 	'definition' => 'Establish the tax mode on inventory modules to Individual line or Group tax',
+),
+'Inventory_Show_ShippingHandlingCharges' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show or hide Shipping and Handling charges',
 ),
 'Application_Global_Search_Active' => array(
 	'status' => 'Implementada',
@@ -909,6 +923,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'false | true',
 	'definition' => 'If set to the string "true", the Opportunity section will be selected when converting a Lead. By default, the section is not selected.',
 ),
+'Lead_Convert_ContactSelected' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'false | true',
+	'definition' => 'If set to the string "true", the Contact section will be selected when converting a Lead. By default, the section is selected.',
+),
 'Product_Show_Subproducts_Popup' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
@@ -1098,33 +1119,96 @@ $GlobalVariableDefinitons = array(
 	'values' => 'ID or name of template to use',
 	'definition' => 'When the CustomerPortal_PDF variable is set to PDFMaker or GenDoc, this variable indicates which template should be used to generate Sales Order PDF. If it is empty the first template found will be used.',
 ),
-'CustomerPortal_PDFTemplate_Invoice'  => array(
+'CustomerPortal_PDFTemplate_Invoice' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
 	'category' => 'Integration',
 	'values' => 'ID or name of template to use',
 	'definition' => 'When the CustomerPortal_PDF variable is set to PDFMaker or GenDoc, this variable indicates which template should be used to generate Invoice PDF. If it is empty the first template found will be used.',
 ),
-'CustomerPortal_PDFTemplate_PurchaseOrder'  => array(
+'CustomerPortal_PDFTemplate_PurchaseOrder' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
 	'category' => 'Integration',
 	'values' => 'ID or name of template to use',
 	'definition' => 'When the CustomerPortal_PDF variable is set to PDFMaker or GenDoc, this variable indicates which template should be used to generate Purchase Order PDF. If it is empty the first template found will be used.',
 ),
-'Application_Permit_Assign_Up'  => array(
+'Application_Permit_Assign_Up' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'In modules with private sharing privileges, permit assigning the record to any active user in the application.',
 ),
-'Application_Permit_Assign_SameRole'  => array(
+'Application_Permit_Assign_SameRole' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'In modules with private sharing privileges, permit assigning the record to any active user in the application with the same role as the current user.',
+),
+'Application_Permit_Assign_AllGroups' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'In modules with private sharing privileges, permit assigning the record to any defined group in the application.',
+),
+'MailManager_Show_SentTo_Links' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'MailManager shows, by default, on the left panel a set of links to filter emails related to Accounts, Contacts and some other modules. Setting this variable to 0 will hide those quick actions.',
+),
+'Calendar_Show_WeekNumber' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Module Functionality',
+	'values' => '0 | 1',
+	'definition' => 'When Calendar_Show_WeekNumber is active, the week numbers will appear on the Calendar.',
+),
+'Report_HeaderOnXLS' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'When Report_HeaderOnXLS is active, the name of the report will appear as the header in the XLS file.',
+),
+'Report_HeaderOnPDF' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'When Report_HeaderOnPDF is active, the name of the report will appear as the header in the PDF file.',
+),
+'RelatedList_Activity_DefaultStatusFilter' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Any valid Activity Status',
+	'definition' => 'Initial Activity filter on Related List. Default is "all".',
+),
+'Zero_Bounce_API_KEY' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Any valid Zero Bounce API KEY',
+	'definition' => 'The valid Zero Bounce API KEY',
+),
+'PBXManager_SearchOnlyOnTheseFields' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'list of field names',
+	'definition' => 'List of fields to search in when we get a call from Asterisk. The first result found will be returned.',
+),
+'GenDoc_CopyLabelToClipboard' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Extension',
+	'values' => '0|1',
+	'definition' => 'Make the copy links in Detail View copy GenDoc labels instead of field values. By default deactivated.',
 ),
 );
 

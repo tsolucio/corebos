@@ -203,7 +203,7 @@ $smarty->assign('moreinfofields', '');
 if ($cbMap!=null) {
 	$cbMapFields = $cbMap->MasterDetailLayout();
 	$smarty->assign('moreinfofields', "'".implode("','", $cbMapFields['detailview']['fieldnames'])."'");
-	if (empty($associated_prod)) { // creating
+	if (empty($associated_prod) && $isduplicate != 'true') { // creating
 		$product_Detail = $col_fields = array();
 		foreach ($cbMapFields['detailview']['fields'] as $mdfield) {
 			$col_fields[$mdfield['fieldinfo']['name']] = '';
@@ -319,6 +319,7 @@ $smarty->assign('Inventory_ListPrice_ReadOnly', GlobalVariable::getVariable('Inv
 $smarty->assign('TAX_TYPE', GlobalVariable::getVariable('Inventory_Tax_Type_Default', 'individual', $currentModule, $current_user->id));
 //Show or not the Header to copy address to left or right
 $smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Application_Show_Copy_Address', 1, $currentModule, $current_user->id));
+$smarty->assign('SHOW_SHIPHAND_CHARGES', GlobalVariable::getVariable('Inventory_Show_ShippingHandlingCharges', 1, $currentModule, $current_user->id));
 
 $smarty->display('Inventory/InventoryEditView.tpl');
 ?>

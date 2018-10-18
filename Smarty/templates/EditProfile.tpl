@@ -28,19 +28,19 @@
 	<br>
 	<div align=center>
 			{include file='SetMenu.tpl'}
-				<!-- DISPLAY -->
-				<form action="index.php" method="post" name="profileform" id="form" onsubmit="VtigerJS_DialogBox.block();">
-				<input type="hidden" name="module" value="Users">
-				<input type="hidden" name="parenttab" value="Settings">
-				<input type="hidden" name="action" value="{$ACTION}">
-				<input type="hidden" name="mode" value="{$MODE}">
-				<input type="hidden" name="profileid" value="{$PROFILEID}">
-				<input type="hidden" name="profile_name" value="{$PROFILE_NAME}">
-				<input type="hidden" name="profile_description" value="{$PROFILE_DESCRIPTION}">
-				<input type="hidden" name="parent_profile" value="{$PARENTPROFILEID}">
-				<input type="hidden" name="radio_button" value="{$RADIOBUTTON}">
-				<input type="hidden" name="return_action" value="{$RETURN_ACTION}">
-
+                               <!-- DISPLAY -->
+                               <form action="index.php" method="post" name="profileform" id="form">
+                               <input type="hidden" name="module" value="Users">
+                               <input type="hidden" name="parenttab" value="Settings">
+                               <input type="hidden" name="action" value="{$ACTION}">
+                               <input type="hidden" name="mode" value="{$MODE}">
+                               <input type="hidden" name="profileid" value="{$PROFILEID}">
+                               <input type="hidden" name="profile_name" value="{$PROFILE_NAME}">
+                               <input type="hidden" name="profile_description" value="{$PROFILE_DESCRIPTION}">
+                               <input type="hidden" name="parent_profile" value="{$PARENTPROFILEID}">
+                               <input type="hidden" name="radio_button" value="{$RADIOBUTTON}">
+                               <input type="hidden" name="return_action" value="{$RETURN_ACTION}">
+                        
 				<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%">
 				<tbody><tr>
 					<td rowspan="2" valign="top" width="50"><img src="{'ico-profile.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_PROFILES}" title="{$MOD.LBL_PROFILES}" border="0" height="48" width="48"></td>
@@ -81,9 +81,9 @@
                                                 </tbody></table></td>
                                               <td align="right" valign="bottom">&nbsp;
 												{if $ACTION eq 'SaveProfile'}
-                                                <input type="submit" value=" {$CMOD.LBL_FINISH_BUTTON} " name="save" class="crmButton create small" title="{$CMOD.LBL_FINISH_BUTTON}"/>&nbsp;&nbsp;
+                                                <input type="button" value=" {$CMOD.LBL_FINISH_BUTTON} " name="save" class="crmButton create small" title="{$CMOD.LBL_FINISH_BUTTON}" onclick="saveprofile('create')"/>&nbsp;&nbsp;
                                                 {else}
-                                                        <input type="submit" value=" {$APP.LBL_SAVE_BUTTON_LABEL} " name="save" class="crmButton small save" title="{$APP.LBL_SAVE_BUTTON_LABEL}"/>&nbsp;&nbsp;
+                                                        <input type="button" value=" {$APP.LBL_SAVE_BUTTON_LABEL} " name="save" class="crmButton small save" title="{$APP.LBL_SAVE_BUTTON_LABEL}" onclick="saveprofile('edit')" />&nbsp;&nbsp;
                                                 {/if}
                                                 <input type="button" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " name="Cancel" class="crmButton cancel small" title="{$APP.LBL_CANCEL_BUTTON_LABEL}" onClick="window.history.back();" />
 						</td>
@@ -261,9 +261,9 @@
 		<tbody>
 			<tr><td>
 				{if $ACTION eq 'SaveProfile'}
-					<input type="submit" value=" {$CMOD.LBL_FINISH_BUTTON} " name="save" class="crmButton create small" title="{$CMOD.LBL_FINISH_BUTTON}"/>&nbsp;&nbsp;
+					<input type="button" value=" {$CMOD.LBL_FINISH_BUTTON} " name="save" class="crmButton create small" title="{$CMOD.LBL_FINISH_BUTTON}" onclick="saveprofile('create')"/>&nbsp;&nbsp;
 				{else}
-					<input type="submit" value=" {$APP.LBL_SAVE_BUTTON_LABEL} " name="save" class="crmButton small save" title="{$APP.LBL_SAVE_BUTTON_LABEL}" />&nbsp;&nbsp;
+					<input type="button" value=" {$APP.LBL_SAVE_BUTTON_LABEL} " name="save" class="crmButton small save" title="{$APP.LBL_SAVE_BUTTON_LABEL}" onclick="saveprofile('edit')"/>&nbsp;&nbsp;
 				{/if}
 				</td><td>
 					<input type="button" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " name="Cancel" class="crmButton cancel small"onClick="window.history.back();" title="{$APP.LBL_CANCEL_BUTTON_LABEL}" /></td>
@@ -300,7 +300,7 @@
 	</td>
 	</tr>
 	</tbody></table>
-	</form>
+        </form>
 	<!-- End of Display -->
 	</td>
 	</tr>

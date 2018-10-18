@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$mod_strings = Array (
+$mod_strings = array (
 	'Mobile' => 'Mobiel',
 	'LBL_BACK' => 'Terug',
 	'LBL_EDIT' => 'Bewerken',
@@ -94,9 +94,8 @@ $mod_strings = Array (
 	'LBL_THEME_COLOR_B'=>'blue',
 	'LBL_THEME_COLOR_C'=>'white',
 	'LBL_NAVI_SELECTION'=>'Maximale elementen per pagina:',
-
 	'LBL_COMMENTS'=>'Opmerkingen',
 	'LBL_SIGNATURE'=>'Handtekening',
+	'LBL_DUPLICATE'=>'Duplicate',
 );
-
 ?>

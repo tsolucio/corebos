@@ -10,35 +10,36 @@
 include_once 'modules/CustomView/CustomView.php';
 
 class crmtogo_WS_FilterModel {
-	
-	var $filterid, $moduleName;
-	var $user;
+
+	public $filterid;
+	public $moduleName;
+	public $user;
 	protected $customView;
-	
-	function __construct($moduleName) {
+
+	public function __construct($moduleName) {
 		$this->moduleName = $moduleName;
 		$this->customView = new CustomView($moduleName);
 	}
-	
-	function setUser($userInstance) {
+
+	public function setUser($userInstance) {
 		$this->user = $userInstance;
 	}
-	
-	function getUser() {
+
+	public function getUser() {
 		return $this->user;
 	}
-	
-	function query() {
+
+	public function query() {
 		$listquery = getListQuery($this->moduleName);
-		$query = $this->customView->getModifiedCvListQuery($this->filterid,$listquery,$this->moduleName);
+		$query = $this->customView->getModifiedCvListQuery($this->filterid, $listquery, $this->moduleName);
 		return $query;
 	}
-	
-	function queryParameters() {
+
+	public function queryParameters() {
 		return false;
 	}
-	
-	static function modelWithId($moduleName, $filterid) {
+
+	public static function modelWithId($moduleName, $filterid) {
 		$model = new crmtogo_WS_FilterModel($moduleName);
 		$model->filterid = $filterid;
 		return $model;

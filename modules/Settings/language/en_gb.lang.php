@@ -236,6 +236,8 @@ $mod_strings = array(
 	'LBL_QUOTE_STAGE' => 'Quote Stage',
 	'LBL_CARRIER' => 'Carrier',
 	'LBL_TAXCLASS' => 'Tax Class',
+	'LBL_RETENTION'=>'Retention',
+	'LBL_PERCENTAGE'=>'Percentage',
 	'LBL_MY_DETAILS' => 'My Details',
 	'LBL_MY_MAIL_SERVER_DET' => 'My Incoming Mail Server Details',
 	'LBL_EMAIL_ID' => 'Email ID',
@@ -698,6 +700,8 @@ $mod_strings = array(
 	'LBL_TASKS' => 'Tasks',
 	'LBL_NEW_TASK_BUTTON_LABEL' => 'New Task',
 	'LBL_TASK' => 'Task',
+	'LBL_DELAY' => 'Delay',
+
 	'LBL_MANDATORY_FIELDS' => 'Mandatory Fields',
 	'LBL_MANDATORY_FIELDS_DESCRIPTION' => 'Manage mandatory fields of all modules',
 	'LBL_CUSTOMIZE_MODENT_NUMBER' => 'Customise Record Numbering',

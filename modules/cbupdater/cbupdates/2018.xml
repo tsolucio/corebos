@@ -35,4 +35,109 @@
 	<classname>fixCreateFollowupWorkflowTasks</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete webmails module</description>
+	<filename>build/changeSets/2018/delWebmails.php</filename>
+	<classname>delWebmails</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>albana</author>
+	<description>Fill service column for Google Calendar</description>
+	<filename>build/changeSets/2018/addServiceGCalendar.php</filename>
+	<classname>addServiceGCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Tax retention type and control fields</description>
+	<filename>build/changeSets/2018/addRetentionFieldToTaxes.php</filename>
+	<classname>addRetentionFieldToTaxes</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add Financial Fields</description>
+	<filename>build/changeSets/2018/addFinancialFields.php</filename>
+	<classname>addFinancialFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Calendar action permissions: Merge, Import, Export, DuplicatesHandling</description>
+	<filename>build/changeSets/2018/cbcalendaractionpermissions.php</filename>
+	<classname>cbcalendaractionpermissions</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Webservice: support for creating document folders</description>
+	<filename>build/changeSets/2018/webservicecreatedocumentfolder.php</filename>
+	<classname>webservicecreatedocumentfolder</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Surveys: install 4 survey modules from coreBOSCRM</description>
+	<filename>build/changeSets/2018/installcbsurveymodules.php</filename>
+	<classname>installcbsurveymodules</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Business Actions adjustments</description>
+	<filename>build/changeSets/2018/fixBAAddIndex.php</filename>
+	<classname>fixBAAddIndex</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Increment size of Workflow Test field</description>
+	<filename>build/changeSets/2018/IncSizeWorkflowTestField.php</filename>
+	<classname>IncSizeWorkflowTestField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>klivshapllo</author>
+	<description>Update the createdby field value for attachment folders for deleted users</description>
+	<filename>build/changeSets/2018/updateCreatedByField.php</filename>
+	<classname>updateCreatedByField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Changeset to update city table fields.</description>
+	<filename>build/changeSets/2018/updateCityFieldType.php</filename>
+	<classname>updateCityFieldType</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Eliminate UIType 116</description>
+	<filename>build/changeSets/2018/eliminateUIType116.php</filename>
+	<classname>eliminateUIType116</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Changeset to update user_name field type on portalinfo.</description>
+	<filename>build/changeSets/2018/updatePortalinfoUsernameFieldType.php</filename>
+	<classname>updatePortalinfoUsernameFieldType</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Eliminate UIType 75 and 81</description>
+	<filename>build/changeSets/2018/migrateUIType7581to10.php</filename>
+	<classname>migrateUIType7581to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Support for Dispay Type 5 and set passwords to this type</description>
+	<filename>build/changeSets/2018/setPasswordsToDisplayType5.php</filename>
+	<classname>setPasswordsToDisplayType5</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

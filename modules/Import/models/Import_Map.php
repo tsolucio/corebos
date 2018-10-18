@@ -10,11 +10,11 @@
 
 class Import_Map {
 
-	static $tableName = 'vtiger_import_maps';
-	var $map;
-	var $user;
+	public static $tableName = 'vtiger_import_maps';
+	public $map;
+	public $user;
 
-	public function  __construct($map, $user) {
+	public function __construct($map, $user) {
 		$this->map = $map;
 		$this->user = $user;
 	}
@@ -22,12 +22,14 @@ class Import_Map {
 	public static function getInstanceFromDb($row, $user) {
 		global $default_charset;
 		$map = array();
-		foreach($row as $key=>$value) {
-			if (is_numeric($key)) continue;
-			if($key == 'content') {
+		foreach ($row as $key => $value) {
+			if (is_numeric($key)) {
+				continue;
+			}
+			if ($key == 'content') {
 				$content = array();
-				$pairs = explode('&', html_entity_decode($value,ENT_QUOTES,$default_charset));
-				foreach($pairs as $pair) {
+				$pairs = explode('&', html_entity_decode($value, ENT_QUOTES, $default_charset));
+				foreach ($pairs as $pair) {
 					list($mappedName, $sequence) = explode("=", $pair);
 					$mappedName = str_replace('/eq/', '=', $mappedName);
 					$mappedName = str_replace('/amp/', '&', $mappedName);
@@ -61,7 +63,9 @@ class Import_Map {
 	}
 
 	public function getStringifiedContent() {
-		if (empty($this->map['content'])) return;
+		if (empty($this->map['content'])) {
+			return;
+		}
 		$content = $this->map['content'];
 		$keyValueStrings = array();
 		foreach ($content as $key => $value) {
@@ -76,13 +80,20 @@ class Import_Map {
 		$adb = PearDatabase::getInstance();
 
 		$map = $this->getAllValues();
-		$map['content'] = "".$adb->getEmptyBlob()."";
+		$map['content'] = ''.$adb->getEmptyBlob().'';
 		$columnNames = array_keys($map);
 		$columnValues = array_values($map);
-		if(count($map) > 0) {
-			$adb->pquery('INSERT INTO '.self::$tableName.' ('. implode(',',$columnNames).',date_entered) VALUES ('. generateQuestionMarks($columnValues).',now())', array($columnValues));
-			$adb->updateBlob(self::$tableName,"content","name='". $adb->sql_escape_string($this->getValue('name')).
-						"' AND module='".$adb->sql_escape_string($this->getValue('module'))."'",$this->getStringifiedContent());
+		if (count($map) > 0) {
+			$adb->pquery(
+				'INSERT INTO '.self::$tableName.' ('. implode(',', $columnNames).',date_entered) VALUES ('. generateQuestionMarks($columnValues).',now())',
+				array($columnValues)
+			);
+			$adb->updateBlob(
+				self::$tableName,
+				'content',
+				"name='". $adb->sql_escape_string($this->getValue('name')). "' AND module='".$adb->sql_escape_string($this->getValue('module'))."'",
+				$this->getStringifiedContent()
+			);
 		}
 	}
 
@@ -94,13 +105,11 @@ class Import_Map {
 		$noOfMaps = $adb->num_rows($result);
 
 		$savedMaps = array();
-		for($i=0; $i<$noOfMaps; ++$i) {
+		for ($i=0; $i<$noOfMaps; ++$i) {
 			$importMap = Import_Map::getInstanceFromDb($adb->query_result_rowdata($result, $i), $current_user);
 			$savedMaps[$importMap->getId()] = $importMap;
 		}
-
 		return $savedMaps;
 	}
-
 }
 ?>

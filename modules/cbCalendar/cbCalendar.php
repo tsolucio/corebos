@@ -438,8 +438,10 @@ class cbCalendar extends CRMEntity {
 
 	private function getRequestData($return_id) {
 		global $adb;
-		$cont_qry = "select contactid from vtiger_cntactivityrel where activityid=?";
-		$cont_res = $adb->pquery($cont_qry, array($return_id));
+		$cont_qry = 'select contactid from vtiger_cntactivityrel where activityid=?
+			UNION
+			select cto_id from vtiger_activity where activityid=?';
+		$cont_res = $adb->pquery($cont_qry, array($return_id, $return_id));
 		$noofrows = $adb->num_rows($cont_res);
 		$cont_id = array();
 		if ($noofrows > 0) {
@@ -716,7 +718,7 @@ class cbCalendar extends CRMEntity {
 			$taskManager->saveTask($task);
 			// Calendar workflow create follow up
 			$calendarWorkflow = $workflowManager->newWorkFlow("cbCalendar");
-			$calendarWorkflow->test = '[{"fieldname":"followupcreate","operation":"has changed to","value":"true:boolean","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
+			$calendarWorkflow->test='[{"fieldname":"followupcreate","operation":"has changed to","value":"true:boolean","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
 			$calendarWorkflow->description = "Create Calendar Follow Up on change";
 			$calendarWorkflow->executionCondition = VTWorkflowManager::$ON_MODIFY;
 			$calendarWorkflow->defaultworkflow = 1;
@@ -726,7 +728,24 @@ class cbCalendar extends CRMEntity {
 			$task->summary = 'Create Calendar Follow Up';
 			$task->entity_type = "cbCalendar";
 			$task->reference_field = "relatedwith";
-			$task->field_value_mapping = '[{"fieldname":"subject","modulename":"cbCalendar","valuetype":"expression","value":"concat('."'Follow up: '".',subject )"},{"fieldname":"assigned_user_id","modulename":"cbCalendar","valuetype":"fieldname","value":"assigned_user_id "},{"fieldname":"dtstart","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt  "},{"fieldname":"dtend","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt "},{"fieldname":"eventstatus","modulename":"cbCalendar","valuetype":"rawtext","value":"Planned"},{"fieldname":"taskpriority","modulename":"cbCalendar","valuetype":"rawtext","value":"Medium"},{"fieldname":"sendnotification","modulename":"cbCalendar","valuetype":"rawtext","value":"true:boolean"},{"fieldname":"activitytype","modulename":"cbCalendar","valuetype":"fieldname","value":"followuptype "},{"fieldname":"visibility","modulename":"cbCalendar","valuetype":"rawtext","value":"Private"},{"fieldname":"location","modulename":"cbCalendar","valuetype":"fieldname","value":"location "},{"fieldname":"reminder_time","modulename":"cbCalendar","valuetype":"rawtext","value":"0"},{"fieldname":"recurringtype","modulename":"cbCalendar","valuetype":"rawtext","value":"--None--"},{"fieldname":"description","modulename":"cbCalendar","valuetype":"fieldname","value":"description "},{"fieldname":"followupcreate","modulename":"cbCalendar","valuetype":"rawtext","value":"false:boolean"},{"fieldname":"date_start","modulename":"cbCalendar","valuetype":"fieldname","value":"dtstart "},{"fieldname":"time_start","modulename":"cbCalendar","valuetype":"rawtext","value":"00:00"},{"fieldname":"due_date","modulename":"cbCalendar","valuetype":"fieldname","value":"dtend "},{"fieldname":"time_end","modulename":"cbCalendar","valuetype":"rawtext","value":"00:00"}]';
+			$task->field_value_mapping = '[{"fieldname":"subject","modulename":"cbCalendar","valuetype":"expression","value":"concat('."'Follow up: '".',subject )"},'
+				.'{"fieldname":"assigned_user_id","modulename":"cbCalendar","valuetype":"fieldname","value":"assigned_user_id "},'
+				.'{"fieldname":"dtstart","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt  "},'
+				.'{"fieldname":"dtend","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt "},'
+				.'{"fieldname":"eventstatus","modulename":"cbCalendar","valuetype":"rawtext","value":"Planned"},'
+				.'{"fieldname":"taskpriority","modulename":"cbCalendar","valuetype":"rawtext","value":"Medium"},'
+				.'{"fieldname":"sendnotification","modulename":"cbCalendar","valuetype":"rawtext","value":"true:boolean"},'
+				.'{"fieldname":"activitytype","modulename":"cbCalendar","valuetype":"fieldname","value":"followuptype "},'
+				.'{"fieldname":"visibility","modulename":"cbCalendar","valuetype":"rawtext","value":"Private"},'
+				.'{"fieldname":"location","modulename":"cbCalendar","valuetype":"fieldname","value":"location "},'
+				.'{"fieldname":"reminder_time","modulename":"cbCalendar","valuetype":"rawtext","value":"0"},'
+				.'{"fieldname":"recurringtype","modulename":"cbCalendar","valuetype":"rawtext","value":"--None--"},'
+				.'{"fieldname":"description","modulename":"cbCalendar","valuetype":"fieldname","value":"description "},'
+				.'{"fieldname":"followupcreate","modulename":"cbCalendar","valuetype":"rawtext","value":"false:boolean"},'
+				.'{"fieldname":"date_start","modulename":"cbCalendar","valuetype":"fieldname","value":"dtstart "},'
+				.'{"fieldname":"time_start","modulename":"cbCalendar","valuetype":"rawtext","value":"00:00"},'
+				.'{"fieldname":"due_date","modulename":"cbCalendar","valuetype":"fieldname","value":"dtend "},'
+				.'{"fieldname":"time_end","modulename":"cbCalendar","valuetype":"rawtext","value":"00:00"}]';
 			$task->test = '';
 			$task->reevaluate = 0;
 			$taskManager->saveTask($task);
@@ -741,7 +760,24 @@ class cbCalendar extends CRMEntity {
 			$task->summary = 'Create Calendar Follow Up';
 			$task->entity_type = "cbCalendar";
 			$task->reference_field = "relatedwith";
-			$task->field_value_mapping = '[{"fieldname":"subject","modulename":"cbCalendar","valuetype":"expression","value":"concat('."'Follow up: '".',subject )"},{"fieldname":"assigned_user_id","modulename":"cbCalendar","valuetype":"fieldname","value":"assigned_user_id "},{"fieldname":"dtstart","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt  "},{"fieldname":"dtend","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt "},{"fieldname":"eventstatus","modulename":"cbCalendar","valuetype":"rawtext","value":"Planned"},{"fieldname":"taskpriority","modulename":"cbCalendar","valuetype":"rawtext","value":"Medium"},{"fieldname":"sendnotification","modulename":"cbCalendar","valuetype":"rawtext","value":"true:boolean"},{"fieldname":"activitytype","modulename":"cbCalendar","valuetype":"fieldname","value":"followuptype "},{"fieldname":"visibility","modulename":"cbCalendar","valuetype":"rawtext","value":"Private"},{"fieldname":"location","modulename":"cbCalendar","valuetype":"fieldname","value":"location "},{"fieldname":"reminder_time","modulename":"cbCalendar","valuetype":"rawtext","value":"0"},{"fieldname":"recurringtype","modulename":"cbCalendar","valuetype":"rawtext","value":"--None--"},{"fieldname":"description","modulename":"cbCalendar","valuetype":"fieldname","value":"description "},{"fieldname":"followupcreate","modulename":"cbCalendar","valuetype":"rawtext","value":"false:boolean"},{"fieldname":"date_start","modulename":"cbCalendar","valuetype":"fieldname","value":"dtstart "},{"fieldname":"time_start","modulename":"cbCalendar","valuetype":"rawtext","value":"00:00"},{"fieldname":"due_date","modulename":"cbCalendar","valuetype":"fieldname","value":"dtend "},{"fieldname":"time_end","modulename":"cbCalendar","valuetype":"rawtext","value":"00:00"}]';
+			$task->field_value_mapping = '[{"fieldname":"subject","modulename":"cbCalendar","valuetype":"expression","value":"concat('."'Follow up: '".',subject )"},'
+				.'{"fieldname":"assigned_user_id","modulename":"cbCalendar","valuetype":"fieldname","value":"assigned_user_id "},'
+				.'{"fieldname":"dtstart","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt  "},'
+				.'{"fieldname":"dtend","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt "},'
+				.'{"fieldname":"eventstatus","modulename":"cbCalendar","valuetype":"rawtext","value":"Planned"},'
+				.'{"fieldname":"taskpriority","modulename":"cbCalendar","valuetype":"rawtext","value":"Medium"},'
+				.'{"fieldname":"sendnotification","modulename":"cbCalendar","valuetype":"rawtext","value":"true:boolean"},'
+				.'{"fieldname":"activitytype","modulename":"cbCalendar","valuetype":"fieldname","value":"followuptype "},'
+				.'{"fieldname":"visibility","modulename":"cbCalendar","valuetype":"rawtext","value":"Private"},'
+				.'{"fieldname":"location","modulename":"cbCalendar","valuetype":"fieldname","value":"location "},'
+				.'{"fieldname":"reminder_time","modulename":"cbCalendar","valuetype":"rawtext","value":"0"},'
+				.'{"fieldname":"recurringtype","modulename":"cbCalendar","valuetype":"rawtext","value":"--None--"},'
+				.'{"fieldname":"description","modulename":"cbCalendar","valuetype":"fieldname","value":"description "},'
+				.'{"fieldname":"followupcreate","modulename":"cbCalendar","valuetype":"rawtext","value":"false:boolean"},'
+				.'{"fieldname":"date_start","modulename":"cbCalendar","valuetype":"fieldname","value":"dtstart "},'
+				.'{"fieldname":"time_start","modulename":"cbCalendar","valuetype":"rawtext","value":"00:00"},'
+				.'{"fieldname":"due_date","modulename":"cbCalendar","valuetype":"fieldname","value":"dtend "},'
+				.'{"fieldname":"time_end","modulename":"cbCalendar","valuetype":"rawtext","value":"00:00"}]';
 			$task->test = '';
 			$task->reevaluate = 0;
 			$taskManager->saveTask($task);
@@ -818,7 +854,11 @@ class cbCalendar extends CRMEntity {
 				$calwf['test'] = str_replace('taskstatus', 'eventstatus', $calwf['test']);
 				$calendarWorkflow = $workflowManager->newWorkFlow("cbCalendar");
 				if ($calwf['summary']=='Notify when a task is delayed beyond 24 hrs') {
-					$calendarWorkflow->test = '[{"fieldname":"date_start","operation":"days ago","value":"1","valuetype":"expression","joincondition":"and","groupid":"0"},{"fieldname":"activitytype","operation":"is","value":"Task","valuetype":"rawtext","joincondition":"and","groupid":"0"},{"fieldname":"eventstatus","operation":"is not","value":"Held","valuetype":"rawtext","joincondition":"and","groupid":"0"},{"fieldname":"eventstatus","operation":"is not","value":"Completed","valuetype":"rawtext","joincondition":"and","groupid":"0"},{"fieldname":"eventstatus","operation":"is not","value":"In Progress","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
+					$calendarWorkflow->test='[{"fieldname":"date_start","operation":"days ago","value":"1","valuetype":"expression","joincondition":"and","groupid":"0"},'
+						.'{"fieldname":"activitytype","operation":"is","value":"Task","valuetype":"rawtext","joincondition":"and","groupid":"0"},'
+						.'{"fieldname":"eventstatus","operation":"is not","value":"Held","valuetype":"rawtext","joincondition":"and","groupid":"0"},'
+						.'{"fieldname":"eventstatus","operation":"is not","value":"Completed","valuetype":"rawtext","joincondition":"and","groupid":"0"},'
+						.'{"fieldname":"eventstatus","operation":"is not","value":"In Progress","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
 				} else {
 					$calendarWorkflow->test = $calwf['test'];
 				}
@@ -983,7 +1023,7 @@ class cbCalendar extends CRMEntity {
 	 * @param $activityid integer : activity id
 	 */
 	public static function changeStatus($status, $activityid) {
-		global $log, $$current_user;
+		global $log, $current_user;
 		$log->debug("Entering changeStatus($status, $activityid) method");
 		include_once 'include/Webservices/Revise.php';
 		$element = array(
@@ -992,6 +1032,22 @@ class cbCalendar extends CRMEntity {
 		);
 		vtws_revise($element, $current_user);
 		$log->debug('Exiting changeStatus method');
+	}
+
+	/*
+	 * Function to get the primary query part of a report
+	 * @param - $module primary module name
+	 * returns the query string formed on fetching the related data for report for secondary module
+	 */
+	public function generateReportsQuery($module, $queryPlanner) {
+		$query = parent::generateReportsQuery($module, $queryPlanner);
+		if ($queryPlanner->requireTable('vtiger_activity_reminder')) {
+			$query .= ' left join vtiger_activity_reminder on vtiger_activity_reminder.activity_id = vtiger_activity.activityid';
+		}
+		if ($queryPlanner->requireTable('vtiger_recurringevents')) {
+			$query .= ' left join vtiger_recurringevents on vtiger_recurringevents.activityid = vtiger_activity.activityid';
+		}
+		return $query;
 	}
 }
 ?>

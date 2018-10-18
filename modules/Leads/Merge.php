@@ -11,28 +11,28 @@ require_once 'include/database/PearDatabase.php';
 require_once 'include/utils/MergeUtils.php';
 global $app_strings, $default_charset;
 
-$randomfilename = "vt_" . str_replace(array("."," "), "", microtime());
+$randomfilename = 'vt_' . str_replace(array('.',' '), '', microtime());
 
 $templateid = $_REQUEST['mergefile'];
-if ($templateid == "") {
-	die("Select Mail Merge Template");
+if ($templateid == '') {
+	die('Select Mail Merge Template');
 }
 //get the particular file from db and store it in the local hard disk.
 //store the path to the location where the file is stored and pass it  as parameter to the method
-$sql = "select filename,data,filesize from vtiger_wordtemplates where templateid=?";
-$result = $adb->pquery($sql, array($templateid));
+$result = $adb->pquery('select filename,data,filesize from vtiger_wordtemplates where templateid=?', array($templateid));
 $temparray = $adb->fetch_array($result);
 
 $fileContent = $temparray['data'];
 $filename=html_entity_decode($temparray['filename'], ENT_QUOTES, $default_charset);
 $extension=GetFileExtension($filename);
-// Fix For: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/2107
 $filename= $randomfilename . "_mmrg.$extension";
 
 $filesize=$temparray['filesize'];
-$wordtemplatedownloadpath =$root_directory ."/cache/wordtemplatedownload/";
-
-$handle = fopen($wordtemplatedownloadpath.$filename, "wb");
+$wordtemplatedownloadpath =$root_directory .'/cache/wordtemplatedownload/';
+if (!is_dir($wordtemplatedownloadpath)) {
+	@mkdir($wordtemplatedownloadpath);
+}
+$handle = fopen($wordtemplatedownloadpath.$filename, 'wb');
 fwrite($handle, base64_decode($fileContent), $filesize);
 fclose($handle);
 
@@ -40,17 +40,17 @@ fclose($handle);
 $mass_merge = isset($_REQUEST['allselectedboxes']) ? $_REQUEST['allselectedboxes'] : '';
 $single_record = isset($_REQUEST['record']) ? $_REQUEST['record'] : 0;
 
-if ($mass_merge != "") {
-	$mass_merge = explode(";", $mass_merge);
+if ($mass_merge != '') {
+	$mass_merge = explode(';', $mass_merge);
 	$temp_mass_merge = $mass_merge;
-	if (array_pop($temp_mass_merge)=="") {
+	if (array_pop($temp_mass_merge)=='') {
 		array_pop($mass_merge);
 	}
 	//$mass_merge = implode(",",$mass_merge);
 } elseif ($single_record != "") {
 	$mass_merge = $single_record;
 } else {
-	die("Record Id is not found, cannot merge the document");
+	die('Record Id is not found, cannot merge the document');
 }
 
 //<<<<<<<<<<<<<<<<header for csv and select columns for query>>>>>>>>>>>>>>>>>>>>>>>>
@@ -157,23 +157,22 @@ if (count($querycolumns) > 0) {
 				// <<< pag 21-Sep-2011 END >>>
 				// not needed ??? // $actual_values[$x] = '"'.$actual_values[$x].'"';
 			}
-			$actual_values[$x] = decode_html(str_replace(",", " ", $actual_values[$x]));
+			$actual_values[$x] = decode_html(str_replace(',', ' ', $actual_values[$x]));
 		}
-		$mergevalue[] = implode($actual_values, ",");
+		$mergevalue[] = implode($actual_values, ',');
 	}
-	$csvdata = implode($mergevalue, "###");
+	$csvdata = implode($mergevalue, '###');
 } else {
-	die("No fields to do Merge");
+	die('No fields to do Merge');
 }
-echo "<br><br><br>";
-if ($extension == "doc") {
-	// Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/2107
-	$datafilename = $randomfilename . "_data.csv";
-	$handle = fopen($wordtemplatedownloadpath.$datafilename, "wb");
+echo '<br><br><br>';
+if ($extension == 'doc') {
+	$datafilename = $randomfilename . '_data.csv';
+	$handle = fopen($wordtemplatedownloadpath.$datafilename, 'wb');
 	fwrite($handle, $csvheader."\r\n");
 	fwrite($handle, str_replace("###", "\r\n", $csvdata));
 	fclose($handle);
-} elseif ($extension == "odt") {
+} elseif ($extension == 'odt') {
 	//delete old .odt files in the wordtemplatedownload directory
 	foreach (glob("$wordtemplatedownloadpath/*.odt") as $delefile) {
 		unlink($delefile);
@@ -196,20 +195,20 @@ if ($extension == "doc") {
 		echo "&nbsp;&nbsp;<font size=+1><b><a href=cache/wordtemplatedownload/$entityid$filename>".$app_strings['DownloadMergeFile']."</a></b></font><br>";
 		remove_dir($wordtemplatedownloadpath.$temp_dir);
 	}
-} elseif ($extension == "rtf") {
+} elseif ($extension == 'rtf') {
 	foreach (glob("$wordtemplatedownloadpath/*.rtf") as $delefile) {
 		unlink($delefile);
 	}
 	$mass_merge = (array)$mass_merge;
 	$filecontent = base64_decode($fileContent);
 	foreach ($mass_merge as $idx => $entityid) {
-		$handle = fopen($wordtemplatedownloadpath.$entityid.$filename, "wb");
+		$handle = fopen($wordtemplatedownloadpath.$entityid.$filename, 'wb');
 		$new_filecontent = crmmerge($csvheader, $filecontent, $idx, 'utf8Unicode');
 		fwrite($handle, $new_filecontent);
 		fclose($handle);
 		echo "&nbsp;&nbsp;<font size=+1><b><a href=cache/wordtemplatedownload/$entityid$filename>".$app_strings['DownloadMergeFile']."</a></b></font><br>";
 	}
 } else {
-	die("unknown file format");
+	die('unknown file format');
 }
 ?>

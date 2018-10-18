@@ -8,14 +8,14 @@
  * All Rights Reserved.
  ************************************************************************************/
 abstract class Vtiger_PDF_Viewer {
-	
+
 	protected $labelModel;
-	
-	function setLabelModel($m) {
+
+	public function setLabelModel($m) {
 		$this->labelModel = $m;
 	}
-	
-	abstract function totalHeight($parent);
-	abstract function initDisplay($parent);
-	abstract function display($parent);
+
+	abstract public function totalHeight($parent);
+	abstract public function initDisplay($parent);
+	abstract public function display($parent);
 }

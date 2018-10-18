@@ -11,36 +11,35 @@ include_once __DIR__ . '/ModuleRecord.php';
 
 class crmtogo_UI_ModuleModel {
 	public $data;
-	
-	function initData($moduleData) {
+
+	public function initData($moduleData) {
 		$this->data = $moduleData;
 	}
-	
-	function id() {
+
+	public function id() {
 		return $this->data['id'];
 	}
-	
-	function name() {
+
+	public function name() {
 		return $this->data['name'];
 	}
-	
-	function active() {
+
+	public function active() {
 		return $this->data['active'];
 	}
-	
-	function label() {
+
+	public function label() {
 		return $this->data['label'];
 	}
-	
-	static function buildModelsFromResponse($modules) {
+
+	public static function buildModelsFromResponse($modules) {
 		$instances = array();
-		foreach($modules as $moduleData) {
+		foreach ($modules as $moduleData) {
 			$instance = new self();
 			$instance->initData($moduleData);
 			$instances[] = $instance;
 		}
 		return $instances;
 	}
-	
 }
 ?>

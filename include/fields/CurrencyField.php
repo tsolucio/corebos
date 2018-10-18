@@ -386,11 +386,11 @@ class CurrencyField {
 		if ($conversionRate == 0) {
 			return 0;
 		}
-		return $amount / $conversionRate;
+		return (float)$amount / $conversionRate;
 	}
 
 	public static function convertFromDollar($amount, $conversionRate) {
-		return round($amount * $conversionRate, self::$maxNumberOfDecimals);
+		return round((float)$amount * (float)$conversionRate, self::$maxNumberOfDecimals);
 	}
 
 	/** This function returns the amount converted from master currency.

@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-include_once('vtigerversion.php');
+include_once 'vtigerversion.php';
 
 /**
  * Provides utility APIs to work with Vtiger Version detection
@@ -18,7 +18,7 @@ class Vtiger_Version {
 	/**
 	 * Get current version of vtiger in use.
 	 */
-	static function current() {
+	public static function current() {
 		global $vtiger_current_version;
 		return $vtiger_current_version;
 	}
@@ -28,30 +28,34 @@ class Vtiger_Version {
 	 * @param String Version against which comparision to be done
 	 * @param String Condition like ( '=', '!=', '<', '<=', '>', '>=')
 	 */
-	static function check($with_version, $condition='=') {
+	public static function check($with_version, $condition = '=') {
 		$current_version = self::current();
 		//xml node is passed to this method sometimes
-		if(!is_string($with_version)) {
+		if (!is_string($with_version)) {
 			$with_version = (string) $with_version;
 		}
 		$with_version = self::getUpperLimitVersion($with_version);
 		return version_compare($current_version, $with_version, $condition);
 	}
-	
-	static function endsWith($string, $endString) {
+
+	public static function endsWith($string, $endString) {
 		$strLen = strlen($string);
-    	$endStrLen = strlen($endString);
-    	if ($endStrLen > $strLen) return false;
-    	return substr_compare($string, $endString, -$endStrLen) === 0;
+		$endStrLen = strlen($endString);
+		if ($endStrLen > $strLen) {
+			return false;
+		}
+		return substr_compare($string, $endString, -$endStrLen) === 0;
 	}
-	
-	static function getUpperLimitVersion($version) {
-		if(!self::endsWith($version, '.*')) return $version;
-		
+
+	public static function getUpperLimitVersion($version) {
+		if (!self::endsWith($version, '.*')) {
+			return $version;
+		}
+
 		$version = rtrim($version, '.*');
 		$lastVersionPartIndex = strrpos($version, '.');
 		if ($lastVersionPartIndex === false) {
-			$version = ((int) $version) + 1;	
+			$version = ((int) $version) + 1;
 		} else {
 			$lastVersionPart = substr($version, $lastVersionPartIndex+1, strlen($version));
 			$upgradedVersionPart = ((int) $lastVersionPart) + 1;
@@ -59,8 +63,8 @@ class Vtiger_Version {
 		}
 		return $version;
 	}
-	
-	static function updateVersionFile($version) {
+
+	public static function updateVersionFile($version) {
 		// we do not generate this file anymore, it is controlled by git
 		return true;
 		$vfile = file_get_contents('vtigerversion.php');
@@ -69,12 +73,11 @@ class Vtiger_Version {
 		$vfile = str_replace($search, $replace, $vfile);
 		file_put_contents('vtigerversion.php', $vfile);
 	}
-	
-	static function updateVersionDatabase($version) {
+
+	public static function updateVersionDatabase($version) {
 		global $adb;
-		$adb->pquery('UPDATE `vtiger_version` SET `old_version`=`current_version`',array());
-		$adb->pquery('UPDATE `vtiger_version` SET `current_version`=?',array($version));
+		$adb->pquery('UPDATE `vtiger_version` SET `old_version`=`current_version`', array());
+		$adb->pquery('UPDATE `vtiger_version` SET `current_version`=?', array($version));
 	}
-	
 }
 ?>

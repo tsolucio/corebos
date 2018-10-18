@@ -12,11 +12,10 @@ require_once 'include/Webservices/VtigerActorOperation.php';
 class VtigerCompanyDetails extends VtigerActorOperation {
 	public function create($elementType, $element) {
 		$db = PearDatabase::getInstance();
-		$sql = 'select organization_id from vtiger_organizationdetails limit 1';
-		$result = $db->pquery($sql,$params);
+		$result = $db->query('select organization_id from vtiger_organizationdetails limit 1');
 		$rowCount = $db->num_rows($result);
 		if ($rowCount > 0) {
-			$id = $db->query_result($result,0,'organization_id');
+			$id = $db->query_result($result, 0, 'organization_id');
 			$meta = $this->getMeta();
 			$element['id'] = vtws_getId($meta->getEntityId(), $id);
 			return $this->update($element);
@@ -26,7 +25,7 @@ class VtigerCompanyDetails extends VtigerActorOperation {
 		}
 	}
 
-	function handleFileUpload($element) {
+	public function handleFileUpload($element) {
 		$fileFieldList = $this->meta->getFieldListByType('file');
 		foreach ($fileFieldList as $field) {
 			$fieldname = $field->getFieldName();
@@ -41,6 +40,5 @@ class VtigerCompanyDetails extends VtigerActorOperation {
 		$element = $this->handleFileUpload($element);
 		return parent::update($element);
 	}
-
 }
 ?>

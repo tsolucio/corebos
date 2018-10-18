@@ -7,92 +7,94 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('data/CRMEntity.php');
-require_once('data/Tracker.php');
+require_once 'data/CRMEntity.php';
+require_once 'data/Tracker.php';
 
 class SMSNotifierBase extends CRMEntity {
-	var $db, $log; // Used in class functions of CRMEntity
+	public $db;
+	public $log;
 
-	var $table_name = 'vtiger_smsnotifier';
-	var $table_index= 'smsnotifierid';
+	public $table_name = 'vtiger_smsnotifier';
+	public $table_index= 'smsnotifierid';
 
 	/** Indicator if this is a custom module or standard module */
-	var $IsCustomModule = true;
-	var $HasDirectImageField = false;
+	public $IsCustomModule = true;
+	public $HasDirectImageField = false;
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
-	var $customFieldTable = Array('vtiger_smsnotifiercf', 'smsnotifierid');
+	public $customFieldTable = array('vtiger_smsnotifiercf', 'smsnotifierid');
 
 	/**
 	 * Mandatory for Saving, Include tables related to this module.
 	 */
-	var $tab_name = Array('vtiger_crmentity', 'vtiger_smsnotifier', 'vtiger_smsnotifiercf');
+	public $tab_name = array('vtiger_crmentity', 'vtiger_smsnotifier', 'vtiger_smsnotifiercf');
 
 	/**
 	 * Mandatory for Saving, Include tablename and tablekey columnname here.
 	 */
-	var $tab_name_index = Array(
+	public $tab_name_index = array(
 		'vtiger_crmentity' => 'crmid',
 		'vtiger_smsnotifier' => 'smsnotifierid',
-		'vtiger_smsnotifiercf'=>'smsnotifierid');
+		'vtiger_smsnotifiercf'=>'smsnotifierid'
+	);
 
 	/**
 	 * Mandatory for Listing (Related listview)
 	 */
-	var $list_fields = Array (
-		/* Format: Field Label => Array(tablename => columnname) */
+	public $list_fields = array(
+		/* Format: Field Label => array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
-		'Message' => Array('smsnotifier' => 'message'),
-		'Assigned To' => Array('crmentity' => 'smownerid')
+		'Message' => array('smsnotifier' => 'message'),
+		'Assigned To' => array('crmentity' => 'smownerid')
 	);
-	var $list_fields_name = Array(
+	public $list_fields_name = array(
 		/* Format: Field Label => fieldname */
 		'Message' => 'message',
 		'Assigned To' => 'assigned_user_id'
 	);
 
-	// Make the field link to detail view 
-	var $list_link_field = 'message';
+	// Make the field link to detail view
+	public $list_link_field = 'message';
 
 	// For Popup listview and UI type support
-	var $search_fields = Array(
-		/* Format: Field Label => Array(tablename => columnname) */
+	public $search_fields = array(
+		/* Format: Field Label => array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
-		'Message' => Array('smsnotifier' => 'message')
+		'Message' => array('smsnotifier' => 'message')
 	);
-	var $search_fields_name = Array(
+	public $search_fields_name = array(
 		/* Format: Field Label => fieldname */
 		'Message' => 'message'
 	);
 
 	// For Popup window record selection
-	var $popup_fields = Array ('message');
+	public $popup_fields = array('message');
 
 	// Allow sorting on the following (field column names)
-	var $sortby_fields = Array ('message');
+	public $sortby_fields = array('message');
 
 	// For Alphabetical search
-	var $def_basicsearch_col = 'message';
+	public $def_basicsearch_col = 'message';
 
 	// Column value to use on detail view record text display
-	var $def_detailview_recname = 'message';
+	public $def_detailview_recname = 'message';
 
 	// Required Information for enabling Import feature
-	var $required_fields = Array('assigned_user_id'=>1);
+	public $required_fields = array('assigned_user_id'=>1);
 
 	// Callback function list during Importing
-	var $special_functions = Array('set_import_assigned_user');
+	public $special_functions = array('set_import_assigned_user');
 
-	var $default_order_by = 'crmid';
-	var $default_sort_order='DESC';
+	public $default_order_by = 'crmid';
+	public $default_sort_order='DESC';
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
-	var $mandatory_fields = Array('createdtime', 'modifiedtime', 'message');
+	public $mandatory_fields = array('createdtime', 'modifiedtime', 'message');
 
-	function save_module($module) {
+	public function save_module($module) {
 		if ($this->HasDirectImageField) {
-			$this->insertIntoAttachment($this->id,$module);
+			$this->insertIntoAttachment($this->id, $module);
 		}
 	}
 
@@ -101,38 +103,38 @@ class SMSNotifierBase extends CRMEntity {
 	 * @param String Module name
 	 * @param String Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
 	 */
-	function vtlib_handler($modulename, $event_type) {
-		//adds sharing accsess 
-		$SMSNotifierModule  = Vtiger_Module::getInstance('SMSNotifier'); 
+	public function vtlib_handler($modulename, $event_type) {
+		//adds sharing accsess
+		$SMSNotifierModule  = Vtiger_Module::getInstance('SMSNotifier');
 		Vtiger_Access::setDefaultSharing($SMSNotifierModule);
 		$registerLinks = false;
 		$unregisterLinks = false;
-		if($event_type == 'module.postinstall') {
+		if ($event_type == 'module.postinstall') {
 			global $adb;
 			$unregisterLinks = true;
 			$registerLinks = true;
 
 			// Mark the module as Standard module
 			$adb->pquery('UPDATE vtiger_tab SET customized=0 WHERE name=?', array($modulename));
-		} else if($event_type == 'module.disabled') {
+		} elseif ($event_type == 'module.disabled') {
 			$unregisterLinks = true;
-		} else if($event_type == 'module.enabled') {
+		} elseif ($event_type == 'module.enabled') {
 			$registerLinks = true;
-		} else if($event_type == 'module.preuninstall') {
+		} elseif ($event_type == 'module.preuninstall') {
 			// TODO Handle actions when this module is about to be deleted.
-		} else if($event_type == 'module.preupdate') {
+		} elseif ($event_type == 'module.preupdate') {
 			// TODO Handle actions before this module is updated.
-		} else if($event_type == 'module.postupdate') {
+		} elseif ($event_type == 'module.postupdate') {
 			// TODO Handle actions after this module is updated.
 		}
-		if($unregisterLinks) {
+		if ($unregisterLinks) {
 			$smsnotifierModuleInstance = Vtiger_Module::getInstance('SMSNotifier');
 			$smsnotifierModuleInstance->deleteLink("HEADERSCRIPT", "SMSNotifierCommonJS", "modules/SMSNotifier/SMSNotifierCommon.js");
 
 			$leadsModuleInstance = Vtiger_Module::getInstance('Leads');
 			$leadsModuleInstance->deleteLink('LISTVIEWBASIC', 'Send SMS');
 			$leadsModuleInstance->deleteLink('DETAILVIEWBASIC', 'Send SMS');
-			
+
 			$contactsModuleInstance = Vtiger_Module::getInstance('Contacts');
 			$contactsModuleInstance->deleteLink('LISTVIEWBASIC', 'Send SMS');
 			$contactsModuleInstance->deleteLink('DETAILVIEWBASIC', 'Send SMS');
@@ -142,26 +144,26 @@ class SMSNotifierBase extends CRMEntity {
 			$accountsModuleInstance->deleteLink('DETAILVIEWBASIC', 'Send SMS');
 		}
 
-		if($registerLinks) {
+		if ($registerLinks) {
 			$smsnotifierModuleInstance = Vtiger_Module::getInstance('SMSNotifier');
-			$smsnotifierModuleInstance->addLink("HEADERSCRIPT", "SMSNotifierCommonJS", "modules/SMSNotifier/SMSNotifierCommon.js");
+			$smsnotifierModuleInstance->addLink('HEADERSCRIPT', 'SMSNotifierCommonJS', 'modules/SMSNotifier/SMSNotifierCommon.js');
 
 			$leadsModuleInstance = Vtiger_Module::getInstance('Leads');
 
-			$leadsModuleInstance->addLink("LISTVIEWBASIC", "Send SMS", "SMSNotifierCommon.displaySelectWizard(this, '\$MODULE\$');");
-			$leadsModuleInstance->addLink("DETAILVIEWBASIC", "Send SMS", "javascript:SMSNotifierCommon.displaySelectWizard_DetailView('\$MODULE\$', '\$RECORD\$');");
+			$leadsModuleInstance->addLink('LISTVIEWBASIC', 'Send SMS', "SMSNotifierCommon.displaySelectWizard(this, '\$MODULE\$');");
+			$leadsModuleInstance->addLink('DETAILVIEWBASIC', 'Send SMS', "javascript:SMSNotifierCommon.displaySelectWizard_DetailView('\$MODULE\$', '\$RECORD\$');");
 
 			$contactsModuleInstance = Vtiger_Module::getInstance('Contacts');
 			$contactsModuleInstance->addLink('LISTVIEWBASIC', 'Send SMS', "SMSNotifierCommon.displaySelectWizard(this, '\$MODULE\$');");
-			$contactsModuleInstance->addLink("DETAILVIEWBASIC", "Send SMS", "javascript:SMSNotifierCommon.displaySelectWizard_DetailView('\$MODULE\$', '\$RECORD\$');");
+			$contactsModuleInstance->addLink('DETAILVIEWBASIC', 'Send SMS', "javascript:SMSNotifierCommon.displaySelectWizard_DetailView('\$MODULE\$', '\$RECORD\$');");
 
 			$accountsModuleInstance = Vtiger_Module::getInstance('Accounts');
 			$accountsModuleInstance->addLink('LISTVIEWBASIC', 'Send SMS', "SMSNotifierCommon.displaySelectWizard(this, '\$MODULE\$');");
-			$accountsModuleInstance->addLink("DETAILVIEWBASIC", "Send SMS", "javascript:SMSNotifierCommon.displaySelectWizard_DetailView('\$MODULE\$', '\$RECORD\$');");
+			$accountsModuleInstance->addLink('DETAILVIEWBASIC', 'Send SMS', "javascript:SMSNotifierCommon.displaySelectWizard_DetailView('\$MODULE\$', '\$RECORD\$');");
 		}
 	}
 
-	function getListButtons($app_strings) {
+	public function getListButtons($app_strings) {
 		$list_buttons = array();
 
 		if (isPermitted('SMSNotifier', 'Delete', '') == 'yes') {
@@ -176,27 +178,27 @@ class SMSNotifierBase extends CRMEntity {
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
-	// function save_related_module($module, $crmid, $with_module, $with_crmid) { }
+	// public function save_related_module($module, $crmid, $with_module, $with_crmid) { }
 
 	/**
 	 * Handle deleting related module information.
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
-	//function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
+	//public function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
 
 	/**
 	 * Handle getting related list information.
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
-	//function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
+	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 
 	/**
 	 * Handle getting dependents list information.
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
-	//function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
+	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 }
 ?>

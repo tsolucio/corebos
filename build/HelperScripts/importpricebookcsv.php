@@ -24,23 +24,23 @@
 
 $Vtiger_Utils_Log = true;
 
-include_once('vtlib/Vtiger/Module.php');
+include_once 'vtlib/Vtiger/Module.php';
 
 $current_user = Users::getActiveAdminUser();
 
 $file = $argv[1];
 
-if(!file_exists($file) || !is_readable($file)) {
-	echo "No suitable file specified" . PHP_EOL;
+if (!file_exists($file) || !is_readable($file)) {
+	echo 'No suitable file specified' . PHP_EOL;
 	die;
 }
 
-function csv_to_array($file='', $length = 0, $delimiter=',') {
-	$header = NULL;
+function csv_to_array($file = '', $length = 0, $delimiter = ',') {
+	$header = null;
 	$data = array();
-	if (($handle = fopen($file, 'r')) !== FALSE) {
-		while (($row = fgetcsv($handle, $length, $delimiter)) !== FALSE) {
-			if(!$header) {
+	if (($handle = fopen($file, 'r')) !== false) {
+		while (($row = fgetcsv($handle, $length, $delimiter)) !== false) {
+			if (!$header) {
 				$header = $row;
 			} else {
 				$data[] = array_combine($header, $row);
@@ -50,17 +50,17 @@ function csv_to_array($file='', $length = 0, $delimiter=',') {
 	}
 	return $data;
 }
-$inssql = "INSERT INTO vtiger_pricebookproductrel(pricebookid, productid, listprice, usedcurrency) VALUES (?,?,?,?)";
+$inssql = 'INSERT INTO vtiger_pricebookproductrel(pricebookid, productid, listprice, usedcurrency) VALUES (?,?,?,?)';
 $i=0;
 foreach (csv_to_array($file) as $row) {
 	//print_r($row);
-	$rs = $adb->pquery("select currency_id from vtiger_pricebook where pricebookid=?",array($row['pricebookid']));
-	if ($rs and $adb->num_rows($rs)>0) {
+	$rs = $adb->pquery('select currency_id from vtiger_pricebook where pricebookid=?', array($row['pricebookid']));
+	if ($rs && $adb->num_rows($rs)>0) {
 		$curid = $adb->query_result($rs, 0);
 	} else {
 		$curid = 1;
 	}
-	$adb->pquery($inssql,array($row['pricebookid'],$row['productid'],$row['listprice'],$curid));
+	$adb->pquery($inssql, array($row['pricebookid'],$row['productid'],$row['listprice'],$curid));
 	echo $row['pricebookid'].' - '.$row['productid'] . PHP_EOL;
 	//if ($i++==10) break;  // for testing before full launch
 }

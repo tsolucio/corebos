@@ -7,20 +7,18 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/database/PearDatabase.php');
+require_once 'include/database/PearDatabase.php';
 
 global $adb, $mod_strings, $default_charset;
 
-$dbQuery = "SELECT * FROM vtiger_organizationdetails ";
-
-$result = $adb->pquery($dbQuery, array());
-if($adb->num_rows($result) == 1) {
-	$name = @$adb->query_result($result, 0, "logoname");
-	$fileContent = @$adb->query_result($result, 0, "logo");
+$result = $adb->pquery('SELECT * FROM vtiger_organizationdetails', array());
+if ($adb->num_rows($result) == 1) {
+	$name = @$adb->query_result($result, 0, 'logoname');
+	$fileContent = @$adb->query_result($result, 0, 'logo');
 	$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
-	header("Cache-Control: private");
+	header('Cache-Control: private');
 	header("Content-Disposition: attachment; filename=$name");
-	header("Content-Description: PHP Generated Data");
+	header('Content-Description: PHP Generated Data');
 	echo base64_decode($fileContent);
 } else {
 	echo $mod_strings['LBL.RECORD_NOEXIST'];

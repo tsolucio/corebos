@@ -21,54 +21,55 @@ class ModTracker {
 	public static $RESTORED = '3';
 
 	// cache variable
-	public static $__cache_modtracker = array();
+	private static $__cache_modtracker = array();
 
 	/* Entry point will invoke this function no need to act on */
-	function track_view($user_id, $current_module,$id='') {}
+	public function track_view($user_id, $current_module, $id = '') {
+	}
 
 	/**
 	* Invoked when special actions are performed on the module.
 	* @param String Module name
 	* @param String Event Type
 	*/
-	function vtlib_handler($moduleName, $eventType) {
+	public function vtlib_handler($moduleName, $eventType) {
 		global $adb, $currentModule;
 
 		$modtrackerModule = Vtiger_Module::getInstance($currentModule);
-		$otherModuleNames = $this->getModTrackerEnabledModules();
+		$this->getModTrackerEnabledModules();
 
-		if($eventType == 'module.postinstall') {
+		if ($eventType == 'module.postinstall') {
 			$adb->pquery('UPDATE vtiger_tab SET customized=0 WHERE name=?', array($moduleName));
 
 			$fieldid = $adb->getUniqueID('vtiger_settings_field');
 			$blockid = getSettingsBlockId('LBL_OTHER_SETTINGS');
-			$seq_res = $adb->pquery("SELECT max(sequence) AS max_seq FROM vtiger_settings_field WHERE blockid = ?", array($blockid));
+			$seq_res = $adb->pquery('SELECT max(sequence) AS max_seq FROM vtiger_settings_field WHERE blockid = ?', array($blockid));
 			if ($adb->num_rows($seq_res) > 0) {
 				$cur_seq = $adb->query_result($seq_res, 0, 'max_seq');
-				if ($cur_seq != null)	$seq = $cur_seq + 1;
+				if ($cur_seq != null) {
+					$seq = $cur_seq + 1;
+				}
 			}
-
-			$adb->pquery('INSERT INTO vtiger_settings_field(fieldid, blockid, name, iconpath, description, linkto, sequence)
-				VALUES (?,?,?,?,?,?,?)', array($fieldid, $blockid, 'ModTracker', 'set-IcoLoginHistory.gif', 'LBL_MODTRACKER_DESCRIPTION',
-					'index.php?module=ModTracker&action=BasicSettings&parenttab=Settings&formodule=ModTracker', $seq));
-
-		} else if($eventType == 'module.disabled') {
+			$mturl = 'index.php?module=ModTracker&action=BasicSettings&parenttab=Settings&formodule=ModTracker';
+			$adb->pquery(
+				'INSERT INTO vtiger_settings_field(fieldid, blockid, name, iconpath, description, linkto, sequence) VALUES (?,?,?,?,?,?,?)',
+				array($fieldid, $blockid, 'ModTracker', 'set-IcoLoginHistory.gif', 'LBL_MODTRACKER_DESCRIPTION', $mturl, $seq)
+			);
+		} elseif ($eventType == 'module.disabled') {
 			$em = new VTEventsManager($adb);
 			$em->setHandlerInActive('ModTrackerHandler');
 			// De-register Common Javascript
-			$modtrackerModule->deleteLink( 'HEADERSCRIPT', 'ModTrackerCommon_JS');
-
-		} else if($eventType == 'module.enabled') {
+			$modtrackerModule->deleteLink('HEADERSCRIPT', 'ModTrackerCommon_JS');
+		} elseif ($eventType == 'module.enabled') {
 			$em = new VTEventsManager($adb);
 			$em->setHandlerActive('ModTrackerHandler');
 			// Register Common Javascript
-			$modtrackerModule->addLink( 'HEADERSCRIPT', 'ModTrackerCommon_JS', 'modules/ModTracker/ModTrackerCommon.js');
-
-		} else if($eventType == 'module.preuninstall') {
+			$modtrackerModule->addLink('HEADERSCRIPT', 'ModTrackerCommon_JS', 'modules/ModTracker/ModTrackerCommon.js');
+		} elseif ($eventType == 'module.preuninstall') {
 			// TODO Handle actions when this module is about to be deleted.
-		} else if($eventType == 'module.preupdate') {
+		} elseif ($eventType == 'module.preupdate') {
 			// TODO Handle actions before this module is updated.
-		} else if($eventType == 'module.postupdate') {
+		} elseif ($eventType == 'module.postupdate') {
 			// TODO Handle actions after this module is updated.
 		}
 	}
@@ -76,14 +77,14 @@ class ModTracker {
 	/**
 	 * function gives an array of module names for which modtracking is enabled
 	*/
-	function getModTrackerEnabledModules() {
+	public function getModTrackerEnabledModules() {
 		global $adb;
 		$moduleResult = $adb->pquery('SELECT * FROM vtiger_modtracker_tabs', array());
-		for($i=0; $i<$adb->num_rows($moduleResult); $i++) {
+		for ($i=0; $i<$adb->num_rows($moduleResult); $i++) {
 			$tabId = $adb->query_result($moduleResult, $i, 'tabid');
 			$visible = $adb->query_result($moduleResult, $i, 'visible');
 			self::updateCache($tabId, $visible);
-			if($visible == 1) {
+			if ($visible == 1) {
 				$modules[] = getTabModuleName($tabId);
 			}
 		}
@@ -94,16 +95,15 @@ class ModTracker {
 	 *Invoked to disable tracking for the module.
 	 * @param Integer $tabid
 	 */
-	static function disableTrackingForModule($tabid){
+	public static function disableTrackingForModule($tabid) {
 		global $adb;
-		if(!self::isModulePresent($tabid)){
-				$res=$adb->pquery("INSERT INTO vtiger_modtracker_tabs VALUES(?,?)",array($tabid,0));
-				self::updateCache($tabid,0);
-		} else{
-				$updatevisibility = $adb->pquery("UPDATE vtiger_modtracker_tabs SET visible = 0 WHERE tabid = ?", array($tabid));
-				self::updateCache($tabid,0);
+		if (!self::isModulePresent($tabid)) {
+			$adb->pquery('INSERT INTO vtiger_modtracker_tabs VALUES(?,?)', array($tabid, 0));
+		} else {
+			$adb->pquery('UPDATE vtiger_modtracker_tabs SET visible = 0 WHERE tabid = ?', array($tabid));
 		}
-		if(self::isModtrackerLinkPresent($tabid)) {
+		self::updateCache($tabid, 0);
+		if (self::isModtrackerLinkPresent($tabid)) {
 			$moduleInstance=Vtiger_Module::getInstance($tabid);
 			$moduleInstance->deleteLink('DETAILVIEWBASIC', 'View History');
 		}
@@ -113,19 +113,24 @@ class ModTracker {
 	 *Invoked to enable tracking for the module.
 	 * @param Integer $tabid
 	 */
-	static function enableTrackingForModule($tabid){
+	public static function enableTrackingForModule($tabid) {
 		global $adb;
-		if(!self::isModulePresent($tabid)){
-			$res=$adb->pquery("INSERT INTO vtiger_modtracker_tabs VALUES(?,?)",array($tabid,1));
-			self::updateCache($tabid,1);
-		} else{
-			$updatevisibility = $adb->pquery("UPDATE vtiger_modtracker_tabs SET visible = 1 WHERE tabid = ?", array($tabid));
-			self::updateCache($tabid,1);
+		if (!self::isModulePresent($tabid)) {
+			$adb->pquery('INSERT INTO vtiger_modtracker_tabs VALUES(?,?)', array($tabid,1));
+		} else {
+			$adb->pquery('UPDATE vtiger_modtracker_tabs SET visible = 1 WHERE tabid = ?', array($tabid));
 		}
-		if(!self::isModTrackerLinkPresent($tabid)){
+		self::updateCache($tabid, 1);
+		if (!self::isModTrackerLinkPresent($tabid)) {
 			$moduleInstance=Vtiger_Module::getInstance($tabid);
-			$moduleInstance->addLink('DETAILVIEWBASIC', 'View History', "javascript:ModTrackerCommon.showhistory('\$RECORD\$')",'',0,
-				array('path'=>'modules/ModTracker/ModTracker.php','class'=>'ModTracker','method'=>'isViewPermitted'));
+			$moduleInstance->addLink(
+				'DETAILVIEWBASIC',
+				'View History',
+				"javascript:ModTrackerCommon.showhistory('\$RECORD\$')",
+				'',
+				0,
+				array('path'=>'modules/ModTracker/ModTracker.php','class'=>'ModTracker','method'=>'isViewPermitted')
+			);
 		}
 	}
 
@@ -133,59 +138,56 @@ class ModTracker {
 	 *Invoked to check if tracking is enabled or disabled for the module.
 	 * @param String $modulename
 	 */
-	static function isTrackingEnabledForModule($modulename){
+	public static function isTrackingEnabledForModule($modulename) {
 		global $adb;
 		$tabid = getTabid($modulename);
-		if(!self::getVisibilityForModule($tabid)) {
-			$query = $adb->pquery("SELECT * FROM vtiger_modtracker_tabs WHERE vtiger_modtracker_tabs.visible = 1
-								AND vtiger_modtracker_tabs.tabid=?", array($tabid));
+		if (!self::getVisibilityForModule($tabid)) {
+			$query = $adb->pquery('SELECT * FROM vtiger_modtracker_tabs WHERE vtiger_modtracker_tabs.visible=1 AND vtiger_modtracker_tabs.tabid=?', array($tabid));
 			$rows = $adb->num_rows($query);
-			$tabid=$adb->query_result($query,0,'tabid');
-			$visible=$adb->query_result($query,0,'visible');
-			if($rows<1){
-				self::updateCache($tabid,$visible);
+			$tabid=$adb->query_result($query, 0, 'tabid');
+			$visible=$adb->query_result($query, 0, 'visible');
+			if ($rows<1) {
+				self::updateCache($tabid, $visible);
 				return false;
-			} else{
-				self::updateCache($tabid,$visible);
+			} else {
+				self::updateCache($tabid, $visible);
 				return true;
 			}
-		} else
+		} else {
 			return true;
+		}
 	}
 
 	/**
 	 *Invoked to check if the module is present in the table or not.
 	 * @param Integer $tabid
 	 */
-	static function isModulePresent($tabid){
+	public static function isModulePresent($tabid) {
 		global $adb;
-		if(!self::checkModuleInModTrackerCache($tabid)){
-			$query=$adb->pquery("SELECT * FROM vtiger_modtracker_tabs WHERE tabid = ?",array($tabid));
+		if (!self::checkModuleInModTrackerCache($tabid)) {
+			$query=$adb->pquery('SELECT * FROM vtiger_modtracker_tabs WHERE tabid = ?', array($tabid));
 			$rows = $adb->num_rows($query);
-			if($rows){
-				$tabid=$adb->query_result($query,0,'tabid');
-				$visible=$adb->query_result($query,0,'visible');
-				self::updateCache($tabid,$visible);
+			if ($rows) {
+				$tabid=$adb->query_result($query, 0, 'tabid');
+				$visible=$adb->query_result($query, 0, 'visible');
+				self::updateCache($tabid, $visible);
 				return true;
-			} else
+			} else {
 				return false;
-		} else
+			}
+		} else {
 			return true;
+		}
 	}
 
 	/**
 	 *Invoked to check if ModTracker links are enabled for the module.
 	 * @param Integer $tabid
 	 */
-	static function isModtrackerLinkPresent($tabid){
+	public static function isModtrackerLinkPresent($tabid) {
 		global $adb;
-		$query1=$adb->pquery("SELECT * FROM vtiger_links WHERE linktype='DETAILVIEWBASIC' AND
-							linklabel = 'View History' AND tabid = ?",array($tabid));
-		$row=$adb->num_rows($query1);
-		if($row>=1)
-			return true;
-		else
-			return false;
+		$rs=$adb->pquery("SELECT * FROM vtiger_links WHERE linktype='DETAILVIEWBASIC' AND linklabel = 'View History' AND tabid = ?", array($tabid));
+		return ($adb->num_rows($rs)>=1);
 	}
 
 	/**
@@ -193,7 +195,7 @@ class ModTracker {
 	 * @param Integer $tabid
 	 * @param Boolean $visible
 	 */
-	static function updateCache($tabid,$visible){
+	public static function updateCache($tabid, $visible) {
 		self::$__cache_modtracker[$tabid] = array(
 			'tabid'   => $tabid,
 			'visible' => $visible
@@ -204,19 +206,20 @@ class ModTracker {
 	 *Invoked to check the ModTracker cache.
 	 * @param Integer $tabid
 	 */
-	static function checkModuleInModTrackerCache($tabid){
-		if(isset(self::$__cache_modtracker[$tabid])) {
+	public static function checkModuleInModTrackerCache($tabid) {
+		if (isset(self::$__cache_modtracker[$tabid])) {
 			return true;
-		} else
+		} else {
 			return false;
+		}
 	}
 
 	/**
 	 *Invoked to fetch the visibility for the module from the cache.
 	 * @param Integer $tabid
 	 */
-	static function getVisibilityForModule($tabid){
-		if(isset(self::$__cache_modtracker[$tabid])) {
+	public static function getVisibilityForModule($tabid) {
+		if (isset(self::$__cache_modtracker[$tabid])) {
 			return self::$__cache_modtracker[$tabid]['visible'];
 		}
 		return false;
@@ -228,47 +231,49 @@ class ModTracker {
 	 * @param <type> $user
 	 * @param <type> $limit
 	 */
-	function getChangedRecords($uniqueId, $mtime, $limit = 100) {
-		global $current_user, $adb;
+	public function getChangedRecords($uniqueId, $mtime, $limit = 100) {
+		global $adb;
 		$datetime = date('Y-m-d H:i:s', $mtime);
 		$accessibleModules = $this->getModTrackerEnabledModules();
 
-		if(empty($accessibleModules)) throw new Exception('Modtracker not enabled for any modules');
+		if (empty($accessibleModules)) {
+			throw new Exception('Modtracker not enabled for any modules');
+		}
 
-		$query = "SELECT id, module, modifiedtime, vtiger_crmentity.crmid, smownerid, vtiger_modtracker_basic.status
+		$query = 'SELECT id, module, modifiedtime, vtiger_crmentity.crmid, smownerid, vtiger_modtracker_basic.status
 			FROM vtiger_modtracker_basic
 			INNER JOIN vtiger_crmentity ON vtiger_modtracker_basic.crmid = vtiger_crmentity.crmid
 				AND vtiger_modtracker_basic.changedon = vtiger_crmentity.modifiedtime
-			WHERE id > ? AND changedon >= ? AND module IN(".generateQuestionMarks($accessibleModules).")
-			ORDER BY id";
+			WHERE id > ? AND changedon >= ? AND module IN ('.generateQuestionMarks($accessibleModules).') ORDER BY id';
 
 		$params = array($uniqueId, $datetime);
-		foreach($accessibleModules as $entityModule) {
+		foreach ($accessibleModules as $entityModule) {
 			$params[] = $entityModule;
 		}
 
-		if($limit != false)
+		if ($limit != false) {
 			$query .=" LIMIT $limit";
+		}
 
 		$result = $adb->pquery($query, $params);
 
 		$modTime = array();
 		$rows = $adb->num_rows($result);
 
-		for($i=0;$i<$rows;$i++) {
-			$status = $adb->query_result($result,$i,'status');
+		for ($i=0; $i<$rows; $i++) {
+			$status = $adb->query_result($result, $i, 'status');
 
-			$record['uniqueid']     = $adb->query_result($result,$i,'id');
-			$record['modifiedtime'] = $adb->query_result($result,$i,'modifiedtime');
-			$record['module']       = $adb->query_result($result,$i,'module');
-			$record['crmid']        = $adb->query_result($result,$i,'crmid');
-			$record['assigneduserid'] = $adb->query_result($result,$i,'smownerid');
+			$record['uniqueid']     = $adb->query_result($result, $i, 'id');
+			$record['modifiedtime'] = $adb->query_result($result, $i, 'modifiedtime');
+			$record['module']       = $adb->query_result($result, $i, 'module');
+			$record['crmid']        = $adb->query_result($result, $i, 'crmid');
+			$record['assigneduserid'] = $adb->query_result($result, $i, 'smownerid');
 
-			if($status == ModTracker::$DELETED) {
+			if ($status == ModTracker::$DELETED) {
 				$deletedRecords[] = $record;
-			} elseif($status == ModTracker::$CREATED) {
+			} elseif ($status == ModTracker::$CREATED) {
 				$createdRecords[] = $record;
-			} elseif($status == ModTracker::$UPDATED) {
+			} elseif ($status == ModTracker::$UPDATED) {
 				$updatedRecords[] = $record;
 			}
 
@@ -276,17 +281,18 @@ class ModTracker {
 			$uniqueIds[] = $record['uniqueid'];
 		}
 
-		if(!empty($uniqueIds))
+		if (!empty($uniqueIds)) {
 			$maxUniqueId = max($uniqueIds);
+		}
 
-		if(empty($maxUniqueId)) {
+		if (empty($maxUniqueId)) {
 			$maxUniqueId = $uniqueId;
 		}
 
-		if(!empty($modTime)) {
+		if (!empty($modTime)) {
 			$maxModifiedTime = max($modTime);
 		}
-		if(!$maxModifiedTime) {
+		if (!$maxModifiedTime) {
 			$maxModifiedTime = $datetime;
 		}
 
@@ -294,17 +300,16 @@ class ModTracker {
 		$output['updated'] = $updatedRecords;
 		$output['deleted'] = $deletedRecords;
 
-		$moreQuery = "SELECT * FROM vtiger_modtracker_basic WHERE id > ? AND changedon >= ? AND module
-			IN(".generateQuestionMarks($accessibleModules).")";
+		$moreQuery = 'SELECT * FROM vtiger_modtracker_basic WHERE id > ? AND changedon >= ? AND module IN ('.generateQuestionMarks($accessibleModules).')';
 
 		$param = array($maxUniqueId, $maxModifiedTime);
-		foreach($accessibleModules as $entityModule) {
+		foreach ($accessibleModules as $entityModule) {
 			$param[] = $entityModule;
 		}
 
 		$result = $adb->pquery($moreQuery, $param);
 
-		if($adb->num_rows($result)>0) {
+		if ($adb->num_rows($result)>0) {
 			$output['more'] = true;
 		} else {
 			$output['more'] = false;
@@ -312,12 +317,12 @@ class ModTracker {
 
 		$output['uniqueid'] = $maxUniqueId;
 
-		if(!$maxModifiedTime) {
+		if (!$maxModifiedTime) {
 			$modifiedtime = $mtime;
 		} else {
 			$modifiedtime = vtws_getSeconds($maxModifiedTime);
 		}
-		if(is_string($modifiedtime)) {
+		if (is_string($modifiedtime)) {
 			$modifiedtime = (int)$modifiedtime;
 		}
 		$output['lastModifiedTime'] = $modifiedtime;
@@ -325,17 +330,23 @@ class ModTracker {
 		return $output;
 	}
 
-	static function getRecordFieldChanges($crmid, $time) {
+	public static function getRecordFieldChanges($crmid, $time) {
 		global $adb;
 		$date = date('Y-m-d H:i:s', $time);
 
-		$fieldResult = $adb->pquery('SELECT * FROM vtiger_modtracker_detail
-			INNER JOIN vtiger_modtracker_basic ON vtiger_modtracker_basic.id = vtiger_modtracker_detail.id
-			WHERE crmid = ? AND changedon >= ?', array($crmid, $date));
-		for($i=0; $i<$adb->num_rows($fieldResult); $i++) {
+		$fieldResult = $adb->pquery(
+			'SELECT *
+				FROM vtiger_modtracker_detail
+				INNER JOIN vtiger_modtracker_basic ON vtiger_modtracker_basic.id = vtiger_modtracker_detail.id
+				WHERE crmid = ? AND changedon >= ?',
+			array($crmid, $date)
+		);
+		for ($i=0; $i<$adb->num_rows($fieldResult); $i++) {
 			$fieldName = $adb->query_result($fieldResult, $i, 'fieldname');
-			if($fieldName == 'record_id' || $fieldName == 'record_module' ||
-				$fieldName == 'createdtime') continue;
+			if ($fieldName == 'record_id' || $fieldName == 'record_module' ||
+				$fieldName == 'createdtime') {
+				continue;
+			}
 
 			$field['postvalue'] = $adb->query_result($fieldResult, $i, 'postvalue');
 			$field['prevalue'] = $adb->query_result($fieldResult, $i, 'prevalue');
@@ -344,10 +355,10 @@ class ModTracker {
 		return $fields;
 	}
 
-	static function isViewPermitted($linkData) {
+	public static function isViewPermitted($linkData) {
 		$moduleName = $linkData->getModule();
 		$recordId = $linkData->getInputParameter('record');
-        return isPermitted($moduleName, 'DetailView', $recordId) == 'yes';
+		return isPermitted($moduleName, 'DetailView', $recordId) == 'yes';
 	}
 }
 ?>

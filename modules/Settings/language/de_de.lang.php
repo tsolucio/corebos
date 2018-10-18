@@ -268,6 +268,8 @@ $mod_strings = array(
 	'LBL_QUOTE_STAGE'=>'Angebotsstufe',
 	'LBL_CARRIER'=>'Transporteur',
 	'LBL_TAXCLASS'=>'Steuerklasse',
+	'LBL_RETENTION'=>'Retention',
+	'LBL_PERCENTAGE'=>'Percentage',
 	'LBL_MY_DETAILS'=>'Meine Details',
 	'LBL_MY_MAIL_SERVER_DET'=>'Meine Mailserver Details',
 	'LBL_EMAIL_ID'=>'Email ID',
@@ -806,6 +808,8 @@ $mod_strings = array(
 	'LBL_TASKS'=>'Aufgaben',
 	'LBL_NEW_TASK_BUTTON_LABEL'=>'neue Aufgabe',
 	'LBL_TASK'=>'Aufgabe',
+	'LBL_DELAY' => 'Delay',
+
 	'LBL_MANDATORY_FIELDS'=>'Pflichtfelder',
 	'LBL_MANDATORY_FIELDS_DESCRIPTION'=>'Verwalte die Pflichtfelder für alle Module',
 	// Module Sequence Numbering

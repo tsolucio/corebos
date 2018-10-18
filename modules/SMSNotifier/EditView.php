@@ -7,11 +7,11 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('Smarty_setup.php');
-require_once("include/utils/utils.php");
-require_once("modules/com_vtiger_workflow/VTWorkflowUtils.php");
+require_once 'Smarty_setup.php';
+require_once 'include/utils/utils.php';
+require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 
 // Operation to be restricted for non-admin users.
 global $current_user;
-	$smarty->display(vtlib_getModuleTemplate('Vtiger','OperationNotPermitted.tpl'));	
+$smarty->display(vtlib_getModuleTemplate('Vtiger', 'OperationNotPermitted.tpl'));
 ?>

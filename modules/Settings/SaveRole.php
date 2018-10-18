@@ -7,59 +7,44 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
-require_once('include/database/PearDatabase.php');
+require_once 'include/database/PearDatabase.php';
 global $adb, $mod_strings;
 $rolename = vtlib_purify($_REQUEST['roleName']);
 $mode = vtlib_purify($_REQUEST['mode']);
-if(isset($_REQUEST['dup_check']) && $_REQUEST['dup_check']!='')
-{
-	if($mode != 'edit')
-	{
+if (isset($_REQUEST['dup_check']) && $_REQUEST['dup_check']!='') {
+	if ($mode != 'edit') {
 		$query = 'select rolename from vtiger_role where rolename=?';
 		$params = array($rolename);
-	}
-	else
-	{
+	} else {
 		$roleid= vtlib_purify($_REQUEST['roleid']);
 		$query = 'select rolename from vtiger_role where rolename=? and roleid !=?';
 		$params = array($rolename, $roleid);
 	}
 	$result = $adb->pquery($query, $params);
-	if($adb->num_rows($result) > 0)
-	{
+	if ($adb->num_rows($result) > 0) {
 		echo $mod_strings['LBL_ROLENAME_EXIST'];
 		die;
-	}else
-	{
+	} else {
 		echo 'SUCCESS';
 		die;
 	}
-
 }
 $parentRoleId= vtlib_purify($_REQUEST['parent']);
 //Inserting values into Role Table
-if(isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'edit')
-{
+if (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'edit') {
 	$roleId = vtlib_purify($_REQUEST['roleid']);
-	$selected_col_string = 	$_REQUEST['selectedColumnsString'];
-	$profile_array = explode(';',$selected_col_string);
-	updateRole($roleId,$rolename,$profile_array);
-		
-}
-elseif(isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'create')
-{
+	$selected_col_string = $_REQUEST['selectedColumnsString'];
+	$profile_array = explode(';', $selected_col_string);
+	updateRole($roleId, $rolename, $profile_array);
+} elseif (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'create') {
 	$selected_col_string = vtlib_purify($_REQUEST['selectedColumnsString']);
-	$profile_array = explode(';',$selected_col_string);
+	$profile_array = explode(';', $selected_col_string);
 	//Inserting into vtiger_role Table
-	$roleId = createRole($rolename,$parentRoleId,$profile_array);
-	if($roleId != '')
-	{
-		insertRole2Picklist($roleId,$parentRoleId);
+	$roleId = createRole($rolename, $parentRoleId, $profile_array);
+	if ($roleId != '') {
+		insertRole2Picklist($roleId, $parentRoleId);
 	}
-	 	
 }
 
-$loc = "Location: index.php?action=listroles&module=Settings&parenttab=Settings";
-header($loc);
+header('Location: index.php?action=listroles&module=Settings&parenttab=Settings');
 ?>

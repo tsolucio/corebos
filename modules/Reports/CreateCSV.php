@@ -27,6 +27,16 @@ $fname = tempnam($root_directory.$tmp_dir, 'merge2.csv');
 # Write out the data
 $reportid = vtlib_purify($_REQUEST['record']);
 $oReportRun = new ReportRun($reportid);
+if (isPermitted($oReportRun->primarymodule, 'Export', '')!='yes') {
+	$log->debug('You do not have permission to export Report');
+	require_once 'Smarty_setup.php';
+	$smarty = new vtigerCRM_Smarty();
+	global $app_strings;
+	$smarty->assign('APP', $app_strings);
+	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
+	exit;
+}
+
 if (empty($_REQUEST['advft_criteria'])) {
 	$advft_criteria = '';
 } else {

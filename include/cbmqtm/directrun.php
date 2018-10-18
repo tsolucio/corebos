@@ -16,7 +16,7 @@
  *  Module       : coreBOS Message Queue and Task Manager Manager
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-include_once('vtlib/Vtiger/Module.php');
+include_once 'vtlib/Vtiger/Module.php';
 global $current_user;
 $current_user = Users::getActiveAdminUser();
 
@@ -24,9 +24,9 @@ $cb_mq = coreBOS_MQTM::getInstance();
 $callbacks = $cb_mq->getSubscriptionWakeUps();
 foreach ($callbacks as $callback) {
 	if (!empty($callback['file'])) {
-		include_once($callback['file']);
+		include_once $callback['file'];
 	}
-	if (!empty($callback['class']) and !empty($callback['method'])) {
+	if (!empty($callback['class']) && !empty($callback['method'])) {
 		$nc = new $callback['class'];
 		$nc->{$callback['method']}();
 	} elseif (!empty($callback['method'])) {

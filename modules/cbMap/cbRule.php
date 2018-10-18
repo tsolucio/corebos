@@ -20,7 +20,7 @@
 
 class coreBOS_Rule {
 
-	public static $supportedBusinessMaps = array('Condition Query','Condition Expression');
+	private static $supportedBusinessMaps = array('Condition Query', 'Condition Expression');
 
 	public static function evaluate($conditionid, $context) {
 		global $log,$adb,$current_user;
@@ -63,7 +63,7 @@ class coreBOS_Rule {
 			$cbmap = cbMap::getMapByID($cbmapid);
 		}
 		if (empty($cbmap) || !in_array($cbmap->column_fields['maptype'], self::$supportedBusinessMaps)) {
-			throw new WebServiceException(WebServiceErrorCode::$INVALID_BUSINESSMAP, 'Invalid Business Map identifier.');
+			throw new WebServiceException(WebServiceErrorCode::$INVALID_BUSINESSMAP, 'Invalid Business Map identifier: '.$conditionid);
 		}
 
 		// merge fixed context array values

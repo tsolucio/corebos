@@ -13,17 +13,16 @@
 * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
 *************************************************************************************************/
 
-function vtws_getfilterfields($module, $user){
-	global $log,$adb,$default_language;
-	$log->debug("Entering function vtws_getfilterfields");
+function vtws_getfilterfields($module, $user) {
+	global $log;
+	$log->debug('Entering function vtws_getfilterfields');
 
-	include_once("modules/$module/$module.php");
-	$focus = new $module();
+	$focus = CRMEntity::getInstance($module);
 
 	$linkfields=array($focus->list_link_field);
-	if ($module=='Contacts' or $module=='Leads')
-		$linkfields=array('firstname','lastname');
-
+	if ($module=='Contacts' || $module=='Leads') {
+		$linkfields=array('firstname', 'lastname');
+	}
 	$customView = new CustomView($module);
 	$viewid = $customView->getViewId($module);
 	$viewinfo = $customView->getColumnsListByCvid($viewid);
@@ -38,5 +37,4 @@ function vtws_getfilterfields($module, $user){
 		'linkfields'=>$linkfields,
 	);
 }
-
 ?>

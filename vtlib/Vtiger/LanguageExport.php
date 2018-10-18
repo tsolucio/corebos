@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once('vtlib/Vtiger/Package.php');
+include_once 'vtlib/Vtiger/Package.php';
 
 /**
  * Provides API to package vtiger CRM language files.
@@ -20,7 +20,7 @@ class Vtiger_LanguageExport extends Vtiger_Package {
 	/**
 	 * Constructor
 	 */
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 	}
 
@@ -28,7 +28,7 @@ class Vtiger_LanguageExport extends Vtiger_Package {
 	 * Generate unique id for insertion
 	 * @access private
 	 */
-	function __getUniqueId() {
+	private function __getUniqueId() {
 		global $adb;
 		return $adb->getUniqueID(self::TABLENAME);
 	}
@@ -37,9 +37,9 @@ class Vtiger_LanguageExport extends Vtiger_Package {
 	 * Initialize Language Schema
 	 * @access private
 	 */
-	static function __initSchema() {
+	private static function __initSchema() {
 		$hastable = Vtiger_Utils::CheckTable(self::TABLENAME);
-		if(!$hastable) {
+		if (!$hastable) {
 			Vtiger_Utils::CreateTable(
 				self::TABLENAME,
 				'(id INT NOT NULL PRIMARY KEY,
@@ -47,10 +47,12 @@ class Vtiger_LanguageExport extends Vtiger_Package {
 				true
 			);
 			global $languages, $adb;
-			foreach($languages as $langkey=>$langlabel) {
+			foreach ($languages as $langkey => $langlabel) {
 				$uniqueid = self::__getUniqueId();
-				$adb->pquery('INSERT INTO '.self::TABLENAME.'(id,name,prefix,label,lastupdated,active) VALUES(?,?,?,?,?,?)',
-					Array($uniqueid, $langlabel,$langkey,$langlabel,date('Y-m-d H:i:s',time()), 1));
+				$adb->pquery(
+					'INSERT INTO '.self::TABLENAME.'(id,name,prefix,label,lastupdated,active) VALUES(?,?,?,?,?,?)',
+					array($uniqueid, $langlabel,$langkey,$langlabel,date('Y-m-d H:i:s', time()), 1)
+				);
 			}
 		}
 	}
@@ -58,44 +60,52 @@ class Vtiger_LanguageExport extends Vtiger_Package {
 	/**
 	 * Register language pack information.
 	 */
-	static function register($prefix, $label, $name='', $isdefault=false, $isactive=true, $overrideCore=false) {
+	public static function register($prefix, $label, $name = '', $isdefault = false, $isactive = true, $overrideCore = false) {
 		self::__initSchema();
 
 		$prefix = trim($prefix);
 		// We will not allow registering core language unless forced
-		if(strtolower($prefix) == 'en_us' && $overrideCore == false) return;
+		if (strtolower($prefix) == 'en_us' && $overrideCore == false) {
+			return;
+		}
 
 		$useisdefault = ($isdefault)? 1 : 0;
 		$useisactive  = ($isactive)?  1 : 0;
 
 		global $adb;
-		$checkres = $adb->pquery('SELECT * FROM '.self::TABLENAME.' WHERE prefix=?', Array($prefix));
+		$checkres = $adb->pquery('SELECT * FROM '.self::TABLENAME.' WHERE prefix=?', array($prefix));
 		$datetime = date('Y-m-d H:i:s');
-		if($adb->num_rows($checkres)) {
+		if ($adb->num_rows($checkres)) {
 			$id = $adb->query_result($checkres, 0, 'id');
-			$adb->pquery('UPDATE '.self::TABLENAME.' set label=?, name=?, lastupdated=?, isdefault=?, active=? WHERE id=?',
-				Array($label, $name, $datetime, $useisdefault, $useisactive, $id));
+			$adb->pquery(
+				'UPDATE '.self::TABLENAME.' set label=?, name=?, lastupdated=?, isdefault=?, active=? WHERE id=?',
+				array($label, $name, $datetime, $useisdefault, $useisactive, $id)
+			);
 		} else {
 			$uniqueid = self::__getUniqueId();
-			$adb->pquery('INSERT INTO '.self::TABLENAME.' (id,name,prefix,label,lastupdated,isdefault,active) VALUES(?,?,?,?,?,?,?)',
-				Array($uniqueid, $name, $prefix, $label, $datetime, $useisdefault, $useisactive));
+			$adb->pquery(
+				'INSERT INTO '.self::TABLENAME.' (id,name,prefix,label,lastupdated,isdefault,active) VALUES(?,?,?,?,?,?,?)',
+				array($uniqueid, $name, $prefix, $label, $datetime, $useisdefault, $useisactive)
+			);
 		}
-		self::log("Registering Language $label [$prefix] ... DONE");		
+		self::log("Registering Language $label [$prefix] ... DONE");
 	}
 
 	/**
 	 * De-Register language pack information
 	 * @param String Language prefix like (de_de) etc
 	 */
-	static function deregister($prefix) {
+	public static function deregister($prefix) {
 		$prefix = trim($prefix);
 		// We will not allow deregistering core language
-		if(strtolower($prefix) == 'en_us') return;
+		if (strtolower($prefix) == 'en_us') {
+			return;
+		}
 
 		self::__initSchema();
 
 		global $adb;
-		$checkres = $adb->pquery('DELETE FROM '.self::TABLENAME.' WHERE prefix=?', Array($prefix));
+		$adb->pquery('DELETE FROM '.self::TABLENAME.' WHERE prefix=?', array($prefix));
 		self::log("Deregistering Language $prefix ... DONE");
 	}
 
@@ -103,17 +113,20 @@ class Vtiger_LanguageExport extends Vtiger_Package {
 	 * Get all the language information
 	 * @param Boolean true to include in-active languages also, false (default)
 	 */
-	static function getAll($includeInActive=false) {
+	public static function getAll($includeInActive = false) {
 		global $adb;
 		$hastable = Vtiger_Utils::CheckTable(self::TABLENAME);
 
-		$languageinfo = Array();
+		$languageinfo = array();
 
-		if($hastable) {
-			if($includeInActive) $result = $adb->pquery('SELECT * FROM '.self::TABLENAME, array());
-			else $result = $adb->pquery('SELECT * FROM '.self::TABLENAME . ' WHERE active=?', array(1));
+		if ($hastable) {
+			if ($includeInActive) {
+				$result = $adb->pquery('SELECT * FROM '.self::TABLENAME, array());
+			} else {
+				$result = $adb->pquery('SELECT * FROM '.self::TABLENAME . ' WHERE active=?', array(1));
+			}
 
-			for($index = 0; $index < $adb->num_rows($result); ++$index) {
+			for ($index = 0; $index < $adb->num_rows($result); ++$index) {
 				$resultrow = $adb->fetch_array($result);
 				$prefix = $resultrow['prefix'];
 				$label  = $resultrow['label'];
@@ -121,7 +134,7 @@ class Vtiger_LanguageExport extends Vtiger_Package {
 			}
 		} else {
 			global $languages;
-			foreach($languages as $prefix=>$label) {
+			foreach ($languages as $prefix => $label) {
 				$languageinfo[$prefix] = $label;
 			}
 		}

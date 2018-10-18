@@ -184,6 +184,7 @@ jQuery(document).ready(function(){
 		defaultView: '{/literal}{$DEFAULTVIEW}{literal}',
 		allDayText: {/literal}'{$MOD.LBL_ALL_DAY}'{literal},
 
+		weekNumbers: {/literal}{$Calendar_Show_WeekNumber}{literal},
 		weekends: {/literal}{$CALENDAR_SETTINGS.show_weekends}{literal},
 		minTime:  "{/literal}{$CALENDAR_SETTINGS.start_hour}{literal}",
 		maxTime:  "{/literal}{$CALENDAR_SETTINGS.end_hour}{literal}",
@@ -199,13 +200,13 @@ jQuery(document).ready(function(){
 
 {/literal}
 
-        {if $IS_24 eq "true"}
-            timeFormat: 'H:mm',
-            slotLabelFormat: 'H(:mm)',
-        {else}
-            timeFormat: 'h:mma',
-            slotLabelFormat: 'h(:mm)a',
-        {/if}
+		{if $IS_24 eq "true"}
+			timeFormat: 'H:mm',
+			slotLabelFormat: 'H(:mm)',
+		{else}
+			timeFormat: 'h:mma',
+			slotLabelFormat: 'h(:mm)a',
+		{/if}
 
         monthNames: ['{$CMOD.cal_month_long.1|escape}', '{$CMOD.cal_month_long.2|escape}', '{$CMOD.cal_month_long.3|escape}', '{$CMOD.cal_month_long.4|escape}', '{$CMOD.cal_month_long.5|escape}', '{$CMOD.cal_month_long.6|escape}', '{$CMOD.cal_month_long.7|escape}', '{$CMOD.cal_month_long.8|escape}', '{$CMOD.cal_month_long.9|escape}', '{$CMOD.cal_month_long.10|escape}', '{$CMOD.cal_month_long.11|escape}', '{$CMOD.cal_month_long.12|escape}'],
 
@@ -442,7 +443,6 @@ function changeCalendarEvents(el){
 function hideITSEventInfo(){
 	jQuery('#event_info').css('display', 'none');
 	jQuery('#event_info_content').html('');
-
 }
 {/literal}
 </script>
@@ -591,7 +591,7 @@ function hideITSEventInfo(){
 </form>
 <script>
 function changeCalendarUserView(type) {ldelim}
-	if(type == "all") {ldelim}
+	if (type == 'all') {ldelim}
 		{foreach name=act_types2 item=typedata key=typeid from=$ACTIVITYTYPES}
 			jQuery('#event_type_{$typeid}').css('color', '#000000');
 			jQuery('#event_type_{$typeid}').css('background-color', '#ffffff');

@@ -8,7 +8,7 @@
 * All Rights Reserved.
 ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'PBX Manager' => 'PBX Manager',
 	'PBXManager' => 'PBX Manager',
 	'SINGLE_PBXManager' => 'PBX Manager',
@@ -32,5 +32,4 @@ $mod_strings = Array(
 	'received' => 'Received',
 	'OutgoingCall' => 'Outgoing call from',
 );
-
 ?>

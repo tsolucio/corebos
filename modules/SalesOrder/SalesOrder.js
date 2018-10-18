@@ -9,15 +9,17 @@
 
 // Show stock or not
 var hide_stock = 'no';
-ExecuteFunctions('ismoduleactive','checkmodule=Products').then(function (response) {
-	var obj = JSON.parse(response);
-	if (obj.isactive == true) {
+document.addEventListener('DOMContentLoaded', function(event) {
+	ExecuteFunctions('ismoduleactive', 'checkmodule=Products').then(function (response) {
+		var obj = JSON.parse(response);
+		if (obj.isactive == true) {
+			hide_stock = 'no';
+		} else {
+			hide_stock = 'yes';
+		}
+	}, function (error) {
 		hide_stock = 'no';
-	} else {
-		hide_stock = 'yes';
-	}
-}, function (error) {
-	hide_stock = 'no';
+	});
 });
 
 function set_return(product_id, product_name) {
@@ -58,7 +60,7 @@ function set_return_todo(product_id, product_name) {
 	}
 }
 
-function SalesOrdersetValueFromCapture(recordid,value,target_fieldname) {
+function SalesOrdersetValueFromCapture(recordid, value, target_fieldname) {
 	if (target_fieldname=='tandc') {
 		var url = 'module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getFieldValuesFromRecord&getTheseFields=tandc&getFieldValuesFrom='+recordid;
 		jQuery.ajax({

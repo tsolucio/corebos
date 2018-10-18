@@ -1256,4 +1256,32 @@
 	<classname>addNewReportTypeColumn</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mikelkasneci</author>
+	<description>Make ConvertInventoryModule to appear and on non inventory modules</description>
+	<filename>build/changeSets/2018/modifyConvertInventoryModuleTask.php</filename>
+	<classname>modifyConvertInventoryModuleTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+       <author>etlevabiba</author>
+       <description>Create contentjson field for cbMap Module </description>
+       <filename>build/changeSets/2018/add_contentjsonfieldcbMap.php</filename>
+       <classname>createcontentjsonfield</classname>
+       <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+       <author>etlevabiba</author>
+       <description>Create a new vtlib module : BusinessActions Module </description>
+       <filename>build/changeSets/2018/create_modBusinessActions.php</filename>
+       <classname>modbusinessactions</classname>
+       <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mikelkasneci</author>
+	<description>Change type of setting_value column to TEXT</description>
+	<filename>build/changeSets/2018/updateSettingValueField.php</filename>
+	<classname>updateSettingValueField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

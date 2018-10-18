@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF8">
+<meta name="robots" content="noindex">
 <link REL="SHORTCUT ICON" HREF="{$FAVICON}">
 <title>{'Site Maintenance'|@getTranslatedString:'Settings'}</title>
 <style>

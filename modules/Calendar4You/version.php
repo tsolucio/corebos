@@ -6,5 +6,4 @@
  * Portions created by IT-Solutions4You s.r.o. are Copyright(C) IT-Solutions4You s.r.o.
  * All Rights Reserved.
  ********************************************************************************/
- 
-$version = "540.3";
+$version = '540.3';

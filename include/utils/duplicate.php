@@ -17,7 +17,6 @@
  *  Version      : 5.4.0
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-
 require_once 'include/utils/utils.php';
 require_once 'include/utils/CommonUtils.php';
 
@@ -45,7 +44,7 @@ function duplicaterec($currentModule, $record_id, $bmap) {
 	if ($cbMapid && $cbMap->DuplicateRelations()->DuplicateDirectRelations()) {
 		$invmods = getInventoryModules();
 		foreach ($focus->column_fields as $fieldname => $value) {
-			$sql = 'SELECT * FROM vtiger_field WHERE columnname = ? AND uitype IN (10,51,57,73,76,75,81,78,80)';
+			$sql = 'SELECT * FROM vtiger_field WHERE columnname = ? AND uitype IN (10,51,57,73,76,78,80)';
 			$result = $adb->pquery($sql, array($fieldname));
 			if ($adb->num_rows($result) == 1 && !empty($value)) {
 				$module = getSalesEntityType($value);
@@ -135,8 +134,7 @@ function get_related_lists($curr_tab_id, $maped_relations) {
 	// Get related list
 	global $adb;
 	$related_list = array();
-	$sql = "select related_tabid from vtiger_relatedlists where tabid=? and name=?";
-	$result = $adb->pquery($sql, array($curr_tab_id,"get_related_list"));
+	$result = $adb->pquery('select related_tabid from vtiger_relatedlists where tabid=? and name=?', array($curr_tab_id, 'get_related_list'));
 	$noofrows = $adb->num_rows($result);
 	if ($noofrows) {
 		while ($r = $adb->fetch_array($result)) {
@@ -154,11 +152,85 @@ function dup_related_lists($new_record_id, $currentModule, $related_list, $recor
 	$sql = 'INSERT INTO vtiger_crmentityrel (crmid,module,relcrmid,relmodule) SELECT ?,?,relcrmid,relmodule FROM vtiger_crmentityrel WHERE crmid=? AND relmodule=?';
 	$sqldocs = 'INSERT INTO vtiger_senotesrel (crmid,notesid) SELECT ?,notesid FROM vtiger_senotesrel WHERE crmid=?';
 	foreach ($related_list as $rel_module) {
-		if (empty($maped_relations) || isset($maped_relations[$rel_module])) {
-			if ($rel_module=='Documents') {
-				$adb->pquery($sqldocs, array($new_record_id,$record_id));
+		// Get and check condition type
+		$condition = $maped_relations[$rel_module]['condition'];
+
+		if (!empty($condition)) {
+			if (is_numeric($condition)) {
+				$cbmap = cbMap::getMapByID($condition);
 			} else {
-				$adb->pquery($sql, array($new_record_id,$currentModule,$record_id,$rel_module));
+				$cbmapid = GlobalVariable::getVariable('BusinessMapping_'.$condition, cbMap::getMapIdByName($condition));
+				$cbmap = cbMap::getMapByID($cbmapid);
+			}
+		} else {
+			$cbmap = '';
+		}
+
+		// Get business map
+		if (!empty($cbmap)) {
+			$businessMap = $cbmap->column_fields['maptype'];
+		} else {
+			$businessMap = '';
+		}
+
+		if (empty($maped_relations) || isset($maped_relations[$rel_module])) {
+			// WebserviceID
+			$entityId = vtws_getEntityId($rel_module);
+
+			if ($rel_module=='Documents') {
+				if ($businessMap == 'Condition Query') {
+					// Get crmids
+					$ids = $cbmap->ConditionQuery($record_id);
+					if ($ids && count($ids) > 0) {
+						$adb->pquery(
+							'INSERT IGNORE INTO vtiger_senotesrel (crmid,notesid) 
+								SELECT ?,notesid FROM vtiger_senotesrel WHERE notesid IN ('.generateQuestionMarks($ids).')',
+							array($new_record_id,$ids)
+						);
+					}
+				} elseif ($businessMap == 'Condition Expression') {
+					// Get crmids
+					$result = $adb->pquery('SELECT notesid FROM vtiger_senotesrel WHERE crmid=?', array($record_id));
+					if ($result && $adb->num_rows($result) > 0) {
+						while ($related = $adb->fetch_array($result)) {
+							if ($cbmap->ConditionExpression($entityId.'x'.$related['notesid'])) {
+								$adb->pquery(
+									'INSERT INTO vtiger_senotesrel (crmid,notesid) VALUES(?,?)',
+									array($new_record_id,$related['notesid'])
+								);
+							}
+						}
+					}
+				} else {
+					$adb->pquery($sqldocs, array($new_record_id,$record_id));
+				}
+			} else {
+				if ($businessMap == 'Condition Query') {
+					// Get crmids
+					$ids = $cbmap->ConditionQuery($record_id);
+					if ($ids && count($ids) > 0) {
+						$adb->pquery(
+							'INSERT INTO vtiger_crmentityrel (crmid,module,relcrmid,relmodule) 
+								SELECT ?,?,relcrmid,relmodule FROM vtiger_crmentityrel WHERE relcrmid IN ('.generateQuestionMarks($ids).') AND relmodule=?',
+							array($new_record_id,$currentModule,$ids,$rel_module)
+						);
+					}
+				} elseif ($businessMap == 'Condition Expression') {
+					// Get crmids
+					$result = $adb->pquery('SELECT relcrmid FROM vtiger_crmentityrel WHERE crmid=? AND relmodule=?', array($record_id, $rel_module));
+					if ($result && $adb->num_rows($result) > 0) {
+						while ($related = $adb->fetch_array($result)) {
+							if ($cbmap->ConditionExpression($entityId.'x'.$related['relcrmid'])) {
+								$adb->pquery(
+									'INSERT INTO vtiger_crmentityrel (crmid,module,relcrmid,relmodule) VALUES(?,?,?,?)',
+									array($new_record_id,$currentModule,$related['relcrmid'],$rel_module)
+								);
+							}
+						}
+					}
+				} else {
+					$adb->pquery($sql, array($new_record_id,$currentModule,$record_id,$rel_module));
+				}
 			}
 		}
 	}
@@ -168,8 +240,7 @@ function get_dependent_lists($curr_tab_id) {
 	// Get dependents list
 	global $adb;
 	$dependents_list = array();
-	$sql = "select related_tabid from vtiger_relatedlists where tabid=? and name=?";
-	$result = $adb->pquery($sql, array($curr_tab_id,"get_dependents_list"));
+	$result = $adb->pquery('select related_tabid from vtiger_relatedlists where tabid=? and name=?', array($curr_tab_id, 'get_dependents_list'));
 	$noofrows = $adb->num_rows($result);
 	if ($noofrows) {
 		while ($r = $adb->fetch_array($result)) {
@@ -203,11 +274,11 @@ function dup_dependent_rec($record_id, $relatedModule, $new_record_id, $dependen
 	global $adb, $current_user;
 	$invmods = getInventoryModules();
 	foreach ($dependent_tables as $module => $tables) {
-		if (in_array($module, $invmods)) {
+		if (in_array($module, $invmods) || !vtlib_isModuleActive($module)) {
 			continue; // we can't duplicate these
 		}
 		if (empty($maped_relations) || isset($maped_relations[$module])) {
-			require_once "modules/".$module."/".$module.".php";
+			require_once 'modules/'.$module.'/'.$module.'.php';
 			$handler = vtws_getModuleHandlerFromName($module, $current_user);
 			$meta = $handler->getMeta();
 			$related_field = $tables['columname'];

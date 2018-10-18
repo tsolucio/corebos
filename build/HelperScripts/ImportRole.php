@@ -16,44 +16,45 @@
 *  Version      : 5.4.0
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
-include_once('vtlib/Vtiger/Module.php');
-include_once('modules/Users/Users.php');
-require_once('include/logging.php');
-require_once('include/utils/UserInfoUtil.php');
-require_once('include/utils/utils.php');
-include_once('config.inc.php');
+include_once 'vtlib/Vtiger/Module.php';
+include_once 'modules/Users/Users.php';
+require_once 'include/logging.php';
+require_once 'include/utils/UserInfoUtil.php';
+require_once 'include/utils/utils.php';
+include_once 'config.inc.php';
 global $adb,$root_directory;
 
 $xmlreader = new SimpleXMLElement('build/role.xml', 0, true);
 
 // order is very important, dependent roles appear later in the XML so we can count on having them created
 foreach ($xmlreader->vtcrm_role as $role) {
-	$rlname = html_entity_decode((string)$role->vtcrm_definition->vtcrm_rolename,ENT_QUOTES,'UTF-8');
+	$rlname = html_entity_decode((string)$role->vtcrm_definition->vtcrm_rolename, ENT_QUOTES, 'UTF-8');
 
 	//$pfexist = $adb->getone("select count(*) as cnt from vtiger_role where rolename='".addslashes($rlname)."'");
-	$pfrs = $adb->pquery('select count(*) as cnt from vtiger_role where rolename=?',array($rlname));
+	$pfrs = $adb->pquery('select count(*) as cnt from vtiger_role where rolename=?', array($rlname));
 	$pfcnt = $adb->fetch_array($pfrs);
 	if (!empty($pfcnt['cnt'])) {
 		echo "$rlname already exists!";
 		continue;
 	}
-	
-	if (strrpos((string)$role->vtcrm_definition->vtcrm_parentrole, '::')===false)
+
+	if (strrpos((string)$role->vtcrm_definition->vtcrm_parentrole, '::')===false) {
 		$prole=(string)$role->vtcrm_definition->vtcrm_parentrole;
-	else {
+	} else {
 		// eliminate las role which is the same as we are creating
-		$prole=substr((string)$role->vtcrm_definition->vtcrm_parentrole,0,strrpos((string)$role->vtcrm_definition->vtcrm_parentrole,'::'));
-		if (strrpos($prole, '::')!==false)
-			$prole=substr($prole,strrpos($prole,'::')+2);
+		$prole=substr((string)$role->vtcrm_definition->vtcrm_parentrole, 0, strrpos((string)$role->vtcrm_definition->vtcrm_parentrole, '::'));
+		if (strrpos($prole, '::')!==false) {
+			$prole=substr($prole, strrpos($prole, '::')+2);
+		}
 	}
 	$parentRoleId = $adb->getone("select roleid from vtiger_role where rolename='$prole'");  // this one must exist if XML is sorted correctly
 	$profile_array = array();
 	foreach ($role->vtcrm_role2profiles->vtcrm_role2pf as $profile) {
 		$profile_array[] = $adb->getone("select profileid from vtiger_profile where profilename='".(string)$profile."'");
 	}
-	$roleId = createRole($rlname,$parentRoleId,$profile_array);
-	if(!empty($roleId)) {
-		insertRole2Picklist($roleId,$parentRoleId);
+	$roleId = createRole($rlname, $parentRoleId, $profile_array);
+	if (!empty($roleId)) {
+		insertRole2Picklist($roleId, $parentRoleId);
 	}
 	echo "$rlname imported!";
 }

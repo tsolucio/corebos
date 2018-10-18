@@ -107,6 +107,18 @@ class ListColumns extends processcbMap {
 		return $this->mapping;
 	}
 
+	public function getSummaryTitle() {
+		return $this->mapping['cbmapSUMMARY']['TITLE'];
+	}
+
+	public function getSummaryHeader() {
+		return $this->mapping['cbmapSUMMARY']['HEADER'];
+	}
+
+	public function getSummaryBody() {
+		return $this->mapping['cbmapSUMMARY']['BODY'];
+	}
+
 	private function convertMap2Array() {
 		global $adb;
 		$xml = $this->getXMLContent();
@@ -119,6 +131,7 @@ class ListColumns extends processcbMap {
 		$this->mapping['cbmapPOPUP']['LINKFIELD'] = $f->list_link_field;
 		$this->mapping['cbmapPOPUP']['SearchFields'] = $f->search_fields;
 		$this->mapping['cbmapPOPUP']['SearchFieldsName'] = $f->search_fields_name;
+		$tabid = getTabid($this->modulename);
 		if (isset($xml->popup)) {
 			$this->mapping['cbmapPOPUP']['SearchFields'] = array();
 			$this->mapping['cbmapPOPUP']['SearchFieldsName'] = array();
@@ -126,7 +139,16 @@ class ListColumns extends processcbMap {
 				$this->mapping['cbmapPOPUP']['LINKFIELD'] = (String)$xml->popup->linkfield;
 			}
 			foreach ($xml->popup->columns->field as $k => $v) {
-				$this->mapping['cbmapPOPUP']['SearchFields'][(String)$v->label] = array((String)$v->table=>(String)$v->columnname);
+				$table = empty($v->table) ? '' : (String)$v->table;
+				$columnname = empty($v->columnname) ? '' : (String)$v->columnname;
+				if ($table=='' || $columnname=='') {
+					$res = $adb->pquery('SELECT columnname,tablename FROM vtiger_field WHERE fieldname=? AND tabid=?', array((String)$v->name, $tabid));
+					if ($res && $adb->num_rows($res)>0) {
+						$table = str_replace('vtiger_', '', $adb->query_result($res, 0, 'tablename'));
+						$columnname = $adb->query_result($res, 0, 'columnname');
+					}
+				}
+				$this->mapping['cbmapPOPUP']['SearchFields'][(String)$v->label] = array($table => $columnname);
 				$this->mapping['cbmapPOPUP']['SearchFieldsName'][(String)$v->label] = (String)$v->name;
 			}
 		}
@@ -137,17 +159,35 @@ class ListColumns extends processcbMap {
 				$this->mapping[$modulename]['ListFieldsName'] = array();
 				$this->mapping[$modulename]['LINKFIELD'] = (!empty($v->linkfield) ? (String)$v->linkfield : $f->list_link_field);
 				foreach ($v->columns->field as $vl) {
-					$table = $vl->table;
-					$columnname = $vl->columnname;
-					$tabid = getTabid($this->modulename);
-					$res = $adb->pquery("SELECT columnname,tablename FROM vtiger_field WHERE fieldname=? AND tabid=?", array((String)$vl->name,$tabid));
-					$nr = $adb->num_rows($res);
-					if ($nr > 0) {
-						$table = str_replace('vtiger_', '', $adb->query_result($res, 0, 'tablename'));
-						$columnname = $adb->query_result($res, 0, 'columnname');
+					$table = empty($vl->table) ? '' : (String)$vl->table;
+					$columnname = empty($vl->columnname) ? '' : (String)$vl->columnname;
+					if ($table=='' || $columnname=='') {
+						$res = $adb->pquery('SELECT columnname,tablename FROM vtiger_field WHERE fieldname=? AND tabid=?', array((String)$vl->name, $tabid));
+						if ($res && $adb->num_rows($res)>0) {
+							$table = str_replace('vtiger_', '', $adb->query_result($res, 0, 'tablename'));
+							$columnname = $adb->query_result($res, 0, 'columnname');
+						}
 					}
-					$this->mapping[$modulename]['ListFields'][(String)$vl->label] = array((String)$table=>(String)$columnname);
+					$this->mapping[$modulename]['ListFields'][(String)$vl->label] = array($table => $columnname);
 					$this->mapping[$modulename]['ListFieldsName'][(String)$vl->label] = (String)$vl->name;
+				}
+			}
+		}
+		if (isset($xml->summary)) {
+			$this->mapping['cbmapSUMMARY'] = array();
+			$this->mapping['cbmapSUMMARY']['TITLE'] = (String) $xml->summary->title;
+			$this->mapping['cbmapSUMMARY']['HEADER']['ListFields'] = array();
+			$this->mapping['cbmapSUMMARY']['BODY']['ListFields'] = array();
+
+			foreach ($xml->summary->header->fields as $k => $v) {
+				foreach ($v->field as $vf) {
+					$this->mapping['cbmapSUMMARY']['HEADER']['ListFields'][(String)$vf->label] = (String)$vf->name;
+				}
+			}
+
+			foreach ($xml->summary->body->fields as $k => $v) {
+				foreach ($v->field as $vf) {
+					$this->mapping['cbmapSUMMARY']['BODY']['ListFields'][(String)$vf->label] = (String)$vf->name;
 				}
 			}
 		}

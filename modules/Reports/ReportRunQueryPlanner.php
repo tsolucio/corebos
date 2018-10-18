@@ -164,7 +164,6 @@ class ReportRunQueryPlanner {
 			$adb->pquery('DROP TABLE ' . $uniqueName, array());
 		}
 		$adb->dieOnError = $oldDieOnError;
-
 		$this->tempTables = array();
 	}
 
@@ -241,5 +240,4 @@ class ReportRunQueryPlanner {
 		return $advfiltersql;
 	}
 }
-
 ?>

@@ -8,7 +8,7 @@
  * Contributor(s): Ranieri/Translate terms | 11/03/2017 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
  ********************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 'MyExtension' => 'Minha Extensão',
 "Calendar4You"=>"Agenda",
 "LBL_MODULE_NAME"=>"Agenda",
@@ -20,7 +20,7 @@ $mod_strings = Array (
 "LBL_EVENT_SETTINGS"=>"Configurações do Evento",
 "LBL_COLOR_IN_CALENDAR"=>"Cores na Agenda",
 "LBL_COLOR_IN_CALENDAR_BACKGROUND"=>"Fundo",
-"LBL_COLOR_IN_CALENDAR_TEXT"=>"Texto", 
+"LBL_COLOR_IN_CALENDAR_TEXT"=>"Texto",
 "LBL_DAY_EVENT_INFO"=>"Informações exibidas no calendário do dia",
 "LBL_WEEK_EVENT_INFO"=>"Informações exibidas no calendário da semana",
 "LBL_MONTH_EVENT_INFO"=>"Informações exibidas no calendário do mês",
@@ -38,9 +38,9 @@ $mod_strings = Array (
 "RESIZE_EVENT_QUESTION" => "Tem certeza sobre essa mudança?",
 "LBL_DEFAULT_USER_VIEW" => "Exibição de usuário padrão",
 "LBL_ALL_USERS" => "Todos selecionados",
-"LBL_ME" => "Meu", 
+"LBL_ME" => "Meu",
 "LBL_EVENT_STATUS" => "Status do Evento",
-"LBL_TASK_STATUS" => "Status da tarefa", 
+"LBL_TASK_STATUS" => "Status da tarefa",
 "LBL_DETAIL"=>"Detalhe",
 "LBL_WEEK_STARTS_AT"=>"A semana começa em",
 "LBL_INVITE"=>"Convite",
@@ -78,5 +78,6 @@ $mod_strings = Array (
 'Medium' => 'Média',
 'Low'=> 'Baixa',
 'Gmail_ChangeAccount'=>'If you want to change the Gmail Account please clear the tokens',
+'Click2PickColor' => 'Click here to pick color',
 );
 ?>

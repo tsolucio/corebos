@@ -13,11 +13,10 @@ require_once 'modules/com_vtiger_workflow/VTTaskQueue.inc';
 
 class VTUpdateFieldsTask extends VTTask {
 
-
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
-		return array('field_value_mapping');
+		return array('field_value_mapping', 'launchrelwf');
 	}
 
 	public function doTask(&$entity) {
@@ -69,26 +68,26 @@ class VTUpdateFieldsTask extends VTTask {
 				}
 				if (array_key_exists('fldrelname', $fieldInfo)) {
 					$fldrelname = trim($fieldInfo['fldrelname']);
-					$relId=$focus->column_fields["$fieldName"];
+					$relId=$focus->column_fields[$fieldName];
 					$setype=getSalesEntityType($relId);
 				}
 				if ($fldrelname!='' && $relId!='' && $relId!=0) {
 					if (!in_array($fieldmodule, $relmodule) && $setype==$fieldmodule) {
 						$relmodule[]=$fieldmodule;
-						$focusrel["$fieldmodule"] = CRMEntity::getInstance($fieldmodule);
-						$focusrel["$fieldmodule"]->id = $relId;
-						$focusrel["$fieldmodule"]->mode = 'edit';
-						$focusrel["$fieldmodule"]->retrieve_entity_info($relId, $fieldmodule);
-						$focusrel["$fieldmodule"]->clearSingletonSaveFields();
+						$focusrel[$fieldmodule] = CRMEntity::getInstance($fieldmodule);
+						$focusrel[$fieldmodule]->id = $relId;
+						$focusrel[$fieldmodule]->mode = 'edit';
+						$focusrel[$fieldmodule]->retrieve_entity_info($relId, $fieldmodule);
+						$focusrel[$fieldmodule]->clearSingletonSaveFields();
 					}
 					if (count($relmodule)>3 && $isqueue==false) {
-						$delay = strtotime(" +5 minutes");
+						$delay = strtotime(' +5 minutes');
 						$taskQueue->queueTask($this->id, $entityId, $delay);
 						return;
 					}
 					$moduleHandlerrel = vtws_getModuleHandlerFromName($fieldmodule, $current_user);
-					$handlerMetarel["$fieldmodule"] = $moduleHandlerrel->getMeta();
-					$moduleFieldsrel = $handlerMetarel["$fieldmodule"]->getModuleFields();
+					$handlerMetarel[$fieldmodule] = $moduleHandlerrel->getMeta();
+					$moduleFieldsrel = $handlerMetarel[$fieldmodule]->getModuleFields();
 					$fieldValue=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue, $fldrelname, $focus, $entity, $handlerMetarel[$fieldmodule]);
 				} else {
 					$fieldValue=$util->fieldvaluebytype($moduleFields, $fieldValueType, $fieldValue, $fieldName, $focus, $entity, $handlerMeta);
@@ -97,7 +96,7 @@ class VTUpdateFieldsTask extends VTTask {
 					$focus->column_fields[$fieldName] = $fieldValue;
 					$entity->data[$fieldName] = $fieldValue;
 				} else {
-					$focusrel["$fieldmodule"]->column_fields[$fldrelname]=$fieldValue;
+					$focusrel[$fieldmodule]->column_fields[$fldrelname]=$fieldValue;
 				}
 			}
 
@@ -108,8 +107,12 @@ class VTUpdateFieldsTask extends VTTask {
 			$focus->saveentity($moduleName);
 			if (count($relmodule)>0 && $relId!='' && $relId!=0) {
 				foreach ($relmodule as $mod) {
-					$focusrel["$mod"]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel["$mod"]->column_fields, $handlerMetarel["$mod"]);
-					$focusrel["$mod"]->saveentity($mod);
+					$focusrel[$mod]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel[$mod]->column_fields, $handlerMetarel[$mod]);
+					if ($this->launchrelwf) {
+						$focusrel[$mod]->save($mod);
+					} else {
+						$focusrel[$mod]->saveentity($mod);
+					}
 				}
 			}
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
@@ -121,5 +124,4 @@ class VTUpdateFieldsTask extends VTTask {
 		$logbg->info('Exiting workflow task VTUpdateFieldsTask');
 	}
 }
-
 ?>

@@ -2,12 +2,12 @@
 /***********************************************************
 *  Module       : Products
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 	'LBL_MODULE_NAME' => 'Produits',
 	'SINGLE_Products'=>'Produit',
 	'LBL_LIST_PRODUCT_NAME' => 'Produit',
@@ -179,5 +179,6 @@ $mod_strings = Array (
 	'Divisible' => 'Divisible',
 	'DIVISIBLE_WARNING' => 'ne peut etre vendu que par unités entières',
 	'DIVISIBLE_WARNING_PURCHASE' => 'ne peut etre acheté que par unités entières',
+	'IS_DISCONTINUED' => 'is discontinued',
 );
 ?>

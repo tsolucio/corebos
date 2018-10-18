@@ -222,7 +222,7 @@ class Vtiger_InventoryPDFController {
 
 	public function buildHeaderModelColumnLeft() {
 		global $adb;
-
+		$modelColumnLeft = array();
 		// Company information
 		$result = $adb->pquery('SELECT * FROM vtiger_organizationdetails', array());
 		$num_rows = $adb->num_rows($result);
@@ -243,6 +243,7 @@ class Vtiger_InventoryPDFController {
 			if (!empty($resultrow['country'])) {
 				$addressValues[]= "\n".$resultrow['country'];
 			}
+			$additionalCompanyInfo = array();
 			if (!empty($resultrow['phone'])) {
 				$additionalCompanyInfo[]= "\n".getTranslatedString('Phone: ', $this->moduleName). $resultrow['phone'];
 			}

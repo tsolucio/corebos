@@ -44,12 +44,12 @@ function getMyTickets($maxval, $calCnt) {
 		for ($i=0; $i<$adb->num_rows($tktresult); $i++) {
 			$value=array();
 			$ticketid = $adb->query_result($tktresult, $i, 'ticketid');
-			$viewstatus = $adb->query_result($tktresult, $i, 'viewstatus');
-			if ($viewstatus == 'Unread') {
+			$viewstatus = $adb->query_result($tktresult, $i, 'severity');
+			if ($viewstatus == 'Critical') {
 				$value[]= '<a style="color:red;" href="index.php?action=DetailView&module=HelpDesk&record='.substr($adb->query_result($tktresult, $i, 'ticketid'), 0, 20).
 					'">'.$adb->query_result($tktresult, $i, "title").'</a>';
-			} elseif ($viewstatus == 'Marked') {
-				$value[]= '<a style="color:yellow;" href="index.php?action=DetailView&module=HelpDesk&record='.
+			} elseif ($viewstatus == 'Major') {
+				$value[]= '<a style="color:goldenrod;" href="index.php?action=DetailView&module=HelpDesk&record='.
 					substr($adb->query_result($tktresult, $i, 'ticketid'), 0, 20).'">'.$adb->query_result($tktresult, $i, 'title').'</a>';
 			} else {
 				$value[]= '<a href="index.php?action=DetailView&module=HelpDesk&record='.substr($adb->query_result($tktresult, $i, 'ticketid'), 0, 20).

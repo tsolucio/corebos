@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once("include/database/PearDatabase.php");
-require_once("modules/Users/Users.php");
+require_once 'include/database/PearDatabase.php';
+require_once 'modules/Users/Users.php';
 global $current_user;
 $displayname= vtlib_purify($_REQUEST['displayname']);
 $userid = $current_user->id;
@@ -20,39 +20,52 @@ $server_password = vtlib_purify($_REQUEST['server_password']);
 $mail_servername = vtlib_purify($_REQUEST['mail_servername']);
 $box_refresh = vtlib_purify($_REQUEST['box_refresh']);
 $mails_per_page = vtlib_purify($_REQUEST['mails_per_page']);
-$ssltype = vtlib_purify($_REQUEST["ssltype"]);
-$sslmeth = vtlib_purify($_REQUEST["sslmeth"]);
+$ssltype = vtlib_purify($_REQUEST['ssltype']);
+$sslmeth = vtlib_purify($_REQUEST['sslmeth']);
 
-if($mails_per_page == '') $mails_per_page='0';
+if ($mails_per_page == '') {
+	$mails_per_page='0';
+}
 
-if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
+if (isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 	$id=$_REQUEST['record'];
 }
 
 $focus = new Users();
 $encrypted_password=$focus->changepassword($_REQUEST['server_password']);
-if(isset($_REQUEST['edit']) && $_REQUEST['edit'] && $_REQUEST['record']!='') {
-	$sql="update vtiger_mail_accounts set display_name = ?, mail_id = ?, account_name = ?, mail_protocol = ?, mail_username = ?";
+if (isset($_REQUEST['edit']) && $_REQUEST['edit'] && $_REQUEST['record']!='') {
+	$sql='update vtiger_mail_accounts set display_name = ?, mail_id = ?, account_name = ?, mail_protocol = ?, mail_username = ?';
 	$params = array($displayname, $email, $account_name, $mailprotocol, $server_username);
-	if($server_password != '*****') {
-		$sql.=", mail_password=?";
+	if ($server_password != '*****') {
+		$sql.=', mail_password=?';
 		$params[] = $encrypted_password;
 	}
-	$sql.=", mail_servername=?,  box_refresh=?,  mails_per_page=?, ssltype=? , sslmeth=?, int_mailer=? where user_id = ?";
-	array_push($params, $mail_servername, $box_refresh, $mails_per_page, $ssltype, $sslmeth, $_REQUEST["int_mailer"], $id);
+	$sql.=', mail_servername=?,  box_refresh=?,  mails_per_page=?, ssltype=? , sslmeth=?, int_mailer=? where user_id = ?';
+	array_push($params, $mail_servername, $box_refresh, $mails_per_page, $ssltype, $sslmeth, $_REQUEST['int_mailer'], $id);
 } else {
-	$account_id = $adb->getUniqueID("vtiger_mail_accounts");
-	$sql="insert into vtiger_mail_accounts(account_id, user_id, display_name, mail_id, account_name, mail_protocol, mail_username, mail_password, mail_servername, box_refresh, mails_per_page, ssltype, sslmeth, int_mailer, status, set_default) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-	$params = array($account_id, $current_user->id, $displayname, $email, $account_name, $mailprotocol, $server_username, $encrypted_password, $mail_servername, $box_refresh, $mails_per_page, $ssltype, $sslmeth, $_REQUEST["int_mailer"],'1','0');
+	$account_id = $adb->getUniqueID('vtiger_mail_accounts');
+	$sql='insert into vtiger_mail_accounts
+		(account_id, user_id, display_name, mail_id, account_name, mail_protocol, mail_username, mail_password, mail_servername,
+		box_refresh, mails_per_page, ssltype, sslmeth, int_mailer, status, set_default)
+		values
+		(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+	$params = array(
+		$account_id, $current_user->id, $displayname, $email, $account_name, $mailprotocol, $server_username, $encrypted_password, $mail_servername,
+		$box_refresh, $mails_per_page, $ssltype, $sslmeth, $_REQUEST['int_mailer'],'1','0'
+	);
 }
 
 $adb->pquery($sql, $params);
 
 $return_module = vtlib_purify($_REQUEST['return_module']);
-if(empty($return_module)) $return_module = 'Webmails';
+if (empty($return_module)) {
+	$return_module = 'Emails';
+}
 
 $return_action = vtlib_purify($_REQUEST['return_action']);
-if(empty($return_action)) $return_action = 'index';
+if (empty($return_action)) {
+	$return_action = 'index';
+}
 
 header('Location:index.php?module=' . urlencode($return_module) . '&action=' . urlencode($return_action) . '&mailbox=INBOX');
 ?>

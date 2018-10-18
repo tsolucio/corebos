@@ -7,21 +7,20 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/utils/utils.php');
-require_once('include/utils/UserInfoUtil.php');
+require_once 'include/utils/utils.php';
+require_once 'include/utils/UserInfoUtil.php';
 global $mod_strings, $app_strings, $theme;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 
 $smarty = new vtigerCRM_Smarty;
 
 $defSharingPermissionData = getDefaultSharingAction();
 $access_privileges = array();
 $row=1;
-foreach($defSharingPermissionData as $tab_id => $def_perr)
-{
+foreach ($defSharingPermissionData as $tab_id => $def_perr) {
 	$entity_name = getTabname($tab_id);
-	if($tab_id == 6) {
+	if ($tab_id == 6) {
 		$cont_name = getTabname(4);
 		$entity_name .= ' & '.$cont_name;
 	}
@@ -30,19 +29,20 @@ foreach($defSharingPermissionData as $tab_id => $def_perr)
 
 	$access_privileges[] = $entity_name;
 	$access_privileges[] = $entity_perr;
-	if($entity_perr != 'Private')
+	if ($entity_perr != 'Private') {
 		$access_privileges[] = $mod_strings['LBL_DESCRIPTION_'.$entity_perr] . getTranslatedString($entity_name, $entity_name);
-	else
+	} else {
 		$access_privileges[] = $mod_strings['LBL_USR_CANNOT_ACCESS'] . getTranslatedString($entity_name, $entity_name);
+	}
 	$row++;
 }
-$access_privileges=array_chunk($access_privileges,3);
-usort($access_privileges, function($a,$b) {
+$access_privileges=array_chunk($access_privileges, 3);
+usort($access_privileges, function ($a, $b) {
 	$moda=($a[0]=='Accounts & Contacts' ? 'Accounts' : $a[0]);
 	$modb=($b[0]=='Accounts & Contacts' ? 'Accounts' : $b[0]);
-	return (strtolower(getTranslatedString($moda,$moda)) < strtolower(getTranslatedString($modb,$modb))) ? -1 : 1;
+	return (strtolower(getTranslatedString($moda, $moda)) < strtolower(getTranslatedString($modb, $modb))) ? -1 : 1;
 });
-$smarty->assign("DEFAULT_SHARING", $access_privileges);
+$smarty->assign('DEFAULT_SHARING', $access_privileges);
 
 $custom_access = array();
 //Lead Sharing
@@ -80,15 +80,15 @@ $custom_access['Documents'] = getSharingRuleList('Documents');
 
 // Look up for modules for which sharing access is enabled.
 // NOTE: Accounts and Contacts has been couple, so we need to elimiate Contacts also
-$othermodules = getSharingModuleList(Array('Contacts'));
-if(!empty($othermodules)) {
-	foreach($othermodules as $moduleresname) {
-		if(!isset($custom_access[$moduleresname])) {
+$othermodules = getSharingModuleList(array('Contacts'));
+if (!empty($othermodules)) {
+	foreach ($othermodules as $moduleresname) {
+		if (!isset($custom_access[$moduleresname])) {
 			$sr4module = getSharingRuleList($moduleresname);
 			if (isset($_REQUEST['sortrulesby'])) {
-				usort($sr4module, function($a,$b) {
-					$sba = substr($a[$_REQUEST['sortrulesby']],strpos($a[$_REQUEST['sortrulesby']], '>'));
-					$sbb = substr($b[$_REQUEST['sortrulesby']],strpos($b[$_REQUEST['sortrulesby']], '>'));
+				usort($sr4module, function ($a, $b) {
+					$sba = substr($a[$_REQUEST['sortrulesby']], strpos($a[$_REQUEST['sortrulesby']], '>'));
+					$sbb = substr($b[$_REQUEST['sortrulesby']], strpos($b[$_REQUEST['sortrulesby']], '>'));
 					return $sba < $sbb ? -1 : 1;
 				});
 			}
@@ -96,16 +96,17 @@ if(!empty($othermodules)) {
 		}
 	}
 }
-uksort($custom_access, function($a,$b) {return (strtolower(getTranslatedString($a,$a)) < strtolower(getTranslatedString($b,$b))) ? -1 : 1;});
-$smarty->assign("MODSHARING", $custom_access);
+uksort($custom_access, function ($a, $b) {
+	return (strtolower(getTranslatedString($a, $a)) < strtolower(getTranslatedString($b, $b))) ? -1 : 1;
+});
+$smarty->assign('MODSHARING', $custom_access);
 
 /** returns the list of sharing rules for the specified module
   * @param $module -- Module Name:: Type varchar
   * @returns $access_permission -- sharing rules list info array:: Type array
   *
  */
-function getSharingRuleList($module)
-{
+function getSharingRuleList($module) {
 	global $adb,$mod_strings;
 
 	$tabid=getTabid($module);
@@ -113,11 +114,11 @@ function getSharingRuleList($module)
 
 	$i=1;
 	$access_permission = array();
-	foreach($dataShareTableArray as $table_name => $colName)
-	{
-
-		$colNameArr=explode("::",$colName);
-		$query = "select ".$table_name.".* from ".$table_name." inner join vtiger_datashare_module_rel on ".$table_name.".shareid=vtiger_datashare_module_rel.shareid where vtiger_datashare_module_rel.tabid=?";
+	foreach ($dataShareTableArray as $table_name => $colName) {
+		$colNameArr=explode('::', $colName);
+		$query = 'select '.$table_name.'
+			.* from '.$table_name
+			.' inner join vtiger_datashare_module_rel on '.$table_name.'.shareid=vtiger_datashare_module_rel.shareid where vtiger_datashare_module_rel.tabid=?';
 		$result=$adb->pquery($query, array($tabid));
 		$num_rows=$adb->num_rows($result);
 
@@ -127,22 +128,18 @@ function getSharingRuleList($module)
 		$to_colName=$colNameArr[1];
 		$to_modType=getEntityTypeFromCol($to_colName);
 
-		for($j=0;$j<$num_rows;$j++)
-		{
-			$shareid=$adb->query_result($result,$j,"shareid");
-			$share_id=$adb->query_result($result,$j,$share_colName);
-			$to_id=$adb->query_result($result,$j,$to_colName);
-			$permission = $adb->query_result($result,$j,'permission');
+		for ($j=0; $j<$num_rows; $j++) {
+			$shareid=$adb->query_result($result, $j, 'shareid');
+			$share_id=$adb->query_result($result, $j, $share_colName);
+			$to_id=$adb->query_result($result, $j, $to_colName);
+			$permission = $adb->query_result($result, $j, 'permission');
 
-			$share_ent_disp = getEntityDisplayLink($share_modType,$share_id);
-			$to_ent_disp = getEntityDisplayLink($to_modType,$to_id);
+			$share_ent_disp = getEntityDisplayLink($share_modType, $share_id);
+			$to_ent_disp = getEntityDisplayLink($to_modType, $to_id);
 
-			if($permission == 0)
-			{
+			if ($permission == 0) {
 				$perr_out = $mod_strings['Read Only '];
-			}
-			elseif($permission == 1)
-			{
+			} elseif ($permission == 1) {
 				$perr_out = $mod_strings['Read/Write'];
 			}
 
@@ -154,15 +151,16 @@ function getSharingRuleList($module)
 			$i++;
 		}
 	}
-	if(is_array($access_permission))
-		$access_permission = array_chunk($access_permission,4);
+	if (is_array($access_permission)) {
+		$access_permission = array_chunk($access_permission, 4);
+	}
 	return $access_permission;
 }
-$smarty->assign("THEME", $theme);
-$smarty->assign("IMAGE_PATH",$image_path);
-$smarty->assign("APP", $app_strings);
-$smarty->assign("CMOD", $mod_strings);
-$smarty->assign("MOD", return_module_language($current_language,'Settings'));
+$smarty->assign('THEME', $theme);
+$smarty->assign('IMAGE_PATH', $image_path);
+$smarty->assign('APP', $app_strings);
+$smarty->assign('CMOD', $mod_strings);
+$smarty->assign('MOD', return_module_language($current_language, 'Settings'));
 
-$smarty->display("OrgSharingDetailView.tpl");
+$smarty->display('OrgSharingDetailView.tpl');
 ?>

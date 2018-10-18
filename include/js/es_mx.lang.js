@@ -18,7 +18,7 @@ var alert_arr = {
 	'DELETE_ACCOUNT':'Borrar esta cuenta eliminará las Oportunidades y Cotizaciones que tenga asociadas. ¿Continuar borrando los ',
 	'DELETE_VENDOR':'Borrar este proveedor eliminará las Órdenes de Compra que tenga Asociadas. ¿Continuar borrando los ',
 	'SELECT_MAILID':'Seleccione un e-mail',
-	'OVERWRITE_EXISTING_ACCOUNT1':'¿Sobrescribir la dirección existente con la de la cuenta (',
+	'OVERWRITE_EXISTING_ACCOUNT1':'¿Sobrescribir la dirección existente con la dirección de la cuenta seleccionada (',
 	'OVERWRITE_EXISTING_ACCOUNT2':')?',
 	'OVERWRITE_EXISTING_CONTACT1':'¿Sobrescribir la dirección existente con la dirección del contacto seleccionado (',
 	'OVERWRITE_EXISTING_CONTACT2':')?',
@@ -357,6 +357,10 @@ var alert_arr = {
 	'LBL_IS_NOT' : 'no es',
 	'LBL_BETWEEN' : 'entre',
 	'LBL_BEFORE' : 'antes',
+	'LBL_DOES_NOT_START_WITH' : 'no empieza por',
+	'LBL_DOES_NOT_END_WITH' : 'no acaba por',
+	'DOES_NOT_START_WITH':'no empieza por',
+	'DOES_NOT_END_WITH':'no acaba por',
 	'LBL_AFTER' : 'después',
 	'LBL_IS_TODAY' : 'es hoy',
 	'LBL_LESS_THAN_DAYS_AGO' : 'hace menos de x días',
@@ -405,5 +409,7 @@ var alert_arr = {
 	'JSLBL_PAGINATION': 'Paginado',
 	'JSLBL_FINISH': 'Terminar',
 	'SHOWING' : 'Mostrando',
-	'OF' : 'de'
+	'OF' : 'de',
+	'ERR_Massedit' : 'Error en Edición Masiva',
+	'ProcessFINISHED' : 'Proceso Terminado'
 };

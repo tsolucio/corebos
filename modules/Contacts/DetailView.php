@@ -25,18 +25,20 @@ if (isPermitted('Emails', 'CreateView', '') == 'yes') {
 	$emailFields = $vtwsCRMObjectMeta->getEmailFields();
 	$smarty->assign('SENDMAILBUTTON', 'permitted');
 	$emails=array();
-	foreach ($emailFields as $key => $value) {
+	foreach ($emailFields as $value) {
 		$emails[]=$value;
 	}
 	$smarty->assign('EMAILS', $emails);
 	$cond="LTrim('%s') !=''";
 	$condition=array();
-	foreach ($emails as $key => $value) {
+	foreach ($emails as $value) {
 		$condition[]=sprintf($cond, $value);
 	}
 	$condition_str=implode('||', $condition);
-	$js="if(".$condition_str."){fnvshobj(this,'sendmail_cont');sendmail('".$currentModule."',".vtlib_purify($_REQUEST['record']).");}else{OpenCompose('','create');}";
+	$js='if('.$condition_str."){fnvshobj(this,'sendmail_cont');sendmail('".$currentModule."',".vtlib_purify($_REQUEST['record']).");}else{OpenCompose('','create');}";
 	$smarty->assign('JS', $js);
+} else {
+	$smarty->assign('SENDMAILBUTTON', 'NOTpermitted');
 }
 
 if (isPermitted('Contacts', 'Merge', '') == 'yes') {

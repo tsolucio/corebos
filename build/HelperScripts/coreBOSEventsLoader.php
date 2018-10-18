@@ -8,8 +8,8 @@
 <?php
 // Turn on debugging level
 $Vtiger_Utils_Log = true;
-include_once('vtlib/Vtiger/Module.php');
-require_once('include/events/include.inc');
+include_once 'vtlib/Vtiger/Module.php';
+require_once 'include/events/include.inc';
 global $adb;
 
 function registerEvent($event) {

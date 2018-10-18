@@ -29,25 +29,6 @@ function set_return_specific(vendor_id, vendor_name) {
 	fldId.value = vendor_id;
 }
 
-function set_return_address(vendor_id, vendor_name, street, city, state, code, country,pobox ) {
-	jQuery.ajax({
-		url: 'index.php?module=Vendors&action=VendorsAjax&file=SelectVendorAddress',
-		context: document.body
-	}).done(function (response) {
-		jQuery('#setaddressvendordiv').html(response);
-		jQuery('#setaddressvendordiv').show();
-		fnvshNrm('setaddressvendordiv');
-		jQuery('#vendor_id').val(vendor_id);
-		jQuery('#vendor_name').val(vendor_name);
-		jQuery('#street').val(street);
-		jQuery('#city').val(city);
-		jQuery('#state').val(state);
-		jQuery('#code').val(code);
-		jQuery('#country').val(country);
-		jQuery('#pobox').val(pobox);
-	});
-}
-
 function sva_fillinvalues() {
 	var vendor_id = jQuery('#vendor_id').val();
 	var vendor_name = jQuery('#vendor_name').val();

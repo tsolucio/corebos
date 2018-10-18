@@ -8,14 +8,14 @@
  * All Rights Reserved.
  *************************************************************************************/
 
-class VtigerWebserviceObject{
+class VtigerWebserviceObject {
 
 	private $id;
 	private $name;
 	private $handlerPath;
 	private $handlerClass;
 
-	private function __construct($entityId,$entityName,$handler_path,$handler_class){
+	private function __construct($entityId, $entityName, $handler_path, $handler_class) {
 		$this->id = $entityId;
 		$this->name = $entityName;
 		$this->handlerPath = $handler_path;
@@ -25,16 +25,16 @@ class VtigerWebserviceObject{
 	// Cache variables to enable result re-use
 	private static $_fromNameCache = array();
 
-	static function fromName($adb,$entityName){
+	public static function fromName($adb, $entityName) {
 		$rowData = false;
 
 		// If the information not available in cache?
 		if (!isset(self::$_fromNameCache[$entityName])) {
-			$result = $adb->pquery("select * from vtiger_ws_entity where name=?",array($entityName));
+			$result = $adb->pquery('select * from vtiger_ws_entity where name=?', array($entityName));
 			if ($result) {
 				$rowCount = $adb->num_rows($result);
 				if ($rowCount === 1) {
-					$rowData = $adb->query_result_rowdata($result,0);
+					$rowData = $adb->query_result_rowdata($result, 0);
 					self::$_fromNameCache[$entityName] = $rowData;
 				}
 			}
@@ -43,24 +43,26 @@ class VtigerWebserviceObject{
 		$rowData = isset(self::$_fromNameCache[$entityName]) ? self::$_fromNameCache[$entityName] : false;
 
 		if ($rowData) {
-			return new VtigerWebserviceObject($rowData['id'],$rowData['name'], $rowData['handler_path'],$rowData['handler_class']);
+			return new VtigerWebserviceObject($rowData['id'], $rowData['name'], $rowData['handler_path'], $rowData['handler_class']);
 		}
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to perform the operation is denied for name");
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied for name');
 	}
 
 	// Cache variables to enable result re-use
 	private static $_fromIdCache = array();
 
-	static function fromId($adb,$entityId) {
+	public static function fromId($adb, $entityId) {
 		$rowData = false;
-		if (strpos($entityId, 'x')>0) list($entityId,$void) = explode('x', $entityId);
+		if (strpos($entityId, 'x')>0) {
+			list($entityId,$void) = explode('x', $entityId);
+		}
 		// If the information not available in cache?
 		if (!isset(self::$_fromIdCache[$entityId])) {
-			$result = $adb->pquery("select * from vtiger_ws_entity where id=?",array($entityId));
+			$result = $adb->pquery('select * from vtiger_ws_entity where id=?', array($entityId));
 			if ($result) {
 				$rowCount = $adb->num_rows($result);
 				if ($rowCount === 1) {
-					$rowData = $adb->query_result_rowdata($result,0);
+					$rowData = $adb->query_result_rowdata($result, 0);
 					self::$_fromIdCache[$entityId] = $rowData;
 				}
 			}
@@ -68,19 +70,19 @@ class VtigerWebserviceObject{
 
 		if (!empty(self::$_fromIdCache[$entityId])) {
 			$rowData = self::$_fromIdCache[$entityId];
-			return new VtigerWebserviceObject($rowData['id'],$rowData['name'],$rowData['handler_path'],$rowData['handler_class']);
+			return new VtigerWebserviceObject($rowData['id'], $rowData['name'], $rowData['handler_path'], $rowData['handler_class']);
 		}
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to perform the operation is denied for id");
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied for id');
 	}
 
-	static function fromQuery($adb,$query) {
-		$moduleRegex = "/[fF][rR][Oo][Mm]\s+([^\s;]+)/";
+	public static function fromQuery($adb, $query) {
+		$moduleRegex = '/[fF][rR][Oo][Mm]\s+([^\s;]+)/';
 		$matches = array();
-		$found = preg_match($moduleRegex,$query,$matches);
+		$found = preg_match($moduleRegex, $query, $matches);
 		if ($found === 1) {
-			return VtigerWebserviceObject::fromName($adb,trim($matches[1]));
+			return VtigerWebserviceObject::fromName($adb, trim($matches[1]));
 		}
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to perform the operation is denied for query");
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied for query');
 	}
 
 	public function getEntityName() {
@@ -98,6 +100,5 @@ class VtigerWebserviceObject{
 	public function getHandlerClass() {
 		return $this->handlerClass;
 	}
-
 }
 ?>

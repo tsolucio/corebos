@@ -11,7 +11,7 @@ include_once __DIR__ . '/../../api/ws/models/SearchFilter.php';
 
 class crmtogo_UI_SearchFilterModel extends crmtogo_WS_SearchFilterModel {
 
-	function execute($fieldnames, $paging = false, $calwhere ='') {
+	public function execute($fieldnames, $paging = false, $calwhere = '') {
 		global $current_user;
 		if ($this->moduleName == 'Project') {
 			// Custom View
@@ -29,60 +29,59 @@ class crmtogo_UI_SearchFilterModel extends crmtogo_WS_SearchFilterModel {
 			$current_user = $current_user->retrieveCurrentUserInfoFromFile($userid);
 
 			$queryGenerator = new QueryGenerator($this->moduleName, $current_user);
-			if ($viewid != "0") {
+			if ($viewid != '0') {
 				$queryGenerator->initForCustomViewById($viewid);
 			} else {
 				$queryGenerator->initForDefaultCustomView();
 			}
-			$selectClause = sprintf("SELECT %s", implode(',', $fieldnames).",vtiger_project.projectid");
+			$selectClause = sprintf('SELECT %s', implode(',', $fieldnames).',vtiger_project.projectid');
 			$fromClause = $queryGenerator->getFromClause();
 			$whereClause = $queryGenerator->getWhereClause();
-			$orderClause = "";
-			$groupClause = "";
+			$orderClause = '';
+			$groupClause = '';
 			if ($paging) {
 				$config = crmtogo_WS_Controller::getUserConfigSettings();
-				$limitClause = "LIMIT 0,".$config['NavigationLimit'];
+				$limitClause = 'LIMIT 0,'.$config['NavigationLimit'];
 			}
-		
-			if (!empty($this->criterias)) {
-					$_sortCriteria = $this->criterias['_sort'];
-						if(!empty($_sortCriteria)) {
-						$orderClause = $_sortCriteria;
-					}
-			}
-		
-			$query = sprintf("%s %s %s %s %s %s;", $selectClause, $fromClause, $whereClause, $orderClause, $groupClause, $limitClause);
-			$db = PearDatabase::getInstance();
-			$result = $db->pquery($query,array());
-			$noofrows = $db->num_rows($result);
-			$lstresult = array();
-			for($i=0;$i<$noofrows;$i++) {
-				$lstresult[$i]['firstname'] = $db->query_result($result,$i,'projectname');
-				$lstresult[$i]['id']= "31x".$db->query_result($result,$i,'projectid');
-			}
-			return $lstresult;
-		} 
-		else {
-			$selectClause = sprintf("SELECT %s", implode(',', $fieldnames));
-			$fromClause = sprintf("FROM %s", $this->moduleName);
-			$whereClause = "";
-			$orderClause = "";
-			$groupClause = "";
-			if ($paging) {
-				$config = crmtogo_WS_Controller::getUserConfigSettings();
-				$limitClause = "LIMIT 0,".$config ['NavigationLimit'];
-			}
-		
+
 			if (!empty($this->criterias)) {
 				$_sortCriteria = $this->criterias['_sort'];
-				if(!empty($_sortCriteria)) {
+				if (!empty($_sortCriteria)) {
 					$orderClause = $_sortCriteria;
 				}
 			}
-		 
-			$query = sprintf("%s %s %s %s %s %s;", $selectClause, $fromClause, $whereClause, $orderClause, $groupClause, $limitClause);
-			return vtws_query($query, $this->getUser()); 
-		
-		}	  
+
+			$query = sprintf('%s %s %s %s %s %s;', $selectClause, $fromClause, $whereClause, $orderClause, $groupClause, $limitClause);
+			$db = PearDatabase::getInstance();
+			$result = $db->pquery($query, array());
+			$noofrows = $db->num_rows($result);
+			$lstresult = array();
+			$entityId = vtws_getEntityId($this->moduleName)."x";
+			for ($i=0; $i<$noofrows; $i++) {
+				$lstresult[$i]['firstname'] = $db->query_result($result, $i, 'projectname');
+				$lstresult[$i]['id']= $entityId.$db->query_result($result, $i, 'projectid');
+			}
+			return $lstresult;
+		} else {
+			$selectClause = sprintf('SELECT %s', implode(',', $fieldnames));
+			$fromClause = sprintf('FROM %s', $this->moduleName);
+			$whereClause = '';
+			$orderClause = '';
+			$groupClause = '';
+			if ($paging) {
+				$config = crmtogo_WS_Controller::getUserConfigSettings();
+				$limitClause = 'LIMIT 0,'.$config ['NavigationLimit'];
+			}
+
+			if (!empty($this->criterias)) {
+				$_sortCriteria = $this->criterias['_sort'];
+				if (!empty($_sortCriteria)) {
+					$orderClause = $_sortCriteria;
+				}
+			}
+
+			$query = sprintf('%s %s %s %s %s %s;', $selectClause, $fromClause, $whereClause, $orderClause, $groupClause, $limitClause);
+			return vtws_query($query, $this->getUser());
+		}
 	}
 }

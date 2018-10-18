@@ -27,7 +27,7 @@ class SMSMasivos implements ISMSProvider {
 	const SERVICE_URI = 'http://www.smasivos.com';
 	private static $REQUIRED_PARAMETERS = array();
 
-	function __construct() {
+	public function __construct() {
 	}
 
 	/**
@@ -47,8 +47,8 @@ class SMSMasivos implements ISMSProvider {
 		$this->_parameters[$key] = $value;
 	}
 
-	public function getParameter($key, $defvalue = false)  {
-		if(isset($this->_parameters[$key])) {
+	public function getParameter($key, $defvalue = false) {
+		if (isset($this->_parameters[$key])) {
 			return $this->_parameters[$key];
 		}
 		return $defvalue;
@@ -59,11 +59,14 @@ class SMSMasivos implements ISMSProvider {
 	}
 
 	public function getServiceURL($type = false) {
-		if($type) {
-			switch(strtoupper($type)) {
-				case self::SERVICE_AUTH: return  self::SERVICE_URI . '/http/auth';
-				case self::SERVICE_SEND: return  self::SERVICE_URI . '/sms/api.envio.php';
-				case self::SERVICE_QUERY: return self::SERVICE_URI . '/http/querymsg';
+		if ($type) {
+			switch (strtoupper($type)) {
+				case self::SERVICE_AUTH:
+					return  self::SERVICE_URI . '/http/auth';
+				case self::SERVICE_SEND:
+					return  self::SERVICE_URI . '/sms/api.envio.php';
+				case self::SERVICE_QUERY:
+					return self::SERVICE_URI . '/http/querymsg';
 			}
 		}
 		return false;
@@ -81,13 +84,15 @@ class SMSMasivos implements ISMSProvider {
 		$tonumbers = (array)$tonumbers;
 
 		foreach ($tonumbers as $key => $value) {
-			if (substr($value, 0,3) == '044') $tonumbers[$key]=substr($value,3);
+			if (substr($value, 0, 3) == '044') {
+				$tonumbers[$key]=substr($value, 3);
+			}
 		}
 
 		$results = array();
-		foreach($tonumbers as $numcelular){
+		foreach ($tonumbers as $numcelular) {
 			$params = $this->prepareParameters();
-			$params['mensaje'] = substr($message,0,160);
+			$params['mensaje'] = substr($message, 0, 160);
 			$params['numcelular'] = $numcelular;
 			$params['numregion'] = '52';
 			$serviceURL = $this->getServiceURL(self::SERVICE_SEND);
@@ -97,21 +102,23 @@ class SMSMasivos implements ISMSProvider {
 			$referencia = $responseobj->referencia;
 			$responseLines = split("\n", $response);
 			$i = 0;
-			foreach($responseLines as $responseLine) {
+			foreach ($responseLines as $responseLine) {
 				$responseLine = trim($responseLine);
-				if(empty($responseLine)) continue;
+				if (empty($responseLine)) {
+					continue;
+				}
 				$result = array( 'error' => false, 'statusmessage' => '' );
-				if(preg_match("/Error(.*)/", trim($responseLine), $matches)) {
+				if (preg_match("/Error(.*)/", trim($responseLine), $matches)) {
 					$result['error'] = true;
 					$result['to'] = $numcelular;
 					$i++;
 					$result['statusmessage'] = $matches[0]; // Complete error message
-				} else if(preg_match("/\"Estatus\":\"([^ ]+)\",\"referencia\":(.*)\}/", $responseLine, $matches)) {
+				} elseif (preg_match("/\"Estatus\":\"([^ ]+)\",\"referencia\":(.*)\}/", $responseLine, $matches)) {
 					$result['id'] = trim($matches[2]);
 					$result['to'] = trim($numcelular);
 					$result['statusmessage'] = $matches[1];
 					$result['status'] = self::MSG_STATUS_DISPATCHED;
-				} else if(preg_match("/ID: (.*)/", $responseLine, $matches)) {
+				} elseif (preg_match("/ID: (.*)/", $responseLine, $matches)) {
 					$result['id'] = trim($matches[1]);
 					$result['to'] = $numcelular;
 					$result['status'] = self::MSG_STATUS_PROCESSING;
@@ -134,20 +141,20 @@ class SMSMasivos implements ISMSProvider {
 
 		$result = array( 'error' => false, 'needlookup' => 1 );
 
-		if(preg_match("/ERR: (.*)/", $response, $matches)) {
+		if (preg_match("/ERR: (.*)/", $response, $matches)) {
 			$result['error'] = true;
 			$result['needlookup'] = 0;
 			$result['statusmessage'] = $matches[0];
-		} else if(preg_match("/ID: ([^ ]+) Status: ([^ ]+)/", $response, $matches)) {
+		} elseif (preg_match("/ID: ([^ ]+) Status: ([^ ]+)/", $response, $matches)) {
 			$result['id'] = trim($matches[1]);
 			$status = trim($matches[2]);
 
 			// Capture the status code as message by default.
 			$result['statusmessage'] = "CODE: $status";
 
-			if($status === '1') {
+			if ($status === '1') {
 				$result['status'] = self::MSG_STATUS_PROCESSING;
-			} else if($status === '2') {
+			} elseif ($status === '2') {
 				$result['status'] = self::MSG_STATUS_DISPATCHED;
 				$result['needlookup'] = 0;
 			}

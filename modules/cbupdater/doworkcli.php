@@ -26,12 +26,12 @@ if (count($argv)!=3) {
 	$error = 0;
 	$errmsg = '';
 
+	require_once 'modules/cbupdater/cbupdater.php';
+	require_once 'modules/cbupdater/cbupdaterWorker.php';
 	$ids = strtolower(vtlib_purify($argv[2]));
 	$whattodo = strtolower($argv[1]);
 
 	if (!empty($ids) && ($whattodo=='undo' || $whattodo=='apply')) {
-		require_once 'modules/cbupdater/cbupdater.php';
-		require_once 'modules/cbupdater/cbupdaterWorker.php';
 		global $adb, $log, $mod_strings, $app_strings, $currentModule, $current_user;
 		$currentModule = 'cbupdater';
 		$sql = 'select cbupdaterid,filename,pathfilename,classname, cbupd_no, description from vtiger_cbupdater

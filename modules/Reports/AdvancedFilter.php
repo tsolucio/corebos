@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 if (isset($_REQUEST['record']) && $_REQUEST['record']!='') {
-	$reportid = vtlib_purify($_REQUEST["record"]);
+	$reportid = vtlib_purify($_REQUEST['record']);
 	$oReport = new Reports($reportid);
 	$oReport->getAdvancedFilterList($reportid);
 
@@ -17,13 +17,13 @@ if (isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 	$secondarymodules =array();
 
 	if (!empty($oRep->related_modules[$oReport->primodule])) {
-		foreach ($oRep->related_modules[$oReport->primodule] as $key => $value) {
-			if (isset($_REQUEST["secondarymodule_".$value])) {
-				$secondarymodules []= $_REQUEST["secondarymodule_".$value];
+		foreach ($oRep->related_modules[$oReport->primodule] as $value) {
+			if (isset($_REQUEST['secondarymodule_'.$value])) {
+				$secondarymodules []= $_REQUEST['secondarymodule_'.$value];
 			}
 		}
 	}
-	$secondarymodule = implode(":", $secondarymodules);
+	$secondarymodule = implode(':', $secondarymodules);
 
 	if ($secondarymodule!='') {
 		$oReport->secmodule = $secondarymodule;
@@ -42,7 +42,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 	$COLUMNS_BLOCK = getPrimaryColumns_AdvFilterHTML($primarymodule);
 	$ogReport = new Reports();
 	if (!empty($ogReport->related_modules[$primarymodule])) {
-		foreach ($ogReport->related_modules[$primarymodule] as $key => $value) {
+		foreach ($ogReport->related_modules[$primarymodule] as $value) {
 			//$BLOCK1 .= getSecondaryColumnsHTML($_REQUEST["secondarymodule_".$value]);
 			$COLUMNS_BLOCK .= getSecondaryColumns_AdvFilterHTML($_REQUEST["secondarymodule_".$value]);
 		}
@@ -62,7 +62,7 @@ function getPrimaryColumns_AdvFilterHTML($module, $selected = "") {
 	$selected = decode_html($selected);
 	$block_listed = array();
 	$i18nModule = getTranslatedString($module, $module);
-	foreach ($ogReport->module_list[$module] as $key => $value) {
+	foreach ($ogReport->module_list[$module] as $value) {
 		if (isset($ogReport->pri_module_columnslist[$module][$value]) && !$block_listed[$value]) {
 			$block_listed[$value] = true;
 			$shtml .= "<optgroup label=\"".$i18nModule." ".getTranslatedString($value)."\" class=\"select\" style=\"border:none\">";
@@ -89,7 +89,7 @@ function getSecondaryColumns_AdvFilterHTML($module, $selected = "") {
 			if (vtlib_isModuleActive($secmodule[$i])) {
 				$block_listed = array();
 				$i18nModule = getTranslatedString($secmodule[$i], $secmodule[$i]);
-				foreach ($ogReport->module_list[$secmodule[$i]] as $key => $value) {
+				foreach ($ogReport->module_list[$secmodule[$i]] as $value) {
 					if (isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && !$block_listed[$value]) {
 						$block_listed[$value] = true;
 						$shtml .= "<optgroup label=\"".$i18nModule." ".getTranslatedString($value, $secmodule[$i])."\" class=\"select\" style=\"border:none\">";
@@ -106,7 +106,7 @@ function getSecondaryColumns_AdvFilterHTML($module, $selected = "") {
 	return $shtml;
 }
 
-function getRelatedColumns($selected = "") {
+function getRelatedColumns($selected = '') {
 	global $ogReport;
 	$rel_fields = $ogReport->adv_rel_fields;
 	if ($selected!='All') {
@@ -115,7 +115,7 @@ function getRelatedColumns($selected = "") {
 	$related_fields = array();
 	foreach ($rel_fields as $i => $index) {
 		$shtml='';
-		foreach ($index as $key => $value) {
+		foreach ($index as $value) {
 			$fieldarray = explode("::", $value);
 			$shtml .= "<option value=\"".$fieldarray[0]."\">".$fieldarray[1]."</option>";
 		}
@@ -130,7 +130,7 @@ function getRelatedColumns($selected = "") {
 	}
 }
 
-function getRelatedFieldColumns($selected = "") {
+function getRelatedFieldColumns($selected = '') {
 	global $ogReport;
 	return $ogReport->adv_rel_fields;
 }

@@ -15,16 +15,18 @@
 *************************************************************************************************/
 
 class changeUitype68To10 extends cbupdaterWorker {
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$this->ExecuteQuery("UPDATE vtiger_field SET uitype = '10' WHERE uitype = '68'");
-			$module = Vtiger_Module::getInstance("HelpDesk");
-			$field = Vtiger_Field::getInstance('parent_id',$module);
-			$field->setRelatedModules(array('Accounts','Contacts'));
+			$module = Vtiger_Module::getInstance('HelpDesk');
+			$field = Vtiger_Field::getInstance('parent_id', $module);
+			$field->setRelatedModules(array('Accounts', 'Contacts'));
 
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);

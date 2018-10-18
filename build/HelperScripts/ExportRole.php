@@ -16,16 +16,18 @@
 *  Version      : 5.4.0
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
-include_once('vtlib/Vtiger/Module.php');
-include_once('modules/Users/Users.php');
-require_once('include/logging.php');
-require_once('include/utils/UserInfoUtil.php');
-include_once('config.inc.php');
+include_once 'vtlib/Vtiger/Module.php';
+include_once 'modules/Users/Users.php';
+require_once 'include/logging.php';
+require_once 'include/utils/UserInfoUtil.php';
+include_once 'config.inc.php';
 global $adb,$root_directory;
 
 $uri = 'build/role.xml';
 $xmlwriter = new XMLWriter();
-if (file_exists($uri)) unlink($uri);
+if (file_exists($uri)) {
+	unlink($uri);
+}
 touch($uri);
 $uri = realpath($uri);
 $xmlwriter->openURI($uri);
@@ -38,22 +40,21 @@ $xmlwriter->startElement('vtcrm_roles');
 
 $pfrs = $adb->query('select * from vtiger_role order by depth');  // Order is VERY important for import
 while ($pf = $adb->fetch_array($pfrs)) {
-
 	$xmlwriter->startElement('vtcrm_role');
 	// Start the element for role definition
 	$xmlwriter->startElement('vtcrm_definition');
-	
+
 	// Start the element for name field
 	$xmlwriter->startElement('vtcrm_rolename');
 	$xmlwriter->text($pf['rolename']);
 	$xmlwriter->endElement(); //end rolename
 	$xmlwriter->startElement('vtcrm_parentrole');
-	$pr = explode('::',$pf['parentrole']);
+	$pr = explode('::', $pf['parentrole']);
 	$prnames = array();
 	foreach ($pr as $prole) {
 		$prnames[] = $adb->getone("select rolename from vtiger_role where roleid='$prole'");
 	}
-	$prn = implode('::',$prnames);
+	$prn = implode('::', $prnames);
 	$xmlwriter->text($prn);
 	$xmlwriter->endElement(); //end parentrole
 	$xmlwriter->startElement('vtcrm_depth');
@@ -66,7 +67,7 @@ while ($pf = $adb->fetch_array($pfrs)) {
 
 	// Start the parent role2profile element
 	$xmlwriter->startElement('vtcrm_role2profiles');
-	
+
 	$tab_perr_result = $adb->pquery("select * from vtiger_role2profile where roleid=?", array($first_roleid));
 	while ($p2t = $adb->fetch_array($tab_perr_result)) {
 		$xmlwriter->startElement('vtcrm_role2pf');

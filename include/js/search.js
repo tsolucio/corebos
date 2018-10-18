@@ -7,26 +7,42 @@
  * All Rights Reserved.
 ********************************************************************************/
 
-function searchshowhide(argg,argg2) {
+function searchshowhide(argg, argg2) {
 	var ele_x = document.getElementById(argg);
 	var ele_y = document.getElementById(argg2);
 	var x, y;
-	if (ele_x != null) x = ele_x.style;
-	if (ele_y != null) y = ele_y.style;
+	if (ele_x != null) {
+		x = ele_x.style;
+	}
+	if (ele_y != null) {
+		y = ele_y.style;
+	}
 	if (x != null && x.display=='none' && (y == null || y.display=='none')) {
 		x.display='block';
 	} else {
-		if (y != null) y.display='none';
-		if (x != null) x.display='none';
+		if (y != null) {
+			y.display='none';
+		}
+		if (x != null) {
+			x.display='none';
+		}
 	}
 }
 
-function searchhide(argg,argg2) {
+function searchhide(argg, argg2) {
 	var ele_x = document.getElementById(argg);
 	var ele_y = document.getElementById(argg2);
 	var x, y;
-	if (ele_x != null) x = ele_x.style;
-	if (ele_y != null) y = ele_y.style;
-	if (y != null) y.display='none';
-	if (x != null) x.display='none';
+	if (ele_x != null) {
+		x = ele_x.style;
+	}
+	if (ele_y != null) {
+		y = ele_y.style;
+	}
+	if (y != null) {
+		y.display='none';
+	}
+	if (x != null) {
+		x.display='none';
+	}
 }

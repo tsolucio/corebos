@@ -7,7 +7,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 'MyExtension' => 'My Extension',
 "Calendar4You"=>"Calendar",
 "LBL_MODULE_NAME"=>"Calendar",
@@ -24,7 +24,7 @@ $mod_strings = Array (
 "LBL_WEEK_EVENT_INFO"=>"Zobrazené informácie v týždennom kalendári",
 "LBL_MONTH_EVENT_INFO"=>"Zobrazené informácie v mesačnom kalendári",
 "LBL_AVAILABLE_INFO"=>"Dostupné informácie",
-"LBL_SELECTED_INFO"=>"Vybrané informácie",  
+"LBL_SELECTED_INFO"=>"Vybrané informácie",
 "LBL_PROFILES_DESC"=>"Spravuje prístup používateľov ku Calendar na základe rôl.",
 "LBL_PROFILES"=>"Profily",
 "LBL_SETPRIVILEGIES"=>"Definuje práva pre Calendar pre všetky profily",
@@ -37,9 +37,9 @@ $mod_strings = Array (
 "RESIZE_EVENT_QUESTION" => "Naozaj si želáte zmeniť trvanie danéj aktivity?",
 "LBL_DEFAULT_USER_VIEW" => "Základný pohľad",
 "LBL_ALL_USERS" => "Všetci vybraný",
-"LBL_ME" => "Moje", 
+"LBL_ME" => "Moje",
 "LBL_EVENT_STATUS" => "Stav udalostí",
-"LBL_TASK_STATUS" => "Stav úloh", 
+"LBL_TASK_STATUS" => "Stav úloh",
 "LBL_DETAIL"=>"detail",
 "LBL_WEEK_STARTS_AT"=>"Týždeň začína dňom",
 "LBL_INVITE"=>"Pozvania",
@@ -72,5 +72,6 @@ $mod_strings = Array (
 "LBL_GOOGLEINS"=>"Insert from Google?",
 'LIST_MODULES' => 'List of Modules',
 'Gmail_ChangeAccount'=>'If you want to change the Gmail Account please clear the tokens',
+'Click2PickColor' => 'Click here to pick color',
 );
 ?>

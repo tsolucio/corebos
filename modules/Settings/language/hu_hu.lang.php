@@ -237,6 +237,8 @@ $mod_strings = array(
 	'LBL_QUOTE_STAGE' => 'Ajánlati Fázis',
 	'LBL_CARRIER' => 'Futár',
 	'LBL_TAXCLASS' => 'Adó osztály',
+	'LBL_RETENTION'=>'Retention',
+	'LBL_PERCENTAGE'=>'Percentage',
 	'LBL_MY_DETAILS' => 'Részletek',
 	'LBL_MY_MAIL_SERVER_DET' => 'Bejövő Email Szerver adatai',
 	'LBL_EMAIL_ID' => 'Email azonosító',
@@ -698,6 +700,8 @@ $mod_strings = array(
 	'LBL_TASKS' => 'Feladatok',
 	'LBL_NEW_TASK_BUTTON_LABEL' => 'Új Feladatok',
 	'LBL_TASK' => 'Feladat',
+	'LBL_DELAY' => 'Delay',
+
 	'LBL_MANDATORY_FIELDS' => 'Kötelező Mezők',
 	'LBL_MANDATORY_FIELDS_DESCRIPTION' => 'Kötelező Mezők Beállítása minden modulhoz',
 	'LBL_CUSTOMIZE_MODENT_NUMBER' => 'Rekord számozás beállítás',

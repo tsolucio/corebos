@@ -223,92 +223,7 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 					//<<<<step4 columnstototal>>>>>>>
 
 					//<<<<step5 advancedfilter>>>>>>>
-					$irelcriteriasql = 'insert into vtiger_relcriteria(QUERYID,COLUMNINDEX,COLUMNNAME,COMPARATOR,VALUE,GROUPID,COLUMN_CONDITION) values (?,?,?,?,?,?,?)';
-					foreach ($advft_criteria as $column_index => $column_condition) {
-						if (empty($column_condition)) {
-							continue;
-						}
-
-						$adv_filter_column = $column_condition["columnname"];
-						$adv_filter_comparator = $column_condition["comparator"];
-						$adv_filter_value = $column_condition["value"];
-						$adv_filter_column_condition = $column_condition["columncondition"];
-						$adv_filter_groupid = $column_condition["groupid"];
-
-						$column_info = explode(":", $adv_filter_column);
-						$moduleFieldLabel = $column_info[2];
-						$fieldName = $column_info[3];
-
-						list($module, $fieldLabel) = explode('_', $moduleFieldLabel, 2);
-						$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
-						$fieldType = null;
-						if (!empty($fieldInfo)) {
-							$field = WebserviceField::fromArray($adb, $fieldInfo);
-							$fieldType = $field->getFieldDataType();
-						}
-
-						if (($fieldType == 'currency' || $fieldType == 'double') && (substr($adv_filter_value, 0, 1) != '$' && substr($adv_filter_value, -1, 1) != '$')) {
-							$flduitype = $fieldInfo['uitype'];
-							if ($flduitype == '72' || $flduitype == 9 || $flduitype ==7) {
-								$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value, null, true);
-							} else {
-								$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value);
-							}
-						}
-
-						$temp_val = explode(',', $adv_filter_value);
-						if (($column_info[4] == 'D' || ($column_info[4] == 'T' && $column_info[1] != 'time_start' && $column_info[1] != 'time_end') ||
-							($column_info[4] == 'DT')) && ($column_info[4] != '' && $adv_filter_value != '' )
-						) {
-							$val = array();
-							for ($x=0; $x<count($temp_val); $x++) {
-								if (trim($temp_val[$x]) != '') {
-									$date = new DateTimeField(trim($temp_val[$x]));
-									if ($column_info[4] == 'D') {
-										$val[$x] = DateTimeField::convertToDBFormat(
-											trim($temp_val[$x])
-										);
-									} elseif ($column_info[4] == 'DT') {
-										$val[$x] = $date->getDBInsertDateTimeValue();
-									} else {
-										$val[$x] = $date->getDBInsertTimeValue();
-									}
-								}
-							}
-							$adv_filter_value = implode(",", $val);
-						}
-
-						$adb->pquery(
-							$irelcriteriasql,
-							array($genQueryId, $column_index, $adv_filter_column, $adv_filter_comparator, $adv_filter_value, $adv_filter_groupid, $adv_filter_column_condition)
-						);
-
-						// Update the condition expression for the group to which the condition column belongs
-						$groupConditionExpression = '';
-						if (!empty($advft_criteria_groups[$adv_filter_groupid]["conditionexpression"])) {
-							$groupConditionExpression = $advft_criteria_groups[$adv_filter_groupid]["conditionexpression"];
-						}
-						$groupConditionExpression = $groupConditionExpression .' '. $column_index .' '. $adv_filter_column_condition;
-						$advft_criteria_groups[$adv_filter_groupid]["conditionexpression"] = $groupConditionExpression;
-					}
-
-					$irelcriteriagroupsql = 'insert into vtiger_relcriteria_grouping(GROUPID,QUERYID,GROUP_CONDITION,CONDITION_EXPRESSION) values (?,?,?,?)';
-					foreach ($advft_criteria_groups as $group_index => $group_condition_info) {
-						if (empty($group_condition_info)) {
-							continue;
-						}
-						if (empty($group_condition_info["conditionexpression"])) {
-							continue; // Case when the group doesn't have any column criteria
-						}
-
-						$adb->pquery(
-							$irelcriteriagroupsql,
-							array($group_index, $genQueryId, $group_condition_info['groupcondition'], $group_condition_info['conditionexpression'])
-						);
-					}
-					$log->info("Reports :: Save->Successfully saved vtiger_relcriteria");
-					//<<<<step5 advancedfilter>>>>>>>
-
+					updateAdvancedCriteria($genQueryId, $advft_criteria, $advft_criteria_groups);
 					//<<<<step7 scheduledReport>>>>>>>
 					if ($isReportScheduled == 'on' || $isReportScheduled == '1') {
 						$scheduleReportSql = 'INSERT INTO vtiger_scheduled_reports (reportid,recipients,schedule,format,next_trigger_time) VALUES (?,?,?,?,?)';
@@ -331,13 +246,11 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 			die;
 		}
 
-		$var = unserialize($minfo);
-		$var_one = $var['url'];
 		echo '<script>
-				window.opener.location.href = "'.vtlib_purify($var_one).'";
+				window.opener.location.href = "'. $site_URL.'/index.php?module=Reports&action=SaveAndRun&record='.$genQueryId.'&folderid='.$folderid.'";
 				window.open("index.php?module=Reports&action=ListView", "_blank");
 				self.close();
-			 </script>';
+			</script>';
 	}
 } else {
 	if ($reportid != "") {
@@ -441,95 +354,8 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 			$log->info("Reports :: Save->Successfully saved vtiger_reportsummary");
 			//<<<<step4 columnstototal>>>>>>>
 
-
 			//<<<<step5 advancedfilter>>>>>>>
-
-			$idelrelcriteriasql = "delete from vtiger_relcriteria where queryid=?";
-			$idelrelcriteriasqlresult = $adb->pquery($idelrelcriteriasql, array($reportid));
-
-			$idelrelcriteriagroupsql = "delete from vtiger_relcriteria_grouping where queryid=?";
-			$idelrelcriteriagroupsqlresult = $adb->pquery($idelrelcriteriagroupsql, array($reportid));
-
-			$irelcriteriasql = 'insert into vtiger_relcriteria(QUERYID,COLUMNINDEX,COLUMNNAME,COMPARATOR,VALUE,GROUPID,COLUMN_CONDITION) values (?,?,?,?,?,?,?)';
-			foreach ($advft_criteria as $column_index => $column_condition) {
-				if (empty($column_condition)) {
-					continue;
-				}
-
-				$adv_filter_column = $column_condition["columnname"];
-				$adv_filter_comparator = $column_condition["comparator"];
-				$adv_filter_value = $column_condition["value"];
-				$adv_filter_column_condition = $column_condition["columncondition"];
-				$adv_filter_groupid = $column_condition["groupid"];
-
-				$column_info = explode(":", $adv_filter_column);
-				$moduleFieldLabel = $column_info[2];
-				$fieldName = $column_info[3];
-
-				list($module, $fieldLabel) = explode('_', $moduleFieldLabel, 2);
-				$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
-				$fieldType = null;
-				if (!empty($fieldInfo)) {
-					$field = WebserviceField::fromArray($adb, $fieldInfo);
-					$fieldType = $field->getFieldDataType();
-				}
-
-				if (($fieldType == 'currency' || $fieldType == 'double') && (substr($adv_filter_value, 0, 1) != '$' && substr($adv_filter_value, -1, 1) != '$')) {
-					$flduitype = $fieldInfo['uitype'];
-					if ($flduitype == '72' || $flduitype == 9 || $flduitype ==7) {
-						$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value, null, true);
-					} else {
-						$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value);
-					}
-				}
-
-				$temp_val = explode(",", $adv_filter_value);
-				if (($column_info[4] == 'D' || ($column_info[4] == 'T' && $column_info[1] != 'time_start' && $column_info[1] != 'time_end') ||
-					($column_info[4] == 'DT')) && ($column_info[4] != '' && $adv_filter_value != '' )
-				) {
-					$val = array();
-					for ($x=0; $x<count($temp_val); $x++) {
-						if (trim($temp_val[$x]) != '') {
-							$date = new DateTimeField(trim($temp_val[$x]));
-							if ($column_info[4] == 'D') {
-								$val[$x] = DateTimeField::convertToDBFormat(
-									trim($temp_val[$x])
-								);
-							} elseif ($column_info[4] == 'DT') {
-								$val[$x] = $date->getDBInsertDateTimeValue();
-							} else {
-								$val[$x] = $date->getDBInsertTimeValue();
-							}
-						}
-					}
-					$adv_filter_value = implode(",", $val);
-				}
-
-				$adb->pquery(
-					$irelcriteriasql,
-					array($reportid, $column_index, $adv_filter_column, $adv_filter_comparator, $adv_filter_value, $adv_filter_groupid, $adv_filter_column_condition)
-				);
-
-				// Update the condition expression for the group to which the condition column belongs
-				$groupConditionExpression = '';
-				if (!empty($advft_criteria_groups[$adv_filter_groupid]["conditionexpression"])) {
-					$groupConditionExpression = $advft_criteria_groups[$adv_filter_groupid]["conditionexpression"];
-				}
-				$groupConditionExpression = $groupConditionExpression .' '. $column_index .' '. $adv_filter_column_condition;
-				$advft_criteria_groups[$adv_filter_groupid]["conditionexpression"] = $groupConditionExpression;
-			}
-
-			$irelcriteriagroupsql = 'insert into vtiger_relcriteria_grouping(GROUPID,QUERYID,GROUP_CONDITION,CONDITION_EXPRESSION) values (?,?,?,?)';
-			foreach ($advft_criteria_groups as $group_index => $group_condition_info) {
-				if (empty($group_condition_info)) {
-					continue;
-				}
-				if (empty($group_condition_info["conditionexpression"])) {
-					continue; // Case when the group doesn't have any column criteria
-				}
-				$adb->pquery($irelcriteriagroupsql, array($group_index, $reportid, $group_condition_info['groupcondition'], $group_condition_info['conditionexpression']));
-			}
-			$log->info('Reports :: Save->Successfully saved vtiger_relcriteria');
+			updateAdvancedCriteria($reportid, $advft_criteria, $advft_criteria_groups);
 			//<<<<step5 advancedfilter>>>>>>>
 
 			//<<<<step7 scheduledReport>>>>>>>
@@ -538,7 +364,6 @@ if ($reportid == '' || ($reportid!='' && isset($_REQUEST['saveashidden']) && $_R
 				$adb->pquery($deleteScheduledReportSql, array($reportid));
 			} else {
 				$checkScheduledResult = $adb->pquery('SELECT 1 FROM vtiger_scheduled_reports WHERE reportid=?', array($reportid));
-
 				if ($adb->num_rows($checkScheduledResult) > 0) {
 					$scheduledReportSql = 'UPDATE vtiger_scheduled_reports SET recipients=?,schedule=?,format=? WHERE reportid=?';
 					$adb->pquery($scheduledReportSql, array($selectedRecipients,$scheduledInterval,$scheduledFormat,$reportid));

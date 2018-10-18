@@ -7,9 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('modules/Webforms/Webforms.php');
-require_once('modules/Webforms/model/WebformsModel.php');
-require_once('Smarty_setup.php');
+require_once 'modules/Webforms/Webforms.php';
+require_once 'modules/Webforms/model/WebformsModel.php';
+require_once 'Smarty_setup.php';
 require_once 'config.inc.php';
 
 Webforms::checkAdminAccess($current_user);
@@ -19,10 +19,10 @@ $webformFields=$webformModel->getFields();
 
 $smarty = new vtigerCRM_Smarty();
 
-$smarty->assign('ACTIONPATH',$site_URL);
-$smarty->assign('WEBFORM',new Webforms());
-$smarty->assign('WEBFORMMODEL',$webformModel);
-$smarty->assign('WEBFORMFIELDS',$webformFields);
-$smarty->assign('LANGUAGE',$current_language);
-$smarty->display(vtlib_getModuleTemplate($currentModule,'HTMLView.tpl'));
+$smarty->assign('ACTIONPATH', $site_URL);
+$smarty->assign('WEBFORM', new Webforms());
+$smarty->assign('WEBFORMMODEL', $webformModel);
+$smarty->assign('WEBFORMFIELDS', $webformFields);
+$smarty->assign('LANGUAGE', $current_language);
+$smarty->display(vtlib_getModuleTemplate($currentModule, 'HTMLView.tpl'));
 ?>

@@ -293,7 +293,6 @@ ExecuteQuery("UPDATE vtiger_blocks SET blocklabel = '' WHERE blocklabel = 'LBL_R
 ExecuteQuery("UPDATE vtiger_field SET block = '41' WHERE tabid = '16' and fieldname NOT IN('reminder_time','contact_id')");
 ExecuteQuery("UPDATE vtiger_field SET block = '19' WHERE tabid = '16' and fieldname = 'contact_id'");
 
-
 // Change HelpDesk Workflows
 global $adb;
 $workflowManager = new VTWorkflowManager($adb);
@@ -356,7 +355,7 @@ $taskManager->saveTask($task);
 putMsg('Workflow "'.$helpDeskWorkflow->description.'" created!');
 
 $delmods = array(
-	'EmailTemplates','Google'
+	'EmailTemplates','Google','ExtensionStore'
 );
 
 foreach ($delmods as $module) {
@@ -389,7 +388,4 @@ foreach ($insmods as $module) {
 
 $mod = Vtiger_Module::getInstance('ModTracker');
 $mod->addLink('HEADERSCRIPT', 'ModTrackerCommon_JS', 'modules/ModTracker/ModTrackerCommon.js');
-
-
-
 ?>

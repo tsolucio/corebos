@@ -189,20 +189,18 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 						}
 					}
 					$field = array(
-							'name'  => $fieldname,
-							'value' => $resultRecord[$fieldname],
-							'label' => $fieldinfo['label'],
-							'uitype'=> $fieldinfo['uitype'],
-							'typeofdata'=> $fieldinfo['typeofdata'],
-							'displaytype'=> $fieldinfo['displaytype'],
-							'mandatory'=> $fieldinfo['mandatory']
+						'name'  => $fieldname,
+						'value' => $resultRecord[$fieldname],
+						'label' => $fieldinfo['label'],
+						'uitype'=> $fieldinfo['uitype'],
+						'typeofdata'=> $fieldinfo['typeofdata'],
+						'displaytype'=> $fieldinfo['displaytype'],
+						'mandatory'=> $fieldinfo['mandatory']
 					);
 					//handling for special UI types: modify $field
 					if ($field['uitype'] == '53') {
 						//assigned user
 						$output = array_chunk($value, 1);
-						$recordarray=explode('x', $output[0][0]);
-						$recordprefix=$recordarray[0];
 						$value = $output[0][0];
 						if ($value != '' && $value != 0) {
 								$assigned_user_id = $value;
@@ -218,18 +216,18 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 						//picklists
 						$fieldvalue = array();
 						$options = array();
-						$chk_val="";
+						$chk_val = '';
 						$picklistValues = vtlib_getPicklistValues($fieldname);
 						foreach ($picklistValues as $pickkey => $pickvalue) {
 							$picklistValues[$pickkey] = decode_html($pickvalue);
 						}
-						$valueArr = explode("|##|", $value);
+						$valueArr = explode('|##|', $value);
 						$pickcount = 0;
 						//get values
 						if (!empty($picklistValues)) {
-							foreach ($picklistValues as $order => $pickListValue) {
-								if (in_array(trim($pickListValue), array_map("trim", $valueArr))) {
-									$chk_val = "selected";
+							foreach ($picklistValues as $pickListValue) {
+								if (in_array(trim($pickListValue), array_map('trim', $valueArr))) {
+									$chk_val = 'selected';
 									$pickcount++;
 								} else {
 									$chk_val = '';
@@ -237,7 +235,6 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 								$options[] = array('label'=>getTranslatedString($pickListValue, $module),'value'=>$pickListValue,'selected'=>$chk_val);
 							}
 						}
-						$editview_label[]=getTranslatedString($fieldlabel, $module);
 						foreach ($valueArr as $key => $value) {
 							$valueArr[$key] = getTranslatedString($value, $module);
 						}
@@ -247,7 +244,7 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 							$field['value'] = $valueArr[0];
 						}
 
-						$fieldvalue [] = $options;
+						$fieldvalue[] = $options;
 						$field['type']['value'] =array('value' =>$options,'name' =>$fieldname);
 						//end picklists
 					} elseif ($field['uitype'] == '51' || $field['uitype'] == '10') {

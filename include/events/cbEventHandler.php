@@ -35,11 +35,11 @@ class cbEventHandler {
 		$query = 'SELECT handler_path, handler_class FROM vtiger_eventhandlers WHERE is_active=true AND event_name = ?';
 		$result = $adb->pquery($query, array($filtername));
 
-		if(!isset(self::$_filterCache[$filtername])) {
+		if (!isset(self::$_filterCache[$filtername])) {
 			self::$_filterCache[$filtername] = array();
 		}
 
-		while($filter = $adb->fetchByAssoc($result)) {
+		while ($filter = $adb->fetchByAssoc($result)) {
 			self::$_filterCache[$filtername][] = $filter;
 		}
 	}
@@ -49,16 +49,19 @@ class cbEventHandler {
 		self::$numCounter[0]++;
 
 		// if vtiger.footer Action is called, output the timings for admins
-		if($eventName == 'corebos.footer') {
+		if ($eventName == 'corebos.footer') {
 			global $current_user;
-			$show_response_time = GlobalVariable::getVariable('Debug_Calculate_Response_Time',0);
-			if($current_user->is_admin == 'on' and $show_response_time) {
-				echo "<div style='text-align:left;font-size:11px;padding:0 30px;color:rgb(153, 153, 153);'>Event processing <span title='total time the EventHandler was active' alt='total time the EventHandler was active'>".round(self::$Counter*1000, 1)."</span> / <span title='time Events used internal' alt='time Events used internal'>".round(self::$CounterInternal*1000, 1)." msec (".self::$numCounter[0]." Actions / ".self::$numCounter[1]." Filter)</div>";
+			$show_response_time = GlobalVariable::getVariable('Debug_Calculate_Response_Time', 0);
+			if ($current_user->is_admin == 'on' && $show_response_time) {
+				echo "<div style='text-align:left;font-size:11px;padding:0 30px;color:rgb(153, 153, 153);'>"
+					."Event processing <span title='total time the EventHandler was active' alt='total time the EventHandler was active'>".round(self::$Counter*1000, 1)
+					."</span> / <span title='time Events used internal' alt='time Events used internal'>".round(self::$CounterInternal*1000, 1).' msec ('
+					.self::$numCounter[0].' Actions / '.self::$numCounter[1].' Filter)</div>';
 			}
 		}
 
 		// Handle Events with the internal EventsManager
-		if(self::$_eventManager === false) {
+		if (self::$_eventManager === false) {
 			global $adb;
 			self::$_eventManager = new VTEventsManager($adb);
 			// Initialize Event trigger cache
@@ -76,21 +79,21 @@ class cbEventHandler {
 		$startTime = microtime(true);
 
 		// load the Cache for this Filter
-		if(self::$_filterCache === false || !isset(self::$_filterCache[$filtername])) {
+		if (self::$_filterCache === false || !isset(self::$_filterCache[$filtername])) {
 			self::_loadFilterCache($filtername);
 		}
 
 		// if no filter is registerd only return $parameter
-		if(!isset(self::$_filterCache[$filtername]) || count(self::$_filterCache[$filtername]) == 0) {
+		if (!isset(self::$_filterCache[$filtername]) || count(self::$_filterCache[$filtername]) == 0) {
 			return $parameter;
 		}
 
-		foreach(self::$_filterCache[$filtername] as $filter) {
+		foreach (self::$_filterCache[$filtername] as $filter) {
 			self::$numCounter[1]++;
 
 			// if not used before this, create the Handler Class
-			if(!isset(self::$_objectCache[$filter['handler_path'].'/'.$filter['handler_class']])) {
-				require_once($filter['handler_path']);
+			if (!isset(self::$_objectCache[$filter['handler_path'].'/'.$filter['handler_class']])) {
+				require_once $filter['handler_path'];
 				$className = $filter['handler_class'];
 				self::$_objectCache[$filter['handler_path'].'#'.$filter['handler_class']] = new $className();
 			}

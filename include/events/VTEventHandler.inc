@@ -9,6 +9,6 @@
  *************************************************************************************/
 
 abstract class VTEventHandler {
-	public abstract function handleEvent($name, $data);
+	abstract public function handleEvent($name, $data);
 }
 ?>

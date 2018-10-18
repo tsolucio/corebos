@@ -14,7 +14,7 @@
 		<td class="small">
 			<!-- popup specific content fill in starts -->
 			<form name="EditView" id="massedit_form" action="index.php" onsubmit="VtigerJS_DialogBox.block();" method="POST">
-				<input id="idstring" value="{$IDS}" type="hidden" />
+				<input id="idstring" name="idstring" value="{$IDS}" type="hidden" />
 				<table border=0 cellspacing=0 cellpadding=0 width=100% align=center bgcolor=white>
 				<tr>
 					<td colspan=4 valign="top">
@@ -74,7 +74,7 @@
 					<td align="center">
 						<!--input type="submit" name="save" class="crmbutton small edit" value="{$APP.LBL_SAVE_LABEL}">
 						<input type="button" name="button" class="crmbutton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" onClick="fninvsh('massedit')"-->
-						<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="document.getElementById('massedit_form').action.value='MassEditSave'; return massEditFormValidate()" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
+						<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="run_massedit();" type="button" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
 						<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="fninvsh('massedit')" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
 					</td>
 				</tr>

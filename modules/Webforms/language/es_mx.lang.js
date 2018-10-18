@@ -9,5 +9,6 @@
 
 var webforms_alert_arr = {
 	'LBL_MADATORY_FIELDS' : 'Introduce valores para los campos obligatorios',
-	'LBL_DELETE_MSG'      : '¿Estás seguro que quieres eliminar el formulario web?'
+	'LBL_DELETE_MSG'      : '¿Estás seguro que quieres eliminar el formulario web?',
+	'LBL_DUPLICATE_NAME'  : 'Un formulario con ese nombre ya existe'
 };

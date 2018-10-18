@@ -11,90 +11,94 @@ include_once __DIR__ . '/../lib/StringDiff.php';
 include_once __DIR__ . '/ModTracker_Field.php';
 
 class ModTracker_Detail {
-	var $id;
-	var $name;
-	var $prevalue;
-	var $postvalue;
+	public $id;
+	public $name;
+	public $prevalue;
+	public $postvalue;
 
-	var $parent;
-	var $fieldInstance;
+	public $parent;
+	public $fieldInstance;
 
-	var $_prevalueLabel = false;
-	var $_postvalueLabel = false;
-	var $_fieldLabel = false;
+	private $_prevalueLabel = false;
+	private $_postvalueLabel = false;
+	private $_fieldLabel = false;
 
-	function __construct($parent) {
+	public function __construct($parent) {
 		$this->parent = $parent;
 	}
 
-	function getModuleName() {
+	public function getModuleName() {
 		return $this->parent->module;
 	}
 
-	function getModuleId() {
+	public function getModuleId() {
 		return $this->parent->getTabid();
 	}
 
-	function getRecordId() {
+	public function getRecordId() {
 		return $this->parent->crmid;
 	}
 
-	function getFieldName() {
+	public function getFieldName() {
 		return $this->name;
 	}
 
-	function getDisplayLabelForPreValue() {
-		if($this->_prevalueLabel === false) {
+	public function getDisplayLabelForPreValue() {
+		if ($this->_prevalueLabel === false) {
 			$this->_prevalueLabel = $this->fieldInstance->getDisplayLabel($this->prevalue);
 		}
 		return $this->_prevalueLabel;
 	}
 
-	function getDisplayLabelForPostValue() {
-		if($this->_postvalueLabel === false) {
+	public function getDisplayLabelForPostValue() {
+		if ($this->_postvalueLabel === false) {
 			$this->_postvalueLabel = $this->fieldInstance->getDisplayLabel($this->postvalue);
 		}
 		return $this->_postvalueLabel;
 	}
 
-	function initialize($valuemap) {
+	public function initialize($valuemap) {
 		$this->id = $valuemap['id'];
 		$this->name = $valuemap['fieldname'];
-		if ($this->parent->module=='Products' and substr($this->name,0,10)=='deltaimage') $this->name='imagename';
+		if ($this->parent->module=='Products' && substr($this->name, 0, 10)=='deltaimage') {
+			$this->name='imagename';
+		}
 		$this->prevalue = $valuemap['prevalue'];
 		$this->postvalue =$valuemap['postvalue'];
 		$this->fieldInstance = new ModTracker_Field($this);
 		$this->fieldInstance->initialize();
 	}
 
-	function isViewPermitted() {
+	public function isViewPermitted() {
 		// Check if the logged in user has access to the field
 		global $current_user;
-		if ($this->parent->module=='Products' and substr($this->name,0,10)=='deltaimage') return true;
+		if ($this->parent->module=='Products' && substr($this->name, 0, 10)=='deltaimage') {
+			return true;
+		}
 		return (getFieldVisibilityPermission($this->parent->module, $current_user->id, $this->name) == '0');
 	}
 
-	function diffHighlight() {
+	public function diffHighlight() {
 		return StringDiff::toHTML($this->prevalue, $this->postvalue);
 	}
 
-	function getDisplayName() {
-		if($this->_fieldLabel === false) {
+	public function getDisplayName() {
+		if ($this->_fieldLabel === false) {
 			$this->_fieldLabel = $this->fieldInstance->getFieldLabel();
 		}
 		return getTranslatedString($this->_fieldLabel, $this->parent->module);
 	}
 
-	static function listAll($parent) {
-		global $adb, $log;
-		$instances = Array();
-		$result = $adb->pquery('SELECT * FROM vtiger_modtracker_detail WHERE id=?', Array($parent->id));
-		if($adb->num_rows($result)) {
-			while($rowmap = $adb->fetch_array($result)) {
+	public static function listAll($parent) {
+		global $adb;
+		$instances = array();
+		$result = $adb->pquery('SELECT * FROM vtiger_modtracker_detail WHERE id=?', array($parent->id));
+		if ($adb->num_rows($result)) {
+			while ($rowmap = $adb->fetch_array($result)) {
 				$instance = new self($parent);
 				$instance->initialize($rowmap);
 				// Pick the records which has view access
-				if($instance->isViewPermitted()) {
+				if ($instance->isViewPermitted()) {
 					$instances[] = $instance;
 				}
 			}
@@ -102,7 +106,7 @@ class ModTracker_Detail {
 		return $instances;
 	}
 
-	function getModTrackerField() {
+	public function getModTrackerField() {
 		$modTrackerFieldInstance = new ModTracker_Field();
 		$modTrackerFieldInstance->initialize($this);
 	}

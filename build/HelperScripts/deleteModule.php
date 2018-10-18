@@ -10,14 +10,14 @@
 // Turn on debugging level
 $Vtiger_Utils_Log = true;
 
-include_once('vtlib/Vtiger/Module.php');
+include_once 'vtlib/Vtiger/Module.php';
 require_once 'modules/com_vtiger_workflow/VTEntityMethodManager.inc';
 global $adb;
 
 $modname = 'CalendarSync';
 $module = Vtiger_Module::getInstance($modname);
 
-if($module) {
+if ($module) {
 	$ev = new VTEventsManager($adb);
 	$ev->unregisterHandler('CalendarSyncHandler');
 	$module->deleteRelatedLists();

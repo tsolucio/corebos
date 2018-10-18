@@ -48,19 +48,19 @@ function verifyConvertLeadData(form) {
 			}
 		}
 		if (form.jscal_field_closedate!=null && form.jscal_field_closedate.value!='') {
-			if (!dateValidate('closingdate',alert_arr['LBL_CLOSE_DATE'],'date')) {
+			if (!dateValidate('closingdate', alert_arr['LBL_CLOSE_DATE'], 'date')) {
 				return false;
 			}
 		}
 		var val = form.amount.value;
 		if (typeof userCurrencySeparator != 'undefined' && userCurrencySeparator != '') {
 			while (val.indexOf(userCurrencySeparator) != -1) {
-				val = val.replace(userCurrencySeparator,'');
+				val = val.replace(userCurrencySeparator, '');
 			}
 		}
 		if (typeof userDecimalSeparator != 'undefined' && userDecimalSeparator != '') {
 			if (val.indexOf(userDecimalSeparator) != -1) {
-				val = val.replace(userDecimalSeparator,'.');
+				val = val.replace(userDecimalSeparator, '.');
 			}
 		}
 		if (form.amount.value!=null && isNaN(val)) {
@@ -138,7 +138,7 @@ function set_return_specific(product_id, product_name) {
 	fldId.value = product_id;
 }
 
-function add_data_to_relatedlist(entity_id,recordid) {
+function add_data_to_relatedlist(entity_id, recordid) {
 	opener.document.location.href='index.php?module=Emails&action=updateRelations&destination_module=leads&entityid='+entity_id+'&parentid='+recordid;
 }
 
@@ -178,7 +178,7 @@ function searchMapLocation(addressType) {
 		}
 	}
 	mapParameter = removeHTMLFormatting(mapParameter);
-	window.open('http://maps.google.com/maps?q='+mapParameter,'goolemap','height=450,width=700,resizable=no,titlebar,location,top=200,left=250');
+	window.open('http://maps.google.com/maps?q='+mapParameter, 'goolemap', 'height=450,width=700,resizable=no,titlebar,location,top=200,left=250');
 }
 
 function selectTransferTo(module) {
@@ -196,7 +196,7 @@ function selectTransferTo(module) {
 	}
 }
 
-function setCookie(c_name,value,exdays) {
+function setCookie(c_name, value, exdays) {
 	var exdate=new Date();
 	exdate.setDate(exdate.getDate() + exdays);
 	var c_value=escape(value) + ((exdays==null) ? '' : '; expires='+exdate.toUTCString());
@@ -217,22 +217,32 @@ function getCookie(c_name) {
 		if (c_end == -1) {
 			c_end = c_value.length;
 		}
-		c_value = unescape(c_value.substring(c_start,c_end));
+		c_value = unescape(c_value.substring(c_start, c_end));
 	}
 	return c_value;
 }
 
 function toggle_converted() {
 	if (getCookie('LeadConv') == 'true') {
-		setCookie('LeadConv','false');
+		setCookie('LeadConv', 'false');
 	} else {
-		setCookie('LeadConv','true');
+		setCookie('LeadConv', 'true');
 	}
 	document.location.reload(true);
 }
 
-function LeadssetValueFromCapture(recordid,value,target_fieldname) {
+function LeadssetValueFromCapture(recordid, value, target_fieldname) {
 	if (target_fieldname=='accountname') {
 		document.getElementById('txtbox_accountname').value = value;
 	}
+}
+
+function callConvertLeadDiv(id) {
+	jQuery.ajax({
+		method:'POST',
+		url:'index.php?module=Leads&action=LeadsAjax&file=ConvertLead&record='+id,
+	}).done(function (response) {
+		jQuery('#convertleaddiv').html(response);
+		jQuery('#conv_leadcal').html();
+	});
 }

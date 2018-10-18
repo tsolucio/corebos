@@ -131,10 +131,12 @@ class Validations extends processcbMap {
 			$fl = $adb->pquery('select fieldlabel from vtiger_field where tabid=? and columnname=?', array($tabid,$valfield));
 			$fieldlabel = $adb->query_result($fl, 0, 0);
 			$i18n = getTranslatedString($fieldlabel, $mapping['origin']);
-			foreach ($vals as $rule => $restrictions) {
+			foreach ($vals as $val) {
 				if (isset($screen_values['action']) && $screen_values['action']=='MassEditSave' && empty($screen_values[$valfield.'_mass_edit_check'])) {
 					continue; // we are not saving this field in mass edit save so we don't have to check it
 				}
+				$rule = $val['rule'];
+				$restrictions = $val['rst'];
 				switch ($rule) {
 					case 'required':
 					case 'accepted':
@@ -241,8 +243,9 @@ class Validations extends processcbMap {
 			}
 			$allvals=array();
 			foreach ($v->validations->validation as $val) {
-				$rule = (String)$val->rule;
-				if (empty($rule)) {
+				$retval = array();
+				$retval['rule'] = (String)$val->rule;
+				if (empty($retval['rule'])) {
 					continue;
 				}
 				$rst = array();
@@ -251,7 +254,8 @@ class Validations extends processcbMap {
 						$rst[]=(String)$rv;
 					}
 				}
-				$allvals[$rule]=$rst;
+				$retval['rst'] = $rst;
+				$allvals[]=$retval;
 			}
 			$val_fields[$fieldname] = $allvals;
 		}
@@ -287,6 +291,13 @@ class Validations extends processcbMap {
 			}
 			$screen_values['pdoInformation'] = $products;
 		}
+		if (!empty($screen_values['record'])) {
+			$module_to_edit = CRMEntity::getInstance($screen_values['module']);
+			$module_to_edit->retrieve_entity_info($screen_values['record'], $screen_values['module']);
+			foreach ($module_to_edit->column_fields as $key => $value) {
+				$screen_values['current_'.$key] = $value;
+			}
+		}
 		$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : (isset($screen_values['record']) ? vtlib_purify($screen_values['record']) : 0));
 		$q = 'select cbmapid from vtiger_cbmap
 			inner join vtiger_crmentity on crmid=cbmapid
@@ -308,9 +319,15 @@ class Validations extends processcbMap {
 
 	public static function formatValidationErrors($errors, $module) {
 		$error = '';
-		foreach ($errors as $errs) {
+		foreach ($errors as $field => $errs) {
 			foreach ($errs as $err) {
 				$error.= $err . "\n";
+			}
+			if (strpos($error, "{custommsg|") > 0) {
+				preg_match_all('/{(.*)}/', $error, $match);
+				$res = explode('|', $match[1][0]);
+				include_once 'include/validation/'.$res[1].'.php';
+				$error = call_user_func(array(__NAMESPACE__ .$res[1], $res[2]), $field);
 			}
 		}
 		return $error;
