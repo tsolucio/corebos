@@ -1284,4 +1284,19 @@
 	<classname>updateSettingValueField</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+        <author>edmondkacaj</author>
+        <description>add map field (mvqueryid) to keep the history for Map Generator</description>
+        <filename>build/changeSets/addfieldformapgenerator.php</filename>
+        <classname>addfieldformapgenerator</classname>
+        <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>edmondkacaj</author>
+	<description>Map Generator is a module used to generate Business Maps automatically from Design. The XML rows are generated after the user inserts the parameters he is going to use for a specific functionality.
+	</description>
+	<filename>build/changeSets/MapGenerator.php</filename>
+	<classname>MapGenerator</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

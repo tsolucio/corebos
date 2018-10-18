@@ -1189,6 +1189,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Valor válido de la lista de estados de Actividad',
 	'definition' => 'Filtro inicial de Actividades en la lista relacionada. Por defecto muestra "todos".',
 ),
+'MapGenerator_Remove_inspectElement' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Bloquea la opción de inspeccionar elemento en el Generador de Mapas',
+),
 'Zero_Bounce_API_KEY' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Cadena',

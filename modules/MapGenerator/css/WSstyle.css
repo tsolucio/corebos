@@ -1,0 +1,302 @@
+/* General WS Accordion */
+	.ws-accordion-item {
+		color: #444;
+		cursor: pointer;
+		padding: 10px;
+		width: 100%;
+		border: none;
+		text-align: left;
+		outline: none;
+		transition: 0.4s;
+		margin-bottom: 1rem;
+		border: 1px solid #d4d4d4;
+	}
+	.ws-active,
+	.ws-accordion-item:hover {
+		background-color: #54698D; 
+		cursor: default;
+		color: #fff;
+	}
+	.ws-active .ws-accordion-header a,
+	.ws-accordion-item:hover .ws-accordion-header a,
+	.ws-accordion-item:focus .ws-accordion-header a {
+		color: #fff!important;
+		text-decoration: none;
+	}
+	.ws-accordion-item-content {
+		padding: 0 10px;
+		display: none;
+		background-color: white;
+		overflow: hidden;
+		cursor: default;
+	}
+	.ws-accordion-item-content input {
+		width: 100%;
+	}
+	.ws-accordion-header {
+		position: relative;
+		cursor: pointer;
+	}
+	.ws-accordion-header a {
+		color: #54698d;
+	}
+	.ws-accordion-header h4 {
+		margin-bottom: 0;
+	}
+	.ws-active h4 {
+		margin-bottom: 10px;
+	}
+	.ws-accordion-toggle {
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+	.ws-accordion-toggle i {
+		font-size: 16px;
+		cursor: pointer;
+	}
+	.ws-accordion-toggle i:hover {
+		opacity: .7;
+	}
+	.ws-accordion-title {
+			text-align: center;
+			margin-top: 0;
+	}
+/* End General WS Accordion */
+
+/* WS Configuration Panel */
+	.ws-configuration-container {
+		margin-top: .5rem;
+		cursor: default;
+	}
+	.ws-configuration-container input {
+		width: 100%;
+	}
+	.ws-config-options,
+	.ws-url-container,
+	.ws-input-output {
+		display: flex;
+	}
+	.ws-module-container {
+		padding: 0 .5rem;
+		margin-bottom: 1rem;
+	}
+	.ws-input-output {
+		margin-bottom: 1rem;
+	}
+	.ws-config-options {
+		margin: 1rem 0;
+	}
+
+	.ws-url-input,
+	.ws-url-method,
+	.ws-response-user-password,
+	.ws-host-port-tag,
+	.ws-input-type,
+	.ws-output-type {
+		padding: 0 .5rem;
+		width: 50%;
+	}
+
+	.ws-url-input input {
+		padding-left: 3rem!important;
+	}
+
+	.ws-url-input .slds-input-has-icon_left {
+		position: relative;
+	}
+
+	.ws-url-input span {
+		position: absolute;
+		top: 8px;
+		left: 5px;
+		color: #444;
+	}
+
+	.ws-response-user-password > div:nth-child(2),
+	.ws-host-port-tag > div:nth-child(2) {
+		margin: .5rem 0;
+	}
+
+	.ws-config-buttons {
+		display: flex;
+		padding-top: .5rem
+		border-top: 1px solid #A6BBDC;
+	}
+	.ws-config-buttons > div {
+		width: 50%;
+		padding: 0 .5rem;
+		margin-bottom: 1rem;
+	}
+	.ws-config-buttons button {
+		background-color: #54698D;
+		border-color: #54698D;
+	}
+	.ws-config-buttons button:hover,
+	.ws-config-buttons button:focus {
+		background-color: #8297B8;
+		border-color: #8297B8;
+		box-shadow: 0 0 3px #8297B8;
+	}
+	.ws-configuration-help {
+		padding: 0 .5rem;
+	}
+
+	/* Configuration modal */
+		#ws-configuration-headers-modal h2 {
+			margin: 0;
+		}
+		.ws-modal-container .slds-form-element:first-child {
+			margin-bottom: 1rem;
+		}
+		.ws-modal-container input {
+			width: 100%;
+		}
+	/* End Configuration Modal */
+/* End WS Configuration Panel */
+
+/* Input & Output & error Panel */
+	.ws-input-container,
+	.ws-output-container,
+	.ws-value-container,
+	.ws-error-handler-container {
+		margin: 1rem 0;
+		padding: 0 .5rem;
+	}
+	.ws-input-multiple-value-container,
+	.ws-input-origin-attribute-container,
+	.ws-input-default-format-container,
+	.ws-input-help_text-add_button,
+	.ws-output-name-container,
+	.ws-output-multiple-value-container,
+	.ws-output-label-attribute-container,
+	.ws-output-help_text-add_button,
+	.ws-value-field_name-field_source-container,
+	.ws-value-help_text-add_button-container,
+	.ws-error-help_text-add_button-container,
+	.ws-error-name-value-container {
+		display: flex;
+		margin: .5rem 0;
+	}
+	.ws-input-value-attribute-container {
+		min-height: 55px;
+	}
+	.ws-input-organization,
+	.ws-input-multiple,
+	.ws-input-default,
+	.ws-input-help,
+	.ws-output-multiple,
+	.ws-output-label,
+	.ws-output-help,
+	.ws-value-field_name,
+	.ws-value-help,
+	.ws-error-name,
+	.ws-error-help {
+		padding-right: .5rem;
+		width: 50%;
+	}
+	.ws-input-attribute,
+	.ws-input-static-value,
+	.ws-input-format,
+	.ws-input-buttons,
+	.ws-output-value,
+	.ws-output-attribute,
+	.ws-value-field_source,
+	.ws-output-buttons,
+	.ws-value-field_source,
+	.ws-value-buttons,
+	.ws-error-value,
+	.ws-error-buttons {
+		width: 50%;
+		padding-left: .5rem;
+	}
+	.ws-input-help label,
+	.ws-output-help label,
+	.ws-value-help label,
+	.ws-error-help label {
+		padding-top: .5rem;
+	}
+	.ws-input-value {
+		display: flex;
+	}
+	.ws-input-name,
+	.ws-output-name,
+	.ws-input-value-switcher input {
+		width: 100%;
+	}
+	.ws-select-multiple {
+		min-height: 150px!important;
+	}
+	#ws-input-value-btn {
+		position: absolute;
+		right: 5px;
+		top: 3px;
+	}
+	.ws-output-label,
+	.ws-output-attribute {
+		margin-bottom: .5rem;
+	}
+	.ws-url-module{
+		padding: 0 .5rem;
+		width: 100%;
+		margin-bottom: 10px;
+	}
+	.ws-name-switch {
+		padding-right: .5rem;
+		width: 90%;
+	}
+	.ws-name-switch {
+		padding-right: .5rem;
+		width: 90%;
+	}
+	.ws-error-message textarea {
+		min-height: 30px;
+	}
+/* End Input & Output & error Panel */
+
+/* WS-Validation */
+	.ws-val-container {
+		padding: 0 .5rem;
+		margin-top: .5rem;
+	}
+	.ws-val-container input {
+		width: 100%!important;
+	}
+	.ws-val-modules-container,
+	.ws-val-name-input-container,
+	.ws-val-validation-origin-container,
+	.ws-val-help_text-add_button-container {
+		display: flex;
+	}
+	
+	.ws-val-help_text-add_button-container > div,
+	.ws-val-modules-container > div,
+	.ws-val-name-input-container > div,
+	.ws-val-validation-origin-container > div {
+		width: 50%;
+	}
+	.ws-val-target_module,
+	.ws-val-validation-origin-container > div:last-child,
+	.ws-val-name-input-container > div:last-child {
+		padding-left: .5rem;
+	}
+	.ws-val-origin_module,
+	.ws-val-validation-origin-container > div:first-child,
+	.ws-val-name-input-container > div:first-child {
+		padding-right: .5rem;
+	}
+	.ws-val-fields-header {
+		border-bottom: 1px solid #d4d4d4;
+	}
+	.ws-val-validation-origin-container,
+	.ws-val-button {
+		margin-top: 1rem;
+	}
+	.ws-val-fields-container {
+		margin-top: 1.5rem;
+	}
+	.ws-val-help label {
+		padding-top: 1rem;
+	}
+
+/* End Ws-Validation */

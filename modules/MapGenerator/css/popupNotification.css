@@ -1,0 +1,259 @@
+@import url('font-awesome-4.7.0/css/font-awesome.min.css');
+
+$c-black: #111;
+$c-white: #fff;
+$c-blues: #2980B9, #0074D9, #009FE3;
+$c-greys: #343C3F, #A2ACB0, #D9E1E4;
+$c-greens: #27AE60, #2ECC40, #01FF70;
+$c-reds: #C0392B, #FF4136, #E74C3C;
+$c-yellows: #F39C12, #FCA624, #F1C40F;
+$c-purples: #532E62, #8E44AD, #9B59B6;
+
+/* Popup & History */
+.dvtCellInfo .slds-media__body {
+	text-align: center;
+}
+
+#contenitoreJoin {
+	height: 200px;
+}
+
+.cvp-popup-zone,
+.dvbp-popup-zone,
+.ws-popup-zone,
+.ws-validation-popup-zone,
+.rp-popup-zone {
+	height: 300px!important;
+}
+
+.cvp-history-zone,
+.dvbp-history-zone {
+	height: 100px!important;
+}
+
+#contenitoreJoin > div {
+	overflow-x:  hidden;
+	overflow-y:  auto;
+	height: 100%;
+}
+
+#LoadHistoryPopup,
+#LoadShowPopup {
+	white-space: normal;
+	display: block;
+}
+
+/* End Popup & History */
+
+/* Popup Zone */
+.alerts {
+	padding: 10px;
+	background-color: #54698D;
+	margin: 4px;
+	color: white;
+	display: block;
+	border-radius: 5px;
+}
+
+.alerts p {
+	margin: 5px 0 0 0;
+}
+
+.alerts .block-name {
+	margin: 5px 0 10px 0;
+}
+
+.alerts .block-name strong {
+	border-bottom: 1px solid;
+}
+
+
+.closebtns {
+	margin-left: 15px;
+	color: white;
+	font-weight: bold;
+	float: right;
+	font-size: 20px;
+	line-height: 15px;
+	cursor: pointer;
+	transition: 0.3s ease-in-out;
+}
+
+.closebtns:hover {
+		color: black;
+}
+
+/* End Popup Zone */
+
+/* History */
+.Message {
+	padding: 3px;
+	background-color: #A6BBDC;
+	margin: 4px;
+	display: block;
+	border-radius: 5px;
+	position: relative;
+	transition: all 0.2s ease;
+	border-radius: 5px;
+	display: block;
+}
+
+.Message-icon {
+	display: inline-block;
+	vertical-align: top;
+	width: 36px;
+	height: 36px!important;
+	padding: 0;
+	margin: 5px 0 5px 5px;
+	text-align: center;
+	border-radius: 5px;
+	background-color: #54698D;
+	font-size: 20px;
+}
+
+.Message-icon button {
+	color: #fff;
+	background: transparent;
+	padding: 10px;
+	border: none;
+	padding: 10px;
+	background: transparent;
+}
+
+.Message-icon button i {
+	font-size: 14px;
+}
+
+.Message-body {
+	display: inline-block;
+	padding: 5px;
+	width: 75%;
+}
+
+.Message-body p {
+	word-wrap: break-word;
+	margin-top: 5px;
+	margin-bottom: 0;
+}
+
+.Message-body p:not(:first-child) {
+	font-size: 11px;
+}
+
+.history-title {
+	padding: 2px;
+	font-weight: bold;
+}
+
+.history-container {
+	padding: 2px;
+}
+
+.Message-button {
+	position: absolute;
+	background-color: black;
+	color: #fff;
+	border: none;
+	outline: none;
+	font-size: 20px;
+	right: 5px;
+	top: 5px;
+	opacity: 0;
+	cursor: pointer;
+}
+
+.Message-button:hover {
+	background: black;
+}
+
+.Message-button:active {
+	background: black;
+	box-shadow: 0 0px black;
+	top: 3px;
+}
+
+.Message-close {
+	display: none;
+	position: absolute;
+	top: 10px;
+	cursor: pointer;
+	right: 5px;
+	background-color: transparent;
+	color: #313131;
+	border: none;
+	outline: none;
+	transition: 0.3s ease-in-out;
+}
+
+.Message-close i {
+	padding: 0;
+}
+
+.Message-close:hover{
+	color:#fff;
+}
+
+.Message--orange {
+	background-color: nth($c-yellows, 1);
+}
+
+.Message--red {
+	background-color: nth($c-reds, 2);
+}
+
+.Message--green {
+	background-color: nth($c-greens, 2);
+}
+
+/* End History */
+
+
+
+
+.u-italic {
+	font-style: italic;
+}
+
+/*this is for snack bar */
+
+#snackbar {
+		visibility: hidden;
+		min-width: 250px;
+		margin-left: -125px;
+		background-color: #333;
+		color: #fff;
+		text-align: center;
+		border-radius: 2px;
+		padding: 16px;
+		position: fixed;
+		z-index: 1;
+		left: 50%;
+		bottom: 30px;
+		font-size: 17px;
+}
+
+#snackbar.show {
+		visibility: visible;
+		-webkit-animation: fadein 0.8s;
+		animation: fadein 0.8s;
+}
+
+@-webkit-keyframes fadein {
+		from {bottom: 0; opacity: 0;} 
+		to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+		from {bottom: 0; opacity: 0;}
+		to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+		from {bottom: 30px; opacity: 1;} 
+		to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+		from {bottom: 30px; opacity: 1;}
+		to {bottom: 0; opacity: 0;}
+}
