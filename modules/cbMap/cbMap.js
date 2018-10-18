@@ -21,6 +21,9 @@ function validateMap(mapid) {
         cache: false,
         async: false,
         success: function(text) {
+            function hideresult() {
+            document.getElementById('vtbusy_validate_info').style.display = 'none';          
+            }    
             if (text == 'VALIDATION_NOT_IMPLEMENTED_YET') {
                 //Map doesn't have a XSD yet
                 document.getElementById("map_valid").style.display = "none";
@@ -28,6 +31,8 @@ function validateMap(mapid) {
                 var x = document.getElementById("map_not_implemented_yet");
                 if (x.style.display === "none") {
                     x.style.display = "block";
+                    document.getElementById('vtbusy_validate_info').style.display = '';
+                    setTimeout(hideresult, 100);
                 } else {
                     x.style.display = "none";
                 }
@@ -40,6 +45,8 @@ function validateMap(mapid) {
                 var x = document.getElementById("map_error");
                 if (x.style.display === "none") {
                     x.style.display = "block";
+                    document.getElementById('vtbusy_validate_info').style.display = '';
+                    setTimeout(hideresult, 100);
                 } else {
                     x.style.display = "none";
                 }
@@ -51,6 +58,8 @@ function validateMap(mapid) {
                 var x = document.getElementById("map_valid");
                 if (x.style.display === "none") {
                     x.style.display = "block";
+                    document.getElementById('vtbusy_validate_info').style.display = '';
+                    setTimeout(hideresult, 100);
                 } else {
                     x.style.display = "none";
                 }
