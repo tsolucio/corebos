@@ -12,7 +12,7 @@
         <xs:element name="relatedmodules">
           <xs:complexType mixed="true">
             <xs:sequence>
-              <xs:element name="relatedmodule" maxOccurs="unbounded" minOccurs="0">
+              <xs:element name="relatedmodule" maxOccurs="unbounded" minOccurs="1">
                 <xs:complexType mixed="true">
                   <xs:sequence>
                     <xs:element type="xs:string" name="module"/>

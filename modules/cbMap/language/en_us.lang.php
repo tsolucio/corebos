@@ -40,5 +40,9 @@ $mod_strings = array(
 	'DuplicateRelations' => 'Duplicate Relations',
 	'MasterDetailLayout' => 'Master Detail Layout',
 	'Validations' => 'Validations',
+	'VALIDATE_MAP'=> 'Validate Map',
+	'MAP_NOT_VALID'=> 'Map is not valid!',
+	'MAP_VALID'=> 'Map is valid',
+	'MAP_NOT_IMPLEMENTED_YET'=> 'Validation for this map has not been implemented yet',
 );
 ?>
