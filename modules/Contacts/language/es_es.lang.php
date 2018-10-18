@@ -289,5 +289,4 @@ $mod_strings = array (
 'SYNC_RESULTS'=>'Resultados de la Sincronización',
 'ERR_GContactsSync'=>'Se ha producido un error accediendo a Google. La configuración ha sido eliminada, por favor configurala de nuevo.',
 );
-
 ?>

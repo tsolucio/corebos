@@ -7,11 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/utils/CommonUtils.php');
+require_once 'include/utils/CommonUtils.php';
 global $default_charset;
 
-if(isset($_REQUEST['templateid']) && $_REQUEST['templateid'] !='')
-{
+if (isset($_REQUEST['templateid']) && $_REQUEST['templateid'] !='') {
 	$templatedetails = getTemplateDetails($_REQUEST['templateid']);
 }
 ?>

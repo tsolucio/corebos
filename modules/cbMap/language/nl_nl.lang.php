@@ -42,5 +42,6 @@ $mod_strings = array(
 	'Description' => 'Beschrijving',
 	'GlobalVariable' => 'Globale Variabele',
 	'Validations' => 'Validations',
+	'Detail View Layout Mapping' => 'Detail View Layout Mapping',
 );
 ?>

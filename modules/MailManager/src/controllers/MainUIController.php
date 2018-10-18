@@ -23,6 +23,7 @@ class MailManager_MainUIController extends MailManager_Controller {
 		global $currentModule;
 		$response = new MailManager_Response(true);
 		$viewer = $this->getViewer();
+		$viewer->assign('SHOW_SENTTO_LINKS', GlobalVariable::getVariable('MailManager_Show_SentTo_Links', 0));
 		if ($request->getOperationArg() == '_quicklinks') {
 			$content = $viewer->fetch($this->getModuleTpl('Mainui.QuickLinks.tpl'));
 			$response->setResult(array('ui' => $content));

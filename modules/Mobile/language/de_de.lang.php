@@ -9,7 +9,7 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-$mod_strings = Array (
+$mod_strings = array (
 	'crmtogo' => 'CRM To Go',
 	'Mobile' => 'Mobil',
 	'LBL_BACK' => 'zurück',
@@ -96,10 +96,8 @@ $mod_strings = Array (
 	'LBL_THEME_COLOR_B'=>'blau',
 	'LBL_THEME_COLOR_C'=>'weiß',
 	'LBL_NAVI_SELECTION'=>'Anzahl beim Scrollen:',
-	
-	//5.x special
 	'LBL_COMMENTS'=>'Kommentare',
 	'LBL_SIGNATURE'=>'Unterschrift',
+	'LBL_DUPLICATE'=>'Duplicate',
 );
-
 ?>

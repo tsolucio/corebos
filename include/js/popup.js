@@ -43,25 +43,29 @@ function add_data_to_relatedlist(entity_id, recordid, mod, popupmode, callback) 
 	if (mod == 'Documents' && return_module == 'Emails') {
 		var attachment = document.getElementById('document_attachment_' + entity_id).value;
 		window.opener.addOption(entity_id, attachment);
-		if (document.getElementById('closewindow').value=='true') window.close();
+		if (document.getElementById('closewindow').value=='true') {
+			window.close();
+		}
 		return;
 	}
-	if(popupmode == 'ajax') {
+	if (popupmode == 'ajax') {
 		VtigerJS_DialogBox.block();
 		jQuery.ajax({
 			method: 'POST',
 			url: 'index.php?module='+return_module+'&action='+return_module+'Ajax&file=updateRelations&destination_module='+mod+'&entityid='+entity_id+'&parentid='+recordid+'&mode=Ajax'
-		}).done(function(response) {
+		}).done(function (response) {
 			VtigerJS_DialogBox.unblock();
 			var res = JSON.parse(response);
-			if(typeof callback == 'function') {
+			if (typeof callback == 'function') {
 				callback(res);
 			}
 		});
 		return false;
 	} else {
 		opener.document.location.href='index.php?module='+return_module+'&action=updateRelations&destination_module='+mod+'&entityid='+entity_id+'&parentid='+recordid+'&return_module='+return_module+'&return_action='+gpopupReturnAction;
-		if (document.getElementById('closewindow').value=='true') window.close();
+		if (document.getElementById('closewindow').value=='true') {
+			window.close();
+		}
 	}
 }
 
@@ -77,7 +81,7 @@ function callSearch(searchtype) {
 	}
 	gPopupAlphaSearchUrl = '';
 	var search_fld_val= document.basicSearch.search_field[document.basicSearch.search_field.selectedIndex].value;
-	var search_txt_val= encodeURIComponent(document.basicSearch.search_text.value.replace(/\'/,'\\\''));
+	var search_txt_val= encodeURIComponent(document.basicSearch.search_text.value.replace(/\'/, '\\\''));
 	var urlstring = '';
 	if (searchtype == 'Basic') {
 		urlstring = 'search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val;
@@ -183,8 +187,9 @@ function gethiddenelements() {
 		var cbcustompopupinfo = document.getElementById('cbcustompopupinfo').value;
 		let arr = cbcustompopupinfo.split(';');
 		for (const value of arr) {
-			if(document.getElementById(value) != null && document.getElementById(value).value != '')
+			if (document.getElementById(value) != null && document.getElementById(value).value != '') {
 				urlstring +='&'+value+'='+document.getElementById(value).value;
+			}
 		}
 	}
 	var return_module = document.getElementById('return_module').value;
@@ -267,7 +272,7 @@ function QCreatePop(module, urlpop) {
 		jQuery.ajax({
 			method: 'POST',
 			url: 'index.php?module='+module+'&action='+module+'Ajax&file=QuickCreate&from=popup&pop='+urlpop
-		}).done(function(response) {
+		}).done(function (response) {
 			document.getElementById('status').style.display='none';
 			document.getElementById('qcformpop').style.display='inline';
 			document.getElementById('qcformpop').innerHTML = response;

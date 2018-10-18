@@ -20,8 +20,8 @@ $operationInfo = array(
 	 'prelogin'=> 0,
 	 'type'    => 'POST',
 	 'parameters' => array(
-	 	array('name' => 'query','type' => 'string'),
-	 	array('name' => 'search_onlyin','type' => 'string'),
-	 	array('name' => 'restrictionids','type' => 'encoded'),
+		 array('name' => 'query','type' => 'string'),
+		 array('name' => 'search_onlyin','type' => 'string'),
+		 array('name' => 'restrictionids','type' => 'encoded'),
 	 )
 );

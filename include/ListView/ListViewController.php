@@ -187,7 +187,7 @@ class ListViewController {
 			}
 			if (!$is_admin && ($field->getFieldDataType() == 'picklist' ||
 					$field->getFieldDataType() == 'multipicklist')) {
-				$this->setupAccessiblePicklistValueList($fieldName);
+				$this->setupAccessiblePicklistValueList($field->getColumnName());
 			}
 			$idList=array();
 			if ($fieldName!='assigned_user_id' && false !== strpos($fieldName, '.assigned_user_id')) {
@@ -380,6 +380,10 @@ class ListViewController {
 					}
 				} elseif ($field->getFieldDataType() == 'currency') {
 					if ($value != '') {
+						if (!isset($totals[$fieldName])) {
+							$totals[$fieldName]=0;
+						}
+						$totals[$fieldName] = $totals[$fieldName] + $value;
 						if ($field->getUIType() == 72) {
 							if ($fieldName == 'unit_price') {
 								$currencyId = getProductBaseCurrency($recordId, $module);
@@ -389,10 +393,6 @@ class ListViewController {
 								$currencyInfo = getInventoryCurrencyInfo($module, $recordId);
 								$currencySymbol = $currencyInfo['currency_symbol'];
 							}
-							if (!isset($totals[$fieldName])) {
-								$totals[$fieldName]=0;
-							}
-							$totals[$fieldName] = $totals[$fieldName] + $value;
 							$currencyValue = CurrencyField::convertToUserFormat($value, null, true);
 							$value = CurrencyField::appendCurrencySymbol($currencyValue, $currencySymbol);
 						} else {
@@ -401,6 +401,7 @@ class ListViewController {
 								$value = CurrencyField::convertToUserFormat($value);
 							}
 						}
+						$value = '<span style="float:right">'.$value.'</span>';
 					}
 				} elseif ($field->getFieldDataType() == 'url') {
 					$matchPattern = "^[\w]+:\/\/^";
@@ -487,7 +488,7 @@ class ListViewController {
 						$tmp = '';
 						$tmpArray = array();
 						foreach ($valueArray as $val) {
-							if (!$is_admin && !in_array(trim(decode_html($val)), $this->picklistValueMap[$fieldName])) {
+							if (!$is_admin && !in_array(trim(decode_html($val)), $this->picklistValueMap[$field->getColumnName()])) {
 								continue;
 							}
 							if (!$listview_max_textlength || !(strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i", "", $tmp)) > $listview_max_textlength)) {
@@ -599,7 +600,7 @@ class ListViewController {
 				} elseif ($module == 'Emails' && ($fieldName == 'subject')) {
 						$value = '<a href="javascript:;" onClick="ShowEmail(\'' . $recordId . '\');">' . textlength_check($value) . '</a>';
 				} else {
-					$field_val = $value;
+					$field_val = vtlib_purify($value);
 					$value = textlength_check($value);
 					if (substr($value, -3) == '...') {
 						$value = '<span title="'.$field_val.'">'.$value.'<span>';
@@ -631,16 +632,15 @@ class ListViewController {
 			}
 
 			//Added for Actions ie., edit and delete links in listview
-			$actionLinkInfo = "";
+			$actionLinkInfo = '';
 			if (isPermitted($module, 'EditView', $recordId) == 'yes') {
 				$racbr = $wfs->getRACRuleForRecord($currentModule, $recordId);
 				if (!$racbr || $racbr->hasListViewPermissionTo('edit')) {
 					$edit_link = $this->getListViewEditLink($module, $recordId);
 					if (isset($navigationInfo['start']) && $navigationInfo['start'] > 1 && $module != 'Emails') {
-						$actionLinkInfo .= "<a href=\"$edit_link&start=".
-						$navigationInfo['start']."\">".getTranslatedString("LNK_EDIT", $module)."</a> ";
+						$actionLinkInfo .= "<a href=\"$edit_link&start=".$navigationInfo['start']."\">".getTranslatedString('LNK_EDIT', $module).'</a> ';
 					} else {
-						$actionLinkInfo .= "<a href=\"$edit_link\">".getTranslatedString("LNK_EDIT", $module)."</a> ";
+						$actionLinkInfo .= "<a href=\"$edit_link\">".getTranslatedString('LNK_EDIT', $module).'</a> ';
 					}
 				}
 			}
@@ -649,12 +649,11 @@ class ListViewController {
 				$racbr = $wfs->getRACRuleForRecord($currentModule, $recordId);
 				if (!$racbr || $racbr->hasListViewPermissionTo('delete')) {
 					$del_link = $this->getListViewDeleteLink($module, $recordId);
-					if ($actionLinkInfo != "" && $del_link != "") {
+					if ($actionLinkInfo != '' && $del_link != '') {
 						$actionLinkInfo .= ' | ';
 					}
-					if ($del_link != "") {
-						$actionLinkInfo .=	"<a href='javascript:confirmdelete(\"".
-						addslashes(urlencode($del_link))."\")'>".getTranslatedString('LNK_DELETE', $module).'</a>';
+					if ($del_link != '') {
+						$actionLinkInfo.="<a href='javascript:confirmdelete(\"".addslashes(urlencode($del_link))."\")'>".getTranslatedString('LNK_DELETE', $module).'</a>';
 					}
 				}
 			}
@@ -748,7 +747,6 @@ class ListViewController {
 		global $theme, $current_user;
 
 		$arrow='';
-		//$qry = getURLstring($focus);
 		$header = array();
 
 		//$tabid = getTabid($module);

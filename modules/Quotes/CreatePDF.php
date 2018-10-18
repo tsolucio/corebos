@@ -13,20 +13,17 @@ global $root_directory;
 
 $controller = new Vtiger_QuotePDFController($currentModule);
 $controller->loadRecord(vtlib_purify($_REQUEST['record']));
-$quote_no = getModuleSequenceNumber($currentModule,vtlib_purify($_REQUEST['record']));
+$quote_no = getModuleSequenceNumber($currentModule, vtlib_purify($_REQUEST['record']));
 $moduleName = str_replace(' ', '', getTranslatedString('SINGLE_Quotes', $currentModule));
-if(isset($_REQUEST['savemode']) && $_REQUEST['savemode'] == 'file') {
+if (isset($_REQUEST['savemode']) && $_REQUEST['savemode'] == 'file') {
 	$quote_id = vtlib_purify($_REQUEST['record']);
 	$filepath=$root_directory.'cache/'.$quote_id.'_'.$moduleName.'_'.$quote_no.'.pdf';
-	//added file name to make it work in IE, also forces the download giving the user the option to save
-	$controller->Output($filepath,'F');
-} elseif (isset($purpose) and $purpose == 'webservice') {
+	$controller->Output($filepath, 'F');
+} elseif (isset($purpose) && $purpose == 'webservice') {
 	$log->debug('Switched to buffer. Purpose = '. $purpose);
-	$PDFBuffer = $controller->Output('','S'); // S means send the pdf output in buffer instead of file
+	$PDFBuffer = $controller->Output('', 'S'); // S means send the pdf output in buffer instead of file
 } else {
-	//added file name to make it work in IE, also forces the download giving the user the option to save
 	$controller->Output($moduleName.'_'.$quote_no.'.pdf', 'D');
 	exit();
 }
-
 ?>

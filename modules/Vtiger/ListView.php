@@ -55,6 +55,12 @@ $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 
 $smarty->assign('CHANGE_OWNER', getUserslist());
 $smarty->assign('CHANGE_GROUP_OWNER', getGroupslist());
+if (empty($ERROR_MESSAGE) && !empty($_REQUEST['error_msg'])) {
+	if (isset($_REQUEST['error_msgclass'])) {
+		$ERROR_MESSAGE_CLASS = vtlib_purify($_REQUEST['error_msgclass']);
+	}
+	$ERROR_MESSAGE = vtlib_purify($_REQUEST['error_msg']);
+}
 if (!empty($ERROR_MESSAGE)) {
 	$smarty->assign('ERROR_MESSAGE_CLASS', isset($ERROR_MESSAGE_CLASS) ? $ERROR_MESSAGE_CLASS : 'cb-alert-info');
 	$smarty->assign('ERROR_MESSAGE', getTranslatedString($ERROR_MESSAGE, $currentModule));
@@ -236,13 +242,11 @@ if ($sql_error) {
 	// Module Search
 		$alphabetical = AlphabeticalSearch($currentModule, 'index', $focus->def_basicsearch_col, 'true', 'basic', '', '', '', '', $viewid);
 		$fieldnames = $controller->getAdvancedSearchOptionString();
-		$criteria = getcriteria_options();
 		$smarty->assign('ALPHABETICAL', $alphabetical);
 		$smarty->assign('FIELDNAMES', $fieldnames);
-		$smarty->assign('CRITERIA', $criteria);
 
 		$smarty->assign('AVALABLE_FIELDS', getMergeFields($currentModule, 'available_fields'));
-		$smarty->assign('FIELDS_TO_MERGE', getMergeFields($currentModule, 'fileds_to_merge'));
+		$smarty->assign('FIELDS_TO_MERGE', getMergeFields($currentModule, 'fields_to_merge'));
 
 	//Added to select Multiple records in multiple pages
 		$smarty->assign('SELECTEDIDS', isset($_REQUEST['selobjs']) ? vtlib_purify($_REQUEST['selobjs']) : '');
@@ -282,5 +286,4 @@ if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
 } else {
 	$smarty->display('ListView.tpl');
 }
-
 ?>

@@ -7,7 +7,7 @@
  * Portions created by JPL TSolucio, S.L are Copyright (C) JPL TSolucio, S.L.
  * All Rights Reserved.
  ************************************************************************************
- * This translations is based on earlier work of: 
+ * This translations is based on earlier work of:
  * - IT-Online.nl <www.it-online.nl>
  * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/

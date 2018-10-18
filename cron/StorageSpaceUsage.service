@@ -18,8 +18,8 @@
  *************************************************************************************************/
 
 $Vtiger_Utils_Log = false;
-include_once('vtlib/Vtiger/Module.php');
+include_once 'vtlib/Vtiger/Module.php';
 
 $filepath = GlobalVariable::getVariable('Application_Storage_Directory', 'storage/');
-coreBOS_Settings::setSetting('cbod_storagesize', round(getFolderSize($filepath)/1000000000,2));
+coreBOS_Settings::setSetting('cbod_storagesize', round(getFolderSize($filepath)/1000000000, 2));
 ?>

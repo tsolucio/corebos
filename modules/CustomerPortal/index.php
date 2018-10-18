@@ -7,8 +7,8 @@
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
 ********************************************************************************/
-if (isPermitted('CustomerPortal','')=='yes') {
-	include_once('modules/CustomerPortal/ListView.php');
+if (isPermitted('CustomerPortal', '')=='yes') {
+	include_once 'modules/CustomerPortal/ListView.php';
 } else {
 	echo '<br><br>';
 	$smarty = new vtigerCRM_Smarty();

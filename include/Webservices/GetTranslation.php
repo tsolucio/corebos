@@ -13,24 +13,25 @@
 * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
 *************************************************************************************************/
 
-function vtws_gettranslation($totranslate, $portal_language, $module, $user){
-	global $log,$adb,$default_language;
-	$log->debug("Entering function vtws_gettranslation");
+function vtws_gettranslation($totranslate, $portal_language, $module, $user) {
+	global $log, $default_language, $current_language;
+	$log->debug('Entering function vtws_gettranslation');
 	$language = $portal_language;
 	$totranslate=(array)$totranslate;
 	$mod_strings=array();
 	$app_strings=array();
 	// $app_strings
 	$applanguage_used = $language;
-	if (file_exists("include/language/$language.lang.php"))
-		@include("include/language/$language.lang.php");
-	else {
-		$log->warn("Unable to find the application language file for language: ".$language);
+	if (file_exists("include/language/$language.lang.php")) {
+		@include "include/language/$language.lang.php";
+	} else {
+		$log->warn('Unable to find the application language file for language: '.$language);
 		$applanguage_used = $default_language;
-		if (file_exists("include/language/$default_language.lang.php"))
-			@include("include/language/$default_language.lang.php");
-		else
+		if (file_exists("include/language/$default_language.lang.php")) {
+			@include "include/language/$default_language.lang.php";
+		} else {
 			$applanguage_used=false;
+		}
 	}
 
 	// $mod_strings
@@ -38,37 +39,48 @@ function vtws_gettranslation($totranslate, $portal_language, $module, $user){
 	if (!empty($module)) {
 		$modlanguage_used = $language;
 		if (file_exists("modules/$module/language/$language.lang.php")) {
-			@include("modules/$module/language/$language.lang.php");
+			@include "modules/$module/language/$language.lang.php";
 		} else {
 			$log->warn("Unable to find the module language file for language/module: $language/$module");
 			$modlanguage_used = $default_language;
-			if (file_exists("modules/$module/language/$default_language.lang.php"))
-				@include("modules/$module/language/$default_language.lang.php");
-			else
+			if (file_exists("modules/$module/language/$default_language.lang.php")) {
+				@include "modules/$module/language/$default_language.lang.php";
+			} else {
 				$modlanguage_used = false;
+			}
 		}
 	}
 
-	if (!$applanguage_used and !$modlanguage_used)
-		return $totranslate;  // We can't find language file so we return what we are given
+	if (!$applanguage_used && !$modlanguage_used) {
+		return $totranslate; // We can't find language file so we return what we are given
+	}
 
+	$default_language = $current_language = $language;
 	$translated=array();
-	foreach ($totranslate as $key=>$str) {
-		if (!empty($mod_strings[$str]))
+	foreach ($totranslate as $key => $str) {
+		$ismodule = vtlib_isModuleActive($key) && $key!='Events';
+		if ($ismodule) {
+			$i18nMod = getTranslatedString($key, $key);
+		}
+		if (!empty($mod_strings[$str])) {
 			$tr = $mod_strings[$str];
-		elseif (!empty($app_strings[$str]))
+		} elseif (!empty($app_strings[$str])) {
 			$tr = $app_strings[$str];
-		elseif (!empty($mod_strings[$key]))
+		} elseif (!empty($mod_strings[$key])) {
 			$tr = $mod_strings[$key];
-		elseif (!empty($app_strings[$key]))
+		} elseif (!empty($app_strings[$key])) {
 			$tr = $app_strings[$key];
-		else
+		} elseif ($ismodule && $i18nMod != $key) {
+			$tr = $i18nMod;
+		} elseif ($ismodule) {
+			$tr = getTranslatedString($str, $module);
+		} else {
 			$tr = $str;
+		}
 		$translated[$key] = $tr;
 	}
 
-	$log->debug("Leaving function vtws_gettranslation");
+	$log->debug('Leaving function vtws_gettranslation');
 	return $translated;
 }
-
 ?>

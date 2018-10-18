@@ -8,7 +8,7 @@
  * All Rights Reserved.
  *************************************************************************************/
 require_once 'modules/WSAPP/SyncServer.php';
-function wsapp_deregister ($type, $key, $user) {
+function wsapp_deregister($type, $key, $user) {
 
 	$instance = new SyncServer();
 	return $instance->deregister($type, $key, $user);

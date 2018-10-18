@@ -12,13 +12,13 @@ require_once 'modules/Import/resources/Utils.php';
 
 class Import_File_Reader {
 
-	var $status='success';
-	var $numberOfRecordsRead = 0;
-	var $errorMessage='';
-	var $user;
-	var $userInputObject;
+	public $status='success';
+	public $numberOfRecordsRead = 0;
+	public $errorMessage='';
+	public $user;
+	public $userInputObject;
 
-	public function  __construct($userInputObject, $user) {
+	public function __construct($userInputObject, $user) {
 		$this->userInputObject = $userInputObject;
 		$this->user = $user;
 	}
@@ -41,7 +41,7 @@ class Import_File_Reader {
 				|| $this->userInputObject->get('has_header') == true;
 	}
 
-	public function getFirstRowData($hasHeader=true) {
+	public function getFirstRowData($hasHeader = true) {
 		return null;
 	}
 
@@ -51,16 +51,16 @@ class Import_File_Reader {
 
 	public function getFileHandler() {
 		$filePath = $this->getFilePath();
-		if(!file_exists($filePath)) {
+		if (!file_exists($filePath)) {
 			$this->status = 'failed';
-			$this->errorMessage = "ERR_FILE_DOESNT_EXIST";
+			$this->errorMessage = 'ERR_FILE_DOESNT_EXIST';
 			return false;
 		}
 
 		$fileHandler = fopen($filePath, 'r');
-		if(!$fileHandler) {
+		if (!$fileHandler) {
 			$this->status = 'failed';
-			$this->errorMessage = "ERR_CANT_OPEN_FILE";
+			$this->errorMessage = 'ERR_CANT_OPEN_FILE';
 			return false;
 		}
 		return $fileHandler;
@@ -91,7 +91,7 @@ class Import_File_Reader {
 		$fieldMapping = $this->userInputObject->get('field_mapping');
 
 		$columnsListQuery = 'id INT PRIMARY KEY AUTO_INCREMENT, status INT DEFAULT 0, recordid INT';
-		foreach($fieldMapping as $fieldName => $index) {
+		foreach ($fieldMapping as $fieldName => $index) {
 			$columnsListQuery .= ','.$fieldName.' TEXT';
 		}
 		$createTableQuery = 'CREATE TABLE '. $tableName . ' ('.$columnsListQuery.')';
@@ -106,41 +106,39 @@ class Import_File_Reader {
 		$adb->pquery('INSERT INTO '.$tableName.' ('. implode(',', $columnNames).') VALUES ('. generateQuestionMarks($fieldValues) .')', $fieldValues);
 		$this->numberOfRecordsRead++;
 	}
-	
-	public function createTablesFullCSV($columnsListQuery,$columnNames,$Values) {
+
+	public function createTablesFullCSV($columnsListQuery, $columnNames, $Values) {
 		$adb = PearDatabase::getInstance();
 
-		$tableName = Import_Utils::getDbTableName($this->user)."_fullcsv_index";
+		$tableName = Import_Utils::getDbTableName($this->user).'_fullcsv_index';
 		$tableNameData = Import_Utils::getDbTableName($this->user)."_fullcsv";
-		
+
 		//Drop Table
 		$dropTableCSV = 'DROP TABLE '.$tableName;
 		$adb->query($dropTableCSV);
 		$dropTableCSV = 'DROP TABLE '.$tableNameData;
 		$adb->query($dropTableCSV);
-		
+
 		//Create Table
 		$createTableQuery = 'CREATE TABLE '. $tableName . ' ('.$columnsListQuery.')';
 		$adb->query($createTableQuery);
 		//Insert real column names for special import
 		$adb->pquery('INSERT INTO '.$tableName.' ('.$columnNames.') VALUES ('. generateQuestionMarks($Values) .')', $Values);
-		
+
 		//Creata table for storage CSV Data
 		$createTableQuery = 'CREATE TABLE '. $tableNameData . ' (id INT PRIMARY KEY AUTO_INCREMENT,'.$columnsListQuery.')';
 		$adb->query($createTableQuery);
-		
+
 		return true;
 	}
-	
+
 	public function addRecordToDBFullCSV($columnNames, $fieldValues) {
 		$adb = PearDatabase::getInstance();
-		
-		$fieldValues = array_values($fieldValues);
-		$tableName = Import_Utils::getDbTableName($this->user)."_fullcsv";
-		
-		$adb->pquery('INSERT INTO '.$tableName.' ('. implode(',', $columnNames).') VALUES ('. generateQuestionMarks($fieldValues) .')', $fieldValues);
-		
-	}
 
+		$fieldValues = array_values($fieldValues);
+		$tableName = Import_Utils::getDbTableName($this->user).'_fullcsv';
+
+		$adb->pquery('INSERT INTO '.$tableName.' ('. implode(',', $columnNames).') VALUES ('. generateQuestionMarks($fieldValues) .')', $fieldValues);
+	}
 }
 ?>

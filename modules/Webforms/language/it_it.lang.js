@@ -11,5 +11,4 @@ var webforms_alert_arr = {
 	'LBL_MADATORY_FIELDS' : 'Inserisci i valori per i campi obbligatori',
 	'LBL_DELETE_MSG' : 'Sei sicuro di voler eliminare il webform?',
 	'LBL_DUPLICATE_NAME' : 'Webform con lo stesso nome gia\' esistente'
-	
 };

@@ -7,25 +7,19 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 global $adb, $log;
 $return_id = vtlib_purify($_REQUEST['return_id']);
 $record = vtlib_purify($_REQUEST['record']);
 $return_module = urlencode(vtlib_purify($_REQUEST['return_module']));
 $return_action = urlencode(vtlib_purify($_REQUEST['return_action']));
 
-if($return_action !='' && $return_module == "PriceBooks" && $return_action == "CallRelatedList")
-{
-	$log->info("Products :: Deleting Price Book - Delete from PriceBook RelatedList");
-	$query = "delete from vtiger_pricebookproductrel where pricebookid=? and productid=?";
-	$adb->pquery($query, array($return_id, $record));
-}
-else
-{
-	$log->info("Products :: Deleting Price Book");
-	$query = "delete from vtiger_pricebookproductrel where pricebookid=? and productid=?";
-	$adb->pquery($query, array($record, $return_id));
+if ($return_action !='' && $return_module == 'PriceBooks' && $return_action == 'CallRelatedList') {
+	$log->info('Products :: Deleting Price Book - Delete from PriceBook RelatedList');
+	$adb->pquery('delete from vtiger_pricebookproductrel where pricebookid=? and productid=?', array($return_id, $record));
+} else {
+	$log->info('Products :: Deleting Price Book');
+	$adb->pquery('delete from vtiger_pricebookproductrel where pricebookid=? and productid=?', array($record, $return_id));
 }
 
-header('Location: index.php?module='.$return_module.'&action='.$return_module."Ajax&file=$return_action&ajax=true&record=".urlencode($return_id));
+header('Location: index.php?module='.$return_module."&action=$return_action&record=".urlencode($return_id));
 ?>

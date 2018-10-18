@@ -194,17 +194,17 @@ if (isset($action) && isset($module)) {
 		preg_match("/^UserInfoUtil/", $action) ||
 		preg_match("/^deleteRole/", $action) ||
 		preg_match("/^minical/", $action) ||
-		preg_match("/^send_mail/", $action) ||
 		preg_match("/^populatetemplate/", $action) ||
 		preg_match("/^TemplateMerge/", $action) ||
 		preg_match("/^testemailtemplateusage/", $action) ||
 		preg_match("/^saveemailtemplate/", $action) ||
 		preg_match("/^ProcessDuplicates/", $action) ||
+		preg_match("/^deleteattachments/", $action) ||
+		preg_match("/^CreateXL/", $action) ||
 		preg_match("/^lastImport/", $action) ||
 		preg_match("/^lookupemailtemplate/", $action) ||
 		preg_match("/^deleteemailtemplate/", $action) ||
 		preg_match("/^CurrencyDelete/", $action) ||
-		preg_match("/^deleteattachments/", $action) ||
 		preg_match("/^UpdateFieldLevelAccess/", $action) ||
 		preg_match("/^UpdateDefaultFieldLevelAccess/", $action) ||
 		preg_match("/^UpdateProfile/", $action) ||
@@ -214,36 +214,25 @@ if (isset($action) && isset($module)) {
 		preg_match("/^addPbProductRelToDB/", $action) ||
 		preg_match("/^UpdateListPrice/", $action) ||
 		preg_match("/^PriceListPopup/", $action) ||
-		preg_match("/^SalesOrderPopup/", $action) ||
 		preg_match("/^CreatePDF/", $action) ||
 		preg_match("/^CreateSOPDF/", $action) ||
 		preg_match("/^redirect/", $action) ||
 		preg_match("/^webmail/", $action) ||
-		preg_match("/^folders_create/", $action) ||
-		preg_match("/^imap_general/", $action) ||
 		preg_match("/^download/", $action) ||
-		preg_match("/^SendMailAction/", $action) ||
-		preg_match("/^CreateXL/", $action) ||
 		preg_match("/^home_rss/", $action) ||
 		preg_match("/^ConvertAsFAQ/", $action) ||
 		preg_match("/^ActivityAjax/", $action) ||
 		preg_match("/^updateCalendarSharing/", $action) ||
 		preg_match("/^disable_sharing/", $action) ||
-		preg_match("/^TodoSave/", $action) ||
 		preg_match("/^RecalculateSharingRules/", $action) ||
-		(preg_match("/^body/", $action) && preg_match("/^Webmails/", $module)) ||
-		(preg_match("/^dlAttachments/", $action) && preg_match("/^Webmails/", $module)) ||
-		(preg_match("/^DetailView/", $action) && preg_match("/^Webmails/", $module)) ||
 		preg_match("/^savewordtemplate/", $action) ||
 		preg_match("/^deletewordtemplate/", $action) ||
 		preg_match("/^mailmergedownloadfile/", $action) ||
-		(preg_match("/^Webmails/", $module) && preg_match("/^get_img/", $action)) ||
-		preg_match("/^download/", $action) ||
 		preg_match("/^getListOfRecords/", $action) ||
 		preg_match("/^iCalExport/", $action)
 		) {
 		$skipHeaders=true;
-		//skip headers for all these invocations as they are mostly popups
+		//skip headers for all these invocations
 		if (preg_match("/^Popup/", $action) ||
 			preg_match("/^".$module."Ajax/", $action) ||
 			preg_match("/^MassEditSave/", $action) ||
@@ -252,22 +241,16 @@ if (isset($action) && isset($module)) {
 			preg_match("/^home_rss/", $action) ||
 			preg_match("/^massdelete/", $action) ||
 			preg_match("/^mailmergedownloadfile/", $action) ||
-			preg_match("/^get_img/", $action) ||
 			preg_match("/^download/", $action) ||
 			preg_match("/^ProcessDuplicates/", $action) ||
 			preg_match("/^lastImport/", $action) ||
-			preg_match("/^massdelete/", $action) ||
 			preg_match("/^getListOfRecords/", $action) ||
 			preg_match("/^iCalExport/", $action)
 			) {
 			$skipFooters=true;
 		}
-		//skip footers for all these invocations as they are mostly popups
-		if (preg_match("/^mailmergedownloadfile/", $action)
-		|| preg_match("/^get_img/", $action)
-		|| preg_match("/^dlAttachments/", $action)
-		|| preg_match("/^iCalExport/", $action)
-		) {
+		//skip footers for all these invocations
+		if (preg_match("/^mailmergedownloadfile/", $action) || preg_match("/^iCalExport/", $action)) {
 			$viewAttachment = true;
 		}
 		if ($action == ' Delete ') {
@@ -379,9 +362,6 @@ if (isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_aut
 $theme = basename(vtlib_purify($theme));
 $log->debug('Current theme is: '.$theme);
 
-//Used for current record focus
-$focus = "";
-
 // if the language is not set yet, then set it to the default language.
 if (isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] != '') {
 	$current_language = $_SESSION['authenticated_user_language'];
@@ -400,23 +380,14 @@ $app_strings = return_application_language($current_language);
 $mod_strings = return_module_language($current_language, $currentModule);
 
 //If DetailView, set focus to record passed in
-if ($action == "DetailView") {
+if ($action == 'DetailView') {
 	if (empty($_REQUEST['record'])) {
 		die('A record number must be specified to view details.');
 	}
-
 	// If we are going to a detail form, load up the record now and use the record to track the viewing.
-	switch ($currentModule) {
-		case 'Webmails':
-			//No need to create a webmail object here
-			break;
-		default:
-			$focus = CRMEntity::getInstance($currentModule);
-			break;
-	}
-
-	if (isset($_REQUEST['record']) && $_REQUEST['record']!='' && $_REQUEST["module"] != "Webmails" && $current_user->id != '') {
+	if (!empty($_REQUEST['record']) && !empty($current_user->id)) {
 		// Only track a viewing if the record was retrieved.
+		$focus = CRMEntity::getInstance($currentModule);
 		$focus->track_view($current_user->id, $currentModule, $_REQUEST['record']);
 	}
 }

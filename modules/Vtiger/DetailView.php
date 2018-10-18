@@ -136,7 +136,7 @@ $smarty->assign('BLOCKINITIALSTATUS', $_SESSION['BLOCKINITIALSTATUS']);
 // Gather the custom link information to display
 include_once 'vtlib/Vtiger/Link.php';
 $customlink_params = array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));
-$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('DETAILVIEWBASIC', 'DETAILVIEW', 'DETAILVIEWWIDGET'), $customlink_params));
+$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType($tabid, array('DETAILVIEWBASIC', 'DETAILVIEW', 'DETAILVIEWWIDGET'), $customlink_params));
 if ($isPresentRelatedListBlock) {
 	$related_list_block = array();
 	foreach ($blocks as $blabel => $binfo) {

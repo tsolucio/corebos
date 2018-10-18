@@ -26,9 +26,7 @@ $mod_strings = array (
 	'LBL_AF_HDR4' => 'Se `Tipo Attivit&agrave;` &egrave; selezionato, dai a ognuno i seguenti valori `Chiamata`;, `Meeting` o `Compito`  ',
 
 	'LBL_NONE' => 'Nessuno',
-	'View_Name' => 'Nome_Vista',
 	'LBL_AND' => 'E',
-	'LBL_DATE_FORMAT_CUSTOMVIEW' => 'A-M-G',
 	'Custom' => 'Personalizzato',
 	'Previous FY' => 'Precedente Anno Fiscale',
 	'Current FY' => 'Attuale Anno Fiscale',

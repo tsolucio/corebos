@@ -155,7 +155,10 @@ class CobroPago extends CRMEntity {
 
 		$relatedId = $this->column_fields['related_id'];
 		if (!empty($relatedId) && self::invoice_control_installed()) {
-			Invoice::updateAmountDue($relatedId);
+			$relatedId_seType = getSalesEntityType($relatedId);
+			$related_focus = CRMEntity::getInstance($relatedId_seType);
+			$related_focus->retrieve_entity_info($relatedId, $relatedId_seType);
+			Invoice::updateAmountDue($relatedId, $related_focus->column_fields, 'CobroPago');
 		}
 		// Calculate related module balance
 		$this->calculateRelatedTotals($this->column_fields['parent_id']);
@@ -252,7 +255,10 @@ class CobroPago extends CRMEntity {
 			$relatedId = $adb->query_result($rs, 0, 'related_id');
 			$pid = $adb->query_result($rs, 0, 'parent_id');
 			if (!empty($relatedId) && self::invoice_control_installed()) {
-				Invoice::updateAmountDue($relatedId);
+				$relatedId_seType = getSalesEntityType($relatedId);
+				$related_focus = CRMEntity::getInstance($relatedId_seType);
+				$related_focus->retrieve_entity_info($relatedId, $relatedId_seType);
+				Invoice::updateAmountDue($relatedId, $related_focus->column_fields, 'CobroPago');
 			}
 			// Calculate related module balance
 			CobroPago::calculateRelatedTotals($pid);
@@ -267,7 +273,10 @@ class CobroPago extends CRMEntity {
 			$relatedId = $adb->query_result($rs, 0, 'related_id');
 			$pid = $adb->query_result($rs, 0, 'parent_id');
 			if (!empty($relatedId) && self::invoice_control_installed()) {
-				Invoice::updateAmountDue($relatedId);
+				$relatedId_seType = getSalesEntityType($relatedId);
+				$related_focus = CRMEntity::getInstance($relatedId_seType);
+				$related_focus->retrieve_entity_info($relatedId, $relatedId_seType);
+				Invoice::updateAmountDue($relatedId, $related_focus->column_fields, 'CobroPago');
 			}
 			// Calculate related module balance
 			CobroPago::calculateRelatedTotals($pid);

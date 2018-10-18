@@ -6,23 +6,23 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * @Contributor - Elmue 2008
  ************************************************************************************/
 require_once 'modules/Users/authTypes/config.ldap.php';
 
-function ldapConnectServer()
-{
+function ldapConnectServer() {
 	global $AUTH_LDAP_CFG;
 
-	$conn = @ldap_connect($AUTH_LDAP_CFG['ldap_host'],$AUTH_LDAP_CFG['ldap_port']);
+	$conn = @ldap_connect($AUTH_LDAP_CFG['ldap_host'], $AUTH_LDAP_CFG['ldap_port']);
 	@ldap_set_option($conn, LDAP_OPT_PROTOCOL_VERSION, 3); // Try version 3.  Will fail and default to v2.
 
 	if (!empty($AUTH_LDAP_CFG['ldap_username'])) {
-		if (!@ldap_bind($conn, $AUTH_LDAP_CFG['ldap_username'], $AUTH_LDAP_CFG['ldap_pass']))
-			return NULL;
+		if (!@ldap_bind($conn, $AUTH_LDAP_CFG['ldap_username'], $AUTH_LDAP_CFG['ldap_pass'])) {
+			return null;
+		}
 	} else {
-		if (!@ldap_bind($conn)) //attempt an anonymous bind if no user/pass specified in config.php
-			return NULL;
+		if (!@ldap_bind($conn)) { //attempt an anonymous bind if no user/pass specified in config.php
+			return null;
+		}
 	}
 	return $conn;
 }
@@ -37,12 +37,14 @@ function ldapConnectServer()
 function ldapAuthenticate($authUser, $authPW) {
 	global $AUTH_LDAP_CFG;
 
-	if (empty($authUser) || empty($authPW))
+	if (empty($authUser) || empty($authPW)) {
 		return false;
+	}
 
 	$conn = ldapConnectServer();
-	if ($conn == NULL)
+	if ($conn == null) {
 		return false;
+	}
 
 	$retval = false;
 	$filter = $AUTH_LDAP_CFG['ldap_account'] . '=' . $authUser;
@@ -51,8 +53,9 @@ function ldapAuthenticate($authUser, $authPW) {
 		$result = @ldap_get_entries($conn, $ident);
 		if ($result[0]) {
 			// dn is the LDAP path where the user was fond. This attribute is always returned.
-			if (@ldap_bind( $conn, $result[0]["dn"], $authPW) )
+			if (@ldap_bind($conn, $result[0]["dn"], $authPW)) {
 				$retval = true;
+			}
 		}
 		ldap_free_result($ident);
 	}
@@ -62,13 +65,13 @@ function ldapAuthenticate($authUser, $authPW) {
 }
 
 // Search a user by the given filter and returns the attributes defined in the array $required
-function ldapSearchUser($filter, $required)
-{
+function ldapSearchUser($filter, $required) {
 	global $AUTH_LDAP_CFG;
 
 	$conn = ldapConnectServer();
-	if ($conn == NULL)
-		return NULL;
+	if ($conn == null) {
+		return null;
+	}
 
 	$ident = @ldap_search($conn, $AUTH_LDAP_CFG['ldap_basedn'], $filter, $required);
 	if ($ident) {
@@ -82,8 +85,7 @@ function ldapSearchUser($filter, $required)
 
 // Searches for a user's fullname
 // returns a hashtable with Account => FullName of all matching users
-function ldapSearchUserAccountAndName($user)
-{
+function ldapSearchUserAccountAndName($user) {
 	global $AUTH_LDAP_CFG;
 
 	$fldaccount = strtolower($AUTH_LDAP_CFG['ldap_account']);
@@ -97,18 +99,15 @@ function ldapSearchUserAccountAndName($user)
 
 	// copy from LDAP specific array to a standardized hashtable
 	// Skip Groups and Organizational Units. Copy only users.
-	for ($i=0; $i<$ldapArray["count"]; $i++)
-	{
+	for ($i=0; $i<$ldapArray["count"]; $i++) {
 		$isuser = false;
-		foreach($usrfilter as $filt)
-		{
+		foreach ($usrfilter as $filt) {
 			if (in_array($filt, $ldapArray[$i][$fldclass])) {
 				$isuser = true;
 				break;
 			}
 		}
-		if ($isuser)
-		{
+		if ($isuser) {
 			$account = $ldapArray[$i][$fldaccount][0];
 			$name    = $ldapArray[$i][$fldname]   [0];
 			$userArray[$account] = $name;
@@ -120,12 +119,10 @@ function ldapSearchUserAccountAndName($user)
 // retrieve all requested LDAP values for the given user account
 // $fields = array("ldap_forename", "ldap_email",...)
 // returns a hashtable with "ldap_forename" => "John"
-function ldapGetUserValues($account, $fields)
-{
+function ldapGetUserValues($account, $fields) {
 	global $AUTH_LDAP_CFG;
 
-	foreach ($fields as $key)
-	{
+	foreach ($fields as $key) {
 		$required[] = $AUTH_LDAP_CFG[$key];
 	}
 
@@ -133,8 +130,7 @@ function ldapGetUserValues($account, $fields)
 	$ldapArray = ldapSearchUser($filter, $required);
 
 	// copy from LDAP specific array to a standardized hashtable
-	foreach ($fields as $key)
-	{
+	foreach ($fields as $key) {
 		$attr  = strtolower($AUTH_LDAP_CFG[$key]);
 		$value = $ldapArray[0][$attr][0];
 		$valueArray[$key] = $value;
@@ -142,4 +138,34 @@ function ldapGetUserValues($account, $fields)
 	return $valueArray;
 }
 
+function makePass($name) {
+	global $AUTH_LDAP_CFG;
+//  If we had first/lastnames
+//	$first = 'Joe';
+//	$last = 'Blogs';
+//	$name = $first . $last;
+
+	if ($AUTH_LDAP_CFG['pass_password']  != 'generated') {
+		return $AUTH_LDAP_CFG['pass_userpass'];
+	} else {
+		$pass = '';
+		$number = strtolower($AUTH_LDAP_CFG['pass_usernumber']);
+		$char   = strtolower($AUTH_LDAP_CFG['pass_userchar']);
+
+		$name = strtolower($name);
+		$name = preg_replace('/\s+/', '', $name); //remove whitespace
+		$name = ucfirst($name); // Lowercase
+		$name = substr($name, 0, 4); // First 4 letters
+
+		$nameArr = str_split($name); // Split Letters to array
+		$digitArr = str_split($number); // Split Numbers to array
+
+		for ($i=0; $i< count($nameArr); $i++) {
+			$pass = $pass . $nameArr[$i] . $digitArr[$i];
+		}
+
+		$pass = $pass . $char; // Add character
+	}
+	return $pass;
+}
 ?>

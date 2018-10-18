@@ -116,6 +116,18 @@ $mod_strings = array(
 'CBSelectcbMap' => 'Select Business Rule',
 'ConvertInventoryModule' => 'Convert Inventory Module Records',
 'ConvertInventoryModuleMessage' => 'The field mappings is the default application mapping and can be adjusted using Field Mapping Business Rules.',
+'LBL_EVENTNAME' => 'Event Name',
+'LBL_DESCRIPTION' => 'Description',
+'LBL_STATUS' => 'Status',
+'LBL_TYPE' => 'Type',
+'LBL_START_TIME' => 'Start Time',
+'LBL_START_DATE' => 'Start Date',
+'LBL_END_TIME' => 'End Time',
+'LBL_END_DATE' => 'End Date',
+'LBL_SET_DATE'=>'Set Date',
+'LBL_AFTER' => 'After',
+'LBL_BEFORE' => 'Before',
+'LBL_DAYS' => 'days',
 'LBL_HELPDESK_SUPPORT_EMAILID'=>'Helpdesk support e-mail',
 'LBL_HELPDESK_SUPPORT_NAME'=>'Helpdesk support naam',
 'LBL_ORGANIZATION_LOGO'=>'Logo',
@@ -149,6 +161,7 @@ $mod_strings = array(
 'Workflow for Calendar Todos when Send Notification is True' => 'Workflow for Calendar Todos when Send Notification is True',
 'Calculate or Update forecast amount' => 'Calculate or Update forecast amount',
 'LBL_METHOD_NAME' => 'Method Name',
-'NO_METHOD_AVAILABLE' => 'No method is available for this module.'
+'NO_METHOD_AVAILABLE' => 'No method is available for this module.',
+'launchrelwf' => 'Launch workflows on related updates',
 );
 ?>

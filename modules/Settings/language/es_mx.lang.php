@@ -234,6 +234,8 @@ $mod_strings = array (
 	  'LBL_QUOTE_STAGE' => 'Fase de la Cotización',
 	  'LBL_CARRIER' => 'Transportista',
 	  'LBL_TAXCLASS' => 'Tipo de Impuesto',
+	'LBL_RETENTION'=>'Retención',
+	'LBL_PERCENTAGE'=>'Porcentaje',
 	  'LBL_MY_DETAILS' => 'Mis Detalles',
 	  'LBL_MY_MAIL_SERVER_DET' => 'Detalles de mi Servidor de Correo',
 	  'LBL_EMAIL_ID' => 'Email ID',
@@ -725,6 +727,7 @@ $mod_strings = array (
 	  'LBL_TASKS'=>'Tareas',
 	  'LBL_NEW_TASK_BUTTON_LABEL'=>'Nueva Tarea',
 	  'LBL_TASK'=>'Tarea',
+	  'LBL_DELAY' => 'Delay',
 	  // END
 
 	  //Added for vantage customization (Mandatory fields) -- Pavani

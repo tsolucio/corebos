@@ -18,6 +18,15 @@ $fname = tempnam($root_directory.$tmp_dir, 'merge2.xls');
 # Write out the data
 $reportid = vtlib_purify($_REQUEST['record']);
 $oReportRun = new ReportRun($reportid);
+if (isPermitted($oReportRun->primarymodule, 'Export', '')!='yes') {
+	$log->debug('You do not have permission to export Report');
+	require_once 'Smarty_setup.php';
+	$smarty = new vtigerCRM_Smarty();
+	global $app_strings;
+	$smarty->assign('APP', $app_strings);
+	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
+	exit;
+}
 if (!empty($_REQUEST['startdate']) && !empty($_REQUEST['enddate']) && $_REQUEST['startdate'] != '0000-00-00' && $_REQUEST['enddate'] != '0000-00-00') {
 	$filtercolumn = $_REQUEST['stdDateFilterField'];
 	$filter = $_REQUEST['stdDateFilter'];

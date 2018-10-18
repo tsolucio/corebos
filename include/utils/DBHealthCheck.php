@@ -9,29 +9,37 @@
  *********************************************************************************/
 
 class DBHealthCheck {
-	var $db;
-	var $dbType;
-	var $dbName;
-	var $dbHostName;
-	var $recommendedEngineType = 'InnoDB';
+	public $db;
+	public $dbType;
+	public $dbName;
+	public $dbHostName;
+	public $recommendedEngineType = 'InnoDB';
 
-	function __construct($db) {
+	public function __construct($db) {
 		$this->db = $db;
 		$this->dbType = $db->databaseType;
 		$this->dbName = $db->databaseName;
 		$this->dbHostName = $db->host;
 	}
 
-	function isMySQL() { return (stripos($this->dbType ,'mysql') === 0);}
-	function isOracle() { return $this->dbType=='oci8'; }
-	function isPostgres() { return $this->dbType=='pgsql'; }
+	public function isMySQL() {
+		return (stripos($this->dbType, 'mysql') === 0);
+	}
 
-	function isDBHealthy() {
+	public function isOracle() {
+		return $this->dbType=='oci8';
+	}
+
+	public function isPostgres() {
+		return $this->dbType=='pgsql';
+	}
+
+	public function isDBHealthy() {
 		$tablesList = $this->getUnhealthyTablesList();
 		return !(count($tablesList) > 0);
 	}
 
-	function getUnhealthyTablesList() {
+	public function getUnhealthyTablesList() {
 		$tablesList = array();
 		if ($this->isMySql()) {
 			$tablesList = $this->_mysql_getUnhealthyTables();
@@ -39,19 +47,19 @@ class DBHealthCheck {
 		return $tablesList;
 	}
 
-	function updateTableEngineType($tableName) {
+	public function updateTableEngineType($tableName) {
 		if ($this->isMySql()) {
 			$this->_mysql_updateEngineType($tableName);
 		}
 	}
 
-	function updateAllTablesEngineType() {
+	public function updateAllTablesEngineType() {
 		if ($this->isMySql()) {
 			$this->_mysql_updateEngineTypeForAllTables();
 		}
 	}
 
-	function _mysql_getUnhealthyTables() {
+	public function _mysql_getUnhealthyTables() {
 		$tablesResult = $this->db->_Execute("SHOW TABLE STATUS FROM `$this->dbName`");
 		$noOfTables = $tablesResult->NumRows($tablesResult);
 		$unHealthyTables = array();
@@ -64,7 +72,7 @@ class DBHealthCheck {
 				$isHealthy = true;
 			}
 			// If table is a sequence table, then skip it.
-			$tableNameParts = explode("_",$tableInfo['name']);
+			$tableNameParts = explode("_", $tableInfo['name']);
 			$tableNamePartsCount = count($tableNameParts);
 			if ($tableNameParts[$tableNamePartsCount-1] == 'seq') {
 				$isHealthy = true;
@@ -74,7 +82,7 @@ class DBHealthCheck {
 				$unHealthyTables[$i]['engine'] = $tableInfo['engine'];
 				$unHealthyTables[$i]['autoincrementValue'] = $tableInfo['auto_increment'];
 				$tableCollation = $tableInfo['collation'];
-				$unHealthyTables[$i]['characterset'] = substr($tableCollation, 0, strpos($tableCollation,'_'));
+				$unHealthyTables[$i]['characterset'] = substr($tableCollation, 0, strpos($tableCollation, '_'));
 				$unHealthyTables[$i]['collation'] = $tableCollation;
 				$unHealthyTables[$i]['createOptions'] = $tableInfo['create_options'];
 				++$i;
@@ -84,11 +92,11 @@ class DBHealthCheck {
 		return $unHealthyTables;
 	}
 
-	function _mysql_updateEngineType($tableName) {
+	public function _mysql_updateEngineType($tableName) {
 		$this->db->_Execute("ALTER TABLE $tableName ENGINE=$this->recommendedEngineType");
 	}
 
-	function _mysql_updateEngineTypeForAllTables() {
+	public function _mysql_updateEngineTypeForAllTables() {
 		$unHealthyTables = $this->_mysql_getUnhealthyTables();
 		foreach ($unHealthyTables as $table) {
 			$tableName = $table['name'];

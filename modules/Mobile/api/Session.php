@@ -7,38 +7,36 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-ini_set('include_path',ini_get('include_path'). PATH_SEPARATOR . '../../../include/HTTP_Session2');
+ini_set('include_path', ini_get('include_path'). PATH_SEPARATOR . '../../../include/HTTP_Session2');
 include_once __DIR__ . '/../../../include/HTTP_Session2/Session2.php';
 
 class crmtogo_API_Session {
-	
-	function __construct() {
+
+	public function __construct() {
 	}
-	
-	static function destroy($sessionid = false) {
+
+	public static function destroy($sessionid = false) {
 		HTTP_Session2::destroy($sessionid);
 	}
-	
-	static function init($sessionid = false) {
-		if(empty($sessionid)) {
+
+	public static function init($sessionid = false) {
+		if (empty($sessionid)) {
 			HTTP_Session2::start(null, null);
 			$sessionid = HTTP_Session2::id();
 		} else {
 			HTTP_Session2::start(null, $sessionid);
 		}
-		
-		if(HTTP_Session2::isIdle() || HTTP_Session2::isExpired()) {
+		if (HTTP_Session2::isIdle() || HTTP_Session2::isExpired()) {
 			return false;
 		}
 		return $sessionid;
 	}
-	
-	static function get($key, $defvalue = '') {
+
+	public static function get($key, $defvalue = '') {
 		return HTTP_Session2::get($key, $defvalue);
 	}
-	
-	static function set($key, $value) {
+
+	public static function set($key, $value) {
 		HTTP_Session2::set($key, $value);
 	}
-
 }

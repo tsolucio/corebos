@@ -15,7 +15,6 @@ $mod_strings = array (
 	'LBL_FAILURE' => 'Toevoegen aan het CRM is mislukt.',
 	'LBL_ERROR_CODE' => 'Foutcode',
 	'LBL_ERROR_MESSAGE' => 'Foutboodschap',
-
 	'LBL_WEBFORM_NAME'=>'Webformulier naam',
 	'LBL_DESCRIPTION'=>'Omschrijving',
 	'LBL_MODULE'=>'Module',

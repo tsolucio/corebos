@@ -27,6 +27,11 @@ if (isset($_REQUEST['search_onlyin'])) {
 	} else {
 		$search_onlyin = array();
 	}
+	if (count($search_onlyin)>0) {
+		$search_onlyin = array_filter($search_onlyin, function ($elem) {
+			return !(strpos($elem, $GLOBALS['csrf']['input-name']) !== false);
+		});
+	}
 	// Save the selection for future use (UnifiedSearchModules.php)
 	coreBOS_Session::set('__UnifiedSearch_SelectedModules__', $search_onlyin);
 	if (count($search_onlyin)>0) {

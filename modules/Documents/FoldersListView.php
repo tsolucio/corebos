@@ -140,7 +140,7 @@ if ($viewid ==0) {
 
 //Retreive the List View Table Header
 if ($viewid !='') {
-	$url_string .="&viewname=".$viewid;
+	$url_string .='&viewname='.$viewid;
 }
 
 $controller = new ListViewController($adb, $current_user, $queryGenerator);
@@ -167,7 +167,7 @@ if ($foldercount > 0) {
 		$query = $focus->query;
 		$list_query = '';
 		$list_query = $focus->query;
-		$folder_id = $adb->query_result($result, $i, "folderid");
+		$folder_id = $adb->query_result($result, $i, 'folderid');
 		$query .= " and vtiger_notes.folderid = $folder_id";
 		$sorder = $focus->getSortOrderForFolder($folder_id);
 		if (isset($_SESSION['NOTES_FOLDER_SORT_ORDER']) && !is_array($_SESSION['NOTES_FOLDER_SORT_ORDER'])) {
@@ -188,11 +188,10 @@ if ($foldercount > 0) {
 			$tablename = ($tablename != '' ? $tablename.'.' : '');
 			$query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
 			$list_query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
-			$focus->additional_query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
 		}
 		//Retreiving the no of rows
 		$count_result = $adb->query(mkCountQuery($query));
-		$num_records = $adb->query_result($count_result, 0, "count");
+		$num_records = $adb->query_result($count_result, 0, 'count');
 		if ($num_records > 0) {
 			$displayFolder=true;
 		}
@@ -261,7 +260,7 @@ $smarty->assign('EMPTY_FOLDERS', $emptyfolders);
 $smarty->assign('ALL_FOLDERS', array_merge($folders, $emptyfolders));
 
 $smarty->assign('AVALABLE_FIELDS', getMergeFields($currentModule, 'available_fields'));
-$smarty->assign('FIELDS_TO_MERGE', getMergeFields($currentModule, 'fileds_to_merge'));
+$smarty->assign('FIELDS_TO_MERGE', getMergeFields($currentModule, 'fields_to_merge'));
 
 //Added to select Multiple records in multiple pages
 $smarty->assign('SELECTEDIDS', (isset($_REQUEST['selobjs']) ? vtlib_purify($_REQUEST['selobjs']) : ''));
@@ -271,10 +270,8 @@ ListViewSession::setSessionQuery($currentModule, $focus->query, $viewid);
 
 $alphabetical = AlphabeticalSearch($currentModule, 'index', 'notes_title', 'true', 'basic', '', '', '', '', $viewid);
 $fieldnames = $controller->getAdvancedSearchOptionString();
-$criteria = getcriteria_options();
 $smarty->assign('ALPHABETICAL', $alphabetical);
 $smarty->assign('FIELDNAMES', $fieldnames);
-$smarty->assign('CRITERIA', $criteria);
 $adminuser = is_admin($current_user);
 $smarty->assign('IS_ADMIN', $adminuser);
 

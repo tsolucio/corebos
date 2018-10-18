@@ -397,8 +397,6 @@ $mod_strings = array(
 'INV_TANDC'=>'Condiciones Generales',
 'INV_TERMSANDCONDITIONS'=>'Inventario - Condiciones Generales',
 'LBL_INV_TERMSANDCONDITIONS'=>'Gestión de Inventario',
-
-
 'INVENTORYNOTIFICATION'=>'Notificaciones de Inventario',
 'LBL_INVENTORY_NOTIFICATIONS'=>'Editar Notificaciones de Inventario',
 'LBL_INV_NOT_DESC'=>'Listado de las notificaciones que se envían a los proveedores cuando durante la creación de un presupuesto, orden de venta o factura, no hay cantidad suficiente de producto .',

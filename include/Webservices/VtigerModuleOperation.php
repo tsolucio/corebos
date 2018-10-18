@@ -148,7 +148,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 					$pila[$balanced]=array('pos'=>$ch,'dir'=>'(');
 					$balanced++;
 				} elseif ($afterwhere[$ch]==')') {
-					if ($balanced>0 and $pila[$balanced-1]['dir']=='(') {
+					if ($balanced>0 && $pila[$balanced-1]['dir']=='(') {
 						array_pop($pila);
 						$balanced--;
 					} else {
@@ -161,7 +161,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 				$afterwhere[$paren['pos']]=' ';
 			}
 			// transform artificial commentcontent for FAQ and Ticket comments
-			if (strtolower($relatedModule)=='modcomments' and (strtolower($moduleName)=='helpdesk' or strtolower($moduleName)=='faq')) {
+			if (strtolower($relatedModule)=='modcomments' && (strtolower($moduleName)=='helpdesk' || strtolower($moduleName)=='faq')) {
 				$afterwhere = str_ireplace('commentcontent', 'comments', $afterwhere);
 			}
 			$relhandler = vtws_getModuleHandlerFromName($moduleName, $this->user);
@@ -185,7 +185,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			$afterwhere = $chgawhere;
 			if (!empty($afterwhere)) {
 				$start = strtolower(substr(trim($afterwhere), 0, 5));
-				if ($start!='limit' and $start!='order') { // there is a condition we add the glue
+				if ($start!='limit' && $start!='order') { // there is a condition we add the glue
 					$mysql_query.=" $glue ";
 				}
 				$mysql_query.=" $afterwhere";
@@ -250,7 +250,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 						$newrflds = array();
 						foreach ($relflds as $fldname => $fldvalue) {
 							$fldmod = substr($fldname, 0, strlen($relmod));
-							if (isset($row[$fldname]) and $fldmod==$lrm) {
+							if (isset($row[$fldname]) && $fldmod==$lrm) {
 								$newkey = substr($fldname, strlen($lrm));
 								$newrflds[$newkey] = $fldvalue;
 							}
@@ -270,16 +270,18 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 	}
 
 	public function describe($elementType) {
-		$current_user = vtws_preserveGlobal('current_user', $this->user);
+		vtws_preserveGlobal('current_user', $this->user);
 		$label = getTranslatedString($elementType, $elementType);
 		$createable = strcasecmp(isPermitted($elementType, EntityMeta::$CREATE), 'yes') === 0;
 		$updateable = strcasecmp(isPermitted($elementType, EntityMeta::$UPDATE), 'yes') === 0;
 		$deleteable = $this->meta->hasDeleteAccess();
 		$retrieveable = $this->meta->hasReadAccess();
 		$fields = $this->getModuleFields();
-		return array("label"=>$label,"name"=>$elementType,"createable"=>$createable,"updateable"=>$updateable,
-				"deleteable"=>$deleteable,"retrieveable"=>$retrieveable,"fields"=>$fields,
-				"idPrefix"=>$this->meta->getEntityId(),'isEntity'=>$this->isEntity,'labelFields'=>$this->meta->getNameFields());
+		return array(
+			'label'=>$label,'label_raw'=>$elementType,'name'=>$elementType,'createable'=>$createable,'updateable'=>$updateable,
+			'deleteable'=>$deleteable,'retrieveable'=>$retrieveable,'fields'=>$fields,
+			'idPrefix'=>$this->meta->getEntityId(),'isEntity'=>$this->isEntity,'labelFields'=>$this->meta->getNameFields()
+		);
 	}
 
 	public function getModuleFields() {
@@ -290,7 +292,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		}
 		$fields = array();
 		$moduleFields = $this->meta->getModuleFields();
-		foreach ($moduleFields as $fieldName => $webserviceField) {
+		foreach ($moduleFields as $webserviceField) {
 			if (((int)$webserviceField->getPresence()) == 1) {
 				continue;
 			}
@@ -307,13 +309,8 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		if (array_key_exists($dfkey, $purified_dfcache)) {
 			return $purified_dfcache[$dfkey];
 		}
-		$default_language = isset($this->user->language) ? $this->user->language : VTWS_PreserveGlobal::getGlobal('default_language');
-
-		require 'modules/'.$this->meta->getTabName()."/language/$default_language.lang.php";
 		$fieldLabel = $webserviceField->getFieldLabelKey();
-		if (isset($mod_strings[$fieldLabel])) {
-			$fieldLabel = $mod_strings[$fieldLabel];
-		}
+		$fieldLabeli18n = getTranslatedString($fieldLabel, $this->meta->getTabName());
 		$typeDetails = $this->getFieldTypeDetails($webserviceField);
 
 		//set type name, in the type details array.
@@ -321,8 +318,8 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$editable = $this->isEditable($webserviceField);
 
 		$blkname = $webserviceField->getBlockName();
-		$describeArray = array('name'=>$webserviceField->getFieldName(),'label'=>$fieldLabel,'mandatory'=>
-			$webserviceField->isMandatory(),'type'=>$typeDetails,'nullable'=>$webserviceField->isNullable(),
+		$describeArray = array('name'=>$webserviceField->getFieldName(),'label'=>$fieldLabeli18n,'label_raw'=>$fieldLabel,
+			'mandatory'=>$webserviceField->isMandatory(),'type'=>$typeDetails,'nullable'=>$webserviceField->isNullable(),
 			"editable"=>$editable,'uitype'=>$webserviceField->getUIType(),'typeofdata'=>$webserviceField->getTypeOfData(),
 			'sequence'=>$webserviceField->getFieldSequence(),'quickcreate'=>$webserviceField->getQuickCreate(),'displaytype'=>$webserviceField->getDisplayType(),
 			'block'=>array('blockid'=>$webserviceField->getBlockId(),'blocksequence'=>$webserviceField->getBlockSequence(),

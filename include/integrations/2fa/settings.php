@@ -24,23 +24,23 @@ use \RobThree\Auth\TwoFactorAuth;
 $smarty = new vtigerCRM_Smarty();
 
 $userid = isset($_REQUEST['user_list']) ? vtlib_purify($_REQUEST['user_list']) : '';
-$do2FA = GlobalVariable::getVariable('User_2FAAuthentication',0,'Users',$userid);
+$do2FA = GlobalVariable::getVariable('User_2FAAuthentication', 0, 'Users', $userid);
 $isAppActive = ($do2FA==1);
-if (!empty($userid) and $_REQUEST['_op']=='setconfig2fa') {
-	$isFormActive = ((empty($_REQUEST['2faactive']) or $_REQUEST['2faactive']!='on') ? '0' : '1');
+if (!empty($userid) && $_REQUEST['_op']=='setconfig2fa') {
+	$isFormActive = ((empty($_REQUEST['2faactive']) || $_REQUEST['2faactive']!='on') ? '0' : '1');
 	$recexists = $adb->pquery('select globalvariableid
 		from vtiger_globalvariable
 		inner join vtiger_crmentity on crmid=globalvariableid
-		where deleted=0 and gvname=? and smownerid=?',array('User_2FAAuthentication',$userid));
+		where deleted=0 and gvname=? and smownerid=?', array('User_2FAAuthentication',$userid));
 	if ($isFormActive=='1') {
 		$tfa = new TwoFactorAuth('coreBOSWebApp');
 		$FASecret = $tfa->createSecret(160);
 		$smarty->assign('FASecret', chunk_split($FASecret, 4, ' '));
 		coreBOS_Settings::setSetting('coreBOS_2FA_Secret_'.$userid, $FASecret);
-		$smarty->assign('QRCODE',$tfa->getQRCodeImageAsDataUri('coreBOSWebApp', $FASecret));
-		if ($recexists and $adb->num_rows($recexists)==1) {
+		$smarty->assign('QRCODE', $tfa->getQRCodeImageAsDataUri('coreBOSWebApp', $FASecret));
+		if ($recexists && $adb->num_rows($recexists)==1) {
 			$gvid = $adb->query_result($recexists, 0, 0);
-			$adb->pquery('update vtiger_globalvariable set value=1 where globalvariableid=?',array($gvid));
+			$adb->pquery('update vtiger_globalvariable set value=1 where globalvariableid=?', array($gvid));
 		} else {
 			vtws_create('GlobalVariable', array(
 				'gvname' => 'User_2FAAuthentication',
@@ -56,9 +56,9 @@ if (!empty($userid) and $_REQUEST['_op']=='setconfig2fa') {
 		}
 		$isAppActive = true;
 	} else {
-		if ($recexists and $adb->num_rows($recexists)==1) {
+		if ($recexists && $adb->num_rows($recexists)==1) {
 			$gvid = $adb->query_result($recexists, 0, 0);
-			$adb->pquery('update vtiger_globalvariable set value=0 where globalvariableid=?',array($gvid));
+			$adb->pquery('update vtiger_globalvariable set value=0 where globalvariableid=?', array($gvid));
 		}
 		$smarty->assign('FASecret', '');
 		coreBOS_Settings::delSetting('coreBOS_2FA_Secret_'.$userid);
@@ -71,15 +71,15 @@ if (!empty($userid) and $_REQUEST['_op']=='setconfig2fa') {
 }
 $smarty->assign('isActive', $isAppActive);
 
-$smarty->assign('TITLE_MESSAGE', getTranslatedString('2FA Activation',$currentModule));
-$smarty->assign('USERLIST', getUserslist(true,$userid));
+$smarty->assign('TITLE_MESSAGE', getTranslatedString('2FA Activation', $currentModule));
+$smarty->assign('USERLIST', getUserslist(true, $userid));
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('THEME', $theme);
-include('modules/cbupdater/forcedButtons.php');
+include 'modules/cbupdater/forcedButtons.php';
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('ISADMIN', is_admin($current_user));
 $smarty->display('modules/Utilities/2fa.tpl');

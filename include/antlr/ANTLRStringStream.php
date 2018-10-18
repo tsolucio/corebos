@@ -82,7 +82,7 @@
 	        }
 	        $this->markDepth++;
 			$state = null;
-			if ($this->markDepth>=sizeof($this->markers)) {
+			if ($this->markDepth>=count($this->markers)) {
 				$state = new CharStreamState();
 				$this->markers[] = $state;
 			}

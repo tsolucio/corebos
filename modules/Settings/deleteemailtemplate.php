@@ -11,11 +11,10 @@
 $idlist = vtlib_purify($_REQUEST['idlist']);
 $id_array=explode(';', $idlist);
 
-for($i=0;$i < count($id_array)-1;$i++) {
-	$sql = "delete from vtiger_emailtemplates where templateid =?";
+$sql = 'delete from vtiger_emailtemplates where templateid =?';
+for ($i=0; $i < count($id_array)-1; $i++) {
 	$adb->pquery($sql, array($id_array[$i]));
 }
 
-header("Location:index.php?module=Settings&action=listemailtemplates");
-
+header('Location:index.php?module=Settings&action=listemailtemplates');
 ?>

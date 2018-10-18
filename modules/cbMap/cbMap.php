@@ -115,6 +115,12 @@ class cbMap extends CRMEntity {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
 		}
+		if (!empty($this->column_fields['content'])) {
+			$xml = simplexml_load_string($this->column_fields['content']);
+			$json = json_encode($xml);
+			global $adb;
+			$adb->pquery('update vtiger_cbmap set contentjson=? where cbmapid=?', array($json, $this->id));
+		}
 	}
 
 	/**
@@ -185,6 +191,14 @@ class cbMap extends CRMEntity {
 	 */
 	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 
+	public function retrieve_entity_info($cbmapid, $mname, $deleted = false) {
+		global $current_user;
+		$holduser = $current_user;
+		$current_user = Users::getActiveAdminUser();
+		parent::retrieve_entity_info($cbmapid, $mname, $deleted);
+		$current_user = $holduser;
+	}
+
 	public function __call($name, $arguments) {
 		require_once 'modules/cbMap/processmap/'.$name.'.php';
 		$processmap = new $name($this);
@@ -253,6 +267,14 @@ class cbMap extends CRMEntity {
 			}
 		}
 		return $ret;
+	}
+
+	public function getvtlib_open_popup_window_function($fieldname, $basemodule) {
+		if ($fieldname=='brmap' && $basemodule=='BusinessActions') {
+			return 'openBRMapInBA';
+		} else {
+			return 'vtlib_open_popup_window';
+		}
 	}
 }
 ?>

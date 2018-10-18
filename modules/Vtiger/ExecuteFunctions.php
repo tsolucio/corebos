@@ -70,6 +70,11 @@ switch ($functiontocall) {
 		}
 		$ret = getReferenceAutocomplete($term, $op, $searchinmodule, $limit, $current_user);
 		break;
+	case 'getProductServiceAutocomplete':
+		include_once 'include/Webservices/CustomerPortalWS.php';
+		$limit =  isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 5;
+		$ret = getProductServiceAutocomplete($_REQUEST['term'], array(), $limit);
+		break;
 	case 'getFieldValuesFromRecord':
 		$ret = array();
 		$crmid = vtlib_purify($_REQUEST['getFieldValuesFrom']);
@@ -198,6 +203,7 @@ switch ($functiontocall) {
 		}
 		break;
 	case 'getGloalSearch':
+	case 'getGlobalSearch':
 		include_once 'include/Webservices/CustomerPortalWS.php';
 		$data = json_decode($_REQUEST['data'], true);
 		$searchin = vtlib_purify($data['searchin']);
@@ -235,6 +241,34 @@ switch ($functiontocall) {
 				'module'=>$mod,
 				'modulerel'=>$modrel,
 			);
+		}
+		break;
+	case 'getSetting':
+		$skey = vtlib_purify($_REQUEST['skey']);
+		if (!empty($_REQUEST['default'])) {
+			$default = vtlib_purify($_REQUEST['default']);
+			$ret = coreBOS_Settings::getSetting($skey, $default);
+		} else {
+			$ret = coreBOS_Settings::getSetting($skey, null);
+		}
+		break;
+	case 'setSetting':
+		$skey = vtlib_purify($_REQUEST['skey']);
+		$svalue = vtlib_purify($_REQUEST['svalue']);
+		$ret = coreBOS_Settings::setSetting($skey, $svalue);
+		break;
+	case 'delSetting':
+		$skey = vtlib_purify($_REQUEST['skey']);
+		$ret = coreBOS_Settings::delSetting($skey);
+		break;
+	case 'getTranslatedStrings':
+		global $currentModule;
+		$i18nm = empty($_REQUEST['i18nmodule']) ? $currentModule : vtlib_purify($_REQUEST['i18nmodule']);
+		$tkeys = vtlib_purify($_REQUEST['tkeys']);
+		$tkeys = explode(';', $tkeys);
+		$ret = array();
+		foreach ($tkeys as $tr) {
+			$ret[$tr] = getTranslatedString($tr, $i18nm);
 		}
 		break;
 	case 'ismoduleactive':

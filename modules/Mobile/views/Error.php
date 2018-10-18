@@ -8,14 +8,14 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-class crmtogo_UI_Error  extends crmtogo_WS_Controller {
+class crmtogo_UI_Error extends crmtogo_WS_Controller {
 	protected $error;
-	
-	function setError($e) {
+
+	public function setError($e) {
 		$this->error = $e;
 	}
-	
-	function process(crmtogo_API_Request $request) {
+
+	public function process(crmtogo_API_Request $request) {
 		$viewer = new crmtogo_UI_Viewer();
 		$config = $this->getUserConfigSettings();
 		$viewer->assign('COLOR_HEADER_FOOTER', $config['theme']);
@@ -23,5 +23,4 @@ class crmtogo_UI_Error  extends crmtogo_WS_Controller {
 		$viewer->assign('errormsg', $this->error['message']);
 		return $viewer->process('Error.tpl');
 	}
-
 }

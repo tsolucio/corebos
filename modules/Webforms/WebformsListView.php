@@ -9,9 +9,9 @@
  ********************************************************************************/
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme,$current_user,$adb,$log;
 
-require_once('Smarty_setup.php');
-require_once('modules/Webforms/Webforms.php');
-require_once('modules/Webforms/model/WebformsModel.php');
+require_once 'Smarty_setup.php';
+require_once 'modules/Webforms/Webforms.php';
+require_once 'modules/Webforms/model/WebformsModel.php';
 
 Webforms::checkAdminAccess($current_user);
 
@@ -20,8 +20,8 @@ $webforms = Webforms_Model::listAll();
 $smarty = new vtigerCRM_Smarty();
 
 $category = getParentTab();
-$smarty->assign('WEBFORMS',$webforms);
-$smarty->assign('ACTION','list');
+$smarty->assign('WEBFORMS', $webforms);
+$smarty->assign('ACTION', 'list');
 $smarty->assign("THEME", $theme);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
@@ -29,12 +29,12 @@ $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('CATEGORY', $category);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
-$smarty->assign('LANGUAGE',$current_language);
-if(isset($tool_buttons)==false) {
+$smarty->assign('LANGUAGE', $current_language);
+if (isset($tool_buttons)==false) {
 	$tool_buttons = Button_Check($currentModule);
 }
 $tool_buttons['Merge'] = $tool_buttons['DuplicatesHandling'] = 'no';
 $smarty->assign('CHECK', $tool_buttons);
 
-$smarty->display(vtlib_getModuleTemplate($currentModule,'ListView.tpl'));
+$smarty->display(vtlib_getModuleTemplate($currentModule, 'ListView.tpl'));
 ?>

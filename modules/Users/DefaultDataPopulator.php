@@ -7,23 +7,21 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * ****************************************************************************** */
-include_once('config.php');
-require_once('include/logging.php');
-require_once('include/utils/utils.php');
+include_once 'config.php';
+require_once 'include/logging.php';
+require_once 'include/utils/utils.php';
 
 /** Class to populate the default required data during installation */
 class DefaultDataPopulator extends CRMEntity {
 
-	function __construct() {
+	public function __construct() {
 		$this->log = LoggerManager::getLogger('DefaultDataPopulator');
 		$this->db = PearDatabase::getInstance();
 	}
 
 	/** Function to populate the default required data during installation
 	 */
-	function create_tables() {
-		global $app_strings;
-
+	public function create_tables() {
 		$this->db->query("INSERT INTO vtiger_tab(tabid,name,presence,tabsequence,tablabel,customized,ownedby,isentitytype,parent) VALUES (3,'Home',0,1,'Home',0,1,0,null)");
 		$this->db->query("INSERT INTO vtiger_tab(tabid,name,presence,tabsequence,tablabel,customized,ownedby,isentitytype,parent) VALUES (7,'Leads',0,4,'Leads',0,0,1,'Sales')");
 		$this->db->query("INSERT INTO vtiger_tab(tabid,name,presence,tabsequence,tablabel,customized,ownedby,isentitytype,parent) VALUES (6,'Accounts',0,5,'Accounts',0,0,1,'Sales')");
@@ -327,7 +325,6 @@ class DefaultDataPopulator extends CRMEntity {
 		//ContactImageInformation
 		$this->db->query("insert into vtiger_field values (4," . $this->db->getUniqueID("vtiger_field") . ",'imagename','vtiger_contactdetails',1,'69','imagename','Contact Image',1,2,'',100,1,$imageblockid,1,'V~O',3,null,'ADV',0)");
 
-
 		//Block8 -- Start
 		$this->db->query("insert into vtiger_field values (4," . $this->db->getUniqueID("vtiger_field") . ",'description','vtiger_crmentity',1,'19','description','Description',1,2,'',100,1,8,1,'V~O',1,null,'BAS',1)");
 		//Block8 -- End
@@ -434,7 +431,6 @@ class DefaultDataPopulator extends CRMEntity {
 		$this->db->query("insert into vtiger_field values (14," . $this->db->getUniqueID("vtiger_field") . ",'start_date','vtiger_products',1,'5','start_date','Support Start Date',1,2,'',100,7,31,1,'D~O',1,null,'BAS',1)");
 		$this->db->query("insert into vtiger_field values (14," . $this->db->getUniqueID("vtiger_field") . ",'expiry_date','vtiger_products',1,'5','expiry_date','Support Expiry Date',1,2,'',100,10,31,1,'D~O~OTH~GE~start_date~Start Date',1,null,'BAS',1)");
 
-
 		$this->db->query("insert into vtiger_field values (14," . $this->db->getUniqueID("vtiger_field") . ",'website','vtiger_products',1,'17','website','Website',1,2,'',100,14,31,1,'V~O',1,null,'BAS',1)");
 		$this->db->query("insert into vtiger_field values (14," . $this->db->getUniqueID("vtiger_field") . ",'vendor_id','vtiger_products',1,'75','vendor_id','Vendor Name',1,2,'',100,13,31,1,'I~O',1,null,'BAS',1)");
 		$this->db->query("insert into vtiger_field values (14," . $this->db->getUniqueID("vtiger_field") . ",'mfr_part_no','vtiger_products',1,'1','mfr_part_no','Mfr PartNo',1,2,'',100,16,31,1,'V~O',1,null,'BAS',1)");
@@ -451,7 +447,6 @@ class DefaultDataPopulator extends CRMEntity {
 		$this->db->query("insert into vtiger_field values (14," . $this->db->getUniqueID("vtiger_field") . ",'unit_price','vtiger_products',1,'72','unit_price','Unit Price',1,2,'',100,1,32,1,'N~O',2,3,'BAS',2)");
 		$this->db->query("insert into vtiger_field values (14," . $this->db->getUniqueID("vtiger_field") . ",'commissionrate','vtiger_products',1,'9','commissionrate','Commission Rate',1,2,'',100,2,32,1,'N~O',1,null,'BAS',1)");
 		$this->db->query("insert into vtiger_field values (14," . $this->db->getUniqueID("vtiger_field") . ",'taxclass','vtiger_products',1,'83','taxclass','Tax Class',1,2,'',100,4,32,1,'V~O',3,null,'BAS',1)");
-
 
 		//Block 33 stock info
 
@@ -530,7 +525,6 @@ class DefaultDataPopulator extends CRMEntity {
 		$this->db->query("Insert into vtiger_field values (9," . $this->db->getUniqueID("vtiger_field") . ",'visibility','vtiger_activity',1,'16','visibility','Visibility',1,0,'',100,17,19,3,'V~O',1,null,'BAS',1)");
 
 		$this->db->query("insert into vtiger_field values (9," . $this->db->getUniqueID("vtiger_field") . ",'description','vtiger_crmentity',1,'19','description','Description',1,0,'',100,1,20,1,'V~O',1,null,'BAS',1)");
-
 
 		$this->db->query("insert into vtiger_field values (9," . $this->db->getUniqueID("vtiger_field") . ",'duration_hours','vtiger_activity',1,'63','duration_hours','Duration',1,0,'',100,17,19,3,'T~O',1,null,'BAS',1)");
 		$this->db->query("insert into vtiger_field values (9," . $this->db->getUniqueID("vtiger_field") . ",'duration_minutes','vtiger_activity',1,'16','duration_minutes','Duration Minutes',1,0,'',100,18,19,3,'T~O',1,null,'BAS',1)");
@@ -679,7 +673,6 @@ class DefaultDataPopulator extends CRMEntity {
 		$this->db->query("insert into vtiger_field values (20," . $this->db->getUniqueID("vtiger_field") . ",'bill_code','vtiger_quotesbillads',1,'1','bill_code','Billing Code',1,2,'',100,9,$quotesaddressblock,1,'V~O',3,null,'BAS',1)");
 		$this->db->query("insert into vtiger_field values (20," . $this->db->getUniqueID("vtiger_field") . ",'ship_code','vtiger_quotesshipads',1,'1','ship_code','Shipping Code',1,2,'',100,10,$quotesaddressblock,1,'V~O',3,null,'BAS',1)");
 
-
 		$this->db->query("insert into vtiger_field values (20," . $this->db->getUniqueID("vtiger_field") . ",'bill_country','vtiger_quotesbillads',1,'1','bill_country','Billing Country',1,2,'',100,11,$quotesaddressblock,1,'V~O',3,null,'BAS',1)");
 		$this->db->query("insert into vtiger_field values (20," . $this->db->getUniqueID("vtiger_field") . ",'ship_country','vtiger_quotesshipads',1,'1','ship_country','Shipping Country',1,2,'',100,12,$quotesaddressblock,1,'V~O',3,null,'BAS',1)");
 
@@ -691,7 +684,6 @@ class DefaultDataPopulator extends CRMEntity {
 
 		//Block 56
 		$this->db->query("insert into vtiger_field values (20," . $this->db->getUniqueID("vtiger_field") . ",'terms_conditions','vtiger_quotes',1,'19','terms_conditions','Terms & Conditions',1,2,'',100,1,$quotetermsblock,1,'V~O',3,null,'ADV',1)");
-
 
 		//Quote Details -- END
 		//Purchase Order Details -- START
@@ -739,7 +731,6 @@ class DefaultDataPopulator extends CRMEntity {
 
 		$this->db->query("insert into vtiger_field values (21," . $this->db->getUniqueID("vtiger_field") . ",'bill_code','vtiger_pobillads',1,'1','bill_code','Billing Code',1,2,'',100,9,$poaddressblock,1,'V~O',3,null,'BAS',1)");
 		$this->db->query("insert into vtiger_field values (21," . $this->db->getUniqueID("vtiger_field") . ",'ship_code','vtiger_poshipads',1,'1','ship_code','Shipping Code',1,2,'',100,10,$poaddressblock,1,'V~O',3,null,'BAS',1)");
-
 
 		$this->db->query("insert into vtiger_field values (21," . $this->db->getUniqueID("vtiger_field") . ",'bill_country','vtiger_pobillads',1,'1','bill_country','Billing Country',1,2,'',100,11,$poaddressblock,1,'V~O',3,null,'BAS',1)");
 		$this->db->query("insert into vtiger_field values (21," . $this->db->getUniqueID("vtiger_field") . ",'ship_country','vtiger_poshipads',1,'1','ship_country','Shipping Country',1,2,'',100,12,$poaddressblock,1,'V~O',3,null,'BAS',1)");
@@ -802,7 +793,6 @@ class DefaultDataPopulator extends CRMEntity {
 		$this->db->query("insert into vtiger_field values (22," . $this->db->getUniqueID("vtiger_field") . ",'bill_code','vtiger_sobillads',1,'1','bill_code','Billing Code',1,2,'',100,9,$soaddressblock,1,'V~O',3,null,'BAS',1)");
 		$this->db->query("insert into vtiger_field values (22," . $this->db->getUniqueID("vtiger_field") . ",'ship_code','vtiger_soshipads',1,'1','ship_code','Shipping Code',1,2,'',100,10,$soaddressblock,1,'V~O',3,null,'BAS',1)");
 
-
 		$this->db->query("insert into vtiger_field values (22," . $this->db->getUniqueID("vtiger_field") . ",'bill_country','vtiger_sobillads',1,'1','bill_country','Billing Country',1,2,'',100,11,$soaddressblock,1,'V~O',3,null,'BAS',1)");
 		$this->db->query("insert into vtiger_field values (22," . $this->db->getUniqueID("vtiger_field") . ",'ship_country','vtiger_soshipads',1,'1','ship_country','Shipping Country',1,2,'',100,12,$soaddressblock,1,'V~O',3,null,'BAS',1)");
 
@@ -830,7 +820,6 @@ class DefaultDataPopulator extends CRMEntity {
 		$this->db->query("insert into vtiger_field values (23," . $this->db->getUniqueID("vtiger_field") . ",'subject','vtiger_invoice',1,'2','subject','Subject',1,0,'',100,1,$invoicebasicblock,1,'V~M',3,null,'BAS',1)");
 		$this->db->query("insert into vtiger_field values (23," . $this->db->getUniqueID("vtiger_field") . ",'salesorderid','vtiger_invoice',1,'80','salesorder_id','Sales Order',1,2,'',100,2,$invoicebasicblock,1,'I~O',3,null,'BAS',1)");
 		$this->db->query("insert into vtiger_field values (23," . $this->db->getUniqueID("vtiger_field") . ",'customerno','vtiger_invoice',1,'1','customerno','Customer No',1,2,'',100,3,$invoicebasicblock,1,'V~O',3,null,'BAS',1)");
-
 
 		//to include contact name vtiger_field in Invoice-start
 		$this->db->query("insert into vtiger_field values (23," . $this->db->getUniqueID("vtiger_field") . ",'contactid','vtiger_invoice',1,'57','contact_id','Contact Name',1,2,'',100,4,$invoicebasicblock,1,'I~O',3,null,'BAS',1)");
@@ -874,7 +863,6 @@ class DefaultDataPopulator extends CRMEntity {
 
 		$this->db->query("insert into vtiger_field values (23," . $this->db->getUniqueID("vtiger_field") . ",'bill_code','vtiger_invoicebillads',1,'1','bill_code','Billing Code',1,2,'',100,9,$invoiceaddressblock,1,'V~O',3,null,'BAS',1)");
 		$this->db->query("insert into vtiger_field values (23," . $this->db->getUniqueID("vtiger_field") . ",'ship_code','vtiger_invoiceshipads',1,'1','ship_code','Shipping Code',1,2,'',100,10,$invoiceaddressblock,1,'V~O',3,null,'BAS',1)");
-
 
 		$this->db->query("insert into vtiger_field values (23," . $this->db->getUniqueID("vtiger_field") . ",'bill_country','vtiger_invoicebillads',1,'1','bill_country','Billing Country',1,2,'',100,11,$invoiceaddressblock,1,'V~O',3,null,'BAS',1)");
 		$this->db->query("insert into vtiger_field values (23," . $this->db->getUniqueID("vtiger_field") . ",'ship_country','vtiger_invoiceshipads',1,'1','ship_country','Shipping Country',1,2,'',100,12,$invoiceaddressblock,1,'V~O',3,null,'BAS',1)");
@@ -1005,7 +993,7 @@ class DefaultDataPopulator extends CRMEntity {
 		$this->db->query("insert into vtiger_org_share_action_mapping values(7,'Show Details and Add Events')");
 
 		//Inserting for all vtiger_tabs
-		$def_org_tabid = Array(2, 4, 6, 7, 8, 9, 10, 13, 14, 16, 20, 21, 22, 23, 26);
+		$def_org_tabid = array(2, 4, 6, 7, 8, 9, 10, 13, 14, 16, 20, 21, 22, 23, 26);
 
 		foreach ($def_org_tabid as $def_tabid) {
 			$this->db->query("insert into vtiger_org_share_action2tab values(0," . $def_tabid . ")");
@@ -1052,9 +1040,6 @@ class DefaultDataPopulator extends CRMEntity {
 
 		//SO Related Module
 		$this->db->query("insert into vtiger_datashare_relatedmodules values (" . $this->db->getUniqueID('vtiger_datashare_relatedmodules') . ",22,23)");
-
-
-
 
 		// New Secutity End
 		//insert into the vtiger_notificationscheduler vtiger_table
@@ -1103,9 +1088,7 @@ class DefaultDataPopulator extends CRMEntity {
 
 		$this->db->query("insert into vtiger_relatedlists values(" . $this->db->getUniqueID('vtiger_relatedlists') . "," . getTabid("Contacts") . "," . getTabid("Calendar") . ",'get_activities',2,'Activities',0,'add')");
 
-
 		$this->db->query("insert into vtiger_relatedlists values(" . $this->db->getUniqueID('vtiger_relatedlists') . "," . getTabid("Contacts") . "," . getTabid("Emails") . ",'get_emails',3,'Emails',0,'add')");
-
 
 		$this->db->query("insert into vtiger_relatedlists values(" . $this->db->getUniqueID('vtiger_relatedlists') . "," . getTabid("Contacts") . "," . getTabid("HelpDesk") . ",'get_tickets',4,'HelpDesk',0,'add')");
 
@@ -1129,9 +1112,7 @@ class DefaultDataPopulator extends CRMEntity {
 
 		$this->db->query("insert into vtiger_relatedlists values(" . $this->db->getUniqueID('vtiger_relatedlists') . "," . getTabid("Potentials") . "," . getTabid("Calendar") . ",'get_activities',1,'Activities',0,'add')");
 
-
 		$this->db->query("insert into vtiger_relatedlists values(" . $this->db->getUniqueID('vtiger_relatedlists') . "," . getTabid("Potentials") . "," . getTabid("Contacts") . ",'get_contacts',2,'Contacts',0,'select')");
-
 
 		$this->db->query("insert into vtiger_relatedlists values(" . $this->db->getUniqueID('vtiger_relatedlists') . "," . getTabid("Potentials") . "," . getTabid("Products") . ",'get_products',3,'Products',0,'select')");
 
@@ -1262,7 +1243,6 @@ Severity: Critical
 Thanks,
 {CURRENTUSER}';
 
-
 		$this->db->query("insert into vtiger_inventorynotification(notificationid,notificationname,notificationsubject,notificationbody,label) values (" . $this->db->getUniqueID("vtiger_inventorynotification") . ",'InvoiceNotification','{PRODUCTNAME} Stock Level is Low','" . $invoice_body . " ','InvoiceNotificationDescription')");
 
 		$quote_body = 'Dear {HANDLER},
@@ -1273,7 +1253,6 @@ Severity: Minor
 
 Thanks,
 {CURRENTUSER}';
-
 
 		$this->db->query("insert into vtiger_inventorynotification(notificationid,notificationname,notificationsubject,notificationbody,label) values (" . $this->db->getUniqueID("vtiger_inventorynotification") . ",'QuoteNotification','Quote given for {PRODUCTNAME}','" . $quote_body . " ','QuoteNotificationDescription')");
 
@@ -1287,7 +1266,6 @@ Severity: Major
 
 Thanks,
 {CURRENTUSER}';
-
 
 		$this->db->query("insert into vtiger_inventorynotification(notificationid,notificationname,notificationsubject,notificationbody,label) values (" . $this->db->getUniqueID("vtiger_inventorynotification") . ",'SalesOrderNotification','Sales Order generated for {PRODUCTNAME}','" . $so_body . " ','SalesOrderNotificationDescription')");
 
@@ -1325,8 +1303,6 @@ Thanks,
 
 		$this->db->query("insert into vtiger_emailtemplates(foldername,templatename,subject,description,body,deleted,templateid) values ('Public','Announcement for Release','Announcement for Release','Announcement of a release','" . $body . "',0," . $this->db->getUniqueID('vtiger_emailtemplates') . ")");
 
-
-
 		$body = 'name <br />
 street, <br />
 city, <br />
@@ -1347,12 +1323,7 @@ state, <br />
  We will be more than happy to give you a call. <br />
  We would like to continue our business with you.';
 
-
 		$this->db->query("insert into vtiger_emailtemplates(foldername,templatename,subject,description,body,deleted,templateid) values ('Public','Pending Invoices','Invoices Pending','Payment Due','" . $body . "',0," . $this->db->getUniqueID('vtiger_emailtemplates') . ")");
-
-
-
-
 
 		$body = ' Dear <br />
  <br />
@@ -1371,18 +1342,14 @@ Executive Lounge. <br />
 <br />
 Looking forward to seeing you there.';
 
-
 		$this->db->query("insert into vtiger_emailtemplates(foldername,templatename,subject,description,body,deleted,templateid) values ('Public','Acceptance Proposal','Acceptance Proposal','Acceptance of Proposal','" . $body . "',0," . $this->db->getUniqueID('vtiger_emailtemplates') . ")");
-
 
 		$body = ' The undersigned hereby acknowledges receipt and delivery of the goods. <br />
 The undersigned will release the payment subject to the goods being discovered not satisfactory. <br />
 <br />
 Signed under seal this <date>';
 
-
 		$this->db->query("insert into vtiger_emailtemplates(foldername,templatename,subject,description,body,deleted,templateid) values ('Public','Goods received acknowledgement','Goods received acknowledgement','Acknowledged Receipt of Goods','" . $body . "',0," . $this->db->getUniqueID('vtiger_emailtemplates') . ")");
-
 
 		$body = ' Dear <br />
          We are in receipt of your order as contained in the <br />
@@ -1393,13 +1360,7 @@ this notice. <br />
  <br />
 Thank you for your patronage.';
 
-
-
-
 		$this->db->query("insert into vtiger_emailtemplates(foldername,templatename,subject,description,body,deleted,templateid) values ('Public','Accept Order','Accept Order','Acknowledgement/Acceptance of Order','" . $body . "',0," . $this->db->getUniqueID('vtiger_emailtemplates') . ")");
-
-
-
 
 		$body = 'Dear <br />
  <br />
@@ -1414,10 +1375,7 @@ at 3250 Lovedale Square Avenue, in Frankfurt. <br />
 We hope to keep in touch with you all. <br />
 Please update your addressbooks.';
 
-
 		$this->db->query("insert into vtiger_emailtemplates(foldername,templatename,subject,description,body,deleted,templateid) values ('Public','Address Change','Change of Address','Address Change','" . $body . "',0," . $this->db->getUniqueID('vtiger_emailtemplates') . ")");
-
-
 
 		$body = 'Dear <br />
 <br />
@@ -1435,11 +1393,7 @@ I was genuinely touched to receive such fine hospitality. <br />
 <br />
 Thank you once again.';
 
-
-
 		$this->db->query("insert into vtiger_emailtemplates(foldername,templatename,subject,description,body,deleted,templateid) values ('Public','Follow Up','Follow Up','Follow Up of meeting','" . $body . "',0," . $this->db->getUniqueID('vtiger_emailtemplates') . ")");
-
-
 
 		$body = 'Congratulations! <br />
 <br />
@@ -1454,8 +1408,6 @@ Let us meet at Smoking Joe for a drink in the evening! <br />
 
 C you all there guys!';
 
-
-
 		$this->db->query("insert into vtiger_emailtemplates(foldername,templatename,subject,description,body,deleted,templateid) values ('Public','Target Crossed!','Target Crossed!','Fantastic Sales Spree!','" . $body . "',0," . $this->db->getUniqueID('vtiger_emailtemplates') . ")");
 
 		$body = 'Dear <br />
@@ -1465,8 +1417,6 @@ We are glad to be given the chance to serve you.I look <br />
 forward to establishing a long term partnership with you. <br />
 Consider me as a friend. <br />
 Should any need arise,please do give us a call.';
-
-
 
 		$this->db->query("insert into vtiger_emailtemplates(foldername,templatename,subject,description,body,deleted,templateid) values ('Public','Thanks Note','Thanks Note','Note of thanks','" . $body . "',0," . $this->db->getUniqueID('vtiger_emailtemplates') . ")");
 
@@ -1615,7 +1565,6 @@ Should any need arise,please do give us a call.';
 
 		$this->db->query("insert into vtiger_emailtemplates(foldername,templatename,subject,description,body,deleted,templateid) values ('Public','Customer Login Details','Customer Portal Login Details','Send Portal login details to customer','" . $body . "',0," . $this->db->getUniqueID('vtiger_emailtemplates') . ")");
 
-
 //for Support end notification before a week
 		$body = '<table width="700" cellspacing="0" cellpadding="0" border="0" align="center" style="font-family: Arial,Helvetica,sans-serif; font-size: 12px; font-weight: normal; text-decoration: none; background-color: rgb(122, 122, 254);">
         <tr>
@@ -1732,7 +1681,6 @@ Should any need arise,please do give us a call.';
         </tr>
 </table>';
 		$this->db->query("insert into vtiger_emailtemplates(foldername,templatename,subject,description,body,deleted,templateid) values ('Public','Support end notification before a week','VtigerCRM Support Notification','Send Notification mail to customer before a week of support end date','" . $body . "',0," . $this->db->getUniqueID('vtiger_emailtemplates') . ")");
-
 
 //for Support end notification before a month
 		$body = '<table width="700" cellspacing="0" cellpadding="0" border="0" align="center" style="font-family: Arial,Helvetica,sans-serif; font-size: 12px; font-weight: normal; text-decoration: none; background-color: rgb(122, 122, 254);">
@@ -1851,13 +1799,11 @@ Should any need arise,please do give us a call.';
 </table>';
 		$this->db->query("insert into vtiger_emailtemplates(foldername,templatename,subject,description,body,deleted,templateid) values ('Public','Support end notification before a month','VtigerCRM Support Notification','Send Notification mail to customer before a month of support end date','" . $body . "',0," . $this->db->getUniqueID('vtiger_emailtemplates') . ")");
 
-
 		//Insert into vtiger_organizationdetails vtiger_table
 		$organizationId = $this->db->getUniqueID('vtiger_organizationdetails');
 		$this->db->query("insert into vtiger_organizationdetails(organization_id,organizationname,address,city,state,country,code,phone,fax,website,logoname)
 								values ($organizationId,'Your Company',' Your Address','Your City',
 										'Your State','Your Country','ZIP CODE','+99-98-7654-3210','+99-98-7654-3210','www.your-company.tld','app-logo.png')");
-
 
 		$this->db->query("insert into vtiger_actionmapping values(0,'Save',0)");
 		$this->db->query("insert into vtiger_actionmapping values(1,'EditView',0)");
@@ -1963,11 +1909,11 @@ Should any need arise,please do give us a call.';
 		$this->db->query("alter table vtiger_inventoryshippingrel add column shtax$shserviceid decimal(7,3) default NULL");
 
 		//version file is included here because without including this file version cannot be get
-		include('vtigerversion.php');
+		include 'vtigerversion.php';
 		$this->db->query("insert into vtiger_version values(" . $this->db->getUniqueID('vtiger_version') . ",'" . $vtiger_current_version . "','" . $vtiger_current_version . "')");
 
 		//Register default language English
-		require_once('vtlib/Vtiger/Language.php');
+		require_once 'vtlib/Vtiger/Language.php';
 		$vtlanguage = new Vtiger_Language();
 		$vtlanguage->register('en_us', 'US English', 'English', true, true, true);
 
@@ -1995,7 +1941,7 @@ Should any need arise,please do give us a call.';
 		);
 		foreach ($modseq as $modname => $prefix) {
 			$this->addInventoryRows(
-					array(
+				array(
 						array('semodule' => $modname, 'active' => '1', 'prefix' => $prefix, 'startid' => '1', 'curid' => '1')
 					)
 			);
@@ -2006,7 +1952,7 @@ Should any need arise,please do give us a call.';
 		$this->db->query("insert into vtiger_reportfilters values(2,'Public')");
 		$this->db->query("insert into vtiger_reportfilters values(3,'Shared')");
 
-		require('modules/Utilities/Currencies.php');
+		require 'modules/Utilities/Currencies.php';
 		foreach ($currencies as $key => $value) {
 			$this->db->query("insert into vtiger_currencies values(" . $this->db->getUniqueID("vtiger_currencies") . ",'$key','" . $value[0] . "','" . $value[1] . "')");
 		}
@@ -2014,14 +1960,14 @@ Should any need arise,please do give us a call.';
 		$this->addDefaultLeadMapping();
 	}
 
-	function initWebservices() {
+	public function initWebservices() {
 		$this->vtws_addEntityInfo();
 		$this->vtws_addOperationInfo();
 		$this->vtws_addFieldTypeInformation();
 		$this->vtws_addFieldInfo();
 	}
 
-	function vtws_addOperationInfo() {
+	public function vtws_addOperationInfo() {
 		$operationMeta = array(
 			"login" => array(
 				"include" => array(
@@ -2220,7 +2166,7 @@ Should any need arise,please do give us a call.';
 		}
 	}
 
-	function vtws_addEntityInfo() {
+	public function vtws_addEntityInfo() {
 		require_once 'include/Webservices/Utils.php';
 		$names = vtws_getModuleNameList();
 		$moduleHandler = array('file' => 'include/Webservices/VtigerModuleOperation.php',
@@ -2237,14 +2183,13 @@ Should any need arise,please do give us a call.';
 		$entityId = $this->db->getUniqueID("vtiger_ws_entity");
 		$this->db->pquery('insert into vtiger_ws_entity(id,name,handler_path,handler_class,ismodule) values (?,?,?,?,?)', array($entityId, 'Events', $moduleHandler['file'], $moduleHandler['class'], 1));
 
-
 		$entityId = $this->db->getUniqueID("vtiger_ws_entity");
 		$this->db->pquery('insert into vtiger_ws_entity(id,name,handler_path,handler_class,ismodule) values (?,?,?,?,?)', array($entityId, 'Users', $moduleHandler['file'], $moduleHandler['class'], 1));
 
 		vtws_addDefaultActorTypeEntity('Groups', array('fieldNames' => 'groupname',
 			'indexField' => 'groupid', 'tableName' => 'vtiger_groups'));
 
-		require_once("include/Webservices/WebServiceError.php");
+		require_once "include/Webservices/WebServiceError.php";
 		require_once 'include/Webservices/VtigerWebserviceObject.php';
 		$webserviceObject = VtigerWebserviceObject::fromName($this->db, 'Groups');
 		$this->db->pquery("insert into vtiger_ws_entity_tables(webservice_entity_id,table_name) values
@@ -2262,16 +2207,20 @@ Should any need arise,please do give us a call.';
 		$this->db->pquery("insert into vtiger_ws_entity_tables(webservice_entity_id,table_name) values (?,?)", array($webserviceObject->getEntityId(), 'vtiger_attachmentsfolder'));
 
 		vtws_addActorTypeWebserviceEntityWithName(
-				'CompanyDetails', 'include/Webservices/VtigerCompanyDetails.php', 'VtigerCompanyDetails', array('fieldNames' => 'organizationname', 'indexField' => 'groupid', 'tableName' => 'vtiger_organizationdetails'));
+			'CompanyDetails',
+			'include/Webservices/VtigerCompanyDetails.php',
+			'VtigerCompanyDetails',
+			array('fieldNames' => 'organizationname', 'indexField' => 'groupid', 'tableName' => 'vtiger_organizationdetails')
+		);
 		$webserviceObject = VtigerWebserviceObject::fromName($this->db, 'CompanyDetails');
 		$this->db->pquery('INSERT INTO vtiger_ws_entity_tables(webservice_entity_id,table_name) VALUES (?,?)', array($webserviceObject->getEntityId(), 'vtiger_organizationdetails'));
 	}
 
-	function vtws_addFieldInfo() {
+	public function vtws_addFieldInfo() {
 		$this->db->pquery('INSERT INTO vtiger_ws_fieldinfo(id,property_name,property_value) VALUES (?,?,?)', array('vtiger_organizationdetails.organization_id', 'upload.path', '1'));
 	}
 
-	function vtws_addFieldTypeInformation() {
+	public function vtws_addFieldTypeInformation() {
 		$fieldTypeInfo = array('picklist' => array(15, 16), 'text' => array(19, 20, 21, 24), 'autogenerated' => array(3), 'phone' => array(11),
 			'multipicklist' => array(33), 'url' => array(17), 'skype' => array(85), 'boolean' => array(56, 156), 'owner' => array(53),
 			'file' => array(61, 28), 'email' => array(13), 'currency' => array(71, 72));
@@ -2288,7 +2237,7 @@ Should any need arise,please do give us a call.';
 		$this->vtws_addReferenceTypeInformation();
 	}
 
-	function vtws_addReferenceTypeInformation() {
+	public function vtws_addReferenceTypeInformation() {
 		$referenceMapping = array("50" => array("Accounts"), "51" => array("Accounts"), "57" => array("Contacts"),
 			"58" => array("Campaigns"), "73" => array("Accounts"), "75" => array("Vendors"), "76" => array("Potentials"),
 			"78" => array("Quotes"), "80" => array("SalesOrder"), "81" => array("Vendors"), "101" => array("Users"), "52" => array("Users"),
@@ -2306,7 +2255,7 @@ Should any need arise,please do give us a call.';
 			$rowCount = $this->db->num_rows($result);
 			for ($i = 0; $i < $rowCount; $i++) {
 				$fieldTypeId = $this->db->query_result($result, $i, "fieldtypeid");
-				foreach ($referenceArray as $index => $referenceType) {
+				foreach ($referenceArray as $referenceType) {
 					$result = $this->db->pquery("insert into vtiger_ws_referencetype(fieldtypeid,type) values(?,?)", array($fieldTypeId, $referenceType));
 					if (!is_object($result)) {
 						echo "failed for: $referenceType, uitype: $fieldTypeId";
@@ -2357,20 +2306,14 @@ Should any need arise,please do give us a call.';
 			$success = false;
 		}
 		if (!$success) {
-			echo "Migration Query Failed";
+			echo 'Migration Query Failed';
 		}
 	}
 
-	function addInventoryRows($paramArray) {
-		global $adb;
-
-		$fieldCreateCount = 0;
-
+	public function addInventoryRows($paramArray) {
 		for ($index = 0; $index < count($paramArray); ++$index) {
 			$criteria = $paramArray[$index];
-
 			$semodule = $criteria['semodule'];
-
 			$modfocus = CRMEntity::getInstance($semodule);
 			$modfocus->setModuleSeqNumber('configure', $semodule, $criteria['prefix'], $criteria['startid']);
 		}
@@ -2380,7 +2323,7 @@ Should any need arise,please do give us a call.';
 	 * this function adds the entries for settings page
 	 * it assumes entries as were present on 10-12-208
 	 */
-	function addEntriesForSettings() {
+	public function addEntriesForSettings() {
 		global $adb;
 
 		//icons for all fields
@@ -2452,7 +2395,6 @@ Should any need arise,please do give us a call.';
 			'LBL_LIST_WORKFLOWS',
 			'LBL_MENU_EDITOR');
 
-
 		$name_blocks = array('LBL_USERS' => 'LBL_USER_MANAGEMENT',
 			'LBL_ROLES' => 'LBL_USER_MANAGEMENT',
 			'LBL_PROFILES' => 'LBL_USER_MANAGEMENT',
@@ -2482,7 +2424,6 @@ Should any need arise,please do give us a call.';
 			'LBL_MAIL_SCANNER' => 'LBL_OTHER_SETTINGS',
 			'LBL_LIST_WORKFLOWS' => 'LBL_OTHER_SETTINGS',
 			'LBL_MENU_EDITOR' => 'LBL_STUDIO');
-
 
 		//description for fields
 		$description = array('LBL_USER_DESCRIPTION',
@@ -2564,7 +2505,7 @@ Should any need arise,please do give us a call.';
 		$module_manager_id = getSettingsBlockId('LBL_MODULE_MANAGER');
 		$result = $adb->pquery("SELECT max(sequence) AS maxseq FROM vtiger_settings_field WHERE blockid = ?", array($module_manager_id));
 		$maxseq = $adb->query_result($result, 0, 'maxseq');
-		if ($maxseq < 0 || $maxseq == NULL) {
+		if ($maxseq < 0 || $maxseq == null) {
 			$maxseq = 1;
 		}
 		$adb->pquery("INSERT INTO vtiger_settings_field (fieldid, blockid, name, iconpath, description, linkto, sequence) VALUES (?,?,?,?,?,?,?)", array($adb->getUniqueID('vtiger_settings_field'), $module_manager_id, 'LBL_WORKFLOW_LIST', 'settingsWorkflow.png', 'LBL_AVAILABLE_WORKLIST_LIST', 'index.php?module=com_vtiger_workflow&action=workflowlist', $maxseq));
@@ -2573,7 +2514,7 @@ Should any need arise,please do give us a call.';
 		$adb->query("update vtiger_settings_field set active=1 where name='LBL_SYSTEM_INFO'");
 	}
 
-	function addDefaultLeadMapping() {
+	public function addDefaultLeadMapping() {
 		global $adb;
 
 		$fieldMap = array(
@@ -2624,7 +2565,5 @@ Should any need arise,please do give us a call.';
 			$adb->pquery($mapSql, array($leadfid, $accountfid, $contactfid, $potentialfid, $editable));
 		}
 	}
-
 }
-
 ?>

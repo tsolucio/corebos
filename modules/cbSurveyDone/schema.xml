@@ -1,0 +1,28 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_cbsurveydone</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_cbsurveydone` (
+  `cbsurveydoneid` int(11) NOT NULL,
+  `cbsurveydone_no` varchar(26) default NULL,
+  `relatewith` int(11) default NULL,
+  `cbsurvey` int(11) default NULL,
+  `surveydonedate` date default NULL,
+  `cbsd_providerid` varchar(126) default NULL,
+  `cbsq_token` varchar(226) default NULL,
+  `cbsq_completed` varchar(3) default NULL,
+  `cbsq_addinfo` text default NULL,
+  `cbsq_hiddeninfo` text default NULL,
+  PRIMARY KEY (`cbsurveydoneid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_cbsurveydonecf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_cbsurveydonecf` (
+  `cbsurveydoneid` int(11) NOT NULL,
+  PRIMARY KEY (`cbsurveydoneid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

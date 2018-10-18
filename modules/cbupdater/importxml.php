@@ -124,6 +124,8 @@ function cbupd_import($zipfile) {
 		echo getTranslatedString('ImportError', 'cbupdater').'<br>';
 		echo getTranslatedString('CleanUp', 'cbupdater').'<br>';
 		cbupd_cleanup($filelist);
+	} else {
+		include_once 'modules/cbupdater/getupdates.php';
 	}
 }
 

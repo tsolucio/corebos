@@ -179,8 +179,9 @@ if (isset($_REQUEST['potential_id']) && $_REQUEST['potential_id'] != '') {
 	$focus->column_fields['potential_id'] = $_REQUEST['potential_id'];
 	$relatedInfo = getRelatedInfo($_REQUEST['potential_id']);
 	if (!empty($relatedInfo)) {
-		$setype = $relatedInfo["setype"];
-		$relID = $relatedInfo["relID"];
+		$setype = $relatedInfo['setype'];
+		$relID = $relatedInfo['relID'];
+		$_REQUEST['convertmode'] = 'frompotential';
 	}
 	if ($setype == 'Accounts') {
 		$_REQUEST['account_id'] = $relID;
@@ -189,8 +190,13 @@ if (isset($_REQUEST['potential_id']) && $_REQUEST['potential_id'] != '') {
 	}
 	$log->debug('Sales Order EditView: Potential Id from the request is ' . $_REQUEST['potential_id']);
 	$associated_prod = getAssociatedProducts('Potentials', $focus, $focus->column_fields['potential_id']);
+	if (count($associated_prod)==1 && count($associated_prod[1])==1) { // no products so we empty array to avoid warning
+		$smarty->assign('AVAILABLE_PRODUCTS', 'false');
+		$associated_prod = array();
+	} else {
+		$smarty->assign('AVAILABLE_PRODUCTS', 'true');
+	}
 	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
-	$smarty->assign('AVAILABLE_PRODUCTS', count($associated_prod)>0 ? 'true' : 'false');
 	$smarty->assign('MODE', $focus->mode);
 }
 if (isset($_REQUEST['product_id']) && $_REQUEST['product_id'] != '') {
@@ -310,7 +316,7 @@ $smarty->assign('moreinfofields', '');
 if ($cbMap!=null) {
 	$cbMapFields = $cbMap->MasterDetailLayout();
 	$smarty->assign('moreinfofields', "'".implode("','", $cbMapFields['detailview']['fieldnames'])."'");
-	if (empty($associated_prod)) { // creating
+	if (empty($associated_prod) && $isduplicate != 'true') { // creating
 		$product_Detail = $col_fields = array();
 		foreach ($cbMapFields['detailview']['fields'] as $mdfield) {
 			$col_fields[$mdfield['fieldinfo']['name']] = '';
@@ -426,6 +432,7 @@ $smarty->assign('Inventory_ListPrice_ReadOnly', GlobalVariable::getVariable('Inv
 $smarty->assign('TAX_TYPE', GlobalVariable::getVariable('Inventory_Tax_Type_Default', 'individual', $currentModule, $current_user->id));
 //Show or not the Header to copy address to left or right
 $smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Application_Show_Copy_Address', 1, $currentModule, $current_user->id));
+$smarty->assign('SHOW_SHIPHAND_CHARGES', GlobalVariable::getVariable('Inventory_Show_ShippingHandlingCharges', 1, $currentModule, $current_user->id));
 
 $smarty->display('Inventory/InventoryEditView.tpl');
 ?>

@@ -62,6 +62,7 @@ $mod_strings = array(
 	'LBL_YEAR'=>'Año',
 	'LBL_UNTIL' => 'Hasta',
 	'LBL_SET_DATE'=>'Establecer Fecha',
+	'LBL_SET_DATE_TIME'=>'Establecer Fecha y Hora',
 	'LBL_SM_MON' => 'Lun',
 	'LBL_SM_TUE' => 'Mar',
 	'LBL_SM_WED' => 'Mie',

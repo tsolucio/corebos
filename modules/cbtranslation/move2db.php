@@ -44,7 +44,7 @@ foreach ($import_langs as $lang) {
 }
 
 $import_modules = getAllowedPicklistModules(1);
-$import_modules = array_merge($import_modules, array('Rss','Webmails','Recyclebin'));
+$import_modules = array_merge($import_modules, array('Rss','Recyclebin'));
 foreach ($import_modules as $impmod) {
 	set_time_limit(0);
 	foreach ($import_langs as $lang) {

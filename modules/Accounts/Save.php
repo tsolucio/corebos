@@ -11,15 +11,15 @@ global $current_user, $currentModule, $adb, $singlepane_view;
 
 if (isset($_REQUEST['dup_check']) && $_REQUEST['dup_check'] != '') {
 	$value = vtlib_purify($_REQUEST['accountname']);
-	$query = 'SELECT accountname FROM vtiger_account,vtiger_crmentity WHERE accountname =? and vtiger_account.accountid = vtiger_crmentity.crmid and vtiger_crmentity.deleted != 1';
+	$query = 'SELECT 1 FROM vtiger_account,vtiger_crmentity WHERE accountname=? and vtiger_account.accountid=vtiger_crmentity.crmid and vtiger_crmentity.deleted!=1';
 	$params = array($value);
 	$id = vtlib_purify($_REQUEST['record']);
-	if(isset($id) && $id !='') {
+	if (isset($id) && $id !='') {
 		$query .= ' and vtiger_account.accountid != ?';
 		$params[] = $id;
 	}
 	$result = $adb->pquery($query, $params);
-	if($adb->num_rows($result) > 0) {
+	if ($adb->num_rows($result) > 0) {
 		echo $mod_strings['LBL_ACCOUNT_EXIST'];
 	} else {
 		echo 'SUCCESS';
@@ -27,5 +27,5 @@ if (isset($_REQUEST['dup_check']) && $_REQUEST['dup_check'] != '') {
 	die;
 }
 
-require_once('modules/Vtiger/Save.php');
+require_once 'modules/Vtiger/Save.php';
 ?>

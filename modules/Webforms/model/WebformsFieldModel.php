@@ -14,85 +14,81 @@ class Webforms_Field_Model {
 
 	protected $data;
 
-	function __construct($data=array()) {
+	public function __construct($data = array()) {
 		$this->data = $data;
 	}
 
-	function setId($id) {
-		$this->data["id"] = $id;
+	public function setId($id) {
+		$this->data['id'] = $id;
 	}
 
-	function setWebformId($webformid) {
-		$this->data["webformid"] = $webformid;
+	public function setWebformId($webformid) {
+		$this->data['webformid'] = $webformid;
 	}
 
-	function setFieldName($fieldname) {
-		$this->data["fieldname"] = $fieldname;
+	public function setFieldName($fieldname) {
+		$this->data['fieldname'] = $fieldname;
 	}
 
-	function setNeutralizedField($fieldname, $fieldlabel=false) {
-		$fieldlabel = str_replace(" ", "_", $fieldlabel);
+	public function setNeutralizedField($fieldname, $fieldlabel = false) {
+		$fieldlabel = str_replace(' ', '_', $fieldlabel);
 		if (Webforms_Model::isCustomField($fieldname)) {
-			$this->data["neutralizedfield"] = 'label:' . $fieldlabel;
+			$this->data['neutralizedfield'] = 'label:' . $fieldlabel;
 		} else {
-			$this->data["neutralizedfield"] = $fieldname;
+			$this->data['neutralizedfield'] = $fieldname;
 		}
 	}
 
-	function setEnabled($enabled) {
-		$this->data["enabled"] = $enabled;
+	public function setEnabled($enabled) {
+		$this->data['enabled'] = $enabled;
 	}
 
-	function setDefaultValue($defaultvalue) {
+	public function setDefaultValue($defaultvalue) {
 		if (is_array($defaultvalue)) {
-			$defaultvalue = implode(" |##| ", $defaultvalue);
+			$defaultvalue = implode(' |##| ', $defaultvalue);
 		}
-		$this->data["defaultvalue"] = $defaultvalue;
+		$this->data['defaultvalue'] = $defaultvalue;
 	}
 
-	function setRequired($required) {
-		$this->data["required"] = $required;
+	public function setRequired($required) {
+		$this->data['required'] = $required;
 	}
 
-	function getId() {
-		return $this->data["id"];
+	public function getId() {
+		return $this->data['id'];
 	}
 
-	function getWebformId() {
-		return $this->data["webformid"];
+	public function getWebformId() {
+		return $this->data['webformid'];
 	}
 
-	function getFieldName() {
-		return $this->data["fieldname"];
+	public function getFieldName() {
+		return $this->data['fieldname'];
 	}
 
-	function getNeutralizedField() {
+	public function getNeutralizedField() {
 		return str_replace(' ', '_', $this->data['neutralizedfield']);
 	}
 
-	function getEnabled() {
-		return $this->data["enabled"];
+	public function getEnabled() {
+		return $this->data['enabled'];
 	}
 
-	function getDefaultValue() {
+	public function getDefaultValue() {
 		return $this->data['defaultvalue'];
 	}
 
-	function getRequired() {
-		return $this->data["required"];
+	public function getRequired() {
+		return $this->data['required'];
 	}
 
-	static function retrieveNeutralizedField($webformid, $fieldname) {
+	public static function retrieveNeutralizedField($webformid, $fieldname) {
 		global $adb;
-		$sql = "SELECT neutralizedfield FROM vtiger_webforms_field WHERE webformid=? and fieldname=?";
-		$result = $adb->pquery($sql, array($webformid, $fieldname));
-		$model = false;
+		$result = $adb->pquery('SELECT neutralizedfield FROM vtiger_webforms_field WHERE webformid=? and fieldname=?', array($webformid, $fieldname));
 		if ($adb->num_rows($result)) {
-			$neutralizedfield = $adb->query_result($result, 0, "neutralizedfield");
+			$neutralizedfield = $adb->query_result($result, 0, 'neutralizedfield');
 		}
 		return $neutralizedfield;
 	}
-
 }
-
 ?>

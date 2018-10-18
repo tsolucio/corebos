@@ -9,13 +9,13 @@
  ************************************************************************************/
 $mod_strings = array (
 	'MailManager' => 'Mail Manager',
-	
+
 	// Translations for JS (please use the prefix JSLBL in key)
 	'JSLBL_Loading_Please_Wait'  => 'Attendere il caricamento',
 	'JSLBL_Loading'              => 'Caricamento',
 	'JSLBL_Settings'             => 'Impostazioni',
 	'JSLBL_Opening'              => 'Apertura',
-	'JSLBL_Deleting'              => 'Cancellazione',  
+	'JSLBL_Deleting'              => 'Cancellazione',
 	'JSLBL_Updating'             => 'Aggiornamento',
 	'JSLBL_Associating'          => 'Associazione',
 	'JSLBL_Saving_And_Verifying' => 'Salva & Verifica',
@@ -70,13 +70,13 @@ $mod_strings = array (
 	'JSLBL_MOVING'=>'Spostamento Email/s',
 	'JSLBL_LOADING_FOLDERS' => 'Caricamento Cartella..',
 	'JSLBL_ADD_COMMENT'=>'Aggiungi commento',
-    'JSLBL_Yahoo'=>'Yahoo',
-    'JSLBL_CANNOT_ADD_EMPTY_COMMENT' => 'Il commento non pu&ograve; essere vuoto',
-    'JSLBL_NO_EMAILS_SELECTED' => 'Nessuna email selezionata.',
-    'JSLBL_ENTER_SOME_VALUE' => 'Inserisci testo da ricercare',
-    'JSLBL_DRAFT_MAIL_SAVED'=>'La mail &egrave; stata salvata sotto bozze',
-    
-	// General translations
+	'JSLBL_Yahoo'=>'Yahoo',
+	'JSLBL_CANNOT_ADD_EMPTY_COMMENT' => 'Il commento non pu&ograve; essere vuoto',
+	'JSLBL_NO_EMAILS_SELECTED' => 'Nessuna email selezionata.',
+	'JSLBL_ENTER_SOME_VALUE' => 'Inserisci testo da ricercare',
+	'JSLBL_DRAFT_MAIL_SAVED'=>'La mail &egrave; stata salvata sotto bozze',
+
+		// General translations
 	'LBL_Folders'         => 'Cartelle',
 	'LBL_Newer'           => 'Recenti',
 	'LBL_Older'           => 'Vecchi',
@@ -104,7 +104,7 @@ $mod_strings = array (
 	'LBL_ACTIONS'         => 'Azioni',
 	'LBL_Search'          => 'Cerca',
 	'LBL_Delete'            =>  'Elimina',
-	
+
 	'LBL_Username'             => 'Nome Utente',
 	'LBL_Your_Mailbox_Account' => 'Account della casella di posta',
 	'LBL_Password'             => 'Password',
@@ -120,7 +120,7 @@ $mod_strings = array (
 	'LBL_Validate_Cert'           => 'Valida certificato',
 	'LBL_Do_Not_Validate_Cert'    => 'Non validare certificato',
 	'LBL_SELECT_ACCOUNT_TYPE'     => 'Seleziona tipo account',
-	
+
 	'LBL_FROM'        => 'Da',
 	'LBL_TO'          => 'A',
 	'LBL_CC'          => 'CC',
@@ -150,31 +150,31 @@ $mod_strings = array (
 	'LBL_5_MIN' => '5 Minuti',
 	'LBL_10_MIN' => '10 Minuti',
 	'LBL_MOVE_TO'=>'Sposta...',
-    'LBL_MAILMANAGER_ADD_Contacts' => 'Aggiungi Contatto',
-    'LBL_MAILMANAGER_ADD_Accounts' => 'Aggiungi Account',
-    'LBL_MAILMANAGER_ADD_Leads' => 'Aggiungi Lead',
-    'LBL_MAILMANAGER_ADD_Calendar' => 'Aggiungi ToDo',
-    'LBL_MAILMANAGER_ADD_HelpDesk' => 'Aggiungi Ticket',
-    'LBL_MAILMANAGER_ADD_Emails' => 'Allega Email',
-    'LBL_MAILMANAGER_ADD_ModComments' => 'Aggiungi Commento',
-    'LBL_MAILMANAGER_ADD_Potentials' => 'Add Potential',
-    'LBL_MAILMANAGER_ADD_Project' => 'Add Project',
-    'LBL_MAILMANAGER_ADD_ProjectTask' => 'Add Project Task',
-    'LBL_ADD' => 'Aggiungi',
-	
-    'JSLBL_SendWith_EmptyText' => 'Inviare la mail senza testo?',
+	'LBL_MAILMANAGER_ADD_Contacts' => 'Aggiungi Contatto',
+	'LBL_MAILMANAGER_ADD_Accounts' => 'Aggiungi Account',
+	'LBL_MAILMANAGER_ADD_Leads' => 'Aggiungi Lead',
+	'LBL_MAILMANAGER_ADD_Calendar' => 'Aggiungi ToDo',
+	'LBL_MAILMANAGER_ADD_HelpDesk' => 'Aggiungi Ticket',
+	'LBL_MAILMANAGER_ADD_Emails' => 'Allega Email',
+	'LBL_MAILMANAGER_ADD_ModComments' => 'Aggiungi Commento',
+	'LBL_MAILMANAGER_ADD_Potentials' => 'Add Potential',
+	'LBL_MAILMANAGER_ADD_Project' => 'Add Project',
+	'LBL_MAILMANAGER_ADD_ProjectTask' => 'Add Project Task',
+	'LBL_ADD' => 'Aggiungi',
+
+	'JSLBL_SendWith_EmptyText' => 'Inviare la mail senza testo?',
 	'LBL_ALLMAILS' => 'Tutte le Mail',
 	'LBL_TO_CONTACTS' => 'Ai Contatti',
 	'LBL_TO_ACCOUNTS' => 'Alle Aziende',
 	'LBL_TO_LEADS' => 'Ai Leads',
 	'LBL_TO_USERS' => 'Agli Utenti',
 	'LBL_SENT_MAILS' => 'Mail Inviate',
-	
-    'SUBJECT'=>'OGGETTO',
-    'a'=>'A',
-    'BODY'=>'CORPO',
-    'BCC'=>'BCC',
-    'CC'=>'CC',
-    'FROM'=>'DA',
+
+	'SUBJECT'=>'OGGETTO',
+	'a'=>'A',
+	'BODY'=>'CORPO',
+	'BCC'=>'BCC',
+	'CC'=>'CC',
+	'FROM'=>'DA',
 );
 ?>

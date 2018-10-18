@@ -9,6 +9,7 @@
  ********************************************************************************/
 require_once 'modules/Settings/MailScanner/core/MailBox.php';
 require_once 'modules/Settings/MailScanner/core/MailAttachmentMIME.php';
+require_once 'modules/Users/Users.php';
 
 /**
  * Mail Scanner provides the ability to scan through the given mailbox
@@ -58,6 +59,11 @@ class Vtiger_MailScanner {
 	 * Start Scanning.
 	 */
 	public function performScanNow() {
+		global $current_user;
+		if (is_null($current_user)) {
+			$current_user = Users::getActiveAdminUser();
+		}
+
 		// Check if rules exists to proceed
 		$rules = $this->_scannerinfo->rules;
 
@@ -274,9 +280,14 @@ class Vtiger_MailScanner {
 	}
 
 	public function getEmployeeList($crmobj) {
-		global $adb;
+		global $adb,$currentModule,$current_user;
+
+		if (is_null($current_user)) {
+			$current_user = Users::getActiveAdminUser();
+		}
 		$retemp = array();
 		if (vtlib_isModuleActive("cbEmployee")) {
+			$currentModule = 'cbEmployee';
 			$module = get_class($crmobj);
 			$modtab = getTabid($module);
 			$emptab = getTabid('cbEmployee');
@@ -301,7 +312,7 @@ class Vtiger_MailScanner {
 	 */
 	public function LookupUser($email, $checkWithId = false) {
 		global $adb;
-		if ($this->_cachedUserIds[$email]) {
+		if (isset($this->_cachedUserIds[$email])) {
 			$this->log("Reusing Cached User Id for email: $email");
 			return $this->_cachedUserIds[$email];
 		}
@@ -338,7 +349,7 @@ class Vtiger_MailScanner {
 		global $adb;
 		$empid = false;
 		if (vtlib_isModuleActive("cbEmployee")) {
-			if ($this->_cachedEmployeeIds[$email]) {
+			if (isset($this->_cachedEmployeeIds[$email])) {
 				$this->log("Reusing Cached Employee Id for email: $email");
 				return $this->_cachedEmployeeIds[$email];
 			}

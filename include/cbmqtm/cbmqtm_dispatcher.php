@@ -16,7 +16,7 @@
  *  Module       : coreBOS Message Queue and Task Manager Manager
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-include_once('vtlib/Vtiger/Module.php');
+include_once 'vtlib/Vtiger/Module.php';
 
 class coreBOS_MQTMDispatcher extends \Core_Daemon {
 	protected $loop_interval = 5;
@@ -48,7 +48,7 @@ class coreBOS_MQTMDispatcher extends \Core_Daemon {
 	 * @return void
 	 */
 	protected function execute() {
-		if (empty($this->cb_db) or $this->cb_db->database->_connectionID->errno>0) {
+		if (empty($this->cb_db) || $this->cb_db->database->_connectionID->errno>0) {
 			global $adb;
 			$adb->connect();
 			$this->setup();
@@ -56,9 +56,9 @@ class coreBOS_MQTMDispatcher extends \Core_Daemon {
 		$callbacks = $this->cb_mq->getSubscriptionWakeUps();
 		foreach ($callbacks as $callback) {
 			if (!empty($callback['file'])) {
-				include_once($callback['file']);
+				include_once $callback['file'];
 			}
-			if (!empty($callback['class']) and !empty($callback['method'])) {
+			if (!empty($callback['class']) && !empty($callback['method'])) {
 				$this->task(array(new $callback['class'],$callback['method']));
 			} elseif (!empty($callback['method'])) {
 				$this->task($callback['method']);
@@ -73,6 +73,7 @@ class coreBOS_MQTMDispatcher extends \Core_Daemon {
 	public function log($message, $label = '', $indent = 1) {
 		return;
 	}
+
 	protected function log_file() {
 		return '';
 	}

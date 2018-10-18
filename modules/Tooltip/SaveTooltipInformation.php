@@ -9,7 +9,6 @@
  ********************************************************************************/
 
 /**
- * Created on 09-Oct-08
  * this file saves the tooltip information
  */
 $fieldid = vtlib_purify($_REQUEST['fieldid']);
@@ -24,19 +23,20 @@ echo SaveTooltipInformation($fieldid, $sequence);
  * @param integer $view - the current view :: 1 by default
  * @param integer $sequence - the starting sequence
  */
-function SaveTooltipInformation($fieldid, $sequence, $view=1){
+function SaveTooltipInformation($fieldid, $sequence, $view = 1) {
 	global $adb;
-
 	if (empty($fieldid)) {
-		return "FAILURE";
+		return 'FAILURE';
 	} else {
 		$checkedFields = array();
 		if (!empty($_REQUEST['checkedFields'])) {
-			$checkedFields = explode(",",$_REQUEST['checkedFields']);
+			$checkedFields = explode(',', $_REQUEST['checkedFields']);
 			//add to vtiger_quickview table
 			foreach ($checkedFields as $checkedField) {
-				$query = "insert into vtiger_quickview (fieldid,related_fieldid,sequence,currentview) values (?,?,?,?)";
-				$adb->pquery($query,array($fieldid, $checkedField, $sequence, $view));
+				$adb->pquery(
+					'insert into vtiger_quickview (fieldid,related_fieldid,sequence,currentview) values (?,?,?,?)',
+					array($fieldid, $checkedField, $sequence, $view)
+				);
 				$sequence++;
 			}
 		}
@@ -49,11 +49,10 @@ function SaveTooltipInformation($fieldid, $sequence, $view=1){
  * @param integer $fieldid - the fieldid of the field
  * @param integer $view - the view for which ot remove :: 1 by default
  */
-function deleteOldInfo($fieldid, $view=1){
+function deleteOldInfo($fieldid, $view = 1) {
 	global $adb;
 	//remove from the table
-	$query = "delete from vtiger_quickview where fieldid = ? and currentview = ?";
-	$adb->pquery($query,array($fieldid,$view));
+	$adb->pquery('delete from vtiger_quickview where fieldid = ? and currentview = ?', array($fieldid,$view));
 }
 
 /**
@@ -62,8 +61,8 @@ function deleteOldInfo($fieldid, $view=1){
  * @param array $checkedFields - the fields which are selected to be displayed in quickview
  * @return string $data - the formatted quickview data
  */
-function getDetailViewForTooltip($fieldid, $checkedFields){
-	require_once('Smarty_setup.php');
+function getDetailViewForTooltip($fieldid, $checkedFields) {
+	require_once 'Smarty_setup.php';
 	global $app_strings, $theme;
 	$labels = array();
 	if (!empty($checkedFields)) {
@@ -71,14 +70,14 @@ function getDetailViewForTooltip($fieldid, $checkedFields){
 	}
 	$module = getModuleForField($fieldid);
 	$smarty = new vtigerCRM_Smarty;
-	$smarty->assign("FIELDID", $fieldid);
+	$smarty->assign('FIELDID', $fieldid);
 	$smarty->assign('FORMODULE', $module);
-	$smarty->assign("APP",$app_strings);
-	$smarty->assign("IMAGES", "themes/images/");
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('IMAGES', 'themes/images/');
 	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 	$smarty->assign('THEME', $theme);
-	$smarty->assign("LABELS", $labels);
-	$smarty->assign("COUNT", count($labels));
+	$smarty->assign('LABELS', $labels);
+	$smarty->assign('COUNT', count($labels));
 	return $smarty->fetch('modules/Tooltip/DetailQuickView.tpl');
 }
 
@@ -87,20 +86,17 @@ function getDetailViewForTooltip($fieldid, $checkedFields){
  * @param array $checkedFields - the fieldids array
  * @return array $data - the fieldlabels array
  */
-function getFieldLabels($checkedFields){
+function getFieldLabels($checkedFields) {
 	global $adb;
 	$data = array();
-
-	$sql = "select * from vtiger_field where fieldid in (".generateQuestionMarks($checkedFields).") and vtiger_field.presence in (0,2)";
-	$result = $adb->pquery($sql,array($checkedFields));
+	$sql = 'select * from vtiger_field where fieldid in ('.generateQuestionMarks($checkedFields).') and vtiger_field.presence in (0,2)';
+	$result = $adb->pquery($sql, array($checkedFields));
 	$count = $adb->num_rows($result);
-/**
- * to fix the localization of strings
- */
-	$tabid = $adb->query_result($result, 0, "tabid");
+	// to fix the localization of strings
+	$tabid = $adb->query_result($result, 0, 'tabid');
 	$module = getTabModuleName($tabid);
-	for($i=0;$i<$count;$i++){
-		$data[] = getTranslatedString($adb->query_result($result, $i, "fieldlabel"),$module);
+	for ($i=0; $i<$count; $i++) {
+		$data[] = getTranslatedString($adb->query_result($result, $i, 'fieldlabel'), $module);
 	}
 	return $data;
 }

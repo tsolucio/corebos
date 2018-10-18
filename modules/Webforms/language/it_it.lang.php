@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$mod_strings = Array (
+$mod_strings = array (
 'Webforms' => 'Moduli web (webforms)',
 'LBL_SUCCESS' => 'Aggiungi voce a vtiger CRM.',
 'LBL_FAILURE' => 'Impossibile aggiungere la voce in vtiger CRM.',

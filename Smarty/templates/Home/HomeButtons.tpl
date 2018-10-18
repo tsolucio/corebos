@@ -52,9 +52,12 @@
 	</td>
 
 	<td width="100%" align="center">
-		<div id="vtbusy_info" style="display: none;">
-			<img src="{'status.gif'|@vtiger_imageurl:$THEME}" border="0" />
+		<span id="vtbusy_info" style="display:none;" valign="bottom">
+		<div role="status" class="slds-spinner slds-spinner_brand slds-spinner_x-small" style="position:relative; top:6px;">
+			<div class="slds-spinner__dot-a"></div>
+			<div class="slds-spinner__dot-b"></div>
 		</div>
+		</span>
 	</td>
 </tr>
 </table>

@@ -294,6 +294,7 @@ class cbupdaterWorker {
 							$newfield = new Vtiger_Field();
 							$newfield->name = $fname;
 							$newfield->label = (empty($fieldinfo['label']) ? $fname : $fieldinfo['label']);
+							$newfield->helpinfo = (empty($fieldinfo['helpinfo']) ? '' : $fieldinfo['helpinfo']);
 							$newfield->column = $fname;
 							$newfield->columntype = $fieldinfo['columntype'];
 							$newfield->typeofdata = $fieldinfo['typeofdata'];
@@ -542,6 +543,16 @@ class cbupdaterWorker {
 			$this->sendMsg("$module installed!");
 		} else {
 			$this->sendMsgError("ERROR installing $module!");
+		}
+	}
+
+	public function removeAllMenuEntries($module) {
+		global $adb;
+		$modulesToRemove = $adb->pquery('SELECT evvtmenuid from vtiger_evvtmenu where mvalue=?', array($module));
+		if ($adb->num_rows($modulesToRemove) > 0) {
+			for ($i=0; $i < $adb->num_rows($modulesToRemove); $i++) {
+				$adb->pquery('DELETE from vtiger_evvtmenu where evvtmenuid=?', array($adb->query_result($modulesToRemove, $i, 0)));
+			}
 		}
 	}
 

@@ -20,8 +20,6 @@ function __vt_time_diff($arr) {
 		$time_operand1 = $time1 = $arr[0];
 		$time_operand2 = $time2 = $arr[1];
 	} else {
-		// Added as we need to compare with the values based on the user date format and timezone
-		global $default_timezone;
 		$time_operand1 = date('Y-m-d H:i:s'); // Current time
 		$time_operand2 = $arr[0];
 	}
@@ -55,6 +53,29 @@ function __vt_time_diffdays($arr) {
 	$timediff  = __vt_time_diff($arr);
 	$days_diff = floor($timediff / (60 * 60 * 24));
 	return $days_diff;
+}
+
+function __cb_time_diffyears($arr) {
+	$time_operand1 = $time_operand2 = 0;
+	if (count($arr) > 1) {
+		$time_operand1 = $time1 = $arr[0];
+		$time_operand2 = $time2 = $arr[1];
+	} else {
+		$time_operand1 = date('Y-m-d H:i:s'); // Current time
+		$time_operand2 = $arr[0];
+	}
+
+	if (empty($time_operand1) || empty($time_operand2)) {
+		return 0;
+	}
+
+	$time_operand1 = getValidDBInsertDateTimeValue($time_operand1);
+	$time_operand2 = getValidDBInsertDateTimeValue($time_operand2);
+
+	$date1 = new DateTime($time_operand1);
+	$date2 = new DateTime($time_operand2);
+	$interval = $date2->diff($date1);
+	return $interval->y;
 }
 
 function __cb_getWeekdayDifference($arr) {
@@ -91,8 +112,6 @@ function __vt_add_days($arr) {
 		$noOfDays = $arr[1];
 	} else {
 		$noOfDays = $arr[0];
-	}
-	if (empty($baseDate)) {
 		$baseDate = date('Y-m-d'); // Current date
 	}
 	preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
@@ -107,13 +126,39 @@ function __vt_sub_days($arr) {
 		$noOfDays = $arr[1];
 	} else {
 		$noOfDays = $arr[0];
-	}
-	if (empty($baseDate)) {
 		$baseDate = date('Y-m-d'); // Current date
 	}
 	preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
 	$baseDate = strtotime($match[0]);
 	$date = strftime('%Y-%m-%d', $baseDate - ($noOfDays * 24 * 60 * 60));
+	return $date;
+}
+
+function __vt_add_months($arr) {
+	if (count($arr) > 1) {
+		$baseDate = $arr[0];
+		$noOfMonths = $arr[1];
+	} else {
+		$noOfMonths = $arr[0];
+		$baseDate = date('Y-m-d'); // Current date
+	}
+	preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
+	$baseDate = strtotime("+$noOfMonths months", strtotime($match[0]));
+	$date = strftime('%Y-%m-%d', $baseDate);
+	return $date;
+}
+
+function __vt_sub_months($arr) {
+	if (count($arr) > 1) {
+		$baseDate = $arr[0];
+		$noOfMonths = $arr[1];
+	} else {
+		$noOfMonths = $arr[0];
+		$baseDate = date('Y-m-d'); // Current date
+	}
+	preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
+	$baseDate = strtotime("-$noOfMonths months", strtotime($match[0]));
+	$date = strftime('%Y-%m-%d', $baseDate);
 	return $date;
 }
 
@@ -129,7 +174,6 @@ function __vt_get_date($arr) {
 			return date('Y-m-d', strtotime('-1 day'));
 			break;
 		case 'time':
-			global $default_timezone;
 			return date('H:i:s');
 			break;
 		default:
@@ -139,9 +183,19 @@ function __vt_get_date($arr) {
 }
 
 function __cb_format_date($arr) {
+	if (empty($arr[0])) {
+		return '';
+	}
 	$fmt = empty($arr[1]) ? 'Y-m-d' : $arr[1];
-	list($y,$m,$d) = explode('-', $arr[0]);
-	$dt = mktime(0, 0, 0, $m, $d, $y);
+	if (strpos($arr[0], ' ')>0) {
+		list($dt, $ht) = explode(' ', $arr[0]);
+		list($h, $i, $s) = explode(':', $ht);
+	} else {
+		$dt = $arr[0];
+		$h = $i = $s = 0;
+	}
+	list($y,$m,$d) = explode('-', $dt);
+	$dt = mktime($h, $i, $s, $m, $d, $y);
 	return date($fmt, $dt);
 }
 

@@ -9,7 +9,7 @@
  *************************************************************************************/
 require_once 'modules/WSAPP/synclib/models/BaseModel.php';
 
-class WSAPP_SyncRecordModel extends WSAPP_BaseModel{
+class WSAPP_SyncRecordModel extends WSAPP_BaseModel {
 
 	const WSAPP_CREATE_MODE = 'create';
 	const WSAPP_UPDATE_MODE = 'update';
@@ -20,59 +20,58 @@ class WSAPP_SyncRecordModel extends WSAPP_BaseModel{
 
 	protected $mode;
 
-	public function getId(){
+	public function getId() {
 		return $this->get('id');
 	}
-	
-	public function setId($id){
-		return $this->set('id',$id);
-	}
-	
-	public function setModifiedTime($modifiedTime){
-		return $this->set('modifiedtime',$modifiedTime);
+
+	public function setId($id) {
+		return $this->set('id', $id);
 	}
 
-	public function getModifiedTime(){
+	public function setModifiedTime($modifiedTime) {
+		return $this->set('modifiedtime', $modifiedTime);
+	}
+
+	public function getModifiedTime() {
 		return $this->get('modifiedtime');
 	}
 
-	public function setType($type){
+	public function setType($type) {
 		$this->type = $type;
 		return $this;
 	}
 
-	public function getType(){
+	public function getType() {
 		return $this->type;
 	}
 
-	public function setMode($mode){
+	public function setMode($mode) {
 		$this->mode = $mode;
 		return $this;
 	}
 
-	public function getMode(){
+	public function getMode() {
 		return $this->mode;
 	}
 
-	public function isDeleteMode(){
+	public function isDeleteMode() {
 		return $this->mode == self::WSAPP_DELETE_MODE;
 	}
 
-	public function isCreateMode(){
+	public function isCreateMode() {
 		return $this->mode == self::WSAPP_CREATE_MODE;
 	}
 
-	public function getSyncIdentificationKey(){
+	public function getSyncIdentificationKey() {
 		return $this->get('_syncidentificationkey');
 	}
 
-	public function setSyncIdentificationKey($key){
-		return $this->set('_syncidentificationkey',$key);
+	public function setSyncIdentificationKey($key) {
+		return $this->set('_syncidentificationkey', $key);
 	}
 
-	public static function getInstanceFromValues($recordValues){
+	public static function getInstanceFromValues($recordValues) {
 		return new WSAPP_SyncRecordModel($recordValues);
 	}
-
 }
 ?>

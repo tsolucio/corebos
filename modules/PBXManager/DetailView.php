@@ -13,8 +13,7 @@ global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log, 
 
 $smarty = new vtigerCRM_Smarty();
 
-include('modules/cbupdater/forcedButtons.php');
-
+include 'modules/cbupdater/forcedButtons.php';
 require_once 'modules/Vtiger/DetailView.php';
 $flabel = getTranslatedString('Call From', 'PBXManager');
 $idx = getFieldFromDetailViewBlockArray($blocks, $flabel);

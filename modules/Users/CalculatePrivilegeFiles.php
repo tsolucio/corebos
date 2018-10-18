@@ -17,7 +17,7 @@
  *************************************************************************************************/
 include 'modules/Users/CreateUserPrivilegeFile.php';
 $record = vtlib_purify($_REQUEST['record']);
-if (!empty($record) and is_numeric($record)) {
+if (!empty($record) && is_numeric($record)) {
 	createUserPrivilegesfile($record);
 	createUserSharingPrivilegesfile($record);
 }

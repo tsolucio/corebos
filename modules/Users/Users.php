@@ -1031,19 +1031,19 @@ class Users extends CRMEntity {
 		$filesize = $file_details['size'];
 		$filetmp_name = $file_details['tmp_name'];
 
-		$current_id = $this->db->getUniqueID("vtiger_crmentity");
+		if (validateImageFile($file_details) == 'true' && validateImageContents($filetmp_name) == false) {
+			$log->debug('Skip the save attachment process.');
+			return;
+		}
+
+		$current_id = $this->db->getUniqueID('vtiger_crmentity');
 
 		//get the file path inwhich folder we want to upload the file
 		$upload_file_path = decideFilePath();
 		//upload the file in server
 		$upload_status = move_uploaded_file($filetmp_name, $upload_file_path . $current_id . "_" . $binFile);
 
-		$save_file = 'true';
-		//only images are allowed for these modules
-		if ($module == 'Users') {
-			$save_file = validateImageFile($file_details);
-		}
-		if ($save_file == 'true') {
+		if ($upload_status) {
 			$sql1 = 'insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,createdtime,modifiedtime) values(?,?,?,?,?,?,?)';
 			$params1 = array($current_id, $current_user->id, $ownerid, $module . ' Attachment', $this->column_fields['description'],
 				$this->db->formatString('vtiger_crmentity', 'createdtime', $date_var), $this->db->formatDate($date_var, true));
@@ -1063,8 +1063,6 @@ class Users extends CRMEntity {
 
 			//we should update the imagename in the users table
 			$this->db->pquery("update vtiger_users set imagename=? where id=?", array($filename, $id));
-		} else {
-			$log->debug("Skip the save attachment process.");
 		}
 		return;
 	}

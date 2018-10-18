@@ -234,6 +234,8 @@ $mod_strings = array (
 		'LBL_QUOTE_STAGE' => 'Phase devis',
 		'LBL_CARRIER' => 'Transporteur',
 		'LBL_TAXCLASS' => 'Taxes',
+		'LBL_RETENTION'=>'Retention',
+		'LBL_PERCENTAGE'=>'Percentage',
 		'LBL_MY_DETAILS' => 'Mes informations',
 		'LBL_MY_MAIL_SERVER_DET' => 'Ma configuration email',
 		'LBL_EMAIL_ID' => 'Identifiant Email',
@@ -698,6 +700,7 @@ $mod_strings = array (
 		'LBL_TASKS' => 'Tâches',
 		'LBL_NEW_TASK_BUTTON_LABEL' => 'Nouvelle tâche',
 		'LBL_TASK' => 'Tâche',
+		'LBL_DELAY' => 'Delay',
 
 		'LBL_MANDATORY_FIELDS' => 'Champs obligatoires',
 		'LBL_MANDATORY_FIELDS_DESCRIPTION' => 'Gérer les champs obligatoires de tous les modules',

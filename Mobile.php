@@ -1,3 +1,3 @@
 <?php
-	header("Location: modules/Mobile");
+header('Location: modules/Mobile');
 ?>

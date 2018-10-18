@@ -128,11 +128,14 @@ class InventoryDetails extends CRMEntity {
 	public $mandatory_fields = array('createdtime', 'modifiedtime', 'inventorydetails_no');
 
 	public function save_module($module) {
-		global $adb;
+		global $adb, $current_user;
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
 		}
-		$this->column_fields['cost_gross'] = $this->column_fields['quantity'] * $this->column_fields['cost_price'];
+		$handler = vtws_getModuleHandlerFromName('InventoryDetails', $current_user);
+		$meta = $handler->getMeta();
+		$dbformat = DataTransform::sanitizeCurrencyFieldsForDB($this->column_fields, $meta);
+		$this->column_fields['cost_gross'] = $this->column_fields['quantity'] * (float)$dbformat['cost_price'];
 		$adb->pquery('update vtiger_inventorydetails set cost_gross=? where inventorydetailsid=?', array($this->column_fields['cost_gross'], $this->id));
 		if (!empty($this->column_fields['productid'])) {
 			$this->column_fields['total_stock'] = getPrdQtyInStck($this->column_fields['productid']);
@@ -257,10 +260,19 @@ class InventoryDetails extends CRMEntity {
 		$save_currentModule = $currentModule;
 		$currentModule = 'InventoryDetails';
 		$related_to = $related_focus->id;
+		$ipr_cols = $adb->query("show fields from vtiger_inventoryproductrel where field like 'tax%'");
+		$txsql = '';
+		$txsumsql = '(';
+		while ($txinfo = $adb->fetch_array($ipr_cols)) {
+			$tname = $txinfo['field'];
+			$txsql .= "coalesce($tname, 0) AS id_".$tname.'_perc,';
+			$txsumsql .= " COALESCE($tname, 0 ) +";
+		}
+		$txsumsql = rtrim($txsumsql, '+').')';
 		$taxtype = getInventoryTaxType($module, $related_to);
 		if ($taxtype == 'group') {
 			$query = "SELECT id as related_to, vtiger_inventoryproductrel.productid, sequence_no, lineitem_id, quantity, listprice, comment as description,
-			quantity * listprice AS extgross, coalesce(tax1, 0) AS id_tax1_perc, coalesce(tax2, 0) AS id_tax2_perc, coalesce(tax3, 0) AS id_tax3_perc,
+			quantity * listprice AS extgross, $txsql
 			COALESCE( discount_percent, COALESCE( discount_amount *100 / ( quantity * listprice ) , 0 ) ) AS discount_percent,
 			COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ) ) AS discount_amount,
 			(quantity * listprice) - COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 )) AS extnet,
@@ -273,14 +285,14 @@ class InventoryDetails extends CRMEntity {
 			WHERE id = ?";
 		} elseif ($taxtype == 'individual') {
 			$query = "SELECT id as related_to, vtiger_inventoryproductrel.productid, sequence_no, lineitem_id, quantity, listprice, comment as description,
-			coalesce(tax1, 0) AS id_tax1_perc, coalesce(tax2, 0) AS id_tax2_perc, coalesce(tax3, 0) AS id_tax3_perc,
-			( COALESCE( tax1, 0 ) + COALESCE( tax2, 0 ) + COALESCE( tax3, 0 ) ) as tax_percent,
+			$txsql
+			$txsumsql as tax_percent,
 			quantity * listprice AS extgross,
 			COALESCE( discount_percent, COALESCE( discount_amount *100 / ( quantity * listprice ) , 0 ) ) AS discount_percent,
 			COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ) ) AS discount_amount,
 			(quantity * listprice) - COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 )) AS extnet,
-			((quantity * listprice) - COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ))) * ( COALESCE( tax1, 0 ) + COALESCE( tax2, 0 ) + COALESCE( tax3, 0 ) ) /100 AS linetax,
-			((quantity * listprice) - COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ))) * ( 1 + ( COALESCE( tax1, 0 ) + COALESCE( tax2, 0 ) + COALESCE( tax3, 0 )) /100) AS linetotal,
+			((quantity * listprice) - COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ))) * $txsumsql/100 AS linetax,
+			((quantity * listprice) - COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ))) * (1 + $txsumsql/100) AS linetotal,
 			case when vtiger_products.productid != '' then vtiger_products.cost_price else vtiger_service.cost_price end as cost_price,
 			case when vtiger_products.productid != '' then vtiger_products.vendor_id else 0 end as vendor_id
 			FROM vtiger_inventoryproductrel

@@ -14,7 +14,7 @@ if ($_SERVER['QUERY_STRING']=='module=Mobile&action=index') {
 <?php
 die();
 }
-define('COREBOS_INSIDE_MOBILE',1);
+define('COREBOS_INSIDE_MOBILE', 1);
 header('Content-Type: text/html;charset=utf-8');
 chdir(__DIR__ . '/../../');
 
@@ -34,44 +34,44 @@ if (!GlobalVariable::getVariable('Mobile_UI_Enabled', 1, 'Users', $adminid) || c
 //require_once __DIR__ . '/api/Relation.php';
 include_once __DIR__ . '/api/Request.php';
 include_once __DIR__ . '/api/Response.php';
-
-
 include_once __DIR__ . '/api/ws/Controller.php';
-
 include_once __DIR__ . '/Mobile.php';
 include_once __DIR__ . '/views/Viewer.php';
 include_once __DIR__ . '/views/models/Module.php'; // Required for auto de-serializatio of session data
 
 class crmtogo_Index_Controller {
 
-	static $opControllers = array(
+	public static $opControllers = array(
 		'logout'                  => array('file' => '/views/Logout.php', 'class' => 'crmtogo_UI_Logout'),
 		'login'                   => array('file' => '/views/Login.php', 'class' => 'crmtogo_UI_Login'),
 		'loginAndFetchModules'    => array('file' => '/views/LoginAndFetchModules.php', 'class' => 'crmtogo_UI_LoginAndFetchModules'),
 		'listModuleRecords'       => array('file' => '/views/ListModuleRecords.php', 'class' => 'crmtogo_UI_ListModuleRecords'),
 		'fetchRecord' 			  => array('file' => '/views/DetailView.php', 'class' => 'crmtogo_UI_DetailView'),
-		'edit'                    => array('file' => '/views/EditView.php', 'class' => 'crmtogo_UI_EditView' ),
-		'create'                  => array('file' => '/views/EditView.php', 'class' => 'crmtogo_UI_EditView' ), 
-		'globalsearch'            => array('file' => '/views/ListGlobalSearchResults.php', 'class' => 'crmtogo_UI_GlobalSearch' ),
+		'edit'                    => array('file' => '/views/EditView.php', 'class' => 'crmtogo_UI_EditView'),
+		'create'                  => array('file' => '/views/EditView.php', 'class' => 'crmtogo_UI_EditView'),
+		'duplicate'				  => array('file' => '/views/EditView.php', 'class' => 'crmtogo_UI_EditView'),
+		'globalsearch'            => array('file' => '/views/ListGlobalSearchResults.php', 'class' => 'crmtogo_UI_GlobalSearch'),
 		'deleteConfirmation'  	  => array('file' => '/views/deleteConfirmation.php', 'class' => 'crmtogo_UI_Delete' ),
-		'deleteRecords'  		  => array('file' => '/views/ListModuleRecords.php', 'class' => 'crmtogo_UI_ListModuleRecords' ),
+		'deleteRecords'  		  => array('file' => '/views/ListModuleRecords.php', 'class' => 'crmtogo_UI_ListModuleRecords'),
 		'saveRecord'              => array('file' => '/views/SaveRecord.php', 'class' => 'crmtogo_UI_ProcessRecordCreation'),
 		'getrelatedlists'         => array('file' => '/views/getRelationList.php', 'class' => 'crmtogo_UI_GetRelatedLists'),
 		'addComment'			  => array('file' => '/views/addComment.php', 'class' => 'crmtogo_UI_AddComment'),
 		'configCRMTOGO'			  => array('file' => '/views/editConfiguration.php', 'class' => 'crmtogo_UI_Configuration'),
 		'downloadFile'			  => array('file' => '/actions/getFileForDownload.php', 'class' => 'crmtogo_UI_DownLoadFile'),
-		'getRelatedFieldAjax'  	  => array('file' => '/actions/getRelatedFieldAjax.php', 'class' => 'crmtogo_UI_getRelatedFieldAjax' ), 
+		'getRelatedFieldAjax'  	  => array('file' => '/actions/getRelatedFieldAjax.php', 'class' => 'crmtogo_UI_getRelatedFieldAjax'),
 		'getScrollcontent'        => array('file' => '/actions/getScrollContent.php', 'class' => 'crmtogo_UI_GetScrollRecords' ),
 		'changeGUISettings'       => array('file' => '/actions/changeGUISettings.php', 'class' => 'crmtogo_UI_ChangeSettings' ),
 		'saveSignature'			  => array('file' => '/views/saveSignature.php', 'class' => 'UI_saveSignature'),
 	);
 
-	static function process(crmtogo_API_Request $request) {
+	public static function process(crmtogo_API_Request $request) {
 		$operation = $request->getOperation();
-		if (empty($operation)) $operation = 'login';
+		if (empty($operation)) {
+			$operation = 'login';
+		}
 
 		$response = false;
-		if(isset(self::$opControllers[$operation])) {
+		if (isset(self::$opControllers[$operation])) {
 			$operationFile = self::$opControllers[$operation]['file'];
 			$operationClass= self::$opControllers[$operation]['class'];
 
@@ -79,9 +79,9 @@ class crmtogo_Index_Controller {
 			$operationController = new $operationClass;
 
 			$operationSession = false;
-			if($operationController->requireLogin()) {
+			if ($operationController->requireLogin()) {
 				$operationSession = coreBOS_Session::init();
-				if($operationController->hasActiveUser() === false) {
+				if ($operationController->hasActiveUser() === false) {
 					$operationSession = false;
 				}
 			} else {
@@ -89,13 +89,13 @@ class crmtogo_Index_Controller {
 				$operationSession = true;
 			}
 
-			if($operationSession === false) {
+			if ($operationSession === false) {
 				$response = new crmtogo_API_Response();
 				$response->setError(1501, 'Login required');
 			} else {
 				try {
 					$response = $operationController->process($request);
-				} catch(Exception $e) {
+				} catch (Exception $e) {
 					$response = new crmtogo_API_Response();
 					$response->setError($e->getCode(), $e->getMessage());
 				}
@@ -105,19 +105,17 @@ class crmtogo_Index_Controller {
 			$response->setError(1404, 'Operation not found: ' . $operation);
 		}
 
-		if($response !== false) {
+		if ($response !== false) {
 			if ($response->hasError()) {
 				include_once __DIR__ . '/views/Error.php';
 				$errorController = new crmtogo_UI_Error();
 				$errorController->setError($response->getError());
 				echo $errorController->process($request)->emitHTML();
-			} 
-			else {
+			} else {
 				$result = $response->getResult();
-				if ( !empty($result['type']) AND $result['type'] =='json') {
+				if (!empty($result['type']) && $result['type'] =='json') {
 					echo $response->emitJSON();
-				}
-				else {
+				} else {
 					echo $response->emitHTML();
 				}
 			}
@@ -125,7 +123,7 @@ class crmtogo_Index_Controller {
 	}
 }
 
-if(!defined('CRMTOGO_INDEX_CONTROLLER_AVOID_TRIGGER')) {
+if (!defined('CRMTOGO_INDEX_CONTROLLER_AVOID_TRIGGER')) {
 	crmtogo_Index_Controller::process(new crmtogo_API_Request($_REQUEST));
 }
 ?>

@@ -14,15 +14,15 @@ require_once 'include/QueryGenerator/QueryGenerator.php';
 
 class Import_ListView_Controller {
 
-	var $user;
-	var $module;
-	static $_cached_module_meta;
+	public $user;
+	public $module;
+	public static $_cached_module_meta;
 
-	public function  __construct() {
+	public function __construct() {
 	}
 
 	public static function getModuleMeta($moduleName, $user) {
-		if(empty(self::$_cached_module_meta[$moduleName][$user->id])) {
+		if (empty(self::$_cached_module_meta[$moduleName][$user->id])) {
 			$moduleHandler = vtws_getModuleHandlerFromName($moduleName, $user);
 			self::$_cached_module_meta[$moduleName][$user->id] = $moduleHandler->getMeta();
 		}
@@ -38,24 +38,25 @@ class Import_ListView_Controller {
 		$owner = new Users();
 		$owner->id = $ownerId;
 		$owner->retrieve_entity_info($ownerId, 'Users');
-		if(!is_admin($user) && $user->id != $owner->id) {
+		if (!is_admin($user) && $user->id != $owner->id) {
 			$viewer->display('OperationNotPermitted.tpl', 'Vtiger');
 			exit;
 		}
 		$userDBTableName = Import_Utils::getDbTableName($owner);
 
 		$moduleName = $userInputObject->get('module');
-		$moduleMeta = self::getModuleMeta($moduleName, $user);
+		self::getModuleMeta($moduleName, $user);
 
 		$result = $adb->query('SELECT recordid FROM '.$userDBTableName.' WHERE status is NOT NULL AND recordid IS NOT NULL');
 		$noOfRecords = $adb->num_rows($result);
 
 		$importedRecordIds = array();
-		for($i=0; $i<$noOfRecords; ++$i) {
+		for ($i=0; $i<$noOfRecords; ++$i) {
 			$importedRecordIds[] = $adb->query_result($result, $i, 'recordid');
 		}
-		if(count($importedRecordIds) == 0) $importedRecordIds[] = 0;
-
+		if (count($importedRecordIds) == 0) {
+			$importedRecordIds[] = 0;
+		}
 
 		$focus = CRMEntity::getInstance($moduleName);
 		$queryGenerator = new QueryGenerator($moduleName, $user);
@@ -68,26 +69,26 @@ class Import_ListView_Controller {
 		$list_query .= ' AND '.$focus->table_name.'.'.$focus->table_index.' IN ('. implode(',', $importedRecordIds).')';
 
 		if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, $moduleName)) {
-			$count_result = $adb->query( mkCountQuery( $list_query));
-			$noofrows = $adb->query_result($count_result,0,"count");
-		}else{
+			$count_result = $adb->query(mkCountQuery($list_query));
+			$noofrows = $adb->query_result($count_result, 0, "count");
+		} else {
 			$noofrows = null;
 		}
 
 		$start = ListViewSession::getRequestCurrentPage($moduleName, $list_query, $viewId, false);
-		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$moduleName);
-		$navigation_array = VT_getSimpleNavigationValues($start,$list_max_entries_per_page,$noofrows);
+		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $moduleName);
+		$navigation_array = VT_getSimpleNavigationValues($start, $list_max_entries_per_page, $noofrows);
 
 		$limit_start_rec = ($start-1) * $list_max_entries_per_page;
 
 		$list_result = $adb->pquery($list_query. " LIMIT $limit_start_rec, $list_max_entries_per_page", array());
 
-		$recordListRangeMsg = getRecordRangeMessage($list_result, $limit_start_rec,$noofrows);
-		$viewer->assign('recordListRange',$recordListRangeMsg);
+		$recordListRangeMsg = getRecordRangeMessage($list_result, $limit_start_rec, $noofrows);
+		$viewer->assign('recordListRange', $recordListRangeMsg);
 
 		$controller = new ListViewController($adb, $user, $queryGenerator);
-		$listview_header = $controller->getListViewHeader($focus,$moduleName,'','','',true);
-		$listview_entries = $controller->getListViewEntries($focus,$moduleName,$list_result,$navigation_array,true);
+		$listview_header = $controller->getListViewHeader($focus, $moduleName, '', '', '', true);
+		$listview_entries = $controller->getListViewEntries($focus, $moduleName, $list_result, $navigation_array, true);
 
 		$viewer->assign('CURRENT_PAGE', $start);
 		$viewer->assign('LISTHEADER', $listview_header);
@@ -97,12 +98,11 @@ class Import_ListView_Controller {
 		$viewer->assign('FOR_USER', $ownerId);
 
 		$isAjax = $userInputObject->get('ajax');
-		if(!empty($isAjax)) {
+		if (!empty($isAjax)) {
 			echo $viewer->fetch('ListViewEntries.tpl');
 		} else {
 			$viewer->display('ImportListView.tpl');
 		}
 	}
 }
-
 ?>

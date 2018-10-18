@@ -7,55 +7,48 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
+require_once 'Smarty_setup.php';
+require_once 'data/Tracker.php';
+require_once 'include/utils/UserInfoUtil.php';
+require_once 'include/database/PearDatabase.php';
+require_once 'include/CustomFieldUtil.php';
 
-require_once('Smarty_setup.php');
-require_once('data/Tracker.php');
-require_once('include/utils/UserInfoUtil.php');
-require_once('include/database/PearDatabase.php');
-require_once('include/CustomFieldUtil.php');
+global $mod_strings, $app_strings, $theme, $current_language, $log, $default_charset;
 
-global $mod_strings;
-global $app_strings;
-global $theme;
-global $current_language;
-
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
-global $log,$default_charset;
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 
 $mode = 'create';
 
-if(isset($_REQUEST['templateid']) && $_REQUEST['templateid']!='')
-{
+if (isset($_REQUEST['templateid']) && $_REQUEST['templateid']!='') {
 	$mode = 'edit';
 	$templateid = vtlib_purify($_REQUEST['templateid']);
-	 $log->debug("the templateid is set to the value ".$templateid);
+	 $log->debug('the templateid is set to the value '.$templateid);
 }
-$sql = "select * from vtiger_emailtemplates where templateid=?";
-$result = $adb->pquery($sql, array($templateid));
-$emailtemplateResult = str_replace('"','&quot;',$adb->fetch_array($result));
-$smod_strings = return_module_language($current_language,'Settings');
+$result = $adb->pquery('select * from vtiger_emailtemplates where templateid=?', array($templateid));
+$emailtemplateResult = str_replace('"', '&quot;', $adb->fetch_array($result));
+$smod_strings = return_module_language($current_language, 'Settings');
 
 //To get Email Template variables -- Pavani
 $allOptions=getEmailTemplateVariables();
 $smarty = new vtigerCRM_smarty;
 
-$smarty->assign("UMOD", $mod_strings);
-$smarty->assign("APP", $app_strings);
-$smarty->assign("THEME", $theme_path);
-$smarty->assign("IMAGE_PATH", $image_path);
-$smarty->assign("MOD", $smod_strings);
-$smarty->assign("FOLDERNAME", $emailtemplateResult["foldername"]);
-$smarty->assign("TEMPLATENAME", $emailtemplateResult["templatename"]);
-$smarty->assign("TEMPLATEID", $emailtemplateResult["templateid"]);
-$smarty->assign("DESCRIPTION", $emailtemplateResult["description"]);
-$smarty->assign("SUBJECT", $emailtemplateResult["subject"]);
-$smarty->assign("BODY", $emailtemplateResult["body"]);
-$smarty->assign("EMAILFROM", $emailtemplateResult["sendemailfrom"]);
-$smarty->assign("MODULE", 'Settings');
-$smarty->assign("PARENTTAB", getParentTab());
-$smarty->assign("EMODE", $mode);
-$smarty->assign("ALL_VARIABLES", $allOptions);
+$smarty->assign('UMOD', $mod_strings);
+$smarty->assign('APP', $app_strings);
+$smarty->assign('THEME', $theme_path);
+$smarty->assign('IMAGE_PATH', $image_path);
+$smarty->assign('MOD', $smod_strings);
+$smarty->assign('FOLDERNAME', $emailtemplateResult['foldername']);
+$smarty->assign('TEMPLATENAME', $emailtemplateResult['templatename']);
+$smarty->assign('TEMPLATEID', $emailtemplateResult['templateid']);
+$smarty->assign('DESCRIPTION', $emailtemplateResult['description']);
+$smarty->assign('SUBJECT', $emailtemplateResult['subject']);
+$smarty->assign('BODY', $emailtemplateResult['body']);
+$smarty->assign('EMAILFROM', $emailtemplateResult['sendemailfrom']);
+$smarty->assign('MODULE', 'Settings');
+$smarty->assign('PARENTTAB', getParentTab());
+$smarty->assign('EMODE', $mode);
+$smarty->assign('ALL_VARIABLES', $allOptions);
 
-$smarty->display("CreateEmailTemplate.tpl");
+$smarty->display('CreateEmailTemplate.tpl');
 ?>

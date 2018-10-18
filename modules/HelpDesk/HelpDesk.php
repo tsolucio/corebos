@@ -126,7 +126,7 @@ class HelpDesk extends CRMEntity {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
 		}
-		if (!((isset($_REQUEST['mode']) && $_REQUEST['mode'] =='Import') || $_REQUEST['action'] =='MassEditSave')) {
+		if (!((isset($_REQUEST['mode']) && $_REQUEST['mode'] =='Import') || (isset($_REQUEST['action']) && $_REQUEST['action'] =='MassEditSave'))) {
 			//Inserting into Ticket Comment Table
 			$this->insertIntoTicketCommentTable();
 		}
@@ -297,7 +297,7 @@ class HelpDesk extends CRMEntity {
 		//In ajax save we should not add this div
 		$list = $enddiv = '';
 		if ($_REQUEST['action'] != 'HelpDeskAjax') {
-			$list .= '<div id="comments_div" style="overflow: auto;height:200px;width:100%;">';
+			$list .= '<div id="comments_div" style="overflow: auto; margin-bottom: 20px; width: 100%; word-break: break-all; height:200px;">';
 			$enddiv = '</div>';
 		}
 		for ($i=0; $i<$noofrows; $i++) {
@@ -485,12 +485,12 @@ class HelpDesk extends CRMEntity {
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
 		$log->debug("Entering function transferRelatedRecords ($module, $transferEntityIds, $entityId)");
+		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
+		$rel_table_arr = array('Attachments'=>'vtiger_seattachmentsrel');
 
-		$rel_table_arr = array('Activities'=>'vtiger_seactivityrel','Attachments'=>'vtiger_seattachmentsrel','Documents'=>'vtiger_senotesrel');
+		$tbl_field_arr = array('vtiger_seattachmentsrel'=>'attachmentsid');
 
-		$tbl_field_arr = array('vtiger_seactivityrel'=>'activityid','vtiger_seattachmentsrel'=>'attachmentsid','vtiger_senotesrel'=>'notesid');
-
-		$entity_tbl_field_arr = array('vtiger_seactivityrel'=>'crmid','vtiger_seattachmentsrel'=>'crmid','vtiger_senotesrel'=>'crmid');
+		$entity_tbl_field_arr = array('vtiger_seattachmentsrel'=>'crmid');
 
 		foreach ($transferEntityIds as $transferId) {
 			foreach ($rel_table_arr as $rel_table) {
@@ -632,18 +632,18 @@ class HelpDesk extends CRMEntity {
 		}
 		$desc = getTranslatedString('Ticket ID', $moduleName) . ' : ' . $entityId . '<br>'
 			. getTranslatedString('Ticket Title', $moduleName) . ' : ' . $temp . ' ' . $entityData->get('ticket_title');
-		$desc .= "<br><br>" . getTranslatedString('Hi', $moduleName) . " " . getParentName($parentId) . ",<br><br>"
-			. getTranslatedString('LBL_PORTAL_BODY_MAILINFO', $moduleName) . " " . $reply . " " . getTranslatedString('LBL_DETAIL', $moduleName) . "<br>";
-		$desc .= "<br>" . getTranslatedString('Ticket No', $moduleName) . " : " . $entityData->get('ticket_no');
-		$desc .= "<br>" . getTranslatedString('Status', $moduleName) . " : " . $entityData->get('ticketstatus');
-		$desc .= "<br>" . getTranslatedString('Category', $moduleName) . " : " . $entityData->get('ticketcategories');
-		$desc .= "<br>" . getTranslatedString('Severity', $moduleName) . " : " . $entityData->get('ticketseverities');
-		$desc .= "<br>" . getTranslatedString('Priority', $moduleName) . " : " . $entityData->get('ticketpriorities');
-		$desc .= "<br><br>" . getTranslatedString('Description', $moduleName) . " : <br>" . $entityData->get('description');
-		$desc .= "<br><br>" . getTranslatedString('Solution', $moduleName) . " : <br>" . $entityData->get('solution');
+		$desc .= '<br><br>' . getTranslatedString('Hi', $moduleName) . ' ' . getParentName($parentId) . ',<br><br>'
+			. getTranslatedString('LBL_PORTAL_BODY_MAILINFO', $moduleName) . ' ' . $reply . ' ' . getTranslatedString('LBL_DETAIL', $moduleName) . '<br>';
+		$desc .= '<br>' . getTranslatedString('Ticket No', $moduleName) . ' : ' . $entityData->get('ticket_no');
+		$desc .= '<br>' . getTranslatedString('Status', $moduleName) . ' : ' . getTranslatedString($entityData->get('ticketstatus'), $moduleName);
+		$desc .= '<br>' . getTranslatedString('Category', $moduleName) . ' : ' . getTranslatedString($entityData->get('ticketcategories'), $moduleName);
+		$desc .= '<br>' . getTranslatedString('Severity', $moduleName) . ' : ' . getTranslatedString($entityData->get('ticketseverities'), $moduleName);
+		$desc .= '<br>' . getTranslatedString('Priority', $moduleName) . ' : ' . getTranslatedString($entityData->get('ticketpriorities'), $moduleName);
+		$desc .= '<br><br>' . getTranslatedString('Description', $moduleName) . ' : <br>' . $entityData->get('description');
+		$desc .= '<br><br>' . getTranslatedString('Solution', $moduleName) . ' : <br>' . $entityData->get('solution');
 		$desc .= getTicketComments($entityId);
 
-		$sql = "SELECT * FROM vtiger_ticketcf WHERE ticketid = ?";
+		$sql = 'SELECT * FROM vtiger_ticketcf WHERE ticketid = ?';
 		$result = $adb->pquery($sql, array($entityId));
 		$cffields = $adb->getFieldsarray($result);
 		$sql = 'SELECT fieldlabel FROM vtiger_field WHERE columnname = ? and vtiger_field.presence in (0,2)';
@@ -674,14 +674,14 @@ class HelpDesk extends CRMEntity {
 			$parentId = $parentIdParts[1];
 		}
 		$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL', 'http://your_support_domain.tld/customerportal');
-		$portalUrl = "<a href='" . $PORTAL_URL . "/index.php?module=HelpDesk&action=index&ticketid=" . $entityId . "&fun=detail'>"
+		$portalUrl = "<a href='" . $PORTAL_URL . '/index.php?module=HelpDesk&action=index&ticketid=' . $entityId . "&fun=detail'>"
 			. getTranslatedString('LBL_TICKET_DETAILS', $moduleName) . "</a>";
-		$contents = getTranslatedString('Dear', $moduleName) . " " . getParentName(parentId) . ",<br><br>";
+		$contents = getTranslatedString('Dear', $moduleName) . " " . getParentName(parentId) . ',<br><br>';
 		$contents .= getTranslatedString('reply', $moduleName) . ' <b>' . $entityData->get('ticket_title')
 			. '</b>' . getTranslatedString('customer_portal', $moduleName);
-		$contents .= getTranslatedString("link", $moduleName) . '<br>';
+		$contents .= getTranslatedString('link', $moduleName) . '<br>';
 		$contents .= $portalUrl;
-		$contents .= '<br><br>' . getTranslatedString("Thanks", $moduleName) . '<br><br>' . getTranslatedString("Support_team", $moduleName);
+		$contents .= '<br><br>' . getTranslatedString('Thanks', $moduleName) . '<br><br>' . getTranslatedString('Support_team', $moduleName);
 		return $contents;
 	}
 

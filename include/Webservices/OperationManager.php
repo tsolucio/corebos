@@ -8,18 +8,17 @@
  * All Rights Reserved.
  *************************************************************************************/
 
-class OperationManager{
+class OperationManager {
 	private $format;
 	private $formatsData=array(
-		"json"=>array(
-			"includePath"=>'include/Webservices/OperationManagerEnDecode.php',
-			"class"=>'OperationManagerEnDecode',
-			"encodeMethod"=>"encode",
-			"decodeMethod"=>"decode",
-			"postCreate"=>''
+		'json'=>array(
+			'includePath'=>'include/Webservices/OperationManagerEnDecode.php',
+			'class'=>'OperationManagerEnDecode',
+			'encodeMethod'=>'encode',
+			'decodeMethod'=>'decode',
+			'postCreate'=>''
 		)
 	);
-	private $operationMeta = null;
 	private $formatObjects ;
 	private $inParamProcess ;
 	private $sessionManager;
@@ -32,37 +31,36 @@ class OperationManager{
 	private $operationId;
 	private $operationParams;
 
-	function __construct($adb,$operationName,$format, $sessionManager){
+	public function __construct($adb, $operationName, $format, $sessionManager) {
 		$this->format = strtolower($format);
 		$this->sessionManager = $sessionManager;
 		$this->formatObjects = array();
-		foreach($this->formatsData as $frmt=>$frmtData){
-			require_once($frmtData["includePath"]);
-			$instance = new $frmtData["class"]();
-			$this->formatObjects[$frmt]["encode"] = array(&$instance,$frmtData["encodeMethod"]);
-			$this->formatObjects[$frmt]["decode"] = array(&$instance,$frmtData["decodeMethod"]);
-			if($frmtData["postCreate"]){
-				call_user_func($frmtData["postCreate"],$instance);
+		foreach ($this->formatsData as $frmt => $frmtData) {
+			require_once $frmtData['includePath'];
+			$instance = new $frmtData['class']();
+			$this->formatObjects[$frmt]['encode'] = array(&$instance,$frmtData['encodeMethod']);
+			$this->formatObjects[$frmt]['decode'] = array(&$instance,$frmtData['decodeMethod']);
+			if ($frmtData['postCreate']) {
+				call_user_func($frmtData['postCreate'], $instance);
 			}
 		}
 		$this->pearDB = $adb;
 		$this->operationName = $operationName;
 		$this->inParamProcess = array();
-		$this->inParamProcess["encoded"] = &$this->formatObjects[$this->format]["decode"];
+		$this->inParamProcess['encoded'] = &$this->formatObjects[$this->format]['decode'];
 		$this->fillOperationDetails($operationName);
 	}
 
-	function isPreLoginOperation(){
+	public function isPreLoginOperation() {
 		return $this->preLogin == 1;
 	}
 
-	private function fillOperationDetails($operationName){
-		$sql = "select * from vtiger_ws_operation where name=?";
-		$result = $this->pearDB->pquery($sql,array($operationName));
-		if($result){
+	private function fillOperationDetails($operationName) {
+		$result = $this->pearDB->pquery('select * from vtiger_ws_operation where name=?', array($operationName));
+		if ($result) {
 			$rowCount = $this->pearDB->num_rows($result);
-			if($rowCount > 0){
-				$row = $this->pearDB->query_result_rowdata($result,0);
+			if ($rowCount > 0) {
+				$row = $this->pearDB->query_result_rowdata($result, 0);
 				$this->type = $row['type'];
 				$this->handlerMethod = $row['handler_method'];
 				$this->handlerPath = $row['handler_path'];
@@ -73,99 +71,100 @@ class OperationManager{
 				return;
 			}
 		}
-		throw new WebServiceException(WebServiceErrorCode::$UNKNOWNOPERATION,"Unknown operation requested");
+		throw new WebServiceException(WebServiceErrorCode::$UNKNOWNOPERATION, 'Unknown operation requested');
 	}
 
-	private function fillOperationParameters(){
-		$sql = "select name, type from vtiger_ws_operation_parameters where operationid=? order by sequence";
-		$result = $this->pearDB->pquery($sql,array($this->operationId));
+	private function fillOperationParameters() {
+		$sql = 'select name, type from vtiger_ws_operation_parameters where operationid=? order by sequence';
+		$result = $this->pearDB->pquery($sql, array($this->operationId));
 		$this->operationParams = array();
-		if($result){
+		if ($result) {
 			$rowCount = $this->pearDB->num_rows($result);
-			if($rowCount > 0){
-				for ($i=0;$i<$rowCount;++$i){
-					$row = $this->pearDB->query_result_rowdata($result,$i);
+			if ($rowCount > 0) {
+				for ($i=0; $i<$rowCount; ++$i) {
+					$row = $this->pearDB->query_result_rowdata($result, $i);
 					$this->operationParams[] = array($row['name'] => $row['type']);
 				}
 			}
 		}
 	}
 
-	public function getOperationInput(){
+	public function getOperationInput() {
 		$type = strtolower($this->type);
-		switch($type){
-			case 'get': $input = &$_GET;
+		switch ($type) {
+			case 'get':
+				$input = &$_GET;
 				return $input;
-			case 'post': $input = &$_POST;
+			case 'post':
+				$input = &$_POST;
 				return $input;
-			default: $input = &$_REQUEST;
+			default:
+				$input = &$_REQUEST;
 				return $input;
 		}
 	}
 
-	function sanitizeOperation($input){
+	public function sanitizeOperation($input) {
 		return $this->sanitizeInputForType($input);
 	}
 
-	function sanitizeInputForType($input){
+	public function sanitizeInputForType($input) {
 		$sanitizedInput = array();
-		foreach($this->operationParams as $ind=>$columnDetails){
+		foreach ($this->operationParams as $columnDetails) {
 			foreach ($columnDetails as $columnName => $type) {
-				$sanitizedInput[$columnName] = $this->handleType($type,vtws_getParameter($input,$columnName));
+				$sanitizedInput[$columnName] = $this->handleType($type, vtws_getParameter($input, $columnName));
 			}
 		}
 		return $sanitizedInput;
 	}
 
-	function handleType($type,$value){
+	public function handleType($type, $value) {
 		$result;
 		$value = stripslashes($value);
 		$type = strtolower($type);
-		if(!empty($this->inParamProcess[$type])){
-			$result = call_user_func($this->inParamProcess[$type],$value);
-		}else{
+		if (!empty($this->inParamProcess[$type])) {
+			$result = call_user_func($this->inParamProcess[$type], $value);
+		} else {
 			$result = $value;
 		}
 		return $result;
 	}
 
-	function runOperation($params,$user){
+	public function runOperation($params, $user) {
 		global $API_VERSION;
-		try{
-			$operation = strtolower($this->operationName);
-			if(!$this->preLogin){
+		try {
+			if (!$this->preLogin) {
 				$params[] = $user;
-				return call_user_func_array($this->handlerMethod,$params);
-			}else{
-				$userDetails = call_user_func_array($this->handlerMethod,$params);
-				if(is_array($userDetails)){
+				return call_user_func_array($this->handlerMethod, $params);
+			} else {
+				$userDetails = call_user_func_array($this->handlerMethod, $params);
+				if (is_array($userDetails)) {
 					return $userDetails;
-				}else{
-					$this->sessionManager->set("authenticatedUserId", $userDetails->id);
+				} else {
+					$this->sessionManager->set('authenticatedUserId', $userDetails->id);
 					global $adb;
-					$webserviceObject = VtigerWebserviceObject::fromName($adb,"Users");
-					$userId = vtws_getId($webserviceObject->getEntityId(),$userDetails->id);
+					$webserviceObject = VtigerWebserviceObject::fromName($adb, 'Users');
+					$userId = vtws_getId($webserviceObject->getEntityId(), $userDetails->id);
 					$vtigerVersion = vtws_getVtigerVersion();
-					$resp = array("sessionName"=>$this->sessionManager->getSessionId(),"userId"=>$userId,"version"=>$API_VERSION,"vtigerVersion"=>$vtigerVersion);
+					$resp = array('sessionName'=>$this->sessionManager->getSessionId(),'userId'=>$userId,'version'=>$API_VERSION,'vtigerVersion'=>$vtigerVersion);
 					return $resp;
 				}
 			}
-		}catch(WebServiceException $e){
+		} catch (WebServiceException $e) {
 			throw $e;
-		}catch(Exception $e){
-			throw new WebServiceException(WebServiceErrorCode::$INTERNALERROR,"Unknown Error while processing request");
+		} catch (Exception $e) {
+			throw new WebServiceException(WebServiceErrorCode::$INTERNALERROR, 'Unknown Error while processing request');
 		}
 	}
 
-	function encode($param){
-		return call_user_func($this->formatObjects[$this->format]["encode"],$param);
+	public function encode($param) {
+		return call_user_func($this->formatObjects[$this->format]['encode'], $param);
 	}
 
-	function getOperationIncludes(){
+	public function getOperationIncludes() {
 		$includes = array();
 		$includes[] = $this->handlerPath;
 		return $includes;
 	}
 }
-
 ?>

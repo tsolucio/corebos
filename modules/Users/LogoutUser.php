@@ -15,9 +15,9 @@
  *************************************************************************************************
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-require_once('include/logging.php');
-require_once('modules/Users/LoginHistory.php');
-require_once('modules/Users/Users.php');
+require_once 'include/logging.php';
+require_once 'modules/Users/LoginHistory.php';
+require_once 'modules/Users/Users.php';
 global $current_user;
 
 if (is_admin($current_user) && !empty($_REQUEST['logoutuserid']) && is_numeric($_REQUEST['logoutuserid'])) {

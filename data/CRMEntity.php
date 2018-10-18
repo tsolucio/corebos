@@ -298,6 +298,11 @@ class CRMEntity {
 		//$filesize = $file_details['size'];
 		$filetmp_name = $file_details['tmp_name'];
 
+		if (validateImageFile($file_details) == 'true' && validateImageContents($filetmp_name) == false) {
+			$log->debug('Skip the save attachment process.');
+			return false;
+		}
+
 		//get the file path inwhich folder we want to upload the file
 		$upload_file_path = decideFilePath();
 
@@ -536,6 +541,9 @@ class CRMEntity {
 			if ($num_rows <= 0) {
 				$insertion_mode = '';
 			}
+			$creatingdisplay = '';
+		} else {
+			$creatingdisplay = ',5';
 		}
 
 		$selectFields = 'fieldname, columnname, uitype, typeofdata';
@@ -551,10 +559,10 @@ class CRMEntity {
 			checkFileAccessForInclusion('user_privileges/user_privileges_' . $current_user->id . '.php');
 			require 'user_privileges/user_privileges_' . $current_user->id . '.php';
 			if (isset($from_wf) && $from_wf) {
-				$sql = "select $selectFields from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3,4) and presence in (0,2)";
+				$sql = "select $selectFields from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3,4$creatingdisplay) and presence in (0,2)";
 				$params = array($tabid, $table_name);
 			} elseif ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
-				$sql = "select $selectFields from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3) and presence in (0,2)";
+				$sql = "select $selectFields from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3$creatingdisplay) and presence in (0,2)";
 				$params = array($tabid, $table_name);
 			} else {
 				$profileList = getCurrentUserProfileList();
@@ -568,7 +576,7 @@ class CRMEntity {
 						WHERE $uniqueFieldsRestriction
 						AND vtiger_profile2field.visible = 0 AND vtiger_profile2field.readonly = 0
 						AND vtiger_profile2field.profileid IN (" . generateQuestionMarks($profileList) . ")
-						AND vtiger_def_org_field.visible = 0 and vtiger_field.tablename=? and vtiger_field.displaytype in (1,3) and vtiger_field.presence in (0,2)";
+						AND vtiger_def_org_field.visible = 0 and vtiger_field.tablename=? and vtiger_field.displaytype in (1,3$creatingdisplay) and vtiger_field.presence in (0,2)";
 					$params = array($tabid, $profileList, $table_name);
 				} else {
 					$sql = "SELECT distinct $selectFields
@@ -579,7 +587,7 @@ class CRMEntity {
 						ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
 						WHERE $uniqueFieldsRestriction
 						AND vtiger_profile2field.visible = 0 AND vtiger_profile2field.readonly = 0
-						AND vtiger_def_org_field.visible = 0 and vtiger_field.tablename=? and vtiger_field.displaytype in (1,3) and vtiger_field.presence in (0,2)";
+						AND vtiger_def_org_field.visible = 0 and vtiger_field.tablename=? and vtiger_field.displaytype in (1,3$creatingdisplay) and vtiger_field.presence in (0,2)";
 					$params = array($tabid, $table_name);
 				}
 			}
@@ -591,7 +599,7 @@ class CRMEntity {
 			}
 			$column = array($table_index_column);
 			$value = array($this->id);
-			$sql = "select $selectFields from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3,4) and vtiger_field.presence in (0,2)";
+			$sql = "select $selectFields from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3,4$creatingdisplay) and vtiger_field.presence in (0,2)";
 			$params = array($tabid, $table_name);
 		}
 
@@ -628,9 +636,11 @@ class CRMEntity {
 
 			$ajaxSave = false;
 			if ((isset($_REQUEST['file']) && $_REQUEST['file'] == 'DetailViewAjax' && isset($_REQUEST['ajxaction']) && $_REQUEST['ajxaction'] == 'DETAILVIEW'
-						&& isset($_REQUEST["fldName"]) && $_REQUEST["fldName"] != $fieldname)
-					|| (isset($_REQUEST['action']) && $_REQUEST['action'] == 'MassEditSave' && !isset($_REQUEST[$fieldname."_mass_edit_check"])
-							&& (!isset($_REQUEST['ajxaction']) || $_REQUEST['ajxaction'] != 'Workflow'))) {
+				&& isset($_REQUEST["fldName"]) && $_REQUEST["fldName"] != $fieldname)
+				|| (isset($_REQUEST['action']) && $_REQUEST['action'] == 'MassEditSave' && !isset($_REQUEST[$fieldname."_mass_edit_check"])
+				&& (!isset($_REQUEST['ajxaction']) || $_REQUEST['ajxaction'] != 'Workflow'))
+				|| (!empty($this->column_fields['__cbws_skipcurdbconv'.$fieldname]) || !empty($this->column_fields['__cbws_skipcurdbconvall']))
+			) {
 				$ajaxSave = true;
 			}
 
@@ -797,12 +807,12 @@ class CRMEntity {
 		if ($insertion_mode == 'edit') {
 			// If update is empty the query fails
 			if (count($update) > 0) {
-				$sql1 = "update $table_name set " . implode(",", $update) . " where " . $this->tab_name_index[$table_name] . "=?";
+				$sql1 = "update $table_name set " . implode(',', $update) . ' where ' . $this->tab_name_index[$table_name] . '=?';
 				$update_params[] = $this->id;
 				$adb->pquery($sql1, $update_params);
 			}
 		} else {
-			$sql1 = "insert into $table_name(" . implode(",", $column) . ") values(" . generateQuestionMarks($value) . ")";
+			$sql1 = "insert into $table_name(" . implode(',', $column) . ') values(' . generateQuestionMarks($value) . ')';
 			$adb->pquery($sql1, $value);
 		}
 	}
@@ -811,7 +821,7 @@ class CRMEntity {
 	 * @param $fieldname currency field name
 	 * @param $fldvalue currency value they want to save
 	 * @param $tabid tabID of the module the field is on
-	 * @returns field value from database with maximum decimals if it is the same as value being saved
+	 * @return field value from database with maximum decimals if it is the same as value being saved
 	 */
 	public function adjustCurrencyField($fieldname, $fldvalue, $tabid) {
 		global $adb, $log, $current_user;
@@ -867,16 +877,15 @@ class CRMEntity {
 	 */
 	public function getOldFileName($notesid) {
 		global $log, $adb;
-		$log->info("in getOldFileName " . $notesid);
-		$query1 = 'select * from vtiger_seattachmentsrel where crmid=?';
-		$result = $adb->pquery($query1, array($notesid));
+		$log->info('in getOldFileName ' . $notesid);
+		$result = $adb->pquery('select * from vtiger_seattachmentsrel where crmid=?', array($notesid));
 		$noofrows = $adb->num_rows($result);
 		if ($noofrows != 0) {
 			$attachmentid = $adb->query_result($result, 0, 'attachmentsid');
 		}
 		if ($attachmentid != '') {
-			$query2 = 'select * from vtiger_attachments where attachmentsid=?';
-			$filename = $adb->query_result($adb->pquery($query2, array($attachmentid)), 0, 'name');
+			$rs = $adb->pquery('select * from vtiger_attachments where attachmentsid=?', array($attachmentid));
+			$filename = $adb->query_result($rs, 0, 'name');
 		}
 		return $filename;
 	}
@@ -887,11 +896,19 @@ class CRMEntity {
 	 * This function retrives the information from the database and sets the value in the class columnfields array
 	 */
 	public function retrieve_entity_info($record, $module, $deleted = false) {
-		global $adb, $app_strings;
+		global $adb, $app_strings, $current_user;
 		$preFmt = '<br><br><center>';
 		$postFmt = '.</a></center>';
 		$i8nGoBack = $app_strings['LBL_GO_BACK'];
 		$result = array();
+
+		//Here we check if user can see this record.
+		if (isPermitted($module, 'DetailView', $record) != 'yes') {
+			$this->column_fields['record_id'] = $record;
+			$this->column_fields['record_module'] = $module;
+			return;
+		}
+
 		foreach ($this->tab_name_index as $table_name => $index) {
 			$result[$table_name] = $adb->pquery("select * from $table_name where $index=?", array($record));
 			$isRecordDeleted = $adb->query_result($result['vtiger_crmentity'], 0, 'deleted');
@@ -906,7 +923,7 @@ class CRMEntity {
 			if ($adb->query_result($result[$this->table_name], 0, $mod_index_col) == '') {
 				echo $preFmt . $app_strings['LBL_RECORD_NOT_FOUND'] . ". <a href='javascript:window.history.back()'>" . $i8nGoBack . $postFmt;
 				if (GlobalVariable::getVariable('Debug_Record_Not_Found', false)) {
-					echo $preFmt . "Looking for " . $this->table_name . '.' . $mod_index_col . ' in <br>' . print_r($result[$this->table_name]->sql, true) . '</center>';
+					echo $preFmt . 'Looking for ' . $this->table_name . '.' . $mod_index_col . ' in <br>' . print_r($result[$this->table_name]->sql, true) . '</center>';
 					echo '<pre>';
 					debug_print_backtrace();
 					echo '</pre>';
@@ -954,7 +971,12 @@ class CRMEntity {
 				$fieldcolname = $fieldinfo['columnname'];
 				$tablename = $fieldinfo['tablename'];
 				$fieldname = $fieldinfo['fieldname'];
-
+				//Here we check if user have the paermission to access this field.
+				//If it is allowed then it will get the actual value, otherwise it gets an empty string.
+				if (getFieldVisibilityPermission($module, $current_user->id, $fieldname) != '0') {
+					$this->column_fields[$fieldname] = '';
+					continue;
+				}
 				// To avoid ADODB execption pick the entries that are in $tablename
 				// (ex. when we don't have attachment for troubletickets, $result[vtiger_attachments]
 				// will not be set so here we should not retrieve)
@@ -1027,11 +1049,11 @@ class CRMEntity {
 	}
 
 	/** Function to saves the values in all the tables mentioned in the class variable $tab_name for the specified module
-	 * @param $module -- module:: Type varchar
+	 * @param $module_name -- module:: Type varchar
 	 */
 	public function save($module_name, $fileid = '') {
 		global $log;
-		$log->debug("module name is " . $module_name);
+		$log->debug('module name is ' . $module_name);
 
 		//Check if assigned_user_id is empty for assign the current user.
 		if (empty($this->column_fields['assigned_user_id'])) {
@@ -1333,6 +1355,7 @@ class CRMEntity {
 			" WHERE uitype='10' AND vtiger_fieldmodulerel.module=?", array($thismodule));
 		$linkedFieldsCount = $this->db->num_rows($linkedModulesQuery);
 
+		$rel_mods = array();
 		$rel_mods[$this->table_name] = 1;
 		for ($i=0; $i<$linkedFieldsCount; $i++) {
 			$related_module = $this->db->query_result($linkedModulesQuery, $i, 'relmodule');
@@ -1484,7 +1507,7 @@ class CRMEntity {
 		global $current_user, $adb;
 
 		$setype = getSalesEntityType($id);
-		if ($setype != $module && !($module == 'cbCalendar' && $setype == 'Calendar')) { // security
+		if ($setype != $module && !($module == 'cbCalendar' && $setype == 'Emails')) { // security
 			return false;
 		}
 		require_once 'include/events/include.inc';
@@ -1571,7 +1594,7 @@ class CRMEntity {
 
 	/** Function to restore a deleted record of specified module with given crmid
 	 * @param $module -- module name:: Type varchar
-	 * @param $entity_ids -- list of crmids :: Array
+	 * @param $id -- list of crmids :: Array
 	 */
 	public function restore($module, $id) {
 		global $current_user, $adb;
@@ -1579,15 +1602,14 @@ class CRMEntity {
 		$this->db->println("TRANS restore starts $module");
 		$this->db->startTransaction();
 
-		$date_var = date("Y-m-d H:i:s");
+		$date_var = date('Y-m-d H:i:s');
 		$query = 'UPDATE vtiger_crmentity SET deleted=0,modifiedtime=?,modifiedby=? WHERE crmid = ?';
-		$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, "Error restoring records :");
+		$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, 'Error restoring records :');
 		//Restore related entities/records
 		$this->restoreRelatedRecords($module, $id);
 
 		//Event triggering code
 		require_once 'include/events/include.inc';
-		global $adb;
 		$em = new VTEventsManager($adb);
 
 		// Initialize Event trigger cache
@@ -2141,6 +2163,12 @@ class CRMEntity {
 		$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN $userNameSql ELSE vtiger_groups.groupname END AS user_name";
 
 		$more_relation = '';
+		// Select Custom Field Table Columns if present
+		if (isset($other->customFieldTable) && empty($other->related_tables[$other->customFieldTable[0]])) {
+			$query .= ', '.$other->customFieldTable[0].'.*';
+			$more_relation .= " INNER JOIN ".$other->customFieldTable[0]." ON ".$other->customFieldTable[0].'.'.$other->customFieldTable[1] .
+				" = $other->table_name.$other->table_index";
+		}
 		if (!empty($other->related_tables)) {
 			foreach ($other->related_tables as $tname => $relmap) {
 				$query .= ", $tname.*";
@@ -2256,6 +2284,11 @@ class CRMEntity {
 			$query .= ", CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN $userNameSql ELSE vtiger_groups.groupname END AS user_name";
 
 			$more_relation = '';
+			if (isset($other->customFieldTable) && empty($other->related_tables[$other->customFieldTable[0]])) {
+				$query .= ', '.$other->customFieldTable[0].'.*';
+				$more_relation .= " INNER JOIN ".$other->customFieldTable[0]." ON ".$other->customFieldTable[0].'.'.$other->customFieldTable[1] .
+					" = $other->table_name.$other->table_index";
+			}
 			if (!empty($other->related_tables)) {
 				foreach ($other->related_tables as $tname => $relmap) {
 					$query .= ", $tname.*";
@@ -2355,9 +2388,12 @@ class CRMEntity {
 				'Ajax&file=DetailViewAjax&record='.$id.'&ajxaction=LOADRELATEDLIST&header=Activities&relation_id='.$relid.
 				'&cbcalendar_filter=\'+this.options[this.options.selectedIndex].value+\'&actions=add&parenttab=Support\',\'tbl_'.$currentModule.'_Activities\',\''.
 				$currentModule.'_Activities\');"><option value="all">'.getTranslatedString('LBL_ALL').'</option>';
+			if (!isset($_REQUEST['cbcalendar_filter'])) {
+				$_REQUEST['cbcalendar_filter'] = GlobalVariable::getVariable('RelatedList_Activity_DefaultStatusFilter', 'all', $currentModule);
+			}
 			foreach ($calStatus as $cstatkey => $cstatvalue) {
 				$button .= '<option value="'.$cstatkey.'" '.
-					((isset($_REQUEST['cbcalendar_filter']) && $_REQUEST['cbcalendar_filter']==$cstatkey) ? 'selected' : '').'>'.$cstatvalue.'</option>';
+					($_REQUEST['cbcalendar_filter']==$cstatkey ? 'selected' : '').'>'.$cstatvalue.'</option>';
 			}
 			$button .= '</select>&nbsp;';
 			if ($actions) {
@@ -2416,7 +2452,7 @@ class CRMEntity {
 				$query .= " WHERE vtiger_crmentity.deleted = 0 AND $this->table_name.$this->table_index = $id";
 			}
 			$query .= " AND vtiger_activity.activitytype != 'Emails'";
-			if (isset($_REQUEST['cbcalendar_filter']) && $_REQUEST['cbcalendar_filter'] != 'all') {
+			if ($_REQUEST['cbcalendar_filter'] != 'all') {
 				$query .= $adb->convert2Sql(' and vtiger_activity.eventstatus=? ', array(vtlib_purify($_REQUEST['cbcalendar_filter'])));
 			}
 			$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
@@ -2438,7 +2474,36 @@ class CRMEntity {
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb, $log;
 		$log->debug("Entering function transferRelatedRecords ($module, ".print_r($transferEntityIds, true).", $entityId)");
+
+		$rel_table_arr = array('Activities'=>'vtiger_seactivityrel');
+
+		$tbl_field_arr = array('vtiger_seactivityrel'=>'activityid');
+
+		$entity_tbl_field_arr = array('vtiger_seactivityrel'=>'crmid');
+
 		foreach ($transferEntityIds as $transferId) {
+			foreach ($rel_table_arr as $rel_table) {
+				$id_field = $tbl_field_arr[$rel_table];
+				$entity_id_field = $entity_tbl_field_arr[$rel_table];
+
+				// IN clause to avoid duplicate entries
+				$sel_result = $adb->pquery(
+					"select $id_field from $rel_table where $entity_id_field=? " .
+						" and $id_field not in (select $id_field from $rel_table where $entity_id_field=?)",
+					array($transferId,$entityId)
+				);
+				$res_cnt = $adb->num_rows($sel_result);
+				if ($res_cnt > 0) {
+					for ($i=0; $i<$res_cnt; $i++) {
+						$id_field_value = $adb->query_result($sel_result, $i, $id_field);
+						$adb->pquery(
+							"update $rel_table set $entity_id_field=? where $entity_id_field=? and $id_field=?",
+							array($entityId,$transferId,$id_field_value)
+						);
+					}
+				}
+			}
+
 			// Pick the records related to the entity to be transfered, but do not pick the once which are already related to the current entity.
 			$relatedRecords = $adb->pquery("SELECT relcrmid, relmodule FROM vtiger_crmentityrel WHERE crmid=? AND module=?" .
 					" AND relcrmid NOT IN (SELECT relcrmid FROM vtiger_crmentityrel WHERE crmid=? AND module=?)", array($transferId, $module, $entityId, $module));
@@ -3071,7 +3136,11 @@ class CRMEntity {
 		if ($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && isset($defaultOrgSharingPermission[$tabId]) && $defaultOrgSharingPermission[$tabId] == 3) {
 			$tableName = 'vt_tmp_u' . $user->id;
 			$sharingRuleInfoVariable = $module . '_share_read_permission';
-			$sharingRuleInfo = $$sharingRuleInfoVariable;
+			if (isset($$sharingRuleInfoVariable)) {
+				$sharingRuleInfo = $$sharingRuleInfoVariable;
+			} else {
+				$sharingRuleInfo = '';
+			}
 			$sharedTabId = null;
 			if (!empty($sharingRuleInfo) && (count($sharingRuleInfo['ROLE']) > 0 || count($sharingRuleInfo['GROUP']) > 0)) {
 				$tableName = $tableName . '_t' . $tabId;
@@ -3122,7 +3191,7 @@ class CRMEntity {
 		//as mysql query optimizer puts crmentity on the left side and considerably slow down
 		$query = preg_replace('/\s+/', ' ', $query);
 		if (strripos($query, ' WHERE ') !== false) {
-			$query = str_ireplace(' where ', " WHERE $this->table_name.$this->table_index > 0 AND ", $query);
+			$query = preg_replace('/ where /i', " WHERE $this->table_name.$this->table_index > 0 AND ", $query, 1);
 		}
 		return $query;
 	}

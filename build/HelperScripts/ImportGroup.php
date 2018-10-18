@@ -16,23 +16,23 @@
 *  Version      : 5.4.0
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
-include_once('vtlib/Vtiger/Module.php');
-include_once('modules/Users/Users.php');
-require_once('include/logging.php');
-require_once('include/utils/UserInfoUtil.php');
-require_once('include/utils/utils.php');
-include_once('config.inc.php');
+include_once 'vtlib/Vtiger/Module.php';
+include_once 'modules/Users/Users.php';
+require_once 'include/logging.php';
+require_once 'include/utils/UserInfoUtil.php';
+require_once 'include/utils/utils.php';
+include_once 'config.inc.php';
 global $adb,$root_directory;
 
 $xmlreader = new SimpleXMLElement('build/group.xml', 0, true);
 
 $missingGroups = array();
 foreach ($xmlreader->vtcrm_group as $group) {
-	$grpname = html_entity_decode((string)$group->vtcrm_definition->vtcrm_groupname,ENT_QUOTES,'UTF-8');
-	$grpdesc = html_entity_decode((string)$group->vtcrm_definition->vtcrm_groupdescription,ENT_QUOTES,'UTF-8');
+	$grpname = html_entity_decode((string)$group->vtcrm_definition->vtcrm_groupname, ENT_QUOTES, 'UTF-8');
+	$grpdesc = html_entity_decode((string)$group->vtcrm_definition->vtcrm_groupdescription, ENT_QUOTES, 'UTF-8');
 
 	//$pfexist = $adb->getone("select count(*) as cnt from vtiger_groups where groupname='".addslashes($grpname)."'");
-	$pfrs = $adb->pquery('select count(*) as cnt from vtiger_groups where groupname=?',array($grpname));
+	$pfrs = $adb->pquery('select count(*) as cnt from vtiger_groups where groupname=?', array($grpname));
 	$pfcnt = $adb->fetch_array($pfrs);
 	if (!empty($pfcnt['cnt'])) {
 		echo "$grpname already exists!";
@@ -44,7 +44,7 @@ foreach ($xmlreader->vtcrm_group as $group) {
 	$grpm = array();
 	$missgrp = array();
 	foreach ($group->vtcrm_group2groups->vtcrm_group2group as $grp) {
-		$grprs = $adb->pquery('select groupid from vtiger_groups where groupname=?',array((string)$grp));
+		$grprs = $adb->pquery('select groupid from vtiger_groups where groupname=?', array((string)$grp));
 		if ($adb->num_rows($grprs)==0) {
 			$missgrp[] = (string)$grp;
 		} else {
@@ -68,7 +68,7 @@ foreach ($xmlreader->vtcrm_group as $group) {
 
 	$grpMembers['users'] = array();
 
-	$groupId = createGroup($grpname,$grpMembers,$grpdesc);
+	$groupId = createGroup($grpname, $grpMembers, $grpdesc);
 
 	if (count($missgrp)>0) {
 		$missingGroups[$groupId] = $missgrp;
@@ -83,8 +83,9 @@ foreach ($xmlreader->vtcrm_group as $group) {
 foreach ($missingGroups as $grpid => $miss) {
 	foreach ($miss as $grpname) {
 		$containsGroupId = $adb->getone("select groupid from vtiger_groups where groupname='".addslashes($grpname)."'");
-		if (!empty($containsGroupId))
-			insertGroupToGroupRelation($grpid,$containsGroupId);
+		if (!empty($containsGroupId)) {
+			insertGroupToGroupRelation($grpid, $containsGroupId);
+		}
 	}
 }
 ?>

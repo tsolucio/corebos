@@ -1,0 +1,41 @@
+{
+  "repositories": [
+  {
+    "type": "vcs",
+    "url": "file:///home/joe/reps/ComposerInstall"
+  },
+  {
+    "type": "vcs",
+    "url": "file:///home/joe/reps/adocDetail"
+  },
+  {
+    "type": "vcs",
+    "url": "file:///home/joe/reps/adocMaster"
+  },
+  {
+    "type": "vcs",
+    "url": "file:///home/joe/reps/coreBOSPackingSlip"
+  },
+  {
+    "type": "vcs",
+    "url": "file:///home/joe/reps/coreBOSEmployee"
+  },
+  {
+	"packagist": false
+  }
+  ],
+  "require": {
+    "tsolucio/ComposerInstall": "dev-master",
+    "tsolucio/coreBOSPackingSlip": "dev-master",
+    "tsolucio/adocDetail": "dev-master",
+    "tsolucio/adocMaster": "dev-master",
+    "tsolucio/coreBOSEmployee": "dev-master"
+  },
+  "scripts": {
+    "post-install-cmd": [
+    	"tsolucio\\ComposerInstall\\ComposerInstall::postPackageInstall",
+    	"php modules/cbupdater/loadapplychanges.php modules/ConfigEditor/composer.xml"
+    ],
+    "post-update-cmd": "tsolucio\\ComposerInstall\\ComposerInstall::postPackageUpdate"
+  }
+}

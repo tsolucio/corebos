@@ -267,6 +267,8 @@ $mod_strings = array(
 'LBL_QUOTE_STAGE'=>'Offerte stadium',
 'LBL_CARRIER'=>'Vervoerder',
 'LBL_TAXCLASS'=>'Belastingklasse',
+'LBL_RETENTION'=>'Retention',
+'LBL_PERCENTAGE'=>'Percentage',
 'LBL_MY_DETAILS'=>'Mijn details',
 'LBL_MY_MAIL_SERVER_DET'=>'Mijn inkomende e-mail server details',
 'LBL_EMAIL_ID'=>'E-mail ID',
@@ -788,6 +790,7 @@ $mod_strings = array(
 'LBL_TASKS'=>'Taken',
 'LBL_NEW_TASK_BUTTON_LABEL'=>'Nieuwe taak',
 'LBL_TASK'=>'Taak',
+'LBL_DELAY' => 'Delay',
 //Added for vantage customization (Mandatory fields) -- Pavani
 'LBL_MANDATORY_FIELDS'=>'Verplichte Velden',
 'LBL_MANDATORY_FIELDS_DESCRIPTION'=>'Manage Verplichte velden van alle modulen',

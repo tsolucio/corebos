@@ -72,128 +72,124 @@ class VTEventConditionParserLexer_DFA9 extends DFA {
 }
 
 class VTEventConditionParserLexer extends AntlrLexer {
-	static $INTEGER=8;
-	static $T__16=16;
-	static $IN=5;
-	static $T__15=15;
-	static $SYMBOL=4;
-	static $T__14=14;
-	static $LETTER=9;
-	static $T__13=13;
-	static $WHITESPACE=12;
-	static $DIGIT=7;
-	static $DOT=10;
-	static $EOF=-1;
-	static $ELEMENT_ID=11;
-	static $STRING=6;
+	public static $INTEGER=8;
+	public static $T__16=16;
+	public static $IN=5;
+	public static $T__15=15;
+	public static $SYMBOL=4;
+	public static $T__14=14;
+	public static $LETTER=9;
+	public static $T__13=13;
+	public static $WHITESPACE=12;
+	public static $DIGIT=7;
+	public static $DOT=10;
+	public static $EOF=-1;
+	public static $ELEMENT_ID=11;
+	public static $STRING=6;
 
 	public function reportError($e) {
-		print_r($e);
-		throw new Exception("The condition you provided is invalid");
+		global $log;
+		$log->fatal($e);
+		throw new Exception('The condition you provided is invalid');
 	}
 
 	// delegates
 	// delegators
 
-	function __construct($input, $state=null) {
-		parent::__construct($input,$state);
+	public function __construct($input, $state = null) {
+		parent::__construct($input, $state);
 		$this->dfa9 = new VTEventConditionParserLexer_DFA9($this);
 	}
 
-	function getGrammarFileName() {
-		return "VTEventConditionParser.g";
+	public function getGrammarFileName() {
+		return 'VTEventConditionParser.g';
 	}
 
 	// $ANTLR start "T__13"
-	function mT__13() {
+	public function mT__13() {
 		try {
 			$_type = VTEventConditionParserLexer::$T__13;
 			$_channel = VTEventConditionParserLexer::$DEFAULT_TOKEN_CHANNEL;
-			$this->matchString("==");
+			$this->matchString('==');
 			$this->state->type = $_type;
 			$this->state->channel = $_channel;
-		}
-		catch (Exception $e) {
+		} catch (Exception $e) {
 			throw $e;
 		}
 	}
 	// $ANTLR end "T__13"
 
 	// $ANTLR start "T__14"
-	function mT__14() {
+	public function mT__14() {
 		try {
 			$_type = VTEventConditionParserLexer::$T__14;
 			$_channel = VTEventConditionParserLexer::$DEFAULT_TOKEN_CHANNEL;
 			$this->matchChar(91);
 			$this->state->type = $_type;
 			$this->state->channel = $_channel;
-		}
-		catch (Exception $e) {
+		} catch (Exception $e) {
 			throw $e;
 		}
 	}
 	// $ANTLR end "T__14"
 
 	// $ANTLR start "T__15"
-	function mT__15() {
+	public function mT__15() {
 		try {
 			$_type = VTEventConditionParserLexer::$T__15;
 			$_channel = VTEventConditionParserLexer::$DEFAULT_TOKEN_CHANNEL;
 			$this->matchChar(44);
 			$this->state->type = $_type;
 			$this->state->channel = $_channel;
-		}
-		catch (Exception $e) {
+		} catch (Exception $e) {
 			throw $e;
 		}
 	}
 	// $ANTLR end "T__15"
 
 	// $ANTLR start "T__16"
-	function mT__16() {
+	public function mT__16() {
 		try {
 			$_type = VTEventConditionParserLexer::$T__16;
 			$_channel = VTEventConditionParserLexer::$DEFAULT_TOKEN_CHANNEL;
 			$this->matchChar(93);
 			$this->state->type = $_type;
 			$this->state->channel = $_channel;
-		}
-		catch (Exception $e) {
+		} catch (Exception $e) {
 			throw $e;
 		}
 	}
 	// $ANTLR end "T__16"
 
 	// $ANTLR start "IN"
-	function mIN() {
+	public function mIN() {
 		try {
 			$_type = VTEventConditionParserLexer::$IN;
 			$_channel = VTEventConditionParserLexer::$DEFAULT_TOKEN_CHANNEL;
-			if ( $this->input->LA(1)==73||$this->input->LA(1)==105 ) {
+			if ($this->input->LA(1)==73||$this->input->LA(1)==105) {
 				$this->input->consume();
 			} else {
-				$mse = new MismatchedSetException(null,$this->input);
+				$mse = new MismatchedSetException(null, $this->input);
 				$this->recover($mse);
 				throw $mse;
 			}
-			if ( $this->input->LA(1)==78||$this->input->LA(1)==110 ) {
+			if ($this->input->LA(1)==78||$this->input->LA(1)==110) {
 				$this->input->consume();
 			} else {
-				$mse = new MismatchedSetException(null,$this->input);
+				$mse = new MismatchedSetException(null, $this->input);
 				$this->recover($mse);
 				throw $mse;
 			}
 			$this->state->type = $_type;
 			$this->state->channel = $_channel;
-		}
-		catch (Exception $e) {
+		} catch (Exception $e) {
 			throw $e;
 		}
 	}
 	// $ANTLR end "IN"
 
 	// $ANTLR start "INTEGER"
-	function mINTEGER() {
+	public function mINTEGER() {
 		try {
 			$_type = VTEventConditionParserLexer::$INTEGER;
 			$_channel = VTEventConditionParserLexer::$DEFAULT_TOKEN_CHANNEL;
@@ -203,31 +199,32 @@ class VTEventConditionParserLexer extends AntlrLexer {
 				$alt1=2;
 				$LA1_0 = $this->input->LA(1);
 
-				if ( (($LA1_0>=$this->getToken('48') && $LA1_0<=$this->getToken('57'))) ) {
+				if ((($LA1_0>=$this->getToken('48') && $LA1_0<=$this->getToken('57')))) {
 					$alt1=1;
 				}
 
 				switch ($alt1) {
-					case 1 :
+					case 1:
 						$this->mDIGIT();
 						break;
-					default :
-						if ( $cnt1 >= 1 ) break 2;//loop1;
+					default:
+						if ($cnt1 >= 1) {
+							break 2;//loop1;
+						}
 						throw new EarlyExitException(1, $this->input);
 				}
 				$cnt1++;
 			} while (true);
 			$this->state->type = $_type;
 			$this->state->channel = $_channel;
-		}
-		catch (Exception $e) {
+		} catch (Exception $e) {
 			throw $e;
 		}
 	}
 	// $ANTLR end "INTEGER"
 
 	// $ANTLR start "STRING"
-	function mSTRING() {
+	public function mSTRING() {
 		try {
 			$_type = VTEventConditionParserLexer::$STRING;
 			$_channel = VTEventConditionParserLexer::$DEFAULT_TOKEN_CHANNEL;
@@ -238,30 +235,32 @@ class VTEventConditionParserLexer extends AntlrLexer {
 				$alt2=3;
 				$LA2_0 = $this->input->LA(1);
 
-				if ( ($LA2_0==$this->getToken('39')) ) {
+				if (($LA2_0==$this->getToken('39'))) {
 					$LA2_1 = $this->input->LA(2);
 
-					if ( ($LA2_1==$this->getToken('39')) ) {
+					if (($LA2_1==$this->getToken('39'))) {
 						$alt2=2;
 					}
-				} else if ( (($LA2_0>=$this->getToken('0') && $LA2_0<=$this->getToken('38')) || ($LA2_0>=$this->getToken('40') && $LA2_0<=$this->getToken('65534'))) ) {
+				} elseif ((($LA2_0>=$this->getToken('0') && $LA2_0<=$this->getToken('38')) || ($LA2_0>=$this->getToken('40') && $LA2_0<=$this->getToken('65534')))) {
 					$alt2=1;
 				}
 				switch ($alt2) {
-					case 1 :
-						if ( ($this->input->LA(1)>=$this->getToken('0') && $this->input->LA(1)<=$this->getToken('38')) || ($this->input->LA(1)>=$this->getToken('40') && $this->input->LA(1)<=$this->getToken('65534')) ) {
+					case 1:
+						if (($this->input->LA(1)>=$this->getToken('0') && $this->input->LA(1)<=$this->getToken('38')) || ($this->input->LA(1)>=$this->getToken('40') && $this->input->LA(1)<=$this->getToken('65534'))) {
 							$this->input->consume();
 						} else {
-							$mse = new MismatchedSetException(null,$this->input);
+							$mse = new MismatchedSetException(null, $this->input);
 							$this->recover($mse);
 							throw $mse;
 						}
 						break;
-					case 2 :
+					case 2:
 						$this->matchString("\'\'");
 						break;
-					default :
-						if ( $cnt2 >= 1 ) break 2;//loop2;
+					default:
+						if ($cnt2 >= 1) {
+							break 2;//loop2;
+						}
 						throw new EarlyExitException(2, $this->input);
 				}
 				$cnt2++;
@@ -269,55 +268,54 @@ class VTEventConditionParserLexer extends AntlrLexer {
 			$this->matchChar(39);
 			$this->state->type = $_type;
 			$this->state->channel = $_channel;
-		}
-		catch (Exception $e) {
+		} catch (Exception $e) {
 			throw $e;
 		}
 	}
 	// $ANTLR end "STRING"
 
 	// $ANTLR start "SYMBOL"
-	function mSYMBOL() {
+	public function mSYMBOL() {
 		try {
 			$_type = VTEventConditionParserLexer::$SYMBOL;
 			$_channel = VTEventConditionParserLexer::$DEFAULT_TOKEN_CHANNEL;
 			$alt5=2;
 			$LA5_0 = $this->input->LA(1);
 
-			if ( (($LA5_0>=$this->getToken('65') && $LA5_0<=$this->getToken('90')) || ($LA5_0>=$this->getToken('97') && $LA5_0<=$this->getToken('122'))) ) {
+			if ((($LA5_0>=$this->getToken('65') && $LA5_0<=$this->getToken('90')) || ($LA5_0>=$this->getToken('97') && $LA5_0<=$this->getToken('122')))) {
 				$alt5=1;
-			} else if ( ($LA5_0==$this->getToken('96')) ) {
+			} elseif (($LA5_0==$this->getToken('96'))) {
 				$alt5=2;
 			} else {
 				throw new NoViableAltException('', 5, 0, $this->input);
 			}
 			switch ($alt5) {
-				case 1 :
+				case 1:
 					$this->mLETTER();
 					//loop3:
 					do {
 						$alt3=2;
 						$LA3_0 = $this->input->LA(1);
 
-						if ( (($LA3_0>=$this->getToken('48') && $LA3_0<=$this->getToken('57')) || ($LA3_0>=$this->getToken('65') && $LA3_0<=$this->getToken('90')) || $LA3_0==$this->getToken('95') || ($LA3_0>=$this->getToken('97') && $LA3_0<=$this->getToken('122'))) ) {
+						if ((($LA3_0>=$this->getToken('48') && $LA3_0<=$this->getToken('57')) || ($LA3_0>=$this->getToken('65') && $LA3_0<=$this->getToken('90')) || $LA3_0==$this->getToken('95') || ($LA3_0>=$this->getToken('97') && $LA3_0<=$this->getToken('122')))) {
 							$alt3=1;
 						}
 						switch ($alt3) {
-							case 1 :
-								if ( ($this->input->LA(1)>=$this->getToken('48') && $this->input->LA(1)<=$this->getToken('57')) || ($this->input->LA(1)>=$this->getToken('65') && $this->input->LA(1)<=$this->getToken('90')) || $this->input->LA(1)==95 || ($this->input->LA(1)>=$this->getToken('97') && $this->input->LA(1)<=$this->getToken('122')) ) {
+							case 1:
+								if (($this->input->LA(1)>=$this->getToken('48') && $this->input->LA(1)<=$this->getToken('57')) || ($this->input->LA(1)>=$this->getToken('65') && $this->input->LA(1)<=$this->getToken('90')) || $this->input->LA(1)==95 || ($this->input->LA(1)>=$this->getToken('97') && $this->input->LA(1)<=$this->getToken('122'))) {
 									$this->input->consume();
 								} else {
-									$mse = new MismatchedSetException(null,$this->input);
+									$mse = new MismatchedSetException(null, $this->input);
 									$this->recover($mse);
 									throw $mse;
 								}
 								break;
-							default :
+							default:
 								break 2;//loop3;
 						}
 					} while (true);
 					break;
-				case 2 :
+				case 2:
 					$this->matchChar(96);
 					$cnt4=0;
 					//loop4:
@@ -325,21 +323,23 @@ class VTEventConditionParserLexer extends AntlrLexer {
 						$alt4=2;
 						$LA4_0 = $this->input->LA(1);
 
-						if ( (($LA4_0>=$this->getToken('0') && $LA4_0<=$this->getToken('95')) || ($LA4_0>=$this->getToken('97') && $LA4_0<=$this->getToken('65534'))) ) {
+						if ((($LA4_0>=$this->getToken('0') && $LA4_0<=$this->getToken('95')) || ($LA4_0>=$this->getToken('97') && $LA4_0<=$this->getToken('65534')))) {
 							$alt4=1;
 						}
 						switch ($alt4) {
-							case 1 :
-								if ( ($this->input->LA(1)>=$this->getToken('0') && $this->input->LA(1)<=$this->getToken('95')) || ($this->input->LA(1)>=$this->getToken('97') && $this->input->LA(1)<=$this->getToken('65534')) ) {
+							case 1:
+								if (($this->input->LA(1)>=$this->getToken('0') && $this->input->LA(1)<=$this->getToken('95')) || ($this->input->LA(1)>=$this->getToken('97') && $this->input->LA(1)<=$this->getToken('65534'))) {
 									$this->input->consume();
 								} else {
-									$mse = new MismatchedSetException(null,$this->input);
+									$mse = new MismatchedSetException(null, $this->input);
 									$this->recover($mse);
 									throw $mse;
 								}
 								break;
-							default :
-								if ( $cnt4 >= 1 ) break 2;//loop4;
+							default:
+								if ($cnt4 >= 1) {
+									break 2;//loop4;
+								}
 								throw new EarlyExitException(4, $this->input);
 						}
 						$cnt4++;
@@ -350,30 +350,28 @@ class VTEventConditionParserLexer extends AntlrLexer {
 			}
 			$this->state->type = $_type;
 			$this->state->channel = $_channel;
-		}
-		catch (Exception $e) {
+		} catch (Exception $e) {
 			throw $e;
 		}
 	}
 	// $ANTLR end "SYMBOL"
 
 	// $ANTLR start "DOT"
-	function mDOT() {
+	public function mDOT() {
 		try {
 			$_type = VTEventConditionParserLexer::$DOT;
 			$_channel = VTEventConditionParserLexer::$DEFAULT_TOKEN_CHANNEL;
 			$this->matchChar(46);
 			$this->state->type = $_type;
 			$this->state->channel = $_channel;
-		}
-		catch (Exception $e) {
+		} catch (Exception $e) {
 			throw $e;
 		}
 	}
 	// $ANTLR end "DOT"
 
 	// $ANTLR start "ELEMENT_ID"
-	function mELEMENT_ID() {
+	public function mELEMENT_ID() {
 		try {
 			$_type = VTEventConditionParserLexer::$ELEMENT_ID;
 			$_channel = VTEventConditionParserLexer::$DEFAULT_TOKEN_CHANNEL;
@@ -383,15 +381,17 @@ class VTEventConditionParserLexer extends AntlrLexer {
 				$alt6=2;
 				$LA6_0 = $this->input->LA(1);
 
-				if ( (($LA6_0>=$this->getToken('48') && $LA6_0<=$this->getToken('57'))) ) {
+				if ((($LA6_0>=$this->getToken('48') && $LA6_0<=$this->getToken('57')))) {
 					$alt6=1;
 				}
 				switch ($alt6) {
-					case 1 :
+					case 1:
 						$this->mDIGIT();
 						break;
-					default :
-						if ( $cnt6 >= 1 ) break 2;//loop6;
+					default:
+						if ($cnt6 >= 1) {
+							break 2;//loop6;
+						}
 						$eee = new EarlyExitException(6, $this->input);
 						throw $eee;
 				}
@@ -405,15 +405,17 @@ class VTEventConditionParserLexer extends AntlrLexer {
 				$alt7=2;
 				$LA7_0 = $this->input->LA(1);
 
-				if ( (($LA7_0>=$this->getToken('48') && $LA7_0<=$this->getToken('57'))) ) {
+				if ((($LA7_0>=$this->getToken('48') && $LA7_0<=$this->getToken('57')))) {
 					$alt7=1;
 				}
 				switch ($alt7) {
-					case 1 :
+					case 1:
 						$this->mDIGIT();
 						break;
-					default :
-						if ( $cnt7 >= 1 ) break 2;//loop7;
+					default:
+						if ($cnt7 >= 1) {
+							break 2;//loop7;
+						}
 						$eee = new EarlyExitException(7, $this->input);
 						throw $eee;
 				}
@@ -422,43 +424,40 @@ class VTEventConditionParserLexer extends AntlrLexer {
 
 			$this->state->type = $_type;
 			$this->state->channel = $_channel;
-		}
-		catch (Exception $e) {
+		} catch (Exception $e) {
 			throw $e;
 		}
 	}
 	// $ANTLR end "ELEMENT_ID"
 
 	// $ANTLR start "LETTER"
-	function mLETTER() {
+	public function mLETTER() {
 		try {
-			if ( ($this->input->LA(1)>=$this->getToken('65') && $this->input->LA(1)<=$this->getToken('90')) || ($this->input->LA(1)>=$this->getToken('97') && $this->input->LA(1)<=$this->getToken('122')) ) {
+			if (($this->input->LA(1)>=$this->getToken('65') && $this->input->LA(1)<=$this->getToken('90')) || ($this->input->LA(1)>=$this->getToken('97') && $this->input->LA(1)<=$this->getToken('122'))) {
 				$this->input->consume();
 			} else {
-				$mse = new MismatchedSetException(null,$this->input);
+				$mse = new MismatchedSetException(null, $this->input);
 				$this->recover($mse);
 				throw $mse;
 			}
-		}
-		catch (Exception $e) {
+		} catch (Exception $e) {
 			throw $e;
 		}
 	}
 	// $ANTLR end "LETTER"
 
 	// $ANTLR start "DIGIT"
-	function mDIGIT() {
+	public function mDIGIT() {
 		try {
-			$this->matchRange(48,57);
-		}
-		catch (Exception $e) {
+			$this->matchRange(48, 57);
+		} catch (Exception $e) {
 			throw $e;
 		}
 	}
 	// $ANTLR end "DIGIT"
 
 	// $ANTLR start "WHITESPACE"
-	function mWHITESPACE() {
+	public function mWHITESPACE() {
 		try {
 			$_type = VTEventConditionParserLexer::$WHITESPACE;
 			$_channel = VTEventConditionParserLexer::$DEFAULT_TOKEN_CHANNEL;
@@ -468,21 +467,23 @@ class VTEventConditionParserLexer extends AntlrLexer {
 				$alt8=2;
 				$LA8_0 = $this->input->LA(1);
 
-				if ( (($LA8_0>=$this->getToken('9') && $LA8_0<=$this->getToken('10')) || $LA8_0==$this->getToken('13') || $LA8_0==$this->getToken('32')) ) {
+				if ((($LA8_0>=$this->getToken('9') && $LA8_0<=$this->getToken('10')) || $LA8_0==$this->getToken('13') || $LA8_0==$this->getToken('32'))) {
 					$alt8=1;
 				}
 				switch ($alt8) {
-					case 1 :
-						if ( ($this->input->LA(1)>=$this->getToken('9') && $this->input->LA(1)<=$this->getToken('10')) || $this->input->LA(1)==13 || $this->input->LA(1)==32 ) {
+					case 1:
+						if (($this->input->LA(1)>=$this->getToken('9') && $this->input->LA(1)<=$this->getToken('10')) || $this->input->LA(1)==13 || $this->input->LA(1)==32) {
 							$this->input->consume();
 						} else {
-							$mse = new MismatchedSetException(null,$this->input);
+							$mse = new MismatchedSetException(null, $this->input);
 							$this->recover($mse);
 							throw $mse;
 						}
 						break;
-					default :
-						if ( $cnt8 >= 1 ) break 2;//loop8;
+					default:
+						if ($cnt8 >= 1) {
+							break 2;//loop8;
+						}
 						throw new EarlyExitException(8, $this->input);
 				}
 				$cnt8++;
@@ -491,52 +492,50 @@ class VTEventConditionParserLexer extends AntlrLexer {
 			$_channel=self::$HIDDEN;
 			$this->state->type = $_type;
 			$this->state->channel = $_channel;
-		}
-		catch (Exception $e) {
+		} catch (Exception $e) {
 			throw $e;
 		}
 	}
 	// $ANTLR end "WHITESPACE"
 
-	function mTokens() {
+	public function mTokens() {
 		$alt9=11;
 		$alt9 = $this->dfa9->predict($this->input);
 		switch ($alt9) {
-			case 1 :
+			case 1:
 				$this->mT__13();
 				break;
-			case 2 :
+			case 2:
 				$this->mT__14();
 				break;
-			case 3 :
+			case 3:
 				$this->mT__15();
 				break;
-			case 4 :
+			case 4:
 				$this->mT__16();
 				break;
-			case 5 :
+			case 5:
 				$this->mIN();
 				break;
-			case 6 :
+			case 6:
 				$this->mINTEGER();
 				break;
-			case 7 :
+			case 7:
 				$this->mSTRING();
 				break;
-			case 8 :
+			case 8:
 				$this->mSYMBOL();
 				break;
-			case 9 :
+			case 9:
 				$this->mDOT();
 				break;
-			case 10 :
+			case 10:
 				$this->mELEMENT_ID();
 				break;
-			case 11 :
+			case 11:
 				$this->mWHITESPACE();
 				break;
 		}
 	}
-
 }
 ?>

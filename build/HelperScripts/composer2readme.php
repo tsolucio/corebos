@@ -57,14 +57,14 @@ $uitypes = array(
 	'255'=>'picklist(salutation)',
 );
 
-if ($argc==2 and !empty($argv[1])) {
+if ($argc==2 && !empty($argv[1])) {
 	$cjson = file_get_contents($argv[1].'/composer.json');
 	if ($cjson===false) {
 		echo "\nCannot read file ".$argv[1]."/composer.json\n\n";
 		exit(1);
 	}
-	$def = json_decode($cjson,true);
-	if ($def===false or is_null($def)) {
+	$def = json_decode($cjson, true);
+	if ($def===false || is_null($def)) {
 		echo "\nCannot convert composer.json file contents to JSON\n\n";
 		exit(2);
 	}
@@ -85,12 +85,15 @@ if ($argc==2 and !empty($argv[1])) {
 				echo "**Keywords** : ".$def['properties']['keywords']."\n\n";
 			}
 		}
-		if (!empty($def['properties']['version']))
+		if (!empty($def['properties']['version'])) {
 			echo "**Version** : ".$def['properties']['version']."\n\n";
-		if (!empty($def['properties']['homepage']))
+		}
+		if (!empty($def['properties']['homepage'])) {
 			echo "[**Homepage**](".$def['properties']['homepage'].")\n\n";
-		if (!empty($def['properties']['time']))
+		}
+		if (!empty($def['properties']['time'])) {
 			echo "**Release date** : ".$def['properties']['time']."\n\n";
+		}
 		if (!empty($def['properties']['license'])) {
 			if (is_array($def['properties']['license'])) {
 				echo "**Licenses** : ".implode(',', $def['properties']['license'])."\n\n";
@@ -99,36 +102,49 @@ if ($argc==2 and !empty($argv[1])) {
 			}
 		}
 		if (isset($def['properties']['extra'])) {
-			if (!empty($def['properties']['extra']['price']))
+			if (!empty($def['properties']['extra']['price'])) {
 				echo "**Price** : ".$def['properties']['extra']['price']."\n\n";
-			if (!empty($def['properties']['extra']['buyemail']))
+			}
+			if (!empty($def['properties']['extra']['buyemail'])) {
 				echo "**Purchase email** : ".$def['properties']['extra']['buyemail']."\n\n";
-			if (!empty($def['properties']['extra']['buyurl']))
+			}
+			if (!empty($def['properties']['extra']['buyurl'])) {
 				echo "[**Purchase site**](".$def['properties']['extra']['buyurl'].")\n\n";
-			if (!empty($def['properties']['extra']['distribution']))
+			}
+			if (!empty($def['properties']['extra']['distribution'])) {
 				echo "**Distribution** : ".$def['properties']['extra']['distribution']."\n\n";
+			}
 		}
-		if (isset($def['properties']['authors']) and is_array($def['properties']['authors']) and count($def['properties']['authors'])>0) {
-			if (!empty($def['properties']['authors'][0]['name']))
+		if (isset($def['properties']['authors']) && is_array($def['properties']['authors']) && count($def['properties']['authors'])>0) {
+			if (!empty($def['properties']['authors'][0]['name'])) {
 				echo "**Author name** : ".$def['properties']['authors'][0]['name']."\n\n";
-			if (!empty($def['properties']['authors'][0]['email']))
+			}
+			if (!empty($def['properties']['authors'][0]['email'])) {
 				echo "**Author email** : ".$def['properties']['authors'][0]['email']."\n\n";
-			if (!empty($def['properties']['authors'][0]['homepage']))
+			}
+			if (!empty($def['properties']['authors'][0]['homepage'])) {
 				echo "**Author homepage** : ".$def['properties']['authors'][0]['homepage']."\n\n";
+			}
 		}
 		if (isset($def['properties']['support'])) {
-			if (!empty($def['properties']['support']['email']))
+			if (!empty($def['properties']['support']['email'])) {
 				echo "**Support email** : ".$def['properties']['support']['email']."\n\n";
-			if (!empty($def['properties']['support']['issues']))
+			}
+			if (!empty($def['properties']['support']['issues'])) {
 				echo "[**Support issues**](".$def['properties']['support']['issues'].")\n\n";
-			if (!empty($def['properties']['support']['forum']))
+			}
+			if (!empty($def['properties']['support']['forum'])) {
 				echo "[**Support forum**](".$def['properties']['support']['forum'].")\n\n";
-			if (!empty($def['properties']['support']['wiki']))
+			}
+			if (!empty($def['properties']['support']['wiki'])) {
 				echo "[**Support wiki**](".$def['properties']['support']['wiki'].")\n\n";
-			if (!empty($def['properties']['support']['irc']))
+			}
+			if (!empty($def['properties']['support']['irc'])) {
 				echo "[**Support IRC](".$def['properties']['support']['irc'].")\n\n";
-			if (!empty($def['properties']['support']['docs']))
+			}
+			if (!empty($def['properties']['support']['docs'])) {
 				echo "[**Support docs**](".$def['properties']['support']['docs'].")\n\n";
+			}
 		}
 	}
 	echo "\n";

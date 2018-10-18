@@ -9,20 +9,20 @@
  ************************************************************************************/
 class Vtiger_PDF_Model {
 	protected $values = array();
-	
-	function set($key, $value) {
+
+	public function set($key, $value) {
 		$this->values[$key] = $value;
 	}
 
-	function get($key, $defvalue='') {
+	public function get($key, $defvalue = '') {
 		return (isset($this->values[$key]))? $this->values[$key] : $defvalue;
 	}
-	
-	function count() {
+
+	public function count() {
 		return count($this->values);
 	}
-	
-	function keys() {
+
+	public function keys() {
 		return array_keys($this->values);
 	}
 }
