@@ -35,6 +35,7 @@ function vtws_getfilterfields($module, $user) {
 	return array(
 		'fields'=>$fields,
 		'linkfields'=>$linkfields,
+		'pagesize' => intval(GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module)),
 	);
 }
 ?>
