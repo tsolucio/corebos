@@ -256,7 +256,7 @@
 								    <div>
 										<button id="chooseFile">{$_FIELD->label()}</button>
 										<div style="display: none;">
-											<input type="file" id="file-input" data-clear-btn="false" name="image" accept="image/*" capture>
+											<input type="file" id="{$_FIELD->name()}" data-clear-btn="false" name="{$_FIELD->name()}" accept="image/*" capture>
 										</div>
 										<div id="preview">
 											<img  id="contactimage" src="{$_FIELD->valueLabel()}" >
