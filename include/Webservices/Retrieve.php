@@ -7,6 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
+include_once 'include/Webservices/CustomerPortalWS.php';
+include_once 'include/Webservices/getRecordImages.php';
 
 function vtws_retrieve($id, $user) {
 	global $log, $adb;
@@ -55,6 +57,34 @@ function vtws_retrieve($id, $user) {
 	}
 
 	$entity = $handler->retrieve($id);
+	// Dereference WSIDs
+	$r = $meta->getReferenceFieldDetails();
+	$listofrelfields = array();
+	foreach ($r as $relfield => $mods) {
+		if (!empty($entity[$relfield])) {
+			$listofrelfields[] = $entity[$relfield];
+		}
+	}
+	if (count($listofrelfields) > 0) {
+		$deref = unserialize(vtws_getReferenceValue(serialize($listofrelfields), $user));
+		foreach ($r as $relfield => $mods) {
+			if (!empty($entity[$relfield])) {
+				$entity[$relfield.'ename'] = $deref[$entity[$relfield]];
+			}
+		}
+	}
+	// Add attachment information
+	$imgs = $meta->getImageFields();
+	if (count($imgs)>0) {
+		$imginfo = cbws_getrecordimageinfo($id, $user);
+		if ($imginfo['results']>0) {
+			foreach ($imgs as $img) {
+				if (!empty($entity[$img])) {
+					$entity[$img.'imageinfo'] = $imginfo['images'][$img];
+				}
+			}
+		}
+	}
 	//return product lines
 	if ($entityName == 'Quotes' || $entityName == 'PurchaseOrder' || $entityName == 'SalesOrder' || $entityName == 'Invoice') {
 		$pdowsid = vtws_getEntityId('Products').'x';

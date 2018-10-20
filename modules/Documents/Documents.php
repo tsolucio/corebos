@@ -31,7 +31,6 @@ class Documents extends CRMEntity {
 		'vtiger_crmentity'=>'crmid',
 		'vtiger_notes'=>'notesid',
 		'vtiger_notescf'=>'notesid',
-		'vtiger_senotesrel'=>'notesid'
 	);
 
 	/**
@@ -159,6 +158,9 @@ class Documents extends CRMEntity {
 		$this->column_fields['filesize'] = $filesize;
 		$this->column_fields['filetype'] = $filetype;
 		$this->column_fields['filedownloadcount'] = $filedownloadcount;
+		if (!empty($this->parentid)) {
+			$this->save_related_module('Documents', $this->id, getSalesEntityType($this->parentid), $this->parentid);
+		}
 	}
 
 	/**
@@ -206,12 +208,12 @@ class Documents extends CRMEntity {
 				$errmsg = getTranslatedString('StorageLimit', 'Documents').' '.$adminlink;
 			}
 		}
-		if (!$saveerror && $this->mode=='' && $_REQUEST['filelocationtype'] == 'I' && $_REQUEST['action'] != 'DocumentsAjax') {
+		if (!$saveerror && $_REQUEST['filelocationtype'] == 'I' && $_REQUEST['action'] != 'DocumentsAjax') {
 			$upload_file_path = decideFilePath();
 			$dirpermission = is_writable($upload_file_path);
 			$upload = is_uploaded_file($_FILES['filename']['tmp_name']);
 			$ferror = (isset($_FILES['error']) ? $_FILES['error'] : $_FILES['filename']['error']);
-			if (!$dirpermission || ($ferror!=0 && $ferror!=4) || (!$upload && $ferror!=4)) {
+			if ((!$dirpermission && ($this->mode=='' || ($this->mode!='' && $upload))) || ($ferror!=0 && $ferror!=4) || (!$upload && $ferror!=4)) {
 				$saveerror = true;
 				$errmsg = getTranslatedString('LBL_FILEUPLOAD_FAILED', 'Documents');
 			}

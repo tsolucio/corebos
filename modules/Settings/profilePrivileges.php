@@ -226,6 +226,7 @@ $smarty->assign('STANDARD_PRIV', $privileges_stand);
 //tab Privileges
 if ($mode == 'view') {
 	$tab_perr_array = getTabsPermission($profileId);
+	$tab_perr_array = orderByModule($tab_perr_array);
 	$no_of_tabs = count($tab_perr_array);
 	foreach ($tab_perr_array as $tabid => $tab_perr) {
 		$tab=array();
@@ -239,6 +240,7 @@ if ($mode == 'view') {
 }
 if ($mode == 'edit') {
 	$tab_perr_array = getTabsPermission($profileId);
+	$tab_perr_array = orderByModule($tab_perr_array);
 	$no_of_tabs = count($tab_perr_array);
 	foreach ($tab_perr_array as $tabid => $tab_perr) {
 		$tab=array();
@@ -253,6 +255,7 @@ if ($mode == 'edit') {
 if ($mode == 'create') {
 	if ($parentProfileId != '') {
 		$tab_perr_array = getTabsPermission($parentProfileId);
+		$tab_perr_array = orderByModule($tab_perr_array);
 		$no_of_tabs = count($tab_perr_array);
 		foreach ($tab_perr_array as $tabid => $tab_perr) {
 			$tab=array();
@@ -265,6 +268,7 @@ if ($mode == 'create') {
 		}
 	} else {
 		$tab_perr_array = getTabsPermission(1);
+		$tab_perr_array = orderByModule($tab_perr_array);
 		$no_of_tabs = count($tab_perr_array);
 		foreach ($tab_perr_array as $tabid => $tab_perr) {
 			$tab=array();
@@ -711,5 +715,19 @@ function profileExists($profileId) {
 		return true;
 	}
 	return false;
+}
+
+function orderByModule($tab_perr_array) {
+	$mnames = array();
+	foreach ($tab_perr_array as $tabid => $tperm) {
+		$mname = getTabModuleName($tabid);
+		$mnames[$tabid] = getTranslatedString($mname, $mname);
+	}
+	asort($mnames);
+	$tpsorted = array();
+	foreach ($mnames as $tabid => $mname) {
+		$tpsorted[$tabid] = $tab_perr_array[$tabid];
+	}
+	return $tpsorted;
 }
 ?>

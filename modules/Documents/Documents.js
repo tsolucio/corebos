@@ -339,3 +339,8 @@ function checkFileIntegrityDetailView(noteid) {
 function hideresult() {
 	document.getElementById('integrity_result').style.display = 'none';
 }
+
+// Send file as an attachment in an email
+function sendfile_email() {
+	OpenCompose(document.getElementById('dldfilename').value, 'Documents');
+}

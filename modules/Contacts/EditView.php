@@ -7,25 +7,22 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $adb;
-require_once('Smarty_setup.php');
-global $current_user;
+global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $adb, $current_user;
+require_once 'Smarty_setup.php';
 
 $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
-// Identify this module as custom module.
+
 $smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 
 $category = getParentTab($currentModule);
 $record = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : null;
 $isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : null;
 
-//added to fix the issue4600
 $searchurl = getBasic_Advance_SearchURL();
-$smarty->assign("SEARCH", $searchurl);
-//4600 ends
+$smarty->assign('SEARCH', $searchurl);
 
-if($record) {
+if ($record) {
 	$focus->id = $record;
 	$focus->mode = 'edit';
 	$focus->retrieve_entity_info($record, $currentModule);
@@ -38,13 +35,13 @@ if ($errormessage == 2) {
 	$errormessage = $mod_strings['LBL_MAXIMUM_LIMIT_ERROR'];
 } else if ($errormessage == 3) {
 	$errormessage = $mod_strings['LBL_UPLOAD_ERROR'];
-} else if ($errormessage == "image") {
+} else if ($errormessage == 'image') {
 	$errormessage = $mod_strings['LBL_IMAGE_ERROR'];
-} else if ($errormessage == "invalid") {
+} else if ($errormessage == 'invalid') {
 	$errormessage = $mod_strings['LBL_INVALID_IMAGE'];
 }
 if ($errormessage != '') {
-	$smarty->assign("ERROR_MESSAGE", $errormessage);
+	$smarty->assign('ERROR_MESSAGE', $errormessage);
 }
 
 if (isset($_REQUEST['account_id']) && $_REQUEST['account_id'] != '' && empty($record)) {
@@ -82,19 +79,19 @@ if (getFieldVisibilityPermission($currentModule, $current_user->id, 'firstname')
 	$contact_name .= ' ' . (isset($focus->firstname) ? $focus->firstname : '');
 }
 
-if($isduplicate == 'true') {
+if ($isduplicate == 'true') {
 	$focus->id = '';
 	$focus->mode = '';
 	$focus->column_fields['isduplicatedfromrecordid'] = $record; // in order to support duplicate workflows
 	$smarty->assign('__cbisduplicatedfromrecordid', $record);
 }
-$focus->preEditCheck($_REQUEST,$smarty);
-if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
+$focus->preEditCheck($_REQUEST, $smarty);
+if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == "true") {
 	if (!empty($_REQUEST['encode_val'])) {
 		global $current_user;
 		$encode_val = vtlib_purify($_REQUEST['encode_val']);
 		$decode_val = base64_decode($encode_val);
-		$explode_decode_val = explode('&', trim($decode_val,'&'));
+		$explode_decode_val = explode('&', trim($decode_val, '&'));
 		$tabid = getTabid($currentModule);
 		foreach ($explode_decode_val as $fieldvalue) {
 			$value = explode("=", $fieldvalue);
@@ -130,29 +127,29 @@ if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
 	$errormessage = isset($_REQUEST['error_msg']) ? vtlib_purify($_REQUEST['error_msg']) : '';
 	$smarty->assign('ERROR_MESSAGE_CLASS', $errormessageclass);
 	$smarty->assign('ERROR_MESSAGE', $errormessage);
-} elseif($focus->mode != 'edit'){
+} elseif ($focus->mode != 'edit') {
 	setObjectValuesFromRequest($focus);
 }
-$smarty->assign('MASS_EDIT','0');
+$smarty->assign('MASS_EDIT', '0');
 $disp_view = getView($focus->mode);
 $blocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields);
 $smarty->assign('BLOCKS', $blocks);
 $basblocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields, 'BAS');
 $smarty->assign('BASBLOCKS', $basblocks);
-$advblocks = getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields,'ADV');
+$advblocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields, 'ADV');
 $smarty->assign('ADVBLOCKS', $advblocks);
 
-$custom_blocks = getCustomBlocks($currentModule,$disp_view);
+$custom_blocks = getCustomBlocks($currentModule, $disp_view);
 $smarty->assign('CUSTOMBLOCKS', $custom_blocks);
-$smarty->assign('FIELDS',$focus->column_fields);
+$smarty->assign('FIELDS', $focus->column_fields);
 
-$smarty->assign('OP_MODE',$disp_view);
+$smarty->assign('OP_MODE', $disp_view);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('CATEGORY', $category);
-$smarty->assign("THEME", $theme);
+$smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('ID', $focus->id);
 $smarty->assign('MODE', $focus->mode);
@@ -162,51 +159,59 @@ $smarty->assign('CHECK', Button_Check($currentModule));
 $smarty->assign('DUPLICATE', $isduplicate);
 
 $smarty->assign('NAME', $contact_name);
-if($focus->mode == 'edit' || $isduplicate == 'true') {
-	$smarty->assign('UPDATEINFO',updateInfo($record));
+if ($focus->mode == 'edit' || $isduplicate == 'true') {
+	$smarty->assign('UPDATEINFO', updateInfo($record));
 }
 
-if(isset($_REQUEST['return_module']))    $smarty->assign("RETURN_MODULE", vtlib_purify($_REQUEST['return_module']));
-if(isset($_REQUEST['return_action']))    $smarty->assign("RETURN_ACTION", vtlib_purify($_REQUEST['return_action']));
-if(isset($_REQUEST['return_id']))        $smarty->assign("RETURN_ID", vtlib_purify($_REQUEST['return_id']));
-if (isset($_REQUEST['return_viewname'])) $smarty->assign("RETURN_VIEWNAME", vtlib_purify($_REQUEST['return_viewname']));
-$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize',3000000,$currentModule);
-$smarty->assign("UPLOADSIZE", $upload_maxsize/1000000); //Convert to MB
-$smarty->assign("UPLOAD_MAXSIZE",$upload_maxsize);
+if (isset($_REQUEST['return_module'])) {
+	$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
+}
+if (isset($_REQUEST['return_action'])) {
+	$smarty->assign('RETURN_ACTION', vtlib_purify($_REQUEST['return_action']));
+}
+if (isset($_REQUEST['return_id'])) {
+	$smarty->assign('RETURN_ID', vtlib_purify($_REQUEST['return_id']));
+}
+if (isset($_REQUEST['return_viewname'])) {
+	$smarty->assign('RETURN_VIEWNAME', vtlib_purify($_REQUEST['return_viewname']));
+}
+$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize', 3000000, $currentModule);
+$smarty->assign('UPLOADSIZE', $upload_maxsize/1000000); //Convert to MB
+$smarty->assign('UPLOAD_MAXSIZE', $upload_maxsize);
 
 // Field Validation Information
 $tabid = getTabid($currentModule);
-$validationData = getDBValidationData($focus->tab_name,$tabid);
+$validationData = getDBValidationData($focus->tab_name, $tabid);
 $validationArray = split_validationdataArray($validationData);
 
-$smarty->assign("VALIDATION_DATA_FIELDNAME",$validationArray['fieldname']);
-$smarty->assign("VALIDATION_DATA_FIELDDATATYPE",$validationArray['datatype']);
-$smarty->assign("VALIDATION_DATA_FIELDLABEL",$validationArray['fieldlabel']);
+$smarty->assign('VALIDATION_DATA_FIELDNAME', $validationArray['fieldname']);
+$smarty->assign('VALIDATION_DATA_FIELDDATATYPE', $validationArray['datatype']);
+$smarty->assign('VALIDATION_DATA_FIELDLABEL', $validationArray['fieldlabel']);
 
 // In case you have a date field
-$smarty->assign("CALENDAR_LANG", $app_strings['LBL_JSCALENDAR_LANG']);
-$smarty->assign("CALENDAR_DATEFORMAT", parse_calendardate($app_strings['NTC_DATE_FORMAT']));
+$smarty->assign('CALENDAR_LANG', $app_strings['LBL_JSCALENDAR_LANG']);
+$smarty->assign('CALENDAR_DATEFORMAT', parse_calendardate($app_strings['NTC_DATE_FORMAT']));
 
 // Module Sequence Numbering
 $mod_seq_field = getModuleSequenceField($currentModule);
-if($focus->mode != 'edit' && $mod_seq_field != null) {
+if ($focus->mode != 'edit' && $mod_seq_field != null) {
 	$autostr = getTranslatedString('MSG_AUTO_GEN_ON_SAVE');
 	list($mod_seq_string, $mod_seq_prefix, $mod_seq_no, $doNative) = cbEventHandler::do_filter('corebos.filter.ModuleSeqNumber.get', array('', '', '', true));
 	if ($doNative) {
-		$mod_seq_string = $adb->pquery("SELECT prefix, cur_id from vtiger_modentity_num where semodule = ? and active=1",array($currentModule));
-		$mod_seq_prefix = $adb->query_result($mod_seq_string,0,'prefix');
-		$mod_seq_no = $adb->query_result($mod_seq_string,0,'cur_id');
+		$mod_seq_string = $adb->pquery('SELECT prefix, cur_id from vtiger_modentity_num where semodule = ? and active=1', array($currentModule));
+		$mod_seq_prefix = $adb->query_result($mod_seq_string, 0, 'prefix');
+		$mod_seq_no = $adb->query_result($mod_seq_string, 0, 'cur_id');
 	}
 	if ($adb->num_rows($mod_seq_string) == 0 || $focus->checkModuleSeqNumber($focus->table_name, $mod_seq_field['column'], $mod_seq_prefix.$mod_seq_no)) {
 		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
-		$smarty->assign('ERROR_MESSAGE', '<b>'. getTranslatedString($mod_seq_field['label']). ' '. getTranslatedString('LBL_NOT_CONFIGURED')
-			.' - '. getTranslatedString('LBL_PLEASE_CLICK') .' <a href="index.php?module=Settings&action=CustomModEntityNo&parenttab=Settings&selmodule='.$currentModule.'">'.getTranslatedString('LBL_HERE').'</a> '
-			. getTranslatedString('LBL_TO_CONFIGURE'). ' '. getTranslatedString($mod_seq_field['label']) .'</b>');
+		$smarty->assign('ERROR_MESSAGE', '<b>'. getTranslatedString($mod_seq_field['label']). ' '. getTranslatedString('LBL_NOT_CONFIGURED').' - '.
+			getTranslatedString('LBL_PLEASE_CLICK') .' <a href="index.php?module=Settings&action=CustomModEntityNo&parenttab=Settings&selmodule='.$currentModule.'">'.
+			getTranslatedString('LBL_HERE').'</a> '. getTranslatedString('LBL_TO_CONFIGURE'). ' '. getTranslatedString($mod_seq_field['label']) .'</b>');
 	} else {
-		$smarty->assign("MOD_SEQ_ID",$autostr);
+		$smarty->assign('MOD_SEQ_ID', $autostr);
 	}
 } else {
-	if (!empty($mod_seq_field) and !empty($mod_seq_field['name']) and !empty($focus->column_fields[$mod_seq_field['name']])) {
+	if (!empty($mod_seq_field) && !empty($mod_seq_field['name']) && !empty($focus->column_fields[$mod_seq_field['name']])) {
 		$smarty->assign('MOD_SEQ_ID', $focus->column_fields[$mod_seq_field['name']]);
 	} else {
 		$smarty->assign('MOD_SEQ_ID', '');
@@ -215,12 +220,12 @@ if($focus->mode != 'edit' && $mod_seq_field != null) {
 
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
+$smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);
 
 $picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
-$smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", json_encode($picklistDependencyDatasource));
+$smarty->assign('PICKIST_DEPENDENCY_DATASOURCE', json_encode($picklistDependencyDatasource));
 //Show or not the Header to copy address to left or right
 $smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Application_Show_Copy_Address', 1, $currentModule, $current_user->id));
 
-$smarty->display("salesEditView.tpl");
-
+$smarty->display('salesEditView.tpl');
 ?>

@@ -312,7 +312,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 			$search_field = "product_id";
 		}
 
-		$qry= 'select vtiger_field.columnname,tablename
+		$qry= 'select vtiger_field.columnname,tablename, fieldname
 			from vtiger_tab
 			inner join vtiger_field on vtiger_field.tabid=vtiger_tab.tabid
 			where vtiger_tab.name=? and (fieldname=? or columnname=?)';
@@ -320,7 +320,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 		$noofrows = $adb->num_rows($result);
 		if ($noofrows!=0) {
 			$column_name=$adb->query_result($result, 0, 'columnname');
-
+			$field_name=$adb->query_result($result, 0, 'fieldname');
 			//Check added for tickets by accounts/contacts in dashboard
 			if ($column_name == 'parent_id') {
 				if ($search_field_first	== 'account_id') {
@@ -337,21 +337,21 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 			$uitype=getUItype($module, $column_name);
 
 			//Added for Member of search in Accounts
-			if ($column_name == "parentid" && $module == "Accounts") {
-				$table_name = "vtiger_account2";
-				$column_name = "accountname";
+			if ($column_name == 'parentid' && $module == 'Accounts') {
+				$table_name = 'vtiger_account2';
+				$column_name = 'accountname';
 			}
-			if ($column_name == "parentid" && $module == "Products") {
-				$table_name = "vtiger_products2";
-				$column_name = "productname";
+			if ($column_name == 'parentid' && $module == 'Products') {
+				$table_name = 'vtiger_products2';
+				$column_name = 'productname';
 			}
-			if ($column_name == "reportsto" && $module == "Contacts") {
-				$table_name = "vtiger_contactdetails2";
-				$column_name = "lastname";
+			if ($column_name == 'reportsto' && $module == 'Contacts') {
+				$table_name = 'vtiger_contactdetails2';
+				$column_name = 'lastname';
 			}
-			if ($column_name == "inventorymanager" && $module = "Quotes") {
-				$table_name = "vtiger_usersQuotes";
-				$column_name = "user_name";
+			if ($column_name == 'inventorymanager' && $module = 'Quotes') {
+				$table_name = 'vtiger_usersQuotes';
+				$column_name = 'user_name';
 			}
 			//Added to support user date format in basic search
 			if ($uitype == 5 || $uitype == 6 || $uitype == 23 || $uitype == 70) {
@@ -375,6 +375,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 					$where="$table_name.$column_name = '-1'";
 				}
 			} elseif ($uitype == 15 || $uitype == 16) {
+				$currlang = $current_user->language;
 				if (is_uitype($uitype, '_picklist_')) {
 					// Get all the keys for the for the Picklist value
 					$mod_keys = array_keys($mod_strings, $search_string);
@@ -386,22 +387,22 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 							if ($stridx !== 0) {
 								$search_string = $mod_key;
 								if ($input['operator'] == 'e' && getFieldVisibilityPermission("Calendar", $current_user->id, 'taskstatus') == '0' && ($column_name == "status" || $column_name == "eventstatus")) {
-									$where="(vtiger_activity.status ='". $search_string ."' or vtiger_activity.eventstatus ='". $search_string ."')";
+									$where="(vtiger_activity.status IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n='". formatForSqlLike($search_string) ."') OR vtiger_activity.eventstatus IN (select translation_key from vtiger_cbtranslation where forpicklist='$module::$field_name' and i18n='". formatForSqlLike($search_string) ."') OR vtiger_activity.status ='". $search_string ."' or vtiger_activity.eventstatus ='". $search_string ."')";
 								} elseif (getFieldVisibilityPermission("Calendar", $current_user->id, 'taskstatus') == '0' && ($column_name == "status" || $column_name == "eventstatus")) {
-									$where="(vtiger_activity.status like '". formatForSqlLike($search_string) ."' or vtiger_activity.eventstatus like '". formatForSqlLike($search_string) ."')";
+									$where="(vtiger_activity.status IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR vtiger_activity.eventstatus IN (select translation_key from vtiger_cbtranslation where forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR vtiger_activity.status ='". $search_string ."' or vtiger_activity.eventstatus ='". $search_string ."')";
 								} else {
-									$where="$table_name.$column_name like '". formatForSqlLike($search_string) ."'";
+									$where="$table_name.$column_name IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR $table_name.$column_name like '". formatForSqlLike($search_string) ."'";
 								}
 								break;
 							} else { //if the mod strings cointains LBL , just return the original search string. Not the key
-								$where="$table_name.$column_name like '". formatForSqlLike($search_string) ."'";
+								$where="$table_name.$column_name IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR $table_name.$column_name like '". formatForSqlLike($search_string) ."'";
 							}
 						}
 					} else {
 						if (getFieldVisibilityPermission("Calendar", $current_user->id, 'taskstatus') == '0' && ($table_name == "vtiger_activity" && ($column_name == "status" || $column_name == "eventstatus"))) {
-							$where="(vtiger_activity.status like '". formatForSqlLike($search_string) ."' or vtiger_activity.eventstatus like '" . formatForSqlLike($search_string) ."')";
+							$where="(vtiger_activity.status IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR vtiger_activity.eventstatus IN (select translation_key from vtiger_cbtranslation where forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR vtiger_activity.status ='". $search_string ."' or vtiger_activity.eventstatus ='". $search_string ."')";
 						} else {
-							$where="$table_name.$column_name like '". formatForSqlLike($search_string) ."'";
+							$where="$table_name.$column_name IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR $table_name.$column_name like '". formatForSqlLike($search_string) ."'";
 						}
 					}
 				}
@@ -977,11 +978,11 @@ function getUnifiedWhere($listquery, $module, $search_val) {
 
 	$search_val = $adb->sql_escape_string($search_val);
 	if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0) {
-		$query = 'SELECT columnname, tablename FROM vtiger_field WHERE tabid = ? and vtiger_field.presence in (0,2)';
+		$query = 'SELECT columnname, tablename, fieldname FROM vtiger_field WHERE tabid = ? and vtiger_field.presence in (0,2)';
 		$qparams = array(getTabid($module));
 	} else {
 		$profileList = getCurrentUserProfileList();
-		$query = 'SELECT columnname, tablename
+		$query = 'SELECT columnname, tablename, fieldname
 			FROM vtiger_field
 			INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
 			INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
@@ -996,18 +997,20 @@ function getUnifiedWhere($listquery, $module, $search_val) {
 	for ($i=0; $i<$noofrows; $i++) {
 		$columnname = $adb->query_result($result, $i, 'columnname');
 		$tablename = $adb->query_result($result, $i, 'tablename');
+		$fieldname = $adb->query_result($result, $i, 'fieldname');
+		$field_uitype = getUItype($module, $columnname);
 
 		// Search / Lookup customization
 		if ($module == 'Contacts' && $columnname == 'accountid') {
-			$columnname = "accountname";
-			$tablename = "vtiger_account";
+			$columnname = 'accountname';
+			$tablename = 'vtiger_account';
 		}
 		if ($module == 'HelpDesk' && $columnname == 'parent_id') {
-			$columnname = "accountname";
-			$tablename = "vtiger_account";
+			$columnname = 'accountname';
+			$tablename = 'vtiger_account';
 			if (false !== strpos($listquery, $tablename)) {
 				if ($where != '') {
-					$where .= " OR ";
+					$where .= ' OR ';
 				}
 				if ($binary_search) {
 					$where .= 'LOWER('.$tablename.'.'.$columnname.") LIKE BINARY LOWER('". formatForSqlLike($search_val) ."')";
@@ -1015,19 +1018,25 @@ function getUnifiedWhere($listquery, $module, $search_val) {
 					$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val) ."'";
 				}
 			}
-			$columnname = "firstname";
-			$tablename = "vtiger_contactdetails";
+			$columnname = 'firstname';
+			$tablename = 'vtiger_contactdetails';
 		}
 
 		//Before form the where condition, check whether the table for the field has been added in the listview query
 		if (false !== strpos($listquery, $tablename)) {
 			if ($where != '') {
-				$where .= " OR ";
+				$where .= ' OR ';
 			}
 			if ($binary_search) {
 				$where .= 'LOWER('.$tablename.'.'.$columnname.") LIKE BINARY LOWER('". formatForSqlLike($search_val) ."')";
 			} else {
-				$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val) ."'";
+				if (is_uitype($field_uitype, '_picklist_')) {
+					$where .= '('.$tablename.".".$columnname.' IN (select translation_key from vtiger_cbtranslation
+						where locale="'.$current_user->language.'" and forpicklist="'.$module.'::'.$fieldname.'" and i18n LIKE "'.formatForSqlLike($search_val).'") OR '
+						.$tablename.".".$columnname.' LIKE "'. formatForSqlLike($search_val).'")';
+				} else {
+					$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val) ."'";
+				}
 			}
 		}
 	}
@@ -1287,12 +1296,13 @@ function getAdvancedSearchComparator($comparator, $value, $datatype = '') {
 function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $datatype) {
 	//we have to add the fieldname/tablename.fieldname and the corresponding value (which we want).
 	// So that when these LHS field comes then RHS value will be replaced for LHS in the where condition of the query
-	global $mod_strings, $currentModule, $current_user;
+	global $adb, $currentModule, $current_user;
 	//Added for proper check of contact name in advance filter
 	if ($tablename == 'vtiger_contactdetails' && $fieldname == 'lastname') {
 		$fieldname = 'contactid';
 	}
-
+	$fldname = $adb->pquery('select fieldname from vtiger_field where tablename=? and columnname=?', array($tablename, $fieldname));
+	$fld = $adb->query_result($fldname, 0, 0);
 	$contactid = 'vtiger_contactdetails.lastname';
 	if ($currentModule != 'Contacts' && $currentModule != 'Leads' && $currentModule != 'Campaigns') {
 		$contactid = getSqlForNameInDisplayFormat(array('lastname'=>'vtiger_contactdetails.lastname', 'firstname'=>'vtiger_contactdetails.firstname'), 'Contacts');
@@ -1328,7 +1338,7 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 		);
 		$temp_value = "( trim($userNameSql)".getAdvancedSearchComparator($comparator, $value, $datatype);
 		$temp_value.= " OR vtiger_groups$tableNameSuffix.groupname".getAdvancedSearchComparator($comparator, $value, $datatype);
-		$value=$temp_value.")";
+		$value = $temp_value . ')';
 	} elseif ($fieldname == "inventorymanager") {
 		$value = $tablename.".".$fieldname.getAdvancedSearchComparator($comparator, getUserId_Ol($value), $datatype);
 	} elseif (!empty($change_table_field[$fieldname])) { //Added to handle special cases
@@ -1343,26 +1353,13 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 		//For crmentity.crmid the control should not come here. This is only to get the related to modules
 		$value = getAdvancedSearchParentEntityValue($comparator, $value, $datatype, $tablename, $fieldname);
 	} else {
-		//For checkbox type values, we have to convert yes/no as 1/0 to get the values
 		$field_uitype = getUItype($currentModule, $fieldname);
+		// For checkbox type values, we have to convert yes/no to 1/0 to get the values
 		if ($field_uitype == 56) {
 			if (strtolower($value) == 'yes') {
 				$value = 1;
 			} elseif (strtolower($value) ==  'no') {
 				$value = 0;
-			}
-		} elseif (is_uitype($field_uitype, '_picklist_')) {
-			// Get all the keys for the for the Picklist value
-			$mod_keys = array_keys($mod_strings, $value);
-
-			// Iterate on the keys, to get the first key which doesn't start with LBL_      (assuming it is not used in PickList)
-			foreach ($mod_keys as $mod_key) {
-				$stridx = strpos($mod_key, 'LBL_');
-			// Use strict type comparision, refer strpos for more details
-				if ($stridx !== 0) {
-					$value = $mod_key;
-					break;
-				}
 			}
 		}
 		if ($currentModule == "Calendar" && ($fieldname=="status" || $fieldname=="taskstatus" || $fieldname=="eventstatus")) {
@@ -1375,7 +1372,15 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 		} elseif ($comparator == 'e' && (trim($value) == 'NULL' || trim($value) == '')) {
 			$value = '('.$tablename.".".$fieldname.' IS NULL OR '.$tablename.'.'.$fieldname.' = \'\')';
 		} else {
-			$value = $tablename.".".$fieldname.getAdvancedSearchComparator($comparator, $value, $datatype);
+			if (is_uitype($field_uitype, '_picklist_')) {
+				$value = $tablename.".".$fieldname.' IN (select translation_key from vtiger_cbtranslation
+					where locale="'.$current_user->language.'" and forpicklist="'.$currentModule.'::'.$fld
+					.'" and i18n '.getAdvancedSearchComparator($comparator, $value, $datatype).')'
+					.(in_array($comparator, array('n', 'k', 'dnsw', 'dnew')) ? ' AND ' : ' OR ')
+					.$tablename.'.'.$fieldname.getAdvancedSearchComparator($comparator, $value, $datatype);
+			} else {
+				$value = $tablename.".".$fieldname.getAdvancedSearchComparator($comparator, $value, $datatype);
+			}
 		}
 	}
 	return $value;
@@ -1503,5 +1508,414 @@ function getTagWhere($search_val, $current_user_id) {
 		$where .= '0)'; // if there are no records we need to add some condition or search will return all the values
 	}
 	return $where;
+}
+
+/**
+ * This function will return the script to set the start data and end date for the standard selection criteria
+ * @returns  $jsStr : Type String
+ */
+function getCriteriaJS($formName) {
+	$todayDateTime = new DateTimeField(date('Y-m-d H:i:s'));
+
+	$tomorrow = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+1, date('Y')));
+	$tomorrowDateTime = new DateTimeField($tomorrow.' '. date('H:i:s'));
+
+	$yesterday = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-1, date('Y')));
+	$yesterdayDateTime = new DateTimeField($yesterday.' '. date('H:i:s'));
+
+	$currentmonth0 = date('Y-m-d', mktime(0, 0, 0, date('m'), '01', date('Y')));
+	$currentMonthStartDateTime = new DateTimeField($currentmonth0.' '. date('H:i:s'));
+	$currentmonth1 = date('Y-m-t');
+	$currentMonthEndDateTime = new DateTimeField($currentmonth1.' '. date('H:i:s'));
+
+	$lastmonth0 = date('Y-m-d', mktime(0, 0, 0, date('m')-1, '01', date('Y')));
+	$lastMonthStartDateTime = new DateTimeField($lastmonth0.' '. date('H:i:s'));
+	$lastmonth1 = date('Y-m-t', strtotime('-1 Month'));
+	$lastMonthEndDateTime = new DateTimeField($lastmonth1.' '. date('H:i:s'));
+
+	$nextmonth0 = date('Y-m-d', mktime(0, 0, 0, date('m')+1, '01', date('Y')));
+	$nextMonthStartDateTime = new DateTimeField($nextmonth0.' '. date('H:i:s'));
+	$nextmonth1 = date('Y-m-t', strtotime('+1 Month'));
+	$nextMonthEndDateTime = new DateTimeField($nextmonth1.' '. date('H:i:s'));
+
+	$lastweek0 = date('Y-m-d', strtotime('-2 week Sunday'));
+	$lastWeekStartDateTime = new DateTimeField($lastweek0.' '. date('H:i:s'));
+	$lastweek1 = date('Y-m-d', strtotime('-1 week Saturday'));
+	$lastWeekEndDateTime = new DateTimeField($lastweek1.' '. date('H:i:s'));
+
+	$thisweek0 = date('Y-m-d', strtotime('-1 week Sunday'));
+	$thisWeekStartDateTime = new DateTimeField($thisweek0.' '. date('H:i:s'));
+	$thisweek1 = date('Y-m-d', strtotime('this Saturday'));
+	$thisWeekEndDateTime = new DateTimeField($thisweek1.' '. date('H:i:s'));
+
+	$nextweek0 = date('Y-m-d', strtotime('this Sunday'));
+	$nextWeekStartDateTime = new DateTimeField($nextweek0.' '. date('H:i:s'));
+	$nextweek1 = date('Y-m-d', strtotime('+1 week Saturday'));
+	$nextWeekEndDateTime = new DateTimeField($nextweek1.' '. date('H:i:s'));
+
+	$next7days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+6, date('Y')));
+	$next7DaysDateTime = new DateTimeField($next7days.' '. date('H:i:s'));
+
+	$next30days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+29, date('Y')));
+	$next30DaysDateTime = new DateTimeField($next30days.' '. date('H:i:s'));
+
+	$next60days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+59, date('Y')));
+	$next60DaysDateTime = new DateTimeField($next60days.' '. date('H:i:s'));
+
+	$next90days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+89, date('Y')));
+	$next90DaysDateTime = new DateTimeField($next90days.' '. date('H:i:s'));
+
+	$next120days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+119, date('Y')));
+	$next120DaysDateTime = new DateTimeField($next120days.' '. date('H:i:s'));
+
+	$last7days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-6, date('Y')));
+	$last7DaysDateTime = new DateTimeField($last7days.' '. date('H:i:s'));
+
+	$last14days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-13, date('Y')));
+	$last14DaysDateTime = new DateTimeField($last14days.' '. date('H:i:s'));
+
+	$last30days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-29, date('Y')));
+	$last30DaysDateTime = new DateTimeField($last30days.' '. date('H:i:s'));
+
+	$last60days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-59, date('Y')));
+	$last60DaysDateTime = new DateTimeField($last60days.' '. date('H:i:s'));
+
+	$last90days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-89, date('Y')));
+	$last90DaysDateTime = new DateTimeField($last90days.' '. date('H:i:s'));
+
+	$last120days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-119, date('Y')));
+	$last120DaysDateTime = new DateTimeField($last120days.' '. date('H:i:s'));
+
+	$currentFY0 = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')));
+	$currentFYStartDateTime = new DateTimeField($currentFY0.' '. date('H:i:s'));
+	$currentFY1 = date('Y-m-t', mktime(0, 0, 0, '12', date('d'), date('Y')));
+	$currentFYEndDateTime = new DateTimeField($currentFY1.' '. date('H:i:s'));
+
+	$lastFY0 = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')-1));
+	$lastFYStartDateTime = new DateTimeField($lastFY0.' '. date('H:i:s'));
+	$lastFY1 = date('Y-m-t', mktime(0, 0, 0, '12', date('d'), date('Y')-1));
+	$lastFYEndDateTime = new DateTimeField($lastFY1.' '. date('H:i:s'));
+
+	$nextFY0 = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')+1));
+	$nextFYStartDateTime = new DateTimeField($nextFY0.' '. date('H:i:s'));
+	$nextFY1 = date('Y-m-t', mktime(0, 0, 0, '12', date('d'), date('Y')+1));
+	$nextFYEndDateTime = new DateTimeField($nextFY1.' '. date('H:i:s'));
+
+	if (date('m') <= 3) {
+		$cFq = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')));
+		$cFqStartDateTime = new DateTimeField($cFq.' '. date('H:i:s'));
+		$cFq1 = date('Y-m-d', mktime(0, 0, 0, '03', '31', date('Y')));
+		$cFqEndDateTime = new DateTimeField($cFq1.' '. date('H:i:s'));
+
+		$nFq = date('Y-m-d', mktime(0, 0, 0, '04', '01', date('Y')));
+		$nFqStartDateTime = new DateTimeField($nFq.' '. date('H:i:s'));
+		$nFq1 = date('Y-m-d', mktime(0, 0, 0, '06', '30', date('Y')));
+		$nFqEndDateTime = new DateTimeField($nFq1.' '. date('H:i:s'));
+
+		$pFq = date('Y-m-d', mktime(0, 0, 0, '10', '01', date('Y')-1));
+		$pFqStartDateTime = new DateTimeField($pFq.' '. date('H:i:s'));
+		$pFq1 = date('Y-m-d', mktime(0, 0, 0, '12', '31', date('Y')-1));
+		$pFqEndDateTime = new DateTimeField($pFq1.' '. date('H:i:s'));
+	} elseif (date('m') > 3 && date('m') <= 6) {
+		$pFq = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')));
+		$pFqStartDateTime = new DateTimeField($pFq.' '. date('H:i:s'));
+		$pFq1 = date('Y-m-d', mktime(0, 0, 0, '03', '31', date('Y')));
+		$pFqEndDateTime = new DateTimeField($pFq1.' '. date('H:i:s'));
+
+		$cFq = date('Y-m-d', mktime(0, 0, 0, '04', '01', date('Y')));
+		$cFqStartDateTime = new DateTimeField($cFq.' '. date('H:i:s'));
+		$cFq1 = date('Y-m-d', mktime(0, 0, 0, '06', '30', date('Y')));
+		$cFqEndDateTime = new DateTimeField($cFq1.' '. date('H:i:s'));
+
+		$nFq = date('Y-m-d', mktime(0, 0, 0, '07', '01', date('Y')));
+		$nFqStartDateTime = new DateTimeField($nFq.' '. date('H:i:s'));
+		$nFq1 = date('Y-m-d', mktime(0, 0, 0, '09', '30', date('Y')));
+		$nFqEndDateTime = new DateTimeField($nFq1.' '. date('H:i:s'));
+	} elseif (date('m') > 6 && date('m') <= 9) {
+		$nFq = date('Y-m-d', mktime(0, 0, 0, '10', '01', date('Y')));
+		$nFqStartDateTime = new DateTimeField($nFq.' '. date('H:i:s'));
+		$nFq1 = date('Y-m-d', mktime(0, 0, 0, '12', '31', date('Y')));
+		$nFqEndDateTime = new DateTimeField($nFq1.' '. date('H:i:s'));
+
+		$pFq = date('Y-m-d', mktime(0, 0, 0, '04', '01', date('Y')));
+		$pFqStartDateTime = new DateTimeField($pFq.' '. date('H:i:s'));
+		$pFq1 = date('Y-m-d', mktime(0, 0, 0, '06', '30', date('Y')));
+		$pFqEndDateTime = new DateTimeField($pFq1.' '. date('H:i:s'));
+
+		$cFq = date('Y-m-d', mktime(0, 0, 0, '07', '01', date('Y')));
+		$cFqStartDateTime = new DateTimeField($cFq.' '. date('H:i:s'));
+		$cFq1 = date('Y-m-d', mktime(0, 0, 0, '09', '30', date('Y')));
+		$cFqEndDateTime = new DateTimeField($cFq1.' '. date('H:i:s'));
+	} elseif (date('m') > 9 && date('m') <= 12) {
+		$nFq = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')+1));
+		$nFqStartDateTime = new DateTimeField($nFq.' '. date('H:i:s'));
+		$nFq1 = date('Y-m-d', mktime(0, 0, 0, '03', '31', date('Y')+1));
+		$nFqEndDateTime = new DateTimeField($nFq1.' '. date('H:i:s'));
+
+		$pFq = date('Y-m-d', mktime(0, 0, 0, '07', '01', date('Y')));
+		$pFqStartDateTime = new DateTimeField($pFq.' '. date('H:i:s'));
+		$pFq1 = date('Y-m-d', mktime(0, 0, 0, '09', '30', date('Y')));
+		$pFqEndDateTime = new DateTimeField($pFq1.' '. date('H:i:s'));
+
+		$cFq = date('Y-m-d', mktime(0, 0, 0, '10', '01', date('Y')));
+		$cFqStartDateTime = new DateTimeField($cFq.' '. date('H:i:s'));
+		$cFq1 = date('Y-m-d', mktime(0, 0, 0, '12', '31', date('Y')));
+		$cFqEndDateTime = new DateTimeField($cFq1.' '. date('H:i:s'));
+	}
+
+	$sjsStr = '<script type="text/javaScript">
+		function showDateRange( type ) {
+			if (type!="custom") {
+				document.'.$formName.'.startdate.readOnly=true
+				document.'.$formName.'.enddate.readOnly=true
+				getObj("jscal_trigger_date_start").style.visibility="hidden"
+				getObj("jscal_trigger_date_end").style.visibility="hidden"
+			} else {
+				document.'.$formName.'.startdate.readOnly=false
+				document.'.$formName.'.enddate.readOnly=false
+				getObj("jscal_trigger_date_start").style.visibility="visible"
+				getObj("jscal_trigger_date_end").style.visibility="visible"
+			}
+			if( type == "today" ) {
+				document.'.$formName.'.startdate.value = "'.$todayDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$todayDateTime->getDisplayDate().'";
+			} else if( type == "yesterday" ) {
+				document.'.$formName.'.startdate.value = "'.$yesterdayDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$yesterdayDateTime->getDisplayDate().'";
+			} else if( type == "tomorrow" ) {
+				document.'.$formName.'.startdate.value = "'.$tomorrowDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$tomorrowDateTime->getDisplayDate().'";
+			} else if( type == "thisweek" ) {
+				document.'.$formName.'.startdate.value = "'.$thisWeekStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$thisWeekEndDateTime->getDisplayDate().'";
+			} else if( type == "lastweek" ) {
+				document.'.$formName.'.startdate.value = "'.$lastWeekStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$lastWeekEndDateTime->getDisplayDate().'";
+			} else if( type == "nextweek" ) {
+				document.'.$formName.'.startdate.value = "'.$nextWeekStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$nextWeekEndDateTime->getDisplayDate().'";
+			} else if( type == "thismonth" ) {
+				document.'.$formName.'.startdate.value = "'.$currentMonthStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$currentMonthEndDateTime->getDisplayDate().'";
+			} else if( type == "lastmonth" ) {
+				document.'.$formName.'.startdate.value = "'.$lastMonthStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$lastMonthEndDateTime->getDisplayDate().'";
+			} else if( type == "nextmonth" ) {
+				document.'.$formName.'.startdate.value = "'.$nextMonthStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$nextMonthEndDateTime->getDisplayDate().'";
+			} else if( type == "next7days" ) {
+				document.'.$formName.'.startdate.value = "'.$todayDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$next7DaysDateTime->getDisplayDate().'";
+			} else if( type == "next30days" ) {
+				document.'.$formName.'.startdate.value = "'.$todayDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$next30DaysDateTime->getDisplayDate().'";
+			} else if( type == "next60days" ) {
+				document.'.$formName.'.startdate.value = "'.$todayDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$next60DaysDateTime->getDisplayDate().'";
+			} else if( type == "next90days" ) {
+				document.'.$formName.'.startdate.value = "'.$todayDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$next90DaysDateTime->getDisplayDate().'";
+			} else if( type == "next120days" ) {
+				document.'.$formName.'.startdate.value = "'.$todayDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$next120DaysDateTime->getDisplayDate().'";
+			} else if( type == "last7days" ) {
+				document.'.$formName.'.startdate.value = "'.$last7DaysDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$todayDateTime->getDisplayDate().'";
+			} else if( type == "last14days" ) {
+				document.'.$formName.'.startdate.value = "'.$last14DaysDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value =  "'.$todayDateTime->getDisplayDate().'";
+			} else if( type == "last30days" ) {
+				document.'.$formName.'.startdate.value = "'.$last30DaysDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$todayDateTime->getDisplayDate().'";
+			} else if( type == "last60days" ) {
+				document.'.$formName.'.startdate.value = "'.$last60DaysDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$todayDateTime->getDisplayDate().'";
+			} else if( type == "last90days" ) {
+				document.'.$formName.'.startdate.value = "'.$last90DaysDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$todayDateTime->getDisplayDate().'";
+			} else if( type == "last120days" ) {
+				document.'.$formName.'.startdate.value = "'.$last120DaysDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$todayDateTime->getDisplayDate().'";
+			} else if( type == "thisfy" ) {
+				document.'.$formName.'.startdate.value = "'.$currentFYStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$currentFYEndDateTime->getDisplayDate().'";
+			} else if( type == "prevfy" ) {
+				document.'.$formName.'.startdate.value = "'.$lastFYStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$lastFYEndDateTime->getDisplayDate().'";
+			} else if( type == "nextfy" ) {
+				document.'.$formName.'.startdate.value = "'.$nextFYStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$nextFYEndDateTime->getDisplayDate().'";
+			} else if( type == "nextfq" ) {
+				document.'.$formName.'.startdate.value = "'.$nFqStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$nFqEndDateTime->getDisplayDate().'";
+			} else if( type == "prevfq" ) {
+				document.'.$formName.'.startdate.value = "'.$pFqStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$pFqEndDateTime->getDisplayDate().'";
+			} else if( type == "thisfq" ) {
+				document.'.$formName.'.startdate.value = "'.$cFqStartDateTime->getDisplayDate().'";
+				document.'.$formName.'.enddate.value = "'.$cFqEndDateTime->getDisplayDate().'";
+			} else {
+				document.'.$formName.'.startdate.value = "";
+				document.'.$formName.'.enddate.value = "";
+			}
+		}
+	</script>';
+	return $sjsStr;
+}
+
+function getDateforStdFilterBytype($type) {
+	$today = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y')));
+	$tomorrow  = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+1, date('Y')));
+	$yesterday  = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-1, date('Y')));
+
+	$currentmonth0 = date('Y-m-d', mktime(0, 0, 0, date('m'), '01', date('Y')));
+	$currentmonth1 = date('Y-m-t');
+	$lastmonth0 = date('Y-m-d', mktime(0, 0, 0, date('m')-1, '01', date('Y')));
+	$lastmonth1 = date('Y-m-t', strtotime('-1 Month'));
+	$nextmonth0 = date('Y-m-d', mktime(0, 0, 0, date('m')+1, '01', date('Y')));
+	$nextmonth1 = date('Y-m-t', strtotime('+1 Month'));
+
+	$lastweek0 = date('Y-m-d', strtotime('-2 week Sunday'));
+	$lastweek1 = date('Y-m-d', strtotime('-1 week Saturday'));
+
+	$thisweek0 = date('Y-m-d', strtotime('-1 week Sunday'));
+	$thisweek1 = date('Y-m-d', strtotime('this Saturday'));
+
+	$nextweek0 = date('Y-m-d', strtotime('this Sunday'));
+	$nextweek1 = date('Y-m-d', strtotime('+1 week Saturday'));
+
+	$next7days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+6, date('Y')));
+	$next30days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+29, date('Y')));
+	$next60days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+59, date('Y')));
+	$next90days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+89, date('Y')));
+	$next120days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+119, date('Y')));
+
+	$last7days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-6, date('Y')));
+	$last14days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-13, date('Y')));
+	$last30days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-29, date('Y')));
+	$last60days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-59, date('Y')));
+	$last90days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-89, date('Y')));
+	$last120days = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-119, date('Y')));
+
+	$currentFY0 = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')));
+	$currentFY1 = date('Y-m-t', mktime(0, 0, 0, '12', date('d'), date('Y')));
+	$lastFY0 = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')-1));
+	$lastFY1 = date('Y-m-t', mktime(0, 0, 0, '12', date('d'), date('Y')-1));
+	$nextFY0 = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')+1));
+	$nextFY1 = date('Y-m-t', mktime(0, 0, 0, '12', date('d'), date('Y')+1));
+
+	if (date('m') <= 3) {
+		$cFq = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')));
+		$cFq1 = date('Y-m-d', mktime(0, 0, 0, '03', '31', date('Y')));
+		$nFq = date('Y-m-d', mktime(0, 0, 0, '04', '01', date('Y')));
+		$nFq1 = date('Y-m-d', mktime(0, 0, 0, '06', '30', date('Y')));
+		$pFq = date('Y-m-d', mktime(0, 0, 0, '10', '01', date('Y')-1));
+		$pFq1 = date('Y-m-d', mktime(0, 0, 0, '12', '31', date('Y')-1));
+	} elseif (date('m') > 3 && date('m') <= 6) {
+		$pFq = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')));
+		$pFq1 = date('Y-m-d', mktime(0, 0, 0, '03', '31', date('Y')));
+		$cFq = date('Y-m-d', mktime(0, 0, 0, '04', '01', date('Y')));
+		$cFq1 = date('Y-m-d', mktime(0, 0, 0, '06', '30', date('Y')));
+		$nFq = date('Y-m-d', mktime(0, 0, 0, '07', '01', date('Y')));
+		$nFq1 = date('Y-m-d', mktime(0, 0, 0, '09', '30', date('Y')));
+	} elseif (date('m') > 6 && date('m') <= 9) {
+		$nFq = date('Y-m-d', mktime(0, 0, 0, '10', '01', date('Y')));
+		$nFq1 = date('Y-m-d', mktime(0, 0, 0, '12', '31', date('Y')));
+		$pFq = date('Y-m-d', mktime(0, 0, 0, '04', '01', date('Y')));
+		$pFq1 = date('Y-m-d', mktime(0, 0, 0, '06', '30', date('Y')));
+		$cFq = date('Y-m-d', mktime(0, 0, 0, '07', '01', date('Y')));
+		$cFq1 = date('Y-m-d', mktime(0, 0, 0, '09', '30', date('Y')));
+	} elseif (date('m') > 9 && date('m') <= 12) {
+		$nFq = date('Y-m-d', mktime(0, 0, 0, '01', '01', date('Y')+1));
+		$nFq1 = date('Y-m-d', mktime(0, 0, 0, '03', '31', date('Y')+1));
+		$pFq = date('Y-m-d', mktime(0, 0, 0, '07', '01', date('Y')));
+		$pFq1 = date('Y-m-d', mktime(0, 0, 0, '09', '30', date('Y')));
+		$cFq = date('Y-m-d', mktime(0, 0, 0, '10', '01', date('Y')));
+		$cFq1 = date('Y-m-d', mktime(0, 0, 0, '12', '31', date('Y')));
+	}
+
+	if ($type == 'today') {
+		$datevalue[0] = $today;
+		$datevalue[1] = $today;
+	} elseif ($type == 'yesterday') {
+		$datevalue[0] = $yesterday;
+		$datevalue[1] = $yesterday;
+	} elseif ($type == 'tomorrow') {
+		$datevalue[0] = $tomorrow;
+		$datevalue[1] = $tomorrow;
+	} elseif ($type == 'thisweek') {
+		$datevalue[0] = $thisweek0;
+		$datevalue[1] = $thisweek1;
+	} elseif ($type == 'lastweek') {
+		$datevalue[0] = $lastweek0;
+		$datevalue[1] = $lastweek1;
+	} elseif ($type == 'nextweek') {
+		$datevalue[0] = $nextweek0;
+		$datevalue[1] = $nextweek1;
+	} elseif ($type == 'thismonth') {
+		$datevalue[0] =$currentmonth0;
+		$datevalue[1] = $currentmonth1;
+	} elseif ($type == 'lastmonth') {
+		$datevalue[0] = $lastmonth0;
+		$datevalue[1] = $lastmonth1;
+	} elseif ($type == 'nextmonth') {
+		$datevalue[0] = $nextmonth0;
+		$datevalue[1] = $nextmonth1;
+	} elseif ($type == 'next7days') {
+		$datevalue[0] = $today;
+		$datevalue[1] = $next7days;
+	} elseif ($type == 'next30days') {
+		$datevalue[0] =$today;
+		$datevalue[1] =$next30days;
+	} elseif ($type == 'next60days') {
+		$datevalue[0] = $today;
+		$datevalue[1] = $next60days;
+	} elseif ($type == 'next90days') {
+		$datevalue[0] = $today;
+		$datevalue[1] = $next90days;
+	} elseif ($type == 'next120days') {
+		$datevalue[0] = $today;
+		$datevalue[1] = $next120days;
+	} elseif ($type == 'last7days') {
+		$datevalue[0] = $last7days;
+		$datevalue[1] = $today;
+	} elseif ($type == 'last14days') {
+		$datevalue[0] = $last14days;
+		$datevalue[1] = $today;
+	} elseif ($type == 'last30days') {
+		$datevalue[0] = $last30days;
+		$datevalue[1] =  $today;
+	} elseif ($type == 'last60days') {
+		$datevalue[0] = $last60days;
+		$datevalue[1] = $today;
+	} elseif ($type == 'last90days') {
+		$datevalue[0] = $last90days;
+		$datevalue[1] = $today;
+	} elseif ($type == 'last120days') {
+		$datevalue[0] = $last120days;
+		$datevalue[1] = $today;
+	} elseif ($type == 'thisfy') {
+		$datevalue[0] = $currentFY0;
+		$datevalue[1] = $currentFY1;
+	} elseif ($type == 'prevfy') {
+		$datevalue[0] = $lastFY0;
+		$datevalue[1] = $lastFY1;
+	} elseif ($type == 'nextfy') {
+		$datevalue[0] = $nextFY0;
+		$datevalue[1] = $nextFY1;
+	} elseif ($type == 'nextfq') {
+		$datevalue[0] = $nFq;
+		$datevalue[1] = $nFq1;
+	} elseif ($type == 'prevfq') {
+		$datevalue[0] = $pFq;
+		$datevalue[1] = $pFq1;
+	} elseif ($type == 'thisfq') {
+		$datevalue[0] = $cFq;
+		$datevalue[1] = $cFq1;
+	} else {
+		$datevalue[0] = '';
+		$datevalue[1] = '';
+	}
+	return $datevalue;
 }
 ?>

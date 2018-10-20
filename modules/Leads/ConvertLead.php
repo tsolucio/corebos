@@ -35,5 +35,6 @@ $smarty->assign('DATE_FORMAT', $current_user->date_format);
 $smarty->assign('CAL_DATE_FORMAT', parse_calendardate($app_strings['NTC_DATE_FORMAT']));
 $smarty->assign('LeadConvertTransferToAccount', GlobalVariable::getVariable('Lead_Convert_TransferToAccount', 'false'));
 $smarty->assign('LeadConvertOpportunitySelected', GlobalVariable::getVariable('Lead_Convert_OpportunitySelected', 'false'));
+$smarty->assign('LeadConvertContactSelected', GlobalVariable::getVariable('Lead_Convert_ContactSelected', 'false'));
 $smarty->display(vtlib_getModuleTemplate($currentModule, 'ConvertLead.tpl'));
 ?>

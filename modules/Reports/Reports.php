@@ -9,7 +9,6 @@
  ********************************************************************************/
 require_once 'include/database/PearDatabase.php';
 require_once 'data/CRMEntity.php';
-require_once 'include/utils/UserInfoUtil.php';
 require_once 'modules/Reports/ReportUtils.php';
 require_once 'modules/Reports/ReportRun.php';
 global $app_strings,$mod_strings, $modules, $blocks, $adv_filter_options;
@@ -600,14 +599,14 @@ class Reports extends CRMEntity {
 		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0) {
 			if ($module == 'Calendar') {
 				// calendar is special because it is two modules and has many overlapping fields so we have to filter them
-				$sql = 'select * from vtiger_field where vtiger_field.block in ('. generateQuestionMarks($block) .') and vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2) AND tablename NOT IN ('.generateQuestionMarks($skipTalbes).') ';
+				$sql = 'select * from vtiger_field where vtiger_field.block in ('. generateQuestionMarks($block) .') and vtiger_field.displaytype in (1,2,3,4) and vtiger_field.presence in (0,2) AND tablename NOT IN ('.generateQuestionMarks($skipTalbes).') ';
 				$sql.= ' and vtiger_field.fieldid in (select min(fieldid) from vtiger_field where vtiger_field.tabid in ('. generateQuestionMarks($tabid) .') group by fieldlabel) order by sequence';
 				$params = array($block, $skipTalbes, $tabid);
 			} else {
 				$sql = 'select *
 					from vtiger_field
 					where vtiger_field.tabid in ('. generateQuestionMarks($tabid) .') and vtiger_field.block in ('. generateQuestionMarks($block)
-					.') and vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2) AND tablename NOT IN ('.generateQuestionMarks($skipTalbes)
+					.') and vtiger_field.displaytype in (1,2,3,4) and vtiger_field.presence in (0,2) AND tablename NOT IN ('.generateQuestionMarks($skipTalbes)
 					.') order by sequence';
 				$params = array($tabid, $block, $skipTalbes);
 			}
@@ -619,7 +618,7 @@ class Reports extends CRMEntity {
 					inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid
 					inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid
 					where vtiger_field.block in ('. generateQuestionMarks($block)
-					.') and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)';
+					.') and vtiger_field.displaytype in (1,2,3,4) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)';
 				$params = array($block);
 			} else {
 				$sql = 'select distinct vtiger_field.*
@@ -627,7 +626,7 @@ class Reports extends CRMEntity {
 					inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid
 					inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid
 					where vtiger_field.tabid in ('. generateQuestionMarks($tabid) .') and vtiger_field.block in ('. generateQuestionMarks($block)
-					.') and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)';
+					.') and vtiger_field.displaytype in (1,2,3,4) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)';
 				$params = array($tabid, $block);
 			}
 			$profileList = getCurrentUserProfileList();
@@ -814,7 +813,7 @@ class Reports extends CRMEntity {
 			//uitype 6 and 23 added for start_date,EndDate,Expected Close Date
 			$sql = 'select *
 				from vtiger_field
-				where vtiger_field.tabid=? and (vtiger_field.uitype =5 or vtiger_field.uitype = 6 or vtiger_field.uitype = 23 or vtiger_field.displaytype=2)
+				where vtiger_field.tabid=? and (vtiger_field.uitype=5 or vtiger_field.uitype=6 or vtiger_field.uitype=23 or vtiger_field.displaytype=2 or vtiger_field.displaytype=4)
 					and vtiger_field.block in ('. generateQuestionMarks($block) .') and vtiger_field.presence in (0,2) order by vtiger_field.sequence';
 		} else {
 			$profileList = getCurrentUserProfileList();
@@ -823,7 +822,7 @@ class Reports extends CRMEntity {
 				inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid
 				inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid
 				inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid
-				where vtiger_field.tabid=? and (vtiger_field.uitype =5 or vtiger_field.displaytype=2) and vtiger_profile2field.visible=0
+				where vtiger_field.tabid=? and (vtiger_field.uitype=5 or vtiger_field.displaytype=2 or vtiger_field.displaytype=4) and vtiger_profile2field.visible=0
 					and vtiger_def_org_field.visible=0 and vtiger_field.block in ('. generateQuestionMarks($block) .') and vtiger_field.presence in (0,2)';
 			if (count($profileList) > 0) {
 				$sql .= ' and vtiger_profile2field.profileid in ('. generateQuestionMarks($profileList) .')';
@@ -851,257 +850,9 @@ class Reports extends CRMEntity {
 		return $stdcriteria_list;
 	}
 
-	/** Function to form a javascript to determine the start date and end date for a standard filter
-	 *  This function is to form a javascript to determine
-	 *  the start date and End date from the value selected in the combo lists
-	 */
+	/** Function to form a javascript to determine the start date and end date for a standard filter */
 	public function getCriteriaJS() {
-		$todayDateTime = new DateTimeField(date('Y-m-d H:i:s'));
-
-		$tomorrow = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
-		$tomorrowDateTime = new DateTimeField($tomorrow.' '. date('H:i:s'));
-
-		$yesterday = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")-1, date("Y")));
-		$yesterdayDateTime = new DateTimeField($yesterday.' '. date('H:i:s'));
-
-		$currentmonth0 = date("Y-m-d", mktime(0, 0, 0, date("m"), "01", date("Y")));
-		$currentMonthStartDateTime = new DateTimeField($currentmonth0.' '. date('H:i:s'));
-		$currentmonth1 = date("Y-m-t");
-		$currentMonthEndDateTime = new DateTimeField($currentmonth1.' '. date('H:i:s'));
-
-		$lastmonth0 = date("Y-m-d", mktime(0, 0, 0, date("m")-1, "01", date("Y")));
-		$lastMonthStartDateTime = new DateTimeField($lastmonth0.' '. date('H:i:s'));
-		$lastmonth1 = date("Y-m-t", strtotime("-1 Month"));
-		$lastMonthEndDateTime = new DateTimeField($lastmonth1.' '. date('H:i:s'));
-
-		$nextmonth0 = date("Y-m-d", mktime(0, 0, 0, date("m")+1, "01", date("Y")));
-		$nextMonthStartDateTime = new DateTimeField($nextmonth0.' '. date('H:i:s'));
-		$nextmonth1 = date("Y-m-t", strtotime("+1 Month"));
-		$nextMonthEndDateTime = new DateTimeField($nextmonth1.' '. date('H:i:s'));
-
-		$lastweek0 = date("Y-m-d", strtotime("-2 week Sunday"));
-		$lastWeekStartDateTime = new DateTimeField($lastweek0.' '. date('H:i:s'));
-		$lastweek1 = date("Y-m-d", strtotime("-1 week Saturday"));
-		$lastWeekEndDateTime = new DateTimeField($lastweek1.' '. date('H:i:s'));
-
-		$thisweek0 = date("Y-m-d", strtotime("-1 week Sunday"));
-		$thisWeekStartDateTime = new DateTimeField($thisweek0.' '. date('H:i:s'));
-		$thisweek1 = date("Y-m-d", strtotime("this Saturday"));
-		$thisWeekEndDateTime = new DateTimeField($thisweek1.' '. date('H:i:s'));
-
-		$nextweek0 = date("Y-m-d", strtotime("this Sunday"));
-		$nextWeekStartDateTime = new DateTimeField($nextweek0.' '. date('H:i:s'));
-		$nextweek1 = date("Y-m-d", strtotime("+1 week Saturday"));
-		$nextWeekEndDateTime = new DateTimeField($nextweek1.' '. date('H:i:s'));
-
-		$next7days = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")+6, date("Y")));
-		$next7DaysDateTime = new DateTimeField($next7days.' '. date('H:i:s'));
-
-		$next30days = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")+29, date("Y")));
-		$next30DaysDateTime = new DateTimeField($next30days.' '. date('H:i:s'));
-
-		$next60days = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")+59, date("Y")));
-		$next60DaysDateTime = new DateTimeField($next60days.' '. date('H:i:s'));
-
-		$next90days = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")+89, date("Y")));
-		$next90DaysDateTime = new DateTimeField($next90days.' '. date('H:i:s'));
-
-		$next120days = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")+119, date("Y")));
-		$next120DaysDateTime = new DateTimeField($next120days.' '. date('H:i:s'));
-
-		$last7days = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")-6, date("Y")));
-		$last7DaysDateTime = new DateTimeField($last7days.' '. date('H:i:s'));
-
-		$last14days = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")-13, date("Y")));
-		$last14DaysDateTime = new DateTimeField($last14days.' '. date('H:i:s'));
-
-		$last30days = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")-29, date("Y")));
-		$last30DaysDateTime = new DateTimeField($last30days.' '. date('H:i:s'));
-
-		$last60days = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")-59, date("Y")));
-		$last60DaysDateTime = new DateTimeField($last60days.' '. date('H:i:s'));
-
-		$last90days = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")-89, date("Y")));
-		$last90DaysDateTime = new DateTimeField($last90days.' '. date('H:i:s'));
-
-		$last120days = date("Y-m-d", mktime(0, 0, 0, date("m"), date("d")-119, date("Y")));
-		$last120DaysDateTime = new DateTimeField($last120days.' '. date('H:i:s'));
-
-		$currentFY0 = date("Y-m-d", mktime(0, 0, 0, "01", "01", date("Y")));
-		$currentFYStartDateTime = new DateTimeField($currentFY0.' '. date('H:i:s'));
-		$currentFY1 = date("Y-m-t", mktime(0, 0, 0, "12", date("d"), date("Y")));
-		$currentFYEndDateTime = new DateTimeField($currentFY1.' '. date('H:i:s'));
-
-		$lastFY0 = date("Y-m-d", mktime(0, 0, 0, "01", "01", date("Y")-1));
-		$lastFYStartDateTime = new DateTimeField($lastFY0.' '. date('H:i:s'));
-		$lastFY1 = date("Y-m-t", mktime(0, 0, 0, "12", date("d"), date("Y")-1));
-		$lastFYEndDateTime = new DateTimeField($lastFY1.' '. date('H:i:s'));
-
-		$nextFY0 = date("Y-m-d", mktime(0, 0, 0, "01", "01", date("Y")+1));
-		$nextFYStartDateTime = new DateTimeField($nextFY0.' '. date('H:i:s'));
-		$nextFY1 = date("Y-m-t", mktime(0, 0, 0, "12", date("d"), date("Y")+1));
-		$nextFYEndDateTime = new DateTimeField($nextFY1.' '. date('H:i:s'));
-
-		if (date("m") <= 3) {
-			$cFq = date("Y-m-d", mktime(0, 0, 0, "01", "01", date("Y")));
-			$cFqStartDateTime = new DateTimeField($cFq.' '. date('H:i:s'));
-			$cFq1 = date("Y-m-d", mktime(0, 0, 0, "03", "31", date("Y")));
-			$cFqEndDateTime = new DateTimeField($cFq1.' '. date('H:i:s'));
-
-			$nFq = date("Y-m-d", mktime(0, 0, 0, "04", "01", date("Y")));
-			$nFqStartDateTime = new DateTimeField($nFq.' '. date('H:i:s'));
-			$nFq1 = date("Y-m-d", mktime(0, 0, 0, "06", "30", date("Y")));
-			$nFqEndDateTime = new DateTimeField($nFq1.' '. date('H:i:s'));
-
-			$pFq = date("Y-m-d", mktime(0, 0, 0, "10", "01", date("Y")-1));
-			$pFqStartDateTime = new DateTimeField($pFq.' '. date('H:i:s'));
-			$pFq1 = date("Y-m-d", mktime(0, 0, 0, "12", "31", date("Y")-1));
-			$pFqEndDateTime = new DateTimeField($pFq1.' '. date('H:i:s'));
-		} elseif (date("m") > 3 && date("m") <= 6) {
-			$pFq = date("Y-m-d", mktime(0, 0, 0, "01", "01", date("Y")));
-			$pFqStartDateTime = new DateTimeField($pFq.' '. date('H:i:s'));
-			$pFq1 = date("Y-m-d", mktime(0, 0, 0, "03", "31", date("Y")));
-			$pFqEndDateTime = new DateTimeField($pFq1.' '. date('H:i:s'));
-
-			$cFq = date("Y-m-d", mktime(0, 0, 0, "04", "01", date("Y")));
-			$cFqStartDateTime = new DateTimeField($cFq.' '. date('H:i:s'));
-			$cFq1 = date("Y-m-d", mktime(0, 0, 0, "06", "30", date("Y")));
-			$cFqEndDateTime = new DateTimeField($cFq1.' '. date('H:i:s'));
-
-			$nFq = date("Y-m-d", mktime(0, 0, 0, "07", "01", date("Y")));
-			$nFqStartDateTime = new DateTimeField($nFq.' '. date('H:i:s'));
-			$nFq1 = date("Y-m-d", mktime(0, 0, 0, "09", "30", date("Y")));
-			$nFqEndDateTime = new DateTimeField($nFq1.' '. date('H:i:s'));
-		} elseif (date("m") > 6 && date("m") <= 9) {
-			$nFq = date("Y-m-d", mktime(0, 0, 0, "10", "01", date("Y")));
-			$nFqStartDateTime = new DateTimeField($nFq.' '. date('H:i:s'));
-			$nFq1 = date("Y-m-d", mktime(0, 0, 0, "12", "31", date("Y")));
-			$nFqEndDateTime = new DateTimeField($nFq1.' '. date('H:i:s'));
-
-			$pFq = date("Y-m-d", mktime(0, 0, 0, "04", "01", date("Y")));
-			$pFqStartDateTime = new DateTimeField($pFq.' '. date('H:i:s'));
-			$pFq1 = date("Y-m-d", mktime(0, 0, 0, "06", "30", date("Y")));
-			$pFqEndDateTime = new DateTimeField($pFq1.' '. date('H:i:s'));
-
-			$cFq = date("Y-m-d", mktime(0, 0, 0, "07", "01", date("Y")));
-			$cFqStartDateTime = new DateTimeField($cFq.' '. date('H:i:s'));
-			$cFq1 = date("Y-m-d", mktime(0, 0, 0, "09", "30", date("Y")));
-			$cFqEndDateTime = new DateTimeField($cFq1.' '. date('H:i:s'));
-		} elseif (date("m") > 9 && date("m") <= 12) {
-			$nFq = date("Y-m-d", mktime(0, 0, 0, "01", "01", date("Y")+1));
-			$nFqStartDateTime = new DateTimeField($nFq.' '. date('H:i:s'));
-			$nFq1 = date("Y-m-d", mktime(0, 0, 0, "03", "31", date("Y")+1));
-			$nFqEndDateTime = new DateTimeField($nFq1.' '. date('H:i:s'));
-
-			$pFq = date("Y-m-d", mktime(0, 0, 0, "07", "01", date("Y")));
-			$pFqStartDateTime = new DateTimeField($pFq.' '. date('H:i:s'));
-			$pFq1 = date("Y-m-d", mktime(0, 0, 0, "09", "30", date("Y")));
-			$pFqEndDateTime = new DateTimeField($pFq1.' '. date('H:i:s'));
-
-			$cFq = date("Y-m-d", mktime(0, 0, 0, "10", "01", date("Y")));
-			$cFqStartDateTime = new DateTimeField($cFq.' '. date('H:i:s'));
-			$cFq1 = date("Y-m-d", mktime(0, 0, 0, "12", "31", date("Y")));
-			$cFqEndDateTime = new DateTimeField($cFq1.' '. date('H:i:s'));
-		}
-
-		$sjsStr = '<script type="text/javaScript">
-			function showDateRange( type ) {
-				if (type!="custom") {
-					document.NewReport.startdate.readOnly=true
-					document.NewReport.enddate.readOnly=true
-					getObj("jscal_trigger_date_start").style.visibility="hidden"
-					getObj("jscal_trigger_date_end").style.visibility="hidden"
-				} else {
-					document.NewReport.startdate.readOnly=false
-					document.NewReport.enddate.readOnly=false
-					getObj("jscal_trigger_date_start").style.visibility="visible"
-					getObj("jscal_trigger_date_end").style.visibility="visible"
-				}
-				if( type == "today" ) {
-					document.NewReport.startdate.value = "'.$todayDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$todayDateTime->getDisplayDate().'";
-				} else if( type == "yesterday" ) {
-					document.NewReport.startdate.value = "'.$yesterdayDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$yesterdayDateTime->getDisplayDate().'";
-				} else if( type == "tomorrow" ) {
-					document.NewReport.startdate.value = "'.$tomorrowDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$tomorrowDateTime->getDisplayDate().'";
-				} else if( type == "thisweek" ) {
-					document.NewReport.startdate.value = "'.$thisWeekStartDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$thisWeekEndDateTime->getDisplayDate().'";
-				} else if( type == "lastweek" ) {
-					document.NewReport.startdate.value = "'.$lastWeekStartDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$lastWeekEndDateTime->getDisplayDate().'";
-				} else if( type == "nextweek" ) {
-					document.NewReport.startdate.value = "'.$nextWeekStartDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$nextWeekEndDateTime->getDisplayDate().'";
-				} else if( type == "thismonth" ) {
-					document.NewReport.startdate.value = "'.$currentMonthStartDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$currentMonthEndDateTime->getDisplayDate().'";
-				} else if( type == "lastmonth" ) {
-					document.NewReport.startdate.value = "'.$lastMonthStartDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$lastMonthEndDateTime->getDisplayDate().'";
-				} else if( type == "nextmonth" ) {
-					document.NewReport.startdate.value = "'.$nextMonthStartDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$nextMonthEndDateTime->getDisplayDate().'";
-				} else if( type == "next7days" ) {
-					document.NewReport.startdate.value = "'.$todayDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$next7DaysDateTime->getDisplayDate().'";
-				} else if( type == "next30days" ) {
-					document.NewReport.startdate.value = "'.$todayDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$next30DaysDateTime->getDisplayDate().'";
-				} else if( type == "next60days" ) {
-					document.NewReport.startdate.value = "'.$todayDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$next60DaysDateTime->getDisplayDate().'";
-				} else if( type == "next90days" ) {
-					document.NewReport.startdate.value = "'.$todayDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$next90DaysDateTime->getDisplayDate().'";
-				} else if( type == "next120days" ) {
-					document.NewReport.startdate.value = "'.$todayDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$next120DaysDateTime->getDisplayDate().'";
-				} else if( type == "last7days" ) {
-					document.NewReport.startdate.value = "'.$last7DaysDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$todayDateTime->getDisplayDate().'";
-				} else if( type == "last14days" ) {
-					document.NewReport.startdate.value = "'.$last14DaysDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value =  "'.$todayDateTime->getDisplayDate().'";
-				} else if( type == "last30days" ) {
-					document.NewReport.startdate.value = "'.$last30DaysDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$todayDateTime->getDisplayDate().'";
-				} else if( type == "last60days" ) {
-					document.NewReport.startdate.value = "'.$last60DaysDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$todayDateTime->getDisplayDate().'";
-				} else if( type == "last90days" ) {
-					document.NewReport.startdate.value = "'.$last90DaysDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$todayDateTime->getDisplayDate().'";
-				} else if( type == "last120days" ) {
-					document.NewReport.startdate.value = "'.$last120DaysDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$todayDateTime->getDisplayDate().'";
-				} else if( type == "thisfy" ) {
-					document.NewReport.startdate.value = "'.$currentFYStartDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$currentFYEndDateTime->getDisplayDate().'";
-				} else if( type == "prevfy" ) {
-					document.NewReport.startdate.value = "'.$lastFYStartDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$lastFYEndDateTime->getDisplayDate().'";
-				} else if( type == "nextfy" ) {
-					document.NewReport.startdate.value = "'.$nextFYStartDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$nextFYEndDateTime->getDisplayDate().'";
-				} else if( type == "nextfq" ) {
-					document.NewReport.startdate.value = "'.$nFqStartDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$nFqEndDateTime->getDisplayDate().'";
-				} else if( type == "prevfq" ) {
-					document.NewReport.startdate.value = "'.$pFqStartDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$pFqEndDateTime->getDisplayDate().'";
-				} else if( type == "thisfq" ) {
-					document.NewReport.startdate.value = "'.$cFqStartDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value = "'.$cFqEndDateTime->getDisplayDate().'";
-				} else {
-					document.NewReport.startdate.value = "";
-					document.NewReport.enddate.value = "";
-				}
-			}
-		</script>';
-		return $sjsStr;
+		return getCriteriaJS('NewReport');
 	}
 
 	public function getEscapedColumns($selectedfields) {
@@ -1134,7 +885,7 @@ class Reports extends CRMEntity {
 			inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where';
 		$params = array();
 		if ($module == "Calendar") {
-			$query .= " vtiger_field.tabid in (9,16) and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
+			$query .= " vtiger_field.tabid in (9,16) and vtiger_field.displaytype in (1,2,3,4) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
 			if (count($profileList) > 0) {
 				$query .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
 				$params[] = $profileList;
@@ -1145,7 +896,7 @@ class Reports extends CRMEntity {
 			$query .= ' vtiger_field.tabid in (
 				select tabid
 				from vtiger_tab
-				where vtiger_tab.name in (?,?)) and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0
+				where vtiger_tab.name in (?,?)) and vtiger_field.displaytype in (1,2,3,4) and vtiger_profile2field.visible=0
 					and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)';
 			if (count($profileList) > 0) {
 				$query .= ' and vtiger_profile2field.profileid in ('. generateQuestionMarks($profileList) .')';
@@ -1414,11 +1165,11 @@ class Reports extends CRMEntity {
 			$ssql = 'select *
 				from vtiger_field
 				inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid
-				where vtiger_field.uitype != 50 and vtiger_field.tabid=? and vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2)';
+				where vtiger_field.uitype != 50 and vtiger_field.tabid=? and vtiger_field.displaytype in (1,2,3,4) and vtiger_field.presence in (0,2)';
 			$calcf = "select *
 				from vtiger_field
 				inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid
-				where vtiger_field.uitype!=50 and vtiger_field.tablename='vtiger_activitycf' and vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2)";
+				where vtiger_field.uitype!=50 and vtiger_field.tablename='vtiger_activitycf' and vtiger_field.displaytype in (1,2,3,4) and vtiger_field.presence in (0,2)";
 		} else {
 			$profileList = getCurrentUserProfileList();
 			$ssql = 'select *
@@ -1426,7 +1177,7 @@ class Reports extends CRMEntity {
 				inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid
 				inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid
 				inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid
-				where vtiger_field.uitype != 50 and vtiger_field.tabid=? and vtiger_field.displaytype in (1,2,3)
+				where vtiger_field.uitype != 50 and vtiger_field.tabid=? and vtiger_field.displaytype in (1,2,3,4)
 					and vtiger_def_org_field.visible=0 and vtiger_profile2field.visible=0 and vtiger_field.presence in (0,2)';
 			if (count($profileList) > 0) {
 				$ssql .= ' and vtiger_profile2field.profileid in ('. generateQuestionMarks($profileList) .')';
@@ -1437,7 +1188,7 @@ class Reports extends CRMEntity {
 				inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid inner
 				join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid
 				inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid
-				where vtiger_field.uitype != 50 and vtiger_field.tablename='vtiger_activitycf' and vtiger_field.displaytype in (1,2,3)
+				where vtiger_field.uitype != 50 and vtiger_field.tablename='vtiger_activitycf' and vtiger_field.displaytype in (1,2,3,4)
 					and vtiger_def_org_field.visible=0 and vtiger_profile2field.visible=0 and vtiger_field.presence in (0,2)";
 			if ($tabid==9 && count($profileList) > 0) {
 				$calcf .= ' and vtiger_profile2field.profileid in ('. generateQuestionMarks($profileList) .')';
@@ -1615,7 +1366,7 @@ function updateAdvancedCriteria($reportid, $advft_criteria, $advft_criteria_grou
 	if (empty($advft_criteria)) {
 		return;
 	}
-
+	$irelcriteriasql = 'insert into vtiger_relcriteria(QUERYID,COLUMNINDEX,COLUMNNAME,COMPARATOR,VALUE,GROUPID,COLUMN_CONDITION) values (?,?,?,?,?,?,?)';
 	foreach ($advft_criteria as $column_index => $column_condition) {
 		if (empty($column_condition)) {
 			continue;
@@ -1656,9 +1407,7 @@ function updateAdvancedCriteria($reportid, $advft_criteria, $advft_criteria_grou
 				if (trim($temp_val[$x]) != '') {
 					$date = new DateTimeField(trim($temp_val[$x]));
 					if ($column_info[4] == 'D') {
-						$val[$x] = DateTimeField::convertToUserFormat(
-							trim($temp_val[$x])
-						);
+						$val[$x] = DateTimeField::convertToDBFormat(trim($temp_val[$x]));
 					} elseif ($column_info[4] == 'DT') {
 						$val[$x] = $date->getDBInsertDateTimeValue();
 					} else {
@@ -1669,7 +1418,6 @@ function updateAdvancedCriteria($reportid, $advft_criteria, $advft_criteria_grou
 			$adv_filter_value = implode(',', $val);
 		}
 
-		$irelcriteriasql = 'insert into vtiger_relcriteria(QUERYID,COLUMNINDEX,COLUMNNAME,COMPARATOR,VALUE,GROUPID,COLUMN_CONDITION) values (?,?,?,?,?,?,?)';
 		$adb->pquery(
 			$irelcriteriasql,
 			array($reportid, $column_index, $adv_filter_column, $adv_filter_comparator, $adv_filter_value, $adv_filter_groupid, $adv_filter_column_condition)

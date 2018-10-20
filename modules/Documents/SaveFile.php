@@ -33,10 +33,9 @@ if (isset($_REQUEST['act']) && $_REQUEST['act'] == 'checkFileIntegrityDetailView
 		$saved_filename = $fileid.'_'.$name;
 		$pathQuery = $adb->pquery('select path from vtiger_attachments where attachmentsid = ?', array($fileid));
 		$filepath = $adb->query_result($pathQuery, 0, 'path');
-	} elseif ($download_type == 'E') {
-		$saved_filename = $name;
 	} else {
-		$saved_filename = '';
+		echo 'file_not_available';
+		die();
 	}
 
 	if (!fopen($filepath.$saved_filename, 'r')) {

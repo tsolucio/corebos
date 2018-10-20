@@ -66,6 +66,11 @@ class VTWorkflowApplication {
 		return "index.php?module={$this->name}&action=deletetask$idPart&return_url=".urlencode($this->returnUrl());
 	}
 
+	public function onoffTaskUrl($id, $active = 0) {
+		$idPart="&task_id=$id";
+		return "index.php?module={$this->name}&action=onofftask$idPart&isactive=$active&return_url=".urlencode($this->returnUrl());
+	}
+
 	public function setReturnUrl($returnUrl) {
 		$this->returnUrl = $returnUrl;
 	}

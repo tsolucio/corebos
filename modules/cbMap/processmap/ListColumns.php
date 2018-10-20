@@ -107,6 +107,18 @@ class ListColumns extends processcbMap {
 		return $this->mapping;
 	}
 
+	public function getSummaryTitle() {
+		return $this->mapping['cbmapSUMMARY']['TITLE'];
+	}
+
+	public function getSummaryHeader() {
+		return $this->mapping['cbmapSUMMARY']['HEADER'];
+	}
+
+	public function getSummaryBody() {
+		return $this->mapping['cbmapSUMMARY']['BODY'];
+	}
+
 	private function convertMap2Array() {
 		global $adb;
 		$xml = $this->getXMLContent();
@@ -158,6 +170,24 @@ class ListColumns extends processcbMap {
 					}
 					$this->mapping[$modulename]['ListFields'][(String)$vl->label] = array($table => $columnname);
 					$this->mapping[$modulename]['ListFieldsName'][(String)$vl->label] = (String)$vl->name;
+				}
+			}
+		}
+		if (isset($xml->summary)) {
+			$this->mapping['cbmapSUMMARY'] = array();
+			$this->mapping['cbmapSUMMARY']['TITLE'] = (String) $xml->summary->title;
+			$this->mapping['cbmapSUMMARY']['HEADER']['ListFields'] = array();
+			$this->mapping['cbmapSUMMARY']['BODY']['ListFields'] = array();
+
+			foreach ($xml->summary->header->fields as $k => $v) {
+				foreach ($v->field as $vf) {
+					$this->mapping['cbmapSUMMARY']['HEADER']['ListFields'][(String)$vf->label] = (String)$vf->name;
+				}
+			}
+
+			foreach ($xml->summary->body->fields as $k => $v) {
+				foreach ($v->field as $vf) {
+					$this->mapping['cbmapSUMMARY']['BODY']['ListFields'][(String)$vf->label] = (String)$vf->name;
 				}
 			}
 		}

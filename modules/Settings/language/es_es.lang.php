@@ -726,6 +726,7 @@ $mod_strings = array (
 	'LBL_TASKS'=>'Tareas',
 	'LBL_NEW_TASK_BUTTON_LABEL'=>'Nueva Tarea',
 	'LBL_TASK'=>'Tarea',
+	'LBL_DELAY' => 'Retrasar',
 
 	'LBL_MANDATORY_FIELDS'=>'Campos obligatorios',
 	'LBL_MANDATORY_FIELDS_DESCRIPTION'=>'Administrar campos obligatorios en todos los módulos',

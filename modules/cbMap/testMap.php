@@ -167,6 +167,9 @@ switch ($focus->column_fields['maptype']) {
 			$fsm = $focus->FieldSetMapping();
 			$mapinfo = $fsm->getFieldSet();
 		break;
+	case 'Detail View Layout Mapping':
+			$mapinfo = $focus->DetailViewLayoutMapping();
+		break;
 	default:
 		break;
 }

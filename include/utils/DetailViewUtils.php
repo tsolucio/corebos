@@ -79,7 +79,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		if ($fieldname == 'confirm_password') {
 			return null;
 		}
-	} elseif ($uitype == 116 || $uitype == 117) {
+	} elseif ($uitype == 117) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = getCurrencyName($col_fields[$fieldname]);
 		$pick_query = "select currency_name, id from vtiger_currency_info where currency_status = 'Active' and deleted=0";
@@ -566,7 +566,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$rs = $adb->pquery('select * from vtiger_seattachmentsrel where crmid = ?', array($col_fields['record_id']));
 		$attachmentid = $adb->query_result($rs, 0, 'attachmentsid');
 		if ($col_fields[$fieldname] == '' && $attachmentid != '') {
-			$adb->pquery('select * from vtiger_attachments where attachmentsid=?', array($attachmentid));
+			$rs = $adb->pquery('select name from vtiger_attachments where attachmentsid=?', array($attachmentid));
 			$col_fields[$fieldname] = $adb->query_result($rs, 0, 'name');
 		}
 		$org_filename = $col_fields[$fieldname];
@@ -590,6 +590,16 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 					$custfldval = '<a href = "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile&return_module='
 						. $col_fields['record_module'] . '&fileid=' . $attachmentid . '&entityid=' . $col_fields['record_id']
 						. '" onclick=\'javascript:dldCntIncrease(' . $col_fields['record_id'] . ');\'>' . $col_fields[$fieldname] . '</a>';
+					$image_res = $adb->pquery('SELECT path,name FROM vtiger_attachments WHERE attachmentsid = ?', array($attachmentid));
+					$image_path = $adb->query_result($image_res, 0, 'path');
+					$image_name = decode_html($adb->query_result($image_res, 0, 'name'));
+					$imgpath = $image_path . $attachmentid . '_' . urlencode($image_name);
+					if (stripos($col_fields['filetype'], 'image') !== false) {
+						$imgtxt = getTranslatedString('SINGLE_'.$module, $module).' '.getTranslatedString('Image');
+						$custfldval .= '<br/><img src="' . $imgpath . '" alt="' . $imgtxt . '" title= "' . $imgtxt . '" style="max-width:300px; max-height:300px">';
+					} elseif (stripos($col_fields['filetype'], 'video') !== false) {
+						$custfldval .= '<br/><video width="300px" height="300px" controls><source src="' . $imgpath . '" type="' . $col_fields['filetype'] . '"></video>';
+					}
 				} else {
 					$custfldval = $col_fields[$fieldname];
 				}
@@ -674,9 +684,12 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			if ($image_name != '') {
 				$ftype = $adb->query_result($image_res, 0, 'type');
 				$isimage = stripos($ftype, 'image') !== false;
+				$isvideo = stripos($ftype, 'video') !== false;
 				if ($isimage) {
 					$imgtxt = getTranslatedString('SINGLE_'.$module, $module).' '.getTranslatedString('Image');
 					$label_fld[] = '<img src="' . $imgpath . '" alt="' . $imgtxt . '" title= "' . $imgtxt . '" style="max-width:300px; max-height:300px">';
+				} elseif ($isvideo) {
+					$label_fld[] = '<video width="300px" height="300px" controls><source src="' . $imgpath . '" type="' . $ftype . '"></video>';
 				} else {
 					$imgtxt = getTranslatedString('SINGLE_'.$module, $module).' '.getTranslatedString('SINGLE_Documents');
 					$label_fld[] = '<a href="' . $imgpath . '" alt="' . $imgtxt . '" title= "' . $imgtxt . '" target="_blank">'.$image_name.'</a>';
@@ -1022,13 +1035,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$label_fld[] = $currencyField->getDisplayValue(null, false, true);
 			$label_fld['cursymb'] = $currencyField->getCurrencySymbol();
 		}
-	} elseif ($uitype == 75 || $uitype == 81) {
-		$label_fld[] = getTranslatedString($fieldlabel, $module);
-		$vendor_id = $col_fields[$fieldname];
-		$vendor_name = (empty($vendor_id) ? '' : getVendorName($vendor_id));
-		$label_fld[] = $vendor_name;
-		$label_fld['secid'] = $vendor_id;
-		$label_fld['link'] = 'index.php?module=Vendors&action=DetailView&record=' . $vendor_id;
 	} elseif ($uitype == 76) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$potential_id = $col_fields[$fieldname];
@@ -1058,20 +1064,20 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$label_fld['secid'] = $salesorder_id;
 		$label_fld['link'] = 'index.php?module=SalesOrder&action=DetailView&record=' . $salesorder_id;
 	} elseif ($uitype == 30) {
-		$rem_days = 0;
-		$rem_hrs = 0;
-		$rem_min = 0;
-		$reminder_str = "";
-		$rem_days = floor($col_fields[$fieldname] / (24 * 60));
-		$rem_hrs = floor(($col_fields[$fieldname] - $rem_days * 24 * 60) / 60);
-		$rem_min = ($col_fields[$fieldname] - $rem_days * 24 * 60) % 60;
-
-		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		if ($col_fields[$fieldname]) {
+			$rem_days = floor($col_fields[$fieldname] / (24 * 60));
+			$rem_hrs = floor(($col_fields[$fieldname] - $rem_days * 24 * 60) / 60);
+			$rem_min = ($col_fields[$fieldname] - $rem_days * 24 * 60) % 60;
 			$reminder_str = $rem_days . '&nbsp;' . getTranslatedString('LBL_DAYS', 'Calendar') . '&nbsp;' . $rem_hrs . '&nbsp;'
 				. getTranslatedString('LBL_HOURS', 'Calendar') . '&nbsp;' . $rem_min . '&nbsp;' . getTranslatedString('LBL_MINUTES', 'Calendar') . '&nbsp;&nbsp;'
 				. getTranslatedString('LBL_BEFORE_EVENT', 'Calendar');
+		} else {
+			$rem_days = 0;
+			$rem_hrs = 0;
+			$rem_min = 0;
+			$reminder_str = '';
 		}
+		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = '&nbsp;' . $reminder_str;
 	} elseif ($uitype == 98) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
@@ -1086,7 +1092,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	} elseif ($uitype == 26) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$result = $adb->pquery('select foldername from vtiger_attachmentsfolder where folderid = ?', array($col_fields[$fieldname]));
-		$folder_name = $adb->query_result($result, 0, "foldername");
+		$folder_name = $adb->query_result($result, 0, 'foldername');
 		$label_fld[] = $folder_name;
 	} elseif ($uitype == 27) {
 		if ($col_fields[$fieldname] == 'I') {
@@ -1200,7 +1206,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	return $label_fld;
 }
 
-/** This function returns a HTML output of associated vtiger_products for a given entity (Quotes,Invoice,Sales order or Purchase order)
+/** This function returns a HTML output of associated products for a given entity (Quotes,Invoice,Sales order or Purchase order)
  * Param $module - module name
  * Param $focus - module object
  * Return type string

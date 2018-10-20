@@ -64,7 +64,6 @@ function fetchEditCron(id) {
 	});
 }
 function move_module(tabid, move) {
-	//document.getElementById('vtbusy_info').style.display = "block";
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?module=CronTasks&action=CronTasksAjax&file=CronSequence&parenttab=Settings&record='+tabid+'&move='+move

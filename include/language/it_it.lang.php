@@ -138,6 +138,8 @@ $app_strings = array (
   'LNK_HELP' => 'Aiuto',
   'LNK_ABOUT' => 'About',
   'LNK_OUTLOOK' => './include/images/outlook_download.gif',
+  'LBL_ACTIVATE' => 'Attivare',
+  'LBL_DEACTIVATE' => 'Disattivare',
   'Activity' => 'Attivit&agrave;',
   'Event' => 'Evento',
   'SINGLE_Accounts' => 'Azienda',
@@ -1187,6 +1189,7 @@ $app_strings = array (
 'saved' => 'salvato',
 'notsaved' => 'non salvato',
 'processcomplete' => 'Processo Completato',
+'typetosearch_prodser' => 'Type to search products or services',
 );
 
 // Translation for currency names

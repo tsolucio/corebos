@@ -1,5 +1,4 @@
 {*<!--
-
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -7,22 +6,20 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 -->*}
 <script type="text/javascript" src="modules/PriceBooks/PriceBooks.js"></script>
 <script type="text/javascript" src="include/js/ListView.js"></script>
 {literal}
-<script>     
+<script>
 function editProductListPrice(id,pbid,price){
 	document.getElementById("status").style.display="inline";
 	jQuery.ajax({
-			method:"POST",
-			url:'index.php?action=ProductsAjax&file=EditListPrice&return_action=CallRelatedList&return_module=PriceBooks&module=Products&record='+id+'&pricebook_id='+pbid+'&listprice='+price
+		method:"POST",
+		url:'index.php?action=ProductsAjax&file=EditListPrice&return_action=CallRelatedList&return_module=PriceBooks&module=Products&record='+id+'&pricebook_id='+pbid+'&listprice='+price
 	}).done(function(response) {
-			document.getElementById("status").style.display="none";
-			document.getElementById("editlistprice").innerHTML= response;
+		document.getElementById("status").style.display="none";
+		document.getElementById("editlistprice").innerHTML= response;
 	});
 }
 
@@ -31,11 +28,11 @@ function gotoUpdateListPrice(id,pbid,proid){
 	document.getElementById("roleLay").style.display = "none";
 	var listprice=document.getElementById("list_price").value;
 	jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=Products&action=ProductsAjax&file=UpdateListPrice&ajax=true&return_action=CallRelatedList&return_module=PriceBooks&record='+id+'&pricebook_id='+pbid+'&product_id='+proid+'&list_price='+listprice
+		method:"POST",
+		url:'index.php?module=Products&action=ProductsAjax&file=UpdateListPrice&ajax=true&return_action=CallRelatedList&return_module=PriceBooks&record='+id+'&pricebook_id='+pbid+'&product_id='+proid+'&list_price='+listprice
 	}).done(function(response) {
-			document.getElementById("status").style.display="none";
-			document.getElementById("RLContents").innerHTML=response;
+		document.getElementById("status").style.display="none";
+		document.getElementById("RLContents").innerHTML=response;
 	});
 }
 {/literal}
@@ -49,13 +46,19 @@ function gotoUpdateListPrice(id,pbid,proid){
 	<td class="showPanelBg" valign=top width=100%>
 		<!-- PUBLIC CONTENTS STARTS-->
 		<div class="small" style="padding:20px">
- 	        {* Module Record numbering, used MOD_SEQ_ID instead of ID *}
-			 <span class="lvtHeaderText"><font color="purple">[ {$MOD_SEQ_ID} ] </font>{$NAME} -  {$SINGLE_MOD} {$APP.LBL_MORE} {$APP.LBL_INFORMATION}</span> <br>
-			 {$UPDATEINFO}
-			 </span>&nbsp;&nbsp;<span id="vtbusy_info" style="display:none;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span><span id="vtbusy_info" style="visibility:hidden;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
+			{* Module Record numbering, used MOD_SEQ_ID instead of ID *}
+			<span class="lvtHeaderText"><font color="purple">[ {$MOD_SEQ_ID} ] </font>{$NAME} -  {$SINGLE_MOD} {$APP.LBL_MORE} {$APP.LBL_INFORMATION}</span> <br>
+			{$UPDATEINFO}
+			</span>&nbsp;&nbsp;
+			<span id="vtbusy_info" style="display:none;" valign="bottom">
+			<div role="status" class="slds-spinner slds-spinner_brand slds-spinner_x-small" style="position:relative; top:6px;">
+				<div class="slds-spinner__dot-a"></div>
+				<div class="slds-spinner__dot-b"></div>
+			</div>
+			</span>
 
-			 <hr noshade size=1>
-			 <br>
+			<hr noshade size=1>
+			<br>
 
 			<!-- Account details tabs -->
 			<table border=0 cellspacing=0 cellpadding=0 width=95% align=center>

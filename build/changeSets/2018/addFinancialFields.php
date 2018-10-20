@@ -114,6 +114,38 @@ class addFinancialFields extends cbupdaterWorker {
 				),
 			);
 			$this->massCreateFields($fieldLayout);
+			$ffields = array(
+				'pl_gross_total',
+				'pl_dto_line',
+				'pl_dto_total',
+				'pl_dto_global',
+				'pl_net_total',
+				'sum_nettotal',
+				'sum_taxtotal',
+				'sum_tax1',
+				'sum_taxtotalretention',
+				'sum_tax2',
+				'pl_sh_total',
+				'sum_tax3',
+				'pl_sh_tax',
+				'pl_grand_total',
+				'pl_adjustment',
+			);
+			$fieldLayout = array(
+				'Invoice' => array(
+					'LBL_Invoice_FINANCIALINFO' => $ffields
+				),
+				'SalesOrder' => array(
+					'LBL_SalesOrder_FINANCIALINFO' => $ffields
+				),
+				'Quotes' => array(
+					'LBL_Quotes_FINANCIALINFO' => $ffields
+				),
+				'PurchaseOrder' => array(
+					'LBL_PurchaseOrder_FINANCIALINFO' => $ffields
+				),
+			);
+			$this->orderFieldsInBlocks($fieldLayout);
 
 			$modules = array(
 				array(
@@ -135,14 +167,17 @@ class addFinancialFields extends cbupdaterWorker {
 					'name' => 'PurchaseOrder',
 					'table' => 'vtiger_purchaseorder',
 					'id' => 'purchaseorderid'
-				)
+					)
 			);
 			require_once 'include/setVAT.php';
 			$util = new VTWorkflowUtils();
 			$adminUser = $util->adminUser();
 			foreach ($modules as $mod) {
-				$invModWSID = vtws_getEntityId($mod['name']);
-				$rs = $adb->pquery("select 1 from com_vtiger_workflows where summary='Update Tax fields on every save' and module_name=?", array($mod['name']));
+				$rs = $adb->pquery(
+					"select 1 from com_vtiger_workflows
+					where (summary='Update Tax fields on every save' or summary='Update Financial fields on every save') and module_name=?",
+					array($mod['name'])
+				);
 				if ($rs && $adb->num_rows($rs)==0) {
 					$emm = new VTEntityMethodManager($adb);
 					$emm->addEntityMethod($mod['name'], 'Set Financial Fields', 'include/setVAT.php', 'setVAT');
@@ -208,58 +243,42 @@ class addFinancialFields extends cbupdaterWorker {
 				$field1->displaytype = 2;
 				$field1->presence = 0;
 				$block->addField($field1);
-				$entities=$adb->query("select {$mod['id']}
-					from {$mod['table']}
-					INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = {$mod['table']}.{$mod['id']}
-					WHERE deleted = 0");
+			}
+			$haction = $_REQUEST['action'];
+			$_REQUEST['action'] = 'Save';
+			unset($_REQUEST['ajxaction']);
+			$ffmodsdone = coreBOS_Settings::getSetting('addFFModsDone', '');
+			$ffcrmiddone = coreBOS_Settings::getSetting('addFFcrmidDone', 0);
+			foreach ($modules as $mod) {
+				if (strpos($ffmodsdone, $mod['name'])>0) {
+					continue;
+				}
+				$invModWSID = vtws_getEntityId($mod['name']);
+				$entities=$adb->pquery(
+					"select {$mod['id']}
+						from {$mod['table']}
+						INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = {$mod['table']}.{$mod['id']}
+						WHERE deleted = 0 and crmid>?
+						ORDER BY crmid",
+					array($ffcrmiddone)
+				);
 				$this->sendMsg('Updating Financial fields for '.$mod['name']);
-				$haction = $_REQUEST['action'];
-				$_REQUEST['action'] = 'Save';
-				unset($_REQUEST['ajxaction']);
 				while ($ent=$adb->fetch_array($entities)) {
 					$id = $ent[$mod['id']];
 					$entity = new VTWorkflowEntity($adminUser, $invModWSID.'x'.$id);
 					$entity->moduleName = $mod['name'];
 					setVAT($entity);
+					coreBOS_Settings::setSetting('addFFcrmidDone', $id);
 				}
-				$_REQUEST['action'] = $haction;
+				coreBOS_Settings::setSetting('addFFModsDone', $ffmodsdone.'_'.$mod['name']);
+				coreBOS_Settings::setSetting('addFFcrmidDone', 0);
 			}
+			$_REQUEST['action'] = $haction;
 			$util->revertUser();
-			$ffields = array(
-				'pl_gross_total',
-				'pl_dto_line',
-				'pl_dto_total',
-				'pl_dto_global',
-				'pl_net_total',
-				'sum_nettotal',
-				'sum_taxtotal',
-				'sum_tax1',
-				'sum_taxtotalretention',
-				'sum_tax2',
-				'pl_sh_total',
-				'sum_tax3',
-				'pl_sh_tax',
-				'pl_grand_total',
-				'pl_adjustment',
-			);
-			$fieldLayout = array(
-				'Invoice' => array(
-					'LBL_Invoice_FINANCIALINFO' => $ffields
-				),
-				'SalesOrder' => array(
-					'LBL_SalesOrder_FINANCIALINFO' => $ffields
-				),
-				'Quotes' => array(
-					'LBL_Quotes_FINANCIALINFO' => $ffields
-				),
-				'PurchaseOrder' => array(
-					'LBL_PurchaseOrder_FINANCIALINFO' => $ffields
-				),
-			);
-			$this->orderFieldsInBlocks($fieldLayout);
-
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
+			coreBOS_Settings::delSetting('addFFModsDone');
+			coreBOS_Settings::delSetting('addFFcrmidDone');
 		}
 		$this->finishExecution();
 	}

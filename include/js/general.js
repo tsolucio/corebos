@@ -9,6 +9,31 @@
 
 //Utility Functions
 
+function getTagCloud(crmid) {
+	var obj = document.getElementById('tagfields');
+	if (obj != null && typeof(obj) != undefined) {
+		jQuery.ajax({
+			method:'POST',
+			url:'index.php?module='+gVTModule+'&action='+gVTModule+'Ajax&file=TagCloud&ajxaction=GETTAGCLOUD&recordid='+crmid,
+		}).done(function (response) {
+			document.getElementById('tagfields').innerHTML=response;
+			document.getElementById('txtbox_tagfields').value ='';
+		});
+	}
+}
+
+function DeleteTag(id, recordid) {
+	VtigerJS_DialogBox.showbusy();
+	jQuery('#tag_'+id).fadeOut();
+	jQuery.ajax({
+		method:'POST',
+		url:'index.php?file=TagCloud&module='+gVTModule+'&action='+gVTModule+'Ajax&ajxaction=DELETETAG&recordid='+recordid+'&tagid=' +id,
+	}).done(function (response) {
+		getTagCloud();
+		VtigerJS_DialogBox.hidebusy();
+	});
+}
+
 function c_toggleAssignType(currType) {
 	if (currType=='U') {
 		document.getElementById('c_assign_user').style.display='block';
@@ -28,6 +53,9 @@ if (document.all) {
 }
 
 var gBrowserAgent = navigator.userAgent.toLowerCase();
+
+function doNothing() {
+}
 
 function hideSelect() {
 	var oselect_array = document.getElementsByTagName('SELECT');
@@ -185,8 +213,7 @@ function emptyCheck(fldName, fldLabel, fldType) {
 		} else {
 			return true;
 		}
-	} else if ((fldType == 'textarea')
-		&& (typeof(CKEDITOR)!=='undefined' && CKEDITOR.instances[fldName] !== undefined)) {
+	} else if ((fldType == 'textarea') && (typeof(CKEDITOR)!=='undefined' && CKEDITOR.instances[fldName] !== undefined)) {
 		var textObj = CKEDITOR.instances[fldName];  // thank you Stefan (from developers list)
 		var textValue = trim(textObj.getData());
 		if (textValue == '' || /^<br *\/?>$/.test(textValue)) {
@@ -351,13 +378,17 @@ function compareDates(date1, fldLabel1, date2, fldLabel2, type, message) {
 }
 
 function dateTimeValidate(dateFldName, timeFldName, fldLabel, type) {
-	if (patternValidate(dateFldName, fldLabel, 'DATE')==false) {
+	return dateTimeValidateObject(getObj(dateFldName), getObj(timeFldName), fldLabel, type);
+}
+
+function dateTimeValidateObject(dateFldObj, timeFldObj, fldLabel, type) {
+	if (patternValidateObject(dateFldObj, fldLabel, 'DATE')==false) {
 		return false;
 	}
-	let dateval = getObj(dateFldName).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	let dateval = dateFldObj.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 
-	if (timeFldName==undefined) {
-		timeFldName = dateFldName;
+	if (timeFldObj==undefined) {
+		timeFldObj = dateFldObj;
 		let dt = dateval.split(' ');
 		dateval = dt[0];
 	}
@@ -370,7 +401,7 @@ function dateTimeValidate(dateFldName, timeFldName, fldLabel, type) {
 	if (dd<1 || dd>31 || mm<1 || mm>12 || yyyy<1 || yyyy<1000) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
-			getObj(dateFldName).focus();
+			dateFldObj.focus();
 		} catch (error) { }
 		return false;
 	}
@@ -378,7 +409,7 @@ function dateTimeValidate(dateFldName, timeFldName, fldLabel, type) {
 	if ((mm==2) && (dd>29)) {//checking of no. of days in february month
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
-			getObj(dateFldName).focus();
+			dateFldObj.focus();
 		} catch (error) { }
 		return false;
 	}
@@ -386,7 +417,7 @@ function dateTimeValidate(dateFldName, timeFldName, fldLabel, type) {
 	if ((mm==2) && (dd>28) && ((yyyy%4)!=0)) {//leap year checking
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
-			getObj(dateFldName).focus();
+			dateFldObj.focus();
 		} catch (error) { }
 		return false;
 	}
@@ -400,24 +431,24 @@ function dateTimeValidate(dateFldName, timeFldName, fldLabel, type) {
 		if (dd>30) {
 			alert(alert_arr.ENTER_VALID+fldLabel);
 			try {
-				getObj(dateFldName).focus();
+				dateFldObj.focus();
 			} catch (error) { }
 			return false;
 		}
 	}
 
-	if (patternValidate(timeFldName, fldLabel, 'TIME')==false) {
+	if (patternValidateObject(timeFldObj, fldLabel, 'TIME')==false) {
 		return false;
 	}
 
-	var timeval=getObj(timeFldName).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	var timeval=timeFldObj.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 	if (timeval.indexOf(' ')>0) {
 		let dt = timeval.split(' ');
 		timeval = dt[1];
 	}
 	var hourval=parseInt(timeval.substring(0, timeval.indexOf(':')));
 	var minval=parseInt(timeval.substring(timeval.indexOf(':')+1, timeval.length));
-	var currObj=getObj(timeFldName);
+	var currObj=timeFldObj;
 
 	if (hourval>23 || minval>59) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
@@ -439,7 +470,7 @@ function dateTimeValidate(dateFldName, timeFldName, fldLabel, type) {
 	if (type!='OTH') {
 		if (!compareDates(chkdate, fldLabel, currdate, 'current date & time', type)) {
 			try {
-				getObj(dateFldName).focus();
+				dateFldObj.focus();
 			} catch (error) { }
 			return false;
 		} else {
@@ -578,7 +609,11 @@ function dateValidate(fldName, fldLabel, type) {
 	if (patternValidate(fldName, fldLabel, 'DATE')==false) {
 		return false;
 	}
-	var dateval=getObj(fldName).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	return dateValidateObject(getObj(fldName), fldLabel, type);
+}
+
+function dateValidateObject(fldObj, fldLabel, type) {
+	var dateval=fldObj.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 
 	var dateelements=splitDateVal(dateval);
 
@@ -589,7 +624,7 @@ function dateValidate(fldName, fldLabel, type) {
 	if (dd<1 || dd>31 || mm<1 || mm>12 || yyyy<1 || yyyy<1000) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
-			getObj(fldName).focus();
+			fldObj.focus();
 		} catch (error) { }
 		return false;
 	}
@@ -597,7 +632,7 @@ function dateValidate(fldName, fldLabel, type) {
 	if ((mm==2) && (dd>29)) {//checking of no. of days in february month
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
-			getObj(fldName).focus();
+			fldObj.focus();
 		} catch (error) { }
 		return false;
 	}
@@ -605,7 +640,7 @@ function dateValidate(fldName, fldLabel, type) {
 	if ((mm==2) && (dd>28) && ((yyyy%4)!=0)) {//leap year checking
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
-			getObj(fldName).focus();
+			fldObj.focus();
 		} catch (error) { }
 		return false;
 	}
@@ -619,7 +654,7 @@ function dateValidate(fldName, fldLabel, type) {
 		if (dd>30) {
 			alert(alert_arr.ENTER_VALID+fldLabel);
 			try {
-				getObj(fldName).focus();
+				fldObj.focus();
 			} catch (error) { }
 			return false;
 		}
@@ -635,7 +670,7 @@ function dateValidate(fldName, fldLabel, type) {
 	if (type!='OTH') {
 		if (!compareDates(chkdate, fldLabel, currdate, 'current date', type)) {
 			try {
-				getObj(fldName).focus();
+				fldObj.focus();
 			} catch (error) { }
 			return false;
 		} else {
@@ -647,8 +682,12 @@ function dateValidate(fldName, fldLabel, type) {
 }
 
 function dateComparison(fldName1, fldLabel1, fldName2, fldLabel2, type) {
-	var dateval1=getObj(fldName1).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
-	var dateval2=getObj(fldName2).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	return dateComparisonObject(getObj(fldName1), fldLabel1, getObj(fldName2), fldLabel2, type);
+}
+
+function dateComparisonObject(fldObj1, fldLabel1, fldObj2, fldLabel2, type) {
+	var dateval1=fldObj1.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	var dateval2=fldObj2.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 
 	var dateelements1=splitDateVal(dateval1);
 	var dateelements2=splitDateVal(dateval2);
@@ -675,7 +714,7 @@ function dateComparison(fldName1, fldLabel1, fldName2, fldLabel2, type) {
 	if (type!='OTH') {
 		if (!compareDates(date1, fldLabel1, date2, fldLabel2, type)) {
 			try {
-				getObj(fldName1).focus();
+				fldObj1.focus();
 			} catch (error) { }
 			return false;
 		} else {
@@ -960,7 +999,11 @@ function intValidate(fldName, fldLabel) {
 }
 
 function numConstComp(fldName, fldLabel, type, constval) {
-	var val=parseFloat(getObj(fldName).value.replace(/^\s+/g, '').replace(/\s+$/g, ''));
+	return numConstCompObject(getObj(fldName), fldLabel, type, constval);
+}
+
+function numConstCompObject(fldObj, fldLabel, type, constval) {
+	var val=parseFloat(fldObj.value.replace(/^\s+/g, '').replace(/\s+$/g, ''));
 	constval=parseFloat(constval);
 
 	var ret=true;
@@ -1005,7 +1048,7 @@ function numConstComp(fldName, fldLabel, type, constval) {
 
 	if (ret==false) {
 		try {
-			getObj(fldName).focus();
+			fldObj.focus();
 		} catch (error) { }
 		return false;
 	} else {
@@ -1653,37 +1696,33 @@ function hideLocateMapMenu(ev) {
 }
 
 /*
-* javascript function to display the div tag
+* display the div tag
 * @param divId :: div tag ID
 */
 function show(divId) {
 	if (getObj(divId)) {
-		var id = document.getElementById(divId);
-		id.style.display = 'inline';
+		document.getElementById(divId).style.display = 'inline';
 	}
 }
 
 /*
-* javascript function to display the div tag
+* display the div tag
 * @param divId :: div tag ID
 */
 function showBlock(divId) {
-	var id = document.getElementById(divId);
-	id.style.display = 'block';
+	document.getElementById(divId).style.display = 'block';
 }
 
 /*
-* javascript function to hide the div tag
+* hide the div tag
 * @param divId :: div tag ID
 */
 function hide(divId) {
-	var id = document.getElementById(divId);
-	id.style.display = 'none';
+	document.getElementById(divId).style.display = 'none';
 }
 
 function fnhide(divId) {
-	var id = document.getElementById(divId);
-	id.style.display = 'none';
+	document.getElementById(divId).style.display = 'none';
 }
 
 function fnCopy(source, design) {
@@ -3886,23 +3925,31 @@ VtigerJS_DialogBox = {
 		if (!olayer) {
 			olayer = document.createElement('div');
 			olayer.id = olayerid;
-			olayer.className = 'small veil';
-			olayer.style.zIndex = (new Date()).getTime();
+			olayer.className = 'slds-spinner_container slds-is-fixed';
 
 			// Avoid zIndex going beyond integer max
-			// http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/7146#comment:1
-			olayer.style.zIndex = parseInt((new Date()).getTime() / 1000);
+			//olayer.style.zIndex = parseInt((new Date()).getTime() / 1000);
 
 			// In case zIndex goes to negative side!
-			if (olayer.style.zIndex < 0) {
-				olayer.style.zIndex *= -1;
-			}
+			//if (olayer.style.zIndex < 0) {
+				//olayer.style.zIndex *= -1;
+			//}
 			if (browser_ie) {
 				olayer.style.height = document.body.offsetHeight + (document.body.scrollHeight - document.body.offsetHeight) + 'px';
 			} else if (browser_nn4 || browser_nn6) {
 				olayer.style.height = document.body.offsetHeight + 'px';
 			}
-			olayer.style.width = '100%';
+			//olayer.style.width = '100%';
+			var spinner = document.createElement('div');
+			spinner.role = 'status';
+			spinner.className = 'slds-spinner slds-spinner_inline slds-spinner_large slds-spinner_brand';
+			var spininside2 = document.createElement('div');
+			spininside2.className = 'slds-spinner__dot-a';
+			var spininside3 = document.createElement('div');
+			spininside3.className = 'slds-spinner__dot-b';
+			spinner.appendChild(spininside2);
+			spinner.appendChild(spininside3);
+			olayer.appendChild(spinner);
 			document.body.appendChild(olayer);
 
 			var closeimg = document.createElement('img');
@@ -3931,6 +3978,7 @@ VtigerJS_DialogBox = {
 	},
 	unblock : function () {
 		VtigerJS_DialogBox._olayer(false);
+		VtigerJS_DialogBox.hidebusy();
 	},
 	block : function (opacity) {
 		if (typeof(opactiy)=='undefined') {
@@ -3938,6 +3986,13 @@ VtigerJS_DialogBox = {
 		}
 		var olayernode = VtigerJS_DialogBox._olayer(true);
 		olayernode.style.opacity = opacity;
+		VtigerJS_DialogBox.showbusy();
+	},
+	showbusy : function () {
+		document.getElementById('status').style.display='inline';
+	},
+	hidebusy : function () {
+		document.getElementById('status').style.display='none';
 	},
 	hideprogress : function () {
 		VtigerJS_DialogBox._olayer(false);
@@ -4648,7 +4703,7 @@ function QCformValidate() {
 				if (window.document.QcEditView[curr_fieldname] != null && window.document.QcEditView[curr_fieldname].value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0) {
 					if (window.document.QcEditView[curr_fieldname].value.length!=0) {
 						var etype = 'EMAIL';
-						if (!qcpatternValidate(curr_fieldname, qcfieldlabel[i], etype)) {
+						if (!patternValidateObject(window.document.QcEditView[curr_fieldname], qcfieldlabel[i], etype)) {
 							return false;
 						}
 					}

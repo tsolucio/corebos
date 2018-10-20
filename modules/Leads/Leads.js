@@ -236,3 +236,13 @@ function LeadssetValueFromCapture(recordid, value, target_fieldname) {
 		document.getElementById('txtbox_accountname').value = value;
 	}
 }
+
+function callConvertLeadDiv(id) {
+	jQuery.ajax({
+		method:'POST',
+		url:'index.php?module=Leads&action=LeadsAjax&file=ConvertLead&record='+id,
+	}).done(function (response) {
+		jQuery('#convertleaddiv').html(response);
+		jQuery('#conv_leadcal').html();
+	});
+}

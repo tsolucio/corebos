@@ -29,49 +29,6 @@ class addModulecbCompany extends cbupdaterWorker {
                 } else {
                     $this->installManifestModule($module);
                 }
-                /*
-                 * create the default company record importing the information
-                 * from vtiger_organizationdetails table
-                 */
-                require_once "modules/$module/$module.php";
-                require_once "modules/Users/Users.php";
-                global $adb;
-                $query = $adb->query(
-                    'SELECT *
-        				FROM vtiger_organizationdetails
-        				WHERE organization_id=1');
-                if($query && $adb->num_rows($query) > 0){
-                    $userFocus = new Users();
-                    $adminId = $userFocus->retrieve_user_id('admin');
-                    $focus = new $module();
-                    $focus->column_fields['assigned_user_id'] = $adminId;
-                    $focus->column_fields['companyname'] = $adb->query_result($query, 0, 'organizationname');
-                    $focus->column_fields['address'] = $adb->query_result($query, 0, 'address');
-                    $focus->column_fields['city'] = $adb->query_result($query, 0, 'city');
-                    $focus->column_fields['state'] = $adb->query_result($query, 0, 'state');
-                    $focus->column_fields['country'] = $adb->query_result($query, 0, 'country');
-                    $focus->column_fields['postalcode'] = $adb->query_result($query, 0, 'code');
-                    $focus->column_fields['phone'] = $adb->query_result($query, 0, 'phone');
-                    $focus->column_fields['fax'] = $adb->query_result($query, 0, 'fax');
-                    $focus->column_fields['website'] = $adb->query_result($query, 0, 'website');
-                    $focus->column_fields['defaultcompany'] = 1;
-                    $imagesArray = array("companylogo"=>"logoname","applogo"=>"frontlogo","favicon"=>"faviconlogo");
-                    foreach ($imagesArray as $index => $name) {
-                        $filetyp =str_replace('.', '', strtolower(substr($adb->query_result($query, 0, $name), -4)));
-                        $_FILES[$index] = array(
-                            'name' => $adb->query_result($query, 0, $name),
-                            'type' => "image/".$filetyp,
-                            'tmp_name' => "test/logo/".$adb->query_result($query, 0, $name),
-                            'error' => 0,
-                            'size' => 1
-                        );
-                    }
-                    $focus->save($module);
-                }
-                /*
-                 * remove the company settings section
-                 */
-                $adb->query('update vtiger_settings_field set active = 1  where name = "LBL_COMPANY_DETAILS" ');
             }
             $this->sendMsg('Changeset '.get_class($this).' applied!');
             $this->markApplied();
@@ -80,12 +37,10 @@ class addModulecbCompany extends cbupdaterWorker {
     }
     
     function undoChange() {
-	global $adb;
         if ($this->hasError()) $this->sendError();
         if ($this->isApplied()) {
             vtlib_toggleModuleAccess('cbCompany',false);
             $this->sendMsg('cbCompany deactivated!');
- 	    $adb->query('update vtiger_settings_field set active = 0  where name = "LBL_COMPANY_DETAILS" ')
             $this->markUndone(false);
             $this->sendMsg('Changeset '.get_class($this).' undone!');
         } else {

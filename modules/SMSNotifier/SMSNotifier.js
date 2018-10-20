@@ -25,13 +25,13 @@ if (typeof(SMSNotifier) == 'undefined') {
 				if (query) {
 					url += '&mode=query';
 				}
-				document.getElementById('vtbusy_info').style.display='block';
+				VtigerJS_DialogBox.showbusy();
 				jQuery.ajax({
 					method: 'POST',
 					url: 'index.php?'+url,
 				}).done(function (response) {
 					wrapper.innerHTML = response;
-					document.getElementById('vtbusy_info').style.display='none';
+					VtigerJS_DialogBox.hidebusy();
 				});
 			}
 		}

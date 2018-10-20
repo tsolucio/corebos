@@ -158,7 +158,7 @@ if ($focus->mode != 'edit' && $mod_seq_field != null) {
 			getTranslatedString('LBL_PLEASE_CLICK') .' <a href="index.php?module=Settings&action=CustomModEntityNo&parenttab=Settings&selmodule='.$currentModule.'">'.
 			getTranslatedString('LBL_HERE').'</a> '. getTranslatedString('LBL_TO_CONFIGURE'). ' '. getTranslatedString($mod_seq_field['label']) .'</b>');
 	} else {
-		$smarty->assign("MOD_SEQ_ID", $autostr);
+		$smarty->assign('MOD_SEQ_ID', $autostr);
 	}
 } else {
 	if (!empty($mod_seq_field) && !empty($mod_seq_field['name']) && !empty($focus->column_fields[$mod_seq_field['name']])) {

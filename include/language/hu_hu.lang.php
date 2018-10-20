@@ -139,6 +139,8 @@ $app_strings = array(
 	'LNK_HELP' => 'Súgó',
 	'LNK_ABOUT' => 'Névjegy',
 	'LNK_OUTLOOK' => './include/images/outlook_download.gif',
+	'LBL_ACTIVATE' => 'Aktiválja',
+	'LBL_DEACTIVATE' => 'Kikapcsolása',
 	'SINGLE_Accounts' => 'Cég',
 	'SINGLE_Contacts' => 'Kapcsolat',
 	'SINGLE_Campaigns' => 'Kampány',
@@ -1217,6 +1219,7 @@ $app_strings = array(
 	'saved' => 'saved',
 	'notsaved' => 'notsaved',
 	'processcomplete' => 'Process Complete',
+	'typetosearch_prodser' => 'Type to search products or services',
 );
 
 // Translation for currency names

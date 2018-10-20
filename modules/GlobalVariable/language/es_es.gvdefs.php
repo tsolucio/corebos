@@ -370,6 +370,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'URL del portal del cliente (Ejemplo: http://your_support_domain.tld/portal). Utilizado principalmente en las plantillas de correo.',
 ),
+'Application_Customer_Portal_BeingUsed' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'vtigercrmportal | coreboscp',
+	'definition' => 'Indica el portal de ciente conectado a este coreBOS para que podamos adaptar algunas salidas correctamente. Utilizado principalmente en las plantillas de correo.',
+),
 'Debug_Calculate_Response_Time' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -916,6 +923,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'false | true',
 	'definition' => 'Si se establece a "true", la sección de la Oportunidad se seleccionará al convertir un PreContacto. De forma predeterminada, la sección no está activada.',
 ),
+'Lead_Convert_ContactSelected' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'false | true',
+	'definition' => 'Si se establece a "true", la sección del Contacto se seleccionará al convertir un PreContacto. De forma predeterminada, la sección está activada.',
+),
 'Product_Show_Subproducts_Popup' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -1155,25 +1169,46 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'Cuando la variable está activa se mostrará el número de semana en el calendario.',
 ),
 'Report_HeaderOnXLS' => array(
-	'status' => 'Implementeda',
+	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'Cuando Report_HeaderOnXLS está activo, el nombre del informe aparecerá como el encabezado en el archivo XLS.',
 ),
 'Report_HeaderOnPDF' => array(
-	'status' => 'Implementeda',
+	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'Cuando Report_HeaderOnPDF está activo, el nombre del informe aparecerá como el encabezado en el archivo PDF.',
 ),
 'RelatedList_Activity_DefaultStatusFilter' => array(
-	'status' => 'Implementeda',
+	'status' => 'Implementada',
 	'valuetype' => 'Cadena',
 	'category' => 'Aplicación',
 	'values' => 'Valor válido de la lista de estados de Actividad',
 	'definition' => 'Filtro inicial de Actividades en la lista relacionada. Por defecto muestra "todos".',
+),
+'Zero_Bounce_API_KEY' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'Cualquier Clave API válida de Zero Bounce',
+	'definition' => 'Una clave válida para el API de Zero Bounce para poder validar cuentas de correo.',
+),
+'PBXManager_SearchOnlyOnTheseFields' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'nombres de campos',
+	'definition' => 'Lista de campos en los que buscar al recibir una llamada de Asterisk. Se devolverá el primer resultado encontrado.',
+),
+'GenDoc_CopyLabelToClipboard' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Extensión',
+	'values' => '0|1',
+	'definition' => 'Haz que los enlaces de Copiar generen las etiquetas GenDoc en vez de los valores de los campos. Por defecto desactivado.',
 ),
 );
 

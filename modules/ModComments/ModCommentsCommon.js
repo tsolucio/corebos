@@ -19,14 +19,14 @@ if (typeof(ModCommentsCommon) == 'undefined') {
 			var url = 'module=ModComments&action=ModCommentsAjax&file=DetailViewAjax&ajax=true&ajxaction=WIDGETADDCOMMENT&parentid='+encodeURIComponent(parentid);
 
 			VtigerJS_DialogBox.block();
-			document.getElementById('vtbusy_info').style.display='inline';
+			VtigerJS_DialogBox.showbusy();
 
 			jQuery.ajax({
 				method: 'POST',
 				data : {'comment': textBoxField.value},
 				url: 'index.php?'+url,
 			}).done(function (response) {
-				document.getElementById('vtbusy_info').style.display='none';
+				VtigerJS_DialogBox.hidebusy();
 				VtigerJS_DialogBox.unblock();
 				var responseTextTrimmed = trim(response);
 				if (responseTextTrimmed.substring(0, 10) == ':#:SUCCESS') {

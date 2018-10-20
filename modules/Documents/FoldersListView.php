@@ -140,7 +140,7 @@ if ($viewid ==0) {
 
 //Retreive the List View Table Header
 if ($viewid !='') {
-	$url_string .="&viewname=".$viewid;
+	$url_string .='&viewname='.$viewid;
 }
 
 $controller = new ListViewController($adb, $current_user, $queryGenerator);
@@ -167,7 +167,7 @@ if ($foldercount > 0) {
 		$query = $focus->query;
 		$list_query = '';
 		$list_query = $focus->query;
-		$folder_id = $adb->query_result($result, $i, "folderid");
+		$folder_id = $adb->query_result($result, $i, 'folderid');
 		$query .= " and vtiger_notes.folderid = $folder_id";
 		$sorder = $focus->getSortOrderForFolder($folder_id);
 		if (isset($_SESSION['NOTES_FOLDER_SORT_ORDER']) && !is_array($_SESSION['NOTES_FOLDER_SORT_ORDER'])) {
@@ -191,7 +191,7 @@ if ($foldercount > 0) {
 		}
 		//Retreiving the no of rows
 		$count_result = $adb->query(mkCountQuery($query));
-		$num_records = $adb->query_result($count_result, 0, "count");
+		$num_records = $adb->query_result($count_result, 0, 'count');
 		if ($num_records > 0) {
 			$displayFolder=true;
 		}
@@ -260,7 +260,7 @@ $smarty->assign('EMPTY_FOLDERS', $emptyfolders);
 $smarty->assign('ALL_FOLDERS', array_merge($folders, $emptyfolders));
 
 $smarty->assign('AVALABLE_FIELDS', getMergeFields($currentModule, 'available_fields'));
-$smarty->assign('FIELDS_TO_MERGE', getMergeFields($currentModule, 'fileds_to_merge'));
+$smarty->assign('FIELDS_TO_MERGE', getMergeFields($currentModule, 'fields_to_merge'));
 
 //Added to select Multiple records in multiple pages
 $smarty->assign('SELECTEDIDS', (isset($_REQUEST['selobjs']) ? vtlib_purify($_REQUEST['selobjs']) : ''));

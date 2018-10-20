@@ -37,13 +37,13 @@ function getCustomFieldList(customField)
 
 function changeFieldorder(what_to_do,fieldid,blockid,modulename)
 {ldelim}
-	document.getElementById('vtbusy_info').style.display = "block";
+	VtigerJS_DialogBox.showbusy();
 	jQuery.ajax({ldelim}
 		method:"POST",
 		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeOrder&fld_module='+modulename+'&parenttab=Settings&what_to_do='+what_to_do+'&fieldid='+fieldid+'&blockid='+blockid+'&ajax=true'
 	{rdelim}).done(function(response) {ldelim}
 		document.getElementById("cfList").innerHTML=response;
-		document.getElementById('vtbusy_info').style.display = "none";
+		VtigerJS_DialogBox.hidebusy();
 	{rdelim});
 {rdelim}
 
@@ -60,13 +60,13 @@ function changeShowstatus(tabid,blockid,modulename)
 
 function changeBlockorder(what_to_do,tabid,blockid,modulename)
 {ldelim}
-	document.getElementById('vtbusy_info').style.display = "block";
+	VtigerJS_DialogBox.showbusy();
 	jQuery.ajax({ldelim}
 		method:"POST",
 		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeOrder&fld_module='+modulename+'&parenttab=Settings&what_to_do='+what_to_do+'&tabid='+tabid+'&blockid='+blockid+'&ajax=true'
 	{rdelim}).done(function(response) {ldelim}
 		document.getElementById("cfList").innerHTML=response;
-		document.getElementById('vtbusy_info').style.display = "none";
+		VtigerJS_DialogBox.hidebusy();
 	{rdelim});
 {rdelim}
 
@@ -74,14 +74,14 @@ function changeBlockorder(what_to_do,tabid,blockid,modulename)
 function deleteCustomField(id, fld_module, colName, uitype)
 {
 	if(confirm(alert_arr.ARE_YOU_SURE_YOU_WANT_TO_DELETE)){
-		document.getElementById('vtbusy_info').style.display = "block";
+		VtigerJS_DialogBox.showbusy();
 			jQuery.ajax({
 				method:"POST",
 				url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=deleteCustomField&ajax=true&fld_module='+fld_module+'&fld_id='+id+'&colName='+colName+'&uitype='+uitype
 			}).done(function(response) {
 				document.getElementById("cfList").innerHTML=response;
 				gselected_fieldtype = '';
-				document.getElementById('vtbusy_info').style.display = "none";
+				VtigerJS_DialogBox.hidebusy();
 			});
 	}else{
 		fninvsh('editfield_'+id);
@@ -94,13 +94,13 @@ function deleteCustomBlock(module,blockid,no){
 		return false;
 	}else{
 		if(confirm(alert_arr.ARE_YOU_SURE_YOU_WANT_TO_DELETE_BLOCK)){
-			document.getElementById('vtbusy_info').style.display = "block";
+			VtigerJS_DialogBox.showbusy();
 			jQuery.ajax({
 				method:"POST",
 				url:'index.php?module=Settings&action=SettingsAjax&fld_module='+module+'&file=LayoutBlockList&sub_mode=deleteCustomBlock&ajax=true&blockid='+blockid
 			}).done(function(response) {
 				document.getElementById("cfList").innerHTML=response;
-				document.getElementById('vtbusy_info').style.display = "none";
+				VtigerJS_DialogBox.hidebusy();
 			});
 		}
 	}
@@ -115,13 +115,13 @@ function getCreateCustomBlockForm(modulename,mode)
 	var val = trim(blocklabel.value);
 	var blockid = document.getElementById('after_blockid').value;
 	var relblock = document.getElementById('relatedlistblock').value;
-	document.getElementById('vtbusy_info').style.display = "block";
+	VtigerJS_DialogBox.showbusy();
 		jQuery.ajax({
 			method:"POST",
 			url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=addBlock&fld_module='+modulename+'&parenttab=Settings&ajax=true&mode='+mode+'&blocklabel='+
 			encodeURIComponent(val)+'&after_blockid='+blockid+'&relblock='+relblock
 		}).done(function(response) {
-			document.getElementById('vtbusy_info').style.display = "none";
+			VtigerJS_DialogBox.hidebusy();
 			var str = response;
 			if (str == 'ERROR') {
 				alert(alert_arr.LABEL_ALREADY_EXISTS);
@@ -179,7 +179,7 @@ function saveFieldInfo(fieldid,module,sub_mode,typeofdata){
 		urlstring = urlstring + '&defaultvalue=' + encodeURIComponent(defaultvalue);
 	}
 
-	document.getElementById('vtbusy_info').style.display = "block";
+	VtigerJS_DialogBox.showbusy();
 	jQuery.ajax({
 		method:"POST",
 		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode='+sub_mode+'&parenttab=Settings'+
@@ -187,7 +187,7 @@ function saveFieldInfo(fieldid,module,sub_mode,typeofdata){
 	}).done(function(response) {
 		fninvsh('editfield_'+fieldid);
 		document.getElementById("cfList").innerHTML=response;
-		document.getElementById('vtbusy_info').style.display = "none";
+		VtigerJS_DialogBox.hidebusy();
 	});
 }
 
@@ -278,41 +278,41 @@ function show_move_hiddenfields(modulename,tabid,blockid,sub_mode){
 			}
 		}
 	}
-	document.getElementById('vtbusy_info').style.display = "block";
+	VtigerJS_DialogBox.showbusy();
 	jQuery.ajax({
 		method:"POST",
 		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode='+sub_mode+'&fld_module='+modulename+'&parenttab=Settings&ajax=true&tabid='+tabid+'&blockid='+blockid+'&selected='+selectedids_str,
 	}).done(function(response) {
 		document.getElementById("cfList").innerHTML=response;
-		document.getElementById('vtbusy_info').style.display = "none";
+		VtigerJS_DialogBox.hidebusy();
 	});
 }
 
 function changeRelatedListorder(what_to_do,tabid,sequence,id,module)
 {
-	document.getElementById('vtbusy_info').style.display = "block";
+	VtigerJS_DialogBox.showbusy();
 	jQuery.ajax({
 		method:"POST",
 		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeRelatedInfoOrder&sequence='+sequence+'&fld_module='+module+'&parenttab=Settings&what_to_do='+what_to_do+'&tabid='+tabid+'&id='+id+'&ajax=true'
 	}).done(function(response) {
 		document.getElementById("relatedlistdiv").innerHTML=response;
-		document.getElementById('vtbusy_info').style.display = "none";
+		VtigerJS_DialogBox.hidebusy();
 	});
 }
 
 function deleteRelatedList(tabid,sequence,id,module) {
-	document.getElementById('vtbusy_info').style.display = "block";
+	VtigerJS_DialogBox.showbusy();
 	jQuery.ajax({
 		method:"POST",
 		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=deleteRelatedList&sequence='+sequence+'&fld_module='+module+'&parenttab=Settings&tabid='+tabid+'&id='+id+'&ajax=true'
 	}).done(function(response) {
 		document.getElementById("relatedlistdiv").innerHTML=response;
-		document.getElementById('vtbusy_info').style.display = "none";
+		VtigerJS_DialogBox.hidebusy();
 	});
 }
 
 function createRelatedList(module) {
-	document.getElementById('vtbusy_info').style.display = "block";
+	VtigerJS_DialogBox.showbusy();
 	var relmodpl = document.getElementById('relatewithmodule');
 	var relmod = relmodpl.options[relmodpl.selectedIndex].value;
 	jQuery.ajax({
@@ -320,19 +320,19 @@ function createRelatedList(module) {
 		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=createRelatedList&fld_module='+module+'&relwithmod='+relmod+'&parenttab=Settings&ajax=true',
 	}).done(function(response) {
 		document.getElementById("relatedlistdiv").innerHTML=response;
-		document.getElementById('vtbusy_info').style.display = "none";
+		VtigerJS_DialogBox.hidebusy();
 	});
 }
 
 function callRelatedList(module){
-	document.getElementById('vtbusy_info').style.display = "block";
+	VtigerJS_DialogBox.showbusy();
 	jQuery.ajax({
 		method:"POST",
 		url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=getRelatedInfoOrder&parenttab=Settings&formodule='+module+'&ajax=true'
 	}).done(function(response) {
 		document.getElementById("relatedlistdiv").innerHTML=response;
 		fnvshNrm('relatedlistdiv');
-		document.getElementById('vtbusy_info').style.display = "none";
+		VtigerJS_DialogBox.hidebusy();
 	});
 }
 
@@ -380,7 +380,6 @@ var gselected_fieldtype = '';
 					</td>
 					<td align="right" width="8%"><input type="button" class="crmButton create small" onclick="fnvshobj(this,'addblock');" alt="{$MOD.ADD_BLOCK}" title="{$MOD.ADD_BLOCK}" value="{$MOD.ADD_BLOCK}"/>
 					</td>
-					&nbsp; <img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" id="vtbusy_info" style="display:none;position:absolute;top:180px;right:100px;" border="0" />
 				</tr>
 			</table>
 			<div id="cfList">

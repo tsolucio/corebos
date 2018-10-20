@@ -37,6 +37,7 @@ class Skebby implements ISMSProvider {
 	private $_username;
 	private $_password;
 	private $_parameters = array();
+	private $enableLogging = false;
 	public $helpURL = 'http://www.skebby.com/';
 	public $helpLink = 'Skebby';
 
@@ -99,7 +100,7 @@ class Skebby implements ISMSProvider {
 
 	public function send($message, $recipients) {
 		$recipients = (array)$recipients;
-
+		$this->log('recipients: ' . print_r($recipients, true));
 		$params = $this->prepareParameters();
 
 		if ($params['Prefix'] && is_numeric($params['Prefix'])) {
@@ -152,7 +153,7 @@ class Skebby implements ISMSProvider {
 			}
 			$results[] = $result;
 		}
-
+		$this->log('results: ' . print_r($results, true));
 		return $results;
 	}
 
@@ -166,10 +167,10 @@ class Skebby implements ISMSProvider {
 	public function do_post_request($url, $data, $optional_headers = null) {
 		if (!function_exists('curl_init')) {
 			$params = array(
-					'http' => array(
-							'method' => 'POST',
-							'content' => $data
-					)
+				'http' => array(
+					'method' => 'POST',
+					'content' => $data
+				)
 			);
 			if ($optional_headers !== null) {
 				$params['http']['header'] = $optional_headers;
@@ -259,9 +260,7 @@ class Skebby implements ISMSProvider {
 		$url = $this->getServiceUrl(self::SERVICE_SEND);
 		$method = 'get_credit';
 
-		$parameters = 'method='.urlencode($method).'&'
-			.'username='.urlencode($username).'&'
-			.'password='.urlencode($password);
+		$parameters = 'method='.urlencode($method).'&username='.urlencode($username).'&password='.urlencode($password);
 
 		switch ($charset) {
 			case 'UTF-8':
@@ -276,7 +275,7 @@ class Skebby implements ISMSProvider {
 
 	public function log($text) {
 		if ($this->enableLogging) {
-			$fileName = '/tmp/skebby_logging.txt';
+			$fileName = 'logs/skebby.log';
 			$fp = fopen($fileName, 'a+');
 			if ($fp) {
 				flock($fp, LOCK_EX);

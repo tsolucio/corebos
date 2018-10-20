@@ -12,9 +12,20 @@ var globaltxtboxid = '';
 var globalfldtimeformat = '';
 var itsonview=false;
 var clipcopyclicked=false;
+var clipcopyGenDoc=false;
 // to retain the old value if we cancel the ajax edit
 var globaltempvalue = '';
 var globaluitype = '';
+
+document.addEventListener('DOMContentLoaded', function () {
+	GlobalVariable_getVariable('GenDoc_CopyLabelToClipboard', 0, '', gVTUserID).then(function (response) {
+		var obj = JSON.parse(response);
+		clipcopyGenDoc = (obj.GenDoc_CopyLabelToClipboard!='0' && obj.GenDoc_CopyLabelToClipboard!='false');
+	}, function (error) {
+		clipcopyGenDoc = false;
+	});
+});
+
 function showHide(showId, hideId) {
 	show(showId);
 	fnhide(hideId);
@@ -77,6 +88,7 @@ function hndMouseOver(uitype, fieldLabel) {
 		}
 	} else if (globaluitype == 50) {
 		globalfldtimeformat = getObj('inputtimefmt_' + fieldLabel).value;
+		globaltxtboxid ='txtbox_' + fieldLabel;
 	} else {
 		globaltxtboxid='txtbox_'+ fieldLabel;//textboxpanid;
 	}
@@ -94,15 +106,29 @@ function hndMouseOver(uitype, fieldLabel) {
 
 function handleCopyClipboard(event) {
 	clipcopyclicked = true;
-	if (globaluitype != 53) {
-		let temp = getObj(globaltxtboxid).value;
-		if (globaluitype == 56) {
-			temp = (getObj(globaltxtboxid).checked ? alert_arr.YES : alert_arr.NO);
-		}
-		document.getElementById('clipcopylink').dataset.clipboardText = temp;
+	if (clipcopyGenDoc) {
+		let res = globaltxtboxid.substring(7);
+		document.getElementById('clipcopylink').dataset.clipboardText = '{' + gVTModule + '.' + res + '}';
 	} else {
-		let assigne_value = getObj('hdtxt_assigned_user_id').value;
-		document.getElementById('clipcopylink').dataset.clipboardText = assigne_value;
+		if (globaluitype != 53) {
+			let temp = getObj(globaltxtboxid).value;
+			if (globaluitype == 56) {
+				temp = (getObj(globaltxtboxid).checked ? alert_arr.YES : alert_arr.NO);
+			} else if (globaluitype == 50) {
+				let res = globaltxtboxid.split('_');
+				temp = getObj('txtbox_' + res[1]).value + ' ' + getObj('inputtimefmt_' + res[1]).value;
+			} else if (globaluitype == 10) {
+				let res = globaltxtboxid.substring(7);
+				let dispbox = getObj(res + '_display');
+				if (dispbox) {
+					temp = dispbox.value;
+				}
+			}
+			document.getElementById('clipcopylink').dataset.clipboardText = temp;
+		} else {
+			let assigne_value = getObj('hdtxt_assigned_user_id').value;
+			document.getElementById('clipcopylink').dataset.clipboardText = assigne_value;
+		}
 	}
 	//if (event) event.stopPropagation();
 	return false;
@@ -159,7 +185,7 @@ function dtlViewAjaxDirectFieldSave(fieldValue, module, tableName, fieldName, cr
 		} else if (response.indexOf(':#:ERR')>-1) {
 			alert_str = response.replace(':#:ERR', '');
 			alert(alert_str);
-			document.getElementById('vtbusy_info').style.display='none';
+			VtigerJS_DialogBox.hidebusy();
 		} else if (response.indexOf(':#:SUCCESS')>-1) {
 			//For HD & FAQ - comments, we should empty the field value
 			if ((module == 'HelpDesk' || module == 'Faq') && fieldName == 'comments') {
@@ -178,7 +204,7 @@ function dtlViewAjaxDirectFieldSave(fieldValue, module, tableName, fieldName, cr
 					alert(okmsg);
 				}
 			}
-			document.getElementById('vtbusy_info').style.display='none';
+			VtigerJS_DialogBox.hidebusy();
 		}
 	});
 }
@@ -238,7 +264,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 	var popupTxt= 'popuptxt_'+ fieldLabel;
 	var hdTxt = 'hdtxt_'+ fieldLabel;
 
-	document.getElementById('vtbusy_info').style.display='inline';
+	VtigerJS_DialogBox.showbusy();
 	var isAdmin = document.getElementById('hdtxt_IsAdmin').value;
 
 	//overriden the tagValue based on UI Type for checkbox
@@ -295,7 +321,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 	}
 	jQuery.ajax({
 		method: 'POST',
-		url: 'index.php?'+ url,
+		url: 'index.php?' + url,
 		data : data
 	}).done(function (response) {
 		if (response.indexOf(':#:FAILURE')>-1) {
@@ -303,7 +329,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		} else if (response.indexOf(':#:ERR')>-1) {
 			alert_str = response.replace(':#:ERR', '');
 			alert(alert_str);
-			document.getElementById('vtbusy_info').style.display='none';
+			VtigerJS_DialogBox.hidebusy();
 		} else if (response.indexOf(':#:SUCCESS')>-1) {
 			//For HD & FAQ - comments, we should empty the field value
 			if ((module == 'HelpDesk' || module == 'Faq') && fieldName == 'comments') {
@@ -321,7 +347,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 			if (typeof colorizer_after_change === 'function') {
 				colorizer_after_change(fieldName, tagValue);
 			}
-			document.getElementById('vtbusy_info').style.display='none';
+			VtigerJS_DialogBox.hidebusy();
 		}
 	});
 	tagValue = get_converted_html(tagValue);
@@ -395,7 +421,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		} else {
 			getObj(dtlView).innerHTML = alert_arr.NO;
 		}
-	} else if (uitype == 116 || uitype == 117) {
+	} else if (uitype == 117) {
 		getObj(dtlView).innerHTML = document.getElementById(txtBox).options[document.getElementById(txtBox).selectedIndex].text;
 	} else if (uitype == '10') {
 		getObj(dtlView).innerHTML = '<a href="index.php?module='+document.getElementById(fieldName+'_type').value+'&action=DetailView&record='+tagValue+'">'+document.getElementById(fieldName+'_display').value+'&nbsp;</a>';
@@ -405,8 +431,6 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 			getObj(dtlView).innerHTML = '<a href="index.php?module=Accounts&action=DetailView&record='+tagValue+'">'+popObj.value+'&nbsp;</a>';
 		} else if (uitype == '57') {
 			getObj(dtlView).innerHTML = '<a href="index.php?module=Contacts&action=DetailView&record='+tagValue+'">'+popObj.value+'&nbsp;</a>';
-		} else if (uitype == '75' || uitype == '81' ) {
-			getObj(dtlView).innerHTML = '<a href="index.php?module=Vendors&action=DetailView&record='+tagValue+'">'+popObj.value+'&nbsp;</a>';
 		} else if (uitype == '76') {
 			getObj(dtlView).innerHTML = '<a href="index.php?module=Potentials&action=DetailView&record='+tagValue+'">'+popObj.value+'&nbsp;</a>';
 		} else if (uitype == '78') {
@@ -590,7 +614,7 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 function SaveTag(tagfield, crmId, module) {
 	var tagValue = document.getElementById(tagfield).value;
 	tagValue = encodeURIComponent(tagValue);
-	document.getElementById('vtbusy_info').style.display='inline';
+	VtigerJS_DialogBox.showbusy();
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?file=TagCloud&module=' + module + '&action=' + module + 'Ajax&recordid=' + crmId + '&ajxaction=SAVETAG&tagfields=' +tagValue
@@ -601,7 +625,7 @@ function SaveTag(tagfield, crmId, module) {
 			getObj('tagfields').innerHTML = response;
 			document.getElementById(tagfield).value = '';
 		}
-		document.getElementById('vtbusy_info').style.display='none';
+		VtigerJS_DialogBox.hidebusy();
 	});
 }
 function setSelectValue(fieldLabel) {
@@ -645,4 +669,44 @@ function hndMouseClick(fieldLabel) {
 	document.getElementById(globaltxtboxid).value = document.getElementById(globaldtlviewspanid).innerHTML;
 	handleEdit();
 	jQuery('#'+globaltxtboxid).select();
+}
+
+function setCoOrdinate(elemId) {
+	var oBtnObj = document.getElementById(elemId);
+	var tagName = document.getElementById('lstRecordLayout');
+	leftpos  = 0;
+	toppos = 0;
+	var aTag = oBtnObj;
+	do {
+		leftpos += aTag.offsetLeft;
+		toppos += aTag.offsetTop;
+	} while (aTag = aTag.offsetParent);
+	tagName.style.top= toppos + 20 + 'px';
+	tagName.style.left= leftpos - 276 + 'px';
+}
+
+function getListOfRecords(obj, sModule, iId, sParentTab) {
+	jQuery.ajax({
+		method:'POST',
+		url:'index.php?module=Users&action=getListOfRecords&ajax=true&CurModule='+sModule+'&CurRecordId='+iId+'&CurParentTab='+sParentTab,
+	}).done(function (response) {
+		document.getElementById('lstRecordLayout').innerHTML = response;
+		Lay = 'lstRecordLayout';
+		var tagName = document.getElementById(Lay);
+		var leftSide = findPosX(obj);
+		var topSide = findPosY(obj);
+		var maxW = tagName.style.width;
+		var widthM = maxW.substring(0, maxW.length-2);
+		var getVal = parseInt(leftSide) + parseInt(widthM);
+		if (getVal > document.body.clientWidth) {
+			leftSide = parseInt(leftSide) - parseInt(widthM);
+			tagName.style.left = leftSide + 230 + 'px';
+			tagName.style.top = topSide + 20 + 'px';
+		} else {
+			tagName.style.left = leftSide + 230 + 'px';
+		}
+		setCoOrdinate(obj.id);
+		tagName.style.display = 'block';
+		tagName.style.visibility = 'visible';
+	});
 }

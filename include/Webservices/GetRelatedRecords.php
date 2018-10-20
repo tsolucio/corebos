@@ -73,14 +73,31 @@ function getRelatedRecords($id, $module, $relatedModule, $queryParameters, $user
 	$records = array();
 
 	// Return results
+	$pdowsid = vtws_getEntityID('Products').'x';
+	$srvwsid = vtws_getEntityID('Services').'x';
 	while ($row = $adb->fetch_array($result)) {
 		if (($module=='HelpDesk' || $module=='Faq') && $relatedModule=='ModComments') {
 			$records[] = $row;
 		} else {
-			if (isset($row['id']) && getSalesEntityType($row['id'])=='Services') {
-				$records[] = DataTransform::sanitizeData($row, $srvmeta);
+			if ($relatedModule=='Products') {
+				if (isset($row['productid']) && isset($row['sequence_no'])) {
+					if (isset($row['productid']) && getSalesEntityType($row['productid'])=='Services') {
+						$rec = DataTransform::sanitizeData($row, $srvmeta);
+						$rec['id'] = $srvwsid.$row['productid'];
+						$rec['productid'] = $srvwsid.$row['productid'];
+						$rec['linetype'] = 'Services';
+					} else {
+						$rec = DataTransform::sanitizeData($row, $meta);
+						$rec['productid'] = $pdowsid.$row['productid'];
+						$rec['id'] = $pdowsid.$row['productid'];
+						$rec['linetype'] = 'Products';
+					}
+					$records[] = $rec;
+				} else {
+					$records[] =  DataTransform::sanitizeData($row, $meta);
+				}
 			} else {
-				$records[] = DataTransform::sanitizeData($row, $meta);
+				$records[] =  DataTransform::sanitizeData($row, $meta);
 			}
 		}
 	}
@@ -176,7 +193,11 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 	$crmid = $idComponents[1];
 
 	// check permission on related module and pickup meta data for further processing
-	$webserviceObject = VtigerWebserviceObject::fromName($adb, $relatedModule);
+	if ($relatedModule == 'Products' && !vtlib_isModuleActive('Products') && vtlib_isModuleActive('Services')) {
+		$webserviceObject = VtigerWebserviceObject::fromName($adb, 'Services');
+	} else {
+		$webserviceObject = VtigerWebserviceObject::fromName($adb, $relatedModule);
+	}
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
 
@@ -185,7 +206,11 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 	$meta = $handler->getMeta();
 
-	if (!in_array($relatedModule, $types['types'])) {
+	if ($relatedModule == 'Products') {
+		if (!(in_array('Products', $types['types']) || in_array('Services', $types['types']))) {
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to perform the operation on module ($relatedModule) is denied");
+		}
+	} elseif (!in_array($relatedModule, $types['types'])) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to perform the operation on module ($relatedModule) is denied");
 	}
 
@@ -348,6 +373,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 							inner join vtiger_crmentity as crmq on crmq.crmid=vtiger_quotes.quoteid
 							left join vtiger_inventoryproductrel on vtiger_inventoryproductrel.id=vtiger_quotes.quoteid
 							inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
+							left join vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
 							left join $pstable on $pstable.$psfield = vtiger_inventoryproductrel.productid
 							where vtiger_inventoryproductrel.productid = $pstable.$psfield AND crmq.deleted=0
 							and $relatedField = $crmid";
@@ -358,6 +384,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 							inner join vtiger_crmentity as crmi on crmi.crmid=vtiger_invoice.invoiceid
 							left join vtiger_inventoryproductrel on vtiger_inventoryproductrel.id=vtiger_invoice.invoiceid
 							inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
+							left join vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid 
 							left join $pstable on $pstable.$psfield = vtiger_inventoryproductrel.productid
 							where vtiger_inventoryproductrel.productid = $pstable.$psfield AND crmi.deleted=0
 							and $relatedField = $crmid";
@@ -368,6 +395,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 						inner join vtiger_crmentity as crms on crms.crmid=vtiger_salesorder.salesorderid
 						left join vtiger_inventoryproductrel on vtiger_inventoryproductrel.id=vtiger_salesorder.salesorderid
 						inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
+						left join vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
 						left join $pstable on $pstable.$psfield = vtiger_inventoryproductrel.productid
 						where vtiger_inventoryproductrel.productid = $pstable.$psfield AND crms.deleted=0
 						and $relatedField = $crmid";

@@ -97,5 +97,6 @@ $mod_strings = array (
 	'LBL_NAVI_SELECTION'=>'Nombre d\'enregistrements à afficher:',
 	'LBL_COMMENTS'=>'Commentaires',
 	'LBL_SIGNATURE'=>'Signature',
+	'LBL_DUPLICATE'=>'Duplicate',
 );
 ?>

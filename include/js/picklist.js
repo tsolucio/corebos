@@ -102,9 +102,9 @@ function pushEditedValue(e) {
 }
 
 /**
- * this function is used to show the delete div for a picklist
+ * this function is used to show the ACTION div for a picklist
  */
-function showDeleteDiv() {
+function showActionDiv(action) {
 	var moduleElem = document.getElementById('pickmodule');
 	var module = moduleElem.options[moduleElem.selectedIndex].value;
 
@@ -115,59 +115,34 @@ function showDeleteDiv() {
 	document.getElementById('status').style.display='inline';
 	jQuery.ajax({
 		method: 'POST',
-		url: 'index.php?action=PickListAjax&module=PickList&mode=delete&file=ShowActionDivs&moduleName='+encodeURIComponent(module)+'&fieldname='+encodeURIComponent(fieldName)+'&fieldlabel='+encodeURIComponent(fieldLabel)
+		url: 'index.php?action=PickListAjax&module=PickList&mode='+action+'&file=ShowActionDivs&moduleName='+encodeURIComponent(module)+'&fieldname='+encodeURIComponent(fieldName)+'&fieldlabel='+encodeURIComponent(fieldLabel)
 	}).done(function (response) {
 		document.getElementById('status').style.display='none';
 		document.getElementById('actiondiv').style.display ='block';
 		document.getElementById('actiondiv').innerHTML=response;
 		placeAtCenter(document.getElementById('actiondiv'));
 	});
+}
+
+/**
+ * this function is used to show the delete div for a picklist
+ */
+function showDeleteDiv() {
+	showActionDiv('delete');
 }
 
 /**
  * this function is used to show the add div for a picklist
  */
 function showAddDiv() {
-	var moduleElem = document.getElementById('pickmodule');
-	var module = moduleElem.options[moduleElem.selectedIndex].value;
-
-	var oModPick = document.getElementById('allpick');
-	var fieldName=oModPick.options[oModPick.selectedIndex].value;
-	var fieldLabel=oModPick.options[oModPick.selectedIndex].text;
-
-	document.getElementById('status').style.display='inline';
-	jQuery.ajax({
-		method: 'POST',
-		url: 'index.php?action=PickListAjax&module=PickList&mode=add&file=ShowActionDivs&moduleName='+encodeURIComponent(module)+'&fieldname='+encodeURIComponent(fieldName)+'&fieldlabel='+encodeURIComponent(fieldLabel)
-	}).done(function (response) {
-		document.getElementById('status').style.display='none';
-		document.getElementById('actiondiv').style.display ='block';
-		document.getElementById('actiondiv').innerHTML=response;
-		placeAtCenter(document.getElementById('actiondiv'));
-	});
+	showActionDiv('add');
 }
 
 /**
  * this function is used to show the edit div for a picklist
  */
 function showEditDiv() {
-	var moduleElem = document.getElementById('pickmodule');
-	var module = moduleElem.options[moduleElem.selectedIndex].value;
-
-	var oModPick = document.getElementById('allpick');
-	var fieldName=oModPick.options[oModPick.selectedIndex].value;
-	var fieldLabel=oModPick.options[oModPick.selectedIndex].text;
-
-	document.getElementById('status').style.display='inline';
-	jQuery.ajax({
-		method: 'POST',
-		url: 'index.php?action=PickListAjax&module=PickList&mode=edit&file=ShowActionDivs&moduleName='+encodeURIComponent(module)+'&fieldname='+encodeURIComponent(fieldName)+'&fieldlabel='+encodeURIComponent(fieldLabel)
-	}).done(function (response) {
-		document.getElementById('status').style.display='none';
-		document.getElementById('actiondiv').style.display ='block';
-		document.getElementById('actiondiv').innerHTML=response;
-		placeAtCenter(document.getElementById('actiondiv'));
-	});
+	showActionDiv('edit');
 }
 
 /**

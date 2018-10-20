@@ -53,6 +53,12 @@ class ConvertInventoryModule extends VTTask {
 			$fromEntity->column_fields = $data;
 			$toEntity->column_fields = $data;
 			$result = getConvertQuoteToSoObject($toEntity, $fromEntity, $entity->getId());
+			if (empty($result->column_fields['sostatus'])) {
+				$result->column_fields['sostatus'] = 'AutoCreated';
+			}
+			if (empty($result->column_fields['invoicestatus'])) {
+				$result->column_fields['invoicestatus'] = 'AutoCreated';
+			}
 			$data = $result->column_fields;
 		} elseif ($cbfrommodule=='SalesOrder' && $this->convertto=='Invoice') {
 			$fromEntity = CRMEntity::getInstance($cbfrommodule);

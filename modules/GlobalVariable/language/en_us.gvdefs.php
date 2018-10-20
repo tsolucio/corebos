@@ -370,6 +370,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'URL for customer portal (Example: http://your_support_domain.tld/portal). Used mostly for email template communications.',
 ),
+'Application_Customer_Portal_BeingUsed' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'vtigercrmportal | coreboscp',
+	'definition' => 'Indicate the customer portal connected to this coreBOS so we can adapt outputs accordingly. Used mostly for email template communications.',
+),
 'Debug_Calculate_Response_Time' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
@@ -916,6 +923,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'false | true',
 	'definition' => 'If set to the string "true", the Opportunity section will be selected when converting a Lead. By default, the section is not selected.',
 ),
+'Lead_Convert_ContactSelected' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'false | true',
+	'definition' => 'If set to the string "true", the Contact section will be selected when converting a Lead. By default, the section is selected.',
+),
 'Product_Show_Subproducts_Popup' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
@@ -1174,6 +1188,27 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'Any valid Activity Status',
 	'definition' => 'Initial Activity filter on Related List. Default is "all".',
+),
+'Zero_Bounce_API_KEY' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Any valid Zero Bounce API KEY',
+	'definition' => 'The valid Zero Bounce API KEY',
+),
+'PBXManager_SearchOnlyOnTheseFields' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'list of field names',
+	'definition' => 'List of fields to search in when we get a call from Asterisk. The first result found will be returned.',
+),
+'GenDoc_CopyLabelToClipboard' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Extension',
+	'values' => '0|1',
+	'definition' => 'Make the copy links in Detail View copy GenDoc labels instead of field values. By default deactivated.',
 ),
 );
 

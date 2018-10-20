@@ -135,6 +135,7 @@ function mass_edit_formload(idstring, module, parenttab) {
 		vtlib_executeJavascriptInElement(document.getElementById('massedit_form_div'));
 	});
 }
+
 function mass_edit_fieldchange(selectBox) {
 	var oldSelectedIndex = selectBox.oldSelectedIndex;
 	var selectedIndex = selectBox.selectedIndex;
@@ -149,114 +150,6 @@ function mass_edit_fieldchange(selectBox) {
 	selectBox.oldSelectedIndex = selectedIndex;
 }
 
-function mass_edit_save() {
-	var masseditform = document.getElementById('massedit_form');
-	var module = masseditform['massedit_module'].value;
-	var viewid = document.getElementById('viewname').options[document.getElementById('viewname').options.selectedIndex].value;
-	var searchurl = document.getElementById('search_url').value;
-
-	var urlstring =
-		'module=' + encodeURIComponent(module) + '&action=' + encodeURIComponent(module + 'Ajax') +
-		'&return_module=' + encodeURIComponent(module) + '&return_action=ListView' +
-		'&mode=ajax&file=MassEditSave&viewname=' + viewid;//+"&"+ searchurl;
-
-	fninvsh('massedit');
-
-	jQuery.ajax({
-		method: 'POST',
-		url: 'index.php?' + urlstring
-	}).done(function (response) {
-		document.getElementById('status').style.display = 'none';
-		var result = response.split('&#&#&#');
-		document.getElementById('ListViewContents').innerHTML = result[2];
-		if (result[1] != '') {
-			alert(result[1]);
-		}
-		document.getElementById('basicsearchcolumns').innerHTML = '';
-	});
-}
-
-function ajax_mass_edit() {
-	alert();
-	document.getElementById('status').style.display = 'inline';
-
-	var masseditform = document.getElementById('massedit_form');
-	var module = masseditform['massedit_module'].value;
-
-	var viewid = document.getElementById('viewname').options[document.getElementById('viewname').options.selectedIndex].value;
-	var idstring = masseditform['massedit_recordids'].value;
-	var searchurl = document.getElementById('search_url').value;
-	var tplstart = '&';
-	if (gstart != '') {
-		tplstart = tplstart + gstart;
-	}
-
-	var masseditfield = masseditform['massedit_field'].value;
-	var masseditvalue = masseditform['massedit_value_' + masseditfield].value;
-
-	var urlstring =
-			'module=' + encodeURIComponent(module) + '&action=' + encodeURIComponent(module + 'Ajax') +
-			'&return_module=' + encodeURIComponent(module) +
-			'&mode=ajax&file=MassEditSave&viewname=' + viewid +
-			'&massedit_field=' + encodeURIComponent(masseditfield) +
-			'&massedit_value=' + encodeURIComponent(masseditvalue) +
-			'&idlist=' + idstring + searchurl;
-
-	fninvsh('massedit');
-
-	jQuery.ajax({
-		method: 'POST',
-		url: 'index.php?' + urlstring
-	}).done(function (response) {
-		document.getElementById('status').style.display = 'none';
-		var result = response.split('&#&#&#');
-		document.getElementById('ListViewContents').innerHTML = result[2];
-		if (result[1] != '') {
-			alert(result[1]);
-		}
-		document.getElementById('basicsearchcolumns').innerHTML = '';
-	});
-}
-
-function change(obj, divid) {
-	var excludedRecords = document.getElementById('excludedRecords').value;
-	var select_options = document.getElementById('allselectedboxes').value;
-	//Added to remove the semi colen ';' at the end of the string.done to avoid error.
-	var searchurl = document.getElementById('search_url').value;
-	var numOfRows = document.getElementById('numOfRows').value;
-	var idstring = '';
-	var count = 0;
-	if (select_options == 'all') {
-		idstring = select_options;
-		document.getElementById('idlist').value = idstring;
-		count = numOfRows;
-	} else {
-		var x = select_options.split(';');
-		count = x.length;
-		if (count > 1) {
-			idstring = select_options;
-			document.getElementById('idlist').value = idstring;
-		} else {
-			alert(alert_arr.SELECT);
-			return false;
-		}
-	}
-
-	if (count > getMaxMassOperationLimit()) {
-		var confirm_str = alert_arr.MORE_THAN_500;
-		if (confirm(confirm_str)) {
-			var confirm_status = true;
-		} else {
-			return false;
-		}
-	} else {
-		confirm_status = true;
-	}
-
-	if (confirm_status) {
-		fnvshobj(obj, divid);
-	}
-}
 var gstart='';
 function massDelete(module) {
 	var searchurl = document.getElementById('search_url').value;
@@ -634,19 +527,20 @@ function ChangeCustomViewStatus(viewid, now_status, changed_status, module, pare
 
 function getListViewCount(module, element, parentElement, url) {
 	var i=0;
+	var elementList = '';
 	if (module != 'Documents') {
-		var elementList = document.getElementsByName(module+'_listViewCountRefreshIcon');
+		elementList = document.getElementsByName(module+'_listViewCountRefreshIcon');
 		for (i=0; i<elementList.length; ++i) {
 			elementList[i].style.display = 'none';
 		}
 	} else {
 		element.style.display = 'none';
 	}
-	var elementList = document.getElementsByName(module+'_listViewCountContainerBusy');
+	elementList = document.getElementsByName(module+'_listViewCountContainerBusy');
 	for (i=0; i<elementList.length; ++i) {
 		elementList[i].style.display = '';
 	}
-	var element = document.getElementsByName('search_url')[0];
+	element = document.getElementsByName('search_url')[0];
 	var searchURL = '';
 	if (typeof element !='undefined') {
 		searchURL = element.value;
@@ -654,8 +548,7 @@ function getListViewCount(module, element, parentElement, url) {
 		element = document.getElementsByName('search_text')[0];
 		var searchField = document.getElementsByName('search_field')[0];
 		if (element.value.length > 0) {
-			searchURL = '&query=true&searchtype=BasicSearch&search_field='+
-				encodeURIComponent(searchField.value)+'&search_text='+encodeURIComponent(element.value);
+			searchURL = '&query=true&searchtype=BasicSearch&search_field='+encodeURIComponent(searchField.value)+'&search_text='+encodeURIComponent(element.value);
 		}
 	} else if (document.getElementById('globalSearchText') != null &&
 			typeof document.getElementById('globalSearchText') != 'undefined') {
@@ -704,13 +597,14 @@ function VT_disableFormSubmit(evt) {
 	}
 	return true;
 }
+
 var statusPopupTimer = null;
 function closeStatusPopup(elementid) {
 	statusPopupTimer = setTimeout('document.getElementById(\'' + elementid + '\').style.display = \'none\';', 50);
 }
 
 function updateCampaignRelationStatus(relatedmodule, campaignid, crmid, campaignrelstatusid, campaignrelstatus) {
-	document.getElementById('vtbusy_info').style.display='inline';
+	VtigerJS_DialogBox.showbusy();
 	document.getElementById('campaignstatus_popup_' + crmid).style.display = 'none';
 	var data = 'action=updateRelationsAjax&module=Campaigns&relatedmodule=' + relatedmodule + '&campaignid=' + campaignid + '&crmid=' + crmid + '&campaignrelstatusid=' + campaignrelstatusid;
 	jQuery.ajax({
@@ -721,7 +615,7 @@ function updateCampaignRelationStatus(relatedmodule, campaignid, crmid, campaign
 			alert(alert_arr.ERROR_WHILE_EDITING);
 		} else if (response.indexOf(':#:SUCCESS')>-1) {
 			document.getElementById('campaignstatus_' + crmid).innerHTML = campaignrelstatus;
-			document.getElementById('vtbusy_info').style.display='none';
+			VtigerJS_DialogBox.hidebusy();
 		}
 	});
 }
@@ -772,13 +666,11 @@ function emptyCvList(type, id) {
 	}
 }
 
-// mailer_export
 function mailer_export() {
 	var module = document.getElementById('curmodule').value;
 	gotourl('index.php?module='+module+'&action=MailerExport&from='+module+'&step=ask');
 	return false;
 }
-// end of mailer export
 
 function checkgroup() {
 	if (document.getElementById('group_checkbox').checked) {
@@ -825,6 +717,7 @@ function callSearch(searchtype) {
 	});
 	return false;
 }
+
 function alphabetic(module, url, dataid) {
 	for (var i = 1; i <= 26; i++) {
 		var data_td_id = 'alpha_' + eval(i);
@@ -845,6 +738,7 @@ function alphabetic(module, url, dataid) {
 		document.getElementById('basicsearchcolumns').innerHTML = '';
 	});
 }
+
 function modifyimage(imagename) {
 	var imgArea = getObj('dynloadarea');
 	if (!imgArea) {

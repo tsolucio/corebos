@@ -38,7 +38,7 @@ $tax_div = '<table width="100%" border="0" cellpadding="5" cellspacing="0" class
 	<tr>
 		<td id="tax_div_title'.$rowid.'" nowrap align="left" ><b>'.$app_strings['LABEL_SET_TAX_FOR'].' : '.$product_total.'</b></td>
 		<td>&nbsp;</td>
-		<td align="right"><img src="'. vtiger_imageurl('close.gif', $theme).'" border="0" onClick="fnHidePopDiv(\'tax_div'.$rowid.'\')" style="cursor:pointer;"></td>
+		<td align="right"><img src="'. vtiger_imageurl('close.gif', $theme).'" border="0" onClick="fnhide(\'tax_div'.$rowid.'\')" style="cursor:pointer;"></td>
 	</tr>';
 
 $net_tax_total = 0.00;
