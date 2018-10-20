@@ -145,13 +145,6 @@
 	<description>add module cbCompany</description>
 	<filename>build/changeSets/2018/addModulecbCompany.php</filename>
 	<classname>addModulecbCompany</classname>
-	<systemupdate>false</systemupdate>
-</changeSet>
-<changeSet>
-	<author>albana</author>
-	<description>migrate Company Setting</description>
-	<filename>build/changeSets/2018/migrateCompanySettings.php</filename>
-	<classname>migrateCompanySettings</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
 </updatesChangeLog>
