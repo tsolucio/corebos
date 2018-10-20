@@ -31,7 +31,6 @@ class Documents extends CRMEntity {
 		'vtiger_crmentity'=>'crmid',
 		'vtiger_notes'=>'notesid',
 		'vtiger_notescf'=>'notesid',
-		'vtiger_senotesrel'=>'notesid'
 	);
 
 	/**
