@@ -21,7 +21,7 @@ function validaCPF($field, $cpf = null) {
 	}
 
 	// Elimina possivel mascara
-	$cpf = ereg_replace('[^0-9]', '', $cpf);
+	$cpf = preg_replace('/[^0-9]/', '', $cpf);
 	$cpf = str_pad($cpf, 11, '0', STR_PAD_LEFT);
 
 	// Verifica se o numero de digitos informados é igual a 11
