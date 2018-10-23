@@ -337,32 +337,11 @@ function evvt_PortalModuleRestrictions($module, $accountId, $contactId) {
 	return $condition;
 }
 
-/**
- * To get the modules allowed for global search this function returns all the
- * modules which supports global search as an array in the following structure
- * array($module_name1=>$object_name1,$module_name2=>$object_name2,$module_name3=>$object_name3,$module_name4=>$object_name4,-----);
- */
-function getSearchModules($filter = array()) {
-	global $adb;
-	// vtlib customization: Ignore disabled modules.
-	$sql = 'select distinct vtiger_field.tabid,name
-		from vtiger_field
-		inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
-		where vtiger_tab.tabid not in (16,29) and vtiger_tab.presence != 1 and vtiger_field.presence in (0,2)';
-	$result = $adb->pquery($sql, array());
-	while ($module_result = $adb->fetch_array($result)) {
-		$modulename = $module_result['name'];
-		// Do we need to filter the module selection?
-		if (!empty($filter) && is_array($filter) && !in_array($modulename, $filter)) {
-			continue;
-		}
-		if ($modulename != 'Calendar') {
-			$return_arr[$modulename] = $modulename;
-		} else {
-			$return_arr[$modulename] = 'Activity';
-		}
+// To get the modules allowed for global search
+if (!function_exists('getSearchModules')) {
+	function getSearchModules($filter = array()) {
+		return getSearchModulesCommon($filter);
 	}
-	return $return_arr;
 }
 
 function getSearchingListViewEntries($focus, $module, $list_result, $navigation_array, $relatedlist = '', $returnset = '', $edit_action = 'EditView', $del_action = 'Delete', $oCv = '', $page = '', $selectedfields = '', $contRelatedfields = '', $skipActions = false, $linksallowed = false) {
