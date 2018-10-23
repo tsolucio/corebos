@@ -2354,7 +2354,8 @@ function getListQuery($module, $where = '') {
 			$query .= 'WHERE vtiger_crmentity.deleted = 0 ' . $where;
 			break;
 		case "Contacts":
-			$query = "SELECT vtiger_contactdetails.*, vtiger_crmentity.smownerid, vtiger_crmentity.crmid
+			$query = "SELECT vtiger_contactdetails.*, vtiger_contactaddress.*, vtiger_contactsubdetails.*, vtiger_contactscf.*, vtiger_customerdetails.*,
+					vtiger_crmentity.smownerid, vtiger_crmentity.crmid
 			FROM vtiger_contactdetails
 			INNER JOIN vtiger_crmentity
 				ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
