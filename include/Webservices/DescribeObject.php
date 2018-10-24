@@ -8,7 +8,7 @@
  * All Rights Reserved.
  *************************************************************************************/
 function vtws_describe($elementType, $user) {
-	include 'GetFilterFields.php';
+	include_once 'GetFilterFields.php';
 	global $log, $adb;
 	$modules = explode(',', $elementType);
 	$rdo = array();
@@ -31,6 +31,5 @@ function vtws_describe($elementType, $user) {
 	} else {
 		return $rdo;
 	}
-
 }
 ?>
