@@ -468,11 +468,12 @@ class CustomView extends CRMEntity {
 	 */
 	public function getColumnsListByCvid($cvid) {
 		global $adb;
-
-		$sSQL = "select vtiger_cvcolumnlist.* from vtiger_cvcolumnlist";
-		$sSQL .= " inner join vtiger_customview on vtiger_customview.cvid = vtiger_cvcolumnlist.cvid";
-		$sSQL .= " where vtiger_customview.cvid =? order by vtiger_cvcolumnlist.columnindex";
+		$sSQL = 'select vtiger_cvcolumnlist.*
+			from vtiger_cvcolumnlist
+			inner join vtiger_customview on vtiger_customview.cvid = vtiger_cvcolumnlist.cvid
+			where vtiger_customview.cvid =? order by vtiger_cvcolumnlist.columnindex';
 		$result = $adb->pquery($sSQL, array($cvid));
+		$columnlist = array();
 		while ($columnrow = $adb->fetch_array($result)) {
 			$columnlist[$columnrow['columnindex']] = $columnrow['columnname'];
 		}
