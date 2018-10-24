@@ -23,10 +23,10 @@ function vtws_describe($elementType, $user) {
 			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
 		}
 		$rdo[$elementType] = $handler->describe($elementType);
+		$rdo[$elementType]['filterFields']=vtws_getfilterfields($elementType, $user);
 	}
 	VTWS_PreserveGlobal::flush();
 	if (count($rdo)==1) {
-		$rdo[$elementType]['Filter Fields']=vtws_getfilterfields($elementType, $user) ;
 		return $rdo[$elementType];
 	} else {
 		return $rdo;
