@@ -201,9 +201,10 @@ function addSignature($contents, $fromname) {
   */
 function setMailerProperties($mail, $subject, $contents, $from_email, $from_name, $to_email, $attachment = '', $emailid = '', $logo = '', $qrScan = '') {
 	global $adb;
-	$adb->println("Inside the function setMailerProperties");
+	$adb->println('Inside the function setMailerProperties');
 	if ($logo == 1) {
-		$mail->AddEmbeddedImage('themes/images/logo_mail.jpg', 'logo', 'logo.jpg', 'base64', 'image/jpg');
+		$cmp = retrieveCompanyDetails();
+		$mail->AddEmbeddedImage($cmp['companylogo'], 'logo', 'logo.jpg', 'base64', 'image/jpg');
 	}
 	if ($qrScan == 1) {
 		preg_match_all('/<img src="cid:(qrcode.*)"/', $contents, $matches);
