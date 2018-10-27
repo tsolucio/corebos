@@ -53,13 +53,13 @@ class addModulecbCompany extends cbupdaterWorker {
 					$focus->column_fields['fax'] = $adb->query_result($query, 0, 'fax');
 					$focus->column_fields['website'] = $adb->query_result($query, 0, 'website');
 					$focus->column_fields['defaultcompany'] = 1;
-					$imagesArray = array("companylogo"=>"logoname","applogo"=>"frontlogo","favicon"=>"faviconlogo");
+					$imagesArray = array('companylogo'=>'logoname','applogo'=>'frontlogo','favicon'=>'faviconlogo');
 					foreach ($imagesArray as $index => $name) {
 						$filetyp =str_replace('.', '', strtolower(substr($adb->query_result($query, 0, $name), -4)));
 						$_FILES[$index] = array(
 							'name' => $adb->query_result($query, 0, $name),
-							'type' => "image/".$filetyp,
-							'tmp_name' => "test/logo/".$adb->query_result($query, 0, $name),
+							'type' => 'image/'.$filetyp,
+							'tmp_name' => 'test/logo/'.$adb->query_result($query, 0, $name),
 							'error' => 0,
 							'size' => 1
 						);
