@@ -3396,21 +3396,19 @@ function picklistHasDependency($keyfldname, $modulename) {
 
 function fetch_logo($type) {
 	global $adb;
-	$logodir ='test/logo/';
-	$sql='select logoname,frontlogo,faviconlogo from vtiger_organizationdetails';
-	$result = $adb->pquery($sql, array());
+	$companyDetails = retrieveCompanyDetails();
 	switch ($type) {
 		case 1:
-			$logoname = decode_html($adb->query_result($result, 0, 'logoname'));
+		    $logoname = decode_html($companyDetails['companylogo']);
 			break;
 		case 2:
-			$logoname = decode_html($adb->query_result($result, 0, 'frontlogo'));
+		    $logoname = decode_html($companyDetails['applogo']);
 			break;
 		case 3:
-			$logoname = decode_html($adb->query_result($result, 0, 'faviconlogo'));
+		    $logoname = decode_html($companyDetails['favicon']);
 			break;
 		default:
-			$logoname = 'app-logo.jpg';
+		    $logoname = 'test/logo/app-logo.jpg';
 	}
 	return $logodir.$logoname;
 }

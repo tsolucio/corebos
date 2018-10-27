@@ -651,6 +651,7 @@ class crmtogo_WS_Utils {
 	}
 
 	public static function getConfigDefaults() {
+	    require 'include/utils/utils.php';
 		$db = PearDatabase::getInstance();
 		$result = $db->pquery('SELECT * FROM berli_crmtogo_defaults', array());
 		$config = array ();
@@ -658,11 +659,10 @@ class crmtogo_WS_Utils {
 		$config ['fetch_limit'] = $db->query_result($result, 0, 'fetch_limit');
 		$config ['theme'] = $db->query_result($result, 0, 'defaulttheme');
 		//Get organizations details
-		$res_orgdt = $db->pquery('select * from vtiger_organizationdetails', array());
-		//Handle for allowed organation logo/logoname likes UTF-8 Character
-		$config['company_name'] = $db->query_result($res_orgdt, 0, 'organizationname');
-		$config['company_website'] = $db->query_result($res_orgdt, 0, 'website');
-		$config['company_logo'] = decode_html($db->query_result($res_orgdt, 0, 'logoname'));
+		$companyDetails = retrieveCompanyDetails();
+		$config['company_name'] = $companyDetails["companyname"];
+		$config['company_website'] = $companyDetails["website"];
+		$config['company_logo'] = $companyDetails["companylogo"];
 		return $config;
 	}
 

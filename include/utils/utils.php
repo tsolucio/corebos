@@ -3991,4 +3991,69 @@ function getMinimumCronFrequency() {
 	return GlobalVariable::getVariable('Application_Minimum_Cron_Frequency', 15);
 }
 
+/**
+ * Function to get the details of the default company
+ */
+function retrieveCompanyDetails(){
+    global $adb;
+    $companyDetails = array();
+    $query = $adb->pquery(
+            'SELECT c.*,a.*
+                    FROM vtiger_cbcompany c
+                    JOIN vtiger_crmentity on vtiger_crmentity.crmid = c.cbcompanyid
+                    LEFT JOIN vtiger_seattachmentsrel s ON c.cbcompanyid = s.crmid
+                    LEFT JOIN vtiger_attachments a ON s.attachmentsid = a.attachmentsid
+                    WHERE c.defaultcompany = 1 and vtiger_crmentity.deleted = 0', array() );
+    if( $query && $adb->num_rows($query) > 0){
+        $record = $adb->query_result($query, 0, "cbcompanyid");
+        $companyDetails["name"]     = $companyDetails["companyname"] = $adb->query_result($query, 0, "companyname");
+        $companyDetails["website"]  = $adb->query_result($query, 0, "website");
+        $companyDetails['address']  = $adb->query_result($query, 0, 'address');
+        $companyDetails['city']     = $adb->query_result($query, 0, 'city');
+        $companyDetails['state']    = $adb->query_result($query, 0, 'state');
+        $companyDetails['country']  = $adb->query_result($query, 0, 'country');
+        $companyDetails['postalcode'] = $adb->query_result($query, 0, 'postalcode');
+        $companyDetails['phone']    = $adb->query_result($query, 0, 'phone');
+        $companyDetails['fax']      = $adb->query_result($query, 0, 'fax');
+        for($i=0;$i<$adb->num_rows($query);$i++){
+            $path           = $adb->query_result($query, $i, "path");
+            $attachmentsid  = $adb->query_result($query, $i, "attachmentsid");
+            $favicon        = decode_html($adb->query_result($query, $i, "favicon"));
+            $companylogo    = decode_html($adb->query_result($query, $i, "companylogo"));
+            $applogo        = decode_html($adb->query_result($query, $i, "applogo"));
+            $name           = $adb->query_result($query, $i, "name"); // attachmentname
+            if($name == $favicon){
+                $companyDetails["favicon"] = $path.$attachmentsid."_".$favicon;
+            } else if($name == $companylogo){
+                $companyDetails["companylogo"] = $path.$attachmentsid."_".$companylogo;
+            } else if($name == $applogo){
+                $companyDetails["applogo"] = $path.$attachmentsid."_".$applogo;
+            }
+        }
+    } else{
+        $companyDetails["name"] = $companyDetails["companyname"] = GlobalVariable::getVariable('Application_UI_Name', 'coreBOS');
+    }
+    $companyDetails = setDefaultCompanyParams($companyDetails);
+    
+    return $companyDetails;
+}
+
+/**
+ * Function to set default company details if left empty
+ */
+function setDefaultCompanyParams($companyDetails){
+    
+    $imageArray = array("companylogo","applogo");
+    for($i=0;$i<sizeof($imageArray);$i++){
+        $imagename = $imageArray[$i];
+        if(empty($companyDetails[$imagename])){
+            $companyDetails[$imagename] = 'test/logo/noimageloaded.png';
+        }
+    }
+    if(empty($companyDetails["favicon"])){
+        $companyDetails["favicon"] = 'themes/images/favicon.ico';
+    }
+    return $companyDetails;
+}
+
 ?>

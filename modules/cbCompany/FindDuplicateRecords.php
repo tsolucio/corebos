@@ -7,18 +7,5 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once 'include/database/PearDatabase.php';
-require_once 'include/utils/utils.php';
-
-global $adb, $mod_strings, $default_charset;
-
-$companyDetails = retrieveCompanyDetails();
-$name = $companyDetails["companyname"];
-$fileContent = $companyDetails["applogo"];
-$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
-header('Cache-Control: private');
-header("Content-Disposition: attachment; filename=$name");
-header('Content-Description: PHP Generated Data');
-echo base64_decode($fileContent);
-
+require_once 'modules/Vtiger/FindDuplicateRecords.php';
 ?>

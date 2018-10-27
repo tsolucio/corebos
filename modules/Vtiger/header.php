@@ -83,34 +83,7 @@ $smarty->assign('coreBOS_app_name', $appUIName);
 $appUINameHTML = decode_html(vtlib_purify(GlobalVariable::getVariable('Application_UI_NameHTML', $appUIName)));
 $smarty->assign('coreBOS_app_nameHTML', $appUINameHTML);
 
-// We check if we have the two new logo fields > if not we create them
-$cnorg=$adb->getColumnNames('vtiger_organizationdetails');
-if (!in_array('faviconlogo', $cnorg)) {
-	$adb->query('ALTER TABLE `vtiger_organizationdetails` ADD `frontlogo` VARCHAR(150) NOT NULL, ADD `faviconlogo` VARCHAR(150) NOT NULL');
-}
-$sql='select * from vtiger_organizationdetails limit 1';
-$result = $adb->pquery($sql, array());
-//Handle for allowed organization logo/logoname likes UTF-8 Character
-// $organization_logo = decode_html($adb->query_result($result,0,'logoname'));
-// if(!file_exists('test/logo/'.$organization_logo)) $organization_logo='noimageloaded.png';
-// $smarty->assign("LOGO",$organization_logo);
-$favicon = decode_html($adb->query_result($result, 0, 'faviconlogo'));
-if ($favicon=='') {
-	$favicon='themes/images/favicon.ico';
-} else {
-	$favicon='test/logo/'.$favicon;
-}
-$smarty->assign('FAVICON', $favicon);
-$frontlogo = decode_html($adb->query_result($result, 0, 'frontlogo'));
-if ($frontlogo=='') {
-	$frontlogo='noimageloaded.png';
-}
-$smarty->assign('FRONTLOGO', $frontlogo);
-$companyDetails = array();
-$companyDetails['name'] = $adb->query_result($result, 0, 'organizationname');
-$companyDetails['website'] = $adb->query_result($result, 0, 'website');
-//$companyDetails['logo'] = $organization_logo;
-
+$companyDetails = retrieveCompanyDetails();
 $smarty->assign('COMPANY_DETAILS', $companyDetails);
 
 //Global Search Autocomplete Mapping
