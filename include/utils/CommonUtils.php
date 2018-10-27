@@ -3457,7 +3457,7 @@ function getSearchModulesCommon($filter = array()) {
 	// Ignore disabled administrative modules
 	$doNotSearchThese = array('Dashboard','Home','Calendar','Events','Rss','Reports','Portal','Users','ConfigEditor','Import','MailManager','Mobile','ModTracker',
 		'PBXManager','VtigerBackup','WSAPP','cbupdater','CronTasks','RecycleBin','Tooltip','Webforms','Calendar4You','GlobalVariable','cbMap','evvtMenu','cbAuditTrail',
-		'cbLoginHistory','cbtranslation','BusinessActions');
+		'cbLoginHistory','cbtranslation','BusinessActions','cbCVManagement');
 	$doNotSearchTheseTabids = array();
 	foreach ($doNotSearchThese as $mname) {
 		$tabid = getTabid($mname);
