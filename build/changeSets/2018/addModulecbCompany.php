@@ -36,8 +36,8 @@ class addModulecbCompany extends cbupdaterWorker {
 
 				global $adb;
 				require_once "modules/$module/$module.php";
-				require_once "modules/Users/Users.php";
-				$query = $adb->query('SELECT * FROM vtiger_organizationdetails WHERE organization_id=1');
+				require_once 'modules/Users/Users.php';
+				$query = $adb->query('SELECT * FROM vtiger_organizationdetails limit 1');
 				if ($query && $adb->num_rows($query) > 0) {
 					$userFocus = new Users();
 					$adminId = $userFocus->retrieve_user_id('admin');
