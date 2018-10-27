@@ -3395,22 +3395,21 @@ function picklistHasDependency($keyfldname, $modulename) {
 }
 
 function fetch_logo($type) {
-	global $adb;
 	$companyDetails = retrieveCompanyDetails();
 	switch ($type) {
 		case 1:
-		    $logoname = decode_html($companyDetails['companylogo']);
+			$logoname = decode_html($companyDetails['companylogo']);
 			break;
 		case 2:
-		    $logoname = decode_html($companyDetails['applogo']);
+			$logoname = decode_html($companyDetails['applogo']);
 			break;
 		case 3:
-		    $logoname = decode_html($companyDetails['favicon']);
+			$logoname = decode_html($companyDetails['favicon']);
 			break;
 		default:
-		    $logoname = 'test/logo/app-logo.jpg';
+			$logoname = 'test/logo/app-logo.jpg';
 	}
-	return $logodir.$logoname;
+	return $logoname;
 }
 
 /* added to get mail info for portal user

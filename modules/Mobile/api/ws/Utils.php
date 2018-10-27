@@ -509,10 +509,8 @@ class crmtogo_WS_Utils {
 	}
 
 	//     Function to find the related modulename by given fieldname
-
 	public static function getEntityName($fieldname, $module = '') {
 		$db = PearDatabase::getInstance();
-
 		$result = $db->pquery('SELECT `modulename` FROM `vtiger_entityname` WHERE `entityidcolumn` = ? LIMIT 1', array($fieldname));
 		return $db->query_result($result, 0, 'modulename');
 	}
@@ -555,7 +553,6 @@ class crmtogo_WS_Utils {
 				$columnname = 'accountname';
 				$tablename = 'vtiger_account';
 			}
-			// END
 
 			//Before form the where condition, check whether the table for the field has been added in the listview query
 			if (strstr($listquery, $tablename)) {
@@ -651,7 +648,7 @@ class crmtogo_WS_Utils {
 	}
 
 	public static function getConfigDefaults() {
-	    require 'include/utils/utils.php';
+		require 'include/utils/utils.php';
 		$db = PearDatabase::getInstance();
 		$result = $db->pquery('SELECT * FROM berli_crmtogo_defaults', array());
 		$config = array ();

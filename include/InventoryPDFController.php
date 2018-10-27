@@ -253,7 +253,7 @@ class Vtiger_InventoryPDFController {
 		}
 
 		$modelColumnLeft = array(
-		    'logo' => $resultrow['applogo'],
+			'logo' => $resultrow['applogo'],
 			'summary' => decode_html($resultrow['companyname']),
 			'content' => $this->joinValues($addressValues, ' '). $this->joinValues($additionalCompanyInfo, ' ')
 		);
