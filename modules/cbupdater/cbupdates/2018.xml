@@ -147,4 +147,11 @@
 	<classname>addModulecbCompany</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Custom View Management Module</description>
+	<filename>build/changeSets/2018/installcbCVManagement.php</filename>
+	<classname>installcbCVManagement</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

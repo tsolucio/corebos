@@ -37,11 +37,11 @@ $smarty->assign('CATEGORY', getParentTab($currentModule));
 $ids_list = array();
 $errormsg = '';
 if (isset($_REQUEST['del_rec'])) {
-	$delete_id_array=explode(",", $delete_idstring, -1);
+	$delete_id_array=explode(',', $delete_idstring, -1);
 
 	foreach ($delete_id_array as $id) {
 		if (isPermitted($req_module, 'Delete', $id) == 'yes') {
-			DeleteEntity($req_module, $return_module, $focus, $id, "");
+			DeleteEntity($req_module, $return_module, $focus, $id, '');
 		} else {
 			$ids_list[] = $id;
 		}
