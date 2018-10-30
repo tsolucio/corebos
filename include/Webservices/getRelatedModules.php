@@ -14,9 +14,11 @@
  ************************************************************************************/
 
 function getRelatedModulesInfomation($module, $user) {
+	include_once 'include/Webservices/GetFilterFields.php';
 	global $log, $adb;
 	$log->debug('Entering getRelatedModulesInfomation(' . $module . ') method ...');
 	$types = vtws_listtypes(null, $user);
+	$filterFields=array();
 	if (!in_array($module, $types['types'])) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
 	}
@@ -28,6 +30,7 @@ function getRelatedModulesInfomation($module, $user) {
 		$label = $adb->query_result($result, $i, 'label');
 		$actions = $adb->query_result($result, $i, 'actions');
 		$relationId = $adb->query_result($result, $i, 'relation_id');
+		$filterFields['Filter Fields'] = vtws_getfilterfields($module, $user);
 		if ($rel_tab_id != 0) {
 			$relModuleName = getTabModuleName($rel_tab_id);
 			if (!in_array($relModuleName, $types['types'])) {
@@ -39,7 +42,8 @@ function getRelatedModulesInfomation($module, $user) {
 				'label'=> $label,
 				'labeli18n' =>getTranslatedString($label, $relModuleName),
 				'actions' => $actions,
-				'relationId' => $relationId
+				'relationId' => $relationId,
+				'filterFields'=> $filterFields
 			);
 		} else {
 			$focus_list[$label] = array(
@@ -48,7 +52,8 @@ function getRelatedModulesInfomation($module, $user) {
 				'label'=> $label,
 				'labeli18n' =>getTranslatedString($label, $module),
 				'actions' => $actions,
-				'relationId' => $relationId
+				'relationId' => $relationId,
+				'filterFields'=> $filterFields
 			);
 		}
 	}
