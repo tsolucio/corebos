@@ -20,25 +20,6 @@ if (isPermitted('Emails', 'CreateView', '') == 'yes') {
 	//Added to pass the parents list as hidden for Emails
 	$parent_email = getEmailParentsList('Contacts', $_REQUEST['record'], $focus);
 	$smarty->assign('HIDDEN_PARENTS_LIST', $parent_email);
-	$vtwsObject = VtigerWebserviceObject::fromName($adb, $currentModule);
-	$vtwsCRMObjectMeta = new VtigerCRMObjectMeta($vtwsObject, $current_user);
-	$emailFields = $vtwsCRMObjectMeta->getEmailFields();
-	$smarty->assign('SENDMAILBUTTON', 'permitted');
-	$emails=array();
-	foreach ($emailFields as $value) {
-		$emails[]=$value;
-	}
-	$smarty->assign('EMAILS', $emails);
-	$cond="LTrim('%s') !=''";
-	$condition=array();
-	foreach ($emails as $value) {
-		$condition[]=sprintf($cond, $value);
-	}
-	$condition_str=implode('||', $condition);
-	$js='if('.$condition_str."){fnvshobj(this,'sendmail_cont');sendmail('".$currentModule."',".vtlib_purify($_REQUEST['record']).");}else{OpenCompose('','create');}";
-	$smarty->assign('JS', $js);
-} else {
-	$smarty->assign('SENDMAILBUTTON', 'NOTpermitted');
 }
 
 if (isPermitted('Contacts', 'Merge', '') == 'yes') {
@@ -63,13 +44,6 @@ if (isPermitted('Contacts', 'Merge', '') == 'yes') {
 $smarty->assign('CONTACT_PERMISSION', CheckFieldPermission('contact_id', 'Calendar'));
 
 require_once 'modules/Vtiger/DetailView.php';
-
-$sql = $adb->pquery('select accountid from vtiger_contactdetails where contactid=?', array($focus->id));
-$accountid = $adb->query_result($sql, 0, 'accountid');
-if ($accountid == 0) {
-	$accountid='';
-}
-$smarty->assign('accountid', $accountid);
 
 $smarty->display('DetailView.tpl');
 ?>
