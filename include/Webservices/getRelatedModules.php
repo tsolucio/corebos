@@ -30,7 +30,7 @@ function getRelatedModulesInfomation($module, $user) {
 		$label = $adb->query_result($result, $i, 'label');
 		$actions = $adb->query_result($result, $i, 'actions');
 		$relationId = $adb->query_result($result, $i, 'relation_id');
-		$filterFields['Filter Fields'] = vtws_getfilterfields($module, $user);
+		$filterFields = vtws_getfilterfields($module, $user);
 		if ($rel_tab_id != 0) {
 			$relModuleName = getTabModuleName($rel_tab_id);
 			if (!in_array($relModuleName, $types['types'])) {
