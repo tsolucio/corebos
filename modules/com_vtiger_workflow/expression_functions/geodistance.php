@@ -57,7 +57,7 @@ function __cb_getGEODistance($arr) {
 }
 
 function __cb_getGEODistanceFromCompanyAddress($arr) {
-	require 'include/utils/utils.php';
+	require_once 'include/utils/utils.php';
 	$companyDetails = retrieveCompanyDetails();
 	$from = $companyDetails['address'];
 	$fld = $companyDetails['state'];

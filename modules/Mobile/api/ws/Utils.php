@@ -648,7 +648,7 @@ class crmtogo_WS_Utils {
 	}
 
 	public static function getConfigDefaults() {
-		require 'include/utils/utils.php';
+		require_once 'include/utils/utils.php';
 		$db = PearDatabase::getInstance();
 		$result = $db->pquery('SELECT * FROM berli_crmtogo_defaults', array());
 		$config = array ();
