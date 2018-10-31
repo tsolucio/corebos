@@ -131,7 +131,7 @@ class BusinessActions extends CRMEntity {
 
 		$link_obj = new Vtiger_Link();
 
-		$link_obj->tabid = $tabid;
+		$link_obj->tabid = (string) $tabid;
 		$link_obj->linkid = $valuemap['businessactionsid'];
 		$link_obj->linktype       = $valuemap['elementtype_action'];
 		$link_obj->linklabel      = $valuemap['linklabel'];
@@ -179,6 +179,10 @@ class BusinessActions extends CRMEntity {
 		if ($userid == null) {
 			$userid = $current_user->id;
 		}
+
+		if ($recordid == null) {
+		    $recordid = '';
+        }
 
 		$type_sql = "";
 
@@ -275,7 +279,7 @@ class BusinessActions extends CRMEntity {
 				}
 			}
 
-			if (isset($recordid) && $row['brmap'] > 0 && $row['mandatory'] == 0 && !coreBOS_Rule::evaluate($row['brmap'], $recordid)) {
+			if ($row['brmap'] > 0 && $row['mandatory'] == 0 && !coreBOS_Rule::evaluate($row['brmap'], $recordid)) {
 				continue;
 			}
 
