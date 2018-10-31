@@ -8,6 +8,7 @@
  * All Rights Reserved.
  *************************************************************************************/
 function vtws_describe($elementType, $user) {
+	include_once 'include/Webservices/GetFilterFields.php';
 	include_once 'include/Webservices/getRelatedModules.php';
 	global $log, $adb;
 	$modules = explode(',', $elementType);
@@ -23,6 +24,7 @@ function vtws_describe($elementType, $user) {
 			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
 		}
 		$rdo[$elementType] = $handler->describe($elementType);
+		$rdo[$elementType]['filterFields']=vtws_getfilterfields($elementType, $user);
 		$rdo[$elementType]['relatedModules']=getRelatedModulesInfomation($elementType, $user);
 	}
 	VTWS_PreserveGlobal::flush();
