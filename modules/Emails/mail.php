@@ -113,6 +113,11 @@ function send_mail($module, $to_email, $from_name, $from_email, $subject, $conte
 
 	$mail = new PHPMailer();
 
+	// Add main HTML tags when missing
+	if (!preg_match('/^\s*<\!DOCTYPE/', $contents) && !preg_match('/^\s*<html/i', $contents)) {
+		$contents = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /></head><body>" . $contents . "</body></html>";
+	}
+
 	setMailerProperties($mail, $subject, $contents, $from_email, $from_name, trim($to_email, ','), $attachment, $emailid, $logo, $qrScan);
 
 	setCCAddress($mail, 'cc', $cc);
