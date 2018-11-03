@@ -74,8 +74,8 @@
 									{/if}
 								{/if}
 							{else}
-								{if $_FIELD->uitype() eq '69' && $_FIELD->valueLabel() neq ''}
-									<img  src="{$_FIELD->valueLabel()}"></img>
+								{if ($_FIELD->uitype() eq '69' || $_FIELD->uitype() eq '69m') && $_FIELD->valueLabel() neq ''}
+									<img src="{$_FIELD->valueLabel()}"></img>
 								{else}
 									{$_FIELD->label()}:
 								{/if}
@@ -131,7 +131,7 @@
 											{$_FIELD->valueLabel()}{if $_FIELD->name() eq 'probability'} %{/if}
 										{elseif $_FIELD->uitype() eq '17'}
 											<a href="#" onclick="window.open('http://{$_FIELD->valueLabel()}','_blank');" rel=external> {$_FIELD->valueLabel()} </a>
-										{elseif $_FIELD->uitype() eq '69'}
+										{elseif ($_FIELD->uitype() eq '69' || $_FIELD->uitype() eq '69m')}
 											<!-- do nothing here for image -->
 										{elseif $_FIELD->uitype() eq '70'}
 											{$_FIELD->valueLabel()}

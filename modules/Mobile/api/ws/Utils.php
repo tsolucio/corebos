@@ -565,15 +565,20 @@ class crmtogo_WS_Utils {
 		return $where;
 	}
 
-	public static function getContactBase64Image($contactid) {
-		$contactid = explode('x', $contactid);
+	public static function getContactBase64Image($crmid, $module, $imagename) {
+		$crmid = explode('x', $crmid);
 		$db = PearDatabase::getInstance();
+		if ($module=='Contacts') {
+			$attstr = 'Contacts Image';
+		} else {
+			$attstr = $module.' Attachment';
+		}
 		$sql = "SELECT vtiger_attachments.*, vtiger_crmentity.setype
 			FROM vtiger_attachments
 			INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
 			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
-			WHERE vtiger_crmentity.setype = 'Contacts Image' and vtiger_seattachmentsrel.crmid = ?";
-		$result = $db->pquery($sql, array($contactid[1]));
+			WHERE vtiger_crmentity.setype = '$attstr' and vtiger_seattachmentsrel.crmid=? and vtiger_attachments.name=?";
+		$result = $db->pquery($sql, array($crmid[1], $imagename));
 		$noofrows = $db->num_rows($result);
 		if ($noofrows >0) {
 			$imageId = $db->query_result($result, 0, 'attachmentsid');

@@ -153,7 +153,6 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 		}
 		foreach ($moduleFieldGroups as $blocklabel => $fieldgroups) {
 			$fields = array();
-
 			foreach ($fieldgroups as $fieldname => $fieldinfo) {
 				$value = '';
 				$fieldlabel = $fieldinfo['label'];
@@ -180,13 +179,10 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 					}
 					if ($fieldinfo['uitype'] == 69 && strlen($resultRecord[$fieldname])) {
 						//image --> get it base64 coded
-						if ($module =='Contacts') {
-							$resultRecord[$fieldname]= crmtogo_WS_Utils::getContactBase64Image($resultRecord['id']);
-						} elseif ($module =='Products') {
-							$resultRecord[$fieldname]= crmtogo_WS_Utils::getProductBase64Image($resultRecord['id']);
-						} else {
-							$resultRecord[$fieldname]= '';
-						}
+						$resultRecord[$fieldname]= crmtogo_WS_Utils::getContactBase64Image($resultRecord['id'], $module, $resultRecord[$fieldname]);
+					}
+					if ($fieldinfo['uitype'] == '69m') {
+						$resultRecord[$fieldname]= crmtogo_WS_Utils::getProductBase64Image($resultRecord['id']);
 					}
 					$field = array(
 						'name'  => $fieldname,
