@@ -25,6 +25,7 @@ function getRelatedModulesInfomation($module, $user) {
 	$cur_tab_id = getTabid($module);
 	$result = $adb->pquery('select * from vtiger_relatedlists where tabid=?', array($cur_tab_id));
 	$num_row = $adb->num_rows($result);
+	$focus_list = array();
 	for ($i = 0; $i < $num_row; $i++) {
 		$rel_tab_id = $adb->query_result($result, $i, 'related_tabid');
 		$label = $adb->query_result($result, $i, 'label');

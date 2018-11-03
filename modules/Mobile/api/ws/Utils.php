@@ -463,7 +463,7 @@ class crmtogo_WS_Utils {
 	**/
 	public static function getTicketComments($ticket) {
 		$db = PearDatabase::getInstance();
-		$commentlist = '';
+		$commentlist = array();
 		$recordid = vtws_getIdComponents($ticket['id']);
 		$recordid = $recordid[1];
 		$recordprefix= self::getEntityModuleWSId('Users');

@@ -280,7 +280,7 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 			// go through all fields
 			if (!empty($fieldnames)) {
 				foreach ($fieldgroups as $fieldname => $fieldinfo) {
-					if (!is_array($resultRecord[$fieldname]) && !is_object($resultRecord[$fieldname])) {
+					if (isset($resultRecord[$fieldname]) && !is_array($resultRecord[$fieldname]) && !is_object($resultRecord[$fieldname])) {
 						$value = trim($resultRecord[$fieldname]);
 						// check street and city for first address
 						if ($mailingAddressOK != -1 && ($fieldname == $fieldnames[0] || $fieldname == $fieldnames[2])) {
