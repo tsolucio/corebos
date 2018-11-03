@@ -64,6 +64,9 @@
 				{foreach item=_FIELD from=$_FIELDS}
 					<input type="hidden" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$_FIELD->valueLabel()}">
 					<div class="ui-grid-a">
+						{if ($_FIELD->uitype() eq '69' || $_FIELD->uitype() eq '69m') && $_FIELD->valueLabel() neq ''}
+							<img src="{$_FIELD->valueLabel()}" style="max-width:100%"></img>
+						{else}
 						<div class="ui-block-a">
 							{if $_MODULE->name() eq 'cbCalendar'}
 								{if $_FIELD->name() eq 'date_start'}
@@ -74,11 +77,7 @@
 									{/if}
 								{/if}
 							{else}
-								{if ($_FIELD->uitype() eq '69' || $_FIELD->uitype() eq '69m') && $_FIELD->valueLabel() neq ''}
-									<img src="{$_FIELD->valueLabel()}"></img>
-								{else}
-									{$_FIELD->label()}:
-								{/if}
+								{$_FIELD->label()}:
 							{/if}
 						</div>
 						<div class="ui-block-b">
@@ -145,9 +144,10 @@
 									{/if}
 								{/if}
 							{/if}
-						</div>	
-					</div>	
-	            {/foreach}
+						</div>
+						{/if}
+					</div>
+				{/foreach}
 			</div>	
 		{/foreach}
 	</div>
