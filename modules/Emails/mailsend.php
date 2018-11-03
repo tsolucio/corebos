@@ -117,11 +117,12 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 			$subject=getMergedDescription($subject, $current_user->id, 'Users');
 			$description=getMergedDescription($description, $current_user->id, 'Users');
 
-			if ($pmodule=='Contacts' && !empty($myfocus->column_fields['account_id'])) {
-				$subject=getMergedDescription($subject, $myfocus->column_fields['account_id'], 'Accounts');
-				$description=getMergedDescription($description, $myfocus->column_fields['account_id'], 'Accounts');
+			$accid = getRelatedAccountContact($mycrmid, 'Accounts');
+			if (!empty($accid)) {
+				$subject=getMergedDescription($subject, $accid, 'Accounts');
+				$description=getMergedDescription($description, $accid, 'Accounts');
 			}
-			$fldname=$adb->query_result($fresult, 0, "columnname");
+			$fldname=$adb->query_result($fresult, 0, 'columnname');
 			$emailadd=br2nl($myfocus->column_fields[$fldname]);
 
 			if ($emailadd != '') {
