@@ -19,19 +19,18 @@ include_once 'modules/Users/Users.php';
 
 class migrateLinksIntoBusinessActionEntities extends cbupdaterWorker {
 
-    public function applyChange() {
+	public function applyChange() {
 
-        if ($this->hasError()) {
-            $this->sendError();
-        }
-        if ($this->isApplied()) {
-            $this->sendMsg('Changeset ' . get_class($this) . ' already applied!');
-        } else {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
+		if ($this->isApplied()) {
+			$this->sendMsg('Changeset ' . get_class($this) . ' already applied!');
+		} else {
+			if ($this->isModuleInstalled('BusinessActions')) {
+				global $adb;
 
-            if ($this->isModuleInstalled('BusinessActions')) {
-                global $adb;
-
-                $collectLinksSql ="SELECT linktype, 
+				$collectLinksSql ="SELECT linktype, 
                                           linklabel, 
                                           linkurl,
                                           handler_path,
@@ -42,31 +41,31 @@ class migrateLinksIntoBusinessActionEntities extends cbupdaterWorker {
                                           (SELECT vtiger_tab.name FROM vtiger_tab WHERE vtiger_tab.tabid = vtiger_links.tabid) AS module_list
                                      FROM vtiger_links";
 
-                $collectedLinks = $adb->pquery($collectLinksSql, array());
-                $adminId = Users::getActiveAdminID();
+				$collectedLinks = $adb->pquery($collectLinksSql, array());
+				$adminId = Users::getActiveAdminID();
 
-                while ($link = $adb->fetch_array($collectedLinks)) {
-                    $focusnew = new BusinessActions();
-                    $focusnew->column_fields['assigned_user_id'] = $adminId;
-                    $focusnew->column_fields['linktype'] = $link['linktype'];
-                    $focusnew->column_fields['linklabel'] = $link['linklabel'];
-                    $focusnew->column_fields['linkurl'] = html_entity_decode($link['linkurl'], ENT_QUOTES, 'UTF-8');
-                    $focusnew->column_fields['sequence'] = 0;
-                    $focusnew->column_fields['module_list'] = $link['module_list'];
-                    $focusnew->column_fields['handler_path'] = $link['handler_path'];
-                    $focusnew->column_fields['onlyonmymodule'] = $link['onlyonmymodule'];
-                    $focusnew->column_fields['handler_class'] = $link['handler_class'];
-                    $focusnew->column_fields['linkicon'] = $link['linkicon'];
-                    $focusnew->column_fields['handler'] = $link['handler'];
-                    $focusnew->column_fields['active'] = 1;
-                    $focusnew->save('BusinessActions');
-                }
+				while ($link = $adb->fetch_array($collectedLinks)) {
+					$focusnew = new BusinessActions();
+					$focusnew->column_fields['assigned_user_id'] = $adminId;
+					$focusnew->column_fields['linktype'] = $link['linktype'];
+					$focusnew->column_fields['linklabel'] = $link['linklabel'];
+					$focusnew->column_fields['linkurl'] = html_entity_decode($link['linkurl'], ENT_QUOTES, 'UTF-8');
+					$focusnew->column_fields['sequence'] = 0;
+					$focusnew->column_fields['module_list'] = $link['module_list'];
+					$focusnew->column_fields['handler_path'] = $link['handler_path'];
+					$focusnew->column_fields['onlyonmymodule'] = $link['onlyonmymodule'];
+					$focusnew->column_fields['handler_class'] = $link['handler_class'];
+					$focusnew->column_fields['linkicon'] = $link['linkicon'];
+					$focusnew->column_fields['handler'] = $link['handler'];
+					$focusnew->column_fields['active'] = 1;
+					$focusnew->save('BusinessActions');
+				}
 
-                $this->sendMsg('Changeset ' . get_class($this) . ' applied!');
-                $this->sendMsg('The vtiger links were migrated successfully into Business Action entities');
-                $this->markApplied();
-            }
-        }
-        $this->finishExecution();
-    }
+				$this->sendMsg('Changeset ' . get_class($this) . ' applied!');
+				$this->sendMsg('The vtiger links were migrated successfully into Business Action entities');
+				$this->markApplied();
+			}
+		}
+		$this->finishExecution();
+	}
 }

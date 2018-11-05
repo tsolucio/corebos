@@ -186,15 +186,17 @@ class ModTracker {
 	 */
 	public static function isModtrackerLinkPresent($tabid) {
 		global $adb;
-        $module_name = getTabModuleName($tabid);
+		$module_name = getTabModuleName($tabid);
 
-        $rs=$adb->pquery("SELECT businessactionsid 
+		$rs=$adb->pquery(
+			"SELECT businessactionsid 
                                 FROM vtiger_businessactions INNER JOIN vtiger_crmentity ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid 
                                WHERE deleted = 0
                                  AND elementtype_action='DETAILVIEWBASIC' 
                                  AND linklabel = 'View History' 
                                  AND (module_list = ? OR module_list LIKE ? OR module_list LIKE ? OR module_list LIKE ?)",
-            array($module_name, $module_name.' %', '% '.$module_name.' %', '% '.$module_name,));
+			array($module_name, $module_name.' %', '% '.$module_name.' %', '% '.$module_name,)
+		);
 
 		return ($adb->num_rows($rs)>=1);
 	}
