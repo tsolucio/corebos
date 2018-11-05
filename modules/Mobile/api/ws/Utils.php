@@ -731,13 +731,19 @@ class crmtogo_WS_Utils {
 		//todo: find better way to identify modules with comments
 		$comments_module = array ();
 		$db = PearDatabase::getInstance();
-		$sql = "SELECT * FROM vtiger_links where linktype = 'DETAILVIEWWIDGET' and linkurl = 'block://ModComments:modules/ModComments/ModComments.php'";
+		$sql = "SELECT vtiger_businessactions.module_list 
+                  FROM vtiger_businessactions INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_businessactions.businessactionsid 
+                 WHERE vtiger_crmentity.deleted = 0
+                   AND vtiger_businessactions.elementtype_action = 'DETAILVIEWWIDGET' 
+                   AND vtiger_businessactions.linkurl = 'block://ModComments:modules/ModComments/ModComments.php'";
 		$result = $db->pquery($sql, array());
 		$noofrows = $db->num_rows($result);
 		if ($noofrows >0) {
 			for ($i=0; $i<$noofrows; $i++) {
-				$tabid = $db->query_result($result, $i, 'tabid');
-				$comments_module[] =vtlib_getModuleNameById($tabid);
+                $module_list = explode(' |##| ', $db->query_result($result, $i, 'module_list'));
+                foreach ($module_list as $module) {
+                    $comments_module[] = $module;
+                }
 			}
 		}
 		$comments_module[] = 'HelpDesk';

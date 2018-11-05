@@ -513,7 +513,7 @@ function changeFieldOrder() {
 		if ($_REQUEST['what_to_do']=='block_down') {
 			$blockid = vtlib_purify($_REQUEST['blockid']);
 			if (substr($blockid, 0, 3)=='dvb') { // detail view block
-				$sql_up_current='update vtiger_links set sequence=sequence+1 where linkid=?';
+				$sql_up_current='update vtiger_businessactions set sequence=sequence+1 where businessactionsid=?';
 				$result_up_current = $adb->pquery($sql_up_current, array(substr($blockid, 3)));
 			} else {  // normal block
 				$sql="select sequence from vtiger_blocks where blockid=?";
@@ -538,7 +538,7 @@ function changeFieldOrder() {
 		if ($_REQUEST['what_to_do']=='block_up') {
 			$blockid = vtlib_purify($_REQUEST['blockid']);
 			if (substr($blockid, 0, 3)=='dvb') { // detail view block
-				$sql_up_current='update vtiger_links set sequence=if (sequence-1<0,0,sequence-1) where linkid=?';
+				$sql_up_current='update vtiger_businessactions set sequence=if (sequence-1<0,0,sequence-1) where businessactionsid=?';
 				$result_up_current = $adb->pquery($sql_up_current, array(substr($blockid, 3)));
 			} else {  // normal block
 				$sql="select * from vtiger_blocks where blockid=?";

@@ -169,6 +169,14 @@ class BusinessActions extends CRMEntity {
 		}
 	}
 
+    /**
+     * Get all the link related to module based on type
+     * @param Integer Module ID
+     * @param mixed String or List of types to select
+     * @param Map Key-Value pair to use for formating the link url
+     * @param Integer User Id
+     * @param Integer Record Id
+     */
 	public static function getAllByType($tabid, $type = false, $parameters = false, $userid = null, $recordid = null) {
 		global $adb, $current_user;
 
@@ -211,7 +219,7 @@ class BusinessActions extends CRMEntity {
                     FROM vtiger_businessactions INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_businessactions.businessactionsid
                    WHERE vtiger_crmentity.deleted = 0 
                      AND active = 1 
-                     AND module_list LIKE "%'.$module_name.'%" '.$type_sql;
+                     AND (module_list = "'.$module_name.'" OR module_list LIKE "'.$module_name.' %" OR module_list LIKE "% '.$module_name.' %" OR module_list LIKE "% '.$module_name.'") '.$type_sql;
 
 		$orderby = ' ORDER BY elementtype_action, sequence';
 
@@ -297,6 +305,168 @@ class BusinessActions extends CRMEntity {
 
 		return $result;
 	}
+
+    /**
+     * Add link given module
+     * @param Integer Module ID
+     * @param String Link Type (like DETAILVIEW). Useful for grouping based on pages.
+     * @param String Label to display
+     * @param String HREF value or URL to use for the link
+     * @param String ICON to use on the display
+     * @param Integer Order or sequence of displaying the link
+     */
+	public static function addLink($tabid, $type, $label, $url, $iconpath = '', $sequence = 0, $handlerInfo = null, $onlyonmymodule = false) {
+
+	    global $adb;
+        $module_name = getTabModuleName($tabid);
+
+        $linkcheck = $adb->pquery(
+            'SELECT businessactionsid 
+                   FROM vtiger_businessactions INNER JOIN vtiger_crmentity 
+                  WHERE vtiger_crmentity.crmid = vtiger_businessactions.businessactionsid
+                    AND vtiger_crmentity.deleted = 0
+                    AND module_list = ?
+                    AND elementtype_action = ? 
+                    AND linkurl = ? 
+                    AND linkicon = ? 
+                    AND linklabel = ?',
+            array($module_name, $type, $url, $iconpath, $label)
+        );
+
+        if (!$adb->num_rows($linkcheck)) {
+
+            $newBA = new BusinessActions();
+
+            $newBA->column_fields['linktype'] = $type;
+            $newBA->column_fields['linklabel'] = $label;
+            $newBA->column_fields['linkurl'] = $url;
+            $newBA->column_fields['sequence'] = (int) $sequence;
+            $newBA->column_fields['module_list'] = $module_name;
+            $newBA->column_fields['onlyonmymodule'] = $onlyonmymodule;
+            $newBA->column_fields['linkicon'] = $iconpath;
+            $newBA->column_fields['active'] = 1;
+
+            if (!empty($handlerInfo)) {
+                $newBA->column_fields['handler_path'] = (isset($handlerInfo['path']) ? $handlerInfo['path'] : '');
+                $newBA->column_fields['handler_class'] = (isset($handlerInfo['class']) ? $handlerInfo['class'] : '');
+                $newBA->column_fields['handler'] = (isset($handlerInfo['method']) ? $handlerInfo['method'] : '');
+            }
+
+            $newBA->save('BusinessActions');
+
+        }
+
+    }
+
+    /**
+     * Delete link of the module
+     * @param Integer Module ID
+     * @param String Link Type (like DETAILVIEW). Useful for grouping based on pages.
+     * @param String Display label
+     * @param String URL of link to lookup while deleting
+     */
+    public static function deleteLink($tabid, $type, $label, $url = false) {
+
+        global $adb;
+        $module_name = getTabModuleName($tabid);
+
+        if ($url) {
+            $ba = $adb->pquery(
+                'SELECT vtiger_businessactions.businessactionsid 
+                       FROM vtiger_businessactions INNER JOIN vtiger_crmentity ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid 
+                        AND vtiger_crmentity.deleted = 0
+                        AND vtiger_businessactions.module_list = ?
+                        AND vtiger_businessactions.elementtype_action = ?
+                        AND vtiger_businessactions.linklabel = ?
+                        AND vtiger_businessactions.linkurl = ?',
+                array($module_name, $type, $label, $url)
+            );
+
+        } else {
+            $ba = $adb->pquery(
+                'SELECT vtiger_businessactions.businessactionsid 
+                       FROM vtiger_businessactions INNER JOIN vtiger_crmentity ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid 
+                        AND vtiger_crmentity.deleted = 0
+                        AND vtiger_businessactions.module_list = ?
+                        AND vtiger_businessactions.elementtype_action = ?
+                        AND vtiger_businessactions.linklabel = ?',
+                array($module_name, $type, $label)
+            );
+        }
+
+        $countba = $adb->num_rows($ba);
+
+        for($i = 0; $i < $countba; $i++) {
+
+            $recordid = $adb->query_result($ba, $i, "businessactionsid");
+            $focus = CRMEntity::getInstance('BusinessActions');
+            DeleteEntity('BusinessActions', 'BusinessActions', $focus, $recordid, 0);
+
+        }
+
+    }
+
+    /**
+     * Delete all links related to module
+     * @param Integer Module ID.
+     */
+    public static function deleteAll($tabid) {
+
+        global $adb;
+        $module_name = getTabModuleName($tabid);
+
+        $ba = $adb->pquery(
+            'SELECT vtiger_businessactions.businessactionsid 
+                   FROM vtiger_businessactions INNER JOIN vtiger_crmentity ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid 
+                    AND vtiger_crmentity.deleted = 0
+                    AND vtiger_businessactions.module_list = ?',
+            array($module_name)
+        );
+
+        $countba = $adb->num_rows($ba);
+
+        for($i = 0; $i < $countba; $i++) {
+
+            $recordid = $adb->query_result($ba, $i, "businessactionsid");
+            $focus = CRMEntity::getInstance('BusinessActions');
+            DeleteEntity('BusinessActions', 'BusinessActions', $focus, $recordid, 0);
+
+        }
+    }
+
+    public static function updateLink($tabId, $businessActionId, $linkInfo = array()) {
+        if ($linkInfo && is_array($linkInfo)) {
+            include_once 'include/Webservices/Revise.php';
+            global $adb, $current_user;
+
+            $module_name = getTabModuleName($tabId);
+            $linkInfo['id'] = vtws_getEntityId('BusinessActions') . 'x' . $businessActionId;
+
+            if(!empty($linkInfo['elementtype_action'])) {
+                $linkInfo['linktype'] = $linkInfo['elementtype_action'];
+            }
+
+            if (!empty($linkInfo['module_list'])) {
+                $linkInfo['module_list'] = $module_name;
+            }
+
+            if(isset($linkInfo['status'])) {
+                $linkInfo['active'] = $linkInfo['status'];
+            }
+
+            $businessAction = $adb->pquery('SELECT 1 
+                                                  FROM vtiger_businessactions INNER JOIN vtiger_crmentity ON vtiger_businessactions.businessactionsid = vtiger_crmentity.crmid 
+                                                   AND vtiger_crmentity.deleted = 0
+                                                   AND vtiger_businessactions.module_list = ?
+                                                   AND vtiger_businessactions.businessactionsid = ?',
+                array($module_name, $businessActionId)
+            );
+
+            if ($adb->num_rows($businessAction)) {
+                vtws_revise($linkInfo, $current_user);
+            }
+        }
+    }
 
 	/**
 	 * Handle saving related module information.

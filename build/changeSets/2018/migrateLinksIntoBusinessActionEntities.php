@@ -39,9 +39,8 @@ class migrateLinksIntoBusinessActionEntities extends cbupdaterWorker {
                                           handler_class,
                                           linkicon,
                                           handler,
-                                          GROUP_CONCAT((SELECT vtiger_tab.name FROM vtiger_tab WHERE vtiger_tab.tabid = vtiger_links.tabid) separator ' |##| ') AS module_list
-                                     FROM vtiger_links
-                                   GROUP BY linktype, linklabel, linkurl, handler_path, onlyonmymodule, handler_class, linkicon, handler";
+                                          (SELECT vtiger_tab.name FROM vtiger_tab WHERE vtiger_tab.tabid = vtiger_links.tabid) AS module_list
+                                     FROM vtiger_links";
 
                 $collectedLinks = $adb->pquery($collectLinksSql, array());
                 $adminId = Users::getActiveAdminID();
