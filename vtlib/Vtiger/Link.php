@@ -113,8 +113,34 @@ class Vtiger_Link {
 	 * @param Integer Order or sequence of displaying the link
 	 */
 	public static function addLink($tabid, $type, $label, $url, $iconpath = '', $sequence = 0, $handlerInfo = null, $onlyonmymodule = false) {
-		BusinessActions::addLink($tabid, $type, $label, $url, $iconpath, $sequence, $handlerInfo, $onlyonmymodule);
-	}
+
+		if(self::isBusinessActionCompatible()) {
+            BusinessActions::addLink($tabid, $type, $label, $url, $iconpath, $sequence, $handlerInfo, $onlyonmymodule);
+        } else {
+			global $adb;
+            self::__initSchema();
+            $checkres = $adb->pquery(
+                'SELECT linkid FROM vtiger_links WHERE tabid=? AND linktype=? AND linkurl=? AND linkicon=? AND linklabel=?',
+                array($tabid, $type, $url, $iconpath, $label)
+            );
+            if (!$adb->num_rows($checkres)) {
+                $uniqueid = self::__getUniqueId();
+                $sql = 'INSERT INTO vtiger_links (linkid,tabid,linktype,linklabel,linkurl,linkicon,sequence';
+                $params = array($uniqueid, $tabid, $type, $label, $url, $iconpath, (int)$sequence);
+                if (!empty($handlerInfo)) {
+                    $sql .= (', handler_path, handler_class, handler');
+                    $params[] = (isset($handlerInfo['path']) ? $handlerInfo['path'] : '');
+                    $params[] = (isset($handlerInfo['class']) ? $handlerInfo['class'] : '');
+                    $params[] = (isset($handlerInfo['method']) ? $handlerInfo['method'] : '');
+                }
+                $params[] = $onlyonmymodule;
+                $sql .= (', onlyonmymodule) VALUES ('.generateQuestionMarks($params).')');
+                $adb->pquery($sql, $params);
+                self::log("Adding Link ($type - $label) ... DONE");
+            }
+		}
+
+    }
 
 	/**
 	 * Delete link of the module
@@ -124,15 +150,43 @@ class Vtiger_Link {
 	 * @param String URL of link to lookup while deleting
 	 */
 	public static function deleteLink($tabid, $type, $label, $url = false) {
-		BusinessActions::deleteLink($tabid, $type, $label, $url);
-	}
+
+        if(self::isBusinessActionCompatible()) {
+            BusinessActions::deleteLink($tabid, $type, $label, $url);
+        } else {
+            global $adb;
+            self::__initSchema();
+            if ($url) {
+                $adb->pquery(
+                    'DELETE FROM vtiger_links WHERE tabid=? AND linktype=? AND linklabel=? AND linkurl=?',
+                    array($tabid, $type, $label, $url)
+                );
+                self::log("Deleting Link ($type - $label - $url) ... DONE");
+            } else {
+                $adb->pquery(
+                    'DELETE FROM vtiger_links WHERE tabid=? AND linktype=? AND linklabel=?',
+                    array($tabid, $type, $label)
+                );
+                self::log("Deleting Link ($type - $label) ... DONE");
+            }
+		}
+    }
 
 	/**
 	 * Delete all links related to module
 	 * @param Integer Module ID.
 	 */
 	public static function deleteAll($tabid) {
-		BusinessActions::deleteAll($tabid);
+
+		if(self::isBusinessActionCompatible()) {
+            BusinessActions::deleteAll($tabid);
+        } else {
+            global $adb;
+            self::__initSchema();
+            $adb->pquery('DELETE FROM vtiger_links WHERE tabid=?', array($tabid));
+            self::log('Deleting Links ... DONE');
+		}
+
 	}
 
 	/**
@@ -174,7 +228,46 @@ class Vtiger_Link {
 	}
 
 	public static function updateLink($tabId, $linkId, $linkInfo = array()) {
-		BusinessActions::updateLink($tabId, $linkId, $linkInfo);
+
+        if(self::isBusinessActionCompatible()) {
+            BusinessActions::updateLink($tabId, $linkId, $linkInfo);
+        } else {
+            if ($linkInfo && is_array($linkInfo)) {
+                $db = PearDatabase::getInstance();
+                $result = $db->pquery('SELECT 1 FROM vtiger_links WHERE tabid=? AND linkid=?', array($tabId, $linkId));
+                if ($db->num_rows($result)) {
+                    $columnsList = $db->getColumnNames('vtiger_links');
+                    $isColumnUpdate = false;
+
+                    $sql = 'UPDATE vtiger_links SET ';
+                    foreach ($linkInfo as $column => $columnValue) {
+                        if (in_array($column, $columnsList)) {
+                            $columnValue = ($column == 'sequence') ? intval($columnValue) : $columnValue;
+                            $sql .= "$column='$columnValue',";
+                            $isColumnUpdate = true;
+                        }
+                    }
+
+                    if ($isColumnUpdate) {
+                        $sql = trim($sql, ',').' WHERE tabid=? AND linkid=?';
+                        $db->pquery($sql, array($tabId, $linkId));
+                    }
+                }
+            }
+		}
+	}
+
+	public static function isBusinessActionCompatible() {
+
+        $db = PearDatabase::getInstance();
+        $compatibility_check = $db->pquery("SELECT cbupdaterid 
+												  FROM vtiger_cbupdater
+											     WHERE classname = ?
+											       AND pathfilename = ?
+							   					   AND execstate = ?", array('modbusinessactions', 'build/changeSets/2018/create_modBusinessActions.php', 'Executed'));
+
+        return ($db->num_rows($compatibility_check) > 0) ? true : false;
+
 	}
 }
 ?>
