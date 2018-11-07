@@ -18,57 +18,57 @@ include_once 'vtlib/Vtiger/Link.php';
 
 class importHardCodedLinks extends cbupdaterWorker {
 
-    private static $__cacheSchemaChanges = array();
+	private static $__cacheSchemaChanges = array();
 
-    public static function __getUniqueId() {
-        global $adb;
-        return $adb->getUniqueID('vtiger_links');
-    }
+	public static function __getUniqueId() {
+		global $adb;
+		return $adb->getUniqueID('vtiger_links');
+	}
 
-    private static function __initSchema() {
-        if (empty(self::$__cacheSchemaChanges['vtiger_links'])) {
-            if (!Vtiger_Utils::CheckTable('vtiger_links')) {
-                Vtiger_Utils::CreateTable(
-                    'vtiger_links',
-                    '(linkid INT NOT NULL PRIMARY KEY,
+	private static function __initSchema() {
+		if (empty(self::$__cacheSchemaChanges['vtiger_links'])) {
+			if (!Vtiger_Utils::CheckTable('vtiger_links')) {
+				Vtiger_Utils::CreateTable(
+					'vtiger_links',
+					'(linkid INT NOT NULL PRIMARY KEY,
 					tabid INT, linktype VARCHAR(20), linklabel VARCHAR(30), linkurl VARCHAR(255), linkicon VARCHAR(100), sequence INT, status INT(1) NOT NULL DEFAULT 1)',
-                    true
-                );
-                Vtiger_Utils::ExecuteQuery(
-                    'CREATE INDEX link_tabidtype_idx on vtiger_links(tabid,linktype)'
-                );
-            }
-            self::$__cacheSchemaChanges['vtiger_links'] = true;
-        }
-        global $adb;
-        $lns=$adb->getColumnNames('vtiger_links');
-        if (!in_array('onlyonmymodule', $lns)) {
-            $adb->query('ALTER TABLE `vtiger_links` ADD `onlyonmymodule` BOOLEAN NOT NULL DEFAULT FALSE');
-        }
-    }
+					true
+				);
+				Vtiger_Utils::ExecuteQuery(
+					'CREATE INDEX link_tabidtype_idx on vtiger_links(tabid,linktype)'
+				);
+			}
+			self::$__cacheSchemaChanges['vtiger_links'] = true;
+		}
+		global $adb;
+		$lns=$adb->getColumnNames('vtiger_links');
+		if (!in_array('onlyonmymodule', $lns)) {
+			$adb->query('ALTER TABLE `vtiger_links` ADD `onlyonmymodule` BOOLEAN NOT NULL DEFAULT FALSE');
+		}
+	}
 
-    public static function insertRecordsIntoVtigerLinksTable($tabid, $type, $label, $url, $iconpath = '', $sequence = 0, $handlerInfo = null, $onlyonmymodule = false) {
-        global $adb;
-        self::__initSchema();
-        $checkres = $adb->pquery(
-            'SELECT linkid FROM vtiger_links WHERE tabid=? AND linktype=? AND linkurl=? AND linkicon=? AND linklabel=?',
-            array($tabid, $type, $url, $iconpath, $label)
-        );
-        if (!$adb->num_rows($checkres)) {
-            $uniqueid = self::__getUniqueId();
-            $sql = 'INSERT INTO vtiger_links (linkid,tabid,linktype,linklabel,linkurl,linkicon,sequence';
-            $params = array($uniqueid, $tabid, $type, $label, $url, $iconpath, (int)$sequence);
-            if (!empty($handlerInfo)) {
-                $sql .= (', handler_path, handler_class, handler');
-                $params[] = (isset($handlerInfo['path']) ? $handlerInfo['path'] : '');
-                $params[] = (isset($handlerInfo['class']) ? $handlerInfo['class'] : '');
-                $params[] = (isset($handlerInfo['method']) ? $handlerInfo['method'] : '');
-            }
-            $params[] = $onlyonmymodule;
-            $sql .= (', onlyonmymodule) VALUES ('.generateQuestionMarks($params).')');
-            $adb->pquery($sql, $params);
-        }
-    }
+	public static function insertRecordsIntoVtigerLinksTable($tabid, $type, $label, $url, $iconpath = '', $sequence = 0, $handlerInfo = null, $onlyonmymodule = false) {
+		global $adb;
+		self::__initSchema();
+		$checkres = $adb->pquery(
+			'SELECT linkid FROM vtiger_links WHERE tabid=? AND linktype=? AND linkurl=? AND linkicon=? AND linklabel=?',
+			array($tabid, $type, $url, $iconpath, $label)
+		);
+		if (!$adb->num_rows($checkres)) {
+			$uniqueid = self::__getUniqueId();
+			$sql = 'INSERT INTO vtiger_links (linkid,tabid,linktype,linklabel,linkurl,linkicon,sequence';
+			$params = array($uniqueid, $tabid, $type, $label, $url, $iconpath, (int)$sequence);
+			if (!empty($handlerInfo)) {
+				$sql .= (', handler_path, handler_class, handler');
+				$params[] = (isset($handlerInfo['path']) ? $handlerInfo['path'] : '');
+				$params[] = (isset($handlerInfo['class']) ? $handlerInfo['class'] : '');
+				$params[] = (isset($handlerInfo['method']) ? $handlerInfo['method'] : '');
+			}
+			$params[] = $onlyonmymodule;
+			$sql .= (', onlyonmymodule) VALUES ('.generateQuestionMarks($params).')');
+			$adb->pquery($sql, $params);
+		}
+	}
 
 	public function applyChange() {
 
