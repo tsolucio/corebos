@@ -352,7 +352,7 @@ class Vtiger_Link {
 												  FROM vtiger_cbupdater
 											     WHERE classname = ?
 											       AND pathfilename = ?
-							   					   AND execstate = ?", array('modbusinessactions', 'build/changeSets/2018/create_modBusinessActions.php', 'Executed'));
+							   					   AND execstate = ?", array('migrateLinksIntoBusinessActionEntities', 'build/changeSets/2018/migrateLinksIntoBusinessActionEntities.php', 'Executed'));
 
 		return ($db->num_rows($compatibility_check) > 0) ? true : false;
 	}
