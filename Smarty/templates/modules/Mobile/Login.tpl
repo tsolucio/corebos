@@ -14,7 +14,7 @@
 <body>
 <div data-role="page" data-theme="b" data-mini="true" id="login_page">
 	<div id="loginTop" style="text-align:center;">
-		<img src="../../test/logo/{$COMPANY_LOGO}" style="width: 15em;height: 4.2em;">
+		<img src="../../{$COMPANY_LOGO}" style="width: 15em;height: 4.2em;">
 	</div>
 	<div data-role="header"  data-theme="{$COLOR_HEADER_FOOTER}" >
 		<h4>{$COMPANY_NAME}</h4>

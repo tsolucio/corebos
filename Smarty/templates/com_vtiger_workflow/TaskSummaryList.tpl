@@ -12,11 +12,20 @@
 <table class="listTable" width="100%" border="0" cellspacing="1" cellpadding="5" id='expressionlist'>
 	<tr>
 		<td class="colHeader small" width="6%"></td>
-		<td class="colHeader small" width="70%">
+		<td class="colHeader small" width="34%">
 			{$MOD.LBL_TASK}
 		</td>
 		<td class="colHeader small" width="12%">
+			{$MOD.LBL_TYPE}
+		</td>
+		<td class="colHeader small" width="12%">
 			{$MOD.LBL_STATUS}
+		</td>
+		<td class="colHeader small" width="12%">
+			{$MOD.LBL_CONDITIONS}
+		</td>
+		<td class="colHeader small" width="12%">
+			{$MOD.LBL_DELAY}
 		</td>
 		<td class="colHeader small" width="12%">
 			{$MOD.LBL_LIST_TOOLS}
@@ -33,18 +42,54 @@
 		{/if}
 		</td>
 		<td class="listTableRow small">{$task->summary|@to_html}</td>
+
+		<td class="listTableRow small">{get_class($task)}</td>
 		<td class="listTableRow small">{if $task->active}{'Active'|@getTranslatedString:$MODULE_NAME}{else}{'Inactive'|@getTranslatedString:$MODULE_NAME}{/if}</td>
+		<td class="listTableRow small"> {if empty($task->test)}{'LBL_NO'|@getTranslatedString:$MODULE_NAME}{else}{'LBL_YES'|@getTranslatedString:$MODULE_NAME}{/if}</td>
+		<td class="listTableRow small">
+			{if empty($task->trigger)}
+				0
+			{else}
+				{if $task->trigger['days'] eq abs($task->trigger['days'])}
+					{abs($task->trigger['days'])} {$MOD.LBL_DAYS} {'LBL_AFTER'|@getTranslatedString:$MODULE_NAME} {$task->trigger['field']}
+				{else}
+					{abs($task->trigger['days'])} {$MOD.LBL_DAYS} {'LBL_BEFORE'|@getTranslatedString:$MODULE_NAME}   {$task->trigger['field']}
+				{/if}
+			{/if}
+		</td>
 		<td class="listTableRow small">
 			<a href="{$module->editTaskUrl($task->id)}">
-				<img border="0" title="{'LBL_EDIT_BUTTON'|@getTranslatedString:$MODULE_NAME}" alt="{'LBL_EDIT_BUTTON'|@getTranslatedString:$MODULE_NAME}" \
-					style="cursor: pointer;" id="expressionlist_editlink_{$task->id}" \
-					src="{'editfield.gif'|@vtiger_imageurl:$THEME}"/>
+				<span class="slds-icon_container slds-icon_container_circle slds-icon-action-description" title="{'LBL_EDIT_BUTTON'|@getTranslatedString:$MODULE_NAME}">
+					<svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon--small">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
+					</svg>
+				</span>
 			</a>
+			{if empty($task->active)}
+			<a href="{$module->onoffTaskUrl($task->id)}">
+				<span class="slds-icon_container slds-icon_container_circle slds-icon-action-description" title="{'LBL_ACTIVATE'|@getTranslatedString:$MODULE_NAME}" id="expressionlist_deletelink_{$task->id}">
+					<svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon--small">
+						<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#approval"></use>
+					</svg>
+				</span>
+			</a>
+			{elseif $task->active eq 1}
+			<a href="{$module->onoffTaskUrl($task->id, $task->active)}">
+				<span class="slds-icon_container slds-icon_container_circle slds-icon-action-description" title="{'LBL_DEACTIVATE'|@getTranslatedString:$MODULE_NAME}" id="expressionlist_deletelink_{$task->id}">
+					<svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon--small">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+					</svg>
+				</span>
+			</a>
+			{/if}
 			<a href="{$module->deleteTaskUrl($task->id)}" onclick="return confirm('{$APP.SURE_TO_DELETE}');">
-				<img border="0" title="{'LBL_DELETE_BUTTON'|@getTranslatedString:$MODULE_NAME}" alt="{'LBL_DELETE_BUTTON'|@getTranslatedString:$MODULE_NAME}"\
-					src="{'delete.gif'|@vtiger_imageurl:$THEME}" \
-					style="cursor: pointer;" id="expressionlist_deletelink_{$task->id}"/>
+				<span class="slds-icon_container slds-icon_container_circle slds-icon-action-description" title="{'LBL_DELETE_BUTTON'|@getTranslatedString:$MODULE_NAME}" id="expressionlist_deletelink_{$task->id}">
+					<svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon--small">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
+					</svg>
+				</span>
 			</a>
+
 		</td>
 	</tr>
 	{/foreach}

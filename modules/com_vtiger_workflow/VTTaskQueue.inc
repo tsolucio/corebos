@@ -25,7 +25,14 @@ class VTTaskQueue {
 	 * @param $when The time after which the task should be executed. This is an optional value with a default value of 0.
 	 */
 	public function queueTask($taskId, $entityId, $when = 0) {
-		$this->adb->pquery('insert into com_vtiger_workflowtask_queue (task_id, entity_id, do_after) values (?,?,?)', array($taskId, $entityId, $when));
+		$adb = $this->adb;
+		$result = $adb->pquery('select * from com_vtiger_workflowtask_queue where task_id=? and entity_id=?', array($taskId, $entityId));
+		if ($adb->num_rows($result)==1) {
+			return false;
+		} else {
+			$adb->pquery('insert into com_vtiger_workflowtask_queue (task_id, entity_id, do_after) values (?,?,?)', array($taskId, $entityId, $when));
+			return true;
+		}
 	}
 
 	/**

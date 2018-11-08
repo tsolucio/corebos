@@ -16,7 +16,7 @@
 	<div class="loginContainer">
 		<div id="loginWrapper">
 			<div id="loginTop">
-				<a href="index.php"><img src="test/logo/{$COMPANY_DETAILS.logo}"></a>
+				<a href="index.php"><img src="{$COMPANY_DETAILS.companylogo}"></a>
 			</div>
 			<div id="loginBody">
 				<div class="loginForm">

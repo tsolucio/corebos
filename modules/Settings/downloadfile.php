@@ -8,19 +8,16 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once 'include/database/PearDatabase.php';
+require_once 'include/utils/utils.php';
 
 global $adb, $mod_strings, $default_charset;
 
-$result = $adb->pquery('SELECT * FROM vtiger_organizationdetails', array());
-if ($adb->num_rows($result) == 1) {
-	$name = @$adb->query_result($result, 0, 'logoname');
-	$fileContent = @$adb->query_result($result, 0, 'logo');
-	$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
-	header('Cache-Control: private');
-	header("Content-Disposition: attachment; filename=$name");
-	header('Content-Description: PHP Generated Data');
-	echo base64_decode($fileContent);
-} else {
-	echo $mod_strings['LBL.RECORD_NOEXIST'];
-}
+$companyDetails = retrieveCompanyDetails();
+$name = $companyDetails['companyname'];
+$fileContent = $companyDetails['applogo'];
+$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
+header('Cache-Control: private');
+header("Content-Disposition: attachment; filename=$name");
+header('Content-Description: PHP Generated Data');
+echo base64_decode($fileContent);
 ?>

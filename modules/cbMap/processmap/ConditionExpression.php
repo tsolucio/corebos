@@ -64,12 +64,12 @@ class ConditionExpression extends processcbMap {
 		$entityId = $arguments[0];
 		$holduser = $current_user;
 		$current_user = Users::getActiveAdminUser(); // evaluate condition as admin user
-        if (!empty($entityId)) {
-            $entity = new VTWorkflowEntity($current_user, $entityId, true);
-            if (is_null($entity->data)) { // invalid context
-                return false;
-            }
-        }
+		if (!empty($entityId)) {
+			$entity = new VTWorkflowEntity($current_user, $entityId, true);
+			if (is_null($entity->data)) { // invalid context
+				return false;
+			}
+		}
 		$current_user = $holduser;
 		if (isset($xml->expression)) {
 			$testexpression = (String)$xml->expression;
@@ -78,18 +78,18 @@ class ConditionExpression extends processcbMap {
 			$exprEvaluater = new VTFieldExpressionEvaluater($expression);
 			$exprEvaluation = $exprEvaluater->evaluate($entity);
 		} elseif (isset($xml->function)) {
-            if (!empty($entity->data)) {
-                list($void,$entity->data['record_id']) = explode('x', $entity->data['id']);
-                $entity->data['record_module'] = $entity->getModuleName();
-            }
+			if (!empty($entity->data)) {
+				list($void,$entity->data['record_id']) = explode('x', $entity->data['id']);
+				$entity->data['record_module'] = $entity->getModuleName();
+			}
 			$function = (String)$xml->function->name;
 			$testexpression = '$exprEvaluation = ' . $function . '(';
 			foreach ($xml->function->parameters->parameter as $k => $v) {
 				if (isset($entity->data[(String)$v])) {
 					$testexpression.= "'" . $entity->data[(String)$v] . "',";
 				} elseif (isset($GLOBALS[(String)$v])) {
-                    $testexpression .= "'" . $GLOBALS[(String)$v] . "',";
-                } else {
+					$testexpression.= "'" . $GLOBALS[(String)$v] . "',";
+				} else {
 					$testexpression.= "'" . (String)$v . "',";
 				}
 			}

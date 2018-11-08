@@ -91,9 +91,9 @@
 			{else}
 				<br>
 				{if $fromlink eq 'qcreate'}
-				<select id="{$fldname}_type" class="small" name="{$fldname}_type" onChange='document.QcEditView.{$fldname}_display.value=""; document.QcEditView.{$fldname}.value="";'>
+				<select id="{$fldname}_type" class="small" style="max-width:175px" name="{$fldname}_type" onChange='document.QcEditView.{$fldname}_display.value=""; document.QcEditView.{$fldname}.value="";'>
 				{else}
-				<select id="{$fldname}_type" class="small" name="{$fldname}_type" onChange='document.EditView.{$fldname}_display.value=""; document.EditView.{$fldname}.value="";document.getElementById("qcform").innerHTML=""'>
+				<select id="{$fldname}_type" class="small" style="max-width:175px" name="{$fldname}_type" onChange='document.EditView.{$fldname}_display.value=""; document.EditView.{$fldname}.value="";document.getElementById("qcform").innerHTML=""'>
 				{/if}
 				{foreach item=option from=$fldlabel.options}
 					<option value="{$option}"
@@ -339,7 +339,17 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
 			</td>
 			<td width="30%" align=left class="dvtCellInfo">
-				<select MULTIPLE name="{$fldname}[]" id="{$fldname}" size="4" style="width:280px;" tabindex="{$vt_tab}" class="small">
+				{if (isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['columns']))}
+					{assign var=mplsize value=$maindata['extendedfieldinfo']['columns']}
+				{else}
+					{assign var=mplsize value=4}
+				{/if}
+				{if (isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['width']))}
+					{assign var=mplwidth value=$maindata['extendedfieldinfo']['width']}
+				{else}
+					{assign var=mplwidth value=280}
+				{/if}
+				<select MULTIPLE name="{$fldname}[]" id="{$fldname}" size="{$mplsize}" style="width:{$mplwidth}px;" tabindex="{$vt_tab}" class="small">
 				{foreach item=arr from=$fldvalue}
 					<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
 				{/foreach}
@@ -441,19 +451,6 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			<td width="30%" align=left class="dvtCellInfo">
 				<input readonly name="account_name" id = "single_accountid" type="text" value="{$fldvalue}"><input name="{$fldname}" type="hidden" value="{$secondvalue}">&nbsp;<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module=Accounts&action=Popup&popuptype=specific_account_address&form=TasksEditView&form_submit=false&fromlink={$fromlink}","test","width=640,height=602,resizable=0,scrollbars=0");' align="absmiddle" style='cursor:hand;cursor:pointer'>
 				<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.account_id.value=''; this.form.account_name.value='';return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
-			</td>
-
-		{elseif $uitype eq 75 || $uitype eq 81}
-			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
-				{if $uitype eq 81}
-					{assign var="pop_type" value="specific_vendor_address"}
-					{else}{assign var="pop_type" value="specific"}
-				{/if}
-				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
-			</td>
-			<td width="30%" align=left class="dvtCellInfo">
-				<input name="vendor_name" id="vendor_name" readonly type="text" style="border:1px solid #bababa;" value="{$fldvalue}"><input name="{$fldname}" id="{$fldname}" type="hidden" value="{$secondvalue}">&nbsp;<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module=Vendors&action=Popup&html=Popup_picker&popuptype={$pop_type}&form=EditView&fromlink={$fromlink}","test","width=640,height=602,resizable=0,scrollbars=0");' align="absmiddle" style='cursor:hand;cursor:pointer'>
-				<input type="image" tabindex="{$vt_tab}" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.vendor_id.value='';this.form.vendor_name.value='';return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
 			</td>
 		{elseif $uitype eq 57}
 			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
@@ -600,20 +597,20 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			{if $fldname eq 'portal'}
 				<td width="30%" align=left class="dvtCellInfo">
 					<input type="hidden" name="existing_portal" value="{$fldvalue}">
-					<input name="{$fldname}" type="checkbox" tabindex="{$vt_tab}" {if $fldvalue eq 1}checked{/if}>
+					<input name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" {if $fldvalue eq 1}checked{/if}>
 				</td>
 			{else}
 				{if $fldvalue eq 1}
 					<td width="30%" align=left class="dvtCellInfo">
-						<input name="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
+						<input name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
 					</td>
 				{elseif $fldname eq 'filestatus'&& $MODE eq 'create'}
 					<td width="30%" align=left class="dvtCellInfo">
-						<input name="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
+						<input name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
 					</td>
 				{else}
 					<td width="30%" align=left class="dvtCellInfo">
-						<input name="{$fldname}" tabindex="{$vt_tab}" type="checkbox">
+						<input name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" type="checkbox">
 					</td>
 				{/if}
 			{/if}
@@ -981,7 +978,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					&nbsp;<input title="{$APP.LBL_CHANGE_TITLE}" accessKey="C" type="button" class="small" value='{$APP.LBL_CHANGE}' name="btn1" onclick='return window.open("index.php?module=Users&action=Popup&html=Popup_picker&form=vtlibPopupView&form_submit=false&fromlink={$fromlink}&recordid={if isset($ID)}{$ID}{/if}&forfield={$fldname}","test","width=640,height=603,resizable=0,scrollbars=0");'>
 					&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
 				</td>
-			{elseif $uitype eq 116 || $uitype eq 117}<!-- for currency in users details-->
+			{elseif $uitype eq 117}<!-- for currency in users details-->
 			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
 			</td>

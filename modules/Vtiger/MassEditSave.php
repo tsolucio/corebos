@@ -45,9 +45,9 @@ if (isset($idlist)) {
 
 	// Replacing params action value
 	$_REQUEST['params'] = preg_replace('/"action":""/', '"action":"MassEditSave"', $_REQUEST['params']);
-
+	$idlist = trim($idlist, ';');
 	$recordids = explode(';', $idlist);
-	$recordcount = count($recordids)-1;
+	$recordcount = count($recordids);
 	$id = 1;
 	$recordprocessed = 0;
 	for ($index = 0; $index < $recordcount; ++$index) {
@@ -103,7 +103,7 @@ if (isset($idlist)) {
 			}
 		}
 		$recordprocessed++;
-		$progress = $recordprocessed / $recordcount * 100;
+		$progress = round($recordprocessed / $recordcount * 100, 0);
 		send_message($id++, $msg, $progress, $recordprocessed, $recordcount);
 	}
 }

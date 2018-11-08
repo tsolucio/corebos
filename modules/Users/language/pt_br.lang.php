@@ -8,7 +8,7 @@
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  * Contributor: Ranieri Slemer, translate missing terms to brazilian portuguese | 22-Jan-2018 | www.ecrmweb.com.br
- * Contributor: Ranieri Slemer, translate missing terms to brazilian portuguese | 07-Apr-2018 | www.ecrmweb.com.br
+ * Contributor: Ranieri Slemer, translate missing terms to brazilian portuguese | 16-10-2018 | www.ecrmweb.com.br
  ********************************************************************************/
 
 $mod_strings = array(
@@ -28,7 +28,7 @@ $mod_strings = array(
 'LBL_LIST_PRIMARY_PHONE'=>'Telefone principal',
 'LBL_LIST_ADMIN'=>'Admin',
 'LBL_LIST_CONFIRM_PASSWORD'=>'Confirmar senha',
-'LBL_LIST_USER_NAME_ROLE'=>'ID Usuário , Nome & Função',
+'LBL_LIST_USER_NAME_ROLE'=>'ID Usuário , Nome & função',
 'LBL_LIST_SELECT'=>'Selecionar',
 'LBL_LIST_PHONE'=>'Telefone',
 'LBL_LIST_NO'=>'#',
@@ -65,15 +65,15 @@ $mod_strings = array(
 'LBL_THEME'=>'Tema',
 'LBL_LANGUAGE'=>'Idioma',
 'LBL_ADMIN'=>'Admin',
-'LBL_OFFICE_PHONE'=>'Telefone Comercial',
+'LBL_OFFICE_PHONE'=>'Telefone comercial',
 'LBL_REPORTS_TO'=>'Reporta-se à',
-'LBL_OTHER_PHONE'=>'Outro Telefone',
+'LBL_OTHER_PHONE'=>'Outro telefone',
 'LBL_OTHER_EMAIL'=>'Outro e-mail',
 'LBL_DEPARTMENT'=>'Departamento',
 'LBL_STATUS'=>'Status',
 'LBL_TITLE'=>'Função',
 'LBL_ANY_PHONE'=>'Telefone alternativo:',
-'LBL_ANY_EMAIL'=>'E-mail Alternativo:',
+'LBL_ANY_EMAIL'=>'E-mail alternativo:',
 'LBL_ADDRESS'=>'Endereço',
 'LBL_CITY'=>'Cidade',
 'LBL_STATE'=>'Estado',
@@ -124,7 +124,7 @@ $mod_strings = array(
 'ERR_USER_NAME_EXISTS_1'=>'O nome de usuário',
 'ERR_USER_NAME_EXISTS_2'=>' já existe.  Nomes de usuários duplicados não são permitidos.<br>Mude o nome de usuário de forma que seja único.',
 'ERR_LAST_ADMIN_1'=>'O nome de usuário',
-'ERR_LAST_ADMIN_2'=>' é o único usuário Admin.  Pelo menos um usuário deve ser o Admininstrador do Sistema.<br>Verifique as configurações do usuário Administrador.',
+'ERR_LAST_ADMIN_2'=>' é o único usuário Admin.  Pelo menos um usuário deve ser o admininstrador do sistema.<br>Verifique as configurações do usuário Administrador.',
 'ERR_MAXLOGINATTEMPTS' => 'Número máximo de logins com falha ultrapassado. Contate o seu administrator para desbloquear sua conta',
 'LBL_FAILED_LOGIN_ATTEMPTS' => 'Número de tentativas de login',
 'ERR_DELETE_RECORD'=>"Um número de registro deve ser especificado para apagar a conta.",
@@ -134,7 +134,7 @@ $mod_strings = array(
 // Users--listroles.php , createrole.php , ListPermissions.php , editpermissions.php
 
 'LBL_ROLES'=>'Funções',
-'LBL_ROLES_SUBORDINATES'=>'Funções e Subordinados',
+'LBL_ROLES_SUBORDINATES'=>'Funções & subordinados',
 
 'LBL_CREATE_NEW_ROLE'=>'Criar nova função',
 'LBL_INDICATES_REQUIRED_FIELD'=>'Indica campos obrigatórios',
@@ -215,7 +215,7 @@ $mod_strings = array(
 'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'Separador decimal e separador de agrupamento de dígitos não podem ser o mesmo.',
 
 // Added fields in createnewgroup.php
-'LBL_CREATE_NEW_GROUP'=>'Criar novo Grupo',
+'LBL_CREATE_NEW_GROUP'=>'Criar novo grupo',
 'LBL_NEW_GROUP'=>'Novo grupo',
 'LBL_EDIT_GROUP'=>'Editar grupo',
 'LBL_GROUP_NAME'=>'Nome grupo',
@@ -242,12 +242,12 @@ $mod_strings = array(
 'LBL_NAME'=>'Nome',
 
 // Added fields in TabCustomise.php,html and UpdateTab.php,html
-'LBL_CUSTOMISE_TABS'=>'Customizar Tabs',
-'LBL_CHOOSE_TABS'=>'Escolher TABS',
-'LBL_AVAILABLE_TABS'=>'TABS Disponíveis',
+'LBL_CUSTOMISE_TABS'=>'Customizar tabs',
+'LBL_CHOOSE_TABS'=>'Escolher tABS',
+'LBL_AVAILABLE_TABS'=>'TABS disponíveis',
 'LBL_SELECTED_TABS'=>'TABS Selecionadas',
 'LBL_USER'=>'Usuário',
-'LBL_TAB_MENU_UPDATED'=>'Menu TAB Atualizado! Por gentileza, siga para',
+'LBL_TAB_MENU_UPDATED'=>'Menu TAB atualizado! Por gentileza, siga para',
 'LBL_TO_VIEW_CHANGES'=>' para visualizar as mudanças',
 
 // Added to change homepage order
@@ -297,7 +297,7 @@ $mod_strings = array(
 'LBL_USE_OPTION_TO_SET_PRIV'=>'Usar as opções abaixo para definir privilégio',
 'LBL_SUPER_USER_PRIV'=>'Privilégio global',
 'LBL_SET_PRIV_FOR_EACH_MODULE'=>'Definir privilégio para cada módulo ',
-'LBL_FIELDS_AND_TOOLS_SETTINGS'=>'Configurações Campos & Ferramentas',
+'LBL_FIELDS_AND_TOOLS_SETTINGS'=>'Configurações Campos & ferramentas',
 'LBL_SHOW_FIELDS'=>'Mostrar campos',
 'LBL_TOOLS_TO_BE_SHOWN'=>'Ferramentas para mostrar',
 'LBL_WELCOME_PROFILE_CREATE'=>'Bem vindo ao sistema de atribuição de privilégios por perfil ',
@@ -334,7 +334,7 @@ $mod_strings = array(
 'LBL_SAVE_PERMISSIONS'=>'Salvar permissão',
 'LBL_READ_ONLY'=>'Publico: Só leitura',
 'LBL_EDIT_CREATE_ONLY'=>'Publico: leitura, criar/editar',
-'LBL_READ_CREATE_EDIT_DEL'=>'Publico: leitura, criar/dditar, apaga',
+'LBL_READ_CREATE_EDIT_DEL'=>'Publico: leitura, criar/editar, apagar',
 'LBL_PRIVATE'=>'Privado',
 
 //Added fields in listnotificationschedulers.php
@@ -345,7 +345,7 @@ $mod_strings = array(
 'LBL_NOTIFICATION'=>'Notificação',
 'LBL_DESCRIPTION'=>'Descrição',
 'LBL_TASK_NOTIFICATION'=>'Notificação de tarefas atrasadas',
-'LBL_TASK_NOTIFICATION_DESCRITPION'=>'Notificação quando uma tarefa está atrasada à mais de 24 h',
+'LBL_TASK_NOTIFICATION_DESCRITPION'=>'Notificação quando uma tarefa está atrasada à mais de 24h',
 'LBL_MANY_TICKETS'=>'Notificação de excesso de tickets',
 'LBL_MANY_TICKETS_DESCRIPTION'=>'Notificar quando for alocado tickets além do limite a uma entidade em particular, podendo comprometer a qualidade do serviço',
 'LBL_PENDING_TICKETS'=>'Notificação de tickets pendentes',
@@ -437,7 +437,7 @@ $mod_strings = array(
 
 'LBL_CONTACT_FIELD_ACCESS'=>'Acesso campos contato',
 
-'LBL_OPPORTUNITY_FIELD_ACCESS'=>'Acesso campos pportunidade',
+'LBL_OPPORTUNITY_FIELD_ACCESS'=>'Acesso campos oportunidade',
 
 'LBL_HELPDESK_FIELD_ACCESS'=>'Acesso campos Helpdesk',
 
@@ -466,7 +466,7 @@ $mod_strings = array(
 'LBL_HOMEPAGE_ID'=>'Ordem Blocos',
 'ERR_INVALID_USER'=>'Acesso inválido--Por favor chame a partir de minhas contas',
 'ALVT'=>'Principais contas',
-'PLVT'=>'Principais pportunidades',
+'PLVT'=>'Principais oportunidades',
 'QLTQ'=>'Principais cotações',
 'CVLVT'=>'Indicadores ( KPIs)',
 'HLT'=>'Principais tickets',
@@ -483,14 +483,14 @@ $mod_strings = array(
 //Added for 5.0 alpha
 'LBL_GROUP_NAME_ERROR'=>'O nome do grupo já existe!',
 'MNL'=>'Novos leads',
-'LBL_LEAD_VIEW'=>'Padrão bisualizão lead',
+'LBL_LEAD_VIEW'=>'Padrão visualizão lead',
 'LBL_TAG_CLOUD'=>'Tag Cloud',
 'LBL_LIST_TOOLS'=>'Ferramentas',
 'LBL_STATISTICS'=>'Estatísticas',
 'LBL_TOTAL'=>'Total :',
 'LBL_OTHERS'=>'Outros :',
 'LBL_USERS'=>'Usuário(s)',
-'LBL_USER_LOGIN_ROLE'=>'Login Usuário & Função',
+'LBL_USER_LOGIN_ROLE'=>'Login Usuário & função',
 'LBL_USER_MORE_INFN'=>'Mais informação',
 'LBL_USER_ADDR_INFN'=>'Informação endereço',
 'LBL_USER_IMAGE'=>'Imagem usuário',
@@ -545,7 +545,7 @@ $mod_strings = array(
 'Other Email'=>'E-mail alternativo',
 'Fax'=>'Fax',
 'Yahoo id'=>'ID Yahoo',
-'Home Phone'=>'telefone residencial',
+'Home Phone'=>'Telefone residencial',
 'User Image'=>'Imagem usuário',
 'Date Format'=>'Formato data',
 'Tag Cloud'=>'Tag Cloud',
@@ -567,7 +567,7 @@ $mod_strings = array(
 'LBL_USERDETAIL_INFO'=>'Visualizando detalhes sobre o usuário',
 'LBL_DELETE_GROUP'=>'Apagar grupo',
 'LBL_DELETE_GROUPNAME'=>'Grupo a ser apagado',
-'LBL_TRANSFER_GROUP'=>'Transferir oropriedade para: ',
+'LBL_TRANSFER_GROUP'=>'Transferir propriedade para: ',
 'LBL_DELETE_USER'=>'Usuário a ser apagado',
 'LBL_TRANSFER_USER'=>'Transferir propriedade para usuário',
 'LBL_DELETE_PROFILE'=>'Apagar perfil',
@@ -614,11 +614,11 @@ $mod_strings = array(
 'LBL_TLS'=>'TLS',
 'LBL_NO_TLS'=>'Sem TLS',
 'LBL_CERT_VAL'=>'Validações certificado',
-'LBL_INT_MAILER'=>'Usar Sistema ynterno envio e-mail?',
+'LBL_INT_MAILER'=>'Usar sistema interno no envio e-mail?',
 'LBL_INT_MAILER_USE'=>'Sim',
 'LBL_INT_MAILER_NOUSE'=>'Não',
 'LBL_VAL_SSL_CERT'=>'Validar SSL',
-'LBL_DONOT_VAL_SSL_CERT'=>'Não Validar SSL',
+'LBL_DONOT_VAL_SSL_CERT'=>'Não validar SSL',
 'LBL_WEB_MAIL_CONFIG'=>'Configuração Webmail',
 'LBL_CONFIGURE_WEB_MAIL'=>' - Configurar Webmail',
 'LBL_LIST_MAIL_ACCOUNT'=>'  Listar conta correio',
@@ -653,10 +653,10 @@ $mod_strings = array(
 
 'LBL_SSL' => 'SSL',
 'LBL_USERNAME_EXIST' => 'Nome usuário já existe!',
-'LBL_UNAUTHORIZED_ACCESS' => 'Acesso não autorizado para administração de Usuário',
+'LBL_UNAUTHORIZED_ACCESS' => 'Acesso não autorizado para administração de usuário',
 //Added to provide User based TagCloud
 'LBL_TAGCLOUD_DISPLAY'=>'Mostrar Tag Cloud',
-'INTERNAL_MAIL_COMPOSER'=>'Editor ynterno de mensagens',
+'INTERNAL_MAIL_COMPOSER'=>'Editor interno de mensagens',
 
 'User Login Details'=>'Detalhes acesso usuário',
 'LBL_TO_LOGIN' => 'para acesso',
@@ -672,11 +672,11 @@ $mod_strings = array(
 //Fixed For Asterisk Configration
 'Asterisk Configuration' => 'Configuração iPBX',
 'Asterisk Extension' => 'Extensão iPBX',
-'Receive Incoming Calls' => 'Receber chamadas',
+'Receive Incoming Calls' => 'Utilizar ramal iPBX',
 
 'LBL_CURRENCY_CONFIGURATION'=> 'Configuração moeda',
 
-'Digit Grouping Pattern'=>'Padrão Agrupamento dígitos',
+'Digit Grouping Pattern'=>'Padrão agrupamento dígitos',
 'Decimal Separator'=>'Separador decimal',
 'Symbol Placement'=>'Localização símbolo',
 'Digit Grouping Separator'=>'Separador agrupamento dígitos',

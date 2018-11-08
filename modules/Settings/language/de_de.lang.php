@@ -808,6 +808,8 @@ $mod_strings = array(
 	'LBL_TASKS'=>'Aufgaben',
 	'LBL_NEW_TASK_BUTTON_LABEL'=>'neue Aufgabe',
 	'LBL_TASK'=>'Aufgabe',
+	'LBL_DELAY' => 'Delay',
+
 	'LBL_MANDATORY_FIELDS'=>'Pflichtfelder',
 	'LBL_MANDATORY_FIELDS_DESCRIPTION'=>'Verwalte die Pflichtfelder für alle Module',
 	// Module Sequence Numbering

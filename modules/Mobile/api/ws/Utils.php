@@ -117,7 +117,7 @@ class crmtogo_WS_Utils {
 		if (isset(self::$detectFieldnamesToResolveCache[$module])) {
 			return self::$detectFieldnamesToResolveCache[$module];
 		}
-		$resolveUITypes = array(10, 101, 116, 117, 26, 357, 51, 52, 53, 57, 66, 68, 73, 75, 76, 77, 78, 80, 81);
+		$resolveUITypes = array(10, 101, 117, 26, 357, 51, 52, 53, 57, 66, 68, 73, 76, 77, 78, 80);
 		$result = $db->pquery(
 			'SELECT fieldname FROM vtiger_field WHERE uitype IN('.generateQuestionMarks($resolveUITypes) .') AND tabid=?',
 			array($resolveUITypes, getTabid($module))
@@ -368,6 +368,28 @@ class crmtogo_WS_Utils {
 				}
 				$describeInfo['fields'][$index] = $fieldInfo;
 			}
+		} elseif ($module == 'Timecontrol') {
+			if (isset($_REQUEST['_operation']) && $_REQUEST['_operation']=='create') {
+				$stdate = new DateTimeField(date('Y-m-d').' '.date('H:i'));
+				$datestoconsider ['start'] = date('Y-m-d');
+				$datestoconsider ['tstart'] = $stdate->getDisplayTime();
+			}
+			foreach ($describeInfo['fields'] as $index => $fieldInfo) {
+				if (isset($fieldInfo['uitype'])) {
+					$fieldInfo['uitype'] = self::fixUIType($module, $fieldInfo['name'], $fieldInfo['uitype']);
+				}
+				if ($fieldInfo['name'] == 'visibility') {
+					if (empty($fieldInfo['type']['picklistValues'])) {
+						$fieldInfo['type']['picklistValues'] = self::visibilityValues();
+						$fieldInfo['type']['defaultValue'] = $fieldInfo['type']['picklistValues'][0]['value'];
+					}
+				} elseif ($fieldInfo['name'] == 'date_start') {
+					$fieldInfo['default'] = $datestoconsider ['start'];
+				} elseif ($fieldInfo['name'] == 'time_start') {
+					$fieldInfo['default'] = $datestoconsider ['tstart'];
+				}
+				$describeInfo['fields'][$index] = $fieldInfo;
+			}
 		}
 	}
 
@@ -441,7 +463,7 @@ class crmtogo_WS_Utils {
 	**/
 	public static function getTicketComments($ticket) {
 		$db = PearDatabase::getInstance();
-		$commentlist = '';
+		$commentlist = array();
 		$recordid = vtws_getIdComponents($ticket['id']);
 		$recordid = $recordid[1];
 		$recordprefix= self::getEntityModuleWSId('Users');
@@ -487,20 +509,8 @@ class crmtogo_WS_Utils {
 	}
 
 	//     Function to find the related modulename by given fieldname
-
 	public static function getEntityName($fieldname, $module = '') {
 		$db = PearDatabase::getInstance();
-		// Exception for Assets Module
-		if ($module == 'Assets') {
-			switch ($fieldname) {
-				case 'account':
-					$fieldname = 'account_id';
-					break;
-				case 'product':
-					$fieldname = 'product_id';
-					break;
-			}
-		}
 		$result = $db->pquery('SELECT `modulename` FROM `vtiger_entityname` WHERE `entityidcolumn` = ? LIMIT 1', array($fieldname));
 		return $db->query_result($result, 0, 'modulename');
 	}
@@ -543,7 +553,6 @@ class crmtogo_WS_Utils {
 				$columnname = 'accountname';
 				$tablename = 'vtiger_account';
 			}
-			// END
 
 			//Before form the where condition, check whether the table for the field has been added in the listview query
 			if (strstr($listquery, $tablename)) {
@@ -556,28 +565,20 @@ class crmtogo_WS_Utils {
 		return $where;
 	}
 
-	public static function fixReferenceIdByModule($module, $fieldid) {
-		if ($module =='Assets') {
-			if ($fieldid=='account') {
-				$fieldid='account_id';
-			} elseif ($fieldid=='product') {
-				$fieldid='product_id';
-			} elseif ($fieldid=='contact') {
-				$fieldid='contact_id';
-			}
-		}
-		return $fieldid;
-	}
-
-	public static function getContactBase64Image($contactid) {
-		$contactid = explode('x', $contactid);
+	public static function getContactBase64Image($crmid, $module, $imagename) {
+		$crmid = explode('x', $crmid);
 		$db = PearDatabase::getInstance();
+		if ($module=='Contacts') {
+			$attstr = 'Contacts Image';
+		} else {
+			$attstr = $module.' Attachment';
+		}
 		$sql = "SELECT vtiger_attachments.*, vtiger_crmentity.setype
 			FROM vtiger_attachments
 			INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
 			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
-			WHERE vtiger_crmentity.setype = 'Contacts Image' and vtiger_seattachmentsrel.crmid = ?";
-		$result = $db->pquery($sql, array($contactid[1]));
+			WHERE vtiger_crmentity.setype = '$attstr' and vtiger_seattachmentsrel.crmid=? and vtiger_attachments.name=?";
+		$result = $db->pquery($sql, array($crmid[1], $imagename));
 		$noofrows = $db->num_rows($result);
 		if ($noofrows >0) {
 			$imageId = $db->query_result($result, 0, 'attachmentsid');
@@ -652,6 +653,7 @@ class crmtogo_WS_Utils {
 	}
 
 	public static function getConfigDefaults() {
+		require_once 'include/utils/utils.php';
 		$db = PearDatabase::getInstance();
 		$result = $db->pquery('SELECT * FROM berli_crmtogo_defaults', array());
 		$config = array ();
@@ -659,11 +661,10 @@ class crmtogo_WS_Utils {
 		$config ['fetch_limit'] = $db->query_result($result, 0, 'fetch_limit');
 		$config ['theme'] = $db->query_result($result, 0, 'defaulttheme');
 		//Get organizations details
-		$res_orgdt = $db->pquery('select * from vtiger_organizationdetails', array());
-		//Handle for allowed organation logo/logoname likes UTF-8 Character
-		$config['company_name'] = $db->query_result($res_orgdt, 0, 'organizationname');
-		$config['company_website'] = $db->query_result($res_orgdt, 0, 'website');
-		$config['company_logo'] = decode_html($db->query_result($res_orgdt, 0, 'logoname'));
+		$companyDetails = retrieveCompanyDetails();
+		$config['company_name'] = $companyDetails["companyname"];
+		$config['company_website'] = $companyDetails["website"];
+		$config['company_logo'] = $companyDetails["companylogo"];
 		return $config;
 	}
 

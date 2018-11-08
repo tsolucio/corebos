@@ -7,6 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+include_once 'modules/Users/authTypes/TwoFactorAuth/autoload.php';
+use \RobThree\Auth\TwoFactorAuth;
+
 class VTSimpleTemplate {
 
 	public function __construct($templateString) {
@@ -113,7 +116,7 @@ class VTSimpleTemplate {
 		return $result;
 	}
 
-	private function getComments($num, $sort, $format, $field) {
+	private function getComments($num, $sort, $format, $field, $dtformat) {
 		global $adb, $current_user;
 		$wsId = $this->parent->getId();
 		if (empty($wsId)) {
@@ -128,6 +131,12 @@ class VTSimpleTemplate {
 			$format = 'html';
 		}
 		$html = ($format == 'html');
+		if (substr($field, 0, 4)=='date' && strlen($field)>4) {
+			$dateformat = substr($field, 4);
+			$field = 'date';
+		} else {
+			$dateformat = $dtformat;
+		}
 		$field = strtolower($field);
 		if ($field!='creator' && $field!='comment' && $field!='date' && $field!='all') {
 			$field = 'all';
@@ -198,8 +207,13 @@ class VTSimpleTemplate {
 						if ($html) {
 							$retcm .= '<li class="commentdate">';
 						}
-						$dt = new DateTimeField($cm['createdtime']);
-						$retcm .= $dt->getDisplayDateTimeValue($datefmtuser);
+						if ($dateformat == 'user') {
+							$dt = new DateTimeField($cm['createdtime']);
+							$retcm .= $dt->getDisplayDateTimeValue($datefmtuser);
+						} else {
+							$dt = strtotime($cm['createdtime']);
+							$retcm .= date($dateformat, $dt);
+						}
 						if (!$html && !$singlefield) {
 							$retcm .= "\n";
 						}
@@ -323,16 +337,28 @@ class VTSimpleTemplate {
 			$groupname = trim(str_replace('_', ' ', substr($fieldname, 14)));
 			$fieldname = 'groupEmailList';
 		}
-		if (substr($fieldname, 0, 8)=='comments') {
+		if (substr($fieldname, 0, 8)=='comments' || strpos($fieldname, '_comments')>0) {
 			if (strpos($fieldname, '_')>0) {
 				$commspec = explode('_', $fieldname);
-				$fieldname = 'comments';
-				$srtcomm = substr($commspec[1], -1);
-				if (is_numeric($srtcomm)) {
-					$srtcomm = 'a';
-					$numcomm = $commspec[1];
+				if ($commspec[0]!='comments') {
+					$cs = array_reverse($commspec);
+					$dtformat = array_pop($cs);
+					$commspec = array_reverse($cs);
 				} else {
-					$numcomm = substr($commspec[1], 0, strlen($commspec[1])-1);
+					$dtformat = 'user';
+				}
+				$fieldname = 'comments';
+				if (count($commspec)>1) {
+					$srtcomm = substr($commspec[1], -1);
+					if (is_numeric($srtcomm)) {
+						$srtcomm = 'a';
+						$numcomm = $commspec[1];
+					} else {
+						$numcomm = substr($commspec[1], 0, strlen($commspec[1])-1);
+					}
+				} else {
+					$numcomm = 0;
+					$srtcomm = 'a';
 				}
 				if (count($commspec)>2) {
 					$fmtcomm = $commspec[2];
@@ -349,7 +375,12 @@ class VTSimpleTemplate {
 				$srtcomm = 'a';
 				$fmtcomm = 'html';
 				$fldcomm = 'all';
+				$dtformat = 'user';
 			}
+		}
+		if (substr($fieldname, 0, 10) == 'scanQRCode') {
+			$field = substr($fieldname, 16);
+			$fieldname = 'scanQRCode';
 		}
 		switch ($fieldname) {
 			case 'date':
@@ -384,7 +415,16 @@ class VTSimpleTemplate {
 					$recorIdName = 'productid';
 				}
 				$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL', 'http://your_support_domain.tld/customerportal');
-				return $PORTAL_URL.'/index.php?module='.$moduleName.'&action=index&'.$recorIdName.'='.$recordId.'&fun=detail';
+				$PORTALUSED = GlobalVariable::getVariable('Application_Customer_Portal_BeingUsed', 'vtigercrmportal');
+				switch ($PORTALUSED) {
+					case 'coreboscp':
+						$purl = $PORTAL_URL.'/index.php#vtentity/'.$moduleName.'/list/'.$wsId.'/dvcpage/0';
+						break;
+					case 'vtigercrmportal':
+					default:
+						$purl = $PORTAL_URL.'/index.php?module='.$moduleName.'&action=index&'.$recorIdName.'='.$recordId.'&fun=detail';
+				}
+				return $purl;
 			case 'siteurl':
 				return $site_URL;
 			case 'portalurl':
@@ -399,11 +439,26 @@ class VTSimpleTemplate {
 			case 'supportEmailId':
 				return GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
 			case 'comments':
-				return $this->getComments($numcomm, $srtcomm, $fmtcomm, $fldcomm);
+				return $this->getComments($numcomm, $srtcomm, $fmtcomm, $fldcomm, $dtformat);
 			case 'groupEmailList':
 				return $this->getGroupFieldList($groupname, 'email1');
 			case 'Events_Users_Invited':
 				return $this->getinvitedUsersList($this->parent->getId());
+			case 'scanQRCode':
+				$wsId = $this->parent->getId();
+				$parts = explode('x', $wsId);
+				$recordId = $parts[1];
+				$moduleName = $this->parent->getModuleName();
+				$focus = CRMEntity::getInstance($moduleName);
+				$focus->retrieve_entity_info($recordId, $moduleName);
+				$fieldValue = $focus->column_fields[$field];
+				$tfa = new TwoFactorAuth('emailwfqrcode');
+				$qrcodeprovider = $tfa->getQrCodeProvider();
+				$img = $qrcodeprovider->getQRCodeImage($fieldValue, 150);
+				$fname = uniqid('qrcode');
+				@unlink('cache/images/'.$fname.'.png');
+				file_put_contents('cache/images/'.$fname.'.png', $img);
+				return '<img src="cid:'.$fname.'" />';
 			default:
 				'';
 		}

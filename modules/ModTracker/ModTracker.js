@@ -37,17 +37,8 @@ function delRow() {
 
 function searchModTrackerResult() {
 	var filterRows = document.getElementById('addModTrackerSrc').rows.length;
-	var urlstring='';
+	var urlstring = getFilterList();
 	var reportname = document.getElementById('reportname').value;
-	for (var i=0; i<filterRows; i++) {
-		var modtrac_searchfield = getObj('modtrac_fields'+i);
-		var modtrac_condition = getObj('modtrac_condition'+i);
-		var modtrac_searchfieldvalue = getObj('modtrac_src_value'+i);
-
-		urlstring = urlstring+'field'+i+'='+modtrac_searchfield.value+'&';
-		urlstring = urlstring+'condition'+i+'='+modtrac_condition.value.replace(/\\'/g, '')+'&';
-		urlstring = urlstring+'value'+i+'='+encodeURIComponent(modtrac_searchfieldvalue.value)+'&';
-	}
 	document.getElementById('status').style.display='inline';
 	jQuery.ajax({
 		method: 'POST',
@@ -80,7 +71,6 @@ function getFilterList() {
 				var modtrac_searchfield = getObj('modtrac_fields'+i);
 				var modtrac_condition = getObj('modtrac_condition'+i);
 				var modtrac_searchfieldvalue = getObj('modtrac_src_value'+i);
-
 				urlstring = urlstring+'field'+i+'='+modtrac_searchfield.value+'&';
 				urlstring = urlstring+'condition'+i+'='+modtrac_condition.value.replace(/\\'/g, '')+'&';
 				urlstring = urlstring+'value'+i+'='+encodeURIComponent(modtrac_searchfieldvalue.value)+'&';

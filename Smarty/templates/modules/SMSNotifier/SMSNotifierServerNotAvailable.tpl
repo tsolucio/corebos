@@ -13,7 +13,9 @@
 		<table width="100%" cellpadding="5" cellspacing="0" border="0" class="layerHeadingULine">
 			<tr>
 				<td class="genHeaderSmall" width="90%" align="left">{'ServerNotConfigured'|getTranslatedString:$MODULE}</td>
-				<td width="10%" align="right"><a href="javascript:void(0);" onclick="SMSNotifierCommon.hideSelectWizard();"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"/></a></td>
+				<td width="10%" align="right">
+					<a href="javascript:void(0);" onclick="SMSNotifierCommon.hideSelectWizard();"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"/></a>
+				</td>
 		</table>
 
 		<table width="95%" cellpadding="5" cellspacing="0" border="0" align="center">

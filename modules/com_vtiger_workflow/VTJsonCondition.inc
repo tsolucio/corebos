@@ -38,7 +38,7 @@ class VTJsonCondition {
 					$entity = $entityCache->forId($data[$referenceField]);
 					if ($entity->getModuleName() == $referenceModule) {
 						$cond['fieldname'] = $fieldname;
-						$expressionResults[$conditionGroup][$i]['result'] = $this->checkCondition($entity, $cond, $entityData);
+						$expressionResults[$conditionGroup][$i]['result'] = $this->checkCondition($entity, $cond, $entity);
 					} else {
 						$expressionResults[$conditionGroup][$i]['result'] = ($cond['operation'] == 'is empty' || ($cond['operation'] == 'is' && $cond['value'] == ''));
 					}
@@ -131,11 +131,11 @@ class VTJsonCondition {
 		if ($expressionType == 'fieldname') {
 			if ($referredEntityData != null) {
 				$referredData = $referredEntityData->getData();
-				if (isset($referredEntityData->user)) {
-					preg_match('/(\w+) : \((\w+)\) (\w+)/', $value, $usermatches);
-					if ($usermatches[1]=='assigned_user_id') {
-						$referredData[$value] = $referredEntityData->user->column_fields[$usermatches[3]];
-					}
+				preg_match('/(\w+) : \((\w+)\) (\w+)/', $value, $valuematches);
+				if (isset($referredEntityData->user) && count($valuematches) > 0 && $valuematches[1]=='assigned_user_id') {
+					$referredData[$value] = $referredEntityData->user->column_fields[$valuematches[3]];
+				} elseif (count($valuematches) > 0) {
+					$value = $valuematches[3];
 				}
 			} else {
 				$referredData = $data;

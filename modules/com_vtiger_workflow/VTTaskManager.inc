@@ -218,7 +218,8 @@ abstract class VTTask {
 			'Comments' => '(general : (__VtigerMeta__) comments)',
 			'groupEmailList' => '(general : (__VtigerMeta__) groupEmailList_Put_Group_Name_Here)',
 			'invitedUsers' => '(general : (__VtigerMeta__) Events_Users_Invited)',
-			'WorkflowFunction' => '(general : (__WorkflowFunction__) Put_Function_Here ) ',
+			'WorkflowFunction' => '(general : (__WorkflowFunction__) Put_Function_Here )',
+			'scan QRCode' => '(general : (__VtigerMeta__) scanQRCode->FieldName)'
 		);
 	}
 }

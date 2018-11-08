@@ -421,7 +421,6 @@ class Leads extends CRMEntity {
 		}
 		if (isPermitted('Leads', 'EditView', '') == 'yes') {
 			$list_buttons['mass_edit'] = $app_strings['LBL_MASS_EDIT'];
-			$list_buttons['c_owner'] = $app_strings['LBL_CHANGE_OWNER'];
 		}
 		return $list_buttons;
 	}
