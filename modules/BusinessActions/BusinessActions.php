@@ -121,6 +121,9 @@ class BusinessActions extends CRMEntity {
 	// Refers to vtiger_field.fieldname values.
 	public $mandatory_fields = array('createdtime', 'modifiedtime', 'businessactions_no');
 
+    // Ignore module while selection
+    const IGNORE_MODULE = -1;
+
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
@@ -178,10 +181,16 @@ class BusinessActions extends CRMEntity {
 	 * @param Integer Record Id
 	 */
 	public static function getAllByType($tabid, $type = false, $parameters = false, $userid = null, $recordid = null) {
-		global $adb, $current_user;
+		global $adb, $current_user, $currentModule;
 
 		$accumulator = array();
-		$module_name = getTabModuleName($tabid);
+
+		$module_sql = "";
+		if($tabid != self::IGNORE_MODULE) {
+		    $module_name = getTabModuleName($tabid);
+		    $module_sql = " AND (module_list = '".$module_name."' OR module_list LIKE '".$module_name." %' OR module_list LIKE '% ".$module_name." %' OR module_list LIKE '% ".$module_name."') ";
+        }
+
 		$multitype = false;
 
 		if ($userid == null) {
@@ -199,6 +208,9 @@ class BusinessActions extends CRMEntity {
 			if (is_array($type)) {
 				$multitype = true;
 				$type_sql = $adb->convert2Sql(' AND elementtype_action IN ('.Vtiger_Utils::implodestr('?', count($type), ',') .') ', $adb->flatten_array($type));
+                if ($tabid == self::IGNORE_MODULE && !empty($currentModule)) {
+                    $module_sql = " AND ((onlyonmymodule AND (module_list = '".$currentModule."' OR module_list LIKE '".$currentModule." %' OR module_list LIKE '% ".$currentModule." %' OR module_list LIKE '% ".$currentModule."')) OR !onlyonmymodule) ";
+                }
 			} else {
 				$type_sql = $adb->convert2Sql(' AND elementtype_action = ?', array($type));
 			}
@@ -218,12 +230,7 @@ class BusinessActions extends CRMEntity {
                          mandatory
                     FROM vtiger_businessactions INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_businessactions.businessactionsid
                    WHERE vtiger_crmentity.deleted = 0 
-                     AND active = 1 
-                     AND (module_list = "'.$module_name.'" 
-                          OR module_list LIKE "'.$module_name.' %" 
-                          OR module_list LIKE "% '.$module_name.' %" 
-                          OR module_list LIKE "% '.$module_name.'"
-                     ) '.$type_sql;
+                     AND active = 1 '.$module_sql.$type_sql;
 
 		$orderby = ' ORDER BY elementtype_action, sequence';
 
