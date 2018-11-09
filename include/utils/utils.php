@@ -1018,15 +1018,15 @@ function getProfile2FieldPermissionList($fld_module, $profileid) {
 		$qparams = array($profileid, $tabid);
 		$result = $adb->pquery($query, $qparams);
 		$return_data = array();
-		for ($i=0; $i<$adb->num_rows($result); $i++) {
+		while ($row = $adb->fetch_array($result)) {
 			$return_data[]=array(
-				$adb->query_result($result, $i, 'fieldlabel'),
-				$adb->query_result($result, $i, 'visible'), // From vtiger_profile2field.visible
-				$adb->query_result($result, $i, 'uitype'),
-				$adb->query_result($result, $i, 'readonly'),
-				$adb->query_result($result, $i, 'fieldid'),
-				$adb->query_result($result, $i, 'displaytype'),
-				$adb->query_result($result, $i, 'typeofdata')
+				$row['fieldlabel'],
+				$row['visible'], // From vtiger_profile2field.visible
+				$row['uitype'],
+				$row['readonly'],
+				$row['fieldid'],
+				$row['displaytype'],
+				$row['typeofdata'],
 			);
 		}
 
