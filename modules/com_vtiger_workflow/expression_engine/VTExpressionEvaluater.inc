@@ -47,7 +47,7 @@ class VTFieldExpressionEvaluater {
 			'format_date' => '__cb_format_date',
 			'add_time' => '__vt_add_time',
 			'sub_time' => '__vt_sub_time',
-			'power'	   => '__vt_power',
+			'power' => '__vt_power',
 			'substring' => '__vt_substring',
 			'stringposition' => '__cb_stringposition',
 			'stringlength' => '__cb_stringlength',

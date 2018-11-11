@@ -613,8 +613,7 @@ class QueryGenerator {
 						//reference field values.
 						if (!array_key_exists($referenceTable, $tableJoinMapping)) { // table already added in from clause
 							$tableJoinMapping[$referenceTableName] = $joinas;
-							$tableJoinCondition[$fieldName][$referenceTableName] = $baseTable.'.'.
-							$field->getColumnName().' = '.$referenceTable.'.'.$referenceTableIndex;
+							$tableJoinCondition[$fieldName][$referenceTableName] = $baseTable.'.'.$field->getColumnName().' = '.$referenceTable.'.'.$referenceTableIndex;
 						}
 					}
 				}
@@ -731,13 +730,12 @@ class QueryGenerator {
 					if (!in_array($tableName, $referenceFieldTableList)) {
 						if ($baseTable != $referenceFieldObject->getTableName() && !in_array($referenceFieldObject->getTableName(), $alreadyinfrom)) {
 							if ($this->getModule() == 'Emails') {
-								$join = "INNER JOIN ";
+								$join = 'INNER JOIN ';
 							} else {
-								$join = "LEFT JOIN ";
+								$join = 'LEFT JOIN ';
 							}
-							$joinclause =  $join.$referenceFieldObject->getTableName().' ON '.
-							$referenceFieldObject->getTableName().'.'.$moduleTableIndexList[$referenceFieldObject->getTableName()].'='.
-							$baseTable.'.'.$baseTableIndex;
+							$joinclause =  $join.$referenceFieldObject->getTableName().' ON '.$referenceFieldObject->getTableName().'.'
+								.$moduleTableIndexList[$referenceFieldObject->getTableName()].'='.$baseTable.'.'.$baseTableIndex;
 
 							$referenceFieldTableList[] = $referenceFieldObject->getTableName();
 							if (!in_array($referenceFieldObject->getTableName().$baseTable, $specialTableJoins)) {
@@ -745,9 +743,8 @@ class QueryGenerator {
 								$specialTableJoins[] = $referenceFieldObject->getTableName().$baseTable;
 							}
 						}
-						$sql .= " LEFT JOIN ".$tableName.' AS '.$tableName.$conditionInfo['referenceField'].' ON '.
-						$tableName.$conditionInfo['referenceField'].'.'.$reltableList[$tableName].'='.
-						$referenceFieldObject->getTableName().'.'.$referenceFieldObject->getColumnName();
+						$sql .= ' LEFT JOIN '.$tableName.' AS '.$tableName.$conditionInfo['referenceField'].' ON '.$tableName.$conditionInfo['referenceField'].'.'
+							.$reltableList[$tableName].'='.$referenceFieldObject->getTableName().'.'.$referenceFieldObject->getColumnName();
 						$referenceFieldTableList[] = $tableName;
 					}
 				}
