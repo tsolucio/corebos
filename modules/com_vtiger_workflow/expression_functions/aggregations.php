@@ -80,7 +80,7 @@ function __cb_aggregation_operation($arr) {
 
 function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
 	global $adb, $GetRelatedList_ReturnOnlyQuery;
-	$validoperations = array('sum', 'min', 'max', 'avg', 'count', 'std', 'variance');
+	$validoperations = array('sum', 'min', 'max', 'avg', 'count', 'std', 'variance', 'time_to_sec');
 	$operation = strtolower($arr[0]);
 	if (!in_array($operation, $validoperations)) {
 		return 0;
