@@ -33,6 +33,7 @@ class QueryGenerator {
 	private $user;
 	private $advFilterList;
 	private $fields;
+	private $addJoinFields;
 	private $referenceModuleMetaInfo;
 	private $moduleNameFields;
 	private $referenceFieldInfoList;
@@ -61,6 +62,7 @@ class QueryGenerator {
 		$this->user = $user;
 		$this->advFilterList = null;
 		$this->fields = array();
+		$this->addJoinFields = array();
 		$this->referenceModuleMetaInfo = array();
 		$this->moduleNameFields = array();
 		$this->whereFields = array();
@@ -160,6 +162,19 @@ class QueryGenerator {
 				}
 			}
 		}
+	}
+
+	public function setReferenceFieldsManually($referenceField, $refmod, $fname) {
+		global $current_user;
+		$handler = vtws_getModuleHandlerFromName($refmod, $current_user);
+		$meta = $handler->getMeta();
+		$fields = $meta->getModuleFields();
+		$this->referenceFields[$referenceField][$refmod][$fname] = $fields[$fname];
+		$this->setaddJoinFields($refmod.'.'.$fname);
+	}
+
+	public function setaddJoinFields($fieldname) {
+		$this->addJoinFields[] = $fieldname;
 	}
 
 	public function getCustomViewFields() {
@@ -749,7 +764,8 @@ class QueryGenerator {
 					}
 				}
 			}
-			foreach ($this->fields as $fieldName) {
+			$joinFields = array_merge($this->addJoinFields, $this->fields);
+			foreach ($joinFields as $fieldName) {
 				if ($fieldName == 'id' || !empty($moduleFields[$fieldName])) {
 					continue;
 				}
