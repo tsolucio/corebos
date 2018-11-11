@@ -48,7 +48,7 @@ class VTSimpleTemplateOnData extends VTSimpleTemplate {
 		} elseif (isset($this->data['id']) && is_numeric($this->data['id'])) {
 			$id = $this->data['id'];
 		} else {
-			$id = 0;
+			$id = '0x0';
 		}
 		return $id;
 	}
