@@ -12,7 +12,9 @@
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  ************************************************************************************/
-require_once "include/Webservices/Utils.php";
+require_once 'include/Webservices/Utils.php';
+require_once 'modules/com_vtiger_workflow/include.inc';
+require_once 'modules/com_vtiger_workflow/WorkFlowScheduler.php';
 
 /*
  * Given a webservice formatted query with optional extended FQN syntax return a valid SQL statement
@@ -474,4 +476,57 @@ function __FQNExtendedQueryCleanQuery($q) {
 	$moduleRegex = "/\(\s*\)/Us";  // eliminate empty parenthesis
 	$r = preg_replace($moduleRegex, '', $r);
 	return $r;
+}
+
+function __ExtendedQueryConditionQuery($q) {
+	preg_match('/ where\s+\[/i', $q, $qop);
+	return (count($qop)>0);
+}
+
+function __ExtendedQueryConditionGetQuery($q, $fromModule, $user) {
+	global $adb;
+	$queryColumns = trim(substr($q, 6, stripos($q, ' from ')-5));
+	$queryColumns = explode(',', $queryColumns);
+	$queryColumns = array_map('trim', $queryColumns);
+	$queryRelatedModules = array();
+	foreach ($queryColumns as $k => $field) {
+		if (strpos($field, '.')>0) {
+			list($m,$f) = explode('.', $field);
+			if (!isset($queryRelatedModules[$m])) {
+				$relhandler = vtws_getModuleHandlerFromName($m, $user);
+				$relmeta = $relhandler->getMeta();
+				$mn = $relmeta->getTabName();  // normalize module name
+				$queryRelatedModules[$mn] = $relmeta;
+				if ($m!=$mn) {
+					$queryColumns[$k] = $mn.'.'.$f;
+				}
+			}
+		}
+	}
+	if (!in_array('id', $queryColumns)) {
+		$queryColumns[] = 'id';  // add ID column to follow REST interface behaviour
+	}
+	$workflowScheduler = new WorkFlowScheduler($adb);
+	$workflow = new Workflow();
+	$wfvals = array(
+		'workflow_id' => 0,
+		'module_name' => $fromModule,
+		'summary' => '',
+		'test' => '',
+		'execution_condition' => 6, // VTWorkflowManager::$ON_SCHEDULE
+		'schtypeid' => '',
+		'schtime' => '08:08:08',
+		'schdayofmonth' => '[3]',
+		'schdayofweek' => '[3]',
+		'schannualdates' => '["2018-10-08"]',
+		'schminuteinterval' => '3',
+		'defaultworkflow' => 0,
+		'nexttrigger_time' => '',
+	);
+	$cond = substr($q, stripos($q, ' where ')+7);
+	$cond = trim($cond);
+	$cond = trim($cond, ';');
+	$wfvals['test'] = $cond;
+	$workflow->setup($wfvals);
+	return array($workflowScheduler->getWorkflowQuery($workflow, $queryColumns), $queryRelatedModules);
 }
