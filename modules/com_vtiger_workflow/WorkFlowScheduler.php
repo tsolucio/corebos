@@ -22,12 +22,13 @@ class WorkFlowScheduler {
 		$this->db = $adb;
 	}
 
-	public function getWorkflowQuery($workflow) {
+	public function getWorkflowQuery($workflow, $fields = array()) {
 		$conditions = json_decode(decode_html($workflow->test));
 
 		$moduleName = $workflow->moduleName;
 		$queryGenerator = new QueryGenerator($moduleName, $this->user);
-		$queryGenerator->setFields(array('id'));
+		$selectcolumns = array_merge(array('id'), $fields);
+		$queryGenerator->setFields($selectcolumns);
 		$substExps = $this->addWorkflowConditionsToQueryGenerator($queryGenerator, $conditions);
 		if ($moduleName == 'Calendar' || $moduleName == 'Events') {
 			if ($conditions) {
