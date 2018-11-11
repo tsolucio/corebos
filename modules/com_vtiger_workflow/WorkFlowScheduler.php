@@ -28,8 +28,7 @@ class WorkFlowScheduler {
 		$moduleName = $workflow->moduleName;
 		$queryGenerator = new QueryGenerator($moduleName, $this->user);
 		$queryGenerator->setFields(array('id'));
-		$this->addWorkflowConditionsToQueryGenerator($queryGenerator, $conditions);
-
+		$substExps = $this->addWorkflowConditionsToQueryGenerator($queryGenerator, $conditions);
 		if ($moduleName == 'Calendar' || $moduleName == 'Events') {
 			if ($conditions) {
 				$queryGenerator->addConditionGlue('AND');
@@ -45,6 +44,17 @@ class WorkFlowScheduler {
 		}
 
 		$query = $queryGenerator->getQuery();
+		if (count($substExps)>0) {
+			foreach ($substExps as $subst => $val) {
+				if (substr($subst, 0, 3)=='::#') {
+					// we substitute first with quotes, then without to catch both cases of string and numeric field types
+					$query = str_replace("'".$subst."'", $val, $query);
+					$query = str_replace($subst, $val, $query);
+				} else {
+					$query = str_replace($subst, $val, $query);
+				}
+			}
+		}
 		return $query;
 	}
 
@@ -167,7 +177,8 @@ class WorkFlowScheduler {
 		//2. Foreach of the condition, if its a condition in the same group just append with the existing joincondition
 		//3. If its a new group, then start the group with the group join.
 		//4. And for the first condition in the new group, dont append any joincondition.
-
+		$substExpressions = array();
+		$substExpressionsIndex = 1;
 		if ($noOfConditions > 0) {
 			if ($queryGenerator->conditionInstanceCount > 0) {
 				$queryGenerator->startGroup(QueryGenerator::$AND);
@@ -217,7 +228,24 @@ class WorkFlowScheduler {
 					$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($value)));
 					$expression = $parser->expression();
 					$exprEvaluater = new VTFieldExpressionEvaluater($expression);
-					$value = $exprEvaluater->evaluate(false);
+					if ($expression instanceof VTExpressionTreeNode) {
+						$params = $expression->getParams();
+						foreach ($params as $param) {
+							if (is_object($param) && isset($param->value)) {
+								preg_match('/(\w+) : \((\w+)\) (\w+)/', $param->value, $parammatches);
+								if (count($parammatches) != 0) {
+									$queryGenerator->setReferenceFieldsManually($parammatches[1], $parammatches[2], $parammatches[3]);
+								}
+							}
+						}
+					}
+					$wfscenv = new cbexpsql_environmentstub($queryGenerator->getModule(), '0x0');
+					$substExpressions['::#'.$substExpressionsIndex] = $exprEvaluater->evaluate($wfscenv, true);
+					if (is_object($substExpressions['::#'.$substExpressionsIndex])) {
+						$substExpressions['::#'.$substExpressionsIndex] = $substExpressions['::#'.$substExpressionsIndex]->value;
+					}
+					$value = '::#'.$substExpressionsIndex;
+					$substExpressionsIndex++;
 				} else {
 					$value = html_entity_decode($value);
 					preg_match('/(\w+) : \((\w+)\) (\w+)/', $condition['fieldname'], $matches);
@@ -231,6 +259,13 @@ class WorkFlowScheduler {
 							$value = '0';
 						}
 					}
+					preg_match('/(\w+) : \((\w+)\) (\w+)/', $value, $valuematches);
+					if (count($valuematches) != 0) {
+						list($value, $isfield) = self::getColumnFromField($value, true);
+						$queryGenerator->setReferenceFieldsManually($valuematches[1], $valuematches[2], $valuematches[3]);
+					} elseif ($valueType=='fieldname' && strpos($value, '.')===false) {
+						list($value, $isfield) = self::getColumnFromField('$(nofield : ('.$queryGenerator->getModule().') '.$value.')', false);
+					}
 				}
 				if ($referenceField) {
 					$queryGenerator->addReferenceModuleFieldCondition($referenceModule, $referenceField, $fieldname, $value, $operator, $columnCondition);
@@ -242,6 +277,7 @@ class WorkFlowScheduler {
 			$queryGenerator->endGroup();
 			$queryGenerator->endGroup();
 		}
+		return $substExpressions;
 	}
 
 	/**
@@ -325,5 +361,19 @@ class WorkFlowScheduler {
 		}
 		@date_default_timezone_set($default_timezone);
 		return $value;
+	}
+
+	public static function getColumnFromField($fieldspec, $addfieldname = true) {
+		preg_match('/(\w+) : \((\w+)\) (\w+)/', $fieldspec, $matches);
+		list($full, $referenceField, $referenceModule, $fieldname) = $matches;
+		$mod = Vtiger_Module::getInstance($referenceModule);
+		if (!$mod) {
+			return array($fieldname, false);
+		}
+		$fld = Vtiger_Field::getInstance($fieldname, $mod);
+		if (!$fld) {
+			return array($fieldname, false);
+		}
+		return array($fld->table.($addfieldname ? $referenceField : '').'.'.$fld->column, true);
 	}
 }
