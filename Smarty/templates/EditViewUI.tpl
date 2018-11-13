@@ -284,6 +284,29 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			<td width=30% align=left class="dvtCellInfo">
 				<textarea value="{$fldvalue}" name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" rows=2>{$fldvalue}</textarea>
 			</td>
+			{if ($USE_RTE eq 1) && ($MODULE eq 'Settings')}
+				<script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
+					<script type="text/javascript" defer="1">
+						var textAreaName = 'signature';
+						CKEDITOR.replace(textAreaName,
+						{ldelim}
+							extraPlugins : 'uicolor',
+							uiColor: '#dfdff1',
+								on : {ldelim}
+									instanceReady : function( ev ) {ldelim}
+										this.dataProcessor.writer.setRules( 'p',  {ldelim}
+											indent : false,
+											breakBeforeOpen : false,
+											breakAfterOpen : false,
+											breakBeforeClose : false,
+											breakAfterClose : false
+									{rdelim});
+								{rdelim}
+							{rdelim}
+						{rdelim});
+						var oCKeditor{$fldname} = CKEDITOR.instances[{$fldname}];
+					</script>
+			{/if}
 		{elseif $uitype eq 15 || $uitype eq 16  || $uitype eq '31' || $uitype eq '32' || $uitype eq '1613' || $uitype eq '1614'}
 			<td width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 				<font color="red">{$mandatory_field}</font>
