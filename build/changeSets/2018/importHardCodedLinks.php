@@ -321,13 +321,12 @@ class importHardCodedLinks extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset ' . get_class($this) . ' already applied!');
 		} else {
-			foreach ($hardCodedLinks as $key => $value) {
+			foreach ($hardCodedLinks as $value) {
 				$tabid = getTabid($value['modulename']);
 				$type = $value['linktype'];
 				$label = $value['linklabel'];
 				$url = $value['linkurl'];
 				$iconpath = $value['linkicon'];
-
 				self::insertRecordsIntoVtigerLinksTable($tabid, $type, $label, $url, $iconpath, 0, null, 0);
 			}
 
