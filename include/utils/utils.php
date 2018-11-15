@@ -2544,7 +2544,7 @@ function getDuplicateQuery($module, $field_values, $ui_type_arr) {
 }
 
 /** Function to return the duplicate records data as a formatted array */
-function getDuplicateRecordsArr($module, $use_limit=true) {
+function getDuplicateRecordsArr($module, $use_limit = true) {
 	global $adb,$app_strings,$theme,$default_charset;
 	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module);
 	$field_values_array=getFieldValues($module);
@@ -2576,8 +2576,7 @@ function getDuplicateRecordsArr($module, $use_limit=true) {
 	} else {
 		$limit_start_rec = $start_rec -1;
 	}
-	
-	if ($use_limit){
+	if ($use_limit) {
 		$dup_query .= " LIMIT $limit_start_rec, $list_max_entries_per_page";
 	}
 
@@ -2611,7 +2610,7 @@ function getDuplicateRecordsArr($module, $use_limit=true) {
 	$rec_cnt = 0;
 	$temp = array();
 	$sl_arr = array();
-	$grp = "group0";
+	$grp = 'group0';
 	$gcnt = 0;
 	$ii = 0; //ii'th record in group
 	while ($rec_cnt < $no_rows) {
@@ -2750,7 +2749,7 @@ function deleteExactDuplicates($dup_records, $module) {
 	foreach ($dup_records_ids as $id) {
 		if (isPermitted($module, 'Delete', $id) == 'yes') {
 			$del_response=DeleteEntity($module, $module, $focus, $id, "");
-			if($del_response[0]){
+			if ($del_response[0]) {
 				$delete_fail_status = true;
 			}
 		} else {
