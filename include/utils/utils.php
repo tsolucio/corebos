@@ -2544,7 +2544,7 @@ function getDuplicateQuery($module, $field_values, $ui_type_arr) {
 }
 
 /** Function to return the duplicate records data as a formatted array */
-function getDuplicateRecordsArr($module) {
+function getDuplicateRecordsArr($module, $use_limit=true) {
 	global $adb,$app_strings,$theme,$default_charset;
 	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module);
 	$field_values_array=getFieldValues($module);
@@ -2576,7 +2576,10 @@ function getDuplicateRecordsArr($module) {
 	} else {
 		$limit_start_rec = $start_rec -1;
 	}
-	$dup_query .= " LIMIT $limit_start_rec, $list_max_entries_per_page";
+	
+	if ($use_limit){
+		$dup_query .= " LIMIT $limit_start_rec, $list_max_entries_per_page";
+	}
 
 	$nresult=$adb->query($dup_query);
 	$no_rows=$adb->num_rows($nresult);
@@ -2728,6 +2731,33 @@ function getDuplicateRecordsArr($module) {
 	$ret_arr[2]=$ui_type;
 	$ret_arr['navigation']=$navigationOutput;
 	return $ret_arr;
+}
+
+/** Function to Delete Exact Duplicates */
+function deleteExactDuplicates($dup_records, $module) {
+	$dup_records_ids=array();
+	$delete_fail_status=false;
+	foreach ($dup_records as $records_group) {
+		$record_position=0;
+		foreach ($records_group as $records) {
+			if ($record_position!=0) {
+				array_push($dup_records_ids, $records['recordid']);
+			}
+			$record_position++;
+		}
+	}
+	$focus = CRMEntity::getInstance($module);
+	foreach ($dup_records_ids as $id) {
+		if (isPermitted($module, 'Delete', $id) == 'yes') {
+			$del_response=DeleteEntity($module, $module, $focus, $id, "");
+			if($del_response[0]){
+				$delete_fail_status = true;
+			}
+		} else {
+			$delete_fail_status = true;
+		}
+	}
+	return $delete_fail_status;
 }
 
 /** Function to get on clause criteria for sub tables like address tables to construct duplicate check query */
