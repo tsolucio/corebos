@@ -146,14 +146,19 @@ function __cb_aggregation_getconditions($conditions, $module, $mainmodule, $reco
 		$v = trim($v, '[');
 		$v = trim($v, ']');
 	});
+	$SQLGenerationMode = ($recordid=='::#');
 	$entityId = vtws_getEntityId($mainmodule).'x'.$recordid;
 	$entityCache = new VTEntityCache($current_user);
 	$qg = new QueryGenerator($module, $current_user);
 	$qg->setFields(array('id'));
 	foreach ($c as $cond) {
 		$cndparams = explode(',', $cond);
-		$ct = new VTSimpleTemplate($cndparams[2]);
-		$value = $ct->render($entityCache, $entityId);
+		if (!$SQLGenerationMode) {
+			$ct = new VTSimpleTemplate($cndparams[2]);
+			$value = $ct->render($entityCache, $entityId);
+		} else {
+			$value = $cndparams[2];
+		}
 		$qg->addCondition($cndparams[0], $value, $cndparams[1], $cndparams[3]);
 	}
 	$where = $qg->getWhereClause();
