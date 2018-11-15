@@ -213,6 +213,7 @@ var alert_arr = {
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE': 'você tem certeza que deseja apagar ?',
 	'PLEASE_MOVE_THE_FIELDS_TO_ANOTHER_BLOCK': 'Por gentileza, mova o campo para outro bloco',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_BLOCK': 'você tem certeza que deseja apagar o bloco?',
+	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_EXACT_DUPLICATE': 'Are you sure you want to Delete All Exact record duplicates?',
 	'LABEL_CANNOT_NOT_EMPTY': 'O rótulo não pode ficar em branco',
 	'LBL_TYPEALERT_1': 'Desculpe, você não pode mapear o',
 	'LBL_WITH': 'com',

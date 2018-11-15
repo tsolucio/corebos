@@ -206,6 +206,7 @@ var alert_arr = {
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE' : '¿Estás seguro que quieres eliminar?',
 	'PLEASE_MOVE_THE_FIELDS_TO_ANOTHER_BLOCK' : 'Por favor mueve los campos a otro bloque',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_BLOCK' : '¿Estás seguro que quieres eliminar el bloque?',
+	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_EXACT_DUPLICATE': '¿Estás seguro que quieres eliminar Todos los Duplicados Exactos?',
 	'LABEL_CANNOT_NOT_EMPTY' : 'La etiqueta no puede quedar vacía',
 	'LBL_TYPEALERT_1' : 'No se puede vincular',
 	'LBL_WITH' : 'con el tipo de dato',

@@ -208,6 +208,7 @@ var alert_arr = {
 	/*layout Editor changes*/
 	'BLOCK_NAME_CANNOT_BE_BLANK': 'Bloknaam mag niet leeg zijn',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE': 'Weet u zeker dat u wilt verwijderen ?',
+	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_EXACT_DUPLICATE': 'Are you sure you want to Delete All Exact record duplicates?',
 	'PLEASE_MOVE_THE_FIELDS_TO_ANOTHER_BLOCK': 'Verplaats de velden alstublieft naar een ander blok',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_BLOCK': 'weet u zeker dat u het blok wilt verwijderen?',
 	'LABEL_CANNOT_NOT_EMPTY': 'Naam mag niet leeg zijn',
