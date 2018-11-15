@@ -33,5 +33,9 @@ $mod_strings = array(
 'mandatory'=>'Obligatorio',
 'brmap'=>'Mapa de Negocio',
 'businessactions_no'=>'Nº Acción de Negocio',
+'User' => 'Usuario',
+'Module' => 'Lista Módulos',
+'Search'=> 'Buscar Acción de Negocio',
+'Test' => 'Prueba'
 );
 ?>

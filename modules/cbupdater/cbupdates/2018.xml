@@ -154,4 +154,25 @@
 	<classname>installcbCVManagement</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+    <author>klivshapllo</author>
+    <description>Import hard-coded action links into vtiger_link table</description>
+    <filename>build/changeSets/2018/importHardCodedLinks.php</filename>
+    <classname>importHardCodedLinks</classname>
+    <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+    <author>klivshapllo</author>
+    <description>Create Contacts2cbCalendar Mapping Business Map</description>
+    <filename>build/changeSets/2018/createContacts2cbCalendarBusinessMap.php</filename>
+    <classname>createContacts2cbCalendarBusinessMap</classname>
+    <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+    <author>klivshapllo</author>
+    <description>Migrate Vtiger Links into Business Action entities</description>
+    <filename>build/changeSets/2018/migrateLinksIntoBusinessActionEntities.php</filename>
+    <classname>migrateLinksIntoBusinessActionEntities</classname>
+    <systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

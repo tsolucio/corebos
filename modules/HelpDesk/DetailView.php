@@ -44,11 +44,6 @@ if (!empty($_REQUEST['mail_error'])) {
 	echo $mod_strings['LBL_MAIL_SEND_STATUS'].' <b><font class="warning">'.$error_msg.'</font></b>';
 }
 
-//Added button to Convert the ticket to FAQ
-if (isPermitted('Faq', 'CreateView', '') == 'yes') {
-	$smarty->assign('CONVERTASFAQ', 'permitted');
-}
-
 //Added to display the ticket comments information
 $smarty->assign('COMMENT_BLOCK', $focus->getCommentInformation($record));
 $smarty->assign('TICKETID', $record);

@@ -491,6 +491,23 @@ function getProfileDescription($profileid) {
 	return $profileDescription;
 }
 
+function leadCanBeConverted($leadid) {
+	static $leadCanBeConverted = null;
+	if (is_null($leadCanBeConverted)) {
+		global $current_user;
+		require_once 'modules/Leads/ConvertLeadUI.php';
+		$uiinfo = new ConvertLeadUI($leadid, $current_user);
+		$leadCanBeConverted =
+			isPermitted('Leads', 'EditView', $leadid) == 'yes'
+			&& isPermitted('Leads', 'ConvertLead') == 'yes'
+			&& (isPermitted('Accounts', 'CreateView') == 'yes' || isPermitted('Contacts', 'CreateView') == 'yes')
+			&& (vtlib_isModuleActive('Contacts') || vtlib_isModuleActive('Accounts'))
+			&& !isLeadConverted($leadid)
+			&& ($uiinfo->getCompany() != null || $uiinfo->isModuleActive('Contacts') == true);
+	}
+	return $leadCanBeConverted;
+}
+
 /** This function is a wrapper that extends the permissions system with a hook to specific functionality **/
 function isPermitted($module, $actionname, $record_id = '') {
 // 	global $current_user, $adb;
