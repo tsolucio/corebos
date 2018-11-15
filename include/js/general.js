@@ -3525,6 +3525,22 @@ function delete_fields(module) {
 	}
 }
 
+function deleteExactDuplicates(module) {
+	var alert_msg= alert_arr.ARE_YOU_SURE_YOU_WANT_TO_DELETE_EXACT_DUPLICATE;
+	if (confirm(alert_msg)) {
+		VtigerJS_DialogBox.block();
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module='+module+'&action='+module+'Ajax&file=FindDuplicateRecords&del_exact_dup_rec=true&ajax=true'
+		}).done(function (response) {
+			VtigerJS_DialogBox.unblock();
+			document.getElementById('duplicate_ajax').innerHTML= response;
+		});
+	} else {
+		return false;
+	}
+}
+
 function validate_merge(module) {
 	var check_var=false;
 	var check_lead1=false;
