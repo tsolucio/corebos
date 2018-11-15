@@ -13,7 +13,7 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
-class cbquestion extends cbupdaterWorker{
+class installcbquestion extends cbupdaterWorker {
 
 	public function applyChange() {
 		if ($this->hasError()) {
@@ -36,6 +36,5 @@ class cbquestion extends cbupdaterWorker{
 		}
 		$this->finishExecution();
 	}
-
 }
 ?>

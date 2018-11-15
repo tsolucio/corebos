@@ -49,6 +49,5 @@ $mod_strings = array(
 	'schannualdates' => 'Annual Dates',
 	'schminuteinterval' => 'Minute Interval',
 	'nexttrigger_time' => 'Trigger Time',
-
 );
 ?>
