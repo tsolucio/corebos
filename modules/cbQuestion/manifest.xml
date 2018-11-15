@@ -2,7 +2,7 @@
 <module>
 <name>cbQuestion</name>
 <label>Business Question</label>
-<parent>Tools</parent>
+<parent>Analytics</parent>
 <version>1.0</version>
 <short_description>Question/Pulse module</short_description>
 <dependencies>
