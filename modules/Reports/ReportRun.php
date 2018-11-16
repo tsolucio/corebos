@@ -3275,10 +3275,7 @@ class ReportRun extends CRMEntity {
 			foreach ($arrayFirstRowValues as $key => $value) {
 				$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $key, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
 				$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
-
-				// NOTE Performance overhead: http://stackoverflow.com/questions/9965476/phpexcel-column-size-issues
 				$worksheet->getColumnDimensionByColumn($count)->setAutoSize(true);
-
 				$count = $count + 1;
 				if ($FieldDataTypes[$key]=='currency') {
 					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, getTranslatedString('LBL_CURRENCY'), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
