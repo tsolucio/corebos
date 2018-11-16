@@ -115,11 +115,6 @@ function set_return_specific(product_id, product_name) {
 	fldId.value = product_id;
 }
 
-function submitform(id) {
-	document.massdelete.entityid.value=id;
-	document.massdelete.submit();
-}
-
 function searchMapLocation(addressType) {
 	var mapParameter = '';
 	if (addressType == 'Main') {

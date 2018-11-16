@@ -12,6 +12,7 @@
 			{assign var='massDelete' value='LBL_MASS_DELETE'|getTranslatedString:$MODULE}
 			{if $DELETE eq $massDelete}
 				<input class="crmbutton small delete" type="button" value="{$APP.LBL_DELETE}" onclick="return delete_fields('{$MODULE}')"/>
+				<input class="crmbutton small delete" type="button" value="{$APP.LBL_DELETE_DUPLICATES}" onclick="return deleteExactDuplicates('{$MODULE}')"/>
 			{/if}
 		</td>
 		<td nowrap >

@@ -207,6 +207,7 @@ var alert_arr = {
 	/*layout Editor changes*/
 	'BLOCK_NAME_CANNOT_BE_BLANK' : 'Sie müssen einem Block einen Namen geben',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE' : 'Wollen Sie wirklich löschen?',
+	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_EXACT_DUPLICATE': 'Are you sure you want to Delete All Exact record duplicates?',
 	'PLEASE_MOVE_THE_FIELDS_TO_ANOTHER_BLOCK' : 'Bitte die Felder in einen anderen Block verschieben.',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_BLOCK' : 'Wollen Sie den Block wirklich löschen?',
 	'LABEL_CANNOT_NOT_EMPTY' : 'Sie müssen ein Label angeben',

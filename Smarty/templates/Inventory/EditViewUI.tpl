@@ -244,14 +244,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}
 			</span>
 			<span width="30%" class="mdCellInfo">
-				{if $uitype eq 52}
-					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small">
-				{elseif $uitype eq 77}
-					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small">
-				{else}
-					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small">
-				{/if}
-
+				<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small">
 				{foreach key=key_one item=arr from=$fldvalue}
 					{foreach key=sel_value item=value from=$arr}
 						<option value="{$key_one}" {$value}>{$sel_value}</option>

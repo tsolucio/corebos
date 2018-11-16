@@ -71,6 +71,25 @@ if (isset($_REQUEST['del_rec'])) {
 	}
 }
 
+if (isset($_REQUEST['del_exact_dup_rec'])) {
+	$dup_records=getDuplicateRecordsArr($req_module, false);
+	$delete_fail_status = deleteExactDuplicates($dup_records[0], $req_module);
+	if (!$delete_fail_status) {
+		$smarty = new vtigerCRM_Smarty();
+		$smarty->assign('APP', $app_strings);
+		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-success');
+		$smarty->assign('ERROR_MESSAGE', $app_strings['LBL_DUPLICATE_DELETE']);
+		$smarty->display('applicationmessage.tpl');
+		exit;
+	} else {
+		$smarty = new vtigerCRM_Smarty();
+		$smarty->assign('APP', $app_strings);
+		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
+		$smarty->assign('ERROR_MESSAGE', $app_strings['LBL_DUPLICATE_DELETE_FAIL']);
+		$smarty->display('applicationmessage.tpl');
+	}
+}
+
 include 'include/saveMergeCriteria.php';
 $ret_arr=getDuplicateRecordsArr($req_module);
 

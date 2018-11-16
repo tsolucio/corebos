@@ -72,7 +72,7 @@ class ModuleClass extends CRMEntity {
 	);
 	public $search_fields_name = array(
 		/* Format: Field Label => fieldname */
-		'MODULE_NAME_LABEL Name'=> 'MODULE_REFERENCE_FIELD'
+		'MODULE_NAME_LABEL'=> 'MODULE_REFERENCE_FIELD'
 	);
 
 	// For Popup window record selection
