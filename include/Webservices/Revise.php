@@ -116,7 +116,9 @@ function vtws_revise($element, $user) {
 	VTWS_PreserveGlobal::flush();
 	if (!empty($_FILES)) {
 		foreach ($_FILES as $file) {
-			unlink($file['tmp_name']);
+			if (file_exists($file['tmp_name'])) {
+				unlink($file['tmp_name']);
+			}
 		}
 	}
 	return $entity;

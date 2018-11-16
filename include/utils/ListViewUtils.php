@@ -2941,6 +2941,7 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 	global $log, $adb;
 	$log->debug("Entering getPopupCheckquery(" . $current_module . "," . $relmodule . "," . $relmod_recordid . ") method ...");
+	$condition = '';
 	if ($current_module == "Contacts") {
 		if ($relmodule == "Accounts" && $relmod_recordid != '') {
 			$condition = "and vtiger_account.accountid= " . $relmod_recordid;

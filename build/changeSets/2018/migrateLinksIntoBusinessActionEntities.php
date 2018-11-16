@@ -16,6 +16,7 @@
 
 include_once 'modules/BusinessActions/BusinessActions.php';
 include_once 'modules/Users/Users.php';
+include_once 'include/Webservices/Create.php';
 
 class migrateLinksIntoBusinessActionEntities extends cbupdaterWorker {
 
@@ -29,8 +30,110 @@ class migrateLinksIntoBusinessActionEntities extends cbupdaterWorker {
 		} else {
 			if ($this->isModuleInstalled('BusinessActions')) {
                 vtlib_toggleModuleAccess('BusinessActions', true);
-				global $adb;
-
+				global $adb, $current_user;
+				$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
+				$brules = array();
+				$default_values =  array(
+					'mapname' => '',
+					'maptype' => 'Condition Expression',
+					'targetname' => '',
+					'content' => '',
+					'description' => '',
+					'assigned_user_id' => $usrwsid,
+				);
+				/////////
+				$rec = $default_values;
+				$rec['mapname'] = 'ConverLead_ConditionExpression';
+				$rec['targetname'] = 'Leads';
+				$rec['content'] = '<map>
+<function>
+	<name>leadCanBeConverted</name>
+	<parameters>
+		<parameter>record_id</parameter>
+	</parameters>
+</function>
+</map>';
+				$brule = vtws_create('cbMap', $rec, $current_user);
+				$brules['LBL_CONVERT_BUTTON_LABEL'] = $brule['id'];
+				/////////
+				$rec = $default_values;
+				$rec['mapname'] = 'ConvertTicket_ConditionExpression';
+				$rec['targetname'] = 'HelpDesk';
+				$rec['content'] = '<map>
+<function>
+	<name>isPermitted</name>
+	<parameters>
+		<parameter>Faq</parameter>
+		<parameter>CreateView</parameter>
+	</parameters>
+</function>
+</map>';
+				$brule = vtws_create('cbMap', $rec, $current_user);
+				$brules['LBL_CONVERT_AS_FAQ_BUTTON_LABEL'] = $brule['id'];
+				/////////
+				$rec = $default_values;
+				$rec['mapname'] = 'ConvertOpportunityToInvoice_ConditionExcpression';
+				$rec['targetname'] = 'Potentials';
+				$rec['content'] = '<map>
+<function>
+	<name>isPermitted</name>
+	<parameters>
+		<parameter>Invoice</parameter>
+		<parameter>CreateView</parameter>
+		<parameter>record_id</parameter>
+	</parameters>
+</function>
+</map>';
+				$brule = vtws_create('cbMap', $rec, $current_user);
+				$brules['Create Invoice'] = $brule['id'];
+				/////////
+				$rec = $default_values;
+				$rec['mapname'] = 'SendEmail_ConditionExpression';
+				$rec['targetname'] = 'Emails';
+				$rec['content'] = '<map>
+<function>
+	<name>isPermitted</name>
+	<parameters>
+		<parameter>Emails</parameter>
+		<parameter>CreateView</parameter>
+	</parameters>
+</function>
+</map>';
+				$brule = vtws_create('cbMap', $rec, $current_user);
+				$brules['LBL_SENDMAIL_BUTTON_LABEL'] = $brule['id'];
+				/////////
+				$rec = $default_values;
+				$rec['mapname'] = 'EventPersmission_ConditionExpression';
+				$rec['targetname'] = 'Contacts';
+				$rec['content'] = '<map>
+<function>
+	<name>CheckFieldPermission</name>
+	<parameters>
+		<parameter>parent_id</parameter>
+		<parameter>Events</parameter>
+	</parameters>
+</function>
+</map>';
+				$brule = vtws_create('cbMap', $rec, $current_user);
+				$brules['Add event'] = $brule['id'];
+				$brules['Add Event'] = $brule['id'];
+				/////////
+				$rec = $default_values;
+				$rec['mapname'] = 'AccountsMailerExportListView_ConditionExpression';
+				$rec['targetname'] = 'Accounts';
+				$rec['content'] = '<map>
+<function>
+	<name>isPermitted</name>
+	<parameters>
+		<parameter>Accounts</parameter>
+		<parameter>Export</parameter>
+		<parameter></parameter>
+	</parameters>
+</function>
+</map>';
+				$brule = vtws_create('cbMap', $rec, $current_user);
+				$brules['LBL_MAILER_EXPORT'] = $brule['id'];
+				/////////
 				$collectLinksSql ="SELECT linktype, 
                                           linklabel, 
                                           linkurl,
@@ -59,6 +162,16 @@ class migrateLinksIntoBusinessActionEntities extends cbupdaterWorker {
 					$focusnew->column_fields['linkicon'] = $link['linkicon'];
 					$focusnew->column_fields['handler'] = $link['handler'];
 					$focusnew->column_fields['active'] = 1;
+					if (isset($brules[$link['linklabel']])) {
+						if (($link['linklabel']=='Create Invoice' && $link['module_list']!='Potentials')) {
+							$focusnew->column_fields['brmap'] = 0;
+						} else {
+							list($wsid, $brid) = explode('x', $brules[$focusnew->column_fields['linklabel']]);
+							$focusnew->column_fields['brmap'] = $brid;
+						}
+					} else {
+						$focusnew->column_fields['brmap'] = 0;
+					}
 					$focusnew->save('BusinessActions');
 				}
 

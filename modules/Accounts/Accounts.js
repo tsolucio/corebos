@@ -343,12 +343,6 @@ function set_return_contact_address(account_id, account_name, bill_street, ship_
 	}
 }
 
-//added for emails
-function submitform(id) {
-	document.massdelete.entityid.value = id;
-	document.massdelete.submit();
-}
-
 function searchMapLocation(addressType) {
 	var mapParameter = '';
 	if (addressType == 'Main') {

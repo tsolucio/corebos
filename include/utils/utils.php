@@ -1018,15 +1018,15 @@ function getProfile2FieldPermissionList($fld_module, $profileid) {
 		$qparams = array($profileid, $tabid);
 		$result = $adb->pquery($query, $qparams);
 		$return_data = array();
-		for ($i=0; $i<$adb->num_rows($result); $i++) {
+		while ($row = $adb->fetch_array($result)) {
 			$return_data[]=array(
-				$adb->query_result($result, $i, 'fieldlabel'),
-				$adb->query_result($result, $i, 'visible'), // From vtiger_profile2field.visible
-				$adb->query_result($result, $i, 'uitype'),
-				$adb->query_result($result, $i, 'readonly'),
-				$adb->query_result($result, $i, 'fieldid'),
-				$adb->query_result($result, $i, 'displaytype'),
-				$adb->query_result($result, $i, 'typeofdata')
+				$row['fieldlabel'],
+				$row['visible'], // From vtiger_profile2field.visible
+				$row['uitype'],
+				$row['readonly'],
+				$row['fieldid'],
+				$row['displaytype'],
+				$row['typeofdata'],
 			);
 		}
 
@@ -2544,7 +2544,7 @@ function getDuplicateQuery($module, $field_values, $ui_type_arr) {
 }
 
 /** Function to return the duplicate records data as a formatted array */
-function getDuplicateRecordsArr($module) {
+function getDuplicateRecordsArr($module, $use_limit = true) {
 	global $adb,$app_strings,$theme,$default_charset;
 	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module);
 	$field_values_array=getFieldValues($module);
@@ -2576,7 +2576,9 @@ function getDuplicateRecordsArr($module) {
 	} else {
 		$limit_start_rec = $start_rec -1;
 	}
-	$dup_query .= " LIMIT $limit_start_rec, $list_max_entries_per_page";
+	if ($use_limit) {
+		$dup_query .= " LIMIT $limit_start_rec, $list_max_entries_per_page";
+	}
 
 	$nresult=$adb->query($dup_query);
 	$no_rows=$adb->num_rows($nresult);
@@ -2608,7 +2610,7 @@ function getDuplicateRecordsArr($module) {
 	$rec_cnt = 0;
 	$temp = array();
 	$sl_arr = array();
-	$grp = "group0";
+	$grp = 'group0';
 	$gcnt = 0;
 	$ii = 0; //ii'th record in group
 	while ($rec_cnt < $no_rows) {
@@ -2728,6 +2730,33 @@ function getDuplicateRecordsArr($module) {
 	$ret_arr[2]=$ui_type;
 	$ret_arr['navigation']=$navigationOutput;
 	return $ret_arr;
+}
+
+/** Function to Delete Exact Duplicates */
+function deleteExactDuplicates($dup_records, $module) {
+	$dup_records_ids=array();
+	$delete_fail_status=false;
+	foreach ($dup_records as $records_group) {
+		$record_position=0;
+		foreach ($records_group as $records) {
+			if ($record_position!=0) {
+				array_push($dup_records_ids, $records['recordid']);
+			}
+			$record_position++;
+		}
+	}
+	$focus = CRMEntity::getInstance($module);
+	foreach ($dup_records_ids as $id) {
+		if (isPermitted($module, 'Delete', $id) == 'yes') {
+			$del_response=DeleteEntity($module, $module, $focus, $id, "");
+			if ($del_response[0]) {
+				$delete_fail_status = true;
+			}
+		} else {
+			$delete_fail_status = true;
+		}
+	}
+	return $delete_fail_status;
 }
 
 /** Function to get on clause criteria for sub tables like address tables to construct duplicate check query */

@@ -10,24 +10,6 @@
 var gFolderid = 1;
 var gselectedrowid = 0;
 
-function getEmailContents(id) {
-	document.getElementById('status').style.display='inline';
-	var rowid = 'row_'+id;
-	getObj(rowid).className = 'emailSelected';
-	if (gselectedrowid != 0 && gselectedrowid != id) {
-		var prev_selected_rowid = 'row_'+gselectedrowid;
-		getObj(prev_selected_rowid).className = 'prvPrfHoverOff';
-	}
-	gselectedrowid = id;
-	jQuery.ajax({
-		method: 'POST',
-		url: 'index.php?module=Emails&action=EmailsAjax&file=DetailView&mode=ajax&record='+id
-	}).done(function (response) {
-		document.getElementById('status').style.display='none';
-		document.getElementById('EmailDetails').innerHTML = response;
-	});
-}
-
 function getListViewEntries_js(module, url) {
 	document.getElementById('status').style.display='inline';
 	jQuery.ajax({

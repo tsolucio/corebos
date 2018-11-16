@@ -60,12 +60,16 @@ function vtws_retrieve($id, $user) {
 	// Dereference WSIDs
 	$r = $meta->getReferenceFieldDetails();
 	$listofrelfields = array();
+	if (!empty($entity['assigned_user_id'])) {
+		$r['assigned_user_id'] = array('Users');
+		$listofrelfields[] = $entity['assigned_user_id'];
+	}
 	foreach ($r as $relfield => $mods) {
 		if (!empty($entity[$relfield])) {
 			$listofrelfields[] = $entity[$relfield];
 		}
 	}
-	if (count($listofrelfields) > 0) {
+	if (count($listofrelfields)>0) {
 		$deref = unserialize(vtws_getReferenceValue(serialize($listofrelfields), $user));
 		foreach ($r as $relfield => $mods) {
 			if (!empty($entity[$relfield])) {
