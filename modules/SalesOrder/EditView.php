@@ -227,7 +227,7 @@ if (!empty($_REQUEST['parent_id']) && !empty($_REQUEST['return_module'])) {
 }
 
 // Get address if account or contact is given
-if (is_null($record) && isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] != 'update_quote_val') {
+if (is_null($record) && (empty($_REQUEST['convertmode']) || (isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] != 'update_quote_val'))) {
 	if (!empty($_REQUEST['account_id'])) {
 		$acct_focus = CRMEntity::getInstance('Accounts');
 		$acct_focus->retrieve_entity_info($_REQUEST['account_id'], 'Accounts');
