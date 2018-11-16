@@ -130,6 +130,8 @@ foreach ($modArr as $fld_module => $fld_label) {
 		}
 		$readonlyfieldid = $fieldid.'_readonly';
 		$readOnlyValue = (isset($sentvariables->$readonlyfieldid) ? $sentvariables->$readonlyfieldid : 0);
+		$positionfieldid = $fieldid.'_position';
+		$positionValue = (isset($sentvariables->$positionfieldid) ? $sentvariables->$positionfieldid : 'B');
 		//Updating the Mandatory vtiger_fields
 		$uitype = $adb->query_result($fieldListResult, $i, 'uitype');
 		$displaytype = $adb->query_result($fieldListResult, $i, 'displaytype');
@@ -140,8 +142,8 @@ foreach ($modArr as $fld_module => $fld_label) {
 			$visible_value = 0;
 		}
 		//Updating the database
-		$update_query = 'update vtiger_profile2field set visible=?, readonly=? where fieldid=? and profileid=? and tabid=?';
-		$adb->pquery($update_query, array($visible_value, $readOnlyValue, $fieldid, $profileid, $tab_id));
+		$update_query = 'update vtiger_profile2field set visible=?, readonly=?, summary=? where fieldid=? and profileid=? and tabid=?';
+		$adb->pquery($update_query, array($visible_value, $readOnlyValue, $positionValue, $fieldid, $profileid, $tab_id));
 	}
 }
 if ($return_action == 'profilePrivileges' || $return_action == 'ListProfiles') {
