@@ -127,9 +127,10 @@ class VTSimpleTemplate {
 			$sort = 'a';
 		}
 		$format = strtolower($format);
-		if ($format!='html' && $format!='text' && $formart!='table') {
+		if ($format!='html' && $format!='text' && $format!='table') {
 			$format = 'html';
 		}
+		var_dump($format);
 		$html = ($format == 'html');
 		$table = ($format == 'table');
 		if (substr($field, 0, 4)=='date' && strlen($field)>4) {
