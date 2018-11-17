@@ -251,11 +251,10 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$value = $col_fields[$fieldname];
 		preg_match($matchPattern, $value, $matches);
 		if (!empty($matches[0])) {
-			$fieldValue = str_replace($matches, '', $value);
 			$label_fld[] = $value;
 		} else {
 			if ($value != null) {
-				$label_fld[] = 'http://'.$value;
+				$label_fld[] = 'https://'.$value;
 			} else {
 				$label_fld[] = '';
 			}
