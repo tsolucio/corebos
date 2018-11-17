@@ -624,7 +624,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 				//decode_html  - added to handle UTF-8   characters in file names
 				//urlencode    - added to handle special characters like #, %, etc.,
 				$image_array[] = urlencode(decode_html($adb->query_result($result_image, $image_iter, 'name')));
-				$image_orgname_array[] = decode_html($adb->query_result($result_image, $image_iter, 'name'));
+				//$image_orgname_array[] = decode_html($adb->query_result($result_image, $image_iter, 'name'));
 
 				$imagepath_array[] = $adb->query_result($result_image, $image_iter, 'path');
 			}
