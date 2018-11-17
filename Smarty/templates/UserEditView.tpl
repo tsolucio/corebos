@@ -132,7 +132,7 @@ function check_duplicate()
 		{include file='SetMenu.tpl'}
 	{/if}
 
-		<form name="EditView" method="POST" action="index.php" ENCTYPE="multipart/form-data" onsubmit="VtigerJS_DialogBox.block();">
+	<form name="EditView" method="POST" action="index.php" ENCTYPE="multipart/form-data" onsubmit="VtigerJS_DialogBox.block();">
 		<input type="hidden" name="module" value="Users">
 		<input type="hidden" name="record" value="{if isset($ID)}{$ID}{/if}">
 		<input type="hidden" name="mode" value="{$MODE}">
