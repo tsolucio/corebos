@@ -254,7 +254,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				{if $fldlabel eq $i18nSolution}
 				<input type="hidden" name="helpdesk_solution" id="helpdesk_solution" value='{$fldvalue}'>
 				{/if}
-				{if ($fldname eq 'notecontent') || (($fldname eq 'signature') && ($USE_RTE eq 1) && ($MODULE eq 'Settings')) || (isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['RTE']) && $maindata['extendedfieldinfo']['RTE'] && vt_hasRTE())}
+				{if ($fldname eq 'notecontent') || ($fldname eq 'signature' && $MODULE eq 'Settings') || (isset($maindata['extendedfieldinfo']) && isset($maindata['extendedfieldinfo']['RTE']) && $maindata['extendedfieldinfo']['RTE'] && vt_hasRTE())}
 				<script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
 				<script>
 					CKEDITOR.replace('{$fldname}',
