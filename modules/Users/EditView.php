@@ -149,5 +149,7 @@ if ($mode == 'create') {
 }
 $smarty->assign('LDAP_BUTTON', $LdapBtnText);
 
+$smarty->assign("USE_RTE", vt_hasRTE());
+
 $smarty->display('UserEditView.tpl');
 ?>
