@@ -292,7 +292,7 @@ class BusinessActions extends CRMEntity {
 				}
 			}
 
-			if ($row['brmap'] > 0 && $row['mandatory'] == 0 && !coreBOS_Rule::evaluate($row['brmap'], $recordid)) {
+			if ($row['brmap'] > 0 && !coreBOS_Rule::evaluate($row['brmap'], $recordid)) {
 				continue;
 			}
 
