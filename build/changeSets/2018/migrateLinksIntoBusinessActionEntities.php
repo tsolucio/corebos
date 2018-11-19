@@ -29,6 +29,7 @@ class migrateLinksIntoBusinessActionEntities extends cbupdaterWorker {
 			$this->sendMsg('Changeset ' . get_class($this) . ' already applied!');
 		} else {
 			if ($this->isModuleInstalled('BusinessActions')) {
+				vtlib_toggleModuleAccess('BusinessActions', true);
 				global $adb, $current_user;
 				$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
 				$brules = array();

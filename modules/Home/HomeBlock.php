@@ -30,7 +30,10 @@ if (!empty($_REQUEST['blockstufftype'])) {
 	$stufftype = vtlib_purify($_REQUEST['blockstufftype']);
 }
 $dashdet = '';
-$homestuff_values = '';
+$homestuff_values = array(
+	'Maxentries' => 0,
+	'Details'=> array('ModuleName'=>'','Title'=>'','Header'=>'','Entries'=>array(),'search_qry'=>''),
+);
 if ($stufftype=='Tag Cloud') {
 	$freetag = new freetag();
 	$smarty->assign('ALL_TAG', $freetag->get_tag_cloud_html('', $current_user->id));
@@ -51,6 +54,12 @@ if ($stufftype=='Tag Cloud') {
 	$smarty->display('Home/HomeWidgetURL.tpl');
 } else {
 	$homestuff_values=$homeObj->getHomePageStuff($stuffid, $stufftype);
+	if ($homestuff_values=='') {
+		$homestuff_values = array(
+			'Maxentries' => 0,
+			'Details'=> array('ModuleName'=>'','Title'=>'','Header'=>'','Entries'=>array(),'search_qry'=>''),
+		);
+	}
 	if ($stufftype=='DashBoard') {
 		$homeObj->getDashDetails($stuffid, 'type');
 		$dashdet=$homeObj->dashdetails;

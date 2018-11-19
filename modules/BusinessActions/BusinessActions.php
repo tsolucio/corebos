@@ -248,7 +248,7 @@ class BusinessActions extends CRMEntity {
 			$group_condition = 'OR vtiger_crmentity.smownerid IN ('.$groups.') ';
 		}
 
-		$where_ext = 'AND ('.$role_condition.' OR '.$user_condition. ' '.$group_condition.')';
+		$where_ext = 'AND (mandatory=1 OR '.$role_condition.' OR '.$user_condition. ' '.$group_condition.')';
 		$sql = $query.$where_ext.$orderby;
 
 		$business_actions = $adb->query($sql);
@@ -292,7 +292,7 @@ class BusinessActions extends CRMEntity {
 				}
 			}
 
-			if ($row['brmap'] > 0 && $row['mandatory'] == 0 && !coreBOS_Rule::evaluate($row['brmap'], $recordid)) {
+			if ($row['brmap'] > 0 && !coreBOS_Rule::evaluate($row['brmap'], $recordid)) {
 				continue;
 			}
 

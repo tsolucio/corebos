@@ -46,7 +46,9 @@ class coreBOS_Session {
 	 * Initialize session
 	 */
 	public static function init($setKCFinder = false, $saveTabValues = false) {
-		session_name(self::getSessionName());
+		if (!isset($_SESSION)) {
+			session_name(self::getSessionName());
+		}
 		@session_start();
 		if ($setKCFinder) {
 			self::setKCFinderVariables();

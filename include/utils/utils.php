@@ -3653,7 +3653,7 @@ function getValidDBInsertDateTimeValue($value) {
 		} catch (Exception $ex) {
 			return '';
 		}
-	} elseif (count($valueList == 1)) {
+	} elseif (count($valueList) == 1) {
 		return getValidDBInsertDateValue($value);
 	}
 	return '';
