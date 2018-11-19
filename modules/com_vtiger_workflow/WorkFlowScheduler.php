@@ -171,7 +171,7 @@ class WorkFlowScheduler {
 			'does not start with' => 'dnsw',
 			'does not end with' => 'dnew',
 		);
-		$noOfConditions = count($conditions);
+		$noOfConditions = is_array($conditions) ? count($conditions) : 0;
 		//Algorithm :
 		//1. If the query has already where condition then start a new group with and condition, else start a group
 		//1.5 Open a global parenthesis to encapsulate the whole condition (required to get the or joins correct)
