@@ -8,7 +8,7 @@
 </dependencies>
 <license>
 <inline><![CDATA[/*************************************************************************************************
- * Copyright 2016 TSolucio -- This file is a part of TSOLUCIO coreBOS customizations.
+ * Copyright 2018 TSolucio -- This file is a part of TSOLUCIO coreBOS customizations.
  * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
  * Vizsage Public License (the "License"). You may not use this file except in compliance with the
  * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
@@ -78,7 +78,7 @@
 <helpinfo><![CDATA[]]></helpinfo>
 <masseditable>1</masseditable>
 <relatedmodules>
-<relatedmodule>cbsalesproduct</relatedmodule>
+<relatedmodule>Products</relatedmodule>
 </relatedmodules>
 </field>
 <field>
@@ -101,7 +101,7 @@
 <helpinfo><![CDATA[]]></helpinfo>
 <masseditable>1</masseditable>
 <relatedmodules>
-<relatedmodule>cbsalesproduct</relatedmodule>
+<relatedmodule>Products</relatedmodule>
 </relatedmodules>
 </field>
 <field>
@@ -114,7 +114,7 @@
 <readonly>1</readonly>
 <presence>2</presence>
 <defaultvalue></defaultvalue>
-<sequence>5</sequence>
+<sequence>7</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
 <quickcreate>1</quickcreate>
@@ -125,11 +125,9 @@
 <masseditable>1</masseditable>
 <picklistvalues>
 <picklistvalue>Required</picklistvalue>
-<picklistvalue>Marketing</picklistvalue>
-<picklistvalue>Substitue</picklistvalue>
-<picklistvalue>Complement</picklistvalue>
+<picklistvalue>Optional</picklistvalue>
+<picklistvalue>Substituable</picklistvalue>
 <picklistvalue>Incompatible</picklistvalue>
-<picklistvalue>Obsolesence</picklistvalue>
 </picklistvalues>
 </field>
 <field>
@@ -162,7 +160,7 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <selected>0</selected>
-<sequence>2</sequence>
+<sequence>6</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
 <quickcreate>3</quickcreate>
@@ -206,7 +204,7 @@
 <readonly>1</readonly>
 <presence>2</presence>
 <defaultvalue></defaultvalue>
-<sequence>6</sequence>
+<sequence>5</sequence>
 <maximumlength>11</maximumlength>
 <typeofdata>N~O</typeofdata>
 <quickcreate>1</quickcreate>

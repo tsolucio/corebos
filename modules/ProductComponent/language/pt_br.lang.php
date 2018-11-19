@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'ModuleName' => 'Nome Módulo',
 	'SINGLE_ModuleName' => 'Nome Módulo',
 	'ModuleName ID' => 'ID Nome Módulo',
@@ -19,5 +19,4 @@ $mod_strings = Array(
 
 	'ModuleFieldLabel' => 'Texto Etiqueta Campo Módulo',
 );
-
 ?>

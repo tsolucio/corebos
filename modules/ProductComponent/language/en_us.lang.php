@@ -8,8 +8,8 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
-	'ProductComponent' => 'Product Component',
+$mod_strings = array(
+	'ProductComponent' => 'Product Components',
 	'SINGLE_ProductComponent' => 'Product Component',
 	'ProductComponent ID' => 'Product Component ID',
 	'frompdo' => 'From Product',
@@ -19,19 +19,15 @@ $mod_strings = Array(
 	'Relation Number' => 'Relation Number',
 	'Relation to' => 'Valid to',
 	'quantity' => 'Quantity',
-	'Quantity Rule' => 'Quantity Rule',
 	'instructions' => 'Instructions',
 
 	'Required' => 'Required',
-	'Marketing' => 'Marketing',
-	'Substitue' => 'Substitue',
-	'Complement' => 'Complement',
+	'Optional' => 'Optional',
+	'Substituable' => 'Replaceable',
 	'Incompatible' => 'Incompatible',
-	'Obsolesence' => 'Obsolesence',
 
 	'LBL_PRODUCTCOMPONENT_INFORMATION' => 'Product Component Information',
 	'LBL_CUSTOM_INFORMATION' => 'Custom Information',
 	'LBL_DESCRIPTION_INFORMATION' => 'Description',
 );
-
 ?>

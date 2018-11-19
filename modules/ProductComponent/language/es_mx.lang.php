@@ -8,30 +8,27 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
-	'ProductAssociation' => 'Relación Productos',
-	'SINGLE_ProductAssociation' => 'Relación Producto',
-	'ProductAssociation ID' => 'ID Relación Producto',
-	'frompdo' => 'Producto Principal',
-	'topdo' => 'Producto Asociado',
+$mod_strings = array(
+	'ProductComponent' => 'Componentes de Productos',
+	'SINGLE_ProductComponent' => 'Componente de Producto',
+	'ProductComponent ID' => 'ID Componente',
+
+	'frompdo' => 'Producto Paterno',
+	'topdo' => 'Subproducto',
 	'Relation Mode' => 'Tipo Relación',
 	'Relation from' => 'Válido desde',
 	'Relation Number' => 'Nº Relación',
 	'Relation to' => 'Válido hasta',
 	'quantity' => 'Cantidad',
-	'Quantity Rule' => 'Regla Cantidad',
 	'instructions' => 'Instrucciones',
 
 	'Required' => 'Requerido',
-	'Marketing' => 'Marketing',
-	'Substitue' => 'Substituye',
-	'Complement' => 'Complementa',
+	'Optional' => 'Opcional',
+	'Substituable' => 'Substituible',
 	'Incompatible' => 'Incompatible',
-	'Obsolesence' => 'Obsolescencia',
 
-	'LBL_PRODUCTASSOCIATION_INFORMATION' => 'Información Relación Producto',
+	'LBL_PRODUCTCOMPONENT_INFORMATION' => 'Información Componente Producto',
 	'LBL_CUSTOM_INFORMATION' => 'Información Personalizada',
 	'LBL_DESCRIPTION_INFORMATION' => 'Descripción',
 );
-
 ?>

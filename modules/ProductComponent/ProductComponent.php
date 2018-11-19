@@ -125,7 +125,7 @@ class ProductComponent extends CRMEntity {
 	public function vtlib_handler($modulename, $event_type) {
 		if ($event_type == 'module.postinstall') {
 			// TODO Handle post installation actions
-			$this->setModuleSeqNumber('configure', $modulename, 'pcmpnt','0000001');
+			$this->setModuleSeqNumber('configure', $modulename, 'pcmpnt', '0000001');
 		} elseif ($event_type == 'module.disabled') {
 			// TODO Handle actions when this module is disabled.
 		} elseif ($event_type == 'module.enabled') {
@@ -167,7 +167,7 @@ class ProductComponent extends CRMEntity {
 	 */
 	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 
-	public static function getRelation($fromProduct='*',$toProduct='*',$fromDate='*',$toDate='*',$relationType='*') {
+	public static function getRelation($fromProduct = '*', $toProduct = '*', $fromDate = '*', $toDate = '*', $relationType = '*') {
 		global $adb;
 		$sql = 'select * from vtiger_productcomponent
 			inner join vtiger_crmentity on crmid=productcomponentid
@@ -192,11 +192,11 @@ class ProductComponent extends CRMEntity {
 			$sql.=' and relmode=? ';
 			$params[] = $relationType;
 		}
-		$rs = $adb->pquery($sql,$params);
+		$rs = $adb->pquery($sql, $params);
 		$ret = array();
 		while ($pa = $adb->fetch_array($rs)) {
-			$frompdo_name = getEntityName('cbsalesproduct',$pa['frompdo']);
-			$topdo_name = getEntityName('cbsalesproduct',$pa['topdo']);
+			$frompdo_name = getEntityName('Products', $pa['frompdo']);
+			$topdo_name = getEntityName('Products', $pa['topdo']);
 			$ret[$pa['productcomponentid']] = array(
 				'relno' => $pa['relno'],
 				'frompdo' => $pa['frompdo'],
