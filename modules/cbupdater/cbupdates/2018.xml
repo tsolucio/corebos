@@ -175,4 +175,11 @@
     <classname>migrateLinksIntoBusinessActionEntities</classname>
     <systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+    <author>george1806</author>
+    <description>Make Business Action linkicon non mandatory and set Mandatory fields 1 for All records</description>
+    <filename>build/changeSets/2018/makeLinkiconNonmandatoryInBusinessAction.php</filename>
+    <classname>makeLinkiconNonmandatoryInBusinessAction</classname>
+    <systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
