@@ -1478,16 +1478,15 @@ function getRoleAndSubordinateUsers($roleId) {
 	$log->debug("Entering getRoleAndSubordinateUsers(".$roleId.") method ...");
 	$roleInfoArr=getRoleInformation($roleId);
 	$parentRole=$roleInfoArr[$roleId][1];
-	$query = 'select vtiger_user2role.*,vtiger_users.user_name
+	$query = 'select vtiger_user2role.userid,vtiger_users.user_name
 		from vtiger_user2role
 		inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 		inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
 		where vtiger_role.parentrole like ?';
 	$result = $adb->pquery($query, array($parentRole.'%'));
-	$num_rows=$adb->num_rows($result);
 	$roleRelatedUsers=array();
-	for ($i=0; $i<$num_rows; $i++) {
-		$roleRelatedUsers[$adb->query_result($result, $i, 'userid')]=$adb->query_result($result, $i, 'user_name');
+	while ($row = $adb->fetch_array($result)) {
+		$roleRelatedUsers[ $row['userid'] ] = $row['user_name'];
 	}
 	$log->debug('Exiting getRoleAndSubordinateUsers method...');
 	return $roleRelatedUsers;
@@ -1503,16 +1502,15 @@ function getRoleAndSubordinateUserIds($roleId) {
 	$log->debug("Entering getRoleAndSubordinateUserIds(".$roleId.") method ...");
 	$roleInfoArr=getRoleInformation($roleId);
 	$parentRole=$roleInfoArr[$roleId][1];
-	$query = 'select vtiger_user2role.*,vtiger_users.user_name
+	$query = 'select vtiger_user2role.userid
 		from vtiger_user2role
 		inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 		inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
 		where vtiger_role.parentrole like ?';
 	$result = $adb->pquery($query, array($parentRole.'%'));
-	$num_rows=$adb->num_rows($result);
 	$roleRelatedUsers=array();
-	for ($i=0; $i<$num_rows; $i++) {
-		$roleRelatedUsers[]=$adb->query_result($result, $i, 'userid');
+	while ($row = $adb->getNextRow($result, false)) {
+		$roleRelatedUsers[] = $row[0];
 	}
 	$log->debug('Exiting getRoleAndSubordinateUserIds method...');
 	return $roleRelatedUsers;
