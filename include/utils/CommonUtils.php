@@ -2097,6 +2097,7 @@ function getEntityName($module, $ids_list) {
 		$module = 'Calendar';
 	}
 	if ($module != '') {
+		$ids_list = (array)$ids_list;
 		if (count($ids_list) <= 0) {
 			return array();
 		}
@@ -3253,16 +3254,12 @@ function getEntityFieldValues($entity_field_info, $ids_list) {
 	//$moduleName = $entity_field_info['modulename'];
 	$entityIdField = $entity_field_info['entityidfield'];
 	if (is_array($fieldsName)) {
-		$fieldsNameString = implode(",", $fieldsName);
+		$fieldsNameString = implode(',', $fieldsName);
 	} else {
 		$fieldsNameString = $fieldsName;
 	}
-	$query1 = "SELECT $fieldsNameString,$entityIdField FROM $tableName WHERE $entityIdField IN (" . generateQuestionMarks($ids_list) . ')';
-	if (is_array($ids_list)) {
-		$params1 = $ids_list;
-	} else {
-		$params1 = array($ids_list);
-	}
+	$params1 = (array)$ids_list;
+	$query1 = "SELECT $fieldsNameString,$entityIdField FROM $tableName WHERE $entityIdField IN (" . generateQuestionMarks($params1) . ')';
 	$result = $adb->pquery($query1, $params1);
 	$numrows = $adb->num_rows($result);
 	$entity_info = array();
