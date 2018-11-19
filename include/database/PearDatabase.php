@@ -483,7 +483,7 @@ class PearDatabase {
 
 		$sql_start_time = microtime(true);
 		$params = $this->flatten_array($params);
-		if (count($params) > 0) {
+		if (!is_null($params) && count($params) > 0) {
 			$log->debug('Prepared sql query parameters : [' . implode(",", $params) . ']');
 		}
 
