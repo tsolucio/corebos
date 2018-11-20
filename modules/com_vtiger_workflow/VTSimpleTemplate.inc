@@ -267,7 +267,6 @@ class VTSimpleTemplate {
 		if ($html ||$table ) {
 			$retcm .= '</div>';
 		}
-
 		return $retcm;
 	}
 
