@@ -172,7 +172,7 @@ class VTSimpleTemplate {
 		}
 		$cmsqlws = __getRLQuery($wsId, $moduleName, 'ModComments', $queryParameters, $current_user);
 		$retcm = '';
-		if ($html ||$table) {
+		if ($html || $table) {
 			$retcm = '<div class="comments">';
 		}
 		$cmrs = $adb->pquery($cmsqlws, array());
@@ -234,7 +234,7 @@ class VTSimpleTemplate {
 							$retcm .= '</li>';
 						}
 							if ($table) {
-							$retcm .= '</li>';
+							$retcm .= '</td>';
 						}
 						break;
 					case 'comment':
@@ -267,7 +267,7 @@ class VTSimpleTemplate {
 		if ($html ||$table ) {
 			$retcm .= '</div>';
 		}
-		
+
 		return $retcm;
 	}
 
