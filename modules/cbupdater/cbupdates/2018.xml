@@ -182,4 +182,11 @@
     <classname>makeLinkiconNonmandatoryInBusinessAction</classname>
     <systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+    <author>george1806</author>
+    <description>Change Uitype of CobroPago(payment) module fields amount, cost and benefit to 71 </description>
+    <filename>build/changeSets/2018/changePaymentFieldsUitypeTo71.php</filename>
+    <classname>changePaymentFieldsUitypeTo71</classname>
+    <systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
