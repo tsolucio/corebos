@@ -1074,7 +1074,7 @@ function getProfile2ModuleFieldPermissionList($fld_module, $profileid) {
 			$adb->pquery($sql11, array($profileid, $tabid, $fieldid,$visible_value, $readOnlyValue));
 		}
 
-		$sql = 'SELECT vtiger_profile2field.visible, vtiger_profile2field.readonly FROM vtiger_profile2field WHERE fieldid=? AND tabid=? AND profileid=?';
+		$sql = 'SELECT vtiger_profile2field.visible, vtiger_profile2field.readonly, summary FROM vtiger_profile2field WHERE fieldid=? AND tabid=? AND profileid=?';
 		$params = array($fieldid,$tabid,$profileid);
 		$res = $adb->pquery($sql, $params);
 
@@ -1085,7 +1085,8 @@ function getProfile2ModuleFieldPermissionList($fld_module, $profileid) {
 			$adb->query_result($res, 0, 'readonly'), // From vtiger_profile2field.readonly
 			$adb->query_result($result, $i, 'fieldid'),
 			$adb->query_result($result, $i, 'displaytype'),
-			$adb->query_result($result, $i, 'typeofdata')
+			$adb->query_result($result, $i, 'typeofdata'),
+			$adb->query_result($res, 0, 'summary') // From vtiger_profile2field.summary
 		);
 	}
 
