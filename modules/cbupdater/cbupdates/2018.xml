@@ -182,4 +182,11 @@
     <classname>makeLinkiconNonmandatoryInBusinessAction</classname>
     <systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+    <author>george1806</author>
+    <description>Increment The Size of Document Title to 200 characters </description>
+    <filename>build/changeSets/2018/incrementSizeofDocumentTitle.php</filename>
+    <classname>incrementSizeofDocumentTitle</classname>
+    <systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
