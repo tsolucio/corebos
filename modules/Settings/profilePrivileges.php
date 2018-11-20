@@ -484,50 +484,50 @@ if ($mode=='view') {
 
 			$position = $fieldListResult[$module_name][$j][7];
 
-			$display_title_position = "none";
-			$display_header_position = "none";
-			$display_body_position = "none";
-			$display_no_show_position = "none";
+			$display_title_position = 'none';
+			$display_header_position = 'none';
+			$display_body_position = 'none';
+			$display_no_show_position = 'none';
 
-			if ($position == "T") {
-				$display_title_position = "inline";
-			} elseif ($position == "H") {
-				$display_header_position = "inline";
-			} elseif ($position == "B") {
-				$display_body_position = "inline";
+			if ($position == 'T') {
+				$display_title_position = 'inline';
+			} elseif ($position == 'H') {
+				$display_header_position = 'inline';
+			} elseif ($position == 'B') {
+				$display_body_position = 'inline';
 			} else {
-				$display_no_show_position = "inline";
+				$display_no_show_position = 'inline';
 			}
 
 			$currentFieldId = $fieldListResult[$module_name][$j][4];
 
 			$field[] = '<input type="hidden" id="'.$module_id.'_position_'.$currentFieldId.'" name="'.$currentFieldId.'_position" value="'.$position.'" />
-                        <a href="javascript:void(0);" onclick="tooglePosition(\''.$module_id.'_position_'.$currentFieldId.'\')">
-                            <img id="'.$module_id.'_position_'.$currentFieldId.'_position_title" 
-                                 class="'.$module_id.'_position_'.$currentFieldId.'position_image" 
-                                 src="'.vtiger_imageurl('field_position_T.png', $theme).'" 
-                                 style="display: '.$display_title_position.'" 
-                                 border="0" 
-                            />
-                            <img id="'.$module_id.'_position_'.$currentFieldId.'_position_header" 
-                                 class="'.$module_id.'_position_'.$currentFieldId.'position_image" 
-                                 src="'.vtiger_imageurl('field_position_H.png', $theme).'" 
-                                 style="display: '.$display_header_position.'" 
-                                 border="0" 
-                            />
-                            <img id="'.$module_id.'_position_'.$currentFieldId.'_position_body" 
-                                 class="'.$module_id.'_position_'.$currentFieldId.'position_image" 
-                                 src="'.vtiger_imageurl('field_position_B.png', $theme).'" 
-                                 style="display: '.$display_body_position.'" 
-                                 border="0" 
-                            />                       
-                            <img id="'.$module_id.'_position_'.$currentFieldId.'_position_no_show" 
-                                 class="'.$module_id.'_position_'.$currentFieldId.'position_image" 
-                                 src="'.vtiger_imageurl('no.gif', $theme).'" 
-                                 style="display: '.$display_no_show_position.'" 
-                                 border="0" 
-                            />                       
-                        </a>';
+				<a href="javascript:void(0);" onclick="tooglePosition(\''.$module_id.'_position_'.$currentFieldId.'\')">
+					<img id="'.$module_id.'_position_'.$currentFieldId.'_position_title"
+						class="'.$module_id.'_position_'.$currentFieldId.'position_image"
+						src="'.vtiger_imageurl('field_position_T.png', $theme).'"
+						style="display: '.$display_title_position.'"
+						border="0"
+					/>
+					<img id="'.$module_id.'_position_'.$currentFieldId.'_position_header"
+						class="'.$module_id.'_position_'.$currentFieldId.'position_image"
+						src="'.vtiger_imageurl('field_position_H.png', $theme).'"
+						style="display: '.$display_header_position.'"
+						border="0"
+					/>
+					<img id="'.$module_id.'_position_'.$currentFieldId.'_position_body"
+						class="'.$module_id.'_position_'.$currentFieldId.'position_image"
+						src="'.vtiger_imageurl('field_position_B.png', $theme).'"
+						style="display: '.$display_body_position.'"
+						border="0"
+					/>
+					<img id="'.$module_id.'_position_'.$currentFieldId.'_position_no_show"
+						class="'.$module_id.'_position_'.$currentFieldId.'position_image"
+						src="'.vtiger_imageurl('no.gif', $theme).'"
+						style="display: '.$display_no_show_position.'"
+						border="0"
+					/>
+				</a>';
 			$field_module[]=$field;
 		}
 		$privilege_field[$module_id] = array_chunk($field_module, 3);
@@ -599,50 +599,50 @@ if ($mode=='view') {
 
 				$position = $fieldListResult[$module_name][$j][7];
 
-				$display_title_position = "none";
-				$display_header_position = "none";
-				$display_body_position = "none";
-				$display_no_show_position = "none";
+				$display_title_position = 'none';
+				$display_header_position = 'none';
+				$display_body_position = 'none';
+				$display_no_show_position = 'none';
 
-				if ($position == "T") {
-					$display_title_position = "inline";
-				} elseif ($position == "H") {
-					$display_header_position = "inline";
-				} elseif ($position == "B") {
-					$display_body_position = "inline";
+				if ($position == 'T') {
+					$display_title_position = 'inline';
+				} elseif ($position == 'H') {
+					$display_header_position = 'inline';
+				} elseif ($position == 'B') {
+					$display_body_position = 'inline';
 				} else {
-					$display_no_show_position = "inline";
+					$display_no_show_position = 'inline';
 				}
 
 				$currentFieldId = $fieldListResult[$module_name][$j][4];
 
 				$field[] = '<input type="hidden" id="'.$module_id.'_position_'.$currentFieldId.'" name="'.$currentFieldId.'_position" value="'.$position.'" />
-                        <a href="javascript:void(0);" onclick="tooglePosition(\''.$module_id.'_position_'.$currentFieldId.'\')">
-                            <img id="'.$module_id.'_position_'.$currentFieldId.'_position_title" 
-                                 class="'.$module_id.'_position_'.$currentFieldId.'position_image" 
-                                 src="'.vtiger_imageurl('field_position_T.png', $theme).'" 
-                                 style="display: '.$display_title_position.'" 
-                                 border="0" 
-                            />
-                            <img id="'.$module_id.'_position_'.$currentFieldId.'_position_header" 
-                                 class="'.$module_id.'_position_'.$currentFieldId.'position_image" 
-                                 src="'.vtiger_imageurl('field_position_H.png', $theme).'" 
-                                 style="display: '.$display_header_position.'" 
-                                 border="0" 
-                            />
-                            <img id="'.$module_id.'_position_'.$currentFieldId.'_position_body" 
-                                 class="'.$module_id.'_position_'.$currentFieldId.'position_image" 
-                                 src="'.vtiger_imageurl('field_position_B.png', $theme).'" 
-                                 style="display: '.$display_body_position.'" 
-                                 border="0" 
-                            />                       
-                            <img id="'.$module_id.'_position_'.$currentFieldId.'_position_no_show" 
-                                 class="'.$module_id.'_position_'.$currentFieldId.'position_image" 
-                                 src="'.vtiger_imageurl('no.gif', $theme).'" 
-                                 style="display: '.$display_no_show_position.'" 
-                                 border="0" 
-                            />                       
-                        </a>';
+					<a href="javascript:void(0);" onclick="tooglePosition(\''.$module_id.'_position_'.$currentFieldId.'\')">
+						<img id="'.$module_id.'_position_'.$currentFieldId.'_position_title"
+							class="'.$module_id.'_position_'.$currentFieldId.'position_image"
+							src="'.vtiger_imageurl('field_position_T.png', $theme).'"
+							style="display: '.$display_title_position.'"
+							border="0"
+						/>
+						<img id="'.$module_id.'_position_'.$currentFieldId.'_position_header"
+							class="'.$module_id.'_position_'.$currentFieldId.'position_image"
+							src="'.vtiger_imageurl('field_position_H.png', $theme).'"
+							style="display: '.$display_header_position.'"
+							border="0"
+						/>
+						<img id="'.$module_id.'_position_'.$currentFieldId.'_position_body"
+							class="'.$module_id.'_position_'.$currentFieldId.'position_image"
+							src="'.vtiger_imageurl('field_position_B.png', $theme).'"
+							style="display: '.$display_body_position.'"
+							border="0"
+						/>
+						<img id="'.$module_id.'_position_'.$currentFieldId.'_position_no_show"
+							class="'.$module_id.'_position_'.$currentFieldId.'position_image"
+							src="'.vtiger_imageurl('no.gif', $theme).'"
+							style="display: '.$display_no_show_position.'"
+							border="0"
+						/>
+					</a>';
 
 				$field_module[]=$field;
 			}
@@ -712,32 +712,32 @@ if ($mode=='view') {
 				$currentFieldId = $fieldListResult[$module_name][$j][4];
 
 				$field[] = '<input type="hidden" id="'.$module_id.'_position_'.$currentFieldId.'" name="'.$currentFieldId.'_position" value="B" />
-                        <a href="javascript:void(0);" onclick="tooglePosition(\''.$module_id.'_position_'.$currentFieldId.'\')">
-                            <img id="'.$module_id.'_position_'.$currentFieldId.'_position_title" 
-                                 class="'.$module_id.'_position_'.$currentFieldId.'position_image" 
-                                 src="'.vtiger_imageurl('field_position_T.png', $theme).'" 
-                                 style="display: none"
-                                 border="0" 
-                            />
-                            <img id="'.$module_id.'_position_'.$currentFieldId.'_position_header" 
-                                 class="'.$module_id.'_position_'.$currentFieldId.'position_image" 
-                                 src="'.vtiger_imageurl('field_position_H.png', $theme).'" 
-                                 style="display: none" 
-                                 border="0" 
-                            />
-                            <img id="'.$module_id.'_position_'.$currentFieldId.'_position_body" 
-                                 class="'.$module_id.'_position_'.$currentFieldId.'position_image" 
-                                 src="'.vtiger_imageurl('field_position_B.png', $theme).'" 
-                                 style="display: inline" 
-                                 border="0" 
-                            />                       
-                            <img id="'.$module_id.'_position_'.$currentFieldId.'_position_no_show" 
-                                 class="'.$module_id.'_position_'.$currentFieldId.'position_image" 
-                                 src="'.vtiger_imageurl('no.gif', $theme).'" 
-                                 style="display: none" 
-                                 border="0" 
-                            />                       
-                        </a>';
+					<a href="javascript:void(0);" onclick="tooglePosition(\''.$module_id.'_position_'.$currentFieldId.'\')">
+						<img id="'.$module_id.'_position_'.$currentFieldId.'_position_title"
+							class="'.$module_id.'_position_'.$currentFieldId.'position_image"
+							src="'.vtiger_imageurl('field_position_T.png', $theme).'"
+							style="display: none"
+							border="0"
+						/>
+						<img id="'.$module_id.'_position_'.$currentFieldId.'_position_header"
+							class="'.$module_id.'_position_'.$currentFieldId.'position_image"
+							src="'.vtiger_imageurl('field_position_H.png', $theme).'"
+							style="display: none"
+							border="0"
+						/>
+						<img id="'.$module_id.'_position_'.$currentFieldId.'_position_body"
+							class="'.$module_id.'_position_'.$currentFieldId.'position_image"
+							src="'.vtiger_imageurl('field_position_B.png', $theme).'"
+							style="display: inline"
+							border="0"
+						/>
+						<img id="'.$module_id.'_position_'.$currentFieldId.'_position_no_show"
+							class="'.$module_id.'_position_'.$currentFieldId.'position_image"
+							src="'.vtiger_imageurl('no.gif', $theme).'"
+							style="display: none"
+							border="0"
+						/>
+					</a>';
 				$field_module[]=$field;
 			}
 			$privilege_field[$module_id] = array_chunk($field_module, 3);
