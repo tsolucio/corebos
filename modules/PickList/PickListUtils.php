@@ -176,6 +176,8 @@ function getNonEditablePicklistValues($fieldName, $lang, $adb) {
  */
 function getAssignedPicklistValues($tableName, $roleid, $adb, $lang = array()) {
 	static $cache = array();
+	static $questionMarkLists = [];
+	static $paramLists = [];
 
 	$cacheId = $tableName . '#' . $roleid;
 	if (isset($cache[$cacheId])) {
@@ -184,21 +186,18 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang = array()) {
 
 	$arr = array();
 
-	$sub = getSubordinateRoleAndUsers($roleid, false);
-	$subRoles = array($roleid);
-	$subRoles = array_merge($subRoles, array_keys($sub));
-
 	$result = $adb->pquery('select 1 from vtiger_picklist where name = ?', array($tableName));
 	if ($adb->num_rows($result)) {
-		$roleids = array();
-		foreach ($subRoles as $role) {
-			$roleids[] = $role;
+		if (!isset($paramLists[$roleid])) {
+			$roleids = array_merge(array($roleid), array_keys(getSubordinateRoleAndUsers($roleid, false)));
+			$questionMarkLists[$roleid] = generateQuestionMarks($roleids);
+			$paramLists[$roleid] = array_merge($roleids, $roleids);
 		}
 		$tname = $adb->sql_escape_string("vtiger_$tableName");
 		$sql = 'SELECT '.$adb->sql_escape_string($tableName).' FROM '. $tname
 			. ' inner join vtiger_role2picklist on '.$tname.'.picklist_valueid=vtiger_role2picklist.picklistvalueid'
-			. ' and roleid in ('.generateQuestionMarks($roleids).') order by field(roleid,'.generateQuestionMarks($roleids).'), sortid';
-		$result = $adb->pquery($sql, array_merge($roleids, $roleids));
+			. ' and roleid in ('.$questionMarkLists[$roleid].') order by field(roleid,'.$questionMarkLists[$roleid].'), sortid';
+		$result = $adb->pquery($sql, $paramLists[$roleid]);
 
 		if (!empty($result)) {
 			while (!$result->EOF) {
