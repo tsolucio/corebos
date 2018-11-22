@@ -4055,11 +4055,13 @@ function retrieveCompanyDetails() {
 			$companylogo    = decode_html($adb->query_result($query, $i, 'companylogo'));
 			$applogo        = decode_html($adb->query_result($query, $i, 'applogo'));
 			$name           = $adb->query_result($query, $i, 'name'); // attachmentname
-			if ($name == $favicon) {
+			if ($name == $favicon && !isset($companyDetails['favicon'])) {
 				$companyDetails['favicon'] = $path.$attachmentsid.'_'.$favicon;
-			} elseif ($name == $companylogo) {
+			}
+			if ($name == $companylogo && !isset($companyDetails['companylogo'])) {
 				$companyDetails['companylogo'] = $path.$attachmentsid.'_'.$companylogo;
-			} elseif ($name == $applogo) {
+			}
+			if ($name == $applogo && !isset($companyDetails['applogo'])) {
 				$companyDetails['applogo'] = $path.$attachmentsid.'_'.$applogo;
 			}
 		}
