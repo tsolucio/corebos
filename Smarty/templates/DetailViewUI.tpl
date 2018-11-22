@@ -312,7 +312,7 @@
                         </td>
 			{elseif $keyid eq '156'} <!--CheckBox for is admin-->
 			{if $smarty.request.record neq $CURRENT_USERID && $keyadmin eq 1}
-                      <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onMouseOver="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{if $APP.$keyval!=''}{$APP.$keyval}{elseif $MOD.$keyval!=''}{$MOD.$keyval}{else}{$keyval}{/if}&nbsp;</span>
+                      <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onMouseOver="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{$keyval|getTranslatedString:$MODULE}&nbsp;</span>
                     	<div id="editarea_{$keyfldname}" style="display:none;">
                         {if $keyval eq 'on'}
                             <input id="txtbox_{$keyfldname}" name="{$keyfldname}" type="checkbox" style="border:1px solid #bababa;" checked value="1">
