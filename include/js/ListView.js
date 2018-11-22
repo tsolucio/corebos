@@ -739,19 +739,6 @@ function alphabetic(module, url, dataid) {
 	});
 }
 
-function modifyimage(imagename) {
-	var imgArea = getObj('dynloadarea');
-	if (!imgArea) {
-		imgArea = document.createElement('div');
-		imgArea.id = 'dynloadarea';
-		imgArea.setAttribute('style', 'z-index:100000001;');
-		imgArea.style.position = 'absolute';
-		imgArea.innerHTML = '<img width="260" height="200" src="' + imagename + '" class="thumbnail">';
-		document.body.appendChild(imgArea);
-	}
-	PositionDialogToCenter(imgArea.id);
-}
-
 function PositionDialogToCenter(ID) {
 	var vpx, vpy;
 	if (self.innerHeight) {// Mozilla, FF, Safari and Opera
