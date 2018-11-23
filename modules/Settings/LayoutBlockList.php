@@ -1090,10 +1090,10 @@ function addCustomField() {
 				//Inserting values into vtiger_profile2field tables
 				$sql1_result = $adb->pquery('select * from vtiger_profile', array());
 				$sql1_num = $adb->num_rows($sql1_result);
-				$sql2 = 'insert into vtiger_profile2field values(?,?,?,?,?)';
+				$sql2 = 'insert into vtiger_profile2field values(?,?,?,?,?,?)';
 				for ($i=0; $i<$sql1_num; $i++) {
 					$profileid = $adb->query_result($sql1_result, $i, 'profileid');
-					$adb->pquery($sql2, array($profileid, $tabid, $custfld_fieldid, 0, 0));
+					$adb->pquery($sql2, array($profileid, $tabid, $custfld_fieldid, 0, 0, 'B'));
 				}
 
 				//Inserting values into def_org tables

@@ -1253,13 +1253,13 @@ function createProfile($profilename, $parentProfileId, $description) {
 	$params10 = array($parentProfileId);
 	$result10= $adb->pquery($sql10, $params10);
 	$p2field_rows = $adb->num_rows($result10);
+	$sql11='insert into vtiger_profile2field values(?,?,?,?,?,?)';
 	for ($i=0; $i<$p2field_rows; $i++) {
 		$tab_id=$adb->query_result($result10, $i, 'tabid');
 		$fieldid=$adb->query_result($result10, $i, 'fieldid');
 		$permissions=$adb->query_result($result10, $i, 'visible');
 		$readonly=$adb->query_result($result10, $i, 'readonly');
-		$sql11="insert into vtiger_profile2field values(?,?,?,?,?)";
-		$params11 = array($current_profile_id, $tab_id, $fieldid, $permissions ,$readonly);
+		$params11 = array($current_profile_id, $tab_id, $fieldid, $permissions ,$readonly, 'B');
 		$adb->pquery($sql11, $params11);
 	}
 	$log->debug("Exiting createProfile method ...");

@@ -944,8 +944,8 @@ function insertProfile2field($profileid) {
 	for ($i=0; $i<$num_rows; $i++) {
 		$tab_id = $adb->query_result($fld_result, $i, 'tabid');
 		$field_id = $adb->query_result($fld_result, $i, 'fieldid');
-		$params = array($profileid, $tab_id, $field_id, 0, 0);
-		$adb->pquery("insert into vtiger_profile2field values (?,?,?,?,?)", $params);
+		$params = array($profileid, $tab_id, $field_id, 0, 0, 'B');
+		$adb->pquery('insert into vtiger_profile2field values (?,?,?,?,?,?)', $params);
 	}
 	$log->debug("Exiting insertProfile2field method ...");
 }
@@ -1070,8 +1070,8 @@ function getProfile2ModuleFieldPermissionList($fld_module, $profileid) {
 		$visible_value = 0;
 		$readOnlyValue = 0;
 		if ($adb->num_rows($checkentry) == 0) {
-			$sql11='INSERT INTO vtiger_profile2field VALUES(?,?,?,?,?)';
-			$adb->pquery($sql11, array($profileid, $tabid, $fieldid,$visible_value, $readOnlyValue));
+			$sql11='INSERT INTO vtiger_profile2field VALUES(?,?,?,?,?,?)';
+			$adb->pquery($sql11, array($profileid, $tabid, $fieldid,$visible_value, $readOnlyValue, 'B'));
 		}
 
 		$sql = 'SELECT vtiger_profile2field.visible, vtiger_profile2field.readonly, summary FROM vtiger_profile2field WHERE fieldid=? AND tabid=? AND profileid=?';
