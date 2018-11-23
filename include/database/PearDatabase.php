@@ -710,7 +710,7 @@ class PearDatabase {
 		if (!is_array($data)) {
 			throw new Exception('data must be an array');
 		}
-		if (!count($table)) {
+		if (!count($data)) {
 			throw new Exception('no data given');
 		}
 		$sql_fields = '';
