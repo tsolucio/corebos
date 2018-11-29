@@ -496,6 +496,7 @@ $app_strings = array (
   'LBL_QTY' => 'Quantit&agrave;',
   'LBL_UNIT_PRICE' => 'Prezzo unitario',
   'LBL_LIST_PRICE' => 'Prezzo di listino',
+  'LBL_PURCHASE_PRICE' => 'Prezzo di Compra',  
   'List Price' => 'Prezzo di listino',
   'LBL_TOTAL' => 'Totale',
   'LBL_ADD_PRODUCT' => 'Aggiungi Prodotto',

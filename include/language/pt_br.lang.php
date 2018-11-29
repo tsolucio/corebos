@@ -500,6 +500,7 @@ $app_strings = array (
 'LBL_QTY' => 'Qde',
 'LBL_UNIT_PRICE' => 'Preço unitário',
 'LBL_LIST_PRICE' => 'Lista de preço',
+'LBL_PURCHASE_PRICE' => 'Preço de Compra',  
 'List Price' => 'Lista de preço',
 'LBL_TOTAL' => 'Total',
 'LBL_ADD_PRODUCT' => 'Adicionar produto',

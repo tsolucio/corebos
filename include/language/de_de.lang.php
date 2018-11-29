@@ -493,6 +493,7 @@ $app_strings = array(
 'LBL_QTY'=>'Menge',
 'LBL_UNIT_PRICE'=>'Preis',
 'LBL_LIST_PRICE'=>'Listenpreis',
+'LBL_PURCHASE_PRICE' => 'Einkauf preis',
 'List Price' => 'Listenpreis',
 'LBL_TOTAL'=>'Total',
 'LBL_ADD_PRODUCT'=>'Produkt hinzufügen',
