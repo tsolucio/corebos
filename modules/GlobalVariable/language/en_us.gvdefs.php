@@ -524,6 +524,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Show or hide Shipping and Handling charges',
 ),
+'Inventory_Fill_CostPriceInPurchaseOrders' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Set this to 1 to fill the price field in inventory modules with the cost price in stead of the unit price in Purchase Orders when a product is selected',
+),
 'Application_Global_Search_Active' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
