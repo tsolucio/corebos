@@ -1260,9 +1260,10 @@ function getDetailAssociatedProducts($module, $focus) {
 	//Additional information column
 	$output .= '<td width=20% class="lvtCol"><b>' . $app_strings['LBL_INFORMATION'] . '</b></td>';
 
+	$price_label = $_REQUEST['module'] == 'PurchaseOrder' ? $app_strings['LBL_PURCHASE_PRICE'] : $app_strings['LBL_LIST_PRICE'];
 	$output .= '
 		<td width=10% class="lvtCol"><b>' . $app_strings['LBL_QTY'] . '</b></td>
-		<td width=10% class="lvtCol" align="right"><b>' . $app_strings['LBL_LIST_PRICE'] . '</b></td>
+		<td width=10% class="lvtCol" align="right"><b>' . $price_label . '</b></td>
 		<td width=10% nowrap class="lvtCol" align="right"><b>' . $app_strings['LBL_TOTAL'] . '</b></td>
 		<td width=10% valign="top" class="lvtCol" align="right"><b>' . $app_strings['LBL_NET_PRICE'] . '</b></td>
 	</tr>';

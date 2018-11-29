@@ -504,6 +504,7 @@ $app_strings = array(
 	'LBL_QTY' => 'Db',
 	'LBL_UNIT_PRICE' => 'Egyedi ár',
 	'LBL_LIST_PRICE' => 'Csomagár',
+	'LBL_PURCHASE_PRICE' => 'Csomagár',
 	'List Price' => 'Csomagár',
 	'LBL_TOTAL' => 'Összesen',
 	'LBL_ADD_PRODUCT' => 'Következő tétel: Termék hozzáadása',

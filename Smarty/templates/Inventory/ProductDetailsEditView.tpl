@@ -121,7 +121,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 	<td width=35% class="lvtCol"><font color='red'>*</font><b>{$APP.LBL_ITEM_NAME}</b></td>
 	<td width=20% class="lvtCol"><b>{$APP.LBL_INFORMATION}</b></td>
 	<td width=10% class="lvtCol"><b>{$APP.LBL_QTY}</b></td>
-	<td width=10% class="lvtCol" align="right"><b>{$APP.LBL_LIST_PRICE}</b></td>
+	<td width=10% class="lvtCol" align="right"><b>{if $MODULE == 'PurchaseOrder'}{$APP.LBL_PURCHASE_PRICE}{else}{$APP.LBL_LIST_PRICE}{/if}</b></td>
 	<td width=10% nowrap class="lvtCol" align="right"><b>{$APP.LBL_TOTAL}</b></td>
 	<td width=10% valign="top" class="lvtCol" align="right"><b>{$APP.LBL_NET_PRICE}</b></td>
    </tr>
