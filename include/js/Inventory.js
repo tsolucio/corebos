@@ -9,8 +9,7 @@
 
 var inventoryi18n = '',
 	defaultProdQty = 1,
-	defaultSerQty = 1,
-	setCostPriceInPos = 0;
+	defaultSerQty = 1;
 
 document.addEventListener('DOMContentLoaded', function () {
 	ExecuteFunctions('getTranslatedStrings', 'i18nmodule=SalesOrder&tkeys=typetosearch_prodser').then(function (data) {
@@ -27,12 +26,6 @@ document.addEventListener('DOMContentLoaded', function () {
 		defaultSerQty = obj.Inventory_Service_Default_Units;
 	}, function (error) {
 		defaultSerQty = 1; // units
-	});
-	GlobalVariable_getVariable('Inventory_Fill_CostPriceInPurchaseOrders', 1, '', gVTUserID).then(function (response) {
-		var obj = JSON.parse(response);
-		setCostPriceInPos = obj.Inventory_Fill_CostPriceInPurchaseOrders;
-	}, function (error) {
-		setCostPriceInPos = 0; // default to no
 	});
 });
 
@@ -1877,7 +1870,7 @@ function handleProductAutocompleteSelect(obj) {
 		document.getElementById('listPrice'+no).value = obj.result.pricing.multicurrency[currency].actual_price;
 	} else {
 		var list_price = obj.result.pricing.unit_price
-		if (setCostPriceInPos == 1) {
+		if (gVTModule == 'PurchaseOrder') {
 			list_price = obj.result.pricing.unit_cost;
 		}
 		document.getElementById('listPrice'+no).value = list_price;
