@@ -1284,4 +1284,11 @@
 	<classname>updateSettingValueField</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>besart</author>
+	<description>Add validate map feature</description>
+	<filename>build/changeSets/2018/validateMap.php</filename>
+	<classname>validateMap</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
