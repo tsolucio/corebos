@@ -1,0 +1,46 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="map">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="originmodule">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="originname"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="panes">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="pane" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="label"/>
+                    <xs:element type="xs:byte" name="sequence"/>
+                    <xs:element name="blocks" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="block" maxOccurs="unbounded" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="label"/>
+                                <xs:element type="xs:byte" name="sequence"/>
+                                <xs:element type="xs:string" name="type"/>
+                                <xs:element type="xs:string" name="loadfrom"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element type="xs:byte" name="defaultMoreInformation" minOccurs="0"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
