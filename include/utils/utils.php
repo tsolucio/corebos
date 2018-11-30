@@ -253,14 +253,16 @@ function get_user_array($add_blank = true, $status = "Active", $assigned_user = 
 }
 
 function get_group_array($add_blank = true, $status = "Active", $assigned_user = "", $private = "") {
-	global $log, $current_user;
+	global $log, $current_user, $currentModule;
 	$log->debug("Entering get_group_array(".$add_blank.",". $status.",".$assigned_user.",".$private.") method ...");
+	$current_user_groups = array();
+	$current_user_parent_role_seq = '';
 	if (isset($current_user) && $current_user->id != '') {
 		require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
 		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 	}
 	static $group_array = null;
-	$module=vtlib_purify($_REQUEST['module']);
+	$module= (isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : $currentModule);
 
 	if ($group_array == null) {
 		require_once 'include/database/PearDatabase.php';
