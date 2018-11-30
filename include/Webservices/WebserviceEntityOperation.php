@@ -74,6 +74,7 @@ abstract class WebserviceEntityOperation {
 	}
 
 	public function getFieldTypeDetails($webserviceField) {
+		global $current_user;
 		$typeDetails = array();
 		switch ($webserviceField->getFieldDataType()) {
 			case 'reference':
@@ -102,6 +103,19 @@ abstract class WebserviceEntityOperation {
 				break;
 			case 'date':
 				$typeDetails['format'] = $this->user->date_format;
+				break;
+			case 'owner':
+				$mname = getTabModuleName($webserviceField->getTabId());
+				$typeDetails['assignto']['users'] = array(
+					'label_raw' => 'Users',
+					'label' => getTranslatedString('Users', $mname),
+					'options' => json_decode(vtws_getAssignedUserList($mname, $current_user), true)
+				);
+				$typeDetails['assignto']['groups'] = array(
+					'label_raw' => 'Groups',
+					'label' => getTranslatedString('Groups', $mname),
+					'options' => json_decode(vtws_getAssignedGroupList($mname, $current_user), true),
+				);
 		}
 		return $typeDetails;
 	}
