@@ -166,6 +166,15 @@ $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtl
 
 // Record Change Notification
 $focus->markAsViewed($current_user->id);
+$bmapname = $currentModule.'_FieldDependency';
+$cbMapFDEP = array();
+$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+if ($cbMapid) {
+        $cbMap = cbMap::getMapByID($cbMapid);
+        $cbMapFDEP = $cbMap->FieldDependency();
+        $cbMapFDEP = $cbMapFDEP['fields'];
+    }
+$smarty->assign("FIELD_DEPENDENCY_DATASOURCE", json_encode($cbMapFDEP));
 
 $smarty->assign('DETAILVIEW_AJAX_EDIT', GlobalVariable::getVariable('Application_DetailView_Inline_Edit', 1));
 ?>

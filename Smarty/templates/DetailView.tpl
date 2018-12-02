@@ -9,6 +9,12 @@
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="include/js/dtlviewajax.js"></script>
+{if $FIELD_DEPENDENCY_DATASOURCE neq ''}
+<script type="text/javascript" src="include/js/FieldDependencies.js"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function() {ldelim} (new FieldDependencies({$FIELD_DEPENDENCY_DATASOURCE})).init(document.forms['DetailView']) {rdelim});
+</script>
+{/if}
 <script type="text/javascript" src="include/js/clipboard.min.js"></script>
 <span id="crmspanid" style="display:none;position:absolute;" onmouseover="show('crmspanid');">
 	<a class="link" id="clipcopylink" href="javascript:;" onclick="handleCopyClipboard(event);" data-clipboard-text="">{$APP.LBL_COPY_BUTTON}</a>
