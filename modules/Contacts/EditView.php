@@ -33,11 +33,11 @@ if ($record) {
 $errormessage = isset($_REQUEST['error_msg']) ? vtlib_purify($_REQUEST['error_msg']) : '';
 if ($errormessage == 2) {
 	$errormessage = $mod_strings['LBL_MAXIMUM_LIMIT_ERROR'];
-} else if ($errormessage == 3) {
+} elseif ($errormessage == 3) {
 	$errormessage = $mod_strings['LBL_UPLOAD_ERROR'];
-} else if ($errormessage == 'image') {
+} elseif ($errormessage == 'image') {
 	$errormessage = $mod_strings['LBL_IMAGE_ERROR'];
-} else if ($errormessage == 'invalid') {
+} elseif ($errormessage == 'invalid') {
 	$errormessage = $mod_strings['LBL_INVALID_IMAGE'];
 }
 if ($errormessage != '') {
@@ -45,7 +45,7 @@ if ($errormessage != '') {
 }
 
 if (isset($_REQUEST['account_id']) && $_REQUEST['account_id'] != '' && empty($record)) {
-	require_once('modules/Accounts/Accounts.php');
+	require_once 'modules/Accounts/Accounts.php';
 	$focus->column_fields['account_id'] = vtlib_purify($_REQUEST['account_id']);
 	$acct_focus = new Accounts();
 	$acct_focus->retrieve_entity_info($focus->column_fields['account_id'], 'Accounts');
@@ -71,9 +71,9 @@ if (isset($_REQUEST['account_name']) && empty($focus->account_name)) {
 if (isset($_REQUEST['account_id']) && empty($focus->account_id)) {
 	$focus->account_id = vtlib_purify($_REQUEST['account_id']);
 }
-if (isset($_REQUEST['campaignid']))
+if (isset($_REQUEST['campaignid'])) {
 	$smarty->assign('campaignid', vtlib_purify($_REQUEST['campaignid']));
-
+}
 $contact_name = (isset($focus->lastname) ? $focus->lastname : '');
 if (getFieldVisibilityPermission($currentModule, $current_user->id, 'firstname') == '0') {
 	$contact_name .= ' ' . (isset($focus->firstname) ? $focus->firstname : '');

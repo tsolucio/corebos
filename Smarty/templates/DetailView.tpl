@@ -11,6 +11,7 @@
 <script type="text/javascript" src="include/js/dtlviewajax.js"></script>
 {if $FIELD_DEPENDENCY_DATASOURCE neq ''}
 <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
+<script type="text/javascript" src="include/js/FieldDepFunc.js"></script>
 <script type="text/javascript">
 	jQuery(document).ready(function() {ldelim} (new FieldDependencies({$FIELD_DEPENDENCY_DATASOURCE})).init(document.forms['DetailView']) {rdelim});
 </script>
