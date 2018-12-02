@@ -207,16 +207,24 @@ class FieldDependency extends processcbMap {
 				$actions['setoptions'][] = array('field'=>(String)$action->field,'options'=>$opt);
 			}
 			foreach ($v->actions->collapse as $key => $action) {
-				$actions['collapse'][] = array('block'=>(String)$action->block);
+				$bname = getTranslatedString((String)$action->block, $mapping['origin']);
+				$bname = str_replace(' ', '', $bname);
+				$actions['collapse'][] = array('block'=>$bname);
 			}
 			foreach ($v->actions->open as $key => $action) {
-				$actions['open'][] = array('block'=>(String)$action->block);
+				$bname = getTranslatedString((String)$action->block, $mapping['origin']);
+				$bname = str_replace(' ', '', $bname);
+				$actions['open'][] = array('block'=>$bname);
 			}
 			foreach ($v->actions->disappear as $key => $action) {
-				$actions['disappear'][] = array('block'=>(String)$action->block);
+				$bname = getTranslatedString((String)$action->block, $mapping['origin']);
+				$bname = str_replace(' ', '', $bname);
+				$actions['disappear'][] = array('block'=>$bname);
 			}
 			foreach ($v->actions->appear as $key => $action) {
-				$actions['appear'][] = array('block'=>(String)$action->block);
+				$bname = getTranslatedString((String)$action->block, $mapping['origin']);
+				$bname = str_replace(' ', '', $bname);
+				$actions['appear'][] = array('block'=>$bname);
 			}
 			foreach ($v->actions->function as $key => $action) {
 				$params=array();
