@@ -17,61 +17,13 @@
  *  Version      : 5.4.0
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************
- * The accepted format is:
-<map>
-  <name>mymap</name>
-  <targetmodule>
-   <targetid>6</targetid>
-   <targetname>Accounts</targetname>
-  </targetmodule>
-  <originmodule>
-   <originid>6</originid>
-   <originname>Accounts</originname>
-  </originmodule>
-  <fields>
-   <field>
-	<Orgfields>
-	 <Responsiblefield>
-	  <fieldname>obbietivochiamata</fieldname>
-	  <fieldvalue>Welcome Call</fieldvalue>
-	  <comparison>equal</comparison>
-	 </Responsiblefield>
-	 .............
-	 <Orgfield>
-	  <fieldname>metodopagamento</fieldname>
-	  <fieldaction>show/hide/readonly</fieldaction>
-	  <fieldvalue></fieldvalue>
-	  <mandatory>mandatory</mandatory>
-	 </Orgfield>
-	 <ResponsibleMode>
-	  <values>DetailView</values>
-	 .............
-	 </ResponsibleMode>
-	 <ResponsibleRole>
-	  <values>H16</values>
-	 .............
-	 </ResponsibleRole>
-	 .............
-	 <Picklist>
-	  <fieldname>status</fieldname>
-	  <values>OK</values>
-	  <values>KO</values>
-	 .............
-	 </Picklist>
-	 .............
-	</Orgfields>
-   </field>
-  </fields>
-</map>
+ * The accepted format can be consulted in the wiki
  *************************************************************************************************/
-
 require_once 'modules/cbMap/cbMap.php';
 require_once 'modules/cbMap/processmap/processMap.php';
 
 class FieldDependency extends processcbMap {
 	private $mapping = array();
-	private $input = array();
-	private $output = array();
 
 	public function processMap($arguments) {
 		$mapping=$this->convertMap2Array();
@@ -237,13 +189,11 @@ class FieldDependency extends processcbMap {
 					'params'=>$params
 				);
 			}
-			//$target_fields[$fieldname][] = array('conditions'=>$conditions,'actions'=>$actions);
 			foreach ($v->field as $key => $fld) {
 				$target_fields[(String)$fld][] = array('conditions'=>$conditions,'actions'=>$actions);
 			}
 		}
-		$mapping['fields'] = $target_fields;
-		//var_dump($mapping);
+		$mapping['fields'] = array_merge(Vtiger_DependencyPicklist::getMapPicklistDependencyDatasource($mapping['origin']), $target_fields);
 		return $mapping;
 	}
 }

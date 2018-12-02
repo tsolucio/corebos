@@ -172,13 +172,6 @@ if ($focus->mode != 'edit' && $mod_seq_field != null) {
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);
 
-$bmapname = $currentModule.'_FieldDependency';
-$cbMapFDEP = array();
-$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
-if ($cbMapid) {
-	$cbMap = cbMap::getMapByID($cbMapid);
-	$cbMapFDEP = $cbMap->FieldDependency();
-	$cbMapFDEP = $cbMapFDEP['fields'];
-}
+$cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 ?>

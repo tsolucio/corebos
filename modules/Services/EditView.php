@@ -222,8 +222,8 @@ $base_currency = 'curname' . $service_base_currency;
 $smarty->assign('BASE_CURRENCY', $base_currency);
 $smarty->assign('CONVERT_MODE', '');
 
-$picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
-$smarty->assign('PICKIST_DEPENDENCY_DATASOURCE', json_encode($picklistDependencyDatasource));
+$cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
+$smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 
 if ($focus->mode == 'edit') {
 	$smarty->display('Inventory/InventoryEditView.tpl');
