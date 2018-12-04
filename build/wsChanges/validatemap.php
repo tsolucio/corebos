@@ -14,12 +14,12 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'ValidateInformation',
-	 'include' => 'include/Webservices/ValidateInformation.php',
-	 'handler' => 'cbwsValidateInformation',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array(
+	'name'    => 'ValidateInformation',
+	'include' => 'include/Webservices/ValidateInformation.php',
+	'handler' => 'cbwsValidateInformation',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array(
 		array('name' => 'context','type' => 'String'),
-	 )
+	)
 );
