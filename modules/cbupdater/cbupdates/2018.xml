@@ -203,4 +203,11 @@
     <classname>changePaymentFieldsUitypeTo71</classname>
     <systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add virtual webservice table for workflow, audit and login history</description>
+	<filename>build/changeSets/2018/addWSVirtualActors.php</filename>
+	<classname>addWSVirtualActors</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
