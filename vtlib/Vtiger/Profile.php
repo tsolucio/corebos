@@ -40,8 +40,8 @@ class Vtiger_Profile {
 		$profileids = self::getAllIds();
 		foreach ($profileids as $profileid) {
 			$adb->pquery(
-				'INSERT INTO vtiger_profile2field (profileid, tabid, fieldid, visible, readonly) VALUES(?,?,?,?,?)',
-				array($profileid, $fieldInstance->getModuleId(), $fieldInstance->id, '0', '0')
+				'INSERT INTO vtiger_profile2field (profileid, tabid, fieldid, visible, readonly, summary) VALUES(?,?,?,?,?,?)',
+				array($profileid, $fieldInstance->getModuleId(), $fieldInstance->id, '0', '0', 'B')
 			);
 		}
 	}

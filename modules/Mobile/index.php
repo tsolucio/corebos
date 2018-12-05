@@ -8,7 +8,7 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-if ($_SERVER['QUERY_STRING']=='module=Mobile&action=index') {
+if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING']=='module=Mobile&action=index') {
 ?>
 <script type="text/javascript">gotourl('modules/Mobile/index.php');</script>
 <?php

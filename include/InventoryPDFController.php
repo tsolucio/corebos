@@ -15,6 +15,7 @@ include_once 'vtlib/Vtiger/PDF/inventory/ContentViewer2.php';
 include_once 'vtlib/Vtiger/PDF/viewers/PagerViewer.php';
 include_once 'vtlib/Vtiger/PDF/PDFGenerator.php';
 include_once 'data/CRMEntity.php';
+include_once 'include/utils/utils.php';
 
 class Vtiger_InventoryPDFController {
 
@@ -224,42 +225,38 @@ class Vtiger_InventoryPDFController {
 		global $adb;
 		$modelColumnLeft = array();
 		// Company information
-		$result = $adb->pquery('SELECT * FROM vtiger_organizationdetails', array());
-		$num_rows = $adb->num_rows($result);
-		if ($num_rows) {
-			$resultrow = $adb->fetch_array($result);
+		$resultrow = retrieveCompanyDetails();
 
-			$addressValues = array();
-			$addressValues[] = $resultrow['address'];
-			if (!empty($resultrow['city'])) {
-				$addressValues[]= "\n".$resultrow['city'];
-			}
-			if (!empty($resultrow['state'])) {
-				$addressValues[]= ",".$resultrow['state'];
-			}
-			if (!empty($resultrow['code'])) {
-				$addressValues[]= $resultrow['code'];
-			}
-			if (!empty($resultrow['country'])) {
-				$addressValues[]= "\n".$resultrow['country'];
-			}
-			$additionalCompanyInfo = array();
-			if (!empty($resultrow['phone'])) {
-				$additionalCompanyInfo[]= "\n".getTranslatedString('Phone: ', $this->moduleName). $resultrow['phone'];
-			}
-			if (!empty($resultrow['fax'])) {
-				$additionalCompanyInfo[]= "\n".getTranslatedString('Fax: ', $this->moduleName). $resultrow['fax'];
-			}
-			if (!empty($resultrow['website'])) {
-				$additionalCompanyInfo[]= "\n".getTranslatedString('Website: ', $this->moduleName). $resultrow['website'];
-			}
-
-			$modelColumnLeft = array(
-				'logo' => "test/logo/".$resultrow['logoname'],
-				'summary' => decode_html($resultrow['organizationname']),
-				'content' => $this->joinValues($addressValues, ' '). $this->joinValues($additionalCompanyInfo, ' ')
-			);
+		$addressValues = array();
+		$addressValues[] = $resultrow['address'];
+		if (!empty($resultrow['city'])) {
+			$addressValues[]= "\n".$resultrow['city'];
 		}
+		if (!empty($resultrow['state'])) {
+			$addressValues[]= ",".$resultrow['state'];
+		}
+		if (!empty($resultrow['postalcode'])) {
+			$addressValues[]= $resultrow['postalcode'];
+		}
+		if (!empty($resultrow['country'])) {
+			$addressValues[]= "\n".$resultrow['country'];
+		}
+		$additionalCompanyInfo = array();
+		if (!empty($resultrow['phone'])) {
+			$additionalCompanyInfo[]= "\n".getTranslatedString('Phone: ', $this->moduleName). $resultrow['phone'];
+		}
+		if (!empty($resultrow['fax'])) {
+			$additionalCompanyInfo[]= "\n".getTranslatedString('Fax: ', $this->moduleName). $resultrow['fax'];
+		}
+		if (!empty($resultrow['website'])) {
+			$additionalCompanyInfo[]= "\n".getTranslatedString('Website: ', $this->moduleName). $resultrow['website'];
+		}
+
+		$modelColumnLeft = array(
+			'logo' => $resultrow['applogo'],
+			'summary' => decode_html($resultrow['companyname']),
+			'content' => $this->joinValues($addressValues, ' '). $this->joinValues($additionalCompanyInfo, ' ')
+		);
 		return $modelColumnLeft;
 	}
 

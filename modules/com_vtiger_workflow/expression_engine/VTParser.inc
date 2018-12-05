@@ -24,8 +24,12 @@ class VTExpressionTreeNode {
 }
 
 class VTExpressionSymbol {
-	public function __construct($value) {
+	public $value;
+	public $type;
+
+	public function __construct($value, $type = '') {
 		$this->value = $value;
+		$this->type = ($type == '' ? gettype($value) : $type);
 	}
 
 	public function __toString() {

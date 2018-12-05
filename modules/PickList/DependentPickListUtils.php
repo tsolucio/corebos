@@ -199,6 +199,44 @@ class Vtiger_DependencyPicklist {
 		return json_encode($picklistDependencyDatasource);
 	}
 
+	public static function getMapPicklistDependencyDatasource($module) {
+		$picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($module);
+		$fields = array();
+		foreach ($picklistDependencyDatasource as $field => $deps) {
+			foreach ($deps as $value => $subpl) {
+				$deparr['conditions'] = '[{"columnname":"'.CustomView::getFilterFieldDefinition($field, $module).'",'
+					.'"comparator":"e",'
+					.'"value":"'.$value.'",'
+					.'"columncondition":"",'
+					.'"groupid":"1"}]';
+				$setopts = array();
+				foreach ($subpl as $subfld => $options) {
+					$setopts[] = array(
+						'field' => $subfld,
+						'options' => $options,
+					);
+				}
+				$deparr['actions']['setoptions'] = $setopts;
+				$fields[$field][] = $deparr;
+			}
+		}
+		return $fields;
+	}
+
+	public static function getFieldDependencyDatasource($module) {
+		$bmapname = $module.'_FieldDependency';
+		$cbMapFDEP = array();
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$cbMapFDEP = $cbMap->FieldDependency();
+			$cbMapFDEP = $cbMapFDEP['fields'];
+		} else {
+			$cbMapFDEP = self::getMapPicklistDependencyDatasource($module);
+		}
+		return $cbMapFDEP;
+	}
+
 	public static function checkCyclicDependency($module, $sourceField, $targetField) {
 		$adb = PearDatabase::getInstance();
 

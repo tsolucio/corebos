@@ -20,10 +20,10 @@
  *************************************************************************************************/
 
 $Vtiger_Utils_Log = false;
-include_once('vtlib/Vtiger/Module.php');
-require_once('vtlib/Vtiger/Cron.php');
-require_once('modules/Emails/mail.php');
-require_once('modules/Emails/Emails.php');
+include_once 'vtlib/Vtiger/Module.php';
+require_once 'vtlib/Vtiger/Cron.php';
+require_once 'modules/Emails/mail.php';
+require_once 'modules/Emails/Emails.php';
 global $site_URL, $currentModule;
 
 // Time Threshold: after these minutes running we will send email
@@ -35,16 +35,18 @@ $warningTimeThreshold = $warningMinutes*60; // $warningMinutes minutes.
 // i18n
 //$i18nInactive = getTranslatedString('LBL_INACTIVE','CronTasks');
 //$i18nActive = getTranslatedString('LBL_ACTIVE','CronTasks');
-$i18nRunning = getTranslatedString('LBL_RUNNING','CronTasks');
+$i18nRunning = getTranslatedString('LBL_RUNNING', 'CronTasks');
 
 $wcronTasks = Vtiger_Cron::listAllActiveInstances();
-$output = Array();
+$output = array();
 $holdCM = $currentModule;
 $currentModule = 'CronTasks';
 foreach ($wcronTasks as $wcronTask) {
 	$cron_st = $wcronTask->getStatus();
-	if ($cron_st!=Vtiger_Cron::$STATUS_RUNNING) continue;
-	if($wcronTask->getLastStart() != 0) {
+	if ($cron_st!=Vtiger_Cron::$STATUS_RUNNING) {
+		continue;
+	}
+	if ($wcronTask->getLastStart() != 0) {
 		$start_ts = $wcronTask->getLastStart();
 		$end_ts = time();
 		$elapsed = $end_ts - $start_ts;
@@ -53,14 +55,16 @@ foreach ($wcronTasks as $wcronTask) {
 		$elapsed = 86400000; // 1000 days
 		$cron_started = 'Never started!?!';
 	}
-	if ($elapsed<$warningTimeThreshold) continue;
-	$out = Array();
+	if ($elapsed<$warningTimeThreshold) {
+		continue;
+	}
+	$out = array();
 	$cron_id = $wcronTask->getId();
 	$cron_mod = $wcronTask->getName();
 	$cron_freq = $wcronTask->getFrequency();
-	$out['cronname'] = getTranslatedString($cron_mod,$wcronTask->getModule());
-	$out['hours'] = str_pad((int)(($cron_freq/(60*60))),2,0,STR_PAD_LEFT);
-	$out['mins'] =str_pad((int)(($cron_freq%(60*60))/60),2,0,STR_PAD_LEFT);
+	$out['cronname'] = getTranslatedString($cron_mod, $wcronTask->getModule());
+	$out['hours'] = str_pad((int)(($cron_freq/(60*60))), 2, 0, STR_PAD_LEFT);
+	$out['mins'] =str_pad((int)(($cron_freq%(60*60))/60), 2, 0, STR_PAD_LEFT);
 	$out['laststart']= $cron_started;
 	$output[] = $out;
 }
@@ -69,20 +73,20 @@ $currentModule = $holdCM;
 //Send email with error.
 $mailto = $auser->column_fields['email1'];
 $mailtoDefined = GlobalVariable::getVariable('CronTasks_cronWatcher_mailto', '', 'CronTasks', $auser->id);
-if($mailto != ''){
+if ($mailto != '') {
 	$mailto .= ','.$mailtoDefined;
-}else {
+} else {
 	$mailto = $mailtoDefined;
 }
-if ($mailto != '' and count($output)>0) {
-	$mailsubject = "[Warning]: cron Task(s) exceed time threshold";
+if ($mailto != '' && count($output)>0) {
+	$mailsubject = '[Warning]: cron Task(s) exceed time threshold';
 	$mailcontent = '<br>Some cron tasks in <b>'.$site_URL.'</b> have exceeded the maximum execution time.<br><br>';
 	$mailcontent.= '<table width="100%" border=1>';
 	$mailcontent.= '<tr>';
-	$mailcontent.= '<th>'.getTranslatedString('Cron Job','CronTasks').'</th>';
-	$mailcontent.= '<th>'.getTranslatedString('LBL_FREQUENCY','CronTasks').'</th>';
-	$mailcontent.= '<th>'.getTranslatedString('LBL_STATUS','CronTasks').'</th>';
-	$mailcontent.= '<th>'.getTranslatedString('LAST_START','CronTasks').'</th>';
+	$mailcontent.= '<th>'.getTranslatedString('Cron Job', 'CronTasks').'</th>';
+	$mailcontent.= '<th>'.getTranslatedString('LBL_FREQUENCY', 'CronTasks').'</th>';
+	$mailcontent.= '<th>'.getTranslatedString('LBL_STATUS', 'CronTasks').'</th>';
+	$mailcontent.= '<th>'.getTranslatedString('LAST_START', 'CronTasks').'</th>';
 	$mailcontent.= '</tr>';
 	foreach ($output as $ctsk) {
 		$mailcontent.= '<tr>';
@@ -93,9 +97,8 @@ if ($mailto != '' and count($output)>0) {
 		$mailcontent.= '</tr>';
 	}
 	$mailcontent.= '</table>';
-	$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk');
-	$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name','your-support name','HelpDesk');
-	send_mail('Emails',$mailto,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$mailsubject,$mailcontent);
+	$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk', $auser->id);
+	$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name', 'your-support name', 'HelpDesk', $auser->id);
+	send_mail('Emails', $mailto, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_ID, $mailsubject, $mailcontent);
 }
-
 ?>

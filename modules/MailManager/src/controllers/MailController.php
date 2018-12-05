@@ -118,7 +118,7 @@ class MailManager_MailController extends MailManager_Controller {
 							break;
 						}
 					}
-					if ($parentIds == '') {
+					if (empty($parentIds)) {
 						if ($numreltos > 0) {
 							$relateto = vtws_getIdComponents($relatedtos[0]['record']);
 							$parentIds = $relateto[1].'@'.($relatedtos[0]['module']=='Users' ? '-' : '').'1';
@@ -211,7 +211,7 @@ class MailManager_MailController extends MailManager_Controller {
 				$email->column_fields['assigned_user_id'] = $current_user->id;
 				$email->column_fields['date_start'] = date('Y-m-d');
 				$email->column_fields['time_start'] = date('H:i');
-				$email->column_fields['parent_id'] = $parentIds;
+				$email->column_fields['parent_id'] = empty($parentIds) ? '' : $parentIds;
 				$email->column_fields['subject'] = $mailer->Subject;
 				$email->column_fields['description'] = $mailer->Body;
 				$email->column_fields['activitytype'] = 'Emails';

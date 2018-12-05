@@ -126,4 +126,81 @@
 	<classname>updatePortalinfoUsernameFieldType</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Eliminate UIType 75 and 81</description>
+	<filename>build/changeSets/2018/migrateUIType7581to10.php</filename>
+	<classname>migrateUIType7581to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Support for Dispay Type 5 and set passwords to this type</description>
+	<filename>build/changeSets/2018/setPasswordsToDisplayType5.php</filename>
+	<classname>setPasswordsToDisplayType5</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>albana</author>
+	<description>add module cbCompany</description>
+	<filename>build/changeSets/2018/addModulecbCompany.php</filename>
+	<classname>addModulecbCompany</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Custom View Management Module</description>
+	<filename>build/changeSets/2018/installcbCVManagement.php</filename>
+	<classname>installcbCVManagement</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+    <author>klivshapllo</author>
+    <description>Import hard-coded action links into vtiger_link table</description>
+    <filename>build/changeSets/2018/importHardCodedLinks.php</filename>
+    <classname>importHardCodedLinks</classname>
+    <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+    <author>klivshapllo</author>
+    <description>Create Contacts2cbCalendar Mapping Business Map</description>
+    <filename>build/changeSets/2018/createContacts2cbCalendarBusinessMap.php</filename>
+    <classname>createContacts2cbCalendarBusinessMap</classname>
+    <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+    <author>klivshapllo</author>
+    <description>Migrate Vtiger Links into Business Action entities</description>
+    <filename>build/changeSets/2018/migrateLinksIntoBusinessActionEntities.php</filename>
+    <classname>migrateLinksIntoBusinessActionEntities</classname>
+    <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+    <author>george1806</author>
+    <description>Make Business Action linkicon non mandatory and set Mandatory fields 1 for All records</description>
+    <filename>build/changeSets/2018/makeLinkiconNonmandatoryInBusinessAction.php</filename>
+    <classname>makeLinkiconNonmandatoryInBusinessAction</classname>
+    <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+    <author>klivshapllo</author>
+    <description>Add summary column in vtiger_profile2field table</description>
+    <filename>build/changeSets/2018/addSummaryColumnToProfile2Field.php</filename>
+    <classname>addSummaryColumnToProfile2Field</classname>
+    <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+    <author>george1806</author>
+    <description>Increment The Size of Document Title to 200 characters </description>
+    <filename>build/changeSets/2018/incrementSizeofDocumentTitle.php</filename>
+    <classname>incrementSizeofDocumentTitle</classname>
+    <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+    <author>george1806</author>
+    <description>Change Uitype of CobroPago(payment) module fields amount, cost and benefit to 71 </description>
+    <filename>build/changeSets/2018/changePaymentFieldsUitypeTo71.php</filename>
+    <classname>changePaymentFieldsUitypeTo71</classname>
+    <systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

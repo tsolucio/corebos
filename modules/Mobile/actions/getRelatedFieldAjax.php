@@ -26,7 +26,7 @@ class crmtogo_UI_getRelatedFieldAjax extends crmtogo_WS_Controller {
 		$module = vtlib_purify($request->get('modulename'));
 		$parentselector = vtlib_purify($request->get('parentselector'));
 		$parentid=  str_replace('_selector', '', $parentselector);
-		$parentid=  crmtogo_WS_Utils::fixReferenceIdByModule($module, $parentid);
+
 		$searchresult = array();
 		//HelpDesk special case with Product.
 		if ($module == 'HelpDesk' && $parentid == 'product_id') {

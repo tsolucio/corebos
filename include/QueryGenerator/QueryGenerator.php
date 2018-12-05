@@ -33,6 +33,7 @@ class QueryGenerator {
 	private $user;
 	private $advFilterList;
 	private $fields;
+	private $addJoinFields;
 	private $referenceModuleMetaInfo;
 	private $moduleNameFields;
 	private $referenceFieldInfoList;
@@ -61,6 +62,7 @@ class QueryGenerator {
 		$this->user = $user;
 		$this->advFilterList = null;
 		$this->fields = array();
+		$this->addJoinFields = array();
 		$this->referenceModuleMetaInfo = array();
 		$this->moduleNameFields = array();
 		$this->whereFields = array();
@@ -160,6 +162,19 @@ class QueryGenerator {
 				}
 			}
 		}
+	}
+
+	public function setReferenceFieldsManually($referenceField, $refmod, $fname) {
+		global $current_user;
+		$handler = vtws_getModuleHandlerFromName($refmod, $current_user);
+		$meta = $handler->getMeta();
+		$fields = $meta->getModuleFields();
+		$this->referenceFields[$referenceField][$refmod][$fname] = $fields[$fname];
+		$this->setaddJoinFields($refmod.'.'.$fname);
+	}
+
+	public function setaddJoinFields($fieldname) {
+		$this->addJoinFields[] = $fieldname;
 	}
 
 	public function getCustomViewFields() {
@@ -613,8 +628,7 @@ class QueryGenerator {
 						//reference field values.
 						if (!array_key_exists($referenceTable, $tableJoinMapping)) { // table already added in from clause
 							$tableJoinMapping[$referenceTableName] = $joinas;
-							$tableJoinCondition[$fieldName][$referenceTableName] = $baseTable.'.'.
-							$field->getColumnName().' = '.$referenceTable.'.'.$referenceTableIndex;
+							$tableJoinCondition[$fieldName][$referenceTableName] = $baseTable.'.'.$field->getColumnName().' = '.$referenceTable.'.'.$referenceTableIndex;
 						}
 					}
 				}
@@ -731,13 +745,12 @@ class QueryGenerator {
 					if (!in_array($tableName, $referenceFieldTableList)) {
 						if ($baseTable != $referenceFieldObject->getTableName() && !in_array($referenceFieldObject->getTableName(), $alreadyinfrom)) {
 							if ($this->getModule() == 'Emails') {
-								$join = "INNER JOIN ";
+								$join = 'INNER JOIN ';
 							} else {
-								$join = "LEFT JOIN ";
+								$join = 'LEFT JOIN ';
 							}
-							$joinclause =  $join.$referenceFieldObject->getTableName().' ON '.
-							$referenceFieldObject->getTableName().'.'.$moduleTableIndexList[$referenceFieldObject->getTableName()].'='.
-							$baseTable.'.'.$baseTableIndex;
+							$joinclause =  $join.$referenceFieldObject->getTableName().' ON '.$referenceFieldObject->getTableName().'.'
+								.$moduleTableIndexList[$referenceFieldObject->getTableName()].'='.$baseTable.'.'.$baseTableIndex;
 
 							$referenceFieldTableList[] = $referenceFieldObject->getTableName();
 							if (!in_array($referenceFieldObject->getTableName().$baseTable, $specialTableJoins)) {
@@ -745,14 +758,14 @@ class QueryGenerator {
 								$specialTableJoins[] = $referenceFieldObject->getTableName().$baseTable;
 							}
 						}
-						$sql .= " LEFT JOIN ".$tableName.' AS '.$tableName.$conditionInfo['referenceField'].' ON '.
-						$tableName.$conditionInfo['referenceField'].'.'.$reltableList[$tableName].'='.
-						$referenceFieldObject->getTableName().'.'.$referenceFieldObject->getColumnName();
+						$sql .= ' LEFT JOIN '.$tableName.' AS '.$tableName.$conditionInfo['referenceField'].' ON '.$tableName.$conditionInfo['referenceField'].'.'
+							.$reltableList[$tableName].'='.$referenceFieldObject->getTableName().'.'.$referenceFieldObject->getColumnName();
 						$referenceFieldTableList[] = $tableName;
 					}
 				}
 			}
-			foreach ($this->fields as $fieldName) {
+			$joinFields = array_merge($this->addJoinFields, $this->fields);
+			foreach ($joinFields as $fieldName) {
 				if ($fieldName == 'id' || !empty($moduleFields[$fieldName])) {
 					continue;
 				}
@@ -1243,17 +1256,21 @@ class QueryGenerator {
 					$value = 0;
 				}
 			} elseif ($this->isDateType($field->getFieldDataType())) {
-				$value = getValidDBInsertDateTimeValue($value);
+				if (substr($value, 0, 3)!='::#') {
+					$value = getValidDBInsertDateTimeValue($value);
+				}
 				if (empty($value)) {
 					$sql[] = 'IS NULL or '.$field->getTableName().'.'.$field->getColumnName()." = ''";
 					return $sql;
 				}
 			} elseif ($field->getFieldDataType() === 'currency') {
-				$uiType = $field->getUIType();
-				if ($uiType == 72) {
-					$value = CurrencyField::convertToDBFormat($value, null, true);
-				} elseif ($uiType == 71) {
-					$value = CurrencyField::convertToDBFormat($value, $this->user);
+				if (substr($value, 0, 3)!='::#') {
+					$uiType = $field->getUIType();
+					if ($uiType == 72) {
+						$value = CurrencyField::convertToDBFormat($value, null, true);
+					} elseif ($uiType == 71) {
+						$value = CurrencyField::convertToDBFormat($value, $this->user);
+					}
 				}
 			}
 

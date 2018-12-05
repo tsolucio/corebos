@@ -541,6 +541,9 @@ class CRMEntity {
 			if ($num_rows <= 0) {
 				$insertion_mode = '';
 			}
+			$creatingdisplay = '';
+		} else {
+			$creatingdisplay = ',5';
 		}
 
 		$selectFields = 'fieldname, columnname, uitype, typeofdata';
@@ -556,10 +559,10 @@ class CRMEntity {
 			checkFileAccessForInclusion('user_privileges/user_privileges_' . $current_user->id . '.php');
 			require 'user_privileges/user_privileges_' . $current_user->id . '.php';
 			if (isset($from_wf) && $from_wf) {
-				$sql = "select $selectFields from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3,4) and presence in (0,2)";
+				$sql = "select $selectFields from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3,4$creatingdisplay) and presence in (0,2)";
 				$params = array($tabid, $table_name);
 			} elseif ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
-				$sql = "select $selectFields from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3) and presence in (0,2)";
+				$sql = "select $selectFields from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3$creatingdisplay) and presence in (0,2)";
 				$params = array($tabid, $table_name);
 			} else {
 				$profileList = getCurrentUserProfileList();
@@ -573,7 +576,7 @@ class CRMEntity {
 						WHERE $uniqueFieldsRestriction
 						AND vtiger_profile2field.visible = 0 AND vtiger_profile2field.readonly = 0
 						AND vtiger_profile2field.profileid IN (" . generateQuestionMarks($profileList) . ")
-						AND vtiger_def_org_field.visible = 0 and vtiger_field.tablename=? and vtiger_field.displaytype in (1,3) and vtiger_field.presence in (0,2)";
+						AND vtiger_def_org_field.visible = 0 and vtiger_field.tablename=? and vtiger_field.displaytype in (1,3$creatingdisplay) and vtiger_field.presence in (0,2)";
 					$params = array($tabid, $profileList, $table_name);
 				} else {
 					$sql = "SELECT distinct $selectFields
@@ -584,7 +587,7 @@ class CRMEntity {
 						ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
 						WHERE $uniqueFieldsRestriction
 						AND vtiger_profile2field.visible = 0 AND vtiger_profile2field.readonly = 0
-						AND vtiger_def_org_field.visible = 0 and vtiger_field.tablename=? and vtiger_field.displaytype in (1,3) and vtiger_field.presence in (0,2)";
+						AND vtiger_def_org_field.visible = 0 and vtiger_field.tablename=? and vtiger_field.displaytype in (1,3$creatingdisplay) and vtiger_field.presence in (0,2)";
 					$params = array($tabid, $table_name);
 				}
 			}
@@ -596,7 +599,7 @@ class CRMEntity {
 			}
 			$column = array($table_index_column);
 			$value = array($this->id);
-			$sql = "select $selectFields from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3,4) and vtiger_field.presence in (0,2)";
+			$sql = "select $selectFields from vtiger_field where $uniqueFieldsRestriction and tablename=? and displaytype in (1,3,4$creatingdisplay) and vtiger_field.presence in (0,2)";
 			$params = array($tabid, $table_name);
 		}
 
@@ -1213,12 +1216,6 @@ class CRMEntity {
 	 */
 	public function getDuplicatesQuery($module, $table_cols, $field_values, $ui_type_arr, $select_cols = '') {
 		$select_clause = "SELECT ". $this->table_name .".".$this->table_index ." AS recordid, vtiger_users_last_import.deleted,".$table_cols;
-
-		// Select Custom Field Table Columns if present
-		if (isset($this->customFieldTable)) {
-			$select_clause .= ", " . $this->customFieldTable[0] . ".* ";
-		}
-
 		$from_clause = " FROM $this->table_name";
 		$from_clause .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
 
@@ -1702,7 +1699,7 @@ class CRMEntity {
 	public function setModuleSeqNumber($mode, $module, $req_str = '', $req_no = '') {
 		global $adb;
 		//when we configure the invoice number in Settings this will be used
-		if ($mode == "configure" && $req_no != '') {
+		if ($mode == 'configure' && $req_no != '') {
 			list($mode, $module, $req_str, $req_no, $result, $returnResult) = cbEventHandler::do_filter(
 				'corebos.filter.ModuleSeqNumber.set',
 				array($mode, $module, $req_str, $req_no, '', false)
@@ -1710,25 +1707,25 @@ class CRMEntity {
 			if ($returnResult) {
 				return $result;
 			}
-			$check = $adb->pquery("select cur_id from vtiger_modentity_num where semodule=? and prefix = ?", array($module, $req_str));
+			$check = $adb->pquery('select cur_id from vtiger_modentity_num where semodule=? and prefix=?', array($module, $req_str));
 			if ($adb->num_rows($check) == 0) {
-				$numid = $adb->getUniqueId("vtiger_modentity_num");
-				$active = $adb->pquery("select num_id from vtiger_modentity_num where semodule=? and active=1", array($module));
-				$adb->pquery("UPDATE vtiger_modentity_num SET active=0 where num_id=?", array($adb->query_result($active, 0, 'num_id')));
+				$numid = $adb->getUniqueId('vtiger_modentity_num');
+				$active = $adb->pquery('select num_id from vtiger_modentity_num where semodule=? and active=1', array($module));
+				$adb->pquery('UPDATE vtiger_modentity_num SET active=0 where num_id=?', array($adb->query_result($active, 0, 'num_id')));
 
-				$adb->pquery("INSERT into vtiger_modentity_num values(?,?,?,?,?,?)", array($numid, $module, $req_str, $req_no, $req_no, 1));
+				$adb->pquery('INSERT into vtiger_modentity_num values(?,?,?,?,?,?)', array($numid, $module, $req_str, $req_no, $req_no, 1));
 				return true;
 			} elseif ($adb->num_rows($check) != 0) {
 				$num_check = $adb->query_result($check, 0, 'cur_id');
 				if ($req_no < $num_check) {
 					return false;
 				} else {
-					$adb->pquery("UPDATE vtiger_modentity_num SET active=0 where active=1 and semodule=?", array($module));
-					$adb->pquery("UPDATE vtiger_modentity_num SET cur_id=?, active = 1 where prefix=? and semodule=?", array($req_no, $req_str, $module));
+					$adb->pquery('UPDATE vtiger_modentity_num SET active=0 where active=1 and semodule=?', array($module));
+					$adb->pquery('UPDATE vtiger_modentity_num SET cur_id=?, active=1 where prefix=? and semodule=?', array($req_no, $req_str, $module));
 					return true;
 				}
 			}
-		} elseif ($mode == "increment") {
+		} elseif ($mode == 'increment') {
 			list($mode, $module, $req_str, $req_no, $result, $returnResult) = cbEventHandler::do_filter(
 				'corebos.filter.ModuleSeqNumber.increment',
 				array($mode, $module, $req_str, $req_no, '', false)
@@ -2226,8 +2223,8 @@ class CRMEntity {
 		}
 
 		$return_value = null;
-		$dependentFieldSql = $this->db->pquery("SELECT tabid, tablename, fieldname, columnname FROM vtiger_field WHERE uitype='10' AND" .
-				" fieldid IN (SELECT fieldid FROM vtiger_fieldmodulerel WHERE relmodule=? AND module=?)", array($currentModule, $related_module));
+		$dependentFieldSql = $this->db->pquery("SELECT tabid, tablename, fieldname, columnname FROM vtiger_field WHERE uitype='10' AND"
+			." fieldid IN (SELECT fieldid FROM vtiger_fieldmodulerel WHERE relmodule=? AND module=?)", array($currentModule, $related_module));
 		$numOfFields = $this->db->num_rows($dependentFieldSql);
 
 		$relWithSelf = false;

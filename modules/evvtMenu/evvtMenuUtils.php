@@ -215,6 +215,7 @@ function checkevvtMenuInstalled() {
 			$argv[1] = 'apply';
 			$argv[2] = $updid;
 			include 'modules/cbupdater/doworkcli.php';
+			vtlib_toggleModuleAccess('GlobalVariable', true); // in case changeset is applied but module deactivated
 			ob_end_clean();
 			$current_user = $holduser;
 		}
@@ -228,6 +229,7 @@ function checkevvtMenuInstalled() {
 			$argv[1] = 'apply';
 			$argv[2] = $updid;
 			include 'modules/cbupdater/doworkcli.php';
+			vtlib_toggleModuleAccess('evvtMenu', true); // in case changeset is applied but module deactivated
 			ob_end_clean();
 			$current_user = $holduser;
 		}

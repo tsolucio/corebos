@@ -915,8 +915,8 @@ function getBaseConversionRateForProduct($productid, $mode = 'edit', $module = '
  */
 function getPricesForProducts($currencyid, $product_ids, $module = 'Products', $unitprice = true) {
 	global $adb, $current_user;
-
 	$price_list = array();
+	$product_ids = (array)$product_ids;
 	if (count($product_ids) > 0) {
 		if ($module == 'Services') {
 			$query = 'SELECT vtiger_currency_info.id, vtiger_currency_info.conversion_rate, vtiger_service.serviceid AS productid, vtiger_service.unit_price,

@@ -1266,10 +1266,12 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 		}
 		$aBlockStatus[$sLabelVal] = $adb->query_result($result, $i, 'display_status');
 	}
-	if ($mode == 'mass_edit') {
+	if ($mode == 'edit') {
+		$display_type_check = 'vtiger_field.displaytype = 1';
+	} elseif ($mode == 'mass_edit') {
 		$display_type_check = 'vtiger_field.displaytype = 1 AND vtiger_field.masseditable NOT IN (0,2)';
 	} else {
-		$display_type_check = 'vtiger_field.displaytype = 1';
+		$display_type_check = 'vtiger_field.displaytype in (1,5)';
 	}
 
 	// Retrieve the profile list from database
@@ -1296,14 +1298,14 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 				(select max(vtiger_field.fieldid) from vtiger_field where vtiger_field.tabid=? GROUP BY vtiger_field.columnname)';
 			$sql = "SELECT distinct $selectSql, '0' as readonly
 				FROM vtiger_field WHERE $uniqueFieldsRestriction AND vtiger_field.block IN (".
-				generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4) and vtiger_field.presence in (0,2) ORDER BY block,sequence';
+				generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4,5) and vtiger_field.presence in (0,2) ORDER BY block,sequence';
 			$params = array($tabid, $blockid_list);
 		} elseif ($profileGlobalPermission[1] == 0) { // view all
 			$profileList = getCurrentUserProfileList();
 			$sql = "SELECT distinct $selectSql, vtiger_profile2field.readonly
 				FROM vtiger_field
 				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
-				WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4) and '.
+				WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4,5) and '.
 					'vtiger_field.presence in (0,2) AND vtiger_profile2field.profileid IN (' . generateQuestionMarks($profileList) . ') ORDER BY block,sequence';
 			$params = array($tabid, $blockid_list, $profileList);
 		} else {
@@ -1312,7 +1314,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 				FROM vtiger_field
 				INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid
 				INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid
-				WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4) and '.
+				WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4,5) and '.
 					'vtiger_field.presence in (0,2) AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN ('.
 					generateQuestionMarks($profileList) . ") ORDER BY block,sequence";
 			$params = array($tabid, $blockid_list, $profileList);
@@ -2095,6 +2097,7 @@ function getEntityName($module, $ids_list) {
 		$module = 'Calendar';
 	}
 	if ($module != '') {
+		$ids_list = (array)$ids_list;
 		if (count($ids_list) <= 0) {
 			return array();
 		}
@@ -3251,16 +3254,12 @@ function getEntityFieldValues($entity_field_info, $ids_list) {
 	//$moduleName = $entity_field_info['modulename'];
 	$entityIdField = $entity_field_info['entityidfield'];
 	if (is_array($fieldsName)) {
-		$fieldsNameString = implode(",", $fieldsName);
+		$fieldsNameString = implode(',', $fieldsName);
 	} else {
 		$fieldsNameString = $fieldsName;
 	}
-	$query1 = "SELECT $fieldsNameString,$entityIdField FROM $tableName WHERE $entityIdField IN (" . generateQuestionMarks($ids_list) . ')';
-	if (is_array($ids_list)) {
-		$params1 = $ids_list;
-	} else {
-		$params1 = array($ids_list);
-	}
+	$params1 = (array)$ids_list;
+	$query1 = "SELECT $fieldsNameString,$entityIdField FROM $tableName WHERE $entityIdField IN (" . generateQuestionMarks($params1) . ')';
 	$result = $adb->pquery($query1, $params1);
 	$numrows = $adb->num_rows($result);
 	$entity_info = array();
@@ -3393,24 +3392,21 @@ function picklistHasDependency($keyfldname, $modulename) {
 }
 
 function fetch_logo($type) {
-	global $adb;
-	$logodir ='test/logo/';
-	$sql='select logoname,frontlogo,faviconlogo from vtiger_organizationdetails';
-	$result = $adb->pquery($sql, array());
+	$companyDetails = retrieveCompanyDetails();
 	switch ($type) {
 		case 1:
-			$logoname = decode_html($adb->query_result($result, 0, 'logoname'));
+			$logoname = decode_html($companyDetails['companylogo']);
 			break;
 		case 2:
-			$logoname = decode_html($adb->query_result($result, 0, 'frontlogo'));
+			$logoname = decode_html($companyDetails['applogo']);
 			break;
 		case 3:
-			$logoname = decode_html($adb->query_result($result, 0, 'faviconlogo'));
+			$logoname = decode_html($companyDetails['favicon']);
 			break;
 		default:
-			$logoname = 'app-logo.jpg';
+			$logoname = 'test/logo/app-logo.jpg';
 	}
-	return $logodir.$logoname;
+	return $logoname;
 }
 
 /* added to get mail info for portal user
@@ -3443,5 +3439,40 @@ function getmail_contents_portalUser($request_array, $password, $type = '') {
 	}
 
 	return $contents;
+}
+
+/**
+ * To get the modules allowed for global search this function returns all the
+ * modules which supports global search as an array in the following structure
+ * array($module_name1=>$object_name1,$module_name2=>$object_name2,$module_name3=>$object_name3,$module_name4=>$object_name4,-----)
+ */
+function getSearchModulesCommon($filter = array()) {
+	global $adb;
+	// Ignore disabled administrative modules
+	$doNotSearchThese = array('Dashboard','Home','Calendar','Events','Rss','Reports','Portal','Users','ConfigEditor','Import','MailManager','Mobile','ModTracker',
+		'PBXManager','VtigerBackup','WSAPP','cbupdater','CronTasks','RecycleBin','Tooltip','Webforms','Calendar4You','GlobalVariable','cbMap','evvtMenu','cbAuditTrail',
+		'cbLoginHistory','cbtranslation','BusinessActions','cbCVManagement');
+	$doNotSearchTheseTabids = array();
+	foreach ($doNotSearchThese as $mname) {
+		$tabid = getTabid($mname);
+		if (!empty($tabid)) {
+			$doNotSearchTheseTabids[] = $tabid;
+		}
+	}
+	$sql = 'select distinct vtiger_field.tabid,name
+		from vtiger_field
+		inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
+		where vtiger_tab.tabid not in ('.generateQuestionMarks($doNotSearchTheseTabids).') and vtiger_tab.presence != 1 and vtiger_field.presence in (0,2)';
+	$result = $adb->pquery($sql, array($doNotSearchTheseTabids));
+	$return_arr = array();
+	while ($module_result = $adb->fetch_array($result)) {
+		$modulename = $module_result['name'];
+		// Do we need to filter the module selection?
+		if (!empty($filter) && is_array($filter) && !in_array($modulename, $filter)) {
+			continue;
+		}
+		$return_arr[$modulename] = $modulename;
+	}
+	return $return_arr;
 }
 ?>

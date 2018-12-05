@@ -192,6 +192,43 @@ function toogleAccess(elementId) {
 	}
 }
 
+function tooglePosition(elementId) {
+	var element = $('#' + elementId);
+	if (element == null || typeof(element) == 'undefined') {
+		return;
+	}
+
+	var orderedPositions = ['T', 'H', 'B', 'N'];
+	var actualPosition = element.val();
+	var actualIndex = orderedPositions.indexOf(actualPosition);
+
+	if (actualIndex < 0) {
+		return;
+	}
+
+	var nextIndex;
+	if (actualIndex === (orderedPositions.length - 1)) {
+		nextIndex = 0;
+	} else {
+		nextIndex = actualIndex + 1;
+	}
+
+	var nextPosition = orderedPositions[nextIndex];
+	$('.' + elementId + 'position_image').css({'display': 'none'});
+
+	if (nextPosition === 'T') {
+		$('#' + elementId + '_position_title').css({'display': 'inline'});
+	} else if (nextPosition === 'H') {
+		$('#' + elementId + '_position_header').css({'display': 'inline'});
+	} else if (nextPosition === 'B') {
+		$('#' + elementId + '_position_body').css({'display': 'inline'});
+	} else {
+		$('#' + elementId + '_position_no_show').css({'display': 'inline'});
+	}
+
+	element.val(nextPosition);
+}
+
 function saveprofile(frm) {
 	if (frm == 'create') {
 		var file = 'SaveProfile';
@@ -278,6 +315,9 @@ function saveprofile(frm) {
 			}
 		}
 		if (document.profileform.elements[i].type == 'hidden' && document.profileform.elements[i].name.indexOf('_readonly')!=-1) {
+			sentForm[document.profileform.elements[i].name] = document.profileform.elements[i].value;
+		}
+		if (document.profileform.elements[i].type == 'hidden' && document.profileform.elements[i].name.indexOf('_position')!=-1) {
 			sentForm[document.profileform.elements[i].name] = document.profileform.elements[i].value;
 		}
 	}

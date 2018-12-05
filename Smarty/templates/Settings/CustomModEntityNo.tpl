@@ -39,15 +39,15 @@ function updateModEntityNoSetting(button, form) {
 		return;
 	}
 
-	document.getElementById("status").style.display="inline";
+	document.getElementById('status').style.display='inline';
 	button.disabled = true;
 
 	jQuery.ajax({
-		method:"POST",
+		method:'POST',
 		url:'index.php?module=Settings&action=SettingsAjax&file=CustomModEntityNo&ajax=true' + '&selmodule=' + encodeURIComponent(module) +
 			'&recprefix=' + encodeURIComponent(recprefix) + '&recnumber=' + encodeURIComponent(recnumber) + '&mode=' + encodeURIComponent(mode)
 	}).done(function(response) {
-		document.getElementById("status").style.display="none";
+		document.getElementById('status').style.display='none';
 		var restext = response;
 		document.getElementById('customentity_infodiv').innerHTML = restext;
 	});

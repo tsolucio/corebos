@@ -9,15 +9,17 @@
 
 // Show stock or not
 var hide_stock = 'no';
-ExecuteFunctions('ismoduleactive', 'checkmodule=Products').then(function (response) {
-	var obj = JSON.parse(response);
-	if (obj.isactive == true) {
+document.addEventListener('DOMContentLoaded', function(event) {
+	ExecuteFunctions('ismoduleactive', 'checkmodule=Products').then(function (response) {
+		var obj = JSON.parse(response);
+		if (obj.isactive == true) {
+			hide_stock = 'no';
+		} else {
+			hide_stock = 'yes';
+		}
+	}, function (error) {
 		hide_stock = 'no';
-	} else {
-		hide_stock = 'yes';
-	}
-}, function (error) {
-	hide_stock = 'no';
+	});
 });
 
 function set_return(product_id, product_name) {

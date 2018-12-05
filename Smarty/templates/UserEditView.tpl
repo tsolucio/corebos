@@ -10,7 +10,7 @@
 -->*}
 <script type="text/javascript" src="include/js/ColorPicker2.js"></script>
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
-
+<script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
 var cp2 = new ColorPicker('window');
 
@@ -132,7 +132,7 @@ function check_duplicate()
 		{include file='SetMenu.tpl'}
 	{/if}
 
-		<form name="EditView" method="POST" action="index.php" ENCTYPE="multipart/form-data" onsubmit="VtigerJS_DialogBox.block();">
+	<form name="EditView" method="POST" action="index.php" ENCTYPE="multipart/form-data" onsubmit="VtigerJS_DialogBox.block();">
 		<input type="hidden" name="module" value="Users">
 		<input type="hidden" name="record" value="{if isset($ID)}{$ID}{/if}">
 		<input type="hidden" name="mode" value="{$MODE}">

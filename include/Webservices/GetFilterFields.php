@@ -17,6 +17,13 @@ function vtws_getfilterfields($module, $user) {
 	global $log;
 	$log->debug('Entering function vtws_getfilterfields');
 
+	if (!vtlib_isEntityModule($module)) {
+		return array(
+			'fields'=>'',
+			'linkfields'=>'',
+			'pagesize' => intval(GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module)),
+		);
+	}
 	$focus = CRMEntity::getInstance($module);
 
 	$linkfields=array($focus->list_link_field);
@@ -35,6 +42,7 @@ function vtws_getfilterfields($module, $user) {
 	return array(
 		'fields'=>$fields,
 		'linkfields'=>$linkfields,
+		'pagesize' => intval(GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module)),
 	);
 }
 ?>

@@ -923,6 +923,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'false | true',
 	'definition' => 'Si se establece a "true", la sección de la Oportunidad se seleccionará al convertir un PreContacto. De forma predeterminada, la sección no está activada.',
 ),
+'Lead_Convert_ContactSelected' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'false | true',
+	'definition' => 'Si se establece a "true", la sección del Contacto se seleccionará al convertir un PreContacto. De forma predeterminada, la sección está activada.',
+),
 'Product_Show_Subproducts_Popup' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',

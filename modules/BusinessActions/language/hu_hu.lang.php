@@ -30,7 +30,7 @@ $mod_strings = array(
 'assigned_user_id'=>'Assigned To',
 'active'=>'Active',
 'acrole'=>'Acrole',
-'mandatory'=>'Mandatory',
+'mandatory'=>'For all users',
 'brmap'=>'Brmap',
 'businessactions_no'=>'Business Actions No',
 );

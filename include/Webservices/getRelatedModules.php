@@ -14,6 +14,7 @@
  ************************************************************************************/
 
 function getRelatedModulesInfomation($module, $user) {
+	include_once 'include/Webservices/GetFilterFields.php';
 	global $log, $adb;
 	$log->debug('Entering getRelatedModulesInfomation(' . $module . ') method ...');
 	$types = vtws_listtypes(null, $user);
@@ -23,6 +24,7 @@ function getRelatedModulesInfomation($module, $user) {
 	$cur_tab_id = getTabid($module);
 	$result = $adb->pquery('select * from vtiger_relatedlists where tabid=?', array($cur_tab_id));
 	$num_row = $adb->num_rows($result);
+	$focus_list = array();
 	for ($i = 0; $i < $num_row; $i++) {
 		$rel_tab_id = $adb->query_result($result, $i, 'related_tabid');
 		$label = $adb->query_result($result, $i, 'label');
@@ -39,7 +41,8 @@ function getRelatedModulesInfomation($module, $user) {
 				'label'=> $label,
 				'labeli18n' =>getTranslatedString($label, $relModuleName),
 				'actions' => $actions,
-				'relationId' => $relationId
+				'relationId' => $relationId,
+				'filterFields'=> vtws_getfilterfields($relModuleName, $user),
 			);
 		} else {
 			$focus_list[$label] = array(
@@ -48,7 +51,8 @@ function getRelatedModulesInfomation($module, $user) {
 				'label'=> $label,
 				'labeli18n' =>getTranslatedString($label, $module),
 				'actions' => $actions,
-				'relationId' => $relationId
+				'relationId' => $relationId,
+				'filterFields'=> vtws_getfilterfields($module, $user),
 			);
 		}
 	}

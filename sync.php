@@ -43,11 +43,17 @@ $client->setScopes(array('https://www.googleapis.com/auth/calendar', 'https://ww
 if (isset($_GET['code'])) {
 	$q=$client->authenticate($_GET['code']);
 	coreBOS_Session::set('token', $client->getAccessToken());
-	$token=json_decode(coreBOS_Session::get('token'));
-	if ($token->refresh_token!='' && $token->refresh_token!=null) {
+	if (is_array(coreBOS_Session::get('token'))) {
+		$token=coreBOS_Session::get('token');
+		$refresh_token = $token['refresh_token'];
+	} else {
+		$token=json_decode(coreBOS_Session::get('token'));
+		$refresh_token = $token->refresh_token;
+	}
+	if ($refresh_token!='' && $refresh_token!=null) {
 		$adb->pquery(
 			'update its4you_googlesync4you_access set refresh_token=? where userid=? and service=?',
-			array($token->refresh_token, $_SESSION['authenticated_user_id'],$service)
+			array($refresh_token, $_SESSION['authenticated_user_id'],$service)
 		);
 	}
 	header("Location: $site_URL/index.php?module=Calendar4You&action=index");

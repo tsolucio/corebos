@@ -399,7 +399,7 @@ $mod_strings = array(
 'LBL_INV_TERMSANDCONDITIONS'=>'Gestión de Inventario',
 'INVENTORYNOTIFICATION'=>'Notificaciones de Inventario',
 'LBL_INVENTORY_NOTIFICATIONS'=>'Editar Notificaciones de Inventario',
-'LBL_INV_NOT_DESC'=>'Listado de las notificaciones que se envían a los proveedores cuando durante la creación de un presupuesto, orden de venta o factura, no hay cantidad suficiente de producto .',
+'LBL_INV_NOT_DESC'=>'Listado de las notificaciones que se envían a los proveedores cuando, durante la creación de un presupuesto, orden de venta o factura, no hay cantidad suficiente de producto.',
 
 'InvoiceNotification'=>'Notificación de stock de producto bajo durante la generación de una factura',
 'InvoiceNotificationDescription'=>'Si durante la Factura el stock del producto almacenado es menor que la cantidad demandada en la orden de venta, se enviará esta notificación al responsable del producto',

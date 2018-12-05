@@ -32,14 +32,15 @@ class validateEmailWithZB {
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 150);
 		$response = curl_exec($ch);
-		curl_close($ch);
 		$json = json_decode($response, true);
 		$valueToReturn = false;
 		$text = '';
 		if (curl_errno($ch)) {
 			self::$lastErrorStatus[$field] = 'Curl error: ' . curl_error($ch);
+			curl_close($ch);
 			return true;
 		}
+		curl_close($ch);
 		if (isset($json['status'])) {
 			if ($json['status'] == 'valid') {
 				$valueToReturn = true;

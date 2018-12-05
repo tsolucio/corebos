@@ -72,7 +72,7 @@ if ($to_email == '' && $cc == '' && $bcc == '') {
 }
 
 $parentid= vtlib_purify($_REQUEST['parent_id']);
-$myids=explode("|", $parentid);
+$myids=explode('|', $parentid);
 $all_to_emailids = array();
 $from_name = $current_user->user_name;
 $from_address = $current_user->column_fields['email1'];
@@ -86,7 +86,7 @@ if (!empty($_REQUEST['from_email'])) {
 }
 
 for ($i=0; $i<(count($myids)-1); $i++) {
-	$realid=explode("@", $myids[$i]);
+	$realid=explode('@', $myids[$i]);
 	$nemail=count($realid);
 	$mycrmid=$realid[0];
 	if (getModuleForField($realid[1]) == 'Users') {
@@ -97,7 +97,7 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 		$description = getMergedDescription($_REQUEST['description'], $mycrmid, $pmodule);
 		$mail_status = send_mail('Emails', $emailadd, $from_name, $from_address, $_REQUEST['subject'], $description, '', '', 'all', $focus->id);
 		$all_to_emailids []= $emailadd;
-		$mail_status_str .= $emailadd."=".$mail_status."&&&";
+		$mail_status_str .= $emailadd.'='.$mail_status.'&&&';
 	} else {
 		//Send mail to account, lead or contact based on their ids
 		$pmodule=getSalesEntityType($mycrmid);
@@ -117,11 +117,12 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 			$subject=getMergedDescription($subject, $current_user->id, 'Users');
 			$description=getMergedDescription($description, $current_user->id, 'Users');
 
-			if ($pmodule=='Contacts' && !empty($myfocus->column_fields['account_id'])) {
-				$subject=getMergedDescription($subject, $myfocus->column_fields['account_id'], 'Accounts');
-				$description=getMergedDescription($description, $myfocus->column_fields['account_id'], 'Accounts');
+			$accid = getRelatedAccountContact($mycrmid, 'Accounts');
+			if (!empty($accid)) {
+				$subject=getMergedDescription($subject, $accid, 'Accounts');
+				$description=getMergedDescription($description, $accid, 'Accounts');
 			}
-			$fldname=$adb->query_result($fresult, 0, "columnname");
+			$fldname=$adb->query_result($fresult, 0, 'columnname');
 			$emailadd=br2nl($myfocus->column_fields[$fldname]);
 
 			if ($emailadd != '') {
@@ -146,7 +147,7 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 				}
 
 				$all_to_emailids []= $emailadd;
-				$mail_status_str .= $emailadd."=".$mail_status."&&&";
+				$mail_status_str .= $emailadd.'='.$mail_status.'&&&';
 				//added to get remain the EditView page if an error occurs in mail sending
 				if ($mail_status != 1) {
 					$errorheader2 = 1;

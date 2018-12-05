@@ -33,9 +33,8 @@ class PreparedQMark2SqlValue {
 		/**
 		* If ? is found as expected in regex used in function convert2sql
 		* /('[^']*')|(\"[^\"]*\")|([?])/
-		*
 		*/
-		if ($matches[3]=='?') {
+		if (isset($matches[3]) && $matches[3]=='?') {
 			$this->ctr++;
 			return $this->vals[$this->ctr-1];
 		} else {
@@ -260,7 +259,7 @@ class PearDatabase {
 	}
 
 	public function getDataSourceName() {
-		return 	$this->dbType. "://".$this->userName.":".$this->userPassword."@". $this->dbHostName . "/". $this->dbName;
+		return 	$this->dbType. '://'.$this->userName.':'.$this->userPassword.'@'. $this->dbHostName . '/'. $this->dbName;
 	}
 
 	public function startTransaction() {
@@ -268,7 +267,7 @@ class PearDatabase {
 			return;
 		}
 		$this->checkConnection();
-		$this->println("TRANS Started");
+		$this->println('TRANS Started');
 		$this->database->StartTrans();
 	}
 
@@ -453,7 +452,7 @@ class PearDatabase {
 				$vals[$index] = 'NULL';
 			}
 		}
-		$sql = preg_replace_callback("/('[^']*')|(\"[^\"]*\")|([?])/", array(new PreparedQMark2SqlValue($vals),"call"), $ps);
+		$sql = preg_replace_callback("/('[^']*')|(\"[^\"]*\")|([?])/", array(new PreparedQMark2SqlValue($vals), 'call'), $ps);
 		return $sql;
 	}
 
@@ -484,7 +483,7 @@ class PearDatabase {
 
 		$sql_start_time = microtime(true);
 		$params = $this->flatten_array($params);
-		if (count($params) > 0) {
+		if (!is_null($params) && count($params) > 0) {
 			$log->debug('Prepared sql query parameters : [' . implode(",", $params) . ']');
 		}
 
@@ -711,7 +710,7 @@ class PearDatabase {
 		if (!is_array($data)) {
 			throw new Exception('data must be an array');
 		}
-		if (!count($table)) {
+		if (!count($data)) {
 			throw new Exception('no data given');
 		}
 		$sql_fields = '';

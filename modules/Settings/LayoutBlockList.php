@@ -520,7 +520,7 @@ function changeFieldOrder() {
 		if ($_REQUEST['what_to_do']=='block_down') {
 			$blockid = vtlib_purify($_REQUEST['blockid']);
 			if (substr($blockid, 0, 3)=='dvb') { // detail view block
-				$sql_up_current='update vtiger_links set sequence=sequence+1 where linkid=?';
+				$sql_up_current='update vtiger_businessactions set sequence=sequence+1 where businessactionsid=?';
 				$result_up_current = $adb->pquery($sql_up_current, array(substr($blockid, 3)));
 			} else {  // normal block
 				$sql='select sequence from vtiger_blocks where blockid=?';
@@ -545,7 +545,7 @@ function changeFieldOrder() {
 		if ($_REQUEST['what_to_do']=='block_up') {
 			$blockid = vtlib_purify($_REQUEST['blockid']);
 			if (substr($blockid, 0, 3)=='dvb') { // detail view block
-				$sql_up_current='update vtiger_links set sequence=if (sequence-1<0,0,sequence-1) where linkid=?';
+				$sql_up_current='update vtiger_businessactions set sequence=if (sequence-1<0,0,sequence-1) where businessactionsid=?';
 				$result_up_current = $adb->pquery($sql_up_current, array(substr($blockid, 3)));
 			} else {  // normal block
 				$sql='select * from vtiger_blocks where blockid=?';
@@ -1090,10 +1090,10 @@ function addCustomField() {
 				//Inserting values into vtiger_profile2field tables
 				$sql1_result = $adb->pquery('select * from vtiger_profile', array());
 				$sql1_num = $adb->num_rows($sql1_result);
-				$sql2 = 'insert into vtiger_profile2field values(?,?,?,?,?)';
+				$sql2 = 'insert into vtiger_profile2field values(?,?,?,?,?,?)';
 				for ($i=0; $i<$sql1_num; $i++) {
 					$profileid = $adb->query_result($sql1_result, $i, 'profileid');
-					$adb->pquery($sql2, array($profileid, $tabid, $custfld_fieldid, 0, 0));
+					$adb->pquery($sql2, array($profileid, $tabid, $custfld_fieldid, 0, 0, 'B'));
 				}
 
 				//Inserting values into def_org tables

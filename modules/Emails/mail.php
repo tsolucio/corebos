@@ -10,18 +10,43 @@
 require_once 'modules/Emails/PHPMailerAutoload.php';
 require_once 'include/utils/CommonUtils.php';
 
-/**   Function used to send email
-  *   $module		-- current module
-  *   $to_email		-- to email address
-  *   $from_name	-- currently loggedin user name
-  *   $from_email	-- currently loggedin users's email id. you can give as '' if you are not in HelpDesk module
-  *   $subject		-- subject of the email you want to send
-  *   $contents		-- body of the email you want to send
-  *   $cc			-- add email ids with comma seperated. - optional
-  *   $bcc			-- add email ids with comma seperated. - optional.
-  *   $attachment	-- whether we want to attach the currently selected file or all files.[values = current,all] - optional
-  *   $emailid		-- id of the email object which will be used to get the attachments
-  */
+/** Function used to send an email
+ * $module     - module: only used to add signature if it is different than "Calendar"
+ * $to_email   - "TO" email address
+ * $from_name  - name that will be shown in the "From", it  will also  be used to search for the user signature
+ * $from_email - email address from which the email will come from, if left empty we will search for a username equal to
+					$from_name, if found that email will be used, if not we will use $HELPDESK_SUPPORT_EMAIL_ID
+					if the "FROM EMAIL" field in set in Settings Outgoing Server, that one will be used
+ * $subject    - subject of the email you want to send
+ * $contents   - body of the email you want to send
+ * $cc         - add email address with comma seperated. - optional
+ * $bcc        - add email address with comma seperated. - optional
+ * $attachment - accepted values are:
+					current: get file name from $_REQUEST['filename_hidden'] or $_FILES['filename']['name']
+					all: all files directly related with the crmid record, this is mostly only useful for email records
+					attReports: get file name from $_REQUEST['filename_hidden_pdf'] and $_REQUEST['filename_hidden_xls']
+					array of filenames or document IDs: array('themes/images/webcam.png','themes/images/Meetings.gif', 42525);
+					array of direct content:
+						array(
+							'direct' => true,
+							'files' => array(
+								array(
+									'name' => 'summarize.gif',
+									'content' => file_get_contents('themes/images/summarize.gif')
+								),
+								array(
+									'name' => 'jump_to_top_60.png',
+									'content' => file_get_contents('themes/images/jump_to_top_60.png')
+								),
+							)
+						);
+ * $emailid    - id of the email object which will be used to get the attachments when $attachment='all'
+ * $logo       - if the company logo should be added to the email, for this to work you must put
+						<img src="cid:logo" />
+					wherever you want the logo to appear
+ * $replyto    - email address that an automatic "reply to" will be sent
+ * $qrScan     - if we should load qrcode images from cache directory   <img src="cid:qrcode{$fname}" />
+ */
 function send_mail($module, $to_email, $from_name, $from_email, $subject, $contents, $cc = '', $bcc = '', $attachment = '', $emailid = '', $logo = '', $replyto = '', $qrScan = '') {
 	global $adb;
 	$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
@@ -40,10 +65,9 @@ function send_mail($module, $to_email, $from_name, $from_email, $subject, $conte
 			$from_name = $adb->query_result($result, 0, 0);
 		}
 	}
-	//if module is HelpDesk then from_email will come based on support email id
 	if ($from_email == '') {
-			//if from email is not defined, then use the useremailid as the from address
-			$from_email = getUserEmailId('user_name', $from_name);
+		//if from email is not defined, then use the useremailid as the from address
+		$from_email = getUserEmailId('user_name', $from_name);
 	}
 	if (empty($from_email)) {
 		$from_email = $HELPDESK_SUPPORT_EMAIL_ID;
@@ -55,13 +79,13 @@ function send_mail($module, $to_email, $from_name, $from_email, $subject, $conte
 	$from_email_field = $adb->query_result($result, 0, 'from_email_field');
 	if (empty($replyto)) {
 		if (isUserInitiated()) {
-				global $current_user;
-				$reply_to_secondary = GlobalVariable::getVariable('Users_ReplyTo_SecondEmail', 0, $module, $current_user->id);
+			global $current_user;
+			$reply_to_secondary = GlobalVariable::getVariable('Users_ReplyTo_SecondEmail', 0, 'Users', $current_user->id);
 			if ($reply_to_secondary == 1) {
 				$result = $adb->pquery('select secondaryemail from vtiger_users where id=?', array($current_user->id));
 				$second_email = '';
 				if ($result && $adb->num_rows($result)>0) {
-						$second_email = $adb->query_result($result, 0, 'secondaryemail');
+					$second_email = $adb->query_result($result, 0, 'secondaryemail');
 				}
 			}
 			if (!empty($second_email)) {
@@ -70,7 +94,7 @@ function send_mail($module, $to_email, $from_name, $from_email, $subject, $conte
 				$replyToEmail = $from_email;
 			}
 		} else {
-				$replyToEmail = $from_email_field;
+			$replyToEmail = $from_email_field;
 		}
 	} else {
 		$replyToEmail = $replyto;
@@ -89,7 +113,12 @@ function send_mail($module, $to_email, $from_name, $from_email, $subject, $conte
 
 	$mail = new PHPMailer();
 
-	setMailerProperties($mail, $subject, $contents, $from_email, $from_name, trim($to_email, ","), $attachment, $emailid, $module, $logo, $qrScan);
+	// Add main HTML tags when missing
+	if (!preg_match('/^\s*<\!DOCTYPE/', $contents) && !preg_match('/^\s*<html/i', $contents)) {
+		$contents = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /></head><body>" . $contents . "</body></html>";
+	}
+
+	setMailerProperties($mail, $subject, $contents, $from_email, $from_name, trim($to_email, ','), $attachment, $emailid, $logo, $qrScan);
 
 	setCCAddress($mail, 'cc', $cc);
 	setCCAddress($mail, 'bcc', $bcc);
@@ -102,9 +131,8 @@ function send_mail($module, $to_email, $from_name, $from_email, $subject, $conte
 	if ($HELPDESK_SUPPORT_EMAIL_REPLY_ID && $HELPDESK_SUPPORT_EMAIL_ID != $HELPDESK_SUPPORT_EMAIL_REPLY_ID) {
 		$mail->AddReplyTo($HELPDESK_SUPPORT_EMAIL_REPLY_ID);
 	}
-	// END
 
-	// Fix: Return immediately if Outgoing server not configured
+	// Return immediately if Outgoing server not configured
 	if (empty($mail->Host)) {
 		return 0;
 	}
@@ -119,9 +147,9 @@ function send_mail($module, $to_email, $from_name, $from_email, $subject, $conte
 	return $mail_error;
 }
 
-/**	Function to get the user Email id based on column name and column value
-  *	$name -- column name of the vtiger_users vtiger_table
-  *	$val  -- column value
+/** Function to get the user Email id based on column name and column value
+  * $name -- column name of the vtiger_users vtiger_table
+  * $val  -- column value
   */
 function getUserEmailId($name, $val) {
 	global $adb;
@@ -145,14 +173,14 @@ function getUserEmailId($name, $val) {
 	}
 }
 
-/**	Funtion to add the user's signature with the content passed
-  *	$contents -- where we want to add the signature
-  *	$fromname -- which user's signature will be added to the contents
+/** Funtion to add the user's signature with the content passed
+  * $contents -- where we want to add the signature
+  * $fromname -- which user's signature will be added to the contents
   */
 function addSignature($contents, $fromname) {
-	global $adb, $default_charset;
+	global $adb, $default_charset, $current_user;
 	$adb->println("Inside the function addSignature");
-	$signrs = $adb->pquery('select signature from vtiger_users where user_name=?', array($fromname));
+	$signrs = $adb->pquery('select signature from vtiger_users where user_name=? or id=?', array($fromname, $current_user->id));
 	$sign = $adb->query_result($signrs, 0, 'signature');
 	if ($sign != '') {
 		$sign = html_entity_decode($sign, ENT_QUOTES, $default_charset);
@@ -164,23 +192,24 @@ function addSignature($contents, $fromname) {
 	return $contents;
 }
 
-/**	Function to set all the Mailer properties
-  *	$mail		-- reference of the mail object
-  *	$subject	-- subject of the email you want to send
-  *	$contents	-- body of the email you want to send
-  *	$from_email	-- from email id which will be displayed in the mail
-  *	$from_name	-- from name which will be displayed in the mail
-  *	$to_email	-- to email address  -- This can be an email in a single string, a comma separated
-  *			   list of emails or an array of email addresses
-  *	$attachment	-- whether we want to attach the currently selected file or all files.
+/** Function to set all the Mailer properties
+  * $mail		-- reference of the mail object
+  * $subject	-- subject of the email you want to send
+  * $contents	-- body of the email you want to send
+  * $from_email	-- from email id which will be displayed in the mail
+  * $from_name	-- from name which will be displayed in the mail
+  * $to_email	-- to email address  -- This can be an email in a single string, a comma separated
+  * 		   list of emails or an array of email addresses
+  * $attachment	-- whether we want to attach the currently selected file or all files.
 				  [values = current,all] - optional
-  *	$emailid	-- id of the email object which will be used to get the vtiger_attachments - optional
+  * $emailid	-- id of the email object which will be used to get the vtiger_attachments - optional
   */
-function setMailerProperties($mail, $subject, $contents, $from_email, $from_name, $to_email, $attachment = '', $emailid = '', $module = '', $logo = '', $qrScan = '') {
+function setMailerProperties($mail, $subject, $contents, $from_email, $from_name, $to_email, $attachment = '', $emailid = '', $logo = '', $qrScan = '') {
 	global $adb;
-	$adb->println("Inside the function setMailerProperties");
-	if ($module == 'Support' || $logo ==1) {
-		$mail->AddEmbeddedImage('themes/images/logo_mail.jpg', 'logo', 'logo.jpg', 'base64', 'image/jpg');
+	$adb->println('Inside the function setMailerProperties');
+	if ($logo == 1) {
+		$cmp = retrieveCompanyDetails();
+		$mail->AddEmbeddedImage($cmp['companylogo'], 'logo', 'logo.jpg', 'base64', 'image/jpg');
 	}
 	if ($qrScan == 1) {
 		preg_match_all('/<img src="cid:(qrcode.*)"/', $contents, $matches);
@@ -254,7 +283,7 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
 	//If we send attachments from MarketingDashboard
 	if (is_array($attachment)) {
 		if (array_key_exists('direct', $attachment) && $attachment['direct']) {
-			//We are sending attachments with direct content, the files are'nt stored
+			//We are sending attachments with direct content, the files are not stored
 			foreach ($attachment['files'] as $file) {
 				addStringAttachment($mail, $file['name'], $file['content']);
 			}
@@ -270,8 +299,8 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
 	return;
 }
 
-/**	Function to set the Mail Server Properties in the object passed
-  *	$mail -- reference of the mailobject
+/** Function to set the Mail Server Properties in the object passed
+  * $mail -- reference of the mailobject
   */
 function setMailServerProperties($mail) {
 	global $adb,$default_charset;
@@ -305,11 +334,11 @@ function setMailServerProperties($mail) {
 		if ('true' != $smtp_auth) {
 			if ($smtp_auth == 'sslnc' || $smtp_auth == 'tlsnc') {
 				$mail->SMTPOptions = array(
-						'ssl' => array(
-							'verify_peer' => false,
-							'verify_peer_name' => false,
-							'allow_self_signed' => true
-						)
+					'ssl' => array(
+						'verify_peer' => false,
+						'verify_peer_name' => false,
+						'allow_self_signed' => true
+					)
 				);
 				$smtp_auth = substr($smtp_auth, 0, 3);
 			}
@@ -338,10 +367,10 @@ function setMailServerProperties($mail) {
 	}
 }
 
-/**	Function to add the file as attachment with the mail object
-  *	$mail -- reference of the mail object
-  *	$filename -- filename which is going to added with the mail
-  *	$record -- id of the record - optional
+/** Function to add the file as attachment with the mail object
+  * $mail -- reference of the mail object
+  * $filename -- filename which is going to added with the mail
+  * $record -- id of the record - optional
   */
 function addAttachment($mail, $filename, $record) {
 	global $adb, $root_directory;
@@ -350,13 +379,25 @@ function addAttachment($mail, $filename, $record) {
 	//This is the file which has been selected in Email EditView
 	if (is_file($root_directory.$filename) && ($root_directory.$filename) != '') {
 		$mail->AddAttachment($root_directory.$filename);
+	} elseif (is_numeric($filename)) {
+		$query = 'SELECT vtiger_attachments.path, vtiger_attachments.name, vtiger_attachments.attachmentsid
+			FROM vtiger_attachments
+			INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
+			INNER JOIN vtiger_crmentity ON vtiger_attachments.attachmentsid=vtiger_crmentity.crmid
+			WHERE deleted=0 AND vtiger_seattachmentsrel.crmid = ?';
+		$docid = $filename;
+		$docrs = $adb->pquery($query, array($docid));
+		if ($docrs && $adb->num_rows($docrs)==1) {
+			$attname = $adb->query_result($docrs, 0, 'path').$adb->query_result($docrs, 0, 'attachmentsid').'_'.$adb->query_result($docrs, 0, 'name');
+			$mail->AddAttachment($attname);
+		}
 	}
 }
 
-/**	Function to add the file as attachment with the mail object
-  *	$mail -- reference of the mail object
-  *	$filename -- filename which is going to added with the mail
-  *	$data -- file contents to attach
+/** Function to add the file as attachment with the mail object
+  * $mail -- reference of the mail object
+  * $filename -- filename which is going to added with the mail
+  * $data -- file contents to attach
   */
 function addStringAttachment($mail, $filename, $data) {
 	global $adb;
@@ -364,9 +405,9 @@ function addStringAttachment($mail, $filename, $data) {
 	$mail->AddStringAttachment($data, $filename);
 }
 
-/**     Function to add all the files as attachment with the mail object
-  *     $mail -- reference of the mail object
-  *     $record -- email id ie., record id which is used to get the all vtiger_attachments from database
+/** Function to add all the files as attachment with the mail object
+  * $mail -- reference of the mail object
+  * $record -- email id ie., record id which is used to get the all vtiger_attachments from database
   */
 function addAllAttachments($mail, $record) {
 	global $adb, $root_directory;
@@ -395,10 +436,10 @@ function addAllAttachments($mail, $record) {
 	}
 }
 
-/**	Function to set the CC or BCC addresses in the mail
-  *	$mail -- reference of the mail object
-  *	$cc_mod -- mode to set the address ie., cc or bcc
-  *	$cc_val -- addresss with comma seperated to set as CC or BCC in the mail
+/** Function to set the CC or BCC addresses in the mail
+  * $mail -- reference of the mail object
+  * $cc_mod -- mode to set the address ie., cc or bcc
+  * $cc_val -- addresss with comma seperated to set as CC or BCC in the mail
   */
 function setCCAddress($mail, $cc_mod, $cc_val) {
 	global $adb;
@@ -427,8 +468,8 @@ function setCCAddress($mail, $cc_mod, $cc_val) {
 	}
 }
 
-/**	Function to send the mail which will be called after set all the mail object values
-  *	$mail -- reference of the mail object
+/** Function to send the mail which will be called after set all the mail object values
+  * $mail -- reference of the mail object
   */
 function MailSend($mail) {
 	global $log;
@@ -442,9 +483,9 @@ function MailSend($mail) {
 	}
 }
 
-/**	Function to get the Parent email id from HelpDesk to send the details about the ticket via email
-  *	$returnmodule -- Parent module value. Contact or Account for send email about the ticket details
-  *	$parentid -- id of the parent ie., contact or vtiger_account
+/** Function to get the Parent email id from HelpDesk to send the details about the ticket via email
+  * $returnmodule -- Parent module value. Contact or Account for send email about the ticket details
+  * $parentid -- id of the parent ie., contact or vtiger_account
   */
 function getParentMailId($parentmodule, $parentid) {
 	global $adb;
@@ -476,10 +517,10 @@ function getParentMailId($parentmodule, $parentid) {
 	return $mailid;
 }
 
-/**	Function to parse and get the mail error
-  *	$mail -- reference of the mail object
-  *	$mail_status -- status of the mail which is sent or not
-  *	return -- Mail error occured during the mail sending process
+/** Function to parse and get the mail error
+  * $mail -- reference of the mail object
+  * $mail_status -- status of the mail which is sent or not
+  * return -- Mail error occured during the mail sending process
   */
 function getMailError($mail, $mail_status) {
 	//Error types in class.phpmailer.php
@@ -507,9 +548,9 @@ function getMailError($mail, $mail_status) {
 	return $error_msg;
 }
 
-/**	Function to get the mail status string (string of sent mail status)
-  *	$mail_status_str -- concatenated string with all the error messages with &&& seperation
-  *	return - the error status as a encoded string
+/** Function to get the mail status string (string of sent mail status)
+  * $mail_status_str -- concatenated string with all the error messages with &&& seperation
+  * return - the error status as a encoded string
   */
 function getMailErrorString($mail_status_str) {
 	global $adb;
@@ -533,9 +574,9 @@ function getMailErrorString($mail_status_str) {
 	return $mail_error_str;
 }
 
-/**	Function to parse the error string
-  *	$mail_error_str -- base64 encoded string which contains the mail sending errors as concatenated with &&&
-  *	return - Error message to display
+/** Function to parse the error string
+  * $mail_error_str -- base64 encoded string which contains the mail sending errors as concatenated with &&&
+  * return - Error message to display
   */
 function parseEmailErrorString($mail_error_str) {
 	global $adb;
@@ -580,7 +621,7 @@ function parseEmailErrorString($mail_error_str) {
 
 function isUserInitiated() {
 	return (isset($_REQUEST['module']) && isset($_REQUEST['action']) && $_REQUEST['module'] == 'Emails' &&
-			($_REQUEST['action'] == 'mailsend' || $_REQUEST['action'] == 'webmailsend' || $_REQUEST['action'] == 'Save'));
+		($_REQUEST['action'] == 'mailsend' || $_REQUEST['action'] == 'webmailsend' || $_REQUEST['action'] == 'Save'));
 }
 
 /**
@@ -620,5 +661,32 @@ function getDefaultAssigneeEmailIds($groupId) {
 		$adb->println('Group id is empty, so return value is empty');
 	}
 	return $emails;
+}
+
+function createEmailRecord($element) {
+	global $adb, $log, $current_user;
+	include_once 'include/Webservices/Create.php';
+	$elementType = 'Emails';
+	$webserviceObject = VtigerWebserviceObject::fromName($adb, $elementType);
+	$handlerPath = $webserviceObject->getHandlerPath();
+	$handlerClass = $webserviceObject->getHandlerClass();
+	require_once $handlerPath;
+	$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
+	$element['activitytype'] = 'Emails';
+	if (empty($element['assigned_user_id'])) {
+		$element['assigned_user_id'] = vtws_getEntityId('Users').'x'.$current_user->id;
+	}
+	if (empty($element['date_start'])) {
+		$date = new DateTimeField(null);
+		$element['date_start'] = $date->getDisplayDate($current_user);
+	}
+	if (empty($element['time_start'])) {
+		$element['time_start'] = date('H:i:s');
+	}
+	if (empty($element['email_flag'])) {
+		$element['email_flag'] = 'SENT';
+	}
+	$result = $handler->create($elementType, $element);
+	return $result['id'];
 }
 ?>

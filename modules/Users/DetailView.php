@@ -148,7 +148,8 @@ if ($current_user->id == $_REQUEST['record'] || is_admin($current_user) == true)
 	$smarty->assign('SHOWTAGAS', getTranslatedString($HomeValues['showtagas'], 'Users'));
 	unset($HomeValues['Tag Cloud'], $HomeValues['showtagas']);
 	$smarty->assign('HOMEORDER', $HomeValues);
-	$smarty->assign('BLOCKS', getBlocks($currentModule, 'detail_view', '', $focus->column_fields));
+	$blocks = getBlocks($currentModule, 'detail_view', '', $focus->column_fields);
+	$smarty->assign('BLOCKS', $blocks);
 	$smarty->assign('USERNAME', getFullNameFromArray('Users', $focus->column_fields));
 	$smarty->assign('HOUR_FORMAT', $focus->hour_format);
 	$smarty->assign('START_HOUR', $focus->start_hour);

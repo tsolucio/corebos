@@ -397,7 +397,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		} else {
 			$profileList = getCurrentUserProfileList();
 			if (count($profileList) > 0) {
-				$sql = 'SELECT distinct vtiger_field.*, vtiger_profile2field.readonly, vtiger_blocks.sequence as blkseq
+				$sql = 'SELECT distinct vtiger_field.*, vtiger_profile2field.readonly, vtiger_blocks.sequence as blkseq, vtiger_profile2field.summary
 					FROM vtiger_field
 					LEFT JOIN vtiger_blocks ON vtiger_field.block=vtiger_blocks.blockid
 					INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
@@ -408,7 +408,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 						AND vtiger_field.presence in (0,2) ORDER BY vtiger_blocks.sequence ASC, vtiger_field.sequence ASC';
 				$params = array($tabid, $profileList, $block);
 			} else {
-				$sql = 'SELECT distinct vtiger_field.*, vtiger_profile2field.readonly, vtiger_blocks.sequence as blkseq
+				$sql = 'SELECT distinct vtiger_field.*, vtiger_profile2field.readonly, vtiger_blocks.sequence as blkseq, vtiger_profile2field.summary
 					FROM vtiger_field
 					LEFT JOIN vtiger_blocks ON vtiger_field.block=vtiger_blocks.blockid
 					INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid

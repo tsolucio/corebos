@@ -23,7 +23,9 @@ class SessionManager {
 		$this->maxLife = $now + GlobalVariable::getVariable('WebService_Session_Life_Span', 86400);
 		$this->idleLife = $now + GlobalVariable::getVariable('WebService_Session_Idle_Time', 1800);
 
-		HTTP_Session2::useCookies(false); //disable cookie usage. may this could be moved out constructor?
+		if (!coreBOS_Session::isSessionStarted()) {
+			HTTP_Session2::useCookies(false); //disable cookie usage. may this could be moved out constructor?
+		}
 		// only first invocation of following method, which is setExpire
 		//have an effect and any further invocation will be have no effect.
 		HTTP_Session2::setExpire($this->maxLife);

@@ -127,10 +127,11 @@ class VTSimpleTemplate {
 			$sort = 'a';
 		}
 		$format = strtolower($format);
-		if ($format!='html' && $format!='text') {
+		if ($format!='html' && $format!='text' && $format!='table') {
 			$format = 'html';
 		}
 		$html = ($format == 'html');
+		$table = ($format == 'table');
 		if (substr($field, 0, 4)=='date' && strlen($field)>4) {
 			$dateformat = substr($field, 4);
 			$field = 'date';
@@ -171,7 +172,7 @@ class VTSimpleTemplate {
 		}
 		$cmsqlws = __getRLQuery($wsId, $moduleName, 'ModComments', $queryParameters, $current_user);
 		$retcm = '';
-		if ($html) {
+		if ($html || $table) {
 			$retcm = '<div class="comments">';
 		}
 		$cmrs = $adb->pquery($cmsqlws, array());
@@ -179,11 +180,17 @@ class VTSimpleTemplate {
 			if ($html) {
 				$retcm .= '<div class="commentdetails"><ul class="commentfields">';
 			}
+			if ($table) {
+				$retcm .= '<table class="commentdetails"><tr class="commentfields">';
+			}
 			foreach ($fields as $field) {
 				switch ($field) {
 					case 'creator':
 						if ($html) {
 							$retcm .= '<li class="commentcreator">';
+						}
+						if ($table) {
+							$retcm .= '<td class="commentcreator">';
 						}
 						if ($moduleName!='HelpDesk' && $moduleName!='Faq') {
 							$wsid = $wsUsersId;
@@ -196,16 +203,22 @@ class VTSimpleTemplate {
 							$un = getParentName($cm['creator']);
 						}
 						$retcm .= $un;
-						if (!$html && !$singlefield) {
+						if (!$html && !$table && !$singlefield) {
 							$retcm .= "\n";
 						}
 						if ($html) {
 							$retcm .= '</li>';
 						}
+						if ($table) {
+							$retcm .= '</td>';
+						}
 						break;
 					case 'date':
 						if ($html) {
 							$retcm .= '<li class="commentdate">';
+						}
+						if ($table) {
+							$retcm .= '<td class="commentdate">';
 						}
 						if ($dateformat == 'user') {
 							$dt = new DateTimeField($cm['createdtime']);
@@ -214,23 +227,32 @@ class VTSimpleTemplate {
 							$dt = strtotime($cm['createdtime']);
 							$retcm .= date($dateformat, $dt);
 						}
-						if (!$html && !$singlefield) {
+						if (!$html && !$table && !$singlefield) {
 							$retcm .= "\n";
 						}
 						if ($html) {
 							$retcm .= '</li>';
+						}
+							if ($table) {
+							$retcm .= '</td>';
 						}
 						break;
 					case 'comment':
 						if ($html) {
 							$retcm .= '<li class="commentcomment">';
 						}
+						if ($table) {
+							$retcm .= '<td class="commentcomment">';
+						}
 						$retcm .= vtlib_purify($cm['commentcontent']);
-						if (!$html && !$singlefield) {
+						if (!$html && !$table && !$singlefield) {
 							$retcm .= "\n";
 						}
 						if ($html) {
 							$retcm .= '</li>';
+						}
+						if ($table) {
+							$retcm .= '</td>';
 						}
 						break;
 				}
@@ -238,8 +260,11 @@ class VTSimpleTemplate {
 			if ($html) {
 				$retcm .= '</ul></div>';
 			}
+			if ($table) {
+				$retcm .= '</tr></table>';
+			}
 		}
-		if ($html) {
+		if ($html ||$table ) {
 			$retcm .= '</div>';
 		}
 		return $retcm;

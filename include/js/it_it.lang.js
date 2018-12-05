@@ -203,6 +203,7 @@ var alert_arr = {
 	'LBL_PLEASE_CHANGE_REPLACEMENT':'prego cambiare il valore di sostituzione; \u00E8 anche selezionato per l\'eliminazione',
 	'BLOCK_NAME_CANNOT_BE_BLANK':'Nome Blocco non pu\u00F2 essere vuoto',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE':'Sicuro di volerlo eliminare ?',
+	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_EXACT_DUPLICATE': 'Are you sure you want to Delete All Exact record duplicates?',
 	'PLEASE_MOVE_THE_FIELDS_TO_ANOTHER_BLOCK' :'Prego, spostare il campo in un altro blocco',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_BLOCK':'Sicuro di volerl eliminare il blocco ?',
 	'LABEL_CANNOT_NOT_EMPTY':'Etichetta non pu\u00F2 essere Vuota',

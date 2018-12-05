@@ -401,6 +401,7 @@ class ListViewController {
 								$value = CurrencyField::convertToUserFormat($value);
 							}
 						}
+						$value = '<span style="float:right">'.$value.'</span>';
 					}
 				} elseif ($field->getFieldDataType() == 'url') {
 					$matchPattern = "^[\w]+:\/\/^";

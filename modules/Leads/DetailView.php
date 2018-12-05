@@ -20,25 +20,6 @@ if (isPermitted('Emails', 'CreateView', '') == 'yes') {
 	//Added to pass the parents list as hidden for Emails
 	$parent_email = getEmailParentsList('Leads', $_REQUEST['record'], $focus);
 	$smarty->assign('HIDDEN_PARENTS_LIST', $parent_email);
-	$vtwsObject = VtigerWebserviceObject::fromName($adb, $currentModule);
-	$vtwsCRMObjectMeta = new VtigerCRMObjectMeta($vtwsObject, $current_user);
-	$emailFields = $vtwsCRMObjectMeta->getEmailFields();
-	$smarty->assign('SENDMAILBUTTON', 'permitted');
-	$emails=array();
-	foreach ($emailFields as $value) {
-		$emails[]=$value;
-	}
-	$smarty->assign('EMAILS', $emails);
-	$cond="LTrim('%s') !=''";
-	$condition=array();
-	foreach ($emails as $value) {
-		$condition[]=sprintf($cond, $value);
-	}
-	$condition_str=implode('||', $condition);
-	$js='if('.$condition_str."){fnvshobj(this,'sendmail_cont');sendmail('".$currentModule."',".vtlib_purify($_REQUEST['record']).");}else{OpenCompose('','create');}";
-	$smarty->assign('JS', $js);
-} else {
-	$smarty->assign('SENDMAILBUTTON', 'NOTpermitted');
 }
 
 if (isPermitted('Leads', 'Merge', '') == 'yes') {
@@ -63,23 +44,9 @@ if (isPermitted('Leads', 'Merge', '') == 'yes') {
 
 require_once 'modules/Vtiger/DetailView.php';
 
-if (isPermitted($currentModule, 'EditView', $record) == 'yes') {
-	require_once 'modules/Leads/ConvertLeadUI.php';
-	$uiinfo = new ConvertLeadUI($record, $current_user);
-	if (isPermitted('Leads', 'ConvertLead') == 'yes'
-		&& (isPermitted('Accounts', 'CreateView') == 'yes' || isPermitted('Contacts', 'CreateView') == 'yes')
-		&& (vtlib_isModuleActive('Contacts') || vtlib_isModuleActive('Accounts'))
-		&& !isLeadConverted($focus->id)
-		&& (($uiinfo->getCompany() != null) || ($uiinfo->isModuleActive('Contacts') == true))
-	) {
-		$smarty->assign('CONVERTLEAD', 'permitted');
-	} else {
-		$smarty->assign('ERROR_MESSAGE', getTranslatedString('LeadAlreadyConverted', 'Leads'));
-		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
-		$smarty->assign('CONVERTLEAD', 'no');
-	}
-} else {
-	$smarty->assign('CONVERTLEAD', 'no');
+if (!leadCanBeConverted($record)) {
+	$smarty->assign('ERROR_MESSAGE', getTranslatedString('LeadAlreadyConverted', 'Leads'));
+	$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
 }
 
 $smarty->display('DetailView.tpl');

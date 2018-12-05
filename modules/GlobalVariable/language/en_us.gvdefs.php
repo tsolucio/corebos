@@ -923,6 +923,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'false | true',
 	'definition' => 'If set to the string "true", the Opportunity section will be selected when converting a Lead. By default, the section is not selected.',
 ),
+'Lead_Convert_ContactSelected' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'false | true',
+	'definition' => 'If set to the string "true", the Contact section will be selected when converting a Lead. By default, the section is selected.',
+),
 'Product_Show_Subproducts_Popup' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',

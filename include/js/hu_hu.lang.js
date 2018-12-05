@@ -204,6 +204,7 @@ var alert_arr = {
 	'LBL_PLEASE_CHANGE_REPLACEMENT' : 'Kérjük, hogy cseréld a helyettesítő értéket; ez szintén ki van választva törlésre',
 	'BLOCK_NAME_CANNOT_BE_BLANK' : 'A blokk neve nem lehet üres',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE' : 'Biztos vagy abban, hogy Törölni akarod?',
+	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_EXACT_DUPLICATE': 'Are you sure you want to Delete All Exact record duplicates?',
 	'PLEASE_MOVE_THE_FIELDS_TO_ANOTHER_BLOCK' : 'Mozgasd a mezőt egy másik blokkba',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_BLOCK' : 'Biztos vagy abban, hogy Törölni akarod a blokkot?',
 	'LABEL_CANNOT_NOT_EMPTY' : 'Címke nem lehet üres',

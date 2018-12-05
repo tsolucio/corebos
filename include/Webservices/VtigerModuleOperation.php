@@ -193,6 +193,13 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			if (stripos($q, 'count(*)')>0) {
 				$mysql_query = str_ireplace(' as count ', '', mkCountQuery($mysql_query));
 			}
+		} elseif (__ExtendedQueryConditionQuery($q)) {  // extended workflow condition syntax
+			$moduleRegex = '/[fF][rR][Oo][Mm]\s+([^\s;]+)/';
+			preg_match($moduleRegex, $q, $m);
+			$fromModule = trim($m[1]);
+			$handler = vtws_getModuleHandlerFromName($fromModule, $this->user);
+			$meta = $handler->getMeta();
+			list($mysql_query, $queryRelatedModules) = __ExtendedQueryConditionGetQuery($q, $fromModule, $this->user);
 		} elseif (__FQNExtendedQueryIsFQNQuery($q)) {  // FQN extended syntax
 			list($mysql_query,$queryRelatedModules) = __FQNExtendedQueryGetQuery($q, $this->user);
 			$moduleRegex = "/[fF][rR][Oo][Mm]\s+([^\s;]+)/";
@@ -322,6 +329,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			'mandatory'=>$webserviceField->isMandatory(),'type'=>$typeDetails,'nullable'=>$webserviceField->isNullable(),
 			"editable"=>$editable,'uitype'=>$webserviceField->getUIType(),'typeofdata'=>$webserviceField->getTypeOfData(),
 			'sequence'=>$webserviceField->getFieldSequence(),'quickcreate'=>$webserviceField->getQuickCreate(),'displaytype'=>$webserviceField->getDisplayType(),
+			'summary' => $webserviceField->getSummary(),
 			'block'=>array('blockid'=>$webserviceField->getBlockId(),'blocksequence'=>$webserviceField->getBlockSequence(),
 				'blocklabel'=>$blkname,'blockname'=>getTranslatedString($blkname, $this->meta->getTabName())));
 		if ($webserviceField->hasDefault()) {
