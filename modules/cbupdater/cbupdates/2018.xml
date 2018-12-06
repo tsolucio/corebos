@@ -141,10 +141,10 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
-	<author>glory</author>
+	<author>glory-moshi</author>
 	<description>add Block and Field in cbQuestion</description>
-	<filename>build/changeSets/2018/addBlockandFieldincbQuestion.php</filename>
-	<classname>addBlockandFieldincbQuestion</classname>
+	<filename>build/changeSets/2018/addBlockFieldincbQuestion.php</filename>
+	<classname>addBlockFieldincbQuestion</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
 </updatesChangeLog>
