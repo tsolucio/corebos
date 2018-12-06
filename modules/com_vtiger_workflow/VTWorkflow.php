@@ -43,6 +43,7 @@ class Workflow {
 		if ($row['defaultworkflow']) {
 			$this->defaultworkflow=$row['defaultworkflow'];
 		}
+		$this->purpose = isset($row['purpose']) ? $row['purpose'] : '';
 		$this->nexttrigger_time = isset($row['nexttrigger_time']) ? $row['nexttrigger_time'] : '';
 	}
 

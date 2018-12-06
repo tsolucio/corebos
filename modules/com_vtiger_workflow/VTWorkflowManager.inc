@@ -50,12 +50,15 @@ class VTWorkflowManager {
 		if (!isset($workflow->schminuteinterval)) {
 			$workflow->schminuteinterval = '';
 		}
+		if (!isset($workflow->purpose)) {
+			$workflow->purpose = '';
+		}
 		$wf=$workflow;
 		if (!empty($workflow->id)) {
 			$adb->pquery(
 				'update com_vtiger_workflows set
 					module_name=?, summary=?, test=?, execution_condition=?, defaultworkflow=?,
-					schtypeid=?, schtime=?, schdayofmonth=?, schdayofweek=?, schannualdates=?,schminuteinterval=? where workflow_id=?',
+					schtypeid=?, schtime=?, schdayofmonth=?, schdayofweek=?, schannualdates=?,schminuteinterval=?, purpose=? where workflow_id=?',
 				array($wf->moduleName, $wf->description, $wf->test, $wf->executionCondition, (isset($wf->defaultworkflow) ? $wf->defaultworkflow : 0),
 					$wf->schtypeid,
 					$wf->schtime,
@@ -63,6 +66,7 @@ class VTWorkflowManager {
 					$wf->schdayofweek,
 					$wf->schannualdates,
 					$wf->schminuteinterval,
+					$wf->purpose,
 					$wf->id)
 			);
 		} else {
@@ -74,7 +78,7 @@ class VTWorkflowManager {
 				$adb->pquery(
 					'insert into com_vtiger_workflows
 						(workflow_id, module_name, summary, test, execution_condition, type, defaultworkflow,
-						schtypeid, schtime, schdayofmonth, schdayofweek, schannualdates,schminuteinterval) values (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+						schtypeid, schtime, schdayofmonth, schdayofweek, schannualdates, schminuteinterval, purpose) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 					array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, $wf->type,
 						(isset($wf->defaultworkflow) ? $wf->defaultworkflow : 0),
 						$wf->schtypeid,
@@ -82,20 +86,22 @@ class VTWorkflowManager {
 						$wf->schdayofmonth,
 						$wf->schdayofweek,
 						$wf->schannualdates,
-						$wf->schminuteinterval)
+						$wf->schminuteinterval,
+						$wf->purpose)
 				);
 			} else {
 				$adb->pquery(
 					'insert into com_vtiger_workflows
 						(workflow_id, module_name, summary, test, execution_condition, defaultworkflow,
-						schtypeid, schtime, schdayofmonth, schdayofweek, schannualdates,schminuteinterval) values (?,?,?,?,?,?,?,?,?,?,?,?)',
+						schtypeid, schtime, schdayofmonth, schdayofweek, schannualdates,schminuteinterval, purpose) values (?,?,?,?,?,?,?,?,?,?,?,?)',
 					array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, (isset($wf->defaultworkflow) ? $wf->defaultworkflow : 0),
 						$wf->schtypeid,
 						$wf->schtime,
 						$wf->schdayofmonth,
 						$wf->schdayofweek,
 						$wf->schannualdates,
-						$wf->schminuteinterval)
+						$wf->schminuteinterval,
+						$wf->purpose)
 				);
 			}
 		}
@@ -105,9 +111,9 @@ class VTWorkflowManager {
 	public function getWorkflows() {
 		$result=$this->adb->getColumnNames('com_vtiger_workflows');
 		if (in_array('defaultworkflow', $result)) {
-			$result = $this->adb->query('select workflow_id, module_name, summary, test, execution_condition,defaultworkflow, type from com_vtiger_workflows');
+			$result = $this->adb->query('select workflow_id, module_name, summary, test, execution_condition,defaultworkflow, type, purpose from com_vtiger_workflows');
 		} else {
-			$result = $this->adb->query('select workflow_id, module_name, summary, test, execution_condition, type from com_vtiger_workflows');
+			$result = $this->adb->query('select workflow_id, module_name, summary, test, execution_condition, type, purpose from com_vtiger_workflows');
 		}
 		return $this->getWorkflowsForResult($result);
 	}
@@ -149,12 +155,12 @@ class VTWorkflowManager {
 		$result=$this->adb->getColumnNames('com_vtiger_workflows');
 		if (in_array('defaultworkflow', $result)) {
 			$result = $this->adb->pquery(
-				'select workflow_id, module_name, summary, test, execution_condition, defaultworkflow, type from com_vtiger_workflows where module_name=?',
+				'select workflow_id, module_name, summary, test, execution_condition, defaultworkflow, type, purpose from com_vtiger_workflows where module_name=?',
 				array($moduleName)
 			);
 		} else {
 			$result = $this->adb->pquery(
-				'select workflow_id, module_name, summary, test, execution_condition, type from com_vtiger_workflows where module_name=?',
+				'select workflow_id, module_name, summary, test, execution_condition, type, purpose from com_vtiger_workflows where module_name=?',
 				array($moduleName)
 			);
 		}
@@ -310,6 +316,7 @@ class VTWorkflowManager {
 		$workflow->type = 'basic';
 		$workflow->id = 0;
 		$workflow->description = '';
+		$workflow->purpose = '';
 		$workflow->schtypeid = 0;
 		$workflow->nexttrigger_time = '';
 		return $workflow;
@@ -324,6 +331,7 @@ class VTWorkflowManager {
 		$exp = array();
 		$exp['moduleName'] = $workflow->moduleName;
 		$exp['description'] = $workflow->description;
+		$exp['purpose'] = $workflow->purpose;
 		$exp['test'] = $workflow->test;
 		$exp['executionCondition'] = $workflow->executionCondition;
 		$exp['schtypeid'] = $workflow->schtypeid;
@@ -351,6 +359,7 @@ class VTWorkflowManager {
 		$data =  json_decode($str, true);
 		$workflow = $this->newWorkflow($data['moduleName']);
 		$workflow->description = $data['description'];
+		$workflow->purpose = $data['purpose'];
 		$workflow->test = $data['test'];
 		$workflow->executionCondition = $data['executionCondition'];
 		$workflow->schtypeid = $data['schtypeid'];

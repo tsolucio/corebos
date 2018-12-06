@@ -210,4 +210,11 @@
 	<classname>addWSVirtualActors</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add PURPOSE field to workflows</description>
+	<filename>build/changeSets/2018/addWFPurpose.php</filename>
+	<classname>addWFPurpose</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
