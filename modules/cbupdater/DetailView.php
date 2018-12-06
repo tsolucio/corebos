@@ -25,6 +25,6 @@ $smarty->assign('EDIT_PERMISSION', 'no');
 $smarty->assign('CREATE_PERMISSION', 'no');
 $smarty->assign('DELETE', 'notpermitted');
 $smarty->assign('CONTACT_PERMISSION', 'notpermitted');
-
+$smarty->assign('IS_REL_LIST', isPresentRelatedLists($currentModule));
 $smarty->display('DetailView.tpl');
 ?>
