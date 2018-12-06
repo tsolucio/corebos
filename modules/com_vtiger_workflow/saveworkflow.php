@@ -29,6 +29,7 @@ function vtWorkflowSave($adb, $request) {
 	}
 
 	$description = $request['description'];
+	$purpose = $request['purpose'];
 	$moduleName = $request['module_name'];
 	$conditions = $request['conditions'];
 	$saveType = $request['save_type'];
@@ -65,6 +66,7 @@ function vtWorkflowSave($adb, $request) {
 	if ($saveType == 'new') {
 		$wf = $wm->newWorkflow($moduleName);
 		$wf->description = $description;
+		$wf->purpose = $purpose;
 		$wf->test = $conditions;
 		$wf->executionConditionAsLabel($executionCondition);
 		$wf->schtypeid = $request['schtypeid'];
@@ -77,6 +79,7 @@ function vtWorkflowSave($adb, $request) {
 	} elseif ($saveType == 'edit') {
 		$wf = $wm->retrieve($request["workflow_id"]);
 		$wf->description = $description;
+		$wf->purpose = $purpose;
 		$wf->test = $conditions;
 		$wf->executionConditionAsLabel($executionCondition);
 		$wf->schtypeid = $request['schtypeid'];

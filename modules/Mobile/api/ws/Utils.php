@@ -463,7 +463,7 @@ class crmtogo_WS_Utils {
 	**/
 	public static function getTicketComments($ticket) {
 		$db = PearDatabase::getInstance();
-		$commentlist = '';
+		$commentlist = array();
 		$recordid = vtws_getIdComponents($ticket['id']);
 		$recordid = $recordid[1];
 		$recordprefix= self::getEntityModuleWSId('Users');
@@ -509,10 +509,8 @@ class crmtogo_WS_Utils {
 	}
 
 	//     Function to find the related modulename by given fieldname
-
 	public static function getEntityName($fieldname, $module = '') {
 		$db = PearDatabase::getInstance();
-
 		$result = $db->pquery('SELECT `modulename` FROM `vtiger_entityname` WHERE `entityidcolumn` = ? LIMIT 1', array($fieldname));
 		return $db->query_result($result, 0, 'modulename');
 	}
@@ -555,7 +553,6 @@ class crmtogo_WS_Utils {
 				$columnname = 'accountname';
 				$tablename = 'vtiger_account';
 			}
-			// END
 
 			//Before form the where condition, check whether the table for the field has been added in the listview query
 			if (strstr($listquery, $tablename)) {
@@ -568,15 +565,20 @@ class crmtogo_WS_Utils {
 		return $where;
 	}
 
-	public static function getContactBase64Image($contactid) {
-		$contactid = explode('x', $contactid);
+	public static function getContactBase64Image($crmid, $module, $imagename) {
+		$crmid = explode('x', $crmid);
 		$db = PearDatabase::getInstance();
+		if ($module=='Contacts') {
+			$attstr = 'Contacts Image';
+		} else {
+			$attstr = $module.' Attachment';
+		}
 		$sql = "SELECT vtiger_attachments.*, vtiger_crmentity.setype
 			FROM vtiger_attachments
 			INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
 			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
-			WHERE vtiger_crmentity.setype = 'Contacts Image' and vtiger_seattachmentsrel.crmid = ?";
-		$result = $db->pquery($sql, array($contactid[1]));
+			WHERE vtiger_crmentity.setype = '$attstr' and vtiger_seattachmentsrel.crmid=? and vtiger_attachments.name=?";
+		$result = $db->pquery($sql, array($crmid[1], $imagename));
 		$noofrows = $db->num_rows($result);
 		if ($noofrows >0) {
 			$imageId = $db->query_result($result, 0, 'attachmentsid');
@@ -651,6 +653,7 @@ class crmtogo_WS_Utils {
 	}
 
 	public static function getConfigDefaults() {
+		require_once 'include/utils/utils.php';
 		$db = PearDatabase::getInstance();
 		$result = $db->pquery('SELECT * FROM berli_crmtogo_defaults', array());
 		$config = array ();
@@ -658,11 +661,10 @@ class crmtogo_WS_Utils {
 		$config ['fetch_limit'] = $db->query_result($result, 0, 'fetch_limit');
 		$config ['theme'] = $db->query_result($result, 0, 'defaulttheme');
 		//Get organizations details
-		$res_orgdt = $db->pquery('select * from vtiger_organizationdetails', array());
-		//Handle for allowed organation logo/logoname likes UTF-8 Character
-		$config['company_name'] = $db->query_result($res_orgdt, 0, 'organizationname');
-		$config['company_website'] = $db->query_result($res_orgdt, 0, 'website');
-		$config['company_logo'] = decode_html($db->query_result($res_orgdt, 0, 'logoname'));
+		$companyDetails = retrieveCompanyDetails();
+		$config['company_name'] = $companyDetails["companyname"];
+		$config['company_website'] = $companyDetails["website"];
+		$config['company_logo'] = $companyDetails["companylogo"];
 		return $config;
 	}
 
@@ -730,13 +732,19 @@ class crmtogo_WS_Utils {
 		//todo: find better way to identify modules with comments
 		$comments_module = array ();
 		$db = PearDatabase::getInstance();
-		$sql = "SELECT * FROM vtiger_links where linktype = 'DETAILVIEWWIDGET' and linkurl = 'block://ModComments:modules/ModComments/ModComments.php'";
+		$sql = "SELECT vtiger_businessactions.module_list 
+                  FROM vtiger_businessactions INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_businessactions.businessactionsid 
+                 WHERE vtiger_crmentity.deleted = 0
+                   AND vtiger_businessactions.elementtype_action = 'DETAILVIEWWIDGET' 
+                   AND vtiger_businessactions.linkurl = 'block://ModComments:modules/ModComments/ModComments.php'";
 		$result = $db->pquery($sql, array());
 		$noofrows = $db->num_rows($result);
 		if ($noofrows >0) {
 			for ($i=0; $i<$noofrows; $i++) {
-				$tabid = $db->query_result($result, $i, 'tabid');
-				$comments_module[] =vtlib_getModuleNameById($tabid);
+				$module_list = explode(' |##| ', $db->query_result($result, $i, 'module_list'));
+				foreach ($module_list as $module) {
+					$comments_module[] = $module;
+				}
 			}
 		}
 		$comments_module[] = 'HelpDesk';

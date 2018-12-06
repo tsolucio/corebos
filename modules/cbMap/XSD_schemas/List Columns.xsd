@@ -1,0 +1,69 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="map">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="originmodule">
+          <xs:complexType mixed="true">
+            <xs:sequence>
+              <xs:element type="xs:byte" name="originid"/>
+              <xs:element type="xs:string" name="originname"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="relatedlists">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="relatedlist">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="module"/>
+                    <xs:element type="xs:string" name="linkfield"/>
+                    <xs:element name="columns">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="field">
+                            <xs:complexType mixed="true">
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="label"/>
+                                <xs:element type="xs:string" name="name"/>
+                                <xs:element type="xs:string" name="table"/>
+                                <xs:element type="xs:string" name="columnname"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="popup">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="linkfield"/>
+              <xs:element name="columns">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="field">
+                      <xs:complexType mixed="true">
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="label"/>
+                          <xs:element type="xs:string" name="name"/>
+                          <xs:element type="xs:string" name="table"/>
+                          <xs:element type="xs:string" name="columnname"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

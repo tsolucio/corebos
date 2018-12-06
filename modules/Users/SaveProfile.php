@@ -150,6 +150,12 @@ foreach ($modArr as $fld_module => $fld_label) {
 		} else {
 			$readOnlyValue = '';
 		}
+		$positionfieldid = $fieldid.'_position';
+		if (isset($sentvariables->$positionfieldid)) {
+			$positionValue = $sentvariables->$positionfieldid;
+		} else {
+			$positionValue = 'B';
+		}
 		//Updating the Mandatory fields
 		$uitype = $adb->query_result($fieldListResult, $i, 'uitype');
 		$displaytype = $adb->query_result($fieldListResult, $i, 'displaytype');
@@ -160,7 +166,7 @@ foreach ($modArr as $fld_module => $fld_label) {
 			$visible_value = 0;
 		}
 		//Updating the database
-		$adb->pquery('insert into vtiger_profile2field values(?,?,?,?,?)', array($profileid, $tab_id, $fieldid, $visible_value,$readOnlyValue));
+		$adb->pquery('insert into vtiger_profile2field values(?,?,?,?,?,?)', array($profileid, $tab_id, $fieldid, $visible_value, $readOnlyValue, $positionValue));
 	}
 }
 $loc = 'index.php?action=ListProfiles&module=Settings&mode=view&parenttab=Settings&profileid='.urlencode(vtlib_purify($profileid))

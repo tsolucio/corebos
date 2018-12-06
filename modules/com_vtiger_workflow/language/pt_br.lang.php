@@ -159,5 +159,6 @@ $mod_strings = array(
 'LBL_METHOD_NAME' => 'Nome do método',
 'NO_METHOD_AVAILABLE' => 'Nenhum método está disponível para este módulo.',
 'launchrelwf' => 'Launch workflows on related updates',
+'LBL_WFPURPOSE' => 'Purpose',
 );
 ?>

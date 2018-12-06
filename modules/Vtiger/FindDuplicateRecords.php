@@ -37,11 +37,11 @@ $smarty->assign('CATEGORY', getParentTab($currentModule));
 $ids_list = array();
 $errormsg = '';
 if (isset($_REQUEST['del_rec'])) {
-	$delete_id_array=explode(",", $delete_idstring, -1);
+	$delete_id_array=explode(',', $delete_idstring, -1);
 
 	foreach ($delete_id_array as $id) {
 		if (isPermitted($req_module, 'Delete', $id) == 'yes') {
-			DeleteEntity($req_module, $return_module, $focus, $id, "");
+			DeleteEntity($req_module, $return_module, $focus, $id, '');
 		} else {
 			$ids_list[] = $id;
 		}
@@ -68,6 +68,25 @@ if (isset($_REQUEST['del_rec'])) {
 			</div>
 			</td></tr></table>";
 		exit;
+	}
+}
+
+if (isset($_REQUEST['del_exact_dup_rec'])) {
+	$dup_records=getDuplicateRecordsArr($req_module, false);
+	$delete_fail_status = deleteExactDuplicates($dup_records[0], $req_module);
+	if (!$delete_fail_status) {
+		$smarty = new vtigerCRM_Smarty();
+		$smarty->assign('APP', $app_strings);
+		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-success');
+		$smarty->assign('ERROR_MESSAGE', $app_strings['LBL_DUPLICATE_DELETE']);
+		$smarty->display('applicationmessage.tpl');
+		exit;
+	} else {
+		$smarty = new vtigerCRM_Smarty();
+		$smarty->assign('APP', $app_strings);
+		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
+		$smarty->assign('ERROR_MESSAGE', $app_strings['LBL_DUPLICATE_DELETE_FAIL']);
+		$smarty->display('applicationmessage.tpl');
 	}
 }
 

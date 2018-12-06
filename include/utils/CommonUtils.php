@@ -2097,6 +2097,7 @@ function getEntityName($module, $ids_list) {
 		$module = 'Calendar';
 	}
 	if ($module != '') {
+		$ids_list = (array)$ids_list;
 		if (count($ids_list) <= 0) {
 			return array();
 		}
@@ -3253,16 +3254,12 @@ function getEntityFieldValues($entity_field_info, $ids_list) {
 	//$moduleName = $entity_field_info['modulename'];
 	$entityIdField = $entity_field_info['entityidfield'];
 	if (is_array($fieldsName)) {
-		$fieldsNameString = implode(",", $fieldsName);
+		$fieldsNameString = implode(',', $fieldsName);
 	} else {
 		$fieldsNameString = $fieldsName;
 	}
-	$query1 = "SELECT $fieldsNameString,$entityIdField FROM $tableName WHERE $entityIdField IN (" . generateQuestionMarks($ids_list) . ')';
-	if (is_array($ids_list)) {
-		$params1 = $ids_list;
-	} else {
-		$params1 = array($ids_list);
-	}
+	$params1 = (array)$ids_list;
+	$query1 = "SELECT $fieldsNameString,$entityIdField FROM $tableName WHERE $entityIdField IN (" . generateQuestionMarks($params1) . ')';
 	$result = $adb->pquery($query1, $params1);
 	$numrows = $adb->num_rows($result);
 	$entity_info = array();
@@ -3395,24 +3392,21 @@ function picklistHasDependency($keyfldname, $modulename) {
 }
 
 function fetch_logo($type) {
-	global $adb;
-	$logodir ='test/logo/';
-	$sql='select logoname,frontlogo,faviconlogo from vtiger_organizationdetails';
-	$result = $adb->pquery($sql, array());
+	$companyDetails = retrieveCompanyDetails();
 	switch ($type) {
 		case 1:
-			$logoname = decode_html($adb->query_result($result, 0, 'logoname'));
+			$logoname = decode_html($companyDetails['companylogo']);
 			break;
 		case 2:
-			$logoname = decode_html($adb->query_result($result, 0, 'frontlogo'));
+			$logoname = decode_html($companyDetails['applogo']);
 			break;
 		case 3:
-			$logoname = decode_html($adb->query_result($result, 0, 'faviconlogo'));
+			$logoname = decode_html($companyDetails['favicon']);
 			break;
 		default:
-			$logoname = 'app-logo.jpg';
+			$logoname = 'test/logo/app-logo.jpg';
 	}
-	return $logodir.$logoname;
+	return $logoname;
 }
 
 /* added to get mail info for portal user
@@ -3445,5 +3439,40 @@ function getmail_contents_portalUser($request_array, $password, $type = '') {
 	}
 
 	return $contents;
+}
+
+/**
+ * To get the modules allowed for global search this function returns all the
+ * modules which supports global search as an array in the following structure
+ * array($module_name1=>$object_name1,$module_name2=>$object_name2,$module_name3=>$object_name3,$module_name4=>$object_name4,-----)
+ */
+function getSearchModulesCommon($filter = array()) {
+	global $adb;
+	// Ignore disabled administrative modules
+	$doNotSearchThese = array('Dashboard','Home','Calendar','Events','Rss','Reports','Portal','Users','ConfigEditor','Import','MailManager','Mobile','ModTracker',
+		'PBXManager','VtigerBackup','WSAPP','cbupdater','CronTasks','RecycleBin','Tooltip','Webforms','Calendar4You','GlobalVariable','cbMap','evvtMenu','cbAuditTrail',
+		'cbLoginHistory','cbtranslation','BusinessActions','cbCVManagement');
+	$doNotSearchTheseTabids = array();
+	foreach ($doNotSearchThese as $mname) {
+		$tabid = getTabid($mname);
+		if (!empty($tabid)) {
+			$doNotSearchTheseTabids[] = $tabid;
+		}
+	}
+	$sql = 'select distinct vtiger_field.tabid,name
+		from vtiger_field
+		inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
+		where vtiger_tab.tabid not in ('.generateQuestionMarks($doNotSearchTheseTabids).') and vtiger_tab.presence != 1 and vtiger_field.presence in (0,2)';
+	$result = $adb->pquery($sql, array($doNotSearchTheseTabids));
+	$return_arr = array();
+	while ($module_result = $adb->fetch_array($result)) {
+		$modulename = $module_result['name'];
+		// Do we need to filter the module selection?
+		if (!empty($filter) && is_array($filter) && !in_array($modulename, $filter)) {
+			continue;
+		}
+		$return_arr[$modulename] = $modulename;
+	}
+	return $return_arr;
 }
 ?>

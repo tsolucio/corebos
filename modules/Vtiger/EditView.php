@@ -154,9 +154,9 @@ if ($focus->mode != 'edit' && $mod_seq_field != null) {
 	}
 	if ($adb->num_rows($mod_seq_string) == 0 || $focus->checkModuleSeqNumber($focus->table_name, $mod_seq_field['column'], $mod_seq_prefix.$mod_seq_no)) {
 		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
-		$smarty->assign('ERROR_MESSAGE', '<b>'. getTranslatedString($mod_seq_field['label']). ' '. getTranslatedString('LBL_NOT_CONFIGURED').' - '.
-			getTranslatedString('LBL_PLEASE_CLICK') .' <a href="index.php?module=Settings&action=CustomModEntityNo&parenttab=Settings&selmodule='.$currentModule.'">'.
-			getTranslatedString('LBL_HERE').'</a> '. getTranslatedString('LBL_TO_CONFIGURE'). ' '. getTranslatedString($mod_seq_field['label']) .'</b>');
+		$smarty->assign('ERROR_MESSAGE', '<b>'. getTranslatedString($mod_seq_field['label']). ' '. getTranslatedString('LBL_NOT_CONFIGURED')
+			.' - '. getTranslatedString('LBL_PLEASE_CLICK') .' <a href="index.php?module=Settings&action=CustomModEntityNo&parenttab=Settings&selmodule='
+			.$currentModule.'">'.getTranslatedString('LBL_HERE').'</a> '.getTranslatedString('LBL_TO_CONFIGURE').' '.getTranslatedString($mod_seq_field['label']).'</b>');
 	} else {
 		$smarty->assign('MOD_SEQ_ID', $autostr);
 	}
@@ -172,6 +172,6 @@ if ($focus->mode != 'edit' && $mod_seq_field != null) {
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);
 
-$picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
-$smarty->assign('PICKIST_DEPENDENCY_DATASOURCE', json_encode($picklistDependencyDatasource));
+$cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
+$smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 ?>

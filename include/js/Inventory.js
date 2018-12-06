@@ -1869,7 +1869,11 @@ function handleProductAutocompleteSelect(obj) {
 	if (obj.result.pricing.multicurrency[currency] != undefined) {
 		document.getElementById('listPrice'+no).value = obj.result.pricing.multicurrency[currency].actual_price;
 	} else {
-		document.getElementById('listPrice'+no).value = obj.result.pricing.unit_price;
+		var list_price = obj.result.pricing.unit_price
+		if (gVTModule == 'PurchaseOrder') {
+			list_price = obj.result.pricing.unit_cost;
+		}
+		document.getElementById('listPrice'+no).value = list_price;
 	}
 	document.getElementById('hdnProductId'+no).value = obj.result.meta.id;
 	document.getElementById('lineItemType'+no).value = obj.result.meta.type;

@@ -9,6 +9,13 @@
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="include/js/dtlviewajax.js"></script>
+{if $FIELD_DEPENDENCY_DATASOURCE neq ''}
+<script type="text/javascript" src="include/js/FieldDependencies.js"></script>
+<script type="text/javascript" src="include/js/FieldDepFunc.js"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function() {ldelim} (new FieldDependencies({$FIELD_DEPENDENCY_DATASOURCE})).init(document.forms['DetailView']) {rdelim});
+</script>
+{/if}
 <script type="text/javascript" src="include/js/clipboard.min.js"></script>
 <span id="crmspanid" style="display:none;position:absolute;" onmouseover="show('crmspanid');">
 	<a class="link" id="clipcopylink" href="javascript:;" onclick="handleCopyClipboard(event);" data-clipboard-text="">{$APP.LBL_COPY_BUTTON}</a>
@@ -44,14 +51,6 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 	}
 }
 {/literal}
-function tagvalidate() {ldelim}
-	if (trim(document.getElementById('txtbox_tagfields').value) != '') {ldelim}
-		SaveTag('txtbox_tagfields','{$ID}','{$MODULE}');
-	{rdelim} else {ldelim}
-		alert("{$APP.PLEASE_ENTER_TAG}");
-		return false;
-	{rdelim}
-{rdelim}
 </script>
 
 <div id="lstRecordLayout" class="layerPopup" style="display:none;width:325px;height:300px;"></div>
@@ -347,140 +346,9 @@ function tagvalidate() {ldelim}
 												<table width="100%" border="0" cellpadding="5" cellspacing="0" class="detailview_actionlinks actionlinks_events_todo">
 													<tr><td align="left" class="genHeaderSmall">{$APP.LBL_ACTIONS}</td></tr>
 
-													{if $MODULE eq 'HelpDesk'}
-														{if $CONVERTASFAQ eq 'permitted'}
-															<tr class="actionlink actionlink_converttofaq">
-																<td align="left" style="padding-left:10px;">
-																	<a class="webMnu" href="index.php?return_module={$MODULE}&return_action=DetailView&record={$ID}&return_id={$ID}&module={$MODULE}&action=ConvertAsFAQ"><img src="{'convert.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle"  border="0"/></a>
-																	<a class="webMnu" href="index.php?return_module={$MODULE}&return_action=DetailView&record={$ID}&return_id={$ID}&module={$MODULE}&action=ConvertAsFAQ">{$MOD.LBL_CONVERT_AS_FAQ_BUTTON_LABEL}</a>
-																</td>
-															</tr>
-														{/if}
-													{elseif $MODULE eq 'Potentials'}
-														{if $CONVERTINVOICE eq 'permitted'}
-															<tr class="actionlink actionlink_converttoinvoice">
-																<td align="left" style="padding-left:10px;">
-																	<a class="webMnu" href="index.php?return_module={$MODULE}&return_action=DetailView&return_id={$ID}&convertmode={$CONVERTMODE}&module=Invoice&action=EditView&account_id={$ACCOUNTID}"><img src="{'actionGenerateInvoice.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle"  border="0"/></a>
-																	<a class="webMnu" href="index.php?return_module={$MODULE}&return_action=DetailView&return_id={$ID}&convertmode={$CONVERTMODE}&module=Invoice&action=EditView&account_id={$ACCOUNTID}">{$APP.LBL_CREATE} {$APP.Invoice}</a>
-																</td>
-															</tr>
-														{/if}
-													{elseif $MODULE eq 'Products' || $MODULE eq 'Services'}
-													<!-- Product/Services Actions starts -->
-														{if $MODULE eq 'Products'}
-															{assign var='module_id' value='product_id'}
-														{else}
-															{assign var='module_id' value='parent_id'}
-														{/if}
-														<tr>
-															<td align="left" style="padding-left:5px;">
-																<a href="javascript: document.DetailView.module.value='Quotes'; document.DetailView.action.value='EditView'; document.DetailView.return_module.value='{$MODULE}'; document.DetailView.return_action.value='DetailView'; document.DetailView.return_id.value='{$ID}'; document.DetailView.parent_id.value='{$ID}'; document.DetailView.{$module_id}.value='{$ID}'; document.DetailView.record.value=''; document.DetailView.submit();" class="webMnu"><img src="{'actionGenerateQuote.gif'|@vtiger_imageurl:$THEME}" hspace="2" align="absmiddle" border="0"/></a>
-																<a href="javascript: document.DetailView.module.value='Quotes'; document.DetailView.action.value='EditView'; document.DetailView.return_module.value='{$MODULE}'; document.DetailView.return_action.value='DetailView'; document.DetailView.return_id.value='{$ID}'; document.DetailView.parent_id.value='{$ID}'; document.DetailView.{$module_id}.value='{$ID}'; document.DetailView.record.value=''; document.DetailView.submit();" class="webMnu">{$APP.LBL_CREATE_BUTTON_LABEL} {$APP.Quote}</a>
-															</td>
-														</tr>
-														<tr>
-															<td align="left" style="padding-left:5px;">
-																<a href="javascript: document.DetailView.module.value='Invoice'; document.DetailView.action.value='EditView'; document.DetailView.return_module.value='{$MODULE}'; document.DetailView.return_action.value='DetailView'; document.DetailView.return_id.value='{$ID}'; document.DetailView.parent_id.value='{$ID}'; document.DetailView.{$module_id}.value='{$ID}'; document.DetailView.record.value=''; document.DetailView.submit();" class="webMnu"><img src="{'actionGenerateInvoice.gif'|@vtiger_imageurl:$THEME}" hspace="2" align="absmiddle" border="0"/></a>
-																<a href="javascript: document.DetailView.module.value='Invoice'; document.DetailView.action.value='EditView'; document.DetailView.return_module.value='{$MODULE}'; document.DetailView.return_action.value='DetailView'; document.DetailView.return_id.value='{$ID}'; document.DetailView.parent_id.value='{$ID}'; document.DetailView.{$module_id}.value='{$ID}'; document.DetailView.record.value=''; document.DetailView.submit();" class="webMnu">{$APP.LBL_CREATE_BUTTON_LABEL} {$APP.Invoice}</a>
-															</td>
-														</tr>
-														<tr>
-															<td align="left" style="padding-left:5px;">
-																<a href="javascript: document.DetailView.module.value='SalesOrder'; document.DetailView.action.value='EditView'; document.DetailView.return_module.value='{$MODULE}'; document.DetailView.return_action.value='DetailView'; document.DetailView.return_id.value='{$ID}'; document.DetailView.parent_id.value='{$ID}'; document.DetailView.{$module_id}.value='{$ID}'; document.DetailView.record.value=''; document.DetailView.submit();" class="webMnu"><img src="{'actionGenerateSalesOrder.gif'|@vtiger_imageurl:$THEME}" hspace="2" align="absmiddle" border="0"/></a>
-																<a href="javascript: document.DetailView.module.value='SalesOrder'; document.DetailView.action.value='EditView'; document.DetailView.return_module.value='{$MODULE}'; document.DetailView.return_action.value='DetailView'; document.DetailView.return_id.value='{$ID}'; document.DetailView.parent_id.value='{$ID}'; document.DetailView.{$module_id}.value='{$ID}'; document.DetailView.record.value=''; document.DetailView.submit();" class="webMnu">{$APP.LBL_CREATE_BUTTON_LABEL} {$APP.SalesOrder}</a>
-															</td>
-														</tr>
-														<tr>
-															<td align="left" style="padding-left:5px;">
-																<a href="javascript: document.DetailView.module.value='PurchaseOrder'; document.DetailView.action.value='EditView'; document.DetailView.return_module.value='{$MODULE}'; document.DetailView.return_action.value='DetailView'; document.DetailView.return_id.value='{$ID}'; document.DetailView.parent_id.value='{$ID}'; document.DetailView.{$module_id}.value='{$ID}'; document.DetailView.record.value=''; document.DetailView.submit();" class="webMnu"><img src="{'actionGenPurchaseOrder.gif'|@vtiger_imageurl:$THEME}" hspace="2" align="absmiddle" border="0"/></a>
-																<a href="javascript: document.DetailView.module.value='PurchaseOrder'; document.DetailView.action.value='EditView'; document.DetailView.return_module.value='{$MODULE}'; document.DetailView.return_action.value='DetailView'; document.DetailView.return_id.value='{$ID}'; document.DetailView.parent_id.value='{$ID}'; document.DetailView.{$module_id}.value='{$ID}'; document.DetailView.record.value=''; document.DetailView.submit();" class="webMnu">{$APP.LBL_CREATE_BUTTON_LABEL} {$APP.PurchaseOrder}</a>
-															</td>
-														</tr>
-													{elseif $MODULE eq 'Vendors'}
-														<tr>
-															<td align="left" style="padding-left:10px;">
-																<a href="javascript: document.DetailView.module.value='PurchaseOrder'; document.DetailView.action.value='EditView'; document.DetailView.return_module.value='Vendors'; document.DetailView.return_action.value='DetailView'; document.DetailView.return_id.value='{$ID}'; document.DetailView.parent_id.value='{$ID}'; document.DetailView.vendor_id.value='{$ID}'; document.DetailView.record.value=''; document.DetailView.submit();" class="webMnu">	<img src="{'actionGenPurchaseOrder.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle" border="0"/></a>
-																<a href="javascript: document.DetailView.module.value='PurchaseOrder'; document.DetailView.action.value='EditView'; document.DetailView.return_module.value='Vendors'; document.DetailView.return_action.value='DetailView'; document.DetailView.return_id.value='{$ID}'; document.DetailView.parent_id.value='{$ID}'; document.DetailView.vendor_id.value='{$ID}'; document.DetailView.record.value=''; document.DetailView.submit();" class="webMnu">{$APP.LBL_CREATE_BUTTON_LABEL} {$APP.PurchaseOrder}</a>
-															</td>
-														</tr>
-													{elseif in_array($MODULE, getInventoryModules())}
+													{if in_array($MODULE, getInventoryModules())}
 														<!-- Inventory Actions -->
 														{include file="Inventory/InventoryActions.tpl"}
-													{elseif $TODO_PERMISSION eq 'true' || $EVENT_PERMISSION eq 'true' || $CONTACT_PERMISSION eq 'true'|| $MODULE eq 'Contacts' || $MODULE eq 'Leads' || ($MODULE eq 'Documents')}
-
-														{if $MODULE eq 'Contacts'}
-															{assign var=subst value="cto_id"}
-															{assign var=acc value="&rel_id=$accountid"}
-														{else}
-															{assign var=subst value="rel_id"}
-															{assign var=acc value=""}
-														{/if}
-
-														{if $MODULE eq 'Leads' || $MODULE eq 'Contacts' || $MODULE eq 'Accounts'}
-															{if $SENDMAILBUTTON eq 'permitted'}
-																<tr class="actionlink actionlink_sendemail">
-																	<td align="left" style="padding-left:10px;">
-																		{foreach key=index item=email from=$EMAILS}
-																			<input type="hidden" name="email_{$index}" value="{$email}"/>
-																		{/foreach}
-																		<a href="javascript:void(0);" class="webMnu" onclick="{$JS}"><img src="{'sendmail.png'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle"  border="0"/></a>
-																		<a href="javascript:void(0);" class="webMnu" onclick="{$JS}">{$APP.LBL_SENDMAIL_BUTTON_LABEL}</a>
-																	</td>
-																</tr>
-															{/if}
-														{/if}
-
-														{if $MODULE eq 'Contacts' || $EVENT_PERMISSION eq 'true'}
-															<tr class="actionlink actionlink_addevent">
-																<td align="left" style="padding-left:10px;">
-																	<a href="index.php?module=cbCalendar&action=EditView&return_module={$MODULE}&return_action=DetailView&return_id={$ID}&{$subst}={$ID}{$acc}&cbfromid={$ID}&parenttab={$CATEGORY}" class="webMnu"><img src="{'AddEvent.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle"  border="0"/></a>
-																	<a href="index.php?module=cbCalendar&action=EditView&return_module={$MODULE}&return_action=DetailView&return_id={$ID}&{$subst}={$ID}{$acc}&cbfromid={$ID}&parenttab={$CATEGORY}" class="webMnu">{$APP.LBL_ADD_NEW} {$APP.Event}</a>
-																</td>
-															</tr>
-														{/if}
-
-														{if $MODULE eq 'Leads'}
-															{if $CONVERTLEAD eq 'permitted'}
-																<tr class="actionlink actionlink_convertlead">
-																	<td align="left" style="padding-left:10px;">
-																		<a href="javascript:void(0);" class="webMnu" onclick="callConvertLeadDiv('{$ID}');"><img src="{'Leads.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle"  border="0"/></a>
-																		<a href="javascript:void(0);" class="webMnu" onclick="callConvertLeadDiv('{$ID}');">{$APP.LBL_CONVERT_BUTTON_LABEL}</a>
-																	</td>
-																</tr>
-															{/if}
-														{/if}
-
-														<!-- Start: Actions for Documents Module -->
-														{if $MODULE eq 'Documents'}
-															<tr class="actionlink actionlink_downloaddocument"><td align="left" style="padding-left:10px;">
-																	{if $DLD_TYPE eq 'I' && $FILE_STATUS eq '1' && $FILE_EXIST eq 'yes'}
-																		<br><a href="index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile&fileid={$FILEID}&entityid={$NOTESID}"  onclick="javascript:dldCntIncrease({$NOTESID});" class="webMnu"><img src="{'fbDownload.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle" title="{$MOD.LNK_DOWNLOAD}" border="0"/></a>
-																		<a href="index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile&fileid={$FILEID}&entityid={$NOTESID}" onclick="javascript:dldCntIncrease({$NOTESID});">{$MOD.LBL_DOWNLOAD_FILE}</a>
-																	{elseif $DLD_TYPE eq 'E' && $FILE_STATUS eq '1'}
-																		<br><a target="_blank" href="{$DLD_PATH}" onclick="javascript:dldCntIncrease({$NOTESID});"><img src="{'fbDownload.gif'|@vtiger_imageurl:$THEME}"" align="absmiddle" title="{$MOD.LNK_DOWNLOAD}" border="0"></a>
-																		<a target="_blank" href="{$DLD_PATH}" onclick="javascript:dldCntIncrease({$NOTESID});">{$MOD.LBL_DOWNLOAD_FILE}</a>
-																	{/if}
-																</td></tr>
-																{if $CHECK_INTEGRITY_PERMISSION eq 'yes'}
-																<tr class="actionlink actionlink_checkdocinteg"><td align="left" style="padding-left:10px;">
-																		<br><a href="javascript:;" onClick="checkFileIntegrityDetailView({$NOTESID});"><img id="CheckIntegrity_img_id" src="{'yes.gif'|@vtiger_imageurl:$THEME}" alt="Check integrity of this file" title="Check integrity of this file" hspace="5" align="absmiddle" border="0"/></a>
-																		<a href="javascript:;" onClick="checkFileIntegrityDetailView({$NOTESID});">{$MOD.LBL_CHECK_INTEGRITY}</a>&nbsp;
-																		<input type="hidden" id="dldfilename" name="dldfilename" value="{$FILEID}-{$FILENAME}">
-																		<span id="vtbusy_integrity_info" style="display:none;">
-																			<img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-																		<span id="integrity_result" style="display:none"></span>
-																	</td></tr>
-																{/if}
-															<tr class="actionlink actionlink_emaildocument"><td align="left" style="padding-left:10px;">
-																	{if $DLD_TYPE eq 'I' &&  $FILE_STATUS eq '1' && $FILE_EXIST eq 'yes'}
-																		<input type="hidden" id="dldfilename" name="dldfilename" value="{$FILEID}-{$FILENAME}">
-																		<br><a href="javascript: document.DetailView.return_module.value='Documents'; document.DetailView.return_action.value='DetailView'; document.DetailView.module.value='Documents'; document.DetailView.action.value='EmailFile'; document.DetailView.record.value={$NOTESID}; document.DetailView.return_id.value={$NOTESID}; sendfile_email();" class="webMnu"><img src="{'attachment.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle" border="0"/></a>
-																		<a href="javascript: document.DetailView.return_module.value='Documents'; document.DetailView.return_action.value='DetailView'; document.DetailView.module.value='Documents'; document.DetailView.action.value='EmailFile'; document.DetailView.record.value={$NOTESID}; document.DetailView.return_id.value={$NOTESID}; sendfile_email();">{$MOD.LBL_EMAIL_FILE}</a>
-																	{/if}
-																</td></tr>
-															<tr><td>&nbsp;</td></tr>
-
-														{/if}
 													{/if}
 												</table>
 												{* vtlib customization: Avoid line break if custom links are present *}

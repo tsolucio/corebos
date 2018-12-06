@@ -16,39 +16,40 @@
 
 class ldMenu extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError ())
-			$this->sendError ();
-		if ($this->isApplied ()) {
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
+		if ($this->isApplied()) {
 			$this->sendMsg('Changeset ' . get_class($this) . ' already applied!');
 		} else {
 			$toinstall = array('evvtMenu');
-			foreach ( $toinstall as $module ) {
+			foreach ($toinstall as $module) {
 				if ($this->isModuleInstalled($module)) {
-					vtlib_toggleModuleAccess( $module, true );
-					$this->sendMsg( "$module activated!" );
+					vtlib_toggleModuleAccess($module, true);
+					$this->sendMsg("$module activated!");
 				} else {
 					$this->ExecuteQuery("CREATE TABLE IF NOT EXISTS `vtiger_evvtmenu` (
-								  `evvtmenuid` int(11) NOT NULL AUTO_INCREMENT,
-								  `mtype` varchar(25) NOT NULL,
-								  `mvalue` varchar(200) NOT NULL,
-								  `mlabel` varchar(200) NOT NULL,
-								  `mparent` int(11) NOT NULL,
-								  `mseq` smallint(6) NOT NULL,
-								  `mvisible` tinyint(4) NOT NULL,
-								  `mpermission` varchar(250) NOT NULL,
-								  PRIMARY KEY (`evvtmenuid`),
-								  KEY `mparent` (`mparent`)
-								) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
-					$this->installManifestModule( $module );
+							`evvtmenuid` int(11) NOT NULL AUTO_INCREMENT,
+							`mtype` varchar(25) NOT NULL,
+							`mvalue` varchar(200) NOT NULL,
+							`mlabel` varchar(200) NOT NULL,
+							`mparent` int(11) NOT NULL,
+							`mseq` smallint(6) NOT NULL,
+							`mvisible` tinyint(4) NOT NULL,
+							`mpermission` varchar(250) NOT NULL,
+							PRIMARY KEY (`evvtmenuid`),
+							KEY `mparent` (`mparent`)
+						) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;");
+					$this->installManifestModule($module);
 				}
 			}
 			$this->sendMsg('This changeset eliminates the Menu Settings section');
 			$this->sendMsg("From now on you must go to Menu Editor link either in the Settings Menu or on the administrator's quick access dropdown menu");
 			$this->ExecuteQuery('UPDATE vtiger_settings_field SET active=? WHERE vtiger_settings_field.name = ?', array('1', 'LBL_MENU_EDITOR'));
-			$this->sendMsg('Changeset ' . get_class ( $this ) . ' applied!');
-			$this->markApplied ();
+			$this->sendMsg('Changeset ' . get_class($this) . ' applied!');
+			$this->markApplied();
 		}
-		$this->finishExecution ();
+		$this->finishExecution();
 	}
 }

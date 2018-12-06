@@ -34,22 +34,24 @@ class coreBOS_Rule {
 			$mergeContextVariables = false;
 			$contextid = $context;
 		}
-		if (strpos($contextid, 'x')===false) {
-			$setype = getSalesEntityType($contextid);
-			$contextid = vtws_getEntityId($setype).'x'.$contextid;
-		}
-		// check that $contextid is correct
-		$webserviceObject = VtigerWebserviceObject::fromId($adb, $contextid);
-		$handlerPath = $webserviceObject->getHandlerPath();
-		$handlerClass = $webserviceObject->getHandlerClass();
+		if (!empty($contextid)) {
+			if (strpos($contextid, 'x')===false) {
+				$setype = getSalesEntityType($contextid);
+				$contextid = vtws_getEntityId($setype).'x'.$contextid;
+			}
+			// check that $contextid is correct
+			$webserviceObject = VtigerWebserviceObject::fromId($adb, $contextid);
+			$handlerPath = $webserviceObject->getHandlerPath();
+			$handlerClass = $webserviceObject->getHandlerClass();
 
-		require_once $handlerPath;
+			require_once $handlerPath;
 
-		$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
-		$meta = $handler->getMeta();
-		$entityName = $meta->getObjectEntityName($contextid);
-		if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $contextid)) {
-			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
+			$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
+			$meta = $handler->getMeta();
+			$entityName = $meta->getObjectEntityName($contextid);
+			if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $contextid)) {
+				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
+			}
 		}
 
 		// check that cbmapid is correct and load it

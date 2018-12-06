@@ -107,7 +107,6 @@ function cbws_getrecordimageinfo($id, $user) {
 			$imga['id'] = $img['attachmentsid'];
 			$imgfield = '';
 			foreach ($inames as $fname => $imgvalue) {
-				global $log; $log->fatal(array($img['name'] , $imgvalue, $fname));
 				if ($img['name'] == $imgvalue) {
 					$imgfield = $fname;
 					break;

@@ -30,8 +30,12 @@ $mod_strings = array(
 'assigned_user_id'=>'Asignado a',
 'active'=>'Activo',
 'acrole'=>'Roles',
-'mandatory'=>'Obligatorio',
+'mandatory'=>'Para todos los usuarios',
 'brmap'=>'Mapa de Negocio',
 'businessactions_no'=>'Nº Acción de Negocio',
+'User' => 'Usuario',
+'Module' => 'Lista Módulos',
+'Search'=> 'Buscar Acción de Negocio',
+'Test' => 'Prueba'
 );
 ?>

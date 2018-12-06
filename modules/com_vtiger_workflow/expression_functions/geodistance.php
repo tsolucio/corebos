@@ -57,18 +57,18 @@ function __cb_getGEODistance($arr) {
 }
 
 function __cb_getGEODistanceFromCompanyAddress($arr) {
-	global $adb;
-	$compAdr = $adb->query('Select address,city,state,country,code from vtiger_organizationdetails');
-	$from = $adb->query_result($compAdr, 0, 'address');
-	$fld = $adb->query_result($compAdr, 0, 'state');
+	require_once 'include/utils/utils.php';
+	$companyDetails = retrieveCompanyDetails();
+	$from = $companyDetails['address'];
+	$fld = $companyDetails['state'];
 	$from.= empty($fld) ? '':', '.$fld;
-	$fld = $adb->query_result($compAdr, 0, 'city');
+	$fld = $companyDetails['city'];
 	$from.= empty($fld) ? '':', '.$fld;
-	$fld = $adb->query_result($compAdr, 0, 'code');
+	$fld = $companyDetails['postalcode'];
 	$from.= empty($fld) ? '':', '.$fld;
 	$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default', '');
 	if ($country == '') {
-		$fld = $adb->query_result($compAdr, 0, 'country');
+	    $fld = $companyDetails['country'];
 		$from.= empty($fld) ? '':', '.$fld;
 	}
 	$array = array($from, $arr[0]);

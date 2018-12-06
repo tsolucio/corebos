@@ -16,27 +16,6 @@ $smarty = new vtigerCRM_Smarty();
 if (useInternalMailer() == 1) {
 	$smarty->assign('INT_MAILER', 'true');
 }
-if (isPermitted('Emails', 'CreateView', '') == 'yes') {
-	$vtwsObject = VtigerWebserviceObject::fromName($adb, $currentModule);
-	$vtwsCRMObjectMeta = new VtigerCRMObjectMeta($vtwsObject, $current_user);
-	$emailFields = $vtwsCRMObjectMeta->getEmailFields();
-	$smarty->assign('SENDMAILBUTTON', 'permitted');
-	$emails=array();
-	foreach ($emailFields as $value) {
-		$emails[]=$value;
-	}
-	$smarty->assign('EMAILS', $emails);
-	$cond="LTrim('%s') !=''";
-	$condition=array();
-	foreach ($emails as $value) {
-		$condition[]=sprintf($cond, $value);
-	}
-	$condition_str=implode('||', $condition);
-	$js='if('.$condition_str."){fnvshobj(this,'sendmail_cont');sendmail('".$currentModule."',".vtlib_purify($_REQUEST['record']).");}else{OpenCompose('','create');}";
-	$smarty->assign('JS', $js);
-} else {
-	$smarty->assign('SENDMAILBUTTON', 'NOTpermitted');
-}
 
 if (isPermitted('Accounts', 'Merge', '') == 'yes') {
 	$wordTemplateResult = fetchWordTemplateList('Accounts');

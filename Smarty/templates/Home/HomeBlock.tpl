@@ -86,7 +86,7 @@
 
 {elseif $HOME_STUFFTYPE eq "Default"}
 	<input type=hidden id=more_{$HOME_STUFFID} value="{if isset($HOME_STUFF.Details.ModuleName)}{$HOME_STUFF.Details.ModuleName}{/if}"/>
-	{if $HOME_STUFF.Details.Entries|@count > 0}
+	{if is_array($HOME_STUFF.Details.Entries) && $HOME_STUFF.Details.Entries|@count > 0}
 		<table border=0 cellspacing=0 cellpadding=2 width=100%>
 		<tr>
 			<td width=5%>&nbsp;</td>

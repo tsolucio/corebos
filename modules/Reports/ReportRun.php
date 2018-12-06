@@ -7,6 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 global $app_strings,$mod_strings, $theme, $log;
 
 $theme_path='themes/'.$theme.'/';
@@ -3226,16 +3229,17 @@ class ReportRun extends CRMEntity {
 		global $currentModule, $current_language, $current_user;
 		$mod_strings = return_module_language($current_language, $currentModule);
 
-		require_once 'include/PHPExcel/PHPExcel.php';
+		require 'include/PhpSpreadsheet/autoload.php';
+
 		$xlsrowheight = GlobalVariable::getVariable('Report_Excel_Export_RowHeight', 20);
-		$workbook = new PHPExcel();
+		$workbook = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
 		$worksheet = $workbook->setActiveSheetIndex(0);
 		$fieldinfo = array();
 		$arr_val = $this->GenerateReport('PDF', $filterlist, false, $fieldinfo);
 		$totalxls = $this->GenerateReport('TOTALXLS', $filterlist);
 
 		$header_styles = array(
-			'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb'=>'E1E0F7')),
+			'fill' => array('fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'startColor' => array('rgb'=>'E1E0F7')),
 			'font' => array('bold' => true)
 		);
 
@@ -3256,7 +3260,7 @@ class ReportRun extends CRMEntity {
 			}
 			$BoolTrue = getTranslatedString('LBL_YES');
 			//$BoolFalse = getTranslatedString('LBL_NO');
-			$count = 0;
+			$count = 1;
 			$rowcount = 1;
 			$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
 			//copy the first value details
@@ -3264,42 +3268,38 @@ class ReportRun extends CRMEntity {
 			$report_header = GlobalVariable::getVariable('Report_HeaderOnXLS', '');
 			if ($report_header == 1) {
 				$rowcount++;
-				$worksheet->setCellValueExplicitByColumnAndRow(0, 1, getTranslatedString($this->reportname), true);
-				$worksheet->getStyleByColumnAndRow(0, 1)->applyFromArray($header_styles);
-				$worksheet->getColumnDimensionByColumn(0)->setAutoSize(true);
+				$worksheet->setCellValueExplicitByColumnAndRow(1, 1, getTranslatedString($this->reportname), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+				$worksheet->getStyleByColumnAndRow(1, 1)->applyFromArray($header_styles);
+				$worksheet->getColumnDimensionByColumn(1)->setAutoSize(true);
 			}
 			foreach ($arrayFirstRowValues as $key => $value) {
-				$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $key, true);
+				$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $key, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
 				$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
-
-				// NOTE Performance overhead: http://stackoverflow.com/questions/9965476/phpexcel-column-size-issues
 				$worksheet->getColumnDimensionByColumn($count)->setAutoSize(true);
-
 				$count = $count + 1;
 				if ($FieldDataTypes[$key]=='currency') {
-					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, getTranslatedString('LBL_CURRENCY'), true);
+					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, getTranslatedString('LBL_CURRENCY'), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
 					$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
 					$worksheet->getColumnDimensionByColumn($count)->setAutoSize(true);
 					$count = $count + 1;
 				}
 			}
-
 			$rowcount++;
 			$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
 			foreach ($arr_val as $key => $array_value) {
-				$count = 0;
+				$count = 1;
 				foreach ($array_value as $hdr => $value) {
 					$value = decode_html($value);
 					$datetime = false;
 					switch ($FieldDataTypes[$hdr]) {
 						case 'boolean':
-							$celltype = PHPExcel_Cell_DataType::TYPE_BOOL;
+							$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_BOOL;
 							$value = ($value==$BoolTrue ? 1:0);
 							break;
 						case 'integer':
 						case 'double':
 						case 'currency':
-							$celltype = PHPExcel_Cell_DataType::TYPE_NUMERIC;
+							$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC;
 							break;
 						case 'date':
 						case 'time':
@@ -3315,14 +3315,14 @@ class ReportRun extends CRMEntity {
 									$value = DateTimeField::__convertToDBFormat($value, $current_user->date_format);
 									$dt = new DateTime($value);
 								}
-								$value = PHPExcel_Shared_Date::PHPToExcel($dt);
-								$celltype = PHPExcel_Cell_DataType::TYPE_NUMERIC;
+								$value = \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel($dt);
+								$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC;
 							} else {
-								$celltype = PHPExcel_Cell_DataType::TYPE_STRING;
+								$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING;
 							}
 							break;
 						default:
-							$celltype = PHPExcel_Cell_DataType::TYPE_STRING;
+							$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING;
 							break;
 					}
 					if ($FieldDataTypes[$hdr]=='currency') {
@@ -3336,16 +3336,16 @@ class ReportRun extends CRMEntity {
 					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, $celltype);
 					if ($FieldDataTypes[$hdr]=='date') {
 						if ($datetime) {
-							$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode($current_user->date_format.' '.PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME4);
+							$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode($current_user->date_format.' '.\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME4);
 						} else {
 							$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode($current_user->date_format);
 						}
 					} elseif ($FieldDataTypes[$hdr]=='time') {
-						$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME4);
+						$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME4);
 					}
 					if ($FieldDataTypes[$hdr]=='currency') {
 						$count = $count + 1;
-						$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $csym, PHPExcel_Cell_DataType::TYPE_STRING);
+						$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $csym, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
 					}
 					$count = $count + 1;
 				}
@@ -3359,13 +3359,13 @@ class ReportRun extends CRMEntity {
 			$count=0;
 			if (isset($totalxls) && is_array($totalxls) && count($totalxls)>0) {
 				if (is_array($totalxls[0])) {
-					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, getTranslatedString('Totals', 'Reports'), PHPExcel_Cell_DataType::TYPE_STRING);
+					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, getTranslatedString('Totals', 'Reports'), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
 					$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
 					$count = $count + 1;
 					foreach ($totalxls[0] as $key => $value) {
 						$chdr=substr($key, -3, 3);
 						$translated_str = in_array($chdr, array_keys($mod_strings))?$mod_strings[$chdr]:$key;
-						$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, decode_html($translated_str), PHPExcel_Cell_DataType::TYPE_STRING);
+						$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, decode_html($translated_str), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
 						$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
 						$count = $count + 1;
 					}
@@ -3381,7 +3381,7 @@ class ReportRun extends CRMEntity {
 							$lbl = substr($lbl, strpos($lbl, '_')+1);
 							$lbl = str_replace('_', ' ', $lbl);
 							$lbl = getTranslatedString($lbl, $mname);
-							$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, decode_html($lbl), PHPExcel_Cell_DataType::TYPE_STRING);
+							$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, decode_html($lbl), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
 							$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
 							$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
 							$count = $count + 1;
@@ -3390,14 +3390,14 @@ class ReportRun extends CRMEntity {
 						if ($current_user->currency_decimal_separator!='.') {
 							$value = str_replace($current_user->currency_decimal_separator, '.', $value);
 						}
-						$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, PHPExcel_Cell_DataType::TYPE_NUMERIC);
+						$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC);
 						$count = $count + 1;
 					}
 					$rowcount++;
 				}
 			}
 		}
-		$workbookWriter = PHPExcel_IOFactory::createWriter($workbook, 'Excel5');
+		$workbookWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($workbook, 'Xls');
 		$workbookWriter->save($fileName);
 	}
 

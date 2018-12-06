@@ -16,17 +16,15 @@ require_once 'include/utils/utils.php';
 
 $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
-// Identify this module as custom module.
+
 $smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 
 $category = getParentTab($currentModule);
 $record = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : null;
 $isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : null;
 
-//added to fix the issue4600
 $searchurl = getBasic_Advance_SearchURL();
-$smarty->assign("SEARCH", $searchurl);
-//4600 ends
+$smarty->assign('SEARCH', $searchurl);
 
 $currencyid = fetchCurrency($current_user->id);
 $rate_symbol = getCurrencySymbolandCRate($currencyid);
@@ -227,7 +225,7 @@ if (!empty($_REQUEST['parent_id']) && !empty($_REQUEST['return_module'])) {
 }
 
 // Get address if account or contact is given
-if (is_null($record) && isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] != 'update_quote_val') {
+if (is_null($record) && (empty($_REQUEST['convertmode']) || (isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] != 'update_quote_val'))) {
 	if (!empty($_REQUEST['account_id'])) {
 		$acct_focus = CRMEntity::getInstance('Accounts');
 		$acct_focus->retrieve_entity_info($_REQUEST['account_id'], 'Accounts');
@@ -377,7 +375,7 @@ if ($focus->mode != 'edit' && $mod_seq_field != null) {
 	$autostr = getTranslatedString('MSG_AUTO_GEN_ON_SAVE');
 	list($mod_seq_string, $mod_seq_prefix, $mod_seq_no, $doNative) = cbEventHandler::do_filter('corebos.filter.ModuleSeqNumber.get', array('', '', '', true));
 	if ($doNative) {
-		$mod_seq_string = $adb->pquery("SELECT prefix, cur_id from vtiger_modentity_num where semodule = ? and active=1", array($currentModule));
+		$mod_seq_string = $adb->pquery('SELECT prefix, cur_id from vtiger_modentity_num where semodule = ? and active=1', array($currentModule));
 		$mod_seq_prefix = $adb->query_result($mod_seq_string, 0, 'prefix');
 		$mod_seq_no = $adb->query_result($mod_seq_string, 0, 'cur_id');
 	}
@@ -387,7 +385,7 @@ if ($focus->mode != 'edit' && $mod_seq_field != null) {
 			.' - '. getTranslatedString('LBL_PLEASE_CLICK') .' <a href="index.php?module=Settings&action=CustomModEntityNo&parenttab=Settings&selmodule='
 			.$currentModule.'">'.getTranslatedString('LBL_HERE').'</a> '.getTranslatedString('LBL_TO_CONFIGURE').' '.getTranslatedString($mod_seq_field['label']).'</b>');
 	} else {
-		$smarty->assign("MOD_SEQ_ID", $autostr);
+		$smarty->assign('MOD_SEQ_ID', $autostr);
 	}
 } else {
 	if (!empty($mod_seq_field) && !empty($mod_seq_field['name']) && !empty($focus->column_fields[$mod_seq_field['name']])) {
@@ -422,8 +420,8 @@ $smarty->assign('CREATEMODE', isset($_REQUEST['createmode']) ? vtlib_purify($_RE
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);
 
-$picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
-$smarty->assign('PICKIST_DEPENDENCY_DATASOURCE', json_encode($picklistDependencyDatasource));
+$cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
+$smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 
 //Get Service or Product by default when create
 $smarty->assign('PRODUCT_OR_SERVICE', GlobalVariable::getVariable('Inventory_ProductService_Default', 'Products', $currentModule, $current_user->id));

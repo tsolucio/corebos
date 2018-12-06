@@ -253,14 +253,16 @@ function get_user_array($add_blank = true, $status = "Active", $assigned_user = 
 }
 
 function get_group_array($add_blank = true, $status = "Active", $assigned_user = "", $private = "") {
-	global $log, $current_user;
+	global $log, $current_user, $currentModule;
 	$log->debug("Entering get_group_array(".$add_blank.",". $status.",".$assigned_user.",".$private.") method ...");
+	$current_user_groups = array();
+	$current_user_parent_role_seq = '';
 	if (isset($current_user) && $current_user->id != '') {
 		require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
 		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 	}
 	static $group_array = null;
-	$module=vtlib_purify($_REQUEST['module']);
+	$module= (isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : $currentModule);
 
 	if ($group_array == null) {
 		require_once 'include/database/PearDatabase.php';
@@ -944,8 +946,8 @@ function insertProfile2field($profileid) {
 	for ($i=0; $i<$num_rows; $i++) {
 		$tab_id = $adb->query_result($fld_result, $i, 'tabid');
 		$field_id = $adb->query_result($fld_result, $i, 'fieldid');
-		$params = array($profileid, $tab_id, $field_id, 0, 0);
-		$adb->pquery("insert into vtiger_profile2field values (?,?,?,?,?)", $params);
+		$params = array($profileid, $tab_id, $field_id, 0, 0, 'B');
+		$adb->pquery('insert into vtiger_profile2field values (?,?,?,?,?,?)', $params);
 	}
 	$log->debug("Exiting insertProfile2field method ...");
 }
@@ -1018,15 +1020,15 @@ function getProfile2FieldPermissionList($fld_module, $profileid) {
 		$qparams = array($profileid, $tabid);
 		$result = $adb->pquery($query, $qparams);
 		$return_data = array();
-		for ($i=0; $i<$adb->num_rows($result); $i++) {
+		while ($row = $adb->fetch_array($result)) {
 			$return_data[]=array(
-				$adb->query_result($result, $i, 'fieldlabel'),
-				$adb->query_result($result, $i, 'visible'), // From vtiger_profile2field.visible
-				$adb->query_result($result, $i, 'uitype'),
-				$adb->query_result($result, $i, 'readonly'),
-				$adb->query_result($result, $i, 'fieldid'),
-				$adb->query_result($result, $i, 'displaytype'),
-				$adb->query_result($result, $i, 'typeofdata')
+				$row['fieldlabel'],
+				$row['visible'], // From vtiger_profile2field.visible
+				$row['uitype'],
+				$row['readonly'],
+				$row['fieldid'],
+				$row['displaytype'],
+				$row['typeofdata'],
 			);
 		}
 
@@ -1070,11 +1072,11 @@ function getProfile2ModuleFieldPermissionList($fld_module, $profileid) {
 		$visible_value = 0;
 		$readOnlyValue = 0;
 		if ($adb->num_rows($checkentry) == 0) {
-			$sql11='INSERT INTO vtiger_profile2field VALUES(?,?,?,?,?)';
-			$adb->pquery($sql11, array($profileid, $tabid, $fieldid,$visible_value, $readOnlyValue));
+			$sql11='INSERT INTO vtiger_profile2field VALUES(?,?,?,?,?,?)';
+			$adb->pquery($sql11, array($profileid, $tabid, $fieldid,$visible_value, $readOnlyValue, 'B'));
 		}
 
-		$sql = 'SELECT vtiger_profile2field.visible, vtiger_profile2field.readonly FROM vtiger_profile2field WHERE fieldid=? AND tabid=? AND profileid=?';
+		$sql = 'SELECT vtiger_profile2field.visible, vtiger_profile2field.readonly, summary FROM vtiger_profile2field WHERE fieldid=? AND tabid=? AND profileid=?';
 		$params = array($fieldid,$tabid,$profileid);
 		$res = $adb->pquery($sql, $params);
 
@@ -1085,7 +1087,8 @@ function getProfile2ModuleFieldPermissionList($fld_module, $profileid) {
 			$adb->query_result($res, 0, 'readonly'), // From vtiger_profile2field.readonly
 			$adb->query_result($result, $i, 'fieldid'),
 			$adb->query_result($result, $i, 'displaytype'),
-			$adb->query_result($result, $i, 'typeofdata')
+			$adb->query_result($result, $i, 'typeofdata'),
+			$adb->query_result($res, 0, 'summary') // From vtiger_profile2field.summary
 		);
 	}
 
@@ -2544,7 +2547,7 @@ function getDuplicateQuery($module, $field_values, $ui_type_arr) {
 }
 
 /** Function to return the duplicate records data as a formatted array */
-function getDuplicateRecordsArr($module) {
+function getDuplicateRecordsArr($module, $use_limit = true) {
 	global $adb,$app_strings,$theme,$default_charset;
 	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module);
 	$field_values_array=getFieldValues($module);
@@ -2576,7 +2579,9 @@ function getDuplicateRecordsArr($module) {
 	} else {
 		$limit_start_rec = $start_rec -1;
 	}
-	$dup_query .= " LIMIT $limit_start_rec, $list_max_entries_per_page";
+	if ($use_limit) {
+		$dup_query .= " LIMIT $limit_start_rec, $list_max_entries_per_page";
+	}
 
 	$nresult=$adb->query($dup_query);
 	$no_rows=$adb->num_rows($nresult);
@@ -2608,7 +2613,7 @@ function getDuplicateRecordsArr($module) {
 	$rec_cnt = 0;
 	$temp = array();
 	$sl_arr = array();
-	$grp = "group0";
+	$grp = 'group0';
 	$gcnt = 0;
 	$ii = 0; //ii'th record in group
 	while ($rec_cnt < $no_rows) {
@@ -2728,6 +2733,33 @@ function getDuplicateRecordsArr($module) {
 	$ret_arr[2]=$ui_type;
 	$ret_arr['navigation']=$navigationOutput;
 	return $ret_arr;
+}
+
+/** Function to Delete Exact Duplicates */
+function deleteExactDuplicates($dup_records, $module) {
+	$dup_records_ids=array();
+	$delete_fail_status=false;
+	foreach ($dup_records as $records_group) {
+		$record_position=0;
+		foreach ($records_group as $records) {
+			if ($record_position!=0) {
+				array_push($dup_records_ids, $records['recordid']);
+			}
+			$record_position++;
+		}
+	}
+	$focus = CRMEntity::getInstance($module);
+	foreach ($dup_records_ids as $id) {
+		if (isPermitted($module, 'Delete', $id) == 'yes') {
+			$del_response=DeleteEntity($module, $module, $focus, $id, "");
+			if ($del_response[0]) {
+				$delete_fail_status = true;
+			}
+		} else {
+			$delete_fail_status = true;
+		}
+	}
+	return $delete_fail_status;
 }
 
 /** Function to get on clause criteria for sub tables like address tables to construct duplicate check query */
@@ -3623,7 +3655,7 @@ function getValidDBInsertDateTimeValue($value) {
 		} catch (Exception $ex) {
 			return '';
 		}
-	} elseif (count($valueList == 1)) {
+	} elseif (count($valueList) == 1) {
 		return getValidDBInsertDateValue($value);
 	}
 	return '';
@@ -3991,4 +4023,71 @@ function getMinimumCronFrequency() {
 	return GlobalVariable::getVariable('Application_Minimum_Cron_Frequency', 15);
 }
 
+/**
+ * Function to get the details of the default company
+ */
+function retrieveCompanyDetails() {
+	global $adb;
+	$companyDetails = array();
+	$query = $adb->pquery(
+		'SELECT c.*,a.*
+			FROM vtiger_cbcompany c
+			JOIN vtiger_crmentity on vtiger_crmentity.crmid = c.cbcompanyid
+			LEFT JOIN vtiger_seattachmentsrel s ON c.cbcompanyid = s.crmid
+			LEFT JOIN vtiger_attachments a ON s.attachmentsid = a.attachmentsid
+			WHERE c.defaultcompany = 1 and vtiger_crmentity.deleted = 0',
+		array()
+	);
+	if ($query && $adb->num_rows($query) > 0) {
+		$record = $adb->query_result($query, 0, 'cbcompanyid');
+		$companyDetails['name']     = $companyDetails['companyname'] = $adb->query_result($query, 0, 'companyname');
+		$companyDetails['website']  = $adb->query_result($query, 0, 'website');
+		$companyDetails['address']  = $adb->query_result($query, 0, 'address');
+		$companyDetails['city']     = $adb->query_result($query, 0, 'city');
+		$companyDetails['state']    = $adb->query_result($query, 0, 'state');
+		$companyDetails['country']  = $adb->query_result($query, 0, 'country');
+		$companyDetails['postalcode'] = $adb->query_result($query, 0, 'postalcode');
+		$companyDetails['code'] = $adb->query_result($query, 0, 'postalcode');
+		$companyDetails['phone']    = $adb->query_result($query, 0, 'phone');
+		$companyDetails['fax']      = $adb->query_result($query, 0, 'fax');
+		for ($i=0; $i<$adb->num_rows($query); $i++) {
+			$path           = $adb->query_result($query, $i, 'path');
+			$attachmentsid  = $adb->query_result($query, $i, 'attachmentsid');
+			$favicon        = decode_html($adb->query_result($query, $i, 'favicon'));
+			$companylogo    = decode_html($adb->query_result($query, $i, 'companylogo'));
+			$applogo        = decode_html($adb->query_result($query, $i, 'applogo'));
+			$name           = $adb->query_result($query, $i, 'name'); // attachmentname
+			if ($name == $favicon && !isset($companyDetails['favicon'])) {
+				$companyDetails['favicon'] = $path.$attachmentsid.'_'.$favicon;
+			}
+			if ($name == $companylogo && !isset($companyDetails['companylogo'])) {
+				$companyDetails['companylogo'] = $path.$attachmentsid.'_'.$companylogo;
+			}
+			if ($name == $applogo && !isset($companyDetails['applogo'])) {
+				$companyDetails['applogo'] = $path.$attachmentsid.'_'.$applogo;
+			}
+		}
+	} else {
+		$companyDetails['name'] = $companyDetails['companyname'] = GlobalVariable::getVariable('Application_UI_Name', 'coreBOS');
+	}
+	$companyDetails = setDefaultCompanyParams($companyDetails);
+	return $companyDetails;
+}
+
+/**
+ * Function to set default company details if left empty
+ */
+function setDefaultCompanyParams($companyDetails) {
+	$imageArray = array('companylogo','applogo');
+	for ($i=0; $i<sizeof($imageArray); $i++) {
+		$imagename = $imageArray[$i];
+		if (empty($companyDetails[$imagename])) {
+			$companyDetails[$imagename] = 'test/logo/noimageloaded.png';
+		}
+	}
+	if (empty($companyDetails['favicon'])) {
+		$companyDetails['favicon'] = 'themes/images/favicon.ico';
+	}
+	return $companyDetails;
+}
 ?>

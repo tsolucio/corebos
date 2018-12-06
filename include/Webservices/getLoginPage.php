@@ -34,23 +34,7 @@ function get_loginpage($template, $language, $csrf, $user) {
 	$smarty->assign('IMAGE_PATH', $image_path);
 	$smarty->assign('VTIGER_VERSION', $coreBOS_app_version);
 
-	// We check if we have the two new logo fields > if not we create them
-	$cnorg=$adb->getColumnNames('vtiger_organizationdetails');
-	if (!in_array('faviconlogo', $cnorg)) {
-		$adb->query('ALTER TABLE `vtiger_organizationdetails` ADD `frontlogo` VARCHAR(150) NOT NULL, ADD `faviconlogo` VARCHAR(150) NOT NULL');
-	}
-	$result = $adb->pquery('select * from vtiger_organizationdetails', array());
-	//Handle for allowed organation logo/logoname likes UTF-8 Character
-	$companyDetails = array();
-	$companyDetails['name'] = $adb->query_result($result, 0, 'organizationname');
-	$companyDetails['website'] = $adb->query_result($result, 0, 'website');
-	$companyDetails['logo'] = decode_html($adb->query_result($result, 0, 'logoname'));
-	if (decode_html($adb->query_result($result, 0, 'faviconlogo'))=='') {
-		$favicon='themes/images/favicon.ico';
-	} else {
-		$favicon='test/logo/'.decode_html($adb->query_result($result, 0, 'faviconlogo'));
-	}
-	$companyDetails['favicon'] = $favicon;
+	$companyDetails = retrieveCompanyDetails();
 	$smarty->assign('COMPANY_DETAILS', $companyDetails);
 	$smarty->assign('coreBOS_uiapp_name', GlobalVariable::getVariable('Application_UI_Name', $coreBOS_app_name, 'Users', Users::getActiveAdminId()));
 	$smarty->assign('currentLoginIP', Vtiger_Request::get_ip());

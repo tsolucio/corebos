@@ -288,7 +288,7 @@ class GoogleSync4You {
 		} else {
 			$start->setDateTime($startDate.'T'.$startTime.':00:00.000');
 		}
-		$start->setTimeZone('$default_timezone');
+		$start->setTimeZone("$default_timezone");
 		$event->setStart($start);
 		$end = new Google_Service_Calendar_EventDateTime();
 		if (strlen($endTime)>4) {
@@ -296,7 +296,7 @@ class GoogleSync4You {
 		} else {
 			$end->setDateTime($endDate.'T'.$endTime.':00:00.000');
 		}
-		$end->setTimeZone('$default_timezone');
+		$end->setTimeZone("$default_timezone");
 		$event->setEnd($end);
 		$SendEventNotifications = new Google_Service_Calendar_EventReminders();
 		//$SendEventNotifications->setValue(true);

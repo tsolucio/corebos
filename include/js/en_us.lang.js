@@ -208,6 +208,7 @@ var alert_arr = {
 	/*layout Editor changes*/
 	'BLOCK_NAME_CANNOT_BE_BLANK': 'Block name can not be blank',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE': 'Are you sure you want to delete ?',
+	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_EXACT_DUPLICATE': 'Are you sure you want to Delete All Exact record duplicates?',
 	'PLEASE_MOVE_THE_FIELDS_TO_ANOTHER_BLOCK': 'Please move the fields to another block',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_BLOCK': 'Are you sure you want to delete block?',
 	'LABEL_CANNOT_NOT_EMPTY': 'Label cannot be Emtpy',

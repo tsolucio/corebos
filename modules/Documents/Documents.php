@@ -31,7 +31,6 @@ class Documents extends CRMEntity {
 		'vtiger_crmentity'=>'crmid',
 		'vtiger_notes'=>'notesid',
 		'vtiger_notescf'=>'notesid',
-		'vtiger_senotesrel'=>'notesid'
 	);
 
 	/**
@@ -159,6 +158,9 @@ class Documents extends CRMEntity {
 		$this->column_fields['filesize'] = $filesize;
 		$this->column_fields['filetype'] = $filetype;
 		$this->column_fields['filedownloadcount'] = $filedownloadcount;
+		if (!empty($this->parentid)) {
+			$this->save_related_module('Documents', $this->id, getSalesEntityType($this->parentid), $this->parentid);
+		}
 	}
 
 	/**

@@ -257,7 +257,10 @@ function UpdateProfile() {
 						{foreach item=row_values from=$FIELD_PRIVILEGES[$tabid]}
 				            	<tr>
 						      {foreach item=element from=$row_values}
-					              <td valign="top">{$element.1}</td>
+					              <td valign="top">
+									  <span>{$element.1}</span>
+									  <span>{$element.2}</span>
+								  </td>
 					              <td>{$element.0}</td>
 						      {/foreach}
 				                </tr>
@@ -270,7 +273,10 @@ function UpdateProfile() {
 						{foreach item=row_values from=$FIELD_PRIVILEGES[16]}
 				            	<tr>
 						      {foreach item=element from=$row_values}
-					              <td valign="top">{$element.1}</td>
+					              <td valign="top">
+									  <span>{$element.1}</span>
+									  <span>{$element.2}</span>
+								  </td>
 					              <td>{$element.0}</td>
 						      {/foreach}
 				                </tr>

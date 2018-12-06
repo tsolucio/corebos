@@ -1,0 +1,110 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="map">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element type="xs:string" name="originmodule"/>
+        <xs:element type="xs:string" name="targetmodule"/>
+        <xs:element name="linkfields">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="originfield"/>
+              <xs:element type="xs:string" name="targetfield"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element type="xs:string" name="sortfield"/>
+        <xs:element name="toolbar">
+          <xs:complexType mixed="true">
+            <xs:sequence>
+              <xs:element type="xs:string" name="title"/>
+              <xs:element type="xs:byte" name="expandall"/>
+              <xs:element type="xs:byte" name="create"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="listview">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="toolbar">
+                <xs:complexType mixed="true">
+                  <xs:sequence>
+                    <xs:element type="xs:byte" name="moveup"/>
+                    <xs:element type="xs:byte" name="movedown"/>
+                    <xs:element type="xs:byte" name="delete"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="fields">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="field" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="fieldtype"/>
+                          <xs:element type="xs:string" name="fieldname"/>
+                          <xs:element type="xs:string" name="linkedto" minOccurs="0"/>
+                          <xs:element type="xs:byte" name="editable"/>
+                          <xs:element type="xs:byte" name="mandatory"/>
+                          <xs:element type="xs:byte" name="hidden"/>
+                          <xs:element type="xs:string" name="layout"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="detailview">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="layout"/>
+              <xs:element name="fields">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="field" maxOccurs="unbounded" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element type="xs:string" name="fieldtype"/>
+                          <xs:element type="xs:string" name="fieldname"/>
+                          <xs:element type="xs:string" name="linkedto" minOccurs="0"/>
+                          <xs:element type="xs:byte" name="editable"/>
+                          <xs:element type="xs:byte" name="mandatory"/>
+                          <xs:element type="xs:byte" name="hidden"/>
+                          <xs:element type="xs:string" name="position" minOccurs="0"/>
+                          <xs:element type="xs:string" name="currency" minOccurs="0"/>
+                          <xs:element type="xs:string" name="layout"/>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="aggregations">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="operation" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="type"/>
+                    <xs:element type="xs:string" name="items"/>
+                    <xs:element type="xs:string" name="operation"/>
+                    <xs:element type="xs:string" name="column"/>
+                    <xs:element type="xs:string" name="variable"/>
+                    <xs:element type="xs:string" name="label"/>
+                    <xs:element type="xs:string" name="position"/>
+                    <xs:element type="xs:string" name="currency" minOccurs="0"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

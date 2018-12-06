@@ -7,6 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
+echo "<script>gotourl('index.php?action=index&module=cbCompany');</script>";
+die();
 require_once 'Smarty_setup.php';
 global $mod_strings, $app_strings;
 

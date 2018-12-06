@@ -491,6 +491,23 @@ function getProfileDescription($profileid) {
 	return $profileDescription;
 }
 
+function leadCanBeConverted($leadid) {
+	static $leadCanBeConverted = null;
+	if (is_null($leadCanBeConverted)) {
+		global $current_user;
+		require_once 'modules/Leads/ConvertLeadUI.php';
+		$uiinfo = new ConvertLeadUI($leadid, $current_user);
+		$leadCanBeConverted =
+			isPermitted('Leads', 'EditView', $leadid) == 'yes'
+			&& isPermitted('Leads', 'ConvertLead') == 'yes'
+			&& (isPermitted('Accounts', 'CreateView') == 'yes' || isPermitted('Contacts', 'CreateView') == 'yes')
+			&& (vtlib_isModuleActive('Contacts') || vtlib_isModuleActive('Accounts'))
+			&& !isLeadConverted($leadid)
+			&& ($uiinfo->getCompany() != null || $uiinfo->isModuleActive('Contacts') == true);
+	}
+	return $leadCanBeConverted;
+}
+
 /** This function is a wrapper that extends the permissions system with a hook to specific functionality **/
 function isPermitted($module, $actionname, $record_id = '') {
 // 	global $current_user, $adb;
@@ -1236,13 +1253,13 @@ function createProfile($profilename, $parentProfileId, $description) {
 	$params10 = array($parentProfileId);
 	$result10= $adb->pquery($sql10, $params10);
 	$p2field_rows = $adb->num_rows($result10);
+	$sql11='insert into vtiger_profile2field values(?,?,?,?,?,?)';
 	for ($i=0; $i<$p2field_rows; $i++) {
 		$tab_id=$adb->query_result($result10, $i, 'tabid');
 		$fieldid=$adb->query_result($result10, $i, 'fieldid');
 		$permissions=$adb->query_result($result10, $i, 'visible');
 		$readonly=$adb->query_result($result10, $i, 'readonly');
-		$sql11="insert into vtiger_profile2field values(?,?,?,?,?)";
-		$params11 = array($current_profile_id, $tab_id, $fieldid, $permissions ,$readonly);
+		$params11 = array($current_profile_id, $tab_id, $fieldid, $permissions ,$readonly, 'B');
 		$adb->pquery($sql11, $params11);
 	}
 	$log->debug("Exiting createProfile method ...");
@@ -1461,16 +1478,15 @@ function getRoleAndSubordinateUsers($roleId) {
 	$log->debug("Entering getRoleAndSubordinateUsers(".$roleId.") method ...");
 	$roleInfoArr=getRoleInformation($roleId);
 	$parentRole=$roleInfoArr[$roleId][1];
-	$query = 'select vtiger_user2role.*,vtiger_users.user_name
+	$query = 'select vtiger_user2role.userid,vtiger_users.user_name
 		from vtiger_user2role
 		inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 		inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
 		where vtiger_role.parentrole like ?';
 	$result = $adb->pquery($query, array($parentRole.'%'));
-	$num_rows=$adb->num_rows($result);
 	$roleRelatedUsers=array();
-	for ($i=0; $i<$num_rows; $i++) {
-		$roleRelatedUsers[$adb->query_result($result, $i, 'userid')]=$adb->query_result($result, $i, 'user_name');
+	while ($row = $adb->fetch_array($result)) {
+		$roleRelatedUsers[ $row['userid'] ] = $row['user_name'];
 	}
 	$log->debug('Exiting getRoleAndSubordinateUsers method...');
 	return $roleRelatedUsers;
@@ -1486,16 +1502,15 @@ function getRoleAndSubordinateUserIds($roleId) {
 	$log->debug("Entering getRoleAndSubordinateUserIds(".$roleId.") method ...");
 	$roleInfoArr=getRoleInformation($roleId);
 	$parentRole=$roleInfoArr[$roleId][1];
-	$query = 'select vtiger_user2role.*,vtiger_users.user_name
+	$query = 'select vtiger_user2role.userid
 		from vtiger_user2role
 		inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 		inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
 		where vtiger_role.parentrole like ?';
 	$result = $adb->pquery($query, array($parentRole.'%'));
-	$num_rows=$adb->num_rows($result);
 	$roleRelatedUsers=array();
-	for ($i=0; $i<$num_rows; $i++) {
-		$roleRelatedUsers[]=$adb->query_result($result, $i, 'userid');
+	while ($row = $adb->getNextRow($result, false)) {
+		$roleRelatedUsers[] = $row[0];
 	}
 	$log->debug('Exiting getRoleAndSubordinateUserIds method...');
 	return $roleRelatedUsers;

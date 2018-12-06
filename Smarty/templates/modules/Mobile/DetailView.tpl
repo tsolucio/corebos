@@ -64,6 +64,9 @@
 				{foreach item=_FIELD from=$_FIELDS}
 					<input type="hidden" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$_FIELD->valueLabel()}">
 					<div class="ui-grid-a">
+						{if ($_FIELD->uitype() eq '69' || $_FIELD->uitype() eq '69m') && $_FIELD->valueLabel() neq ''}
+							<img src="{$_FIELD->valueLabel()}" style="max-width:100%"></img>
+						{else}
 						<div class="ui-block-a">
 							{if $_MODULE->name() eq 'cbCalendar'}
 								{if $_FIELD->name() eq 'date_start'}
@@ -74,11 +77,7 @@
 									{/if}
 								{/if}
 							{else}
-								{if $_FIELD->uitype() eq '69' && $_FIELD->valueLabel() neq ''}
-									<img  src="{$_FIELD->valueLabel()}"></img>
-								{else}
-									{$_FIELD->label()}:
-								{/if}
+								{$_FIELD->label()}:
 							{/if}
 						</div>
 						<div class="ui-block-b">
@@ -131,7 +130,7 @@
 											{$_FIELD->valueLabel()}{if $_FIELD->name() eq 'probability'} %{/if}
 										{elseif $_FIELD->uitype() eq '17'}
 											<a href="#" onclick="window.open('http://{$_FIELD->valueLabel()}','_blank');" rel=external> {$_FIELD->valueLabel()} </a>
-										{elseif $_FIELD->uitype() eq '69'}
+										{elseif ($_FIELD->uitype() eq '69' || $_FIELD->uitype() eq '69m')}
 											<!-- do nothing here for image -->
 										{elseif $_FIELD->uitype() eq '70'}
 											{$_FIELD->valueLabel()}
@@ -145,14 +144,15 @@
 									{/if}
 								{/if}
 							{/if}
-						</div>	
-					</div>	
-	            {/foreach}
+						</div>
+						{/if}
+					</div>
+				{/foreach}
 			</div>	
 		{/foreach}
 	</div>
 	<div data-role="footer" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
-		<a href="?_operation=deleteConfirmation&module={$_MODULE->name()}&record={$_RECORD->id()}&&lang={$LANGUAGE}" class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-notext" data-rel="dialog" data-iconpos="left" data-prefetch>{$MOD.LBL_DELETE}</a>
+		<a href="?_operation=deleteConfirmation&module={$_MODULE->name()}&record={$_RECORD->id()}&&lang={$LANGUAGE}" class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-notext" data-rel="dialog" data-iconpos="left">{$MOD.LBL_DELETE}</a>
 		{if $_MODULE->name() eq "HelpDesk" && 'Timecontrol'|vtlib_isModuleActive}
 		<a href="?_operation=create&module=Timecontrol&record=''&relatedto={$_RECORD->id()}&returnto={$_RECORD->id()}" class="ui-btn ui-btn-right ui-corner-all ui-icon-clock ui-btn-icon-notext" rel="external" data-transition="slideup" data-iconpos="right">{$MOD.LBL_NEW}</a>
 		{/if}

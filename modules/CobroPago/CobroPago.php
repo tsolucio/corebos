@@ -254,7 +254,7 @@ class CobroPago extends CRMEntity {
 		if ($rs && $adb->num_rows($rs)==1) {
 			$relatedId = $adb->query_result($rs, 0, 'related_id');
 			$pid = $adb->query_result($rs, 0, 'parent_id');
-			if (!empty($relatedId) && self::invoice_control_installed()) {
+			if (!empty($relatedId) && isRecordExists($relatedId) && self::invoice_control_installed()) {
 				$relatedId_seType = getSalesEntityType($relatedId);
 				$related_focus = CRMEntity::getInstance($relatedId_seType);
 				$related_focus->retrieve_entity_info($relatedId, $relatedId_seType);

@@ -142,12 +142,6 @@ function add_data_to_relatedlist(entity_id, recordid) {
 	opener.document.location.href='index.php?module=Emails&action=updateRelations&destination_module=leads&entityid='+entity_id+'&parentid='+recordid;
 }
 
-//added by rdhital/Raju for emails
-function submitform(id) {
-	document.massdelete.entityid.value=id;
-	document.massdelete.submit();
-}
-
 function searchMapLocation(addressType) {
 	var mapParameter = '';
 	if (addressType == 'Main') {
