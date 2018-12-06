@@ -23,13 +23,42 @@ class WorkFlowScheduler {
 	}
 
 	public function getWorkflowQuery($workflow, $fields = array()) {
-		$conditions = json_decode(decode_html($workflow->test));
 
 		$moduleName = $workflow->moduleName;
+
+		$queryGeneratorSelect = new QueryGenerator($moduleName, $this->user);
 		$queryGenerator = new QueryGenerator($moduleName, $this->user);
-		$selectcolumns = array_merge(array('id'), $fields);
-		$queryGenerator->setFields($selectcolumns);
+
+		$conditions = json_decode(decode_html($workflow->test));
+		$selectExpressions = json_decode(decode_html($workflow->select_expressions));
+
+		if ($selectExpressions) {
+			$substExpsSelect = $this->addWorkflowConditionsToQueryGenerator($queryGeneratorSelect, $selectExpressions);
+
+			$selectFields = [];
+			$selectExpsCounter = 1;
+			foreach ($selectExpressions as $selectExpression) {
+				if ($selectExpression->valuetype == 'fieldname') {
+					preg_match('/(\w+) : \((\w+)\) (\w+)/', $selectExpression->fieldname, $valuematches);
+					if (count($valuematches) != 0) {
+						$queryGenerator->setReferenceFieldsManually($valuematches[1], $valuematches[2], $valuematches[3]);
+					}
+					$selectFields[] = $queryGeneratorSelect->getSQLColumn($selectExpression->value);
+				} elseif ($selectExpression->valuetype == 'expression') {
+					$selectFields[] = $substExpsSelect["::#$selectExpsCounter"]." AS $selectExpression->fieldname";
+					$selectExpsCounter++;
+				} else {
+					$selectFields[] = $selectExpression->value;
+				}
+			}
+
+			$selectSql = implode(",", $selectFields);
+		} else {
+			$queryGenerator->setFields(array_merge(array('id'), $fields));
+		}
+
 		$substExps = $this->addWorkflowConditionsToQueryGenerator($queryGenerator, $conditions);
+
 		if ($moduleName == 'Calendar' || $moduleName == 'Events') {
 			if ($conditions) {
 				$queryGenerator->addConditionGlue('AND');
@@ -44,7 +73,14 @@ class WorkFlowScheduler {
 			}
 		}
 
-		$query = $queryGenerator->getQuery();
+		if ($selectExpressions) {
+			$query = 'SELECT '.$selectSql;
+			$query .= $queryGenerator->getFromClause();
+			$query .= $queryGenerator->getWhereClause();
+		} else {
+			$query = $queryGenerator->getQuery();
+		}
+
 		if (count($substExps)>0) {
 			foreach ($substExps as $subst => $val) {
 				if (substr($subst, 0, 3)=='::#') {

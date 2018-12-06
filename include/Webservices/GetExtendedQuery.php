@@ -485,27 +485,7 @@ function __ExtendedQueryConditionQuery($q) {
 
 function __ExtendedQueryConditionGetQuery($q, $fromModule, $user) {
 	global $adb;
-	$queryColumns = trim(substr($q, 6, stripos($q, ' from ')-5));
-	$queryColumns = explode(',', $queryColumns);
-	$queryColumns = array_map('trim', $queryColumns);
-	$queryRelatedModules = array();
-	foreach ($queryColumns as $k => $field) {
-		if (strpos($field, '.')>0) {
-			list($m,$f) = explode('.', $field);
-			if (!isset($queryRelatedModules[$m])) {
-				$relhandler = vtws_getModuleHandlerFromName($m, $user);
-				$relmeta = $relhandler->getMeta();
-				$mn = $relmeta->getTabName();  // normalize module name
-				$queryRelatedModules[$mn] = $relmeta;
-				if ($m!=$mn) {
-					$queryColumns[$k] = $mn.'.'.$f;
-				}
-			}
-		}
-	}
-	if (!in_array('id', $queryColumns)) {
-		$queryColumns[] = 'id';  // add ID column to follow REST interface behaviour
-	}
+
 	$workflowScheduler = new WorkFlowScheduler($adb);
 	$workflow = new Workflow();
 	$wfvals = array(
@@ -523,10 +503,48 @@ function __ExtendedQueryConditionGetQuery($q, $fromModule, $user) {
 		'defaultworkflow' => 0,
 		'nexttrigger_time' => '',
 	);
+
+	preg_match('/select\s+\[/i', $q, $selectSyntaxMatches);
+
+	if (count($selectSyntaxMatches) == 0) {
+		$queryColumns = trim(substr($q, 6, stripos($q, ' from ')-5));
+		$queryColumns = explode(',', $queryColumns);
+		$queryColumns = array_map('trim', $queryColumns);
+		$queryRelatedModules = array();
+		foreach ($queryColumns as $k => $field) {
+			if (strpos($field, '.')>0) {
+				list($m,$f) = explode('.', $field);
+				if (!isset($queryRelatedModules[$m])) {
+					$relhandler = vtws_getModuleHandlerFromName($m, $user);
+					$relmeta = $relhandler->getMeta();
+					$mn = $relmeta->getTabName();  // normalize module name
+					$queryRelatedModules[$mn] = $relmeta;
+					if ($m!=$mn) {
+						$queryColumns[$k] = $mn.'.'.$f;
+					}
+				}
+			}
+		}
+		if (!in_array('id', $queryColumns)) {
+			$queryColumns[] = 'id';  // add ID column to follow REST interface behaviour
+		}
+	} else {
+		$queryColumns = [];
+		$queryRelatedModules = [];
+
+		$selectExpressions = substr($q, stripos($q, 'select') + 6, stripos($q, ' from ') - 6);
+		$selectExpressions = trim($selectExpressions);
+		$selectExpressions = trim($selectExpressions, ';');
+
+		$wfvals['select_expressions'] = $selectExpressions;
+	}
+
 	$cond = substr($q, stripos($q, ' where ')+7);
 	$cond = trim($cond);
 	$cond = trim($cond, ';');
+
 	$wfvals['test'] = $cond;
+
 	$workflow->setup($wfvals);
 	return array($workflowScheduler->getWorkflowQuery($workflow, $queryColumns), $queryRelatedModules);
 }
