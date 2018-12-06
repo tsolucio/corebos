@@ -33,4 +33,8 @@
 		<td class="dvtCellLabel" align=right width=20%><b>{$APP.LBL_MODULE}</b></td>
 		<td class="dvtCellInfo" align="left">{$workflow->moduleName|@getTranslatedString:$workflow->moduleName}</td>
 	</tr>
+	<tr>
+		<td class="dvtCellLabel" align=right width=20%><b>{'LBL_WFPURPOSE'|@getTranslatedString:'com_vtiger_workflow'}</b></td>
+		<td class="dvtCellInfo" align="left"><textarea id='purpose' name='purpose'>{$workflow->purpose}</textarea></td>
+	</tr>
 </table>
