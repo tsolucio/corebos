@@ -140,4 +140,11 @@
 	<classname>setPasswordsToDisplayType5</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>glory</author>
+	<description>add Block and Field in cbQuestion</description>
+	<filename>build/changeSets/2018/addBlockandFieldincbQuestion.php</filename>
+	<classname>setPasswordsToDisplayType5</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
