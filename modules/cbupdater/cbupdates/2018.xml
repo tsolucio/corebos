@@ -144,7 +144,7 @@
 	<author>glory</author>
 	<description>add Block and Field in cbQuestion</description>
 	<filename>build/changeSets/2018/addBlockandFieldincbQuestion.php</filename>
-	<classname>setPasswordsToDisplayType5</classname>
+	<classname>addBlockandFieldincbQuestion</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
 </updatesChangeLog>
