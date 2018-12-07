@@ -23,6 +23,8 @@ class DataTransform {
 		foreach ($row as $col => $val) {
 			if (array_key_exists($col, $columnFieldMapping)) {
 				$newRow[$columnFieldMapping[$col]] = $val;
+			} else {
+				$newRow[$col] = $val;
 			}
 		}
 		$newRow = DataTransform::sanitizeData($newRow, $meta, true);
