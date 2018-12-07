@@ -22,6 +22,7 @@ class cbValidator extends Validator {
 		'IBAN_BankAccount' => 'validate_IBAN_BankAccount',
 		'EU_VAT' => 'validate_EU_VAT',
 		'notDuplicate' => 'validate_notDuplicate',
+		'expression' => 'validate_expression'
 	);
 
 	public function __construct($data, $fields = array()) {

@@ -209,7 +209,7 @@ class Validations extends processcbMap {
 						$v->rule($rule, $valfield, $mapping['origin'], $arguments[1])->label($i18n);
 						break;
 					case 'expression':
-						$v->rule($rule, $valfield, $mapping['origin'], $arguments[1])->label($i18n);
+						$v->rule($rule, $valfield, $arguments[1], $restrictions[0])->label($i18n);
 						break;
 					case 'custom':
 						if (file_exists($restrictions[0])) {
