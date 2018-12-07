@@ -108,6 +108,8 @@
 		restrictions: none
 	notDuplicate - checks that no other record with the same value exists on the given fieldname
 		restrictions: none
+	expression - accept a workflow expression and evaluate it in the context of the new screen values
+		restrictions: none
 	custom - launch custom function that can be found in the indicated file
 		restrictions: file name, validation test name, function name and label to show on error (will be translated)
  *************************************************************************************************/
@@ -205,6 +207,9 @@ class Validations extends processcbMap {
 						break;
 					case 'notDuplicate':
 						$v->rule($rule, $valfield, $mapping['origin'], $arguments[1])->label($i18n);
+						break;
+					case 'expression':
+						$v->rule($rule, $valfield, $arguments[1], $restrictions[0])->label($i18n);
 						break;
 					case 'custom':
 						if (file_exists($restrictions[0])) {
