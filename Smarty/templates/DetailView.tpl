@@ -247,7 +247,7 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 																							<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small detailview_table">
 																							{if !empty($CUSTOMBLOCKS.$header.custom)}
 																								{include file=$CUSTOMBLOCKS.$header.tpl}
-																							{elseif isset($BLOCKS.$header.relatedlist) && $IS_REL_LIST|@count > 0}
+																							{elseif isset($BLOCKS.$header.relatedlist) && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
 																								{assign var='RELBINDEX' value=$BLOCKS.$header.relatedlist}
 																								{include file='RelatedListNew.tpl' RELATEDLISTS=$RELATEDLISTBLOCK.$RELBINDEX RELLISTID=$RELBINDEX}
 																							{else}
@@ -333,7 +333,7 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 																		{$ASSOCIATED_PRODUCTS}
 																	</td></tr>
 																	{/if}
-																{if $SinglePane_View eq 'true' && $IS_REL_LIST|@count > 0}
+																{if $SinglePane_View eq 'true' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
 																	{include file= 'RelatedListNew.tpl'}
 																{/if}
 															</table>

@@ -105,6 +105,11 @@ function cbupd_import($zipfile) {
 								$w->startElement("systemupdate");
 								$w->text($upd['systemupdate'] == '1' ? 'true' : 'false');
 								$w->endElement();
+							if (isset($upd['continuous'])) {
+								$w->startElement('continuous');
+								$w->text($upd['continuous']);
+								$w->endElement();
+							}
 							$w->endElement();
 						}
 					}

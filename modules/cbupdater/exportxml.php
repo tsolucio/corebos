@@ -75,6 +75,9 @@ if (!empty($ids)) {
 				$w->startElement('systemupdate');
 				$w->text($upd['systemupdate'] == '1' ? 'true' : 'false');
 				$w->endElement();
+				$w->startElement('continuous');
+				$w->text($upd['execstate'] == 'Continuous' ? 'true' : 'false');
+				$w->endElement();
 			$w->endElement();
 			$bname = basename($upd['pathfilename']);
 			$zip->addFile($upd['pathfilename'], $bname);

@@ -217,4 +217,11 @@
 	<classname>addWFPurpose</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>glory</author>
+	<description>adding of new field in cbQuestion</description>
+	<filename>build/changeSets/2018/addFieldincbQuestion.php</filename>
+	<classname>addBlockFieldincbQuestion</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
