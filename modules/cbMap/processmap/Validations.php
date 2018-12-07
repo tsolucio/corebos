@@ -109,7 +109,7 @@
 	notDuplicate - checks that no other record with the same value exists on the given fieldname
 		restrictions: none
 	expression - accept a workflow expression and evaluate it in the context of the new screen values
-		restrictions: none
+		restrictions: map name or ID
 	custom - launch custom function that can be found in the indicated file
 		restrictions: file name, validation test name, function name and label to show on error (will be translated)
  *************************************************************************************************/
