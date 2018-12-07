@@ -17,7 +17,7 @@ require_once 'include/events/include.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowManager.inc';
 require_once 'modules/GlobalVariable/GlobalVariable.php';
 require_once 'modules/cbMap/cbMap.php';
-require_once 'include/ComboUtil.php'; //new
+require_once 'include/ComboUtil.php';
 require_once 'include/utils/ListViewUtils.php';
 require_once 'include/utils/EditViewUtils.php';
 require_once 'include/utils/DetailViewUtils.php';
@@ -35,15 +35,15 @@ require_once 'vtlib/Vtiger/Language.php';
 // Constants to be defined here
 
 // For Customview status.
-define("CV_STATUS_DEFAULT", 0);
-define("CV_STATUS_PRIVATE", 1);
-define("CV_STATUS_PENDING", 2);
-define("CV_STATUS_PUBLIC", 3);
+define('CV_STATUS_DEFAULT', 0);
+define('CV_STATUS_PRIVATE', 1);
+define('CV_STATUS_PENDING', 2);
+define('CV_STATUS_PUBLIC', 3);
 
 // For Restoration.
-define("RB_RECORD_DELETED", 'delete');
-define("RB_RECORD_INSERTED", 'insert');
-define("RB_RECORD_UPDATED", 'update');
+define('RB_RECORD_DELETED', 'delete');
+define('RB_RECORD_INSERTED', 'insert');
+define('RB_RECORD_UPDATED', 'update');
 
 /** Function to load global browser variables for javascript
  * @param smarty object to load the variables, if empty it will only return the variables in an array
