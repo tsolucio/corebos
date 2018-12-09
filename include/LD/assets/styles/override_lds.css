@@ -411,6 +411,9 @@ hr {
 #LB_buttonlist table {
   width: auto;
 }
+#LB_buttonlist td {
+  padding: 1px;
+}
 table.small td,
 table.small th {
   padding: 5px;
