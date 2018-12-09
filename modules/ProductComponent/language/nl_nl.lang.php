@@ -9,14 +9,25 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Module Name',
-	'SINGLE_ModuleName' => 'Module Name',
-	'ModuleName ID' => 'Module Name ID',
+	'ProductComponent' => 'Product Componenten',
+	'SINGLE_ProductComponent' => 'Product Component',
+	'ProductComponent ID' => 'Product Component ID',
+	'frompdo' => 'Van product',
+	'topdo' => 'Naar product',
+	'Relation Mode' => 'Relatie soort',
+	'Relation from' => 'Geldig van',
+	'Relation Number' => 'Relatienummer',
+	'Relation to' => 'Geldig tot',
+	'quantity' => 'Hoeveelheid',
+	'instructions' => 'Instructies',
 
-	'LBL_CUSTOM_INFORMATION' => 'Custom Information',
-	'LBL_MODULEBLOCK_INFORMATION' => 'ModuleBlock Information',
-	'LBL_DESCRIPTION_INFORMATION' => 'Verkoopkans omschrijving',
+	'Required' => 'Vereist',
+	'Optional' => 'Optioneel',
+	'Substituable' => 'Vervangbaar',
+	'Incompatible' => 'Incompatibel',
 
-	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
+	'LBL_PRODUCTCOMPONENT_INFORMATION' => 'Product Component Informatie',
+	'LBL_CUSTOM_INFORMATION' => 'Eigen informatie',
+	'LBL_DESCRIPTION_INFORMATION' => 'Omschrijving',
 );
 ?>
