@@ -406,3 +406,8 @@ hr {
 		content: none;
 	}
 }
+
+/* This section can later be removed, it is purely meant for the transition period to LDS */
+#LB_buttonlist table {
+  width: auto;
+}
