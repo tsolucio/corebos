@@ -411,3 +411,12 @@ hr {
 #LB_buttonlist table {
   width: auto;
 }
+table.small td,
+table.small th {
+  padding: 5px;
+}
+
+table.lvt {
+  border-collapse: separate;
+  border-spacing: 1px;
+}
