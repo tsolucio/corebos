@@ -233,8 +233,8 @@
 				<table width="100%">
 					<tr>
 						<td class="small" nowrap align="left">{$recordListRange}</td>
-						<td nowrap width="50%" align="right">
-							<table border=0 cellspacing=0 cellpadding=0 class="small">
+						<td nowrap width="50%" align="right" class="cblds-t-align--right">
+							<table border=0 cellspacing=0 cellpadding=0 class="small" style="display: inline-block;">
 							<tr>{$NAVIGATION}</tr>
 							</table>
 						</td>
