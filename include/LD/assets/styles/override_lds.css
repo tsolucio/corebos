@@ -418,7 +418,8 @@ table.lvt {
   border-collapse: separate;
   border-spacing: 1px;
 }
-table.lvt td {
+table.lvt td,
+td.small {
   padding: 5px;
 }
 .cblds-width--auto {
