@@ -517,6 +517,26 @@ td.small {
 .reportGenHdr tr td:nth-child(2) {
   text-align: left;
 }
+/* Settings section */
+.settingsIconDisplay td,
+.settingsUI td {
+  padding: 10px;
+}
+#settingsSideMenu td {
+  padding: 2px;
+}
+#vtlib_modulemanager_list > table > tbody > tr:first-child .tableHeading {
+  text-align: right;
+}
+#vtlib_modulemanager_list > table > tbody > tr:nth-child(2) > td:first-child,
+#vtlib_modulemanager_list > table > tbody > tr:nth-child(2) > td:nth-child(3) {
+  width: 50%;
+  padding: 0;
+}
+#vtlib_modulemanager_list > table > tbody > tr:nth-child(2) > td:first-child table td,
+#vtlib_modulemanager_list > table > tbody > tr:nth-child(2) > td:nth-child(3) table td {
+  padding: 5px 1px;
+}
 /* Override general classes */
 .cblds-width--auto {
   width: auto !important;
