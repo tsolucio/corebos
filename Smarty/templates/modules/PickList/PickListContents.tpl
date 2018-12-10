@@ -11,17 +11,17 @@
 <div id="pickListContents">
 <table class="tableHeading" border="0" cellpadding="5" cellspacing="0" width="100%">
 <tr>
-	<td class="big" width="20%" nowrap>
+	<td class="big cblds-p-v--medium" width="20%" nowrap>
 		<strong>{$MOD.LBL_SELECT_PICKLIST}</strong>&nbsp;&nbsp;
 	</td>
-	<td class="cellText" width="40%">
+	<td class="cellText cblds-p-v--medium" width="40%">
 		<select name="avail_picklists" id="allpick" class="small detailedViewTextBox" style="font-weight: normal;">
 			{foreach key=fld_nam item=fld_lbl from=$ALL_LISTS}
 				<option value="{$fld_nam}">{$fld_lbl|getTranslatedString:$MODULE}</option>
 			{/foreach}
 		</select>
 	</td>
-	<td nowrap align="right">
+	<td nowrap align="right" class="cblds-p-v--medium cblds-t-align--right">
 		<input type="button" value="{'LBL_ADD_BUTTON'|@getTranslatedString}" name="add" class="crmButton small create" onclick="showAddDiv();">
 		<input type="button" value="{'LBL_EDIT_BUTTON'|@getTranslatedString}" name="del" class="crmButton small edit" onclick="showEditDiv();">
 		<input type="button" value="{'LBL_DELETE_BUTTON'|@getTranslatedString}" name="del" class="crmButton small delete" onclick="showDeleteDiv();">

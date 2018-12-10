@@ -22,11 +22,11 @@
 		<!-- DISPLAY -->
 		<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 		<tr>
-			<td width=50 rowspan=2 valign=top><img src="{'picklist.gif'|@vtiger_imageurl:$THEME}" width="48" height="48" border=0 ></td>
+			<td width=50 rowspan=2 valign=top class="cblds-p--none"><img src="{'picklist.gif'|@vtiger_imageurl:$THEME}" width="48" height="48" border=0 ></td>
 			<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_PICKLIST_EDITOR}</b></td>
 		</tr>
 		<tr>
-			<td valign=top class="small">{$MOD.LBL_PICKLIST_DESCRIPTION}</td>
+			<td valign=top class="small cblds-p-v--none">{$MOD.LBL_PICKLIST_DESCRIPTION}</td>
 		</tr>
 		</table>
 
@@ -35,15 +35,15 @@
 			<td valign=top>
 			<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 			<tr>
-				<td class="small" width="20%" nowrap>
+				<td class="small cblds-p-v--medium" width="20%" nowrap>
 					<strong>{$MOD.LBL_SELECT_MODULE}</strong>&nbsp;&nbsp;
 				</td>
-				<td class="small" align="left" width="30%">
+				<td class="small cblds-p-v--medium" align="left" width="30%">
 					<select name="pickmodule" id="pickmodule" class="detailedViewTextBox" onChange="changeModule();">
 					{html_options options=$MODULE_LISTS selected=$MODULE sortoptions=asc}
 					</select>
 				</td>
-				<td class="small" align="right">&nbsp;</td>
+				<td class="small cblds-p-v--medium" align="right">&nbsp;</td>
 			</tr>
 			</table>
 
