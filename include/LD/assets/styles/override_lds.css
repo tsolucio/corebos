@@ -546,6 +546,20 @@ td.small {
 #useredit__homeorder td {
   padding: 5px 0;
 }
+/* Workflows section */
+.workflows-list td,
+.workflows-edit td {
+  padding: 3px;
+}
+.workflows-list__item td {
+  padding: 6px 0;
+}
+#new_workflow_popup td {
+  padding: 5px;
+}
+#new_task_popup td {
+  padding: 5px;
+}
 /* Override general classes */
 .cblds-width--auto {
   width: auto !important;
@@ -555,4 +569,10 @@ td.small {
 }
 .cblds-p-top--small {
   padding-top: 5px !important;
+}
+.cblds-t-align--right {
+  text-align: right !important;
+}
+.cblds-t-align--center {
+  text-align: center !important;
 }
