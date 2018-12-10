@@ -460,6 +460,23 @@ td.small {
 .rel_mod_data_paging tbody tr td:nth-child(4) {
   text-align: right;
 }
+/* Inventory overrides */
+.detailview_inventory_row td {
+  padding: 5px;
+}
+.detailview_inventory_lpricecell td,
+.detailview_inventory_totalscell td,
+.detailview_inventory_npricecell,
+#detailview_inventory_subtotalrow td,
+#detailview_inventory_totaldiscrow td,
+#detailview_inventory_taxtotalrow td,
+#detailview_inventory_shippingrow td,
+#detailview_inventory_shiptaxrow td,
+#detailview_inventory_adjustrow td,
+#detailview_inventory_grandtotrow td {
+  text-align: right !important;
+}
+/* Override general classes */
 .cblds-width--auto {
   width: auto !important;
 }
