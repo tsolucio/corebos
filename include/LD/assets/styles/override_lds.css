@@ -475,6 +475,9 @@ td.small {
 .rel_mod_data_paging tbody tr td:nth-child(4) {
   text-align: right;
 }
+#tracker > table:first-child tbody tr td:nth-child(2) {
+  text-align: right;
+}
 /* Inventory overrides */
 .detailview_inventory_row td {
   padding: 5px;
