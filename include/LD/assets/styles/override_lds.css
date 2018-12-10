@@ -500,6 +500,17 @@ td.small {
 .reportsListTable tbody tr:nth-child(3) td table tbody tr td:nth-child(4) {
   text-align: right !important;
 }
+.reportGenerateTable tr:nth-child(2) td {
+  text-align: center;
+  padding-bottom: 3px;
+}
+.reportGenHdr td,
+#Generate .mailSubHeader td {
+  text-align: right;
+}
+.reportGenHdr tr td:nth-child(2) {
+  text-align: left;
+}
 /* Override general classes */
 .cblds-width--auto {
   width: auto !important;
