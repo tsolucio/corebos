@@ -192,7 +192,7 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 																						<td>&nbsp;</td>
 																						<td>&nbsp;</td>
 																						<td>&nbsp;</td>
-																						<td align=right>
+																						<td class="cblds-t-align--right" align=right>
 																							{if isset($MOD.LBL_ADDRESS_INFORMATION) && $header eq $MOD.LBL_ADDRESS_INFORMATION && ($MODULE eq 'Accounts' || $MODULE eq 'Contacts' || $MODULE eq 'Leads') }
 																								{if $MODULE eq 'Leads'}
 																									<input name="mapbutton" value="{$APP.LBL_LOCATE_MAP}" class="crmbutton small create" type="button" onClick="searchMapLocation( 'Main' )" title="{$APP.LBL_LOCATE_MAP}">
