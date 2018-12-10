@@ -445,6 +445,21 @@ td.small {
 .actionlink td {
   padding: 5px 0;
 }
+.rel_mod_table {
+  border-collapse: collapse !important;
+}
+.rel_mod_table .dvInnerHeader {
+  padding: 8px;
+}
+.rel_mod_content_wrapper {
+  padding: 0 !important;
+}
+.rel_mod_data_row td {
+  border: 1px solid #dedede;
+}
+.rel_mod_data_paging tbody tr td:nth-child(4) {
+  text-align: right;
+}
 .cblds-width--auto {
   width: auto !important;
 }
