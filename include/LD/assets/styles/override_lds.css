@@ -428,6 +428,19 @@ td.small {
 .closeX {
   text-align: right !important;
 }
+#adv_filter_div td {
+  padding: 7px;
+}
+#adv_filter_div > table:first-child td, 
+#adv_filter_div > div:nth-child(3) > table:first-child tr:first-child td {
+  text-align: right;
+}
+#adv_filter_div > div > table tr:last-child td {
+  text-align: left !important;
+}
+#advSearch .searchUIAdv3 td {
+  text-align: center;
+}
 .cblds-width--auto {
   width: auto !important;
 }
