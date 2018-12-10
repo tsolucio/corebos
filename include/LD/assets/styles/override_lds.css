@@ -425,6 +425,9 @@ td.small {
 .searchAlph {
   text-align: center;
 }
+.closeX {
+  text-align: right !important;
+}
 .cblds-width--auto {
   width: auto !important;
 }
