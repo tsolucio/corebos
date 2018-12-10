@@ -427,3 +427,6 @@ table.lvt td {
 .cblds-float--right {
   float: right !important;
 }
+.cblds-p-top--small {
+  padding-top: 5px !important;
+}
