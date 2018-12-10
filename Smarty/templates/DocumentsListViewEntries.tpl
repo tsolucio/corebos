@@ -165,7 +165,7 @@
 																	{if $foldercount eq 1}
 																		<tr>
 																			<td align="center" style="background-color:#efefef;height:340px" colspan="{$header_count+1}">
-																				<div style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 45%; position: relative;">
+																				<div id="no_entries_found" style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 45%; position: relative;">
 																					{assign var=vowel_conf value='LBL_A'}
 																					{assign var=MODULE_CREATE value=$SINGLE_MOD}
 																					{if $CHECK.EditView eq 'yes'}
