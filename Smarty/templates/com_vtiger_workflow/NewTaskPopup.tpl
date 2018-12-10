@@ -16,7 +16,7 @@
 			<td width="60%" align="left" class="layerPopupHeading">
 				{$MOD.LBL_CREATE_TASK}
 				</td>
-			<td width="40%" align="right">
+			<td width="40%" class="cblds-t-align--right" align="right">
 				<a href="javascript:void(0);" id="new_task_popup_close">
 					<img border="0" align="middle" src="{'close.gif'|@vtiger_imageurl:$THEME}"/>
 				</a>
@@ -42,7 +42,7 @@
 			<input type="hidden" name="workflow_id" value="{$workflow->id}">
 		</div>
 		<table width="100%" cellspacing="0" cellpadding="5" border="0" class="layerPopupTransport">
-			<tr><td align="center">
+			<tr><td class="cblds-t-align--center" align="center">
 				<input type="submit" class="crmButton small save" value="{$APP.LBL_CREATE_BUTTON_LABEL}" name="save" id='new_task_popup_save'/>
 				<input type="button" class="crmButton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL} " name="cancel" id='new_task_popup_cancel'/>
 			</td></tr>

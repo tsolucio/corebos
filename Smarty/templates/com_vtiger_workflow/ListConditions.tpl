@@ -14,7 +14,7 @@
 		<td class="big" nowrap="nowrap">
 			<strong>{$MOD.LBL_CONDITIONS}</strong>
 		</td>
-		<td class="small" align="right">
+		<td class="small cblds-t-align--right" align="right">
 			<span id="workflow_loading" style="display:none">
 			<b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0">
 			</span>
