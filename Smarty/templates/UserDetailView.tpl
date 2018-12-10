@@ -17,7 +17,7 @@
 
 <br>
 <!-- Shadow table -->
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
+<table align="center" class="user-detailview" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tr>
     <td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
     <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
@@ -26,7 +26,7 @@
 		{if $CATEGORY eq 'Settings'}
 			{include file='SetMenu.tpl'}
 		{/if}
-				<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td class="padTab" align="left">
 						<form name="DetailView" method="POST" action="index.php" ENCTYPE="multipart/form-data" id="form" style="margin:0px" onsubmit="VtigerJS_DialogBox.block();">
@@ -102,7 +102,7 @@
 							<tr>
 								<td colspan="2" align=left>
 								<!-- User detail blocks -->
-								<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+								<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" class="user-detailview__table">
 								<tr>
 								<td align="left" valign="top">
 									{foreach key=header name=blockforeach item=detail from=$BLOCKS}
@@ -113,7 +113,7 @@
 										 <td class="big">
 										<strong>{$smarty.foreach.blockforeach.iteration}. {$header}</strong>
 										 </td>
-										 <td class="small" align="right">&nbsp;</td>
+										 <td class="small cblds-t-align--right" align="right">&nbsp;</td>
 										{/strip}
 									</tr>
 									</table>
@@ -136,7 +136,7 @@
 										   {assign var=keyadmin value=$data.isadmin}
 
 										   {if $label ne ''}
-										   <td class="dvtCellLabel" align=right width=25%>{$label}</td>
+										   <td class="dvtCellLabel cblds-t-align--right" align=right width=25%>{$label}</td>
 											{if $cbodUserBlocked}
 											{if $keyfldname eq 'user_password'}
 												{assign var=keyval value=''}
@@ -146,7 +146,7 @@
 											{include file="DetailViewUI.tpl"}
 											{/if}
 										   {else}
-										   <td class="dvtCellLabel" align=right>&nbsp;</td>
+										   <td class="dvtCellLabel cblds-t-align--right" align=right>&nbsp;</td>
 										   <td class="dvtCellInfo" align=left >&nbsp;</td>
 										   {/if}
 										{/foreach}
@@ -163,19 +163,19 @@
 										 <td class="big">
 										<strong>{$list_numbering+1}. {$UMOD.LBL_HOME_PAGE_COMP}</strong>
 										 </td>
-										 <td class="small" align="right"><img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" onClick="ShowHidefn('home_comp');"></td>
+										 <td class="small cblds-t-align--right" align="right"><img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" onClick="ShowHidefn('home_comp');"></td>
 									</tr>
 									</table>
 
 									<div style="float: none; display: none;" id="home_comp">
 									<table border="0" cellpadding="5" cellspacing="0" width="100%">
 									{foreach item=homeitems key=values from=$HOMEORDER}
-										<tr><td class="dvtCellLabel" align="right" width="30%">{$UMOD.$values|@getTranslatedString:'Home'}</td>
+										<tr><td class="dvtCellLabel cblds-t-align--right" align="right" width="30%">{$UMOD.$values|@getTranslatedString:'Home'}</td>
 											{if $homeitems neq ''}
-												<td class="dvtCellInfo" align="center" width="5%">
+												<td class="dvtCellInfo cblds-t-align--center" align="center" width="5%">
 												<img src="{'prvPrfSelectedTick.gif'|@vtiger_imageurl:$THEME}" alt="{$UMOD.LBL_SHOWN}" title="{$UMOD.LBL_SHOWN}" height="12" width="12"></td><td class="dvtCellInfo" align="left">{$UMOD.LBL_SHOWN}</td>
 												{else}
-												<td class="dvtCellInfo" align="center" width="5%">
+												<td class="dvtCellInfo cblds-t-align--center" align="center" width="5%">
 												<img src="{'no.gif'|@vtiger_imageurl:$THEME}" alt="{$UMOD.LBL_HIDDEN}" title="{$UMOD.LBL_HIDDEN}" height="12" width="12"></td><td class="dvtCellInfo" align="left">{$UMOD.LBL_HIDDEN}</td>
 											{/if}
 										</tr>
@@ -190,21 +190,21 @@
 										<td class="big">
 										<strong>{$list_numbering+2}. {$UMOD.LBL_TAGCLOUD_DISPLAY}</strong>
 										</td>
-										<td class="small" align="right"><img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" onClick="ShowHidefn('tagcloud_disp');"></td>
+										<td class="small cblds-t-align--right" align="right"><img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" onClick="ShowHidefn('tagcloud_disp');"></td>
 									</tr>
 									</table>
 									<div style="float: none; display: none;" id="tagcloud_disp">
 									<table border="0" cellpadding="5" cellspacing="0" width="100%">
-										<tr><td class="dvtCellLabel" align="right" width="30%">{$UMOD.LBL_TAG_CLOUD}</td>
+										<tr><td class="dvtCellLabel cblds-t-align--right" align="right" width="30%">{$UMOD.LBL_TAG_CLOUD}</td>
 											{if $TAGCLOUDVIEW eq 'true'}
-												<td class="dvtCellInfo" align="center" width="5%">
+												<td class="dvtCellInfo cblds-t-align--center" align="center" width="5%">
 												<img src="{'prvPrfSelectedTick.gif'|@vtiger_imageurl:$THEME}" alt="{$UMOD.LBL_SHOWN}" title="{$UMOD.LBL_SHOWN}" height="12" width="12"></td><td class="dvtCellInfo" align="left">{$UMOD.LBL_SHOWN}</td>
 											{else}
-												<td class="dvtCellInfo" align="center" width="5%">
+												<td class="dvtCellInfo cblds-t-align--center" align="center" width="5%">
 												<img src="{'no.gif'|@vtiger_imageurl:$THEME}" alt="{$UMOD.LBL_HIDDEN}" title="{$UMOD.LBL_HIDDEN}" height="12" width="12"></td><td class="dvtCellInfo" align="left">{$UMOD.LBL_HIDDEN}</td>
 											{/if}
 										</tr>
-										<tr><td class="dvtCellLabel" align="right" width="30%">{$MOD.LBL_Show}</td>
+										<tr><td class="dvtCellLabel cblds-t-align--right" align="right" width="30%">{$MOD.LBL_Show}</td>
 											<td class="dvtCellInfo" align="left" colspan=3>{$SHOWTAGAS}</td>
 										</tr>
 									</table>
@@ -216,7 +216,7 @@
 										<td class="big">
 										<strong>{$list_numbering+3}. {$UMOD.LBL_MY_GROUPS}</strong>
 										 </td>
-										 <td class="small" align="right">
+										 <td class="small cblds-t-align--right" align="right">
 										{if $GROUP_COUNT > 0}
 										<img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" onClick="fetchGroups_js({$ID});">
 										{else}
@@ -238,7 +238,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td colspan=2 class="small"><div align="right"><a href="#top">{$MOD.LBL_SCROLL}</a></div></td>
+								<td colspan=2 class="small"><div class="cblds-t-align--right" align="right"><a href="#top">{$MOD.LBL_SCROLL}</a></div></td>
 							</tr>
 							</table>
 

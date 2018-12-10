@@ -562,6 +562,9 @@ td.small {
 #useredit__homeorder td {
   padding: 5px 0;
 }
+.user-detailview__table td {
+  padding: 5px;
+}
 
 /* Workflows section */
 .workflows-list td,
