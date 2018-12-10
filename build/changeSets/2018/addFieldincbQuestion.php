@@ -48,7 +48,7 @@ class addBlockFieldincbQuestion extends cbupdaterWorker {
 				),
 			);
 			$this->massCreateFields($fieldLayout);
-			$this->ExecuteQuery('update vtiger_blocks set sequence=9 where tabid=? and blocklabel=?', array(getTabId('cbQuestion', 'LBL_DESCRIPTION_INFORMATION')));
+			$this->ExecuteQuery('update vtiger_blocks set sequence=9 where tabid=? and blocklabel=?', array(getTabId('cbQuestion'), 'LBL_DESCRIPTION_INFORMATION'));
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}
