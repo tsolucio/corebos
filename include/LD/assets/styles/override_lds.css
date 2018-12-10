@@ -572,6 +572,9 @@ td.small {
 .user-detailview__table td {
   padding: 5px;
 }
+.options {
+  margin: 16% auto 0 auto;
+}
 
 /* Workflows section */
 .workflows-list td,
