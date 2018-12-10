@@ -423,3 +423,9 @@ table.lvt {
   border-collapse: separate;
   border-spacing: 1px;
 }
+.cblds-width--auto {
+  width: auto !important;
+}
+.cblds-float--right {
+  float: right !important;
+}

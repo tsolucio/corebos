@@ -138,8 +138,8 @@
 				</table>
 			</div>
 		</td>
-		<td class=small nowrap align="right" style="padding-right:10px;">
-			<table border=0 cellspacing=0 cellpadding=0>
+		<td nowrap align="right" style="padding-right:10px;" class="cblds-float--right small">
+			<table border=0 cellspacing=0 cellpadding=0 class="cblds-width--auto">
 				<tr>
 					<td valign="top" class="genHeaderSmall" style="padding-left:10px;padding-top:3px;">
 						<span class="userName">{$USER}</span>
