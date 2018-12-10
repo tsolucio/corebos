@@ -648,6 +648,14 @@ td.small {
   padding-top: 5px !important;
   padding-bottom: 5px !important;
 }
+.cblds-p-v--small {
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+.cblds-p-v--none {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
 .cblds-p--large {
   padding: 10px !important;
 }
