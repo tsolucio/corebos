@@ -14,9 +14,9 @@
 	<input type="hidden" name="module" value="{$FOR_MODULE}" />
 	<input type="hidden" name="action" value="Import" />
 	<input type="hidden" name="mode" value="upload_and_parse" />
-	<table style="width:80%;margin-left:auto;margin-right:auto;margin-top:10px;" cellpadding="5" cellspacing="12" class="searchUIBasic">
+	<table style="width:80%;margin-left:auto;margin-right:auto;margin-top:10px;" cellpadding="5" cellspacing="12" class="searchUIBasic" id="import-table">
 		<tr>
-			<td class="heading2" align="left" colspan="2">
+			<td class="heading2 cblds-p--x-large" align="left" colspan="2">
 				{'LBL_IMPORT'|@getTranslatedString:$MODULE} {$FOR_MODULE|@getTranslatedString:$FOR_MODULE}
 			</td>
 		</tr>
@@ -28,20 +28,20 @@
 		</tr>
 		{/if}
 		<tr>
-			<td class="leftFormBorder1" width="60%" valign="top">
+			<td class="leftFormBorder1 cblds-m--x-large" width="60%" valign="top">
 			{include file='modules/Import/Import_Step1.tpl'}
 			</td>
-			<td class="leftFormBorder1" width="40%" valign="top">
+			<td class="leftFormBorder1 cblds-m--x-large" width="40%" valign="top">
 			{include file='modules/Import/Import_Step2.tpl'}
 			</td>
 		</tr>
 		<tr>
-			<td class="leftFormBorder1" colspan="2" valign="top">
+			<td class="leftFormBorder1 cblds-m--x-large" colspan="2" valign="top">
 			{include file='modules/Import/Import_Step3.tpl'}
 			</td>
 		</tr>
 		<tr>
-			<td align="right" colspan="2">
+			<td align="right" colspan="2" class="cblds-t-align--right cblds-m--x-large">
 			{include file='modules/Import/Import_Basic_Buttons.tpl'}
 			</td>
 		</tr>

@@ -607,6 +607,12 @@ td.small {
   padding: 5px;
 }
 
+/* Import */
+#import-table {
+  border-collapse: separate;
+  border-spacing: 15px;
+}
+
 /* Override general classes */
 .cblds-width--auto {
   width: auto !important;
@@ -637,4 +643,19 @@ td.small {
 }
 .cblds-p--xx-small {
   padding: 2px !important;
+}
+.cblds-m--none {
+  margin: 0 !important;
+}
+.cblds-m--medium {
+  margin: 5px !important;
+}
+.cblds-m--large {
+  margin: 10px !important;
+}
+.cblds-m--x-large {
+  margin: 15px !important;
+}
+.cblds-m--xx-small {
+  margin: 2px !important;
 }
