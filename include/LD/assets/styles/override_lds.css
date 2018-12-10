@@ -635,6 +635,10 @@ td.small {
 .cblds-p--medium {
   padding: 5px !important;
 }
+.cblds-p-v--medium {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
 .cblds-p--large {
   padding: 10px !important;
 }

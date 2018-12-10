@@ -16,15 +16,15 @@
 	<div style="display:block; position:relative; width:225px;" class="layerPopup">
 		<table width="100%" border="0" cellpadding="3" cellspacing="0" class="layerHeadingULine" >
 				<tr class="colHeader big">
-					<td width="80%" colspan="2">
+					<td width="80%" colspan="2" class="cblds-p--medium">
 						{$MOD.LBL_RELATED_LIST}
 					</td>
-					<td width="20%" align="right" colspan="2">
+					<td width="20%" align="right" colspan="2" class="cblds-t-align--right cblds-p--medium">
 						<img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" onclick="fninvsh('relatedlistdiv');" alt="{$APP.LBL_CLOSE}" title="{$APP.LBL_CLOSE}" />
 					</td>
 				</tr>
 				<tr class="big">
-					<td width="80%" colspan="2" style="border-bottom-color: #ddd;border-bottom-width: 1px; border-bottom-style: solid;">
+					<td width="80%" colspan="2" class="cblds-p--medium" style="border-bottom-color: #ddd;border-bottom-width: 1px; border-bottom-style: solid;">
 						<select class="small" style='width:155px;' name='relatewithmodule' id='relatewithmodule'>
 							{html_options options=$NotRelatedModules}
 						</select>
@@ -37,28 +37,28 @@
 				<tr>
 					<td>{$related.label}</td>
 				{if $smarty.foreach.relinfo.first}
-					<td align="right" >
+					<td align="right" class="cblds-t-align--right cblds-p-v--medium">
 						<img src="{'blank.gif'|@vtiger_imageurl:$THEME}" style="width:16px;height:16px;" border="0" />&nbsp;&nbsp;
 					</td>
-					<td align="right" valign="middle">
+					<td align="right" valign="middle" class="cblds-t-align--right cblds-p-v--medium">
 						<img src="{'arrow_down.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="changeRelatedListorder('move_down','{$related.tabid}','{$related.sequence}','{$related.id}','{$MODULE}'); " alt="{$MOD.DOWN}" title="{$MOD.DOWN}">&nbsp;&nbsp;
 					</td>
 				{elseif $smarty.foreach.relinfo.last}
-					<td align="right" valign="middle">
+					<td align="right" valign="middle" class="cblds-t-align--right cblds-p-v--medium">
 						<img src="{'arrow_up.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="changeRelatedListorder('move_up','{$related.tabid}','{$related.sequence}','{$related.id}','{$MODULE}'); " alt="{$MOD.UP}" title="{$MOD.UP}">&nbsp;&nbsp;
 					</td>
-					<td align="right" >
+					<td align="right" class="cblds-t-align--right cblds-p-v--medium">
 						<img src="{'blank.gif'|@vtiger_imageurl:$THEME}" style="width:16px;height:16px;" border="0" />&nbsp;&nbsp;
 					</td>
 				{else}
-					<td align="right" valign="middle">
+					<td align="right" valign="middle" class="cblds-t-align--right cblds-p-v--medium">
 						<img src="{'arrow_up.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="changeRelatedListorder('move_up','{$related.tabid}','{$related.sequence}','{$related.id}','{$MODULE}') " alt="{$MOD.UP}" title="{$MOD.UP}">&nbsp;&nbsp;
 					</td>
-					<td align="right" valign="middle">
+					<td align="right" valign="middle" class="cblds-t-align--right cblds-p-v--medium">
 						<img src="{'arrow_down.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="changeRelatedListorder('move_down','{$related.tabid}','{$related.sequence}','{$related.id}','{$MODULE}') " alt="{$MOD.DOWN}" title="{$MOD.DOWN}">&nbsp;&nbsp;
 					</td>
 				{/if}
-				<td align="right" valign="middle">
+				<td align="right" valign="middle" class="cblds-t-align--right cblds-p-v--medium">
 					<img src="{'delete.gif'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="if (confirm(alert_arr.ARE_YOU_SURE_YOU_WANT_TO_DELETE)) deleteRelatedList('{$related.tabid}','{$related.sequence}','{$related.id}','{$MODULE}');" alt="{$MOD.LBL_DELETE}" title="{$MOD.LBL_DELETE}">
 				</td>
 			</tr>
