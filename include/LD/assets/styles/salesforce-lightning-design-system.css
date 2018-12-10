@@ -332,7 +332,7 @@ input[type="search"] {
   box-sizing: border-box; }
 
 table {
-  width: 100%; }
+  /*width: 100%;*/ }
 
 caption,
 th,
