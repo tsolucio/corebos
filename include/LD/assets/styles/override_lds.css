@@ -442,6 +442,9 @@ td.small {
 #advSearch .searchUIAdv3 td {
   text-align: center;
 }
+.actionlink td {
+  padding: 5px 0;
+}
 .cblds-width--auto {
   width: auto !important;
 }
