@@ -494,6 +494,18 @@ td.small {
 #detailview_inventory_grandtotrow td {
   text-align: right !important;
 }
+#proTab > tbody > tr:nth-child(2) td {
+  padding: 5px 0;
+}
+.inv-editview__pricecol td,
+.inv-editview__totalscol td,
+.inv-editview__netpricecol {
+  text-align: right !important;
+}
+.inv-editview__pricecol td,
+.inv-editview__totalscol td {
+  padding: 5px 0;
+}
 /* Reports overrides */
 .reportsListTable .lvtColData td,
 .reportsListTable .lvtColDataHover td {
@@ -584,4 +596,13 @@ td.small {
 }
 .cblds-t-align--center {
   text-align: center !important;
+}
+.cblds-p--none {
+  padding: 0 !important;
+}
+.cblds-p--medium {
+  padding: 5px !important;
+}
+.cblds-p--xx-small {
+  padding: 2px !important;
 }
