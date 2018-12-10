@@ -459,6 +459,9 @@ td.small {
 #adv_filter_div > div > table tr:last-child td {
   text-align: left !important;
 }
+#adv_filter_div > div > table tr:last-child td.cblds-t-align--center {
+  text-align: center !important;
+}
 #advSearch .searchUIAdv3 td {
   text-align: center;
 }
@@ -611,6 +614,12 @@ td.small {
 #import-table {
   border-collapse: separate;
   border-spacing: 15px;
+}
+
+/* CustomView / Filters */
+.cvt-tabheaders .dvtSelectedCell,
+.cvt-tabheaders .dvtUnSelectedCell {
+  padding: 6px 15px;
 }
 
 /* Override general classes */
