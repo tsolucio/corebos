@@ -476,6 +476,24 @@ td.small {
 #detailview_inventory_grandtotrow td {
   text-align: right !important;
 }
+/* Reports overrides */
+.reportsListTable .lvtColData td,
+.reportsListTable .lvtColDataHover td {
+  padding: 7px;
+}
+.reportsListTable .hdrNameBg table td {
+  text-align: right !important;
+}
+.reportsListTable table tr:first-child td {
+  padding: 5px;
+}
+.reportsListTable tbody tr:nth-child(3) td table tbody tr:first-child td:nth-child(4),
+.reportsListTable tbody tr:nth-child(3) td table tbody tr:first-child td:nth-child(3) {
+  width: auto !important;
+}
+.reportsListTable tbody tr:nth-child(3) td table tbody tr td:nth-child(4) {
+  text-align: right !important;
+}
 /* Override general classes */
 .cblds-width--auto {
   width: auto !important;
