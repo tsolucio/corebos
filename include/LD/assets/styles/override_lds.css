@@ -419,6 +419,7 @@ border-top: 1px solid #d8dde6;
 .slds-context-bar__icon-action .slds-icon-waffle_container {
   height: auto;
 }
+
 /* Listview overrides */
 #no_entries_found {
   margin: 0 auto;
@@ -478,6 +479,7 @@ td.small {
 #tracker > table:first-child tbody tr td:nth-child(2) {
   text-align: right;
 }
+
 /* Inventory overrides */
 .detailview_inventory_row td {
   padding: 5px;
@@ -506,6 +508,7 @@ td.small {
 .inv-editview__totalscol td {
   padding: 5px 0;
 }
+
 /* Reports overrides */
 .reportsListTable .lvtColData td,
 .reportsListTable .lvtColDataHover td {
@@ -535,6 +538,7 @@ td.small {
 .reportGenHdr tr td:nth-child(2) {
   text-align: left;
 }
+
 /* Settings section */
 .settingsIconDisplay td,
 .settingsUI td {
@@ -558,6 +562,7 @@ td.small {
 #useredit__homeorder td {
   padding: 5px 0;
 }
+
 /* Workflows section */
 .workflows-list td,
 .workflows-edit td {
@@ -572,15 +577,29 @@ td.small {
 #new_task_popup td {
   padding: 5px;
 }
+
 /* Popup section */
 .popup-table td {
   padding: 5px 0 !important;
   border: 1px solid #dedede;
 }
+
 /* Home section */
 .homePageMatrixHdr {
   text-align: right !important;
 }
+
+/* Massedit */
+#massedit table:first-child td {
+  padding: 5px;
+}
+#massedit_form > table > tbody > tr:nth-child(2) > td > table td {
+  padding: 8px 20px;
+}
+#massedit_form > table > tbody > tr:nth-child(2) > td > table td:first-child {
+  padding: 5px;
+}
+
 /* Override general classes */
 .cblds-width--auto {
   width: auto !important;
