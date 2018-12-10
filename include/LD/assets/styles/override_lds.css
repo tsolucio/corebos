@@ -543,6 +543,9 @@ td.small {
 #vtlib_modulemanager_list > table > tbody > tr:nth-child(2) > td:nth-child(3) table td {
   padding: 5px 1px;
 }
+#useredit__homeorder td {
+  padding: 5px 0;
+}
 /* Override general classes */
 .cblds-width--auto {
   width: auto !important;

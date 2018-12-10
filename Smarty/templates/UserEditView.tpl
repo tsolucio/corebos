@@ -230,7 +230,7 @@ function check_duplicate()
 						<td class="small" align="right">&nbsp;</td>
 					</tr>
 				</table>
-				<table border="0" cellpadding="5" cellspacing="0" width="100%">
+				<table border="0" cellpadding="5" cellspacing="0" width="100%" id="useredit__homeorder">
 				{foreach item=homeitems key=values from=$HOMEORDER}
 					<tr>
 						<td class="dvtCellLabel" align="right" width="30%">{$UMOD.$values|@getTranslatedString:'Home'}</td>
