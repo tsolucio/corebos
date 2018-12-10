@@ -83,8 +83,8 @@
 							</table>
 						</td>
 						<!-- Page Navigation -->
-						<td nowrap align="right" width="25%">
-							<table border=0 cellspacing=0 cellpadding=0 class="small">
+						<td nowrap align="right" width="25%" class="cblds-t-align--right">
+							<table border=0 cellspacing=0 cellpadding=0 class="small" style="display: inline-block;">
 								<tr>{$NAVIGATION}</tr>
 							</table>
 						</td>
