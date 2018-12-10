@@ -408,6 +408,9 @@ hr {
 }
 
 /* This section can later be removed, it is purely meant for the transition period to LDS */
+.slds-context-bar {
+border-top: 1px solid #d8dde6;
+}
 #LB_buttonlist table {
   width: auto;
 }
