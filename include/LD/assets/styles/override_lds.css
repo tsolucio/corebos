@@ -419,6 +419,10 @@ border-top: 1px solid #d8dde6;
 .slds-context-bar__icon-action .slds-icon-waffle_container {
   height: auto;
 }
+#usermenu-headerlinks td {
+  padding-right: 2px;
+  padding-left: 0;
+}
 
 /* Listview overrides */
 #no_entries_found {
