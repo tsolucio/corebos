@@ -565,6 +565,10 @@ td.small {
   padding: 5px 0 !important;
   border: 1px solid #dedede;
 }
+/* Home section */
+.homePageMatrixHdr {
+  text-align: right !important;
+}
 /* Override general classes */
 .cblds-width--auto {
   width: auto !important;
