@@ -411,6 +411,9 @@ hr {
 .slds-context-bar {
 border-top: 1px solid #d8dde6;
 }
+.slds-context-bar__dropdown-trigger .slds-dropdown::before {
+  height: 0;
+}
 #LB_buttonlist table {
   width: auto;
 }
