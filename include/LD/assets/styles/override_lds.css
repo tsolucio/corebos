@@ -422,6 +422,9 @@ table.lvt td,
 td.small {
   padding: 5px;
 }
+.searchAlph {
+  text-align: center;
+}
 .cblds-width--auto {
   width: auto !important;
 }
