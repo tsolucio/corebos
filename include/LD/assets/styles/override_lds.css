@@ -408,12 +408,18 @@ hr {
 }
 
 /* This section can later be removed, it is purely meant for the transition period to LDS */
+
+/* Main header overrides */
 .slds-context-bar {
 border-top: 1px solid #d8dde6;
 }
 .slds-context-bar__dropdown-trigger .slds-dropdown::before {
   height: 0;
 }
+.slds-context-bar__icon-action .slds-icon-waffle_container {
+  height: auto;
+}
+/* Listview overrides */
 #LB_buttonlist table {
   width: auto;
 }
