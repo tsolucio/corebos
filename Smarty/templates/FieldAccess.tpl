@@ -41,7 +41,7 @@
 		<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 		<tr>
 			<td class="big"><strong>{'LBL_GLOBAL_FIELDS_MANAGER'|@getTranslatedString:'Users'}</strong></td>
-			<td class="small" align=right>
+			<td class="small cblds-t-align--right" align=right>
 			{if $MODE neq 'edit'}
 				<input name="Edit" type="submit" class="crmButton small edit" value="{$APP.LBL_EDIT_BUTTON}" >
 			{else}
