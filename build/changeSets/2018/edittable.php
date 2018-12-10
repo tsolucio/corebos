@@ -22,7 +22,7 @@ class edittable extends cbupdaterWorker{
                                 INNER JOIN vtiger_crmentity AS c1 ON vtiger_seproductsrel.crmid = c1.crmid 
                                 INNER JOIN vtiger_crmentity AS c2 ON vtiger_seproductsrel.productid = c2.crmid
                                 INNER JOIN vtiger_products ON vtiger_products.productid = vtiger_seproductsrel.crmid
-                                WHERE c1.deleted = 0 AND c1.deleted = 0 AND vtiger_seproductsrel.setype = 'Products'");
+                                WHERE c1.deleted = 0 AND c2.deleted = 0 AND vtiger_seproductsrel.setype = 'Products'");
             $usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
                         $default_values = array(
                         'assigned_user_id' => $usrwsid,
