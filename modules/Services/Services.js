@@ -66,6 +66,10 @@ function set_return_inventory(product_id, product_name, unitprice, taxstr, curr_
 	}
 	window.opener.document.EditView.elements['qty'+curr_row].value = service_default_units;
 	window.opener.document.EditView.elements['qty'+curr_row].focus();
+	var func = window.opener.gVTModule + 'setValueFromCapture';
+	if (typeof window.opener[func] == 'function') {
+		window.opener[func](product_id, product_name, 'productName'+curr_row);
+	}
 }
 
 function set_return_inventory_po(product_id, product_name, unitprice, taxstr, curr_row, desc) {

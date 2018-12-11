@@ -49,6 +49,10 @@ function set_return_formname_specific(formname, product_id, product_name) {
 function set_return_inventory(product_id, product_name, unitprice, qtyinstock, taxstr, curr_row, desc, subprod_id) {
 	getOpenerObj('qtyInStock'+curr_row).innerHTML = qtyinstock;
 	set_return_inventory_po(product_id, product_name, unitprice, taxstr, curr_row, desc, subprod_id);
+	var func = window.opener.gVTModule + 'setValueFromCapture';
+	if (typeof window.opener[func] == 'function') {
+		window.opener[func](product_id, product_name, 'productName'+curr_row);
+	}
 }
 
 function set_return_inventory_po(product_id, product_name, unitprice, taxstr, curr_row, desc, subprod_id) {
