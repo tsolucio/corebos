@@ -499,6 +499,19 @@ td.small {
   padding: 5px;
 }
 
+/* Global search */
+#UnifiedSearch_moduleformwrapper form table:nth-child(2) tbody tr td table:first-child tbody tr td:nth-child(2) a:nth-child(3) {
+  float: right;
+}
+#UnifiedSearch_moduleformwrapper form table:nth-child(2) tbody tr td table:nth-child(2) td {
+  padding: 7px;
+  text-align: left !important;
+}
+#UnifiedSearch_moduleformwrapper form table:nth-child(2) tbody tr:nth-child(2) td {
+  padding: 5px;
+  text-align: right !important;
+}
+
 /* Inventory overrides */
 .detailview_inventory_row td {
   padding: 5px;
