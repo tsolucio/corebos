@@ -1666,6 +1666,8 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			$temp_val = html_entity_decode($temp_val, ENT_QUOTES, $default_charset);
 			$value = vt_suppressHTMLTags(implode(',', json_decode($temp_val, true)));
 		}
+	} elseif ($uitype == 7) {
+		$value = CurrencyField::convertToUserFormat($temp_val);
 	} else {
 		if ($fieldname == $focus->list_link_field) {
 			if ($mode == 'search') {
