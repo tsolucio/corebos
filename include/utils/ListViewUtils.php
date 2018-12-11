@@ -1847,7 +1847,9 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 							$str_sep = ':';
 						}
 						$sub_products .= $str_sep . $id;
-						$sub_prod .= $str_sep . " - $id." . $adb->query_result($sub_prod_query, $i, 'productname');
+						$sub_prod .= $str_sep . ' - ('
+							.CurrencyField::convertToUserFormat($adb->query_result($sub_prod_query, $i, 'quantity')) . ') '
+							.$adb->query_result($sub_prod_query, $i, 'productname');
 					}
 
 					$sub_det = $sub_products . '::' . str_replace(':', '<br>', $sub_prod);
