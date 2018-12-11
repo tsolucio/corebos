@@ -324,11 +324,11 @@ if ($currentModule == 'PriceBooks' && isset($_REQUEST['productid'])) {
 		if ($showSubproducts == 'yes') {
 			$where_relquery.=' and vtiger_products.discontinued <> 0';
 		} else {
-			$where_relquery.=" and vtiger_products.discontinued<>0 AND vtiger_products.productid NOT IN (SELECT crmid FROM vtiger_seproductsrel WHERE setype='Products')";
+			$where_relquery.=" and vtiger_products.discontinued<>0 AND vtiger_products.productid NOT IN (SELECT topdo FROM vtiger_productcomponent)";
 		}
 	} elseif ($currentModule == 'Products' && !empty($_REQUEST['record_id']) && ($popuptype == 'inventory_prod' || $popuptype == 'inventory_prod_po')) {
 		$where_relquery .= ' and vtiger_products.discontinued <> 0 AND (vtiger_products.productid IN '
-			."(SELECT crmid FROM vtiger_seproductsrel WHERE setype='Products' AND productid=".$adb->sql_escape_string($_REQUEST['record_id']).'))';
+			."(SELECT topdo FROM vtiger_productcomponent WHERE frompdo=".$adb->sql_escape_string($_REQUEST['record_id']).'))';
 	} elseif ($currentModule == 'Products' && (empty($_REQUEST['return_module']) || $_REQUEST['return_module'] != 'Products')) {
 		$where_relquery .= ' and vtiger_products.discontinued <> 0';
 	}
@@ -340,12 +340,12 @@ if ($currentModule == 'PriceBooks' && isset($_REQUEST['productid'])) {
 			$where_relquery .=' and vtiger_products.discontinued <> 0 AND vtiger_crmentity.crmid NOT IN ('.$adb->sql_escape_string($_REQUEST['recordid']).')';
 		} elseif ($parentLikeSubProduct == 'yes' && $SubProductBeParent == 'yes') {
 			$where_relquery .=' and vtiger_products.discontinued <> 0 AND (vtiger_crmentity.crmid NOT IN ('.$adb->sql_escape_string($_REQUEST['recordid'])
-				.") AND vtiger_crmentity.crmid NOT IN (SELECT productid FROM vtiger_seproductsrel WHERE setype='Products' AND crmid="
+				.") AND vtiger_crmentity.crmid NOT IN (SELECT frompdo FROM vtiger_productcomponent WHERE topdo="
 				.$adb->sql_escape_string($_REQUEST['recordid']).'))';
 		} else {
 			$where_relquery .=' and vtiger_products.discontinued <> 0 AND (vtiger_crmentity.crmid NOT IN ('.$adb->sql_escape_string($_REQUEST['recordid'])
-				.") AND vtiger_crmentity.crmid NOT IN (SELECT productid FROM vtiger_seproductsrel WHERE setype='Products') AND vtiger_crmentity.crmid NOT IN "
-				."(SELECT crmid FROM vtiger_seproductsrel WHERE setype='Products' AND productid=".$adb->sql_escape_string($_REQUEST['recordid']).'))';
+				.") AND vtiger_crmentity.crmid NOT IN (SELECT frompdo FROM vtiger_productcomponent) AND vtiger_crmentity.crmid NOT IN "
+				."(SELECT topdo FROM vtiger_productcomponent WHERE frompdo=".$adb->sql_escape_string($_REQUEST['recordid']).'))';
 		}
 	}
 		$smarty->assign('SHOW_SUBPRODUCTS', GlobalVariable::getVariable('Product_Show_Subproducts_Popup', 'no'));

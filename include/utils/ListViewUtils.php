@@ -1177,11 +1177,11 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 				$sub_products = '';
 				$sub_prod = '';
 				$sub_prod_query = $adb->pquery(
-					"SELECT vtiger_products.productid,vtiger_products.productname
+					'SELECT vtiger_products.productid,vtiger_products.productname
 						from vtiger_products
 						INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
-						INNER JOIN vtiger_seproductsrel on vtiger_seproductsrel.crmid=vtiger_products.productid
-						WHERE vtiger_seproductsrel.productid=? and vtiger_seproductsrel.setype='Products'",
+						INNER JOIN vtiger_productcomponent on vtiger_productcomponent.topdo=vtiger_products.productid
+						WHERE vtiger_productcomponent.frompdo=?',
 					array($entity_id)
 				);
 				for ($k = 0; $k < $adb->num_rows($sub_prod_query); $k++) {
@@ -1208,7 +1208,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 					.'&currencyid=' . vtlib_purify($_REQUEST['currencyid']) . '" > '.getTranslatedString('Sub Products').'</a>';
 				$SubProductBeParent = GlobalVariable::getVariable('Product_Permit_Subproduct_Be_Parent', 'no');
 				if (!isset($_REQUEST['record_id']) || $SubProductBeParent == 'yes') {
-					$sub_products_query = $adb->pquery("SELECT productid from vtiger_seproductsrel WHERE productid=? AND setype='Products' limit 1", array($entity_id));
+					$sub_products_query = $adb->pquery('SELECT productid from vtiger_productcomponent WHERE frompdo=? limit 1', array($entity_id));
 					if ($adb->num_rows($sub_products_query) > 0) {
 						$list_header[] = $sub_products_link;
 					} else {
@@ -1768,11 +1768,11 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$sub_products = '';
 					$sub_prod = '';
 					$sub_prod_query = $adb->pquery(
-						"SELECT vtiger_products.productid,vtiger_products.productname,vtiger_products.qtyinstock,vtiger_crmentity.description
+						'SELECT vtiger_products.productid,vtiger_products.productname,vtiger_products.qtyinstock,vtiger_crmentity.description
 							from vtiger_products
 							INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
-							INNER JOIN vtiger_seproductsrel on vtiger_seproductsrel.crmid=vtiger_products.productid
-							WHERE vtiger_seproductsrel.productid=? and vtiger_seproductsrel.setype='Products'",
+							INNER JOIN vtiger_productcomponent on vtiger_productcomponent.topdo=vtiger_products.productid
+							WHERE vtiger_productcomponent.frompdo=?',
 						array($entity_id)
 					);
 					for ($i = 0; $i < $adb->num_rows($sub_prod_query); $i++) {
@@ -1817,11 +1817,11 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$sub_products = '';
 					$sub_prod = '';
 					$sub_prod_query = $adb->pquery(
-						"SELECT vtiger_products.productid,vtiger_products.productname,vtiger_products.qtyinstock,vtiger_crmentity.description
+						'SELECT vtiger_products.productid,vtiger_products.productname,vtiger_products.qtyinstock,vtiger_crmentity.description
 							from vtiger_products
 							INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_products.productid
-							INNER JOIN vtiger_seproductsrel on vtiger_seproductsrel.crmid=vtiger_products.productid
-							WHERE vtiger_seproductsrel.productid=? and vtiger_seproductsrel.setype='Products'",
+							INNER JOIN vtiger_productcomponent on vtiger_productcomponent.topdo=vtiger_products.productid
+							WHERE vtiger_productcomponent.frompdo=?',
 						array($entity_id)
 					);
 					for ($i = 0; $i < $adb->num_rows($sub_prod_query); $i++) {
