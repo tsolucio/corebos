@@ -43,7 +43,7 @@
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 					<tr>
 						<td class="big"><strong>{$MOD.LBL_PROFILES_LIST}</strong></td>
-						<td class="small" align=right>{$CMOD.LBL_TOTAL} {$COUNT} {$MOD.LBL_PROFILES} </td>
+						<td class="small cblds-t-align--right" align=right>{$CMOD.LBL_TOTAL} {$COUNT} {$MOD.LBL_PROFILES} </td>
 					</tr>
 					</table>
 
