@@ -40,11 +40,11 @@
 								<!-- DISPLAY -->
 								<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 									<tr>
-										<td width=50 rowspan=2 valign=top><img src="{'ogmailserver.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" width="48" height="48" border=0 title="{$MOD.LBL_USERS}"></td>
+										<td width=50 rowspan=2 valign=top class="cblds-p--none"><img src="{'ogmailserver.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" width="48" height="48" border=0 title="{$MOD.LBL_USERS}"></td>
 										<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_MAIL_SERVER_SETTINGS} </b></td>
 									</tr>
 									<tr>
-										<td valign=top class="small">{$MOD.LBL_MAIL_SERVER_DESC} </td>
+										<td valign=top class="small cblds-p-v--none">{$MOD.LBL_MAIL_SERVER_DESC} </td>
 									</tr>
 								</table>
 								<br>
