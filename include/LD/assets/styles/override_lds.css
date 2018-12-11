@@ -488,6 +488,17 @@ td.small {
   text-align: right;
 }
 
+/* Quick create overrides */
+#qcform .qcTransport td:first-child {
+  text-align: right;
+}
+#qcform .qcTransport td:nth-child(2) {
+  text-align: left;
+}
+#qcform .qcTransport td {
+  padding: 5px;
+}
+
 /* Inventory overrides */
 .detailview_inventory_row td {
   padding: 5px;
