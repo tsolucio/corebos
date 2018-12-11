@@ -442,7 +442,8 @@ table.lvt td,
 td.small {
   padding: 5px;
 }
-.searchAlph {
+.searchAlph,
+.searchAlphselected {
   text-align: center;
 }
 .closeX {
