@@ -648,9 +648,16 @@ td.small {
 .cblds-p--medium {
   padding: 5px !important;
 }
+.cblds-p--large {
+  padding: 10px !important;
+}
 .cblds-p-v--medium {
   padding-top: 5px !important;
   padding-bottom: 5px !important;
+}
+.cblds-p-v--mediumsmall {
+  padding-top: 3px !important;
+  padding-bottom: 3px !important;
 }
 .cblds-p-v--small {
   padding-top: 2px !important;
