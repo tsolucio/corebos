@@ -41,12 +41,12 @@ function performScanNow(app_key, scannername) {
 				<!-- DISPLAY -->
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 				<tr>
-					<td width=50 rowspan=2 valign=top><img src="{'mailScanner.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_MAIL_SCANNER}" width="48" height="48" border=0 title="{$MOD.LBL_MAIL_SCANNER}"></td>
+					<td width=50 rowspan=2 valign=top class="cblds-p--none"><img src="{'mailScanner.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_MAIL_SCANNER}" width="48" height="48" border=0 title="{$MOD.LBL_MAIL_SCANNER}"></td>
 					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_MAIL_SCANNER}</b></td>
 				</tr>
 				<tr>
-					<td valign=top class="small">{$MOD.LBL_MAIL_SCANNER_DESCRIPTION}</td>
-					<td align="right" class="small" width='40%'>
+					<td valign=top class="small cblds-p-v--none">{$MOD.LBL_MAIL_SCANNER_DESCRIPTION}</td>
+					<td align="right" class="small cblds-t-align--right" width='40%'>
 						<b>
 						{if $CRON_TASK->isDisabled() }{'LBL_DISABLED'|@getTranslatedString:'CronTasks'}{/if}
 						{if $CRON_TASK->isRunning() }{'LBL_RUNNING'|@getTranslatedString:'CronTasks'}{/if}
@@ -74,7 +74,7 @@ function performScanNow(app_key, scannername) {
 						<table border=0 cellspacing=0 cellpadding=2 width=100% class="tableHeading">
 						<tr>
 							<td class="big" width="60%"><strong>{$MOD.LBL_MAILBOX}</strong></td>
-							<td width="30%" nowrap align="right">
+							<td width="30%" nowrap align="right" class="cblds-t-align--right">
 								<a href="index.php?module=Settings&action=MailScanner&parenttab=Settings&mode=edit&scannername="><img src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" border="0" /></a>
 							</td>
 						</tr>
@@ -104,7 +104,7 @@ function performScanNow(app_key, scannername) {
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 				<tr>
 				<td class="big" width="70%"><strong>{$SCANNERINFO.scannername} {$MOD.LBL_INFORMATION}</strong></td>
-				<td width="30%" nowrap align="right">
+				<td width="30%" nowrap align="right" class="cblds-t-align--right">
 					{if $SCANNERINFO.isvalid eq true}
 
 					{if $SCANNERINFO.rules neq false}
@@ -165,7 +165,7 @@ function performScanNow(app_key, scannername) {
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 					<tr>
 					<td class="big" width="70%"><strong>{$MOD.LBL_SCANNING} {$MOD.LBL_INFORMATION}</strong></td>
-					<td width="30%" nowrap align="right">&nbsp;</td>
+					<td width="30%" nowrap align="right" class="cblds-t-align--right">&nbsp;</td>
 					</tr>
 					</table>
 
