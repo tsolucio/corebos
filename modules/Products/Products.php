@@ -1015,6 +1015,8 @@ class Products extends CRMEntity {
 					"<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='crmbutton small create'" .
 					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"ProductComponent\";' type='submit' name='button'" .
 					" value='". getTranslatedString('LBL_ADD_NEW'). " " . $singular_modname ."'>&nbsp;";
+				$button .= '<input type="hidden" name="frompdo" id="frompdo" value="' . $id . '">';
+				$button .= '<input type="hidden" name="frompdo_type" id="frompdo_type" value="' . $currentModule . '">';
 			}
 		}
 
@@ -1111,12 +1113,13 @@ class Products extends CRMEntity {
 	public function isparent_check() {
 		global $adb;
 		$isparent_query = $adb->pquery(
-			getListQuery('Products')." AND (vtiger_products.productid IN
-				(SELECT frompdo from vtiger_productcomponent WHERE vtiger_productcomponent.frompdo = ?))",
+			'SELECT EXISTS (SELECT 1
+				FROM vtiger_productcomponent
+				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_productcomponent.productcomponentid
+				WHERE vtiger_crmentity.deleted=0 AND vtiger_productcomponent.frompdo=?)',
 			array($this->id)
 		);
-		$isparent = $adb->num_rows($isparent_query);
-		return $isparent;
+		return (int)$adb->query_result($isparent_query, 0, 0);
 	}
 
 	/** Function to check if the product is member of other product
@@ -1127,13 +1130,15 @@ class Products extends CRMEntity {
 		$ismember = 0;
 		if ($SubProductBeParent == 'no') {
 			$ismember_query = $adb->pquery(
-				getListQuery('Products')." AND (vtiger_products.productid IN
-					(SELECT topdo from vtiger_productcomponent WHERE vtiger_productcomponent.topdo = ?))",
+				'SELECT EXISTS (SELECT 1
+					FROM vtiger_productcomponent
+					INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_productcomponent.productcomponentid
+					WHERE vtiger_crmentity.deleted=0 AND vtiger_productcomponent.topdo=?)',
 				array($this->id)
 			);
-			$ismember = $adb->num_rows($ismember_query);
+			$ismember = $adb->query_result($ismember_query, 0, 0);
 		}
-		return $ismember;
+		return (int)$ismember;
 	}
 
 	/**

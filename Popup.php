@@ -324,11 +324,16 @@ if ($currentModule == 'PriceBooks' && isset($_REQUEST['productid'])) {
 		if ($showSubproducts == 'yes') {
 			$where_relquery.=' and vtiger_products.discontinued <> 0';
 		} else {
-			$where_relquery.=" and vtiger_products.discontinued<>0 AND vtiger_products.productid NOT IN (SELECT topdo FROM vtiger_productcomponent)";
+			$where_relquery.=' and vtiger_products.discontinued<>0 AND vtiger_products.productid NOT IN (SELECT distinct topdo
+				FROM vtiger_productcomponent
+				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
+				WHERE vtiger_crmentity.deleted = 0)';
 		}
 	} elseif ($currentModule == 'Products' && !empty($_REQUEST['record_id']) && ($popuptype == 'inventory_prod' || $popuptype == 'inventory_prod_po')) {
 		$where_relquery .= ' and vtiger_products.discontinued <> 0 AND (vtiger_products.productid IN '
-			."(SELECT topdo FROM vtiger_productcomponent WHERE frompdo=".$adb->sql_escape_string($_REQUEST['record_id']).'))';
+			.'(SELECT topdo FROM vtiger_productcomponent
+				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
+				WHERE vtiger_crmentity.deleted=0 AND frompdo='.$adb->sql_escape_string($_REQUEST['record_id']).'))';
 	} elseif ($currentModule == 'Products' && (empty($_REQUEST['return_module']) || $_REQUEST['return_module'] != 'Products')) {
 		$where_relquery .= ' and vtiger_products.discontinued <> 0';
 	}
@@ -340,17 +345,25 @@ if ($currentModule == 'PriceBooks' && isset($_REQUEST['productid'])) {
 			$where_relquery .=' and vtiger_products.discontinued <> 0 AND vtiger_crmentity.crmid NOT IN ('.$adb->sql_escape_string($_REQUEST['recordid']).')';
 		} elseif ($parentLikeSubProduct == 'yes' && $SubProductBeParent == 'yes') {
 			$where_relquery .=' and vtiger_products.discontinued <> 0 AND (vtiger_crmentity.crmid NOT IN ('.$adb->sql_escape_string($_REQUEST['recordid'])
-				.") AND vtiger_crmentity.crmid NOT IN (SELECT frompdo FROM vtiger_productcomponent WHERE topdo="
-				.$adb->sql_escape_string($_REQUEST['recordid']).'))';
+				.') AND vtiger_crmentity.crmid NOT IN (SELECT distinct frompdo
+					FROM vtiger_productcomponent
+					INNER JOIN vtiger_crmentity crmpc ON crmpc.crmid=vtiger_productcomponent.productcomponentid
+					WHERE crmpc.deleted=0 AND topdo='.$adb->sql_escape_string($_REQUEST['recordid']).'))';
 		} else {
 			$where_relquery .=' and vtiger_products.discontinued <> 0 AND (vtiger_crmentity.crmid NOT IN ('.$adb->sql_escape_string($_REQUEST['recordid'])
-				.") AND vtiger_crmentity.crmid NOT IN (SELECT frompdo FROM vtiger_productcomponent) AND vtiger_crmentity.crmid NOT IN "
-				."(SELECT topdo FROM vtiger_productcomponent WHERE frompdo=".$adb->sql_escape_string($_REQUEST['recordid']).'))';
+				.') AND vtiger_crmentity.crmid NOT IN (SELECT distinct frompdo
+					FROM vtiger_productcomponent
+					INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
+					WHERE vtiger_crmentity.deleted=0
+				) AND vtiger_crmentity.crmid NOT IN (SELECT distinct topdo
+					FROM vtiger_productcomponent
+					INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
+					WHERE vtiger_crmentity.deleted=0 AND frompdo='.$adb->sql_escape_string($_REQUEST['recordid']).'))';
 		}
 	}
-		$smarty->assign('SHOW_SUBPRODUCTS', GlobalVariable::getVariable('Product_Show_Subproducts_Popup', 'no'));
-		$smarty->assign('PRODUCT_PARENT_LIKE_SUBPRODUCT', GlobalVariable::getVariable('Product_Permit_Relate_Bundle_Parent', 'no'));
-		$smarty->assign('SUBPRODUCT_BE_PARENT', GlobalVariable::getVariable('Product_Permit_Subproduct_Be_Parent', 'no'));
+	$smarty->assign('SHOW_SUBPRODUCTS', GlobalVariable::getVariable('Product_Show_Subproducts_Popup', 'no'));
+	$smarty->assign('PRODUCT_PARENT_LIKE_SUBPRODUCT', GlobalVariable::getVariable('Product_Permit_Relate_Bundle_Parent', 'no'));
+	$smarty->assign('SUBPRODUCT_BE_PARENT', GlobalVariable::getVariable('Product_Permit_Subproduct_Be_Parent', 'no'));
 	if ($currentModule == 'Services' && $popuptype == 'inventory_service') {
 		$where_relquery .=' and vtiger_service.discontinued <> 0';
 	}
