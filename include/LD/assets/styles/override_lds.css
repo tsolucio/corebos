@@ -565,6 +565,7 @@ td.small {
 #vtlib_modulemanager_list > table > tbody > tr:nth-child(2) > td:first-child table td,
 #vtlib_modulemanager_list > table > tbody > tr:nth-child(2) > td:nth-child(3) table td {
   padding: 5px 1px;
+  min-width: 20px;
 }
 #useredit__homeorder td {
   padding: 5px 0;
