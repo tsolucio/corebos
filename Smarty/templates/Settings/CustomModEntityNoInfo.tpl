@@ -17,7 +17,7 @@
 	<td width="100%" class="small cellText">
 		 <b>{$STATUSMSG}</b>
 	</td>
-	<td width="80%" nowrap class="small cellText" align=right>
+	<td width="80%" nowrap class="small cellText cblds-t-align--right" align=right>
 		<b>{$MOD.LBL_MODULE_NUMBERING_FIX_MISSING}</b>
 		<input type="button" class="crmbutton small create" value="{$APP.LBL_APPLY_BUTTON_LABEL}" onclick="updateModEntityExisting(this, this.form);"/>
 	</td>
@@ -37,7 +37,7 @@
 </tr>
 
 <tr>
-	<td width="20%" nowrap colspan="3" align ="center">
+	<td width="20%" nowrap colspan="3" align ="center" class="cblds-t-align--right">
 		<input type="button" name="Button" class="crmbutton small save" value="{$APP.LBL_SAVE_BUTTON_LABEL}" onclick="updateModEntityNoSetting(this, this.form);" />
 		<input type="button" name="Button" class="crmbutton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" onclick="history.back(-1);" /></td>
 	</td>
