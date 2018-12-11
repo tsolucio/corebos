@@ -366,7 +366,8 @@ class Invoice extends CRMEntity {
 				//don't do any discount)
 				if ($fieldsList[$k]!='lineitem_id' &&
 					($fieldsList[$k]!='discount_amount' || ($fieldsList[$k]=='discount_amount' && !empty($row[$fieldsList[$k]]))) &&
-					($fieldsList[$k]!='discount_percent' || ($fieldsList[$k]=='discount_percent' && !empty($row[$fieldsList[$k]])))
+					($fieldsList[$k]!='discount_percent' || ($fieldsList[$k]=='discount_percent' && !empty($row[$fieldsList[$k]]))) &&
+					(substr($fieldsList[$k],0,3) != 'tax' || (substr($fieldsList[$k],0,3) == 'tax' && !empty($row[$fieldsList[$k]])))
 				) {
 					$col_value[$fieldsList[$k]] = $row[$fieldsList[$k]];
 				}
@@ -413,7 +414,8 @@ class Invoice extends CRMEntity {
 			$row = $adb->query_result_rowdata($res, $j);
 			$col_value = array();
 			for ($k=0; $k<count($fieldsList); $k++) {
-				$col_value[$fieldsList[$k]] = $row[$fieldsList[$k]];
+				if(!empty($row[$fieldsList[$k]]))
+					$col_value[$fieldsList[$k]] = $row[$fieldsList[$k]];
 			}
 			if (count($col_value) > 0) {
 				$col_value['id'] = $this->id;
