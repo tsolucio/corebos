@@ -58,7 +58,7 @@
 									<!-- Heading and Icons -->
 									<table width="100%" cellpadding="5" cellspacing="0" border="0" class="settingsSelUITopLine">
 									<tr>
-										<td width=50 rowspan="2"><img src="{'ico-users.gif'|@vtiger_imageurl:$THEME}" align="absmiddle"></td>
+										<td width=50 rowspan="2" class="cblds-p--none"><img src="{'ico-users.gif'|@vtiger_imageurl:$THEME}" align="absmiddle"></td>
 										<td>
 											{if $CATEGORY eq 'Settings'}
 											<span class="heading2">
@@ -85,7 +85,7 @@
 							</tr>
 							<tr><td colspan="2">&nbsp;</td></tr>
 							<tr>
-								<td colspan="2" nowrap align="right">
+								<td colspan="2" nowrap align="right" class="cblds-t-align--right">
 									<input type="button" onclick="gotourl('index.php?module=Utilities&action=integration&_op=getconfig2fa&user_list={$ID}');" value="{'GoTo2FAActivation'|getTranslatedString:'Utilities'}" class="crmButton small save"></input>
 									{if $IS_ADMIN eq 'true' && !$mustChangePassword}
 									<input type="button" onclick="gotourl('index.php?module=cbLoginHistory&action=ListView&page=1&user_list={$ID}');" value="{$MOD.LBL_LOGIN_HISTORY_DETAILS}" class="crmButton small save"></input>

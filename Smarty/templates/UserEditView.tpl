@@ -191,7 +191,7 @@ function check_duplicate()
 	</tr>
 	<tr><td>&nbsp;</td></tr>
 	<tr>
-		<td nowrap align="right">
+		<td nowrap align="right" class="cblds-t-align--right">
 			{if $LDAP_BUTTON neq ''}
 				<input type="text" id="LdapSearchUser" class="detailedViewTextBox" style="width:150px;" placeholder="{$UMOD.LBL_FORE_LASTNAME}">
 				<input type="button" class="crmbutton small create" value="{$UMOD.LBL_QUERY} {$LDAP_BUTTON}" onClick="QueryLdap('LdapSearchUser');">
@@ -275,7 +275,7 @@ function check_duplicate()
 				<br>
 				<tr><td colspan=4>&nbsp;</td></tr>
 						<tr>
-							<td colspan=4 align="right">
+							<td colspan=4 align="right" class="cblds-t-align--right">
 							<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accesskey="{$APP.LBL_SAVE_BUTTON_KEY}" class="small crmbutton save" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " onclick="this.form.action.value='Save'; return verify_data(EditView)" type="button" />
 							<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accesskey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="small crmbutton cancel" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " onclick="window.history.back()" type="button" />
 							</td>
@@ -287,7 +287,7 @@ function check_duplicate()
 				</table>
 				<br>
 				</td></tr>
-				<tr><td class="small"><div align="right"><a href="#top">{$MOD.LBL_SCROLL}</a></div></td></tr>
+				<tr><td class="small cblds-t-align--right"><div align="right"><a href="#top">{$MOD.LBL_SCROLL}</a></div></td></tr>
 				</table>
 			</td>
 			</tr>
