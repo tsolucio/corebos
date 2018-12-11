@@ -29,11 +29,11 @@
 				<!-- DISPLAY -->
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 				<tr>
-					<td width=50 rowspan=2 valign=top><img src="{'ico-profile.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_PROFILES}" width="48" height="48" border=0 title="{$MOD.LBL_PROFILES}"></td>
+					<td width=50 rowspan=2 valign=top class="cblds-p--none"><img src="{'ico-profile.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_PROFILES}" width="48" height="48" border=0 title="{$MOD.LBL_PROFILES}"></td>
 					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_PROFILES} </b></td>
 				</tr>
 				<tr>
-					<td valign=top class="small">{$MOD.LBL_PROFILE_DESCRIPTION}</td>
+					<td valign=top class="small cblds-p-v--none">{$MOD.LBL_PROFILE_DESCRIPTION}</td>
 				</tr>
 				</table>
 
@@ -49,16 +49,16 @@
 
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="listTableTopButtons">
 					<tr>
-						<td class=small align=right><input type="submit" value="{$CMOD.LBL_NEW_PROFILE}" title="{$CMOD.LBL_NEW_PROFILE}" class="crmButton create small"></td>
+						<td class="small cblds-t-align--right" align=right><input type="submit" value="{$CMOD.LBL_NEW_PROFILE}" title="{$CMOD.LBL_NEW_PROFILE}" class="crmButton create small"></td>
 					</tr>
 					</table>
 
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="listTable">
 					<tr>
-						<td class="colHeader small" valign=top width=2%>{$LIST_HEADER.0}</td>
-						<td class="colHeader small" valign=top width=8%>{$LIST_HEADER.1}</td>
-						<td class="colHeader small" valign=top width=30%>{$LIST_HEADER.2} </td>
-						<td class="colHeader small" valign=top width=60%>{$LIST_HEADER.3}</td>
+						<td class="colHeader small cblds-p-v--medium" valign=top width=2%>{$LIST_HEADER.0}</td>
+						<td class="colHeader small cblds-p-v--medium" valign=top width=8%>{$LIST_HEADER.1}</td>
+						<td class="colHeader small cblds-p-v--medium" valign=top width=30%>{$LIST_HEADER.2} </td>
+						<td class="colHeader small cblds-p-v--medium" valign=top width=60%>{$LIST_HEADER.3}</td>
 					</tr>
 					{foreach name=profilelist item=listvalues from=$LIST_ENTRIES}
 					<tr>
