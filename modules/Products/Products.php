@@ -133,11 +133,24 @@ class Products extends CRMEntity {
 		}
 		$copyBundle = GlobalVariable::getVariable('Product_Copy_Bundle_OnDuplicate', 'false');
 		if ($copyBundle != 'false' && $_REQUEST['cbcustominfo1'] == 'duplicatingproduct' && !empty($_REQUEST['cbcustominfo2'])) {
-			global $adb;
-			$adb->pquery(
-				'insert into vtiger_seproductsrel select crmid,?,setype from vtiger_seproductsrel where productid = ?',
-				array($this->id, $_REQUEST['cbcustominfo2'])
+			include_once 'include/Webservices/Create.php';
+			include_once 'include/Webservices/Retrieve.php';
+			global $adb, $current_user;
+			$pcrs = $adb->pquery(
+				'select productcomponentid
+					from vtiger_productcomponent
+					inner join vtiger_crmentity on crmid=productcomponentid
+					where deleted=0 and frompdo=?',
+				array($_REQUEST['cbcustominfo2'])
 			);
+			$pcmwsid = vtws_getEntityId('ProductComponent').'x';
+			$pdowsid = vtws_getEntityId('Products').'x';
+			while ($pc = $adb->fetch_array($pcrs)) {
+				$pcdup = vtws_retrieve($pcmwsid.$pc['productcomponentid'], $current_user);
+				$pcdup['frompdo'] = $pdowsid.$this->id;
+				unset($pcdup['id'], $pcdup['frompdoename'], $pcdup['topdoename'], $pcdup['assigned_user_idename']);
+				vtws_create('ProductComponent', $pcdup, $current_user);
+			}
 		}
 	}
 
