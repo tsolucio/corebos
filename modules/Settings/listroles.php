@@ -43,7 +43,7 @@ function indent($hrarray, $roleout, $role_det) {
 		$roleout .= '<ul class="slds-tree" role="tree" id="'.$roleid.'">';
 		$roleout .= '<li role="treeitem" aria-level="'.$roledepth.'" aria-expanded="true"><div class="slds-tree__item"><table border="0" cellpadding="0"'.
 			'cellspacing="0" onMouseOver="fnVisible(\'layer_'.$roleid.'\')" onMouseOut="fnInVisible(\'layer_'.$roleid.'\')">';
-		$roleout.= '<tr><td nowrap>';
+		$roleout.= '<tr><td nowrap class="cblds-p-v--none">';
 		if (count($value) >0 && $roledepth != 0) {
 			$roleout.='<b style="font-weight:bold;margin:0;padding:0;cursor:pointer;">';
 			$roleout .= '<img src="' . vtiger_imageurl('minus.gif', $theme) . '" id="img_'.$roleid.'" border="0" alt="'.$app_strings['LBL_EXPAND_COLLAPSE'].'" title="'.
@@ -57,13 +57,13 @@ function indent($hrarray, $roleout, $role_det) {
 		}
 		if ($roledepth == 0) {
 			$roleout .= '&nbsp;<b class="genHeaderGray">'.$rolename.'</b></td>';
-			$roleout .= '<td nowrap><div id="layer_'.$roleid.'" class="drag_Element"><a href="index.php?module=Settings&action=createrole&parenttab=Settings&parent='.
+			$roleout .= '<td nowrap class="cblds-p-v--none"><div id="layer_'.$roleid.'" class="drag_Element"><a href="index.php?module=Settings&action=createrole&parenttab=Settings&parent='.
 				$roleid.'"><img src="' . vtiger_imageurl('Rolesadd.gif', $theme) . '" align="absmiddle" border="0" alt="'.$mod_strings['LBL_ADD_ROLE'].'" title="'.
 				$mod_strings['LBL_ADD_ROLE'].'"></a></div></td></tr></table>';
 		} else {
 			$roleout .= '&nbsp;<a href="javascript:put_child_ID(\'user_'.$roleid.'\');" class="x" id="user_'.$roleid.'">'.$rolename.'</a></td>';
 
-			$roleout.='<td nowrap><div id="layer_'.$roleid.'" class="drag_Element">
+			$roleout.='<td nowrap class="cblds-p-v--none"><div id="layer_'.$roleid.'" class="drag_Element">
 				<a href="index.php?module=Settings&action=createrole&parenttab=Settings&parent='.$roleid.'"><img src="' . vtiger_imageurl('Rolesadd.gif', $theme) .
 				'" align="absmiddle" border="0" alt="'.$mod_strings['LBL_ADD_ROLE'].'" title="'.$mod_strings['LBL_ADD_ROLE'].'"></a>
 				<a href="index.php?module=Settings&action=createrole&roleid='.$roleid.'&parenttab=Settings&mode=edit"><img src="'.
