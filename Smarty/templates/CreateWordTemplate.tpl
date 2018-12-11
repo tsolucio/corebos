@@ -26,11 +26,11 @@
 				<input type="hidden" name="MAX_FILE_SIZE" value="{$MAX_FILE_SIZE}">
 				<input type="hidden" name="action">
 				<tr>
-					<td width=50 rowspan=2 valign=top><img src="{'mailmarge.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_MODULE_NAME}" width="48" height="48" border=0 title="{$MOD.LBL_MODULE_NAME}"></td>
+					<td width=50 rowspan=2 valign=top class="cblds-p--none"><img src="{'mailmarge.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_MODULE_NAME}" width="48" height="48" border=0 title="{$MOD.LBL_MODULE_NAME}"></td>
 					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=listwordtemplates&parenttab=Settings">{$UMOD.LBL_WORD_TEMPLATES}</a> > {$UMOD.LBL_NEW_TEMPLATE} </b></td>
 				</tr>
 				<tr>
-					<td valign=top class="small">{$MOD.LBL_MAIL_MERGE_DESC}</td>
+					<td valign=top class="small cblds-p-v--none">{$MOD.LBL_MAIL_MERGE_DESC}</td>
 				</tr>
 				</table>
 
@@ -42,7 +42,7 @@
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 					<tr>
 						<td class="big"><strong>{$UMOD.LBL_NEW_TEMPLATE}</strong><br>{$ERRORFLAG}</br></td>
-						<td class="small" align=right>
+						<td class="small cblds-t-align--right" align=right>
 							<input title="{$APP.LBL_SAVE_BUTTON_LABEL}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" type="submit" tabindex="4" name="button" value="{$APP.LBL_SAVE_BUTTON_LABEL}" onclick="this.form.action.value='savewordtemplate'; this.form.parenttab.value='Settings'" class="crmButton small save" />&nbsp;
 							&nbsp;<input title="{$APP.LBL_CANCEL_BUTTON_LABEL}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" tabindex="5" onclick="window.history.back();" type="button" name="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmButton small cancel" />
 						</td>
@@ -75,7 +75,7 @@
 					</table>
 					<table border=0 cellspacing=0 cellpadding=5 width=100% >
 					<tr>
-						<td class="small" nowrap align=right><a href="#top">{$APP.LBL_SCROLL}</a></td>
+						<td class="small cblds-t-align--right" nowrap align=right><a href="#top">{$APP.LBL_SCROLL}</a></td>
 					</tr>
 					</table>
 				</td>
