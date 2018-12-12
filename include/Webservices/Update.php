@@ -113,7 +113,7 @@ function vtws_update($element, $user) {
 		//Added to construct the update log for Ticket history
 		$colflds = $element;
 		list($void, $colflds['assigned_user_id']) = explode('x', $colflds['assigned_user_id']);
-		$updlog = HelpDesk::getUpdateLogEditMessage($idList[1], $colflds);
+		$updlog = HelpDesk::getUpdateLogEditMessage($idList[1], $colflds, 'U');
 	}
 	$entity = $handler->update($element);
 	if ($entityName == 'HelpDesk') {
