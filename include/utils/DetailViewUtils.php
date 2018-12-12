@@ -251,18 +251,17 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$value = $col_fields[$fieldname];
 		preg_match($matchPattern, $value, $matches);
 		if (!empty($matches[0])) {
-			$fieldValue = str_replace($matches, '', $value);
 			$label_fld[] = $value;
 		} else {
 			if ($value != null) {
-				$label_fld[] = 'http://'.$value;
+				$label_fld[] = 'https://'.$value;
 			} else {
 				$label_fld[] = '';
 			}
 		}
 	} elseif ($uitype == 19) {
 		$col_fields[$fieldname] = decode_html($col_fields[$fieldname]); // undo database encoding
-		if ($fieldname == 'notecontent' || $module=='Emails' || (isset($cbMapFI['RTE']) && $cbMapFI['RTE'] && vt_hasRTE())) {
+		if ($fieldname=='notecontent' || $module=='Emails' || ($fieldname=='signature' && $module=='Users') || (isset($cbMapFI['RTE']) && $cbMapFI['RTE'] && vt_hasRTE())) {
 			//$col_fields[$fieldname] = htmlentities($col_fields[$fieldname]); // prepare for output
 			$col_fields[$fieldname] = from_html($col_fields[$fieldname]);
 		} else {
@@ -624,7 +623,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 				//decode_html  - added to handle UTF-8   characters in file names
 				//urlencode    - added to handle special characters like #, %, etc.,
 				$image_array[] = urlencode(decode_html($adb->query_result($result_image, $image_iter, 'name')));
-				$image_orgname_array[] = decode_html($adb->query_result($result_image, $image_iter, 'name'));
+				//$image_orgname_array[] = decode_html($adb->query_result($result_image, $image_iter, 'name'));
 
 				$imagepath_array[] = $adb->query_result($result_image, $image_iter, 'path');
 			}
@@ -1261,9 +1260,10 @@ function getDetailAssociatedProducts($module, $focus) {
 	//Additional information column
 	$output .= '<td width=20% class="lvtCol"><b>' . $app_strings['LBL_INFORMATION'] . '</b></td>';
 
+	$price_label = $_REQUEST['module'] == 'PurchaseOrder' ? $app_strings['LBL_PURCHASE_PRICE'] : $app_strings['LBL_LIST_PRICE'];
 	$output .= '
 		<td width=10% class="lvtCol"><b>' . $app_strings['LBL_QTY'] . '</b></td>
-		<td width=10% class="lvtCol" align="right"><b>' . $app_strings['LBL_LIST_PRICE'] . '</b></td>
+		<td width=10% class="lvtCol" align="right"><b>' . $price_label . '</b></td>
 		<td width=10% nowrap class="lvtCol" align="right"><b>' . $app_strings['LBL_TOTAL'] . '</b></td>
 		<td width=10% valign="top" class="lvtCol" align="right"><b>' . $app_strings['LBL_NET_PRICE'] . '</b></td>
 	</tr>';

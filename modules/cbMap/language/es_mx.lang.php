@@ -41,5 +41,9 @@ $mod_strings = array(
 	'MasterDetailLayout' => 'Disposición Maestro-Detalle',
 	'Validations' => 'Validaciones',
 	'Detail View Layout Mapping' => 'Asignación de diseño de vista de detalle',
+	'VALIDATE_MAP'=> 'Validar Mapa',
+	'MAP_NOT_VALID'=> 'Mapa no es válido!',
+	'MAP_VALID'=> 'Mapa es válido',
+	'MAP_NOT_IMPLEMENTED_YET'=> 'No hay una validación para este mapa',
 );
 ?>

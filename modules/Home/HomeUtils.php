@@ -172,7 +172,7 @@ function homepage_getPendingActivities($maxval, $calCnt) {
 
 	$open_activity_list = array();
 	$noofrows = $adb->num_rows($res);
-	if (count($res)>0) {
+	if ($res && $noofrecords>0) {
 		for ($i=0; $i<$noofrows; $i++) {
 			$dateValue = $adb->query_result($res, $i, 'date_start') . ' ' . $adb->query_result($res, $i, 'time_start');
 			$endDateValue = $adb->query_result($res, $i, 'due_date') . ' ' . $adb->query_result($res, $i, 'time_end');

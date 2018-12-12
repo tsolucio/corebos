@@ -284,8 +284,8 @@ $smarty->assign('Product_Maximum_Number_Images', GlobalVariable::getVariable('Pr
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 
-$picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
-$smarty->assign('PICKIST_DEPENDENCY_DATASOURCE', json_encode($picklistDependencyDatasource));
+$cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
+$smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 
 if ($focus->mode == 'edit') {
 	$smarty->display('Inventory/InventoryEditView.tpl');

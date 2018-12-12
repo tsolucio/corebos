@@ -119,6 +119,28 @@ function vtws_getAssignedUserList($module, $user) {
 	return json_encode($usrinfo);
 }
 
+function vtws_getAssignedGroupList($module, $user) {
+	global $log,$current_user,$default_charset;
+	$log->debug('Entering vtws_getAssignedGroupList function with parameter modulename: '.$module);
+	$hcuser = $current_user;
+	$current_user = $user;
+	require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
+	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
+	$tabid=getTabid($module);
+	if (!is_admin($user) && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabid] == 3 || $defaultOrgSharingPermission[$tabid] == 0)) {
+		$users = get_group_array(false, 'Active', $user->id, 'private');
+	} else {
+		$users = get_group_array(false, 'Active', $user->id);
+	}
+	$usrwsid = vtyiicpng_getWSEntityId('Groups');
+	$usrinfo = array();
+	foreach ($users as $id => $usr) {
+		$usrinfo[] = array('groupid' => $usrwsid.$id,'groupname'=> trim(html_entity_decode($usr, ENT_QUOTES, $default_charset)));
+	}
+	$current_user = $hcuser;
+	return json_encode($usrinfo);
+}
+
 function vtws_AuthenticateContact($email, $password) {
 	global $adb,$log;
 	$log->debug('Entering AuthenticateContact function with parameter email: '.$email.' password:'.$password);

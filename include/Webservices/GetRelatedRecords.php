@@ -327,10 +327,14 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 				$moduleInstance = CRMEntity::getInstance($module);
 				$params = array($crmid, $moduleId, $relatedModuleId);
 
+				global $GetRelatedList_ReturnOnlyQuery;
+				$holdValue = $GetRelatedList_ReturnOnlyQuery;
+				$GetRelatedList_ReturnOnlyQuery = true;
 				$relationData = call_user_func_array(array($moduleInstance,$relationInfo['name']), $params);
 				if (!isset($relationData['query'])) {
 					throw new WebServiceException(WebServiceErrorCode::$OPERATIONNOTSUPPORTED, 'getRelatedRecords can only be called from Webservice interface');
 				}
+				$GetRelatedList_ReturnOnlyQuery = $holdValue;
 				$query = $relationData['query'];
 
 				// select the fields the user has access to and prepare query

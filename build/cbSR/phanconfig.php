@@ -81,7 +81,7 @@ return [
         'include/log4php',
         'include/log4php.debug',
         'include/nusoap',
-        'include/PHPExcel',
+        'include/PhpSpreadsheet',
         'include/simplepie',
         'include/sw-precache',
         'include/tcpdf',

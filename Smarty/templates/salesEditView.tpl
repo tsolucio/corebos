@@ -8,10 +8,11 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
+{if $FIELD_DEPENDENCY_DATASOURCE neq ''}
 <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
-{if $PICKIST_DEPENDENCY_DATASOURCE neq ''}
+<script type="text/javascript" src="include/js/FieldDepFunc.js"></script>
 <script type="text/javascript">
-	jQuery(document).ready(function() {ldelim} (new FieldDependencies({$PICKIST_DEPENDENCY_DATASOURCE})).init() {rdelim});
+	jQuery(document).ready(function() {ldelim} (new FieldDependencies({$FIELD_DEPENDENCY_DATASOURCE})).init() {rdelim});
 </script>
 {/if}
 {if vt_hasRTE()}

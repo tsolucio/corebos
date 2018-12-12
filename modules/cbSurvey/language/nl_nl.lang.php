@@ -9,14 +9,22 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Module Name',
-	'SINGLE_ModuleName' => 'Module Name',
-	'ModuleName ID' => 'Module Name ID',
+	'cbSurvey' => 'Onderzoeken',
+	'SINGLE_cbSurvey' => 'Onderzoek',
+	'cbSurvey ID' => 'Onderzoek ID',
 
-	'LBL_CUSTOM_INFORMATION' => 'Custom Information',
-	'LBL_MODULEBLOCK_INFORMATION' => 'ModuleBlock Information',
-	'LBL_DESCRIPTION_INFORMATION' => 'Verkoopkans omschrijving',
+	'LBL_CUSTOM_INFORMATION' => 'Eigen informatie',
+	'LBL_MODULEBLOCK_INFORMATION' => 'Onderzoeksinformatie',
+	'LBL_DESCRIPTION_INFORMATION' => 'Beschrijving',
 
-	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
+	'cbsurveyname' => 'Naam onderzoek',
+	'cbsurvey_no' => 'Onderzoeksnummer',
+	'cbsurveyprovider' => 'Onderzoeksuitvoerder',
+	'cbsurveyurl' => 'Onderzoek URL',
+	'cbsurveystart' => 'Onderzoek start',
+	'cbsurveyend' => 'Onderzoek eindigt',
+	'total' => 'Totaal inzendingen',
+	'completed' => 'Complete inzendingen',
+	'cbslastsync' => 'Laatste synchronisatie',
 );
 ?>

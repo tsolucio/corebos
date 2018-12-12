@@ -1869,7 +1869,11 @@ function handleProductAutocompleteSelect(obj) {
 	if (obj.result.pricing.multicurrency[currency] != undefined) {
 		document.getElementById('listPrice'+no).value = obj.result.pricing.multicurrency[currency].actual_price;
 	} else {
-		document.getElementById('listPrice'+no).value = obj.result.pricing.unit_price;
+		var list_price = obj.result.pricing.unit_price
+		if (gVTModule == 'PurchaseOrder') {
+			list_price = obj.result.pricing.unit_cost;
+		}
+		document.getElementById('listPrice'+no).value = list_price;
 	}
 	document.getElementById('hdnProductId'+no).value = obj.result.meta.id;
 	document.getElementById('lineItemType'+no).value = obj.result.meta.type;
@@ -1888,6 +1892,10 @@ function handleProductAutocompleteSelect(obj) {
 		searchIcon.src = 'themes/images/services.gif';
 		searchIcon.setAttribute('onclick', "servicePickList(this,'"+gVTModule+"','"+no+"')");
 		break;
+	}
+	var func = gVTModule + 'setValueFromCapture';
+	if (typeof window[func] == 'function') {
+		window[func](obj.result.meta.id, obj.result.meta.name, 'productName'+no);
 	}
 	document.getElementById('qty'+no).focus();
 }

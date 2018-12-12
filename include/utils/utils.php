@@ -17,7 +17,7 @@ require_once 'include/events/include.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowManager.inc';
 require_once 'modules/GlobalVariable/GlobalVariable.php';
 require_once 'modules/cbMap/cbMap.php';
-require_once 'include/ComboUtil.php'; //new
+require_once 'include/ComboUtil.php';
 require_once 'include/utils/ListViewUtils.php';
 require_once 'include/utils/EditViewUtils.php';
 require_once 'include/utils/DetailViewUtils.php';
@@ -35,15 +35,15 @@ require_once 'vtlib/Vtiger/Language.php';
 // Constants to be defined here
 
 // For Customview status.
-define("CV_STATUS_DEFAULT", 0);
-define("CV_STATUS_PRIVATE", 1);
-define("CV_STATUS_PENDING", 2);
-define("CV_STATUS_PUBLIC", 3);
+define('CV_STATUS_DEFAULT', 0);
+define('CV_STATUS_PRIVATE', 1);
+define('CV_STATUS_PENDING', 2);
+define('CV_STATUS_PUBLIC', 3);
 
 // For Restoration.
-define("RB_RECORD_DELETED", 'delete');
-define("RB_RECORD_INSERTED", 'insert');
-define("RB_RECORD_UPDATED", 'update');
+define('RB_RECORD_DELETED', 'delete');
+define('RB_RECORD_INSERTED', 'insert');
+define('RB_RECORD_UPDATED', 'update');
 
 /** Function to load global browser variables for javascript
  * @param smarty object to load the variables, if empty it will only return the variables in an array
@@ -253,14 +253,16 @@ function get_user_array($add_blank = true, $status = "Active", $assigned_user = 
 }
 
 function get_group_array($add_blank = true, $status = "Active", $assigned_user = "", $private = "") {
-	global $log, $current_user;
+	global $log, $current_user, $currentModule;
 	$log->debug("Entering get_group_array(".$add_blank.",". $status.",".$assigned_user.",".$private.") method ...");
+	$current_user_groups = array();
+	$current_user_parent_role_seq = '';
 	if (isset($current_user) && $current_user->id != '') {
 		require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
 		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 	}
 	static $group_array = null;
-	$module=vtlib_purify($_REQUEST['module']);
+	$module= (isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : $currentModule);
 
 	if ($group_array == null) {
 		require_once 'include/database/PearDatabase.php';
@@ -944,8 +946,8 @@ function insertProfile2field($profileid) {
 	for ($i=0; $i<$num_rows; $i++) {
 		$tab_id = $adb->query_result($fld_result, $i, 'tabid');
 		$field_id = $adb->query_result($fld_result, $i, 'fieldid');
-		$params = array($profileid, $tab_id, $field_id, 0, 0);
-		$adb->pquery("insert into vtiger_profile2field values (?,?,?,?,?)", $params);
+		$params = array($profileid, $tab_id, $field_id, 0, 0, 'B');
+		$adb->pquery('insert into vtiger_profile2field values (?,?,?,?,?,?)', $params);
 	}
 	$log->debug("Exiting insertProfile2field method ...");
 }
@@ -1070,11 +1072,11 @@ function getProfile2ModuleFieldPermissionList($fld_module, $profileid) {
 		$visible_value = 0;
 		$readOnlyValue = 0;
 		if ($adb->num_rows($checkentry) == 0) {
-			$sql11='INSERT INTO vtiger_profile2field VALUES(?,?,?,?,?)';
-			$adb->pquery($sql11, array($profileid, $tabid, $fieldid,$visible_value, $readOnlyValue));
+			$sql11='INSERT INTO vtiger_profile2field VALUES(?,?,?,?,?,?)';
+			$adb->pquery($sql11, array($profileid, $tabid, $fieldid,$visible_value, $readOnlyValue, 'B'));
 		}
 
-		$sql = 'SELECT vtiger_profile2field.visible, vtiger_profile2field.readonly FROM vtiger_profile2field WHERE fieldid=? AND tabid=? AND profileid=?';
+		$sql = 'SELECT vtiger_profile2field.visible, vtiger_profile2field.readonly, summary FROM vtiger_profile2field WHERE fieldid=? AND tabid=? AND profileid=?';
 		$params = array($fieldid,$tabid,$profileid);
 		$res = $adb->pquery($sql, $params);
 
@@ -1085,7 +1087,8 @@ function getProfile2ModuleFieldPermissionList($fld_module, $profileid) {
 			$adb->query_result($res, 0, 'readonly'), // From vtiger_profile2field.readonly
 			$adb->query_result($result, $i, 'fieldid'),
 			$adb->query_result($result, $i, 'displaytype'),
-			$adb->query_result($result, $i, 'typeofdata')
+			$adb->query_result($result, $i, 'typeofdata'),
+			$adb->query_result($res, 0, 'summary') // From vtiger_profile2field.summary
 		);
 	}
 
@@ -2544,7 +2547,7 @@ function getDuplicateQuery($module, $field_values, $ui_type_arr) {
 }
 
 /** Function to return the duplicate records data as a formatted array */
-function getDuplicateRecordsArr($module) {
+function getDuplicateRecordsArr($module, $use_limit = true) {
 	global $adb,$app_strings,$theme,$default_charset;
 	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module);
 	$field_values_array=getFieldValues($module);
@@ -2576,7 +2579,9 @@ function getDuplicateRecordsArr($module) {
 	} else {
 		$limit_start_rec = $start_rec -1;
 	}
-	$dup_query .= " LIMIT $limit_start_rec, $list_max_entries_per_page";
+	if ($use_limit) {
+		$dup_query .= " LIMIT $limit_start_rec, $list_max_entries_per_page";
+	}
 
 	$nresult=$adb->query($dup_query);
 	$no_rows=$adb->num_rows($nresult);
@@ -2608,7 +2613,7 @@ function getDuplicateRecordsArr($module) {
 	$rec_cnt = 0;
 	$temp = array();
 	$sl_arr = array();
-	$grp = "group0";
+	$grp = 'group0';
 	$gcnt = 0;
 	$ii = 0; //ii'th record in group
 	while ($rec_cnt < $no_rows) {
@@ -2728,6 +2733,33 @@ function getDuplicateRecordsArr($module) {
 	$ret_arr[2]=$ui_type;
 	$ret_arr['navigation']=$navigationOutput;
 	return $ret_arr;
+}
+
+/** Function to Delete Exact Duplicates */
+function deleteExactDuplicates($dup_records, $module) {
+	$dup_records_ids=array();
+	$delete_fail_status=false;
+	foreach ($dup_records as $records_group) {
+		$record_position=0;
+		foreach ($records_group as $records) {
+			if ($record_position!=0) {
+				array_push($dup_records_ids, $records['recordid']);
+			}
+			$record_position++;
+		}
+	}
+	$focus = CRMEntity::getInstance($module);
+	foreach ($dup_records_ids as $id) {
+		if (isPermitted($module, 'Delete', $id) == 'yes') {
+			$del_response=DeleteEntity($module, $module, $focus, $id, "");
+			if ($del_response[0]) {
+				$delete_fail_status = true;
+			}
+		} else {
+			$delete_fail_status = true;
+		}
+	}
+	return $delete_fail_status;
 }
 
 /** Function to get on clause criteria for sub tables like address tables to construct duplicate check query */
@@ -3623,7 +3655,7 @@ function getValidDBInsertDateTimeValue($value) {
 		} catch (Exception $ex) {
 			return '';
 		}
-	} elseif (count($valueList == 1)) {
+	} elseif (count($valueList) == 1) {
 		return getValidDBInsertDateValue($value);
 	}
 	return '';
@@ -4025,11 +4057,13 @@ function retrieveCompanyDetails() {
 			$companylogo    = decode_html($adb->query_result($query, $i, 'companylogo'));
 			$applogo        = decode_html($adb->query_result($query, $i, 'applogo'));
 			$name           = $adb->query_result($query, $i, 'name'); // attachmentname
-			if ($name == $favicon) {
+			if ($name == $favicon && !isset($companyDetails['favicon'])) {
 				$companyDetails['favicon'] = $path.$attachmentsid.'_'.$favicon;
-			} elseif ($name == $companylogo) {
+			}
+			if ($name == $companylogo && !isset($companyDetails['companylogo'])) {
 				$companyDetails['companylogo'] = $path.$attachmentsid.'_'.$companylogo;
-			} elseif ($name == $applogo) {
+			}
+			if ($name == $applogo && !isset($companyDetails['applogo'])) {
 				$companyDetails['applogo'] = $path.$attachmentsid.'_'.$applogo;
 			}
 		}

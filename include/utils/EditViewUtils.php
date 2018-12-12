@@ -1453,7 +1453,13 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 			$product_Detail[$i]['delRow'.$i]="Del";
 		}
 		if (empty($focus->mode) && $seid!='') {
-			$sub_prod_query = $adb->pquery("SELECT crmid as prod_id from vtiger_seproductsrel WHERE productid=? AND setype='Products'", array($seid));
+			$sub_prod_query = $adb->pquery(
+				'SELECT topdo as prod_id
+					FROM vtiger_productcomponent
+					INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_productcomponent.productcomponentid
+					WHERE vtiger_crmentity.deleted=0 AND frompdo=?',
+				array($seid)
+			);
 		} else {
 			$sub_prod_query = $adb->pquery("SELECT productid as prod_id from vtiger_inventorysubproductrel WHERE id=? AND sequence_no=?", array($focus->id,$i));
 		}

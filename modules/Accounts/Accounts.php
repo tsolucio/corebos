@@ -1114,14 +1114,6 @@ class Accounts extends CRMEntity {
 		if (isPermitted('Accounts', 'EditView', '') == 'yes') {
 			$list_buttons['mass_edit'] = $app_strings['LBL_MASS_EDIT'];
 		}
-		if (isPermitted('Emails', 'CreateView', '') == 'yes') {
-			$list_buttons['s_mail'] = $app_strings['LBL_SEND_MAIL_BUTTON'];
-		}
-		// mailer export
-		if (isPermitted('Accounts', 'Export', '') == 'yes') {
-			$list_buttons['mailer_exp'] = getTranslatedString('LBL_MAILER_EXPORT', 'Accounts');
-		}
-		// end of mailer export
 		return $list_buttons;
 	}
 

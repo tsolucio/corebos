@@ -46,6 +46,8 @@ class WebserviceField {
 	private $genericUIType = 10;
 
 	private $readOnly = 0;
+	private $summary;
+	private static $moduleLinks;
 
 	const REFERENCE_TYPE = 'reference';
 	const OWNER_TYPE = 'owner';
@@ -82,6 +84,30 @@ class WebserviceField {
 		$this->explicitDefaultValue = false;
 
 		$this->readOnly = (isset($row['readonly']))? $row['readonly'] : 0;
+
+		if (!isset($row['summary'])) {
+			if (!isset(self::$moduleLinks[$this->tabid])) {
+				$modulename = getTabModuleName($this->tabid);
+				$moduleLinkFields = getEntityFieldnames($modulename);
+
+				if (is_array($moduleLinkFields['fieldname'])) {
+					$links = $moduleLinkFields['fieldname'];
+				} elseif ($moduleLinkFields['fieldname'] == '') {
+					$links = [];
+				} else {
+					$links = [$moduleLinkFields['fieldname']];
+				}
+				self::$moduleLinks[$this->tabid] = $links;
+			}
+
+			if (in_array($this->fieldName, self::$moduleLinks[$this->tabid])) {
+				$this->summary = 'T';
+			} else {
+				$this->summary = 'B';
+			}
+		} else {
+			$this->summary = $row['summary'];
+		}
 
 		if (is_array($row) && array_key_exists('defaultvalue', $row)) {
 			$this->setDefault($row['defaultvalue']);
@@ -520,6 +546,10 @@ class WebserviceField {
 		}
 		$purified_plcache[$moduleName.$fieldName] = $options;
 		return $options;
+	}
+
+	public function getSummary() {
+		return $this->summary;
 	}
 }
 ?>

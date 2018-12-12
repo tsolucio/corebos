@@ -201,7 +201,7 @@
 						{foreach item=row_values from=$FIELD_PRIVILEGES[$tabid]}
 				            	<tr>
 						      {foreach item=element from=$row_values}
-					              <td valign="top">{$element.2}{$element.1}</td>
+					              <td valign="top">{$element.2}{$element.1}{$element.3}</td>
 					              <td>{$element.0}</td>
 						      {/foreach}
 				                </tr>
@@ -214,7 +214,7 @@
 						{foreach item=row_values from=$FIELD_PRIVILEGES[16]}
 				            	<tr>
 						      {foreach item=element from=$row_values}
-					              <td valign="top">{$element.2}{$element.1}</td>
+					              <td valign="top">{$element.2}{$element.1}{$element.3}</td>
 					              <td>{$element.0}</td>
 						      {/foreach}
 				                </tr>

@@ -153,6 +153,6 @@
 		{if $workflow->executionConditionAsLabel() eq 'RECORD_ACCESS_CONTROL'}checked{/if} {if $workflow->executionConditionAsLabel() eq 'MANUAL'}disabled{/if} /></td>
 		<td>{$MOD.LBL_RECORD_ACCESS_CONTROL}.</td></tr>
 	<tr><td><input type="radio" name="execution_condition" value="MANUAL"
-		{if $workflow->executionConditionAsLabel() eq 'MANUAL'}checked{/if} disabled /></td>
+		{if $workflow->executionConditionAsLabel() eq 'MANUAL'}checked{/if} /></td>
 		<td>{$MOD.LBL_MANUAL}.</td></tr>
 </table>

@@ -539,6 +539,23 @@ class CustomView extends CRMEntity {
 		return $stdcriteria_list;
 	}
 
+	public static function getFilterFieldDefinition($field, $module) {
+		$fielddef = '';
+		$mod = Vtiger_Module::getInstance($module);
+		if ($mod) {
+			$fld = Vtiger_Field::getInstance($field, $mod);
+			if ($fld) {
+				$fieldtablename = $fld->table;
+				$fieldcolname = $fld->column;
+				$fieldlabel = $fld->label;
+				$fieldname = $fld->name;
+				$fieldlabel1 = str_replace(' ', '_', $fieldlabel);
+				$fielddef = $fieldtablename . ':' . $fieldcolname . ':' . $fieldname . ':' . $module . '_' . $fieldlabel1 . ':' . $fld->typeofdata;
+			}
+		}
+		return $fielddef;
+	}
+
 	/** to get the standard filter criteria
 	 * @param $selcriteria :: Type String (optional)
 	 * @returns  $filter Array in the following format

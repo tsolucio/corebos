@@ -17,6 +17,9 @@
  *  Author    : JPL TSolucio, S. L.
  *************************************************************************************************/
 
+if (!isset($_REQUEST['_op'])) {
+	$_REQUEST['_op'] = 'HELP';
+}
 switch ($_REQUEST['_op']) {
 	case 'Success':
 		$smarty = new vtigerCRM_Smarty();
@@ -62,5 +65,19 @@ switch ($_REQUEST['_op']) {
 	case 'getconfiggcontact':
 	case 'setconfiggcontact':
 		include_once 'include/integrations/GContacts/settings.php';
+		break;
+	default:
+		$smarty = new vtigerCRM_Smarty();
+		$titlemessage = getTranslatedString('Available Integrations', $currentModule);
+		$smarty->assign('TITLE_MESSAGE', $titlemessage);
+		$smarty->assign('APP', $app_strings);
+		$smarty->assign('MOD', $mod_strings);
+		$smarty->assign('MODULE', $currentModule);
+		$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
+		$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
+		$smarty->assign('THEME', $theme);
+		include 'modules/cbupdater/forcedButtons.php';
+		$smarty->assign('CHECK', $tool_buttons);
+		$smarty->display('modules/Utilities/integrationhelp.tpl');
 		break;
 }

@@ -523,10 +523,15 @@ function __ExtendedQueryConditionGetQuery($q, $fromModule, $user) {
 		'defaultworkflow' => 0,
 		'nexttrigger_time' => '',
 	);
-	$cond = substr($q, stripos($q, ' where ')+7);
+	$startcond = stripos($q, ' where ')+7;
+	$endcond = strrpos($q, ']')+1;
+	$cond = substr($q, $startcond, $endcond-$startcond);
 	$cond = trim($cond);
 	$cond = trim($cond, ';');
+	$ol_by = substr($q, $endcond);
+	$ol_by = trim($ol_by);
+	$ol_by = ' '.trim($ol_by, ';');
 	$wfvals['test'] = $cond;
 	$workflow->setup($wfvals);
-	return array($workflowScheduler->getWorkflowQuery($workflow, $queryColumns), $queryRelatedModules);
+	return array(trim($workflowScheduler->getWorkflowQuery($workflow, $queryColumns).$ol_by), $queryRelatedModules);
 }

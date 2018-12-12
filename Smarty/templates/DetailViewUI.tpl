@@ -184,7 +184,7 @@
 						{/if}
 							<!--{assign var="DESCRIPTION_SEPARATOR_STRING" value=" "}  {* Separates Description *}-->
 							<!--{assign var="DESCRIPTION_WORDWRAP_WIDTH" value="70"} {* No. of chars for word wrapping long lines of Description *}-->
-							{if $MODULE eq 'Documents'}
+							{if $MODULE eq 'Documents' || ($MODULE eq 'Users' && $keyfldname eq 'signature')}
 							<!--To give hyperlink to URL-->
 								<td width="100%" colspan="3" class="dvtCellInfo" align="left">{$keyval|regex_replace:"/(^|[\n ])([\w]+?:\/\/.*?[^ \"\n\r\t<]*)/":"\\1<a href=\"\\2\" target=\"_blank\">\\2</a>"|regex_replace:"/(^|[\n ])((www|ftp)\.[\w\-]+\.[\w\-.\~]+(?:\/[^ \"\t\n\r<]*)?)/":"\\1<a href=\"http://\\2\" target=\"_blank\">\\2</a>"|regex_replace:"/(^|[\n ])([a-z0-9&\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)/i":"\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>"|regex_replace:"/,\"|\.\"|\)\"|\)\.\"|\.\)\"/":"\""}&nbsp;</td>
 							{else}
@@ -312,7 +312,7 @@
                         </td>
 			{elseif $keyid eq '156'} <!--CheckBox for is admin-->
 			{if $smarty.request.record neq $CURRENT_USERID && $keyadmin eq 1}
-                      <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onMouseOver="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{if $APP.$keyval!=''}{$APP.$keyval}{elseif $MOD.$keyval!=''}{$MOD.$keyval}{else}{$keyval}{/if}&nbsp;</span>
+                      <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onMouseOver="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{$keyval|getTranslatedString:$MODULE}&nbsp;</span>
                     	<div id="editarea_{$keyfldname}" style="display:none;">
                         {if $keyval eq 'on'}
                             <input id="txtbox_{$keyfldname}" name="{$keyfldname}" type="checkbox" style="border:1px solid #bababa;" checked value="1">

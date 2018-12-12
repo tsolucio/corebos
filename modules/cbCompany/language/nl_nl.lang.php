@@ -9,14 +9,33 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Module Name',
-	'SINGLE_ModuleName' => 'Module Name',
-	'ModuleName ID' => 'Module Name ID',
+	'cbCompany' => 'Bedrijven',
+	'SINGLE_cbCompany' => 'Bedrijf',
+	'Company Name' => 'Bedrijfsnaam',
+	'Company No' => 'Bedrijfsnummer',
+	'Comercial Name' => 'Commerciële naam',
+	'SIC Code' => 'SIC Code',
+	'Related Account' => 'Gerelateerd Account',
+	'Phone' => 'Telefoon',
+	'Address' => 'Adres',
+	'Fax' => 'Fax',
+	'City' => 'Plaats',
+	'Email' => 'Email',
+	'State' => 'Provincie',
+	'Website' => 'Website',
+	'Postal Code' => 'Postcode',
+	'Business Registration' => 'Registratie',
+	'Country' => 'Land',
+	'Data Protection' => 'Data beveiliging',
+	'Default Company' => 'Standaard bedrijf',
+	'Company Logo' => 'Bedrijfslogo',
+	'Application Logo' => 'Applicatie logo',
+	'Favicon' => 'Favicon',
 
-	'LBL_CUSTOM_INFORMATION' => 'Custom Information',
-	'LBL_MODULEBLOCK_INFORMATION' => 'ModuleBlock Information',
-	'LBL_DESCRIPTION_INFORMATION' => 'Verkoopkans omschrijving',
-
-	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
+	'LBL_COMPANY_EXISTS' => 'Er kan maar één bedrijf het "standaard bedrijf" zijn',
+	'LBL_COMPANY_INFORMATION' => 'Bedrijfsinformatie',
+	'LBL_COMPANY_LOGO' => 'Bedrijfslogo',
+	'LBL_APPLICATION_LOGOS' => 'Applicatie logo\'s',
+	'LBL_DESCRIPTION_INFORMATION' => 'Omschrijving',
 );
 ?>

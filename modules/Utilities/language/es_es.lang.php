@@ -30,5 +30,6 @@ $mod_strings = array(
 	'2FA Activation' => 'Activación Verificación en Dos Pasos',
 	'GoTo2FAActivation' => 'Verificación en Dos Pasos',
 	'2FA Secret Code' => 'Código Secreto Dos Pasos',
+	'Available Integrations' => 'Integraciones Disponibles',
 );
 ?>
