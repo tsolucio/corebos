@@ -169,6 +169,7 @@ class CRMEntity {
 					$files['original_name'] = stripslashes($files['name']);
 				}
 				$files['original_name'] = str_replace('"', '', $files['original_name']);
+				$files['original_name'] = str_replace(':', '', $files['original_name']);
 				$result = $adb->pquery($sql, array($fileindex,$tabid));
 				$tblname = $adb->query_result($result, 0, 'tablename');
 				$colname = $adb->query_result($result, 0, 'columnname');
