@@ -40,8 +40,14 @@ function fieldDep_SubDays(change_field, action_field, new_value, old_value, para
 	}
 }
 
-function fieldDep_OnlyNumbers(change_field, action_field, new_value, old_value, parameters) {
-alert('ddj');
+function fieldDep_OnlyNumbers(change_field,evt, action_field, new_value, old_value, parameters) {
+//alert('ddj');
+	evt = (evt) ? evt : window.event;
+	var charCode = (evt.which) ? evt.which : evt.keyCode;
+	if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+		return false;
+	}
+	return true;
 }
 
 function fieldDep_OnlyLetters(change_field, action_field, new_value, old_value, parameters) {
