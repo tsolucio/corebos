@@ -45,6 +45,10 @@ class WorkFlowScheduler {
 					}
 					$selectFields[] = $queryGeneratorSelect->getSQLColumn($selectExpression->value);
 				} elseif ($selectExpression->valuetype == 'expression') {
+                    preg_match('/(\w+) : \((\w+)\) (\w+)/', $selectExpression->value, $valuematches);
+                    if (count($valuematches) != 0) {
+                        $queryGenerator->setReferenceFieldsManually($valuematches[1], $valuematches[2], $valuematches[3]);
+                    }
 					$selectFields[] = $substExpsSelect["::#$selectExpsCounter"]." AS $selectExpression->fieldname";
 					$selectExpsCounter++;
 				} else {
