@@ -244,6 +244,127 @@ class VTSimpleTemplate {
 		}
 		return $retcm;
 	}
+	private function getInventoryDetails($format, $field) {
+		global $adb, $current_user;
+		$wsId = $this->parent->getId();
+		if (empty($wsId)) {
+			return '';
+		}
+		$format = strtolower($format);
+		if ($format!='html' && $format!='text') {
+			$format = 'html';
+		}
+		$html = ($format == 'html');
+		if (substr($field, 0, 4)=='date' && strlen($field)>4) {
+			$dateformat = substr($field, 4);
+			$field = 'date';
+		} else {
+			$dateformat = $dtformat;
+		}
+		$field = strtolower($field);
+		if ($field!='creator' && $field!='inventorydetails' && $field!='date' && $field!='all') {
+			$field = 'all';
+		}
+		if ($field=='all') {
+			$fields = array('creator','date','inventorydetails');
+		} else {
+			$fields = array($field);
+		}
+		$singlefield = (count($fields)==1);
+		$datefmtuserid = $this->parent->get('assigned_user_id');
+		if (!empty($datefmtuserid)) {
+			list($void,$dfuid) = explode('x', $datefmtuserid);
+			if (file_exists('user_privileges/user_privileges_' . $dfuid . '.php')) {
+				$datefmtuser = new Users();
+				$datefmtuser->retrieveCurrentUserInfoFromFile($dfuid);
+			} else {
+				$datefmtuser = $current_user;
+			}
+		} else {
+			$datefmtuser = $current_user;
+		}
+		$moduleName = $this->parent->getModuleName();
+		$wsUsersId = vtws_getEntityId('Users');
+		include_once 'include/Webservices/GetRelatedRecords.php';
+		$queryParameters = array(
+			'columns' => '*',
+		);
+		$wsid = $this->parent->getId();
+		list($wsid,$crmid) = explode('x', $wsid);
+		$cmsqlws = 'SELECT vtiger_products.productname 
+		FROM vtiger_inventorydetails
+		INNER JOIN vtiger_crmentity ON vtiger_inventorydetails.inventorydetailsid=vtiger_crmentity.crmid
+		INNER JOIN  vtiger_products ON vtiger_inventorydetails.productid=vtiger_products.productid
+		 WHERE related_to=?';
+		$retcm = '';
+		if ($html) {
+			$retcm = '<div class="inventorydetails">';
+		}
+		$cmrs = $adb->pquery($cmsqlws, array($crmid));
+		while ($cm = $adb->fetch_array($cmrs)) {
+			if ($html) {
+				$retcm .= '<div class="inventorydetails"><ul class="inventorydetailsfields">';
+			}
+			foreach ($fields as $field) {
+				switch ($field) {
+					case 'creator':
+						if ($html) {
+							$retcm .= '<li class="inventorydetailscreator">';
+						}
+						if ($moduleName!='Invoice' && $moduleName!='Quotes' && $moduleName!='PurchaseOrder' && $moduleName!='SalesOrder') {
+							$wsid = $wsUsersId;
+						} else {
+							list($wsid,$crmid) = explode('x', $cm['creator']);
+						}
+						if ($wsUsersId==$wsid) {
+							$un = getUserFullName($cm['creator']);
+						} else {
+							$un = getParentName($cm['creator']);
+						}
+						$retcm .= $un;
+						if (!$html && !$singlefield) {
+							$retcm .= "\n";
+						}
+						if ($html) {
+							$retcm .= '</li>';
+						}
+						break;
+					case 'date':
+						if ($html) {
+							$retcm .= '<li class="inventorydetailsdate">';
+						}
+							$dt = new DateTimeField($cm['createdtime']);
+							$retcm .= $dt->getDisplayDateTimeValue($datefmtuser);
+						if (!$html && !$table && !$singlefield) {
+							$retcm .= "\n";
+						}
+						if ($html) {
+							$retcm .= '</li>';
+						}
+						break;
+					case 'inventorydetails':
+						if ($html) {
+							$retcm .= '<li class="inventorydetailsinventorydetails">';
+						}
+						$retcm .= vtlib_purify($cm['productname']);
+						if (!$html && !$singlefield) {
+							$retcm .= "\n";
+						}
+						if ($html) {
+							$retcm .= '</li>';
+						}
+						break;
+				}
+			}
+			if ($html) {
+				$retcm .= '</ul></div>';
+			}
+		}
+		if ($html) {
+			$retcm .= '</div>';
+		}
+		return $retcm;
+	}
 
 	private function getinvitedUsersList($recid) {
 		global $adb;
@@ -440,6 +561,8 @@ class VTSimpleTemplate {
 				return GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
 			case 'comments':
 				return $this->getComments($numcomm, $srtcomm, $fmtcomm, $fldcomm, $dtformat);
+			case 'inventorydetails':
+				return $this->getInventoryDetails('html', 'all');
 			case 'groupEmailList':
 				return $this->getGroupFieldList($groupname, 'email1');
 			case 'Events_Users_Invited':
