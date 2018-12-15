@@ -76,6 +76,9 @@ function fieldDep_Format(change_field, action_field, new_value, old_value, param
 }
 
 function fieldDep_ChangeLabel(change_field, action_field, new_value, old_value, parameters) {
+	var orignLabel = document.getElementById("values_id").innerHTML; 
+    var newLabel = orignLabel.replace(old_value, new_value);
+    document.getElementById("values_id").innerHTML = newLabel;
 
 }
 
