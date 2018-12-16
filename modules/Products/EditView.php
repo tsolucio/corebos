@@ -21,9 +21,6 @@ if (!empty($_REQUEST['saverepeat'])) {
 }
 $focus = CRMEntity::getInstance($currentModule);
 
-$encode_val = (!empty($_REQUEST['encode_val']) ? vtlib_purify($_REQUEST['encode_val']) : '');
-$decode_val=base64_decode($encode_val);
-
 $saveimage=isset($_REQUEST['saveimage'])?vtlib_purify($_REQUEST['saveimage']):'false';
 $errormessage=isset($_REQUEST['error_msg'])?vtlib_purify($_REQUEST['error_msg']):'false';
 $image_error=isset($_REQUEST['image_error'])?vtlib_purify($_REQUEST['image_error']):'false';
@@ -46,10 +43,12 @@ if ($record) {
 	$product_base_currency = fetchCurrency($current_user->id);
 }
 if ($image_error=='true') {
+	$encode_val = (!empty($_REQUEST['encode_val']) ? vtlib_purify($_REQUEST['encode_val']) : '');
+	$decode_val=base64_decode($encode_val);
 	$explode_decode_val=explode('&', $decode_val);
 	for ($i=1; $i<count($explode_decode_val); $i++) {
 		$test=$explode_decode_val[$i];
-		$values=explode("=", $test);
+		$values=explode('=', $test);
 		$field_name_val=$values[0];
 		$field_value=$values[1];
 		$focus->column_fields[$field_name_val]=$field_value;
