@@ -16,5 +16,4 @@ $result=$adb->pquery('DELETE FROM vtiger_convertleadmapping WHERE cfmid=?', arra
 
 $listURL='index.php?action=CustomFieldList&module=Settings&parenttab=Settings';
 header(sprintf('Location: %s', $listURL));
-
 ?>

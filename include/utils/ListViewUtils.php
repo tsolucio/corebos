@@ -1447,8 +1447,8 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		} else {
 			$value = '<a href="http://' . $field_val . '" target="_blank">' . textlength_check($temp_val) . '</a>';
 		}
-	} elseif ($uitype == 13 && ($_REQUEST['action'] != 'Popup' && (empty($_REQUEST['file']) || $_REQUEST['file'] != 'Popup'))) {
-		if ($_SESSION['internal_mailer'] == 1) {
+	} elseif ($uitype == 13 && (!empty($_REQUEST['action']) && $_REQUEST['action'] != 'Popup' && (empty($_REQUEST['file']) || $_REQUEST['file'] != 'Popup'))) {
+		if (isset($_SESSION['internal_mailer']) && $_SESSION['internal_mailer'] == 1) {
 			//check added for email link in user detailview
 			if ($module == 'Calendar') {
 				if (getActivityType($entity_id) == 'Task') {
