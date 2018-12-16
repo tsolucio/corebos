@@ -10,6 +10,15 @@
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $adb;
 require_once 'Smarty_setup.php';
 
+$smarty = new vtigerCRM_Smarty();
+if (!empty($_REQUEST['saverepeat'])) {
+	$_REQUEST = array_merge($_REQUEST, coreBOS_Session::get('saverepeatRequest', array()));
+	if (isset($_REQUEST['CANCELGO'])) {
+		$smarty->assign('CANCELGO', vtlib_purify($_REQUEST['CANCELGO']));
+	}
+} else {
+	coreBOS_Session::set('saverepeatRequest', $_REQUEST);
+}
 $focus = CRMEntity::getInstance($currentModule);
 
 $encode_val = (!empty($_REQUEST['encode_val']) ? vtlib_purify($_REQUEST['encode_val']) : '');
@@ -18,9 +27,6 @@ $decode_val=base64_decode($encode_val);
 $saveimage=isset($_REQUEST['saveimage'])?vtlib_purify($_REQUEST['saveimage']):'false';
 $errormessage=isset($_REQUEST['error_msg'])?vtlib_purify($_REQUEST['error_msg']):'false';
 $image_error=isset($_REQUEST['image_error'])?vtlib_purify($_REQUEST['image_error']):'false';
-
-$smarty = new vtigerCRM_Smarty();
-// Identify this module as custom module.
 $smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 $smarty->assign('CONVERT_MODE', '');
 

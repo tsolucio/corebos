@@ -117,7 +117,14 @@ if (!isset($__cbSaveSendHeader) || $__cbSaveSendHeader) {
 	if (isset($_REQUEST['Module_Popup_Edit']) && $_REQUEST['Module_Popup_Edit']==1) {
 		echo '<script>window.close();</script>';
 	} else {
-		header('Location: index.php?' . $req->getReturnURL() . $search);
+		if (!empty($_REQUEST['saverepeat'])) {
+			$sesreq = coreBOS_Session::get('saverepeatRequest', array());
+			$sesreq['CANCELGO'] = 'index.php?' . $req->getReturnURL() . $search;
+			coreBOS_Session::set('saverepeatRequest', $sesreq);
+			header('Location: index.php?action=EditView&saverepeat=1&module='.$currentModule);
+		} else {
+			header('Location: index.php?' . $req->getReturnURL() . $search);
+		}
 	}
 }
 ?>

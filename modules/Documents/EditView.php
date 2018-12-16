@@ -13,6 +13,14 @@ require_once 'data/Tracker.php';
 
 $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
+if (!empty($_REQUEST['saverepeat'])) {
+	$_REQUEST = array_merge($_REQUEST, coreBOS_Session::get('saverepeatRequest', array()));
+	if (isset($_REQUEST['CANCELGO'])) {
+		$smarty->assign('CANCELGO', vtlib_purify($_REQUEST['CANCELGO']));
+	}
+} else {
+	coreBOS_Session::set('saverepeatRequest', $_REQUEST);
+}
 $smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 
 $category = getParentTab($currentModule);
