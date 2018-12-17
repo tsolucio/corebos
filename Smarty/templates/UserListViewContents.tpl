@@ -43,13 +43,13 @@
 
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="listTable">
 <tr>
-	<td class="colHeader small" valign=top>#</td>
-	<td class="colHeader small" valign=top>{$APP.Tools}</td>
-	<td class="colHeader small" valign=top>{$LIST_HEADER.3}</td>
-	<td class="colHeader small" valign=top>{$LIST_HEADER.5}</td>
-	<td class="colHeader small" valign=top>{$LIST_HEADER.7}</td>
-	<td class="colHeader small" valign=top>{$LIST_HEADER.6}</td>
-	<td class="colHeader small" valign=top>{$LIST_HEADER.4}</td>
+	<td class="colHeader small cblds-p-v--mediumsmall" valign=top>#</td>
+	<td class="colHeader small cblds-p-v--mediumsmall" valign=top>{$APP.Tools}</td>
+	<td class="colHeader small cblds-p-v--mediumsmall" valign=top>{$LIST_HEADER.3}</td>
+	<td class="colHeader small cblds-p-v--mediumsmall" valign=top>{$LIST_HEADER.5}</td>
+	<td class="colHeader small cblds-p-v--mediumsmall" valign=top>{$LIST_HEADER.7}</td>
+	<td class="colHeader small cblds-p-v--mediumsmall" valign=top>{$LIST_HEADER.6}</td>
+	<td class="colHeader small cblds-p-v--mediumsmall" valign=top>{$LIST_HEADER.4}</td>
 </tr>
 	{foreach name=userlist item=listvalues key=userid from=$LIST_ENTRIES}
 		{assign var=flag value=0}
@@ -112,6 +112,6 @@
 	{/foreach}
 </table>
 <table border=0 cellspacing=0 cellpadding=5 width=100% >
-	<tr><td class="small" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
+	<tr><td class="small cblds-t-align--right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
 </table>
 
