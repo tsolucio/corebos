@@ -17,7 +17,7 @@
         <table cellpadding=2 cellspacing=0 border=0 class="small" width="100%">
         {foreach item=FOLDER from=$FOLDERS}
         <tr>
-            <td>
+            <td class="cblds-p--medium">
                 <a class="mm_folder" id='_mailfolder_{$FOLDER->name()|@htmlentities}' href='#{$FOLDER->name()|@htmlentities}' onclick="MailManager.clearSearchString(); MailManager.folder_open('{$FOLDER->name()|@htmlentities}'); "
                 >{if $FOLDER->unreadCount()}<b>{$FOLDER->name()|@htmlentities} ({$FOLDER->unreadCount()})</b>{else}{$FOLDER->name()|@htmlentities}{/if}</a>
             </td>

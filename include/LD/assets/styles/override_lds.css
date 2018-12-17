@@ -673,6 +673,9 @@ td.small {
 .cblds-p--medium {
   padding: 5px !important;
 }
+.cblds-p--mediumlarge {
+  padding: 7px !important;
+}
 .cblds-p--large {
   padding: 10px !important;
 }
@@ -691,9 +694,6 @@ td.small {
 .cblds-p-v--none {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
-}
-.cblds-p--large {
-  padding: 10px !important;
 }
 .cblds-p--x-large {
   padding: 15px !important;
@@ -717,11 +717,15 @@ td.small {
   margin: 2px !important;
 }
 .cblds-table-border--sep {
-  border-collapse: separate;
+  border-collapse: separate !important;
 }
 .cblds-table-bordersp--medium {
-  border-spacing: 10px;
+  border-spacing: 10px !important;
 }
 .cblds-table-bordersp--small {
-  border-spacing: 4px;
+  border-spacing: 4px !important;
+}
+.cblds-autowidth {
+  width: auto !important;
+  max-width: 100000000px !important;
 }
