@@ -41,7 +41,7 @@
 									<td>
 										<!-- Filters -->
 										{if empty($HIDE_CUSTOM_LINKS) || $HIDE_CUSTOM_LINKS neq '1'}
-										<table cellpadding="5" cellspacing="0" class="small">
+										<table cellpadding="5" cellspacing="0" class="small  cblds-table-border--sep cblds-table-bordersp--medium">
 											<tr>
 												<td style="padding-left:5px;padding-right:5px" align="center">
 													<b><font size=2>{$APP.LBL_VIEW}</font></b> <SELECT NAME="viewname" id="viewname" class="small" style="max-width:240px;" onchange="showDefaultCustomView(this,'{$MODULE}','{$CATEGORY}')">{$CUSTOMVIEW_OPTION}</SELECT>
@@ -90,7 +90,7 @@
 						</td>
 					</tr>
 				</table>
-				<table border=0 cellspacing=0 cellpadding=2 width=100% class="small">
+				<table border=0 cellspacing=0 cellpadding=2 width=100% class="small cblds-table-border--sep cblds-table-bordersp--small">
 					<tr>
 						<!-- Buttons -->
 						<td style="padding-right:20px" nowrap>{include file='ListViewButtons.tpl'}</td>

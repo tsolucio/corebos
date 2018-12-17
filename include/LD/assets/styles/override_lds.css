@@ -722,3 +722,6 @@ td.small {
 .cblds-table-bordersp--medium {
   border-spacing: 10px;
 }
+.cblds-table-bordersp--small {
+  border-spacing: 4px;
+}
