@@ -20,7 +20,7 @@
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
-		<td align="right">
+		<td align="right" class="cblds-t-align--right">
 			<div id="savedMapsContainer">
 				{include file="modules/Import/Import_Saved_Maps.tpl"}
 			</div>
@@ -35,17 +35,17 @@
 			<table width="100%" cellspacing="0" cellpadding="5" class="listRow">
 				<tr>
 					{if $HAS_HEADER eq true}
-					<td class="big tableHeading" width="25%"><b>{'LBL_FILE_COLUMN_HEADER'|@getTranslatedString:$MODULE}</b></td>
+					<td class="big tableHeading cblds-p-v--mediumsmall" width="25%"><b>{'LBL_FILE_COLUMN_HEADER'|@getTranslatedString:$MODULE}</b></td>
 					{/if}
-					<td class="big tableHeading" width="25%"><b>{'LBL_ROW_1'|@getTranslatedString:$MODULE}</b></td>
-					<td class="big tableHeading" width="25%"><b>{'LBL_CRM_FIELDS'|@getTranslatedString:$MODULE}</b></td>
-					<td class="big tableHeading" width="25%"><b>{'LBL_DEFAULT_VALUE'|@getTranslatedString:$MODULE}</b></td>
+					<td class="big tableHeading cblds-p-v--mediumsmall" width="25%"><b>{'LBL_ROW_1'|@getTranslatedString:$MODULE}</b></td>
+					<td class="big tableHeading cblds-p-v--mediumsmall" width="25%"><b>{'LBL_CRM_FIELDS'|@getTranslatedString:$MODULE}</b></td>
+					<td class="big tableHeading cblds-p-v--mediumsmall" width="25%"><b>{'LBL_DEFAULT_VALUE'|@getTranslatedString:$MODULE}</b></td>
 				</tr>
 				{foreach key=_HEADER_NAME item=_FIELD_VALUE from=$ROW_1_DATA name="headerIterator"}
 				{assign var="_COUNTER" value=$smarty.foreach.headerIterator.iteration}
 				<tr class="fieldIdentifier" id="fieldIdentifier{$_COUNTER}">
 					{if $HAS_HEADER eq true}
-					<td class="cellLabel">
+					<td class="cellLabel cblds-p--large">
 						<span name="header_name">{$_HEADER_NAME}</span>
 					</td>
 					{/if}
@@ -71,7 +71,7 @@
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
-		<td align="right">
+		<td align="right" class="cblds-t-align--right cblds-p-v--mediumsmall">
 			<input type="checkbox" name="save_map" id="save_map" class="small" />
 			<span class="small">{'LBL_SAVE_AS_CUSTOM_MAPPING'|@getTranslatedString:$MODULE}</span>&nbsp; : &nbsp;
 			<input type="text" name="save_map_as" id="save_map_as" class="small" />

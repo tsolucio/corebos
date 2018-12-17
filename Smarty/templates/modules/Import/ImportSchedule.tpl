@@ -10,7 +10,7 @@
 -->*}
 <script type="text/javascript" src="modules/Import/resources/Import.js"></script>
 
-<table style="width:70%;margin-left:auto;margin-right:auto;margin-top:10px;" cellpadding="10" cellspacing="10" class="searchUIBasic">
+<table style="width:70%;margin-left:auto;margin-right:auto;margin-top:10px;" cellpadding="10" cellspacing="10" class="searchUIBasic cblds-table-border--sep cblds-table-bordersp--medium">
 	<tr>
 		<td class="heading2" align="left" colspan="2">
 			{'LBL_IMPORT_SCHEDULED'|@getTranslatedString:$MODULE} 
@@ -25,7 +25,7 @@
 	{/if}
 	<tr>
 		<td colspan="2" valign="top">
-			<table cellpadding="10" cellspacing="0" align="center" class="dvtSelectedCell thickBorder">
+			<table cellpadding="10" cellspacing="0" align="center" class="dvtSelectedCell thickBorder cblds-table-border--sep cblds-table-bordersp--medium">
 				<tr>
 					<td>{'LBL_SCHEDULED_IMPORT_DETAILS'|@getTranslatedString:$MODULE}</td>
 				</tr>
@@ -33,7 +33,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td align="right" colspan="2">
+		<td align="right" colspan="2" class="cblds-t-align--right">
 			<input type="button" name="cancel" value="{'LBL_CANCEL_IMPORT'|@getTranslatedString:$MODULE}" class="crmButton small delete"
 				onclick="location.href='index.php?module={$FOR_MODULE}&action=Import&mode=cancel_import&import_id={$IMPORT_ID}'" />
 			{include file='modules/Import/Import_Done_Buttons.tpl'}
