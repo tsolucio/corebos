@@ -725,6 +725,9 @@ td.small {
 .cblds-table-bordersp--small {
   border-spacing: 4px !important;
 }
+.cblds-table-cellpadding--medium td {
+  padding: 5px !important;
+}
 .cblds-autowidth {
   width: auto !important;
   max-width: 100000000px !important;

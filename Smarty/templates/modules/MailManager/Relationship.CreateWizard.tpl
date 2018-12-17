@@ -16,12 +16,12 @@
 		<td class="mailSubHeader">
 			<b style="font-size:16px">{'LBL_ADD'|getTranslatedString}&nbsp;{$QCMODULE}</b>
         </td>
-        <td class="mailSubHeader" align="right">
+        <td class="mailSubHeader cblds-t-align--right" align="right">
 			<img src="{'close.gif'|vtiger_imageurl:$THEME}" class="mm_clickable" border=0 onclick="MailManager.mail_associate_create_cancel();">
 		</td>
 	</tr>
 	</table>
-	<table border="0" cellspacing="0" cellpadding="5" width="100%" class="small" bgcolor="white" >
+	<table border="0" cellspacing="0" cellpadding="5" width="100%" class="small cblds-table-border--sep cblds-table-cellpadding--medium" bgcolor="white">
 	{assign var="fromlink" value="qcreate"}
 	{foreach item=subdata from=$QUICKCREATE}
 		<tr>
@@ -33,7 +33,7 @@
 	</table>
 	<table border="0" cellspacing="0" cellpadding="5" width="100%" class=qcTransport>
 		<tr>
-			<td align=right>
+			<td align=right class="cblds-t-align--right">
 			{if $MODULE eq 'Accounts'}
 				<input title="{'LBL_SAVE_LABEL'|getTranslatedString}" accessKey="{'LBL_SAVE_LABEL'|getTranslatedString}" class="crmbutton small save" 
 					   onclick="if(QCformValidate()) MailManager.AjaxDuplicateValidate('Accounts', 'accountname', this.form).done(function(form) {ldelim} MailManager.mail_associate_create(form);{rdelim} );" type="button" name="button" value="{'LBL_SAVE_LABEL'|getTranslatedString}">
