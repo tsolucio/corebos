@@ -40,27 +40,14 @@ function fieldDep_SubDays(change_field, action_field, new_value, old_value, para
 	}
 }
 
-function fieldDep_OnlyNumbers(change_field,evt, action_field, new_value, old_value, parameters) {
-//alert('ddj');
-	evt = (evt) ? evt : window.event;
-	var charCode = (evt.which) ? evt.which : evt.keyCode;
-	//Allow numbers
-	if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-		return false;
-	}
-	return true;
+function fieldDep_OnlyNumbers(change_field, action_field, new_value, old_value, parameters) { 
+	var myVal = document.getElementsByName(action_field).value;
+	new_value = myVal.replace(/^[A-Za-z]+$//g,"");
 }
 
-function fieldDep_OnlyLetters(change_field, inputtxt, action_field, new_value, old_value, parameters) { 
-	var letters = /^[A-Za-z]+$/;
-	//Allow letters
-	if(inputtxt.value.match(letters)) {
-		//alert('Enter your letters...!!');
-		return true;
-	} else {
-		//alert('Please enter letters only');
-		return false;
-	}
+function fieldDep_OnlyLetters(change_field, action_field, new_value, old_value, parameters) { 
+	var myVal = document.getElementsByName(action_field).value;
+	new_value = myVal.replace(/[^0-9]//g,"");
 }
 
 function fieldDep_GetField(change_field, action_field, new_value, old_value, parameters) {
