@@ -716,3 +716,9 @@ td.small {
 .cblds-m--xx-small {
   margin: 2px !important;
 }
+.cblds-table-border--sep {
+  border-collapse: separate;
+}
+.cblds-table-bordersp--medium {
+  border-spacing: 10px;
+}

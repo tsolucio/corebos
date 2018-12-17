@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<table cellpadding="10" cellspacing="0" align="center" class="dvtSelectedCell thickBorder">
+<table cellpadding="10" cellspacing="0" align="center" class="dvtSelectedCell thickBorder cblds-table-border--sep cblds-table-bordersp--medium">
 	<tr>
 		<td>{'LBL_TOTAL_RECORDS_IMPORTED'|@getTranslatedString:$MODULE}</td>
 		<td width="10%">:</td>
