@@ -166,6 +166,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'HelpDesk_Support_Name',
 				'HelpDesk_Support_Reply_EMail',
 				'HelpDesk_Notify_Owner_EMail',
+				'HelpDesk_Sort_Comments_ASC',
 				'Document_Folder_View',
 				'Document_CreateSelectContactFolder',
 				'Document_CreateSelectAccountFolder',
