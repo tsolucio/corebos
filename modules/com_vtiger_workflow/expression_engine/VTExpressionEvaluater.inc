@@ -154,7 +154,11 @@ class VTFieldExpressionEvaluater {
 			'getGEODistanceFromAssignUser2ContactBilling' => 'cbexpsql_getGEODistanceFromAssignUser2ContactBilling',
 			'getGEODistanceFromUser2ContactShipping' => 'cbexpsql_getGEODistanceFromUser2ContactShipping',
 			'getGEODistanceFromAssignUser2ContactShipping' => 'cbexpsql_getGEODistanceFromAssignUser2ContactShipping',
-			'getGEODistanceFromCoordinates' => 'cbexpsql_getGEODistanceFromCoordinates'
+			'getGEODistanceFromCoordinates' => 'cbexpsql_getGEODistanceFromCoordinates',
+            'sum' => 'cbexpsql_sum',
+            'min' => 'cbexpsql_min',
+            'max' => 'cbexpsql_max',
+            'avg' => 'cbexpsql_avg'
 		);
 		$this->rawparams = array(
 			'__cb_getGEODistanceFromUser2AccountBilling',

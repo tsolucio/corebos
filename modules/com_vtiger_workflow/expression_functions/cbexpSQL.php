@@ -293,6 +293,22 @@ function cbexpsql_ifelse($arr, $mmodule) {
 	return __cbexpsql_functionparams('IF', $arr, $mmodule);
 }
 
+function cbexpsql_sum($arr, $mmodule) {
+	return __cbexpsql_functionparams('SUM', $arr, $mmodule);
+}
+
+function cbexpsql_min($arr, $mmodule) {
+	return __cbexpsql_functionparams('MIN', $arr, $mmodule);
+}
+
+function cbexpsql_max($arr, $mmodule) {
+	return __cbexpsql_functionparams('MAX', $arr, $mmodule);
+}
+
+function cbexpsql_avg($arr, $mmodule) {
+	return __cbexpsql_functionparams('AVG', $arr, $mmodule);
+}
+
 //// UNSUPPORTED FUNCTIONS
 function cbexpsql_uppercasefirst($arr, $mmodule) {
 	return 'TRUE';
