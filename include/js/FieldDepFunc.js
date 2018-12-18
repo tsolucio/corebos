@@ -40,14 +40,16 @@ function fieldDep_SubDays(change_field, action_field, new_value, old_value, para
 	}
 }
 
-function fieldDep_OnlyNumbers(change_field, action_field, new_value, old_value, parameters) { 
-	var myVal = document.getElementsByName(action_field).value;
-	new_value = myVal.replace(/^[A-Za-z]+$//g,"");
+function fieldDep_OnlyNumbers(change_field, action_field, new_value, old_value, parameters) {
+	alert('Testing');
+	//return false;
+	//action_field = document.getElementsById('siccode').innerHTML;
+	//new_value = action_field.replace(/^[A-Za-z]+$//g,'');
 }
 
 function fieldDep_OnlyLetters(change_field, action_field, new_value, old_value, parameters) { 
-	var myVal = document.getElementsByName(action_field).value;
-	new_value = myVal.replace(/[^0-9]//g,"");
+	//action_field = document.getElementsByName('').innerHTML;
+	//new_value = action_field.replace(/[^0-9]//g,'');
 }
 
 function fieldDep_GetField(change_field, action_field, new_value, old_value, parameters) {
