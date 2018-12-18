@@ -338,6 +338,7 @@ var alert_arr = {
 	'LBL_ENDS_WITH' : 'ends with',
 	'LBL_HAS_CHANGED' : 'has changed',
 	'LBL_HAS_CHANGED_TO' : 'has changed to',
+	'LBL_WAS' : 'was',
 	'LBL_IS_EMPTY': 'is empty',
 	'LBL_IS_NOT_EMPTY' : 'is not empty',
 	'LBL_EQUAL_TO' : 'equal to',

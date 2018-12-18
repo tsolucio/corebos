@@ -323,6 +323,10 @@ class VTJsonCondition {
 				$entityDelta = new VTEntityDelta();
 				$idParts = vtws_getIdComponents($entityData->getId());
 				return $entityDelta->hasChanged($entityData->getModuleName(), $idParts[1], $cond['fieldname'], $value);
+			case 'was':
+				$entityDelta = new VTEntityDelta();
+				$idParts = vtws_getIdComponents($entityData->getId());
+				return $entityDelta->getOldEntityValue($entityData->getModuleName(), $idParts[1], $cond['fieldname'])==$value;
 			case 'is empty':
 				if (empty($fieldValue)) {
 					return true;
