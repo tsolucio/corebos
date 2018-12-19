@@ -292,7 +292,7 @@ class VTSimpleTemplate {
 				$retcm .= '</tr></table>';
 			}
 		}
-		if ($html || $html) {
+		if ($html || $table) {
 			$retcm .= '</div>';
 		}
 		return $retcm;
