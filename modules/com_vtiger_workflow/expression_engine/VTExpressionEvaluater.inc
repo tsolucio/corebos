@@ -158,7 +158,8 @@ class VTFieldExpressionEvaluater {
             'sum' => 'cbexpsql_sum',
             'min' => 'cbexpsql_min',
             'max' => 'cbexpsql_max',
-            'avg' => 'cbexpsql_avg'
+            'avg' => 'cbexpsql_avg',
+            'count' => 'cbexpsql_count'
 		);
 		$this->rawparams = array(
 			'__cb_getGEODistanceFromUser2AccountBilling',

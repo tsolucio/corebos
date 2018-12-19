@@ -309,6 +309,10 @@ function cbexpsql_avg($arr, $mmodule) {
 	return __cbexpsql_functionparams('AVG', $arr, $mmodule);
 }
 
+function cbexpsql_count($arr, $mmodule) {
+	return __cbexpsql_functionparams('COUNT', $arr, $mmodule);
+}
+
 //// UNSUPPORTED FUNCTIONS
 function cbexpsql_uppercasefirst($arr, $mmodule) {
 	return 'TRUE';
