@@ -41,22 +41,26 @@ function fieldDep_SubDays(change_field, action_field, new_value, old_value, para
 }
 
 function fieldDep_OnlyNumbers(change_field, action_field, new_value, old_value, parameters) {
-	alert('Testing');
-	//return false;
-	//action_field = document.getElementsById('siccode').innerHTML;
-	//new_value = action_field.replace(/^[A-Za-z]+$//g,'');
+	document.getElementsByName(action_field).item(0).value = new_value.replace(/\D/g,'');
 }
 
 function fieldDep_OnlyLetters(change_field, action_field, new_value, old_value, parameters) { 
-	//action_field = document.getElementsByName('').innerHTML;
-	//new_value = action_field.replace(/[^0-9]//g,'');
+	document.getElementsByName(action_field).item(0).value = new_value.replace(/[^A-Za-z]/g,'');
 }
 
 function fieldDep_GetField(change_field, action_field, new_value, old_value, parameters) {
-
+	
 }
 
 function fieldDep_AssignNewValue(change_field, action_field, new_value, old_value, parameters) {
+	//alert(old_value);
+	//return false;
+	document.getElementsByName(action_field).item(0).value = new_value.replace(old_value,new_value);
+
+	//document.getElementsByName(change_field).item(0).value = document.getElementsByName(action_field).item(0).value;
+	//alert(document.getElementsByName(action_field).item(0).value);
+	//alert(document.getElementsByName(change_field).item(0).value);
+	//new_value = getElementsByName(change_field).item(0).value;
 
 }
 
@@ -65,9 +69,6 @@ function fieldDep_Format(change_field, action_field, new_value, old_value, param
 }
 
 function fieldDep_ChangeLabel(change_field, action_field, new_value, old_value, parameters) {
-	var orignLabel = document.getElementById("values_id").innerHTML; 
-    var newLabel = orignLabel.replace(old_value, new_value);
-    document.getElementById("values_id").innerHTML = newLabel;
 
 }
 
