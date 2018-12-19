@@ -244,123 +244,55 @@ class VTSimpleTemplate {
 		}
 		return $retcm;
 	}
-	private function getInventoryDetails($format, $field) {
+
+    private function getInventoryDetails($format, $field) {
 		global $adb, $current_user;
-		$wsId = $this->parent->getId();
-		if (empty($wsId)) {
-			return '';
-		}
 		$format = strtolower($format);
-		if ($format!='html' && $format!='text') {
+		if ($format!='html' && $format!='text'&& $format!='table') {
 			$format = 'html';
 		}
 		$html = ($format == 'html');
-		if (substr($field, 0, 4)=='date' && strlen($field)>4) {
-			$dateformat = substr($field, 4);
-			$field = 'date';
-		} else {
-			$dateformat = $dtformat;
-		}
+		$table = ($format == 'table');
 		$field = strtolower($field);
-		if ($field!='creator' && $field!='inventorydetails' && $field!='date' && $field!='all') {
-			$field = 'all';
-		}
-		if ($field=='all') {
-			$fields = array('creator','date','inventorydetails');
-		} else {
-			$fields = array($field);
-		}
-		$singlefield = (count($fields)==1);
-		$datefmtuserid = $this->parent->get('assigned_user_id');
-		if (!empty($datefmtuserid)) {
-			list($void,$dfuid) = explode('x', $datefmtuserid);
-			if (file_exists('user_privileges/user_privileges_' . $dfuid . '.php')) {
-				$datefmtuser = new Users();
-				$datefmtuser->retrieveCurrentUserInfoFromFile($dfuid);
-			} else {
-				$datefmtuser = $current_user;
-			}
-		} else {
-			$datefmtuser = $current_user;
-		}
+
+		// Checking if field present in the table.
+		// To Do.
+
+		//$singlefield = (count($fields)==1);
 		$moduleName = $this->parent->getModuleName();
 		$wsUsersId = vtws_getEntityId('Users');
 		include_once 'include/Webservices/GetRelatedRecords.php';
-		$queryParameters = array(
-			'columns' => '*',
-		);
 		$wsid = $this->parent->getId();
 		list($wsid,$crmid) = explode('x', $wsid);
-		$cmsqlws = 'SELECT vtiger_products.productname 
+		$cmsqlws = 'SELECT '.$field.' 
 		FROM vtiger_inventorydetails
 		INNER JOIN vtiger_crmentity ON vtiger_inventorydetails.inventorydetailsid=vtiger_crmentity.crmid
 		INNER JOIN  vtiger_products ON vtiger_inventorydetails.productid=vtiger_products.productid
 		 WHERE related_to=?';
 		$retcm = '';
-		if ($html) {
+		if ($html || $table) {
 			$retcm = '<div class="inventorydetails">';
 		}
+		$current_user = Users::getActiveAdminUser();
+		$wsid = $this->parent->getId();
 		$cmrs = $adb->pquery($cmsqlws, array($crmid));
-		while ($cm = $adb->fetch_array($cmrs)) {
+		while ($inv = $adb->fetch_array($cmrs)) {
 			if ($html) {
 				$retcm .= '<div class="inventorydetails"><ul class="inventorydetailsfields">';
-			}
-			foreach ($fields as $field) {
-				switch ($field) {
-					case 'creator':
-						if ($html) {
-							$retcm .= '<li class="inventorydetailscreator">';
-						}
-						if ($moduleName!='Invoice' && $moduleName!='Quotes' && $moduleName!='PurchaseOrder' && $moduleName!='SalesOrder') {
-							$wsid = $wsUsersId;
-						} else {
-							list($wsid,$crmid) = explode('x', $cm['creator']);
-						}
-						if ($wsUsersId==$wsid) {
-							$un = getUserFullName($cm['creator']);
-						} else {
-							$un = getParentName($cm['creator']);
-						}
-						$retcm .= $un;
-						if (!$html && !$singlefield) {
-							$retcm .= "\n";
-						}
-						if ($html) {
-							$retcm .= '</li>';
-						}
-						break;
-					case 'date':
-						if ($html) {
-							$retcm .= '<li class="inventorydetailsdate">';
-						}
-							$dt = new DateTimeField($cm['createdtime']);
-							$retcm .= $dt->getDisplayDateTimeValue($datefmtuser);
-						if (!$html && !$table && !$singlefield) {
-							$retcm .= "\n";
-						}
-						if ($html) {
-							$retcm .= '</li>';
-						}
-						break;
-					case 'inventorydetails':
-						if ($html) {
-							$retcm .= '<li class="inventorydetailsinventorydetails">';
-						}
-						$retcm .= vtlib_purify($cm['productname']);
-						if (!$html && !$singlefield) {
-							$retcm .= "\n";
-						}
-						if ($html) {
-							$retcm .= '</li>';
-						}
-						break;
-				}
-			}
-			if ($html) {
+				$retcm .= '<li class="inventorydetailsfield">';
+				$retcm .= vtlib_purify($inv[$field]);
+				$retcm .= '</li>';
 				$retcm .= '</ul></div>';
 			}
+			if ($table) {
+				$retcm .= '<table class="inventorydetails"><tr class="inventorydetailsfields">';
+				$retcm .= '<td class="inventorydetailsfield">';
+				$retcm .= vtlib_purify($inv[$field]);
+				$retcm .= '</td>';
+				$retcm .= '</tr></table>';
+			}
 		}
-		if ($html) {
+		if ($html || $html) {
 			$retcm .= '</div>';
 		}
 		return $retcm;
@@ -503,6 +435,13 @@ class VTSimpleTemplate {
 			$field = substr($fieldname, 16);
 			$fieldname = 'scanQRCode';
 		}
+		if (substr($fieldname, 0, 16)=='inventorydetails') {
+			$inventoryspec = explode('_', $fieldname);
+
+			$format = isset($inventoryspec[1]) ? $inventoryspec[1] : "";
+			$field = isset($inventoryspec[2]) ? $inventoryspec[2] : "";
+			$fieldname = 'inventorydetails';
+		}
 		switch ($fieldname) {
 			case 'date':
 				return getNewDisplayDate();
@@ -562,7 +501,7 @@ class VTSimpleTemplate {
 			case 'comments':
 				return $this->getComments($numcomm, $srtcomm, $fmtcomm, $fldcomm, $dtformat);
 			case 'inventorydetails':
-				return $this->getInventoryDetails('html', 'all');
+				return $this->getInventoryDetails($format, $field);
 			case 'groupEmailList':
 				return $this->getGroupFieldList($groupname, 'email1');
 			case 'Events_Users_Invited':
