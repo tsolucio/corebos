@@ -340,7 +340,7 @@ $smarty->assign('CREATEMODE', isset($_REQUEST['createmode']) ? vtlib_purify($_RE
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);
-
+$smarty->assign('SandRActive', GlobalVariable::getVariable('Application_SaveAndRepeatActive', 0, $currentModule));
 $cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 

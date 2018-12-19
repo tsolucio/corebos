@@ -244,6 +244,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'all | admin | none',
 	'definition' => 'Global security check to permit exporting. "all" to allow anyone to use exports, "admin" to only allow admins to export, "none" to block exports completely. Default value = all',
 ),
+'Application_SaveAndRepeatActive' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Activate "Save and Repeat" action in edit mode. Default deactivated',
+),
 'Application_ListView_Max_Text_Length' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',

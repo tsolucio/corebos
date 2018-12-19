@@ -238,6 +238,7 @@ if ($cbMapid) {
 	$cbMapFDEP = $cbMap->FieldDependency();
 	$cbMapFDEP = $cbMapFDEP['fields'];
 }
+$smarty->assign('SandRActive', GlobalVariable::getVariable('Application_SaveAndRepeatActive', 0, $currentModule));
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 //Show or not the Header to copy address to left or right
 $smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Application_Show_Copy_Address', 1, $currentModule, $current_user->id));

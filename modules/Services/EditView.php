@@ -228,7 +228,7 @@ $smarty->assign("PRICE_DETAILS", $price_details);
 $base_currency = 'curname' . $service_base_currency;
 $smarty->assign('BASE_CURRENCY', $base_currency);
 $smarty->assign('CONVERT_MODE', '');
-
+$smarty->assign('SandRActive', GlobalVariable::getVariable('Application_SaveAndRepeatActive', 0, $currentModule));
 $cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 

@@ -68,6 +68,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_ListView_Default_Sorting',
 				'Application_ListView_Compute_Page_Count',
 				'Application_ListView_Sum_Currency',
+				'Application_SaveAndRepeatActive',
 				'Application_Upload_MaxSize',
 				'Application_Single_Pane_View',
 				'Application_Minimum_Cron_Frequency',

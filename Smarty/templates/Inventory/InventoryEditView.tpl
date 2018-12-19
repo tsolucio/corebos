@@ -79,7 +79,9 @@
 										<td colspan=4 style="padding:5px">
 											<div align="center">
 												<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save'; displaydeleted(); return validateInventory('{$MODULE}')" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
+												{if isset($SandRActive) && $SandRActive!=0}
 												<input title="{$APP.LBL_SAVEREPEAT_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVEREPEAT_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.saverepeat.value='1';this.form.action.value='Save'; displaydeleted(); return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVEREPEAT_BUTTON_LABEL}  ">
+												{/if}
 												<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="{if isset($smarty.request.Module_Popup_Edit)}window.close(){elseif isset($CANCELGO)}window.location.href='{$CANCELGO}'{else}window.history.back(){/if};" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
 											</div>
 										</td>
@@ -135,7 +137,9 @@
 										<td  colspan=4 style="padding:5px">
 											<div align="center">
 												<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save';  displaydeleted();return validateInventory('{$MODULE}')" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
+												{if isset($SandRActive) && $SandRActive!=0}
 												<input title="{$APP.LBL_SAVEREPEAT_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVEREPEAT_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.saverepeat.value='1';this.form.action.value='Save'; displaydeleted(); return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVEREPEAT_BUTTON_LABEL}  ">
+												{/if}
 												<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="{if isset($smarty.request.Module_Popup_Edit)}window.close(){elseif isset($CANCELGO)}window.location.href='{$CANCELGO}'{else}window.history.back(){/if};" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
 											</div>
 										</td>

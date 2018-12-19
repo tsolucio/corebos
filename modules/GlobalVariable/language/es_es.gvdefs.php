@@ -244,6 +244,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'all | admin | none',
 	'definition' => 'Comprobación global de seguridad que permite la exportación de información. "all" para permitir que cualquiera con permiso pueda exportar, "admin" para permitir solo a los usuarios administradores exportar, "none" para bloquear la exportación completamente. El valor por defecto es "all"',
 ),
+'Application_SaveAndRepeatActive' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Activar la acción de "Guardar y Repetir" en modo edición. Por defecto desactivado',
+),
 'Application_ListView_Max_Text_Length' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Entero',
