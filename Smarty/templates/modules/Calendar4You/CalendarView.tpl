@@ -535,7 +535,7 @@ function hideITSEventInfo(){
                                                     {/foreach}
                                                     </div>
                                                     </div>
-                                                </td>PriorityPanel
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
