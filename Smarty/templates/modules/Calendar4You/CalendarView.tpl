@@ -496,42 +496,6 @@ function hideITSEventInfo(){
                                         </tbody>
                                     </table>
                                     {/if}
-                                     {if $Calendar_Status_Panel_Visible && $PANEL_NAME eq 'StatusPanel'}
-                                    <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
-                                        <tbody>
-                                            <tr>
-                                                <td align="left" class="ui-widget-header"><div style="font-size:13px;padding:5px" class="ui-widget" onclick="jQuery('#module_type_wrapper').toggle();">{'LIST_MODULES'|@getTranslatedString:$MODULE}</div></td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding:5px" class="ui-widget-content">
-                                                  <div id="status_type_wrapper" style="display:{$upSTATUSBLOCK_DISPLAY}">
-                                                    {foreach name=act_types2 item=typedata key=typeid from=$STATUSTYPES}
-                                                    <table width="98%" id="event_type_{$typeid}" style="font-weight:bold;font-size:12px;{if $USER_VIEW_TYPE neq "all"}color:{$typedata.textColor};background-color:{$typedata.color};border: 2px solid {$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};margin:0px 3px 3px 3px;padding:1px;border-top-left-radius: 3px;border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;"><tr><td><input type="checkbox" id="calendar_event_{$typeid}" name="calendar_event_{$typeid}" onClick="changeCalendarEvents(this)" value="{$typeid}" {if $typedata.checked eq 'T'}checked="checked"{/if}>{$typedata.label}<td><td align="right"><a id="event_type_{$typeid}_icon" href="javascript:;" style="display:none" onClick="loadITSEventSettings(this,'type','{$typeid}')"><img src="themes/images/activate.gif" border="0"></a></td></tr></table>
-                                                    {/foreach}
-                                                  </div>
-                                                 </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    {/if}
-                                    {if $Calendar_Priority_Panel_Visible && $PANEL_NAME eq 'PriorityPanel'}
-                                    <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
-                                        <tbody>
-                                            <tr>
-                                                <td align="left" class="ui-widget-header"><div style="font-size:13px;padding:5px" class="ui-widget" onclick="jQuery('#module_type_wrapper').toggle();">{'LIST_MODULES'|@getTranslatedString:$MODULE}</div></td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding:5px" class="ui-widget-content">
-                                                  <div id="priority_type_wrapper" style="display:{$upSTATUSBLOCK_DISPLAY}">
-                                                    {foreach name=act_types2 item=typedata key=typeid from=$PRIORITYTYPES}
-                                                    <table width="98%" id="event_type_{$typeid}" style="font-weight:bold;font-size:12px;{if $USER_VIEW_TYPE neq "all"}color:{$typedata.textColor};background-color:{$typedata.color};border: 2px solid {$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};margin:0px 3px 3px 3px;padding:1px;border-top-left-radius: 3px;border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;"><tr><td><input type="checkbox" id="calendar_event_{$typeid}" name="calendar_event_{$typeid}" onClick="changeCalendarEvents(this)" value="{$typeid}" {if $typedata.checked eq 'T'}checked="checked"{/if}>{$typedata.label}<td><td align="right"><a id="event_type_{$typeid}_icon" href="javascript:;" style="display:none" onClick="loadITSEventSettings(this,'type','{$typeid}')"><img src="themes/images/activate.gif" border="0"></a></td></tr></table>
-                                                    {/foreach}
-                                                  </div>
-                                                 </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    {/if}
                                     {if $PANEL_NAME eq 'AssignedUser'}
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
@@ -556,7 +520,7 @@ function hideITSEventInfo(){
                                         </tbody>
                                     </table>
                                     {/if}
-                                    {if $PANEL_NAME eq 'ActivityStatus'}
+                                    {if $Calendar_Status_Panel_Visible && $PANEL_NAME eq 'ActivityStatus'}
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>
@@ -571,12 +535,12 @@ function hideITSEventInfo(){
                                                     {/foreach}
                                                     </div>
                                                     </div>
-                                                </td>
+                                                </td>PriorityPanel
                                             </tr>
                                         </tbody>
                                     </table>
                                     {/if}
-                                    {if $PANEL_NAME eq 'ActivityPriority'}
+                                    {if $Calendar_Priority_Panel_Visible && $PANEL_NAME eq 'ActivityPriority'}
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>

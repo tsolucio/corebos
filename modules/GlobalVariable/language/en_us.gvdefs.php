@@ -776,6 +776,20 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Show or hide the modules list in the calendar. The default value of 1 shows the list and 0 hides it.',
 ),
+'Calendar_Status_Panel_Visible' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide the status in the calendar. The default value of 1 shows it and 0 hides it.',
+),
+'Calendar_Priority_Panel_Visible' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'hide the Priority in the calendar. The default value of 1 shows it and 0 hides it.',
+),
 'Calendar_Default_Reminder_Minutes' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',
