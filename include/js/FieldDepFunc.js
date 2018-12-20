@@ -45,7 +45,7 @@ function fieldDep_OnlyNumbers(change_field, action_field, new_value, old_value, 
 }
 
 function fieldDep_OnlyLetters(change_field, action_field, new_value, old_value, parameters) { 
-	document.getElementsByName(action_field).item(0).value = new_value.replace(/[^A-Za-z]/g,'');
+	document.getElementsByClassName(action_field).item(0).value = new_value.replace(/[^A-Za-z]/g,'');
 }
 
 function fieldDep_GetField(change_field, action_field, new_value, old_value, parameters) {
@@ -53,15 +53,7 @@ function fieldDep_GetField(change_field, action_field, new_value, old_value, par
 }
 
 function fieldDep_AssignNewValue(change_field, action_field, new_value, old_value, parameters) {
-	//alert(old_value);
-	//return false;
 	document.getElementsByName(action_field).item(0).value = new_value.replace(old_value,new_value);
-
-	//document.getElementsByName(change_field).item(0).value = document.getElementsByName(action_field).item(0).value;
-	//alert(document.getElementsByName(action_field).item(0).value);
-	//alert(document.getElementsByName(change_field).item(0).value);
-	//new_value = getElementsByName(change_field).item(0).value;
-
 }
 
 function fieldDep_Format(change_field, action_field, new_value, old_value, parameters) {
@@ -69,6 +61,6 @@ function fieldDep_Format(change_field, action_field, new_value, old_value, param
 }
 
 function fieldDep_ChangeLabel(change_field, action_field, new_value, old_value, parameters) {
-
+	//document.getElementsByName('td_'.action_field).item(0).value = new_value.replace(old_value,new_value);
 }
 
