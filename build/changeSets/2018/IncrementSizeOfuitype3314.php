@@ -28,7 +28,7 @@
                     while ($_rows = $adb->fetch_array($result)) {
                         $table = $_rows['tablename'];
                         $col = $_rows['fieldname'];
-                        $this->ExecuteQuery("ALTER TABLE ".$table." MODIFY COLUMN ".$col." VARCHAR(2500)");
+                        $this->ExecuteQuery("ALTER TABLE ".$table." MODIFY COLUMN ".$col." VARCHAR(1000)");
                     }
                 }
                 $this->sendMsg('Changeset '.get_class($this).' applied!');
