@@ -28,13 +28,12 @@ class Emails extends CRMEntity {
 
 	// added to check email save from plugin or not
 	public $plugin_save = false;
-	public $rel_users_table = "vtiger_salesmanactivityrel";
-	public $rel_contacts_table = "vtiger_cntactivityrel";
-	public $rel_serel_table = "vtiger_seactivityrel";
+	public $rel_users_table = 'vtiger_salesmanactivityrel';
+	public $rel_contacts_table = 'vtiger_cntactivityrel';
+	public $rel_serel_table = 'vtiger_seactivityrel';
 	public $tab_name = array('vtiger_crmentity', 'vtiger_activity', 'vtiger_emaildetails');
 	public $tab_name_index = array('vtiger_crmentity' => 'crmid', 'vtiger_activity' => 'activityid',
 		'vtiger_seactivityrel' => 'activityid', 'vtiger_cntactivityrel' => 'activityid', 'vtiger_email_track' => 'mailid', 'vtiger_emaildetails' => 'emailid');
-	// This is the list of vtiger_fields that are in the lists.
 	public $list_fields = array(
 		'Subject' => array('activity' => 'subject'),
 		'Related to' => array('seactivityrel' => 'parent_id'),

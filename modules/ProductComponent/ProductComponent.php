@@ -49,6 +49,7 @@ class ProductComponent extends CRMEntity {
 		'Relation Number'=> array('productcomponent' => 'relno'),
 		'frompdo'=> array('productcomponent' => 'frompdo'),
 		'topdo'=> array('productcomponent' => 'topdo'),
+		'quantity'=> array('productcomponent' => 'quantity'),
 		'Relation Mode'=> array('productcomponent' => 'relmode'),
 		'Relation from'=> array('productcomponent' => 'relfrom'),
 		'Relation to'=> array('productcomponent' => 'relto')
@@ -58,6 +59,7 @@ class ProductComponent extends CRMEntity {
 		'Relation Number'=> 'relno',
 		'frompdo'=> 'frompdo',
 		'topdo'=> 'topdo',
+		'quantity'=> 'quantity',
 		'Relation Mode'=> 'relmode',
 		'Relation from'=> 'relfrom',
 		'Relation to'=> 'relto'
@@ -73,6 +75,7 @@ class ProductComponent extends CRMEntity {
 		'Relation Number'=> array('productcomponent' => 'relno'),
 		'frompdo'=> array('productcomponent' => 'frompdo'),
 		'topdo'=> array('productcomponent' => 'topdo'),
+		'quantity'=> array('productcomponent' => 'quantity'),
 		'Relation Mode'=> array('productcomponent' => 'relmode'),
 		'Relation from'=> array('productcomponent' => 'relfrom'),
 		'Relation to'=> array('productcomponent' => 'relto')
@@ -82,6 +85,7 @@ class ProductComponent extends CRMEntity {
 		'Relation Number'=> 'relno',
 		'frompdo'=> 'frompdo',
 		'topdo'=> 'topdo',
+		'quantity'=> 'quantity',
 		'Relation Mode'=> 'relmode',
 		'Relation from'=> 'relfrom',
 		'Relation to'=> 'relto'

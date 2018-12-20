@@ -271,6 +271,22 @@ switch ($functiontocall) {
 			$ret[$tr] = getTranslatedString($tr, $i18nm);
 		}
 		break;
+	case 'execwf':
+		include_once 'include/Webservices/ExecuteWorkflow.php';
+		$wfid = vtlib_purify($_REQUEST['wfid']);
+		$ids = explode(';', vtlib_purify($_REQUEST['ids']));
+		$id = reset($ids);
+		$wsid = vtws_getEntityId(getSalesEntityType($id)).'x';
+		$crmids = array();
+		foreach ($ids as $crmid) {
+			$crmids[] = $wsid.$crmid;
+		}
+		try {
+			$ret = cbwsExecuteWorkflow($wfid, json_encode($crmids), $current_user);
+		} catch (Exception $e) {
+			$ret = false;
+		}
+		break;
 	case 'ismoduleactive':
 	default:
 		$mod = vtlib_purify($_REQUEST['checkmodule']);

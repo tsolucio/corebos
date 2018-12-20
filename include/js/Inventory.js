@@ -1893,6 +1893,10 @@ function handleProductAutocompleteSelect(obj) {
 		searchIcon.setAttribute('onclick', "servicePickList(this,'"+gVTModule+"','"+no+"')");
 		break;
 	}
+	var func = gVTModule + 'setValueFromCapture';
+	if (typeof window[func] == 'function') {
+		window[func](obj.result.meta.id, obj.result.meta.name, 'productName'+no);
+	}
 	document.getElementById('qty'+no).focus();
 }
 

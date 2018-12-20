@@ -31,9 +31,10 @@ class VTWorkflowUtils {
 			return false;
 		}
 	}
-		/**
-		 * Get fieldvalue based on fieldtype
-		 */
+
+	/**
+	 * Get fieldvalue based on fieldtype
+	 */
 	public static function fieldvaluebytype($moduleFields, $fieldValueType, $fieldValue, $fieldName, $focus, $entity, $handlerMeta) {
 		$breaks = array('<br />','<br>','<br/>');
 		$fieldInstance = $moduleFields[$fieldName];
@@ -89,6 +90,7 @@ class VTWorkflowUtils {
 		}
 		return $fieldValue;
 	}
+
 	/**
 	 * Push the admin user on to the user stack
 	 * and make it the $current_user
@@ -133,7 +135,7 @@ class VTWorkflowUtils {
 	 * Get the previous user
 	 */
 	public static function previousUser() {
-		if (count(self::$userStack)>0) {
+		if (is_array(self::$userStack) && count(self::$userStack)>0) {
 			return self::$userStack[count(self::$userStack)-1];
 		}
 		return false;

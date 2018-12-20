@@ -61,6 +61,8 @@ function getRelatedRecords($id, $module, $relatedModule, $queryParameters, $user
 		require_once $srvhandlerPath;
 		$srvhandler = new $srvhandlerClass($srvwebserviceObject, $user, $adb, $log);
 		$srvmeta = $srvhandler->getMeta();
+	} elseif ($relatedModule=='Products' && $module=='Products') {
+		$relatedModule = 'ProductComponent';
 	}
 
 	require_once $handlerPath;
@@ -107,6 +109,9 @@ function getRelatedRecords($id, $module, $relatedModule, $queryParameters, $user
 // see parameter description in getRelatedRecords() above
 function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 	global $adb, $currentModule, $log, $current_user;
+	if (strtolower($relatedModule)=='products' && strtolower($module)=='products') {
+		$relatedModule = 'ProductComponent';
+	}
 
 	// Initialize required globals
 	$currentModule = $module;
@@ -285,7 +290,7 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 		default:
 			$relation_criteria = '';
 			switch ($relatedModule) {
-				case 'Products':
+				case 'ProductComponent':
 					if ($module == 'Products') {  // Product Bundles
 						if (!empty($productDiscriminator) && $productDiscriminator == 'productparent') {
 							$relation_criteria = " and label like '%parent%'";
@@ -336,14 +341,26 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 				}
 				$GetRelatedList_ReturnOnlyQuery = $holdValue;
 				$query = $relationData['query'];
-
+				if ($relatedModule == 'ProductComponent') {
+					$webserviceObject = VtigerWebserviceObject::fromName($adb, 'Products');
+					$handlerPath = $webserviceObject->getHandlerPath();
+					$handlerClass = $webserviceObject->getHandlerClass();
+					require_once $handlerPath;
+					$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+					$meta = $handler->getMeta();
+					if (!empty($productDiscriminator) && $productDiscriminator == 'productparent') {
+						$query = appendFromClauseToQuery($query, ' inner join vtiger_products on vtiger_products.productid=vtiger_productcomponent.frompdo');
+					} else {
+						$query = appendFromClauseToQuery($query, ' inner join vtiger_products on vtiger_products.productid=vtiger_productcomponent.topdo');
+					}
+				}
 				// select the fields the user has access to and prepare query
 				$qfields = __getRLQueryFields($meta, $queryParameters['columns']);
 				// Remove all the \n, \r and white spaces to keep the space between the words consistent.
 				$query = preg_replace("/[\n\r\s]+/", ' ', $query);
 				$query = "select $qfields ".substr($query, stripos($query, ' FROM '), strlen($query));
 				// Append additional joins for some queries
-				$query = __getRLQueryFromJoins($query, $meta);
+				$query = __getRLQueryFromJoins($query, $meta, $relatedModule);
 				//Appending Access Control
 				if ($relatedModule != 'Faq' && $relatedModule != 'PriceBook' && $relatedModule != 'Vendors' && $relatedModule != 'Users') {
 					$secQuery = getNonAdminAccessControlQuery($relatedModule, $current_user);
@@ -454,7 +471,7 @@ function __getRLQueryFields($meta, $cols = '*') {
 // We obtain the query that relates both entities by means of the Related List function that joins them
 // but this query doesn't always have support for all the tables that are need to obtain all the possible fields
 // this function is an intent to add the necessary joins to the default query so all fields will work
-function __getRLQueryFromJoins($query, $meta) {
+function __getRLQueryFromJoins($query, $meta, $relatedModule = '') {
 	if ($meta->getEntityName()=='Emails') {
 		// this query is non-standard, I try to fix it a bit to get it working
 		$chgFrom = 'from vtiger_activity, vtiger_seactivityrel, vtiger_contactdetails, vtiger_users, vtiger_crmentity';
@@ -478,7 +495,7 @@ function __getRLQueryFromJoins($query, $meta) {
 		if (stripos($query, $tbl)>$posFrom) {
 			continue;  // the table is present after FROM
 		}
-		if ($tbl=='vtiger_ticketcomments' || $tbl=='vtiger_faqcomments') {
+		if ($tbl=='vtiger_ticketcomments' || $tbl=='vtiger_faqcomments' || ($relatedModule=='ProductComponent' && $tbl='vtiger_seproductsrel')) {
 			continue;  // these are obtained through comments
 		}
 		$secQuery = " left join $tbl on $tbl.$fld = $etable.$eindex ";

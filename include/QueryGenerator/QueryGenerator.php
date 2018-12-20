@@ -496,6 +496,9 @@ class QueryGenerator {
 			$this->fields = array_intersect($this->fields, $accessibleFieldList);
 		}
 		foreach ($this->fields as $field) {
+			if ($field == 'filename' && $this->getModule()=='Emails') {
+				continue;
+			}
 			$sql = $this->getSQLColumn($field);
 			$columns[] = $sql;
 
@@ -536,7 +539,7 @@ class QueryGenerator {
 
 		$moduleTableIndexList = $this->meta->getEntityTableIndexList();
 		foreach ($this->fields as $fieldName) {
-			if ($fieldName == 'id' || empty($moduleFields[$fieldName])) {
+			if ($fieldName == 'id' || empty($moduleFields[$fieldName]) || ($fieldName=='filename' && $baseModule=='Emails')) {
 				continue;
 			}
 

@@ -298,11 +298,7 @@ FieldDependencies.prototype.fieldReadonly = function (readonlyFields) {
 		field=readonlyFields[i]['field'];
 		document.getElementById(field+'_hidden').innerHTML=document.getElementsByName(field).item(0).value;
 		document.getElementById(field+'_hidden').style.display='inline';
-		if (document.getElementById(field).type=='select-one' || document.getElementById(field).type=='select-multiple') {
-			document.getElementsByName(field).item(0).style.display='none';
-		} else {
-			document.getElementById(field).readOnly=true; // it will not work for picklists, only for input
-		}
+		document.getElementsByName(field).item(0).style.display='none';
 	}
 };
 

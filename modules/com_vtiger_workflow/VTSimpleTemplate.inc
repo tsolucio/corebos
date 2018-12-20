@@ -38,7 +38,7 @@ class VTSimpleTemplate {
 				} elseif ($uitype == '5' || $uitype == '6' || $uitype == '23') {  // date
 					$date = new DateTimeField($data[$fieldname]);
 					$result = $date->getDisplayDate($current_user);
-				} elseif ($uitype == '70') {  // datetime
+				} elseif ($uitype == '50') {  // datetime
 					$date = new DateTimeField($data[$fieldname]);
 					$result = $date->getDisplayDateTimeValue($current_user);
 				} elseif ($uitype == '71' || $uitype == '72' || $uitype == '7' || $uitype == '9') {
@@ -87,7 +87,7 @@ class VTSimpleTemplate {
 								} elseif ($uitype == '5' || $uitype == '6' || $uitype == '23') {  // date
 									$date = new DateTimeField($data[$fieldname]);
 									$result = $date->getDisplayDate($current_user);
-								} elseif ($uitype == '70') {  // datetime
+								} elseif ($uitype == '50') {  // datetime
 									$date = new DateTimeField($data[$fieldname]);
 									$result = $date->getDisplayDateTimeValue($current_user);
 								} elseif ($uitype == '71' || $uitype == '72' || $uitype == '7' || $uitype == '9') {

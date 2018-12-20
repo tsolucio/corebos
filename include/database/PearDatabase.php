@@ -668,7 +668,7 @@ class PearDatabase {
 		if (is_array($arr)) {
 			$arr = array_map('to_html', $arr);
 		}
-			return $this->change_key_case($arr);
+		return $this->change_key_case($arr);
 	}
 
 	// adds new functions to the PearDatabase class to come around the whole broken query_result() idea

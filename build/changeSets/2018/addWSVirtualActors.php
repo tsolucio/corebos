@@ -30,7 +30,7 @@ class addWSVirtualActors extends cbupdaterWorker {
 				VALUES (?, 'Workflow', 'include/Webservices/VtigerActorOperation.php', 'VtigerActorOperation', '0')", array($wsid));
 			$this->ExecuteQuery("INSERT INTO `vtiger_ws_entity_tables` (`webservice_entity_id`, `table_name`) VALUES (?, 'com_vtiger_workflows');", array($wsid));
 			$this->ExecuteQuery("INSERT INTO `vtiger_ws_entity_name` (`entity_id`, `name_fields`, `index_field`, `table_name`)
-				VALUES ('?, 'summary', 'workflow_id', 'com_vtiger_workflows');", array($wsid));
+				VALUES (?, 'summary', 'workflow_id', 'com_vtiger_workflows');", array($wsid));
 			// Audit Trail
 			$wsid = $adb->getUniqueID('vtiger_ws_entity');
 			$this->ExecuteQuery("INSERT INTO `vtiger_ws_entity` (`id`, `name`, `handler_path`, `handler_class`, `ismodule`)

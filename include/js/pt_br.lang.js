@@ -355,6 +355,7 @@ var alert_arr = {
 	'LBL_ENDS_WITH' : 'termina com',
 	'LBL_HAS_CHANGED' : 'foi alterado',
 	'LBL_HAS_CHANGED_TO' : 'não foi alterado',
+	'LBL_WAS' : 'was',
 	'LBL_IS_EMPTY': 'está vazio',
 	'LBL_IS_NOT_EMPTY' : 'não está vazio',
 	'LBL_EQUAL_TO' : 'igual a',

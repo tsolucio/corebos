@@ -290,8 +290,8 @@ class HelpDesk extends CRMEntity {
 	public function getCommentInformation($ticketid) {
 		global $log, $adb, $mod_strings, $default_charset;
 		$log->debug('Entering getCommentInformation('.$ticketid.') method ...');
-
-		$result = $adb->pquery('select * from vtiger_ticketcomments where ticketid=?', array($ticketid));
+		$sortby = GlobalVariable::getVariable('HelpDesk_Sort_Comments_ASC', 1, 'HelpDesk') ? 'ASC' : 'DESC';
+		$result = $adb->pquery('select * from vtiger_ticketcomments where ticketid=? order by createdtime '.$sortby, array($ticketid));
 		$noofrows = $adb->num_rows($result);
 
 		//In ajax save we should not add this div

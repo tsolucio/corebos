@@ -390,11 +390,12 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 	$field_list = array();
 	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 	foreach ($focus->list_fields as $name => $tableinfo) {
-		$fieldname = $focus->list_fields_name[$name];
-		if ($oCv) {
-			if (isset($oCv->list_fields_name)) {
-				$fieldname = $oCv->list_fields_name[$name];
-			}
+		if ($oCv && isset($oCv->list_fields_name)) {
+			$fieldname = $oCv->list_fields_name[$name];
+		} elseif (isset($focus->list_fields_name[$name])) {
+			$fieldname = $focus->list_fields_name[$name];
+		} else {
+			continue;
 		}
 		if ($fieldname == 'accountname' && $module != 'Accounts') {
 			$fieldname = 'account_id';
@@ -478,8 +479,6 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 				$entity_id = $adb->query_result($list_result, $i-1, 'id');
 			}
 			foreach ($focus->list_fields as $name => $tableinfo) {
-				$fieldname = $focus->list_fields_name[$name];
-
 				if ($oCv) {
 					if (isset($oCv->list_fields_name)) {
 						$fieldname = $oCv->list_fields_name[$name];
@@ -495,7 +494,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 					} else {
 						$fieldname = $focus->list_fields_name[$name];
 					}
-				} else {
+				} elseif (isset($focus->list_fields_name[$name])) {
 					$fieldname = $focus->list_fields_name[$name];
 					if ($fieldname == 'accountname' && $module != 'Accounts') {
 						$fieldname = 'account_id';
@@ -506,6 +505,8 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 					if ($fieldname == 'productname' && $module != 'Products') {
 						$fieldname = 'product_id';
 					}
+				} else {
+					continue;
 				}
 				if ($is_admin==true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0 || in_array($fieldname, $field) || $fieldname == '') {
 					if ($fieldname == '') {
@@ -769,15 +770,15 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 							$value = evvt_strip_html_links($value);
 						}
 					}
-					$list_header[] = $value;
+					$list_header[$name] = $value;
 				}
 			}
 			$varreturnset = '';
 
 			$varreturnset = $returnset;
 			$webserviceEntityId=vtyiicpng_getWSEntityId($module);
-			$list_header[]=$webserviceEntityId.$entity_id;
-			$list_header[]=$module;
+			$list_header['id']=$webserviceEntityId.$entity_id;
+			$list_header['search_module_name']=$module;
 			$list_block[$entity_id] = $list_header;
 		}
 	}

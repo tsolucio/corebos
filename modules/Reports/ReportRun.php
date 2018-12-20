@@ -906,6 +906,7 @@ class ReportRun extends CRMEntity {
 	 *
 	 */
 	public function RunTimeFilter($filtercolumn, $filter, $startdate, $enddate) {
+		$stdfilterlist = array();
 		if ($filtercolumn != "none") {
 			$selectedfields = explode(":", $filtercolumn);
 			if ($selectedfields[0] == "vtiger_crmentity".$this->primarymodule) {

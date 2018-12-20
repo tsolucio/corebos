@@ -62,15 +62,15 @@ function cbupd_import($zipfile) {
 			echo "XML File found: $filename <br>";
 			$cbupdates= new DOMDocument();
 			if ($cbupdates->load($cspath.'/'.$filename)) {
-				echo "XML File loaded!<br>";
+				echo 'XML File loaded!<br>';
 				if ($cbupdates->schemaValidate('modules/cbupdater/cbupdater.xsd')) {
-					echo "XML File validated!<br>";
+					echo 'XML File validated!<br>';
 					$csxmlfound = true;
 					$w=new XMLWriter();
 					$w->openMemory();
 					$w->setIndent(true);
 					$w->startDocument('1.0', 'UTF-8');
-					$w->startElement("updatesChangeLog");
+					$w->startElement('updatesChangeLog');
 					$root = $cbupdates->documentElement;
 					foreach ($root->childNodes as $node) {
 						if (get_class($node)=='DOMElement' && $node->nodeName=='changeSet') {
@@ -85,26 +85,31 @@ function cbupd_import($zipfile) {
 								}
 							}
 							echo $processing.getTranslatedString('ChangeSet', 'cbupdater').' '.$upd['classname'].'<br>';
-							$w->startElement("changeSet");
+							$w->startElement('changeSet');
 							if (!empty($upd['author'])) {
-								$w->startElement("author");
+								$w->startElement('author');
 								$w->text($upd['author']);
 								$w->endElement();
 							}
 							if (!empty($upd['description'])) {
-								$w->startElement("description");
+								$w->startElement('description');
 								$w->text($upd['description']);
 								$w->endElement();
 							}
-								$w->startElement("filename");
-								$w->text($upd['filename']);
+							$w->startElement('filename');
+							$w->text($upd['filename']);
+							$w->endElement();
+							$w->startElement('classname');
+							$w->text($upd['classname']);
+							$w->endElement();
+							$w->startElement('systemupdate');
+							$w->text($upd['systemupdate'] == '1' ? 'true' : 'false');
+							$w->endElement();
+							if (isset($upd['continuous'])) {
+								$w->startElement('continuous');
+								$w->text($upd['continuous']);
 								$w->endElement();
-								$w->startElement("classname");
-								$w->text($upd['classname']);
-								$w->endElement();
-								$w->startElement("systemupdate");
-								$w->text($upd['systemupdate'] == '1' ? 'true' : 'false');
-								$w->endElement();
+							}
 							$w->endElement();
 						}
 					}

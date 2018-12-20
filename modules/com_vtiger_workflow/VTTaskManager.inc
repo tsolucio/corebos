@@ -324,7 +324,7 @@ class VTTaskType {
 	public static function getInstanceFromTaskType($taskType) {
 		$adb = PearDatabase::getInstance();
 
-		$result = $adb->pquery('SELECT * FROM com_vtiger_workflow_tasktypes where tasktypename=?', array($taskType));
+		$result = $adb->pquery('SELECT * FROM com_vtiger_workflow_tasktypes where tasktypename=? or classname=? limit 1', array($taskType, $taskType));
 		$taskTypes['name'] = $adb->query_result($result, 0, 'tasktypename');
 		$taskTypes['label'] = $adb->query_result($result, 0, 'label');
 		$taskTypes['classname'] = $adb->query_result($result, 0, 'classname');

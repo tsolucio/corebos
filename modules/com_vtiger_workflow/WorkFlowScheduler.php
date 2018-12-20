@@ -193,7 +193,7 @@ class WorkFlowScheduler {
 				$operation = $condition['operation'];
 
 				//Cannot handle this condition for scheduled workflows
-				if ($operation == 'has changed') {
+				if ($operation == 'has changed' || $operation == 'has changed to' || $operation == 'was') {
 					continue;
 				}
 

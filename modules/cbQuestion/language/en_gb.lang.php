@@ -19,6 +19,8 @@ $mod_strings = array(
 	'LBL_Conditions_INFORMATION' => 'Conditions Information',
 	'LBL_Pulse_INFORMATION' => 'Pulse Information',
 	'LBL_DESCRIPTION_INFORMATION' => 'Description',
+	'Order Information' => 'Order Information',
+	'Grouping Information' => 'Grouping Information',
 
 	'qname' => 'Name Text',
 	'Question_No' => 'Question No',
@@ -49,5 +51,9 @@ $mod_strings = array(
 	'schannualdates' => 'Annual Dates',
 	'schminuteinterval' => 'Minute Interval',
 	'nexttrigger_time' => 'Trigger Time',
+	'Order by Column' => 'Order by Column',
+	'Group by Column' => 'Group by Column',
+	'Type Information' => 'Type Information',
+	'Type Properties' => 'Type Properties',
 );
 ?>
