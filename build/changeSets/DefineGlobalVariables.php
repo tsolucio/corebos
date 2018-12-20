@@ -104,6 +104,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'CronTasks_cronWatcher_mailto',
 				'CronTasks_cronWatcher_TimeThreshold',
 
+				'BusinessQuestion_TableAnswer_Limit',
+
 				'BusinessMapping_SalesOrder2Invoice',
 				'BusinessMapping_PotentialOnCampaignRelation',
 				'BusinessMapping_Quotes2Invoice',
