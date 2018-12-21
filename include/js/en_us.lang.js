@@ -11,6 +11,7 @@ var alert_arr = {
 	'DELETE':'Are you sure you want to delete the selected ',
 	'RECORDS':' records?',
 	'SELECT':'Please select at least one entity',
+	'SELECTCONDITION':'Please select at least one condition',
 	'SELECTTEMPLATE':'Please select at least one document Template',
 	'SELECTMERGE':'Please select an entity to merge!',
 	'GENDOCSAVED':'Document saved. Please verify that it has been created correctly.',

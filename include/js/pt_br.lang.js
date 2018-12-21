@@ -13,6 +13,7 @@ var alert_arr = {
 	'DELETE':'Deseja realmente apagar o registro selecionado?',
 	'RECORDS':' registros!',
 	'SELECT':'Por favor, selecione pelo menos uma entidade',
+	'SELECTCONDITION':'Please select at least one condition',
 	'SELECTTEMPLATE':'Por favor, selecione ao menos um modelo de documento',
 	'SELECTMERGE':'Por favor, selecione uma entidade para mesclar!',
 	'GENDOCSAVED':'Documento salvo. Por favor verifique se ele foi criado corretanente.',

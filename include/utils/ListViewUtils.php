@@ -3973,4 +3973,116 @@ function counterValue() {
 	$counter = $counter + 1;
 	return $counter;
 }
+
+/* get the picklist data for the select type field or owner type field */
+function GetPickListOwnerData($fieldname, $fieldtype) {
+	require_once 'modules/PickList/PickListUtils.php';
+	global $adb, $current_user;
+	$pick_array = array();
+	if ($fieldtype == 'select') {
+		$pick_array = getAssignedPicklistValues($fieldname, $current_user->roleid, $adb);
+	} elseif ($fieldtype == 'owner') {
+		$users = array();
+		$tks_res = $adb->query('SELECT first_name, last_name FROM vtiger_users WHERE deleted=0');
+		$num_rows = $adb->num_rows($tks_res);
+		for ($i = 0; $i < $num_rows; $i++) {
+			$fname = $adb->query_result($tks_res, $i, 'first_name');
+			$lname = $adb->query_result($tks_res, $i, 'last_name');
+			array_push($users, trim($fname . ' ' . $lname));
+		}
+		$group = array();
+		$tks_res = $adb->query('SELECT groupname FROM vtiger_groups');
+		$num_rows = $adb->num_rows($tks_res);
+		for ($i = 0; $i < $num_rows; $i++) {
+			array_push($group, $adb->query_result($tks_res, $i, 'groupname'));
+		}
+		$pick_array = array(
+			'users' => $users,
+			'group' => $group
+		);
+	}
+	return $pick_array;
+}
+
+/* build the searchlist block data */
+function getListColumnSearch($list, $mod) {
+	global $adb;
+	if (!is_array($list) || $mod == '') {
+		return '';
+	}
+
+	$l_array = array();
+	$user_data = array();
+	$ftype = 'text';
+	$ui = 1;
+	$keys = array_keys($list);
+	sort($keys);
+	$sql = 'SELECT vtiger_field.fieldname,vtiger_field.uitype
+		FROM vtiger_field
+		INNER JOIN vtiger_tab ON vtiger_tab.tabid = vtiger_field.tabid
+		WHERE vtiger_tab.name=? AND vtiger_field.fieldname IN (' . generateQuestionMarks($keys) . ') ORDER BY vtiger_field.fieldname ASC';
+	$tks_res = $adb->pquery($sql, array($mod, $keys));
+	$num_rows = $adb->num_rows($tks_res);
+	for ($i = 0; $i < $num_rows; $i++) {
+		$ui = $adb->query_result($tks_res, $i, 'uitype');
+		$f_name = $adb->query_result($tks_res, $i, 'fieldname');
+		switch ($ui) {
+			case 56:
+			case 156:
+				$ftype = 'checkbox';
+				break;
+
+			case 52:
+			case 53:
+				$ftype = 'owner';
+				$user_data = GetPickListOwnerData($f_name, $ftype);
+				break;
+
+			case 15:
+			case 16:
+			case 33:
+			case 27:
+				$ftype = 'select';
+				$user_data = GetPickListOwnerData($f_name, $ftype);
+				break;
+
+			case 5:
+			case 6:
+			case 23:
+				$ftype = 'date';
+				break;
+
+			case 50:
+				$ftype = 'datetime';
+				break;
+
+			case 7:
+			case 9:
+				$ftype = 'number';
+				break;
+
+			case 71:
+			case 72:
+				$ftype = 'currency';
+				break;
+
+			default:
+				$ftype = 'text';
+		}
+
+		$list[$f_name] = array(
+			'fieldname' => $f_name,
+			'fieldtype' => $ftype,
+			'uitype' => $ui,
+			'value' => $list[$f_name],
+			'pickdata' => $user_data
+		);
+		$user_data = array();
+	}
+
+	foreach ($list as $key => $value) {
+		array_push($l_array, $list[$key]);
+	}
+	return $l_array;
+}
 ?>

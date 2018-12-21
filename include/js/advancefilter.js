@@ -308,6 +308,9 @@ function defaultRequiredElements(columnindex) {
 }
 
 function checkAdvancedFilter() {
+	if (doingAdhocColumnSearch) {
+		return true;
+	}
 	var escapedOptions = new Array('account_id', 'contactid', 'contact_id', 'product_id', 'parent_id', 'campaignid', 'potential_id', 'assigned_user_id1', 'quote_id', 'accountname', 'salesorder_id', 'vendor_id', 'time_start', 'time_end', 'lastname');
 	var extendedValue = '';
 	var conditionColumns = vt_getElementsByName('tr', 'conditionColumn');

@@ -293,6 +293,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Mostrar la suma total de columnas de tipo moneda. El valor por defecto es 1',
 ),
+'Application_ListView_SearchColumns' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Mostrar columnas de búsqueda en la tabla de la lista de vista',
+),
 'Application_DetailView_Record_Navigation' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',

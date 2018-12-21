@@ -11,6 +11,7 @@ var alert_arr = {
 	'DELETE':'U gaat verwijderen, bent u zeker over de geselecteerde ',
 	'RECORDS':' records?',
 	'SELECT':'Kies alstublieft minimaal één record',
+	'SELECTCONDITION':'Please select at least one condition',
 	'SELECTTEMPLATE':'Kies alstublieft minimaal één Document template',
 	'SELECTMERGE':'Kies alstublieft één record om mee samen te voegen',
 	'GENDOCSAVED':'Document opgeslagen, kijk a.u.b. na of het correct is opgeslagen',

@@ -11,6 +11,7 @@ var alert_arr = {
 	'DELETE':'Sind Sie sicher, dass Sie das tun wollen? ',
 	'RECORDS':' Datensätze',
 	'SELECT':'Bitte wenigstens einen Eintrag markieren.',
+	'SELECTCONDITION':'Please select at least one condition',
 	'SELECTTEMPLATE':'Please select at least one document Template',
 	'SELECTMERGE':'Please select an entity to merge!',
 	'GENDOCSAVED':'Document saved. Please verify that it has been created correctly.',
