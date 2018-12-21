@@ -1284,4 +1284,18 @@
 	<classname>updateSettingValueField</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>jonidasinaj</author>
+	<description>prodsubprodhandlerevent</description>
+	<filename>build/changeSets/2018/prodsubprodhandlerevent.php</filename>
+	<classname>Prodsubprodhandlerevent</classname>
+	<systemupdate>1</systemupdate>
+</changeSet>
+<changeSet>
+	<author>jonidasinaj</author>
+	<description>prodhandlerevent</description>
+	<filename>build/changeSets/2018/prodhandlerevent.php</filename>
+	<classname>Prodhandlerevent</classname>
+	<systemupdate>1</systemupdate>
+</changeSet>
 </updatesChangeLog>
