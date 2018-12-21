@@ -260,13 +260,13 @@ if ($sql_error) {
 		$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW'), $customlink_params));
 	// END
 
-		if (isPermitted($currentModule, "Merge") == 'yes' && file_exists("modules/$currentModule/Merge.php")) {
+		if (isPermitted($currentModule, 'Merge') == 'yes' && file_exists("modules/$currentModule/Merge.php")) {
 			$wordTemplates = array();
 			$wordTemplateResult = fetchWordTemplateList($currentModule);
 			$tempCount = $adb->num_rows($wordTemplateResult);
 			$tempVal = $adb->fetch_array($wordTemplateResult);
 			for ($templateCount = 0; $templateCount < $tempCount; $templateCount++) {
-				$wordTemplates[$tempVal["templateid"]] = $tempVal["filename"];
+				$wordTemplates[$tempVal['templateid']] = $tempVal['filename'];
 				$tempVal = $adb->fetch_array($wordTemplateResult);
 			}
 			$smarty->assign('WORDTEMPLATES', $wordTemplates);
