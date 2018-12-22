@@ -30,8 +30,8 @@
 
 			{if is_array($NONEDITPICKLIST)}
 			<table border=0 cellspacing=0 cellpadding=0 width=100%>
-				<tr><td><b>{$MOD.LBL_NON_EDITABLE_PICKLIST_ENTRIES} :</b></td></tr>
-				<tr><td><b>
+				<tr><td class="cblds-p--none"><b>{$MOD.LBL_NON_EDITABLE_PICKLIST_ENTRIES} :</b></td></tr>
+				<tr><td class="cblds-p-v--small cblds-p-h--none"><b>
 					<div id="nonedit_pl_values">
 						{foreach item=nonedit from=$NONEDITPICKLIST}
 							<span class="nonEditablePicklistValues">
@@ -45,7 +45,7 @@
 		</td>
 		</tr>
 		<tr>
-			<td>
+			<td class="cblds-p-v--small">
 				<b>{$MOD.LBL_EDIT_HERE}</b>&nbsp;
 				<input type="text" id="replaceVal" class="small" style="width: 60%" onchange="pushEditedValue(event)"/>
 			</td>

@@ -710,6 +710,10 @@ td.small {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
 }
+.cblds-p-h--none {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
 .cblds-p--x-large {
   padding: 15px !important;
 }
