@@ -725,6 +725,8 @@ $app_strings = array (
 //Added for java script alerts
 'DELETE_CONFIRMATION' => 'Você tem certeza que deseja apagar o selecionado',
 'SELECT_ATLEAST_ONE' => 'Por favor selecione pelo menos uma entidade',
+'SELECT_ATLEAST_ONECONDITION' => 'Please select at least one condition',
+'Select Condition' => 'Select Condition',
 'DELETING_ACCOUNT' => 'Apagando esta(s) conta(s) removerá as oportunidades, cotações, pedidos vendas e faturas relacionadas. Tem certeza que deseja enviar para a lixeira?',
 'DELETING_VENDOR' => 'Apagando este(s) fornecedor(es) você removerá o(s) pedido de compra(s) relacionado(s)',
 'PLEASE_SELECT_MAILID' => 'Por favor Selecione um endereço de mensagem',

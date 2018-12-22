@@ -57,9 +57,9 @@ if ($mode == 'UPDATESETTINGS') {
 	if (isset($focus)) {
 		$status = $focus->setModuleSeqNumber('configure', $selectedModule, $recprefix, $recnumber);
 		if ($status === false) {
-			$STATUSMSG = "<font color='red'>".$mod_strings['LBL_UPDATE']." ".$mod_strings['LBL_FAILED']."</font> $recprefix$recnum ".$mod_strings['LBL_IN_USE'];
+			$STATUSMSG = "<font color='red'>".$mod_strings['LBL_UPDATE'].' '.$mod_strings['LBL_FAILED']."</font> $recprefix$recnumber ".$mod_strings['LBL_IN_USE'];
 		} else {
-			$STATUSMSG = "<font color='green'>".$mod_strings['LBL_UPDATE']." ".$mod_strings['LBL_DONE']."</font>";
+			$STATUSMSG = "<font color='green'>".$mod_strings['LBL_UPDATE'].' '.$mod_strings['LBL_DONE']."</font>";
 		}
 	}
 } elseif ($mode == 'UPDATEBULKEXISTING') {

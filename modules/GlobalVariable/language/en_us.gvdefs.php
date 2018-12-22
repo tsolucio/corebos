@@ -300,6 +300,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Show total sum of currency columns. The default is 1',
 ),
+'Application_ListView_SearchColumns' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show search columns in the list view table',
+),
 'Application_DetailView_Record_Navigation' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
@@ -348,6 +355,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Performance',
 	'values' => '0 | 1',
 	'definition' => 'If set to 1 an email will be sent to the owner of the HelpDesk Ticket when it changes, if set to 0 no email will be sent to the owner. This can be overridden with workflows, it only applies to the default workflows. The default value is 1.',
+),
+'HelpDesk_Sort_Comments_ASC' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'If set to 1, ticket comments will be presented from the oldest to the newest (this is the default), if set to zero the comments will be presented from newest to oldest.',
 ),
 'HomePage_Widget_Group_Size' => array(
 	'status' => 'Implemented',

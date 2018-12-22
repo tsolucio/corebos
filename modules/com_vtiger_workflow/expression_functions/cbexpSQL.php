@@ -127,17 +127,17 @@ function cbexpsql_get_date($arr, $mmodule) {
 	}
 	switch (strtolower($arr[0])) {
 		case 'tomorrow':
-			return 'adddate(CURDATE(),1)';
+			return __cbexpsql_functionparams('adddate', array(__cbexpsql_functionparams('CURDATE', array(), $mmodule),'1'), $mmodule);
 			break;
 		case 'yesterday':
-			return 'subdate(CURDATE(),1)';
+			return __cbexpsql_functionparams('subdate', array(__cbexpsql_functionparams('CURDATE', array(), $mmodule),'1'), $mmodule);
 			break;
 		case 'time':
-			return 'CURTIME()';
+			return __cbexpsql_functionparams('CURTIME', array(), $mmodule);
 			break;
 		case 'today':
 		default:
-			return 'CURDATE()';
+			return __cbexpsql_functionparams('CURDATE', array(), $mmodule);
 			break;
 	}
 }

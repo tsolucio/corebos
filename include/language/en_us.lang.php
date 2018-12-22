@@ -723,6 +723,8 @@ $app_strings = array(
 //Added for java script alerts
 'DELETE_CONFIRMATION' => 'Are you sure you want to delete the selected ',
 'SELECT_ATLEAST_ONE' => 'Please select at least one entity',
+'SELECT_ATLEAST_ONECONDITION' => 'Please select at least one condition',
+'Select Condition' => 'Select Condition',
 'DELETING_ACCOUNT' => 'Deleting this account(s) will remove its related Opportunities,Quotes,Sales Orders & Invoice. Are you sure you want to delete the selected ',
 'DELETING_VENDOR' => 'Deleting this vendor(s) will remove its related Purchase Orders. Are you sure you want to delete the selected ',
 'PLEASE_SELECT_MAILID' => 'Please Select a mailid',

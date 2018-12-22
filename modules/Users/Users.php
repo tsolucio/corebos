@@ -714,7 +714,6 @@ class Users extends CRMEntity {
 	 */
 	public function saveentity($module, $fileid = '') {
 		global $current_user;
-		//$adb added by raju for mass mailing
 		$insertion_mode = $this->mode;
 		if (empty($this->column_fields['time_zone'])) {
 			$dbDefaultTimeZone = DateTimeField::getDBTimeZone();

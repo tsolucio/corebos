@@ -6,4 +6,11 @@
 		<classname>edittable</classname>
 		<systemupdate>true</systemupdate>
 	</changeSet>
+	<changeSet>
+		<author>joebordes</author>
+		<description>productcomponent-relationship fix</description>
+		<filename>build/changeSets/2018/fixedittable.php</filename>
+		<classname>fixedittable</classname>
+		<systemupdate>true</systemupdate>
+	</changeSet>
 </updatesChangeLog>

@@ -172,5 +172,36 @@ class cbQuestion extends CRMEntity {
 	 * You can override the behavior by re-defining it here.
 	 */
 	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
+
+	public static function getAnswer($qid) {
+		global $current_user, $default_charset;
+		if (isPermitted('cbQuestion', 'DetailView', $qid) != 'yes') {
+			return array('type' => 'ERROR', 'answer' => 'LBL_PERMISSION');
+		}
+		include_once 'include/Webservices/Query.php';
+		$q = new cbQuestion();
+		$q->retrieve_entity_info($qid, 'cbQuestion');
+		$query = 'SELECT '.$q->column_fields['qcolumns'].' FROM '.$q->column_fields['qmodule'];
+		if (!empty($q->column_fields['qcondition'])) {
+			$query .= ' WHERE '.$q->column_fields['qcondition'];
+		}
+		if (!empty($q->column_fields['orderby'])) {
+			$query .= ' ORDER BY '.$q->column_fields['orderby'];
+		}
+		if (!empty($q->column_fields['groupby'])) {
+			$query .= ' GROUP BY '.$q->column_fields['groupby'];
+		}
+		if (!empty($q->column_fields['qpagesize'])) {
+			$query .= ' LIMIT '.$q->column_fields['qpagesize'];
+		}
+		$query .= ';';
+		return array(
+			'type' => $q->column_fields['qtype'],
+			'module' => $q->column_fields['qmodule'],
+			'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
+			'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
+			'answer' => vtws_query($query, $current_user)
+		);
+	}
 }
 ?>

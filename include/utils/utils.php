@@ -4042,6 +4042,9 @@ function retrieveCompanyDetails() {
 		$record = $adb->query_result($query, 0, 'cbcompanyid');
 		$companyDetails['name']     = $companyDetails['companyname'] = $adb->query_result($query, 0, 'companyname');
 		$companyDetails['website']  = $adb->query_result($query, 0, 'website');
+		$companyDetails['email']  = $adb->query_result($query, 0, 'email');
+		$companyDetails['siccode']  = $adb->query_result($query, 0, 'siccode');
+		$companyDetails['accid']  = $adb->query_result($query, 0, 'accid');
 		$companyDetails['address']  = $adb->query_result($query, 0, 'address');
 		$companyDetails['city']     = $adb->query_result($query, 0, 'city');
 		$companyDetails['state']    = $adb->query_result($query, 0, 'state');

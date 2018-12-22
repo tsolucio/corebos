@@ -224,4 +224,18 @@
 	<classname>addBlockFieldincbQuestion</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>adding of new field in cbQuestion</description>
+	<filename>build/changeSets/2018/addFieldParamscbQuestion.php</filename>
+	<classname>addFieldParamscbQuestion</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>Increment size of uitype 3314</description>
+	<filename>build/changeSets/2018/IncrementSizeOfuitype3314.php</filename>
+	<classname>IncrementSizeOfuitype3314</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

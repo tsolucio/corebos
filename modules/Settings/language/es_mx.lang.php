@@ -780,8 +780,8 @@ $mod_strings = array (
 	  'VTLIB_LBL_NOT_WRITEABLE'=>'no escribible',
 	  'VTLIB_LBL_PACKAGE_VERSION'=>'Versión',
 
-		  'LBL_UPGRADE'=>'Actualizar',
-	  'VTLIB_LBL_UPDATE_FAILURE'=>'Actualización Falida',
+	  'LBL_UPGRADE'=>'Actualizar',
+	  'VTLIB_LBL_UPDATE_FAILURE'=>'Actualización Fallida',
 	  'VTLIB_LBL_MODULENAME_MISMATCH'=>'Nombres de módulos no coinciden',
 	  'VTLIB_LBL_TRY_AGAIN'=>'Inténtalo de nuevo',
 	  'VTLIB_LBL_VERIFY_UPDATE_DETAILS'=>'Verifica la información de actualización',

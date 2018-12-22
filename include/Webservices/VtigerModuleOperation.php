@@ -125,7 +125,16 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			$relatedCond = "/\(*[rR][eE][lL][aA][tT][eE][dD]\.([^\s;]+)\s*=\s*([^\s;]+)\)*\s*([aA][nN][dD]|[oO][rR]\s)*/";
 			preg_match($relatedCond, $afterwhere, $pieces);
 			$glue = isset($pieces[3]) ? trim($pieces[3]) : 'and';
-			$afterwhere=trim(preg_replace($relatedCond, '', $afterwhere), ' ;');
+			if (strtolower($relatedModule)=='documents') {
+				$docrelcond = substr($mysql_query, stripos($mysql_query, 'where')+6);
+				$addDocGlue = (stripos($docrelcond, ' and ') > 0 || stripos($docrelcond, ' or ') > 0);
+				$mysql_query = substr($mysql_query, 0, stripos($mysql_query, 'where')+6);
+				$relatedCond = "/[rR][eE][lL][aA][tT][eE][dD]\.([^\s;]+)\s*=\s*([^\s;]+)/";
+				$afterwhere=trim(preg_replace($relatedCond, $docrelcond, $afterwhere), ' ;');
+			} else {
+				$addDocGlue = true;
+				$afterwhere=trim(preg_replace($relatedCond, '', $afterwhere), ' ;');
+			}
 			$relatedCond = "/\s+([aA][nN][dD]|[oO][rR])+\s+([oO][rR][dD][eE][rR])+/";
 			$afterwhere=trim(preg_replace($relatedCond, ' order ', $afterwhere), ' ;');
 			$relatedCond = "/\s+([aA][nN][dD]|[oO][rR])+\s+([lL][iI][mM][iI][tT])+/";
@@ -185,7 +194,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			$afterwhere = $chgawhere;
 			if (!empty($afterwhere)) {
 				$start = strtolower(substr(trim($afterwhere), 0, 5));
-				if ($start!='limit' && $start!='order') { // there is a condition we add the glue
+				if ($start!='limit' && $start!='order' && $addDocGlue) { // there is a condition we add the glue
 					$mysql_query.=" $glue ";
 				}
 				$mysql_query.=" $afterwhere";

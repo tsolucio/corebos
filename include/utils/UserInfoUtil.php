@@ -3369,8 +3369,8 @@ function getColumnVisibilityPermission($userid, $columnname, $module, $accessmod
 	return getFieldVisibilityPermission($module, $userid, $fieldname, $accessmode);
 }
 
-/** Function to get the vtiger_field access module array
-  * @returns The vtiger_field Access module Array :: Type Array
+/** Function to get the field access module array
+  * @returns The field Access module Array :: Type Array
  */
 function getFieldModuleAccessArray() {
 	global $log, $adb;
@@ -3388,8 +3388,8 @@ function getFieldModuleAccessArray() {
 	return $fldModArr;
 }
 
-/** Function to get the vtiger_field access module array
-  * @returns The vtiger_field Access module Array :: Type Array
+/** Function to get the module access array
+  * @returns The Module Access Array :: Type Array
  */
 function getModuleAccessArray() {
 	global $log, $adb;

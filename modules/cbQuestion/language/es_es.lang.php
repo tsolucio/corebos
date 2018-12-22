@@ -53,5 +53,7 @@ $mod_strings = array(
 	'nexttrigger_time' => 'Hora de Lanzamiento',
 	'Order by Column' => 'Ordenar por Columna',
 	'Group by Column' => 'Agrupar por Columna',
+	'Type Information' => 'Información Tipo',
+	'Type Properties' => 'Propiedades Tipo',
 );
 ?>
