@@ -63,7 +63,7 @@
         <input type="hidden" name="evvtmenudo" value="doSave">
       </form>
 
-        <button class="slds-button slds-button--brand" style="float:right;margin-right: 45px;margin-bottom: 15px;" onclick="saveTree();">{'LBL_SAVE_LABEL'|getTranslatedString:$MODULE}</button>
+        <button class="slds-button slds-button_brand" style="float:right;margin-right: 45px;margin-bottom: 15px;" onclick="saveTree();">{'LBL_SAVE_LABEL'|getTranslatedString:$MODULE}</button>
 
         <div id="jstree"></div>
 
@@ -76,7 +76,7 @@
         <input type="hidden" name="treeIds" id="treeIds" value="">
         <input type="hidden" name="treeParents" id="treeParents" value="">
         <input type="hidden" name="treePositions" id="treePositions" value="">
-      <div class="slds-form--horizontal" style="float:left;margin-left:40px;;width:90%;text-align:left;">
+      <div class="slds-form_horizontal" style="float:left;margin-left:40px;;width:90%;text-align:left;">
           <div id="typeForm">
               <label class="slds-form-element__label evvtmenu-label" for="mtype">{'MenuType'|getTranslatedString:$MODULE}</label>
               <div class="slds-form-element__control">
@@ -138,10 +138,10 @@
 			</div>
           </br>
 			<div style="width:90%;margin:auto;">
-              <button class="slds-button slds-button--brand" onclick="VtigerJS_DialogBox.block();processTree('doAdd');">{'LBL_ADD_BUTTON'|getTranslatedString:$MODULE}</button>
-              <button class="slds-button slds-button--brand" onclick="VtigerJS_DialogBox.block();processTree('doUpd');">{'LBL_UPDATE'|getTranslatedString:$MODULE}</button>
-              <button class="slds-button slds-button--destructive" onclick="VtigerJS_DialogBox.block();processTree('doDel');">{'LBL_DELETE_BUTTON'|getTranslatedString:$MODULE}</button>
-              <button class="slds-button slds-button--neutral" onclick="clearForm();">{'LBL_CLEAR_BUTTON_LABEL'|getTranslatedString:$MODULE}</button>
+              <button class="slds-button slds-button_brand" onclick="VtigerJS_DialogBox.block();processTree('doAdd');">{'LBL_ADD_BUTTON'|getTranslatedString:$MODULE}</button>
+              <button class="slds-button slds-button_brand" onclick="VtigerJS_DialogBox.block();processTree('doUpd');">{'LBL_UPDATE'|getTranslatedString:$MODULE}</button>
+              <button class="slds-button slds-button_destructive" onclick="VtigerJS_DialogBox.block();processTree('doDel');">{'LBL_DELETE_BUTTON'|getTranslatedString:$MODULE}</button>
+              <button class="slds-button slds-button_neutral" onclick="clearForm();">{'LBL_CLEAR_BUTTON_LABEL'|getTranslatedString:$MODULE}</button>
 			</div>
       </div>
 	</form>

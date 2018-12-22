@@ -408,7 +408,7 @@
 				<div id="hiddenfield_{$value.label}" style="display:none; position:absolute; width:500px; height: 500px; margin-top: -400px">
 					<section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
 						<div class="slds-modal__container">
-							<div class="slds-box--border">
+							<div class="slds-box_border">
 							<header class="slds-modal__header">
 								<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{$value.label} ({$value.columnname})</h2>
 							</header>
@@ -417,9 +417,9 @@
 							</div>
 							<footer class="slds-modal__footer" style="width:100%">
 								{if $value.customfieldflag neq 0}
-								<button class="slds-button slds-button--destructive" onclick="deleteCustomField('{$value.fieldselect}','{$MODULE}','{$value.columnname}','{$value.uitype}'); return false;"> {$APP.LBL_DELETE_BUTTON_LABEL} </button>
+								<button class="slds-button slds-button_destructive" onclick="deleteCustomField('{$value.fieldselect}','{$MODULE}','{$value.columnname}','{$value.uitype}'); return false;"> {$APP.LBL_DELETE_BUTTON_LABEL} </button>
 								{/if}
-								<button class="slds-button slds-button--neutral" onclick="fninvsh('hiddenfield_{$value.label}');return false;">{$APP.LBL_CANCEL_BUTTON_LABEL}</button>
+								<button class="slds-button slds-button_neutral" onclick="fninvsh('hiddenfield_{$value.label}');return false;">{$APP.LBL_CANCEL_BUTTON_LABEL}</button>
 							</footer>
 							</div>
 						</div>

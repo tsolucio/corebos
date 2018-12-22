@@ -105,7 +105,7 @@ if(typeof(e) != 'undefined')
 				<td>
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 					<tr>
-						<td><h4 class="slds-text-title--caps" id="role_treeheading">{$MOD.LBL_ROLE_HIERARCHY_TREE}</h4></td>
+						<td><h4 class="slds-text-title_caps" id="role_treeheading">{$MOD.LBL_ROLE_HIERARCHY_TREE}</h4></td>
 						<td class="small" align=right>&nbsp;</td>
 					</tr>
 					</table>

@@ -9,10 +9,10 @@
  ********************************************************************************/
 -->*}
 <link rel="stylesheet" type="text/css" href="include/LD/assets/styles/salesforce-lightning-design-system.css" />
-<div class="slds-m-top--x-large">
-	<div class="slds-notify slds-notify--alert slds-theme--error slds-theme--alert-texture" role="alert">
+<div class="slds-m-top_x-large">
+	<div class="slds-notify slds-notify_alert slds-theme_error slds-theme_alert-texture" role="alert">
 	<h2>
-		<svg class="slds-icon slds-icon--small slds-m-right--x-small" aria-hidden="true">
+		<svg class="slds-icon slds-icon_small slds-m-right_x-small" aria-hidden="true">
 		<use xlink:href="include/LD//assets/icons/utility-sprite/svg/symbols.svg#ban"></use>
 		</svg>{if isset($OPERATION_MESSAGE)}{$OPERATION_MESSAGE}{else}{$APP.LBL_PERMISSION}{/if}<br>
 		{if !isset($PUT_BACK_ACTION)}

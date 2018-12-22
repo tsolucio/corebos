@@ -15,7 +15,7 @@
 					</svg>
 				</div>
 				<div class="slds-media__body">
-					<h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate"
+					<h1 class="slds-page-header__title slds-m-right_small slds-align-middle slds-truncate"
 						title="{$TITLE_MESSAGE}">{$TITLE_MESSAGE}</h1>
 				</div>
 			</div>
@@ -24,7 +24,7 @@
 </div>
 <br>
 <div class="">
-<ul class="slds-list_horizontal slds-m-left--large">
+<ul class="slds-list_horizontal slds-m-left_large">
 <li><a href="index.php?action=integration&module=Utilities&_op=getconfig2fa">{'GoTo2FAActivation'|@getTranslatedString:'Utilities'}</a></li>
 <li><a href="index.php?action=integration&module=Utilities&_op=getconfiggcontact">{'GOOGLE_CONTACTS'|@getTranslatedString:'Contacts'}</a></li>
 <li><a href="index.php?action=integration&module=Utilities&_op=getconfighubspot">{'HubSpot Activation'|@getTranslatedString:'Utilities'}</a></li>

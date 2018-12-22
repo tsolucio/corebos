@@ -59,38 +59,34 @@
 		</td>
 		<td class="listTableRow small">
 			<a href="{$module->editTaskUrl($task->id)}">
-				<span class="slds-icon_container slds-icon_container_circle slds-icon-action-edit" title="{'LBL_EDIT_BUTTON'|@getTranslatedString:$MODULE_NAME}">
-					<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
-						<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#edit"></use>
+				<span class="slds-icon_container slds-icon_container_circle slds-icon-action-description" title="{'LBL_EDIT_BUTTON'|@getTranslatedString:$MODULE_NAME}">
+					<svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon_small">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#edit"></use>
 					</svg>
-					<span class="slds-assistive-text">{'LBL_EDIT_BUTTON'|@getTranslatedString:$MODULE_NAME}</span>
 				</span>
 			</a>
 			{if empty($task->active)}
 			<a href="{$module->onoffTaskUrl($task->id)}">
-				<span class="slds-icon_container slds-icon_container_circle slds-icon-action-approval" title="{'LBL_ACTIVATE'|@getTranslatedString:$MODULE_NAME}">
-					<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+				<span class="slds-icon_container slds-icon_container_circle slds-icon-action-description" title="{'LBL_ACTIVATE'|@getTranslatedString:$MODULE_NAME}" id="expressionlist_deletelink_{$task->id}">
+					<svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon_small">
 						<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#approval"></use>
 					</svg>
-					<span class="slds-assistive-text">{'LBL_ACTIVATE'|@getTranslatedString:$MODULE_NAME}</span>
 				</span>
 			</a>
 			{elseif $task->active eq 1}
 			<a href="{$module->onoffTaskUrl($task->id, $task->active)}">
-				<span class="slds-icon_container slds-icon_container_circle slds-icon-action-close" title="{'LBL_DEACTIVATE'|@getTranslatedString:$MODULE_NAME}">
-					<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
-						<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#close"></use>
+				<span class="slds-icon_container slds-icon_container_circle slds-icon-action-description" title="{'LBL_DEACTIVATE'|@getTranslatedString:$MODULE_NAME}" id="expressionlist_deletelink_{$task->id}">
+					<svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon_small">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
 					</svg>
-					<span class="slds-assistive-text">{'LBL_DEACTIVATE'|@getTranslatedString:$MODULE_NAME}</span>
 				</span>
 			</a>
 			{/if}
 			<a href="{$module->deleteTaskUrl($task->id)}" onclick="return confirm('{$APP.SURE_TO_DELETE}');">
-				<span class="slds-icon_container slds-icon_container_circle slds-icon-action-delete" title="{'LBL_DELETE_BUTTON'|@getTranslatedString:$MODULE_NAME}">
-					<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
-						<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#delete"></use>
+				<span class="slds-icon_container slds-icon_container_circle slds-icon-action-description" title="{'LBL_DELETE_BUTTON'|@getTranslatedString:$MODULE_NAME}" id="expressionlist_deletelink_{$task->id}">
+					<svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon_small">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#delete"></use>
 					</svg>
-					<span class="slds-assistive-text">{'LBL_DELETE_BUTTON'|@getTranslatedString:$MODULE_NAME}</span>
 				</span>
 			</a>
 

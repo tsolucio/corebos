@@ -15,12 +15,12 @@
 	<ul class="slds-grid" id="cbmenu">
 	{foreach $menu as $menuitem}
 		{if $menuitem.mtype == 'menu'}
-		<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
+		<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_hover" aria-haspopup="true">
 			<a href="javascript:void(0);" class="slds-context-bar__label-action" title="{$menuitem.mlabel}">
 				<span class="slds-truncate">{$menuitem.mlabel}</span>
 			</a>
 			{if !empty($menuitem.submenu)}
-			<div class="slds-context-bar__icon-action slds-p-left--none" tabindex="0">
+			<div class="slds-context-bar__icon-action slds-p-left_none" tabindex="0">
 				<svg aria-hidden="true" class="slds-button__icon">
 					<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevrondown"></use>
 				</svg>
@@ -57,7 +57,7 @@
 
 {* Creates the second level menu *}
 {function cbsubmenu j=0}
-<div class="slds-dropdown slds-dropdown--center slds-nubbin--top">
+<div class="slds-dropdown slds-dropdown_center slds-nubbin_top">
 	<ul class="slds-dropdown__list" role="menu" id="menu{$i}">
 	{foreach $submenu as $menuitem}
 		{if $menuitem.mtype == 'module' && empty($menuitem.submenu)}
@@ -77,15 +77,15 @@
 		{$j = $j + 1}
 		</li>
 		{elseif $menuitem.mtype == 'headtop'}
-		<li class="slds-dropdown__header slds-has-divider--top-space" role="separator">
-			<span class="slds-text-title--caps">{$menuitem.mlabel}</span>
+		<li class="slds-dropdown__header slds-has-divider_top-space" role="separator">
+			<span class="slds-text-title_caps">{$menuitem.mlabel}</span>
 		</li>
 		{elseif $menuitem.mtype == 'headbottom'}
-		<li class="slds-dropdown__header slds-has-divider--bottom-space" role="separator">
-			<span class="slds-text-title--caps">{$menuitem.mlabel}</span>
+		<li class="slds-dropdown__header slds-has-divider_bottom-space" role="separator">
+			<span class="slds-text-title_caps">{$menuitem.mlabel}</span>
 		</li>
 		{elseif $menuitem.mtype == 'sep'}
-		<li class="slds-dropdown__header slds-has-divider--top-space" role="separator"></li>
+		<li class="slds-dropdown__header slds-has-divider_top-space" role="separator"></li>
 		{elseif $menuitem.mtype == 'url'}
 		<li class="slds-dropdown__item" role="presentation">
 			<a href="{$menuitem.mvalue}" role="menuitem" tabindex="-1">
@@ -126,15 +126,15 @@
 			</a>
 		</li>
 	{elseif $submenuitem.mtype == 'headtop'}
-		<li class="slds-dropdown__header slds-has-divider--top-space" role="separator">
-			<span class="slds-text-title--caps">{$submenuitem.mlabel}</span>
+		<li class="slds-dropdown__header slds-has-divider_top-space" role="separator">
+			<span class="slds-text-title_caps">{$submenuitem.mlabel}</span>
 		</li>
 	{elseif $submenuitem.mtype == 'headbottom'}
-		<li class="slds-dropdown__header slds-has-divider--bottom-space" role="separator">
-			<span class="slds-text-title--caps">{$submenuitem.mlabel}</span>
+		<li class="slds-dropdown__header slds-has-divider_bottom-space" role="separator">
+			<span class="slds-text-title_caps">{$submenuitem.mlabel}</span>
 		</li>
 	{elseif $submenuitem.mtype == 'sep'}
-		<li class="slds-dropdown__header slds-has-divider--top-space" role="separator"></li>
+		<li class="slds-dropdown__header slds-has-divider_top-space" role="separator"></li>
 	{elseif $submenuitem.mtype == 'url'}
 		<li class="slds-dropdown__item" role="presentation">
 			<a href="{$submenuitem.mvalue}" role="menuitem" tabindex="-1">

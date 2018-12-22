@@ -159,7 +159,7 @@
 										{else}
 											{assign var="headerlink_label" value=$headerlink_label|@getTranslatedString:$HEADERLINK->module()}
 										{/if}
-										<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
+										<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_hover" aria-haspopup="true">
 											<a href="{$headerlink_href}" class="slds-context-bar__label-action" title="{$headerlink_label}">
 													<span class="slds-truncate">{$headerlink_label}</span>
 											</a>
@@ -265,8 +265,8 @@
 <!-- header - master tabs -->
 <div class="noprint">
 <div class="slds-context-bar">
-	<div class="slds-context-bar__primary slds-context-bar__item--divider-right">
-		<div class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--click slds-no-hover">
+	<div class="slds-context-bar__primary slds-context-bar__item_divider-right">
+		<div class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_click slds-no-hover">
 			<div class="slds-context-bar__icon-action">
 				<a href="index.php" class="slds-icon-waffle_container slds-context-bar__button">
 					<div class="slds-icon-waffle">
@@ -327,13 +327,13 @@
 <div id="mainsettings" class="drop_mnu_user" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnvshNrm('mainsettings');" style="width:180px;">
 	<ul>
 		{foreach key=actionlabel item=actionlink from=$HEADERS}
-			<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
+			<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_hover" aria-haspopup="true">
 				<a href="{$actionlink}" class="slds-context-bar__label-action" title="{$actionlabel}">
 						<span class="slds-truncate">{$actionlabel}</span>
 				</a>
 			</li>
 		{/foreach}
-		<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
+		<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_hover" aria-haspopup="true">
 			<a href="index.php?module=Settings&action=index&parenttab=" class="slds-context-bar__label-action" title="{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}">
 					<span class="slds-truncate">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</span>
 			</a>

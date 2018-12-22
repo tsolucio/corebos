@@ -85,7 +85,7 @@ var __attinfo = {$task->dzattinfo|json_encode};
 	<tr>
 		<td colspan="4">
 			<span id="_messagediv_" style="display: none;z-index:22;" class="cb-alert-info"></span>
-			<div id="file-uploader" class="dropzone mm-dz-div slds-m-top--xx-small" style="display: none;">
+			<div id="file-uploader" class="dropzone mm-dz-div slds-m-top_xx-small" style="display: none;">
 				<span class="dz-message mmdzmessage"><img alt="{'Drag attachment here or click to upload'|@getTranslatedString}" src="include/dropzone/upload_32.png"></span>
 				<span class="dz-message mmdzmessage" id="file-uploader-message">&nbsp;{'Drag attachment here or click to upload'|@getTranslatedString}</span>
 			</div>
@@ -93,10 +93,10 @@ var __attinfo = {$task->dzattinfo|json_encode};
 		<td valign="top" align="left" style="white-space:nowrap;">
 			<input type="hidden" id="attachmentCount" name="attachmentCount" value="{if isset($task->attachmentids)}{$task->attachmentids|substr_count:','}{else}0{/if}" >
 			<input type="hidden" id="attachmentids"  name="attachmentids" value="{if isset($task->attachmentids)}{$task->attachmentids}{/if}" >
-			<button onclick="jQuery('#file-uploader').show();attachmentManager.getDocuments();return false;" class="crmbutton small edit slds-m-left--xx-small slds-m-top--xx-small">{'LBL_SELECT_DOCUMENTS'|@getTranslatedString:'MailManager'}</button><br>
-			<button onclick="jQuery('#file-uploader').toggle();return false;" class="crmbutton small edit slds-m-left--xx-small slds-m-top--xx-small">{'LBL_Attachments'|@getTranslatedString:'MailManager'}</button><br>
-			<span class="slds-m-left--xx-small slds-m-top--x-small"><b>{'LBL_AttachmentInField'|@getTranslatedString:$MODULE_NAME}</b></span><br>
-			<select id='attfieldnames' name='attfieldnames' class="small slds-m-left--xx-small slds-m-top--xx-small"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select><br>
+			<button onclick="jQuery('#file-uploader').show();attachmentManager.getDocuments();return false;" class="crmbutton small edit slds-m-left_xx-small slds-m-top_xx-small">{'LBL_SELECT_DOCUMENTS'|@getTranslatedString:'MailManager'}</button><br>
+			<button onclick="jQuery('#file-uploader').toggle();return false;" class="crmbutton small edit slds-m-left_xx-small slds-m-top_xx-small">{'LBL_Attachments'|@getTranslatedString:'MailManager'}</button><br>
+			<span class="slds-m-left_xx-small slds-m-top_x-small"><b>{'LBL_AttachmentInField'|@getTranslatedString:$MODULE_NAME}</b></span><br>
+			<select id='attfieldnames' name='attfieldnames' class="small slds-m-left_xx-small slds-m-top_xx-small"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select><br>
 		</td>
 	</tr>
 </table>
