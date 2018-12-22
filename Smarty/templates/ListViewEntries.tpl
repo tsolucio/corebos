@@ -19,7 +19,8 @@
 	<input name="idlist" id="idlist" type="hidden">
 	<input name="change_owner" type="hidden">
 	<input name="change_status" type="hidden">
-	<input name="action" type="hidden">
+	<input name="action" id="action" type="hidden">
+	<input name="massedit1x1" id="massedit1x1" type="hidden" value="">
 	<input name="where_export" type="hidden" value="{$export_where}">
 	<input name="step" type="hidden">
 	<input name="excludedRecords" type="hidden" id="excludedRecords" value="">
