@@ -651,6 +651,21 @@ td.small {
   padding: 6px 15px;
 }
 
+/* Calendar4You */
+#event_setting {
+  padding: 5px;
+}
+#event_setting > .layerHeadingULine > tbody > tr > td:nth-child(2) {
+  text-align: right;
+}
+#event_setting > form > div > table > tbody > tr:first-child td.dvtSelectedCell {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+#event_setting > form > table.layerPopupTransport > tbody > tr > td {
+  text-align: center;
+}
+
 /* Override general classes */
 .cblds-width--auto {
   width: auto !important;
@@ -715,6 +730,12 @@ td.small {
 }
 .cblds-m--xx-small {
   margin: 2px !important;
+}
+.cblds-m-l--small {
+  margin-left: 5px;
+}
+.cblds-m-r--small {
+  margin-right: 5px;
 }
 .cblds-table-border--sep {
   border-collapse: separate !important;
