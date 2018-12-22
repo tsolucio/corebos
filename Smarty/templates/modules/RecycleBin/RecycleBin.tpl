@@ -109,7 +109,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td align="center">
+			<td align="center" class="cblds-t-align--center">
 				<input type="button" onclick="return emptyRecyclebin('rb_empty_conf_id');" value="{$APP.LBL_YES}"/>
 				<input type="button" onclick="document.getElementById('rb_empty_conf_id').style.display='none';" value="{$APP.LBL_NO}"/>
 			</td>

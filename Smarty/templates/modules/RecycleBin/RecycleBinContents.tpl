@@ -39,7 +39,7 @@
 					<tr>{$NAVIGATION}</tr>
 				</table>
 			</td>
-			<td width=100% align="right">
+			<td width=100% align="right" class="cblds-t-align--right">
 				<b>{$MOD.LBL_SELECT_MODULE} : </b>
 				<select id="select_module" onChange="changeModule(this);" class="small">
 				{foreach key=mod_name item=module from=$MODULE_NAME}
