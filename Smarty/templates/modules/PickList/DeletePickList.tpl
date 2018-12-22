@@ -27,7 +27,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td nowrap>
+			<td nowrap class="cblds-p-v--none">
 				<b>{$MOD.LBL_REPLACE_WITH}</b>&nbsp;
 				<select id="replace_picklistval" name="replaceList" style="border:1px solid #666666;font-family:Arial, Helvetica, sans-serif;font-size:11px;">
 					<option value=""></option>
@@ -49,9 +49,9 @@
 
 		{if is_array($NONEDITPICKLIST)}
 		<tr>
-			<td colspan=3>
+			<td colspan=3 class="cblds-p--none">
 				<table border=0 cellspacing=0 cellpadding=0 width=100%>
-					<tr><td><b>{$MOD.LBL_NON_EDITABLE_PICKLIST_ENTRIES} :</b></td></tr>
+					<tr><td class="cblds-p-v--none"><b>{$MOD.LBL_NON_EDITABLE_PICKLIST_ENTRIES} :</b></td></tr>
 					<tr><td>
 					<select id="nonEditablePicklistVal" name="nonEditablePicklistVal" multiple="multiple" wrap size="5" style="width: 100%">
 					{foreach item=nonedit from=$NONEDITPICKLIST}
