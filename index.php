@@ -503,7 +503,7 @@ if ((!$viewAttachment) && (!$viewAttachment && $action!='home_rss') && $action!=
 			echo '&nbsp;('.($coreBOS_uiapp_showgitversion ? $gitversion : '').($coreBOS_uiapp_showgitdate ? $gitdate : '').')';
 		}
 		echo '</span></td>';
-		echo "<td class=small align=right><span>&copy; 2004-".date('Y')." <a href='$coreBOS_uiapp_url' target='_blank'>$coreBOS_uiapp_companyname</a></span></td></tr></table>";
+		echo "<td class='cblds-t-align--right small' align=right><span>&copy; 2004-".date('Y')." <a href='$coreBOS_uiapp_url' target='_blank'>$coreBOS_uiapp_companyname</a></span></td></tr></table>";
 		if ($calculate_response_time) {
 			$endTime = microtime(true);
 			echo "<table align='center'><tr><td align='center'>";
