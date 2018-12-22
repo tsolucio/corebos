@@ -1,0 +1,39 @@
+.slds-dropdown__item:hover > .moreMenu,
+.slds-dropdown__item:hover > .moreMenu {
+    visibility: visible;
+    opacity: 1;
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -o-transform: translateX(0);
+    transform: translateX(0);    
+}
+.slds-dropdown__item {
+    position: relative;
+}
+.moreMenu {
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background-color:white;
+    border: 1px solid #d8dde6;
+    border-radius: 0.25rem;
+    border-left: none;
+}
+.moreMenu2{
+    margin-left: 90%;
+    margin-top: -7%;
+    position: absolute;
+    background-color:white;
+    border: 1px solid #d8dde6;
+    border-radius: 0.25rem;
+    border-left: none;
+}
+.moreMenu, .moreMenu2 {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.1s linear, visibility 0.1s, transform 100ms;
+    -webkit-transform: translateX(-3px);
+    -moz-transform: translateX(-3px);
+    -o-transform: translateX(-3px);
+    transform: translateX(-3px);
+}
