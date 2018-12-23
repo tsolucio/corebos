@@ -12,8 +12,8 @@
     <input type=hidden id="selected_servername" value="{$SERVERNAME}" >
     <table width="100%" cellpadding=5 cellspacing=0 border=0 class="small" style='clear: both;'>
         <tr>
-            <td width="15%" class="cblds-p-v--medium">{'LBL_SELECT_ACCOUNT_TYPE'|@getTranslatedString}</td>
-            <td class="cblds-p-v--medium"><select id="_mbox_helper" class="small" onchange="MailManager.handle_settings_confighelper(this);">
+            <td width="15%" class="cblds-p-v_medium">{'LBL_SELECT_ACCOUNT_TYPE'|@getTranslatedString}</td>
+            <td class="cblds-p-v_medium"><select id="_mbox_helper" class="small" onchange="MailManager.handle_settings_confighelper(this);">
                     <option value=''>{'JSLBL_Choose_Server_Type'|@getTranslatedString:'MailManager'}</option>
                     <option value='gmail' {if $SERVERNAME eq 'gmail'} selected {/if}>{'JSLBL_Gmail'|@getTranslatedString:'MailManager'}</option>
                     <option value='yahoo' {if $SERVERNAME eq 'yahoo'} selected {/if}>{'JSLBL_Yahoo'|@getTranslatedString:'MailManager'}</option>
@@ -26,24 +26,24 @@
     <div id="settings_details" {if $SERVERNAME neq ''} style="display:block;" {else} style="display:none;"{/if}>
         <table width="100%" cellpadding=5 cellspacing=0 border=0 class="small" style='clear: both;'>
             <tr>
-                <td width="15%" nowrap="nowrap" class="cblds-p-v--medium"><font color="red">*</font>{'LBL_Mail_Server'|@getTranslatedString}</td>
-                <td class="cblds-p-v--medium">
+                <td width="15%" nowrap="nowrap" class="cblds-p-v_medium"><font color="red">*</font>{'LBL_Mail_Server'|@getTranslatedString}</td>
+                <td class="cblds-p-v_medium">
                     <input name="_mbox_server" value="{$MAILBOX->server()}" type="text" style="width: 60%" class="detailedViewTextBox" onblur="this.className='detailedViewTextBox'" onfocus="this.className='detailedViewTextBoxOn'">
                     <span class="mm_blur">{'LBL_Like'|@getTranslatedString}, mail.company.com or 192.168.10.20</span>
                 </td>
             </tr>
 
             <tr>
-                <td width="15%" nowrap="nowrap" class="cblds-p-v--medium"><font color="red">*</font>{'LBL_Username'|@getTranslatedString}</td>
-                <td class="cblds-p-v--medium">
+                <td width="15%" nowrap="nowrap" class="cblds-p-v_medium"><font color="red">*</font>{'LBL_Username'|@getTranslatedString}</td>
+                <td class="cblds-p-v_medium">
                     <input name="_mbox_user" id="_mbox_user" value="{$MAILBOX->username()}" type="text" style="width: 60%" class="detailedViewTextBox" onblur="this.className='detailedViewTextBox'" onfocus="this.className='detailedViewTextBoxOn'">
                     <span class="mm_blur">{'LBL_Your_Mailbox_Account'|@getTranslatedString}</span>
                 </td>
             </tr>
 
             <tr>
-                <td width="15%" nowrap="nowrap" class="cblds-p-v--medium"><font color="red">*</font>{'LBL_Password'|@getTranslatedString}</td>
-                <td class="cblds-p-v--medium">
+                <td width="15%" nowrap="nowrap" class="cblds-p-v_medium"><font color="red">*</font>{'LBL_Password'|@getTranslatedString}</td>
+                <td class="cblds-p-v_medium">
                     <input name="_mbox_pwd" id="_mbox_pwd" value="{$MAILBOX->password()}" type="password" style="width: 60%" class="detailedViewTextBox" onblur="this.className='detailedViewTextBox'" onfocus="this.className='detailedViewTextBoxOn'">
                     <span class="mm_blur">{'LBL_Account_Password'|@getTranslatedString}</span>
                 </td>
@@ -53,16 +53,16 @@
         <div id="additional_settings" {if $SERVERNAME eq 'other'} style="display:block;"{else} style="display:none;" {/if}>
         <table width="100%" cellpadding=5 cellspacing=0 border=0 class="small" style='clear: both;'>
             <tr>
-                <td width="15%" nowrap="nowrap" class="cblds-p-v--medium">{'LBL_Protocol'|@getTranslatedString}</td>
-                <td class="cblds-p-v--medium">
+                <td width="15%" nowrap="nowrap" class="cblds-p-v_medium">{'LBL_Protocol'|@getTranslatedString}</td>
+                <td class="cblds-p-v_medium">
                     <input type="radio" name="_mbox_protocol" value="IMAP2" {if strcasecmp($MAILBOX->protocol(), 'imap2')===0}checked=true{/if}> {'LBL_Imap2'|@getTranslatedString}
                     <input type="radio" name="_mbox_protocol" value="IMAP4" {if strcasecmp($MAILBOX->protocol(), 'imap4')===0}checked=true{/if}> {'LBL_Imap4'|@getTranslatedString}
                 </td>
             </tr>
 
             <tr>
-                <td width="15%" nowrap="nowrap" class="cblds-p-v--medium">{'LBL_SSL_Options'|@getTranslatedString}</td>
-                <td class="cblds-p-v--medium">
+                <td width="15%" nowrap="nowrap" class="cblds-p-v_medium">{'LBL_SSL_Options'|@getTranslatedString}</td>
+                <td class="cblds-p-v_medium">
                     <input type="radio" name="_mbox_ssltype" value="notls" {if strcasecmp($MAILBOX->ssltype(), 'notls')===0}checked=true{/if}> {'LBL_No_TLS'|@getTranslatedString}
                     <input type="radio" name="_mbox_ssltype" value="tls" {if strcasecmp($MAILBOX->ssltype(), 'tls')===0}checked=true{/if}> {'LBL_TLS'|@getTranslatedString}
                     <input type="radio"name="_mbox_ssltype" value="ssl" {if strcasecmp($MAILBOX->ssltype(), 'ssl')===0}checked=true{/if}> {'LBL_SSL'|@getTranslatedString}
@@ -70,8 +70,8 @@
             </tr>
 
             <tr>
-                <td width="15%" nowrap="nowrap" class="cblds-p-v--medium">{'LBL_Certificate_Validations'|@getTranslatedString}</td>
-                <td class="cblds-p-v--medium">
+                <td width="15%" nowrap="nowrap" class="cblds-p-v_medium">{'LBL_Certificate_Validations'|@getTranslatedString}</td>
+                <td class="cblds-p-v_medium">
                     <input type="radio" name="_mbox_certvalidate" value="validate-cert" {if strcasecmp($MAILBOX->certvalidate(), 'validate-cert')===0}checked=true{/if} > {'LBL_Validate_Cert'|@getTranslatedString}
                     <input type="radio" name="_mbox_certvalidate" value="novalidate-cert" {if strcasecmp($MAILBOX->certvalidate(), 'novalidate-cert')===0}checked=true{/if}> {'LBL_Do_Not_Validate_Cert'|@getTranslatedString}
                 </td>
@@ -80,8 +80,8 @@
         </div>
         <table width="100%" cellpadding=5 cellspacing=0 border=0 class="small" style='clear: both;'>
             <tr>
-                <td width="15%" nowrap="nowrap" class="cblds-p-v--medium">{'LBL_REFRESH_TIME'|@getTranslatedString}</td>
-                <td class="cblds-p-v--medium">
+                <td width="15%" nowrap="nowrap" class="cblds-p-v_medium">{'LBL_REFRESH_TIME'|@getTranslatedString}</td>
+                <td class="cblds-p-v_medium">
                     <select name="_mbox_refresh_timeout">
                         <option value="0" {if $MAILBOX->refreshTimeOut() eq ''}selected{/if}>{$MOD.LBL_NONE}</option>
                         <option value="300000" {if strcasecmp($MAILBOX->refreshTimeOut(), '300000')==0}selected{/if}>{$MOD.LBL_5_MIN}</option>
@@ -90,8 +90,8 @@
                 </td>
             </tr>
             <tr>
-                <td width="15%" class="cblds-p-v--medium">&nbsp;</td>
-                <td colspan=2 class="cblds-p-v--medium">
+                <td width="15%" class="cblds-p-v_medium">&nbsp;</td>
+                <td colspan=2 class="cblds-p-v_medium">
                     <input type="button" class="small crmbutton save" value="{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString}" onclick="MailManager.save_settings(this.form);" >
                     {if $MAILBOX && $MAILBOX->exists()}
                         <input type="button" class="small crmbutton cancel" onclick="MailManager.close_settings();" value="{'LBL_CANCEL_BUTTON_LABEL'|@getTranslatedString}" >

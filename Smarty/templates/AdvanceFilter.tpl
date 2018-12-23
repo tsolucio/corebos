@@ -208,7 +208,7 @@ function addConditionGroup(parentNodeId) {ldelim}
 
   	newNode.innerHTML = "<table class='small crmTable' border='0' cellpadding='5' cellspacing='1' width='100%' valign='top' id='conditiongrouptable_"+groupIndex+"'>"+
 			"<tr id='groupheader_"+groupIndex+"'>"+
-				"<td colspan='5' align='right' class='cblds-t-align--right'>"+
+				"<td colspan='5' align='right' class='cblds-t-align_right'>"+
 					"<a href='javascript:void(0);' onclick='deleteGroup(\""+groupIndex+"\");'><img border=0 src={'close.gif'|@vtiger_imageurl:$THEME} alt='{$APP.LBL_DELETE_GROUP}' title='{$APP.LBL_DELETE_GROUP}'/></a>"+
 				"</td>"+
 			"</tr>"+
@@ -219,7 +219,7 @@ function addConditionGroup(parentNodeId) {ldelim}
 			"</tr>"+
 		"</table>"+
 		"<table class='small' border='0' cellpadding='5' cellspacing='1' width='100%' valign='top'>"+
-			"<tr><td align='center' class='cblds-t-align--center' id='groupconditionglue_"+groupIndex+"'>"+
+			"<tr><td align='center' class='cblds-t-align_center' id='groupconditionglue_"+groupIndex+"'>"+
 			"</td></tr>"+
 		"</table>";
 

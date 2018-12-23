@@ -14,7 +14,7 @@
 		<td class="big" nowrap="nowrap">
 			<strong>{$MOD.LBL_TASKS}</strong>
 		</td>
-		<td class="small cblds-t-align--right" align="right">
+		<td class="small cblds-t-align_right" align="right">
 			<input type="button" class="crmButton create small" value="{$MOD.LBL_NEW_TASK_BUTTON_LABEL}" id='new_task' style="display:none;" />
 		</td>
 	</tr>

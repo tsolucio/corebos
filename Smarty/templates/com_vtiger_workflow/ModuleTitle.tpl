@@ -11,7 +11,7 @@
 	<tr>
 		<td valign="top" class="small">{$PAGE_TITLE}</td>
 		{if isset($CRON_TASK)}
-		<td align="right" class="small cblds-t-align--right" width='40%'>
+		<td align="right" class="small cblds-t-align_right" width='40%'>
 			<b>
 			{if $CRON_TASK->isDisabled() }{'LBL_DISABLED'|@getTranslatedString:$MODULE_NAME}{/if}
 			{if $CRON_TASK->isRunning() }{'LBL_RUNNING'|@getTranslatedString:$MODULE_NAME}{/if}
