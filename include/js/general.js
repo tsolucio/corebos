@@ -5328,3 +5328,404 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 	}
 	return 3;
 };
+
+/****
+	* ldsCombobox
+	* @author: MajorLabel <info@majorlabel.nl>
+	* @license GNUv2
+	*/
+(function ldscomboboxModule(factory){
+
+	if (typeof define === "function" && define.amd) {
+		define(factory);
+	} else if (typeof module != "undefined" && typeof module.exports != "undefined") {
+		module.exports = factory();
+	} else {
+		window["ldsCombobox"] = factory();
+	}
+
+})(function ldscomboboxFactory(){
+
+	/**
+	 * @class ldsCombobox
+	 * @param {element}: Typically a wrapping element of an LDS combobox, like 'slds-combobox-picklist'
+	 */
+	function ldsCombobox(el, params) {
+		/* Public attributes */
+		this.el 	= el,
+		this.input 	= el.getElementsByClassName("slds-combobox__input")[0],
+		this.specialKeys = ["up","down","enter","esc"],
+		this.optionNodes = this.getOptionNodes(),
+		this.active = false,
+		this.curSel = this.input.value,
+		this.fallBackSel = null,
+		this.curSelIndex = this.getCurSelIndex(),
+		this.fallBackIndex = this.getCurSelIndex(),
+		this.onSelect = typeof params.onSelect == "function" ? params.onSelect : false,
+		this._val = this.optionNodes[this.curSelIndex].getAttribute("data-value"),
+		this.parentForm = _findUp(this.input, "$FORM");
+		this.valueHolder = this.getValueHolder();
+
+		/* Instance listeners */
+		_on(el, "mousedown", this.handleClick, this);
+		_on(el, "click", this.trigger, this);
+		_on(this.input, "focus", this.trigger, this);
+		_on(this.input, "keyup", this.trigger, this);
+		_on(this.input, "blur", this.close, this);
+
+		if (this.parentForm !== undefined) {
+			_on(this.parentForm, "keydown", this.preventFormSubmit, this);
+		}
+	}
+
+	ldsCombobox.prototype = {
+		constructor: ldsCombobox,
+
+		/*
+		 * Method: 'trigger'
+		 * Is in response to any keyboard or mouse action that should trigger the combobox
+		 *
+		 * @param: Event object
+		 */
+		trigger: function(e) {
+			if (!this.active) {
+				this.open();
+			} else {
+				this.handleKeys(e);
+			}
+		},
+
+		/*
+		 * Method: 'preventFormSubmit'
+		 * Prevents a parent form from submitting when enter key is pressed to select an option.
+		 * This method is only invoked when this input is a child of a form and the options
+		 * box is open.
+		 *
+		 * @param: Event object
+		 */
+		preventFormSubmit: function(e) {
+			if (_getKey(e.keyCode) === "enter" && this.active) {
+				e.preventDefault();
+			}
+		},
+
+		/*
+		 * Method: 'getOptionNodes'
+		 * Gets all the option nodes that have a child with a class
+		 * of 'slds-truncate'
+		 *
+		 */
+		getOptionNodes: function() {
+			var optionNodes = this.el.getElementsByClassName("slds-listbox__item");
+			var filteredOptionNodes = [];
+			for (var i = 0; i < optionNodes.length; i++) {
+				if (optionNodes[i].getElementsByClassName("slds-truncate").length !== 0) filteredOptionNodes.push(optionNodes[i]);
+			}
+
+			return filteredOptionNodes;
+		},
+
+		/*
+		 * Method: 'getValueHolder'
+		 * Retrieves the hidden input that holds the actual value for the dropdown
+		 *
+		 */
+		getValueHolder: function() {
+			var valueHolderLoc = this.input.getAttribute("data-valueholder");
+			switch (valueHolderLoc) {
+				case "nextsibling":
+					return this.input.nextElementSibling
+					break;
+				default:
+					return false;
+			}
+		},
+
+		/*
+		 * Method: 'updateValueHolder'
+		 * Sets the value for the (hidden) valueHolder input, if there was one
+		 *
+		 */
+		updateValueHolder: function(val) {
+			if (this.valueHolder)
+				this.valueHolder.value = val;
+		},
+
+		/*
+		 * Method: 'getOpener'
+		 * Get the correct div to add the 'slds-is-open' class to
+		 * or remove it from when opening and closing
+		 *
+		 */
+		getOpener: function() {
+			if ( this.el.classList.contains("slds-combobox") )
+				return this.el;
+			else
+				return this.el.getElementsByClassName("slds-combobox")[0];
+		},
+
+		/*
+		 * Method: 'open'
+		 * Opens and activates the dropdown and selects the last selected (or first)
+		 * item in the list
+		 *
+		 */
+		open: function() {
+			this.fallBackIndex = this.getCurSelIndex(),
+			this.fallBackSel = this.curSel;
+
+			this.getOpener().classList.add("slds-is-open");
+			// Set first oprtion active on open? Need to update hidden val as well then
+			// this.setOptionState(this.curSelIndex, "selected");
+			this.active = true;
+		},
+
+		/*
+		 * Method: 'close'
+		 * Closes the dropdown. 
+		 *
+		 */
+		close: function(e) {
+			this.getOpener().classList.remove("slds-is-open");
+			this.active = false;
+		},
+
+		/*
+		 * Method: 'handleClick'
+		 * Searches upwards for a listbox item to see if this was an option
+		 * Then de-selects all other options and selects the clicked one 
+		 *
+		 * @param: Event object
+		 */
+		handleClick: function(e) {
+			var isOption = _findUp(e.target, ".slds-listbox__item");
+			if (isOption != undefined) {
+				var index = this.getIndexByNode(isOption);
+				this.unselectAll();
+				this.setOptionState(index, "selected");
+				this.curSelIndex = index;
+				this.select();
+			}
+		},
+
+		/*
+		 * Method: 'handleKeys'
+		 * Tests if a special key was pressed and if so, passes it on
+		 * to 'handleKey'
+		 *
+		 * @param: Event object
+		 */
+		handleKeys: function(e) {
+			if (this.isSpecialKey(e.keyCode)) {
+				this.handleKey(_getKey(e.keyCode));
+			}
+		},
+
+		/*
+		 * Method: 'handleKey'
+		 * Tests the keyname being pressed and selects the according
+		 * method
+		 *
+		 * @param: Keyname string
+		 */
+		handleKey: function(keyName) {
+			switch(keyName) {
+				case "up":
+					this.selectPrevious();
+					break;
+				case "down":
+					this.selectNext();
+					break;
+				case "enter":
+					this.select();
+					break;
+				case "esc":
+					this.close();
+					this.fallBack();
+					break;
+			}
+		},
+
+		/*
+		 * Method: 'fallBack'
+		 * Used when a dropdown was opened, but cancelled
+		 * Typically by browsing through the list but pressing
+		 * 'esc' without selecting anything
+		 *
+		 */
+		fallBack: function() {
+			this.unselectAll();
+			this.curSelIndex = this.fallBackIndex,
+			this.curSel = this.fallBackSel;
+			this.select();
+		},
+
+		/*
+		 * Method: 'isSpecialKey'
+		 * Tests if a keycode is in the list of special keys for the class
+		 *
+		 * @param: Keycode INT
+		 */
+		isSpecialKey: function(code) {
+			if (window.dropdownKeycodeMap[code] !== undefined)
+				return this.specialKeys.indexOf(window.dropdownKeycodeMap[code]) == -1 ? false : true;
+			else
+				return false;
+		},
+
+		/*
+		 * Method: 'unselectAll'
+		 * Convenience method to unselect all options
+		 *
+		 */
+		unselectAll: function() {
+			for (var i = 0; i < this.optionNodes.length; i++) {
+				this.setOptionState(i, "unselected");
+			}
+		},
+
+		/*
+		 * Method: 'setOptionState'
+		 * Sets the state of an option in the dropdown list. Updates both the
+		 * visual frontend side as the instance properties
+		 *
+		 * @param: index: index of the nodelist of options
+		 * @param: state: either "selected", or anything else
+		 */
+		setOptionState(index, state) {
+			if (state == "selected") {
+				this.optionNodes[index].children[0].classList.add("slds-has-focus");
+				this.curSel = this.optionNodes[index].getElementsByClassName("slds-truncate")[0].innerText;
+				this.input.value = this.curSel;
+			} else {
+				this.optionNodes[index].children[0].classList.remove("slds-has-focus");
+				this.curSel = "";
+			}
+		},
+
+		/*
+		 * Method: 'selectPrevious'
+		 * Only used by keyboard. Selects the previous option if
+		 * the current is not the first one.
+		 *
+		 */
+		selectPrevious: function() {
+			if (this.curSelIndex != 0) {
+				this.setOptionState(this.curSelIndex, "unselected");
+				this.curSelIndex--;
+				this.setOptionState(this.curSelIndex, "selected");
+			}
+		},
+
+		/*
+		 * Method: 'selectNext'
+		 * Only used by keyboard. Selects the next option if
+		 * the current is not the last one.
+		 *
+		 */
+		selectNext: function() {
+			if (this.curSelIndex != this.optionNodes.length - 1) {
+				this.setOptionState(this.curSelIndex, "unselected");
+				this.curSelIndex++;
+				this.setOptionState(this.curSelIndex, "selected");
+			}
+		},
+
+		/*
+		 * Method: 'select'
+		 * Performs the actual select based on the instance property
+		 * 'curSel'. Also closes the dropdown.
+		 *
+		 */
+		select: function() {
+			var val = this.optionNodes[this.curSelIndex].getAttribute("data-value");
+			this._val = val;
+			this.updateValueHolder(val);
+			this.input.value = this.curSel;
+			this.close();
+
+			if (this.onSelect)
+				this.onSelect(this._val);
+		},
+
+		/*
+		 * Method: 'getVal'
+		 * Returns the 'hidden' currently selected value, similar to
+		 * the 'value' property of a normal <option> element
+		 *
+		 */
+		getVal: function() {
+			return this._val;
+		},
+
+		/*
+		 * Method: 'getIndexByNode'
+		 * Searches through the list of DOM nodes in the dropdown
+		 * and returns the index if there is a match
+		 *
+		 * @param: node (DOM)
+		 */
+		getIndexByNode: function(node) {
+			for (var i = 0; i < this.optionNodes.length; i++) {
+				if (node.isSameNode(this.optionNodes[i])) return i;
+			}
+		},
+		/*
+		 * Method: 'getCurSelIndex'
+		 * Returns the index of the option that matches
+		 * the value of the input field
+		 *
+		 */
+		getCurSelIndex: function() {
+			var curSelIndex = 0;
+			for (var i = 0; i < this.optionNodes.length; i++) {
+				if (this.optionNodes[i].getElementsByClassName("slds-truncate")[0].innerHTML == this.input.value) curSelIndex = i;
+			}
+			return curSelIndex;
+		}
+	}
+
+	/**
+	  * Section with factory tools
+	  */
+	function _on(el,type,func,context) {
+		el.addEventListener(type, func.bind(context));
+	}
+
+	function _getKey(code) {
+		return window.dropdownKeycodeMap[code];
+	}
+
+	function _findUp(element, searchterm) {
+		element = element.children[0] != undefined ? element.children[0] : element; // Include the current element
+		while (element = element.parentElement) {
+			if ( (searchterm.charAt(0) === "#" && element.id === searchterm.slice(1) )
+				|| ( searchterm.charAt(0) === "." && element.classList.contains(searchterm.slice(1) ) 
+				|| ( searchterm.charAt(0) === "$" && element.tagName === searchterm.slice(1) ) 
+				|| ( element.hasAttribute(searchterm) ))) {
+				return element;
+			} else if (element == document.body) {
+				break;
+			}
+		}
+	}
+
+	/*
+	 * Globals
+	 */
+	if (!window.hasOwnProperty("dropdownKeycodeMap")) {
+		window.dropdownKeycodeMap = {
+			38: "up",
+			40: "down",
+			37: "left",
+			39: "right",
+			27: "esc",
+			9:  "tab",
+			13: "enter",
+			27: "esc"
+		}
+	}
+
+	return ldsCombobox;
+
+});
