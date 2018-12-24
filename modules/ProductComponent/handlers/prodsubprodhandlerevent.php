@@ -17,10 +17,14 @@
 
 class prodsubprodhandlerevent extends VTEventHandler {
 
-	private function updateproductprice($id) {
+	private function updateproductprice($id, $isproduct = false) {
 		global $adb;
-		$qu = $adb->pquery('SELECT vtiger_productcomponent.frompdo FROM vtiger_productcomponent where vtiger_productcomponent.productcomponentid=?', array($id));
-		$v = $adb->query_result($qu, 0, 'frompdo');
+		if ($isproduct) {
+			$v = $id;
+		} else {
+			$qu = $adb->pquery('SELECT vtiger_productcomponent.frompdo FROM vtiger_productcomponent where vtiger_productcomponent.productcomponentid=?', array($id));
+			$v = $adb->query_result($qu, 0, 'frompdo');
+		}
 		$query = $adb->pquery(
 			'SELECT sum(vtiger_productcomponent.quantity*vtiger_products.unit_price) AS total
 				FROM vtiger_productcomponent
@@ -40,10 +44,14 @@ class prodsubprodhandlerevent extends VTEventHandler {
 		$adb->pquery('update vtiger_productcurrencyrel set actual_price=? where productid=? and currencyid=?', array($prod_unit_price, $v, $prod_base_currency));
 	}
 
-	private function updatecostprice($id) {
+	private function updatecostprice($id, $isproduct = false) {
 		global $adb;
-		$qu = $adb->pquery('SELECT vtiger_productcomponent.frompdo FROM vtiger_productcomponent where vtiger_productcomponent.productcomponentid=?', array($id));
-		$v = $adb->query_result($qu, 0, 'frompdo');
+		if ($isproduct) {
+			$v = $id;
+		} else {
+			$qu = $adb->pquery('SELECT vtiger_productcomponent.frompdo FROM vtiger_productcomponent where vtiger_productcomponent.productcomponentid=?', array($id));
+			$v = $adb->query_result($qu, 0, 'frompdo');
+		}
 		$query_new = $adb->pquery(
 			'SELECT sum(vtiger_productcomponent.quantity*vtiger_products.cost_price) AS totalcost
 				FROM vtiger_productcomponent
@@ -62,18 +70,32 @@ class prodsubprodhandlerevent extends VTEventHandler {
 		if ($eventName == 'vtiger.entity.aftersave' || $eventName == 'vtiger.entity.afterdelete') {
 			$moduleName = $entityData->getModuleName();
 			$id = $entityData->getId();
+			$entityDelta = new VTEntityDelta();
 			if ($moduleName == 'ProductComponent') {
 				$Product_SubProduct_PriceRollUp = GlobalVariable::getVariable('Product_SubProduct_PriceRollUp', '', 'Products', '')=='1';
 				$Product_SubProduct_CostRollUp = GlobalVariable::getVariable('Product_SubProduct_CostRollUp', '', 'Products', '')=='1';
-				if ($Product_SubProduct_PriceRollUp) {
-					$this->updateproductprice($id);
+				if ($entityDelta->hasChanged($moduleName, $id, 'frompdo')) {
+					$oldFromPdo = $entityDelta->getOldEntityValue($moduleName, $id, 'frompdo');
+					if ($Product_SubProduct_PriceRollUp) {
+						$this->updateproductprice($oldFromPdo, true);
+						$this->updateproductprice($id);
+					}
+					if ($Product_SubProduct_CostRollUp) {
+						$this->updatecostprice($oldFromPdo, true);
+						$this->updatecostprice($id);
+					}
 				}
-				if ($Product_SubProduct_CostRollUp) {
-					$this->updatecostprice($id);
+				if ($entityDelta->hasChanged($moduleName, $id, 'quantity') || $entityDelta->hasChanged($moduleName, $id, 'topdo')) {
+					if ($Product_SubProduct_PriceRollUp) {
+						$this->updateproductprice($id);
+					}
+					if ($Product_SubProduct_CostRollUp) {
+						$this->updatecostprice($id);
+					}
 				}
 			}
 
-			if ($moduleName == 'Products') {
+			if ($moduleName == 'Products' && ($entityDelta->hasChanged($moduleName, $id, 'cost_price') || $entityDelta->hasChanged($moduleName, $id, 'unit_price'))) {
 				$Product_SubProduct_PriceRollUp = GlobalVariable::getVariable('Product_SubProduct_PriceRollUp', '', 'Products', '')=='1';
 				$Product_SubProduct_CostRollUp = GlobalVariable::getVariable('Product_SubProduct_CostRollUp', '', 'Products', '')=='1';
 				$r_check = $adb->pquery('SELECT vtiger_productcomponent.productcomponentid FROM vtiger_productcomponent WHERE topdo = ?', array($id));
