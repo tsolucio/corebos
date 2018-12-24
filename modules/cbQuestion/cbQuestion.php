@@ -203,5 +203,33 @@ class cbQuestion extends CRMEntity {
 			'answer' => vtws_query($query, $current_user)
 		);
 	}
+
+	public static function getTableFromAnswer($ans) {
+		$table = '';
+		if (!empty($ans)) {
+			$answer = $ans['answer'];
+			$module = $ans['module'];
+			$properties = json_decode($ans['properties']);
+			$columnLabels = $properties->columnlabels;
+			$limit = GlobalVariable::getVariable('BusinessQuestion_TableAnswer_Limit', 2000);
+			$table .= '<table>';
+			$table .= '<tr>';
+			foreach ($columnLabels as $columnLabel) {
+				$table .= '<th>'.getTranslatedString($columnLabel, $module).'</th>';
+			}
+			$table .= '</tr>';
+			for ($x = 0; $x < $limit; $x++) {
+				if (isset($answer[$x])) {
+					$table .= '<tr>';
+					foreach ($answer[$x] as $columnValue) {
+						$table .= '<td>'.$columnValue.'</td>';
+					}
+					$table .= '</tr>';
+				}
+			}
+			$table .= '</table>';
+		}
+		return $table;
+	}
 }
 ?>
