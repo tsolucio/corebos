@@ -520,7 +520,7 @@ function hideITSEventInfo(){
                                         </tbody>
                                     </table>
                                     {/if}
-                                    {if $PANEL_NAME eq 'ActivityStatus'}
+                                    {if $Calendar_Status_Panel_Visible && $PANEL_NAME eq 'ActivityStatus'}
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>
@@ -540,7 +540,7 @@ function hideITSEventInfo(){
                                         </tbody>
                                     </table>
                                     {/if}
-                                    {if $PANEL_NAME eq 'ActivityPriority'}
+                                    {if $Calendar_Priority_Panel_Visible && $PANEL_NAME eq 'ActivityPriority'}
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>

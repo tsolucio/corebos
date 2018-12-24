@@ -97,8 +97,10 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Calendar_Slot_Event_Overlap',
 				'Calendar_Show_Inactive_Users',
 				'Calendar_Show_Group_Events',
+				'Calendar_Status_Panel_Visible',
 				'Calendar_Push_End_On_Start_Change',
 				'Calendar_PopupReminder_DaysPast',
+				'Calendar_Priority_Panel_Visible',
 				'Calendar_Show_Only_My_Events',
 				'Calendar_Show_WeekNumber',
 

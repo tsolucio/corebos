@@ -270,6 +270,59 @@ class VTSimpleTemplate {
 		return $retcm;
 	}
 
+    private function getInventoryDetails($format, $field) {
+		global $adb, $current_user;
+		$format = strtolower($format);
+		if ($format!='html' && $format!='text'&& $format!='table') {
+			$format = 'html';
+		}
+		$html = ($format == 'html');
+		$table = ($format == 'table');
+		$field = strtolower($field);
+
+		// Checking if field present in the table.
+		// To Do.
+
+		//$singlefield = (count($fields)==1);
+		$moduleName = $this->parent->getModuleName();
+		$wsUsersId = vtws_getEntityId('Users');
+		include_once 'include/Webservices/GetRelatedRecords.php';
+		$wsid = $this->parent->getId();
+		list($wsid,$crmid) = explode('x', $wsid);
+		$cmsqlws = 'SELECT '.$field.' 
+		FROM vtiger_inventorydetails
+		INNER JOIN vtiger_crmentity ON vtiger_inventorydetails.inventorydetailsid=vtiger_crmentity.crmid
+		INNER JOIN  vtiger_products ON vtiger_inventorydetails.productid=vtiger_products.productid
+		 WHERE related_to=?';
+		$retcm = '';
+		if ($html || $table) {
+			$retcm = '<div class="inventorydetails">';
+		}
+		$current_user = Users::getActiveAdminUser();
+		$wsid = $this->parent->getId();
+		$cmrs = $adb->pquery($cmsqlws, array($crmid));
+		while ($inv = $adb->fetch_array($cmrs)) {
+			if ($html) {
+				$retcm .= '<div class="inventorydetails"><ul class="inventorydetailsfields">';
+				$retcm .= '<li class="inventorydetailsfield">';
+				$retcm .= vtlib_purify($inv[$field]);
+				$retcm .= '</li>';
+				$retcm .= '</ul></div>';
+			}
+			if ($table) {
+				$retcm .= '<table class="inventorydetails"><tr class="inventorydetailsfields">';
+				$retcm .= '<td class="inventorydetailsfield">';
+				$retcm .= vtlib_purify($inv[$field]);
+				$retcm .= '</td>';
+				$retcm .= '</tr></table>';
+			}
+		}
+		if ($html || $table) {
+			$retcm .= '</div>';
+		}
+		return $retcm;
+	}
+
 	private function getinvitedUsersList($recid) {
 		global $adb;
 		$modulename = $this->parent->getModuleName();
@@ -407,6 +460,13 @@ class VTSimpleTemplate {
 			$field = substr($fieldname, 16);
 			$fieldname = 'scanQRCode';
 		}
+		if (substr($fieldname, 0, 16)=='inventorydetails') {
+			$inventoryspec = explode('_', $fieldname);
+
+			$format = isset($inventoryspec[1]) ? $inventoryspec[1] : "";
+			$field = isset($inventoryspec[2]) ? $inventoryspec[2] : "";
+			$fieldname = 'inventorydetails';
+		}
 		switch ($fieldname) {
 			case 'date':
 				return getNewDisplayDate();
@@ -465,6 +525,8 @@ class VTSimpleTemplate {
 				return GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
 			case 'comments':
 				return $this->getComments($numcomm, $srtcomm, $fmtcomm, $fldcomm, $dtformat);
+			case 'inventorydetails':
+				return $this->getInventoryDetails($format, $field);
 			case 'groupEmailList':
 				return $this->getGroupFieldList($groupname, 'email1');
 			case 'Events_Users_Invited':

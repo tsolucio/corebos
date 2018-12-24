@@ -216,6 +216,7 @@ abstract class VTTask {
 			'LBL_HELPDESK_SUPPORT_NAME' => '(general : (__VtigerMeta__) supportName)',
 			'LBL_HELPDESK_SUPPORT_EMAILID' => '(general : (__VtigerMeta__) supportEmailId)',
 			'Comments' => '(general : (__VtigerMeta__) comments)',
+			'InventoryDetails' => '(general : (__VtigerMeta__) inventorydetails)',
 			'groupEmailList' => '(general : (__VtigerMeta__) groupEmailList_Put_Group_Name_Here)',
 			'invitedUsers' => '(general : (__VtigerMeta__) Events_Users_Invited)',
 			'WorkflowFunction' => '(general : (__WorkflowFunction__) Put_Function_Here )',
