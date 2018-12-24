@@ -1291,4 +1291,11 @@
 	<classname>validateMap</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>jonidasinaj</author>
+	<description>Product-Subproduct Roll Up handler</description>
+	<filename>build/changeSets/2018/ProdSubprodHandlerEvent.php</filename>
+	<classname>ProdSubprodHandlerEvent</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
