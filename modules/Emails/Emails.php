@@ -320,11 +320,7 @@ class Emails extends CRMEntity {
 		return $return_value;
 	}
 
-	/** Returns the column name that needs to be sorted
-	 * Portions created by vtigerCRM are Copyright (C) vtigerCRM.
-	 * All Rights Reserved..
-	 * Contributor(s): Mike Crowe
-	 */
+	/** Returns the column name that needs to be sorted */
 	public function getSortOrder() {
 		global $log;
 		$log->debug("Entering getSortOrder() method ...");
@@ -338,11 +334,7 @@ class Emails extends CRMEntity {
 		return $sorder;
 	}
 
-	/** Returns the order in which the records need to be sorted
-	 * Portions created by vtigerCRM are Copyright (C) vtigerCRM.
-	 * All Rights Reserved..
-	 * Contributor(s): Mike Crowe
-	 */
+	/** Returns the order in which the records need to be sorted */
 	public function getOrderBy() {
 		global $log;
 		$log->debug("Entering getOrderBy() method ...");

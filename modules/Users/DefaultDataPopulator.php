@@ -1829,7 +1829,6 @@ Should any need arise,please do give us a call.';
 		$this->db->query("insert into vtiger_actionmapping values(3,'Popup',1)");
 		$this->db->query("insert into vtiger_actionmapping values(10,'DuplicatesHandling',0)");
 
-		//added by jeri for category view from db
 		$this->db->query("insert into vtiger_parenttab values (1,'My Home Page',1,0)");
 		$this->db->query("insert into vtiger_parenttab values (2,'Marketing',2,0)");
 		$this->db->query("insert into vtiger_parenttab values (3,'Sales',3,0)");

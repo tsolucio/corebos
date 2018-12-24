@@ -267,7 +267,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	} elseif ($uitype == 17) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue [] = $value;
-	} elseif ($uitype == 85) { //added for Skype by Minnie
+	} elseif ($uitype == 85) { //added for Skype
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue [] = $value;
 	} elseif ($uitype == 14) { //added for Time Field

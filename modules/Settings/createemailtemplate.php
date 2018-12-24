@@ -18,7 +18,6 @@ $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
 $smod_strings = return_module_language($current_language, 'Settings');
 
-//To get Email Template variables -- Pavani
 $allOptions=getEmailTemplateVariables();
 $smarty = new vtigerCRM_smarty;
 
