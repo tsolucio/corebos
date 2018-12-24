@@ -790,6 +790,20 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Mostrar u ocultar la lista de módulos en el calendario. El valor predeterminado de 1 muestra la lista y 0 la oculta.',
 ),
+'Calendar_Status_Panel_Visible' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Mostrar u ocultar el panel de Estado en el calendario. El valor predeterminado de 1 muestra el panel y 0 lo oculta.',
+),
+'Calendar_Priority_Panel_Visible' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Mostrar u ocultar el panel de Prioridad en el calendario. El valor predeterminado de 1 muestra el panel y 0 lo oculta.',
+),
 'Calendar_Default_Reminder_Minutes' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Entero',
@@ -1223,6 +1237,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Extensión',
 	'values' => '0|1',
 	'definition' => 'Haz que los enlaces de Copiar generen las etiquetas GenDoc en vez de los valores de los campos. Por defecto desactivado.',
+),
+'BusinessQuestion_TableAnswer_Limit' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'Número máximo de filas devueltas como resultado de la respuesta de una Pregunta de Negocio.',
 ),
 );
 

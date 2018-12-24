@@ -795,14 +795,14 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
-	'definition' => 'hide the status in the calendar. The default value of 1 shows it and 0 hides it.',
+	'definition' => 'Show or hide the Status panel in the calendar. The default value of 1 shows it and 0 hides it.',
 ),
 'Calendar_Priority_Panel_Visible' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
-	'definition' => 'hide the Priority in the calendar. The default value of 1 shows it and 0 hides it.',
+	'definition' => 'Show or hide the Priority panel in the calendar. The default value of 1 shows it and 0 hides it.',
 ),
 'Calendar_Default_Reminder_Minutes' => array(
 	'status' => 'Implemented',
@@ -1243,7 +1243,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Integer',
 	'category' => 'Application',
 	'values' => '',
-	'definition' => 'Maximum number of returned table output of the answer.',
+	'definition' => 'Maximum number of returned table rows as output of the Business Question answer.',
 ),
 );
 

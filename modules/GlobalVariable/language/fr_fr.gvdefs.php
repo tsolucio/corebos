@@ -790,6 +790,20 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Cache (0) ou rend visible (1) la liste des modules dans le module Agenda. La valeur par defaut est (1)',
 ),
+'Calendar_Status_Panel_Visible' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show or hide the Status panel in the calendar. The default value of 1 shows it and 0 hides it.',
+),
+'Calendar_Priority_Panel_Visible' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show or hide the Priority panel in the calendar. The default value of 1 shows it and 0 hides it.',
+),
 'Calendar_Default_Reminder_Minutes' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Entier',
@@ -1223,6 +1237,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Extension',
 	'values' => '0|1',
 	'definition' => 'Make the copy links in Detail View copy GenDoc labels instead of field values. By default deactivated.',
+),
+'BusinessQuestion_TableAnswer_Limit' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Maximum number of returned table rows as output of the Business Question answer.',
 ),
 );
 
