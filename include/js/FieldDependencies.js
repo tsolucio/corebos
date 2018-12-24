@@ -225,9 +225,7 @@ FieldDependencies.prototype.fieldOptions = function (sourcename, targetFields, t
 				var targetnode = jQuery('[name="'+targetname+'"]', this.baseform);
 				var selectedtargetvalue = targetnode.val();
 
-				// In IE we cannot hide the options!, the only way to achieve this effect is
-				// recreating the options list again. 
-				//
+				// In IE we cannot hide the options!, the only way to achieve this effect is recreating the options list again.
 				// To maintain implementation consistency, let us keep copy of options in select node and use it for re-creation
 				if (typeof(targetnode.data('allOptions')) == 'undefined') {
 					var allOptions = [];

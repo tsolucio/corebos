@@ -233,7 +233,7 @@ class VTSimpleTemplate {
 						if ($html) {
 							$retcm .= '</li>';
 						}
-							if ($table) {
+						if ($table) {
 							$retcm .= '</td>';
 						}
 						break;
@@ -264,13 +264,13 @@ class VTSimpleTemplate {
 				$retcm .= '</tr></table>';
 			}
 		}
-		if ($html ||$table ) {
+		if ($html ||$table) {
 			$retcm .= '</div>';
 		}
 		return $retcm;
 	}
 
-    private function getInventoryDetails($format, $field) {
+	private function getInventoryDetails($format, $field) {
 		global $adb, $current_user;
 		$format = strtolower($format);
 		if ($format!='html' && $format!='text'&& $format!='table') {

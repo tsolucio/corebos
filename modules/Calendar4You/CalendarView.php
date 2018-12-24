@@ -349,5 +349,5 @@ $smarty->assign('Calendar_Priority_Panel_Visible', GlobalVariable::getVariable('
 $smarty->assign('Calendar_Status_Panel_Visible', GlobalVariable::getVariable('Calendar_Status_Panel_Visible', 1));
 $smarty->assign('Calendar_Other_Default_Duration', GlobalVariable::getVariable('calendar_other_default_duration', 1));
 $smarty->assign('Calendar_Show_WeekNumber', GlobalVariable::getVariable('Calendar_Show_WeekNumber', 0) ? 'true' : 'false');
-//add
+
 $smarty->display('modules/Calendar4You/CalendarView.tpl');

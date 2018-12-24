@@ -295,7 +295,6 @@ class VTFieldExpressionEvaluater {
 						} else {
 							$parentparams = $expr->getParams();
 							if (false && $parentparams[0] instanceof VTExpressionTreeNode && isset($this->operationsSQL[$parentparams[0]->arr[0]->value])) {
-								var_dump($parentparams[0],$pval);
 								$prms[] = new VTExpressionSymbol($pval, 'constant');
 							} else {
 								$prms[] = new VTExpressionSymbol($pval);
