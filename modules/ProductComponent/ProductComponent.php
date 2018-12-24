@@ -50,6 +50,8 @@ class ProductComponent extends CRMEntity {
 		'frompdo'=> array('productcomponent' => 'frompdo'),
 		'topdo'=> array('productcomponent' => 'topdo'),
 		'quantity'=> array('productcomponent' => 'quantity'),
+		'Unit Price'=>array('products'=>'unit_price'),
+		'Cost Price'=>array('products'=>'cost_price'),
 		'Relation Mode'=> array('productcomponent' => 'relmode'),
 		'Relation from'=> array('productcomponent' => 'relfrom'),
 		'Relation to'=> array('productcomponent' => 'relto')
@@ -60,6 +62,8 @@ class ProductComponent extends CRMEntity {
 		'frompdo'=> 'frompdo',
 		'topdo'=> 'topdo',
 		'quantity'=> 'quantity',
+		'Unit Price'=> 'unit_price',
+		'Cost Price'=> 'cost_price',
 		'Relation Mode'=> 'relmode',
 		'Relation from'=> 'relfrom',
 		'Relation to'=> 'relto'
