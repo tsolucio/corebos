@@ -68,6 +68,9 @@ module.exports = {
         "no-redeclare": [
             "off"
         ],
+        "no-cond-assign": [
+            "off"
+        ],
         "no-console": [
             "off"
         ],
