@@ -979,6 +979,20 @@ $GlobalVariableDefinitons = array(
 	'values' => 'yes | no',
 	'definition' => 'Permitir asignar subproductos a subproducto',
 ),
+'Product_SubProduct_PriceRollUp' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Calcula el precio unitario del producto según el precio unitario y la cantidad de sus subproductos.',
+),
+'Product_SubProduct_CostRollUp' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Calcula el precio de coste del producto según el coste y la cantidad de sus subproductos.',
+),
 'Product_Maximum_Number_Images' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Entero',
