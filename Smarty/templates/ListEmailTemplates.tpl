@@ -104,11 +104,11 @@ function massDelete()
 					<input name="module" type="hidden" value="Settings">
 					<input name="action" type="hidden" value="deleteemailtemplate">
 				<tr>
-					<td width=50 rowspan=2 valign=top><img src="{'ViewTemplate.gif'|@vtiger_imageurl:$THEME}" border=0></td>
+					<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'ViewTemplate.gif'|@vtiger_imageurl:$THEME}" border=0></td>
 					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$UMOD.LBL_EMAIL_TEMPLATES} </b></td>
 				</tr>
 				<tr>
-					<td valign=top class="small">{$UMOD.LBL_EMAIL_TEMPLATE_DESC}</td>
+					<td valign=top class="small cblds-p-v_none">{$UMOD.LBL_EMAIL_TEMPLATE_DESC}</td>
 				</tr>
 				</table>
 				<br>
@@ -125,15 +125,15 @@ function massDelete()
 					<table border=0 cellspacing=0 cellpadding=5 width=100% class="listTableTopButtons">
 					<tr>
 						<td class=small><input type="submit" value="{$UMOD.LBL_DELETE}" onclick="return massDelete();" class="crmButton delete small"></td>
-						<td class=small align=right id="new_template"><div id = "myProfile"><input class="crmButton create small" type="submit" value="{$UMOD.LBL_NEW_TEMPLATE}" name="profile"  class="classBtn" onclick="this.form.action.value='createemailtemplate';"></div></td>
+						<td class="small cblds-t-align_right" align=right id="new_template"><div id = "myProfile"><input class="crmButton create small" type="submit" value="{$UMOD.LBL_NEW_TEMPLATE}" name="profile"  class="classBtn" onclick="this.form.action.value='createemailtemplate';"></div></td>
 					</tr>
 					</table>
 					<table border="0" cellspacing="0" cellpadding="5" width="100%" class="listTable">
 					<tr>
-						<td width="5%" class="colHeader small">#</td>
-						<td width="5%" class="colHeader small">{$UMOD.LBL_LIST_SELECT}</td>
-						<td width="30%" class="colHeader small">{$UMOD.LBL_EMAIL_TEMPLATE}</td>
-						<td width="60%" class="colHeader small">{$UMOD.LBL_DESCRIPTION}</td>
+						<td width="5%" class="colHeader small cblds-p-v_mediumsmall">#</td>
+						<td width="5%" class="colHeader small cblds-p-v_mediumsmall">{$UMOD.LBL_LIST_SELECT}</td>
+						<td width="30%" class="colHeader small cblds-p-v_mediumsmall">{$UMOD.LBL_EMAIL_TEMPLATE}</td>
+						<td width="60%" class="colHeader small cblds-p-v_mediumsmall">{$UMOD.LBL_DESCRIPTION}</td>
 						<!--<td width="20%" class="colHeader small">{$UMOD.LBL_TEMPLATE_TOOLS}</td>-->
 					</tr>
 					{foreach name=emailtemplate item=template from=$TEMPLATES}
@@ -152,7 +152,7 @@ function massDelete()
 					</table>
 					<table border=0 cellspacing=0 cellpadding=5 width=100% >
 					<tr>
-						<td class="small" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td>
+						<td class="small cblds-t-align_right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td>
 					</tr>
 					</table>
 				</td>

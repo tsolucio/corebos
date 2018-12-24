@@ -40,6 +40,7 @@ var advft_column_index_count = -1;
 var advft_group_index_count = 0;
 var column_index_array = [];
 var group_index_array = [];
+var doingAdhocColumnSearch = 0;
 
 function trimfValues(value) {
 	var string_array;
@@ -308,6 +309,9 @@ function defaultRequiredElements(columnindex) {
 }
 
 function checkAdvancedFilter() {
+	if (doingAdhocColumnSearch) {
+		return true;
+	}
 	var escapedOptions = new Array('account_id', 'contactid', 'contact_id', 'product_id', 'parent_id', 'campaignid', 'potential_id', 'assigned_user_id1', 'quote_id', 'accountname', 'salesorder_id', 'vendor_id', 'time_start', 'time_end', 'lastname');
 	var extendedValue = '';
 	var conditionColumns = vt_getElementsByName('tr', 'conditionColumn');

@@ -7,6 +7,287 @@
  * All Rights Reserved.
  ********************************************************************************/
 
+// ListView inline column search
+/* function to clear all the inline search condition fields*/
+function clearAllField() {
+	doingAdhocColumnSearch = 0;
+	document.getElementById('advft_criteria').value = '';
+	document.getElementById('advft_criteria_groups').value = '';
+	document.basicSearch.searchtype.searchlaunched = '';
+	var conditionColumns = getObj('noofsearchfields').value;
+	for (var i = 0; i < conditionColumns; i++) {
+		var p1 = getObj('fname_'+i);
+		if (p1 != null && p1 != undefined) {
+			if (getObj('type_'+i).value == 'date' || getObj('type_'+i).value == 'datetime') {
+				var searchField = document.getElementById('jscal_field_'+p1.value+'_date1');
+			} else {
+				var searchField = getObj('tks_'+p1.value);
+			}
+			if (searchField != null && searchField != undefined) {
+				if (getObj('type_'+i).value == 'select' || getObj('type_'+i).value == 'owner' || getObj('type_'+i).value == 'checkbox') {
+					clearSelect('tks_'+p1.value);
+				} else if (getObj('type_'+i).value == 'date' || getObj('type_'+i).value == 'datetime') {
+					document.getElementById('jscal_field_'+p1.value+'_date1').value = '';
+					document.getElementById('jscal_field_'+p1.value+'_date2').value = '';
+				} else {
+					searchField.value = '';
+					disableDiv ('div_'+p1.value);
+				}
+			}
+		}
+	}
+	jQuery.ajax({
+		method: 'POST',
+		url:'index.php?file=ListView&module='+gVTModule+'&action='+gVTModule+'Ajax&ajax=true'
+	}).done(function (response) {
+		document.getElementById('status').style.display='none';
+		result = response.split('&#&#&#');
+		var LVC = document.getElementById('ListViewContents');
+		LVC.innerHTML = result[2];
+		vtlib_executeJavascriptInElement(LVC);
+		if (result[1] != '') {
+			alert(result[1]);
+		}
+	});
+}
+
+/* function to clear field*/
+function clearField(id) {
+	document.getElementById(id).value = '';
+}
+
+function clearSelect(id) {
+	var selectObj=document.getElementById(id);
+	var options=selectObj.options;
+	for (var i=0; i<options.length; i++) {
+		options[i].selected=false;
+	}
+}
+
+/* function to copy first date into second date*/
+function copyDate(start, end) {
+	var startdate = document.getElementById(start);
+	document.getElementById(end).value = startdate.value;
+}
+
+/* function to enable the condition div*/
+function enableDiv(id) {
+	var x=document.getElementsByName('layerPopup');
+	for (var i=0; i< x.length; i++) {
+		if (x[i].id != id && x[i].style.display == 'block') {
+			x[i].style.display = 'none';
+		}
+	}
+	document.getElementById(id).style.display = 'block';
+}
+
+/* function to disable the condition div*/
+function disableDiv(id) {
+	document.getElementById(id).style.display = 'none';
+}
+
+/* function for reinitializing the seach block by the previous search options*/
+function reint_pram(arr) {
+	for (var i = 0; i < arr.length; i++) {
+		if (arr[i]['type'] == 'text' || arr[i]['type'] == 'number' || arr[i]['type'] == 'currency') {
+			getObj(arr[i]['field']).value = arr[i]['value'];
+		} else if (arr[i]['type'] == 'select' || arr[i]['type'] == 'owner' || arr[i]['type'] == 'checkbox') {
+			jQuery('#'+arr[i]['field']).val(arr[i]['value']);
+		} else if (arr[i]['type'] == 'date' || arr[i]['type'] == 'datetime') {
+			var t1 = arr[i]['field'].split(',');
+			var t2 = arr[i]['value'].split(',');
+			getObj(t1[0]).value = t2[0];
+			getObj(t1[1]).value = t2[1];
+		}
+	}
+}
+
+/* function for disabling enter key and preventing submit form event*/
+function disableEnterKey(e, mod) {
+	var key;
+	if (window.event) {
+		key = window.event.keyCode;
+	} else { //IE
+		key = e.which;
+	} //firefox
+	if (key == 13) {
+		activateCustomSearch(mod);
+	}
+	return (key != 13);
+}
+
+/* function to searching the records and loding the ajax result in listviewcontent div*/
+function activateCustomSearch(module) {
+	var urlstring			= '';
+	var groupid				= 1;
+	var k					= 0;
+	var cond				= '';
+	var criteriaConditions	= new Array();
+	var iterator			= new Array();
+	var conditionColumns	= getObj('noofsearchfields').value;
+	var searchblock			= getObj('fcolcolumnIndex');
+	var backup_array		= new Array();
+
+	/* get the search field criteria data value for ajax url parameter assign to hidden field*/
+	for (var i = 0; i < conditionColumns; i++) {
+		var fval = getObj('fvalue_'+i);
+		if (fval != null && fval != undefined) {
+			for (var j = 0; j < searchblock.length; j++) {
+				if (searchblock.options[j].text == fval.value) {
+					getObj('customval_'+i).value = searchblock.options[j].value.replace(/\\'/g, '');
+					break;
+				}
+			}
+		}
+	}
+
+	/* check for the field condition that has been selected by the user for search*/
+	for (i = 0, j = 0; i < conditionColumns; i++) {
+		var p1 = getObj('fname_'+i);
+		if (p1 != null && p1 != undefined) {
+			if (getObj('type_'+i).value == 'date' || getObj('type_'+i).value == 'datetime') {
+				var searchField = document.getElementById('jscal_field_'+p1.value+'_date1');
+			} else {
+				var searchField = getObj('tks_'+p1.value);
+			}
+			if (searchField != null && searchField != undefined && searchField.value != '') {
+				iterator[j++] = i;
+			}
+		}
+	}
+
+	if (iterator.length == 0) {
+		alert(alert_arr.SELECTCONDITION);
+		return false;
+	}
+
+	if (iterator.length > 1) {
+		cond = 'and';
+	}
+	for (i = 0; i < iterator.length; i++) {
+		if (i == iterator.length - 1) {
+			cond = '';
+		}
+
+		var p1 = getObj('fname_'+iterator[i]);
+		var p2 = getObj('fvalue_'+iterator[i]);
+		var p3 = getObj('customval_'+iterator[i]);
+		var p4 = getObj('type_'+iterator[i]);
+
+		if (p1 != null && p1 != undefined) {
+			var searchField = getObj('tks_'+p1.value);
+
+			if (searchField != null && searchField != undefined && searchField.value != '') {
+				if (p4.value == 'text' || p4.value == 'number' || p4.value == 'currency') {
+					var p5 = getObj('op_cond_'+iterator[i]).value;
+					criteriaConditions[k++] =
+					{
+						'groupid'			: groupid,
+						'columnname'		: p3.value,
+						'comparator'		: p5,
+						'value'				: searchField.value,
+						'columncondition'	: cond
+					};
+					backup_array.push({ 'field' : 'tks_'+p1.value, 'value' : searchField.value, 'type' : p4.value });
+				} else if (p4.value == 'select' || p4.value == 'owner' || p4.value == 'checkbox') {
+					var tks_array = '';
+					jQuery('select#tks_'+p1.value+' option:selected').map(function () {
+						tks_array += (jQuery(this).val())+',';
+					});
+
+					var temp_array = tks_array.split(',');
+					var comp = 'e';
+
+					if ((temp_array.length) - 1 > 1) {
+						var lcon = 'or';
+						for (j = 0; j < temp_array.length - 1; j++) {
+							if (j == temp_array.length - 2) {
+								if (i == iterator.length - 1) {
+									lcon = '';
+								} else {
+									lcon = 'and';
+								}
+							}
+							criteriaConditions[k++] =
+							{
+								'groupid'			: groupid,
+								'columnname'		: p3.value,
+								'comparator'		: comp,
+								'value'				: temp_array[j],
+								'columncondition'	: lcon
+							};
+						}
+						backup_array.push({ 'field' : 'tks_'+p1.value, 'value' : temp_array, 'type' : p4.value });
+					} else {
+						if (i == (iterator.length) - 1) {
+							lcon = '';
+						} else {
+							lcon = 'and';
+						}
+
+						criteriaConditions[k++] =
+						{
+							'groupid'			: groupid,
+							'columnname'		: p3.value,
+							'comparator'		: comp,
+							'value'				: temp_array[0],
+							'columncondition'	: lcon
+						};
+						backup_array.push({ 'field' : 'tks_'+p1.value, 'value' : temp_array[0], 'type' : p4.value });
+					}
+				}
+			}
+			if (p4.value == 'date'	|| p4.value == 'datetime') {
+				var d1	=  document.getElementById('jscal_field_'+p1.value+'_date1');
+				var d2	=  document.getElementById('jscal_field_'+p1.value+'_date2');
+
+				if (d1 != null && d1 != undefined && d1.value != '' && d2 != null && d2 != undefined && d2.value != '') {
+					criteriaConditions[k++] =
+					{
+						'groupid'			: groupid,
+						'columnname'		: p3.value,
+						'comparator'		: 'bw',
+						'value'				: d1.value+','+d2.value,
+						'columncondition'	: cond
+					};
+					backup_array.push({ 'field' : 'jscal_field_'+p1.value+'_date1,jscal_field_'+p1.value+'_date2', 'value' : d1.value+','+d2.value, 'type' : p4.value });
+				} else {
+					alert(alert_arr.ERR_INVALID_DATE);
+					return false;
+				}
+			}
+		}
+	}
+	var advft_criteria = JSON.stringify(criteriaConditions);
+	var advft_criteria_groups = '[null,{"groupcondition":""}]';
+	document.getElementById('advft_criteria').value = advft_criteria;
+	document.getElementById('advft_criteria_groups').value = advft_criteria_groups;
+	document.basicSearch.searchtype.searchlaunched = 'advance';
+	doingAdhocColumnSearch = 1;
+	urlstring += '&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&';
+	urlstring += 'searchtype=advance&';
+	if (iterator.length > 0) {
+		var posturl = 'query=true&file=index&module='+module+'&action='+module+'Ajax&ajax=true&search=true';
+		document.getElementById('status').style.display = 'inline';
+		jQuery.ajax({
+			method: 'POST',
+			url:'index.php?'+urlstring+posturl,
+		}).done(function (response) {
+			document.getElementById('status').style.display='none';
+			result = response.split('&#&#&#');
+			var LVC = document.getElementById('ListViewContents');
+			LVC.innerHTML = result[2];
+			vtlib_executeJavascriptInElement(LVC);
+			if (result[1] != '') {
+				alert(result[1]);
+			}
+		});
+	} else {
+		alert(alert_arr.SELECTCONDITION);
+	}
+	return false;
+}
+
 // MassEdit Feature
 function massedit_togglediv(curTabId, total) {
 	for (var i=0; i<total; i++) {
@@ -709,7 +990,9 @@ function callSearch(searchtype) {
 	}).done(function (response) {
 		document.getElementById('status').style.display = 'none';
 		var result = response.split('&#&#&#');
-		document.getElementById('ListViewContents').innerHTML = result[2];
+		var LVC = document.getElementById('ListViewContents');
+		LVC.innerHTML = result[2];
+		vtlib_executeJavascriptInElement(LVC);
 		if (result[1] != '') {
 			alert(result[1]);
 		}
@@ -731,7 +1014,9 @@ function alphabetic(module, url, dataid) {
 	}).done(function (response) {
 		document.getElementById('status').style.display = 'none';
 		var result = response.split('&#&#&#');
-		document.getElementById('ListViewContents').innerHTML = result[2];
+		var LVC = document.getElementById('ListViewContents');
+		LVC.innerHTML = result[2];
+		vtlib_executeJavascriptInElement(LVC);
 		if (result[1] != '') {
 			alert(result[1]);
 		}

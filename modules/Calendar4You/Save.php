@@ -148,7 +148,7 @@ if ((isset($_REQUEST['change_status']) && $_REQUEST['change_status']) && ($_REQU
 	$focus->column_fields[$fieldname] = $date->getDBInsertTimeValue();
 
 	$focus->save($tab_type);
-	/* For Followup START -- by Minnie */
+	/* For Followup START */
 	if (isset($_REQUEST['followup']) && $_REQUEST['followup']=='on' && $activity_mode=='Events' && isset($_REQUEST['followup_time_start']) &&  $_REQUEST['followup_time_start']!='') {
 		$heldevent_id = $focus->id;
 		$focus->column_fields['subject'] = '['.getTranslatedString('LBL_FOLLOWUP', 'Calendar').'] '.$focus->column_fields['subject'];
@@ -163,7 +163,7 @@ if ((isset($_REQUEST['change_status']) && $_REQUEST['change_status']) && ($_REQU
 		$focus->mode = 'create';
 		$focus->save($tab_type);
 	}
-	/* For Followup END -- by Minnie */
+	/* For Followup END */
 	$return_id = $focus->id;
 }
 

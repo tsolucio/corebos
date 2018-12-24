@@ -260,13 +260,13 @@ if ($sql_error) {
 		$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW'), $customlink_params));
 	// END
 
-		if (isPermitted($currentModule, "Merge") == 'yes' && file_exists("modules/$currentModule/Merge.php")) {
+		if (isPermitted($currentModule, 'Merge') == 'yes' && file_exists("modules/$currentModule/Merge.php")) {
 			$wordTemplates = array();
 			$wordTemplateResult = fetchWordTemplateList($currentModule);
 			$tempCount = $adb->num_rows($wordTemplateResult);
 			$tempVal = $adb->fetch_array($wordTemplateResult);
 			for ($templateCount = 0; $templateCount < $tempCount; $templateCount++) {
-				$wordTemplates[$tempVal["templateid"]] = $tempVal["filename"];
+				$wordTemplates[$tempVal['templateid']] = $tempVal['filename'];
 				$tempVal = $adb->fetch_array($wordTemplateResult);
 			}
 			$smarty->assign('WORDTEMPLATES', $wordTemplates);
@@ -274,7 +274,12 @@ if ($sql_error) {
 	}
 } // try query
 $smarty->assign('IS_ADMIN', is_admin($current_user));
-
+if (is_array($listview_header_search)) {
+	require_once 'include/utils/ListViewUtils.php';
+	$tks_list = getListColumnSearch($listview_header_search, $currentModule);
+	$smarty->assign('TKS_LIST_SEARCH', $tks_list);
+	$smarty->assign('LVCSearchActive', GlobalVariable::getVariable('Application_ListView_SearchColumns', 0));
+}
 // Search Panel Status
 $DEFAULT_SEARCH_PANEL_STATUS = GlobalVariable::getVariable('Application_ListView_SearchPanel_Open', 1);
 $smarty->assign('DEFAULT_SEARCH_PANEL_STATUS', ($DEFAULT_SEARCH_PANEL_STATUS ? 'display: block' : 'display: none'));

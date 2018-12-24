@@ -26,10 +26,10 @@
 {else}
 	{assign var="slds_role" value="error"}
 {/if}
-<div class="slds-m-top--x-small slds-m-bottom--x-small">
-	<div class="slds-notify slds-notify--alert slds-theme--{$slds_role} slds-theme--alert-texture" role="alert" style="padding:0.1rem">
+<div class="slds-m-top_x-small slds-m-bottom_x-small">
+	<div class="slds-notify slds-notify_alert slds-theme_{$slds_role} slds-theme_alert-texture" role="alert" style="padding:0.1rem">
 	<h2>
-		<svg class="slds-icon slds-icon--small slds-m-right--x-small" aria-hidden="true">
+		<svg class="slds-icon slds-icon_small slds-m-right_x-small" aria-hidden="true">
 		<use xlink:href="include/LD//assets/icons/utility-sprite/svg/symbols.svg#{$slds_role}"></use>
 		</svg>{$ERROR_MESSAGE}
 	</h2>

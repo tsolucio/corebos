@@ -43,7 +43,7 @@ switch ($_REQUEST['_op']) {
 		$smarty->assign('TITLE_MESSAGE', $titlemessage);
 		$smarty->assign('MESSAGE', sprintf(getTranslatedString('UNSUCCESSFUL_REGISTRATION_MESSAGE', $currentModule), vtlib_purify($_REQUEST['integration'])).
 			'<br>'.vtlib_purify($_REQUEST['error_description']).' ('.vtlib_purify($_REQUEST['error_code']).')');
-		$smarty->assign('ERROR_CLASS', 'slds-theme--error');
+		$smarty->assign('ERROR_CLASS', 'slds-theme_error');
 		$smarty->assign('APP', $app_strings);
 		$smarty->assign('MOD', $mod_strings);
 		$smarty->assign('MODULE', $currentModule);

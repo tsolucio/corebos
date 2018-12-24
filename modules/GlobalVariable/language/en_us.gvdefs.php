@@ -293,6 +293,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Show total sum of currency columns. The default is 1',
 ),
+'Application_ListView_SearchColumns' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show search columns in the list view table',
+),
 'Application_DetailView_Record_Navigation' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',

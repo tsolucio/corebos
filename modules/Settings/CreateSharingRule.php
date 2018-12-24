@@ -156,7 +156,7 @@ if ($sharing_module == 'Accounts') {
 } else {
 	$display_module = getTranslatedString($sharing_module, $sharing_module);
 }
-$output .= '<td class=layerPopupHeading " align="left">'.$display_module.' - ';
+$output .= '<td class="layerPopupHeading cblds-p_medium" align="left">'.$display_module.' - ';
 if ($mode == 'edit') {
 	$output .= $mod_strings['LBL_EDIT_CUSTOM_RULE'].'</td>';
 } else {
@@ -172,7 +172,7 @@ $output .= '<td align="right" class="small"><img src="'. vtiger_imageurl('close.
 	<td class="small">
 	<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
 	<tr>
-		<td><b>'.$mod_strings['LBL_STEP'].' 1 : '.$display_module.' '.$app_strings['LBL_LIST_OF'].' </b>('.$mod_strings['LBL_SELECT_ENTITY'].')</td>
+		<td class="cblds-p_medium"><b>'.$mod_strings['LBL_STEP'].' 1 : '.$display_module.' '.$app_strings['LBL_LIST_OF'].' </b>('.$mod_strings['LBL_SELECT_ENTITY'].')</td>
 		<td>&nbsp;</td>
 	</tr>
 	<tr>
@@ -187,7 +187,7 @@ $output .= '<td align="right" class="small"><img src="'. vtiger_imageurl('close.
 	</tr>
 	<tr><td colspan="2">&nbsp;</td></tr>
 	<tr>
-		<td style="text-align:left;"><b>'.$mod_strings['LBL_STEP'].' 2 : '.$mod_strings['LBL_CAN_BE_ACCESSED_BY'].' </b>('.$mod_strings['LBL_SELECT_ENTITY'].')</td>
+		<td class="cblds-p_medium" style="text-align:left;"><b>'.$mod_strings['LBL_STEP'].' 2 : '.$mod_strings['LBL_CAN_BE_ACCESSED_BY'].' </b>('.$mod_strings['LBL_SELECT_ENTITY'].')</td>
 		<td align="left"><b>'.$mod_strings['LBL_PERMISSIONS'].'</b></td>
 	</tr>
 	<tr>
@@ -213,7 +213,7 @@ $output .= '<td align="right" class="small"><img src="'. vtiger_imageurl('close.
 
 	</tr>
 	<tr>
-		<td style="white-space:normal;" colspan="2" id="rules">&nbsp;
+		<td style="white-space:normal;" class="cblds-p_medium" colspan="2" id="rules">&nbsp;
 	</td>
 	</tr>
 	<tr>
@@ -226,7 +226,7 @@ $output .= '<td align="right" class="small"><img src="'. vtiger_imageurl('close.
 </table>
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
 	<tr>
-		<td colspan="2" align="center">
+		<td colspan="2" align="center" class="cblds-p_medium cblds-t-align_center">
 		<input type="submit" class="crmButton small save" name="add" value="'.$mod_strings['LBL_ADD_RULE'].'">&nbsp;&nbsp;
 	</td>
 	</tr>

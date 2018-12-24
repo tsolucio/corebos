@@ -713,6 +713,8 @@ $app_strings = array(
 //Added for java script alerts
 'DELETE_CONFIRMATION' => 'Sind Sie sicher? ',
 'SELECT_ATLEAST_ONE' => 'Btte wenigstens einen Eintrag auswählen.',
+'SELECT_ATLEAST_ONECONDITION' => 'Please select at least one condition',
+'Select Condition' => 'Select Condition',
 'DELETING_ACCOUNT' => 'Wenn Sie diese Organisation löschen, werden auch die darauf bezogenen Potentiale, Angebote, Verkaufsbestellungen und Rechnungen entfernt. Sind Sie sicher, dass Sie das wirklich tun möchten? ',
 'DELETING_VENDOR' => 'Wenn Sie diesen Lieferanten löschen, werden auch die darauf bezogenen Einkaufsbestellungen entfernt. Sind Sie sicher, dass Sie das wirklich tun möchten?',
 'PLEASE_SELECT_MAILID' => 'Bitte geben Sie eine E-Mail Adresse an.',

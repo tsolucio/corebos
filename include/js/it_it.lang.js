@@ -11,6 +11,7 @@ var alert_arr = {
 	'DELETE':'Sicuro di voler cancellare il selezionato',
 	'RECORDS':' record?',
 	'SELECT':'Prego selezionare almeno una riga',
+	'SELECTCONDITION':'Please select at least one condition',
 	'SELECTTEMPLATE':'Please select at least one document Template',
 	'SELECTMERGE':'Please select an entity to merge!',
 	'GENDOCSAVED':'Document saved. Please verify that it has been created correctly.',

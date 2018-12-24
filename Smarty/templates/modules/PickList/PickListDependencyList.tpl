@@ -22,7 +22,7 @@
 				{/foreach}
 				</select>
 			</td>
-			<td class=small align=right>
+			<td class="small cblds-t-align_right" align=right>
 				<input title="{$MOD_PICKLIST.LBL_NEW_DEPENDENCY}" class="crmButton create small" type="button" name="New" value="{$MOD_PICKLIST.LBL_NEW_DEPENDENCY}" onclick="addNewDependencyPicklist();"/>
 			</td>
 		</tr>
@@ -30,11 +30,11 @@
 
 	<table border=0 cellspacing=0 cellpadding=5 width=100% class="listTable">
 		<tr>
-			<td class="colHeader small" valign=top width=5%>#</td>
-			<td class="colHeader small" valign=top width=25%>{$APP.LBL_MODULE}</td>
-			<td class="colHeader small" valign=top width=30%>{$MOD_PICKLIST.LBL_SOURCE_FIELD}</td>
-			<td class="colHeader small" valign=top width=30%>{$MOD_PICKLIST.LBL_TARGET_FIELD}</td>
-			<td class="colHeader small" valign=top width=10%>{$MOD_PICKLIST.LBL_TOOLS}</td>
+			<td class="colHeader small cblds-p-v_medium" valign=top width=5%>#</td>
+			<td class="colHeader small cblds-p-v_medium" valign=top width=25%>{$APP.LBL_MODULE}</td>
+			<td class="colHeader small cblds-p-v_medium" valign=top width=30%>{$MOD_PICKLIST.LBL_SOURCE_FIELD}</td>
+			<td class="colHeader small cblds-p-v_medium" valign=top width=30%>{$MOD_PICKLIST.LBL_TARGET_FIELD}</td>
+			<td class="colHeader small cblds-p-v_medium" valign=top width=10%>{$MOD_PICKLIST.LBL_TOOLS}</td>
 		</tr>
 		{foreach name=dependencylist item=dependencyvalues from=$DEPENDENT_PICKLISTS}
 		{assign var="FIELD_MODULE" value=$dependencyvalues.module}

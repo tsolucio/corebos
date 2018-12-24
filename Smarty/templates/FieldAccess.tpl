@@ -29,19 +29,19 @@
 			<input type="hidden" name="action" value="EditDefOrgFieldLevelAccess">
 		{/if}
 		<tr>
-			<td width=50 rowspan=2 valign=top><img src="{'orgshar.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_MODULE_NAME}" width="48" height="48" border=0 title="{$MOD.LBL_MODULE_NAME}"></td>
+			<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'orgshar.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_MODULE_NAME}" width="48" height="48" border=0 title="{$MOD.LBL_MODULE_NAME}"></td>
 			<td colspan=2 class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_FIELDS_ACCESS} </b></td>
 			<td rowspan=2 class="small" align=right>&nbsp;</td>
 		</tr>
 		<tr>
-			<td valign=top class="small">{$MOD.LBL_SHARING_FIELDS_DESCRIPTION}</td>
+			<td valign=top class="small cblds-p-v_none">{$MOD.LBL_SHARING_FIELDS_DESCRIPTION}</td>
 		</tr>
 		</table>
 		<br>
 		<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 		<tr>
 			<td class="big"><strong>{'LBL_GLOBAL_FIELDS_MANAGER'|@getTranslatedString:'Users'}</strong></td>
-			<td class="small" align=right>
+			<td class="small cblds-t-align_right" align=right>
 			{if $MODE neq 'edit'}
 				<input name="Edit" type="submit" class="crmButton small edit" value="{$APP.LBL_EDIT_BUTTON}" >
 			{else}

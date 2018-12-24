@@ -280,7 +280,6 @@ if (empty($mysel) || !in_array($mysel, $views)) {
 		$mysel = 'day';
 	}
 }
-/* fix given by dartagnanlaf END --integrated by Minnie */
 $date_data = array();
 if (isset($_REQUEST['day']) && is_numeric(vtlib_purify($_REQUEST['day']))) {
 	$date_data['day'] = vtlib_purify($_REQUEST['day']);

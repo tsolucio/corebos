@@ -12,6 +12,7 @@ var alert_arr = {
 	'DELETE':'¿Borrar los ',
 	'RECORDS':' registros?',
 	'SELECT':'Introduzca, al menos, una entidad',
+	'SELECTCONDITION':'Introduzca, al menos, una condición',
 	'SELECTTEMPLATE':'Selecciona al menos una plantilla',
 	'SELECTMERGE':'Selecciona una entidad para la combinación!',
 	'GENDOCSAVED':'Documento guardado. Por favor verifica que ha sido creado correctamente.',

@@ -160,7 +160,7 @@ function displayCoords(currObj,obj,mode,curr_row)
    <tr id="row{$row_no}" valign="top">
 
 	<!-- column 1 - delete link - starts -->
-	<td class="crmTableRow small lineOnTop">
+	<td class="crmTableRow small lineOnTop inv-editview__toolscol">
 		{if $row_no neq 1}
 			<img src="{'delete.gif'|@vtiger_imageurl:$THEME}" border="0" onclick="deleteRow('{$MODULE}',{$row_no},'{$IMAGE_PATH}')" style="cursor:pointer;" title="{'LBL_DELETE'|@getTranslatedString:'Settings'}">
 		{/if}<br/><br/>
@@ -175,17 +175,17 @@ function displayCoords(currObj,obj,mode,curr_row)
 	</td>
 
 	<!-- column 2 - Product Name - starts -->
-	<td class="crmTableRow small lineOnTop">
+	<td class="crmTableRow small lineOnTop inv-editview__namecol">
 		<!-- Product Re-Ordering Feature Code Addition Starts -->
 		<input type="hidden" name="hidtax_row_no{$row_no}" id="hidtax_row_no{$row_no}" value="{if isset($tax_row_no)}{$tax_row_no}{/if}"/>
 		<!-- Product Re-Ordering Feature Code Addition ends -->
 		<table width="100%"  border="0" cellspacing="0" cellpadding="1">
 			<tr>
-				<td class="small" valign="top">
+				<td class="small cblds-p_none" valign="top">
 					<div class="slds-combobox_container slds-has-inline-listbox cbds-product-search" style="width:70%;display:inline-block">
 						<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-combobox-lookup" aria-expanded="false" aria-haspopup="listbox" role="combobox">
 							<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
-								<input id="{$productName}" name="{$productName}" class="slds-input slds-combobox__input cbds-inventoryline__input--name" aria-autocomplete="list" aria-controls="listbox-unique-id" autocomplete="off" role="textbox" placeholder="{$APP.typetosearch_prodser}" value="{$data.$productName}" type="text" style="box-shadow: none;">
+								<input id="{$productName}" name="{$productName}" class="slds-input slds-combobox__input cbds-inventoryline__input_name" aria-autocomplete="list" aria-controls="listbox-unique-id" autocomplete="off" role="textbox" placeholder="{$APP.typetosearch_prodser}" value="{$data.$productName}" type="text" style="box-shadow: none;">
 							</div>
 						</div>
 					</div>
@@ -200,13 +200,13 @@ function displayCoords(currObj,obj,mode,curr_row)
 				</td>
 			</tr>
 			<tr>
-				<td class="small">
+				<td class="small cblds-p_xx-small">
 					<input type="hidden" value="{$data.$subproduct_ids}" id="{$subproduct_ids}" name="{$subproduct_ids}" />
 					<span id="{$subprod_names}" name="{$subprod_names}"  style="color:#C0C0C0;font-style:italic;">{$data.$subprod_names}</span>
 				</td>
 			</tr>
 			<tr>
-				<td class="small" id="setComment">
+				<td class="small cblds-p_none" id="setComment">
 					<textarea id="{$comment}" name="{$comment}" class=small style="width:70%;height:40px">{$data.$comment}</textarea>
 					<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" onClick="getObj('{$comment}').value=''" style="cursor:pointer;" />
 				</td>
@@ -216,7 +216,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 	<!-- column 2 - Product Name - ends -->
 
 	<!-- column 3 - Quantity in Stock - starts -->
-	<td class="crmTableRow small lineOnTop" valign="top">
+	<td class="crmTableRow small lineOnTop inv-editview__infocol" valign="top">
 		{if ($MODULE eq 'Quotes' || $MODULE eq 'SalesOrder' || $MODULE eq 'Invoice' || $MODULE eq 'Issuecards' || $MODULE eq 'Receiptcards')  && 'Products'|vtlib_isModuleActive}
 		{$APP.LBL_QTY_IN_STOCK}:&nbsp;<span id="{$qtyInStock}">{$data.$qtyInStock}</span><br>
 		{/if}
@@ -229,7 +229,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 	<!-- column 3 - Quantity in Stock - ends -->
 
 	<!-- column 4 - Quantity - starts -->
-	<td class="crmTableRow small lineOnTop" valign="top">
+	<td class="crmTableRow small lineOnTop inv-editview__qtycol" valign="top">
 		{if $TAX_TYPE eq 'group'}
 			<input id="{$qty}" name="{$qty}" type="text" class="small " style="width:50px" onBlur="settotalnoofrows(); calcTotal(); loadTaxes_Ajax('{$row_no}'); calcGroupTax();{if $MODULE eq 'Invoice' && $entityType neq 'Services'} stock_alert('{$row_no}');{/if}" onChange="setDiscount(this,'{$row_no}')" value="{$data.$qty}"/><br><span id="stock_alert{$row_no}"></span>
 		{else}
@@ -239,7 +239,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 	<!-- column 4 - Quantity - ends -->
 
 	<!-- column 5 - List Price with Discount, Total After Discount and Tax as table - starts -->
-	<td class="crmTableRow small lineOnTop" align="right" valign="top">
+	<td class="crmTableRow small lineOnTop inv-editview__pricecol" align="right" valign="top">
 		<table width="100%" cellpadding="0" cellspacing="0">
 		   <tr>
 			<td align="right">
@@ -278,7 +278,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 			</td>
 		   </tr>
 		   <tr id="individual_tax_row{$row_no}" class="TaxShow">
-			<td align="right" style="padding:5px;" nowrap>
+			<td align="right" class="cblds-t-align_right" style="padding:5px;" nowrap>
 				(+)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,'tax_div{$row_no}','tax','{$row_no}')" >{$APP.LBL_TAX} </a> : </b>
 				<div class="discountUI" id="tax_div{$row_no}">
 					<!-- we will form the table with all taxes -->
@@ -300,8 +300,8 @@ function displayCoords(currObj,obj,mode,curr_row)
 							<input type="text" class="small" size="5" name="{$taxname}" id="{$taxname}" value="{$tax_data.percentage}" onBlur="calcCurrentTax('{$taxname}',{$row_no},{$tax_row_no})">&nbsp;%
 							<input type="hidden" id="{$tax_id_name}" value="{$taxname}">
 						</td>
-						<td align="center" class="lineOnTop">{$tax_data.taxlabel}</td>
-						<td align="right" class="lineOnTop">
+						<td align="center" class="cblds-t-align_center" class="lineOnTop">{$tax_data.taxlabel}</td>
+						<td align="right" class="lineOnTop cblds-t-align_right">
 							<input type="text" class="small" size="6" name="{$popup_tax_rowname}" id="{$popup_tax_rowname}" style="cursor:pointer;" value="0.0" readonly>
 						</td>
 					   </tr>
@@ -318,7 +318,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 
 
 	<!-- column 6 - Product Total - starts -->
-	<td class="crmTableRow small lineOnTop" align="right">
+	<td class="crmTableRow small lineOnTop inv-editview__totalscol"align="right">
 		<table width="100%" cellpadding="5" cellspacing="0">
 		   <tr>
 			<td id="productTotal{$row_no}" align="right">{$data.$productTotal}</td>
@@ -337,7 +337,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 	<!-- column 6 - Product Total - ends -->
 
 	<!-- column 7 - Net Price - starts -->
-	<td valign="bottom" class="crmTableRow small lineOnTop" align="right">
+	<td valign="bottom" class="crmTableRow small lineOnTop inv-editview__netpricecol" align="right">
 		<span id="netPrice{$row_no}"><b>{$data.$netPrice}</b></span>
 	</td>
 	<!-- column 7 - Net Price - ends -->
@@ -350,7 +350,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 <table width="100%"  border="0" align="center" cellpadding="5" cellspacing="0" class="crmTable">
    <!-- Add Product Button -->
    <tr>
-	<td colspan="3">
+	<td colspan="3" class="cblds-p_medium">
 		{if 'Products'|vtlib_isModuleActive}
 		<input type="button" name="Button" class="crmbutton small create" value="{$APP.LBL_ADD_PRODUCT}" onclick="fnAddProductRow('{$MODULE}','{$IMAGE_PATH}');" />
 		{/if}
@@ -369,13 +369,13 @@ so we will get that array, parse that array and fill the details
 
    <!-- Product Details Final Total Discount, Tax and Shipping&Hanling  - Starts -->
    <tr valign="top">
-	<td width="88%" colspan="2" class="crmTableRow small lineOnTop" align="right"><b>{$APP.LBL_NET_TOTAL}</b></td>
-	<td width="12%" id="netTotal" class="crmTableRow small lineOnTop" align="right">0.00</td>
+	<td width="88%" colspan="2" class="crmTableRow small lineOnTop cblds-t-align_right" align="right"><b>{$APP.LBL_NET_TOTAL}</b></td>
+	<td width="12%" id="netTotal" class="crmTableRow small lineOnTop cblds-t-align_right" align="right">0.00</td>
    </tr>
 
    <tr valign="top">
 	<td class="crmTableRow small lineOnTop" width="60%" style="border-right:1px #dadada;">&nbsp;</td>
-	<td class="crmTableRow small lineOnTop" align="right">
+	<td class="crmTableRow small lineOnTop cblds-t-align_right" align="right">
 		(-)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,'discount_div_final','discount_final','1')">{$APP.LBL_DISCOUNT}</a>
 
 		<!-- Popup Discount DIV -->
@@ -384,7 +384,7 @@ so we will get that array, parse that array and fill the details
 			<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
 			   <tr>
 				<td id="discount_div_title_final" nowrap align="left" ></td>
-				<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnhide('discount_div_final')" style="cursor:pointer;"></td>
+				<td align="right" class="cblds-t-align_right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnhide('discount_div_final')" style="cursor:pointer;"></td>
 			   </tr>
 			   <tr>
 				<td align="left" class="lineOnTop"><input type="radio" name="discount_final" checked onclick="setDiscount(this,'_final'); calcGroupTax(); calcTotal();">&nbsp; {$APP.LBL_ZERO_DISCOUNT}</td>
@@ -392,42 +392,42 @@ so we will get that array, parse that array and fill the details
 			   </tr>
 			   <tr>
 				<td align="left"><input type="radio" name="discount_final" onclick="setDiscount(this,'_final');  calcTotal(); calcGroupTax();" {if isset($FINAL.checked_discount_percentage_final)}{$FINAL.checked_discount_percentage_final}{/if}>&nbsp; % {$APP.LBL_OF_PRICE}</td>
-				<td align="right"><input type="text" class="small" size="5" id="discount_percentage_final" name="discount_percentage_final" value="{$FINAL.discount_percentage_final}" {if isset($FINAL.style_discount_percentage_final)}{$FINAL.style_discount_percentage_final}{/if} onBlur="setDiscount(this,'_final'); calcGroupTax(); calcTotal();">&nbsp;%</td>
+				<td align="right" class="cblds-t-align_right"><input type="text" class="small" size="5" id="discount_percentage_final" name="discount_percentage_final" value="{$FINAL.discount_percentage_final}" {if isset($FINAL.style_discount_percentage_final)}{$FINAL.style_discount_percentage_final}{/if} onBlur="setDiscount(this,'_final'); calcGroupTax(); calcTotal();">&nbsp;%</td>
 			   </tr>
 			   <tr>
 				<td align="left" nowrap><input type="radio" name="discount_final" onclick="setDiscount(this,'_final');  calcTotal(); calcGroupTax();" {if isset($FINAL.checked_discount_amount_final)}{$FINAL.checked_discount_amount_final}{/if}>&nbsp;{$APP.LBL_DIRECT_PRICE_REDUCTION}</td>
-				<td align="right"><input type="text" id="discount_amount_final" name="discount_amount_final" size="5" value="{$FINAL.discount_amount_final}" {if isset($FINAL.style_discount_amount_final)}{$FINAL.style_discount_amount_final}{/if} onBlur="setDiscount(this,'_final');  calcGroupTax(); calcTotal();"></td>
+				<td align="right" class="cblds-t-align_right"><input type="text" id="discount_amount_final" name="discount_amount_final" size="5" value="{$FINAL.discount_amount_final}" {if isset($FINAL.style_discount_amount_final)}{$FINAL.style_discount_amount_final}{/if} onBlur="setDiscount(this,'_final');  calcGroupTax(); calcTotal();"></td>
 			   </tr>
 			</table>
 		</div>
 		<!-- End Div -->
 
 	</td>
-	<td id="discountTotal_final" class="crmTableRow small lineOnTop" align="right">{$FINAL.discountTotal_final}</td>
+	<td id="discountTotal_final" class="crmTableRow small lineOnTop cblds-t-align_right" align="right">{$FINAL.discountTotal_final}</td>
    </tr>
 
 
    <!-- Group Tax - starts -->
    <tr id="group_tax_row" valign="top" class="TaxHide">
 	<td class="crmTableRow small lineOnTop" style="border-right:1px #dadada;">&nbsp;</td>
-	<td class="crmTableRow small lineOnTop" align="right">
+	<td class="crmTableRow small lineOnTop cblds-t-align_right" align="right">
 		(+)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,'group_tax_div','group_tax_div_title','');  calcTotal(); calcGroupTax();" >{$APP.LBL_TAX}</a></b>
 			<!-- Pop Div For Group TAX -->
 			{assign var="GROUP_TAXES" value=$FINAL.taxes}
 			<div class="discountUI" id="group_tax_div">{include file="Inventory/GroupTax.tpl"}</div>
 			<!-- End Popup Div Group Tax -->
 	</td>
-	<td id="tax_final" class="crmTableRow small lineOnTop" align="right">{$FINAL.tax_totalamount}</td>
+	<td id="tax_final" class="crmTableRow small lineOnTop cblds-t-align_right" align="right">{$FINAL.tax_totalamount}</td>
    </tr>
    <!-- Group Tax - ends -->
 
 {if $SHOW_SHIPHAND_CHARGES}
    <tr valign="top">
 	<td class="crmTableRow small" style="border-right:1px #dadada;">&nbsp;</td>
-	<td class="crmTableRow small" align="right">
+	<td class="crmTableRow small cblds-t-align_right" align="right">
 		(+)&nbsp;<b>{$APP.LBL_SHIPPING_AND_HANDLING_CHARGES} </b>
 	</td>
-	<td class="crmTableRow small" align="right">
+	<td class="crmTableRow small cblds-t-align_right" align="right">
 		<input id="shipping_handling_charge" name="shipping_handling_charge" type="text" class="small" style="width:75px;text-align:right" align="right" value="{$FINAL.shipping_handling_charge}" onBlur="calcSHTax();">
 	</td>
    </tr>
@@ -437,7 +437,7 @@ so we will get that array, parse that array and fill the details
 {if !empty($FINAL.sh_taxes)}
    <tr valign="top">
 	<td class="crmTableRow small" style="border-right:1px #dadada;">&nbsp;</td>
-	<td class="crmTableRow small" align="right">
+	<td class="crmTableRow small cblds-t-align_right" align="right">
 		(+)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,'shipping_handling_div','sh_tax_div_title',''); calcSHTax();" >{$APP.LBL_TAX_FOR_SHIPPING_AND_HANDLING} </a></b>
 
 				<!-- Pop Div For Shipping and Handlin TAX -->
@@ -445,7 +445,7 @@ so we will get that array, parse that array and fill the details
 					<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
 					   <tr>
 						<td id="sh_tax_div_title" colspan="2" nowrap align="left" ></td>
-						<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnhide('shipping_handling_div')" style="cursor:pointer;"></td>
+						<td align="right" class="cblds-t-align_right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnhide('shipping_handling_div')" style="cursor:pointer;"></td>
 					   </tr>
 
 					{foreach item=tax_detail name=sh_loop key=loop_count from=$FINAL.sh_taxes}
@@ -454,8 +454,8 @@ so we will get that array, parse that array and fill the details
 						<td align="left" class="lineOnTop">
 							<input type="text" class="small" size="3" name="{$tax_detail.taxname}_sh_percent" id="sh_tax_percentage{$smarty.foreach.sh_loop.iteration}" value="{$tax_detail.percentage}" onBlur="calcSHTax()">&nbsp;%
 						</td>
-						<td align="center" class="lineOnTop">{$tax_detail.taxlabel}</td>
-						<td align="right" class="lineOnTop">
+						<td align="center" class="lineOnTop cblds-t-align_center">{$tax_detail.taxlabel}</td>
+						<td align="right" class="lineOnTop cblds-t-align_right">
 							<input type="text" class="small" size="4" name="{$tax_detail.taxname}_sh_amount" id="sh_tax_amount{$smarty.foreach.sh_loop.iteration}" style="cursor:pointer;" value="0.00" readonly>
 						</td>
 					   </tr>
@@ -467,26 +467,26 @@ so we will get that array, parse that array and fill the details
 				</div>
 				<!-- End Popup Div for Shipping and Handling TAX -->
 	</td>
-	<td id="shipping_handling_tax" class="crmTableRow small" align="right">{$FINAL.shtax_totalamount}</td>
+	<td id="shipping_handling_tax" class="crmTableRow small cblds-t-align_right" align="right">{$FINAL.shtax_totalamount}</td>
    </tr>
 {/if}
    <tr valign="top">
 	<td class="crmTableRow small" style="border-right:1px #dadada;">&nbsp;</td>
-	<td class="crmTableRow small" align="right">
+	<td class="crmTableRow small cblds-t-align_right" align="right">
 		{$APP.LBL_ADJUSTMENT}
 		<select id="adjustmentType" name="adjustmentType" class=small onchange="calcTotal();">
 			<option value="+">{$APP.LBL_ADD_ITEM}</option>
 			<option value="-">{$APP.LBL_DEDUCT}</option>
 		</select>
 	</td>
-	<td class="crmTableRow small" align="right">
+	<td class="crmTableRow small cblds-t-align_right" align="right">
 		<input id="adjustment" name="adjustment" type="text" class="small" style="width:75px;text-align:right" align="right" value="{$FINAL.adjustment}" onBlur="calcTotal();">
 	</td>
    </tr>
    <tr valign="top">
 	<td class="crmTableRow big lineOnTop" style="border-right:1px #dadada;">&nbsp;</td>
-	<td class="crmTableRow big lineOnTop" align="right"><b>{$APP.LBL_GRAND_TOTAL}</b></td>
-	<td id="grandTotal" name="grandTotal" class="crmTableRow big lineOnTop" align="right">{$FINAL.grandTotal}</td>
+	<td class="crmTableRow big lineOnTop cblds-t-align_right" align="right"><b>{$APP.LBL_GRAND_TOTAL}</b></td>
+	<td id="grandTotal" name="grandTotal" class="crmTableRow big lineOnTop cblds-t-align_right" align="right">{$FINAL.grandTotal}</td>
    </tr>
 </table>
 

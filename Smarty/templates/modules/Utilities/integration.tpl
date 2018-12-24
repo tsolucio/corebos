@@ -15,7 +15,7 @@
 					</svg>
 				</div>
 				<div class="slds-media__body">
-					<h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate"
+					<h1 class="slds-page-header__title slds-m-right_small slds-align-middle slds-truncate"
 						title="{$TITLE_MESSAGE}">{$TITLE_MESSAGE}</h1>
 				</div>
 			</div>
@@ -24,9 +24,9 @@
 </div>
 <br>
 <div class="">
-	<div class="slds-notify slds-notify--alert {$ERROR_CLASS} slds-theme--alert-texture" role="alert">
+	<div class="slds-notify slds-notify_alert {$ERROR_CLASS} slds-theme_alert-texture" role="alert">
 	<h2>
-		<svg class="slds-icon slds-icon--small slds-m-right--x-small" aria-hidden="true">
+		<svg class="slds-icon slds-icon_small slds-m-right_x-small" aria-hidden="true">
 		<use xlink:href="include/LD//assets/icons/utility-sprite/svg/symbols.svg#ban"></use>
 		</svg>{$MESSAGE}
 	</h2>

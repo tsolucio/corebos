@@ -62,7 +62,7 @@
 					</svg>
 				</div>
 				<div class="slds-media__body">
-					<h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate"
+					<h1 class="slds-page-header__title slds-m-right_small slds-align-middle slds-truncate"
 						title="{$MOD.LBL_LOGIN_HISTORY_DETAILS}">{$MOD.LBL_LOGIN_HISTORY_DETAILS}</h1>
 				</div>
 			</div>
@@ -74,17 +74,17 @@
 		<header>
 			<div class="slds-form-element slds-lookup" data-select="single" style="width: 400px; margin-bottom: 6px;">
 				<label class="slds-form-element__label" for="lookup-339">{'LBL_SEARCH_FORM_TITLE'|getTranslatedString:'Users'}</label>
-				<div class="slds-form-element__control slds-grid slds-box--border">
-					<div class="slds-dropdown--trigger slds-dropdown-trigger--click slds-align-middle slds-m-left--xx-small slds-shrink-none">
-						<svg aria-hidden="true" class="slds-icon slds-icon-standard-account slds-icon--small">
+				<div class="slds-form-element__control slds-grid slds-box_border">
+					<div class="slds-dropdown_trigger slds-dropdown-trigger_click slds-align-middle slds-m-left_xx-small slds-shrink-none">
+						<svg aria-hidden="true" class="slds-icon slds-icon-standard-account slds-icon_small">
 							<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#user"></use>
 						</svg>
 					</div>
-					<div class="slds-input-has-icon slds-input-has-icon--right slds-grow">
+					<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
 						<svg aria-hidden="true" class="slds-input__icon">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 						</svg>
-						<select name="user_list" id="user_list" class="slds-lookup__search-input slds-input--bare" type="search"
+						<select name="user_list" id="user_list" class="slds-lookup__search-input slds-input_bare" type="search"
 							aria-owns="user_list" role="combobox" aria-activedescendent="" aria-expanded="false" aria-autocomplete="list">
 							<option value="none" selected="true">{$APP.LBL_NONE}</option>
 							{$USERLIST}
