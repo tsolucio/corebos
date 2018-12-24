@@ -278,47 +278,76 @@ class VTSimpleTemplate {
 		}
 		$html = ($format == 'html');
 		$table = ($format == 'table');
-		$field = strtolower($field);
-
+		$fieldsql = "case when vtiger_products.productid != '' then vtiger_products.productname else vtiger_service.servicename end as pdoname,";
+		if ($field=='*') {
+			$fieldsql .= 'vtiger_inventorydetails.quantity, vtiger_inventorydetails.listprice, vtiger_inventorydetails.extgross, vtiger_inventorydetails.linetotal';
+		} else {
+			$fieldsql .= strtolower($field);
+		}
+		$field = $fieldsql;
+		$fields = explode(',', $field);
+		for ($fidx = 0; $fidx<count($fields); $fidx++) {
+			$fields[$fidx] = trim(str_replace('vtiger_inventorydetails.', '', $fields[$fidx]));
+			if ($fields[$fidx]=='productname' || $fields[$fidx]=='servicename') {
+				$fields[$fidx]='pdoname';
+			}
+			if ($fields[$fidx]=="case when vtiger_products.productid != '' then vtiger_products.productname else vtiger_service.servicename end as pdoname") {
+				$fields[$fidx]='pdoname';
+			}
+		}
+		$fields = array_unique($fields);
+		$singlefield = (count($fields)==1);
 		// Checking if field present in the table.
 		// To Do.
 
-		//$singlefield = (count($fields)==1);
 		$moduleName = $this->parent->getModuleName();
 		$wsUsersId = vtws_getEntityId('Users');
-		include_once 'include/Webservices/GetRelatedRecords.php';
 		$wsid = $this->parent->getId();
 		list($wsid,$crmid) = explode('x', $wsid);
-		$cmsqlws = 'SELECT '.$field.' 
-		FROM vtiger_inventorydetails
-		INNER JOIN vtiger_crmentity ON vtiger_inventorydetails.inventorydetailsid=vtiger_crmentity.crmid
-		INNER JOIN  vtiger_products ON vtiger_inventorydetails.productid=vtiger_products.productid
-		 WHERE related_to=?';
+		$cmsqlws = 'SELECT '.$field.'
+			FROM vtiger_inventorydetails
+			INNER JOIN vtiger_crmentity ON vtiger_inventorydetails.inventorydetailsid=vtiger_crmentity.crmid
+			LEFT JOIN vtiger_products ON vtiger_inventorydetails.productid=vtiger_products.productid
+			LEFT JOIN vtiger_service ON vtiger_inventorydetails.productid=vtiger_service.serviceid
+			WHERE related_to=?';
 		$retcm = '';
-		if ($html || $table) {
-			$retcm = '<div class="inventorydetails">';
-		}
-		$current_user = Users::getActiveAdminUser();
 		$wsid = $this->parent->getId();
 		$cmrs = $adb->pquery($cmsqlws, array($crmid));
+		if ($html) {
+			$retcm .= '<div class="inventorydetails"><ul class="inventorydetailsfields">';
+		}
+		if ($table) {
+			$retcm .= '<table class="inventorydetails"><tr class="inventorydetailsfields">';
+		}
 		while ($inv = $adb->fetch_array($cmrs)) {
-			if ($html) {
-				$retcm .= '<div class="inventorydetails"><ul class="inventorydetailsfields">';
-				$retcm .= '<li class="inventorydetailsfield">';
-				$retcm .= vtlib_purify($inv[$field]);
-				$retcm .= '</li>';
-				$retcm .= '</ul></div>';
-			}
-			if ($table) {
-				$retcm .= '<table class="inventorydetails"><tr class="inventorydetailsfields">';
-				$retcm .= '<td class="inventorydetailsfield">';
-				$retcm .= vtlib_purify($inv[$field]);
-				$retcm .= '</td>';
-				$retcm .= '</tr></table>';
+			foreach ($fields as $fname) {
+				if ($html) {
+					$retcm .= '<li class="inventorydetailsfield">';
+				}
+				if ($table) {
+					$retcm .= '<td class="inventorydetailsfield">';
+				}
+				$fval = vtlib_purify($inv[$fname]);
+				if (is_numeric($fval)) {
+					$fval = CurrencyField::convertToUserFormat($fval, null, true);
+				}
+				$retcm .= $fval;
+				if (!$html && !$table && $singlefield) {
+					$retcm .= "\n";
+				}
+				if ($html) {
+					$retcm .= '</li>';
+				}
+				if ($table) {
+					$retcm .= '</td>';
+				}
 			}
 		}
-		if ($html || $table) {
-			$retcm .= '</div>';
+		if ($html) {
+			$retcm .= '</ul></div>';
+		}
+		if ($table) {
+			$retcm .= '</tr></table>';
 		}
 		return $retcm;
 	}
@@ -462,9 +491,8 @@ class VTSimpleTemplate {
 		}
 		if (substr($fieldname, 0, 16)=='inventorydetails') {
 			$inventoryspec = explode('_', $fieldname);
-
-			$format = isset($inventoryspec[1]) ? $inventoryspec[1] : "";
-			$field = isset($inventoryspec[2]) ? $inventoryspec[2] : "";
+			$format = isset($inventoryspec[1]) ? $inventoryspec[1] : 'html';
+			$field = isset($inventoryspec[2]) ? $inventoryspec[2] : '*';
 			$fieldname = 'inventorydetails';
 		}
 		switch ($fieldname) {
