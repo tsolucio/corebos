@@ -22,7 +22,7 @@ class WorkFlowScheduler {
 		$this->db = $adb;
 	}
 
-	public function getWorkflowQuery($workflow, $fields = array()) {
+	public function getWorkflowQuery($workflow, $fields = array(), $addID = true) {
 
 		$moduleName = $workflow->moduleName;
 
@@ -42,6 +42,8 @@ class WorkFlowScheduler {
 					preg_match('/(\w+) : \((\w+)\) (\w+)/', $selectExpression->fieldname, $valuematches);
 					if (count($valuematches) != 0) {
 						$queryGenerator->setReferenceFieldsManually($valuematches[1], $valuematches[2], $valuematches[3]);
+					} else {
+						$queryGenerator->addWhereField($selectExpression->fieldname);
 					}
 					$selectFields[] = $queryGeneratorSelect->getSQLColumn($selectExpression->value);
 				} elseif ($selectExpression->valuetype == 'expression') {
@@ -58,7 +60,11 @@ class WorkFlowScheduler {
 
 			$selectSql = implode(",", $selectFields);
 		} else {
-			$queryGenerator->setFields(array_merge(array('id'), $fields));
+			if ($addID) {
+				$queryGenerator->setFields(array_merge(array('id'), $fields));
+			} else {
+				$queryGenerator->setFields($fields);
+			}
 		}
 
 		$substExps = $this->addWorkflowConditionsToQueryGenerator($queryGenerator, $conditions);

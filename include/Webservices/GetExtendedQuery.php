@@ -479,8 +479,9 @@ function __FQNExtendedQueryCleanQuery($q) {
 }
 
 function __ExtendedQueryConditionQuery($q) {
+	preg_match('/\s*select\s+\[/i', $q, $sop);
 	preg_match('/ where\s+\[/i', $q, $qop);
-	return (count($qop)>0);
+	return (count($qop)>0 || count($sop)>0);
 }
 
 function __ExtendedQueryConditionGetQuery($q, $fromModule, $user) {
@@ -502,8 +503,8 @@ function __ExtendedQueryConditionGetQuery($q, $fromModule, $user) {
 		'defaultworkflow' => 0,
 		'nexttrigger_time' => '',
 	);
+	$hasGroupBy = (stripos($q, 'group by')>0);
 	preg_match('/select\s+\[/i', $q, $selectSyntaxMatches);
-
 	if (count($selectSyntaxMatches) == 0) {
 		$queryColumns = trim(substr($q, 6, stripos($q, ' from ')-5));
 		$queryColumns = explode(',', $queryColumns);
@@ -523,7 +524,7 @@ function __ExtendedQueryConditionGetQuery($q, $fromModule, $user) {
 				}
 			}
 		}
-		if (!in_array('id', $queryColumns)) {
+		if (!in_array('id', $queryColumns) && !$hasGroupBy) {
 			$queryColumns[] = 'id';  // add ID column to follow REST interface behaviour
 		}
 	} else {
@@ -536,15 +537,26 @@ function __ExtendedQueryConditionGetQuery($q, $fromModule, $user) {
 
 		$wfvals['select_expressions'] = $selectExpressions;
 	}
-	$startcond = stripos($q, ' where ')+7;
-	$endcond = strrpos($q, ']')+1;
-	$cond = substr($q, $startcond, $endcond-$startcond);
-	$cond = trim($cond);
-	$cond = trim($cond, ';');
-	$ol_by = substr($q, $endcond);
-	$ol_by = trim($ol_by);
-	$ol_by = ' '.trim($ol_by, ';');
-	$wfvals['test'] = $cond;
+	preg_match('/ where\s+\[/i', $q, $qop);
+	if (count($qop)>0) {
+		$startcond = stripos($q, ' where ')+7;
+		$endcond = strrpos($q, ']')+1;
+		$cond = substr($q, $startcond, $endcond-$startcond);
+		$cond = trim($cond);
+		$cond = trim($cond, ';');
+		$ol_by = substr($q, $endcond);
+		$ol_by = trim($ol_by);
+		$ol_by = ' '.trim($ol_by, ';');
+		$wfvals['test'] = $cond;
+	} else {
+		$wfvals['test'] = '';
+		preg_match('/ from\s+\w+\s+(.*)/i', $q, $qfrom);
+		if (isset($qfrom[1])) {
+			$ol_by = ' '.$qfrom[1];
+		} else {
+			$ol_by = '';
+		}
+	}
 	$workflow->setup($wfvals);
-	return array(trim($workflowScheduler->getWorkflowQuery($workflow, $queryColumns).$ol_by), $queryRelatedModules);
+	return array(trim($workflowScheduler->getWorkflowQuery($workflow, $queryColumns, !$hasGroupBy).$ol_by), $queryRelatedModules);
 }
