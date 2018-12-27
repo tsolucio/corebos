@@ -558,5 +558,5 @@ function __ExtendedQueryConditionGetQuery($q, $fromModule, $user) {
 		}
 	}
 	$workflow->setup($wfvals);
-	return array(trim($workflowScheduler->getWorkflowQuery($workflow, $queryColumns, !$hasGroupBy).$ol_by), $queryRelatedModules);
+	return array(trim($workflowScheduler->getWorkflowQuery($workflow, $queryColumns, !$hasGroupBy, $user).$ol_by), $queryRelatedModules);
 }

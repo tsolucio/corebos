@@ -22,12 +22,14 @@ class WorkFlowScheduler {
 		$this->db = $adb;
 	}
 
-	public function getWorkflowQuery($workflow, $fields = array(), $addID = true) {
-
+	public function getWorkflowQuery($workflow, $fields = array(), $addID = true, $user = null) {
+		if (is_null($user)) {
+			$user = $this->user;
+		}
 		$moduleName = $workflow->moduleName;
 
-		$queryGeneratorSelect = new QueryGenerator($moduleName, $this->user);
-		$queryGenerator = new QueryGenerator($moduleName, $this->user);
+		$queryGeneratorSelect = new QueryGenerator($moduleName, $user);
+		$queryGenerator = new QueryGenerator($moduleName, $user);
 
 		$conditions = json_decode(decode_html($workflow->test));
 		$selectExpressions = json_decode(decode_html($workflow->select_expressions));
