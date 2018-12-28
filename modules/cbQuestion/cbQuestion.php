@@ -199,6 +199,7 @@ class cbQuestion extends CRMEntity {
 			'type' => $q->column_fields['qtype'],
 			'module' => $q->column_fields['qmodule'],
 			'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
+			'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
 			'columns' => html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset),
 			'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
 			'answer' => vtws_query($query, $current_user)
@@ -236,10 +237,12 @@ class cbQuestion extends CRMEntity {
 	public static function getChartFromAnswer($ans) {
 		$chart = '';
 		if (!empty($ans)) {
+			$title = $ans['title'];
 			$answer = $ans['answer'];
 			$module = $ans['module'];
 			$columns = explode(",", str_replace(" ","", $ans['columns']));
-
+			$type = $ans['type'];
+			$type = "bar"; //<- Hardcoded
 			$labels = array();
 			$data = array();
 			for ($x = 0; $x < count($answer); $x++) {
@@ -250,6 +253,7 @@ class cbQuestion extends CRMEntity {
 			$chart .= '<script src="include/chart.js/Chart.min.js"></script>
 				<script src="include/chart.js/randomColor.js"></script>';
 			$chart .= '<div class="hide_tab" style="width: 70%;">';
+			$chart .= '<h2>'.$title.' - '.$type.' Chart</h2>';
 			$chart .= '<canvas id="chartAns" style="width:500px;height:250px;margin:auto;padding:10px;"></canvas>';
 			$chart .= '
 				<script type="text/javascript">
@@ -297,7 +301,7 @@ class cbQuestion extends CRMEntity {
 						});
 					}
 
-					let charttype = "bar";
+					let charttype = "'.$type.'";
 					doChartAns(charttype);
 				</script>
 			';
