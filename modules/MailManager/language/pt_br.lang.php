@@ -10,7 +10,7 @@
  * Contributor: Ranieri Slemer | Brazilian translate Missing Terms | 16-10-2018 | www.slemernet.com.br
  ************************************************************************************/
 $mod_strings = array (
-	'MailManager' => 'Gestor mensagens',
+	'MailManager' => 'Gestor de Mensagens',
 
 	// Translations for JS (please use the prefix JSLBL in key)
 	'JSLBL_Loading_Please_Wait'  => 'Carregando, por favor aguarde',
@@ -84,7 +84,7 @@ $mod_strings = array (
 	'LBL_Older'           => 'Antigo',
 	'LBL_No_Mails_Found'  => 'Caixa postal vazia, ou nenhuma mensagem foi encontrada.',
 	'LBL_Go_Back'         => 'Voltar',
-	'LBL_Reply_All'       => 'Responder todos',
+	'LBL_Reply_All'       => 'Responder a todos',
 	'LBL_Reply'           => 'Responder',
 	'LBL_Mark_As_Unread'  => 'Marcar como não lida',
 	'LBL_Previous'        => 'anterior',

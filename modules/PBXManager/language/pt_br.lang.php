@@ -15,7 +15,7 @@ $mod_strings = array(
 	'SINGLE_PBXManager' => 'Gerenciador iPBX',
 	'Asterisk' => 'Asterisk',
 	'LBL_ASTERISK_INFORMATION' => 'Informação ASTERISK',
-	'LBL_CALL_INFORMATION' => 'Informaço da Chamada',
+	'LBL_CALL_INFORMATION' => 'Informação da Chamada',
 
 	'Call From'=>'Chamada de',
 	'Call To'=>'Chamada para',

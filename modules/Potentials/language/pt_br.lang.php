@@ -16,16 +16,16 @@ $mod_strings = array(
 'LBL_SEARCH_FORM_TITLE'=>'Pesquisar Oportunidade',
 'LBL_LIST_FORM_TITLE'=>'Listar Oportunidade',
 'LBL_OPPORTUNITY'=>'Oportunidade:',
-'LBL_NAME'=>'Nome Oportunidade',
+'LBL_NAME'=>'Nome da Oportunidade',
 'LBL_INVITEE'=>'Contatos',
 'LBL_LIST_OPPORTUNITY_NAME'=>'Oportunidade',
 'LBL_LIST_ACCOUNT_NAME'=>'Nome Conta',
-'LBL_PRODUCT_NAME'=>'Nome Produto',
+'LBL_PRODUCT_NAME'=>'Nome do Produto',
 'LBL_LIST_AMOUNT'=>'Valor',
 'LBL_LIST_DATE_CLOSED'=>'Previsão Fechamento',
 'LBL_LIST_SALES_STAGE'=>'Estágio Vendas',
 
-'LBL_OPPORTUNITY_NAME'=>'Nome Oportunidade:',
+'LBL_OPPORTUNITY_NAME'=>'Nome da Oportunidade:',
 'LBL_ACCOUNT_NAME'=>'Nome Conta:',
 'LBL_AMOUNT'=>'Valor(R$):',
 'LBL_DATE_CLOSED'=>'Data Prevista Fechamento:',
@@ -37,7 +37,7 @@ $mod_strings = array(
 'LBL_DESCRIPTION'=>'Descrição:',
 'LBL_OPPORTUNITY_INFORMATION'=>'Dados da Oportunidade:',
 'LBL_DESCRIPTION_INFORMATION'=>'Descrição:',
-'LBL_CUSTOM_INFORMATION'=>'Informação Customizada',
+'LBL_CUSTOM_INFORMATION'=>'Informação Personalizada',
 
 'LBL_NEW_FORM_TITLE'=>'Nova Oportunidade',
 
@@ -78,12 +78,12 @@ $mod_strings = array(
 'LBL_PROSPECTING'=>'Prospectando',
 
 'LBL_TOOL_FORM_TITLE'=>'Ferramentas Oportunidade',
-'Potential Name'=>'Nome Oportunidade',
+'Potential Name'=>'Nome da Oportunidade',
 'Amount'=>'Valor',
 'Account Name'=>'Nome Conta',
 'Currency'=>'Moeda',
 'Expected Close Date'=>'Previsão Data Fechamento',
-'Opportunity Type'=>'Tipo Oportunidade',
+'Opportunity Type'=>'Tipo de Oportunidade',
 'Type'=>'Tipo',
 'Next Step'=>'Próximo Passo',
 'Lead Source'=>'Fonte Lead',
@@ -131,7 +131,5 @@ $mod_strings = array(
 'Potentials ID' => 'ID Oportunidades',
 
 'Forecast Amount'=> 'Valor de Forecast',
-
 );
-
 ?>

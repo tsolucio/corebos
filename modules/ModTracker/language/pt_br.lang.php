@@ -28,7 +28,7 @@ $mod_strings = array (
 'LBL_ACCESS_RESTRICTED' => 'Acesso negado',
 'LBL_REPORTNAME'=>'Nome relatório',
 'LBL_EXPORTPDF_BUTTON' => 'Exportar p/PDF',
-'LBL_EXPORTXL_BUTTON' => 'Exportar p/excel',
+'LBL_EXPORTXL_BUTTON' => 'Exportar p/Excel',
 'LBL_PRINT_REPORT' => 'Imprimir relatório',
 'LBL_FILTER'=>'Filtro',
 'LBL_GENERATE_NOW'=>'Gerar agora',
@@ -42,11 +42,11 @@ $mod_strings = array (
 'NO'=>'Não',
 'LBL_CANNOT_DISABLE'=>'Não é possível desativar',
 'LBL_CHANGED_BY'=>'Alterado por',
-'LBL_ACCESS_TO_FIELD_CHANGES_DENIED'=>'Ou você não tem permissão para visualizar os campos modificados <br> (OU) <br> A gravação foi restaurada neste ponto.',
-'LBL_CONFIGURATION_DESCRIPTION' => 'Selecione os módulos que você deseja controlar',
+'LBL_ACCESS_TO_FIELD_CHANGES_DENIED'=>'Não tem permissão para visualizar os campos modificados <br> (OU) <br> A gravação foi restaurada neste ponto.',
+'LBL_CONFIGURATION_DESCRIPTION' => 'Selecione os módulos que deseja controlar',
 'LBL_DELETED'=>'APAGADO!',
 'LBL_RESTORED'=>'RESTAURADO!',
 'LBL_ModTracker_SETTINGS' => 'Módulos ativados',
-'LBL_NO_HISTORY_TITLE' => 'Não há histórico',
+'LBL_NO_HISTORY_TITLE' => 'Não existe histórico',
 );
 ?>

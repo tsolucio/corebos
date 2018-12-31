@@ -24,7 +24,7 @@ $mod_strings = array (
 'Sequence' =>'Sequência',
 'Visible'=>'Visível',
 
-'LBL_CUSTOMERPORTAL_SETTINGS'=>'Configurações Portal do Cliente',
+'LBL_CUSTOMERPORTAL_SETTINGS'=>'Configurações do Portal do Cliente',
 'LBL_MODULE_INFORMATION'=>'Informação Módulo',
 'LBL_MODULE' => 'Módulo',
 'LBL_SEQUENCE' =>'Sequencia',
