@@ -81,12 +81,13 @@ FieldDependencies.prototype.setup = function (sourceform, datasource) {
 		return;
 	}
 
-	jQuery('input', this.baseform).bind('change', function (ev) {
-		thisContext.actOnSelectChange(ev);
-	});
-	jQuery('select', this.baseform).bind('change', function (ev) {
-		thisContext.actOnSelectChange(ev);
-	});
+	var nodelist = document.querySelectorAll('input,select');
+	for (var i = 0; i < nodelist.length; i++) {
+		// we should use addEventListener here but it doesn't work on the jscalendar element nor on the initial loading of the page
+		nodelist[i].onchange = function (ev) {
+			thisContext.actOnSelectChange(ev);
+		};
+	};
 };
 
 /**
