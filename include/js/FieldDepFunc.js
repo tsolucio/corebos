@@ -1,43 +1,45 @@
 
 function fieldDep_AddDays(change_field, action_field, new_value, old_value, parameters) {
-	var date=new_value.split('-');
-	var dd, mm, y;
-	switch (userDateFormat) {
-	case 'mm-dd-yyyy':
-		dd = parseInt(date[1]);
-		mm = parseInt(date[0]);
-		y = parseInt(date[2]);
-		break;
-	case 'dd-mm-yyyy':
-		dd = parseInt(date[0]);
-		mm = parseInt(date[1]);
-		y = parseInt(date[2]);
-		break;
-	case 'yyyy-mm-dd':
-		dd = parseInt(date[2]);
-		mm = parseInt(date[1]);
-		y = parseInt(date[0]);
-		break;
+	var datesep = '-';
+	if (new_value.indexOf('-')>=0) {
+		datesep='-';
+	} else if (new_value.indexOf('.')>=0) {
+		datesep='.';
+	} else if (new_value.indexOf('/')>=0) {
+		datesep='/';
 	}
-	//console.log(date);console.log(mm);
+	var date=splitDateVal(new_value);
+	var dd = parseInt(date[0]);
+	var mm = parseInt(date[1]);
+	var y = parseInt(date[2]);
 	var currDate=new Date();
 	currDate.setFullYear(y);
-	currDate.setMonth( mm-1);
+	currDate.setMonth(mm-1);
 	currDate.setDate(dd);
-	//console.log(currDate);
 	currDate.setDate(currDate.getDate() + parseInt(parameters[0]));
-	//console.log(currDate);
 	dd = currDate.getDate();
+	dd = (dd>9 ? '' : '0') + dd;
 	mm = currDate.getMonth() + 1;
+	mm = (mm>9 ? '' : '0') + mm;
 	y = currDate.getFullYear();
-	document.getElementsByName(action_field).item(0).value= y+ '-'+ mm + '-'+ dd;
+	var fulldate = '';
+	switch (userDateFormat) {
+	case 'mm-dd-yyyy':
+		fulldate = mm+datesep+dd+datesep+y;
+		break;
+	case 'dd-mm-yyyy':
+		fulldate = dd+datesep+mm+datesep+y;
+		break;
+	case 'yyyy-mm-dd':
+		fulldate = y+datesep+mm+datesep+dd;
+		break;
+	}
+	document.getElementsByName(action_field).item(0).value=fulldate;
 }
 
 function fieldDep_SubDays(change_field, action_field, new_value, old_value, parameters) {
-	var oselect_array = document.getElementsByTagName('SELECT');
-	for (var i=0; i<oselect_array.length; i++) {
-		oselect_array[i].style.display = 'block';
-	}
+	parameters[0] = -1*parseInt(parameters[0]);
+	fieldDep_AddDays(change_field, action_field, new_value, old_value, parameters)
 }
 
 function fieldDep_OnlyNumbers(change_field, action_field, new_value, old_value, parameters) {
