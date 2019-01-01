@@ -1388,7 +1388,6 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 
 function getAdvancedSearchParentEntityValue($comparator, $value, $datatype, $tablename, $fieldname) {
 	global $log, $adb;
-
 	$adv_chk_value = $value;
 	$value = '(';
 	$sql = 'select distinct(setype) from vtiger_crmentity c INNER JOIN '.$adb->sql_escape_string($tablename).' t ON t.'.$adb->sql_escape_string($fieldname).' = c.crmid';
@@ -1402,7 +1401,6 @@ function getAdvancedSearchParentEntityValue($comparator, $value, $datatype, $tab
 			$value .= ' or ';
 		}
 		if ($modulename == 'Accounts') {
-			//By Pavani : Related to problem in calender, Ticket: 4284 and 4675
 			if (($comparator == 'e' || $comparator == 's' || $comparator == 'c') && trim($adv_chk_value) == '') {
 				if ($tablename == 'vtiger_seactivityrel' && $fieldname == 'crmid') {
 					$value .= 'vtiger_account2.accountname IS NULL or ';

@@ -280,7 +280,6 @@ if (empty($mysel) || !in_array($mysel, $views)) {
 		$mysel = 'day';
 	}
 }
-/* fix given by dartagnanlaf END --integrated by Minnie */
 $date_data = array();
 if (isset($_REQUEST['day']) && is_numeric(vtlib_purify($_REQUEST['day']))) {
 	$date_data['day'] = vtlib_purify($_REQUEST['day']);
@@ -346,6 +345,8 @@ $smarty->assign('USER_DATE_FORMAT', $dat_fmt);
 $smarty->assign('Calendar_Slot_Minutes', '00:'.GlobalVariable::getVariable('Calendar_Slot_Minutes', 15).':00');
 $smarty->assign('Calendar_Slot_Event_Overlap', (GlobalVariable::getVariable('Calendar_Slot_Event_Overlap', 1) ? 'true' : 'false'));
 $smarty->assign('Calendar_Modules_Panel_Visible', GlobalVariable::getVariable('Calendar_Modules_Panel_Visible', 1));
+$smarty->assign('Calendar_Priority_Panel_Visible', GlobalVariable::getVariable('Calendar_Priority_Panel_Visible', 1));
+$smarty->assign('Calendar_Status_Panel_Visible', GlobalVariable::getVariable('Calendar_Status_Panel_Visible', 1));
 $smarty->assign('Calendar_Other_Default_Duration', GlobalVariable::getVariable('calendar_other_default_duration', 1));
 $smarty->assign('Calendar_Show_WeekNumber', GlobalVariable::getVariable('Calendar_Show_WeekNumber', 0) ? 'true' : 'false');
 

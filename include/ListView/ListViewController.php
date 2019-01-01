@@ -404,7 +404,7 @@ class ListViewController {
 						$value = '<span style="float:right">'.$value.'</span>';
 					}
 				} elseif ($field->getFieldDataType() == 'double') {
-					if ($value != '') {	
+					if ($value != '') {
 						$value = CurrencyField::convertToUserFormat($value);
 					}
 				} elseif ($field->getFieldDataType() == 'url') {

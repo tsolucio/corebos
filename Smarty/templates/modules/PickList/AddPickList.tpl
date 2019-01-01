@@ -52,7 +52,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td valign=top align=right>
+			<td valign=top align=right class="cblds-t-align_right">
 				<input type="button" value="{$APP.LBL_SAVE_BUTTON_LABEL}" id="saveAddButton" name="save" class="crmButton small edit" onclick="validateAdd('{$FIELDNAME}','{$MODULE}');">
 				<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" name="cancel" class="crmButton small cancel" onclick="fnhide('actiondiv');">
 			</td>

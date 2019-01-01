@@ -154,7 +154,12 @@ class VTFieldExpressionEvaluater {
 			'getGEODistanceFromAssignUser2ContactBilling' => 'cbexpsql_getGEODistanceFromAssignUser2ContactBilling',
 			'getGEODistanceFromUser2ContactShipping' => 'cbexpsql_getGEODistanceFromUser2ContactShipping',
 			'getGEODistanceFromAssignUser2ContactShipping' => 'cbexpsql_getGEODistanceFromAssignUser2ContactShipping',
-			'getGEODistanceFromCoordinates' => 'cbexpsql_getGEODistanceFromCoordinates'
+			'getGEODistanceFromCoordinates' => 'cbexpsql_getGEODistanceFromCoordinates',
+			'sum' => 'cbexpsql_sum',
+			'min' => 'cbexpsql_min',
+			'max' => 'cbexpsql_max',
+			'avg' => 'cbexpsql_avg',
+			'count' => 'cbexpsql_count'
 		);
 		$this->rawparams = array(
 			'__cb_getGEODistanceFromUser2AccountBilling',
@@ -295,7 +300,6 @@ class VTFieldExpressionEvaluater {
 						} else {
 							$parentparams = $expr->getParams();
 							if (false && $parentparams[0] instanceof VTExpressionTreeNode && isset($this->operationsSQL[$parentparams[0]->arr[0]->value])) {
-								var_dump($parentparams[0],$pval);
 								$prms[] = new VTExpressionSymbol($pval, 'constant');
 							} else {
 								$prms[] = new VTExpressionSymbol($pval);

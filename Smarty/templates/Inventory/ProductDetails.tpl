@@ -141,7 +141,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 				<div class="slds-combobox_container slds-has-inline-listbox cbds-product-search" style="width:70%;display:inline-block">
 					<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-combobox-lookup" aria-expanded="false" aria-haspopup="listbox" role="combobox">
 						<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
-							<input id="productName1" name="productName1" class="slds-input slds-combobox__input cbds-inventoryline__input--name" aria-autocomplete="list" aria-controls="listbox-unique-id" autocomplete="off" role="textbox" placeholder="{$APP.typetosearch_prodser}" value="{if isset($PRODUCT_NAME)}{$PRODUCT_NAME}{/if}" type="text" style="box-shadow: none;">
+							<input id="productName1" name="productName1" class="slds-input slds-combobox__input cbds-inventoryline__input_name" aria-autocomplete="list" aria-controls="listbox-unique-id" autocomplete="off" role="textbox" placeholder="{$APP.typetosearch_prodser}" value="{if isset($PRODUCT_NAME)}{$PRODUCT_NAME}{/if}" type="text" style="box-shadow: none;">
 						</div>
 					</div>
 				</div>

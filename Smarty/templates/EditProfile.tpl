@@ -43,11 +43,11 @@
                         
 				<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%">
 				<tbody><tr>
-					<td rowspan="2" valign="top" width="50"><img src="{'ico-profile.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_PROFILES}" title="{$MOD.LBL_PROFILES}" border="0" height="48" width="48"></td>
+					<td rowspan="2" valign="top" width="50" class="cblds-p_none"><img src="{'ico-profile.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_PROFILES}" title="{$MOD.LBL_PROFILES}" border="0" height="48" width="48"></td>
 					<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=ListProfiles&parenttab=Settings">{$CMOD.LBL_PROFILE_PRIVILEGES}</a> &gt; {$CMOD.LBL_VIEWING} &quot;{$PROFILE_NAME}&quot;</b></td>
 				</tr>
 				<tr>
-					<td class="small" valign="top">{$CMOD.LBL_PROFILE_MESG} &quot;{$PROFILE_NAME}&quot; </td>
+					<td class="small cblds-p-v_none" valign="top">{$CMOD.LBL_PROFILE_MESG} &quot;{$PROFILE_NAME}&quot; </td>
 				</tr>
 				</tbody></table>
 				<table border="0" cellpadding="10" cellspacing="0" width="100%">
@@ -55,11 +55,11 @@
 				<td valign="top">
 					<table border="0" cellpadding="0" cellspacing="0" width="100%">
                       <tbody><tr>
-                        <td><table border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <td class="cblds-p_none"><table border="0" cellpadding="0" cellspacing="0" width="100%">
                             <tbody><tr class="small">
-                              <td><img src="{'prvPrfTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-                              <td class="prvPrfTopBg" width="100%"></td>
-                              <td><img src="{'prvPrfTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
+                              <td class="cblds-p_none cblds-p-v_medium"><img src="{'prvPrfTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
+                              <td class="prvPrfTopBg cblds-p_none" width="100%"></td>
+                              <td class="cblds-p_none"><img src="{'prvPrfTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
                             </tr>
                           </tbody></table>
                             <table class="prvPrfOutline" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -70,16 +70,16 @@
                                       <tbody><tr>
                                         <td><table class="small" border="0" cellpadding="5" cellspacing="0" width="100%">
                                             <tbody><tr>
-                                              <td><!-- Module name heading -->
+                                              <td class="cblds-p_none"><!-- Module name heading -->
                                                   <table class="small" border="0" cellpadding="2" cellspacing="0">
                                                     <tbody><tr>
-                                                      <td valign="top"><img src="{'prvPrfHdrArrow.gif'|@vtiger_imageurl:$THEME}"> </td>
-                                                      <td class="prvPrfBigText"><b> {if $MODE eq 'create'}{$CMOD.LBL_STEP_2_2} : {/if}{$CMOD.LBL_DEFINE_PRIV_FOR} &lt;{$PROFILE_NAME}&gt; </b><br>
+                                                      <td valign="top" class="cblds-p_none"><img src="{'prvPrfHdrArrow.gif'|@vtiger_imageurl:$THEME}"> </td>
+                                                      <td class="prvPrfBigText cblds-p_none"><b> {if $MODE eq 'create'}{$CMOD.LBL_STEP_2_2} : {/if}{$CMOD.LBL_DEFINE_PRIV_FOR} &lt;{$PROFILE_NAME}&gt; </b><br>
                                                       <font class="small">{$CMOD.LBL_USE_OPTION_TO_SET_PRIV}</font> </td>
-                                                      <td class="small" style="padding-left: 10px;" align="right"></td>
+                                                      <td class="small cblds-p_none" style="padding-left: 10px;" align="right"></td>
                                                     </tr>
                                                 </tbody></table></td>
-                                              <td align="right" valign="bottom">&nbsp;
+                                              <td class="cblds-t-align_right" align="right" valign="bottom">&nbsp;
 												{if $ACTION eq 'SaveProfile'}
                                                 <input type="button" value=" {$CMOD.LBL_FINISH_BUTTON} " name="save" class="crmButton create small" title="{$CMOD.LBL_FINISH_BUTTON}" onclick="saveprofile('create')"/>&nbsp;&nbsp;
                                                 {else}
@@ -111,23 +111,23 @@
                                                     <td valign="top" width="97%"><table class="small" border="0" cellpadding="2" cellspacing="0" width="100%">
                                                       <tbody>
 				                         <tr id="gva">
-                                                          <td valign="top">{$GLOBAL_PRIV.0}</td>
-                                                          <td ><b>{$CMOD.LBL_VIEW_ALL}</b> </td>
+                                                          <td class="cblds-p_none" valign="top">{$GLOBAL_PRIV.0}</td>
+                                                          <td class="cblds-p_none"><b>{$CMOD.LBL_VIEW_ALL}</b> </td>
                                                         </tr>
                                                         <tr>
-                                                          <td valign="top"></td>
-                                                          <td width="100%" >{$CMOD.LBL_ALLOW} "{$PROFILE_NAME}" {$CMOD.LBL_MESG_VIEW}</td>
+                                                          <td class="cblds-p_none" valign="top"></td>
+                                                          <td class="cblds-p_none" width="100%" >{$CMOD.LBL_ALLOW} "{$PROFILE_NAME}" {$CMOD.LBL_MESG_VIEW}</td>
                                                         </tr>
                                                         <tr>
                                                           <td>&nbsp;</td>
                                                         </tr>
 							<tr>
-							<td valign="top">{$GLOBAL_PRIV.1}</td>
-							<td ><b>{$CMOD.LBL_EDIT_ALL}</b> </td>
+							<td class="cblds-p_none" valign="top">{$GLOBAL_PRIV.1}</td>
+							<td class="cblds-p_none"><b>{$CMOD.LBL_EDIT_ALL}</b> </td>
 							</tr>
                                                         <tr>
-                                                          <td valign="top"></td>
-                                                          <td > {$CMOD.LBL_ALLOW} "{$PROFILE_NAME}" {$CMOD.LBL_MESG_EDIT}</td>
+                                                          <td class="cblds-p_none"valign="top"></td>
+                                                          <td class="cblds-p_none"> {$CMOD.LBL_ALLOW} "{$PROFILE_NAME}" {$CMOD.LBL_MESG_EDIT}</td>
                                                         </tr>
 
                                                       </tbody></table>
@@ -148,15 +148,15 @@
 				<table class="small listTable" border="0" cellpadding="5" cellspacing="0" width="100%">
 			        <tbody>
 				<tr id="gva">
-			          <td colspan="7" class="small colHeader"><div align="center"><strong>{$CMOD.LBL_EDIT_PERMISSIONS}</strong></div></td>
+			          <td colspan="7" class="small colHeader cblds-p-v_mediumsmall"><div align="center"><strong>{$CMOD.LBL_EDIT_PERMISSIONS}</strong></div></td>
 			        </tr>
 			        <tr id="gva">
-			          <td colspan="2" class="small colHeader"><strong> {$CMOD.LBL_TAB_MESG_OPTION} </strong><strong></strong></td>
-			          <td class="small colHeader"><div align="center"><strong>{$CMOD.LBL_CREATE}</strong></div></td>
-			          <td class="small colHeader"><div align="center"><strong>{$CMOD.Edit}</strong></div></td>
-			          <td class="small colHeader"> <div align="center"><strong>{$CMOD.LBL_VIEW}</strong></div></td>
-			          <td class="small colHeader"> <div align="center"><strong>{$CMOD.LBL_DELETE}</strong></div></td>
-			          <td class="small colHeader" nowrap="nowrap">{$CMOD.LBL_FIELDS_AND_TOOLS_SETTINGS}</td>
+			          <td colspan="2" class="small colHeader cblds-p-v_mediumsmall"><strong> {$CMOD.LBL_TAB_MESG_OPTION} </strong><strong></strong></td>
+			          <td class="small colHeader cblds-p-v_mediumsmall"><div align="center"><strong>{$CMOD.LBL_CREATE}</strong></div></td>
+			          <td class="small colHeader cblds-p-v_mediumsmall"><div align="center"><strong>{$CMOD.Edit}</strong></div></td>
+			          <td class="small colHeader cblds-p-v_mediumsmall"> <div align="center"><strong>{$CMOD.LBL_VIEW}</strong></div></td>
+			          <td class="small colHeader cblds-p-v_mediumsmall"> <div align="center"><strong>{$CMOD.LBL_DELETE}</strong></div></td>
+			          <td class="small colHeader cblds-p-v_mediumsmall" nowrap="nowrap">{$CMOD.LBL_FIELDS_AND_TOOLS_SETTINGS}</td>
 			        </tr>
 
 				<!-- module loops-->
@@ -193,9 +193,9 @@
 						{if !empty($FIELD_PRIVILEGES[$tabid])}
 						<tr>
 							{if $modulename eq 'Calendar'}
-								<td class="small colHeader" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN} ({$APP.Tasks})</td>
+								<td class="small colHeader cblds-p-v_mediumsmall" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN} ({$APP.Tasks})</td>
 							{else}
-								<td class="small colHeader" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN}</td>
+								<td class="small colHeader cblds-p-v_mediumsmall" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN}</td>
 							{/if}
 					        </tr>
 						{foreach item=row_values from=$FIELD_PRIVILEGES[$tabid]}
@@ -248,16 +248,16 @@
 		</tr>
 		<table border="0" cellpadding="2" cellspacing="0">
 			<tr>
-				<td align="left"><font color="red" size=5>*</font>{$CMOD.LBL_MANDATORY_MSG}</td>
+				<td align="left" class="cblds-p_none"><font color="red" size=5>*</font>{$CMOD.LBL_MANDATORY_MSG}</td>
 			</tr>
 			<tr>
-				<td align="left"><font color="blue" size=5>*</font>{$CMOD.LBL_DISABLE_FIELD_MSG}</td>
+				<td align="left" class="cblds-p_none"><font color="blue" size=5>*</font>{$CMOD.LBL_DISABLE_FIELD_MSG}</td>
 			</tr>
 		</table>
 		<tr>
-		<td style="border-top: 2px dotted rgb(204, 204, 204);" align="right">
+		<td style="border-top: 2px dotted rgb(204, 204, 204);" align="right" class="cblds-t-align_right">
 		<!-- wizard buttons -->
-		<table border="0" cellpadding="2" cellspacing="0">
+		<table border="0" cellpadding="2" cellspacing="0" style="display: inline-block;">
 		<tbody>
 			<tr><td>
 				{if $ACTION eq 'SaveProfile'}
@@ -295,7 +295,7 @@
       </tbody></table>
 	<p>&nbsp;</p>
 	<table border="0" cellpadding="5" cellspacing="0" width="100%">
-	<tbody><tr><td class="small" align="right" nowrap="nowrap"><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
+	<tbody><tr><td class="small cblds-t-align_right" align="right" nowrap="nowrap"><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
 	</tbody></table>
 	</td>
 	</tr>

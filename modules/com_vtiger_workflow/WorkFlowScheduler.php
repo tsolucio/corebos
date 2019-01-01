@@ -22,14 +22,55 @@ class WorkFlowScheduler {
 		$this->db = $adb;
 	}
 
-	public function getWorkflowQuery($workflow, $fields = array()) {
-		$conditions = json_decode(decode_html($workflow->test));
-
+	public function getWorkflowQuery($workflow, $fields = array(), $addID = true, $user = null) {
+		if (is_null($user)) {
+			$user = $this->user;
+		}
 		$moduleName = $workflow->moduleName;
-		$queryGenerator = new QueryGenerator($moduleName, $this->user);
-		$selectcolumns = array_merge(array('id'), $fields);
-		$queryGenerator->setFields($selectcolumns);
+
+		$queryGeneratorSelect = new QueryGenerator($moduleName, $user);
+		$queryGenerator = new QueryGenerator($moduleName, $user);
+
+		$conditions = json_decode(decode_html($workflow->test));
+		$selectExpressions = json_decode(decode_html($workflow->select_expressions));
+
+		if ($selectExpressions) {
+			$substExpsSelect = $this->addWorkflowConditionsToQueryGenerator($queryGeneratorSelect, $selectExpressions);
+
+			$selectFields = [];
+			$selectExpsCounter = 1;
+			foreach ($selectExpressions as $selectExpression) {
+				if ($selectExpression->valuetype == 'fieldname') {
+					preg_match('/(\w+) : \((\w+)\) (\w+)/', $selectExpression->fieldname, $valuematches);
+					if (count($valuematches) != 0) {
+						$queryGenerator->setReferenceFieldsManually($valuematches[1], $valuematches[2], $valuematches[3]);
+					} else {
+						$queryGenerator->addWhereField($selectExpression->fieldname);
+					}
+					$selectFields[] = $queryGeneratorSelect->getSQLColumn($selectExpression->value);
+				} elseif ($selectExpression->valuetype == 'expression') {
+					preg_match('/(\w+) : \((\w+)\) (\w+)/', $selectExpression->value, $valuematches);
+					if (count($valuematches) != 0) {
+						$queryGenerator->setReferenceFieldsManually($valuematches[1], $valuematches[2], $valuematches[3]);
+					}
+					$selectFields[] = $substExpsSelect["::#$selectExpsCounter"]." AS $selectExpression->fieldname";
+					$selectExpsCounter++;
+				} else {
+					$selectFields[] = $selectExpression->value;
+				}
+			}
+
+			$selectSql = implode(",", $selectFields);
+		} else {
+			if ($addID) {
+				$queryGenerator->setFields(array_merge(array('id'), $fields));
+			} else {
+				$queryGenerator->setFields($fields);
+			}
+		}
+
 		$substExps = $this->addWorkflowConditionsToQueryGenerator($queryGenerator, $conditions);
+
 		if ($moduleName == 'Calendar' || $moduleName == 'Events') {
 			if ($conditions) {
 				$queryGenerator->addConditionGlue('AND');
@@ -44,7 +85,14 @@ class WorkFlowScheduler {
 			}
 		}
 
-		$query = $queryGenerator->getQuery();
+		if ($selectExpressions) {
+			$query = 'SELECT '.$selectSql;
+			$query .= $queryGenerator->getFromClause();
+			$query .= $queryGenerator->getWhereClause();
+		} else {
+			$query = $queryGenerator->getQuery();
+		}
+
 		if (count($substExps)>0) {
 			foreach ($substExps as $subst => $val) {
 				if (substr($subst, 0, 3)=='::#') {

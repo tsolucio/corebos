@@ -86,7 +86,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$pickListResult = $adb->pquery($pick_query, array());
 		$noofpickrows = $adb->num_rows($pickListResult);
 
-		//Mikecrowe fix to correctly default for custom pick lists
+		// fix to correctly default for custom pick lists
 		$options = array();
 		$found = false;
 		for ($j = 0; $j < $noofpickrows; $j++) {
@@ -1085,7 +1085,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		} else {
 			$label_fld[] = getRoleName($col_fields[$fieldname]);
 		}
-	} elseif ($uitype == 85) { //Added for Skype by Minnie
+	} elseif ($uitype == 85) { //Added for Skype
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = $col_fields[$fieldname];
 	} elseif ($uitype == 26) {

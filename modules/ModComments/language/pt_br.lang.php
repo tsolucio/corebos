@@ -14,7 +14,7 @@ $mod_strings = array (
 
 'LBL_MODCOMMENTS_INFORMATION' => 'Informação comentários',
 'LBL_OTHER_INFORMATION' => 'Outras informações',
-'LBL_CUSTOM_INFORMATION' => 'Informação customizada',
+'LBL_CUSTOM_INFORMATION' => 'Informação Personalizada',
 
 'Assigned To' => 'Atribuído à',
 'Created Time' => 'Data de criação',

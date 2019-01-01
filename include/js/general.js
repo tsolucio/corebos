@@ -3948,7 +3948,7 @@ VtigerJS_DialogBox = {
 
 			// In case zIndex goes to negative side!
 			//if (olayer.style.zIndex < 0) {
-				//olayer.style.zIndex *= -1;
+			//	olayer.style.zIndex *= -1;
 			//}
 			if (browser_ie) {
 				olayer.style.height = document.body.offsetHeight + (document.body.scrollHeight - document.body.offsetHeight) + 'px';

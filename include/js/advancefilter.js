@@ -40,6 +40,7 @@ var advft_column_index_count = -1;
 var advft_group_index_count = 0;
 var column_index_array = [];
 var group_index_array = [];
+var doingAdhocColumnSearch = 0;
 
 function trimfValues(value) {
 	var string_array;

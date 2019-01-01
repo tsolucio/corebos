@@ -10,7 +10,7 @@
   ************************************************************************************/
 $mod_strings = array(
 'VTEmailTask' => 'Enviar e-mail',
-'VTEntityMethodTask' => 'Invocar função customizada',
+'VTEntityMethodTask' => 'Invocar função personalizada',
 'VTCreateTodoTask' => 'Criar compromisso',
 'VTCreateEventTask' => 'Criar evento',
 'VTSMSTask' => 'Tarefa SMS',
@@ -34,7 +34,7 @@ $mod_strings = array(
 'LBL_AVAILABLE_WORKLIST_LIST'=>'Workflows disponíveis',
 'LBL_LOADING'=>'Carregando...',
 'LBL_REEVALCONDITIONS' => 'Avaliar condições na execução',
-'LBL_VALIDATION_ERROR'=>'Erro Validação',
+'LBL_VALIDATION_ERROR'=>'Erro de Validação',
 'LBL_SELECT_OPTION_DOTDOTDOT'=>'Selecionar Opção...',
 'LBL_WORKFLOW_NOTE_CRON_CONFIG'=>'NOTA: Você deve ter um script Cron configurado para o workflow.',
 'LBL_NO_TEMPLATES'=>'Nenhum modelo',
@@ -58,7 +58,7 @@ $mod_strings = array(
 'VTUpdateFieldsTask' => 'Atualizar campos',
 'LBL_ON_DELETE'=>'Ao apagar',
 
-'LBL_VALIDATION_DUPLICATE_FIELDNAMES' => 'Mesmo campo selecionado mais de uma vez.',
+'LBL_VALIDATION_DUPLICATE_FIELDNAMES' => 'O mesmo campo foi selecionado mais de uma vez.',
 'LBL_VALIDATION_INVALID_FIELD_VALUES' => 'Valores de campo inválidos',
 'LBL_CREATE_ENTITY_NOTE_ORDER_MATTERS' => 'Nota: As expressões serão avaliadas na ordem dos valores do campo fornecidos.
 							    Portanto, certifique-se de que tenha fornecido o valor para um campo antes de utilizá-lo na expressão.',
@@ -96,8 +96,8 @@ $mod_strings = array(
 'LBL_NO_ENTITIES_FOUND' => 'Nenhuma entidade encontrada para se criar',
 'LBL_PARENT_OWNER' => 'Proprietário de registro pai',
 'LBL_SPECIAL_OPTIONS' => 'Opções Especiais',
-'CBTagTask' => 'Adic/apagar Tag',
-'Add Tag' => 'Adic Tag',
+'CBTagTask' => 'Adicionar/Apagar Tag',
+'Add Tag' => 'Adicionar Tag',
 'Delete Tag' => 'Apagar Tag',
 'Tags' => 'Tags',
 'ForAllUsers' => 'Para todos os usuários',
@@ -158,6 +158,12 @@ $mod_strings = array(
 'Calculate or Update forecast amount' => 'Calcular ou atualizar o valor da previsão',
 'LBL_METHOD_NAME' => 'Nome do método',
 'NO_METHOD_AVAILABLE' => 'Nenhum método está disponível para este módulo.',
+'LBL_URLQUERY' => 'Query GMP',
+'gmp_url_explanation' => 'Module will apply default config (GA ID, version & ClientId), you must place in the query only specific elemnts,like hit type (t). You can look for Google Measurement protocol parameters here: <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters">Measurement Protocol Parameter Reference</a>',
+'url_query' => 'Query GMP',
+'CBGMPTask' => 'Google Measurement Protocol',
+'GenerateDocument'=>'Criar Documento',
+'Templates'=>'Templates',
 'launchrelwf' => 'Launch workflows on related updates',
 'LBL_WFPURPOSE' => 'Purpose',
 );

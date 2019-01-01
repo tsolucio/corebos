@@ -8,7 +8,6 @@
  ********************************************************************************/
 
 // ListView inline column search
-var doingAdhocColumnSearch = 0;
 /* function to clear all the inline search condition fields*/
 function clearAllField() {
 	doingAdhocColumnSearch = 0;

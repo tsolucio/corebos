@@ -14,6 +14,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
 	<title>{$MODULE|@getTranslatedString:$MODULE} - {$coreBOS_uiapp_name}</title>
 	<link REL="SHORTCUT ICON" HREF="themes/images/blank.gif">
+	<link rel="stylesheet" type="text/css" href="include/LD/assets/styles/override_lds.css">
 <script type="text/javascript">
 var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 var gVTUserID = "{$CURRENT_USER_ID}";

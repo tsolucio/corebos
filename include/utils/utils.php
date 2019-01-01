@@ -2927,7 +2927,7 @@ function getFieldValues($module) {
 	return $field_values_array;
 }
 
-/** To get security parameter for a particular module -- By Pavani*/
+/** To get security parameter for a particular module */
 function getSecParameterforMerge($module) {
 	global $current_user;
 	$tab_id = getTabid($module);

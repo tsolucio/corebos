@@ -694,7 +694,6 @@ class Users extends CRMEntity {
 	/** Function to get the current user information from the user_privileges file
 	 * @param $userid -- user id:: Type integer
 	 * @returns user info in $this->column_fields array:: Type array
-	 *
 	 */
 	public function retrieveCurrentUserInfoFromFile($userid) {
 		checkFileAccessForInclusion('user_privileges/user_privileges_' . $userid . '.php');

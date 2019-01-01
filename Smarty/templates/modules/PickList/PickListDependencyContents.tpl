@@ -35,7 +35,7 @@
 					{/foreach}
 				</select>
 			</td>
-			<td nowrap align="right" class="small cellLabel">
+			<td nowrap align="right" class="small cellLabel cblds-t-align_right">
 				{if $DEPENDENCY_MAP neq '' && $DEPENDENCY_MAP|@count > 0}
 				<input type="submit" value="{$APP.LBL_SAVE_BUTTON_LABEL}" name="save" class="crmButton small save" onclick="saveDependency('{$MODULE}');" />
 				{else}
@@ -56,7 +56,7 @@
 					</li>
 				</ul>
 			</td>
-			<td align="right" valign="top">
+			<td align="right" valign="top" class="cblds-t-align_right">
 				<input type="button" class="small create" onclick="show('sourceValuesSelectionDiv');placeAtCenter(document.getElementById('sourceValuesSelectionDiv'));"
 					value="{'LBL_BUTTON_SELECTED_SOURCE_VALUES'|@getTranslatedString:$PICKLIST_MODULE}"
 					title="{'LBL_BUTTON_SELECTED_SOURCE_VALUES'|@getTranslatedString:$PICKLIST_MODULE}"/>
@@ -83,7 +83,7 @@
 							{/foreach}
 							</tr>
 							<tr>
-								<td valign="top" colspan="4" align="center">
+								<td valign="top" colspan="4" align="center" class="cblds-t-align_center">
 									<input type="button" value="{$APP.LBL_APPLY_BUTTON_LABEL}" name="apply" class="crmButton small edit" onclick="loadMappingForSelectedValues(); fnhide('sourceValuesSelectionDiv');">
 									<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" name="cancel" class="crmButton small cancel" onclick="fnhide('sourceValuesSelectionDiv');">
 								</td>

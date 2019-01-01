@@ -19,39 +19,36 @@ require_once 'include/utils/utils.php';
 require_once 'include/database/PearDatabase.php';
 require_once 'include/utils/utils.php';
 
-$mapid = $_REQUEST["mapid"];
-$focus1 = CRMEntity::getInstance("cbMap");
-$focus1->retrieve_entity_info($mapid, "cbMap");
-$maptype = $focus1->column_fields["maptype"];
-$content = $focus1->column_fields["content"];
+$mapid = vtlib_purify($_REQUEST['mapid']);
+$focus1 = CRMEntity::getInstance('cbMap');
+$focus1->retrieve_entity_info($mapid, 'cbMap');
+$maptype = $focus1->column_fields['maptype'];
+$content = $focus1->column_fields['content'];
 
-function libxml_display_error($error)
-{
-    $return = "<br/>\n";
-    switch ($error->level) {
-        case LIBXML_ERR_WARNING:
-            $return .= "Warning: ";
-            break;
-        case LIBXML_ERR_ERROR:
-            $return .= "Error: ";
-            break;
-        case LIBXML_ERR_FATAL:
-            $return .= "Fatal Error: ";
-            break;
-    }
-    $return .= trim($error->message);
-    $return .= " on line <b>$error->line</b>\n";
-
-    return $return;
+function libxml_display_error($error) {
+	$return = "<br/>\n";
+	switch ($error->level) {
+		case LIBXML_ERR_WARNING:
+			$return .= 'Warning: ';
+			break;
+		case LIBXML_ERR_ERROR:
+			$return .= 'Error: ';
+			break;
+		case LIBXML_ERR_FATAL:
+			$return .= 'Fatal Error: ';
+			break;
+	}
+	$return .= trim($error->message);
+	$return .= " on line <b>$error->line</b>\n";
+	return $return;
 }
 
-function libxml_display_errors()
-{
-    $errors = libxml_get_errors();
-    foreach ($errors as $error) {
-        print libxml_display_error($error);
-    }
-    libxml_clear_errors();
+function libxml_display_errors() {
+	$errors = libxml_get_errors();
+	foreach ($errors as $error) {
+		print libxml_display_error($error);
+	}
+	libxml_clear_errors();
 }
 
 // Enable user error handling
@@ -61,10 +58,9 @@ $xml = new DOMDocument();
 $xml->loadXML($content1);
 
 if (!file_exists('modules/cbMap/XSD_schemas/' . $maptype . '.xsd')) {
-    echo "VALIDATION_NOT_IMPLEMENTED_YET";
-
+	echo 'VALIDATION_NOT_IMPLEMENTED_YET';
 } else {
-    if (!$xml->schemaValidate('modules/cbMap/XSD_schemas/' . $maptype . '.xsd')) {
-        libxml_display_errors();
-    }
+	if (!$xml->schemaValidate('modules/cbMap/XSD_schemas/' . $maptype . '.xsd')) {
+		libxml_display_errors();
+	}
 }

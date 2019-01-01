@@ -14,6 +14,7 @@ require_once 'include/utils/RecurringType.php';
 require_once 'include/utils/EmailTemplate.php';
 require_once 'include/QueryGenerator/QueryGenerator.php';
 require_once 'include/ListView/ListViewController.php';
+require_once 'modules/cbtranslation/cbtranslation.php';
 
 /**
  * Check if user object belongs to a system admin.
@@ -2533,7 +2534,7 @@ function getrecurringObjValue() {
 function getTranslatedString($str, $module = '') {
 	global $app_strings, $mod_strings, $current_language;
 	$temp_mod_strings = ($module != '' ) ? return_module_language($current_language, $module) : $mod_strings;
-	$trans_str = (!empty($temp_mod_strings[$str]) ? $temp_mod_strings[$str] : (!empty($app_strings[$str]) ? $app_strings[$str] : $str));
+	$trans_str = (!empty($temp_mod_strings[$str]) ? $temp_mod_strings[$str] : (!empty($app_strings[$str]) ? $app_strings[$str] : cbtranslation::get($str, $module)));
 	return $trans_str;
 }
 

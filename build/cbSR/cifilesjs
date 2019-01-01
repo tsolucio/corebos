@@ -57,6 +57,7 @@
 ./modules/MailManager/MailManager.js
 ./modules/Accounts/Accounts.js
 ./modules/cbMap/cbMap.js
+./modules/ProductComponent/ProductComponent.js
 ./modules/cbTermConditions/cbTermConditions.js
 ./modules/Campaigns/Campaigns.js
 ./modules/Invoice/Invoice.js
@@ -90,6 +91,7 @@
 ./modules/Reports/ReportsSteps.js
 ./modules/Reports/Reports.js
 ./modules/cbAuditTrail/cbAuditTrail.js
+./modules/cbQuestion/cbQuestion.js
 ./modules/PriceBooks/PriceBooks.js
 ./modules/Mobile/resources/settings.js
 ./modules/Mobile/resources/lang/nl_nl.lang.js
@@ -98,6 +100,7 @@
 ./modules/Mobile/resources/lang/fr_fr.lang.js
 ./modules/Mobile/resources/lang/es_es.lang.js
 ./modules/Mobile/resources/lang/pt_br.lang.js
+./modules/Mobile/resources/lang/en_gb.lang.js
 ./modules/Mobile/resources/lang/de_de.lang.js
 ./modules/Mobile/resources/crmtogo.js
 ./modules/Mobile/resources/documents.js
@@ -118,6 +121,7 @@
 ./modules/com_vtiger_workflow/resources/fieldvalidator.js
 ./modules/com_vtiger_workflow/resources/edittaskscript.js
 ./modules/Quotes/Quotes.js
+./modules/cbCompany/cbCompany.js
 ./modules/GlobalVariable/GlobalVariable.js
 ./modules/PurchaseOrder/PurchaseOrder.js
 ./massedit-worker.js
@@ -156,4 +160,5 @@
 ./include/js/search.js
 ./include/js/Inventory.js
 ./include/js/RelatedLists.js
+./include/js/FieldDepFunc.js
 ./include/js/dedup.js

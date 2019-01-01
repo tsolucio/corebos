@@ -9,7 +9,7 @@
       <div id="map_error" style="display:none">
          </br>
          <div align="center" class="slds-popover_small role="dialog">
-            <div class="slds-popover__header slds-theme--error" >
+            <div class="slds-popover__header slds-theme_error" >
                <h3>{$MOD.MAP_NOT_VALID}</h3>
             </div>
             <div id="map_validation_message" class="slds-popover__body"></div>
@@ -17,13 +17,13 @@
       </div>
       <div id="map_valid" style="display:none">
          </br>
-         <div align="center" class="slds-popover_small slds-theme--success" role="dialog">
+         <div align="center" class="slds-popover_small slds-theme_success" role="dialog">
             <div id="map_validation_message" class="slds-popover__body">{$MOD.MAP_VALID}</div>
          </div>
       </div>
       <div id="map_not_implemented_yet" style="display:none">
          </br>
-         <div align="center" class="slds-popover_small slds-theme--warning" role="dialog">
+         <div align="center" class="slds-popover_small slds-theme_warning" role="dialog">
             <div id="map_validation_message" class="slds-popover__body">{$MOD.MAP_NOT_IMPLEMENTED_YET}</div>
          </div>
       </div>

@@ -9,7 +9,6 @@
  ************************************************************************************/
 $mod_strings = array (
 'WSAPP' => 'WSAPP',
-'WSAPPInfo' => 'This extension enhances the application with a set of internal functions to sync with Outlook. It has no visible functionality so you can eliminate it from the menu.',
+'WSAPPInfo' => 'Esta extensão melhora a aplicação através de um conjunto de funcionalidades internas a sincronizar com o Outlook. Não tem qualquer funcionalidade visível pelo que é possível eliminá-la a partir do menú.',
 );
-
 ?>
