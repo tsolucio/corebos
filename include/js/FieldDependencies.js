@@ -84,9 +84,15 @@ FieldDependencies.prototype.setup = function (sourceform, datasource) {
 	var nodelist = document.querySelectorAll('input,select');
 	for (var i = 0; i < nodelist.length; i++) {
 		// we should use addEventListener here but it doesn't work on the jscalendar element nor on the initial loading of the page
-		nodelist[i].onchange = function (ev) {
-			thisContext.actOnSelectChange(ev);
-		};
+		if (nodelist[i].id.substring(0, 12)=='jscal_field_') {
+			nodelist[i].onchange = function (ev) {
+				thisContext.actOnSelectChange(ev);
+			};
+		} else {
+			jQuery('#'+nodelist[i].id).bind('change', function (ev) {
+				thisContext.actOnSelectChange(ev);
+			});
+		}
 	};
 };
 
