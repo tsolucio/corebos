@@ -8,7 +8,7 @@
  ************************************************************************************/
 
 var webforms_alert_arr = {
-	'LBL_MADATORY_FIELDS' : 'Please enter value for mandatory fields',
-	'LBL_DELETE_MSG' : 'Are you sure, you want to delete the webform?',
-	'LBL_DUPLICATE_NAME' : 'Webform already exists'
+	'LBL_MADATORY_FIELDS' : 'Por favor insira um valor nos campos obrigatórios',
+	'LBL_DELETE_MSG' : 'Tem a certeza que deseja eliminar este webform?',
+	'LBL_DUPLICATE_NAME' : 'Webform já existente'
 };

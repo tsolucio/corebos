@@ -9,14 +9,18 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Nome Módulo',
-	'SINGLE_ModuleName' => 'Nome Módulo',
-	'ModuleName ID' => 'ID Nome Módulo',
+	'cbSurveyQuestion' => 'Perguntas do Questionário',
+	'SINGLE_cbSurveyQuestion' => 'Pergunta do Questionário',
+	'cbSurveyQuestion ID' => 'ID Pergunta do Questionário',
 
-	'LBL_CUSTOM_INFORMATION' => 'Imformação Customizada',
-	'LBL_MODULEBLOCK_INFORMATION' => 'Informação Bloco Módulo',
+	'LBL_CUSTOM_INFORMATION' => 'Informação Personalizada',
+	'LBL_MODULEBLOCK_INFORMATION' => 'Informação Pergunta do Questionário',
 	'LBL_DESCRIPTION_INFORMATION' => 'Descrição',
 
-	'ModuleFieldLabel' => 'Texto Etiqueta Campo Módulo',
+	'cbsurveyquestion_no' => 'Nº Pergunta do Questionário',
+	'cbsurvey' => 'Questionário',
+	'cbsquestion' => 'Pergunta',
+	'cbsanswer' => 'Resposta',
+	'cbsq_providerid' => 'ID Fornecedor',
 );
 ?>
