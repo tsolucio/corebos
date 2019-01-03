@@ -444,11 +444,10 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			}
 			$pickListResult = $adb->pquery($pick_query, $params);
 			$noofpickrows = $adb->num_rows($pickListResult);
-			$sal_value = $col_fields['salutationtype'];
+			$sal_value = empty($col_fields['salutationtype']) ? '' : $col_fields['salutationtype'];
 			$salcount = 0;
 			for ($j = 0; $j < $noofpickrows; $j++) {
 				$pickListValue = $adb->query_result($pickListResult, $j, 'salutationtype');
-
 				if ($sal_value == $pickListValue) {
 					$chk_val = 'selected';
 					$salcount++;
@@ -460,7 +459,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			if ($salcount == 0 && $sal_value != '') {
 				$notacc = $app_strings['LBL_NOT_ACCESSIBLE'];
 			}
-			$sal_value = $col_fields['salutationtype'];
 			if ($sal_value == '--None--') {
 				$sal_value = '';
 			}
