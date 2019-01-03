@@ -247,7 +247,6 @@ class cbQuestion extends CRMEntity {
 				$labels[] = getTranslatedString($answer[$x][$properties->key_label], $module);
 				$values[] = $answer[$x][$properties->key_value];
 			}
-			
 			$chart .= '<script src="include/chart.js/Chart.min.js"></script>
 				<script src="include/chart.js/randomColor.js"></script>';
 			$chart .= '<div class="hide_tab" style="width: 70%;">';
