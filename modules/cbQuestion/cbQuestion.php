@@ -199,6 +199,7 @@ class cbQuestion extends CRMEntity {
 			'type' => $q->column_fields['qtype'],
 			'module' => $q->column_fields['qmodule'],
 			'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
+			'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
 			'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
 			'answer' => vtws_query($query, $current_user)
 		);
@@ -230,6 +231,80 @@ class cbQuestion extends CRMEntity {
 			$table .= '</table>';
 		}
 		return $table;
+	}
+
+	public static function getChartFromAnswer($ans) {
+		$chart = '';
+		if (!empty($ans)) {
+			$title = $ans['title'];
+			$answer = $ans['answer'];
+			$module = $ans['module'];
+			$type = $ans['type'];
+			$properties = json_decode($ans['properties']);
+			$labels = array();
+			$values = array();
+			for ($x = 0; $x < count($answer); $x++) {
+				$labels[] = getTranslatedString($answer[$x][$properties->key_label], $module);
+				$values[] = $answer[$x][$properties->key_value];
+			}
+			$chart .= '<script src="include/chart.js/Chart.min.js"></script>
+				<script src="include/chart.js/randomColor.js"></script>';
+			$chart .= '<div class="hide_tab" style="width: 70%;">';
+			$chart .= '<h2>'.$title.' - '.$type.' Chart</h2>';
+			$chart .= '<canvas id="chartAns" style="width:500px;height:250px;margin:auto;padding:10px;"></canvas>';
+			$chart .= '
+				<script type="text/javascript">
+					function getRandomColor() {
+						return randomColor({
+							luminosity: "dark",
+							hue: "random"
+						});
+					}
+
+					window.doChartAns = function(charttype) {
+						let chartans = document.getElementById("chartAns");
+						let context = chartans.getContext("2d");
+						context.clearRect(0, 0, chartans.width, chartans.height);
+					
+						let chartDataObject = {
+							labels: '.json_encode($labels).',
+							datasets: [{
+								data: '.json_encode($values).',
+								backgroundColor: [getRandomColor(),getRandomColor()]
+							}]
+						};
+						var maxnum = Math.max.apply(Math, chartDataObject.datasets[0].data);
+						var maxgrph = Math.ceil(maxnum + (5 * maxnum / 100));
+						Chart.scaleService.updateScaleDefaults("linear", {
+							ticks: {
+								min: 0,
+								max: maxgrph
+							}
+						});
+						window.chartAns = new Chart(chartans,{
+							type: charttype,
+							data: chartDataObject,
+							options: {
+								responsive: true,
+								legend: {
+									position: "right",
+									display: (charttype=="pie"),
+									labels: {
+										fontSize: 11,
+										boxWidth: 18
+									}
+								}
+							}
+						});
+					}
+
+					let charttype = "'.$type.'";
+					doChartAns(charttype);
+				</script>
+			';
+			$chart .= '</div>';
+		}
+		return $chart;
 	}
 }
 ?>
