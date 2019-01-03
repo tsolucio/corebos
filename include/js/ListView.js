@@ -329,6 +329,19 @@ function massedit_initOnChangeHandlers() {
 	}
 }
 
+function mass_edit1x1(obj) {
+	var select_options = document.getElementById('allselectedboxes').value;
+	var x = select_options.split(';');
+	if (select_options!='all' && x.length<=1) {
+		alert(alert_arr.SELECT);
+	} else {
+		document.getElementById('action').value='EditView';
+		document.getElementById('massedit1x1').value='s';
+		document.getElementById('massdelete').submit();
+	}
+	return false;
+}
+
 function mass_edit(obj, divid, module, parenttab) {
 	var select_options = document.getElementById('allselectedboxes').value;
 	var numOfRows = document.getElementById('numOfRows').value;

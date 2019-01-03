@@ -12,6 +12,20 @@ global $current_user, $currentModule, $singlepane_view;
 checkFileAccessForInclusion("modules/$currentModule/$currentModule.php");
 require_once "modules/$currentModule/$currentModule.php";
 
+if (isset($_REQUEST['saverepeat']) && $_REQUEST['saverepeat']=='skip' && coreBOS_Session::has('ME1x1Info')) {
+	$ME1x1Info = coreBOS_Session::get('ME1x1Info', array());
+	if (count($ME1x1Info['pending'])==1) {
+		coreBOS_Session::delete('ME1x1Info');// we are done
+		header('Location: index.php?action=ListView&module='.$currentModule);
+		die();
+	}
+	array_shift($ME1x1Info['pending']); // this one is skipped
+	$ME1x1Info['processed'][] = $ME1x1Info['next'];
+	$ME1x1Info['next'] = $ME1x1Info['pending'][0];
+	coreBOS_Session::set('ME1x1Info', $ME1x1Info);
+	header('Location: index.php?action=EditView&record='.$ME1x1Info['pending'][0].'&module='.$currentModule);
+	die();
+}
 if (isset($_REQUEST['search_url'])) {
 	$search = vtlib_purify($_REQUEST['search_url']);
 	if (substr($search, 0, 1) != '&') {
@@ -117,7 +131,30 @@ if (!isset($__cbSaveSendHeader) || $__cbSaveSendHeader) {
 	if (isset($_REQUEST['Module_Popup_Edit']) && $_REQUEST['Module_Popup_Edit']==1) {
 		echo '<script>window.close();</script>';
 	} else {
-		header('Location: index.php?' . $req->getReturnURL() . $search);
+		if (!empty($_REQUEST['saverepeat'])) {
+			$sesreq = coreBOS_Session::get('saverepeatRequest', array());
+			$sesreq['CANCELGO'] = 'index.php?' . $req->getReturnURL() . $search;
+			coreBOS_Session::set('saverepeatRequest', $sesreq);
+			header('Location: index.php?action=EditView&saverepeat=1&module='.$currentModule);
+		} else {
+			if (coreBOS_Session::has('ME1x1Info')) {
+				$ME1x1Info = coreBOS_Session::get('ME1x1Info', array());
+				if (count($ME1x1Info['pending'])==1) {
+					coreBOS_Session::delete('ME1x1Info');// we are done
+					header('Location: index.php?' . $req->getReturnURL() . $search);
+				} else {
+					array_shift($ME1x1Info['pending']); // this one is done
+					$ME1x1Info['processed'][] = $ME1x1Info['next'];
+					$ME1x1Info['next'] = $ME1x1Info['pending'][0];
+					coreBOS_Session::set('ME1x1Info', $ME1x1Info);
+					$ME1x1Info = coreBOS_Session::get('ME1x1Info', array());
+					header('Location: index.php?action=EditView&record='.$ME1x1Info['pending'][0].'&module='.$currentModule);
+				}
+			} else {
+				header('Location: index.php?' . $req->getReturnURL() . $search);
+			}
+		}
 	}
+	die();
 }
 ?>

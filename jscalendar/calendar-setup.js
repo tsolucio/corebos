@@ -114,8 +114,9 @@ Calendar.setup = function (params) {
 		}
 		if (update && p.inputField) {
 			p.inputField.value = cal.date.print(p.ifFormat);
-			if (typeof p.inputField.onchange == "function")
-				p.inputField.onchange();
+			if (typeof p.inputField.onchange == 'function') {
+				p.inputField.dispatchEvent(new Event('change')); // p.inputField.onchange();
+			}
 		}
 		if (update && p.displayArea) {
 			p.displayArea.innerHTML = cal.date.print(p.daFormat);

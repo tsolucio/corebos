@@ -244,6 +244,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'all | admin | none',
 	'definition' => 'Permet l\'activation ou la désactivation de la fonctionalité export. Si "all" (par défaut) tous les utilisateurs peuvent exporter. Si "admin" seul les administrateurs peuvent exporter. Si "none" personne ne peut exporter.',
 ),
+'Application_SaveAndRepeatActive' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Activate "Save and Repeat" action in edit mode. Default deactivated',
+),
 'Application_ListView_Max_Text_Length' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Entier',
