@@ -200,7 +200,6 @@ class cbQuestion extends CRMEntity {
 			'module' => $q->column_fields['qmodule'],
 			'title' => html_entity_decode($q->column_fields['qname'], ENT_QUOTES, $default_charset),
 			'type' => html_entity_decode($q->column_fields['qtype'], ENT_QUOTES, $default_charset),
-			'columns' => html_entity_decode($q->column_fields['qcolumns'], ENT_QUOTES, $default_charset),
 			'properties' => html_entity_decode($q->column_fields['typeprops'], ENT_QUOTES, $default_charset),
 			'answer' => vtws_query($query, $current_user)
 		);
@@ -240,14 +239,13 @@ class cbQuestion extends CRMEntity {
 			$title = $ans['title'];
 			$answer = $ans['answer'];
 			$module = $ans['module'];
-			$columns = explode(",", str_replace(" ","", $ans['columns']));
 			$type = $ans['type'];
-			$type = "bar"; //<- Hardcoded
+			$properties = json_decode($ans['properties']);
 			$labels = array();
-			$data = array();
+			$values = array();
 			for ($x = 0; $x < count($answer); $x++) {
-				$labels[] = $answer[$x][$columns[0]];
-				$data[] = $answer[$x][$columns[1]];
+				$labels[] = getTranslatedString($answer[$x][$properties->key_label], $module);
+				$values[] = $answer[$x][$properties->key_value];
 			}
 			
 			$chart .= '<script src="include/chart.js/Chart.min.js"></script>
@@ -272,7 +270,7 @@ class cbQuestion extends CRMEntity {
 						let chartDataObject = {
 							labels: '.json_encode($labels).',
 							datasets: [{
-								data: '.json_encode($data).',
+								data: '.json_encode($values).',
 								backgroundColor: [getRandomColor(),getRandomColor()]
 							}]
 						};
