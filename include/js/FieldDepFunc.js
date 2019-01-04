@@ -1,4 +1,3 @@
-
 function fieldDep_AddDays(change_field, action_field, new_value, old_value, parameters) {
 	var date=new_value.split('-');
 	var dd, mm, y;
@@ -49,18 +48,18 @@ function fieldDep_OnlyLetters(change_field, action_field, new_value, old_value, 
 }
 
 function fieldDep_GetField(change_field, action_field, new_value, old_value, parameters) {
-	
+	alert(parameters);	
 }
 
 function fieldDep_AssignNewValue(change_field, action_field, new_value, old_value, parameters) {
-	document.getElementsByName(action_field).item(0).value = new_value.replace(old_value,new_value);
+	document.getElementsByName(action_field).item(0).value = new_value.replace(old_value/g, new_value);
 }
 
 function fieldDep_Format(change_field, action_field, new_value, old_value, parameters) {
-
+	
 }
 
 function fieldDep_ChangeLabel(change_field, action_field, new_value, old_value, parameters) {
-	//document.getElementsByName('td_'.action_field).item(0).value = new_value.replace(old_value,new_value);
+	
 }
 
