@@ -1297,6 +1297,7 @@ $app_strings = array (
 	'notsaved' => 'no guardado',
 	'processcomplete' => 'Proceso Terminado',
 	'typetosearch_prodser' => 'Busca productos o servicios',
+	'RecordIsAssignedToInactiveUser' => 'El registro está asignado a un usuario inactivo. Por favor selecciona otro usuario.',
 );
 
 // Translation for currency names

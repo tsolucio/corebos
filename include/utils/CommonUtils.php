@@ -3476,4 +3476,20 @@ function getSearchModulesCommon($filter = array()) {
 	}
 	return $return_arr;
 }
+
+function recordIsAssignedToInactiveUser($crmid) {
+	global $adb;
+	if (empty($crmid)) { // creating
+		return false;
+	} else { // editing
+		$urs = $adb->pquery(
+			'select vtiger_users.status
+				from vtiger_crmentity
+				inner join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
+				where crmid = ?',
+			array($crmid)
+		);
+		return ($adb->query_result($urs, 0, 'status')=='Inactive');
+	}
+}
 ?>

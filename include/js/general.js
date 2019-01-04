@@ -1228,9 +1228,10 @@ function doServerValidation(edit_type, formName, callback) {
 		var action = 'Save';
 	}
 	let SVModule = document.forms[formName].module.value;
+	let SVRecord = document.forms[formName].record.value;
 	//Testing if a Validation file exists
 	jQuery.ajax({
-		url: 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule='+SVModule,
+		url: 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule='+SVModule+'&crmid='+SVRecord,
 		type:'get'
 	}).fail(function (jqXHR, textStatus) {
 		//Validation file does not exist

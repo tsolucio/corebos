@@ -277,6 +277,11 @@ class Validations extends processcbMap {
 		return ($rs && $adb->num_rows($rs)==1);
 	}
 
+	public static function recordIsAssignedToInactiveUser() {
+		$screen_values = json_decode($_REQUEST['structure'], true);
+		return recordIsAssignedToInactiveUser($screen_values['record']);
+	}
+
 	public static function processAllValidationsFor($module) {
 		global $adb;
 		$screen_values = json_decode($_REQUEST['structure'], true);

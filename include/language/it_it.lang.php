@@ -1202,6 +1202,7 @@ $app_strings = array (
 'notsaved' => 'non salvato',
 'processcomplete' => 'Processo Completato',
 'typetosearch_prodser' => 'Type to search products or services',
+'RecordIsAssignedToInactiveUser' => 'The record is assigned to an inactive user. Please select another user.',
 );
 
 // Translation for currency names
