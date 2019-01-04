@@ -1,4 +1,3 @@
-
 function fieldDep_AddDays(change_field, action_field, new_value, old_value, parameters) {
 	var datesep = '-';
 	if (new_value.indexOf('-')>=0) {
@@ -43,26 +42,26 @@ function fieldDep_SubDays(change_field, action_field, new_value, old_value, para
 }
 
 function fieldDep_OnlyNumbers(change_field, action_field, new_value, old_value, parameters) {
-alert('ddj');
+	document.getElementsByName(action_field).item(0).value = new_value.replace(/\D/g,'');
 }
 
-function fieldDep_OnlyLetters(change_field, action_field, new_value, old_value, parameters) {
-
+function fieldDep_OnlyLetters(change_field, action_field, new_value, old_value, parameters) { 
+	document.getElementsByClassName(action_field).item(0).value = new_value.replace(/[^A-Za-z]/g,'');
 }
 
 function fieldDep_GetField(change_field, action_field, new_value, old_value, parameters) {
-
+	alert(parameters);	
 }
 
 function fieldDep_AssignNewValue(change_field, action_field, new_value, old_value, parameters) {
-
+	document.getElementsByName(action_field).item(0).value = new_value.replace(old_value/g, new_value);
 }
 
 function fieldDep_Format(change_field, action_field, new_value, old_value, parameters) {
-
+	
 }
 
 function fieldDep_ChangeLabel(change_field, action_field, new_value, old_value, parameters) {
-
+	
 }
 
