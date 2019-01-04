@@ -93,7 +93,7 @@ FieldDependencies.prototype.setup = function (sourceform, datasource) {
 				thisContext.actOnSelectChange(ev);
 			});
 		}
-	};
+	}
 };
 
 /**
