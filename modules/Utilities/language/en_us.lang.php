@@ -26,5 +26,6 @@ $mod_strings = array(
 	'GoTo2FAActivation' => 'Two Factor Activation',
 	'2FA Secret Code' => '2FA Secret Code',
 	'Available Integrations' => 'Available Integrations',
+	'Zendesk Activation' => 'Zendesk Activation',
 );
 ?>

@@ -31,5 +31,6 @@ $mod_strings = array(
 	'GoTo2FAActivation' => 'Verificación en Dos Pasos',
 	'2FA Secret Code' => 'Código Secreto Dos Pasos',
 	'Available Integrations' => 'Integraciones Disponibles',
+	'Zendesk Activation' => 'Activación Zendesk',
 );
 ?>
