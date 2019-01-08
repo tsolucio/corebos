@@ -31,5 +31,11 @@ $mod_strings = array(
 	'2FA Activation' => 'Ativação da Verificação em Dois Passos',
 	'GoTo2FAActivation' => 'Verificação em Dois Passos',
 	'2FA Secret Code' => 'Código Secreto Dois Passos',
+	'Available Integrations' => 'Available Integrations',
+	'Zendesk Activation' => 'Zendesk Activation',
+	'zendesk_active' => 'Integration Active',
+	'zendesk_apiurl' => 'API Domain',
+	'zendesk_accessCode' => 'Zendesk Access Token',
+	'zendesk_username' => 'Zendesk User Name',
 );
 ?>
