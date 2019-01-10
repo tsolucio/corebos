@@ -105,6 +105,18 @@ abstract class WebserviceEntityOperation {
 					}
 					$typeDetails['picklistValues'] = $crs;
 				}
+				if ($webserviceField->getUIType()==77) {
+					$mname = getTabModuleName($webserviceField->getTabId());
+					$crs = array();
+					$res=json_decode(vtws_getAssignedUserList($mname, $current_user), true);
+					for ($i=0; $i<count($res); $i++) {
+						$crs[] = array(
+							'value' => $res[$i]['userid'],
+							'label' => $res[$i]['username'],
+						);
+					}
+					$typeDetails['picklistValues'] = $crs;
+				}
 				break;
 			case 'multipicklist':
 			case 'picklist':
