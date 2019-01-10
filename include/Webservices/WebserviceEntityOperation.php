@@ -74,11 +74,24 @@ abstract class WebserviceEntityOperation {
 	}
 
 	public function getFieldTypeDetails($webserviceField) {
-		global $current_user;
+		global $current_user, $adb;
 		$typeDetails = array();
 		switch ($webserviceField->getFieldDataType()) {
 			case 'reference':
 				$typeDetails['refersTo'] = $webserviceField->getReferenceList();
+				if (in_array('DocumentFolders', $typeDetails['refersTo'])) {
+					$fldrs = array();
+					$fldwsid = vtws_getEntityId('DocumentFolders').'x';
+					$res=$adb->pquery('select foldername,folderid from vtiger_attachmentsfolder order by foldername', array());
+					for ($i=0; $i<$adb->num_rows($res); $i++) {
+						$fid=$adb->query_result($res, $i, 'folderid');
+						$fldrs[] = array(
+							'value' => $fldwsid.$fid,
+							'label' => $adb->query_result($res, $i, 'foldername'),
+						);
+					}
+					$typeDetails['picklistValues'] = $fldrs;
+				}
 				break;
 			case 'multipicklist':
 			case 'picklist':
