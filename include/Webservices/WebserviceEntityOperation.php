@@ -92,6 +92,19 @@ abstract class WebserviceEntityOperation {
 					}
 					$typeDetails['picklistValues'] = $fldrs;
 				}
+				if (in_array('Currency', $typeDetails['refersTo'])) {
+					$crs = array();
+					$cwsid = vtws_getEntityId('Currency').'x';
+					$res=$adb->pquery("select * from vtiger_currency_info where currency_status = 'Active' and deleted=0", array());
+					for ($i=0; $i<$adb->num_rows($res); $i++) {
+						$cid=$adb->query_result($res, $i, 'id');
+						$crs[] = array(
+							'value' => $cwsid.$cid,
+							'label' => $adb->query_result($res, $i, 'currency_name'),
+						);
+					}
+					$typeDetails['picklistValues'] = $crs;
+				}
 				break;
 			case 'multipicklist':
 			case 'picklist':
