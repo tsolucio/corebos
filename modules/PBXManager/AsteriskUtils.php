@@ -170,9 +170,7 @@ function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, 
 			'HelpDesk'=>'vtiger_seactivityrel',
 			'Potentials'=>'vtiger_seactivityrel',
 		);
-		$sql = 'insert into '.$tablename[$callerInfo['module']].' values (?,?)';
-		$params = array($callerInfo['id'], $focus->id);
-		$adb->pquery($sql, $params);
+		$adb->pquery('insert ignore into '.$tablename[$callerInfo['module']].' values (?,?)', array($callerInfo['id'], $focus->id));
 	}
 	return $focus->id;
 }
@@ -206,9 +204,7 @@ function addOutgoingcallHistory($current_user, $extension, $record, $adb) {
 
 	if (!empty($setype)) {
 		$tablename = array('Contacts'=>'vtiger_cntactivityrel', 'Accounts'=>'vtiger_seactivityrel', 'Leads'=>'vtiger_seactivityrel');
-		$sql = 'insert into '.$tablename[$setype].' values (?,?)';
-		$params = array($record, $focus->id);
-		$adb->pquery($sql, $params);
+		$adb->pquery('insert ignore into '.$tablename[$setype].' values (?,?)', array($record, $focus->id));
 		$status = 'success';
 	} else {
 		$status = 'failure';
