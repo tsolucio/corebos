@@ -127,6 +127,13 @@ class Validations extends processcbMap {
 		$mapping=$this->convertMap2Array();
 		$tabid = getTabid($mapping['origin']);
 		$screen_values = $arguments[0];
+		foreach ($mapping['fields'] as $valfield => $vals) {
+			if (isset($screen_values['action']) && $screen_values['action']=='DetailViewEdit' && $screen_values['dtlview_edit_fieldcheck']!=$valfield
+			&& !isset($screen_values[$valfield]) && isset($screen_values['current_'.$valfield])
+			) {
+				$screen_values[$valfield] = $screen_values['current_'.$valfield];
+			}
+		}
 		$v = new cbValidator($screen_values);
 		$validations = array();
 		foreach ($mapping['fields'] as $valfield => $vals) {
@@ -142,10 +149,6 @@ class Validations extends processcbMap {
 				switch ($rule) {
 					case 'required':
 					case 'accepted':
-						if (isset($screen_values[$valfield])) {
-							$v->rule($rule, $valfield)->label($i18n);
-						}
-						break;
 					case 'numeric':
 					case 'integer':
 					case 'array':

@@ -578,6 +578,8 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 					sentForm[fieldName] = document.getElementById('txtbox_'+fieldName).value;
 					break;
 				}
+				sentForm['action'] = 'DetailViewEdit';
+				sentForm['dtlview_edit_fieldcheck'] = fieldName;
 				//JSONize form data
 				sentForm = JSON.stringify(sentForm);
 				jQuery.ajax({
