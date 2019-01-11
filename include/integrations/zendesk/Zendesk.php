@@ -30,13 +30,13 @@ class corebos_zendesk {
 	private $username = 'joe@tsolucio.com';
 
 	// Configuration Keys
-	private const KEY_ISACTIVE = 'zendesk_isactive';
-	private const KEY_API_URL = 'zendesk_apiurl';
-	private const KEY_ACCESSCODE = 'zendesk_accessCode';
-	private const KEY_USERNAME = 'zendesk_accessToken';
+	const KEY_ISACTIVE = 'zendesk_isactive';
+	const KEY_API_URL = 'zendesk_apiurl';
+	const KEY_ACCESSCODE = 'zendesk_accessCode';
+	const KEY_USERNAME = 'zendesk_accessToken';
 
 	// Debug
-	private const DEBUG = true;
+	const DEBUG = true;
 
 	// Errors
 	public static $ERROR_NONE = 0;
