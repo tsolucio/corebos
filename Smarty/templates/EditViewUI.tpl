@@ -105,7 +105,6 @@
 			{/if}
 			{if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
 			{$fldhelplink}
-
 			</td>
 			<td id="td_val_{$fldname}" width="30%" align=left class="dvtCellInfo">
 				<input id="{$fldname}" name="{$fldname}" type="hidden" value="{$fldvalue.entityid}">
