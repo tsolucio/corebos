@@ -100,7 +100,7 @@ class WebserviceField {
 				self::$moduleLinks[$this->tabid] = $links;
 			}
 
-			if (in_array($this->fieldName, self::$moduleLinks[$this->tabid])) {
+			if (in_array($this->fieldName, self::$moduleLinks[$this->tabid]) || in_array($this->columnName, self::$moduleLinks[$this->tabid])) {
 				$this->summary = 'T';
 			} else {
 				$this->summary = 'B';
