@@ -126,6 +126,9 @@ class Validations extends processcbMap {
 		global $adb;
 		$mapping=$this->convertMap2Array();
 		$tabid = getTabid($mapping['origin']);
+		if (isset($arguments[2]) && $arguments[2]==true) {
+			$mapping=$this->addFieldValidations($mapping, $tabid);
+		}
 		$screen_values = $arguments[0];
 		foreach ($mapping['fields'] as $valfield => $vals) {
 			if (isset($screen_values['action']) && $screen_values['action']=='DetailViewEdit' && $screen_values['dtlview_edit_fieldcheck']!=$valfield
@@ -271,6 +274,30 @@ class Validations extends processcbMap {
 		return $mapping;
 	}
 
+	private function addFieldValidations($mapping, $tabid) {
+		$validationData = getDBValidationData(array(), $tabid);
+		foreach ($validationData as $fname => $finfo) {
+			foreach ($finfo as $flabel => $fvalidation) {
+				if (strpos($fvalidation, '~M')) {
+					if (isset($mapping['fields'][$fname])) {
+						$mapping['fields'][$fname][] = array('rule'=>'required', 'rst'=>array());
+					} else {
+						$mapping['fields'][$fname] = array(array('rule'=>'required', 'rst'=>array()));
+					}
+				}
+				if (strpos($fvalidation, '~OTH~')) { //D~O~OTH~GE~support_start_date~Support Start Date
+					$val = explode('~', $fvalidation);
+					if (isset($mapping['fields'][$fname])) {
+						$mapping['fields'][$fname][] = array('rule'=>'dateAfter', 'rst'=>array('{{'.$val[4].'}}'));
+					} else {
+						$mapping['fields'][$fname] = array(array('rule'=>'dateAfter', 'rst'=>array('{{'.$val[4].'}}')));
+					}
+				}
+			}
+		}
+		return $mapping;
+	}
+
 	public static function ValidationsExist($module) {
 		global $adb;
 		$q = 'select 1 from vtiger_cbmap
@@ -319,10 +346,12 @@ class Validations extends processcbMap {
 		$focus = new cbMap();
 		$focus->mode = '';
 		$validation = true;
+		$addFieldValidations = true;
 		while ($val = $adb->fetch_array($rs)) {
 			$focus->id = $val['cbmapid'];
 			$focus->retrieve_entity_info($val['cbmapid'], 'cbMap');
-			$validation = $focus->Validations($screen_values, $record);
+			$validation = $focus->Validations($screen_values, $record, $addFieldValidations);
+			$addFieldValidations = false;
 			if ($validation!==true) {
 				break;
 			}
