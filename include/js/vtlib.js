@@ -37,6 +37,7 @@ function vtlib_setvalue_from_popup(recordid, value, target_fieldname, formname) 
 		}
 		if (domnode_id) {
 			domnode_id.value = recordid;
+			window.opener.document.getElementById(target_fieldname).dispatchEvent(new Event('change'));
 		}
 		if (domnode_display) {
 			domnode_display.value = value;

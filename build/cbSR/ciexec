@@ -1,0 +1,2 @@
+phpcs.phar --standard=build/cbSR/ci.xml --extensions=inc,js,php,service `cat build/cbSR/cifiles`
+eslint -c build/cbSR/eslintci.js `cat build/cbSR/cifilesjs`

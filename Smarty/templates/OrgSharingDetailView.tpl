@@ -44,12 +44,12 @@ DIV.fixedLay {
 				<!-- DISPLAY -->
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 				<tr>
-					<td width=50 rowspan=2 valign=top class="cblds-p--none"><img src="{'shareaccess.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" width="48" height="48" border=0 title="{$MOD.LBL_USERS}"></td>
+					<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'shareaccess.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" width="48" height="48" border=0 title="{$MOD.LBL_USERS}"></td>
 					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_SHARING_ACCESS} </b></td>
 					<td rowspan=2 class="small" align=right>&nbsp;</td>
 				</tr>
 				<tr>
-					<td valign=top class="small cblds-p-v--none">{$MOD.LBL_SHARING_ACCESS_DESCRIPTION}</td>
+					<td valign=top class="small cblds-p-v_none">{$MOD.LBL_SHARING_ACCESS_DESCRIPTION}</td>
 				</tr>
 				</table>
 
@@ -66,7 +66,7 @@ DIV.fixedLay {
 				<input type="hidden" name="parenttab" value="Settings">
 				<tr>
 					<td class="big"><strong>1. {$CMOD.LBL_GLOBAL_ACCESS_PRIVILEGES}</strong></td>
-					<td class="small cblds-t-align--right" align=right>
+					<td class="small cblds-t-align_right" align=right>
 						<input class="crmButton small cancel" title="{$CMOD.LBL_RECALCULATE_BUTTON}"  type="button" name="recalculate" value="{$CMOD.LBL_RECALCULATE_BUTTON}" onclick="return freezeBackground();">
 	&nbsp;<input class="crmButton small edit" type="submit" name="Edit" value="{$CMOD.LBL_CHANGE} {$CMOD.LBL_PRIVILEGES}" ></td>
 					</td>
@@ -76,8 +76,8 @@ DIV.fixedLay {
 				{foreach item=module from=$DEFAULT_SHARING}
 				  {assign var="MODULELABEL" value=$module.0|getTranslatedString:$module.0}
                   <tr>
-                    <td width="20%" class="colHeader small cblds-p-v--medium" nowrap>{$MODULELABEL}</td>
-                    <td width="30%" class="listTableRow small cblds-p-v--medium" nowrap>
+                    <td width="20%" class="colHeader small cblds-p-v_medium" nowrap>{$MODULELABEL}</td>
+                    <td width="30%" class="listTableRow small cblds-p-v_medium" nowrap>
 					{if $module.1 neq 'Private' && $module.1 neq 'Hide Details'}
 						<img src="{'public.gif'|@vtiger_imageurl:$THEME}" align="absmiddle">
 					{else}
@@ -85,7 +85,7 @@ DIV.fixedLay {
 					{/if}
 						{$CMOD[$module.1]}
 					</td>
-                    <td width="50%" class="listTableRow small cblds-p-v--medium" nowrap>{$module.2}</td>
+                    <td width="50%" class="listTableRow small cblds-p-v_medium" nowrap>{$module.2}</td>
                   </tr>
 				{/foreach}
 		</form>
@@ -113,7 +113,7 @@ DIV.fixedLay {
 				<table width="100%" border="0" cellpadding="5" cellspacing="0" class="listTableTopButtons">
                   		<tr>
 		                    <td  style="padding-left:5px;" class="big"><img src="{'arrow.jpg'|@vtiger_imageurl:$THEME}" width="19" height="21" align="absmiddle" />&nbsp; <b>{$mod_display}</b>&nbsp; </td>
-                		    <td align="right" class="cblds-t-align--right">
+                		    <td align="right" class="cblds-t-align_right">
 					<input class="crmButton small save" type="button" name="Create" value="{$CMOD.LBL_ADD_PRIVILEGES_BUTTON}" onClick="callEditDiv(this,'{$modulename}','create','')">
 				    </td>
                   		</tr>
@@ -149,13 +149,13 @@ DIV.fixedLay {
 		      <table width="100%" border="0" cellpadding="5" cellspacing="0" class="listTableTopButtons">
                       <tr>
                         <td  style="padding-left:5px;" class="big"><img src="{'arrow.jpg'|@vtiger_imageurl:$THEME}" width="19" height="21" align="absmiddle" />&nbsp; <b>{$mod_display}</b>&nbsp; </td>
-                        <td align="right" class="cblds-t-align--right">
+                        <td align="right" class="cblds-t-align_right">
 				<input class="crmButton small save" type="button" name="Create" value="{$APP.LBL_ADD_ITEM} {$CMOD.LBL_PRIVILEGES}" onClick="callEditDiv(this,'{$modulename}','create','')">
 			</td>
                       </tr>
 			<table width="100%" cellpadding="5" cellspacing="0">
 			<tr>
-			<td colspan="2"  style="padding:20px;" align="center" class="small cblds-t-align--center">
+			<td colspan="2"  style="padding:20px;" align="center" class="small cblds-t-align_center">
 			   {$CMOD.LBL_CUSTOM_ACCESS_MESG}
 			   <a href="javascript:void(0);" onClick="callEditDiv(this,'{$modulename}','create','')">{$CMOD.LNK_CLICK_HERE}</a>
 			   {$CMOD.LBL_CREATE_RULE_MESG}
@@ -173,7 +173,7 @@ DIV.fixedLay {
 		   </div>
 				<!-- Edit Button -->
 				<table border=0 cellspacing=0 cellpadding=5 width=100% >
-				<tr><td class="small" ><div align=right class="cblds-t-align--right"><a href="#top">{$MOD.LBL_SCROLL}</a></div></td></tr>
+				<tr><td class="small" ><div align=right class="cblds-t-align_right"><a href="#top">{$MOD.LBL_SCROLL}</a></div></td></tr>
 				</table>
 		</td>
 		</tr>
@@ -196,12 +196,12 @@ DIV.fixedLay {
 <div id="confId"  class='veil_new small' style="display:none;">
 <table class="options small" border="0" cellpadding="18" cellspacing="0">
 <tr>
-	<td align="center" class="cblds-t-align--center" nowrap style="color:#FFFFFF;font-size:15px;">
+	<td align="center" class="cblds-t-align_center" nowrap style="color:#FFFFFF;font-size:15px;">
 		<b>{$CMOD.LBL_RECALC_MSG}</b>
 	</td>
 	<br>
 	<tr>
-		<td align="center" class="cblds-t-align--center"><input type="button" style="color: #000000;" value="{$CMOD.LBL_YES}" onclick="return disableStyle('confId');">&nbsp;&nbsp;<input type="button" value="&nbsp;{$CMOD.LBL_NO}&nbsp;" style="color: #000000;" onclick="showSelect();document.getElementById('confId').style.display='none';document.body.removeChild(document.getElementById('freeze'));"></td>
+		<td align="center" class="cblds-t-align_center"><input type="button" style="color: #000000;" value="{$CMOD.LBL_YES}" onclick="return disableStyle('confId');">&nbsp;&nbsp;<input type="button" value="&nbsp;{$CMOD.LBL_NO}&nbsp;" style="color: #000000;" onclick="showSelect();document.getElementById('confId').style.display='none';document.body.removeChild(document.getElementById('freeze'));"></td>
 	</tr>
 </tr>
 </table>
@@ -210,7 +210,7 @@ DIV.fixedLay {
 <div id="divId" class="veil_new" style="position:absolute;width:100%;display:none;top:0px;left:0px;">
 <table border="5" cellpadding="0" cellspacing="0" align="center" style="vertical-align:middle;width:100%;height:100%;">
 <tbody><tr>
-	<td class="big cblds-t-align--center" align="center">
+	<td class="big cblds-t-align_center" align="center">
 		<img src="{'plsWaitAnimated.gif'|@vtiger_imageurl:$THEME}">
 	</td>
 </tr></tbody>

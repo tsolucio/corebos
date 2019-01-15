@@ -11,14 +11,14 @@
 *}
 <table width="100%" cellpadding="5" cellspacing="0" class="listTable" >
 	<tr>
-		<td class="colHeader small cblds-p-v--mediumsmall" width="3%">#</td>
-		<td class="colHeader small cblds-p-v--mediumsmall" width="9%">{$MOD.LBL_CURRENCY_TOOL}</td>
-		<td class="colHeader small cblds-p-v--mediumsmall" width="23%">{$MOD.LBL_CURRENCY_NAME}</td>
-		<td class="colHeader small cblds-p-v--mediumsmall" width="15%">{$MOD.LBL_CURRENCY_CODE}</td>
-		<td class="colHeader small cblds-p-v--mediumsmall" width="10%">{$MOD.LBL_CURRENCY_SYMBOL}</td>
-		<td class="colHeader small cblds-p-v--mediumsmall" width="16%">{'Symbol Placement'|@getTranslatedString:'Users'}</td>
-		<td class="colHeader small cblds-p-v--mediumsmall" width="16%">{$MOD.LBL_CURRENCY_CRATE}</td>
-		<td class="colHeader small cblds-p-v--mediumsmall" width="8%">{$MOD.LBL_CURRENCY_STATUS}</td>
+		<td class="colHeader small cblds-p-v_mediumsmall" width="3%">#</td>
+		<td class="colHeader small cblds-p-v_mediumsmall" width="9%">{$MOD.LBL_CURRENCY_TOOL}</td>
+		<td class="colHeader small cblds-p-v_mediumsmall" width="23%">{$MOD.LBL_CURRENCY_NAME}</td>
+		<td class="colHeader small cblds-p-v_mediumsmall" width="15%">{$MOD.LBL_CURRENCY_CODE}</td>
+		<td class="colHeader small cblds-p-v_mediumsmall" width="10%">{$MOD.LBL_CURRENCY_SYMBOL}</td>
+		<td class="colHeader small cblds-p-v_mediumsmall" width="16%">{'Symbol Placement'|@getTranslatedString:'Users'}</td>
+		<td class="colHeader small cblds-p-v_mediumsmall" width="16%">{$MOD.LBL_CURRENCY_CRATE}</td>
+		<td class="colHeader small cblds-p-v_mediumsmall" width="8%">{$MOD.LBL_CURRENCY_STATUS}</td>
 	</tr>
 	{foreach item=currencyvalues name=currlist key=id from=$CURRENCY_LIST}
 	<tr>

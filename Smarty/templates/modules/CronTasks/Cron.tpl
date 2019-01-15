@@ -21,12 +21,12 @@
 			<!-- DISPLAY -->
 			<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 			<tr>
-				<td width="50" rowspan="2" valign="top" class="cblds-p--none"><img src="{'Cron.png'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_SCHEDULER}" width="48" height="48" border=0 title="{$MOD.LBL_SCHEDULER}"></td>
+				<td width="50" rowspan="2" valign="top" class="cblds-p_none"><img src="{'Cron.png'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_SCHEDULER}" width="48" height="48" border=0 title="{$MOD.LBL_SCHEDULER}"></td>
 				<td colspan="2" class="heading2" valign=bottom align="left"><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_SCHEDULER} </b></td>
 				<td rowspan=2 class="small" align=right>&nbsp;</td>
 			</tr>
 			<tr>
-				<td valign=top class="small cblds-p-v--none" align="left">{$MOD.LBL_SCHEDULER}</td>
+				<td valign=top class="small cblds-p-v_none" align="left">{$MOD.LBL_SCHEDULER}</td>
 			</tr>
 			</table>
 			<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
@@ -44,7 +44,7 @@
 			</div>
 
 			<table border=0 cellspacing=0 cellpadding=5 width=100% >
-				<tr><td class="small cblds-t-align--right" nowrap align=right><a href="#top">{$APP.LBL_SCROLL}</a></td></tr>
+				<tr><td class="small cblds-t-align_right" nowrap align=right><a href="#top">{$APP.LBL_SCROLL}</a></td></tr>
 			</table>
 		</td>
 	</tr>

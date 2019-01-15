@@ -15,6 +15,12 @@ $mod_strings = array(
 	'UNSUCCESSFUL_REGISTRATION_MESSAGE' => 'You have NOT established authentification credentials with %s. You will have to repeat the process if you want to start using the functionality.',
 	'IntegrationAuthorizationClick' => 'Click here to establish %s Authorization',
 	'HubSpot Activation' => 'HubSpot Activation',
+	'hubspot_active' => 'Integration Active',
+	'hubspot_mssync' => 'Master/Slave Sync Active',
+	'hubspot_clientId' => 'HubSpot Client ID',
+	'hubspot_oauthclientId' => 'oAuth Client ID',
+	'hubspot_clientSecret' => 'Client API Key or oAuth Secret',
+	'hubspot_apiurl' => 'API URL',
 	'hubspot_pollFrequency' => 'HubSpot Poll Frequency',
 	'hubspot_relateDealWith' => 'Related Deals with',
 	'GContacts Activation' => 'Google Contacts Activation',
@@ -26,5 +32,10 @@ $mod_strings = array(
 	'GoTo2FAActivation' => 'Two Factor Activation',
 	'2FA Secret Code' => '2FA Secret Code',
 	'Available Integrations' => 'Available Integrations',
+	'Zendesk Activation' => 'Zendesk Activation',
+	'zendesk_active' => 'Integration Active',
+	'zendesk_apiurl' => 'API Domain',
+	'zendesk_accessCode' => 'Zendesk Access Token',
+	'zendesk_username' => 'Zendesk User Name',
 );
 ?>

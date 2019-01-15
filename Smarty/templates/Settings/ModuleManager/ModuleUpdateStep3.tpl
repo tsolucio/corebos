@@ -11,12 +11,12 @@
 
 		<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%">
 		<tr>
-			<td rowspan="2" valign="top" width="50" class="cblds-p--none"><img src="{'vtlib_modmng.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" title="{$MOD.LBL_USERS}" border="0" height="48" width="48"></td>
+			<td rowspan="2" valign="top" width="50" class="cblds-p_none"><img src="{'vtlib_modmng.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" title="{$MOD.LBL_USERS}" border="0" height="48" width="48"></td>
 			<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> &gt; {$MOD.VTLIB_LBL_MODULE_MANAGER} &gt; {$MOD.LBL_UPGRADE} </b></td>
 		</tr>
 
 		<tr>
-			<td class="small cblds-p-v--none" valign="top">{$MOD.VTLIB_LBL_MODULE_MANAGER_DESCRIPTION}</td>
+			<td class="small cblds-p-v_none" valign="top">{$MOD.VTLIB_LBL_MODULE_MANAGER_DESCRIPTION}</td>
 		</tr>
 		</table>
 		<br>
@@ -38,7 +38,7 @@
 
 						<table class='tableHeading' cellpadding=5 cellspacing=0 border=0 width=100%>
 						<tr valign=top>
-							<td class='cellText small cblds-t-align--right' align=right>
+							<td class='cellText small cblds-t-align_right' align=right>
 								<input type="hidden" name="module" value="Settings">
 								<input type="hidden" name="action" value="ModuleManager">
 								<input type="hidden" name="parenttab" value="Settings">

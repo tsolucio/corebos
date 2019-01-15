@@ -74,7 +74,7 @@ function validate()
 				<input type="hidden" name="mode" value="{$MODE}">
 				<input type="hidden" name="parent" value="{$PARENT}">
 				<tr>
-					<td width=50 rowspan=2 valign=top class="cblds-p--none"><img src="{'ico-roles.gif'|@vtiger_imageurl:$THEME}" alt="{$CMOD.LBL_ROLES}" width="48" height="48" border=0 title="{$CMOD.LBL_ROLES}"></td>
+					<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'ico-roles.gif'|@vtiger_imageurl:$THEME}" alt="{$CMOD.LBL_ROLES}" width="48" height="48" border=0 title="{$CMOD.LBL_ROLES}"></td>
 					{if $MODE eq 'edit'}
 					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=listroles&parenttab=Settings">{$CMOD.LBL_ROLES}</a> &gt; {$MOD.LBL_EDIT} &quot;{$ROLENAME}&quot; </b></td>
 					{else}	
@@ -83,9 +83,9 @@ function validate()
 				</tr>
 				<tr>
 					{if $MODE eq 'edit'}
-					<td valign=top class="small cblds-p-v--none">{$MOD.LBL_EDIT} {$CMOD.LBL_PROPERTIES} &quot;{$ROLENAME}&quot; {$MOD.LBL_LIST_CONTACT_ROLE}</td>
+					<td valign=top class="small cblds-p-v_none">{$MOD.LBL_EDIT} {$CMOD.LBL_PROPERTIES} &quot;{$ROLENAME}&quot; {$MOD.LBL_LIST_CONTACT_ROLE}</td>
 					{else}
-					<td valign=top class="small cblds-p-v--none">{$CMOD.LBL_NEW_ROLE}</td>
+					<td valign=top class="small cblds-p-v_none">{$CMOD.LBL_NEW_ROLE}</td>
 					{/if}
 				</tr>
 				</table>
@@ -102,7 +102,7 @@ function validate()
 						{else}
 						<td class="big"><strong>{$CMOD.LBL_NEW_ROLE}</strong></td>
 						{/if}
-						<td><div align="right" class="cblds-t-align--right">
+						<td><div align="right" class="cblds-t-align_right">
 							<input type="button" class="crmButton small save" name="add" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " onClick="return validate()">
 						
 						<input type="button" class="crmButton cancel small" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" onClick="window.history.back()">
@@ -164,7 +164,7 @@ function validate()
                     </table>
 					<br>
 					<table border=0 cellspacing=0 cellpadding=5 width=100% >
-					<tr><td class="small cblds-t-align--right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
+					<tr><td class="small cblds-t-align_right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
 					</table>
 				</td>
 				</tr>

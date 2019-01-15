@@ -53,12 +53,14 @@ function getProductDetailsBlockInfo($mode, $module, $focus = '', $num_of_product
 function getPrdQtyInStck($product_id) {
 	global $log, $adb;
 	$log->debug("Entering getPrdQtyInStck($product_id) method ...");
-	$query1 = 'SELECT qtyinstock FROM vtiger_products WHERE productid = ?';
-	$result=$adb->pquery($query1, array($product_id));
+	$result=$adb->pquery('SELECT qtyinstock FROM vtiger_products WHERE productid=?', array($product_id));
 	if ($result && $adb->num_rows($result)>0) {
-		$qtyinstck= $adb->query_result($result, 0, 'qtyinstock');
+		$qtyinstck=$adb->query_result($result, 0, 'qtyinstock');
+		if ($qtyinstck=='') {
+			$qtyinstck=0;
+		}
 	} else {
-		$qtyinstck= 0;
+		$qtyinstck=0;
 	}
 	$log->debug('Exiting getPrdQtyInStck method ...');
 	return $qtyinstck;

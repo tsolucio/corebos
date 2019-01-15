@@ -11,7 +11,7 @@
 			<td width="80%" align="left" class="layerPopupHeading">
 				{$MOD.LBL_CREATE_WORKFLOW}
 				</td>
-			<td width="20%" class="cblds-t-align--right" align="right">
+			<td width="20%" class="cblds-t-align_right" align="right">
 				<a href="javascript:void(0);" id="new_workflow_popup_close">
 					<img border="0" align="middle" src="{'close.gif'|@vtiger_imageurl:$THEME}"/>
 				</a>
@@ -55,7 +55,7 @@
 			<input type="hidden" name="module" value="{$module->name}" id="save_module">
 			<input type="hidden" name="action" value="editworkflow" id="save_action">
 			<table width="100%" cellspacing="0" cellpadding="5" border="0" class="layerPopupTransport">
-				<tr><td class="cblds-t-align--center" align="center">
+				<tr><td class="cblds-t-align_center" align="center">
 					<input type="submit" class="crmButton small save" value="{$APP.LBL_CREATE_BUTTON_LABEL}" name="save" id='new_workflow_popup_save'/>
 					<input type="button" class="crmButton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL} " name="cancel" id='new_workflow_popup_cancel'/>
 				</td></tr>
@@ -73,7 +73,7 @@
 			<td class="big" nowrap="nowrap">
 				<strong><span id="module_info"></span></strong>
 			</td>
-			<td class="small cblds-t-align--right" align="right">
+			<td class="small cblds-t-align_right" align="right">
 				<form action="index.php" method="post" accept-charset="utf-8" id="filter_modules" onsubmit="VtigerJS_DialogBox.block();" style="display: inline;">
 					<b>{$MOD.LBL_SELECT_MODULE}: </b>
 					<select class="importBox" name="list_module" id='pick_module'>
@@ -96,7 +96,7 @@
 	<table class="listTableTopButtons" width="100%" border="0" cellspacing="0" cellpadding="5">
 		<tr>
 			<td class="small"> <span id="status_message"></span> </td>
-			<td class="small cblds-t-align--right" align="right">
+			<td class="small cblds-t-align_right" align="right">
 				<input type="button" class="crmButton create small" value="{$MOD.LBL_NEW_WORKFLOW}" id='new_workflow'/>
 			</td>
 		</tr>

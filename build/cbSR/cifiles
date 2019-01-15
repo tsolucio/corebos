@@ -5,9 +5,11 @@ modules/BusinessActions
 modules/Campaigns
 modules/cbAuditTrail
 modules/cbCalendar
+modules/cbCompany
 modules/cbCVManagement
 modules/cbLoginHistory
 modules/cbMap
+modules/cbQuestion
 modules/cbSurvey
 modules/cbSurveyAnswer
 modules/cbSurveyDone
@@ -42,6 +44,7 @@ modules/PickList
 modules/Portal
 modules/Potentials
 modules/PriceBooks
+modules/ProductComponent
 modules/Products
 modules/Project
 modules/ProjectMilestone
@@ -73,7 +76,6 @@ modules/Emails/EmailsAjax.php
 modules/Emails/Emails.php
 modules/Emails/evcbrcHandler.php
 modules/Emails/GmailBookmarklet.php
-modules/Emails/gotodownload.php
 modules/Emails/index.php
 modules/Emails/language
 modules/Emails/ListViewPagging.php

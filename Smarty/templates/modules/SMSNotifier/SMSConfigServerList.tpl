@@ -50,7 +50,7 @@
 			<table width="100%" border="0" cellpadding="5" cellspacing="0" class="tableHeading">
 				<tr>
 					<td style="padding-left:5px;" class="big">{$CMOD.SERVER_CONFIGURATION_DESCRIPTION}</td>
-					<td valign=top class="small cblds-t-align--right" align="right">
+					<td valign=top class="small cblds-t-align_right" align="right">
 					<input id="_smsserver_add_button_" type="button" class="small create" value="{$CMOD.LBL_ADDNEW}" onclick="_SMSConfigServerFetchEdit('');fnvshobj(this,'editdiv');">
 					</td>
 				</tr>
@@ -62,7 +62,7 @@
 
 			<table border=0 cellspacing=0 cellpadding=5 width=100% >
 				<tr>
-					<td class="small cblds-t-align--right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td>
+					<td class="small cblds-t-align_right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td>
 				</tr>
 			</table>
 		</td>

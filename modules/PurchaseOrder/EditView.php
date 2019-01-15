@@ -15,7 +15,40 @@ require_once 'include/utils/utils.php';
 
 $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
-// Identify this module as custom module.
+$massedit1x1 = isset($_REQUEST['massedit1x1']) ? vtlib_purify($_REQUEST['massedit1x1']) : '0';
+if ($massedit1x1=='s') { // mass edit 1x1 start
+	$idstring = getSelectedRecords(
+		$_REQUEST,
+		$currentModule,
+		(isset($_REQUEST['allselectedboxes']) ? trim($_REQUEST['allselectedboxes'], ';') : ''),
+		(isset($_REQUEST['excludedRecords']) ? trim($_REQUEST['excludedRecords'], ';') : '')
+	);
+	coreBOS_Session::set('ME1x1Info', array(
+		'complete' => $idstring,
+		'processed' => array(),
+		'pending' => $idstring,
+		'next' => $idstring[0],
+	));
+}
+if (coreBOS_Session::has('ME1x1Info')) {
+	$ME1x1Info = coreBOS_Session::get('ME1x1Info', array());
+	$smarty->assign('MED1x1MODE', 1);
+	$smarty->assign('CANCELGO', 'index.php?action=ListView&massedit1x1=c&module='.$currentModule);
+	$_REQUEST['record'] = $ME1x1Info['next'];
+	$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-info');
+	$memsg = getTranslatedString('LBL_MASS_EDIT').':&nbsp;'.getTranslatedString('LBL_RECORD').(count($ME1x1Info['processed'])+1).'/'.count($ME1x1Info['complete']);
+	$smarty->assign('ERROR_MESSAGE', $memsg);
+} else {
+	$smarty->assign('MED1x1MODE', 0);
+}
+if (!empty($_REQUEST['saverepeat'])) {
+	$_REQUEST = array_merge($_REQUEST, coreBOS_Session::get('saverepeatRequest', array()));
+	if (isset($_REQUEST['CANCELGO'])) {
+		$smarty->assign('CANCELGO', vtlib_purify($_REQUEST['CANCELGO']));
+	}
+} else {
+	coreBOS_Session::set('saverepeatRequest', $_REQUEST);
+}
 $smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 
 $category = getParentTab($currentModule);
@@ -308,7 +341,7 @@ $smarty->assign('CREATEMODE', isset($_REQUEST['createmode']) ? vtlib_purify($_RE
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);
-
+$smarty->assign('SandRActive', GlobalVariable::getVariable('Application_SaveAndRepeatActive', 0, $currentModule));
 $cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 

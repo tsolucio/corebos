@@ -811,7 +811,7 @@ class CustomView extends CRMEntity {
 
 					$tablefield[$list[0]] = $list[1];
 
-					//Changed as the replace of module name may replace the string if the fieldname has module name in it -- Jeri
+					//Changed as the replace of module name may replace the string if the fieldname has module name in it
 					$fieldinfo = explode('_', $list[3], 2);
 					$fieldlabel = $fieldinfo[1];
 					$fieldlabel = str_replace('_', ' ', $fieldlabel);

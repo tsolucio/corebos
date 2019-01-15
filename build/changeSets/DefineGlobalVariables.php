@@ -69,6 +69,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_ListView_Compute_Page_Count',
 				'Application_ListView_Sum_Currency',
 				'Application_ListView_SearchColumns',
+				'Application_SaveAndRepeatActive',
 				'Application_Upload_MaxSize',
 				'Application_Single_Pane_View',
 				'Application_Minimum_Cron_Frequency',
@@ -88,6 +89,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Permit_Assign_Up',
 				'Application_Permit_Assign_SameRole',
 				'Application_Permit_Assign_AllGroups',
+				'Application_User_SortBy',
 
 				'RelatedList_Activity_DefaultStatusFilter',
 
@@ -97,13 +99,17 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Calendar_Slot_Event_Overlap',
 				'Calendar_Show_Inactive_Users',
 				'Calendar_Show_Group_Events',
+				'Calendar_Status_Panel_Visible',
 				'Calendar_Push_End_On_Start_Change',
 				'Calendar_PopupReminder_DaysPast',
+				'Calendar_Priority_Panel_Visible',
 				'Calendar_Show_Only_My_Events',
 				'Calendar_Show_WeekNumber',
 
 				'CronTasks_cronWatcher_mailto',
 				'CronTasks_cronWatcher_TimeThreshold',
+
+				'BusinessQuestion_TableAnswer_Limit',
 
 				'BusinessMapping_SalesOrder2Invoice',
 				'BusinessMapping_PotentialOnCampaignRelation',
@@ -150,6 +156,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Product_Permit_Relate_Bundle_Parent',
 				'Product_Permit_Subproduct_Be_Parent',
 				'Product_Maximum_Number_Images',
+				'Product_SubProduct_PriceRollUp',
+				'Product_SubProduct_CostRollUp',
 				'Workflow_Send_Email_ToCCBCC',
 				'Workflow_GeoDistance_Country_Default',
 				'Workflow_GeoDistance_ServerIP',

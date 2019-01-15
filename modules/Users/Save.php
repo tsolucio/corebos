@@ -119,7 +119,7 @@ if (empty($_REQUEST['changepassword']) || $_REQUEST['changepassword'] != 'true')
 	if (!isset($_POST['is_admin'])) {
 		$_REQUEST["is_admin"] = 'off';
 	}
-	//Code contributed by mike crowe for rearrange the home page and tab
+	// rearrange the home page and tab
 	if (!isset($_POST['deleted'])) {
 		$_REQUEST["deleted"] = '0';
 	}

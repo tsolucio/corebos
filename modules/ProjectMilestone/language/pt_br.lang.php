@@ -8,31 +8,31 @@
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ************************************************************************************/
 $mod_strings = array(
-	'LBL_MODULE_NAME'=>'Marco Projeto',
-	'LBL_MODULE_TITLE'=>'Marcos Projeto',
-	'LBL_NEW_OPERATION'=>'Novo Marco Projeto',
-	'LBL_MILESTONES'=>'Marco Projeto',
-	'LBL_MILESTOME'=>'Marco Projeto',
-	'Project Milestone ID'=>'ID Marco',
-	'projectmilestones' => 'Marcos Projeto',
+	'LBL_MODULE_NAME'=>'Marco do Projeto',
+	'LBL_MODULE_TITLE'=>'Marco do Projeto',
+	'LBL_NEW_OPERATION'=>'Novo Marco do Projeto',
+	'LBL_MILESTONES'=>'Marco do Projeto',
+	'LBL_MILESTOME'=>'Marco do Projeto',
+	'Project Milestone ID'=>'ID Marco do Projeto',
+	'projectmilestones' => 'Marcos do Projeto',
 	//added this to translate the module name in the main app menu
-	'ProjectMilestone'=>'Marcos Projeto',
+	'ProjectMilestone'=>'Marcos do Projeto',
 	//
-	'SINGLE_ProjectMilestone' => 'Marco Projeto',
-	'LBL_CUSTOM_INFORMATION' => 'Informação Customizada',
-	'LBL_PROJECT_MILESTONE_INFORMATION' => 'Informação Marco Projeto',
+	'SINGLE_ProjectMilestone' => 'Marco do Projeto',
+	'LBL_CUSTOM_INFORMATION' => 'Informação Personalizada',
+	'LBL_PROJECT_MILESTONE_INFORMATION' => 'Informação Marco do Projeto',
 	'LBL_DESCRIPTION_INFORMATION' => 'Descrição',
-	'Assigned To' => 'Atribuído à',
-	'Milestone Date' => 'Data Marco',
+	'Assigned To' => 'Responsável',
+	'Milestone Date' => 'Data do Marco',
 	'Milestone' => 'Marco',
 	'Type'=>'Tipo',
 	'Related to' => 'Projeto',
 	'administrative' => 'administrativo',
 	'operative' => 'operacional',
 	'other' => 'outro',
-	'--none--' => '--None--',
+	'--none--' => '--Nenhum--',
 	//added for related lists
-	'Project Milestone Name' => 'Nome Marco',
-	'Project Milestone No' => 'No. Marco',
+	'Project Milestone Name' => 'Nome do Marco do Projeto',
+	'Project Milestone No' => 'No. Marco do Projeto',
 );
 ?>

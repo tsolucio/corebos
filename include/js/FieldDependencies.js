@@ -81,12 +81,19 @@ FieldDependencies.prototype.setup = function (sourceform, datasource) {
 		return;
 	}
 
-	jQuery('input', this.baseform).bind('change', function (ev) {
-		thisContext.actOnSelectChange(ev);
-	});
-	jQuery('select', this.baseform).bind('change', function (ev) {
-		thisContext.actOnSelectChange(ev);
-	});
+	var nodelist = document.querySelectorAll('input,select');
+	for (var i = 0; i < nodelist.length; i++) {
+		// we should use addEventListener here but it doesn't work on the jscalendar element nor on the initial loading of the page
+		if (nodelist[i].id.substring(0, 12)=='jscal_field_') {
+			nodelist[i].onchange = function (ev) {
+				thisContext.actOnSelectChange(ev);
+			};
+		} else {
+			jQuery('#'+nodelist[i].id).bind('change', function (ev) {
+				thisContext.actOnSelectChange(ev);
+			});
+		}
+	}
 };
 
 /**
@@ -225,9 +232,7 @@ FieldDependencies.prototype.fieldOptions = function (sourcename, targetFields, t
 				var targetnode = jQuery('[name="'+targetname+'"]', this.baseform);
 				var selectedtargetvalue = targetnode.val();
 
-				// In IE we cannot hide the options!, the only way to achieve this effect is
-				// recreating the options list again. 
-				//
+				// In IE we cannot hide the options!, the only way to achieve this effect is recreating the options list again.
 				// To maintain implementation consistency, let us keep copy of options in select node and use it for re-creation
 				if (typeof(targetnode.data('allOptions')) == 'undefined') {
 					var allOptions = [];

@@ -104,7 +104,7 @@ function mandatoryCheck()
 			<td colspan=4 width="100%" style="padding:0px">
 			<table cellpadding=4 cellspacing=0 width=100% border=0>
 				<tr>
-					<td class="dvtCellInfo cblds-p--medium" width="10%" align="right"><span class="style1">*</span>{$MOD.LBL_VIEW_NAME}
+					<td class="dvtCellInfo cblds-p_medium" width="10%" align="right"><span class="style1">*</span>{$MOD.LBL_VIEW_NAME}
 					</td>
 					<td class="dvtCellInfo" width="30%">
 						<input class="detailedViewTextBox" type="text" name='viewName' value="{if isset($VIEWNAME)}{$VIEWNAME}{/if}" onfocus="this.className='detailedViewTextBoxOn'" onblur="this.className='detailedViewTextBox'" size="40"/>
@@ -149,7 +149,7 @@ function mandatoryCheck()
 		{math equation="(x-1)*4+y" x=$smarty.section.SelectColumn.index y=$smarty.section.Column.index assign="cvcolumn"}
 		{math equation="x-1" x=$cvcolumn assign="cvselected"}
 		{if $cvcolumn <= $ListView_MaxColumns}
-		<td class="cblds-p--medium">
+		<td class="cblds-p_medium">
 			<select id="column{$cvcolumn}" name ="column{$cvcolumn}" onChange="checkDuplicate();" class="small">
 				<option value="">{$MOD.LBL_NONE}</option>
 				{foreach item=filteroption key=label from=$CHOOSECOLUMN}

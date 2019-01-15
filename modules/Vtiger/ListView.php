@@ -19,6 +19,10 @@ require_once "modules/$currentModule/$currentModule.php";
 
 $category = getParentTab();
 $url_string = '';
+$massedit1x1 = isset($_REQUEST['massedit1x1']) ? vtlib_purify($_REQUEST['massedit1x1']) : 0;
+if ($massedit1x1=='c') { // mass edit 1x1 cancelled
+	coreBOS_Session::delete('ME1x1Info');
+}
 
 if (isset($tool_buttons)==false) {
 	$tool_buttons = Button_Check($currentModule);

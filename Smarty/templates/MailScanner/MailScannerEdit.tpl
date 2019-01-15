@@ -33,11 +33,11 @@
 				<!-- DISPLAY -->
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 				<tr>
-					<td width=50 rowspan=2 valign=top class="cblds-p--none"><img src="{'mailScanner.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_MAIL_SCANNER}" width="48" height="48" border=0 title="{$MOD.LBL_MAIL_SCANNER}"></td>
+					<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'mailScanner.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_MAIL_SCANNER}" width="48" height="48" border=0 title="{$MOD.LBL_MAIL_SCANNER}"></td>
 					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_MAIL_SCANNER}</b></td>
 				</tr>
 				<tr>
-					<td valign=top class="small cblds-p-v--none">{$MOD.LBL_MAIL_SCANNER_DESCRIPTION}</td>
+					<td valign=top class="small cblds-p-v_none">{$MOD.LBL_MAIL_SCANNER_DESCRIPTION}</td>
 				</tr>
 				</table>
 				<br>
@@ -199,7 +199,7 @@
 				</table>
 
 				<tr>
-					<td colspan=2 nowrap align="center" class="cblds-t-align--center">
+					<td colspan=2 nowrap align="center" class="cblds-t-align_center">
 						<input type="submit" class="crmbutton small save" value="{$APP.LBL_SAVE_LABEL}" onclick="return mailscaneredit_validateform(this.form);" />
 						<input type="button" class="crmbutton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" onclick="window.location.href='index.php?module=Settings&action=MailScanner&parenttab=Settings'"/>
 					</td>

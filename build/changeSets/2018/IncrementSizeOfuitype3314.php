@@ -13,28 +13,28 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
-    class IncrementSizeOfuitype3314 extends cbupdaterWorker {
-        public function applyChange() {
-            if ($this->hasError()) {
-                $this->sendError();
-            }
-            if ($this->isApplied()) {
-                $this->sendMsg('Changeset '.get_class($this).' already applied!');
-            } else {
-                global $adb;
-                $query = "SELECT tablename, fieldname FROM `vtiger_field` WHERE vtiger_field.uitype = ?";
-                $result = $adb->pquery($query, array(3314));
-                if ($adb->num_rows($result) > 0) {
-                    while ($_rows = $adb->fetch_array($result)) {
-                        $table = $_rows['tablename'];
-                        $col = $_rows['fieldname'];
-                        $this->ExecuteQuery("ALTER TABLE ".$table." MODIFY COLUMN ".$col." VARCHAR(1000)");
-                    }
-                }
-                $this->sendMsg('Changeset '.get_class($this).' applied!');
-                $this->markApplied();
-            }
-            $this->finishExecution();
-        }
-    }
+class IncrementSizeOfuitype3314 extends cbupdaterWorker {
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
+		if ($this->isApplied()) {
+			$this->sendMsg('Changeset '.get_class($this).' already applied!');
+		} else {
+			global $adb;
+			$query = "SELECT tablename, fieldname FROM `vtiger_field` WHERE vtiger_field.uitype = ?";
+			$result = $adb->pquery($query, array(3314));
+			if ($adb->num_rows($result) > 0) {
+				while ($_rows = $adb->fetch_array($result)) {
+					$table = $_rows['tablename'];
+					$col = $_rows['fieldname'];
+					$this->ExecuteQuery("ALTER TABLE ".$table." MODIFY COLUMN ".$col." VARCHAR(1000)");
+				}
+			}
+			$this->sendMsg('Changeset '.get_class($this).' applied!');
+			$this->markApplied(false);
+		}
+		$this->finishExecution();
+	}
+}
 ?>

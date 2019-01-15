@@ -233,7 +233,7 @@ class VTSimpleTemplate {
 						if ($html) {
 							$retcm .= '</li>';
 						}
-							if ($table) {
+						if ($table) {
 							$retcm .= '</td>';
 						}
 						break;
@@ -264,8 +264,90 @@ class VTSimpleTemplate {
 				$retcm .= '</tr></table>';
 			}
 		}
-		if ($html ||$table ) {
+		if ($html ||$table) {
 			$retcm .= '</div>';
+		}
+		return $retcm;
+	}
+
+	private function getInventoryDetails($format, $field) {
+		global $adb, $current_user;
+		$format = strtolower($format);
+		if ($format!='html' && $format!='text'&& $format!='table') {
+			$format = 'html';
+		}
+		$html = ($format == 'html');
+		$table = ($format == 'table');
+		$fieldsql = "case when vtiger_products.productid != '' then vtiger_products.productname else vtiger_service.servicename end as pdoname,";
+		if ($field=='*') {
+			$fieldsql .= 'vtiger_inventorydetails.quantity, vtiger_inventorydetails.listprice, vtiger_inventorydetails.extgross, vtiger_inventorydetails.linetotal';
+		} else {
+			$fieldsql .= strtolower($field);
+		}
+		$field = $fieldsql;
+		$fields = explode(',', $field);
+		for ($fidx = 0; $fidx<count($fields); $fidx++) {
+			$fields[$fidx] = trim(str_replace('vtiger_inventorydetails.', '', $fields[$fidx]));
+			if ($fields[$fidx]=='productname' || $fields[$fidx]=='servicename') {
+				$fields[$fidx]='pdoname';
+			}
+			if ($fields[$fidx]=="case when vtiger_products.productid != '' then vtiger_products.productname else vtiger_service.servicename end as pdoname") {
+				$fields[$fidx]='pdoname';
+			}
+		}
+		$fields = array_unique($fields);
+		$singlefield = (count($fields)==1);
+		// Checking if field present in the table.
+		// To Do.
+
+		$moduleName = $this->parent->getModuleName();
+		$wsUsersId = vtws_getEntityId('Users');
+		$wsid = $this->parent->getId();
+		list($wsid,$crmid) = explode('x', $wsid);
+		$cmsqlws = 'SELECT '.$field.'
+			FROM vtiger_inventorydetails
+			INNER JOIN vtiger_crmentity ON vtiger_inventorydetails.inventorydetailsid=vtiger_crmentity.crmid
+			LEFT JOIN vtiger_products ON vtiger_inventorydetails.productid=vtiger_products.productid
+			LEFT JOIN vtiger_service ON vtiger_inventorydetails.productid=vtiger_service.serviceid
+			WHERE related_to=?';
+		$retcm = '';
+		$wsid = $this->parent->getId();
+		$cmrs = $adb->pquery($cmsqlws, array($crmid));
+		if ($html) {
+			$retcm .= '<div class="inventorydetails"><ul class="inventorydetailsfields">';
+		}
+		if ($table) {
+			$retcm .= '<table class="inventorydetails"><tr class="inventorydetailsfields">';
+		}
+		while ($inv = $adb->fetch_array($cmrs)) {
+			foreach ($fields as $fname) {
+				if ($html) {
+					$retcm .= '<li class="inventorydetailsfield">';
+				}
+				if ($table) {
+					$retcm .= '<td class="inventorydetailsfield">';
+				}
+				$fval = vtlib_purify($inv[$fname]);
+				if (is_numeric($fval)) {
+					$fval = CurrencyField::convertToUserFormat($fval, null, true);
+				}
+				$retcm .= $fval;
+				if (!$html && !$table && $singlefield) {
+					$retcm .= "\n";
+				}
+				if ($html) {
+					$retcm .= '</li>';
+				}
+				if ($table) {
+					$retcm .= '</td>';
+				}
+			}
+		}
+		if ($html) {
+			$retcm .= '</ul></div>';
+		}
+		if ($table) {
+			$retcm .= '</tr></table>';
 		}
 		return $retcm;
 	}
@@ -407,6 +489,12 @@ class VTSimpleTemplate {
 			$field = substr($fieldname, 16);
 			$fieldname = 'scanQRCode';
 		}
+		if (substr($fieldname, 0, 16)=='inventorydetails') {
+			$inventoryspec = explode('_', $fieldname);
+			$format = isset($inventoryspec[1]) ? $inventoryspec[1] : 'html';
+			$field = isset($inventoryspec[2]) ? $inventoryspec[2] : '*';
+			$fieldname = 'inventorydetails';
+		}
 		switch ($fieldname) {
 			case 'date':
 				return getNewDisplayDate();
@@ -465,6 +553,8 @@ class VTSimpleTemplate {
 				return GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
 			case 'comments':
 				return $this->getComments($numcomm, $srtcomm, $fmtcomm, $fldcomm, $dtformat);
+			case 'inventorydetails':
+				return $this->getInventoryDetails($format, $field);
 			case 'groupEmailList':
 				return $this->getGroupFieldList($groupname, 'email1');
 			case 'Events_Users_Invited':

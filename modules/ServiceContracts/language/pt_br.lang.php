@@ -10,13 +10,13 @@
  ************************************************************************************/
 
 $mod_strings = array (
-'Service Contracts' => 'Contratos serviços',
-'ServiceContracts' => 'Contratos serviços',
-'SINGLE_ServiceContracts' => 'Contrato serviço',
-'LBL_SERVICE_CONTRACT_INFORMATION' => 'Informação contrato serviço',
-'LBL_CUSTOM_INFORMATION' => 'Informação customizada',
+'Service Contracts' => 'Contratos de Serviços',
+'ServiceContracts' => 'Contratos de Serviços',
+'SINGLE_ServiceContracts' => 'Contrato de Serviço',
+'LBL_SERVICE_CONTRACT_INFORMATION' => 'Informação Contrato de Serviço',
+'LBL_CUSTOM_INFORMATION' => 'Informação Personalizada',
 
-'Contract No' => 'No. contrato',
+'Contract No' => 'No. Contrato',
 'Assigned To' => 'Responsável',
 'Created Time' => 'Data & hora criação',
 'Modified Time' => 'Data & hora modificação',
@@ -54,7 +54,7 @@ $mod_strings = array (
 'Hours'=>'Horas',
 'Days'=>'Dias',
 'Incidents'=>'Incidentes',
-'LBL_MODULE_NAME'=>'Contratos serviços',
-'Service Requests'=>'Tickets',
+'LBL_MODULE_NAME'=>'Contratos de Serviços',
+'Service Requests'=>'Solicitação de Serviços',
 );
 ?>

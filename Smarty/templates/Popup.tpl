@@ -105,7 +105,15 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 						{/if}
 					{/if}
 					<td width=24% nowrap class="componentName" align=right>{$coreBOS_uiapp_name}</td>
-					<td width=6% nowrap class="componentName" align=right><input type="hidden" id='closewindow' value="true"/><img src="themes/images/unlocked.png" id='closewindowimage' onclick="if (document.getElementById('closewindow').value=='true') {ldelim}document.getElementById('closewindowimage').src='themes/images/locked.png';document.getElementById('closewindow').value='false';{rdelim} else {ldelim}document.getElementById('closewindowimage').src='themes/images/unlocked.png';document.getElementById('closewindow').value='true';{rdelim};"/></td>
+					<td width=6% nowrap class="componentName" align=right>
+						<input type="hidden" id='closewindow' value="true"/>
+						<svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon_small" id="closewindowimageunlock" onclick="togglePopupLock();">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#unlock"></use>
+						</svg>
+						<svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon_small" id="closewindowimagelock" style="display:none" onclick="togglePopupLock();">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#lock"></use>
+						</svg>
+					</td>
 				</tr>
 			</table>
 			<div id="status" style="position:absolute;display:none;right:135px;top:15px;height:27px;white-space:nowrap;"><img src="{'status.gif'|@vtiger_imageurl:$THEME}"></div>

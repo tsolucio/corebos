@@ -33,6 +33,7 @@ class Workflow {
 		$this->moduleName = $row['module_name'];
 		$this->description = to_html(getTranslatedString($row['summary'], 'com_vtiger_workflow'));
 		$this->test = $row['test'];
+		$this->select_expressions = isset($row['select_expressions']) ? $row['select_expressions'] : '';
 		$this->executionCondition = $row['execution_condition'];
 		$this->schtypeid = isset($row['schtypeid']) ? $row['schtypeid'] : '';
 		$this->schtime = isset($row['schtime']) ? $row['schtime'] : '';

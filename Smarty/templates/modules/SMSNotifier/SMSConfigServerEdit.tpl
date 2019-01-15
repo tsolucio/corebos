@@ -14,7 +14,7 @@ window.__smsHelpInfo = {$SMSHELPINFO};
 <div id="EditInv" class="layerPopup">
 <table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
 <tr>
-	<td class="layerPopupHeading cblds-p--medium" align="left">
+	<td class="layerPopupHeading cblds-p_medium" align="left">
 		{if empty($SMSSERVERINFO)}
 			{$CMOD.LBL_ADDNEW}
 		{else}
@@ -22,7 +22,7 @@ window.__smsHelpInfo = {$SMSHELPINFO};
 			<input type="hidden" name="smsserver_id" value="{$SMSSERVERINFO.id}">
 		{/if}
 	</td>
-	<td align="right" class="small cblds-t-align--right"><img onClick="hide('editdiv');" style="cursor:pointer;" src="{'close.gif'|@vtiger_imageurl:$THEME}" align="middle" border="0"></td>
+	<td align="right" class="small cblds-t-align_right"><img onClick="hide('editdiv');" style="cursor:pointer;" src="{'close.gif'|@vtiger_imageurl:$THEME}" align="middle" border="0"></td>
 </tr>
 </table>
 <table border=0 cellspacing=0 cellpadding=5 width=95% align=center>
@@ -96,7 +96,7 @@ window.__smsHelpInfo = {$SMSHELPINFO};
 </table>
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
 <tr>
-	<td align="center" class="small cblds-t-align--center">
+	<td align="center" class="small cblds-t-align_center">
 		<input value="{$APP.LBL_SAVE_BUTTON_LABEL}" class="crmButton small save" type="button" onClick="_SMSConfigServerSaveForm(this.form)">
 		<input value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmButton small cancel" type="button" onClick="hide('editdiv');">
 	</td>

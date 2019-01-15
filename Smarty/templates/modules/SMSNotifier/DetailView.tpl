@@ -395,7 +395,6 @@ function sendfile_email()
 		</td>
 		<td width=22% valign=top style="border-left:1px dashed #cccccc;padding:13px">
 			<!-- right side relevant info -->
-			<!-- Action links for Event & Todo START-by Minnie -->
 			{if $MODULE eq 'Potentials' || $MODULE eq 'HelpDesk' || $MODULE eq 'Contacts' || $MODULE eq 'Accounts' || $MODULE eq 'Leads' || ($MODULE eq 'Documents' && ($ADMIN eq 'yes' || $FILE_STATUS eq '1') && $FILE_EXIST eq 'yes')}
   			<table width="100%" border="0" cellpadding="5" cellspacing="0">
 				<tr><td>&nbsp;</td></tr>

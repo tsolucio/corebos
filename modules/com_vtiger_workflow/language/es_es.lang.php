@@ -107,6 +107,9 @@ $mod_strings = array(
 'CBSelectcbMap' => 'Selecciona Regla de Negocio',
 'ConvertInventoryModule' => 'Convertir Módulos Inventario',
 'ConvertInventoryModuleMessage' => 'La correspondencia de campos es la que trae la aplicación por defecto y puede ajustarse utilizando las Reglas de Negocio de tipo Mapeo de Campo.',
+'CBSendMMMSGTask' => 'Enviar Mensaje a Mattermost',
+'Send Message To MM' => 'Enviar Mensaje a Mattermost',
+'VTSendMessage2MMTask' => 'Enviar Mensaje a Mattermost',
 
 'LBL_EVENTNAME' => 'Nombre de Evento',
 'LBL_DESCRIPTION' => 'Descripción',

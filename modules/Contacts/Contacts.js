@@ -96,7 +96,7 @@ function add_data_to_relatedlist_incal(id, name) {
 			window.opener.document.EditView.contactidlist.value = idval+';'+id;
 			if (name != '') {
 				// this has been modified to provide delete option for Contacts in Calendar
-				//this function is defined in script.js ------- Jeri
+				//this function is defined in script.js
 				window.opener.addOption(id, name);
 			}
 		}

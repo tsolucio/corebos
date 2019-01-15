@@ -113,6 +113,8 @@ switch ($functiontocall) {
 			include_once 'modules/cbMap/processmap/Validations.php';
 			if (Validations::ValidationsExist($valmod)) {
 				echo 'yes';
+			} elseif (recordIsAssignedToInactiveUser(vtlib_purify($_REQUEST['crmid']))) {
+				echo 'yes';
 			} else {
 				echo 'no';
 			}
@@ -122,6 +124,10 @@ switch ($functiontocall) {
 	case 'ValidationLoad':
 		$valmod = vtlib_purify($_REQUEST['valmodule']);
 		include_once 'modules/cbMap/processmap/Validations.php';
+		if (Validations::recordIsAssignedToInactiveUser()) {
+			echo getTranslatedString('RecordIsAssignedToInactiveUser');
+			die();
+		}
 		if (Validations::ValidationsExist($valmod)) {
 			$validation = Validations::processAllValidationsFor($valmod);
 			if ($validation!==true) {

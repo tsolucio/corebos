@@ -287,3 +287,15 @@ function QCreatePop(module, urlpop) {
 		hide('qcformpop');
 	}
 }
+
+function togglePopupLock() {
+	if (document.getElementById('closewindow').value=='true') {
+		document.getElementById('closewindowimagelock').style.display='block';
+		document.getElementById('closewindowimageunlock').style.display='none';
+		document.getElementById('closewindow').value='false';
+	} else {
+		document.getElementById('closewindowimagelock').style.display='none';
+		document.getElementById('closewindowimageunlock').style.display='block';
+		document.getElementById('closewindow').value='true';
+	}
+}

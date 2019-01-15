@@ -68,7 +68,7 @@ function __cb_getGEODistanceFromCompanyAddress($arr) {
 	$from.= empty($fld) ? '':', '.$fld;
 	$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default', '');
 	if ($country == '') {
-	    $fld = $companyDetails['country'];
+		$fld = $companyDetails['country'];
 		$from.= empty($fld) ? '':', '.$fld;
 	}
 	$array = array($from, $arr[0]);

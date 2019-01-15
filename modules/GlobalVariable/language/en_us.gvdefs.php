@@ -244,6 +244,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'all | admin | none',
 	'definition' => 'Global security check to permit exporting. "all" to allow anyone to use exports, "admin" to only allow admins to export, "none" to block exports completely. Default value = all',
 ),
+'Application_SaveAndRepeatActive' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Activate "Save and Repeat" action in edit mode. Default deactivated',
+),
 'Application_ListView_Max_Text_Length' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',
@@ -790,6 +797,20 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Show or hide the modules list in the calendar. The default value of 1 shows the list and 0 hides it.',
 ),
+'Calendar_Status_Panel_Visible' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show or hide the Status panel in the calendar. The default value of 1 shows it and 0 hides it.',
+),
+'Calendar_Priority_Panel_Visible' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show or hide the Priority panel in the calendar. The default value of 1 shows it and 0 hides it.',
+),
 'Calendar_Default_Reminder_Minutes' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',
@@ -964,6 +985,20 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'yes | no',
 	'definition' => 'Permit assigning subproducts to a subproduct',
+),
+'Product_SubProduct_PriceRollUp' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Calculate product unit price based on the unit price and quantity of its subproducts.',
+),
+'Product_SubProduct_CostRollUp' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Calculate product cost price based on the cost price and quantity of its subproducts.',
 ),
 'Product_Maximum_Number_Images' => array(
 	'status' => 'Implemented',
@@ -1223,6 +1258,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Extension',
 	'values' => '0|1',
 	'definition' => 'Make the copy links in Detail View copy GenDoc labels instead of field values. By default deactivated.',
+),
+'BusinessQuestion_TableAnswer_Limit' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Maximum number of returned table rows as output of the Business Question answer.',
 ),
 );
 
