@@ -29,7 +29,6 @@ $result = $adb->pquery('select * from vtiger_emailtemplates where templateid=?',
 $emailtemplateResult = str_replace('"', '&quot;', $adb->fetch_array($result));
 $smod_strings = return_module_language($current_language, 'Settings');
 
-//To get Email Template variables -- Pavani
 $allOptions=getEmailTemplateVariables();
 $smarty = new vtigerCRM_smarty;
 

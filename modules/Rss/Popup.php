@@ -15,7 +15,7 @@ require_once 'modules/Rss/Rss.php';
 global $mod_strings;
 $log = LoggerManager::getLogger('rss_save');
 
-if (isset($_REQUEST["record"])) {
+if (isset($_REQUEST['record'])) {
 	global $adb;
 	$adb->pquery('update vtiger_rss set starred=0', array());
 	$adb->pquery('update vtiger_rss set starred=1 where rssid =?', array($_REQUEST['record']));

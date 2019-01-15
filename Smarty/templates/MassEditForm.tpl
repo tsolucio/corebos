@@ -28,7 +28,7 @@
 					</td>
 				</tr>
 					<tr>
-						<td colspan=4 class="cblds-p--none">
+						<td colspan=4 class="cblds-p_none">
 							<table class="small" border="0" cellpadding="3" cellspacing="0" width="100%">
 								<tbody><tr>
 									<td class="dvtTabCache" style="width: 10px;" nowrap>&nbsp;</td>
@@ -50,7 +50,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td colspan=4 class="cblds-p--none">
+						<td colspan=4 class="cblds-p_none">
 							{foreach key=header name=block item=data from=$BLOCKS}
 								{if $smarty.foreach.block.index eq 0}
 									<div id="massedit_div{$smarty.foreach.block.index}" style='display:block;'>
@@ -71,7 +71,7 @@
 			</table>
 			<table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
 				<tr>
-					<td align="center" class="cblds-t-align--center">
+					<td align="center" class="cblds-t-align_center">
 						<!--input type="submit" name="save" class="crmbutton small edit" value="{$APP.LBL_SAVE_LABEL}">
 						<input type="button" name="button" class="crmbutton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" onClick="fninvsh('massedit')"-->
 						<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="run_massedit();" type="button" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">

@@ -58,7 +58,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 	// Remove fields which are made inactive
 	$focus->filterInactiveFields($module);
 
-	//Added to reduce the no. of queries logging for non-admin user -- by Minnie-start
+	//Added to reduce the no. of queries logging for non-admin user
 	$field_list = array();
 	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
 	foreach ($focus->list_fields as $name => $tableinfo) {
@@ -1014,7 +1014,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 		$focus->popup_fields = array($cbMap->ListColumns()->getSearchLinkField());
 		$focus->list_link_field = $cbMap->ListColumns()->getSearchLinkField();
 	}
-	//Added to reduce the no. of queries logging for non-admin user -- by Minnie-start
+	//Added to reduce the no. of queries logging for non-admin user
 	$field_list = array_values($focus->search_fields_name);
 
 	$field = array();

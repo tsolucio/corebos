@@ -54,7 +54,7 @@ $mod_strings = array(
 'LBL_ADDRESS_INFORMATION'=>'Dados do Endereço',
 'LBL_ACCOUNT_INFORMATION'=>'Dados da FAQ',
 'LBL_BILLING_ADDRESS'=>'Endereço:',
-'LBL_SHIPPING_ADDRESS'=>'Endereço Entrega:',
+'LBL_SHIPPING_ADDRESS'=>'Endereço de Entrega:',
 'LBL_ANY_ADDRESS'=>'Outro Endereço:',
 'LBL_CITY'=>'Cidade:',
 'LBL_STATE'=>'Estado:',
@@ -99,7 +99,7 @@ $mod_strings = array(
 
 'LBL_TICKETS'=>'Tickets',
 'LBL_FAQ'=>'FAQ',
-'Product Name'=>'Nome Produto',
+'Product Name'=>'Nome do Produto',
 'Add Comment'=>'Adicionar Comentário',
 'LBL_ADD_COMMENT'=>'Add Comment',//give the same value given to the above string 'Add Comment'
 'LBL_COMMENT_INFORMATION'=>'Dados do Comentário',

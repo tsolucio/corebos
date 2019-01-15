@@ -192,7 +192,7 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 																						<td>&nbsp;</td>
 																						<td>&nbsp;</td>
 																						<td>&nbsp;</td>
-																						<td class="cblds-t-align--right" align=right>
+																						<td class="cblds-t-align_right" align=right>
 																							{if isset($MOD.LBL_ADDRESS_INFORMATION) && $header eq $MOD.LBL_ADDRESS_INFORMATION && ($MODULE eq 'Accounts' || $MODULE eq 'Contacts' || $MODULE eq 'Leads') }
 																								{if $MODULE eq 'Leads'}
 																									<input name="mapbutton" value="{$APP.LBL_LOCATE_MAP}" class="crmbutton small create" type="button" onClick="searchMapLocation( 'Main' )" title="{$APP.LBL_LOCATE_MAP}">
@@ -342,7 +342,6 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 
 											<td width=22% valign=top style="border-left:1px dashed #cccccc;padding:13px;{$DEFAULT_ACTION_PANEL_STATUS}" class="noprint" id="actioncolumn">
 												<!-- right side relevant info -->
-												<!-- Action links for Event & Todo START-by Minnie -->
 												<table width="100%" border="0" cellpadding="5" cellspacing="0" class="detailview_actionlinks actionlinks_events_todo">
 													<tr><td align="left" class="genHeaderSmall">{$APP.LBL_ACTIONS}</td></tr>
 

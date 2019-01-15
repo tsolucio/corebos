@@ -34,6 +34,8 @@ $app_strings = array(
 'LBL_APPLY_BUTTON_LABEL' => 'Anwenden',
 'LBL_SEND_MAIL_BUTTON'=>'E-Mail senden',
 'LBL_SAVE_BUTTON_TITLE'=>'Speichern [Alt+S]',
+'LBL_SAVEREPEAT_BUTTON_TITLE' => 'Save+Repeat [Alt+H]',
+'LBL_SKIP_BUTTON_TITLE' => 'Skip [Alt+K]',
 'LBL_EDIT_BUTTON_TITLE'=>'Bearbeiten [Alt+E]',
 'LBL_RECALCULATE_BUTTON_TITLE' => 'Neu berechnen [Alt+R]',
 'LBL_CONVERTSO_BUTTON_TITLE'=>'erstelle Kundenbestellung',
@@ -69,6 +71,8 @@ $app_strings = array(
 'LBL_CREATE_BUTTON_LABEL' =>'Erstelle',
 'LBL_GENERATE'=>'Erstelle',
 'LBL_SAVE_BUTTON_KEY'=>'S',
+'LBL_SAVEREPEAT_BUTTON_KEY' => 'H',
+'LBL_SKIP_BUTTON_KEY' => 'K',
 'LBL_EDIT_BUTTON_KEY'=>'E',
 'LBL_CONVERTSO_BUTTON_KEY'=>'S',
 'LBL_CONVERTINVOICE_BUTTON_KEY'=>'I',
@@ -82,6 +86,8 @@ $app_strings = array(
 'LBL_CLEAR_BUTTON_KEY'=>'C',
 'LBL_SELECT_BUTTON_KEY'=>'T',
 'LBL_SAVE_BUTTON_LABEL'=>'Speichern',
+'LBL_SAVEREPEAT_BUTTON_LABEL' => 'Save+Repeat',
+'LBL_SKIP_BUTTON_LABEL' => 'Skip',
 'LBL_EDIT_BUTTON_LABEL'=>'Bearbeiten',
 'LBL_CONVERTSO_BUTTON_LABEL'=>'erstelle Kundenbestellung',
 'LBL_CONVERTINVOICE_BUTTON_LABEL'=>'erstelle Rechnung',
@@ -1310,6 +1316,7 @@ $app_strings = array(
 'notsaved' => 'notsaved',
 'processcomplete' => 'Process Complete',
 'typetosearch_prodser' => 'Type to search products or services',
+'RecordIsAssignedToInactiveUser' => 'The record is assigned to an inactive user. Please select another user.',
 );
 
 // Translation for currency names

@@ -9,14 +9,20 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Nome Módulo',
-	'SINGLE_ModuleName' => 'Nome Módulo',
-	'ModuleName ID' => 'ID Nome Módulo',
+	'cbTermConditions' => 'Termos e Condições',
+	'SINGLE_cbTermConditions' => 'Termos e Condições',
+	'TandC No' => 'Nº Termos e Condições',
+	'Reference' => 'Referência',
+	'Is Default' => 'Por Defeito',
+	'Terms and Conditions' => 'Termos e Condições',
+	'formodule' => 'Por Módulo',
+	'Quotes' => 'Orçamentos',
+	'SalesOrder' => 'Ordem de Venda',
+	'PurchaseOrder' => 'Ordem de Compra',
+	'Invoice' => 'Fatura',
 
-	'LBL_CUSTOM_INFORMATION' => 'Imformação Customizada',
-	'LBL_MODULEBLOCK_INFORMATION' => 'Informação Bloco Módulo',
+	'LBL_CBTERMCONDITIONS_INFORMATION' => 'Termos e Condições',
+	'LBL_TERMANDCONDITIONS' => 'Termos e Condições',
 	'LBL_DESCRIPTION_INFORMATION' => 'Descrição',
-
-	'ModuleFieldLabel' => 'Texto Etiqueta Campo Módulo',
 );
 ?>

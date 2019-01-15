@@ -28,7 +28,7 @@ jQuery(document).ready(function() {
 	<input type="hidden" name="mode" value="" />
 	{/if}
 </form>
-<table style="width:70%;margin-left:auto;margin-right:auto;margin-top:10px;" cellpadding="10" cellspacing="10" class="searchUIBasic cblds-table-border--sep cblds-table-bordersp--medium">
+<table style="width:70%;margin-left:auto;margin-right:auto;margin-top:10px;" cellpadding="10" cellspacing="10" class="searchUIBasic cblds-table-border_sep cblds-table-bordersp_medium">
 	<tr>
 		<td class="heading2" align="left" colspan="2">
 			{'LBL_IMPORT'|@getTranslatedString:$MODULE} {$FOR_MODULE|@getTranslatedString:$FOR_MODULE} - 
@@ -44,7 +44,7 @@ jQuery(document).ready(function() {
 	{/if}
 	<tr>
 		<td valign="top">
-			<table cellpadding="10" cellspacing="0" align="center" class="dvtSelectedCell thickBorder cblds-table-border--sep cblds-table-bordersp--medium">
+			<table cellpadding="10" cellspacing="0" align="center" class="dvtSelectedCell thickBorder cblds-table-border_sep cblds-table-bordersp_medium">
 				<tr>
 					<td>{'LBL_TOTAL_RECORDS_IMPORTED'|@getTranslatedString:$MODULE}</td>
 					<td width="10%">:</td>
@@ -52,7 +52,7 @@ jQuery(document).ready(function() {
 				</tr>
 				<tr>
 					<td colspan="3">
-						<table cellpadding="10" cellspacing="0" class="calDayHour cblds-table-border--sep cblds-table-bordersp--medium">
+						<table cellpadding="10" cellspacing="0" class="calDayHour cblds-table-border_sep cblds-table-bordersp_medium">
 							<tr>
 								<td>{'LBL_NUMBER_OF_RECORDS_CREATED'|@getTranslatedString:$MODULE}</td>
 								<td width="10%">:</td>
@@ -80,7 +80,7 @@ jQuery(document).ready(function() {
 		</td>
 	</tr>
 	<tr>
-		<td align="right" class="cblds-t-align--right">
+		<td align="right" class="cblds-t-align_right">
 		<input type="button" name="cancel" value="{'LBL_CANCEL_IMPORT'|@getTranslatedString:$MODULE}" class="crmButton small delete"
 			 onclick="location.href='index.php?module={$FOR_MODULE}&action=Import&mode=cancel_import&import_id={$IMPORT_ID}'" />
 		</td>

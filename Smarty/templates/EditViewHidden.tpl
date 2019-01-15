@@ -65,6 +65,7 @@
 <input type="hidden" name="record" value="{$ID}">
 <input type="hidden" name="mode" value="{$MODE}">
 <input type="hidden" name="action">
+<input type="hidden" name="saverepeat" value="0">
 <input type="hidden" name="parenttab" value="{$CATEGORY}">
 <input type="hidden" name="return_module" value="{if isset($RETURN_MODULE)}{$RETURN_MODULE}{/if}">
 <input type="hidden" name="return_id" value="{if isset($RETURN_ID)}{$RETURN_ID}{/if}">

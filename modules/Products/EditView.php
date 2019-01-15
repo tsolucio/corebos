@@ -10,17 +10,46 @@
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $adb;
 require_once 'Smarty_setup.php';
 
+$smarty = new vtigerCRM_Smarty();
+$massedit1x1 = isset($_REQUEST['massedit1x1']) ? vtlib_purify($_REQUEST['massedit1x1']) : '0';
+if ($massedit1x1=='s') { // mass edit 1x1 start
+	$idstring = getSelectedRecords(
+		$_REQUEST,
+		$currentModule,
+		(isset($_REQUEST['allselectedboxes']) ? trim($_REQUEST['allselectedboxes'], ';') : ''),
+		(isset($_REQUEST['excludedRecords']) ? trim($_REQUEST['excludedRecords'], ';') : '')
+	);
+	coreBOS_Session::set('ME1x1Info', array(
+		'complete' => $idstring,
+		'processed' => array(),
+		'pending' => $idstring,
+		'next' => $idstring[0],
+	));
+}
+if (coreBOS_Session::has('ME1x1Info')) {
+	$ME1x1Info = coreBOS_Session::get('ME1x1Info', array());
+	$smarty->assign('MED1x1MODE', 1);
+	$smarty->assign('CANCELGO', 'index.php?action=ListView&massedit1x1=c&module='.$currentModule);
+	$_REQUEST['record'] = $ME1x1Info['next'];
+	$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-info');
+	$memsg = getTranslatedString('LBL_MASS_EDIT').':&nbsp;'.getTranslatedString('LBL_RECORD').(count($ME1x1Info['processed'])+1).'/'.count($ME1x1Info['complete']);
+	$smarty->assign('ERROR_MESSAGE', $memsg);
+} else {
+	$smarty->assign('MED1x1MODE', 0);
+}
+if (!empty($_REQUEST['saverepeat'])) {
+	$_REQUEST = array_merge($_REQUEST, coreBOS_Session::get('saverepeatRequest', array()));
+	if (isset($_REQUEST['CANCELGO'])) {
+		$smarty->assign('CANCELGO', vtlib_purify($_REQUEST['CANCELGO']));
+	}
+} else {
+	coreBOS_Session::set('saverepeatRequest', $_REQUEST);
+}
 $focus = CRMEntity::getInstance($currentModule);
-
-$encode_val = (!empty($_REQUEST['encode_val']) ? vtlib_purify($_REQUEST['encode_val']) : '');
-$decode_val=base64_decode($encode_val);
 
 $saveimage=isset($_REQUEST['saveimage'])?vtlib_purify($_REQUEST['saveimage']):'false';
 $errormessage=isset($_REQUEST['error_msg'])?vtlib_purify($_REQUEST['error_msg']):'false';
 $image_error=isset($_REQUEST['image_error'])?vtlib_purify($_REQUEST['image_error']):'false';
-
-$smarty = new vtigerCRM_Smarty();
-// Identify this module as custom module.
 $smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 $smarty->assign('CONVERT_MODE', '');
 
@@ -40,10 +69,12 @@ if ($record) {
 	$product_base_currency = fetchCurrency($current_user->id);
 }
 if ($image_error=='true') {
+	$encode_val = (!empty($_REQUEST['encode_val']) ? vtlib_purify($_REQUEST['encode_val']) : '');
+	$decode_val=base64_decode($encode_val);
 	$explode_decode_val=explode('&', $decode_val);
 	for ($i=1; $i<count($explode_decode_val); $i++) {
 		$test=$explode_decode_val[$i];
-		$values=explode("=", $test);
+		$values=explode('=', $test);
 		$field_name_val=$values[0];
 		$field_value=$values[1];
 		$focus->column_fields[$field_name_val]=$field_value;
@@ -283,7 +314,7 @@ $smarty->assign('Product_Maximum_Number_Images', GlobalVariable::getVariable('Pr
 
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
-
+$smarty->assign('SandRActive', GlobalVariable::getVariable('Application_SaveAndRepeatActive', 0, $currentModule));
 $cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
 $smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 

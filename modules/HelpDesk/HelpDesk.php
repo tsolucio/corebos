@@ -360,7 +360,7 @@ class HelpDesk extends CRMEntity {
 		$log->debug('Exiting getCustomerName method ...');
 		return $customername;
 	}
-	//Pavani: Function to create, export query for helpdesk module
+
 	/** Function to export the ticket records in CSV Format
 	 * @param reference variable - where condition is passed when the query is executed
 	 * Returns Export Tickets Query.

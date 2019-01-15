@@ -11,20 +11,20 @@
 
 <table class="listTable" width="100%" border="0" cellspacing="1" cellpadding="5" id='expressionlist'>
 	<tr>
-		<td class="colHeader small" width="6%"></td>
-		<td class="colHeader small" width="34%">
+		<td class="colHeader small" width="5%"></td>
+		<td class="colHeader small" width="32%">
 			{$MOD.LBL_TASK}
 		</td>
-		<td class="colHeader small" width="12%">
+		<td class="colHeader small" width="24%">
 			{$MOD.LBL_TYPE}
 		</td>
-		<td class="colHeader small" width="12%">
+		<td class="colHeader small" width="9%">
 			{$MOD.LBL_STATUS}
 		</td>
-		<td class="colHeader small" width="12%">
+		<td class="colHeader small" width="9%">
 			{$MOD.LBL_CONDITIONS}
 		</td>
-		<td class="colHeader small" width="12%">
+		<td class="colHeader small" width="9%">
 			{$MOD.LBL_DELAY}
 		</td>
 		<td class="colHeader small" width="12%">
@@ -43,7 +43,7 @@
 		</td>
 		<td class="listTableRow small">{$task->summary|@to_html}</td>
 
-		<td class="listTableRow small">{get_class($task)}</td>
+		<td class="listTableRow small">{get_class($task)|@getTranslatedString:$MODULE_NAME}</td>
 		<td class="listTableRow small">{if $task->active}{'Active'|@getTranslatedString:$MODULE_NAME}{else}{'Inactive'|@getTranslatedString:$MODULE_NAME}{/if}</td>
 		<td class="listTableRow small"> {if empty($task->test)}{'LBL_NO'|@getTranslatedString:$MODULE_NAME}{else}{'LBL_YES'|@getTranslatedString:$MODULE_NAME}{/if}</td>
 		<td class="listTableRow small">

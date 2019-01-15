@@ -25,11 +25,11 @@
 			<input type="hidden" name="module" value="Settings">
 			<input type="hidden" name="action" value="CurrencyEditView">
 			<tr>
-					<td width=50 rowspan=2 valign=top class="cblds-p--none"><img src="{'currency.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" width="48" height="48" border=0 title="{$MOD.LBL_USERS}"></td>
+					<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'currency.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" width="48" height="48" border=0 title="{$MOD.LBL_USERS}"></td>
 				<td class="heading2" valign="bottom" ><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_CURRENCY_SETTINGS} </b></td>
 			</tr>
 			<tr>
-				<td valign=top class="small cblds-p-v--none">{$MOD.LBL_CURRENCY_DESCRIPTION}</td>
+				<td valign=top class="small cblds-p-v_none">{$MOD.LBL_CURRENCY_DESCRIPTION}</td>
 			</tr>
 			</table>
 			<br>
@@ -46,7 +46,7 @@
 
 			<table width="100%" border="0" cellpadding="5" cellspacing="0" class="listTableTopButtons">
 			<tr>
-				<td class="small cblds-t-align--right" align=right>
+				<td class="small cblds-t-align_right" align=right>
 					<input type="submit" value="{$MOD.LBL_NEW_CURRENCY}" class="crmButton create small">
 				</td>
 			</tr>
@@ -57,7 +57,7 @@
 			</div>
 
 	<table border=0 cellspacing=0 cellpadding=5 width=100% >
-	<tr><td class="small cblds-t-align--right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
+	<tr><td class="small cblds-t-align_right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
 	</table>
 	</td>
 	</tr>

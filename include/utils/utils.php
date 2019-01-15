@@ -231,7 +231,11 @@ function get_user_array($add_blank = true, $status = "Active", $assigned_user = 
 			$params[] = $assigned_user;
 		}
 
-		$query .= " order by user_name ASC";
+		$userOrder = GlobalVariable::getVariable('Application_User_SortBy', 'user_name ASC', $module, $current_user->id);
+		if ($userOrder != 'DO NOT SORT') {
+			$orderByCol = $db->convert2Sql('?', array($userOrder));
+			$query .= ' order by '.str_replace("'", "", $orderByCol);
+		}
 
 		$result = $db->pquery($query, $params, true, "Error filling in user array: ");
 
@@ -2927,7 +2931,7 @@ function getFieldValues($module) {
 	return $field_values_array;
 }
 
-/** To get security parameter for a particular module -- By Pavani*/
+/** To get security parameter for a particular module */
 function getSecParameterforMerge($module) {
 	global $current_user;
 	$tab_id = getTabid($module);

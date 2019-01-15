@@ -10,7 +10,7 @@
 -->*}
 <table width="100%" cellspacing="0" cellpadding="5">
 	<tr>
-		<td class="heading2 cblds-p--large">{'LBL_IMPORT_STEP_1'|@getTranslatedString:$MODULE}:</td>
+		<td class="heading2 cblds-p_large">{'LBL_IMPORT_STEP_1'|@getTranslatedString:$MODULE}:</td>
 		<td class="big">{'LBL_IMPORT_STEP_1_DESCRIPTION'|@getTranslatedString:$MODULE}</td>
 	</tr>
 	<tr>

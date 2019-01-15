@@ -10,7 +10,7 @@
 -->*}
 <table width="100%" cellspacing="0" cellpadding="5">
 	<tr>
-		<td class="heading2 cblds-p--large" width="10%">
+		<td class="heading2 cblds-p_large" width="10%">
 			<input type="checkbox" class="small" id="auto_merge" name="auto_merge" onclick="ImportJs.toogleMergeConfiguration();" />
 			{'LBL_IMPORT_STEP_3'|@getTranslatedString:$MODULE}:
 		</td>

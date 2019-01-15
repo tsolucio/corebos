@@ -1,0 +1,29 @@
+{
+    "name": "mmucklo/inflect",
+    "type": "library",
+    "description": "inflect - a memoizing inflector for php",
+    "license": "MIT",
+    "keywords": ["singularize", "pluralize", "inflect", "inflector", "urlify"],
+    "authors": [
+	{
+	    "name": "Matthew J. Mucklo",
+	    "email": "mmucklo@gmail.com"
+	},
+	{
+	    "name": "Sho Kuwamoto",
+	    "email": "sho@kuwamoto.org"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "require": {
+        "php": ">=5.3.17"
+    },
+    "autoload": {
+        "psr-0": {
+	    "Inflect": "src/"
+	}
+    }
+}
+

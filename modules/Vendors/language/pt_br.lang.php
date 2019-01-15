@@ -11,15 +11,15 @@
 
 $mod_strings = array(
 'LBL_VENDOR_INFORMATION'=>'Informação Fornecedor:',
-'LBL_CUSTOM_INFORMATION'=>'Informação Customizada',
-'LBL_VENDOR_ADDRESS_INFORMATION'=>'Informação Endereço:',
+'LBL_CUSTOM_INFORMATION'=>'Informação Personalizada',
+'LBL_VENDOR_ADDRESS_INFORMATION'=>'Informação Endereço Fornecedor:',
 'LBL_DESCRIPTION_INFORMATION'=>'Descrição:',
 
 'Vendor Name'=>'Nome Fornecedor',
 'Name'=>'Nome',
 'Company Name'=>'Nome Empresa',
-'Phone'=>'Fone',
-'Email'=>'Email',
+'Phone'=>'Telefone',
+'Email'=>'E-mail',
 'Website'=>'Website',
 'GL Account'=>'Conta Plano Contas',
 'Category'=>'Categoria',

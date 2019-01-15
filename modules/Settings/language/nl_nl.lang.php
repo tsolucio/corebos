@@ -791,7 +791,6 @@ $mod_strings = array(
 'LBL_NEW_TASK_BUTTON_LABEL'=>'Nieuwe taak',
 'LBL_TASK'=>'Taak',
 'LBL_DELAY' => 'Delay',
-//Added for vantage customization (Mandatory fields) -- Pavani
 'LBL_MANDATORY_FIELDS'=>'Verplichte Velden',
 'LBL_MANDATORY_FIELDS_DESCRIPTION'=>'Manage Verplichte velden van alle modulen',
 // Module Sequence Numbering

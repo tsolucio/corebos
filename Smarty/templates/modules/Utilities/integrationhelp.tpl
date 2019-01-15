@@ -24,9 +24,10 @@
 </div>
 <br>
 <div class="">
-<ul class="slds-list_horizontal slds-m-left_large">
+<ul class="slds-list_vertical slds-m-left_large">
 <li><a href="index.php?action=integration&module=Utilities&_op=getconfig2fa">{'GoTo2FAActivation'|@getTranslatedString:'Utilities'}</a></li>
 <li><a href="index.php?action=integration&module=Utilities&_op=getconfiggcontact">{'GOOGLE_CONTACTS'|@getTranslatedString:'Contacts'}</a></li>
 <li><a href="index.php?action=integration&module=Utilities&_op=getconfighubspot">{'HubSpot Activation'|@getTranslatedString:'Utilities'}</a></li>
+<li><a href="index.php?action=integration&module=Utilities&_op=getconfigzendesk">{'Zendesk Activation'|@getTranslatedString:'Utilities'}</a></li>
 </ul>
 </div>

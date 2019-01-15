@@ -376,9 +376,9 @@ var gselected_fieldtype = '';
 				<tr>
 					<td class="small" valign="top">{$MOD.LBL_LAYOUT_EDITOR_DESCRIPTION}
 					</td>
-					<td align="right" class="cblds-t-align--right" width="15%"><input type="button" class="crmButton create small" onclick="callRelatedList('{$CFENTRIES.0.module}');fnvshNrm('relatedlistdiv');posLay(this,'relatedlistdiv');" alt="{$MOD.ARRANGE_RELATEDLIST}" title="{$MOD.ARRANGE_RELATEDLIST}" value="{$MOD.ARRANGE_RELATEDLIST}"/>
+					<td align="right" class="cblds-t-align_right" width="15%"><input type="button" class="crmButton create small" onclick="callRelatedList('{$CFENTRIES.0.module}');fnvshNrm('relatedlistdiv');posLay(this,'relatedlistdiv');" alt="{$MOD.ARRANGE_RELATEDLIST}" title="{$MOD.ARRANGE_RELATEDLIST}" value="{$MOD.ARRANGE_RELATEDLIST}"/>
 					</td>
-					<td align="right" class="cblds-t-align--right" width="8%"><input type="button" class="crmButton create small" onclick="fnvshobj(this,'addblock');" alt="{$MOD.ADD_BLOCK}" title="{$MOD.ADD_BLOCK}" value="{$MOD.ADD_BLOCK}"/>
+					<td align="right" class="cblds-t-align_right" width="8%"><input type="button" class="crmButton create small" onclick="fnvshobj(this,'addblock');" alt="{$MOD.ADD_BLOCK}" title="{$MOD.ADD_BLOCK}" value="{$MOD.ADD_BLOCK}"/>
 					</td>
 				</tr>
 			</table>
@@ -387,7 +387,7 @@ var gselected_fieldtype = '';
 			</div>
 			<table border="0" cellpadding="5" cellspacing="0" width="100%">
 				<tr>
-					<td class="small cblds-t-align--right" nowrap="nowrap"><a href="#top">{$MOD.LBL_SCROLL}</a></td>
+					<td class="small cblds-t-align_right" nowrap="nowrap"><a href="#top">{$MOD.LBL_SCROLL}</a></td>
 				</tr>
 			</table>
 		</td>

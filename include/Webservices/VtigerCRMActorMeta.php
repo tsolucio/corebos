@@ -24,7 +24,6 @@ class VtigerCRMActorMeta extends EntityMeta {
 			$this->moduleFields[$field->getFieldName()] = $field;
 		}
 
-		$this->pearDB = $adb;
 		$this->tableList = array($this->baseTable);
 		$this->tableIndexList = array($this->baseTable=>$this->idColumn);
 		$this->defaultTableList = array();

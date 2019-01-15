@@ -16,7 +16,7 @@ $mod_strings = array(
 'LBL_MASS_RESTORE'=>'Restaurar',
 'LBL_EMPTY_RECYCLEBIN'=>'Limpar Lixeira',
 'LBL_EMPTY_RBMODULE'=>'Limpar Módulo',
-'LNK_RESTORE'=>'restaurar',
+'LNK_RESTORE'=>'Restaurar',
 'LBL_NO_PERMITTED_MODULES'=>'Nenhum Módulo permitido disponível',
 );
 ?>

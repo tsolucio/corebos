@@ -1869,7 +1869,7 @@ function handleProductAutocompleteSelect(obj) {
 	if (obj.result.pricing.multicurrency[currency] != undefined) {
 		document.getElementById('listPrice'+no).value = obj.result.pricing.multicurrency[currency].actual_price;
 	} else {
-		var list_price = obj.result.pricing.unit_price
+		var list_price = obj.result.pricing.unit_price;
 		if (gVTModule == 'PurchaseOrder') {
 			list_price = obj.result.pricing.unit_cost;
 		}

@@ -20,12 +20,12 @@ $mod_strings = array(
 'LBL_URL'=>'URL :',
 'LBL_ADD'=>'Adicionar',
 'LBL_SNO'=>'#',
-'LBL_BOOKMARK_NAME_URL'=>'Nome Favoritos & URL',
+'LBL_BOOKMARK_NAME_URL'=>'Nome Favoritos e URL',
 'LBL_TOOLS'=>'Ferramentas',
 'LBL_MANAGE_SITES'=>'Administração Sites',
 'LBL_MY_SITES'=>'Sites',
 
-'LBL_SET_DEFAULT_BUTTON'=>'Definir como Padrão',
-'ERR_NOT_PERMITTED_LOAD' => 'The website you have indicated has blocked loading inside another webpage so it has been opened in another tab.',
+'LBL_SET_DEFAULT_BUTTON'=>'Tornar como pré-definido',
+'ERR_NOT_PERMITTED_LOAD' => 'O website indicado bloqueou o carregamento inserido noutro website; por isso foi aberto outro separador.',
 );
 ?>

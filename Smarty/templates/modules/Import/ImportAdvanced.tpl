@@ -23,9 +23,9 @@
 
 	<input type="hidden" id="mandatory_fields" name="mandatory_fields" value='{$ENCODED_MANDATORY_FIELDS}' />
 
-	<table style="width:80%;margin-left:auto;margin-right:auto;margin-top:10px;" cellpadding="5" cellspacing="12" class="searchUIBasic cblds-table-border--sep cblds-table-bordersp--medium">
+	<table style="width:80%;margin-left:auto;margin-right:auto;margin-top:10px;" cellpadding="5" cellspacing="12" class="searchUIBasic cblds-table-border_sep cblds-table-bordersp_medium">
 		<tr>
-			<td class="heading2 cblds-p--large" align="left" colspan="2">
+			<td class="heading2 cblds-p_large" align="left" colspan="2">
 				{'LBL_IMPORT'|@getTranslatedString:$MODULE} {$FOR_MODULE|@getTranslatedString:$FOR_MODULE}
 			</td>
 		</tr>
@@ -37,12 +37,12 @@
 		</tr>
 		{/if}
 		<tr>
-			<td class="leftFormBorder1 cblds-p--large" colspan="2" valign="top">
+			<td class="leftFormBorder1 cblds-p_large" colspan="2" valign="top">
 			{include file='modules/Import/Import_Step4.tpl'}
 			</td>
 		</tr>
 		<tr>
-			<td align="right" colspan="2" class="cblds-t-align--right">
+			<td align="right" colspan="2" class="cblds-t-align_right">
 			{include file='modules/Import/Import_Advanced_Buttons.tpl'}
 			</td>
 		</tr>

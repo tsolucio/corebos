@@ -204,7 +204,7 @@ $mod_strings = array(
 'Conference'=>'Conferência',
 'Trade Show'=>'Feira Negócios',
 'Web Site'=>'Web Site',
-'Word of mouth'=>'Boca-boca',
+'Word of mouth'=>'Boca-a-boca',
 
 'Attempted to Contact'=>'Tentativa Contato',
 'Cold'=>'Frio',
@@ -223,11 +223,12 @@ $mod_strings = array(
 'LBL_FOLLOWING_ARE_POSSIBLE_REASONS' => 'O seguinte pode ser uma das possíveis razões',
 'LBL_LEADS_FIELD_MAPPING_INCOMPLETE' => 'Todos os campos obrigatórios não são mapeados',
 'LBL_MANDATORY_FIELDS_ARE_EMPTY' => 'Alguns dos valores dos campos obrigatórios estão vazios',
-'LBL_LEADS_FIELD_MAPPING' => 'Mapeamento Campos Customizados do Lead',
+'LBL_LEADS_FIELD_MAPPING' => 'Mapeamento Campos Personalizados do Lead',
 'LBL_FIELD_SETTINGS' => 'Configurações do Campo',
 'Leads ID' => 'ID Leads',
 
 'Secondary Email'=>'Email Alternativo',
+'Email Opt Out' => 'Recusa E-mail',
 'LeadAlreadyConverted' => 'O lead não pode ser convertido. Ou já foi convertido ou você não possui permissão em um ou mais dos módulos de destino.',
 );
 ?>

@@ -180,8 +180,10 @@ class FieldDependency extends processcbMap {
 			}
 			foreach ($v->actions->function as $key => $action) {
 				$params=array();
-				foreach ($v->actions->function->parameters->parameter as $key2 => $opt2) {
-					$params[]=(String)$opt2;
+				if (isset($v->actions->function->parameters)) {
+					foreach ($v->actions->function->parameters->parameter as $key2 => $opt2) {
+						$params[]=(String)$opt2;
+					}
 				}
 				$actions['function'][] = array(
 					'field'=>(String)$action->field,

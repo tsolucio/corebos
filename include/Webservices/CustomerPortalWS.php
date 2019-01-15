@@ -386,7 +386,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 	// Remove fields which are made inactive
 	$focus->filterInactiveFields($module);
 
-	//Added to reduce the no. of queries logging for non-admin user -- by minnie-start
+	//Added to reduce the no. of queries logging for non-admin user
 	$field_list = array();
 	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 	foreach ($focus->list_fields as $name => $tableinfo) {
