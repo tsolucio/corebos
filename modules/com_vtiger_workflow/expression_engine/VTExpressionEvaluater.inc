@@ -376,7 +376,7 @@ class VTFieldExpressionEvaluater {
 }
 
 // Load expression functions
-foreach (glob('modules/com_vtiger_workflow/expression_functions/*.{php}', GLOB_BRACE) as $fcode) {
+foreach (glob('modules/com_vtiger_workflow/expression_functions/*.php') as $fcode) {
 	include $fcode;
 }
 ?>
