@@ -109,6 +109,24 @@ class Users extends CRMEntity {
 	public $default_order_by = "user_name";
 	public $default_sort_order = 'ASC';
 
+	/**
+	 * Function to get the Headers of Audit Trail Information like Module, Action, RecordID, ActionDate.
+	 * Returns Header Values like Module, Action etc in an array format.
+	**/
+	public function getUserListHeader() {
+		global $log, $app_strings;
+		$log->debug('Entering getUserListHeader() method ...');
+		$header_array = array(
+			$app_strings['LBL_MODULE'],
+			$app_strings['LBL_DESCRIPTION'],
+			$app_strings['LBL_PURPOSE'],
+			$app_strings['LBL_TRIGGER'],
+			$app_strings['LBL_TOOLS'],
+		);
+		$log->debug('Exiting getUserListHeader() method ...');
+		return $header_array;
+	}
+
 	public $record_id;
 
 	public $DEFAULT_PASSWORD_CRYPT_TYPE;
