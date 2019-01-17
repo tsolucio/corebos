@@ -24,16 +24,15 @@ class installWhatsappWorkflowTask extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			include_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
-			$taskTypes = array();
 			$defaultModules = array('include' => array(), 'exclude'=>array());
 			$taskType= array(
-				"name"=>"whatsappworkflowtask",
-				"label"=>"Whatsapp Workflow Task",
-				"classname"=>"WhatsappWorkflowTask",
-				"classpath"=>"modules/com_vtiger_workflow/tasks/WhatsappWorkflowTask.inc",
-				"templatepath"=>"com_vtiger_workflow/taskforms/WhatsappTaskUi.tpl",
-				"modules"=>$defaultModules,
-				"sourcemodule"=>'',
+				'name'=>'whatsappworkflowtask',
+				'label'=>'Whatsapp Workflow Task',
+				'classname'=>'WhatsappWorkflowTask',
+				'classpath'=>'modules/com_vtiger_workflow/tasks/WhatsappWorkflowTask.inc',
+				'templatepath'=>'com_vtiger_workflow/taskforms/WhatsappTaskUi.tpl',
+				'modules'=>$defaultModules,
+				'sourcemodule'=>'',
 			);
 			VTTaskType::registerTaskType($taskType);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
