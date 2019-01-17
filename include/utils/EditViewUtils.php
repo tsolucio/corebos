@@ -1307,9 +1307,10 @@ function getConvertQuoteToSoObject($focus, $quote_focus, $quoteid) {
 * Param $module - module name
 * Param $focus - module object
 * Param $seid - sales entity id
+* Param $listcostprice: true will fill the list price with the cost price of the product
 * Return type is an object array
 */
-function getAssociatedProducts($module, $focus, $seid = '') {
+function getAssociatedProducts($module, $focus, $seid = '', $listcostprice = false) {
 	global $log, $adb, $currentModule;
 	$log->debug("Entering getAssociatedProducts(".$module.",".get_class($focus).",".$seid."='') method ...");
 
@@ -1319,7 +1320,8 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 		$query="SELECT
 			case when vtiger_products.productid != '' then vtiger_products.productname else vtiger_service.servicename end as productname,
 			case when vtiger_products.productid != '' then vtiger_products.productcode else vtiger_service.service_no end as productcode,
-			case when vtiger_products.productid != '' then vtiger_products.unit_price else vtiger_service.unit_price end as unit_price,
+			case when vtiger_products.productid != '' then vtiger_products.unit_price else vtiger_service.unit_price end as unit_price, 
+			case when vtiger_products.productid != '' then vtiger_products.cost_price else vtiger_service.cost_price end as cost_price, 
 			case when vtiger_products.productid != '' then vtiger_products.qtyinstock else 'NA' end as qtyinstock,
 			case when vtiger_products.productid != '' then 'Products' else 'Services' end as entitytype,
 			vtiger_inventoryproductrel.listprice,
@@ -1427,7 +1429,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 		$qtyinstock=$adb->query_result($result, $i-1, 'qtyinstock');
 		$qty=$adb->query_result($result, $i-1, 'quantity');
 		$unitprice=$adb->query_result($result, $i-1, 'unit_price');
-		$listprice=$adb->query_result($result, $i-1, 'listprice');
+		$listprice=$listcostprice ? $adb->query_result($result, $i-1, 'cost_price') : $adb->query_result($result, $i-1, 'listprice');
 		$entitytype=$adb->query_result($result, $i-1, 'entitytype');
 		if (!empty($entitytype)) {
 			$product_Detail[$i]['entityType'.$i]=$entitytype;
