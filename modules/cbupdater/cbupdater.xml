@@ -1305,4 +1305,11 @@
 	<classname>Notificationdrivers</classname>
 	<systemupdate>1</systemupdate>
 </changeSet>
+<changeSet>
+	<author>loridacito</author>
+	<description>add Messages module</description>
+	<filename>build/changeSets/2019/addmodulemessages.php</filename>
+	<classname>Addmodulemessages</classname>
+	<systemupdate>1</systemupdate>
+</changeSet>
 </updatesChangeLog>
