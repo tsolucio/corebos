@@ -17,18 +17,18 @@
  *  Version      : 1.0
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-include_once("include/database/PearDatabase.php");
-include_once("include/utils/utils.php");
+include_once "include/database/PearDatabase.php";
+include_once "include/utils/utils.php";
 global $adb;
 $type = vtlib_purify($_REQUEST['type']);
 $driver = $adb->pquery("select path, functionname from vtiger_notificationdrivers where type='$type'");
-$path = $adb->query_result($driver,0,0);
-$function = $adb->query_result($driver,0,1);
-if($type == 'googlecal'){
-    $input = $_GET['code'];
+$path = $adb->query_result($driver, 0, 0);
+$function = $adb->query_result($driver, 0, 1);
+if ($type == 'googlecal') {
+	$input = $_GET['code'];
 } else {
-    $input = file_get_contents('php://input');
+	$input = file_get_contents('php://input');
 }
 //run function
-include_once("$path");
+include_once "$path";
 $function($input);

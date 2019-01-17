@@ -1298,4 +1298,11 @@
 	<classname>ProdSubprodHandlerEvent</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>loridacito</author>
+	<description>notification driver tables</description>
+	<filename>build/changeSets/2019/notificationdrivers.php</filename>
+	<classname>Notificationdrivers</classname>
+	<systemupdate>1</systemupdate>
+</changeSet>
 </updatesChangeLog>
