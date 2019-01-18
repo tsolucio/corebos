@@ -1307,15 +1307,20 @@ function getConvertQuoteToSoObject($focus, $quote_focus, $quoteid) {
 * Param $module - module name
 * Param $focus - module object
 * Param $seid - sales entity id
-* Param $listcostprice: true will fill the list price with the cost price of the product
 * Return type is an object array
 */
-function getAssociatedProducts($module, $focus, $seid = '', $listcostprice = false) {
+function getAssociatedProducts($module, $focus, $seid = '') {
 	global $log, $adb, $currentModule;
 	$log->debug("Entering getAssociatedProducts(".$module.",".get_class($focus).",".$seid."='') method ...");
 
 	$product_Detail = array();
 	$acvid = 0;
+	$listcostprice = false;
+
+	if (GlobalVariable::getVariable('PurchaseOrder_TransferCostPrice', '0', $_REQUEST['return_module']) == '1') {
+		$listcostprice = true;
+	}
+
 	if (in_array($module, getInventoryModules())) {
 		$query="SELECT
 			case when vtiger_products.productid != '' then vtiger_products.productname else vtiger_service.servicename end as productname,
