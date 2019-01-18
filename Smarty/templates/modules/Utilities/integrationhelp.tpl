@@ -29,5 +29,6 @@
 <li><a href="index.php?action=integration&module=Utilities&_op=getconfiggcontact">{'GOOGLE_CONTACTS'|@getTranslatedString:'Contacts'}</a></li>
 <li><a href="index.php?action=integration&module=Utilities&_op=getconfighubspot">{'HubSpot Activation'|@getTranslatedString:'Utilities'}</a></li>
 <li><a href="index.php?action=integration&module=Utilities&_op=getconfigzendesk">{'Zendesk Activation'|@getTranslatedString:'Utilities'}</a></li>
+<li><a href="index.php?action=integration&module=Utilities&_op=getconfigwhatsapp">{'Whatsapp Activation'|@getTranslatedString:'Utilities'}</a></li>
 </ul>
 </div>
