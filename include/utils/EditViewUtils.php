@@ -1317,7 +1317,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 	$acvid = 0;
 	$listcostprice = false;
 
-	if (GlobalVariable::getVariable('PurchaseOrder_TransferCostPrice', '0', $_REQUEST['return_module']) == '1') {
+	if (GlobalVariable::getVariable('PurchaseOrder_TransferCostPrice', '0', $_REQUEST['return_module']) == '1' && $currentModule == 'PurchaseOrder') {
 		$listcostprice = true;
 	}
 
