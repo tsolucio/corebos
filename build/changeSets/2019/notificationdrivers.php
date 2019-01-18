@@ -31,7 +31,7 @@ class Notificationdrivers extends cbupdaterWorker {
                           functionname varchar(250) NOT NULL,
                           PRIMARY KEY (id)
                           ) ENGINE=InnoDB DEFAULT CHARSET=utf8", array());
-			$this->ExecuteQuery("INSERT INTO vtiger_notificationdrivers (type,path,functionname) VALUES ('whatsapp','whatsappsync.php','whatsappsync')");
+			$this->ExecuteQuery("INSERT INTO vtiger_notificationdrivers (type,path,functionname) VALUES ('whatsapp','include/integrations/whatsapp/whatsappsync.php','whatsappsync')");
 			$this->ExecuteQuery("INSERT INTO vtiger_notificationdrivers (type,path,functionname) VALUES ('googlecal','modules/Calendar4You/googlecalsync.php','googlecalsync')");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
