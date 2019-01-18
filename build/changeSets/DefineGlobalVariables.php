@@ -158,6 +158,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Product_Maximum_Number_Images',
 				'Product_SubProduct_PriceRollUp',
 				'Product_SubProduct_CostRollUp',
+				'PurchaseOrder_TransferCostPrice',
 				'Workflow_Send_Email_ToCCBCC',
 				'Workflow_GeoDistance_Country_Default',
 				'Workflow_GeoDistance_ServerIP',
