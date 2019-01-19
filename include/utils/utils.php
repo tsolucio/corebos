@@ -1002,13 +1002,6 @@ function getProfile2FieldPermissionList($fld_module, $profileid) {
 	global $log;
 	$log->debug("Entering getProfile2FieldPermissionList(".$fld_module.",". $profileid.") method ...");
 
-	// Cache information to re-use
-	static $_module_fieldpermission_cache = array();
-
-	if (!isset($_module_fieldpermission_cache[$fld_module])) {
-		$_module_fieldpermission_cache[$fld_module] = array();
-	}
-
 	// Lookup cache first
 	$return_data = VTCacheUtils::lookupProfile2FieldPermissionList($fld_module, $profileid);
 
@@ -1039,7 +1032,7 @@ function getProfile2FieldPermissionList($fld_module, $profileid) {
 		// Update information to cache for re-use
 		VTCacheUtils::updateProfile2FieldPermissionList($fld_module, $profileid, $return_data);
 	}
-	$log->debug("Exiting getProfile2FieldPermissionList method ...");
+	$log->debug('Exiting getProfile2FieldPermissionList method ...');
 	return $return_data;
 }
 
