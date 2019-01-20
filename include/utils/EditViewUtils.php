@@ -1316,9 +1316,13 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 	$product_Detail = array();
 	$acvid = 0;
 	$listcostprice = false;
+	$zerodiscount = false;
 
 	if (GlobalVariable::getVariable('PurchaseOrder_TransferCostPrice', '0', $_REQUEST['return_module']) == '1' && $currentModule == 'PurchaseOrder') {
 		$listcostprice = true;
+	}
+	if (GlobalVariable::getVariable('PurchaseOrder_IgnoreTransferDiscount', '0', $_REQUEST['return_module']) == '1' && $currentModule == 'PurchaseOrder') {
+		$zerodiscount = true;
 	}
 
 	if (in_array($module, getInventoryModules())) {
@@ -1561,6 +1565,14 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 		$totalAfterDiscount = $productTotal-$discountTotal;
 		$product_Detail[$i]['discountTotal'.$i] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($discountTotal, null, true), null, true);
 		$product_Detail[$i]['totalAfterDiscount'.$i] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($totalAfterDiscount, null, true), null, true);
+
+		if ($zerodiscount) {
+			$product_Detail[$i]['discount_type'.$i] = 'zero';
+			$product_Detail[$i]['discount_percent'.$i] = 0;
+			$product_Detail[$i]['discount_amount'.$i] = 0;
+			$product_Detail[$i]['discountTotal'.$i] = 0;
+			$product_Detail[$i]['totalAfterDiscount'.$i] = $product_Detail[$i]['listPrice'.$i];
+		}
 
 		$taxTotal = '0.00';
 		$product_Detail[$i]['taxTotal'.$i] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($taxTotal, null, true), null, true);
