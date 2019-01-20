@@ -21,7 +21,7 @@ Here are some other interesting links you can have a look at:
  - [Youtube coreBOSCRM](https://www.youtube.com/channel/UCqH0YuMrOI9HSEObq3xqXLQ)
  - [Twitter](https://twitter.com/coreBOSBeat)
  - [Documentation](http://corebos.org/documentation/)
- - [Demo Install]()
+ - [Demo Install](http://demo.corebos.com/) User and password: _admin_ there are a handful of other users whose password is the same as the name of the user.
 
 
 **Thank you** very much for your help and contribution.
