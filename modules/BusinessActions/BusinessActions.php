@@ -304,7 +304,7 @@ class BusinessActions extends CRMEntity {
 			if ($multitype) {
 				$result[$link->linktype][] = $link;
 			} else {
-				$result[$link->linktype] = $link;
+				$result[] = $link;
 			}
 		}
 
