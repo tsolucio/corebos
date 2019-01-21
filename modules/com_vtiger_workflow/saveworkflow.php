@@ -19,7 +19,8 @@ require_once 'modules/com_vtiger_workflow/tasks/VTCreateEventTask.inc';
 function vtWorkflowSave($adb, $request) {
 	global $current_language;
 	$util = new VTWorkflowUtils();
-	$module = new VTWorkflowApplication('saveworkflow');
+	$edit_return_url = 'index.php?module=com_vtiger_workflow&action=workflowlist&parenttab=Settings';
+	$module = new VTWorkflowApplication('saveworkflow', $edit_return_url);
 	$mod = return_module_language($current_language, $module->name);
 	$request = vtlib_purify($request);  // this cleans all values of the array
 	if (!$util->checkAdminAccess()) {
@@ -95,13 +96,13 @@ function vtWorkflowSave($adb, $request) {
 	if (isset($request['return_url'])) {
 		$returnUrl=$request['return_url'];
 	} else {
-		$returnUrl=$module->editWorkflowUrl($wf->id);
+		$returnUrl=$module->returnUrl();
 	}
 	?>
 	<script type="text/javascript" charset="utf-8">
-		window.location="<?php echo $returnUrl?>";
+		window.location="<?php echo urldecode($returnUrl)?>";
 	</script>
-	<a href="<?php echo $returnUrl?>">Return</a>
+	<a href="<?php echo urldecode($returnUrl)?>">Return</a>
 	<?php
 }
 

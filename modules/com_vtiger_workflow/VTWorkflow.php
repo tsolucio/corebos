@@ -52,8 +52,8 @@ class Workflow {
 	public $default_sort_order = 'DESC';
 
 	/**
-	 * Function to get the Headers of Audit Trail Information like Module, Action, RecordID, ActionDate.
-	 * Returns Header Values like Module, Action etc in an array format.
+	 * Function to get the Headers of Workflow List Information like Module, Description, Purpose, Trigger.
+	 * Returns Header Values like Module, Description etc in an array format.
 	**/
 	public function getWorkListHeader() {
 		global $log, $app_strings;
@@ -514,8 +514,8 @@ class Workflow {
 		}
 		$entries_list['prev_page_url'] = 'index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getJSON&page='.($page == 1 ? 1 : $page-1);
 		$unames = array();
-		$dataUrl = new VTWorkflowApplication('workflowlist');
-		$dataUrl -> setReturnUrl("return_url='index.php?module=com_vtiger_workflow&action=workflowlist&parenttab=Settings'");
+		$edit_return_url = 'index.php?module=com_vtiger_workflow&action=workflowlist&parenttab=Settings';
+		$vtwfappObject= new VTWorkflowApplication('workflowlist', $edit_return_url);
 		while ($lgn = $adb->fetch_array($result)) {
 			$entry = array();
 			$entry['isDefaultWorkflow'] = true;
@@ -531,13 +531,14 @@ class Workflow {
 				if ($lgn['module_name']=='Reports') {
 					$rurl = 'index.php?module=Reports&action=SaveAndRun&record='.$lgn['workflow_id'];
 				} else {
-					$rurl = $dataUrl->editWorkflowUrl($lgn['workflow_id']);
-					$delurl = $dataUrl->deleteWorkflowUrl($lgn['workflow_id']);
+					$rurl = $vtwfappObject->editWorkflowUrl($lgn['workflow_id']);
+					$delurl = $vtwfappObject->deleteWorkflowUrl($lgn['workflow_id']);
 				}
 			}
 			$entry['Record'] = $rurl;
 			$entry['RecordDel'] = $delurl;
 			$entry['RecordDetail'] = $lgn['workflow_id'];
+			$entry['workflow_id'] = $lgn['workflow_id'];
 			$entry['Purpose'] = $lgn['purpose'];
 			$entry['Trigger'] = getTranslatedString($workflow_execution_condtion_list[$lgn['execution_condition']], 'Settings');
 			$entries_list['data'][] = $entry;

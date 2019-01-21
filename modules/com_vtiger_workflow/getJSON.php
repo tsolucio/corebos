@@ -34,8 +34,8 @@ if (isset($_REQUEST['trigger_list']) && is_numeric($_REQUEST['trigger_list'])) {
 } else {
 	$executioncondtionid = 0;
 }
-if (isset($_REQUEST['module_list'])) {
-	$modulename = vtlib_purify($_REQUEST['module_list']);
+if (isset($_REQUEST['modules_list'])) {
+	$modulename = vtlib_purify($_REQUEST['modules_list']);
 } else {
 	$modulename = 'all';
 }
@@ -56,17 +56,13 @@ if (isset($_REQUEST['order_by']) && is_numeric($_REQUEST['order_by'])) {
 			$order_by = $focus->list_fields_name['Module'];
 			break;
 		case 1:
-			$order_by = $focus->list_fields_name['Module'];
+			$order_by = $focus->list_fields_name['Description'];
 			break;
 		case 2:
-			$order_by = $focus->list_fields_name['Module'];
+			$order_by = $focus->list_fields_name['Purpose'];
 			break;
 		case 3:
-			$order_by = $focus->list_fields_name['Module'];
-			break;
-		default:
-		case 4:
-			$order_by = $focus->list_fields_name['Module'];
+			$order_by = $focus->list_fields_name['Trigger'];
 			break;
 	}
 } else {

@@ -35,36 +35,16 @@
 	<datatable url="index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getJSON" template="workflowlist_row_template">
 	<header>
 			<div class="slds-grid slds-gutters" style="width: 650px;">
-				{* <div class="slds-col">
-					<div class="slds-form-element" style="width: 162px;">
-						<label class="slds-form-element__label" for="text-input-id-1">
-						{'LBL_MODULE'|getTranslatedString:'Reports'} {'LBL_Search'|getTranslatedString:'MailManager'}
-						</label>
-						<div class="slds-form-element__control">
-							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
-								<svg aria-hidden="true" class="slds-input__icon">
-									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
-								</svg>
-								<input type="text"  name="action_search" id="action_search" class="slds-input" style="height: 30px;"/>
-							</div>
-						</div>
-					</div>
-				</div> *}
 				<div class="slds-col">
 					<div class="slds-form-element slds-lookup" data-select="single" style="width: 162px; margin-bottom: 6px;">
 						<label class="slds-form-element__label" for="lookup-339">{'LBL_MODULE'|getTranslatedString:'Reports'} {'LBL_Search'|getTranslatedString:'MailManager'}</label>
 						<div class="slds-form-element__control slds-grid slds-box_border">
-							{* <div class="slds-dropdown_trigger slds-dropdown-trigger_click slds-align-middle slds-m-left_xx-small slds-shrink-none">
-								<svg aria-hidden="true" class="slds-icon slds-icon-standard-account slds-icon_small">
-									<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#user"></use>
-								</svg>
-							</div> *}
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
 								<svg aria-hidden="true" class="slds-input__icon">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 								</svg>
-								<select name="module_list" id="module_list" class="slds-lookup__search-input slds-input_bare" type="search" style="height: 30px;"
-									aria-owns="module_list" role="combobox" aria-activedescendent="" aria-expanded="false" aria-autocomplete="list">
+								<select name="modules_list" id="modules_list" class="slds-lookup__search-input slds-input_bare" type="search" style="height: 30px;"
+									aria-owns="modules_list" role="combobox" aria-activedescendent="" aria-expanded="false" aria-autocomplete="list">
 									<option value="all" selected="true">{$APP.LBL_ALL}</option>
 									{$modulelist}
 								</select>
@@ -106,11 +86,6 @@
 					<div class="slds-form-element slds-lookup" data-select="single" style="width: 162px; margin-bottom: 6px;">
 						<label class="slds-form-element__label" for="lookup-339">{'LBL_TRIGGER'|getTranslatedString:'Reports'} {'LBL_Search'|getTranslatedString:'MailManager'}</label>
 						<div class="slds-form-element__control slds-grid slds-box_border">
-							{* <div class="slds-dropdown_trigger slds-dropdown-trigger_click slds-align-middle slds-m-left_xx-small slds-shrink-none">
-								<svg aria-hidden="true" class="slds-icon slds-icon-standard-account slds-icon_small">
-									<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#user"></use>
-								</svg>
-							</div> *}
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
 								<svg aria-hidden="true" class="slds-input__icon">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
@@ -148,12 +123,10 @@
 				<img border="0" title="{'LBL_EDIT'|@getTranslatedString}" alt="{'LBL_EDIT'|@getTranslatedString}"
 					style="cursor: pointer;" id="expressionlist_editlink_{$workflow->id}"
 					src="{'editfield.gif'|@vtiger_imageurl:$THEME}"/></span></a>
-				{if false}
-				<a av="href:RecordDel"><span><img border="0" title="{'LBL_DELETE'|@getTranslatedString}" alt="{'LBL_DELETE'|@getTranslatedString}"
+				<a av="href:RecordDel"><span av="id:workflow_id"><img border="0" title="{'LBL_DELETE'|@getTranslatedString}" alt="{'LBL_DELETE'|@getTranslatedString}"
 					src="{'delete.gif'|@vtiger_imageurl:$THEME}"
-					style="cursor: pointer;" id="expressionlist_deletelink_{$workflow->id}"</span>
+					style="cursor: pointer;"</span>
 				</a>
-				{/if}
 			</td>
 			{else}
 			<td v="{$dtkey}" class="rptData"></td>
@@ -164,6 +137,13 @@
 <script type="text/javascript">
 {literal}
 Template.define('workflowlist_row_template', {});
+DataTable.onRedraw(document.getElementsByTagName('datatable')[0], function (data) {
+	for (index in data.data) {
+		if (data.data[index].isDefaultWorkflow) {
+			document.getElementById(data.data[index].workflow_id).style.display = "none";
+		}
+	}
+});
 {/literal}
 Pagination._config.langFirst = "{$APP.LNK_LIST_START}";
 Pagination._config.langLast = "{$APP.LNK_LIST_END}";
@@ -173,7 +153,7 @@ Pagination._config.langNext = "{$APP.LNK_LIST_NEXT} >";
 Pagination._config.langStats = "{from}-{to} {/literal}{$APP.LBL_LIST_OF}{literal} {total} ({/literal}{$APP.Page}{literal} {currentPage} {/literal}{$APP.LBL_LIST_OF}{literal} {lastPage})";
 DataTableConfig.loadingImg = 'themes/images/loading.svg';
 DataTableConfig.searchInputName = 'trigger_list';
-DataTableConfig.searchInputName = 'module_list';
+DataTableConfig.searchInputName = 'modules_list';
 </script>
 {/literal}
 <!--New workflow popup-->
