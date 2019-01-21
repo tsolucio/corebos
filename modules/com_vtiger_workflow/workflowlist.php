@@ -13,10 +13,11 @@ require_once 'include/events/SqlResultIterator.inc';
 require_once 'VTWorkflowManager.inc';
 require_once 'VTWorkflowApplication.inc';
 require_once 'VTWorkflowUtils.php';
+require_once 'VTWorkflow.php';
 require_once 'vtlib/Vtiger/Cron.php';
 
 function vtDisplayWorkflowList($adb, $request, $requestUrl, $app_strings, $current_language) {
-	global $theme;
+	global $theme, $current_user;
 	$image_path = "themes/$theme/images/";
 
 	$module = new VTWorkflowApplication('workflowlist');
@@ -31,7 +32,10 @@ function vtDisplayWorkflowList($adb, $request, $requestUrl, $app_strings, $curre
 
 	$smarty = new vtigerCRM_Smarty();
 	$wfs = new VTWorkflowManager($adb);
+	$focus = new Workflow();
 	$smarty->assign('moduleNames', $util->vtGetModules($adb));
+	$smarty->assign('modulelist', $util->getModulesList($adb));
+	$smarty->assign('triggerlist', $util->getWorkflowExecutionConditionList());
 	$smarty->assign('returnUrl', $requestUrl);
 
 	$listModule = isset($request['list_module']) ? $request['list_module'] : '';
@@ -49,8 +53,11 @@ function vtDisplayWorkflowList($adb, $request, $requestUrl, $app_strings, $curre
 	$smarty->assign('MODULE_NAME', $module->label);
 	$smarty->assign('PAGE_NAME', $mod['LBL_WORKFLOW_LIST']);
 	$smarty->assign('PAGE_TITLE', $mod['LBL_AVAILABLE_WORKLIST_LIST']);
+	$smarty->assign('PAGINATION_LIMIT', GlobalVariable::getVariable('Application_Pagination_Limit', '12', $module->name, $current_user->id));
 	$smarty->assign('module', $module);
 	$smarty->assign('MODULE', $module->name);
+	$smarty->assign('LIST_HEADER', $focus->getWorkListHeader());
+	$smarty->assign('LIST_FIELDS', $focus->list_fields_name);
 	$smarty->assign('CRON_TASK', Vtiger_Cron::getInstance('Workflow'));
 	$smarty->display("{$module->name}/ListWorkflows.tpl");
 }
