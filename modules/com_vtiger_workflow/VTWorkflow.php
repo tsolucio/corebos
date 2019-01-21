@@ -446,7 +446,7 @@ class Workflow {
 	public function getWorkFlowJSON($modulename, $executioncondtionid, $page, $order_by = 'module_name', $sorder = 'DESC', $desc_search = '', $purpose_search = '') {
 		global $log, $adb;
 		$log->debug('Entering getWorkFlowJSON() method ...');
-		
+
 		$workflow_execution_condtion_list = array(
 			VTWorkflowManager::$ON_FIRST_SAVE => 'LBL_ONLY_ON_FIRST_SAVE',
 			VTWorkflowManager::$ONCE => 'LBL_UNTIL_FIRST_TIME_CONDITION_TRUE',
@@ -457,7 +457,7 @@ class Workflow {
 			VTWorkflowManager::$MANUAL => 'LBL_MANUAL',
 			VTWorkflowManager::$RECORD_ACCESS_CONTROL => 'LBL_RECORD_ACCESS_CONTROL',
 		);
-		
+
 		$where = ' where 1 ';
 		$params = array();
 		if (!empty($modulename) && $modulename != 'all') {

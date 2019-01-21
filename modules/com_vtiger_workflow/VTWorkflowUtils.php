@@ -160,12 +160,12 @@ class VTWorkflowUtils {
 	 * Insert redirection script
 	 */
 	public static function redirectTo($to, $message) {
-?>
+		?>
 	<script type="text/javascript" charset="utf-8">
 	window.location="<?php echo $to ?>";
 	</script>
 	<a href="<?php echo $to ?>"><?php echo $message ?></a>
-<?php
+		<?php
 	}
 
 	/**
@@ -266,8 +266,8 @@ class VTWorkflowUtils {
 		$trigger_condtion_options = '';
 		foreach ($workflow_execution_condtion_list as $trigger_condtion) {
 			$trigger_condtion_options .= "<option value=".$trigger_condtion['id'].">" . getTranslatedString($trigger_condtion['label'], 'Settings') . "</option>";
+		}
+		return $trigger_condtion_options;
 	}
-	return $trigger_condtion_options;
-}
 }
 ?>
