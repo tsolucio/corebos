@@ -1266,6 +1266,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Maximum number of returned table rows as output of the Business Question answer.',
 ),
+'PurchaseOrder_TransferCostPrice' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0|1',
+	'definition' => 'When set to \'1\', creating a PurchaseOrder from another record (i.e. SalesOrder, Product) will use the product/service costprice in inventorylines rather than the selling price. You can further specify this behavior by checking the \'In Module List\' box and selecting the source modules you want this to happen for in the module list.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php', GLOB_BRACE) as $tcode) {

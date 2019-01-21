@@ -73,6 +73,12 @@ function cbwsValidateInformation($context, $user) {
 	}
 	include_once 'modules/cbMap/processmap/Validations.php';
 	$validation = Validations::processAllValidationsFor($_REQUEST['module']);
+	if (is_array($validation)) {
+		$validation = array(
+			'wssuccess' => false,
+			'wsresult' => $validation,
+		);
+	}
 	VTWS_PreserveGlobal::flush();
 	return $validation;
 }

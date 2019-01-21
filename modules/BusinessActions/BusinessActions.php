@@ -304,7 +304,7 @@ class BusinessActions extends CRMEntity {
 			if ($multitype) {
 				$result[$link->linktype][] = $link;
 			} else {
-				$result[$link->linktype] = $link;
+				$result[] = $link;
 			}
 		}
 
@@ -395,12 +395,10 @@ class BusinessActions extends CRMEntity {
 			);
 		}
 
-		$countba = $adb->num_rows($ba);
-
-		for ($i = 0; $i < $countba; $i++) {
-			$recordid = $adb->query_result($ba, $i, "businessactionsid");
-			$focus = CRMEntity::getInstance('BusinessActions');
-			DeleteEntity('BusinessActions', 'BusinessActions', $focus, $recordid, 0);
+		$focus = CRMEntity::getInstance('BusinessActions');
+		while ($row = $adb->fetch_array($ba)) {
+			$focus->id = $row['businessactionsid'];
+			DeleteEntity('BusinessActions', 'BusinessActions', $focus, $row['businessactionsid'], 0);
 		}
 	}
 

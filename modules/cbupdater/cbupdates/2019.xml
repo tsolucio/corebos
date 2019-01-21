@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updatesChangeLog>
+<changeSet>
+	<author>joebordes</author>
+	<description>add Zendesk virtual Webservice API to database</description>
+	<filename>build/changeSets/2019/addZendeskWSAPI.php</filename>
+	<classname>addZendeskWSAPI</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>george1806</author>
+	<description>Install whatsapp workflow task</description>
+	<filename>build/changeSets/2019/installWhatsappWorkflowTask.php</filename>
+	<classname>installWhatsappWorkflowTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+</updatesChangeLog>

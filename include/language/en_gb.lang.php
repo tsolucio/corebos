@@ -1197,6 +1197,7 @@ $app_strings = array(
 	'notsaved' => 'notsaved',
 	'processcomplete' => 'Process Complete',
 	'typetosearch_prodser' => 'Type to search products or services',
+	'RecordIsAssignedToInactiveUser' => 'The record is assigned to an inactive user. Please select another user.',
 );
 
 $app_currency_strings = array(

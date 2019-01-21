@@ -573,7 +573,7 @@ class cbupdaterWorker {
 
 	public function sendError() {
 		$this->updError = true;
-		echo '<tr width="100%"><td colspan=3<span style="color:red">ERROR: Class called without update record in application!!</span></td></tr></table>';
+		echo '<tr width="100%"><td colspan=3<span style="color:red">ERROR: Class '.get_class($this).'called without update record in application!!</span></td></tr></table>';
 		die();
 	}
 

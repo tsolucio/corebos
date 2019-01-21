@@ -44,22 +44,22 @@
 </table>
 <table border="0" >
 	<tr><td><input type="radio" name="execution_condition" value="ON_FIRST_SAVE" onclick="onschedule_preparescreen(this);"
-		{if $workflow->executionConditionAsLabel() eq 'ON_FIRST_SAVE'}checked{/if} {if $workflow->executionConditionAsLabel() eq 'MANUAL'}disabled{/if}/></td>
+		{if $workflow->executionConditionAsLabel() eq 'ON_FIRST_SAVE'}checked{/if} /></td>
 		<td>{$MOD.LBL_ONLY_ON_FIRST_SAVE}.</td></tr>
 	<tr><td><input type="radio" name="execution_condition" value="ONCE" onclick="onschedule_preparescreen(this);"
-		{if $workflow->executionConditionAsLabel() eq 'ONCE'}checked{/if} {if $workflow->executionConditionAsLabel() eq 'MANUAL'}disabled{/if}/></td>
+		{if $workflow->executionConditionAsLabel() eq 'ONCE'}checked{/if} /></td>
 		<td>{$MOD.LBL_UNTIL_FIRST_TIME_CONDITION_TRUE}.</td></tr>
 	<tr><td><input type="radio" name="execution_condition" value="ON_EVERY_SAVE" onclick="onschedule_preparescreen(this);"
-		{if $workflow->executionConditionAsLabel() eq 'ON_EVERY_SAVE'}checked{/if} {if $workflow->executionConditionAsLabel() eq 'MANUAL'}disabled{/if}/></td>
+		{if $workflow->executionConditionAsLabel() eq 'ON_EVERY_SAVE'}checked{/if} /></td>
 		<td>{$MOD.LBL_EVERYTIME_RECORD_SAVED}.</td></tr>
 	<tr><td><input type="radio" name="execution_condition" value="ON_MODIFY" onclick="onschedule_preparescreen(this);"
-		{if $workflow->executionConditionAsLabel() eq 'ON_MODIFY'}checked{/if} {if $workflow->executionConditionAsLabel() eq 'MANUAL'}disabled{/if}/></td>
+		{if $workflow->executionConditionAsLabel() eq 'ON_MODIFY'}checked{/if} /></td>
 		<td>{$MOD.LBL_ON_MODIFY}.</td></tr>
 	<tr><td><input type="radio" name="execution_condition" value="ON_DELETE" onclick="onschedule_preparescreen(this);"
-		{if $workflow->executionConditionAsLabel() eq 'ON_DELETE'}checked{/if} {if $workflow->executionConditionAsLabel() eq 'MANUAL'}disabled{/if}/></td>
+		{if $workflow->executionConditionAsLabel() eq 'ON_DELETE'}checked{/if} /></td>
 		<td>{$MOD.LBL_ON_DELETE}.</td></tr>
 	<tr><td valign="top"><input type="radio" name="execution_condition" value="ON_SCHEDULE" onclick="onschedule_preparescreen(this);"
-		{if $workflow->executionConditionAsLabel() eq 'ON_SCHEDULE'}checked{/if} {if $ScheduledWorkflowsCount>$MaxAllowedScheduledWorkflows}disabled{/if} {if $workflow->executionConditionAsLabel() eq 'MANUAL'}disabled{/if}/></td>
+		{if $workflow->executionConditionAsLabel() eq 'ON_SCHEDULE'}checked{/if} {if $ScheduledWorkflowsCount>$MaxAllowedScheduledWorkflows}disabled{/if} /></td>
 		<td>{$MOD.LBL_ON_SCHEDULE}.
 		{if $ScheduledWorkflowsCount>$MaxAllowedScheduledWorkflows}
 		 <span class='errorMessage' style="color:red;margin-left: 10px;">{'EXCEEDS_MAX'|@getTranslatedString} : {$MaxAllowedScheduledWorkflows}</span>
@@ -150,9 +150,9 @@
 		{/if}
 		</td></tr>
 	<tr><td><input type="radio" name="execution_condition" value="RECORD_ACCESS_CONTROL" onclick="onschedule_preparescreen(this);"
-		{if $workflow->executionConditionAsLabel() eq 'RECORD_ACCESS_CONTROL'}checked{/if} {if $workflow->executionConditionAsLabel() eq 'MANUAL'}disabled{/if} /></td>
+		{if $workflow->executionConditionAsLabel() eq 'RECORD_ACCESS_CONTROL'}checked{/if} /></td>
 		<td>{$MOD.LBL_RECORD_ACCESS_CONTROL}.</td></tr>
-	<tr><td><input type="radio" name="execution_condition" value="MANUAL"
+	<tr><td><input type="radio" name="execution_condition" value="MANUAL" onclick="onschedule_preparescreen(this);"
 		{if $workflow->executionConditionAsLabel() eq 'MANUAL'}checked{/if} /></td>
 		<td>{$MOD.LBL_MANUAL}.</td></tr>
 </table>

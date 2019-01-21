@@ -93,7 +93,7 @@ FieldDependencies.prototype.setup = function (sourceform, datasource) {
 				thisContext.actOnSelectChange(ev);
 			});
 		}
-	};
+	}
 };
 
 /**
@@ -125,6 +125,7 @@ FieldDependencies.prototype.actOnSelectChange = function (event) {
 			var condArray=new Array();
 			var condOperatorArray=new Array();
 			for (var j=0; j<conditions.length; j++) {
+				newGroup=false;
 				field=conditions[j]['columnname'];
 				comparator=conditions[j]['comparator'];
 				value=conditions[j]['value'];

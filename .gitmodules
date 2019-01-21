@@ -1,3 +1,0 @@
-[submodule "build/coreBOSTests"]
-	path = build/coreBOSTests
-	url = https://github.com/tsolucio/coreBOSTests.git

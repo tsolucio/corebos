@@ -1,0 +1,20 @@
+language: php
+php:
+  - 5.5
+  - 5.6
+  - 7.0
+  - 7.1
+  - 7.2
+  - nightly
+matrix:
+  fast_finish: true
+  allow_failures:
+    - php: 7.2
+    - php: nightly
+install:
+  - travis_retry composer self-update && composer install
+script:
+  - vendor/bin/phpunit --testsuite "Zendesk API Unit Test Suites"
+  - vendor/bin/phpcs --extensions=php --standard=PSR2 --report=summary -np src/ tests/
+notifications:
+  email: false

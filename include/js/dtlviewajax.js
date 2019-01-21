@@ -505,7 +505,7 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 	if (doformValidation('')) { //base function which validates form data
 		//Testing if a Validation file exists
 		jQuery.ajax({
-			url: 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule='+gVTModule,
+			url: 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule='+gVTModule+'&crmid='+crmId,
 			type:'get'
 		}).fail(function () {
 			//Validation file does not exist
@@ -578,6 +578,8 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 					sentForm[fieldName] = document.getElementById('txtbox_'+fieldName).value;
 					break;
 				}
+				sentForm['action'] = 'DetailViewEdit';
+				sentForm['dtlview_edit_fieldcheck'] = fieldName;
 				//JSONize form data
 				sentForm = JSON.stringify(sentForm);
 				jQuery.ajax({

@@ -2950,7 +2950,7 @@ class ReportRun extends CRMEntity {
 				$field_columnalias = $module_name."_".$fieldlist[3];
 				$field_columnalias = decode_html($field_columnalias);
 				$query_columnalias = substr($field_columnalias, 0, strrpos($field_columnalias, '_'));
-				$query_columnalias = str_replace(array(' ','&'), '_', $query_columnalias);
+				$query_columnalias = str_replace(array(' ','&','(',')'), '_', $query_columnalias);
 				$sckey = $field_tablename.':'.$field_columnname.':'.$query_columnalias.':'.$field_columnname.':N'; // vtiger_invoice:subject:Invoice_Subject:subject:V
 				$scval = $field_tablename.'.'.$field_columnname." AS '".$query_columnalias."'"; // vtiger_invoice.subject AS 'Invoice_Subject'
 				$seltotalcols[$sckey] = $scval;

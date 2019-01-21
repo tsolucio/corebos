@@ -413,7 +413,7 @@
 								</select>
 							{/if}
 							<input id="txtbox_{$keyfldname}" name="{$keyfldname}" type="hidden" value="{$data.extendedfieldinfo.entityid}">
-							<input id="{$keyfldname}_display" name="{$keyfldname}_display" readonly type="text" style="border:1px solid #bababa;" value="{$data.extendedfieldinfo.displayvalue}">&nbsp;
+							<input id="{$keyfldname}_display" name="{$keyfldname}_display" readonly type="text" style="border:1px solid #bababa;" value="{$data.extendedfieldinfo.displayvalue}" onclick='return {$vtui10func}("DetailView","{$keyfldname}","{$MODULE}","{$ID}");'>&nbsp;
 							<img src="{'select.gif'|@vtiger_imageurl:$THEME}"
 								alt="{'LBL_SELECT'|@getTranslatedString}" title="{'LBL_SELECT'|@getTranslatedString}" onclick='return {$vtui10func}("DetailView","{$keyfldname}","{$MODULE}","{$ID}");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 							<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}"

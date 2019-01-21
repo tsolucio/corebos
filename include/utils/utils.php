@@ -231,7 +231,11 @@ function get_user_array($add_blank = true, $status = "Active", $assigned_user = 
 			$params[] = $assigned_user;
 		}
 
-		$query .= " order by user_name ASC";
+		$userOrder = GlobalVariable::getVariable('Application_User_SortBy', 'user_name ASC', $module, $current_user->id);
+		if ($userOrder != 'DO NOT SORT') {
+			$orderByCol = $db->convert2Sql('?', array($userOrder));
+			$query .= ' order by '.str_replace("'", "", $orderByCol);
+		}
 
 		$result = $db->pquery($query, $params, true, "Error filling in user array: ");
 
@@ -998,13 +1002,6 @@ function getProfile2FieldPermissionList($fld_module, $profileid) {
 	global $log;
 	$log->debug("Entering getProfile2FieldPermissionList(".$fld_module.",". $profileid.") method ...");
 
-	// Cache information to re-use
-	static $_module_fieldpermission_cache = array();
-
-	if (!isset($_module_fieldpermission_cache[$fld_module])) {
-		$_module_fieldpermission_cache[$fld_module] = array();
-	}
-
 	// Lookup cache first
 	$return_data = VTCacheUtils::lookupProfile2FieldPermissionList($fld_module, $profileid);
 
@@ -1035,7 +1032,7 @@ function getProfile2FieldPermissionList($fld_module, $profileid) {
 		// Update information to cache for re-use
 		VTCacheUtils::updateProfile2FieldPermissionList($fld_module, $profileid, $return_data);
 	}
-	$log->debug("Exiting getProfile2FieldPermissionList method ...");
+	$log->debug('Exiting getProfile2FieldPermissionList method ...');
 	return $return_data;
 }
 
@@ -1048,51 +1045,36 @@ function getProfile2ModuleFieldPermissionList($fld_module, $profileid) {
 	global $log, $adb;
 	$log->debug("Entering getProfile2ModuleFieldPermissionList(".$fld_module.",". $profileid.") method ...");
 
-	// Cache information to re-use
-	static $_module_fieldpermission_cache = array();
-
-	if (!isset($_module_fieldpermission_cache[$fld_module])) {
-		$_module_fieldpermission_cache[$fld_module] = array();
-	}
-
-	$return_data = array();
-
 	$tabid = getTabid($fld_module);
-
 	$query = 'SELECT vtiger_profile2tab.tabid, vtiger_profile2tab.permissions, vtiger_field.fieldlabel, vtiger_field.uitype,
 		vtiger_field.fieldid, vtiger_field.displaytype, vtiger_field.typeofdata
 		FROM vtiger_profile2tab INNER JOIN vtiger_field ON vtiger_field.tabid=vtiger_profile2tab.tabid
 		WHERE vtiger_profile2tab.profileid=? AND vtiger_profile2tab.tabid=? AND vtiger_field.presence in (0,2)';
-	$qparams = array($profileid, $tabid);
-	$result = $adb->pquery($query, $qparams);
+	$result = $adb->pquery($query, array($profileid, $tabid));
 
-	for ($i=0; $i<$adb->num_rows($result); $i++) {
-		$fieldid = $adb->query_result($result, $i, "fieldid");
-		$checkentry = $adb->pquery('SELECT 1 FROM vtiger_profile2field WHERE profileid=? AND tabid=? AND fieldid =?', array($profileid,$tabid,$fieldid));
-		$visible_value = 0;
-		$readOnlyValue = 0;
+	$inssql = 'INSERT INTO vtiger_profile2field VALUES(?,?,?,?,?,?)';
+	$selsql = 'SELECT vtiger_profile2field.visible, vtiger_profile2field.readonly, summary FROM vtiger_profile2field WHERE fieldid=? AND tabid=? AND profileid=?';
+	$chksql = 'SELECT 1 FROM vtiger_profile2field WHERE profileid=? AND tabid=? AND fieldid =?';
+	$return_data = array();
+	while ($row = $adb->fetch_array($result)) {
+		$checkentry = $adb->pquery($chksql, array($profileid, $tabid, $row['fieldid']));
 		if ($adb->num_rows($checkentry) == 0) {
-			$sql11='INSERT INTO vtiger_profile2field VALUES(?,?,?,?,?,?)';
-			$adb->pquery($sql11, array($profileid, $tabid, $fieldid,$visible_value, $readOnlyValue, 'B'));
+			$adb->pquery($inssql, array($profileid, $tabid, $row['fieldid'], 0, 0, 'B'));
 		}
-
-		$sql = 'SELECT vtiger_profile2field.visible, vtiger_profile2field.readonly, summary FROM vtiger_profile2field WHERE fieldid=? AND tabid=? AND profileid=?';
-		$params = array($fieldid,$tabid,$profileid);
-		$res = $adb->pquery($sql, $params);
-
+		$res = $adb->pquery($selsql, array($row['fieldid'], $tabid, $profileid));
+		$moreinfo = $adb->fetch_array($res);
 		$return_data[] = array(
-			$adb->query_result($result, $i, 'fieldlabel'),
-			$adb->query_result($res, 0, 'visible'), // From vtiger_profile2field.visible
-			$adb->query_result($result, $i, 'uitype'),
-			$adb->query_result($res, 0, 'readonly'), // From vtiger_profile2field.readonly
-			$adb->query_result($result, $i, 'fieldid'),
-			$adb->query_result($result, $i, 'displaytype'),
-			$adb->query_result($result, $i, 'typeofdata'),
-			$adb->query_result($res, 0, 'summary') // From vtiger_profile2field.summary
+			$row['fieldlabel'],
+			$moreinfo['visible'], // From vtiger_profile2field.visible
+			$row['uitype'],
+			$moreinfo['readonly'], // From vtiger_profile2field.readonly
+			$row['fieldid'],
+			$row['displaytype'],
+			$row['typeofdata'],
+			$moreinfo['summary'], // From vtiger_profile2field.summary
 		);
 	}
-
-	$log->debug("Exiting getProfile2ModuleFieldPermissionList method ...");
+	$log->debug('Exiting getProfile2ModuleFieldPermissionList method ...');
 	return $return_data;
 }
 

@@ -74,11 +74,49 @@ abstract class WebserviceEntityOperation {
 	}
 
 	public function getFieldTypeDetails($webserviceField) {
-		global $current_user;
+		global $current_user, $adb;
 		$typeDetails = array();
 		switch ($webserviceField->getFieldDataType()) {
 			case 'reference':
 				$typeDetails['refersTo'] = $webserviceField->getReferenceList();
+				if (in_array('DocumentFolders', $typeDetails['refersTo'])) {
+					$fldrs = array();
+					$fldwsid = vtws_getEntityId('DocumentFolders').'x';
+					$res=$adb->pquery('select foldername,folderid from vtiger_attachmentsfolder order by foldername', array());
+					for ($i=0; $i<$adb->num_rows($res); $i++) {
+						$fid=$adb->query_result($res, $i, 'folderid');
+						$fldrs[] = array(
+							'value' => $fldwsid.$fid,
+							'label' => $adb->query_result($res, $i, 'foldername'),
+						);
+					}
+					$typeDetails['picklistValues'] = $fldrs;
+				}
+				if (in_array('Currency', $typeDetails['refersTo'])) {
+					$crs = array();
+					$cwsid = vtws_getEntityId('Currency').'x';
+					$res=$adb->pquery("select * from vtiger_currency_info where currency_status = 'Active' and deleted=0", array());
+					for ($i=0; $i<$adb->num_rows($res); $i++) {
+						$cid=$adb->query_result($res, $i, 'id');
+						$crs[] = array(
+							'value' => $cwsid.$cid,
+							'label' => $adb->query_result($res, $i, 'currency_name'),
+						);
+					}
+					$typeDetails['picklistValues'] = $crs;
+				}
+				if ($webserviceField->getUIType()==77) {
+					$mname = getTabModuleName($webserviceField->getTabId());
+					$crs = array();
+					$res=json_decode(vtws_getAssignedUserList($mname, $current_user), true);
+					for ($i=0; $i<count($res); $i++) {
+						$crs[] = array(
+							'value' => $res[$i]['userid'],
+							'label' => $res[$i]['username'],
+						);
+					}
+					$typeDetails['picklistValues'] = $crs;
+				}
 				break;
 			case 'multipicklist':
 			case 'picklist':

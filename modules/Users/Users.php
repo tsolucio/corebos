@@ -1338,6 +1338,7 @@ class Users extends CRMEntity {
 		$log->debug("Entering in function saveHomeOrder($id)");
 
 		if ($this->mode == 'edit') {
+			$save_array = array();
 			$qry = 'update vtiger_homestuff,vtiger_homedefault
 				set vtiger_homestuff.visible=?
 				where vtiger_homestuff.stuffid=vtiger_homedefault.stuffid and vtiger_homestuff.userid=? and vtiger_homedefault.hometype=?';
@@ -1350,7 +1351,7 @@ class Users extends CRMEntity {
 				}
 				$result = $adb->pquery($qry, array($visible, $id, $key));
 			}
-			if ($save_array != "") {
+			if (count($save_array)>0) {
 				$homeorder = implode(',', $save_array);
 			}
 		} else {

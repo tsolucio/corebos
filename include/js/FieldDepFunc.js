@@ -1,4 +1,3 @@
-
 function fieldDep_AddDays(change_field, action_field, new_value, old_value, parameters) {
 	var datesep = '-';
 	if (new_value.indexOf('-')>=0) {
@@ -39,30 +38,38 @@ function fieldDep_AddDays(change_field, action_field, new_value, old_value, para
 
 function fieldDep_SubDays(change_field, action_field, new_value, old_value, parameters) {
 	parameters[0] = -1*parseInt(parameters[0]);
-	fieldDep_AddDays(change_field, action_field, new_value, old_value, parameters)
+	fieldDep_AddDays(change_field, action_field, new_value, old_value, parameters);
 }
 
 function fieldDep_OnlyNumbers(change_field, action_field, new_value, old_value, parameters) {
-alert('ddj');
+	document.getElementsByName(action_field).item(0).value = new_value.replace(/\D/g, '');
 }
 
 function fieldDep_OnlyLetters(change_field, action_field, new_value, old_value, parameters) {
-
+	document.getElementsByClassName(action_field).item(0).value = new_value.replace(/[^A-Za-z]/g, '');
 }
 
 function fieldDep_GetField(change_field, action_field, new_value, old_value, parameters) {
-
+	ExecuteFunctions('getFieldValuesFromRecord', 'getFieldValuesFrom='+new_value+'&getTheseFields='+parameters[0]).then(function (data) {
+		let rdo = JSON.parse(data);
+		let srcfieldids = parameters[0].split(',');
+		let dstfieldids = parameters[1].split(',');
+		for (var f=0; f<srcfieldids.length; f++) {
+			let fld = document.getElementById(dstfieldids[f]);
+			if (fld) {
+				fld.value = rdo[srcfieldids[f]];
+			}
+		}
+	});
 }
 
 function fieldDep_AssignNewValue(change_field, action_field, new_value, old_value, parameters) {
-
+	document.getElementsByName(action_field).item(0).value = new_value;
 }
 
 function fieldDep_Format(change_field, action_field, new_value, old_value, parameters) {
-
 }
 
 function fieldDep_ChangeLabel(change_field, action_field, new_value, old_value, parameters) {
-
 }
 

@@ -83,13 +83,13 @@
 {if $tablestuff.Stufftype neq "Tag Cloud"}
 	<table width="100%" cellpadding="0" cellspacing="0" class="small scrollLink">
 	<tr>
-		<td align="left">
+		<td align="left" class="slds-p-left_small">
 			<a href="javascript:;" onclick="addScrollBar({$tablestuff.Stuffid});">
 				{$MOD.LBL_SCROLL}
 			</a>
 		</td>
 {if $tablestuff.Stufftype eq "Module" || ($tablestuff.Stufftype eq "Default" && $tablestuff.Stufftitle neq "Key Metrics" && $tablestuff.Stufftitle neq $homepagedashboard_title && $tablestuff.Stufftitle neq "My Group Allocation" ) || $tablestuff.Stufftype eq "RSS" || $tablestuff.Stufftype eq "DashBoard"|| $tablestuff.Stufftype eq "ReportCharts"}
-		<td align="right">
+		<td style="text-align: right;" class="slds-p-right_small">
 			<a href="#" id="a_{$tablestuff.Stuffid}">
 				{$MOD.LBL_MORE}
 			</a>

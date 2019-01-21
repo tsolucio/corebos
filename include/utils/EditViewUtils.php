@@ -1315,11 +1315,18 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 
 	$product_Detail = array();
 	$acvid = 0;
+	$listcostprice = false;
+
+	if (GlobalVariable::getVariable('PurchaseOrder_TransferCostPrice', '0', $_REQUEST['return_module']) == '1' && $currentModule == 'PurchaseOrder') {
+		$listcostprice = true;
+	}
+
 	if (in_array($module, getInventoryModules())) {
 		$query="SELECT
 			case when vtiger_products.productid != '' then vtiger_products.productname else vtiger_service.servicename end as productname,
 			case when vtiger_products.productid != '' then vtiger_products.productcode else vtiger_service.service_no end as productcode,
-			case when vtiger_products.productid != '' then vtiger_products.unit_price else vtiger_service.unit_price end as unit_price,
+			case when vtiger_products.productid != '' then vtiger_products.unit_price else vtiger_service.unit_price end as unit_price, 
+			case when vtiger_products.productid != '' then vtiger_products.cost_price else vtiger_service.cost_price end as cost_price, 
 			case when vtiger_products.productid != '' then vtiger_products.qtyinstock else 'NA' end as qtyinstock,
 			case when vtiger_products.productid != '' then 'Products' else 'Services' end as entitytype,
 			vtiger_inventoryproductrel.listprice,
@@ -1427,7 +1434,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 		$qtyinstock=$adb->query_result($result, $i-1, 'qtyinstock');
 		$qty=$adb->query_result($result, $i-1, 'quantity');
 		$unitprice=$adb->query_result($result, $i-1, 'unit_price');
-		$listprice=$adb->query_result($result, $i-1, 'listprice');
+		$listprice=$listcostprice ? $adb->query_result($result, $i-1, 'cost_price') : $adb->query_result($result, $i-1, 'listprice');
 		$entitytype=$adb->query_result($result, $i-1, 'entitytype');
 		if (!empty($entitytype)) {
 			$product_Detail[$i]['entityType'.$i]=$entitytype;

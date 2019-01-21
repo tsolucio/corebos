@@ -15,16 +15,18 @@
 *************************************************************************************************/
 
 class inventoryproductstockcontrol extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			global $adb;
 			$emm = new VTEntityMethodManager($adb);
 			// Adding EntityMethod for Updating Products data after updating PurchaseOrder
-			$emm->addEntityMethod("PurchaseOrder","UpdateInventory","include/InventoryHandler.php","handleInventoryProductRel");
+			$emm->addEntityMethod("PurchaseOrder", "UpdateInventory", "include/InventoryHandler.php", "handleInventoryProductRel");
 			// Creating Workflow for Updating Inventory Stock on PO
 			$vtWorkFlow = new VTWorkflowManager($adb);
 			$invWorkFlow = $vtWorkFlow->newWorkFlow("PurchaseOrder");
@@ -32,7 +34,7 @@ class inventoryproductstockcontrol extends cbupdaterWorker {
 			$invWorkFlow->description = "UpdateInventoryProducts On Every Save";
 			$invWorkFlow->defaultworkflow = 1;
 			$vtWorkFlow->save($invWorkFlow);
-		
+
 			$tm = new VTTaskManager($adb);
 			$task = $tm->createTask('VTEntityMethodTask', $invWorkFlow->id);
 			$task->active=true;
@@ -41,26 +43,25 @@ class inventoryproductstockcontrol extends cbupdaterWorker {
 			$tm->saveTask($task);
 			// add Cancel status to Invoice and SO for stock control
 			$moduleInstance = Vtiger_Module::getInstance('Invoice');
-			$field = Vtiger_Field::getInstance('invoicestatus',$moduleInstance);
+			$field = Vtiger_Field::getInstance('invoicestatus', $moduleInstance);
 			if ($field) {
 				$field->setPicklistValues(array('Cancel'));
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied! Add Workflow Custom Function complete!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
 
-	function isApplied() {
+	public function isApplied() {
 		$done = parent::isApplied();
 		if (!$done) {
 			global $adb;
 			$result = $adb->pquery("SELECT * FROM com_vtiger_workflowtasks_entitymethod where module_name = 'PurchaseOrder' and method_name= 'UpdateInventory'",array());
-			$done = ($result and $adb->num_rows($result)==1);
+			$done = ($result && $adb->num_rows($result)==1);
 			$result = $adb->pquery("SELECT `workflow_id` FROM `com_vtiger_workflows` WHERE `module_name` = 'PurchaseOrder' and `summary`='UpdateInventoryProducts On Every Save'",array());
-			$done = ($done and $result and $adb->num_rows($result)==1);
+			$done = ($done && $result && $adb->num_rows($result)==1);
 		}
 		return $done;
 	}
-
 }
