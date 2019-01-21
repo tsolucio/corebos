@@ -119,11 +119,9 @@
 			<td class="rptData">
 				<a av="href:Record"><span>
 				<img border="0" title="{'LBL_EDIT'|@getTranslatedString}" alt="{'LBL_EDIT'|@getTranslatedString}"
-					style="cursor: pointer;" id="expressionlist_editlink_{$workflow->id}"
-					src="{'editfield.gif'|@vtiger_imageurl:$THEME}"/></span></a>
+					style="cursor: pointer;" src="{'editfield.gif'|@vtiger_imageurl:$THEME}"/></span></a>
 				<a av="href:RecordDel"><span av="id:workflow_id"><img border="0" title="{'LBL_DELETE'|@getTranslatedString}" alt="{'LBL_DELETE'|@getTranslatedString}"
-					src="{'delete.gif'|@vtiger_imageurl:$THEME}"
-					style="cursor: pointer;"</span>
+					src="{'delete.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;"</span>
 				</a>
 			</td>
 			{else}
