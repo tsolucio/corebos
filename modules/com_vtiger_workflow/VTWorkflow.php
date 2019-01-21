@@ -522,8 +522,8 @@ class Workflow {
 			if (empty($lgn['defaultworkflow']) && getTranslatedString($workflow_execution_condtion_list[$lgn['execution_condition']], 'Settings') != 'MANUAL') {
 				$entry['isDefaultWorkflow'] = false;
 			}
-			$entry['Module'] = $lgn['module_name'];
-			$entry['Description'] = $lgn['summary'];
+			$entry['Module'] = getTranslatedString($lgn['module_name'], $lgn['module_name']);
+			$entry['Description'] = getTranslatedString($lgn['summary'], 'com_vtiger_workflow');
 			if (empty($lgn['workflow_id'])) {
 				$rurl = '';
 				$delurl = '';

@@ -44,7 +44,7 @@
 								</svg>
 								<select name="modules_list" id="modules_list" class="slds-lookup__search-input slds-input_bare" type="search" style="height: 30px;"
 									aria-owns="modules_list" role="combobox" aria-activedescendent="" aria-expanded="false" aria-autocomplete="list">
-									<option value="all" selected="true">{$APP.LBL_ALL}</option>
+									<option value="all" selected="true">{$APP.LBL_ALLPICKLIST}</option>
 									{$modulelist}
 								</select>
 							</div>

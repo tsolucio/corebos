@@ -247,7 +247,7 @@ class VTWorkflowUtils {
 		);
 		$module_options = '';
 		foreach ($modules as $moduleName) {
-			$module_options .= "<option value=".$moduleName.">" . $moduleName . "</option>";
+			$module_options .= "<option value=".$moduleName.">" . getTranslatedString($moduleName, $moduleName) . "</option>";
 		}
 		return $module_options;
 	}
