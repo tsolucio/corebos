@@ -12,7 +12,6 @@
 <script src="include/bunnyjs/datatable.icons.min.js"></script>
 <script src="include/bunnyjs/element.min.js"></script>
 <script src="include/bunnyjs/datatable.scrolltop.min.js"></script>
-<script src="modules/cbAuditTrail/cbAuditTrail.js"></script>
 <!-- BunnyJs Script Files -->
 
 <script src="modules/{$module->name}/resources/functional.js" type="text/javascript" charset="utf-8"></script>
@@ -102,8 +101,7 @@
 			</div>
 		</header>
 		<footer>
-			<pagination limit="12" outer></pagination>
-			<stats></stats>
+			<pagination limit={$PAGINATION_LIMIT} outer></pagination>
 		</footer>
 		<table class="rptTable">
 			<tr>
