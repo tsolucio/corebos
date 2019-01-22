@@ -23,50 +23,50 @@ global $adb, $coreBOSOnDemandActive;
 $ids = vtlib_purify($_REQUEST['idstring']);
 
 if (!$coreBOSOnDemandActive) {
-if (!empty($ids)) {
-	// Export as Zip
-	if (empty($todir)) {
-		$todir = 'cache';
-	}
-	if (empty($xmlfilename)) {
-		$xmlfilename = 'coreBOSUpdates.xml';
-	} else {
-		$xmlfilename = basename($xmlfilename);
-	}
-	if (empty($xmlfilename) || $xmlfilename=='.' || $xmlfilename=='..') {
-		$xmlfilename = 'coreBOSUpdates.xml';
-	}
-	$xmlcfn = 'cache/'.$xmlfilename;
-	$zipfilename = "$todir/cbupdates-" . date('YmdHis') . '.zip';
-	$zip = new Vtiger_Zip($zipfilename);
+	if (!empty($ids)) {
+		// Export as Zip
+		if (empty($todir)) {
+			$todir = 'cache';
+		}
+		if (empty($xmlfilename)) {
+			$xmlfilename = 'coreBOSUpdates.xml';
+		} else {
+			$xmlfilename = basename($xmlfilename);
+		}
+		if (empty($xmlfilename) || $xmlfilename=='.' || $xmlfilename=='..') {
+			$xmlfilename = 'coreBOSUpdates.xml';
+		}
+		$xmlcfn = 'cache/'.$xmlfilename;
+		$zipfilename = "$todir/cbupdates-" . date('YmdHis') . '.zip';
+		$zip = new Vtiger_Zip($zipfilename);
 
-	$sql = 'select * from vtiger_cbupdater
+		$sql = 'select * from vtiger_cbupdater
 			inner join vtiger_crmentity on crmid=cbupdaterid
 			where deleted=0 ';
-	if ($ids!='all') {
-		$ids = str_replace(';', ',', $ids);
-		$ids = trim($ids, ',');
-		$sql .= $adb->sql_escape_string(" and cbupdaterid in ($ids)");
-	}
-	$rs = $adb->query($sql);
-	if ($rs && $adb->num_rows($rs)>0) {
-		$w=new XMLWriter();
-		$w->openMemory();
-		$w->setIndent(true);
-		$w->startDocument('1.0', 'UTF-8');
-		$w->startElement('updatesChangeLog');
-		while ($upd = $adb->fetch_array($rs)) {
-			$w->startElement('changeSet');
-			if (!empty($upd['author'])) {
-				$w->startElement('author');
-				$w->text($upd['author']);
-				$w->endElement();
-			}
-			if (!empty($upd['description'])) {
-				$w->startElement('description');
-				$w->text($upd['description']);
-				$w->endElement();
-			}
+		if ($ids!='all') {
+			$ids = str_replace(';', ',', $ids);
+			$ids = trim($ids, ',');
+			$sql .= $adb->sql_escape_string(" and cbupdaterid in ($ids)");
+		}
+		$rs = $adb->query($sql);
+		if ($rs && $adb->num_rows($rs)>0) {
+			$w=new XMLWriter();
+			$w->openMemory();
+			$w->setIndent(true);
+			$w->startDocument('1.0', 'UTF-8');
+			$w->startElement('updatesChangeLog');
+			while ($upd = $adb->fetch_array($rs)) {
+				$w->startElement('changeSet');
+				if (!empty($upd['author'])) {
+					$w->startElement('author');
+					$w->text($upd['author']);
+					$w->endElement();
+				}
+				if (!empty($upd['description'])) {
+					$w->startElement('description');
+					$w->text($upd['description']);
+					$w->endElement();
+				}
 				$w->startElement('filename');
 				$w->text($upd['pathfilename']);
 				$w->endElement();
@@ -76,25 +76,25 @@ if (!empty($ids)) {
 				$w->startElement('systemupdate');
 				$w->text($upd['systemupdate'] == '1' ? 'true' : 'false');
 				$w->endElement();
+				$w->endElement();
+				$bname = basename($upd['pathfilename']);
+				$zip->addFile($upd['pathfilename'], $bname);
+			}
 			$w->endElement();
-			$bname = basename($upd['pathfilename']);
-			$zip->addFile($upd['pathfilename'], $bname);
+			$fd = fopen($xmlcfn, 'w');
+			$cbxml = $w->outputMemory(true);
+			fwrite($fd, $cbxml);
+			fclose($fd);
+			$zip->addFile($xmlcfn, $xmlfilename);
+			$zip->save();
+			$zip->forceDownload($zipfilename);
+			unlink($zipfilename);
+		} else {
+			echo getTranslatedString('LBL_RECORD_NOT_FOUND');
 		}
-		$w->endElement();
-		$fd = fopen($xmlcfn, 'w');
-		$cbxml = $w->outputMemory(true);
-		fwrite($fd, $cbxml);
-		fclose($fd);
-		$zip->addFile($xmlcfn, $xmlfilename);
-		$zip->save();
-		$zip->forceDownload($zipfilename);
-		unlink($zipfilename);
 	} else {
 		echo getTranslatedString('LBL_RECORD_NOT_FOUND');
 	}
-} else {
-	echo getTranslatedString('LBL_RECORD_NOT_FOUND');
-}
 } else {
 	if (empty($qid) || isPermitted($currentModule, 'DetailView', $qid) !== 'yes') {
 		$smarty = new vtigerCRM_Smarty();
