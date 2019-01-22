@@ -19,9 +19,10 @@
 *************************************************************************************************/
 include_once 'vtlib/Vtiger/Zip.php';
 
-global $adb;
+global $adb, $coreBOSOnDemandActive;
 $ids = vtlib_purify($_REQUEST['idstring']);
 
+if (!$coreBOSOnDemandActive) {
 if (!empty($ids)) {
 	// Export as Zip
 	if (empty($todir)) {
@@ -93,5 +94,13 @@ if (!empty($ids)) {
 	}
 } else {
 	echo getTranslatedString('LBL_RECORD_NOT_FOUND');
+}
+} else {
+	if (empty($qid) || isPermitted($currentModule, 'DetailView', $qid) !== 'yes') {
+		$smarty = new vtigerCRM_Smarty();
+		$smarty->assign('APP', $app_strings);
+		$smarty->assign('OPERATION_MESSAGE', getTranslatedString('LBL_PERMISSION'));
+		$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
+	}
 }
 ?>

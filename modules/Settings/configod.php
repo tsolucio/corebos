@@ -20,7 +20,7 @@
 // CONFIGURATION VARIABLES
 
 // Activate OnDemand
-$coreBOSOnDemandActive = false;
+$coreBOSOnDemandActive = true;
 
 // Login Page
 $cbodLoginPage = 'ldsnoimage';
