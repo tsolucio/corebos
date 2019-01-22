@@ -7,4 +7,11 @@
 	<classname>addZendeskWSAPI</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>george1806</author>
+	<description>Install whatsapp workflow task</description>
+	<filename>build/changeSets/2019/installWhatsappWorkflowTask.php</filename>
+	<classname>installWhatsappWorkflowTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

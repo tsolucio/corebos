@@ -14,9 +14,11 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 class addCostPriceID extends cbupdaterWorker {
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -24,7 +26,7 @@ class addCostPriceID extends cbupdaterWorker {
 			$modname = 'InventoryDetails';
 			$module = Vtiger_Module::getInstance($modname);
 			$block = Vtiger_Block::getInstance('LBL_INVENTORYDETAILS_INFORMATION', $module);
-			$field = Vtiger_Field::getInstance('cost_price',$module);
+			$field = Vtiger_Field::getInstance('cost_price', $module);
 			if (!$field) {
 				$field1 = new Vtiger_Field();
 				$field1->name = 'cost_price';
@@ -37,7 +39,7 @@ class addCostPriceID extends cbupdaterWorker {
 				$field1->presence = 0;
 				$block->addField($field1);
 			}
-			$field = Vtiger_Field::getInstance('cost_gross',$module);
+			$field = Vtiger_Field::getInstance('cost_gross', $module);
 			if (!$field) {
 				$field1 = new Vtiger_Field();
 				$field1->name = 'cost_gross';
@@ -51,11 +53,9 @@ class addCostPriceID extends cbupdaterWorker {
 				$block->addField($field1);
 			}
 		}
-
 		$this->sendMsg('Changeset '.get_class($this).' applied!');
 		$this->markApplied();
 		$this->finishExecution();
 	}
 }
-
 ?>

@@ -90,6 +90,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Permit_Assign_SameRole',
 				'Application_Permit_Assign_AllGroups',
 				'Application_User_SortBy',
+				'Application_Pagination_Limit',
 
 				'RelatedList_Activity_DefaultStatusFilter',
 
@@ -158,6 +159,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Product_Maximum_Number_Images',
 				'Product_SubProduct_PriceRollUp',
 				'Product_SubProduct_CostRollUp',
+				'PurchaseOrder_TransferCostPrice',
+				'PurchaseOrder_IgnoreTransferDiscount',
 				'Workflow_Send_Email_ToCCBCC',
 				'Workflow_GeoDistance_Country_Default',
 				'Workflow_GeoDistance_ServerIP',

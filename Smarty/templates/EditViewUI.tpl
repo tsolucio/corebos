@@ -118,7 +118,6 @@
 						name="{$fldname}_display"
 						type="text"
 						style="border:1px solid #bababa;"
-						onclick='return {$vtui10func}("{$fromlink}","{$fldname}","{$MODULE}","{if isset($ID)}{$ID}{/if}");'
 						value="{$fldvalue.displayvalue}"
 						autocomplete="off"
 						class="autocomplete-input"

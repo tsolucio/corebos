@@ -51,11 +51,6 @@ class corebos_zendesk {
 	}
 
 	public function initGlobalScope() {
-		global $current_user, $adb;
-		if (empty($current_user)) {
-			$current_user = Users::getActiveAdminUser();
-		}
-		$adb = new PearDatabase();
 		$this->API_URL = coreBOS_Settings::getSetting(self::KEY_API_URL, '');
 		$this->accessCode = coreBOS_Settings::getSetting(self::KEY_ACCESSCODE, '');
 		$this->username = coreBOS_Settings::getSetting(self::KEY_USERNAME, '');
@@ -160,6 +155,5 @@ class corebos_zendesk {
 		}
 		return $ent;
 	}
-
 }
 ?>

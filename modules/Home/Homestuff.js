@@ -759,8 +759,7 @@ function saveLayout() {
 		method: 'POST',
 		url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&layout='+layout
 	}).done(function (response) {
-		var responseVal=response;
-		window.location.href = window.location.href;
+		window.location.reload();
 	});
 }
 function saveEditReportCharts(dashRowId) {
