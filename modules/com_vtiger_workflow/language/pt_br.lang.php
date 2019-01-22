@@ -169,5 +169,6 @@ $mod_strings = array(
 'Templates'=>'Templates',
 'launchrelwf' => 'Launch workflows on related updates',
 'LBL_WFPURPOSE' => 'Purpose',
+'whatsappworkflowtask' => 'Send Whatsapp Message',
 );
 ?>

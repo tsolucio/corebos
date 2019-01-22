@@ -167,5 +167,6 @@ $mod_strings = array(
 'NO_METHOD_AVAILABLE' => 'No method is available for this module.',
 'launchrelwf' => 'Launch workflows on related updates',
 'LBL_WFPURPOSE' => 'Purpose',
+'whatsappworkflowtask' => 'Send Whatsapp Message',
 );
 ?>
