@@ -1572,7 +1572,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 			$product_Detail[$i]['discount_amount'.$i] = 0;
 			$product_Detail[$i]['discountTotal'.$i] = 0;
 			$product_Detail[$i]['totalAfterDiscount'.$i] = $product_Detail[$i]['listPrice'.$i];
-		}		
+		}
 
 		$taxTotal = '0.00';
 		$product_Detail[$i]['taxTotal'.$i] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($taxTotal, null, true), null, true);
@@ -1663,7 +1663,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 		$product_Detail[1]['final_details']['discount_percentage_final'] = 0;
 		$product_Detail[1]['final_details']['discount_amount_final'] = 0;
 		$product_Detail[1]['final_details']['discountTotal_final'] = 0;
-	}	
+	}
 
 	//To set the Final Tax values
 	//we will get all taxes. if individual then show the product related taxes only else show all taxes
