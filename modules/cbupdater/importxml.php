@@ -24,6 +24,16 @@ $cspath = 'build/changeSets/imported';
 if (!is_dir($cspath)) {
 	mkdir($cspath);
 }
+
+if (isOnDemandActive()) {
+	require_once 'Smarty_setup.php';
+	$smarty = new vtigerCRM_Smarty();
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('OPERATION_MESSAGE', getTranslatedString('LBL_PERMISSION'));
+	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
+	die();
+}
+
 $zipfile = '';
 if (count($_FILES)==1 && !empty($_FILES['zipfile'])
  && !empty($_FILES['zipfile']['tmp_name']) && !empty($_FILES['zipfile']['type'])
