@@ -14,4 +14,11 @@
 	<classname>installWhatsappWorkflowTask</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>Block cbupdater Import/Export when OnDemand is active</description>
+	<filename>build/changeSets/2019/onDemandImportExportActive.php</filename>
+	<classname>onDemandImportExportActive</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
