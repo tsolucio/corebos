@@ -85,6 +85,10 @@ if (in_array($action, $nologinaction) && file_exists('modules/Utilities/'.$actio
 if ($action == 'ModuleManagerExport') {
 	include 'modules/Settings/ModuleManager/Export.php';
 }
+$file = '';
+if (isset($_REQUEST['file'])) {
+	$file = vtlib_purify($_REQUEST['file']);
+}
 
 //Code added for 'Path Traversal/File Disclosure' security fix - Philip
 $is_module = false;
@@ -329,6 +333,17 @@ if ($use_current_login) {
 				$action = 'Save (Edit)';
 			}
 		}
+	if ($action =='ReportsAjax' && $module == 'Reports') {
+		if ($file == 'CreatePDF') {
+			$action .= " Print PDF";
+		} elseif($file == 'CreateCSV'){
+			$action .= " Print CSV";
+		}elseif($file == 'CreateXL'){
+            $action .= " Print EXCEL";
+		}elseif($file == 'getJSON'){
+			$action .= " View";
+		}
+    }
 		$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
 		$query = 'insert into vtiger_audit_trial values(?,?,?,?,?,?)';
 		$qparams = array($adb->getUniqueID('vtiger_audit_trial'), $current_user->id, $module, $action, $record, $date_var);
