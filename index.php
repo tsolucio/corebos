@@ -320,33 +320,34 @@ if ($use_current_login) {
 	require_once 'user_privileges/audit_trail.php';
 	/* Skip audit trail log for special request types */
 	$skip_auditing = false;
-	if (($action == 'ActivityReminderCallbackAjax' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'ActivityReminderCallbackAjax')) && $module == 'Calendar') {
+	$auditaction = $action;
+	if (($auditaction == 'ActivityReminderCallbackAjax' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'ActivityReminderCallbackAjax')) && $module == 'Calendar') {
 		$skip_auditing = true;
 	} elseif (($action == 'TraceIncomingCall' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'TraceIncomingCall')) && $module == 'PBXManager') {
 		$skip_auditing = true;
 	}
 	if ($audit_trail == 'true' && !$skip_auditing) {
-		if ($action=='Save') {
+		if ($auditaction=='Save') {
 			if (empty($record)) {
-				$action = 'Save (Create)';
+				$auditaction = 'Save (Create)';
 			} else {
-				$action = 'Save (Edit)';
+				$auditaction = 'Save (Edit)';
 			}
 		}
-	if ($action =='ReportsAjax' && $module == 'Reports') {
-		if ($file == 'CreatePDF') {
-			$action .= " Print PDF";
-		} elseif($file == 'CreateCSV'){
-			$action .= " Print CSV";
-		}elseif($file == 'CreateXL'){
-            $action .= " Print EXCEL";
-		}elseif($file == 'getJSON'){
-			$action .= " View";
+		if ($auditaction =='ReportsAjax' && $module == 'Reports') {
+			if ($file == 'CreatePDF') {
+				$auditaction .= " Print PDF";
+			} elseif ($file == 'CreateCSV') {
+				$auditaction .= " Print CSV";
+			} elseif ($file == 'CreateXL') {
+				$auditaction .= " Print EXCEL";
+			} elseif ($file == 'getJSON') {
+				$auditaction .= " View";
+			}
 		}
-    }
 		$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
 		$query = 'insert into vtiger_audit_trial values(?,?,?,?,?,?)';
-		$qparams = array($adb->getUniqueID('vtiger_audit_trial'), $current_user->id, $module, $action, $record, $date_var);
+		$qparams = array($adb->getUniqueID('vtiger_audit_trial'), $current_user->id, $module, $auditaction, $record, $date_var);
 		$adb->pquery($query, $qparams);
 	}
 	if (!$skip_auditing) {
