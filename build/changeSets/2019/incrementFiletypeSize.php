@@ -22,10 +22,10 @@ class incrementFiletypeSize extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			global $adb;
+            global $adb;
             $this->ExecuteQuery("ALTER TABLE vtiger_notes MODIFY COLUMN filetype VARCHAR(255)");
             
-			$this->sendMsg('Changeset '.get_class($this).' applied!');
+            $this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}
 		$this->finishExecution();
