@@ -21,4 +21,11 @@
 	<classname>onDemandImportExportActive</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Increment the size of filetype attribute on vtiger_notes</description>
+	<filename>build/changeSets/2019/incrementFiletypeSize.php</filename>
+	<classname>incrementFiletypeSize</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
