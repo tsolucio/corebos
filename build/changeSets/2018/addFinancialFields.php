@@ -253,6 +253,9 @@ class addFinancialFields extends cbupdaterWorker {
 			$ffmodsdone = coreBOS_Settings::getSetting('addFFModsDone', '');
 			$ffcrmiddone = coreBOS_Settings::getSetting('addFFcrmidDone', 0);
 			foreach ($modules as $mod) {
+				if (!vtlib_isModuleActive($mod['name'])) {
+					continue;
+				}
 				if (strpos($ffmodsdone, $mod['name'])>0) {
 					continue;
 				}
