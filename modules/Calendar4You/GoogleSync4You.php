@@ -121,7 +121,7 @@ class GoogleSync4You {
 
 	public function getAuthURL($force = false) {
 		set_include_path($this->root_directory.'modules/Calendar4You/');
-		require_once 'gcal/vendor/autoload.php';
+		require_once 'vendor/autoload.php';
 		$CLIENT_ID = $this->clientid;
 		$KEY_FILE = $this->keyfile;
 		$client = new Google_Client();
@@ -146,7 +146,7 @@ class GoogleSync4You {
 	//new method for API v.3
 	private function connectToGoogleViaAPI3() {
 		set_include_path($this->root_directory. 'modules/Calendar4You/');
-		require_once 'gcal/vendor/autoload.php';
+		require_once 'vendor/autoload.php';
 		if ($this->user_clientsecret != '' && $this->apikey != '' && $this->clientid!='' && $this->keyfile!='') {
 			try {
 				$CLIENT_ID = $this->clientid;
