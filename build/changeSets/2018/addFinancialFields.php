@@ -173,6 +173,9 @@ class addFinancialFields extends cbupdaterWorker {
 			$util = new VTWorkflowUtils();
 			$adminUser = $util->adminUser();
 			foreach ($modules as $mod) {
+				if (!vtlib_isModuleActive($mod['name'])) {
+					continue;
+				}
 				$rs = $adb->pquery(
 					"select 1 from com_vtiger_workflows
 					where (summary='Update Tax fields on every save' or summary='Update Financial fields on every save') and module_name=?",
