@@ -322,16 +322,36 @@ if ($use_current_login) {
 		$skip_auditing = true;
 	}
 	if ($audit_trail == 'true' && !$skip_auditing) {
+		$auditaction = $action;
 		if ($action=='Save') {
 			if (empty($record)) {
-				$action = 'Save (Create)';
+				$auditaction = 'Save (Create)';
 			} else {
-				$action = 'Save (Edit)';
+				$auditaction = 'Save (Edit)';
+			}
+		} elseif ($action=='ReportsAjax') {
+			switch ($_REQUEST['file']) {
+				case 'CreatePDF':
+					$auditaction = 'Report Export PDF';
+					break;
+				case 'CreateCSV':
+					$auditaction = 'Report Export CSV';
+					break;
+				case 'CreateXL':
+					$auditaction = 'Report Export XLS';
+					break;
+				case 'PrintReport':
+					$auditaction = 'Report Print';
+					break;
+				case 'getJSON':
+				default:
+					$auditaction = 'Report View';
+					break;
 			}
 		}
 		$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
 		$query = 'insert into vtiger_audit_trial values(?,?,?,?,?,?)';
-		$qparams = array($adb->getUniqueID('vtiger_audit_trial'), $current_user->id, $module, $action, $record, $date_var);
+		$qparams = array($adb->getUniqueID('vtiger_audit_trial'), $current_user->id, $module, $auditaction, $record, $date_var);
 		$adb->pquery($query, $qparams);
 	}
 	if (!$skip_auditing) {
