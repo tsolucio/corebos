@@ -17,7 +17,6 @@ class GoogleSync4You {
 	private $refresh_token;
 	private $googleinsert;
 	public $root_directory = '';
-	public $mod_strings = array();
 	public $status = '';
 	public $is_logged = false;
 	public $event = '';
@@ -25,10 +24,9 @@ class GoogleSync4You {
 	private $service='GoogleCalendar';
 
 	public function __construct() {
-		global $root_directory, $mod_strings;
+		global $root_directory;
 		$this->db = PearDatabase::getInstance();
 		$this->root_directory = $root_directory;
-		$this->mod_strings = $mod_strings;
 	}
 
 	public function getclientsecret() {
@@ -176,12 +174,12 @@ class GoogleSync4You {
 						} else {
 							$authUrl = $client->createAuthUrl();
 							$this->status='No refresh token';
-							echo "<a class='login' href='$authUrl'>".$this->mod_strings['LBL_CONNECT'].'</a><br>';
+							echo "<a class='login' href='$authUrl'>".getTranslatedString('LBL_CONNECT', 'Calendar4You').'</a><br>';
 						}
 					} catch (Exception $e) {
 						$this->status =$e->getMessage();
 						$authUrl = $client->createAuthUrl();
-						echo "<a class='login' href='$authUrl'>".$this->mod_strings['LBL_CONNECT'].'</a><br>';
+						echo "<a class='login' href='$authUrl'>".getTranslatedString('LBL_CONNECT', 'Calendar4You').'</a><br>';
 					}
 				}
 				if ($client->getAccessToken()) {
@@ -193,7 +191,7 @@ class GoogleSync4You {
 			} catch (Exception $e) {
 				$this->status = $e->getMessage();
 				$authUrl = $client->createAuthUrl();
-				echo "<a class='login' href='$authUrl'>".$this->mod_strings['LBL_CONNECT'].'</a><br>';
+				echo "<a class='login' href='$authUrl'>".getTranslatedString('LBL_CONNECT', 'Calendar4You').'</a><br>';
 			}
 		} //        else if($this->refresh_token=='' && $this->user_clientsecret != "" && $this->apikey != "" && $this->clientid!="" && $this->keyfile!=""){
 //             $CLIENT_ID = $this->clientid;
@@ -208,10 +206,10 @@ class GoogleSync4You {
 //            $client->setScopes(array("https://www.googleapis.com/auth/calendar","https://www.googleapis.com/auth/calendar.readonly"));
 //            $authUrl = $client->createAuthUrl();
 //			if(isset($_REQUEST['type']) && ($_REQUEST['type'] == 'event_settings' || $_REQUEST['type'] == 'settings'))
-//                   echo "<a class='login' href='$authUrl'>".$this->mod_strings["LBL_CONNECT"]."</a><br>";
+//                   echo "<a class='login' href='$authUrl'>".getTranslatedString('LBL_CONNECT', 'Calendar4You')."</a><br>";
 //        }
 		else {
-			$this->status = $this->mod_strings['LBL_MISSING_AUTH_DATA'];
+			$this->status = getTranslatedString('LBL_MISSING_AUTH_DATA', 'Calendar4You');
 		}
 
 		if ($this->is_logged) {
