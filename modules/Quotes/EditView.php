@@ -192,8 +192,8 @@ if (isset($_REQUEST['account_id']) && $_REQUEST['account_id'] != '' && $record =
 	$focus->column_fields['ship_code'] = $acct_focus->column_fields['ship_code'];
 	$focus->column_fields['bill_country'] = $acct_focus->column_fields['bill_country'];
 	$focus->column_fields['ship_country'] = $acct_focus->column_fields['ship_country'];
-	$focus->column_fields['bill_pobox'] = $acct_focus->column_fields['bill_pobox'];
-	$focus->column_fields['ship_pobox'] = $acct_focus->column_fields['ship_pobox'];
+	$focus->column_fields['bill_pobox'] = isset($acct_focus->column_fields['bill_pobox']) ? $acct_focus->column_fields['bill_pobox'] : '';
+	$focus->column_fields['ship_pobox'] = isset($acct_focus->column_fields['ship_pobox']) ? $acct_focus->column_fields['ship_pobox'] : '';
 	$log->debug('Accountid Id from the request is '.$_REQUEST['account_id']);
 } elseif (!empty($_REQUEST['contact_id']) && $record == '') {
 	$cto_focus = CRMEntity::getInstance('Contacts');

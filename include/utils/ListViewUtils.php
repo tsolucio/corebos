@@ -1924,8 +1924,22 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					}
 					$bill_street = str_replace(array("\r", "\n"), array('\r', '\n'), popup_decode_html($acct_focus->column_fields['bill_street']));
 					$ship_street = str_replace(array("\r", "\n"), array('\r', '\n'), popup_decode_html($acct_focus->column_fields['ship_street']));
+					$bill_city = isset($acct_focus->column_fields['bill_city']) ? $acct_focus->column_fields['bill_city'] : '';
+					$ship_city = isset($acct_focus->column_fields['ship_city']) ? $acct_focus->column_fields['ship_city'] : '';
+					$bill_state = isset($acct_focus->column_fields['bill_state']) ? $acct_focus->column_fields['bill_state'] : '';
+					$ship_state = isset($acct_focus->column_fields['ship_state']) ? $acct_focus->column_fields['ship_state'] : '';
+					$bill_code = isset($acct_focus->column_fields['bill_code']) ? $acct_focus->column_fields['bill_code'] : '';
+					$ship_code = isset($acct_focus->column_fields['ship_code']) ? $acct_focus->column_fields['ship_code'] : '';
+					$bill_country = isset($acct_focus->column_fields['bill_country']) ? $acct_focus->column_fields['bill_country'] : '';
+					$ship_country = isset($acct_focus->column_fields['ship_country']) ? $acct_focus->column_fields['ship_country'] : '';
+					$bill_pobox = isset($acct_focus->column_fields['bill_pobox']) ? $acct_focus->column_fields['bill_pobox'] : '';
+					$ship_pobox = isset($acct_focus->column_fields['ship_pobox']) ? $acct_focus->column_fields['ship_pobox'] : '';
 					$count = counterValue();
-					$value = '<a href="javascript:void(0);" onclick=\'set_return_shipbilladdress("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '", "' . $bill_street . '", "' . $ship_street . '", "' . popup_decode_html($acct_focus->column_fields['bill_city']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_city']) . '", "' . popup_decode_html($acct_focus->column_fields['bill_state']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_state']) . '", "' . popup_decode_html($acct_focus->column_fields['bill_code']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_code']) . '", "' . popup_decode_html($acct_focus->column_fields['bill_country']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_country']) . '","' . popup_decode_html($acct_focus->column_fields['bill_pobox']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_pobox']) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+					$value = '<a href="javascript:void(0);" onclick=\'set_return_shipbilladdress("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '", "'
+						.$bill_street . '", "' . $ship_street . '", "' . popup_decode_html($bill_city) . '", "' . popup_decode_html($ship_city) . '", "'
+						.popup_decode_html($bill_state) . '", "' . popup_decode_html($ship_state) . '", "' . popup_decode_html($bill_code) . '", "'
+						.popup_decode_html($ship_code) . '", "' . popup_decode_html($bill_country) . '", "' . popup_decode_html($ship_country) . '","'
+						.popup_decode_html($bill_pobox) . '", "' . popup_decode_html($ship_pobox) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
 				} elseif ($popuptype == "specific_contact_account_address") {
 					require_once 'modules/Accounts/Accounts.php';
 					$acct_focus = new Accounts();
@@ -1936,8 +1950,22 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 
 					$bill_street = str_replace(array("\r", "\n"), array('\r', '\n'), popup_decode_html($acct_focus->column_fields['bill_street']));
 					$ship_street = str_replace(array("\r", "\n"), array('\r', '\n'), popup_decode_html($acct_focus->column_fields['ship_street']));
+					$bill_city = isset($acct_focus->column_fields['bill_city']) ? $acct_focus->column_fields['bill_city'] : '';
+					$ship_city = isset($acct_focus->column_fields['ship_city']) ? $acct_focus->column_fields['ship_city'] : '';
+					$bill_state = isset($acct_focus->column_fields['bill_state']) ? $acct_focus->column_fields['bill_state'] : '';
+					$ship_state = isset($acct_focus->column_fields['ship_state']) ? $acct_focus->column_fields['ship_state'] : '';
+					$bill_code = isset($acct_focus->column_fields['bill_code']) ? $acct_focus->column_fields['bill_code'] : '';
+					$ship_code = isset($acct_focus->column_fields['ship_code']) ? $acct_focus->column_fields['ship_code'] : '';
+					$bill_country = isset($acct_focus->column_fields['bill_country']) ? $acct_focus->column_fields['bill_country'] : '';
+					$ship_country = isset($acct_focus->column_fields['ship_country']) ? $acct_focus->column_fields['ship_country'] : '';
+					$bill_pobox = isset($acct_focus->column_fields['bill_pobox']) ? $acct_focus->column_fields['bill_pobox'] : '';
+					$ship_pobox = isset($acct_focus->column_fields['ship_pobox']) ? $acct_focus->column_fields['ship_pobox'] : '';
 					$count = counterValue();
-					$value = '<a href="javascript:window.close();" onclick=\'set_return_contact_address("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '", "' . $bill_street . '", "' . $ship_street . '", "' . popup_decode_html($acct_focus->column_fields['bill_city']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_city']) . '", "' . popup_decode_html($acct_focus->column_fields['bill_state']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_state']) . '", "' . popup_decode_html($acct_focus->column_fields['bill_code']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_code']) . '", "' . popup_decode_html($acct_focus->column_fields['bill_country']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_country']) . '","' . popup_decode_html($acct_focus->column_fields['bill_pobox']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_pobox']) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+					$value = '<a href="javascript:window.close();" onclick=\'set_return_contact_address("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val))
+						.'", "' . $bill_street . '", "' . $ship_street . '", "' . popup_decode_html($bill_city) . '", "' . popup_decode_html($ship_city) . '", "'
+						.popup_decode_html($bill_state) . '", "' . popup_decode_html($ship_state) . '", "' . popup_decode_html($bill_code) . '", "'
+						.popup_decode_html($ship_code) . '", "' . popup_decode_html($bill_country) . '", "' . popup_decode_html($ship_country) . '","'
+						.popup_decode_html($bill_pobox) . '", "' . popup_decode_html($ship_pobox) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
 				} elseif ($popuptype == 'specific_potential_account_address') {
 					$slashes_temp_val = popup_from_html($temp_val);
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
