@@ -1,5 +1,6 @@
 {
     "require": {
-        "symfony/console": "^3.4"
+        "symfony/console": "^3.4",
+        "twilio/sdk": "^5.28"
     }
 }
