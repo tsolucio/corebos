@@ -174,6 +174,12 @@ class migrateLinksIntoBusinessActionEntities extends cbupdaterWorker {
 					}
 					$focusnew->save('BusinessActions');
 				}
+				$this->ExecuteQuery('update vtiger_businessactions set mandatory=1');
+				$mod = Vtiger_Module::getInstance('BusinessActions');
+				$field = Vtiger_Field::getInstance('linkicon', $mod);
+				if ($field) {
+					$this->ExecuteQuery("update vtiger_field set typeofdata='V~O' where fieldid=?", array($field->id));
+				}
 
 				$this->sendMsg('Changeset ' . get_class($this) . ' applied!');
 				$this->sendMsg('The vtiger links were migrated successfully into Business Action entities');
