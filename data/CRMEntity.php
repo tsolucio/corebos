@@ -91,9 +91,8 @@ class CRMEntity {
 				$this->DirectImageFieldValues[$finfo['columnname']] = $adb->query_result($mrowrs, 0, 0);
 			}
 		}
-		$columnFields = $this->column_fields;
 		$anyValue = false;
-		foreach ($columnFields as $value) {
+		foreach ($this->column_fields as $value) {
 			if (!empty($value)) {
 				$anyValue = true;
 				break;
