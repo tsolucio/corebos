@@ -28,6 +28,11 @@ class migrateLinksIntoBusinessActionEntities extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset ' . get_class($this) . ' already applied!');
 		} else {
+			if (!$this->isModuleInstalled('cbCompany')) {
+				$this->sendMsgError('<H2>Please install Company module before applying this change.</H2>');
+				return;
+			}
+			$this->ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `purpose` TEXT NULL;');
 			if ($this->isModuleInstalled('BusinessActions')) {
 				vtlib_toggleModuleAccess('BusinessActions', true);
 				global $adb, $current_user;
@@ -43,7 +48,7 @@ class migrateLinksIntoBusinessActionEntities extends cbupdaterWorker {
 				);
 				/////////
 				$rec = $default_values;
-				$rec['mapname'] = 'ConverLead_ConditionExpression';
+				$rec['mapname'] = 'ConvertLead_ConditionExpression';
 				$rec['targetname'] = 'Leads';
 				$rec['content'] = '<map>
 <function>
@@ -134,16 +139,16 @@ class migrateLinksIntoBusinessActionEntities extends cbupdaterWorker {
 				$brule = vtws_create('cbMap', $rec, $current_user);
 				$brules['LBL_MAILER_EXPORT'] = $brule['id'];
 				/////////
-				$collectLinksSql ="SELECT linktype, 
-                                          linklabel, 
-                                          linkurl,
-                                          handler_path,
-                                          onlyonmymodule,
-                                          handler_class,
-                                          linkicon,
-                                          handler,
-                                          (SELECT vtiger_tab.name FROM vtiger_tab WHERE vtiger_tab.tabid = vtiger_links.tabid) AS module_list
-                                     FROM vtiger_links";
+				$collectLinksSql ="SELECT linktype,
+						linklabel,
+						linkurl,
+						handler_path,
+						onlyonmymodule,
+						handler_class,
+						linkicon,
+						handler,
+						(SELECT vtiger_tab.name FROM vtiger_tab WHERE vtiger_tab.tabid = vtiger_links.tabid) AS module_list
+					FROM vtiger_links";
 
 				$collectedLinks = $adb->pquery($collectLinksSql, array());
 				$adminId = Users::getActiveAdminID();
