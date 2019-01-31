@@ -34,8 +34,8 @@ if (isset($_REQUEST['trigger_list']) && is_numeric($_REQUEST['trigger_list'])) {
 } else {
 	$executioncondtionid = 0;
 }
-if (isset($_REQUEST['modules_list'])) {
-	$modulename = vtlib_purify($_REQUEST['modules_list']);
+if (isset($_REQUEST['list_module'])) {
+	$modulename = vtlib_purify($_REQUEST['list_module']);
 } else {
 	$modulename = 'all';
 }

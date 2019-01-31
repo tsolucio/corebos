@@ -34,11 +34,12 @@ function vtDeleteWorkflow($adb, $request) {
 	if (isset($request["return_url"])) {
 		$returnUrl=$request["return_url"];
 	} else {
+		$module->setReturnUrl('');
 		$returnUrl=$module->editWorkflowUrl($wfid);
 	}
 ?>
 	<script type="text/javascript" charset="utf-8">
-		window.location="<?php echo $returnUrl?>";
+		window.location="<?php echo urldecode($returnUrl)?>";
 	</script>
 <?php
 }
