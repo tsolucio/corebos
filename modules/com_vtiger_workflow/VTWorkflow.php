@@ -57,7 +57,7 @@ class Workflow {
 	**/
 	public function getWorkListHeader() {
 		global $log, $app_strings;
-		$log->debug('Entering getAuditTrailHeader() method ...');
+		$log->debug('Entering getWorkListHeader() method ...');
 		$header_array = array(
 			$app_strings['LBL_MODULE'],
 			$app_strings['LBL_DESCRIPTION'],
@@ -65,7 +65,7 @@ class Workflow {
 			$app_strings['LBL_TRIGGER'],
 			$app_strings['LBL_TOOLS'],
 		);
-		$log->debug('Exiting getAuditTrailHeader() method ...');
+		$log->debug('Exiting getWorkListHeader() method ...');
 		return $header_array;
 	}
 
