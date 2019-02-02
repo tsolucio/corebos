@@ -19,7 +19,7 @@
 
 function cbws_getpdfdata($id, $user) {
 	global $log,$adb;
-	$log->debug('Entering function vtws_getpdfdata');
+	$log->debug('> vtws_getpdfdata');
 
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $id);
 	$handlerPath = $webserviceObject->getHandlerPath();
@@ -66,7 +66,7 @@ function cbws_getpdfdata($id, $user) {
 
 	VTWS_PreserveGlobal::flush();
 
-	$log->debug('Leaving function vtws_getpdfdata');
+	$log->debug('< vtws_getpdfdata');
 	return $entity;
 }
 
@@ -75,7 +75,7 @@ function get_module_pdf($modulename, $recordid, $user = '') {
 	if (empty($user)) {
 		$user = $current_user;
 	}
-	$log->debug("Entering function get_module_pdf($recordid)");
+	$log->debug('> get_module_pdf '.$recordid);
 
 	switch (GlobalVariable::getVariable('CustomerPortal_PDF', 'Native', $modulename, $user->id)) {
 		case 'PDFMaker':
@@ -94,14 +94,14 @@ function get_module_pdf($modulename, $recordid, $user = '') {
 	$recordpdf[0]['modulename'] = $modulename;
 	$recordpdf[0]['pdf_data'] = base64_encode($_pdf_data);
 
-	$log->debug("Leaving function get_module_pdf($recordid)");
+	$log->debug('< get_module_pdf');
 	return $recordpdf;
 }
 
 function GetRawPDFData($modulename, $recordid) {
 	global $log, $currentModule;
 
-	$log->debug("Entering function GetRawPDFData. Module = $modulename record = $recordid");
+	$log->debug("> GetRawPDFData $modulename, $recordid");
 
 	$_REQUEST['record'] = $recordid;
 	$_REQUEST['module'] = $modulename;
@@ -115,7 +115,7 @@ function GetRawPDFData($modulename, $recordid) {
 		require 'modules/'.$modulename.'/CreatePDF.php';
 	}
 
-	$log->debug("Leaving function GetRawPDFData. Module = $modulename record = $recordid");
+	$log->debug('< GetRawPDFData');
 	return $PDFBuffer;
 }
 
@@ -187,7 +187,7 @@ startxref
 		$user = $current_user;
 	}
 
-	$log->debug('Entering webservice function get_pdfmaker_pdf');
+	$log->debug('> get_pdfmaker_pdf');
 
 	require_once 'config.inc.php';
 
@@ -261,7 +261,7 @@ startxref
 	$filenamewithpath = 'cache/' . $currentModule . $id . '.pdf';
 	$xx19->Output($filenamewithpath);
 	$filecontents = file_get_contents($filenamewithpath);
-	$log->debug('Exiting webservice function get_pdfmaker_pdf');
+	$log->debug('< get_pdfmaker_pdf');
 	return $filecontents;
 }
 ?>
