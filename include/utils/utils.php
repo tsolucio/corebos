@@ -2567,7 +2567,6 @@ function getDuplicateRecordsArr($module, $use_limit = true) {
 	$ii = 0; //ii'th record in group
 	while ($rec_cnt < $no_rows) {
 		$result = $adb->fetchByAssoc($nresult);
-		//echo '<pre>';print_r($result);echo '</pre>';
 		if ($rec_cnt != 0) {
 			$sl_arr = array_slice($result, 2);
 			array_walk($temp, 'setFormatForDuplicateCompare');

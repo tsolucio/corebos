@@ -271,8 +271,7 @@ class CRMEntity {
 	 */
 	public function uploadAndSaveFile($id, $module, $file_details, $attachmentname = '', $direct_import = false, $forfield = '') {
 		global $log, $adb, $current_user, $upload_badext;
-		$fparams = print_r($file_details, true);
-		$log->debug("> uploadAndSaveFile $id,$module,$fparams");
+		$log->debug('> uploadAndSaveFile '.$id.','.$module.','.print_r($file_details, true));
 
 		$date_var = date('Y-m-d H:i:s');
 
@@ -398,7 +397,7 @@ class CRMEntity {
 	 * @param $module -- module:: Type varchar
 	 */
 	private function insertIntoCrmEntity($module, $fileid = '') {
-		global $adb, $current_user, $log;
+		global $adb, $current_user;
 
 		if ($fileid != '') {
 			$this->id = $fileid;
@@ -874,7 +873,7 @@ class CRMEntity {
 	 * returns the 'filename'
 	 */
 	public function getOldFileName($notesid) {
-		global $log, $adb;
+		global $adb;
 		$result = $adb->pquery('select * from vtiger_seattachmentsrel where crmid=?', array($notesid));
 		$noofrows = $adb->num_rows($result);
 		if ($noofrows != 0) {
@@ -2462,7 +2461,7 @@ class CRMEntity {
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb, $log;
-		$log->debug("> transferRelatedRecords $module, ".print_r($transferEntityIds, true).','.$entityId);
+		$log->debug('> transferRelatedRecords '.$module.','.print_r($transferEntityIds, true).','.$entityId);
 
 		$rel_table_arr = array('Activities'=>'vtiger_seactivityrel');
 

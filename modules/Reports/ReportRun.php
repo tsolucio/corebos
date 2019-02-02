@@ -3210,7 +3210,6 @@ class ReportRun extends CRMEntity {
 		$pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
 		$pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 		//$pdf->setLanguageArray($l);
-		//echo '<pre>';print_r($columnlength);echo '</pre>';
 		$pdf->AddPage();
 
 		$pdf->SetFillColor(224, 235, 255);
