@@ -150,18 +150,18 @@ if ($use_current_login) {
 		$qry_res = $adb->pquery("select internal_mailer from vtiger_users where id=?", array($_SESSION["authenticated_user_id"]));
 		coreBOS_Session::set('internal_mailer', $adb->query_result($qry_res, 0, 'internal_mailer'));
 	}
-	$log->debug('We have an authenticated user id: '.$_SESSION['authenticated_user_id']);
+	$log->debug('authenticated user: '.$_SESSION['authenticated_user_id']);
 	if (coreBOS_Settings::getSetting('cbSMActive', 0) && !is_adminID($_SESSION['authenticated_user_id'])) {
 		include 'modules/Vtiger/maintenance.php';
 		exit;
 	}
 } elseif (isset($action) && isset($module) && $action=="Authenticate" && $module=="Users") {
-	$log->debug("We are authenticating user now");
+	$log->debug('authenticating user');
 } else {
 	if (!isset($_REQUEST['action']) || ($_REQUEST['action'] != 'Logout' && $_REQUEST['action'] != 'Login')) {
 		coreBOS_Session::set('lastpage', $_SERVER['QUERY_STRING']);
 	}
-	$log->debug('The current user does not have a session. Going to the login page');
+	$log->debug('no session > login page');
 	if (isset($_REQUEST['action']) && substr($_REQUEST['action'], -4)=='Ajax') {
 		echo 'Login';
 		die();
@@ -172,14 +172,13 @@ if ($use_current_login) {
 	exit;
 }
 
-$log->debug($_REQUEST);
 $skipHeaders=false;
 $skipFooters=false;
 $viewAttachment = false;
 $skipSecurityCheck= false;
 
 if (isset($action) && isset($module)) {
-	$log->info("About to take action ".$action);
+	$log->debug('action '.$action);
 	if (preg_match("/^Popup/", $action) ||
 		preg_match("/^".$module."Ajax/", $action) ||
 		preg_match("/^Save/", $action) ||
@@ -293,8 +292,6 @@ if (isset($action) && isset($module)) {
 	exit();
 }
 
-$log->info("current page is $currentModuleFile current module is $currentModule ");
-
 $module = (isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : '');
 $action = (isset($_REQUEST['action']) ? vtlib_purify($_REQUEST['action']) : '');
 $record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : (isset($_REQUEST['recordid']) ? vtlib_purify($_REQUEST['recordid']) : ''));
@@ -357,7 +354,6 @@ if ($use_current_login) {
 	if (!$skip_auditing) {
 		cbEventHandler::do_action('corebos.audit.action', array($current_user->id, $module, $action, $record, date('Y-m-d H:i:s')));
 	}
-	$log->debug('Current user is: '.$current_user->user_name);
 }
 // Force password change
 if ($current_user->mustChangePassword() && $_REQUEST['action']!='Logout' && $_REQUEST['action']!='CalendarAjax' && $_REQUEST['action']!='UsersAjax'
@@ -380,7 +376,6 @@ if (isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_aut
 	}
 }
 $theme = basename(vtlib_purify($theme));
-$log->debug('Current theme is: '.$theme);
 
 // if the language is not set yet, then set it to the default language.
 if (isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] != '') {
@@ -392,7 +387,6 @@ if (isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_
 		$current_language = $default_language;
 	}
 }
-$log->debug('current_language is: '.$current_language);
 
 //set module and application string arrays based upon selected language
 $app_currency_strings = return_app_currency_strings_language($current_language);
@@ -416,7 +410,6 @@ if ($action == 'DetailView') {
 $siteURLParts = parse_url($site_URL);
 $cookieDomain = $siteURLParts['host'];
 if (isset($_SESSION['authenticated_user_id'])) {
-	$log->debug("setting cookie ck_login_id_vtiger to ".$_SESSION['authenticated_user_id']);
 	setcookie('ck_login_id_vtiger', $_SESSION['authenticated_user_id'], 0, null, $cookieDomain, false, true);
 }
 
@@ -428,7 +421,6 @@ if ($_REQUEST['module'] == 'Documents' && $action == 'DownloadFile') {
 
 //skip headers for popups, deleting, saving, importing and other actions
 if (!$skipHeaders) {
-	$log->debug("including headers");
 	if ($use_current_login) {
 		include 'modules/Vtiger/header.php';
 	}
@@ -439,7 +431,6 @@ if (!$skipHeaders) {
 		getBrowserVariables($vartpl);
 		$vartpl->display('BrowserVariables.tpl');
 	}*/
-	$log->debug("skipping headers");
 }
 
 //logging the security Information

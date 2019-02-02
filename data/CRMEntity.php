@@ -151,7 +151,7 @@ class CRMEntity {
 
 	public function insertIntoAttachment($id, $module, $direct_import = false) {
 		global $log, $adb;
-		$log->debug("Entering into insertIntoAttachment($id,$module) method.");
+		$log->debug("> insertIntoAttachment $id,$module");
 		$file_saved = false;
 		// get the list of uitype 69 fields so we can set their value
 		$sql = 'SELECT tablename,columnname
@@ -259,7 +259,7 @@ class CRMEntity {
 				}
 			}
 		}
-		$log->debug("Exiting from insertIntoAttachment($id,$module) method.");
+		$log->debug('< insertIntoAttachment');
 	}
 
 	/**
@@ -272,7 +272,7 @@ class CRMEntity {
 	public function uploadAndSaveFile($id, $module, $file_details, $attachmentname = '', $direct_import = false, $forfield = '') {
 		global $log, $adb, $current_user, $upload_badext;
 		$fparams = print_r($file_details, true);
-		$log->debug("Entering into uploadAndSaveFile($id,$module,$fparams) method.");
+		$log->debug("> uploadAndSaveFile $id,$module,$fparams");
 
 		$date_var = date('Y-m-d H:i:s');
 
@@ -298,7 +298,7 @@ class CRMEntity {
 		$filetmp_name = $file_details['tmp_name'];
 
 		if (validateImageFile($file_details) == 'true' && validateImageContents($filetmp_name) == false) {
-			$log->debug('Skip the save attachment process.');
+			$log->debug('< uploadAndSaveFile: skip save attachment process');
 			return false;
 		}
 
@@ -389,7 +389,7 @@ class CRMEntity {
 			}
 			return true;
 		} else {
-			$log->debug("Skip the save attachment process.");
+			$log->debug('< uploadAndSaveFile: skip save attachment process');
 			return false;
 		}
 	}
@@ -424,7 +424,6 @@ class CRMEntity {
 		$this->ownedby = $adb->query_result($res, 0, 'ownedby');
 
 		if ($this->ownedby == 1) {
-			$log->info('module is =' . $module);
 			$ownerid = $current_user->id;
 		}
 		if (empty($ownerid)) {
@@ -525,7 +524,7 @@ class CRMEntity {
 	 */
 	private function insertIntoEntityTable($table_name, $module, $fileid = '') {
 		global $log, $current_user, $app_strings, $from_wf, $adb;
-		$log->debug("function insertIntoEntityTable $module $table_name");
+		$log->debug("> insertIntoEntityTable $module $table_name");
 		$insertion_mode = $this->mode;
 
 		//Checking if entry is already present so we have to update
@@ -824,7 +823,7 @@ class CRMEntity {
 	 */
 	public function adjustCurrencyField($fieldname, $fldvalue, $tabid) {
 		global $adb, $log, $current_user;
-		$log->debug("Entering adjustCurrencyField($fieldname,$fldvalue)");
+		$log->debug("> adjustCurrencyField $fieldname,$fldvalue");
 		if (isset(self::$dbvalues[$fieldname])) {
 			$dbvalue = self::$dbvalues[$fieldname];
 		} else {
@@ -849,7 +848,7 @@ class CRMEntity {
 		if (round($dbvalue, min($decimals, $current_user->no_of_currency_decimals))==$fldvalue) {
 			$fldvalue = $dbvalue;
 		}
-		$log->debug("Exiting adjustCurrencyField ($fldvalue)");
+		$log->debug('< adjustCurrencyField '.$fldvalue);
 		return $fldvalue;
 	}
 
@@ -876,7 +875,6 @@ class CRMEntity {
 	 */
 	public function getOldFileName($notesid) {
 		global $log, $adb;
-		$log->info('in getOldFileName ' . $notesid);
 		$result = $adb->pquery('select * from vtiger_seattachmentsrel where crmid=?', array($notesid));
 		$noofrows = $adb->num_rows($result);
 		if ($noofrows != 0) {
@@ -1051,9 +1049,6 @@ class CRMEntity {
 	 * @param $module_name -- module:: Type varchar
 	 */
 	public function save($module_name, $fileid = '') {
-		global $log;
-		$log->debug('module name is ' . $module_name);
-
 		//Check if assigned_user_id is empty for assign the current user.
 		if (empty($this->column_fields['assigned_user_id'])) {
 			global $current_user;
@@ -1174,7 +1169,7 @@ class CRMEntity {
 	 */
 	public function get_column_value($columnname, $fldvalue, $fieldname, $uitype, $datatype = '') {
 		global $log;
-		$log->debug("Entering function get_column_value ($columnname, $fldvalue, $fieldname, $uitype, $datatype='')");
+		$log->debug("> get_column_value $columnname, $fldvalue, $fieldname, $uitype, $datatype");
 
 		// Added for the fields of uitype '57' which has datatype mismatch in crmentity table and particular entity table
 		if ($uitype == 57 && $fldvalue == '') {
@@ -1186,7 +1181,7 @@ class CRMEntity {
 		if ($datatype == 'I' || $datatype == 'N' || $datatype == 'NN' || $uitype == 10 || $uitype == 101) {
 			return 0;
 		}
-		$log->debug('Exiting function get_column_value');
+		$log->debug('< get_column_value');
 		return $fldvalue;
 	}
 
@@ -1660,7 +1655,7 @@ class CRMEntity {
 	 */
 	public function initSortByField($module) {
 		global $adb, $log;
-		$log->debug("Entering function initSortByField ($module)");
+		$log->debug('> initSortByField '.$module);
 		// Define the columnname's and uitype's which needs to be excluded
 		$exclude_columns = array('quoteid', 'vendorid', 'access_count');
 		$exclude_uitypes = array();
@@ -1692,7 +1687,7 @@ class CRMEntity {
 		if ($tabid == 21 || $tabid == 22) {
 			$this->sortby_fields[] = 'crmid';
 		}
-		$log->debug("Exiting initSortByField");
+		$log->debug('< initSortByField');
 	}
 
 	/* Function to set the Sequence string and sequence number starting value */
@@ -1782,7 +1777,7 @@ class CRMEntity {
 
 	public function updateMissingSeqNumber($module) {
 		global $log, $adb;
-		$log->debug('Entered updateMissingSeqNumber function');
+		$log->debug('> updateMissingSeqNumber');
 		list($module, $result, $returnResult) = cbEventHandler::do_filter('corebos.filter.ModuleSeqNumber.fillempty', array($module, '', false));
 		if ($returnResult) {
 			return $result;
@@ -1823,7 +1818,7 @@ class CRMEntity {
 						if ($strip < 0) {
 							$strip = 0;
 						}
-						$temp = str_repeat("0", $strip);
+						$temp = str_repeat('0', $strip);
 						$cur_id = $temp . ($cur_id + 1);
 						$returninfo['updatedrecords'] = $returninfo['updatedrecords'] + 1;
 					}
@@ -1918,7 +1913,7 @@ class CRMEntity {
 	 */
 	public function get_emails($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
-		$log->debug("Entering get_emails(".$id.") method ...");
+		$log->debug('> get_emails '.$id);
 		$this_module = $currentModule;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
@@ -1976,7 +1971,7 @@ class CRMEntity {
 		}
 		$return_value['CUSTOM_BUTTON'] = $button;
 
-		$log->debug("Exiting get_emails method ...");
+		$log->debug('< get_emails');
 		return $return_value;
 	}
 
@@ -2467,7 +2462,7 @@ class CRMEntity {
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb, $log;
-		$log->debug("Entering function transferRelatedRecords ($module, ".print_r($transferEntityIds, true).", $entityId)");
+		$log->debug("> transferRelatedRecords $module, ".print_r($transferEntityIds, true).','.$entityId);
 
 		$rel_table_arr = array('Activities'=>'vtiger_seactivityrel');
 
@@ -2529,7 +2524,7 @@ class CRMEntity {
 			$adb->pquery('UPDATE vtiger_modcomments SET related_to = ? WHERE related_to = ?', array($entityId, $transferId));
 			$adb->pquery('UPDATE vtiger_senotesrel SET crmid = ? WHERE crmid = ?', array($entityId, $transferId));
 		}
-		$log->debug('Exiting transferRelatedRecords...');
+		$log->debug('< transferRelatedRecords');
 	}
 
 	/*
@@ -3228,14 +3223,14 @@ class CRMEntity {
 	 */
 	public function getSortOrder() {
 		global $log,$currentModule;
-		$log->debug('Entering getSortOrder() method ...');
+		$log->debug('> getSortOrder');
 		$sorder = $this->default_sort_order;
 		if (isset($_REQUEST['sorder'])) {
 			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
 		} elseif (!empty($_SESSION[$currentModule.'_Sort_Order'])) {
 			$sorder = $this->db->sql_escape_string($_SESSION[$currentModule.'_Sort_Order']);
 		}
-		$log->debug('Exiting getSortOrder() method ...');
+		$log->debug('< getSortOrder');
 		return $sorder;
 	}
 
@@ -3245,7 +3240,7 @@ class CRMEntity {
 	 */
 	public function getOrderBy() {
 		global $log, $currentModule;
-		$log->debug('Entering getOrderBy() method ...');
+		$log->debug('> getOrderBy');
 
 		$order_by = '';
 		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $currentModule)) {
@@ -3257,7 +3252,7 @@ class CRMEntity {
 		} elseif (!empty($_SESSION[$currentModule.'_Order_By'])) {
 			$order_by = $this->db->sql_escape_string($_SESSION[$currentModule.'_Order_By']);
 		}
-		$log->debug('Exiting getOrderBy method ...');
+		$log->debug('< getOrderBy');
 		return $order_by;
 	}
 
