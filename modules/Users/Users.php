@@ -119,7 +119,7 @@ class Users extends CRMEntity {
 	 */
 	public function __construct() {
 		$this->log = LoggerManager::getLogger('user');
-		$this->log->debug("Entering Users() method ...");
+		$this->log->debug('> Users');
 		$this->db = PearDatabase::getInstance();
 		$this->DEFAULT_PASSWORD_CRYPT_TYPE = (version_compare(PHP_VERSION, '5.3.0') >= 0) ? 'PHP5.3MD5' : 'MD5';
 		$this->column_fields = getColumnFields('Users');
@@ -127,7 +127,7 @@ class Users extends CRMEntity {
 		$this->column_fields['currency_code'] = '';
 		$this->column_fields['currency_symbol'] = '';
 		$this->column_fields['conv_rate'] = '';
-		$this->log->debug("Exiting Users() method ...");
+		$this->log->debug('< Users');
 	}
 
 	/**
@@ -136,13 +136,13 @@ class Users extends CRMEntity {
 	 */
 	public function getSortOrder() {
 		global $log;
-		$log->debug("Entering getSortOrder() method ...");
+		$log->debug('> getSortOrder');
 		if (isset($_REQUEST['sorder'])) {
 			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
 		} else {
 			$sorder = (!empty($_SESSION['USERS_SORT_ORDER']) ? ($_SESSION['USERS_SORT_ORDER']) : ($this->default_sort_order));
 		}
-		$log->debug("Exiting getSortOrder method ...");
+		$log->debug('< getSortOrder');
 		return $sorder;
 	}
 
@@ -152,7 +152,7 @@ class Users extends CRMEntity {
 	 */
 	public function getOrderBy() {
 		global $log;
-		$log->debug("Entering getOrderBy() method ...");
+		$log->debug('> getOrderBy');
 
 		$use_default_order_by = '';
 		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0)) {
@@ -164,7 +164,7 @@ class Users extends CRMEntity {
 		} else {
 			$order_by = (!empty($_SESSION['USERS_ORDER_BY']) ? ($_SESSION['USERS_ORDER_BY']) : ($use_default_order_by));
 		}
-		$log->debug("Exiting getOrderBy method ...");
+		$log->debug('< getOrderBy');
 		return $order_by;
 	}
 
@@ -207,8 +207,8 @@ class Users extends CRMEntity {
 			$this->log->debug("LOADING :PREFERENCES SIZE " . strlen($value));
 			$this->user_preferences = unserialize(base64_decode($value));
 			coreBOS_Session::merge($this->user_preferences);
-			$this->log->debug("Finished Loading");
 			coreBOS_Session::set('USER_PREFERENCES', $this->user_preferences);
+			$this->log->debug('Finished Loading');
 		}
 	}
 
@@ -682,7 +682,7 @@ class Users extends CRMEntity {
 		$result = $this->db->pquery($query, array($this->id), true, "Error filling in additional detail vtiger_fields");
 
 		$row = $this->db->fetchByAssoc($result);
-		$this->log->debug("additional detail query results: $row");
+		$this->log->debug('< fill_in_additional_detail_fields '.$row);
 
 		if ($row != null) {
 			$this->reports_to_name = stripslashes(getFullNameFromArray('Users', $row));
@@ -747,9 +747,9 @@ class Users extends CRMEntity {
 
 	public function createAccessKey() {
 		global $log;
-		$log->info("Entering Into function createAccessKey()");
+		$log->debug('> createAccessKey');
 		$this->db->pquery('update vtiger_users set accesskey=? where id=?', array(vtws_generateRandomAccessKey(16), $this->id));
-		$log->info("Exiting function createAccessKey()");
+		$log->debug('< createAccessKey');
 	}
 
 	/** Function to insert values in the specifed table for the specified module
@@ -758,7 +758,7 @@ class Users extends CRMEntity {
 	 */
 	public function insertIntoEntityTable($table_name, $module, $fileid = '') {
 		global $log, $app_strings;
-		$log->info("function insertIntoEntityTable " . $module . ' vtiger_table name ' . $table_name);
+		$log->debug('> insertIntoEntityTable '.$table_name.','.$module);
 		global $adb, $current_user;
 		$insertion_mode = $this->mode;
 		//Checkin whether an entry is already is present in the vtiger_table to update
@@ -925,7 +925,7 @@ class Users extends CRMEntity {
 	 */
 	public function insertIntoAttachment($id, $module, $direct_import = false) {
 		global $log;
-		$log->debug("Entering into insertIntoAttachment($id,$module) method.");
+		$log->debug("> insertIntoAttachment $id,$module");
 
 		foreach ($_FILES as $fileindex => $files) {
 			if ($files['name'] != '' && $files['size'] > 0) {
@@ -934,7 +934,7 @@ class Users extends CRMEntity {
 			}
 		}
 
-		$log->debug("Exiting from insertIntoAttachment($id,$module) method.");
+		$log->debug('< insertIntoAttachment');
 	}
 
 	/** Function to retreive the user info of the specifed user id The user info will be available in $this->column_fields array
@@ -943,10 +943,10 @@ class Users extends CRMEntity {
 	 */
 	public function retrieve_entity_info($record, $module, $deleted = false) {
 		global $adb, $log;
-		$log->debug("Entering into retrieve_entity_info($record, $module) method.");
+		$log->debug("> retrieve_entity_info $record, $module");
 
 		if ($record == '') {
-			$log->debug("record is empty. returning null");
+			$log->debug('record is empty. returning null');
 			return null;
 		}
 
@@ -997,8 +997,7 @@ class Users extends CRMEntity {
 		}
 
 		$this->id = $record;
-		$log->debug("Exit from retrieve_entity_info($record, $module) method.");
-
+		$log->debug('< retrieve_entity_info');
 		return $this;
 	}
 
@@ -1530,7 +1529,7 @@ class Users extends CRMEntity {
 	*/
 	public function create_export_query($where = '') {
 		global $log, $current_user;
-		$log->debug("Entering create_export_query(".$where.") method ...");
+		$log->debug('> create_export_query '.$where);
 
 		$query = '';
 
@@ -1556,7 +1555,7 @@ class Users extends CRMEntity {
 				$query .= ' WHERE '.$where_auto;
 			}
 
-			$log->debug('Exiting create_export_query method ...');
+			$log->debug('< create_export_query');
 		}
 		return $query;
 	}

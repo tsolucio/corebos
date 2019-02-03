@@ -142,7 +142,6 @@ if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == "true") {
 }
 if (isset($_REQUEST['product_id']) && $_REQUEST['product_id'] !='') {
 	$focus->column_fields['product_id'] = $_REQUEST['product_id'];
-	$log->debug('Purchase Order EditView: Product Id from the request is '.$_REQUEST['product_id']);
 	$associated_prod = getAssociatedProducts("Products", $focus, $focus->column_fields['product_id']);
 	for ($i=1; $i<=count($associated_prod); $i++) {
 		$associated_prod_id = $associated_prod[$i]['hdnProductId'.$i];
@@ -160,7 +159,6 @@ if (isset($_REQUEST['product_id']) && $_REQUEST['product_id'] !='') {
 if (!empty($_REQUEST['parent_id']) && !empty($_REQUEST['return_module'])) {
 	if ($_REQUEST['return_module'] == 'Services') {
 		$focus->column_fields['product_id'] = vtlib_purify($_REQUEST['parent_id']);
-		$log->debug("Service Id from the request is " . vtlib_purify($_REQUEST['parent_id']));
 		$associated_prod = getAssociatedProducts("Services", $focus, $focus->column_fields['product_id']);
 		for ($i=1; $i<=count($associated_prod); $i++) {
 			$associated_prod_id = $associated_prod[$i]['hdnProductId'.$i];

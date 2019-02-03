@@ -214,8 +214,6 @@ if (isset($_REQUEST['filename']) && (empty($_REQUEST['isDuplicate']) || $_REQUES
 	}
 }
 
-$log->info('Email detail view');
-
 // Pass on the authenticated user language
 global $current_language;
 $smarty->assign('LANGUAGE', $current_language);

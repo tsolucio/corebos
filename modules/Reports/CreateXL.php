@@ -19,7 +19,7 @@ $fname = tempnam($root_directory.$tmp_dir, 'merge2.xls');
 $reportid = vtlib_purify($_REQUEST['record']);
 $oReportRun = new ReportRun($reportid);
 if (isPermitted($oReportRun->primarymodule, 'Export', '')!='yes') {
-	$log->debug('You do not have permission to export Report');
+	$log->debug('< CreateXL: You do not have permission to export Report');
 	require_once 'Smarty_setup.php';
 	$smarty = new vtigerCRM_Smarty();
 	global $app_strings;

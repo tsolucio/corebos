@@ -20,7 +20,6 @@ if (isset($_REQUEST['savemode']) && $_REQUEST['savemode'] == 'file') {
 	$filepath=$root_directory.'cache/'.$quote_id.'_'.$moduleName.'_'.$quote_no.'.pdf';
 	$controller->Output($filepath, 'F');
 } elseif (isset($purpose) && $purpose == 'webservice') {
-	$log->debug('Switched to buffer. Purpose = '. $purpose);
 	$PDFBuffer = $controller->Output('', 'S'); // S means send the pdf output in buffer instead of file
 } else {
 	$controller->Output($moduleName.'_'.$quote_no.'.pdf', 'D');

@@ -64,7 +64,7 @@ class AuditTrail {
 	**/
 	public function getAuditTrailHeader() {
 		global $log, $app_strings;
-		$log->debug('Entering getAuditTrailHeader() method ...');
+		$log->debug('> getAuditTrailHeader');
 		$header_array = array(
 			$app_strings['LBL_LIST_USER_NAME'],
 			$app_strings['LBL_MODULE'],
@@ -72,7 +72,7 @@ class AuditTrail {
 			$app_strings['LBL_RECORD_ID'],
 			$app_strings['LBL_ACTION_DATE'],
 		);
-		$log->debug('Exiting getAuditTrailHeader() method ...');
+		$log->debug('< getAuditTrailHeader');
 		return $header_array;
 	}
 
@@ -86,7 +86,7 @@ class AuditTrail {
 	**/
 	public function getAuditTrailEntries($userid, $navigation_array, $sorder = '', $orderby = '') {
 		global $log, $adb;
-		$log->debug("Entering getAuditTrailEntries(".$userid.") method ...");
+		$log->debug('> getAuditTrailEntries '.$userid);
 
 		if ($sorder != '' && $order_by != '') {
 			$list_query = 'Select * from vtiger_audit_trial where userid =? order by '.$adb->sql_escape_string($order_by).' '.$adb->sql_escape_string($sorder);
@@ -107,14 +107,14 @@ class AuditTrail {
 				$entries[] = $date->getDBInsertDateValue();
 				$entries_list[] = $entries;
 			}
-			$log->debug('Exiting getAuditTrailEntries() method ...');
+			$log->debug('< getAuditTrailEntries');
 			return $entries_list;
 		}
 	}
 
 	public function getAuditJSON($userid, $page, $order_by = 'actiondate', $sorder = 'DESC', $action_search = '') {
 		global $log, $adb;
-		$log->debug('Entering getAuditJSON() method ...');
+		$log->debug('> getAuditJSON');
 
 		$where = ' where 1 ';
 		$params = array();
@@ -186,7 +186,7 @@ class AuditTrail {
 			$entry['Action Date'] = $lgn['actiondate'];
 			$entries_list['data'][] = $entry;
 		}
-		$log->debug('Exiting getAuditJSON() method ...');
+		$log->debug('< getAuditJSON');
 		return json_encode($entries_list);
 	}
 }

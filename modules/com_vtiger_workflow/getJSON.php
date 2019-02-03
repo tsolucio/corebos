@@ -73,6 +73,5 @@ if (isset($_REQUEST['order_rule'])) {
 } else {
 	$sorder = 'DESC';
 }
-$log->debug('Entering getWorkFlowJSON() method ...');
 $response = $focus->getWorkFlowJSON($modulename, $executioncondtionid, $page, $order_by, $sorder, $desc_search, $purpose_search);
 echo $response;
