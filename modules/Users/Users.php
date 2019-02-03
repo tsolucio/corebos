@@ -517,8 +517,8 @@ class Users extends CRMEntity {
 		$usr_name = $this->column_fields["user_name"];
 		$this->log->debug("Starting password change for $usr_name");
 
-		if (!isset($new_password) || $new_password == "") {
-			$this->error_string = $mod_strings['ERR_PASSWORD_CHANGE_FAILED_1'] . $user_name . $mod_strings['ERR_PASSWORD_CHANGE_FAILED_2'];
+		if (!isset($new_password) || $new_password == '') {
+			$this->error_string = $mod_strings['ERR_PASSWORD_CHANGE_FAILED_1'] . $usr_name . $mod_strings['ERR_PASSWORD_CHANGE_FAILED_2'];
 			return false;
 		}
 
@@ -712,7 +712,6 @@ class Users extends CRMEntity {
 	 * @param $module -- module name:: Type varchar
 	 */
 	public function saveentity($module, $fileid = '') {
-		global $current_user;
 		$insertion_mode = $this->mode;
 		if (empty($this->column_fields['time_zone'])) {
 			$dbDefaultTimeZone = DateTimeField::getDBTimeZone();
@@ -749,8 +748,7 @@ class Users extends CRMEntity {
 	public function createAccessKey() {
 		global $log;
 		$log->info("Entering Into function createAccessKey()");
-		$updateQuery = "update vtiger_users set accesskey=? where id=?";
-		$insertResult = $this->db->pquery($updateQuery, array(vtws_generateRandomAccessKey(16), $this->id));
+		$this->db->pquery('update vtiger_users set accesskey=? where id=?', array(vtws_generateRandomAccessKey(16), $this->id));
 		$log->info("Exiting function createAccessKey()");
 	}
 
@@ -759,7 +757,7 @@ class Users extends CRMEntity {
 	 * @param $module -- module:: Type varchar
 	 */
 	public function insertIntoEntityTable($table_name, $module, $fileid = '') {
-		global $log;
+		global $log, $app_strings;
 		$log->info("function insertIntoEntityTable " . $module . ' vtiger_table name ' . $table_name);
 		global $adb, $current_user;
 		$insertion_mode = $this->mode;
@@ -1049,18 +1047,17 @@ class Users extends CRMEntity {
 
 			$sql2 = 'insert into vtiger_attachments(attachmentsid, name, description, type, path) values(?,?,?,?,?)';
 			$params2 = array($current_id, $filename, $this->column_fields['description'], $filetype, $upload_file_path);
-			$result = $this->db->pquery($sql2, $params2);
+			$this->db->pquery($sql2, $params2);
 
 			if ($id != '') {
 				$delquery = 'delete from vtiger_salesmanattachmentsrel where smid = ?';
 				$this->db->pquery($delquery, array($id));
 			}
 
-			$sql3 = 'insert into vtiger_salesmanattachmentsrel values(?,?)';
-			$this->db->pquery($sql3, array($id, $current_id));
+			$this->db->pquery('insert into vtiger_salesmanattachmentsrel values(?,?)', array($id, $current_id));
 
 			//we should update the imagename in the users table
-			$this->db->pquery("update vtiger_users set imagename=? where id=?", array($filename, $id));
+			$this->db->pquery('update vtiger_users set imagename=? where id=?', array($filename, $id));
 		}
 		return;
 	}
@@ -1069,7 +1066,7 @@ class Users extends CRMEntity {
 	 * @param $module -- module name:: Type varchar
 	 */
 	public function save($module_name, $fileid = '') {
-		global $log, $adb, $current_user, $cbodUserLog;
+		global $adb, $current_user, $cbodUserLog;
 		if (!is_admin($current_user) && $current_user->id != $this->id) {// only admin users can change other users profile
 			return false;
 		}
@@ -1335,10 +1332,9 @@ class Users extends CRMEntity {
 	 */
 	public function saveHomeStuffOrder($id) {
 		global $log, $adb;
-		$log->debug("Entering in function saveHomeOrder($id)");
+		$log->debug('> saveHomeOrder '.$id);
 
 		if ($this->mode == 'edit') {
-			$save_array = array();
 			$qry = 'update vtiger_homestuff,vtiger_homedefault
 				set vtiger_homestuff.visible=?
 				where vtiger_homestuff.stuffid=vtiger_homedefault.stuffid and vtiger_homestuff.userid=? and vtiger_homedefault.hometype=?';
@@ -1349,15 +1345,12 @@ class Users extends CRMEntity {
 				} else {
 					$visible = 1; //To hide the default Homestuff on the the Home Page
 				}
-				$result = $adb->pquery($qry, array($visible, $id, $key));
-			}
-			if (count($save_array)>0) {
-				$homeorder = implode(',', $save_array);
+				$adb->pquery($qry, array($visible, $id, $key));
 			}
 		} else {
 			$this->insertUserdetails('postinstall');
 		}
-		$log->debug("Exiting from function saveHomeOrder($id)");
+		$log->debug('< saveHomeOrder');
 	}
 
 	/**
@@ -1420,7 +1413,7 @@ class Users extends CRMEntity {
 
 	/** Function to delete an entity with given Id */
 	public function trash($module, $id) {
-		global $log, $current_user, $cbodUserLog;
+		global $current_user, $cbodUserLog;
 		$this->mark_deleted($id);
 		// ODController delete user
 		if ($cbodUserLog) {
@@ -1486,10 +1479,10 @@ class Users extends CRMEntity {
 	 * @param <type> $id
 	 */
 	public function mark_deleted($id) {
-		global $log, $current_user, $adb;
+		global $current_user, $adb;
 		$date_var = date('Y-m-d H:i:s');
 		$query = "UPDATE vtiger_users set status=?,date_modified=?,modified_user_id=? where id=?";
-		$adb->pquery($query, array('Inactive', $adb->formatDate($date_var, true), $current_user->id, $id), true, "Error marking record deleted: ");
+		$adb->pquery($query, array('Inactive', $adb->formatDate($date_var, true), $current_user->id, $id), true, 'Error marking record deleted: ');
 	}
 
 	/**
