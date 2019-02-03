@@ -83,7 +83,20 @@
 																					<td width="6px">&nbsp;</td>
 																					<td><b>{$xmlgkey}</b></td>
 																					<td>
-																						{$xmlginfo}
+																						{if $xmlginfo|is_array}
+																							<table style="margin-left: 6px;text-align: left;" border=0>
+																							<tr><th colspan="3">{$xmlfkey}</th></tr>
+																							{foreach key=xmlginfokey item=xmlginfoinfo from=$xmlginfo}
+																							<tr>
+																								<td width="6px">&nbsp;</td>
+																								<td><b>{$xmlginfokey}</b></td>
+																								<td>{$xmlginfoinfo|json_encode}</td>
+																							</tr>
+																							{/foreach}
+																							</table>
+																						{else}
+																							{$xmlginfo}
+																						{/if}
 																					</td>
 																				</tr>
 																				{/foreach}
