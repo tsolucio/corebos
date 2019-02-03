@@ -26,12 +26,7 @@ class FieldDependency extends processcbMap {
 	private $mapping = array();
 
 	public function processMap($arguments) {
-		$mapping=$this->convertMap2Array();
-		return $mapping;
-	}
-
-	public function getCompleteMapping() {
-		return $this->mapping;
+		return $this->convertMap2Array();
 	}
 
 	public function readResponsibleField() {
