@@ -622,13 +622,13 @@ class CRMEntity {
 		}
 
 		for ($i = 0; $i < $noofrows; $i++) {
-			$fieldname = $this->resolve_query_result_value($result, $i, "fieldname");
-			$columname = $this->resolve_query_result_value($result, $i, "columnname");
-			$uitype = $this->resolve_query_result_value($result, $i, "uitype");
-			//$generatedtype = $this->resolve_query_result_value($result, $i, "generatedtype");
-			$typeofdata = $this->resolve_query_result_value($result, $i, "typeofdata");
+			$fieldname = $this->resolve_query_result_value($result, $i, 'fieldname');
+			$columname = $this->resolve_query_result_value($result, $i, 'columnname');
+			$uitype = $this->resolve_query_result_value($result, $i, 'uitype');
+			//$generatedtype = $this->resolve_query_result_value($result, $i, 'generatedtype');
+			$typeofdata = $this->resolve_query_result_value($result, $i, 'typeofdata');
 
-			$typeofdata_array = explode("~", $typeofdata);
+			$typeofdata_array = explode('~', $typeofdata);
 			$datatype = $typeofdata_array[0];
 
 			$ajaxSave = false;
@@ -1215,21 +1215,19 @@ class CRMEntity {
 
 		// Consider custom table join as well.
 		if (isset($this->customFieldTable)) {
-			$from_clause .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				" = $this->table_name.$this->table_index";
+			$from_clause.=' INNER JOIN '.$this->customFieldTable[0].' ON '.$this->customFieldTable[0].'.'.$this->customFieldTable[1]."=$this->table_name.$this->table_index";
 		}
-		$from_clause .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
-						LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+		$from_clause .= ' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
+						LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid';
 
-		$where_clause = " WHERE vtiger_crmentity.deleted = 0";
+		$where_clause = ' WHERE vtiger_crmentity.deleted = 0';
 		$where_clause .= $this->getListViewSecurityParameter($module);
 
 		if (isset($select_cols) && trim($select_cols) != '') {
-			$sub_query = "SELECT $select_cols FROM $this->table_name AS t " .
-				" INNER JOIN vtiger_crmentity AS crm ON crm.crmid = t.".$this->table_index;
+			$sub_query = "SELECT $select_cols FROM $this->table_name AS t INNER JOIN vtiger_crmentity AS crm ON crm.crmid = t.".$this->table_index;
 			// Consider custom table join as well.
 			if (isset($this->customFieldTable)) {
-				$sub_query .= " LEFT JOIN ".$this->customFieldTable[0]." tcf ON tcf.".$this->customFieldTable[1]." = t.$this->table_index";
+				$sub_query .= ' LEFT JOIN '.$this->customFieldTable[0].' tcf ON tcf.'.$this->customFieldTable[1]." = t.$this->table_index";
 			}
 			$sub_query .= " WHERE crm.deleted=0 GROUP BY $select_cols HAVING COUNT(*)>1";
 		} else {
@@ -1237,10 +1235,10 @@ class CRMEntity {
 		}
 
 		$query = $select_clause . $from_clause .
-			" LEFT JOIN vtiger_users_last_import ON vtiger_users_last_import.bean_id=" . $this->table_name .".".$this->table_index .
-			" INNER JOIN (" . $sub_query . ") AS temp ON ".get_on_clause($field_values, $ui_type_arr, $module) .
+			' LEFT JOIN vtiger_users_last_import ON vtiger_users_last_import.bean_id=' . $this->table_name .'.'.$this->table_index .
+			' INNER JOIN (' . $sub_query . ') AS temp ON '.get_on_clause($field_values, $ui_type_arr, $module) .
 			$where_clause .
-			" ORDER BY $table_cols,". $this->table_name .".".$this->table_index ." ASC";
+			" ORDER BY $table_cols,". $this->table_name .'.'.$this->table_index .' ASC';
 
 		return $query;
 	}

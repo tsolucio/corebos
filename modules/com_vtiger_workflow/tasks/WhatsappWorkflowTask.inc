@@ -8,7 +8,8 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-include_once("include/integrations/whatsapp/whatsapp.php");
+include_once 'include/integrations/whatsapp/whatsapp.php';
+
 class WhatsappWorkflowTask extends VTTask {
 
 	public $executeImmediately = true;
@@ -17,35 +18,35 @@ class WhatsappWorkflowTask extends VTTask {
 		return array('messageBody', 'attachmentids');
 	}
 
-	public function doTask(&$entityData) {    
-            $moduleName = $entityData->getModuleName();
-            $data = $entityData->getData();
-            $clientclass = new corebos_whatsapp();
-            $client = $clientclass->whatsappclient;
-            $sender = $clientclass->senderphone;
-            $body = $this->messageBody;
-            //will change it using default value from utilites
-            $phone = $data['phone'];
-            
-            if($sender!=''){
-            $message=$client->messages->create(
-                'whatsapp:'.$phone,
-                array(
-                    'from' => 'whatsapp:'.$sender,
-                    'body' => $body
-                )
-            );
-           
-            $messageid = $message->sid;
-            include_once("modules/Messages/Messages.php");
-            $msg = new Messages();
-            $msg->column_fields["messagesname"] = date("Y-m-d H:i").' '.$phone;
-            $msg->column_fields["messagesuniqueid"] = $messageid;
-            $msg->column_fields["messagestype"] = 'Whatsapp';
-            $msg->column_fields["assigned_user_id"] = '19x1';
-            $msg->column_fields["description"] = $body;
-            $msg->save("Messages");
-            }
+	public function doTask(&$entityData) {
+		$moduleName = $entityData->getModuleName();
+		$data = $entityData->getData();
+		$clientclass = new corebos_whatsapp();
+		$client = $clientclass->whatsappclient;
+		$sender = $clientclass->senderphone;
+		$body = $this->messageBody;
+		//will change it using default value from utilities
+		$phone = $data['phone'];
+
+		if ($sender!='') {
+			$message=$client->messages->create(
+				'whatsapp:'.$phone,
+				array(
+					'from' => 'whatsapp:'.$sender,
+					'body' => $body
+				)
+			);
+
+			$messageid = $message->sid;
+			include_once 'modules/Messages/Messages.php';
+			$msg = new Messages();
+			$msg->column_fields['messagesname'] = date('Y-m-d H:i').' '.$phone;
+			$msg->column_fields['messagesuniqueid'] = $messageid;
+			$msg->column_fields['messagestype'] = 'Whatsapp';
+			$msg->column_fields['assigned_user_id'] = '19x1';
+			$msg->column_fields['description'] = $body;
+			$msg->save('Messages');
+		}
 	}
 }
 ?>
