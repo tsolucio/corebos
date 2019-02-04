@@ -80,7 +80,7 @@ class ModTracker_Detail {
 
 	public function diffHighlight() {
 		if ( $this->name=='assigned_user_id') {
-			return StringDiff::toHTML($this->prevalue, getUserFullName($this->postvalue));;
+			return StringDiff::toHTML($this->prevalue, getUserFullName($this->postvalue));
 		}else{
 			return StringDiff::toHTML($this->prevalue, $this->postvalue);
 		}
