@@ -34,16 +34,16 @@ class DeveloperBlock {
 	}
 
 	public function setWidgetName($widgetName) {
-	    $this->widgetName = $widgetName;
-    }
+		$this->widgetName = $widgetName;
+	}
 
 	public function getModuleToRender() {
-	    return $this->myModule;
-    }
+		return $this->myModule;
+	}
 
 	public function setModuleToRender($module) {
-	    $this->myModule = $module;
-    }
+		$this->myModule = $module;
+	}
 
 	// Helper method to setup Smarty
 	public function getViewer() {
