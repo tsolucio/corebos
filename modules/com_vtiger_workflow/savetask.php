@@ -82,12 +82,8 @@ function vtSaveTask($adb, $request) {
 	$task->reevaluate = ((isset($request['reevaluate']) && $request['reevaluate']=='on') ? 1 : 0);
 	$tm->saveTask($task);
 
-	if (isset($request['return_url'])) {
-		$returnUrl=$request['return_url'];
-	} else {
-		$returnUrl=$module->editTaskUrl($task->id);
-	}
-
+	$module->setReturnUrl('');
+	$returnUrl=$module->editWorkflowUrl($task->workflowId);
 ?>
 	<script type="text/javascript" charset="utf-8">
 		window.location="<?php echo $returnUrl?>";

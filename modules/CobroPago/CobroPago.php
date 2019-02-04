@@ -439,7 +439,7 @@ class CobroPago extends CRMEntity {
 	 */
 	public function get_payment_history($id) {
 		global $log, $adb, $app_strings;
-		$log->debug("Entering get_stage_history(".$id.") method ...");
+		$log->debug('> get_stage_history '.$id);
 
 		$query = 'select vtiger_potstagehistory.*, vtiger_cobropago.reference
 			from vtiger_potstagehistory
@@ -482,13 +482,13 @@ class CobroPago extends CRMEntity {
 
 		$return_data = array('header'=>$header,'entries'=>$entries_list,'navigation'=>array('',''));
 
-		$log->debug('Exiting get_stage_history method ...');
+		$log->debug('< get_stage_history');
 		return $return_data;
 	}
 
 	public function get_history_cobropago($cobropagoid) {
 		global $log, $adb;
-		$log->debug("Entering into get_history_cobropago($cobropagoid) method ...");
+		$log->debug('> get_history_cobropago '.$cobropagoid);
 
 		$result=$adb->pquery('select reference,update_log from vtiger_cobropago where cobropagoid=?', array($cobropagoid));
 		$update_log = $adb->query_result($result, 0, 'update_log');
@@ -499,7 +499,7 @@ class CobroPago extends CRMEntity {
 
 		$return_value = array('header'=>$header,'entries'=>$splitval,'navigation'=>array('',''));
 
-		$log->debug("Exiting from get_history_cobropago($cobropagoid) method ...");
+		$log->debug('< get_history_cobropago');
 		return $return_value;
 	}
 
@@ -532,7 +532,7 @@ class CobroPago extends CRMEntity {
 	**/
 	public function permissiontoedit() {
 		global $log,$current_user,$adb;
-		$log->debug('Entering permissiontoedit() method ...');
+		$log->debug('> permissiontoedit');
 
 		$res = $adb->pquery('select block_paid from vtiger_cobropagoconfig', array());
 		$Block_paid = $adb->query_result($res, 0, 'block_paid');
@@ -546,7 +546,7 @@ class CobroPago extends CRMEntity {
 		} else {
 			$permiso = true;
 		}
-		$log->debug('Exiting permissiontoedit method ...');
+		$log->debug('< permissiontoedit');
 		return $permiso;
 	}
 }

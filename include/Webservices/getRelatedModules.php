@@ -15,8 +15,7 @@
 
 function getRelatedModulesInfomation($module, $user) {
 	include_once 'include/Webservices/GetFilterFields.php';
-	global $log, $adb;
-	$log->debug('Entering getRelatedModulesInfomation(' . $module . ') method ...');
+	global $adb;
 	$types = vtws_listtypes(null, $user);
 	if (!in_array($module, $types['types'])) {
 		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');

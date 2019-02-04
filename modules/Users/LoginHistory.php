@@ -73,7 +73,7 @@ class LoginHistory {
 	**/
 	public function getHistoryListViewHeader() {
 		global $log, $app_strings;
-		$log->debug('Entering getHistoryListViewHeader method ...');
+		$log->debug('> getHistoryListViewHeader');
 		$header_array = array(
 			$app_strings['LBL_LIST_USER_NAME'],
 			$app_strings['LBL_LIST_USERIP'],
@@ -81,7 +81,7 @@ class LoginHistory {
 			$app_strings['LBL_LIST_SIGNOUT'],
 			$app_strings['LBL_LIST_STATUS'],
 		);
-		$log->debug('Exiting getHistoryListViewHeader method ...');
+		$log->debug('< getHistoryListViewHeader');
 		return $header_array;
 	}
 
@@ -94,7 +94,7 @@ class LoginHistory {
 	**/
 	public function getHistoryListViewEntries($username, $navigation_array, $sorder = '', $orderby = '') {
 		global $log, $adb;
-		$log->debug('Entering getHistoryListViewEntries() method ...');
+		$log->debug('> getHistoryListViewEntries');
 
 		if ($sorder != '' && $order_by != '') {
 			$list_query = "Select * from vtiger_loginhistory where user_name=? order by ".$order_by." ".$sorder;
@@ -119,13 +119,13 @@ class LoginHistory {
 				$entries_list[] = $entries;
 			}
 		}
-		$log->debug('Exiting getHistoryListViewEntries() method ...');
+		$log->debug('< getHistoryListViewEntries');
 		return $entries_list;
 	}
 
 	public function getHistoryJSON($userid, $page, $order_by = 'login_time', $sorder = 'DESC') {
 		global $log, $adb;
-		$log->debug('Entering getHistoryJSON() method ...');
+		$log->debug('> getHistoryJSON');
 
 		if (empty($userid)) {
 			$where = '';
@@ -183,7 +183,7 @@ class LoginHistory {
 			$entry['Status'] = ($lgn['status']=='Signed in' ? $in : $out);
 			$entries_list['data'][] = $entry;
 		}
-		$log->debug('Exiting getHistoryJSON() method ...');
+		$log->debug('< getHistoryJSON');
 		return json_encode($entries_list);
 	}
 

@@ -25,7 +25,7 @@ class addWFPurpose extends cbupdaterWorker {
 		} else {
 			$this->ExecuteQuery('ALTER TABLE `com_vtiger_workflows` ADD `purpose` TEXT NULL;');
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}

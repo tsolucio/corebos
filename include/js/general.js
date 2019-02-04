@@ -1174,6 +1174,16 @@ function run_massedit() {
 		worker.addEventListener('message', function (e) {
 			var message = e.data;
 			if (e.data == 'CLOSE') {
+				jQuery.ajax({
+					method: 'POST',
+					url: 'index.php?module='+gVTModule+'&action='+gVTModule+'Ajax&file=ListView&ajax=meditupdate'
+				}).done(function (response) {
+					var result = response.split('&#&#&#');
+					document.getElementById('ListViewContents').innerHTML= result[2];
+					if (result[1] != '') {
+						alert(result[1]);
+					}
+				});
 				__addLog('<br><b>' + alert_arr.ProcessFINISHED + '!</b>');
 				var pBar = document.getElementById('progressor');
 				pBar.value = pBar.max; //max out the progress bar

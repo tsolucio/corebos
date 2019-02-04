@@ -15,7 +15,7 @@
  */
 function getPermittedBlocks($module, $disp_view) {
 	global $adb, $log;
-	$log->debug("Entering into the function getPermittedBlocks($module, $disp_view)");
+	$log->debug("> getPermittedBlocks $module, $disp_view");
 
 	$tabid = getTabid($module);
 	$query="select blockid,blocklabel,show_title from vtiger_blocks where tabid=? and $disp_view=0 and visible = 0 order by sequence";
@@ -31,7 +31,7 @@ function getPermittedBlocks($module, $disp_view) {
 	}
 	$blockid_list .= ')';
 
-	$log->debug("Exit from the function getPermittedBlocks($module, $disp_view). Return value = $blockid_list");
+	$log->debug('< getPermittedBlocks '.$blockid_list);
 	return $blockid_list;
 }
 
@@ -42,7 +42,7 @@ function getPermittedBlocks($module, $disp_view) {
  */
 function getPermittedFieldsQuery($module, $disp_view) {
 	global $log, $current_user;
-	$log->debug("Entering into the function getPermittedFieldsQuery($module, $disp_view)");
+	$log->debug("> getPermittedFieldsQuery $module, $disp_view");
 
 	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 
@@ -67,7 +67,7 @@ function getPermittedFieldsQuery($module, $disp_view) {
 			ORDER BY block,sequence';
 	}
 
-	$log->debug("Exit from the function getPermittedFieldsQuery($module, $disp_view). Return value = $sql");
+	$log->debug('< getPermittedFieldsQuery '.$sql);
 	return $sql;
 }
 
@@ -77,7 +77,7 @@ function getPermittedFieldsQuery($module, $disp_view) {
  */
 function getFieldsListFromQuery($query) {
 	global $adb, $log;
-	$log->debug("Entering into the function getFieldsListFromQuery($query)");
+	$log->debug("> getFieldsListFromQuery $query");
 
 	$result = $adb->query($query);
 	$num_rows = $adb->num_rows($result);
@@ -147,7 +147,7 @@ function getFieldsListFromQuery($query) {
 	}
 	$fields = trim($fields, ',');
 
-	$log->debug("Exit from the function getFieldsListFromQuery($query). Return value = $fields");
+	$log->debug('< getFieldsListFromQuery '.$fields);
 	return $fields;
 }
 ?>

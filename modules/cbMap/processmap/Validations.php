@@ -33,6 +33,7 @@
 		  <restrictions>
 		  <restriction>{values depend on the rule}</restriction>
 		  </restrictions>
+		  <message>This is my custom msg for field: {field}</message> {optional}
 		</validation>
 		.....
 	  </validations>
@@ -164,7 +165,11 @@ class Validations extends processcbMap {
 					case 'date':
 					case 'IBAN_BankAccount':
 					case 'EU_VAT':
-						$v->rule($rule, $valfield)->label($i18n);
+						if (isset($val['msg'])) {
+							$v->rule($rule, $valfield)->message($val['msg'])->label($i18n);
+						} else {
+							$v->rule($rule, $valfield)->label($i18n);
+						}
 						break;
 					case 'equals':
 					case 'different':
@@ -185,7 +190,11 @@ class Validations extends processcbMap {
 						} else {
 							$rulevalue = $restrictions[0];
 						}
-						$v->rule($rule, $valfield, $rulevalue)->label($i18n);
+						if (isset($val['msg'])) {
+							$v->rule($rule, $valfield, $rulevalue)->message($val['msg'])->label($i18n);
+						} else {
+							$v->rule($rule, $valfield, $rulevalue)->label($i18n);
+						}
 						break;
 					case 'lengthBetween':
 						if ($restrictions[0]<$restrictions[1]) {
@@ -195,27 +204,55 @@ class Validations extends processcbMap {
 							$min = $restrictions[1];
 							$max = $restrictions[0];
 						}
-						$v->rule($rule, $valfield, $min, $max)->label($i18n);
+						if (isset($val['msg'])) {
+							$v->rule($rule, $valfield, $min, $max)->message($val['msg'])->label($i18n);
+						} else {
+							$v->rule($rule, $valfield, $min, $max)->label($i18n);
+						}
 						break;
 					case 'in':
 					case 'notIn':
-						$v->rule($rule, $valfield, $restrictions)->label($i18n);
+						if (isset($val['msg'])) {
+							$v->rule($rule, $valfield, $restrictions)->message($val['msg'])->label($i18n);
+						} else {
+							$v->rule($rule, $valfield, $restrictions)->label($i18n);
+						}
 						break;
 					case 'regex': // CDATA?
-						$v->rule($rule, $valfield, $restrictions[0])->label($i18n);
+						if (isset($val['msg'])) {
+							$v->rule($rule, $valfield, $restrictions[0])->message($val['msg'])->label($i18n);
+						} else {
+							$v->rule($rule, $valfield, $restrictions[0])->label($i18n);
+						}
 						break;
 					case 'creditCard':
 						if (count($restrictions)>0) {
-							$v->rule($rule, $valfield, $restrictions)->label($i18n);
+							if (isset($val['msg'])) {
+								$v->rule($rule, $valfield, $restrictions)->message($val['msg'])->label($i18n);
+							} else {
+								$v->rule($rule, $valfield, $restrictions)->label($i18n);
+							}
 						} else {
-							$v->rule($rule, $valfield->label($i18n));
+							if (isset($val['msg'])) {
+								$v->rule($rule, $valfield)->message($val['msg'])->label($i18n);
+							} else {
+								$v->rule($rule, $valfield)->label($i18n);
+							}
 						}
 						break;
 					case 'notDuplicate':
-						$v->rule($rule, $valfield, $mapping['origin'], $arguments[1])->label($i18n);
+						if (isset($val['msg'])) {
+							$v->rule($rule, $valfield, $mapping['origin'], $arguments[1])->message($val['msg'])->label($i18n);
+						} else {
+							$v->rule($rule, $valfield, $mapping['origin'], $arguments[1])->label($i18n);
+						}
 						break;
 					case 'expression':
-						$v->rule($rule, $valfield, $arguments[1], $restrictions[0])->label($i18n);
+						if (isset($val['msg'])) {
+							$v->rule($rule, $valfield, $arguments[1], $restrictions[0])->message($val['msg'])->label($i18n);
+						} else {
+							$v->rule($rule, $valfield, $arguments[1], $restrictions[0])->label($i18n);
+						}
 						break;
 					case 'custom':
 						if (file_exists($restrictions[0])) {
@@ -223,7 +260,11 @@ class Validations extends processcbMap {
 							if (function_exists($restrictions[2])) {
 								$lbl = (isset($restrictions[3]) ? getTranslatedString($restrictions[3], $mapping['origin']) : getTranslatedString('INVALID', $mapping['origin']));
 								$v->addRule($restrictions[1], $restrictions[2], $lbl);
-								$v->rule($restrictions[1], $valfield)->label($i18n);
+								if (isset($val['msg'])) {
+									$v->rule($restrictions[1], $valfield)->message($val['msg'])->label($i18n);
+								} else {
+									$v->rule($restrictions[1], $valfield)->label($i18n);
+								}
 							}
 						}
 						break;
@@ -266,6 +307,9 @@ class Validations extends processcbMap {
 					}
 				}
 				$retval['rst'] = $rst;
+				if (isset($val->message)) {
+					$retval['msg']=(String)$val->message;
+				}
 				$allvals[]=$retval;
 			}
 			$val_fields[$fieldname] = $allvals;
@@ -309,7 +353,22 @@ class Validations extends processcbMap {
 
 	public static function recordIsAssignedToInactiveUser() {
 		$screen_values = json_decode($_REQUEST['structure'], true);
-		return recordIsAssignedToInactiveUser($screen_values['record']);
+		if (isset($screen_values['assigned_user_id'])) {
+			global $adb;
+			$usrrs = $adb->pquery('select status from vtiger_users where id=?', array($screen_values['assigned_user_id']));
+			if ($usrrs && $adb->num_rows($usrrs)==1) {
+				return ($adb->query_result($usrrs, 0, 'status')!='Active');
+			} else {
+				$grprs = $adb->pquery('select 1 from vtiger_groups where groupid=?', array($screen_values['assigned_user_id']));
+				if ($grprs && $adb->num_rows($grprs)==1) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+		} else {
+			return recordIsAssignedToInactiveUser($screen_values['record']);
+		}
 	}
 
 	public static function processAllValidationsFor($module) {

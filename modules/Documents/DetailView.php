@@ -102,6 +102,9 @@ if ($flag == 1) {
 if (is_admin($current_user)) {
 	$smarty->assign('CHECK_INTEGRITY_PERMISSION', 'yes');
 	$smarty->assign('ADMIN', 'yes');
+} else {
+	$smarty->assign('CHECK_INTEGRITY_PERMISSION', 'no');
+	$smarty->assign('ADMIN', 'no');
 }
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);

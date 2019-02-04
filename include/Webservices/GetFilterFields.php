@@ -14,9 +14,6 @@
 *************************************************************************************************/
 
 function vtws_getfilterfields($module, $user) {
-	global $log;
-	$log->debug('Entering function vtws_getfilterfields');
-
 	if ($module=='Users') {
 		return array(
 			'fields'=>array('first_name', 'last_name', 'email1'),

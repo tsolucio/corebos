@@ -38,7 +38,7 @@ include_once 'include/utils/utils.php';
 	<table border=0 cellspacing=0 cellpadding=10 width=80% align=center>
 	<tr>
 		<td class="small" bgcolor="#FFFFFF" align=center>
-			A PHP version from 5.4.x (5.6.x minimum recommended) to 7.2.0 is required.
+			A PHP version from 5.4.x (5.6.x minimum recommended) to 7.3.0 is required.
 			Your current PHP version is <?php echo (isset($serverPhpVersion) ? vtlib_purify($serverPhpVersion) : phpversion());?><br/>
 			Kindly adapt your PHP installation, and try again!<br/>
 		</td>

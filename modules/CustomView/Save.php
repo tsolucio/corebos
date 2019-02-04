@@ -121,7 +121,6 @@ if ($cvmodule != '') {
 			$customviewsql = 'INSERT INTO vtiger_customview(cvid, viewname, setdefault, setmetrics, entitytype, status, userid) VALUES (?,?,?,?,?,?,?)';
 			$customviewparams = array($genCVid, $viewname, 0, $setmetrics, $cvmodule, $status, $userid);
 			$customviewresult = $adb->pquery($customviewsql, $customviewparams);
-			$log->info('CustomView :: Save :: vtiger_customview created successfully');
 
 			if ($setdefault == 1) {
 				$sql_result = $adb->pquery('SELECT * FROM vtiger_user_module_preferences WHERE userid = ? and tabid = ?', array($current_user->id, $cv_tabid));
@@ -140,8 +139,6 @@ if ($cvmodule != '') {
 				}
 			}
 
-			$log->info('CustomView :: Save :: setdefault upated successfully');
-
 			if ($customviewresult) {
 				if (isset($columnslist)) {
 					for ($i=0; $i<count($columnslist); $i++) {
@@ -159,7 +156,6 @@ if ($cvmodule != '') {
 							$adb->formatDate($std_filter_list['enddate'], true),
 						);
 						$stdfilterresult = $adb->pquery($stdfiltersql, $stdfilterparams);
-						$log->info('CustomView :: Save :: vtiger_cvstdfilter created successfully');
 					}
 
 					if (is_array($advft_criteria)) {
@@ -266,7 +262,6 @@ if ($cvmodule != '') {
 							);
 						}
 					}
-					$log->info('CustomView :: Save :: vtiger_cvadvfilter created successfully');
 				}
 			}
 			$cvid = $genCVid;
@@ -276,7 +271,6 @@ if ($cvmodule != '') {
 			$updatecvsql = 'UPDATE vtiger_customview SET viewname = ?, setmetrics = ?, status = ? WHERE cvid = ?';
 			$updatecvparams = array($viewname, $setmetrics, $status, $cvid);
 			$updatecvresult = $adb->pquery($updatecvsql, $updatecvparams);
-			$log->info('CustomView :: Save :: vtiger_customview upated successfully'.$cvid);
 
 			if ($setdefault == 1) {
 				$sql_result = $adb->pquery('SELECT * FROM vtiger_user_module_preferences WHERE userid = ? and tabid = ?', array($current_user->id, $cv_tabid));
@@ -294,7 +288,6 @@ if ($cvmodule != '') {
 					$deletedefaultresult = $adb->pquery($deletedefaultsql, array($current_user->id, $cv_tabid));
 				}
 			}
-			$log->info('CustomView :: Save :: setdefault upated successfully'.$cvid);
 
 			$deletesql = 'DELETE FROM vtiger_cvcolumnlist WHERE cvid = ?';
 			$deleteresult = $adb->pquery($deletesql, array($cvid));
@@ -308,7 +301,6 @@ if ($cvmodule != '') {
 			$deletesql = 'DELETE FROM vtiger_cvadvfilter_grouping WHERE cvid = ?';
 			$deleteresult = $adb->pquery($deletesql, array($cvid));
 
-			$log->info('CustomView :: Save :: vtiger_cvcolumnlist,cvstdfilter,cvadvfilter,cvadvfilter_grouping deleted successfully before update'.$cvid);
 
 			$genCVid = $cvid;
 			if ($updatecvresult) {
@@ -318,7 +310,6 @@ if ($cvmodule != '') {
 						$columnparams = array($genCVid, $i, $columnslist[$i]);
 						$columnresult = $adb->pquery($columnsql, $columnparams);
 					}
-					$log->info('CustomView :: Save :: vtiger_cvcolumnlist update successfully'.$genCVid);
 					if (!empty($std_filter_list['columnname'])) {
 						$stdfiltersql = 'INSERT INTO vtiger_cvstdfilter (cvid,columnname,stdfilter,startdate,enddate) VALUES (?,?,?,?,?)';
 						$stdfilterparams = array(
@@ -329,7 +320,6 @@ if ($cvmodule != '') {
 							$adb->formatDate($std_filter_list['enddate'], true),
 						);
 						$stdfilterresult = $adb->pquery($stdfiltersql, $stdfilterparams);
-						$log->info('CustomView :: Save :: vtiger_cvstdfilter update successfully'.$genCVid);
 					}
 					if (is_array($advft_criteria)) {
 						foreach ($advft_criteria as $column_index => $column_condition) {
@@ -436,7 +426,6 @@ if ($cvmodule != '') {
 							);
 						}
 					}
-					$log->info('CustomView :: Save :: vtiger_cvadvfilter update successfully'.$cvid);
 				}
 			}
 		}

@@ -72,8 +72,6 @@ function cbws_uploadProductImages($recordID, $fileData, $user) {
 	$product = CRMEntity::getInstance('Products');
 	$product->retrieve_entity_info($idList[1], 'Products');
 
-	$log->debug("Entering into add uploadProductImages($recordID) method.");
-
 	$finfo = finfo_open(FILEINFO_MIME_TYPE);
 	$myResult = array();
 	$newnumimages = $numimages;

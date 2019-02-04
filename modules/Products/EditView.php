@@ -225,7 +225,7 @@ if ($focus->mode != 'edit' && $mod_seq_field != null) {
 		$smarty->assign('MOD_SEQ_ID', $autostr);
 	}
 } else {
-	$smarty->assign('MOD_SEQ_ID', $focus->column_fields[$mod_seq_field['name']]);
+	$smarty->assign('MOD_SEQ_ID', isset($focus->column_fields[$mod_seq_field['name']]) ? $focus->column_fields[$mod_seq_field['name']] : '');
 }
 
 // Gather the help information associated with fields

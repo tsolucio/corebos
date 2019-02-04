@@ -38,5 +38,9 @@ $mod_strings = array (
 	'LBL_DOUBLE_CHECK_INFO'=>' Por favor, verifique com atenção antes de salvar os dados.',
 	'LBL_HELP_INFO'=>"Este e-mail é utilizado como 'Remetente' no envio de mensagens, com as credenciais de acesso de um novo usuário cadastrado,
 		para enviar mensagem a usuário que tenha um Ticket a ele designado e para envio de mensagens de lembrete e notificação.",
+	'LBL_RESTRICTED_CHARACTERS'=>"Caracteres como ' &#34 e ; não são permitidos",
+	'LBL_CORS_ENABLED_DOMAINS' => 'Domínios autorizados para CORS',
+	'disable_stats_tracking' => 'Tracker de Estatísticas de E-mail Desativado',
+	'LBL_TYPEFORM_API_KEY' => 'Introduzir Chave API',
 );
 ?>

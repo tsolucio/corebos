@@ -46,6 +46,9 @@ class picklist_translations extends cbupdaterWorker {
 				from vtiger_cbtranslation
 				where translation_module=? and translation_key=? and forpicklist=? and locale=?';
 			foreach ($import_modules as $impmod) {
+				if ($impmod=='Emails') {
+					continue;
+				}
 				set_time_limit(0);
 				foreach ($import_langs as $lang) {
 					if (file_exists('modules/' . $impmod . '/language/' . $lang . '.lang.php')) {

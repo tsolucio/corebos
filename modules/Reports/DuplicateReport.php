@@ -55,7 +55,7 @@ if ($numOfRows > 0) {
 
 			$iquerysql = "insert into vtiger_selectquery (QUERYID,STARTINDEX,NUMOFOBJECTS) values (?,?,?)";
 			$iquerysqlresult = $adb->pquery($iquerysql, array($genQueryId,0,0));
-			$log->info("Reports :: Save->Successfully saved vtiger_selectquery");
+			$log->debug("Reports :: Save->Successfully saved vtiger_selectquery");
 
 			if ($iquerysqlresult != false) {
 				$adb->pquery("INSERT INTO vtiger_selectcolumn (queryid,columnindex,columnname)
@@ -73,33 +73,33 @@ if ($numOfRows > 0) {
 					array($reportid)
 				);
 				if ($ireportresult != false) {
-					$log->info('Reports :: Save->Successfully saved report');
+					$log->debug('Reports :: Save->Successfully saved report');
 					$adb->pquery("INSERT INTO vtiger_reportmodules (reportmodulesid,primarymodule,secondarymodules)
 							SELECT $genQueryId,primarymodule,secondarymodules FROM vtiger_reportmodules WHERE reportmodulesid=?", array($reportid));
-					$log->info("Reports :: Save->Successfully saved vtiger_reportmodules");
+					$log->debug("Reports :: Save->Successfully saved vtiger_reportmodules");
 
 					$adb->pquery("INSERT INTO vtiger_reportsortcol (sortcolid,reportid,columnname,sortorder)
 							SELECT sortcolid,$genQueryId,columnname,sortorder FROM vtiger_reportsortcol WHERE reportid=?", array($reportid));
-					$log->info("Reports :: Save->Successfully saved vtiger_reportsortcol");
+					$log->debug("Reports :: Save->Successfully saved vtiger_reportsortcol");
 
 					$adb->pquery("INSERT INTO vtiger_reportdatefilter (datefilterid,datecolumnname,datefilter,startdate,enddate)
 							SELECT $genQueryId,datecolumnname,datefilter,startdate,enddate FROM vtiger_reportdatefilter WHERE datefilterid=?", array($reportid));
-					$log->info("Reports :: Save->Successfully saved vtiger_reportdatefilter");
+					$log->debug("Reports :: Save->Successfully saved vtiger_reportdatefilter");
 
 					$adb->pquery("INSERT INTO vtiger_reportsummary (reportsummaryid,summarytype,columnname)
 							SELECT $genQueryId,summarytype,columnname FROM vtiger_reportsummary WHERE reportsummaryid=?", array($reportid));
-					$log->info("Reports :: Save->Successfully saved vtiger_reportsummary");
+					$log->debug("Reports :: Save->Successfully saved vtiger_reportsummary");
 
 					$adb->pquery(
 						"INSERT INTO vtiger_relcriteria (queryid,columnindex,columnname,comparator,value,groupid,column_condition)
 							SELECT $genQueryId,columnindex,columnname,comparator,value,groupid,column_condition FROM vtiger_relcriteria WHERE queryid=?",
 						array($reportid)
 					);
-					$log->info('Reports :: Save->Successfully saved vtiger_relcriteria');
+					$log->debug('Reports :: Save->Successfully saved vtiger_relcriteria');
 
 					$adb->pquery("INSERT INTO vtiger_relcriteria_grouping (groupid,queryid,group_condition,condition_expression)
 							SELECT groupid,$genQueryId,group_condition,condition_expression FROM vtiger_relcriteria_grouping WHERE queryid=?", array($reportid));
-					$log->info('Reports :: Save->Successfully saved vtiger_relcriteria_grouping');
+					$log->debug('Reports :: Save->Successfully saved vtiger_relcriteria_grouping');
 
 					$advft_criteria = $_REQUEST['advft_criteria'];
 					$advft_criteria_groups = $_REQUEST['advft_criteria_groups'];
@@ -109,11 +109,11 @@ if ($numOfRows > 0) {
 						updateAdvancedCriteria($genQueryId, $advft_criteria, $advft_criteria_groups);
 					}
 				} else {
-					$log->info('Reports :: Save->ERROR saving report info');
+					$log->debug('Reports :: Save->ERROR saving report info');
 					$response_array['errormessage'] = $mod_strings['ERR_CREATE_REPORT'];
 				}
 			} else {
-				$log->info('Reports :: Save->ERROR saving report query');
+				$log->debug('Reports :: Save->ERROR saving report query');
 				$response_array['errormessage'] = $mod_strings['ERR_CREATE_REPORT'];
 			}
 		}

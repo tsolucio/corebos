@@ -403,11 +403,11 @@ class PearDatabase {
 		if ($this->isCacheEnabled()) {
 			$fromcache = $this->getCacheInstance()->getCacheResult($sql);
 			if ($fromcache) {
-				$log->debug("Using query result from cache: $sql");
+				$log->debug(">< query result from cache: $sql");
 				return $fromcache;
 			}
 		}
-		$log->debug('query being executed : '.$sql);
+		$log->debug('> query '.$sql);
 		$this->checkConnection();
 
 		$this->executeSetNamesUTF8SQL();
@@ -471,12 +471,12 @@ class PearDatabase {
 		if ($this->isCacheEnabled()) {
 			$fromcache = $this->getCacheInstance()->getCacheResult($sql, $params);
 			if ($fromcache) {
-				$log->debug("Using query result from cache: $sql");
+				$log->debug("> pquery result from cache: $sql");
 				return $fromcache;
 			}
 		}
 		// END
-		$log->debug('Prepared sql query being executed : '.$sql);
+		$log->debug('> pquery '.$sql);
 		$this->checkConnection();
 
 		$this->executeSetNamesUTF8SQL();
@@ -484,7 +484,7 @@ class PearDatabase {
 		$sql_start_time = microtime(true);
 		$params = $this->flatten_array($params);
 		if (!is_null($params) && count($params) > 0) {
-			$log->debug('Prepared sql query parameters : [' . implode(",", $params) . ']');
+			$log->debug('> pquery parameters [' . implode(',', $params) . ']');
 		}
 
 		if ($this->avoidPreparedSql || empty($params)) {
@@ -566,7 +566,7 @@ class PearDatabase {
 
 	public function limitQuery($sql, $start, $count, $dieOnError = false, $msg = '') {
 		global $log;
-		$log->debug(' limitQuery sql = '.$sql .' st = '.$start .' co = '.$count);
+		$log->debug('> limitQuery '.$sql .','.$start .','.$count);
 		$this->checkConnection();
 
 		$this->executeSetNamesUTF8SQL();
@@ -874,9 +874,9 @@ class PearDatabase {
 
 	public function getAffectedRowCount(&$result) {
 		global $log;
-		$log->debug('getAffectedRowCount');
+		$log->debug('> getAffectedRowCount');
 		$rows =$this->database->Affected_Rows();
-		$log->debug('getAffectedRowCount rows = '.$rows);
+		$log->debug('< getAffectedRowCount '.$rows);
 		return $rows;
 	}
 
@@ -930,8 +930,6 @@ class PearDatabase {
 	}
 
 	public function getNextRow(&$result, $encode = true) {
-		global $log;
-		$log->info('getNextRow');
 		if (isset($result)) {
 			$row = $this->change_key_case($result->FetchRow());
 			if ($row && $encode && is_array($row)) {
