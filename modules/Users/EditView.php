@@ -64,8 +64,6 @@ global $theme;
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
 
-$log->info('User edit view');
-
 $smarty->assign('JAVASCRIPT', get_validate_record_js());
 $smarty->assign('UMOD', $mod_strings);
 global $current_language;

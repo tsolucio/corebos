@@ -24,8 +24,7 @@ function getAsteriskInfo($adb) {
 		$data['version'] = $adb->query_result($result, 0, 'version');
 		return $data;
 	} else {
-		$log->debug("Asterisk server settings not specified.\n".
-					"Change the configuration from vtiger-> Settings-> Softphone Settings\n");
+		$log->debug('< getAsteriskInfo: error: Asterisk server settings not specified');
 		return false;
 	}
 }

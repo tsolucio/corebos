@@ -500,7 +500,9 @@ function vtlib_purify($input, $ignore = false) {
  */
 function vtlib_process_widget($widgetLinkInfo, $context = false) {
 	if (preg_match("/^block:\/\/(.*)/", $widgetLinkInfo->linkurl, $matches)) {
-		list($widgetControllerClass, $widgetControllerClassFile) = explode(':', $matches[1]);
+		$widgetInfo = explode(':', $matches[1]);
+		$widgetControllerClass = $widgetInfo[0];
+		$widgetControllerClassFile = $widgetInfo[1];
 		if (!class_exists($widgetControllerClass)) {
 			checkFileAccessForInclusion($widgetControllerClassFile);
 			include_once $widgetControllerClassFile;
@@ -509,6 +511,10 @@ function vtlib_process_widget($widgetLinkInfo, $context = false) {
 			$widgetControllerInstance = new $widgetControllerClass;
 			$widgetInstance = $widgetControllerInstance->getWidget($widgetLinkInfo->linklabel);
 			if ($widgetInstance) {
+				if (isset($widgetInfo[2])) {
+					parse_str($widgetInfo[2], $widgetContext);
+					$context = array_merge($context, $widgetContext);
+				}
 				return $widgetInstance->process($context);
 			}
 		}

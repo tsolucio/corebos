@@ -23,8 +23,8 @@ class ListView {
 	public $query_where = null;
 	public $query_limit = -1;
 	public $query_orderby = null;
-	public $header_title = "";
-	public $header_text = "";
+	public $header_title = '';
+	public $header_text = '';
 	public $log = null;
 	public $initialized = false;
 	public $querey_where_has_changed = false;
@@ -32,7 +32,7 @@ class ListView {
 
 	public function __construct() {
 		global $log;
-		$log->debug('Entering ListView() method ...');
+		$log->debug('> ListView');
 		if (!$this->initialized) {
 			global $theme, $app_strings, $image_path, $currentModule;
 			$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
@@ -47,68 +47,68 @@ class ListView {
 				$this->local_image_path = 'themes/'.$theme.'/images';
 			}
 			$this->log = LoggerManager::getLogger('listView_'.$this->local_current_module);
-			$log->debug('Exiting ListView method ...');
+			$log->debug('< ListView');
 		}
 	}
 
 	/** sets the header title */
 	public function setHeaderTitle($value) {
 		global $log;
-		$log->debug("Entering setHeaderTitle(".$value.") method ...");
+		$log->debug('> setHeaderTitle '.$value);
 		$this->header_title = $value;
-		$log->debug('Exiting setHeaderTitle method ...');
+		$log->debug('< setHeaderTitle');
 	}
 
 	/** sets the header text this is text thats appended to the header vtiger_table and is usually used for the creation of buttons */
 	public function setHeaderText($value) {
 		global $log;
-		$log->debug("Entering setHeaderText(".$value.") method ...");
+		$log->debug('> setHeaderText '.$value);
 		$this->header_text = $value;
-		$log->debug("Exiting setHeaderText method ...");
+		$log->debug('< setHeaderText');
 	}
 
 	/**	sets the parameters dealing with the db */
 	public function setQuery($where, $limit, $orderBy, $varName, $allowOrderByOveride = true) {
 		global $log;
-		$log->debug("Entering setQuery(".$where.",". $limit.",". $orderBy.",". $varName.",". $allowOrderByOveride.") method ...");
+		$log->debug('> setQuery '.$where.','.$limit.','.$orderBy.','.$varName.','.$allowOrderByOveride);
 		$this->query_where = $where;
-		if ($this->getSessionVariable("query", "where") != $where) {
+		if ($this->getSessionVariable('query', 'where') != $where) {
 			$this->querey_where_has_changed = true;
-			$this->setSessionVariable("query", "where", $where);
+			$this->setSessionVariable('query', 'where', $where);
 		}
 		$this->query_limit = $limit;
 		if (!$allowOrderByOveride) {
 			$this->query_orderby = $orderBy;
-			$log->debug("Exiting setQuery method ...");
+			$log->debug('< setQuery');
 			return;
 		}
-		$sortBy = $this->getSessionVariable($varName, "ORDER_BY") ;
+		$sortBy = $this->getSessionVariable($varName, 'ORDER_BY') ;
 
 		if (empty($sortBy)) {
-			$this->setUserVariable($varName, "ORDER_BY", $orderBy);
+			$this->setUserVariable($varName, 'ORDER_BY', $orderBy);
 			$sortBy = $orderBy;
 		} else {
-			$this->setUserVariable($varName, "ORDER_BY", $sortBy);
+			$this->setUserVariable($varName, 'ORDER_BY', $sortBy);
 		}
 		if ($sortBy == 'amount') {
 			$sortBy = 'amount*1';
 		}
 
 		$desc = false;
-		$desc = $this->getSessionVariable($varName, $sortBy."_desc");
+		$desc = $this->getSessionVariable($varName, $sortBy.'_desc');
 
 		if (empty($desc)) {
 			$desc = false;
 		}
-		if (isset($_REQUEST[$this->getSessionVariableName($varName, "ORDER_BY")])) {
-			$last = $this->getSessionVariable($varName, "ORDER_BY_LAST");
+		if (isset($_REQUEST[$this->getSessionVariableName($varName, 'ORDER_BY')])) {
+			$last = $this->getSessionVariable($varName, 'ORDER_BY_LAST');
 		}
 		if (!empty($last) && $last == $sortBy) {
 			$desc = !$desc;
 		} else {
-			$this->setSessionVariable($varName, "ORDER_BY_LAST", $sortBy);
+			$this->setSessionVariable($varName, 'ORDER_BY_LAST', $sortBy);
 		}
-		$this->setSessionVariable($varName, $sortBy."_desc", $desc);
+		$this->setSessionVariable($varName, $sortBy.'_desc', $desc);
 		if (!empty($sortBy)) {
 			if (substr_count(strtolower($sortBy), ' desc') == 0 && substr_count(strtolower($sortBy), ' asc') == 0) {
 				if ($desc) {
@@ -120,100 +120,100 @@ class ListView {
 				$this->query_orderby = $sortBy;
 			}
 		} else {
-			$this->query_orderby = "";
+			$this->query_orderby = '';
 		}
-		$log->debug("Exiting setQuery method ...");
+		$log->debug('< setQuery');
 	}
 
 	/** sets the theme used only use if it is different from the global */
 	public function setTheme($theme) {
 		global $log;
-		$log->debug("Entering setTheme(".$theme.") method ...");
+		$log->debug('> setTheme '.$theme);
 		$this->local_theme = $theme;
 		if (isset($this->xTemplate)) {
 			$this->xTemplate->assign('THEME', $this->local_theme);
 		}
-		$log->debug('Exiting setTheme method ...');
+		$log->debug('< setTheme');
 	}
 
 	/** sets the AppStrings used only use if it is different from the global */
 	public function setAppStrings(&$app_strings) {
 		global $log;
-		$log->debug("Entering setAppStrings(".$app_strings.") method ...");
+		$log->debug('> setAppStrings');
 		unset($this->local_app_strings);
 		$this->local_app_strings = $app_strings;
 		if (isset($this->xTemplate)) {
-			$this->xTemplate->assign("APP", $this->local_app_strings);
+			$this->xTemplate->assign('APP', $this->local_app_strings);
 		}
-		$log->debug("Exiting setAppStrings method ...");
+		$log->debug('< setAppStrings');
 	}
 
 	/** sets the ModStrings used */
 	public function setModStrings(&$mod_strings) {
 		global $log;
-		$log->debug("Entering setModStrings(".$mod_strings.") method ...");
+		$log->debug('> setModStrings');
 		unset($this->local_module_strings);
 		$this->local_mod_strings = $mod_strings;
 		if (isset($this->xTemplate)) {
-			$this->xTemplate->assign("MOD", $this->local_mod_strings);
+			$this->xTemplate->assign('MOD', $this->local_mod_strings);
 		}
-		$log->debug("Exiting setModStrings method ...");
+		$log->debug('< setModStrings');
 	}
 
 	/** sets the ImagePath used */
 	public function setImagePath($image_path) {
 		global $log;
-		$log->debug("Entering setImagePath(".$image_path.") method ...");
+		$log->debug('> setImagePath '.$image_path);
 		$this->local_image_path = $image_path;
 		if (empty($this->local_image_path)) {
 			$this->local_image_path = 'themes/'.$this->local_theme.'/images';
 		}
 		if (isset($this->xTemplate)) {
-			$this->xTemplate->assign("IMAGE_PATH", $this->local_image_path);
+			$this->xTemplate->assign('IMAGE_PATH', $this->local_image_path);
 		}
-		$log->debug("Exiting setImagePath method ...");
+		$log->debug('< setImagePath');
 	}
 
 	/** sets the currentModule only use if this is different from the global */
 	public function setCurrentModule($currentModule) {
 		global $log;
-		$log->debug("Entering setCurrentModule(".$currentModule.") method ...");
+		$log->debug('> setCurrentModule '.$currentModule);
 		unset($this->local_current_module);
 		$this->local_current_module = $currentModule;
 		$this->log = LoggerManager::getLogger('listView_'.$this->local_current_module);
 		if (isset($this->xTemplate)) {
 			$this->xTemplate->assign('MODULE_NAME', $this->local_current_module);
 		}
-		$log->debug('Exiting setCurrentModule method ...');
+		$log->debug('< setCurrentModule');
 	}
 
 	/** sets a session variable */
 	public function setSessionVariable($localVarName, $varName, $value) {
 		global $log;
-		$log->debug("Entering setSessionVariable(".$localVarName.",".$varName.",". $value.") method ...");
+		$log->debug('> setSessionVariable '.$localVarName.','.$varName.','. $value);
 		coreBOS_Session::set($this->local_current_module.'_'.$localVarName.'_'.$varName, $value);
-		$log->debug("Exiting setSessionVariable method ...");
+		$log->debug('< setSessionVariable');
 	}
 
 	public function setUserVariable($localVarName, $varName, $value) {
 		global $log, $current_user;
-		$log->debug("Entering setUserVariable(".$localVarName.",".$varName.",". $value.") method ...");
-		$current_user->setPreference($this->local_current_module."_".$localVarName."_".$varName, $value);
-		$log->debug("Exiting setUserVariable method ...");
+		$log->debug('> setUserVariable '.$localVarName.','.$varName.','.$value);
+		$current_user->setPreference($this->local_current_module.'_'.$localVarName.'_'.$varName, $value);
+		$log->debug('< setUserVariable');
 	}
 
 	/** returns a session variable first checking the querey for it then checking the session */
 	public function getSessionVariable($localVarName, $varName) {
 		global $log;
-		$log->debug("Entering getSessionVariable(".$localVarName.",".$varName.") method ...");
+		$log->debug('> getSessionVariable '.$localVarName.','.$varName);
 		if (isset($_REQUEST[$this->getSessionVariableName($localVarName, $varName)])) {
 			$this->setSessionVariable($localVarName, $varName, vtlib_purify($_REQUEST[$this->getSessionVariableName($localVarName, $varName)]));
 		}
 		if (isset($_SESSION[$this->getSessionVariableName($localVarName, $varName)])) {
-			$log->debug("Exiting getSessionVariable method ...");
+			$log->debug('< getSessionVariable');
 			return coreBOS_Session::get($this->getSessionVariableName($localVarName, $varName));
 		}
-		$log->debug("Exiting getSessionVariable method ...");
+		$log->debug('< getSessionVariable');
 		return '';
 	}
 
@@ -225,8 +225,7 @@ class ListView {
 	 */
 	public function getSessionVariableName($localVarName, $varName) {
 		global $log;
-		$log->debug("Entering getSessionVariableName(".$localVarName.",".$varName.") method ...");
-		$log->debug('Exiting getSessionVariableName method ...');
+		$log->debug('>< getSessionVariableName '.$localVarName.','.$varName);
 		return $this->local_current_module.'_'.$localVarName.'_'.$varName;
 	}
 }

@@ -26,7 +26,7 @@ class PopulateComboValues {
 	 */
 	public function insertComboValues($values, $tableName, $picklistid) {
 		global $log, $adb;
-		$log->debug('Entering insertComboValues('.$values.', '.$tableName.') method ...');
+		$log->debug('> insertComboValues '.$values.', '.$tableName);
 		//inserting the value in the vtiger_picklistvalues_seq for the getting uniqueID for each picklist values...
 		$i=0;
 		foreach ($values as $val => $cal) {
@@ -50,7 +50,7 @@ class PopulateComboValues {
 			}
 			$i++;
 		}
-		$log->debug('Exiting insertComboValues method ...');
+		$log->debug('< insertComboValues');
 	}
 
 	/**
@@ -58,7 +58,7 @@ class PopulateComboValues {
 	 */
 	public function create_tables() {
 		global $log, $adb, $combo_strings;
-		$log->debug('Entering create_tables () method ...');
+		$log->debug('> create_tables');
 		$comboRes = $adb->query("SELECT distinct fieldname FROM vtiger_field WHERE uitype IN ('15') OR fieldname = 'salutationtype' and vtiger_field.presence in (0,2)");
 		$noOfCombos = $adb->num_rows($comboRes);
 		for ($i=0; $i<$noOfCombos; $i++) {
@@ -83,12 +83,12 @@ class PopulateComboValues {
 		foreach ($noneditable_values as $picklistname => $value) {
 			$adb->pquery("update vtiger_$value set PRESENCE=0 where $value=?", array($picklistname));
 		}
-		$log->debug('Exiting create_tables () method ...');
+		$log->debug('< create_tables');
 	}
 
 	public function create_nonpicklist_tables() {
 		global $log, $adb, $combo_strings;
-		$log->debug('Entering create_nonpicklist_tables () method ...');
+		$log->debug('> create_nonpicklist_tables');
 		// uitype -> 16 - Non standard picklist, 115 - User status, 83 - Tax Class
 		$comboRes = $adb->query(
 			"SELECT distinct fieldname FROM vtiger_field
@@ -99,12 +99,12 @@ class PopulateComboValues {
 			$comTab = $adb->query_result($comboRes, $i, 'fieldname');
 			$this->insertNonPicklistValues($combo_strings[$comTab.'_dom'], $comTab);
 		}
-		$log->debug('Exiting create_tables () method ...');
+		$log->debug('< create_tables');
 	}
 
 	public function insertNonPicklistValues($values, $tableName) {
 		global $log, $adb;
-		$log->debug('Entering insertNonPicklistValues('.$values.', '.$tableName.') method ...');
+		$log->debug('> insertNonPicklistValues '.$values.', '.$tableName);
 		$i=0;
 		foreach ($values as $val => $cal) {
 				$id = $adb->getUniqueID('vtiger_'.$tableName);
@@ -116,7 +116,7 @@ class PopulateComboValues {
 				$adb->pquery("insert into vtiger_$tableName values(?,?,?,?)", $params);
 				$i++;
 		}
-		$log->debug('Exiting insertNonPicklistValues method ...');
+		$log->debug('< insertNonPicklistValues');
 	}
 }
 ?>

@@ -25,7 +25,7 @@ require_once 'include/CustomFieldUtil.php';
  */
 function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order_by = '', $relatedlist = '', $oCv = '', $relatedmodule = '', $skipActions = false) {
 	global $log, $adb, $theme, $app_strings;
-	$log->debug("Entering getListViewHeader($module,$sort_qry,$sorder,$order_by,$relatedlist,oCv) method...");
+	$log->debug("> getListViewHeader $module,$sort_qry,$sorder,$order_by,$relatedlist,oCv");
 
 	$arrow = '';
 	$list_header = array();
@@ -187,7 +187,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 									"file=DetailViewAjax&ajxaction=LOADRELATEDLIST&header=" . $moduleHeader .
 									"&order_by=$col&record=$relatedlist&sorder=$temp_sorder$relationURL" .
 									"$actionsURL\",\"tbl_" . $relatedmodule . "_$moduleLabel\"," .
-									"\"$relatedmodule" . "_$moduleLabel\");' class='listFormHeaderLinks'>$lbl_name$arrow</a>";
+									'"'.$relatedmodule.'_'.$moduleLabel."\");' class='listFormHeaderLinks'>$lbl_name$arrow</a>";
 						} elseif ($module == 'Users' && $name == 'User Name') {
 							$name  = "<a href='javascript:;' onClick='getListViewEntries_js(\"" . $module . "\",\"parenttab=" . $tabname . "&order_by=" . $col;
 							$name .= "&start=1&sorder=" . $temp_sorder . $sort_qry . "\");' class='listFormHeaderLinks'>";
@@ -213,7 +213,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 		$list_header[] = $app_strings['LBL_ACTION'];
 	}
 
-	$log->debug('Exiting getListViewHeader method ...');
+	$log->debug('< getListViewHeader');
 	return $list_header;
 }
 
@@ -227,7 +227,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
  */
 function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order_by = '') {
 	global $log, $adb, $theme, $current_user;
-	$log->debug("Entering getSearchListViewHeader(" . get_class($focus) . "," . $module . "," . $sort_qry . "," . $sorder . "," . $order_by . ") method ...");
+	$log->debug('> getSearchListViewHeader ' . get_class($focus) . ',' . $module . ',' . $sort_qry . ',' . $sorder . ',' . $order_by);
 	$arrow = '';
 	$list_header = array();
 	$tabid = getTabid($module);
@@ -345,7 +345,7 @@ function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', 
 			$list_header[] = $name;
 		}
 	}
-	$log->debug('Exiting getSearchListViewHeader method');
+	$log->debug('< getSearchListViewHeader');
 	return $list_header;
 }
 
@@ -359,7 +359,7 @@ function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', 
 //code contributed by raju for improved pagination
 function getNavigationValues($display, $noofrows, $limit) {
 	global $log;
-	$log->debug("Entering getNavigationValues(" . $display . "," . $noofrows . "," . $limit . ") method ...");
+	$log->debug('> getNavigationValues ' . $display . ',' . $noofrows . ',' . $limit);
 	$navigation_array = array();
 	$limitpage_navigation = '5'; // magic number to limit the end page to five more than the current page
 	if (isset($_REQUEST['allflag']) && $_REQUEST['allflag'] == 'All') {
@@ -372,7 +372,7 @@ function getNavigationValues($display, $noofrows, $limit) {
 		$navigation_array['current'] = 1;
 		$navigation_array['allflag'] = 'Normal';
 		$navigation_array['verylast'] = 1;
-		$log->debug('Exiting getNavigationValues method');
+		$log->debug('< getNavigationValues');
 		return $navigation_array;
 	}
 	if ($noofrows != 0) {
@@ -428,7 +428,7 @@ function getNavigationValues($display, $noofrows, $limit) {
 	$navigation_array['current'] = $display;
 	$navigation_array['allflag'] = 'All';
 	$navigation_array['verylast'] = $paging;
-	$log->debug('Exiting getNavigationValues method ...');
+	$log->debug('< getNavigationValues');
 	return $navigation_array;
 }
 
@@ -445,7 +445,7 @@ function getNavigationValues($display, $noofrows, $limit) {
  */
 function getListViewEntries($focus, $module, $list_result, $navigation_array, $relatedlist = '', $returnset = '', $edit_action = 'EditView', $del_action = 'Delete', $oCv = '', $page = '', $selectedfields = '', $contRelatedfields = '', $skipActions = false) {
 	global $log, $adb, $current_user, $app_strings, $theme, $default_charset;
-	$log->debug("Entering getListViewEntries(focus,$module,list_result,$relatedlist,$returnset,$edit_action,$del_action,oCv) method");
+	$log->debug("> getListViewEntries focus,$module,list_result,$relatedlist,$returnset,$edit_action,$del_action,oCv");
 	$tabname = getParentTab();
 	$noofrows = $adb->num_rows($list_result);
 	$list_block = array();
@@ -977,7 +977,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 		}
 		$list_block['total'] = $trow;
 	}
-	$log->debug('Exiting getListViewEntries method ...');
+	$log->debug('< getListViewEntries');
 	return $list_block;
 }
 
@@ -994,7 +994,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
  */
 function getSearchListViewEntries($focus, $module, $list_result, $navigation_array, $form = '') {
 	global $log, $adb, $app_strings, $current_user;
-	$log->debug("Entering getSearchListViewEntries(" . get_class($focus) . "," . $module . "," . $list_result . ") method ...");
+	$log->debug('> getSearchListViewEntries ' . get_class($focus) . ',' . $module . ',' . $list_result);
 
 	$noofrows = $adb->num_rows($list_result);
 
@@ -1256,7 +1256,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 		}
 	}
 	$list = $list_block;
-	$log->debug('Exiting getSearchListViewEntries method ...');
+	$log->debug('< getSearchListViewEntries');
 	return $list;
 }
 
@@ -1276,7 +1276,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
  */
 function getValue($field_result, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, $mode, $popuptype, $returnset = '', $viewid = '') {
 	global $log, $app_strings, $current_language, $currentModule, $adb, $current_user, $default_charset;
-	$log->debug('Entering getValue('.print_r($field_result, true).",list_result,$fieldname,focus,$module,$entity_id,$list_result_count,$mode,$popuptype,$returnset,$viewid) method");
+	$log->debug('> getValue '.print_r($field_result, true).",list_result,$fieldname,focus,$module,$entity_id,$list_result_count,$mode,$popuptype,$returnset,$viewid");
 
 	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
 	$tabname = getParentTab();
@@ -1924,8 +1924,22 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					}
 					$bill_street = str_replace(array("\r", "\n"), array('\r', '\n'), popup_decode_html($acct_focus->column_fields['bill_street']));
 					$ship_street = str_replace(array("\r", "\n"), array('\r', '\n'), popup_decode_html($acct_focus->column_fields['ship_street']));
+					$bill_city = isset($acct_focus->column_fields['bill_city']) ? $acct_focus->column_fields['bill_city'] : '';
+					$ship_city = isset($acct_focus->column_fields['ship_city']) ? $acct_focus->column_fields['ship_city'] : '';
+					$bill_state = isset($acct_focus->column_fields['bill_state']) ? $acct_focus->column_fields['bill_state'] : '';
+					$ship_state = isset($acct_focus->column_fields['ship_state']) ? $acct_focus->column_fields['ship_state'] : '';
+					$bill_code = isset($acct_focus->column_fields['bill_code']) ? $acct_focus->column_fields['bill_code'] : '';
+					$ship_code = isset($acct_focus->column_fields['ship_code']) ? $acct_focus->column_fields['ship_code'] : '';
+					$bill_country = isset($acct_focus->column_fields['bill_country']) ? $acct_focus->column_fields['bill_country'] : '';
+					$ship_country = isset($acct_focus->column_fields['ship_country']) ? $acct_focus->column_fields['ship_country'] : '';
+					$bill_pobox = isset($acct_focus->column_fields['bill_pobox']) ? $acct_focus->column_fields['bill_pobox'] : '';
+					$ship_pobox = isset($acct_focus->column_fields['ship_pobox']) ? $acct_focus->column_fields['ship_pobox'] : '';
 					$count = counterValue();
-					$value = '<a href="javascript:void(0);" onclick=\'set_return_shipbilladdress("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '", "' . $bill_street . '", "' . $ship_street . '", "' . popup_decode_html($acct_focus->column_fields['bill_city']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_city']) . '", "' . popup_decode_html($acct_focus->column_fields['bill_state']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_state']) . '", "' . popup_decode_html($acct_focus->column_fields['bill_code']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_code']) . '", "' . popup_decode_html($acct_focus->column_fields['bill_country']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_country']) . '","' . popup_decode_html($acct_focus->column_fields['bill_pobox']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_pobox']) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+					$value = '<a href="javascript:void(0);" onclick=\'set_return_shipbilladdress("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '", "'
+						.$bill_street . '", "' . $ship_street . '", "' . popup_decode_html($bill_city) . '", "' . popup_decode_html($ship_city) . '", "'
+						.popup_decode_html($bill_state) . '", "' . popup_decode_html($ship_state) . '", "' . popup_decode_html($bill_code) . '", "'
+						.popup_decode_html($ship_code) . '", "' . popup_decode_html($bill_country) . '", "' . popup_decode_html($ship_country) . '","'
+						.popup_decode_html($bill_pobox) . '", "' . popup_decode_html($ship_pobox) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
 				} elseif ($popuptype == "specific_contact_account_address") {
 					require_once 'modules/Accounts/Accounts.php';
 					$acct_focus = new Accounts();
@@ -1936,8 +1950,22 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 
 					$bill_street = str_replace(array("\r", "\n"), array('\r', '\n'), popup_decode_html($acct_focus->column_fields['bill_street']));
 					$ship_street = str_replace(array("\r", "\n"), array('\r', '\n'), popup_decode_html($acct_focus->column_fields['ship_street']));
+					$bill_city = isset($acct_focus->column_fields['bill_city']) ? $acct_focus->column_fields['bill_city'] : '';
+					$ship_city = isset($acct_focus->column_fields['ship_city']) ? $acct_focus->column_fields['ship_city'] : '';
+					$bill_state = isset($acct_focus->column_fields['bill_state']) ? $acct_focus->column_fields['bill_state'] : '';
+					$ship_state = isset($acct_focus->column_fields['ship_state']) ? $acct_focus->column_fields['ship_state'] : '';
+					$bill_code = isset($acct_focus->column_fields['bill_code']) ? $acct_focus->column_fields['bill_code'] : '';
+					$ship_code = isset($acct_focus->column_fields['ship_code']) ? $acct_focus->column_fields['ship_code'] : '';
+					$bill_country = isset($acct_focus->column_fields['bill_country']) ? $acct_focus->column_fields['bill_country'] : '';
+					$ship_country = isset($acct_focus->column_fields['ship_country']) ? $acct_focus->column_fields['ship_country'] : '';
+					$bill_pobox = isset($acct_focus->column_fields['bill_pobox']) ? $acct_focus->column_fields['bill_pobox'] : '';
+					$ship_pobox = isset($acct_focus->column_fields['ship_pobox']) ? $acct_focus->column_fields['ship_pobox'] : '';
 					$count = counterValue();
-					$value = '<a href="javascript:window.close();" onclick=\'set_return_contact_address("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '", "' . $bill_street . '", "' . $ship_street . '", "' . popup_decode_html($acct_focus->column_fields['bill_city']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_city']) . '", "' . popup_decode_html($acct_focus->column_fields['bill_state']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_state']) . '", "' . popup_decode_html($acct_focus->column_fields['bill_code']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_code']) . '", "' . popup_decode_html($acct_focus->column_fields['bill_country']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_country']) . '","' . popup_decode_html($acct_focus->column_fields['bill_pobox']) . '", "' . popup_decode_html($acct_focus->column_fields['ship_pobox']) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+					$value = '<a href="javascript:window.close();" onclick=\'set_return_contact_address("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val))
+						.'", "' . $bill_street . '", "' . $ship_street . '", "' . popup_decode_html($bill_city) . '", "' . popup_decode_html($ship_city) . '", "'
+						.popup_decode_html($bill_state) . '", "' . popup_decode_html($ship_state) . '", "' . popup_decode_html($bill_code) . '", "'
+						.popup_decode_html($ship_code) . '", "' . popup_decode_html($bill_country) . '", "' . popup_decode_html($ship_country) . '","'
+						.popup_decode_html($bill_pobox) . '", "' . popup_decode_html($ship_pobox) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
 				} elseif ($popuptype == 'specific_potential_account_address') {
 					$slashes_temp_val = popup_from_html($temp_val);
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
@@ -2182,7 +2210,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$slashes_temp_val = popup_from_html($temp_val);
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
 
-					$log->debug('Exiting getValue method ...');
+					$log->debug('< getValue');
 					if (isset($_REQUEST['maintab']) && $_REQUEST['maintab'] == 'Calendar') {
 						$count = counterValue();
 						$value = '<a href="javascript:window.close();" onclick=\'set_return_todo("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
@@ -2255,7 +2283,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 	if (in_array($uitype, array(71, 72, 7, 9, 90))) {
 		$value = '<span style="float:right;display:block;">' . $value . '</span>';
 	}
-	$log->debug('Exiting getValue method');
+	$log->debug('< getValue');
 	return $value;
 }
 
@@ -2266,7 +2294,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
  */
 function getListQuery($module, $where = '') {
 	global $log, $current_user;
-	$log->debug('Entering getListQuery(' . $module . ',' . $where . ') method');
+	$log->debug('> getListQuery ' . $module . ',' . $where);
 
 	$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 	switch ($module) {
@@ -2572,7 +2600,7 @@ function getListQuery($module, $where = '') {
 	if ($module != 'Users') {
 		$query = listQueryNonAdminChange($query, $module);
 	}
-	$log->debug('Exiting getListQuery method ...');
+	$log->debug('< getListQuery');
 	return $query;
 }
 
@@ -2582,7 +2610,7 @@ function getListQuery($module, $where = '') {
  */
 function getReadEntityIds($module) {
 	global $log, $current_user;
-	$log->debug('Entering getReadEntityIds(' . $module . ') method ...');
+	$log->debug('> getReadEntityIds ' . $module);
 
 	if ($module == 'Leads') {
 		$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
@@ -2666,7 +2694,7 @@ function getReadEntityIds($module) {
 		$query .= 'WHERE vtiger_crmentity.deleted = 0 ';
 	}
 
-	$log->debug('Exiting getReadEntityIds method ...');
+	$log->debug('< getReadEntityIds');
 	return $query;
 }
 
@@ -2686,7 +2714,7 @@ function getReadEntityIds($module) {
  */
 function AlphabeticalSearch($module, $action, $fieldname, $query, $type, $popuptype = '', $recordid = '', $return_module = '', $append_url = '', $viewid = '', $groupid = '') {
 	global $log;
-	$log->debug("Entering AlphabeticalSearch($module,$action,$fieldname,$query,$type,$popuptype,$recordid,$return_module,$append_url,$viewid,$groupid) method");
+	$log->debug("> AlphabeticalSearch $module,$action,$fieldname,$query,$type,$popuptype,$recordid,$return_module,$append_url,$viewid,$groupid");
 	if ($type == 'advanced') {
 		$flag = '&advanced=true';
 	} else {
@@ -2725,7 +2753,7 @@ function AlphabeticalSearch($module, $action, $fieldname, $query, $type, $popupt
 			.'","alpha_' . $i . '")\'>' . $var . '</td>';
 	}
 
-	$log->debug('Exiting AlphabeticalSearch method ...');
+	$log->debug('< AlphabeticalSearch');
 	return $list;
 }
 
@@ -2807,7 +2835,7 @@ function getRelatedTo($module, $list_result, $rset) {
 		$modEName = (is_array($modMetaInfo['fieldname']) ? $modMetaInfo['fieldname'][0] : $modMetaInfo['fieldname']);
 		$parent_value .= "<span type='vtlib_metainfo' vtrecordid='{$parent_id}' vtfieldname='{$modEName}' vtmodule='$parent_module' style='display:none;'></span>";
 	}
-	$log->debug("Exiting getRelatedTo method ...");
+	$log->debug('< getRelatedTo');
 	return $parent_value;
 }
 
@@ -2821,7 +2849,7 @@ function getRelatedTo($module, $list_result, $rset) {
  */
 function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $action_val = 'index', $viewid = '') {
 	global $log, $app_strings, $theme, $current_user;
-	$log->debug('Entering getTableHeaderNavigation('.print_r($navigation_array, true) . ',' . $url_qry . ',' . $module . ',' . $action_val . ',' . $viewid . ') method');
+	$log->debug('> getTableHeaderNavigation '.print_r($navigation_array, true) . ',' . $url_qry . ',' . $module . ',' . $action_val . ',' . $viewid);
 	if ($module == 'Documents' && GlobalVariable::getVariable('Document_Folder_View', 1, 'Documents')) {
 		$output = '<td class="mailSubHeader" width="100%" align="center">';
 	} else {
@@ -2951,7 +2979,7 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 		$output .= '<img src="' . vtiger_imageurl('end_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
 	}
 	$output .= '</td>';
-	$log->debug("Exiting getTableHeaderNavigation method ...");
+	$log->debug('< getTableHeaderNavigation');
 	if ($navigation_array['first'] == '') {
 		return;
 	} else {
@@ -2961,7 +2989,7 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 
 function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 	global $log, $adb;
-	$log->debug("Entering getPopupCheckquery(" . $current_module . "," . $relmodule . "," . $relmod_recordid . ") method ...");
+	$log->debug('> getPopupCheckquery ' . $current_module . ',' . $relmodule . ',' . $relmod_recordid);
 	$condition = '';
 	if ($current_module == 'Contacts') {
 		if ($relmodule == 'Accounts' && $relmod_recordid != '') {
@@ -3190,7 +3218,7 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 		$condition = '';
 	}
 	$where = $condition;
-	$log->debug('Exiting getPopupCheckquery method ...');
+	$log->debug('< getPopupCheckquery');
 	return $where;
 }
 
@@ -3202,7 +3230,7 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
  */
 function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 	global $log, $adb;
-	$log->debug("Entering getRelCheckquery(" . $currentmodule . "," . $returnmodule . "," . $recordid . ") method ...");
+	$log->debug('> getRelCheckquery ' . $currentmodule . ',' . $returnmodule . ',' . $recordid);
 	$skip_id = array();
 	$where_relquery = '';
 	$params = array();
@@ -3326,7 +3354,7 @@ function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 			}
 		}
 	}
-	$log->debug('Exiting getRelCheckquery method ...');
+	$log->debug('< getRelCheckquery');
 	return $where_relquery;
 }
 
@@ -3390,7 +3418,7 @@ function setSessionVar($lv_array, $noofrows, $max_ent, $module = '', $related = 
 function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $related_module, $recordid) {
 	global $log, $app_strings, $adb, $theme;
 	$relation_id = vtlib_purify($_REQUEST['relation_id']);
-	$log->debug("Entering getRelatedTableHeaderNavigation(" . $url_qry . "," . $module . "," . $related_module . "," . $recordid . ") method ...");
+	$log->debug('> getRelatedTableHeaderNavigation ' . $url_qry . ',' . $module . ',' . $related_module . ',' . $recordid);
 	$tabid = getTabid($module);
 	$relatedListResult = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE relation_id=?', array($relation_id));
 	//Old code to prevent any error if $_REQUEST['relation_id'] is empty;
@@ -3452,7 +3480,7 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 		$output .= '<img src="' . vtiger_imageurl('end_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
 	}
 	$output .= '</td>';
-	$log->debug('Exiting getRelatedTableHeaderNavigation method ...');
+	$log->debug('< getRelatedTableHeaderNavigation');
 	if ($navigation_array['first'] == '') {
 		return;
 	} else {
@@ -3563,7 +3591,7 @@ function getListViewDeleteLink($module, $entity_id, $relatedlist, $returnset, $l
 /* Function to get the Entity Id of a given Entity Name */
 function getEntityId($module, $entityName, $searchonfield = '') {
 	global $log, $adb;
-	$log->info('in getEntityId ' . $entityName);
+	$log->debug('> getEntityId ' . $entityName);
 
 	$query = 'select fieldname,tablename,entityidfield from vtiger_entityname where modulename=?';
 	$result = $adb->pquery($query, array($module));
@@ -3603,6 +3631,7 @@ function getEntityId($module, $entityName, $searchonfield = '') {
 			$entityId = $adb->query_result($result, 0, $entityidfield);
 		}
 	}
+	$log->debug('< getEntityId');
 	if (!empty($entityId)) {
 		return $entityId;
 	} else {

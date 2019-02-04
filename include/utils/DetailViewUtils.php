@@ -24,7 +24,7 @@ require_once 'modules/PickList/PickListUtils.php';
  */
 function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid = '', $module = '', $cbMapFI = array()) {
 	global $log, $adb, $mod_strings, $app_strings, $current_user, $theme, $default_charset;
-	$log->debug("Entering getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel," . print_r($col_fields, true) . ", $generatedtype, $tabid) method ...");
+	$log->debug("> getDetailViewOutputHtml $uitype, $fieldname, $fieldlabel," . print_r($col_fields, true) . ", $generatedtype, $tabid");
 	$theme_path = 'themes/' . $theme . '/';
 	$image_path = $theme_path . 'images/';
 	$value = '';
@@ -1199,7 +1199,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$label_fld['isadmin'] = 0;
 	}
 
-	$log->debug('Exiting getDetailViewOutputHtml method ...');
+	$log->debug('< getDetailViewOutputHtml');
 	return $label_fld;
 }
 
@@ -1210,7 +1210,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
  */
 function getDetailAssociatedProducts($module, $focus) {
 	global $log, $adb, $theme, $log, $app_strings;
-	$log->debug('Entering getDetailAssociatedProducts(' . $module . ',' . get_class($focus) . ') method ...');
+	$log->debug('> getDetailAssociatedProducts ' . $module . ',' . get_class($focus));
 
 	if (vtlib_isModuleActive('Products')) {
 		$hide_stock = 'no';
@@ -1579,7 +1579,7 @@ function getDetailAssociatedProducts($module, $focus) {
 	$output .= '</tr>';
 	$output .= '</table>';
 
-	$log->debug('Exiting getDetailAssociatedProducts method ...');
+	$log->debug('< getDetailAssociatedProducts');
 	return $output;
 }
 
@@ -1591,7 +1591,7 @@ function getDetailAssociatedProducts($module, $focus) {
  */
 function getRelatedListsInformation($module, $focus) {
 	global $log, $adb, $current_user;
-	$log->debug('Entering getRelatedListsInformation(' . $module . ',' . get_class($focus) . ') method ...');
+	$log->debug('> getRelatedListsInformation ' . $module . ',' . get_class($focus));
 	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
 
 	$cur_tab_id = getTabid($module);
@@ -1621,7 +1621,7 @@ function getRelatedListsInformation($module, $focus) {
 			$focus_list[$label] = $focus->$function_name($focus->id, $cur_tab_id, $rel_tab_id, $actions);
 		}
 	}
-	$log->debug('Exiting getRelatedListsInformation method ...');
+	$log->debug('< getRelatedListsInformation');
 	return $focus_list;
 }
 
@@ -1633,7 +1633,7 @@ function getRelatedListsInformation($module, $focus) {
  */
 function getRelatedLists($module, $focus, $restrictedRelations = null) {
 	global $log, $adb, $current_user;
-	$log->debug('Entering getRelatedLists(' . $module . ') method ...');
+	$log->debug('> getRelatedLists ' . $module);
 	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
 
 	$cur_tab_id = getTabid($module);
@@ -1668,7 +1668,7 @@ function getRelatedLists($module, $focus, $restrictedRelations = null) {
 			$focus_list[$label] = array('related_tabid' => $rel_tab_id, 'relationId' => $relationId, 'actions' => $actions);
 		}
 	}
-	$log->debug('Exiting getRelatedLists method ...');
+	$log->debug('< getRelatedLists');
 	return $focus_list;
 }
 
@@ -1749,7 +1749,7 @@ function isPresentRelatedLists($module, $activity_mode = '') {
  */
 function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block_label) {
 	global $log, $adb;
-	$log->debug("Entering getDetailBlockInformation($module, $result," . print_r($col_fields, true) . ", $tabid, " . print_r($block_label, true) . ') method ...');
+	$log->debug("> getDetailBlockInformation $module, $result," . print_r($col_fields, true) . ", $tabid, " . print_r($block_label, true));
 	$label_data = array();
 
 	$bmapname = $module.'_FieldInfo';
@@ -1906,7 +1906,7 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 			}
 		}
 	}
-	$log->debug("Exiting getDetailBlockInformation method ...");
+	$log->debug('< getDetailBlockInformation');
 	return $returndata;
 }
 

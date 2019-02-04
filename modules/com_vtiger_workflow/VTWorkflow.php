@@ -57,7 +57,7 @@ class Workflow {
 	**/
 	public function getWorkListHeader() {
 		global $log, $app_strings;
-		$log->debug('Entering getAuditTrailHeader() method ...');
+		$log->debug('> getWorkListHeader');
 		$header_array = array(
 			$app_strings['LBL_MODULE'],
 			$app_strings['LBL_DESCRIPTION'],
@@ -65,7 +65,7 @@ class Workflow {
 			$app_strings['LBL_TRIGGER'],
 			$app_strings['LBL_TOOLS'],
 		);
-		$log->debug('Exiting getAuditTrailHeader() method ...');
+		$log->debug('< getWorkListHeader');
 		return $header_array;
 	}
 
@@ -445,7 +445,7 @@ class Workflow {
 	 */
 	public function getWorkFlowJSON($modulename, $executioncondtionid, $page, $order_by = 'module_name', $sorder = 'DESC', $desc_search = '', $purpose_search = '') {
 		global $log, $adb;
-		$log->debug('Entering getWorkFlowJSON() method ...');
+		$log->debug('> getWorkFlowJSON');
 
 		$workflow_execution_condtion_list = array(
 			VTWorkflowManager::$ON_FIRST_SAVE => 'LBL_ONLY_ON_FIRST_SAVE',
@@ -513,7 +513,6 @@ class Workflow {
 			$entries_list['next_page_url'] = 'index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getJSON&page='.($islastpage ? $page : $page+1);
 		}
 		$entries_list['prev_page_url'] = 'index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getJSON&page='.($page == 1 ? 1 : $page-1);
-		$unames = array();
 		$edit_return_url = 'index.php?module=com_vtiger_workflow&action=workflowlist&parenttab=Settings';
 		$vtwfappObject= new VTWorkflowApplication('workflowlist', $edit_return_url);
 		while ($lgn = $adb->fetch_array($result)) {
@@ -543,7 +542,7 @@ class Workflow {
 			$entry['Trigger'] = getTranslatedString($workflow_execution_condtion_list[$lgn['execution_condition']], 'Settings');
 			$entries_list['data'][] = $entry;
 		}
-		$log->debug('Exiting getWorkFlowJSON() method ...');
+		$log->debug('< getWorkFlowJSON');
 		return json_encode($entries_list);
 	}
 }

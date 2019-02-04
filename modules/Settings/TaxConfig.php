@@ -114,7 +114,7 @@ $smarty->display('Settings/TaxConfig.tpl');
  */
 function updateTaxPercentages($new_percentages, $sh = '') {
 	global $adb, $log;
-	$log->debug('Entering into the function updateTaxPercentages');
+	$log->debug('> updateTaxPercentages');
 
 	foreach ($new_percentages as $taxid => $new_val) {
 		if ($new_val != '') {
@@ -127,19 +127,19 @@ function updateTaxPercentages($new_percentages, $sh = '') {
 		}
 	}
 
-	$log->debug('Exiting from the function updateTaxPercentages');
+	$log->debug('< updateTaxPercentages');
 }
 
 function updateTaxRetentions($retentions) {
 	global $adb, $log;
-	$log->debug('Entering into the function updateTaxRetentions');
+	$log->debug('> updateTaxRetentions');
 	$query = 'update vtiger_inventorytaxinfo set retention=? where taxid=?';
 	foreach ($retentions as $taxid => $new_val) {
 		if ($new_val == 0 || $new_val == 1) {
 			$adb->pquery($query, array($new_val, $taxid));
 		}
 	}
-	$log->debug('Exiting from the function updateTaxRetentions');
+	$log->debug('< updateTaxRetentions');
 }
 
 /**	Function to update the list of Tax Labels for the taxes
@@ -149,7 +149,7 @@ function updateTaxRetentions($retentions) {
  */
 function updateTaxLabels($new_labels, $sh = '') {
 	global $adb, $log, $currentModule;
-	$log->debug("Entering into the function updateTaxPercentages");
+	$log->debug('> updateTaxPercentages');
 
 	$duplicateTaxLabels = 0;
 	foreach ($new_labels as $taxid => $new_val) {
@@ -186,7 +186,7 @@ function updateTaxLabels($new_labels, $sh = '') {
 		return "<font color='red'>".getTranslatedString('LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS', $currentModule)."</font>";
 	}
 
-	$log->debug("Exiting from the function updateTaxPercentages");
+	$log->debug('< updateTaxPercentages');
 }
 /**	Function used to add the tax type which will do database alterations
  *	@param string $taxlabel - tax label name to be added
@@ -196,7 +196,7 @@ function updateTaxLabels($new_labels, $sh = '') {
  */
 function addTaxType($taxlabel, $taxvalue, $sh = '', $retention = 0) {
 	global $adb, $log, $currentModule;
-	$log->debug("Entering into function addTaxType($taxlabel, $taxvalue, $sh)");
+	$log->debug("> addTaxType $taxlabel, $taxvalue, $sh");
 
 	//First we will check whether the tax is already available or not
 	if ($sh != '' && $sh == 'sh') {
@@ -290,7 +290,7 @@ function addTaxType($taxlabel, $taxvalue, $sh = '', $retention = 0) {
 		$res1 = $adb->pquery($query1, $params1);
 	}
 
-	$log->debug("Exit from function addTaxType($taxlabel, $taxvalue)");
+	$log->debug('< addTaxType');
 	if ($res1) {
 		return '';
 	} else {
@@ -307,7 +307,7 @@ function addTaxType($taxlabel, $taxvalue, $sh = '', $retention = 0) {
  */
 function changeDeleted($taxname, $deleted, $sh = '') {
 	global $log, $adb;
-	$log->debug("Entering into function changeDeleted($taxname, $deleted, $sh)");
+	$log->debug("> changeDeleted $taxname, $deleted, $sh");
 
 	if ($sh == 'sh') {
 		$adb->pquery("update vtiger_shippingtaxinfo set deleted=? where taxname=?", array($deleted, $taxname));
@@ -320,6 +320,6 @@ function changeDeleted($taxname, $deleted, $sh = '') {
 		'status' => $deleted == 1 ? 'disabled' : 'enabled'
 	);
 	cbEventHandler::do_action('corebos.changestatus.tax', $event_data);
-	$log->debug("Exit from function changeDeleted($taxname, $deleted, $sh)");
+	$log->debug('< changeDeleted');
 }
 ?>

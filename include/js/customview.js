@@ -128,8 +128,8 @@ function validate(blockid) {
 
 			//Empty Check validation
 			for (i=0; i<pickListAry.length; i++) {
-				if (pickListAry[i].search(/(\<|\>|\\|\/)/gi)!=-1) {
-					alert(alert_arr.SPECIAL_CHARACTERS+'"<" ">" "\\" "/"'+alert_arr.NOT_ALLOWED);
+				if (pickListAry[i].search(/(\<|\>|\\)/gi)!=-1) {
+					alert(alert_arr.SPECIAL_CHARACTERS+' "<" ">" "\\" '+alert_arr.NOT_ALLOWED);
 
 					picklistObj.focus();
 					return false;

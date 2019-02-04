@@ -10,7 +10,7 @@
 
 function getValuesforRBColumns($column_name, $search_string) {
 	global $log, $adb;
-	$log->debug("Entering getValuesforRBColumns(".$column_name.",".$search_string.") method ...");
+	$log->debug('> getValuesforRBColumns '.$column_name.','.$search_string);
 	$sql = "select concat(tablename,':',fieldname) as tablename from vtiger_entityname where entityidfield=? or entityidcolumn=?";
 	$result = $adb->pquery($sql, array($column_name));
 	$tablename = $adb->query_result($result, 0, 'tablename');
@@ -24,13 +24,13 @@ function getValuesforRBColumns($column_name, $search_string) {
 			$where=" $explode_column[0] like '".formatForSqlLike($search_string)."' or $main_tablename[0]$main_tablename[1] like '".formatForSqlLike($search_string)."'";
 		}
 	}
-	$log->debug('Exiting getValuesforRBColumns method ...');
+	$log->debug('< getValuesforRBColumns');
 	return $where;
 }
 
 function RBSearch($module) {
 	global $log;
-	$log->debug("Entering RBSearch(".$module.") method ...");
+	$log->debug('> RBSearch '.$module);
 	$url_string='';
 	if (isset($_REQUEST['search_field']) && $_REQUEST['search_field'] !="") {
 		$search_column=vtlib_purify($_REQUEST['search_field']);
@@ -49,14 +49,14 @@ function RBSearch($module) {
 		if (isset($_REQUEST['type']) && $_REQUEST['type'] != '') {
 			$url_string .= "&type=".vtlib_purify($_REQUEST['type']);
 		}
-		$log->debug('Exiting RBSearch method ...');
+		$log->debug('< RBSearch');
 		return $where."#@@#".$url_string;
 	}
 }
 
 function basicRBsearch($module, $search_field, $search_string) {
 	global $log, $adb;
-	$log->debug("Entering basicRBsearch(".$module.",".$search_field.",".$search_string.") method ...");
+	$log->debug('> basicRBsearch '.$module.','.$search_field.','.$search_string);
 	if ($search_field =='crmid') {
 		$column_name='crmid';
 		$table_name='vtiger_entity';
@@ -125,7 +125,7 @@ function basicRBsearch($module, $search_field, $search_string) {
 	if ($_REQUEST['type'] == 'alpbt') {
 		$where = str_replace_once('%', '', $where);
 	}
-	$log->debug('Exiting basicRBsearch method ...');
+	$log->debug('< basicRBsearch');
 	return $where;
 }
 

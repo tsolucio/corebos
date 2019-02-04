@@ -69,9 +69,9 @@ if ($allow_exports=='none' || ( $allow_exports=='admin' && ! is_admin($current_u
 */
 function br2nl_vt($str) {
 	global $log;
-	$log->debug('Entering br2nl_vt('.$str.') method ...');
+	$log->debug('> br2nl_vt '.$str);
 	$str = preg_replace("/(\r\n)/", ' ', $str);
-	$log->debug('Exiting br2nl_vt method ...');
+	$log->debug('< br2nl_vt');
 	return $str;
 }
 
@@ -82,7 +82,7 @@ function br2nl_vt($str) {
  */
 function export($type) {
 	global $log, $adb;
-	$log->debug('Entering export('.$type.') method ...');
+	$log->debug('> export '.$type);
 
 	$focus = 0;
 
@@ -234,7 +234,7 @@ function export($type) {
 		/** Output each row information */
 		echo $line;
 	}
-	$log->debug('Exiting export method ...');
+	$log->debug('< export');
 	return true;
 }
 

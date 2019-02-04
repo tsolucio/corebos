@@ -42,8 +42,8 @@
 								<svg aria-hidden="true" class="slds-input__icon">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 								</svg>
-								<select name="modules_list" id="modules_list" class="slds-lookup__search-input slds-input_bare" type="search" style="height: 30px;"
-									aria-owns="modules_list" role="combobox" aria-activedescendent="" aria-expanded="false" aria-autocomplete="list">
+								<select name="list_module" id="list_module" class="slds-lookup__search-input slds-input_bare" type="search" style="height: 30px;"
+									aria-owns="list_module" role="combobox" aria-activedescendent="" aria-expanded="false" aria-autocomplete="list">
 									<option value="all" selected="true">{$APP.LBL_ALLPICKLIST}</option>
 									{$modulelist}
 								</select>
@@ -91,7 +91,7 @@
 								</svg>
 								<select name="trigger_list" id="trigger_list" class="slds-lookup__search-input slds-input_bare" type="search" style="height: 30px;"
 									aria-owns="trigger_list" role="combobox" aria-activedescendent="" aria-expanded="false" aria-autocomplete="list">
-									<option value="all" selected="true">{$APP.LBL_ALL}</option>
+									<option value="all" selected="true">{$APP.LBL_ALLPICKLIST}</option>
 									{$triggerlist}
 								</select>
 							</div>
@@ -149,7 +149,7 @@ Pagination._config.langNext = "{$APP.LNK_LIST_NEXT} >";
 Pagination._config.langStats = "{from}-{to} {/literal}{$APP.LBL_LIST_OF}{literal} {total} ({/literal}{$APP.Page}{literal} {currentPage} {/literal}{$APP.LBL_LIST_OF}{literal} {lastPage})";
 DataTableConfig.loadingImg = 'themes/images/loading.svg';
 DataTableConfig.searchInputName = 'trigger_list';
-DataTableConfig.searchInputName = 'modules_list';
+DataTableConfig.searchInputName = 'list_module';
 </script>
 {/literal}
 <!--New workflow popup-->

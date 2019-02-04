@@ -14,8 +14,6 @@ global $app_strings, $mod_strings, $theme, $adb, $log, $current_language;
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
 
-$log->info('Inside Email Templates List View');
-
 $result = $adb->pquery('select * from vtiger_emailtemplates order by templateid DESC', array());
 $temprow = $adb->fetch_array($result);
 
@@ -42,8 +40,6 @@ if ($temprow != null) {
 		$cnt++;
 	} while ($temprow = $adb->fetch_array($result));
 }
-
-$log->info('Exiting Email Templates List View');
 
 $smarty->assign('TEMPLATES', $return_data);
 $smarty->display('ListEmailTemplates.tpl');

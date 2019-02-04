@@ -31,28 +31,28 @@ DEFINE('FF_FONT1', 'Vera');
 */
 function calculate_font_name($locale) {
 	global $log;
-	$log->debug('Entering calculate_font_name('.$locale.') method ...');
+	$log->debug('> calculate_font_name '.$locale);
 
 	switch ($locale) {
 		case 'cn_zh':
-			$log->debug('Exiting calculate_font_name method ...');
+			$log->debug('< calculate_font_name');
 			return FF_SIMSUN;
 		case 'tw_zh':
 			if (!function_exists('iconv')) {
 				echo " Unable to display traditional Chinese on the graphs.<BR>
 					The function iconv does not exists please read more about <a href='http://us4.php.net/iconv'>iconv here</a><BR>";
-				$log->debug('Exiting calculate_font_name method ...');
+				$log->debug('< calculate_font_name');
 				return FF_DEJAVUSAN;
 			} else {
-				$log->debug('Exiting calculate_font_name method ...');
+				$log->debug('< calculate_font_name');
 				 return FF_CHINESE;
 			}
 		default:
-			$log->debug('Exiting calculate_font_name method ...');
+			$log->debug('< calculate_font_name');
 			return FF_DEJAVUSAN;
 	}
 
-	$log->debug('Exiting calculate_font_name method ...');
+	$log->debug('< calculate_font_name');
 	return FF_DEJAVUSAN;
 }
 
@@ -64,7 +64,7 @@ function calculate_font_name($locale) {
 */
 function color_generator($count = 1, $start = '33CCFF', $step = '221133') {
 	global $log;
-	$log->debug('Entering color_generator('.$count.','.$start.','.$step.') method ...');
+	$log->debug('> color_generator '.$count.','.$start.','.$step);
 	// explode color strings to RGB array
 	if ($start{0} == '#') {
 		$start = substr($start, 1);
@@ -88,7 +88,7 @@ function color_generator($count = 1, $start = '33CCFF', $step = '221133') {
 			}
 		}
 	}
-	$log->debug('Exiting color_generator method ...');
+	$log->debug('< color_generator');
 	return $result;
 }
 
@@ -98,7 +98,7 @@ function color_generator($count = 1, $start = '33CCFF', $step = '221133') {
 */
 function get_tickspacing($max = 10) {
 	global $log,$app_strings;
-	$log->debug('Entering get_tickspacing('.$max.') method ...');
+	$log->debug('> get_tickspacing '.$max);
 	$result = array(1,1);
 
 	// normalize $max to get value between 1 and 10
@@ -106,7 +106,7 @@ function get_tickspacing($max = 10) {
 	if ($coef == 0) {
 		$data=0;
 		echo '<h3>'.$app_strings['NO_DATA_AVAILABLE_WITH_SPECIFIED_PERIOD'].'</h3>';
-		$log->debug('Exiting get_tickspacing method ...');
+		$log->debug('< get_tickspacing');
 		return $data;
 	}
 	$normalized = $max / $coef;
@@ -123,7 +123,7 @@ function get_tickspacing($max = 10) {
 	}
 	$result[0] *= $coef;
 	$result[1] *= $coef;
-	$log->debug('Exiting get_tickspacing method ...');
+	$log->debug('< get_tickspacing');
 	return $result;
 }
 ?>

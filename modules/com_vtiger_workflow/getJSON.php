@@ -34,8 +34,8 @@ if (isset($_REQUEST['trigger_list']) && is_numeric($_REQUEST['trigger_list'])) {
 } else {
 	$executioncondtionid = 0;
 }
-if (isset($_REQUEST['modules_list'])) {
-	$modulename = vtlib_purify($_REQUEST['modules_list']);
+if (isset($_REQUEST['list_module'])) {
+	$modulename = vtlib_purify($_REQUEST['list_module']);
 } else {
 	$modulename = 'all';
 }
@@ -73,6 +73,5 @@ if (isset($_REQUEST['order_rule'])) {
 } else {
 	$sorder = 'DESC';
 }
-$log->debug('Entering getWorkFlowJSON() method ...');
 $response = $focus->getWorkFlowJSON($modulename, $executioncondtionid, $page, $order_by, $sorder, $desc_search, $purpose_search);
 echo $response;

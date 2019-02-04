@@ -219,7 +219,6 @@ if (isset($_REQUEST['potential_id']) && $_REQUEST['potential_id'] != '') {
 	} elseif ($setype == 'Contacts') {
 		$_REQUEST['contact_id'] = $relID;
 	}
-	$log->debug('Sales Order EditView: Potential Id from the request is ' . $_REQUEST['potential_id']);
 	$associated_prod = getAssociatedProducts('Potentials', $focus, $focus->column_fields['potential_id']);
 	if (count($associated_prod)==1 && count($associated_prod[1])==1) { // no products so we empty array to avoid warning
 		$smarty->assign('AVAILABLE_PRODUCTS', 'false');
@@ -245,7 +244,6 @@ if (isset($_REQUEST['product_id']) && $_REQUEST['product_id'] != '') {
 if (!empty($_REQUEST['parent_id']) && !empty($_REQUEST['return_module'])) {
 	if ($_REQUEST['return_module'] == 'Services') {
 		$focus->column_fields['product_id'] = vtlib_purify($_REQUEST['parent_id']);
-		$log->debug('Service Id from the request is ' . vtlib_purify($_REQUEST['parent_id']));
 		$associated_prod = getAssociatedProducts("Services", $focus, $focus->column_fields['product_id']);
 		for ($i=1; $i<=count($associated_prod); $i++) {
 			$associated_prod_id = $associated_prod[$i]['hdnProductId'.$i];

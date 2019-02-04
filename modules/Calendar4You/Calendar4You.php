@@ -583,7 +583,7 @@ class Calendar4You extends CRMEntity {
 	 */
 	public function get_contacts($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $currentModule;
-		$log->debug('Entering get_contacts('.$id.') method ...');
+		$log->debug('> get_contacts '.$id);
 		$this_module = $currentModule;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
@@ -624,7 +624,7 @@ class Calendar4You extends CRMEntity {
 			$return_value = array();
 		}
 		$return_value['CUSTOM_BUTTON'] = $button;
-		$log->debug('Exiting get_contacts');
+		$log->debug('< get_contacts');
 		return $return_value;
 	}
 
@@ -635,7 +635,7 @@ class Calendar4You extends CRMEntity {
 	 */
 	public function get_users($id) {
 		global $log;
-		$log->debug('Entering get_contacts('.$id.') method ...');
+		$log->debug('> get_users '.$id);
 
 		$focus = new Users();
 
@@ -663,7 +663,7 @@ class Calendar4You extends CRMEntity {
 		}
 		$return_data['CUSTOM_BUTTON'] = $button;
 
-		$log->debug('Exiting get_users');
+		$log->debug('< get_users');
 		return $return_data;
 	}
 

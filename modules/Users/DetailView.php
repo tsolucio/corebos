@@ -41,7 +41,6 @@ $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
 
 //the user might belong to multiple groups
-$log->info('User detail view');
 
 $category = getParenttab();
 

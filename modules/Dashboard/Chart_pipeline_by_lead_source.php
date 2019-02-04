@@ -35,15 +35,9 @@ $datax = array();
 //get list of sales stage keys to display
 if (isset($_SESSION['pbls_lead_sources']) && count($_SESSION['pbls_lead_sources']) > 0 && !isset($_REQUEST['pbls_lead_sources'])) {
 	$tempx = $_SESSION['pbls_lead_sources'];
-	$log->debug("_SESSION['pbls_lead_sources'] is:");
-	$log->debug($_SESSION['pbls_lead_sources']);
 } elseif (isset($_REQUEST['pbls_lead_sources']) && count($_REQUEST['pbls_lead_sources']) > 0) {
 	$tempx = $_REQUEST['pbls_lead_sources'];
 	$current_user->setPreference('pbls_lead_sources', $_REQUEST['pbls_lead_sources']);
-	$log->debug("_REQUEST['pbls_lead_sources'] is:");
-	$log->debug($_REQUEST['pbls_lead_sources']);
-	$log->debug("_SESSION['pbls_lead_sources'] is:");
-	$log->debug($_SESSION['pbls_lead_sources']);
 }
 
 //set $datax using selected sales stage keys
@@ -63,15 +57,9 @@ if (isset($_REQUEST['showmypipeline'])) {
 	$ids = array($_REQUEST['showpipelineof']);
 } elseif (isset($_SESSION['pbls_ids']) && count($_SESSION['pbls_ids']) != 0 && !isset($_REQUEST['pbls_ids'])) {
 	$ids = $_SESSION['pbls_ids'];
-	$log->debug("_SESSION['pbls_ids'] is:");
-	$log->debug($_SESSION['pbls_ids']);
 } elseif (isset($_REQUEST['pbls_ids']) && count($_REQUEST['pbls_ids']) > 0) {
 	$ids = $_REQUEST['pbls_ids'];
 	$current_user->setPreference('pbls_ids', $ids);
-	$log->debug("_REQUEST['pbls_ids'] is:");
-	$log->debug($_REQUEST['pbls_ids']);
-	$log->debug("_SESSION['pbls_ids'] is:");
-	$log->debug($_SESSION['pbls_ids']);
 } else {
 	$ids = get_user_array(false);
 	$ids = array_keys($ids);
