@@ -70,6 +70,10 @@ switch ($_REQUEST['_op']) {
 	case 'setconfiggcontact':
 		include_once 'include/integrations/GContacts/settings.php';
 		break;
+	case 'getconfigwhatsapp':
+	case 'setconfigwhatsapp':
+		include_once 'include/integrations/whatsapp/settings.php';
+		break;
 	default:
 		$smarty = new vtigerCRM_Smarty();
 		$titlemessage = getTranslatedString('Available Integrations', $currentModule);

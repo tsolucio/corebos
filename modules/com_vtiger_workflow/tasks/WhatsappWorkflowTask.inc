@@ -8,6 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
+include_once("include/integrations/whatsapp/whatsapp.php");
 class WhatsappWorkflowTask extends VTTask {
 
 	public $executeImmediately = true;
@@ -16,35 +17,35 @@ class WhatsappWorkflowTask extends VTTask {
 		return array('messageBody', 'attachmentids');
 	}
 
-	public function doTask(&$entityData) {
-	}
-	public function afterRetrieve() {
-		global $adb;
-		$this->attachmentsinfo = array();
-		$this->dzattinfo = array();
-		if (!empty($this->attachmentids)) {
-			$aids = explode(',', trim($this->attachmentids, ','));
-			$query = 'SELECT vtiger_attachments.path, vtiger_attachments.name, vtiger_attachments.attachmentsid, vtiger_notes.filename, vtiger_notes.filesize
-				FROM vtiger_attachments
-				INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
-				INNER JOIN vtiger_crmentity ON vtiger_attachments.attachmentsid=vtiger_crmentity.crmid
-				INNER JOIN vtiger_notes ON vtiger_notes.notesid=vtiger_seattachmentsrel.crmid
-				WHERE deleted=0 AND vtiger_seattachmentsrel.crmid = ?';
-			foreach ($aids as $docid) {
-				$docrs = $adb->pquery($query, array($docid));
-				if ($docrs && $adb->num_rows($docrs)==1) {
-					$attname = $adb->query_result($docrs, 0, 'path').$adb->query_result($docrs, 0, 'attachmentsid').'_'.$adb->query_result($docrs, 0, 'name');
-					$this->attachmentsinfo[] = $attname;
-					$this->dzattinfo[] = array(
-						'docid' => $docid,
-						'name' => $adb->query_result($docrs, 0, 'filename'),
-						'size' => $adb->query_result($docrs, 0, 'filesize'),
-					);
-				} else {
-					$this->attachmentids = str_replace($docid.',', '', $this->attachmentids);
-				}
-			}
-		}
+	public function doTask(&$entityData) {    
+            $moduleName = $entityData->getModuleName();
+            $data = $entityData->getData();
+            $clientclass = new corebos_whatsapp();
+            $client = $clientclass->whatsappclient;
+            $sender = $clientclass->senderphone;
+            $body = $this->messageBody;
+            //will change it using default value from utilites
+            $phone = $data['phone'];
+            
+            if($sender!=''){
+            $message=$client->messages->create(
+                'whatsapp:'.$phone,
+                array(
+                    'from' => 'whatsapp:'.$sender,
+                    'body' => $body
+                )
+            );
+           
+            $messageid = $message->sid;
+            include_once("modules/Messages/Messages.php");
+            $msg = new Messages();
+            $msg->column_fields["messagesname"] = date("Y-m-d H:i").' '.$phone;
+            $msg->column_fields["messagesuniqueid"] = $messageid;
+            $msg->column_fields["messagestype"] = 'Whatsapp';
+            $msg->column_fields["assigned_user_id"] = '19x1';
+            $msg->column_fields["description"] = $body;
+            $msg->save("Messages");
+            }
 	}
 }
 ?>
