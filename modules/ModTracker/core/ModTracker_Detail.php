@@ -64,7 +64,7 @@ class ModTracker_Detail {
 			$this->name='imagename';
 		}
 		$this->prevalue = $valuemap['prevalue'];
-		$this->postvalue = $valuemap['postvalue'];
+		$this->postvalue =$valuemap['postvalue'];
 		$this->fieldInstance = new ModTracker_Field($this);
 		$this->fieldInstance->initialize();
 	}
@@ -79,7 +79,11 @@ class ModTracker_Detail {
 	}
 
 	public function diffHighlight() {
-		return StringDiff::toHTML($this->prevalue, getUserFullName($this->postvalue));
+		if ( $this->name=='assigned_user_id') {
+			return StringDiff::toHTML($this->prevalue, getUserFullName($this->postvalue));;
+		}else{
+			return StringDiff::toHTML($this->prevalue, $this->postvalue);
+		}
 	}
 
 	public function getDisplayName() {
