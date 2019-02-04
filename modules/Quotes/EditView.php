@@ -68,7 +68,6 @@ $smarty->assign('CONVERT_MODE', '');
 if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 	$focus->id = $record;
 	$focus->mode = 'edit';
-	$log->debug("Mode is Edit. Quoteid is ".$focus->id);
 	$focus->retrieve_entity_info($record, 'Quotes');
 	$focus->name=$focus->column_fields['subject'];
 }
@@ -77,7 +76,6 @@ if ($isduplicate == 'true') {
 	$QUOTE_associated_prod = getAssociatedProducts($currentModule, $focus);
 	$inventory_cur_info = getInventoryCurrencyInfo($currentModule, $focus->id);
 	$currencyid = $inventory_cur_info['currency_id'];
-	$log->debug('Mode is Duplicate. Quoteid to be duplicated is '.$focus->id);
 	$focus->id = '';
 	$focus->mode = '';
 	$smarty->assign('__cbisduplicatedfromrecordid', $record);
@@ -139,7 +137,6 @@ if (isset($_REQUEST['potential_id']) && $_REQUEST['potential_id'] !='') {
 	} elseif ($setype == 'Contacts') {
 		$_REQUEST['contact_id'] = $relID;
 	}
-	$log->debug('Quotes EditView: Potential Id from the request is '.$_REQUEST['potential_id']);
 	$associated_prod = getAssociatedProducts('Potentials', $focus, $focus->column_fields['potential_id']);
 	if (count($associated_prod)==1 && count($associated_prod[1])==1) { // no products so we empty array to avoid warning
 		$smarty->assign('AVAILABLE_PRODUCTS', 'false');
@@ -152,7 +149,6 @@ if (isset($_REQUEST['potential_id']) && $_REQUEST['potential_id'] !='') {
 }
 if (isset($_REQUEST['product_id']) && $_REQUEST['product_id'] != '') {
 	$focus->column_fields['product_id'] = $_REQUEST['product_id'];
-	$log->debug('Product Id from the request is '.$_REQUEST['product_id']);
 	$associated_prod = getAssociatedProducts('Products', $focus, $focus->column_fields['product_id']);
 	for ($i=1; $i<=count($associated_prod); $i++) {
 		$associated_prod_id = $associated_prod[$i]['hdnProductId'.$i];
@@ -166,7 +162,6 @@ if (isset($_REQUEST['product_id']) && $_REQUEST['product_id'] != '') {
 if (!empty($_REQUEST['parent_id']) && !empty($_REQUEST['return_module'])) {
 	if ($_REQUEST['return_module'] == 'Services') {
 		$focus->column_fields['product_id'] = vtlib_purify($_REQUEST['parent_id']);
-		$log->debug('Service Id from the request is ' . vtlib_purify($_REQUEST['parent_id']));
 		$associated_prod = getAssociatedProducts('Services', $focus, $focus->column_fields['product_id']);
 		for ($i=1; $i<=count($associated_prod); $i++) {
 			$associated_prod_id = $associated_prod[$i]['hdnProductId'.$i];
@@ -192,9 +187,8 @@ if (isset($_REQUEST['account_id']) && $_REQUEST['account_id'] != '' && $record =
 	$focus->column_fields['ship_code'] = $acct_focus->column_fields['ship_code'];
 	$focus->column_fields['bill_country'] = $acct_focus->column_fields['bill_country'];
 	$focus->column_fields['ship_country'] = $acct_focus->column_fields['ship_country'];
-	$focus->column_fields['bill_pobox'] = $acct_focus->column_fields['bill_pobox'];
-	$focus->column_fields['ship_pobox'] = $acct_focus->column_fields['ship_pobox'];
-	$log->debug('Accountid Id from the request is '.$_REQUEST['account_id']);
+	$focus->column_fields['bill_pobox'] = isset($acct_focus->column_fields['bill_pobox']) ? $acct_focus->column_fields['bill_pobox'] : '';
+	$focus->column_fields['ship_pobox'] = isset($acct_focus->column_fields['ship_pobox']) ? $acct_focus->column_fields['ship_pobox'] : '';
 } elseif (!empty($_REQUEST['contact_id']) && $record == '') {
 	$cto_focus = CRMEntity::getInstance('Contacts');
 	$cto_focus->retrieve_entity_info($_REQUEST['contact_id'], 'Contacts');

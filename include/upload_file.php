@@ -16,7 +16,7 @@ class UploadFile {
 	public function __construct($field_name) {
 		global $log;
 		$this->field_name = $field_name;
-		$log->debug('Entering/Exiting UploadFile ('.$field_name.') method ...');
+		$log->debug('>< UploadFile '.$field_name);
 	}
 
 	/** Function to get the url of the attachment
@@ -26,7 +26,7 @@ class UploadFile {
 	*/
 	public function get_url($stored_file_name, $bean_id) {
 		global $log, $site_URL, $upload_dir;
-		$log->debug('Entering/Exiting get_url('.$stored_file_name.','.$bean_id.') method ...');
+		$log->debug('>< get_url '.$stored_file_name.','.$bean_id);
 		//echo $site_URL.'/'.$upload_dir.$bean_id.$stored_file_name;
 		//echo $_ENV['HOSTNAME'] .':' .$_SERVER['SERVER_PORT'].'/'.$upload_dir.$bean_id.$stored_file_name;
 		return 'http://'.$_ENV['HOSTNAME'] .':' .$_SERVER['SERVER_PORT'].'/'.$upload_dir.$bean_id.$stored_file_name;
@@ -40,11 +40,11 @@ class UploadFile {
 	*/
 	public function duplicate_file($old_id, $new_id, $file_name) {
 		global $log, $root_directory, $upload_dir;
-		$log->debug('Entering duplicate_file('.$old_id.', '.$new_id.', '.$file_name.') method ...');
+		$log->debug('> duplicate_file '.$old_id.', '.$new_id.', '.$file_name);
 		$source = $root_directory.'/'.$upload_dir.$old_id.$file_name;
 		$destination = $root_directory.'/'.$upload_dir.$new_id.$file_name;
 		copy($source, $destination);
-		$log->debug('Exiting duplicate_file method ...');
+		$log->debug('< duplicate_file');
 	}
 
 	/** Function to get the status of the file upload
@@ -52,11 +52,11 @@ class UploadFile {
 	 */
 	public function confirm_upload() {
 		global $log, $root_directory, $upload_dir, $upload_badext, $currentModule;
-		$log->debug('Entering confirm_upload() method ...');
+		$log->debug('> confirm_upload');
 		$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize', 3000000, $currentModule);
 
 		if (!is_uploaded_file($_FILES[$this->field_name]['tmp_name'])) {
-			$log->debug('Exiting confirm_upload method ...');
+			$log->debug('< confirm_upload');
 			return false;
 		} elseif ($_FILES[$this->field_name]['size'] > $upload_maxsize) {
 			die("ERROR: uploaded file was too big: max filesize:$upload_maxsize");
@@ -68,14 +68,14 @@ class UploadFile {
 
 		require_once 'include/utils/utils.php';
 		$this->stored_file_name = sanitizeUploadFileName($_FILES[$this->field_name]['name'], $upload_badext);
-		$log->debug('Exiting confirm_upload method ...');
+		$log->debug('< confirm_upload');
 		return true;
 	}
 
 	/** Function to get the stored file name */
 	public function get_stored_file_name() {
 		global $log;
-		$log->debug('Entering/Exiting get_stored_file_name() method ...');
+		$log->debug('>< get_stored_file_name');
 		return $this->stored_file_name;
 	}
 
@@ -85,7 +85,7 @@ class UploadFile {
 	*/
 	public function final_move($bean_id) {
 		global $log, $root_directory, $upload_dir;
-		$log->debug('Entering final_move('.$bean_id.') method ...');
+		$log->debug('> final_move '.$bean_id);
 
 		$file_name = $bean_id.$this->stored_file_name;
 		$destination = $root_directory.'/'.$upload_dir.$file_name;
@@ -93,7 +93,7 @@ class UploadFile {
 		if (!move_uploaded_file($_FILES[$this->field_name]['tmp_name'], $destination)) {
 			die('ERROR: cannot move_uploaded_file to destination');
 		}
-		$log->debug('Exiting final_move method ...');
+		$log->debug('< final_move');
 		return true;
 	}
 
@@ -104,7 +104,7 @@ class UploadFile {
 	*/
 	public function unlink_file($bean_id, $file_name) {
 		global $log, $root_directory, $upload_dir;
-		$log->debug('Entering/Exiting unlink_file('.$bean_id.','.$file_name.') method ...');
+		$log->debug('>< unlink_file '.$bean_id.','.$file_name);
 		return unlink($root_directory.'/'.$upload_dir.$bean_id.$file_name);
 	}
 }

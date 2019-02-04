@@ -19,9 +19,8 @@ class GetParentGroups {
 	 */
 	public function getAllParentGroups($groupid) {
 		global $adb,$log;
-		$log->debug("Entering getAllParentGroups($groupid) method...");
-		$query = 'select groupid from vtiger_group2grouprel where containsgroupid=?';
-		$result = $adb->pquery($query, array($groupid));
+		$log->debug('> getAllParentGroups '.$groupid);
+		$result = $adb->pquery('select groupid from vtiger_group2grouprel where containsgroupid=?', array($groupid));
 		$num_rows=$adb->num_rows($result);
 		if ($num_rows > 0) {
 			for ($i=0; $i<$num_rows; $i++) {
@@ -32,7 +31,7 @@ class GetParentGroups {
 				}
 			}
 		}
-		$log->debug('Exiting getAllParentGroups method...');
+		$log->debug('< getAllParentGroups');
 	}
 }
 ?>

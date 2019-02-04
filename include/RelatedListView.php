@@ -32,8 +32,8 @@ if (!function_exists('GetRelatedList')) {
   * @returns $related_entries -- related entires:: Type string array
   */
 function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $returnset, $id = '', $edit_val = '', $del_val = '', $skipActions = false) {
-	$log = LoggerManager::getLogger('account_list');
-	$log->debug('Entering GetRelatedList('.$module.','.$relatedmodule.','.get_class($focus).','.$query.','.$button.','.$returnset.','.$edit_val.','.$del_val.') method');
+	$log = LoggerManager::getLogger('GetRelatedList');
+	$log->debug('> GetRelatedList '.$module.','.$relatedmodule.','.get_class($focus).','.$query.','.$button.','.$returnset.','.$edit_val.','.$del_val);
 	global $GetRelatedList_ReturnOnlyQuery;
 	if (isset($GetRelatedList_ReturnOnlyQuery) && $GetRelatedList_ReturnOnlyQuery) {
 		return array('query'=>$query);
@@ -213,7 +213,7 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 	}
 	$related_entries = array('header'=>$listview_header,'entries'=>$listview_entries,'navigation'=>$navigationOutput);
 
-	$log->debug('Exiting GetRelatedList method ...');
+	$log->debug('< GetRelatedList');
 	return $related_entries;
 }
 
@@ -225,7 +225,7 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
   */
 function getHistory($parentmodule, $query, $id) {
 	global $log, $adb, $app_strings, $current_user;
-	$log->debug('Entering getHistory('.$parentmodule.','.$query.','.$id.') method ...');
+	$log->debug('> getHistory '.$parentmodule.','.$query.','.$id);
 
 	//Appending the security parameter
 	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
@@ -295,7 +295,7 @@ function getHistory($parentmodule, $query, $id) {
 		}
 
 		$return_data = array('header'=>$header,'entries'=>$entries_list);
-		$log->debug('Exiting getHistory method ...');
+		$log->debug('< getHistory');
 		return $return_data;
 	}
 }
@@ -310,7 +310,7 @@ function getHistory($parentmodule, $query, $id) {
  */
 function getPriceBookRelatedProducts($query, $focus, $returnset = '') {
 	global $log, $adb, $app_strings, $mod_strings, $current_language,$current_user, $theme;
-	$log->debug('Entering getPriceBookRelatedProducts('.$query.','.get_class($focus).','.$returnset.') method ...');
+	$log->debug('> getPriceBookRelatedProducts '.$query.','.get_class($focus).','.$returnset);
 
 	return_module_language($current_language, 'PriceBook');
 	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, 'PriceBook');
@@ -411,7 +411,7 @@ function getPriceBookRelatedProducts($query, $focus, $returnset = '') {
 	);
 	$return_data = array('header'=>$header,'entries'=>$entries_list,'navigation'=>$navigationOutput);
 
-	$log->debug('Exiting getPriceBookRelatedProducts method ...');
+	$log->debug('< getPriceBookRelatedProducts');
 	return $return_data;
 }
 

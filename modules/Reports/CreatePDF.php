@@ -16,7 +16,7 @@ require_once "include/language/$language";
 $reportid = vtlib_purify($_REQUEST['record']);
 $oReportRun = new ReportRun($reportid);
 if (isPermitted($oReportRun->primarymodule, 'Export', '')!='yes') {
-	$log->debug('You do not have permission to export Report');
+	$log->debug('< CreatePDF: You do not have permission to export Report');
 	require_once 'Smarty_setup.php';
 	$smarty = new vtigerCRM_Smarty();
 	global $app_strings;

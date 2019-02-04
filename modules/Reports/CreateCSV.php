@@ -28,7 +28,7 @@ $fname = tempnam($root_directory.$tmp_dir, 'merge2.csv');
 $reportid = vtlib_purify($_REQUEST['record']);
 $oReportRun = new ReportRun($reportid);
 if (isPermitted($oReportRun->primarymodule, 'Export', '')!='yes') {
-	$log->debug('You do not have permission to export Report');
+	$log->debug('< CreateCSV: You do not have permission to export Report');
 	require_once 'Smarty_setup.php';
 	$smarty = new vtigerCRM_Smarty();
 	global $app_strings;

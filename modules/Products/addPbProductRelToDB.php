@@ -18,7 +18,6 @@ $productid = vtlib_purify($_REQUEST['product_id']);
 if (isset($_REQUEST['pricebook_id']) && $_REQUEST['pricebook_id']!='') {
 	$currency_id = getPriceBookCurrency($pricebook_id);
 	$storearray = explode(';', $idlist);
-	$log->info('Products :: Inserting products to price book');
 	$query= 'insert into vtiger_pricebookproductrel (pricebookid,productid,listprice,usedcurrency) values(?,?,?,?)';
 	foreach ($storearray as $id) {
 		if ($id != '') {
@@ -35,7 +34,6 @@ if (isset($_REQUEST['pricebook_id']) && $_REQUEST['pricebook_id']!='') {
 	}
 } elseif (isset($_REQUEST['product_id']) && $_REQUEST['product_id']!='') {
 	$storearray = explode(';', $idlist);
-	$log->info('Products :: Inserting PriceBooks to Product');
 	$query= 'insert into vtiger_pricebookproductrel (pricebookid,productid,listprice,usedcurrency) values(?,?,?,?)';
 	foreach ($storearray as $id) {
 		if ($id != '') {

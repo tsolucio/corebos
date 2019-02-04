@@ -29,7 +29,7 @@
 
 function cbws_getrecordimageinfo($id, $user) {
 	global $log, $adb, $site_URL, $default_charset;
-	$log->debug("Entering function cbws_getrecordimageinfo($id)");
+	$log->debug('> cbws_getrecordimageinfo '.$id);
 	list($wsid,$crmid) = explode('x', $id);
 	if ((vtws_getEntityId('Calendar')==$wsid || vtws_getEntityId('Events')==$wsid) && getSalesEntityType($crmid)=='cbCalendar') {
 		$id = vtws_getEntityId('cbCalendar') . 'x' . $crmid;
@@ -117,7 +117,7 @@ function cbws_getrecordimageinfo($id, $user) {
 		$rdo['results']=count($rdo['images']);
 	}
 	VTWS_PreserveGlobal::flush();
-	$log->debug('Leaving function cbws_getrecordimageinfo');
+	$log->debug('< cbws_getrecordimageinfo');
 	return $rdo;
 }
 ?>

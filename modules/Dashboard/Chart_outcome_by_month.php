@@ -41,30 +41,18 @@ if (isset($_REQUEST['obm_date_end']) && $_REQUEST['obm_date_end'] == '') {
 }
 if (isset($_SESSION['obm_date_start']) && $_SESSION['obm_date_start'] != '' && !isset($_REQUEST['obm_date_start'])) {
 	$date_start = $_SESSION['obm_date_start'];
-	$log->debug("_SESSION['obm_date_start'] is:");
-	$log->debug($_SESSION['obm_date_start']);
 } elseif (isset($_REQUEST['obm_date_start']) && $_REQUEST['obm_date_start'] != '') {
 	$date_start = $_REQUEST['obm_date_start'];
 	$current_user->setPreference('obm_date_start', $_REQUEST['obm_date_start']);
-	$log->debug("_REQUEST['obm_date_start'] is:");
-	$log->debug($_REQUEST['obm_date_start']);
-	$log->debug("_SESSION['obm_date_start'] is:");
-	$log->debug($_SESSION['obm_date_start']);
 } else {
 	$date_start = '2000-01-01';
 }
 
 if (isset($_SESSION['obm_date_end']) && $_SESSION['obm_date_end'] != '' && !isset($_REQUEST['obm_date_end'])) {
 	$date_end = $_SESSION['obm_date_end'];
-	$log->debug("_SESSION['obm_date_end'] is:");
-	$log->debug($_SESSION['obm_date_end']);
 } elseif (isset($_REQUEST['obm_date_end']) && $_REQUEST['obm_date_end'] != '') {
 	$date_end = $_REQUEST['obm_date_end'];
 	$current_user->setPreference('obm_date_end', $_REQUEST['obm_date_end']);
-	$log->debug("_REQUEST['obm_date_end'] is:");
-	$log->debug($_REQUEST['obm_date_end']);
-	$log->debug("_SESSION['obm_date_end'] is:");
-	$log->debug($_SESSION['obm_date_end']);
 } else {
 	$date_end = '2100-01-01';
 }
@@ -77,15 +65,9 @@ if (isset($_REQUEST['showmypipeline'])) {
 	$ids = array($_REQUEST['showpipelineof']);
 } elseif (isset($_SESSION['obm_ids']) && count($_SESSION['obm_ids']) != 0 && !isset($_REQUEST['obm_ids'])) {
 	$ids = $_SESSION['obm_ids'];
-	$log->debug("_SESSION['obm_ids'] is:");
-	$log->debug($_SESSION['obm_ids']);
 } elseif (isset($_REQUEST['obm_ids']) && count($_REQUEST['obm_ids']) > 0) {
 	$ids = $_REQUEST['obm_ids'];
 	$current_user->setPreference('obm_ids', $_REQUEST['obm_ids']);
-	$log->debug("_REQUEST['obm_ids'] is:");
-	$log->debug($_REQUEST['obm_ids']);
-	$log->debug("_SESSION['obm_ids'] is:");
-	$log->debug($_SESSION['obm_ids']);
 } else {
 	$ids = get_user_array(false);
 	$ids = array_keys($ids);

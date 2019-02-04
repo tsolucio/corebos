@@ -19,7 +19,7 @@ require_once 'modules/Emails/mail.php';
  */
 function getProductDetailsBlockInfo($mode, $module, $focus = '', $num_of_products = '', $associated_prod = '') {
 	global $log;
-	$log->debug("Entering getProductDetailsBlockInfo(".$mode.",".$module.",".$num_of_products.",".$associated_prod.") method ...");
+	$log->debug('> getProductDetailsBlockInfo '.$mode.','.$module.','.$num_of_products.','.$associated_prod);
 
 	$productDetails = array();
 	$productBlock = array();
@@ -42,7 +42,7 @@ function getProductDetailsBlockInfo($mode, $module, $focus = '', $num_of_product
 	} else {
 		$productBlock[] = array(array());
 	}
-	$log->debug('Exiting getProductDetailsBlockInfo');
+	$log->debug('< getProductDetailsBlockInfo');
 	return $productBlock;
 }
 
@@ -52,7 +52,7 @@ function getProductDetailsBlockInfo($mode, $module, $focus = '', $num_of_product
 */
 function getPrdQtyInStck($product_id) {
 	global $log, $adb;
-	$log->debug("Entering getPrdQtyInStck($product_id) method ...");
+	$log->debug('> getPrdQtyInStck '.$product_id);
 	$result=$adb->pquery('SELECT qtyinstock FROM vtiger_products WHERE productid=?', array($product_id));
 	if ($result && $adb->num_rows($result)>0) {
 		$qtyinstck=$adb->query_result($result, 0, 'qtyinstock');
@@ -62,7 +62,7 @@ function getPrdQtyInStck($product_id) {
 	} else {
 		$qtyinstck=0;
 	}
-	$log->debug('Exiting getPrdQtyInStck method ...');
+	$log->debug('< getPrdQtyInStck');
 	return $qtyinstck;
 }
 
@@ -72,10 +72,10 @@ function getPrdQtyInStck($product_id) {
 */
 function getPrdReOrderLevel($product_id) {
 	global $log, $adb;
-	$log->debug("Entering getPrdReOrderLevel($product_id)");
+	$log->debug('> getPrdReOrderLevel '.$product_id);
 	$result=$adb->pquery('SELECT reorderlevel FROM vtiger_products WHERE productid = ?', array($product_id));
 	$reorderlevel= $adb->query_result($result, 0, 'reorderlevel');
-	$log->debug('Exiting getPrdReOrderLevel');
+	$log->debug('< getPrdReOrderLevel');
 	return $reorderlevel;
 }
 
@@ -85,7 +85,7 @@ function getPrdReOrderLevel($product_id) {
  */
 function getTaxId($type) {
 	global $adb, $log;
-	$log->debug("Entering into getTaxId($type) function.");
+	$log->debug('> getTaxId '.$type);
 
 	list($void,$taxid) = cbEventHandler::do_filter('corebos.filter.TaxCalculation.getTaxId', array($type, ''));
 	if ($taxid=='') {
@@ -94,7 +94,7 @@ function getTaxId($type) {
 			$taxid = $adb->query_result($res, 0, 'taxid');
 		}
 	}
-	$log->debug("Exiting from getTaxId($type) function. return value=$taxid");
+	$log->debug('< getTaxId '.$taxid);
 	return $taxid;
 }
 
@@ -104,7 +104,7 @@ function getTaxId($type) {
  */
 function getTaxPercentage($type) {
 	global $adb, $log;
-	$log->debug("Entering into getTaxPercentage($type) function.");
+	$log->debug('> into getTaxPercentage '.$type);
 
 	list($void,$taxpercentage) = cbEventHandler::do_filter('corebos.filter.TaxCalculation.getTaxPercentage', array($type, ''));
 	if ($taxpercentage=='') {
@@ -113,7 +113,7 @@ function getTaxPercentage($type) {
 			$taxpercentage = $adb->query_result($res, 0, 'percentage');
 		}
 	}
-	$log->debug("Exiting from getTaxPercentage($type) function. return value=$taxpercentage");
+	$log->debug('< getTaxPercentage '.$taxpercentage);
 	return $taxpercentage;
 }
 
@@ -126,7 +126,7 @@ function getTaxPercentage($type) {
  */
 function getProductTaxPercentage($type, $productid, $default = '') {
 	global $adb, $log;
-	$log->debug("Entering into getProductTaxPercentage($type,$productid) function.");
+	$log->debug('> into getProductTaxPercentage '.$type.','.$productid);
 
 	list($void1,$void2,$taxpercentage) = cbEventHandler::do_filter('corebos.filter.TaxCalculation.getProductTaxPercentage', array($type, $productid, ''));
 	if ($taxpercentage=='') {
@@ -146,7 +146,7 @@ function getProductTaxPercentage($type, $productid, $default = '') {
 		$taxpercentage = getTaxPercentage($type);
 	}
 
-	$log->debug("Exiting from getProductTaxPercentage($productid,$type) function. return value=$taxpercentage");
+	$log->debug('< getProductTaxPercentage '.$taxpercentage);
 	return $taxpercentage;
 }
 
@@ -159,7 +159,7 @@ function getProductTaxPercentage($type, $productid, $default = '') {
  */
 function addInventoryHistory($module, $id, $relatedname, $total, $history_fldval) {
 	global $log, $adb;
-	$log->debug("Entering into function addInventoryHistory($module, $id, $relatedname, $total, $history_fldval)");
+	$log->debug("> addInventoryHistory $module, $id, $relatedname, $total, $history_fldval");
 
 	$history_table_array = array(
 		'PurchaseOrder'=>'vtiger_postatushistory',
@@ -173,7 +173,7 @@ function addInventoryHistory($module, $id, $relatedname, $total, $history_fldval
 	$query = "insert into $history_table_array[$module] values(?,?,?,?,?,?)";
 	$qparams = array($histid,$id,$relatedname,$total,$history_fldval,$modifiedtime);
 	$adb->pquery($query, $qparams);
-	$log->debug('Exit from function addInventoryHistory');
+	$log->debug('< addInventoryHistory');
 }
 
 /**	Function used to get the list of Tax types as a array
@@ -186,7 +186,7 @@ function addInventoryHistory($module, $id, $relatedname, $total, $history_fldval
  */
 function getAllTaxes($available = 'all', $sh = '', $mode = '', $id = '') {
 	global $adb, $log, $default_charset;
-	$log->debug("Entering into the function getAllTaxes($available,$sh,$mode,$id)");
+	$log->debug("> getAllTaxes $available,$sh,$mode,$id");
 	$taxtypes = array();
 	list($void1,$void2,$void3,$void4,$taxtypes) = cbEventHandler::do_filter('corebos.filter.TaxCalculation.getAllTaxes', array($available,$sh,$mode,$id, array()));
 	if (count($taxtypes)==0) {
@@ -248,7 +248,7 @@ function getAllTaxes($available = 'all', $sh = '', $mode = '', $id = '') {
 			}
 		}
 	} // corebos tax calculation
-	$log->debug("Exit from the function getAllTaxes($available,$sh,$mode,$id)");
+	$log->debug('< getAllTaxes');
 	return $taxtypes;
 }
 
@@ -263,7 +263,7 @@ function getAllTaxes($available = 'all', $sh = '', $mode = '', $id = '') {
  */
 function getTaxDetailsForProduct($productid, $available = 'all', $acvid = 0) {
 	global $log, $adb, $default_charset;
-	$log->debug("Entering into function getTaxDetailsForProduct($productid)");
+	$log->debug('> getTaxDetailsForProduct '.$productid);
 	$tax_details = array();
 	if ($productid != '') {
 		list($void1,$void2,$void,$tax_details) = cbEventHandler::do_filter(
@@ -303,7 +303,7 @@ function getTaxDetailsForProduct($productid, $available = 'all', $acvid = 0) {
 		$log->debug('Product id is empty. we cannot retrieve the associated products.');
 	}
 
-	$log->debug("Exit from function getTaxDetailsForProduct($productid)");
+	$log->debug('< getTaxDetailsForProduct');
 	return $tax_details;
 }
 
@@ -312,7 +312,7 @@ function getTaxDetailsForProduct($productid, $available = 'all', $acvid = 0) {
  */
 function deleteInventoryProductDetails($focus) {
 	global $log, $adb,$updateInventoryProductRel_update_product_array;
-	$log->debug('Entering into function deleteInventoryProductDetails('.$focus->id.').');
+	$log->debug('> deleteInventoryProductDetails '.$focus->id);
 	$product_info = $adb->pquery('SELECT productid, quantity, sequence_no, incrementondel from vtiger_inventoryproductrel WHERE id=?', array($focus->id));
 	$numrows = $adb->num_rows($product_info);
 	for ($index = 0; $index <$numrows; $index++) {
@@ -336,7 +336,7 @@ function deleteInventoryProductDetails($focus) {
 	$adb->pquery('delete from vtiger_inventoryproductrel where id=?', array($focus->id));
 	$adb->pquery('delete from vtiger_inventorysubproductrel where id=?', array($focus->id));
 	$adb->pquery('delete from vtiger_inventoryshippingrel where id=?', array($focus->id));
-	$log->debug('Exit from function deleteInventoryProductDetails('.$focus->id.')');
+	$log->debug('< deleteInventoryProductDetails');
 }
 
 function updateInventoryProductRel($entity) {
@@ -344,7 +344,7 @@ function updateInventoryProductRel($entity) {
 	$entity_id = vtws_getIdComponents($entity->getId());
 	$entity_id = $entity_id[1];
 	$update_product_array = $updateInventoryProductRel_update_product_array;
-	$log->debug('Entering into function updateInventoryProductRel('.$entity_id.').');
+	$log->debug('> updateInventoryProductRel '.$entity_id);
 
 	if (!empty($update_product_array)) {
 		foreach ($update_product_array as $seq) {
@@ -415,7 +415,7 @@ function updateInventoryProductRel($entity) {
 			}
 		}
 	}
-	$log->debug('Exit from function updateInventoryProductRel('.$entity_id.')');
+	$log->debug('< updateInventoryProductRel');
 }
 
 /**	Function used to save the Inventory product details for the passed entity
@@ -427,7 +427,7 @@ function updateInventoryProductRel($entity) {
 function saveInventoryProductDetails(&$focus, $module, $update_prod_stock = 'false', $updateDemand = '') {
 	global $log, $adb;
 	$id=$focus->id;
-	$log->debug("Entering into function saveInventoryProductDetails($module).");
+	$log->debug('> saveInventoryProductDetails '.$module);
 	//Added to get the convertid
 	if (isset($_REQUEST['convert_from']) && $_REQUEST['convert_from'] !='') {
 		$id=vtlib_purify($_REQUEST['return_id']);
@@ -631,7 +631,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock = 'fal
 		$sh_query = "insert into vtiger_inventoryshippingrel($sh_query_fields) values($sh_query_values)";
 		$adb->pquery($sh_query, $sh_query_params);
 	}
-	$log->debug("Exit from function saveInventoryProductDetails($module).");
+	$log->debug('< saveInventoryProductDetails');
 }
 
 /**	function used to get the tax type for the entity (PO, SO, Quotes or Invoice)
@@ -641,7 +641,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock = 'fal
  */
 function getInventoryTaxType($module, $id) {
 	global $log, $adb;
-	$log->debug("Entering into function getInventoryTaxType($module, $id).");
+	$log->debug("> getInventoryTaxType $module, $id");
 
 	$inv_table_array = array(
 		'PurchaseOrder' => 'vtiger_purchaseorder',
@@ -663,7 +663,7 @@ function getInventoryTaxType($module, $id) {
 	$res = $adb->pquery("select taxtype from $inv_table_array[$module] where $inv_id_array[$module]=?", array($id));
 	$taxtype = $adb->query_result($res, 0, 'taxtype');
 
-	$log->debug("Exit from function getInventoryTaxType($module, $id).");
+	$log->debug('< getInventoryTaxType');
 	return $taxtype;
 }
 
@@ -674,7 +674,7 @@ function getInventoryTaxType($module, $id) {
  */
 function getInventoryCurrencyInfo($module, $id) {
 	global $log;
-	$log->debug("Entering into function getInventoryCurrencyInfo($module, $id).");
+	$log->debug(">< getInventoryCurrencyInfo $module, $id");
 	return CurrencyField::getMultiCurrencyInfoFrom($module, $id);
 }
 
@@ -686,7 +686,7 @@ function getInventoryCurrencyInfo($module, $id) {
  */
 function getInventoryProductTaxValue($id, $productid, $taxname) {
 	global $log, $adb;
-	$log->debug("Entering into function getInventoryProductTaxValue($id, $productid, $taxname).");
+	$log->debug("> getInventoryProductTaxValue $id, $productid, $taxname");
 	list($void1,$void2,$void3,$taxvalue) = cbEventHandler::do_filter('corebos.filter.TaxCalculation.getInventoryProductTaxValue', array($id, $productid, $taxname, ''));
 	if ($taxvalue == '') {
 		$res = $adb->pquery("select $taxname from vtiger_inventoryproductrel where id = ? and productid = ?", array($id, $productid));
@@ -696,7 +696,7 @@ function getInventoryProductTaxValue($id, $productid, $taxname) {
 		$taxvalue = '0.00';
 	}
 
-	$log->debug("Exit from function getInventoryProductTaxValue($id, $productid, $taxname).");
+	$log->debug('< getInventoryProductTaxValue');
 	return $taxvalue;
 }
 
@@ -707,7 +707,7 @@ function getInventoryProductTaxValue($id, $productid, $taxname) {
  */
 function getInventorySHTaxPercent($id, $taxname) {
 	global $log, $adb;
-	$log->debug("Entering into function getInventorySHTaxPercent($id, $taxname)");
+	$log->debug("> getInventorySHTaxPercent $id, $taxname");
 	list($void1,$void2,$taxpercentage) = cbEventHandler::do_filter('corebos.filter.TaxCalculation.getInventorySHTaxPercent', array($id, $taxname, ''));
 	if ($taxpercentage == '') {
 		$res = $adb->pquery("select $taxname from vtiger_inventoryshippingrel where id= ?", array($id));
@@ -717,7 +717,7 @@ function getInventorySHTaxPercent($id, $taxname) {
 		$taxpercentage = '0.00';
 	}
 
-	$log->debug("Exit from function getInventorySHTaxPercent($id, $taxname)");
+	$log->debug('< getInventorySHTaxPercent');
 	return $taxpercentage;
 }
 
@@ -727,7 +727,7 @@ function getInventorySHTaxPercent($id, $taxname) {
  */
 function getAllCurrencies($available = 'available') {
 	global $adb, $log;
-	$log->debug("Entering into function getAllCurrencies($available)");
+	$log->debug('> getAllCurrencies '.$available);
 
 	$sql = 'select * from vtiger_currency_info';
 	if ($available != 'all') {
@@ -747,7 +747,7 @@ function getAllCurrencies($available = 'available') {
 		$currency_details[$i]['curname'] = 'curname' . $adb->query_result($res, $i, 'id');
 	}
 
-	$log->debug("Entering into function getAllCurrencies($available)");
+	$log->debug('< getAllCurrencies');
 	return $currency_details;
 }
 
@@ -761,7 +761,7 @@ function getAllCurrencies($available = 'available') {
  */
 function getPriceDetailsForProduct($productid, $unit_price, $available = 'available', $itemtype = 'Products') {
 	global $log, $adb;
-	$log->debug("Entering into function getPriceDetailsForProduct($productid)");
+	$log->debug('> getPriceDetailsForProduct '.$productid);
 	$price_details = array();
 	if ($productid != '') {
 		$product_currency_id = getProductBaseCurrency($productid, $itemtype);
@@ -858,7 +858,7 @@ function getPriceDetailsForProduct($productid, $unit_price, $available = 'availa
 		}
 	}
 
-	$log->debug("Exit from function getPriceDetailsForProduct($productid)");
+	$log->debug('< getPriceDetailsForProduct');
 	return $price_details;
 }
 
@@ -1334,7 +1334,7 @@ function inventoryCanSaveProductLines($request, $module) {
 	global $log;
 	$return = ($request['action'] != $module.'Ajax' && $request['action'] != 'MassEditSave' && $request['action'] != 'ProcessDuplicates'
 			&& (empty($request['ajxaction']) || ($request['ajxaction'] != 'DETAILVIEW' && $request['ajxaction'] != 'Workflow')));
-	$log->debug('inventoryCanSaveProductLines: '.($return ? 'true':'false'));
+	$log->debug('>< inventoryCanSaveProductLines '.($return ? 'true':'false'));
 	return $return;
 }
 ?>

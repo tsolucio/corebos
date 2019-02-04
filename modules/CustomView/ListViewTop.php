@@ -50,7 +50,6 @@ function getKeyMetrics($maxval, $calCnt) {
 		return count($metriclists);
 	}
 
-	$log->info("Metrics :: Successfully got MetricList to be displayed");
 	if (isset($metriclists)) {
 		global $current_user;
 		foreach ($metriclists as $key => $metriclist) {
@@ -76,7 +75,6 @@ function getKeyMetrics($maxval, $calCnt) {
 				}
 			}
 		}
-		$log->info('Metrics :: Successfully build the Metrics');
 	}
 	$title=array();
 	$title[]='keyMetrics.gif';

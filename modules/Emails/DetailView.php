@@ -20,7 +20,6 @@ $smarty = new vtigerCRM_Smarty;
 if (isset($_REQUEST['record'])) {
 	global $adb;
 	$focus->retrieve_entity_info($_REQUEST['record'], 'Emails');
-	$log->info('Entity info successfully retrieved for DetailView.');
 	$focus->id = $_REQUEST['record'];
 	$query = 'select email_flag,from_email,to_email,cc_email,bcc_email,date_start,time_start
 		from vtiger_emaildetails

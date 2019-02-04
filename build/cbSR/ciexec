@@ -1,2 +1,3 @@
 phpcs.phar --standard=build/cbSR/ci.xml --extensions=inc,js,php,service `cat build/cbSR/cifiles`
 eslint -c build/cbSR/eslintci.js `cat build/cbSR/cifilesjs`
+find . -not -path "./.git/*" -type f -perm /u=x,g=x,o=x -print | sort | diff build/cbSR/executables -

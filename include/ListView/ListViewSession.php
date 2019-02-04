@@ -21,8 +21,7 @@ class ListViewSession {
 
 	/**initializes ListViewSession */
 	public function __construct() {
-		global $log,$currentModule;
-		$log->debug('Entering ListViewSession() method ...');
+		global $currentModule;
 		$this->module = $currentModule;
 		$this->sortby = 'ASC';
 		$this->start =1;

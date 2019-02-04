@@ -18,7 +18,7 @@
  *  Proud member of the coreBOS family!  http://corebos.org
  *************************************************************************************************/
 
-if (version_compare(phpversion(), '5.4.0') < 0 || version_compare(phpversion(), '7.2.0') >= 0) {
+if (version_compare(phpversion(), '5.4.0') < 0 || version_compare(phpversion(), '7.4.0') >= 0) {
 	echo 'NOK: incorrect PHP version';
 	die();
 }

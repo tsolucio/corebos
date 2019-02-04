@@ -13,7 +13,7 @@ RUN apk upgrade
 RUN apk add --update curl openssl
 
 RUN chmod +x /www/docker/phpcs.phar
-RUN mv /www/docker/phpcs.phar /usr/local/bin
+RUN cp /www/docker/phpcs.phar /usr/local/bin
 
 RUN apk add --update nodejs nodejs-npm
 

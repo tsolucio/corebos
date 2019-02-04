@@ -23,7 +23,7 @@ class DashboardCharts {
 
 	public static function pipeline_by_sales_stage($datax, $date_start, $date_end, $user_id, $width, $height) {
 		global $log, $current_user, $adb, $mod_strings;
-		$log->debug('Entering pipeline_by_sales_stage('.print_r($datax, true).','.$date_start.','.$date_end.','.print_r($user_id, true).','.$width.','.$height.')');
+		$log->debug('> pipeline_by_sales_stage '.print_r($datax, true).','.$date_start.','.$date_end.','.print_r($user_id, true).','.$width.','.$height);
 
 		$where=' deleted = 0 ';
 		$labels = array();
@@ -141,13 +141,13 @@ class DashboardCharts {
 				)
 			)
 		);
-		$log->debug('Exiting pipeline_by_sales_stage method ...');
+		$log->debug('< pipeline_by_sales_stage');
 		return ChartUtils::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'pipeline_by_sales_stage', $width, $height, 0, 0, 0, 0);
 	}
 
 	public static function outcome_by_month($date_start, $date_end, $user_id, $width, $height) {
 		global $log, $current_user, $adb, $current_language, $mod_strings;
-		$log->debug('Entering outcome_by_month('.$date_start.','.$date_end.','.print_r($user_id, true).','.$width.','.$height.')');
+		$log->debug('> outcome_by_month '.$date_start.','.$date_end.','.print_r($user_id, true).','.$width.','.$height);
 		$report_strings = return_module_language($current_language, 'Reports');
 		$months = $report_strings['MONTH_STRINGS'];
 
@@ -318,13 +318,13 @@ class DashboardCharts {
 				)
 			)
 		);
-		$log->debug('Exiting outcome_by_month method ...');
+		$log->debug('< outcome_by_month');
 		return ChartUtils::getChartHTMLwithObject(json_encode($chartobject), json_encode(array()), 'outcome_by_month', $width, $height, 0, 0, 0, 0);
 	}
 
 	public static function lead_source_by_outcome($datax, $user_id, $width, $height) {
 		global $log, $current_user, $adb, $mod_strings;
-		$log->debug('Entering lead_source_by_outcome('.print_r($datax, true).','.print_r($user_id, true).','.$width.','.$height.')');
+		$log->debug('> lead_source_by_outcome '.print_r($datax, true).','.print_r($user_id, true).','.$width.','.$height);
 
 		$where=' deleted = 0 ';
 		$labels = array();
@@ -436,13 +436,13 @@ class DashboardCharts {
 				)
 			)
 		);
-		$log->debug('Exiting lead_source_by_outcome method ...');
+		$log->debug('< lead_source_by_outcome');
 		return ChartUtils::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'lead_source_by_outcome', $width, $height, 0, 0, 0, 0);
 	}
 
 	public static function pipeline_by_lead_source($datax, $date_start, $date_end, $user_id, $width, $height) {
 		global $log, $current_user, $adb, $mod_strings;
-		$log->debug('Entering pipeline_by_lead_source('.print_r($datax, true).','.$date_start.','.$date_end.','.print_r($user_id, true).','.$width.','.$height.')');
+		$log->debug('> pipeline_by_lead_source '.print_r($datax, true).','.$date_start.','.$date_end.','.print_r($user_id, true).','.$width.','.$height);
 
 		$where=' deleted = 0 ';
 		$labels = array();
@@ -527,7 +527,7 @@ class DashboardCharts {
 				)
 			)
 		);
-		$log->debug('Exiting pipeline_by_lead_source method ...');
+		$log->debug('< pipeline_by_lead_source');
 		return ChartUtils::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'pipeline_by_lead_source', $width, $height, 0, 0, 0, 0);
 	}
 }

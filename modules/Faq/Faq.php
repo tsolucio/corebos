@@ -116,7 +116,7 @@ class Faq extends CRMEntity {
 	 */
 	public function insertIntoFAQCommentTable($table_name, $module) {
 		global $log, $adb;
-		$log->info("in insertIntoFAQCommentTable $table_name module is $module");
+		$log->debug("> insertIntoFAQCommentTable $table_name, $module");
 
 		$current_time = $adb->formatDate(date('Y-m-d H:i:s'), true);
 
@@ -131,6 +131,7 @@ class Faq extends CRMEntity {
 			$params = array($this->id, $comment, $current_time);
 			$adb->pquery('insert into vtiger_faqcomments (faqid, comments, createdtime) values(?, ?, ?)', $params);
 		}
+		$log->debug('< insertIntoFAQCommentTable');
 	}
 
 	/** Function to get the list of comments for the given FAQ id
@@ -139,7 +140,7 @@ class Faq extends CRMEntity {
 	 **/
 	public function getFAQComments($faqid) {
 		global $log, $default_charset, $mod_strings;
-		$log->debug("Entering getFAQComments(".$faqid.") method ...");
+		$log->debug('> getFAQComments '.$faqid);
 
 		$result = $this->db->pquery('select * from vtiger_faqcomments where faqid=?', array($faqid));
 		$noofrows = $this->db->num_rows($result);
@@ -167,7 +168,7 @@ class Faq extends CRMEntity {
 			}
 		}
 		$list .= $enddiv;
-		$log->debug("Exiting getFAQComments method ...");
+		$log->debug('< getFAQComments');
 		return $list;
 	}
 

@@ -19,8 +19,7 @@
 function vtws_get_entitynum() {
 	require_once 'include/utils/UserInfoUtil.php';
 	require_once 'modules/Users/Users.php';
-	global $adb, $log;
-	$log->debug('Entering vtws_get_entitynum');
+	global $adb;
 
 	$enumres = $adb->query('SELECT semodule, prefix FROM vtiger_modentity_num');
 	$no_of_cont = $adb->num_rows($enumres);
@@ -34,7 +33,6 @@ function vtws_get_entitynum() {
 			$entitynum[$module][] = $prefix;
 		}
 	}
-	$log->debug('Exiting get_entitynum');
 	return array($entitynum);
 }
 ?>

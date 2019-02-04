@@ -33,7 +33,7 @@ class DateTimeField {
 	 */
 	public function getDBInsertDateValue($user = null) {
 		global $log;
-		$log->debug("Entering getDBInsertDateValue(" . $this->datetime . ") method ...");
+		$log->debug('> getDBInsertDateValue '.$this->datetime);
 		$value = explode(' ', $this->datetime);
 		if (count($value) == 2) {
 			$value[0] = self::convertToUserFormat($value[0], $user);
@@ -45,7 +45,7 @@ class DateTimeField {
 		} else {
 			$insert_date = self::convertToDBFormat($value[0], $user);
 		}
-		$log->debug("Exiting getDBInsertDateValue method ...");
+		$log->debug('< getDBInsertDateValue');
 		return $insert_date;
 	}
 
@@ -394,10 +394,10 @@ class DateTimeField {
 	 */
 	public function getDBInsertTimeValue($user = null) {
 		global $log;
-		$log->debug("Entering getDBInsertTimeValue(" . $this->datetime . ") method ...");
+		$log->debug('> getDBInsertTimeValue '.$this->datetime);
 		$date = self::convertToDBTimeZone($this->datetime, $user);
-		$log->debug("Exiting getDBInsertTimeValue method ...");
-		return $date->format("H:i:s");
+		$log->debug('< getDBInsertTimeValue');
+		return $date->format('H:i:s');
 	}
 
 	/**
@@ -408,7 +408,7 @@ class DateTimeField {
 	 */
 	public function getDisplayDate($user = null) {
 		global $log;
-		$log->debug("Entering getDisplayDate(" . $this->datetime . ") method ...");
+		$log->debug('> getDisplayDate '.$this->datetime);
 
 		$date_value = explode(' ', $this->datetime);
 		if (isset($date_value[1]) && $date_value[1] != '') {
@@ -417,16 +417,16 @@ class DateTimeField {
 		}
 
 		$display_date = self::convertToUserFormat($date_value, $user);
-		$log->debug("Exiting getDisplayDate method ...");
+		$log->debug('< getDisplayDate');
 		return $display_date;
 	}
 
 	public function getDisplayTime($user = null) {
 		global $log;
-		$log->debug("Entering getDisplayTime(" . $this->datetime . ") method ...");
+		$log->debug('> getDisplayTime '.$this->datetime);
 		$date = self::convertToUserTimeZone($this->datetime, $user);
 		$time = $date->format("H:i:s");
-		$log->debug("Exiting getDisplayTime method ...");
+		$log->debug('< getDisplayTime');
 		return $time;
 	}
 
