@@ -25,7 +25,6 @@ class StringDiff {
 
 		Look at original license: http://en.wikipedia.org/wiki/Zlib_License
 	*/
-
 	public static function diff($old, $new) {
 		$matrix = array();
 		$maxlen = 0;
@@ -33,7 +32,7 @@ class StringDiff {
 			$nkeys = array_keys($new, $ovalue);
 			foreach ($nkeys as $nindex) {
 				$matrix[$oindex][$nindex] = isset($matrix[$oindex - 1][$nindex - 1]) ?
-					$matrix[$oindex - 1][$nindex - 1] + 1 : 1;
+				$matrix[$oindex - 1][$nindex - 1] + 1 : 1;
 				if ($matrix[$oindex][$nindex] > $maxlen) {
 					$maxlen = $matrix[$oindex][$nindex];
 					$omax = $oindex + 1 - $maxlen;
@@ -53,13 +52,13 @@ class StringDiff {
 
 	public static function htmlDiff($old, $new) {
 		$ret = '';
-		$diff = self::diff(preg_split("/[\s]+/", $old), preg_split("/[\s]+/", $new));
+		$diff = self::diff(str_split($old), str_split($new));
 		foreach ($diff as $k) {
 			if (is_array($k)) {
-				$ret .= (!empty($k['d'])?"<del>".implode(' ', $k['d'])."</del> ":'').
-					(!empty($k['i'])?"<ins>".implode(' ', $k['i'])."</ins> ":'');
+				$ret .= preg_replace('/\s+/', '', ((!empty($k['d'])?"<del>".implode(' ', $k['d'])."</del> ":'').
+				(!empty($k['i'])?"<ins>".implode(' ', $k['i'])."</ins> ":'')));
 			} else {
-				$ret .= $k . ' ';
+				$ret .= $k.'';
 			}
 		}
 		return $ret;
