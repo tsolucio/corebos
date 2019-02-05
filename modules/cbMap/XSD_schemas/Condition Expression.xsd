@@ -2,21 +2,23 @@
   <xs:element name="map">
     <xs:complexType>
       <xs:sequence>
+       <xs:choice>
         <xs:element type="xs:string" name="expression"/>
-        <xs:element name="function">
+        <xs:element  name="function" maxOccurs="unbounded" minOccurs="0">
           <xs:complexType>
             <xs:sequence>
               <xs:element type="xs:string" name="name"/>
-              <xs:element name="parameters">
+              <xs:element name="parameters" minOccurs="0">
                 <xs:complexType>
                   <xs:sequence>
-                    <xs:element type="xs:string" name="parameter"/>
+                    <xs:element type="xs:string" name="parameter" maxOccurs="unbounded" minOccurs="0"/>
                   </xs:sequence>
                 </xs:complexType>
               </xs:element>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+       </xs:choice>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
