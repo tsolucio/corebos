@@ -1,0 +1,32 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_cbpulse</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_cbpulse` (
+  `cbpulseid` int(11) NOT NULL,
+  `cbpulse_no` varchar(100)  NOT NULL,
+  `questionid` int(100) NOT NULL,
+  `pactive` char(100),
+  `sendmethod` varchar(100) default 'Email',
+  `schtypeid` varchar(100) default NULL,
+  `schtime` time default NULL,
+  `schdayofmonth` varchar(200) default NULL,
+  `schdayofweek` varchar(200) default NULL,
+  `schannualdates` varchar(200) default NULL,
+  `schminuteinterval` varchar(200) default NULL,
+  `nexttrigger_time` datetime default NULL,
+  `workflowid` int(100) default NULL,
+  PRIMARY KEY (`cbpulseid`),
+  index (`questionid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_cbpulsecf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_cbpulsecf` (
+  `cbpulseid` int(11) NOT NULL,
+  PRIMARY KEY (`cbpulseid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>
