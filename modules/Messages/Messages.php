@@ -48,52 +48,86 @@ class Messages extends CRMEntity {
 	public $list_fields = array(
 		/* Format: Field Label => array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
-		'Messages Name'=> array('messages' => 'messagesname'),
-		'Assigned To' => array('crmentity' => 'smownerid')
+		'Messages No'=> array('messages' => 'messageno'),
+		'Message Name'=> array('messages' => 'messagename'),
+		'Campaign'=> array('messages' => 'campaign_message'),
+		'Contact'=> array('messages' => 'contact_message'),
+		'Status'=> array('messages' => 'status_message'),
+		'Delivered' => array('messages' =>'delivered'),
+		'Open' => array('messages' => 'open'),
+		'Clicked' => array('messages' => 'clicked'),
+		'Bounce' => array('messages' => 'bounce'),
+		'Unsubscribe' => array('messages' => 'unsubscribe'),
+		'no_mail' => array('messages' => 'no_mail')
 	);
 	public $list_fields_name = array(
-		/* Format: Field Label => fieldname */
-		'Messages Name'=> 'messagesname',
-		'Assigned To' => 'assigned_user_id'
+		'Messages No'=> 'messageno',
+		'Message Name'=> 'messagename',
+		'Campaign'=> 'campaign_message',
+		'Contact'=>'contact_message',
+		'Status'=> 'status_message',
+		'Delivered' => 'delivered',
+		'Open' => 'open',
+		'Clicked' => 'clicked',
+		'Bounce' => 'bounce',
+		'Unsubscribe' => 'unsubscribe',
+		'no_mail' => 'no_mail',
 	);
 
 	// Make the field link to detail view from list view (Fieldname)
-	public $list_link_field = 'messagesname';
+	public $list_link_field = 'messageno';
 
 	// For Popup listview and UI type support
 	public $search_fields = array(
-		/* Format: Field Label => array(tablename => columnname) */
-		// tablename should not have prefix 'vtiger_'
-		'Messages Name'=> array('messages' => 'messagesname')
+		'Messages No'=> array('messages' => 'messageno'),
+		'Message Name'=> array('messages' => 'messagename'),
+		'Campaign'=> array('messages' => 'campaign_message'),
+		'Contact'=> array('messages' => 'contact_message'),
+		'Status'=> array('messages' => 'status_message'),
+		'Delivered' => array('messages' => 'delivered'),
+		'Open' => array('messages' => 'open'),
+		'Clicked' => array('messages' => 'clicked'),
+		'Bounce' => array('messages' => 'bounce'),
+		'Unsubscribe' => array('messages' => 'unsubscribe'),
+		'no_mail' => array('messages' => 'no_mail'),
 	);
 	public $search_fields_name = array(
-		/* Format: Field Label => fieldname */
-		'Messages Name'=> 'messagesname'
+		'Messages No'=> 'messageno',
+		'Message Name'=> 'messagename',
+		'Campaign'=> 'campaign_message',
+		'Contact'=>'contact_message',
+		'Status'=> 'status_message',
+		'Delivered' => 'delivered',
+		'Open' => 'open',
+		'Clicked' => 'clicked',
+		'Bounce' => 'bounce',
+		'Unsubscribe' => 'unsubscribe',
+		'no_mail' => 'no_mail'
 	);
 
 	// For Popup window record selection
-	public $popup_fields = array('messagesname');
+	public $popup_fields = array('messageno');
 
 	// Placeholder for sort fields - All the fields will be initialized for Sorting through initSortFields
 	public $sortby_fields = array();
 
 	// For Alphabetical search
-	public $def_basicsearch_col = 'messagesname';
+	public $def_basicsearch_col = 'messageno';
 
 	// Column value to use on detail view record text display
-	public $def_detailview_recname = 'messagesname';
+	public $def_detailview_recname = 'messageno';
 
 	// Required Information for enabling Import feature
-	public $required_fields = array('messagesname'=>1);
+	public $required_fields = array('messageno'=>1);
 
 	// Callback function list during Importing
 	public $special_functions = array('set_import_assigned_user');
 
-	public $default_order_by = 'messagesname';
+	public $default_order_by = 'messageno';
 	public $default_sort_order='ASC';
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
-	public $mandatory_fields = array('createdtime', 'modifiedtime', 'messagesname');
+	public $mandatory_fields = array('createdtime', 'modifiedtime', 'messageno');
 
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {

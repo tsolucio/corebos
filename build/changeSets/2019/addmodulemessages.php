@@ -17,22 +17,71 @@
 class Addmodulemessages extends cbupdaterWorker {
 
 	public function applyChange() {
-		global $adb;
 		if ($this->hasError()) {
 			$this->sendError();
 		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$toinstall = array('Messages');
-			foreach ($toinstall as $module) {
-				if ($this->isModuleInstalled($module)) {
-					vtlib_toggleModuleAccess($module, true);
-					$this->sendMsg("$module activated!");
+			global $adb;
+			$module = 'Messages';
+			if ($this->isModuleInstalled($module)) {
+				vtlib_toggleModuleAccess($module, true);
+				$cnmsg = $adb->getColumnNames('vtiger_messages');
+				if (in_array('messagename', $cnmsg) && in_array('messagetype', $cnmsg) && in_array('messageno', $cnmsg)) {
+					$msgModuleWithS = '0';
+					$blockName = 'LBL_MESSAGE_INFORMATION';
 				} else {
-					$this->installManifestModule($module);
+					$msgModuleWithS = '1';
+					$blockName = 'LBL_MESSAGES_INFORMATION';
 				}
+				$fields = array(
+					$module => array(
+						$blockName => array(
+							'lasteventtime' => array(
+								'columntype'=>'datetime',
+								'typeofdata'=>'DT~O',
+								'uitype'=>'70',
+								'displaytype'=>'2',
+								'label'=>'lasteventtime', // optional, if empty fieldname will be used
+								'massedit' => 1,  // optional, if empty 0 will be set
+							),
+							'email_tplid' => array(
+								'columntype'=>'int(11)',
+								'typeofdata'=>'I~O',
+								'uitype'=>'10',
+								'displaytype'=>'1',
+								'label'=>'email_tplid', // optional, if empty fieldname will be used
+								'massedit' => 0,  // optional, if empty 0 will be set
+								'mods'=>array('Actions'), // used if uitype 10
+							),
+							'messagesrelatedto' => array(
+								'columntype'=>'int(11)',
+								'typeofdata'=>'I~O',
+								'uitype'=>'10',
+								'displaytype'=>'1',
+								'label'=>'Related To', // optional, if empty fieldname will be used
+								'massedit' => 1,  // optional, if empty 0 will be set
+								'mods'=>array('Accounts', 'Contacts', 'Potentials', 'Leads', 'HelpDesk', 'Vendors', 'Project', 'ProjectTask',), // used if uitype 10
+							),
+							'messagesuniqueid' => array(
+								'columntype'=>'varchar(250)',
+								'typeofdata'=>'V~O',
+								'uitype'=>'1',
+								'displaytype'=>'1',
+								'label'=>'messagesuniqueid', // optional, if empty fieldname will be used
+								'massedit' => 1,  // optional, if empty 0 will be set
+							),
+						)
+					),
+				);
+				$this->massCreateFields();
+				$this->sendMsg("$module activated!");
+			} else {
+				$msgModuleWithS = '0';
+				$this->installManifestModule($module);
 			}
+			coreBOS_Settings::setSetting('coreBOSMessageModuleWithS', $msgModuleWithS);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
