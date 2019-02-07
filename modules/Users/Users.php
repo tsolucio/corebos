@@ -110,18 +110,19 @@ class Users extends CRMEntity {
 	public $default_sort_order = 'ASC';
 
 	/**
-	 * Function to get the Headers of Audit Trail Information like Module, Action, RecordID, ActionDate.
-	 * Returns Header Values like Module, Action etc in an array format.
+	 * Function to get the Headers of Users Information like User ID, Name, Role, Email.
+	 * Returns Header Values like User ID, Email etc in an array format.
 	**/
 	public function getUserListHeader() {
 		global $log, $app_strings;
 		$log->debug('Entering getUserListHeader() method ...');
 		$header_array = array(
-			$app_strings['LBL_MODULE'],
-			$app_strings['LBL_DESCRIPTION'],
-			$app_strings['LBL_PURPOSE'],
-			$app_strings['LBL_TRIGGER'],
-			$app_strings['LBL_TOOLS'],
+			"Tools",
+			"User ID, Name & Role",
+			"Email",
+			"Admin",
+			"Email2",
+			"Status"
 		);
 		$log->debug('Exiting getUserListHeader() method ...');
 		return $header_array;
@@ -1576,6 +1577,112 @@ class Users extends CRMEntity {
 			$log->debug('< create_export_query');
 		}
 		return $query;
+	}
+
+	/**
+	 * public function getUsersJSON($userid, $page, $order_by = 'module_name', $sorder = 'DESC', $action_search = '')
+	 */
+	public function getUsersJSON($modulename, $executioncondtionid, $page, $order_by = 'module_name', $sorder = 'DESC', $desc_search = '', $purpose_search = '') {
+		global $log, $adb;
+		$log->debug('> getWorkFlowJSON');
+
+		// $workflow_execution_condtion_list = array(
+		// 	VTWorkflowManager::$ON_FIRST_SAVE => 'LBL_ONLY_ON_FIRST_SAVE',
+		// 	VTWorkflowManager::$ONCE => 'LBL_UNTIL_FIRST_TIME_CONDITION_TRUE',
+		// 	VTWorkflowManager::$ON_EVERY_SAVE => 'LBL_EVERYTIME_RECORD_SAVED',
+		// 	VTWorkflowManager::$ON_MODIFY => 'LBL_ON_MODIFY',
+		// 	VTWorkflowManager::$ON_DELETE => 'LBL_ON_DELETE',
+		// 	VTWorkflowManager::$ON_SCHEDULE => 'LBL_ON_SCHEDULE',
+		// 	VTWorkflowManager::$MANUAL => 'LBL_MANUAL',
+		// 	VTWorkflowManager::$RECORD_ACCESS_CONTROL => 'LBL_RECORD_ACCESS_CONTROL',
+		// );
+
+		$where = ' where 1 ';
+		$params = array();
+		if (!empty($modulename) && $modulename != 'all') {
+			$where .= ' and module_name = ? ';
+			array_push($params, $modulename);
+		}
+		if (!empty($executioncondtionid)) {
+			$where .= ' and execution_condition = ? ';
+			array_push($params, $executioncondtionid);
+		}
+		if (!empty($desc_search)) {
+			$where .= " and summary like ? ";
+			array_push($params, "%" . $desc_search . "%");
+		}
+		if (!empty($purpose_search)) {
+			$where .= " and purpose like ? ";
+			array_push($params, "%" . $purpose_search . "%");
+		}
+		if ($sorder != '' && $order_by != '') {
+			$list_query = "Select * from com_vtiger_workflows $where order by $order_by $sorder";
+		} else {
+			$list_query = "Select * from com_vtiger_workflows $where order by ".$this->default_order_by." ".$this->default_sort_order;
+		}
+		$rowsperpage = GlobalVariable::getVariable('Workflow_ListView_PageSize', 20);
+		$from = ($page-1)*$rowsperpage;
+		$limit = " limit $from,$rowsperpage";
+
+		$result = $adb->pquery($list_query.$limit, $params);
+		$rscnt = $adb->pquery("select count(*) from com_vtiger_workflows $where", array($params));
+		$noofrows = $adb->query_result($rscnt, 0, 0);
+		$last_page = ceil($noofrows/$rowsperpage);
+		if ($page*$rowsperpage>$noofrows-($noofrows % $rowsperpage)) {
+			$islastpage = true;
+			$to = $noofrows;
+		} else {
+			$islastpage = false;
+			$to = $page*$rowsperpage;
+		}
+		$entries_list = array(
+			'total' => $noofrows,
+			'per_page' => $rowsperpage,
+			'current_page' => $page,
+			'last_page' => $last_page,
+			'next_page_url' => '',
+			'prev_page_url' => '',
+			'from' => $from+1,
+			'to' => $to,
+			'data' => array(),
+		);
+		if ($islastpage && $page!=1) {
+			$entries_list['next_page_url'] = null;
+		} else {
+			$entries_list['next_page_url'] = 'index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getJSON&page='.($islastpage ? $page : $page+1);
+		}
+		$entries_list['prev_page_url'] = 'index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getJSON&page='.($page == 1 ? 1 : $page-1);
+		$edit_return_url = 'index.php?module=com_vtiger_workflow&action=workflowlist&parenttab=Settings';
+		$vtwfappObject= new VTWorkflowApplication('workflowlist', $edit_return_url);
+		while ($lgn = $adb->fetch_array($result)) {
+			$entry = array();
+			$entry['isDefaultWorkflow'] = true;
+			if (empty($lgn['defaultworkflow']) && getTranslatedString($workflow_execution_condtion_list[$lgn['execution_condition']], 'Settings') != 'MANUAL') {
+				$entry['isDefaultWorkflow'] = false;
+			}
+			$entry['Module'] = getTranslatedString($lgn['module_name'], $lgn['module_name']);
+			$entry['Description'] = getTranslatedString($lgn['summary'], 'com_vtiger_workflow');
+			if (empty($lgn['workflow_id'])) {
+				$rurl = '';
+				$delurl = '';
+			} else {
+				if ($lgn['module_name']=='Reports') {
+					$rurl = 'index.php?module=Reports&action=SaveAndRun&record='.$lgn['workflow_id'];
+				} else {
+					$rurl = $vtwfappObject->editWorkflowUrl($lgn['workflow_id']);
+					$delurl = $vtwfappObject->deleteWorkflowUrl($lgn['workflow_id']);
+				}
+			}
+			$entry['Record'] = $rurl;
+			$entry['RecordDel'] = $delurl;
+			$entry['RecordDetail'] = $lgn['workflow_id'];
+			$entry['workflow_id'] = $lgn['workflow_id'];
+			$entry['Purpose'] = $lgn['purpose'];
+			$entry['Trigger'] = getTranslatedString($workflow_execution_condtion_list[$lgn['execution_condition']], 'Settings');
+			$entries_list['data'][] = $entry;
+		}
+		$log->debug('< getUsersJSON');
+		return json_encode($entries_list);
 	}
 }
 ?>
