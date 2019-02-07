@@ -24,13 +24,16 @@ class Notificationdrivers extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery("CREATE TABLE IF NOT EXISTS vtiger_notificationdrivers (
-                          id int(11) NOT NULL AUTO_INCREMENT,
-                          type varchar(250) NOT NULL,
-                          path varchar(250) NOT NULL,
-                          functionname varchar(250) NOT NULL,
-                          PRIMARY KEY (id)
-                          ) ENGINE=InnoDB DEFAULT CHARSET=utf8", array());
+			$this->ExecuteQuery(
+				'CREATE TABLE IF NOT EXISTS vtiger_notificationdrivers (
+					id int(11) NOT NULL AUTO_INCREMENT,
+					type varchar(250) NOT NULL,
+					path varchar(250) NOT NULL,
+					functionname varchar(250) NOT NULL,
+					PRIMARY KEY (id)
+					) ENGINE=InnoDB DEFAULT CHARSET=utf8',
+				array()
+			);
 			$this->ExecuteQuery("INSERT INTO vtiger_notificationdrivers (type,path,functionname) VALUES ('whatsapp','include/integrations/whatsapp/whatsappsync.php','whatsappsync')");
 			$this->ExecuteQuery("INSERT INTO vtiger_notificationdrivers (type,path,functionname) VALUES ('googlecal','modules/Calendar4You/googlecalsync.php','googlecalsync')");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
