@@ -39,13 +39,12 @@ class WhatsappWorkflowTask extends VTTask {
 
 			$messageid = $message->sid;
 			include_once 'modules/Messages/Messages.php';
-			$msg = new Messages();
-			$msg->column_fields['messagesname'] = date('Y-m-d H:i').' '.$phone;
-			$msg->column_fields['messagesuniqueid'] = $messageid;
-			$msg->column_fields['messagestype'] = 'Whatsapp';
-			$msg->column_fields['assigned_user_id'] = '19x1';
-			$msg->column_fields['description'] = $body;
-			$msg->save('Messages');
+			Messages::createMessage(array(
+				'datenametext' => $phone,
+				'type' => 'Whatsapp',
+				'uniqueid' => $messageid,
+				'description' => $body,
+			));
 		}
 	}
 }

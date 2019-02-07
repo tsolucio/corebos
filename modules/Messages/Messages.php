@@ -135,6 +135,99 @@ class Messages extends CRMEntity {
 		}
 	}
 
+	/* create a message record
+	 * @param $fields array of field values. valid elements are:
+	 *   name: message name field
+	 *   datenametext: if name is empty this text will be concatenated to the date to construct the name
+	 *   type: message type
+	 *   uniqueid
+	 *   clicked, dropped, bounce, open, delivered, unsubscribe, spamreport
+	 *   status
+	 *   template
+	 *   account, contact, lead, campaign, relatedto
+	 *   description
+	 *   userid
+	 */
+	public static function createMessage($fields) {
+		$info = array();
+		if (empty($fields['name'])) {
+			$info['messagename'] = $info['messagesname'] = $fields['name'];
+		} else {
+			$info['messagename'] = $info['messagesname'] = date('Y-m-d H:i').(empty($fields['datenametext']) ? '' : ' '.$fields['datenametext']);
+		}
+		if (isset($fields['type'])) {
+			$info['messagetype'] = $info['messagestype'] = $fields['type'];
+		} else {
+			$info['messagetype'] = $info['messagestype'] = '';
+		}
+		if (isset($fields['uniqueid'])) {
+			$info['messagesuniqueid'] = $fields['uniqueid'];
+		} else {
+			$info['messagesuniqueid'] = '';
+		}
+		$nf = array('clicked', 'dropped', 'bounce', 'open', 'delivered', 'unsubscribe', 'spamreport');
+		foreach ($nf as $fld) {
+			if (isset($fields[$fld])) {
+				$info[$fld] = $fields[$fld];
+			} else {
+				$info[$fld] = '0';
+			}
+		}
+		if (isset($fields['status'])) {
+			$info['status_message'] = $fields['status'];
+		} else {
+			$info['status_message'] = '--None--';
+		}
+		if (isset($fields['relatedto'])) {
+			$info['messagesrelatedto'] = $fields['relatedto'];
+		} else {
+			$info['messagesrelatedto'] = '0';
+		}
+		if (isset($fields['campaign'])) {
+			$info['campaign_message'] = $fields['campaign'];
+		} else {
+			$info['campaign_message'] = '0';
+		}
+		if (isset($fields['account'])) {
+			$info['account_message'] = $fields['account'];
+		} else {
+			$info['account_message'] = '0';
+		}
+		if (isset($fields['contact'])) {
+			$info['contact_message'] = $fields['contact'];
+		} else {
+			$info['contact_message'] = '0';
+		}
+		if (isset($fields['lead'])) {
+			$info['lead_message'] = $fields['lead'];
+		} else {
+			$info['lead_message'] = '0';
+		}
+		if (isset($fields['template'])) {
+			$info['email_tplid'] = $fields['template'];
+		} else {
+			$info['email_tplid'] = '0';
+		}
+		if (isset($fields['description'])) {
+			$info['description'] = $fields['description'];
+		} else {
+			$info['description'] = '';
+		}
+		if (isset($fields['userid'])) {
+			$info['assigned_user_id'] = $fields['userid'];
+		} else {
+			global $current_user;
+			$info['assigned_user_id'] = $current_user->id;
+		}
+		$info['no_mail'] = '';
+		$info['lasteventtime'] = '';
+		$info['lasturlclicked'] = '';
+		$msg = new Messages();
+		$msg->column_fields = $info;
+		$msg->save('Messages');
+		return $msg->id;
+	}
+
 	/**
 	 * Invoked when special actions are performed on the module.
 	 * @param String Module name
