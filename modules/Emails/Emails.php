@@ -40,6 +40,11 @@ class Emails extends CRMEntity {
 		'Date Sent' => array('activity' => 'date_start'),
 		'Time Sent' => array('activity' => 'time_start'),
 		'Assigned To' => array('crmentity' => 'smownerid'),
+		'Delivered' => array('emaildetails' => 'delivered'),
+		'Open' => array('emaildetails' => 'open'),
+		'Clicked' => array('emaildetails' => 'clicked'),
+		'Bounce' => array('emaildetails' => 'bounce'),
+		'Unsubscribe' => array('emaildetails' => 'unsubscribe'),
 		'Access Count' => array('email_track' => 'access_count')
 	);
 	public $list_fields_name = array(
@@ -48,7 +53,19 @@ class Emails extends CRMEntity {
 		'Date Sent' => 'date_start',
 		'Time Sent' => 'time_start',
 		'Assigned To' => 'assigned_user_id',
+		'Delivered' => 'delivered',
+		'Open' => 'open',
+		'Clicked' => 'clicked',
+		'Bounce' => 'bounce',
+		'Unsubscribe' => 'unsubscribe',
 		'Access Count' => 'access_count'
+	);
+	public $search_fields_name = array(
+		'Delivered' => 'delivered',
+		'Open' => 'open',
+		'Clicked' => 'clicked',
+		'Bounce' => 'bounce',
+		'Unsubscribe' => 'unsubscribe',
 	);
 	public $list_link_field = 'subject';
 	public $sortby_fields = array('subject', 'date_start', 'saved_toid');
