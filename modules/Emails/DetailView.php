@@ -34,12 +34,12 @@ if (isset($_REQUEST['record'])) {
 	$bcc_email = json_decode($adb->query_result($result, 0, 'bcc_email'), true);
 	$smarty->assign('BCC_MAIL', vt_suppressHTMLTags(@implode(',', $bcc_email)));
 	$smarty->assign('EMAIL_FLAG', $adb->query_result($result, 0, 'email_flag'));
-	$smarty->assign('EMDelivered',$adb->query_result($result,0,'delivered'));
-	$smarty->assign('EMDropped',$adb->query_result($result,0,'dropped'));
-	$smarty->assign('EMBounce',$adb->query_result($result,0,'bounce'));
-	$smarty->assign('EMOpen',$adb->query_result($result,0,'open'));
-	$smarty->assign('EMClicked',$adb->query_result($result,0,'clicked'));
-	$smarty->assign('EMUnsubscribe',$adb->query_result($result,0,'unsubscribe'));
+	$smarty->assign('EMDelivered', $adb->query_result($result, 0, 'delivered'));
+	$smarty->assign('EMDropped', $adb->query_result($result, 0, 'dropped'));
+	$smarty->assign('EMBounce', $adb->query_result($result, 0, 'bounce'));
+	$smarty->assign('EMOpen', $adb->query_result($result, 0, 'open'));
+	$smarty->assign('EMClicked', $adb->query_result($result, 0, 'clicked'));
+	$smarty->assign('EMUnsubscribe', $adb->query_result($result, 0, 'unsubscribe'));
 
 	$dt = new DateTimeField($adb->query_result($result, 0, 'date_start'));
 	$fmtdate = $dt->getDisplayDate($current_user);
