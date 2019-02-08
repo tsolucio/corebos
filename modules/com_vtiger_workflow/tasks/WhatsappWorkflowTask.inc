@@ -15,7 +15,7 @@ class WhatsappWorkflowTask extends VTTask {
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
-		return array('messageBody', 'attachmentids');
+		return array('messageBody', 'attachmentids', 'phone');
 	}
 
 	public function doTask(&$entityData) {
@@ -25,8 +25,7 @@ class WhatsappWorkflowTask extends VTTask {
 		$client = $clientclass->whatsappclient;
 		$sender = $clientclass->senderphone;
 		$body = $this->messageBody;
-		//will change it using default value from utilities
-		$phone = $data['phone'];
+		$phone = $data[$this->phone];
 
 		if ($sender!='') {
 			$message=$client->messages->create(
