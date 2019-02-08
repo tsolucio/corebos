@@ -32,14 +32,6 @@
 			<name>vtiger_messagescf</name>
 			<sql><![CDATA[CREATE TABLE `vtiger_messagescf` (
   `messagesid` int(11) NOT NULL,
-  `cf_963` varchar(255) DEFAULT '',
-  `cf_964` varchar(10) DEFAULT '',
-  `cf_965` varchar(10) DEFAULT '',
-  `cf_967` varchar(10) DEFAULT '',
-  `cf_968` varchar(10) DEFAULT '',
-  `cf_969` varchar(10) DEFAULT '',
-  `cf_970` varchar(10) DEFAULT '',
-  `cf_971` varchar(255) DEFAULT '',
   PRIMARY KEY (`messagesid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
 		</table>
