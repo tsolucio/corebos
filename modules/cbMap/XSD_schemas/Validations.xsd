@@ -18,17 +18,17 @@
                   <xs:sequence>
                     <xs:element type="xs:string" name="fieldname" minOccurs="0"/>
                     <xs:element type="xs:short" name="fieldID" minOccurs="0"/>
-                    <xs:element name="validations" minOccurs="0">
+                    <xs:element name="validations" maxOccurs="unbounded" minOccurs="0">
                       <xs:complexType mixed="true">
                         <xs:sequence>
-                          <xs:element name="validation">
+                          <xs:element name="validation" maxOccurs="unbounded" minOccurs="0">
                             <xs:complexType mixed="true">
                               <xs:sequence>
                                 <xs:element type="xs:string" name="rule"/>
-                                <xs:element name="restrictions">
+                                <xs:element name="restrictions" minOccurs="0">
                                   <xs:complexType>
                                     <xs:sequence>
-                                      <xs:element type="xs:string" name="restriction"/>
+                                      <xs:element type="xs:string" name="restriction" maxOccurs="unbounded" minOccurs="0"/>
                                     </xs:sequence>
                                   </xs:complexType>
                                 </xs:element>
