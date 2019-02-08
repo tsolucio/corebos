@@ -134,7 +134,7 @@
 <helpinfo><![CDATA[]]></helpinfo>
 <masseditable>1</masseditable>
 <picklistvalues>
-<picklistvalue>--Nessuno--</picklistvalue>
+<picklistvalue>--None--</picklistvalue>
 <picklistvalue>Email</picklistvalue>
 <picklistvalue>SMS</picklistvalue>
 <picklistvalue>Comments</picklistvalue>
@@ -252,9 +252,9 @@
 <masseditable>1</masseditable>
 </field>
 <field>
-<fieldname>msg_campaign</fieldname>
+<fieldname>campaign_message</fieldname>
 <uitype>10</uitype>
-<columnname>msg_campaign</columnname>
+<columnname>campaign_message</columnname>
 <tablename>vtiger_messages</tablename>
 <generatedtype>1</generatedtype>
 <fieldlabel>Campaign</fieldlabel>
