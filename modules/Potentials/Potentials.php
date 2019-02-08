@@ -16,7 +16,7 @@ require_once('modules/Calendar/Activity.php');
 require_once('modules/Documents/Documents.php');
 require_once('modules/Emails/Emails.php');
 require_once('include/utils/utils.php');
-require('user_privileges/default_module_view.php');
+require('modules/Vtiger/default_module_view.php');
 
 class Potentials extends CRMEntity {
 	var $db, $log; // Used in class functions of CRMEntity
