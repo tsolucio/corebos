@@ -353,7 +353,22 @@ class Validations extends processcbMap {
 
 	public static function recordIsAssignedToInactiveUser() {
 		$screen_values = json_decode($_REQUEST['structure'], true);
-		return recordIsAssignedToInactiveUser($screen_values['record']);
+		if (isset($screen_values['assigned_user_id'])) {
+			global $adb;
+			$usrrs = $adb->pquery('select status from vtiger_users where id=?', array($screen_values['assigned_user_id']));
+			if ($usrrs && $adb->num_rows($usrrs)==1) {
+				return ($adb->query_result($usrrs, 0, 'status')!='Active');
+			} else {
+				$grprs = $adb->pquery('select 1 from vtiger_groups where groupid=?', array($screen_values['assigned_user_id']));
+				if ($grprs && $adb->num_rows($grprs)==1) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+		} else {
+			return recordIsAssignedToInactiveUser($screen_values['record']);
+		}
 	}
 
 	public static function processAllValidationsFor($module) {

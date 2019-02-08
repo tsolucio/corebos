@@ -367,7 +367,7 @@ class Reports extends CRMEntity {
 				$returndata[] = $details;
 			} while ($reportfldrow = $adb->fetch_array($result));
 		}
-		$log->info('Reports :: sgetRptFldr -> returned report folder information');
+		$log->debug('Reports :: sgetRptFldr -> returned report folder information');
 		return $returndata;
 	}
 
@@ -474,7 +474,7 @@ class Reports extends CRMEntity {
 			$returndata = $returndata[$rpt_fldr_id];
 		}
 
-		$log->info('Reports :: sgetRptsforFldr -> returned report folder information');
+		$log->debug('Reports :: sgetRptsforFldr -> returned report folder information');
 		return $returndata;
 	}
 
@@ -730,7 +730,7 @@ class Reports extends CRMEntity {
 				$module_columnlist[$optionvalue] = $label;
 			}
 		}
-		$log->info("Reports :: FieldColumns->Successfully returned ColumnslistbyBlock".$module.$block);
+		$log->debug('Reports :: FieldColumns-> returned ColumnslistbyBlock'.$module.$block);
 		return $module_columnlist;
 	}
 
@@ -846,7 +846,7 @@ class Reports extends CRMEntity {
 			$stdcriteria_list[$optionvalue] = $fieldlabel;
 		}
 
-		$log->info('Reports :: StdfilterColumns->Successfully returned Stdfilter for'.$module);
+		$log->debug('Reports :: StdfilterColumns-> returned Stdfilter for'.$module);
 		return $stdcriteria_list;
 	}
 
@@ -935,7 +935,7 @@ class Reports extends CRMEntity {
 			$array_list[] = $fieldcolname;
 		}
 
-		$log->info('Reports :: Successfully returned getSelctedSortingColumns');
+		$log->debug('Reports :: returned getSelctedSortingColumns');
 		return $array_list;
 	}
 
@@ -997,7 +997,7 @@ class Reports extends CRMEntity {
 				}
 			}
 		}
-		$log->info('ReportRun :: Successfully returned getQueryColumnsList'.$reportid);
+		$log->debug('ReportRun :: returned getQueryColumnsList'.$reportid);
 		return $options;
 	}
 
@@ -1082,7 +1082,7 @@ class Reports extends CRMEntity {
 			$advft_criteria[$i-1]['condition'] = '';
 		}
 		$this->advft_criteria = $advft_criteria;
-		$log->info('Reports :: Successfully returned getAdvancedFilterList');
+		$log->debug('Reports :: returned getAdvancedFilterList');
 		return true;
 	}
 
@@ -1098,7 +1098,7 @@ class Reports extends CRMEntity {
 		do {
 			$shtml .= "<option value='".$reportfldrow['folderid']."'>".$reportfldrow['foldername'].'</option>';
 		} while ($reportfldrow = $adb->fetch_array($result));
-		$log->info('Reports :: Successfully returned sgetRptFldrSaveReport');
+		$log->debug('Reports :: returned sgetRptFldrSaveReport');
 		return $shtml;
 	}
 
@@ -1146,7 +1146,7 @@ class Reports extends CRMEntity {
 				$options []= $this->sgetColumnstoTotalHTML($secondarymodule[$i], ($i+1));
 			}
 		}
-		$log->info('Reports :: Successfully returned sgetColumntoTotalSelected');
+		$log->debug('Reports :: returned sgetColumntoTotalSelected');
 		return $options;
 	}
 
@@ -1298,7 +1298,7 @@ class Reports extends CRMEntity {
 			}
 		} while ($columntototalrow = $adb->fetch_array($result));
 
-		$log->info('Reports :: Successfully returned sgetColumnstoTotalHTML');
+		$log->debug('Reports :: returned sgetColumnstoTotalHTML');
 		return $options_list;
 	}
 

@@ -20,9 +20,8 @@ $smarty = new vtigerCRM_Smarty;
 if (isset($_REQUEST['record'])) {
 	global $adb;
 	$focus->retrieve_entity_info($_REQUEST['record'], 'Emails');
-	$log->info('Entity info successfully retrieved for DetailView.');
 	$focus->id = $_REQUEST['record'];
-	$query = 'select email_flag,from_email,to_email,cc_email,bcc_email,date_start,time_start
+	$query = 'select *
 		from vtiger_emaildetails
 		left join vtiger_activity on vtiger_emaildetails.emailid = vtiger_activity.activityid
 		where emailid = ?';
@@ -35,6 +34,12 @@ if (isset($_REQUEST['record'])) {
 	$bcc_email = json_decode($adb->query_result($result, 0, 'bcc_email'), true);
 	$smarty->assign('BCC_MAIL', vt_suppressHTMLTags(@implode(',', $bcc_email)));
 	$smarty->assign('EMAIL_FLAG', $adb->query_result($result, 0, 'email_flag'));
+	$smarty->assign('EMDelivered',$adb->query_result($result,0,'delivered'));
+	$smarty->assign('EMDropped',$adb->query_result($result,0,'dropped'));
+	$smarty->assign('EMBounce',$adb->query_result($result,0,'bounce'));
+	$smarty->assign('EMOpen',$adb->query_result($result,0,'open'));
+	$smarty->assign('EMClicked',$adb->query_result($result,0,'clicked'));
+	$smarty->assign('EMUnsubscribe',$adb->query_result($result,0,'unsubscribe'));
 
 	$dt = new DateTimeField($adb->query_result($result, 0, 'date_start'));
 	$fmtdate = $dt->getDisplayDate($current_user);

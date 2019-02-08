@@ -195,7 +195,7 @@ class Invoice extends CRMEntity {
 	 */
 	public function get_invoicestatushistory($id) {
 		global $log, $adb, $app_strings, $current_user;
-		$log->debug("Entering get_invoicestatushistory($id) method ...");
+		$log->debug('> get_invoicestatushistory '.$id);
 
 		$query = 'select vtiger_invoicestatushistory.*, vtiger_invoice.invoice_no
 			from vtiger_invoicestatushistory
@@ -236,7 +236,7 @@ class Invoice extends CRMEntity {
 		}
 
 		$return_data = array('header'=>$header,'entries'=>$entries_list,'navigation'=>array('',''));
-		$log->debug("Exiting get_invoicestatushistory method ...");
+		$log->debug('< get_invoicestatushistory');
 		return $return_data;
 	}
 
@@ -483,7 +483,7 @@ class Invoice extends CRMEntity {
 	*/
 	public function create_export_query($where) {
 		global $log, $current_user;
-		$log->debug("Entering create_export_query($where) method ...");
+		$log->debug('> create_export_query '.$where);
 
 		include 'include/utils/ExportUtils.php';
 
@@ -517,7 +517,7 @@ class Invoice extends CRMEntity {
 			$query .= ' where '.$where_auto;
 		}
 
-		$log->debug('Exiting create_export_query method ...');
+		$log->debug('< create_export_query');
 		return $query;
 	}
 

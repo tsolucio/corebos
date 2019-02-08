@@ -15,7 +15,7 @@
 */
 function getNewLeads($maxval, $calCnt) {
 	global $log, $adb, $current_language, $current_user;
-	$log->debug('Entering getNewLeads() method ...');
+	$log->debug('> getNewLeads');
 	require_once 'data/Tracker.php';
 	require_once 'include/utils/utils.php';
 
@@ -124,7 +124,7 @@ function getNewLeads($maxval, $calCnt) {
 	$search_qry = '&advft_criteria='.json_encode($advft_criteria).'&advft_criteria_groups='.json_encode($advft_criteria_groups).'&searchtype=advance&query=true';
 
 	$values=array('ModuleName'=>'Leads','Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
-	$log->debug("Exiting getNewLeads method ...");
+	$log->debug('< getNewLeads');
 	if ((count($entries) == 0 ) || (count($entries)>0)) {
 		return $values;
 	}

@@ -277,7 +277,7 @@ class Vtiger_Link {
 					$linkData = new Vtiger_LinkData($instance, $current_user);
 					$ignore = call_user_func(array($row['handler_class'], $row['handler']), $linkData);
 					if (!$ignore) {
-						self::log("Ignoring Link ... ".var_export($row, true));
+						self::log('Ignoring Link '.print_r($row, true));
 						continue;
 					}
 				}

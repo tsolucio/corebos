@@ -96,7 +96,8 @@ function vtWorkflowSave($adb, $request) {
 	if (isset($request['return_url'])) {
 		$returnUrl=$request['return_url'];
 	} else {
-		$returnUrl=$module->returnUrl();
+		$module->setReturnUrl('');
+		$returnUrl=$module->editWorkflowUrl($wf->id);
 	}
 	?>
 	<script type="text/javascript" charset="utf-8">

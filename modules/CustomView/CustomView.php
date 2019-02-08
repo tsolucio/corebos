@@ -1198,7 +1198,7 @@ class CustomView extends CRMEntity {
 	//Function to check if the current user is able to see the customView
 	public function isPermittedCustomView($record_id, $action, $module) {
 		global $log, $current_user;
-		$log->debug("Entering isPermittedCustomView($record_id,$action,$module) method....");
+		$log->debug("> isPermittedCustomView $record_id,$action,$module");
 
 		$permission = "yes";
 
@@ -1210,36 +1210,36 @@ class CustomView extends CRMEntity {
 				$userid = $status_userid_info['userid'];
 
 				if ($status == CV_STATUS_DEFAULT) {
-					$log->debug("Entering when status=0");
+					$log->debug('status=0');
 					if ($action == 'ListView' || $action == $module . "Ajax" || $action == 'index' || $action == 'DetailView') {
-						$permission = "yes";
+						$permission = 'yes';
 					} else {
-						$permission = "no";
+						$permission = 'no';
 					}
 				} elseif (is_admin($current_user)) {
 					$permission = 'yes';
 				} elseif ($action != 'ChangeStatus') {
 					if ($userid == $current_user->id) {
-						$log->debug("Entering when $userid=$current_user->id");
-						$permission = "yes";
+						$log->debug($userid.'='.$current_user->id);
+						$permission = 'yes';
 					} elseif ($status == CV_STATUS_PUBLIC) {
-						$log->debug("Entering when status=3");
+						$log->debug('status=3');
 						if ($action == 'ListView' || $action == $module . "Ajax" || $action == 'index' || $action == 'DetailView') {
-							$permission = "yes";
+							$permission = 'yes';
 						} else {
 							$user_array = getRoleAndSubordinateUserIds($current_user->column_fields['roleid']);
 							if (in_array($userid, $user_array)) {
-								$permission = "yes";
+								$permission = 'yes';
 							} else {
-								$permission = "no";
+								$permission = 'no';
 							}
 						}
 					} elseif ($status == CV_STATUS_PRIVATE || $status == CV_STATUS_PENDING) {
-						$log->debug("Entering when status=1 or 2");
+						$log->debug('status=1 or 2');
 						if ($userid == $current_user->id) {
 							$permission = "yes";
 						} else {
-							$log->debug("Entering when status=1 or status=2 & action = ListView or $module.Ajax or index");
+							$log->debug('status=1 or status=2 and action equals ListView or '.$module.'Ajax or index');
 							$user_array = getRoleAndSubordinateUserIds($current_user->column_fields['roleid']);
 							if (count($user_array) > 0) {
 								if (in_array($current_user->id, $user_array)) {
@@ -1252,26 +1252,25 @@ class CustomView extends CRMEntity {
 							}
 						}
 					} else {
-						$permission = "yes";
+						$permission = 'yes';
 					}
 				} else {
-					$log->debug("Entering else condition............");
-					$permission = "no";
+					$log->debug('else condition');
+					$permission = 'no';
 				}
 			} else {
-				$log->debug("Enters when count =0");
+				$log->debug('count=0');
 				$permission = 'no';
 			}
 		}
-		$log->debug("Permission @@@@@@@@@@@@@@@@@@@@@@@@@@@ : $permission");
-		$log->debug("Exiting isPermittedCustomView($record_id,$action,$module) method....");
+		$log->debug('< isPermittedCustomView '.$permission);
 		return $permission;
 	}
 
 	public function isPermittedChangeStatus($status, $viewid = 0) {
 		global $current_user, $log, $current_language;
-		$custom_strings = return_module_language($current_language, "CustomView");
-		$log->debug("Entering isPermittedChangeStatus($status) method...");
+		$custom_strings = return_module_language($current_language, 'CustomView');
+		$log->debug('> isPermittedChangeStatus '.$status);
 		$changed_status = $status_label = '';
 		$status_details = array('Status' => CV_STATUS_DEFAULT, 'ChangedStatus' => $changed_status, 'Label' => $status_label);
 		if ($viewid>0) {
@@ -1288,9 +1287,8 @@ class CustomView extends CRMEntity {
 			}
 			$status_details = array('Status' => $status, 'ChangedStatus' => $changed_status, 'Label' => $status_label);
 		}
-		$log->debug("Exiting isPermittedChangeStatus($status) method...");
+		$log->debug('< isPermittedChangeStatus');
 		return $status_details;
 	}
 }
-
 ?>

@@ -20,19 +20,16 @@ $body = vtlib_purify($_REQUEST['body']);
 $emailfrom = vtlib_purify($_REQUEST['emailfrom']);
 
 if (!empty($templateid)) {
-	$log->info('the templateid is set');
 	$adb->pquery(
 		'update vtiger_emailtemplates set foldername =?, templatename =?, subject =?, description =?, body =?, sendemailfrom=? where templateid =?',
 		array($folderName, $templateName, $subject, $description, $body, $emailfrom, $templateid)
 	);
-	$log->info('about to invoke the detailviewemailtemplate file');
 } else {
 	$templateid = $db->getUniqueID('vtiger_emailtemplates');
 	$adb->pquery(
 		'insert into vtiger_emailtemplates (foldername, templatename, subject, description, body, deleted, templateid, sendemailfrom) values (?,?,?,?,?,?,?,?)',
 		array($folderName, $templateName, $subject, $description, $body, 0, $templateid, $emailfrom)
 	);
-	$log->info('added to the db the emailtemplate');
 }
 header('Location:index.php?module=Settings&action=detailviewemailtemplate&parenttab=Settings&templateid='.urlencode($templateid));
 ?>

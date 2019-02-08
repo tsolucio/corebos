@@ -177,7 +177,6 @@ function InStrCount($String, $Find, $CaseSensitive = false) {
 		}
 		$i++;
 	}
-	$log->debug("In InStrCount function $String, $Find");
 	return $x;
 }
 
