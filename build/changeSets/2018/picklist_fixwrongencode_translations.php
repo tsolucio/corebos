@@ -24,6 +24,7 @@ class picklist_fixwrongencode_translations extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
+			/*
 			$current_user = Users::getActiveAdminUser();
 			global $mod_strings, $app_strings, $current_language;
 			set_time_limit(0);
@@ -116,7 +117,7 @@ class picklist_fixwrongencode_translations extends cbupdaterWorker {
 					}
 				}
 			}
-
+			*/
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}
