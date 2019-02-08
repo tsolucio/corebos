@@ -12,14 +12,14 @@ if (isPermitted('VtigerBackup', '')=='yes') {
 		global $root_directory;
 		$filename = $root_directory.'user_privileges/enable_backup.php';
 
-		$readhandle = @fopen($filename, "r+");
+		$readhandle = @fopen($filename, 'r+');
 
 		if ($readhandle) {
 			$buffer = '';
 			$new_buffer = '';
 			while (!feof($readhandle)) {
 				$buffer = fgets($readhandle, 5200);
-				list($starter, $tmp) = explode(" = ", $buffer);
+				list($starter, $tmp) = explode(' = ', $buffer);
 
 				if ($starter == '$enable_ftp_backup' && stristr($tmp, 'false')) {
 					$new_buffer .= "\$enable_ftp_backup = 'true';\n";
@@ -32,14 +32,14 @@ if (isPermitted('VtigerBackup', '')=='yes') {
 			fclose($readhandle);
 		}
 
-		$handle = fopen($filename, "w");
+		$handle = fopen($filename, 'w');
 		fputs($handle, $new_buffer);
 		fclose($handle);
 	} elseif (isset($_REQUEST['enable_local_backup']) && vtlib_purify($_REQUEST['enable_local_backup']) != '') {
 		global $root_directory;
 		$filename = $root_directory.'user_privileges/enable_backup.php';
 
-		$readhandle = @fopen($filename, "r+");
+		$readhandle = @fopen($filename, 'r+');
 
 		if ($readhandle) {
 			$buffer = '';
@@ -58,7 +58,7 @@ if (isPermitted('VtigerBackup', '')=='yes') {
 			fclose($readhandle);
 		}
 
-		$handle = fopen($filename, "w");
+		$handle = fopen($filename, 'w');
 		fputs($handle, $new_buffer);
 		fclose($handle);
 	} elseif (!empty($_REQUEST['GetBackupDetail']) && ($_REQUEST['servertype'] == 'local_backup' || $_REQUEST['servertype'] == 'ftp_backup')) {
