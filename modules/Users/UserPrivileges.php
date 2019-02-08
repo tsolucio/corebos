@@ -213,4 +213,19 @@ class UserPrivileges {
 	public function isAdmin() {
 		return $this->is_admin;
 	}
+
+	/**
+	 * Methot to fetch audit trail
+	 *
+	 * @return bool
+	 */
+	public function auditTrail() {
+		if( !isset($this->auditTrail) ) {
+			require_once "user_privileges/audit_trail.php";
+			$definedVars = get_defined_vars();
+			$this->auditTrail = (array_key_exists("audit_trail", $definedVars))?
+			$definedVars["audit_trail"]:false;
+		}
+		return $this->auditTrail;
+	}
 }
