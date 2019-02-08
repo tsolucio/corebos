@@ -205,6 +205,25 @@ class cbQuestion extends CRMEntity {
 		);
 	}
 
+	public static function getFormattedAnswer($qid) {
+		$ans = self::getAnswer($qid);
+		switch ($ans['type']) {
+			case 'Table':
+				$ret = self::getTableFromAnswer($ans);
+				break;
+			case 'Number':
+				$ret = array_pop($ans['answer'][0]);
+				break;
+			case 'Pie':
+				$ret = self::getChartFromAnswer($ans);
+				break;
+			case 'ERROR':
+			default:
+				$ret = getTranslatedString('LBL_PERMISSION');
+		}
+		return $ret;
+	}
+
 	public static function getTableFromAnswer($ans) {
 		$table = '';
 		if (!empty($ans)) {
@@ -247,11 +266,12 @@ class cbQuestion extends CRMEntity {
 				$labels[] = getTranslatedString($answer[$x][$properties->key_label], $module);
 				$values[] = $answer[$x][$properties->key_value];
 			}
+			$chartID = uniqid('chartAns');
 			$chart .= '<script src="include/chart.js/Chart.min.js"></script>
 				<script src="include/chart.js/randomColor.js"></script>';
-			$chart .= '<div class="hide_tab" style="width: 70%;">';
+			$chart .= '<div style="width: 80%;">';
 			$chart .= '<h2>'.$title.' - '.$type.' Chart</h2>';
-			$chart .= '<canvas id="chartAns" style="width:500px;height:250px;margin:auto;padding:10px;"></canvas>';
+			$chart .= '<canvas id="'.$chartID.'" style="width:500px;height:250px;margin:auto;padding:10px;"></canvas>';
 			$chart .= '
 				<script type="text/javascript">
 					function getRandomColor() {
@@ -262,7 +282,7 @@ class cbQuestion extends CRMEntity {
 					}
 
 					window.doChartAns = function(charttype) {
-						let chartans = document.getElementById("chartAns");
+						let chartans = document.getElementById("'.$chartID.'");
 						let context = chartans.getContext("2d");
 						context.clearRect(0, 0, chartans.width, chartans.height);
 					
@@ -298,7 +318,7 @@ class cbQuestion extends CRMEntity {
 						});
 					}
 
-					let charttype = "'.$type.'";
+					let charttype = "'.strtolower($type).'";
 					doChartAns(charttype);
 				</script>
 			';

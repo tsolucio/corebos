@@ -109,6 +109,10 @@ if (count($module_name) > 0) {
 	if (isset($where) && $where != '') {
 		$list_query .= ' AND '.$where;
 	}
+	// Sorting
+	if (!empty($order_by)) {
+		$list_query .= ' ORDER BY '.$queryGenerator->getOrderByColumn($order_by).' '.$sorder;
+	}
 	$count_result = $adb->query(mkCountQuery($list_query));
 	$noofrows = $adb->query_result($count_result, 0, 'count');
 	$smarty->assign('NUMOFROWS', $noofrows);

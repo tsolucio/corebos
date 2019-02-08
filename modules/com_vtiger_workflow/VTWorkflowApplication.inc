@@ -9,12 +9,15 @@
  ************************************************************************************/
 
 class VTWorkflowApplication {
-	public function __construct($action) {
+	public function __construct($action, $returnUrl = false) {
 		global $_REQUEST;
 		$this->name = 'com_vtiger_workflow';
 		$this->label = 'Workflow';
 		$this->action = $action;
-		$this->returnUrl = 'index.php?'.$_SERVER['QUERY_STRING'];
+		if ($returnUrl===false) {
+			$returnUrl='index.php?'.$_SERVER['QUERY_STRING'];
+		}
+		$this->returnUrl = urldecode($returnUrl);
 	}
 
 	public function currentUrl() {

@@ -28,6 +28,7 @@ $badpassword.= $mod_strings['Min. 1 special character'].'<br>';
 <style type="text/css">@import url("themes/<?php echo $theme; ?>/style.css"); </style>
 </HEAD><BODY leftMargin="5" topMargin="5" MARGINHEIGHT="0" MARGINWIDTH="0">
 <link REL="SHORTCUT ICON" HREF="themes/images/blank.gif">
+<script type="text/javascript" src="include/jquery/jquery.js"></script>
 <script type='text/javascript' src="include/js/general.js"></script>
 <script type='text/javascript' src="include/js/PasswordManagement.js"></script>
 <script type='text/javascript'>
@@ -79,6 +80,12 @@ function set_password(form) {
 	}
 }
 </script>
+<div id="status" style="position:absolute;display:none;left:850px;top:95px;height:27px;white-space:nowrap;">
+	<div role="status" class="slds-spinner slds-spinner_small slds-spinner_brand">
+		<div class="slds-spinner__dot-a"></div>
+		<div class="slds-spinner__dot-b"></div>
+	</div>
+</div>
 <div class="cb-alert-danger" id="chgpasserrmsg" style="display: none;"></div>
 <form name="ChangePassword" onsubmit="VtigerJS_DialogBox.block();">
 <table width='100%' cellspacing='0' cellpadding='5' border='0' class="small">

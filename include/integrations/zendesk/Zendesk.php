@@ -155,6 +155,5 @@ class corebos_zendesk {
 		}
 		return $ent;
 	}
-
 }
 ?>

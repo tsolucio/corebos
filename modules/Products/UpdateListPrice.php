@@ -14,7 +14,6 @@ $product_id = vtlib_purify($_REQUEST['product_id']);
 $listprice = vtlib_purify($_REQUEST['list_price']);
 $return_action = urlencode(vtlib_purify($_REQUEST['return_action']));
 $return_module = urlencode(vtlib_purify($_REQUEST['return_module']));
-$log->debug("Update ListPrice in (modules/Products/UpdateListPrice.php): $pricebook_id $product_id $listprice");
 
 $query = 'update vtiger_pricebookproductrel set listprice=? where pricebookid=? and productid=?';
 $listprice = CurrencyField::convertToDBFormat($listprice, null, true);

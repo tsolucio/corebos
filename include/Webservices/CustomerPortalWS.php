@@ -32,7 +32,7 @@ function evvt_strip_html_links($text) {
 
 function vtws_changePortalUserPassword($email, $newPass) {
 	global $adb,$log;
-	$log->debug('Entering schangePortalUserPassword');
+	$log->debug('> schangePortalUserPassword');
 	$nra = $adb->pquery('update vtiger_portalinfo set user_password=? where user_name=?', array($newPass,$email));
 	if ($nra) {
 		return true;
@@ -43,20 +43,20 @@ function vtws_changePortalUserPassword($email, $newPass) {
 
 function vtws_findByPortalUserName($username) {
 	global $adb,$log;
-	$log->debug('Entering function vtws_findByPortalUserName');
+	$log->debug('> vtws_findByPortalUserName');
 	$nra=$adb->query_result($adb->pquery('select count(*) from vtiger_portalinfo where isactive=1 and user_name=?', array($username)), 0, 0);
 	if (empty($nra)) {
 		$output=false;
 	} else {
 		$output=true;
 	}
-	$log->debug('Exiting function vtws_findByPortalUserName');
+	$log->debug('< vtws_findByPortalUserName');
 	return $output;
 }
 
 function vtws_sendRecoverPassword($username) {
 	global $adb,$log,$current_user;
-	$log->debug('Entering function vtws_sendRecoverPassword');
+	$log->debug('> vtws_sendRecoverPassword');
 
 	$ctors=$adb->pquery('select contactid,email,user_password
 			from vtiger_contactdetails
@@ -74,7 +74,7 @@ function vtws_sendRecoverPassword($username) {
 	$subject = getTranslatedString('Customer Portal Login Details', 'Contacts');
 	$mail_status = send_mail('Contacts', $cto['email'], $current_user->user_name, '', $subject, $contents);
 
-	$log->debug('Exiting function vtws_sendRecoverPassword');
+	$log->debug('< vtws_sendRecoverPassword');
 	return $mail_status;
 }
 
@@ -99,7 +99,7 @@ function vtws_getPortalUserInfo($user) {
 
 function vtws_getAssignedUserList($module, $user) {
 	global $log,$current_user,$default_charset;
-	$log->debug('Entering getAssignedUserList function with parameter modulename: '.$module);
+	$log->debug('> getAssignedUserList '.$module);
 	$hcuser = $current_user;
 	$current_user = $user;
 	require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
@@ -121,7 +121,7 @@ function vtws_getAssignedUserList($module, $user) {
 
 function vtws_getAssignedGroupList($module, $user) {
 	global $log,$current_user,$default_charset;
-	$log->debug('Entering vtws_getAssignedGroupList function with parameter modulename: '.$module);
+	$log->debug('> vtws_getAssignedGroupList '.$module);
 	$hcuser = $current_user;
 	$current_user = $user;
 	require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
@@ -143,7 +143,7 @@ function vtws_getAssignedGroupList($module, $user) {
 
 function vtws_AuthenticateContact($email, $password) {
 	global $adb,$log;
-	$log->debug('Entering AuthenticateContact function with parameter email: '.$email.' password:'.$password);
+	$log->debug('> AuthenticateContact '.$email.','.$password);
 
 	$rs = $adb->pquery('select id
 		from vtiger_portalinfo
@@ -163,7 +163,7 @@ function vtws_AuthenticateContact($email, $password) {
 function vtws_getPicklistValues($fld_module) {
 	global $adb,$log;
 	include_once 'modules/PickList/PickListUtils.php';
-	$log->debug('Entering getPicklistValues function with parameter: '.$fld_module);
+	$log->debug('> getPicklistValues '.$fld_module);
 	$res=array();
 	$all=array();
 	if ($fld_module == 'Documents') {
@@ -187,7 +187,7 @@ function vtws_getPicklistValues($fld_module) {
 
 function vtws_getUItype($module, $user) {
 	global $adb,$log;
-	$log->debug('Entering getUItype function with parameter modulename: '.$module);
+	$log->debug('> getUItype '.$module);
 	$tabid=getTabid($module);
 	$res=$adb->pquery('select uitype,fieldname from vtiger_field where tabid=? and presence in (0,2) ', array($tabid));
 	$nr=$adb->num_rows($res);
@@ -202,7 +202,7 @@ function vtws_getUItype($module, $user) {
 function vtws_getReferenceValue($strids, $user) {
 	global $log,$adb;
 	$ids=unserialize($strids);
-	$log->debug('Entering vtws_getReferenceValue with id '.$strids);
+	$log->debug('> vtws_getReferenceValue '.$strids);
 	foreach ($ids as $id) {
 		list($wsid,$realid)=explode('x', $id);
 		$rs = $adb->pquery('select name from vtiger_ws_entity where id=?', array($wsid));
@@ -225,7 +225,7 @@ function vtws_getReferenceValue($strids, $user) {
 			$result[$id]=array('module'=>$modulename,'reference'=>$entityinfo[$realid]);
 		}
 	}
-	$log->debug('Exit vtws_getReferenceValue');
+	$log->debug('< vtws_getReferenceValue');
 	return serialize($result);
 }
 
@@ -368,7 +368,7 @@ if (!function_exists('getSearchModules')) {
 
 function getSearchingListViewEntries($focus, $module, $list_result, $navigation_array, $relatedlist = '', $returnset = '', $edit_action = 'EditView', $del_action = 'Delete', $oCv = '', $page = '', $selectedfields = '', $contRelatedfields = '', $skipActions = false, $linksallowed = false) {
 	global $log, $adb, $current_user, $theme;
-	$log->debug('Entering getSearchingListViewEntries in CPWS('.get_class($focus).','. $module.') method ...');
+	$log->debug('> getSearchingListViewEntries in CPWS '.get_class($focus).','. $module);
 	$noofrows = $adb->num_rows($list_result);
 	$list_block = array();
 	//getting the field table entries from database
@@ -782,7 +782,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 			$list_block[$entity_id] = $list_header;
 		}
 	}
-	$log->debug('Exiting getSearchingListViewEntries method ...');
+	$log->debug('< getSearchingListViewEntries CPWS');
 	return $list_block;
 }
 

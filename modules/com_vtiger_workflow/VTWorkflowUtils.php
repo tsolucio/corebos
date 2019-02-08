@@ -160,12 +160,12 @@ class VTWorkflowUtils {
 	 * Insert redirection script
 	 */
 	public static function redirectTo($to, $message) {
-?>
+		?>
 	<script type="text/javascript" charset="utf-8">
 	window.location="<?php echo $to ?>";
 	</script>
 	<a href="<?php echo $to ?>"><?php echo $message ?></a>
-<?php
+		<?php
 	}
 
 	/**
@@ -226,6 +226,48 @@ class VTWorkflowUtils {
 			}
 		);
 		return $modules;
+	}
+
+	public static function getModulesList($adb) {
+		$modules_not_supported = array('Calendar', 'Events', 'PBXManager');
+		$sql = 'select distinct vtiger_field.tabid, name
+			from vtiger_field
+			inner join vtiger_tab on vtiger_field.tabid=vtiger_tab.tabid
+			where vtiger_tab.name not in(' . generateQuestionMarks($modules_not_supported) . ') and vtiger_tab.isentitytype=1 and vtiger_tab.presence in (0,2)';
+		$it = new SqlResultIterator($adb, $adb->pquery($sql, array($modules_not_supported)));
+		$modules = array();
+		foreach ($it as $row) {
+			$modules[] = $row->name;
+		}
+		uasort(
+			$modules,
+			function ($a, $b) {
+				return (strtolower(getTranslatedString($a, $a)) < strtolower(getTranslatedString($b, $b))) ? -1 : 1;
+			}
+		);
+		$module_options = '';
+		foreach ($modules as $moduleName) {
+			$module_options .= "<option value=".$moduleName.">" . getTranslatedString($moduleName, $moduleName) . "</option>";
+		}
+		return $module_options;
+	}
+
+	public static function getWorkflowExecutionConditionList() {
+		$workflow_execution_condtion_list = array(
+			'ON_FIRST_SAVE'=> array('id' => VTWorkflowManager::$ON_FIRST_SAVE, 'label' => 'LBL_ONLY_ON_FIRST_SAVE'),
+			'ONCE'=> array('id' => VTWorkflowManager::$ONCE, 'label' => 'LBL_UNTIL_FIRST_TIME_CONDITION_TRUE'),
+			'ON_EVERY_SAVE'=>array('id' => VTWorkflowManager::$ON_EVERY_SAVE, 'label' => 'LBL_EVERYTIME_RECORD_SAVED'),
+			'ON_MODIFY'=>array('id' => VTWorkflowManager::$ON_MODIFY, 'label' => 'LBL_ON_MODIFY'),
+			'ON_DELETE'=>array('id' => VTWorkflowManager::$ON_DELETE, 'label' => 'LBL_ON_DELETE'),
+			'ON_SCHEDULE'=>array('id' => VTWorkflowManager::$ON_SCHEDULE, 'label' => 'LBL_ON_SCHEDULE'),
+			'MANUAL'=>array('id' => VTWorkflowManager::$MANUAL, 'label' => 'LBL_MANUAL'),
+			'RECORD_ACCESS_CONTROL'=> array('id' => VTWorkflowManager::$RECORD_ACCESS_CONTROL, 'label' => 'LBL_RECORD_ACCESS_CONTROL'),
+		);
+		$trigger_condtion_options = '';
+		foreach ($workflow_execution_condtion_list as $trigger_condtion) {
+			$trigger_condtion_options .= "<option value=".$trigger_condtion['id'].">" . getTranslatedString($trigger_condtion['label'], 'Settings') . "</option>";
+		}
+		return $trigger_condtion_options;
 	}
 }
 ?>

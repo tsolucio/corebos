@@ -174,8 +174,8 @@ function validateAdd(fieldname, module) {
 		}
 	} else {
 		for (i=0; i<new_vals.length; i++) {
-			if (trim(new_vals[i]).search(/(\<|\>|\\|\/")/gi)!=-1) {
-				alert(alert_arr.SPECIAL_CHARACTERS+'"<" ">" "\\" "/"'+alert_arr.NOT_ALLOWED);
+			if (trim(new_vals[i]).search(/(\<|\>|\\")/gi)!=-1) {
+				alert(alert_arr.SPECIAL_CHARACTERS+' "<" ">" "\\" '+alert_arr.NOT_ALLOWED);
 				return false;
 			}
 		}
@@ -279,8 +279,8 @@ function validateEdit(fieldname, module) {
 			alert(alert_arr.LBL_CANNOT_HAVE_EMPTY_VALUE);
 			return false;
 		}
-		if (trim(newVal[i]).search(/(\<|\>|\\|\/)/gi)!=-1) {
-			alert(alert_arr.SPECIAL_CHARACTERS+'"<" ">" "\\" "/"'+alert_arr.NOT_ALLOWED);
+		if (trim(newVal[i]).search(/(\<|\>|\\)/gi)!=-1) {
+			alert(alert_arr.SPECIAL_CHARACTERS+' "<" ">" "\\" '+alert_arr.NOT_ALLOWED);
 			return false;
 		}
 		oldVal[i] = node[i].value;

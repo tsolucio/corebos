@@ -19,7 +19,6 @@ $theme_path = 'themes/' . $theme . '/';
 
 if (isset($_REQUEST['record'])) {
 	$id = vtlib_purify($_REQUEST['record']);
-	$log->debug(" the id is " . $id);
 }
 $category = getParentTab();
 

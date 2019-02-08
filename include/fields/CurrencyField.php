@@ -411,7 +411,7 @@ class CurrencyField {
 	 */
 	public static function getMultiCurrencyInfoFrom($module, $crmid) {
 		global $log, $adb;
-		$log->debug("Entering into function getMultiCurrencyInfoFrom($module, $crmid).");
+		$log->debug('> getMultiCurrencyInfoFrom '.$module.','.$crmid);
 		$m = CRMEntity::getInstance($module);
 		$inventory_table = $m->table_name;
 		$inventory_id = $m->table_index;
@@ -436,7 +436,7 @@ class CurrencyField {
 		$currency_info['currency_symbol'] = $adb->query_result($res, 0, 'currency_symbol');
 		$currency_info['currency_position'] = $adb->query_result($res, 0, 'currency_position');
 
-		$log->debug("Exit from function getMultiCurrencyInfoFrom.");
+		$log->debug('< getMultiCurrencyInfoFrom');
 		return $currency_info;
 	}
 

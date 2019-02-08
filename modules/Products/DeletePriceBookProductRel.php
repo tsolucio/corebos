@@ -14,10 +14,8 @@ $return_module = urlencode(vtlib_purify($_REQUEST['return_module']));
 $return_action = urlencode(vtlib_purify($_REQUEST['return_action']));
 
 if ($return_action !='' && $return_module == 'PriceBooks' && $return_action == 'CallRelatedList') {
-	$log->info('Products :: Deleting Price Book - Delete from PriceBook RelatedList');
 	$adb->pquery('delete from vtiger_pricebookproductrel where pricebookid=? and productid=?', array($return_id, $record));
 } else {
-	$log->info('Products :: Deleting Price Book');
 	$adb->pquery('delete from vtiger_pricebookproductrel where pricebookid=? and productid=?', array($record, $return_id));
 }
 

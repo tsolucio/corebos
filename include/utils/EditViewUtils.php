@@ -24,7 +24,7 @@ require_once 'modules/PickList/DependentPickListUtils.php';
   */
 function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields, $generatedtype, $module_name, $mode = '', $typeofdata = null, $cbMapFI = array()) {
 	global $log,$app_strings, $adb,$default_charset, $current_user;
-	$log->debug('getOutputHtml('.$uitype.",". $fieldname.",". $fieldlabel.",". $maxlength.",". print_r($col_fields, true).",".$generatedtype.",".$module_name.')');
+	$log->debug('> getOutputHtml '.$uitype.','. $fieldname.','. $fieldlabel.','. $maxlength.','. print_r($col_fields, true).','.$generatedtype.','.$module_name);
 
 	require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
 	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
@@ -83,7 +83,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$editview_label[] = array('options'=>$entityTypes, 'selected'=>$valueType, 'displaylabel'=>getTranslatedString($fieldlabel, $module_name));
 		$fieldvalue[] = array('displayvalue'=>$displayValue,'entityid'=>$parent_id);
 	} elseif ($uitype == 5 || $uitype == 6 || $uitype ==23) {
-		$log->info("uitype is ".$uitype);
 		$curr_time = '';
 		if ($value == '') {
 			if ($fieldname != 'birthday' && $generatedtype != 2 && getTabid($module_name) != 14) {
@@ -1146,7 +1145,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	} else {
 		$final_arr[] = 'O';
 	}
-	$log->debug('Exiting getOutputHtml method ...');
+	$log->debug('< getOutputHtml');
 	return $final_arr;
 }
 
@@ -1158,7 +1157,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 */
 function getConvertSoToInvoice($focus, $so_focus, $soid) {
 	global $log,$current_user;
-	$log->debug('Entering getConvertSoToInvoice('.get_class($focus).','.get_class($so_focus).','.$soid.') method ...');
+	$log->debug('> getConvertSoToInvoice '.get_class($focus).','.get_class($so_focus).','.$soid);
 	$fields = array(
 		'bill_street','bill_city','bill_code','bill_pobox','bill_country','bill_state',
 		'ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state'
@@ -1200,7 +1199,7 @@ function getConvertSoToInvoice($focus, $so_focus, $soid) {
 		$cbMap = cbMap::getMapByID($cbMapid);
 		$focus->column_fields = $cbMap->Mapping($so_focus->column_fields, $focus->column_fields);
 	}
-	$log->debug('Exiting getConvertSoToInvoice method ...');
+	$log->debug('< getConvertSoToInvoice');
 	return $focus;
 }
 
@@ -1212,7 +1211,7 @@ function getConvertSoToInvoice($focus, $so_focus, $soid) {
 */
 function getConvertQuoteToInvoice($focus, $quote_focus, $quoteid) {
 	global $log,$current_user;
-	$log->debug('Entering getConvertQuoteToInvoice('.get_class($focus).','.get_class($quote_focus).','.$quoteid.') method ...');
+	$log->debug('> getConvertQuoteToInvoice '.get_class($focus).','.get_class($quote_focus).','.$quoteid);
 	$fields = array(
 		'bill_street','bill_city','bill_code','bill_pobox','bill_country','bill_state',
 		'ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state'
@@ -1248,7 +1247,7 @@ function getConvertQuoteToInvoice($focus, $quote_focus, $quoteid) {
 		$cbMap = cbMap::getMapByID($cbMapid);
 		$focus->column_fields = $cbMap->Mapping($quote_focus->column_fields, $focus->column_fields);
 	}
-	$log->debug('Exiting getConvertQuoteToInvoice method ...');
+	$log->debug('< getConvertQuoteToInvoice');
 	return $focus;
 }
 
@@ -1260,7 +1259,7 @@ function getConvertQuoteToInvoice($focus, $quote_focus, $quoteid) {
 */
 function getConvertQuoteToSoObject($focus, $quote_focus, $quoteid) {
 	global $log,$current_user;
-	$log->debug('Entering getConvertQuoteToSoObject('.get_class($focus).','.get_class($quote_focus).','.$quoteid.') method ...');
+	$log->debug('> getConvertQuoteToSoObject '.get_class($focus).','.get_class($quote_focus).','.$quoteid);
 	$fields = array(
 		'bill_street','bill_city','bill_code','bill_pobox','bill_country','bill_state',
 		'ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state'
@@ -1299,7 +1298,7 @@ function getConvertQuoteToSoObject($focus, $quote_focus, $quoteid) {
 		$cbMap = cbMap::getMapByID($cbMapid);
 		$focus->column_fields = $cbMap->Mapping($quote_focus->column_fields, $focus->column_fields);
 	}
-	$log->debug('Exiting getConvertQuoteToSoObject method ...');
+	$log->debug('< getConvertQuoteToSoObject');
 	return $focus;
 }
 
@@ -1311,15 +1310,26 @@ function getConvertQuoteToSoObject($focus, $quote_focus, $quoteid) {
 */
 function getAssociatedProducts($module, $focus, $seid = '') {
 	global $log, $adb, $currentModule;
-	$log->debug("Entering getAssociatedProducts(".$module.",".get_class($focus).",".$seid."='') method ...");
+	$log->debug('> getAssociatedProducts '.$module.','.get_class($focus).','.$seid);
 
 	$product_Detail = array();
 	$acvid = 0;
+	$listcostprice = false;
+	$zerodiscount = false;
+
+	if (GlobalVariable::getVariable('PurchaseOrder_TransferCostPrice', '0', isset($_REQUEST['return_module']) ? $_REQUEST['return_module'] : '') == '1' && $currentModule == 'PurchaseOrder') {
+		$listcostprice = true;
+	}
+	if (GlobalVariable::getVariable('PurchaseOrder_IgnoreTransferDiscount', '0', isset($_REQUEST['return_module']) ? $_REQUEST['return_module'] : '') == '1' && $currentModule == 'PurchaseOrder') {
+		$zerodiscount = true;
+	}
+
 	if (in_array($module, getInventoryModules())) {
 		$query="SELECT
 			case when vtiger_products.productid != '' then vtiger_products.productname else vtiger_service.servicename end as productname,
 			case when vtiger_products.productid != '' then vtiger_products.productcode else vtiger_service.service_no end as productcode,
-			case when vtiger_products.productid != '' then vtiger_products.unit_price else vtiger_service.unit_price end as unit_price,
+			case when vtiger_products.productid != '' then vtiger_products.unit_price else vtiger_service.unit_price end as unit_price, 
+			case when vtiger_products.productid != '' then vtiger_products.cost_price else vtiger_service.cost_price end as cost_price, 
 			case when vtiger_products.productid != '' then vtiger_products.qtyinstock else 'NA' end as qtyinstock,
 			case when vtiger_products.productid != '' then 'Products' else 'Services' end as entitytype,
 			vtiger_inventoryproductrel.listprice,
@@ -1427,7 +1437,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 		$qtyinstock=$adb->query_result($result, $i-1, 'qtyinstock');
 		$qty=$adb->query_result($result, $i-1, 'quantity');
 		$unitprice=$adb->query_result($result, $i-1, 'unit_price');
-		$listprice=$adb->query_result($result, $i-1, 'listprice');
+		$listprice=$listcostprice ? $adb->query_result($result, $i-1, 'cost_price') : $adb->query_result($result, $i-1, 'listprice');
 		$entitytype=$adb->query_result($result, $i-1, 'entitytype');
 		if (!empty($entitytype)) {
 			$product_Detail[$i]['entityType'.$i]=$entitytype;
@@ -1555,6 +1565,14 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 		$product_Detail[$i]['discountTotal'.$i] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($discountTotal, null, true), null, true);
 		$product_Detail[$i]['totalAfterDiscount'.$i] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($totalAfterDiscount, null, true), null, true);
 
+		if ($zerodiscount) {
+			$product_Detail[$i]['discount_type'.$i] = 'zero';
+			$product_Detail[$i]['discount_percent'.$i] = 0;
+			$product_Detail[$i]['discount_amount'.$i] = 0;
+			$product_Detail[$i]['discountTotal'.$i] = 0;
+			$product_Detail[$i]['totalAfterDiscount'.$i] = $product_Detail[$i]['listPrice'.$i];
+		}
+
 		$taxTotal = '0.00';
 		$product_Detail[$i]['taxTotal'.$i] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($taxTotal, null, true), null, true);
 
@@ -1639,6 +1657,13 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 	}
 	$product_Detail[1]['final_details']['discountTotal_final'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($finalDiscount, null, true), null, true);
 
+	if ($zerodiscount) {
+		$product_Detail[1]['final_details']['discount_type_final'] = 'zero';
+		$product_Detail[1]['final_details']['discount_percentage_final'] = 0;
+		$product_Detail[1]['final_details']['discount_amount_final'] = 0;
+		$product_Detail[1]['final_details']['discountTotal_final'] = 0;
+	}
+
 	//To set the Final Tax values
 	//we will get all taxes. if individual then show the product related taxes only else show all taxes
 	//suppose user want to change individual to group or vice versa in edit time the we have to show all taxes.
@@ -1713,7 +1738,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 	$grandTotal = (!empty($focus->column_fields['hdnGrandTotal']))?$focus->column_fields['hdnGrandTotal']:'0.00';
 	$product_Detail[1]['final_details']['grandTotal'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($grandTotal, null, true), null, true);
 
-	$log->debug('Exiting getAssociatedProducts method ...');
+	$log->debug('< getAssociatedProducts');
 	return $product_Detail;
 }
 
@@ -1725,7 +1750,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 */
 function getNoOfAssocProducts($module, $focus, $seid = '') {
 	global $log, $adb;
-	$log->debug('Entering getNoOfAssocProducts('.$module.','.get_class($focus).','.$seid.')');
+	$log->debug('> getNoOfAssocProducts '.$module.','.get_class($focus).','.$seid);
 	if ($module == 'Quotes') {
 		$query='select vtiger_products.productname, vtiger_products.unit_price, vtiger_inventoryproductrel.*
 			from vtiger_inventoryproductrel
@@ -1766,7 +1791,7 @@ function getNoOfAssocProducts($module, $focus, $seid = '') {
 
 	$result = $adb->pquery($query, $params);
 	$num_rows=$adb->num_rows($result);
-	$log->debug('Exiting getNoOfAssocProducts');
+	$log->debug('< getNoOfAssocProducts');
 	return $num_rows;
 }
 
@@ -1781,7 +1806,7 @@ function getNoOfAssocProducts($module, $focus, $seid = '') {
 */
 function getBlockInformation($module, $result, $col_fields, $tabid, $block_label, $mode) {
 	global $log, $adb;
-	$log->debug("Entering getBlockInformation(".$module.",". print_r($col_fields, true).",".$tabid.",".print_r($block_label, true).')');
+	$log->debug('> getBlockInformation '.$module.','. print_r($col_fields, true).','.$tabid.','.print_r($block_label, true));
 	$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : false;
 	$editview_arr = array();
 
@@ -1866,7 +1891,7 @@ function getBlockInformation($module, $result, $col_fields, $tabid, $block_label
 			$returndata[$i18nidx]=array_merge((array)$returndata[$i18nidx], array($label=>array()));
 		}
 	}
-	$log->debug('Exiting getBlockInformation');
+	$log->debug('< getBlockInformation');
 	return $returndata;
 }
 
@@ -1876,7 +1901,7 @@ function getBlockInformation($module, $result, $col_fields, $tabid, $block_label
 */
 function split_validationdataArray($validationData) {
 	global $log;
-	$log->debug('Entering split_validationdataArray('.print_r($validationData, true).')');
+	$log->debug('> split_validationdataArray '.print_r($validationData, true));
 	$fieldName = '';
 	$fieldLabel = '';
 	$fldDataType = '';
@@ -1902,7 +1927,7 @@ function split_validationdataArray($validationData) {
 	$data['fieldname'] = $fieldName;
 	$data['fieldlabel'] = $fieldLabel;
 	$data['datatype'] = $fldDataType;
-	$log->debug('Exiting split_validationdataArray');
+	$log->debug('< split_validationdataArray');
 	return $data;
 }
 

@@ -51,7 +51,8 @@ class ReportRun extends CRMEntity {
 						'Quotes_Total', 'Quotes_Sub_Total', 'Quotes_S&H_Amount', 'Quotes_Discount_Amount', 'Quotes_Adjustment',
 						'SalesOrder_Total', 'SalesOrder_Sub_Total', 'SalesOrder_S&H_Amount', 'SalesOrder_Discount_Amount', 'SalesOrder_Adjustment',
 						'PurchaseOrder_Total', 'PurchaseOrder_Sub_Total', 'PurchaseOrder_S&H_Amount', 'PurchaseOrder_Discount_Amount', 'PurchaseOrder_Adjustment',
-						'Issuecards_Total', 'Issuecards_Sub_Total', 'Issuecards_S&H_Amount', 'Issuecards_Discount_Amount', 'Issuecards_Adjustment',
+						'Issuecards_Total', 'Issuecards_Sub_Total', 'Issuecards_S&H_Amount', 'Issuecards_Discount_Amount', 'Issuecards_Adjustment','Invoice_SandH_Amount',
+						'Quotes_SandH_Amount','SalesOrder_SandH_Amount','PurchaseOrder_SandH_Amount','Issuecards_SandH_Amount',
 						);
 	public $ui10_fields = array();
 	public $ui101_fields = array();
@@ -276,7 +277,7 @@ class ReportRun extends CRMEntity {
 		// Save the information
 		$this->_columnslist[$outputformat] = $columnslist;
 
-		$log->info('ReportRun :: Successfully returned getQueryColumnsList'.$reportid);
+		$log->debug('ReportRun :: getQueryColumnsList'.$reportid);
 		return $columnslist;
 	}
 
@@ -406,7 +407,7 @@ class ReportRun extends CRMEntity {
 		}
 		$sSQL .= implode(",", $sSQLList);
 
-		$log->info("ReportRun :: Successfully returned getSelectedColumnsList".$reportid);
+		$log->debug('ReportRun :: getSelectedColumnsList'.$reportid);
 		return $sSQL;
 	}
 
@@ -487,7 +488,7 @@ class ReportRun extends CRMEntity {
 			$rtvalue = str_replace("'", '', $rtvalue);
 			$rtvalue = str_replace("\\", '', $rtvalue);
 		}
-		$log->info('ReportRun :: Successfully returned getAdvComparator');
+		$log->debug('ReportRun :: getAdvComparator');
 		return $rtvalue;
 	}
 
@@ -802,7 +803,7 @@ class ReportRun extends CRMEntity {
 		// Save the information
 		$this->_advfiltersql = $advfiltersql;
 
-		$log->info('ReportRun :: Successfully returned getAdvFilterSql'.$reportid);
+		$log->debug('ReportRun :: getAdvFilterSql'.$reportid);
 		return $advfiltersql;
 	}
 
@@ -893,7 +894,7 @@ class ReportRun extends CRMEntity {
 		// Save the information
 		$this->_stdfilterlist = $stdfilterlist;
 
-		$log->info("ReportRun :: Successfully returned getStdFilterList".$reportid);
+		$log->debug('ReportRun :: getStdFilterList'.$reportid);
 		return $stdfilterlist;
 	}
 
@@ -1075,7 +1076,7 @@ class ReportRun extends CRMEntity {
 				$this->queryPlanner->addTable($selectedfields[0]);
 			}
 		}
-		$log->info("ReportRun :: Successfully returned getStandardCriterialSql".$reportid);
+		$log->debug('ReportRun :: getStandardCriterialSql'.$reportid);
 		return $sSQL;
 	}
 
@@ -1164,7 +1165,7 @@ class ReportRun extends CRMEntity {
 		// Save the information
 		$this->_groupinglist = $grouplist;
 
-		$log->info("ReportRun :: Successfully returned getGroupingList".$reportid);
+		$log->debug('ReportRun :: getGroupingList'.$reportid);
 		return $grouplist;
 	}
 
@@ -1221,7 +1222,7 @@ class ReportRun extends CRMEntity {
 				$this->orderbylistsql .= $selectedfields[0].'.'.$selectedfields[1].' '.$selectedfields[2];
 			}
 		}
-		$log->info('ReportRun :: Successfully returned getSelectedOrderbyList'.$reportid);
+		$log->debug('ReportRun :: getSelectedOrderbyList'.$reportid);
 		return $sSQL;
 	}
 
@@ -1243,7 +1244,7 @@ class ReportRun extends CRMEntity {
 				$query .= getNonAdminAccessControlQuery($value, $current_user, $value);
 			}
 		}
-		$log->info('ReportRun :: Successfully returned getRelatedModulesQuery'.$secmodule);
+		$log->debug('ReportRun :: getRelatedModulesQuery'.$secmodule);
 		return $query;
 	}
 
@@ -1686,7 +1687,7 @@ class ReportRun extends CRMEntity {
 					' WHERE vtiger_crmentity.deleted=0';
 			}
 		}
-		$log->info("ReportRun :: Successfully returned getReportsQuery".$module);
+		$log->debug('ReportRun :: getReportsQuery'.$module);
 
 		return $query;
 	}
@@ -1868,7 +1869,7 @@ class ReportRun extends CRMEntity {
 			$this->queryPlanner->initializeTempTables();
 			$this->_tmptablesinitialized = true;
 		}
-		$log->info("ReportRun :: Successfully returned sGetSQLforReport".$reportid);
+		$log->debug('ReportRun :: sGetSQLforReport'.$reportid);
 		if (GlobalVariable::getVariable('Debug_Report_Query', '0')=='1') {
 			$log->fatal('Report Query for '.$this->reportname." ($reportid)");
 			$log->fatal($reportquery);
@@ -2950,7 +2951,7 @@ class ReportRun extends CRMEntity {
 				$field_columnalias = $module_name."_".$fieldlist[3];
 				$field_columnalias = decode_html($field_columnalias);
 				$query_columnalias = substr($field_columnalias, 0, strrpos($field_columnalias, '_'));
-				$query_columnalias = str_replace(array(' ','&'), '_', $query_columnalias);
+				$query_columnalias = str_replace(array(' ','&','(',')'), '_', $query_columnalias);
 				$sckey = $field_tablename.':'.$field_columnname.':'.$query_columnalias.':'.$field_columnname.':N'; // vtiger_invoice:subject:Invoice_Subject:subject:V
 				$scval = $field_tablename.'.'.$field_columnname." AS '".$query_columnalias."'"; // vtiger_invoice.subject AS 'Invoice_Subject'
 				$seltotalcols[$sckey] = $scval;
@@ -3011,7 +3012,7 @@ class ReportRun extends CRMEntity {
 		$this->_columnstotallist = $stdfilterlist;
 		$stc = array_diff($seltotalcols, $selectlist);
 		$this->_columnstotallistaddtoselect = $stc;
-		$log->info('ReportRun :: Successfully returned getColumnsTotal'.$reportid);
+		$log->debug('ReportRun :: getColumnsTotal'.$reportid);
 		return $stdfilterlist;
 	}
 
@@ -3051,7 +3052,7 @@ class ReportRun extends CRMEntity {
 		if (isset($sSQLList)) {
 			$sSQL = implode(',', $sSQLList);
 		}
-		$log->info('ReportRun :: Successfully returned getColumnsToTotalColumns'.$reportid);
+		$log->debug('ReportRun :: getColumnsToTotalColumns'.$reportid);
 		return $sSQL;
 	}
 
@@ -3209,7 +3210,6 @@ class ReportRun extends CRMEntity {
 		$pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
 		$pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 		//$pdf->setLanguageArray($l);
-		//echo '<pre>';print_r($columnlength);echo '</pre>';
 		$pdf->AddPage();
 
 		$pdf->SetFillColor(224, 235, 255);

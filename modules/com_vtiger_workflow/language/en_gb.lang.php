@@ -114,6 +114,9 @@ $mod_strings = array(
 'CBSendMMMSGTask' => 'Send Message to Mattermost',
 'Send Message To MM' => 'Send Message to Mattermost',
 'VTSendMessage2MMTask' => 'Send Message to Mattermost',
+'whatsappworkflowtask' => 'Send WhatsApp Message',
+'Whatsapp Workflow Task' => 'Send WhatsApp Message',
+'WhatsappWorkflowTask' => 'Send WhatsApp Message',
 
 'LBL_EVENTNAME' => 'Event Name',
 'LBL_DESCRIPTION' => 'Description',
@@ -163,5 +166,6 @@ $mod_strings = array(
 'NO_METHOD_AVAILABLE' => 'No method is available for this module.',
 'launchrelwf' => 'Launch workflows on related updates',
 'LBL_WFPURPOSE' => 'Purpose',
+'whatsappworkflowtask' => 'Send Whatsapp Message',
 );
 ?>

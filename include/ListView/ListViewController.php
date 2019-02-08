@@ -185,9 +185,8 @@ class ListViewController {
 					continue;
 				}
 			}
-			if (!$is_admin && ($field->getFieldDataType() == 'picklist' ||
-					$field->getFieldDataType() == 'multipicklist')) {
-				$this->setupAccessiblePicklistValueList($field->getColumnName());
+			if (!$is_admin && ($field->getFieldDataType() == 'picklist' || $field->getFieldDataType() == 'multipicklist')) {
+				$this->setupAccessiblePicklistValueList($field->getFieldName());
 			}
 			$idList=array();
 			if ($fieldName!='assigned_user_id' && false !== strpos($fieldName, '.assigned_user_id')) {
@@ -492,7 +491,7 @@ class ListViewController {
 						$tmp = '';
 						$tmpArray = array();
 						foreach ($valueArray as $val) {
-							if (!$is_admin && !in_array(trim(decode_html($val)), $this->picklistValueMap[$field->getColumnName()])) {
+							if (!$is_admin && !in_array(trim(decode_html($val)), $this->picklistValueMap[$field->getFieldName()])) {
 								continue;
 							}
 							if (!$listview_max_textlength || !(strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i", "", $tmp)) > $listview_max_textlength)) {

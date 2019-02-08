@@ -1266,6 +1266,20 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Número máximo de filas devueltas como resultado de la respuesta de una Pregunta de Negocio.',
 ),
+'PurchaseOrder_TransferCostPrice' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0|1',
+	'definition' => 'Cuando se establece en 1, la creación de una orden de compra a partir de otro registro (es decir, la orden de venta, la factura y/o el producto) utilizará el costo del producto/servicio en las líneas de inventario en lugar del precio de venta. Puedes especificar aún más este comportamiento marcando la casilla "En la lista de módulos" y seleccionando los módulos de origen para los que quieres que esto suceda en el desplegable.',
+),
+'PurchaseOrder_IgnoreTransferDiscount' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0|1',
+	'definition' => 'Cuando se establece en 1, la transferencia de una línea de, por ejemplo, una orden de venta a una orden de compra, establecerá todos los descuentos a cero, independientemente de lo que el módulo de origen tenga. Puedes ajustar los módulos de origen marcando "En la lista de módulos" y seleccionando los módulos de origen.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {

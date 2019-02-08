@@ -15,7 +15,7 @@
 
 function vtws_gettranslation($totranslate, $portal_language, $module, $user) {
 	global $log, $default_language, $current_language;
-	$log->debug('Entering function vtws_gettranslation');
+	$log->debug('> vtws_gettranslation');
 	$language = $portal_language;
 	$totranslate=(array)$totranslate;
 	$mod_strings=array();
@@ -80,7 +80,7 @@ function vtws_gettranslation($totranslate, $portal_language, $module, $user) {
 		$translated[$key] = $tr;
 	}
 
-	$log->debug('Leaving function vtws_gettranslation');
+	$log->debug('< vtws_gettranslation');
 	return $translated;
 }
 ?>

@@ -371,7 +371,6 @@ class SyncServer {
 	 * Share the Create/Update/Delete state information
 	 */
 	public function get($key, $module, $token, $user) {
-		global $log;
 		$appid = $this->appid_with_key($key);
 		if (empty($appid)) {
 			throw new WebServiceException('WSAPP04', 'Access restricted to app');
@@ -380,8 +379,6 @@ class SyncServer {
 		//hardcoded since the destination handler will be vtigerCRM
 		$serverKey = wsapp_getAppKey('vtigerCRM');
 		$handlerDetails = $this->getDestinationHandleDetails();
-		$log->debug('gettt');
-		$log->debug($handlerDetails);
 		require_once $handlerDetails['handlerpath'];
 		$this->destHandler = new $handlerDetails['handlerclass']($serverKey);
 		$this->destHandler->setClientSyncType($clientApplicationSyncType);

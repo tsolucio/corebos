@@ -270,7 +270,7 @@ function NOPermissionDiv() {
 
 function getCalendar4YouListQuery($userid, $invites, $where = '', $type = '1') {
 	global $log, $adb;
-	$log->debug('Entering getCalendar4YouListQuery(' . $userid . ',' . $where . ') method ...');
+	$log->debug('> getCalendar4YouListQuery '.$userid.','.$where);
 	if ($userid != '') {
 		require 'user_privileges/user_privileges_' . $userid . '.php';
 		require 'user_privileges/sharing_privileges_' . $userid . '.php';
@@ -321,7 +321,7 @@ function getCalendar4YouListQuery($userid, $invites, $where = '', $type = '1') {
 
 	$query = listQueryNonAdminChange($query, 'Calendar');
 
-	$log->debug('Exiting getListQuery method ...');
+	$log->debug('< getListQuery');
 	return $query;
 }
 

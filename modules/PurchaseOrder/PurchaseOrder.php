@@ -168,7 +168,7 @@ class PurchaseOrder extends CRMEntity {
 	 */
 	public function get_postatushistory($id) {
 		global $log, $adb, $app_strings, $current_user;
-		$log->debug("Entering get_postatushistory(".$id.") method ...");
+		$log->debug('> get_postatushistory '.$id);
 
 		$query = 'select vtiger_postatushistory.*, vtiger_purchaseorder.purchaseorder_no
 			from vtiger_postatushistory
@@ -210,7 +210,7 @@ class PurchaseOrder extends CRMEntity {
 		}
 
 		$return_data = array('header'=>$header, 'entries'=>$entries_list, 'navigation'=>array('',''));
-		$log->debug('Exiting get_postatushistory method ...');
+		$log->debug('< get_postatushistory');
 		return $return_data;
 	}
 
@@ -337,7 +337,7 @@ class PurchaseOrder extends CRMEntity {
 	*/
 	public function create_export_query($where) {
 		global $log, $current_user;
-		$log->debug("Entering create_export_query($where) method ...");
+		$log->debug('> create_export_query '.$where);
 
 		include 'include/utils/ExportUtils.php';
 
@@ -371,7 +371,7 @@ class PurchaseOrder extends CRMEntity {
 			$query .= ' where '.$where_auto;
 		}
 
-		$log->debug('Exiting create_export_query method ...');
+		$log->debug('< create_export_query');
 		return $query;
 	}
 }

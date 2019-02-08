@@ -1,0 +1,11 @@
+./build/HelperScripts/bettersafe.sh
+./build/HelperScripts/createuserfiles
+./build/HelperScripts/dumpdatabase.sh
+./build/HelperScripts/reset_admin_pw
+./build/HelperScripts/update_tabdata
+./docker/phpcbf.phar
+./docker/phpcs.phar
+./docker/phpmd.phar
+./include/cbmqtm/run.php
+./include/integrations/zendesk/vendor/zendesk/zendesk_api_client_php/bin/console
+./include/sw-precache/regen_swprecache

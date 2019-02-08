@@ -19,7 +19,6 @@ if (isset($_REQUEST['savemode']) && $_REQUEST['savemode'] == 'file') {
 	$filepath=$root_directory.'cache/'.$id.'_'.$moduleName.'_'.$invoice_no.'.pdf';
 	$controller->Output($filepath, 'F'); //added file name to make it work in IE, also forces the download giving the user the option to save
 } elseif (isset($purpose) && $purpose == 'webservice') {
-	$log->debug('Switched to buffer. Purpose = '. $purpose);
 	$PDFBuffer = $controller->Output('', 'S'); // S means send the pdf output in buffer instead of file
 } else {
 	$controller->Output($moduleName.'_'.$invoice_no.'.pdf', 'D');//added file name to make it work in IE, also forces the download giving the user the option to save

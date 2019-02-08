@@ -126,7 +126,7 @@
 							</td>
 							{if $Application_Global_Search_Active}
 							<td align ="right" style="background-color:#FFFFEF; vertical-align:middle;padding:5px;" onclick="UnifiedSearch_SelectModuleForm(this);">
-								<a href='javascript:void(0);' ><img src="{'arrow_down_black.png'|@vtiger_imageurl:$THEME}" align='left' border=0></a>
+								<a href='javascript:void(0);'><img src="{'arrow_down_black.png'|@vtiger_imageurl:$THEME}" align='left' style="max-width:initial;"></a>
 							</td>
 							<td style="background-color:#cccccc">
 								<input type="image" class="searchBtn" alt="{$APP.LBL_FIND}" title="{$APP.LBL_FIND}" width="70%" height="70%" src="{'searchicon.PNG'|@vtiger_imageurl:$THEME}" align='left' border=1>
