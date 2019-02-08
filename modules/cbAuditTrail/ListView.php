@@ -13,7 +13,6 @@ require_once('modules/cbAuditTrail/AuditTrail.php');
 require_once('modules/Users/Users.php');
 require_once('include/logging.php');
 require_once('include/utils/utils.php');
-require('user_privileges/audit_trail.php');
 
 global $app_strings, $mod_strings, $current_language, $current_user, $adb, $theme, $currentModule;
 
@@ -23,7 +22,6 @@ $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
 $focus = new AuditTrail();
-
 $smarty = new vtigerCRM_Smarty();
 
 $category = getParenttab();
@@ -38,7 +36,7 @@ $smarty->assign("CATEGORY",$category);
 $smarty->assign("USERLIST", getUserslist(false));
 $smarty->assign("LIST_HEADER",$focus->getAuditTrailHeader());
 $smarty->assign("LIST_FIELDS",$focus->list_fields_name);
-$smarty->assign("ATENABLED",$audit_trail);
+$smarty->assign("ATENABLED", $current_user->getPrivileges()->auditTrail());
 
 $smarty->display('modules/cbAuditTrail/index.tpl');
 ?>

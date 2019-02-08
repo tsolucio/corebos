@@ -383,8 +383,6 @@ if($use_current_login)
 	coreBOS_Session::setUserGlobalSessionVariables();
 	$moduleList = getPermittedModuleNames();
 
-	//auditing
-	require_once('user_privileges/audit_trail.php');
 	/* Skip audit trail log for special request types */
 	$skip_auditing = false;
 	if(($action == 'ActivityReminderCallbackAjax' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'ActivityReminderCallbackAjax')) && $module == 'Calendar') {
@@ -393,7 +391,8 @@ if($use_current_login)
 		$skip_auditing = true;
 	}
 	/* END */
-	if($audit_trail == 'true' and !$skip_auditing) {
+	$privileges = $current_user->getPrivileges();
+	if($privileges->auditTrail() and !$skip_auditing) {
 		$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
 		$query = "insert into vtiger_audit_trial values(?,?,?,?,?,?)";
 		$qparams = array($adb->getUniqueID('vtiger_audit_trial'), $current_user->id, $module, $action, $record, $date_var);
