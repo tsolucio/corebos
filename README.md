@@ -15,7 +15,6 @@ We invite you to[ give it a try](http://corebos.org/documentation/doku.php?id=en
 
 Here are some other interesting links you can have a look at:
  - [Our website](http://corebos.org/) for full details of the project
- - [Google+](https://plus.google.com/communities/109845486286232591652)
  - [LinkedIn](http://www.linkedin.com/groups/coreBOS-7479130?trk=my_groups-b-grp-v)
  - [Youtube coreBOS](https://www.youtube.com/channel/UCmUzoelIqe2eL3YvEv5kLYw)
  - [Youtube coreBOSCRM](https://www.youtube.com/channel/UCqH0YuMrOI9HSEObq3xqXLQ)
