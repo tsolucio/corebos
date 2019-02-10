@@ -38,6 +38,8 @@ class picklist_translations extends cbupdaterWorker {
 				'proofread' => '1',
 				'assigned_user_id' => $usrwsid,
 			);
+			$langsDoneStr = coreBOS_Settings::getSetting('picklistTranslationLanguagesDone', '');
+			$langsDone = explode(';', $langsDoneStr);
 			$import_langs = array('en_us','es_es','de_de','en_gb','es_mx','fr_fr','hu_hu','it_it','nl_nl','pt_br');
 			$import_modules = getAllowedPicklistModules(1);
 			$import_modules = array_merge($import_modules, array('Rss','Recyclebin'));
@@ -51,6 +53,9 @@ class picklist_translations extends cbupdaterWorker {
 				set_time_limit(0);
 				$rec['translation_module'] = $impmod;
 				foreach ($import_langs as $lang) {  // FOREACH LANGUAGE
+					if (in_array($lang, $langsDone)) {
+						continue;
+					}
 					if (file_exists('modules/' . $impmod . '/language/' . $lang . '.lang.php')) {
 						include 'modules/' . $impmod . '/language/' . $lang . '.lang.php';
 						include 'include/language/' . $lang . '.lang.php';
@@ -94,9 +99,11 @@ class picklist_translations extends cbupdaterWorker {
 							}
 						}
 					}
+					coreBOS_Settings::setSetting('picklistTranslationLanguagesDone', $langsDoneStr.';'.$lang);
 				}
 			}
 			$this->ExecuteQuery("update vtiger_cbupdater set blocked='1', systemupdate='0' where cbupdaterid=?", array($this->cbupdid));
+			coreBOS_Settings::delSetting('picklistTranslationLanguagesDone');
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}
