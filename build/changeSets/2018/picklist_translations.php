@@ -99,7 +99,8 @@ class picklist_translations extends cbupdaterWorker {
 							}
 						}
 					}
-					coreBOS_Settings::setSetting('picklistTranslationLanguagesDone', $langsDoneStr.';'.$lang);
+					$langsDone[] = $lang;
+					coreBOS_Settings::setSetting('picklistTranslationLanguagesDone', implode(';', $langsDoneStr));
 				}
 			}
 			$this->ExecuteQuery("update vtiger_cbupdater set blocked='1', systemupdate='0' where cbupdaterid=?", array($this->cbupdid));
