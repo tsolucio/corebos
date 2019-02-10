@@ -38,8 +38,8 @@ class picklist_translations extends cbupdaterWorker {
 				'proofread' => '1',
 				'assigned_user_id' => $usrwsid,
 			);
-			$langsDoneStr = coreBOS_Settings::getSetting('picklistTranslationLanguagesDone', '');
-			$langsDone = explode(';', $langsDoneStr);
+			$modsDoneStr = coreBOS_Settings::getSetting('picklistTranslationLanguageModulesDone', '');
+			$modsDone = explode(';', $modsDoneStr);
 			$import_langs = array('en_us','es_es','de_de','en_gb','es_mx','fr_fr','hu_hu','it_it','nl_nl','pt_br');
 			$import_modules = getAllowedPicklistModules(1);
 			$import_modules = array_merge($import_modules, array('Rss','Recyclebin'));
@@ -47,15 +47,12 @@ class picklist_translations extends cbupdaterWorker {
 				from vtiger_cbtranslation
 				where translation_module=? and translation_key=? and forpicklist=? and locale=?';
 			foreach ($import_modules as $impmod) {  // FOREACH MODULE
-				if ($impmod=='Emails') {
+				if (in_array($impmod, $modsDone) || $impmod=='Emails') {
 					continue;
 				}
 				set_time_limit(0);
 				$rec['translation_module'] = $impmod;
 				foreach ($import_langs as $lang) {  // FOREACH LANGUAGE
-					if (in_array($lang, $langsDone)) {
-						continue;
-					}
 					if (file_exists('modules/' . $impmod . '/language/' . $lang . '.lang.php')) {
 						include 'modules/' . $impmod . '/language/' . $lang . '.lang.php';
 						include 'include/language/' . $lang . '.lang.php';
@@ -99,12 +96,12 @@ class picklist_translations extends cbupdaterWorker {
 							}
 						}
 					}
-					$langsDone[] = $lang;
-					coreBOS_Settings::setSetting('picklistTranslationLanguagesDone', implode(';', $langsDoneStr));
 				}
+				$modsDone[] = $impmod;
+				coreBOS_Settings::setSetting('picklistTranslationLanguageModulesDone', implode(';', $modsDone));
 			}
 			$this->ExecuteQuery("update vtiger_cbupdater set blocked='1', systemupdate='0' where cbupdaterid=?", array($this->cbupdid));
-			coreBOS_Settings::delSetting('picklistTranslationLanguagesDone');
+			coreBOS_Settings::delSetting('picklistTranslationLanguageModulesDone');
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}
