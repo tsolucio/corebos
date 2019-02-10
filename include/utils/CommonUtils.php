@@ -57,8 +57,8 @@ function is_adminID($userID) {
  */
 function isInsideApplication($path2check) {
 	global $root_directory;
-	$rp = realpath($path2check);
-	$rt = rtrim($root_directory, '/').DIRECTORY_SEPARATOR;
+	$rp = str_replace('\\', '/', realpath($path2check));
+	$rt = str_replace('\\', '/', $root_directory);
 	return (strpos($rp, $rt)===0);
 }
 
