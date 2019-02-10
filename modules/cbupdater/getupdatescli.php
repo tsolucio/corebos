@@ -48,7 +48,7 @@ if (isset($argv) && count($argv)==2) {
 	$cbupdate_files[] = vtlib_purify($argv[1]);
 } else {
 	$cbupdate_files[] = 'modules/cbupdater/cbupdater.xml';
-	foreach (glob('modules/cbupdater/cbupdates/*.{xml}', GLOB_BRACE) as $tcode) {
+	foreach (glob('modules/cbupdater/cbupdates/*.xml') as $tcode) {
 		$cbupdate_files[] = $tcode;
 	}
 }
