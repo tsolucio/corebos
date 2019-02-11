@@ -10,7 +10,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="targetmodule"  minOccurs="0">
+        <xs:element name="targetmodule">
           <xs:complexType>
             <xs:sequence>
               <xs:element type="xs:byte" name="targetid" minOccurs="0"/>
@@ -33,31 +33,11 @@
                             <xs:complexType mixed="true">
                               <xs:sequence>
                                 <xs:element type="xs:string" name="OrgfieldName"/>
-                                <xs:element type="xs:string" name="OrgfieldID" minOccurs="0"/>
+                                <xs:element type="xs:string" name="OrgfieldID"/>
                               </xs:sequence>
                             </xs:complexType>
                           </xs:element>
                           <xs:element type="xs:string" name="delimiter" minOccurs="0"/>
-                        </xs:sequence>
-                      </xs:complexType>
-                    </xs:element>
-                    <xs:element name="validations" maxOccurs="unbounded" minOccurs="0">
-                      <xs:complexType>
-                        <xs:sequence>
-                          <xs:element name="validation">
-                            <xs:complexType>
-                              <xs:sequence>
-                                <xs:element type="xs:string" name="rule"/>
-                                <xs:element name="restrictions">
-                                  <xs:complexType>
-                                    <xs:sequence>
-                                      <xs:element type="xs:string" name="restriction"/>
-                                    </xs:sequence>
-                                  </xs:complexType>
-                                </xs:element>
-                              </xs:sequence>
-                            </xs:complexType>
-                          </xs:element>
                         </xs:sequence>
                       </xs:complexType>
                     </xs:element>
