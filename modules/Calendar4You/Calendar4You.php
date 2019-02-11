@@ -14,7 +14,6 @@ class Calendar4You extends CRMEntity {
     private $profilesActions;
     private $profilesPermissions;
 
-    private $profile_Global_Permission = array();
     private $subordinate_roles_users = array();
     private $current_user_groups = array();
 
@@ -85,27 +84,26 @@ public function setgoogleaccessparams($userid){
  }
 }
 
-    public function GetDefPermission($userid) {
+    public function GetDefPermission(Users $user) {
         
-        require('user_privileges/user_privileges_'.$userid.'.php');
-		require('user_privileges/sharing_privileges_'.$userid.'.php');
+
+        $priv = $user->getPrivileges();
+        $this->privileges = $priv;
+        $this->is_admin = $priv->isAdmin();
         
-        $this->is_admin = $is_admin;
-        
-        if($this->is_admin==false) {
+        if(!$this->is_admin) {
             if (empty($this->tabid)) $this->tabid = getTabid("Calendar4You");
 
-            $this->profile_Global_Permission = $profileGlobalPermission;
-            $this->subordinate_roles_users = $subordinate_roles_users;
-            $this->current_user_groups = $current_user_groups;
+            $this->subordinate_roles_users = $priv->getSubordinateRoles2Users();
+            $this->current_user_groups = $priv->getGroups();
               
-            if ($this->profile_Global_Permission[1] == "0")
+            if ($priv->hasGlobalViewPermission())
                 $this->view_all = true;
          
-            if ($this->profile_Global_Permission[2] == "0")
+            if ($priv->hasGlobalWritePermission())
                 $this->edit_all = true;
             
-            $dosp = $defaultOrgSharingPermission[$this->tabid];
+            $dosp =  $priv->getModuleSharingPermission($this->tabid);
             
             //0 - Public: Read Only
             //1 - Public: Read, Create/Edit
@@ -148,9 +146,6 @@ public function setgoogleaccessparams($userid){
 		} else {
 			if (empty($this->tabid)) $this->tabid = getTabid("Calendar4You");
 
-			require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-			require('user_privileges/user_privileges_'.$current_user->id.'.php');
-
             $query = "select status as status, id as id,user_name as user_name,first_name,last_name from vtiger_users where id=? 
                       union 
                       select status as status, vtiger_user2role.userid as id,vtiger_users.user_name as user_name ,
@@ -162,7 +157,13 @@ public function setgoogleaccessparams($userid){
                       union
                       select status as status, id as id,user_name as user_name,first_name,last_name from vtiger_users 
                       inner join vtiger_sharedcalendar on vtiger_sharedcalendar.userid = vtiger_users.id where sharedid=?";
-			$params = array($current_user->id, $current_user_parent_role_seq."::%", $current_user->id, $this->tabid, $current_user->id);
+			$params = array(
+				$current_user->id,
+				$this->privileges->getParentRoleSequence() ."::%",
+				$current_user->id,
+				$this->tabid,
+				$current_user->id
+			);
         }
         $result = $this->db->pquery($query,$params);
 
@@ -379,14 +380,14 @@ public function setgoogleaccessparams($userid){
     //Method for checking the permissions, whether the user has privilegies to perform specific action on PDF Maker.
     public function CheckPermissions($actionKey,$record_id = '') {
         global $current_user;
-        
-        if (empty($this->view_all)) $this->GetDefPermission($current_user->id);
+
+        if (empty($this->view_all)) $this->GetDefPermission($current_user);
         
         if ($this->is_admin) return true;
             
-        if ($this->profile_Global_Permission[1] == "0" && $actionKey == "DETAIL") {
+        if ($this->view_all && $actionKey == "DETAIL") {
             return true;
-        } elseif ($this->profile_Global_Permission[2] == "0" && ($actionKey == "EDIT" || $actionKey == "CREATE")) {
+        } elseif ($this->edit_all && ($actionKey == "EDIT" || $actionKey == "CREATE")) {
             return true;
         } else {
 
@@ -458,7 +459,6 @@ public function setgoogleaccessparams($userid){
     
     function getActStatusFieldValues($fieldname,$tablename) {
     	global $adb, $mod_strings,$current_user,$default_charset;
-    	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 
         if (count($this->View) > 0) $load_ch = true; else $load_ch = false;
 
