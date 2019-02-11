@@ -32,7 +32,7 @@ function evvt_strip_html_links($text) {
 
 function vtws_changePortalUserPassword($email, $newPass) {
 	global $adb,$log;
-	$log->debug('> schangePortalUserPassword');
+	$log->debug('Entering schangePortalUserPassword');
 	$nra = $adb->pquery('update vtiger_portalinfo set user_password=? where user_name=?', array($newPass,$email));
 	if ($nra) {
 		return true;
@@ -43,20 +43,20 @@ function vtws_changePortalUserPassword($email, $newPass) {
 
 function vtws_findByPortalUserName($username) {
 	global $adb,$log;
-	$log->debug('> vtws_findByPortalUserName');
+	$log->debug('Entering function vtws_findByPortalUserName');
 	$nra=$adb->query_result($adb->pquery('select count(*) from vtiger_portalinfo where isactive=1 and user_name=?', array($username)), 0, 0);
 	if (empty($nra)) {
 		$output=false;
 	} else {
 		$output=true;
 	}
-	$log->debug('< vtws_findByPortalUserName');
+	$log->debug('Exiting function vtws_findByPortalUserName');
 	return $output;
 }
 
 function vtws_sendRecoverPassword($username) {
 	global $adb,$log,$current_user;
-	$log->debug('> vtws_sendRecoverPassword');
+	$log->debug('Entering function vtws_sendRecoverPassword');
 
 	$ctors=$adb->pquery('select contactid,email,user_password
 			from vtiger_contactdetails
@@ -74,8 +74,23 @@ function vtws_sendRecoverPassword($username) {
 	$subject = getTranslatedString('Customer Portal Login Details', 'Contacts');
 	$mail_status = send_mail('Contacts', $cto['email'], $current_user->user_name, '', $subject, $contents);
 
-	$log->debug('< vtws_sendRecoverPassword');
+	$log->debug('Exiting function vtws_sendRecoverPassword');
 	return $mail_status;
+}
+
+function vtws_getAllUsers() {
+	global $adb,$log,$current_user;
+	$log->debug('Entering function vtws_getAllUsers');
+
+	$usrwsid = vtyiicpng_getWSEntityId('Users');
+	$usrs=$adb->pquery('select id,first_name,last_name from vtiger_users', array());
+	$usr_array = array();
+	while($usr = $adb->fetch_array($usrs)){
+		$usr_array[] = array($usrwsid.$usr['id'],$usr['first_name'].' '.$usr['last_name']);
+	}
+
+	$log->debug('Exiting function vtws_sendRecoverPassword');
+	return $usr_array;
 }
 
 function vtws_getPortalUserDateFormat($user) {
@@ -99,7 +114,7 @@ function vtws_getPortalUserInfo($user) {
 
 function vtws_getAssignedUserList($module, $user) {
 	global $log,$current_user,$default_charset;
-	$log->debug('> getAssignedUserList '.$module);
+	$log->debug('Entering getAssignedUserList function with parameter modulename: '.$module);
 	$hcuser = $current_user;
 	$current_user = $user;
 	require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
@@ -121,7 +136,7 @@ function vtws_getAssignedUserList($module, $user) {
 
 function vtws_getAssignedGroupList($module, $user) {
 	global $log,$current_user,$default_charset;
-	$log->debug('> vtws_getAssignedGroupList '.$module);
+	$log->debug('Entering vtws_getAssignedGroupList function with parameter modulename: '.$module);
 	$hcuser = $current_user;
 	$current_user = $user;
 	require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
@@ -143,7 +158,7 @@ function vtws_getAssignedGroupList($module, $user) {
 
 function vtws_AuthenticateContact($email, $password) {
 	global $adb,$log;
-	$log->debug('> AuthenticateContact '.$email.','.$password);
+	$log->debug('Entering AuthenticateContact function with parameter email: '.$email.' password:'.$password);
 
 	$rs = $adb->pquery('select id
 		from vtiger_portalinfo
@@ -163,7 +178,7 @@ function vtws_AuthenticateContact($email, $password) {
 function vtws_getPicklistValues($fld_module) {
 	global $adb,$log;
 	include_once 'modules/PickList/PickListUtils.php';
-	$log->debug('> getPicklistValues '.$fld_module);
+	$log->debug('Entering getPicklistValues function with parameter: '.$fld_module);
 	$res=array();
 	$all=array();
 	if ($fld_module == 'Documents') {
@@ -187,7 +202,7 @@ function vtws_getPicklistValues($fld_module) {
 
 function vtws_getUItype($module, $user) {
 	global $adb,$log;
-	$log->debug('> getUItype '.$module);
+	$log->debug('Entering getUItype function with parameter modulename: '.$module);
 	$tabid=getTabid($module);
 	$res=$adb->pquery('select uitype,fieldname from vtiger_field where tabid=? and presence in (0,2) ', array($tabid));
 	$nr=$adb->num_rows($res);
@@ -202,7 +217,7 @@ function vtws_getUItype($module, $user) {
 function vtws_getReferenceValue($strids, $user) {
 	global $log,$adb;
 	$ids=unserialize($strids);
-	$log->debug('> vtws_getReferenceValue '.$strids);
+	$log->debug('Entering vtws_getReferenceValue with id '.$strids);
 	foreach ($ids as $id) {
 		list($wsid,$realid)=explode('x', $id);
 		$rs = $adb->pquery('select name from vtiger_ws_entity where id=?', array($wsid));
@@ -225,7 +240,7 @@ function vtws_getReferenceValue($strids, $user) {
 			$result[$id]=array('module'=>$modulename,'reference'=>$entityinfo[$realid]);
 		}
 	}
-	$log->debug('< vtws_getReferenceValue');
+	$log->debug('Exit vtws_getReferenceValue');
 	return serialize($result);
 }
 
@@ -368,7 +383,7 @@ if (!function_exists('getSearchModules')) {
 
 function getSearchingListViewEntries($focus, $module, $list_result, $navigation_array, $relatedlist = '', $returnset = '', $edit_action = 'EditView', $del_action = 'Delete', $oCv = '', $page = '', $selectedfields = '', $contRelatedfields = '', $skipActions = false, $linksallowed = false) {
 	global $log, $adb, $current_user, $theme;
-	$log->debug('> getSearchingListViewEntries in CPWS '.get_class($focus).','. $module);
+	$log->debug('Entering getSearchingListViewEntries in CPWS('.get_class($focus).','. $module.') method ...');
 	$noofrows = $adb->num_rows($list_result);
 	$list_block = array();
 	//getting the field table entries from database
@@ -386,16 +401,15 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 	// Remove fields which are made inactive
 	$focus->filterInactiveFields($module);
 
-	//Added to reduce the no. of queries logging for non-admin user
+	//Added to reduce the no. of queries logging for non-admin user -- by minnie-start
 	$field_list = array();
 	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 	foreach ($focus->list_fields as $name => $tableinfo) {
-		if ($oCv && isset($oCv->list_fields_name)) {
-			$fieldname = $oCv->list_fields_name[$name];
-		} elseif (isset($focus->list_fields_name[$name])) {
-			$fieldname = $focus->list_fields_name[$name];
-		} else {
-			continue;
+		$fieldname = $focus->list_fields_name[$name];
+		if ($oCv) {
+			if (isset($oCv->list_fields_name)) {
+				$fieldname = $oCv->list_fields_name[$name];
+			}
 		}
 		if ($fieldname == 'accountname' && $module != 'Accounts') {
 			$fieldname = 'account_id';
@@ -479,6 +493,8 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 				$entity_id = $adb->query_result($list_result, $i-1, 'id');
 			}
 			foreach ($focus->list_fields as $name => $tableinfo) {
+				$fieldname = $focus->list_fields_name[$name];
+
 				if ($oCv) {
 					if (isset($oCv->list_fields_name)) {
 						$fieldname = $oCv->list_fields_name[$name];
@@ -494,7 +510,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 					} else {
 						$fieldname = $focus->list_fields_name[$name];
 					}
-				} elseif (isset($focus->list_fields_name[$name])) {
+				} else {
 					$fieldname = $focus->list_fields_name[$name];
 					if ($fieldname == 'accountname' && $module != 'Accounts') {
 						$fieldname = 'account_id';
@@ -505,8 +521,6 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 					if ($fieldname == 'productname' && $module != 'Products') {
 						$fieldname = 'product_id';
 					}
-				} else {
-					continue;
 				}
 				if ($is_admin==true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0 || in_array($fieldname, $field) || $fieldname == '') {
 					if ($fieldname == '') {
@@ -770,19 +784,19 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 							$value = evvt_strip_html_links($value);
 						}
 					}
-					$list_header[$name] = $value;
+					$list_header[] = $value;
 				}
 			}
 			$varreturnset = '';
 
 			$varreturnset = $returnset;
 			$webserviceEntityId=vtyiicpng_getWSEntityId($module);
-			$list_header['id']=$webserviceEntityId.$entity_id;
-			$list_header['search_module_name']=$module;
+			$list_header[]=$webserviceEntityId.$entity_id;
+			$list_header[]=$module;
 			$list_block[$entity_id] = $list_header;
 		}
 	}
-	$log->debug('< getSearchingListViewEntries CPWS');
+	$log->debug('Exiting getSearchingListViewEntries method ...');
 	return $list_block;
 }
 
