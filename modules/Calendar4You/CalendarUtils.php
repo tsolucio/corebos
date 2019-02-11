@@ -151,10 +151,9 @@ function getActTypeForCalendar($activitytypeid, $translate = true) {
 
 function getActTypesForCalendar() {
 	global $adb,$mod_strings,$current_user;
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 
 	$ActTypes = array();
-	if($is_admin)
+	if($current_user->getPrivileges()->isAdmin())
 		$q = "select * from vtiger_activitytype";
 	else {
 		$roleid=$current_user->roleid;
@@ -250,10 +249,7 @@ function NOPermissionDiv() {
 function getCalendar4YouListQuery($userid, $invites, $where = '', $type='1') {
 	global $log, $current_user;
 	$log->debug("Entering getCalendar4YouListQuery(" . $userid . "," . $where . ") method ...");
-	if ($userid != "") {
-		require('user_privileges/user_privileges_' . $userid . '.php');
-		require('user_privileges/sharing_privileges_' . $userid . '.php');
-	}
+
 	//$tab_id = getTabid("Calendar4You");
 	$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' =>'vtiger_users.last_name'), 'Users');
 
@@ -421,10 +417,13 @@ function getCalendar4YouNonAdminUserAccessQuery($user, $parentRole, $userGroups)
  * @param <type> $user
  */
 function getCalendar4YouNonAdminModuleAccessQuery($module, $userid) {
-	require('user_privileges/sharing_privileges_' . $userid . '.php');
+
+	global $current_user;
+	$privileges = $current_user->getPrivileges();
+
 	$tabId = getTabid($module);
-	$sharingRuleInfoVariable = $module . '_share_read_permission';
-	$sharingRuleInfo = $$sharingRuleInfoVariable;
+	$sharingRuleInfo = $privileges->getModuleSharingRules($module, "read");
+
 	$sharedTabId = null;
 	$query = '';
 	if (!empty($sharingRuleInfo) && (count($sharingRuleInfo['ROLE']) > 0 || count($sharingRuleInfo['GROUP']) > 0)) {
@@ -493,7 +492,7 @@ function getEventActivityMode($id) {
 
 function getITSActFieldCombo($fieldname,$tablename,$from_module = '',$follow_activitytype = false) {
 	global $adb, $mod_strings,$current_user,$default_charset;
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+
 	$combo = '';
 	$js_fn = '';
 	$def = '';
@@ -515,7 +514,7 @@ function getITSActFieldCombo($fieldname,$tablename,$from_module = '',$follow_act
 		$combo .= '<select name="follow_'.$fieldname.'" id="follow_'.$fieldname.'" class=small '.$js_fn.'>';
 	else
 		$combo .= '<select name="'.$fieldname.'" id="'.$fieldname.'" class=small '.$js_fn.'>';
-	if($is_admin)
+	if($current_user->getPrivileges()->isAdmin())
 		$q = "select * from ".$tablename;
 	else {
 		$roleid=$current_user->roleid;
