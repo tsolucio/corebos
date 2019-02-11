@@ -9,24 +9,56 @@
  ************************************************************************************/
 
 include_once 'include/integrations/whatsapp/whatsapp.php';
+require_once 'modules/com_vtiger_workflow/VTSimpleTemplate.inc';
 
 class WhatsappWorkflowTask extends VTTask {
 
 	public $executeImmediately = true;
+	public $attachmentsinfo = array();
+	public $dzattinfo = array();
 
 	public function getFieldNames() {
 		return array('messageBody', 'attachmentids', 'phone');
 	}
-
+	public function after_retrieve() {
+		global $adb;
+		$this->attachmentsinfo = array();
+		$this->dzattinfo = array();
+		if (!empty($this->attachmentids)) {
+			$aids = explode(',', trim($this->attachmentids, ','));
+			$query = 'SELECT vtiger_attachments.path, vtiger_attachments.name, vtiger_attachments.attachmentsid, vtiger_notes.filename, vtiger_notes.filesize
+				FROM vtiger_attachments
+				INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
+				INNER JOIN vtiger_crmentity ON vtiger_attachments.attachmentsid=vtiger_crmentity.crmid
+				INNER JOIN vtiger_notes ON vtiger_notes.notesid=vtiger_seattachmentsrel.crmid
+				WHERE deleted=0 AND vtiger_seattachmentsrel.crmid = ?';
+			foreach ($aids as $docid) {
+				$docrs = $adb->pquery($query, array($docid));
+				if ($docrs && $adb->num_rows($docrs)==1) {
+					$attname = $adb->query_result($docrs, 0, 'path').$adb->query_result($docrs, 0, 'attachmentsid').'_'.$adb->query_result($docrs, 0, 'name');
+					$this->attachmentsinfo[] = $attname;
+					$this->dzattinfo[] = array(
+						'docid' => $docid,
+						'name' => $adb->query_result($docrs, 0, 'filename'),
+						'size' => $adb->query_result($docrs, 0, 'filesize'),
+					);
+				} else {
+					$this->attachmentids = str_replace($docid.',', '', $this->attachmentids);
+				}
+			}
+		}
+	}
 	public function doTask(&$entityData) {
 		$moduleName = $entityData->getModuleName();
 		$data = $entityData->getData();
 		$clientclass = new corebos_whatsapp();
 		$client = $clientclass->whatsappclient;
 		$sender = $clientclass->senderphone;
-		$body = $this->messageBody;
+		$entityCache = new VTEntityCache($current_user);
+		$ws_id = $entity->getId();
+		$pt = new VTSimpleTemplate($this->messageBody);
+		$body = $pt->render($entityCache, $ws_id);
 		$phone = $data[$this->phone];
-
 		if ($sender!='') {
 			$message=$client->messages->create(
 				'whatsapp:'.$phone,

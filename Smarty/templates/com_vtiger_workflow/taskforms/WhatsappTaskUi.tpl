@@ -17,20 +17,18 @@ var __attinfo = {$task->dzattinfo|json_encode};
 
 <table border="0" cellpadding="0" cellspacing="0" width="100%" class="small">
 	<tr>
-		<td>&nbsp</td>
-		<td style='padding-top: 10px;'>
-			<b>{$MOD.LBL_SELECT}&nbsp</b>
-		</td>
-		<td style='padding-top: 10px;'>
-			<select class="small" id="task_timefields">
+		<td style="padding-top: 10px; width: 100%">
+			<select class="small" id="task_timefields" name="metavariable">
 					<option value="">{'Select Meta Variables'|@getTranslatedString:$MODULE_NAME}</option>
 					{foreach key=META_LABEL item=META_VALUE from=$META_VARIABLES}
 					<option value="{$META_VALUE}">{$META_LABEL|@getTranslatedString:$MODULE_NAME}</option>
 					{/foreach}
 			</select>
 		</td>
-		<td align="right" style='padding-top: 10px;'>
-			<span class="helpmessagebox" style="font-style: italic;">{$MOD.LBL_WORKFLOW_NOTE_CRON_CONFIG}</span>
+		<td class='' style="padding-top: 10px; width: 100%">
+			<select id="task_phonefields" class="small" name="phone" style="">
+				<option value="">{'Phone Fields'|@getTranslatedString:$MODULE_NAME}</option>
+			</select>
 		</td>
 	</tr>
 	<tr>
@@ -38,9 +36,7 @@ var __attinfo = {$task->dzattinfo|json_encode};
 			<span id="_messagediv_" style="display: none;z-index:22;" class="cb-alert-info"></span>
 			<div id="file-uploader" class="dropzone mm-dz-div slds-m-top_xx-small" style="display: none;">
 				<span class="dz-message mmdzmessage"><img alt="{'Drag attachment here or click to upload'|@getTranslatedString}" src="include/dropzone/upload_32.png"></span>
-				<span class="dz-message mmdzmessage" id="file-uploader-message">
-				&nbsp;{'Drag attachment here or click to upload'|@getTranslatedString}
-				</span>
+				<span class="dz-message mmdzmessage" id="file-uploader-message">&nbsp;{'Drag attachment here or click to upload'|@getTranslatedString}</span>
 			</div>
 		</td>
 		<td valign="top" align="left" style="white-space:nowrap;">
@@ -51,23 +47,15 @@ var __attinfo = {$task->dzattinfo|json_encode};
 		</td>
 	</tr>
 </table>
-<table>
-	<tr>
-		<td>&nbsp</td>
-	</tr>
-	<tr>
-		<td><b>{$MOD.LBL_MESSAGE}:</b></td>
-	</tr>
-</table>
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
-<p style="border:1px solid black;">
+<p style="">
+<b>{$MOD.LBL_MESSAGE}</b>
 	<textarea style="width:90%;height:200px;" name="messageBody" rows="55" cols="40" id="save_content" class="detailedViewTextBox"> {$task->messageBody} </textarea>
 </p>
 <script type="text/javascript" defer="1">
 	var textAreaName = 'save_content';
 	CKEDITOR.replace( textAreaName,	{ldelim}
-		extraPlugins : 'uicolor',
-		uiColor: '#dfdff1'
+		customConfig: '../../modules/chatwithme/workflow/ckeditor_config.js'
 	{rdelim} ) ;
 	var oCKeditor = CKEDITOR.instances[textAreaName];
 </script>
