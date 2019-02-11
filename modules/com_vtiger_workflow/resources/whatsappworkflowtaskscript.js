@@ -195,6 +195,11 @@ function WhatsappTask($) {
 					fillSelectBox('task_phonefields', modules, moduleName, function (e) {
 						return e['type']['name']=='phone';
 					});
+					$('#task_phonefields').change(function () {
+						var input = $($('#phone').get());
+						var value = '$'+$(this).val();
+						input.val(input.val()+','+value);
+					});
 					$('#task_timefields').change(function () {
 						var textarea = CKEDITOR.instances.save_content;
 						var value = '$'+$(this).val();
