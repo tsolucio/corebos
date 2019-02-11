@@ -215,7 +215,7 @@ class UserPrivileges {
 	}
 
 	/**
-	 * Methot to fetch audit trail
+	 * Method to fetch audit trail
 	 *
 	 * @return bool
 	 */
@@ -227,5 +227,44 @@ class UserPrivileges {
 			$definedVars["audit_trail"]:false;
 		}
 		return $this->auditTrail;
+	}
+
+	/**
+	 * Method to set audit trail
+	 *
+	 * @return void
+	 */
+	public function setAuditTrail() {
+		global $root_directory;
+
+		$filename = $root_directory . 'user_privileges/audit_trail.php';
+		if (is_writable($filename)) {
+			$readhandle = @fopen($filename, "r+");
+
+			if ($readhandle) {
+				$buffer = '';
+				$new_buffer = '';
+				while (!feof($readhandle)) {
+					$buffer = fgets($readhandle, 5200);
+					list($starter, $tmp) = explode(" = ", $buffer);
+
+					if ($starter == '$audit_trail' && stristr($tmp, 'false')) {
+						$new_buffer .= "\$audit_trail = true;\n";
+					} elseif ($starter == '$audit_trail' && stristr($tmp, 'true')) {
+						$new_buffer .= "\$audit_trail = false;\n";
+					} else {
+						$new_buffer .= $buffer;
+					}
+
+				}
+				fclose($readhandle);
+			}
+
+			$handle = fopen($filename, "w");
+			fputs($handle, $new_buffer);
+			fflush($handle);
+			fclose($handle);
+			sleep(3);
+		}
 	}
 }
