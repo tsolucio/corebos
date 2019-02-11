@@ -97,6 +97,21 @@ function vtws_getPortalUserInfo($user) {
 	return $usrinfo;
 }
 
+function vtws_getAllUsers() {
+	global $log;
+	$log->debug('Entering function vtws_getAllUsers');
+
+	$usrwsid = vtyiicpng_getWSEntityId('Users');
+	$usrs = getAllUserName();
+	$usr_array = array();
+	foreach ($usrs as $id => $usr) {
+		$usr_array[$usrwsid.$id] = $usr;
+	}
+
+	$log->debug('Exiting function vtws_sendRecoverPassword');
+	return $usr_array;
+}
+
 function vtws_getAssignedUserList($module, $user) {
 	global $log,$current_user,$default_charset;
 	$log->debug('> getAssignedUserList '.$module);
