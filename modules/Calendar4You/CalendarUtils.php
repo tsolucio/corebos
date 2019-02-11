@@ -313,37 +313,11 @@ function getCalendar4YouListQuery($userid, $invites, $where = '', $type='1') {
 
 	if($invites && $userid != "") $query.= "INNER JOIN vtiger_invitees ON vtiger_invitees.activityid = vtiger_activity.activityid AND vtiger_invitees.inviteeid = '".$userid."' ";
 
-	//$query .= getCalendar4YouNonAdminAccessControlQuery($userid);
 	$query.=" WHERE vtiger_crmentity.deleted = 0 AND activitytype != 'Emails' " . $where;
 
 	$query = listQueryNonAdminChange($query, "Calendar");
 
 	$log->debug("Exiting getListQuery method ...");
-	return $query;
-}
-
-function getCalendar4YouNonAdminAccessControlQuery($userid,$scope='') {
-	require('user_privileges/user_privileges_'.$userid.'.php');
-	require('user_privileges/sharing_privileges_'.$userid.'.php');
-	$module = "Calendar";
-	$query = ' ';
-	$tabId = getTabid($module);
-	if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2]
-			== 1 && $defaultOrgSharingPermission[$tabId] == 3) {
-		$tableName = 'vt_tmp_u'.$userid.'_t'.$tabId;
-		$sharingRuleInfoVariable = $module.'_share_read_permission';
-		$sharingRuleInfo = $$sharingRuleInfoVariable;
-		$sharedTabId = null;
-		setupCalendar4YouTemporaryTable($tableName, $sharedTabId, $user,
-				$current_user_parent_role_seq, $current_user_groups);
-		$query = " INNER JOIN $tableName $tableName$scope ON ($tableName$scope.id = ".
-				"vtiger_crmentity$scope.smownerid and $tableName$scope.shared=0) ";
-		$sharedIds = getCalendar4YouSharedCalendarId($userid);
-		if(!empty($sharedIds)){
-			$query .= "or ($tableName$scope.id = vtiger_crmentity$scope.smownerid AND ".
-				"$tableName$scope.shared=1 and vtiger_activity.visibility = 'Public') ";
-		}
-	}
 	return $query;
 }
 
