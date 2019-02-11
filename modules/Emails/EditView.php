@@ -141,7 +141,8 @@ if (isset($_REQUEST['internal_mailer']) && $_REQUEST['internal_mailer'] == 'true
 	} elseif ($rec_type == 'email_addy') {
 		$email1 = vtlib_purify($_REQUEST['email_addy']);
 	}
-	$smarty->assign('TO_MAIL', trim($email1, ',').',');
+	$tm = trim($email1, ',');
+	$smarty->assign('TO_MAIL', $tm.($tm == '' ? '' : ','));
 }
 
 //handled for replying emails
