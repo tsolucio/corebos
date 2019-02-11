@@ -25,7 +25,7 @@ if($focus->is_authenticated())
 {
 	coreBOS_Session::destroy();
 	//Inserting entries for audit trail during login
-	if ($current_user->getPrivileges()->auditTrail()) {
+	if ($focus->getPrivileges()->auditTrail()) {
 		$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
 		$query = "insert into vtiger_audit_trial values(?,?,?,?,?,?)";
 		$params = array($adb->getUniqueID('vtiger_audit_trial'), $focus->id, 'Users','Authenticate','',$date_var);
