@@ -99,7 +99,7 @@ function vtws_getPortalUserInfo($user) {
 
 function vtws_getAllUsers() {
 	global $log;
-	$log->debug('Entering function vtws_getAllUsers');
+	$log->debug('> vtws_getAllUsers');
 
 	$usrwsid = vtyiicpng_getWSEntityId('Users');
 	$usrs = getAllUserName();
@@ -108,7 +108,7 @@ function vtws_getAllUsers() {
 		$usr_array[$usrwsid.$id] = $usr;
 	}
 
-	$log->debug('Exiting function vtws_sendRecoverPassword');
+	$log->debug('< vtws_getAllUsers');
 	return $usr_array;
 }
 

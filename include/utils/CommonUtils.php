@@ -223,7 +223,7 @@ function parse_calendardate($local_format) {
 /**
  * Rudimentary/Trusted input clean up for XSS
  * input values $string - string to be cleaned
- * returns the cleaned value in string fromat
+ * returns the cleaned value in string format
  */
 function from_html($string) {
 	if (is_string($string)) {
@@ -240,9 +240,10 @@ function fck_from_html($string) {
 }
 
 /**
- * 	Function used to decodes the given single quote and double quote only. This function used for popup selection
- * 	@param string $string - string to be converted, $encode - flag to decode
- * 	@return string $string - the decoded value in string fromat where as only single and double quotes will be decoded
+ * Function used to decode the given single quote and double quote only. This function is used for popup selection
+ * @param string $string - string to be converted
+ * @param boolean $encode - flag to decode
+ * @return string $string - the decoded value in string format where as only single and double quotes will be decoded
  */
 function popup_from_html($string, $encode = true) {
 	global $log;
@@ -474,8 +475,8 @@ function getFieldFromBlockArray($blocks, $fldlabel) {
 
 /**
  * Function to get the CustomViewName
- * Takes the input as $cvid - customviewid
- * returns the cvname string fromat
+ * @param integer $cvid - customviewid
+ * @return string cvname format
  */
 function getCVname($cvid) {
 	global $log, $adb;
