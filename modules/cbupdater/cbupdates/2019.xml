@@ -42,11 +42,4 @@
 	<classname>unblockpicklist_translations</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
-<changeSet>
-	<author>Kiko Jover</author>
-	<description>Add getAllUsers webservice operation</description>
-	<filename>build/changeSets/2019/add_WS_getallusers.php</filename>
-	<classname>add_WS_getallusers</classname>
-	<systemupdate>true</systemupdate>
-</changeSet>
 </updatesChangeLog>
