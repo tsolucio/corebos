@@ -85,7 +85,7 @@ class VTUpdateFieldsTask extends VTTask {
 						$taskQueue->queueTask($this->id, $entityId, $delay);
 						return;
 					}
-					$moduleHandlerrel = vtws_getModuleHandlerFromName($fieldmodule, $current_user);
+					$moduleHandlerrel = vtws_getModuleHandlerFromName($fieldmodule, $current_user, $from_wf);
 					$handlerMetarel[$fieldmodule] = $moduleHandlerrel->getMeta();
 					$moduleFieldsrel = $handlerMetarel[$fieldmodule]->getModuleFields();
 					$fieldValue=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue, $fldrelname, $focus, $entity, $handlerMetarel[$fieldmodule]);
