@@ -486,12 +486,10 @@ function vtws_addWebserviceOperationParam($operationId, $paramName, $paramType, 
  * @global <type> $log
  * @param <type> $name
  * @param <type> $user
- * @param <bool> $from_wf
  * @return WebserviceEntityOperation
  */
-function vtws_getModuleHandlerFromName($name, $user, $from_wf = false) {
+function vtws_getModuleHandlerFromName($name, $user) {
 	global $adb, $log;
-	$user = $from_wf ? Users::getActiveAdminUser() : $user;
 	$webserviceObject = VtigerWebserviceObject::fromName($adb, $name);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
