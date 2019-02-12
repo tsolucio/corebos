@@ -59,13 +59,12 @@ if ($record == "" && $save != "") {
 }
 $detailview_permissions = $Calendar4You->CheckPermissions("DETAIL");
 
-require('user_privileges/user_privileges_'.$current_user->id.'.php');
-require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+$privileges = $current_user->getPrivileges();
 
 $ParentUsers = array();
 
 $u_query = "select vtiger_user2role.userid as id from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like ?";
-$u_params = array($current_user_parent_role_seq."::%");
+$u_params = array($privileges->getParentRoleSequence() ."::%");
 $u_result = $adb->pquery($u_query,$u_params);
 
 while($u_row = $adb->fetchByAssoc($u_result)) {
