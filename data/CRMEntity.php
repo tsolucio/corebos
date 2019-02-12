@@ -891,7 +891,7 @@ class CRMEntity {
 	 * @param $module -- module:: Type varchar
 	 * This function retrives the information from the database and sets the value in the class columnfields array
 	 */
-	public function retrieve_entity_info($record, $module, $deleted = false) {
+	public function retrieve_entity_info($record, $module, $deleted = false, $from_wf = false) {
 		global $adb, $app_strings, $current_user;
 		$preFmt = '<br><br><center>';
 		$postFmt = '.</a></center>';
@@ -969,9 +969,11 @@ class CRMEntity {
 				$fieldname = $fieldinfo['fieldname'];
 				//Here we check if user have the paermission to access this field.
 				//If it is allowed then it will get the actual value, otherwise it gets an empty string.
-				if (getFieldVisibilityPermission($module, $current_user->id, $fieldname) != '0') {
-					$this->column_fields[$fieldname] = '';
-					continue;
+				if (!isset($from_wf) || !$from_wf) {
+					if (getFieldVisibilityPermission($module, $current_user->id, $fieldname) != '0') {
+						$this->column_fields[$fieldname] = '';
+						continue;
+					}
 				}
 				// To avoid ADODB execption pick the entries that are in $tablename
 				// (ex. when we don't have attachment for troubletickets, $result[vtiger_attachments]

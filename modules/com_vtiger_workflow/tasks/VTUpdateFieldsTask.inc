@@ -77,7 +77,7 @@ class VTUpdateFieldsTask extends VTTask {
 						$focusrel[$fieldmodule] = CRMEntity::getInstance($fieldmodule);
 						$focusrel[$fieldmodule]->id = $relId;
 						$focusrel[$fieldmodule]->mode = 'edit';
-						$focusrel[$fieldmodule]->retrieve_entity_info($relId, $fieldmodule);
+						$focusrel[$fieldmodule]->retrieve_entity_info($relId, $fieldmodule, false, $from_wf);
 						$focusrel[$fieldmodule]->clearSingletonSaveFields();
 					}
 					if (count($relmodule)>3 && $isqueue==false) {
