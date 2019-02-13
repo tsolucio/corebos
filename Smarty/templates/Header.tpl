@@ -139,11 +139,7 @@
 												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 											</svg>
 										</span>
-										
 									<input type="text" class="slds-input slds-combobox__input" id="combobox-id-1" aria-autocomplete="list" aria-controls="search-listbox-id-1" autoComplete="off" role="textbox" placeholder="Search coreBOS" onFocus="this.value=''" /> 
-								{*
-									<input  placeholder="" name="query_string" id="query_string" class="slds-input slds-size_full" type="text" value="{$QUERY_STRING}"  onFocus="this.value=''" autocomplete="off" data-autocomp='{$GS_AUTOCOMP|@json_encode}' />*}
-
 								</div>
 							</div>
 						</div>
@@ -156,13 +152,11 @@
 				<li class="slds-global-actions__item">
 					<div class="slds-global-actions__favorites slds-dropdown-trigger">
 						<div class="slds-button-group">
-							<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border " aria-pressed="false" title="More info">
-								<a href="{$HELP_URL}" target="_blank">
+							<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border " aria-pressed="false" title="More info" onclick="window.open('{$HELP_URL}')">
 									<svg class="slds-button__icon" aria-hidden="true">
 										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
 									</svg>
 									<span class="slds-assistive-text">More info</span>
-								</a>
 							</button>
 							<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-pressed="false" title="Show recent" onclick="document.getElementById('cbds-last-visited').classList.add('cbds-anim-slidein--right');document.getElementById('cbds-last-visited').classList.remove('cbds-anim-slideout--right');">
 								<svg class="slds-button__icon" aria-hidden="true">
@@ -228,6 +222,33 @@
 					<span class="slds-text-title slds-truncate" title="Filter Accounts">{$USER}</span>
 				</li>                    
 			</ul>
+		</div>
+	</div>
+	<div class="noprint">
+		<div class="slds-context-bar">
+			<div class="slds-context-bar__primary slds-context-bar__item_divider-right">
+				<div class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_click slds-no-hover">
+					<div class="slds-context-bar__icon-action">
+						<a href="index.php" class="slds-icon-waffle_container slds-context-bar__button">
+							<div class="slds-icon-waffle">
+								<div class="slds-r1"></div>
+								<div class="slds-r2"></div>
+								<div class="slds-r3"></div>
+								<div class="slds-r4"></div>
+								<div class="slds-r5"></div>
+								<div class="slds-r6"></div>
+								<div class="slds-r7"></div>
+								<div class="slds-r8"></div>
+								<div class="slds-r9"></div>
+							</div>
+						</a>
+					</div>
+					<span class="slds-context-bar__label-action slds-context-bar__app-name">
+						<span class="slds-truncate" title="{$coreBOS_app_name}">{$coreBOS_app_nameHTML}</span>
+					</span>
+				</div>
+			</div>
+		{call cbmenu menu=$MENU}
 		</div>
 	</div>
 </header>
@@ -459,34 +480,7 @@
 {/if}
 {$COREBOS_HEADER_PREMENU}
 <!-- header - master tabs -->
-<div class="noprint">
-<div class="slds-context-bar">
-	<div class="slds-context-bar__primary slds-context-bar__item_divider-right">
-		<div class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_click slds-no-hover">
-			<div class="slds-context-bar__icon-action">
-				<a href="index.php" class="slds-icon-waffle_container slds-context-bar__button">
-					<div class="slds-icon-waffle">
-						<div class="slds-r1"></div>
-						<div class="slds-r2"></div>
-						<div class="slds-r3"></div>
-						<div class="slds-r4"></div>
-						<div class="slds-r5"></div>
-						<div class="slds-r6"></div>
-						<div class="slds-r7"></div>
-						<div class="slds-r8"></div>
-						<div class="slds-r9"></div>
-					</div>
-				</a>
-			</div>
-			<span class="slds-context-bar__label-action slds-context-bar__app-name">
-				<span class="slds-truncate" title="{$coreBOS_app_name}">{$coreBOS_app_nameHTML}</span>
-			</span>
-		</div>
-	</div>
-{call cbmenu menu=$MENU}
-</div>
-</div>
-</td>
+
 
 <div id="calculator_cont" style="position:absolute; z-index:10000" ></div>
 {include file="Clock.tpl"}
