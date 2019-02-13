@@ -134,7 +134,22 @@ class UserPrivileges {
 	 * @return void
 	 */
 	private function loadSharingPrivilegesDB($userid) {
+		global $adb;
 
+		$query = $adb->pquery(
+			"SELECT * FROM sharing_privileges WHERE userid = ?",
+			array($userid)
+		);
+
+		if ($adb->num_rows($query) != 1) {
+			throw new Exception("User has no sharing privileges");
+		}
+
+		$sharing_data = json_decode($adb->query_result($query, 0, 'sharing_data'), true);
+
+		foreach($sharing_data as $key => $data) {
+			$this->$key = $data;
+		}
 	}
 
 	/**
