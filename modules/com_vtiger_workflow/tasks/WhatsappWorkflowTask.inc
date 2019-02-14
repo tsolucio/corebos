@@ -56,42 +56,45 @@ class WhatsappWorkflowTask extends VTTask {
 		$data = $entityData->getData();
 		$clientclass = new corebos_whatsapp();
 		$client = $clientclass->whatsappclient;
+		$isactive = $clientclass->isActive();
 		$sender = $clientclass->senderphone;
-		$entityCache = new VTEntityCache($current_user);
-		$ws_id = $entityData->getId();
-		$pt = new VTSimpleTemplate($this->messageBody);
-		$body = $pt->render($entityCache, $ws_id);
-		$phonest = new VTSimpleTemplate($this->phone);
-		$phones = $phonest->render($entityCache, $ws_id);
-		$phones = trim($phones, ',');
-		if ($sender!='' && $phones!='') {
-			$pa = explode(',', $phones);
-			foreach ($pa as $phone) {
-				$phone = trim($phone);
-				if ($phone=='') {
-					continue;
+		if ($isactive) {
+			$entityCache = new VTEntityCache($current_user);
+			$ws_id = $entityData->getId();
+			$pt = new VTSimpleTemplate($this->messageBody);
+			$body = $pt->render($entityCache, $ws_id);
+			$phonest = new VTSimpleTemplate($this->phone);
+			$phones = $phonest->render($entityCache, $ws_id);
+			$phones = trim($phones, ',');
+			if ($sender!='' && $phones!='') {
+				$pa = explode(',', $phones);
+				foreach ($pa as $phone) {
+					$phone = trim($phone);
+					if ($phone=='') {
+							continue;
+					}
+					if (substr($phone, 0, 1) == '+') {
+							$prefix = '+';
+					} else {
+							$prefix = '';
+					}
+					$phone = $prefix.preg_replace('/[^0-9]/', '', $phone);
+					$message=$client->messages->create(
+						'whatsapp:'.$phone,
+						array(
+							'from' => 'whatsapp:'.$sender,
+							'body' => $body
+							)
+					);
+					$messageid = $message->sid;
+					include_once 'modules/Messages/Messages.php';
+					Messages::createMessage(array(
+							'datenametext' => $phone,
+							'type' => 'Whatsapp',
+							'uniqueid' => $messageid,
+							'description' => $body,
+					));
 				}
-				if (substr($phone, 0, 1) == '+') {
-					$prefix = '+';
-				} else {
-					$prefix = '';
-				}
-				$phone = $prefix.preg_replace('/[^0-9]/', '', $phone);
-				$message=$client->messages->create(
-					'whatsapp:'.$phone,
-					array(
-						'from' => 'whatsapp:'.$sender,
-						'body' => $body
-					)
-				);
-				$messageid = $message->sid;
-				include_once 'modules/Messages/Messages.php';
-				Messages::createMessage(array(
-					'datenametext' => $phone,
-					'type' => 'Whatsapp',
-					'uniqueid' => $messageid,
-					'description' => $body,
-				));
 			}
 		}
 	}
