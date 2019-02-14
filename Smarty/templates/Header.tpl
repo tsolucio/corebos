@@ -117,7 +117,7 @@
                   <div class="slds-combobox_container">
 										<div id="test-1" class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-controls="primary-search-combobox-id-1" aria-expanded="false" aria-haspopup="listbox" role="combobox">
 											<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
-												<input type="text" class="slds-input slds-combobox__input slds-combobox__input-value" id="objectswitcher-combobox-id-1" aria-controls="UnifiedSearch_moduleformwrapper" autoComplete="off" role="textbox" placeholder="Select a module" value="" onfocus="document.getElementById('test-1').classList.add('slds-is-open'); UnifiedSearch_SelectModuleForm(this);" onblur="document.getElementById('test-1').classList.remove('slds-is-open');" />
+												<input type="text" class="slds-input slds-combobox__input slds-combobox__input-value" id="objectswitcher-combobox-id-1" aria-controls="UnifiedSearch_moduleformwrapper" autoComplete="off" role="textbox" placeholder="{$APP.LBL_SELECT_MODULES_FOR_SEARCH}" value="" onfocus="document.getElementById('test-1').classList.add('slds-is-open'); UnifiedSearch_SelectModuleForm(this);" onblur="document.getElementById('test-1').classList.remove('slds-is-open');" />
 												<span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
 													<svg class="slds-icon slds-icon slds-icon_xx-small slds-icon-text-default" aria-hidden="true">
 														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
@@ -139,7 +139,7 @@
 												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 											</svg>
 										</span>
-									<input type="text" class="slds-input slds-combobox__input" id="combobox-id-1" aria-autocomplete="list" aria-controls="search-listbox-id-1" autoComplete="off" role="textbox" placeholder="Search coreBOS" onFocus="this.value=''" /> 
+									<input type="text" class="slds-input slds-combobox__input" id="combobox-id-1" aria-autocomplete="list" aria-controls="search-listbox-id-1" autoComplete="off" role="textbox" placeholder="{$APP.LBL_SEARCH_TITLE}{$APP.LBL_BROWSER_TITLE}" onFocus="this.value=''" /> 
 								</div>
 							</div>
 						</div>
@@ -152,11 +152,11 @@
 				<li class="slds-global-actions__item">
 					<div class="slds-global-actions__favorites slds-dropdown-trigger">
 						<div class="slds-button-group">
-							<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border " aria-pressed="false" title="More info" onclick="window.open('{$HELP_URL}')">
+							<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border " aria-pressed="false" title="{$APP.LNK_HELP}" onclick="window.open('{$HELP_URL}')">
 									<svg class="slds-button__icon" aria-hidden="true">
 										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
 									</svg>
-									<span class="slds-assistive-text">More info</span>
+									<span class="slds-assistive-text">{$APP.LNK_HELP}</span>
 							</button>
 							<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-pressed="false" title="Show recent" onclick="document.getElementById('cbds-last-visited').classList.add('cbds-anim-slidein--right');document.getElementById('cbds-last-visited').classList.remove('cbds-anim-slideout--right');">
 								<svg class="slds-button__icon" aria-hidden="true">
@@ -169,15 +169,15 @@
 				</li>
 				<li class="slds-global-actions__item">
 					<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
-						<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-haspopup="true" title="Show More">
+						<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-haspopup="true" title="{$APP.LBL_MORE}">
 							<svg class="slds-button__icon" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#settings"></use>
 							</svg>
-							<span class="slds-assistive-text">Show More</span>
+							<span class="slds-assistive-text">{$APP.LBL_MORE}</span>
 						</button>
 						<div class="slds-dropdown slds-dropdown_right">
 							
-							<ul class="slds-dropdown__list" role="menu" aria-label="Show More">
+							<ul class="slds-dropdown__list" role="menu" aria-label="{$APP.LBL_MORE}">
 								{foreach key=actionlabel item=actionlink from=$HEADERS}
 									<li class="slds-dropdown__item" role="presentation">
 									<a href="{$actionlink}" role="menuitem" tabindex="0">
@@ -188,7 +188,7 @@
 								<li class="slds-has-divider_top-space" role="separator"></li>
 								<li class="slds-dropdown__item" role="presentation">
 									<a href="index.php?module=Settings&action=index&parenttab=" role="menuitem" tabindex="-1">
-										<span class="slds-truncate" title="CRM settings">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</span>
+										<span class="slds-truncate" title="{$APP.LBL_CRM_SETTINGS}">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</span>
 									</a>
 								</li>
 							</ul>
@@ -197,21 +197,21 @@
 				</li>
 				<li class="slds-global-actions__item">
 					<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
-						<button class="slds-button slds-global-actions__avatar slds-global-actions__item-action" title="person name" aria-haspopup="true">
+						<button class="slds-button slds-global-actions__avatar slds-global-actions__item-action" title="{$USER}" aria-haspopup="true">
 							<span class="slds-avatar slds-avatar_circle slds-avatar_medium">
-									<img alt="Person name" src="include/LD/assets/images/avatar2.jpg" title="{$USER}" />
+									<img alt="{$USER}" src="include/LD/assets/images/avatar2.jpg" title="{$USER}" />
 								</span>
 						</button>
 						<div class="slds-dropdown slds-dropdown_left">
 							<ul class="slds-dropdown__list" role="menu" aria-label="Show More">
 								<li class="slds-dropdown__item" role="presentation">
 									<a href="index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}&modechk=prefview" role="menuitem" tabindex="0">
-										<span class="slds-truncate" title="Edit profile">Edit profile</span>
+										<span class="slds-truncate" title="{$APP.LBL_MY_PREFERENCES}">{$APP.LBL_MY_PREFERENCES}</span>
 									</a>
 								</li>
 								<li class="slds-dropdown__item" role="presentation">
 									<a href="index.php?module=Users&action=Logout" role="menuitem" tabindex="-1">
-										<span class="slds-truncate" title="Logout">Logout</span>
+										<span class="slds-truncate" title="{$APP.LBL_LOGOUT}">{$APP.LBL_LOGOUT}</span>
 									</a>
 								</li>
 							</ul>
@@ -219,7 +219,7 @@
 					</div>
 				</li>
 				<li class="slds-global-actions__item">
-					<span class="slds-text-title slds-truncate" title="Filter Accounts">{$USER}</span>
+					<span class="slds-text-title slds-truncate" title="{$USER}">{$USER}</span>
 				</li>                    
 			</ul>
 		</div>
@@ -252,6 +252,7 @@
 		</div>
 	</div>
 </header>
+<div style="width: 1px; height: 90px;"></div>
 
 <!-- END LDS Global header -->
 
@@ -325,7 +326,7 @@
 					<a id="headerUser" class="headerlink" href="index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}&modechk=prefview">
 					{* <img src="{$IMAGEPATH}user.PNG" border=0 style="padding: 0px;padding-left:5px" title="{$APP.LBL_MY_PREFERENCES}" alt="{$APP.LBL_MY_PREFERENCES}"> *}
 						<span class="slds-icon_container slds-icon-utility-user" style="padding-left: 5px" title="{$APP.LBL_MY_PREFERENCES}">
-							<svg class="slds-icon slds-icon_small" aria-hidden="true">
+							<svg class="slds-icon slds-icon_small slds-icon-text-default" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#user"></use>
 							</svg>
 						</span>
@@ -339,7 +340,7 @@
 							<a href="javascript:;" onmouseover="fnvshobj(this,'vtlib_headerLinksLay');" onclick="fnvshobj(this,'vtlib_headerLinksLay');">
 							{* <img src="{'menu_more.png'|@vtiger_imageurl:$THEME}" border=0 style="padding: 0px;padding-left:5px"> *}
 							<span class="slds-icon_container slds-icon-utility-settings" style="padding-left: 5px" title="">
-								<svg class="slds-icon slds-icon_small"  aria-hidden="true">
+								<svg class="slds-icon slds-icon_small slds-icon-text-default"  aria-hidden="true">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#settings"></use>
 								</svg>
 							</span>
@@ -369,7 +370,7 @@
 				<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap><a id="headerHelp" class="headerlink" href="{$HELP_URL}" target="_blank">
 				{* <img src="{$IMAGEPATH}info.PNG" border=0 style="padding: 0px;padding-left:5px" title="{$APP.LNK_HELP}"> *}
 					<span class="slds-icon_container slds-icon-utility-info" style="padding-left: 5px" title="{$APP.LNK_HELP}">
-						<svg class="slds-icon slds-icon_small"  aria-hidden="true">
+						<svg class="slds-icon slds-icon_small slds-icon-text-default"  aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
 						</svg>
 					</span>
@@ -379,7 +380,7 @@
 					<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnDropDown(this,'mainsettings');" nowrap><a id="headerSettings" class="headerlink" href="index.php?module=Settings&action=index&parenttab=" id="settingslink">
 					{* <img src="{$IMAGEPATH}mainSettings.PNG" border=0 style="padding: 0px;padding-left:5px"> *}
 						<span class="slds-icon_container slds-icon-utility-settings" style="padding-left: 5px" title="">
-							<svg class="slds-icon slds-icon_small"  aria-hidden="true">
+							<svg class="slds-icon slds-icon_small slds-icon-text-default"  aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#settings"></use>
 							</svg>
 						</span>
@@ -388,7 +389,7 @@
 				<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap><a id="headerLogout" class="headerlink" href="index.php?module=Users&action=Logout"> 
 				{* <img src="themes/images/logout.png" border=0 style="padding: 0px;padding-left:5px " title="{$APP.LBL_LOGOUT}" alt="{$APP.LBL_LOGOUT}"> *}
 					<span class="slds-icon_container slds-icon-utility-logout" style="padding-left: 5px" title="{$APP.LBL_LOGOUT}">
-						<svg class="slds-icon slds-icon_small" aria-hidden="true">
+						<svg class="slds-icon slds-icon_small slds-icon-text-default" aria-hidden="true">
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#logout"></use>
 						</svg>
 					</span>
@@ -480,7 +481,6 @@
 {/if}
 {$COREBOS_HEADER_PREMENU}
 <!-- header - master tabs -->
-
 
 <div id="calculator_cont" style="position:absolute; z-index:10000" ></div>
 {include file="Clock.tpl"}
