@@ -25,24 +25,39 @@ class UserPrivileges {
 	const SHARING_READWRITE = 1;
 	const SHARING_READWRITEDELETE = 2;
 	const SHARING_PRIVATE = 3;
+	const READ_PRIVILEGES_FROM = 'file';
+
+	private $parent_role_seq = null;
+	private $profiles = null;
+	private $profileGlobalPermission = null;
+	private $profileTabsPermission = null;
+	private $profileActionPermission = null;
+	private $groups = null;
+	private $subordinate_roles = null;
+	private $parent_roles = null;
+	private $subordinate_roles_users = null;
+	private $defaultOrgSharingPermission = null;
 
 	public function __construct($userid) {
+		if(READ_PRIVILEGES_FROM == 'file') {
+			loadUserPrivilegesFile($userid);
+		} else if(READ_PRIVILEGES_FROM == 'db') {
+			loadUserPrivilegesDB($userid);
+		}
+	}
+
+	/**
+	 * Load User Privileges from the file
+	 *
+	 * @param int $userid
+	 * @return void
+	 */
+	private function loadUserPrivilegesFile($userid) {
 		checkFileAccessForInclusion('user_privileges/user_privileges_' . $userid . '.php');
-		require("user_privileges/user_privileges_$userid.php");
-		$this->is_admin = (bool)$is_admin;
-// 		$this->roles = $current_user_roles;
-		if ($this->is_admin) {
-			$this->parent_role_seq = null;
-			$this->profiles = null;
-			$this->profileGlobalPermission =  null;
-			$this->profileTabsPermission = null;
-			$this->profileActionPermission =  null;
-			$this->groups =  null;
-			$this->subordinate_roles =  null;
-			$this->parent_roles =  null;
-			$this->subordinate_roles_users =  null;
-			$this->defaultOrgSharingPermission = null;
-		} else {
+		require "user_privileges/user_privileges_$userid.php";
+		$this->is_admin = (bool) $is_admin;
+		// 	$this->roles = $current_user_roles;
+		if (!$this->is_admin) {
 			$this->parent_role_seq = $current_user_parent_role_seq;
 			$this->profiles = $current_user_profiles;
 			$this->profileGlobalPermission = $profileGlobalPermission;
@@ -57,6 +72,12 @@ class UserPrivileges {
 		$this->user_info = $user_info;
 	}
 
+	/**
+	 * Load Sharing Privileges from the file
+	 *
+	 * @param int $userid
+	 * @return void
+	 */
 	private function loadSharingPrivilegesFile($userid) {
 		checkFileAccessForInclusion('user_privileges/sharing_privileges_' . $userid . '.php');
 		require("user_privileges/sharing_privileges_$userid.php");
@@ -67,6 +88,67 @@ class UserPrivileges {
 			if (!in_array($var, $ignore) && preg_match('/.+_share_\w+_permission/', $var)) {
 				$this->$var = $val;
 			}
+		}
+	}
+
+	/**
+	 * Load User Privileges from the database
+	 *
+	 * @param int $userid
+	 * @return void
+	 */
+	private function loadUserPrivilegesDB($userid) {
+		global $adb;
+
+		$query = $adb->pquery(
+			"SELECT * FROM user_privileges WHERE userid = ?",
+			array($userid)
+		);
+
+		if($adb->num_rows($query) != 1) {
+			throw new Exception("User has no Access Rights");
+		}
+
+		$user_data = json_decode($adb->query_result($query,0,'user_data'), true);
+
+		$this->is_admin = (bool)$user_data["is_admin"];
+		if (!$this->is_admin) {
+			$this->parent_role_seq = $user_data["current_user_parent_role_seq"];
+			$this->profiles = $user_data["current_user_profiles"];
+			$this->profileGlobalPermission = $user_data["profileGlobalPermission"];
+			$this->profileTabsPermission = $user_data["profileTabsPermission"];
+			$this->profileActionPermission = $user_data["profileActionPermission"];
+			$this->groups = $user_data["current_user_groups"];
+			$this->subordinate_roles = $user_data["subordinate_roles"];
+			$this->parent_roles = $user_data["parent_roles"];
+			$this->subordinate_roles_users = $user_data["subordinate_roles_users"];
+			$this->loadSharingPrivilegesDB($userid);
+		}
+		$this->user_info = $user_data["user_info"];
+	}
+
+	/**
+	 * Load Sharing Privileges from the database
+	 *
+	 * @param int $userid
+	 * @return void
+	 */
+	private function loadSharingPrivilegesDB($userid) {
+		global $adb;
+
+		$query = $adb->pquery(
+			"SELECT * FROM sharing_privileges WHERE userid = ?",
+			array($userid)
+		);
+
+		if ($adb->num_rows($query) != 1) {
+			throw new Exception("User has no sharing privileges");
+		}
+
+		$sharing_data = json_decode($adb->query_result($query, 0, 'sharing_data'), true);
+
+		foreach($sharing_data as $key => $data) {
+			$this->$key = $data;
 		}
 	}
 

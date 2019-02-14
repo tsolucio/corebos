@@ -28,7 +28,7 @@ require_once('modules/Users/LoginHistory.php');
 require_once('data/Tracker.php');
 require_once('include/utils/utils.php');
 require_once('modules/Users/DefaultDataPopulator.php');
-require_once('modules/Users/CreateUserPrivilegeFile.php');
+require_once('modules/Users/UserPrivilegesWriter.php');
 
 // load the config_override.php file to provide default user settings
 if (is_file("config_override.php")) {
@@ -776,8 +776,8 @@ function create_default_users_access() {
 		$adb->pquery("insert into vtiger_users2group values (?,?)", array($group2_id, $admin_user_id));
 
 		//Creating the flat files for admin user
-		createUserPrivilegesfile($admin_user_id);
-		createUserSharingPrivilegesfile($admin_user_id);
+		UserPrivilegesWriter::setUserPrivileges($admin_user_id);
+		UserPrivilegesWriter::setSharingPrivileges($admin_user_id);
 
 		//Insert into vtiger_profile2field
 		insertProfile2field($profile1_id);
