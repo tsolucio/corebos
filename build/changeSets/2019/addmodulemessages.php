@@ -75,7 +75,7 @@ class Addmodulemessages extends cbupdaterWorker {
 						)
 					),
 				);
-				$this->massCreateFields();
+				$this->massCreateFields($fields);
 				$this->sendMsg("$module activated!");
 			} else {
 				$msgModuleWithS = '0';
