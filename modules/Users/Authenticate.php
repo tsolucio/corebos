@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once('modules/Users/Users.php');
-require_once('modules/Users/CreateUserPrivilegeFile.php');
+require_once('modules/Users/UserPrivilegesWriter.php');
 require_once('include/logging.php');
 
 global $mod_strings, $default_charset, $adb;
@@ -43,7 +43,7 @@ if($focus->is_authenticated())
 	//Security related entries start
 	require_once('include/utils/UserInfoUtil.php');
 
-	createUserPrivilegesfile($focus->id);
+	UserPrivilegesWriter::setUserPrivileges($focus->id);
 
 	//Security related entries end
 	coreBOS_Session::delete('login_password');

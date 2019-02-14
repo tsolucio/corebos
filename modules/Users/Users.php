@@ -468,8 +468,8 @@ class Users extends CRMEntity {
 		$query = "UPDATE $this->table_name SET user_password=?, confirm_password=?, crypt_type=?, change_password=?, last_password_reset_date=now(), failed_login_attempts=0 where id=?";
 		$this->db->pquery($query, array($encrypted_new_password, $encrypted_new_password, $crypt_type, $change_password_next_login, $this->id));
 		$this->createAccessKey();
-		require_once ('modules/Users/CreateUserPrivilegeFile.php');
-		createUserPrivilegesfile($this->id);
+		require_once ('modules/Users/UserPrivilegesWriter.php');
+		UserPrivilegesWriter::setUserPrivileges($this->id);
 		return true;
 	}
 
@@ -638,8 +638,8 @@ class Users extends CRMEntity {
 				$this->insertIntoEntityTable($table_name, $module, $fileid);
 			}
 		}
-		require_once ('modules/Users/CreateUserPrivilegeFile.php');
-		createUserPrivilegesfile($this->id);
+		require_once ('modules/Users/UserPrivilegesWriter.php');
+		UserPrivilegesWriter::setUserPrivileges($this->id);
 		coreBOS_Session::delete('next_reminder_interval');
 		coreBOS_Session::delete('next_reminder_time');
 		if ($insertion_mode != 'edit') {
@@ -1004,10 +1004,10 @@ class Users extends CRMEntity {
 		if (isset($this->column_fields['roleid'])) {
 			updateUser2RoleMapping($this->column_fields['roleid'], $this->id);
 		}
-		require_once ('modules/Users/CreateUserPrivilegeFile.php');
+		require_once ('modules/Users/UserPrivilegesWriter.php');
 		//createUserPrivilegesfile($this->id); // done in saveentity above
 		if ($this->mode!='edit' or $oldrole != $this->column_fields['roleid']) {
-			createUserSharingPrivilegesfile($this->id);
+			UserPrivilegesWriter::setUserPrivileges($this->id);
 		}
 	}
 

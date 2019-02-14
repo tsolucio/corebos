@@ -119,10 +119,11 @@ function vtlib_isModuleActive($module) {
  */
 function vtlib_RecreateUserPrivilegeFiles() {
 	global $adb;
+	require_once "modules/Users/UserPrivilegesWriter.php";
 	$userres = $adb->query('SELECT id FROM vtiger_users WHERE deleted = 0');
 	if($userres && $adb->num_rows($userres)) {
 		while($userrow = $adb->fetch_array($userres)) {
-			createUserPrivilegesfile($userrow['id']);
+			UserPrivilegesWriter::setUserPrivileges($userrow['id']);
 		}
 	}
 }

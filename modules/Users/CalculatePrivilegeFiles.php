@@ -15,11 +15,10 @@
  *************************************************************************************************
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-include 'modules/Users/CreateUserPrivilegeFile.php';
+include 'modules/Users/UserPrivilegesWriter.php';
 $record = vtlib_purify($_REQUEST['record']);
 if (!empty($record) and is_numeric($record)) {
-	createUserPrivilegesfile($record);
-	createUserSharingPrivilegesfile($record);
+	UserPrivilegesWriter::setUserPrivileges($record);
+	UserPrivilegesWriter::setSharingPrivileges($record);
 }
 header('Location: index.php?action=DetailView&module=Users&record='.urlencode($record));
-?>
