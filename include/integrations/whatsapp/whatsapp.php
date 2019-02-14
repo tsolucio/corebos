@@ -31,7 +31,7 @@ class corebos_whatsapp {
 	public $senderphone = '11111111111';
 
 	// Configuration Keys
-		const KEY_ISACTIVE = 'whatsapp_isactive';
+	const KEY_ISACTIVE = 'whatsapp_isactive';
 	const KEY_SID = 'sid';
 	const KEY_TOKEN = 'token';
 	const KEY_SENDERPHONE = 'senderphone';
@@ -61,7 +61,7 @@ class corebos_whatsapp {
 	}
 
 	public function saveSettings($isactive, $sid, $token, $senderphone) {
-				coreBOS_Settings::setSetting(self::KEY_ISACTIVE, $isactive);
+		coreBOS_Settings::setSetting(self::KEY_ISACTIVE, $isactive);
 		coreBOS_Settings::setSetting(self::KEY_SID, $sid);
 		coreBOS_Settings::setSetting(self::KEY_TOKEN, $token);
 		coreBOS_Settings::setSetting(self::KEY_SENDERPHONE, $senderphone);
@@ -69,7 +69,7 @@ class corebos_whatsapp {
 
 	public function getSettings() {
 		return array(
-						'isActive' => coreBOS_Settings::getSetting(self::KEY_ISACTIVE, ''),
+			'isActive' => coreBOS_Settings::getSetting(self::KEY_ISACTIVE, ''),
 			'sid' => coreBOS_Settings::getSetting(self::KEY_SID, ''),
 			'token' => coreBOS_Settings::getSetting(self::KEY_TOKEN, ''),
 			'senderphone' => coreBOS_Settings::getSetting(self::KEY_SENDERPHONE, ''),

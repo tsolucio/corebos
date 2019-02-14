@@ -23,7 +23,7 @@ $wa = new corebos_whatsapp();
 
 $isadmin = is_admin($current_user);
 
-if ($isadmin && isset($_REQUEST['whatsapp_active'])) {
+if ($isadmin && isset($_REQUEST['sid'])) {
 	$isActive = ((empty($_REQUEST['whatsapp_active']) || $_REQUEST['whatsapp_active']!='on') ? '0' : '1');
 	$sid = (empty($_REQUEST['sid']) ? '' : vtlib_purify($_REQUEST['sid']));
 	$token = (empty($_REQUEST['token']) ? '' : vtlib_purify($_REQUEST['token']));
