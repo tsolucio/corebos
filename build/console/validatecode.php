@@ -38,7 +38,7 @@ class validatecodeCommand extends Command {
 		$path = $input->getArgument("file");
 		if (file_exists($path)) {
 			$fileext = explode('.', strrev($path), 2);
-			if (strrev($fileext[0]) == 'php') {
+			if (strrev($fileext[0]) == 'php' || strrev($fileext[0]) == 'inc') {
 				$val = shell_exec("phpcs --standard=build/cbSR $path");
 				echo $val;
 			} elseif (strrev($fileext[0]) == 'js') {
