@@ -58,23 +58,23 @@ class MailManager_Model_DraftEmail {
 		}
 
 		if (!empty($page)) {
-			$limitClause = "LIMIT ".($limit*$page).", ".$limit;
+			$limitClause = 'LIMIT '.($limit*$page).', '.$limit;
 		} else {
-			$limitClause = "LIMIT 0, ".$limit;
+			$limitClause = 'LIMIT 0, '.$limit;
 		}
 		$query = "SELECT * FROM Emails where email_flag='SAVED' $where $limitClause;";
 		$draftMails = vtws_query($query, $current_user);
 		for ($i=0; $i<count($draftMails); $i++) {
 			foreach ($draftMails[$i] as $fieldname => $fieldvalue) {
-				if ($fieldname == "saved_toid" || $fieldname == "ccmail" || $fieldname == "bccmail") {
+				if ($fieldname == 'saved_toid' || $fieldname == 'ccmail' || $fieldname == 'bccmail') {
 					if (!empty($fieldvalue)) {
-						$value = implode(',', json_decode($fieldvalue), true);
+						$value = implode(',', json_decode($fieldvalue, true));
 						if (strlen($value) > 45) {
-							$value = substr($value, 0, 45)."....";
+							$value = substr($value, 0, 45).'....';
 						}
 						$draftMails[$i][$fieldname] = $value;
 					}
-				} elseif ($fieldname == "id") {
+				} elseif ($fieldname == 'id') {
 					$emailId = vtws_getIdComponents($fieldvalue);
 					$draftMails[$i][$fieldname] = $emailId[1];
 				}
