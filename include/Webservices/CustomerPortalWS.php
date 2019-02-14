@@ -32,7 +32,7 @@ function evvt_strip_html_links($text) {
 
 function vtws_changePortalUserPassword($email, $newPass) {
 	global $adb,$log;
-	$log->debug('> schangePortalUserPassword');
+	$log->debug('>< changePortalUserPassword');
 	$nra = $adb->pquery('update vtiger_portalinfo set user_password=? where user_name=?', array($newPass,$email));
 	if ($nra) {
 		return true;
@@ -43,15 +43,10 @@ function vtws_changePortalUserPassword($email, $newPass) {
 
 function vtws_findByPortalUserName($username) {
 	global $adb,$log;
-	$log->debug('> vtws_findByPortalUserName');
-	$nra=$adb->query_result($adb->pquery('select count(*) from vtiger_portalinfo where isactive=1 and user_name=?', array($username)), 0, 0);
-	if (empty($nra)) {
-		$output=false;
-	} else {
-		$output=true;
-	}
-	$log->debug('< vtws_findByPortalUserName');
-	return $output;
+	$log->debug('>< vtws_findByPortalUserName');
+	$rs = $adb->pquery('select count(*) from vtiger_portalinfo where isactive=1 and user_name=?', array($username));
+	$nra=$adb->query_result($rs, 0, 0);
+	return !empty($nra);
 }
 
 function vtws_sendRecoverPassword($username) {
