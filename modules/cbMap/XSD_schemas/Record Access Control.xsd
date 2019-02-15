@@ -13,11 +13,12 @@
         <xs:element name="listview">
           <xs:complexType mixed="true">
             <xs:sequence>
-            <xs:choice maxOccurs="5" minOccurs="1">
-              <xs:element type="xs:byte" name="c"/>
-              <xs:element type="xs:byte" name="r"/>
-              <xs:element type="xs:byte" name="u"/>
-              <xs:element type="xs:byte" name="d"/>
+              <xs:choice maxOccurs="4" minOccurs="1">
+                <xs:element type="xs:byte" name="c"/>
+                <xs:element type="xs:byte" name="r"/>
+                <xs:element type="xs:byte" name="u"/>
+                <xs:element type="xs:byte" name="d"/>
+              </xs:choice>
               <xs:element name="condition" minOccurs="0">
                 <xs:complexType mixed="true">
                   <xs:sequence>
@@ -32,14 +33,13 @@
                   </xs:sequence>
                 </xs:complexType>
               </xs:element>
-               </xs:choice>
             </xs:sequence>
           </xs:complexType>
         </xs:element> 
         <xs:element name="detailview" minOccurs="0">
           <xs:complexType mixed="true">
             <xs:sequence>
-            <xs:choice maxOccurs="5" minOccurs="1">
+            <xs:choice maxOccurs="4" minOccurs="1">
               <xs:element type="xs:byte" name="c"/>
               <xs:element type="xs:byte" name="r"/>
               <xs:element type="xs:byte" name="u"/>
