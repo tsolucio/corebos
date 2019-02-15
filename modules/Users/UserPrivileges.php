@@ -39,10 +39,10 @@ class UserPrivileges {
 	private $defaultOrgSharingPermission = null;
 
 	public function __construct($userid) {
-		if(READ_PRIVILEGES_FROM == 'file') {
-			loadUserPrivilegesFile($userid);
-		} else if(READ_PRIVILEGES_FROM == 'db') {
-			loadUserPrivilegesDB($userid);
+		if(self::READ_PRIVILEGES_FROM == 'file') {
+			$this->loadUserPrivilegesFile($userid);
+		} else if(self::READ_PRIVILEGES_FROM == 'db') {
+			$this->loadUserPrivilegesDB($userid);
 		}
 	}
 
