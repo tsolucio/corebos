@@ -51,7 +51,7 @@ class UserPrivilegesWriter {
 	 */
 	private function createSharingPrivilegesFile($userId) {
 		require_once 'modules/Users/CreateUserPrivilegeFile.php';
- 		createUserSharingPrivilegesfile($userId)
+ 		createUserSharingPrivilegesfile($userId);
 	}
 
 	/**
@@ -68,7 +68,7 @@ class UserPrivilegesWriter {
 	 *
 	 * @param  int $userId [description]
 	 */
-	private function createUserPrivileges($userId) {
+	private function createSharingPrivileges($userId) {
 
 	}
 }
