@@ -5,7 +5,7 @@
         <xs:element name="originmodule">
           <xs:complexType mixed="true">
             <xs:sequence>
-              <xs:element type="xs:byte" name="originid"/>
+              <xs:element type="xs:byte" name="originid" minOccurs="0"/>
               <xs:element type="xs:string" name="originname"/>
             </xs:sequence>
           </xs:complexType>
@@ -13,35 +13,55 @@
         <xs:element name="listview">
           <xs:complexType mixed="true">
             <xs:sequence>
-              <xs:element type="xs:byte" name="c"/>
-              <xs:element type="xs:byte" name="r"/>
-              <xs:element type="xs:byte" name="u"/>
-              <xs:element type="xs:byte" name="d"/>
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="detailview">
-          <xs:complexType mixed="true">
-            <xs:sequence>
-              <xs:element type="xs:byte" name="c"/>
-              <xs:element type="xs:byte" name="r"/>
-              <xs:element type="xs:byte" name="u"/>
-              <xs:element type="xs:byte" name="d"/>
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="relatedlists">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="relatedlist">
+              <xs:choice maxOccurs="4" minOccurs="1">
+                <xs:element type="xs:byte" name="c"/>
+                <xs:element type="xs:byte" name="r"/>
+                <xs:element type="xs:byte" name="u"/>
+                <xs:element type="xs:byte" name="d"/>
+              </xs:choice>
+              <xs:element name="condition" minOccurs="0">
                 <xs:complexType mixed="true">
                   <xs:sequence>
-                    <xs:element type="xs:string" name="modulename"/>
+                    <xs:element type="xs:string" name="businessrule"/>
+                    <xs:choice maxOccurs="5" minOccurs="1">
                     <xs:element type="xs:byte" name="c"/>
                     <xs:element type="xs:byte" name="r"/>
                     <xs:element type="xs:byte" name="u"/>
                     <xs:element type="xs:byte" name="d"/>
                     <xs:element type="xs:byte" name="s"/>
+                    </xs:choice>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element> 
+        <xs:element name="detailview" minOccurs="0">
+          <xs:complexType mixed="true">
+            <xs:sequence>
+            <xs:choice maxOccurs="4" minOccurs="1">
+              <xs:element type="xs:byte" name="c"/>
+              <xs:element type="xs:byte" name="r"/>
+              <xs:element type="xs:byte" name="u"/>
+              <xs:element type="xs:byte" name="d"/>
+              </xs:choice>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="relatedlists" minOccurs="0">
+          <xs:complexType mixed="true">
+            <xs:sequence>
+              <xs:element name="relatedlist">
+                <xs:complexType mixed="true">
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="modulename"/>
+                    <xs:choice maxOccurs="5" minOccurs="1">
+                    <xs:element type="xs:byte" name="c"/>
+                    <xs:element type="xs:byte" name="r"/>
+                    <xs:element type="xs:byte" name="u"/>
+                    <xs:element type="xs:byte" name="d"/>
+                    <xs:element type="xs:byte" name="s"/>
+                    </xs:choice>
                   </xs:sequence>
                 </xs:complexType>
               </xs:element>
