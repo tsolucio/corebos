@@ -52,6 +52,7 @@ class WhatsappWorkflowTask extends VTTask {
 	}
 	public function doTask(&$entityData) {
 		global $current_user;
+				global $site_URL;
 		$moduleName = $entityData->getModuleName();
 		$data = $entityData->getData();
 		$clientclass = new corebos_whatsapp();
@@ -64,6 +65,15 @@ class WhatsappWorkflowTask extends VTTask {
 			$pt = new VTSimpleTemplate($this->messageBody);
 			$body = $pt->render($entityCache, $ws_id);
 			$phonest = new VTSimpleTemplate($this->phone);
+			$this->after_retrieve();
+			$count = count($this->attachmentsinfo);
+			if ($count>0) {
+				$url = $this->attachmentsinfo[0];
+				$mediaurl = "$site_URL/$url";
+			} else {
+				$url = "";
+				$mediaurl = "";
+			}
 			$phones = $phonest->render($entityCache, $ws_id);
 			$phones = trim($phones, ',');
 			if ($sender!='' && $phones!='') {
@@ -79,13 +89,23 @@ class WhatsappWorkflowTask extends VTTask {
 							$prefix = '';
 					}
 					$phone = $prefix.preg_replace('/[^0-9]/', '', $phone);
-					$message=$client->messages->create(
-						'whatsapp:'.$phone,
-						array(
-							'from' => 'whatsapp:'.$sender,
-							'body' => $body
+					if ($count==0) {
+						$message=$client->messages->create(
+							'whatsapp:'.$phone,
+							array(
+								'from' => 'whatsapp:'.$sender,
+								'body' => $body
 							)
-					);
+						);
+					} else {
+						$message=$client->messages->create(
+							'whatsapp:'.$phone,
+							array(
+								'from' => 'whatsapp:'.$sender,
+								'mediaurl' => $mediaurl
+							)
+						);
+					}
 					$messageid = $message->sid;
 					include_once 'modules/Messages/Messages.php';
 					Messages::createMessage(array(
