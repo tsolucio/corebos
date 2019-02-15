@@ -1179,4 +1179,11 @@
 	<classname>ModCommentsImportExport</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+       <author>albertxhani</author>
+       <description>Creates user privileges and sharing privileges tables</description>
+       <filename>build/changeSets/2019/CreateUserPrivTables.php</filename>
+       <classname>CreateUserPrivTables</classname>
+       <systemupdate>1</systemupdate>
+</changeSet>
 </updatesChangeLog>
