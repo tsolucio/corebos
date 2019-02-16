@@ -713,8 +713,10 @@ class CustomView extends CRMEntity {
 					}
 					$advfilterval = implode(',', $val);
 				}
-				if (($col[1]=='smownerid' || $col[1]=='smcreatorid' || $col[1]=='modifiedby')
-					&& $advfilterval=='current_user' && $_REQUEST['action']!='CustomView' && empty($_REQUEST['record'])) {
+				$uitype = getUItypeByFieldName($this->customviewmodule, $col[2]);
+				if (($col[1]=='smownerid' || $col[1]=='smcreatorid' || $col[1]=='modifiedby' || $uitype==101)
+					&& $advfilterval=='current_user' && (empty($_REQUEST['action']) || $_REQUEST['action']!='CustomView') && empty($_REQUEST['record'])
+				) {
 					$advfilterval = trim($current_user->first_name.' '.$current_user->last_name);
 					$advfilterval = decode_html($advfilterval);
 				}
