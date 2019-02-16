@@ -907,10 +907,10 @@ class CRMEntity {
 
 		foreach ($this->tab_name_index as $table_name => $index) {
 			$result[$table_name] = $adb->pquery("select * from $table_name where $index=?", array($record));
-			$isRecordDeleted = $adb->query_result($result['vtiger_crmentity'], 0, 'deleted');
-			if ($isRecordDeleted !== 0 && $isRecordDeleted !== '0' && !$deleted) {
-				die($preFmt . $app_strings['LBL_RECORD_DELETE'] . " $module: $record <a href='javascript:window.history.back()'>" . $i8nGoBack . $postFmt);
-			}
+		}
+		$isRecordDeleted = $adb->query_result($result['vtiger_crmentity'], 0, 'deleted');
+		if ($isRecordDeleted !== 0 && $isRecordDeleted !== '0' && !$deleted) {
+			die($preFmt . $app_strings['LBL_RECORD_DELETE'] . " $module: $record <a href='javascript:window.history.back()'>" . $i8nGoBack . $postFmt);
 		}
 
 		/* Block access to empty record */
