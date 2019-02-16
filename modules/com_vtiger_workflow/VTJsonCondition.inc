@@ -15,7 +15,7 @@ class VTJsonCondition {
 
 	public function evaluate($condition, $entityCache, $id) {
 		global $logbg;
-		$logbg->debug("Entering evaluate($condition,$id) method ...");
+		$logbg->debug("> evaluate($condition,$id)");
 		$expr = json_decode($condition, true);
 		$entityData = $entityCache->forId($id);
 		$data = $entityData->getData();
@@ -93,7 +93,7 @@ class VTJsonCondition {
 		}
 		$logbg->debug('expressionResults: '.var_export($expressionResults, true));
 		$logbg->debug('groupResults: '.var_export($groupResults, true));
-		$logbg->debug('Exiting evaluate(): '.var_export($finalResult, true));
+		$logbg->debug('< evaluate: '.var_export($finalResult, true));
 		return $finalResult;
 	}
 

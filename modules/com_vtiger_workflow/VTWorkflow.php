@@ -123,7 +123,7 @@ class Workflow {
 
 	public function performTasks($entityData) {
 		global $adb,$logbg;
-		$logbg->debug('entering PerformTasks for Workflow: '.$this->id);
+		$logbg->debug('> PerformTasks for Workflow: '.$this->id);
 		$data = $entityData->getData();
 		$util = new VTWorkflowUtils();
 		$user = $util->adminUser();
