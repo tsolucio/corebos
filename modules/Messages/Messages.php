@@ -151,9 +151,9 @@ class Messages extends CRMEntity {
 	public static function createMessage($fields) {
 		$info = array();
 		if (empty($fields['name'])) {
-			$info['messagename'] = $info['messagesname'] = $fields['name'];
-		} else {
 			$info['messagename'] = $info['messagesname'] = date('Y-m-d H:i').(empty($fields['datenametext']) ? '' : ' '.$fields['datenametext']);
+		} else {
+			$info['messagename'] = $info['messagesname'] = $fields['name'];
 		}
 		if (isset($fields['type'])) {
 			$info['messagetype'] = $info['messagestype'] = $fields['type'];
@@ -218,6 +218,11 @@ class Messages extends CRMEntity {
 		} else {
 			global $current_user;
 			$info['assigned_user_id'] = $current_user->id;
+		}
+		if (isset($fields['attachment'])) {
+			$info['attachment'] = $fields['attachment'];
+		} else {
+			$info['attachment'] = '';
 		}
 		$info['no_mail'] = '';
 		$info['lasteventtime'] = '';
