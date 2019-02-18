@@ -115,9 +115,9 @@
 								<label class="slds-form-element__label slds-assistive-text" for="objectswitcher-combobox-id-1">Filter Search by:</label>
 								<div class="slds-form-element__control">
                   <div class="slds-combobox_container">
-										<div id="test-1" class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-controls="primary-search-combobox-id-1" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+										<div id="globalsearch-moduleselect" class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-controls="primary-search-combobox-id-1" aria-expanded="false" aria-haspopup="listbox" role="combobox">
 											<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
-												<input type="text" class="slds-input slds-combobox__input slds-combobox__input-value" id="objectswitcher-combobox-id-1" aria-controls="UnifiedSearch_moduleformwrapper" autoComplete="off" role="textbox" placeholder="{$APP.LBL_SELECT_MODULES_FOR_SEARCH}" value="" onfocus="document.getElementById('test-1').classList.add('slds-is-open'); UnifiedSearch_SelectModuleForm(this);" onblur="document.getElementById('test-1').classList.remove('slds-is-open');" />
+												<input type="text" class="slds-input slds-combobox__input slds-combobox__input-value" id="objectswitcher-combobox-id-1" aria-controls="UnifiedSearch_moduleformwrapper" autoComplete="off" role="textbox" placeholder="{$APP.LBL_SELECT_MODULES_FOR_SEARCH}" value="" onfocus="document.getElementById('globalsearch-moduleselect').classList.add('slds-is-open'); UnifiedSearch_SelectModuleForm(this);" onblur="document.getElementById('globalsearch-moduleselect').classList.remove('slds-is-open');" />
 												<span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
 													<svg class="slds-icon slds-icon slds-icon_xx-small slds-icon-text-default" aria-hidden="true">
 														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>

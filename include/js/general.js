@@ -4848,7 +4848,7 @@ function UnifiedSearch_SelectModuleForm(obj) {
 }
 
 function UnifiedSearch_SelectModuleFormCallback(obj) {
-	fnvshobjsearch(obj, 'UnifiedSearch_moduleformwrapper');
+	//fnvshobjsearch(obj, 'UnifiedSearch_moduleformwrapper');
 }
 
 function UnifiedSearch_SelectModuleToggle(flag) {
