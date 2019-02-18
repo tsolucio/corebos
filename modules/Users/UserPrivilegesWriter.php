@@ -60,6 +60,49 @@ class UserPrivilegesWriter {
 	 * @param  int $userId [description]
 	 */
 	private function createUserPrivileges($userId) {
+		global $adb;
+
+		$privs = array();
+		$userFocus = new Users();
+		$userFocus->retrieve_entity_info($userId, "Users");
+		$userInfo = array();
+		$userFocus->column_fields["id"] = '';
+		$userFocus->id = $userId;
+		foreach ($userFocus->column_fields as $field => $value) {
+			if (isset($userFocus->$field)) {
+				$userInfo[$field] = $userFocus->$field;
+			}
+		}
+		$privs["user_info"] = $userFocus;
+		$privs["is_admin"] = ($userFocus->is_admin == 'on') ? true : false;
+
+		$userRole = fetchUserRole($userId);
+		$userRoleInfo = getRoleInformation($userRole);
+		$userRoleParent = $userRoleInfo[$userRole][1];
+		$userGroupFocus = new GetUserGroups();
+		$userGroupFocus->getAllUserGroups($userId);
+
+		if(!$privs["is_admin"]) {
+			$privs["current_user_roles"] = $userRole;
+			$privs["current_user_parent_role_seq"] = $userRoleParent;
+			$privs["current_user_profiles"] = getUserProfile($userId);
+			$privs["profileGlobalPermission"] = getCombinedUserGlobalPermissions($userId);
+			$privs["profileTabsPermission"] = getCombinedUserTabsPermissions($userId);
+			$privs["profileActionPermission"] = getCombinedUserActionPermissions($userId);
+			$privs["current_user_groups"] = $userGroupFocus->user_groups;
+			$privs["subordinate_roles"] = getRoleSubordinates($userRole);
+			$privs["parent_roles"] = getParentRole($userRole);
+			$privs["subordinate_roles_users"] = getSubordinateRoleAndUsers($userRole);
+		}
+		$encodedPrivs = json_encode($privs);
+
+		$adb->pquery(
+			"INSERT ON user_privileges(userid, user_data)
+			VALUES (?, ?)
+			ON DUPLICATE KEY UPDATE
+			user_data = ?",
+			array($userId, $encodedPrivs, $encodedPrivs)
+		);
 
 	}
 
