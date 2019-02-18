@@ -674,8 +674,8 @@ class CustomView extends CRMEntity {
 		$i = 1;
 		$j = 0;
 		while ($relcriteriagroup = $adb->fetch_array($groupsresult)) {
-			$groupId = $relcriteriagroup["groupid"];
-			$groupCondition = $relcriteriagroup["group_condition"];
+			$groupId = $relcriteriagroup['groupid'];
+			$groupCondition = $relcriteriagroup['group_condition'];
 
 			$ssql = 'select vtiger_cvadvfilter.*
 				from vtiger_customview

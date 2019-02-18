@@ -97,7 +97,7 @@ function vtTaskEdit($adb, $request, $current_language, $app_strings) {
 		} else {
 			$direction = 'after';
 		}
-		$smarty->assign('trigger', array('days'=>$days, 'direction'=>$direction,  'field'=>$trigger['field']));
+		$smarty->assign('trigger', array('days'=>$days, 'direction'=>$direction, 'field'=>$trigger['field']));
 	}
 	$metaVariables = $task->getMetaVariables();
 
@@ -123,7 +123,7 @@ function vtTaskEdit($adb, $request, $current_language, $app_strings) {
 	$users['user'] = get_user_array();
 	$users['group'] = get_group_array();
 	$smarty->assign('ASSIGNED_TO', $users);
-	$smarty->assign("module", $module);
+	$smarty->assign('module', $module);
 	$smarty->display("{$module->name}/EditTask.tpl");
 }
 vtTaskEdit($adb, $_REQUEST, $current_language, $app_strings);

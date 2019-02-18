@@ -299,7 +299,6 @@ function VTUpdateFieldsTask($, fieldvaluemapping) {
 						} else if (relmodule==result.name) {
 							$('#save_fieldvalues10_'+mappingno+'_fieldname').val(relmodule+'-'+fldrelname);
 						}
-
 					}));
 				}
 				var fe = $('#save_fieldvalues10_'+mappingno+'_fieldname');
