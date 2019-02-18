@@ -31,10 +31,10 @@
                     	{$APP.LBL_CANCEL_BUTTON_LABEL}
                     </a>
                 </div>
-                {if $keyid eq '71' && $keyfldname eq 'unit_price'}
+                {if $keyid eq '72' && $keyfldname eq 'unit_price'}
                 	{if $PRICE_DETAILS|@count > 0}
 						<span id="multiple_currencies" width="38%" style="align:right;">
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="toggleShowHide('currency_class','multiple_currencies');">{$APP.LBL_MORE_CURRENCIES} &raquo;</a>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="toggleShowHide('currency_class','multiple_currencies');event.stopPropagation();">{$APP.LBL_MORE_CURRENCIES} &raquo;</a>
 						</span>
 
 						<div id="currency_class" class="multiCurrencyDetailUI">
@@ -43,8 +43,8 @@
 								<th colspan="2">
 									<b>{$MOD.LBL_PRODUCT_PRICES}</b>
 								</th>
-								<th align="right">
-									<img border="0" style="cursor: pointer;" onclick="toggleShowHide('multiple_currencies','currency_class');" src="{'close.gif'|@vtiger_imageurl:$THEME}"/>
+								<th class='cblds-t-align--right' style="text-align:right;">
+									<img border="0" style="cursor: pointer;" onclick="toggleShowHide('multiple_currencies','currency_class');event.stopPropagation();" src="{'close.gif'|@vtiger_imageurl:$THEME}"/>
 								</th>
 							</tr>
 							<tr class="detailedViewHeader">
