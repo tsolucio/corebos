@@ -4831,26 +4831,16 @@ function fetch_calc() {
 }
 
 function UnifiedSearch_SelectModuleForm(obj) {
-	if (jQuery('#UnifiedSearch_moduleform').length) {
-		// If we have loaded the form already.
-		UnifiedSearch_SelectModuleFormCallback(obj);
-	} else {
-		jQuery('#status').show();
+	jQuery('#status').show();
 		jQuery.ajax({
 			method:'POST',
 			url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModules&ajax=true'
 		}).done(function (response) {
 			jQuery('#status').hide();
 			jQuery('#UnifiedSearch_moduleformwrapper').html(response);
-			UnifiedSearch_SelectModuleFormCallback(obj);
 		});
-	}
 }
-
-function UnifiedSearch_SelectModuleFormCallback(obj) {
-	//fnvshobjsearch(obj, 'UnifiedSearch_moduleformwrapper');
-}
-
+/*
 function UnifiedSearch_SelectModuleToggle(flag) {
 	jQuery('#UnifiedSearch_moduleform input[type=checkbox]').each(function () {
 		this.checked = flag;
@@ -4870,8 +4860,9 @@ function UnifiedSearch_SelectModuleSave() {
 	}).done(function (response) {
 		// continue
 	});
-	UnifiedSearch_SelectModuleCancel();
+	//UnifiedSearch_SelectModuleCancel();
 }
+ */
 
 /**
  * image pasting into canvas
