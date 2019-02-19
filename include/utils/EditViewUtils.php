@@ -1317,10 +1317,10 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 	$listcostprice = false;
 	$zerodiscount = false;
 
-	if (GlobalVariable::getVariable('PurchaseOrder_TransferCostPrice', '0', isset($_REQUEST['return_module']) ? $_REQUEST['return_module'] : '') == '1' && $currentModule == 'PurchaseOrder') {
+	if (GlobalVariable::getVariable('PurchaseOrder_TransferCostPrice', '0', isset($_REQUEST['return_module']) ? $_REQUEST['return_module'] : '') == '1' && $currentModule == 'PurchaseOrder' && $_REQUEST['return_module'] != 'PurchaseOrder') {
 		$listcostprice = true;
 	}
-	if (GlobalVariable::getVariable('PurchaseOrder_IgnoreTransferDiscount', '0', isset($_REQUEST['return_module']) ? $_REQUEST['return_module'] : '') == '1' && $currentModule == 'PurchaseOrder') {
+	if (GlobalVariable::getVariable('PurchaseOrder_IgnoreTransferDiscount', '0', isset($_REQUEST['return_module']) ? $_REQUEST['return_module'] : '') == '1' && $currentModule == 'PurchaseOrder' && $_REQUEST['return_module'] != 'PurchaseOrder') {
 		$zerodiscount = true;
 	}
 
