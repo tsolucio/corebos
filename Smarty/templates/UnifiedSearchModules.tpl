@@ -11,11 +11,6 @@
 
 <form id="UnifiedSearch_moduleform" name="UnifiedSearch_moduleform" method="post" >
 	<ul class="slds-listbox slds-listbox_vertical" role="group" aria-label="Suggested for you">
-		<li role="presentation" class="slds-listbox__item">
-			<div id="object0" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="presentation">
-				<h3 class="slds-listbox__option-header" role="presentation"><strong>Suggested for you</strong></h3>
-			</div>
-		</li>
 		{foreach item=SEARCH_MODULEINFO key=SEARCH_MODULENAME from=$ALLOWED_MODULES name=allowed_modulesloop}								 
 			<li role="presentation" class="slds-listbox__item">
 				<div id="option{$smarty.foreach.allowed_modulesloop.iteration}" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small slds-is-selected" role="option">

@@ -132,16 +132,28 @@
 							</div>
 						</div>
 						<div class="slds-combobox_container slds-combobox-addon_end">
-							<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false" aria-haspopup="listbox" id="primary-search-combobox-id-1" role="combobox">
-								<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left slds-global-search__form-element" role="none">
-									<span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_left">
-											<svg class="slds-icon slds-icon slds-icon_xx-small slds-icon-text-default" aria-hidden="true">
-												<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
-											</svg>
-										</span>
-									<input type="text" class="slds-input slds-combobox__input" id="combobox-id-1" aria-autocomplete="list" aria-controls="search-listbox-id-1" autoComplete="off" role="textbox" placeholder="{$APP.LBL_SEARCH_TITLE}{$APP.LBL_BROWSER_TITLE}" onFocus="this.value=''" /> 
+							{if $Application_Global_Search_Active}
+							<form name="UnifiedSearch" method="post" action="index.php" style="margin:0px" onsubmit="if (document.getElementById('query_string').value=='') return false; VtigerJS_DialogBox.block();">
+							{else}
+							<form name="UnifiedSearch" style="margin:0px" onsubmit="return false;">
+							{/if}
+								<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false" aria-haspopup="listbox" id="primary-search-combobox-id-1" role="combobox">
+									{if $Application_Global_Search_Active || (isset($GS_AUTOCOMP) && isset($GS_AUTOCOMP['searchin']))}
+									<input type="hidden" name="action" value="UnifiedSearch" style="margin:0px">
+									<input type="hidden" name="module" value="Home" style="margin:0px">
+									<input type="hidden" name="parenttab" value="{$CATEGORY}" style="margin:0px">
+									<input type="hidden" name="search_onlyin" value="--USESELECTED--" style="margin:0px">
+									<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left slds-global-search__form-element" role="none">
+										<span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_left">
+												<svg class="slds-icon slds-icon slds-icon_xx-small slds-icon-text-default" aria-hidden="true">
+													<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+												</svg>
+											</span>
+										<input  name="query_string" id="query_string" class="slds-input slds-combobox__input" type="text" role="textbox" placeholder="{$APP.LBL_SEARCH_TITLE}{$APP.LBL_BROWSER_TITLE}" onFocus="this.value=''" aria-autocomplete="list" aria-controls="search-listbox-id-1" autoComplete="off" data-autocomp='{$GS_AUTOCOMP|@json_encode}' />
+									</div>
+									{/if}
 								</div>
-							</div>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -269,7 +281,7 @@
 				{/if}
 					<tr>
 						{if $Application_Global_Search_Active}
-						<form name="UnifiedSearch" method="post" action="index.php" style="margin:0px" onsubmit="if (document.getElementById('query_string').value=='') return false; VtigerJS_DialogBox.block();">
+						<form name="UnifiedSearch" method="post" action="index.php" style="margin:0px" onsubmit="if (document.getElementById('query_string1').value=='') return false; VtigerJS_DialogBox.block();">
 						{else}
 						<form name="UnifiedSearch" style="margin:0px" onsubmit="return false;">
 						{/if}
@@ -284,7 +296,7 @@
 										<svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
 											<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search" />
 										</svg>
-										<input  placeholder="" name="query_string" id="query_string" class="slds-input slds-size_full" type="text" value="{$QUERY_STRING}"  onFocus="this.value=''" autocomplete="off" data-autocomp='{$GS_AUTOCOMP|@json_encode}' />
+										<input  placeholder="" name="query_string1" id="query_string1" class="slds-input slds-size_full" type="text" value="{$QUERY_STRING}"  onFocus="this.value=''" autocomplete="off" data-autocomp='{$GS_AUTOCOMP|@json_encode}' />
 									</div>
 								</div>
 									<div id="listbox-unique-id" role="listbox" class="">
@@ -293,7 +305,7 @@
 								{/if}
 							</td>
 							{if $Application_Global_Search_Active}
-							<td align ="right" style="vertical-align:middle;padding:5px;" onclick="UnifiedSearch_SelectModuleForm(this);">
+							<td align ="right" style="vertical-align:middle;padding:5px;" onclick="//UnifiedSearch_SelectModuleForm(this);">
 								<a href='javascript:void(0);' >
 								<span class="slds-icon_container null slds-icon__svg--default">
 									<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
