@@ -88,7 +88,7 @@ class VTUpdateFieldsTask extends VTTask {
 					$moduleHandlerrel = vtws_getModuleHandlerFromName($fieldmodule, $current_user);
 					$handlerMetarel[$fieldmodule] = $moduleHandlerrel->getMeta();
 					$moduleFieldsrel = $handlerMetarel[$fieldmodule]->getModuleFields();
-					$fieldValue=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue, $fldrelname, $focus, $entity, $handlerMetarel[$fieldmodule]);
+					$fieldValue=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue, $fldrelname, $focus, $entity, $handlerMeta);
 				} else {
 					$fieldValue=$util->fieldvaluebytype($moduleFields, $fieldValueType, $fieldValue, $fieldName, $focus, $entity, $handlerMeta);
 				}
