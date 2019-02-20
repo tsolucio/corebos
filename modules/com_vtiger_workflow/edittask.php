@@ -59,8 +59,10 @@ function vtTaskEdit($adb, $request, $current_language, $app_strings) {
 		return;
 	}
 
+	$module->setReturnUrl('');
+	$returnUrl = $module->editWorkflowUrl($task->workflowId);
 	$smarty->assign('workflow', $workflow);
-	$smarty->assign('returnUrl', $request['return_url']);
+	$smarty->assign('returnUrl', $returnUrl);
 	$smarty->assign('task', $task);
 	$smarty->assign('taskType', $taskClass);
 	$smarty->assign('saveType', isset($request['save_type']) ? $request['save_type'] : '');
