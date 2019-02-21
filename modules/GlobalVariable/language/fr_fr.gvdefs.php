@@ -1284,7 +1284,7 @@ $GlobalVariableDefinitons = array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
 	'category' => 'Application',
-	'values' => 'SQL sort specification',
+	'values' => 'SQL sort specification|DO NOT SORT',
 	'definition' => 'If given will be feeded directly into the SQL query to retrieve users that appear in the Assigned To dropdown permitting us to customize the sort order of these users.',
 ),
 'Workflow_ListView_PageSize' => array(

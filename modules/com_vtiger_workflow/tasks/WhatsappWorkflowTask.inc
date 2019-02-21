@@ -52,7 +52,7 @@ class WhatsappWorkflowTask extends VTTask {
 	}
 	public function doTask(&$entityData) {
 		global $current_user;
-				global $site_URL;
+		global $site_URL;
 		$moduleName = $entityData->getModuleName();
 		$data = $entityData->getData();
 		$clientclass = new corebos_whatsapp();
@@ -63,17 +63,19 @@ class WhatsappWorkflowTask extends VTTask {
 			$entityCache = new VTEntityCache($current_user);
 			$ws_id = $entityData->getId();
 			$pt = new VTSimpleTemplate($this->messageBody);
-			$body = $pt->render($entityCache, $ws_id);
+			$body = str_replace(array('<p>','</p>','<strong>','</strong>','<em>','</em>'), array('','','*','*','_','_'), $pt->render($entityCache, $ws_id));
 			$phonest = new VTSimpleTemplate($this->phone);
 			$this->after_retrieve();
 			$count = count($this->attachmentsinfo);
 			if ($count>0) {
-				$url = $this->attachmentsinfo[0];
-				$mediaurl = "$site_URL/$url";
+				$url = $this->attachmentsinfo;
+								$attachment = explode(",", $this->attachmentids);
 			} else {
 				$url = "";
+								$attachment = "";
 				$mediaurl = "";
 			}
+			$messageid = array();
 			$phones = $phonest->render($entityCache, $ws_id);
 			$phones = trim($phones, ',');
 			if ($sender!='' && $phones!='') {
@@ -97,23 +99,51 @@ class WhatsappWorkflowTask extends VTTask {
 								'body' => $body
 							)
 						);
+						$messageid[0]['messageid'] = $message->sid;
+						$messageid[0]['body'] = $body;
+						$messageid[0]['attachment'] = "";
 					} else {
-						$message=$client->messages->create(
-							'whatsapp:'.$phone,
-							array(
+						if ($body!='') {
+							$message=$client->messages->create(
+								'whatsapp:'.$phone,
+								array(
+								'from' => 'whatsapp:'.$sender,
+								'body' => $body
+								)
+							);
+						}
+							$messageid[0]['messageid'] = $message->sid;
+							$messageid[0]['body'] = $body;
+							$messageid[0]['attachment'] = "";
+
+						for ($j=0; $j<$count; $j++) {
+							$mediaurl = "$site_URL/$url[$j]";
+							$message=$client->messages->create(
+								'whatsapp:'.$phone,
+								array(
 								'from' => 'whatsapp:'.$sender,
 								'mediaurl' => $mediaurl
-							)
-						);
+									)
+							);
+							$messageid[$j+1]['messageid'] = $message->sid;
+							$messageid[$j+1]['body'] = '';
+							$messageid[$j+1]['attachment'] = $attachment[$j];
+						}
 					}
-					$messageid = $message->sid;
-					include_once 'modules/Messages/Messages.php';
-					Messages::createMessage(array(
+					$cnt = count($messageid);
+					for ($i=0; $i<$cnt; $i++) {
+						$messid = $messageid[$i]['messageid'];
+						$bd = $messageid[$i]['body'];
+						$att = $messageid[$i]['attachment'];
+						include_once 'modules/Messages/Messages.php';
+						Messages::createMessage(array(
 							'datenametext' => $phone,
 							'type' => 'Whatsapp',
-							'uniqueid' => $messageid,
-							'description' => $body,
-					));
+							'uniqueid' => $messid,
+							'description' => $bd,
+							'attachment' => $att
+						));
+					}
 				}
 			}
 		}

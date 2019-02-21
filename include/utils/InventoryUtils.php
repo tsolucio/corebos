@@ -873,8 +873,7 @@ function getProductBaseCurrency($productid, $module = 'Products') {
 	} else {
 		$sql = 'select currency_id from vtiger_products where productid=?';
 	}
-	$params = array($productid);
-	$res = $adb->pquery($sql, $params);
+	$res = $adb->pquery($sql, array($productid));
 	return $adb->query_result($res, 0, 'currency_id');
 }
 

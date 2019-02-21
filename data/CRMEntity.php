@@ -836,8 +836,10 @@ class CRMEntity {
 			}
 			self::$dbvalues = $dbvals;
 			$dbvalue = empty(self::$dbvalues[$fieldname]) ? 0 : self::$dbvalues[$fieldname];
-			$fldrs = $adb->pquery('select fieldname,typeofdata from vtiger_field
-				where vtiger_field.uitype in (7,9,71,72) and vtiger_field.tabid=?', array($tabid));
+			$fldrs = $adb->pquery(
+				'select fieldname,typeofdata from vtiger_field where vtiger_field.uitype in (7,9,71,72) and vtiger_field.tabid=?',
+				array($tabid)
+			);
 			while ($fldinf = $adb->fetch_array($fldrs)) {
 				self::$todvalues[$fldinf['fieldname']] = $fldinf['typeofdata'];
 			}
@@ -907,10 +909,10 @@ class CRMEntity {
 
 		foreach ($this->tab_name_index as $table_name => $index) {
 			$result[$table_name] = $adb->pquery("select * from $table_name where $index=?", array($record));
-			$isRecordDeleted = $adb->query_result($result['vtiger_crmentity'], 0, 'deleted');
-			if ($isRecordDeleted !== 0 && $isRecordDeleted !== '0' && !$deleted) {
-				die($preFmt . $app_strings['LBL_RECORD_DELETE'] . " $module: $record <a href='javascript:window.history.back()'>" . $i8nGoBack . $postFmt);
-			}
+		}
+		$isRecordDeleted = $adb->query_result($result['vtiger_crmentity'], 0, 'deleted');
+		if ($isRecordDeleted !== 0 && $isRecordDeleted !== '0' && !$deleted) {
+			die($preFmt . $app_strings['LBL_RECORD_DELETE'] . " $module: $record <a href='javascript:window.history.back()'>" . $i8nGoBack . $postFmt);
 		}
 
 		/* Block access to empty record */

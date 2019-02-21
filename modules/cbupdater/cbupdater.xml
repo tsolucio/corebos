@@ -1312,4 +1312,11 @@
 	<classname>Addmodulemessages</classname>
 	<systemupdate>1</systemupdate>
 </changeSet>
+<changeSet>
+	<author>loridacito</author>
+	<description>attachment</description>
+	<filename>build/changeSets/2019/attachment.php</filename>
+	<classname>Attachment</classname>
+	<systemupdate>1</systemupdate>
+</changeSet>
 </updatesChangeLog>

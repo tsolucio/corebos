@@ -1284,7 +1284,7 @@ $GlobalVariableDefinitons = array(
 	'status' => 'Implementada',
 	'valuetype' => 'Cadena',
 	'category' => 'Aplicación',
-	'values' => 'Especificación SQL para order by',
+	'values' => 'Especificación SQL para order by|DO NOT SORT',
 	'definition' => 'Si se proporciona, se incorporará directamente a la consulta SQL para recuperar los usuarios que aparecen en el menú desplegable Asignado a, lo que nos permite personalizar el orden de aparición de estos usuarios.',
 ),
 'Workflow_ListView_PageSize' => array(

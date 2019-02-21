@@ -168,7 +168,11 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 								<input type="button" name="search" value=" &nbsp;{$APP.LBL_SEARCH_NOW_BUTTON}&nbsp; " onClick="callSearch('Basic');" class="crmbutton small create">
 							</td>
 							<td width="2%" class="dvtCellLabel">
-								{if in_array($MODULE,$QCMODULEARRAY)}<a href="javascript:QCreatePop('{$MODULE}','{$POPUP}');"><img src="{'select.gif'|@vtiger_imageurl:$THEME}" align="left" border="0"></a>{/if}
+								{if in_array($MODULE,$QCMODULEARRAY)}
+									<svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon_x-small" id="popupqcreate" onclick="QCreatePop('{$MODULE}','{$POPUP}');">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
+									</svg>
+								{/if}
 							</td>
 						</tr>
 						 <tr>
