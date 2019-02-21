@@ -1025,6 +1025,13 @@ function getNewDisplayTime() {
 	return $date->getDisplayTime($current_user);
 }
 
+function getDisplayDateTimeValue() {
+	global $log, $current_user;
+	$log->debug('>< getDisplayDateTimeValue');
+	$date = new DateTimeField(null);
+	return $date->getDisplayDateTimeValue($current_user);
+}
+
 /** This function returns the default currency information.
  * Takes no param, return type array.
  */
