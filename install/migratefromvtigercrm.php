@@ -33,5 +33,5 @@ $_REQUEST['filename'] = 'SetMigrationConfig.php';
 $_REQUEST['file'] = 'CheckSystem.php';
 $_REQUEST['migrate'] = 'true';
 
-include "install/".$the_file;
+include 'install/'.$the_file;
 ?>
