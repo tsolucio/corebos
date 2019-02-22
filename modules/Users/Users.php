@@ -790,7 +790,7 @@ class Users extends CRMEntity {
 			}
 			$qparams = array($this->id);
 			$tabid = getTabid($module);
-			$sql = "select * from vtiger_field where tabid=? and tablename=? and displaytype in (1,3,4) and vtiger_field.presence in (0,2)";
+			$sql = "select * from vtiger_field where tabid=? and tablename=? and displaytype in (1,3,4,5) and vtiger_field.presence in (0,2)";
 			$params = array($tabid, $table_name);
 
 			$crypt_type = $this->DEFAULT_PASSWORD_CRYPT_TYPE;
