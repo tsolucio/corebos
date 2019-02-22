@@ -112,7 +112,7 @@ ExecuteQuery("UPDATE vtiger_def_org_field SET readonly=0");
 ExecuteQuery("UPDATE vtiger_profile2field SET readonly=0");
 
 // Modify selected column to enable support for setting default values for fields
-ExecuteQuery("ALTER TABLE vtiger_field CHANGE COLUMN selected defaultvalue TEXT default ''");
+ExecuteQuery('ALTER TABLE vtiger_field CHANGE COLUMN selected defaultvalue TEXT');
 ExecuteQuery("UPDATE vtiger_field SET defaultvalue='' WHERE defaultvalue='0'");
 
 // Scheduled Reports (Email)
