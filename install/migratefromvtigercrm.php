@@ -8,26 +8,30 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-include('include/adodb/adodb.inc.php');
+include 'include/adodb/adodb.inc.php';
 
-if(version_compare(phpversion(), '5.4') < 0) {
+if (version_compare(phpversion(), '5.5') < 0) {
 	$serverPhpVersion = phpversion();
-	require_once('phpversionfail.php');
+	require_once 'phpversionfail.php';
 	die();
 }
 
-require_once('include/install/language/en_us.lang.php');
-require_once('include/install/resources/utils.php');
-require_once('vtigerversion.php');	
-global $installationStrings, $vtiger_current_version, $coreBOS_app_version;
+require_once 'include/install/language/en_us.lang.php';
+require_once 'include/install/resources/utils.php';
+require_once 'vtigerversion.php';
+global $installationStrings, $vtiger_current_version, $coreBOS_app_version, $current_user, $adb;
+include_once 'vtlib/Vtiger/Module.php';
+error_reporting(E_ERROR);
+ini_set('display_errors', 'on');
+$current_user = Users::getActiveAdminUser();
 
-@include_once('install/config.db.php');
-
+@include_once 'install/config.db.php';
+$adb->query("SET SESSION sql_mode = ''");
 $the_file = 'CheckSystem.php';
 Common_Install_Wizard_Utils::checkFileAccessForInclusion("install/".$the_file);
 $_REQUEST['filename'] = 'SetMigrationConfig.php';
 $_REQUEST['file'] = 'CheckSystem.php';
 $_REQUEST['migrate'] = 'true';
 
-include("install/".$the_file);
+include "install/".$the_file;
 ?>

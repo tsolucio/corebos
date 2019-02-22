@@ -630,9 +630,12 @@ ExecutePQuery("insert into vtiger_reportgroupbycolumn (reportid, sortid, sortcol
 ExecutePQuery("DELETE FROM vtiger_time_zone WHERE time_zone = 'Kwajalein'", array());
 ExecutePQuery("UPDATE vtiger_users SET time_zone='UTC' WHERE time_zone='Kwajalein'", array());
 
+global $current_user;
+$current_user = Users::getActiveAdminUser();
+
 $serviceContractsInstance = Vtiger_Module::getInstance('ServiceContracts');
 $helpDeskInstance = Vtiger_Module::getInstance("HelpDesk");
-$helpDeskInstance->setRelatedList($serviceContractsInstance,"Service Contracts",Array('ADD','SELECT'));
+$helpDeskInstance->setRelatedList($serviceContractsInstance, "Service Contracts", array('ADD','SELECT'));
 
 ExecutePQuery("UPDATE vtiger_field SET uitype=11 WHERE fieldname IN ('phone_work', 'phone_mobile', 'phone_fax', 'phone_home', 'phone_other')
 							AND tabid IN (SELECT tabid FROM vtiger_tab WHERE name='Users')", array());
