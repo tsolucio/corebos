@@ -308,6 +308,7 @@ class HelpDesk extends CRMEntity {
 				if ($_REQUEST['action'] == 'HelpDeskAjax') {
 					$comment = htmlentities($comment, ENT_QUOTES, $default_charset);
 				}
+				$comment = html_entity_decode($comment, ENT_QUOTES, $default_charset);
 				$list .= '<div valign="top" style="width:99%;padding-top:10px;" class="dataField">';
 				$list .= make_clickable(nl2br($comment));
 
