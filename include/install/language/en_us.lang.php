@@ -128,15 +128,15 @@ $installationStrings = array(
 	'LBL_SET_OUTGOING_EMAIL_SERVER' => 'Do not forget to set the outgoing email server (setup accessible from Settings-&gt;Outgoing Server)',
 	'LBL_RENAME_HTACCESS_FILE' => 'Rename htaccess.txt file to .htaccess to control public file access',
 	'MSG_HTACCESS_DETAILS' => 'This .htaccess file will work if "<b>AllowOverride All</b>" is set on Apache server configuration file (httpd.conf) for the DocumentRoot or for the current coreBOS path.<br>
-				   				If this AllowOverride is set as None ie., "<b>AllowOverride None</b>" then .htaccess file will not take into effect.<br>
-				   				If AllowOverride is None then add the following configuration in the apache server configuration file (httpd.conf) <br>
-				   				<b>&lt;Directory "C:/Program Files/corebos/apache/htdocs/coreBOS"&gt;<br>Options -Indexes<br>&lt;/Directory&gt;</b><br>
-				   				So that without .htaccess file we can restrict the directory listing',
+								If this AllowOverride is set as None ie., "<b>AllowOverride None</b>" then .htaccess file will not take into effect.<br>
+								If AllowOverride is None then add the following configuration in the apache server configuration file (httpd.conf) <br>
+								<b>&lt;Directory "C:/Program Files/corebos/apache/htdocs/coreBOS"&gt;<br>Options -Indexes<br>&lt;/Directory&gt;</b><br>
+								So that without .htaccess file we can restrict the directory listing',
 	'LBL_YOU_ARE_IMPORTANT' => 'You are very important to us!',
 	'LBL_PRIDE_BEING_ASSOCIATED' => 'We take pride in being associated with you',
-	'LBL_TALK_TO_US_AT_FORUMS' => 'Talk to us in our <a href="https://plus.google.com/communities/109845486286232591652" target="_blank">Google+ Community</a> or <a href="http://www.linkedin.com/groups/coreBOS-7479130?trk=my_groups-b-grp-v" target="_blank">LinkedIn Group</a>',
+	'LBL_TALK_TO_US_AT_FORUMS' => 'Talk to us in our <a href="http://discussions.corebos.org/" target="_blank">Community Forum</a> or <a href="http://www.linkedin.com/groups/coreBOS-7479130?trk=my_groups-b-grp-v" target="_blank">LinkedIn Group</a>',
 	'LBL_WE_AIM_TO_BE_BEST' => 'We aim to help you do your business',
-	'LBL_SPACE_FOR_YOU' => 'Come on over, there is space for you too!',	
+	'LBL_SPACE_FOR_YOU' => 'Come on over, there is space for you too!',
 	'LBL_NO_OPTIONAL_MODULES_FOUND' => 'No Optional Modules found',
 	'LBL_PREVIOUS_INSTALLATION_INFORMATION' => 'Previous Installation Information',
 	'LBL_PREVIOUS_INSTALLATION_PATH' => 'Previous Installation Path',
