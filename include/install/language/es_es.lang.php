@@ -129,16 +129,15 @@ $installationStrings = array(
 	'LBL_SET_OUTGOING_EMAIL_SERVER' => 'No olvides configurar los datos del servidor saliente de correo, accesible desde Configuración-&gt;Servidor de Correo Saliente',
 	'LBL_RENAME_HTACCESS_FILE' => 'Renombra htaccess.txt a .htaccess para controlar el acceso a los ficheros de la aplicación',
 	'MSG_HTACCESS_DETAILS' => 'Este fichero .htaccess funcionará si la directiva "<b>AllowOverride All</b>" esta establecida en la configuración de Apache (httpd.conf) para el DocumentRoot o el camino actual de vtiger CRM.<br>
-				   				Si la directiva AllowOverride tiene valor None ie., "<b>AllowOverride None</b>" entonces el fichero .htaccess no tendrá efecto.<br>
-				   				Si AllowOverride es None añade la siguiente configuración en al servidor apache (httpd.conf) <br>
-				   				<b>&lt;Directory "C:/Program Files/vtigercrm/apache/htdocs/vtigerCRM"&gt;<br>Options -Indexes<br>&lt;/Directory&gt;</b><br>
-				   				Así se restringe el acceso a los ficheros sin necesidad del fichero .htaccess',
+								Si la directiva AllowOverride tiene valor None ie., "<b>AllowOverride None</b>" entonces el fichero .htaccess no tendrá efecto.<br>
+								Si AllowOverride es None añade la siguiente configuración en al servidor apache (httpd.conf) <br>
+								<b>&lt;Directory "C:/Program Files/vtigercrm/apache/htdocs/vtigerCRM"&gt;<br>Options -Indexes<br>&lt;/Directory&gt;</b><br>
+								Así se restringe el acceso a los ficheros sin necesidad del fichero .htaccess',
 	'LBL_YOU_ARE_IMPORTANT' => 'Eres muy importante para nosotros!',
 	'LBL_PRIDE_BEING_ASSOCIATED' => 'Nos enorgullece estar asociado contigo',
-	'LBL_TALK_TO_US_AT_FORUMS' => 'Habla con nosotros en <a href="http://forums.vtiger.com" target="_blank">forums</a>',
-	'LBL_DISCUSS_WITH_US_AT_BLOGS' => 'Comenta con nosotros en <a href="http://blogs.vtiger.com" target="_blank">blogs</a>',
+	'LBL_TALK_TO_US_AT_FORUMS' => 'Habla con nosotros en nuestro <a href="http://discussions.corebos.org/" target="_blank">Foro Comunitario</a> o en nuestro <a href="http://www.linkedin.com/groups/coreBOS-7479130?trk=my_groups-b-grp-v" target="_blank">Grupo LinkedIn</a>',
 	'LBL_WE_AIM_TO_BE_BEST' => 'Nuestro objetivo - simplemente el mejor',
-	'LBL_SPACE_FOR_YOU' => 'Vente, hay espacio para ti también!',	
+	'LBL_SPACE_FOR_YOU' => 'Vente, hay espacio para ti también!',
 	'LBL_NO_OPTIONAL_MODULES_FOUND' => 'No se han encontrado Módulos Opcionales',
 	'LBL_PREVIOUS_INSTALLATION_INFORMATION' => 'Información de Instalación Anterior',
 	'LBL_PREVIOUS_INSTALLATION_PATH' => 'Camino de la Instalación Anterior',
