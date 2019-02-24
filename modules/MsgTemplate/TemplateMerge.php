@@ -20,7 +20,7 @@ require_once 'include/utils/CommonUtils.php';
 global $default_charset;
 
 if (isset($_REQUEST['action_id']) && $_REQUEST['action_id'] !='') {
-	$ids = explode(':', $_REQUEST['idlist']);
+	$ids = explode(':', $_REQUEST['listofids']);
 	$crmid = null;
 	if (count($ids) == 1) {
 		$crmid = $ids[0];
@@ -45,8 +45,7 @@ if (isset($_REQUEST['action_id']) && $_REQUEST['action_id'] !='') {
 </form>
 <script type="text/javascript">
 //my changes
-if(typeof window.opener.document.getElementById('subject') != 'undefined' &&
-	window.opener.document.getElementById('subject') != null){
+if (typeof window.opener.document.getElementById('subject') != 'undefined' && window.opener.document.getElementById('subject') != null) {
 	window.opener.document.getElementById('subject').value = window.document.frmrepstr.subject.value;
 	window.opener.document.getElementById('description').value = window.document.frmrepstr.repstr.value;
 	window.opener.oCKeditor.setData(window.document.frmrepstr.repstr.value);

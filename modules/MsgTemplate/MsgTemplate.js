@@ -7,6 +7,11 @@
  * All Rights Reserved.
  ************************************************************************************/
 
+function submittemplate(recordid, value, target_fieldname, formname) {
+	let idlist = window.opener.document.getElementById('listofids').value;
+	window.document.location.href = 'index.php?module=MsgTemplate&action=MsgTemplateAjax&file=TemplateMerge&listofids='+idlist+'&action_id='+recordid;
+}
+
 function msgtFillInModuleFields() {
 	alert('Fill In fields');
 }

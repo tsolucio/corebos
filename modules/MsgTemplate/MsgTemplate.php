@@ -111,10 +111,19 @@ class MsgTemplate extends CRMEntity {
 	// Refers to vtiger_field.fieldname values.
 	public $mandatory_fields = array('createdtime', 'modifiedtime', 'reference');
 
+	public $popup_function = 'submittemplate';
+
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
 		}
+	}
+
+	public function getQueryByModuleField($module, $fieldname, $srcrecord, $query = '') {
+		$wherepos = stripos($query, 'where'); // there is always a where
+		$query_body = substr($query, 0, $wherepos+5);
+		$query_cond = substr($query, $wherepos+5);
+		return $query_body." vtiger_msgtemplate.msgt_status='Active' and ".$query_cond;
 	}
 
 	/**
