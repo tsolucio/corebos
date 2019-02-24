@@ -135,21 +135,21 @@
 Template.define('workflowlist_row_template', {
 	remove: function(button, data) {
 		button.addEventListener('click', function (event) {
-            event.preventDefault();
-			var prompt = document.getElementById("confirm-prompt");
-			prompt.style.display = "block";
-			document.getElementById("no_button").onclick = function () {
-				document.getElementById("confirm-prompt").style.display = "none";
+			event.preventDefault();
+			var prompt = document.getElementById('confirm-prompt');
+			prompt.style.display = 'block';
+			document.getElementById('no_button').onclick = function () {
+				document.getElementById('confirm-prompt').style.display = 'none';
 			};
-			document.getElementById("yes_button").onclick = function () {
+			document.getElementById('yes_button').onclick = function () {
 				var return_url = encodeURIComponent('index.php?module=com_vtiger_workflow&action=workflowlist&parenttab=Settings');
-				document.getElementById("confirm-prompt").style.display = "none";
+				document.getElementById('confirm-prompt').style.display = 'none';
 				var base_url = (window.location.origin + window.location.pathname).replace('index.php', '');
-				var idPart= "&workflow_id="+data.workflow_id;
-				var deleteURL =base_url + "index.php?module=com_vtiger_workflow&action=deleteworkflow"+idPart+"&return_url="+return_url;
+				var idPart= '&workflow_id='+data.workflow_id;
+				var deleteURL =base_url + 'index.php?module=com_vtiger_workflow&action=deleteworkflow'+idPart+'&return_url='+return_url;
 				window.location.href = deleteURL;
 			};
-        });
+		});
 	}
 });
 DataTable.onRedraw(document.getElementsByTagName('datatable')[0], function (data) {
@@ -233,21 +233,21 @@ DataTableConfig.searchInputName = 'list_module';
 <!--Done Popups-->
 <!-- Prompt -->
 <div id="confirm-prompt" style="display:none;">
-  <section role="alertdialog" tabindex="0" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
-    <div class="slds-modal__container">
-      <header class="slds-modal__header slds-theme_error slds-theme_alert-texture">
-        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{$APP.LBL_DELETE_WORKFLOW}</h2>
-      </header>
-      <div class="slds-modal__content slds-p-around_medium" id="prompt-message-wrapper">
-        <p>{$APP.WORKFLOW_DELETE_CONFIRMATION}</p>
-      </div>
-      <footer class="slds-modal__footer" style="width:auto;">
-        <button class="slds-button slds-button_neutral" id="no_button">{$APP.LBL_NO}</button>
-        <button class="slds-button slds-button_neutral" id="yes_button">{$APP.LBL_YES}</button>
-      </footer>
-    </div>
-  </section>
-  <div class="slds-backdrop slds-backdrop_open"></div>
+	<section role="alertdialog" tabindex="0" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+		<div class="slds-modal__container">
+			<header class="slds-modal__header slds-theme_error slds-theme_alert-texture">
+				<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{'LBL_DELETE_WORKFLOW'|@getTranslatedString:'com_vtiger_workflow'}</h2>
+			</header>
+			<div class="slds-modal__content slds-p-around_medium" id="prompt-message-wrapper">
+				<p>{'WORKFLOW_DELETE_CONFIRMATION'|@getTranslatedString:'com_vtiger_workflow'}</p>
+			</div>
+			<footer class="slds-modal__footer" style="width:auto;">
+				<button class="slds-button slds-button_neutral" id="no_button">{$APP.LBL_NO}</button>
+				<button class="slds-button slds-button_neutral" id="yes_button">{$APP.LBL_YES}</button>
+			</footer>
+		</div>
+	</section>
+	<div class="slds-backdrop slds-backdrop_open"></div>
 </div>
 {include file='com_vtiger_workflow/Footer.tpl'}
 
