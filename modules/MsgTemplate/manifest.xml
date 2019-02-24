@@ -41,6 +41,7 @@
   `msgt_language` varchar(100) DEFAULT NULL,
   `msgt_module` varchar(100) DEFAULT NULL,
   `msgt_fields` varchar(150) DEFAULT NULL,
+  `msgt_metavars` varchar(150) DEFAULT NULL,
   `subject` text,
   `template` mediumtext,
   `templateonlytext` text,
@@ -336,6 +337,11 @@
 <helpinfo><![CDATA[]]></helpinfo>
 <masseditable>1</masseditable>
 </field>
+</fields>
+</block>
+<block>
+<label></label>
+<fields>
 <field>
 <fieldname>msgt_fields</fieldname>
 <uitype>15</uitype>
@@ -343,6 +349,26 @@
 <tablename>vtiger_msgtemplate</tablename>
 <generatedtype>1</generatedtype>
 <fieldlabel>msgt_fields</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>1</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
+<fieldname>msgt_metavars</fieldname>
+<uitype>15</uitype>
+<columnname>msgt_metavars</columnname>
+<tablename>vtiger_msgtemplate</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>msgt_metavars</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
 <defaultvalue></defaultvalue>
