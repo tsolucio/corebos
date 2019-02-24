@@ -196,6 +196,9 @@ class cbCalendar extends CRMEntity {
 			$listofctos = explode(';', $this->column_fields['contact_id']);
 			foreach ($listofctos as $cto) {
 				if (!empty($cto)) {
+					if (getSalesEntityType($cto)!='Contacts') {
+						continue;
+					}
 					if (strpos($cto, 'x')) {
 						list($wsid,$cto) = explode('x', $cto);
 					}
