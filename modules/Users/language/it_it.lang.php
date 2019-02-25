@@ -213,6 +213,7 @@ $mod_strings = array(
 
   'LBL_ASTERISKEXTENSIONS_EXIST' => 'Estensione Asterisk gi&agrave esistente!',
   'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'Decimal Separator and Digit Grouping Separator cannot be the same.',
+  'LBL_FORUSER' => ' for User ',
 
   'LBL_CREATE_NEW_GROUP' => 'Crea Nuovo Gruppo',
   'LBL_NEW_GROUP' => 'Nuovo Gruppo',

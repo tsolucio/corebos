@@ -216,7 +216,7 @@ $mod_strings = array(
 
 'LBL_ASTERISKEXTENSIONS_EXIST' => 'Asterisk Extension Already Exists',
 'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'Decimal Separator and Digit Grouping Separator cannot be the same.',
-'LBL_FORUSER' => ' For User ',
+'LBL_FORUSER' => ' for User ',
 // Added fields in createnewgroup.php
 'LBL_CREATE_NEW_GROUP'=>'Create New Group',
 'LBL_NEW_GROUP'=>'New Group',

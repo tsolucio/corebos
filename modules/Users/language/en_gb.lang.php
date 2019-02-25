@@ -195,6 +195,7 @@ $mod_strings = array(
 	'LBL_PROPERTIES' => 'Properties of',
 	'LBL_ASTERISKEXTENSIONS_EXIST' => 'Asterisk extension already exists',
 	'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'Decimal Separator and Digit Grouping Separator cannot be the same.',
+	'LBL_FORUSER' => ' for User ',
 	'LBL_CREATE_NEW_GROUP' => 'Create New Group',
 	'LBL_NEW_GROUP' => 'New Group',
 	'LBL_EDIT_GROUP' => 'Edit Group',
