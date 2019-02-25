@@ -1,0 +1,17 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="map">
+    <xs:complexType>
+    <xs:sequence>
+      <xs:choice maxOccurs="1" minOccurs="0">
+        <xs:element type="xs:string" name="sql"/>
+        <xs:element type="xs:string" name="module"/>
+      </xs:choice>
+      <xs:choice maxOccurs="2" minOccurs="0">
+        <xs:element type="xs:string" name="fields"/>
+        <xs:element type="xs:string" name="conditions"/>
+      </xs:choice>
+      <xs:element type="xs:string" name="return" maxOccurs="1" minOccurs="1"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

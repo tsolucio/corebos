@@ -133,7 +133,6 @@ if ($mode == 'add') {
 			}
 		}
 	}
-	echo "SUCCESS";
+	echo 'SUCCESS';
 }
-
 ?>

@@ -185,8 +185,8 @@ class cbCalendar extends CRMEntity {
 			} else {
 				$adb->pquery('insert into vtiger_seactivityrel(crmid,activityid) values(?,?)', array($this->column_fields['rel_id'],$this->id));
 			}
-		} elseif (($this->column_fields['rel_id']=='' || $this->column_fields['rel_id']=='0') && $this->mode=="edit") {
-			$this->deleteRelation("vtiger_seactivityrel");
+		} elseif (($this->column_fields['rel_id']=='' || $this->column_fields['rel_id']=='0') && $this->mode=='edit') {
+			$this->deleteRelation('vtiger_seactivityrel');
 		}
 		//Insert into cntactivity rel
 		if (empty($this->column_fields['contact_id']) && !empty($this->column_fields['cto_id'])) {
@@ -196,6 +196,9 @@ class cbCalendar extends CRMEntity {
 			$listofctos = explode(';', $this->column_fields['contact_id']);
 			foreach ($listofctos as $cto) {
 				if (!empty($cto)) {
+					if (getSalesEntityType($cto)!='Contacts') {
+						continue;
+					}
 					if (strpos($cto, 'x')) {
 						list($wsid,$cto) = explode('x', $cto);
 					}

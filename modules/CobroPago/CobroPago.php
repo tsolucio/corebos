@@ -149,7 +149,9 @@ class CobroPago extends CRMEntity {
 		$rate = $rate_symbol['rate'];
 		$value=0;
 		if (isset($data['amount']) && isset($data['cost'])) {
-			$value = CurrencyField::convertToDollar($data['amount']-$data['cost'], $rate);
+			$am = CurrencyField::convertToDBFormat($data['amount']);
+			$ct = CurrencyField::convertToDBFormat($data['cost']);
+			$value = CurrencyField::convertToDollar($am-$ct, $rate);
 		}
 		$adb->pquery('update vtiger_cobropago set benefit=? where cobropagoid=?', array($value, $cypid));
 

@@ -264,11 +264,12 @@ function VTUpdateFieldsTask($, fieldvaluemapping) {
 						}
 						var parentFields = map(function (e) {
 							if (refersize>1) {
-								return [e['name'], result.name+'-'+e['label']];
+								return [result.name+'-'+e['name'], result.label+'-'+e['label']];
 							} else {
-								return [e['name'], e['label']];
+								return [result.name+'-'+e['name'], e['label']];
 							}
 						}, filteredFields(parent['fields']));
+						parentFields.unshift([result.label, '----'+result.label+'----']);
 						fieldLabels = dict(parentFields);
 						if (k==refersize) {
 							fieldLabels['none']='None';
@@ -280,7 +281,6 @@ function VTUpdateFieldsTask($, fieldvaluemapping) {
 							}
 							$('#modtypes').val(JSON.stringify(modtypes2));
 						}
-						fieldLabels[result.label]='----'+result.label+'----';
 						var fe = $('#save_fieldvalues10_'+mappingno+'_fieldname');
 						if (relmodule=='') {
 							$('#save_fieldvalues10_'+mappingno+'_module').val(result.name);
@@ -296,10 +296,9 @@ function VTUpdateFieldsTask($, fieldvaluemapping) {
 						$('#save_fieldvalues10_'+mappingno+'_fieldname').show();
 						if (fldrelname=='' || fldrelname==undefined || fldrelname==null) {
 							$('#save_fieldvalues10_'+mappingno+'_fieldname').val('none');
-						} else {
-							$('#save_fieldvalues10_'+mappingno+'_fieldname').val(fldrelname);
+						} else if (relmodule==result.name) {
+							$('#save_fieldvalues10_'+mappingno+'_fieldname').val(relmodule+'-'+fldrelname);
 						}
-
 					}));
 				}
 				var fe = $('#save_fieldvalues10_'+mappingno+'_fieldname');
@@ -307,12 +306,13 @@ function VTUpdateFieldsTask($, fieldvaluemapping) {
 					var select = $(this);
 					var modtypes=JSON.parse($('#modtypes').val());
 					var mappingno = select.prop('id').match(/save_fieldvalues10_(\d+)_fieldname/)[1];
-					var fullFieldName = $(this).val();
-					var modname=$(this).find('option:selected').text().split('-');
+					var modname=$(this).find('option:selected').val().split('-');
 					if (modname.length == 1) {
+						var fullFieldName = $(this).val();
 						var mod=$('#save_fieldvalues10_'+mappingno+'_module').val();
 						fieldtype = modtypes[mod];
 					} else {
+						var fullFieldName = modname[1];
 						mod = modname[0];
 						$('#save_fieldvalues10_'+mappingno+'_module').val(mod);
 					}
@@ -323,7 +323,8 @@ function VTUpdateFieldsTask($, fieldvaluemapping) {
 					resetFields(fieldtype[fullFieldName], fullFieldName, mappingno, '', '');
 					//set property name on hidden field
 					var fv = $('#save_fieldvalues_'+mappingno+'_value');
-					var fldrelname=$('#save_fieldvalues10_'+mappingno+'_fieldname').val();
+					var frn=$('#save_fieldvalues10_'+mappingno+'_fieldname').val().split('-');
+					var fldrelname=frn[1];
 					if (fldrelname!='' && fldrelname!=undefined && fldrelname!=null) {
 						fv.prop('name', fldrelname);
 					} else {
@@ -570,7 +571,8 @@ function VTUpdateFieldsTask($, fieldvaluemapping) {
 					var fieldvaluemapping = [];
 					$('#save_fieldvaluemapping').children().each(function (i) {
 						var fieldname = $(this).children('.fieldname').val();
-						var fldrelname=$(this).children('.fieldname1').val();
+						var frn=$(this).children('.fieldname1').val().split('-');
+						var fldrelname=frn[1];
 						var type = $(this).children('.type').val();
 						var value = $(this).children('.expressionvalue').val();
 						if (fldrelname!='none' && fldrelname!=undefined) {

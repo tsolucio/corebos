@@ -188,7 +188,7 @@ class migrateLinksIntoBusinessActionEntities extends cbupdaterWorker {
 
 				$this->sendMsg('Changeset ' . get_class($this) . ' applied!');
 				$this->sendMsg('The vtiger links were migrated successfully into Business Action entities');
-				$this->markApplied();
+				$this->markApplied(false);
 			}
 		}
 		$this->finishExecution();

@@ -135,8 +135,6 @@
 										{/if}
 
 									   {/foreach}
-
-
 									   <!-- Added to display the Product Details in Inventory-->
 									   {if $MODULE eq 'PurchaseOrder' || $MODULE eq 'SalesOrder' || $MODULE eq 'Quotes' || $MODULE eq 'Invoice' || $MODULE eq 'Issuecards' || $MODULE eq 'Receiptcards'}
 									   <tr>

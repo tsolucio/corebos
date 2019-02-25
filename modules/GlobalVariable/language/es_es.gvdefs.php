@@ -1280,6 +1280,20 @@ $GlobalVariableDefinitons = array(
 	'values' => '0|1',
 	'definition' => 'Cuando se establece en 1, la transferencia de una línea de, por ejemplo, una orden de venta a una orden de compra, establecerá todos los descuentos a cero, independientemente de lo que el módulo de origen tenga. Puedes ajustar los módulos de origen marcando "En la lista de módulos" y seleccionando los módulos de origen.',
 ),
+'Application_User_SortBy' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'Especificación SQL para order by|DO NOT SORT',
+	'definition' => 'Si se proporciona, se incorporará directamente a la consulta SQL para recuperar los usuarios que aparecen en el menú desplegable Asignado a, lo que nos permite personalizar el orden de aparición de estos usuarios.',
+),
+'Workflow_ListView_PageSize' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'Número de filas a mostrar por página en la vista de lista de flujos de trabajo. El valor predeterminado es 20.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {

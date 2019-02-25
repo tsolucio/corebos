@@ -13,7 +13,7 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-require_once('vtlib/Vtiger/Module.php');
+require_once 'vtlib/Vtiger/Module.php';
 
 function installAddons() {
 	$packageList = array('module' => array(
@@ -62,16 +62,15 @@ function installAddons() {
 				$enabled = true;
 			}
 			switch ($type) {
-			case 'module':
-				$packageImport->importManifest('modules/' . $package);
-				vtlib_toggleModuleAccess($package, $enabled, true);
-				break;
-			case 'lang':
-				$packageImport->importManifest('include/language/' . $package . '.manifest.xml');
-				vtlib_toggleLanguageAccess($package, $enabled);
-				break;
+				case 'module':
+					$packageImport->importManifest('modules/' . $package);
+					vtlib_toggleModuleAccess($package, $enabled, true);
+					break;
+				case 'lang':
+					$packageImport->importManifest('include/language/' . $package . '.manifest.xml');
+					vtlib_toggleLanguageAccess($package, $enabled);
+					break;
 			}
 		}
 	}
-
 }

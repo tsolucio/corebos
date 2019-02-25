@@ -31,7 +31,7 @@ if (!empty($_REQUEST['update_file'])) {
 	$cbupdate_files[] = vtlib_purify($_REQUEST['update_file']);
 } else {
 	$cbupdate_files[] = 'modules/cbupdater/cbupdater.xml';
-	foreach (glob('modules/cbupdater/cbupdates/*.{xml}', GLOB_BRACE) as $tcode) {
+	foreach (glob('modules/cbupdater/cbupdates/*.xml') as $tcode) {
 		$cbupdate_files[] = $tcode;
 	}
 }

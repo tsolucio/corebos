@@ -38,5 +38,5 @@ $mod_strings = array(
 	'SelectNumberTypes' => 'Please select the number types to send the SMS',
 	'ComposeSMS' => 'Compose SMS',
 	'characters' => 'characters',
-	);
+);
 ?>

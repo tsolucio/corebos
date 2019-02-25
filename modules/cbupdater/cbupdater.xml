@@ -1298,4 +1298,25 @@
 	<classname>ProdSubprodHandlerEvent</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>loridacito</author>
+	<description>notification driver tables</description>
+	<filename>build/changeSets/2019/notificationdrivers.php</filename>
+	<classname>Notificationdrivers</classname>
+	<systemupdate>1</systemupdate>
+</changeSet>
+<changeSet>
+	<author>loridacito</author>
+	<description>add Messages module</description>
+	<filename>build/changeSets/2019/addmodulemessages.php</filename>
+	<classname>Addmodulemessages</classname>
+	<systemupdate>1</systemupdate>
+</changeSet>
+<changeSet>
+	<author>loridacito</author>
+	<description>attachment</description>
+	<filename>build/changeSets/2019/attachment.php</filename>
+	<classname>Attachment</classname>
+	<systemupdate>1</systemupdate>
+</changeSet>
 </updatesChangeLog>

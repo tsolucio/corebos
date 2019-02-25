@@ -135,7 +135,6 @@ $mod_strings = array(
 'Product Name'=>'Nombre de Producto',
 'Active'=>'Activo',
 
-//Added for 4.2 Release -- CustomView
 'LBL_ALL'=>'Todo',
 'LBL_VENDOR_SEARCH_FORM_TITLE'=>'Buscar Proveedor',
 'LBL_PRICEBOOK_SEARCH_FORM_TITLE'=>'Buscar Listas de precios',
@@ -154,7 +153,6 @@ $mod_strings = array(
 'LBL_ADD_PRODUCT_PRICEBOOKS'=>'Agregar producto a las Listas de precios',
 'LBL_ADD_PRODUCTS_PRICEBOOK'=>'Agregar producto a las Listas de precios',
 
-//Added for 4.2 patch2 release
 'LBL_MAXIMUM_LIMIT_ERROR'=>'El archivo excede el límite de tamaño máximo. Pruebe con otro archivo menor que 800Kbytes',
 'LBL_UPLOAD_ERROR'=>'Problemas con el archivo. ¡Inténtelo de nuevo!',
 'LBL_IMAGE_ERROR'=>'El archivo no es de tipo imágen(.gif/.jpg/.png)',
@@ -198,7 +196,6 @@ $mod_strings = array(
 'Spiral Binder'=>'Encuadernado Espiral',
 'Sq Ft'=>'m&sup2;',
 
-//Added for 5.0.3
 'MSG_STOCK_LEVEL'=>'Stock Bajo',
 'MSG_DEAR'=>'Querido',
 'MSG_CURRENT_STOCK'=>'El Stock actual',
@@ -207,14 +204,11 @@ $mod_strings = array(
 'MSG_SEVERITY'=>'Importancia: Alta',
 'MSG_THANKS'=>'Gracias, ',
 
-// Added after 5.0.4 GA
-
 'LBL_PRODUCT_PRICES'=>'Precios Productos',
 'Member Of'=>'Miembro de',
 
 // Module Sequence Numbering
 'Product No' => 'Núm. Producto',
-// END
 
 'Parent Product' => 'Producto Paterno',
 

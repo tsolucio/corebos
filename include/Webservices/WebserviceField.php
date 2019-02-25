@@ -109,8 +109,20 @@ class WebserviceField {
 			$this->summary = $row['summary'];
 		}
 
-		if (is_array($row) && array_key_exists('defaultvalue', $row)) {
-			$this->setDefault($row['defaultvalue']);
+		if (isset($row['defaultvalue'])) {
+			if ($this->uitype == 5 || $this->uitype == 50) {
+				if ($row['defaultvalue']=='' && $row['generatedtype']==1) {
+					if ($this->uitype == 5) {
+						$this->setDefault(getNewDisplayDate());
+					} else {
+						$this->setDefault(getDisplayDateTimeValue());
+					}
+				} else {
+					$this->setDefault($row['defaultvalue']);
+				}
+			} else {
+				$this->setDefault($row['defaultvalue']);
+			}
 		}
 	}
 

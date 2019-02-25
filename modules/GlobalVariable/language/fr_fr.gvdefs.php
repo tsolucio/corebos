@@ -1280,6 +1280,20 @@ $GlobalVariableDefinitons = array(
 	'values' => '0|1',
 	'definition' => 'When set to \'1\', transferring a line from for instance a salesorder to a purschaseorder will set all discounts to zero regardless of what the source module lists for that line. You can fine-tune the source modules by checking \'In Module list\' and selecting the source modules.',
 ),
+'Application_User_SortBy' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'SQL sort specification|DO NOT SORT',
+	'definition' => 'If given will be feeded directly into the SQL query to retrieve users that appear in the Assigned To dropdown permitting us to customize the sort order of these users.',
+),
+'Workflow_ListView_PageSize' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Number of rows to show per page in the workflow list view grid. The default is 20.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php', GLOB_BRACE) as $tcode) {
