@@ -170,12 +170,12 @@
 									</svg>
 									<span class="slds-assistive-text">{$APP.LNK_HELP}</span>
 							</button>
-							<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-pressed="false" title="Show recent" onclick="document.getElementById('cbds-last-visited').classList.add('cbds-anim-slidein--right');document.getElementById('cbds-last-visited').classList.remove('cbds-anim-slideout--right');">
+							<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-pressed="false" title="{$APP.LBL_LAST_VIEWED}" onclick="document.getElementById('cbds-last-visited').style.display = 'block';">
 								<svg class="slds-button__icon" aria-hidden="true">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#attach"></use>
 								</svg>
-								<span class="slds-assistive-text">Show recent</span>
-							</button>
+								<span class="slds-assistive-text">{$APP.LBL_LAST_VIEWED}</span>
+							</button>							
 						</div>
 					</div>
 				</li>
@@ -494,7 +494,7 @@
 {$COREBOS_HEADER_PREMENU}
 <!-- header - master tabs -->
 
-<div id="calculator_cont" style="position:absolute; z-index:10000" ></div>
+<div id="calculator_cont" style="position:absolute; z-index:100001;" ></div>
 {include file="Clock.tpl"}
 
 <div id="qcform" style="position:absolute;width:700px;top:80px;left:450px;z-index:90000;"></div>
@@ -506,22 +506,47 @@
 	</div>
 </div>
 
-<div id="tracker" style="display:none;position:absolute;z-index:100000001;" class="layerPopup">
-	<table border="0" cellpadding="5" cellspacing="0" width="200">
-		<tr style="cursor:move;">
-			<td colspan="2" class="mailClientBg small" id="Track_Handle"><strong>{$APP.LBL_LAST_VIEWED}</strong></td>
-			<td align="right" style="padding:5px;" class="mailClientBg small">
-				<a href="javascript:;"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fninvsh('tracker')" hspace="5" align="absmiddle"></a>
-			</td></tr>
-	</table>
-	<table border="0" cellpadding="5" cellspacing="0" width="200" class="hdrNameBg">
+<!-- Last visited panel -->
+<div id="cbds-last-visited" style="z-index:100000001; position: absolute;right: 0px; top: 50px; display:none;" class="layerPopup slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right cbds-last-visited" aria-hidden="false">
+  <div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default">
+    <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Panel Header">{$APP.LBL_LAST_VIEWED}</h2>
+    <button class="slds-button slds-button_icon slds-button_icon-small slds-panel__close" title="Collapse Panel Header" onclick="document.getElementById('cbds-last-visited').style.display = 'none';">
+      <svg class="slds-button__icon slds-text-color_default" aria-hidden="true">
+        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+      </svg>
+      <span class="slds-assistive-text">Close panel</span>
+    </button>
+  </div>
+  <div class="slds-panel__body">
 		{foreach name=trackinfo item=trackelements from=$TRACINFO}
-			<tr>
-				<td class="trackerListBullet small" align="center" width="12">{$smarty.foreach.trackinfo.iteration}</td>
-				<td class="trackerList small"> <a href="index.php?module={$trackelements.module_name}&action=DetailView&record={$trackelements.crmid}&parenttab={$CATEGORY}">{$trackelements.item_summary}</a> </td><td class="trackerList small">&nbsp;</td></tr>
+			<article class="slds-card">
+				<div class="slds-card__header slds-grid">
+					<header class="slds-media slds-media_center slds-has-flexi-truncate">
+						<div class="slds-media__figure">
+							<span class="slds-icon_container slds-icon-standard-account" title="account">
+								<svg class="slds-icon slds-icon_small" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#account"></use>
+								</svg>
+								<span class="slds-assistive-text">account</span>
+							</span>
+						</div>
+						<div class="slds-media__body">
+							<h2 class="slds-card__header-title">
+								<a href="index.php?module={$trackelements.module_name}&action=DetailView&record={$trackelements.crmid}&parenttab={$CATEGORY}" class="slds-card__header-link" title="{$trackelements.module_name}">
+									<span>{$trackelements.item_summary}</span>
+								</a>
+							</h2>
+							<span></span>
+						</div>
+					</header>
+				</div>
+			</article>
 		{/foreach}
-	</table>
+  </div>
 </div>
+
+<!-- Last // visited panel -->
+
 
 <div id="mainsettings" class="drop_mnu_user" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnvshNrm('mainsettings');" style="width:180px;">
 	<ul>
