@@ -32,23 +32,23 @@ function checkAsteriskDetails() {
  * this function gets the asterisk extensions assigned
  */
 function getAsteriskExtensions() {
-    global $adb;
-    $sql = "SELECT * FROM vtiger_asteriskextensions
+	global $adb;
+	$sql = "SELECT * FROM vtiger_asteriskextensions
         INNER JOIN vtiger_users ON vtiger_users.id = vtiger_asteriskextensions.userid
         AND vtiger_users.deleted=0 AND status = 'Active'";
-    $result = $adb->pquery($sql, array());
-    $count = $adb->num_rows($result);
-    $data = array();
-    $dataFullnames = array();
-    for ($i=0; $i<$count; $i++) {
-        $user = $adb->query_result($result, $i, 'userid');
-        $extension = $adb->query_result($result, $i, 'asterisk_extension');
-        if (!empty($extension)) {
-            $data[$user] = $extension;
-            $dataFullnames[$user] = getUserFullName($user);
-        }
-    }
-    return array($data, $dataFullnames);
+	$result = $adb->pquery($sql, array());
+	$count = $adb->num_rows($result);
+	$data = array();
+	$dataFullnames = array();
+	for ($i=0; $i<$count; $i++) {
+		$user = $adb->query_result($result, $i, 'userid');
+		$extension = $adb->query_result($result, $i, 'asterisk_extension');
+		if (!empty($extension)) {
+			$data[$user] = $extension;
+			$dataFullnames[$user] = getUserFullName($user);
+		}
+	}
+	return array($data, $dataFullnames);
 }
 
 /**
@@ -72,15 +72,15 @@ function get_validate_record_js() {
 	$secondary_email_field_is = $app_strings['SECONDARY_EMAIL_FILED_IS'].$err_invalid_secondary_email_address;
 	$lbl_asterisk_details_not_set = $app_strings['LBL_ASTERISK_SET_ERROR'];
 	$lbl_currency_separators_incorrect = getTranslatedString('LBL_CURRENCY_SEPARATORS_INCORRECT', 'Users');
-    
+
 //check asteriskdetails start
-$checkAsteriskDetails = checkAsteriskDetails();
-$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : 'false'); // used to check the asterisk extension in edit mode
-$mode = (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true')?'true':'false';
-list($extensions, $fullnames) = getAsteriskExtensions();
-$extensions_list = json_encode($extensions);
-$fullnames_list = json_encode($fullnames);
-$esteriskmessage = $mod_strings['LBL_ASTERISKEXTENSIONS_EXIST'].$mod_strings[ 'LBL_FORUSER'];
+	$checkAsteriskDetails = checkAsteriskDetails();
+	$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : 'false'); // used to check the asterisk extension in edit mode
+	$mode = (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true')?'true':'false';
+	list($extensions, $fullnames) = getAsteriskExtensions();
+	$extensions_list = json_encode($extensions);
+	$fullnames_list = json_encode($fullnames);
+	$esteriskmessage = $mod_strings['LBL_ASTERISKEXTENSIONS_EXIST'].$mod_strings[ 'LBL_FORUSER'];
 //check asteriskdetails end
 
 	$the_script = <<<EOQ
@@ -95,11 +95,11 @@ function verify_data(form) {
 	var errorMessage = "";
 
 	//check if asterisk server details are set or not
-	//if(trim(form.asterisk_extension.value)!="" && "$checkAsteriskDetails" == "false"){
-		//errorMessage = "$lbl_asterisk_details_not_set";
-		//alert(errorMessage);
-		//return false;
-	//}
+	if(trim(form.asterisk_extension.value)!="" && "$checkAsteriskDetails" == "false"){
+		errorMessage = "$lbl_asterisk_details_not_set";
+		alert(errorMessage);
+		return false;
+	}
 	var messagess = '$esteriskmessage';
 	var extensions = $extensions_list;
     var fullnames = $fullnames_list;
