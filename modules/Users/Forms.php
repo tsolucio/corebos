@@ -22,9 +22,9 @@ function checkAsteriskDetails() {
 	$result = $adb->pquery('select * from vtiger_asterisk', array());
 	$count = $adb->num_rows($result);
 	if ($count > 0) {
-		return "true";
+		return 'true';
 	} else {
-		return "false";
+		return 'false';
 	}
 }
 
@@ -34,8 +34,7 @@ function checkAsteriskDetails() {
 function getAsteriskExtensions() {
 	global $adb;
 	$sql = "SELECT * FROM vtiger_asteriskextensions
-        INNER JOIN vtiger_users ON vtiger_users.id = vtiger_asteriskextensions.userid
-        AND vtiger_users.deleted=0 AND status = 'Active'";
+		INNER JOIN vtiger_users ON vtiger_users.id = vtiger_asteriskextensions.userid AND vtiger_users.deleted=0 AND status = 'Active'";
 	$result = $adb->pquery($sql, array());
 	$count = $adb->num_rows($result);
 	$data = array();
@@ -102,7 +101,7 @@ function verify_data(form) {
 	}
 	var messagess = '$esteriskmessage';
 	var extensions = $extensions_list;
-    var fullnames = $fullnames_list;
+	var fullnames = $fullnames_list;
 	if (form.asterisk_extension.value != "") {
 		for (var userid in extensions) {
 			if(trim(form.asterisk_extension.value) == extensions[userid]) {
