@@ -229,6 +229,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 	}
 
 	public function query($q) {
+		global $site_URL, $adb, $default_charset;
 		$mysql_query = $this->wsVTQL2SQL($q, $meta, $queryRelatedModules);
 		if (strpos($mysql_query, 'vtiger_inventoryproductrel')) {
 			$invlines = true;
@@ -246,11 +247,12 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
 
+		$isDocModule = ($meta->getEntityName()=='Documents');
 		$noofrows = $this->pearDB->num_rows($result);
 		$output = array();
 		for ($i=0; $i<$noofrows; $i++) {
 			$row = $this->pearDB->fetchByAssoc($result, $i);
-			$rowcrmid = (isset($row['crmid']) ? $row['crmid'] : (isset($row['id']) ? $row['id'] : ''));
+			$rowcrmid = (isset($row[$meta->idColumn]) ? $row[$meta->idColumn] : (isset($row['crmid']) ? $row['crmid'] : (isset($row['id']) ? $row['id'] : '')));
 			if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $rowcrmid)) {
 				continue;
 			}
@@ -277,6 +279,20 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 							$newrelrow[$lrm.$key] = $value;
 						}
 						$newrow = array_merge($newrow, $newrelrow);
+					}
+				}
+			}
+			if ($isDocModule) {
+				$relatt=$adb->pquery('SELECT attachmentsid FROM vtiger_seattachmentsrel WHERE crmid=?', array($rowcrmid));
+				if ($relatt && $adb->num_rows($relatt)==1) {
+					$fileid = $adb->query_result($relatt, 0, 0);
+					$attrs=$adb->pquery('SELECT * FROM vtiger_attachments WHERE attachmentsid=?', array($fileid));
+					if ($attrs && $adb->num_rows($attrs) == 1) {
+						$name = @$adb->query_result($attrs, 0, 'name');
+						$filepath = @$adb->query_result($attrs, 0, 'path');
+						$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
+						$newrow['_downloadurl'] = $site_URL.'/'.$filepath.$fileid.'_'.$name;
+						$newrow['filename'] = $name;
 					}
 				}
 			}
