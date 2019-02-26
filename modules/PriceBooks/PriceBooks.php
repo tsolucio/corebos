@@ -21,6 +21,8 @@ class PriceBooks extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'standard', 'class' => 'pricebook', 'icon'=>'pricebook');
+
 	public $tab_name = array('vtiger_crmentity','vtiger_pricebook','vtiger_pricebookcf');
 	public $tab_name_index = array('vtiger_crmentity'=>'crmid','vtiger_pricebook'=>'pricebookid','vtiger_pricebookcf'=>'pricebookid');
 	/**

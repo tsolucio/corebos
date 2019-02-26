@@ -19,6 +19,8 @@ class ModComments extends ModCommentsCore {
 	 * @param String Module name
 	 * @param String Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
 	 */
+	public $moduleIcon = array('library' => 'standard', 'class' => 'feedback', 'icon'=>'feedback');
+
 	public function vtlib_handler($modulename, $event_type) {
 		parent::vtlib_handler($modulename, $event_type);
 		if ($event_type == 'module.postinstall') {

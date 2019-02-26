@@ -149,7 +149,7 @@
 													<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 												</svg>
 											</span>
-										<input  name="query_string" id="query_string" class="slds-input slds-combobox__input" type="text" role="textbox" placeholder="{$APP.LBL_SEARCH_TITLE}{$APP.LBL_BROWSER_TITLE}" onFocus="this.value=''" aria-autocomplete="list" aria-controls="search-listbox-id-1" autoComplete="off" data-autocomp='{$GS_AUTOCOMP|@json_encode}' />
+										<input  name="query_string" id="query_string" class="slds-input slds-combobox__input" type="text" role="textbox" placeholder="{$APP.LBL_SEARCH_TITLE}{$coreBOS_app_name}" onFocus="this.value=''" aria-autocomplete="list" aria-controls="search-listbox-id-1" autoComplete="off" data-autocomp='{$GS_AUTOCOMP|@json_encode}' />
 									</div>
 									{/if}
 								</div>
@@ -268,149 +268,6 @@
 
 <!-- END LDS Global header -->
 
-<TABLE border=0 cellspacing=0 cellpadding=0 width=100% class="small">
-	<tr  class="slds-grid slds-gutters">
-		<td class="slds-col slds-size_1-of-4"><img src="{$COMPANY_DETAILS.applogo}" alt="{$COMPANY_DETAILS.companyname}" title="{$COMPANY_DETAILS.companyname}" border=0 style="width: 6.5em; margin: 0.5rem 1rem;" href="index.php"></td>
-
-		<td  style="vertical-align: middle" class="slds-col slds-size_2-of-4 slds-align_absolute-center" >
-			<div align ="center" border='3' style="padding:5px; width: 70%" class="noprint">
-				{if $Application_Global_Search_Active || (isset($GS_AUTOCOMP) && isset($GS_AUTOCOMP['searchin']))}
-				<table border=0 cellspacing=0 cellpadding=0 id="" align="center">
-				{else}
-				<table border=0 cellspacing=0 cellpadding=0 align="center">
-				{/if}
-					<tr>
-						{if $Application_Global_Search_Active}
-						<form name="UnifiedSearch" method="post" action="index.php" style="margin:0px" onsubmit="if (document.getElementById('query_string1').value=='') return false; VtigerJS_DialogBox.block();">
-						{else}
-						<form name="UnifiedSearch" style="margin:0px" onsubmit="return false;">
-						{/if}
-							<td style="background-color:#ffffff;border:1px;border-color:black;vertical-align:middle; width: 100%;" nowrap>
-								{if $Application_Global_Search_Active || (isset($GS_AUTOCOMP) && isset($GS_AUTOCOMP['searchin']))}
-								<input type="hidden" name="action" value="UnifiedSearch" style="margin:0px">
-								<input type="hidden" name="module" value="Home" style="margin:0px">
-								<input type="hidden" name="parenttab" value="{$CATEGORY}" style="margin:0px">
-								<input type="hidden" name="search_onlyin" value="--USESELECTED--" style="margin:0px">
-								<div class="slds-form-element">
-									<div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
-										<svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
-											<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search" />
-										</svg>
-										<input  placeholder="" name="query_string1" id="query_string1" class="slds-input slds-size_full" type="text" value="{$QUERY_STRING}"  onFocus="this.value=''" autocomplete="off" data-autocomp='{$GS_AUTOCOMP|@json_encode}' />
-									</div>
-								</div>
-									<div id="listbox-unique-id" role="listbox" class="">
-										<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%;left:45%;" role="presentation"></ul>
-									</div>
-								{/if}
-							</td>
-							{if $Application_Global_Search_Active}
-							<td align ="right" style="vertical-align:middle;padding:5px;" onclick="//UnifiedSearch_SelectModuleForm(this);">
-								<a href='javascript:void(0);' >
-								<span class="slds-icon_container null slds-icon__svg--default">
-									<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
-										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
-									</svg>
-								</span>
-								</a>
-							</td>
-							{/if}
-						</form>
-					</tr>
-				</table>
-			</div>
-		</td>
-		<td nowrap class="cblds-p-top_small slds-col slds-size_1-of-4">
-			<table border=0 cellspacing=0 cellpadding=0  class="slds-float_right slds-m-right_small" id="usermenu-headerlinks">
-				<tr>
-					 <td valign="middle" class="genHeaderSmall" style="padding-left:10px; padding-top:0px;">
-						<span class="userName" style="color: #757575;">{$USER}</span> 
-					</td>
-					{*
-					<td class="small" valign="bottom" nowrap style="padding-bottom: 1em;">
-					<a id="headerUser" class="headerlink">
-						<span class="slds-avatar slds-avatar_small slds-avatar_circle">
-							<abbr class="slds-avatar__initials slds-icon-standard-account" title="{$USER}">{$USER|substr:0:2}</abbr>
-						</span>
-					</a>
-					</td> *}
-					<td class="small" valign="bottom" nowrap style="padding-bottom: 1em;">
-					<a id="headerUser" class="headerlink" href="index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}&modechk=prefview">
-					{* <img src="{$IMAGEPATH}user.PNG" border=0 style="padding: 0px;padding-left:5px" title="{$APP.LBL_MY_PREFERENCES}" alt="{$APP.LBL_MY_PREFERENCES}"> *}
-						<span class="slds-icon_container slds-icon-utility-user" style="padding-left: 5px" title="{$APP.LBL_MY_PREFERENCES}">
-							<svg class="slds-icon slds-icon_small slds-icon-text-default" aria-hidden="true">
-								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#user"></use>
-							</svg>
-						</span>
-						
-					</a>
-					
-					</td>
-					{* vtlib customization: Header links on the top panel *}
-					{if $HEADERLINKS}
-						<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap>
-							<a href="javascript:;" onmouseover="fnvshobj(this,'vtlib_headerLinksLay');" onclick="fnvshobj(this,'vtlib_headerLinksLay');">
-							{* <img src="{'menu_more.png'|@vtiger_imageurl:$THEME}" border=0 style="padding: 0px;padding-left:5px"> *}
-							<span class="slds-icon_container slds-icon-utility-settings" style="padding-left: 5px" title="">
-								<svg class="slds-icon slds-icon_small slds-icon-text-default"  aria-hidden="true">
-									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#settings"></use>
-								</svg>
-							</span>
-							</a>
-							<div class="drop_mnu_user" style="display: none; width:155px;" id="vtlib_headerLinksLay"
-								 onmouseout="fninvsh('vtlib_headerLinksLay')" onmouseover="fnvshNrm('vtlib_headerLinksLay')">
-								<ul>
-									{foreach key=actionlabel item=HEADERLINK from=$HEADERLINKS}
-										{assign var="headerlink_href" value=$HEADERLINK->linkurl}
-										{assign var="headerlink_label" value=$HEADERLINK->linklabel}
-										{if $headerlink_label eq ''}
-											{assign var="headerlink_label" value=$headerlink_href}
-										{else}
-											{assign var="headerlink_label" value=$headerlink_label|@getTranslatedString:$HEADERLINK->module()}
-										{/if}
-										<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_hover" aria-haspopup="true">
-											<a href="{$headerlink_href}" class="slds-context-bar__label-action" title="{$headerlink_label}">
-													<span class="slds-truncate">{$headerlink_label}</span>
-											</a>
-										</li>
-									{/foreach}
-								</ul>
-							</div>
-						</td>
-					{/if}
-				{if $HELP_URL}
-				<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap><a id="headerHelp" class="headerlink" href="{$HELP_URL}" target="_blank">
-				{* <img src="{$IMAGEPATH}info.PNG" border=0 style="padding: 0px;padding-left:5px" title="{$APP.LNK_HELP}"> *}
-					<span class="slds-icon_container slds-icon-utility-info" style="padding-left: 5px" title="{$APP.LNK_HELP}">
-						<svg class="slds-icon slds-icon_small slds-icon-text-default"  aria-hidden="true">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
-						</svg>
-					</span>
-				</a></td>
-				{/if}
-				{if !empty($ADMIN_LINK)}
-					<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnDropDown(this,'mainsettings');" nowrap><a id="headerSettings" class="headerlink" href="index.php?module=Settings&action=index&parenttab=" id="settingslink">
-					{* <img src="{$IMAGEPATH}mainSettings.PNG" border=0 style="padding: 0px;padding-left:5px"> *}
-						<span class="slds-icon_container slds-icon-utility-settings" style="padding-left: 5px" title="">
-							<svg class="slds-icon slds-icon_small slds-icon-text-default"  aria-hidden="true">
-								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#settings"></use>
-							</svg>
-						</span>
-					</a></td>
-				{/if}
-				<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap><a id="headerLogout" class="headerlink" href="index.php?module=Users&action=Logout"> 
-				{* <img src="themes/images/logout.png" border=0 style="padding: 0px;padding-left:5px " title="{$APP.LBL_LOGOUT}" alt="{$APP.LBL_LOGOUT}"> *}
-					<span class="slds-icon_container slds-icon-utility-logout" style="padding-left: 5px" title="{$APP.LBL_LOGOUT}">
-						<svg class="slds-icon slds-icon_small slds-icon-text-default" aria-hidden="true">
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#logout"></use>
-						</svg>
-					</span>
-				</a></td>
-			</tr>
-			</table>
-		</td>
-	</tr>
-</TABLE>
 {if $ANNOUNCEMENT}
 	<table width ="100%">
 		<tr colspan="3" width="100%">
@@ -507,7 +364,7 @@
 </div>
 
 <!-- Last visited panel -->
-<div id="cbds-last-visited" style="z-index:100000001; position: absolute;right: 0px; top: 50px; display:none;" class="layerPopup slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right cbds-last-visited" aria-hidden="false">
+<div id="cbds-last-visited" style="z-index:100000001; position: absolute;right: 0px; top: 50px; display:none;" class="slds-panel slds-size_medium slds-panel_docked-right cbds-last-visited" aria-hidden="false">
   <div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default">
     <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Panel Header">{$APP.LBL_LAST_VIEWED}</h2>
     <button class="slds-button slds-button_icon slds-button_icon-small slds-panel__close" title="Collapse Panel Header" onclick="document.getElementById('cbds-last-visited').style.display = 'none';">
@@ -523,12 +380,12 @@
 				<div class="slds-card__header slds-grid">
 					<header class="slds-media slds-media_center slds-has-flexi-truncate">
 						<div class="slds-media__figure">
-							<span class="slds-icon_container slds-icon-standard-account" title="account">
-								<svg class="slds-icon slds-icon_small" aria-hidden="true">
-									<use xlink:href="include/LD/assets/icons/standard-sprite/svg/symbols.svg#account"></use>
-								</svg>
-								<span class="slds-assistive-text">account</span>
-							</span>
+							<span class="slds-icon_container slds-icon-{$trackelements.__ICONLibrary}-{$trackelements.__ICONClass}" title="{$trackelements.module_name}">
+							<svg class="slds-icon" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/{$trackelements.__ICONLibrary}-sprite/svg/symbols.svg#{$trackelements.__ICONName}"></use> 
+							</svg>
+							<span class="slds-assistive-text">{$trackelements.module_name}</span>
+						</span>
 						</div>
 						<div class="slds-media__body">
 							<h2 class="slds-card__header-title">

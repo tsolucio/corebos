@@ -22,6 +22,8 @@ class SMSNotifier extends SMSNotifierBase {
 		return ($provider !== false);
 	}
 
+	public $moduleIcon = array('library' => 'standard', 'class' => 'sms', 'icon'=>'sms');
+
 	/**
 	 * Send SMS (Creates SMS Entity record, links it with related CRM record and triggers provider to send sms)
 	 *

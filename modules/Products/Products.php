@@ -22,6 +22,7 @@ class Products extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = true;
+	public $moduleIcon = array('library' => 'standard', 'class' => 'product', 'icon'=>'product');
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */

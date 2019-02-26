@@ -22,6 +22,7 @@ class cbCalendar extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = true;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'standard', 'class' => 'event', 'icon'=>'event');
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
