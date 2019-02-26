@@ -271,7 +271,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = $col_fields[$fieldname];
 	} elseif ($uitype == 20 || $uitype == 21 || $uitype == 22 || $uitype == 24) {
-		if ($uitype == 20) { //Fix the issue #4680
+		if ($uitype == 20) {
 			$col_fields[$fieldname] = $col_fields[$fieldname];
 		} else {
 			$col_fields[$fieldname] = nl2br($col_fields[$fieldname]);

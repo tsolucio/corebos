@@ -2217,7 +2217,6 @@ function validateImageFile($file_details) {
 	return $saveimage;
 }
 
-
 /**
  * Validate image metadata.
  * @param mixed $data
