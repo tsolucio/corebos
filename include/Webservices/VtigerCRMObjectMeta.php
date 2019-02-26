@@ -18,6 +18,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 	private $hasWriteAccess;
 	private $hasDeleteAccess;
 	private $assignUsers;
+	public $idColumn;
 
 	public function __construct($webserviceObject, $user) {
 		parent::__construct($webserviceObject, $user);
