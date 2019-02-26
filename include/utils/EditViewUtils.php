@@ -223,7 +223,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				}
 			}
 		}
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name, $value);
+		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $options;
 	} elseif ($uitype == 3313 || $uitype == 3314) {
 		require_once 'modules/PickList/PickListUtils.php';
