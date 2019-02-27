@@ -2,22 +2,33 @@
   <xs:element name="map">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="originmodule">
+        <xs:element name="originmodule" minOccurs="1">
           <xs:complexType>
             <xs:sequence>
               <xs:element type="xs:string" name="originname"/>
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="blocks">
+        <xs:element name="blocks" minOccurs="1">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="block">
+              <xs:element name="block" minOccurs="1">
                 <xs:complexType mixed="true">
                   <xs:sequence>
                     <xs:element type="xs:string" name="label"/>
-                    <xs:element type="xs:string" name="sequence"/>
-                    <xs:element type="xs:string" name="type"/>
+                    <xs:element type="xs:string" name="sequence"/>    
+                    <xs:element name="type">
+                  <xs:simpleType>
+                 <xs:restriction base="xs:string">
+                <xs:enumeration value="ApplicationFields"/>
+             <xs:enumeration value="FieldList"/>
+           <xs:enumeration value="RelatedList"/>
+          <xs:enumeration value="Widget"/>
+        <xs:enumeration value="CodeWithHeader"/>
+        <xs:enumeration value="CodeWithoutHeader"/>
+          </xs:restriction>
+            </xs:simpleType>
+               </xs:element> 
                     <xs:element type="xs:string" name="blockid"/>
                     <xs:element name="layout">
                       <xs:complexType>
