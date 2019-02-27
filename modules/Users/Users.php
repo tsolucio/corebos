@@ -35,7 +35,7 @@ class Users extends CRMEntity {
 	public $tab_name = array('vtiger_users', 'vtiger_attachments', 'vtiger_user2role', 'vtiger_asteriskextensions');
 	public $tab_name_index = array('vtiger_users'=>'id', 'vtiger_attachments'=>'attachmentsid', 'vtiger_user2role'=>'userid', 'vtiger_asteriskextensions'=>'userid');
 
-	public $moduleIcon = array('library' => 'standard', 'class' => 'user', 'icon'=>'user');
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-user', 'class' => 'slds-icon', 'icon'=>'user');
 
 	public $table_name = 'vtiger_users';
 	public $table_index = 'id';

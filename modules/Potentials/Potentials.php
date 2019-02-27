@@ -28,7 +28,7 @@ class Potentials extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
-	public $moduleIcon = array('library' => 'standard', 'class' => 'opportunity', 'icon'=>'opportunity');
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-opportunity', 'class' => 'slds-icon', 'icon'=>'opportunity');
 
 	/**
 	 * Mandatory table for supporting custom fields.

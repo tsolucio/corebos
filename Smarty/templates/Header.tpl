@@ -380,10 +380,10 @@
 				<div class="slds-card__header slds-grid">
 					<header class="slds-media slds-media_center slds-has-flexi-truncate">
 						<div class="slds-media__figure">
-							<span class="slds-icon_container slds-icon-{$trackelements.__ICONLibrary}-{$trackelements.__ICONClass}" title="{$trackelements.module_name}">
-							<svg class="slds-icon" aria-hidden="true">
-								<use xlink:href="include/LD/assets/icons/{$trackelements.__ICONLibrary}-sprite/svg/symbols.svg#{$trackelements.__ICONName}"></use> 
-							</svg>
+							<span class="{$trackelements.__ICONContainerClass}" title="{$trackelements.module_name}">
+								<svg class="{$trackelements.__ICONClass}" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/{$trackelements.__ICONLibrary}-sprite/svg/symbols.svg#{$trackelements.__ICONName}"></use> 
+								</svg>
 							<span class="slds-assistive-text">{$trackelements.module_name}</span>
 						</span>
 						</div>

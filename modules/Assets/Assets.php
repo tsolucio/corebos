@@ -21,7 +21,7 @@ class Assets extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = true;
 	public $HasDirectImageField = false;
-	public $moduleIcon = array('library' => 'standard', 'class' => 'asset-relationship', 'icon'=>'asset_relationship');
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-asset-relationship', 'class' => 'slds-icon', 'icon'=>'asset_relationship');
 
 	/**
 	 * Mandatory table for supporting custom fields.

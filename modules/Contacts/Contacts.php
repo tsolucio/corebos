@@ -28,7 +28,7 @@ class Contacts extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = true;
-	public $moduleIcon = array('library' => 'standard','class' => 'contact', 'icon'=>'contact');
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-contact', 'class' => 'slds-icon', 'icon'=>'contact');
 
 	/**
 	 * Mandatory table for supporting custom fields.

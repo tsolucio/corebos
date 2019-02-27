@@ -25,7 +25,7 @@ class Emails extends CRMEntity {
 
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
-	public $moduleIcon = array('library' => 'standard', 'class' => 'email', 'icon'=>'email');
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-email', 'class' => 'slds-icon', 'icon'=>'email');
 
 	// added to check email save from plugin or not
 	public $plugin_save = false;

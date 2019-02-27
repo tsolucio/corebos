@@ -30,7 +30,7 @@ class GlobalVariable extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = true;
 	public $HasDirectImageField = false;
-	public $moduleIcon = array('library' => 'standard', 'class' => 'system-and-global-variable', 'icon'=>'system_and_global_variable');
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-system-and-global-variable', 'class' => 'slds-icon', 'icon'=>'system_and_global_variable');
 
 	/**
 	 * Mandatory table for supporting custom fields.

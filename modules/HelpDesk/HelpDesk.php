@@ -22,7 +22,8 @@ class HelpDesk extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
-	public $moduleIcon = array('library' => 'standard', 'class' => 'sossession', 'icon'=>'sossession');
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-sossession', 'class' => 'slds-icon', 'icon'=>'sossession');
+
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */

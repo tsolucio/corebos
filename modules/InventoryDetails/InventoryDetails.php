@@ -21,7 +21,7 @@ class InventoryDetails extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = true;
 	public $HasDirectImageField = false;
-	public $moduleIcon = array('library' => 'standard', 'class' => 'product-item', 'icon'=>'product_item');
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-product-item-transaction', 'class' => 'slds-icon', 'icon'=>'product_item_transaction');
 
 	/**
 	 * Mandatory table for supporting custom fields.

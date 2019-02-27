@@ -21,7 +21,7 @@ class ServiceContracts extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = true;
 	public $HasDirectImageField = false;
-	public $moduleIcon = array('library' => 'standard', 'class' => 'service-contract', 'icon'=>'service_contract');
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-service-contract', 'class' => 'slds-icon', 'icon'=>'service_contract');
 
 	/**
 	 * Mandatory table for supporting custom fields.

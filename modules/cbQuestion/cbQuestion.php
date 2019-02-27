@@ -21,7 +21,7 @@ class cbQuestion extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = true;
 	public $HasDirectImageField = false;
-	public $moduleIcon = array('library' => 'standard', 'class' => 'question-feed', 'icon'=>'question_feed');
+	public $moduleIcon = array('library' => 'custom', 'containerClass' => 'slds-icon_container slds-icon-custom-custom102', 'class' => 'slds-icon', 'icon'=>'custom102');
 
 	/**
 	 * Mandatory table for supporting custom fields.

@@ -27,7 +27,7 @@ class cbCVManagement extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = true;
 	public $HasDirectImageField = false;
-	public $moduleIcon = array('library' => 'standard', 'class' => 'resource-skill', 'icon'=>'resource_skill');
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-calibration', 'class' => 'slds-icon', 'icon'=>'calibration');
 
 	/**
 	 * Mandatory table for supporting custom fields.
