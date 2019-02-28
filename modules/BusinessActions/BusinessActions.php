@@ -348,6 +348,7 @@ class BusinessActions extends CRMEntity {
 			$newBA->column_fields['onlyonmymodule'] = $onlyonmymodule;
 			$newBA->column_fields['linkicon'] = $iconpath;
 			$newBA->column_fields['active'] = 1;
+			$newBA->column_fields['mandatory'] = 1;
 
 			if (!empty($handlerInfo)) {
 				$newBA->column_fields['handler_path'] = (isset($handlerInfo['path']) ? $handlerInfo['path'] : '');

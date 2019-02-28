@@ -195,6 +195,7 @@ $mod_strings = array (
 		'LBL_PROPERTIES' => 'Propriétés de',
 		'LBL_ASTERISKEXTENSIONS_EXIST' => 'L\'Extension Asterisk existe déjà!',
 		'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'Le séparateur de décimales et celui de groupe ne peuvent pas être les même.',
+		'LBL_FORUSER' => ' for User ',
 		'LBL_CREATE_NEW_GROUP' => 'Nouvelle équipe',
 		'LBL_NEW_GROUP' => 'Nouvelle équipe',
 		'LBL_EDIT_GROUP' => 'Editer équipe',

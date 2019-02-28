@@ -19,15 +19,13 @@ function onoffTask($adb, $request) {
 	} else {
 		$status = 1;
 	}
+	$vtw = new VTWorkflowApplication('edittask');
 	$tm = new VTTaskManager($adb);
 	$task = $tm->retrieveTask($request['task_id']);
 	$task->active = $status;
 	$tm->saveTask($task);
-	if (isset($request['return_url'])) {
-		$returnUrl=$request['return_url'];
-	} else {
-		$returnUrl='index.php';
-	}
+	$vtw->setReturnUrl('');
+	$returnUrl = $vtw->editWorkflowUrl($task->workflowId);
 ?>
 	<script type="text/javascript" charset="utf-8">
 		window.location="<?php echo $returnUrl?>";

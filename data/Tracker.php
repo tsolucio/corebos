@@ -108,6 +108,9 @@ class Tracker {
 					$per = isPermitted($module, 'DetailView', $entity_id);
 				}
 				if ($per == 'yes') {
+					$curMod = CRMEntity::getInstance($module);
+					$row['__ICONLibrary'] = $curMod->moduleIcon['library'];
+					$row['__ICONName'] = $curMod->moduleIcon['icon'];
 					$list[] = $row;
 				}
 			}

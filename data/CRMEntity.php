@@ -27,6 +27,7 @@ class CRMEntity {
 	static protected $methods = array();
 	static protected $dbvalues = array();
 	static protected $todvalues = array();
+	public $moduleIcon = array('library' => 'utility', 'icon'=>'account');
 
 	public function __construct() {
 		global $log;
