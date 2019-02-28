@@ -8,7 +8,7 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<div style="position:relative;display: block;" id="orgLay" class="layerPopup">
+<div style="position:relative;display: block; width: 520px;" id="orgLay" class="layerPopup">
 	<table border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
 		<tr>
 			<td class="layerPopupHeading" align="left" width="40%" nowrap>{$MOD.ASSIGN_PICKLIST_VALUES} - {$FIELDLABEL}</td>
@@ -27,8 +27,8 @@
 				</select>
 			</td>
 			<td align="center" width="25px;">
-				<img border="0" title="right" alt="Move Right" onclick="moveRight();" style="cursor: pointer" src="{'arrow_right.png'|@vtiger_imageurl:$THEME}"/>
-				<img border="0" title="left" alt="Remove" onclick="removeValue();" style="cursor: pointer" src="{'arrow_left.png'|@vtiger_imageurl:$THEME}"/>
+				<img border="0" title="{$MOD.LBL_MOVE_RIGHT}" alt="{$MOD.LBL_MOVE_RIGHT}" onclick="moveRight();" style="cursor: pointer; max-width: unset;" src="{'arrow_right.png'|@vtiger_imageurl:$THEME}"/>
+				<img border="0" title="{$MOD.LBL_REMOVE}" alt="{$MOD.LBL_REMOVE}" onclick="removeValue();" style="cursor: pointer; max-width: unset;" src="{'arrow_left.png'|@vtiger_imageurl:$THEME}"/>
 			</td>
 			<td width="auto;">
 				<b>{$MOD.LBL_PICKLIST_VALUES_ASSIGNED_TO} {$ROLENAME}</b>
@@ -39,8 +39,8 @@
 				</select>
 			</td>
 			<td align="center">
-				<img border="0" title="up" alt="Move Up" onclick="moveUp();" style="cursor: pointer" src="{'arrow_up.png'|@vtiger_imageurl:$THEME}"/>
-				<img border="0" title="down" alt="Move Down" onclick="moveDown();" style="cursor: pointer" src="{'arrow_down.png'|@vtiger_imageurl:$THEME}"/>
+				<img border="0" title="{$MOD.LBL_MOVE_UP}" alt="{$MOD.LBL_MOVE_UP}" onclick="moveUp();" style="cursor: pointer; max-width: unset;" src="{'arrow_up.png'|@vtiger_imageurl:$THEME}"/>
+				<img border="0" title="{$MOD.LBL_MOVE_DOWN}" alt="{$MOD.LBL_MOVE_DOWN}" onclick="moveDown();" style="cursor: pointer; max-width: unset;" src="{'arrow_down.png'|@vtiger_imageurl:$THEME}"/>
 			</td>
 		</tr>
 		<tr>

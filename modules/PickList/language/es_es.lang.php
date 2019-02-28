@@ -44,6 +44,11 @@ $mod_strings = array(
 	'LBL_ADD_BUTTON' => 'Añadir Elemento',
 	'LBL_EDIT_BUTTON' => 'Renombrar Elemento',
 	'LBL_DELETE_BUTTON' => 'Eliminar Elemento',
+	'LBL_MOVE_UP' => 'Subir',
+	'LBL_MOVE_DOWN' => 'Bajar',
+	'LBL_MOVE_LEFT' => 'Mover Izquierda',
+	'LBL_MOVE_RIGHT' => 'Mover Derecha',
+	'LBL_REMOVE' => 'Quitar',
 	'NTC_DELETE_CONFIRMATION'=>'¿Seguro que quieres eliminar esta dependencia?',
 );
 ?>

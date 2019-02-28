@@ -44,6 +44,11 @@ $mod_strings = array(
 	'LBL_CONFIGURE_DEPENDENCY_HELP_3' => 'Valores seleccionados del campo destino, se muestran como',
 	'LBL_ADD_BUTTON' => 'Agregar Elemento',
 	'LBL_EDIT_BUTTON' => 'Renombrar Elemento',
+	'LBL_MOVE_UP' => 'Subir',
+	'LBL_MOVE_DOWN' => 'Bajar',
+	'LBL_MOVE_LEFT' => 'Mover Izquierda',
+	'LBL_MOVE_RIGHT' => 'Mover Derecha',
+	'LBL_REMOVE' => 'Quitar',
 	'LBL_DELETE_BUTTON' => 'Eliminar Elemento',
 );
 ?>

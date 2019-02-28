@@ -44,6 +44,11 @@ $mod_strings = array(
 	'LBL_ADD_BUTTON' => 'Wert hinzufügen',
 	'LBL_EDIT_BUTTON' => 'Wert umbenennen',
 	'LBL_DELETE_BUTTON' => 'Wert löschen',
+	'LBL_MOVE_UP' => 'Move Up',
+	'LBL_MOVE_DOWN' => 'Move Down',
+	'LBL_MOVE_LEFT' => 'Move Left',
+	'LBL_MOVE_RIGHT' => 'Move Right',
+	'LBL_REMOVE' => 'Remove',
 	'NTC_DELETE_CONFIRMATION'=>'Sind Sie sicher, dass Sie diese Auswahllistabhängigkeit löschen wollen?',
 );
 ?>

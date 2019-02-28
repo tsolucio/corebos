@@ -7,13 +7,11 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 $mod_strings = array(
 	'LBL_ASSIGN_BUTTON'=>'Toewijzen',
 	'ADD_PICKLIST_VALUES'=>'Voeg waarden toe',
 	'LBL_EXISTING_PICKLIST_VALUES'=>'Beschikbare waarden',
 	'LBL_PICKLIST_ADDINFO'=>'Voeg hier nieuwe waardes toe',
-	'LBL_SELECT_ROLES'=>'Selecteer rollen',
 	'LBL_NON_EDITABLE_PICKLIST_ENTRIES'=>'Niet-wijzigbare waarden',
 	'EDIT_PICKLIST_VALUE'=>'Wijzig waardes',
 	'LBL_EDIT_HERE'=>'Vervang door: ',
@@ -25,7 +23,10 @@ $mod_strings = array(
 	'LBL_PICKLIST_VALUES_ASSIGNED_TO'=>'Waardes die zijn toegewezen aan ',
 	'LBL_ADD_TO_OTHER_ROLES'=>'Wijs toe aan andere rol',
 	'LBL_OK_BUTTON_LABEL'=>'Ok',
-// For Dependency picklist // since vtiger version 5.3
+	'LBL_SELECT_ROLES'=>'Selecteer rollen',
+	'LBL_DISPLAYED_VALUES'=>'Alle beschikbare waarden voor de rol worden hieronder getoont',
+
+	// For Dependency picklist // since vtiger version 5.3
 	'LBL_PICKLIST_DEPENDENCY_SETUP' => 'Picklijst Afhankelijkheden Setup',
 	'LBL_PICKLIST_DEPENDENCY_DESCRIPTION' => 'Setup Afhankelijkheden tussen picklijstwaarden in elke module',
 	'LBL_NEW_DEPENDENCY' => 'Nieuwe Picklijst Afhankelijkheden',
@@ -40,5 +41,13 @@ $mod_strings = array(
 	'LBL_CONFIGURE_DEPENDENCY_HELP_2' => "Indien u de mapping van de andere picklijstwaarden van het bronveld wilt zien of aanpassen, <br/>
 										moet u de waarden selecteren doro te klikken op <b>'Selecteer bronwaarden'</b> button on the right side",
 	'LBL_CONFIGURE_DEPENDENCY_HELP_3' => 'Geselecteerde waarden van de doelveldwaarden, zijn gehighlight als',
-	'LBL_DISPLAYED_VALUES'=>'Alle beschikbare waarden voor de rol worden hieronder getoont',
+	'LBL_ADD_BUTTON' => 'Add Item',
+	'LBL_EDIT_BUTTON' => 'Rename Item',
+	'LBL_DELETE_BUTTON' => 'Delete Item',
+	'LBL_MOVE_UP' => 'Move Up',
+	'LBL_MOVE_DOWN' => 'Move Down',
+	'LBL_MOVE_LEFT' => 'Move Left',
+	'LBL_MOVE_RIGHT' => 'Move Right',
+	'LBL_REMOVE' => 'Remove',
+	'NTC_DELETE_CONFIRMATION'=>'Are you sure you want to delete this picklist dependency?',
 );
