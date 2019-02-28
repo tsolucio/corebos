@@ -26,7 +26,7 @@
                             <xs:complexType mixed="true">
                               <xs:sequence>
                                 <xs:element type="xs:string" name="label"/>
-                                <xs:element type="xs:string" name="sequence"/>
+                                <xs:element type="xs:byte" name="sequence"/>
                                 <xs:element type="xs:string" name="type"/>
                                 <xs:element type="xs:string" name="loadfrom"/>
                                 <xs:element type="xs:string" name="loadphp" minOccurs="0"/>
