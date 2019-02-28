@@ -674,7 +674,6 @@ class Services extends CRMEntity {
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
 		$log->debug("> transferRelatedRecords $module, $transferEntityIds, $entityId");
-
 		$rel_table_arr = array(
 			'Quotes' => 'vtiger_inventoryproductrel',
 			'PurchaseOrder' => 'vtiger_inventoryproductrel',
@@ -682,25 +681,21 @@ class Services extends CRMEntity {
 			'Invoice' => 'vtiger_inventoryproductrel',
 			'PriceBooks' => 'vtiger_pricebookproductrel',
 		);
-
 		$tbl_field_arr = array(
 			'vtiger_inventoryproductrel'=>'id',
 			'vtiger_pricebookproductrel'=>'pricebookid',
 		);
-
 		$entity_tbl_field_arr = array(
 			'vtiger_inventoryproductrel'=>'productid',
 			'vtiger_pricebookproductrel'=>'productid',
 		);
-
 		foreach ($transferEntityIds as $transferId) {
 			foreach ($rel_table_arr as $rel_table) {
 				$id_field = $tbl_field_arr[$rel_table];
 				$entity_id_field = $entity_tbl_field_arr[$rel_table];
 				// IN clause to avoid duplicate entries
 				$sel_result = $adb->pquery(
-					"select $id_field from $rel_table where $entity_id_field=? " .
-						" and $id_field not in (select $id_field from $rel_table where $entity_id_field=?)",
+					"select $id_field from $rel_table where $entity_id_field=? and $id_field not in (select $id_field from $rel_table where $entity_id_field=?)",
 					array($transferId,$entityId)
 				);
 				$res_cnt = $adb->num_rows($sel_result);
@@ -715,7 +710,6 @@ class Services extends CRMEntity {
 				}
 			}
 		}
-
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$log->debug('< transferRelatedRecords');
 	}
