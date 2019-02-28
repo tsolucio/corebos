@@ -1869,7 +1869,7 @@ class ReportRun extends CRMEntity {
 			$this->queryPlanner->initializeTempTables();
 			$this->_tmptablesinitialized = true;
 		}
-		$log->debug('ReportRun :: sGetSQLforReport'.$reportid);
+		$log->debug('ReportRun :: sGetSQLforReport '.$reportid);
 		if (GlobalVariable::getVariable('Debug_Report_Query', '0')=='1') {
 			$log->fatal('Report Query for '.$this->reportname." ($reportid)");
 			$log->fatal($reportquery);
@@ -3465,7 +3465,7 @@ class ReportRun extends CRMEntity {
 		$sortFieldResult= $adb->pquery($sortFieldQuery, array($reportid));
 		if ($adb->num_rows($sortFieldResult)>0) {
 			$fieldcolname = $adb->query_result($sortFieldResult, 0, 'columnname');
-			list($tablename,$colname,$module_field,$fieldname,$typeOfData) = explode(":", $fieldcolname);
+			list($tablename,$colname,$module_field,$fieldname,$typeOfData) = explode(':', $fieldcolname);
 			list($modulename,$fieldlabel) = explode('_', $module_field, 2);
 			$groupByField = '`'.$module_field.'`';
 			if ($typeOfData == 'D') {
@@ -3478,7 +3478,7 @@ class ReportRun extends CRMEntity {
 						}
 					}
 					$groupByCondition[] = $this->GetTimeCriteriaCondition($groupCriteria, $groupByField);
-					$groupByField = implode(", ", $groupByCondition);
+					$groupByField = implode(', ', $groupByCondition);
 				}
 			} elseif (CheckFieldPermission($fieldname, $modulename) != 'true') {
 				if ((strpos($tablename, 'vtiger_inventoryproductrel') === false && ($colname != 'productid' || $colname != 'serviceid'))) {
