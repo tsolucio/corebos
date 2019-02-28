@@ -131,10 +131,10 @@ class Potentials extends CRMEntity {
 			$sql = 'insert into vtiger_potstagehistory (potentialid, amount, stage, probability, expectedrevenue, closedate, lastmodified) values (?,?,?,?,?,?,?)';
 			$params = array(
 				$this->id,
-				$this->column_fields['amount'],
+				empty($this->column_fields['amount']) ? 0 : $this->column_fields['amount'],
 				decode_html($this->sales_stage),
 				$this->column_fields['probability'],
-				$this->column_fields['forecast_amount'],
+				empty($this->column_fields['forecast_amount']) ? 0 : $this->column_fields['forecast_amount'],
 				$adb->formatDate($closingdate, true),
 				$adb->formatDate($date_var, true)
 			);
