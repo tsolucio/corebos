@@ -3438,12 +3438,8 @@ function fetch_logo($type) {
 function getmail_contents_portalUser($request_array, $password, $type = '') {
 	global $mod_strings ,$adb;
 
-	//$subject = $mod_strings['Customer Portal Login Details'];
-
-	// id is hardcoded: it is for support start notification in vtiger_notificationscheduler
-	$query='SELECT subject,body FROM vtiger_emailtemplates WHERE templateid=10';
-
-	$result = $adb->pquery($query, array());
+	$query='SELECT subject,template FROM vtiger_msgtemplate WHERE reference=?';
+	$result = $adb->pquery($query, array('Customer Login Details'));
 	$body=$adb->query_result($result, 0, 'body');
 	$contents=$body;
 	$contents = str_replace('$contact_name$', $request_array['first_name']." ".$request_array['last_name'], $contents);

@@ -1187,10 +1187,8 @@ class Contacts extends CRMEntity {
 		$portalURL = '<a href="'.$PORTAL_URL.'" style="font-family:Arial, Helvetica, sans-serif;font-size:12px; font-weight:bolder;text-decoration:none;color: #4242FD;">'
 			.getTranslatedString('Please Login Here', $moduleName).'</a>';
 
-		//here id is hardcoded with 5. it is for support start notification in vtiger_notificationscheduler
-		$query='SELECT subject,body FROM vtiger_emailtemplates WHERE templateid=10';
-
-		$result = $adb->pquery($query, array());
+		$query='SELECT subject,template FROM vtiger_msgtemplate WHERE reference=?';
+		$result = $adb->pquery($query, array('Customer Login Details'));
 		$body=$adb->query_result($result, 0, 'body');
 		$contents = html_entity_decode($body, ENT_QUOTES, $default_charset);
 		$contents = str_replace('$contact_name$', $entityData->get('firstname').' '.$entityData->get('lastname'), $contents);
