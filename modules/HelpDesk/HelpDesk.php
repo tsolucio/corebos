@@ -487,20 +487,25 @@ class HelpDesk extends CRMEntity {
 		global $adb,$log;
 		$log->debug("> transferRelatedRecords $module, $transferEntityIds, $entityId");
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
-		$rel_table_arr = array('Attachments'=>'vtiger_seattachmentsrel');
-
-		$tbl_field_arr = array('vtiger_seattachmentsrel'=>'attachmentsid');
-
-		$entity_tbl_field_arr = array('vtiger_seattachmentsrel'=>'crmid');
-
+		$rel_table_arr = array(
+			'Attachments'=>'vtiger_seattachmentsrel',
+			'cbCalendar'=>'vtiger_activity',
+		);
+		$tbl_field_arr = array(
+			'vtiger_seattachmentsrel'=>'attachmentsid',
+			'vtiger_activity'=>'activityid',
+		);
+		$entity_tbl_field_arr = array(
+			'vtiger_seattachmentsrel'=>'crmid',
+			'vtiger_activity'=>'rel_id',
+		);
 		foreach ($transferEntityIds as $transferId) {
 			foreach ($rel_table_arr as $rel_table) {
 				$id_field = $tbl_field_arr[$rel_table];
 				$entity_id_field = $entity_tbl_field_arr[$rel_table];
 				// IN clause to avoid duplicate entries
 				$sel_result = $adb->pquery(
-					"select $id_field from $rel_table where $entity_id_field=? " .
-						" and $id_field not in (select $id_field from $rel_table where $entity_id_field=?)",
+					"select $id_field from $rel_table where $entity_id_field=? and $id_field not in (select $id_field from $rel_table where $entity_id_field=?)",
 					array($transferId,$entityId)
 				);
 				$res_cnt = $adb->num_rows($sel_result);

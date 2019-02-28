@@ -744,6 +744,7 @@ class Accounts extends CRMEntity {
 			'Attachments'=>'vtiger_seattachmentsrel',
 			'Products'=>'vtiger_seproductsrel',
 			'Campaigns'=>'vtiger_campaignaccountrel',
+			'cbCalendar'=>'vtiger_activity',
 		);
 		$tbl_field_arr = array(
 			'vtiger_contactdetails'=>'contactid',
@@ -755,6 +756,7 @@ class Accounts extends CRMEntity {
 			'vtiger_seattachmentsrel'=>'attachmentsid',
 			'vtiger_seproductsrel'=>'productid',
 			'vtiger_campaignaccountrel'=>'campaignid',
+			'vtiger_activity'=>'activityid',
 		);
 		$entity_tbl_field_arr = array(
 			'vtiger_contactdetails'=>'accountid',
@@ -766,6 +768,7 @@ class Accounts extends CRMEntity {
 			'vtiger_seattachmentsrel'=>'crmid',
 			'vtiger_seproductsrel'=>'crmid',
 			'vtiger_campaignaccountrel'=>'accountid',
+			'vtiger_activity'=>'rel_id',
 		);
 		foreach ($transferEntityIds as $transferId) {
 			foreach ($rel_table_arr as $rel_table) {
