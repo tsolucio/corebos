@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-global $current_user, $currentModule, $singlepane_view;
+global $current_user, $currentModule, $singlepane_view, $log, $index;
 
 checkFileAccessForInclusion("modules/$currentModule/$currentModule.php");
 require_once "modules/$currentModule/$currentModule.php";
@@ -24,6 +24,23 @@ if (isset($_REQUEST['saverepeat']) && $_REQUEST['saverepeat']=='skip' && coreBOS
 	$ME1x1Info['next'] = $ME1x1Info['pending'][0];
 	coreBOS_Session::set('ME1x1Info', $ME1x1Info);
 	header('Location: index.php?action=EditView&record='.$ME1x1Info['pending'][0].'&module='.$currentModule);
+	die();
+}
+if (isset($_REQUEST['saverepeat']) && $_REQUEST['saverepeat']=='goback' && coreBOS_Session::has('ME1x1Info')) {
+	$ME1x1Info = coreBOS_Session::get('ME1x1Info', array());
+	$log->fatal('This is go back button start');
+	$log->fatal($ME1x1Info);
+	$index = count($ME1x1Info['processed']);
+	$ME1x1Info['next'] = $ME1x1Info['processed'][$index-1];
+	$ME1x1Info['pending'][] = $ME1x1Info['next'];
+	array_shift($ME1x1Info['processed']); // this one is where go back start
+	if ($index==0) {
+		coreBOS_Session::set('ME1x1Info', $ME1x1Info);
+		header('Location: index.php?action=EditView&record='.$ME1x1Info['processed'][0].'&module='.$currentModule);
+		die();
+	}
+	coreBOS_Session::set('ME1x1Info', $ME1x1Info);
+	header('Location: index.php?action=EditView&record='.$ME1x1Info['processed'][$index-1].'&module='.$currentModule);
 	die();
 }
 if (isset($_REQUEST['search_url'])) {
