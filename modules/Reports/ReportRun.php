@@ -3467,7 +3467,7 @@ class ReportRun extends CRMEntity {
 			$fieldcolname = $adb->query_result($sortFieldResult, 0, 'columnname');
 			list($tablename,$colname,$module_field,$fieldname,$typeOfData) = explode(':', $fieldcolname);
 			list($modulename,$fieldlabel) = explode('_', $module_field, 2);
-			$groupByField = '`'.$module_field.'`';
+			$groupByField = '`'.ReportRun::replaceSpecialChar($module_field).'`';
 			if ($typeOfData == 'D') {
 				$groupCriteria = $adb->query_result($sortFieldResult, 0, 'dategroupbycriteria');
 				if (strtolower($groupCriteria)!='none') {
