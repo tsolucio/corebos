@@ -649,7 +649,6 @@ class Campaigns extends CRMEntity {
 				}
 			}
 		}
-		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$log->debug('< transferRelatedRecords');
 	}
 }
