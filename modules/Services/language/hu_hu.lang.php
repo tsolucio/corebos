@@ -98,6 +98,7 @@ $mod_strings = array(
 	'LBL_ALL' => 'Minden',
 	'LBL_PRICEBOOK_SEARCH_FORM_TITLE' => 'Keresés a csomagokban',
 	'LBL_PRICEBOOK_TITLE' => 'Csomagár',
+	'LBL_PRODUCT_PRICES' => 'Service Prices',
 	'LBL_SERVICES_TITLE' => 'Szolgáltatás megnevezése',
 	'LBL_COMPANY_NAME' => 'Cégnév',
 	'LBL_CATEGORY_TITLE' => 'Kategória',

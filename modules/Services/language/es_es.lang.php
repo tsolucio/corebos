@@ -93,6 +93,7 @@ $mod_strings = array(
 
 //Mapping for price book
 'Price Book Name'=>'Nombre Tarifa',
+'LBL_PRODUCT_PRICES' => 'Precios Servicio',
 'Service Name'=>'Nombre Servicio',
 'Active'=>'Activo',
 
