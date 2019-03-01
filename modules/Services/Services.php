@@ -110,10 +110,10 @@ class Services extends CRMEntity {
 			$this->insertIntoAttachment($this->id, $module);
 		}
 		//Inserting into service_taxrel table
-		if ((empty($_REQUEST['ajxaction']) || $_REQUEST['ajxaction']!='DETAILVIEW') && $_REQUEST['action']!='MassEditSave' && $_REQUEST['action']!='ProcessDuplicates') {
+		if (inventoryCanSaveProductLines($_REQUEST, $module)) {
 			$this->insertPriceInformation('vtiger_productcurrencyrel', 'Services');
 		}
-		if ((empty($_REQUEST['ajxaction']) || $_REQUEST['ajxaction'] != 'DETAILVIEW') && $_REQUEST['action'] != 'ProcessDuplicates') {
+		if (inventoryCanSaveProductLines($_REQUEST, $module) || $_REQUEST['action'] == 'MassEditSave') {
 			$this->insertTaxInformation('vtiger_producttaxrel', 'Services');
 		}
 		// Update unit price value in vtiger_productcurrencyrel
