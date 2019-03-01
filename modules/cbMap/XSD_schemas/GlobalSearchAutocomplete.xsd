@@ -9,7 +9,7 @@
             <xs:sequence>
               <xs:element name="module" maxOccurs="unbounded" minOccurs="1">
                 <xs:complexType>
-                  <xs:sequence>g
+                  <xs:sequence>
                     <xs:element type="xs:string" name="name"/>
                     <xs:element type="xs:string" name="searchfields"/>
                     <xs:element type="xs:string" name="searchcondition"/>
