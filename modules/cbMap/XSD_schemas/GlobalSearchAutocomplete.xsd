@@ -7,7 +7,7 @@
         <xs:element name="searchin">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="module">
+              <xs:element name="module" maxOccurs="unbounded" minOccurs="1">
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element type="xs:string" name="name"/>
