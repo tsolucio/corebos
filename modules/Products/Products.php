@@ -165,29 +165,28 @@ class Products extends CRMEntity {
 			$params = json_decode($_REQUEST['params'], true);
 			$_REQUEST = array_merge($params, $_REQUEST);
 		}
+		$numtaxes = count($tax_details);
 		$tax_per = '';
 		//Save the Product - tax relationship if corresponding tax check box is enabled
 		//Delete the existing tax if any
 		if ($this->mode == 'edit') {
-			for ($i=0; $i<count($tax_details); $i++) {
-				$tax_checkname = $tax_details[$i]['taxname']."_check";
+			$sql = 'delete from vtiger_producttaxrel where productid=? and taxid=?';
+			for ($i=0; $i<$numtaxes; $i++) {
+				$tax_checkname = $tax_details[$i]['taxname'].'_check';
 				if ($_REQUEST['action'] == 'MassEditSave') { // then we only modify the marked taxes
 					if (isset($_REQUEST[$tax_checkname]) && ($_REQUEST[$tax_checkname] == 'on' || $_REQUEST[$tax_checkname] == 1)) {
 						$taxid = getTaxId($tax_details[$i]['taxname']);
-						$sql = "delete from vtiger_producttaxrel where productid=? and taxid=?";
 						$adb->pquery($sql, array($this->id,$taxid));
 					}
 				} else {
 					$taxid = getTaxId($tax_details[$i]['taxname']);
-					$sql = "delete from vtiger_producttaxrel where productid=? and taxid=?";
 					$adb->pquery($sql, array($this->id,$taxid));
 				}
 			}
 		}
-		$query = 'insert into vtiger_producttaxrel values(?,?,?)';
-		for ($i=0; $i<count($tax_details); $i++) {
+		for ($i=0; $i<$numtaxes; $i++) {
 			$tax_name = $tax_details[$i]['taxname'];
-			$tax_checkname = $tax_details[$i]['taxname']."_check";
+			$tax_checkname = $tax_details[$i]['taxname'].'_check';
 			if (!empty($_REQUEST[$tax_checkname]) && ($_REQUEST[$tax_checkname] == 'on' || $_REQUEST[$tax_checkname] == 1)) {
 				$taxid = getTaxId($tax_name);
 				$tax_per = $_REQUEST[$tax_name];
@@ -196,7 +195,7 @@ class Products extends CRMEntity {
 					$tax_per = getTaxPercentage($tax_name);
 				}
 				$log->debug("Going to save the Product - $tax_name tax relationship");
-				$adb->pquery($query, array($this->id,$taxid,$tax_per));
+				$adb->pquery('insert into vtiger_producttaxrel values(?,?,?)', array($this->id, $taxid, $tax_per));
 			}
 		}
 		$log->debug('< insertTaxInformation');
@@ -219,14 +218,13 @@ class Products extends CRMEntity {
 			$sql = 'delete from vtiger_productcurrencyrel where productid=? and currencyid=?';
 			for ($i=0; $i<count($currency_details); $i++) {
 				$curid = $currency_details[$i]['curid'];
-				$adb->pquery($sql, array($this->id,$curid));
+				$adb->pquery($sql, array($this->id, $curid));
 			}
 		}
 
 		$product_base_conv_rate = getBaseConversionRateForProduct($this->id, $this->mode);
 
 		//Save the Product - Currency relationship if corresponding currency check box is enabled
-		$query = 'insert into vtiger_productcurrencyrel values(?,?,?,?)';
 		for ($i=0; $i<count($currency_details); $i++) {
 			$curid = $currency_details[$i]['curid'];
 			$curname = $currency_details[$i]['currencylabel'];
@@ -240,7 +238,7 @@ class Products extends CRMEntity {
 				$converted_price = $actual_conversion_rate * $requestPrice;
 
 				$log->debug("Going to save the Product - $curname currency relationship");
-				$adb->pquery($query, array($this->id,$curid,$converted_price,$actualPrice));
+				$adb->pquery('insert into vtiger_productcurrencyrel values(?,?,?,?)', array($this->id, $curid, $converted_price, $actualPrice));
 
 				// Update the Product information with Base Currency choosen by the User.
 				if ($_REQUEST['base_currency'] == $cur_valuename) {

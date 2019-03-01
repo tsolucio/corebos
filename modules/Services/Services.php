@@ -129,6 +129,10 @@ class Services extends CRMEntity {
 		global $adb, $log;
 		$log->debug("> insertTaxInformation $tablename, $module");
 		$tax_details = getAllTaxes();
+		if ($_REQUEST['action'] == 'MassEditSave') {
+			$params = json_decode($_REQUEST['params'], true);
+			$_REQUEST = array_merge($params, $_REQUEST);
+		}
 		$numtaxes = count($tax_details);
 		$tax_per = '';
 		//Save the Product - tax relationship if corresponding tax check box is enabled
@@ -151,14 +155,14 @@ class Services extends CRMEntity {
 		for ($i=0; $i<$numtaxes; $i++) {
 			$tax_name = $tax_details[$i]['taxname'];
 			$tax_checkname = $tax_details[$i]['taxname'].'_check';
-			if (isset($_REQUEST[$tax_checkname]) && ($_REQUEST[$tax_checkname] == 'on' || $_REQUEST[$tax_checkname] == 1)) {
+			if (!empty($_REQUEST[$tax_checkname]) && ($_REQUEST[$tax_checkname] == 'on' || $_REQUEST[$tax_checkname] == 1)) {
 				$taxid = getTaxId($tax_name);
 				$tax_per = $_REQUEST[$tax_name];
 				if ($tax_per == '') {
 					$log->debug('Tax selected but value not given so default value will be saved.');
 					$tax_per = getTaxPercentage($tax_name);
 				}
-				$log->debug("Going to save the Product - $tax_name tax relationship");
+				$log->debug("Going to save the Service - $tax_name tax relationship");
 				$adb->pquery('insert into vtiger_producttaxrel values(?,?,?)', array($this->id, $taxid, $tax_per));
 			}
 		}
@@ -178,7 +182,7 @@ class Services extends CRMEntity {
 		$currency_details = getAllCurrencies('all');
 
 		//Delete the existing currency relationship if any
-		if ($this->mode == 'edit' && $_REQUEST['action'] != 'MassEditSave' && $_REQUEST['action'] != 'ProcessDuplicates') {
+		if ($this->mode == 'edit' && $_REQUEST['action'] !== 'MassEditSave') {
 			$sql = 'delete from vtiger_productcurrencyrel where productid=? and currencyid=?';
 			for ($i=0; $i<count($currency_details); $i++) {
 				$curid = $currency_details[$i]['curid'];
@@ -194,15 +198,15 @@ class Services extends CRMEntity {
 			$curname = $currency_details[$i]['currencylabel'];
 			$cur_checkname = 'cur_' . $curid . '_check';
 			$cur_valuename = 'curname' . $curid;
-			$srvprice = (isset($_REQUEST['unit_price']) ? $_REQUEST['unit_price'] : 0);
-			$requestPrice = CurrencyField::convertToDBFormat($srvprice, null, true);
-			$actualPrice = CurrencyField::convertToDBFormat((isset($_REQUEST[$cur_valuename]) ? $_REQUEST[$cur_valuename] : 0), null, true);
-			if (isset($_REQUEST[$cur_checkname]) && ($_REQUEST[$cur_checkname] == 'on' || $_REQUEST[$cur_checkname] == 1)) {
+			if (!empty($_REQUEST[$cur_checkname]) && ($_REQUEST[$cur_checkname] == 'on' || $_REQUEST[$cur_checkname] == 1)) {
+				$srvprice = (isset($_REQUEST['unit_price']) ? $_REQUEST['unit_price'] : 0);
+				$requestPrice = CurrencyField::convertToDBFormat($srvprice, null, true);
+				$actualPrice = CurrencyField::convertToDBFormat((isset($_REQUEST[$cur_valuename]) ? $_REQUEST[$cur_valuename] : 0), null, true);
 				$conversion_rate = $currency_details[$i]['conversionrate'];
 				$actual_conversion_rate = $service_base_conv_rate * $conversion_rate;
 				$converted_price = $actual_conversion_rate * $requestPrice;
 
-				$log->debug("Going to save the Product - $curname currency relationship");
+				$log->debug("Going to save the Service - $curname currency relationship");
 				$adb->pquery('insert into vtiger_productcurrencyrel values(?,?,?,?)', array($this->id, $curid, $converted_price, $actualPrice));
 
 				// Update the Product information with Base Currency choosen by the User.
@@ -218,7 +222,6 @@ class Services extends CRMEntity {
 		$prod_res = $this->db->pquery('select unit_price, currency_id from vtiger_service where serviceid=?', array($this->id));
 		$prod_unit_price = $this->db->query_result($prod_res, 0, 'unit_price');
 		$prod_base_currency = $this->db->query_result($prod_res, 0, 'currency_id');
-
 		$query = 'update vtiger_productcurrencyrel set actual_price=? where productid=? and currencyid=?';
 		$params = array($prod_unit_price, $this->id, $prod_base_currency);
 		$this->db->pquery($query, $params);
