@@ -10,6 +10,9 @@
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/com_vtiger_workflow/VTEmailRecipientsTemplate.inc';
+require_once 'config.inc.php';
+require_once 'include/utils/CommonUtils.php';
+require_once 'modules/Messages/Messages.php';
 require_once 'modules/Emails/mail.php';
 include_once 'include/Webservices/VtigerEmailOperation.php';
 
@@ -154,7 +157,11 @@ class VTEmailTask extends VTTask {
 		$element['subject'] = $subject;
 		$element['description'] = $content;
 		$emailid = $this->createEmailRecord($element);
-		list($wsid, $crmid) = explode('x', $emailid);
+		//Create a Message to register this email
+		$crmid = $this->createMessage($this->entityid, $module, $subject, $this->summary);
+		if ($crmid=='') {
+			list($wsid, $crmid) = explode('x', $emailid);
+		}
 		$rdo = send_mail($module, $to_email, $from_name, $from_email, $subject, $content, $cc, $bcc, $this->attachmentsinfo, $crmid, $logo, $replyto, $qrScan);
 		$logbg->debug("VTEmailTask\nTo: $to_email\nFromName: $from_name\nFromEmail: $from_email\nCC: $cc\nBCC: $bcc\nResult: $rdo");
 		$util->revertUser();
@@ -193,6 +200,57 @@ class VTEmailTask extends VTTask {
 			}
 		}
 		return $result['id'];
+	}
+
+	private function createMessage($to_id, $to_module, $to_name, $desc_name, $templateid = 0) {
+		global $adb, $current_user;
+
+		$focus = new Messages();
+
+		$focus->column_fields['messagename'] = $to_name;
+		$no_message = false;
+		switch ($to_module) {
+			case 'Accounts':
+				$focus->column_fields['account_message'] = $to_id;
+				break;
+			case 'Contacts':
+				$focus->column_fields['contact_message'] = $to_id;
+				break;
+			case 'Leads':
+				$focus->column_fields['lead_message'] = $to_id;
+				break;
+			case 'Potentials':
+				$result = $adb->pquery('SELECT potential_no,related_to FROM vtiger_potential WHERE potentialid=?', array($to_id));
+				$related_to = $adb->query_result($result, 0, 'related_to');
+				$potential_no = $adb->query_result($result, 0, 'potential_no');
+				$desc_name .= ' '.getTranslatedString('LBL_FROM', 'MailManager').' '.getTranslatedString('SINGLE_Potentials', 'Potential').' '.$potential_no;
+				if (getSalesEntityType($related_to) == 'Accounts') {
+					$focus->column_fields['account_message'] = $related_to;
+				} elseif (getSalesEntityType($related_to) == 'Contacts') {
+					$focus->column_fields['contact_message'] = $related_to;
+				}
+				break;
+			default:
+				$no_message = true;
+				break;
+		}
+		if ($no_message == false) {
+			$focus->column_fields['messagetype'] = 'email';
+			if ($templateid != 0) {
+				$focus->column_fields['email_tplid'] = $templateid;
+				$etinfo = getEntityName('MsgTemplate', array($templateid));
+				$focus->column_fields['description'] = $etinfo[$templateid];
+			} else {
+				$focus->column_fields['description'] = "\n".getTranslatedString('Workflow', 'com_vtger_workflow').' '.getTranslatedString('Task').': '.$desc_name."\n\n";
+			}
+			$focus->column_fields['assigned_user_id'] = $current_user->id;
+			$focus->mode = '';
+			$focus->save('Messages');
+			$message_id = $focus->id;
+		} else {
+			$message_id = '';
+		}
+		return $message_id;
 	}
 }
 ?>
