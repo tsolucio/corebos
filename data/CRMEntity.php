@@ -983,16 +983,16 @@ class CRMEntity {
 					$fld_value = $adb->query_result($result[$tablename], 0, $fieldcolname);
 				} else {
 					$adb->println("There is no entry for this entity $record ($module) in the table $tablename");
-					$fld_value = "";
+					$fld_value = '';
 				}
 				$this->column_fields[$fieldname] = $fld_value;
 			}
 		}
 		if ($module == 'Users') {
 			for ($i = 0; $i < $noofrows; $i++) {
-				$fieldcolname = $adb->query_result($result1, $i, "columnname");
-				$tablename = $adb->query_result($result1, $i, "tablename");
-				$fieldname = $adb->query_result($result1, $i, "fieldname");
+				$fieldcolname = $adb->query_result($result1, $i, 'columnname');
+				$tablename = $adb->query_result($result1, $i, 'tablename');
+				$fieldname = $adb->query_result($result1, $i, 'fieldname');
 				$fld_value = $adb->query_result($result[$tablename], 0, $fieldcolname);
 				$this->$fieldname = $fld_value;
 			}
