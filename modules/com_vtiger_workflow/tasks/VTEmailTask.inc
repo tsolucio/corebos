@@ -21,6 +21,10 @@ class VTEmailTask extends VTTask {
 	public $executeImmediately = false;
 	public $attachmentsinfo = array();
 	public $dzattinfo = array();
+	private $entityrecord = 0;
+	private $entityid = 0;
+	private $entitymodule = '';
+	private $entityinfo = '';
 
 	public function getFieldNames() {
 		return array('fromname', 'fromemail', 'replyto', 'subject', 'content', 'recepient', 'emailcc', 'emailbcc', 'attfieldnames', 'attachmentids');
@@ -30,8 +34,16 @@ class VTEmailTask extends VTTask {
 		$this->attachmentsinfo = array();
 		$this->dzattinfo = array();
 		if (!empty($this->attachmentids)) {
+			$GenDocActive = vtlib_isModuleActive('evvtgendoc');
+			if ($GenDocActive) {
+				include_once 'modules/evvtgendoc/OpenDocument.php';
+				$GenDocPDF = (coreBOS_Settings::getSetting('cbgendoc_server', '')!='');
+			} else {
+				$GenDocPDF = false;
+			}
 			$aids = explode(',', trim($this->attachmentids, ','));
-			$query = 'SELECT vtiger_attachments.path, vtiger_attachments.name, vtiger_attachments.attachmentsid, vtiger_notes.filename, vtiger_notes.filesize
+			$query = 'SELECT vtiger_attachments.path, vtiger_attachments.name, vtiger_attachments.attachmentsid, vtiger_notes.filename, vtiger_notes.filesize,
+					vtiger_notes.template, vtiger_notes.template_for
 				FROM vtiger_attachments
 				INNER JOIN vtiger_seattachmentsrel ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
 				INNER JOIN vtiger_crmentity ON vtiger_attachments.attachmentsid=vtiger_crmentity.crmid
@@ -40,6 +52,18 @@ class VTEmailTask extends VTTask {
 			foreach ($aids as $docid) {
 				$docrs = $adb->pquery($query, array($docid));
 				if ($docrs && $adb->num_rows($docrs)==1) {
+					$istemplate = $adb->query_result($docrs, 0, 'template');
+					$istemplatefor = $adb->query_result($docrs, 0, 'template_for');
+					if ($GenDocActive && $this->entityrecord && $istemplate=='1' && $istemplatefor==$this->entitymodule) {
+						$prevdocid = $docid;
+						$format = ($GenDocPDF ? 'pdf' : 'odt');
+						$docfname = OpenDocument::doGenDocMerge($this->entityid, $docid, $format);
+						$mergeTemplateName = $adb->query_result($docrs, 0, 'filename');
+						$name = str_replace(' ', '_', $mergeTemplateName).'_'.str_replace(' ', '_', $this->entityinfo[$this->entityid]);
+						$docid = OpenDocument::saveAsDocument($this->entityid, $this->entitymodule, $format, $mergeTemplateName, $docfname, $name);
+						$docrs = $adb->pquery($query, array($docid));
+						$this->attachmentids = str_replace($prevdocid, $docid, $this->attachmentids);
+					}
 					$attname = $adb->query_result($docrs, 0, 'path').$adb->query_result($docrs, 0, 'attachmentsid').'_'.$adb->query_result($docrs, 0, 'name');
 					$this->attachmentsinfo[] = $attname;
 					$this->dzattinfo[] = array(
@@ -59,6 +83,10 @@ class VTEmailTask extends VTTask {
 
 		$admin = $util->adminUser();
 		$module = $entity->getModuleName();
+		$this->entityrecord = $entity->getId();
+		list($void, $this->entityid) = explode('x', $this->entityrecord);
+		$this->entitymodule = $module;
+		$this->entityinfo = getEntityName($module, $this->entityid);
 
 		$entityCache = new VTEntityCache($admin);
 
