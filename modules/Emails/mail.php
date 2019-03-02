@@ -25,7 +25,8 @@ require_once 'include/utils/CommonUtils.php';
 					current: get file name from $_REQUEST['filename_hidden'] or $_FILES['filename']['name']
 					all: all files directly related with the crmid record, this is mostly only useful for email records
 					attReports: get file name from $_REQUEST['filename_hidden_pdf'] and $_REQUEST['filename_hidden_xls']
-					array of filenames or document IDs: array('themes/images/webcam.png','themes/images/Meetings.gif', 42525);
+					array of filenames or document IDs or array file name and path: array('themes/images/webcam.png','themes/images/Meetings.gif', 42525);
+					array of filenames as array of name and full path: array('fname'=> {basename}, 'fpath'=> {full path including base name})
 					array of direct content:
 						array(
 							'direct' => true,
@@ -200,8 +201,7 @@ function addSignature($contents, $fromname) {
   * $from_name	-- from name which will be displayed in the mail
   * $to_email	-- to email address  -- This can be an email in a single string, a comma separated
   * 		   list of emails or an array of email addresses
-  * $attachment	-- whether we want to attach the currently selected file or all files.
-				  [values = current,all] - optional
+  * $attachment	-- see sendmail explanation
   * $emailid	-- id of the email object which will be used to get the vtiger_attachments - optional
   */
 function setMailerProperties($mail, $subject, $contents, $from_email, $from_name, $to_email, $attachment = '', $emailid = '', $logo = '', $qrScan = '') {
@@ -289,7 +289,11 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
 			}
 		} else {
 			foreach ($attachment as $file) {
-				addAttachment($mail, $file, $emailid);
+				if (is_array($file)) {
+					addAttachment($mail, $file['fname'], $emailid);
+				} else {
+					addAttachment($mail, $file, $emailid);
+				}
 			}
 		}
 	}
