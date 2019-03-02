@@ -436,6 +436,34 @@ function addAllAttachments($mail, $record) {
 	}
 }
 
+/** Function to get all the related files as attachments
+ * @param integer $record - email id: record id which is used to get all the related attachments
+ */
+function getAllAttachments($record) {
+	global $adb, $log, $root_directory;
+	$log->debug('> getAllAttachments');
+	$res = $adb->pquery(
+		'select vtiger_attachments.*
+			from vtiger_attachments
+			inner join vtiger_seattachmentsrel on vtiger_attachments.attachmentsid = vtiger_seattachmentsrel.attachmentsid
+			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
+			where vtiger_crmentity.deleted=0 and vtiger_seattachmentsrel.crmid=?',
+		array($record)
+	);
+	$attachments = array();
+	while ($att = $adb->fetch_array($res)) {
+		$fileid = $att['attachmentsid'];
+		$filename = decode_html($att['name']);
+		$filepath = $att['path'];
+		$filewithpath = $root_directory.$filepath.$fileid.'_'.$filename;
+		if (is_file($filewithpath)) {
+			$attachments[]=array('fname'=>$filename,'fpath'=>$filewithpath);
+		}
+	}
+	$log->debug('< getAllAttachments');
+	return $attachments;
+}
+
 /** Function to set the CC or BCC addresses in the mail
   * $mail -- reference of the mail object
   * $cc_mod -- mode to set the address ie., cc or bcc
