@@ -193,7 +193,7 @@ function HelpDesk_notifyParentOnTicketChange($entityData) {
 			}
 			$mail_status_str = $parent_email.'='.$mail_status.'&&&';
 		} else {
-			$adb->println("'".$parentname."' is not want to get the email about the ticket details as emailoptout is selected");
+			$adb->println($parentname.' does not want to get the email about the ticket details as emailoptout is selected');
 		}
 
 		if ($mail_status != '') {

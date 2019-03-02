@@ -223,11 +223,11 @@ class PearDatabase {
 
 	public function println($msg) {
 		require_once 'include/logging.php';
-		$log1 = LoggerManager::getLogger('VT');
+		$log1 = LoggerManager::getLogger('DB');
 		if (is_array($msg)) {
-			$log1->info('PearDatabase ->'.print_r($msg, true));
+			$log1->info('DB >'.print_r($msg, true));
 		} else {
-			$log1->info('PearDatabase ->'.$msg);
+			$log1->info('DB >'.$msg);
 		}
 		return $msg;
 	}
