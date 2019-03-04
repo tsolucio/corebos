@@ -31,7 +31,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 		$recordId = vtws_getIdComponents($entityId);
 		$recordId = $recordId[1];
 		$logbg->debug("Module: $moduleName, Record: $entityId");
-		$moduleHandler = vtws_getModuleHandlerFromName($moduleName, $current_user);
+		$moduleHandler = vtws_getModuleHandlerFromName($moduleName, Users::getActiveAdminUser());
 		$handlerMeta = $moduleHandler->getMeta();
 		$moduleFields = $handlerMeta->getModuleFields();
 		$fieldValueMapping = array();
@@ -43,7 +43,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 			$focus = CRMEntity::getInstance($moduleName);
 			$focus->id = $recordId;
 			$focus->mode = 'edit';
-			$focus->retrieve_entity_info($recordId, $moduleName);
+			$focus->retrieve_entity_info($recordId, $moduleName, false, $from_wf);
 			$focus->clearSingletonSaveFields();
 			$logbg->debug('field values pre: '.print_r($focus->column_fields, true));
 			$logbg->debug('update info: '.print_r($fieldValueMapping, true));
@@ -72,10 +72,10 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 				if (!in_array($fldmod, $relmodule)) {
 					$relmodule[] = $fldmod;
 				}
-				$moduleHandlerrel = vtws_getModuleHandlerFromName($module, $current_user);
+				$moduleHandlerrel = vtws_getModuleHandlerFromName($module, Users::getActiveAdminUser());
 				$handlerMetarel[$fldmod] = $moduleHandlerrel->getMeta();
 				$moduleFieldsrel = $handlerMetarel[$fldmod]->getModuleFields();
-				$fieldValue[$fldmod][$fieldName]=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue1, $fieldName, $focus, $entity, $handlerMetarel[$fldmod]);
+				$fieldValue[$fldmod][$fieldName]=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue1, $fieldName, $focus, $entity, $handlerMeta);
 			}
 			$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 			$_REQUEST['ajxaction'] = 'Workflow';
@@ -84,12 +84,16 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 				if (count($relmodule)>3 && $isqueue==false) {
 					$delay = strtotime(' +5 minutes');
 					$taskQueue->queueTask($this->id, $entityId, $delay);
+					$util->revertUser();
+					$from_wf = false;
+					$_REQUEST['ajxaction'] = $hold_ajxaction;
+					$logbg->debug('< CBMassiveUpdateRelatedTask: queued');
 					return;
 				} else {
 					foreach ($relmodule as $mod) {
 						$fieldmodule = explode('__', $mod);
-						$relfield = $fieldmodule[1];
 						$relmodule = $fieldmodule[0];
+						$relfield = $fieldmodule[1];
 						$focusrel[$mod] = CRMEntity::getInstance($relmodule);
 						$maintable = $focusrel[$mod]->table_name;
 						$mainid = $focusrel[$mod]->table_index;
@@ -98,7 +102,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 							$relId = $adb->query_result($records, $nr, '0');
 							$focusrel[$mod]->id = $relId;
 							$focusrel[$mod]->mode = 'edit';
-							$focusrel[$mod]->retrieve_entity_info($relId, $relmodule);
+							$focusrel[$mod]->retrieve_entity_info($relId, $relmodule, false, $from_wf);
 							$focusrel[$mod]->clearSingletonSaveFields();
 							$fval = $fieldValue[$mod];
 							foreach ($fval as $key => $value) {
@@ -111,12 +115,10 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 				}
 			}
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
-			$util->revertUser();
-			$logbg->debug('field values postsave: '.print_r($focus->column_fields, true));
 		}
 		$util->revertUser();
 		$from_wf = false;
-		$logbg->info('< CBMassiveUpdateRelatedTask');
+		$logbg->debug('< CBMassiveUpdateRelatedTask');
 	}
 }
 ?>
