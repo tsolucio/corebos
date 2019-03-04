@@ -902,7 +902,7 @@ class CRMEntity {
 		$result = array();
 
 		//Here we check if user can see this record.
-		if (isPermitted($module, 'DetailView', $record) != 'yes') {
+		if (!$from_wf && isPermitted($module, 'DetailView', $record) != 'yes') {
 			$this->column_fields['record_id'] = $record;
 			$this->column_fields['record_module'] = $module;
 			return;
