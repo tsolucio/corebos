@@ -99,6 +99,7 @@ $mod_strings = array(
 'LBL_PARENT_OWNER' => 'Proprietário de registro pai',
 'LBL_SPECIAL_OPTIONS' => 'Opções Especiais',
 'CBTagTask' => 'Adicionar/Apagar Tag',
+'CBMassiveUpdateRelatedTask' => 'Massive Update of related records',
 'Add Tag' => 'Adicionar Tag',
 'Delete Tag' => 'Apagar Tag',
 'Tags' => 'Tags',

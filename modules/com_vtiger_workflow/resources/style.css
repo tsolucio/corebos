@@ -73,7 +73,7 @@
 }
 
 /* similar to .small class defined themes/softed/style.css */
-.fieldname, .operation, .value, .joincondition, .form_input, .time_field, .timepicker {
+.fieldmodule, .fieldname1, .fieldname, .operation, .value, .joincondition, .form_input, .time_field, .timepicker {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 11px;
 	color: #000000;

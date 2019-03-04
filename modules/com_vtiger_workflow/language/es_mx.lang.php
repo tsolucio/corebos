@@ -38,6 +38,8 @@ $mod_strings = array(
 'LBL_MESSAGE'=>'Mensaje',
 'VTPDFMakerTask'=>'Guardar documento de PDFMaker',  // ITS4YOU-CR PDF Maker
 'LBL_SEND_ALL_ATTACHMENT'=>'Enviar todos los adjuntos',
+'VTPDFMakerTask'=>'Guardar documento de PDFMaker',  // ITS4YOU-CR PDF Maker
+'LBL_SEND_ALL_ATTACHMENT'=>'Enviar todos los adjuntos', 
 'LBL_SET_FIELD_VALUES'=>'Establecer valor de campo',
 'LBL_ADD_FIELD'=>'Agregar campo',
 
@@ -96,6 +98,7 @@ $mod_strings = array(
 'LBL_PARENT_OWNER' => 'Dueño del Registro Superior',
 'LBL_SPECIAL_OPTIONS' => 'Opciones Especiales',
 'CBTagTask' => 'Añadir/Eliminar Etiqueta',
+'CBMassiveUpdateRelatedTask' => 'Actualización masiva de relacionados',
 'Add Tag' => 'Añadir Etiqueta',
 'Delete Tag' => 'Eliminar Etiqueta',
 'Tags' => 'Etiquetas',
