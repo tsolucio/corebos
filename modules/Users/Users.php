@@ -742,7 +742,7 @@ class Users extends CRMEntity {
 			$this->createAccessKey();
 		}
 		$this->db->completeTransaction();
-		$this->db->println("TRANS saveentity ends");
+		$this->db->println('TRANS saveentity ends');
 	}
 
 	public function createAccessKey() {

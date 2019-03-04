@@ -107,7 +107,7 @@ class CRMEntity {
 		$this->db->startTransaction();
 
 		foreach ($this->tab_name as $table_name) {
-			if ($table_name == "vtiger_crmentity") {
+			if ($table_name == 'vtiger_crmentity') {
 				$this->insertIntoCrmEntity($module, $fileid);
 			} else {
 				$this->insertIntoEntityTable($table_name, $module, $fileid);
@@ -125,7 +125,7 @@ class CRMEntity {
 		$this->save_module($module);
 
 		$this->db->completeTransaction();
-		$this->db->println("TRANS saveentity ends");
+		$this->db->println('TRANS saveentity ends');
 
 		// vtlib customization: Hook provide to enable generic module relation.
 		if (isset($_REQUEST['createmode']) && $_REQUEST['createmode'] == 'link') {
@@ -1064,7 +1064,7 @@ class CRMEntity {
 		}
 
 		//Event triggering code
-		require_once "include/events/include.inc";
+		require_once 'include/events/include.inc';
 		global $adb;
 
 		$em = new VTEventsManager($adb);
@@ -1072,26 +1072,26 @@ class CRMEntity {
 		$em->initTriggerCache();
 		$entityData = VTEntityData::fromCRMEntity($this);
 
-		$em->triggerEvent("vtiger.entity.beforesave.modifiable", $entityData);
-		$em->triggerEvent("vtiger.entity.beforesave", $entityData);
-		$em->triggerEvent("vtiger.entity.beforesave.final", $entityData);
+		$em->triggerEvent('vtiger.entity.beforesave.modifiable', $entityData);
+		$em->triggerEvent('vtiger.entity.beforesave', $entityData);
+		$em->triggerEvent('vtiger.entity.beforesave.final', $entityData);
 		//Event triggering code ends
 		//GS Save entity being called with the modulename as parameter
 		$this->saveentity($module_name, $fileid);
 
 		//Event triggering code
-		$em->triggerEvent("vtiger.entity.aftersave.first", $entityData);
-		$em->triggerEvent("vtiger.entity.aftersave", $entityData);
-		$em->triggerEvent("vtiger.entity.aftersave.final", $entityData);
+		$em->triggerEvent('vtiger.entity.aftersave.first', $entityData);
+		$em->triggerEvent('vtiger.entity.aftersave', $entityData);
+		$em->triggerEvent('vtiger.entity.aftersave.final', $entityData);
 		//Event triggering code ends
 	}
 
 	/** Mark an item as deleted */
 	public function mark_deleted($id) {
 		global $current_user;
-		$date_var = date("Y-m-d H:i:s");
-		$query = "UPDATE vtiger_crmentity set deleted=1,modifiedtime=?,modifiedby=? where crmid=?";
-		$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, "Error marking record deleted: ");
+		$date_var = date('Y-m-d H:i:s');
+		$query = 'UPDATE vtiger_crmentity set deleted=1,modifiedtime=?,modifiedby=? where crmid=?';
+		$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, 'Error marking record deleted: ');
 	}
 
 	// this method is called during an import before inserting a bean
