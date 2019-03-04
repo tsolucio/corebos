@@ -27,6 +27,7 @@ class CRMEntity {
 	static protected $methods = array();
 	static protected $dbvalues = array();
 	static protected $todvalues = array();
+	public $moduleIcon = array('library' => 'utility', 'icon'=>'account');
 
 	public function __construct() {
 		global $log;
@@ -982,16 +983,16 @@ class CRMEntity {
 					$fld_value = $adb->query_result($result[$tablename], 0, $fieldcolname);
 				} else {
 					$adb->println("There is no entry for this entity $record ($module) in the table $tablename");
-					$fld_value = "";
+					$fld_value = '';
 				}
 				$this->column_fields[$fieldname] = $fld_value;
 			}
 		}
 		if ($module == 'Users') {
 			for ($i = 0; $i < $noofrows; $i++) {
-				$fieldcolname = $adb->query_result($result1, $i, "columnname");
-				$tablename = $adb->query_result($result1, $i, "tablename");
-				$fieldname = $adb->query_result($result1, $i, "fieldname");
+				$fieldcolname = $adb->query_result($result1, $i, 'columnname');
+				$tablename = $adb->query_result($result1, $i, 'tablename');
+				$fieldname = $adb->query_result($result1, $i, 'fieldname');
 				$fld_value = $adb->query_result($result[$tablename], 0, $fieldcolname);
 				$this->$fieldname = $fld_value;
 			}
@@ -2476,8 +2477,7 @@ class CRMEntity {
 
 				// IN clause to avoid duplicate entries
 				$sel_result = $adb->pquery(
-					"select $id_field from $rel_table where $entity_id_field=? " .
-						" and $id_field not in (select $id_field from $rel_table where $entity_id_field=?)",
+					"select $id_field from $rel_table where $entity_id_field=? and $id_field not in (select $id_field from $rel_table where $entity_id_field=?)",
 					array($transferId,$entityId)
 				);
 				$res_cnt = $adb->num_rows($sel_result);

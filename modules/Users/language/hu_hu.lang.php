@@ -196,6 +196,7 @@ $mod_strings = array(
 	'LBL_PROPERTIES' => 'Tulajdonsága',
 	'LBL_ASTERISKEXTENSIONS_EXIST' => 'Az Asterisk bővítmény már létezik!',
 	'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'Decimal Separator and Digit Grouping Separator cannot be the same.',
+	'LBL_FORUSER' => ' for User ',
 	'LBL_CREATE_NEW_GROUP' => 'Új Csoport',
 	'LBL_NEW_GROUP' => 'Új Csoport',
 	'LBL_EDIT_GROUP' => 'Csoport Szerkesztése',

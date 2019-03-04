@@ -129,16 +129,15 @@ $installationStrings = array(
 	'LBL_SET_OUTGOING_EMAIL_SERVER' => 'Não esqueça de configurar o Servidor de Envio de Mensagens (a configuração pode ser feita a partir de Configuração > Servidor Envio Mensagem)',
 	'LBL_RENAME_HTACCESS_FILE' => 'Renomei o arquivo htaccess.txt para .htaccess para controlar o acesso público a arquivos',
 	'MSG_HTACCESS_DETAILS' => 'Este arquivo .htaccess irá funcionar se o "<b>AllowOverride All</b>" estiver configurado no arquivo de configuração do Apache (httpd.conf) para o DocumentRoot ou para o caminho (path) atual do vtiger.<br>
-				   				Se o AllowOverride estiver configurado como None ie., "<b>AllowOverride None</b>", então o arquivo .htaccess não terá nenhum efeito.<br>
-				   				Se o AllowOverride for None, então adicione a seguinte configuração no arquivo de configuração do Apache (httpd.conf) <br>
-				   				<b>&lt;Diretório "C:/Program Files/vtigercrm/apache/htdocs/vtigerCRM"&gt;<br>Options -Indexes<br>&lt;/Diretório&gt;</b><br>
-				   				Sem o arquivo .htaccess podemos restringir a listagem de diretório',
+								Se o AllowOverride estiver configurado como None ie., "<b>AllowOverride None</b>", então o arquivo .htaccess não terá nenhum efeito.<br>
+								Se o AllowOverride for None, então adicione a seguinte configuração no arquivo de configuração do Apache (httpd.conf) <br>
+								<b>&lt;Diretório "C:/Program Files/vtigercrm/apache/htdocs/vtigerCRM"&gt;<br>Options -Indexes<br>&lt;/Diretório&gt;</b><br>
+								Sem o arquivo .htaccess podemos restringir a listagem de diretório',
 	'LBL_YOU_ARE_IMPORTANT' => 'Você é muito importante para nós!',
 	'LBL_PRIDE_BEING_ASSOCIATED' => 'Temos orgulho em ter você como associado',
-	'LBL_TALK_TO_US_AT_FORUMS' => 'Fale conosco a partir dos <a href="http://forums.vtiger.com" target="_blank">forums</a>',
-	'LBL_DISCUSS_WITH_US_AT_BLOGS' => 'Discuta conosco a partir dos <a href="http://blogs.vtiger.com" target="_blank">blogs</a>',
+	'LBL_TALK_TO_US_AT_FORUMS' => 'Fale conosco a partir dos <a href="http://discussions.corebos.org/" target="_blank">forums</a>',
 	'LBL_WE_AIM_TO_BE_BEST' => 'Queremos ser - simplesmente o melhor',
-	'LBL_SPACE_FOR_YOU' => 'Venha conosco, existe espaço para você também!',	
+	'LBL_SPACE_FOR_YOU' => 'Venha conosco, existe espaço para você também!',
 	'LBL_NO_OPTIONAL_MODULES_FOUND' => 'Nenhum Móduo Opcional encontrado',
 	'LBL_PREVIOUS_INSTALLATION_INFORMATION' => 'Informação de Instalação Anterior',
 	'LBL_PREVIOUS_INSTALLATION_PATH' => 'Caminho (path) da Instalação Anterior',

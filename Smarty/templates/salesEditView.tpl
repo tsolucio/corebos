@@ -83,6 +83,9 @@
 												{if isset($MED1x1MODE) && $MED1x1MODE!=0}
 												<input title="{$APP.LBL_SKIP_BUTTON_TITLE}" accessKey="{$APP.LBL_SKIP_BUTTON_KEY}" class="crmbutton small cancel" onclick="this.form.saverepeat.value='skip';this.form.action.value='Save'; displaydeleted();" type="submit" name="button" value="  {$APP.LBL_SKIP_BUTTON_LABEL}  ">
 												{/if}
+												{if isset($gobackBTN) && !$gobackBTN}
+												<input title="{$APP.LBL_GOBACK_BUTTON_TITLE}" accessKey="{$APP.LBL_GOBACK_BUTTON_KEY}" class="crmbutton small cancel" onclick="this.form.saverepeat.value='goback';this.form.action.value='Save'; displaydeleted();" type="submit" name="button" value="  {$APP.LBL_GOBACK_BUTTON_LABEL}  ">
+												{/if}
 												<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="{if isset($smarty.request.Module_Popup_Edit)}window.close(){elseif isset($CANCELGO)}window.location.href='{$CANCELGO}'{else}window.history.back(){/if};" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
 											</div>
 										</td>
@@ -135,8 +138,6 @@
 										{/if}
 
 									   {/foreach}
-
-
 									   <!-- Added to display the Product Details in Inventory-->
 									   {if $MODULE eq 'PurchaseOrder' || $MODULE eq 'SalesOrder' || $MODULE eq 'Quotes' || $MODULE eq 'Invoice' || $MODULE eq 'Issuecards' || $MODULE eq 'Receiptcards'}
 									   <tr>
@@ -167,6 +168,9 @@
 												{/if}
 												{if isset($MED1x1MODE) && $MED1x1MODE!=0}
 												<input title="{$APP.LBL_SKIP_BUTTON_TITLE}" accessKey="{$APP.LBL_SKIP_BUTTON_KEY}" class="crmbutton small cancel" onclick="this.form.saverepeat.value='skip';this.form.action.value='Save'; displaydeleted();" type="submit" name="button" value="  {$APP.LBL_SKIP_BUTTON_LABEL}  ">
+												{/if}
+												{if isset($gobackBTN) && !$gobackBTN}
+												<input title="{$APP.LBL_GOBACK_BUTTON_TITLE}" accessKey="{$APP.LBL_GOBACK_BUTTON_KEY}" class="crmbutton small cancel" onclick="this.form.saverepeat.value='goback';this.form.action.value='Save'; displaydeleted();" type="submit" name="button" value="  {$APP.LBL_GOBACK_BUTTON_LABEL}  ">
 												{/if}
 												<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="{if isset($smarty.request.Module_Popup_Edit)}window.close(){elseif isset($CANCELGO)}window.location.href='{$CANCELGO}'{else}window.history.back(){/if};" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
 											</div>

@@ -86,6 +86,8 @@ $mod_strings = array(
 'groupEmailList' => 'Group Email List',
 
 'Workflow'=>'Workflow',
+'WORKFLOW_DELETE_CONFIRMATION' => 'Are you sure you want to delete this Workflow?',
+'LBL_DELETE_WORKFLOW' => 'Delete Workflow',
 
 'VTCreateEntityTask' => 'Crea Oggetto',
 'LBL_ENTITY_TYPE' => 'Tipo Oggetto',

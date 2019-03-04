@@ -45,6 +45,11 @@ $mod_strings = array(
 	'LBL_ADD_BUTTON' => 'Adicionar Item',
 	'LBL_EDIT_BUTTON' => 'Renomear Item',
 	'LBL_DELETE_BUTTON' => 'Apagar Item',
+	'LBL_MOVE_UP' => 'Move Up',
+	'LBL_MOVE_DOWN' => 'Move Down',
+	'LBL_MOVE_LEFT' => 'Move Left',
+	'LBL_MOVE_RIGHT' => 'Move Right',
+	'LBL_REMOVE' => 'Remove',
 	'NTC_DELETE_CONFIRMATION'=>'Tem a certeza que deseja apagar esta dependência da Lista de Opções?',
 );
 ?>

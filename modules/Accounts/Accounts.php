@@ -734,27 +734,49 @@ class Accounts extends CRMEntity {
 		global $adb,$log;
 		$log->debug("> transferRelatedRecords $module, $transferEntityIds, $entityId");
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
-		$rel_table_arr = array("Contacts"=>"vtiger_contactdetails","Potentials"=>"vtiger_potential","Quotes"=>"vtiger_quotes",
-					"SalesOrder"=>"vtiger_salesorder","Invoice"=>"vtiger_invoice",
-					"HelpDesk"=>"vtiger_troubletickets","Attachments"=>"vtiger_seattachmentsrel",
-					"Products"=>"vtiger_seproductsrel","Campaigns"=>"vtiger_campaignaccountrel");
-
-		$tbl_field_arr = array("vtiger_contactdetails"=>"contactid","vtiger_potential"=>"potentialid","vtiger_quotes"=>"quoteid",
-					"vtiger_salesorder"=>"salesorderid","vtiger_invoice"=>"invoiceid","vtiger_troubletickets"=>"ticketid","vtiger_seattachmentsrel"=>"attachmentsid",
-					"vtiger_seproductsrel"=>"productid","vtiger_campaignaccountrel"=>"campaignid");
-
-		$entity_tbl_field_arr = array("vtiger_contactdetails"=>"accountid","vtiger_potential"=>"related_to","vtiger_quotes"=>"accountid",
-					"vtiger_salesorder"=>"accountid","vtiger_invoice"=>"accountid","vtiger_troubletickets"=>"parent_id","vtiger_seattachmentsrel"=>"crmid",
-					"vtiger_seproductsrel"=>"crmid","vtiger_campaignaccountrel"=>"accountid");
-
+		$rel_table_arr = array(
+			'Contacts'=>'vtiger_contactdetails',
+			'Potentials'=>'vtiger_potential',
+			'Quotes'=>'vtiger_quotes',
+			'SalesOrder'=>'vtiger_salesorder',
+			'Invoice'=>'vtiger_invoice',
+			'HelpDesk'=>'vtiger_troubletickets',
+			'Attachments'=>'vtiger_seattachmentsrel',
+			'Products'=>'vtiger_seproductsrel',
+			'Campaigns'=>'vtiger_campaignaccountrel',
+			'cbCalendar'=>'vtiger_activity',
+		);
+		$tbl_field_arr = array(
+			'vtiger_contactdetails'=>'contactid',
+			'vtiger_potential'=>'potentialid',
+			'vtiger_quotes'=>'quoteid',
+			'vtiger_salesorder'=>'salesorderid',
+			'vtiger_invoice'=>'invoiceid',
+			'vtiger_troubletickets'=>'ticketid',
+			'vtiger_seattachmentsrel'=>'attachmentsid',
+			'vtiger_seproductsrel'=>'productid',
+			'vtiger_campaignaccountrel'=>'campaignid',
+			'vtiger_activity'=>'activityid',
+		);
+		$entity_tbl_field_arr = array(
+			'vtiger_contactdetails'=>'accountid',
+			'vtiger_potential'=>'related_to',
+			'vtiger_quotes'=>'accountid',
+			'vtiger_salesorder'=>'accountid',
+			'vtiger_invoice'=>'accountid',
+			'vtiger_troubletickets'=>'parent_id',
+			'vtiger_seattachmentsrel'=>'crmid',
+			'vtiger_seproductsrel'=>'crmid',
+			'vtiger_campaignaccountrel'=>'accountid',
+			'vtiger_activity'=>'rel_id',
+		);
 		foreach ($transferEntityIds as $transferId) {
 			foreach ($rel_table_arr as $rel_table) {
 				$id_field = $tbl_field_arr[$rel_table];
 				$entity_id_field = $entity_tbl_field_arr[$rel_table];
 				// IN clause to avoid duplicate entries
 				$sel_result = $adb->pquery(
-					"select $id_field from $rel_table where $entity_id_field=? " .
-						" and $id_field not in (select $id_field from $rel_table where $entity_id_field=?)",
+					"select $id_field from $rel_table where $entity_id_field=? and $id_field not in (select $id_field from $rel_table where $entity_id_field=?)",
 					array($transferId,$entityId)
 				);
 				$res_cnt = $adb->num_rows($sel_result);

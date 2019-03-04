@@ -16,14 +16,16 @@
 
 class mysqlstrictNO_ZERO_IN_DATE extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			global $adb;
 			$smrs = $adb->query('SELECT @@SESSION.sql_mode');
-			$sm = $adb->query_result($smrs,0,0);
+			$sm = $adb->query_result($smrs, 0, 0);
 			$adb->query("SET SESSION sql_mode = ''");
 			$this->ExecuteQuery('ALTER TABLE `vtiger_email_access` CHANGE `accesstime` `accesstime` TIME NULL DEFAULT NULL');
 			$this->ExecuteQuery('ALTER TABLE `vtiger_users` CHANGE `date_entered` `date_entered` DATETIME NOT NULL');
@@ -38,9 +40,8 @@ class mysqlstrictNO_ZERO_IN_DATE extends cbupdaterWorker {
 			$this->ExecuteQuery("UPDATE `vtiger_loginhistory` set logout_time=null where logout_time='0000-00-00 00:00:00'");
 			$adb->query("SET SESSION sql_mode = '$sm'");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
-
 }

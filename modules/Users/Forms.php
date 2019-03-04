@@ -22,9 +22,9 @@ function checkAsteriskDetails() {
 	$result = $adb->pquery('select * from vtiger_asterisk', array());
 	$count = $adb->num_rows($result);
 	if ($count > 0) {
-		return "true";
+		return 'true';
 	} else {
-		return "false";
+		return 'false';
 	}
 }
 
@@ -34,19 +34,20 @@ function checkAsteriskDetails() {
 function getAsteriskExtensions() {
 	global $adb;
 	$sql = "SELECT * FROM vtiger_asteriskextensions
-		INNER JOIN vtiger_users ON vtiger_users.id = vtiger_asteriskextensions.userid
-		AND vtiger_users.deleted=0 AND status = 'Active'";
+		INNER JOIN vtiger_users ON vtiger_users.id = vtiger_asteriskextensions.userid AND vtiger_users.deleted=0 AND status = 'Active'";
 	$result = $adb->pquery($sql, array());
 	$count = $adb->num_rows($result);
 	$data = array();
+	$dataFullnames = array();
 	for ($i=0; $i<$count; $i++) {
 		$user = $adb->query_result($result, $i, 'userid');
 		$extension = $adb->query_result($result, $i, 'asterisk_extension');
 		if (!empty($extension)) {
 			$data[$user] = $extension;
+			$dataFullnames[$user] = getUserFullName($user);
 		}
 	}
-	return $data;
+	return array($data, $dataFullnames);
 }
 
 /**
@@ -75,8 +76,10 @@ function get_validate_record_js() {
 	$checkAsteriskDetails = checkAsteriskDetails();
 	$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : 'false'); // used to check the asterisk extension in edit mode
 	$mode = (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true')?'true':'false';
-	$extensions = getAsteriskExtensions();
+	list($extensions, $fullnames) = getAsteriskExtensions();
 	$extensions_list = json_encode($extensions);
+	$fullnames_list = json_encode($fullnames);
+	$esteriskmessage = $mod_strings['LBL_ASTERISKEXTENSIONS_EXIST'].$mod_strings[ 'LBL_FORUSER'];
 //check asteriskdetails end
 
 	$the_script = <<<EOQ
@@ -96,13 +99,15 @@ function verify_data(form) {
 		alert(errorMessage);
 		return false;
 	}
+	var messagess = '$esteriskmessage';
 	var extensions = $extensions_list;
+	var fullnames = $fullnames_list;
 	if (form.asterisk_extension.value != "") {
 		for (var userid in extensions) {
 			if(trim(form.asterisk_extension.value) == extensions[userid]) {
 				if (userid == $record && $mode == false) {
 				} else {
-					alert("This extension has already been configured for another user. Please use another extension.");
+					alert(messagess + fullnames[userid]);
 					return false;
 				}
 			}

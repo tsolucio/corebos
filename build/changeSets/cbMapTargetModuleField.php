@@ -16,17 +16,19 @@
 
 class cbMapTargetModuleField extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$moduleInstance = Vtiger_Module::getInstance('cbMap');
 			$block = Vtiger_Block::getInstance('LBL_MAP_INFORMATION', $moduleInstance);
-			$field = Vtiger_Field::getInstance('targetname',$moduleInstance);
+			$field = Vtiger_Field::getInstance('targetname', $moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?', array($field->id));
 			} else {
 				$field = new Vtiger_Field();
 				$field->name = 'targetname';
@@ -40,14 +42,13 @@ class cbMapTargetModuleField extends cbupdaterWorker {
 				$field->sequence = 4;
 				$block->addField($field);
 			}
-			$field = Vtiger_Field::getInstance('assigned_user_id',$moduleInstance);
-			$this->ExecuteQuery('update vtiger_field set sequence=6 where fieldid=?',array($field->id));
-			$field = Vtiger_Field::getInstance('createdtime',$moduleInstance);
-			$this->ExecuteQuery('update vtiger_field set sequence=7 where fieldid=?',array($field->id));
+			$field = Vtiger_Field::getInstance('assigned_user_id', $moduleInstance);
+			$this->ExecuteQuery('update vtiger_field set sequence=6 where fieldid=?', array($field->id));
+			$field = Vtiger_Field::getInstance('createdtime', $moduleInstance);
+			$this->ExecuteQuery('update vtiger_field set sequence=7 where fieldid=?', array($field->id));
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-
 }

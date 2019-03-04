@@ -196,7 +196,7 @@ function get_user_array($add_blank = true, $status = "Active", $assigned_user = 
 		$temp_result = array();
 		// Including deleted users for now.
 		if (empty($status)) {
-			$query = "SELECT id, user_name from vtiger_users";
+			$query = 'SELECT id, user_name from vtiger_users';
 			$params = array();
 		} else {
 			$assignUP = GlobalVariable::getVariable('Application_Permit_Assign_Up', 0, $module, $current_user->id);
@@ -222,22 +222,22 @@ function get_user_array($add_blank = true, $status = "Active", $assigned_user = 
 					getTabid($module)
 				);
 			} else {
-				$query = "SELECT id, user_name,first_name,last_name from vtiger_users WHERE status=?";
+				$query = 'SELECT id, user_name,first_name,last_name from vtiger_users WHERE status=?';
 				$params = array($status);
 			}
 		}
 		if (!empty($assigned_user)) {
-			$query .= " OR id=?";
+			$query .= ' OR id=?';
 			$params[] = $assigned_user;
 		}
 
 		$userOrder = GlobalVariable::getVariable('Application_User_SortBy', 'user_name ASC', $module, $current_user->id);
 		if ($userOrder != 'DO NOT SORT') {
 			$orderByCol = $db->convert2Sql('?', array($userOrder));
-			$query .= ' order by '.str_replace("'", "", $orderByCol);
+			$query .= ' order by '.str_replace("'", '', $orderByCol);
 		}
 
-		$result = $db->pquery($query, $params, true, "Error filling in user array: ");
+		$result = $db->pquery($query, $params, true, 'Error filling in user array');
 
 		if ($add_blank==true) {
 			// Add in a blank row
@@ -256,7 +256,7 @@ function get_user_array($add_blank = true, $status = "Active", $assigned_user = 
 	return $user_array;
 }
 
-function get_group_array($add_blank = true, $status = "Active", $assigned_user = "", $private = "") {
+function get_group_array($add_blank = true, $status = 'Active', $assigned_user = '', $private = '') {
 	global $log, $current_user, $currentModule;
 	$log->debug('> get_group_array '.$add_blank.','. $status.','.$assigned_user.','.$private);
 	$current_user_groups = array();
@@ -738,9 +738,8 @@ function getTabModuleName($tabid) {
 			$tabname = array_search($tabid, $tab_info_array);
 		}
 		if ($tabname === false) {
-			$sql = "select name from vtiger_tab where tabid=?";
-			$result = $adb->pquery($sql, array($tabid));
-			$tabname = $adb->query_result($result, 0, "name");
+			$result = $adb->pquery('select name from vtiger_tab where tabid=?', array($tabid));
+			$tabname = $adb->query_result($result, 0, 'name');
 		}
 		// Update information to cache for re-use
 		VTCacheUtils::updateTabidInfo($tabid, $tabname);
@@ -767,8 +766,8 @@ function getColumnFields($module) {
 		}
 
 		// Let us pick up all the fields first so that we can cache information
-		$sql = "SELECT tabid, fieldname, fieldid, fieldlabel, columnname, tablename, uitype, typeofdata, presence
-			FROM vtiger_field WHERE tabid in (" . generateQuestionMarks($tabid) . ")";
+		$sql = 'SELECT tabid, fieldname, fieldid, fieldlabel, columnname, tablename, uitype, typeofdata, presence FROM vtiger_field WHERE tabid in ('
+			.generateQuestionMarks($tabid).')';
 
 		$result = $adb->pquery($sql, array($tabid));
 		$noofrows = $adb->num_rows($result);
@@ -1238,7 +1237,7 @@ function updateSubTotal($module, $tablename, $colname, $colname1, $entid_fld, $e
 	global $log, $adb;
 	$log->debug('> updateSubTotal '.$module.','.$tablename.','.$colname.','.$colname1.','.$entid_fld.','.$entid.','.$prod_total);
 	//getting the subtotal
-	$query = "select ".$colname.",".$colname1." from ".$tablename." where ".$entid_fld."=?";
+	$query = 'select '.$colname.','.$colname1.' from '.$tablename.' where '.$entid_fld.'=?';
 	$result1 = $adb->pquery($query, array($entid));
 	$subtot = $adb->query_result($result1, 0, $colname);
 	$subtot_upd = $subtot - $prod_total;

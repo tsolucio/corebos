@@ -6,10 +6,8 @@
   * The Initial Developer of the Original Code is vtiger.
   * Portions created by vtiger are Copyright (C) vtiger.
   * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
-
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
 
 <br>
@@ -17,7 +15,7 @@
 <tbody>
 <tr>
 	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-    <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
+	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 
 	<form action="index.php" method="post" id="form" onsubmit="VtigerJS_DialogBox.block();">
 		<input type='hidden' name='module' value='Settings'>
@@ -28,7 +26,7 @@
 		<input type='hidden' name='return_module' value='Settings'>
 		<input type='hidden' name='parenttab' value='Settings'>
 
-        <br>
+		<br>
 
 		<div align=center>
 			{include file='SetMenu.tpl'}
@@ -42,7 +40,6 @@
 					<td valign=top class="small">{$MOD.LBL_MAIL_SCANNER_DESCRIPTION}</td>
 				</tr>
 				</table>
-				
 				<br>
 				<table border=0 cellspacing=0 cellpadding=10 width=100% >
 				<tr>
@@ -61,7 +58,7 @@
 				
 				<table border=0 cellspacing=0 cellpadding=0 width=100% class="listRow">
 				<tr>
-	         	    <td class="small" valign=top ><table width="100%"  border="0" cellspacing="0" cellpadding="5">
+					<td class="small" valign=top ><table width="100%"  border="0" cellspacing="0" cellpadding="5">
 
 						{assign var="PREV_RULEID" value=""}
 						{foreach item=SCANNERRULE key=RULEINDEX from=$SCANNERRULES}
@@ -88,54 +85,54 @@
 							</td>
 						</tr>
 						<tr>
-                            <td nowrap class="small cellLabel" width="20%"><strong>{$MOD.LBL_FROM}</strong></td>
-                            <td nowrap class="small cellText" width="80%" colspan=2>
+							<td nowrap class="small cellLabel" width="20%"><strong>{$MOD.LBL_FROM}</strong></td>
+							<td nowrap class="small cellText" width="80%" colspan=2>
 								{$SCANNERRULE->fromaddress}
 							</td>
 						</tr>
 						<tr>
-                            <td nowrap class="small cellLabel" width="20%"><strong>{$MOD.LBL_TO}</strong></td>
-                            <td nowrap class="small cellText" width="80%" colspan=2>
+							<td nowrap class="small cellLabel" width="20%"><strong>{$MOD.LBL_TO}</strong></td>
+							<td nowrap class="small cellText" width="80%" colspan=2>
 								{$SCANNERRULE->toaddress}
 							</td>
 						</tr>
 						<tr>
-                            <td nowrap class="small cellLabel" width="20%"><strong>{$MOD.LBL_SUBJECT}</strong></td>
-                            <td nowrap class="small cellText" width="10%">{$SCANNERRULE->subjectop}</td>
-                            <td nowrap class="small cellText" width="70%">
+							<td nowrap class="small cellLabel" width="20%"><strong>{$MOD.LBL_SUBJECT}</strong></td>
+							<td nowrap class="small cellText" width="10%">{$SCANNERRULE->subjectop}</td>
+							<td nowrap class="small cellText" width="70%">
 								{$SCANNERRULE->subject}
 							</td>
 						</tr>
 						<tr>
-                            <td nowrap class="small cellLabel" width="20%"><strong>{$MOD.LBL_BODY}</strong></td>
-                            <td nowrap class="small cellText" width="10%">{$SCANNERRULE->bodyop}</td>
-                            <td nowrap class="small cellText" width="70%">
+							<td nowrap class="small cellLabel" width="20%"><strong>{$MOD.LBL_BODY}</strong></td>
+							<td nowrap class="small cellText" width="10%">{$SCANNERRULE->bodyop}</td>
+							<td nowrap class="small cellText" width="70%">
 								{$SCANNERRULE->body}
 							</td>
 						</tr>
 						<tr>
-                            <td nowrap class="small cellLabel" width="20%"><strong>{$MOD.LBL_MATCH}</strong></td>
-                            <td nowrap class="small cellText" width="80%" colspan=2>
+							<td nowrap class="small cellLabel" width="20%"><strong>{$MOD.LBL_MATCH}</strong></td>
+							<td nowrap class="small cellText" width="80%" colspan=2>
 								{if $SCANNERRULE->matchusing eq 'OR'}{$MOD.LBL_ANY} {$MOD.LBL_CONDITION}
 								{else} {$MOD.LBL_ALL} {$MOD.LBL_CONDITION} {/if}
 							</td>
 						</tr>
 						<tr>
-                            {if $SCANNERRULE->useaction->actiontext eq 'CREATE,HelpDesk,FROM'}
+						{if $SCANNERRULE->useaction->actiontext eq 'CREATE,HelpDesk,FROM'}
 						<tr>
-                            <td nowrap class="small cellLabel" width="20%"><strong>{$MOD.LBL_ASSIGN}</strong></td>
-                            <td nowrap class="small cellText" width="80%" colspan=2>
+							<td nowrap class="small cellLabel" width="20%"><strong>{$MOD.LBL_ASSIGN}</strong></td>
+							<td nowrap class="small cellText" width="80%" colspan=2>
 								{if $SCANNERRULE->assign_to_type eq 'U'}
-                                                                    <a href="index.php?module=Users&action=DetailView&record={$SCANNERRULE->assign_to}">{$SCANNERRULE->assign_to_name}</a>
+									<a href="index.php?module=Users&action=DetailView&record={$SCANNERRULE->assign_to}">{$SCANNERRULE->assign_to_name}</a>
 								{else}
-                                                                    <a href="index.php?module=Settings&action=GroupDetailView&groupId={$SCANNERRULE->assign_to}">{$SCANNERRULE->assign_to_name}</a>
-                                                                {/if}
+									<a href="index.php?module=Settings&action=GroupDetailView&groupId={$SCANNERRULE->assign_to}">{$SCANNERRULE->assign_to_name}</a>
+								{/if}
 							</td>
 						</tr>
-                            {/if}
+						{/if}
 						<tr>
-                            <td nowrap class="small cellLabel" width="20%"><strong>{$MOD.LBL_ACTION}</strong></td>
-                            <td nowrap class="small cellText" width="80%" colspan=2>
+							<td nowrap class="small cellLabel" width="20%"><strong>{$MOD.LBL_ACTION}</strong></td>
+							<td nowrap class="small cellText" width="80%" colspan=2>
 								{if $SCANNERRULE->useaction->actiontext eq 'CREATE,HelpDesk,FROM'} {$MOD.LBL_CREATE} {$MOD.LBL_TICKET}
 								{elseif $SCANNERRULE->useaction->actiontext eq 'UPDATE,HelpDesk,SUBJECT'} {$MOD.LBL_UPDATE} {$MOD.LBL_TICKET}
 								{elseif $SCANNERRULE->useaction->actiontext eq 'UPDATE,Project,SUBJECT'} {$MOD.LBL_UPDATE} {$MOD.LBL_PROJECT}
@@ -151,26 +148,22 @@
 						{/if}
 						{assign var="PREV_RULEID" value=$SCANNERRULE->ruleid}
 					{/foreach}
-				    </td>
-            	</tr>
-				</table>	
-				
+					</td>
+				</tr>
+				</table>
 				</td>
 				</tr>
 				</table>
-			
 			</td>
 			</tr>
 			</table>
 		</td>
 	</tr>
 	</table>
-		
 	</div>
-
 </td>
-        <td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
-   </tr>
+		<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
+	</tr>
 </tbody>
 </form>
 </table>
