@@ -61,7 +61,7 @@ function gITSshow(argg1, type, startdate, enddate, starthr, startmin, startfmt, 
 	emin = _2digit(emin);
 	url = url + '&dtstart=' + startdate + ' ' + shr + ':' + smin;
 	url = url + '&dtend=' + enddate + ' ' + ehr + ':' + emin;
-	url = url + '&activitytype=' + type;
+	url = url + '&activitytype=' + encodeURIComponent(type);
 	var w = window,
 		d = document,
 		e = d.documentElement,

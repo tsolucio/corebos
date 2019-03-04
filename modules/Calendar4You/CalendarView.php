@@ -102,10 +102,10 @@ for ($i=0; $i<$adb->num_rows($Res); $i++) {
 	$eventlists_array .= '"'.html_entity_decode($actname, ENT_QUOTES, $default_charset).'",';
 	$i18actname = getTranslatedString($actname, 'Calendar');
 	$abelist.='<tr><td><a id="add'.strtolower($actname)
-		.'" href="index.php?module=cbCalendar&action=EditView&return_module=Calendar4You&return_action=index&activity_mode=Events&activitytype='.$actname
+		.'" href="index.php?module=cbCalendar&action=EditView&return_module=Calendar4You&return_action=index&activity_mode=Events&activitytype='.urlencode($actname)
 		.'" class="drop_down">'.$i18actname.'</a></td></tr>';
 	$btnelist .= '<tr><td><a id="btnadd'.strtolower($actname)
-		.'" href="index.php?module=cbCalendar&action=EditView&return_module=Calendar4You&return_action=index&activity_mode=Events&activitytype='.$actname
+		.'" href="index.php?module=cbCalendar&action=EditView&return_module=Calendar4You&return_action=index&activity_mode=Events&activitytype='.urlencode($actname)
 		.'" class="drop_down">'.$i18actname.'</a></td></tr>';
 }
 	$smarty->assign('EVENTLIST', trim($eventlists_array, ','));
