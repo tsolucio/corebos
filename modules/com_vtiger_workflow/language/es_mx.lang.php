@@ -39,7 +39,7 @@ $mod_strings = array(
 'VTPDFMakerTask'=>'Guardar documento de PDFMaker',  // ITS4YOU-CR PDF Maker
 'LBL_SEND_ALL_ATTACHMENT'=>'Enviar todos los adjuntos',
 'VTPDFMakerTask'=>'Guardar documento de PDFMaker',  // ITS4YOU-CR PDF Maker
-'LBL_SEND_ALL_ATTACHMENT'=>'Enviar todos los adjuntos', 
+'LBL_SEND_ALL_ATTACHMENT'=>'Enviar todos los adjuntos',
 'LBL_SET_FIELD_VALUES'=>'Establecer valor de campo',
 'LBL_ADD_FIELD'=>'Agregar campo',
 
