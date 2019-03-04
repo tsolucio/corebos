@@ -277,10 +277,10 @@ function getTaxDetailsForProduct($productid, $available = 'all', $acvid = 0) {
 				$where = ' and vtiger_inventorytaxinfo.deleted=0';
 			}
 			if ($available != 'all' && $available == 'available_associated') {
-				$query = 'SELECT max(vtiger_producttaxrel.taxpercentage), vtiger_inventorytaxinfo.*
+				$query = 'SELECT COALESCE(`taxpercentage`,`percentage`) as taxpercentage, vtiger_inventorytaxinfo.*
 					FROM vtiger_inventorytaxinfo
-					left JOIN vtiger_producttaxrel ON vtiger_inventorytaxinfo.taxid = vtiger_producttaxrel.taxid
-					WHERE vtiger_producttaxrel.productid = ? or vtiger_inventorytaxinfo.deleted=0 GROUP BY vtiger_inventorytaxinfo.taxid';
+					LEFT JOIN vtiger_producttaxrel ON vtiger_inventorytaxinfo.taxid = vtiger_producttaxrel.taxid and vtiger_producttaxrel.productid=?
+					WHERE vtiger_inventorytaxinfo.deleted=0';
 			} else {
 				$query = 'SELECT vtiger_producttaxrel.*, vtiger_inventorytaxinfo.*
 					FROM vtiger_inventorytaxinfo
