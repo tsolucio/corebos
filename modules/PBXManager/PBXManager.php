@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('data/CRMEntity.php');
-require_once('data/Tracker.php');
+require_once 'data/CRMEntity.php';
+require_once 'data/Tracker.php';
 
 class PBXManager extends CRMEntity {
 	public $db;
@@ -40,7 +40,7 @@ class PBXManager extends CRMEntity {
 	/**
 	 * Mandatory for Listing (Related listview)
 	 */
-	public $list_fields = array (
+	public $list_fields = array(
 		/* Format: Field Label => array(tablename => columnname) */
 		'Call To'=> array('pbxmanager' => 'callto'),
 		'Call From'=>array('pbxmanager' => 'callfrom'),
@@ -97,9 +97,9 @@ class PBXManager extends CRMEntity {
 			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
 				" = $this->table_name.$this->table_index";
 		}
-		$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid ";
+		$query .= ' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid ';
 
-		$query .= "	WHERE vtiger_crmentity.deleted = 0";
+		$query .= ' WHERE vtiger_crmentity.deleted = 0';
 		$query .= $this->getListViewSecurityParameter($module);
 		return $query;
 	}
@@ -109,14 +109,13 @@ class PBXManager extends CRMEntity {
 	 */
 	public function getListViewSecurityParameter($module) {
 		global $current_user;
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
+		require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
 
 		$sec_query = '';
 		$tabid = getTabid($module);
 
-		if ($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1
-			&& $defaultOrgSharingPermission[$tabid] == 3) {
+		if ($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tabid] == 3) {
 				$sec_query .= " AND (vtiger_crmentity.smownerid in($current_user->id) OR vtiger_crmentity.smownerid IN
 					(
 						SELECT vtiger_user2role.userid FROM vtiger_user2role
@@ -159,10 +158,10 @@ class PBXManager extends CRMEntity {
 		global $current_user;
 		$thismodule = $_REQUEST['module'];
 
-		include("include/utils/ExportUtils.php");
+		include 'include/utils/ExportUtils.php';
 
 		//To get the Permitted fields query and the permitted fields list
-		$sql = getPermittedFieldsQuery($thismodule, "detail_view");
+		$sql = getPermittedFieldsQuery($thismodule, 'detail_view');
 
 		$fields_list = getFieldsListFromQuery($sql);
 
@@ -180,7 +179,7 @@ class PBXManager extends CRMEntity {
 		$query .= " LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'";
 		$query .= " LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'";
 
-		$where_auto = " vtiger_crmentity.deleted=0";
+		$where_auto = ' vtiger_crmentity.deleted=0';
 
 		if ($where != '') {
 			$query .= " WHERE ($where) AND $where_auto";
@@ -188,8 +187,8 @@ class PBXManager extends CRMEntity {
 			$query .= " WHERE $where_auto";
 		}
 
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
+		require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
 
 		// Security Check for Field Access
 		if ($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[7] == 3) {
@@ -219,9 +218,9 @@ class PBXManager extends CRMEntity {
 	* @param String Event Type
 	*/
 	public function vtlib_handler($moduleName, $eventType) {
-		require_once('include/utils/utils.php');
+		require_once 'include/utils/utils.php';
 		global $adb;
-		$tabid = getTabid("Users");
+		$tabid = getTabid('Users');
 		if ($eventType == 'module.postinstall') {
 			// Add a block and 2 fields for Users module
 			$blockid = $adb->getUniqueID('vtiger_blocks');

@@ -12,7 +12,6 @@ $mod_strings = array(
 	'ADD_PICKLIST_VALUES'=>'Add picklist values',
 	'LBL_EXISTING_PICKLIST_VALUES'=>'Existing picklist values',
 	'LBL_PICKLIST_ADDINFO'=>'Add new entries here',
-	'LBL_SELECT_ROLES'=>'Select roles',
 	'LBL_NON_EDITABLE_PICKLIST_ENTRIES'=>'Non-editable values',
 	'EDIT_PICKLIST_VALUE'=>'Edit picklist values',
 	'LBL_EDIT_HERE'=>'Replace with: ',
@@ -45,6 +44,11 @@ $mod_strings = array(
 	'LBL_ADD_BUTTON' => 'Add Item',
 	'LBL_EDIT_BUTTON' => 'Rename Item',
 	'LBL_DELETE_BUTTON' => 'Delete Item',
+	'LBL_MOVE_UP' => 'Move Up',
+	'LBL_MOVE_DOWN' => 'Move Down',
+	'LBL_MOVE_LEFT' => 'Move Left',
+	'LBL_MOVE_RIGHT' => 'Move Right',
+	'LBL_REMOVE' => 'Remove',
 	'NTC_DELETE_CONFIRMATION'=>'Are you sure you want to delete this picklist dependency?',
 );
 ?>

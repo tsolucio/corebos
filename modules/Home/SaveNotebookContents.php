@@ -8,30 +8,28 @@
  * All Rights Reserved.
  ********************************************************************************/
 /**
- * Created on 10-Oct-08
- * this file saves the notebook contents to database
+ * save notebook contents to database
  */
 $status = SaveNotebookContents();
-if($status == true) {
-    require_once('include/home.php');
-    $homeObj=new Homestuff;
-    $contents = $homeObj->getNoteBookContents($_REQUEST['notebookid']);
+if ($status == true) {
+	require_once 'include/home.php';
+	$homeObj=new Homestuff;
+	$contents = $homeObj->getNoteBookContents($_REQUEST['notebookid']);
 }
 $returnvalue = array('status' => $status, 'contents' => $contents);
 echo json_encode($returnvalue);
 
-function SaveNotebookContents(){
-	if(empty($_REQUEST['notebookid'])){
+function SaveNotebookContents() {
+	if (empty($_REQUEST['notebookid'])) {
 		return false;
-	}else{
-		$notebookid = $_REQUEST['notebookid'];
+	} else {
+		$notebookid = vtlib_purify($_REQUEST['notebookid']);
 	}
-	
-	global $adb,$current_user;
-	
+	global $adb, $current_user;
+
 	$contents = $_REQUEST['contents'];
-	
-	$sql = "update vtiger_notebook_contents set contents=? where userid=? and notebookid=?";
+
+	$sql = 'update vtiger_notebook_contents set contents=? where userid=? and notebookid=?';
 	$adb->pquery($sql, array($contents, $current_user->id, $notebookid));
 	return true;
 }

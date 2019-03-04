@@ -129,7 +129,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			<span class="mdCellInfo"><input readonly type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" {if $MODE eq 'edit'} value="{$fldvalue}" {else} value="{$MOD_SEQ_ID}" {/if} class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></span>
 		{elseif $uitype eq 11 || $uitype eq 1 || $uitype eq 13 || $uitype eq 7}
 			<span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}"><font color="red">{$mandatory_field}</font>{$usefldlabel}</span>
-			<span class="mdCellInfo"><input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></span>
+			<span class="mdCellInfo"><input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></span><br>
 		{elseif $uitype eq 9}
 			<span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}"><font color="red">{$mandatory_field}</font>{$usefldlabel} {$APP.COVERED_PERCENTAGE}</span>
 			<span class="mdCellInfo"><input type="text" tabindex="{$vt_tab}" name="{$fldname}" id ="{$fldname}" value="{$fldvalue}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"></span>
@@ -244,14 +244,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}
 			</span>
 			<span width="30%" class="mdCellInfo">
-				{if $uitype eq 52}
-					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small">
-				{elseif $uitype eq 77}
-					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small">
-				{else}
-					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small">
-				{/if}
-
+				<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small">
 				{foreach key=key_one item=arr from=$fldvalue}
 					{foreach key=sel_value item=value from=$arr}
 						<option value="{$key_one}" {$value}>{$sel_value}</option>
@@ -286,19 +279,6 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			<span width="30%" class="mdCellInfo">
 				<input readonly name="account_name" id = "single_accountid" type="text" value="{$fldvalue}"><input name="{$fldname}" type="hidden" value="{$secondvalue}">&nbsp;<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module=Accounts&action=Popup&popuptype=specific_account_address&form=TasksEditView&form_submit=false&fromlink={$fromlink}","test","width=640,height=602,resizable=0,scrollbars=0");' align="absmiddle" style='cursor:hand;cursor:pointer'>
 				<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.account_id.value=''; this.form.account_name.value='';return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
-			</span>
-
-		{elseif $uitype eq 75 || $uitype eq 81}
-			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
-				{if $uitype eq 81}
-					{assign var="pop_type" value="specific_vendor_address"}
-					{else}{assign var="pop_type" value="specific"}
-				{/if}
-				<font color="red">{$mandatory_field}</font>{$usefldlabel}
-			</span>
-			<span width="30%" class="mdCellInfo">
-				<input name="vendor_name" id="vendor_name" readonly type="text" style="border:1px solid #bababa;" value="{$fldvalue}"><input name="{$fldname}" id="{$fldname}" type="hidden" value="{$secondvalue}">&nbsp;<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module=Vendors&action=Popup&html=Popup_picker&popuptype={$pop_type}&form=EditView&fromlink={$fromlink}","test","width=640,height=602,resizable=0,scrollbars=0");' align="absmiddle" style='cursor:hand;cursor:pointer'>
-				<input type="image" tabindex="{$vt_tab}" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.vendor_id.value='';this.form.vendor_name.value='';return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
 			</span>
 		{elseif $uitype eq 57}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
@@ -514,9 +494,9 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				{else}
 					{assign var=imagevalueexists value=false}
 				{/if}
-				<input name="{$fldname}" type="file" value="{if $imagevalueexists}{$maindata[3].0.name}{/if}" tabindex="{$vt_tab}" onchange="validateFilename(this);" />
-				<input name="{$fldname}_hidden" type="hidden" value="{if $imagevalueexists}{$maindata[3].0.name}{/if}" />
-				<input name="{$fldname}_path_hidden" type="hidden" value="{if $imagevalueexists}{$maindata[3].0.path}{$maindata[3].0.name}{/if}" />
+				<input name="{$fldname}" id="{$fldname}" type="file" value="{if $imagevalueexists}{$maindata[3].0.name}{/if}" tabindex="{$vt_tab}" onchange="validateFilename(this);" />
+				<input name="{$fldname}_hidden" id="{$fldname}_hidden" type="hidden" value="{if $imagevalueexists}{$maindata[3].0.name}{/if}" />
+				<input name="{$fldname}_path_hidden" id="{$fldname}_path_hidden" type="hidden" value="{if $imagevalueexists}{$maindata[3].0.path}{$maindata[3].0.name}{/if}" />
 				{if $imagevalueexists}
 					<div id="{$fldname}_replaceimage">[{$maindata[3].0.orgname}] <input id="{$fldname}_attach" value="{'LBL_DELETE_BUTTON'|@getTranslatedString}" type="button" class="crmbutton small delete" onclick='delimage({$ID},"{$fldname}","{$maindata[3].0.orgname}");'></div>
 				{/if}
@@ -627,7 +607,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					&nbsp;<input title="{$APP.LBL_CHANGE_TITLE}" accessKey="C" type="button" class="small" value='{$APP.LBL_CHANGE}' name="btn1" onclick='return window.open("index.php?module=Users&action=Popup&html=Popup_picker&form=vtlibPopupView&form_submit=false&fromlink={$fromlink}&recordid={$ID}&forfield={$fldname}","test","width=640,height=603,resizable=0,scrollbars=0");'>
 					&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
 				</span>
-			{elseif $uitype eq 116 || $uitype eq 117}<!-- for currency in users details-->
+			{elseif $uitype eq 117}<!-- for currency in users details-->
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}
 			</span>

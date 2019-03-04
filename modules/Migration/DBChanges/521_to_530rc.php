@@ -103,7 +103,7 @@ vt530_registerVTEntityDeltaApi();
 vt530_addDepedencyToVTWorkflowEventHandler();
 
 // Workflow changes
-if(!in_array('type', $adb->getColumnNames('com_vtiger_workflows'))) {
+if (!in_array('type', $adb->getColumnNames('com_vtiger_workflows'))) {
 	ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD COLUMN type VARCHAR(255) DEFAULT 'basic'");
 }
 
@@ -112,7 +112,7 @@ ExecuteQuery("UPDATE vtiger_def_org_field SET readonly=0");
 ExecuteQuery("UPDATE vtiger_profile2field SET readonly=0");
 
 // Modify selected column to enable support for setting default values for fields
-ExecuteQuery("ALTER TABLE vtiger_field CHANGE COLUMN selected defaultvalue TEXT default ''");
+ExecuteQuery('ALTER TABLE vtiger_field CHANGE COLUMN selected defaultvalue TEXT');
 ExecuteQuery("UPDATE vtiger_field SET defaultvalue='' WHERE defaultvalue='0'");
 
 // Scheduled Reports (Email)
@@ -125,9 +125,9 @@ ExecuteQuery("CREATE TABLE IF NOT EXISTS vtiger_scheduled_reports(reportid INT, 
 $usersQuery = "SELECT * FROM vtiger_users";
 $usersResult = $adb->query($usersQuery);
 $usersCount = $adb->num_rows($usersResult);
-for($i=0;$i<$usersCount;++$i){
-	$userId = $adb->query_result($usersResult,$i,'id');
-	$userName = $adb->query_result($usersResult,$i,'user_name');
+for ($i=0; $i<$usersCount; ++$i) {
+	$userId = $adb->query_result($usersResult, $i, 'id');
+	$userName = $adb->query_result($usersResult, $i, 'user_name');
 	$fullName = getFullNameFromQResult($usersResult, $i, 'Users');
 
 	ExecutePQuery("UPDATE vtiger_cvadvfilter SET value=? WHERE columnname LIKE '%:assigned_user_id:%' AND value=?", array($fullName, $userName));

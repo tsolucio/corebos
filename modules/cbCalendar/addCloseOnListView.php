@@ -23,8 +23,8 @@ class cbCalendar_addCloseOnListView extends VTEventHandler {
 		global $currentModule, $adb;
 		$relatedList = (isset($_REQUEST['ajxaction']) && isset($_REQUEST['header']) && $_REQUEST['ajxaction']=='LOADRELATEDLIST' && $_REQUEST['header']=='Activities');
 		if (($currentModule=='cbCalendar' && $handlerType=='corebos.filter.listview.render' &&
-			($_REQUEST['action']=='ListView' || $_REQUEST['action']=='index') || ($_REQUEST['action']=='cbCalendarAjax' && $_REQUEST['file']=='ListView') ||
-				($_REQUEST['action']=='cbCalendarAjax' && $_REQUEST['file']=='calendarops' && $_REQUEST['op']=='changestatus')) || $relatedList
+			(($_REQUEST['action']=='ListView' || $_REQUEST['action']=='index') || ($_REQUEST['action']=='cbCalendarAjax' && $_REQUEST['file']=='ListView') ||
+				($_REQUEST['action']=='cbCalendarAjax' && $_REQUEST['file']=='calendarops' && $_REQUEST['op']=='changestatus'))) || $relatedList
 		) {
 			if (!empty($parameter[2])) {
 				$evtrs = $adb->pquery('select eventstatus,activitytype from vtiger_activity where activityid=?', array($parameter[2]));

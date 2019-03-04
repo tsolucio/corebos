@@ -4,7 +4,7 @@
 <div data-role="page" data-theme="b">
 	<!-- header -->
 	<div data-role="header" data-theme="{$COLOR_HEADER_FOOTER}">
-			<h4>CRM</h4>
+		<h4>CRM</h4>
 	</div><!-- /header -->
 	<!-- /header -->
 	<h4 class='error'>{$errormsg}</h4>
@@ -18,7 +18,7 @@
 	</div>
 	<div data-role="footer" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
 		<h1></h1>
-	</div>	
-</div>		
+	</div>
+</div>
 </body>
 {/strip}

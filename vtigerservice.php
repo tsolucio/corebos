@@ -7,31 +7,17 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-if(isset($_REQUEST['service']))
-{
-	if($_REQUEST['service'] == "outlook")
-	{
-		include("soap/vtigerolservice.php");
+if (isset($_REQUEST['service'])) {
+	if ($_REQUEST['service'] == 'outlook') {
+		include 'soap/vtigerolservice.php';
+	} elseif ($_REQUEST['service'] == 'customerportal') {
+		include 'soap/customerportal.php';
+	} else {
+		echo 'No Service Configured for '. vtlib_purify($_REQUEST['service']);
 	}
-	elseif($_REQUEST['service'] == "customerportal")
-	{
-		include("soap/customerportal.php");
-	}
-	elseif($_REQUEST['service'] == "wordplugin")
-	{
-		include("soap/wordplugin.php");
-	}
-	else
-	{
-		echo "No Service Configured for ". strip_tags($_REQUEST[service]);
-	}
+} else {
+	echo '<h1>Soap Services</h1>';
+	echo "<li>Outlook Plugin EndPoint URL -- Click <a href='vtigerservice.php?service=outlook'>here</a></li>";
+	echo "<li>Customer Portal EndPoint URL -- Click <a href='vtigerservice.php?service=customerportal'>here</a></li>";
 }
-else
-{
-	echo "<h1>vtigerCRM Soap Services</h1>";
-	echo "<li>vtigerCRM Outlook Plugin EndPoint URL -- Click <a href='vtigerservice.php?service=outlook'>here</a></li>";
-	echo "<li>vtigerCRM Word Plugin EndPoint URL -- Click <a href='vtigerservice.php?service=wordplugin'>here</a></li>";
-	echo "<li>vtigerCRM Customer Portal EndPoint URL -- Click <a href='vtigerservice.php?service=customerportal'>here</a></li>";
-}
-
 ?>

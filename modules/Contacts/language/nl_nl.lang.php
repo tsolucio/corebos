@@ -7,7 +7,7 @@
  * Portions created by JPL TSolucio, S.L are Copyright (C) JPL TSolucio, S.L.
  * All Rights Reserved.
  ************************************************************************************
- * This translations is based on earlier work of: 
+ * This translations is based on earlier work of:
  * - IT-Online.nl <www.it-online.nl>
  * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
@@ -243,13 +243,12 @@ $mod_strings = array(
 	'LBL_ONLY_SYNC_FROM_GOOGLE_TO_VTIGER' => 'From Google to Application only',
 	'LBL_ONLY_SYNC_FROM_VTIGER_TO_GOOGLE' => 'From Application to Google only',
 	'Company' => 'Company',
-	'Birthday' => 'Birthday',
-	'Phone' => 'Phone',
+	'Birthday' => 'Verjaardag',
 	'URL' => 'Url',
-	'home' => 'Home',
+	'home' => 'Telefoon Thuis',
 	'work' => 'Work',
 	'custom' => 'Custom',
-	'mobile' => 'Mobile',
+	'mobile' => 'Telefoon Mobiel',
 	'main' => 'Main',
 	'work_fax' => 'Fax',
 	'home_fax' => 'Home Fax',
@@ -258,20 +257,20 @@ $mod_strings = array(
 	'blog' => 'Blog',
 	'home-page' => 'Homepage',
 	'LBL_SIGN_IN_WITH_GOOGLE' => 'Sign in with Google',
-	'phone' => 'Phone',
-	'email' => 'Email',
+	'phone' => 'Telefoonnummer',
+	'email' => 'E-mail',
 	'url' => 'Url',
 	'EXTENTIONNAME'=>'Google',
 	'Name_Prefix' => 'Name Prefix',
-	'First_Name' => 'First Name',
-	'Last_Name' => 'Last Name',
-	'Job_Title' => 'Job Title',
+	'First_Name' => 'Voornaam',
+	'Last_Name' => 'Achternaam',
+	'Job_Title' => 'Titel',
 	'Organization_Name' => 'Organization Name',
 	'Date_of_Birth'=>'Date of Birth',
 	'Secondary_Email'=>'Secondary email',
-	'Mobile_Phone'=>'Mobile Phone',
-	'Office_Phone'=>'Office Phone',
-	'Home_Phone' => 'Home Phone',
+	'Mobile_Phone'=>'Telefoon Mobiel',
+	'Office_Phone'=>'Telefoon Kantoor',
+	'Home_Phone' => 'Telefoon Thuis',
 	'Mailing_Address' => 'Mailing Address',
 	'Other_Address' => 'Other Address',
 	'Note' => 'Note',

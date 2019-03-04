@@ -7,9 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('Smarty_setup.php');
-require_once('vtlib/Vtiger/Cron.php');
-require_once('include/utils/utils.php');
+require_once 'Smarty_setup.php';
+require_once 'vtlib/Vtiger/Cron.php';
+require_once 'include/utils/utils.php';
 
 global $theme,$app_strings,$mod_strings,$current_language;
 $theme_path="themes/".$theme."/";

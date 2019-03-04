@@ -10,17 +10,17 @@
 
 include_once 'include/InventoryPDFController.php';
 
-class Vtiger_InvoicePDFController extends Vtiger_InventoryPDFController{
-	function buildHeaderModelTitle() {
+class Vtiger_InvoicePDFController extends Vtiger_InventoryPDFController {
+	public function buildHeaderModelTitle() {
 		$singularModuleNameKey = 'SINGLE_'.$this->moduleName;
 		$translatedSingularModuleLabel = getTranslatedString($singularModuleNameKey, $this->moduleName);
-		if($translatedSingularModuleLabel == $singularModuleNameKey) {
+		if ($translatedSingularModuleLabel == $singularModuleNameKey) {
 			$translatedSingularModuleLabel = getTranslatedString($this->moduleName, $this->moduleName);
 		}
 		return sprintf("%s: %s", $translatedSingularModuleLabel, $this->focusColumnValue('invoice_no'));
 	}
 
-	function buildHeaderModelColumnCenter() {
+	public function buildHeaderModelColumnCenter() {
 		$customerName = $this->resolveReferenceLabel($this->focusColumnValue('account_id'), 'Accounts');
 		$contactName = $this->resolveReferenceLabel($this->focusColumnValue('contact_id'), 'Contacts');
 		$purchaseOrder = $this->focusColumnValue('vtiger_purchaseorder');
@@ -32,32 +32,32 @@ class Vtiger_InvoicePDFController extends Vtiger_InventoryPDFController{
 		$salesOrderLabel = getTranslatedString('Sales Order', $this->moduleName);
 
 		$modelColumnCenter = array(
-				$customerNameLabel	=>	$customerName,
-				$purchaseOrderLabel =>	$purchaseOrder,
-				$contactNameLabel	=>	$contactName,
-				$salesOrderLabel	=>	$salesOrder
-			);
+			$customerNameLabel	=>	$customerName,
+			$purchaseOrderLabel =>	$purchaseOrder,
+			$contactNameLabel	=>	$contactName,
+			$salesOrderLabel	=>	$salesOrder
+		);
 		return $modelColumnCenter;
 	}
 
-	function buildHeaderModelColumnRight() {
+	public function buildHeaderModelColumnRight() {
 		$issueDateLabel = getTranslatedString('Issued Date', $this->moduleName);
 		$validDateLabel = getTranslatedString('Due Date', $this->moduleName);
 		$billingAddressLabel = getTranslatedString('Billing Address', $this->moduleName);
 		$shippingAddressLabel = getTranslatedString('Shipping Address', $this->moduleName);
 
 		$modelColumnRight = array(
-				'dates' => array(
-					$issueDateLabel  => $this->formatDate(date("Y-m-d")),
-					$validDateLabel => $this->formatDate($this->focusColumnValue('duedate')),
-				),
-				$billingAddressLabel  => $this->buildHeaderBillingAddress(),
-				$shippingAddressLabel => $this->buildHeaderShippingAddress()
-			);
+			'dates' => array(
+				$issueDateLabel  => $this->formatDate(date("Y-m-d")),
+				$validDateLabel => $this->formatDate($this->focusColumnValue('duedate')),
+			),
+			$billingAddressLabel  => $this->buildHeaderBillingAddress(),
+			$shippingAddressLabel => $this->buildHeaderShippingAddress()
+		);
 		return $modelColumnRight;
 	}
 
-	function getWatermarkContent() {
+	public function getWatermarkContent() {
 		return $this->focusColumnValue('invoicestatus');
 	}
 }

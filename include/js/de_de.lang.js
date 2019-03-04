@@ -11,6 +11,7 @@ var alert_arr = {
 	'DELETE':'Sind Sie sicher, dass Sie das tun wollen? ',
 	'RECORDS':' Datensätze',
 	'SELECT':'Bitte wenigstens einen Eintrag markieren.',
+	'SELECTCONDITION':'Please select at least one condition',
 	'SELECTTEMPLATE':'Please select at least one document Template',
 	'SELECTMERGE':'Please select an entity to merge!',
 	'GENDOCSAVED':'Document saved. Please verify that it has been created correctly.',
@@ -207,6 +208,7 @@ var alert_arr = {
 	/*layout Editor changes*/
 	'BLOCK_NAME_CANNOT_BE_BLANK' : 'Sie müssen einem Block einen Namen geben',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE' : 'Wollen Sie wirklich löschen?',
+	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_EXACT_DUPLICATE': 'Are you sure you want to Delete All Exact record duplicates?',
 	'PLEASE_MOVE_THE_FIELDS_TO_ANOTHER_BLOCK' : 'Bitte die Felder in einen anderen Block verschieben.',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_BLOCK' : 'Wollen Sie den Block wirklich löschen?',
 	'LABEL_CANNOT_NOT_EMPTY' : 'Sie müssen ein Label angeben',
@@ -350,6 +352,7 @@ var alert_arr = {
 	'LBL_ENDS_WITH' : 'ends with',
 	'LBL_HAS_CHANGED' : 'has changed',
 	'LBL_HAS_CHANGED_TO' : 'has changed to',
+	'LBL_WAS' : 'was',
 	'LBL_IS_EMPTY': 'is empty',
 	'LBL_IS_NOT_EMPTY' : 'is not empty',
 	'LBL_EQUAL_TO' : 'equal to',
@@ -361,6 +364,10 @@ var alert_arr = {
 	'LBL_IS_NOT' : 'is not',
 	'LBL_BETWEEN' : 'between',
 	'LBL_BEFORE' : 'before',
+	'LBL_DOES_NOT_START_WITH' : 'does not start with',
+	'LBL_DOES_NOT_END_WITH' : 'does not end with',
+	'DOES_NOT_START_WITH':'does not start with',
+	'DOES_NOT_END_WITH':'does not end with',
 	'LBL_AFTER' : 'after',
 	'LBL_IS_TODAY' : 'is today',
 	'LBL_LESS_THAN_DAYS_AGO' : 'less than days ago',
@@ -409,5 +416,7 @@ var alert_arr = {
 	'JSLBL_PAGINATION': 'Pagination',
 	'JSLBL_FINISH': 'Finish',
 	'SHOWING' : 'Showing',
-	'OF' : 'of'
+	'OF' : 'of',
+	'ERR_Massedit' : 'Error on Mass Edit',
+	'ProcessFINISHED' : 'Process Finished'
 };

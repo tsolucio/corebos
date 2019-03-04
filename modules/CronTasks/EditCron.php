@@ -7,13 +7,13 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('Smarty_setup.php');
-require_once('config.inc.php');
-require_once('vtlib/Vtiger/Cron.php');
-require_once('config.inc.php');
+require_once 'Smarty_setup.php';
+require_once 'config.inc.php';
+require_once 'vtlib/Vtiger/Cron.php';
+require_once 'config.inc.php';
 global $mod_strings, $app_strings, $current_language, $theme;
 $theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$image_path=$theme_path.'images/';
 
 $smarty = new vtigerCRM_Smarty;
 if (isset($_REQUEST['record']) && $_REQUEST['record']!='') {

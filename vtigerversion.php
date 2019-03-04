@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 $vtiger_current_version = '5.5.0';
-$coreBOS_app_version = '7.0';
+$coreBOS_app_version = '8.0';
 $coreBOS_app_name ='coreBOS';
 $coreBOS_app_url = 'http://corebos.org';
 $coreBOS_commit_info = '$Format:%ci$ ($Format:%h$)';

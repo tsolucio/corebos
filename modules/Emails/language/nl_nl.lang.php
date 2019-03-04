@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Feel free to use / redistribute these languagefiles under the VPL 1.0.
- * This translations is based on earlier work of: 
+ * This translations is based on earlier work of:
  * - IT-Online.nl <www.it-online.nl>
  * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
@@ -99,10 +99,8 @@ $mod_strings = array(
 	'MESSAGE_MAIL_ID_IS_INCORRECT' => 'E-mailadres is niet correct....',
 	'MESSAGE_ADD_USER_OR_CONTACT' => 'Gebruiker(s) of contact(en)... toevoegen a.u.b.',
 	'MESSAGE_MAIL_SENT_SUCCESSFULLY' => ' e-mail(s) zijn verstuurd!',
-	'LBL_FETCH_WEBMAIL' => 'Webmail Ophalen',
 	'LBL_ALL' => 'Allemaal',
 	'MESSAGE_CONTACT_NOT_WANT_MAIL' => 'Deze contactpersoon wil geen e-mail ontvangen.',
-	'LBL_WEBMAILS_TITLE' => 'Webmails',
 	'LBL_EMAILS_TITLE' => 'E-mails',
 	'LBL_MAIL_CONNECT_ERROR_INFO' => 'Kan geen verbinding krijgen met de mail server!<br> Controleer in mijn accounts->Mail serverlijst -> mail accountlijst',
 	'LBL_ALLMAILS' => 'Alle e-mails',
@@ -111,6 +109,7 @@ $mod_strings = array(
 	'LBL_IN_SUBJECT' => 'In onderwerp',
 	'LBL_IN_SENDER' => 'In van',
 	'LBL_IN_SUBJECT_OR_SENDER' => 'In onderwerp of van',
+	'SELECT_EMAIL'=>'Select Email IDs',
 	'CHOSE_EMAIL' => 'Kies e-mailadres',
 	'Sender' => 'Van',
 	'LBL_CONFIGURE_MAIL_SETTINGS' => 'Uw inkomende e-mailserver is niet geconfigureerd',
@@ -132,7 +131,6 @@ $mod_strings = array(
 	'LBL_CONF_MAILSERVER_ERROR' => 'Configureer uw uitgaande mailserver selecteer settings ---> uitgaande server link a.u.b. ',
 	'LBL_CONF_SERVERSTORAGE_ERROR' => 'The permissions on your storage directory are insufficient, you will not be able to send attachments!',
 	'LBL_MAILSELECT_INFO3' => 'U heeft geen permissie om de e-mailadressen van de geselecteerde velden te bekijken.',
-	'FEATURE_AVAILABLE_INFO' => 'Dit kenmerk is momenteel alleen beschikbaar voor Microsoft Internet Explorer 5.5+!',
 	'DOWNLOAD_CONFIRAMATION' => 'Wilt u het bestand downloaden?',
 	'LBL_PLEASE_ATTACH' => 'Een geldig bestand bijvoegen en opnieuw proberen a.u.b.!',
 	'LBL_KINDLY_UPLOAD' => 'aub configureren <font color="red">upload_tmp_dir</font> variabel in php.ini bestand.',

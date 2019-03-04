@@ -72,7 +72,7 @@ if ($to_email == '' && $cc == '' && $bcc == '') {
 }
 
 $parentid= vtlib_purify($_REQUEST['parent_id']);
-$myids=explode("|", $parentid);
+$myids=explode('|', $parentid);
 $all_to_emailids = array();
 $from_name = $current_user->user_name;
 $from_address = $current_user->column_fields['email1'];
@@ -86,7 +86,7 @@ if (!empty($_REQUEST['from_email'])) {
 }
 
 for ($i=0; $i<(count($myids)-1); $i++) {
-	$realid=explode("@", $myids[$i]);
+	$realid=explode('@', $myids[$i]);
 	$nemail=count($realid);
 	$mycrmid=$realid[0];
 	if (getModuleForField($realid[1]) == 'Users') {
@@ -97,7 +97,7 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 		$description = getMergedDescription($_REQUEST['description'], $mycrmid, $pmodule);
 		$mail_status = send_mail('Emails', $emailadd, $from_name, $from_address, $_REQUEST['subject'], $description, '', '', 'all', $focus->id);
 		$all_to_emailids []= $emailadd;
-		$mail_status_str .= $emailadd."=".$mail_status."&&&";
+		$mail_status_str .= $emailadd.'='.$mail_status.'&&&';
 	} else {
 		//Send mail to account, lead or contact based on their ids
 		$pmodule=getSalesEntityType($mycrmid);
@@ -107,55 +107,22 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 			$temp=$realid[$j];
 			$myquery='Select columnname from vtiger_field where fieldid = ? and vtiger_field.presence in (0,2)';
 			$fresult=$adb->pquery($myquery, array($temp));
-			if ($pmodule=='Contacts') {
-				require_once('modules/Contacts/Contacts.php');
-				$myfocus = new Contacts();
-				$myfocus->retrieve_entity_info($mycrmid, "Contacts");
+			// vtlib customization: Enabling mail send from other modules
+			$myfocus = CRMEntity::getInstance($pmodule);
+			$myfocus->retrieve_entity_info($mycrmid, $pmodule);
 
-				$subject=getMergedDescription($subject, $mycrmid, $pmodule);
-				$description=getMergedDescription($description, $mycrmid, $pmodule);
+			$subject=getMergedDescription($subject, $mycrmid, $pmodule);
+			$description = getMergedDescription($description, $mycrmid, $pmodule);
 
-				$subject=getMergedDescription($subject, $myfocus->column_fields['account_id'], 'Accounts');
-				$description=getMergedDescription($description, $myfocus->column_fields['account_id'], 'Accounts');
+			$subject=getMergedDescription($subject, $current_user->id, 'Users');
+			$description=getMergedDescription($description, $current_user->id, 'Users');
 
-				$subject=getMergedDescription($subject, $current_user->id, 'Users');
-				$description=getMergedDescription($description, $current_user->id, 'Users');
-			} elseif ($pmodule=='Accounts') {
-				require_once('modules/Accounts/Accounts.php');
-				$myfocus = new Accounts();
-				$myfocus->retrieve_entity_info($mycrmid, "Accounts");
-
-				$subject=getMergedDescription($subject, $mycrmid, $pmodule);
-				$description=getMergedDescription($description, $mycrmid, $pmodule);
-
-				$subject=getMergedDescription($subject, $current_user->id, 'Users');
-				$description=getMergedDescription($description, $current_user->id, 'Users');
-			} elseif ($pmodule=='Leads') {
-				require_once('modules/Leads/Leads.php');
-				$myfocus = new Leads();
-				$myfocus->retrieve_entity_info($mycrmid, "Leads");
-
-				$subject=getMergedDescription($subject, $mycrmid, $pmodule);
-				$description=getMergedDescription($description, $mycrmid, $pmodule);
-
-				$subject=getMergedDescription($subject, $current_user->id, 'Users');
-				$description=getMergedDescription($description, $current_user->id, 'Users');
-			} elseif ($pmodule=='Vendors') {
-				require_once('modules/Vendors/Vendors.php');
-				$myfocus = new Vendors();
-				$myfocus->retrieve_entity_info($mycrmid, "Vendors");
-			} else {
-				// vtlib customization: Enabling mail send from other modules
-				$myfocus = CRMEntity::getInstance($pmodule);
-				$myfocus->retrieve_entity_info($mycrmid, $pmodule);
-
-				$subject=getMergedDescription($subject, $mycrmid, $pmodule);
-				$description = getMergedDescription($description, $mycrmid, $pmodule);
-
-				$subject=getMergedDescription($subject, $current_user->id, 'Users');
-				$description=getMergedDescription($description, $current_user->id, 'Users');
+			$accid = getRelatedAccountContact($mycrmid, 'Accounts');
+			if (!empty($accid)) {
+				$subject=getMergedDescription($subject, $accid, 'Accounts');
+				$description=getMergedDescription($description, $accid, 'Accounts');
 			}
-			$fldname=$adb->query_result($fresult, 0, "columnname");
+			$fldname=$adb->query_result($fresult, 0, 'columnname');
 			$emailadd=br2nl($myfocus->column_fields[$fldname]);
 
 			if ($emailadd != '') {
@@ -180,7 +147,7 @@ for ($i=0; $i<(count($myids)-1); $i++) {
 				}
 
 				$all_to_emailids []= $emailadd;
-				$mail_status_str .= $emailadd."=".$mail_status."&&&";
+				$mail_status_str .= $emailadd.'='.$mail_status.'&&&';
 				//added to get remain the EditView page if an error occurs in mail sending
 				if ($mail_status != 1) {
 					$errorheader2 = 1;

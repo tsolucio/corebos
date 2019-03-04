@@ -180,94 +180,99 @@
 {literal}
 <script>
 function validate(type) {
-if(type == 'FTP'){
-	if (!emptyCheck("server","FTP {/literal}{$MOD.LBL_SERVER_ADDRESS}{literal}","text")) return false
-		if (!emptyCheck("server_username","FTP {/literal}{$MOD.LBL_USERNAME}{literal}","text")) return false
-				if (!emptyCheck("server_password","FTP {/literal}{$MOD.LBL_PASWRD}{literal}","text")) return false
+	if (type == 'FTP') {
+		if (!emptyCheck('server', 'FTP {/literal}{$MOD.LBL_SERVER_ADDRESS}{literal}', 'text')) {
+			return false;
+		}
+		if (!emptyCheck('server_username', 'FTP {/literal}{$MOD.LBL_USERNAME}{literal}', 'text')) {
+			return false;
+		}
+		if (!emptyCheck('server_password', 'FTP {/literal}{$MOD.LBL_PASWRD}{literal}', 'text')) {
+			return false;
+		}
+		return true;
+	}
+	if (type == 'Local') {
+		if (!emptyCheck('server_path', '{/literal}{$MOD.LBL_BACKUP_LOCATION}{literal}', 'text')) {
+			return false;
+		} else {
 			return true;
-}
-if(type == 'Local'){
-	if (!emptyCheck("server_path","{/literal}{$MOD.LBL_BACKUP_LOCATION}{literal}","text")) return false;
-	else return true;
-}
+		}
+	}
 }
 
-function clearBackupServer(Obj)
-{
+function clearBackupServer(Obj) {
 	jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=VtigerBackup&action=VtigerBackupAjax&ajax=true&file=BackupServerConfig&opmode=del'
+		method:'POST',
+		url:'index.php?module=VtigerBackup&action=VtigerBackupAjax&ajax=true&file=BackupServerConfig&opmode=del'
 	}).done(function(response) {
-			document.getElementById("BackupServerContents").innerHTML=response;
+		document.getElementById('BackupServerContents').innerHTML=response;
 	});
 	backupenabled(Obj);
 }
 
-function backupenabled(ochkbox)
-{
-	if(ochkbox.checked == true) {
+function backupenabled(ochkbox) {
+	if (ochkbox.checked == true) {
 		document.getElementById('bckcontents').style.display='block';
 		var status='enabled';
 		document.getElementById('view_info').innerHTML = alert_arr.MSG_FTP_BACKUP_ENABLED+', ' + alert_arr.MSG_CONFIRM_FTP_DETAILS;
 		document.getElementById('view_info').style.display = 'block';
-		document.getElementById("ftp_buttons").style.display="block";
+		document.getElementById('ftp_buttons').style.display='block';
 
 		jQuery.ajax({
-			method:"POST",
+			method:'POST',
 			url:'index.php?module=VtigerBackup&action=VtigerBackupAjax&file=SaveEnableBackup&ajax=true&GetBackupDetail=true&servertype=ftp_backup'
 		}).done(function(response) {
-				if(response.indexOf('FAILURE') > -1) {
-					document.location.href = "index.php?module=VtigerBackup&action=BackupServerConfig&bkp_server_mode=edit";
-					return false;
-				}
+			if (response.indexOf('FAILURE') > -1) {
+				document.location.href = 'index.php?module=VtigerBackup&action=BackupServerConfig&bkp_server_mode=edit';
+				return false;
+			}
 		});
 	} else {
 		document.getElementById('bckcontents').style.display='none';
 		var status = 'disabled';
 		document.getElementById('view_info').innerHTML = alert_arr.MSG_FTP_BACKUP_DISABLED;
 		document.getElementById('view_info').style.display = 'block';
-		document.getElementById("ftp_buttons").style.display="none";
+		document.getElementById('ftp_buttons').style.display='none';
 	}
 
 	jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=VtigerBackup&action=VtigerBackupAjax&file=SaveEnableBackup&ajax=true&enable_ftp_backup='+status
+		method:"POST",
+		url:'index.php?module=VtigerBackup&action=VtigerBackupAjax&file=SaveEnableBackup&ajax=true&enable_ftp_backup='+status
 	}).done(function(response) {
-			document.getElementById("status").style.display="none";
+		document.getElementById('status').style.display='none';
 	});
 	setTimeout("hide('view_info')",3000);
 }
 
-function backupenable_check()
-{
+function backupenable_check() {
 	jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=VtigerBackup&action=VtigerBackupAjax&file=SaveEnableBackup&ajax=true&GetBackupDetail=true&servertype=ftp_backup'
+		method:'POST',
+		url:'index.php?module=VtigerBackup&action=VtigerBackupAjax&file=SaveEnableBackup&ajax=true&GetBackupDetail=true&servertype=ftp_backup'
 	}).done(function(response) {
-			if(response.indexOf('FAILURE') > -1) {
-				document.forms['tandc'].enable_ftp_backup.checked = false;
-				backupenabled(document.tandc.enable_ftp_backup);
-				window.history.back();
-			}
+		if(response.indexOf('FAILURE') > -1) {
+			document.forms['tandc'].enable_ftp_backup.checked = false;
+			backupenabled(document.tandc.enable_ftp_backup);
+			window.history.back();
+		}
 	});
 }
 
-function localbackupenabled(ochkbox)
-{
-	if(ochkbox.checked == true) {
+function localbackupenabled(ochkbox) {
+	if (ochkbox.checked == true) {
 		document.getElementById('localbackup_buttons').style.display='block';
 		document.getElementById('localbackup_fields').style.display='block';
 		var status='enabled';
 		document.getElementById('view_info').innerHTML = alert_arr.MSG_LOCAL_BACKUP_ENABLED+', '+alert_arr.MSG_CONFIRM_PATH;
 		document.getElementById('view_info').style.display = 'block';
 		jQuery.ajax({
-			method:"POST",
+			method:'POST',
 			url:'index.php?module=VtigerBackup&action=VtigerBackupAjax&file=SaveEnableBackup&ajax=true&GetBackupDetail=true&servertype=local_backup'
 		}).done(function(response) {
-				if(response.indexOf('FAILURE') > -1) {
-					document.location.href = "index.php?module=VtigerBackup&action=BackupServerConfig&local_server_mode=edit";
-					return false;
-				}
+			if (response.indexOf('FAILURE') > -1) {
+				document.location.href = 'index.php?module=VtigerBackup&action=BackupServerConfig&local_server_mode=edit';
+				return false;
+			}
 		});
 	} else {
 		document.getElementById('localbackup_buttons').style.display='none';
@@ -277,10 +282,10 @@ function localbackupenabled(ochkbox)
 		document.getElementById('view_info').style.display = 'block';
 	}
 	jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=VtigerBackup&action=VtigerBackupAjax&file=SaveEnableBackup&ajax=true&enable_local_backup='+status
+		method:'POST',
+		url:'index.php?module=VtigerBackup&action=VtigerBackupAjax&file=SaveEnableBackup&ajax=true&enable_local_backup='+status
 	}).done(function(response) {
-			document.getElementById("status").style.display="none";
+		document.getElementById("status").style.display="none";
 	});
 	setTimeout("hide('view_info')",3000);
 }

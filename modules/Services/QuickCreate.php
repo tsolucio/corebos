@@ -1,23 +1,23 @@
 <?php
-/*+********************************************************************************
+/*+**********************************************************************************
  * The contents of this file are subject to the vtiger CRM Public License Version 1.0
- * ('License'); You may not use this file except in compliance with the License
+ * ("License"); You may not use this file except in compliance with the License
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *********************************************************************************/
+ ************************************************************************************/
 require_once 'Smarty_setup.php';
 require_once 'include/utils/CommonUtils.php';
 
-global $mod_strings,$current_user, $app_strings, $currentModule, $theme;
+global $mod_strings, $current_user, $app_strings, $currentModule, $theme;
 
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
 
 $smarty = new vtigerCRM_Smarty;
 
-$qcreate_array = QuickCreate($module);
+$qcreate_array = QuickCreate($currentModule);
 $validationData = $qcreate_array['data'];
 $data = split_validationdataArray($validationData);
 $smarty->assign('QUICKCREATE', $qcreate_array['form']);

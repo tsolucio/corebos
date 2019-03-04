@@ -15,13 +15,13 @@
 	<td>
 		
 	</td>
-	<td align="right" colspan="4">
-		<table>
+	<td align="right" colspan="4" class="cblds-t-align_right cblds-p_medium">
+		<table style="display: inline-table;">
 			<tr>
 			{if $FOLDER->hasPrevPage()}
 				<td>
 					<a href="#{$FOLDER->name()}/page/{$FOLDER->pageCurrent(-1)}" onclick="MailManager.folder_open('{$FOLDER->name()}', {$FOLDER->pageCurrent(-1)});">
-					<img border="0" src="modules/Webmails/images/previous.gif" title="{'LBL_Previous'|@getTranslatedString}"></a>
+					<img border="0" src="themes/images/previous.gif" title="{'LBL_Previous'|@getTranslatedString}"></a>
 				</td>
 			{/if}
 
@@ -29,7 +29,7 @@
 
 			{if $FOLDER->hasNextPage()}
 				<td><a href="#{$FOLDER->name()}/page/{$FOLDER->pageCurrent(1)}" onclick="MailManager.folder_open('{$FOLDER->name()}', {$FOLDER->pageCurrent(1)});">
-					<img border="0" src="modules/Webmails/images/next.gif" title="{'LBL_Next'|@getTranslatedString}"></a>
+					<img border="0" src="themes/images/next.gif" title="{'LBL_Next'|@getTranslatedString}"></a>
 				</td>
 			{/if}
 			</tr>
@@ -38,7 +38,7 @@
 </tr>
 <tr>
 	<td colspan="5">
-	<table class="mm_tableHeadBg small" width="100%" cellspacing="0" border="0" cellpadding="2px" >
+	<table class="mm_tableHeadBg small cblds-table-border_sep cblds-table-bordersp_small" width="100%" cellspacing="0" border="0" cellpadding="2px" >
 		<tr>
 			<td align="left" style="width: 10%;" nowrap="nowrap">
 				<input align="left" type="checkbox" class='small'  name="selectall" id="parentCheckBox" onClick='MailManager.toggleSelect(this.checked,"mc_box");'/>&nbsp;&nbsp;
@@ -52,7 +52,7 @@
 					{/foreach}
 				</select>
 			</td>
-			<td class="moduleName" align="right">{'LBL_Search'|@getTranslatedString}
+			<td class="moduleName cblds-t-align_right" align="right">{'LBL_Search'|@getTranslatedString}
 				<input type="text" id='search_txt' class='small' value="{$QUERY}" />
 				{'LBL_IN'|@getTranslatedString}
 				<select class='small' id="search_type">
@@ -76,11 +76,10 @@
 	{foreach item=MAIL from=$FOLDER->mails()}
 	<tr class="mm_lvtColData {if $MAIL->isRead()}mm_normal{else}mm_bold{/if} mm_clickable"
 		 id="_mailrow_{$MAIL->msgNo()}" onmouseover='MailManager.highLightListMail(this);' onmouseout='MailManager.unHighLightListMail(this);'>
-		<td width="3%"><input type='checkbox' value = "{$MAIL->msgNo()}" name = 'mc_box' class='small'
-                              onclick='MailManager.toggleSelectMail(this.checked, this);'></td>
-		<td width="27%" onclick="MailManager.mail_open('{$FOLDER->name()}', {$MAIL->msgNo()});">{$MAIL->from(30)}</td>
-		<td onclick="MailManager.mail_open('{$FOLDER->name()}', {$MAIL->msgNo()});">{$MAIL->subject()}</td>
-		<td width="17%" align="right" onclick="MailManager.mail_open('{$FOLDER->name()}', {$MAIL->msgNo()});">{$MAIL->date(true)}</td>
+		<td width="3%" class="cblds-p_mediumlarge"><input type='checkbox' value = "{$MAIL->msgNo()}" name = 'mc_box' class='small' onclick='MailManager.toggleSelectMail(this.checked, this);'></td>
+		<td width="27%" class="cblds-p_mediumlarge" onclick="MailManager.mail_open('{$FOLDER->name()}', {$MAIL->msgNo()});">{$MAIL->from(30)}</td>
+		<td class="cblds-p_mediumlarge" onclick="MailManager.mail_open('{$FOLDER->name()}', {$MAIL->msgNo()});">{$MAIL->subject()}</td>
+		<td class="cblds-p_mediumlarge cblds-t-align_right" width="17%" align="right" onclick="MailManager.mail_open('{$FOLDER->name()}', {$MAIL->msgNo()});">{$MAIL->date(true)}</td>
 	</tr>
 	{foreachelse}
 </table>

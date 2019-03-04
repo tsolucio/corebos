@@ -72,7 +72,6 @@ $mod_strings = array(
 'LBL_PD'=>'Platform Dependent',
 'LBL_PIND'=>'Platform Independent',
 'ChoosePlatform'=>'Choose Platform',
-'LBL_INACTIVE'=>'Inactive',
 'LBL_UPLOAD_BUTTON'=>'Upload',
 'architecture'=>'Architecture',
 'LBL_DOWNLOAD_FILE'=>'Download file',
@@ -88,9 +87,7 @@ $mod_strings = array(
 'File Name'=>'File Name',
 'File Type'=>'File Type',
 'File Size'=>'Size',
-'LBL_INTERNAL'=>'Internal',
 'LBL_URL'=>'URL',
-'LBL_EXTERNAL'=>'External',
 'LBL_EXTERNAL_LNK'=>'External Link',
 'LBL_ACTIVE'=>'Active',
 'LBL_INACTIVE'=>'Inactive',
@@ -132,5 +129,4 @@ $mod_strings = array(
 'NewSize' => 'New Size',
 'accept_charge' => 'I accept the license change and the associated charge it may have',
 );
-
 ?>

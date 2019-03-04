@@ -10,38 +10,36 @@
  ************************************************************************************/
 
 class crmtogo_UI_FieldModel {
-	private $data; 
-	
-	function initData($fieldData) {
+	private $data;
+
+	public function initData($fieldData) {
 		$this->data = $fieldData;
 	}
-	
-	function uitype() {
+
+	public function uitype() {
 		return $this->data['uitype'];
 	}
 
-	function name() {
+	public function name() {
 		return $this->data['name'];
 	}
 
-	function value() {
+	public function value() {
 		global $current_user;
-		if ($this->data['uitype'] == '15' || $this->data['uitype'] == '33' || ($this->data['uitype'] == '16' and $this->data['name'] !='recurringtype' and $this->data['name'] !='duration_minutes' and $this->data['name'] !='visibility' )) {  
+		if ($this->data['uitype'] == '26' || $this->data['uitype'] == '15' || $this->data['uitype'] == '33' || ($this->data['uitype'] == '16'
+			&& $this->data['name'] !='recurringtype' && $this->data['name'] !='duration_minutes' && $this->data['name'] !='visibility')
+		) {
 			$rawValue = $this->data['type']['value'];
-			
 			if (is_array($rawValue)) {
 				return $rawValue['value'];
 			}
 			return $rawValue;
-		}
-		else if($this->data['uitype'] == '53') {
+		} elseif ($this->data['uitype'] == '53') {
 			$rawValue = $this->data['type']['value'];
-
-			if (is_array($rawValue)){
+			if (is_array($rawValue)) {
 				return $rawValue['value'];
 			}
-		}
-		else {
+		} else {
 			if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'Timecontrol' && $this->name()=='relatedto' && isset($_REQUEST['relatedto'])) {
 				$relatedto = $_REQUEST['relatedto'];
 				$fieldvalue = trim(vtws_getName($relatedto, $current_user));
@@ -51,30 +49,34 @@ class crmtogo_UI_FieldModel {
 			} else {
 				$rawValue = $this->data['value'];
 			}
-			if (is_array($rawValue)) return $rawValue['value'];
+			if (is_array($rawValue)) {
+				return $rawValue['value'];
+			}
 			return $rawValue;
 		}
 	}
 
-	function valueLabel() {
+	public function valueLabel() {
 		$rawValue = $this->data['value'];
-		if (is_array($rawValue)) return $rawValue['label'];
+		if (is_array($rawValue)) {
+			return $rawValue['label'];
+		}
 		return $rawValue;
 	}
 
-	function label() {
+	public function label() {
 		return $this->data['label'];
 	}
-	
-	function isReferenceType() {
-		static $options = array('101', '116', '357', '51', '52', '53', '57', '66', '73', '75', '76', '77', '78', '80', '81');
+
+	public function isReferenceType() {
+		static $options = array('101', '357', '51', '52', '53', '57', '66', '73', '76', '77', '78', '80');
 		if (isset($this->data['uitype'])) {
 			$uitype = $this->data['uitype'];
 			if (in_array($uitype, $options)) {
 				return true;
 			}
-		} else if(isset($this->data['type'])) {
-			switch($this->data['type']['name']) {
+		} elseif (isset($this->data['type'])) {
+			switch ($this->data['type']['name']) {
 				case 'reference':
 				case 'owner':
 					return true;
@@ -82,21 +84,19 @@ class crmtogo_UI_FieldModel {
 		}
 		return $this->isMultiReferenceType();
 	}
-	
-	function isMultiReferenceType() {
+
+	public function isMultiReferenceType() {
 		static $options = array('10', '68');
-		
 		$uitype = $this->data['uitype'];
 		if (in_array($uitype, $options)) {
 			return true;
 		}
 		return false;
 	}
-	
-	static function buildModelsFromResponse($fields) {
-		$instances = array();
 
-		foreach($fields as $fieldData) {
+	public static function buildModelsFromResponse($fields) {
+		$instances = array();
+		foreach ($fields as $fieldData) {
 			$instance = new self();
 			$instance->initData($fieldData);
 			$instances[] = $instance;
@@ -104,30 +104,29 @@ class crmtogo_UI_FieldModel {
 		return $instances;
 	}
 
-	function typeofdata() {
+	public function typeofdata() {
 		return $this->data['typeofdata'];
 	}
-	
+
 	// added for crmtogo_WS_Utils::getEntityName
-	function relatedmodule() {
+	public function relatedmodule() {
 		return $this->data['relatedmodule'];
 	}
-	
-	function ismandatory() {
-		$type_array = explode( '~',$this->data['typeofdata']);
+
+	public function ismandatory() {
+		$type_array = explode('~', $this->data['typeofdata']);
 		if ($type_array[1]=='M') {
 			return 'M';
-		}
-		else {
+		} else {
 			return '';
 		}
 	}
 
-	function quickcreate() {
+	public function quickcreate() {
 		return $this->data['quickcreate'];
 	}
 
-	function displaytype() {
+	public function displaytype() {
 		return $this->data['displaytype'];
 	}
 }

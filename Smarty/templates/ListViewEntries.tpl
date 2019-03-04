@@ -10,6 +10,8 @@
 -->*}
 {if !empty($smarty.request.ajax)}
 &#&#&#{if isset($ERROR)}{$ERROR}{/if}&#&#&#
+{else}
+{include file='applicationmessage.tpl'}
 {/if}
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <form name="massdelete" method="POST" id="massdelete" onsubmit="VtigerJS_DialogBox.block();">
@@ -17,7 +19,8 @@
 	<input name="idlist" id="idlist" type="hidden">
 	<input name="change_owner" type="hidden">
 	<input name="change_status" type="hidden">
-	<input name="action" type="hidden">
+	<input name="action" id="action" type="hidden">
+	<input name="massedit1x1" id="massedit1x1" type="hidden" value="">
 	<input name="where_export" type="hidden" value="{$export_where}">
 	<input name="step" type="hidden">
 	<input name="excludedRecords" type="hidden" id="excludedRecords" value="">
@@ -39,7 +42,7 @@
 									<td>
 										<!-- Filters -->
 										{if empty($HIDE_CUSTOM_LINKS) || $HIDE_CUSTOM_LINKS neq '1'}
-										<table cellpadding="5" cellspacing="0" class="small">
+										<table cellpadding="5" cellspacing="0" class="small cblds-table-border_sep cblds-table-bordersp_medium">
 											<tr>
 												<td style="padding-left:5px;padding-right:5px" align="center">
 													<b><font size=2>{$APP.LBL_VIEW}</font></b> <SELECT NAME="viewname" id="viewname" class="small" style="max-width:240px;" onchange="showDefaultCustomView(this,'{$MODULE}','{$CATEGORY}')">{$CUSTOMVIEW_OPTION}</SELECT>
@@ -81,14 +84,14 @@
 							</table>
 						</td>
 						<!-- Page Navigation -->
-						<td nowrap align="right" width="25%">
-							<table border=0 cellspacing=0 cellpadding=0 class="small">
+						<td nowrap align="right" width="25%" class="cblds-t-align_right">
+							<table border=0 cellspacing=0 cellpadding=0 class="small" style="display: inline-block;">
 								<tr>{$NAVIGATION}</tr>
 							</table>
 						</td>
 					</tr>
 				</table>
-				<table border=0 cellspacing=0 cellpadding=2 width=100% class="small">
+				<table border=0 cellspacing=0 cellpadding=2 width=100% class="small cblds-table-border_sep cblds-table-bordersp_small">
 					<tr>
 						<!-- Buttons -->
 						<td style="padding-right:20px" nowrap>{include file='ListViewButtons.tpl'}</td>
@@ -105,6 +108,7 @@
 					<td class="lvtCol">{$header}</td>
 				{/foreach}
 			</tr>
+			{include file="ListViewSearchBlock.tpl" SOURCE='customview' COLUMNS_BLOCK=$FIELDNAMES}
 			<tr>
 				<td id="linkForSelectAll" class="linkForSelectAll" style="display:none;" colspan=15>
 					<span id="selectAllRec" class="selectall" style="display:inline;" onClick="toggleSelectAll_Records('{$MODULE}',true,'selected_id')">{$APP.LBL_SELECT_ALL} <span id="count"> </span> {$APP.LBL_RECORDS_IN} {$MODULE|@getTranslatedString:$MODULE}</span>
@@ -146,7 +150,7 @@
 					</tr>
 					</table>
 				{else}
-					{if $CHECK.EditView eq 'yes' && $MODULE neq 'Emails' && $MODULE neq 'Webmails'}
+					{if $CHECK.EditView eq 'yes' && $MODULE neq 'Emails'}
 						<table border="0" cellpadding="5" cellspacing="0" width="98%">
 						<tr>
 							<td rowspan="2" width="25%"><img src="{'empty.png'|@vtiger_imageurl:$THEME}" height="60" width="61"></td>
@@ -231,8 +235,8 @@
 				<table width="100%">
 					<tr>
 						<td class="small" nowrap align="left">{$recordListRange}</td>
-						<td nowrap width="50%" align="right">
-							<table border=0 cellspacing=0 cellpadding=0 class="small">
+						<td nowrap width="50%" align="right" class="cblds-t-align_right">
+							<table border=0 cellspacing=0 cellpadding=0 class="small" style="display: inline-block;">
 							<tr>{$NAVIGATION}</tr>
 							</table>
 						</td>

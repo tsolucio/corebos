@@ -12,14 +12,14 @@ require_once 'modules/Import/ui/Viewer.php';
 
 class Import_Utils {
 
-	static $AUTO_MERGE_NONE = 0;
-	static $AUTO_MERGE_IGNORE = 1;
-	static $AUTO_MERGE_OVERWRITE = 2;
-	static $AUTO_MERGE_MERGEFIELDS = 3;
+	static public $AUTO_MERGE_NONE = 0;
+	static public $AUTO_MERGE_IGNORE = 1;
+	static public $AUTO_MERGE_OVERWRITE = 2;
+	static public $AUTO_MERGE_MERGEFIELDS = 3;
 
-	static $supportedFileEncoding = array('UTF-8'=>'UTF-8', 'ISO-8859-1'=>'ISO-8859-1');
-	static $supportedDelimiters = array(','=>'comma', ';'=>'semicolon');
-	static $supportedFileExtensions = array('csv','vcf');
+	static public $supportedFileEncoding = array('UTF-8'=>'UTF-8', 'ISO-8859-1'=>'ISO-8859-1');
+	static public $supportedDelimiters = array(','=>'comma', ';'=>'semicolon');
+	static public $supportedFileExtensions = array('csv','vcf');
 
 	public static function getSupportedFileExtensions() {
 		return self::$supportedFileExtensions;
@@ -42,7 +42,7 @@ class Import_Utils {
 	}
 
 	public static function getMaxUploadSize() {
-		return GlobalVariable::getVariable('Application_Upload_MaxSize',3000000);
+		return GlobalVariable::getVariable('Application_Upload_MaxSize', 3000000);
 	}
 
 	public static function getImportDirectory() {
@@ -52,14 +52,13 @@ class Import_Utils {
 
 	public static function getImportFilePath($user) {
 		$importDirectory = self::getImportDirectory();
-		return $importDirectory. "IMPORT_".$user->id;
+		return $importDirectory. 'IMPORT_'.$user->id;
 	}
-
 
 	public static function getFileReaderInfo($type) {
 		$configReader = new ConfigReader('modules/Import/config.inc', 'ImportConfig');
 		$importTypeConfig = $configReader->getConfig('importTypes');
-		if(isset($importTypeConfig[$type])) {
+		if (isset($importTypeConfig[$type])) {
 			return $importTypeConfig[$type];
 		}
 		return null;
@@ -67,7 +66,7 @@ class Import_Utils {
 
 	public static function getFileReader($userInputObject, $user) {
 		$fileReaderInfo = self::getFileReaderInfo($userInputObject->get('type'));
-		if(!empty($fileReaderInfo)) {
+		if (!empty($fileReaderInfo)) {
 			require_once $fileReaderInfo['classpath'];
 			$fileReader = new $fileReaderInfo['reader'] ($userInputObject, $user);
 		} else {
@@ -82,7 +81,7 @@ class Import_Utils {
 		return $userImportTablePrefix . $user->id;
 	}
 
-	public static function showErrorPage($errorMessage, $errorDetails=false, $customActions=false, $moduleName='') {
+	public static function showErrorPage($errorMessage, $errorDetails = false, $customActions = false, $moduleName = '') {
 		$viewer = new Import_UI_Viewer();
 		$viewer->assign('FOR_MODULE', $moduleName);
 		$viewer->assign('ERROR_MESSAGE', $errorMessage);
@@ -102,10 +101,8 @@ class Import_Utils {
 	}
 
 	public static function showImportTableBlockedError($moduleName, $user) {
-
 		$errorMessage = getTranslatedString('ERR_UNIMPORTED_RECORDS_EXIST', 'Import');
 		$customActions = array('LBL_CLEAR_DATA' => "location.href='index.php?module={$moduleName}&action=Import&mode=clear_corrupted_data'");
-
 		self::showErrorPage($errorMessage, '', $customActions, $moduleName);
 	}
 
@@ -113,9 +110,9 @@ class Import_Utils {
 		$adb = PearDatabase::getInstance();
 		$tableName = self::getDbTableName($user);
 
-		if(Vtiger_Utils::CheckTable($tableName)) {
+		if (Vtiger_Utils::CheckTable($tableName)) {
 			$result = $adb->query('SELECT 1 FROM '.$tableName.' WHERE status = '.Import_Data_Controller::$IMPORT_RECORD_NONE);
-			if($adb->num_rows($result) > 0) {
+			if ($adb->num_rows($result) > 0) {
 				return true;
 			}
 		}
@@ -133,44 +130,40 @@ class Import_Utils {
 
 	public static function getAssignedToUserList($module) {
 		global $current_user;
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
+		require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
 		$tabId = getTabid($module);
 
-		if(!is_admin($current_user) && $profileGlobalPermission[2] == 1
-				&& ($defaultOrgSharingPermission[$tabId] == 3 or $defaultOrgSharingPermission[$tabId] == 0)) {
-
-			return get_user_array(FALSE, "Active", $current_user->id,'private');
+		if (!is_admin($current_user) && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabId] == 3 || $defaultOrgSharingPermission[$tabId] == 0)) {
+			return get_user_array(false, 'Active', $current_user->id, 'private');
 		} else {
-			return get_user_array(FALSE, "Active", $current_user->id);
+			return get_user_array(false, 'Active', $current_user->id);
 		}
 	}
 
 	public static function getAssignedToGroupList($module) {
 		global $current_user;
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
+		require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
 		$tabId = getTabid($module);
 
-		if(!is_admin($current_user) && $profileGlobalPermission[2] == 1
-				&& ($defaultOrgSharingPermission[$tabId] == 3 or $defaultOrgSharingPermission[$tabId] == 0)) {
-			return get_group_array(FALSE, "Active", $current_user->id,'private');
+		if (!is_admin($current_user) && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabId] == 3 || $defaultOrgSharingPermission[$tabId] == 0)) {
+			return get_group_array(false, 'Active', $current_user->id, 'private');
 		} else {
-			return get_group_array(FALSE, "Active", $current_user->id);
+			return get_group_array(false, 'Active', $current_user->id);
 		}
 	}
 
 	public static function hasAssignPrivilege($moduleName, $assignToUserId) {
 		$assignableUsersList = self::getAssignedToUserList($moduleName);
-		if(array_key_exists($assignToUserId, $assignableUsersList)) {
+		if (array_key_exists($assignToUserId, $assignableUsersList)) {
 			return true;
 		}
 		$assignableGroupsList = self::getAssignedToGroupList($moduleName);
-		if(array_key_exists($assignToUserId, $assignableGroupsList)) {
+		if (array_key_exists($assignToUserId, $assignableGroupsList)) {
 			return true;
 		}
 		return false;
 	}
-
 }
 ?>

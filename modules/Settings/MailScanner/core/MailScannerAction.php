@@ -7,10 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('modules/Emails/Emails.php');
-require_once('modules/HelpDesk/HelpDesk.php');
-require_once('modules/Users/Users.php');
-require_once('modules/Documents/Documents.php');
+require_once 'modules/Emails/Emails.php';
+require_once 'modules/HelpDesk/HelpDesk.php';
+require_once 'modules/Users/Users.php';
+require_once 'modules/Documents/Documents.php';
 
 /**
  * Mail Scanner Action
@@ -198,7 +198,6 @@ class Vtiger_MailScannerAction {
 	 * Update Project action.
 	 */
 	public function __UpdateProject($mailscanner, $mailrecord, $regexMatchInfo) {
-		global $adb;
 		$returnid = false;
 		$usesubject = false;
 		if ($this->lookup == 'SUBJECT') {
@@ -322,7 +321,7 @@ class Vtiger_MailScannerAction {
 	 * Create new Email record (and link to given record) including attachements
 	 */
 	public function __CreateNewEmail($mailrecord, $module, $linkfocus) {
-		global $current_user, $adb;
+		global $current_user;
 		if (!$current_user) {
 			$current_user = Users::getActiveAdminUser();
 		}
@@ -342,7 +341,6 @@ class Vtiger_MailScannerAction {
 		$to = $mailrecord->_to[0];
 		$cc = (!empty($mailrecord->_cc))? implode(',', $mailrecord->_cc) : '';
 		$bcc= (!empty($mailrecord->_bcc))? implode(',', $mailrecord->_bcc) : '';
-		$flag=''; // 'SENT'/'SAVED'
 		//emails field were restructured and to,bcc and cc field are JSON arrays
 		$focus->column_fields['from_email'] = $from;
 		$focus->column_fields['saved_toid'] = $to;
@@ -434,7 +432,7 @@ class Vtiger_MailScannerAction {
 
 		$description = $filename;
 		$filename = str_replace(' ', '-', $filename);
-		$saveasfile = "$dirname$attachid" . "_$filename";
+		$saveasfile = $dirname . $attachid . "_$filename";
 		if (!file_exists($saveasfile)) {
 			$this->log("Saved attachement as $saveasfile\n");
 			$fh = fopen($saveasfile, 'wb');

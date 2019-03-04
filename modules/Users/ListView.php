@@ -7,35 +7,34 @@
   * Portions created by vtiger are Copyright (C) vtiger.
   * All Rights Reserved.
   ********************************************************************************/
-require_once('include/utils/utils.php');
-require_once('Smarty_setup.php');
+require_once 'include/utils/utils.php';
+require_once 'Smarty_setup.php';
 global $app_strings, $currentModule, $current_user;
-$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
-if($current_user->is_admin != 'on')
-{
-	die("<br><br><center>".$app_strings['LBL_PERMISSION']." <a href='javascript:window.history.back()'>".$app_strings['LBL_GO_BACK'].".</a></center>");
+$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
+if ($current_user->is_admin != 'on') {
+	die('<br><br><center>'.$app_strings['LBL_PERMISSION']." <a href='javascript:window.history.back()'>".$app_strings['LBL_GO_BACK'].'.</a></center>');
 }
 
 $log = LoggerManager::getLogger('user_list');
 
 global $mod_strings,$adb, $theme, $current_language;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
-$mod_strings = return_module_language($current_language,'Users');
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
+$mod_strings = return_module_language($current_language, 'Users');
 $category = getParentTab();
 $focus = new Users();
 $no_of_users=UserCount();
 
 //Display the mail send status
 $smarty = new vtigerCRM_Smarty;
-if(!empty($_REQUEST['mail_error'])) {
-	require_once("modules/Emails/mail.php");
+if (!empty($_REQUEST['mail_error'])) {
+	require_once 'modules/Emails/mail.php';
 	$error_msg = strip_tags(parseEmailErrorString($_REQUEST['mail_error']));
 	$error_msg = $app_strings['LBL_MAIL_NOT_SENT_TO_USER']. ' ' . vtlib_purify($_REQUEST['user']). '. ' .$app_strings['LBL_PLS_CHECK_EMAIL_N_SERVER'];
-	$smarty->assign('ERROR_MSG',$app_strings['LBL_MAIL_SEND_STATUS'].' <b><font class="warning">'.$error_msg.'</font></b>');
+	$smarty->assign('ERROR_MSG', $app_strings['LBL_MAIL_SEND_STATUS'].' <b><font class="warning">'.$error_msg.'</font></b>');
 }
 
-$list_query = getListQuery("Users");
+$list_query = getListQuery('Users');
 
 $userid = array();
 $blockedusers = $cbodBlockedUsers;
@@ -43,41 +42,45 @@ $blockedusers[] = 'admin';
 $userid_Query = 'SELECT id,user_name FROM vtiger_users WHERE user_name IN ('.generateQuestionMarks($blockedusers).')';
 $users = $adb->pquery($userid_Query, array($blockedusers));
 $norows = $adb->num_rows($users);
-if($norows  > 0){
-	for($i=0;$i<$norows ;$i++){
-		$id = $adb->query_result($users,$i,'id');
-		$userid[$id] = $adb->query_result($users,$i,'user_name');
+if ($norows  > 0) {
+	for ($i=0; $i<$norows; $i++) {
+		$id = $adb->query_result($users, $i, 'id');
+		$userid[$id] = $adb->query_result($users, $i, 'user_name');
 	}
 }
-$smarty->assign("USERNODELETE",$userid);
+$smarty->assign('USERNODELETE', $userid);
 
 $userid_noedit = array();
-$userid_noedit_Query = 'SELECT id,user_name FROM vtiger_users WHERE user_name IN ('.generateQuestionMarks($cbodBlockedUsers).')';
-$users_noedit = $adb->pquery($userid_noedit_Query, array($cbodBlockedUsers));
-$norows_noedit = $adb->num_rows($users_noedit);
-if ($norows_noedit  > 0) {
-	for ($i=0; $i<$norows_noedit; $i++){
-		$id = $adb->query_result($users_noedit, $i, 'id');
-		if ($current_user->id != $id) {
-			$userid_noedit[$id] = $adb->query_result($users_noedit, $i, 'user_name');
+if (count($cbodBlockedUsers)>0) {
+	$userid_noedit_Query = 'SELECT id,user_name FROM vtiger_users WHERE user_name IN ('.generateQuestionMarks($cbodBlockedUsers).')';
+	$users_noedit = $adb->pquery($userid_noedit_Query, array($cbodBlockedUsers));
+	$norows_noedit = $adb->num_rows($users_noedit);
+	if ($norows_noedit > 0) {
+		for ($i=0; $i<$norows_noedit; $i++) {
+			$id = $adb->query_result($users_noedit, $i, 'id');
+			if ($current_user->id != $id) {
+				$userid_noedit[$id] = $adb->query_result($users_noedit, $i, 'user_name');
+			}
 		}
 	}
 }
 $smarty->assign('USERNOEDIT', $userid_noedit);
 
-if(!empty($_REQUEST['sorder']))
+if (!empty($_REQUEST['sorder'])) {
 	$sorder = $adb->sql_escape_string($_REQUEST['sorder']);
-else
+} else {
 	$sorder = $focus->getSortOrder();
+}
 coreBOS_Session::set('USERS_SORT_ORDER', $sorder);
 
-if(!empty($_REQUEST['order_by']))
+if (!empty($_REQUEST['order_by'])) {
 	$order_by = $adb->sql_escape_string($_REQUEST['order_by']);
-else
+} else {
 	$order_by = $focus->getOrderBy();
+}
 coreBOS_Session::set('USERS_ORDER_BY', $order_by);
 
-if(empty($_SESSION['lvs'][$currentModule])) {
+if (empty($_SESSION['lvs'][$currentModule])) {
 	coreBOS_Session::delete('lvs');
 	$modObj = new ListViewSession();
 	$modObj->sorder = $sorder;
@@ -85,42 +88,43 @@ if(empty($_SESSION['lvs'][$currentModule])) {
 	coreBOS_Session::set('lvs^'.$currentModule, get_object_vars($modObj));
 }
 
-if(!empty($order_by)){
+if (!empty($order_by)) {
 	$list_query .= ' ORDER BY '.$order_by.' '.$sorder;
 }
 
 if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
-	$count_result = $adb->query( mkCountQuery($list_query));
-	$noofrows = $adb->query_result($count_result,0,"count");
-}else{
+	$count_result = $adb->query(mkCountQuery($list_query));
+	$noofrows = $adb->query_result($count_result, 0, 'count');
+} else {
 	$noofrows = null;
 }
 $queryMode = (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true');
 $start = ListViewSession::getRequestCurrentPage($currentModule, $list_query, '', $queryMode);
 
-$navigation_array = VT_getSimpleNavigationValues($start,$list_max_entries_per_page,$noofrows);
+$navigation_array = VT_getSimpleNavigationValues($start, $list_max_entries_per_page, $noofrows);
 
 $limit_start_rec = ($start-1) * $list_max_entries_per_page;
 $list_result = $adb->pquery($list_query. " LIMIT $limit_start_rec, $list_max_entries_per_page", array());
 
-$recordListRangeMsg = getRecordRangeMessage($list_result, $limit_start_rec,$noofrows);
-$smarty->assign('recordListRange',$recordListRangeMsg);
+$recordListRangeMsg = getRecordRangeMessage($list_result, $limit_start_rec, $noofrows);
+$smarty->assign('recordListRange', $recordListRangeMsg);
 $url_string = '';
-$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string,"Users","index",'');
-$smarty->assign("MOD", return_module_language($current_language,'Settings'));
-$smarty->assign("CMOD", $mod_strings);
-$smarty->assign("APP", $app_strings);
-$smarty->assign("CURRENT_USERID", $current_user->id);
-$smarty->assign("THEME", $theme);
-$smarty->assign("IMAGE_PATH",$image_path);
-$smarty->assign("CATEGORY",$category);
-$smarty->assign("LIST_HEADER",getListViewHeader($focus,"Users",$url_string,$sorder,$order_by,"",""));
-$smarty->assign("LIST_ENTRIES",getListViewEntries($focus,"Users",$list_result,$navigation_array,"","","EditView","Delete",""));
-$smarty->assign("PAGE_START_RECORD",$limit_start_rec);
-$smarty->assign("NAVIGATION", $navigationOutput);
-$smarty->assign("USER_IMAGES",getUserImageNames());
-if(!empty($_REQUEST['ajax']))
-	$smarty->display("UserListViewContents.tpl");
-else
-	$smarty->display("UserListView.tpl");
+$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string, 'Users', 'index', '');
+$smarty->assign('MOD', return_module_language($current_language, 'Settings'));
+$smarty->assign('CMOD', $mod_strings);
+$smarty->assign('APP', $app_strings);
+$smarty->assign('CURRENT_USERID', $current_user->id);
+$smarty->assign('THEME', $theme);
+$smarty->assign('IMAGE_PATH', $image_path);
+$smarty->assign('CATEGORY', $category);
+$smarty->assign('LIST_HEADER', getListViewHeader($focus, 'Users', $url_string, $sorder, $order_by, '', ''));
+$smarty->assign('LIST_ENTRIES', getListViewEntries($focus, 'Users', $list_result, $navigation_array, '', '', 'EditView', 'Delete', ''));
+$smarty->assign('PAGE_START_RECORD', $limit_start_rec);
+$smarty->assign('NAVIGATION', $navigationOutput);
+$smarty->assign('USER_IMAGES', getUserImageNames());
+if (!empty($_REQUEST['ajax'])) {
+	$smarty->display('UserListViewContents.tpl');
+} else {
+	$smarty->display('UserListView.tpl');
+}
 ?>

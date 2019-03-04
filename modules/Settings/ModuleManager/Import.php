@@ -10,16 +10,16 @@
 
 $module_import_step = vtlib_purify($_REQUEST['module_import']);
 
-require_once('Smarty_setup.php');
-require_once('vtlib/Vtiger/Package.php');
-require_once('vtlib/Vtiger/Language.php');
+require_once 'Smarty_setup.php';
+require_once 'vtlib/Vtiger/Package.php';
+require_once 'vtlib/Vtiger/Language.php';
 
 global $mod_strings,$app_strings,$theme;
 $smarty = new vtigerCRM_Smarty;
-$smarty->assign("MOD", $mod_strings);
-$smarty->assign("APP", $app_strings);
-$smarty->assign("THEME", $theme);
-$smarty->assign("IMAGE_PATH", "themes/$theme/images/");
+$smarty->assign('MOD', $mod_strings);
+$smarty->assign('APP', $app_strings);
+$smarty->assign('THEME', $theme);
+$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 
 global $modulemanager_uploaddir; // Defined in modules/Settings/ModuleManager.php
 
@@ -27,19 +27,19 @@ if ($module_import_step == 'Step2') {
 	if (!is_dir($modulemanager_uploaddir)) {
 		mkdir($modulemanager_uploaddir);
 	}
-	$uploadfile = "usermodule_". time() . ".zip";
+	$uploadfile = 'usermodule_' . time() . '.zip';
 	$uploadfilename = "$modulemanager_uploaddir/$uploadfile";
 	checkFileAccess($modulemanager_uploaddir);
 
 	if ($_REQUEST['installtype'] == 'file') {
 		if (!move_uploaded_file($_FILES['module_zipfile']['tmp_name'], $uploadfilename)) {
-			$smarty->assign("MODULEIMPORT_FAILED", "true");
+			$smarty->assign('MODULEIMPORT_FAILED', 'true');
 			$uploadfilename = null;
 		}
 	} else {
 		$url = $_REQUEST['module_url'];
 		if (!preg_match('%^\w+://%', $url)) {
-			$smarty->assign("MODULEIMPORT_FAILED", "true");
+			$smarty->assign('MODULEIMPORT_FAILED', 'true');
 			$uploadfilename = null;
 		} else {
 			if (!preg_match('/.zip$/', $url)) {
@@ -48,7 +48,7 @@ if ($module_import_step == 'Step2') {
 			}
 			$input = fopen($url, 'r');
 			if (!file_put_contents($uploadfilename, $input)) {
-				$smarty->assign("MODULEIMPORT_FAILED", "true");
+				$smarty->assign('MODULEIMPORT_FAILED', 'true');
 				$uploadfilename = null;
 			}
 		}
@@ -77,31 +77,31 @@ if ($module_import_step == 'Step2') {
 		$moduleimport_name = $package->getModuleNameFromZip($uploadfilename);
 
 		if ($moduleimport_name == null) {
-			$smarty->assign("MODULEIMPORT_FAILED", "true");
-			$smarty->assign("MODULEIMPORT_FILE_INVALID", "true");
+			$smarty->assign('MODULEIMPORT_FAILED', 'true');
+			$smarty->assign('MODULEIMPORT_FILE_INVALID', 'true');
 		} else {
 			$smarty->assign('MODULEIMPORT_FAILED', '');
 			$smarty->assign('MODULEIMPORT_FILE_INVALID', '');
 
 			if (!$package->isLanguageType() && !$package->isModuleBundle()) {
 				$moduleInstance = Vtiger_Module::getInstance($moduleimport_name);
-				$moduleimport_exists=($moduleInstance)? "true" : "false";
+				$moduleimport_exists=($moduleInstance)? 'true' : 'false';
 				$moduleimport_dir_name="modules/$moduleimport_name";
-				$moduleimport_dir_exists= (is_dir($moduleimport_dir_name)? "true" : "false");
+				$moduleimport_dir_exists= (is_dir($moduleimport_dir_name)? 'true' : 'false');
 
-				$smarty->assign("MODULEIMPORT_EXISTS", $moduleimport_exists);
-				$smarty->assign("MODULEIMPORT_DIR", $moduleimport_dir_name);
-				$smarty->assign("MODULEIMPORT_DIR_EXISTS", $moduleimport_dir_exists);
+				$smarty->assign('MODULEIMPORT_EXISTS', $moduleimport_exists);
+				$smarty->assign('MODULEIMPORT_DIR', $moduleimport_dir_name);
+				$smarty->assign('MODULEIMPORT_DIR_EXISTS', $moduleimport_dir_exists);
 			}
 
 			$moduleimport_dep_vtversion = $package->getDependentVtigerVersion();
 			$moduleimport_license = $package->getLicense();
 
-			$smarty->assign("MODULEIMPORT_FILE", $uploadfile);
-			$smarty->assign("MODULEIMPORT_TYPE", $package->type());
-			$smarty->assign("MODULEIMPORT_NAME", $moduleimport_name);
-			$smarty->assign("MODULEIMPORT_DEP_VTVERSION", $moduleimport_dep_vtversion);
-			$smarty->assign("MODULEIMPORT_LICENSE", $moduleimport_license);
+			$smarty->assign('MODULEIMPORT_FILE', $uploadfile);
+			$smarty->assign('MODULEIMPORT_TYPE', $package->type());
+			$smarty->assign('MODULEIMPORT_NAME', $moduleimport_name);
+			$smarty->assign('MODULEIMPORT_DEP_VTVERSION', $moduleimport_dep_vtversion);
+			$smarty->assign('MODULEIMPORT_LICENSE', $moduleimport_license);
 		}
 	}
 } elseif ($module_import_step == 'Step3') {

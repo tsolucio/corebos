@@ -19,45 +19,45 @@
 
 class evvtMenu {
 
- 	/**
+	/**
 	* Invoked when special actions are performed on the module.
 	* @param String Module name
 	* @param String Event Type
 	*/
-	function vtlib_handler($moduleName, $eventType) {
+	public function vtlib_handler($moduleName, $eventType) {
 		global $adb;
- 		if($eventType == 'module.postinstall') {
- 			$menus = $adb->query('SELECT vtiger_parenttab.parenttabid,vtiger_parenttab.parenttab_label,visible,vtiger_parenttabrel.tabid,vtiger_tab.name 
+		if ($eventType == 'module.postinstall') {
+			$menus = $adb->query('SELECT vtiger_parenttab.parenttabid,vtiger_parenttab.parenttab_label,visible,vtiger_parenttabrel.tabid,vtiger_tab.name 
 				FROM vtiger_parenttabrel
 				inner join vtiger_parenttab on vtiger_parenttab.parenttabid=vtiger_parenttabrel.parenttabid
 				inner join vtiger_tab on vtiger_tab.tabid=vtiger_parenttabrel.tabid
 				order by vtiger_parenttab.parenttabid,vtiger_parenttab.sequence,vtiger_parenttabrel.sequence');
- 			$mainmenucnt=0;
- 			$submenucnt=1;
- 			while ($menu = $adb->fetch_array($menus)) {
- 				if ($mainmenucnt==0 or $mainmenucnt!=$menu['parenttabid']) {
- 					$mainmenucnt++;
- 					$adb->query("insert into vtiger_evvtmenu (mtype,mvalue,mlabel,mparent,mseq,mvisible,mpermission) values
- 							('menu','','".$menu['parenttab_label']."',0,$mainmenucnt,1,'')");
- 					$pmenuidrs = $adb->query('select max(evvtmenuid) from vtiger_evvtmenu');
- 					$pmenuid = $adb->query_result($pmenuidrs,0,0);
- 					$submenucnt=1;
- 				}
- 				$adb->query("insert into vtiger_evvtmenu (mtype,mvalue,mlabel,mparent,mseq,mvisible,mpermission) values
- 							('module','".$menu['name']."','".$menu['name']."',$pmenuid,$submenucnt,1,'')");
- 				$submenucnt++;
- 			}
-		} else if($eventType == 'module.disabled') {
+			$mainmenucnt=0;
+			$submenucnt=1;
+			while ($menu = $adb->fetch_array($menus)) {
+				if ($mainmenucnt==0 || $mainmenucnt!=$menu['parenttabid']) {
+					$mainmenucnt++;
+					$adb->query("insert into vtiger_evvtmenu (mtype,mvalue,mlabel,mparent,mseq,mvisible,mpermission) values
+							('menu','','".$menu['parenttab_label']."',0,$mainmenucnt,1,'')");
+					$pmenuidrs = $adb->query('select max(evvtmenuid) from vtiger_evvtmenu');
+					$pmenuid = $adb->query_result($pmenuidrs, 0, 0);
+					$submenucnt=1;
+				}
+				$adb->query("insert into vtiger_evvtmenu (mtype,mvalue,mlabel,mparent,mseq,mvisible,mpermission) values
+							('module','".$menu['name']."','".$menu['name']."',$pmenuid,$submenucnt,1,'')");
+				$submenucnt++;
+			}
+		} elseif ($eventType == 'module.disabled') {
 		// TODO Handle actions when this module is disabled.
-		} else if($eventType == 'module.enabled') {
+		} elseif ($eventType == 'module.enabled') {
 		// TODO Handle actions when this module is enabled.
-		} else if($eventType == 'module.preuninstall') {
+		} elseif ($eventType == 'module.preuninstall') {
 		// TODO Handle actions when this module is about to be deleted.
-		} else if($eventType == 'module.preupdate') {
+		} elseif ($eventType == 'module.preupdate') {
 		// TODO Handle actions before this module is updated.
-		} else if($eventType == 'module.postupdate') {
+		} elseif ($eventType == 'module.postupdate') {
 		// TODO Handle actions after this module is updated.
 		}
- 	}
+	}
 }
 ?>

@@ -228,7 +228,6 @@ $mod_strings = array(
 	'LBL_ONLY_SYNC_FROM_VTIGER_TO_GOOGLE' => 'From Application to Google only',
 	'Company' => 'Company',
 	'Birthday' => 'Birthday',
-	'Phone' => 'Phone',
 	'URL' => 'Url',
 	'home' => 'Home',
 	'work' => 'Work',
@@ -267,5 +266,4 @@ $mod_strings = array(
 	'SYNC_RESULTS'=>'Sync Results',
 	'ERR_GContactsSync'=>'There has been an error accessing Google. The settings have been deleted, please configure the access again.',
 );
-
 ?>

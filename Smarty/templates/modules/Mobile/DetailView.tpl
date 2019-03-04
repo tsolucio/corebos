@@ -21,30 +21,21 @@
 <div data-role="page" data-theme="b" id="detail_page">
 	<input type="hidden" name="recordid" id="recordid" value="{$_RECORD->id()}">
 	<input type="hidden" name="module" id="module" value="{$_MODULE->name()}">
-	{if $_MODULE->name() neq 'Accounts' && $_MODULE->name() neq 'Contacts'&& $_MODULE->name() neq 'Potentials' && $_MODULE->name() neq 'HelpDesk' && $_MODULE->name() neq 'Assets'}
-	<div  data-role="header" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
-		{if $_MODULE->name() neq 'Quotes' AND  $_MODULE->name() neq 'SalesOrder' AND  $_MODULE->name() neq 'Invoice' AND  $_MODULE->name() neq 'PurchaseOrder' AND  $_MODULE->name() neq 'Documents' AND  $_MODULE->name() neq 'Products'}
-			<div class="ui-btn-left" data-role="controlgroup" data-type="horizontal">
-				<a href="?_operation=edit&module={$_MODULE->name()}&record={$_RECORD->id()}" class="ui-btn ui-corner-all ui-icon-edit ui-btn-icon-notext" data-transition="slideup" >{$MOD.LBL_EDIT}</a>
-				<a href="#"  onclick="window.history.back()" class="ui-btn ui-corner-all ui-icon-back ui-btn-icon-notext">{$MOD.LBL_CANCEL}</a>
-			</div>
-		{else}
-			<a href="#"  onclick="window.history.back()" class="ui-btn ui-corner-all ui-icon-back ui-btn-icon-notext">{$MOD.LBL_CANCEL}</a>
-		{/if}
-			<h2></h2>
-			<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
-	</div>
-	{else}
 	<div data-role="header" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
-	    <div class="ui-btn-left" data-role="controlgroup" data-type="horizontal">
-			<a href="?_operation=edit&module={$_MODULE->name()}&record={$_RECORD->id()}" class="ui-btn ui-corner-all ui-icon-edit ui-btn-icon-notext" data-transition="slideup" >{$MOD.LBL_EDIT}</a>
-			<a href="?_operation=getrelatedlists&module={$_MODULE->name()}&record={$_RECORD->id()}" class="ui-btn ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="slideup" >{$MOD.LBL_RELATED_LISTS}</a>
-			<a href="#"  onclick="window.history.back()" class="ui-btn ui-corner-all ui-icon-back ui-btn-icon-notext">{$MOD.LBL_CANCEL}</a>
+		 <div class="ui-btn-left" data-role="controlgroup" data-type="horizontal">
+	{if $_MODULE->name() neq 'Quotes' AND  $_MODULE->name() neq 'SalesOrder' AND  $_MODULE->name() neq 'Invoice' AND  $_MODULE->name() neq 'PurchaseOrder' AND  $_MODULE->name() neq 'Documents' AND  $_MODULE->name() neq 'Products'}
+				<a href="?_operation=edit&module={$_MODULE->name()}&record={$_RECORD->id()}" class="ui-btn ui-corner-all ui-icon-edit ui-btn-icon-notext" data-transition="slideup" >{$MOD.LBL_EDIT}</a>
+				<a href="?_operation=getrelatedlists&module={$_MODULE->name()}&record={$_RECORD->id()}" class="ui-btn ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="slideup" >{$MOD.LBL_RELATED_LISTS}</a>
+				<a href="?_operation=duplicate&module={$_MODULE->name()}&record={$_RECORD->id()}&duplicatedfrom={$_RECORD->id()}" class="ui-btn ui-corner-all ui-icon-recycle ui-btn-icon-notext" data-transition="slideup" >{$MOD.LBL_DUPLICATE}</a>
+				<a href="#"  onclick="window.history.back()" class="ui-btn ui-corner-all ui-icon-back ui-btn-icon-notext">{$MOD.LBL_CANCEL}</a>
+	{else}
+		<a href="?_operation=getrelatedlists&module={$_MODULE->name()}&record={$_RECORD->id()}" class="ui-btn ui-corner-all ui-icon-bars ui-btn-icon-notext" data-transition="slideup" >{$MOD.LBL_RELATED_LISTS}</a>
+		<a href="#"  onclick="window.history.back()" class="ui-btn ui-corner-all ui-icon-back ui-btn-icon-notext">{$MOD.LBL_CANCEL}</a>
+	{/if}
 		</div>
 		<h2></h2>
 			<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
 	</div>
-	{/if}
 	<div>
 	{if $_MODULE->name() eq "HelpDesk"}
 		<div data-role="collapsible" id="signatureCollapsible" data-collapsed="true" data-mini="true">
@@ -73,6 +64,9 @@
 				{foreach item=_FIELD from=$_FIELDS}
 					<input type="hidden" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$_FIELD->valueLabel()}">
 					<div class="ui-grid-a">
+						{if ($_FIELD->uitype() eq '69' || $_FIELD->uitype() eq '69m') && $_FIELD->valueLabel() neq ''}
+							<img src="{$_FIELD->valueLabel()}" style="max-width:100%"></img>
+						{else}
 						<div class="ui-block-a">
 							{if $_MODULE->name() eq 'cbCalendar'}
 								{if $_FIELD->name() eq 'date_start'}
@@ -83,11 +77,7 @@
 									{/if}
 								{/if}
 							{else}
-								{if $_FIELD->uitype() eq '69' && $_FIELD->valueLabel() neq ''}
-									<img  src="{$_FIELD->valueLabel()}"></img>
-								{else}
-									{$_FIELD->label()}:
-								{/if}
+								{$_FIELD->label()}:
 							{/if}
 						</div>
 						<div class="ui-block-b">
@@ -139,8 +129,8 @@
 										{elseif $_FIELD->uitype() eq '9'}
 											{$_FIELD->valueLabel()}{if $_FIELD->name() eq 'probability'} %{/if}
 										{elseif $_FIELD->uitype() eq '17'}
-											{$_FIELD->valueLabel()}
-										{elseif $_FIELD->uitype() eq '69'}
+											<a href="#" onclick="window.open('http://{$_FIELD->valueLabel()}','_blank');" rel=external> {$_FIELD->valueLabel()} </a>
+										{elseif ($_FIELD->uitype() eq '69' || $_FIELD->uitype() eq '69m')}
 											<!-- do nothing here for image -->
 										{elseif $_FIELD->uitype() eq '70'}
 											{$_FIELD->valueLabel()}
@@ -154,17 +144,19 @@
 									{/if}
 								{/if}
 							{/if}
-						</div>	
-					</div>	
-	            {/foreach}
+						</div>
+						{/if}
+					</div>
+				{/foreach}
 			</div>	
 		{/foreach}
 	</div>
 	<div data-role="footer" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
-		<a href="?_operation=deleteConfirmation&module={$_MODULE->name()}&record={$_RECORD->id()}&&lang={$LANGUAGE}" class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-notext" data-rel="dialog" data-iconpos="left" data-prefetch>{$MOD.LBL_DELETE}</a>
+		<a href="?_operation=deleteConfirmation&module={$_MODULE->name()}&record={$_RECORD->id()}&&lang={$LANGUAGE}" class="ui-btn ui-corner-all ui-icon-delete ui-btn-icon-notext" data-rel="dialog" data-iconpos="left">{$MOD.LBL_DELETE}</a>
 		{if $_MODULE->name() eq "HelpDesk" && 'Timecontrol'|vtlib_isModuleActive}
-		<a href="?_operation=create&module=Timecontrol&record=''&relatedto={$_RECORD->id()}" class="ui-btn ui-btn-right ui-corner-all ui-icon-clock ui-btn-icon-notext" rel="external" data-transition="slideup" data-iconpos="right">{$MOD.LBL_NEW}</a>
+		<a href="?_operation=create&module=Timecontrol&record=''&relatedto={$_RECORD->id()}&returnto={$_RECORD->id()}" class="ui-btn ui-btn-right ui-corner-all ui-icon-clock ui-btn-icon-notext" rel="external" data-transition="slideup" data-iconpos="right">{$MOD.LBL_NEW}</a>
 		{/if}
+		<a style="right: 20%" href="?_operation=create&module=Documents&record=''&relations={$_RECORD->id()}&returnto={$_RECORD->id()}" class="ui-btn ui-btn-right ui-corner-all ui-icon-camera ui-btn-icon-notext" rel="external" data-transition="slideup" data-iconpos="right">{$MOD.LBL_NEW}</a>
 	</div>
 	{include file="modules/Mobile/PanelMenu.tpl"}
 </div>

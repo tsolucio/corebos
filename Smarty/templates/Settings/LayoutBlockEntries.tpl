@@ -14,6 +14,8 @@
 <input type="hidden" name="mode">
 <script type="text/javascript" src="include/js/customview.js"></script>
 <script type="text/javascript" src="include/js/general.js"></script>
+<script type="text/javascript" src="modules/Settings/Settings.js"></script>
+<script src="include/jquery/jquery.js"></script>
 <table class="listTable" border="0" cellpadding="3" cellspacing="0" width="100%">
 	{foreach item=entries key=id from=$CFENTRIES name=outer}
 		{if isset($entries.blockid) && $entries.blockid ne $RELPRODUCTSECTIONID && isset($entries.blocklabel) && $entries.blocklabel neq '' }
@@ -33,7 +35,7 @@
 				</select>
 				&nbsp;&nbsp;{$entries.blocklabel}&nbsp;&nbsp;
 				</td>
-				<td class="colHeader small" id = "blockid_{$entries.blockid}" colspan="2" align='right'>
+				<td class="colHeader small cblds-t-align_right" id = "blockid_{$entries.blockid}" colspan="2" align='right'>
 					{if $entries.iscustom == 1 }
 					<img style="cursor:pointer;" onClick=" deleteCustomBlock('{$MODULE}','{$entries.blockid}','{$entries.no}')" src="{'delete.gif'|@vtiger_imageurl:$THEME}" border="0" alt="{$APP.LBL_DELETE}" title="{$APP.LBL_DELETE}"/>&nbsp;&nbsp;
 					{/if}
@@ -47,7 +49,7 @@
 												<td width="95%" align="left" class="layerPopupHeading">
 													{$MOD.HIDDEN_FIELDS}
 												</td>
-												<td width="5%" align="right">
+												<td width="5%" align="right" class="cblds-t-align_right">
 													<a href="javascript:fninvsh('hiddenfields_{$entries.blockid}');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a>
 												</td>
 											</tr>
@@ -104,7 +106,7 @@
 										<tr>
 											<td width="60%" align="left" class="layerPopupHeading">{$MOD.LBL_ADD_FIELD}
 											</td>
-											<td width="40%" align="right"><a href="javascript:fninvsh('addfield_{$entries.blockid}');">
+											<td width="40%" align="right" class="cblds-t-align_right"><a href="javascript:fninvsh('addfield_{$entries.blockid}');">
 											<img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a>
 											</td>
 										</tr>
@@ -205,7 +207,7 @@
 												<td width="95%" align="left" class="layerPopupHeading">
 													{$MOD.LBL_MOVE_FIELDS}
 												</td>
-												<td width="5%" align="right">
+												<td width="5%" align="right" class="cblds-t-align_right">
 													<a href="javascript:fninvsh('movefields_{$entries.blockid}');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a>
 												</td>
 											</tr>
@@ -272,18 +274,25 @@
 						<font color='red'> *</font>
 					{/if}
 				</td>
-				<td width="19%" align = "right" class="colData small" >
+				<td width="19%" align="right" class="colData small cblds-t-align_right">
 					<img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="fnvshNrm('editfield_{$value.fieldselect}'); posLay(this, 'editfield_{$value.fieldselect}');" alt="Popup" title="{$MOD.LBL_EDIT_PROPERTIES}"/>&nbsp;&nbsp;
 					<div id="editfield_{$value.fieldselect}" style="display:none; position: absolute; width: 225px; left: 300px; top: 300px;" >
 						<div class="layerPopup" style="position:relative; display:block">
 									<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
 										<tr class="detailedViewHeader">
 											<th width="95%" align="left">
-												{$value.label} ({$value.columnname})
+												{$value.label}
 											</th>
-											<th width="5%" align="right">
+											<th width="5%" align="right" class="cblds-t-align_right">
 												<a href="javascript:fninvsh('editfield_{$value.fieldselect}');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a>
 											</th>
+										</tr>
+										<tr>
+											<td colspan="2" style="margin:auto; valign="top" class="dvtCellInfo" width="10px">
+											<span> {$value.columnname}</span>
+											<span> {$value.type}</span>
+											<span> {$value.fieldsize}</span>
+											</td>
 										</tr>
 									</table>
 									<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
@@ -387,7 +396,7 @@
 									<td colspan="3" class="dvtCellInfo" align="center">
 										<input type="button" name="save" value=" &nbsp; {$APP.LBL_SAVE_BUTTON_LABEL} &nbsp; " class="crmButton small save" onclick="saveFieldInfo('{$value.fieldselect}','{$MODULE}','updateFieldProperties','{$value.typeofdata}');" />&nbsp;
 										{if $value.customfieldflag neq 0}
-											<input type="button" name="delete" value=" {$APP.LBL_DELETE_BUTTON_LABEL} " class="crmButton small delete" onclick="deleteCustomField('{$value.fieldselect}','{$MODULE}','{$value.columnname}','{$value.uitype}')" />
+											<input type="button" name="delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}" id="fieldname" class="crmButton small delete" onclick="getData('{$value.columnname}', '{$MODULE}', '{$value.label}'); fnvshobj(this,'hiddenfield_{$value.label}');" />
 										{/if}
 										<input type="button" name="cancel" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmButton small cancel" onclick="fninvsh('editfield_{$value.fieldselect}');" />
 									</td>
@@ -395,6 +404,29 @@
 							</table>
 						</div>
 					</div>
+
+				<div id="hiddenfield_{$value.label}" style="display:none; position:absolute; width:500px; height: 500px; margin-top: -400px">
+					<section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+						<div class="slds-modal__container">
+							<div class="slds-box_border">
+							<header class="slds-modal__header">
+								<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{$value.label} ({$value.columnname})</h2>
+							</header>
+							<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+								<p id="{$value.label}" style="text-align: left; padding-left: 6px;"></p>
+							</div>
+							<footer class="slds-modal__footer" style="width:100%">
+								{if $value.customfieldflag neq 0}
+								<button class="slds-button slds-button_destructive" onclick="deleteCustomField('{$value.fieldselect}','{$MODULE}','{$value.columnname}','{$value.uitype}'); return false;"> {$APP.LBL_DELETE_BUTTON_LABEL} </button>
+								{/if}
+								<button class="slds-button slds-button_neutral" onclick="fninvsh('hiddenfield_{$value.label}');return false;">{$APP.LBL_CANCEL_BUTTON_LABEL}</button>
+							</footer>
+							</div>
+						</div>
+					</section>
+					<div class="slds-backdrop slds-backdrop_open"></div>
+				</div>
+
 					{if $smarty.foreach.inner.first}
 						{if $value.no % 2 != 0}
 							<img src="{'blank.gif'|@vtiger_imageurl:$THEME}" style="width:16px;height:16px;" border="0" />&nbsp;&nbsp;
@@ -450,7 +482,7 @@
 		{/if}
 		<tr>
 			<td class="colHeader small" colspan="2">&nbsp;&nbsp;{$entries.label}</td>
-			<td class="colHeader small" id = "blockid_dvb{$entries.DVB}" colspan="2" align='right'>
+			<td class="colHeader small" id = "blockid_dvb{$entries.DVB}" colspan="2" align='right' class="cblds-t-align_right">
 			{if $smarty.foreach.outer.first}
 				<img src="{'blank.gif'|@vtiger_imageurl:$THEME}" style="width:16px;height:16px;" border="0" />&nbsp;&nbsp;
 				<img src="{'arrow_down.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="changeBlockorder('block_down','{$entries.tabid}','dvb{$entries.DVB}','{$MODULE}') " alt="{$MOD.DOWN}" title="{$MOD.DOWN}">&nbsp;&nbsp;
@@ -468,9 +500,9 @@
 	<div id="addblock" style="display:none; position:absolute; width:500px;" class="layerPopup">
 		<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
 			<tr>
-				<td width="95%" align="left" class="layerPopupHeading">{$MOD.LBL_ADD_BLOCK}
+				<td width="95%" align="left" class="layerPopupHeading cblds-p_medium">{$MOD.LBL_ADD_BLOCK}
 				</td>
-				<td width="5%" align="right"><a href="javascript:fninvsh('addblock');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a>
+				<td width="5%" align="right" class="cblds-t-align_right cblds-p_medium"><a href="javascript:fninvsh('addblock');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a>
 				</td>
 			</tr>
 		</table>
@@ -482,17 +514,19 @@
 							<td width="50%">
 								<table width="100%" border="0" cellpadding="5" cellspacing="0">
 									<tr>
-										<td class="dataLabel" nowrap="nowrap" align="right" width="30%"><b>{$MOD.LBL_BLOCK_NAME}</b></td>
+										<td class="dataLabel cblds-t-align_right cblds-p_medium" nowrap="nowrap" align="right" width="30%"><b>{$MOD.LBL_BLOCK_NAME}</b></td>
 										<td align="left" width="70%">
 										<input id="blocklabel" value="" type="text" class="txtBox">
 										</td>
 									</tr>
 									<tr>
-										<td class="dataLabel" align="right" width="30%"><b>{$MOD.AFTER}</b></td>
+										<td class="dataLabel cblds-t-align_right cblds-p_medium" align="right" width="30%"><b>{$MOD.AFTER}</b></td>
 										<td align="left" width="70%">
 										<select id="after_blockid" name="after_blockid">
 											{foreach key=blockid item=blockname from=$BLOCKS}
+											{if !empty($blockname)}
 											<option value = {$blockid}> {$blockname} </option>
+											{/if}
 											{/foreach}
 										</select>
 										</td>
@@ -506,12 +540,16 @@
 						<td colspan=2><hr width="100%"></td>
 						</tr>
 						<tr>
-						<td class="dataLabel" nowrap="nowrap" align="right" width="30%"><b>{'QuickRelatedList'|@gettranslatedString:$MODULE}:</b></td>
+						<td class="dataLabel cblds-t-align_right cblds-p_medium" nowrap="nowrap" align="right" width="30%"><b>{'QuickRelatedList'|@gettranslatedString:$MODULE}:</b></td>
 						<td align="left" width="70%">
 							<select name='relatedlistblock' id='relatedlistblock' onchange="getElementById('blocklabel').value=this.value;">
 								<option value="no" selected>{'LBL_NO'|@gettranslatedString:$MODULE}</option>
 								{foreach key=rlmname item=rllabel from=$NotBlockRelatedModules}
-								<option value="{$rlmname}">{$rlmname|@gettranslatedString:$rlmname}</option>
+								{if is_numeric($rlmname)} {
+									<option value="{$rlmname}">{$rllabel|@gettranslatedString:$MODULE}</option>
+								{else}
+									<option value="{$rlmname}">{$rlmname|@gettranslatedString:$rlmname}</option>
+								{/if}}
 								{/foreach}
 							</select>
 						</td>
@@ -519,7 +557,7 @@
 					</table>
 					<table border=0 cellspacing=0 cellpadding=5 width=100% >
 						<tr>
-							<td align="center">
+							<td align="center" class="cblds-t-align_center">
 								<input type="button" name="save" value= "{$APP.LBL_SAVE_BUTTON_LABEL}" class="crmButton small save" onclick="getCreateCustomBlockForm('{$MODULE}','add');"/>&nbsp;
 								<input type="button" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmButton small cancel" onclick= "fninvsh('addblock');" />
 							</td>

@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Contacts',
 'LBL_INVITEE'=>'Direct Reports',
 'LBL_MODULE_TITLE'=>'Contacts: Home',
@@ -35,7 +35,7 @@ $mod_strings = Array(
 'db_email1' => 'LBL_LIST_EMAIL_ADDRESS',
 'db_email2' => 'LBL_LIST_EMAIL_ADDRESS',
 //END DON'T CONVERT
-	
+
 'LBL_EXISTING_CONTACT' => 'Used an existing contact',
 'LBL_CREATED_CONTACT' => 'Created a new contact',
 'LBL_EXISTING_ACCOUNT' => 'Used an existing organization',
@@ -100,9 +100,6 @@ $mod_strings = Array(
 //Added for search heading
 'LBL_GENERAL_INFORMATION'=>'General Information',
 
-
-
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'New Opportunity',
 'LBL_POTENTIAL_TITLE'=>'Opportunities',
 
@@ -117,7 +114,6 @@ $mod_strings = Array(
 'LBL_NEW_NOTE'=>'New Document',
 'LBL_NOTE_TITLE'=>'Documents',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Contact Tools',
 
 'Salutation'=>'Salutation',
@@ -292,5 +288,4 @@ $mod_strings = Array(
 'SYNC_RESULTS'=>'Sync Results',
 'ERR_GContactsSync'=>'There has been an error accessing Google. The settings have been deleted, please configure the access again.',
 );
-
 ?>

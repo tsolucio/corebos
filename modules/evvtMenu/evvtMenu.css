@@ -21,7 +21,7 @@
 	margin:auto;
 }
 #treeview .k-sprite {
-background-image: url("coloricons-sprite.png");
+	background-image: url("coloricons-sprite.png");
 }
 
 .rootfolder { background-position: 0 0; }
@@ -30,28 +30,27 @@ background-image: url("coloricons-sprite.png");
 .html       { background-position: 0 -48px; }
 .image      { background-position: 0 -64px; }
 
-.treeview-back
-{
-    float: left;
-    margin: 0 0 2em;
-    padding: 20px;
-    -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
-    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.45), inner 0 0 30px rgba(0,0,0,0.07);
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
-    border-radius: 8px;
+.treeview-back {
+	float: left;
+	margin: 0 0 2em;
+	padding: 20px;
+	-moz-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.45), inset 0 0 30px rgba(0,0,0,0.07);
+	box-shadow: 0 1px 2px rgba(0,0,0,0.45), inner 0 0 30px rgba(0,0,0,0.07);
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
 }
-.treeview{
+.treeview {
 	margin-left:40px;
 }
-.treeitems{
+.treeitems {
 	margin-left:25px;
 }
-.show{
+.show {
 	display: block;
 }
-.hide{
+.hide {
 	display:none;
 }
 

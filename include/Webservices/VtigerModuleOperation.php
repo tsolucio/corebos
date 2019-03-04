@@ -125,7 +125,16 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			$relatedCond = "/\(*[rR][eE][lL][aA][tT][eE][dD]\.([^\s;]+)\s*=\s*([^\s;]+)\)*\s*([aA][nN][dD]|[oO][rR]\s)*/";
 			preg_match($relatedCond, $afterwhere, $pieces);
 			$glue = isset($pieces[3]) ? trim($pieces[3]) : 'and';
-			$afterwhere=trim(preg_replace($relatedCond, '', $afterwhere), ' ;');
+			if (strtolower($relatedModule)=='documents') {
+				$docrelcond = substr($mysql_query, stripos($mysql_query, 'where')+6);
+				$addDocGlue = (stripos($docrelcond, ' and ') > 0 || stripos($docrelcond, ' or ') > 0);
+				$mysql_query = substr($mysql_query, 0, stripos($mysql_query, 'where')+6);
+				$relatedCond = "/[rR][eE][lL][aA][tT][eE][dD]\.([^\s;]+)\s*=\s*([^\s;]+)/";
+				$afterwhere=trim(preg_replace($relatedCond, $docrelcond, $afterwhere), ' ;');
+			} else {
+				$addDocGlue = true;
+				$afterwhere=trim(preg_replace($relatedCond, '', $afterwhere), ' ;');
+			}
 			$relatedCond = "/\s+([aA][nN][dD]|[oO][rR])+\s+([oO][rR][dD][eE][rR])+/";
 			$afterwhere=trim(preg_replace($relatedCond, ' order ', $afterwhere), ' ;');
 			$relatedCond = "/\s+([aA][nN][dD]|[oO][rR])+\s+([lL][iI][mM][iI][tT])+/";
@@ -148,7 +157,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 					$pila[$balanced]=array('pos'=>$ch,'dir'=>'(');
 					$balanced++;
 				} elseif ($afterwhere[$ch]==')') {
-					if ($balanced>0 and $pila[$balanced-1]['dir']=='(') {
+					if ($balanced>0 && $pila[$balanced-1]['dir']=='(') {
 						array_pop($pila);
 						$balanced--;
 					} else {
@@ -161,7 +170,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 				$afterwhere[$paren['pos']]=' ';
 			}
 			// transform artificial commentcontent for FAQ and Ticket comments
-			if (strtolower($relatedModule)=='modcomments' and (strtolower($moduleName)=='helpdesk' or strtolower($moduleName)=='faq')) {
+			if (strtolower($relatedModule)=='modcomments' && (strtolower($moduleName)=='helpdesk' || strtolower($moduleName)=='faq')) {
 				$afterwhere = str_ireplace('commentcontent', 'comments', $afterwhere);
 			}
 			$relhandler = vtws_getModuleHandlerFromName($moduleName, $this->user);
@@ -185,7 +194,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			$afterwhere = $chgawhere;
 			if (!empty($afterwhere)) {
 				$start = strtolower(substr(trim($afterwhere), 0, 5));
-				if ($start!='limit' and $start!='order') { // there is a condition we add the glue
+				if ($start!='limit' && $start!='order' && $addDocGlue) { // there is a condition we add the glue
 					$mysql_query.=" $glue ";
 				}
 				$mysql_query.=" $afterwhere";
@@ -193,6 +202,13 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			if (stripos($q, 'count(*)')>0) {
 				$mysql_query = str_ireplace(' as count ', '', mkCountQuery($mysql_query));
 			}
+		} elseif (__ExtendedQueryConditionQuery($q)) {  // extended workflow condition syntax
+			$moduleRegex = '/[fF][rR][Oo][Mm]\s+([^\s;]+)/';
+			preg_match($moduleRegex, $q, $m);
+			$fromModule = trim($m[1]);
+			$handler = vtws_getModuleHandlerFromName($fromModule, $this->user);
+			$meta = $handler->getMeta();
+			list($mysql_query, $queryRelatedModules) = __ExtendedQueryConditionGetQuery($q, $fromModule, $this->user);
 		} elseif (__FQNExtendedQueryIsFQNQuery($q)) {  // FQN extended syntax
 			list($mysql_query,$queryRelatedModules) = __FQNExtendedQueryGetQuery($q, $this->user);
 			$moduleRegex = "/[fF][rR][Oo][Mm]\s+([^\s;]+)/";
@@ -213,6 +229,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 	}
 
 	public function query($q) {
+		global $site_URL, $adb, $default_charset;
 		$mysql_query = $this->wsVTQL2SQL($q, $meta, $queryRelatedModules);
 		if (strpos($mysql_query, 'vtiger_inventoryproductrel')) {
 			$invlines = true;
@@ -230,11 +247,12 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
 
+		$isDocModule = ($meta->getEntityName()=='Documents');
 		$noofrows = $this->pearDB->num_rows($result);
 		$output = array();
 		for ($i=0; $i<$noofrows; $i++) {
 			$row = $this->pearDB->fetchByAssoc($result, $i);
-			$rowcrmid = (isset($row['crmid']) ? $row['crmid'] : (isset($row['id']) ? $row['id'] : ''));
+			$rowcrmid = (isset($row[$meta->idColumn]) ? $row[$meta->idColumn] : (isset($row['crmid']) ? $row['crmid'] : (isset($row['id']) ? $row['id'] : '')));
 			if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $rowcrmid)) {
 				continue;
 			}
@@ -250,7 +268,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 						$newrflds = array();
 						foreach ($relflds as $fldname => $fldvalue) {
 							$fldmod = substr($fldname, 0, strlen($relmod));
-							if (isset($row[$fldname]) and $fldmod==$lrm) {
+							if (isset($row[$fldname]) && $fldmod==$lrm) {
 								$newkey = substr($fldname, strlen($lrm));
 								$newrflds[$newkey] = $fldvalue;
 							}
@@ -264,22 +282,38 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 					}
 				}
 			}
+			if ($isDocModule) {
+				$relatt=$adb->pquery('SELECT attachmentsid FROM vtiger_seattachmentsrel WHERE crmid=?', array($rowcrmid));
+				if ($relatt && $adb->num_rows($relatt)==1) {
+					$fileid = $adb->query_result($relatt, 0, 0);
+					$attrs=$adb->pquery('SELECT * FROM vtiger_attachments WHERE attachmentsid=?', array($fileid));
+					if ($attrs && $adb->num_rows($attrs) == 1) {
+						$name = @$adb->query_result($attrs, 0, 'name');
+						$filepath = @$adb->query_result($attrs, 0, 'path');
+						$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
+						$newrow['_downloadurl'] = $site_URL.'/'.$filepath.$fileid.'_'.$name;
+						$newrow['filename'] = $name;
+					}
+				}
+			}
 			$output[] = $newrow;
 		}
 		return $output;
 	}
 
 	public function describe($elementType) {
-		$current_user = vtws_preserveGlobal('current_user', $this->user);
+		vtws_preserveGlobal('current_user', $this->user);
 		$label = getTranslatedString($elementType, $elementType);
 		$createable = strcasecmp(isPermitted($elementType, EntityMeta::$CREATE), 'yes') === 0;
 		$updateable = strcasecmp(isPermitted($elementType, EntityMeta::$UPDATE), 'yes') === 0;
 		$deleteable = $this->meta->hasDeleteAccess();
 		$retrieveable = $this->meta->hasReadAccess();
 		$fields = $this->getModuleFields();
-		return array("label"=>$label,"name"=>$elementType,"createable"=>$createable,"updateable"=>$updateable,
-				"deleteable"=>$deleteable,"retrieveable"=>$retrieveable,"fields"=>$fields,
-				"idPrefix"=>$this->meta->getEntityId(),'isEntity'=>$this->isEntity,'labelFields'=>$this->meta->getNameFields());
+		return array(
+			'label'=>$label,'label_raw'=>$elementType,'name'=>$elementType,'createable'=>$createable,'updateable'=>$updateable,
+			'deleteable'=>$deleteable,'retrieveable'=>$retrieveable,'fields'=>$fields,
+			'idPrefix'=>$this->meta->getEntityId(),'isEntity'=>$this->isEntity,'labelFields'=>$this->meta->getNameFields()
+		);
 	}
 
 	public function getModuleFields() {
@@ -290,7 +324,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		}
 		$fields = array();
 		$moduleFields = $this->meta->getModuleFields();
-		foreach ($moduleFields as $fieldName => $webserviceField) {
+		foreach ($moduleFields as $webserviceField) {
 			if (((int)$webserviceField->getPresence()) == 1) {
 				continue;
 			}
@@ -307,13 +341,8 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		if (array_key_exists($dfkey, $purified_dfcache)) {
 			return $purified_dfcache[$dfkey];
 		}
-		$default_language = isset($this->user->language) ? $this->user->language : VTWS_PreserveGlobal::getGlobal('default_language');
-
-		require 'modules/'.$this->meta->getTabName()."/language/$default_language.lang.php";
 		$fieldLabel = $webserviceField->getFieldLabelKey();
-		if (isset($mod_strings[$fieldLabel])) {
-			$fieldLabel = $mod_strings[$fieldLabel];
-		}
+		$fieldLabeli18n = getTranslatedString($fieldLabel, $this->meta->getTabName());
 		$typeDetails = $this->getFieldTypeDetails($webserviceField);
 
 		//set type name, in the type details array.
@@ -321,10 +350,11 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$editable = $this->isEditable($webserviceField);
 
 		$blkname = $webserviceField->getBlockName();
-		$describeArray = array('name'=>$webserviceField->getFieldName(),'label'=>$fieldLabel,'mandatory'=>
-			$webserviceField->isMandatory(),'type'=>$typeDetails,'nullable'=>$webserviceField->isNullable(),
+		$describeArray = array('name'=>$webserviceField->getFieldName(),'label'=>$fieldLabeli18n,'label_raw'=>$fieldLabel,
+			'mandatory'=>$webserviceField->isMandatory(),'type'=>$typeDetails,'nullable'=>$webserviceField->isNullable(),
 			"editable"=>$editable,'uitype'=>$webserviceField->getUIType(),'typeofdata'=>$webserviceField->getTypeOfData(),
 			'sequence'=>$webserviceField->getFieldSequence(),'quickcreate'=>$webserviceField->getQuickCreate(),'displaytype'=>$webserviceField->getDisplayType(),
+			'summary' => $webserviceField->getSummary(),
 			'block'=>array('blockid'=>$webserviceField->getBlockId(),'blocksequence'=>$webserviceField->getBlockSequence(),
 				'blocklabel'=>$blkname,'blockname'=>getTranslatedString($blkname, $this->meta->getTabName())));
 		if ($webserviceField->hasDefault()) {

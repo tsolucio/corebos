@@ -2,7 +2,7 @@
 /***********************************************************
 *  Module       : Leads
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
@@ -15,7 +15,7 @@ if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
 	$toggle_name = 'Prospects';
 }
 
-$mod_strings = Array(
+$mod_strings = array(
 	'LBL_TGL_HISTORICOS' => $toggle_historicos,
 	'LBL_MODULE_NAME'=>$toggle_name,
 	'Leads' => $toggle_name,
@@ -203,7 +203,7 @@ $mod_strings = Array(
 	'Designation' => 'Titre',
 	'Lead No' => 'Prospect n°',
 	'Secondary Email' => 'Email secondaire',
-	
+
 	'LBL_TRANSFER_RELATED_RECORDS_TO' => 'Transférer les enregistrements relatifs à',
 	'LBL_FOLLOWING_ARE_POSSIBLE_REASONS' => 'Voici les raisons possibles',
 	'LBL_LEADS_FIELD_MAPPING_INCOMPLETE' => 'Tous les champs obligatoires ne sont pas mappés',

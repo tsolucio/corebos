@@ -7,18 +7,16 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/logging.php');
+require_once 'include/logging.php';
 
 global $app_strings, $mod_strings, $currentModule, $theme;
 
 require 'modules/Dashboard/graphdefinitions.php';
 
 $log = LoggerManager::getLogger('dashboard');
-if(isset($_REQUEST['type']) && $_REQUEST['type'] != '')
-{
+if (isset($_REQUEST['type']) && $_REQUEST['type'] != '') {
 	$dashboard_type = $_REQUEST['type'];
-}else
-{
+} else {
 	$dashboard_type = 'DashboardHome';
 }
 ?>
@@ -26,7 +24,9 @@ if(isset($_REQUEST['type']) && $_REQUEST['type'] != '')
 <TABLE border=0 cellspacing=0 cellpadding=0 width=100% class=small>
 <tr><td style="height:2px"></td></tr>
 <tr>
-	<td style="padding-left:10px;padding-right:30px" class="moduleName" width="20%" nowrap><a class="hdrLink" href="index.php?action=index&parenttab=Analytics&module=Dashboard"><?php echo $app_strings['Dashboard'] ?></a></td>
+	<td style="padding-left:10px;padding-right:30px" class="moduleName" width="20%" nowrap>
+		<a class="hdrLink" href="index.php?action=index&parenttab=Analytics&module=Dashboard"><?php echo $app_strings['Dashboard'] ?></a>
+	</td>
 
 	<td nowrap width="8%">
 		<table border=0 cellspacing=0 cellpadding=0>
@@ -36,7 +36,7 @@ if(isset($_REQUEST['type']) && $_REQUEST['type'] != '')
 				<table border=0 cellspacing=0 cellpadding=5>
 				<tr>
 					<td style="padding-right:0px;padding-left:10px;"><img src="<?php echo vtiger_imageurl('btnL3Add-Faded.gif', $theme); ?>" border=0></td>
-					 <td style="padding-right:10px"><img src="<?php echo vtiger_imageurl('btnL3Search-Faded.gif', $theme); ?>" border=0></td>
+					<td style="padding-right:10px"><img src="<?php echo vtiger_imageurl('btnL3Search-Faded.gif', $theme); ?>" border=0></td>
 				</tr>
 				</table>
 	</td>
@@ -48,24 +48,38 @@ if(isset($_REQUEST['type']) && $_REQUEST['type'] != '')
 		<table border=0 cellspacing=0 cellpadding=5>
 			<tr>
 <?php
-if(GlobalVariable::getVariable('Application_Display_Mini_Calendar',1,$currentModule)) {
+if (GlobalVariable::getVariable('Application_Display_Mini_Calendar', 1, $currentModule)) {
 ?>
-	<td style="padding-right:0px;padding-left:10px;"><a href="javascript:;" onClick='fnvshobj(this,"miniCal");getMiniCal("parenttab=My Home Page");'><img src="<?php echo vtiger_imageurl('btnL3Calendar.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_CALENDAR_ALT']; ?>" title="<?php echo $app_strings['LBL_CALENDAR_TITLE']; ?>" border=0></a></a></td>
+	<td style="padding-right:0px;padding-left:10px;">
+		<a href="javascript:;" onClick='fnvshobj(this,"miniCal");getMiniCal("parenttab=My Home Page");'>
+		<img src="<?php echo vtiger_imageurl('btnL3Calendar.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_CALENDAR_ALT']; ?>" title="<?php echo $app_strings['LBL_CALENDAR_TITLE']; ?>" border=0>
+		</a>
+	</td>
 <?php
 }
-if(GlobalVariable::getVariable('Application_Display_World_Clock',1,$currentModule)) {
+if (GlobalVariable::getVariable('Application_Display_World_Clock', 1, $currentModule)) {
 ?>
-	<td style="padding-right:0px"><a href="javascript:;"><img src="<?php echo vtiger_imageurl('btnL3Clock.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_CLOCK_ALT']; ?>" title="<?php echo $app_strings['LBL_CLOCK_TITLE']; ?>" border=0 onClick="fnvshobj(this,'wclock');"></a></a></td>
+	<td style="padding-right:0px">
+		<a href="javascript:;">
+		<img src="<?php echo vtiger_imageurl('btnL3Clock.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_CLOCK_ALT']; ?>" title="<?php echo $app_strings['LBL_CLOCK_TITLE']; ?>" border=0 onClick="fnvshobj(this,'wclock');">
+		</a>
+	</td>
 <?php
 }
-if(GlobalVariable::getVariable('Application_Display_Calculator',1,$currentModule)) {
+if (GlobalVariable::getVariable('Application_Display_Calculator', 1, $currentModule)) {
 ?>
-	<td style="padding-right:0px"><a href="#"><img src="<?php echo vtiger_imageurl('btnL3Calc.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_CALCULATOR_ALT']; ?>" title="<?php echo $app_strings['LBL_CALCULATOR_TITLE']; ?>" border=0 onClick="fnvshobj(this,'calculator_cont');fetch_calc();"></a></td>
+	<td style="padding-right:0px">
+		<a href="#">
+		<img src="<?php echo vtiger_imageurl('btnL3Calc.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_CALCULATOR_ALT']; ?>" title="<?php echo $app_strings['LBL_CALCULATOR_TITLE']; ?>" border=0 onClick="fnvshobj(this,'calculator_cont');fetch_calc();">
+		</a>
+	</td>
 <?php
 }
 ?>
 </td>
-				<td style="padding-right: 10px;"><img src="<?php echo vtiger_imageurl('btnL3Tracker.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_LAST_VIEWED']; ?>" title="<?php echo $app_strings['LBL_LAST_VIEWED']; ?>" onclick="fnvshobj(this,'tracker');" style="cursor:pointer;" border="0"></td>
+				<td style="padding-right: 10px;">
+					<img src="<?php echo vtiger_imageurl('btnL3Tracker.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_LAST_VIEWED']; ?>" title="<?php echo $app_strings['LBL_LAST_VIEWED']; ?>" onclick="fnvshobj(this,'tracker');" style="cursor:pointer;" border="0">
+				</td>
 			</tr>
 		</table>
 	</td>
@@ -116,15 +130,13 @@ if(GlobalVariable::getVariable('Application_Display_Calculator',1,$currentModule
 								<td>
 								<select name="dashordlists" id="dashboard_combo" onChange="loadDashBoard(this);">
 								<?php
-									foreach($graph_array as $key=>$value) {
-									if($dashboard_type == $key)
-									{
+								foreach ($graph_array as $key => $value) {
+									if ($dashboard_type == $key) {
 										$dash_board_title = $value;
 										?><option selected value="<?php echo $key;?>"><?php echo $value;?></option><?php
-									}else
-									{
+									} else {
 										?><option value="<?php echo $key;?>"><?php echo $value;?></option>
-								<?php
+									<?php
 									}
 								} ?>
 								</select>
@@ -154,7 +166,11 @@ if(GlobalVariable::getVariable('Application_Display_Calculator',1,$currentModule
 							<td width="90%" nowrap>
 							<?php echo $app_strings['Dashboard']; ?> &gt; <?php echo $app_strings['Home'];?> &gt; <span id="dashTitle_div"><?php echo $dash_board_title; ?></span>
 							</td>
-							<td align="right" width="10%"><img alt="<?php echo $mod_strings['NORMALVIEW'];?>" title="<?php echo $mod_strings['NORMALVIEW'];?>" style="cursor:pointer;" onClick="changeView('NORMAL');" src="<?php echo vtiger_imageurl('dboardNormalView.gif', $theme); ?>" align="absmiddle" border="0">&nbsp;|&nbsp;<img alt="<?php echo $mod_strings['GRIDVIEW'];?>" title="<?php echo $mod_strings['GRIDVIEW'];?>" style="cursor:pointer;" onClick="changeView('MATRIX');" src="<?php echo vtiger_imageurl('dboardMatrixView.gif', $theme); ?>" align="absmiddle" border="0"></td>
+							<td align="right" width="10%">
+							<img alt="<?php echo $mod_strings['NORMALVIEW'];?>" title="<?php echo $mod_strings['NORMALVIEW'];?>" style="cursor:pointer;" onClick="changeView('NORMAL');" src="<?php echo vtiger_imageurl('dboardNormalView.gif', $theme); ?>" align="absmiddle" border="0">
+							&nbsp;|&nbsp;
+							<img alt="<?php echo $mod_strings['GRIDVIEW'];?>" title="<?php echo $mod_strings['GRIDVIEW'];?>" style="cursor:pointer;" onClick="changeView('MATRIX');" src="<?php echo vtiger_imageurl('dboardMatrixView.gif', $theme); ?>" align="absmiddle" border="0">
+							</td>
 						</tr>
 						</table>
 						</td>
@@ -167,7 +183,6 @@ if(GlobalVariable::getVariable('Application_Display_Calculator',1,$currentModule
 							<!-- NAVIGATION TABLE -->
 							<table width="100%" border="0" cellpadding="0" cellspacing="0">
 								<tr>
-
 									<td width="45%" align="right">&nbsp;
 									</td>
 								</tr>
@@ -179,19 +194,15 @@ if(GlobalVariable::getVariable('Application_Display_Calculator',1,$currentModule
 							<tr>
 								<td height="300">
 								<?php
-									if(!isset($_REQUEST['type']))
-									{
-										if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
-										{
-											require_once('modules/Dashboard/DashboardHome_matrix.php');
-										}else
-										{
-											require_once('modules/Dashboard/DashboardHome.php');
-										}
-									}else
-									{
-										require_once('modules/Dashboard/loadDashBoard.php');
+								if (!isset($_REQUEST['type'])) {
+									if (isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX') {
+										require_once 'modules/Dashboard/DashboardHome_matrix.php';
+									} else {
+										require_once 'modules/Dashboard/DashboardHome.php';
 									}
+								} else {
+									require_once 'modules/Dashboard/loadDashBoard.php';
+								}
 								?>
 								&nbsp;</td>
 							</tr>
@@ -218,19 +229,17 @@ if(GlobalVariable::getVariable('Application_Display_Calculator',1,$currentModule
 											<tr>
 												<td><select name="dashordlists" id="dashboard_combo1" onChange="loadDashBoard(this);">
 									<?php
-									foreach($graph_array as $key=>$value) {
-									if($dashboard_type == $key)
-									{
-										$dash_board_title = $value;
-									?>
-									<option selected value="<?php echo $key;?>"><?php echo $value;?></option>
+									foreach ($graph_array as $key => $value) {
+										if ($dashboard_type == $key) {
+											$dash_board_title = $value;
+										?>
+										<option selected value="<?php echo $key;?>"><?php echo $value;?></option>
 									<?php
-									}else
-									{
-									?>
-									<option value="<?php echo $key;?>"><?php echo $value;?></option>
-									<?php   }
-								} ?>
+										} else {
+										?>
+										<option value="<?php echo $key;?>"><?php echo $value;?></option>
+										<?php   }
+									} ?>
 											</select>
 											</td>
 										</tr>
@@ -247,9 +256,9 @@ if(GlobalVariable::getVariable('Application_Display_Calculator',1,$currentModule
 						<td colspan="3">
 							<table width="100%" border="0" cellpadding="0" cellspacing="0">
 								<tr>
-									<td width="112"><img src="<?php echo vtiger_imageurl('dash_btm_left.jpg', $theme) ?>" border="0" align="absmiddle"></td>
+									<td width="112"><img src="<?php echo vtiger_imageurl('dash_btm_left.jpg', $theme); ?>" border="0" align="absmiddle"></td>
 									<td width="100%" class="dash_btm">&nbsp;</td>
-									<td width="129"><img src="<?php echo vtiger_imageurl('dash_btm_right.jpg', $theme) ?>" border="0" align="absmiddle"></td>
+									<td width="129"><img src="<?php echo vtiger_imageurl('dash_btm_right.jpg', $theme); ?>" border="0" align="absmiddle"></td>
 								</tr>
 							</table>
 						</td>

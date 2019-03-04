@@ -2,7 +2,7 @@
 /***********************************************************
 *  Module       : Settings
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
@@ -107,7 +107,6 @@ $mod_strings = array (
 		'LBL_FTP' => 'FTP',
 		'LBL_SYSTEM_CONFIG' => 'Configuration du système',
 		'LBL_SYSTEM_INFO' => 'Information système',
-		'LBL_PROXY_SETTINGS' => 'Proxy',
 		'LBL_AUDIT_TRAIL' => 'Audit Trail',
 		'LBL_ENABLE_AUDIT_TRAIL' => 'Activer Audit Trail',
 		'AuditTrailEnabled' => 'Audit Trail Enabled',
@@ -235,6 +234,8 @@ $mod_strings = array (
 		'LBL_QUOTE_STAGE' => 'Phase devis',
 		'LBL_CARRIER' => 'Transporteur',
 		'LBL_TAXCLASS' => 'Taxes',
+		'LBL_RETENTION'=>'Retention',
+		'LBL_PERCENTAGE'=>'Percentage',
 		'LBL_MY_DETAILS' => 'Mes informations',
 		'LBL_MY_MAIL_SERVER_DET' => 'Ma configuration email',
 		'LBL_EMAIL_ID' => 'Identifiant Email',
@@ -694,11 +695,14 @@ $mod_strings = array (
 		'LBL_ON_MODIFY' => 'A chaque fois qu\'un enregistrement est modifié',
 		'LBL_ON_SCHEDULE' => 'Planifier',
 		'LBL_ON_DELETE' => 'Lorsque l\'enregistrement est supprimé',
+		'LBL_MANUAL' => 'Manual',
+		'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
 		'LBL_CONDITIONS' => 'Conditions',
 		'LBL_NEW_CONDITION_BUTTON_LABEL' => 'Nouvelle Condition',
 		'LBL_TASKS' => 'Tâches',
 		'LBL_NEW_TASK_BUTTON_LABEL' => 'Nouvelle tâche',
 		'LBL_TASK' => 'Tâche',
+		'LBL_DELAY' => 'Delay',
 
 		'LBL_MANDATORY_FIELDS' => 'Champs obligatoires',
 		'LBL_MANDATORY_FIELDS_DESCRIPTION' => 'Gérer les champs obligatoires de tous les modules',
@@ -808,7 +812,7 @@ $mod_strings = array (
 		'LBL_DESCRIPTION_Public: Read Only'=>'Droits de lecture seul des données entre utilisateurs ',
 		'LBL_DESCRIPTION_Public: Read, Create/Edit'=>'Droit de lecture/écriture des données entre utilisateurs  ',
 		'LBL_DESCRIPTION_Public: Read, Create/Edit, Delete'=>'Droit de lecture/écriture/suppression des données entre utilisateurs ',
-		
+
 		// For Dependency picklist
 		'LBL_PICKLIST_DEPENDENCY_SETUP' => 'Editeur de listes dépendantes',
 		'LBL_PICKLIST_DEPENDENCY_DESCRIPTION' => 'Réglages des dépendances entre les listes déroulantes',
@@ -852,5 +856,32 @@ $mod_strings = array (
 	'LBL_OPENSSL_SUPPORT' => 'OpenSSL Support',
 	'LBL_IMAP_SUPPORT' => 'IMAP Support',
 	'StorageSpaceUsage' => 'Storage Space Usage',
+	'wf_conditions_found' => 'Field found in workflow condtions: ',
+	'wf conditions' => 'Field not found in workflow condtions.',
+	'wf_tasks' => 'Field not found in workflow tasks.',
+	'wf_tasks_found' => 'Field found in workflow ',
+	'cv_column' => 'Field found in custom view columns: ',
+	'cv_column_nf' => 'Field not found in custom view columns',
+	'cv_advfilter' => 'Field found in custom view conditions: ',
+	'cv_advfilter_nf' => 'Field not found in custom view conditions',
+	'cv_stdfilter' => 'Field found in custom view date conditions: ',
+	'cv_stdfilter_nf' => 'Field not found in custom view date conditions',
+	'email_templates' => 'Field found in Email Template: ',
+	'email_templates_nf' => 'Field not found in Email Templates',
+	'select_column' => 'Field found in Report (columns): ',
+	'select_column_nf' => 'Field not found in Report Columns',
+	'report_dtfilter' => 'Field found in Report (Date Filters): ',
+	'report_dtfilter_nf' => 'Field not found in Report Date Filters',
+	'report' => 'Field found in Report (Group By): ',
+	'report_nf' => 'Field not found in Report Group By',
+	'report_sort' => 'Field found in Report (Sort By): ',
+	'report_sort_nf' => 'Field not found in Report Sort By',
+	'report_summary' => 'Field found in Report (Summary): ',
+	'report_summary_nf' => 'Field not found in Report Summary',
+	'cl_mapping' => 'Field found in Lead Conversion Mapping',
+	'cl_mapping_nf' => 'Field not found in Lead Conversion Mapping',
+	'Site Maintenance' => 'Site Maintenance',
+	'SM_BeBackSoon' => 'We&rsquo;ll be back soon!',
+	'SM_SorryInconvenience' => 'Sorry for the inconvenience but we&rsquo;re performing some maintenance at the moment. We&rsquo;ll be back online shortly!',
 );
 ?>

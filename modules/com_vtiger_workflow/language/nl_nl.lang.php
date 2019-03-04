@@ -5,27 +5,12 @@
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
- * All Rights Reserved.
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
- * Portions created by vtiger are Copyright (C) vtiger.
  * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
  * Feel free to use / redistribute these languagefiles under the VPL 1.0.
  * This translations is based on earlier work of:
  * - IT-Online.nl <www.it-online.nl>
  * - Weltevree.org <www.Weltevree.org>
- ********************************************************************************/
-
-/*******************************************************************************
- * Vicus eBusiness Solutions Version Control
- * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.4.x
- * @author	$Author: luuk $
- * @version 	$Revision: 1.3 $ $Date: 2014/02/13 21:42:40 $
- * @source	$Source: /var/lib/cvs/vtiger540/Dutch/modules/com_vtiger_workflow/language/nl_nl.lang.php,v $
- * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
- * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
 
 $mod_strings = array(
@@ -38,7 +23,6 @@ $mod_strings = array(
 'LBL_EDIT_TASK_TITLE'=>'Bewerk een bestaande taak of maak een nieuwe aan',
 'LBL_EDIT_WORKFLOW'=>'Bewerk Werkstroom',
 'LBL_EDIT_WORKFLOW_TITLE'=>'Bewerk een bestaande werkstroom of maak een nieuwe aan',
-'LBL_FROM_TEMPLATE'=>'Van een Sjabloon',
 'LBL_NEW_WORKFLOW'=>'Nieuwe Werkstroom',
 'LBL_NEW_TEMPLATE'=>'Bewaar als Sjabloon',
 'LBL_CREATE_WORKFLOW_FOR'=>'Maak een Werkstroom voor',
@@ -60,7 +44,6 @@ $mod_strings = array(
 'LBL_WORKFLOW_NOTE_CRON_CONFIG'=>'NOTE: U moet het Werkstroom cron script geconfigureerd hebben.',
 'LBL_NO_TEMPLATES'=>'Geen Sjablonen',
 
-// @since vtiger 5.3 / NLDutch 1.3
 'LBL_SELECT'=>'Selecteer',
 'LBL_MESSAGE'=>'Bericht',
 'LBL_SET_FIELD_VALUES'=>'Stel veldwaarde in',
@@ -97,7 +80,6 @@ $mod_strings = array(
 'LBL_AttachmentInField' => 'Attachment In Field',
 'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Opmerking: Alle datum, tijd en herhaalinformatie zoals voor het event ingesteld werken conform de standaard tijdzone, zoals geconfigureerd in config.inc.php',
 
-
 'Select Meta Variables' => 'Selecteer Meta Variabelen',
 'Current Date' => 'Huidige Datum',
 'Current Time' => 'Huidige Tijd',
@@ -110,6 +92,8 @@ $mod_strings = array(
 'groupEmailList' => 'Group Email List',
 
 'Workflow'=>'Werkstroom',
+'WORKFLOW_DELETE_CONFIRMATION' => 'Are you sure you want to delete this Workflow?',
+'LBL_DELETE_WORKFLOW' => 'Delete Workflow',
 
 'VTCreateEntityTask' => 'Maak Entiteit',
 'LBL_ENTITY_TYPE' => 'Entiteittype',
@@ -135,6 +119,24 @@ $mod_strings = array(
 'CBSelectcbMap' => 'Select Business Rule',
 'ConvertInventoryModule' => 'Convert Inventory Module Records',
 'ConvertInventoryModuleMessage' => 'The field mappings is the default application mapping and can be adjusted using Field Mapping Business Rules.',
+'CBSendMMMSGTask' => 'Send Message to Mattermost',
+'Send Message To MM' => 'Send Message to Mattermost',
+'VTSendMessage2MMTask' => 'Send Message to Mattermost',
+'whatsappworkflowtask' => 'Send WhatsApp Message',
+'Whatsapp Workflow Task' => 'Send WhatsApp Message',
+'WhatsappWorkflowTask' => 'Send WhatsApp Message',
+'LBL_EVENTNAME' => 'Event Name',
+'LBL_DESCRIPTION' => 'Description',
+'LBL_STATUS' => 'Status',
+'LBL_TYPE' => 'Type',
+'LBL_START_TIME' => 'Start Time',
+'LBL_START_DATE' => 'Start Date',
+'LBL_END_TIME' => 'End Time',
+'LBL_END_DATE' => 'End Date',
+'LBL_SET_DATE'=>'Set Date',
+'LBL_AFTER' => 'After',
+'LBL_BEFORE' => 'Before',
+'LBL_DAYS' => 'days',
 'LBL_HELPDESK_SUPPORT_EMAILID'=>'Helpdesk support e-mail',
 'LBL_HELPDESK_SUPPORT_NAME'=>'Helpdesk support naam',
 'LBL_ORGANIZATION_LOGO'=>'Logo',
@@ -156,7 +158,6 @@ $mod_strings = array(
 'LBL_SELECTED_DATES' => 'Selected Dates',
 'LBL_EXCEEDING_MAXIMUM_LIMIT' => 'Maximum limit exceeded',
 'LBL_NEXT_TRIGGER_TIME' => 'Next trigger time on',
-'LBL_MESSAGE' => 'Message',
 'UpdateInventoryProducts On Every Save' => 'Update Product Inventory',
 'Send Email to user when Notifyowner is True' => 'Send Email to user when Notifyowner is True',
 'Send Email to user when Portal User is True' => 'Send Email to user when Portal User is True',
@@ -169,6 +170,8 @@ $mod_strings = array(
 'Workflow for Calendar Todos when Send Notification is True' => 'Workflow for Calendar Todos when Send Notification is True',
 'Calculate or Update forecast amount' => 'Calculate or Update forecast amount',
 'LBL_METHOD_NAME' => 'Method Name',
-'NO_METHOD_AVAILABLE' => 'No method is available for this module.'
+'NO_METHOD_AVAILABLE' => 'No method is available for this module.',
+'launchrelwf' => 'Launch workflows on related updates',
+'LBL_WFPURPOSE' => 'Purpose',
 );
 ?>

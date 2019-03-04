@@ -11,25 +11,25 @@ class WSAPP_BaseModel {
 
 	protected $data;
 
-	function  __construct($values = array()) {
+	public function __construct($values = array()) {
 		$this->data = $values;
 	}
 
-	public function getData(){
+	public function getData() {
 		return $this->data;
 	}
 
-	public function setData($values){
+	public function setData($values) {
 		$this->data = $values;
 		return $this;
 	}
 
-	public function set($key,$value){
+	public function set($key, $value) {
 		$this->data[$key] = $value;
 		return $this;
 	}
 
-	public function get($key){
+	public function get($key) {
 		return (isset($this->data[$key]) ? $this->data[$key] : null);
 	}
 
@@ -44,7 +44,6 @@ class WSAPP_BaseModel {
 	public function isEmpty($key) {
 		return (!isset($this->data[$key]) || empty($this->data[$key]));
 	}
-
 }
 
 ?>

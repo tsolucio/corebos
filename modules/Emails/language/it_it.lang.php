@@ -105,10 +105,8 @@ $mod_strings = array (
   'MESSAGE_ADD_USER_OR_CONTACT' => 'Aggiungi un utente(i) o contatto(i)',
   'MESSAGE_MAIL_SENT_SUCCESSFULLY' => 'Mail inviata(e) correttamente!',
 
-  'LBL_FETCH_WEBMAIL' => 'Scarica Web Mail',
   'LBL_ALL' => 'Tutto',
   'MESSAGE_CONTACT_NOT_WANT_MAIL' => 'Questo contatto non vuole ricevere mail',
-  'LBL_WEBMAILS_TITLE' => 'WebMail',
   'LBL_EMAILS_TITLE' => 'Email',
   'LBL_MAIL_CONNECT_ERROR_INFO' => 'Errore di connessione al server di posta, controlla Mio Accounts >Lista Server di posta> Lista Mail Account',
   'LBL_ALLMAILS' => 'Tutte le mail',
@@ -140,7 +138,6 @@ $mod_strings = array (
   'LBL_CONF_MAILSERVER_ERROR' => 'Prego configura il server di posta in uscita da -> Impostazioni---> Server Posta in Uscita',
   'LBL_CONF_SERVERSTORAGE_ERROR'=>'The permissions on your storage directory are insufficient, you will not be able to send attachments!',
   'LBL_MAILSELECT_INFO3' => 'Non hai il permesso di visualizzare le email degli elementi selezionati',
-  'FEATURE_AVAILABLE_INFO' => 'Questa funzionalit&agrave; &egrave; disponibile  solo con Microsoft Internet Explorer 5.5 o superiore\\nPer il momento...',
   'DOWNLOAD_CONFIRAMATION' => 'Vuoi scaricare il file?',
   'LBL_PLEASE_ATTACH' => 'Scegli un nome di file valido e riprova',
   'LBL_KINDLY_UPLOAD' => 'Prego configurare la variabile <font color=red>upload_tmp_dir</font> nel file php.ini ',
@@ -152,7 +149,5 @@ $mod_strings = array (
   'LBL_NO_RECORDS' => 'Nessun record trovato',
 	'LBL_PRINT_EMAIL' => 'Stampa',
 	'Access Count' => 'Access Count',
-
 );
-
 ?>

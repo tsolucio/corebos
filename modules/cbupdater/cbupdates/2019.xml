@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updatesChangeLog>
+<changeSet>
+	<author>joebordes</author>
+	<description>add Zendesk virtual Webservice API to database</description>
+	<filename>build/changeSets/2019/addZendeskWSAPI.php</filename>
+	<classname>addZendeskWSAPI</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>george1806</author>
+	<description>Install whatsapp workflow task</description>
+	<filename>build/changeSets/2019/installWhatsappWorkflowTask.php</filename>
+	<classname>installWhatsappWorkflowTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>Block cbupdater Import/Export when OnDemand is active</description>
+	<filename>build/changeSets/2019/onDemandImportExportActive.php</filename>
+	<classname>onDemandImportExportActive</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Increment the size of filetype attribute on vtiger_notes</description>
+	<filename>build/changeSets/2019/incrementFiletypeSize.php</filename>
+	<classname>incrementFiletypeSize</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>george1806</author>
+	<description>Install New Module (cbPulse)</description>
+	<filename>build/changeSets/2019/installcbPulse.php</filename>
+	<classname>installcbPulse</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>make picklist translation executable on demand</description>
+	<filename>build/changeSets/2019/unblockpicklist_translations.php</filename>
+	<classname>unblockpicklist_translations</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+</updatesChangeLog>

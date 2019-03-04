@@ -1518,10 +1518,6 @@ Acknowledgments:
 
 We have used the following software:
 
-1. ExcelReader package to read the xls files. We have taken the utility from the following Web site : 
- http://freshmeat.net/projects/phpexcelreader/
- The product is available as GNU General Public License (GPL).
-
 2. E-mail Client to handle attachments with PHP. We have taken the ideas from the article by Kevin Steffer available at the
 http://www.linuxscope.net/articles/mailAttachmentsPHP.html
 

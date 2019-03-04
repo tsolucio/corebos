@@ -12,6 +12,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
+<meta name="robots" content="noindex">
 <title>{$coreBOS_uiapp_name}</title>
 <link REL="SHORTCUT ICON" HREF="{$COMPANY_DETAILS.favicon}">
 <script type="text/javascript" src="themes/login/login.js"></script>

@@ -20,7 +20,7 @@
 
 class coreBOS_Rule {
 
-	public static $supportedBusinessMaps = array('Condition Query','Condition Expression');
+	private static $supportedBusinessMaps = array('Condition Query', 'Condition Expression');
 
 	public static function evaluate($conditionid, $context) {
 		global $log,$adb,$current_user;
@@ -34,22 +34,24 @@ class coreBOS_Rule {
 			$mergeContextVariables = false;
 			$contextid = $context;
 		}
-		if (strpos($contextid, 'x')===false) {
-			$setype = getSalesEntityType($contextid);
-			$contextid = vtws_getEntityId($setype).'x'.$contextid;
-		}
-		// check that $contextid is correct
-		$webserviceObject = VtigerWebserviceObject::fromId($adb, $contextid);
-		$handlerPath = $webserviceObject->getHandlerPath();
-		$handlerClass = $webserviceObject->getHandlerClass();
+		if (!empty($contextid)) {
+			if (strpos($contextid, 'x')===false) {
+				$setype = getSalesEntityType($contextid);
+				$contextid = vtws_getEntityId($setype).'x'.$contextid;
+			}
+			// check that $contextid is correct
+			$webserviceObject = VtigerWebserviceObject::fromId($adb, $contextid);
+			$handlerPath = $webserviceObject->getHandlerPath();
+			$handlerClass = $webserviceObject->getHandlerClass();
 
-		require_once $handlerPath;
+			require_once $handlerPath;
 
-		$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
-		$meta = $handler->getMeta();
-		$entityName = $meta->getObjectEntityName($contextid);
-		if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $contextid)) {
-			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
+			$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
+			$meta = $handler->getMeta();
+			$entityName = $meta->getObjectEntityName($contextid);
+			if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $contextid)) {
+				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
+			}
 		}
 
 		// check that cbmapid is correct and load it
@@ -63,7 +65,7 @@ class coreBOS_Rule {
 			$cbmap = cbMap::getMapByID($cbmapid);
 		}
 		if (empty($cbmap) || !in_array($cbmap->column_fields['maptype'], self::$supportedBusinessMaps)) {
-			throw new WebServiceException(WebServiceErrorCode::$INVALID_BUSINESSMAP, 'Invalid Business Map identifier.');
+			throw new WebServiceException(WebServiceErrorCode::$INVALID_BUSINESSMAP, 'Invalid Business Map identifier: '.$conditionid);
 		}
 
 		// merge fixed context array values

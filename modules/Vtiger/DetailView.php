@@ -96,11 +96,11 @@ if ($cbMapid) {
 } else {
 	$smarty->assign('HASRELATEDPANES', 'false');
 }
-if ($singlepane_view == 'true' or $isPresentRelatedListBlock) {
+if ($singlepane_view == 'true' || $isPresentRelatedListBlock) {
 	$related_array = getRelatedLists($currentModule, $focus);
 	$smarty->assign("RELATEDLISTS", $related_array);
 
-	require_once('include/ListView/RelatedListViewSession.php');
+	require_once 'include/ListView/RelatedListViewSession.php';
 	if (!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
 		RelatedListViewSession::addRelatedModuleToSession(vtlib_purify($_REQUEST['relation_id']), vtlib_purify($_REQUEST['selected_header']));
 	}
@@ -134,9 +134,9 @@ if (is_admin($current_user)) {
 
 $smarty->assign('BLOCKINITIALSTATUS', $_SESSION['BLOCKINITIALSTATUS']);
 // Gather the custom link information to display
-include_once('vtlib/Vtiger/Link.php');
+include_once 'vtlib/Vtiger/Link.php';
 $customlink_params = array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));
-$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('DETAILVIEWBASIC', 'DETAILVIEW', 'DETAILVIEWWIDGET'), $customlink_params));
+$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType($tabid, array('DETAILVIEWBASIC', 'DETAILVIEW', 'DETAILVIEWWIDGET'), $customlink_params, null, $focus->id));
 if ($isPresentRelatedListBlock) {
 	$related_list_block = array();
 	foreach ($blocks as $blabel => $binfo) {
@@ -166,6 +166,15 @@ $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtl
 
 // Record Change Notification
 $focus->markAsViewed($current_user->id);
+$bmapname = $currentModule.'_FieldDependency';
+$cbMapFDEP = array();
+$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+if ($cbMapid) {
+	$cbMap = cbMap::getMapByID($cbMapid);
+	$cbMapFDEP = $cbMap->FieldDependency();
+	$cbMapFDEP = $cbMapFDEP['fields'];
+}
+$smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 
 $smarty->assign('DETAILVIEW_AJAX_EDIT', GlobalVariable::getVariable('Application_DetailView_Inline_Edit', 1));
 ?>

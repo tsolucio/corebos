@@ -13,9 +13,9 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-if (isPermitted('VtigerBackup','')=='yes') {
+if (isPermitted('VtigerBackup', '')=='yes') {
 	checkFileAccessForInclusion("modules/VtigerBackup/BackupServerConfig.php");
-	include_once("modules/VtigerBackup/BackupServerConfig.php");
+	include_once 'modules/VtigerBackup/BackupServerConfig.php';
 } else {
 	echo '<br><br>';
 	$smarty = new vtigerCRM_Smarty();

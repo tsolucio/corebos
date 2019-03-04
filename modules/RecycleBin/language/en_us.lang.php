@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'RecycleBin' => 'Recycle Bin',
 'MSG_EMPTY_RB_CONFIRMATION'=>'Are you sure, you want to Permanently remove all the deleted records from your database?',
 'LBL_SELECT_MODULE'=>'Select Module',
@@ -19,5 +19,4 @@ $mod_strings = Array(
 'LNK_RESTORE'=>'restore',
 'LBL_NO_PERMITTED_MODULES'=>'No permitted modules available',
 );
-
 ?>

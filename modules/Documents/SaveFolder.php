@@ -7,9 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('modules/Documents/Documents.php');
-require_once('include/logging.php');
-require_once('include/database/PearDatabase.php');
+require_once 'modules/Documents/Documents.php';
+require_once 'include/logging.php';
+require_once 'include/database/PearDatabase.php';
 
 global $adb;
 
@@ -45,7 +45,7 @@ if (isset($_REQUEST['savemode']) && $_REQUEST['savemode'] == 'Save') {
 	} elseif ($folderid != '') {
 		$dbQuery = 'select count(*) from vtiger_attachmentsfolder where foldername=? and folderid!=?';
 		$result1 = $adb->pquery($dbQuery, array($foldername, $folderid));
-		if ($result1 and $adb->query_result($result1, 0, 0)==0) {
+		if ($result1 && $adb->query_result($result1, 0, 0)==0) {
 			if (empty($folderdesc)) {
 				$sql = 'update vtiger_attachmentsfolder set foldername=? where folderid= ?';
 				$result = $adb->pquery($sql, array($foldername,$folderid));

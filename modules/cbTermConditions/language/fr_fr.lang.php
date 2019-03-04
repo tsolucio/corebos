@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'cbTermConditions' => 'Modalités et Conditions',
 	'SINGLE_cbTermConditions' => 'Modalités et Conditions',
 	'TandC No' => 'Modalités et Conditions n°',
@@ -24,7 +24,5 @@ $mod_strings = Array(
 	'LBL_CBTERMCONDITIONS_INFORMATION' => 'Détail modalités et conditions',
 	'LBL_TERMANDCONDITIONS' => 'Modalités et Conditions',
 	'LBL_DESCRIPTION_INFORMATION' => 'Description',
-
 );
-
 ?>

@@ -8,36 +8,30 @@
  * All Rights Reserved. | Contributor: Valmir Carlos Trindade - 30/12/2010 - www.ttcasolucoes.com.br
  ************************************************************************************/
 
-$mod_strings = Array(
-/*some general information*/
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Ativos',
 'SINGLE_Assets'=>'Ativo',
 
-/*blocks for the module*/
-'LBL_ASSET_INFORMATION'=>'Informação Ativo',
-'LBL_CUSTOM_INFORMATION'=>'Informação Customizada',
+'LBL_ASSET_INFORMATION'=>'Informação do Ativo',
+'LBL_CUSTOM_INFORMATION'=>'Informação Personalizada',
 'LBL_DESCRIPTION_INFORMATION'=>'Notas',
 
-/*fields for the module*/
 'Assets'=>'Ativos',
-'Asset Name' => 'Nome Ativo',
-'Customer Name'=>'Nome Cliente',
-'Product Name'=>'Nome Produto',
-'Serial Number'=>'Número Série',
-'Asset No'=>'No. Ativo',
-'Date Sold'=>'Data Venda',
+'Asset Name' => 'Nome do Ativo',
+'Customer Name'=>'Nome do Cliente',
+'Product Name'=>'Nome do Produto',
+'Serial Number'=>'Número de Série',
+'Asset No'=>'No. do Ativo',
+'Date Sold'=>'Data de Venda',
 'Date in Service'=>'Data em Serviço',
 'Status'=>'Status',
-'Shipping Method'=>'Método Entrega',
-'Shipping Tracking Number'=>'Número Rastreamento Entrega',
-'Tag Number'=>'Número Etiqueta',
+'Shipping Method'=>'Meio de Entrega',
+'Shipping Tracking Number'=>'Número de Rastreio da Entrega',
+'Tag Number'=>'Número de Etiqueta',
 'Notes'=>'Notas',
 'Invoice Name'=>'Nome Fatura',
 
-/*picklist values*/
 'In Service'=>'Em Serviço',
-'Out-of-service'=>'Fora Serviço',
-
-
+'Out-of-service'=>'Fora de Serviço',
 );
 ?>

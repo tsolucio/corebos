@@ -95,6 +95,26 @@ function installManifestModule($module) {
 
 echo "<table width=80% align=center border=1>";
 
+// Some records in VT6x are incorrectly assigned to inexistent users so we fix that before starting by assigning them to the admin user
+ExecuteQuery(
+	'update vtiger_crmentity
+		set smownerid=?
+		where smownerid not in (select id from vtiger_users union select groupid from vtiger_groups);',
+	array($current_user->id)
+);
+ExecuteQuery(
+	'update vtiger_crmentity
+		set smcreatorid=?
+		where smcreatorid not in (select id from vtiger_users union select groupid from vtiger_groups);',
+	array($current_user->id)
+);
+ExecuteQuery(
+	'update vtiger_crmentity
+		set modifiedby=?
+		where modifiedby not in (select id from vtiger_users union select groupid from vtiger_groups);',
+	array($current_user->id)
+);
+
 $result = $adb->pquery('show columns from com_vtiger_workflowtasks like ?', array('executionorder'));
 if (!($adb->num_rows($result))) {
 	ExecuteQuery('ALTER TABLE com_vtiger_workflowtasks ADD executionorder INT(10)', array());

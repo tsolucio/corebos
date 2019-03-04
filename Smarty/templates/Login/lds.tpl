@@ -49,7 +49,7 @@ body {
 					<div id="logo_wrapper" class="standard_logo_wrapper mb24">
 						<h1 style="height: 100%; display: table-cell; vertical-align: bottom;">
 							<img id="logo" class="standard_logo"
-								src="test/logo/{$COMPANY_DETAILS.logo}"
+								src="{$COMPANY_DETAILS.companylogo}"
 								alt="{$coreBOS_uiapp_name}" border="0" name="logo">
 						</h1>
 					</div>

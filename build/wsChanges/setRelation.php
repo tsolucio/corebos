@@ -20,7 +20,7 @@ $operationInfo = array(
 	 'prelogin'=> 0,
 	 'type'    => 'POST',
 	 'parameters' => array(
-	 	array('name' => 'relate_this_id','type' => 'String'),
-	 	array('name' => 'with_these_ids','type' => 'encoded')
+		 array('name' => 'relate_this_id','type' => 'String'),
+		 array('name' => 'with_these_ids','type' => 'encoded')
 	 )
 );

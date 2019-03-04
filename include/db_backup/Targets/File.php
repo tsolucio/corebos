@@ -13,7 +13,7 @@ class File extends Response {
 	private $defaultPath;
 	private $filePath = null;
 
-	public function __construct($dbConfig, $fileName=null, $supportUTF8 = true) {
+	public function __construct($dbConfig, $fileName = null, $supportUTF8 = true) {
 		parent::__construct($dbConfig, $supportUTF8);
 		$this->defaultPath = 'backup'.DIRECTORY_SEPARATOR;
 		if (empty($fileName)) {
@@ -34,8 +34,7 @@ class File extends Response {
 	public function fixPathSeparator($path) {
 		$start = 0;
 		do {
-			$done = false;
-			$index = strpos($path, '/',$start);
+			$index = strpos($path, '/', $start);
 			$start = $index + 1;
 			if ($index != false && $path[$index - 1] == '\\'.DIRECTORY_SEPARATOR) {
 				continue;
@@ -57,7 +56,7 @@ class File extends Response {
 	}
 
 	protected function writeLine($string) {
-		fwrite($this->file,$string."\n");
+		fwrite($this->file, $string."\n");
 	}
 
 	public function finishBackup() {
@@ -68,6 +67,5 @@ class File extends Response {
 	public function getFilePath() {
 		return $this->filePath;
 	}
-
 }
 ?>

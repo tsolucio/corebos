@@ -7,32 +7,33 @@
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
 ********************************************************************************/
-require_once('modules/Portal/Portal.php');
-global $app_strings,$mod_strings,$adb,$theme;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
-if(isset($_REQUEST['record']) && $_REQUEST['record'] !='')
-{
+require_once 'modules/Portal/Portal.php';
+global $app_strings, $mod_strings, $adb, $theme;
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
+if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 	$portalid = vtlib_purify($_REQUEST['record']);
 	$query = 'select * from vtiger_portal where portalid =?';
 	$result=$adb->pquery($query, array($portalid));
-	if ($result and $adb->num_rows($result)==1) {
-		$portalname = $adb->query_result($result,0,'portalname');
-		$portalurl = $adb->query_result($result,0,'portalurl');
+	if ($result && $adb->num_rows($result)==1) {
+		$portalname = $adb->query_result($result, 0, 'portalname');
+		$portalurl = $adb->query_result($result, 0, 'portalurl');
 		/* to remove http:// from portal url*/
-		$portalurl = preg_replace("/http:\/\//i","",$portalurl);
+		$portalurl = preg_replace("/http:\/\//i", '', $portalurl);
 	} else {
 		$portalid = $portalname = $portalurl = '';
 	}
 } else {
 	$portalid = $portalname = $portalurl = '';
 }
-$portal_inputs = '<div style="display:block;position:relative;" id="orgLay" class="layerPopup">
+echo '<div style="display:block;position:relative;" id="orgLay" class="layerPopup">
 		<form onSubmit="OnUrlChange(); SaveSite(\''.$portalid.'\');return false;" >
 		<table border="0" cellpadding="3" cellspacing="0" width="100%" class="layerHeadingULine">
 		<tr>
 			<td class="layerPopupHeading" align="left" width="60%">' .$mod_strings['LBL_ADD'] .' '.$mod_strings['LBL_BOOKMARK'].'</td>
-			<td align="right" width="40%"><a href="javascript:fninvsh(\'orgLay\');"><img src="'. vtiger_imageurl('close.gif', $theme) .'" align="absmiddle" border="0"></a></td>
+			<td align="right" width="40%"><a href="javascript:fninvsh(\'orgLay\');">
+				<img src="'. vtiger_imageurl('close.gif', $theme) .'" align="absmiddle" border="0"></a>
+			</td>
 		</tr>
 		</table>
 <table border="0" cellspacing="0" cellpadding="5" width="95%" align="center">
@@ -61,5 +62,4 @@ $portal_inputs = '<div style="display:block;position:relative;" id="orgLay" clas
 </table>
 </form>
 </div>';
-echo $portal_inputs;
 ?>

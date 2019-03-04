@@ -6,7 +6,5 @@
  * Portions created by IT-Solutions4You s.r.o. are Copyright(C) IT-Solutions4You s.r.o.
  * All Rights Reserved.
  ********************************************************************************/
-
-require_once('include/Ajax/CommonAjax.php');
-
+require_once 'include/Ajax/CommonAjax.php';
 ?>

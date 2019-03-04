@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('modules/Users/Users.php');
-require_once('include/logging.php');
+require_once 'modules/Users/Users.php';
+require_once 'include/logging.php';
 
 global $theme, $app_strings, $mod_strings, $default_charset;
 
@@ -23,11 +23,12 @@ $badpassword.= $mod_strings['Min. 1 special character'].'<br>';
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML><HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset='.$default_charset.'">
+<meta http-equiv="Content-Type" content="text/html; charset='<?php echo $default_charset; ?>'">
 <title><?php echo $app_strings['LBL_BROWSER_TITLE']; ?></title>
-<style type="text/css">@import url("themes/'.$theme.'/style.css"); </style>
+<style type="text/css">@import url("themes/<?php echo $theme; ?>/style.css"); </style>
 </HEAD><BODY leftMargin="5" topMargin="5" MARGINHEIGHT="0" MARGINWIDTH="0">
 <link REL="SHORTCUT ICON" HREF="themes/images/blank.gif">
+<script type="text/javascript" src="include/jquery/jquery.js"></script>
 <script type='text/javascript' src="include/js/general.js"></script>
 <script type='text/javascript' src="include/js/PasswordManagement.js"></script>
 <script type='text/javascript'>
@@ -56,7 +57,7 @@ function set_password(form) {
 	}
 	//Check Password
 	var passwordOK = corebos_Password.passwordChecker(form.new_password.value);
-	if(passwordOK) { //Complex Password is ok
+	if (passwordOK) { //Complex Password is ok
 		if (trim(form.new_password.value) == trim(form.confirm_new_password.value)) {
 			if (form.is_admin.value == 1) window.opener.document.DetailView.old_password.value = form.old_password.value;
 			window.opener.document.DetailView.new_password.value = form.new_password.value;
@@ -67,8 +68,7 @@ function set_password(form) {
 			window.opener.document.DetailView.action.value = 'Save';
 			window.opener.document.DetailView.submit();
 			return true;
-		}
-		else {
+		} else {
 			errmsg.innerHTML = "<?php echo $mod_strings['ERR_REENTER_PASSWORDS']; ?>";
 			errmsg.style.display = 'block';
 			return false;
@@ -80,13 +80,20 @@ function set_password(form) {
 	}
 }
 </script>
+<div id="status" style="position:absolute;display:none;left:850px;top:95px;height:27px;white-space:nowrap;">
+	<div role="status" class="slds-spinner slds-spinner_small slds-spinner_brand">
+		<div class="slds-spinner__dot-a"></div>
+		<div class="slds-spinner__dot-b"></div>
+	</div>
+</div>
 <div class="cb-alert-danger" id="chgpasserrmsg" style="display: none;"></div>
 <form name="ChangePassword" onsubmit="VtigerJS_DialogBox.block();">
 <table width='100%' cellspacing='0' cellpadding='5' border='0' class="small">
 <tr>
 	<td class="detailedViewHeader" colspan="3"><b><?php echo $mod_strings['LBL_CHANGE_PASSWORD']; ?></b></td>
 </tr>
-<?php if (!is_admin($current_user)) {
+<?php
+if (!is_admin($current_user)) {
 	echo "<tr>";
 	echo "<td width='20%' class='dvtCellLabel' align='right'><b> ".$mod_strings['LBL_OLD_PASSWORD']."</b></td>\n";
 	echo "<td width='50%' class='dvtCellInfo'><input name='old_password' type='password' tabindex='1' size='15'></td>\n";
@@ -121,11 +128,11 @@ function set_password(form) {
 </form>
 <script>
 <?php
-	if (is_admin($current_user)) {
-		echo 'document.ChangePassword.new_password.focus();';
-	} else {
-		echo 'document.ChangePassword.old_password.focus();';
-	}
+if (is_admin($current_user)) {
+	echo 'document.ChangePassword.new_password.focus();';
+} else {
+	echo 'document.ChangePassword.old_password.focus();';
+}
 ?>
 </script>
 <br>

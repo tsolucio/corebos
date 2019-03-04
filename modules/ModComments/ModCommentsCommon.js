@@ -8,9 +8,9 @@
  ************************************************************************************/
 if (typeof(ModCommentsCommon) == 'undefined') {
 	ModCommentsCommon = {
-		addComment : function(domkeyid, parentid) {
+		addComment : function (domkeyid, parentid) {
 			var textBoxField = document.getElementById('txtbox_'+domkeyid);
-			var editareaDOM = document.getElementById('editarea_'+domkeyid);
+			//var editareaDOM = document.getElementById('editarea_'+domkeyid);
 			var contentWrapDOM = document.getElementById('contentwrap_'+domkeyid);
 			if (textBoxField.value == '') {
 				return;
@@ -19,27 +19,28 @@ if (typeof(ModCommentsCommon) == 'undefined') {
 			var url = 'module=ModComments&action=ModCommentsAjax&file=DetailViewAjax&ajax=true&ajxaction=WIDGETADDCOMMENT&parentid='+encodeURIComponent(parentid);
 
 			VtigerJS_DialogBox.block();
-			document.getElementById("vtbusy_info").style.display="inline";
+			VtigerJS_DialogBox.showbusy();
 
 			jQuery.ajax({
 				method: 'POST',
 				data : {'comment': textBoxField.value},
 				url: 'index.php?'+url,
 			}).done(function (response) {
-					document.getElementById("vtbusy_info").style.display="none";
-					VtigerJS_DialogBox.unblock();
-					var responseTextTrimmed = trim(response);
-					if (responseTextTrimmed.substring(0, 10) == ':#:SUCCESS') {
-						textBoxField.value = '';
-						contentWrapDOM.innerHTML = responseTextTrimmed.substring(10)+contentWrapDOM.innerHTML;
-					} else {
-						alert(alert_arr.OPERATION_DENIED);
-					}
+				VtigerJS_DialogBox.hidebusy();
+				VtigerJS_DialogBox.unblock();
+				var responseTextTrimmed = trim(response);
+				if (responseTextTrimmed.substring(0, 10) == ':#:SUCCESS') {
+					textBoxField.value = '';
+					contentWrapDOM.innerHTML = responseTextTrimmed.substring(10)+contentWrapDOM.innerHTML;
+				} else {
+					alert(alert_arr.OPERATION_DENIED);
 				}
-			);
+			});
 		},
-		reloadContentWithFiltering : function(widget, parentid, criteria, targetdomid, indicator) {
-			if(document.getElementById(indicator)) document.getElementById(indicator).style.display="inline";
+		reloadContentWithFiltering : function (widget, parentid, criteria, targetdomid, indicator) {
+			if (document.getElementById(indicator)) {
+				document.getElementById(indicator).style.display='inline';
+			}
 
 			var url = 'module=ModComments&action=ModCommentsAjax&file=ModCommentsWidgetHandler&ajax=true';
 			url += '&widget=' + encodeURIComponent(widget) + '&parentid='+encodeURIComponent(parentid);
@@ -48,11 +49,13 @@ if (typeof(ModCommentsCommon) == 'undefined') {
 				method: 'POST',
 				url: 'index.php?'+url,
 			}).done(function (response) {
-					if(document.getElementById(indicator)) document.getElementById(indicator).style.display="none";
-					if(document.getElementById(targetdomid)) document.getElementById(targetdomid).innerHTML = response;
+				if (document.getElementById(indicator)) {
+					document.getElementById(indicator).style.display='none';
 				}
-			);
+				if (document.getElementById(targetdomid)) {
+					document.getElementById(targetdomid).innerHTML = response;
+				}
+			});
 		}
 	};
 }
-

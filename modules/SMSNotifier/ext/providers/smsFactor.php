@@ -10,8 +10,8 @@
 include_once __DIR__ . '/../ISMSProvider.php';
 include_once 'vtlib/Vtiger/Net/Client.php';
 
-class smsFactor implements ISMSProvider
-{
+class smsFactor implements ISMSProvider {
+
 	private $_username;
 	private $_password;
 	private $_parameters = array();
@@ -21,7 +21,7 @@ class smsFactor implements ISMSProvider
 	const SERVICE_URI = 'http://gateway.oms-smsfactor.com/httpservice.aspx';
 	private static $REQUIRED_PARAMETERS = array('Originator');
 
-	function __construct() {
+	public function __construct() {
 	}
 
 	/**
@@ -42,7 +42,7 @@ class smsFactor implements ISMSProvider
 	}
 
 	public function getParameter($key, $defvalue = false) {
-		if(isset($this->_parameters[$key])) {
+		if (isset($this->_parameters[$key])) {
 			return $this->_parameters[$key];
 		}
 		return $defvalue;
@@ -53,11 +53,14 @@ class smsFactor implements ISMSProvider
 	}
 
 	public function getServiceURL($type = false) {
-		if($type) {
-			switch(strtoupper($type)) {
-				case self::SERVICE_AUTH: return  self::SERVICE_URI . '';
-				case self::SERVICE_SEND: return  self::SERVICE_URI . '?method=SendSMS&';
-				case self::SERVICE_QUERY: return self::SERVICE_URI . '?method=GetSMSStatus&';
+		if ($type) {
+			switch (strtoupper($type)) {
+				case self::SERVICE_AUTH:
+					return  self::SERVICE_URI . '';
+				case self::SERVICE_SEND:
+					return  self::SERVICE_URI . '?method=SendSMS&';
+				case self::SERVICE_QUERY:
+					return self::SERVICE_URI . '?method=GetSMSStatus&';
 			}
 		}
 		return false;
@@ -102,25 +105,25 @@ class smsFactor implements ISMSProvider
 			if ($localLen < 1 || $localLen > 64) {
 				// local part length exceeded
 				$isValid = false;
-			} else if ($domainLen < 1 || $domainLen > 255) {
+			} elseif ($domainLen < 1 || $domainLen > 255) {
 				// domain part length exceeded
 				$isValid = false;
-			} else if ($local[0] == '.' || $local[$localLen-1] == '.') {
+			} elseif ($local[0] == '.' || $local[$localLen-1] == '.') {
 				// local part starts or ends with '.'
 				$isValid = false;
-			} else if (preg_match('/\\.\\./', $local)) {
+			} elseif (preg_match('/\\.\\./', $local)) {
 				// local part has two consecutive dots
 				$isValid = false;
-			} else if (!preg_match('/^[A-Za-z0-9\\-\\.]+$/', $domain)) {
+			} elseif (!preg_match('/^[A-Za-z0-9\\-\\.]+$/', $domain)) {
 				// character not valid in domain part
 				$isValid = false;
-			} else if (preg_match('/\\.\\./', $domain)) {
+			} elseif (preg_match('/\\.\\./', $domain)) {
 				// domain part has two consecutive dots
 				$isValid = false;
-			} else if (!preg_match('/^(\\\\.|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/', str_replace("\\\\","",$local))) {
-				// character not valid in local part unless 
+			} elseif (!preg_match('/^(\\\\.|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/', str_replace("\\\\", "", $local))) {
+				// character not valid in local part unless
 				// local part is quoted
-				if (!preg_match('/^"(\\\\"|[^"])+"$/', str_replace("\\\\","",$local))) {
+				if (!preg_match('/^"(\\\\"|[^"])+"$/', str_replace("\\\\", "", $local))) {
 					$isValid = false;
 				}
 			}
@@ -128,30 +131,22 @@ class smsFactor implements ISMSProvider
 		return $isValid;
 	}
 
-	private function getReplyMethodID($originator)
-	{
-		if (substr($originator, 0, 1) === '+' && is_numeric(substr($originator, 1)))
-		{
+	private function getReplyMethodID($originator) {
+		if (substr($originator, 0, 1) === '+' && is_numeric(substr($originator, 1))) {
 			return 4;
-		}
-		else if ($this->validEmail($originator))
-		{
+		} elseif ($this->validEmail($originator)) {
 			return 2;
-		}
-		else
-		{
+		} else {
 			return 1;
 		}
 	}
 
-	private function sendMessage($clientMessageReference, $message, $tonumbers)
-	{
+	private function sendMessage($clientMessageReference, $message, $tonumbers) {
 		$originator = $this->getParameter('Originator', '');
 		$replyMethodID = $this->getReplyMethodID($originator);
-		
+
 		$replyData = '';
-		if ($replyMethodID == 2)
-		{
+		if ($replyMethodID == 2) {
 			$replyData = $originator;
 			$originator = '';
 		}
@@ -162,17 +157,17 @@ class smsFactor implements ISMSProvider
 		$current_user->retrieveCurrentUserInfoFromFile($_SESSION['authenticated_user_id']);
 
 		$serviceURL = $this->getServiceURL(self::SERVICE_SEND);
-		$serviceURL = $serviceURL . 'returnCSVString='			. 'true' . '&';
+		$serviceURL = $serviceURL . 'returnCSVString=true&';
 		$serviceURL = $serviceURL . 'externalLogin=' 			. urlencode($this->_username) . '&';
 		$serviceURL = $serviceURL . 'password='					. urlencode($this->_password) . '&';
-		$serviceURL = $serviceURL . 'clientBillingReference='	. urlencode('vTiger' . '-'. $current_user->user_name) . '&';
+		$serviceURL = $serviceURL . 'clientBillingReference='	. urlencode('vTiger-'. $current_user->user_name) . '&';
 		$serviceURL = $serviceURL . 'clientMessageReference='	. urlencode($clientMessageReference) . '&';
 		$serviceURL = $serviceURL . 'originator='				. urlencode($originator) . '&';
 		$serviceURL = $serviceURL . 'body='						. urlencode(html_entity_decode($message)) . '&';
-		$serviceURL = $serviceURL . 'destinations='				. urlencode(implode(',',  $tonumbers)) . '&';
+		$serviceURL = $serviceURL . 'destinations='				. urlencode(implode(',', $tonumbers)) . '&';
 		$serviceURL = $serviceURL . 'validity='					. urlencode('72') . '&';
 		$serviceURL = $serviceURL . 'characterSetID='			. urlencode($characterSetID) . '&';
-		$serviceURL = $serviceURL . 'replyMethodID='			. urlencode($replyMethodID) . '&'; 
+		$serviceURL = $serviceURL . 'replyMethodID='			. urlencode($replyMethodID) . '&';
 		$serviceURL = $serviceURL . 'replyData='				. urlencode($replyData) . '&';
 		$serviceURL = $serviceURL . 'statusNotificationUrl=';
 
@@ -180,32 +175,26 @@ class smsFactor implements ISMSProvider
 		return $httpClient->doPost(array());
 	}
 
-	private function processSendMessageResult($response, $clientMessageReference, $tonumbers)
-	{
+	private function processSendMessageResult($response, $clientMessageReference, $tonumbers) {
 		$results = array();
 
 		$responseLines = split("\n", $response);
 
-		if(trim($responseLines[0]) === '#1#')
-		{
+		if (trim($responseLines[0]) === '#1#') {
 			//Successful transaction
 			$numberResults = split(",", $responseLines[1]);
-			foreach($numberResults as $numberResult)
-			{
+			foreach ($numberResults as $numberResult) {
 				$numberResultSplit = split(":", $numberResult);
 				$number = trim($numberResultSplit[0]);
 				$code = trim($numberResultSplit[1]);
 
 				$result = array();
 
-				if ($code != '1')
-				{
-					$result['error'] = true; 
+				if ($code != '1') {
+					$result['error'] = true;
 					$result['statusmessage'] = $code;
 					$result['to'] = $number;
-				}
-				else
-				{
+				} else {
 					$result['error'] = false;
 					$result['id'] = $clientMessageReference . '--' . $number;
 					$result['status'] = self::MSG_STATUS_PROCESSING;
@@ -214,24 +203,19 @@ class smsFactor implements ISMSProvider
 				}
 				$results[] = $result;
 			}
-		}
-		else
-		{
+		} else {
 			//Transaction failed
-			foreach($tonumbers as $number)
-			{
+			foreach ($tonumbers as $number) {
 				$result = array('error' => true, 'statusmessage' => $responseLines[0], 'to' => $number);
 				$results[] = $result;
 			}
 		}
-		
 		return $results;
 	}
 
-	private function queryMessage($clientMessageReference)
-	{
+	private function queryMessage($clientMessageReference) {
 		$serviceURL = $this->getServiceURL(self::SERVICE_QUERY);
-		$serviceURL = $serviceURL . 'returnCSVString='			. 'true' . '&';
+		$serviceURL = $serviceURL . 'returnCSVString=true&';
 		$serviceURL = $serviceURL . 'externalLogin=' 			. urlencode($this->_username) . '&';
 		$serviceURL = $serviceURL . 'password='					. urlencode($this->_password) . '&';
 		$serviceURL = $serviceURL . 'clientMessageReference='	. urlencode($clientMessageReference);
@@ -240,38 +224,34 @@ class smsFactor implements ISMSProvider
 		return $httpClient->doPost(array());
 	}
 
-	private function processQueryMessageResult($response, $number)
-	{
+	private function processQueryMessageResult($response, $number) {
 		$result = array();
 
 		$responseLines = split("\n", $response);
 
-		if(trim($responseLines[0]) === '#1#')
-		{
+		if (trim($responseLines[0]) === '#1#') {
 			//Successful transaction
 			$numberResults = split(",", $responseLines[1]);
-			foreach($numberResults as $numberResult)
-			{
+			foreach ($numberResults as $numberResult) {
 				$numberResultSplit = split(":", $numberResult);
 				$thisNumber = trim($numberResultSplit[0]);
 				$code = (int)trim($numberResultSplit[1]);
 
-				if ($thisNumber != $number)
+				if ($thisNumber != $number) {
 					continue;
-				
-				if($code >= 400 && $code <= 499) {
+				}
+
+				if ($code >= 400 && $code <= 499) {
 					$result['error'] = false;
 					$result['status'] = self::MSG_STATUS_DELIVERED;
 					$result['needlookup'] = 0;
 					$result['statusmessage'] = $code;
-				}
-				else if ($code >= 500 && $code <= 599) {
+				} elseif ($code >= 500 && $code <= 599) {
 					$result['error'] = false;
 					$result['status'] = self::MSG_STATUS_FAILED;
 					$result['needlookup'] = 0;
 					$result['statusmessage'] = $code;
-				}
-				else if ($code >= 600 && $code <= 699) {
+				} elseif ($code >= 600 && $code <= 699) {
 					$result['error'] = false;
 					$result['status'] = self::MSG_STATUS_DISPATCHED;
 					$result['needlookup'] = 1;
@@ -279,9 +259,7 @@ class smsFactor implements ISMSProvider
 				}
 				break;
 			}
-		}
-		else
-		{
+		} else {
 			//Transaction failed
 			$result['error'] = true;
 			$result['needlookup'] = 1;

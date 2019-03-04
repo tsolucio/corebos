@@ -16,9 +16,11 @@
 
 class cleanoptimizedatabase_190 extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -34,32 +36,32 @@ class cleanoptimizedatabase_190 extends cbupdaterWorker {
 			$this->ExecuteQuery('SET foreign_key_checks = 1', array());
 			$this->ExecuteQuery('ALTER TABLE vtiger_crmentity MODIFY setype VARCHAR(100)', array());
 			$this->ExecuteQuery('ALTER TABLE vtiger_portalinfo MODIFY user_password VARCHAR(255)', array());
-			$this->ExecuteQuery('ALTER TABLE vtiger_mailscanner_ids ADD INDEX messageids_crmid_idx(crmid)',array());
+			$this->ExecuteQuery('ALTER TABLE vtiger_mailscanner_ids ADD INDEX messageids_crmid_idx(crmid)', array());
 			$this->ExecuteQuery('ALTER TABLE vtiger_activity MODIFY COLUMN subject VARCHAR(255)', array());
 			// Change fieldLabel of description field to Description - Project modules.
 			$fieldId = getFieldid(getTabid('Project'), 'description');
 			if ($fieldId) {
 				$fieldModel = Vtiger_Field::getInstance($fieldId);
 				$fieldModel->label = 'Description';
-				$fieldModel->__update();
+				$fieldModel->save();
 			}
 			$fieldId = getFieldid(getTabid('ProjectMilestone'), 'description');
 			if ($fieldId) {
 				$fieldModel = Vtiger_Field::getInstance($fieldId);
 				$fieldModel->label = 'Description';
-				$fieldModel->__update();
+				$fieldModel->save();
 			}
 			$fieldId = getFieldid(getTabid('ProjectTask'), 'description');
 			if ($fieldId) {
 				$fieldModel = Vtiger_Field::getInstance($fieldId);
 				$fieldModel->label = 'Description';
-				$fieldModel->__update();
+				$fieldModel->save();
 			}
 
 			$columns = $adb->getColumnNames('vtiger_modcomments');
 			if (in_array('parent_comments', $columns)) {
-				$this->ExecuteQuery("UPDATE `vtiger_modcomments` SET `parent_comments`='0' WHERE `parent_comments` is null or `parent_comments` = ''",array());
-				$this->ExecuteQuery('ALTER TABLE vtiger_modcomments MODIFY parent_comments INT(19) DEFAULT 0',array());
+				$this->ExecuteQuery("UPDATE `vtiger_modcomments` SET `parent_comments`='0' WHERE `parent_comments` is null or `parent_comments` = ''", array());
+				$this->ExecuteQuery('ALTER TABLE vtiger_modcomments MODIFY parent_comments INT(19) DEFAULT 0', array());
 			}
 
 			// Update Currency symbol for Egypt
@@ -71,5 +73,4 @@ class cleanoptimizedatabase_190 extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

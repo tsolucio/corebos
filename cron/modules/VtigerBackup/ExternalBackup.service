@@ -15,8 +15,8 @@
 
 $path_to_corebos = realpath(__DIR__.'/..');
 ini_set("include_path", $path_to_corebos);
-require_once('config.inc.php');
-require_once('include/utils/utils.php');
+require_once 'config.inc.php';
+require_once 'include/utils/utils.php';
 global $adb, $site_URL;
 
 $db_user = $dbconfig['db_username'];
@@ -26,44 +26,46 @@ $db_name = $dbconfig['db_name'];
 
 $ftp_server=$adb->query("select * from vtiger_systems where server_type='ftp_backup'");
 $res_ftp=$adb->num_rows($ftp_server);
-if($res_ftp==1){
+if ($res_ftp==1) {
 	$backup_use_ftp=true;
+	$ftp_server_name=$adb->query_result($ftp_server, 0, 'server');
+	//$ftp_server_port=$adb->query_result($ftp_server,0,'server_port');
+	$ftp_server_username=$adb->query_result($ftp_server, 0, 'server_username');
+	$ftp_server_password=$adb->query_result($ftp_server, 0, 'server_password');
+} else {
+	$backup_use_ftp=false;
 }
-$ftp_server_name=$adb->query_result($ftp_server,0,'server');
-//$ftp_server_port=$adb->query_result($ftp_server,0,'server_port');
-$ftp_server_username=$adb->query_result($ftp_server,0,'server_username');
-$ftp_server_password=$adb->query_result($ftp_server,0,'server_password');
 
 //Dump mysql
 $dumpname=$db_name.date('YmdHi').'.sql';
-if($dbconfig['db_password']!=''){
+if ($dbconfig['db_password']!='') {
 	$pass = $dbconfig['db_password'];
-	$pass = str_replace('$','\$',$pass);
-	$pass = str_replace('%','\%',$pass);
-	$pass = str_replace('&','\&',$pass);
-	$pass = str_replace('#','\#',$pass);
+	$pass = str_replace('$', '\$', $pass);
+	$pass = str_replace('%', '\%', $pass);
+	$pass = str_replace('&', '\&', $pass);
+	$pass = str_replace('#', '\#', $pass);
 	$passwordopt='--password='.$pass;
 }
-if(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN'){
+if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 	exec("mysqldump.exe --user=".$dbconfig['db_username']." ".$passwordopt." --opt ".$dbconfig['db_name'].' > backup/'.$dumpname);
 } else {
 	passthru("mysqldump --user=".$dbconfig['db_username']." ".$passwordopt." --opt ".$dbconfig['db_name'].' > backup/'.$dumpname);
 }
 
-include_once('vtlib/Vtiger/Zip.php');
-$archive_name1=str_replace('http://','',$site_URL);
-$archive_name1=str_replace('/','',$archive_name1);
+include_once 'vtlib/Vtiger/Zip.php';
+$archive_name1=str_replace('http://', '', $site_URL);
+$archive_name1=str_replace('/', '', $archive_name1);
 $archive_name =$archive_name1.'-'.date('YmdHi').'.zip';
 $archive = new Vtiger_Zip('backup/'.$archive_name);
 $archive->copyDirectoryFromDisk('user_privileges/');
 $archive->copyDirectoryFromDisk('storage/');
 $archive->copyDirectoryFromDisk('test/');
-$archive->copyFileFromDisk('backup/','database',$dumpname);
+$archive->copyFileFromDisk('backup/', 'database', $dumpname);
 $archive->save();
 
 @unlink('backup/'.$dumpname);
 
-if($backup_use_ftp==true){
+if ($backup_use_ftp==true) {
 	require 'include/db_backup/ftp.php';
 	$rdo = ftpBackupFile('backup/'.$archive_name, $ftp_server_name, $ftp_server_username, $ftp_server_password);
 	if ($rdo) {

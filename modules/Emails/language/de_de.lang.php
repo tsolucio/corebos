@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_GENERAL_INFORMATION'=>'Allgemeine Information',
 
 'LBL_MODULE_NAME'=>'E-Mails',
@@ -31,11 +31,10 @@ $mod_strings = Array(
 'LBL_BODY'=>'Text:',
 'LBL_CONTACT_NAME'=>'Person: ',
 'LBL_EMAIL'=>'E-Mail:',
-'LBL_DETAILVIEW_EMAIL'=>'E-Mail', 
+'LBL_DETAILVIEW_EMAIL'=>'E-Mail',
 'LBL_COLON'=>':',
 'LBL_CHK_MAIL'=>'Check Mail',
 'LBL_COMPOSE'=>'Neu',
-//Single change for 5.0.3
 'LBL_SETTINGS'=>'Einstellungen',
 'LBL_EMAIL_FOLDERS'=>'E-Mail Ordner',
 'LBL_INBOX'=>'Inbox',
@@ -61,8 +60,6 @@ $mod_strings = Array(
 'NTC_REMOVE_INVITEE'=>'Möchten Sie diesen Empfänger von der E-Mail löschen',
 'LBL_INVITEE'=>'Empfänger',
 
-// Added Fields
-// Contacts-SubPanelViewContactsAndUsers.php
 'LBL_BULK_MAILS'=>'Massen-E-Mails',
 'LBL_ATTACHMENT'=>'Anhang',
 'LBL_UPLOAD'=>'Hochladen',
@@ -75,10 +72,6 @@ $mod_strings = Array(
 'LBL_EMAIL_TEMPLATES_LIST'=>'E-Mail Vorlagenliste',
 'LBL_EMAIL_INFORMATION'=>'E-Mail Information',
 
-
-
-
-//for v4 release added
 'LBL_NEW_LEAD'=>'Neuer Lead',
 'LBL_LEAD_TITLE'=>'Leads',
 
@@ -89,13 +82,10 @@ $mod_strings = Array(
 'LBL_NEW_ACCOUNT'=>'Neue Organisation',
 'LBL_ACCOUNT_TITLE'=>'Organisationen',
 
-// Added fields after vtiger4 - Beta
 'LBL_USER_TITLE'=>'Nutzer',
 'LBL_NEW_USER'=>'Neuer Nutzer',
 
-// Added for 4 GA
 'LBL_TOOL_FORM_TITLE'=>'E-Mail Werkzeuge',
-//Added for 4GA
 'Date & Time Sent'=>'Startdatum und -zeit',
 'Sales Enity Module'=>'Vertriebsmodul',
 'Related To'=>'bezogen auf',
@@ -115,10 +105,8 @@ $mod_strings = Array(
 'MESSAGE_ADD_USER_OR_CONTACT'=>'Bitte Nutzer oder Person hinzufügen...',
 'MESSAGE_MAIL_SENT_SUCCESSFULLY'=>' E-Mail(s) erfolgreich versendet!',
 
-'LBL_FETCH_WEBMAIL'=>'Fetch WebMail',
 'LBL_ALL'=>'Alle',
 'MESSAGE_CONTACT_NOT_WANT_MAIL'=>'Dieser Kontakt möchte keine E-Mails empfangen.',
-'LBL_WEBMAILS_TITLE'=>'WebMails',
 'LBL_EMAILS_TITLE'=>'E-Mails',
 'LBL_MAIL_CONNECT_ERROR_INFO'=>'Fehler in der Verbindung zum Mail Server!<br> Überprüfen Sie die Servereinstellung in Startseite->E-Mails -> Einstellungen',
 'LBL_ALLMAILS'=>'Alle Mails',
@@ -150,8 +138,6 @@ $mod_strings = Array(
 'LBL_CONF_SERVERSTORAGE_ERROR'=>'The permissions on your storage directory are insufficient, you will not be able to send attachments!',
 'LBL_VTIGER_EMAIL_CLIENT'=>'E-Mail Client',
 'LBL_MAILSELECT_INFO3'=>'Sie haben nicht die Berechtigung, auf die E-Mail Adresse zuzugreifen.',
-//Added  for script alerts
-'FEATURE_AVAILABLE_INFO' => 'Diese Funktion ist ggw. nur für den Microsoft Internet Explorer 5.5+ verfügbar\n\nBitte haben Sie etwas Geduld, wir werden das verbessern!',
 'DOWNLOAD_CONFIRAMATION' => 'Wollen Sie die Datei auf Ihren Computer laden?',
 'LBL_PLEASE_ATTACH' => 'Bitte geben Sie eine Datei für den Anhang an.',
 'LBL_KINDLY_UPLOAD' => 'Bitte konfigurieren Sie die <font color="red">upload_tmp_dir</font> Variable in der php.ini Datei.',
@@ -159,7 +145,6 @@ $mod_strings = Array(
 'LBL_BYTES' => ' Bytes',
 'LBL_CHECK_USER_MAILID' => 'Bitte überprüfen Sie die E-Mail Adresse.',
 
-// Added/Updated for vtiger CRM 5.0.4
 'Activity Type'=>'Aktivitätentyp',
 'LBL_MAILSELECT_INFO'=>'hat eine Referenz auf die nachfolgenden E-Mail Adressen. Bitte wählen Sie die Adresse zu der die E-Mail gesendet werden soll.',
 'LBL_NO_RECORDS' => 'Keine Daten gefunden',
@@ -167,5 +152,4 @@ $mod_strings = Array(
 'LBL_ATTACH_DOCUMENTS' => 'Attach documents',
 'Access Count' => 'Access Count',
 );
-
 ?>

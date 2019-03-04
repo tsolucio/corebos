@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updatesChangeLog>
+<changeSet>
+	<author>MajorLabel</author>
+	<description>Installs a new block in InventoryDetails module for separate taxes</description>
+	<filename>build/changeSets/2018/inventoryDetailsTaxBlock.php</filename>
+	<classname>inventoryDetailsTaxBlock</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>make inventory tax fields not null and set default value to 0</description>
+	<filename>build/changeSets/2018/inventoryDetailsTaxBlockDValue.php</filename>
+	<classname>inventoryDetailsTaxBlockDValue</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+	<author>MajorLabel</author>
+	<description>Also installs fields for inactive taxes</description>
+	<filename>build/changeSets/2018/inactiveTaxesInInventoryDetails.php</filename>
+	<classname>inactiveTaxesInInventoryDetails</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+</updatesChangeLog>

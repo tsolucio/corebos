@@ -17,6 +17,9 @@
  *  Author    : JPL TSolucio, S. L.
  *************************************************************************************************/
 
+if (!isset($_REQUEST['_op'])) {
+	$_REQUEST['_op'] = 'HELP';
+}
 switch ($_REQUEST['_op']) {
 	case 'Success':
 		$smarty = new vtigerCRM_Smarty();
@@ -40,7 +43,7 @@ switch ($_REQUEST['_op']) {
 		$smarty->assign('TITLE_MESSAGE', $titlemessage);
 		$smarty->assign('MESSAGE', sprintf(getTranslatedString('UNSUCCESSFUL_REGISTRATION_MESSAGE', $currentModule), vtlib_purify($_REQUEST['integration'])).
 			'<br>'.vtlib_purify($_REQUEST['error_description']).' ('.vtlib_purify($_REQUEST['error_code']).')');
-		$smarty->assign('ERROR_CLASS', 'slds-theme--error');
+		$smarty->assign('ERROR_CLASS', 'slds-theme_error');
 		$smarty->assign('APP', $app_strings);
 		$smarty->assign('MOD', $mod_strings);
 		$smarty->assign('MODULE', $currentModule);
@@ -55,6 +58,10 @@ switch ($_REQUEST['_op']) {
 	case 'setconfighubspot':
 		include_once 'include/integrations/hubspot/settings.php';
 		break;
+	case 'getconfigzendesk':
+	case 'setconfigzendesk':
+		include_once 'include/integrations/zendesk/settings.php';
+		break;
 	case 'getconfig2fa':
 	case 'setconfig2fa':
 		include_once 'include/integrations/2fa/settings.php';
@@ -62,5 +69,23 @@ switch ($_REQUEST['_op']) {
 	case 'getconfiggcontact':
 	case 'setconfiggcontact':
 		include_once 'include/integrations/GContacts/settings.php';
+		break;
+	case 'getconfigwhatsapp':
+	case 'setconfigwhatsapp':
+		include_once 'include/integrations/whatsapp/settings.php';
+		break;
+	default:
+		$smarty = new vtigerCRM_Smarty();
+		$titlemessage = getTranslatedString('Available Integrations', $currentModule);
+		$smarty->assign('TITLE_MESSAGE', $titlemessage);
+		$smarty->assign('APP', $app_strings);
+		$smarty->assign('MOD', $mod_strings);
+		$smarty->assign('MODULE', $currentModule);
+		$smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
+		$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
+		$smarty->assign('THEME', $theme);
+		include 'modules/cbupdater/forcedButtons.php';
+		$smarty->assign('CHECK', $tool_buttons);
+		$smarty->display('modules/Utilities/integrationhelp.tpl');
 		break;
 }

@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('Smarty_setup.php');
-require('user_privileges/default_module_view.php');
+require_once 'Smarty_setup.php';
+require 'user_privileges/default_module_view.php';
 
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log, $adb;
 
@@ -16,15 +16,14 @@ $action = vtlib_purify($_REQUEST['action']);
 $record = vtlib_purify($_REQUEST['record']);
 $isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : false;
 
-if($singlepane_view == 'true' && $action == 'CallRelatedList') {
+if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	echo "<script>document.location='index.php?action=DetailView&module=".urlencode($currentModule).'&record='.urlencode($record)."';</script>";
 	die();
 } else {
-
 	$tool_buttons = Button_Check($currentModule);
 
 	$focus = CRMEntity::getInstance($currentModule);
-	if($record != '') {
+	if ($record != '') {
 		$focus->retrieve_entity_info($record, $currentModule);
 		$focus->id = $record;
 		$focus->name=$focus->column_fields['firstname'].' '.$focus->column_fields['lastname'];
@@ -32,13 +31,21 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 
 	$smarty = new vtigerCRM_Smarty;
 	$sql = $adb->pquery('select accountid from vtiger_contactdetails where contactid=?', array($focus->id));
-	$accountid = $adb->query_result($sql,0,'accountid');
-	if($accountid == 0) $accountid='';
-	$smarty->assign('accountid',$accountid);
+	$accountid = $adb->query_result($sql, 0, 'accountid');
+	if ($accountid == 0) {
+		$accountid='';
+	}
+	$smarty->assign('accountid', $accountid);
 
-	if($isduplicate == 'true') $focus->id = '';
-	if(isset($_REQUEST['mode']) && $_REQUEST['mode'] != ' ') $smarty->assign("OP_MODE",vtlib_purify($_REQUEST['mode']));
-	if(empty($_SESSION['rlvs'][$currentModule])) coreBOS_Session::delete('rlvs');
+	if ($isduplicate == 'true') {
+		$focus->id = '';
+	}
+	if (isset($_REQUEST['mode']) && $_REQUEST['mode'] != ' ') {
+		$smarty->assign('OP_MODE', vtlib_purify($_REQUEST['mode']));
+	}
+	if (empty($_SESSION['rlvs'][$currentModule])) {
+		coreBOS_Session::delete('rlvs');
+	}
 
 	// Identify this module as custom module.
 	$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
@@ -55,14 +62,14 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	$smarty->assign('CHECK', $tool_buttons);
 
 	$smarty->assign('NAME', $focus->name);
-	$smarty->assign('UPDATEINFO',updateInfo($focus->id));
-	$parent_email = getEmailParentsList('Contacts',$record, $focus);
-	$smarty->assign('HIDDEN_PARENTS_LIST',$parent_email);
-	$smarty->assign('TODO_PERMISSION',CheckFieldPermission('parent_id','Calendar'));
-	$smarty->assign('CONTACT_PERMISSION',CheckFieldPermission('contact_id','Calendar'));
-	$smarty->assign('EVENT_PERMISSION',CheckFieldPermission('parent_id','Events'));
-	$smarty->assign('EMAIL',$focus->column_fields['email']);
-	$smarty->assign('SECONDARY_EMAIL',$focus->column_fields['secondaryemail']);
+	$smarty->assign('UPDATEINFO', updateInfo($focus->id));
+	$parent_email = getEmailParentsList('Contacts', $record, $focus);
+	$smarty->assign('HIDDEN_PARENTS_LIST', $parent_email);
+	$smarty->assign('CONTACT_PERMISSION', CheckFieldPermission('contact_id', 'Calendar'));
+	$smarty->assign('EMAIL', $focus->column_fields['email']);
+	$smarty->assign('SECONDARY_EMAIL', $focus->column_fields['secondaryemail']);
+	$smarty->assign('TODO_PERMISSION', CheckFieldPermission('parent_id', 'Calendar'));
+	$smarty->assign('EVENT_PERMISSION', CheckFieldPermission('parent_id', 'Events'));
 
 	// Module Sequence Numbering
 	$mod_seq_field = getModuleSequenceField($currentModule);
@@ -79,9 +86,9 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 			$_RelatedPane=vtlib_purify($_SESSION['RelatedPane']);
 		} else {
 			$_RelatedPane=vtlib_purify($_REQUEST['RelatedPane']);
-			coreBOS_Session::set('RelatedPane',$_RelatedPane);
+			coreBOS_Session::set('RelatedPane', $_RelatedPane);
 		}
-		$smarty->assign("RETURN_RELATEDPANE", $_RelatedPane);
+		$smarty->assign('RETURN_RELATEDPANE', $_RelatedPane);
 		$cbMap = cbMap::getMapByID($cbMapid);
 		$rltabs = $cbMap->RelatedPanes($focus->id);
 		$smarty->assign('RLTabs', $rltabs['panes']);
@@ -90,7 +97,20 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 		$rel_array = getRelatedLists($currentModule, $focus, $restrictedRelations);
 		foreach ($rltabs['panes'][$_RelatedPane]['blocks'] as $blk) {
 			if ($blk['type']=='RelatedList') {
-				$related_array[$blk['loadfrom']] = empty($rel_array[$blk['loadfrom']]) ? $rel_array[$blk['label']] : $rel_array[$blk['loadfrom']];
+				if (empty($rel_array[$blk['loadfrom']])) {
+					if (empty($rel_array[$blk['label']])) {
+						$i18n = getTranslatedString($blk['label'], $blk['label']);
+						if (empty($rel_array[$i18n])) {
+							continue;
+						} else {
+							$related_array[$blk['loadfrom']] = $rel_array[$i18n];
+						}
+					} else {
+						$related_array[$blk['loadfrom']] = $rel_array[$blk['label']];
+					}
+				} else {
+					$related_array[$blk['loadfrom']] = $rel_array[$blk['loadfrom']];
+				}
 			} else {
 				if (!empty($blk['loadphp'])) {
 					try {
@@ -116,13 +136,13 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	}
 	$smarty->assign('RELATEDLISTS', $related_array);
 
-	require_once('include/ListView/RelatedListViewSession.php');
-	if(!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
+	require_once 'include/ListView/RelatedListViewSession.php';
+	if (!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
 		$relationId = vtlib_purify($_REQUEST['relation_id']);
-		RelatedListViewSession::addRelatedModuleToSession($relationId,vtlib_purify($_REQUEST['selected_header']));
+		RelatedListViewSession::addRelatedModuleToSession($relationId, vtlib_purify($_REQUEST['selected_header']));
 	}
 	$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
-	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
+	$smarty->assign('SELECTEDHEADERS', $open_related_modules);
 
 	$smarty->display('RelatedLists.tpl');
 }

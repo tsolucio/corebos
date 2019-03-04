@@ -11,32 +11,32 @@ require_once 'include/Webservices/Utils.php';
 require_once 'include/Webservices/ModuleTypes.php';
 require_once 'include/utils/CommonUtils.php';
 
-function vtws_sync($mtime,$elementType,$syncType='',$user=''){
-	global $adb, $recordString,$modifiedTimeString;
+function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
+	global $adb;
 
 	$numRecordsLimit = 100;
-	$ignoreModules = array("Users");
+	$ignoreModules = array('Users');
 	$typed = true;
-	$dformat = "Y-m-d H:i:s";
+	$dformat = 'Y-m-d H:i:s';
 	$datetime = date($dformat, $mtime);
-	$setypeArray = array();
-	$setypeData = array();
-	$setypeHandler = array();
-	$setypeNoAccessArray = array();
 
 	$output = array();
-	$output["updated"] = array();
-	$output["deleted"] = array();
+	$output['updated'] = array();
+	$output['deleted'] = array();
 
 	$applicationSync = false;
 	if (is_object($syncType) && ($syncType instanceof Users)) {
 		$user = $syncType;
-	} else if ($syncType == 'application') {
+	} elseif ($syncType == 'application') {
 		$applicationSync = true;
 	}
 
 	if ($applicationSync && !is_admin($user)) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Only admin users can perform application sync");
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Only admin users can perform application sync');
+	}
+	global $cbodCSAppSyncUser;
+	if (in_array($user->id, $cbodCSAppSyncUser)) {
+		$applicationSync = true;
 	}
 
 	$ownerIds = array($user->id);
@@ -49,23 +49,24 @@ function vtws_sync($mtime,$elementType,$syncType='',$user=''){
 
 	$accessableModules = array();
 	$entityModules = array();
-	$modulesDetails = vtws_listtypes(null,$user);
-	$moduleTypes = $modulesDetails['types'];
-	$modulesInformation = $modulesDetails["information"];
+	$modulesDetails = vtws_listtypes(null, $user);
+	$modulesInformation = $modulesDetails['information'];
 
-	foreach($modulesInformation as $moduleName=>$entityInformation){
-		if ($entityInformation["isEntity"])
+	foreach ($modulesInformation as $moduleName => $entityInformation) {
+		if ($entityInformation['isEntity']) {
 			$entityModules[] = $moduleName;
+		}
 	}
-	if(!$typed){
+	if (!$typed) {
 		$accessableModules = $entityModules;
 	} else {
-		if (!in_array($elementType,$entityModules))
-			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to perform the operation is denied");
+		if (!in_array($elementType, $entityModules)) {
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
+		}
 		$accessableModules[] = $elementType;
 	}
 
-	$accessableModules = array_diff($accessableModules,$ignoreModules);
+	$accessableModules = array_diff($accessableModules, $ignoreModules);
 
 	if (count($accessableModules)<=0) {
 		$output['lastModifiedTime'] = $mtime;
@@ -79,31 +80,33 @@ function vtws_sync($mtime,$elementType,$syncType='',$user=''){
 			$entityDefaultBaseTables = $moduleMeta->getEntityDefaultTableList();
 			//since there will be only one base table for all entities
 			$baseCRMTable = $entityDefaultBaseTables[0];
-			if ($elementType=="Calendar" || $elementType=="Events" ) {
-				$baseCRMTable = getSyncQueryBaseTable($elementType);
-			}
-	} else
-	 $baseCRMTable = " vtiger_crmentity ";
+		if ($elementType=='Calendar' || $elementType=='Events') {
+			$baseCRMTable = getSyncQueryBaseTable($elementType);
+		}
+	} else {
+		$baseCRMTable = ' vtiger_crmentity ';
+	}
 
 	//modifiedtime - next token
-	$q = "SELECT modifiedtime FROM $baseCRMTable WHERE  modifiedtime>? and setype IN(".generateQuestionMarks($accessableModules).") ";
+	$q = "SELECT modifiedtime FROM $baseCRMTable WHERE  modifiedtime>? and setype IN(".generateQuestionMarks($accessableModules).') ';
 	$params = array($datetime);
 	foreach ($accessableModules as $entityModule) {
-		if ($entityModule == "Events")
-			$entityModule = "Calendar";
+		if ($entityModule == 'Events') {
+			$entityModule = 'Calendar';
+		}
 		$params[] = $entityModule;
 	}
 	if (!$applicationSync) {
 		$q .= ' and smownerid IN('.generateQuestionMarks($ownerIds).')';
-		$params = array_merge($params,$ownerIds);
+		$params = array_merge($params, $ownerIds);
 	}
 
 	$q .=" order by modifiedtime limit $numRecordsLimit";
-	$result = $adb->pquery($q,$params);
+	$result = $adb->pquery($q, $params);
 
 	$modTime = array();
-	for ($i=0;$i<$adb->num_rows($result);$i++) {
-		$modTime[] = $adb->query_result($result,$i,'modifiedtime');
+	for ($i=0; $i<$adb->num_rows($result); $i++) {
+		$modTime[] = $adb->query_result($result, $i, 'modifiedtime');
 	}
 	if (!empty($modTime)) {
 		$maxModifiedTime = max($modTime);
@@ -115,81 +118,80 @@ function vtws_sync($mtime,$elementType,$syncType='',$user=''){
 		$handler = vtws_getModuleHandlerFromName($elementType, $user);
 		$moduleMeta = $handler->getMeta();
 		$deletedQueryCondition = $moduleMeta->getEntityDeletedQuery();
-		preg_match_all("/(?:\s+\w+[ \t\n\r]+)?([^=]+)\s*=(\S+|'[^']+')/",$deletedQueryCondition,$deletedFieldDetails);
+		preg_match_all("/(?:\s+\w+[ \t\n\r]+)?([^=]+)\s*=(\S+|'[^']+')/", $deletedQueryCondition, $deletedFieldDetails);
 		$fieldNameDetails = $deletedFieldDetails[1];
 		$deleteFieldValues = $deletedFieldDetails[2];
 		$deleteColumnNames = array();
 		foreach ($fieldNameDetails as $tableName_fieldName) {
-			$fieldComp = explode(".",$tableName_fieldName);
+			$fieldComp = explode(".", $tableName_fieldName);
 			$deleteColumnNames[$tableName_fieldName] = $fieldComp[1];
 		}
 		$params = array($moduleMeta->getTabName(),$datetime,$maxModifiedTime);
 
 		$queryGenerator = new QueryGenerator($elementType, $user);
-		$fields = array();
-		$moduleFeilds = $moduleMeta->getModuleFields();
-		$moduleFeildNames = array_keys($moduleFeilds);
-		$moduleFeildNames[]='id';
-		$queryGenerator->setFields($moduleFeildNames);
+		$moduleFields = $moduleMeta->getModuleFields();
+		$moduleFieldNames = array_keys($moduleFields);
+		$moduleFieldNames[]='id';
+		$queryGenerator->setFields($moduleFieldNames);
 		$selectClause = "SELECT ".$queryGenerator->getSelectClauseColumnSQL();
 		// adding the fieldnames that are present in the delete condition to the select clause
 		// since not all fields present in delete condition will be present in the fieldnames of the module
-		foreach($deleteColumnNames as $table_fieldName=>$columnName){
-			if(!in_array($columnName,$moduleFeildNames)){
-				$selectClause .=", ".$table_fieldName;
+		foreach ($deleteColumnNames as $table_fieldName => $columnName) {
+			if (!in_array($columnName, $moduleFieldNames)) {
+				$selectClause .= ', '.$table_fieldName;
 			}
 		}
-		if ($elementType=="Emails")
+		if ($elementType=='Emails') {
 			$fromClause = vtws_getEmailFromClause();
-		else
+		} else {
 			$fromClause = $queryGenerator->getFromClause();
+		}
 		$fromClause .= " INNER JOIN (select modifiedtime, crmid,deleted,setype FROM $baseCRMTable WHERE setype=? and modifiedtime >? and modifiedtime<=?";
 		if (!$applicationSync) {
 			$fromClause.= 'and smownerid IN('.generateQuestionMarks($ownerIds).')';
-			$params = array_merge($params,$ownerIds);
+			$params = array_merge($params, $ownerIds);
 		}
 		$fromClause.= ' ) vtiger_ws_sync ON (vtiger_crmentity.crmid = vtiger_ws_sync.crmid)';
-		$q = $selectClause." ".$fromClause;
+		$q = $selectClause.' '.$fromClause;
 		$result = $adb->pquery($q, $params);
-		$recordDetails = array();
-		$deleteRecordDetails = array();
-		while($arre = $adb->fetchByAssoc($result)){
+		while ($arre = $adb->fetchByAssoc($result)) {
 			$key = $arre[$moduleMeta->getIdColumn()];
-			if (vtws_isRecordDeleted($arre,$deleteColumnNames,$deleteFieldValues)) {
-				if(!$moduleMeta->hasAccess()){
+			if (vtws_isRecordDeleted($arre, $deleteColumnNames, $deleteFieldValues)) {
+				if (!$moduleMeta->hasAccess()) {
 					continue;
 				}
-				$output["deleted"][] = vtws_getId($moduleMeta->getEntityId(), $key);
+				$output['deleted'][] = vtws_getId($moduleMeta->getEntityId(), $key);
 			} else {
-				if (!$moduleMeta->hasAccess() ||!$moduleMeta->hasPermission(EntityMeta::$RETRIEVE,$key)) {
+				if (!$moduleMeta->hasAccess() ||!$moduleMeta->hasPermission(EntityMeta::$RETRIEVE, $key)) {
 					continue;
 				}
 				try {
-					$output["updated"][] = DataTransform::sanitizeDataWithColumn($arre,$moduleMeta);
-				} catch(WebServiceException $e) {
+					$output['updated'][] = DataTransform::sanitizeDataWithColumn($arre, $moduleMeta);
+				} catch (WebServiceException $e) {
 					//ignore records the user doesn't have access to.
 					continue;
-				} catch(Exception $e) {
-					throw new WebServiceException(WebServiceErrorCode::$INTERNALERROR,"Unknown Error while processing request");
+				} catch (Exception $e) {
+					throw new WebServiceException(WebServiceErrorCode::$INTERNALERROR, 'Unknown Error while processing request');
 				}
 			}
 		}
 	}
 
-	$q = "SELECT crmid FROM $baseCRMTable WHERE modifiedtime>?  and setype IN(".generateQuestionMarks($accessableModules).")";
+	$q = "SELECT crmid FROM $baseCRMTable WHERE modifiedtime>?  and setype IN(".generateQuestionMarks($accessableModules).')';
 	$params = array($maxModifiedTime);
 
 	foreach ($accessableModules as $entityModule) {
-		if ($entityModule == "Events")
-			$entityModule = "Calendar";
+		if ($entityModule == 'Events') {
+			$entityModule = 'Calendar';
+		}
 		$params[] = $entityModule;
 	}
 	if (!$applicationSync) {
 		$q.='and smownerid IN('.generateQuestionMarks($ownerIds).')';
-		$params = array_merge($params,$ownerIds);
+		$params = array_merge($params, $ownerIds);
 	}
 
-	$result = $adb->pquery($q,$params);
+	$result = $adb->pquery($q, $params);
 	if ($adb->num_rows($result)>0) {
 		$output['more'] = true;
 	} else {
@@ -216,15 +218,15 @@ function vtws_sync($mtime,$elementType,$syncType='',$user=''){
 	return $output;
 }
 
-function vtws_getSeconds($mtimeString){
+function vtws_getSeconds($mtimeString) {
 	//TODO handle timezone and change time to gmt.
 	return strtotime($mtimeString);
 }
 
-function vtws_isRecordDeleted($recordDetails,$deleteColumnDetails,$deletedValues){
+function vtws_isRecordDeleted($recordDetails, $deleteColumnDetails, $deletedValues) {
 	$deletedRecord = false;
 	$i=0;
-	foreach ($deleteColumnDetails as $tableName_fieldName=>$columnName) {
+	foreach ($deleteColumnDetails as $columnName) {
 		if ($recordDetails[$columnName]!=$deletedValues[$i++]) {
 			$deletedRecord = true;
 			break;
@@ -233,8 +235,8 @@ function vtws_isRecordDeleted($recordDetails,$deleteColumnDetails,$deletedValues
 	return $deletedRecord;
 }
 
-function vtws_getEmailFromClause(){
-	$q = "FROM vtiger_activity
+function vtws_getEmailFromClause() {
+	$q = 'FROM vtiger_activity
 		INNER JOIN vtiger_crmentity ON vtiger_activity.activityid = vtiger_crmentity.crmid
 		LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id
 		LEFT JOIN vtiger_groups ON vtiger_crmentity.smownerid = vtiger_groups.groupid
@@ -243,13 +245,13 @@ function vtws_getEmailFromClause(){
 		LEFT JOIN vtiger_email_track ON vtiger_activity.activityid = vtiger_email_track.mailid
 		INNER JOIN vtiger_emaildetails ON vtiger_activity.activityid = vtiger_emaildetails.emailid
 		LEFT JOIN vtiger_users vtiger_users2 ON vtiger_emaildetails.idlists = vtiger_users2.id
-		LEFT JOIN vtiger_groups vtiger_groups2 ON vtiger_emaildetails.idlists = vtiger_groups2.groupid";
+		LEFT JOIN vtiger_groups vtiger_groups2 ON vtiger_emaildetails.idlists = vtiger_groups2.groupid';
 	return $q;
 }
 
-function getSyncQueryBaseTable($elementType){
-	if ($elementType!="Calendar" && $elementType!="Events") {
-		return "vtiger_crmentity";
+function getSyncQueryBaseTable($elementType) {
+	if ($elementType!='Calendar' && $elementType!='Events') {
+		return 'vtiger_crmentity';
 	} else {
 		$activityCondition = getCalendarTypeCondition($elementType);
 		$query = "vtiger_crmentity INNER JOIN vtiger_activity ON (vtiger_crmentity.crmid = vtiger_activity.activityid and $activityCondition)";
@@ -257,12 +259,12 @@ function getSyncQueryBaseTable($elementType){
 	}
 }
 
-function getCalendarTypeCondition($elementType){
-	if ($elementType == "Events")
+function getCalendarTypeCondition($elementType) {
+	if ($elementType == 'Events') {
 		$activityCondition = "vtiger_activity.activitytype !='Task' and vtiger_activity.activitytype !='Emails'";
-	else
+	} else {
 		$activityCondition = "vtiger_activity.activitytype ='Task'";
+	}
 	return $activityCondition;
 }
-
 ?>

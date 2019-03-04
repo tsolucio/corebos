@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('data/Tracker.php');
+require_once 'data/Tracker.php';
 
 global $mod_strings, $app_strings, $current_user, $theme, $log, $default_charset;
 $focus = 0;
@@ -17,9 +17,9 @@ global $oCustomView;
 //<<<<<>>>>>>
 
 $error_msg = '';
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
-require_once('modules/CustomView/CustomView.php');
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
+require_once 'modules/CustomView/CustomView.php';
 
 $cv_module = vtlib_purify($_REQUEST['module']);
 $recordid = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : '';
@@ -41,7 +41,7 @@ $smarty->assign('STATUS', '');
 if ($recordid == '') {
 	$oCustomView = new CustomView();
 	$modulecollist = $oCustomView->getModuleColumnsList($cv_module);
-	$log->info('CustomView :: Successfully got ColumnsList for the module'.$cv_module);
+	$log->debug('CustomView :: ColumnsList for the module'.$cv_module);
 	if (isset($modulecollist)) {
 		$choosecolslist = getByModule_ColumnsList($cv_module, $modulecollist);
 	}
@@ -74,10 +74,10 @@ if ($recordid == '') {
 	$now_action = vtlib_purify($_REQUEST['action']);
 	if ($oCustomView->isPermittedCustomView($recordid, $now_action, $oCustomView->customviewmodule) == 'yes') {
 		$customviewdtls = $oCustomView->getCustomViewByCvid($recordid);
-		$log->info('CustomView :: Successfully got ViewDetails for the Viewid'.$recordid);
+		$log->debug('CustomView :: ViewDetails for the Viewid'.$recordid);
 		$modulecollist = $oCustomView->getModuleColumnsList($cv_module);
 		$selectedcolumnslist = $oCustomView->getColumnsListByCvid($recordid);
-		$log->info('CustomView :: Successfully got ColumnsList for the Viewid'.$recordid);
+		$log->debug('CustomView :: ColumnsList for the Viewid'.$recordid);
 
 		$smarty->assign("VIEWNAME", $customviewdtls["viewname"]);
 
@@ -96,7 +96,7 @@ if ($recordid == '') {
 		$smarty->assign('ListView_MaxColumns', $Application_ListView_MaxColumns);
 		$smarty->assign('FILTERROWS', ceil($Application_ListView_MaxColumns/4)+1);
 		$stdfilterlist = $oCustomView->getStdFilterByCvid($recordid);
-		$log->info('CustomView :: Successfully got Standard Filter for the Viewid'.$recordid);
+		$log->debug('CustomView :: Standard Filter for the Viewid'.$recordid);
 		$stdfilterlist["stdfilter"] = ($stdfilterlist["stdfilter"] != "") ? ($stdfilterlist["stdfilter"]) : ("custom");
 		$stdfilterhtml = $oCustomView->getStdFilterCriteria($stdfilterlist["stdfilter"]);
 		$stdfiltercolhtml = getStdFilterHTML($cv_module, $stdfilterlist["columnname"]);
@@ -157,8 +157,8 @@ function generateSelectColumnsHTML($columnsList, $module) {
 	return $shtml;
 }
 
-function getByModule_ColumnsList($mod, $columnslist, $selected = "") {
-	global $oCustomView, $current_language, $theme;
+function getByModule_ColumnsList($mod, $columnslist, $selected = '') {
+	global $oCustomView;
 	$advfilter = array();
 	$check_dup = array();
 	foreach ($oCustomView->module_list as $module => $blks) {
@@ -192,11 +192,10 @@ function getByModule_ColumnsList($mod, $columnslist, $selected = "") {
 * $filter = Array( 0 => array('value'=>$tablename:$colname:$fieldname:$fieldlabel,'text'=>$mod_strings[$field label],'selected'=>$selected),
 *	1 => array('value'=>$$tablename1:$colname1:$fieldname1:$fieldlabel1,'text'=>$mod_strings[$field label1],'selected'=>$selected),
 */
-function getStdFilterHTML($module, $selected = "") {
-	global $current_language, $app_strings, $current_user, $oCustomView;
+function getStdFilterHTML($module, $selected = '') {
+	global $app_strings, $current_user, $oCustomView;
 	$stdfilter = array();
 	$result = $oCustomView->getStdCriteriaByModule($module);
-	$mod_strings = return_module_language($current_language, $module);
 
 	if (isset($result)) {
 		foreach ($result as $key => $value) {
@@ -204,27 +203,12 @@ function getStdFilterHTML($module, $selected = "") {
 				$value = 'Start Date';
 			}
 			$use_module_label =  getTranslatedString($module, $module);
-			if (isset($mod_strings[$value])) {
-				if ($key == $selected) {
-					$filter['value'] = $key;
-					$filter['text'] = $use_module_label." - ".getTranslatedString($value);
-					$filter['selected'] = "selected";
-				} else {
-						$filter['value'] = $key;
-						$filter['text'] = $use_module_label." - ".getTranslatedString($value);
-						$filter['selected'] ="";
-				}
+			$filter['value'] = $key;
+			$filter['text'] = $use_module_label.' - '.getTranslatedString($value, $module);
+			if ($key == $selected) {
+				$filter['selected'] = 'selected';
 			} else {
-				if ($key == $selected) {
-					$filter['value'] = $key;
-
-					$filter['text'] = $use_module_label." - ".$value;
-					$filter['selected'] = 'selected';
-				} else {
-					$filter['value'] = $key;
-					$filter['text'] = $use_module_label." - ".$value;
-					$filter['selected'] ='';
-				}
+				$filter['selected'] = '';
 			}
 			$stdfilter[]=$filter;
 			// If a user doesn't have permission for a field and it has been used to filter a custom view, it should be displayed to him as Not Accessible.

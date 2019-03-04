@@ -2,7 +2,7 @@
 /***********************************************************
 *  Module       : Accounts
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
@@ -180,10 +180,20 @@ $mod_strings = array (
 		'LBL_MAILER_EXPORT_NOTCHECKED' => 'Non sélectionné',
 		//Module Sequence Numbering
 		'Account No'=>'Compte n°',
-		// END
 
 		// Account Hierarchy
-		'LBL_SHOW_ACCOUNT_HIERARCHY' => 'Afficher la hiérarchie des comptes', 
+		'LBL_SHOW_ACCOUNT_HIERARCHY' => 'Afficher la hiérarchie des comptes',
 		'Accounts ID' => 'Compte ID',
+
+	'LBL_ONDEMAND_CONTROL_INFORMATION' => 'On Demand Control',
+	'Start Date OD' => 'On Demand Start',
+	'End Date OD' => 'On Demand End',
+	'OD Service Active' => 'On Demand Active',
+	'OD Sync Module Active' => 'On Demand Sync Active',
+	'OD Sync Modules' => 'On Demand Sync Modules',
+	'Invoice With Tax' => 'Invoice With Tax',
+	'Free Space' => 'Free Space',
+	'Space Consumed' => 'Space Consumed',
+	'Frequency' => 'Invoice Frequency',
 );
 ?>

@@ -37,11 +37,8 @@ $mod_strings = array(
 'LBL_AF_HDR3'=>'U kunt tot 10 trefwoorden invoeren gescheiden door een komma.',
 'LBL_AF_HDR4'=>'Als "Activiteit" is geselecteerd, kunt u verder kiezen uit "Telefoon","Vergadering" of "Taak".',
 
-//strings added for vtiger 5, date format...
 'LBL_NONE'=>'Geen',
-'View_Name'=>'Bekijk_naam',
 'LBL_AND'=>'En',
-'LBL_DATE_FORMAT_CUSTOMVIEW'=>'d-m-j',
 //Strings added for filter
 'Custom'=>'Standaard',
 'Previous FY'=>'Vorige FJ',
@@ -257,13 +254,10 @@ $mod_strings = array(
 'End_Date'=>'Einddatum',
 'LBL_RULE'=>'REGEL',
 
-/// Added/Updated for vtiger CRM 5.0.4
 'not equal to'=>'Niet gelijk aan',
 'starts with'=>'begint met',
 'ends with'=>'eindigt op',
 //'Product Code'=>'Product Code',
-
-// Added after 5.0.4 GA
 
 //Added for Role based Custom filters
 'LBL_SET_AS_PUBLIC'=>'Maak publiek toegankelijk ',
@@ -271,6 +265,5 @@ $mod_strings = array(
 'LBL_EDIT'=>'Bewerk',
 'LBL_STATUS_PUBLIC_APPROVE'=>'Goedkeuren',
 'LBL_STATUS_PUBLIC_DENY'=>'Verbieden',
-
 );
 ?>

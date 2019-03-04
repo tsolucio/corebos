@@ -33,9 +33,8 @@ class PreparedQMark2SqlValue {
 		/**
 		* If ? is found as expected in regex used in function convert2sql
 		* /('[^']*')|(\"[^\"]*\")|([?])/
-		*
 		*/
-		if ($matches[3]=='?') {
+		if (isset($matches[3]) && $matches[3]=='?') {
 			$this->ctr++;
 			return $this->vals[$this->ctr-1];
 		} else {
@@ -224,11 +223,11 @@ class PearDatabase {
 
 	public function println($msg) {
 		require_once 'include/logging.php';
-		$log1 = LoggerManager::getLogger('VT');
+		$log1 = LoggerManager::getLogger('DB');
 		if (is_array($msg)) {
-			$log1->info('PearDatabase ->'.print_r($msg, true));
+			$log1->info('DB >'.print_r($msg, true));
 		} else {
-			$log1->info('PearDatabase ->'.$msg);
+			$log1->info('DB >'.$msg);
 		}
 		return $msg;
 	}
@@ -260,7 +259,7 @@ class PearDatabase {
 	}
 
 	public function getDataSourceName() {
-		return 	$this->dbType. "://".$this->userName.":".$this->userPassword."@". $this->dbHostName . "/". $this->dbName;
+		return 	$this->dbType. '://'.$this->userName.':'.$this->userPassword.'@'. $this->dbHostName . '/'. $this->dbName;
 	}
 
 	public function startTransaction() {
@@ -268,7 +267,7 @@ class PearDatabase {
 			return;
 		}
 		$this->checkConnection();
-		$this->println("TRANS Started");
+		$this->println('TRANS Started');
 		$this->database->StartTrans();
 	}
 
@@ -404,11 +403,11 @@ class PearDatabase {
 		if ($this->isCacheEnabled()) {
 			$fromcache = $this->getCacheInstance()->getCacheResult($sql);
 			if ($fromcache) {
-				$log->debug("Using query result from cache: $sql");
+				$log->debug(">< query result from cache: $sql");
 				return $fromcache;
 			}
 		}
-		$log->debug('query being executed : '.$sql);
+		$log->debug('> query '.$sql);
 		$this->checkConnection();
 
 		$this->executeSetNamesUTF8SQL();
@@ -453,7 +452,7 @@ class PearDatabase {
 				$vals[$index] = 'NULL';
 			}
 		}
-		$sql = preg_replace_callback("/('[^']*')|(\"[^\"]*\")|([?])/", array(new PreparedQMark2SqlValue($vals),"call"), $ps);
+		$sql = preg_replace_callback("/('[^']*')|(\"[^\"]*\")|([?])/", array(new PreparedQMark2SqlValue($vals), 'call'), $ps);
 		return $sql;
 	}
 
@@ -472,20 +471,20 @@ class PearDatabase {
 		if ($this->isCacheEnabled()) {
 			$fromcache = $this->getCacheInstance()->getCacheResult($sql, $params);
 			if ($fromcache) {
-				$log->debug("Using query result from cache: $sql");
+				$log->debug("> pquery result from cache: $sql");
 				return $fromcache;
 			}
 		}
 		// END
-		$log->debug('Prepared sql query being executed : '.$sql);
+		$log->debug('> pquery '.$sql);
 		$this->checkConnection();
 
 		$this->executeSetNamesUTF8SQL();
 
 		$sql_start_time = microtime(true);
 		$params = $this->flatten_array($params);
-		if (count($params) > 0) {
-			$log->debug('Prepared sql query parameters : [' . implode(",", $params) . ']');
+		if (!is_null($params) && count($params) > 0) {
+			$log->debug('> pquery parameters [' . implode(',', $params) . ']');
 		}
 
 		if ($this->avoidPreparedSql || empty($params)) {
@@ -567,7 +566,7 @@ class PearDatabase {
 
 	public function limitQuery($sql, $start, $count, $dieOnError = false, $msg = '') {
 		global $log;
-		$log->debug(' limitQuery sql = '.$sql .' st = '.$start .' co = '.$count);
+		$log->debug('> limitQuery '.$sql .','.$start .','.$count);
 		$this->checkConnection();
 
 		$this->executeSetNamesUTF8SQL();
@@ -669,7 +668,7 @@ class PearDatabase {
 		if (is_array($arr)) {
 			$arr = array_map('to_html', $arr);
 		}
-			return $this->change_key_case($arr);
+		return $this->change_key_case($arr);
 	}
 
 	// adds new functions to the PearDatabase class to come around the whole broken query_result() idea
@@ -711,7 +710,7 @@ class PearDatabase {
 		if (!is_array($data)) {
 			throw new Exception('data must be an array');
 		}
-		if (!count($table)) {
+		if (!count($data)) {
 			throw new Exception('no data given');
 		}
 		$sql_fields = '';
@@ -875,9 +874,9 @@ class PearDatabase {
 
 	public function getAffectedRowCount(&$result) {
 		global $log;
-		$log->debug('getAffectedRowCount');
+		$log->debug('> getAffectedRowCount');
 		$rows =$this->database->Affected_Rows();
-		$log->debug('getAffectedRowCount rows = '.$rows);
+		$log->debug('< getAffectedRowCount '.$rows);
 		return $rows;
 	}
 
@@ -931,8 +930,6 @@ class PearDatabase {
 	}
 
 	public function getNextRow(&$result, $encode = true) {
-		global $log;
-		$log->info('getNextRow');
 		if (isset($result)) {
 			$row = $this->change_key_case($result->FetchRow());
 			if ($row && $encode && is_array($row)) {

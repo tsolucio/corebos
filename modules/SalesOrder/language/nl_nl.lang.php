@@ -1,36 +1,14 @@
 <?php
-/*******************************************************************************
- * The contents of this file are subject to the following licences:
- * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
- * - vtiger CRM Public License Version 1.0 
- * You may not use this file except in compliance with the License
- * Software distributed under the License is distributed on an  "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is: SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
- * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
- * Feel free to use / redistribute these languagefiles under the VPL 1.0.
- * This translations is based on earlier work of: 
- * - IT-Online.nl <www.it-online.nl>
- * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
 
-/*******************************************************************************
- * Vicus eBusiness Solutions Version Control
- * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.3.x
- * @author	$Author: luuk $
- * @version 	$Revision: 1.6 $ $Date: 2012/02/28 23:40:22 $
- * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/SalesOrder/language/nl_nl.lang.php,v $
- * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
- * @license	vtiger CRM Public License Version 1.0 (by definition)
- ********************************************************************************/
- 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Verkooporders',
 'LBL_SO_MODULE_NAME'=>'Verkooporder',
 'LBL_RELATED_PRODUCTS'=>'Product details',
@@ -91,7 +69,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Selecteer account',
 'LBL_GENERAL_INFORMATION'=>'Algemene informatie',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nieuwe verkoopkans',
 'LBL_POTENTIAL_TITLE'=>'Verkoopkans',
 
@@ -106,16 +83,13 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'Nieuw contact',
 'LBL_CONTACT_TITLE'=>'Contacten',
 
-//Added fields after RC1 - Release
 'LBL_ALL'=>'Alle',
 'LBL_PROSPECT'=>'Prospect',
 'LBL_INVESTOR'=>'Investeerder',
 'LBL_RESELLER'=>'Wederverkoper',
 'LBL_PARTNER'=>'Partner',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Account gereedschap',
-//Added for 4GA
 'Subject'=>'Onderwerp',
 'Quote Name'=>'Offertenaam',
 'Vendor Name'=>'Naam Leverancier',
@@ -135,7 +109,7 @@ $mod_strings = Array(
 'Shipping Address'=>'Afleveradres',
 'Billing City'=>'P Plaats',
 'Billing State'=>'P Provincie',
-'Billing Code'=>'P postcode',
+'Billing Code'=>'P Postcode',
 'Billing Country'=>'P Land',
 'Billing Po Box'=>'P Postbus',
 'Shipping Po Box'=>'A Postbus',
@@ -156,12 +130,10 @@ $mod_strings = Array(
 'Vendor Terms'=>'Voorwaarden leverancier',
 'Pending'=>'Wacht op',
 'Account Name'=>'Accountnaam',
-'Terms & Conditions'=>'Algemene Voorwaarden',
 //Quote Info
 'LBL_SO_INFORMATION'=>'Verkooporder information',
 'LBL_SO'=>'Verkooporder:',
 
- //Added for 5.0 GA
 'LBL_SO_FORM_TITLE'=>'Verkoop',
 'LBL_SUBJECT_TITLE'=>'Onderwerp',
 'LBL_VENDOR_NAME_TITLE'=>'Leveranciersnaam',
@@ -174,7 +146,6 @@ $mod_strings = Array(
 'SalesOrder'=>'Verkooporder',
 
 //Added for existing Picklist Entries
-
 'FedEx'=>'FedEx',
 'UPS'=>'UPS',
 'USPS'=>'TNT express',
@@ -187,20 +158,17 @@ $mod_strings = Array(
 'Cancelled'=>'Geannuleerd',
 'Adjustment'=>'Bijstelling',
 'Sub Total'=>'Subtotaal',
-// added by Vicus
 'AutoCreated'=>'AutoCreated',
 'Sent'=>'Verzonden',
 'Credit Invoice'=>'Creditnota',
 'Paid'=>'Betaald',
 
-//Added for Reports (5.0.4)
 'Tax Type'=>'Belastingsoort',
 'Discount Percent'=>'Kortingspercentage',
 'Discount Amount'=>'Kortingsbedrag',
 'Terms & Conditions'=>'Voorwaarden',
 'S&H Amount'=>'Handling en Verzendtoeslag',
 
-//Added after 5.0.4 GA
 'SalesOrder No'=>'Verkooporder Nr',
 
 'Recurring Invoice Information' => 'Periodiek factureren',
@@ -229,6 +197,19 @@ $mod_strings = Array(
 '4years' => '4 Years',
 '5years' => '5 Years',
 
+'LBL_SalesOrder_FINANCIALINFO' => 'Financiële informatie',
+'Gross Total' => 'Bruto totaal',
+'Total Discount' => 'Totale korting',
+'Net Total (aGD)' => 'Netto totaal na korting',
+'Net Total (bGD)' => 'Netto totaal voor korting',
+'Total Tax' => 'Totaal aan belastingen',
+'SH Total' => 'Totaal aan servicekosten',
+'SH Tax' => 'Belasting over servicekosten',
+'Final Adjustment' => 'Eindbijstelling',
+'Line Discount' => 'Regelkortingen',
+'Global Discount' => 'Totaalkorting',
+'Net Total' => 'Netto totaal voor korting',
+'VAT' => 'BTW',
+'Grand Total' => 'Eindtotaal',
 );
-
 ?>

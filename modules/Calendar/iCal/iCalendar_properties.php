@@ -1,4 +1,16 @@
-<?php // $Id: iCalendar_properties.php,v 1.13 2005/07/21 22:42:13 defacer Exp $
+<?php
+/**
+ *  BENNU - PHP iCalendar library
+ *  (c) 2005-2006 Ioannis Papaioannou (pj@moodle.org). All rights reserved.
+ *
+ *  Released under the LGPL.
+ *
+ *  See http://bennu.sourceforge.net/ for more information and downloads.
+ *
+ * @author Ioannis Papaioannou
+ * @version $Id$
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ */
 
 class iCalendar_property {
     // Properties can have parameters, but cannot have other properties or components
@@ -98,8 +110,15 @@ class iCalendar_property {
         $valarray = explode('\\,', $this->value);
 
         // Undo transparent formatting
-        $replace_function = create_function('$a', 'return rfc2445_undo_value_formatting($a, '.$this->val_type.');');
-        $valarray = array_map($replace_function, $valarray);
+        //$replace_function = create_function('$a', 'return rfc2445_undo_value_formatting($a, '.$this->val_type.');');
+        //$valarray = array_map($replace_function, $valarray);
+        $val_type = $this->val_type;
+        $valarray = array_map(
+        	function ($a) use ($val_type) {
+        		return rfc2445_undo_value_formatting($a, $val_type);
+        	},
+        	$valarray
+        );
 
         // Now, if this property cannot have multiple values, don't return as an array
         if(!$this->val_multi) {

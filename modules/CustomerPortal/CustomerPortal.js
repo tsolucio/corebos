@@ -7,7 +7,7 @@
  * All Rights Reserved.
 ********************************************************************************/
 
-function moveUp(moduleObj,sequence) {
+function moveUp(moduleObj, sequence) {
 	var oldSequence = moduleObj[sequence]['sequence'];
 	var changeSequence  = oldSequence - 1;
 
@@ -22,7 +22,7 @@ function moveUp(moduleObj,sequence) {
 	renderModuleSettings(moduleObj);
 }
 
-function moveDown(moduleObj,sequence) {
+function moveDown(moduleObj, sequence) {
 	var oldSequence = moduleObj[sequence]['sequence'];
 	var changeSequence  = parseInt(oldSequence) + 1;
 
@@ -38,25 +38,28 @@ function moveDown(moduleObj,sequence) {
 
 Object.prototype.size = function () {
 	var len = this.length ? --this.length : -1;
-	for (var k in this)
-	len++;
+	for (var k in this) {
+		len++;
+	}
 	return len;
 };
 
-function visibleValueChange(sequence,tabid,moduleObj) {
-	if(moduleObj[sequence]['sequence'] == sequence && moduleObj[sequence]['tabid'] == tabid){
-		if(moduleObj[sequence]['visible'] == 1)
+function visibleValueChange(sequence, tabid, moduleObj) {
+	if (moduleObj[sequence]['sequence'] == sequence && moduleObj[sequence]['tabid'] == tabid) {
+		if (moduleObj[sequence]['visible'] == 1) {
 			moduleObj[sequence]['visible'] = '0';
-		else
+		} else {
 			moduleObj[sequence]['visible'] = '1';
+		}
 	}
 }
 
-function prefValueChange(sequence,tabid,moduleObj) {
-	if(moduleObj[sequence]['sequence'] == sequence && moduleObj[sequence]['tabid'] == tabid){
-		if(moduleObj[sequence]['value'] == 1)
+function prefValueChange(sequence, tabid, moduleObj) {
+	if (moduleObj[sequence]['sequence'] == sequence && moduleObj[sequence]['tabid'] == tabid) {
+		if (moduleObj[sequence]['value'] == 1) {
 			moduleObj[sequence]['value'] = '0';
-		else
+		} else {
 			moduleObj[sequence]['value'] = '1';
+		}
 	}
 }

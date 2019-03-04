@@ -1,0 +1,11 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t tsolucio/corebos-formatter -f ./docker/Dockerfile .
+
+script:
+  - docker run tsolucio/corebos-formatter phpcs.phar --standard=build/cbSR/ci.xml --extensions=inc,js,php,service `cat build/cbSR/cifiles`
+  - docker run tsolucio/corebos-formatter eslint -c build/cbSR/eslintci.js `cat build/cbSR/cifilesjs`
+  - docker run tsolucio/corebos-formatter find . -not -path "./.git/*" -type f -perm /u=x,g=x,o=x -print | sort | diff build/cbSR/executables -

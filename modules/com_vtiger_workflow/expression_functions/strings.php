@@ -77,7 +77,7 @@ function __vt_uppercasewords($arr) {
 	if (count($arr)==0) {
 		return '';
 	} else {
-		return ucwords($arr[0]);
+		return ucwords(strtolower($arr[0]));
 	}
 }
 
@@ -96,5 +96,24 @@ function __cb_num2str($arr) {
 	require_once 'modules/cbtranslation/number2string.php';
 	$lang = (isset($arr[1]) ? $arr[1] : '');
 	return number2string::convert($arr[0], $lang);
+}
+
+function __cb_translate($arr) {
+	require_once 'modules/cbtranslation/cbtranslation.php';
+	return cbtranslation::get($arr[0]);
+}
+
+function __cb_hash($arr) {
+	if (count($arr)>2 || count($arr)==0) {
+		return -1;
+	} elseif (count($arr)==1) {
+		return sha1($arr[0]);
+	}
+	switch ($arr[1]) {
+		case 'md5':
+			return md5($arr[0]);
+		default:
+			return sha1($arr[0]);
+	}
 }
 ?>

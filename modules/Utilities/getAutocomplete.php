@@ -86,7 +86,7 @@ function extendFields(&$res, $data) {
 }
 
 function getAutocomplete($data, $limit, $fltr) {
-	global $adb, $log, $current_user;
+	global $current_user;
 
 	$searchinmodule = vtlib_purify($data['searchmodule']);
 	$fields = vtlib_purify($data['searchfields']);

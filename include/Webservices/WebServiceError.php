@@ -7,17 +7,16 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-require_once("include/Webservices/WebServiceErrorCode.php");
+require_once 'include/Webservices/WebServiceErrorCode.php';
 
 class WebServiceException extends Exception {
 
 	public $code;
 	public $message;
 
-	function __construct($errCode,$msg){
+	public function __construct($errCode, $msg) {
 		$this->code = $errCode;
 		$this->message = $msg;
 	}
 }
-
 ?>

@@ -1,19 +1,25 @@
 <?php
-$mod_strings = Array (
-    'Webforms' => 'Webformulare',
-    'Allows you to manage Webforms' => 'Create and manage webforms which can be used to capture Leads',
-    'LBL_SUCCESS' => 'Vielen Dank. Ihre Nachricht wurde empfangen und wird von uns umgehend bearbeitet.',
-    'LBL_FAILURE' => 'Fehler bei der Übertragung. Bitte noch einmal versuchen.',
-    'LBL_ERROR_CODE' => 'Fehlercode',
-    'LBL_ERROR_MESSAGE' => 'Fehlernachricht',
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
+ ************************************************************************************/
+$mod_strings = array (
+	'Webforms' => 'Webformulare',
+	'Allows you to manage Webforms' => 'Create and manage webforms which can be used to capture Leads',
+	'LBL_SUCCESS' => 'Vielen Dank. Ihre Nachricht wurde empfangen und wird von uns umgehend bearbeitet.',
+	'LBL_FAILURE' => 'Fehler bei der Übertragung. Bitte noch einmal versuchen.',
+	'LBL_ERROR_CODE' => 'Fehlercode',
+	'LBL_ERROR_MESSAGE' => 'Fehlernachricht',
 	'LBL_WEBFORM_NAME'=>'Webformular Name',
 	'LBL_DESCRIPTION'=>'Beschreibung',
 	'LBL_MODULE'=>'Modul',
 	'LBL_RETURNURL'=>'Return URL',
 	'LBL_ACTION'=>'Aktion',
 	'LBL_ASSIGNED_TO'=>'zuständig',
-	'LBL_EDIT'=>'bearbeiten',
-	'LBL_DELETE'=>'löschen',
 	'LBL_SOURCE'=>'zeige Formular',
 	'LBL_MODULE_INFORMATION'=>'Webformular Information',
 	'LBL_FIELD_INFORMATION'=>'Feldinformation',
@@ -40,5 +46,4 @@ $mod_strings = Array (
 	'LBL_WEB_DOMAIN' => 'Web Domain',
 	'LBL_CREATENEW' => 'You can Create a Webform Now. Click the link below',
 );
-
 ?>

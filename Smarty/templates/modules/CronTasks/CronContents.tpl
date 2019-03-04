@@ -10,14 +10,14 @@
 -->*}
 <table width="100%" cellpadding="5" cellspacing="0" class="listTable" >
 	<tr>
-	<td class="colHeader small" width="5%">#</td>
-	<td class="colHeader small" width="20%">{'Cron Job'|@getTranslatedString:'CronTasks'}</td>
-	<td class="colHeader small" width="11%">{$MOD.LBL_FREQUENCY}{$MOD.LBL_HOURMIN}</td>
-	<td class="colHeader small" width="9%">{$CMOD.LBL_STATUS}</td>
-	<td class="colHeader small" width="20%">{$MOD.LAST_START}</td>
-	<td class="colHeader small" width="20%">{$MOD.LAST_END}</td>
-	<td class="colHeader small" width='10%'>{$MOD.LBL_SEQUENCE}</td>
-	<td class="colHeader small" width="5%">{$MOD.LBL_TOOLS}</td>
+	<td class="colHeader small cblds-p-v_mediumsmall" width="5%">#</td>
+	<td class="colHeader small cblds-p-v_mediumsmall" width="20%">{'Cron Job'|@getTranslatedString:'CronTasks'}</td>
+	<td class="colHeader small cblds-p-v_mediumsmall" width="11%">{$MOD.LBL_FREQUENCY}{$MOD.LBL_HOURMIN}</td>
+	<td class="colHeader small cblds-p-v_mediumsmall" width="9%">{$CMOD.LBL_STATUS}</td>
+	<td class="colHeader small cblds-p-v_mediumsmall" width="20%">{$MOD.LAST_START}</td>
+	<td class="colHeader small cblds-p-v_mediumsmall" width="20%">{$MOD.LAST_END}</td>
+	<td class="colHeader small cblds-p-v_mediumsmall" width='10%'>{$MOD.LBL_SEQUENCE}</td>
+	<td class="colHeader small cblds-p-v_mediumsmall" width="5%">{$MOD.LBL_TOOLS}</td>
 	</tr>
 	{foreach name=cronlist item=elements from=$CRON}
 	<tr>

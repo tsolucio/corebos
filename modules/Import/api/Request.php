@@ -7,21 +7,20 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
 require_once 'modules/Import/api/UserInput.php';
 
 class Import_API_Request extends Import_API_UserInput {
 
-	function get($key) {
-		if(isset($this->valuemap[$key])) {
+	public function get($key) {
+		if (isset($this->valuemap[$key])) {
 			$value = $this->valuemap[$key];
-			if(json_decode($value) != null) {
-				$value = json_decode($value,true);
+			if (json_decode($value) != null) {
+				$value = json_decode($value, true);
 			}
 
-			if(is_array($value)) {
+			if (is_array($value)) {
 				$purifiedValue = array();
-				foreach($value as $key => $val) {
+				foreach ($value as $key => $val) {
 					$purifiedValue[$key] = vtlib_purify($val);
 				}
 			} else {
@@ -32,10 +31,10 @@ class Import_API_Request extends Import_API_UserInput {
 		return '';
 	}
 
-	function getString($key) {
-		if(isset($this->valuemap[$key])) {
+	public function getString($key) {
+		if (isset($this->valuemap[$key])) {
 			$value = $this->valuemap[$key];
-			if(json_decode($value) != null) {
+			if (json_decode($value) != null) {
 				return $this->valuemap[$key];
 			} else {
 				return vtlib_purify($this->valuemap[$key]);

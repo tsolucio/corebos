@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('Smarty_setup.php');
+require_once 'Smarty_setup.php';
 
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
@@ -15,21 +15,24 @@ $smarty = new vtigerCRM_Smarty();
 
 require_once 'modules/Vtiger/DetailView.php';
 
-$pdochk = $adb->pquery('select 1
-	from '.$focus->table_name.'
-	inner join vtiger_inventoryproductrel on '.$focus->table_index.'=id
-	inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
-	where vtiger_crmentity.deleted = 1 and '.$focus->table_index.'=?',array($record));
+$pdochk = $adb->pquery(
+	'select 1
+		from '.$focus->table_name.'
+		inner join vtiger_inventoryproductrel on '.$focus->table_index.'=id
+		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_inventoryproductrel.productid
+		where vtiger_crmentity.deleted = 1 and '.$focus->table_index.'=?',
+	array($record)
+);
 if ($adb->num_rows($pdochk)>0) {
 	$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
-	$smarty->assign('ERROR_MESSAGE', getTranslatedString('DeletedProducts',$currentModule));
+	$smarty->assign('ERROR_MESSAGE', getTranslatedString('DeletedProducts', $currentModule));
 }
 
 //Get the associated Products and then display above Terms and Conditions
-$smarty->assign('ASSOCIATED_PRODUCTS',getDetailAssociatedProducts($currentModule,$focus));
-$smarty->assign('CREATEPDF','permitted');
-$purchaseorder_no = getModuleSequenceNumber($currentModule,$record);
-$smarty->assign('PO_NO',$purchaseorder_no);
+$smarty->assign('ASSOCIATED_PRODUCTS', getDetailAssociatedProducts($currentModule, $focus));
+$smarty->assign('CREATEPDF', 'permitted');
+$purchaseorder_no = getModuleSequenceNumber($currentModule, $record);
+$smarty->assign('PO_NO', $purchaseorder_no);
 
-$smarty->display('Inventory/InventoryDetailView.tpl');
+$smarty->display('DetailView.tpl');
 ?>

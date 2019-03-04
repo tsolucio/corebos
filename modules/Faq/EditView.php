@@ -9,10 +9,10 @@
  ************************************************************************************/
 require_once 'modules/Vtiger/EditView.php';
 
-if(!empty($_REQUEST['record'])) {
+if (!empty($_REQUEST['record'])) {
 	//Added to display the Faq comments information
-	$smarty->assign("COMMENT_BLOCK",$focus->getFAQComments($_REQUEST['record']));
+	$smarty->assign('COMMENT_BLOCK', $focus->getFAQComments($_REQUEST['record']));
 }
 
-$smarty->display("salesEditView.tpl");
+$smarty->display('salesEditView.tpl');
 ?>

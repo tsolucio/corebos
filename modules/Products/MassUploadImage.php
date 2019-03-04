@@ -17,14 +17,14 @@
  *  Version      : 1.0
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-require_once('Smarty_setup.php');
+require_once 'Smarty_setup.php';
 
 global $current_language, $currentModule, $theme, $adb;
 
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
 $smarty = new vtigerCRM_Smarty;
-$smarty->assign('ID',vtlib_purify($_REQUEST['record']));
+$smarty->assign('ID', vtlib_purify($_REQUEST['record']));
 
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);

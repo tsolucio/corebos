@@ -9,8 +9,8 @@
  ********************************************************************************/
 
 /** Class to retreive all the Parent Groups of the specified Group */
-require_once('include/utils/UserInfoUtil.php');
-require_once('include/utils/GetParentGroups.php');
+require_once 'include/utils/UserInfoUtil.php';
+require_once 'include/utils/GetParentGroups.php';
 
 class GetUserGroups {
 
@@ -23,7 +23,7 @@ class GetUserGroups {
 	 */
 	public function getAllUserGroups($userid) {
 		global $adb, $log;
-		$log->debug("Entering getAllUserGroups($userid) method...");
+		$log->debug('> getAllUserGroups '.$userid);
 		//Retreiving from the user2grouptable
 		$query='select groupid from vtiger_users2group where userid=?';
 		$result = $adb->pquery($query, array($userid));
@@ -73,7 +73,7 @@ class GetUserGroups {
 				}
 			}
 		}
-		$log->debug('Exiting getAllUserGroups method...');
+		$log->debug('< getAllUserGroups');
 	}
 }
 ?>

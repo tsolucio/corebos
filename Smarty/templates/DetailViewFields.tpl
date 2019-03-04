@@ -21,7 +21,7 @@
 					<span id="dtlview_{$label}">{$keyval}</span>
 				{/if}
 
-				{if $keyid eq '71' && $keyfldname eq 'unit_price'}
+				{if $keyid eq '72' && $keyfldname eq 'unit_price'}
 					{if $PRICE_DETAILS|@count > 0}
 						<span id="multiple_currencies" width="38%" style="align:right;">
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="toggleShowHide('currency_class','multiple_currencies');">{$APP.LBL_MORE_CURRENCIES} &raquo;</a>
@@ -33,8 +33,8 @@
 								<th colspan="2">
 									<b>{$MOD.LBL_PRODUCT_PRICES}</b>
 								</th>
-								<th align="right">
-									<img border="0" style="cursor: pointer;" onclick="toggleShowHide('multiple_currencies','currency_class');" src="{'close.gif'|@vtiger_imageurl:$THEME}"/>
+								<th class='cblds-t-align--right' style="text-align:right;">
+									<img border="0" style="cursor: pointer;" onclick="toggleShowHide('multiple_currencies','currency_class');event.stopPropagation();" src="{'close.gif'|@vtiger_imageurl:$THEME}"/>
 								</th>
 							</tr>
 							<tr class="detailedViewHeader">
@@ -111,7 +111,7 @@
 			</td>
 		{elseif $keyid eq '21' || $keyid eq '24' || $keyid eq '22'} <!--TextArea/Street-->
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<span id="dtlview_{$label}" style="word-break:break-word;">{$keyval}</span></td>
-		{elseif $keyid eq '73' || $keyid eq '51' || $keyid eq '57' || $keyid eq '75' || $keyid eq '81' || $keyid eq '76' || $keyid eq '78' || $keyid eq '80'}
+		{elseif $keyid eq '73' || $keyid eq '51' || $keyid eq '57' || $keyid eq '76' || $keyid eq '78' || $keyid eq '80'}
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="vtlib_listview.trigger('cell.onmouseover', this);" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">&nbsp;<a href="{$keyseclink}">{$keyval}</a></td>
 		{elseif $keyid eq 82} <!--Email Body-->
 			<td colspan="3" width=100% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;{$keyval}</td>

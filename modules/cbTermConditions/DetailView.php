@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('Smarty_setup.php');
+require_once 'Smarty_setup.php';
 
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 

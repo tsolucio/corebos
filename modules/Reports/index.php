@@ -8,8 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 global $theme, $mod_strings;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
-
-include ('modules/Reports/ListView.php');
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
+include 'modules/Reports/ListView.php';
 ?>

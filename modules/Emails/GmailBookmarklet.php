@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*************************************************************************************************
  * Copyright 2017 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
  * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
@@ -13,12 +13,12 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-require_once('Smarty_setup.php');
+require_once 'Smarty_setup.php';
 
 global $log, $app_strings, $mod_strings, $currentModule, $theme, $site_URL;
 
 $smarty = new vtigerCRM_Smarty;
-include('modules/cbupdater/forcedButtons.php');
+include 'modules/cbupdater/forcedButtons.php';
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('CUSTOM_MODULE', true);
 $smarty->assign('APP', $app_strings);
@@ -28,10 +28,9 @@ $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('CATEGORY', getParentTab($currentModule));
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('THEME', $theme);
-$gmailBookmarklet = sprintf("javascript:(%s)();",
-	"function()%7Bvar%20doc=document;var%20bodyElement=document.body;doc.vtigerURL=%22$site_URL/%22;" .
+$gmailBookmarklet = "javascript:(function()%7Bvar%20doc=document;var%20bodyElement=document.body;doc.vtigerURL=%22$site_URL/%22;".
 	"var%20scriptElement=document.createElement(%22script%22);scriptElement.type=%22text/javascript%22;".
-	"scriptElement.src=doc.vtigerURL+%22modules/Emails/GmailBookmarkletTrigger.js%22;bodyElement.appendChild(scriptElement);%7D");
+	"scriptElement.src=doc.vtigerURL+%22modules/Emails/GmailBookmarkletTrigger.js%22;bodyElement.appendChild(scriptElement);%7D)();";
 $smarty->assign('GMAIL_BOOKMARKLET', $gmailBookmarklet);
 $smarty->display('modules/Emails/index.tpl');
 ?>

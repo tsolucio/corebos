@@ -172,5 +172,4 @@ $mod_strings = array(
 'SINGLE_PurchaseOrder'=>'Purchase Order',
 'PurchaseOrder ID'=>'Purchase Order ID',
 );
-
 ?>

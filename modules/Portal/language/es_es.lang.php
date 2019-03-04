@@ -14,7 +14,7 @@
 *  Author       : Joe Bordes
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_BOOKMARKED_URL'=>"Marcadores Favoritos",
 'LBL_MANAGE_BOOKMARKS'=>'Administrar Marcadores',
 'LBL_BOOKMARK_LIST'=>'Lista de Favoritos',

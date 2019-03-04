@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Products',
 'SINGLE_Products'=>'Product',
 'LBL_LIST_PRODUCT_NAME'=>'Product Name',
@@ -22,7 +22,6 @@ $mod_strings = Array(
 'LBL_VENDOR_INFORMATION'=>'Vendor Information:',
 'LBL_PRICEBOOK_INFORMATION'=>'Price Book Information:',
 'LBL_VENDOR_ADDRESS_INFORMATION'=>'Address Information:',
-'LBL_DESCRIPTION_INFORMATION'=>'Description Name:',
 'LBL_PRICING_INFORMATION'=>'Pricing Information:',
 'LBL_STOCK_INFORMATION'=>'Stock Information:',
 'LBL_LIST_FORM_TITLE'=>'Product List',
@@ -44,7 +43,6 @@ $mod_strings = Array(
 'LBL_CUSTOM_INFORMATION'=>'Custom Information',
 'LBL_DESCRIPTION_INFORMATION'=>'Description Information',
 
-//New entry
 'LBL_UPLOAD'=>'Upload File',
 
 'LBL_PRODUCT'=>'Product',
@@ -56,7 +54,6 @@ $mod_strings = Array(
 'LBL_DESCRIPTION'=>'Description',
 'LBL_FILE'=>'File Name',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'New Opportunity',
 'LBL_POTENTIAL_TITLE'=>'Opportunities',
 
@@ -72,14 +69,12 @@ $mod_strings = Array(
 'LBL_NEW_ATTACHMENT'=>'New Attachment',
 'LBL_ATTACHMENT_TITLE'=>'Attachments',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_MANUFACTURER'=>'Manufacturer',
 'LBL_PRODUCTCATEGORY'=>'Product Category',
 'LBL_SUPPORT_START_DATE'=>'Support Start Date',
 'LBL_SUPPORT_EXPIRY_DATE'=>'Support Expiry Date',
 'LBL_PURCHASE_DATE'=>'Purchase Date',
 
-//Added for 4GA
 'Product Name'=>'Product Name',
 //'Product Code'=>'Part Number',
 'Part Number'=>'Part Number',
@@ -130,10 +125,8 @@ $mod_strings = Array(
 
 //Mapping for price book
 'Price Book Name'=>'Price Book Name',
-'Product Name'=>'Product Name',
 'Active'=>'Active',
 
-//Added for 4.2 Release -- CustomView
 'LBL_ALL'=>'All',
 'LBL_VENDOR_SEARCH_FORM_TITLE'=>'Vendor Search',
 'LBL_PRICEBOOK_SEARCH_FORM_TITLE'=>'PriceBook Search',
@@ -152,7 +145,6 @@ $mod_strings = Array(
 'LBL_ADD_PRODUCT_PRICEBOOKS'=>'Add Product to PriceBooks',
 'LBL_ADD_PRODUCTS_PRICEBOOK'=>'Add Products to PriceBook',
 
-//Added for 4.2 patch2 release
 'LBL_MAXIMUM_LIMIT_ERROR'=>'Sorry, the uploaded file exceeds the maximum file size limit. Please try a file smaller than 800000 bytes',
 'LBL_UPLOAD_ERROR'=>'Problems in file upload. Please try again!',
 'LBL_IMAGE_ERROR'=>'The given file is not of type image(.gif/.jpg/.png)',
@@ -161,10 +153,7 @@ $mod_strings = Array(
 'Product'=>'Product',
 'LBL_EDITLISTPRICE'=>'EditListPrice',
 
-//Added for existing picklist entries
-
 '--None--'=>'--None--',
-
 'Hardware'=>'Hardware',
 'Software'=>'Software',
 'CRM Applications'=>'CRM Applications',
@@ -181,7 +170,6 @@ $mod_strings = Array(
 
 'Box'=>'Box',
 'Carton'=>'Carton',
-'Caton'=>'Caton',
 'Dozen'=>'Dozen',
 'Each'=>'Each',
 'Hours'=>'Hours',
@@ -197,7 +185,6 @@ $mod_strings = Array(
 'Spiral Binder'=>'Spiral Binder',
 'Sq Ft'=>'Sq Ft',
 
-//Added for 5.0.3
 'MSG_STOCK_LEVEL'=>'Stock Level is Low',
 'MSG_DEAR'=>'Dear',
 'MSG_CURRENT_STOCK'=>'The current stock of',
@@ -206,14 +193,11 @@ $mod_strings = Array(
 'MSG_SEVERITY'=>'Severity: Major',
 'MSG_THANKS'=>'Thanks,',
 
-// Added after 5.0.4 GA
-
 'LBL_PRODUCT_PRICES'=>'Product Prices',
 'Member Of'=>'Member Of',
 
 // Module Sequence Numbering
 'Product No' => 'Product No',
-// END
 
 'LBL_NO_TAXES_ASSOCIATED'=>'No taxes associated with this product',
 'Parent Product' => 'Parent Product',
@@ -222,6 +206,6 @@ $mod_strings = Array(
 'Divisible' => 'Divisible',
 'DIVISIBLE_WARNING' => 'can only be sold in multiplies of one',
 'DIVISIBLE_WARNING_PURCHASE' => 'can only be purchased in multiplies of one',
+'IS_DISCONTINUED' => 'is discontinued',
 );
-
 ?>

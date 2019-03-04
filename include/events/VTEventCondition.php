@@ -10,7 +10,7 @@
 
 class VTEventCondition {
 
-	function __construct($expr) {
+	public function __construct($expr) {
 		if ($expr!='') {
 			$parser = $this->getParser($expr);
 			$this->expr = $parser->statement();
@@ -19,7 +19,7 @@ class VTEventCondition {
 		}
 	}
 
-	function test($obj) {
+	public function test($obj) {
 		$this->data = $obj;
 		if ($this->expr==null) {
 			return true;
@@ -28,15 +28,15 @@ class VTEventCondition {
 		}
 	}
 
-	private function getParser($expr){
+	private function getParser($expr) {
 		$ass = new ANTLRStringStream($expr);
 		$lex = new VTEventConditionParserLexer($ass);
 		$cts = new CommonTokenStream($lex);
 		return new VTEventConditionParserParser($cts);
 	}
 
-	private function evaluate($expr){
-		if(is_array($expr)){
+	private function evaluate($expr) {
+		if (is_array($expr)) {
 			$oper = $expr[0];
 			if ($oper=='.') {
 				$out = $this->data;
@@ -47,12 +47,12 @@ class VTEventCondition {
 				return $out;
 			} else {
 				$evaled = array_map(array($this, 'evaluate'), array_slice($expr, 1));
-				switch($oper){
-					case "in":
+				switch ($oper) {
+					case 'in':
 						return in_array($evaled[0], $evaled[1]);
-					case "==":
+					case '==':
 						return $evaled[0] == $evaled[1];
-					case "list":
+					case 'list':
 						return $evaled;
 					default:
 						return false;
@@ -71,7 +71,7 @@ class VTEventCondition {
 		if (is_array($obj)) {
 			return $obj[$field];
 		} else {
-			$func = "get".ucwords($field);
+			$func = 'get'.ucwords($field);
 			if (method_exists($obj, $func)) {
 				return $obj->$func();
 			} else {

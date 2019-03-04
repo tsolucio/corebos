@@ -13,24 +13,13 @@
 	<tr>
 		<td align="left">
 			{$RELATEDLISTDATA.navigation.0}
-			{if $MODULE eq 'Campaigns' && ($RELATED_MODULE eq 'Contacts' || $RELATED_MODULE eq 
-				'Leads' || $RELATED_MODULE eq 'Accounts') && $RELATEDLISTDATA.entries|@count > 0}
+			{if $MODULE eq 'Campaigns' && ($RELATED_MODULE eq 'Contacts' || $RELATED_MODULE eq 'Leads'
+				|| $RELATED_MODULE eq 'Accounts') && $RELATEDLISTDATA.entries|@count > 0}
 			{/if}
 		</td>
 		<td align="center">{$RELATEDLISTDATA.navigation.1} </td>
 		<td align="right">
 			{if isset($RELATEDLISTDATA.CUSTOM_BUTTON)}{$RELATEDLISTDATA.CUSTOM_BUTTON}{/if}
-
-			{if $HEADER eq 'Contacts' && $MODULE neq 'Campaigns' && $MODULE neq 'Accounts' && $MODULE neq 'Potentials' && $MODULE neq 'Products' && $MODULE neq 'Vendors'}
-				{if $MODULE eq 'Calendar'}
-					<input alt="{$APP.LBL_SELECT_CONTACT_BUTTON_LABEL}" title="{$APP.LBL_SELECT_CONTACT_BUTTON_LABEL}" accessKey="" class="crmbutton small edit" value="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.Contacts}" onclick='return window.open("index.php?module=Contacts&return_module={$MODULE}&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid={$ID}{$search_string}","test","width=640,height=602,resizable=0,scrollbars=0");' type="button"  name="button"></td>
-				{elseif $MODULE neq 'Services'}
-					<input type='hidden' name='createmode' value='link' />
-					<input title="{$APP.LBL_ADD_NEW} {$APP.Contact}" accessyKey="F" class="crmbutton small create" onclick="this.form.action.value='EditView';this.form.module.value='Contacts'" type="submit" name="button" value="{$APP.LBL_ADD_NEW} {$APP.Contact}"></td>
-				{/if}
-			{elseif $HEADER eq 'Users' && $MODULE eq 'Calendar'}
-				<input title="Change" accessKey="" tabindex="2" type="button" class="crmbutton small edit" value="{$APP.LBL_SELECT_USER_BUTTON_LABEL}" name="button" onclick='return window.open("index.php?module=Users&return_module=Calendar&return_action={$return_modname}&activity_mode=Events&action=Popup&popuptype=detailview&form=EditView&form_submit=true&select=enable&return_id={$ID}&recordid={$ID}","test","width=640,height=525,resizable=0,scrollbars=0")';>
-			{/if}
 		</td>
 	</tr>
 </table>
@@ -70,6 +59,6 @@
 	{/foreach}
 </table>
 {if $MODULE eq 'Campaigns' && ($RELATED_MODULE eq 'Contacts' || $RELATED_MODULE eq 'Leads' || $RELATED_MODULE eq 'Accounts')
-			&& $RELATEDLISTDATA.entries|@count > 0 && $RESET_COOKIE eq 'true'}
-			<script type='text/javascript'>set_cookie('{$RELATED_MODULE}_all', '');</script>
+	&& $RELATEDLISTDATA.entries|@count > 0 && $RESET_COOKIE eq 'true'}
+		<script type='text/javascript'>set_cookie('{$RELATED_MODULE}_all', '');</script>
 {/if}

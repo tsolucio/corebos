@@ -88,12 +88,9 @@ $mod_strings = array(
 'File Name'=>'Nome File',
 'File Type'=>'Tipo File',
 'File Size'=>'Dimensione',
-'LBL_INTERNAL'=>'Interno',
 'LBL_URL'=>'URL',
-'LBL_EXTERNAL'=>'Esterno',
 'LBL_EXTERNAL_LNK'=>'Link Esterno',
 'LBL_ACTIVE'=>'Attivo',
-'LBL_INACTIVE'=>'Inattivo',
 'LBL_PLATFORM_INDEPENDENT'=>'Piattaforma Dipendente',
 'LNK_DOWNLOAD'=>'Scarica',
 'LBL_MOVE_DOCUMENTS'=>'Sposta Documento/i',
@@ -104,7 +101,6 @@ $mod_strings = array(
 'Download Count'=>'Contatore Download',
 'Platform'=>'Piattaforma',
 'Assigned To'=>'Assegnato a',
-'Document No' => 'Nr. Documento',
 
 'LBL_EMPTY_FOLDERS' => 'Cartelle Vuote',
 'LBL_VIEW_EMPTY_FOLDERS' => 'Visualizza Cartelle Vuote',
@@ -132,5 +128,4 @@ $mod_strings = array(
 'NewSize' => 'New Size',
 'accept_charge' => 'I accept the license change and the associated charge it may have',
 );
-
 ?>

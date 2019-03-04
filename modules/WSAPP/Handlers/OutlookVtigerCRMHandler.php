@@ -10,48 +10,49 @@
 require_once 'modules/WSAPP/Handlers/vtigerCRMHandler.php';
 require_once 'include/utils/GetUserGroups.php';
 
-class OutlookVtigerCRMHandler extends vtigerCRMHandler{
+class OutlookVtigerCRMHandler extends vtigerCRMHandler {
 
-	public function translateReferenceFieldNamesToIds($entityRecords,$user){
+	public function translateReferenceFieldNamesToIds($entityRecords, $user) {
 		$entityRecordList = array();
-		foreach ($entityRecords as $index=>$record) {
+		foreach ($entityRecords as $index => $record) {
 			$entityRecordList[$record['module']][$index] = $record;
 		}
-		foreach ($entityRecordList as $module=>$records) {
+		foreach ($entityRecordList as $module => $records) {
 			$handler = vtws_getModuleHandlerFromName($module, $user);
 			$meta = $handler->getMeta();
 			$referenceFieldDetails = $meta->getReferenceFieldDetails();
 
-			foreach ($referenceFieldDetails as $referenceFieldName=>$referenceModuleDetails) {
+			foreach ($referenceFieldDetails as $referenceFieldName => $referenceModuleDetails) {
 				$recordReferenceFieldNames = array();
-				foreach ($records as $index=>$recordDetails) {
+				foreach ($records as $index => $recordDetails) {
 					if (!empty($recordDetails[$referenceFieldName])) {
 						$recordReferenceFieldNames[] = $recordDetails[$referenceFieldName];
 					}
 				}
 				$entityNameIds = wsapp_getRecordEntityNameIds(array_values($recordReferenceFieldNames), $referenceModuleDetails, $user);
-				if (is_array($entityNameIds))
+				if (is_array($entityNameIds)) {
 					$entityNameIds = array_change_key_case($entityNameIds, CASE_LOWER);
-				foreach($records as $index=>$recordInfo){
+				}
+				foreach ($records as $index => $recordInfo) {
 					if (!empty($entityNameIds[strtolower($recordInfo[$referenceFieldName])])) {
 						$recordInfo[$referenceFieldName] = $entityNameIds[strtolower($recordInfo[$referenceFieldName])];
 					} else {
 						if ($referenceFieldName == 'account_id') {
-							if ($recordInfo[$referenceFieldName]!=NULL) {
+							if ($recordInfo[$referenceFieldName]!=null) {
 								$element['accountname'] = $recordInfo[$referenceFieldName];
 								$element['assigned_user_id'] = vtws_getWebserviceEntityId('Users', $user->id);
-								$element['module'] = "Accounts";
+								$element['module'] = 'Accounts';
 								$createRecord= array($element);
 								$createRecord = $this->fillNonExistingMandatoryPicklistValues($createRecord);
 								$createRecord = $this->fillMandatoryFields($createRecord, $user);
-								foreach ($createRecord as $key => $record) {
+								foreach ($createRecord as $record) {
 									vtws_create($record['module'], $record, $user);
 								}
 								$entityNameIds = wsapp_getRecordEntityNameIds(array_values($recordReferenceFieldNames), $referenceModuleDetails, $user);
-								$recordInfo[$referenceFieldName] = $entityNameIds[$recordInfo[$referenceFieldName]];;
+								$recordInfo[$referenceFieldName] = $entityNameIds[$recordInfo[$referenceFieldName]];
 							}
 						} else {
-							$recordInfo[$referenceFieldName] = "";
+							$recordInfo[$referenceFieldName] = '';
 						}
 					}
 					$records[$index] = $recordInfo;
@@ -61,8 +62,8 @@ class OutlookVtigerCRMHandler extends vtigerCRMHandler{
 		}
 
 		$crmRecords = array();
-		foreach ($entityRecordList as $module=>$entityRecords) {
-			foreach ($entityRecords as $index=>$record) {
+		foreach ($entityRecordList as $module => $entityRecords) {
+			foreach ($entityRecords as $index => $record) {
 				$crmRecords[$index] = $record;
 			}
 		}
@@ -73,7 +74,6 @@ class OutlookVtigerCRMHandler extends vtigerCRMHandler{
 	* Function overriden to handle duplication
 	*/
 	public function put($recordDetails, $user) {
-		global $log;
 		$this->user = $user;
 		$recordDetails = $this->syncToNativeFormat($recordDetails);
 		$createdRecords = $recordDetails['created'];
@@ -96,7 +96,7 @@ class OutlookVtigerCRMHandler extends vtigerCRMHandler{
 		$crmIds = array();
 
 		foreach ($updatedRecords as $index => $record) {
-			$webserviceRecordId = $record["id"];
+			$webserviceRecordId = $record['id'];
 			$recordIdComp = vtws_getIdComponents($webserviceRecordId);
 			$crmIds[] = $recordIdComp[1];
 		}
@@ -108,19 +108,19 @@ class OutlookVtigerCRMHandler extends vtigerCRMHandler{
 				$getUserGroups = new GetUserGroups();
 				$getUserGroups->getAllUserGroups($this->user->id);
 				$groupIds = $getUserGroups->user_groups;
-				if(!empty($groupIds)){
+				if (!empty($groupIds)) {
 					$groupRecordId = wsapp_checkIfRecordsAssignToUser($crmIds, $groupIds);
 					$assignedRecordIds = array_merge($assignedRecordIds, $groupRecordId);
 				}
 			}
 		}
 		foreach ($updatedRecords as $index => $record) {
-			$webserviceRecordId = $record["id"];
+			$webserviceRecordId = $record['id'];
 			$recordIdComp = vtws_getIdComponents($webserviceRecordId);
 			try {
 				if (in_array($recordIdComp[1], $assignedRecordIds)) {
 					$updatedRecords[$index] = vtws_revise($record, $this->user);
-				} else if (!$this->isClientUserSyncType()) {
+				} elseif (!$this->isClientUserSyncType()) {
 					$updatedRecords[$index] = vtws_revise($record, $this->user);
 				} else {
 					$this->assignToChangedRecords[$index] = $record;
@@ -129,7 +129,7 @@ class OutlookVtigerCRMHandler extends vtigerCRMHandler{
 				continue;
 			}
 			// Added to handle duplication
-			if($record['duplicate']){
+			if ($record['duplicate']) {
 				$updatedRecords[$index]['duplicate'] = true;
 			}
 		}
@@ -144,7 +144,7 @@ class OutlookVtigerCRMHandler extends vtigerCRMHandler{
 
 		// To get record id's assigned to group of the current user
 		if ($this->isClientUserAndGroupSyncType()) {
-			if(!empty($groupIds)){
+			if (!empty($groupIds)) {
 				foreach ($groupIds as $group) {
 					$groupRecordId = wsapp_checkIfRecordsAssignToUser($deletedCrmIds, $group);
 					$assignedDeletedRecordIds = array_merge($assignedDeletedRecordIds, $groupRecordId);
@@ -176,5 +176,4 @@ class OutlookVtigerCRMHandler extends vtigerCRMHandler{
 		return $this->nativeToSyncFormat($recordDetails);
 	}
 }
-
 ?>

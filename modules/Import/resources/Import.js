@@ -11,29 +11,29 @@ if (typeof(ImportJs) == 'undefined') {
 	/*
 	 * Namespaced javascript class for Import
 	 */
-	ImportJs = {
+	var ImportJs = {
 
-		toogleMergeConfiguration: function() {
+		toogleMergeConfiguration: function () {
 			var mergeChecked = jQuery('#auto_merge').is(':checked');
-			if(mergeChecked) {
+			if (mergeChecked) {
 				jQuery('#duplicates_merge_configuration').show();
 			} else {
 				jQuery('#duplicates_merge_configuration').hide();
 			}
 		},
 
-		checkFileType: function() {
+		checkFileType: function () {
 			var filePath = jQuery('#import_file').val();
-			if(filePath != '') {
+			if (filePath != '') {
 				var fileExtension = filePath.split('.').pop();
 				jQuery('#type').val(fileExtension);
 				ImportJs.handleFileTypeChange();
 			}
 		},
 
-		handleFileTypeChange: function() {
+		handleFileTypeChange: function () {
 			var fileType = jQuery('#type').val();
-			if(fileType != 'csv') {
+			if (fileType != 'csv') {
 				jQuery('#delimiter_container').hide();
 				jQuery('#has_header_container').hide();
 			} else {
@@ -42,34 +42,38 @@ if (typeof(ImportJs) == 'undefined') {
 			}
 		},
 
-		uploadAndParse: function() {
-			if(!ImportJs.validateFilePath()) return false;
-			if(!ImportJs.validateMergeCriteria()) return false;
+		uploadAndParse: function () {
+			if (!ImportJs.validateFilePath()) {
+				return false;
+			}
+			if (!ImportJs.validateMergeCriteria()) {
+				return false;
+			}
 			return true;
 		},
 
-		validateFilePath: function() {
+		validateFilePath: function () {
 			var filePath = jQuery('#import_file').val();
-			if(jQuery.trim(filePath) == '') {
+			if (jQuery.trim(filePath) == '') {
 				alert('Import File '+alert_arr.CANNOT_BE_EMPTY);
 				jQuery('#import_file').focus();
 				return false;
 			}
-			if(!ImportJs.uploadFilter("import_file", "csv|vcf")) {
+			if (!ImportJs.uploadFilter('import_file', 'csv|vcf')) {
 				return false;
 			}
 			return true;
 		},
 
-		uploadFilter: function(elementId, allowedExtensions) {
+		uploadFilter: function (elementId, allowedExtensions) {
 			var obj = jQuery('#'+elementId);
-			if(obj) {
+			if (obj) {
 				var filePath = obj.val();
 				var fileParts = filePath.toLowerCase().split('.');
 				var fileType = fileParts[fileParts.length-1];
 				var validExtensions = allowedExtensions.toLowerCase().split('|');
 
-				if(validExtensions.indexOf(fileType) < 0) {
+				if (validExtensions.indexOf(fileType) < 0) {
 					alert(alert_arr.PLS_SELECT_VALID_FILE+' '+validExtensions);
 					obj.focus();
 					return false;
@@ -78,11 +82,11 @@ if (typeof(ImportJs) == 'undefined') {
 			return true;
 		},
 
-		validateMergeCriteria: function() {
-			$mergeChecked = jQuery('#auto_merge').is(':checked');
-			if($mergeChecked) {
+		validateMergeCriteria: function () {
+			var mergeChecked = jQuery('#auto_merge').is(':checked');
+			if (mergeChecked) {
 				var selectedOptions = jQuery('#selected_merge_fields option');
-				if(selectedOptions.length == 0) {
+				if (selectedOptions.length == 0) {
 					alert(alert_arr.ERR_SELECT_ATLEAST_ONE_MERGE_CRITERIA_FIELD);
 					return false;
 				}
@@ -91,35 +95,39 @@ if (typeof(ImportJs) == 'undefined') {
 			return true;
 		},
 
-		sanitizeAndSubmit: function() {
-			if(!ImportJs.sanitizeFieldMapping()) return false;
-			if(!ImportJs.validateCustomMap()) return false;
+		sanitizeAndSubmit: function () {
+			if (!ImportJs.sanitizeFieldMapping()) {
+				return false;
+			}
+			if (!ImportJs.validateCustomMap()) {
+				return false;
+			}
 			return true;
 		},
 
-		sanitizeFieldMapping: function() {
+		sanitizeFieldMapping: function () {
 			var fieldsList = jQuery('.fieldIdentifier');
 			var mappedFields = {};
 			var mappedDefaultValues = {};
-			for(var i=0; i<fieldsList.length; ++i) {
+			for (var i=0; i<fieldsList.length; ++i) {
 				var fieldElement = jQuery(fieldsList.get(i));
 				var rowId = jQuery('[name=row_counter]', fieldElement).get(0).value;
 				var selectedFieldElement = jQuery('select option:selected', fieldElement);
 				var selectedFieldName = selectedFieldElement.val();
 				var selectedFieldDefaultValueElement = jQuery('#'+selectedFieldName+'_defaultvalue', fieldElement);
 				var defaultValue = '';
-				if(selectedFieldDefaultValueElement.prop('type') == 'checkbox') {
+				if (selectedFieldDefaultValueElement.prop('type') == 'checkbox') {
 					defaultValue = selectedFieldDefaultValueElement.is(':checked');
 				} else {
 					defaultValue = selectedFieldDefaultValueElement.val();
 				}
-				if(selectedFieldName != '') {
-					if(selectedFieldName in mappedFields) {
+				if (selectedFieldName != '') {
+					if (selectedFieldName in mappedFields) {
 						alert(alert_arr.ERR_FIELDS_MAPPED_MORE_THAN_ONCE + ' "' + selectedFieldElement.html() +'"');
 						return false;
 					}
 					mappedFields[selectedFieldName] = rowId-1;
-					if(defaultValue != '') {
+					if (defaultValue != '') {
 						mappedDefaultValues[selectedFieldName] = defaultValue;
 					}
 				}
@@ -129,13 +137,13 @@ if (typeof(ImportJs) == 'undefined') {
 			var mandatoryFields = jQuery('#mandatory_fields').val();
 			if (mandatoryFields!='') {
 				mandatoryFields = JSON.parse(mandatoryFields);
-				for(var mandatoryFieldName in mandatoryFields) {
+				for (var mandatoryFieldName in mandatoryFields) {
 					if (!(mandatoryFieldName in mappedFields)) {
 						missingMandatoryFields.push('"'+mandatoryFields[mandatoryFieldName]+'"');
 					}
 				}
 			}
-			if(missingMandatoryFields.length > 0) {
+			if (missingMandatoryFields.length > 0) {
 				alert(alert_arr.ERR_PLEASE_MAP_MANDATORY_FIELDS + ' : ' + missingMandatoryFields.join(','));
 				return false;
 			}
@@ -144,18 +152,18 @@ if (typeof(ImportJs) == 'undefined') {
 			return true;
 		},
 
-		validateCustomMap: function() {
+		validateCustomMap: function () {
 			var saveMap = jQuery('#save_map').is(':checked');
-			if(saveMap) {
+			if (saveMap) {
 				var mapName = jQuery('#save_map_as').val();
-				if(jQuery.trim(mapName) == '') {
+				if (jQuery.trim(mapName) == '') {
 					alert(alert_arr.ERR_MAP_NAME_CANNOT_BE_EMPTY);
 					return false;
 				}
 				var mapOptions = jQuery('#saved_maps option');
-				for(var i=0; i<mapOptions.length; ++i) {
+				for (var i=0; i<mapOptions.length; ++i) {
 					var mapOption = jQuery(mapOptions.get(i));
-					if(mapOption.html() == mapName) {
+					if (mapOption.html() == mapName) {
 						alert(alert_arr.ERR_MAP_NAME_ALREADY_EXISTS);
 						return false;
 					}
@@ -164,59 +172,65 @@ if (typeof(ImportJs) == 'undefined') {
 			return true;
 		},
 
-		loadSavedMap: function() {
+		loadSavedMap: function () {
 			var selectedMapElement = jQuery('#saved_maps option:selected');
 			var mapId = selectedMapElement.prop('id');
 			var fieldsList = jQuery('.fieldIdentifier');
-			fieldsList.each(function(i, element) {
+			fieldsList.each(function (i, element) {
 				var fieldElement = jQuery(element);
 				jQuery('[name=mapped_fields]', fieldElement).val('');
 			});
-			if(mapId == -1) {
+			if (mapId == -1) {
 				jQuery('#delete_map_container').hide();
 				return;
 			}
 			jQuery('#delete_map_container').show();
 			var mappingString = selectedMapElement.val();
-			if(mappingString == '') return;
+			if (mappingString == '') {
+				return;
+			}
 			var mappingPairs = mappingString.split('&');
 			var mapping = {};
-			for(var i=0; i<mappingPairs.length; ++i) {
+			for (var i=0; i<mappingPairs.length; ++i) {
 				var mappingPair = mappingPairs[i].split('=');
 				var header = mappingPair[0];
 				header = header.replace(/\/eq\//g, '=');
 				header = header.replace(/\/amp\//g, '&');
 				mapping["'"+header+"'"] = mappingPair[1];
+				mapping[i] = mappingPair[1]; /* To make Row based match when there is no header */
 			}
-			fieldsList.each(function(i, element) {
+			var maparray = Object.values(mapping);
+			fieldsList.each(function (i, element) {
 				var fieldElement = jQuery(element);
 				var rowId = jQuery('[name=row_counter]', fieldElement).get(0).value;
 				var headerNameElement = jQuery('[name=header_name]', fieldElement).get(0);
 				var headerName = jQuery(headerNameElement).html();
-				if("'"+headerName+"'" in mapping) {
+				if ("'"+headerName+"'" in mapping) {
 					jQuery('[name=mapped_fields]', fieldElement).val(mapping["'"+headerName+"'"]);
-				} else if(rowId in mapping) {
-					jQuery('[name=mapped_fields]', fieldElement).val($rowId);
+				} else if (maparray.indexOf(headerName)>-1) {
+					jQuery('[name=mapped_fields]', fieldElement).val(headerName);
+				} else if (rowId-1 in mapping) { /* Row based match when there is no header - but saved map is loaded. */
+					jQuery('[name=mapped_fields]', fieldElement).val(mapping[rowId-1]);
 				}
 				ImportJs.loadDefaultValueWidget(fieldElement.prop('id'));
 			});
 		},
 
-		deleteMap : function(module) {
-			if(confirm(alert_arr.ARE_YOU_SURE_YOU_WANT_TO_DELETE)) {
+		deleteMap : function (module) {
+			if (confirm(alert_arr.ARE_YOU_SURE_YOU_WANT_TO_DELETE)) {
 				var selectedMapElement = jQuery('#saved_maps option:selected');
 				var mapId = selectedMapElement.prop('id');
 				jQuery('#status').show();
-				jQuery.ajax( {
+				jQuery.ajax({
 					url  : 'index.php',
 					type : 'POST',
 					data : {module: module,
-							action: module+'Ajax',
-							file: 'Import',
-							mode: 'delete_map',
-							mapid: mapId,
-							ajax: true},
-					complete : function(response) {
+						action: module+'Ajax',
+						file: 'Import',
+						mode: 'delete_map',
+						mapid: mapId,
+						ajax: true},
+					complete : function (response) {
 						jQuery('#savedMapsContainer').html(response);
 						jQuery('#status').hide();
 					}
@@ -224,38 +238,40 @@ if (typeof(ImportJs) == 'undefined') {
 			}
 		},
 
-		loadListViewPage: function(module, pagenum, userid) {
+		loadListViewPage: function (module, pagenum, userid) {
 			jQuery('#status').show();
-			jQuery.ajax( {
+			jQuery.ajax({
 				url  : 'index.php',
 				type : 'POST',
 				data : {module: module,
-						action: module+'Ajax',
-						file: 'Import',
-						mode: 'listview',
-						start: pagenum,
-						foruser: userid,
-						ajax: true},
-				complete : function(response) {
+					action: module+'Ajax',
+					file: 'Import',
+					mode: 'listview',
+					start: pagenum,
+					foruser: userid,
+					ajax: true},
+				complete : function (response) {
 					jQuery('#import_listview_contents').html(response);
 					jQuery('#status').hide();
 				}
 			});
 		},
 
-		loadListViewSelectedPage: function(module, userid) {
+		loadListViewSelectedPage: function (module, userid) {
 			var pagenum = jQuery('#page_num').val();
 			ImportJs.loadListViewPage(module, pagenum, userid);
 		},
 
-		loadDefaultValueWidget: function(rowIdentifierId) {
+		loadDefaultValueWidget: function (rowIdentifierId) {
 			var affectedRow = jQuery('#'+rowIdentifierId);
-			if(typeof affectedRow == 'undefined' || affectedRow == null) return;
+			if (typeof affectedRow == 'undefined' || affectedRow == null) {
+				return;
+			}
 			var selectedFieldElement = jQuery('[name=mapped_fields]', affectedRow).get(0);
 			var selectedFieldName = jQuery(selectedFieldElement).val();
 			var defaultValueContainer = jQuery(jQuery('[name=default_value_container]', affectedRow).get(0));
 			var allDefaultValuesContainer = jQuery('#defaultValuesElementsContainer');
-			if(defaultValueContainer.children.length > 0) {
+			if (defaultValueContainer.children.length > 0) {
 				var copyOfDefaultValueWidget = jQuery(':first', defaultValueContainer).detach();
 				copyOfDefaultValueWidget.appendTo(allDefaultValuesContainer);
 			}
@@ -264,12 +280,12 @@ if (typeof(ImportJs) == 'undefined') {
 			defaultValueWidget.appendTo(defaultValueContainer);
 		},
 
-		loadDefaultValueWidgetForMappedFields: function() {
+		loadDefaultValueWidgetForMappedFields: function () {
 			var fieldsList = jQuery('.fieldIdentifier');
-			fieldsList.each(function(i, element) {
+			fieldsList.each(function (i, element) {
 				var fieldElement = jQuery(element);
 				var mappedFieldName = jQuery('[name=mapped_fields]', fieldElement).val();
-				if(mappedFieldName != '') {
+				if (mappedFieldName != '') {
 					ImportJs.loadDefaultValueWidget(fieldElement.prop('id'));
 				}
 			});
@@ -277,7 +293,7 @@ if (typeof(ImportJs) == 'undefined') {
 		}
 	};
 
-	jQuery(document).ready(function() {
+	jQuery(document).ready(function () {
 		ImportJs.toogleMergeConfiguration();
 		ImportJs.loadDefaultValueWidgetForMappedFields();
 	});

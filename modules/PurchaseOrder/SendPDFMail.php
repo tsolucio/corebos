@@ -16,14 +16,16 @@ $controller = new Vtiger_PurchaseOrderPDFController($currentModule);
 $controller->loadRecord(vtlib_purify($_REQUEST['record']));
 
 $filenameid = vtlib_purify($_REQUEST['record']);
-$purchaseorder_no = getModuleSequenceNumber($currentModule,vtlib_purify($_REQUEST['record']));
+$purchaseorder_no = getModuleSequenceNumber($currentModule, vtlib_purify($_REQUEST['record']));
 $moduleName = getTranslatedString('SINGLE_PurchaseOrder', $currentModule);
-if(empty($filenameid)) $filenameid = time();
+if (empty($filenameid)) {
+	$filenameid = time();
+}
 $filepath=$root_directory."storage/".$moduleName.'_'.$purchaseorder_no.".pdf";
 //added file name to make it work in IE, also forces the download giving the user the option to save
-$controller->Output($filepath,'F');
+$controller->Output($filepath, 'F');
 
 // Added to fix annoying bug that includes HTML in your PDF
-echo "<script>window.history.back();</script>";
+echo '<script>window.history.back();</script>';
 exit();
 ?>

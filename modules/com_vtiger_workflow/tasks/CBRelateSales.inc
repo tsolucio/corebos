@@ -15,9 +15,8 @@
  *************************************************************************************************
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-
-require_once('modules/com_vtiger_workflow/VTEntityCache.inc');
-require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
+require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
+require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 
 class CBRelateSales extends VTTask {
 	public $executeImmediately = true;
@@ -27,7 +26,7 @@ class CBRelateSales extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb,$default_charset,$log,$current_user;
+		global $adb;
 		$invinfo = array(
 			'Quotes' => array('id'=>'quoteid','account'=>'accountid','contact'=>'contactid'),
 			'SalesOrder' => array('id'=>'salesorderid','account'=>'accountid','contact'=>'contactid'),
@@ -39,7 +38,7 @@ class CBRelateSales extends VTTask {
 			$setype = getSalesEntityType($inv_id);
 			$query = 'select productid from vtiger_inventoryproductrel inner join vtiger_crmentity on crmid=productid where deleted=0 and id=?';
 			$srvs = $adb->pquery($query, array($inv_id));
-			if ($srvs and $adb->num_rows($srvs) > 0) {
+			if ($srvs && $adb->num_rows($srvs) > 0) {
 				if ($setype=='PurchaseOrder') {
 					$acc = CRMEntity::getInstance('Vendors');
 					$accrs = $adb->pquery('select vendorid from vtiger_purchaseorder where purchaseorderid=?', array($inv_id));
@@ -56,11 +55,11 @@ class CBRelateSales extends VTTask {
 				$ctoid = $adb->query_result($ctors, 0, 0);
 				while ($srv = $adb->fetch_array($srvs)) {
 					$pdosrv = getSalesEntityType($srv['productid']);
-					if (($pdosrv == 'Products' and $this->relpdo) or (($pdosrv == 'Services' and $this->relsrv))) {
-						if ($this->withaccvnd and !empty($accid)) {
+					if (($pdosrv == 'Products' && $this->relpdo) || (($pdosrv == 'Services' && $this->relsrv))) {
+						if ($this->withaccvnd && !empty($accid)) {
 							relateEntities($acc, $accmodule, $accid, $pdosrv, $srv['productid']);
 						}
-						if ($this->withcto and !empty($ctoid)) {
+						if ($this->withcto && !empty($ctoid)) {
 							relateEntities($cto, 'Contacts', $ctoid, $pdosrv, $srv['productid']);
 						}
 					}

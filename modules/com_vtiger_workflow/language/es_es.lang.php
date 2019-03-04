@@ -71,7 +71,6 @@ $mod_strings = array(
 'LBL_AttachmentInField' => 'Adjunto en campo',
 'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Nota: Todas las fechas, horas e información recurrente configurada para el evento,
 											serán respecto a la zona horaria por defecto, configurada en config.inc.php',
-
 'Select Meta Variables' => 'Selecciona Meta Variables',
 'Current Date' => 'Fecha Actual',
 'Current Time' => 'Hora Actual',
@@ -84,6 +83,8 @@ $mod_strings = array(
 'groupEmailList' => 'Emails de Grupo',
 
 'Workflow'=>'Flujo de Trabajo',
+'WORKFLOW_DELETE_CONFIRMATION' => '¿Seguro que quieres eliminar este flujo de trabajo?',
+'LBL_DELETE_WORKFLOW' => 'Eliminar Flujo de Trabajo',
 
 'VTCreateEntityTask' => 'Crear Entidad',
 'LBL_ENTITY_TYPE' => 'Tipo Entidad',
@@ -109,6 +110,12 @@ $mod_strings = array(
 'CBSelectcbMap' => 'Selecciona Regla de Negocio',
 'ConvertInventoryModule' => 'Convertir Módulos Inventario',
 'ConvertInventoryModuleMessage' => 'La correspondencia de campos es la que trae la aplicación por defecto y puede ajustarse utilizando las Reglas de Negocio de tipo Mapeo de Campo.',
+'CBSendMMMSGTask' => 'Enviar Mensaje a Mattermost',
+'Send Message To MM' => 'Enviar Mensaje a Mattermost',
+'VTSendMessage2MMTask' => 'Enviar Mensaje a Mattermost',
+'whatsappworkflowtask' => 'Enviar Mensaje WhatsApp',
+'Whatsapp Workflow Task' => 'Enviar Mensaje WhatsApp',
+'WhatsappWorkflowTask' => 'Enviar Mensaje WhatsApp',
 
 'LBL_EVENTNAME' => 'Nombre de Evento',
 'LBL_DESCRIPTION' => 'Descripción',
@@ -143,7 +150,6 @@ $mod_strings = array(
 'LBL_SELECTED_DATES' => 'Fechas seleccionadas',
 'LBL_EXCEEDING_MAXIMUM_LIMIT' => 'Se ha excedido el límite máximo permtido',
 'LBL_NEXT_TRIGGER_TIME' => 'Próxima ejecución',
-'LBL_MESSAGE' => 'Mensaje',
 'UpdateInventoryProducts On Every Save' => 'Actualizar inventario de productos',
 'Send Email to user when Notifyowner is True' => 'Envíar Email al usuario cuando Notificación Propietario está activado',
 'Send Email to user when Portal User is True' => 'Envíar Email al usuario cuando Portal de Usuario está activado',
@@ -156,6 +162,8 @@ $mod_strings = array(
 'Workflow for Calendar Todos when Send Notification is True' => 'Flujo de Trabajo para Tareas de Calendario cuando el Envío de Notificación está activado',
 'Calculate or Update forecast amount' => 'Calcular cantidad objetiva en oportunidad',
 'LBL_METHOD_NAME' => 'Nombre del Método',
-'NO_METHOD_AVAILABLE' => 'No hay ningún método disponible para este Módulo.'
+'NO_METHOD_AVAILABLE' => 'No hay ningún método disponible para este Módulo.',
+'launchrelwf' => 'Ejecutar flujos en actualizaciones de módulos relacionados',
+'LBL_WFPURPOSE' => 'Propósito',
 );
 ?>

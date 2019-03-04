@@ -154,7 +154,6 @@ $mod_strings = array(
 	'308-Sales-Books' => '308-Könyv-Értékesítés',
 	'Box' => 'Doboz',
 	'Carton' => 'Karton',
-	'Caton' => 'Caton',
 	'Dozen' => 'Tucat',
 	'Each' => 'Mindegyik',
 	'Hours' => 'Órák',
@@ -185,5 +184,6 @@ $mod_strings = array(
 	'Divisible' => 'Divisible',
 	'DIVISIBLE_WARNING' => 'can only be sold in multiplies of one',
 	'DIVISIBLE_WARNING_PURCHASE' => 'can only be purchased in multiplies of one',
+	'IS_DISCONTINUED' => 'is discontinued',
 );
 ?>

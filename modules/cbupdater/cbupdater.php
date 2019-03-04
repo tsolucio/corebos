@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('data/CRMEntity.php');
-require_once('data/Tracker.php');
+require_once 'data/CRMEntity.php';
+require_once 'data/Tracker.php';
 
 class cbupdater extends CRMEntity {
 	public $db;
@@ -42,7 +42,7 @@ class cbupdater extends CRMEntity {
 	/**
 	 * Mandatory for Listing (Related listview)
 	 */
-	public $list_fields = array (
+	public $list_fields = array(
 		/* Format: Field Label => array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
 		'cbupd_no'=> array('cbupdater' => 'cbupd_no'),
@@ -117,26 +117,24 @@ class cbupdater extends CRMEntity {
 	 * return array  $list_buttons - for module (eg: 'Accounts')
 	 */
 	public function getListButtons($app_strings) {
-		global $currentModule;
 		return array();
 	}
 
 	public static function exists($cbinfo) {
-		global $adb,$log;
-		if (empty($cbinfo['filename']) or empty($cbinfo['classname'])) {
+		global $adb;
+		if (empty($cbinfo['filename']) || empty($cbinfo['classname'])) {
 			return false;
 		}
 		$sql = 'select count(*) from vtiger_cbupdater
-				inner join vtiger_crmentity on crmid=cbupdaterid 
-				where deleted=0 and pathfilename=? and classname=?';
+			inner join vtiger_crmentity on crmid=cbupdaterid 
+			where deleted=0 and pathfilename=? and classname=?';
 		$rs = $adb->pquery($sql, array($cbinfo['filename'],$cbinfo['classname']));
-		return ($rs and $adb->query_result($rs, 0, 0)==1);
+		return ($rs && $adb->query_result($rs, 0, 0)==1);
 	}
 
 	public static function getMaxExecutionOrder() {
-		global $adb,$log;
-		$sql = 'select coalesce(max(execorder),0) from vtiger_cbupdater';
-		$rs = $adb->pquery($sql, array());
+		global $adb;
+		$rs = $adb->pquery('select coalesce(max(execorder),0) from vtiger_cbupdater', array());
 		return $adb->query_result($rs, 0, 0);
 	}
 

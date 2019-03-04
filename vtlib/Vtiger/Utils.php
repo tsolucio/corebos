@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once('config.inc.php');
-include_once('include/utils/utils.php');
+include_once 'config.inc.php';
+include_once 'include/utils/utils.php';
 
 /**
  * Provides few utility functions
@@ -20,21 +20,21 @@ class Vtiger_Utils {
 	 * Check if given value is a number or not
 	 * @param mixed String or Integer
 	 */
-	static function isNumber($value) {
+	public static function isNumber($value) {
 		return is_numeric($value)? (int)$value == $value : false;
 	}
 
 	/**
 	 * Implode the prefix and suffix as string for given number of times
 	 * @param String prefix to use
-	 * @param Integer Number of times 
+	 * @param Integer Number of times
 	 * @param String suffix to use (optional)
 	 */
-	static function implodestr($prefix, $count, $suffix=false) {
+	public static function implodestr($prefix, $count, $suffix = false) {
 		$strvalue = '';
-		for($index = 0; $index < $count; ++$index) {
+		for ($index = 0; $index < $count; ++$index) {
 			$strvalue .= $prefix;
-			if($suffix && $index != ($count-1)) {
+			if ($suffix && $index != ($count-1)) {
 				$strvalue .= $suffix;
 			}
 		}
@@ -46,11 +46,11 @@ class Vtiger_Utils {
 	 * @param String File path to check
 	 * @param Boolean False to avoid die() if check fails
 	 */
-	static function checkFileAccessForInclusion($filepath, $dieOnFail=true) {
+	public static function checkFileAccessForInclusion($filepath, $dieOnFail = true) {
 		global $root_directory;
 		// Set the base directory to compare with
 		$use_root_directory = $root_directory;
-		if(empty($use_root_directory)) {
+		if (empty($use_root_directory)) {
 			$use_root_directory = realpath(__DIR__.'/../../.');
 		}
 
@@ -69,8 +69,8 @@ class Vtiger_Utils {
 		$relativeFilePath = str_replace($rootdirpath, '', $realfilepath);
 		$filePathParts = explode('/', $relativeFilePath);
 
-		if(stripos($realfilepath, $rootdirpath) !== 0 || in_array($filePathParts[0], $unsafeDirectories)) {
-			if($dieOnFail) {
+		if (stripos($realfilepath, $rootdirpath) !== 0 || in_array($filePathParts[0], $unsafeDirectories)) {
+			if ($dieOnFail) {
 				global $default_charset;
 				echo 'Sorry! Attempt to access restricted file.<br>';
 				echo 'We are looking for this file path: '.htmlspecialchars($filepath, ENT_QUOTES, $default_charset).'<br>';
@@ -83,17 +83,17 @@ class Vtiger_Utils {
 		return true;
 	}
 
-	/** 
-	 * Function to check the file access is made within web root directory. 
+	/**
+	 * Function to check the file access is made within web root directory.
 	 * @param String File path to check
 	 * @param Boolean False to avoid die() if check fails
 	 */
-	static function checkFileAccess($filepath, $dieOnFail=true) {
+	public static function checkFileAccess($filepath, $dieOnFail = true) {
 		global $root_directory;
 
 		// Set the base directory to compare with
 		$use_root_directory = $root_directory;
-		if(empty($use_root_directory)) {
+		if (empty($use_root_directory)) {
 			$use_root_directory = realpath(__DIR__.'/../../.');
 		}
 
@@ -107,8 +107,8 @@ class Vtiger_Utils {
 		$realfilepath = str_replace('\\', '/', $realfilepath);
 		$rootdirpath  = str_replace('\\', '/', $rootdirpath);
 
-		if(stripos($realfilepath, $rootdirpath) !== 0) {
-			if($dieOnFail) {
+		if (stripos($realfilepath, $rootdirpath) !== 0) {
+			if ($dieOnFail) {
 				global $default_charset;
 				echo 'Sorry! Attempt to access restricted file.<br>';
 				echo 'We are looking for this file path: '.htmlspecialchars($filepath, ENT_QUOTES, $default_charset).'<br>';
@@ -122,20 +122,25 @@ class Vtiger_Utils {
 	}
 
 	/**
-	 * Log the debug message 
+	 * Log the debug message
 	 * @param String Log message
 	 * @param Boolean true to append end-of-line, false otherwise
 	 */
-	static function Log($message, $delimit=true) {
+	public static function Log($message, $delimit = true) {
 		global $Vtiger_Utils_Log, $log;
-		
+
 		$log->debug($message);
-		if(!isset($Vtiger_Utils_Log) || $Vtiger_Utils_Log == false) return;
+		if (!isset($Vtiger_Utils_Log) || $Vtiger_Utils_Log == false) {
+			return;
+		}
 
 		print_r($message);
-		if($delimit) {
-			if(isset($_REQUEST)) echo "<BR>";
-			else echo "\n";
+		if ($delimit) {
+			if (isset($_REQUEST)) {
+				echo '<BR>';
+			} else {
+				echo "\n";
+			}
 		}
 	}
 
@@ -143,8 +148,10 @@ class Vtiger_Utils {
 	 * Escape the string to avoid SQL Injection attacks.
 	 * @param String Sql statement string
 	 */
-	static function SQLEscape($value) {
-		if($value == null) return $value;
+	public static function SQLEscape($value) {
+		if ($value == null) {
+			return $value;
+		}
 		global $adb;
 		return $adb->sql_escape_string($value);
 	}
@@ -153,17 +160,18 @@ class Vtiger_Utils {
 	 * Check if table is present in database
 	 * @param String tablename to check
 	 */
-	static function CheckTable($tablename) {
+	public static function CheckTable($tablename) {
 		global $adb;
 		$old_dieOnError = $adb->dieOnError;
 		$adb->dieOnError = false;
 
 		$tablename = Vtiger_Utils::SQLEscape($tablename);
-		$tablecheck = $adb->pquery("SHOW TABLES LIKE ?", array($tablename));
+		$tablecheck = $adb->pquery('SHOW TABLES LIKE ?', array($tablename));
 
 		$tablePresent = true;
-		if(empty($tablecheck) || $adb->num_rows($tablecheck) === 0)
+		if (empty($tablecheck) || $adb->num_rows($tablecheck) === 0) {
 			$tablePresent = false;
+		}
 
 		$adb->dieOnError = $old_dieOnError;
 		return $tablePresent;
@@ -172,20 +180,20 @@ class Vtiger_Utils {
 	/**
 	 * Create table (supressing failure)
 	 * @param String tablename to create
-	 * @param String table creation criteria like '(columnname columntype, ....)' 
+	 * @param String table creation criteria like '(columnname columntype, ....)'
 	 * @param String Optional suffix to add during table creation
 	 * <br>
 	 * will be appended to CREATE TABLE $tablename SQL
 	 */
-	static function CreateTable($tablename, $criteria, $suffixTableMeta=false) {
+	public static function CreateTable($tablename, $criteria, $suffixTableMeta = false) {
 		global $adb;
 
 		$org_dieOnError = $adb->dieOnError;
 		$adb->dieOnError = false;
-		$sql = "CREATE TABLE " . $tablename . $criteria;
-		if($suffixTableMeta !== false) {
-			if($suffixTableMeta === true) {
-				if($adb->isMySQL()) {
+		$sql = 'CREATE TABLE ' . $tablename . $criteria;
+		if ($suffixTableMeta !== false) {
+			if ($suffixTableMeta === true) {
+				if ($adb->isMySQL()) {
 					$suffixTableMeta = ' ENGINE=InnoDB DEFAULT CHARSET=utf8';
 				} else {
 					// TODO Handle other database types.
@@ -194,7 +202,7 @@ class Vtiger_Utils {
 			$sql .= $suffixTableMeta;
 		}
 		$adb->pquery($sql, array());
-		$adb->dieOnError = $org_dieOnError;	
+		$adb->dieOnError = $org_dieOnError;
 	}
 
 	/**
@@ -203,20 +211,20 @@ class Vtiger_Utils {
 	 * @param String alter criteria like ' ADD columnname columntype' <br>
 	 * will be appended to ALTER TABLE $tablename SQL
 	 */
-	static function AlterTable($tablename, $criteria) {
+	public static function AlterTable($tablename, $criteria) {
 		global $adb;
-		$adb->query("ALTER TABLE " . $tablename . $criteria);
+		$adb->query('ALTER TABLE ' . $tablename . $criteria);
 	}
 
 	/**
 	 * Add column to existing table
 	 * @param String tablename to alter
 	 * @param String columnname to add
-	 * @param String columntype (criteria like 'VARCHAR(100)') 
+	 * @param String columntype (criteria like 'VARCHAR(100)')
 	 */
-	static function AddColumn($tablename, $columnname, $criteria) {
+	public static function AddColumn($tablename, $columnname, $criteria) {
 		global $adb;
-		if(!in_array($columnname, $adb->getColumnNames($tablename))) {
+		if (!in_array($columnname, $adb->getColumnNames($tablename))) {
 			self::AlterTable($tablename, " ADD COLUMN $columnname $criteria");
 		}
 	}
@@ -225,11 +233,13 @@ class Vtiger_Utils {
 	 * Get SQL query
 	 * @param String SQL query statement
 	 */
-	static function ExecuteQuery($sqlquery, $supressdie=false) {
+	public static function ExecuteQuery($sqlquery, $supressdie = false) {
 		global $adb;
 		$old_dieOnError = $adb->dieOnError;
 
-		if($supressdie) $adb->dieOnError = false;
+		if ($supressdie) {
+			$adb->dieOnError = false;
+		}
 
 		$adb->pquery($sqlquery, array());
 
@@ -240,7 +250,7 @@ class Vtiger_Utils {
 	 * Get CREATE SQL for given table
 	 * @param String tablename for which CREATE SQL is requried
 	 */
-	static function CreateTableSql($tablename) {
+	public static function CreateTableSql($tablename) {
 		global $adb;
 		$sql = '';
 		$create_table = $adb->pquery("SHOW CREATE TABLE $tablename", array());
@@ -254,8 +264,8 @@ class Vtiger_Utils {
 	 * Check if the given SQL is a CREATE statement
 	 * @param String SQL String
 	 */
-	static function IsCreateSql($sql) {
-		if(preg_match('/(CREATE TABLE)/', strtoupper($sql))) {
+	public static function IsCreateSql($sql) {
+		if (preg_match('/(CREATE TABLE)/', strtoupper($sql))) {
 			return true;
 		}
 		return false;
@@ -265,9 +275,11 @@ class Vtiger_Utils {
 	 * Check if the given SQL is destructive (DELETE's DATA)
 	 * @param String SQL String
 	 */
-	static function IsDestructiveSql($sql) {
-		if(preg_match('/(DROP TABLE)|(DROP COLUMN)|(DELETE FROM)/', 
-			strtoupper($sql))) {
+	public static function IsDestructiveSql($sql) {
+		if (preg_match(
+			'/(DROP TABLE)|(DROP COLUMN)|(DELETE FROM)/',
+			strtoupper($sql)
+		)) {
 			return true;
 		}
 		return false;

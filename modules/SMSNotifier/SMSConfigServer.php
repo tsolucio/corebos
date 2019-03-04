@@ -7,34 +7,34 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-require_once('Smarty_setup.php');
+require_once 'Smarty_setup.php';
 include_once __DIR__ . '/SMSNotifier.php';
 
 global $theme, $currentModule, $mod_strings, $app_strings, $current_user;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 
 $smarty = new vtigerCRM_Smarty();
-$smarty->assign("THEME", $theme);
-$smarty->assign("MOD", return_module_language($current_language,'Settings'));
-$smarty->assign("IMAGE_PATH",$image_path);
-$smarty->assign("APP", $app_strings);
-$smarty->assign("CMOD", $mod_strings);
-$smarty->assign("MODULE_LBL",$currentModule);
+$smarty->assign('THEME', $theme);
+$smarty->assign('MOD', return_module_language($current_language, 'Settings'));
+$smarty->assign('IMAGE_PATH', $image_path);
+$smarty->assign('APP', $app_strings);
+$smarty->assign('CMOD', $mod_strings);
+$smarty->assign('MODULE_LBL', $currentModule);
 // Operation to be restricted for non-admin users.
-if(!is_admin($current_user)) {
-	$smarty->display(vtlib_getModuleTemplate('Vtiger','OperationNotPermitted.tpl'));
+if (!is_admin($current_user)) {
+	$smarty->display(vtlib_getModuleTemplate('Vtiger', 'OperationNotPermitted.tpl'));
 } else {
 	$mode = empty($_REQUEST['mode']) ? '' : vtlib_purify($_REQUEST['mode']);
-	if(empty($mode)) {
+	if (empty($mode)) {
 		$smarty->assign('SMSSERVERS', SMSNotifierManager::listConfiguredServers());
 		$smarty->display(vtlib_getModuleTemplate($currentModule, 'SMSConfigServerList.tpl'));
-	} else if($mode == 'Edit') {
+	} elseif ($mode == 'Edit') {
 		$record = vtlib_purify($_REQUEST['record']);
 		$smarty->assign('smsHIurl', '');
 		$smarty->assign('smsHIlabel', '');
 		$smsserverparams = array();
-		if(empty($record)) {
+		if (empty($record)) {
 			$smarty->assign('SMSSERVERINFO', array());
 			$smarty->assign('SMSSERVERPARAMS', $smsserverparams);
 		} else {
@@ -42,8 +42,8 @@ if(!is_admin($current_user)) {
 			$smsprovider = SMSProvider::getInstance($smsserverinfo['providertype']);
 			$smarty->assign('smsHIurl', $smsprovider->helpURL);
 			$smarty->assign('smsHIlabel', $smsprovider->helpLink);
-			if(!empty($smsserverinfo['parameters'])) {
-				$smsserverparams = json_decode($smsserverinfo['parameters'],true);
+			if (!empty($smsserverinfo['parameters'])) {
+				$smsserverparams = json_decode($smsserverinfo['parameters'], true);
 			}
 			$smarty->assign('SMSSERVERINFO', $smsserverinfo);
 			$smarty->assign('SMSSERVERPARAMS', $smsserverparams);
@@ -52,11 +52,11 @@ if(!is_admin($current_user)) {
 
 		// Collect required parameters to be made available in the EditForm
 		$smsproviderparams = $smshelpinfo = array();
-		if(!empty($smsproviders)) {
-			foreach($smsproviders as $smsprovidername) {
+		if (!empty($smsproviders)) {
+			foreach ($smsproviders as $smsprovidername) {
 				$smsprovider = SMSProvider::getInstance($smsprovidername);
 				$requiredparameters = $smsprovider->getRequiredParams();
-				if(!empty($requiredparameters)) {
+				if (!empty($requiredparameters)) {
 					$smsproviderparams[$smsprovidername] = $requiredparameters;
 				}
 				$smshelpinfo[] = array(
@@ -69,11 +69,11 @@ if(!is_admin($current_user)) {
 		$smarty->assign('SMSPROVIDERSPARAMS', $smsproviderparams);
 		$smarty->assign('SMSHELPINFO', json_encode($smshelpinfo));
 		$smarty->display(vtlib_getModuleTemplate($currentModule, 'SMSConfigServerEdit.tpl'));
-	} else if($mode == 'Save') {
+	} elseif ($mode == 'Save') {
 		SMSNotifierManager::updateConfiguredServer((isset($_REQUEST['smsserver_id']) ? $_REQUEST['smsserver_id'] : 0), $_REQUEST);
 		$smarty->assign('SMSSERVERS', SMSNotifierManager::listConfiguredServers());
 		$smarty->display(vtlib_getModuleTemplate($currentModule, 'SMSConfigServerListContents.tpl'));
-	} else if($mode == 'Delete') {
+	} elseif ($mode == 'Delete') {
 		SMSNotifierManager::deleteConfiguredServer(vtlib_purify($_REQUEST['record']));
 		$smarty->assign('SMSSERVERS', SMSNotifierManager::listConfiguredServers());
 		$smarty->display(vtlib_getModuleTemplate($currentModule, 'SMSConfigServerListContents.tpl'));

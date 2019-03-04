@@ -1,40 +1,14 @@
 <?php
-/*******************************************************************************
- * The contents of this file are subject to the following licences:
- * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
- * - vtiger CRM Public License Version 1.0 
- * You may not use this file except in compliance with the License
- * Software distributed under the License is distributed on an  "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is: SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
- * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
- * Feel free to use / redistribute these languagefiles under the VPL 1.0.
- * This translations is based on earlier work of: 
- * - IT-Online.nl <www.it-online.nl>
- * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
 
-/*******************************************************************************
- * Vicus eBusiness Solutions Version Control
- * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.4.x
- * @author	$Author: luuk $
- * @version 	$Revision: 1.3 $ $Date: 2014/02/13 21:42:40 $
- * @source	$Source: /var/lib/cvs/vtiger540/Dutch/modules/Import/language/nl_nl.lang.php,v $
- * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
- * @license	vtiger CRM Public License Version 1.0 (by definition)
- ********************************************************************************/
-
-$mod_strings = Array(
-'LBL_IMPORT_MODULE_NO_DIRECTORY'=>'De bestanden index ',
-'LBL_IMPORT_MODULE_NO_DIRECTORY_END'=>' Deze bestaat niet of is niet overschrijfbaar',
-'LBL_IMPORT_MODULE_ERROR_NO_UPLOAD'=>'Het bestand is niet succesvol verstuurd, probeer nog een keer',
-'LBL_IMPORT_MODULE_ERROR_LARGE_FILE'=>'Bestand is te groot. Max:',
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Importeren',
 'LBL_TRY_AGAIN'=>'Probeer nog een keer',
 'LBL_ERROR'=>'Foutmelding:',
@@ -45,7 +19,6 @@ $mod_strings = Array(
 'LBL_SELECT_FILE'=>'Selecteer een bestand:',
 'LBL_CUSTOM'=>'Op maat',
 'LBL_DONT_MAP'=>'-- Selecteer dit veld niet --',
-'LBL_STEP_1_TITLE'=>'Stap 1 of 4: Selecteer data bron',
 'LBL_WHAT_IS'=>'Selecteer een data bron van de hierna genoemde:',
 'LBL_MICROSOFT_OUTLOOK'=>'Microsoft Outlook',
 'LBL_ACT'=>'ACT!',
@@ -112,8 +85,6 @@ $mod_strings = Array(
 
 'LBL_STEP_3_TITLE'=>'Stap 3 van 4: bevestig veld en import',
 'LBL_STEP_1'=>'Stap 1 van 3 : ',
-'LBL_STEP_1_TITLE'=>'Selecteer het .CSV bestand',
-'LBL_STEP_1_TEXT'=> ' vTiger CRM ondersteunt records van .csv (<b> komma gescheiden waarden</b> ) bestanden. Om met de import te beginnen, browse om het .CSV bestand te localiseren en klik op de volgende knop om door te gaan.',
 
 'LBL_SELECT_FIELDS_TO_MAP'=>'In de benedenstaande lijst, selecteer de velden in uw import bestand die in elk veld van het systeem geimporteerd moeten worden. Als u klaar bent, klik <b>importeer nu</b>',
 
@@ -153,11 +124,9 @@ $mod_strings = Array(
 'LBL_SUCCESS_1' => 'Aantal records succesvol geimporteerd : ',
 'LBL_SKIPPED_1' => 'Aantal records overgeslagen aangezien 1 of meer verplichte velden missen : ',
 
-//Added for patch2 - Products Import Notes
 'LBL_PRODUCTS_NOTE_1'=>'Productnaam moet gekoppeld zijn',
 'LBL_PRODUCTS_NOTE_2'=>'Voor het importeren nakijken of een enkele kolom twee keer gekoppeld is. ',
 
-//Added for version 5
 'LBL_FILE_LOCATION'=>'Bestandslocatie :',
 'LBL_STEP_2_3'=>'Stap 2 of 3 :',
 'LBL_LIST_MAPPING'=>'Lijst & koppelen',
@@ -171,19 +140,14 @@ $mod_strings = Array(
 'LBL_STEP_3_3'=>'Stap 3 van 3 : ',
 'LBL_MAPPING_RESULTS'=>'Koppelings resultaten',
 'LBL_LAST_IMPORTED'=>'Laatst geimporteerd',
-//Added for sript alerts
 'PLEASE_CHECK_MAPPING' => "' is meerdere keren gekoppeld. S.v.p. koppelingen nakijken.",
 'MAP_MANDATORY_FIELD' => 'U dient de verplichte velden te koppelen "',
 'ENTER_SAVEMAP_NAME' => 'Geef een naam aan deze koppelings lijst',
 
-//Added for 5.0.3
 'to'=>'aan',
 'of'=>'van',
 'are_imported_succesfully'=>'is succesvol geimporteerd',
 
-// Added after 5.0.4 GA
-
-//added for duplicate handling 
 'LBL_LAST_IMPORT'=>'Laatst Geimporteerd',
 'Select_Criteria_For_Duplicate' => 'Selecteer Criteria voor Afhandeling Dubbele Records',
 'Manual_Merging' => 'Handmatig Merging',

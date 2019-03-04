@@ -53,13 +53,13 @@ function vtRunTaskJob($adb) {
 		list($taskId, $entityId) = $pair;
 		$logbg->debug('WF Cron:: Task '.$taskId.' will be executed with entityId: '.$entityId);
 		$task = $tm->retrieveTask($taskId);
-		if (empty($task)) {  //If task is not there then continue
+		if (empty($task)) { //If task is not there then continue
 			$logbg->debug('WF Cron:: Task: '.$taskId.' fail when was retrieve');
+			$adb->pquery('delete from com_vtiger_workflowtask_queue where task_id=?', array($taskId));
 			continue;
 		}
 		list($moduleId, $crmId) = explode('x', $entityId);
-		$query = "select deleted from vtiger_crmentity where crmid={$crmId}";
-		$res = $adb->query($query);
+		$res = $adb->pquery('select deleted from vtiger_crmentity where crmid=?', array($crmId));
 		if ($adb->num_rows($res) == 0) {
 			$logbg->debug('WF Cron:: CRMID '.$crmId.' was totally deleted');
 			continue;
@@ -69,14 +69,23 @@ function vtRunTaskJob($adb) {
 		$entity = new VTWorkflowEntity($adminUser, $entityId, $isDeleted, true);
 		$entityCache = new VTEntityCache($adminUser);
 		$wsModuleName = $util->toWSModuleName($entity);
-		$wsId = vtws_getWebserviceEntityId($wsModuleName, $entity->getId());
+		if (!vtlib_isModuleActive($wsModuleName)) {
+			$logbg->debug('WF Cron:: Module is not active: '.$wsModuleName);
+			continue;
+		}
+		//$wsId = vtws_getWebserviceEntityId($wsModuleName, $entity->getId());
 		if (empty($task->test)
 			|| (isset($task->reevaluate) && $task->reevaluate==0)
 			|| ((!isset($task->reevaluate) || $task->reevaluate==1) && $task->evaluate($entityCache, $entity->getId()))
 		) {
 			$logbg->debug('WF Cron:: Task '.$taskId.' will call function doTask with entityId: '.$entityId);
-			$task->doTask($entity);
-			$logbg->debug('WF Cron:: Task '.$taskId.' executed with success the function doTask with entityId: '.$entityId);
+			try {
+				$task->doTask($entity);
+				$logbg->debug('WF Cron:: Task '.$taskId.' executed with success the function doTask with entityId: '.$entityId);
+			} catch (Exception $e) {
+				$logbg->debug('WF Cron:: Task '.$taskId.' executed with FAILURE the function doTask with entityId: '.$entityId);
+				$logbg->debug($e->getMessage());
+			}
 		} else {
 			$logbg->debug('WF Cron:: Task '.$taskId.' was skipped due to unsatisfied conditions: '.$entityId);
 		}

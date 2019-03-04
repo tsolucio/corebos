@@ -7,52 +7,54 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('data/CRMEntity.php');
-require_once('data/Tracker.php');
+require_once 'data/CRMEntity.php';
+require_once 'data/Tracker.php';
 
 class cbtranslation extends CRMEntity {
-	var $db, $log; // Used in class functions of CRMEntity
+	public $db;
+	public $log;
 
-	var $table_name = 'vtiger_cbtranslation';
-	var $table_index= 'cbtranslationid';
-	var $column_fields = Array();
+	public $table_name = 'vtiger_cbtranslation';
+	public $table_index= 'cbtranslationid';
+	public $column_fields = array();
 
 	/** Indicator if this is a custom module or standard module */
-	var $IsCustomModule = true;
-	var $HasDirectImageField = false;
+	public $IsCustomModule = true;
+	public $HasDirectImageField = false;
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
-	var $customFieldTable = Array('vtiger_cbtranslationcf', 'cbtranslationid');
+	public $customFieldTable = array('vtiger_cbtranslationcf', 'cbtranslationid');
 
 	/**
 	 * Mandatory for Saving, Include tables related to this module.
 	 */
-	var $tab_name = Array('vtiger_crmentity', 'vtiger_cbtranslation', 'vtiger_cbtranslationcf');
+	public $tab_name = array('vtiger_crmentity', 'vtiger_cbtranslation', 'vtiger_cbtranslationcf');
 
 	/**
 	 * Mandatory for Saving, Include tablename and tablekey columnname here.
 	 */
-	var $tab_name_index = Array(
+	public $tab_name_index = array(
 		'vtiger_crmentity' => 'crmid',
 		'vtiger_cbtranslation'   => 'cbtranslationid',
-		'vtiger_cbtranslationcf' => 'cbtranslationid');
+		'vtiger_cbtranslationcf' => 'cbtranslationid',
+	);
 
 	/**
 	 * Mandatory for Listing (Related listview)
 	 */
-	var $list_fields = Array (
-		/* Format: Field Label => Array(tablename => columnname) */
+	public $list_fields = array(
+		/* Format: Field Label => array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
-		'cbtranslation No'=> Array('cbtranslation' => 'autonum'),
-		'Locale'=> Array('cbtranslation' => 'locale'),
-		'Module'=> Array('cbtranslation' => 'cbtranslation_module'),
-		'Key'=> Array('cbtranslation' => 'translation_key'),
-		'i18n'=> Array('cbtranslation' => 'i18n'),
-		'Proof Read'=> Array('cbtranslation' => 'proofread'),
-		'Assigned To' => Array('crmentity' => 'smownerid')
+		'cbtranslation No'=> array('cbtranslation' => 'autonum'),
+		'Locale'=> array('cbtranslation' => 'locale'),
+		'Module'=> array('cbtranslation' => 'cbtranslation_module'),
+		'Key'=> array('cbtranslation' => 'translation_key'),
+		'i18n'=> array('cbtranslation' => 'i18n'),
+		'Proof Read'=> array('cbtranslation' => 'proofread'),
+		'Assigned To' => array('crmentity' => 'smownerid')
 	);
-	var $list_fields_name = Array(
+	public $list_fields_name = array(
 		/* Format: Field Label => fieldname */
 		'cbtranslation No'=> 'autonum',
 		'Locale'=> 'locale',
@@ -64,20 +66,20 @@ class cbtranslation extends CRMEntity {
 	);
 
 	// Make the field link to detail view from list view (Fieldname)
-	var $list_link_field = 'autonum';
+	public $list_link_field = 'autonum';
 
 	// For Popup listview and UI type support
-	var $search_fields = Array(
-		/* Format: Field Label => Array(tablename => columnname) */
+	public $search_fields = array(
+		/* Format: Field Label => array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
-		'cbtranslation No'=> Array('cbtranslation' => 'autonum'),
-		'Locale'=> Array('cbtranslation' => 'locale'),
-		'Module'=> Array('cbtranslation' => 'cbtranslation_module'),
-		'Key'=> Array('cbtranslation' => 'translation_key'),
-		'i18n'=> Array('cbtranslation' => 'i18n'),
-		'Proof Read'=> Array('cbtranslation' => 'proofread')
+		'cbtranslation No'=> array('cbtranslation' => 'autonum'),
+		'Locale'=> array('cbtranslation' => 'locale'),
+		'Module'=> array('cbtranslation' => 'cbtranslation_module'),
+		'Key'=> array('cbtranslation' => 'translation_key'),
+		'i18n'=> array('cbtranslation' => 'i18n'),
+		'Proof Read'=> array('cbtranslation' => 'proofread')
 	);
-	var $search_fields_name = Array(
+	public $search_fields_name = array(
 		/* Format: Field Label => fieldname */
 		'cbtranslation No'=> 'autonum',
 		'Locale'=> 'locale',
@@ -88,32 +90,32 @@ class cbtranslation extends CRMEntity {
 	);
 
 	// For Popup window record selection
-	var $popup_fields = Array('autonum');
+	public $popup_fields = array('autonum');
 
 	// Placeholder for sort fields - All the fields will be initialized for Sorting through initSortFields
-	var $sortby_fields = Array();
+	public $sortby_fields = array();
 
 	// For Alphabetical search
-	var $def_basicsearch_col = 'translation_key';
+	public $def_basicsearch_col = 'translation_key';
 
 	// Column value to use on detail view record text display
-	var $def_detailview_recname = 'translation_key';
+	public $def_detailview_recname = 'translation_key';
 
 	// Required Information for enabling Import feature
-	var $required_fields = Array('translation_key'=>1);
+	public $required_fields = array('translation_key'=>1);
 
 	// Callback function list during Importing
-	var $special_functions = Array('set_import_assigned_user');
+	public $special_functions = array('set_import_assigned_user');
 
-	var $default_order_by = 'translation_key';
-	var $default_sort_order='ASC';
+	public $default_order_by = 'translation_key';
+	public $default_sort_order='ASC';
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
-	var $mandatory_fields = Array('createdtime', 'modifiedtime', 'translation_key','translation_module','locale');
+	public $mandatory_fields = array('createdtime', 'modifiedtime', 'translation_key','translation_module','locale');
 
-	function save_module($module) {
+	public function save_module($module) {
 		if ($this->HasDirectImageField) {
-			$this->insertIntoAttachment($this->id,$module);
+			$this->insertIntoAttachment($this->id, $module);
 		}
 	}
 
@@ -122,22 +124,22 @@ class cbtranslation extends CRMEntity {
 	 * @param String Module name
 	 * @param String Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
 	 */
-	function vtlib_handler($modulename, $event_type) {
-		if($event_type == 'module.postinstall') {
+	public function vtlib_handler($modulename, $event_type) {
+		if ($event_type == 'module.postinstall') {
 			// TODO Handle post installation actions
 			$this->setModuleSeqNumber('configure', $modulename, 'cbtr-', '0000001');
 			$module = Vtiger_Module::getInstance($modulename);
-			$field = Vtiger_Field::getInstance('translates',$module);
+			$field = Vtiger_Field::getInstance('translates', $module);
 			$field->setRelatedModules(getAllowedPicklistModules(false));
-		} else if($event_type == 'module.disabled') {
+		} elseif ($event_type == 'module.disabled') {
 			// TODO Handle actions when this module is disabled.
-		} else if($event_type == 'module.enabled') {
+		} elseif ($event_type == 'module.enabled') {
 			// TODO Handle actions when this module is enabled.
-		} else if($event_type == 'module.preuninstall') {
+		} elseif ($event_type == 'module.preuninstall') {
 			// TODO Handle actions when this module is about to be deleted.
-		} else if($event_type == 'module.preupdate') {
+		} elseif ($event_type == 'module.preupdate') {
 			// TODO Handle actions before this module is updated.
-		} else if($event_type == 'module.postupdate') {
+		} elseif ($event_type == 'module.postupdate') {
 			// TODO Handle actions after this module is updated.
 		}
 	}
@@ -147,28 +149,28 @@ class cbtranslation extends CRMEntity {
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
-	// function save_related_module($module, $crmid, $with_module, $with_crmid) { }
+	// public function save_related_module($module, $crmid, $with_module, $with_crmid) { }
 
 	/**
 	 * Handle deleting related module information.
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
-	//function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
+	//public function delete_related_module($module, $crmid, $with_module, $with_crmid) { }
 
 	/**
 	 * Handle getting related list information.
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
-	//function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
+	//public function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 
 	/**
 	 * Handle getting dependents list information.
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
-	//function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
+	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 
 	/**
 	 * Returns the language string to be used for translation
@@ -177,8 +179,9 @@ class cbtranslation extends CRMEntity {
 	 */
 	public static function getLanguage() {
 		global $current_user, $default_language;
-		if (!empty($current_user) and !empty($current_user->column_fields['language']))
+		if (!empty($current_user) && !empty($current_user->column_fields['language'])) {
 			return $current_user->column_fields['language'];
+		}
 		// Fallback : Read the Accept-Language header of the request (really useful for login screen)
 		if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 			//Getting all languages in an array
@@ -187,13 +190,19 @@ class cbtranslation extends CRMEntity {
 			preg_match_all("/([a-z-]+)[,;]/i", $_SERVER['HTTP_ACCEPT_LANGUAGE'], $locales);
 			//Looping in found locales and test match against languages
 			foreach ($locales[1] as $locale) {
-				foreach ($languages as $code=>$lang) {
+				foreach ($languages as $code => $lang) {
 					//First case insensitive comparison
-					if (strcasecmp($code, $locale) === 0) return $code;
+					if (strcasecmp($code, $locale) === 0) {
+						return $code;
+					}
 					//Second case with replacing '-' by '_'
-					if (strcasecmp($code, str_replace('-','_',$locale) ) === 0) return $code;
+					if (strcasecmp($code, str_replace('-', '_', $locale)) === 0) {
+						return $code;
+					}
 					//Finally, try with short 2 letters country code
-					if (strcasecmp(substr($code, 0, 2), $locale) === 0) return $code;
+					if (strcasecmp(substr($code, 0, 2), $locale) === 0) {
+						return $code;
+					}
 				}
 			}
 		}
@@ -205,10 +214,34 @@ class cbtranslation extends CRMEntity {
 	 * Function that returns given language short name, if none is given the current language short name will be returned
 	 * @return <String>
 	 */
-	public static function getShortLanguageName($language='') {
+	public static function getShortLanguageName($languageLongName = '') {
 		global $current_language;
-		if ($language == '') $language = $current_language;
-		return substr($language, 0, 2);
+		if ($languageLongName == '') {
+			$languageLongName = $current_language;
+		}
+		return substr($languageLongName, 0, 2);
+	}
+
+	/**
+	 * Function that returns given language long name, if none is given the current language long name will be returned
+	 * @return <String>
+	 */
+	public static function getLongLanguageName($languageShortName = '') {
+		global $current_language;
+		if ($languageShortName == '') {
+			return $current_language;
+		}
+		$lang = array(
+			'de' => 'de_de',
+			'en' => 'en_us',
+			'es' => 'es_es',
+			'fr' => 'fr_fr',
+			'hu' => 'hu_hu',
+			'it' => 'it_it',
+			'nl' => 'nl_nl',
+			'pt' => 'pt_br',
+		);
+		return (isset($lang[$languageShortName]) ? $lang[$languageShortName] : '');
 	}
 
 	/*
@@ -222,11 +255,17 @@ class cbtranslation extends CRMEntity {
 	 * @param if more parameters are given they will be passed in order to the translated label using sprintf
 	 * @returns <String> translated string if found, same label if not
 	 */
-	public static function get($key, $module='', $options='') {
-		global $adb, $current_user, $current_language, $currentModule, $installationStrings;
-		if (!is_object($adb) or is_null($adb->database)) return $key;
-		if (isset($installationStrings)) return $key;
-		if (empty($module)) $module = $currentModule;
+	public static function get($key, $module = '', $options = '') {
+		global $adb, $current_language, $currentModule, $installationStrings;
+		if (!is_object($adb) || is_null($adb->database)) {
+			return $key;
+		}
+		if (isset($installationStrings)) {
+			return $key;
+		}
+		if (empty($module)) {
+			$module = $currentModule;
+		}
 		if (is_array($options)) {
 			if (isset($options['language'])) {
 				$lang = $options['language'];
@@ -257,17 +296,23 @@ class cbtranslation extends CRMEntity {
 			$searchKey = $key.'_'.$context;
 			$searchKey = self::getPluralizedKey($searchKey, $lang, $count);
 			$translatedString = self::getTranslation($searchKey, $module, $lang, $field);
-			if ($translatedString == $searchKey) $translatedString = null;
+			if ($translatedString == $searchKey) {
+				$translatedString = null;
+			}
 		}
 		if (!empty($context) && $translatedString == null) {
 			$searchKey = $key.'_'.$context;
 			$translatedString = self::getTranslation($searchKey, $module, $lang, $field);
-			if ($translatedString == $searchKey) $translatedString = null;
+			if ($translatedString == $searchKey) {
+				$translatedString = null;
+			}
 		}
 		if (!is_null($count) && $translatedString == null) {
 			$searchKey = self::getPluralizedKey($key, $lang, $count);
 			$translatedString = self::getTranslation($searchKey, $module, $lang, $field);
-			if ($translatedString == $searchKey) $translatedString = null;
+			if ($translatedString == $searchKey) {
+				$translatedString = null;
+			}
 		}
 		if ($translatedString == null) {
 			$translatedString = self::getTranslation($key, $module, $lang, $field);
@@ -280,7 +325,7 @@ class cbtranslation extends CRMEntity {
 		return $translatedString;
 	}
 
-	protected static function getTranslation($key, $module, $lang, $field=null) {
+	protected static function getTranslation($key, $module, $lang, $field = null) {
 		global $adb;
 		$ckey = 'cbtcache'.$key.$module.$lang.(is_null($field) ? '' : $field);
 		list($value,$found) = VTCacheUtils::lookupCachedInformation($ckey);
@@ -289,13 +334,15 @@ class cbtranslation extends CRMEntity {
 		}
 		$params = array($lang,$key,$module);
 		if (is_null($field)) {
-			$sql = "SELECT i18n,translation_module FROM vtiger_cbtranslation WHERE locale=? and translation_key=? and (translation_module=? or translation_module='cbtranslation')";
+			$sql = "SELECT i18n,translation_module
+				FROM vtiger_cbtranslation WHERE locale=? and translation_key=? and (translation_module=? or translation_module='cbtranslation')";
 		} else {
-			$sql = "SELECT i18n,translation_module FROM vtiger_cbtranslation WHERE locale=? and translation_key=? and (translation_module=? or translation_module='cbtranslation') and forfield=?";
+			$sql = "SELECT i18n,translation_module
+				FROM vtiger_cbtranslation WHERE locale=? and translation_key=? and (translation_module=? or translation_module='cbtranslation') and forfield=?";
 			$params[] = $field;
 		}
 		$trans = $adb->pquery($sql, $params);
-		if ($trans and $adb->num_rows($trans)>0) {
+		if ($trans && $adb->num_rows($trans)>0) {
 			$i18n = $adb->query_result($trans, 0, 'i18n');
 			if ($adb->num_rows($trans)==2) {
 				$i18nmod = $adb->query_result($trans, 1, 'translation_module');
@@ -322,11 +369,19 @@ class cbtranslation extends CRMEntity {
 	}
 
 	public static function return_module_language($lang, $module) {
-		global $adb, $current_user, $current_language, $currentModule, $installationStrings;
-		if (!is_object($adb) or is_null($adb->database)) return array();
-		if (isset($installationStrings)) return array();
-		if (empty($module)) $module = $currentModule;
-		if (empty($lang)) $lang = $current_language;
+		global $adb, $current_language, $currentModule, $installationStrings;
+		if (!is_object($adb) || is_null($adb->database)) {
+			return array();
+		}
+		if (isset($installationStrings)) {
+			return array();
+		}
+		if (empty($module)) {
+			$module = $currentModule;
+		}
+		if (empty($lang)) {
+			$lang = $current_language;
+		}
 		$ckey = 'cbtmodcache'.$module.$lang;
 		list($value,$found) = VTCacheUtils::lookupCachedInformation($ckey);
 		if ($found) {
@@ -335,13 +390,13 @@ class cbtranslation extends CRMEntity {
 		$mstrings = array();
 		$sql = 'SELECT i18n,translation_key FROM vtiger_cbtranslation WHERE locale=? and translation_module=?';
 		$trans = $adb->pquery($sql, array($lang,$module));
-		if ($trans and $adb->num_rows($trans)>0) {
+		if ($trans && $adb->num_rows($trans)>0) {
 			while ($tr = $adb->fetch_array($trans)) {
 				$mstrings[$tr['translation_key']] = $tr['i18n'];
 			}
 		} else {
 			$trans = $adb->pquery($sql, array('en_us',$module));
-			if ($trans and $adb->num_rows($trans)>0) {
+			if ($trans && $adb->num_rows($trans)>0) {
 				while ($tr = $adb->fetch_array($trans)) {
 					$mstrings[$tr['translation_key']] = $tr['i18n'];
 				}
@@ -371,8 +426,9 @@ class cbtranslation extends CRMEntity {
 	 */
 	public static function getPluralizedKey($key, $locale, $count) {
 		//Extract language code from locale with special cases
-		if (strcasecmp($locale,'pt_BR') === 0) $lang='pt_BR';
-		else {
+		if (strcasecmp($locale, 'pt_BR') === 0) {
+			$lang='pt_BR';
+		} else {
 			preg_match("/^[a-z]+/i", $locale, $match);
 			$lang = strtolower((empty($match[0]))?'en':$match[0]);
 		}
@@ -380,19 +436,25 @@ class cbtranslation extends CRMEntity {
 		//No plural form
 		if (in_array($lang, array(
 			'ay','bo','cgg','dz','id','ja','jbo','ka','km','ko','lo','ms','my','sah','su','th','tt','ug','vi','wo','zh'
-		))) return $key;
+		))) {
+			return $key;
+		}
 
 		//Two plural forms
 		if (in_array($lang, array(
 			'ach','ak','am','arn','br','fa','fil','fr','gun','ln','mfe','mg','mi','oc','pt_BR','tg','ti','tr','uz','wa'
-		))) return ($count > 1) ? $key.'_PLURAL' : $key;
+		))) {
+			return ($count > 1) ? $key.'_PLURAL' : $key;
+		}
 
 		if (in_array($lang, array(
 			'af','an','anp','as','ast','az','bg','bn','brx','ca','da','de','doi','dz','el','en','eo','es','et','eu','ff','fi','fo','fur','fy',
 			'gl','gu','ha','he','hi','hne','hu','hy','ia','it','kk','kl','kn','ku','ky','lb','mai','mk','ml','mn','mni','mr','nah','nap',
 			'nb','ne','nl','nn','nso','or','pa','pap','pms','ps','pt','rm','rw','sat','sco','sd','se','si','so','son','sq','sv','sw',
 			'ta','te','tk','ur','yo'
-		))) return ($count != 1) ? $key.'_PLURAL' : $key;
+		))) {
+			return ($count != 1) ? $key.'_PLURAL' : $key;
+		}
 
 		if ($lang == 'is') {
 			return ($count%10 != 1 || $count%100 == 11)?$key.'_PLURAL':$key;
@@ -404,117 +466,197 @@ class cbtranslation extends CRMEntity {
 		))) {
 			$i = $count%10;
 			$j = $count%100;
-			if ($i == 1 && $j != 11) return $key.'_0';
-			if ($i >= 2 && $i <= 4 && ($j < 10 || $j >= 20)) return $key.'_1';
+			if ($i == 1 && $j != 11) {
+				return $key.'_0';
+			}
+			if ($i >= 2 && $i <= 4 && ($j < 10 || $j >= 20)) {
+				return $key.'_1';
+			}
 			return $key.'_2';
 		}
 
 		if (in_array($lang, array(
 			'cs','sk'
 		))) {
-			if ($count == 1) return $key.'_0';
-			if ($count >= 2 && $count <= 4) return $key.'_1';
+			if ($count == 1) {
+				return $key.'_0';
+			}
+			if ($count >= 2 && $count <= 4) {
+				return $key.'_1';
+			}
 			return $key.'_2';
 		}
 
 		if ($lang == 'csb') {
 			$i = $count%10;
 			$j = $count%100;
-			if ($count == 1) return $key.'_0';
-			if ($i >= 2 && $i <= 4 && ($j < 10 || $j >= 20)) return $key.'_1';
+			if ($count == 1) {
+				return $key.'_0';
+			}
+			if ($i >= 2 && $i <= 4 && ($j < 10 || $j >= 20)) {
+				return $key.'_1';
+			}
 			return $key.'_2';
 		}
 
 		if ($lang == 'lt') {
 			$i = $count%10;
 			$j = $count%100;
-			if ($i == 1 && $j != 11) return $key.'_0';
-			if ($i >= 2 && ($j < 10 || $j >= 20)) return $key.'_1';
+			if ($i == 1 && $j != 11) {
+				return $key.'_0';
+			}
+			if ($i >= 2 && ($j < 10 || $j >= 20)) {
+				return $key.'_1';
+			}
 			return $key.'_2';
 		}
 
 		if ($lang == 'lv') {
 			$i = $count%10;
 			$j = $count%100;
-			if ($i == 1 && $j != 11) return $key.'_0';
-			if ($count != 0) return $key.'_1';
+			if ($i == 1 && $j != 11) {
+				return $key.'_0';
+			}
+			if ($count != 0) {
+				return $key.'_1';
+			}
 			return $key.'_2';
 		}
 
 		if ($lang == 'me') {
 			$i = $count%10;
 			$j = $count%100;
-			if ($i == 1 && $j != 11) return $key.'_0';
-			if ($i >= 2 && $i <= 4 && ($j < 10 || $j >= 20)) return $key.'_1';
+			if ($i == 1 && $j != 11) {
+				return $key.'_0';
+			}
+			if ($i >= 2 && $i <= 4 && ($j < 10 || $j >= 20)) {
+				return $key.'_1';
+			}
 			return $key.'_2';
 		}
 
-		if($lang == 'pl') {
+		if ($lang == 'pl') {
 			$i = $count%10;
 			$j = $count%100;
-			if ($count == 1) return $key.'_0';
-			if ($i >= 2 && $i <=4 && ($j < 10 || $j >= 20)) return $key.'_1';
+			if ($count == 1) {
+				return $key.'_0';
+			}
+			if ($i >= 2 && $i <=4 && ($j < 10 || $j >= 20)) {
+				return $key.'_1';
+			}
 			return $key.'_2';
 		}
 
 		if ($lang == 'ro') {
 			$j = $count%100;
-			if ($count == 1) return $key.'_0';
-			if ($count == 0 || ($j > 0 && $j < 20)) return $key.'_1';
+			if ($count == 1) {
+				return $key.'_0';
+			}
+			if ($count == 0 || ($j > 0 && $j < 20)) {
+				return $key.'_1';
+			}
 			return $key.'_2';
 		}
 
 		if ($lang == 'cy') {
-			if ($count == 1) return $key.'_0';
-			if ($count == 2) return $key.'_1';
-			if ($count != 8 && $count != 11) return $key.'_2';
+			if ($count == 1) {
+				return $key.'_0';
+			}
+			if ($count == 2) {
+				return $key.'_1';
+			}
+			if ($count != 8 && $count != 11) {
+				return $key.'_2';
+			}
 			return $key.'_3';
 		}
 
 		if ($lang == 'gd') {
-			if ($count == 1 || $count == 11) return $key.'_0';
-			if ($count == 2 || $count == 12) return $key.'_1';
-			if ($count > 2 && $count < 20) return $key.'_2';
+			if ($count == 1 || $count == 11) {
+				return $key.'_0';
+			}
+			if ($count == 2 || $count == 12) {
+				return $key.'_1';
+			}
+			if ($count > 2 && $count < 20) {
+				return $key.'_2';
+			}
 			return $key.'_3';
 		}
 
 		if ($lang == 'kw') {
-			if ($count == 1) return $key.'_0';
-			if ($count == 2) return $key.'_1';
-			if ($count == 3) return $key.'_2';
+			if ($count == 1) {
+				return $key.'_0';
+			}
+			if ($count == 2) {
+				return $key.'_1';
+			}
+			if ($count == 3) {
+				return $key.'_2';
+			}
 			return $key.'_3';
 		}
 
 		if ($lang == 'mt') {
 			$j = $count%100;
-			if ($count == 1) return $key.'_0';
-			if ($count == 0 || ($j > 1 && $j < 11)) return $key.'_1';
-			if ($j > 10 && $j <20) return $key.'_2';
+			if ($count == 1) {
+				return $key.'_0';
+			}
+			if ($count == 0 || ($j > 1 && $j < 11)) {
+				return $key.'_1';
+			}
+			if ($j > 10 && $j <20) {
+				return $key.'_2';
+			}
 			return $key.'_3';
 		}
 
 		if ($lang == 'sl') {
 			$j = $count%100;
-			if ($j == 1) return $key.'_0';
-			if ($j == 2) return $key.'_1';
-			if ($j == 3 || $j == 4) return $key.'_2';
+			if ($j == 1) {
+				return $key.'_0';
+			}
+			if ($j == 2) {
+				return $key.'_1';
+			}
+			if ($j == 3 || $j == 4) {
+				return $key.'_2';
+			}
 			return $key.'_3';
 		}
 
 		if ($lang == 'ga') {
-			if ($count == 1) return $key.'_0';
-			if ($count == 2) return $key.'_1';
-			if ($count > 2 && $count < 7) return $key.'_2';
-			if ($count > 6 && $count < 11) return $key.'_3';
+			if ($count == 1) {
+				return $key.'_0';
+			}
+			if ($count == 2) {
+				return $key.'_1';
+			}
+			if ($count > 2 && $count < 7) {
+				return $key.'_2';
+			}
+			if ($count > 6 && $count < 11) {
+				return $key.'_3';
+			}
 			return $key.'_4';
 		}
 
 		if ($lang == 'ar') {
-			if ($count == 0) return $key.'_0';
-			if ($count == 1) return $key.'_1';
-			if ($count == 2) return $key.'_2';
-			if ($count%100 >= 3 && $count%100 <= 10) return $key.'_3';
-			if ($count*100 >= 11) return $key.'_4';
+			if ($count == 0) {
+				return $key.'_0';
+			}
+			if ($count == 1) {
+				return $key.'_1';
+			}
+			if ($count == 2) {
+				return $key.'_2';
+			}
+			if ($count%100 >= 3 && $count%100 <= 10) {
+				return $key.'_3';
+			}
+			if ($count*100 >= 11) {
+				return $key.'_4';
+			}
 			return $key.'_5';
 		}
 
@@ -522,5 +664,42 @@ class cbtranslation extends CRMEntity {
 		return $key;
 	}
 
+	public static function getMonthName($month, $language = '') {
+		if ($language=='') {
+			global $current_language;
+			$language = $current_language;
+		} elseif (strlen($language) == 2) {
+			$language = self::getLongLanguageName($language);
+		}
+		if (file_exists('modules/Reports/language/'.$language.'.lang.php')) {
+			include 'modules/Reports/language/'.$language.'.lang.php';
+			return $mod_strings['MONTH_STRINGS'][$month];
+		} else {
+			return '';
+		}
+	}
+
+	public static function getDayOfWeekName($week, $language = '') {
+		if ($language=='') {
+			global $current_language;
+			$language = $current_language;
+		} elseif (strlen($language) == 2) {
+			$language = self::getLongLanguageName($language);
+		}
+		if (file_exists('modules/Reports/language/'.$language.'.lang.php')) {
+			include 'modules/Reports/language/'.$language.'.lang.php';
+			return $mod_strings['WEEKDAY_STRINGS'][$week];
+		} else {
+			return '';
+		}
+	}
+
+	public function trash($module, $record) {
+		global $adb;
+		parent::trash($module, $record);
+		$adb->pquery('Delete from vtiger_cbtranslation where cbtranslationid=?', array($record));
+		$adb->pquery('Delete from vtiger_cbtranslationcf where cbtranslationid=?', array($record));
+		$adb->pquery('Delete from vtiger_crmentity where crmid=?', array($record));
+	}
 }
 ?>

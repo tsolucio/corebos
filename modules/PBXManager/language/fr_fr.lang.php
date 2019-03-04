@@ -2,12 +2,12 @@
 /***********************************************************
 *  Module       : PBX Manager
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'PBX Manager' => 'Manager PBX',
 	'PBXManager' => 'Manager PBX',
 	'SINGLE_PBXManager' => 'Manager PBX',
@@ -31,5 +31,4 @@ $mod_strings = Array(
 	'received' => 'Reçu',
 	'OutgoingCall' => 'Outgoing call from',
 );
-
 ?>

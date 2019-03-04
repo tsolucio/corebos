@@ -7,10 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('data/CRMEntity.php');
-require_once('data/Tracker.php');
-require_once('modules/cbMap/processmap/processMap.php');
-include_once('modules/cbMap/cbRule.php');
+require_once 'data/CRMEntity.php';
+require_once 'data/Tracker.php';
+require_once 'modules/cbMap/processmap/processMap.php';
+include_once 'modules/cbMap/cbRule.php';
 
 class cbMap extends CRMEntity {
 	public $db;
@@ -115,6 +115,12 @@ class cbMap extends CRMEntity {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
 		}
+		if (!empty($this->column_fields['content'])) {
+			$xml = simplexml_load_string($this->column_fields['content']);
+			$json = json_encode($xml);
+			global $adb;
+			$adb->pquery('update vtiger_cbmap set contentjson=? where cbmapid=?', array($json, $this->id));
+		}
 	}
 
 	/**
@@ -185,6 +191,14 @@ class cbMap extends CRMEntity {
 	 */
 	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 
+	public function retrieve_entity_info($cbmapid, $mname, $deleted = false, $from_wf = false) {
+		global $current_user;
+		$holduser = $current_user;
+		$current_user = Users::getActiveAdminUser();
+		parent::retrieve_entity_info($cbmapid, $mname, $deleted, $from_wf);
+		$current_user = $holduser;
+	}
+
 	public function __call($name, $arguments) {
 		require_once 'modules/cbMap/processmap/'.$name.'.php';
 		$processmap = new $name($this);
@@ -195,7 +209,7 @@ class cbMap extends CRMEntity {
 		global $adb;
 		$query = 'SELECT crmid,setype FROM vtiger_crmentity where crmid=? AND deleted=0';
 		$result = $adb->pquery($query, array($cbmapid));
-		if ($result and $adb->num_rows($result)>0 and $adb->query_result($result, 0, 'setype') == 'cbMap') {
+		if ($result && $adb->num_rows($result)>0 && $adb->query_result($result, 0, 'setype') == 'cbMap') {
 			$cbmap = new cbMap();
 			$cbmap->retrieve_entity_info($cbmapid, 'cbMap');
 			return $cbmap;
@@ -216,7 +230,7 @@ class cbMap extends CRMEntity {
 			$prm[] = $type;
 		}
 		$mrs = $adb->pquery($sql, $prm);
-		if ($mrs and $adb->num_rows($mrs)>0) {
+		if ($mrs && $adb->num_rows($mrs)>0) {
 			$cbmapid = $adb->query_result($mrs, 0, 0);
 			$cbmap = new cbMap();
 			$cbmap->retrieve_entity_info($cbmapid, 'cbMap');
@@ -228,11 +242,14 @@ class cbMap extends CRMEntity {
 
 	public static function getMapIdByName($name) {
 		global $adb;
-		$mrs = $adb->pquery('select cbmapid
+		$mrs = $adb->pquery(
+			'select cbmapid
 			from vtiger_cbmap
 			inner join vtiger_crmentity on crmid=cbmapid
-			where deleted=0 and mapname=?', array($name));
-		if ($mrs and $adb->num_rows($mrs)>0) {
+			where deleted=0 and mapname=?',
+			array($name)
+		);
+		if ($mrs && $adb->num_rows($mrs)>0) {
 			return $adb->query_result($mrs, 0, 0);
 		} else {
 			return 0;
@@ -250,6 +267,14 @@ class cbMap extends CRMEntity {
 			}
 		}
 		return $ret;
+	}
+
+	public function getvtlib_open_popup_window_function($fieldname, $basemodule) {
+		if ($fieldname=='brmap' && $basemodule=='BusinessActions') {
+			return 'openBRMapInBA';
+		} else {
+			return 'vtlib_open_popup_window';
+		}
 	}
 }
 ?>

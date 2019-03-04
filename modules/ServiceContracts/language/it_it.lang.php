@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 'Service Contracts' => 'Servizi a Contratto',
 'ServiceContracts' => 'Servizi a Contratto',
 'SINGLE_ServiceContracts' => 'Servizio a Contratto',
@@ -54,13 +54,8 @@ $mod_strings = Array (
 'Hours'=>'Ore',
 'Days'=>'Giorni',
 'Incidents'=>'Incidenti',
-/*
- * 5.2.0 changes 
- */
 'LBL_MODULE_NAME'=>'Servizi a Contratto',
-'Residual Units'=>'Unit&agrave; Residue',	//crmv@19400
+'Residual Units'=>'Unit&agrave; Residue',
 'Service Requests'=>'Tickets',
-
 );
-
 ?>

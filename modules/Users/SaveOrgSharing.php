@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/database/PearDatabase.php');
+require_once 'include/database/PearDatabase.php';
 global $adb;
 
 $sql2 = 'select * from vtiger_def_org_share where editstatus=0';

@@ -2,12 +2,12 @@
 /***********************************************************
 *  Module       : ModComments
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
-$mod_strings = Array (
+$mod_strings = array(
 	'ModComments' => 'Commentaires',
 	'SINGLE_ModComments' => 'Commentaire',
 	'LBL_MODCOMMENTS_INFORMATION' => 'Détails Commentaire',
@@ -33,5 +33,4 @@ $mod_strings = Array (
 	'LBL_CONFIGURATION_DESCRIPTION' => 'Activater ou désactivater la functionalité pour chaque modules',
 	'LBL_ModComments_SETTINGS' => 'Modules activés',
 );
-
 ?>

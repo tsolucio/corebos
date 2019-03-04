@@ -17,7 +17,7 @@
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Pedidos',
 'LBL_SO_MODULE_NAME'=>'Pedidos',
 'LBL_RELATED_PRODUCTS'=>'Elementos',
@@ -78,7 +78,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Seleccionar Cuenta',
 'LBL_GENERAL_INFORMATION'=>'Información General',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nueva Oportunidad',
 'LBL_POTENTIAL_TITLE'=>'Oportunidad',
 
@@ -93,16 +92,13 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'Nuevo Contacto',
 'LBL_CONTACT_TITLE'=>'Contactos',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'Toda',
 'LBL_PROSPECT'=>'Investigador',
 'LBL_INVESTOR'=>'Inversionista',
 'LBL_RESELLER'=>'Revendedor',
 'LBL_PARTNER'=>'Socio',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Herramientas de la Cuenta',
-//Added for 4GA
 'Subject'=>'Referencia',
 'Quote Name'=>'Referencia de la Cotización',
 'Vendor Name'=>'Nombre del Proveedor',
@@ -148,7 +144,6 @@ $mod_strings = Array(
 'LBL_SO_INFORMATION'=>'Información del Pedido',
 'LBL_SO'=>'Pedido:',
 
- //Added for 5.0 GA
 'LBL_SO_FORM_TITLE'=>'Ventas',
 'LBL_SUBJECT_TITLE'=>'Referencia',
 'LBL_VENDOR_NAME_TITLE'=>'Nombre del Proveedor',
@@ -179,14 +174,11 @@ $mod_strings = Array(
 'Credit Invoice'=>'a Crédito',
 'Paid'=>'Pagada',
 
-//Added for Reports (5.0.4)
 'Tax Type'=>'Impuesto',
 'Discount Percent'=>'Descuento %',
 'Discount Amount'=>'Descuento Importe',
-'Terms & Conditions'=>'Condiciones Generales',
 'S&H Amount'=>'Importe Envío y Manipulado',
 
-//Added after 5.0.4 GA
 'SalesOrder No'=>'No Pedido',
 
 'Recurring Invoice Information' => 'Información Facturación Recurrente',
@@ -214,5 +206,4 @@ $mod_strings = Array(
 
 'SalesOrder ID' => 'Id Orden de Venta',
 );
-
 ?>

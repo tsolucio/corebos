@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('modules/Settings/MailScanner/core/MailScannerAction.php');
+require_once 'modules/Settings/MailScanner/core/MailScannerAction.php';
 
 /**
  * Scanner Rule

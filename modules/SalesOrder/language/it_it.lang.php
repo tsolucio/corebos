@@ -149,7 +149,7 @@ $mod_strings = array (
   'Sub Total' => 'Sub totale',
   'AutoCreated'=>'AutoCreato',
   'Sent'=>'Spedito',
-  'Credit Invoice'=>'Fattura di Accredito', 
+  'Credit Invoice'=>'Fattura di Accredito',
   'Paid'=>'Pagato',
   'Tax Type' => 'Tipo Tassa',
   'Discount Percent' => 'Sconto Percentuale',
@@ -160,7 +160,7 @@ $mod_strings = array (
 'RecurringInvoice' => 'Fattura Periodica',
 'Enable Recurring' => 'Abilita Periodicit&agrave;',
 'Frequency' => 'Frequenza',
-'Start Period' => 'Periodo Inizio', 
+'Start Period' => 'Periodo Inizio',
 'End Period' => 'Periodo Fine',
 'Payment Duration' => 'Durata Pagamento',
 'Invoice Status' => 'Stato Fattura',
@@ -180,5 +180,4 @@ $mod_strings = array (
 '4years' => '4 Years',
 '5years' => '5 Years',
 );
-
 ?>

@@ -7,70 +7,78 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('include/Webservices/Utils.php');
-require_once("include/Webservices/VtigerCRMObject.php");
-require_once("include/Webservices/VtigerCRMObjectMeta.php");
-require_once("include/Webservices/DataTransform.php");
-require_once("include/Webservices/WebServiceError.php");
+require_once 'include/Webservices/Utils.php';
+require_once "include/Webservices/VtigerCRMObject.php";
+require_once "include/Webservices/VtigerCRMObjectMeta.php";
+require_once "include/Webservices/DataTransform.php";
+require_once "include/Webservices/WebServiceError.php";
 require_once 'include/Webservices/ModuleTypes.php';
-require_once('include/Webservices/Create.php');
+require_once 'include/Webservices/Create.php';
 require_once 'include/Webservices/DescribeObject.php';
 require_once 'include/Webservices/WebserviceField.php';
 require_once 'include/Webservices/EntityMeta.php';
 require_once 'include/Webservices/VtigerWebserviceObject.php';
 
-require_once("modules/Users/Users.php");
+require_once "modules/Users/Users.php";
 
-class VTCreateEventTask extends VTTask{
+class VTCreateEventTask extends VTTask {
 	public $executeImmediately = true;
-	
-	public function getFieldNames(){
-		return array('eventType', 'eventName', 'description', 'sendNotification', 
-								 'startTime', 'startDays', 'startDirection', 'startDatefield', 
+
+	public function getFieldNames() {
+		return array('eventType', 'eventName', 'description', 'sendNotification',
+								 'startTime', 'startDays', 'startDirection', 'startDatefield',
 								 'endTime','endDays', 'endDirection', 'endDatefield',
 								 'status', 'priority','recurringcheck','repeat_frequency',
 								 'recurringtype','calendar_repeat_limit_date',
 								 'mon_flag','tue_flag','wed_flag','thu_flag','fri_flag','sat_flag','sun_flag',
 								 'repeatMonth','repeatMonth_date','repeatMonth_daytype','repeatMonth_day', 'assigned_user_id');
 	}
-	
-	function getAdmin(){
+
+	public function getAdmin() {
 		$user = Users::getActiveAdminUser();
 		global $current_user;
 		$this->originalUser = $current_user;
 		$current_user = $user;
 		return $user;
 	}
-	
-	public function doTask(&$entityData){
-                global $from_wf;
-                $from_wf = true;
 
-                if(!vtlib_isModuleActive('Calendar')) {
+	public function doTask(&$entityData) {
+				global $from_wf;
+				$from_wf = true;
+
+		if (!vtlib_isModuleActive('Calendar')) {
 			return;
 		}
 		global $adb, $current_user;
 		$userId = $entityData->get('assigned_user_id');
-		if($userId===null){
+		if ($userId===null) {
 			$userId = vtws_getWebserviceEntityId('Users', 1);
 		}
 
 		$moduleName = $entityData->getModuleName();
 		$adminUser = $this->getAdmin();
 
-		$startDate = $this->calculateDate($entityData, $this->startDays, 
-															$this->startDirection, $this->startDatefield);
-		$endDate = $this->calculateDate($entityData, $this->endDays, 
-															$this->endDirection, $this->endDatefield);
+		$startDate = $this->calculateDate(
+			$entityData,
+			$this->startDays,
+			$this->startDirection,
+			$this->startDatefield
+		);
+		$endDate = $this->calculateDate(
+			$entityData,
+			$this->endDays,
+			$this->endDirection,
+			$this->endDatefield
+		);
 		// Added to check if the user/group is active
-		if(!empty($this->assigned_user_id)) {
+		if (!empty($this->assigned_user_id)) {
 			$userExists = $adb->pquery('SELECT 1 FROM vtiger_users WHERE id = ? AND status = ?', array($this->assigned_user_id, 'Active'));
-			if($adb->num_rows($userExists)) {
+			if ($adb->num_rows($userExists)) {
 				$assignedUserId = vtws_getWebserviceEntityId('Users', $this->assigned_user_id);
 				$userId = $assignedUserId;
 			} else {
 				$groupExist = $adb->pquery('SELECT 1 FROM vtiger_groups WHERE groupid = ?', array($this->assigned_user_id));
-				if($adb->num_rows($groupExist)) {
+				if ($adb->num_rows($groupExist)) {
 					$assignedGroupId = vtws_getWebserviceEntityId('Groups', $this->assigned_user_id);
 					$userId = $assignedGroupId;
 				}
@@ -92,25 +100,25 @@ class VTCreateEventTask extends VTTask{
 			'taskstatus'=>'',
 			'duration_hours'=>'0'
 		);
-		
+
 		$id = $entityData->getId();
-		if($moduleName=='Contacts'){
+		if ($moduleName=='Contacts') {
 			$fields['contact_id'] = $id;
-		}else{ 
+		} else {
 			$data = vtws_describe('Calendar', $adminUser);
 			$fieldInfo = $data['fields'];
-			foreach($fieldInfo as $field){
-				if($field['name']=='parent_id'){
+			foreach ($fieldInfo as $field) {
+				if ($field['name']=='parent_id') {
 					$parentIdField = $field;
 				}
 			}
 			$refersTo = $parentIdField['type']['refersTo'];
-			
-			if(in_array($moduleName, $refersTo)){
+
+			if (in_array($moduleName, $refersTo)) {
 				$fields['parent_id'] = $id;
 			}
 		}
-		
+
 		$event = vtws_create('Events', $fields, $adminUser);
 		$eventIdDetails = vtws_getIdComponents($event['id']);
 		$entityIdDetails = vtws_getIdComponents($id);
@@ -119,17 +127,16 @@ class VTCreateEventTask extends VTTask{
 
 		$handler = vtws_getModuleHandlerFromName('Events', $adminUser);
 		$meta = $handler->getMeta();
-		$recordValues = DataTransform::sanitizeForInsert($event,$meta);
+		$recordValues = DataTransform::sanitizeForInsert($event, $meta);
 		list($typeId, $id) = vtws_getIdComponents($event['id']);
 		$event = CRMEntity::getInstance('Events');
 		$event->id = $id;
 		$event->column_fields = $recordValues;
-		
-		if($this->recurringcheck && !empty($startDate) &&
-				($this->calendar_repeat_limit_date)) {
 
+		if ($this->recurringcheck && !empty($startDate) &&
+				($this->calendar_repeat_limit_date)) {
 			$resultRow = array();
-			
+
 			$resultRow['date_start'] = $startDate;
 			$resultRow['time_start'] = self::conv12to24hour($this->startTime);
 			$resultRow['due_date'] = $this->calendar_repeat_limit_date;
@@ -176,7 +183,7 @@ class VTCreateEventTask extends VTTask{
 				}
 			}
 			$resultRow['recurringinfo'] = $recurringInfo;
-	
+
 			// Added this to relate these events to parent module.
 			$_REQUEST['createmode'] = 'link';
 			$_REQUEST['return_module'] = $moduleName;
@@ -188,19 +195,18 @@ class VTCreateEventTask extends VTTask{
 			Calendar_RepeatEvents::repeat($event, $recurObj);
 
 			$_REQUEST['createmode'] = '';
-
 		}
-                $from_wf = false;
+				$from_wf = false;
 		global $current_user;
 		$current_user = $this->originalUser;
 	}
 
-	private function calculateDate($entityData, $days, $direction, $datefield){
+	private function calculateDate($entityData, $days, $direction, $datefield) {
 		$baseDate = $entityData->get($datefield);
-		if($baseDate == '') {
+		if ($baseDate == '') {
 			$baseDate = date('Y-m-d');
 		}
-		if($days == '') {
+		if ($days == '') {
 			$days = 0;
 		}
 		preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
@@ -210,12 +216,12 @@ class VTCreateEventTask extends VTTask{
 		return $date;
 	}
 
-	static function conv12to24hour($timeStr){
+	public static function conv12to24hour($timeStr) {
 		$arr = array();
 		preg_match('/(\d{1,2}):(\d{1,2})(am|pm)/', $timeStr, $arr);
-		if($arr[3]=='am'){
+		if ($arr[3]=='am') {
 			$hours = ((int)$arr[1]) % 12;
-		}else{
+		} else {
 			$hours = ((int)$arr[1]) % 12 + 12;
 		}
 		return str_pad($hours, 2, '0', STR_PAD_LEFT).':'.str_pad($arr[2], 2, '0', STR_PAD_LEFT);
@@ -224,6 +230,5 @@ class VTCreateEventTask extends VTTask{
 	public function getTimeFieldList() {
 		return array('startTime', 'endTime');
 	}
-
 }
 ?>

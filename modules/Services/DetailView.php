@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('Smarty_setup.php');
+require_once 'Smarty_setup.php';
 
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
@@ -26,5 +26,5 @@ $smarty->assign('TAX_DETAILS', $tax_details);
 $price_details = getPriceDetailsForProduct($focus->id, $focus->unit_price, 'available_associated', $currentModule);
 $smarty->assign('PRICE_DETAILS', $price_details);
 
-$smarty->display('Inventory/InventoryDetailView.tpl');
+$smarty->display('DetailView.tpl');
 ?>

@@ -2,12 +2,12 @@
 /***********************************************************
 *  Module       : ConfigEditor
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
-$mod_strings = Array (
-	
+
+$mod_strings = array (
 	'ConfigEditor' => 'Editeur de Configuration',
 	'LBL_CONFIG_EDITOR' => 'Editeur de Configuration',
 	'LBL_CONFIG_EDIT'=>'Editer la configuration',
@@ -41,5 +41,4 @@ $mod_strings = Array (
 	'LBL_CORS_ENABLED_DOMAINS' => 'Domaines authorisés CORS',
 	'disable_stats_tracking' => 'Désactiver Satistiques d\'Accés aux Email',
 );
-
 ?>

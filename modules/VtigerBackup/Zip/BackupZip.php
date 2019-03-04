@@ -14,12 +14,11 @@ abstract class Vtiger_BackupZip {
 	protected $fileName;
 	protected static $defaultPath;
 	private static $isUserPath;
-	private static $filePrefix = 'Vtiger-';
-	abstract public function addFile($filePath,$parentDirectory);
-	abstract public function addDirectory($directoryPath,$zipPath);
+	abstract public function addFile($filePath, $parentDirectory);
+	abstract public function addDirectory($directoryPath, $zipPath);
 	abstract public function close();
 
-	public static function getInstance($folder = null, $filename=null) {
+	public static function getInstance($folder = null, $filename = null) {
 		if (empty($filename)) {
 			$filename = self::getDefaultFileName();
 		}
@@ -48,10 +47,10 @@ abstract class Vtiger_BackupZip {
 			$time = time();
 		}
 		global $site_URL;
-		$archive_prefix=str_replace('http://','',$site_URL);
-		$archive_prefix=str_replace('/','',$archive_prefix);
-		$archive_prefix=str_replace(':','',$archive_prefix);
-		return $archive_prefix.gmdate('d_M_Y-H_i_s-T',$time).'.zip';
+		$archive_prefix=str_replace('http://', '', $site_URL);
+		$archive_prefix=str_replace('/', '', $archive_prefix);
+		$archive_prefix=str_replace(':', '', $archive_prefix);
+		return $archive_prefix.gmdate('d_M_Y-H_i_s-T', $time).'.zip';
 	}
 
 	public static function getDefaultFolderPath() {
@@ -66,6 +65,5 @@ abstract class Vtiger_BackupZip {
 	public function getBackupFileName() {
 		return $this->fileName;
 	}
-
 }
 ?>

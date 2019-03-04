@@ -12,7 +12,6 @@
 * See the License for the specific language governing permissions and limitations under the
 * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
 *************************************************************************************************/
-
 include_once 'include/Webservices/VtigerModuleOperation.php';
 include_once 'include/Webservices/AttachmentHelper.php';
 
@@ -35,7 +34,7 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 	 *     all the indicated entities will be related to the document being created
 	 */
 	public function create($elementType, $element) {
-		global $adb,$log;
+		global $adb;
 		$crmObject = new VtigerCRMObject($elementType, false);
 
 		$attachments = array();
@@ -46,7 +45,7 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 				$file['setype'] = "Emails Attachment";
 				$attachments[] = SaveAttachmentDB($file);
 				$element['filetype']=$file['type'];
-				$element['filename']=$filename = str_replace(' ', '_', $file['name']);
+				$element['filename']= str_replace(' ', '_', $file['name']);
 			}
 		}
 
@@ -54,7 +53,7 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 
 		$element = DataTransform::sanitizeForInsert($element, $this->meta);
 
-		if (!empty($element['related']) and is_array($element['related'])) {
+		if (!empty($element['related']) && is_array($element['related'])) {
 			$_REQUEST['parent_id'] = '';
 			foreach ($element['related'] as $rel) {
 				$ids = vtws_getIdComponents($rel);
@@ -126,7 +125,7 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 			$element['filesize']=$element['filename']['size'];
 			$attachid=SaveAttachmentDB($element);
 			$element['filetype']=$element['filename']['type'];
-			$element['filename']=$filename = str_replace(' ', '_', $element['filename']['name']);
+			$element['filename']= str_replace(' ', '_', $element['filename']['name']);
 		}
 		// $relations = isset($element['relations']) ? $element['related'] : null;
 		// unset($element['relations']);

@@ -23,7 +23,7 @@ include_once 'modules/cbMap/processmap/Validations.php';
 
 $screen_values = json_decode($_REQUEST['structure'], true);
 $editingDTEnd = !empty($screen_values['dtend']);
-if ((empty($screen_values['dtstart']) or empty($screen_values['dtend'])) and !empty($screen_values['record'])) {
+if ((empty($screen_values['dtstart']) || empty($screen_values['dtend'])) && !empty($screen_values['record'])) {
 	$rs = $adb->pquery('select dtstart,dtend from vtiger_activity where activityid=?', array($screen_values['record']));
 	$dbdatestart = $adb->query_result($rs, 0, 'dtstart');
 	$dbdateend = $adb->query_result($rs, 0, 'dtend');
@@ -86,7 +86,7 @@ if (empty($screen_values['action']) && !empty($screen_values['record']) && !$edi
 	}
 }
 
-if (isset($screen_values['action']) and $screen_values['action'] == 'MassEditSave') {
+if (isset($screen_values['action']) && $screen_values['action'] == 'MassEditSave') {
 	echo '%%%OK%%%';
 } else {
 	if (isset($screen_values['followupcreate']) && $screen_values['followupcreate'] == '1' && !empty($screen_values['record']) && empty($screen_values['followupdt'])) {

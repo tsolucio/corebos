@@ -29,7 +29,8 @@
 				<div class="small" style="padding:10px" >
 					<table align="center" border="0" cellpadding="0" cellspacing="0" width="95%">
 					<tr><td>
-						<span class="dvHeaderText">[ {$ID} ] {$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>&nbsp;&nbsp;&nbsp;<span class="small">{$UPDATEINFO}</span>&nbsp;<span id="vtbusy_info" style="display:none;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
+						<span class="dvHeaderText">[ {$ID} ] {$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>
+						&nbsp;&nbsp;&nbsp;<span class="small">{$UPDATEINFO}</span>
 					</td></tr>
 					</table>
 					<br>
@@ -82,7 +83,20 @@
 																					<td width="6px">&nbsp;</td>
 																					<td><b>{$xmlgkey}</b></td>
 																					<td>
-																						{$xmlginfo}
+																						{if $xmlginfo|is_array}
+																							<table style="margin-left: 6px;text-align: left;" border=0>
+																							<tr><th colspan="3">{$xmlfkey}</th></tr>
+																							{foreach key=xmlginfokey item=xmlginfoinfo from=$xmlginfo}
+																							<tr>
+																								<td width="6px">&nbsp;</td>
+																								<td><b>{$xmlginfokey}</b></td>
+																								<td>{$xmlginfoinfo|json_encode}</td>
+																							</tr>
+																							{/foreach}
+																							</table>
+																						{else}
+																							{$xmlginfo}
+																						{/if}
 																					</td>
 																				</tr>
 																				{/foreach}

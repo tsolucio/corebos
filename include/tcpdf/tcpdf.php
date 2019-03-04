@@ -7556,10 +7556,10 @@ class TCPDF {
 			$dest = $dest ? 'D' : 'F';
 		}
 		$dest = strtoupper($dest);
-		if ($dest[0] != 'F') {
-			$name = preg_replace('/[\s]+/', '_', $name);
-			$name = preg_replace('/[^a-zA-Z0-9_\.-]/', '', $name);
-		}
+// 		if ($dest[0] != 'F') {
+// 			$name = preg_replace('/[\s]+/', '_', $name);
+// 			$name = preg_replace('/[^a-zA-Z0-9_\.-]/', '', $name);
+// 		}
 		if ($this->sign) {
 			// *** apply digital signature to the document ***
 			// get the document content
@@ -12576,7 +12576,7 @@ class TCPDF {
 		$k = $this->k;
 		$this->javascript .= sprintf("f".$name."=this.addField('%s','%s',%u,[%F,%F,%F,%F]);", $name, $type, $this->PageNo()-1, $x*$k, ($this->h-$y)*$k+1, ($x+$w)*$k, ($this->h-$y-$h)*$k+1)."\n";
 		$this->javascript .= 'f'.$name.'.textSize='.$this->FontSizePt.";\n";
-		while (list($key, $val) = each($prop)) {
+		foreach ($prop as $key => $val) {
 			if (strcmp(substr($key, -5), 'Color') == 0) {
 				$val = TCPDF_COLORS::_JScolor($val);
 			} else {
@@ -13551,7 +13551,7 @@ class TCPDF {
 		if (empty($page)) {
 			$page = $this->page + 1;
 		}
-		$this->newpagegroup[$page] = sizeof($this->newpagegroup) + 1;
+		$this->newpagegroup[$page] = count($this->newpagegroup) + 1;
 	}
 
 	/**
@@ -16539,7 +16539,7 @@ class TCPDF {
 					// get attributes
 					preg_match_all('/([^=\s]*)[\s]*=[\s]*"([^"]*)"/', $element, $attr_array, PREG_PATTERN_ORDER);
 					$dom[$key]['attribute'] = array(); // reset attribute array
-					while (list($id, $name) = each($attr_array[1])) {
+					foreach ($attr_array[1] as $id => $name) {
 						$dom[$key]['attribute'][strtolower($name)] = $attr_array[2][$id];
 					}
 					if (!empty($css)) {
@@ -16552,7 +16552,7 @@ class TCPDF {
 						// get style attributes
 						preg_match_all('/([^;:\s]*):([^;]*)/', $dom[$key]['attribute']['style'], $style_array, PREG_PATTERN_ORDER);
 						$dom[$key]['style'] = array(); // reset style attribute array
-						while (list($id, $name) = each($style_array[1])) {
+						foreach ($style_array[1] as $id => $name) {
 							// in case of duplicate attribute the last replace the previous
 							$dom[$key]['style'][strtolower($name)] = trim($style_array[2][$id]);
 						}
@@ -21222,7 +21222,7 @@ Putting 1 is equivalent to putting 0 and calling Ln() just after. Default value:
 		}
 		if (isset($this->newpagegroup[$page])) {
 			// start a new group
-			$this->newpagegroup[$this->page] = sizeof($this->newpagegroup) + 1;
+			$this->newpagegroup[$this->page] = count($this->newpagegroup) + 1;
 			$this->currpagegroup = $this->newpagegroup[$this->page];
 			$this->pagegroups[$this->currpagegroup] = 1;
 		} elseif (isset($this->currpagegroup) AND ($this->currpagegroup > 0)) {
@@ -23677,7 +23677,7 @@ Putting 1 is equivalent to putting 0 and calling Ln() just after. Default value:
 	protected function removeTagNamespace($name) {
 		if(strpos($name, ':') !== false) {
 			$parts = explode(':', $name);
-			return $parts[(sizeof($parts) - 1)];
+			return $parts[(count($parts) - 1)];
 		}
 		return $name;
 	}
@@ -23817,7 +23817,7 @@ Putting 1 is equivalent to putting 0 and calling Ln() just after. Default value:
 					$tmp = array();
 					preg_match_all("/[0-9]+/", $attribs['viewBox'], $tmp);
 					$tmp = $tmp[0];
-					if (sizeof($tmp) == 4) {
+					if (count($tmp) == 4) {
 						$vx = $tmp[0];
 						$vy = $tmp[1];
 						$vw = $tmp[2];
@@ -23833,7 +23833,7 @@ Putting 1 is equivalent to putting 0 and calling Ln() just after. Default value:
 							} else {
 								preg_match_all('/[a-zA-Z]+/', $attribs['preserveAspectRatio'], $tmp);
 								$tmp = $tmp[0];
-								if ((sizeof($tmp) == 2) AND (strlen($tmp[0]) == 8) AND (in_array($tmp[1], array('meet', 'slice', 'none')))) {
+								if ((count($tmp) == 2) AND (strlen($tmp[0]) == 8) AND (in_array($tmp[1], array('meet', 'slice', 'none')))) {
 									$aspectX = substr($tmp[0], 0, 4);
 									$aspectY = substr($tmp[0], 4, 4);
 									$fit = $tmp[1];

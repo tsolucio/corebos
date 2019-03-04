@@ -1,18 +1,14 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific apmt_locationuage governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Tasks',
 'LBL_MODULE_TITLE'=>'Tasks: Home',
 'LBL_MODULE_APPOINTMENT'=>'Tasks: Appointment',
@@ -31,7 +27,6 @@ $mod_strings = Array(
 'LBL_TIMESETTINGS'=>'Time Settings',
 'LBL_HOLDFOLLOWUP'=>'Hold follow up on',
 'LBL_FOLLOWUP' => 'Follow up',
-'LBL_CALL' => 'Call',
 'LBL_MEET' => 'Meeting',
 'LBL_APPNT' => 'Appointment',
 'LBL_NEW_APPNT' => 'New Appointment',
@@ -63,7 +58,6 @@ $mod_strings = Array(
 'LBL_WEEK' => 'Week',
 'LBL_WEEK_BUTTON_KEY' => 'W',
 'LBL_WEEK_BUTTON_TITLE' => 'Week [Alt+W]',
-'LBL_WEEKS' => 'Weeks',
 'LBL_NEXT_WEEK' => 'next week',
 'LBL_LAST_WEEK' => 'last week',
 'LBL_4WEEKS_BACK' => '4 weeks back',
@@ -321,7 +315,6 @@ $mod_strings = Array(
 'Duration Minutes'=>'Duration Minutes',
 'Location'=>'Location',
 'No Time'=>'No Time',
-//Added for Send Reminder 4.2 release
 'Send Reminder'=>'Send Reminder',
 'SendReminder'=>'Send Reminder',
 'LBL_YES'=>'Yes',
@@ -330,12 +323,10 @@ $mod_strings = Array(
 'LBL_MINUTES'=>'minutes',
 'LBL_HOURS'=>'hours',
 'LBL_BEFORE_EVENT'=>'before event',
-//Added for CustomView 4.2 Release
 'Close'=>'Close',
 'Start Date'=>'Start Date',
 'Type'=>'Type',
 'End Date'=>'End Date',
-'Recurrence'=> 'Recurring Events',
 'Recurring Type'=> 'Recurring Type',
 //Activities - Notification Error
 'LBL_NOTIFICATION_ERROR'=>'Mail Error : Please check your outgoing mail server configuration in Settings->Outgoing Mail Server Configuration OR MailId for the present user is not Configured',
@@ -409,15 +400,12 @@ $mod_strings = Array(
 //added to send invitation mail Subject.
 'INVITATION'=>' Invitation ',
 
-// Added/Updated for vtiger CRM 5.0.4
 'LBL_YEAR_BUTTON_TITLE'=>'Year [Alt+Y]',
 'LBL_SELECT_CONTACT'=>'Select Contacts',
 'SHARED_EVENT_DEL_MSG'=>'The User does not have permission to Edit/Delete Shared Event.',
-//added to fix ticket#4525
 'LBL_CREATED'=>'created',
 'LBL_UPDATED'=>'updated',
 
-//Added after 5.0.4 GA
 'LBL_BUSY' => 'Busy',
 
 //Custom Fields support for Calendar
@@ -439,9 +427,8 @@ $mod_strings = Array(
 'LBL_SUCCESS'=>'Success!',
 'LBL_NO_IMPORT_TO_UNDO'=>'There was no import to undo.',
 'LBL_FAILURE'=>'Failed!',
-    
+
 'LBL_ARE_YOU_SURE'=>'Are you sure?',
 'Calendar ID' => 'Tasks ID',
 );
-
 ?>

@@ -29,11 +29,11 @@
 				<input type="hidden" name="mode" value="edit">
 				<input type="hidden" name="parenttab" value="Settings">
 				<tr>
-					<td width=50 rowspan=2 valign=top><img src="{'ico-groups.gif'|@vtiger_imageurl:$THEME}" width="48" height="48" border=0 ></td>
+					<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'ico-groups.gif'|@vtiger_imageurl:$THEME}" width="48" height="48" border=0 ></td>
 					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=listgroups&parenttab=Settings">{$CMOD.LBL_GROUPS}</a> &gt; {$CMOD.LBL_VIEWING} &quot;{$GROUPINFO.0.groupname}&quot; </b></td>
 				</tr>
 				<tr>
-					<td valign=top class="small">{$CMOD.LBL_VIEWING} {$CMOD.LBL_PROPERTIES} &quot;{$GROUPINFO.0.groupname}`&quot; {$CMOD.LBL_GROUP_NAME} </td>
+					<td valign=top class="small cblds-p-v_none">{$CMOD.LBL_VIEWING} {$CMOD.LBL_PROPERTIES} &quot;{$GROUPINFO.0.groupname}`&quot; {$CMOD.LBL_GROUP_NAME} </td>
 				</tr>
 				</table>
 				
@@ -111,7 +111,7 @@
                     </table>
 					<br>
 					<table border=0 cellspacing=0 cellpadding=5 width=100% >
-					<tr><td class="small" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
+					<tr><td class="small cblds-t-align_right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
 					</table>
 					
 					

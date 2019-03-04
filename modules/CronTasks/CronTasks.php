@@ -16,8 +16,8 @@ class CronTasks {
 	* @param String Event Type
 	*/
 	public function vtlib_handler($moduleName, $eventType) {
-		require_once('include/utils/utils.php');
-		global $adb,$mod_strings;
+		require_once 'include/utils/utils.php';
+		global $adb;
 
 		if ($eventType == 'module.postinstall') {
 			$fieldid = $adb->getUniqueID('vtiger_settings_field');

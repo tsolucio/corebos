@@ -8,15 +8,13 @@
  * All Rights Reserved.
  * *********************************************************************************** */
 
-class Google_SaveSettings_Action  {
+class Google_SaveSettings_Action {
 
-	public function process( $request) {
+	public function process($request) {
 		$sourceModule = $request['sourcemodule'];
 		$fieldMapping = $request['fieldmapping'];
-		Google_Utils_Helper::saveSettings($request); 
+		Google_Utils_Helper::saveSettings($request);
 		Google_Utils_Helper::saveFieldMappings($sourceModule, $fieldMapping);
 	}
-
 }
-
 ?>

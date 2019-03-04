@@ -11,19 +11,19 @@ include_once __DIR__ .'/Folder.php';
 
 class MailManager_Model_DraftFolder extends MailManager_Model_Folder {
 
-	function hasPrevPage() {
+	public function hasPrevPage() {
 		return ($this->mPageStart <= $this->mCount  && ($this->mPageCurrent > 0));
 	}
 
-	function hasNextPage() {
+	public function hasNextPage() {
 		return ($this->mPageEnd < $this->mCount);
 	}
 
-	function pageInfo() {
+	public function pageInfo() {
 		$s = max(1, $this->mPageCurrent * $this->mPageLimit+1);
 		$e = min($s+$this->mPageLimit-1, $this->mCount);
 		$t = $this->mCount;
-		return sprintf("%s - %s ".getTranslatedString('LBL_LIST_OF')." %s", $s, $e, $t);
+		return sprintf('%s - %s '.getTranslatedString('LBL_LIST_OF').' %s', $s, $e, $t);
 	}
 }
 ?>

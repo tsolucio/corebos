@@ -7,9 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('Smarty_setup.php');
-require_once('modules/Users/Users.php');
-require_once('include/utils/utils.php');
+require_once 'Smarty_setup.php';
+require_once 'modules/Users/Users.php';
+require_once 'include/utils/utils.php';
 
 $module = vtlib_purify($_REQUEST['module']);
 $focus = CRMEntity::getInstance($module);
@@ -28,6 +28,14 @@ if ($mode == 'mergesave') {
 	$parenttab     = vtlib_purify($_REQUEST['parent']);
 	$merge_id      = vtlib_purify($_REQUEST['record']);
 	$recordids     = vtlib_purify($_REQUEST['pass_rec']);
+	// Here we check if user have the rights to see this data.
+	if (isPermitted($currentModule, 'EditView', $merge_id) !== 'yes') {
+		$smarty = new vtigerCRM_Smarty();
+		$smarty->assign('APP', $app_strings);
+		$smarty->assign('OPERATION_MESSAGE', getTranslatedString('LBL_PERMISSION'));
+		$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
+		exit;
+	}
 
 	$result = $adb->pquery('SELECT count(*) AS count FROM vtiger_crmentity WHERE crmid=? and deleted=0', array($merge_id));
 	$count = $adb->query_result($result, 0, 'count');
@@ -52,7 +60,9 @@ if ($mode == 'mergesave') {
 
 		// Delete the records by id specified in the list
 		foreach ($del_value as $value) {
-			DeleteEntity(vtlib_purify($_REQUEST['module']), vtlib_purify($_REQUEST['return_module']), $focus, $value, '');
+			if (isPermitted($module, 'Delete', $value) === 'yes') {
+				DeleteEntity($module, $return_module, $focus, $value, '');
+			}
 		}
 	}
 ?>
@@ -104,14 +114,8 @@ if ($mode == 'mergesave') {
 
 	$no_existing = ($record_count == $count ? 1 : 0);
 
-	$sql='select faviconlogo from vtiger_organizationdetails limit 1';
-	$result = $adb->pquery($sql, array());
-	$favicon = decode_html($adb->query_result($result, 0, 'faviconlogo'));
-	if ($favicon=='') {
-		$favicon='themes/images/favicon.ico';
-	} else {
-		$favicon='test/logo/'.$favicon;
-	}
+	$companyDetails = retrieveCompanyDetails();
+	$favicon = $companyDetails["favicon"];
 	$smarty->assign('FAVICON', $favicon);
 	$userName = getFullNameFromArray('Users', $current_user->column_fields);
 	$smarty->assign('USER', $userName);

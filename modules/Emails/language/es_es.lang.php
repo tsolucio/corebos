@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_GENERAL_INFORMATION'=>'Información General',
 
 'LBL_MODULE_NAME'=>'Email',
@@ -36,7 +36,6 @@ $mod_strings = Array(
 'LBL_COLON'=>':',
 'LBL_CHK_MAIL'=>'Comprobar Correo',
 'LBL_COMPOSE'=>'Redactar',
-//Single change for 5.0.3
 'LBL_SETTINGS'=>'Configuración',
 'LBL_EMAIL_FOLDERS'=>'Carpetas de Email',
 'LBL_INBOX'=>'Bandeja de Entrada',
@@ -62,8 +61,6 @@ $mod_strings = Array(
 'NTC_REMOVE_INVITEE'=>'¿Está seguro de eliminar esta dirección de Email?',
 'LBL_INVITEE'=>'Receptores',
 
-// Added Fields
-// Contacts-SubPanelViewContactsAndUsers.php
 'LBL_BULK_MAILS'=>'Emails masivos',
 'LBL_ATTACHMENT'=>'Adjunto',
 'LBL_UPLOAD'=>'Actualizar',
@@ -76,10 +73,6 @@ $mod_strings = Array(
 'LBL_EMAIL_TEMPLATES_LIST'=>'Lista de Plantillas de Email',
 'LBL_EMAIL_INFORMATION'=>'Información de email',
 
-
-
-
-//for v4 release added
 'LBL_NEW_LEAD'=>'Nuevo Pre-Contacto',
 'LBL_LEAD_TITLE'=>'Pre-Contactos',
 
@@ -90,13 +83,10 @@ $mod_strings = Array(
 'LBL_NEW_ACCOUNT'=>'Nueva Cuenta',
 'LBL_ACCOUNT_TITLE'=>'Cuentas',
 
-// Added vtiger_fields after vtiger4 - Beta
 'LBL_USER_TITLE'=>'Usuarios',
 'LBL_NEW_USER'=>'Nuevo Usuario',
 
-// Added for 4 GA
 'LBL_TOOL_FORM_TITLE'=>'Herramientas de Email',
-//Added for 4GA
 'Date & Time Sent'=>'Fecha y Hora de envío',
 'Sales Enity Module'=>'Módulo Entidad de Ventas',
 'Related To'=>'Relacionado con',
@@ -116,12 +106,8 @@ $mod_strings = Array(
 'MESSAGE_ADD_USER_OR_CONTACT'=>'Por favor, agregue usuarios y contactos...',
 'MESSAGE_MAIL_SENT_SUCCESSFULLY'=>' ¡El Correo ha sido enviado con exito!',
 
-// Added for web mail post 4.0.1 release
-'LBL_FETCH_WEBMAIL'=>'Cargar WebMail',
-//Added for 4.2 Release -- CustomView
 'LBL_ALL'=>'Todos',
 'MESSAGE_CONTACT_NOT_WANT_MAIL'=>'Este contacto no desea recibir correos.',
-'LBL_WEBMAILS_TITLE'=>'Email',
 'LBL_EMAILS_TITLE'=>'Email',
 'LBL_MAIL_CONNECT_ERROR_INFO'=>'¡Error conectando con el servidor de email!<br> Compruebe en Configuración -> Lista de Servidores de Correo -> Lista de cuentas de correo',
 'LBL_ALLMAILS'=>'Todos los Correos',
@@ -139,7 +125,6 @@ $mod_strings = Array(
 'LBL_COMPOSE_EMAIL'=>'Redactar Correo',
 'LBL_VTIGER_EMAIL_CLIENT'=>'Cliente de Correo',
 
-//Added for 5.0.3
 'TITLE_VTIGERCRM_MAIL'=>'Correo',
 'TITLE_COMPOSE_MAIL'=>'Redactar Correo',
 
@@ -154,9 +139,6 @@ $mod_strings = Array(
 'LBL_CONF_MAILSERVER_ERROR'=>'Configura el servidor de correo saliente en Herramientas --> Servidor de Correo',
 'LBL_CONF_SERVERSTORAGE_ERROR'=>'Los permisos en tu directorio storage son insuficientes, no podrás enviar adjuntos!',
 'LBL_MAILSELECT_INFO3'=>'No tienes permiso para visualizar las cuentas de correo del registro seleccionado.',
-//Added  for script alerts
-'FEATURE_AVAILABLE_INFO' => 'Característica disponible sólo para Microsoft Internet Explorer 5.5+\n\n 
-¡Actualice su navegador!',
 'DOWNLOAD_CONFIRAMATION' => '¿Descargar Archivo?',
 'LBL_PLEASE_ATTACH' => '¡Adjunte un archivo permitido!',
 'LBL_KINDLY_UPLOAD' => '¡Configure la variable<font color="red">upload_tmp_dir</font> en el php.ini',
@@ -164,7 +146,6 @@ $mod_strings = Array(
 'LBL_BYTES' => ' bytes',
 'LBL_CHECK_USER_MAILID' => 'Compruebe que el correo del usuario es una cuenta de correo válida',
 
-// Added/Updated for vtiger CRM 5.0.4
 'Activity Type'=>'Tipo de Evento',
 'LBL_MAILSELECT_INFO'=>'tiene los siguientes emails configurados. Seleccione los que quiera utilizar',
 'LBL_NO_RECORDS'=>'No hay registros en esta carpeta',
@@ -173,5 +154,4 @@ $mod_strings = Array(
 'LBL_ATTACH_DOCUMENTS' => 'Adjuntar documentos',
 'Access Count' => 'Número Accesos',
 );
-
 ?>

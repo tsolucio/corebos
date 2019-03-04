@@ -8,7 +8,7 @@
  ********************************************************************************/
 
 function UpdateAjaxSave(label, fid, fldname, fileOrFolder) {
-	fldVal = document.getElementById('txtbox_' + label).value;
+	var fldVal = document.getElementById('txtbox_' + label).value;
 	if (fldVal.replace(/^\s+/g, '').replace(/\s+$/g, '').length == 0) {
 		alert(alert_arr.FOLDERNAME_EMPTY);
 		return false;
@@ -21,9 +21,9 @@ function UpdateAjaxSave(label, fid, fldname, fileOrFolder) {
 		alert(alert_arr.NO_SPECIAL_CHARS_DOCS);
 		return false;
 	}
-	if (fileOrFolder == 'file')
+	if (fileOrFolder == 'file') {
 		var url = 'action=DocumentsAjax&mode=ajax&ajax=true&file=Save&module=Documents&fileid=' + fid + '&fldVal=' + fldVal + '&fldname=' + fldname + '&act=ajaxEdit';
-	else {
+	} else {
 		var foldername = encodeURIComponent(fldVal);
 		foldername = foldername.replace(/^\s+/g, '').replace(/\s+$/g, '');
 		foldername = foldername.replace(/&/gi, '*amp*');
@@ -33,25 +33,28 @@ function UpdateAjaxSave(label, fid, fldname, fileOrFolder) {
 		fldVal = document.getElementById('txtbox_'+label).options[document.getElementById('txtbox_' + label).options.selectedIndex].text;
 		gtempselectedIndex = document.getElementById('txtbox_' + label).options.selectedIndex;
 	}
-	document.getElementById('status').style.display = "block";
+	document.getElementById('status').style.display = 'block';
 	jQuery.ajax({
 		method: 'POST',
-		url: "index.php?"+ url
+		url: 'index.php?'+ url
 	}).done(function (response) {
 		var item = response;
-		document.getElementById('status').style.display = "none";
-		if (item.indexOf("Failure") > -1) {
-			document.getElementById("lblError").innerHTML = "<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td class=small bgcolor=red><font color=white size=2><b>" + alert_arr.LBL_UNABLE_TO_UPDATE + "</b></font></td></tr></table>";
+		document.getElementById('status').style.display = 'none';
+		if (item.indexOf('Failure') > -1) {
+			var ihtml = '<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td class=small bgcolor=red><font color=white size=2><b>'
+				+ alert_arr.LBL_UNABLE_TO_UPDATE + '</b></font></td></tr></table>';
+			document.getElementById('lblError').innerHTML = ihtml;
 			setTimeout(hidelblError, 3000);
 		} else if (item.indexOf('DUPLICATE_FOLDERNAME') > -1) {
 			alert(alert_arr.DUPLICATE_FOLDER_NAME);
 		} else {
 			document.getElementById('dtlview_' + label).innerHTML = fldVal;
-			eval("hndCancel('dtlview_" + label + "','editarea_" + label + "','" + label + "')");
-			if (fldname == 'status')
+			eval('hndCancel(\'dtlview_' + label + '\',\'editarea_' + label + '\',\'' + label + '\')');
+			if (fldname == 'status') {
 				document.getElementById('txtbox_' + label).selectedIndex = gtempselectedIndex;
-			else
+			} else {
 				document.getElementById('txtbox_' + label).value = fldVal;
+			}
 			eval(item);
 		}
 	});
@@ -98,7 +101,7 @@ function AddFolder() {
 	getObj('folder_desc').value = '';
 	var mode = getObj('fldrsave_mode').value;
 	if (mode == 'save') {
-		url = '&savemode=Save&foldername=' + foldername + '&folderdesc=' + folderdesc;
+		var url = '&savemode=Save&foldername=' + foldername + '&folderdesc=' + folderdesc;
 	}
 	getObj('fldrsave_mode').value = 'save';
 	document.getElementById('status').style.display = 'block';
@@ -109,12 +112,12 @@ function AddFolder() {
 		var item = response;
 		document.getElementById('status').style.display = 'none';
 		if (item.indexOf('Failure') > -1) {
-			document.getElementById('lblError').innerHTML = "<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td class=small bgcolor=red><font color=white size=2><b>" + alert_arr.LBL_UNABLE_TO_ADD_FOLDER + "</b></font></td></tr></table>";
+			document.getElementById('lblError').innerHTML = '<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td class=small bgcolor=red><font color=white size=2><b>' + alert_arr.LBL_UNABLE_TO_ADD_FOLDER + '</b></font></td></tr></table>';
 			setTimeOutFn();
 		} else if (item.indexOf('DUPLICATE_FOLDERNAME') > -1) {
 			alert(alert_arr.DUPLICATE_FOLDER_NAME);
 		} else {
-			getObj("ListViewContents").innerHTML = item.replace('&#&#&#&#&#&#','');
+			getObj('ListViewContents').innerHTML = item.replace('&#&#&#&#&#&#', '');
 		}
 	});
 }
@@ -123,13 +126,13 @@ function DeleteFolderCheck(folderId) {
 	gtempfolderId = folderId;
 	jQuery.ajax({
 		method: 'POST',
-		url: "index.php?module=Documents&action=DocumentsAjax&mode=ajax&ajax=true&file=DeleteFolder&deletechk=true&folderid=" + folderId
+		url: 'index.php?module=Documents&action=DocumentsAjax&mode=ajax&ajax=true&file=DeleteFolder&deletechk=true&folderid=' + folderId
 	}).done(function (response) {
 		var item = response;
-		if (item.indexOf("NOT_PERMITTED") > -1) {
+		if (item.indexOf('NOT_PERMITTED') > -1) {
 			alert(alert_arr.NOT_PERMITTED);
 			return false;
-		} else if (item.indexOf("FAILURE") > -1) {
+		} else if (item.indexOf('FAILURE') > -1) {
 			alert(alert_arr.LBL_FOLDER_SHOULD_BE_EMPTY);
 		} else {
 			if (confirm(alert_arr.LBL_ARE_YOU_SURE_YOU_WANT_TO_DELETE_FOLDER)) {
@@ -140,17 +143,18 @@ function DeleteFolderCheck(folderId) {
 }
 
 function DeleteFolder(folderId) {
-	document.getElementById('status').style.display = "block";
+	document.getElementById('status').style.display = 'block';
 	jQuery.ajax({
 		method: 'POST',
-		url: "index.php?module=Documents&action=DocumentsAjax&mode=ajax&ajax=true&file=DeleteFolder&folderid=" + folderId
+		url: 'index.php?module=Documents&action=DocumentsAjax&mode=ajax&ajax=true&file=DeleteFolder&folderid=' + folderId
 	}).done(function (response) {
 		var item = response;
-		document.getElementById('status').style.display = "none";
-		if (item.indexOf("FAILURE") > -1)
+		document.getElementById('status').style.display = 'none';
+		if (item.indexOf('FAILURE') > -1) {
 			alert(alert_arr.LBL_ERROR_WHILE_DELETING_FOLDER);
-		else
-			document.getElementById('ListViewContents').innerHTML = item.replace('&#&#&#&#&#&#','');
+		} else {
+			document.getElementById('ListViewContents').innerHTML = item.replace('&#&#&#&#&#&#', '');
+		}
 	});
 }
 
@@ -179,15 +183,15 @@ function MoveFile(id, foldername) {
 			}
 		}
 	} else {
-		var select_options = document.getElementById('allselectedboxes').value;
-		var numOfRows = document.getElementById('numOfRows').value;
-		var excludedRecords = document.getElementById('excludedRecords').value;
-		if(select_options=='all') {
+		select_options = document.getElementById('allselectedboxes').value;
+		numOfRows = document.getElementById('numOfRows').value;
+		excludedRecords = document.getElementById('excludedRecords').value;
+		if (select_options=='all') {
 			document.getElementById('idlist').value = select_options;
-			var idstring = select_options;
-			var skiprecords = excludedRecords.split(";");
+			idstring = select_options;
+			var skiprecords = excludedRecords.split(';');
 			var count = skiprecords.length;
-			if(count > 1) {
+			if (count > 1) {
 				count = numOfRows - count + 1;
 			} else {
 				count = numOfRows;
@@ -195,7 +199,7 @@ function MoveFile(id, foldername) {
 		} else {
 			var x = select_options.split(';');
 			var count = x.length;
-			if(count > 1) {
+			if (count > 1) {
 				document.getElementById('idlist').value = select_options;
 				idstring = select_options;
 			} else {
@@ -206,7 +210,7 @@ function MoveFile(id, foldername) {
 			count = count - 1;
 		}
 	}
-	var x = select_options.split(";");
+	var x = select_options.split(';');
 	var count = x.length;
 	numOfRows = numOfRows + count - 1;
 	if (activation == 'true' || select_options == 'all') {
@@ -215,7 +219,7 @@ function MoveFile(id, foldername) {
 		}
 		document.getElementById('idlist').value = select_options;
 		idstring = select_options;
-		var skiprecords = excludedRecords.split(";");
+		var skiprecords = excludedRecords.split(';');
 		var excount = skiprecords.length;
 		if (excount > 1) {
 			count = numOfRows - excount + 1;
@@ -235,8 +239,9 @@ function MoveFile(id, foldername) {
 	}
 
 	if (idstring != '') {
+		var confirm_status = false;
 		if (count > getMaxMassOperationLimit()) {
-			confirm_str = alert_arr.MORE_THAN_500;
+			var confirm_str = alert_arr.MORE_THAN_500;
 			if (confirm(confirm_str)) {
 				confirm_status = true;
 			} else {
@@ -248,29 +253,27 @@ function MoveFile(id, foldername) {
 
 		if (confirm_status) {
 			if (confirm(alert_arr.LBL_ARE_YOU_SURE_TO_MOVE_TO + foldername + alert_arr.LBL_FOLDER)) {
-
-				var url = "&viewname=" + viewid + searchurl + "&excludedRecords=" + excludedRecords + "&folderidstring=" + folderid + "&selectallmode=" + activation;
-				document.getElementById('status').style.display = "block";
+				var url = '&viewname=' + viewid + searchurl + '&excludedRecords=' + excludedRecords + '&folderidstring=' + folderid + '&selectallmode=' + activation;
+				document.getElementById('status').style.display = 'block';
 				jQuery.ajax({
 					method: 'POST',
 					url: 'index.php?action=DocumentsAjax&file=MoveFile&from_folderid=0&module=Documents&folderid=' + id + '&idlist=' + idstring + url
 				}).done(function (response) {
-						var item = response;
-						document.getElementById('status').style.display = "none";
-						if (item.indexOf("NOT_PERMITTED") > -1) {
-							document.getElementById("lblError").innerHTML = "<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td class=small bgcolor=red><font color=white size=2><b>" + alert_arr.NOT_PERMITTED + "</b></font></td></tr></table>";
-							setTimeout(hidelblError, 3000);
-						} else
-							getObj('ListViewContents').innerHTML = item.replace('&#&#&#&#&#&#','');
+					var item = response;
+					document.getElementById('status').style.display = 'none';
+					if (item.indexOf('NOT_PERMITTED') > -1) {
+						document.getElementById('lblError').innerHTML = '<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td class=small bgcolor=red><font color=white size=2><b>' + alert_arr.NOT_PERMITTED + '</b></font></td></tr></table>';
+						setTimeout(hidelblError, 3000);
+					} else {
+						getObj('ListViewContents').innerHTML = item.replace('&#&#&#&#&#&#', '');
 					}
-				);
+				});
 			} else {
 				return false;
 			}
 		} else {
 			return false;
 		}
-
 	} else {
 		alert(alert_arr.LBL_SELECT_ONE_FILE);
 		return false;
@@ -280,7 +283,7 @@ function MoveFile(id, foldername) {
 function dldCntIncrease(fileid) {
 	jQuery.ajax({
 		method: 'POST',
-		url: 'index.php?action=DocumentsAjax&mode=ajax&ajax=true&file=SaveFile&module=Documents&file_id=' + fileid + "&act=updateDldCnt"
+		url: 'index.php?action=DocumentsAjax&mode=ajax&ajax=true&file=SaveFile&module=Documents&file_id=' + fileid + '&act=updateDldCnt'
 	}).done(function (response) {
 	});
 }
@@ -292,14 +295,15 @@ function massDownload() {
 		for (var i = 0; i < obj.length; i++) {
 			var id = obj[i].value;
 			var values = document.getElementById('selectedboxes_selectall' + id).value;
-			if (values)
+			if (values) {
 				arrayobj[id] = values;
+			}
 		}
 	}
 	var count  = Object.keys(arrayobj).length;
 	var array_val = JSON.stringify(arrayobj);
 	if (count !== 0) {
-		window.location.href = 'index.php?action=DocumentsAjax&mode=ajax&ajax=true&file=SaveFile&module=Documents&file_id=' + array_val + "&act=massDldCnt";
+		window.location.href = 'index.php?action=DocumentsAjax&mode=ajax&ajax=true&file=SaveFile&module=Documents&file_id=' + array_val + '&act=massDldCnt';
 	} else {
 		alert(alert_arr.SELECT);
 		return false;
@@ -336,3 +340,7 @@ function hideresult() {
 	document.getElementById('integrity_result').style.display = 'none';
 }
 
+// Send file as an attachment in an email
+function sendfile_email() {
+	OpenCompose(document.getElementById('dldfilename').value, 'Documents');
+}

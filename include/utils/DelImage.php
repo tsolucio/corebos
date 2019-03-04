@@ -27,7 +27,7 @@ function DelImage($id) {
 	 inner join vtiger_attachments on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid
 	 where vtiger_crmentity.setype=? and vtiger_attachments.name=? and vtiger_seattachmentsrel.crmid=?';
 	$result = $adb->pquery($query, array($imgmod.' '.$imageattachment, $aname, $id));
-	if ($result and $adb->num_rows($result)==1) {
+	if ($result && $adb->num_rows($result)==1) {
 		$attachmentsid = $adb->query_result($result, 0, 'attachmentsid');
 		$cntrels = $adb->pquery('select count(*) as cnt from vtiger_seattachmentsrel where attachmentsid=?', array($attachmentsid));
 		$numrels = $adb->query_result($cntrels, 0, 'cnt');
@@ -54,7 +54,7 @@ function DelImage($id) {
 function DelAttachment($id) {
 	global $adb;
 	$selresult = $adb->pquery('select name,path from vtiger_attachments where attachmentsid=?', array($id));
-	if ($selresult and $adb->num_rows($selresult)==1) {
+	if ($selresult && $adb->num_rows($selresult)==1) {
 		unlink($adb->query_result($selresult, 0, 'path').$id.'_'.$adb->query_result($selresult, 0, 'name'));
 		$query='delete from vtiger_seattachmentsrel where attachmentsid=?';
 		$adb->pquery($query, array($id));

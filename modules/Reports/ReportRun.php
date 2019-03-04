@@ -7,64 +7,68 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 global $app_strings,$mod_strings, $theme, $log;
 
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
-require_once('include/database/PearDatabase.php');
-require_once('data/CRMEntity.php');
-require_once("modules/Reports/Reports.php");
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
+require_once 'include/database/PearDatabase.php';
+require_once 'data/CRMEntity.php';
+require_once 'modules/Reports/Reports.php';
 require_once 'modules/Reports/ReportUtils.php';
 require_once 'modules/Reports/ReportRunQueryPlanner.php';
-require_once("vtlib/Vtiger/Module.php");
-include_once("include/fields/InventoryLineField.php");
+require_once 'vtlib/Vtiger/Module.php';
+include_once 'include/fields/InventoryLineField.php';
 
 class ReportRun extends CRMEntity {
 
-	var $primarymodule;
-	var $secondarymodule;
-	var $orderbylistsql;
-	var $orderbylistcolumns;
+	public $primarymodule;
+	public $secondarymodule;
+	public $orderbylistsql;
+	public $orderbylistcolumns;
 
-	var $selectcolumns;
-	var $groupbylist;
-	var $reporttype;
-	var $cbreporttype;
-	var $reportname;
-	var $totallist;
-	var $number_of_rows;
-	var $page = 1;
-	var $islastpage = false;
+	public $selectcolumns;
+	public $groupbylist;
+	public $reporttype;
+	public $cbreporttype;
+	public $reportname;
+	public $totallist;
+	public $number_of_rows;
+	public $page = 1;
+	public $islastpage = false;
 
-	var $_groupinglist  = false;
-	var $_columnslist   = array();
-	var $_stdfilterlist = false;
-	var $_columnstotallist = false;
-	var $_columnstotallistaddtoselect = false;
-	var $_advfiltersql = false;
+	public $_groupinglist  = false;
+	public $_columnslist   = array();
+	public $_stdfilterlist = false;
+	public $_columnstotallist = false;
+	public $_columnstotallistaddtoselect = false;
+	public $_advfiltersql = false;
 
-	var $append_currency_symbol_to_value = array('Products_Unit_Price','Services_Price',
+	public $append_currency_symbol_to_value = array('Products_Unit_Price','Services_Price',
 						'Invoice_Total', 'Invoice_Sub_Total', 'Invoice_S&H_Amount', 'Invoice_Discount_Amount', 'Invoice_Adjustment',
 						'Quotes_Total', 'Quotes_Sub_Total', 'Quotes_S&H_Amount', 'Quotes_Discount_Amount', 'Quotes_Adjustment',
 						'SalesOrder_Total', 'SalesOrder_Sub_Total', 'SalesOrder_S&H_Amount', 'SalesOrder_Discount_Amount', 'SalesOrder_Adjustment',
 						'PurchaseOrder_Total', 'PurchaseOrder_Sub_Total', 'PurchaseOrder_S&H_Amount', 'PurchaseOrder_Discount_Amount', 'PurchaseOrder_Adjustment',
-						'Issuecards_Total', 'Issuecards_Sub_Total', 'Issuecards_S&H_Amount', 'Issuecards_Discount_Amount', 'Issuecards_Adjustment',
+						'Issuecards_Total', 'Issuecards_Sub_Total', 'Issuecards_S&H_Amount', 'Issuecards_Discount_Amount', 'Issuecards_Adjustment','Invoice_SandH_Amount',
+						'Quotes_SandH_Amount','SalesOrder_SandH_Amount','PurchaseOrder_SandH_Amount','Issuecards_SandH_Amount',
 						);
-	var $ui10_fields = array();
-	var $ui101_fields = array();
-	var $groupByTimeParent = array(
+	public $ui10_fields = array();
+	public $ui101_fields = array();
+	public $groupByTimeParent = array(
 		'Quarter'=>array('Year'),
 		'Month'=>array('Year'),
 		'Day'=>array('Year','Month')
 	);
-	var $queryPlanner = null;
-	var $_tmptablesinitialized = false;
+	public $queryPlanner = null;
+	public $_tmptablesinitialized = false;
 
 	/** Function to set reportid,primarymodule,secondarymodule,reporttype,reportname, for given reportid
 	 *  This function accepts the $reportid as argument
 	 *  It sets reportid,primarymodule,secondarymodule,reporttype,reportname for the given reportid
 	 */
-	function __construct($reportid) {
+	public function __construct($reportid) {
 		$oReport = new Reports($reportid);
 		$this->reportid = $reportid;
 		$this->primarymodule = $oReport->primodule;
@@ -74,6 +78,11 @@ class ReportRun extends CRMEntity {
 		$this->reportname = $oReport->reportname;
 		$this->queryPlanner = new ReportRunQueryPlanner();
 		$this->queryPlanner->reportRun = $this;
+	}
+
+	public function getReportName($nospaces = false, $i18n = false) {
+		$rep = ($i18n ? getTranslatedString($this->reportname, 'Reports') : $this->reportname);
+		return ($nospaces ? str_replace(' ', '_', $rep) : $rep);
 	}
 
 	/** Function to get the columns for the reportid
@@ -89,7 +98,7 @@ class ReportRun extends CRMEntity {
 			return $this->_columnslist[$outputformat];
 		}
 
-		global $adb, $modules, $log,$current_user,$current_language;
+		global $adb, $log,$current_user,$current_language;
 		$ssql = "select vtiger_selectcolumn.* from vtiger_report inner join vtiger_selectquery on vtiger_selectquery.queryid = vtiger_report.queryid";
 		$ssql .= " left join vtiger_selectcolumn on vtiger_selectcolumn.queryid = vtiger_selectquery.queryid";
 		$ssql .= " where vtiger_report.reportid = ?";
@@ -108,7 +117,7 @@ class ReportRun extends CRMEntity {
 			list($module, $field) = explode('_', $module_field, 2);
 			$inventory_fields = array('quantity', 'listprice', 'serviceid', 'productid', 'discount', 'comment');
 			$inventory_modules = getInventoryModules();
-			require('user_privileges/user_privileges_'.$current_user->id.'.php');
+			require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 			if ((!isset($permitted_fields[$module]) || count($permitted_fields[$module]) == 0) &&
 					$is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
 				$permitted_fields[$module] = $this->getaccesfield($module);
@@ -124,9 +133,6 @@ class ReportRun extends CRMEntity {
 			$concatSql = getSqlForNameInDisplayFormat(array('first_name'=>$selectedfields[0].'.first_name', 'last_name'=>$selectedfields[0].'.last_name'), 'Users');
 			$querycolumns = $this->getEscapedColumns($selectedfields);
 
-			if (isset($module) && $module!='') {
-				$mod_strings = return_module_language($current_language, $module);
-			}
 			$targetTableName = $tablename;
 			$fieldlabel = trim(preg_replace("/$module/", ' ', $selectedfields[2], 1));
 			$mod_arr=explode('_', $fieldlabel);
@@ -141,52 +147,46 @@ class ReportRun extends CRMEntity {
 				array_shift($fld_arr);
 				$mod_lbl = getTranslatedString($fld_arr[0], $mod); //module
 			}
-			$fld_lbl_str = implode(" ",$fld_arr);
-			$fld_lbl = getTranslatedString($fld_lbl_str,$module); //fieldlabel
+			$fld_lbl_str = implode(" ", $fld_arr);
+			$fld_lbl = getTranslatedString($fld_lbl_str, $module); //fieldlabel
 			$fieldlabel = $mod_lbl." ".$fld_lbl;
-			if(($selectedfields[0] == "vtiger_usersRel1") && ($selectedfields[1] == 'user_name') && ($selectedfields[2] == 'Quotes_Inventory_Manager')){
+			if (($selectedfields[0] == "vtiger_usersRel1") && ($selectedfields[1] == 'user_name') && ($selectedfields[2] == 'Quotes_Inventory_Manager')) {
 				$columnslist[$fieldcolname] = "trim( $concatSql ) as ".$module."_Inventory_Manager";
 				$this->queryPlanner->addTable($selectedfields[0]);
 				continue;
 			}
 
-			if((CheckFieldPermission($fieldname,$mod) != 'true' && $colname!="crmid" && (!in_array($fieldname,$inventory_fields) && in_array($module,$inventory_modules))) || empty($fieldname))
-			{
+			if ((CheckFieldPermission($fieldname, $mod) != 'true' && $colname!="crmid" && (!in_array($fieldname, $inventory_fields) && in_array($module, $inventory_modules))) || empty($fieldname)) {
 				continue;
-			}
-			else
-			{
+			} else {
 				$header_label = $selectedfields[2]; // Header label to be displayed in the reports table
 				// To check if the field in the report is a custom field
 				// and if yes, get the label of this custom field freshly from the vtiger_field as it would have been changed.
 				// Asha - Reference ticket : #4906
 
-				if($querycolumns == '') {
-					if($selectedfields[4] == 'C')
-					{
-						$field_label_data = explode("_",$selectedfields[2]);
+				if ($querycolumns == '') {
+					if ($selectedfields[4] == 'C') {
+						$field_label_data = explode('_', $selectedfields[2]);
 						$module= $field_label_data[0];
 						if ($module!=$this->primarymodule) {
-							$columnslist[$fieldcolname] = "case when (".$selectedfields[0].".".$selectedfields[1]."='1')then '".getTranslatedString('LBL_YES')."' else case when (vtiger_crmentity$module.crmid !='') then '".getTranslatedString('LBL_NO')."' else '-' end end as '$selectedfields[2]'";
+							$columnslist[$fieldcolname] = "case when (".$selectedfields[0].".".$selectedfields[1]."='1')
+								then '".getTranslatedString('LBL_YES')."' else case when (vtiger_crmentity$module.crmid !='') then '".getTranslatedString('LBL_NO')
+								."' else '-' end end as '$selectedfields[2]'";
 							$this->queryPlanner->addTable("vtiger_crmentity$module");
 						} else {
-							$columnslist[$fieldcolname] = "case when (".$selectedfields[0].".".$selectedfields[1]."='1')then '".getTranslatedString('LBL_YES')."' else case when (vtiger_crmentity.crmid !='') then '".getTranslatedString('LBL_NO')."' else '-' end end as '$selectedfields[2]'";
+							$columnslist[$fieldcolname] = "case when (".$selectedfields[0].".".$selectedfields[1]."='1')
+								then '".getTranslatedString('LBL_YES')."' else case when (vtiger_crmentity.crmid !='') then '".getTranslatedString('LBL_NO')
+								."' else '-' end end as '$selectedfields[2]'";
 							$this->queryPlanner->addTable($selectedfields[0]);
 						}
-					}
-					elseif($selectedfields[0] == 'vtiger_activity' && $selectedfields[1] == 'status')
-					{
+					} elseif ($selectedfields[0] == 'vtiger_activity' && $selectedfields[1] == 'status') {
 						$columnslist[$fieldcolname] = " case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end as cbCalendar_Status";
 						$this->queryPlanner->addTable($selectedfields[0]);
-					}
-					elseif ($selectedfields[0] == 'vtiger_activity' && $selectedfields[1] == 'date_start')
-					{
+					} elseif ($selectedfields[0] == 'vtiger_activity' && $selectedfields[1] == 'date_start') {
 						$columnslist[$fieldcolname] = "cast(concat(vtiger_activity.date_start,'  ',vtiger_activity.time_start) as DATETIME) as cbCalendar_Start_Date_and_Time";
 						$this->queryPlanner->addTable($selectedfields[0]);
-					}
-					elseif (stristr($selectedfields[0],"vtiger_users") && ($selectedfields[1] == 'user_name'))
-					{
-						$temp_module_from_tablename = str_replace("vtiger_users","",$selectedfields[0]);
+					} elseif (stristr($selectedfields[0], "vtiger_users") && ($selectedfields[1] == 'user_name')) {
+						$temp_module_from_tablename = str_replace("vtiger_users", "", $selectedfields[0]);
 						if ($module!=$this->primarymodule) {
 							$condition = "and vtiger_crmentity".$module.".crmid!=''";
 							$this->queryPlanner->addTable("vtiger_crmentity$module");
@@ -195,103 +195,79 @@ class ReportRun extends CRMEntity {
 						}
 						if ($temp_module_from_tablename == $module) {
 							$concatSql = getSqlForNameInDisplayFormat(array('first_name' => $selectedfields[0] . ".first_name", 'last_name' => $selectedfields[0] . ".last_name"), 'Users');
-							$columnslist[$fieldcolname] = " case when(".$selectedfields[0].".last_name NOT LIKE '' $condition ) THEN ".$concatSql." else vtiger_groups".$module.".groupname end as '".$module."_$field'";
+							$columnslist[$fieldcolname] = " case when(".$selectedfields[0].".last_name NOT LIKE '' $condition )
+								THEN ".$concatSql." else vtiger_groups".$module.".groupname end as '".$module."_$field'";
 							$this->queryPlanner->addTable('vtiger_groups' . $module); // Auto-include the dependent module table.
 						} else { //Some Fields can't assigned to groups so case avoided (fields like inventory manager)
 							$columnslist[$fieldcolname] = $selectedfields[0].".user_name as '".$header_label."'";
 						}
 						$this->queryPlanner->addTable($selectedfields[0]);
-					}
-					elseif (stristr($selectedfields[0],"vtiger_crmentity") && ($selectedfields[1] == 'modifiedby')) {
+					} elseif (stristr($selectedfields[0], 'vtiger_crmentity') && ($selectedfields[1] == 'modifiedby')) {
 						$targetTableName = 'vtiger_lastModifiedBy' . $module;
-						$concatSql = getSqlForNameInDisplayFormat(array('last_name'=>$targetTableName.'.last_name', 'first_name'=>$targetTableName.'.first_name'), 'Users');
+						$concatSql=getSqlForNameInDisplayFormat(array('last_name'=>$targetTableName.'.last_name', 'first_name'=>$targetTableName.'.first_name'), 'Users');
 						$columnslist[$fieldcolname] = "trim($concatSql) as $header_label";
 						$this->queryPlanner->addTable("vtiger_crmentity$module");
 						$this->queryPlanner->addTable($targetTableName);
 						// Added when no fields from the secondary module are selected but lastmodifiedby field is selected
 						$moduleInstance = CRMEntity::getInstance($module);
 						$this->queryPlanner->addTable($moduleInstance->table_name);
-					}
-					elseif (stristr($selectedfields[0],"vtiger_crmentity") && ($selectedfields[1] == 'smcreatorid')) {
+					} elseif (stristr($selectedfields[0], "vtiger_crmentity") && ($selectedfields[1] == 'smcreatorid')) {
 						$targetTableName = 'vtiger_CreatedBy' . $module;
-						$concatSql = getSqlForNameInDisplayFormat(array('last_name'=>$targetTableName.'.last_name', 'first_name'=>$targetTableName.'.first_name'), 'Users');
+						$concatSql=getSqlForNameInDisplayFormat(array('last_name'=>$targetTableName.'.last_name', 'first_name'=>$targetTableName.'.first_name'), 'Users');
 						$columnslist[$fieldcolname] = "trim($concatSql) as $header_label";
 						$this->queryPlanner->addTable("vtiger_crmentity$module");
 						$this->queryPlanner->addTable($targetTableName);
 						// Added when no fields from the secondary module is selected but creator field is selected
 						$moduleInstance = CRMEntity::getInstance($module);
 						$this->queryPlanner->addTable($moduleInstance->table_name);
-					}
-					elseif ($selectedfields[0] == "vtiger_crmentity".$this->primarymodule)
-					{
+					} elseif ($selectedfields[0] == "vtiger_crmentity".$this->primarymodule) {
 						$columnslist[$fieldcolname] = "vtiger_crmentity.".$selectedfields[1]." AS '".$header_label."'";
-					}
-					elseif($selectedfields[0] == 'vtiger_products' && $selectedfields[1] == 'unit_price')//handled for product fields in Campaigns Module Reports
-					{
+					} elseif ($selectedfields[0] == 'vtiger_products' && $selectedfields[1] == 'unit_price') {//handled for product fields in Campaigns Module Reports
 						$columnslist[$fieldcolname] = "concat(".$selectedfields[0].".currency_id,'::',innerProduct.actual_unit_price) as '". $header_label ."'";
 						$this->queryPlanner->addTable("innerProduct");
-					}
-					elseif(in_array($selectedfields[2], $this->append_currency_symbol_to_value)) {
+					} elseif (in_array($selectedfields[2], $this->append_currency_symbol_to_value)) {
 						$columnslist[$fieldcolname] = "concat(".$selectedfields[0].".currency_id,'::',".$selectedfields[0].".".$selectedfields[1].") as '" . $header_label ."'";
-					}
-					elseif($selectedfields[0] == 'vtiger_notes' && ($selectedfields[1] == 'filelocationtype' || $selectedfields[1] == 'filesize' || $selectedfields[1] == 'folderid' || $selectedfields[1]=='filestatus'))//handled for product fields in Campaigns Module Reports
-					{
-						if($selectedfields[1] == 'filelocationtype'){
-							$columnslist[$fieldcolname] = "case ".$selectedfields[0].".".$selectedfields[1]." when 'I' then 'Internal' when 'E' then 'External' else '-' end as '$selectedfields[2]'";
-						} else if($selectedfields[1] == 'folderid'){
+					} elseif ($selectedfields[0] == 'vtiger_notes' && ($selectedfields[1] == 'filelocationtype' || $selectedfields[1] == 'filesize' || $selectedfields[1] == 'folderid' || $selectedfields[1]=='filestatus')) {//handled for product fields in Campaigns Module Reports
+						if ($selectedfields[1] == 'filelocationtype') {
+							$columnslist[$fieldcolname] = "case ".$selectedfields[0].".".$selectedfields[1]
+								." when 'I' then 'Internal' when 'E' then 'External' else '-' end as '$selectedfields[2]'";
+						} elseif ($selectedfields[1] == 'folderid') {
 							$columnslist[$fieldcolname] = "vtiger_attachmentsfolder.foldername as '$selectedfields[2]'";
-							$this->queryPlanner->addTable("vtiger_attachmentsfolder");
-						} elseif($selectedfields[1] == 'filestatus'){
-							$columnslist[$fieldcolname] = "case ".$selectedfields[0].".".$selectedfields[1]." when '1' then '".getTranslatedString('LBL_YES')."' when '0' then '".getTranslatedString('LBL_NO')."' else '-' end as '$selectedfields[2]'";
-						} elseif($selectedfields[1] == 'filesize'){
-							$columnslist[$fieldcolname] = "case ".$selectedfields[0].".".$selectedfields[1]." when '' then '-' else concat(".$selectedfields[0].".".$selectedfields[1]."/1024,'  ','KB') end as '$selectedfields[2]'";
+							$this->queryPlanner->addTable('vtiger_attachmentsfolder');
+						} elseif ($selectedfields[1] == 'filestatus') {
+							$columnslist[$fieldcolname] = "case ".$selectedfields[0].".".$selectedfields[1]
+								." when '1' then '".getTranslatedString('LBL_YES')
+								."' when '0' then '".getTranslatedString('LBL_NO')."' else '-' end as '$selectedfields[2]'";
+						} elseif ($selectedfields[1] == 'filesize') {
+							$columnslist[$fieldcolname] = "case ".$selectedfields[0].".".$selectedfields[1]
+								." when '' then '-' else concat(".$selectedfields[0].".".$selectedfields[1]."/1024,'  ','KB') end as '$selectedfields[2]'";
 						}
-					}
-					elseif ($selectedfields[0] == 'vtiger_inventoryproductrel') {
+					} elseif ($selectedfields[0] == 'vtiger_inventoryproductrel' || $selectedfields[0] == 'vtiger_inventoryproductrel'.$module) {
 						if ($outputformat !== 'COLUMNSTOTOTAL') {
 							if ($selectedfields[1] == 'discount') {
-								$columnslist[$fieldcolname] = " case when (vtiger_inventoryproductrel{$module}.discount_amount != '') then vtiger_inventoryproductrel{$module}.discount_amount else ROUND((vtiger_inventoryproductrel{$module}.listprice * vtiger_inventoryproductrel{$module}.quantity * (vtiger_inventoryproductrel{$module}.discount_percent/100)),3) end as '" . $header_label ."'";
-							} else if ($selectedfields[1] == 'productid') {
+								$columnslist[$fieldcolname] = " case
+									when (vtiger_inventoryproductrel{$module}.discount_amount != '')
+									then vtiger_inventoryproductrel{$module}.discount_amount
+									else ROUND((vtiger_inventoryproductrel{$module}.listprice * vtiger_inventoryproductrel{$module}.quantity * (vtiger_inventoryproductrel{$module}.discount_percent/100)),3) end as '" . $header_label ."'";
+							} elseif ($selectedfields[1] == 'productid') {
 								$columnslist[$fieldcolname] = "vtiger_products{$module}.productname as '" . $header_label ."'";
 								$this->queryPlanner->addTable("vtiger_products{$module}");
-							} else if ($selectedfields[1] == 'serviceid') {
+							} elseif ($selectedfields[1] == 'serviceid') {
 								$columnslist[$fieldcolname] = "vtiger_service{$module}.servicename as '" . $header_label ."'";
 								$this->queryPlanner->addTable("vtiger_service{$module}");
 							} else {
-								$columnslist[$fieldcolname] = $selectedfields[0].$module.".".$selectedfields[1]." as '".$header_label."'";
-							}
-							$this->queryPlanner->addTable($selectedfields[0] . $module);
-						}
-					}
-					elseif ($selectedfields[0] == 'vtiger_inventoryproductrel'.$module) {
-						if ($outputformat !== 'COLUMNSTOTOTAL') {
-							if ($selectedfields[1] == 'discount') {
-								$columnslist[$fieldcolname] = " case when (vtiger_inventoryproductrel{$module}.discount_amount != '') then vtiger_inventoryproductrel{$module}.discount_amount else ROUND((vtiger_inventoryproductrel{$module}.listprice * vtiger_inventoryproductrel{$module}.quantity * (vtiger_inventoryproductrel{$module}.discount_percent/100)),3) end as '" . $header_label ."'";
-							} else if ($selectedfields[1] == 'productid') {
-								$columnslist[$fieldcolname] = "vtiger_products{$module}.productname as '" . $header_label ."'";
-								$this->queryPlanner->addTable("vtiger_products{$module}");
-							} else if ($selectedfields[1] == 'serviceid') {
-								$columnslist[$fieldcolname] = "vtiger_service{$module}.servicename as '" . $header_label ."'";
-								$this->queryPlanner->addTable("vtiger_service{$module}");
-							} else {
-								$columnslist[$fieldcolname] = $selectedfields[0].".".$selectedfields[1]." as '".$header_label."'";
+								$columnslist[$fieldcolname] = 'vtiger_inventoryproductrel'.$module.'.'.$selectedfields[1]." as '".$header_label."'";
 							}
 							$this->queryPlanner->addTable('vtiger_inventoryproductrel'.$module);
 						}
-					}
-					elseif(stristr($selectedfields[1],'cf_')==true && stripos($selectedfields[1],'cf_')==0)
-					{
+					} elseif (stristr($selectedfields[1], 'cf_')==true && stripos($selectedfields[1], 'cf_')==0) {
 						$columnslist[$fieldcolname] = $selectedfields[0].".".$selectedfields[1]." AS '".$adb->sql_escape_string(decode_html($header_label))."'";
 						$this->queryPlanner->addTable($selectedfields[0]);
-					}
-					else
-					{
+					} else {
 						$columnslist[$fieldcolname] = $selectedfields[0].".".$selectedfields[1]." AS '".$header_label."'";
 						$this->queryPlanner->addTable($selectedfields[0]);
 					}
-				}
-				else
-				{
+				} else {
 					$columnslist[$fieldcolname] = $querycolumns;
 				}
 				$this->queryPlanner->addTable($targetTableName);
@@ -301,7 +277,7 @@ class ReportRun extends CRMEntity {
 		// Save the information
 		$this->_columnslist[$outputformat] = $columnslist;
 
-		$log->info("ReportRun :: Successfully returned getQueryColumnsList".$reportid);
+		$log->debug('ReportRun :: getQueryColumnsList'.$reportid);
 		return $columnslist;
 	}
 
@@ -309,46 +285,48 @@ class ReportRun extends CRMEntity {
 	 *  @ param $module : Type string
 	 *  returns permitted fields in array format
 	 */
-	function getaccesfield($module) {
-		global $current_user;
+	public function getaccesfield($module) {
 		global $adb;
-		$access_fields = Array();
+		$access_fields = array();
 
 		$profileList = getCurrentUserProfileList();
-		$query = "select vtiger_field.fieldname from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where";
+		$query = 'select vtiger_field.fieldname
+			from vtiger_field
+			inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid
+			inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid
+			where';
 		$params = array();
-		if($module == "Calendar")
-		{
+		if ($module == "Calendar") {
 			if (count($profileList) > 0) {
-				$query .= " vtiger_field.tabid in (9,16) and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0
-								and vtiger_field.presence IN (0,2) and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .") group by vtiger_field.fieldid order by block,sequence";
+				$query .= ' vtiger_field.tabid in (9,16) and vtiger_field.displaytype in (1,2,3,4) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0
+					and vtiger_field.presence IN (0,2) and vtiger_profile2field.profileid in ('. generateQuestionMarks($profileList) .') group by vtiger_field.fieldid order by block,sequence';
 				$params[] = $profileList;
 			} else {
-				$query .= " vtiger_field.tabid in (9,16) and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0
-								and vtiger_field.presence IN (0,2) group by vtiger_field.fieldid order by block,sequence";
+				$query .= ' vtiger_field.tabid in (9,16) and vtiger_field.displaytype in (1,2,3,4) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0
+					and vtiger_field.presence IN (0,2) group by vtiger_field.fieldid order by block,sequence';
 			}
-		}
-		else
-		{
+		} else {
 			$params[] = $module;
 			if (count($profileList) > 0) {
-				$query .= " vtiger_field.tabid in (select tabid from vtiger_tab where vtiger_tab.name in (?)) and vtiger_field.displaytype in (1,2,3,5) and vtiger_profile2field.visible=0
-								and vtiger_field.presence IN (0,2) and vtiger_def_org_field.visible=0 and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .") group by vtiger_field.fieldid order by block,sequence";
+				$query .= ' vtiger_field.tabid in (select tabid from vtiger_tab where vtiger_tab.name in (?)) and vtiger_field.displaytype in (1,2,3,4,5)
+					and vtiger_profile2field.visible=0 and vtiger_field.presence IN (0,2) and vtiger_def_org_field.visible=0
+					and vtiger_profile2field.profileid in ('. generateQuestionMarks($profileList).') group by vtiger_field.fieldid order by block,sequence';
 				$params[] = $profileList;
 			} else {
-				$query .= " vtiger_field.tabid in (select tabid from vtiger_tab where vtiger_tab.name in (?)) and vtiger_field.displaytype in (1,2,3,5) and vtiger_profile2field.visible=0
-								and vtiger_field.presence IN (0,2) and vtiger_def_org_field.visible=0 group by vtiger_field.fieldid order by block,sequence";
+				$query .= ' vtiger_field.tabid in (select tabid from vtiger_tab where vtiger_tab.name in (?)) and vtiger_field.displaytype in (1,2,3,4,5)
+					and vtiger_profile2field.visible=0 and vtiger_field.presence IN (0,2) and vtiger_def_org_field.visible=0 group by vtiger_field.fieldid
+					order by block,sequence';
 			}
 		}
 		$result = $adb->pquery($query, $params);
 
-		while($collistrow = $adb->fetch_array($result))
-		{
-			$access_fields[] = $collistrow["fieldname"];
+		while ($collistrow = $adb->fetch_array($result)) {
+			$access_fields[] = $collistrow['fieldname'];
 		}
 		//added to include ticketid for Reports module in select columnlist for all users
-		if($module == "HelpDesk")
-			$access_fields[] = "ticketid";
+		if ($module == 'HelpDesk') {
+			$access_fields[] = 'ticketid';
+		}
 		return $access_fields;
 	}
 
@@ -392,9 +370,8 @@ class ReportRun extends CRMEntity {
 	 *  @ param $reportid : Type Integer
 	 *  returns the query of columnlist for the selected columns
 	 */
-	function getSelectedColumnsList($reportid)
-	{
-		global $adb, $modules, $log;
+	public function getSelectedColumnsList($reportid) {
+		global $adb, $log;
 
 		$ssql = "select vtiger_selectcolumn.* from vtiger_report inner join vtiger_selectquery on vtiger_selectquery.queryid = vtiger_report.queryid";
 		$ssql .= " left join vtiger_selectcolumn on vtiger_selectcolumn.queryid = vtiger_selectquery.queryid where vtiger_report.reportid = ? ";
@@ -403,40 +380,34 @@ class ReportRun extends CRMEntity {
 		$result = $adb->pquery($ssql, array($reportid));
 		$noofrows = $adb->num_rows($result);
 
-		if ($this->orderbylistsql != "")
-		{
+		if ($this->orderbylistsql != "") {
 			$sSQL .= $this->orderbylistsql.", ";
 		}
 
-		for($i=0; $i<$noofrows; $i++)
-		{
-			$fieldcolname = $adb->query_result($result,$i,"columnname");
+		for ($i=0; $i<$noofrows; $i++) {
+			$fieldcolname = $adb->query_result($result, $i, "columnname");
 			$ordercolumnsequal = true;
-			if($fieldcolname != "")
-			{
-				for($j=0;$j<count($this->orderbylistcolumns);$j++)
-				{
-					if($this->orderbylistcolumns[$j] == $fieldcolname)
-					{
+			if ($fieldcolname != "") {
+				for ($j=0; $j<count($this->orderbylistcolumns); $j++) {
+					if ($this->orderbylistcolumns[$j] == $fieldcolname) {
 						$ordercolumnsequal = false;
 						break;
-					}else
-					{
+					} else {
 						$ordercolumnsequal = true;
 					}
 				}
-				if($ordercolumnsequal)
-				{
-					$selectedfields = explode(":",$fieldcolname);
-					if($selectedfields[0] == "vtiger_crmentity".$this->primarymodule)
+				if ($ordercolumnsequal) {
+					$selectedfields = explode(":", $fieldcolname);
+					if ($selectedfields[0] == "vtiger_crmentity".$this->primarymodule) {
 						$selectedfields[0] = "vtiger_crmentity";
+					}
 					$sSQLList[] = $selectedfields[0].".".$selectedfields[1]." '".$selectedfields[2]."'";
 				}
 			}
 		}
-		$sSQL .= implode(",",$sSQLList);
+		$sSQL .= implode(",", $sSQLList);
 
-		$log->info("ReportRun :: Successfully returned getSelectedColumnsList".$reportid);
+		$log->debug('ReportRun :: getSelectedColumnsList'.$reportid);
 		return $sSQL;
 	}
 
@@ -445,99 +416,79 @@ class ReportRun extends CRMEntity {
 	 *  @ param $value : Type String
 	 *  returns the check query for the comparator
 	 */
-	function getAdvComparator($comparator,$value,$datatype="")
-	{
-
-		global $log,$adb,$default_charset,$ogReport;
-		$value=html_entity_decode(trim($value),ENT_QUOTES,$default_charset);
+	public function getAdvComparator($comparator, $value, $datatype = "") {
+		global $log,$adb,$default_charset;
+		$value=html_entity_decode(trim($value), ENT_QUOTES, $default_charset);
 		$value_len = strlen($value);
 		$is_field = false;
-		if($value_len > 1 && $value[0]=='$' && $value[$value_len-1]=='$'){
-			$temp = str_replace('$','',$value);
+		if ($value_len > 1 && $value[0]=='$' && $value[$value_len-1]=='$') {
+			$temp = str_replace('$', '', $value);
 			$is_field = true;
 		}
-		if($datatype=='C'){
-			$value = str_replace("yes","1",str_replace("no","0",$value));
+		if ($datatype=='C') {
+			$value = str_replace("yes", "1", str_replace("no", "0", $value));
 		}
-
-		if($is_field==true){
+		$rtvalue = ' = ';
+		if ($is_field==true) {
 			$value = $this->getFilterComparedField($temp);
 		}
-		if($comparator == "e")
-		{
-			if(trim($value) == "NULL")
-			{
+		if ($comparator == "e") {
+			if (trim($value) == "NULL") {
 				$rtvalue = " is NULL";
-			}elseif(trim($value) != "")
-			{
+			} elseif (trim($value) != "") {
 				$rtvalue = " = ".$adb->quote($value);
-			}elseif(trim($value) == "" && $datatype == "V")
-			{
+			} elseif (trim($value) == "" && $datatype == "V") {
 				$rtvalue = " = ".$adb->quote($value);
-			}else
-			{
+			} else {
 				$rtvalue = " is NULL";
 			}
 		}
-		if($comparator == "n")
-		{
-			if(trim($value) == "NULL")
-			{
+		if ($comparator == "n") {
+			if (trim($value) == "NULL") {
 				$rtvalue = " is NOT NULL";
-			}elseif(trim($value) != "")
-			{
+			} elseif (trim($value) != "") {
 				$rtvalue = " <> ".$adb->quote($value);
-			}elseif(trim($value) == "" && $datatype == "V")
-			{
+			} elseif (trim($value) == "" && $datatype == "V") {
 				$rtvalue = " <> ".$adb->quote($value);
-			}else
-			{
+			} else {
 				$rtvalue = " is NOT NULL";
 			}
 		}
-		if($comparator == "s")
-		{
-			$rtvalue = " like '". formatForSqlLike($value, 2,$is_field) ."'";
+		if ($comparator == "s") {
+			$rtvalue = " like '". formatForSqlLike($value, 2, $is_field) ."'";
 		}
-		if($comparator == "ew")
-		{
-			$rtvalue = " like '". formatForSqlLike($value, 1,$is_field) ."'";
+		if ($comparator == "ew") {
+			$rtvalue = " like '". formatForSqlLike($value, 1, $is_field) ."'";
 		}
-		if($comparator == "c")
-		{
-			$rtvalue = " like '". formatForSqlLike($value,0,$is_field) ."'";
+		if ($comparator == "c") {
+			$rtvalue = " like '". formatForSqlLike($value, 0, $is_field) ."'";
 		}
-		if($comparator == "k")
-		{
-			$rtvalue = " not like '". formatForSqlLike($value,0,$is_field) ."'";
+		if ($comparator == "k") {
+			$rtvalue = " not like '". formatForSqlLike($value, 0, $is_field) ."'";
 		}
-		if($comparator == "l")
-		{
-			$rtvalue = " < ".$adb->quote($value);
+		if ($comparator == 'l') {
+			$rtvalue = ' < '.$adb->quote($value);
 		}
-		if($comparator == "g")
-		{
-			$rtvalue = " > ".$adb->quote($value);
+		if ($comparator == 'g') {
+			$rtvalue = ' > '.$adb->quote($value);
 		}
-		if($comparator == "m")
-		{
-			$rtvalue = " <= ".$adb->quote($value);
+		if ($comparator == 'm') {
+			$rtvalue = ' <= '.$adb->quote($value);
 		}
-		if($comparator == "h")
-		{
-			$rtvalue = " >= ".$adb->quote($value);
+		if ($comparator == 'h') {
+			$rtvalue = ' >= '.$adb->quote($value);
 		}
-		if($comparator == "b") {
-			$rtvalue = " < ".$adb->quote($value);
+		if ($comparator == 'b') {
+			$rtvalue = ' < '.$adb->quote($value);
 		}
-		if($comparator == "a") {
-			$rtvalue = " > ".$adb->quote($value);
+		if ($comparator == 'a') {
+			$rtvalue = ' > '.$adb->quote($value);
 		}
-		if($is_field==true){
-			$rtvalue = str_replace("'","",$rtvalue);
-			$rtvalue = str_replace("\\","",$rtvalue);
+		if ($is_field==true) {
+			$rtvalue = str_replace("'", '', $rtvalue);
+			$rtvalue = str_replace("\\", '', $rtvalue);
 		}
-		$log->info("ReportRun :: Successfully returned getAdvComparator");
+		$log->debug('ReportRun :: getAdvComparator');
 		return $rtvalue;
 	}
 
@@ -545,47 +496,40 @@ class ReportRun extends CRMEntity {
 	 *  @ param $field : field
 	 *  returns the value for the comparator
 	 */
-	function getFilterComparedField($field){
-		global $adb,$ogReport;
-			$field = explode('#',$field);
+	public function getFilterComparedField($field) {
+		global $adb;
+			$field = explode('#', $field);
 			$module = $field[0];
 			$fieldname = trim($field[1]);
 			$tabid = getTabId($module);
-			$field_query = $adb->pquery("SELECT tablename,columnname,typeofdata,fieldname,uitype FROM vtiger_field WHERE tabid = ? AND fieldname= ?",array($tabid,$fieldname));
-			$fieldtablename = $adb->query_result($field_query,0,'tablename');
-			$fieldcolname = $adb->query_result($field_query,0,'columnname');
-			$typeofdata = $adb->query_result($field_query,0,'typeofdata');
-			$fieldtypeofdata=ChangeTypeOfData_Filter($fieldtablename,$fieldcolname,$typeofdata[0]);
-			$uitype = $adb->query_result($field_query,0,'uitype');
-			/*if($tr[0]==$ogReport->primodule)
-				$value = $adb->query_result($field_query,0,'tablename').".".$adb->query_result($field_query,0,'columnname');
-			else
-				$value = $adb->query_result($field_query,0,'tablename').$tr[0].".".$adb->query_result($field_query,0,'columnname');
-			*/
-			if($fieldtablename == "vtiger_crmentity")
-			{
-				$fieldtablename = $fieldtablename.$module;
-			}
-			if($fieldname == "assigned_user_id")
-			{
-				$fieldtablename = "vtiger_users".$module;
-				$fieldcolname = "user_name";
-			}
-			if($fieldtablename == "vtiger_crmentity" && $fieldname == "modifiedby")
-			{
-				$fieldtablename = "vtiger_lastModifiedBy".$module;
-				$fieldcolname = "user_name";
-			}
-			if($fieldtablename == "vtiger_crmentity" && $fieldname == "smcreatorid")
-			{
-				$fieldtablename = "vtiger_CreatedBy".$module;
-				$fieldcolname = "user_name";
-			}
-			if($fieldname == "assigned_user_id1")
-			{
-				$fieldtablename = "vtiger_usersRel1";
-				$fieldcolname = "user_name";
-			}
+			$field_query = $adb->pquery(
+				'SELECT tablename,columnname,typeofdata,fieldname,uitype FROM vtiger_field WHERE tabid = ? AND fieldname= ?',
+				array($tabid,$fieldname)
+			);
+			$fieldtablename = $adb->query_result($field_query, 0, 'tablename');
+			$fieldcolname = $adb->query_result($field_query, 0, 'columnname');
+			$typeofdata = $adb->query_result($field_query, 0, 'typeofdata');
+			//$fieldtypeofdata=ChangeTypeOfData_Filter($fieldtablename, $fieldcolname, $typeofdata[0]);
+			//$uitype = $adb->query_result($field_query, 0, 'uitype');
+		if ($fieldtablename == 'vtiger_crmentity') {
+			$fieldtablename = $fieldtablename.$module;
+		}
+		if ($fieldname == 'assigned_user_id') {
+			$fieldtablename = 'vtiger_users'.$module;
+			$fieldcolname = 'user_name';
+		}
+		if ($fieldtablename == 'vtiger_crmentity' && $fieldname == 'modifiedby') {
+			$fieldtablename = 'vtiger_lastModifiedBy'.$module;
+			$fieldcolname = 'user_name';
+		}
+		if ($fieldtablename == 'vtiger_crmentity' && $fieldname == 'smcreatorid') {
+			$fieldtablename = 'vtiger_CreatedBy'.$module;
+			$fieldcolname = 'user_name';
+		}
+		if ($fieldname == 'assigned_user_id1') {
+			$fieldtablename = 'vtiger_usersRel1';
+			$fieldcolname = 'user_name';
+		}
 		$this->queryPlanner->addTable($fieldtablename);
 		return $fieldtablename.".".$fieldcolname;
 	}
@@ -597,45 +541,42 @@ class ReportRun extends CRMEntity {
 	 *					|
 	 *					$tablenamen:$columnnamen:$fieldlabeln:$fieldnamen:$typeofdatan=>$tablenamen.$columnnamen filtercriteria
 	 */
-	function getAdvFilterList($reportid) {
-		global $adb, $log;
+	public function getAdvFilterList($reportid) {
+		global $adb;
 
 		$advft_criteria = array();
-
-		$sql = 'SELECT * FROM vtiger_relcriteria_grouping WHERE queryid = ? ORDER BY groupid';
-		$groupsresult = $adb->pquery($sql, array($reportid));
-
+		$groupsresult = $adb->pquery('SELECT * FROM vtiger_relcriteria_grouping WHERE queryid = ? ORDER BY groupid', array($reportid));
 		$i = 1;
 		$j = 0;
-		while($relcriteriagroup = $adb->fetch_array($groupsresult)) {
-			$groupId = $relcriteriagroup["groupid"];
-			$groupCondition = $relcriteriagroup["group_condition"];
+		while ($relcriteriagroup = $adb->fetch_array($groupsresult)) {
+			$groupId = $relcriteriagroup['groupid'];
+			$groupCondition = $relcriteriagroup['group_condition'];
 
-			$ssql = 'select vtiger_relcriteria.* from vtiger_report
-						inner join vtiger_relcriteria on vtiger_relcriteria.queryid = vtiger_report.queryid
-						left join vtiger_relcriteria_grouping on vtiger_relcriteria.queryid = vtiger_relcriteria_grouping.queryid
-								and vtiger_relcriteria.groupid = vtiger_relcriteria_grouping.groupid';
-			$ssql.= " where vtiger_report.reportid = ? AND vtiger_relcriteria.groupid = ? order by vtiger_relcriteria.columnindex";
+			$ssql = 'select vtiger_relcriteria.*
+				from vtiger_report
+				inner join vtiger_relcriteria on vtiger_relcriteria.queryid = vtiger_report.queryid
+				left join vtiger_relcriteria_grouping on vtiger_relcriteria.queryid = vtiger_relcriteria_grouping.queryid
+					and vtiger_relcriteria.groupid = vtiger_relcriteria_grouping.groupid
+				where vtiger_report.reportid = ? AND vtiger_relcriteria.groupid = ? order by vtiger_relcriteria.columnindex';
 
 			$result = $adb->pquery($ssql, array($reportid, $groupId));
 			$noOfColumns = $adb->num_rows($result);
-			if($noOfColumns <= 0) continue;
+			if ($noOfColumns <= 0) {
+				continue;
+			}
 
-			while($relcriteriarow = $adb->fetch_array($result)) {
-				$columnIndex = $relcriteriarow["columnindex"];
+			while ($relcriteriarow = $adb->fetch_array($result)) {
+				//$columnIndex = $relcriteriarow['columnindex'];
 				$criteria = array();
-				$criteria['columnname'] = html_entity_decode($relcriteriarow["columnname"]);
-				$criteria['comparator'] = $relcriteriarow["comparator"];
-				$advfilterval = $relcriteriarow["value"];
-				$col = explode(":",$relcriteriarow["columnname"]);
-				list($module,$void) = explode('_',$col[2],2);
+				$criteria['columnname'] = html_entity_decode($relcriteriarow['columnname']);
+				$criteria['comparator'] = $relcriteriarow['comparator'];
+				$advfilterval = $relcriteriarow['value'];
+				$col = explode(':', $relcriteriarow['columnname']);
+				list($module,$void) = explode('_', $col[2], 2);
 				$uitype_value = getUItypeByFieldName($module, $col[3]);
-				if($uitype_value == '15' || $uitype_value == '16' || $uitype_value == '33') {
-					if(!isValueInPicklist($advfilterval,$col[3]))
-						$advfilterval = getTranslationKeyFromTranslatedValue($module, $advfilterval);
-				}
+
 				$criteria['value'] = $advfilterval;
-				$criteria['column_condition'] = $relcriteriarow["column_condition"];
+				$criteria['column_condition'] = $relcriteriarow['column_condition'];
 
 				$advft_criteria[$i]['columns'][$j] = $criteria;
 				$advft_criteria[$i]['condition'] = $groupCondition;
@@ -643,110 +584,117 @@ class ReportRun extends CRMEntity {
 
 				$this->queryPlanner->addTable($col[0]);
 			}
-			if(!empty($advft_criteria[$i]['columns'][$j-1]['column_condition'])) {
+			if (!empty($advft_criteria[$i]['columns'][$j-1]['column_condition'])) {
 				$advft_criteria[$i]['columns'][$j-1]['column_condition'] = '';
 			}
 			$i++;
 		}
 		// Clear the condition (and/or) for last group, if any.
-		if(!empty($advft_criteria[$i-1]['condition'])) $advft_criteria[$i-1]['condition'] = '';
+		if (!empty($advft_criteria[$i-1]['condition'])) {
+			$advft_criteria[$i-1]['condition'] = '';
+		}
 		return $advft_criteria;
 	}
 
-	function generateAdvFilterSql($advfilterlist) {
-		global $adb, $current_user;
+	public function generateAdvFilterSql($advfilterlist) {
+		global $current_user;
 
-		$advfiltersql = "";
+		$advfiltersql = '';
 		$currentUserFullName = getUserFullName($current_user->id);
-		foreach($advfilterlist as $groupindex => $groupinfo) {
+		foreach ($advfilterlist as $groupinfo) {
 			$groupcondition = isset($groupinfo['condition']) ? $groupinfo['condition'] : '';
 			$groupcolumns = $groupinfo['columns'];
 
-			if(count($groupcolumns) > 0) {
+			if (count($groupcolumns) > 0) {
+				$advfiltergroupsql = '';
+				foreach ($groupcolumns as $columninfo) {
+					$fieldcolname = $columninfo['columnname'];
+					$comparator = $columninfo['comparator'];
+					$value = $columninfo['value'];
+					$columncondition = $columninfo['column_condition'];
 
-				$advfiltergroupsql = "";
-				foreach($groupcolumns as $columnindex => $columninfo) {
-					$fieldcolname = $columninfo["columnname"];
-					$comparator = $columninfo["comparator"];
-					$value = $columninfo["value"];
-					$columncondition = $columninfo["column_condition"];
-
-					if($fieldcolname != "" && $comparator != "") {
-						$selectedfields = explode(":",$fieldcolname);
+					if ($fieldcolname != '' && $comparator != '') {
+						$selectedfields = explode(":", $fieldcolname);
 						$moduleFieldLabel = $selectedfields[2];
 						list($moduleName, $fieldLabel) = explode('_', $moduleFieldLabel, 2);
 						$fieldInfo = getFieldByReportLabel($moduleName, $fieldLabel);
-						$concatSql = getSqlForNameInDisplayFormat(array('first_name'=>$selectedfields[0].".first_name",'last_name'=>$selectedfields[0].".last_name"), 'Users');
+						$concatSql = getSqlForNameInDisplayFormat(array('first_name'=>$selectedfields[0].'.first_name', 'last_name'=>$selectedfields[0].'.last_name'), 'Users');
 						// Added to handle the crmentity table name for Primary module
-						if($selectedfields[0] == "vtiger_crmentity".$this->primarymodule) {
-							$selectedfields[0] = "vtiger_crmentity";
+						if ($selectedfields[0] == 'vtiger_crmentity'.$this->primarymodule) {
+							$selectedfields[0] = 'vtiger_crmentity';
 						}
 						//Added to handle yes or no for checkbox field in reports advance filters. -shahul
-						if($selectedfields[4] == 'C') {
-							if(strcasecmp(trim($value),"yes")==0)
-								$value="1";
-							if(strcasecmp(trim($value),"no")==0)
-								$value="0";
+						if ($selectedfields[4] == 'C') {
+							if (strcasecmp(trim($value), 'yes')==0) {
+								$value='1';
+							}
+							if (strcasecmp(trim($value), 'no')==0) {
+								$value='0';
+							}
 						}
-						$valuearray = explode(",",trim($value));
+						$valuearray = explode(",", trim($value));
 						$datatype = (isset($selectedfields[4])) ? $selectedfields[4] : "";
 						$secondarymodules = explode(':', $this->secondarymodule);
-						array_walk($secondarymodules,function(&$val) {$val = 'vtiger_users'.$val;});
-						if(isset($valuearray) && count($valuearray) > 1 && $comparator != 'bw') {
-
+						array_walk($secondarymodules, function (&$val) {
+							$val = 'vtiger_users'.$val;
+						});
+						if (isset($valuearray) && count($valuearray) > 1 && $comparator != 'bw') {
 							$advcolumnsql = "";
-							for($n=0;$n<count($valuearray);$n++) {
+							for ($n=0; $n<count($valuearray); $n++) {
 								$valuearray[$n] = trim($valuearray[$n]);
-								if(($selectedfields[0] == 'vtiger_users'.$this->primarymodule || in_array($selectedfields[0],$secondarymodules)) && $selectedfields[1] == 'user_name') {
+								if (($selectedfields[0] == 'vtiger_users'.$this->primarymodule || in_array($selectedfields[0], $secondarymodules)) && $selectedfields[1] == 'user_name') {
 									if ($valuearray[$n]=='current_user') {
 										$valuearray[$n] = $currentUserFullName;
 									}
-									$module_from_tablename = str_replace("vtiger_users","",$selectedfields[0]);
-									$advcolsql[] = " trim($concatSql)".$this->getAdvComparator($comparator,$valuearray[$n],$datatype)." or vtiger_groups".$module_from_tablename.".groupname ".$this->getAdvComparator($comparator,$valuearray[$n],$datatype);
-								} elseif($selectedfields[1] == 'status') {//when you use comma seperated values.
-									if($selectedfields[2] == 'cbCalendar_Status')
-									$advcolsql[] = "(case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end)".$this->getAdvComparator($comparator,$valuearray[$n],$datatype);
-									elseif($selectedfields[2] == 'HelpDesk_Status')
-									$advcolsql[] = "vtiger_troubletickets.status".$this->getAdvComparator($comparator,$valuearray[$n],$datatype);
-								} elseif($selectedfields[1] == 'description') {//when you use comma seperated values.
-									if($selectedfields[0]=='vtiger_crmentity'.$this->primarymodule)
-										$advcolsql[] = "vtiger_crmentity.description".$this->getAdvComparator($comparator,$valuearray[$n],$datatype);
-									else
-										$advcolsql[] = $selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator,$valuearray[$n],$datatype);
-								} elseif($selectedfields[2] == 'Quotes_Inventory_Manager'){
-									$advcolsql[] = ("trim($concatSql)".$this->getAdvComparator($comparator,$valuearray[$n],$datatype));
+									$module_from_tablename = str_replace("vtiger_users", "", $selectedfields[0]);
+									$advcolsql[] = " trim($concatSql)".$this->getAdvComparator($comparator, $valuearray[$n], $datatype)." or vtiger_groups".$module_from_tablename.".groupname ".$this->getAdvComparator($comparator, $valuearray[$n], $datatype);
+								} elseif ($selectedfields[1] == 'status') {//when you use comma seperated values.
+									if ($selectedfields[2] == 'cbCalendar_Status') {
+										$advcolsql[] = "(case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end)".$this->getAdvComparator($comparator, $valuearray[$n], $datatype);
+									} elseif ($selectedfields[2] == 'HelpDesk_Status') {
+										$advcolsql[] = "vtiger_troubletickets.status".$this->getAdvComparator($comparator, $valuearray[$n], $datatype);
+									}
+								} elseif ($selectedfields[1] == 'description') {//when you use comma seperated values.
+									if ($selectedfields[0]=='vtiger_crmentity'.$this->primarymodule) {
+										$advcolsql[] = "vtiger_crmentity.description".$this->getAdvComparator($comparator, $valuearray[$n], $datatype);
+									} else {
+										$advcolsql[] = $selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator, $valuearray[$n], $datatype);
+									}
+								} elseif ($selectedfields[2] == 'Quotes_Inventory_Manager') {
+									$advcolsql[] = ("trim($concatSql)".$this->getAdvComparator($comparator, $valuearray[$n], $datatype));
 								} else {
-									$advcolsql[] = $selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator,$valuearray[$n],$datatype);
+									$advcolsql[] = $selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator, $valuearray[$n], $datatype);
 								}
 							}
 							//If negative logic filter ('not equal to', 'does not contain') is used, 'and' condition should be applied instead of 'or'
-							if($comparator == 'n' || $comparator == 'k')
-								$advcolumnsql = implode(" and ",$advcolsql);
-							else
-								$advcolumnsql = implode(" or ",$advcolsql);
+							if ($comparator == 'n' || $comparator == 'k') {
+								$advcolumnsql = implode(" and ", $advcolsql);
+							} else {
+								$advcolumnsql = implode(" or ", $advcolsql);
+							}
 							$fieldvalue = " (".$advcolumnsql.") ";
-						} elseif(($selectedfields[0] == 'vtiger_users'.$this->primarymodule || in_array($selectedfields[0],$secondarymodules)) && $selectedfields[1] == 'user_name') {
+						} elseif (($selectedfields[0] == 'vtiger_users'.$this->primarymodule || in_array($selectedfields[0], $secondarymodules)) && $selectedfields[1] == 'user_name') {
 							$value = trim($value);
 							if ($value=='current_user') {
 								$value = $currentUserFullName;
 							}
-							$module_from_tablename = str_replace("vtiger_users","",$selectedfields[0]);
-							$fieldvalue = " trim(case when (".$selectedfields[0].".last_name NOT LIKE '') then ".$concatSql." else vtiger_groups".$module_from_tablename.".groupname end) ".$this->getAdvComparator($comparator,$value,$datatype);
-						} elseif($comparator == 'bw' && count($valuearray) == 2) {
-							if($selectedfields[0] == "vtiger_crmentity".$this->primarymodule) {
-								$fieldvalue = "("."vtiger_crmentity.".$selectedfields[1]." between '".trim($valuearray[0])."' and '".trim($valuearray[1])."')";
-							} elseif($selectedfields[2]=='cbCalendar_Start_Date_and_Time') {
+							$module_from_tablename = str_replace("vtiger_users", "", $selectedfields[0]);
+							$fieldvalue = " trim(case when (".$selectedfields[0].".last_name NOT LIKE '') then ".$concatSql." else vtiger_groups".$module_from_tablename.".groupname end) ".$this->getAdvComparator($comparator, $value, $datatype);
+						} elseif ($comparator == 'bw' && count($valuearray) == 2) {
+							if ($selectedfields[0] == "vtiger_crmentity".$this->primarymodule) {
+								$fieldvalue = "(vtiger_crmentity.".$selectedfields[1]." between '".trim($valuearray[0])."' and '".trim($valuearray[1])."')";
+							} elseif ($selectedfields[2]=='cbCalendar_Start_Date_and_Time') {
 								$fieldvalue = "(cast(concat(vtiger_activity.date_start,'  ',vtiger_activity.time_start) as DATETIME) between '".trim($valuearray[0])."' and '".trim($valuearray[1])."')";
 							} else {
 								$fieldvalue = "(".$selectedfields[0].".".$selectedfields[1]." between '".trim($valuearray[0])."' and '".trim($valuearray[1])."')";
 							}
-						} elseif($selectedfields[0] == "vtiger_crmentity".$this->primarymodule) {
-							$fieldvalue = "vtiger_crmentity.".$selectedfields[1]." ".$this->getAdvComparator($comparator,trim($value),$datatype);
-						} elseif($selectedfields[2] == 'Quotes_Inventory_Manager'){
-							$fieldvalue = ("trim($concatSql)" . $this->getAdvComparator($comparator,trim($value),$datatype));
-						} elseif($selectedfields[1]=='smcreatorid') {
-							$module_from_tablename = str_replace("vtiger_crmentity","",$selectedfields[0]);
-							if($module_from_tablename != '') {
+						} elseif ($selectedfields[0] == "vtiger_crmentity".$this->primarymodule) {
+							$fieldvalue = "vtiger_crmentity.".$selectedfields[1]." ".$this->getAdvComparator($comparator, trim($value), $datatype);
+						} elseif ($selectedfields[2] == 'Quotes_Inventory_Manager') {
+							$fieldvalue = ("trim($concatSql)" . $this->getAdvComparator($comparator, trim($value), $datatype));
+						} elseif ($selectedfields[1]=='smcreatorid') {
+							$module_from_tablename = str_replace("vtiger_crmentity", "", $selectedfields[0]);
+							if ($module_from_tablename != '') {
 								$tableName = 'vtiger_CreatedBy'.$module_from_tablename;
 							} else {
 								$tableName = 'vtiger_CreatedBy'.$this->primarymodule;
@@ -756,11 +704,11 @@ class ReportRun extends CRMEntity {
 								$value = $currentUserFullName;
 							}
 							$fieldvalue = getSqlForNameInDisplayFormat(array('last_name'=>"$tableName.last_name",'first_name'=>"$tableName.first_name"), 'Users').
-									$this->getAdvComparator($comparator,$value,$datatype);
+									$this->getAdvComparator($comparator, $value, $datatype);
 							$this->queryPlanner->addTable($tableName);
-						} elseif($selectedfields[1]=='modifiedby') {
-							$module_from_tablename = str_replace("vtiger_crmentity","",$selectedfields[0]);
-							if($module_from_tablename != '') {
+						} elseif ($selectedfields[1]=='modifiedby') {
+							$module_from_tablename = str_replace("vtiger_crmentity", "", $selectedfields[0]);
+							if ($module_from_tablename != '') {
 								$tableName = 'vtiger_lastModifiedBy'.$module_from_tablename;
 							} else {
 								$tableName = 'vtiger_lastModifiedBy'.$this->primarymodule;
@@ -770,33 +718,32 @@ class ReportRun extends CRMEntity {
 								$value = $currentUserFullName;
 							}
 							$fieldvalue = getSqlForNameInDisplayFormat(array('last_name'=>"$tableName.last_name",'first_name'=>"$tableName.first_name"), 'Users').
-									$this->getAdvComparator($comparator,$value,$datatype);
+									$this->getAdvComparator($comparator, $value, $datatype);
 							$this->queryPlanner->addTable($tableName);
-						} elseif($selectedfields[0] == "vtiger_activity" && $selectedfields[1] == 'status') {
-							$fieldvalue = "(case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end)".$this->getAdvComparator($comparator,trim($value),$datatype);
-						} elseif($comparator == 'e' && (trim($value) == "NULL" || trim($value) == '')) {
+						} elseif ($selectedfields[0] == "vtiger_activity" && $selectedfields[1] == 'status') {
+							$fieldvalue = "(case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end)".$this->getAdvComparator($comparator, trim($value), $datatype);
+						} elseif ($comparator == 'e' && (trim($value) == "NULL" || trim($value) == '')) {
 							$fieldvalue = "(".$selectedfields[0].".".$selectedfields[1]." IS NULL OR ".$selectedfields[0].".".$selectedfields[1]." = '')";
-						} elseif($comparator == 'e' && $datatype == 'D' && (trim($value) == "--$" || trim($value) == '$')) {
+						} elseif ($comparator == 'e' && $datatype == 'D' && (trim($value) == "--$" || trim($value) == '$')) {
 							$fieldvalue = "(".$selectedfields[0].".".$selectedfields[1]." IS NULL OR ".$selectedfields[0].".".$selectedfields[1]." = '')";
-						} elseif(substr($selectedfields[0],0,26) == 'vtiger_inventoryproductrel' && ($selectedfields[1] == 'productid' || $selectedfields[1] == 'serviceid' || $selectedfields[1] == 'discount')) {
+						} elseif (substr($selectedfields[0], 0, 26) == 'vtiger_inventoryproductrel' && ($selectedfields[1] == 'productid' || $selectedfields[1] == 'serviceid' || $selectedfields[1] == 'discount')) {
 							$invmod = (in_array($this->primarymodule, getInventoryModules()) ? $this->primarymodule : $this->secondarymodule);
-							if($selectedfields[1] == 'productid'){
-								$fieldvalue = "vtiger_products{$invmod}.productname ".$this->getAdvComparator($comparator,trim($value),$datatype);
+							if ($selectedfields[1] == 'productid') {
+								$fieldvalue = "vtiger_products{$invmod}.productname ".$this->getAdvComparator($comparator, trim($value), $datatype);
 								$this->queryPlanner->addTable('vtiger_products'.$invmod);
-							} else if($selectedfields[1] == 'serviceid'){
-								$fieldvalue = "vtiger_service{$invmod}.servicename ".$this->getAdvComparator($comparator,trim($value),$datatype);
+							} elseif ($selectedfields[1] == 'serviceid') {
+								$fieldvalue = "vtiger_service{$invmod}.servicename ".$this->getAdvComparator($comparator, trim($value), $datatype);
 								$this->queryPlanner->addTable('vtiger_service'.$invmod);
-							} else if($selectedfields[1] == 'discount'){
-								$fieldvalue = "(vtiger_inventoryproductrel{$invmod}.discount_amount ".$this->getAdvComparator($comparator,trim($value),$datatype)."
-									OR ROUND((vtiger_inventoryproductrel{$invmod}.listprice * vtiger_inventoryproductrel{$invmod}.quantity * (vtiger_inventoryproductrel{$invmod}.discount_percent/100)),3) ".$this->getAdvComparator($comparator,trim($value),$datatype).") ";
+							} elseif ($selectedfields[1] == 'discount') {
+								$fieldvalue = "(vtiger_inventoryproductrel{$invmod}.discount_amount ".$this->getAdvComparator($comparator, trim($value), $datatype)."
+									OR ROUND((vtiger_inventoryproductrel{$invmod}.listprice * vtiger_inventoryproductrel{$invmod}.quantity * (vtiger_inventoryproductrel{$invmod}.discount_percent/100)),3) ".$this->getAdvComparator($comparator, trim($value), $datatype).") ";
 							}
 							$this->queryPlanner->addTable('vtiger_inventoryproductrel'.$invmod);
-						} elseif($fieldInfo['uitype'] == '10' || isReferenceUIType($fieldInfo['uitype'])) {
-
-							$comparatorValue = $this->getAdvComparator($comparator,trim($value),$datatype);
+						} elseif ($fieldInfo['uitype'] == '10' || isReferenceUIType($fieldInfo['uitype'])) {
+							$comparatorValue = $this->getAdvComparator($comparator, trim($value), $datatype);
 							$fieldSqls = array();
 							$fieldSqlColumns = $this->getReferenceFieldColumnList($moduleName, $fieldInfo);
-							foreach($fieldSqlColumns as $columnSql) {
+							foreach ($fieldSqlColumns as $columnSql) {
 								$fieldSqls[] = $columnSql.$comparatorValue;
 							}
 							$fieldvalue = ' ('. implode(' OR ', $fieldSqls).') ';
@@ -808,11 +755,19 @@ class ReportRun extends CRMEntity {
 //							else
 //								$fieldvalue = $fieldInfo['tablename'].'.'.$fieldInfo['columnname'].$cmp;
 						} else {
-							$fieldvalue = $selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator,trim($value),$datatype);
+							if ($fieldInfo['uitype']==15 || $fieldInfo['uitype']==16) {
+								$fieldvalue = '('.$selectedfields[0].".".$selectedfields[1].' IN (select translation_key from vtiger_cbtranslation
+									where locale="'.$current_user->language.'" and forpicklist="'.$moduleName.'::'.$selectedfields[3]
+									.'" and i18n '.$this->getAdvComparator($comparator, trim($value), $datatype).')'
+									.(in_array($comparator, array('n', 'k')) ? ' AND ' : ' OR ')
+									.$selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator, trim($value), $datatype).')';
+							} else {
+								$fieldvalue = $selectedfields[0].".".$selectedfields[1].$this->getAdvComparator($comparator, trim($value), $datatype);
+							}
 						}
 
 						$advfiltergroupsql .= $fieldvalue;
-						if(!empty($columncondition)) {
+						if (!empty($columncondition)) {
 							$advfiltergroupsql .= ' '.$columncondition.' ';
 						}
 						$this->queryPlanner->addTable($selectedfields[0]);
@@ -821,21 +776,23 @@ class ReportRun extends CRMEntity {
 
 				if (trim($advfiltergroupsql) != "") {
 					$advfiltergroupsql = "( $advfiltergroupsql ) ";
-					if(!empty($groupcondition)) {
+					if (!empty($groupcondition)) {
 						$advfiltergroupsql .= ' '. $groupcondition . ' ';
 					}
 					$advfiltersql .= $advfiltergroupsql;
 				}
 			}
 		}
-		if (trim($advfiltersql) != "") $advfiltersql = '('.$advfiltersql.')';
+		if (trim($advfiltersql) != "") {
+			$advfiltersql = '('.$advfiltersql.')';
+		}
 
 		return $advfiltersql;
 	}
 
-	function getAdvFilterSql($reportid) {
+	public function getAdvFilterSql($reportid) {
 		// Have we initialized information already?
-		if($this->_advfiltersql !== false) {
+		if ($this->_advfiltersql !== false) {
 			return $this->_advfiltersql;
 		}
 		global $log;
@@ -846,7 +803,7 @@ class ReportRun extends CRMEntity {
 		// Save the information
 		$this->_advfiltersql = $advfiltersql;
 
-		$log->info("ReportRun :: Successfully returned getAdvFilterSql".$reportid);
+		$log->debug('ReportRun :: getAdvFilterSql'.$reportid);
 		return $advfiltersql;
 	}
 
@@ -855,32 +812,32 @@ class ReportRun extends CRMEntity {
 	 *  This function returns  $stdfilterlist Array: $columnname => $tablename:$columnname:$fieldlabel:$fieldname:$typeofdata=>$tablename.$columnname filtercriteria,
 	 *					$tablename1:$columnname1:$fieldlabel1:$fieldname1:$typeofdata1=>$tablename1.$columnname1 filtercriteria,
 	 */
-	function getStdFilterList($reportid)
-	{
+	public function getStdFilterList($reportid) {
 		// Have we initialized information already?
-		if($this->_stdfilterlist !== false) {
+		if ($this->_stdfilterlist !== false) {
 			return $this->_stdfilterlist;
 		}
 
 		global $adb, $log;
 		$stdfilterlist = array();
 
-		$stdfiltersql = "select vtiger_reportdatefilter.* from vtiger_report";
-		$stdfiltersql .= " inner join vtiger_reportdatefilter on vtiger_report.reportid = vtiger_reportdatefilter.datefilterid";
-		$stdfiltersql .= " where vtiger_report.reportid = ?";
+		$stdfiltersql = 'select vtiger_reportdatefilter.* from vtiger_report';
+		$stdfiltersql .= ' inner join vtiger_reportdatefilter on vtiger_report.reportid = vtiger_reportdatefilter.datefilterid';
+		$stdfiltersql .= ' where vtiger_report.reportid = ?';
 
 		$result = $adb->pquery($stdfiltersql, array($reportid));
 		$stdfilterrow = $adb->fetch_array($result);
-		if(isset($stdfilterrow)) {
-			$fieldcolname = $stdfilterrow["datecolumnname"];
-			$datefilter = $stdfilterrow["datefilter"];
-			$startdate = $stdfilterrow["startdate"];
-			$enddate = $stdfilterrow["enddate"];
+		if (isset($stdfilterrow)) {
+			$fieldcolname = $stdfilterrow['datecolumnname'];
+			$datefilter = $stdfilterrow['datefilter'];
+			$startdate = $stdfilterrow['startdate'];
+			$enddate = $stdfilterrow['enddate'];
 
-			if($fieldcolname != "none") {
-				$selectedfields = explode(":",$fieldcolname);
-				if($selectedfields[0] == "vtiger_crmentity".$this->primarymodule)
-					$selectedfields[0] = "vtiger_crmentity";
+			if ($fieldcolname != 'none') {
+				$selectedfields = explode(':', $fieldcolname);
+				if ($selectedfields[0] == 'vtiger_crmentity'.$this->primarymodule) {
+					$selectedfields[0] = 'vtiger_crmentity';
+				}
 
 				$moduleFieldLabel = $selectedfields[3];
 				list($moduleName, $fieldLabel) = explode('_', $moduleFieldLabel, 2);
@@ -888,25 +845,24 @@ class ReportRun extends CRMEntity {
 				$typeOfData = $fieldInfo['typeofdata'];
 				list($type, $typeOtherInfo) = explode('~', $typeOfData, 2);
 
-				if($datefilter != "custom") {
+				if ($datefilter != "custom") {
 					$startenddate = $this->getStandarFiltersStartAndEndDate($datefilter);
 					$startdate = $startenddate[0];
 					$enddate = $startenddate[1];
 				}
 
-				if($startdate != "0000-00-00" && $enddate != "0000-00-00" && $startdate != "" && $enddate != ""
+				if ($startdate != "0000-00-00" && $enddate != "0000-00-00" && $startdate != "" && $enddate != ""
 						&& $selectedfields[0] != "" && $selectedfields[1] != "") {
-
 					$startDateTime = new DateTimeField($startdate.' '. date('H:i:s'));
 					$userStartDate = $startDateTime->getDisplayDate();
-					if($type == 'DT') {
+					if ($type == 'DT') {
 						$userStartDate = $userStartDate.' 00:00:00';
 					}
 					$startDateTime = getValidDBInsertDateTimeValue($userStartDate);
 
 					$endDateTime = new DateTimeField($enddate.' '. date('H:i:s'));
 					$userEndDate = $endDateTime->getDisplayDate();
-					if($type == 'DT') {
+					if ($type == 'DT') {
 						$userEndDate = $userEndDate.' 23:59:00';
 					}
 					$endDateTime = getValidDBInsertDateTimeValue($userEndDate);
@@ -916,9 +872,9 @@ class ReportRun extends CRMEntity {
 						$startDateTime = "DATE_FORMAT('$startDateTime', '%m%d')";
 						$endDateTime = "DATE_FORMAT('$endDateTime', '%m%d')";
 					} else {
-						if($selectedfields[0] == 'vtiger_activity' && ($selectedfields[1] == 'date_start' || $selectedfields[1] == 'due_date')) {
+						if ($selectedfields[0] == 'vtiger_activity' && ($selectedfields[1] == 'date_start' || $selectedfields[1] == 'due_date')) {
 							$tableColumnSql = '';
-							if($selectedfields[1] == 'date_start') {
+							if ($selectedfields[1] == 'date_start') {
 								$tableColumnSql = "CAST((CONCAT(date_start,' ',time_start)) AS DATETIME)";
 							} else {
 								$tableColumnSql = "CAST((CONCAT(due_date,' ',time_end)) AS DATETIME)";
@@ -938,7 +894,7 @@ class ReportRun extends CRMEntity {
 		// Save the information
 		$this->_stdfilterlist = $stdfilterlist;
 
-		$log->info("ReportRun :: Successfully returned getStdFilterList".$reportid);
+		$log->debug('ReportRun :: getStdFilterList'.$reportid);
 		return $stdfilterlist;
 	}
 
@@ -950,26 +906,21 @@ class ReportRun extends CRMEntity {
 	 *  This function returns  $stdfilterlist Array($columnname => $tablename:$columnname:$fieldlabel=>$tablename.$columnname 'between' $startdate 'and' $enddate)
 	 *
 	 */
-	function RunTimeFilter($filtercolumn,$filter,$startdate,$enddate)
-	{
-		if($filtercolumn != "none")
-		{
-			$selectedfields = explode(":",$filtercolumn);
-			if($selectedfields[0] == "vtiger_crmentity".$this->primarymodule)
+	public function RunTimeFilter($filtercolumn, $filter, $startdate, $enddate) {
+		$stdfilterlist = array();
+		if ($filtercolumn != "none") {
+			$selectedfields = explode(":", $filtercolumn);
+			if ($selectedfields[0] == "vtiger_crmentity".$this->primarymodule) {
 				$selectedfields[0] = "vtiger_crmentity";
-			if($filter == "custom")
-			{
-				if($startdate != "0000-00-00" && $enddate != "0000-00-00" && $startdate != "" &&
-						$enddate != "" && $selectedfields[0] != "" && $selectedfields[1] != "") {
+			}
+			if ($filter == 'custom') {
+				if ($startdate!='0000-00-00' && $enddate != '0000-00-00' && $startdate != '' && $enddate != '' && $selectedfields[0] != '' && $selectedfields[1] != '') {
 					$stdfilterlist[$filtercolumn] = $selectedfields[0].".".$selectedfields[1]." between '".$startdate." 00:00:00' and '".$enddate." 23:59:00'";
 				}
-			}else
-			{
-				if($startdate != "" && $enddate != "")
-				{
+			} else {
+				if ($startdate != '' && $enddate != '') {
 					$startenddate = $this->getStandarFiltersStartAndEndDate($filter);
-					if($startenddate[0] != "" && $startenddate[1] != "" && $selectedfields[0] != "" && $selectedfields[1] != "")
-					{
+					if ($startenddate[0] != '' && $startenddate[1] != '' && $selectedfields[0] != '' && $selectedfields[1] != '') {
 						$stdfilterlist[$filtercolumn] = $selectedfields[0].".".$selectedfields[1]." between '".$startenddate[0]." 00:00:00' and '".$startenddate[1]." 23:59:00'";
 					}
 				}
@@ -984,52 +935,54 @@ class ReportRun extends CRMEntity {
 	 *  @ param $advft_criteria_groups : Type Array
 	 *  This function returns  $advfiltersql
 	 */
-	function RunTimeAdvFilter($advft_criteria,$advft_criteria_groups) {
+	public function RunTimeAdvFilter($advft_criteria, $advft_criteria_groups) {
 		$adb = PearDatabase::getInstance();
 
 		$advfilterlist = array();
 		$advfiltersql = null;
-		if(!empty($advft_criteria)) {
-			foreach($advft_criteria as $column_index => $column_condition) {
+		if (!empty($advft_criteria)) {
+			foreach ($advft_criteria as $column_condition) {
+				if (empty($column_condition)) {
+					continue;
+				}
 
-				if(empty($column_condition)) continue;
+				$adv_filter_column = $column_condition['columnname'];
+				$adv_filter_comparator = $column_condition['comparator'];
+				$adv_filter_value = $column_condition['value'];
+				$adv_filter_column_condition = $column_condition['columncondition'];
+				$adv_filter_groupid = $column_condition['groupid'];
 
-				$adv_filter_column = $column_condition["columnname"];
-				$adv_filter_comparator = $column_condition["comparator"];
-				$adv_filter_value = $column_condition["value"];
-				$adv_filter_column_condition = $column_condition["columncondition"];
-				$adv_filter_groupid = $column_condition["groupid"];
-
-				$column_info = explode(":",$adv_filter_column);
+				$column_info = explode(':', $adv_filter_column);
 
 				$moduleFieldLabel = $column_info[2];
 				$fieldName = $column_info[3];
 				list($module, $fieldLabel) = explode('_', $moduleFieldLabel, 2);
 				$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
 				$fieldType = null;
-				if(!empty($fieldInfo)) {
+				if (!empty($fieldInfo)) {
 					$field = WebserviceField::fromArray($adb, $fieldInfo);
 					$fieldType = $field->getFieldDataType();
 				}
 
-				if(($fieldType == 'currency' or $fieldType == 'double') and (substr($adv_filter_value,0,1) != "$" and substr($adv_filter_value,-1,1) != "$")) {
+				if (($fieldType == 'currency' || $fieldType == 'double') && (substr($adv_filter_value, 0, 1) != "$" && substr($adv_filter_value, -1, 1) != "$")) {
 					$flduitype = $fieldInfo['uitype'];
-					if($flduitype == '72' or $flduitype == 9 or $flduitype ==7) {
+					if ($flduitype == '72' || $flduitype == 9 || $flduitype ==7) {
 						$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value, null, true);
 					} else {
 						$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value);
 					}
 				}
 
-				$temp_val = explode(",",$adv_filter_value);
-				if(($column_info[4] == 'D' || ($column_info[4] == 'T' && $column_info[1] != 'time_start' && $column_info[1] != 'time_end') || ($column_info[4] == 'DT'))
-				&& ($column_info[4] != '' && $adv_filter_value != '' )) {
-					$val = Array();
-					for($x=0;$x<count($temp_val);$x++) {
-						if($column_info[4] == 'D') {
+				$temp_val = explode(",", $adv_filter_value);
+				if (($column_info[4] == 'D' || ($column_info[4] == 'T' && $column_info[1] != 'time_start' && $column_info[1] != 'time_end') || ($column_info[4] == 'DT'))
+					&& ($column_info[4] != '' && $adv_filter_value != '' )
+				) {
+					$val = array();
+					for ($x=0; $x<count($temp_val); $x++) {
+						if ($column_info[4] == 'D') {
 							$date = new DateTimeField(trim($temp_val[$x]));
 							$val[$x] = $date->getDBInsertDateValue();
-						} elseif($column_info[4] == 'DT') {
+						} elseif ($column_info[4] == 'DT') {
 							$date = new DateTimeField(trim($temp_val[$x]));
 							$val[$x] = $date->getDBInsertDateTimeValue();
 						} else {
@@ -1037,12 +990,9 @@ class ReportRun extends CRMEntity {
 							$val[$x] = $date->getDBInsertTimeValue();
 						}
 					}
-					$adv_filter_value = implode(",",$val);
+					$adv_filter_value = implode(",", $val);
 				}
-				if($fieldType=='picklist' || $fieldType=='multipicklist') {
-					if(!isValueInPicklist($adv_filter_value,$fieldName))
-						$adv_filter_value = getTranslationKeyFromTranslatedValue($module, $adv_filter_value);
-				}
+
 				$criteria = array();
 				$criteria['columnname'] = $adv_filter_column;
 				$criteria['comparator'] = $adv_filter_comparator;
@@ -1052,18 +1002,23 @@ class ReportRun extends CRMEntity {
 				$advfilterlist[$adv_filter_groupid]['columns'][] = $criteria;
 			}
 
-			if (is_array($advft_criteria_groups))
-			foreach($advft_criteria_groups as $group_index => $group_condition_info) {
-				if(empty($group_condition_info)) continue;
-				if(empty($advfilterlist[$group_index])) continue;
-				$advfilterlist[$group_index]['condition'] = $group_condition_info["groupcondition"];
-				$noOfGroupColumns = count($advfilterlist[$group_index]['columns']);
-				if(!empty($advfilterlist[$group_index]['columns'][$noOfGroupColumns-1]['column_condition'])) {
-					$advfilterlist[$group_index]['columns'][$noOfGroupColumns-1]['column_condition'] = '';
+			if (is_array($advft_criteria_groups)) {
+				foreach ($advft_criteria_groups as $group_index => $group_condition_info) {
+					if (empty($group_condition_info)) {
+						continue;
+					}
+					if (empty($advfilterlist[$group_index])) {
+						continue;
+					}
+					$advfilterlist[$group_index]['condition'] = $group_condition_info["groupcondition"];
+					$noOfGroupColumns = count($advfilterlist[$group_index]['columns']);
+					if (!empty($advfilterlist[$group_index]['columns'][$noOfGroupColumns-1]['column_condition'])) {
+						$advfilterlist[$group_index]['columns'][$noOfGroupColumns-1]['column_condition'] = '';
+					}
 				}
 			}
 			$noOfGroups = count($advfilterlist);
-			if(!empty($advfilterlist[$noOfGroups]['condition'])) {
+			if (!empty($advfilterlist[$noOfGroups]['condition'])) {
 				$advfilterlist[$noOfGroups]['condition'] = '';
 			}
 
@@ -1076,32 +1031,29 @@ class ReportRun extends CRMEntity {
 	 *  @ param $reportid : Type Integer
 	 *  returns the query of columnlist for the selected columns
 	 */
-	function getStandardCriterialSql($reportid)
-	{
-		global $adb, $modules, $log;
+	public function getStandardCriterialSql($reportid) {
+		global $adb, $log;
 
-		$sreportstdfiltersql = "select vtiger_reportdatefilter.* from vtiger_report";
-		$sreportstdfiltersql .= " inner join vtiger_reportdatefilter on vtiger_report.reportid = vtiger_reportdatefilter.datefilterid";
-		$sreportstdfiltersql .= " where vtiger_report.reportid = ?";
+		$sreportstdfiltersql = 'select vtiger_reportdatefilter.* from vtiger_report';
+		$sreportstdfiltersql .= ' inner join vtiger_reportdatefilter on vtiger_report.reportid = vtiger_reportdatefilter.datefilterid';
+		$sreportstdfiltersql .= ' where vtiger_report.reportid = ?';
 
 		$result = $adb->pquery($sreportstdfiltersql, array($reportid));
 		$noofrows = $adb->num_rows($result);
 
-		for($i=0; $i<$noofrows; $i++) {
-			$fieldcolname = $adb->query_result($result,$i,"datecolumnname");
-			$datefilter = $adb->query_result($result,$i,"datefilter");
-			$startdate = $adb->query_result($result,$i,"startdate");
-			$enddate = $adb->query_result($result,$i,"enddate");
+		for ($i=0; $i<$noofrows; $i++) {
+			$fieldcolname = $adb->query_result($result, $i, 'datecolumnname');
+			$datefilter = $adb->query_result($result, $i, 'datefilter');
+			$startdate = $adb->query_result($result, $i, 'startdate');
+			$enddate = $adb->query_result($result, $i, 'enddate');
 
-			if($fieldcolname != "none") {
-				$selectedfields = explode(":",$fieldcolname);
-				if($selectedfields[0] == "vtiger_crmentity".$this->primarymodule)
-					$selectedfields[0] = "vtiger_crmentity";
-				if($datefilter == "custom") {
-
-					if($startdate != "0000-00-00" && $enddate != "0000-00-00" && $selectedfields[0] != "" && $selectedfields[1] != ""
-							&& $startdate != '' && $enddate != '') {
-
+			if ($fieldcolname != 'none') {
+				$selectedfields = explode(':', $fieldcolname);
+				if ($selectedfields[0] == 'vtiger_crmentity'.$this->primarymodule) {
+					$selectedfields[0] = 'vtiger_crmentity';
+				}
+				if ($datefilter == 'custom') {
+					if ($startdate!='0000-00-00' && $enddate!='0000-00-00' && $selectedfields[0]!='' && $selectedfields[1] != '' && $startdate != '' && $enddate != '') {
 						$startDateTime = new DateTimeField($startdate.' '. date('H:i:s'));
 						$startdate = $startDateTime->getDisplayDate();
 						$endDateTime = new DateTimeField($enddate.' '. date('H:i:s'));
@@ -1110,7 +1062,6 @@ class ReportRun extends CRMEntity {
 						$sSQL .= $selectedfields[0].".".$selectedfields[1]." between '".$startdate."' and '".$enddate."'";
 					}
 				} else {
-
 					$startenddate = $this->getStandarFiltersStartAndEndDate($datefilter);
 
 					$startDateTime = new DateTimeField($startenddate[0].' '. date('H:i:s'));
@@ -1118,14 +1069,14 @@ class ReportRun extends CRMEntity {
 					$endDateTime = new DateTimeField($startenddate[1].' '. date('H:i:s'));
 					$enddate = $endDateTime->getDisplayDate();
 
-					if($startenddate[0] != "" && $startenddate[1] != "" && $selectedfields[0] != "" && $selectedfields[1] != "") {
+					if ($startenddate[0] != "" && $startenddate[1] != "" && $selectedfields[0] != "" && $selectedfields[1] != "") {
 						$sSQL .= $selectedfields[0].".".$selectedfields[1]." between '".$startdate."' and '".$enddate."'";
 					}
 				}
 				$this->queryPlanner->addTable($selectedfields[0]);
 			}
 		}
-		$log->info("ReportRun :: Successfully returned getStandardCriterialSql".$reportid);
+		$log->debug('ReportRun :: getStandardCriterialSql'.$reportid);
 		return $sSQL;
 	}
 
@@ -1134,247 +1085,8 @@ class ReportRun extends CRMEntity {
 	 *  returns the $datevalue Array in the given format
 	 * 		$datevalue = Array(0=>$startdate,1=>$enddate)
 	 */
-	function getStandarFiltersStartAndEndDate($type)
-	{
-		$today = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d"), date("Y")));
-		$tomorrow  = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")+1, date("Y")));
-		$yesterday  = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")-1, date("Y")));
-
-		$currentmonth0 = date("Y-m-d",mktime(0, 0, 0, date("m"), "01",   date("Y")));
-		$currentmonth1 = date("Y-m-t");
-		$lastmonth0 = date("Y-m-d",mktime(0, 0, 0, date("m")-1, "01",   date("Y")));
-		$lastmonth1 = date("Y-m-t", strtotime("-1 Month"));
-		$nextmonth0 = date("Y-m-d",mktime(0, 0, 0, date("m")+1, "01",   date("Y")));
-		$nextmonth1 = date("Y-m-t", strtotime("+1 Month"));
-
-		$lastweek0 = date("Y-m-d",strtotime("-2 week Sunday"));
-		$lastweek1 = date("Y-m-d",strtotime("-1 week Saturday"));
-
-		$thisweek0 = date("Y-m-d",strtotime("-1 week Sunday"));
-		$thisweek1 = date("Y-m-d",strtotime("this Saturday"));
-
-		$nextweek0 = date("Y-m-d",strtotime("this Sunday"));
-		$nextweek1 = date("Y-m-d",strtotime("+1 week Saturday"));
-
-		$next7days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")+6, date("Y")));
-		$next30days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")+29, date("Y")));
-		$next60days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")+59, date("Y")));
-		$next90days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")+89, date("Y")));
-		$next120days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")+119, date("Y")));
-
-		$last7days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")-6, date("Y")));
-		$last14days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")-13, date("Y")));
-		$last30days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")-29, date("Y")));
-		$last60days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")-59, date("Y")));
-		$last90days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")-89, date("Y")));
-		$last120days = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")-119, date("Y")));
-
-		$currentFY0 = date("Y-m-d",mktime(0, 0, 0, "01", "01",   date("Y")));
-		$currentFY1 = date("Y-m-t",mktime(0, 0, 0, "12", date("d"),   date("Y")));
-		$lastFY0 = date("Y-m-d",mktime(0, 0, 0, "01", "01",   date("Y")-1));
-		$lastFY1 = date("Y-m-t", mktime(0, 0, 0, "12", date("d"), date("Y")-1));
-		$nextFY0 = date("Y-m-d",mktime(0, 0, 0, "01", "01",   date("Y")+1));
-		$nextFY1 = date("Y-m-t", mktime(0, 0, 0, "12", date("d"), date("Y")+1));
-
-		if(date("m") <= 3)
-		{
-			$cFq = date("Y-m-d",mktime(0, 0, 0, "01","01",date("Y")));
-			$cFq1 = date("Y-m-d",mktime(0, 0, 0, "03","31",date("Y")));
-			$nFq = date("Y-m-d",mktime(0, 0, 0, "04","01",date("Y")));
-			$nFq1 = date("Y-m-d",mktime(0, 0, 0, "06","30",date("Y")));
-			$pFq = date("Y-m-d",mktime(0, 0, 0, "10","01",date("Y")-1));
-			$pFq1 = date("Y-m-d",mktime(0, 0, 0, "12","31",date("Y")-1));
-		}else if(date("m") > 3 and date("m") <= 6)
-		{
-			$pFq = date("Y-m-d",mktime(0, 0, 0, "01","01",date("Y")));
-			$pFq1 = date("Y-m-d",mktime(0, 0, 0, "03","31",date("Y")));
-			$cFq = date("Y-m-d",mktime(0, 0, 0, "04","01",date("Y")));
-			$cFq1 = date("Y-m-d",mktime(0, 0, 0, "06","30",date("Y")));
-			$nFq = date("Y-m-d",mktime(0, 0, 0, "07","01",date("Y")));
-			$nFq1 = date("Y-m-d",mktime(0, 0, 0, "09","30",date("Y")));
-
-		}else if(date("m") > 6 and date("m") <= 9)
-		{
-			$nFq = date("Y-m-d",mktime(0, 0, 0, "10","01",date("Y")));
-			$nFq1 = date("Y-m-d",mktime(0, 0, 0, "12","31",date("Y")));
-			$pFq = date("Y-m-d",mktime(0, 0, 0, "04","01",date("Y")));
-			$pFq1 = date("Y-m-d",mktime(0, 0, 0, "06","30",date("Y")));
-			$cFq = date("Y-m-d",mktime(0, 0, 0, "07","01",date("Y")));
-			$cFq1 = date("Y-m-d",mktime(0, 0, 0, "09","30",date("Y")));
-		}
-		else if(date("m") > 9 and date("m") <= 12)
-		{
-			$nFq = date("Y-m-d",mktime(0, 0, 0, "01","01",date("Y")+1));
-			$nFq1 = date("Y-m-d",mktime(0, 0, 0, "03","31",date("Y")+1));
-			$pFq = date("Y-m-d",mktime(0, 0, 0, "07","01",date("Y")));
-			$pFq1 = date("Y-m-d",mktime(0, 0, 0, "09","30",date("Y")));
-			$cFq = date("Y-m-d",mktime(0, 0, 0, "10","01",date("Y")));
-			$cFq1 = date("Y-m-d",mktime(0, 0, 0, "12","31",date("Y")));
-
-		}
-
-		if($type == "today" )
-		{
-
-			$datevalue[0] = $today;
-			$datevalue[1] = $today;
-		}
-		elseif($type == "yesterday" )
-		{
-
-			$datevalue[0] = $yesterday;
-			$datevalue[1] = $yesterday;
-		}
-		elseif($type == "tomorrow" )
-		{
-
-			$datevalue[0] = $tomorrow;
-			$datevalue[1] = $tomorrow;
-		}
-		elseif($type == "thisweek" )
-		{
-
-			$datevalue[0] = $thisweek0;
-			$datevalue[1] = $thisweek1;
-		}
-		elseif($type == "lastweek" )
-		{
-
-			$datevalue[0] = $lastweek0;
-			$datevalue[1] = $lastweek1;
-		}
-		elseif($type == "nextweek" )
-		{
-
-			$datevalue[0] = $nextweek0;
-			$datevalue[1] = $nextweek1;
-		}
-		elseif($type == "thismonth" )
-		{
-
-			$datevalue[0] =$currentmonth0;
-			$datevalue[1] = $currentmonth1;
-		}
-
-		elseif($type == "lastmonth" )
-		{
-
-			$datevalue[0] = $lastmonth0;
-			$datevalue[1] = $lastmonth1;
-		}
-		elseif($type == "nextmonth" )
-		{
-
-			$datevalue[0] = $nextmonth0;
-			$datevalue[1] = $nextmonth1;
-		}
-		elseif($type == "next7days" )
-		{
-
-			$datevalue[0] = $today;
-			$datevalue[1] = $next7days;
-		}
-		elseif($type == "next30days" )
-		{
-
-			$datevalue[0] =$today;
-			$datevalue[1] =$next30days;
-		}
-		elseif($type == "next60days" )
-		{
-
-			$datevalue[0] = $today;
-			$datevalue[1] = $next60days;
-		}
-		elseif($type == "next90days" )
-		{
-
-			$datevalue[0] = $today;
-			$datevalue[1] = $next90days;
-		}
-		elseif($type == "next120days" )
-		{
-
-			$datevalue[0] = $today;
-			$datevalue[1] = $next120days;
-		}
-		elseif($type == "last7days" )
-		{
-
-			$datevalue[0] = $last7days;
-			$datevalue[1] = $today;
-		}
-		elseif($type == "last14days" )
-		{
-
-			$datevalue[0] = $last14days;
-			$datevalue[1] = $today;
-		}
-		elseif($type == "last30days" )
-		{
-
-			$datevalue[0] = $last30days;
-			$datevalue[1] =  $today;
-		}
-		elseif($type == "last60days" )
-		{
-
-			$datevalue[0] = $last60days;
-			$datevalue[1] = $today;
-		}
-		else if($type == "last90days" )
-		{
-
-			$datevalue[0] = $last90days;
-			$datevalue[1] = $today;
-		}
-		elseif($type == "last120days" )
-		{
-
-			$datevalue[0] = $last120days;
-			$datevalue[1] = $today;
-		}
-		elseif($type == "thisfy" )
-		{
-
-			$datevalue[0] = $currentFY0;
-			$datevalue[1] = $currentFY1;
-		}
-		elseif($type == "prevfy" )
-		{
-
-			$datevalue[0] = $lastFY0;
-			$datevalue[1] = $lastFY1;
-		}
-		elseif($type == "nextfy" )
-		{
-
-			$datevalue[0] = $nextFY0;
-			$datevalue[1] = $nextFY1;
-		}
-		elseif($type == "nextfq" )
-		{
-
-			$datevalue[0] = $nFq;
-			$datevalue[1] = $nFq1;
-		}
-		elseif($type == "prevfq" )
-		{
-
-			$datevalue[0] = $pFq;
-			$datevalue[1] = $pFq1;
-		}
-		elseif($type == "thisfq" )
-		{
-			$datevalue[0] = $cFq;
-			$datevalue[1] = $cFq1;
-		}
-		else
-		{
-			$datevalue[0] = "";
-			$datevalue[1] = "";
-		}
-		return $datevalue;
+	public function getStandarFiltersStartAndEndDate($type) {
+		return getDateforStdFilterBytype($type);
 	}
 
 	/** Function to get getGroupingList for the given reportid
@@ -1385,65 +1097,65 @@ class ReportRun extends CRMEntity {
 	 *				   $tablename2:$columnname2:$fieldlabel2:fieldname2:typeofdata2=>$tablename2:$columnname2 $sorder)
 	 * This function also sets the return value in the class variable $this->groupbylist
 	 */
-	function getGroupingList($reportid)
-	{
-		global $adb, $modules, $log;
+	public function getGroupingList($reportid) {
+		global $adb, $log;
 
 		// Have we initialized information already?
-		if($this->_groupinglist !== false) {
+		if ($this->_groupinglist !== false) {
 			return $this->_groupinglist;
 		}
 
-		$sreportsortsql = " SELECT vtiger_reportsortcol.*, vtiger_reportgroupbycolumn.* FROM vtiger_report";
-		$sreportsortsql .= " inner join vtiger_reportsortcol on vtiger_report.reportid = vtiger_reportsortcol.reportid";
-		$sreportsortsql .= " LEFT JOIN vtiger_reportgroupbycolumn ON (vtiger_report.reportid = vtiger_reportgroupbycolumn.reportid AND vtiger_reportsortcol.sortcolid = vtiger_reportgroupbycolumn.sortid)";
-		$sreportsortsql .= " where vtiger_report.reportid =? AND vtiger_reportsortcol.columnname IN (SELECT columnname from vtiger_selectcolumn WHERE queryid=?) order by vtiger_reportsortcol.sortcolid";
+		$sreportsortsql = ' SELECT vtiger_reportsortcol.*, vtiger_reportgroupbycolumn.* FROM vtiger_report';
+		$sreportsortsql .= ' inner join vtiger_reportsortcol on vtiger_report.reportid = vtiger_reportsortcol.reportid';
+		$sreportsortsql .= ' LEFT JOIN vtiger_reportgroupbycolumn ON
+			(vtiger_report.reportid = vtiger_reportgroupbycolumn.reportid AND vtiger_reportsortcol.sortcolid = vtiger_reportgroupbycolumn.sortid)';
+		$sreportsortsql .= ' where vtiger_report.reportid =? AND vtiger_reportsortcol.columnname IN (SELECT columnname from vtiger_selectcolumn WHERE queryid=?)';
+		$sreportsortsql .= ' order by vtiger_reportsortcol.sortcolid';
 
 		$result = $adb->pquery($sreportsortsql, array($reportid,$reportid));
 		$grouplist = array();
 
-		while($reportsortrow = $adb->fetch_array($result))
-		{
+		while ($reportsortrow = $adb->fetch_array($result)) {
 			$fieldcolname = $reportsortrow['columnname'];
-			if($fieldcolname != 'none') {
-				list($tablename,$colname,$module_field,$fieldname,$single) = explode(":",$fieldcolname);
-				$sortorder = $reportsortrow["sortorder"];
-				if($sortorder == "Ascending")
-				{
-					$sortorder = "ASC";
-				}elseif($sortorder == "Descending")
-				{
-					$sortorder = "DESC";
+			if ($fieldcolname != 'none') {
+				list($tablename, $colname, $module_field, $fieldname, $single) = explode(':', $fieldcolname);
+				$sortorder = $reportsortrow['sortorder'];
+				if ($sortorder == 'Ascending') {
+					$sortorder = 'ASC';
+				} elseif ($sortorder == 'Descending') {
+					$sortorder = 'DESC';
 				}
-				$selectedfields = explode(":",$fieldcolname);
-				if($selectedfields[0] == "vtiger_crmentity".$this->primarymodule)
-					$selectedfields[0] = "vtiger_crmentity";
-				if(stripos($selectedfields[1],'cf_')==0 && stristr($selectedfields[1],'cf_')==true){
-					$sqlvalue = "`".$adb->sql_escape_string(decode_html($selectedfields[2]))."` ".$sortorder;
+				$selectedfields = explode(':', $fieldcolname);
+				if ($selectedfields[0] == 'vtiger_crmentity'.$this->primarymodule) {
+					$selectedfields[0] = 'vtiger_crmentity';
+				}
+				if (stripos($selectedfields[1], 'cf_')==0 && stristr($selectedfields[1], 'cf_')==true) {
+					$sqlvalue = '`'.$adb->sql_escape_string(decode_html($selectedfields[2])).'` '.$sortorder;
 				} else {
-					$sqlvalue = "`".self::replaceSpecialChar($selectedfields[2])."` ".$sortorder;
+					$sqlvalue = '`'.self::replaceSpecialChar($selectedfields[2]).'` '.$sortorder;
 				}
 				/************** MONOLITHIC phase 6 customization********************************/
-				if($selectedfields[4]=="D" && strtolower($reportsortrow["dategroupbycriteria"])!="none"){
+				if ($selectedfields[4]=="D" && strtolower($reportsortrow["dategroupbycriteria"])!="none") {
 					$groupField = $module_field;
 					$groupCriteria = $reportsortrow["dategroupbycriteria"];
-					if(in_array($groupCriteria,array_keys($this->groupByTimeParent))){
+					if (in_array($groupCriteria, array_keys($this->groupByTimeParent))) {
 						$parentCriteria = $this->groupByTimeParent[$groupCriteria];
-						foreach($parentCriteria as $criteria){
+						foreach ($parentCriteria as $criteria) {
 							$groupByCondition[]=$this->GetTimeCriteriaCondition($criteria, $groupField)." ".$sortorder;
 						}
 					}
 					$groupByCondition[] =$this->GetTimeCriteriaCondition($groupCriteria, $groupField)." ".$sortorder;
-					$sqlvalue = implode(", ",$groupByCondition);
+					$sqlvalue = implode(', ', $groupByCondition);
 				}
 				$grouplist[$fieldcolname] = $sqlvalue;
-				$temp = explode("_",$selectedfields[2],2);
+				$temp = explode("_", $selectedfields[2], 2);
 				$module = $temp[0];
-				if((strpos($selectedfields[0],'vtiger_inventoryproductrel') !== false && ($selectedfields[1]=='productid' || $selectedfields[1]=='serviceid')) || CheckFieldPermission($fieldname,$module) == 'true')
-				{
+				if ((strpos($selectedfields[0], 'vtiger_inventoryproductrel') !== false && ($selectedfields[1]=='productid' || $selectedfields[1]=='serviceid'))
+					|| CheckFieldPermission($fieldname, $module) == 'true'
+				) {
 					$grouplist[$fieldcolname] = $sqlvalue;
 				} else {
-					$grouplist[$fieldcolname] = $selectedfields[0].".".$selectedfields[1];
+					$grouplist[$fieldcolname] = $selectedfields[0].'.'.$selectedfields[1];
 				}
 
 				$this->queryPlanner->addTable($tablename);
@@ -1453,7 +1165,7 @@ class ReportRun extends CRMEntity {
 		// Save the information
 		$this->_groupinglist = $grouplist;
 
-		$log->info("ReportRun :: Successfully returned getGroupingList".$reportid);
+		$log->debug('ReportRun :: getGroupingList'.$reportid);
 		return $grouplist;
 	}
 
@@ -1461,11 +1173,11 @@ class ReportRun extends CRMEntity {
 	 *  @ param $selectedfield : type string
 	 *  this returns the string for grouplist
 	 */
-	public static function replaceSpecialChar($selectedfield){
+	public static function replaceSpecialChar($selectedfield) {
 		$selectedfield = decode_html(decode_html($selectedfield));
 		preg_match('/&/', $selectedfield, $matches);
-		if(!empty($matches)){
-			$selectedfield = str_replace('&', 'and',($selectedfield));
+		if (!empty($matches)) {
+			$selectedfield = str_replace('&', 'and', ($selectedfield));
 		}
 		return $selectedfield;
 	}
@@ -1475,48 +1187,42 @@ class ReportRun extends CRMEntity {
 	 *  this returns the columns query for the sortorder columns
 	 *  this function also sets the return value in the class variable $this->orderbylistsql
 	 */
-	function getSelectedOrderbyList($reportid)
-	{
-		global $adb, $modules, $log;
+	public function getSelectedOrderbyList($reportid) {
+		global $adb, $log;
 
-		$sreportsortsql = "select vtiger_reportsortcol.* from vtiger_report";
-		$sreportsortsql .= " inner join vtiger_reportsortcol on vtiger_report.reportid = vtiger_reportsortcol.reportid";
-		$sreportsortsql .= " where vtiger_report.reportid =? order by vtiger_reportsortcol.sortcolid";
+		$sreportsortsql = 'select vtiger_reportsortcol.* from vtiger_report';
+		$sreportsortsql .= ' inner join vtiger_reportsortcol on vtiger_report.reportid = vtiger_reportsortcol.reportid';
+		$sreportsortsql .= ' where vtiger_report.reportid =? order by vtiger_reportsortcol.sortcolid';
 
 		$result = $adb->pquery($sreportsortsql, array($reportid));
 		$noofrows = $adb->num_rows($result);
 
-		for($i=0; $i<$noofrows; $i++)
-		{
-			$fieldcolname = $adb->query_result($result,$i,"columnname");
-			$sortorder = $adb->query_result($result,$i,"sortorder");
+		for ($i=0; $i<$noofrows; $i++) {
+			$fieldcolname = $adb->query_result($result, $i, 'columnname');
+			$sortorder = $adb->query_result($result, $i, 'sortorder');
 
-			if($sortorder == "Ascending")
-			{
-				$sortorder = "ASC";
-			}
-			elseif($sortorder == "Descending")
-			{
-				$sortorder = "DESC";
+			if ($sortorder == 'Ascending') {
+				$sortorder = 'ASC';
+			} elseif ($sortorder == 'Descending') {
+				$sortorder = 'DESC';
 			}
 
-			if($fieldcolname != "none")
-			{
+			if ($fieldcolname != 'none') {
 				$this->orderbylistcolumns[] = $fieldcolname;
 				$n = $n + 1;
-				$selectedfields = explode(":",$fieldcolname);
-				if($n > 1)
-				{
-					$sSQL .= ", ";
-					$this->orderbylistsql .= ", ";
+				$selectedfields = explode(":", $fieldcolname);
+				if ($n > 1) {
+					$sSQL .= ', ';
+					$this->orderbylistsql .= ', ';
 				}
-				if($selectedfields[0] == "vtiger_crmentity".$this->primarymodule)
-					$selectedfields[0] = "vtiger_crmentity";
-				$sSQL .= $selectedfields[0].".".$selectedfields[1]." ".$sortorder;
-				$this->orderbylistsql .= $selectedfields[0].".".$selectedfields[1]." ".$selectedfields[2];
+				if ($selectedfields[0] == 'vtiger_crmentity'.$this->primarymodule) {
+					$selectedfields[0] = 'vtiger_crmentity';
+				}
+				$sSQL .= $selectedfields[0].'.'.$selectedfields[1].' '.$sortorder;
+				$this->orderbylistsql .= $selectedfields[0].'.'.$selectedfields[1].' '.$selectedfields[2];
 			}
 		}
-		$log->info("ReportRun :: Successfully returned getSelectedOrderbyList".$reportid);
+		$log->debug('ReportRun :: getSelectedOrderbyList'.$reportid);
 		return $sSQL;
 	}
 
@@ -1525,21 +1231,20 @@ class ReportRun extends CRMEntity {
 	 *  @ param $secmodule : type String
 	 *  this returns join query for the given secondary module
 	 */
-	function getRelatedModulesQuery($module,$secmodule,$type = '',$where_condition = '')
-	{
+	public function getRelatedModulesQuery($module, $secmodule, $type = '', $where_condition = '') {
 		global $log,$current_user;
 		$query = '';
-		if($secmodule!=''){
-			$secondarymodule = explode(":",$secmodule);
-			foreach($secondarymodule as $key=>$value) {
+		if ($secmodule!='') {
+			$secondarymodule = explode(':', $secmodule);
+			foreach ($secondarymodule as $value) {
 				$foc = CRMEntity::getInstance($value);
 				// Case handling: Force table requirement ahead of time.
 				$this->queryPlanner->addTable('vtiger_crmentity' . $value);
-				$query .= $foc->generateReportsSecQuery($module,$value, $this->queryPlanner,$type,$where_condition);
-				$query .= getNonAdminAccessControlQuery($value,$current_user,$value);
+				$query .= $foc->generateReportsSecQuery($module, $value, $this->queryPlanner, $type, $where_condition);
+				$query .= getNonAdminAccessControlQuery($value, $current_user, $value);
 			}
 		}
-		$log->info("ReportRun :: Successfully returned getRelatedModulesQuery".$secmodule);
+		$log->debug('ReportRun :: getRelatedModulesQuery'.$secmodule);
 		return $query;
 	}
 
@@ -1547,7 +1252,7 @@ class ReportRun extends CRMEntity {
 	 *  @ param $module : type String
 	 *  this returns join query for the given module
 	 */
-	function getReportsQuery($module, $type='', $where_condition = '') {
+	public function getReportsQuery($module, $type = '', $where_condition = '') {
 		global $log, $current_user;
 		$secondary_module = "'";
 		$secondary_module .= str_replace(":", "','", $this->secondarymodule);
@@ -1578,10 +1283,10 @@ class ReportRun extends CRMEntity {
 			if ($this->queryPlanner->requireTable('vtiger_CreatedByLeads')) {
 				$query .= " left join vtiger_users as vtiger_CreatedByLeads on vtiger_CreatedByLeads.id = vtiger_crmentity.smcreatorid";
 			}
-			$query .= " " . $this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
-				getNonAdminAccessControlQuery($this->primarymodule,$current_user).
+			$query .= " " . $this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition).
+				getNonAdminAccessControlQuery($this->primarymodule, $current_user).
 				" where vtiger_crmentity.deleted=0 and vtiger_leaddetails.converted=$val_conv";
-		} else if ($module == "Accounts") {
+		} elseif ($module == "Accounts") {
 			$focus = CRMEntity::getInstance($module);
 			$query = $focus->generateReportsQuery($module, $this->queryPlanner);
 			if ($this->queryPlanner->requireTable('vtiger_accountbillads')) {
@@ -1591,31 +1296,31 @@ class ReportRun extends CRMEntity {
 				$query .= " inner join vtiger_accountshipads on vtiger_account.accountid=vtiger_accountshipads.accountaddressid";
 			}
 			if ($this->queryPlanner->requireTable('vtiger_accountAccounts')) {
-				$query .= "	left join vtiger_account as vtiger_accountAccounts on vtiger_accountAccounts.accountid = vtiger_account.parentid";
+				$query .= ' left join vtiger_account as vtiger_accountAccounts on vtiger_accountAccounts.accountid = vtiger_account.parentid';
 			}
-			$query.= " ".$this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
-				getNonAdminAccessControlQuery($this->primarymodule,$current_user).
-				" where vtiger_crmentity.deleted=0 ";
-		} else if ($module == "Contacts") {
+			$query.= " ".$this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition).
+				getNonAdminAccessControlQuery($this->primarymodule, $current_user).
+				' where vtiger_crmentity.deleted=0 ';
+		} elseif ($module == "Contacts") {
 			$query = "from vtiger_contactdetails
 				inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid";
 			if ($this->queryPlanner->requireTable('vtiger_contactaddress')) {
-				$query .= "	inner join vtiger_contactaddress on vtiger_contactdetails.contactid = vtiger_contactaddress.contactaddressid";
+				$query .= " inner join vtiger_contactaddress on vtiger_contactdetails.contactid = vtiger_contactaddress.contactaddressid";
 			}
 			if ($this->queryPlanner->requireTable('vtiger_customerdetails')) {
-				$query .= "	inner join vtiger_customerdetails on vtiger_customerdetails.customerid = vtiger_contactdetails.contactid";
+				$query .= " inner join vtiger_customerdetails on vtiger_customerdetails.customerid = vtiger_contactdetails.contactid";
 			}
 			if ($this->queryPlanner->requireTable('vtiger_contactsubdetails')) {
-				$query .= "	inner join vtiger_contactsubdetails on vtiger_contactdetails.contactid = vtiger_contactsubdetails.contactsubscriptionid";
+				$query .= " inner join vtiger_contactsubdetails on vtiger_contactdetails.contactid = vtiger_contactsubdetails.contactsubscriptionid";
 			}
 			if ($this->queryPlanner->requireTable('vtiger_contactscf')) {
-				$query .= "	inner join vtiger_contactscf on vtiger_contactdetails.contactid = vtiger_contactscf.contactid";
+				$query .= " inner join vtiger_contactscf on vtiger_contactdetails.contactid = vtiger_contactscf.contactid";
 			}
 			if ($this->queryPlanner->requireTable('vtiger_contactdetailsContacts')) {
-				$query .= "	left join vtiger_contactdetails as vtiger_contactdetailsContacts on vtiger_contactdetailsContacts.contactid = vtiger_contactdetails.reportsto";
+				$query .=" left join vtiger_contactdetails as vtiger_contactdetailsContacts on vtiger_contactdetailsContacts.contactid = vtiger_contactdetails.reportsto";
 			}
 			if ($this->queryPlanner->requireTable('vtiger_accountContacts')) {
-				$query .= "	left join vtiger_account as vtiger_accountContacts on vtiger_accountContacts.accountid = vtiger_contactdetails.accountid";
+				$query .= " left join vtiger_account as vtiger_accountContacts on vtiger_accountContacts.accountid = vtiger_contactdetails.accountid";
 			}
 			if ($this->queryPlanner->requireTable('vtiger_usersContacts') || $this->queryPlanner->requireTable('vtiger_groupsContacts')) {
 				$query .= " left join vtiger_users as vtiger_usersContacts on vtiger_usersContacts.id = vtiger_crmentity.smownerid";
@@ -1632,22 +1337,20 @@ class ReportRun extends CRMEntity {
 				$query .= " left join vtiger_users as vtiger_CreatedByContacts on vtiger_CreatedByContacts.id = vtiger_crmentity.smcreatorid";
 			}
 
-			$query .= " ".$this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
-					getNonAdminAccessControlQuery($this->primarymodule,$current_user).
+			$query .= " ".$this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition).
+					getNonAdminAccessControlQuery($this->primarymodule, $current_user).
 					" where vtiger_crmentity.deleted=0";
-		} else if ($module == "Potentials") {
+		} elseif ($module == "Potentials") {
 			$focus = CRMEntity::getInstance($module);
 			$query = $focus->generateReportsQuery($module, $this->queryPlanner);
 			if ($this->queryPlanner->requireTable('vtiger_campaignPotentials')) {
 				$query .= " left join vtiger_campaign as vtiger_campaignPotentials on vtiger_potential.campaignid = vtiger_campaignPotentials.campaignid";
 			}
-			$query .= " ".$this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
-				getNonAdminAccessControlQuery($this->primarymodule,$current_user).
+			$query .= " ".$this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition).
+				getNonAdminAccessControlQuery($this->primarymodule, $current_user).
 				" where vtiger_crmentity.deleted=0 ";
-		}
-
-		//For this Product - we can related Accounts, Contacts (Also Leads, Potentials)
-		else if ($module == "Products") {
+		} //For this Product - we can related Accounts, Contacts (Also Leads, Potentials)
+		elseif ($module == "Products") {
 			$focus = CRMEntity::getInstance($module);
 			$query = $focus->generateReportsQuery($module, $this->queryPlanner);
 			if ($this->queryPlanner->requireTable("vtiger_vendorRelProducts")) {
@@ -1665,10 +1368,10 @@ class ReportRun extends CRMEntity {
 						AND vtiger_productcurrencyrel.currencyid = " . $current_user->currency_id . "
 				) AS innerProduct ON innerProduct.productid = vtiger_products.productid";
 			}
-			$query .= " ".$this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
-				getNonAdminAccessControlQuery($this->primarymodule,$current_user).
+			$query .= " ".$this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition).
+				getNonAdminAccessControlQuery($this->primarymodule, $current_user).
 				" where vtiger_crmentity.deleted=0";
-		} else if ($module == "HelpDesk") {
+		} elseif ($module == "HelpDesk") {
 			$focus = CRMEntity::getInstance($module);
 			$query = $focus->generateReportsQuery($module, $this->queryPlanner);
 			$matrix = $this->queryPlanner->newDependencyMatrix();
@@ -1685,10 +1388,10 @@ class ReportRun extends CRMEntity {
 				$query .= " left join vtiger_contactdetails as vtiger_contactdetailsRelHelpDesk on vtiger_contactdetailsRelHelpDesk.contactid= vtiger_crmentityRelHelpDesk.crmid";
 			}
 
-			$query .= " ".$this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
-				getNonAdminAccessControlQuery($this->primarymodule,$current_user).
+			$query .= " ".$this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition).
+				getNonAdminAccessControlQuery($this->primarymodule, $current_user).
 				" where vtiger_crmentity.deleted=0 ";
-		} else if ($module == "Calendar") {
+		} elseif ($module == "Calendar") {
 			$moduleInstance = Vtiger_Module::getInstance('Calendar');
 			$fieldInstance = Vtiger_Field::getInstance('parent_id', $moduleInstance);
 			$referenceModuleList = $fieldInstance->getReferenceList();
@@ -1755,16 +1458,15 @@ class ReportRun extends CRMEntity {
 				$query .= " left join vtiger_users as vtiger_CreatedByCalendar on vtiger_CreatedByCalendar.id = vtiger_crmentity.smcreatorid";
 			}
 
-			$query .= " ".$this->getRelatedModulesQuery($module,$this->secondarymodule).
-				getNonAdminAccessControlQuery($this->primarymodule,$current_user).
+			$query .= " ".$this->getRelatedModulesQuery($module, $this->secondarymodule).
+				getNonAdminAccessControlQuery($this->primarymodule, $current_user).
 				" WHERE vtiger_crmentity.deleted=0 and (vtiger_activity.activitytype != 'Emails')";
-		} else if ($module == "Quotes") {
+		} elseif ($module == "Quotes") {
 			$matrix = $this->queryPlanner->newDependencyMatrix();
 
 			$matrix->setDependency('vtiger_inventoryproductrelQuotes', array('vtiger_productsQuotes', 'vtiger_serviceQuotes'));
-
-			$query = "from vtiger_quotes
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_quotes.quoteid";
+			$focus = CRMEntity::getInstance($module);
+			$query = $focus->generateReportsQuery($module, $this->queryPlanner);
 
 			if ($this->queryPlanner->requireTable('vtiger_quotesbillads')) {
 				$query .= " inner join vtiger_quotesbillads on vtiger_quotes.quoteid=vtiger_quotesbillads.quotebilladdressid";
@@ -1786,23 +1488,6 @@ class ReportRun extends CRMEntity {
 					$query .= " left join vtiger_service as vtiger_serviceQuotes on vtiger_serviceQuotes.serviceid = vtiger_inventoryproductrelQuotes.productid";
 				}
 			}
-			if ($this->queryPlanner->requireTable("vtiger_quotescf")) {
-				$query .= " left join vtiger_quotescf on vtiger_quotes.quoteid = vtiger_quotescf.quoteid";
-			}
-			if ($this->queryPlanner->requireTable("vtiger_usersQuotes") || $this->queryPlanner->requireTable("vtiger_groupsQuotes")) {
-				$query .= " left join vtiger_users as vtiger_usersQuotes on vtiger_usersQuotes.id = vtiger_crmentity.smownerid";
-				$query .= " left join vtiger_groups as vtiger_groupsQuotes on vtiger_groupsQuotes.groupid = vtiger_crmentity.smownerid";
-			}
-
-			$query .= " left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid";
-			$query .= " left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid";
-
-			if ($this->queryPlanner->requireTable("vtiger_lastModifiedByQuotes")) {
-				$query .= " left join vtiger_users as vtiger_lastModifiedByQuotes on vtiger_lastModifiedByQuotes.id = vtiger_crmentity.modifiedby";
-			}
-			if ($this->queryPlanner->requireTable('vtiger_CreatedByQuotes')) {
-				$query .= " left join vtiger_users as vtiger_CreatedByQuotes on vtiger_CreatedByQuotes.id = vtiger_crmentity.smcreatorid";
-			}
 			if ($this->queryPlanner->requireTable("vtiger_usersRel1")) {
 				$query .= " left join vtiger_users as vtiger_usersRel1 on vtiger_usersRel1.id = vtiger_quotes.inventorymanager";
 			}
@@ -1818,17 +1503,15 @@ class ReportRun extends CRMEntity {
 			if ($this->queryPlanner->requireTable('vtiger_currency_info')) {
 				$query .= ' LEFT JOIN vtiger_currency_info ON vtiger_currency_info.id = vtiger_quotes.currency_id';
 			}
-			$query .= " " . $this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
-				getNonAdminAccessControlQuery($this->primarymodule,$current_user).
-				" where vtiger_crmentity.deleted=0";
-		} else if ($module == "PurchaseOrder") {
-
+			$query .= " " . $this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition).
+				getNonAdminAccessControlQuery($this->primarymodule, $current_user).
+				' where vtiger_crmentity.deleted=0';
+		} elseif ($module == "PurchaseOrder") {
 			$matrix = $this->queryPlanner->newDependencyMatrix();
 
 			$matrix->setDependency('vtiger_inventoryproductrelPurchaseOrder', array('vtiger_productsPurchaseOrder', 'vtiger_servicePurchaseOrder'));
-
-			$query = "from vtiger_purchaseorder
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_purchaseorder.purchaseorderid";
+			$focus = CRMEntity::getInstance($module);
+			$query = $focus->generateReportsQuery($module, $this->queryPlanner);
 
 			if ($this->queryPlanner->requireTable("vtiger_pobillads")) {
 				$query .= " inner join vtiger_pobillads on vtiger_purchaseorder.purchaseorderid=vtiger_pobillads.pobilladdressid";
@@ -1850,26 +1533,10 @@ class ReportRun extends CRMEntity {
 					$query .= " left join vtiger_service as vtiger_servicePurchaseOrder on vtiger_servicePurchaseOrder.serviceid = vtiger_inventoryproductrelPurchaseOrder.productid";
 				}
 			}
-			if ($this->queryPlanner->requireTable("vtiger_purchaseordercf")) {
-				$query .= " left join vtiger_purchaseordercf on vtiger_purchaseorder.purchaseorderid = vtiger_purchaseordercf.purchaseorderid";
-			}
-			if ($this->queryPlanner->requireTable("vtiger_usersPurchaseOrder") || $this->queryPlanner->requireTable("vtiger_groupsPurchaseOrder")) {
-				$query .= " left join vtiger_users as vtiger_usersPurchaseOrder on vtiger_usersPurchaseOrder.id = vtiger_crmentity.smownerid";
-				$query .= " left join vtiger_groups as vtiger_groupsPurchaseOrder on vtiger_groupsPurchaseOrder.groupid = vtiger_crmentity.smownerid";
-			}
 			if ($this->queryPlanner->requireTable("vtiger_accountsPurchaseOrder")) {
 				$query .= " left join vtiger_account as vtiger_accountsPurchaseOrder on vtiger_accountsPurchaseOrder.accountid = vtiger_purchaseorder.accountid";
 			}
 
-			$query .= " left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid";
-			$query .= " left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid";
-
-			if ($this->queryPlanner->requireTable("vtiger_lastModifiedByPurchaseOrder")) {
-				$query .= " left join vtiger_users as vtiger_lastModifiedByPurchaseOrder on vtiger_lastModifiedByPurchaseOrder.id = vtiger_crmentity.modifiedby";
-			}
-			if ($this->queryPlanner->requireTable('vtiger_CreatedByPurchaseOrder')) {
-				$query .= " left join vtiger_users as vtiger_CreatedByPurchaseOrder on vtiger_CreatedByPurchaseOrder.id = vtiger_crmentity.smcreatorid";
-			}
 			if ($this->queryPlanner->requireTable("vtiger_vendorRelPurchaseOrder")) {
 				$query .= " left join vtiger_vendor as vtiger_vendorRelPurchaseOrder on vtiger_vendorRelPurchaseOrder.vendorid = vtiger_purchaseorder.vendorid";
 			}
@@ -1879,10 +1546,10 @@ class ReportRun extends CRMEntity {
 			if ($this->queryPlanner->requireTable('vtiger_currency_info')) {
 				$query .= ' LEFT JOIN vtiger_currency_info ON vtiger_currency_info.id = vtiger_purchaseorder.currency_id';
 			}
-			$query .= " " . $this->getRelatedModulesQuery($module, $this->secondarymodule,$type,$where_condition) .
+			$query .= " " . $this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition) .
 				getNonAdminAccessControlQuery($this->primarymodule, $current_user) .
 				" where vtiger_crmentity.deleted=0";
-		} else if ($module == "Invoice") {
+		} elseif ($module == "Invoice") {
 			$matrix = $this->queryPlanner->newDependencyMatrix();
 
 			$matrix->setDependency('vtiger_inventoryproductrelInvoice', array('vtiger_productsInvoice', 'vtiger_serviceInvoice'));
@@ -1921,16 +1588,16 @@ class ReportRun extends CRMEntity {
 			if ($this->queryPlanner->requireTable('vtiger_currency_info')) {
 				$query .= ' LEFT JOIN vtiger_currency_info ON vtiger_currency_info.id = vtiger_invoice.currency_id';
 			}
-			$query .= " " . $this->getRelatedModulesQuery($module, $this->secondarymodule,$type,$where_condition) .
+			$query .= " " . $this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition) .
 				getNonAdminAccessControlQuery($this->primarymodule, $current_user) .
 				" where vtiger_crmentity.deleted=0";
-		} else if ($module == "SalesOrder") {
+		} elseif ($module == "SalesOrder") {
 			$matrix = $this->queryPlanner->newDependencyMatrix();
 
 			$matrix->setDependency('vtiger_inventoryproductrelSalesOrder', array('vtiger_productsSalesOrder', 'vtiger_serviceSalesOrder'));
+			$focus = CRMEntity::getInstance($module);
+			$query = $focus->generateReportsQuery($module, $this->queryPlanner);
 
-			$query = "from vtiger_salesorder
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_salesorder.salesorderid";
 			if ($this->queryPlanner->requireTable("vtiger_sobillads")) {
 				$query .= " inner join vtiger_sobillads on vtiger_salesorder.salesorderid=vtiger_sobillads.sobilladdressid";
 			}
@@ -1948,14 +1615,11 @@ class ReportRun extends CRMEntity {
 					$query .= " left join vtiger_products as vtiger_productsSalesOrder on vtiger_productsSalesOrder.productid = vtiger_inventoryproductrelSalesOrder.productid";
 				}
 				if ($this->queryPlanner->requireTable("vtiger_serviceSalesOrder")) {
-					$query .= " left join vtiger_service as vtiger_serviceSalesOrder on vtiger_serviceSalesOrder.serviceid = vtiger_inventoryproductrelSalesOrder.productid";
+					$query.=' left join vtiger_service as vtiger_serviceSalesOrder on vtiger_serviceSalesOrder.serviceid = vtiger_inventoryproductrelSalesOrder.productid';
 				}
 			}
-			if ($this->queryPlanner->requireTable("vtiger_salesordercf")) {
-				$query .=" left join vtiger_salesordercf on vtiger_salesorder.salesorderid = vtiger_salesordercf.salesorderid";
-			}
 			if ($this->queryPlanner->requireTable("vtiger_contactdetailsSalesOrder")) {
-				$query .= " left join vtiger_contactdetails as vtiger_contactdetailsSalesOrder on vtiger_contactdetailsSalesOrder.contactid = vtiger_salesorder.contactid";
+				$query .=' left join vtiger_contactdetails as vtiger_contactdetailsSalesOrder on vtiger_contactdetailsSalesOrder.contactid = vtiger_salesorder.contactid';
 			}
 			if ($this->queryPlanner->requireTable("vtiger_quotesSalesOrder")) {
 				$query .= " left join vtiger_quotes as vtiger_quotesSalesOrder on vtiger_quotesSalesOrder.quoteid = vtiger_salesorder.quoteid";
@@ -1969,27 +1633,13 @@ class ReportRun extends CRMEntity {
 			if ($this->queryPlanner->requireTable("vtiger_invoice_recurring_info")) {
 				$query .= " left join vtiger_invoice_recurring_info on vtiger_invoice_recurring_info.salesorderid = vtiger_salesorder.salesorderid";
 			}
-			if ($this->queryPlanner->requireTable("vtiger_usersSalesOrder") || $this->queryPlanner->requireTable("vtiger_groupsSalesOrder")) {
-				$query .= " left join vtiger_users as vtiger_usersSalesOrder on vtiger_usersSalesOrder.id = vtiger_crmentity.smownerid";
-				$query .= " left join vtiger_groups as vtiger_groupsSalesOrder on vtiger_groupsSalesOrder.groupid = vtiger_crmentity.smownerid";
-			}
-
-			$query .= " left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid";
-			$query .= " left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid";
-
-			if ($this->queryPlanner->requireTable("vtiger_lastModifiedBySalesOrder")) {
-				$query .= " left join vtiger_users as vtiger_lastModifiedBySalesOrder on vtiger_lastModifiedBySalesOrder.id = vtiger_crmentity.modifiedby";
-			}
-			if ($this->queryPlanner->requireTable('vtiger_CreatedBySalesOrder')) {
-				$query .= " left join vtiger_users as vtiger_CreatedBySalesOrder on vtiger_CreatedBySalesOrder.id = vtiger_crmentity.smcreatorid";
-			}
 			if ($this->queryPlanner->requireTable('vtiger_currency_info')) {
 				$query .= ' LEFT JOIN vtiger_currency_info ON vtiger_currency_info.id = vtiger_salesorder.currency_id';
 			}
-			$query .= " " . $this->getRelatedModulesQuery($module, $this->secondarymodule,$type,$where_condition) .
+			$query .= " " . $this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition) .
 				getNonAdminAccessControlQuery($this->primarymodule, $current_user) .
 				" where vtiger_crmentity.deleted=0";
-		} else if ($module == "Emails") {
+		} elseif ($module == "Emails") {
 			$query = "from vtiger_activity
 			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_activity.activityid AND vtiger_activity.activitytype = 'Emails'
 			LEFT JOIN vtiger_emaildetails ON vtiger_emaildetails.emailid=vtiger_activity.activityid";
@@ -2013,39 +1663,39 @@ class ReportRun extends CRMEntity {
 				$query .= " left join vtiger_users as vtiger_CreatedBy$module on vtiger_CreatedBy$module.id = vtiger_crmentity.smcreatorid";
 			}
 
-			$query .= " ".$this->getRelatedModulesQuery($module,$this->secondarymodule).
-			getNonAdminAccessControlQuery($this->primarymodule,$current_user).
-			" WHERE vtiger_crmentity.deleted = 0";
-		} else if ($module == "Issuecards") {
+			$query .= ' '.$this->getRelatedModulesQuery($module, $this->secondarymodule).
+				getNonAdminAccessControlQuery($this->primarymodule, $current_user).
+				' WHERE vtiger_crmentity.deleted = 0';
+		} elseif ($module == "Issuecards") {
 			$focus = CRMEntity::getInstance($module);
 			$query = $focus->generateReportsQuery($module, $this->queryPlanner);
 			$query .= " left join vtiger_currency_info as vtiger_currency_info$module on vtiger_currency_info$module.id = vtiger_issuecards.currency_id";
 			if (($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) {
-				$query .=" left join vtiger_inventoryproductrel as vtiger_inventoryproductrelIssuecards on vtiger_issuecards.issuecardid = vtiger_inventoryproductrelIssuecards.id
+				$query .= ' left join vtiger_inventoryproductrel as vtiger_inventoryproductrelIssuecards on vtiger_issuecards.issuecardid = vtiger_inventoryproductrelIssuecards.id
 					left join vtiger_products as vtiger_productsIssuecards on vtiger_productsIssuecards.productid = vtiger_inventoryproductrelIssuecards.productid
-					left join vtiger_service as vtiger_serviceIssuecards on vtiger_serviceIssuecards.serviceid = vtiger_inventoryproductrelIssuecards.productid";
+					left join vtiger_service as vtiger_serviceIssuecards on vtiger_serviceIssuecards.serviceid = vtiger_inventoryproductrelIssuecards.productid';
 			}
-			$query .= " ".$this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
-				getNonAdminAccessControlQuery($this->primarymodule,$current_user) .
-				" WHERE vtiger_crmentity.deleted=0";
+			$query .= " ".$this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition).
+				getNonAdminAccessControlQuery($this->primarymodule, $current_user) .
+				' WHERE vtiger_crmentity.deleted=0';
 		} else {
 			if ($module != '') {
 				$focus = CRMEntity::getInstance($module);
 				$query = $focus->generateReportsQuery($module, $this->queryPlanner) .
-						$this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition) .
-						getNonAdminAccessControlQuery($this->primarymodule, $current_user) .
-						" WHERE vtiger_crmentity.deleted=0";
+					$this->getRelatedModulesQuery($module, $this->secondarymodule, $type, $where_condition) .
+					getNonAdminAccessControlQuery($this->primarymodule, $current_user) .
+					' WHERE vtiger_crmentity.deleted=0';
 			}
 		}
-		$log->info("ReportRun :: Successfully returned getReportsQuery".$module);
+		$log->debug('ReportRun :: getReportsQuery'.$module);
 
 		return $query;
 	}
 
-	public static function sGetDirectSQL($reportid, $cbreporttype, $eliminatenewlines=true) {
-		global $log, $adb;
-		$rptrs = $adb->pquery('select moreinfo from vtiger_report where reportid=?',array($reportid));
-		if ($rptrs and $adb->num_rows($rptrs)>0) {
+	public static function sGetDirectSQL($reportid, $cbreporttype, $eliminatenewlines = true) {
+		global $adb;
+		$rptrs = $adb->pquery('select moreinfo from vtiger_report where reportid=?', array($reportid));
+		if ($rptrs && $adb->num_rows($rptrs)>0) {
 			$minfo = $adb->query_result($rptrs, 0, 0);
 			if (!empty($minfo)) {
 				if ($cbreporttype == 'crosstabsql') {
@@ -2068,11 +1718,11 @@ class ReportRun extends CRMEntity {
 	 * @param $chartReport : boolean
 	 *  this returns join query for the report
 	 */
-	function sGetSQLforReport($reportid,$filtersql,$type='',$chartReport=false) {
+	public function sGetSQLforReport($reportid, $filtersql, $type = '', $chartReport = false) {
 		global $log;
 		$groupsquery = '';
-		if ($this->cbreporttype == 'directsql' or $this->cbreporttype == 'crosstabsql') {
-			$reportquery = self::sGetDirectSQL($reportid,$this->cbreporttype,true);
+		if ($this->cbreporttype == 'directsql' || $this->cbreporttype == 'crosstabsql') {
+			$reportquery = self::sGetDirectSQL($reportid, $this->cbreporttype, true);
 			$columnstotalsql = '';
 			if (stripos($reportquery, ' order by ')) {
 				$groupsquery = substr($reportquery, stripos($reportquery, ' order by ')+10);
@@ -2090,87 +1740,80 @@ class ReportRun extends CRMEntity {
 			} else {
 				$glue = ' WHERE ';
 			}
-			if(isset($filtersql) && !empty($filtersql)) {
+			if (isset($filtersql) && !empty($filtersql)) {
 				$wheresql = $advfiltersql = $glue . $filtersql;
 			} else {
 				$wheresql = $advfiltersql = '';
 			}
 			$reportquery .= $wheresql . $groupbyquery;
 		} else {
-		$columnlist = $this->getQueryColumnsList($reportid,$type);
-		$groupslist = $this->getGroupingList($reportid);
-		$groupTimeList = $this->getGroupByTimeList($reportid);
-		$stdfilterlist = $this->getStdFilterList($reportid);
-		$columnstotallist = $this->getColumnsTotal($reportid,$columnlist);
-		$advfiltersql = $this->getAdvFilterSql($reportid);
+			$columnlist = $this->getQueryColumnsList($reportid, $type);
+			$groupslist = $this->getGroupingList($reportid);
+			$this->getGroupByTimeList($reportid);
+			$stdfilterlist = $this->getStdFilterList($reportid);
+			$columnstotallist = $this->getColumnsTotal($reportid, $columnlist);
+			$advfiltersql = $this->getAdvFilterSql($reportid);
 
-		$this->totallist = $columnstotallist;
-		$tab_id = getTabid($this->primarymodule);
-		//Fix for ticket #4915.
-		$selectlist = $columnlist;
+			$this->totallist = $columnstotallist;
+			$selectlist = $columnlist;
 		//columns list
-		if (isset($selectlist)) {
-			$selectedcolumns = implode(", ",$selectlist);
-		}
+			if (isset($selectlist)) {
+				$selectedcolumns = implode(', ', $selectlist);
+			}
 		//groups list
-		if (isset($groupslist)) {
-			$groupsquery = implode(", ",$groupslist);
-		}
-		if (isset($groupTimeList)) {
-			$groupTimeQuery = implode(', ',$groupTimeList);
-		}
+			if (isset($groupslist)) {
+				$groupsquery = implode(', ', $groupslist);
+			}
 
 		//standard list
-		if (isset($stdfilterlist)) {
-			$stdfiltersql = implode(", ",$stdfilterlist);
-		}
-		//columns to total list
-		if (isset($columnstotallist)) {
-			$columnstotalsql = implode(', ',$columnstotallist);
-		} else {
-			$columnstotalsql = '';
-		}
-		if ($stdfiltersql != '') {
-			$wheresql = ' and '.$stdfiltersql;
-		} else {
-			$wheresql = '';
-		}
-
-		if (isset($filtersql) && !empty($filtersql)) {
-			$advfiltersql = $filtersql;
-		}
-		$where_condition = '';
-		if ($advfiltersql != "") {
-			if ($type == 'COLUMNSTOTOTAL') {
-				if (strstr($advfiltersql,'vtiger_products'.$this->primarymodule) || strstr($advfiltersql,'vtiger_service'.$this->primarymodule))
-					$where_condition='add';
+			if (isset($stdfilterlist)) {
+				$stdfiltersql = implode(", ", $stdfilterlist);
 			}
-			$wheresql .= " and ".$advfiltersql;
-		}
+		//columns to total list
+			if (isset($columnstotallist)) {
+				$columnstotalsql = implode(', ', $columnstotallist);
+			} else {
+				$columnstotalsql = '';
+			}
+			if ($stdfiltersql != '') {
+				$wheresql = ' and '.$stdfiltersql;
+			} else {
+				$wheresql = '';
+			}
 
-		$reportquery = $basereportquery = $this->getReportsQuery($this->primarymodule, $type,$where_condition);
+			if (isset($filtersql) && !empty($filtersql)) {
+				$advfiltersql = $filtersql;
+			}
+			$where_condition = '';
+			if ($advfiltersql != '') {
+				if ($type == 'COLUMNSTOTOTAL') {
+					if (strstr($advfiltersql, 'vtiger_products'.$this->primarymodule) || strstr($advfiltersql, 'vtiger_service'.$this->primarymodule)) {
+						$where_condition='add';
+					}
+				}
+				$wheresql .= ' and '.$advfiltersql;
+			}
+
+			$reportquery = $basereportquery = $this->getReportsQuery($this->primarymodule, $type, $where_condition);
 		}
 		// If we don't have access to any columns, let us select one column and limit result to show we have no results
-		// Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/4758 - Prasad
 		$allColumnsRestricted = false;
 
-		if($type == 'COLUMNSTOTOTAL')
-		{
-			if($columnstotalsql != '')
-			{
+		if ($type == 'COLUMNSTOTOTAL') {
+			if ($columnstotalsql != '') {
 				$totalsselectedcolumns = $columnlist;
 				// eliminate product/service columns for inventory modules
 				foreach ($columnlist as $key => $value) {
-					$finfo = explode(':',$key);
+					$finfo = explode(':', $key);
 					if ($finfo[0]=='vtiger_inventoryproductrel'.$this->primarymodule) {
 						unset($totalsselectedcolumns[$key]);
 					}
 				}
-				if (isset($this->_columnstotallistaddtoselect) and is_array($this->_columnstotallistaddtoselect) and count($this->_columnstotallistaddtoselect)>0) {
+				if (isset($this->_columnstotallistaddtoselect) && is_array($this->_columnstotallistaddtoselect) && count($this->_columnstotallistaddtoselect)>0) {
 					$_columnstotallistaddtoselect = ', '.implode(', ', $this->_columnstotallistaddtoselect);
 					$totalscolalias = array();
 					foreach ($this->_columnstotallistaddtoselect as $key => $value) {
-						list($void,$calias) = explode(' AS ',$value);
+						list($void,$calias) = explode(' AS ', $value);
 						$calias = str_replace("'", '', $calias);
 						$totalscolalias[] = $calias;
 					}
@@ -2185,48 +1828,48 @@ class ReportRun extends CRMEntity {
 				} else {
 					$_columnstotallistaddtoselect = '';
 				}
-				$totalsselectedcolumns = implode(', ',$totalsselectedcolumns);
-				$reportquery = "select ".$columnstotalsql.' from (select DISTINCT '.$totalsselectedcolumns.$_columnstotallistaddtoselect." ".$reportquery." ".$wheresql.') as summary_calcs';
+				$totalsselectedcolumns = implode(', ', $totalsselectedcolumns);
+				$reportquery = 'select '.$columnstotalsql.' from (select DISTINCT '.$totalsselectedcolumns.$_columnstotallistaddtoselect.' '
+					.$reportquery." ".$wheresql.') as summary_calcs';
 			}
-		} elseif ($this->cbreporttype != 'directsql' and $this->cbreporttype != 'crosstabsql') {
-			if($selectedcolumns == '') { // Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/4758 - Prasad
+		} elseif ($this->cbreporttype != 'directsql' && $this->cbreporttype != 'crosstabsql') {
+			if ($selectedcolumns == '') { // Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/4758 - Prasad
 				$selectedcolumns = "''"; // "''" to get blank column name
 				$allColumnsRestricted = true;
 			}
-			$reportquery = "select DISTINCT ".$selectedcolumns." ".$reportquery." ".$wheresql;
+			$reportquery = 'select DISTINCT '.$selectedcolumns.' '.$reportquery.' '.$wheresql;
 		}
 		$reportquery = listQueryNonAdminChange($reportquery, $this->primarymodule);
 
-		if(trim($groupsquery) != "" && $type !== 'COLUMNSTOTOTAL')
-		{
-			if($chartReport == true){
+		if (trim($groupsquery) != "" && $type !== 'COLUMNSTOTOTAL') {
+			if ($chartReport == true) {
 				reset($groupslist);
 				$first_key = key($groupslist);
-				$reportquery = 'select '.$columnlist[$first_key].", count(*) AS 'groupby_count' $basereportquery $wheresql group by ".$this->GetFirstSortByField($reportid);
-			}else{
-				$reportquery .= " order by ".$groupsquery;
+				$reportquery='select '.$columnlist[$first_key].", count(*) AS 'groupby_count' $basereportquery $wheresql group by ".$this->GetFirstSortByField($reportid);
+			} else {
+				$reportquery .= ' order by '.$groupsquery;
 			}
 		}
 
-		// Prasad: No columns selected so limit the number of rows directly.
-		if($allColumnsRestricted) {
-			$reportquery .= " limit 0";
+		// No columns selected so limit the number of rows directly.
+		if ($allColumnsRestricted) {
+			$reportquery .= ' limit 0';
 		}
 
 		preg_match('/&amp;/', $reportquery, $matches);
-		if(!empty($matches)){
+		if (!empty($matches)) {
 			$report=str_replace('&amp;', '&', $reportquery);
 			$reportquery = $this->replaceSpecialChar($report);
 		}
-		if ($type == 'HTMLPAGED' and !$allColumnsRestricted) {
-			$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize',40);
+		if ($type == 'HTMLPAGED' && !$allColumnsRestricted) {
+			$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize', 40);
 			$reportquery .= ' limit '.(($this->page-1)*$rowsperpage).', '.$rowsperpage;
 		}
 		if (!$this->_tmptablesinitialized) {
 			$this->queryPlanner->initializeTempTables();
 			$this->_tmptablesinitialized = true;
 		}
-		$log->info("ReportRun :: Successfully returned sGetSQLforReport".$reportid);
+		$log->debug('ReportRun :: sGetSQLforReport '.$reportid);
 		if (GlobalVariable::getVariable('Debug_Report_Query', '0')=='1') {
 			$log->fatal('Report Query for '.$this->reportname." ($reportid)");
 			$log->fatal($reportquery);
@@ -2246,40 +1889,39 @@ class ReportRun extends CRMEntity {
 	 */
 
 	// Performance Optimization: Added parameter directOutput to avoid building big-string!
-	function GenerateReport($outputformat,$filtersql, $directOutput=false, &$returnfieldinfo=array())
-	{
-		global $adb,$current_user,$php_max_execution_time;
-		global $modules,$app_strings, $mod_strings,$current_language;
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	public function GenerateReport($outputformat, $filtersql, $directOutput = false, &$returnfieldinfo = array()) {
+		global $adb, $current_user, $php_max_execution_time, $modules, $app_strings, $mod_strings;
+		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 		$picklistarray = array();
 		$modules_selected = array();
 		$modules_selected[] = $this->primarymodule;
-		if(!empty($this->secondarymodule)){
-			$sec_modules = explode(":",$this->secondarymodule);
-			for($i=0;$i<count($sec_modules);$i++){
+		if (!empty($this->secondarymodule)) {
+			$sec_modules = explode(':', $this->secondarymodule);
+			for ($i=0; $i<count($sec_modules); $i++) {
 				$modules_selected[] = $sec_modules[$i];
 			}
 		}
 
 		// Update Reference fields list list
-		$referencefieldres = $adb->pquery("SELECT tabid, fieldlabel, uitype from vtiger_field WHERE uitype in (10,101)", array());
-		if($referencefieldres) {
-			foreach($referencefieldres as $referencefieldrow) {
+		$referencefieldres = $adb->pquery('SELECT tabid, fieldlabel, uitype from vtiger_field WHERE uitype in (10,101)', array());
+		if ($referencefieldres) {
+			foreach ($referencefieldres as $referencefieldrow) {
 				$uiType = $referencefieldrow['uitype'];
 				$modprefixedlabel = getTabModuleName($referencefieldrow['tabid']).' '.$referencefieldrow['fieldlabel'];
-				$modprefixedlabel = str_replace(' ','_',$modprefixedlabel);
+				$modprefixedlabel = str_replace(' ', '_', $modprefixedlabel);
 
-				if($uiType == 10 && !in_array($modprefixedlabel, $this->ui10_fields)) {
+				if ($uiType == 10 && !in_array($modprefixedlabel, $this->ui10_fields)) {
 					$this->ui10_fields[] = $modprefixedlabel;
-				} elseif($uiType == 101 && !in_array($modprefixedlabel, $this->ui101_fields)) {
+				} elseif ($uiType == 101 && !in_array($modprefixedlabel, $this->ui101_fields)) {
 					$this->ui101_fields[] = $modprefixedlabel;
 				}
 			}
 		}
 
-		if($outputformat == 'HTML' || $outputformat == 'HTMLPAGED')
-		{
-			if ($outputformat=='HTMLPAGED') $directOutput = false;
+		if ($outputformat == 'HTML' || $outputformat == 'HTMLPAGED') {
+			if ($outputformat=='HTMLPAGED') {
+				$directOutput = false;
+			}
 			$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql, $outputformat);
 			$result = $adb->query($sSQL);
 			$error_msg = $adb->database->ErrorMsg();
@@ -2304,26 +1946,24 @@ class ReportRun extends CRMEntity {
 				echo '<table cellpadding="5" cellspacing="0" align="center" class="rptTable"><tr>';
 			}
 
-			if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
+			if ($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
 				$picklistarray = $this->getAccessPickListValues();
 			}
-			if($result)
-			{
+			if ($result) {
 				$y=$adb->num_fields($result);
 				$noofrows = $adb->num_rows($result);
 				$this->number_of_rows = $noofrows;
-				if($outputformat == 'HTMLPAGED') {
-					$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize',40);
+				if ($outputformat == 'HTMLPAGED') {
+					$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize', 40);
 					if ($this->page*$rowsperpage>$noofrows-($noofrows % $rowsperpage)) {
 						$this->islastpage = true;
 					}
 				}
-				$reportmaxrows = GlobalVariable::getVariable('Report_MaxRows_OnScreen',5000);
+				$reportmaxrows = GlobalVariable::getVariable('Report_MaxRows_OnScreen', 5000);
 				$custom_field_values = $adb->fetch_array($result);
 				$groupslist = $this->getGroupingList($this->reportid);
 				$header = '';
-				for ($x=0; $x<$y; $x++)
-				{
+				for ($x=0; $x<$y; $x++) {
 					$fld = $adb->field_name($result, $x);
 					if ($fld->name=='LBL_ACTION') {
 						$module = 'Reports';
@@ -2332,39 +1972,39 @@ class ReportRun extends CRMEntity {
 						list($module, $fieldLabel) = explode('_', $fld->name, 2);
 					}
 					$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
-					if(!empty($fieldInfo)) {
+					if (!empty($fieldInfo)) {
 						$field = WebserviceField::fromArray($adb, $fieldInfo);
 					}
-					if(!empty($fieldInfo)) {
+					if (!empty($fieldInfo)) {
 						$headerLabel = getTranslatedString($field->getFieldLabelKey(), $module);
 					} else {
 						$headerLabel = getTranslatedString(str_replace('_', " ", $fieldLabel), $module);
 					}
 					/*STRING TRANSLATION starts */
 					$moduleLabel = '';
-					if(in_array($module,$modules_selected))
-						$moduleLabel = getTranslatedString($module,$module);
+					if (in_array($module, $modules_selected)) {
+						$moduleLabel = getTranslatedString($module, $module);
+					}
 
-					if(empty($headerLabel)) {
+					if (empty($headerLabel)) {
 							$headerLabel = getTranslatedString(str_replace('_', " ", $fld->name));
 					}
-					if(!empty($this->secondarymodule)) {
-						if($moduleLabel != '') {
+					if (!empty($this->secondarymodule)) {
+						if ($moduleLabel != '') {
 							$headerLabel = $moduleLabel." ". $headerLabel;
 						}
 					}
 					$header .= "<td class='rptCellLabel'>".$headerLabel."</td>";
 
 					// Performance Optimization: If direct output is required
-					if($directOutput) {
+					if ($directOutput) {
 						echo $header;
 						$header = '';
 					}
-					// END
 				}
 
 				// Performance Optimization: If direct output is required
-				if($directOutput) {
+				if ($directOutput) {
 					echo '</tr><tr>';
 				}
 
@@ -2374,124 +2014,110 @@ class ReportRun extends CRMEntity {
 				$thirdvalue = '';
 				$sHTML = '';
 				if ($noofrows<=$reportmaxrows) {
-				do {
-					$newvalue = '';
-					$snewvalue = '';
-					$tnewvalue = '';
-					if(count($groupslist) == 1)
-					{
-						$newvalue = $custom_field_values[0];
-					}elseif(count($groupslist) == 2)
-					{
-						$newvalue = $custom_field_values[0];
-						$snewvalue = $custom_field_values[1];
-					}elseif(count($groupslist) == 3)
-					{
-						$newvalue = $custom_field_values[0];
-						$snewvalue = $custom_field_values[1];
-						$tnewvalue = $custom_field_values[2];
-					}
-					if($newvalue == '') $newvalue = '-';
-
-					if($snewvalue == '') $snewvalue = '-';
-
-					if($tnewvalue == '') $tnewvalue = '-';
-
-					$valtemplate .= '<tr>';
-
-					// Performance Optimization
-					if($directOutput) {
-						echo $valtemplate;
-						$valtemplate = '';
-					}
-
-					for ($i=0; $i<$y; $i++) {
-						$fld = $adb->field_name($result, $i);
-						$fieldvalue = getReportFieldValue($this, $picklistarray, $fld, $custom_field_values, $i);
-
-						if($fieldvalue == '')
-						{
-							$fieldvalue = "-";
+					do {
+						$newvalue = '';
+						$snewvalue = '';
+						$tnewvalue = '';
+						if (count($groupslist) == 1) {
+							$newvalue = $custom_field_values[0];
+						} elseif (count($groupslist) == 2) {
+							$newvalue = $custom_field_values[0];
+							$snewvalue = $custom_field_values[1];
+						} elseif (count($groupslist) == 3) {
+							$newvalue = $custom_field_values[0];
+							$snewvalue = $custom_field_values[1];
+							$tnewvalue = $custom_field_values[2];
 						}
-						else if($fld->name == 'LBL_ACTION' && $fieldvalue != '-')
-						{
-							$fieldvalue = "<a href='index.php?module=" . ($this->primarymodule=='Calendar' ? 'cbCalendar' : $this->primarymodule) . "&action=DetailView&record={$fieldvalue}' target='_blank'>".getTranslatedString('LBL_VIEW_DETAILS','Reports')."</a>";
+						if ($newvalue == '') {
+							$newvalue = '-';
 						}
 
-						if(($lastvalue == $fieldvalue) && $this->reporttype == "summary")
-						{
-							if($this->reporttype == "summary")
-							{
-								$valtemplate .= "<td class='rptEmptyGrp'>&nbsp;</td>";
-							}else
-							{
-								$valtemplate .= "<td class='rptData'>".$fieldvalue."</td>";
-							}
-						}else if(($secondvalue === $fieldvalue) && $this->reporttype == "summary")
-						{
-							if($lastvalue === $newvalue)
-							{
-								$valtemplate .= "<td class='rptEmptyGrp'>&nbsp;</td>";
-							}else
-							{
-								$valtemplate .= "<td class='rptGrpHead'>".$fieldvalue."</td>";
-							}
-						}
-						else if(($thirdvalue === $fieldvalue) && $this->reporttype == "summary")
-						{
-							if($secondvalue === $snewvalue)
-							{
-								$valtemplate .= "<td class='rptEmptyGrp'>&nbsp;</td>";
-							}else
-							{
-								$valtemplate .= "<td class='rptGrpHead'>".$fieldvalue."</td>";
-							}
-						}
-						else
-						{
-							if($this->reporttype == "tabular")
-							{
-								$valtemplate .= "<td class='rptData'>".$fieldvalue."</td>";
-							}else
-							{
-								$valtemplate .= "<td class='rptGrpHead'>".$fieldvalue."</td>";
-							}
+						if ($snewvalue == '') {
+							$snewvalue = '-';
 						}
 
-						// Performance Optimization: If direct output is required
-						if($directOutput) {
+						if ($tnewvalue == '') {
+							$tnewvalue = '-';
+						}
+
+						$valtemplate .= '<tr>';
+
+						// Performance Optimization
+						if ($directOutput) {
 							echo $valtemplate;
 							$valtemplate = '';
 						}
-					}
 
-					$valtemplate .= "</tr>";
+						for ($i=0; $i<$y; $i++) {
+							$fld = $adb->field_name($result, $i);
+							$fieldvalue = getReportFieldValue($this, $picklistarray, $fld, $custom_field_values, $i);
 
-					// Performance Optimization: If direct output is required
-					if($directOutput) {
-						echo $valtemplate;
-						$valtemplate = '';
-					}
+							if ($fieldvalue == '') {
+								$fieldvalue = '-';
+							} elseif ($fld->name == 'LBL_ACTION' && $fieldvalue != '-') {
+								$fieldvalue = "<a href='index.php?module=" . ($this->primarymodule=='Calendar' ? 'cbCalendar' : $this->primarymodule) . "&action=DetailView&record={$fieldvalue}' target='_blank'>".getTranslatedString('LBL_VIEW_DETAILS', 'Reports')."</a>";
+							}
 
-					$lastvalue = $newvalue;
-					$secondvalue = $snewvalue;
-					$thirdvalue = $tnewvalue;
-					set_time_limit($php_max_execution_time);
-				}while($custom_field_values = $adb->fetch_array($result));
+							if (($lastvalue == $fieldvalue) && $this->reporttype == "summary") {
+								if ($this->reporttype == "summary") {
+									$valtemplate .= "<td class='rptEmptyGrp'>&nbsp;</td>";
+								} else {
+									$valtemplate .= "<td class='rptData'>".$fieldvalue."</td>";
+								}
+							} elseif (($secondvalue === $fieldvalue) && $this->reporttype == "summary") {
+								if ($lastvalue === $newvalue) {
+									$valtemplate .= "<td class='rptEmptyGrp'>&nbsp;</td>";
+								} else {
+									$valtemplate .= "<td class='rptGrpHead'>".$fieldvalue."</td>";
+								}
+							} elseif (($thirdvalue === $fieldvalue) && $this->reporttype == "summary") {
+								if ($secondvalue === $snewvalue) {
+									$valtemplate .= "<td class='rptEmptyGrp'>&nbsp;</td>";
+								} else {
+									$valtemplate .= "<td class='rptGrpHead'>".$fieldvalue."</td>";
+								}
+							} else {
+								if ($this->reporttype == "tabular") {
+									$valtemplate .= "<td class='rptData'>".$fieldvalue."</td>";
+								} else {
+									$valtemplate .= "<td class='rptGrpHead'>".$fieldvalue."</td>";
+								}
+							}
+
+							// Performance Optimization: If direct output is required
+							if ($directOutput) {
+								echo $valtemplate;
+								$valtemplate = '';
+							}
+						}
+
+						$valtemplate .= '</tr>';
+
+						// Performance Optimization: If direct output is required
+						if ($directOutput) {
+							echo $valtemplate;
+							$valtemplate = '';
+						}
+
+						$lastvalue = $newvalue;
+						$secondvalue = $snewvalue;
+						$thirdvalue = $tnewvalue;
+						set_time_limit($php_max_execution_time);
+					} while ($custom_field_values = $adb->fetch_array($result));
 				} else {
 					$reporterrmsg = new vtigerCRM_Smarty();
-					$errormessage = getTranslatedString('ERR_TOO_MANY_ROWS','Reports');
+					$errormessage = getTranslatedString('ERR_TOO_MANY_ROWS', 'Reports');
 					$reporterrmsg->assign('ERROR_MESSAGE', $errormessage);
 					$errormessage = $reporterrmsg->fetch('applicationmessage.tpl');
 					$errormessage = '<tr><td colspan="'.$y.'">'.$errormessage.'</td>';
-					if($directOutput) {
+					if ($directOutput) {
 						echo $errormessage;
 					} else {
 						$valtemplate = $errormessage;
 					}
 				}
 				// Performance Optimization
-				if($directOutput) {
+				if ($directOutput) {
 					echo "</tr></table>";
 					echo "<script type='text/javascript' id='__reportrun_directoutput_recordcount_script'>
 						if(document.getElementById('_reportrun_total')) document.getElementById('_reportrun_total').innerHTML=$noofrows;</script>";
@@ -2513,8 +2139,8 @@ class ReportRun extends CRMEntity {
 				$return_data[] = $sSQL;
 				return $return_data;
 			}
-		}elseif($outputformat == 'HEADERS') {
-			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql,'HTML');
+		} elseif ($outputformat == 'HEADERS') {
+			$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql, 'HTML');
 			$result = $adb->query($sSQL.' limit 1');
 			$error_msg = $adb->database->ErrorMsg();
 			if (!$result && $error_msg!='') {
@@ -2551,22 +2177,22 @@ class ReportRun extends CRMEntity {
 					$fieldLabel = $fld->name;
 				}
 				$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
-				if(!empty($fieldInfo)) {
+				if (!empty($fieldInfo)) {
 					$field = WebserviceField::fromArray($adb, $fieldInfo);
 				}
-				if(!empty($fieldInfo)) {
+				if (!empty($fieldInfo)) {
 					$headerLabel = $field->getFieldLabelKey();
 				} else {
 					$headerLabel = str_replace('_', ' ', $fieldLabel);
 				}
-				if(empty($headerLabel)) {
+				if (empty($headerLabel)) {
 					$headerLabel = str_replace('_', ' ', $fld->name);
 				}
 				$i18nheaderLabel = getTranslatedString($headerLabel, $module);
 				$moduleLabel = '';
-				if(!empty($this->secondarymodule) and in_array($module,$modules_selected)) {
+				if (!empty($this->secondarymodule) && in_array($module, $modules_selected)) {
 					$headerLabel = $module.' '.$headerLabel;
-					$i18nheaderLabel = getTranslatedString($module,$module).' '.$i18nheaderLabel;
+					$i18nheaderLabel = getTranslatedString($module, $module).' '.$i18nheaderLabel;
 				}
 				if ($fld->name=='LBL_ACTION') {
 					$jsonheader[] = 'reportrowaction';
@@ -2582,8 +2208,8 @@ class ReportRun extends CRMEntity {
 				'error' => false,
 			);
 			return $resp;
-		}elseif($outputformat == 'JSON' or $outputformat == 'JSONPAGED') {
-			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql,($outputformat == 'JSON' ? 'HTML' : 'HTMLPAGED'));
+		} elseif ($outputformat == 'JSON' || $outputformat == 'JSONPAGED') {
+			$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql, ($outputformat == 'JSON' ? 'HTML' : 'HTMLPAGED'));
 			$sSQL = 'SELECT SQL_CALC_FOUND_ROWS'.substr($sSQL, 6);
 			$result = $adb->query($sSQL);
 			if ($result) {
@@ -2618,13 +2244,12 @@ class ReportRun extends CRMEntity {
 				}
 			}
 
-			if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
+			if ($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
 				$picklistarray = $this->getAccessPickListValues();
 			}
-			if($result)
-			{
+			if ($result) {
 				$fldcnt=$adb->num_fields($result);
-				$noofrows = $adb->query_result($count_result,0,0);
+				$noofrows = $adb->query_result($count_result, 0, 0);
 				$this->number_of_rows = $noofrows;
 				$resp = array(
 					'total' => $noofrows,
@@ -2637,8 +2262,8 @@ class ReportRun extends CRMEntity {
 						$resp[$tmptblname] = $tmptbldetails['query'];
 					}
 				}
-				if($outputformat == 'JSONPAGED') {
-					$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize',40);
+				if ($outputformat == 'JSONPAGED') {
+					$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize', 40);
 					$resp['per_page'] = $rowsperpage;
 					$resp['from'] = ($this->page-1)*$rowsperpage+1;
 					if ($this->page*$rowsperpage>$noofrows-($noofrows % $rowsperpage)) {
@@ -2656,7 +2281,7 @@ class ReportRun extends CRMEntity {
 					$resp['current_page'] = 1;
 					$resp['last_page'] = 1;
 				}
-				if ($this->islastpage and $this->page!=1) {
+				if ($this->islastpage && $this->page!=1) {
 					$resp['next_page_url'] = null;
 				} else {
 					$resp['next_page_url'] = 'index.php?module=Reports&action=ReportsAjax&file=getJSON&record='.$this->reportid.'&page='.($this->islastpage ? $this->page : $this->page+1);
@@ -2665,8 +2290,7 @@ class ReportRun extends CRMEntity {
 				$custom_field_values = $adb->fetch_array($result);
 				$groupslist = $this->getGroupingList($this->reportid);
 				$header = array();
-				for ($x=0; $x<$fldcnt; $x++)
-				{
+				for ($x=0; $x<$fldcnt; $x++) {
 					$fld = $adb->field_name($result, $x);
 					if ($fld->name=='LBL_ACTION') {
 						$module = 'Reports';
@@ -2678,18 +2302,18 @@ class ReportRun extends CRMEntity {
 						$fieldLabel = $fld->name;
 					}
 					$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
-					if(!empty($fieldInfo)) {
+					if (!empty($fieldInfo)) {
 						$field = WebserviceField::fromArray($adb, $fieldInfo);
 					}
-					if(!empty($fieldInfo)) {
+					if (!empty($fieldInfo)) {
 						$headerLabel = $field->getFieldLabelKey();
 					} else {
 						$headerLabel = str_replace('_', ' ', $fieldLabel);
 					}
-					if(empty($headerLabel)) {
+					if (empty($headerLabel)) {
 						$headerLabel = str_replace('_', ' ', $fld->name);
 					}
-					if(!empty($this->secondarymodule) and in_array($module,$modules_selected)) {
+					if (!empty($this->secondarymodule) && in_array($module, $modules_selected)) {
 						$headerLabel = $module.' '.$headerLabel;
 					}
 					$header[] = $headerLabel;
@@ -2704,12 +2328,9 @@ class ReportRun extends CRMEntity {
 					for ($i=0; $i<$fldcnt; $i++) {
 						$fld = $adb->field_name($result, $i);
 						$fieldvalue = getReportFieldValue($this, $picklistarray, $fld, $custom_field_values, $i);
-						if($fieldvalue == '')
-						{
-							$fieldvalue = "-";
-						}
-						else if($fld->name == 'LBL_ACTION' && $fieldvalue != '-')
-						{
+						if ($fieldvalue == '') {
+							$fieldvalue = '-';
+						} elseif ($fld->name == 'LBL_ACTION' && $fieldvalue != '-') {
 							$fieldvalue = 'index.php?module=' . ($this->primarymodule=='Calendar' ? 'cbCalendar' : $this->primarymodule) ."&action=DetailView&record={$fieldvalue}";
 						}
 						if ($header[$i]=='LBL ACTION') {
@@ -2720,7 +2341,7 @@ class ReportRun extends CRMEntity {
 					}
 					$data[] = $datarow;
 					set_time_limit($php_max_execution_time);
-				}while($custom_field_values = $adb->fetch_array($result));
+				} while ($custom_field_values = $adb->fetch_array($result));
 				$resp['data'] = $data;
 				return json_encode($resp);
 			}
@@ -2745,60 +2366,61 @@ class ReportRun extends CRMEntity {
 				$invMods = getInventoryModules();
 				$arr_val = array();
 				do {
-					$arraylists = Array();
+					$arraylists = array();
 					for ($i=0; $i<$y-1; $i++) { //No tratamos la última columna por ser el ACTION con el CRMID.
 						$field = null;
 						$fld = $adb->field_name($result, $i);
 						list($module, $fieldLabel) = explode('_', $fld->name, 2);
 						$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
-						if(!empty($fieldInfo)) {
+						if (!empty($fieldInfo)) {
 							$field = WebserviceField::fromArray($adb, $fieldInfo);
 						} else {
-							if(in_array($module, $invMods)) {
-							  if(substr($fld->table,0,26) == 'vtiger_inventoryproductrel') {
-								foreach ($ILF->getInventoryLineFieldsByName() as $ilfname => $ilfinfo) {
-									$ilflabel = getTranslatedString($ilfinfo['fieldlabel'], $module);
-									if ($ilflabel==$fieldLabel) {
-										$fieldInfo = $ilfinfo;
-										$fieldInfo['tabid'] = getTabid($module);
-										$fieldInfo['presence'] = 1;
-										$field = WebserviceField::fromArray($adb, $fieldInfo);
-										break;
+							if (in_array($module, $invMods)) {
+								if (substr($fld->table, 0, 26) == 'vtiger_inventoryproductrel') {
+									foreach ($ILF->getInventoryLineFieldsByName() as $ilfname => $ilfinfo) {
+										$ilflabel = getTranslatedString($ilfinfo['fieldlabel'], $module);
+										if ($ilflabel==$fieldLabel) {
+											$fieldInfo = $ilfinfo;
+											$fieldInfo['tabid'] = getTabid($module);
+											$fieldInfo['presence'] = 1;
+											$field = WebserviceField::fromArray($adb, $fieldInfo);
+											break;
+										}
+									}
+								} elseif (substr($fld->table, 0, 15) == 'vtiger_products' || substr($fld->table, 0, 14) == 'vtiger_service') {
+									foreach ($ILF->getInventoryLineProductServiceNameFields() as $ilfname => $ilfinfo) {
+										$ilflabel = getTranslatedString($ilfinfo['fieldlabel'], $module);
+										if ($ilflabel==$fieldLabel) {
+											$fieldInfo = $ilfinfo;
+											$fieldInfo['tabid'] = getTabid($ilfinfo['module']);
+											$fieldInfo['presence'] = 1;
+											$field = WebserviceField::fromArray($adb, $fieldInfo);
+											break;
+										}
 									}
 								}
-							  } else if(substr($fld->table,0,15) == 'vtiger_products' or substr($fld->table,0,14) == 'vtiger_service') {
-								foreach ($ILF->getInventoryLineProductServiceNameFields() as $ilfname => $ilfinfo) {
-									$ilflabel = getTranslatedString($ilfinfo['fieldlabel'], $module);
-									if ($ilflabel==$fieldLabel) {
-										$fieldInfo = $ilfinfo;
-										$fieldInfo['tabid'] = getTabid($ilfinfo['module']);
-										$fieldInfo['presence'] = 1;
-										$field = WebserviceField::fromArray($adb, $fieldInfo);
-										break;
-									}
-								}
-							  }
 							}
 						}
-						if(!empty($fieldInfo)) {
+						if (!empty($fieldInfo)) {
 							$headerLabel = getTranslatedString($field->getFieldLabelKey(), $module);
 						} else {
-							$headerLabel = getTranslatedString(str_replace('_', " ", $fieldLabel), $module);
+							$headerLabel = getTranslatedString(str_replace('_', ' ', $fieldLabel), $module);
 						}
 						/*STRING TRANSLATION starts */
 						$moduleLabel ='';
-						if(in_array($module,$modules_selected))
-							$moduleLabel = getTranslatedString($module,$module);
+						if (in_array($module, $modules_selected)) {
+							$moduleLabel = getTranslatedString($module, $module);
+						}
 
-						if(empty($headerLabel)) {
+						if (empty($headerLabel)) {
 								$headerLabel = getTranslatedString(str_replace('_', " ", $fld->name));
 						}
-						if(!empty($this->secondarymodule)) {
-							if($moduleLabel != '') {
+						if (!empty($this->secondarymodule)) {
+							if ($moduleLabel != '') {
 								$headerLabel = $moduleLabel." ". $headerLabel;
 							}
 						}
-						$fieldvalue = getReportFieldValue($this, $picklistarray, $fld,$custom_field_values, $i);
+						$fieldvalue = getReportFieldValue($this, $picklistarray, $fld, $custom_field_values, $i);
 						if (empty($returnfieldinfo[$headerLabel]) && !empty($field)) {
 							$returnfieldinfo[$headerLabel] = $field;
 						}
@@ -2806,232 +2428,232 @@ class ReportRun extends CRMEntity {
 					}
 					$arr_val[] = $arraylists;
 					set_time_limit($php_max_execution_time);
-				}while($custom_field_values = $adb->fetch_array($result));
+				} while ($custom_field_values = $adb->fetch_array($result));
 
 				return $arr_val;
 			}
-		}elseif($outputformat == "TOTALXLS")
-		{
-				$escapedchars = Array('_SUM','_AVG','_MIN','_MAX');
-				$totalpdf=array();
-				$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql,"COLUMNSTOTOTAL");
-				if(isset($this->totallist) and count($this->totallist)>0) {
-						if($sSQL != '')
-						{
-								$result = $adb->query($sSQL);
-								$y=$adb->num_fields($result);
-								$custom_field_values = $adb->fetch_array($result);
-
-								foreach($this->totallist as $key=>$value)
-								{
-										$fieldlist = explode(":",$key);
-										$mod_query = $adb->pquery("SELECT distinct(tabid) as tabid, uitype as uitype from vtiger_field where tablename = ? and columnname=?",array($fieldlist[1],$fieldlist[2]));
-										if($adb->num_rows($mod_query)>0){
-												$module_name = getTabModuleName($adb->query_result($mod_query,0,'tabid'));
-												$fieldlabel = trim(str_replace($escapedchars," ",$fieldlist[3]));
-												$fieldlabel = str_replace("_", " ", $fieldlabel);
-												if($module_name){
-														$field = getTranslatedString($module_name,$module_name)." ".getTranslatedString($fieldlabel,$module_name);
-												} else {
-													$field = getTranslatedString($fieldlabel);
-												}
-										}
-										$uitype_arr[str_replace($escapedchars," ",$module_name."_".$fieldlist[3])] = $adb->query_result($mod_query,0,"uitype");
-										$totclmnflds[str_replace($escapedchars," ",$module_name."_".$fieldlist[3])] = $field;
-								}
-								for($i =0;$i<$y;$i++)
-								{
-										$fld = $adb->field_name($result, $i);
-										$keyhdr[$fld->name] = $custom_field_values[$i];
-								}
-
-								$rowcount=0;
-								foreach($totclmnflds as $key=>$value)
-								{
-										$col_header = trim(str_replace($modules," ",$value));
-										$fld_name_1 = $this->primarymodule . "_" . trim($value);
-										$fld_name_2 = $this->secondarymodule . "_" . trim($value);
-										if($uitype_arr[$key] == 71 || $uitype_arr[$key] == 72 ||
-											in_array($fld_name_1,$this->append_currency_symbol_to_value) || in_array($fld_name_2,$this->append_currency_symbol_to_value)) {
-												$col_header .= " (".$app_strings['LBL_IN']." ".$current_user->currency_symbol.")";
-												$convert_price = true;
-										} else{
-												$convert_price = false;
-										}
-										$value = decode_html(trim($key));
-										$arraykey = $value.'_SUM';
-										if(isset($keyhdr[$arraykey]))
-										{
-											if($convert_price)
-												$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey]);
-											else
-												$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey], null, true);
-												$totalpdf[$rowcount][$arraykey] = $conv_value;
-										}else
-										{
-												$totalpdf[$rowcount][$arraykey] = '';
-										}
-
-										$arraykey = $value.'_AVG';
-										if(isset($keyhdr[$arraykey]))
-										{
-											if($convert_price)
-												$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey]);
-											else
-												$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey], null, true);
-											$totalpdf[$rowcount][$arraykey] = $conv_value;
-										}else
-										{
-												$totalpdf[$rowcount][$arraykey] = '';
-										}
-
-										$arraykey = $value.'_MIN';
-										if(isset($keyhdr[$arraykey]))
-										{
-											if($convert_price)
-												$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey]);
-											else
-												$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey], null, true);
-											$totalpdf[$rowcount][$arraykey] = $conv_value;
-										}else
-										{
-												$totalpdf[$rowcount][$arraykey] = '';
-										}
-
-										$arraykey = $value.'_MAX';
-										if(isset($keyhdr[$arraykey]))
-										{
-											if($convert_price)
-												$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey]);
-											else
-												$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey], null, true);
-											$totalpdf[$rowcount][$arraykey] = $conv_value;
-										}else
-										{
-												$totalpdf[$rowcount][$arraykey] = '';
-										}
-										$rowcount++;
-								}
-						}
-				}
-				return $totalpdf;
-		}elseif($outputformat == "TOTALHTML")
-		{
-			$escapedchars = Array('_SUM','_AVG','_MIN','_MAX');
-			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql,"COLUMNSTOTOTAL");
-			$coltotalhtml = '';
-			if(isset($this->totallist) and count($this->totallist)>0) {
-				if($sSQL != "")
-				{
+		} elseif ($outputformat == 'TOTALXLS') {
+			$escapedchars = array('_SUM','_AVG','_MIN','_MAX');
+			$totalpdf=array();
+			$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql, 'COLUMNSTOTOTAL');
+			if (isset($this->totallist) && count($this->totallist)>0) {
+				if ($sSQL != '') {
 					$result = $adb->query($sSQL);
 					$y=$adb->num_fields($result);
 					$custom_field_values = $adb->fetch_array($result);
-					$coltotalhtml = "<table align='center' width='60%' cellpadding='3' cellspacing='0' border='0' class='rptTable'><tr><td class='rptCellLabel'>".$mod_strings['Totals']."</td><td class='rptCellLabel'>".$mod_strings['SUM']."</td><td class='rptCellLabel'>".$mod_strings['AVG']."</td><td class='rptCellLabel'>".$mod_strings['MIN']."</td><td class='rptCellLabel'>".$mod_strings['MAX']."</td></tr>";
 
-					// Performation Optimization: If Direct output is desired
-					if($directOutput) {
-						echo $coltotalhtml;
-						$coltotalhtml = '';
-					}
-
-					foreach($this->totallist as $key=>$value)
-					{
-						$fieldlist = explode(":",$key);
-						$mod_query = $adb->pquery("SELECT distinct(tabid) as tabid, uitype as uitype from vtiger_field where tablename = ? and columnname=?",array($fieldlist[1],$fieldlist[2]));
-						if($adb->num_rows($mod_query)>0){
-							$module_name = getTabModuleName($adb->query_result($mod_query,0,'tabid'));
-							$fieldlabel = trim(str_replace($escapedchars," ",$fieldlist[3]));
-							$fieldlabel = str_replace("_", " ", $fieldlabel);
-							if($module_name){
-								$field = getTranslatedString($module_name, $module_name)." ".getTranslatedString($fieldlabel,$module_name);
+					foreach ($this->totallist as $key => $value) {
+						$fieldlist = explode(':', $key);
+						$mod_query = $adb->pquery(
+							'SELECT distinct(tabid) as tabid, uitype as uitype from vtiger_field where tablename = ? and columnname=?',
+							array($fieldlist[1], $fieldlist[2])
+						);
+						if ($adb->num_rows($mod_query)>0) {
+							$module_name = getTabModuleName($adb->query_result($mod_query, 0, 'tabid'));
+							$fieldlabel = trim(str_replace($escapedchars, ' ', $fieldlist[3]));
+							$fieldlabel = str_replace('_', ' ', $fieldlabel);
+							if ($module_name) {
+								$field = getTranslatedString($module_name, $module_name).' '.getTranslatedString($fieldlabel, $module_name);
 							} else {
 								$field = getTranslatedString($fieldlabel);
 							}
 						}
-						$uitype_arr[str_replace($escapedchars," ",$module_name."_".$fieldlist[3])] = $adb->query_result($mod_query,0,"uitype");
-						$totclmnflds[str_replace($escapedchars," ",$module_name."_".$fieldlist[3])] = $field;
+						$uitype_arr[str_replace($escapedchars, ' ', $module_name.'_'.$fieldlist[3])] = $adb->query_result($mod_query, 0, 'uitype');
+						$totclmnflds[str_replace($escapedchars, ' ', $module_name.'_'.$fieldlist[3])] = $field;
 					}
-					for($i =0;$i<$y;$i++)
-					{
+					for ($i =0; $i<$y; $i++) {
 						$fld = $adb->field_name($result, $i);
 						$keyhdr[$fld->name] = $custom_field_values[$i];
 					}
 
-					foreach($totclmnflds as $key=>$value)
-					{
-						$coltotalhtml .= '<tr class="rptGrpHead" valign=top>';
-						$col_header = trim(str_replace($modules," ",$value));
-						$fld_name_1 = $this->primarymodule . "_" . trim($value);
-						$fld_name_2 = $this->secondarymodule . "_" . trim($value);
-						if($uitype_arr[$key]==71 || $uitype_arr[$key] == 72 ||
-											in_array($fld_name_1,$this->append_currency_symbol_to_value) || in_array($fld_name_2,$this->append_currency_symbol_to_value)) {
-							$col_header .= " (".$app_strings['LBL_IN']." ".$current_user->currency_symbol.")";
+					$rowcount=0;
+					foreach ($totclmnflds as $key => $value) {
+						$col_header = trim(str_replace($modules, ' ', $value));
+						$fld_name_1 = $this->primarymodule . '_' . trim($value);
+						$fld_name_2 = $this->secondarymodule . '_' . trim($value);
+						if ($uitype_arr[$key] == 71 || $uitype_arr[$key] == 72 ||
+							in_array($fld_name_1, $this->append_currency_symbol_to_value) || in_array($fld_name_2, $this->append_currency_symbol_to_value)
+						) {
+							$col_header .= ' ('.$app_strings['LBL_IN'].' '.$current_user->currency_symbol.')';
 							$convert_price = true;
-						} else{
+						} else {
+							$convert_price = false;
+						}
+						$value = decode_html(trim($key));
+						$arraykey = $value.'_SUM';
+						if (isset($keyhdr[$arraykey])) {
+							if ($convert_price) {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+							} else {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+							}
+								$totalpdf[$rowcount][$arraykey] = $conv_value;
+						} else {
+								$totalpdf[$rowcount][$arraykey] = '';
+						}
+
+						$arraykey = $value.'_AVG';
+						if (isset($keyhdr[$arraykey])) {
+							if ($convert_price) {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+							} else {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+							}
+							$totalpdf[$rowcount][$arraykey] = $conv_value;
+						} else {
+								$totalpdf[$rowcount][$arraykey] = '';
+						}
+
+						$arraykey = $value.'_MIN';
+						if (isset($keyhdr[$arraykey])) {
+							if ($convert_price) {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+							} else {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+							}
+							$totalpdf[$rowcount][$arraykey] = $conv_value;
+						} else {
+							$totalpdf[$rowcount][$arraykey] = '';
+						}
+
+						$arraykey = $value.'_MAX';
+						if (isset($keyhdr[$arraykey])) {
+							if ($convert_price) {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+							} else {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+							}
+							$totalpdf[$rowcount][$arraykey] = $conv_value;
+						} else {
+							$totalpdf[$rowcount][$arraykey] = '';
+						}
+						$rowcount++;
+					}
+				}
+			}
+			return $totalpdf;
+		} elseif ($outputformat == 'TOTALHTML') {
+			$escapedchars = array('_SUM','_AVG','_MIN','_MAX');
+			$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql, 'COLUMNSTOTOTAL');
+			$coltotalhtml = '';
+			if (isset($this->totallist) && count($this->totallist)>0) {
+				if ($sSQL != '') {
+					$result = $adb->query($sSQL);
+					$y=$adb->num_fields($result);
+					$custom_field_values = $adb->fetch_array($result);
+					$coltotalhtml = "<table align='center' width='60%' cellpadding='3' cellspacing='0' border='0' class='rptTable'><tr><td class='rptCellLabel'>"
+						.$mod_strings['Totals']."</td><td class='rptCellLabel'>".$mod_strings['SUM']."</td><td class='rptCellLabel'>".$mod_strings['AVG']
+						."</td><td class='rptCellLabel'>".$mod_strings['MIN']."</td><td class='rptCellLabel'>".$mod_strings['MAX']."</td></tr>";
+
+					// Performation Optimization: If Direct output is desired
+					if ($directOutput) {
+						echo $coltotalhtml;
+						$coltotalhtml = '';
+					}
+
+					foreach ($this->totallist as $key => $value) {
+						$fieldlist = explode(':', $key);
+						$mod_query = $adb->pquery(
+							'SELECT distinct(tabid) as tabid, uitype as uitype from vtiger_field where tablename = ? and columnname=?',
+							array($fieldlist[1], $fieldlist[2])
+						);
+						if ($adb->num_rows($mod_query)>0) {
+							$module_name = getTabModuleName($adb->query_result($mod_query, 0, 'tabid'));
+							$fieldlabel = trim(str_replace($escapedchars, " ", $fieldlist[3]));
+							$fieldlabel = str_replace("_", " ", $fieldlabel);
+							if ($module_name) {
+								$field = getTranslatedString($module_name, $module_name)." ".getTranslatedString($fieldlabel, $module_name);
+							} else {
+								$field = getTranslatedString($fieldlabel);
+							}
+						}
+						$uitype_arr[str_replace($escapedchars, " ", $module_name."_".$fieldlist[3])] = $adb->query_result($mod_query, 0, "uitype");
+						$totclmnflds[str_replace($escapedchars, " ", $module_name."_".$fieldlist[3])] = $field;
+					}
+					for ($i =0; $i<$y; $i++) {
+						$fld = $adb->field_name($result, $i);
+						$keyhdr[$fld->name] = $custom_field_values[$i];
+					}
+
+					foreach ($totclmnflds as $key => $value) {
+						$coltotalhtml .= '<tr class="rptGrpHead" valign=top>';
+						$col_header = trim(str_replace($modules, " ", $value));
+						$fld_name_1 = $this->primarymodule . '_' . trim($value);
+						$fld_name_2 = $this->secondarymodule . '_' . trim($value);
+						if ($uitype_arr[$key]==71 || $uitype_arr[$key] == 72 ||
+							in_array($fld_name_1, $this->append_currency_symbol_to_value) || in_array($fld_name_2, $this->append_currency_symbol_to_value)
+						) {
+							$col_header .= ' ('.$app_strings['LBL_IN'].' '.$current_user->currency_symbol.')';
+							$convert_price = true;
+						} else {
 							$convert_price = false;
 						}
 						$coltotalhtml .= '<td class="rptData">'. $col_header .'</td>';
 						$value = decode_html(trim($key));
 						$arraykey = $value.'_SUM';
-						if(isset($keyhdr[$arraykey]))
-						{
-							if($convert_price)
-								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey]);
-							else
-								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey], null, true);
-							if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' or substr($arraykey, 0, 18)=='TCTotals_TotalTime') $conv_value=$keyhdr[$arraykey];
+						if (isset($keyhdr[$arraykey])) {
+							if ($convert_price) {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+							} else {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+							}
+							if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' || substr($arraykey, 0, 18)=='TCTotals_TotalTime') {
+								$conv_value=$keyhdr[$arraykey];
+							}
 							$coltotalhtml .= '<td class="rptTotal">'.$conv_value.'</td>';
-						}else
-						{
+						} else {
 							$coltotalhtml .= '<td class="rptTotal">&nbsp;</td>';
 						}
 
 						$arraykey = $value.'_AVG';
-						if(isset($keyhdr[$arraykey]))
-						{
-							if($convert_price)
-								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey]);
-							else
-								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey], null, true);
-							if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' or substr($arraykey, 0, 18)=='TCTotals_TotalTime') $conv_value=$keyhdr[$arraykey];
+						if (isset($keyhdr[$arraykey])) {
+							if ($convert_price) {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+							} else {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+							}
+							if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' || substr($arraykey, 0, 18)=='TCTotals_TotalTime') {
+								$conv_value=$keyhdr[$arraykey];
+							}
 							$coltotalhtml .= '<td class="rptTotal">'.$conv_value.'</td>';
-						}else
-						{
+						} else {
 							$coltotalhtml .= '<td class="rptTotal">&nbsp;</td>';
 						}
 
 						$arraykey = $value.'_MIN';
-						if(isset($keyhdr[$arraykey]))
-						{
-							if($convert_price)
-								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey]);
-							else
-								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey], null, true);
-							if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' or substr($arraykey, 0, 18)=='TCTotals_TotalTime') $conv_value=$keyhdr[$arraykey];
+						if (isset($keyhdr[$arraykey])) {
+							if ($convert_price) {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+							} else {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+							}
+							if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' || substr($arraykey, 0, 18)=='TCTotals_TotalTime') {
+								$conv_value=$keyhdr[$arraykey];
+							}
 							$coltotalhtml .= '<td class="rptTotal">'.$conv_value.'</td>';
-						}else
-						{
+						} else {
 							$coltotalhtml .= '<td class="rptTotal">&nbsp;</td>';
 						}
 
 						$arraykey = $value.'_MAX';
-						if(isset($keyhdr[$arraykey]))
-						{
-							if($convert_price)
-								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey]);
-							else
-								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey], null, true);
-							if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' or substr($arraykey, 0, 18)=='TCTotals_TotalTime') $conv_value=$keyhdr[$arraykey];
+						if (isset($keyhdr[$arraykey])) {
+							if ($convert_price) {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+							} else {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+							}
+							if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' || substr($arraykey, 0, 18)=='TCTotals_TotalTime') {
+								$conv_value=$keyhdr[$arraykey];
+							}
 							$coltotalhtml .= '<td class="rptTotal">'.$conv_value.'</td>';
-						}else
-						{
+						} else {
 							$coltotalhtml .= '<td class="rptTotal">&nbsp;</td>';
 						}
 
 						$coltotalhtml .= '<tr>';
 
 						// Performation Optimization: If Direct output is desired
-						if($directOutput) {
+						if ($directOutput) {
 							echo $coltotalhtml;
 							$coltotalhtml = '';
 						}
@@ -3040,51 +2662,50 @@ class ReportRun extends CRMEntity {
 					$coltotalhtml .= "</table>";
 
 					// Performation Optimization: If Direct output is desired
-					if($directOutput) {
+					if ($directOutput) {
 						echo $coltotalhtml;
 						$coltotalhtml = '';
 					}
 				}
 			}
 			return $coltotalhtml;
-		}elseif($outputformat == "PRINT")
-		{
-			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql);
+		} elseif ($outputformat == "PRINT") {
+			$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql);
 			$result = $adb->query($sSQL);
-			if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
-			$picklistarray = $this->getAccessPickListValues();
+			if ($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
+				$picklistarray = $this->getAccessPickListValues();
+			}
 
-			if($result)
-			{
+			if ($result) {
 				$noofrows = $adb->num_rows($result);
 				$this->number_of_rows = $noofrows;
 				$custom_field_values = $adb->fetch_array($result);
 				$groupslist = $this->getGroupingList($this->reportid);
 				$y=$adb->num_fields($result);
 				$header = '';
-				for ($x=0; $x<$y-1; $x++)
-				{
+				for ($x=0; $x<$y-1; $x++) {
 					$fld = $adb->field_name($result, $x);
 					list($module, $fieldLabel) = explode('_', $fld->name, 2);
 					$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
-					if(!empty($fieldInfo)) {
+					if (!empty($fieldInfo)) {
 						$field = WebserviceField::fromArray($adb, $fieldInfo);
 					}
-					if(!empty($fieldInfo)) {
+					if (!empty($fieldInfo)) {
 						$headerLabel = getTranslatedString($field->getFieldLabelKey(), $module);
 					} else {
 						$headerLabel = getTranslatedString(str_replace('_', " ", $fieldLabel), $module);
 					}
 					/*STRING TRANSLATION starts */
 					$moduleLabel = '';
-					if(in_array($module,$modules_selected))
-						$moduleLabel = getTranslatedString($module,$module);
+					if (in_array($module, $modules_selected)) {
+						$moduleLabel = getTranslatedString($module, $module);
+					}
 
-					if(empty($headerLabel)) {
+					if (empty($headerLabel)) {
 							$headerLabel = getTranslatedString(str_replace('_', " ", $fld->name));
 					}
-					if(!empty($this->secondarymodule)) {
-						if($moduleLabel != '') {
+					if (!empty($this->secondarymodule)) {
+						if ($moduleLabel != '') {
 							$headerLabel = $moduleLabel." ". $headerLabel;
 						}
 					}
@@ -3099,65 +2720,53 @@ class ReportRun extends CRMEntity {
 					$newvalue = '';
 					$snewvalue = '';
 					$tnewvalue = '';
-					if(count($groupslist) == 1)
-					{
+					if (count($groupslist) == 1) {
 						$newvalue = $custom_field_values[0];
-					}elseif(count($groupslist) == 2)
-					{
+					} elseif (count($groupslist) == 2) {
 						$newvalue = $custom_field_values[0];
 						$snewvalue = $custom_field_values[1];
-					}elseif(count($groupslist) == 3)
-					{
+					} elseif (count($groupslist) == 3) {
 						$newvalue = $custom_field_values[0];
 						$snewvalue = $custom_field_values[1];
 						$tnewvalue = $custom_field_values[2];
 					}
 
-					if($newvalue == '') $newvalue = '-';
-					if($snewvalue == '') $snewvalue = '-';
-					if($tnewvalue == '') $tnewvalue = '-';
+					if ($newvalue == '') {
+						$newvalue = '-';
+					}
+					if ($snewvalue == '') {
+						$snewvalue = '-';
+					}
+					if ($tnewvalue == '') {
+						$tnewvalue = '-';
+					}
 					$valtemplate .= '<tr>';
 
-					for ($i=0; $i<$y-1; $i++)
-					{
+					for ($i=0; $i<$y-1; $i++) {
 						$fld = $adb->field_name($result, $i);
-						$fieldvalue = getReportFieldValue($this, $picklistarray, $fld,$custom_field_values, $i);
-						if(($lastvalue == $fieldvalue) && $this->reporttype == "summary")
-						{
-							if($this->reporttype == "summary")
-							{
+						$fieldvalue = getReportFieldValue($this, $picklistarray, $fld, $custom_field_values, $i);
+						if (($lastvalue == $fieldvalue) && $this->reporttype == "summary") {
+							if ($this->reporttype == "summary") {
 								$valtemplate .= "<td style='border-top:1px dotted #FFFFFF;'>&nbsp;</td>";
-							}else
-							{
+							} else {
 								$valtemplate .= "<td>".$fieldvalue."</td>";
 							}
-						}else if(($secondvalue == $fieldvalue) && $this->reporttype == "summary")
-						{
-							if($lastvalue == $newvalue)
-							{
+						} elseif (($secondvalue == $fieldvalue) && $this->reporttype == "summary") {
+							if ($lastvalue == $newvalue) {
 								$valtemplate .= "<td style='border-top:1px dotted #FFFFFF;'>&nbsp;</td>";
-							}else
-							{
+							} else {
 								$valtemplate .= "<td>".$fieldvalue."</td>";
 							}
-						}
-						else if(($thirdvalue == $fieldvalue) && $this->reporttype == "summary")
-						{
-							if($secondvalue == $snewvalue)
-							{
+						} elseif (($thirdvalue == $fieldvalue) && $this->reporttype == "summary") {
+							if ($secondvalue == $snewvalue) {
 								$valtemplate .= "<td style='border-top:1px dotted #FFFFFF;'>&nbsp;</td>";
-							}else
-							{
+							} else {
 								$valtemplate .= "<td>".$fieldvalue."</td>";
 							}
-						}
-						else
-						{
-							if($this->reporttype == "tabular")
-							{
+						} else {
+							if ($this->reporttype == "tabular") {
 								$valtemplate .= "<td>".$fieldvalue."</td>";
-							}else
-							{
+							} else {
 								$valtemplate .= "<td>".$fieldvalue."</td>";
 							}
 						}
@@ -3167,128 +2776,123 @@ class ReportRun extends CRMEntity {
 					$secondvalue = $snewvalue;
 					$thirdvalue = $tnewvalue;
 					set_time_limit($php_max_execution_time);
-				}while($custom_field_values = $adb->fetch_array($result));
+				} while ($custom_field_values = $adb->fetch_array($result));
 
 				$sHTML = '<tr>'.$header.'</tr>'.$valtemplate;
 				$return_data[] = $sHTML;
 				$return_data[] = $noofrows;
 				return $return_data;
 			}
-		}elseif($outputformat == "PRINT_TOTAL")
-		{
-			$escapedchars = Array('_SUM','_AVG','_MIN','_MAX');
-			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql,"COLUMNSTOTOTAL");
+		} elseif ($outputformat == 'PRINT_TOTAL') {
+			$escapedchars = array('_SUM','_AVG','_MIN','_MAX');
+			$sSQL = $this->sGetSQLforReport($this->reportid, $filtersql, 'COLUMNSTOTOTAL');
 			$coltotalhtml = '';
-			if(isset($this->totallist) and count($this->totallist)>0) {
-				if($sSQL != "")
-				{
+			if (isset($this->totallist) && count($this->totallist)>0) {
+				if ($sSQL != '') {
 					$result = $adb->query($sSQL);
 					$y=$adb->num_fields($result);
 					$custom_field_values = $adb->fetch_array($result);
 
-					$coltotalhtml = "<br /><table align='center' width='60%' cellpadding='3' cellspacing='0' border='1' class='printReport'><tr><td class='rptCellLabel'>".$mod_strings['Totals']."</td><td><b>".$mod_strings['SUM']."</b></td><td><b>".$mod_strings['AVG']."</b></td><td><b>".$mod_strings['MIN']."</b></td><td><b>".$mod_strings['MAX']."</b></td></tr>";
+					$coltotalhtml = "<br /><table align='center' width='60%' cellpadding='3' cellspacing='0' border='1' class='printReport'><tr><td class='rptCellLabel'>"
+						.$mod_strings['Totals']."</td><td><b>".$mod_strings['SUM']."</b></td><td><b>".$mod_strings['AVG']."</b></td><td><b>".$mod_strings['MIN']
+						."</b></td><td><b>".$mod_strings['MAX']."</b></td></tr>";
 
 					// Performation Optimization: If Direct output is desired
-					if($directOutput) {
+					if ($directOutput) {
 						echo $coltotalhtml;
 						$coltotalhtml = '';
 					}
 
-					foreach($this->totallist as $key=>$value)
-					{
-						$fieldlist = explode(":",$key);
-						$mod_query = $adb->pquery("SELECT distinct(tabid) as tabid, uitype as uitype from vtiger_field where tablename = ? and columnname=?",array($fieldlist[1],$fieldlist[2]));
-						if($adb->num_rows($mod_query)>0){
-							$module_name = getTabModuleName($adb->query_result($mod_query,0,'tabid'));
-							$fieldlabel = trim(str_replace($escapedchars," ",$fieldlist[3]));
+					foreach ($this->totallist as $key => $value) {
+						$fieldlist = explode(':', $key);
+						$mod_query = $adb->pquery(
+							'SELECT distinct(tabid) as tabid, uitype as uitype from vtiger_field where tablename = ? and columnname=?',
+							array($fieldlist[1],$fieldlist[2])
+						);
+						if ($adb->num_rows($mod_query)>0) {
+							$module_name = getTabModuleName($adb->query_result($mod_query, 0, 'tabid'));
+							$fieldlabel = trim(str_replace($escapedchars, " ", $fieldlist[3]));
 							$fieldlabel = str_replace("_", " ", $fieldlabel);
-							if($module_name){
-								$field = getTranslatedString($module_name, $module_name)." ".getTranslatedString($fieldlabel,$module_name);
+							if ($module_name) {
+								$field = getTranslatedString($module_name, $module_name)." ".getTranslatedString($fieldlabel, $module_name);
 							} else {
 								$field = getTranslatedString($fieldlabel);
 							}
 						}
-						$uitype_arr[str_replace($escapedchars," ",$module_name."_".$fieldlist[3])] = $adb->query_result($mod_query,0,"uitype");
-						$totclmnflds[str_replace($escapedchars," ",$module_name."_".$fieldlist[3])] = $field;
+						$uitype_arr[str_replace($escapedchars, " ", $module_name."_".$fieldlist[3])] = $adb->query_result($mod_query, 0, "uitype");
+						$totclmnflds[str_replace($escapedchars, " ", $module_name."_".$fieldlist[3])] = $field;
 					}
 
-					for($i =0;$i<$y;$i++)
-					{
+					for ($i =0; $i<$y; $i++) {
 						$fld = $adb->field_name($result, $i);
 						$keyhdr[$fld->name] = $custom_field_values[$i];
-
 					}
-					foreach($totclmnflds as $key=>$value)
-					{
+					foreach ($totclmnflds as $key => $value) {
 						$coltotalhtml .= '<tr class="rptGrpHead">';
-						$col_header = getTranslatedString(trim(str_replace($modules," ",$value)));
+						$col_header = getTranslatedString(trim(str_replace($modules, " ", $value)));
 						$fld_name_1 = $this->primarymodule . "_" . trim($value);
 						$fld_name_2 = $this->secondarymodule . "_" . trim($value);
-						if($uitype_arr[$key]==71 || $uitype_arr[$key] == 72 ||
-										in_array($fld_name_1,$this->append_currency_symbol_to_value) || in_array($fld_name_2,$this->append_currency_symbol_to_value)) {
+						if ($uitype_arr[$key]==71 || $uitype_arr[$key] == 72 ||
+										in_array($fld_name_1, $this->append_currency_symbol_to_value) || in_array($fld_name_2, $this->append_currency_symbol_to_value)) {
 							$col_header .= " (".$app_strings['LBL_IN']." ".$current_user->currency_symbol.")";
 							$convert_price = true;
-						} else{
+						} else {
 							$convert_price = false;
 						}
 						$coltotalhtml .= '<td class="rptData">'. $col_header .'</td>';
 						$value = decode_html(trim($key));
 						$arraykey = $value.'_SUM';
-						if(isset($keyhdr[$arraykey]))
-						{
-							if($convert_price)
-								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey]);
-							else
-								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey], null, true);
+						if (isset($keyhdr[$arraykey])) {
+							if ($convert_price) {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+							} else {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+							}
 							$coltotalhtml .= "<td class='rptTotal'>".$conv_value.'</td>';
-						}else
-						{
+						} else {
 							$coltotalhtml .= "<td class='rptTotal'>&nbsp;</td>";
 						}
 
 						$arraykey = $value.'_AVG';
-						if(isset($keyhdr[$arraykey]))
-						{
-							if($convert_price)
-								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey]);
-							else
-								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey], null, true);
+						if (isset($keyhdr[$arraykey])) {
+							if ($convert_price) {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+							} else {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+							}
 							$coltotalhtml .= "<td class='rptTotal'>".$conv_value.'</td>';
-						}else
-						{
+						} else {
 							$coltotalhtml .= "<td class='rptTotal'>&nbsp;</td>";
 						}
 
 						$arraykey = $value.'_MIN';
-						if(isset($keyhdr[$arraykey]))
-						{
-							if($convert_price)
-								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey]);
-							else
-								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey], null, true);
+						if (isset($keyhdr[$arraykey])) {
+							if ($convert_price) {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+							} else {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+							}
 							$coltotalhtml .= "<td class='rptTotal'>".$conv_value.'</td>';
-						}else
-						{
+						} else {
 							$coltotalhtml .= "<td class='rptTotal'>&nbsp;</td>";
 						}
 
 						$arraykey = $value.'_MAX';
-						if(isset($keyhdr[$arraykey]))
-						{
-							if($convert_price)
-								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey]);
-							else
-								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey], null, true);
+						if (isset($keyhdr[$arraykey])) {
+							if ($convert_price) {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey]);
+							} else {
+								$conv_value = CurrencyField::convertToUserFormat($keyhdr[$arraykey], null, true);
+							}
 							$coltotalhtml .= "<td class='rptTotal'>".$conv_value.'</td>';
-						}else
-						{
+						} else {
 							$coltotalhtml .= "<td class='rptTotal'>&nbsp;</td>";
 						}
 
 						$coltotalhtml .= '</tr>';
 
 						// Performation Optimization: If Direct output is desired
-						if($directOutput) {
+						if ($directOutput) {
 							echo $coltotalhtml;
 							$coltotalhtml = '';
 						}
@@ -3296,7 +2900,7 @@ class ReportRun extends CRMEntity {
 
 					$coltotalhtml .= "</table>";
 					// Performation Optimization: If Direct output is desired
-					if($directOutput) {
+					if ($directOutput) {
 						echo $coltotalhtml;
 						$coltotalhtml = '';
 					}
@@ -3306,127 +2910,109 @@ class ReportRun extends CRMEntity {
 		}
 	}
 
-	function getColumnsTotal($reportid,$selectlist='')
-	{
+	public function getColumnsTotal($reportid, $selectlist = '') {
 		// Have we initialized it already?
-		if($this->_columnstotallist !== false) {
+		if ($this->_columnstotallist !== false) {
 			return $this->_columnstotallist;
 		}
 
-		global $adb, $modules, $log, $current_user;
+		global $adb, $log;
 		static $modulename_cache = array();
-		$query = 'select primarymodule,secondarymodules from vtiger_reportmodules where reportmodulesid=?';
-		$res = $adb->pquery($query, array($reportid));
-		$modrow = $adb->fetch_array($res);
-		$premod = $modrow["primarymodule"];
-		$secmod = $modrow["secondarymodules"];
-		$coltotalsql = "select vtiger_reportsummary.* from vtiger_report";
-		$coltotalsql .= " inner join vtiger_reportsummary on vtiger_report.reportid = vtiger_reportsummary.reportsummaryid";
-		$coltotalsql .= " where vtiger_report.reportid =?";
+		$coltotalsql = 'select vtiger_reportsummary.* from vtiger_report';
+		$coltotalsql .= ' inner join vtiger_reportsummary on vtiger_report.reportid = vtiger_reportsummary.reportsummaryid';
+		$coltotalsql .= ' where vtiger_report.reportid =?';
 
 		$result = $adb->pquery($coltotalsql, array($reportid));
 		$seltotalcols = array();
 		$stdfilterlist = array();
-		while($coltotalrow = $adb->fetch_array($result))
-		{
-			$fieldcolname = $coltotalrow["columnname"];
-			if($fieldcolname != "none")
-			{
+		while ($coltotalrow = $adb->fetch_array($result)) {
+			$fieldcolname = $coltotalrow['columnname'];
+			if ($fieldcolname != 'none') {
 				$sckey = $scval = '';
-				$fieldlist = explode(":",$fieldcolname);
+				$fieldlist = explode(':', $fieldcolname);
 				$field_tablename = $fieldlist[1];
 				$field_columnname = $fieldlist[2];
 
-				$cachekey = $field_tablename . ":" . $field_columnname;
+				$cachekey = $field_tablename . ':' . $field_columnname;
 				if (!isset($modulename_cache[$cachekey])) {
-					$mod_query = $adb->pquery("SELECT distinct(tabid) as tabid from vtiger_field where tablename = ? and columnname=?",array($fieldlist[1],$fieldlist[2]));
-					if($adb->num_rows($mod_query)>0){
-						$module_name = getTabModuleName($adb->query_result($mod_query,0,'tabid'));
+					$mod_query = $adb->pquery(
+						'SELECT distinct(tabid) as tabid from vtiger_field where tablename = ? and columnname=?',
+						array($fieldlist[1],$fieldlist[2])
+					);
+					if ($adb->num_rows($mod_query)>0) {
+						$module_name = getTabModuleName($adb->query_result($mod_query, 0, 'tabid'));
 						$modulename_cache[$cachekey] = $module_name;
 					}
 				} else {
 					$module_name = $modulename_cache[$cachekey];
 				}
 
-				$fieldlabel = trim($fieldlist[3]);
+				//$fieldlabel = trim($fieldlist[3]);
 				$field_columnalias = $module_name."_".$fieldlist[3];
 				$field_columnalias = decode_html($field_columnalias);
 				$query_columnalias = substr($field_columnalias, 0, strrpos($field_columnalias, '_'));
-				$query_columnalias = str_replace(array(' ','&'),'_',$query_columnalias);
+				$query_columnalias = str_replace(array(' ','&','(',')'), '_', $query_columnalias);
 				$sckey = $field_tablename.':'.$field_columnname.':'.$query_columnalias.':'.$field_columnname.':N'; // vtiger_invoice:subject:Invoice_Subject:subject:V
 				$scval = $field_tablename.'.'.$field_columnname." AS '".$query_columnalias."'"; // vtiger_invoice.subject AS 'Invoice_Subject'
 				$seltotalcols[$sckey] = $scval;
 				$field_permitted = false;
-				if(CheckColumnPermission($field_tablename,$field_columnname,$module_name) != "false"){
+				if (CheckColumnPermission($field_tablename, $field_columnname, $module_name) != "false") {
 					$field_permitted = true;
 				}
-				/* one call to CheckColumnPermission with $module_name is better than the block below
-				if(CheckColumnPermission($field_tablename,$field_columnname,$premod) != "false"){
-					$field_permitted = true;
-				} else {
-					$mod = explode(":",$secmod);
-					foreach($mod as $key){
-						if(CheckColumnPermission($field_tablename,$field_columnname,$key) != "false"){
-							$field_permitted=true;
-						}
-					}
-				}
-				*/
-				if($field_permitted == true)
-				{
-					if($field_tablename == 'vtiger_products' && $field_columnname == 'unit_price') {
+				if ($field_permitted == true) {
+					if ($field_tablename == 'vtiger_products' && $field_columnname == 'unit_price') {
 						// Query needs to be rebuild to get the value in user preferred currency. [innerProduct and actual_unit_price are table and column alias.]
 						$query_columnalias = ' actual_unit_price';
 						$seltotalcols['innerProduct:actual_unit_price:Products_Unit_Price:actual_unit_price:N'] = 'innerProduct.actual_unit_price AS actual_unit_price';
 					}
-					if($field_tablename == 'vtiger_service' && $field_columnname == 'unit_price') {
+					if ($field_tablename == 'vtiger_service' && $field_columnname == 'unit_price') {
 						// Query needs to be rebuild to get the value in user preferred currency. [innerProduct and actual_unit_price are table and column alias.]
 						$query_columnalias = ' actual_unit_price';
 						$seltotalcols['innerService:actual_unit_price:Services_Unit_Price:actual_unit_price:N'] = 'innerService.actual_unit_price AS actual_unit_price';
 					}
-					if(($field_tablename == 'vtiger_invoice' || $field_tablename == 'vtiger_quotes' || $field_tablename == 'vtiger_purchaseorder' || $field_tablename == 'vtiger_salesorder' || $field_tablename == 'vtiger_issuecards')
+					if (($field_tablename == 'vtiger_invoice' || $field_tablename == 'vtiger_quotes' || $field_tablename == 'vtiger_purchaseorder' || $field_tablename == 'vtiger_salesorder' || $field_tablename == 'vtiger_issuecards')
 							&& ($field_columnname == 'total' || $field_columnname == 'subtotal' || $field_columnname == 'discount_amount' || $field_columnname == 's_h_amount')) {
-						$query_columnalias = " $query_columnalias/$module_name"."_Conversion_Rate ";
-						$seltotalcols[$field_tablename.':conversion_rate:'.$module_name.'_Conversion_Rate:conversion_rate:N'] = "$field_tablename.conversion_rate AS $module_name"."_Conversion_Rate ";
+						$query_columnalias = ' '.$query_columnalias.'/'.$module_name.'_Conversion_Rate ';
+						$seltotalcols[$field_tablename.':conversion_rate:'.$module_name.'_Conversion_Rate:conversion_rate:N'] = "$field_tablename.conversion_rate AS $module_name".'_Conversion_Rate ';
 					}
-					if($fieldlist[4] == 2)
-					{
-						if ($fieldlist[2]=='totaltime')
+					if ($fieldlist[4] == 2) {
+						if ($fieldlist[2]=='totaltime') {
 							$stdfilterlist[$fieldcolname] = "sec_to_time(sum(time_to_sec(".$query_columnalias."))) '".$field_columnalias."'";
-						else
+						} else {
 							$stdfilterlist[$fieldcolname] = "sum($query_columnalias) '".$field_columnalias."'";
+						}
 					}
-					if($fieldlist[4] == 3)
-					{
-						//Fixed average calculation issue due to NULL values ie., when we use avg() function, NULL values will be ignored.to avoid this we use (sum/count) to find average.
+					if ($fieldlist[4] == 3) {
+						//when we use avg() function, NULL values will be ignored.to avoid this we use (sum/count) to find average.
 						//$stdfilterlist[$fieldcolname] = "avg(".$fieldlist[1].".".$fieldlist[2].") '".$fieldlist[3]."'";
-						if ($fieldlist[2]=='totaltime')
-							$stdfilterlist[$fieldcolname] = "sec_to_time(sum(time_to_sec(".$query_columnalias."))/count(*)) '".$field_columnalias."'";
-						else
+						if ($fieldlist[2]=='totaltime') {
+							$stdfilterlist[$fieldcolname] = 'sec_to_time(sum(time_to_sec('.$query_columnalias."))/count(*)) '".$field_columnalias."'";
+						} else {
 							$stdfilterlist[$fieldcolname] = "(sum($query_columnalias)/count(*)) '".$field_columnalias."'";
+						}
 					}
-					if($fieldlist[4] == 4)
-					{
-						if ($fieldlist[2]=='totaltime')
-							$stdfilterlist[$fieldcolname] = "sec_to_time(min(time_to_sec(".$query_columnalias."))) '".$field_columnalias."'";
-						else
+					if ($fieldlist[4] == 4) {
+						if ($fieldlist[2]=='totaltime') {
+							$stdfilterlist[$fieldcolname] = 'sec_to_time(min(time_to_sec('.$query_columnalias."))) '".$field_columnalias."'";
+						} else {
 							$stdfilterlist[$fieldcolname] = "min($query_columnalias) '".$field_columnalias."'";
+						}
 					}
-					if($fieldlist[4] == 5)
-					{
-						if ($fieldlist[2]=='totaltime')
-							$stdfilterlist[$fieldcolname] = "sec_to_time(max(time_to_sec(".$query_columnalias."))) '".$field_columnalias."'";
-						else
+					if ($fieldlist[4] == 5) {
+						if ($fieldlist[2]=='totaltime') {
+							$stdfilterlist[$fieldcolname] = 'sec_to_time(max(time_to_sec('.$query_columnalias."))) '".$field_columnalias."'";
+						} else {
 							$stdfilterlist[$fieldcolname] = "max($query_columnalias) '".$field_columnalias."'";
+						}
 					}
 				}
 			}
 		}
 		// Save the information
 		$this->_columnstotallist = $stdfilterlist;
-		$stc = array_diff($seltotalcols,$selectlist);
+		$stc = array_diff($seltotalcols, $selectlist);
 		$this->_columnstotallistaddtoselect = $stc;
-		$log->info("ReportRun :: Successfully returned getColumnsTotal".$reportid);
+		$log->debug('ReportRun :: getColumnsTotal'.$reportid);
 		return $stdfilterlist;
 	}
 
@@ -3434,120 +3020,115 @@ class ReportRun extends CRMEntity {
 	 *  @ param $reportid : Type integer
 	 *  This returns columnstoTotal query for the reportid
 	 */
-	function getColumnsToTotalColumns($reportid)
-	{
-		global $adb, $modules, $log;
+	public function getColumnsToTotalColumns($reportid) {
+		global $adb, $log;
 
-		$sreportstdfiltersql = "select vtiger_reportsummary.* from vtiger_report";
-		$sreportstdfiltersql .= " inner join vtiger_reportsummary on vtiger_report.reportid = vtiger_reportsummary.reportsummaryid";
-		$sreportstdfiltersql .= " where vtiger_report.reportid =?";
+		$sreportstdfiltersql = 'select vtiger_reportsummary.* from vtiger_report';
+		$sreportstdfiltersql .= ' inner join vtiger_reportsummary on vtiger_report.reportid = vtiger_reportsummary.reportsummaryid';
+		$sreportstdfiltersql .= ' where vtiger_report.reportid =?';
 
 		$result = $adb->pquery($sreportstdfiltersql, array($reportid));
 		$noofrows = $adb->num_rows($result);
 
-		for($i=0; $i<$noofrows; $i++)
-		{
-			$fieldcolname = $adb->query_result($result,$i,"columnname");
+		for ($i=0; $i<$noofrows; $i++) {
+			$fieldcolname = $adb->query_result($result, $i, 'columnname');
 
-			if($fieldcolname != "none")
-			{
-				$fieldlist = explode(":",$fieldcolname);
-				if($fieldlist[4] == 2)
-				{
-					$sSQLList[] = "sum(".$fieldlist[1].".".$fieldlist[2].") ".$fieldlist[3];
+			if ($fieldcolname != 'none') {
+				$fieldlist = explode(':', $fieldcolname);
+				if ($fieldlist[4] == 2) {
+					$sSQLList[] = 'sum('.$fieldlist[1].'.'.$fieldlist[2].') '.$fieldlist[3];
 				}
-				if($fieldlist[4] == 3)
-				{
-					$sSQLList[] = "avg(".$fieldlist[1].".".$fieldlist[2].") ".$fieldlist[3];
+				if ($fieldlist[4] == 3) {
+					$sSQLList[] = 'avg('.$fieldlist[1].'.'.$fieldlist[2].') '.$fieldlist[3];
 				}
-				if($fieldlist[4] == 4)
-				{
-					$sSQLList[] = "min(".$fieldlist[1].".".$fieldlist[2].") ".$fieldlist[3];
+				if ($fieldlist[4] == 4) {
+					$sSQLList[] = 'min('.$fieldlist[1].'.'.$fieldlist[2].') '.$fieldlist[3];
 				}
-				if($fieldlist[4] == 5)
-				{
-					$sSQLList[] = "max(".$fieldlist[1].".".$fieldlist[2].") ".$fieldlist[3];
+				if ($fieldlist[4] == 5) {
+					$sSQLList[] = 'max('.$fieldlist[1].'.'.$fieldlist[2].') '.$fieldlist[3];
 				}
 			}
 		}
-		if(isset($sSQLList))
-		{
-			$sSQL = implode(",",$sSQLList);
+		if (isset($sSQLList)) {
+			$sSQL = implode(',', $sSQLList);
 		}
-		$log->info("ReportRun :: Successfully returned getColumnsToTotalColumns".$reportid);
+		$log->debug('ReportRun :: getColumnsToTotalColumns'.$reportid);
 		return $sSQL;
 	}
 
 	/** Function to get picklist value array based on profile returns permitted fields in array format */
-	function getAccessPickListValues()
-	{
+	public function getAccessPickListValues() {
 		global $adb, $current_user;
 		$id = array(getTabid($this->primarymodule));
-		if($this->secondarymodule != '')
+		if ($this->secondarymodule != '') {
 			$id[] = getTabid($this->secondarymodule);
+		}
 
-		$query = 'select fieldname,columnname,fieldid,fieldlabel,tabid,uitype from vtiger_field where tabid in('. generateQuestionMarks($id) .") and uitype in (15,33,55) and columnname != 'firstname'";
+		$query = 'select fieldname,columnname,fieldid,fieldlabel,tabid,uitype
+			from vtiger_field
+			where tabid in('. generateQuestionMarks($id) .") and uitype in (15,33,55) and columnname != 'firstname'";
 		$result = $adb->pquery($query, $id);
 		$roleid=$current_user->roleid;
 		$roleids = getRoleSubordinates($roleid);
 		$roleids[] = $roleid;
-		$roleidslist = implode($roleids,'","');
-		$temp_status = Array();
+		$roleidslist = implode($roleids, '","');
+		$temp_status = array();
 		$fieldlists = array();
-		for($i=0;$i < $adb->num_rows($result);$i++)
-		{
-			$fieldname = $adb->query_result($result,$i,"fieldname");
-			$fieldlabel = $adb->query_result($result,$i,"fieldlabel");
-			$tabid = $adb->query_result($result,$i,"tabid");
-			$uitype = $adb->query_result($result,$i,"uitype");
+		for ($i=0; $i < $adb->num_rows($result); $i++) {
+			$fieldname = $adb->query_result($result, $i, 'fieldname');
+			$fieldlabel = $adb->query_result($result, $i, 'fieldlabel');
+			$tabid = $adb->query_result($result, $i, 'tabid');
+			$uitype = $adb->query_result($result, $i, 'uitype');
 
-			$fieldlabel1 = str_replace(" ","_",$fieldlabel);
-			$keyvalue = getTabModuleName($tabid)."_".$fieldlabel1;
-			$fieldvalues = Array();
-			$mulsel = "select distinct $fieldname from vtiger_$fieldname inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid where roleid in (\"". $roleidslist .'") and picklistid in (select picklistid from vtiger_picklist)'; // order by sortid asc - not requried
+			$fieldlabel1 = str_replace(' ', '_', $fieldlabel);
+			$keyvalue = getTabModuleName($tabid).'_'.$fieldlabel1;
+			$fieldvalues = array();
+			$mulsel = "select distinct $fieldname
+				from vtiger_$fieldname
+				inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid
+				where roleid in (\"". $roleidslist .'") and picklistid in (select picklistid from vtiger_picklist)'; // order by sortid asc - not requried
 			$mulselresult = $adb->query($mulsel);
-			for($j=0;$j < $adb->num_rows($mulselresult);$j++)
-			{
-				$fldvalue = $adb->query_result($mulselresult,$j,$fieldname);
-				if(in_array($fldvalue,$fieldvalues)) continue;
+			for ($j=0; $j < $adb->num_rows($mulselresult); $j++) {
+				$fldvalue = $adb->query_result($mulselresult, $j, $fieldname);
+				if (in_array($fldvalue, $fieldvalues)) {
+					continue;
+				}
 				$fieldvalues[] = $fldvalue;
 			}
 			$field_count = count($fieldvalues);
-			if( $uitype == 15 && $field_count > 0 && ($fieldname == 'taskstatus' || $fieldname == 'eventstatus'))
-			{
+			if ($uitype == 15 && $field_count > 0 && ($fieldname == 'taskstatus' || $fieldname == 'eventstatus')) {
 				$temp_count = (empty($temp_status[$keyvalue]) ? 0 : count($temp_status[$keyvalue]));
-				if($temp_count > 0)
-				{
-					for($t=0;$t < $field_count;$t++)
-					{
+				if ($temp_count > 0) {
+					for ($t=0; $t < $field_count; $t++) {
 						$temp_status[$keyvalue][($temp_count+$t)] = $fieldvalues[$t];
 					}
 					$fieldvalues = $temp_status[$keyvalue];
-				}
-				else
+				} else {
 					$temp_status[$keyvalue] = $fieldvalues;
+				}
 			}
 
-			if($uitype == 33)
+			if ($uitype == 33) {
 				$fieldlists[1][$keyvalue] = $fieldvalues;
-			else if($uitype == 55 && $fieldname == 'salutationtype')
+			} elseif ($uitype == 55 && $fieldname == 'salutationtype') {
 				$fieldlists[$keyvalue] = $fieldvalues;
-			else if($uitype == 15)
+			} elseif ($uitype == 15) {
 				$fieldlists[$keyvalue] = $fieldvalues;
+			}
 		}
 		return $fieldlists;
 	}
 
-	function getReportPDF($filterlist=false) {
+	public function getReportPDF($filterlist = false) {
 		require_once 'include/tcpdf/tcpdf.php';
 
-		$arr_val = $this->GenerateReport("PDF",$filterlist);
+		$arr_val = $this->GenerateReport('PDF', $filterlist);
 
-		if(isset($arr_val)) {
-			foreach($arr_val as $wkey=>$warray_value) {
+		if (isset($arr_val)) {
+			foreach ($arr_val as $wkey => $warray_value) {
 				$w_inner_array = array();
-				foreach($warray_value as $whd=>$wvalue) {
-					if(strlen($wvalue) < strlen($whd)) {
+				foreach ($warray_value as $whd => $wvalue) {
+					if (strlen($wvalue) < strlen($whd)) {
 						$w_inner_array[] = strlen($whd);
 					} else {
 						$w_inner_array[] = strlen($wvalue);
@@ -3557,17 +3138,17 @@ class ReportRun extends CRMEntity {
 				unset($w_inner_array);
 			}
 			$farr_val = array();
-			foreach($warr_val[0] as $fkey=>$fvalue) {
-				foreach($warr_val as $wkey=>$wvalue) {
+			foreach ($warr_val[0] as $fkey => $fvalue) {
+				foreach ($warr_val as $wkey => $wvalue) {
 					$f_inner_array[] = $warr_val[$wkey][$fkey];
 				}
-				sort($f_inner_array,1);
+				sort($f_inner_array, 1);
 				$farr_val[] = $f_inner_array;
 				unset($f_inner_array);
 			}
 			$col_width = array();
-			foreach($farr_val as $skkey=>$skvalue) {
-				if($skvalue[count($arr_val)-1] == 1) {
+			foreach ($farr_val as $skvalue) {
+				if ($skvalue[count($arr_val)-1] == 1) {
 					$col_width[] = ($skvalue[count($arr_val)-1] * 35);
 				} else {
 					$col_width[] = ($skvalue[count($arr_val)-1] * 6) + 10 ;
@@ -3575,159 +3156,159 @@ class ReportRun extends CRMEntity {
 			}
 			$count = 0;
 			$headerHTML = '';
-			foreach($arr_val[0] as $key=>$value) {
+			foreach ($arr_val[0] as $key => $value) {
 				$headerHTML .= '<td width="'.$col_width[$count].'" bgcolor="#DDDDDD"><b>'.$key.'</b></td>';
 				$count = $count + 1;
 			}
 			$dataHTML = '';
-			foreach($arr_val as $key=>$array_value) {
+			foreach ($arr_val as $key => $array_value) {
 				$valueHTML = '';
 				$count = 0;
-				foreach($array_value as $hd=>$value) {
+				foreach ($array_value as $value) {
 					$valueHTML .= '<td width="'.$col_width[$count].'">'.$value.'</td>';
 					$count = $count + 1;
 				}
 				$dataHTML .= '<tr>'.$valueHTML.'</tr>';
 			}
-
 		}
 
-		$totalpdf = $this->GenerateReport("PRINT_TOTAL",$filterlist);
-		$html = '<table border="1"><tr>'.$headerHTML.'</tr>'.$dataHTML.'</table>';
+		$totalpdf = $this->GenerateReport("PRINT_TOTAL", $filterlist);
+		$report_header = GlobalVariable::getVariable('Report_HeaderOnPDF', '');
+		($report_header == 1 ? $html = '<h1>'.getTranslatedString($this->reportname).'</h1>': $html = '');
+		$html = $html.'<table border="1"><tr>'.$headerHTML.'</tr>'.$dataHTML.'</table>';
 		$columnlength = array_sum($col_width);
-		if($columnlength > 14400) {
+		if ($columnlength > 14400) {
 			global $log, $app_strings;
 			$log->fatal('PDF REPORT GENERATION: '.$app_strings['LBL_PDF']);
 			$columnlength = 14400;
 		}
-		if($columnlength <= 420 ) {
-			$pdf = new TCPDF('P','mm','A5',true);
-
-		} elseif($columnlength >= 421 && $columnlength <= 800) {
-			$pdf = new TCPDF('L','mm','A4',true);
-
-		} elseif($columnlength >= 801 && $columnlength <= 1120) {
-			$pdf = new TCPDF('L','mm','A3',true);
-
-		}elseif($columnlength >=1121 && $columnlength <= 1600) {
-			$pdf = new TCPDF('L','mm','A2',true);
-
-		}elseif($columnlength >=1601 && $columnlength <= 2200) {
-			$pdf = new TCPDF('L','mm','A1',true);
-		}
-		elseif($columnlength >=2201 && $columnlength <= 3370) {
-			$pdf = new TCPDF('L','mm','A0',true);
-		}
-		elseif($columnlength >=3371 && $columnlength <= 4690) {
-			$pdf = new TCPDF('L','mm','2A0',true);
-		}
-		elseif($columnlength >=4691 && $columnlength <= 6490) {
-			$pdf = new TCPDF('L','mm','4A0',true);
-		}
-		else {
+		if ($columnlength <= 420) {
+			$pdf = new TCPDF('P', 'mm', 'A5', true);
+		} elseif ($columnlength >= 421 && $columnlength <= 800) {
+			$pdf = new TCPDF('L', 'mm', 'A4', true);
+		} elseif ($columnlength >= 801 && $columnlength <= 1120) {
+			$pdf = new TCPDF('L', 'mm', 'A3', true);
+		} elseif ($columnlength >=1121 && $columnlength <= 1600) {
+			$pdf = new TCPDF('L', 'mm', 'A2', true);
+		} elseif ($columnlength >=1601 && $columnlength <= 2200) {
+			$pdf = new TCPDF('L', 'mm', 'A1', true);
+		} elseif ($columnlength >=2201 && $columnlength <= 3370) {
+			$pdf = new TCPDF('L', 'mm', 'A0', true);
+		} elseif ($columnlength >=3371 && $columnlength <= 4690) {
+			$pdf = new TCPDF('L', 'mm', '2A0', true);
+		} elseif ($columnlength >=4691 && $columnlength <= 6490) {
+			$pdf = new TCPDF('L', 'mm', '4A0', true);
+		} else {
 			$columnhight = count($arr_val)*15;
 			$format = array($columnhight,$columnlength);
-			$pdf = new TCPDF('L','mm',$format,true);
+			$pdf = new TCPDF('L', 'mm', $format, true);
 		}
 		$pdf->SetMargins(10, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+		$pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
 		$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
 		$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-		$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-		$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+		$pdf->setHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+		$pdf->setFooterFont(array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 		//$pdf->setLanguageArray($l);
-		//echo '<pre>';print_r($columnlength);echo '</pre>';
 		$pdf->AddPage();
 
-		$pdf->SetFillColor(224,235,255);
+		$pdf->SetFillColor(224, 235, 255);
 		$pdf->SetTextColor(0);
-		$pdf->SetFont('FreeSerif','B',14);
-		$pdf->Cell(($columnlength*50),10,getTranslatedString($this->reportname),0,0,'C',0);
+		$pdf->SetFont('FreeSerif', 'B', 14);
+		$pdf->Cell(($columnlength*50), 10, getTranslatedString($this->reportname), 0, 0, 'C', 0);
 		//$pdf->writeHTML($oReport->reportname);
 		$pdf->Ln();
 
-		$pdf->SetFont('FreeSerif','',10);
+		$pdf->SetFont('FreeSerif', '', 10);
 
 		$pdf->writeHTML($html.$totalpdf);
 
 		return $pdf;
 	}
 
-	function writeReportToExcelFile($fileName, $filterlist='') {
+	public function writeReportToExcelFile($fileName, $filterlist = '') {
 		global $currentModule, $current_language, $current_user;
 		$mod_strings = return_module_language($current_language, $currentModule);
 
-		require_once('include/PHPExcel/PHPExcel.php');
+		require 'include/PhpSpreadsheet/autoload.php';
+
 		$xlsrowheight = GlobalVariable::getVariable('Report_Excel_Export_RowHeight', 20);
-		$workbook = new PHPExcel();
+		$workbook = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
 		$worksheet = $workbook->setActiveSheetIndex(0);
 		$fieldinfo = array();
-		$arr_val = $this->GenerateReport('PDF',$filterlist,false,$fieldinfo);
-		$totalxls = $this->GenerateReport('TOTALXLS',$filterlist);
+		$arr_val = $this->GenerateReport('PDF', $filterlist, false, $fieldinfo);
+		$totalxls = $this->GenerateReport('TOTALXLS', $filterlist);
 
 		$header_styles = array(
-			'fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb'=>'E1E0F7')),
+			'fill' => array('fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'startColor' => array('rgb'=>'E1E0F7')),
 			'font' => array('bold' => true)
 		);
 
-		if(isset($arr_val)) {
+		if (isset($arr_val)) {
 			$FieldDataTypes = array();
-			foreach($arr_val[0] as $hdr=>$value) {
+			foreach ($arr_val[0] as $hdr => $value) {
 				if (!isset($fieldinfo[$hdr])) {
 					$FieldDataTypes[$hdr] = 'string';
 					continue;
 				}
 				$FieldDataTypes[$hdr] = $fieldinfo[$hdr]->getFieldDataType();
-				if ($fieldinfo[$hdr]->getColumnName()=='totaltime') $FieldDataTypes[$hdr] = 'time';
-				if ($fieldinfo[$hdr]->getColumnName()=='totaldaytime') $FieldDataTypes[$hdr] = 'time';
+				if ($fieldinfo[$hdr]->getColumnName()=='totaltime') {
+					$FieldDataTypes[$hdr] = 'time';
+				}
+				if ($fieldinfo[$hdr]->getColumnName()=='totaldaytime') {
+					$FieldDataTypes[$hdr] = 'time';
+				}
 			}
 			$BoolTrue = getTranslatedString('LBL_YES');
 			//$BoolFalse = getTranslatedString('LBL_NO');
-			$count = 0;
+			$count = 1;
 			$rowcount = 1;
 			$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
 			//copy the first value details
 			$arrayFirstRowValues = $arr_val[0];
-			foreach($arrayFirstRowValues as $key=>$value) {
-				$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $key, true);
+			$report_header = GlobalVariable::getVariable('Report_HeaderOnXLS', '');
+			if ($report_header == 1) {
+				$rowcount++;
+				$worksheet->setCellValueExplicitByColumnAndRow(1, 1, getTranslatedString($this->reportname), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+				$worksheet->getStyleByColumnAndRow(1, 1)->applyFromArray($header_styles);
+				$worksheet->getColumnDimensionByColumn(1)->setAutoSize(true);
+			}
+			foreach ($arrayFirstRowValues as $key => $value) {
+				$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $key, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
 				$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
-
-				// NOTE Performance overhead: http://stackoverflow.com/questions/9965476/phpexcel-column-size-issues
 				$worksheet->getColumnDimensionByColumn($count)->setAutoSize(true);
-
 				$count = $count + 1;
 				if ($FieldDataTypes[$key]=='currency') {
-					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, getTranslatedString('LBL_CURRENCY'), true);
+					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, getTranslatedString('LBL_CURRENCY'), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
 					$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
 					$worksheet->getColumnDimensionByColumn($count)->setAutoSize(true);
 					$count = $count + 1;
 				}
 			}
-
 			$rowcount++;
 			$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
-			foreach($arr_val as $key=>$array_value) {
-				$count = 0;
-				foreach($array_value as $hdr=>$value) {
+			foreach ($arr_val as $key => $array_value) {
+				$count = 1;
+				foreach ($array_value as $hdr => $value) {
 					$value = decode_html($value);
 					$datetime = false;
 					switch ($FieldDataTypes[$hdr]) {
 						case 'boolean':
-							$celltype = PHPExcel_Cell_DataType::TYPE_BOOL;
+							$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_BOOL;
 							$value = ($value==$BoolTrue ? 1:0);
 							break;
 						case 'integer':
 						case 'double':
 						case 'currency':
-							$celltype = PHPExcel_Cell_DataType::TYPE_NUMERIC;
+							$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC;
 							break;
 						case 'date':
 						case 'time':
 							if ($value!='-') {
-								if (strpos($value,':')>0 and (strpos($value,'-')===false)) {
+								if (strpos($value, ':')>0 && (strpos($value, '-')===false)) {
 									// only time, no date
 									$dt = new DateTime("1970-01-01 $value");
-								} elseif(strpos($value,':')>0 and (strpos($value,'-')>0)){
+								} elseif (strpos($value, ':')>0 && (strpos($value, '-')>0)) {
 									// date and time
 									$dt = new DateTime($value);
 									$datetime = true;
@@ -3735,36 +3316,37 @@ class ReportRun extends CRMEntity {
 									$value = DateTimeField::__convertToDBFormat($value, $current_user->date_format);
 									$dt = new DateTime($value);
 								}
-								$value = PHPExcel_Shared_Date::PHPToExcel($dt);
-								$celltype = PHPExcel_Cell_DataType::TYPE_NUMERIC;
+								$value = \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel($dt);
+								$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC;
 							} else {
-								$celltype = PHPExcel_Cell_DataType::TYPE_STRING;
+								$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING;
 							}
 							break;
 						default:
-							$celltype = PHPExcel_Cell_DataType::TYPE_STRING;
+							$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING;
 							break;
 					}
 					if ($FieldDataTypes[$hdr]=='currency') {
 						$csym = preg_replace('/[0-9,.-]/', '', $value);
 						$value = preg_replace('/[^0-9,.-]/', '', $value);
 						$value = str_replace($current_user->currency_grouping_separator, '', $value);
-						if ($current_user->currency_decimal_separator!='.')
+						if ($current_user->currency_decimal_separator!='.') {
 							$value = str_replace($current_user->currency_decimal_separator, '.', $value);
+						}
 					}
 					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, $celltype);
 					if ($FieldDataTypes[$hdr]=='date') {
-						if($datetime){
-							$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode($current_user->date_format." ".PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME4);
-						}else{
+						if ($datetime) {
+							$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode($current_user->date_format.' '.\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME4);
+						} else {
 							$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode($current_user->date_format);
 						}
 					} elseif ($FieldDataTypes[$hdr]=='time') {
-						$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME4);
+						$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_DATE_TIME4);
 					}
 					if ($FieldDataTypes[$hdr]=='currency') {
 						$count = $count + 1;
-						$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $csym, PHPExcel_Cell_DataType::TYPE_STRING);
+						$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $csym, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
 					}
 					$count = $count + 1;
 				}
@@ -3776,63 +3358,59 @@ class ReportRun extends CRMEntity {
 			$rowcount++;
 			$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
 			$count=0;
-			if(isset($totalxls) and is_array($totalxls) and count($totalxls)>0) {
+			if (isset($totalxls) && is_array($totalxls) && count($totalxls)>0) {
 				if (is_array($totalxls[0])) {
-					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, getTranslatedString('Totals','Reports'), PHPExcel_Cell_DataType::TYPE_STRING);
+					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, getTranslatedString('Totals', 'Reports'), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
 					$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
 					$count = $count + 1;
-					foreach($totalxls[0] as $key=>$value) {
-						$chdr=substr($key,-3,3);
-						$translated_str = in_array($chdr ,array_keys($mod_strings))?$mod_strings[$chdr]:$key;
-						$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, decode_html($translated_str), PHPExcel_Cell_DataType::TYPE_STRING);
+					foreach ($totalxls[0] as $key => $value) {
+						$chdr=substr($key, -3, 3);
+						$translated_str = in_array($chdr, array_keys($mod_strings))?$mod_strings[$chdr]:$key;
+						$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, decode_html($translated_str), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
 						$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
 						$count = $count + 1;
 					}
 				}
 				$rowcount++;
 				$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
-				foreach($totalxls as $key=>$array_value) {
+				foreach ($totalxls as $key => $array_value) {
 					$count = 0;
-					foreach($array_value as $hdr=>$value) {
+					foreach ($array_value as $hdr => $value) {
 						if ($count==0) {
 							$lbl = substr($hdr, 0, strrpos($hdr, '_'));
 							$mname = substr($lbl, 0, strpos($lbl, '_'));
 							$lbl = substr($lbl, strpos($lbl, '_')+1);
 							$lbl = str_replace('_', ' ', $lbl);
-							$lbl = getTranslatedString($lbl,$mname);
-							$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, decode_html($lbl), PHPExcel_Cell_DataType::TYPE_STRING);
+							$lbl = getTranslatedString($lbl, $mname);
+							$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, decode_html($lbl), \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
 							$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
 							$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
 							$count = $count + 1;
 						}
 						$value = str_replace($current_user->currency_grouping_separator, '', $value);
-						if ($current_user->currency_decimal_separator!='.')
+						if ($current_user->currency_decimal_separator!='.') {
 							$value = str_replace($current_user->currency_decimal_separator, '.', $value);
-						$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, PHPExcel_Cell_DataType::TYPE_NUMERIC);
+						}
+						$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC);
 						$count = $count + 1;
 					}
 					$rowcount++;
 				}
 			}
 		}
-		$workbookWriter = PHPExcel_IOFactory::createWriter($workbook, 'Excel5');
+		$workbookWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($workbook, 'Xls');
 		$workbookWriter->save($fileName);
 	}
 
-	function writeReportToCSVFile($fileName, $filterlist='') {
-		global $currentModule, $current_language;
-		$mod_strings = return_module_language($current_language, $currentModule);
-
-		$arr_val = $this->GenerateReport("PDF",$filterlist);
-
+	public function writeReportToCSVFile($fileName, $filterlist = '') {
+		$arr_val = $this->GenerateReport('PDF', $filterlist);
 		$fp = fopen($fileName, 'w+');
-
-		if(isset($arr_val)) {
+		if (isset($arr_val)) {
 			$csv_values = array();
 			// Header
 			$csv_values = array_keys($arr_val[0]);
 			fputcsv($fp, $csv_values);
-			foreach($arr_val as $key=>$array_value) {
+			foreach ($arr_val as $array_value) {
 				$csv_values = array_map('decode_html', array_values($array_value));
 				fputcsv($fp, $csv_values);
 			}
@@ -3840,20 +3418,19 @@ class ReportRun extends CRMEntity {
 		fclose($fp);
 	}
 
-	function getGroupByTimeList($reportId){
+	public function getGroupByTimeList($reportId) {
 		global $adb;
-		$groupByTimeQuery = 'SELECT * FROM vtiger_reportgroupbycolumn WHERE reportid=?';
-		$groupByTimeRes = $adb->pquery($groupByTimeQuery,array($reportId));
+		$groupByTimeRes = $adb->pquery('SELECT * FROM vtiger_reportgroupbycolumn WHERE reportid=?', array($reportId));
 		$num_rows = $adb->num_rows($groupByTimeRes);
 		$groupByCondition = array();
-		for($i=0;$i<$num_rows;$i++){
-			$sortColName = $adb->query_result($groupByTimeRes, $i,'sortcolname');
-			list($tablename,$colname,$module_field,$fieldname,$single) = explode(':',$sortColName);
+		for ($i=0; $i<$num_rows; $i++) {
+			$sortColName = $adb->query_result($groupByTimeRes, $i, 'sortcolname');
+			list($tablename,$colname,$module_field,$fieldname,$single) = explode(':', $sortColName);
 			$groupField = $module_field;
-			$groupCriteria = $adb->query_result($groupByTimeRes, $i,'dategroupbycriteria');
-			if(in_array($groupCriteria,array_keys($this->groupByTimeParent))){
+			$groupCriteria = $adb->query_result($groupByTimeRes, $i, 'dategroupbycriteria');
+			if (in_array($groupCriteria, array_keys($this->groupByTimeParent))) {
 				$parentCriteria = $this->groupByTimeParent[$groupCriteria];
-				foreach($parentCriteria as $criteria){
+				foreach ($parentCriteria as $criteria) {
 					$groupByCondition[]=$this->GetTimeCriteriaCondition($criteria, $groupField);
 				}
 			}
@@ -3863,58 +3440,56 @@ class ReportRun extends CRMEntity {
 		return $groupByCondition;
 	}
 
-	function GetTimeCriteriaCondition($criteria,$dateField){
+	public function GetTimeCriteriaCondition($criteria, $dateField) {
 		$condition = '';
-		if(strtolower($criteria)=='year'){
+		if (strtolower($criteria)=='year') {
 			$condition = "DATE_FORMAT($dateField, '%Y' )";
-		}
-		else if (strtolower($criteria)=='month'){
+		} elseif (strtolower($criteria)=='month') {
 			$condition = "CEIL(DATE_FORMAT($dateField,'%m')%13)";
-		}
-		else if(strtolower($criteria)=='quarter'){
+		} elseif (strtolower($criteria)=='quarter') {
 			$condition = "CEIL(DATE_FORMAT($dateField,'%m')/3)";
 		}
-		if(strtolower($criteria)=='day'){
+		if (strtolower($criteria)=='day') {
 			$condition = "DATE_FORMAT($dateField,'%d')";
 		}
 		return $condition;
 	}
 
-	function GetFirstSortByField($reportid)
-	{
+	public function GetFirstSortByField($reportid) {
 		global $adb;
 		$groupByField = '';
 		$sortFieldQuery = "SELECT * FROM vtiger_reportsortcol
-			LEFT JOIN vtiger_reportgroupbycolumn ON (vtiger_reportsortcol.sortcolid = vtiger_reportgroupbycolumn.sortid and vtiger_reportsortcol.reportid = vtiger_reportgroupbycolumn.reportid)
+			LEFT JOIN vtiger_reportgroupbycolumn ON (vtiger_reportsortcol.sortcolid = vtiger_reportgroupbycolumn.sortid
+				and vtiger_reportsortcol.reportid = vtiger_reportgroupbycolumn.reportid)
 			WHERE columnname!='none' and vtiger_reportsortcol.reportid=? ORDER By sortcolid";
-		$sortFieldResult= $adb->pquery($sortFieldQuery,array($reportid));
-		if($adb->num_rows($sortFieldResult)>0){
-			$fieldcolname = $adb->query_result($sortFieldResult,0,'columnname');
-			list($tablename,$colname,$module_field,$fieldname,$typeOfData) = explode(":",$fieldcolname);
+		$sortFieldResult= $adb->pquery($sortFieldQuery, array($reportid));
+		if ($adb->num_rows($sortFieldResult)>0) {
+			$fieldcolname = $adb->query_result($sortFieldResult, 0, 'columnname');
+			list($tablename,$colname,$module_field,$fieldname,$typeOfData) = explode(':', $fieldcolname);
 			list($modulename,$fieldlabel) = explode('_', $module_field, 2);
-			$groupByField = "`".$module_field."`";
-			if($typeOfData == "D"){
-				$groupCriteria = $adb->query_result($sortFieldResult,0,'dategroupbycriteria');
-				if(strtolower($groupCriteria)!='none'){
-					if(in_array($groupCriteria,array_keys($this->groupByTimeParent))){
+			$groupByField = '`'.ReportRun::replaceSpecialChar($module_field).'`';
+			if ($typeOfData == 'D') {
+				$groupCriteria = $adb->query_result($sortFieldResult, 0, 'dategroupbycriteria');
+				if (strtolower($groupCriteria)!='none') {
+					if (in_array($groupCriteria, array_keys($this->groupByTimeParent))) {
 						$parentCriteria = $this->groupByTimeParent[$groupCriteria];
-						foreach($parentCriteria as $criteria){
+						foreach ($parentCriteria as $criteria) {
 							$groupByCondition[]=$this->GetTimeCriteriaCondition($criteria, $groupByField);
 						}
 					}
 					$groupByCondition[] = $this->GetTimeCriteriaCondition($groupCriteria, $groupByField);
-					$groupByField = implode(", ",$groupByCondition);
+					$groupByField = implode(', ', $groupByCondition);
 				}
-
-			} elseif(CheckFieldPermission($fieldname,$modulename) != 'true') {
-				if((strpos($tablename,'vtiger_inventoryproductrel') === false && ($colname != 'productid' || $colname != 'serviceid')))
+			} elseif (CheckFieldPermission($fieldname, $modulename) != 'true') {
+				if ((strpos($tablename, 'vtiger_inventoryproductrel') === false && ($colname != 'productid' || $colname != 'serviceid'))) {
 					$groupByField = $tablename.".".$colname;
+				}
 			}
 		}
 		return $groupByField;
 	}
 
-	function getReferenceFieldColumnList($moduleName, $fieldInfo) {
+	public function getReferenceFieldColumnList($moduleName, $fieldInfo) {
 		$adb = PearDatabase::getInstance();
 
 		$columnsSqlList = array();
@@ -3923,33 +3498,32 @@ class ReportRun extends CRMEntity {
 		$referenceModuleList = $fieldInstance->getReferenceList();
 		$reportSecondaryModules = explode(':', $this->secondarymodule);
 
-		if($moduleName != $this->primarymodule && in_array($this->primarymodule, $referenceModuleList)) {
+		if ($moduleName != $this->primarymodule && in_array($this->primarymodule, $referenceModuleList)) {
 			$entityTableFieldNames = getEntityFieldNames($this->primarymodule);
 			$entityTableName = $entityTableFieldNames['tablename'];
 			$entityFieldNames = $entityTableFieldNames['fieldname'];
 
 			$columnList = array();
-			if(is_array($entityFieldNames)) {
+			if (is_array($entityFieldNames)) {
 				foreach ($entityFieldNames as $entityColumnName) {
 					$columnList["$entityColumnName"] = "$entityTableName.$entityColumnName";
 				}
 			} else {
 				$columnList[] = "$entityTableName.$entityFieldNames";
 			}
-			if(count($columnList) > 1) {
+			if (count($columnList) > 1) {
 				$columnSql = getSqlForNameInDisplayFormat($columnList, $this->primarymodule);
 			} else {
 				$columnSql = implode('', $columnList);
 			}
 			$columnsSqlList[] = $columnSql;
-
 		} else {
-			foreach($referenceModuleList as $referenceModule) {
+			foreach ($referenceModuleList as $referenceModule) {
 				$entityTableFieldNames = getEntityFieldNames($referenceModule);
 				$entityTableName = $entityTableFieldNames['tablename'];
 				$entityFieldNames = $entityTableFieldNames['fieldname'];
 
-				if($moduleName == 'HelpDesk' && $referenceModule == 'Accounts') {
+				if ($moduleName == 'HelpDesk' && $referenceModule == 'Accounts') {
 					$referenceTableName = 'vtiger_accountRelHelpDesk';
 				} elseif ($moduleName == 'HelpDesk' && $referenceModule == 'Contacts') {
 					$referenceTableName = 'vtiger_contactdetailsRelHelpDesk';
@@ -4007,7 +3581,7 @@ class ReportRun extends CRMEntity {
 					$referenceTableName = 'vtiger_contactdetailsSalesOrder';
 				} elseif ($moduleName == 'SalesOrder' && $referenceModule == 'Quotes') {
 					$referenceTableName = 'vtiger_quotesSalesOrder';
-				} elseif (in_array($referenceModule, $reportSecondaryModules) and $moduleName != 'Timecontrol') {
+				} elseif (in_array($referenceModule, $reportSecondaryModules) && $moduleName != 'Timecontrol') {
 					if ($fieldInstance->getFieldId() != '') {
 						$referenceTableName = "{$entityTableName}Rel{$moduleName}{$fieldInstance->getFieldId()}";
 					} else {
@@ -4023,14 +3597,14 @@ class ReportRun extends CRMEntity {
 					$this->queryPlanner->addTable($dependentTableName);
 				}
 				$columnList = array();
-				if(is_array($entityFieldNames)) {
+				if (is_array($entityFieldNames)) {
 					foreach ($entityFieldNames as $entityColumnName) {
 						$columnList["$entityColumnName"] = "$referenceTableName.$entityColumnName";
 					}
 				} else {
 					$columnList[] = "$referenceTableName.$entityFieldNames";
 				}
-				if(count($columnList) > 1) {
+				if (count($columnList) > 1) {
 					$columnSql = getSqlForNameInDisplayFormat($columnList, $referenceModule);
 				} else {
 					$columnSql = implode('', $columnList);

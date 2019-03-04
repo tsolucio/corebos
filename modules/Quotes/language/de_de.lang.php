@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Angebote',
 'LBL_MODULE_TITLE'=>'Angebote: Home',
 'LBL_SEARCH_FORM_TITLE'=>'Angebote suchen',
@@ -66,7 +66,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Organisation wählen',
 'LBL_GENERAL_INFORMATION'=>'Allgemein',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Neues Verkaufspotential',
 'LBL_POTENTIAL_TITLE'=>'Verkaufspotentiale',
 
@@ -81,16 +80,13 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'neue Person',
 'LBL_CONTACT_TITLE'=>'Personen',
 
-//Added fields after RC1 - Release
 'LBL_ALL'=>'All',
 'LBL_PROSPECT'=>'potentieller Kunde',
 'LBL_INVESTOR'=>'Investor',
 'LBL_RESELLER'=>'Wiederverkäufer',
 'LBL_PARTNER'=>'Partner',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Organisations-Tools',
-//Added for 4GA
 'Subject'=>'Titel',
 'Potential Name'=>'Verkaufspotential',
 'Quote Stage'=>'Angebotsstufe',
@@ -123,22 +119,16 @@ $mod_strings = Array(
 'Modified Time'=>'geändert',
 'Description'=>'Beschreibung',
 'Account Name'=>'Organisation',
-'Terms & Conditions'=>'Konditionen',
-//Quote Info
 'LBL_QUOTE_INFORMATION'=>'Angebot',
 'LBL_TERMS_INFORMATION'=>'Liefer- und Zahlungsbedingungen',
 'LBL_QUOTE'=>'Angebot:',
 
-//Added during 4.2 release
 'LBL_SUBJECT'=>'Titel:',
 'LBL_POTENTIAL_NAME'=>'Verkaufspotential:',
 'LBL_ACCOUNT_NAME'=>'Organisation:',
 'LBL_QUOTE_STAGE'=>'Angebotsstufe:',
 'LBL_MY_TOP_QUOTE'=>'meine top Angebote',
-//'Quote ID'=>'Angebots-ID',
 'Quote'=>'Angebot',
-
-//Added for existing Picklist Entries
 
 'Created'=>'erzeugt',
 'Delivered'=>'geliefert',
@@ -153,14 +143,12 @@ $mod_strings = Array(
 'BlueDart'=>'Post',
 'Sales Tax'=>'MwSt.',
 
-//fehlende Einträge für Berichte
 'Tax Type'=>'Steuertyp',
 'Discount Percent'=>'Rabatt (%)',
 'Discount Amount'=>'Rabatt',
 'Adjustment'=>'Anpassung',
 'S&H Amount'=>'Versandkosten',
 
-//Added after 5.0.4 GA
 'Quote No'=>'Angebotsnr.',
 
 'SINGLE_Quotes'=>'Angebot',
@@ -169,5 +157,4 @@ $mod_strings = Array(
 
 'Terms & Conditions'=>'Geschäftsbedingungen',
 );
-
 ?>

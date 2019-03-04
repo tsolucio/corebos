@@ -9,18 +9,18 @@
  ************************************************************************************/
 global $currentModule;
 $modObj = CRMEntity::getInstance($currentModule);
-$ajaxaction = $_REQUEST["ajxaction"];
-if($ajaxaction == 'DETAILVIEW') {
+$ajaxaction = $_REQUEST['ajxaction'];
+if ($ajaxaction == 'DETAILVIEW') {
 	$crmid = vtlib_purify($_REQUEST['recordid']);
 	$fieldname = vtlib_purify($_REQUEST['fldName']);
 	$fieldvalue = utf8RawUrlDecode($_REQUEST['fieldValue']);
-	if($crmid != '') {
+	if ($crmid != '') {
 		$modObj->retrieve_entity_info($crmid, $currentModule);
 
 		//Added to avoid the comment save, when we edit other fields through ajax edit
-		if($fieldname != 'comments')
+		if ($fieldname != 'comments') {
 			$modObj->column_fields['comments'] = '';
-
+		}
 		$modObj->column_fields[$fieldname] = $fieldvalue;
 		$modObj->id = $crmid;
 		$modObj->mode = 'edit';
@@ -30,11 +30,11 @@ if($ajaxaction == 'DETAILVIEW') {
 		} else {
 			$modObj->save($currentModule);
 			if ($modObj->id != '') {
-				if($fieldname == 'comments'){
+				if ($fieldname == 'comments') {
 					$comments = $modObj->getCommentInformation($modObj->id);
-					echo ":#:SUCCESS".$comments;
-				}else{
-					echo ":#:SUCCESS";
+					echo ':#:SUCCESS'.$comments;
+				} else {
+					echo ':#:SUCCESS';
 				}
 			} else {
 				echo ':#:FAILURE';
@@ -43,7 +43,7 @@ if($ajaxaction == 'DETAILVIEW') {
 	} else {
 		echo ':#:FAILURE';
 	}
-} elseif ($ajaxaction == "LOADRELATEDLIST" || $ajaxaction == "DISABLEMODULE") {
+} elseif ($ajaxaction == 'LOADRELATEDLIST' || $ajaxaction == 'DISABLEMODULE') {
 	require_once 'include/ListView/RelatedListViewContents.php';
 }
 ?>

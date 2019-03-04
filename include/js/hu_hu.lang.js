@@ -204,6 +204,7 @@ var alert_arr = {
 	'LBL_PLEASE_CHANGE_REPLACEMENT' : 'Kérjük, hogy cseréld a helyettesítő értéket; ez szintén ki van választva törlésre',
 	'BLOCK_NAME_CANNOT_BE_BLANK' : 'A blokk neve nem lehet üres',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE' : 'Biztos vagy abban, hogy Törölni akarod?',
+	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_EXACT_DUPLICATE': 'Are you sure you want to Delete All Exact record duplicates?',
 	'PLEASE_MOVE_THE_FIELDS_TO_ANOTHER_BLOCK' : 'Mozgasd a mezőt egy másik blokkba',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_BLOCK' : 'Biztos vagy abban, hogy Törölni akarod a blokkot?',
 	'LABEL_CANNOT_NOT_EMPTY' : 'Címke nem lehet üres',
@@ -329,6 +330,7 @@ var alert_arr = {
 	'LBL_ENDS_WITH' : 'ends with',
 	'LBL_HAS_CHANGED' : 'has changed',
 	'LBL_HAS_CHANGED_TO' : 'has changed to',
+	'LBL_WAS' : 'was',
 	'LBL_IS_EMPTY': 'is empty',
 	'LBL_IS_NOT_EMPTY' : 'is not empty',
 	'LBL_EQUAL_TO' : 'equal to',
@@ -341,6 +343,10 @@ var alert_arr = {
 	'LBL_BETWEEN' : 'between',
 	'LBL_BEFORE' : 'before',
 	'LBL_AFTER' : 'after',
+	'LBL_DOES_NOT_START_WITH' : 'does not start with',
+	'LBL_DOES_NOT_END_WITH' : 'does not end with',
+	'DOES_NOT_START_WITH':'does not start with',
+	'DOES_NOT_END_WITH':'does not end with',
 	'LBL_IS_TODAY' : 'is today',
 	'LBL_LESS_THAN_DAYS_AGO' : 'less than days ago',
 	'LBL_MORE_THAN_DAYS_AGO' : 'more than days ago',
@@ -388,5 +394,7 @@ var alert_arr = {
 	'JSLBL_PAGINATION': 'Pagination',
 	'JSLBL_FINISH': 'Finish',
 	'SHOWING' : 'Showing',
-	'OF' : 'of'
+	'OF' : 'of',
+	'ERR_Massedit' : 'Error on Mass Edit',
+	'ProcessFINISHED' : 'Process Finished'
 };

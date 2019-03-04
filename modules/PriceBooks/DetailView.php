@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('Smarty_setup.php');
+require_once 'Smarty_setup.php';
 
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
@@ -15,10 +15,10 @@ $smarty = new vtigerCRM_Smarty();
 
 require_once 'modules/Vtiger/DetailView.php';
 
-$smarty->assign('CURRENCY_ID',$focus->column_fields['currency_id']);
+$smarty->assign('CURRENCY_ID', $focus->column_fields['currency_id']);
 
-if(isPermitted($currentModule, 'DeletePriceBook', $record) == 'yes')
+if (isPermitted($currentModule, 'DeletePriceBook', $record) == 'yes') {
 	$smarty->assign('DELETE', 'permitted');
-
-$smarty->display('Inventory/InventoryDetailView.tpl');
+}
+$smarty->display('DetailView.tpl');
 ?>

@@ -26,7 +26,7 @@
 <body>
 <div data-role="page" data-theme="b" >
 	<div data-role="header" data-theme="{$COLOR_HEADER_FOOTER}"  data-position="fixed">
-		<a href="#"  onclick="window.history.back()" class="ui-btn ui-btn-left ui-corner-all ui-icon-back ui-btn-icon-notext">{$MOD.LBL_CANCEL}</a>
+		<a href="index.php?_operation=fetchRecord&record={$RECORDID}" class="ui-btn ui-btn-left ui-corner-all ui-icon-back ui-btn-icon-notext" rel="external">{$MOD.LBL_CANCEL}</a>
 		<h4>{$MOD.LBL_RELATED_LIST}</h4>
 		<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
 	</div>
@@ -50,7 +50,7 @@
 							<li >
 								<a class="ui-btn ui-btn-icon-right ui-icon-carat-r" href="?_operation=fetchRecord&record={$_FIELD.relatedlistcontent.id}&lang={$LANGUAGE}" target="_self">
 									{$_FIELD.relatedlistcontent.0}
-									{if $_FIELD.relatedlistcontent.1 neq ''},
+									{if isset($_FIELD.relatedlistcontent.1) && $_FIELD.relatedlistcontent.1 neq ''},
 										 {$_FIELD.relatedlistcontent.1}
 									{/if}
 									{if $_MODULE eq 'Timecontrol'}
@@ -73,8 +73,9 @@
 	<div data-role="footer" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
 		<h1></h1>
 		{if $_PARENT_MODULE eq "HelpDesk" && 'Timecontrol'|vtlib_isModuleActive}
-		<a href="?_operation=create&module=Timecontrol&record=''&relatedto={$RECORDID}" class="ui-btn ui-btn-right ui-corner-all ui-icon-clock ui-btn-icon-notext" data-transition="turn" data-iconpos="right">{$MOD.LBL_NEW}</a>
+		<a href="?_operation=create&module=Timecontrol&record=''&relatedto={$RECORDID}&returnto={$RECORDID}&returntomodule={$_PARENT_MODULE}" class="ui-btn ui-btn-right ui-corner-all ui-icon-clock ui-btn-icon-notext" rel="external" data-transition="turn" data-iconpos="right">{$MOD.LBL_NEW}</a>
 		{/if}
+		<a href="?_operation=create&module=Documents&record=''&relations={$RECORDID}&returnto={$RECORDID}&returntomodule={$_PARENT_MODULE}" class="ui-btn ui-btn-left ui-corner-all ui-icon-camera ui-btn-icon-notext" rel="external" data-transition="turn" data-iconpos="left">{$MOD.LBL_NEW}</a>
 	</div>
 	{include file="modules/Mobile/PanelMenu.tpl"}
 </div>

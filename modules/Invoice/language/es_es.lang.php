@@ -13,8 +13,8 @@
 *  Created Date : 2007-03-30
 *  Author       : Joe Bordes  JPL TSolucio, S.L.
  ********************************************************************************/
- 
-$mod_strings = Array(
+
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Facturas',
 'SINGLE_Invoice'=>'Factura',
 'LBL_SO_MODULE_NAME'=>'Factura',
@@ -78,7 +78,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Seleccionar cuenta',
 'LBL_GENERAL_INFORMATION'=>'Informació General',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nueva Oportunidad',
 'LBL_POTENTIAL_TITLE'=>'Oportunidades',
 
@@ -93,21 +92,18 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'Nuevo Contacto',
 'LBL_CONTACT_TITLE'=>'Contactos',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'Todos',
 'LBL_PROSPECT'=>'Prospección',
 'LBL_INVESTOR'=>'Inversionista',
 'LBL_RESELLER'=>'Revendedor',
 'LBL_PARTNER'=>'Socio',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Herramientas de Cuenta',
-//Added for 4GA
 'Subject'=>'Referencia',
 'Quote Name'=>'Nombre del Presupuesto',
 'Vendor Name'=>'Nombre del Proveedor',
 'Invoice Terms'=>'Condiciones Generales de Facturación',
-'Contact Name'=>'Persona de Contacto',//to include contact name field in Invoice
+'Contact Name'=>'Persona de Contacto',
 'Invoice Date'=>'Fecha de Factura',
 'Sub Total'=>'Sub Total',
 'S&H Amount' => 'Importe Envío y Manipulado',
@@ -145,13 +141,11 @@ $mod_strings = Array(
 'Sales Order'=>'Orden de Venta',
 'Pending'=>'Pendientes',
 'Account Name'=>'Nombre de la cuenta',
-//Quote Info
 'LBL_INVOICE_INFORMATION'=>'Información de la Facturación',
 'LBL_INVOICE'=>'Facturación:',
 'LBL_SO_INFORMATION'=>'Información de Orden de Venta',
 'LBL_SO'=>'Orden de Venta:',
 
-//Added in release 4.2
 'LBL_SUBJECT'=>'Referencia:',
 'LBL_SALES_ORDER'=>'Orden de Venta:',
 'LBL_MY_TOP_INVOICE'=>'Mis Facturas pendientes',
@@ -161,19 +155,15 @@ $mod_strings = Array(
 'Id'=>'Número de Factura',
 'Invoice'=>'Factura',
 
-//Added for existing Picklist Entries
-
 'Created'=>'Creada',
 'Approved'=>'Aprobada',
 'Sent'=>'Enviada',
 'Credit Invoice'=>'Rectificativa',
 'Paid'=>'Pagada',
 'AutoCreated'=>'Automática',
-//Added to Custom Invoice Number
 'Invoice No'=>'Nº Factura',
 'Adjustment'=>'Ajuste',
 
-//Added for Reports (5.0.4)
 'Tax Type'=>'Impuesto',
 'Discount Percent'=>'Descuento %',
 'Discount Amount'=>'Descuento Importe',
@@ -181,10 +171,7 @@ $mod_strings = Array(
 'No'=>'No',
 'Date'=>'Fecha',
 
-// Added affter 5.0.4 GA
-//Added for Documents module
 'Documents'=>'Documentos',
 'Invoice ID'=>'Id Factura',
 );
-
 ?>

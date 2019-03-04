@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_NEW_FORM_TITLE'=>'New Contact',
 'LBL_FIRST_NAME'=>'First Name:',
 'LBL_LAST_NAME'=>'Last Name:',
@@ -49,10 +49,7 @@ $mod_strings = Array(
 'Last 2 Days'=>'Last 2 Days',
 'Last Ten Days'=>'Last Ten Days',
 
-// Added/Updated for vtiger CRM 5.0.4 
 'User List'=>'User List',
-
-// Added after 5.0.4 GA
 
 //ADDED for Home Page Customization
 'LBL_HOME_MODULE' => 'Module',
@@ -88,7 +85,6 @@ $mod_strings = Array(
 'LBL_TWO_COLUMN'=>'Two Columns',
 'LBL_THREE_COLUMN'=>'Three Columns',
 'LBL_FOUR_COLUMN'=>'Four Columns',
-// END
 
 // Default home page widget's title
 'Top Accounts'=>'Top Organizations',
@@ -125,5 +121,4 @@ $mod_strings = Array(
 'FilterNotFound' => 'Filter You have Selected is Not Found',
 'Permission Denied' => 'Permission Denied',
 );
-
 ?>

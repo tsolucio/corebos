@@ -8,15 +8,15 @@
  * All Rights Reserved.
  * Translated by Francisco Hernandez www.odin.mx
  ************************************************************************************/
-$mod_strings = Array (
+$mod_strings = array (
 	'MailManager' => 'Administrador de Correo',
-	
+
 	// Translations for JS (please use the prefix JSLBL in key)
 	'JSLBL_Loading_Please_Wait'  => 'Cargando, por favor espera',
 	'JSLBL_Loading'              => 'Cargando',
 	'JSLBL_Settings'             => 'Configuración',
 	'JSLBL_Opening'              => 'Abriendo',
-	'JSLBL_Deleting'              => 'Eliminando',  
+	'JSLBL_Deleting'              => 'Eliminando',
 	'JSLBL_Updating'             => 'Actualizando',
 	'JSLBL_Associating'          => 'Asociando',
 	'JSLBL_Saving_And_Verifying' => 'Guardando & Verificando',
@@ -52,7 +52,6 @@ $mod_strings = Array (
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED'=>'Límite de carga excedida!!',
 	'JSLBL_MAIL_SENT'=>'Correo Enviado',
 	'JSLBL_EMAIL_FORMAT_INCORRECT'=>'Por favor, introduce una dirección de email correcta',
-	'JSLBL_Saving'=>'Guardando',
 	'JSLBL_SaveWith_EmptySubject'=>'¿Guardar sin asunto?',
 	'JSLBL_Delete'            =>  'Eliminar',
 	'JSLBL_Drafts'=>'Borradores',
@@ -72,13 +71,13 @@ $mod_strings = Array (
 	'JSLBL_MOVING'=>'Moviendo Correo(s)',
 	'JSLBL_LOADING_FOLDERS' => 'Cargando Carpetas..',
 	'JSLBL_ADD_COMMENT'=>'Añadir Comentario',
-    'JSLBL_Yahoo'=>'Yahoo',
-    'JSLBL_CANNOT_ADD_EMPTY_COMMENT' => 'Comentario no puede quedar vacío',
-    'JSLBL_NO_EMAILS_SELECTED' => 'No se han seleccionado correos.',
-    'JSLBL_ENTER_SOME_VALUE' => 'Introduce una cadena para buscar',
-    'JSLBL_DRAFT_MAIL_SAVED'=>'Se ha guardado el correo en Borradores',
-    
-	// General translations
+	'JSLBL_Yahoo'=>'Yahoo',
+	'JSLBL_CANNOT_ADD_EMPTY_COMMENT' => 'Comentario no puede quedar vacío',
+	'JSLBL_NO_EMAILS_SELECTED' => 'No se han seleccionado correos.',
+	'JSLBL_ENTER_SOME_VALUE' => 'Introduce una cadena para buscar',
+	'JSLBL_DRAFT_MAIL_SAVED'=>'Se ha guardado el correo en Borradores',
+
+		// General translations
 	'LBL_Folders'         => 'Carpetas',
 	'LBL_Newer'           => 'Más nuevos',
 	'LBL_Older'           => 'Más viejos',
@@ -106,7 +105,7 @@ $mod_strings = Array (
 	'LBL_ACTIONS'         => 'Acciones',
 	'LBL_Search'          => 'Buscar',
 	'LBL_Delete'            =>  'Eliminar',
-	
+
 	'LBL_Username'             => 'Nombre Usuario',
 	'LBL_Your_Mailbox_Account' => 'tu cuenta de correo',
 	'LBL_Password'             => 'Contraseña',
@@ -122,7 +121,7 @@ $mod_strings = Array (
 	'LBL_Validate_Cert'           => 'Validar Certificado',
 	'LBL_Do_Not_Validate_Cert'    => 'No validar Certificado',
 	'LBL_SELECT_ACCOUNT_TYPE'     => 'Selecciona Tipo Cuenta',
-	
+
 	'LBL_FROM'        => 'De',
 	'LBL_TO'          => 'A',
 	'LBL_CC'          => 'CC',
@@ -152,17 +151,17 @@ $mod_strings = Array (
 	'LBL_5_MIN' => '5 Minutos',
 	'LBL_10_MIN' => '10 Minutos',
 	'LBL_MOVE_TO'=>'Mover a...',
-    'LBL_MAILMANAGER_ADD_Contacts' => 'Añadir Contacto',
-    'LBL_MAILMANAGER_ADD_Accounts' => 'Añadir Cuenta',
-    'LBL_MAILMANAGER_ADD_Leads' => 'Añadir Prospecto',
-    'LBL_MAILMANAGER_ADD_Calendar' => 'Añadir Tarea',
-    'LBL_MAILMANAGER_ADD_HelpDesk' => 'Añadir Caso',
-    'LBL_MAILMANAGER_ADD_Emails' => 'Adjuntar Correo',
-    'LBL_MAILMANAGER_ADD_ModComments' => 'Añadir Comentario',
-    'LBL_MAILMANAGER_ADD_Potentials' => 'Añadir Oportunidad',
-    'LBL_MAILMANAGER_ADD_Project' => 'Añadir Proyecto',
-    'LBL_MAILMANAGER_ADD_ProjectTask' => 'Añadir Actividad',
-    'LBL_ADD' => 'Añadir',
+	'LBL_MAILMANAGER_ADD_Contacts' => 'Añadir Contacto',
+	'LBL_MAILMANAGER_ADD_Accounts' => 'Añadir Cuenta',
+	'LBL_MAILMANAGER_ADD_Leads' => 'Añadir Prospecto',
+	'LBL_MAILMANAGER_ADD_Calendar' => 'Añadir Tarea',
+	'LBL_MAILMANAGER_ADD_HelpDesk' => 'Añadir Caso',
+	'LBL_MAILMANAGER_ADD_Emails' => 'Adjuntar Correo',
+	'LBL_MAILMANAGER_ADD_ModComments' => 'Añadir Comentario',
+	'LBL_MAILMANAGER_ADD_Potentials' => 'Añadir Oportunidad',
+	'LBL_MAILMANAGER_ADD_Project' => 'Añadir Proyecto',
+	'LBL_MAILMANAGER_ADD_ProjectTask' => 'Añadir Actividad',
+	'LBL_ADD' => 'Añadir',
 	'JSLBL_SendWith_EmptyText' => '¿Enviar sin texto en el cuerpo?',
 	'LBL_ALLMAILS' => 'Todos los Correos',
 	'LBL_TO_CONTACTS' => 'A Contactos',
@@ -171,5 +170,4 @@ $mod_strings = Array (
 	'LBL_TO_USERS' => 'A Usuarios',
 	'LBL_SENT_MAILS' => 'Correos Enviados'
 );
-
 ?>

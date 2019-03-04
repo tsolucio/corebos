@@ -6,13 +6,13 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-if(typeof(SMSNotifierCommon) == 'undefined') {
+if (typeof(SMSNotifierCommon) == 'undefined') {
 	var SMSNotifierCommon = {
 
 		/** Wizard Container **/
-		getWizardContainer : function() {
+		getWizardContainer : function () {
 			var container = document.getElementById('__smsnotifier_wizard_container__');
-			if(!container) {
+			if (!container) {
 				container = document.createElement('div');
 				container.className = 'layerPopup';
 				container.id = '__smsnotifier_wizard_container__';
@@ -21,15 +21,17 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 			return container;
 		},
 
-		displayWizardContainer : function(container, sourcenode) {
-			if(typeof(container) == 'undefined') container = SMSNotifierCommon.getWizardContainer();
-			if(container) {
-				if(typeof(sourcenode) != 'undefined') {
-					if(sourcenode != null) {
+		displayWizardContainer : function (container, sourcenode) {
+			if (typeof(container) == 'undefined') {
+				container = SMSNotifierCommon.getWizardContainer();
+			}
+			if (container) {
+				if (typeof(sourcenode) != 'undefined') {
+					if (sourcenode != null) {
 						fnvshobj(sourcenode, container.id);
 					} else {
 						// Place at center if not already positioned.
-						if(container.style.top == '') {
+						if (container.style.top == '') {
 							placeAtCenter(container);
 						}
 					}
@@ -38,39 +40,41 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 			}
 		},
 
-		hideWizardContainer : function() {
-			if(typeof(container) == 'undefined') container = SMSNotifierCommon.getWizardContainer();
-			if(container) {
+		hideWizardContainer : function () {
+			if (typeof(container) == 'undefined') {
+				container = SMSNotifierCommon.getWizardContainer();
+			}
+			if (container) {
 				container.style.display='none';
 			}
 		},
 
 		/** Select Wizard **/
-		displaySelectWizard_DetailView : function(sourcemodule, recordid) {
+		displaySelectWizard_DetailView : function (sourcemodule, recordid) {
 			var sourcenode = null;
 			SMSNotifierCommon.displaySelectWizard(sourcenode, sourcemodule, recordid);
 		},
 
-		displaySelectWizard : function(sourcenode, sourcemodule, recordid) {
+		displaySelectWizard : function (sourcenode, sourcemodule, recordid) {
 			var idstring = false;
 
 			// Record id not sent directly? Could be from ListView
-			if(typeof(recordid) == 'undefined' || recordid == null || recordid == '') {
-				var excludedRecords = document.getElementById("excludedRecords").value;
+			if (typeof(recordid) == 'undefined' || recordid == null || recordid == '') {
+				var excludedRecords = document.getElementById('excludedRecords').value;
 				var select_options = document.getElementById('allselectedboxes').value;
 				var searchurl = document.getElementById('search_url').value;
 				var numOfRows = document.getElementById('numOfRows').value;
 				var viewid = getviewId();
-				if(select_options != 'all'){
+				if (select_options != 'all') {
 					var x = select_options.split(';');
 					var count = x.length;
-					if(count > 1) {
+					if (count > 1) {
 						idstring = select_options;
 					} else {
 						alert(alert_arr.SELECT);
 						return false;
 					}
-				}else{
+				} else {
 					idstring = select_options;
 					count = numOfRows;
 				}
@@ -78,9 +82,9 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 				// Record id sent? Could be from DetailView
 				idstring = recordid;
 			}
-			if(count > getMaxMassOperationLimit()) {
+			if (count > getMaxMassOperationLimit()) {
 				var confirm_str = alert_arr.MORE_THAN_500;
-				if(confirm(confirm_str)) {
+				if (confirm(confirm_str)) {
 					var confirm_status = true;
 				} else {
 					return false;
@@ -89,8 +93,8 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 				confirm_status = true;
 			}
 
-			if(confirm_status){
-				if(idstring) {
+			if (confirm_status) {
+				if (idstring) {
 					var url = 'module=SMSNotifier&action=SMSNotifierAjax&ajax=true&file=SMSNotifierSelectWizard';
 					url += '&sourcemodule=' + encodeURIComponent(sourcemodule);
 					url += '&idstring=' + encodeURIComponent(idstring);
@@ -101,28 +105,27 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 						method: 'POST',
 						url: 'index.php?'+url
 					}).done(function (response) {
-							SMSNotifierCommon.buildSelectWizard(response, sourcenode);
-						}
-					);
+						SMSNotifierCommon.buildSelectWizard(response, sourcenode);
+					});
 				}
 			}
 		},
 
-		buildSelectWizard : function(content, sourcenode) {
+		buildSelectWizard : function (content, sourcenode) {
 			var container = SMSNotifierCommon.getWizardContainer();
 			container.innerHTML = content;
 			SMSNotifierCommon.displayWizardContainer(container, sourcenode);
 		},
 
-		hideSelectWizard : function() {
+		hideSelectWizard : function () {
 			SMSNotifierCommon.hideWizardContainer();
 		},
 
 		/** Compose Wizard **/
-		displayComposeWizard : function(form, sourcenode) {
+		displayComposeWizard : function (form, sourcenode) {
 
 			var form_phonetype_inputs = form.phonetype;
-			if(typeof form_phonetype_inputs.length == 'undefined') {
+			if (typeof form_phonetype_inputs.length == 'undefined') {
 				form_phonetype_inputs = [form.phonetype];
 			}
 
@@ -135,13 +138,13 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 			var sourcemodule = form.sourcemodule.value;
 
 			// Gather the phone fields selected.
-			for(var index = 0; index < form_phonetype_inputs.length; ++index) {
-				if(form_phonetype_inputs[index].checked) {
+			for (var index = 0; index < form_phonetype_inputs.length; ++index) {
+				if (form_phonetype_inputs[index].checked) {
 					phonefields += form_phonetype_inputs[index].value + ';';
 				}
 			}
 
-			if(phonefields == '') {
+			if (phonefields == '') {
 				// TODO Show alert?
 				return false;
 			}
@@ -157,25 +160,24 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 				method: 'POST',
 				url: 'index.php?'+url
 			}).done(function (response) {
-					SMSNotifierCommon.buildComposeWizard(response, sourcenode);
-				}
-			);
+				SMSNotifierCommon.buildComposeWizard(response, sourcenode);
+			});
 		},
 
-		buildComposeWizard : function(content, sourcenode) {
+		buildComposeWizard : function (content, sourcenode) {
 			var container = SMSNotifierCommon.getWizardContainer();
 			container.innerHTML = content;
 			SMSNotifierCommon.displayWizardContainer(container, sourcenode);
 		},
 
-		hideComposeWizard : function() {
+		hideComposeWizard : function () {
 			SMSNotifierCommon.hideWizardContainer();
 		},
 
 		/** Send Operation **/
-		triggerSendSMS : function(form) {
+		triggerSendSMS : function (form) {
 			var messageTextInput = form.message;
-			if(messageTextInput.value == '') {
+			if (messageTextInput.value == '') {
 				messageTextInput.focus();
 				return false;
 			}
@@ -202,11 +204,10 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 				method: 'POST',
 				url: 'index.php?'+url
 			}).done(function (response) {
-					SMSNotifierCommon.hideComposeWizard();
-					document.getElementById('status').style.display='none';
-					VtigerJS_DialogBox.unblock();
-				}
-			);
+				SMSNotifierCommon.hideComposeWizard();
+				document.getElementById('status').style.display='none';
+				VtigerJS_DialogBox.unblock();
+			});
 		}
 	};
 }

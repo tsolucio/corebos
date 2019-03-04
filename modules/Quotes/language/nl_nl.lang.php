@@ -1,36 +1,14 @@
 <?php
-/*******************************************************************************
- * The contents of this file are subject to the following licences:
- * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
- * - vtiger CRM Public License Version 1.0 
- * You may not use this file except in compliance with the License
- * Software distributed under the License is distributed on an  "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is: SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
- * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
- * Feel free to use / redistribute these languagefiles under the VPL 1.0.
- * This translations is based on earlier work of: 
- * - IT-Online.nl <www.it-online.nl>
- * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
 
-/*******************************************************************************
- * Vicus eBusiness Solutions Version Control
- * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.3.x
- * @author	$Author: luuk $
- * @version 	$Revision: 1.5 $ $Date: 2012/02/28 23:40:22 $
- * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/Quotes/language/nl_nl.lang.php,v $
- * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
- * @license	vtiger CRM Public License Version 1.0 (by definition)
- ********************************************************************************/
- 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Offertes',
 'LBL_MODULE_TITLE'=>'Offertes: Home',
 'LBL_SEARCH_FORM_TITLE'=>'Offertes zoeken',
@@ -88,7 +66,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Selecteer account',
 'LBL_GENERAL_INFORMATION'=>'Algemene informatie',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nieuwe verkoopkans',
 'LBL_POTENTIAL_TITLE'=>'Verkoopkans',
 
@@ -103,16 +80,13 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'Nieuw contact',
 'LBL_CONTACT_TITLE'=>'Contacten',
 
-//Added fields after RC1 - Release
 'LBL_ALL'=>'Alle',
 'LBL_PROSPECT'=>'Prospect',
 'LBL_INVESTOR'=>'Investeerder',
 'LBL_RESELLER'=>'Wederverkoper',
 'LBL_PARTNER'=>'Partner',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Account gereedschap',
-//Added for 4GA
 'Subject'=>'Onderwerp',
 'Potential Name'=>'Naam verkoopkans',
 'Quote Stage'=>'Offerte stadium',
@@ -145,13 +119,11 @@ $mod_strings = Array(
 'Modified Time'=>'Gewijzigd',
 'Description'=>'Omschrijving',
 'Account Name'=>'Accountnaam',
-'Terms & Conditions'=>'Algemene Voorwaarden',
 //Quote Info
 'LBL_QUOTE_INFORMATION'=>'Offerte informatie',
 'LBL_TERMS_INFORMATION'=>'Algemene Voorwaarden',
 'LBL_QUOTE'=>'Offerte:',
 
-//Added during 4.2 release
 'LBL_SUBJECT'=>'Onderwerp:',
 'LBL_POTENTIAL_NAME'=>'Naam verkoopkans:',
 'LBL_ACCOUNT_NAME'=>'Accountnaam:',
@@ -173,24 +145,31 @@ $mod_strings = Array(
 'USPS'=>'TNT express',
 'DHL'=>'DHL',
 'BlueDart'=>'TNT post',
-'Sales Tax'=>'Verkoopbelasting',  
-   
-//Added for Reports (5.0.4)
+'Sales Tax'=>'Verkoopbelasting',
+
 'Tax Type'=>'Belastingsoort',
 'Discount Percent'=>'Kortingspercentage',
 'Discount Amount'=>'Kortingsbedrag',
 'Terms & Conditions'=>'Voorwaarden',
 'Adjustment'=>'Bijstelling',
-'Sub Total'=>'Subtotaal',
 'S&H Amount'=>'Handling en Verzendtoeslag',
-
-//Added after 5.0.4 GA
 'Quote No'=>'Offerte Nr',
-
 'SINGLE_Quotes'=>'Offerte',
-
 'Add Service Contract'=>'Voeg Servicecontract toe',
 
+'LBL_Quotes_FINANCIALINFO' => 'Financiële informatie',
+'Gross Total' => 'Bruto totaal',
+'Total Discount' => 'Totale korting',
+'Net Total (aGD)' => 'Netto totaal na korting',
+'Net Total (bGD)' => 'Netto totaal voor korting',
+'Total Tax' => 'Totaal aan belastingen',
+'SH Total' => 'Totaal aan servicekosten',
+'SH Tax' => 'Belasting over servicekosten',
+'Final Adjustment' => 'Eindbijstelling',
+'Line Discount' => 'Regelkortingen',
+'Global Discount' => 'Totaalkorting',
+'Net Total' => 'Netto totaal voor korting',
+'VAT' => 'BTW',
+'Grand Total' => 'Eindtotaal',
 );
-
 ?>

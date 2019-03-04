@@ -16,5 +16,4 @@ require_once 'modules/Import/controllers/Import_Data_Controller.php';
 Import_Data_Controller::runScheduledImport();
 
 $VTIGER_BULK_SAVE_MODE = $previousBulkSaveMode;
-
 ?>

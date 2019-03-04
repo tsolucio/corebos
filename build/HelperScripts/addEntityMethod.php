@@ -3,7 +3,7 @@
 $Vtiger_Utils_Log = true;
 
 require_once 'include/utils/utils.php';
-include_once('vtlib/Vtiger/Module.php');
+include_once 'vtlib/Vtiger/Module.php';
 require 'modules/com_vtiger_workflow/VTEntityMethodManager.inc';
 global $adb;
 

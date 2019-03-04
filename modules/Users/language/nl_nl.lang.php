@@ -193,6 +193,7 @@ $mod_strings = array(
 	'LBL_PROPERTIES' => 'Eigendom van',
 	'LBL_ASTERISKEXTENSIONS_EXIST' => 'Asterisk Extensie Bestaat Reeds!',
 	'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'Decimal Separator and Digit Grouping Separator cannot be the same.',
+	'LBL_FORUSER' => ' for User ',
 	'LBL_CREATE_NEW_GROUP' => 'Maak nieuwe groep',
 	'LBL_NEW_GROUP' => 'Nieuwe groep',
 	'LBL_EDIT_GROUP' => 'Bewerk groep',

@@ -7,16 +7,16 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('include/logging.php');
-require_once('include/database/PearDatabase.php');
-require_once('include/utils/UserInfoUtil.php');
+require_once 'include/logging.php';
+require_once 'include/database/PearDatabase.php';
+require_once 'include/utils/UserInfoUtil.php';
 require_once 'data/CRMEntity.php';
-require_once('modules/Calendar/Activity.php');
-require_once('modules/Contacts/Contacts.php');
-require_once('data/Tracker.php');
+require_once 'modules/Calendar/Activity.php';
+require_once 'modules/Contacts/Contacts.php';
+require_once 'data/Tracker.php';
 require_once 'include/utils/CommonUtils.php';
 require_once 'include/Webservices/Utils.php';
-require_once('modules/Users/UserTimeZonesArray.php');
+require_once 'modules/Users/UserTimeZonesArray.php';
 include_once 'modules/Users/authTypes/TwoFactorAuth/autoload.php';
 use \RobThree\Auth\TwoFactorAuth;
 
@@ -77,9 +77,6 @@ class Users extends CRMEntity {
 
 	public $encodeFields = array('first_name', 'last_name', 'description');
 
-	// This is used to retrieve related fields from form posts.
-	public $additional_column_fields = array('reports_to_name');
-
 	public $sortby_fields = array('status', 'email1', 'email2', 'phone_work', 'is_admin', 'user_name', 'last_name');
 
 	// This is the list of fields that are in the lists.
@@ -122,7 +119,7 @@ class Users extends CRMEntity {
 	 */
 	public function __construct() {
 		$this->log = LoggerManager::getLogger('user');
-		$this->log->debug("Entering Users() method ...");
+		$this->log->debug('> Users');
 		$this->db = PearDatabase::getInstance();
 		$this->DEFAULT_PASSWORD_CRYPT_TYPE = (version_compare(PHP_VERSION, '5.3.0') >= 0) ? 'PHP5.3MD5' : 'MD5';
 		$this->column_fields = getColumnFields('Users');
@@ -130,7 +127,7 @@ class Users extends CRMEntity {
 		$this->column_fields['currency_code'] = '';
 		$this->column_fields['currency_symbol'] = '';
 		$this->column_fields['conv_rate'] = '';
-		$this->log->debug("Exiting Users() method ...");
+		$this->log->debug('< Users');
 	}
 
 	/**
@@ -139,13 +136,13 @@ class Users extends CRMEntity {
 	 */
 	public function getSortOrder() {
 		global $log;
-		$log->debug("Entering getSortOrder() method ...");
+		$log->debug('> getSortOrder');
 		if (isset($_REQUEST['sorder'])) {
 			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
 		} else {
 			$sorder = (!empty($_SESSION['USERS_SORT_ORDER']) ? ($_SESSION['USERS_SORT_ORDER']) : ($this->default_sort_order));
 		}
-		$log->debug("Exiting getSortOrder method ...");
+		$log->debug('< getSortOrder');
 		return $sorder;
 	}
 
@@ -155,7 +152,7 @@ class Users extends CRMEntity {
 	 */
 	public function getOrderBy() {
 		global $log;
-		$log->debug("Entering getOrderBy() method ...");
+		$log->debug('> getOrderBy');
 
 		$use_default_order_by = '';
 		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0)) {
@@ -167,7 +164,7 @@ class Users extends CRMEntity {
 		} else {
 			$order_by = (!empty($_SESSION['USERS_ORDER_BY']) ? ($_SESSION['USERS_ORDER_BY']) : ($use_default_order_by));
 		}
-		$log->debug("Exiting getOrderBy method ...");
+		$log->debug('< getOrderBy');
 		return $order_by;
 	}
 
@@ -210,8 +207,8 @@ class Users extends CRMEntity {
 			$this->log->debug("LOADING :PREFERENCES SIZE " . strlen($value));
 			$this->user_preferences = unserialize(base64_decode($value));
 			coreBOS_Session::merge($this->user_preferences);
-			$this->log->debug("Finished Loading");
 			coreBOS_Session::set('USER_PREFERENCES', $this->user_preferences);
+			$this->log->debug('Finished Loading');
 		}
 	}
 
@@ -220,8 +217,6 @@ class Users extends CRMEntity {
 	 * @param string $user_name - Must be non null and at least 2 characters
 	 * @param string $user_password - Must be non null and at least 1 character.
 	 * @desc Take an unencrypted username and password and return the encrypted password
-	 * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc..
-	 * All Rights Reserved.
 	 */
 	public function encrypt_password($user_password, $crypt_type = '') {
 		// encrypt the password.
@@ -277,7 +272,7 @@ class Users extends CRMEntity {
 		switch (strtoupper($authType)) {
 			case 'LDAP':
 				$this->log->debug("Using LDAP authentication");
-				require_once('modules/Users/authTypes/LDAP.php');
+				require_once 'modules/Users/authTypes/LDAP.php';
 				$result = ldapAuthenticate($this->column_fields["user_name"], $user_password);
 				if ($result == null) {
 					return false;
@@ -288,7 +283,7 @@ class Users extends CRMEntity {
 
 			case 'AD':
 				$this->log->debug("Using Active Directory authentication");
-				require_once('modules/Users/authTypes/adLDAP.php');
+				require_once 'modules/Users/authTypes/adLDAP.php';
 				$adldap = new adLDAP();
 				if ($adldap->authenticate($this->column_fields["user_name"], $user_password)) {
 					return true;
@@ -347,8 +342,8 @@ class Users extends CRMEntity {
 				break;
 			case 'EMAIL':
 			default:
-				require_once('modules/Emails/mail.php');
-				require_once('modules/Emails/Emails.php');
+				require_once 'modules/Emails/mail.php';
+				require_once 'modules/Emails/Emails.php';
 				$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk', $userid);
 				$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name', 'your-support name', 'HelpDesk', $userid);
 				$mailto = getUserEmail($userid);
@@ -362,8 +357,6 @@ class Users extends CRMEntity {
 	/**
 	 * Load a user based on the user_name in $this
 	 * @return -- this if load was successul and null if load failed.
-	 * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc..
-	 * All Rights Reserved.
 	 */
 	public function load_user($user_password) {
 		$usr_name = $this->column_fields["user_name"];
@@ -437,8 +430,8 @@ class Users extends CRMEntity {
 				// Send email with authentification error.
 				$mailto = GlobalVariable::getVariable('Debug_Send_UserLoginIPAuth_Error', '', 'Users');
 				if ($mailto != '') {
-					require_once('modules/Emails/mail.php');
-					require_once('modules/Emails/Emails.php');
+					require_once 'modules/Emails/mail.php';
+					require_once 'modules/Emails/Emails.php';
 					$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
 					$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name', 'your-support name', 'HelpDesk');
 					$mailcontent = $mailsubject. "\n";
@@ -461,8 +454,8 @@ class Users extends CRMEntity {
 					// Send email with authentification error.
 					$mailto = GlobalVariable::getVariable('Debug_Send_AdminLoginIPAuth_Error', '', 'Users');
 					if ($mailto != '') {
-						require_once('modules/Emails/mail.php');
-						require_once('modules/Emails/Emails.php');
+						require_once 'modules/Emails/mail.php';
+						require_once 'modules/Emails/Emails.php';
 						$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
 						$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name', 'your-support name', 'HelpDesk');
 						$mailcontent = $mailsubject. "\n";
@@ -518,16 +511,14 @@ class Users extends CRMEntity {
 	 * @param string $new_password - Must be non null and at least 1 character.
 	 * @return boolean - If passwords pass verification and query succeeds, return true, else return false.
 	 * @desc Verify that the current password is correct and write the new password to the DB.
-	 * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc..
-	 * All Rights Reserved.
 	 */
 	public function change_password($user_password, $new_password, $dieOnError = true) {
 		global $mod_strings, $current_user;
 		$usr_name = $this->column_fields["user_name"];
 		$this->log->debug("Starting password change for $usr_name");
 
-		if (!isset($new_password) || $new_password == "") {
-			$this->error_string = $mod_strings['ERR_PASSWORD_CHANGE_FAILED_1'] . $user_name . $mod_strings['ERR_PASSWORD_CHANGE_FAILED_2'];
+		if (!isset($new_password) || $new_password == '') {
+			$this->error_string = $mod_strings['ERR_PASSWORD_CHANGE_FAILED_1'] . $usr_name . $mod_strings['ERR_PASSWORD_CHANGE_FAILED_2'];
 			return false;
 		}
 
@@ -559,7 +550,7 @@ class Users extends CRMEntity {
 			where id=?";
 		$this->db->pquery($query, array($encrypted_new_password, $encrypted_new_password, $crypt_type, $change_password_next_login, $this->id));
 		$this->createAccessKey();
-		require_once('modules/Users/CreateUserPrivilegeFile.php');
+		require_once 'modules/Users/CreateUserPrivilegeFile.php';
 		createUserPrivilegesfile($this->id);
 		return true;
 	}
@@ -574,7 +565,7 @@ class Users extends CRMEntity {
 	}
 
 	public function de_cryption($data) {
-		require_once('include/utils/encryption.php');
+		require_once 'include/utils/encryption.php';
 		$de_crypt = new Encryption();
 		if (isset($data)) {
 			$decrypted_password = $de_crypt->decrypt($data);
@@ -583,7 +574,7 @@ class Users extends CRMEntity {
 	}
 
 	public function changepassword($newpassword) {
-		require_once('include/utils/encryption.php');
+		require_once 'include/utils/encryption.php';
 		$en_crypt = new Encryption();
 		if (isset($newpassword)) {
 			$encrypted_password = $en_crypt->encrypt($newpassword);
@@ -644,8 +635,6 @@ class Users extends CRMEntity {
 
 	/**
 	 * @return -- returns a list of all users in the system.
-	 * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc..
-	 * All Rights Reserved.
 	 */
 	public function verify_data() {
 		$usr_name = $this->column_fields["user_name"];
@@ -693,7 +682,7 @@ class Users extends CRMEntity {
 		$result = $this->db->pquery($query, array($this->id), true, "Error filling in additional detail vtiger_fields");
 
 		$row = $this->db->fetchByAssoc($result);
-		$this->log->debug("additional detail query results: $row");
+		$this->log->debug('< fill_in_additional_detail_fields '.$row);
 
 		if ($row != null) {
 			$this->reports_to_name = stripslashes(getFullNameFromArray('Users', $row));
@@ -705,11 +694,10 @@ class Users extends CRMEntity {
 	/** Function to get the current user information from the user_privileges file
 	 * @param $userid -- user id:: Type integer
 	 * @returns user info in $this->column_fields array:: Type array
-	 *
 	 */
 	public function retrieveCurrentUserInfoFromFile($userid) {
 		checkFileAccessForInclusion('user_privileges/user_privileges_' . $userid . '.php');
-		require('user_privileges/user_privileges_' . $userid . '.php');
+		require 'user_privileges/user_privileges_' . $userid . '.php';
 		foreach ($this->column_fields as $field => $value_iter) {
 			if (isset($user_info[$field])) {
 				$this->$field = $user_info[$field];
@@ -724,8 +712,6 @@ class Users extends CRMEntity {
 	 * @param $module -- module name:: Type varchar
 	 */
 	public function saveentity($module, $fileid = '') {
-		global $current_user;
-		//$adb added by raju for mass mailing
 		$insertion_mode = $this->mode;
 		if (empty($this->column_fields['time_zone'])) {
 			$dbDefaultTimeZone = DateTimeField::getDBTimeZone();
@@ -748,7 +734,7 @@ class Users extends CRMEntity {
 				$this->insertIntoEntityTable($table_name, $module, $fileid);
 			}
 		}
-		require_once('modules/Users/CreateUserPrivilegeFile.php');
+		require_once 'modules/Users/CreateUserPrivilegeFile.php';
 		createUserPrivilegesfile($this->id);
 		coreBOS_Session::delete('next_reminder_interval');
 		coreBOS_Session::delete('next_reminder_time');
@@ -756,15 +742,14 @@ class Users extends CRMEntity {
 			$this->createAccessKey();
 		}
 		$this->db->completeTransaction();
-		$this->db->println("TRANS saveentity ends");
+		$this->db->println('TRANS saveentity ends');
 	}
 
 	public function createAccessKey() {
 		global $log;
-		$log->info("Entering Into function createAccessKey()");
-		$updateQuery = "update vtiger_users set accesskey=? where id=?";
-		$insertResult = $this->db->pquery($updateQuery, array(vtws_generateRandomAccessKey(16), $this->id));
-		$log->info("Exiting function createAccessKey()");
+		$log->debug('> createAccessKey');
+		$this->db->pquery('update vtiger_users set accesskey=? where id=?', array(vtws_generateRandomAccessKey(16), $this->id));
+		$log->debug('< createAccessKey');
 	}
 
 	/** Function to insert values in the specifed table for the specified module
@@ -772,8 +757,8 @@ class Users extends CRMEntity {
 	 * @param $module -- module:: Type varchar
 	 */
 	public function insertIntoEntityTable($table_name, $module, $fileid = '') {
-		global $log;
-		$log->info("function insertIntoEntityTable " . $module . ' vtiger_table name ' . $table_name);
+		global $log, $app_strings;
+		$log->debug('> insertIntoEntityTable '.$table_name.','.$module);
 		global $adb, $current_user;
 		$insertion_mode = $this->mode;
 		//Checkin whether an entry is already is present in the vtiger_table to update
@@ -805,7 +790,7 @@ class Users extends CRMEntity {
 			}
 			$qparams = array($this->id);
 			$tabid = getTabid($module);
-			$sql = "select * from vtiger_field where tabid=? and tablename=? and displaytype in (1,3,4) and vtiger_field.presence in (0,2)";
+			$sql = "select * from vtiger_field where tabid=? and tablename=? and displaytype in (1,3,4,5) and vtiger_field.presence in (0,2)";
 			$params = array($tabid, $table_name);
 
 			$crypt_type = $this->DEFAULT_PASSWORD_CRYPT_TYPE;
@@ -940,7 +925,7 @@ class Users extends CRMEntity {
 	 */
 	public function insertIntoAttachment($id, $module, $direct_import = false) {
 		global $log;
-		$log->debug("Entering into insertIntoAttachment($id,$module) method.");
+		$log->debug("> insertIntoAttachment $id,$module");
 
 		foreach ($_FILES as $fileindex => $files) {
 			if ($files['name'] != '' && $files['size'] > 0) {
@@ -949,19 +934,19 @@ class Users extends CRMEntity {
 			}
 		}
 
-		$log->debug("Exiting from insertIntoAttachment($id,$module) method.");
+		$log->debug('< insertIntoAttachment');
 	}
 
 	/** Function to retreive the user info of the specifed user id The user info will be available in $this->column_fields array
 	 * @param $record -- record id:: Type integer
 	 * @param $module -- module:: Type varchar
 	 */
-	public function retrieve_entity_info($record, $module, $deleted = false) {
+	public function retrieve_entity_info($record, $module, $deleted = false, $from_wf = false) {
 		global $adb, $log;
-		$log->debug("Entering into retrieve_entity_info($record, $module) method.");
+		$log->debug("> retrieve_entity_info $record, $module");
 
 		if ($record == '') {
-			$log->debug("record is empty. returning null");
+			$log->debug('record is empty. returning null');
 			return null;
 		}
 
@@ -1012,8 +997,7 @@ class Users extends CRMEntity {
 		}
 
 		$this->id = $record;
-		$log->debug("Exit from retrieve_entity_info($record, $module) method.");
-
+		$log->debug('< retrieve_entity_info');
 		return $this;
 	}
 
@@ -1042,19 +1026,19 @@ class Users extends CRMEntity {
 		$filesize = $file_details['size'];
 		$filetmp_name = $file_details['tmp_name'];
 
-		$current_id = $this->db->getUniqueID("vtiger_crmentity");
+		if (validateImageFile($file_details) == 'true' && validateImageContents($filetmp_name) == false) {
+			$log->debug('Skip the save attachment process.');
+			return;
+		}
+
+		$current_id = $this->db->getUniqueID('vtiger_crmentity');
 
 		//get the file path inwhich folder we want to upload the file
 		$upload_file_path = decideFilePath();
 		//upload the file in server
 		$upload_status = move_uploaded_file($filetmp_name, $upload_file_path . $current_id . "_" . $binFile);
 
-		$save_file = 'true';
-		//only images are allowed for these modules
-		if ($module == 'Users') {
-			$save_file = validateImageFile($file_details);
-		}
-		if ($save_file == 'true') {
+		if ($upload_status) {
 			$sql1 = 'insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,createdtime,modifiedtime) values(?,?,?,?,?,?,?)';
 			$params1 = array($current_id, $current_user->id, $ownerid, $module . ' Attachment', $this->column_fields['description'],
 				$this->db->formatString('vtiger_crmentity', 'createdtime', $date_var), $this->db->formatDate($date_var, true));
@@ -1062,20 +1046,17 @@ class Users extends CRMEntity {
 
 			$sql2 = 'insert into vtiger_attachments(attachmentsid, name, description, type, path) values(?,?,?,?,?)';
 			$params2 = array($current_id, $filename, $this->column_fields['description'], $filetype, $upload_file_path);
-			$result = $this->db->pquery($sql2, $params2);
+			$this->db->pquery($sql2, $params2);
 
 			if ($id != '') {
 				$delquery = 'delete from vtiger_salesmanattachmentsrel where smid = ?';
 				$this->db->pquery($delquery, array($id));
 			}
 
-			$sql3 = 'insert into vtiger_salesmanattachmentsrel values(?,?)';
-			$this->db->pquery($sql3, array($id, $current_id));
+			$this->db->pquery('insert into vtiger_salesmanattachmentsrel values(?,?)', array($id, $current_id));
 
 			//we should update the imagename in the users table
-			$this->db->pquery("update vtiger_users set imagename=? where id=?", array($filename, $id));
-		} else {
-			$log->debug("Skip the save attachment process.");
+			$this->db->pquery('update vtiger_users set imagename=? where id=?', array($filename, $id));
 		}
 		return;
 	}
@@ -1084,7 +1065,7 @@ class Users extends CRMEntity {
 	 * @param $module -- module name:: Type varchar
 	 */
 	public function save($module_name, $fileid = '') {
-		global $log, $adb, $current_user, $cbodUserLog;
+		global $adb, $current_user, $cbodUserLog;
 		if (!is_admin($current_user) && $current_user->id != $this->id) {// only admin users can change other users profile
 			return false;
 		}
@@ -1112,7 +1093,7 @@ class Users extends CRMEntity {
 		if (isset($this->column_fields['roleid'])) {
 			updateUser2RoleMapping($this->column_fields['roleid'], $this->id);
 		}
-		require_once('modules/Users/CreateUserPrivilegeFile.php');
+		require_once 'modules/Users/CreateUserPrivilegeFile.php';
 		//createUserPrivilegesfile($this->id); // done in saveentity above
 		if ($this->mode!='edit' || $oldrole != $this->column_fields['roleid']) {
 			createUserSharingPrivilegesfile($this->id);
@@ -1125,7 +1106,7 @@ class Users extends CRMEntity {
 					'date' => date('Y-m-d H:i:s'),
 					'currentuser' => $current_user->id,
 					'action' => 'create',
-					'userstatus' => 'active',
+					'userstatus' => 'Active',
 					'oduser' => $this->id,
 				);
 				$cbmq->sendMessage('coreBOSOnDemandChannel', 'Users', 'CentralSync', 'Data', '1:M', 0, 8640000, 0, 0, serialize($msg));
@@ -1136,7 +1117,7 @@ class Users extends CRMEntity {
 						'date' => date('Y-m-d H:i:s'),
 						'currentuser' => $current_user->id,
 						'action' => 'edit',
-						'userstatus' => strtolower($this->column_fields['status']),
+						'userstatus' => $this->column_fields['status'],
 						'oduser' => $this->id,
 					);
 					$cbmq->sendMessage('coreBOSOnDemandChannel', 'Users', 'CentralSync', 'Data', '1:M', 0, 8640000, 0, 0, serialize($msg));
@@ -1350,7 +1331,7 @@ class Users extends CRMEntity {
 	 */
 	public function saveHomeStuffOrder($id) {
 		global $log, $adb;
-		$log->debug("Entering in function saveHomeOrder($id)");
+		$log->debug('> saveHomeOrder '.$id);
 
 		if ($this->mode == 'edit') {
 			$qry = 'update vtiger_homestuff,vtiger_homedefault
@@ -1363,15 +1344,12 @@ class Users extends CRMEntity {
 				} else {
 					$visible = 1; //To hide the default Homestuff on the the Home Page
 				}
-				$result = $adb->pquery($qry, array($visible, $id, $key));
-			}
-			if ($save_array != "") {
-				$homeorder = implode(',', $save_array);
+				$adb->pquery($qry, array($visible, $id, $key));
 			}
 		} else {
 			$this->insertUserdetails('postinstall');
 		}
-		$log->debug("Exiting from function saveHomeOrder($id)");
+		$log->debug('< saveHomeOrder');
 	}
 
 	/**
@@ -1434,17 +1412,21 @@ class Users extends CRMEntity {
 
 	/** Function to delete an entity with given Id */
 	public function trash($module, $id) {
-		global $log, $current_user, $cbodUserLog;
+		global $current_user, $cbodUserLog;
 		$this->mark_deleted($id);
 		// ODController delete user
 		if ($cbodUserLog) {
+			global $adb;
+			$uinf = $adb->pquery('select user_name, last_name from vtiger_users where id=?', array($id));
 			$cbmq = coreBOS_MQTM::getInstance();
 			$msg = array(
 				'date' => date('Y-m-d H:i:s'),
 				'currentuser' => $current_user->id,
 				'action' => 'trash',
-				'userstatus' => 'inactive',
-				'oduser' => $this->id,
+				'userstatus' => 'Inactive',
+				'username' => $adb->query_result($uinf, 0, 'user_name'),
+				'lastname' => $adb->query_result($uinf, 0, 'last_name'),
+				'oduser' => $id,
 			);
 			$cbmq->sendMessage('coreBOSOnDemandChannel', 'Users', 'CentralSync', 'Data', '1:M', 0, 8640000, 0, 0, serialize($msg));
 		}
@@ -1469,13 +1451,16 @@ class Users extends CRMEntity {
 		vtws_transferOwnership($userId, $transformToUserId);
 		// ODController delete user
 		if ($cbodUserLog) {
+			$uinf = $adb->pquery('select user_name, last_name from vtiger_users where id=?', array($userId));
 			$cbmq = coreBOS_MQTM::getInstance();
 			$msg = array(
 				'date' => date('Y-m-d H:i:s'),
 				'currentuser' => $current_user->id,
 				'action' => 'transfer',
-				'userstatus' => 'inactive',
-				'oduser' => $this->id,
+				'userstatus' => 'Inactive',
+				'username' => $adb->query_result($uinf, 0, 'user_name'),
+				'lastname' => $adb->query_result($uinf, 0, 'last_name'),
+				'oduser' => $userId,
 			);
 			$cbmq->sendMessage('coreBOSOnDemandChannel', 'Users', 'CentralSync', 'Data', '1:M', 0, 8640000, 0, 0, serialize($msg));
 		}
@@ -1493,10 +1478,10 @@ class Users extends CRMEntity {
 	 * @param <type> $id
 	 */
 	public function mark_deleted($id) {
-		global $log, $current_user, $adb;
+		global $current_user, $adb;
 		$date_var = date('Y-m-d H:i:s');
 		$query = "UPDATE vtiger_users set status=?,date_modified=?,modified_user_id=? where id=?";
-		$adb->pquery($query, array('Inactive', $adb->formatDate($date_var, true), $current_user->id, $id), true, "Error marking record deleted: ");
+		$adb->pquery($query, array('Inactive', $adb->formatDate($date_var, true), $current_user->id, $id), true, 'Error marking record deleted: ');
 	}
 
 	/**
@@ -1544,12 +1529,12 @@ class Users extends CRMEntity {
 	*/
 	public function create_export_query($where = '') {
 		global $log, $current_user;
-		$log->debug("Entering create_export_query(".$where.") method ...");
+		$log->debug('> create_export_query '.$where);
 
 		$query = '';
 
 		if (is_admin($current_user)) {
-			include("include/utils/ExportUtils.php");
+			include "include/utils/ExportUtils.php";
 
 			//To get the Permitted fields query and the permitted fields list
 			$sql = getPermittedFieldsQuery('Users', 'detail_view');
@@ -1570,7 +1555,7 @@ class Users extends CRMEntity {
 				$query .= ' WHERE '.$where_auto;
 			}
 
-			$log->debug('Exiting create_export_query method ...');
+			$log->debug('< create_export_query');
 		}
 		return $query;
 	}

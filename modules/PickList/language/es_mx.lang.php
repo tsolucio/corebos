@@ -8,9 +8,6 @@
  * All Rights Reserved.
  *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
-/**
- * this file can be used to internationalise the strings present in the picklist
- */
 $mod_strings = array(
 	'LBL_ASSIGN_BUTTON'=>'Asignar',
 	'ADD_PICKLIST_VALUES'=>'Agregar valores de selección',
@@ -28,7 +25,6 @@ $mod_strings = array(
 	'LBL_PICKLIST_VALUES_ASSIGNED_TO'=>'Asigna valores de selección para ',
 	'LBL_ADD_TO_OTHER_ROLES'=>'Agregar a otros roles',
 	'LBL_OK_BUTTON_LABEL'=>'Vale',
-	'LBL_SELECT_ROLES'=>'Selecciona roles',
 	'LBL_DISPLAYED_VALUES'=>'Los valores accesibles por el rol están abajo',
 
 	// For Dependency picklist
@@ -48,6 +44,11 @@ $mod_strings = array(
 	'LBL_CONFIGURE_DEPENDENCY_HELP_3' => 'Valores seleccionados del campo destino, se muestran como',
 	'LBL_ADD_BUTTON' => 'Agregar Elemento',
 	'LBL_EDIT_BUTTON' => 'Renombrar Elemento',
+	'LBL_MOVE_UP' => 'Subir',
+	'LBL_MOVE_DOWN' => 'Bajar',
+	'LBL_MOVE_LEFT' => 'Mover Izquierda',
+	'LBL_MOVE_RIGHT' => 'Mover Derecha',
+	'LBL_REMOVE' => 'Quitar',
 	'LBL_DELETE_BUTTON' => 'Eliminar Elemento',
 );
 ?>

@@ -102,9 +102,6 @@ $mod_strings = array (
 //Added for search heading
 'LBL_GENERAL_INFORMATION'=>'Información General',
 
-
-
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nueva Oportunidad',
 'LBL_POTENTIAL_TITLE'=>'Oportunidades',
 
@@ -119,7 +116,6 @@ $mod_strings = array (
 'LBL_NEW_NOTE'=>'Agregar Documento',
 'LBL_NOTE_TITLE'=>'Documentos',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Herramientas de Contacto',
 
 'Salutation'=>'Saludo',
@@ -294,5 +290,4 @@ $mod_strings = array (
 'SYNC_RESULTS'=>'Resultados de la Sincronización',
 'ERR_GContactsSync'=>'Se ha producido un error accediendo a Google. La configuración ha sido eliminada, por favor configurala de nuevo.',
 );
-
 ?>

@@ -15,9 +15,8 @@
  *************************************************************************************************
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-
-require_once('modules/com_vtiger_workflow/VTEntityCache.inc');
-require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
+require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
+require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 
 class CBTagTask extends VTTask {
 	public $executeImmediately = true;
@@ -27,11 +26,11 @@ class CBTagTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb,$default_charset,$log,$current_user;
+		global $current_user;
 		list($cto, $cto_id) = explode('x', $entity->getId());
-		if (!empty($cto_id) and !empty($this->listoftags)) {
+		if (!empty($cto_id) && !empty($this->listoftags)) {
 			$setype = getSalesEntityType($cto_id);
-			require_once('include/freetag/freetag.class.php');
+			require_once 'include/freetag/freetag.class.php';
 			$freetag = new freetag();
 			if ($this->addrel) {
 				if ($this->forallusers) {

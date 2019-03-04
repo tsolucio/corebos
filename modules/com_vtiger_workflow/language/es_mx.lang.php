@@ -1,8 +1,7 @@
 <?php
 /**
-  JPL TSolucio, S.L. 2009 MPL
-
-   * Es_mx Author: Francisco Hernandez Odin Consultores www.odin.mx
+ * JPL TSolucio, S.L. 2009 MPL
+ * Es_mx Author: Francisco Hernandez Odin Consultores www.odin.mx
  **/
 
 $mod_strings = array(
@@ -15,7 +14,7 @@ $mod_strings = array(
 'LBL_EDIT_TASK_TITLE'=>'Editar una tarea existente o crear una nueva',
 'LBL_EDIT_WORKFLOW'=>'Editar Flujo Trabajo',
 'LBL_EDIT_WORKFLOW_TITLE'=>'Editar un flujo de trabajo existente o crear uno nuevo',
-'LBL_FROM_TEMPLATE'=>'De Plantilla',
+'LBL_FROM_TEMPLATE'=>'Basado en plantilla',
 'LBL_NEW_WORKFLOW'=>'Nuevo Flujo de Trabajo',
 'LBL_NEW_TEMPLATE'=>'Guardar como Plantilla',
 'LBL_CREATE_WORKFLOW_FOR'=>'Crear un flujo de trabajo para',
@@ -37,11 +36,10 @@ $mod_strings = array(
 'LBL_NO_TEMPLATES'=>'Sin Plantillas',
 'LBL_SELECT'=>'Selecciona',
 'LBL_MESSAGE'=>'Mensaje',
-'LBL_SELECT'=>'Selecciona',
-'LBL_MESSAGE'=>'Mensaje',
-'LBL_SEND_ALL_ATTACHMENT'=>'Enviar todos los adjuntos',
 'VTPDFMakerTask'=>'Guardar documento de PDFMaker',  // ITS4YOU-CR PDF Maker
 'LBL_SEND_ALL_ATTACHMENT'=>'Enviar todos los adjuntos',
+'VTPDFMakerTask'=>'Guardar documento de PDFMaker',  // ITS4YOU-CR PDF Maker
+'LBL_SEND_ALL_ATTACHMENT'=>'Enviar todos los adjuntos', 
 'LBL_SET_FIELD_VALUES'=>'Establecer valor de campo',
 'LBL_ADD_FIELD'=>'Agregar campo',
 
@@ -89,6 +87,8 @@ $mod_strings = array(
 'groupEmailList' => 'Emails de Grupo',
 
 'Workflow'=>'Flujo de Trabajo',
+'WORKFLOW_DELETE_CONFIRMATION' => '¿Seguro que quieres eliminar este flujo de trabajo?',
+'LBL_DELETE_WORKFLOW' => 'Eliminar Flujo de Trabajo',
 
 'VTCreateEntityTask' => 'Crear Entidad',
 'LBL_ENTITY_TYPE' => 'Tipo Entidad',
@@ -114,6 +114,25 @@ $mod_strings = array(
 'CBSelectcbMap' => 'Selecciona Regla de Negocio',
 'ConvertInventoryModule' => 'Convertir Módulos Inventario',
 'ConvertInventoryModuleMessage' => 'La correspondencia de campos es la que trae la aplicación por defecto y puede ajustarse utilizando las Reglas de Negocio de tipo Mapeo de Campo.',
+'CBSendMMMSGTask' => 'Enviar Mensaje a Mattermost',
+'Send Message To MM' => 'Enviar Mensaje a Mattermost',
+'VTSendMessage2MMTask' => 'Enviar Mensaje a Mattermost',
+'whatsappworkflowtask' => 'Enviar Mensaje WhatsApp',
+'Whatsapp Workflow Task' => 'Enviar Mensaje WhatsApp',
+'WhatsappWorkflowTask' => 'Enviar Mensaje WhatsApp',
+
+'LBL_EVENTNAME' => 'Nombre de Evento',
+'LBL_DESCRIPTION' => 'Descripción',
+'LBL_STATUS' => 'Estado',
+'LBL_TYPE' => 'Tipo',
+'LBL_START_TIME' => 'Hora de inicio',
+'LBL_START_DATE' => 'Fecha de inicio',
+'LBL_END_TIME' => 'Hora de finalización',
+'LBL_END_DATE' => 'Fecha de finalización',
+'LBL_SET_DATE'=>'Set Date',
+'LBL_AFTER' => 'Después',
+'LBL_BEFORE' => 'Antes',
+'LBL_DAYS' => 'días',
 'LBL_HELPDESK_SUPPORT_EMAILID'=>'Email de Asistencia y Soporte',
 'LBL_HELPDESK_SUPPORT_NAME'=>'Nombre de Asistencia y Soporte',
 'LBL_ORGANIZATION_LOGO' => 'Logo Empresa',
@@ -135,7 +154,6 @@ $mod_strings = array(
 'LBL_SELECTED_DATES' => 'Fechas seleccionadas',
 'LBL_EXCEEDING_MAXIMUM_LIMIT' => 'Se ha excedido el límite máximo permtido',
 'LBL_NEXT_TRIGGER_TIME' => 'Próxima ejecución',
-'LBL_MESSAGE' => 'Mensaje',
 'UpdateInventoryProducts On Every Save' => 'Actualizar inventario de productos',
 'Send Email to user when Notifyowner is True' => 'Envíar Email al usuario cuando Notificación Propietario está activado',
 'Send Email to user when Portal User is True' => 'Envíar Email al usuario cuando Portal de Usuario está activado',
@@ -148,6 +166,8 @@ $mod_strings = array(
 'Workflow for Calendar Todos when Send Notification is True' => 'Flujo de Trabajo para Tareas de Calendario cuando el Envío de Notificación está activado',
 'Calculate or Update forecast amount' => 'Calcular cantidad objetiva en oportunidad',
 'LBL_METHOD_NAME' => 'Nombre del Método',
-'NO_METHOD_AVAILABLE' => 'No hay ningún método disponible para este Módulo.'
+'NO_METHOD_AVAILABLE' => 'No hay ningún método disponible para este Módulo.',
+'launchrelwf' => 'Ejecutar flujos en actualizaciones de módulos relacionados',
+'LBL_WFPURPOSE' => 'Propósito',
 );
 ?>

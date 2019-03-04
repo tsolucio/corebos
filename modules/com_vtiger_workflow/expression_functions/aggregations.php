@@ -28,8 +28,59 @@
  * @param array[4] environment data, this is automatically added by the application
  */
 function __cb_aggregation($arr) {
-	global $adb, $current_user, $GetRelatedList_ReturnOnlyQuery;
-	$validoperations = array('sum', 'min', 'max', 'avg', 'count', 'std', 'variance');
+	global $adb;
+	$query = __cb_aggregation_getQuery($arr, false);
+	if (empty($query)) {
+		return 0;
+	} else {
+		$rs = $adb->query($query);
+		if ($rs) {
+			$rdo = $adb->query_result($rs, 0, 'aggop');
+			if (empty($rdo)) {
+				return 0;
+			} else {
+				return $rdo;
+			}
+		} else {
+			return 0;
+		}
+	}
+}
+
+/*
+ * function to aggregate a set of records related to a main record
+ * @param array[0] aggregation operation: sum, min, max, avg, count, std, variance
+ * @param array[1] RelatedModule
+ * @param array[2] relatedFieldsToAggregate with operations too
+ * @param array[3] conditions: [field,op,value,glue],[...]
+ *   => value will be evaluated against the main module record as an expression
+ *   => may be empty
+ *   => if main module and related module are different the relation condition will be added automatically
+ * @param array[4] environment data, this is automatically added but the application
+ */
+function __cb_aggregation_operation($arr) {
+	global $adb;
+	$query = __cb_aggregation_getQuery($arr, true);
+	if (empty($query)) {
+		return 0;
+	} else {
+		$rs = $adb->query($query);
+		if ($rs) {
+			$rdo = $adb->query_result($rs, 0, 'aggop');
+			if (empty($rdo)) {
+				return 0;
+			} else {
+				return $rdo;
+			}
+		} else {
+			return 0;
+		}
+	}
+}
+
+function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
+	global $adb, $GetRelatedList_ReturnOnlyQuery;
+	$validoperations = array('sum', 'min', 'max', 'avg', 'count', 'std', 'variance', 'time_to_sec');
 	$operation = strtolower($arr[0]);
 	if (!in_array($operation, $validoperations)) {
 		return 0;
@@ -46,12 +97,17 @@ function __cb_aggregation($arr) {
 	list($wsid,$crmid) = explode('x', $recordid);
 	$relmodule = $arr[1];
 	$relatedModuleId = getTabid($relmodule);
-	$relatedmoduleInstance = Vtiger_Module::getInstance($relmodule);
-	$relfield = $arr[2];
-	$rfield = Vtiger_Field::getInstance($relfield, $relatedmoduleInstance);
-	if (!$rfield) {
-		return 0;
+	if ($userdefinedoperation) {
+		$relfields_operation = $arr[2];
+	} else {
+		$relatedmoduleInstance = Vtiger_Module::getInstance($relmodule);
+		$relfield = $arr[2];
+		$rfield = Vtiger_Field::getInstance($relfield, $relatedmoduleInstance);
+		if (!$rfield) {
+			return 0;
+		}
 	}
+
 	$relationResult = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE tabid=? AND related_tabid=?', array($moduleId, $relatedModuleId));
 
 	if ($relationResult && $adb->num_rows($relationResult)>0) {
@@ -75,86 +131,12 @@ function __cb_aggregation($arr) {
 		return 0; // MODULES_NOT_RELATED
 	}
 	$qfrom = substr($query, stripos($query, ' from '));
-	$query = 'select '.$operation.'('.$rfield->table.'.'.$rfield->column.') as aggop '.$qfrom;
-	$rs = $adb->query($query);
-	if ($rs) {
-		$rdo = $adb->query_result($rs, 0, 'aggop');
-		if (empty($rdo)) {
-			return 0;
-		} else {
-			return $rdo;
-		}
+	if ($userdefinedoperation) {
+		$query = 'select '.$operation.'('.$relfields_operation.') as aggop '.$qfrom;
 	} else {
-		return 0;
+		$query = 'select '.$operation.'('.$rfield->table.'.'.$rfield->column.') as aggop '.$qfrom;
 	}
-}
-
-/*
- * function to aggregate a set of records related to a main record
- * @param array[0] aggregation operation: sum, min, max, avg, count, std, variance
- * @param array[1] RelatedModule
- * @param array[2] relatedFieldsToAggregate with operations too
- * @param array[3] conditions: [field,op,value,glue],[...]
- *   => value will be evaluated against the main module record as an expression
- *   => may be empty
- *   => if main module and related module are different the relation condition will be added automatically
- * @param array[4] environment data, this is automatically added but the application
- */
-function __cb_aggregation_operation($arr) {
-	global $adb, $current_user, $GetRelatedList_ReturnOnlyQuery;
-	$validoperations = array('sum', 'min', 'max', 'avg', 'count', 'std', 'variance');
-	$operation = strtolower($arr[0]);
-	if (!in_array($operation, $validoperations)) {
-		return 0;
-	}
-	$env = $arr[4];
-	if (isset($env->moduleName)) {
-		$mainmodule = $env->moduleName;
-	} else {
-		$mainmodule = $env->getModuleName();
-	}
-	$moduleId = getTabid($mainmodule);
-	$data = $env->getData();
-	$recordid = $data['id'];
-	list($wsid,$crmid) = explode('x', $recordid);
-	$relmodule = $arr[1];
-	$relatedModuleId = getTabid($relmodule);
-	$relatedmoduleInstance = Vtiger_Module::getInstance($relmodule);
-	$relfields_operation = $arr[2];
-
-	$relationResult = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE tabid=? AND related_tabid=?', array($moduleId, $relatedModuleId));
-
-	if ($relationResult && $adb->num_rows($relationResult)>0) {
-		$relationInfo = $adb->fetch_array($relationResult);
-		$moduleInstance = CRMEntity::getInstance($mainmodule);
-		$params = array($crmid, $moduleId, $relatedModuleId);
-		$GetRelatedList_ReturnOnlyQuery = true;
-		$relationData = call_user_func_array(array($moduleInstance,$relationInfo['name']), $params);
-		if (!isset($relationData['query'])) {
-			return 0; // no query found
-		}
-		$query = $relationData['query'];
-		$query = str_replace(array("\n", "\t", "\r"), ' ', $query);
-		unset($GetRelatedList_ReturnOnlyQuery);
-		if (!empty($arr[3])) {
-			$query .= ' and ('.__cb_aggregation_getconditions($arr[3], $relmodule, $mainmodule, $crmid).')';
-		}
-	} else {
-		return 0; // MODULES_NOT_RELATED
-	}
-	$qfrom = substr($query, stripos($query, ' from '));
-	$query = 'select '.$operation.'('.$relfields_operation.') as aggop '.$qfrom;
-	$rs = $adb->query($query);
-	if ($rs) {
-		$rdo = $adb->query_result($rs, 0, 'aggop');
-		if (empty($rdo)) {
-			return 0;
-		} else {
-			return $rdo;
-		}
-	} else {
-		return 0;
-	}
+	return $query;
 }
 
 function __cb_aggregation_getconditions($conditions, $module, $mainmodule, $recordid) {
@@ -164,14 +146,19 @@ function __cb_aggregation_getconditions($conditions, $module, $mainmodule, $reco
 		$v = trim($v, '[');
 		$v = trim($v, ']');
 	});
+	$SQLGenerationMode = ($recordid=='::#');
 	$entityId = vtws_getEntityId($mainmodule).'x'.$recordid;
 	$entityCache = new VTEntityCache($current_user);
 	$qg = new QueryGenerator($module, $current_user);
 	$qg->setFields(array('id'));
 	foreach ($c as $cond) {
 		$cndparams = explode(',', $cond);
-		$ct = new VTSimpleTemplate($cndparams[2]);
-		$value = $ct->render($entityCache, $entityId);
+		if (!$SQLGenerationMode) {
+			$ct = new VTSimpleTemplate($cndparams[2]);
+			$value = $ct->render($entityCache, $entityId);
+		} else {
+			$value = $cndparams[2];
+		}
 		$qg->addCondition($cndparams[0], $value, $cndparams[1], $cndparams[3]);
 	}
 	$where = $qg->getWhereClause();
@@ -198,6 +185,14 @@ function __cb_aggregation_queryonsamemodule($conditions, $module, $relfield, $re
 		}
 	}
 	return $qg->getQuery();
+}
+
+function __cb_aggregate_time($arr) {
+	$total_seconds = __cb_aggregation_operation(['sum', $arr[0], 'time_to_sec('. $arr[1] .')', $arr[2], $arr[3]]);
+	$hours = floor($total_seconds / 3600);
+	$minutes = floor((($total_seconds - ($hours * 3600)) / 60));
+	$seconds = (($total_seconds - ($hours * 3600)) % 60);
+	return sprintf('%03d', $hours) . ':' . sprintf('%02d', $minutes) . ':' . sprintf('%02d', $seconds);
 }
 
 ?>

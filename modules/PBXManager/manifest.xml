@@ -37,7 +37,7 @@
   `callfrom` varchar(255) default NULL,
   `callto` varchar(255) default NULL,
   `timeofcall` varchar(255) default NULL,
-  `status` varchar(255) default NULL
+  `status` varchar(255) default NULL,
   PRIMARY KEY (`pbxmanagerid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
 </table>

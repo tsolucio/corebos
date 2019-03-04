@@ -10,14 +10,23 @@
 global $php_max_execution_time, $tmp_dir, $root_directory;
 set_time_limit($php_max_execution_time);
 
-require_once('modules/Reports/ReportRun.php');
-require_once('modules/Reports/Reports.php');
+require_once 'modules/Reports/ReportRun.php';
+require_once 'modules/Reports/Reports.php';
 
 $fname = tempnam($root_directory.$tmp_dir, 'merge2.xls');
 
 # Write out the data
 $reportid = vtlib_purify($_REQUEST['record']);
 $oReportRun = new ReportRun($reportid);
+if (isPermitted($oReportRun->primarymodule, 'Export', '')!='yes') {
+	$log->debug('< CreateXL: You do not have permission to export Report');
+	require_once 'Smarty_setup.php';
+	$smarty = new vtigerCRM_Smarty();
+	global $app_strings;
+	$smarty->assign('APP', $app_strings);
+	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
+	exit;
+}
 if (!empty($_REQUEST['startdate']) && !empty($_REQUEST['enddate']) && $_REQUEST['startdate'] != '0000-00-00' && $_REQUEST['enddate'] != '0000-00-00') {
 	$filtercolumn = $_REQUEST['stdDateFilterField'];
 	$filter = $_REQUEST['stdDateFilter'];
@@ -50,7 +59,7 @@ if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'M
 }
 header('Content-Type: application/x-msexcel');
 header('Content-Length: '.@filesize($fname));
-header('Content-disposition: attachment; filename="Reports.xls"');
+header('Content-disposition: attachment; filename="'.$oReportRun->getReportName(true, true).'.xls"');
 $fh=fopen($fname, 'rb');
 fpassthru($fh);
 //unlink($fname);

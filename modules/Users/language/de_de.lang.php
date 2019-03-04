@@ -37,7 +37,6 @@ $mod_strings = array(
 	'Name'=>'Name',
 	'Tools'=>'Werkzeuge',
 
-	'LBL_GROUP_NAME'=>'Gruppe',
 	'LBL_CURRENCY_NAME'=>'Währung',
 
 	'LBL_NEW_USER_BUTTON_TITLE'=>'Neuer Benutzer [Alt+N]',
@@ -128,7 +127,6 @@ $mod_strings = array(
 	'ERR_DELETE_RECORD'=>"Zum Löschen muss ein Eintrag markiert werden.",
 	'ERR_MUST_CHANGE_PASSWORD' => 'Your password has expired. You must change your password to continue.',
 
-	// Additional Fields for i18n --- Release vtigerCRM 3.2 Patch 2
 	// Users--listroles.php , createrole.php , ListPermissions.php , editpermissions.php
 
 	'LBL_ROLES'=>'Rollen',
@@ -161,7 +159,6 @@ $mod_strings = array(
 	'LBL_IMPORT_OPPURTUNITIES'=>'Verkaufspotentiale importieren',
 
 	'LBL_ROLE_DETAILS'=>'Rollendetails',
-	//added for vtigercrm4 rc
 	'LBL_FILE'=> 'Dateiname',
 	'LBL_FILE_TYPE'=>'File Type',
 	'LBL_UPLOAD'=>'Datei hochladen',
@@ -210,10 +207,9 @@ $mod_strings = array(
 	'LBL_VIEWING'=>'Ansehen',
 	'LBL_PROPERTIES'=>'Eigentum von',
 
-
-	//added to fix the issue #6630
 	'LBL_ASTERISKEXTENSIONS_EXIST' => 'Die Asterisk Erweiterung gibt es bereits!',
 	'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'Decimal Separator and Digit Grouping Separator cannot be the same.',
+	'LBL_FORUSER' => ' for User ',
 
 	// Added fields in createnewgroup.php
 	'LBL_CREATE_NEW_GROUP'=>'Erstelle neue Gruppe',
@@ -227,7 +223,6 @@ $mod_strings = array(
 	'LBL_GROUP_MESG1'=>'Gruppen sind sehr zweckmäßig, um in komplexen Organisationen Rechte zu vergeben. Sie können Rollen, Nutzer, Profile und auch existierende Gruppen zu neuen Gruppen zusammenfassen.',
 	'LBL_GROUP_MESG2'=>'Um eine Gruppenmitglied hinzuzufügen, wählen Sie links die Quelle und klicken Sie auf den ">>" Button.',
 	'LBL_GROUP_MESG3'=>'Um ein Gruppenmitglied zu entfernen, wählen Sie rechts ein Gruppenmitglied und klicken Sie auf den "<<" Button.',
-
 
 	// Added fields in detailViewmailtemplate.html,listgroupmembers.php,listgroups.php
 	'LBL_DETAIL_VIEW_OF_EMAIL_TEMPLATE'=>'Detailansicht der E-Mail Vorlage',
@@ -330,7 +325,6 @@ $mod_strings = array(
 	'LBL_ASSOCIATED_PROFILES'=>'Verbundene Profile :',
 	'LBL_ASSOCIATED_USERS'=>'Verbundene Benutzer :',
 
-
 	//Added fields in OrgSharingDetailsView.php
 	'LBL_ORG_SHARING_PRIVILEGES'=>'CRM Module',
 	'LBL_EDIT_PERMISSIONS'=>'Ändere Berechtigungen',
@@ -368,10 +362,8 @@ $mod_strings = array(
 	'LBL_FIELD_PERMISSIOM_TABLE_HEADER'=>'Standardfelder',
 	'LBL_FIELD_LEVEL_ACCESS'=>'Sichtbarkeit',
 
-	//Added fields after 4.0.1
 	'LBL_SIGNATURE'=>'E-Mail Signatur',
 
-	//Added for Event Reminder 4.2 Alpha release
 	'LBL_ACTIVITY_NOTIFICATION'=>'Erinnerung',
 	'LBL_ACTIVITY_REMINDER_DESCRIPTION'=>'Erinnerungszeit vor dem Termin',
 	'LBL_MESSAGE'=>'Nachricht',
@@ -402,9 +394,6 @@ $mod_strings = array(
 	'LBL_PRIVILEGES'=>'Privilegien',
 	'LBL_OF'=>'von',
 
-
-
-	//Added for 4.2GA support for mail server integration
 	'LBL_ADD_MAILSERVER_BUTTON_TITLE'=>'Mailserver hinzufügen',
 	'LBL_ADD_MAILSERVER_BUTTON_KEY'=>'M',
 	'LBL_ADD_MAILSERVER_BUTTON_LABEL'=>'Mailserver hinzufügen',
@@ -416,7 +405,6 @@ $mod_strings = array(
 	'INV_TANDC'=>'Regeln und Vorschriften',
 	'INV_TERMSANDCONDITIONS'=>'Regeln und Vorschriften für Lager',
 	'LBL_INV_TERMSANDCONDITIONS'=>'Lagermanagement',
-
 
 	'INVENTORYNOTIFICATION'=>'Bestandsmeldungen',
 	'LBL_INVENTORY_NOTIFICATIONS'=>'Bearbeite E-Mail für Bestandesmeldungen',
@@ -431,32 +419,20 @@ $mod_strings = array(
 	'SalesOrderNotification'=>'Lagerbestandsmeldung während der Verkaufs-Erstellung',
 	'SalesOrderNotificationDescription'=>'Wenn der Lagerbestand kleiner ist als die Menge, welche im Verkauf bestätigt wird.',
 
-	//New addition for 4.2 GA
 	'LBL_USER_FIELDS'=>'Benutzerfelder',
 	'LBL_NOTE_DO_NOT_REMOVE_INFO'=>'Bemerkung: Werte zwischen {  } dürfen nicht gelöscht oder geändert werden.',
 
-	//Added for patch2
 	'LBL_FILE_INFORMATION'=>'Dateiinformation',
 
-	//Added after pathc2
 	'LBL_LEAD_FIELD_ACCESS'=>'Feldzugang für Leads',
-
 	'LBL_ACCOUNT_FIELD_ACCESS'=>'Feldzugang für Organisatonen',
-
 	'LBL_CONTACT_FIELD_ACCESS'=>'Feldzugang für Personen',
-
 	'LBL_OPPORTUNITY_FIELD_ACCESS'=>'Feldzugang für Potentiale',
-
 	'LBL_HELPDESK_FIELD_ACCESS'=>'Feldzugang für HelpDesk',
-
 	'LBL_PRODUCT_FIELD_ACCESS'=>'Feldzugang für Produkte',
-
 	'LBL_NOTE_FIELD_ACCESS'=>'Feldzugang für Notizen',
-
 	'LBL_EMAIL_FIELD_ACCESS'=>'Feldzugang für E-Mails',
-
 	'LBL_TASK_FIELD_ACCESS'=>'Feldzugang für Aufgaben',
-
 	'LBL_EVENT_FIELD_ACCESS'=>'Feldzugang für Anrufe/Termine',
 	'LBL_VENDOR_FIELD_ACCESS'=>'Feldzugang für Lieferanten',
 	'LBL_PB_FIELD_ACCESS'=>'Feldzugang für Preislisten',
@@ -488,7 +464,6 @@ $mod_strings = array(
 	'UA'=>'geplante Aktivitäten',
 	'PA'=>'überfällige Aktivitäten',
 
-	//Added for 5.0 alpha
 	'LBL_GROUP_NAME_ERROR'=>'Gruppenname existiert bereits!',
 	'MNL'=>'Meine neuen Leads',
 	'LBL_LEAD_VIEW'=>'Standard Lead-Ansicht',
@@ -512,9 +487,7 @@ $mod_strings = array(
 	'LBL_CHANGE_PHOTO'=>'Ändere Photo...',
 	'LBL_CHANGE'=>'Ändern',
 
-
 	//Added for Access Privileges
-
 	'LBL_GLOBAL_FIELDS_MANAGER'=>'Globaler Feldmanager',
 	'LBL_GLOBAL_ACCESS_PRIVILEGES'=>'Globale Zugangsregeln',
 	'LBL_CUSTOM_ACCESS_PRIVILEGES'=>'Benutzerdefinierte Zugangsregeln',
@@ -534,7 +507,6 @@ $mod_strings = array(
 	'LBL_USERLOGIN_ROLE'=>'Benutzer Login & Rolle',
 	'LBL_USER_IMAGE_INFORMATION'=>'Benutzerbild',
 
-	//Added for 5.0 for all fields
 	'Role'=>'Rolle',
 	'Email'=>'E-Mail',
 	'Admin'=>'Administratorrechte',
@@ -667,7 +639,6 @@ $mod_strings = array(
 	'LBL_TAGCLOUD_DISPLAY'=>'Tag Cloud Anzeige',
 	'INTERNAL_MAIL_COMPOSER'=>'internes E-Mail Programm',
 
-	// Added for 5.0.4 to Support Email notication on User Creation
 	'User Login Details'=>'Benutzer Login Details',
 	'LBL_TO_LOGIN' => 'zum Login',
 

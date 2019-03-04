@@ -7,9 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once('config.inc.php');
-require_once('include/logging.php');
-require_once('include/database/PearDatabase.php');
+include_once 'config.inc.php';
+require_once 'include/logging.php';
+require_once 'include/database/PearDatabase.php';
 
 /** This class is used to track the recently viewed items on a per user basis.
  * It is intended to be called by each module when rendering the detail form.
@@ -22,11 +22,11 @@ class Tracker {
 
 	// Tracker table
 	public $column_fields = array(
-		"id",
-		"user_id",
-		"module_name",
-		"item_id",
-		"item_summary"
+		'id',
+		'user_id',
+		'module_name',
+		'item_id',
+		'item_summary'
 	);
 
 	public function __construct() {
@@ -42,8 +42,7 @@ class Tracker {
 	 * If the new item is the same as the most recent item then do not change the list
 	 */
 	public function track_view($user_id, $current_module, $item_id, $item_summary) {
-		global $adb, $log, $default_charset;
-		$log->info("in track view method ".$current_module);
+		global $adb, $default_charset;
 		$this->delete_history($user_id, $item_id);
 		// change the query so that it puts the tracker entry whenever you touch on the DetailView of the required entity
 		// get the first name and last name from the respective modules
@@ -57,7 +56,7 @@ class Tracker {
 				// concatenate multiple fields with an whitespace between them
 				$fieldlists = explode(',', $fieldsname);
 				$fl = array();
-				foreach ($fieldlists as $w => $c) {
+				foreach ($fieldlists as $c) {
 					if (count($fl)) {
 						$fl[] = "' '";
 					}
@@ -68,14 +67,11 @@ class Tracker {
 			$query1 = "select $fieldsname as entityname from $tablename where $entityidfield = ?";
 			$result = $adb->pquery($query1, array($item_id));
 			$item_summary = html_entity_decode($adb->query_result($result, 0, 'entityname'), ENT_QUOTES, $default_charset);
-			if (strlen($item_summary) > 30) {
-				$item_summary=substr($item_summary, 0, 30).'...';
-			}
+			$item_summary = textlength_check($item_summary);
 		}
 		#if condition added to skip faq in last viewed history
 		$query = "INSERT into $this->table_name (user_id, module_name, item_id, item_summary) values (?,?,?,?)";
 		$qparams = array($user_id, $current_module, $item_id, $item_summary);
-		$this->log->info("Track Item View: ".$query);
 		$this->db->pquery($query, $qparams, true);
 		$this->prune_history($user_id);
 	}
@@ -85,7 +81,7 @@ class Tracker {
 	 * param $module_name - Filter the history to only return records from the specified module. If not specified all records are returned
 	 * return - return the array of result set rows from the query. All of the table fields are included
 	 */
-	public function get_recently_viewed($user_id, $module_name = "") {
+	public function get_recently_viewed($user_id, $module_name = '') {
 		if (empty($user_id)) {
 			return;
 		}
@@ -95,24 +91,26 @@ class Tracker {
 		$query = "SELECT *
 			from {$this->table_name}
 			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_tracker.item_id WHERE user_id=? and vtiger_crmentity.deleted=0 ORDER BY id DESC";
-		$this->log->debug("About to retrieve list: $query");
 		$result = $this->db->pquery($query, array($user_id), true);
 		$list = array();
 		while ($row = $this->db->fetchByAssoc($result, -1, false)) {
 			// If the module was not specified or the module matches the module of the row, add the row to the list
 			if ($module_name == '' || $row['module_name'] == $module_name) {
 				//Adding Security check
-				require_once('include/utils/utils.php');
-				require_once('include/utils/UserInfoUtil.php');
+				require_once 'include/utils/utils.php';
+				require_once 'include/utils/UserInfoUtil.php';
 				$entity_id = $row['item_id'];
 				$module = $row['module_name'];
 				$per = 'no';
-				if ($module == "Users" and is_admin($current_user)) {
+				if ($module == 'Users' && is_admin($current_user)) {
 					$per = 'yes';
 				} else {
 					$per = isPermitted($module, 'DetailView', $entity_id);
 				}
 				if ($per == 'yes') {
+					$curMod = CRMEntity::getInstance($module);
+					$row['__ICONLibrary'] = $curMod->moduleIcon['library'];
+					$row['__ICONName'] = $curMod->moduleIcon['icon'];
 					$list[] = $row;
 				}
 			}
@@ -141,7 +139,6 @@ class Tracker {
 	 * This function will clean out old history records for this user if necessary.
 	 */
 	private function prune_history($user_id) {
-		$this->log->debug("Enter prune_history($user_id)");
 		// Check to see if the number of items in the list is now greater than the config max.
 		$rs = $this->db->pquery("SELECT count(*) from {$this->table_name} WHERE user_id=?", array($user_id));
 		$count = $this->db->query_result($rs, 0, 0);

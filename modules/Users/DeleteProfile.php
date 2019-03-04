@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/utils/UserInfoUtil.php');
+require_once 'include/utils/UserInfoUtil.php';
 global $adb;
 $del_id = $_REQUEST['delete_prof_id'];
 $tran_id = $_REQUEST['transfer_prof_id'];

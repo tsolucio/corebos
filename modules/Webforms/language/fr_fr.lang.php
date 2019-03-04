@@ -2,12 +2,12 @@
 /***********************************************************
 *  Module       : Webforms
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 	'Webforms' => 'Formulaire Web',
 	'Allows you to manage Webforms' => 'Gérer les webforms pour acquérir des leads sur votre site web',
 	'LBL_SUCCESS' => 'ajouté à l\'application.',
@@ -20,8 +20,6 @@ $mod_strings = Array (
 	'LBL_RETURNURL'=>'URL de retour',
 	'LBL_ACTION'=>'Action',
 	'LBL_ASSIGNED_TO'=>'Assigné à',
-	'LBL_EDIT'=>'editer',
-	'LBL_DELETE'=>'supprimer',
 	'LBL_SOURCE'=>'Afficher le formulaire',
 	'LBL_MODULE_INFORMATION'=>'Détails du Formulaire Web',
 	'LBL_FIELD_INFORMATION'=>'Information des champs',

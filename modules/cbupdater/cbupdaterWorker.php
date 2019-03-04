@@ -22,18 +22,18 @@
 $Vtiger_Utils_Log = true;
 
 require_once 'include/utils/utils.php';
-include_once('vtlib/Vtiger/Module.php');
-require_once('vtlib/Vtiger/Package.php');
-include_once('modules/cbupdater/cbupdater.php');
-require_once('modules/com_vtiger_workflow/include.inc');
-require_once('modules/com_vtiger_workflow/tasks/VTEntityMethodTask.inc');
-require_once('modules/com_vtiger_workflow/VTEntityMethodManager.inc');
-require_once('include/events/include.inc');
+include_once 'vtlib/Vtiger/Module.php';
+require_once 'vtlib/Vtiger/Package.php';
+include_once 'modules/cbupdater/cbupdater.php';
+require_once 'modules/com_vtiger_workflow/include.inc';
+require_once 'modules/com_vtiger_workflow/tasks/VTEntityMethodTask.inc';
+require_once 'modules/com_vtiger_workflow/VTEntityMethodManager.inc';
+require_once 'include/events/include.inc';
 global $current_user,$adb,$app_strings;
 set_time_limit(0);
 ini_set('memory_limit', '1024M');
 
-if (empty($current_user) or !is_admin($current_user)) {
+if (empty($current_user) || !is_admin($current_user)) {
 	$current_user = Users::getActiveAdminUser();
 }
 if (empty($current_language)) {
@@ -66,16 +66,15 @@ class cbupdaterWorker {
 	public $query_count=0;
 	public $success_query_count=0;
 	public $failure_query_count=0;
-	public $success_query_array=array();
 	public $failure_query_array=array();
 
 	public function __construct() {
-		global $adb,$log,$current_user;
+		global $adb;
 		echo "<table width=80% align=center border=1>";
 		$reflector = new ReflectionClass(get_class($this));
 		$fname = basename($reflector->getFileName(), '.php');
 		$cburs = $adb->pquery('select * from vtiger_cbupdater where filename=? and classname=?', array($fname, get_class($this)));
-		if ($cburs and $adb->num_rows($cburs)>0) {  // it exists, we load it
+		if ($cburs && $adb->num_rows($cburs)>0) {  // it exists, we load it
 			$cbu = $adb->fetch_array($cburs);
 			$this->cbupdid = $cbu['cbupdaterid'];
 			$this->cbupd_no = $cbu['cbupd_no'];
@@ -148,17 +147,17 @@ class cbupdaterWorker {
 	}
 
 	public function hasError() {
-		return ($this->updError or empty($this->cbupdid));
+		return ($this->updError || empty($this->cbupdid));
 	}
 
 	public function markApplied($stoponerror = true) {
 		if ($this->isBlocked()) {
 			return true;
 		}
-		if ($this->hasError() and $stoponerror) {
+		if ($this->hasError() && $stoponerror) {
 			$this->sendError();
 		}
-		global $adb,$log;
+		global $adb;
 		if ($this->isContinuous()) {
 			$adb->pquery('update vtiger_cbupdater set execdate=CURDATE() where cbupdaterid=?', array($this->cbupdid));
 		} else {
@@ -168,13 +167,13 @@ class cbupdaterWorker {
 	}
 
 	public function markUndone($stoponerror = true) {
-		if ($this->isBlocked() or $this->isContinuous()) {
+		if ($this->isBlocked() || $this->isContinuous()) {
 			return true;
 		}
-		if ($this->hasError() and $stoponerror) {
+		if ($this->hasError() && $stoponerror) {
 			$this->sendError();
 		}
-		global $adb,$log;
+		global $adb;
 		$adb->pquery('update vtiger_cbupdater set execstate=?,execdate=NULL where cbupdaterid=?', array('Pending',$this->cbupdid));
 		$this->execstate = 'Pending';
 	}
@@ -191,7 +190,6 @@ class cbupdaterWorker {
 		<td width="10%"><span style="color:green"> S </span></td>
 		<td width="80%">'.$query.$paramstring.'</td>
 		</tr>';
-			$success_query_array[$this->success_query_count++] = $query;
 			$log->debug("Query Success ==> $query");
 		} else {
 			echo '
@@ -209,6 +207,51 @@ class cbupdaterWorker {
 	public function deleteWorkflow($wfid) {
 		$this->ExecuteQuery('DELETE FROM com_vtiger_workflowtasks WHERE workflow_id=?', array($wfid));
 		$this->ExecuteQuery('DELETE FROM com_vtiger_workflows WHERE workflow_id=?', array($wfid));
+	}
+
+	public function deleteAllPicklistValues($tableName, $moduleName) {
+		global $adb, $default_charset;
+		$tabid = getTabid($moduleName);
+		$result = $adb->query("select picklist_valueid,$tableName from vtiger_$tableName");
+		$delrol = 'delete from vtiger_role2picklist where picklistvalueid=?';
+		$deldep = 'DELETE FROM vtiger_picklist_dependency WHERE sourcevalue=? AND sourcefield=? AND tabid=?';
+		while ($plrow=$adb->fetch_array($result)) {
+			$origPicklistID = $plrow['picklist_valueid'];
+			$value = htmlentities($plrow[$tableName], ENT_QUOTES, $default_charset);
+			$adb->pquery($delrol, array($origPicklistID));
+			$adb->pquery($deldep, array($value, $tableName, $tabid));
+		}
+		$adb->query("delete from vtiger_$tableName"); // delete all entries
+	}
+
+	public function deletePicklistValues($values, $tableName, $moduleName) {
+		global $adb, $default_charset;
+		$tabid = getTabid($moduleName);
+		$delrol = 'delete from vtiger_role2picklist where picklistvalueid=?';
+		$deldep = 'DELETE FROM vtiger_picklist_dependency WHERE sourcevalue=? AND sourcefield=? AND tabid=?';
+		for ($i=0; $i<count($values); $i++) {
+			$sql = "select picklist_valueid from vtiger_$tableName where $tableName=?";
+			$result = $adb->pquery($sql, array($values[$i]));
+			$origPicklistID = $adb->query_result($result, 0, 'picklist_valueid');
+			$values[$i] = array('encodedValue'=>htmlentities($values[$i], ENT_QUOTES, $default_charset), 'rawValue'=>$values[$i]);
+			$sql = "delete from vtiger_$tableName where $tableName=?";
+			$adb->pquery($sql, array($values[$i]['encodedValue']));
+			$adb->pquery($delrol, array($origPicklistID));
+			$adb->pquery($deldep, array($values[$i]['encodedValue'], $tableName, $tabid));
+		}
+	}
+
+	public function setQuickCreateFields($moduleName, $qcfields) {
+		global $adb;
+		$module = VTiger_Module::getInstance($moduleName);
+		$adb->pquery('UPDATE vtiger_field SET quickcreate=1 WHERE quickcreate=2 and tabid=?', array($module->id));
+		$order = 1;
+		$upd = 'UPDATE vtiger_field SET quickcreate=2, quickcreatesequence=? WHERE fieldid=?';
+		foreach ($qcfields as $fldname) {
+			$field = VTiger_Field::getInstance($fldname, $module);
+			$adb->pquery($upd, array($order, $field->id));
+			$order++;
+		}
 	}
 
 	/* Given an array of field definitions this method will create or activate the fields.
@@ -251,6 +294,7 @@ class cbupdaterWorker {
 							$newfield = new Vtiger_Field();
 							$newfield->name = $fname;
 							$newfield->label = (empty($fieldinfo['label']) ? $fname : $fieldinfo['label']);
+							$newfield->helpinfo = (empty($fieldinfo['helpinfo']) ? '' : $fieldinfo['helpinfo']);
 							$newfield->column = $fname;
 							$newfield->columntype = $fieldinfo['columntype'];
 							$newfield->typeofdata = $fieldinfo['typeofdata'];
@@ -258,7 +302,7 @@ class cbupdaterWorker {
 							$newfield->displaytype = (empty($fieldinfo['displaytype']) ? '1' : $fieldinfo['displaytype']);
 							$newfield->masseditable = (empty($fieldinfo['massedit']) ? '0' : $fieldinfo['massedit']);
 							$block->addField($newfield);
-							if ($fieldinfo['uitype']=='10' and !empty($fieldinfo['mods'])) {
+							if ($fieldinfo['uitype']=='10' && !empty($fieldinfo['mods'])) {
 								$newfield->setRelatedModules($fieldinfo['mods']);
 							}
 							if ($fieldinfo['uitype']=='15' || $fieldinfo['uitype']=='16' || $fieldinfo['uitype']=='33') {
@@ -288,7 +332,6 @@ class cbupdaterWorker {
 		),
 	*/
 	public function massHideFields($fieldLayout) {
-		global $adb;
 		foreach ($fieldLayout as $module => $fields) {
 			$moduleInstance = Vtiger_Module::getInstance($module);
 			if ($moduleInstance) {
@@ -315,7 +358,6 @@ class cbupdaterWorker {
 		),
 	*/
 	public function massDeleteFields($fieldLayout) {
-		global $adb;
 		foreach ($fieldLayout as $module => $fields) {
 			$moduleInstance = Vtiger_Module::getInstance($module);
 			if ($moduleInstance) {
@@ -342,7 +384,6 @@ class cbupdaterWorker {
 		),
 	*/
 	public function massMoveFieldsToBlock($fieldLayout, $newblock) {
-		global $adb;
 		foreach ($fieldLayout as $module => $fields) {
 			$moduleInstance = Vtiger_Module::getInstance($module);
 			$block = Vtiger_Block::getInstance($newblock, $moduleInstance);
@@ -425,7 +466,7 @@ class cbupdaterWorker {
 	 * @param boolean multiple indicate if the new picklist with be multiple (true) or simple (false)
 	 */
 	public function convertTextFieldToPicklist($fieldname, $module, $multiple = false) {
-		global $adb,$log;
+		global $adb;
 		if (!empty($fieldname) && !empty($module)) {
 			$moduleInstance = Vtiger_Module::getInstance($module);
 			if ($moduleInstance) {
@@ -461,6 +502,36 @@ class cbupdaterWorker {
 		}
 	}
 
+	/* Mass define tooltip for fields
+	 * The layout is an array of Module Name, hover fields and Field Names
+		array(
+			'module' => '{modulename}',
+			'hoverfield' => 'fieldname that triggers the tooltip',
+			'fields2show' => array(
+				'{list of field names to show in tooltip',
+				'{fieldname1}',
+				'{fieldname2}',
+				'{fieldnamen}',
+			),
+		),
+	*/
+	public function setTooltip($tooltips) {
+		$inssql = 'INSERT INTO `vtiger_quickview` (`fieldid`, `related_fieldid`, `sequence`, `currentview`) VALUES (?,?,?,1)';
+		foreach ($tooltips as $ttflds) {
+			$mname = $ttflds['module'];
+			if (vtlib_isModuleActive($mname)) {
+				$modttip = VTiger_Module::getInstance($mname);
+				$fldttiph = VTiger_Field::getInstance($ttflds['hoverfield'], $modttip);
+				$sort = 1;
+				foreach ($ttflds['fields2show'] as $fldtt) {
+					$fldttips = VTiger_Field::getInstance($fldtt, $modttip);
+					$this->ExecuteQuery($inssql, array($fldttiph->id, $fldttips->id, $sort));
+					$sort++;
+				}
+			}
+		}
+	}
+
 	public function installManifestModule($module) {
 		$package = new Vtiger_Package();
 		ob_start();
@@ -475,10 +546,20 @@ class cbupdaterWorker {
 		}
 	}
 
+	public function removeAllMenuEntries($module) {
+		global $adb;
+		$modulesToRemove = $adb->pquery('SELECT evvtmenuid from vtiger_evvtmenu where mvalue=?', array($module));
+		if ($adb->num_rows($modulesToRemove) > 0) {
+			for ($i=0; $i < $adb->num_rows($modulesToRemove); $i++) {
+				$adb->pquery('DELETE from vtiger_evvtmenu where evvtmenuid=?', array($adb->query_result($modulesToRemove, $i, 0)));
+			}
+		}
+	}
+
 	public function isModuleInstalled($module) {
 		global $adb;
 		$tabrs = $adb->pquery('select count(*) from vtiger_tab where name=?', array($module));
-		return ($tabrs and $adb->query_result($tabrs, 0, 0)==1);
+		return ($tabrs && $adb->query_result($tabrs, 0, 0)==1);
 	}
 
 	public function sendMsg($msg) {
@@ -492,7 +573,7 @@ class cbupdaterWorker {
 
 	public function sendError() {
 		$this->updError = true;
-		echo '<tr width="100%"><td colspan=3<span style="color:red">ERROR: Class called without update record in application!!</span></td></tr></table>';
+		echo '<tr width="100%"><td colspan=3<span style="color:red">ERROR: Class '.get_class($this).'called without update record in application!!</span></td></tr></table>';
 		die();
 	}
 

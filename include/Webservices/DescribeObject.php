@@ -7,26 +7,31 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-
-function vtws_describe($elementType,$user){
-	global $log,$adb;
-	$webserviceObject = VtigerWebserviceObject::fromName($adb,$elementType);
-	$handlerPath = $webserviceObject->getHandlerPath();
-	$handlerClass = $webserviceObject->getHandlerClass();
-
-	require_once $handlerPath;
-
-	$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
-	$meta = $handler->getMeta();
-
+function vtws_describe($elementType, $user) {
+	include_once 'include/Webservices/GetFilterFields.php';
+	include_once 'include/Webservices/getRelatedModules.php';
+	global $log, $adb;
+	$modules = explode(',', $elementType);
+	$rdo = array();
 	$types = vtws_listtypes(null, $user);
-	if(!in_array($elementType,$types['types'])){
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to perform the operation is denied");
+	foreach ($modules as $elementType) {
+		$webserviceObject = VtigerWebserviceObject::fromName($adb, $elementType);
+		$handlerPath = $webserviceObject->getHandlerPath();
+		$handlerClass = $webserviceObject->getHandlerClass();
+		require_once $handlerPath;
+		$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+		if (!in_array($elementType, $types['types'])) {
+			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
+		}
+		$rdo[$elementType] = $handler->describe($elementType);
+		$rdo[$elementType]['filterFields']=vtws_getfilterfields($elementType, $user);
+		$rdo[$elementType]['relatedModules']=getRelatedModulesInfomation($elementType, $user);
 	}
-
-	$entity = $handler->describe($elementType);
 	VTWS_PreserveGlobal::flush();
-	return $entity;
+	if (count($rdo)==1) {
+		return $rdo[$elementType];
+	} else {
+		return $rdo;
+	}
 }
-
 ?>

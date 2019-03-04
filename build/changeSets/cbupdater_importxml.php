@@ -16,22 +16,26 @@
 
 class cbupdater_importxml extends cbupdaterWorker {
 	private $label = 'ImportXML';
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$moduleInstance = Vtiger_Module::getInstance('cbupdater');
-			$moduleInstance->addLink('LISTVIEWBASIC', $this->label, "javascript:gotourl('index.php?module=cbupdater&action=importxml')",'',5);
+			$moduleInstance->addLink('LISTVIEWBASIC', $this->label, "javascript:gotourl('index.php?module=cbupdater&action=importxml')", '', 5);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-	
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			// undo your magic here
 			$moduleInstance = Vtiger_Module::getInstance('cbupdater');
@@ -43,5 +47,4 @@ class cbupdater_importxml extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
 }

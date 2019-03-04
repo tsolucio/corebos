@@ -14,11 +14,18 @@
 	<meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
 	<title>{$MODULE|@getTranslatedString:$MODULE} - {$coreBOS_uiapp_name}</title>
 	<link REL="SHORTCUT ICON" HREF="themes/images/blank.gif">
+	<link rel="stylesheet" type="text/css" href="include/LD/assets/styles/override_lds.css">
 <script type="text/javascript">
 var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 var gVTUserID = "{$CURRENT_USER_ID}";
 var userFirstDayOfWeek = {$USER_FIRST_DOW};
 var image_pth = '{$IMAGE_PATH}';
+var userDateFormat = "{$USER_DATE_FORMAT}";
+var userHourFormat = "{$USER_HOUR_FORMAT}";
+var userCurrencySeparator = "{$USER_CURRENCY_SEPARATOR}";
+var userDecimalSeparator = "{$USER_DECIMAL_FORMAT}";
+var userNumberOfDecimals = "{$USER_NUMBER_DECIMALS}";
+var gVTuserLanguage = "{$USER_LANGUAGE}";
 var product_default_units = '{if isset($Product_Default_Units)}{$Product_Default_Units}{else}1{/if}';
 var service_default_units = '{if isset($Service_Default_Units)}{$Service_Default_Units}{else}1{/if}';
 var gPopupAlphaSearchUrl = '';
@@ -42,6 +49,7 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 </script>
 <link rel="stylesheet" type="text/css" href="{$THEME_PATH}style.css">
 <link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
+<link rel="stylesheet" type="text/css" href="include/LD/assets/styles/salesforce-lightning-design-system.css" />
 {* corebos customization: Inclusion of custom javascript and css as registered in popup *}
 {if $HEADERCSS}
 	<!-- Custom Header CSS -->
@@ -56,10 +64,10 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 <script type='text/javascript' src='include/jquery/jquery.js'></script>
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <script type="text/javascript" src="include/js/general.js"></script>
+<script type="text/javascript" src="include/js/vtlib.js"></script>
 <script type="text/javascript" src="include/js/QuickCreate.js"></script>
 <script type="text/javascript" src="include/js/Inventory.js"></script>
 <script type="text/javascript" src="include/js/search.js"></script>
-<script type="text/javascript" src="include/js/vtlib.js"></script>
 <script type="text/javascript" src="include/js/Mail.js"></script>
 <script type="text/javascript" src="modules/Tooltip/TooltipHeaderScript.js"></script>
 <script type="text/javascript" src="jscalendar/calendar.js"></script>
@@ -97,7 +105,15 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 						{/if}
 					{/if}
 					<td width=24% nowrap class="componentName" align=right>{$coreBOS_uiapp_name}</td>
-					<td width=6% nowrap class="componentName" align=right><input type="hidden" id='closewindow' value="true"/><img src="themes/images/unlocked.png" id='closewindowimage' onclick="if (document.getElementById('closewindow').value=='true') {ldelim}document.getElementById('closewindowimage').src='themes/images/locked.png';document.getElementById('closewindow').value='false';{rdelim} else {ldelim}document.getElementById('closewindowimage').src='themes/images/unlocked.png';document.getElementById('closewindow').value='true';{rdelim};"/></td>
+					<td width=6% nowrap class="componentName" align=right>
+						<input type="hidden" id='closewindow' value="true"/>
+						<svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon_small" id="closewindowimageunlock" onclick="togglePopupLock();">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#unlock"></use>
+						</svg>
+						<svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon_small" id="closewindowimagelock" style="display:none" onclick="togglePopupLock();">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#lock"></use>
+						</svg>
+					</td>
 				</tr>
 			</table>
 			<div id="status" style="position:absolute;display:none;right:135px;top:15px;height:27px;white-space:nowrap;"><img src="{'status.gif'|@vtiger_imageurl:$THEME}"></div>
@@ -152,7 +168,11 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 								<input type="button" name="search" value=" &nbsp;{$APP.LBL_SEARCH_NOW_BUTTON}&nbsp; " onClick="callSearch('Basic');" class="crmbutton small create">
 							</td>
 							<td width="2%" class="dvtCellLabel">
-								{if in_array($MODULE,$QCMODULEARRAY)}<a href="javascript:QCreatePop('{$MODULE}','{$POPUP}');"><img src="{'select.gif'|@vtiger_imageurl:$THEME}" align="left" border="0"></a>{/if}
+								{if in_array($MODULE,$QCMODULEARRAY)}
+									<svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon_x-small" id="popupqcreate" onclick="QCreatePop('{$MODULE}','{$POPUP}');">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
+									</svg>
+								{/if}
 							</td>
 						</tr>
 						 <tr>

@@ -20,26 +20,27 @@
  * The accepted format is:
  <map>
   <originmodule>
-    <originid>22</originid>  {optional}
-    <originname>SalesOrder</originname>
+	<originid>22</originid>  {optional}
+	<originname>SalesOrder</originname>
   </originmodule>
   <fields>
-    <field>
-      <fieldname>subject</fieldname>   {field to validate}
-      <fieldID>999</fieldID>  {optional}
-      <validations>  {if more than one is present they must all pass to accept the value}
-        <validation>
-          <rule>{rule_name}</rule>
-          <restrictions>
-          <restriction>{values depend on the rule}</restriction>
-          </restrictions>
-        </validation>
-        .....
-      </validations>
-    </field>
-    <field>
-     .....
-    </field>
+	<field>
+	  <fieldname>subject</fieldname>   {field to validate}
+	  <fieldID>999</fieldID>  {optional}
+	  <validations>  {if more than one is present they must all pass to accept the value}
+		<validation>
+		  <rule>{rule_name}</rule>
+		  <restrictions>
+		  <restriction>{values depend on the rule}</restriction>
+		  </restrictions>
+		  <message>This is my custom msg for field: {field}</message> {optional}
+		</validation>
+		.....
+	  </validations>
+	</field>
+	<field>
+	 .....
+	</field>
   </fields>
 
   where {rule_name} can be:
@@ -108,6 +109,8 @@
 		restrictions: none
 	notDuplicate - checks that no other record with the same value exists on the given fieldname
 		restrictions: none
+	expression - accept a workflow expression and evaluate it in the context of the new screen values
+		restrictions: map name or ID
 	custom - launch custom function that can be found in the indicated file
 		restrictions: file name, validation test name, function name and label to show on error (will be translated)
  *************************************************************************************************/
@@ -120,25 +123,36 @@ class Validations extends processcbMap {
 	 * $arguments[0] array with all the values to validate, the fieldname as the index of the array
 	 * $arguments[1] crmid of the record being validated
 	 */
-	function processMap($arguments) {
-		global $adb, $current_user;
+	public function processMap($arguments) {
+		global $adb;
 		$mapping=$this->convertMap2Array();
 		$tabid = getTabid($mapping['origin']);
+		if (isset($arguments[2]) && $arguments[2]==true) {
+			$mapping=$this->addFieldValidations($mapping, $tabid);
+		}
 		$screen_values = $arguments[0];
+		foreach ($mapping['fields'] as $valfield => $vals) {
+			if (isset($screen_values['action']) && $screen_values['action']=='DetailViewEdit' && $screen_values['dtlview_edit_fieldcheck']!=$valfield
+			&& !isset($screen_values[$valfield]) && isset($screen_values['current_'.$valfield])
+			) {
+				$screen_values[$valfield] = $screen_values['current_'.$valfield];
+			}
+		}
 		$v = new cbValidator($screen_values);
 		$validations = array();
 		foreach ($mapping['fields'] as $valfield => $vals) {
 			$fl = $adb->pquery('select fieldlabel from vtiger_field where tabid=? and columnname=?', array($tabid,$valfield));
 			$fieldlabel = $adb->query_result($fl, 0, 0);
-			$i18n = getTranslatedString($fieldlabel,$mapping['origin']);
-			foreach ($vals as $rule => $restrictions) {
+			$i18n = getTranslatedString($fieldlabel, $mapping['origin']);
+			foreach ($vals as $val) {
+				if (isset($screen_values['action']) && $screen_values['action']=='MassEditSave' && empty($screen_values[$valfield.'_mass_edit_check'])) {
+					continue; // we are not saving this field in mass edit save so we don't have to check it
+				}
+				$rule = $val['rule'];
+				$restrictions = $val['rst'];
 				switch ($rule) {
 					case 'required':
 					case 'accepted':
-						if (isset($screen_values[$valfield])) {
-							$v->rule($rule, $valfield)->label($i18n);
-						}
-						break;
 					case 'numeric':
 					case 'integer':
 					case 'array':
@@ -151,7 +165,11 @@ class Validations extends processcbMap {
 					case 'date':
 					case 'IBAN_BankAccount':
 					case 'EU_VAT':
-						$v->rule($rule, $valfield)->label($i18n);
+						if (isset($val['msg'])) {
+							$v->rule($rule, $valfield)->message($val['msg'])->label($i18n);
+						} else {
+							$v->rule($rule, $valfield)->label($i18n);
+						}
 						break;
 					case 'equals':
 					case 'different':
@@ -165,12 +183,18 @@ class Validations extends processcbMap {
 					case 'dateBefore':
 					case 'dateAfter':
 					case 'contains':
-						if (substr($restrictions[0], 0, 2)=='{{' and substr($restrictions[0], -2)=='}}' and isset($screen_values[substr($restrictions[0], 2, strlen($restrictions[0])-4)])) {
+						if (substr($restrictions[0], 0, 2)=='{{' && substr($restrictions[0], -2)=='}}'
+							&& isset($screen_values[substr($restrictions[0], 2, strlen($restrictions[0])-4)])
+						) {
 							$rulevalue = $screen_values[substr($restrictions[0], 2, strlen($restrictions[0])-4)];
 						} else {
 							$rulevalue = $restrictions[0];
 						}
-						$v->rule($rule, $valfield, $rulevalue)->label($i18n);
+						if (isset($val['msg'])) {
+							$v->rule($rule, $valfield, $rulevalue)->message($val['msg'])->label($i18n);
+						} else {
+							$v->rule($rule, $valfield, $rulevalue)->label($i18n);
+						}
 						break;
 					case 'lengthBetween':
 						if ($restrictions[0]<$restrictions[1]) {
@@ -180,31 +204,67 @@ class Validations extends processcbMap {
 							$min = $restrictions[1];
 							$max = $restrictions[0];
 						}
-						$v->rule($rule, $valfield, $min, $max)->label($i18n);
+						if (isset($val['msg'])) {
+							$v->rule($rule, $valfield, $min, $max)->message($val['msg'])->label($i18n);
+						} else {
+							$v->rule($rule, $valfield, $min, $max)->label($i18n);
+						}
 						break;
 					case 'in':
 					case 'notIn':
-						$v->rule($rule, $valfield, $restrictions)->label($i18n);
+						if (isset($val['msg'])) {
+							$v->rule($rule, $valfield, $restrictions)->message($val['msg'])->label($i18n);
+						} else {
+							$v->rule($rule, $valfield, $restrictions)->label($i18n);
+						}
 						break;
 					case 'regex': // CDATA?
-						$v->rule($rule, $valfield, $restrictions[0])->label($i18n);
+						if (isset($val['msg'])) {
+							$v->rule($rule, $valfield, $restrictions[0])->message($val['msg'])->label($i18n);
+						} else {
+							$v->rule($rule, $valfield, $restrictions[0])->label($i18n);
+						}
 						break;
 					case 'creditCard':
 						if (count($restrictions)>0) {
-							$v->rule($rule, $valfield, $restrictions)->label($i18n);
+							if (isset($val['msg'])) {
+								$v->rule($rule, $valfield, $restrictions)->message($val['msg'])->label($i18n);
+							} else {
+								$v->rule($rule, $valfield, $restrictions)->label($i18n);
+							}
 						} else {
-							$v->rule($rule, $valfield->label($i18n));
+							if (isset($val['msg'])) {
+								$v->rule($rule, $valfield)->message($val['msg'])->label($i18n);
+							} else {
+								$v->rule($rule, $valfield)->label($i18n);
+							}
 						}
 						break;
 					case 'notDuplicate':
-						$v->rule($rule, $valfield, $mapping['origin'], $arguments[1])->label($i18n);
+						if (isset($val['msg'])) {
+							$v->rule($rule, $valfield, $mapping['origin'], $arguments[1])->message($val['msg'])->label($i18n);
+						} else {
+							$v->rule($rule, $valfield, $mapping['origin'], $arguments[1])->label($i18n);
+						}
+						break;
+					case 'expression':
+						if (isset($val['msg'])) {
+							$v->rule($rule, $valfield, $arguments[1], $restrictions[0])->message($val['msg'])->label($i18n);
+						} else {
+							$v->rule($rule, $valfield, $arguments[1], $restrictions[0])->label($i18n);
+						}
 						break;
 					case 'custom':
 						if (file_exists($restrictions[0])) {
 							@include_once $restrictions[0];
 							if (function_exists($restrictions[2])) {
-								$v->addRule($restrictions[1], $restrictions[2], (isset($restrictions[3]) ? getTranslatedString($restrictions[3],$mapping['origin']) : getTranslatedString('INVALID',$mapping['origin'])));
-								$v->rule($restrictions[1], $valfield)->label($i18n);
+								$lbl = (isset($restrictions[3]) ? getTranslatedString($restrictions[3], $mapping['origin']) : getTranslatedString('INVALID', $mapping['origin']));
+								$v->addRule($restrictions[1], $restrictions[2], $lbl);
+								if (isset($val['msg'])) {
+									$v->rule($restrictions[1], $valfield)->message($val['msg'])->label($i18n);
+								} else {
+									$v->rule($restrictions[1], $valfield)->label($i18n);
+								}
 							}
 						}
 						break;
@@ -214,7 +274,7 @@ class Validations extends processcbMap {
 				}
 			}
 		}
-		if(!$v->validate()) {
+		if (!$v->validate()) {
 			$validations = $v->errors();
 		}
 		if (count($validations)==0) {
@@ -224,28 +284,61 @@ class Validations extends processcbMap {
 		}
 	}
 
-	function convertMap2Array() {
+	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
 		$mapping=$val_fields=array();
 		$mapping['origin'] = (String)$xml->originmodule->originname;
-		foreach($xml->fields->field as $k=>$v) {
+		foreach ($xml->fields->field as $v) {
 			$fieldname = (String)$v->fieldname;
-			if(empty($fieldname)) continue;
+			if (empty($fieldname)) {
+				continue;
+			}
 			$allvals=array();
-			foreach($v->validations->validation as $key=>$val) {
-				$rule = (String)$val->rule;
-				if(empty($rule)) continue;
+			foreach ($v->validations->validation as $val) {
+				$retval = array();
+				$retval['rule'] = (String)$val->rule;
+				if (empty($retval['rule'])) {
+					continue;
+				}
 				$rst = array();
 				if (isset($val->restrictions)) {
-					foreach($val->restrictions->restriction as $rk=>$rv) {
+					foreach ($val->restrictions->restriction as $rv) {
 						$rst[]=(String)$rv;
 					}
 				}
-				$allvals[$rule]=$rst;
+				$retval['rst'] = $rst;
+				if (isset($val->message)) {
+					$retval['msg']=(String)$val->message;
+				}
+				$allvals[]=$retval;
 			}
 			$val_fields[$fieldname] = $allvals;
 		}
 		$mapping['fields'] = $val_fields;
+		return $mapping;
+	}
+
+	private function addFieldValidations($mapping, $tabid) {
+		$validationData = getDBValidationData(array(), $tabid);
+		foreach ($validationData as $fname => $finfo) {
+			foreach ($finfo as $flabel => $fvalidation) {
+				if (strpos($fvalidation, '~M')) {
+					if (isset($mapping['fields'][$fname])) {
+						$mapping['fields'][$fname][] = array('rule'=>'required', 'rst'=>array());
+					} else {
+						$mapping['fields'][$fname] = array(array('rule'=>'required', 'rst'=>array()));
+					}
+				}
+				if (strpos($fvalidation, '~OTH~')) { //D~O~OTH~GE~support_start_date~Support Start Date
+					$val = explode('~', $fvalidation);
+					if (isset($mapping['fields'][$fname])) {
+						$mapping['fields'][$fname][] = array('rule'=>'dateAfter', 'rst'=>array('{{'.$val[4].'}}'));
+					} else {
+						$mapping['fields'][$fname] = array(array('rule'=>'dateAfter', 'rst'=>array('{{'.$val[4].'}}')));
+					}
+				}
+			}
+		}
 		return $mapping;
 	}
 
@@ -254,13 +347,33 @@ class Validations extends processcbMap {
 		$q = 'select 1 from vtiger_cbmap
 			inner join vtiger_crmentity on crmid=cbmapid
 			where deleted=0 and maptype=? and targetname=? limit 1';
-		$rs = $adb->pquery($q,array('Validations',$module));
-		return ($rs and $adb->num_rows($rs)==1);
+		$rs = $adb->pquery($q, array('Validations',$module));
+		return ($rs && $adb->num_rows($rs)==1);
+	}
+
+	public static function recordIsAssignedToInactiveUser() {
+		$screen_values = json_decode($_REQUEST['structure'], true);
+		if (isset($screen_values['assigned_user_id'])) {
+			global $adb;
+			$usrrs = $adb->pquery('select status from vtiger_users where id=?', array($screen_values['assigned_user_id']));
+			if ($usrrs && $adb->num_rows($usrrs)==1) {
+				return ($adb->query_result($usrrs, 0, 'status')!='Active');
+			} else {
+				$grprs = $adb->pquery('select 1 from vtiger_groups where groupid=?', array($screen_values['assigned_user_id']));
+				if ($grprs && $adb->num_rows($grprs)==1) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+		} else {
+			return recordIsAssignedToInactiveUser($screen_values['record']);
+		}
 	}
 
 	public static function processAllValidationsFor($module) {
 		global $adb;
-		$screen_values = json_decode($_REQUEST['structure'],true);
+		$screen_values = json_decode($_REQUEST['structure'], true);
 		if (in_array($module, getInventoryModules())) {
 			$products = array();
 			foreach ($screen_values as $sv_name => $sv) {
@@ -277,18 +390,27 @@ class Validations extends processcbMap {
 			}
 			$screen_values['pdoInformation'] = $products;
 		}
+		if (!empty($screen_values['record'])) {
+			$module_to_edit = CRMEntity::getInstance($screen_values['module']);
+			$module_to_edit->retrieve_entity_info($screen_values['record'], $screen_values['module']);
+			foreach ($module_to_edit->column_fields as $key => $value) {
+				$screen_values['current_'.$key] = $value;
+			}
+		}
 		$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : (isset($screen_values['record']) ? vtlib_purify($screen_values['record']) : 0));
 		$q = 'select cbmapid from vtiger_cbmap
 			inner join vtiger_crmentity on crmid=cbmapid
 			where deleted=0 and maptype=? and targetname=?';
-		$rs = $adb->pquery($q,array('Validations',$module));
+		$rs = $adb->pquery($q, array('Validations', $module));
 		$focus = new cbMap();
 		$focus->mode = '';
 		$validation = true;
+		$addFieldValidations = true;
 		while ($val = $adb->fetch_array($rs)) {
 			$focus->id = $val['cbmapid'];
 			$focus->retrieve_entity_info($val['cbmapid'], 'cbMap');
-			$validation = $focus->Validations($screen_values,$record);
+			$validation = $focus->Validations($screen_values, $record, $addFieldValidations);
+			$addFieldValidations = false;
 			if ($validation!==true) {
 				break;
 			}
@@ -296,15 +418,20 @@ class Validations extends processcbMap {
 		return $validation;
 	}
 
-	public static function formatValidationErrors($errors,$module) {
+	public static function formatValidationErrors($errors, $module) {
 		$error = '';
 		foreach ($errors as $field => $errs) {
 			foreach ($errs as $err) {
 				$error.= $err . "\n";
 			}
+			if (strpos($error, "{custommsg|") > 0) {
+				preg_match_all('/{(.*)}/', $error, $match);
+				$res = explode('|', $match[1][0]);
+				include_once 'include/validation/'.$res[1].'.php';
+				$error = call_user_func(array(__NAMESPACE__ .$res[1], $res[2]), $field);
+			}
 		}
 		return $error;
 	}
-
 }
 ?>

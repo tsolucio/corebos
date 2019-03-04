@@ -7,18 +7,18 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/logging.php');
-require_once('modules/Users/LoginHistory.php');
-require_once('modules/Users/Users.php');
-require_once('include/database/PearDatabase.php');
-require_once('include/utils/Session.php');
+require_once 'include/logging.php';
+require_once 'modules/Users/LoginHistory.php';
+require_once 'modules/Users/Users.php';
+require_once 'include/database/PearDatabase.php';
+require_once 'include/utils/Session.php';
 global $adb,$current_user;
 
 // Recording Logout Info
 $usip = Vtiger_Request::get_ip();
 $outtime=date("Y/m/d H:i:s");
 $loghistory=new LoginHistory();
-$loghistory->user_logout($current_user->user_name,$usip,$outtime);
+$loghistory->user_logout($current_user->user_name, $usip, $outtime);
 
 coreBOS_Settings::delSetting('cbodUserConnection'.$current_user->id);
 

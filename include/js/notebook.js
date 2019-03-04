@@ -23,12 +23,12 @@ function saveContents(node, notebookid) {
 		var responsedata = trim(response);
 		var responsearray = JSON.parse(responsedata);
 		if (responsearray['status'] == false) {
-			alert("Some error has occurred during save");
+			alert('Some error has occurred during save');
 		} else {
 			//success
 			node.style.display = 'none';
 
-			temp = document.getElementById('notebook_contents_'+notebookid);
+			var temp = document.getElementById('notebook_contents_'+notebookid);
 			temp.style.display = 'block';
 			temp.innerHTML = '<pre>' + responsearray['contents'] + '</pre>';
 			document.getElementById('notebook_'+notebookid).style.display = 'block';

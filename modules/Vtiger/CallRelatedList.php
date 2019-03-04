@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('Smarty_setup.php');
-require('user_privileges/default_module_view.php');
+require_once 'Smarty_setup.php';
+require 'user_privileges/default_module_view.php';
 
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
@@ -85,7 +85,20 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 		$rel_array = getRelatedLists($currentModule, $focus, $restrictedRelations);
 		foreach ($rltabs['panes'][$_RelatedPane]['blocks'] as $blk) {
 			if ($blk['type']=='RelatedList') {
-				$related_array[$blk['loadfrom']] = empty($rel_array[$blk['loadfrom']]) ? $rel_array[$blk['label']] : $rel_array[$blk['loadfrom']];
+				if (empty($rel_array[$blk['loadfrom']])) {
+					if (empty($rel_array[$blk['label']])) {
+						$i18n = getTranslatedString($blk['label'], $blk['label']);
+						if (empty($rel_array[$i18n])) {
+							continue;
+						} else {
+							$related_array[$blk['loadfrom']] = $rel_array[$i18n];
+						}
+					} else {
+						$related_array[$blk['loadfrom']] = $rel_array[$blk['label']];
+					}
+				} else {
+					$related_array[$blk['loadfrom']] = $rel_array[$blk['loadfrom']];
+				}
 			} else {
 				if (!empty($blk['loadphp'])) {
 					try {
@@ -111,7 +124,7 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	}
 	$smarty->assign('RELATEDLISTS', $related_array);
 
-	require_once('include/ListView/RelatedListViewSession.php');
+	require_once 'include/ListView/RelatedListViewSession.php';
 	if (!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
 		$relationId = vtlib_purify($_REQUEST['relation_id']);
 		RelatedListViewSession::addRelatedModuleToSession($relationId, vtlib_purify($_REQUEST['selected_header']));

@@ -13,28 +13,27 @@
  */
 echo startCall();
 
-function startCall(){
+function startCall() {
 	global $current_user, $adb,$log;
 	require_once 'include/utils/utils.php';
 	require_once 'modules/PBXManager/utils/AsteriskClass.php';
-	require_once('modules/PBXManager/AsteriskUtils.php');
+	require_once 'modules/PBXManager/AsteriskUtils.php';
 
-	$id = $current_user->id;
 	$number = vtlib_purify($_REQUEST['number']);
 	$record = vtlib_purify($_REQUEST['recordid']);
-	$result = $adb->query("select * from vtiger_asteriskextensions where userid=".$current_user->id);
-	$extension = $adb->query_result($result, 0, "asterisk_extension");
+	$result = $adb->query('select * from vtiger_asteriskextensions where userid='.$current_user->id);
+	$extension = $adb->query_result($result, 0, 'asterisk_extension');
 	$data = getAsteriskInfo($adb);
-	if(!empty($data)){
+	if (!empty($data)) {
 		$server = $data['server'];
 		$port = $data['port'];
 		$username = $data['username'];
 		$password = $data['password'];
-		$version = $data['version'];
-		$errno = $errstr = NULL;
+		//$version = $data['version'];
+		$errno = $errstr = null;
 		$sock = fsockopen($server, $port, $errno, $errstr, 1);
 		stream_set_blocking($sock, false);
-		if( $sock === false ) {
+		if ($sock === false) {
 			echo "Socket cannot be created due to error: $errno:  $errstr\n";
 			$log->debug("Socket cannot be created due to error:   $errno:  $errstr\n");
 			exit(0);
@@ -42,8 +41,8 @@ function startCall(){
 		$asterisk = new Asterisk($sock, $server, $port);
 
 		loginUser($username, $password, $asterisk);
-		$pbxGetLinePrefix = GlobalVariable::getVariable('PBX_Get_Line_Prefix','','PBXManager');
-		$asterisk->transfer($extension,$pbxGetLinePrefix.$number);
+		$pbxGetLinePrefix = GlobalVariable::getVariable('PBX_Get_Line_Prefix', '', 'PBXManager');
+		$asterisk->transfer($extension, $pbxGetLinePrefix.$number);
 
 		$callerModule = getSalesEntityType($record);
 		$entityNames = getEntityName($callerModule, array($record));
@@ -51,10 +50,10 @@ function startCall(){
 		$callerInfo = array('id'=>$record, 'module'=>$callerModule, 'name'=>$callerName);
 
 		//adds to pbx manager
-		addToCallHistory($extension, $extension, $number, "outgoing", $adb, $callerInfo);
+		addToCallHistory($extension, $extension, $number, 'outgoing', $adb, $callerInfo);
 
 		// add to the records activity history
-		addOutgoingcallHistory($current_user ,$extension,$record ,$adb);
+		addOutgoingcallHistory($current_user, $extension, $record, $adb);
 	}
 }
 ?>

@@ -9,16 +9,16 @@
  ************************************************************************************/
 interface ISMSProvider {
 
-	const MSG_STATUS_DISPATCHED = "Dispatched";
-	const MSG_STATUS_PROCESSING = "Processing";
-	const MSG_STATUS_DELIVERED  = "Delivered";
-	const MSG_STATUS_FAILED     = "Failed";
-	const MSG_STATUS_ERROR      = "ERR: ";
+	const MSG_STATUS_DISPATCHED = 'Dispatched';
+	const MSG_STATUS_PROCESSING = 'Processing';
+	const MSG_STATUS_DELIVERED  = 'Delivered';
+	const MSG_STATUS_FAILED     = 'Failed';
+	const MSG_STATUS_ERROR      = 'ERR: ';
 
-	const SERVICE_SEND = "SEND";
-	const SERVICE_QUERY= "QUERY";
-	const SERVICE_PING = "PING";
-	const SERVICE_AUTH = "AUTH";
+	const SERVICE_SEND = 'SEND';
+	const SERVICE_QUERY= 'QUERY';
+	const SERVICE_PING = 'PING';
+	const SERVICE_AUTH = 'AUTH';
 
 	/**
 	 * Get required parameters other than (username, password)
@@ -62,6 +62,5 @@ interface ISMSProvider {
 	 * @param String $messageid
 	 */
 	public function query($messageid);
-
 }
 ?>

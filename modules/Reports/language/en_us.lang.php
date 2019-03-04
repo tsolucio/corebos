@@ -233,7 +233,6 @@ $mod_strings = array(
 'LBL_MONTH'=> 'Month',
 'LBL_DAY'=> 'Day',
 'LBL_QUARTER'=> 'Quarter',
-'LBL_NONE'=> 'None',
 
 'LBL_ROLES'=>'Roles',
 'LBL_ROLES_SUBORDINATES'=>'Roles and Subordinates',
@@ -300,6 +299,6 @@ $mod_strings = array(
 'LBL_COLUMNS_COUNT'=>'Count',
 'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Error while deleting the folder.',
 'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error while deleting the reports of the folder',
+'ERR_CREATE_REPORT' => 'Error creating the report.',
 );
-
 ?>

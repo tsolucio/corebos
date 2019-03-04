@@ -1,19 +1,14 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific apmt_locationuage governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
     'LBL_MODULE_NAME'=>'Kalender',
     'LBL_MODULE_TITLE'=>'Kalender: Home',
     'LBL_MODULE_APPOINTMENT'=>'Kalender: Termin',
@@ -32,7 +27,6 @@ $mod_strings = Array(
     'LBL_TIMESETTINGS'=>'Zeiteinstellungen',
     'LBL_HOLDFOLLOWUP'=>'Nachfassen am',
     'LBL_FOLLOWUP' => 'Follow up',
-    'LBL_CALL' => 'Anruf',
     'LBL_MEET' => 'Meeting',
     'LBL_APPNT' => 'Termin',
     'LBL_NEW_APPNT' => 'Neuer Termin',
@@ -64,7 +58,6 @@ $mod_strings = Array(
     'LBL_WEEK' => 'Woche',
     'LBL_WEEK_BUTTON_KEY' => 'W',
     'LBL_WEEK_BUTTON_TITLE' => 'Woche [Alt+W]',
-    'LBL_WEEKS' => 'Wochen',
     'LBL_NEXT_WEEK' => 'nächste Woche',
     'LBL_LAST_WEEK' => 'vorherige Woche',
     'LBL_4WEEKS_BACK' => '4 Wochen zurück',
@@ -280,7 +273,6 @@ $mod_strings = Array(
     'LBL_LIST_CLOSE'=>'Schließen',
     'LBL_LIST_STATUS'=>'Status',
     'LBL_LIST_CONTACT'=>'Person',
-    //Added for 4.2 release for Account column support as shown by Fredy
     'LBL_LIST_ACCOUNT'=>'Organisation',
     'LBL_LIST_RELATED_TO'=>'Bezogen auf',
     'LBL_LIST_DUE_DATE'=>'zu erledigen bis',
@@ -292,17 +284,14 @@ $mod_strings = Array(
     'ERR_DELETE_RECORD'=>"Bitte wählen Sie wenigstens einen Eintrag aus.",
     'NTC_NONE_SCHEDULED'=>'nichts geplant',
 
-    // Added vtiger_fields for Attachments in Activities/SubPanelView.php
     'LBL_ATTACHMENTS'=>'Anhänge',
     'LBL_NEW_ATTACHMENT'=>'neuer Anhang',
 
-    //Added vtiger_fields after RC1 - Release
     'LBL_ALL'=>'Alle',
     'LBL_CALL'=>'Anruf',
     'LBL_MEETING'=>'Meeting',
     'LBL_TASK'=>'Aufgabe',
 
-    //Added for 4GA Release
     'Subject'=>'Betreff',
     'Assigned To'=>'zuständig',
     'Start Date & Time'=>'Termin beginnt',
@@ -322,7 +311,6 @@ $mod_strings = Array(
     'Duration Minutes'=>'Dauer in Minuten',
     'Location'=>'Ort',
     'No Time'=>'keine Zeitangabe',
-    //Added for Send Reminder 4.2 release
     'Send Reminder'=>'sende Erinnerung',
     'SendReminder'=>'sende Erinnerung',
     'LBL_YES'=>'Ja',
@@ -331,16 +319,13 @@ $mod_strings = Array(
     'LBL_MINUTES'=>'Minute(n)',
     'LBL_HOURS'=>'Stunde(n)',
     'LBL_BEFORE_EVENT'=>'vor dem Ereignis',
-    //Added for CustomView 4.2 Release
     'Close'=>'Schließen',
     'Start Date'=>'Startdatum',
     'Type'=>'Typ',
     'End Date'=>'Endedatum',
-    'Recurrence'=> 'wiederholende Ereignisse',
     'Recurring Type'=> 'Wiederholungstyp',
     //Activities - Notification Error
     'LBL_NOTIFICATION_ERROR'=>'Mail Fehler: Bitten Sie den CRM Systemadministrator die Einstellungen für den ausgehenden Mailserver zu überprüfen ODER geben Sie eine gültige E-Mail Adresse unter Meine Einstellungen an.',
-    // Mike Crowe Mod --------------------------------------------------------added for generic search
     'LBL_GENERAL_INFORMATION'=>'Allgemeine Information',
 
     'LBL_EVENTTYPE'=>'Ereignistyp',
@@ -419,7 +404,6 @@ $mod_strings = Array(
     'LBL_CREATED'=>'erzeugt',
     'LBL_UPDATED'=>'modifiziert',
 
-    //Added after 5.0.4 GA
     'LBL_BUSY' => 'geblockt',
 
     //Custom Fields support for Calendar
@@ -445,5 +429,4 @@ $mod_strings = Array(
     'LBL_ARE_YOU_SURE'=>'Sind Sie sicher?',
     'Calendar ID' => 'Kalendar ID',
 );
-
 ?>

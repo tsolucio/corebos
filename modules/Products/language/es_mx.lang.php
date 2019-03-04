@@ -16,7 +16,7 @@
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
 ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Productos',
 'SINGLE_Products'=>'Producto',
 'LBL_LIST_PRODUCT_NAME'=>'Producto',
@@ -30,7 +30,6 @@ $mod_strings = Array(
 'LBL_VENDOR_INFORMATION'=>'Información del Proveedor:',
 'LBL_PRICEBOOK_INFORMATION'=>'Información de las Listas de precios:',
 'LBL_VENDOR_ADDRESS_INFORMATION'=>'Información de la Dirección:',
-'LBL_DESCRIPTION_INFORMATION'=>'Información Adicional',
 'LBL_PRICING_INFORMATION'=>'Información de Precios:',
 'LBL_STOCK_INFORMATION'=>'Información del Stock:',
 'LBL_LIST_FORM_TITLE'=>'Lista de productos',
@@ -52,7 +51,6 @@ $mod_strings = Array(
 'LBL_CUSTOM_INFORMATION'=>'Información personalizada',
 'LBL_DESCRIPTION_INFORMATION'=>'Descripción',
 
-//New entry
 'LBL_UPLOAD'=>'Adjuntar archivo',
 
 'LBL_PRODUCT'=>'Producto',
@@ -64,8 +62,6 @@ $mod_strings = Array(
 'LBL_DESCRIPTION'=>'Descripción',
 'LBL_FILE'=>'Nombre del Archivo',
 
-
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nueva Oportunidad',
 'LBL_POTENTIAL_TITLE'=>'Oportunidades',
 
@@ -81,15 +77,12 @@ $mod_strings = Array(
 'LBL_NEW_ATTACHMENT'=>'Nuevo Adjunto',
 'LBL_ATTACHMENT_TITLE'=>'Adjuntos',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_MANUFACTURER'=>'Fabricante',
 'LBL_PRODUCTCATEGORY'=>'Categoría',
 'LBL_SUPPORT_START_DATE'=>'Fecha de inicio del Soporte',
 'LBL_SUPPORT_EXPIRY_DATE'=>'Fecha de fin del Soporte',
 'LBL_PURCHASE_DATE'=>'Fecha de compra',
 
-//Added for 4GA
-'Product Name'=>'Nombre del Producto',
 //'Product Code'=>'Part Number',
 'Part Number'=>'Código de Producto',
 'Product Active'=>'Producto Activo',
@@ -142,7 +135,6 @@ $mod_strings = Array(
 'Product Name'=>'Nombre de Producto',
 'Active'=>'Activo',
 
-//Added for 4.2 Release -- CustomView
 'LBL_ALL'=>'Todo',
 'LBL_VENDOR_SEARCH_FORM_TITLE'=>'Buscar Proveedor',
 'LBL_PRICEBOOK_SEARCH_FORM_TITLE'=>'Buscar Listas de precios',
@@ -161,7 +153,6 @@ $mod_strings = Array(
 'LBL_ADD_PRODUCT_PRICEBOOKS'=>'Agregar producto a las Listas de precios',
 'LBL_ADD_PRODUCTS_PRICEBOOK'=>'Agregar producto a las Listas de precios',
 
-//Added for 4.2 patch2 release
 'LBL_MAXIMUM_LIMIT_ERROR'=>'El archivo excede el límite de tamaño máximo. Pruebe con otro archivo menor que 800Kbytes',
 'LBL_UPLOAD_ERROR'=>'Problemas con el archivo. ¡Inténtelo de nuevo!',
 'LBL_IMAGE_ERROR'=>'El archivo no es de tipo imágen(.gif/.jpg/.png)',
@@ -190,7 +181,6 @@ $mod_strings = Array(
 
 'Box'=>'Caja',
 'Carton'=>'Cartón',
-'Caton'=>'Caton',
 'Dozen'=>'Docena',
 'Each'=>'Unidad',
 'Hours'=>'Horas',
@@ -206,7 +196,6 @@ $mod_strings = Array(
 'Spiral Binder'=>'Encuadernado Espiral',
 'Sq Ft'=>'m&sup2;',
 
-//Added for 5.0.3
 'MSG_STOCK_LEVEL'=>'Stock Bajo',
 'MSG_DEAR'=>'Querido',
 'MSG_CURRENT_STOCK'=>'El Stock actual',
@@ -215,14 +204,11 @@ $mod_strings = Array(
 'MSG_SEVERITY'=>'Importancia: Alta',
 'MSG_THANKS'=>'Gracias, ',
 
-// Added after 5.0.4 GA
-
 'LBL_PRODUCT_PRICES'=>'Precios Productos',
 'Member Of'=>'Miembro de',
 
 // Module Sequence Numbering
 'Product No' => 'Núm. Producto',
-// END
 
 'Parent Product' => 'Producto Paterno',
 
@@ -231,7 +217,6 @@ $mod_strings = Array(
 'Divisible' => 'Divisible',
 'DIVISIBLE_WARNING' => 'solo puede venderse en unidades enteras',
 'DIVISIBLE_WARNING_PURCHASE' => 'solo puede comprarse en unidades enteras',
-
+'IS_DISCONTINUED' => 'no está activo',
 );
-
 ?>

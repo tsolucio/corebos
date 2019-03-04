@@ -7,9 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/database/PearDatabase.php');
-require_once('Smarty_setup.php');
-require_once('include/utils/utils.php');
+require_once 'include/database/PearDatabase.php';
+require_once 'Smarty_setup.php';
+require_once 'include/utils/utils.php';
 global $app_strings,$mod_strings, $currentModule, $theme, $current_language, $current_user;
 $list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
 $smarty = new vtigerCRM_Smarty();

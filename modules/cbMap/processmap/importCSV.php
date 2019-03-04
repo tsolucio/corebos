@@ -17,14 +17,14 @@
  *  Version      : 5.4.0
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-require_once('config.inc.php');
-include_once('data/CRMEntity.php');
-include_once('modules/Users/Users.php');
-include_once('modules/cbMap/cbMap.php');
-require_once('modules/cbMap/processmap/processMap.php');
-require_once('modules/cbMap/processmap/Import.php');
-require_once('include/utils/utils.php');
-require_once('include/database/PearDatabase.php');
+require_once 'config.inc.php';
+include_once 'data/CRMEntity.php';
+include_once 'modules/Users/Users.php';
+include_once 'modules/cbMap/cbMap.php';
+require_once 'modules/cbMap/processmap/processMap.php';
+require_once 'modules/cbMap/processmap/Import.php';
+require_once 'include/utils/utils.php';
+require_once 'include/database/PearDatabase.php';
 
 global $adb, $log, $current_user;
 $current_user = Users::getActiveAdminUser();
@@ -32,7 +32,7 @@ if (isset($argv) && !empty($argv)) {
 	$csvfile = $argv[1];
 	$mapid = $argv[2];
 }
-$mapfocus = CRMEntity::getInstance("cbMap");
-$mapfocus->retrieve_entity_info($mapid, "cbMap");
+$mapfocus = CRMEntity::getInstance('cbMap');
+$mapfocus->retrieve_entity_info($mapid, 'cbMap');
 $mapinfo = $mapfocus->Import()->processMap($argv);
 ?>

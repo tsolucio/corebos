@@ -8,7 +8,7 @@
 * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese |30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'RecycleBin' => 'Lixeira',
 'MSG_EMPTY_RB_CONFIRMATION'=>'Você tem certeza que deseja remover? Todos os registros serão apagados permanentemente de sua base de dados!',
 'LBL_SELECT_MODULE'=>'Selecionar Módulo',
@@ -16,8 +16,7 @@ $mod_strings = Array(
 'LBL_MASS_RESTORE'=>'Restaurar',
 'LBL_EMPTY_RECYCLEBIN'=>'Limpar Lixeira',
 'LBL_EMPTY_RBMODULE'=>'Limpar Módulo',
-'LNK_RESTORE'=>'restaurar',
+'LNK_RESTORE'=>'Restaurar',
 'LBL_NO_PERMITTED_MODULES'=>'Nenhum Módulo permitido disponível',
 );
-
 ?>

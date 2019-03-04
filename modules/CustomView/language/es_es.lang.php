@@ -33,11 +33,8 @@ $mod_strings = array (
 'LBL_AF_HDR3'=>'Puede incorporar hasta 10 artículos, separados por comas.',
 'LBL_AF_HDR4'=>'Si "Evento" está selecionado, dele un valor de los siguientes "Llamada", "Reunión" o "Tarea"',
 
-//strings added for vtiger 5, date format...
 'LBL_NONE'=>'Ninguno',
-'View_Name'=>'Ver_Nombre',
 'LBL_AND'=>'y',
-'LBL_DATE_FORMAT_CUSTOMVIEW'=>'A-m-d',
 //Strings added for filter
 'Custom'=>'Personalizado',
 'Previous FY'=>'Año Anterior',
@@ -73,7 +70,7 @@ $mod_strings = array (
 'less or equal'=>'menor o igual',
 'greater or equal'=>'mayor o igual',
 
-//Strings added to translate field label vtiger_groups
+//Strings added to translate field label groups
 'Address'=>'Dirección',
 'Information'=>'Información',
 'Description'=>'Descripción',
@@ -251,13 +248,10 @@ $mod_strings = array (
 'End_Date'=>'Vencimiento',
 'LBL_RULE'=>'REGLA',
 
-// Added/Updated for vtiger CRM 5.0.4
 'not equal to'=>'Distinto de',
 'starts with'=>'Empieza con',
 'ends with'=>'Termina en',
 //'Product Code'=>'Código de Producto',
-
-// Added after 5.0.4 GA
 
 //Added for Role based Custom filters
 'LBL_SET_AS_PUBLIC'=>'Hacer Público ',

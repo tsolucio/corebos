@@ -6,19 +6,20 @@
 * Portions created by IT-Solutions4You s.r.o. are Copyright(C) IT-Solutions4You s.r.o.
 * All Rights Reserved.
 ********************************************************************************/
-require_once('include/fields/DateTimeField.php');
-include_once("modules/Calendar4You/GoogleSync4You.php");
-require_once("modules/Calendar4You/Calendar4You.php");
-require_once("modules/Calendar4You/CalendarUtils.php");
+require_once 'include/fields/DateTimeField.php';
+include_once 'modules/Calendar4You/GoogleSync4You.php';
+require_once 'modules/Calendar4You/Calendar4You.php';
+require_once 'modules/Calendar4You/CalendarUtils.php';
 
 global $adb, $current_user, $default_timezone, $default_theme, $default_language;
 
 $currentModule = 'Calendar';
-$controlmonths = GlobalVariable::getVariable('GoogleCalendarSync_BaseCreateMonths','6');
+$controlmonths = GlobalVariable::getVariable('GoogleCalendarSync_BaseCreateMonths', '6');
 $controltime = strtotime('-'.$controlmonths.' month');
-$controldate = date('Y-m-d',$controltime);
+$controldate = date('Y-m-d', $controltime);
 $controlheldtime = strtotime('-15 day');
-$controlhelddate = date('Y-m-d',$controlheldtime);
+$controlhelddate = date('Y-m-d', $controlheldtime);
+$service='GoogleCalendar';
 
 $c_time_zone = new DateTimeZone($default_timezone);
 
@@ -26,13 +27,13 @@ $sql1 = 'SELECT a.userid ,synctoken,cal.calendar,cal.event
 	FROM its4you_googlesync4you_access a
 	INNER JOIN vtiger_users ON id = a.userid
 	INNER JOIN its4you_googlesync4you_calendar cal on cal.userid=a.userid
-	WHERE googleinsert=1 and deleted=0';
-$result1 = $adb->pquery($sql1,array());
+	WHERE googleinsert=1 and deleted=0 and service = "'.$service.'" ';
+$result1 = $adb->pquery($sql1, array());
 $num_rows1 = $adb->num_rows($result1);
 
 if ($num_rows1 > 0) {
-	while($row1 = $adb->fetchByAssoc($result1)) {
-                $repeated=0;
+	while ($row1 = $adb->fetchByAssoc($result1)) {
+		$repeated=0;
 		$userid = $row1['userid'];
 		$synctoken = $row1['synctoken'];
 		$CALENDAR_ID=$row1['calendar'];
@@ -41,13 +42,13 @@ if ($num_rows1 > 0) {
 		$current_user->id = $userid;
 		$current_user = $current_user->retrieve_entity_info($current_user->id, 'Users');
 		$_SESSION['authenticated_user_id'] = $current_user->id;
-		if(!empty($current_user->theme)) {
+		if (!empty($current_user->theme)) {
 			$theme = $current_user->theme;
 		} else {
 			$theme = $default_theme;
 		}
 		$_SESSION['vtiger_authenticated_user_theme'] = $theme;
-		if(!empty($current_user->language)) {
+		if (!empty($current_user->language)) {
 			$current_language = $current_user->language;
 		} else {
 			$current_language = $default_language;
@@ -58,83 +59,98 @@ if ($num_rows1 > 0) {
 		if ($have_access_data) {
 			$GoogleSync4You->connectToGoogle();
 			if ($GoogleSync4You->isLogged()) {
-				$events = $GoogleSync4You->getGoogleCalEvents($CALENDAR_ID,$synctoken);
+				$events = $GoogleSync4You->getGoogleCalEvents($CALENDAR_ID, $synctoken);
 				$checkevent = 'SELECT 1 FROM its4you_googlesync4you_events WHERE geventid=?';
-				while(true) {
-                                        if ($events==null) break;
+				$repeatedid = array();
+				while (true) {
+					if ($events==null) {
+						break;
+					}
 					$synctoken2=$events->getNextSyncToken();
 					foreach ($events->getItems() as $event) {
-						$gers = $adb->pquery($checkevent,array($event->getId()));
-						if($adb->num_rows($gers)==0) { // we already have this one > it will be updated
-					        if(!in_array($event->getId(),$repeatedid)){
-                                                if ($event->getStatus()!='cancelled'){
-						$tab_type = 'Events';
-						$focus = CRMEntity::getInstance($currentModule);
-						$focus->column_fields['subject'] = $event->getSummary();
-						if (empty($focus->column_fields['subject'])) {$repeatedid[]=$event->getId();continue;}// we don't create events with no subject
-						$focus->column_fields['description'] = $event->getDescription();
-						$focus->column_fields['location'] = $event->getLocation();
-						$focus->column_fields['assigned_user_id'] = $userid;
-						$focus->mode='';
-						$recurrence = $event->getRecurrence();
-						//if (empty($recurrence)) {
-							//$When = $event->getWhen();
-							$evdtst = (empty($event->getStart()->dateTime) ? $event->getStart()->date : $event->getStart()->dateTime);
-							$evdted = (empty($event->getEnd()->dateTime) ? $event->getEnd()->date : $event->getEnd()->dateTime);
-							$start_time_length = strlen($evdtst);
-							if ($start_time_length == 10)
-								$is_full_day_event = true;
-							else
-								$is_full_day_event = false;
-							$startdatetime = new DateTime($evdtst);
-							$startdatetime->setTimeZone($c_time_zone);
-							if ($startdatetime->format('Y-m-d') < $controldate) {$repeatedid[]=$event->getId();continue;}  // it is before controldate > we ignore it
-                                                        if($startdatetime->format('Y')>=date("Y",strtotime("+10 years"))) continue;
-							$new_time_start_time = $startdatetime->format('U');
-							$user_date_start = DateTimeField::convertToUserFormat($startdatetime->format('Y-m-d'));
-							if (!$is_full_day_event)
-								$user_time_start = $startdatetime->format('H:i');
-							else
-								$user_time_start = '00:00';
-							$enddatetime = new DateTime($evdted);
-							$enddatetime->setTimeZone($c_time_zone);
-							$new_time_end_time = $enddatetime->format('U');
-							$user_date_end = DateTimeField::convertToUserFormat($enddatetime->format('Y-m-d'));
-							if (!$is_full_day_event)
-								$user_time_end = $enddatetime->format('H:i');
-							else
-								$user_time_end = '00:00';
-							$evtype = getActTypeForCalendar($type, false);
-							$focus->column_fields['activitytype']=$evtype;
-							if ($startdatetime->format('Y-m-d') < $controlhelddate) { // event in the past
-								$evst = 'Held';
+						$gers = $adb->pquery($checkevent, array($event->getId()));
+						if ($adb->num_rows($gers)==0) { // we already have this one > it will be updated
+							if (!in_array($event->getId(), $repeatedid)) {
+								if ($event->getStatus()!='cancelled') {
+									$tab_type = 'Events';
+									$focus = CRMEntity::getInstance($currentModule);
+									$focus->column_fields['subject'] = $event->getSummary();
+									if (empty($focus->column_fields['subject'])) { // we don't create events with no subject
+										$repeatedid[]=$event->getId();
+										continue;
+									}
+									$focus->column_fields['description'] = $event->getDescription();
+									$focus->column_fields['location'] = $event->getLocation();
+									$focus->column_fields['assigned_user_id'] = $userid;
+									$focus->mode='';
+									$recurrence = $event->getRecurrence();
+								//if (empty($recurrence)) {
+									//$When = $event->getWhen();
+									$evdtst = (empty($event->getStart()->dateTime) ? $event->getStart()->date : $event->getStart()->dateTime);
+									$evdted = (empty($event->getEnd()->dateTime) ? $event->getEnd()->date : $event->getEnd()->dateTime);
+									$start_time_length = strlen($evdtst);
+									if ($start_time_length == 10) {
+										$is_full_day_event = true;
+									} else {
+										$is_full_day_event = false;
+									}
+									$startdatetime = new DateTime($evdtst);
+									$startdatetime->setTimeZone($c_time_zone);
+									if ($startdatetime->format('Y-m-d') < $controldate) { // it is before controldate > we ignore it
+										$repeatedid[]=$event->getId();
+										continue;
+									}
+									if ($startdatetime->format('Y')>=date('Y', strtotime('+10 years'))) {
+										continue;
+									}
+									$new_time_start_time = $startdatetime->format('U');
+									$user_date_start = DateTimeField::convertToUserFormat($startdatetime->format('Y-m-d'));
+									if (!$is_full_day_event) {
+										$user_time_start = $startdatetime->format('H:i');
+									} else {
+										$user_time_start = '00:00';
+									}
+									$enddatetime = new DateTime($evdted);
+									$enddatetime->setTimeZone($c_time_zone);
+									$new_time_end_time = $enddatetime->format('U');
+									$user_date_end = DateTimeField::convertToUserFormat($enddatetime->format('Y-m-d'));
+									if (!$is_full_day_event) {
+										$user_time_end = $enddatetime->format('H:i');
+									} else {
+										$user_time_end = '00:00';
+									}
+									$evtype = getActTypeForCalendar($type, false);
+									$focus->column_fields['activitytype']=$evtype;
+									if ($startdatetime->format('Y-m-d') < $controlhelddate) { // event in the past
+										$evst = 'Held';
+									} else {
+										$evst = 'Planned';
+									}
+									$focus->column_fields['eventstatus']=$evst;
+									$focus->column_fields['taskpriority']='High';
+									$focus->column_fields['date_start'] = $user_date_start;
+									$focus->column_fields['due_date'] = $user_date_end;
+									$focus->column_fields['time_start'] = $user_time_start;
+									$focus->column_fields['time_end'] = $user_time_end;
+									$duration_time = $new_time_end_time - $new_time_start_time;
+									$duration_hour = floor($duration_time / 3600);
+									$duration_minutes = ($duration_time - ($duration_hour * 3600 )) / 60;
+									$focus->column_fields['duration_hours'] = $duration_hour;
+									$focus->column_fields['duration_minutes'] = $duration_minutes;
+								//}
+									$focus->saveentity($currentModule);
+									$sql3 = 'insert into its4you_googlesync4you_events (crmid,geventid,userid,eventtype,lastmodified) values (?,?,?,?,?)';
+									$adb->pquery($sql3, array($focus->id, $event->getId(), $userid, $type, $event->getUpdated()));
+									$adb->pquery("update its4you_googlesync4you_access set synctoken='$synctoken2' where userid=$userid and service=?", array($service));
+								}
 							} else {
-								$evst = 'Planned';
+								$repeated++;
 							}
-							$focus->column_fields['eventstatus']=$evst;
-							$focus->column_fields['taskpriority']='High';
-							$focus->column_fields['date_start'] = $user_date_start;
-							$focus->column_fields['due_date'] = $user_date_end;
-							$focus->column_fields['time_start'] = $user_time_start;
-							$focus->column_fields['time_end'] = $user_time_end;
-							$duration_time = $new_time_end_time - $new_time_start_time;
-							$duration_hour = floor($duration_time / 3600);
-							$duration_minutes = ($duration_time - ($duration_hour * 3600 )) / 60;
-							$focus->column_fields['duration_hours'] = $duration_hour;
-							$focus->column_fields['duration_minutes'] = $duration_minutes;
-						//}
-						$focus->saveentity($currentModule);
-						$sql3 = 'insert into its4you_googlesync4you_events (crmid,geventid,userid,eventtype,lastmodified) values (?,?,?,?,?)';
-						$adb->pquery($sql3,array($focus->id, $event->getId(),$userid,$type,$event->getUpdated()));
-						$adb->pquery("update its4you_googlesync4you_access set synctoken='$synctoken2' where userid=$userid",array());
-					 }
-                                        } 
-                                        else $repeated++;
-                                        } 
-                                        } 
+						}
+					}
 					$pageToken = $events->getNextPageToken();
 					if ($pageToken && $repeated<100) {
-						$events = $GoogleSync4You->getGoogleCalEvents($CALENDAR_ID,$synctoken,$pageToken);
+						$events = $GoogleSync4You->getGoogleCalEvents($CALENDAR_ID, $synctoken, $pageToken);
 					} else {
 						break;
 					}

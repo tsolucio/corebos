@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/logging.php');
-require_once('include/database/PearDatabase.php');
+require_once 'include/logging.php';
+require_once 'include/database/PearDatabase.php';
 global $adb;
 
 $cvid = vtlib_purify($_REQUEST["record"]);

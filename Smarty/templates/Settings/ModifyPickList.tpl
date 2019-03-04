@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 
@@ -23,7 +22,7 @@
 			<tr><td valign=top align=left width=200px;>
 					<select id="delete_availPickList" multiple="multiple" wrap size="20" name="availList" style="width:200px;border:1px solid #666666;font-family:Arial, Helvetica, sans-serif;font-size:11px;">
 						{foreach item=pick_val from=$PICKVAL}
-							<option value="{$pick_val}">{$pick_val}</option>
+							<option value="{$pick_val|htmlspecialchars}">{$pick_val}</option>
 						{/foreach}
 					</select>
 				</td>
@@ -63,7 +62,7 @@
 			<tr><td valign=top align=left width=250px; rowspan="3">
 					<select id="edit_availPickList" name="availList" size="10" style="width:200px;border:1px solid #666666;font-family:Arial, Helvetica, sans-serif;font-size:11px;">
 						{foreach item=pick_val from=$PICKVAL}
-							<option value="{$pick_val}">{$pick_val}</option>
+							<option value="{$pick_val|htmlspecialchars}">{$pick_val}</option>
 						{/foreach}
 					</select>
 

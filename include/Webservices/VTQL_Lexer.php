@@ -21,7 +21,7 @@ function incrementN($lexer, $count) {
 }
 function incState($lexer) {
 	$lexer->current_state ++;
-	if ($lexer->current_state === sizeof($lexer->mandatory_states)) {
+	if ($lexer->current_state === count($lexer->mandatory_states)) {
 		$lexer->mandatory = false;
 	}
 }

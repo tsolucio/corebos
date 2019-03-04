@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('modules/Settings/MailScanner/core/MailScannerInfo.php');
-require_once('modules/Settings/MailScanner/core/MailRecord.php');
+require_once 'modules/Settings/MailScanner/core/MailScannerInfo.php';
+require_once 'modules/Settings/MailScanner/core/MailRecord.php';
 
 /**
  * Class to work with server mailbox.

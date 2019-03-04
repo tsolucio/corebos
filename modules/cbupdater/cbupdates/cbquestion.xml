@@ -1,0 +1,9 @@
+<updatesChangeLog>
+	<changeSet>
+		<author>jonidasinaj</author>
+		<description>Install cbQuestion module</description>
+		<filename>build/changeSets/2018/cbquestion.php</filename>
+		<classname>installcbquestion</classname>
+		<systemupdate>true</systemupdate>
+	</changeSet>
+</updatesChangeLog>	

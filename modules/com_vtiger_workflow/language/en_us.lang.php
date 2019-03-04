@@ -38,7 +38,6 @@ $mod_strings = array(
 'LBL_WORKFLOW_NOTE_CRON_CONFIG'=>'NOTE: You should have Workflow cron script configured.',
 'LBL_NO_TEMPLATES'=>'No Templates',
 'LBL_SELECT'=>'Select',
-'LBL_MESSAGE'=>'Message',
 'LBL_SET_FIELD_VALUES'=>'Set Field Values',
 'LBL_ADD_FIELD'=>'Add Field',
 
@@ -87,6 +86,8 @@ $mod_strings = array(
 'groupEmailList' => 'Group Email List',
 
 'Workflow'=>'Workflow',
+'WORKFLOW_DELETE_CONFIRMATION' => 'Are you sure you want to delete this Workflow?',
+'LBL_DELETE_WORKFLOW' => 'Delete Workflow',
 
 'VTCreateEntityTask' => 'Create Entity',
 'LBL_ENTITY_TYPE' => 'Entity Type',
@@ -112,6 +113,12 @@ $mod_strings = array(
 'CBSelectcbMap' => 'Select Business Rule',
 'ConvertInventoryModule' => 'Convert Inventory Module Records',
 'ConvertInventoryModuleMessage' => 'The field mappings is the default application mapping and can be adjusted using Field Mapping Business Rules.',
+'CBSendMMMSGTask' => 'Send Message to Mattermost',
+'Send Message To MM' => 'Send Message to Mattermost',
+'VTSendMessage2MMTask' => 'Send Message to Mattermost',
+'whatsappworkflowtask' => 'Send WhatsApp Message',
+'Whatsapp Workflow Task' => 'Send WhatsApp Message',
+'WhatsappWorkflowTask' => 'Send WhatsApp Message',
 
 'LBL_EVENTNAME' => 'Event Name',
 'LBL_DESCRIPTION' => 'Description',
@@ -159,6 +166,8 @@ $mod_strings = array(
 'Workflow for Calendar Todos when Send Notification is True' => 'Workflow for Calendar Todos when Send Notification is True',
 'Calculate or Update forecast amount' => 'Calculate or Update forecast amount',
 'LBL_METHOD_NAME' => 'Method Name',
-'NO_METHOD_AVAILABLE' => 'No method is available for this module.'
+'NO_METHOD_AVAILABLE' => 'No method is available for this module.',
+'launchrelwf' => 'Launch workflows on related updates',
+'LBL_WFPURPOSE' => 'Purpose',
 );
 ?>

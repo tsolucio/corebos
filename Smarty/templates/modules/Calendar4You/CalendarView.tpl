@@ -184,6 +184,7 @@ jQuery(document).ready(function(){
 		defaultView: '{/literal}{$DEFAULTVIEW}{literal}',
 		allDayText: {/literal}'{$MOD.LBL_ALL_DAY}'{literal},
 
+		weekNumbers: {/literal}{$Calendar_Show_WeekNumber}{literal},
 		weekends: {/literal}{$CALENDAR_SETTINGS.show_weekends}{literal},
 		minTime:  "{/literal}{$CALENDAR_SETTINGS.start_hour}{literal}",
 		maxTime:  "{/literal}{$CALENDAR_SETTINGS.end_hour}{literal}",
@@ -199,13 +200,13 @@ jQuery(document).ready(function(){
 
 {/literal}
 
-        {if $IS_24 eq "true"}
-            timeFormat: 'H:mm',
-            slotLabelFormat: 'H(:mm)',
-        {else}
-            timeFormat: 'h:mma',
-            slotLabelFormat: 'h(:mm)a',
-        {/if}
+		{if $IS_24 eq "true"}
+			timeFormat: 'H:mm',
+			slotLabelFormat: 'H(:mm)',
+		{else}
+			timeFormat: 'h:mma',
+			slotLabelFormat: 'h(:mm)a',
+		{/if}
 
         monthNames: ['{$CMOD.cal_month_long.1|escape}', '{$CMOD.cal_month_long.2|escape}', '{$CMOD.cal_month_long.3|escape}', '{$CMOD.cal_month_long.4|escape}', '{$CMOD.cal_month_long.5|escape}', '{$CMOD.cal_month_long.6|escape}', '{$CMOD.cal_month_long.7|escape}', '{$CMOD.cal_month_long.8|escape}', '{$CMOD.cal_month_long.9|escape}', '{$CMOD.cal_month_long.10|escape}', '{$CMOD.cal_month_long.11|escape}', '{$CMOD.cal_month_long.12|escape}'],
 
@@ -442,7 +443,6 @@ function changeCalendarEvents(el){
 function hideITSEventInfo(){
 	jQuery('#event_info').css('display', 'none');
 	jQuery('#event_info_content').html('');
-
 }
 {/literal}
 </script>
@@ -470,7 +470,7 @@ function hideITSEventInfo(){
                                                 <td style="padding:5px" class="ui-widget-content">
                                                   <div id="event_type_wrapper" style="display:{$upEVENTBLOCK_DISPLAY}">
                                                     {foreach name=act_types2 item=typedata key=typeid from=$ACTIVITYTYPES}
-                                                    <table width="98%" id="event_type_{$typeid}" style="font-weight:bold;font-size:12px;{if $USER_VIEW_TYPE neq "all"}color:{$typedata.textColor};background-color:{$typedata.color};border: 2px solid {$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};margin:0px 3px 3px 3px;padding:1px;border-top-left-radius: 3px;border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;" onMouseOver="showEventIcon('event_type_{$typeid}_icon')" onMouseOut="hideEventIcon('event_type_{$typeid}_icon')"><tr><td><input type="checkbox" id="calendar_event_{$typeid}" name="calendar_event_{$typeid}" onClick="changeCalendarEvents(this)" value="{$typeid}" {if $typedata.checked eq 'true'}checked="checked"{/if}>{$typedata.label}<td><td align="right"><a id="event_type_{$typeid}_icon" href="javascript:;" style="display:none" onClick="loadITSEventSettings(this,'type','{$typeid}')"><img src="themes/images/activate.gif" border="0"></a></td></tr></table>
+                                                    <table width="98%" id="event_type_{$typeid}" style="font-weight:bold;font-size:12px;{if $USER_VIEW_TYPE neq "all"}color:{$typedata.textColor};background-color:{$typedata.color};border: 2px solid {$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};margin:0px 3px 3px 3px;padding:1px;border-top-left-radius: 3px;border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;" onMouseOver="showEventIcon('event_type_{$typeid}_icon')" onMouseOut="hideEventIcon('event_type_{$typeid}_icon')"><tr><td class="cblds-p-v_small"><input class="cblds-m-r_small" type="checkbox" id="calendar_event_{$typeid}" name="calendar_event_{$typeid}" onClick="changeCalendarEvents(this)" value="{$typeid}" {if $typedata.checked eq 'true'}checked="checked"{/if}>{$typedata.label}<td><td align="right" class="cblds-t-align_right"><a id="event_type_{$typeid}_icon" href="javascript:;" style="display:none" onClick="loadITSEventSettings(this,'type','{$typeid}')"><img src="themes/images/activate.gif" border="0"></a></td></tr></table>
                                                     {/foreach}
                                                   </div>
                                                  </td>
@@ -488,7 +488,7 @@ function hideITSEventInfo(){
                                                 <td style="padding:5px" class="ui-widget-content">
                                                   <div id="module_type_wrapper" style="display:{$upMODULEBLOCK_DISPLAY}">
                                                     {foreach name=act_types2 item=typedata key=typeid from=$MODULETYPES}
-                                                    <table width="98%" id="event_type_{$typeid}" style="font-weight:bold;font-size:12px;{if $USER_VIEW_TYPE neq "all"}color:{$typedata.textColor};background-color:{$typedata.color};border: 2px solid {$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};margin:0px 3px 3px 3px;padding:1px;border-top-left-radius: 3px;border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;"><tr><td><input type="checkbox" id="calendar_event_{$typeid}" name="calendar_event_{$typeid}" onClick="changeCalendarEvents(this)" value="{$typeid}" {if $typedata.checked eq 'T'}checked="checked"{/if}>{$typedata.label}<td><td align="right"><a id="event_type_{$typeid}_icon" href="javascript:;" style="display:none" onClick="loadITSEventSettings(this,'type','{$typeid}')"><img src="themes/images/activate.gif" border="0"></a></td></tr></table>
+                                                    <table width="98%" id="event_type_{$typeid}" style="font-weight:bold;font-size:12px;{if $USER_VIEW_TYPE neq "all"}color:{$typedata.textColor};background-color:{$typedata.color};border: 2px solid {$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};margin:0px 3px 3px 3px;padding:1px;border-top-left-radius: 3px;border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;"><tr><td class="cblds-p-v_small"><input class="cblds-m-r_small" type="checkbox" id="calendar_event_{$typeid}" name="calendar_event_{$typeid}" onClick="changeCalendarEvents(this)" value="{$typeid}" {if $typedata.checked eq 'T'}checked="checked"{/if}>{$typedata.label}<td><td align="right" class="cblds-t-align_right"><a id="event_type_{$typeid}_icon" href="javascript:;" style="display:none" onClick="loadITSEventSettings(this,'type','{$typeid}')"><img src="themes/images/activate.gif" border="0"></a></td></tr></table>
                                                     {/foreach}
                                                   </div>
                                                  </td>
@@ -520,7 +520,7 @@ function hideITSEventInfo(){
                                         </tbody>
                                     </table>
                                     {/if}
-                                    {if $PANEL_NAME eq 'ActivityStatus'}
+                                    {if $Calendar_Status_Panel_Visible && $PANEL_NAME eq 'ActivityStatus'}
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>
@@ -540,7 +540,7 @@ function hideITSEventInfo(){
                                         </tbody>
                                     </table>
                                     {/if}
-                                    {if $PANEL_NAME eq 'ActivityPriority'}
+                                    {if $Calendar_Priority_Panel_Visible && $PANEL_NAME eq 'ActivityPriority'}
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>
@@ -591,7 +591,7 @@ function hideITSEventInfo(){
 </form>
 <script>
 function changeCalendarUserView(type) {ldelim}
-	if(type == "all") {ldelim}
+	if (type == 'all') {ldelim}
 		{foreach name=act_types2 item=typedata key=typeid from=$ACTIVITYTYPES}
 			jQuery('#event_type_{$typeid}').css('color', '#000000');
 			jQuery('#event_type_{$typeid}').css('background-color', '#ffffff');

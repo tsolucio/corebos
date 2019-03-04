@@ -6,5 +6,5 @@
  * Portions created by IT-Solutions4You s.r.o. are Copyright(C) IT-Solutions4You s.r.o.
  * All Rights Reserved.
  ********************************************************************************/
-include('modules/Calendar4You/CalendarView.php');
+include 'modules/Calendar4You/CalendarView.php';
 ?>

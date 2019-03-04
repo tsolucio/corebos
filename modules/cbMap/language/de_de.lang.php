@@ -35,9 +35,15 @@ $mod_strings = array(
 	'Record Access Control' => 'Record Access Control',
 	'Record Set Mapping' => 'Record Set Mapping',
 	'Module Set Mapping' => 'Module Set Mapping',
+	'Field Set Mapping' => 'Field Set Mapping',
 	'ListColumns' => 'List Columns',
 	'DuplicateRelations' => 'Duplicate Relations',
 	'MasterDetailLayout' => 'Master Detail Layout',
 	'Validations' => 'Validations',
+	'Detail View Layout Mapping' => 'Detail View Layout Mapping',
+	'VALIDATE_MAP'=> 'Validate Map',
+	'MAP_NOT_VALID'=> 'Map is not valid!',
+	'MAP_VALID'=> 'Map is valid',
+	'MAP_NOT_IMPLEMENTED_YET'=> 'Validation for this map has not been implemented yet',
 );
 ?>

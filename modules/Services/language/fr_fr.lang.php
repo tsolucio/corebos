@@ -49,6 +49,7 @@ $mod_strings = array(
 	'Website'=>'Site WEB',
 	'Description'=>'Description',
 	'Price Book Name'=>'Nom de la grille tarifaire',
+	'LBL_PRODUCT_PRICES' => 'Service Prices',
 	'LBL_NO_TAXES_ASSOCIATED'=>'Aucune taxe associée à ce service',
 	'--None--' => '--Aucun--',
 	'Installation'=>'Installation',

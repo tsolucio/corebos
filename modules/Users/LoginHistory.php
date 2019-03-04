@@ -7,10 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/logging.php');
-require_once('include/logging.php');
-require_once('include/ListView/ListView.php');
-require_once('include/database/PearDatabase.php');
+require_once 'include/logging.php';
+require_once 'include/logging.php';
+require_once 'include/ListView/ListView.php';
+require_once 'include/database/PearDatabase.php';
 
 /** This class is used to store and display the login history of all the Users.
   * An Admin User can view his login history details  and of all the other users as well.
@@ -73,7 +73,7 @@ class LoginHistory {
 	**/
 	public function getHistoryListViewHeader() {
 		global $log, $app_strings;
-		$log->debug('Entering getHistoryListViewHeader method ...');
+		$log->debug('> getHistoryListViewHeader');
 		$header_array = array(
 			$app_strings['LBL_LIST_USER_NAME'],
 			$app_strings['LBL_LIST_USERIP'],
@@ -81,7 +81,7 @@ class LoginHistory {
 			$app_strings['LBL_LIST_SIGNOUT'],
 			$app_strings['LBL_LIST_STATUS'],
 		);
-		$log->debug('Exiting getHistoryListViewHeader method ...');
+		$log->debug('< getHistoryListViewHeader');
 		return $header_array;
 	}
 
@@ -93,8 +93,8 @@ class LoginHistory {
 	  * Returns the login history entries in an array format.
 	**/
 	public function getHistoryListViewEntries($username, $navigation_array, $sorder = '', $orderby = '') {
-		global $log, $adb, $current_user;
-		$log->debug('Entering getHistoryListViewEntries() method ...');
+		global $log, $adb;
+		$log->debug('> getHistoryListViewEntries');
 
 		if ($sorder != '' && $order_by != '') {
 			$list_query = "Select * from vtiger_loginhistory where user_name=? order by ".$order_by." ".$sorder;
@@ -110,7 +110,7 @@ class LoginHistory {
 			$out = getTranslatedString('Signed off');
 			for ($i = $navigation_array['start']; $i <= $navigation_array['end_val']; $i++) {
 				$entries = array();
-				$loginid = $adb->query_result($result, $i-1, 'login_id');
+				//$loginid = $adb->query_result($result, $i-1, 'login_id');
 				$entries[] = $adb->query_result($result, $i-1, 'user_name');
 				$entries[] = $adb->query_result($result, $i-1, 'user_ip');
 				$entries[] = $adb->query_result($result, $i-1, 'login_time');
@@ -119,13 +119,13 @@ class LoginHistory {
 				$entries_list[] = $entries;
 			}
 		}
-		$log->debug('Exiting getHistoryListViewEntries() method ...');
+		$log->debug('< getHistoryListViewEntries');
 		return $entries_list;
 	}
 
 	public function getHistoryJSON($userid, $page, $order_by = 'login_time', $sorder = 'DESC') {
-		global $log, $adb, $current_user;
-		$log->debug('Entering getHistoryJSON() method ...');
+		global $log, $adb;
+		$log->debug('> getHistoryJSON');
 
 		if (empty($userid)) {
 			$where = '';
@@ -166,7 +166,7 @@ class LoginHistory {
 			'to' => $to,
 			'data' => array(),
 		);
-		if ($islastpage and $page!=1) {
+		if ($islastpage && $page!=1) {
 			$entries_list['next_page_url'] = null;
 		} else {
 			$entries_list['next_page_url'] = 'index.php?module=cbLoginHistory&action=cbLoginHistoryAjax&file=getJSON&page='.($islastpage ? $page : $page+1);
@@ -183,7 +183,7 @@ class LoginHistory {
 			$entry['Status'] = ($lgn['status']=='Signed in' ? $in : $out);
 			$entries_list['data'][] = $entry;
 		}
-		$log->debug("Exiting getHistoryJSON() method ...");
+		$log->debug('< getHistoryJSON');
 		return json_encode($entries_list);
 	}
 

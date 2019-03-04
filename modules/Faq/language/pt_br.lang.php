@@ -16,7 +16,7 @@
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  *************************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'FAQ',
 'LBL_MODULE_TITLE'=>'FAQ: Principal',
 'LBL_SEARCH_FORM_TITLE'=>'Pesquisar FAQ',
@@ -54,7 +54,7 @@ $mod_strings = Array(
 'LBL_ADDRESS_INFORMATION'=>'Dados do Endereço',
 'LBL_ACCOUNT_INFORMATION'=>'Dados da FAQ',
 'LBL_BILLING_ADDRESS'=>'Endereço:',
-'LBL_SHIPPING_ADDRESS'=>'Endereço Entrega:',
+'LBL_SHIPPING_ADDRESS'=>'Endereço de Entrega:',
 'LBL_ANY_ADDRESS'=>'Outro Endereço:',
 'LBL_CITY'=>'Cidade:',
 'LBL_STATE'=>'Estado:',
@@ -74,7 +74,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Selecione FAQ',
 'LBL_GENERAL_INFORMATION'=>'Informação Geral',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nova Oportunidade',
 'LBL_POTENTIAL_TITLE'=>'Oportunidades',
 
@@ -89,7 +88,6 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'Novo Contato',
 'LBL_CONTACT_TITLE'=>'Contatos',
 
-//Added for 4GA Release
 'Category'=>'Categoria',
 'Related To'=>'Relacionado à',
 'Question'=>'Questão',
@@ -99,33 +97,26 @@ $mod_strings = Array(
 'Created Time'=>'Data Criação',
 'Modified Time'=>'Data Modificação',
 
-//Added vtiger_fields after 4.2 alpha
 'LBL_TICKETS'=>'Tickets',
 'LBL_FAQ'=>'FAQ',
-'Product Name'=>'Nome Produto',
+'Product Name'=>'Nome do Produto',
 'Add Comment'=>'Adicionar Comentário',
 'LBL_ADD_COMMENT'=>'Add Comment',//give the same value given to the above string 'Add Comment'
 'LBL_COMMENT_INFORMATION'=>'Dados do Comentário',
 'Status'=>'Status',
 
-//Added on 10-12-2005
 'LBL_QUESTION'=>'Questão',
 'LBL_CATEGORY'=>'Categoria',
 'LBL_MY_FAQ'=>'FAQs Recentes',
 
 //Added for existing Picklist Entries
-
 'General'=>'Geral',
-
 'Draft'=>'Rascunho',
 'Reviewed'=>'Revisada',
 'Published'=>'Publicada',
 'Obsolete'=>'Obsoleta',
 
-// Module Sequence Numbering
 'Faq No' => 'No. Faq',
-// END
 'Faq ID' => 'ID FAQ',
 );
-
 ?>

@@ -27,11 +27,8 @@ $mod_strings = array(
 	'LBL_AF_HDR4'=>'Wenn Sie einen Aktivitätentyp ausgewählt haben, müssen Sie
     "Anruf","Meeting" oder "Aufgabe" auswählen.',
 
-	//strings added for vtiger 5, date format...
 	'LBL_NONE'=>'Keine',
-	'View_Name'=>'Namen sehen',
 	'LBL_AND'=>'AND',
-	'LBL_DATE_FORMAT_CUSTOMVIEW'=>'Y-m-d',
 	//Strings added for filter
 	'Custom'=>'benutzerdefiniert',
 	'Previous FY'=>'vorheriges Jahr',
@@ -245,13 +242,10 @@ $mod_strings = array(
 	'End_Date'=>'Endedatum',
 	'LBL_RULE'=>'Regel',
 
-	// Added/Updated for vtiger CRM 5.0.4
 	'not equal to'=>'nicht gleich zu',
 	'starts with'=>'beginnt mit',
 	'ends with'=>'endet mit',
 	//'Product Code'=>'Produktcode',
-
-	// Added after 5.0.4 GA
 
 	//Added for Role based Custom filters
 	'LBL_SET_AS_PUBLIC'=>'öffentlich machen ',

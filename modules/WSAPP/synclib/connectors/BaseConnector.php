@@ -12,42 +12,40 @@ require_once 'modules/WSAPP/synclib/models/SyncStateModel.php';
 abstract class WSAPP_BaseConnector {
 
 	protected $syncController;
-	
-	function __construct() {
-		
+
+	public function __construct() {
 	}
-	
-	public function pull(WSAPP_SyncStateModel $syncStateModel){
+
+	public function pull(WSAPP_SyncStateModel $syncStateModel) {
 		return false;
 	}
 
-	public function push($recordList, $syncStateModel){
+	public function push($recordList, $syncStateModel) {
 		return false;
 	}
 
-	function postEvent($type, $synchronizedRecords, $syncStateModel){
+	public function postEvent($type, $synchronizedRecords, $syncStateModel) {
 		return false;
 	}
 
-	function preEvent($type){
+	public function preEvent($type) {
 		return false;
 	}
 
-	abstract function getName();
+	abstract public function getName();
 
-	function getSyncState(){
+	public function getSyncState() {
 		return new WSAPP_SyncStateModel();
 	}
 
-	function updateSyncState(WSAPP_SyncStateModel $syncStateModel) {
-
+	public function updateSyncState(WSAPP_SyncStateModel $syncStateModel) {
 	}
 
-	function getSynchronizeController(){
+	public function getSynchronizeController() {
 		return $this->syncController;
 	}
 
-	function setSynchronizeController($syncController){
+	public function setSynchronizeController($syncController) {
 		$this->syncController = $syncController;
 	}
 
@@ -57,23 +55,21 @@ abstract class WSAPP_BaseConnector {
 	 *		The sourece records refers to record which has data
 	 *		Target record refers to record to which data has to be copied
 	 */
-	public function performBasicTransformations(WSAPP_SyncRecordModel $sourceRecord,WSAPP_SyncRecordModel $targetRecord){
+	public function performBasicTransformations(WSAPP_SyncRecordModel $sourceRecord, WSAPP_SyncRecordModel $targetRecord) {
 		$targetRecord->setType($sourceRecord->getType())
-				     ->setMode($sourceRecord->getMode())
-					 ->setSyncIdentificationKey($sourceRecord->getSyncIdentificationKey());
+					->setMode($sourceRecord->getMode())
+					->setSyncIdentificationKey($sourceRecord->getSyncIdentificationKey());
 		return $targetRecord;
 	}
 
-	public function performBasicTransformationsToSourceRecords(WSAPP_SyncRecordModel $sourceRecord, WSAPP_SyncRecordModel $targetRecord){
-		$sourceRecord->setId($targetRecord->getId())
-					->setModifiedTime($targetRecord->getModifiedTime());
+	public function performBasicTransformationsToSourceRecords(WSAPP_SyncRecordModel $sourceRecord, WSAPP_SyncRecordModel $targetRecord) {
+		$sourceRecord->setId($targetRecord->getId())->setModifiedTime($targetRecord->getModifiedTime());
 		return $sourceRecord;
 	}
 
-	public function performBasicTransformationsToTargetRecords(WSAPP_SyncRecordModel $sourceRecord, WSAPP_SyncRecordModel $targetRecord){
+	public function performBasicTransformationsToTargetRecords(WSAPP_SyncRecordModel $sourceRecord, WSAPP_SyncRecordModel $targetRecord) {
 		$sourceRecord->setId($targetRecord->get('_id'))->setModifiedTime($targetRecord->get('_modifiedtime'));
 		return $sourceRecord;
 	}
-
 }
 ?>

@@ -7,20 +7,40 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/logging.php');
-require_once('include/utils/utils.php');
+require_once 'include/logging.php';
+require_once 'include/utils/utils.php';
 global $adb, $log, $current_user;
 
-$cvid = (int) vtlib_purify($_REQUEST["record"]);
+function cvGetNewViewName() {
+	global $adb;
+	$orgviewname = vtlib_purify($_REQUEST['viewName']);
+	$viewname = $orgviewname;
+	$cvmodule = vtlib_purify($_REQUEST['cvmodule']);
+	$finished = false;
+	$i = 1;
+	while (!$finished) {
+		$rscv = $adb->pquery('select 1 from vtiger_customview where entitytype=? and viewname=?', array($cvmodule, $viewname));
+		if ($rscv && $adb->num_rows($rscv)==1) {
+			$viewname = $orgviewname . '_' . $i;
+			$i++;
+		} else {
+			$finished = true;
+		}
+	}
+	return $viewname;
+}
+
+$cvid = (int) vtlib_purify($_REQUEST['record']);
 if (!empty($_REQUEST['newsave'])) {
 	unset($cvid);
+	$_REQUEST['viewName'] = cvGetNewViewName();
 }
-$cvmodule = vtlib_purify($_REQUEST["cvmodule"]);
+$cvmodule = vtlib_purify($_REQUEST['cvmodule']);
 $parenttab = getParentTab();
-$return_action = vtlib_purify($_REQUEST["return_action"]);
-if ($cvmodule != "") {
+$return_action = vtlib_purify($_REQUEST['return_action']);
+if ($cvmodule != '') {
 	$cv_tabid = getTabid($cvmodule);
-	$viewname = vtlib_purify($_REQUEST["viewName"]);
+	$viewname = vtlib_purify($_REQUEST['viewName']);
 	if ($default_charset != 'UTF-8') {
 		$viewname = htmlentities($viewname);
 	}
@@ -101,7 +121,6 @@ if ($cvmodule != "") {
 			$customviewsql = 'INSERT INTO vtiger_customview(cvid, viewname, setdefault, setmetrics, entitytype, status, userid) VALUES (?,?,?,?,?,?,?)';
 			$customviewparams = array($genCVid, $viewname, 0, $setmetrics, $cvmodule, $status, $userid);
 			$customviewresult = $adb->pquery($customviewsql, $customviewparams);
-			$log->info('CustomView :: Save :: vtiger_customview created successfully');
 
 			if ($setdefault == 1) {
 				$sql_result = $adb->pquery('SELECT * FROM vtiger_user_module_preferences WHERE userid = ? and tabid = ?', array($current_user->id, $cv_tabid));
@@ -120,8 +139,6 @@ if ($cvmodule != "") {
 				}
 			}
 
-			$log->info('CustomView :: Save :: setdefault upated successfully');
-
 			if ($customviewresult) {
 				if (isset($columnslist)) {
 					for ($i=0; $i<count($columnslist); $i++) {
@@ -139,7 +156,6 @@ if ($cvmodule != "") {
 							$adb->formatDate($std_filter_list['enddate'], true),
 						);
 						$stdfilterresult = $adb->pquery($stdfiltersql, $stdfilterparams);
-						$log->info('CustomView :: Save :: vtiger_cvstdfilter created successfully');
 					}
 
 					if (is_array($advft_criteria)) {
@@ -148,13 +164,13 @@ if ($cvmodule != "") {
 								continue;
 							}
 
-							$adv_filter_column = $column_condition["columnname"];
-							$adv_filter_comparator = $column_condition["comparator"];
-							$adv_filter_value = $column_condition["value"];
-							$adv_filter_column_condition = $column_condition["columncondition"];
-							$adv_filter_groupid = $column_condition["groupid"];
+							$adv_filter_column = $column_condition['columnname'];
+							$adv_filter_comparator = $column_condition['comparator'];
+							$adv_filter_value = $column_condition['value'];
+							$adv_filter_column_condition = $column_condition['columncondition'];
+							$adv_filter_groupid = $column_condition['groupid'];
 
-							$column_info = explode(":", $adv_filter_column);
+							$column_info = explode(':', $adv_filter_column);
 
 							$fieldName = $column_info[2];
 							if (!empty($moduleFields[$fieldName])) {
@@ -168,17 +184,19 @@ if ($cvmodule != "") {
 							}
 							$fieldType = $fieldObj->getFieldDataType();
 
-							if ($fieldType == 'currency' or $fieldType == 'double') {
+							if ($fieldType == 'currency' || $fieldType == 'double') {
 								$flduitype = $fieldObj->getUIType();
-								if ($flduitype == '72' or $flduitype == 9 or $flduitype ==7) {
+								if ($flduitype == '72' || $flduitype == 9 || $flduitype ==7) {
 									$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value, null, true);
 								} else {
 									$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value);
 								}
 							}
 
-							$temp_val = explode(",", $adv_filter_value);
-							if (($fieldType == 'date' || ($fieldType == 'time' && $fieldName != 'time_start' && $fieldName != 'time_end') || ($fieldType == 'datetime')) && ($fieldType != '' && $adv_filter_value != '' )) {
+							$temp_val = explode(',', $adv_filter_value);
+							if (($fieldType == 'date' || ($fieldType == 'time' && $fieldName != 'time_start' && $fieldName != 'time_end') || ($fieldType == 'datetime'))
+								&& ($fieldType != '' && $adv_filter_value != '')
+							) {
 								$val = array();
 								for ($x=0; $x<count($temp_val); $x++) {
 									// if date and time given then we have to convert the date and leave the time as it is
@@ -196,7 +214,7 @@ if ($cvmodule != "") {
 										}
 									}
 								}
-								$adv_filter_value = implode(",", $val);
+								$adv_filter_value = implode(',', $val);
 							}
 
 							$irelcriteriasql = 'INSERT INTO vtiger_cvadvfilter(cvid,columnindex,columnname,comparator,value,groupid,column_condition) values (?,?,?,?,?,?,?)';
@@ -244,7 +262,6 @@ if ($cvmodule != "") {
 							);
 						}
 					}
-					$log->info('CustomView :: Save :: vtiger_cvadvfilter created successfully');
 				}
 			}
 			$cvid = $genCVid;
@@ -254,7 +271,6 @@ if ($cvmodule != "") {
 			$updatecvsql = 'UPDATE vtiger_customview SET viewname = ?, setmetrics = ?, status = ? WHERE cvid = ?';
 			$updatecvparams = array($viewname, $setmetrics, $status, $cvid);
 			$updatecvresult = $adb->pquery($updatecvsql, $updatecvparams);
-			$log->info('CustomView :: Save :: vtiger_customview upated successfully'.$cvid);
 
 			if ($setdefault == 1) {
 				$sql_result = $adb->pquery('SELECT * FROM vtiger_user_module_preferences WHERE userid = ? and tabid = ?', array($current_user->id, $cv_tabid));
@@ -272,7 +288,6 @@ if ($cvmodule != "") {
 					$deletedefaultresult = $adb->pquery($deletedefaultsql, array($current_user->id, $cv_tabid));
 				}
 			}
-			$log->info('CustomView :: Save :: setdefault upated successfully'.$cvid);
 
 			$deletesql = 'DELETE FROM vtiger_cvcolumnlist WHERE cvid = ?';
 			$deleteresult = $adb->pquery($deletesql, array($cvid));
@@ -286,27 +301,25 @@ if ($cvmodule != "") {
 			$deletesql = 'DELETE FROM vtiger_cvadvfilter_grouping WHERE cvid = ?';
 			$deleteresult = $adb->pquery($deletesql, array($cvid));
 
-			$log->info('CustomView :: Save :: vtiger_cvcolumnlist,cvstdfilter,cvadvfilter,cvadvfilter_grouping deleted successfully before update'.$cvid);
 
 			$genCVid = $cvid;
 			if ($updatecvresult) {
 				if (isset($columnslist)) {
 					for ($i=0; $i<count($columnslist); $i++) {
-						$columnsql = "INSERT INTO vtiger_cvcolumnlist (cvid, columnindex, columnname) VALUES (?,?,?)";
+						$columnsql = 'INSERT INTO vtiger_cvcolumnlist (cvid, columnindex, columnname) VALUES (?,?,?)';
 						$columnparams = array($genCVid, $i, $columnslist[$i]);
 						$columnresult = $adb->pquery($columnsql, $columnparams);
 					}
-					$log->info('CustomView :: Save :: vtiger_cvcolumnlist update successfully'.$genCVid);
 					if (!empty($std_filter_list['columnname'])) {
 						$stdfiltersql = 'INSERT INTO vtiger_cvstdfilter (cvid,columnname,stdfilter,startdate,enddate) VALUES (?,?,?,?,?)';
 						$stdfilterparams = array(
 							$genCVid,
 							$std_filter_list['columnname'],
 							$std_filter_list['stdfilter'],
-							$adb->formatDate($std_filter_list['startdate'], true), $adb->formatDate($std_filter_list['enddate'], true),
+							$adb->formatDate($std_filter_list['startdate'], true),
+							$adb->formatDate($std_filter_list['enddate'], true),
 						);
 						$stdfilterresult = $adb->pquery($stdfiltersql, $stdfilterparams);
-						$log->info("CustomView :: Save :: vtiger_cvstdfilter update successfully".$genCVid);
 					}
 					if (is_array($advft_criteria)) {
 						foreach ($advft_criteria as $column_index => $column_condition) {
@@ -314,13 +327,13 @@ if ($cvmodule != "") {
 								continue;
 							}
 
-							$adv_filter_column = $column_condition["columnname"];
-							$adv_filter_comparator = $column_condition["comparator"];
-							$adv_filter_value = $column_condition["value"];
-							$adv_filter_column_condition = $column_condition["columncondition"];
-							$adv_filter_groupid = $column_condition["groupid"];
+							$adv_filter_column = $column_condition['columnname'];
+							$adv_filter_comparator = $column_condition['comparator'];
+							$adv_filter_value = $column_condition['value'];
+							$adv_filter_column_condition = $column_condition['columncondition'];
+							$adv_filter_groupid = $column_condition['groupid'];
 
-							$column_info = explode(":", $adv_filter_column);
+							$column_info = explode(':', $adv_filter_column);
 
 							$fieldName = $column_info[2];
 							if (!empty($moduleFields[$fieldName])) {
@@ -334,18 +347,20 @@ if ($cvmodule != "") {
 							}
 							$fieldType = $fieldObj->getFieldDataType();
 
-							if ($fieldType == 'currency' or $fieldType == 'double') {
+							if ($fieldType == 'currency' || $fieldType == 'double') {
 								// Some currency fields like Unit Price, Total, Sub-total etc of Inventory modules and normal numbers do not need currency conversion
 								$flduitype = $fieldObj->getUIType();
-								if ($flduitype == '72' or $flduitype == 9 or $flduitype ==7) {
+								if ($flduitype == '72' || $flduitype == 9 || $flduitype ==7) {
 									$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value, null, true);
 								} else {
 									$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value);
 								}
 							}
 
-							$temp_val = explode(",", $adv_filter_value);
-							if (($fieldType == 'date' || ($fieldType == 'time' && $fieldName != 'time_start' && $fieldName != 'time_end') || ($fieldType == 'datetime')) && ($fieldType != '' && $adv_filter_value != '' )) {
+							$temp_val = explode(',', $adv_filter_value);
+							if (($fieldType == 'date' || ($fieldType == 'time' && $fieldName != 'time_start' && $fieldName != 'time_end') || ($fieldType == 'datetime'))
+								&& ($fieldType != '' && $adv_filter_value != '')
+							) {
 								$val = array();
 								for ($x=0; $x<count($temp_val); $x++) {
 									//if date and time given then we have to convert the date and
@@ -364,7 +379,7 @@ if ($cvmodule != "") {
 										}
 									}
 								}
-								$adv_filter_value = implode(",", $val);
+								$adv_filter_value = implode(',', $val);
 							}
 
 							$irelcriteriasql = 'INSERT INTO vtiger_cvadvfilter(cvid,columnindex,columnname,comparator,value,groupid,column_condition) values (?,?,?,?,?,?,?)';
@@ -411,7 +426,6 @@ if ($cvmodule != "") {
 							);
 						}
 					}
-					$log->info('CustomView :: Save :: vtiger_cvadvfilter update successfully'.$cvid);
 				}
 			}
 		}

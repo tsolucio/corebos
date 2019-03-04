@@ -7,11 +7,11 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-if ($_REQUEST['mode'] != 'edit' and $_REQUEST['filelocationtype'] == 'I' and $_FILES['filename']['error'] == 4 and $_FILES['filename']['size'] == 0) {
+if ($_REQUEST['mode'] != 'edit' && $_REQUEST['filelocationtype'] == 'I' && $_FILES['filename']['error'] == 4 && $_FILES['filename']['size'] == 0) {
 	$_REQUEST['filelocationtype'] = 'E';
 }
-if (isset($_REQUEST['notecontent']) and $_REQUEST['notecontent'] != '') {
+if (isset($_REQUEST['notecontent']) && $_REQUEST['notecontent'] != '') {
 	$_REQUEST['notecontent'] = vtlib_purify($_REQUEST['notecontent']);
 }
-require_once('modules/Vtiger/Save.php');
+require_once 'modules/Vtiger/Save.php';
 ?>

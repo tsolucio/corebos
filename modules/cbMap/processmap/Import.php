@@ -54,8 +54,8 @@
 </map>
  *************************************************************************************************/
 
-require_once('modules/cbMap/cbMap.php');
-require_once('modules/cbMap/processmap/processMap.php');
+require_once 'modules/cbMap/cbMap.php';
+require_once 'modules/cbMap/processmap/processMap.php';
 
 class Import extends processcbMap {
 	private $mapping = array();
@@ -79,29 +79,29 @@ class Import extends processcbMap {
 	}
 
 	public function getMapTargetModule() {
-		if (isset($this->mapping["targetmodule"])) {
-			return $this->mapping["targetmodule"];
+		if (isset($this->mapping['targetmodule'])) {
+			return $this->mapping['targetmodule'];
 		}
 		return array();
 	}
 
 	public function getMapUpdateFld() {
-		if (isset($this->mapping["target"])) {
-			return $this->mapping["target"];
+		if (isset($this->mapping['target'])) {
+			return $this->mapping['target'];
 		}
 		return array();
 	}
 
 	public function getMapMatchFld() {
-		if (isset($this->mapping["match"])) {
-			return $this->mapping["match"];
+		if (isset($this->mapping['match'])) {
+			return $this->mapping['match'];
 		}
 		return array();
 	}
 
 	public function getMapOptions() {
-		if (isset($this->mapping["options"])) {
-			return $this->mapping["options"];
+		if (isset($this->mapping['options'])) {
+			return $this->mapping['options'];
 		}
 		return array();
 	}
@@ -188,7 +188,7 @@ class Import extends processcbMap {
 	}
 
 	private function doImport($table) {
-		include_once('modules/Users/Users.php');
+		include_once 'modules/Users/Users.php';
 		global $adb,$current_user;
 		$adminUser = Users::getActiveAdminUser();
 		$dataQuery = $adb->query("SELECT * FROM $table");

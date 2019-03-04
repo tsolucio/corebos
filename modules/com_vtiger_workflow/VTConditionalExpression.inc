@@ -21,11 +21,11 @@ class VTConditionalExpression {
 	}
 
 	private function evalGate($tree) {
-		if (in_array($tree[0], array("and", "or"))) {
+		if (in_array($tree[0], array('and', 'or'))) {
 			switch ($tree[0]) {
-				case "and":
+				case 'and':
 					return ($this->evalGate($tree[1]) && $this->evalGate($tree[2]));
-				case "or":
+				case 'or':
 					return ($this->evalGate($tree[1]) || $this->evalGate($tree[2]));
 			}
 		} else {
@@ -35,7 +35,7 @@ class VTConditionalExpression {
 
 	private function evalCondition($tree) {
 		switch ($tree[0]) {
-			case "=":
+			case '=':
 				return (int)$this->getVal($tree[1]) == (int)$this->getVal($tree[2]);
 		}
 	}
@@ -43,21 +43,22 @@ class VTConditionalExpression {
 	private function getVal($node) {
 		list($valueType, $value) = $node;
 		switch ($valueType) {
-			case "sym":
+			case 'sym':
 				return $this->env[$value];
-			case "num":
+			case 'num':
 				return $value;
 		}
 	}
 }
 
-class VTParseFailed extends Exception { }
+class VTParseFailed extends Exception {
+
+}
 
 /**
  * This is a simple parser for conditional expressions used to trigger workflow actions.
- * 
  */
-class VTConditionalParser{
+class VTConditionalParser {
 
 	public function __construct($expr) {
 		$this->tokens = $this->getTokens($expr);
@@ -65,16 +66,16 @@ class VTConditionalParser{
 	}
 
 	private function getTokens($expression) {
-		preg_match_all('/and|or|\\d+|=|\\w+|\\(|\\)/',$expression, $matches, PREG_SET_ORDER);
+		preg_match_all('/and|or|\\d+|=|\\w+|\\(|\\)/', $expression, $matches, PREG_SET_ORDER);
 		$tokens = array();
 		foreach ($matches as $arr) {
 			$tokenVal = $arr[0];
-			if (in_array($tokenVal, array("and", "or", "=", "(", ")"))) {
-				$tokenType = "op";
-			} else if (is_numeric($tokenVal)) {
-				$tokenType = "num";
+			if (in_array($tokenVal, array('and', 'or', '=', '(', ')'))) {
+				$tokenType = 'op';
+			} elseif (is_numeric($tokenVal)) {
+				$tokenType = 'num';
 			} else {
-				$tokenType = "sym";
+				$tokenType = 'sym';
 			}
 			$tokens[] = array($tokenType, $tokenVal);
 		}
@@ -82,12 +83,12 @@ class VTConditionalParser{
 	}
 
 	public function parse() {
-		$op =  array(
-			"and"=>array("op", "and"),
-			"or"=>array("op", "or"),
-			"="=>array("op", "="),
-			"("=>array("op", "("),
-			")"=>array("op", ")"));
+		$op = array(
+			'and'=>array('op', 'and'),
+			'or'=>array('op', 'or'),
+			'='=>array('op', '='),
+			'('=>array('op', '('),
+			')'=>array('op', ')'));
 
 		if ($this->peek()==$op['(']) {
 			$this->nextToken();

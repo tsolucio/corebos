@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('modules/Settings/MailScanner/core/MailScannerRule.php');
+require_once 'modules/Settings/MailScanner/core/MailScannerRule.php';
 
 $mode = vtlib_purify($_REQUEST['mode']);
 $targetruleid = vtlib_purify($_REQUEST['targetruleid']);
@@ -19,5 +19,5 @@ if ($mode == 'rulemove_up') {
 	Vtiger_MailScannerRule::resetSequence($ruleid, $targetruleid);
 }
 
-include('modules/Settings/MailScanner/MailScannerRule.php');
+include 'modules/Settings/MailScanner/MailScannerRule.php';
 ?>

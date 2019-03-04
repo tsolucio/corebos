@@ -373,7 +373,7 @@ function getMapFieldDependency(){
 
      function initListOfModules(){
             global $adb;
-            $restricted_modules = array('Emails','Events','Webmails');
+            $restricted_modules = array('Emails','Events');
             $restricted_blocks = array('LBL_IMAGE_INFORMATION','LBL_COMMENTS','LBL_COMMENT_INFORMATION');
             //tabid and name of modules
             $this->module_id = array();
