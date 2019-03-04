@@ -742,7 +742,7 @@ class Users extends CRMEntity {
 			$this->createAccessKey();
 		}
 		$this->db->completeTransaction();
-		$this->db->println("TRANS saveentity ends");
+		$this->db->println('TRANS saveentity ends');
 	}
 
 	public function createAccessKey() {
@@ -941,7 +941,7 @@ class Users extends CRMEntity {
 	 * @param $record -- record id:: Type integer
 	 * @param $module -- module:: Type varchar
 	 */
-	public function retrieve_entity_info($record, $module, $deleted = false) {
+	public function retrieve_entity_info($record, $module, $deleted = false, $from_wf = false) {
 		global $adb, $log;
 		$log->debug("> retrieve_entity_info $record, $module");
 

@@ -257,7 +257,7 @@ function getAllTaxes($available = 'all', $sh = '', $mode = '', $id = '') {
  *	@param string $available - available or empty or available_associated where as default is all,
  *		if available then the taxes which are available now will be returned,
  *		if all then all taxes will be returned
- *		otherwise if the value is available_associated then all the associated taxes even they are not available and all the available taxes will be retruned
+ *		otherwise if the value is available_associated then all the associated taxes even they are not available and all the available taxes will be returned
  *	@param int crmid of account,contact or vendor to restrict tax value
  *	@return array $tax_details - tax details as a array with productid, taxid, taxname, percentage and deleted
  */
@@ -277,10 +277,10 @@ function getTaxDetailsForProduct($productid, $available = 'all', $acvid = 0) {
 				$where = ' and vtiger_inventorytaxinfo.deleted=0';
 			}
 			if ($available != 'all' && $available == 'available_associated') {
-				$query = 'SELECT max(vtiger_producttaxrel.taxpercentage), vtiger_inventorytaxinfo.*
+				$query = 'SELECT COALESCE(`taxpercentage`,`percentage`) as taxpercentage, vtiger_inventorytaxinfo.*
 					FROM vtiger_inventorytaxinfo
-					left JOIN vtiger_producttaxrel ON vtiger_inventorytaxinfo.taxid = vtiger_producttaxrel.taxid
-					WHERE vtiger_producttaxrel.productid = ? or vtiger_inventorytaxinfo.deleted=0 GROUP BY vtiger_inventorytaxinfo.taxid';
+					LEFT JOIN vtiger_producttaxrel ON vtiger_inventorytaxinfo.taxid = vtiger_producttaxrel.taxid and vtiger_producttaxrel.productid=?
+					WHERE vtiger_inventorytaxinfo.deleted=0';
 			} else {
 				$query = 'SELECT vtiger_producttaxrel.*, vtiger_inventorytaxinfo.*
 					FROM vtiger_inventorytaxinfo
@@ -300,7 +300,7 @@ function getTaxDetailsForProduct($productid, $available = 'all', $acvid = 0) {
 			}
 		}
 	} else {
-		$log->debug('Product id is empty. we cannot retrieve the associated products.');
+		$log->debug('Product id is empty. we cannot retrieve the associated taxes.');
 	}
 
 	$log->debug('< getTaxDetailsForProduct');
@@ -756,7 +756,7 @@ function getAllCurrencies($available = 'available') {
  *  @param decimal $unit_price - Unit price of the product
  *  @param string $available - available or available_associated where as default is available,
  *  	if available then the prices in the currencies which are available now will be returned,
- *  	otherwise if the value is available_associated then prices of all the associated currencies will be retruned
+ *  	otherwise if the value is available_associated then prices of all the associated currencies will be returned
  *	@return array $price_details - price details as a array with productid, curid, curname
  */
 function getPriceDetailsForProduct($productid, $unit_price, $available = 'available', $itemtype = 'Products') {

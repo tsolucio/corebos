@@ -83,7 +83,7 @@ function cbws_getrecordimageinfo($id, $user) {
 		$qg->addCondition('id', $pdoid, 'e');
 		$query = $qg->getQuery();
 		$imgnamers = $adb->query($query);
-		$imgnames = $adb->fetch_array($imgnamers);
+		$imgnames = (array)$adb->fetch_array($imgnamers);
 		$inames = array();
 		foreach ($imgnames as $fname => $imgvalue) {
 			if (is_numeric($fname)) {

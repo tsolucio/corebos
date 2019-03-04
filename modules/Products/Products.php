@@ -261,7 +261,10 @@ class Products extends CRMEntity {
 	public function insertIntoAttachment($id, $module, $direct_import = false) {
 		global $log, $adb;
 		$log->debug("> insertIntoAttachment $id,$module");
-
+		if (!(isset($_FILES) && is_array($_FILES) && count($_FILES)>0)) {
+			$log->debug('< insertIntoAttachment: no FILES');
+			return;
+		}
 		$file_saved = false;
 		foreach ($_FILES as $fileindex => $files) {
 			if (substr($fileindex, 0, 5)!='file_' && !($fileindex=='file' && $_REQUEST['action']=='ProductsAjax' && $_REQUEST['file']=='UploadImage')) {

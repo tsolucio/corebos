@@ -107,7 +107,7 @@ class CRMEntity {
 		$this->db->startTransaction();
 
 		foreach ($this->tab_name as $table_name) {
-			if ($table_name == "vtiger_crmentity") {
+			if ($table_name == 'vtiger_crmentity') {
 				$this->insertIntoCrmEntity($module, $fileid);
 			} else {
 				$this->insertIntoEntityTable($table_name, $module, $fileid);
@@ -125,7 +125,7 @@ class CRMEntity {
 		$this->save_module($module);
 
 		$this->db->completeTransaction();
-		$this->db->println("TRANS saveentity ends");
+		$this->db->println('TRANS saveentity ends');
 
 		// vtlib customization: Hook provide to enable generic module relation.
 		if (isset($_REQUEST['createmode']) && $_REQUEST['createmode'] == 'link') {
@@ -894,7 +894,7 @@ class CRMEntity {
 	 * @param $module -- module:: Type varchar
 	 * This function retrives the information from the database and sets the value in the class columnfields array
 	 */
-	public function retrieve_entity_info($record, $module, $deleted = false) {
+	public function retrieve_entity_info($record, $module, $deleted = false, $from_wf = false) {
 		global $adb, $app_strings, $current_user;
 		$preFmt = '<br><br><center>';
 		$postFmt = '.</a></center>';
@@ -902,7 +902,7 @@ class CRMEntity {
 		$result = array();
 
 		//Here we check if user can see this record.
-		if (isPermitted($module, 'DetailView', $record) != 'yes') {
+		if (!$from_wf && isPermitted($module, 'DetailView', $record) != 'yes') {
 			$this->column_fields['record_id'] = $record;
 			$this->column_fields['record_module'] = $module;
 			return;
@@ -972,9 +972,11 @@ class CRMEntity {
 				$fieldname = $fieldinfo['fieldname'];
 				//Here we check if user have the paermission to access this field.
 				//If it is allowed then it will get the actual value, otherwise it gets an empty string.
-				if (getFieldVisibilityPermission($module, $current_user->id, $fieldname) != '0') {
-					$this->column_fields[$fieldname] = '';
-					continue;
+				if (!isset($from_wf) || !$from_wf) {
+					if (getFieldVisibilityPermission($module, $current_user->id, $fieldname) != '0') {
+						$this->column_fields[$fieldname] = '';
+						continue;
+					}
 				}
 				// To avoid ADODB execption pick the entries that are in $tablename
 				// (ex. when we don't have attachment for troubletickets, $result[vtiger_attachments]
@@ -1064,7 +1066,7 @@ class CRMEntity {
 		}
 
 		//Event triggering code
-		require_once "include/events/include.inc";
+		require_once 'include/events/include.inc';
 		global $adb;
 
 		$em = new VTEventsManager($adb);
@@ -1072,26 +1074,26 @@ class CRMEntity {
 		$em->initTriggerCache();
 		$entityData = VTEntityData::fromCRMEntity($this);
 
-		$em->triggerEvent("vtiger.entity.beforesave.modifiable", $entityData);
-		$em->triggerEvent("vtiger.entity.beforesave", $entityData);
-		$em->triggerEvent("vtiger.entity.beforesave.final", $entityData);
+		$em->triggerEvent('vtiger.entity.beforesave.modifiable', $entityData);
+		$em->triggerEvent('vtiger.entity.beforesave', $entityData);
+		$em->triggerEvent('vtiger.entity.beforesave.final', $entityData);
 		//Event triggering code ends
 		//GS Save entity being called with the modulename as parameter
 		$this->saveentity($module_name, $fileid);
 
 		//Event triggering code
-		$em->triggerEvent("vtiger.entity.aftersave.first", $entityData);
-		$em->triggerEvent("vtiger.entity.aftersave", $entityData);
-		$em->triggerEvent("vtiger.entity.aftersave.final", $entityData);
+		$em->triggerEvent('vtiger.entity.aftersave.first', $entityData);
+		$em->triggerEvent('vtiger.entity.aftersave', $entityData);
+		$em->triggerEvent('vtiger.entity.aftersave.final', $entityData);
 		//Event triggering code ends
 	}
 
 	/** Mark an item as deleted */
 	public function mark_deleted($id) {
 		global $current_user;
-		$date_var = date("Y-m-d H:i:s");
-		$query = "UPDATE vtiger_crmentity set deleted=1,modifiedtime=?,modifiedby=? where crmid=?";
-		$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, "Error marking record deleted: ");
+		$date_var = date('Y-m-d H:i:s');
+		$query = 'UPDATE vtiger_crmentity set deleted=1,modifiedtime=?,modifiedby=? where crmid=?';
+		$this->db->pquery($query, array($this->db->formatDate($date_var, true), $current_user->id, $id), true, 'Error marking record deleted: ');
 	}
 
 	// this method is called during an import before inserting a bean

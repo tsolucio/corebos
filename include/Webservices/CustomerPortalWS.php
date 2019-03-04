@@ -210,7 +210,7 @@ function vtws_getUItype($module, $user) {
 }
 
 function vtws_getReferenceValue($strids, $user) {
-	global $log,$adb;
+	global $log, $adb, $default_charset;
 	$ids=unserialize($strids);
 	$log->debug('> vtws_getReferenceValue '.$strids);
 	foreach ($ids as $id) {
@@ -219,7 +219,7 @@ function vtws_getReferenceValue($strids, $user) {
 		$modulename = $adb->query_result($rs, 0, 0);
 		if ($modulename=='DocumentFolders') {
 			$rs1 = $adb->pquery('select foldername from vtiger_attachmentsfolder where folderid = ?', array($realid));
-			$result[$id]=array('module'=>$modulename,'reference'=>$adb->query_result($rs1, 0, 0));
+			$result[$id]=array('module'=>$modulename,'reference'=>html_entity_decode($adb->query_result($rs1, 0, 0), ENT_QUOTES, $default_charset));
 		} elseif ($modulename=='Groups') {
 			$rs1 = $adb->pquery('select groupname from vtiger_groups where groupid = ?', array($realid));
 			$result[$id]=array('module'=>$modulename,'reference'=>$adb->query_result($rs1, 0, 0));
@@ -228,6 +228,9 @@ function vtws_getReferenceValue($strids, $user) {
 				$entityinfo[$realid] = getCurrencyName($realid, true);
 			} else {
 				$entityinfo = getEntityName($modulename, $realid);
+				if (isset($entityinfo[$realid])) {
+					$entityinfo[$realid] = html_entity_decode($entityinfo[$realid], ENT_QUOTES, $default_charset);
+				}
 			}
 			if (empty($entityinfo[$realid])) {
 				$entityinfo[$realid] = '';

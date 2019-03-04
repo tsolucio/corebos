@@ -37,8 +37,12 @@ class VTWorkflowUtils {
 	 */
 	public static function fieldvaluebytype($moduleFields, $fieldValueType, $fieldValue, $fieldName, $focus, $entity, $handlerMeta) {
 		$breaks = array('<br />','<br>','<br/>');
-		$fieldInstance = $moduleFields[$fieldName];
-		$fieldtype = $fieldInstance->getFieldDataType();
+		if (!empty($moduleFields[$fieldName])) {
+			$fieldInstance = $moduleFields[$fieldName];
+			$fieldtype = $fieldInstance->getFieldDataType();
+		} else {
+			$fieldtype = '';
+		}
 		if ($fieldValueType == 'fieldname' && !preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $fieldValue)) {
 			if ($fieldtype === 'currency' || $fieldtype === 'double') {
 				$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue, $focus->column_fields[$fieldValue], $handlerMeta->getTabId());
@@ -67,16 +71,16 @@ class VTWorkflowUtils {
 					$fieldValue = '0';
 				}
 			}
-			if ($fieldInstance->getFieldDataType() === 'date') {
+			if ($fieldtype === 'date') {
 				$date = new DateTimeField($fieldValue);
 				$fieldValue = $date->getDisplayDate();
 			}
-			if (in_array($fieldInstance->getUIType(), array(19,20,21))) {
+			if (!empty($fieldInstance) && in_array($fieldInstance->getUIType(), array(19,20,21))) {
 				$fieldValue = str_ireplace($breaks, "\n", $fieldValue);
 			}
 		}
 
-		if ($fieldInstance->getFieldDataType() === 'owner') {
+		if ($fieldtype === 'owner') {
 			$userId = getUserId_Ol($fieldValue);
 			$groupId = getGrpId($fieldValue);
 
