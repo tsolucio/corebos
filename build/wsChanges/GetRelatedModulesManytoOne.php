@@ -14,12 +14,12 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'getRelatedModulesManytoOne',
-	 'include' => 'include/Webservices/GetRelatedModulesManytoOne.php',
-	 'handler' => 'getRelatedModulesManytoOne',
-	 'prelogin'=> 0,
-	 'type'    => 'GET',
-	 'parameters' => array(
+	'name'    => 'getRelatedModulesManytoOne',
+	'include' => 'include/Webservices/GetRelatedModulesManytoOne.php',
+	'handler' => 'getRelatedModulesManytoOne',
+	'prelogin'=> 0,
+	'type'    => 'GET',
+	'parameters' => array(
 		array('name' => 'module','type' => 'String'),
-	 )
+	)
 );

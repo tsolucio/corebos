@@ -9,11 +9,9 @@
  ************************************************************************************/
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
-require_once('modules/com_vtiger_workflow/VTTaskQueue.inc');
+require_once 'modules/com_vtiger_workflow/VTTaskQueue.inc';
 
 class CBMassiveUpdateRelatedTask extends VTTask {
-
-
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
@@ -21,9 +19,9 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user, $default_charset, $log, $logbg,$from_wf;
+		global $adb, $current_user, $logbg, $from_wf;
 		$from_wf = true;
-		$logbg->info('Entering workflow task CBMassiveUpdateRelatedTask');
+		$logbg->debug('> CBMassiveUpdateRelatedTask');
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
 		$isqueue=$entity->isqueue;
@@ -53,61 +51,61 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 			$hold_user = $current_user;
 			$util->loggedInUser();
 			if (is_null($current_user)) {
-				$current_user = $hold_user;  // make sure current_user is defined
+				$current_user = $hold_user; // make sure current_user is defined
 			}
 			$relmodule = array();
 			$handlerMetarel[] = array();
-						$fieldValue = array();
-						$fieldmodule = array();
+			$fieldValue = array();
+			$fieldmodule = array();
 
 			foreach ($fieldValueMapping as $fieldInfo) {
 				$fieldName = $fieldInfo['fieldname'];
 				$fieldType = '';
-								$fldmod = '';
+				$fldmod = '';
 				$fieldValueType = $fieldInfo['valuetype'];
 				$fieldValue1 = trim($fieldInfo['value']);
 				if (array_key_exists('fieldmodule', $fieldInfo)) {
-										$fldmod = trim($fieldInfo['fieldmodule']);
-					$fieldmodule = explode("__", trim($fieldInfo['fieldmodule']));
+					$fldmod = trim($fieldInfo['fieldmodule']);
+					$fieldmodule = explode('__', trim($fieldInfo['fieldmodule']));
 				}
-								$module = $fieldmodule[0];
+				$module = $fieldmodule[0];
 				if (!in_array($fldmod, $relmodule)) {
 					$relmodule[] = $fldmod;
 				}
-								$moduleHandlerrel = vtws_getModuleHandlerFromName($module, $current_user);
-								$handlerMetarel["$fldmod"] = $moduleHandlerrel->getMeta();
-								$moduleFieldsrel = $handlerMetarel["$fldmod"]->getModuleFields();
-								$fieldValue[$fldmod][$fieldName] = $util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue1, $fieldName, $focus, $entity, $handlerMetarel["$fldmod"]);
+				$moduleHandlerrel = vtws_getModuleHandlerFromName($module, $current_user);
+				$handlerMetarel[$fldmod] = $moduleHandlerrel->getMeta();
+				$moduleFieldsrel = $handlerMetarel[$fldmod]->getModuleFields();
+				$fieldValue[$fldmod][$fieldName]=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue1, $fieldName, $focus, $entity, $handlerMetarel[$fldmod]);
 			}
 			$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 			$_REQUEST['ajxaction'] = 'Workflow';
 			if (count($relmodule)>0) {
-								$focusrel[] = array();
+				$focusrel[] = array();
 				if (count($relmodule)>3 && $isqueue==false) {
-					$delay = strtotime(" +5 minutes");
+					$delay = strtotime(' +5 minutes');
 					$taskQueue->queueTask($this->id, $entityId, $delay);
 					return;
 				} else {
 					foreach ($relmodule as $mod) {
-										$fieldmodule = explode("__", $mod);
-										$relfield = $fieldmodule[1];
-										$relmodule = $fieldmodule[0];
-						$focusrel["$mod"] = CRMEntity::getInstance($relmodule);
-										$maintable = $focusrel["$mod"]->table_name;
-										$mainid = $focusrel["$mod"]->table_index;
-										$records=$adb->query("select $mainid from $maintable join vtiger_crmentity on crmid=$mainid where deleted=0 and $relfield='$recordId'");
+						$fieldmodule = explode('__', $mod);
+						$relfield = $fieldmodule[1];
+						$relmodule = $fieldmodule[0];
+						$focusrel[$mod] = CRMEntity::getInstance($relmodule);
+						$maintable = $focusrel[$mod]->table_name;
+						$mainid = $focusrel[$mod]->table_index;
+						$records=$adb->query("select $mainid from $maintable join vtiger_crmentity on crmid=$mainid where deleted=0 and $relfield='$recordId'");
 						for ($nr=0; $nr<$adb->num_rows($records); $nr++) {
-										$relId = $adb->query_result($records, $nr, '0');
-										$focusrel["$mod"]->id = $relId;
-							$focusrel["$mod"]->mode = 'edit';
-							$focusrel["$mod"]->retrieve_entity_info($relId, $relmodule);
-							$focusrel["$mod"]->clearSingletonSaveFields();
+							$relId = $adb->query_result($records, $nr, '0');
+							$focusrel[$mod]->id = $relId;
+							$focusrel[$mod]->mode = 'edit';
+							$focusrel[$mod]->retrieve_entity_info($relId, $relmodule);
+							$focusrel[$mod]->clearSingletonSaveFields();
 							$fval = $fieldValue[$mod];
 							foreach ($fval as $key => $value) {
-								$focusrel["$mod"]->column_fields[$key]=$value;
+								$focusrel[$mod]->column_fields[$key]=$value;
 							}
-							$focusrel["$mod"]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel["$mod"]->column_fields, $handlerMetarel["$mod"]);
-										$focusrel["$mod"]->saveentity($relmodule);
+							$focusrel[$mod]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel[$mod]->column_fields, $handlerMetarel[$mod]);
+							$focusrel[$mod]->saveentity($relmodule);
 						}
 					}
 				}
@@ -118,8 +116,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 		}
 		$util->revertUser();
 		$from_wf = false;
-		$logbg->info('Exiting workflow task CBMassiveUpdateRelatedTask');
+		$logbg->info('< CBMassiveUpdateRelatedTask');
 	}
 }
-
 ?>

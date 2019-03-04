@@ -16,7 +16,7 @@
 
 class add_workflow_massiveupdaterelated extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		if ($this->hasError()) {
 			$this->sendError();
 		}
@@ -26,11 +26,15 @@ class add_workflow_massiveupdaterelated extends cbupdaterWorker {
 			require_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
 			$taskTypes = array();
 			$defaultModules = array('include' => array(), 'exclude'=>array());
-			$taskType= array("name"=>"CBMassiveUpdateRelatedTask", "label"=>"CBMassiveUpdateRelatedTask", "classname"=>"CBMassiveUpdateRelatedTask",
-					 "classpath"=>"modules/com_vtiger_workflow/tasks/CBMassiveUpdateRelatedTask.inc",
-					 "templatepath"=>"com_vtiger_workflow/taskforms/CBMassiveUpdateRelatedTask.tpl",
-					 "modules"=>$defaultModules,
-					 "sourcemodule"=>'');
+			$taskType= array(
+				"name"=>"CBMassiveUpdateRelatedTask",
+				"label"=>"CBMassiveUpdateRelatedTask",
+				"classname"=>"CBMassiveUpdateRelatedTask",
+				"classpath"=>"modules/com_vtiger_workflow/tasks/CBMassiveUpdateRelatedTask.inc",
+				"templatepath"=>"com_vtiger_workflow/taskforms/CBMassiveUpdateRelatedTask.tpl",
+				"modules"=>$defaultModules,
+				"sourcemodule"=>''
+			);
 			VTTaskType::registerTaskType($taskType);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
@@ -38,18 +42,20 @@ class add_workflow_massiveupdaterelated extends cbupdaterWorker {
 		$this->finishExecution();
 	}
 
-	function undoChange() {
+	public function undoChange() {
 		if ($this->hasError()) {
 			$this->sendError();
 		}
 		if ($this->isApplied()) {
 			global $adb;
 			$result = $adb->pquery("SELECT * FROM `com_vtiger_workflowtasks` WHERE `task` like '%CBMassiveUpdateRelatedTask%'", array());
-			if ($result and $adb->num_rows($result)>0) {
+			if ($result && $adb->num_rows($result)>0) {
 				$this->sendMsg('<span style="font-size:large;weight:bold;">Workflows that use this task exist!! Please eliminate them before undoing this change.</span>');
 			} else {
-				$adb->pquery("DELETE FROM com_vtiger_workflow_tasktypes WHERE
-						tasktypename = 'CBMassiveUpdateRelatedTask' and label = 'CBMassiveUpdateRelatedTask' and classname = 'CBMassiveUpdateRelatedTask'", array());
+				$adb->pquery(
+					"DELETE FROM com_vtiger_workflow_tasktypes WHERE tasktypename='CBMassiveUpdateRelatedTask' and label='CBMassiveUpdateRelatedTask' and classname='CBMassiveUpdateRelatedTask'",
+					array()
+				);
 				$this->markUndone(false);
 				$this->sendMsg('Changeset '.get_class($this).' undone!');
 			}
@@ -59,12 +65,12 @@ class add_workflow_massiveupdaterelated extends cbupdaterWorker {
 		$this->finishExecution();
 	}
 
-	function isApplied() {
+	public function isApplied() {
 		$done = parent::isApplied();
 		if (!$done) {
 			global $adb;
 			$result = $adb->pquery("SELECT * FROM com_vtiger_workflow_tasktypes where tasktypename='CBMassiveUpdateRelatedTask'", array());
-			$done = ($result and $adb->num_rows($result)==1);
+			$done = ($result && $adb->num_rows($result)==1);
 		}
 		return $done;
 	}

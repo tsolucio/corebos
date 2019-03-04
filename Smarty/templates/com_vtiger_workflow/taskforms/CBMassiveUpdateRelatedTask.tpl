@@ -28,19 +28,18 @@
 <script src="modules/{$module->name}/resources/updatemassivefieldstaskscript.js" type="text/javascript" charset="utf-8"></script>
 
 <table class="tableHeading" width="100%" border="0" cellspacing="0" cellpadding="5">
-    <tr>
-        <td class="big" nowrap="nowrap">
-            <strong>{$MOD.LBL_SET_FIELD_VALUES}</strong>
-        </td>
-        <td class="small" align="right">
-            <span id="workflow_loading" style="display:none">
-                <b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0">
-            </span>
-            <span id="save_fieldvaluemapping_add-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-            <input type="button" class="crmButton create small"
-                   value="{$MOD.LBL_ADD_FIELD}" id="save_fieldvaluemapping_add" style='display: none;'/>
-        </td>
-    </tr>
+	<tr>
+		<td class="big" nowrap="nowrap">
+			<strong>{$MOD.LBL_SET_FIELD_VALUES}</strong>
+		</td>
+		<td class="small" align="right">
+			<span id="workflow_loading" style="display:none">
+				<b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0">
+			</span>
+			<span id="save_fieldvaluemapping_add-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
+			<input type="button" class="crmButton create small" value="{$MOD.LBL_ADD_FIELD}" id="save_fieldvaluemapping_add" style='display: none;'/>
+		</td>
+	</tr>
 </table>
 <br>
 {include file="com_vtiger_workflow/FieldExpressions.tpl"}
