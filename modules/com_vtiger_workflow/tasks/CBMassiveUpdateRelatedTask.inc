@@ -45,8 +45,6 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 			$focus->mode = 'edit';
 			$focus->retrieve_entity_info($recordId, $moduleName, false, $from_wf);
 			$focus->clearSingletonSaveFields();
-			$logbg->debug('field values pre: '.print_r($focus->column_fields, true));
-			$logbg->debug('update info: '.print_r($fieldValueMapping, true));
 
 			$hold_user = $current_user;
 			$util->loggedInUser();

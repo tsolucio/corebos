@@ -22,7 +22,7 @@ class VTUpdateFieldsTask extends VTTask {
 	public function doTask(&$entity) {
 		global $adb, $current_user, $logbg,$from_wf;
 		$from_wf = true;
-		$logbg->info('Entering workflow task VTUpdateFieldsTask');
+		$logbg->debug('> VTUpdateFieldsTask');
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
 		$isqueue=$entity->isqueue;
@@ -121,7 +121,7 @@ class VTUpdateFieldsTask extends VTTask {
 		}
 		$util->revertUser();
 		$from_wf = false;
-		$logbg->info('Exiting workflow task VTUpdateFieldsTask');
+		$logbg->debug('< VTUpdateFieldsTask');
 	}
 }
 ?>
