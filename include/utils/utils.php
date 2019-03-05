@@ -194,6 +194,7 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 		require_once 'include/database/PearDatabase.php';
 		$db = PearDatabase::getInstance();
 		$temp_result = array();
+		$userOrder = GlobalVariable::getVariable('Application_User_SortBy', 'user_name ASC', $module, $current_user->id);
 		// Including deleted users for now.
 		if (empty($status)) {
 			$query = 'SELECT id, user_name from vtiger_users';
@@ -201,17 +202,23 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 		} else {
 			$assignUP = GlobalVariable::getVariable('Application_Permit_Assign_Up', 0, $module, $current_user->id);
 			if ($private == 'private' && empty($assignUP)) {
+				if ($userOrder != 'DO NOT SORT') {
+					$orderFields = preg_replace('/ asc\s*$| asc\s*,| desc\s*$| desc\s*,/i', ',', $userOrder);
+					$orderFields = trim($orderFields, ' ,').',';
+				} else {
+					$orderFields = '';
+				}
 				$assignBrothers = GlobalVariable::getVariable('Application_Permit_Assign_SameRole', 0, $module, $current_user->id);
-				$query = "select id as id,user_name as user_name,first_name,last_name
+				$query = "select $orderFields id as id,user_name as user_name,first_name,last_name
 					from vtiger_users
 					where id=? and status='Active'
 					union
-					select vtiger_user2role.userid as id,vtiger_users.user_name as user_name, vtiger_users.first_name as first_name, vtiger_users.last_name as last_name
+					select $orderFields vtiger_user2role.userid as id,vtiger_users.user_name as user_name, vtiger_users.first_name as first_name, vtiger_users.last_name as last_name
 					from vtiger_user2role
 					inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 					inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
 					where vtiger_role.parentrole like ? and status='Active'
-					union select shareduserid as id,vtiger_users.user_name as user_name, vtiger_users.first_name as first_name, vtiger_users.last_name as last_name
+					union select $orderFields shareduserid as id,vtiger_users.user_name as user_name, vtiger_users.first_name as first_name, vtiger_users.last_name as last_name
 					from vtiger_tmp_write_user_sharing_per
 					inner join vtiger_users on vtiger_users.id=vtiger_tmp_write_user_sharing_per.shareduserid
 					where status='Active' and vtiger_tmp_write_user_sharing_per.userid=? and vtiger_tmp_write_user_sharing_per.tabid=?";
@@ -231,10 +238,13 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 			$params[] = $assigned_user;
 		}
 
-		$userOrder = GlobalVariable::getVariable('Application_User_SortBy', 'user_name ASC', $module, $current_user->id);
 		if ($userOrder != 'DO NOT SORT') {
 			$orderByCol = $db->convert2Sql('?', array($userOrder));
-			$query .= ' order by '.str_replace("'", '', $orderByCol);
+			if (strpos($query, 'union')) {
+				$query = 'SELECT * FROM ('.$query.') AS USRSEL order by '.str_replace("'", '', $orderByCol);
+			} else {
+				$query .= ' order by '.str_replace("'", '', $orderByCol);
+			}
 		}
 
 		$result = $db->pquery($query, $params, true, 'Error filling in user array');
