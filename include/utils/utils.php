@@ -204,7 +204,14 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 			if ($private == 'private' && empty($assignUP)) {
 				if ($userOrder != 'DO NOT SORT') {
 					$orderFields = preg_replace('/ asc\s*$| asc\s*,| desc\s*$| desc\s*,/i', ',', $userOrder);
-					$orderFields = trim($orderFields, ' ,').',';
+					$orderFields = preg_replace('/\s*/', '', $orderFields);
+					$orderFields = str_replace(array('user_name,','first_name,','last_name,'), '', $orderFields);
+					$orderFields = str_replace(array('user_name','first_name','last_name'), '', $orderFields);
+					$orderFields = str_replace(',,', ',', $orderFields);
+					$orderFields = trim($orderFields, ',');
+					if (strlen($orderFields)>1) {
+						$orderFields .= ',';
+					}
 				} else {
 					$orderFields = '';
 				}
