@@ -180,7 +180,7 @@ function get_assigned_user_name($assigned_user_id) {
   * @param $private -- sharing type:: Type string
   * @returns $user_array -- user array:: Type array
 */
-function get_user_array($add_blank = true, $status = "Active", $assigned_user = "", $private = "") {
+function get_user_array($add_blank = true, $status = 'Active', $assigned_user = '', $private = '') {
 	global $log, $current_user;
 	$log->debug('> get_user_array '.$add_blank.','. $status.','.$assigned_user.','.$private);
 	if (isset($current_user) && $current_user->id != '') {

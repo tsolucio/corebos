@@ -100,7 +100,7 @@ class CRMEntity {
 			}
 		}
 		if (!$anyValue) {
-			die("<center>" .getTranslatedString('LBL_MANDATORY_FIELD_MISSING')."</center>");
+			die('<center>' .getTranslatedString('LBL_MANDATORY_FIELD_MISSING').'</center>');
 		}
 
 		$this->db->println("TRANS saveentity starts $module");
@@ -292,7 +292,7 @@ class CRMEntity {
 
 		$current_id = $adb->getUniqueID('vtiger_crmentity');
 
-		$filename = ltrim(basename(" " . $binFile)); //allowed filename like UTF-8 characters
+		$filename = ltrim(basename(' ' . $binFile)); //allowed filename like UTF-8 characters
 		$filetype = $file_details['type'];
 		//$filesize = $file_details['size'];
 		$filetmp_name = $file_details['tmp_name'];
@@ -307,9 +307,9 @@ class CRMEntity {
 
 		//upload the file in server
 		if ($direct_import || !is_uploaded_file($filetmp_name)) {
-			$upload_status = @copy($filetmp_name, $upload_file_path . $current_id . "_" . $binFile);
+			$upload_status = @copy($filetmp_name, $upload_file_path . $current_id . '_' . $binFile);
 		} else {
-			$upload_status = @move_uploaded_file($filetmp_name, $upload_file_path . $current_id . "_" . $binFile);
+			$upload_status = @move_uploaded_file($filetmp_name, $upload_file_path . $current_id . '_' . $binFile);
 		}
 		if ($upload_status) {
 			$description_val = empty($this->column_fields['description']) ? '' : $this->column_fields['description'];
@@ -371,21 +371,16 @@ class CRMEntity {
 				if ($attachmentsid != '') {
 					$cntrels = $adb->pquery('select count(*) as cnt from vtiger_seattachmentsrel where attachmentsid=?', array($attachmentsid));
 					$numrels = $adb->query_result($cntrels, 0, 'cnt');
-					$delquery = 'delete from vtiger_seattachmentsrel where crmid=? and attachmentsid=?';
-					$adb->pquery($delquery, array($id, $attachmentsid));
+					$adb->pquery('delete from vtiger_seattachmentsrel where crmid=? and attachmentsid=?', array($id, $attachmentsid));
 					if ($numrels == 1) {
-						$crm_delquery = "delete from vtiger_crmentity where crmid=?";
-						$adb->pquery($crm_delquery, array($attachmentsid));
+						$adb->pquery('delete from vtiger_crmentity where crmid=?', array($attachmentsid));
 					}
-					$sql5 = 'insert into vtiger_seattachmentsrel values(?,?)';
-					$adb->pquery($sql5, array($id, $current_id));
+					$adb->pquery('insert into vtiger_seattachmentsrel values(?,?)', array($id, $current_id));
 				} else {
-					$sql3 = 'insert into vtiger_seattachmentsrel values(?,?)';
-					$adb->pquery($sql3, array($id, $current_id));
+					$adb->pquery('insert into vtiger_seattachmentsrel values(?,?)', array($id, $current_id));
 				}
 			} else {
-				$sql3 = 'insert into vtiger_seattachmentsrel values(?,?)';
-				$adb->pquery($sql3, array($id, $current_id));
+				$adb->pquery('insert into vtiger_seattachmentsrel values(?,?)', array($id, $current_id));
 			}
 			return true;
 		} else {
@@ -444,7 +439,7 @@ class CRMEntity {
 			require 'user_privileges/user_privileges_' . $current_user->id . '.php';
 			$tabid = getTabid($module);
 			if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
-				$sql = "update vtiger_crmentity set smownerid=?,modifiedby=?,description=?, modifiedtime=? where crmid=?";
+				$sql = 'update vtiger_crmentity set smownerid=?,modifiedby=?,description=?, modifiedtime=? where crmid=?';
 				$params = array($ownerid, $current_user->id, $description_val, $adb->formatDate($date_var, true), $this->id);
 			} else {
 				$profileList = getCurrentUserProfileList();
