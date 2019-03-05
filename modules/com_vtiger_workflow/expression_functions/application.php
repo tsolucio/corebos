@@ -80,8 +80,7 @@ function __cb_getcrudmode($arr) {
 	$entity = $arr[0];
 	if ($entity->isNew()) {
 		return 'create';
-	}
-	else {
+	} else {
 		return 'edit';
 	}
 }
