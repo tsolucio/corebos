@@ -4859,29 +4859,6 @@ function UnifiedSearch_OnComboSelect(value) {
 		// continue
 	});	
 }
-/*
-function UnifiedSearch_SelectModuleToggle(flag) {
-	jQuery('#UnifiedSearch_moduleform input[type=checkbox]').each(function () {
-		this.checked = flag;
-	});
-}
-
-function UnifiedSearch_SelectModuleCancel() {
-	jQuery('#UnifiedSearch_moduleformwrapper').hide();
-}
-
-function UnifiedSearch_SelectModuleSave() {
-	var UnifiedSearch_form = document.forms.UnifiedSearch;
-	UnifiedSearch_form.search_onlyin.value = jQuery('#UnifiedSearch_moduleform').serialize().replace(/search_onlyin=/g, '').replace(/&/g, ',');
-	jQuery.ajax({
-		method:'POST',
-		url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(UnifiedSearch_form.search_onlyin.value)
-	}).done(function (response) {
-		// continue
-	});
-	//UnifiedSearch_SelectModuleCancel();
-}
- */
 
 /**
  * image pasting into canvas
