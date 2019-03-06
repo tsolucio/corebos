@@ -132,7 +132,15 @@ class UserPrivilegesWriter {
 
 		self::LeadsPrivileges($userFocus, $sharingPrivs);
 		self::AccountsPrivileges($userFocus, $sharingPrivs);
+		self::PotentialsPrivileges($userFocus, $sharingPrivs);
+		self::QuotesPrivileges($userFocus, $sharingPrivs);
+		self::SalesOrderPrivileges($userFocus, $sharingPrivs);
 
+		self::ModulePrivileges('HelpDesk', $user, $sharingPrivs);
+		self::ModulePrivileges('Emails', $user, $sharingPrivs);
+		self::ModulePrivileges('Campaigns', $user, $sharingPrivs);
+		self::ModulePrivileges('PurchaseOrder', $user, $sharingPrivs);
+		self::ModulePrivileges('Invoice', $user, $sharingPrivs);
 	}
 
 	/**
@@ -172,21 +180,7 @@ class UserPrivilegesWriter {
 	 */
 	private function LeadsPrivileges(Users $user, &$sharingPrivs) {
 
-		$userPrivs = $user->getPrivileges();
-		$lead_share_per_array = getUserModuleSharingObjects(
-			"Leads",
-			$user->id,
-			$sharingPrivs["defaultOrgSharingPermission"],
-			$userPrivs->getRoles(),	 // $current_user_roles this needs fixing
-			$userPrivs->getParentRoles(),
-			$userPrivs->getGroups()
-		);
-
-		self::constructModuleSharing(
-			"Leads",
-			$lead_share_per_array,
-			$sharingPrivs
-		);
+		$lead_share_per_array = self::ModulePrivileges('Leads', $user, $sharingPrivs);
 
 		//Constructing the Lead Email Related Module Sharing Array
 		self::constructRelatedSharing(
@@ -207,17 +201,8 @@ class UserPrivilegesWriter {
 	 */
 	private function AccountsPrivileges(Users $user, &$sharingPrivs) {
 
-		$userPrivs = $user->getPrivileges();
-
 		//Constructing Account Sharing Rules
-		$account_share_per_array = getUserModuleSharingObjects(
-			"Accounts",
-			$user->id,
-			$sharingPrivs["defaultOrgSharingPermission"],
-			$userPrivs->getRoles(),
-			$userPrivs->getParentRoles(),
-			$userPrivs->getGroups()
-		);
+		$account_share_per_array = self::ModulePrivileges('Accounts', $user, $sharingPrivs);
 
 		self::constructModuleSharing(
 			"Accounts",
@@ -279,6 +264,113 @@ class UserPrivilegesWriter {
 			$account_share_per_array,
 			$sharingPrivs
 		);
+	}
+
+	/**
+	 * Constructing Potentials Sharing Rules
+	 *
+	 * @param Users $user
+	 * @param Array $sharingPrivs
+	 *
+	 * @return void
+	 */
+	private function PotentialsPrivileges(Users $user, &$sharingPrivs) {
+
+		$pot_share_per_array = self::ModulePrivileges('Potentials', $user, $sharingPrivs);
+
+		self::constructModuleSharing(
+			"Potentials",
+			$pot_share_per_array,
+			$sharingPrivs
+		);
+
+		//Constructing the Potential Quotes Related Module Sharing Array
+		self::constructRelatedSharing(
+			"Potentials",
+			"Quotes",
+			$pot_share_per_array,
+			$sharingPrivs
+		);
+
+		//Constructing the Potential SalesOrder Related Module Sharing Array
+		self::constructRelatedSharing(
+			"Potentials",
+			"SalesOrder",
+			$pot_share_per_array,
+			$sharingPrivs
+		);
+	}
+
+	/**
+	 * Constructing Quotes Sharing Rules
+	 *
+	 * @param Users $user
+	 * @param Array $sharingPrivs
+	 *
+	 * @return void
+	 */
+	private function QuotesPrivileges(Users $user, &$sharingPrivs) {
+
+		$quotes_share_per_array = self::ModulePrivileges('Quotes', $user, $sharingPrivs);
+
+		//Constructing the Lead Email Related Module Sharing Array
+		self::constructRelatedSharing(
+			"Quotes",
+			"SalesOrder",
+			$quotes_share_per_array,
+			$sharingPrivs
+		);
+	}
+
+	/**
+	 * Constructing SalesOrder Sharing Rules
+	 *
+	 * @param Users $user
+	 * @param Array $sharingPrivs
+	 *
+	 * @return void
+	 */
+	private function SalesOrderPrivileges(Users $user, &$sharingPrivs) {
+
+		$share_per_array = self::ModulePrivileges('SalesOrder', $user, $sharingPrivs);
+
+		//Constructing the Lead Email Related Module Sharing Array
+		self::constructRelatedSharing(
+			"SalesOrder",
+			"Invoice",
+			$share_per_array,
+			$sharingPrivs
+		);
+	}
+
+	/**
+	 * Construct General Module Sharing Rules
+	 *
+	 * @param String	$module
+	 * @param Users		$user
+	 * @param Array		$sharingPrivs
+	 *
+	 * @return Array 	$userModSharing
+	 */
+	private function ModulePrivileges($module, Users $user, &$sharingPrivs) {
+		$userPrivs = $user->getPrivileges();
+
+		$userModSharing = getUserModuleSharingObjects(
+			$module,
+			$user->id,
+			$sharingPrivs["defaultOrgSharingPermission"],
+			$userPrivs->getRoles(),
+			$userPrivs->getParentRoles(),
+			$userPrivs->getGroups()
+		);
+
+		self::constructModuleSharing(
+			$module,
+			$userModSharing,
+			$sharingPrivs
+		);
+
+		return $userModSharing;
 	}
 
 	/**
