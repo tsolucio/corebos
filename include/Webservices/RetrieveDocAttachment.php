@@ -17,7 +17,7 @@ function vtws_retrievedocattachment($all_ids, $returnfile, $user) {
 	global $log, $adb;
 	$entities = array();
 	$docWSId = vtws_getEntityId('Documents').'x';
-	$log->debug('Entering function vtws_retrievedocattachment');
+	$log->debug('> vtws_retrievedocattachment');
 	$all_ids='('.str_replace($docWSId, '', $all_ids).')';
 	$query = "SELECT n.notesid, n.filename, n.filelocationtype, n.filetype
 		FROM vtiger_notes n
@@ -71,13 +71,13 @@ function vtws_retrievedocattachment($all_ids, $returnfile, $user) {
 		$entities[$id]=$entity;
 		VTWS_PreserveGlobal::flush();
 	} // end for ids
-	$log->debug('Leaving function vtws_retrievedocattachment');
+	$log->debug('< vtws_retrievedocattachment');
 	return $entities;
 }
 
 function vtws_retrievedocattachment_get_attachment($fileid, $nr = false, $returnfile = true) {
 	global $adb, $log, $default_charset;
-	$log->debug("Entering function vtws_retrievedocattachment_get_attachment($fileid)");
+	$log->debug('> vtws_retrievedocattachment_get_attachment '.$fileid);
 
 	$recordpdf=array();
 
@@ -103,13 +103,11 @@ function vtws_retrievedocattachment_get_attachment($fileid, $nr = false, $return
 		$fileContent = '';
 		$filesize = filesize($filepath.$saved_filename);
 		if (!fopen($filepath.$saved_filename, "r")) {
-			$log->debug('Unable to open file');
 			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Unable to open file $saved_filename. Object is denied");
 		} else {
 			$fileContent = $returnfile ? fread(fopen($filepath.$saved_filename, "r"), $filesize) : '';
 		}
 		if ($fileContent != '') {
-			$log->debug('About to update download count');
 			$rsn = $adb->pquery('select filedownloadcount from vtiger_notes where notesid= ?', array($fileid));
 			$download_count = $adb->query_result($rsn, 0, 'filedownloadcount') + 1;
 			$adb->pquery('update vtiger_notes set filedownloadcount= ? where notesid= ?', array($download_count, $fileid));
@@ -121,7 +119,7 @@ function vtws_retrievedocattachment_get_attachment($fileid, $nr = false, $return
 		$recordpdf['attachment'] = base64_encode($fileContent);
 	}
 
-	$log->debug("Leaving function vtws_retrievedocattachment_get_attachment($fileid)");
+	$log->debug('< vtws_retrievedocattachment_get_attachment');
 	return $recordpdf;
 }
 ?>

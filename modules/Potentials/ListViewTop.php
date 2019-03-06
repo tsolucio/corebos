@@ -15,7 +15,7 @@
 */
 function getTopPotentials($maxval, $calCnt) {
 	$log = LoggerManager::getLogger('top opportunity_list');
-	$log->debug('Entering getTopPotentials() method ...');
+	$log->debug('> getTopPotentials');
 	require_once 'data/Tracker.php';
 	require_once 'modules/Potentials/Potentials.php';
 	require_once 'include/logging.php';
@@ -104,7 +104,7 @@ function getTopPotentials($maxval, $calCnt) {
 
 	$values=array('ModuleName'=>'Potentials', 'Title'=>$title, 'Header'=>$header, 'Entries'=>$entries, 'search_qry'=>$search_qry);
 
-	$log->debug('Exiting getTopPotentials method ...');
+	$log->debug('< getTopPotentials');
 	if ((count($open_potentials_list) == 0 ) || (count($open_potentials_list)>0)) {
 		return $values;
 	}

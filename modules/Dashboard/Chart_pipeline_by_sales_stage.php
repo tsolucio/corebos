@@ -42,30 +42,18 @@ if (isset($_REQUEST['pbss_date_end']) && $_REQUEST['pbss_date_end'] == '') {
 //get the dates to display
 if (isset($_SESSION['pbss_date_start']) && $_SESSION['pbss_date_start'] != '' && !isset($_REQUEST['pbss_date_start'])) {
 	$date_start = $_SESSION['pbss_date_start'];
-	$log->debug("_SESSION['pbss_date_start'] is:");
-	$log->debug($_SESSION['pbss_date_start']);
 } elseif (isset($_REQUEST['pbss_date_start']) && $_REQUEST['pbss_date_start'] != '') {
 	$date_start = $_REQUEST['pbss_date_start'];
 	$current_user->setPreference('pbss_date_start', $_REQUEST['pbss_date_start']);
-	$log->debug("_REQUEST['pbss_date_start'] is:");
-	$log->debug($_REQUEST['pbss_date_start']);
-	$log->debug("_SESSION['pbss_date_start'] is:");
-	$log->debug($_SESSION['pbss_date_start']);
 } else {
 	$date_start = '2001-01-01';
 }
 
 if (isset($_SESSION['pbss_date_end']) && $_SESSION['pbss_date_end'] != '' && !isset($_REQUEST['pbss_date_end'])) {
 	$date_end = $_SESSION['pbss_date_end'];
-	$log->debug("_SESSION['pbss_date_end'] is:");
-	$log->debug($_SESSION['pbss_date_end']);
 } elseif (isset($_REQUEST['pbss_date_end']) && $_REQUEST['pbss_date_end'] != '') {
 	$date_end = $_REQUEST['pbss_date_end'];
 	$current_user->setPreference('pbss_date_end', $_REQUEST['pbss_date_end']);
-	$log->debug("_REQUEST['pbss_date_end'] is:");
-	$log->debug($_REQUEST['pbss_date_end']);
-	$log->debug("_SESSION['pbss_date_end'] is:");
-	$log->debug($_SESSION['pbss_date_end']);
 } else {
 	$date_end = '2100-01-01';
 }
@@ -75,15 +63,9 @@ $datax = array();
 //get list of sales stage keys to display
 if (isset($_SESSION['pbss_sales_stages']) && count($_SESSION['pbss_sales_stages']) > 0 && !isset($_REQUEST['pbss_sales_stages'])) {
 	$tempx = $_SESSION['pbss_sales_stages'];
-	$log->debug("_SESSION['pbss_sales_stages'] is:");
-	$log->debug($_SESSION['pbss_sales_stages']);
 } elseif (isset($_REQUEST['pbss_sales_stages']) && count($_REQUEST['pbss_sales_stages']) > 0) {
 	$tempx = $_REQUEST['pbss_sales_stages'];
 	$current_user->setPreference('pbss_sales_stages', $_REQUEST['pbss_sales_stages']);
-	$log->debug("_REQUEST['pbss_sales_stages'] is:");
-	$log->debug($_REQUEST['pbss_sales_stages']);
-	$log->debug("_SESSION['pbss_sales_stages'] is:");
-	$log->debug($_SESSION['pbss_sales_stages']);
 }
 
 //set $datax using selected sales stage keys
@@ -94,9 +76,6 @@ if (count($tempx) > 0) {
 } else {
 	$datax = $comboFieldArray['sales_stage_dom'];
 }
-$log->debug('datax is:');
-$log->debug($datax);
-
 $ids = array();
 //get list of user ids for which to display data
 if (isset($_REQUEST['showmypipeline'])) {
@@ -105,15 +84,9 @@ if (isset($_REQUEST['showmypipeline'])) {
 	$ids = array($_REQUEST['showpipelineof']);
 } elseif (isset($_SESSION['pbss_ids']) && count($_SESSION['pbss_ids']) != 0 && !isset($_REQUEST['pbss_ids'])) {
 	$ids = $_SESSION['pbss_ids'];
-	$log->debug("_SESSION['pbss_ids'] is:");
-	$log->debug($_SESSION['pbss_ids']);
 } elseif (isset($_REQUEST['pbss_ids']) && count($_REQUEST['pbss_ids']) > 0) {
 	$ids = $_REQUEST['pbss_ids'];
 	$current_user->setPreference('pbss_ids', $_REQUEST['pbss_ids']);
-	$log->debug("_REQUEST['pbss_ids'] is:");
-	$log->debug($_REQUEST['pbss_ids']);
-	$log->debug("_SESSION['pbss_ids'] is:");
-	$log->debug($_SESSION['pbss_ids']);
 } else {
 	$ids = get_user_array(false);
 	$ids = array_keys($ids);

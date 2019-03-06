@@ -29,9 +29,7 @@ if (empty($from)) {
 }
 
 // Get the list of activity for which reminder needs to be sent
-global $adb, $log, $current_language;
-$log = LoggerManager::getLogger('SendReminder');
-$log->debug('invoked SendReminder');
+global $adb, $current_language;
 
 // retrieve the translated strings.
 if (empty($current_language)) {
@@ -93,7 +91,6 @@ if ($adb->num_rows($result) >= 1) {
 		$date = new DateTimeField("$date_start $time_start");
 		$activity_time = strtotime($date->getDisplayDateTimeValue())/60;
 		if (($activity_time - $curr_time) > -12 && ($activity_time - $curr_time) <= $reminder_time) {
-			$log->debug('Inside REMINDER');
 			// Retrieving the Subject and message from reminder table
 			$sql = 'select active,notificationsubject,notificationbody from vtiger_notificationscheduler where schedulednotificationid=8';
 			$result_main = $adb->pquery($sql, array());

@@ -26,6 +26,7 @@ class Leads extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-lead', 'class' => 'slds-icon', 'icon'=>'lead');
 
 	public $tab_name = array('vtiger_crmentity','vtiger_leaddetails','vtiger_leadsubdetails','vtiger_leadaddress','vtiger_leadscf');
 	public $tab_name_index = array(
@@ -108,7 +109,7 @@ class Leads extends CRMEntity {
 	*/
 	public function create_export_query($where) {
 		global $log, $current_user;
-		$log->debug("Entering create_export_query(".$where.") method ...");
+		$log->debug('> create_export_query '.$where);
 
 		include 'include/utils/ExportUtils.php';
 
@@ -133,9 +134,9 @@ class Leads extends CRMEntity {
 		if ($where != '') {
 			$query .= " where ($where) AND ".$where_auto;
 		} else {
-			$query .= " where ".$where_auto;
+			$query .= ' where '.$where_auto;
 		}
-		$log->debug("Exiting create_export_query method ...");
+		$log->debug('< create_export_query');
 		return $query;
 	}
 
@@ -145,7 +146,7 @@ class Leads extends CRMEntity {
 	 */
 	public function get_campaigns($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
-		$log->debug('Entering get_campaigns('.$id.') method ...');
+		$log->debug('> get_campaigns('.$id);
 		$this_module = $currentModule;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
@@ -195,7 +196,7 @@ class Leads extends CRMEntity {
 		}
 		$return_value['CUSTOM_BUTTON'] = $button;
 
-		$log->debug("Exiting get_campaigns method ...");
+		$log->debug('< get_campaigns');
 		return $return_value;
 	}
 
@@ -206,7 +207,7 @@ class Leads extends CRMEntity {
 	*/
 	public function get_products($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
-		$log->debug('Entering get_products('.$id.') method ...');
+		$log->debug('> get_products('.$id);
 		$this_module = $currentModule;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
@@ -259,7 +260,7 @@ class Leads extends CRMEntity {
 		}
 		$return_value['CUSTOM_BUTTON'] = $button;
 
-		$log->debug("Exiting get_products method ...");
+		$log->debug('< get_products');
 		return $return_value;
 	}
 
@@ -269,9 +270,9 @@ class Leads extends CRMEntity {
 	*/
 	public function get_lead_field_options($list_option) {
 		global $log;
-		$log->debug('Entering get_lead_field_options('.$list_option.') method ...');
+		$log->debug('> get_lead_field_options('.$list_option);
 		$comboFieldArray = getComboArray($this->combofieldNames);
-		$log->debug('Exiting get_lead_field_options method ...');
+		$log->debug('< get_lead_field_options');
 		return $comboFieldArray[$list_option];
 	}
 
@@ -281,7 +282,7 @@ class Leads extends CRMEntity {
 	*/
 	public function getColumnNames_Lead() {
 		global $log,$current_user;
-		$log->debug("Entering getColumnNames_Lead() method ...");
+		$log->debug('> getColumnNames_Lead');
 		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
 			$sql1 = "select fieldlabel from vtiger_field where tabid=7 and vtiger_field.presence in (0,2)";
@@ -309,7 +310,7 @@ class Leads extends CRMEntity {
 			$custom_fields[$i] = strtoupper($custom_fields[$i]);
 		}
 		$mergeflds = $custom_fields;
-		$log->debug("Exiting getColumnNames_Lead method ...");
+		$log->debug('< getColumnNames_Lead');
 		return $mergeflds;
 	}
 
@@ -321,7 +322,7 @@ class Leads extends CRMEntity {
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
-		$log->debug("Entering function transferRelatedRecords ($module, $transferEntityIds, $entityId)");
+		$log->debug("> transferRelatedRecords $module, $transferEntityIds, $entityId");
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$rel_table_arr = array("Attachments"=>"vtiger_seattachmentsrel",
 					"Products"=>"vtiger_seproductsrel","Campaigns"=>"vtiger_campaignleadrel");
@@ -354,7 +355,7 @@ class Leads extends CRMEntity {
 				}
 			}
 		}
-		$log->debug("Exiting transferRelatedRecords...");
+		$log->debug('< transferRelatedRecords');
 	}
 
 	/*
@@ -449,7 +450,7 @@ class Leads extends CRMEntity {
 		$current_user->retrieve_entity_info($user_id, 'Users');
 		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 		require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
-		$log->debug("Entering get_searchbyemailid(".$username.",".$emailaddress.") Leads method ...");
+		$log->debug('> get_searchbyemailid '.$username.','.$emailaddress);
 		//get users group ID's
 		$gquery = 'SELECT groupid FROM vtiger_users2group WHERE userid=?';
 		$gresult = $adb->pquery($gquery, array($user_id));
@@ -481,13 +482,13 @@ class Leads extends CRMEntity {
 			$query .= $sec_parameter;
 		}
 
-		$log->debug('Exiting get_searchbyemailid method ...');
+		$log->debug('< get_searchbyemailid');
 		return $this->plugin_process_list_query($query);
 	}
 
 	public function plugin_process_list_query($query) {
 		global $log,$adb,$current_user, $currentModule;
-		$log->debug('Entering process_list_query('.$query.') method ...');
+		$log->debug('> process_list_query('.$query);
 		$permitted_field_lists = array();
 		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
@@ -533,7 +534,7 @@ class Leads extends CRMEntity {
 		$response['row_count'] = $rows_found;
 		//$response['next_offset'] = $next_offset;
 		//$response['previous_offset'] = $previous_offset;
-		$log->debug('Exiting process_list_query method ...');
+		$log->debug('< process_list_query');
 		return $response;
 	}
 }

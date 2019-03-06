@@ -473,12 +473,12 @@ function setCCAddress($mail, $cc_mod, $cc_val) {
   */
 function MailSend($mail) {
 	global $log;
-	$log->info('Inside of Send Mail function.');
+	$log->debug('> MailSend');
 	if (!$mail->Send()) {
-		$log->debug("Error in Mail Sending : Error log = '".$mail->ErrorInfo."'");
+		$log->debug('< MailSend Error: '.$mail->ErrorInfo);
 		return $mail->ErrorInfo;
 	} else {
-		$log->info("Mail has been sent from the application : Status : '".$mail->ErrorInfo."'");
+		$log->debug('< MailSend Status: '.$mail->ErrorInfo);
 		return 1;
 	}
 }

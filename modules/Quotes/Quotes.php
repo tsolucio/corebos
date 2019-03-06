@@ -24,6 +24,8 @@ class Quotes extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-quotes', 'class' => 'slds-icon', 'icon'=>'quotes');
+
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
@@ -155,7 +157,7 @@ class Quotes extends CRMEntity {
 	 */
 	public function get_salesorder($id) {
 		global $log,$singlepane_view;
-		$log->debug("Entering get_salesorder(".$id.") method ...");
+		$log->debug('> get_salesorder '.$id);
 		require_once 'modules/SalesOrder/SalesOrder.php';
 		$focus = new SalesOrder();
 
@@ -182,7 +184,7 @@ class Quotes extends CRMEntity {
 		LEFT JOIN vtiger_soshipads ON vtiger_soshipads.soshipaddressid = vtiger_salesorder.salesorderid
 		left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
 		where vtiger_crmentity.deleted=0 and vtiger_salesorder.quoteid = ".$id;
-		$log->debug('Exiting get_salesorder method ...');
+		$log->debug('< get_salesorder');
 		return GetRelatedList('Quotes', 'SalesOrder', $focus, $query, $button, $returnset);
 	}
 
@@ -193,7 +195,7 @@ class Quotes extends CRMEntity {
 	 */
 	public function get_quotestagehistory($id) {
 		global $log, $adb, $app_strings, $current_user;
-		$log->debug("Entering get_quotestagehistory($id) method ...");
+		$log->debug('> get_quotestagehistory '.$id);
 
 		$query = 'select vtiger_quotestagehistory.*, vtiger_quotes.quote_no
 			from vtiger_quotestagehistory
@@ -235,7 +237,7 @@ class Quotes extends CRMEntity {
 		}
 
 		$return_data = array('header'=>$header,'entries'=>$entries_list,'navigation'=>array('',''));
-		$log->debug("Exiting get_quotestagehistory method ...");
+		$log->debug('< get_quotestagehistory');
 		return $return_data;
 	}
 
@@ -379,7 +381,7 @@ class Quotes extends CRMEntity {
 	*/
 	public function create_export_query($where) {
 		global $log, $current_user;
-		$log->debug("Entering create_export_query($where) method ...");
+		$log->debug('> create_export_query '.$where);
 
 		include 'include/utils/ExportUtils.php';
 
@@ -415,7 +417,7 @@ class Quotes extends CRMEntity {
 			$query .= ' where '.$where_auto;
 		}
 
-		$log->debug('Exiting create_export_query method ...');
+		$log->debug('< create_export_query');
 		return $query;
 	}
 }

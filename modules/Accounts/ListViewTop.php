@@ -14,7 +14,7 @@
 */
 function getTopAccounts($maxval, $calCnt) {
 	$log = LoggerManager::getLogger('top accounts_list');
-	$log->debug('Entering getTopAccounts() method ...');
+	$log->debug('> getTopAccounts');
 	require_once 'data/Tracker.php';
 	require_once 'modules/Potentials/Potentials.php';
 	require_once 'include/logging.php';
@@ -81,7 +81,7 @@ function getTopAccounts($maxval, $calCnt) {
 		$entries[$account['accountid']]=$value;
 	}
 	$values=array('ModuleName'=>'Accounts','Title'=>$title,'Header'=>$header,'Entries'=>$entries);
-	$log->debug("Exiting getTopAccounts method ...");
+	$log->debug('< getTopAccounts');
 	return $values;
 }
 ?>

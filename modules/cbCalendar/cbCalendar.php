@@ -22,6 +22,7 @@ class cbCalendar extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = true;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-event', 'class' => 'slds-icon', 'icon'=>'event');
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
@@ -223,13 +224,11 @@ class cbCalendar extends CRMEntity {
 	 */
 	public function insertIntoRecurringTable(&$recurObj) {
 		global $log,$adb;
-		$log->info("in insertIntoRecurringTable  ");
+		$log->debug('> insertIntoRecurringTable');
 		$st_date = $recurObj->startdate->get_DB_formatted_date();
-		$log->debug("st_date ".$st_date);
 		$end_date = $recurObj->enddate->get_DB_formatted_date();
-		$log->debug("end_date is set ".$end_date);
 		$type = $recurObj->getRecurringType();
-		$log->debug("type is ".$type);
+		$log->debug("st_date=$st_date, end_date=$end_date, type=".$type);
 		$flag="true";
 
 		if ($_REQUEST['mode'] == 'edit') {
@@ -270,16 +269,15 @@ class cbCalendar extends CRMEntity {
 		$recur_freq = $recurObj->getRecurringFrequency();
 		$recurringinfo = $recurObj->getDBRecurringInfoString();
 
-		if ($flag=="true") {
-			$max_recurid_qry = 'select max(recurringid) AS recurid from vtiger_recurringevents;';
-			$result = $adb->pquery($max_recurid_qry, array());
+		if ($flag=='true') {
+			$result = $adb->pquery('select max(recurringid) AS recurid from vtiger_recurringevents', array());
 			$noofrows = $adb->num_rows($result);
 			$recur_id = 0;
 			if ($noofrows > 0) {
-				$recur_id = $adb->query_result($result, 0, "recurid");
+				$recur_id = $adb->query_result($result, 0, 'recurid');
 			}
 			$current_id =$recur_id+1;
-			$recurring_insert = "insert into vtiger_recurringevents values (?,?,?,?,?,?)";
+			$recurring_insert = 'insert into vtiger_recurringevents values (?,?,?,?,?,?)';
 			$rec_params = array($current_id, $this->id, $st_date, $type, $recur_freq, $recurringinfo);
 			$adb->pquery($recurring_insert, $rec_params);
 			coreBOS_Session::delete('next_reminder_time');
@@ -287,6 +285,7 @@ class cbCalendar extends CRMEntity {
 				$this->insertIntoReminderTable($current_id);
 			}
 		}
+		$log->debug('< insertIntoRecurringTable');
 	}
 
 	/** Function to insert values in activity_reminder_popup table for the specified module
@@ -321,23 +320,19 @@ class cbCalendar extends CRMEntity {
 		}
 	}
 
-	/** Function to insert values in vtiger_activity_remainder table for the specified module,
-	  * @param $table_name -- table name:: Type varchar
-	  * @param $module -- module:: Type varchar
+	/** Function to insert values in vtiger_activity_remainder table
+	  * @param $recurid
 	 */
 	public function insertIntoReminderTable($recurid) {
 		global $log;
+		$log->debug('> insertIntoReminderTables '.$recurid);
 		if (isset($_REQUEST['set_reminder']) && $_REQUEST['set_reminder'] == 'Yes') {
 			coreBOS_Session::delete('next_reminder_time');
-			$log->debug("set reminder is set");
 			$rem_days = $_REQUEST['remdays'];
-			$log->debug("rem_days is ".$rem_days);
 			$rem_hrs = $_REQUEST['remhrs'];
-			$log->debug("rem_hrs is ".$rem_hrs);
 			$rem_min = $_REQUEST['remmin'];
-			$log->debug("rem_minutes is ".$rem_min);
 			$reminder_time = $rem_days * 24 * 60 + $rem_hrs * 60 + $rem_min;
-			$log->debug("reminder_time is ".$reminder_time);
+			$log->debug("reminder_time ($rem_days $rem_hrs $rem_min): ".$reminder_time);
 			if ($recurid == 0) {
 				if ($_REQUEST['mode'] == 'edit') {
 					$this->activity_reminder($this->id, $reminder_time, 0, $recurid, 'edit');
@@ -350,6 +345,7 @@ class cbCalendar extends CRMEntity {
 		} elseif (isset($_REQUEST['set_reminder']) && $_REQUEST['set_reminder'] == 'No') {
 			$this->activity_reminder($this->id, '0', 0, $recurid, 'delete');
 		}
+		$log->debug('< insertIntoReminderTables');
 	}
 
 	/**
@@ -362,7 +358,7 @@ class cbCalendar extends CRMEntity {
 	 */
 	public function activity_reminder($activity_id, $reminder_time, $reminder_sent = 0, $recurid = 0, $remindermode = '') {
 		global $log;
-		$log->debug("Entering activity_reminder(".$activity_id.",".$reminder_time.",".$reminder_sent.",".$recurid.",".$remindermode.") method ...");
+		$log->debug('> activity_reminder '.$activity_id.','.$reminder_time.','.$reminder_sent.','.$recurid.','.$remindermode);
 		// Check for activityid already present in the reminder_table
 		$query_exist = "SELECT activity_id FROM ".$this->reminder_table." WHERE activity_id = ?";
 		$result_exist = $this->db->pquery($query_exist, array($activity_id));
@@ -385,7 +381,7 @@ class cbCalendar extends CRMEntity {
 			$params = array($activity_id, $reminder_time, 0, $recurid);
 			$this->db->pquery($query, $params, true, "Error in processing table $this->reminder_table");
 		}
-		$log->debug("Exiting vtiger_activity_reminder method ...");
+		$log->debug('< vtiger_activity_reminder');
 	}
 
 	/** Function to insert values in vtiger_invitees table for the specified module,tablename ,invitees_array
@@ -395,7 +391,7 @@ class cbCalendar extends CRMEntity {
 	 */
 	public function insertIntoInviteeTable($module, $invitees_array) {
 		global $log,$adb;
-		$log->debug("Entering insertIntoInviteeTable($module,".print_r($invitees_array, true).") method ...");
+		$log->debug('> insertIntoInviteeTable '.$module.','.print_r($invitees_array, true));
 		if ($this->mode == 'edit') {
 			$adb->pquery('delete from vtiger_invitees where activityid=?', array($this->id));
 		}
@@ -404,7 +400,7 @@ class cbCalendar extends CRMEntity {
 				$adb->pquery('insert into vtiger_invitees values(?,?)', array($this->id, $inviteeid));
 			}
 		}
-		$log->debug('Exiting insertIntoInviteeTable method ...');
+		$log->debug('< insertIntoInviteeTable');
 	}
 
 	/** Function to insert values in vtiger_salesmanactivityrel table for the specified module
@@ -533,16 +529,16 @@ class cbCalendar extends CRMEntity {
 
 			// Build the query based on the group association of current user.
 			if (count($current_user_groups) > 0) {
-				$sec_query .= " vtiger_groups.groupid IN (". implode(",", $current_user_groups) .") OR ";
+				$sec_query .= ' vtiger_groups.groupid IN ('. implode(',', $current_user_groups) .') OR ';
 			}
-			$sec_query .= " vtiger_groups.groupid IN
+			$sec_query .= ' vtiger_groups.groupid IN
 				(
 					SELECT vtiger_tmp_read_group_sharing_per.sharedgroupid
 					FROM vtiger_tmp_read_group_sharing_per
-					WHERE userid=".$current_user->id." and tabid=".$tabid."
-				)";
-			$sec_query .= ")
-			)";
+					WHERE userid='.$current_user->id.' and tabid='.$tabid.'
+				)';
+			$sec_query .= ')
+			)';
 		}
 		return $sec_query;
 	}
@@ -554,7 +550,7 @@ class cbCalendar extends CRMEntity {
 	 */
 	public function get_contacts($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule, $adb;
-		$log->debug("Entering get_contacts(".$id.") method ...");
+		$log->debug('> get_contacts '.$id);
 		$this_module = $currentModule;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
@@ -613,7 +609,7 @@ class cbCalendar extends CRMEntity {
 				if (empty($relmap[2])) {
 					$relmap[2] = $relmap[0];
 				}
-						$more_relation .= " LEFT JOIN $tname ON $tname.$relmap[0] = $relmap[1].$relmap[2]";
+				$more_relation .= " LEFT JOIN $tname ON $tname.$relmap[0] = $relmap[1].$relmap[2]";
 			}
 		}
 
@@ -629,7 +625,7 @@ class cbCalendar extends CRMEntity {
 			$return_value = array();
 		}
 		$return_value['CUSTOM_BUTTON'] = $button;
-		$log->debug("Exiting get_contacts method ...");
+		$log->debug('< get_contacts');
 		return $return_value;
 	}
 
@@ -1024,14 +1020,14 @@ class cbCalendar extends CRMEntity {
 	 */
 	public static function changeStatus($status, $activityid) {
 		global $log, $current_user;
-		$log->debug("Entering changeStatus($status, $activityid) method");
+		$log->debug("> changeStatus $status, $activityid");
 		include_once 'include/Webservices/Revise.php';
 		$element = array(
 			'id' => vtws_getEntityId('cbCalendar') . 'x' . $activityid,
 			'eventstatus' => $status
 		);
 		vtws_revise($element, $current_user);
-		$log->debug('Exiting changeStatus method');
+		$log->debug('< changeStatus');
 	}
 
 	/*

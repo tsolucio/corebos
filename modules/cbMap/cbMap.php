@@ -23,6 +23,8 @@ class cbMap extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = true;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'custom', 'containerClass' => 'slds-icon_container slds-icon-custom-custom108', 'class' => 'slds-icon', 'icon'=>'custom108');
+
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */

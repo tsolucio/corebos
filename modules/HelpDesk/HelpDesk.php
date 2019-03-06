@@ -22,6 +22,8 @@ class HelpDesk extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-sossession', 'class' => 'slds-icon', 'icon'=>'sossession');
+
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
@@ -155,7 +157,7 @@ class HelpDesk extends CRMEntity {
 	// Function to insert values in ticketcomments
 	public function insertIntoTicketCommentTable() {
 		global $log, $adb, $current_user;
-		$log->info('in insertIntoTicketCommentTable');
+		$log->debug('> insertIntoTicketCommentTable');
 
 		$current_time = $adb->formatDate(date('Y-m-d H:i:s'), true);
 		if ($this->column_fields['from_portal'] != 1) {
@@ -174,6 +176,7 @@ class HelpDesk extends CRMEntity {
 			$adb->pquery("update vtiger_troubletickets set commentadded='1' where ticketid=?", array($this->id));
 			$this->column_fields['commentadded'] = '1';
 		}
+		$log->debug('< insertIntoTicketCommentTable');
 	}
 
 	/** Function to get the Ticket History information as in array format
@@ -186,10 +189,9 @@ class HelpDesk extends CRMEntity {
 	 */
 	public function get_ticket_history($ticketid) {
 		global $log, $adb;
-		$log->debug("Entering into get_ticket_history($ticketid) method ...");
+		$log->debug('> get_ticket_history '.$ticketid);
 
-		$query="select title,update_log from vtiger_troubletickets where ticketid=?";
-		$result=$adb->pquery($query, array($ticketid));
+		$result=$adb->pquery('select title,update_log from vtiger_troubletickets where ticketid=?', array($ticketid));
 		$update_log = $adb->query_result($result, 0, "update_log");
 
 		$splitval = explode('--//--', trim($update_log, '--//--'));
@@ -198,7 +200,7 @@ class HelpDesk extends CRMEntity {
 
 		$return_value = array('header'=>$header,'entries'=>$splitval,'navigation'=>array('',''));
 
-		$log->debug("Exiting from get_ticket_history($ticketid) method ...");
+		$log->debug('< get_ticket_history');
 		return $return_value;
 	}
 
@@ -213,7 +215,7 @@ class HelpDesk extends CRMEntity {
 	**/
 	public function get_ticket_comments_list($ticketid) {
 		global $log;
-		$log->debug('Entering get_ticket_comments_list('.$ticketid.') method ...');
+		$log->debug('> get_ticket_comments_list '.$ticketid);
 		$result = $this->db->pquery('select * from vtiger_ticketcomments where ticketid=? order by createdtime DESC', array($ticketid));
 		$noofrows = $this->db->num_rows($result);
 		for ($i=0; $i<$noofrows; $i++) {
@@ -242,7 +244,7 @@ class HelpDesk extends CRMEntity {
 			$output[$i]['owner'] = $name;
 			$output[$i]['createdtime'] = $this->db->query_result($result, $i, 'createdtime');
 		}
-		$log->debug('Exiting get_ticket_comments_list method...');
+		$log->debug('< get_ticket_comments_list');
 		return $output;
 	}
 
@@ -251,7 +253,7 @@ class HelpDesk extends CRMEntity {
 	**/
 	public function getColumnNames_Hd() {
 		global $log,$current_user;
-		$log->debug('Entering getColumnNames_Hd() method ...');
+		$log->debug('> getColumnNames_Hd');
 		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
 			$sql1 = "select fieldlabel from vtiger_field where tabid=13 and block <> 30 and vtiger_field.uitype <> '61' and vtiger_field.presence in (0,2)";
@@ -279,7 +281,7 @@ class HelpDesk extends CRMEntity {
 			$custom_fields[$i] = strtoupper($custom_fields[$i]);
 		}
 		$mergeflds = $custom_fields;
-		$log->debug('Exiting getColumnNames_Hd method ...');
+		$log->debug('< getColumnNames_Hd');
 		return $mergeflds;
 	}
 
@@ -289,7 +291,7 @@ class HelpDesk extends CRMEntity {
 	**/
 	public function getCommentInformation($ticketid) {
 		global $log, $adb, $mod_strings, $default_charset;
-		$log->debug('Entering getCommentInformation('.$ticketid.') method ...');
+		$log->debug('> getCommentInformation '.$ticketid);
 		$sortby = GlobalVariable::getVariable('HelpDesk_Sort_Comments_ASC', 1, 'HelpDesk') ? 'ASC' : 'DESC';
 		$result = $adb->pquery('select * from vtiger_ticketcomments where ticketid=? order by createdtime '.$sortby, array($ticketid));
 		$noofrows = $adb->num_rows($result);
@@ -340,7 +342,7 @@ class HelpDesk extends CRMEntity {
 
 		$list .= $enddiv;
 
-		$log->debug('Exiting getCommentInformation method ...');
+		$log->debug('< getCommentInformation');
 		return $list;
 	}
 
@@ -350,14 +352,14 @@ class HelpDesk extends CRMEntity {
 	**/
 	public function getCustomerName($id) {
 		global $log, $adb;
-		$log->debug('Entering getCustomerName('.$id.') method ...');
+		$log->debug('> getCustomerName '.$id);
 		$sql = 'select user_name
 			from vtiger_portalinfo
 			inner join vtiger_troubletickets on vtiger_troubletickets.parent_id = vtiger_portalinfo.id
 			where vtiger_troubletickets.ticketid=?';
 		$result = $adb->pquery($sql, array($id));
 		$customername = $adb->query_result($result, 0, 'user_name');
-		$log->debug('Exiting getCustomerName method ...');
+		$log->debug('< getCustomerName');
 		return $customername;
 	}
 
@@ -367,7 +369,7 @@ class HelpDesk extends CRMEntity {
 	 */
 	public function create_export_query($where) {
 		global $log, $current_user;
-		$log->debug("Entering create_export_query(".$where.") method ...");
+		$log->debug('> create_export_query '.$where);
 
 		include 'include/utils/ExportUtils.php';
 
@@ -397,10 +399,10 @@ class HelpDesk extends CRMEntity {
 		if ($where != '') {
 			$query .= " WHERE ($where) AND ".$where_auto;
 		} else {
-			$query .= " WHERE ".$where_auto;
+			$query .= ' WHERE '.$where_auto;
 		}
 
-		$log->debug("Exiting create_export_query method ...");
+		$log->debug('< create_export_query');
 		return $query;
 	}
 
@@ -484,7 +486,7 @@ class HelpDesk extends CRMEntity {
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
-		$log->debug("Entering function transferRelatedRecords ($module, $transferEntityIds, $entityId)");
+		$log->debug("> transferRelatedRecords $module, $transferEntityIds, $entityId");
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$rel_table_arr = array('Attachments'=>'vtiger_seattachmentsrel');
 
@@ -514,7 +516,7 @@ class HelpDesk extends CRMEntity {
 				}
 			}
 		}
-		$log->debug('Exiting transferRelatedRecords...');
+		$log->debug('< transferRelatedRecords');
 	}
 
 	/*

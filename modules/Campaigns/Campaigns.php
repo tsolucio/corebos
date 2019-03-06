@@ -24,6 +24,8 @@ class Campaigns extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-campaign', 'class' => 'slds-icon', 'icon'=>'campaign');
+
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
@@ -99,7 +101,7 @@ class Campaigns extends CRMEntity {
 	 */
 	public function get_accounts($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view,$currentModule;
-		$log->debug("Entering get_accounts(".$id.") method ...");
+		$log->debug('> get_accounts '.$id);
 		$this_module = $currentModule;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
@@ -191,7 +193,7 @@ class Campaigns extends CRMEntity {
 
 		$return_value['CUSTOM_BUTTON'] = $button;
 
-		$log->debug("Exiting get_accounts method ...");
+		$log->debug('< get_accounts');
 		return $return_value;
 	}
 
@@ -202,7 +204,7 @@ class Campaigns extends CRMEntity {
 	 */
 	public function get_contacts($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view,$currentModule;
-		$log->debug("Entering get_contacts(".$id.") method ...");
+		$log->debug('> get_contacts '.$id);
 		$this_module = $currentModule;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
@@ -299,7 +301,7 @@ class Campaigns extends CRMEntity {
 
 		$return_value['CUSTOM_BUTTON'] = $button;
 
-		$log->debug("Exiting get_contacts method ...");
+		$log->debug('< get_contacts');
 		return $return_value;
 	}
 
@@ -310,7 +312,7 @@ class Campaigns extends CRMEntity {
 	 */
 	public function get_leads($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
-		$log->debug("Entering get_leads(".$id.") method ...");
+		$log->debug('> get_leads '.$id);
 		$this_module = $currentModule;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
@@ -404,7 +406,7 @@ class Campaigns extends CRMEntity {
 
 		$return_value['CUSTOM_BUTTON'] = $button;
 
-		$log->debug("Exiting get_leads method ...");
+		$log->debug('< get_leads');
 		return $return_value;
 	}
 
@@ -610,7 +612,7 @@ class Campaigns extends CRMEntity {
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
-		$log->debug("Entering function transferRelatedRecords ($module, $transferEntityIds, $entityId)");
+		$log->debug("> transferRelatedRecords $module, $transferEntityIds, $entityId");
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$rel_table_arr = array("Contacts"=>"vtiger_campaigncontrel","Potentials"=>"vtiger_potential",
 					"Leads"=>"vtiger_campaignleadrel",
@@ -650,7 +652,7 @@ class Campaigns extends CRMEntity {
 			}
 		}
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
-		$log->debug("Exiting transferRelatedRecords...");
+		$log->debug('< transferRelatedRecords');
 	}
 }
 ?>

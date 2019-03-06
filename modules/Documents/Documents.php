@@ -22,6 +22,7 @@ class Documents extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-document', 'class' => 'slds-icon', 'icon'=>'document');
 
 	public $customFieldTable = array('vtiger_notescf', 'notesid');
 
@@ -233,7 +234,7 @@ class Documents extends CRMEntity {
 	*/
 	public function insertIntoAttachment($id, $module, $direct_import = false) {
 		global $log;
-		$log->debug("Entering into insertIntoAttachment($id,$module) method.");
+		$log->debug('> insertIntoAttachment '.$id.','.$module);
 		$file_saved = false;
 		if (isset($_FILES)) {
 			foreach ($_FILES as $fileindex => $files) {
@@ -243,7 +244,7 @@ class Documents extends CRMEntity {
 				}
 			}
 		}
-		$log->debug("Exiting from insertIntoAttachment($id,$module) method.");
+		$log->debug('< insertIntoAttachment');
 	}
 
 	/**
@@ -277,13 +278,13 @@ class Documents extends CRMEntity {
 	*/
 	public function getSortOrder() {
 		global $log;
-		$log->debug('Entering getSortOrder() method ...');
+		$log->debug('> getSortOrder');
 		if (isset($_REQUEST['sorder'])) {
 			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
 		} else {
 			$sorder = (!empty($_SESSION['NOTES_SORT_ORDER']) ? $this->db->sql_escape_string($_SESSION['NOTES_SORT_ORDER']) : $this->default_sort_order);
 		}
-		$log->debug('Exiting getSortOrder() method ...');
+		$log->debug('< getSortOrder');
 		return $sorder;
 	}
 
@@ -293,7 +294,7 @@ class Documents extends CRMEntity {
 	*/
 	public function getOrderBy() {
 		global $currentModule,$log;
-		$log->debug('Entering getOrderBy() method ...');
+		$log->debug('> getOrderBy');
 		$use_default_order_by = '';
 		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $currentModule)) {
 			$use_default_order_by = $this->default_order_by;
@@ -305,7 +306,7 @@ class Documents extends CRMEntity {
 		} else {
 			$order_by = (!empty($_SESSION['NOTES_ORDER_BY']) ? $this->db->sql_escape_string($_SESSION['NOTES_ORDER_BY']) : $use_default_order_by);
 		}
-		$log->debug('Exiting getOrderBy method ...');
+		$log->debug('< getOrderBy');
 		return $order_by;
 	}
 
@@ -349,7 +350,7 @@ class Documents extends CRMEntity {
 	*/
 	public function create_export_query($where) {
 		global $log,$current_user;
-		$log->debug("Entering create_export_query(". $where.") method ...");
+		$log->debug('> create_export_query '. $where);
 
 		include "include/utils/ExportUtils.php";
 		//To get the Permitted fields query and the permitted fields list
@@ -371,13 +372,13 @@ class Documents extends CRMEntity {
 				LEFT JOIN vtiger_users as vtigerCreatedBy ON vtiger_crmentity.smcreatorid = vtigerCreatedBy.id and vtigerCreatedBy.status='Active'
 				LEFT JOIN vtiger_groups ON vtiger_crmentity.smownerid=vtiger_groups.groupid ";
 		$query .= getNonAdminAccessControlQuery('Documents', $current_user);
-		$where_auto=" vtiger_crmentity.deleted=0";
+		$where_auto=' vtiger_crmentity.deleted=0';
 		if ($where != "") {
 			$query .= " WHERE ($where) AND ".$where_auto;
 		} else {
 			$query .= " WHERE ".$where_auto;
 		}
-		$log->debug("Exiting create_export_query method ...");
+		$log->debug('< create_export_query');
 		return $query;
 	}
 
@@ -564,7 +565,7 @@ class Documents extends CRMEntity {
 
 	public function getEntities($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $adb, $app_strings;
-		$log->debug("Entering getEntities($id, $cur_tab_id, $rel_tab_id, $actions) method ...");
+		$log->debug("> getEntities $id, $cur_tab_id, $rel_tab_id, $actions");
 
 		//Form the header columns
 		$header[] = $app_strings['LBL_ENTITY_NAME'];
@@ -614,7 +615,7 @@ class Documents extends CRMEntity {
 			$entries_list[] = $entries;
 		}
 		$return_data = array('header'=>$header,'entries'=>$entries_list,'CUSTOM_BUTTON' => $button,'navigation'=>array('',''));
-		$log->debug("Exiting getEntities method ...");
+		$log->debug('< getEntities');
 		return $return_data;
 	}
 }

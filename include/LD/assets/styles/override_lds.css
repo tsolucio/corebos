@@ -317,6 +317,10 @@ td.small {
   text-align: center;
 }
 
+table {
+  border-collapse: initial;
+}
+
 /* Override general classes */
 .cblds-width_auto {
   width: auto !important;

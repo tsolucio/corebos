@@ -163,8 +163,6 @@ if (!empty($_REQUEST['return_id'])) {
 	$return_id = vtlib_purify($_REQUEST['return_id']);
 }
 
-$log->debug('Saved record with id of '.$return_id);
-
 // Check to see if the mode is User Creation and if yes, then sending the email notification to the User with Login details.
 $error_str = '';
 if (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'create') {

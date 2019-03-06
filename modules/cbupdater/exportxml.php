@@ -20,6 +20,16 @@
 include_once 'vtlib/Vtiger/Zip.php';
 
 global $adb;
+
+if (isOnDemandActive()) {
+	require_once 'Smarty_setup.php';
+	$smarty = new vtigerCRM_Smarty();
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('OPERATION_MESSAGE', getTranslatedString('LBL_PERMISSION'));
+	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
+	die();
+}
+
 $ids = vtlib_purify($_REQUEST['idstring']);
 
 if (!empty($ids)) {

@@ -21,6 +21,8 @@ class PriceBooks extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-pricebook', 'class' => 'slds-icon', 'icon'=>'pricebook');
+
 	public $tab_name = array('vtiger_crmentity','vtiger_pricebook','vtiger_pricebookcf');
 	public $tab_name_index = array('vtiger_crmentity'=>'crmid','vtiger_pricebook'=>'pricebookid','vtiger_pricebookcf'=>'pricebookid');
 	/**
@@ -83,7 +85,7 @@ class PriceBooks extends CRMEntity {
 	   with its Unit price, if the Currency for Price book has changed. */
 	private function updateListPrices() {
 		global $log, $adb;
-		$log->debug('Entering function updateListPrices...');
+		$log->debug('> function updateListPrices');
 		$pricebook_currency = $this->column_fields['currency_id'];
 		$prod_res = $adb->pquery('select * from vtiger_pricebookproductrel where pricebookid=? AND usedcurrency != ?', array($this->id, $pricebook_currency));
 		$numRows = $adb->num_rows($prod_res);
@@ -102,7 +104,7 @@ class PriceBooks extends CRMEntity {
 			$params = array($computed_list_price, $pricebook_currency, $this->id, $product_id);
 			$adb->pquery($query, $params);
 		}
-		$log->debug('Exiting function updateListPrices...');
+		$log->debug('< function updateListPrices');
 	}
 
 	/**	function used to get the products which are related to the pricebook
@@ -111,7 +113,7 @@ class PriceBooks extends CRMEntity {
 	 **/
 	public function get_pricebook_products($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view,$currentModule,$current_user;
-		$log->debug('Entering get_pricebook_products('.$id.') method ...');
+		$log->debug('> get_pricebook_products '.$id);
 		$this_module = $currentModule;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
@@ -155,7 +157,7 @@ class PriceBooks extends CRMEntity {
 		}
 		$return_value['CUSTOM_BUTTON'] = $button;
 
-		$log->debug('Exiting get_pricebook_products method ...');
+		$log->debug('< get_pricebook_products');
 		return $return_value;
 	}
 
@@ -165,7 +167,7 @@ class PriceBooks extends CRMEntity {
 	 **/
 	public function get_pricebook_services($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view,$currentModule,$current_user;
-		$log->debug('Entering get_pricebook_services('.$id.') method ...');
+		$log->debug('> get_pricebook_services '.$id);
 		$this_module = $currentModule;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
@@ -210,7 +212,7 @@ class PriceBooks extends CRMEntity {
 		}
 		$return_value['CUSTOM_BUTTON'] = $button;
 
-		$log->debug('Exiting get_pricebook_services method ...');
+		$log->debug('< get_pricebook_services');
 		return $return_value;
 	}
 
@@ -221,7 +223,7 @@ class PriceBooks extends CRMEntity {
 	 */
 	public function get_pricebook_noproduct($id) {
 		global $log;
-		$log->debug('Entering get_pricebook_noproduct('.$id.') method ...');
+		$log->debug('> get_pricebook_noproduct '.$id);
 
 		$query = 'select vtiger_crmentity.crmid, vtiger_pricebook.*
 			from vtiger_pricebook
@@ -237,17 +239,17 @@ class PriceBooks extends CRMEntity {
 				where vtiger_crmentity.deleted=0 and vtiger_pricebookproductrel.productid=?';
 			$result_pb = $this->db->pquery($pb_query, array($id));
 			if ($no_count == $this->db->num_rows($result_pb)) {
-				$log->debug('Exiting get_pricebook_noproduct method ...');
+				$log->debug('< get_pricebook_noproduct F');
 				return false;
 			} elseif ($this->db->num_rows($result_pb) == 0) {
-				$log->debug('Exiting get_pricebook_noproduct method ...');
+				$log->debug('< get_pricebook_noproduct T');
 				return true;
 			} elseif ($this->db->num_rows($result_pb) < $no_count) {
-				$log->debug('Exiting get_pricebook_noproduct method ...');
+				$log->debug('< get_pricebook_noproduct T');
 				return true;
 			}
 		} else {
-			$log->debug('Exiting get_pricebook_noproduct method ...');
+			$log->debug('< get_pricebook_noproduct F');
 			return false;
 		}
 	}

@@ -11,7 +11,7 @@
 /**	Function to get the list of tickets for the currently loggedin user */
 function getMyTickets($maxval, $calCnt) {
 	global $log, $current_user, $current_language, $adb;
-	$log->debug('Entering getMyTickets() method ...');
+	$log->debug('> getMyTickets');
 	$current_module_strings = return_module_language($current_language, 'HelpDesk');
 
 	$search_query = 'SELECT vtiger_troubletickets.*, vtiger_crmentity.*
@@ -87,11 +87,11 @@ function getMyTickets($maxval, $calCnt) {
 
 		$values=array('ModuleName'=>'HelpDesk','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
 		if (($noofrows == 0 ) || ($noofrows>0)) {
-			$log->debug("Exiting getMyTickets method ...");
+			$log->debug('< getMyTickets');
 			return $values;
 		}
 	}
-	$log->debug("Exiting getMyTickets method ...");
+	$log->debug('< getMyTickets');
 }
 
 /**	Function to get the parent (Account or Contact) link
@@ -100,7 +100,7 @@ function getMyTickets($maxval, $calCnt) {
 **/
 function getParentLink($parent_id) {
 	global $log, $adb;
-	$log->debug('Entering getParentLink('.$parent_id.') method ...');
+	$log->debug('> getParentLink '.$parent_id);
 
 	// Static caching
 	static $__cache_listtickets_parentlink = array();
@@ -125,7 +125,7 @@ function getParentLink($parent_id) {
 	// Add to cache
 	$__cache_listtickets_parentlink[$parent_id] = $parent_name;
 
-	$log->debug('Exiting getParentLink method ...');
+	$log->debug('< getParentLink');
 	return $parent_name;
 }
 ?>

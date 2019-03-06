@@ -17,7 +17,7 @@ require_once 'include/utils/utils.php';
  */
 function getCustomFieldTypeName($uitype) {
 	global $mod_strings, $log;
-	$log->debug('Entering getCustomFieldTypeName('.$uitype.') method ...');
+	$log->debug('> getCustomFieldTypeName '.$uitype);
 	$fldname = '';
 
 	/*
@@ -51,7 +51,7 @@ function getCustomFieldTypeName($uitype) {
 	} elseif ($uitype == 85) {
 		$fldname = $mod_strings['Skype'];
 	}
-	$log->debug('Exiting getCustomFieldTypeName method ...');
+	$log->debug('< getCustomFieldTypeName');
 	return $fldname;
 }
 
@@ -62,7 +62,7 @@ function getCustomFieldTypeName($uitype) {
  */
 function getCustomFieldArray($module) {
 	global $log, $adb;
-	$log->debug('Entering getCustomFieldArray('.$module.') method ...');
+	$log->debug('> getCustomFieldArray '.$module);
 	$custquery = 'select tablename,fieldname from vtiger_field where tablename=? and vtiger_field.presence in (0,2) order by tablename';
 	$mod = CRMEntity::getInstance($module);
 	$param = array($mod->customFieldTable[0]);
@@ -73,7 +73,7 @@ function getCustomFieldArray($module) {
 		$colName=$adb->query_result($custresult, $i, 'fieldname');
 		$custFldArray[$colName] = $i;
 	}
-	$log->debug('Exiting getCustomFieldArray method ...');
+	$log->debug('< getCustomFieldArray');
 	return $custFldArray;
 }
 
@@ -85,7 +85,7 @@ function getCustomFieldArray($module) {
  */
 function getCustomFieldTrans($module, $trans_array) {
 	global $log, $adb;
-	$log->debug('Entering getCustomFieldTrans('.$module.','. $trans_array.') method ...');
+	$log->debug('> getCustomFieldTrans '.$module.','. $trans_array);
 	$tab_id = getTabid($module);
 	$custquery = 'select columnname,fieldlabel from vtiger_field where generatedtype=2 and vtiger_field.presence in (0,2) and tabid=?';
 	$custresult = $adb->pquery($custquery, array($tab_id));
@@ -95,7 +95,7 @@ function getCustomFieldTrans($module, $trans_array) {
 		$fldLbl = $adb->query_result($custresult, $i, 'fieldlabel');
 		$trans_array[$colName] = $fldLbl;
 	}
-	$log->debug('Exiting getCustomFieldTrans method ...');
+	$log->debug('< getCustomFieldTrans');
 }
 
 /**
@@ -107,11 +107,11 @@ function getCustomFieldTrans($module, $trans_array) {
  */
 function getCustomFieldData($tab, $id, $datatype) {
 	global $log, $adb;
-	$log->debug('Entering getCustomFieldData('.$tab.','.$id.','.$datatype.') method ...');
+	$log->debug('> getCustomFieldData '.$tab.','.$id.','.$datatype);
 	$query = 'select * from vtiger_field where tabid=? and fieldid=? and vtiger_field.presence in (0,2)';
 	$result = $adb->pquery($query, array($tab, $id));
 	$return_data=$adb->fetch_array($result);
-	$log->debug('Exiting getCustomFieldData method ...');
+	$log->debug('< getCustomFieldData');
 	return $return_data[$datatype];
 }
 
@@ -122,14 +122,14 @@ function getCustomFieldData($tab, $id, $datatype) {
  */
 function getCustomFieldTableInfo($module) {
 	global $log;
-	$log->debug("Entering getCustomFieldTableInfo($module) method ...");
+	$log->debug('> getCustomFieldTableInfo '.$module);
 	$primary = CRMEntity::getInstance($module);
 	if (isset($primary->customFieldTable)) {
 		$cfinfo = $primary->customFieldTable;
 	} else {
 		$cfinfo = '';
 	}
-	$log->debug('Exiting getCustomFieldTableInfo method ...');
+	$log->debug('< getCustomFieldTableInfo');
 	return $cfinfo;
 }
 
@@ -142,7 +142,7 @@ function getCustomFieldTableInfo($module) {
  */
 function getFldTypeandLengthValue($label, $typeofdata) {
 	global $log, $mod_strings;
-	$log->debug('Entering getFldTypeandLengthValue('.$label.','.$typeofdata.') method ...');
+	$log->debug('> getFldTypeandLengthValue '.$label.','.$typeofdata);
 	if ($label == $mod_strings['Text']) {
 		$types = explode('~', $typeofdata);
 		$data_array=array('0',$types[3]);
@@ -180,13 +180,13 @@ function getFldTypeandLengthValue($label, $typeofdata) {
 	} elseif ($label == $mod_strings['Skype']) {
 		$fieldtype = '12';
 	}
-	$log->debug('Exiting getFldTypeandLengthValue method ...');
+	$log->debug('< getFldTypeandLengthValue');
 	return $fieldtype;
 }
 
 function getCalendarCustomFields($tabid, $mode = 'edit', $col_fields = '') {
 	global $adb, $log, $current_user;
-	$log->debug("Entering getCalendarCustomFields($tabid, $mode, " . print_r($col_fields, true) . ')');
+	$log->debug("> getCalendarCustomFields $tabid, $mode, " . print_r($col_fields, true));
 
 	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 	$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : null;
@@ -233,7 +233,7 @@ function getCalendarCustomFields($tabid, $mode = 'edit', $col_fields = '') {
 		}
 		$custFldArray[] = $custfld;
 	}
-	$log->debug('Exiting getCalendarCustomFields()');
+	$log->debug('< getCalendarCustomFields()');
 	return $custFldArray;
 }
 ?>

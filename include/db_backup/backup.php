@@ -16,11 +16,11 @@ define('DBNAME', $dbconfig['db_name']);
 
 function save_structure($filename, $root_directory) {
 	global $log;
-	$log->debug("Entering save_structure(".$filename.",".$root_directory.") method ...");
+	$log->debug('> save_structure '.$filename.','.$root_directory);
 	$dbdump = new DatabaseDump(DBSERVER, DBUSER, DBPASS);
 	$dumpfile = $root_directory.'/'.$filename;
 	$dbdump->save(DBNAME, $dumpfile) ;
-	$log->debug('Exiting save_structure method ...');
+	$log->debug('< save_structure');
 }
 
 /**

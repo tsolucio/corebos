@@ -28,6 +28,8 @@ class Potentials extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-opportunity', 'class' => 'slds-icon', 'icon'=>'opportunity');
+
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
@@ -171,7 +173,7 @@ class Potentials extends CRMEntity {
 	/** Returns a list of the associated contacts */
 	public function get_contacts($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $adb,$log, $singlepane_view,$currentModule;
-		$log->debug("Entering get_contacts(".$id.") method ...");
+		$log->debug('> get_contacts '.$id);
 		$this_module = $currentModule;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
@@ -249,7 +251,7 @@ class Potentials extends CRMEntity {
 		}
 		$return_value['CUSTOM_BUTTON'] = $button;
 
-		$log->debug("Exiting get_contacts method ...");
+		$log->debug('< get_contacts');
 		return $return_value;
 	}
 
@@ -260,7 +262,7 @@ class Potentials extends CRMEntity {
 	 */
 	public function get_products($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
-		$log->debug("Entering get_products(".$id.") method ...");
+		$log->debug('> get_products '.$id);
 		$this_module = $currentModule;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
@@ -314,7 +316,7 @@ class Potentials extends CRMEntity {
 		}
 		$return_value['CUSTOM_BUTTON'] = $button;
 
-		$log->debug('Exiting get_products method ...');
+		$log->debug('< get_products');
 		return $return_value;
 	}
 
@@ -325,7 +327,7 @@ class Potentials extends CRMEntity {
 	 */
 	public function get_stage_history($id) {
 		global $log, $adb, $app_strings, $current_user;
-		$log->debug("Entering get_stage_history(".$id.") method ...");
+		$log->debug('> get_stage_history '.$id);
 
 		$query = 'select vtiger_potstagehistory.*, vtiger_potential.potentialname
 			from vtiger_potstagehistory
@@ -362,7 +364,7 @@ class Potentials extends CRMEntity {
 		}
 
 		$return_data = array('header'=>$header, 'entries'=>$entries_list, 'navigation'=>array('',''));
-		$log->debug('Exiting get_stage_history method ...');
+		$log->debug('< get_stage_history');
 		return $return_data;
 	}
 
@@ -373,7 +375,7 @@ class Potentials extends CRMEntity {
 	 */
 	public function get_quotes($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view,$currentModule,$current_user;
-		$log->debug("Entering get_quotes(".$id.") method ...");
+		$log->debug('> get_quotes '.$id);
 		$this_module = $currentModule;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
@@ -425,7 +427,7 @@ class Potentials extends CRMEntity {
 		}
 		$return_value['CUSTOM_BUTTON'] = $button;
 
-		$log->debug("Exiting get_quotes method ...");
+		$log->debug('< get_quotes');
 		return $return_value;
 	}
 
@@ -436,7 +438,7 @@ class Potentials extends CRMEntity {
 	 */
 	public function get_salesorder($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view,$currentModule,$current_user;
-		$log->debug("Entering get_salesorder(".$id.") method ...");
+		$log->debug('> get_salesorder '.$id);
 		$this_module = $currentModule;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
@@ -491,7 +493,7 @@ class Potentials extends CRMEntity {
 		}
 		$return_value['CUSTOM_BUTTON'] = $button;
 
-		$log->debug("Exiting get_salesorder method ...");
+		$log->debug('< get_salesorder');
 		return $return_value;
 	}
 
@@ -503,7 +505,7 @@ class Potentials extends CRMEntity {
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
-		$log->debug("Entering function transferRelatedRecords ($module, $transferEntityIds, $entityId)");
+		$log->debug("> transferRelatedRecords $module, $transferEntityIds, $entityId");
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$rel_table_arr = array("Contacts"=>"vtiger_contpotentialrel","Products"=>"vtiger_seproductsrel",
 						"Attachments"=>"vtiger_seattachmentsrel","Quotes"=>"vtiger_quotes","SalesOrder"=>"vtiger_salesorder");
@@ -532,7 +534,7 @@ class Potentials extends CRMEntity {
 				}
 			}
 		}
-		$log->debug("Exiting transferRelatedRecords...");
+		$log->debug('< transferRelatedRecords');
 	}
 
 	/*

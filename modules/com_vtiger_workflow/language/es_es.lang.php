@@ -110,6 +110,9 @@ $mod_strings = array(
 'CBSendMMMSGTask' => 'Enviar Mensaje a Mattermost',
 'Send Message To MM' => 'Enviar Mensaje a Mattermost',
 'VTSendMessage2MMTask' => 'Enviar Mensaje a Mattermost',
+'whatsappworkflowtask' => 'Enviar Mensaje WhatsApp',
+'Whatsapp Workflow Task' => 'Enviar Mensaje WhatsApp',
+'WhatsappWorkflowTask' => 'Enviar Mensaje WhatsApp',
 
 'LBL_EVENTNAME' => 'Nombre de Evento',
 'LBL_DESCRIPTION' => 'Descripción',
@@ -159,5 +162,6 @@ $mod_strings = array(
 'NO_METHOD_AVAILABLE' => 'No hay ningún método disponible para este Módulo.',
 'launchrelwf' => 'Ejecutar flujos en actualizaciones de módulos relacionados',
 'LBL_WFPURPOSE' => 'Propósito',
+'whatsappworkflowtask' => 'Send Whatsapp Message',
 );
 ?>

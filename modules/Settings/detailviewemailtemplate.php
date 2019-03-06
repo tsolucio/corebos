@@ -15,8 +15,6 @@ global $adb, $log, $mod_strings, $app_strings, $current_language, $theme;
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
 
-$log->info('Inside Email Template Detail View');
-
 $smarty = new vtigerCRM_smarty;
 
 $smarty->assign('APP', $app_strings);
@@ -28,7 +26,6 @@ $smarty->assign('MODULE', 'Settings');
 $smarty->assign('IMAGE_PATH', $image_path);
 
 if (isset($_REQUEST['templateid']) && $_REQUEST['templateid']!='') {
-	$log->info('The templateid is set');
 	$tempid = vtlib_purify($_REQUEST['templateid']);
 	$result = $adb->pquery('select * from vtiger_emailtemplates where templateid=?', array($tempid));
 	$emailtemplateResult = $adb->fetch_array($result);

@@ -35,15 +35,9 @@ $datax = array();
 //get list of sales stage keys to display
 if (isset($_SESSION['lsbo_lead_sources']) && count($_SESSION['lsbo_lead_sources']) > 0 && !isset($_REQUEST['lsbo_lead_sources'])) {
 	$tempx = $_SESSION['lsbo_lead_sources'];
-	$log->debug("_SESSION['lsbo_lead_sources'] is:");
-	$log->debug($_SESSION['lsbo_lead_sources']);
 } elseif (isset($_REQUEST['lsbo_lead_sources']) && count($_REQUEST['lsbo_lead_sources']) > 0) {
 	$tempx = $_REQUEST['lsbo_lead_sources'];
 	$current_user->setPreference('lsbo_lead_sources', $_REQUEST['lsbo_lead_sources']);
-	$log->debug("_REQUEST['lsbo_lead_sources'] is:");
-	$log->debug($_REQUEST['lsbo_lead_sources']);
-	$log->debug("_SESSION['lsbo_lead_sources'] is:");
-	$log->debug($_SESSION['lsbo_lead_sources']);
 }
 
 //set $datax using selected sales stage keys
@@ -63,15 +57,9 @@ if (isset($_REQUEST['showmypipeline'])) {
 	$ids = array($_REQUEST['showpipelineof']);
 } elseif (isset($_SESSION['lsbo_ids']) && count($_SESSION['lsbo_ids']) != 0 && !isset($_REQUEST['lsbo_ids'])) {
 	$ids = $_SESSION['lsbo_ids'];
-	$log->debug("_SESSION['lsbo_ids'] is:");
-	$log->debug($_SESSION['lsbo_ids']);
 } elseif (isset($_REQUEST['lsbo_ids']) && count($_REQUEST['lsbo_ids']) > 0) {
 	$ids = $_REQUEST['lsbo_ids'];
 	$current_user->setPreference('lsbo_ids', $_REQUEST['lsbo_ids']);
-	$log->debug("_REQUEST['lsbo_ids'] is:");
-	$log->debug($_REQUEST['lsbo_ids']);
-	$log->debug("_SESSION['lsbo_ids'] is:");
-	$log->debug($_SESSION['lsbo_ids']);
 } else {
 	$ids = get_user_array(false);
 	$ids = array_keys($ids);

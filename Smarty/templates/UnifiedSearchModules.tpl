@@ -9,39 +9,23 @@
  ********************************************************************************/
 -->*}
 
-<form id="UnifiedSearch_moduleform" name="UnifiedSearch_moduleform" method="post">
-	<table width="90%" cellspacing="0" cellpadding="0" border="0" align="center" class="mailClient mailClientBg">
-	<tr>
-		<td>
-			<table width="100%" cellspacing="0" cellpadding="0" border="0" class="small">
-			<tr>
-				<td height="30px" background="{'qcBg.gif'|@vtiger_imageurl:$THEME}" class="mailSubHeader"><b>{$APP.LBL_SELECT_MODULES_FOR_SEARCH}</b></td>
-				<td align=right background="{'qcBg.gif'|@vtiger_imageurl:$THEME}" class="mailSubHeader">
-					<a href='javascript:void(0);' onclick="UnifiedSearch_SelectModuleToggle(true);">{$APP.LBL_SELECT_ALL}</a> |
-					<a href='javascript:void(0);' onclick="UnifiedSearch_SelectModuleToggle(false);">{$APP.LBL_UNSELECT_ALL}</a>
-					<a href='javascript:void(0)' onclick="UnifiedSearch_SelectModuleCancel();"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border=0></a>
-				</td>
-			</tr>
-			</table>
-			<table width="100%" cellspacing="0" cellpadding="5" border="0" class="small">
-				{foreach item=SEARCH_MODULEINFO key=SEARCH_MODULENAME from=$ALLOWED_MODULES name=allowed_modulesloop}
-				{if $smarty.foreach.allowed_modulesloop.index % 3 == 0}
-				<tr valign=top>
-				{/if}
-					<td class="dvtCellLabel"><input type='checkbox' name='search_onlyin' class='small' value='{$SEARCH_MODULENAME}'
-					{if $SEARCH_MODULEINFO.selected}checked=true{/if}>{$SEARCH_MODULEINFO.label}</td>
-				{if $smarty.foreach.allowed_modulesloop.index % 3 == 2}
-				</tr>
-				{/if}
-				{/foreach}
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td align="right" height="30px" class="mailSubHeader">
-			<input type='button' class='crmbutton small cancel' value='{$APP.LBL_CANCEL_BUTTON_LABEL}' onclick='UnifiedSearch_SelectModuleCancel();'>
-			<input type='button' class='crmbutton small create' value='{$APP.LBL_APPLY_BUTTON_LABEL}' onclick='UnifiedSearch_SelectModuleSave();'>
-		</td>
-	</tr>
-	</table>
-</form>
+<ul class="slds-listbox slds-listbox_vertical" role="group" aria-label="">
+	{foreach item=SEARCH_MODULEINFO key=SEARCH_MODULENAME from=$ALLOWED_MODULES name=allowed_modulesloop}
+		<li role="presentation" class="slds-listbox__item" data-value="{$SEARCH_MODULENAME}" data-selected="{if $SEARCH_MODULEINFO.selected}true{else}false{/if}">
+			<div id="globalsearch-option{$smarty.foreach.allowed_modulesloop.iteration}" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small{if $SEARCH_MODULEINFO.selected} slds-is-selected{/if}" role="option">
+				<span class="slds-media__figure slds-listbox__option-icon">
+					<span class="slds-icon_container slds-icon-utility-check slds-current-color{if !$SEARCH_MODULEINFO.selected} slds-hide{/if}">
+						<svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
+						</svg>
+					</span>
+				</span>
+				<span class="slds-media__body">
+					<span class="slds-truncate" title="{$SEARCH_MODULEINFO.label}">
+						{$SEARCH_MODULEINFO.label}
+					</span>
+				</span>
+			</div>
+		</li>
+	{/foreach}
+</ul>

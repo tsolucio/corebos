@@ -69,6 +69,26 @@
 	<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$elements.value}</td>
 	</tr>
 	<tr>
+	<td colspan=3><table width="100%" border=0>
+	<tr>
+	<td class="lvtCol" style="padding: 5px;" align="right"><b>{'Delivered'|@getTranslatedString:'Messages'}</b></td>
+	<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$EMDelivered}</td>
+	<td class="lvtCol" style="padding: 5px;" align="right"><b>{'Dropped'|@getTranslatedString:'Messages'}</b></td>
+	<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$EMDropped}</td>
+	<td class="lvtCol" style="padding: 5px;" align="right"><b>{'Bounce'|@getTranslatedString:'Messages'}</b></td>
+	<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$EMBounce}</td>
+	</tr>
+	<tr>
+	<td class="lvtCol" style="padding: 5px;" align="right"><b>{'Open'|@getTranslatedString:'Messages'}</b></td>
+	<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$EMOpen}</td>
+	<td class="lvtCol" style="padding: 5px;" align="right"><b>{'Clicked'|@getTranslatedString:'Messages'}</b></td>
+	<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$EMClicked}</td>
+	<td class="lvtCol" style="padding: 5px;" align="right"><b>{'Unsubscribe'|@getTranslatedString:'Messages'}</b></td>
+	<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$EMUnsubscribe}</td>
+	</tr>
+	</table>
+	</tr>
+	<tr>
 	<td colspan="3" class="dvtCellLabel" style="padding: 10px;" align="center">
 	<input type="button" name="Send" value=" {$MOD.LBL_REPLY_BUTTON} " class="crmbutton small edit" onClick="OpenCompose('{$ID}','reply')">&nbsp;
 	<input type="button" name="forward" value=" {$MOD.LBL_FORWARD_BUTTON} " alt="{$MOD.LBL_FORWARD_BUTTON}" title="{$MOD.LBL_FORWARD_BUTTON}" class="crmbutton small edit" onClick="OpenCompose('{$ID}','forward')">&nbsp;

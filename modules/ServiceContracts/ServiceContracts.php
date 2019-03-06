@@ -21,6 +21,8 @@ class ServiceContracts extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = true;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-service-contract', 'class' => 'slds-icon', 'icon'=>'service_contract');
+
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
@@ -190,7 +192,7 @@ class ServiceContracts extends CRMEntity {
 	// Function to Update the parent_id of HelpDesk with sc_related_to of ServiceContracts if the parent_id is not set.
 	public function updateHelpDeskRelatedTo($focusId, $entityIds) {
 		global $log;
-		$log->debug('Entering into function updateHelpDeskRelatedTo');
+		$log->debug('> updateHelpDeskRelatedTo');
 
 		$entityIds = (array)$entityIds;
 		$selectTicketsQuery="SELECT ticketid FROM vtiger_troubletickets WHERE (parent_id IS NULL OR parent_id=0) AND ticketid IN (".generateQuestionMarks($entityIds).')';
@@ -203,7 +205,7 @@ class ServiceContracts extends CRMEntity {
 				" AND vtiger_servicecontracts.servicecontractsid = ? AND vtiger_troubletickets.ticketid = ?";
 			$this->db->pquery($updateQuery, array($focusId, $ticketId));
 		}
-		$log->debug('Exit from function updateHelpDeskRelatedTo');
+		$log->debug('< updateHelpDeskRelatedTo');
 	}
 
 	// Function to Compute and Update the Used Units and Progress of the Service Contract based on all the related Trouble tickets.

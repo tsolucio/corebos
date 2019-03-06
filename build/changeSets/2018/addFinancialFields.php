@@ -173,6 +173,9 @@ class addFinancialFields extends cbupdaterWorker {
 			$util = new VTWorkflowUtils();
 			$adminUser = $util->adminUser();
 			foreach ($modules as $mod) {
+				if (!vtlib_isModuleActive($mod['name'])) {
+					continue;
+				}
 				$rs = $adb->pquery(
 					"select 1 from com_vtiger_workflows
 					where (summary='Update Tax fields on every save' or summary='Update Financial fields on every save') and module_name=?",
@@ -250,6 +253,9 @@ class addFinancialFields extends cbupdaterWorker {
 			$ffmodsdone = coreBOS_Settings::getSetting('addFFModsDone', '');
 			$ffcrmiddone = coreBOS_Settings::getSetting('addFFcrmidDone', 0);
 			foreach ($modules as $mod) {
+				if (!vtlib_isModuleActive($mod['name'])) {
+					continue;
+				}
 				if (strpos($ffmodsdone, $mod['name'])>0) {
 					continue;
 				}

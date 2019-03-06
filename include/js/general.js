@@ -1174,6 +1174,23 @@ function run_massedit() {
 		worker.addEventListener('message', function (e) {
 			var message = e.data;
 			if (e.data == 'CLOSE') {
+				var srch = document.basicSearch.searchtype.searchlaunched;
+				if (srch=='basic') {
+					callSearch('Basic');
+				} else if (srch=='advance') {
+					callSearch('Advanced');
+				} else {
+					jQuery.ajax({
+						method: 'POST',
+						url: 'index.php?module='+gVTModule+'&action='+gVTModule+'Ajax&file=ListView&ajax=meditupdate'
+					}).done(function (response) {
+						var result = response.split('&#&#&#');
+						document.getElementById('ListViewContents').innerHTML= result[2];
+						if (result[1] != '') {
+							alert(result[1]);
+						}
+					});
+				}
 				__addLog('<br><b>' + alert_arr.ProcessFINISHED + '!</b>');
 				var pBar = document.getElementById('progressor');
 				pBar.value = pBar.max; //max out the progress bar
@@ -4813,47 +4830,34 @@ function fetch_calc() {
 	});
 }
 
-function UnifiedSearch_SelectModuleForm(obj) {
-	if (jQuery('#UnifiedSearch_moduleform').length) {
-		// If we have loaded the form already.
-		UnifiedSearch_SelectModuleFormCallback(obj);
-	} else {
+function UnifiedSearch_GetModules() {
+	if (document.getElementById("UnifiedSearch_modulelistwrapper").children.length === 0) {
 		jQuery('#status').show();
 		jQuery.ajax({
 			method:'POST',
 			url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModules&ajax=true'
 		}).done(function (response) {
 			jQuery('#status').hide();
-			jQuery('#UnifiedSearch_moduleformwrapper').html(response);
-			UnifiedSearch_SelectModuleFormCallback(obj);
+			jQuery('#UnifiedSearch_modulelistwrapper').html(response);
+			UnifiedSearch_StartCombo();
 		});
 	}
 }
 
-function UnifiedSearch_SelectModuleFormCallback(obj) {
-	fnvshobjsearch(obj, 'UnifiedSearch_moduleformwrapper');
+function UnifiedSearch_StartCombo() {
+	var params = {"isMulti" : true, "onSelect" : UnifiedSearch_OnComboSelect};
+	window.ldsComboBoxes.push(new ldsCombobox(document.getElementById("globalsearch-moduleselect"), params));
 }
 
-function UnifiedSearch_SelectModuleToggle(flag) {
-	jQuery('#UnifiedSearch_moduleform input[type=checkbox]').each(function () {
-		this.checked = flag;
-	});
-}
-
-function UnifiedSearch_SelectModuleCancel() {
-	jQuery('#UnifiedSearch_moduleformwrapper').hide();
-}
-
-function UnifiedSearch_SelectModuleSave() {
-	var UnifiedSearch_form = document.forms.UnifiedSearch;
-	UnifiedSearch_form.search_onlyin.value = jQuery('#UnifiedSearch_moduleform').serialize().replace(/search_onlyin=/g, '').replace(/&/g, ',');
+function UnifiedSearch_OnComboSelect(value) {
+	var prepVal = value.join(",").replace(/ /g, "");
+	document.forms.UnifiedSearch.search_onlyin.value = prepVal;
 	jQuery.ajax({
 		method:'POST',
-		url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(UnifiedSearch_form.search_onlyin.value)
+		url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(prepVal)
 	}).done(function (response) {
 		// continue
-	});
-	UnifiedSearch_SelectModuleCancel();
+	});	
 }
 
 /**
@@ -4940,7 +4944,7 @@ var throttle = function (func, limit) {
 
 document.addEventListener('DOMContentLoaded', function (event) {
 	/* ======= Auto complete part relations ====== */
-	var acInputs = document.querySelectorAll('.autocomplete-input,.searchBox');
+	var acInputs = document.querySelectorAll('.autocomplete-input');
 	for (var i = 0; i < acInputs.length; i++) {
 		(function (_i) {
 			var ac = new AutocompleteRelation(acInputs[_i], _i);
@@ -5352,6 +5356,12 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 	 * @param {element}: Typically a wrapping element of an LDS combobox, like 'slds-combobox-picklist'
 	 */
 	function ldsCombobox(el, params) {
+		/* Set some default values */
+		var params = params || {},
+		    me = this;
+		params.onSelect = params.onSelect || false,
+		params.isMulti = params.isMulti || false;
+
 		/* Public attributes */
 		this.el 	= el,
 		this.input 	= el.getElementsByClassName("slds-combobox__input")[0],
@@ -5363,9 +5373,11 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		this.curSelIndex = this.getCurSelIndex(),
 		this.fallBackIndex = this.getCurSelIndex(),
 		this.onSelect = typeof params.onSelect == "function" ? params.onSelect : false,
-		this._val = this.optionNodes[this.curSelIndex].getAttribute("data-value"),
-		this.parentForm = _findUp(this.input, "$FORM");
-		this.valueHolder = this.getValueHolder();
+		this._val = params.isMulti ? this.getSelNodesArray() : this.optionNodes[this.curSelIndex].getAttribute("data-value"),
+		this.parentForm = _findUp(this.input, "$FORM"),
+		this.valueHolder = this.getValueHolder(),
+		this.isMulti = params.isMulti,
+		this.labels = {};
 
 		/* Instance listeners */
 		_on(el, "mousedown", this.handleClick, this);
@@ -5377,6 +5389,13 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		if (this.parentForm !== undefined) {
 			_on(this.parentForm, "keydown", this.preventFormSubmit, this);
 		}
+
+		ExecuteFunctions("getTranslatedStrings", "i18nmodule=Utilities&tkeys=LBL_MULTIPLE;LBL_NONE").then(function (data) {
+				me.labels = JSON.parse(data);
+		});
+
+		// TO-DO: Error throwing. We need to check the markup for all the neccesary markup and data attributes
+		// and throw sensible errors otherwise
 	}
 
 	ldsCombobox.prototype = {
@@ -5429,13 +5448,25 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		/*
 		 * Method: 'getValueHolder'
 		 * Retrieves the hidden input that holds the actual value for the dropdown
+		 * from the 'data-valueholder' attribute of the main combo input
+		 * 
+		 * Options:
+		 * - "nextsibling":      The node immediately following the main input element
+		 * - "id---SOMEID":      Provide the prefix 'id---' followed by the ID of the node
 		 *
 		 */
 		getValueHolder: function() {
-			var valueHolderLoc = this.input.getAttribute("data-valueholder");
-			switch (valueHolderLoc) {
+			var valueHolderLoc = this.input.getAttribute("data-valueholder"),
+			    vhLocArray = valueHolderLoc != null ? valueHolderLoc.split("---") : [];
+
+			switch (vhLocArray[0]) {
 				case "nextsibling":
 					return this.input.nextElementSibling
+					break;
+				case "id":
+					var vh = document.getElementById(vhLocArray[1]);
+					if (!vh) {throw("ldsComboBox.getValueHolder: No node with id " + vhLocArray[1] + " found");}
+					return vh;
 					break;
 				default:
 					return false;
@@ -5476,14 +5507,14 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 			this.fallBackSel = this.curSel;
 
 			this.getOpener().classList.add("slds-is-open");
-			// Set first oprtion active on open? Need to update hidden val as well then
+			// Set first option active on open? Need to update hidden val as well then
 			// this.setOptionState(this.curSelIndex, "selected");
 			this.active = true;
 		},
 
 		/*
 		 * Method: 'close'
-		 * Closes the dropdown. 
+		 * Closes the dropdown
 		 *
 		 */
 		close: function(e) {
@@ -5501,6 +5532,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		handleClick: function(e) {
 			var isOption = _findUp(e.target, ".slds-listbox__item");
 			if (isOption != undefined) {
+				e.preventDefault(); // Stop bubbling up
 				var index = this.getIndexByNode(isOption);
 				this.unselectAll();
 				this.setOptionState(index, "selected");
@@ -5639,24 +5671,49 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 *
 		 */
 		select: function() {
-			var val = this.optionNodes[this.curSelIndex].getAttribute("data-value");
+			var val = this.getCurSelIndexVal();
 			this._val = val;
 			this.updateValueHolder(val);
-			this.input.value = this.curSel;
-			this.close();
+
+			if (!this.isMulti) {
+				this.input.value = this.curSel;
+				this.close();
+			} else {
+				this.toggleSelected(this.curSelIndex);
+				if (this._val.length == 1)
+					this.input.value = this.curSel;
+				else if (this._val.length > 1)
+					this.input.value = this.labels["LBL_MULTIPLE"];
+				else if (this._val.length == 0)
+					this.input.value = this.labels["LBL_NONE"];
+			}
 
 			if (this.onSelect)
 				this.onSelect(this._val);
 		},
 
 		/*
-		 * Method: 'getVal'
-		 * Returns the 'hidden' currently selected value, similar to
-		 * the 'value' property of a normal <option> element
+		 * Method: 'getCurSelIndexVal'
+		 * Gets the new value, based on the currently selected option node.
+		 * Respects the 'isMulti' flag in that it will update the comma separated
+		 * list in the '_val' property according to the option selected and its
+		 * previous state. In non-multi mode it will just return the new 'val'
 		 *
+		 * @return: string
 		 */
-		getVal: function() {
-			return this._val;
+		getCurSelIndexVal: function() {
+			if (this.isMulti) {
+				var val  = this.optionNodes[this.curSelIndex].getAttribute("data-value");
+				if (this.isOptionSelected(this.curSelIndex)) {
+					var ci = this._val.indexOf(val);
+					if (ci > -1) this._val.splice(ci,1);
+				} else {
+					if (this._val.indexOf(val) === -1) this._val.push(val);
+				}
+				return this._val;
+			} else {
+				return this.optionNodes[this.curSelIndex].getAttribute("data-value");
+			}
 		},
 
 		/*
@@ -5683,7 +5740,66 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 				if (this.optionNodes[i].getElementsByClassName("slds-truncate")[0].innerHTML == this.input.value) curSelIndex = i;
 			}
 			return curSelIndex;
+		},
+		/*
+		 * Method: 'getSelNodesArray'
+		 * Only applicable when this combobox allows selection of multiple
+		 * values. Gets an array of the currently selected values based on
+		 * the DOM options. Typically only used when initializing the 
+		 * Combobox instance
+		 *
+		 */
+		getSelNodesArray: function(index) {
+			var opts = [];
+			for (var i = 0; i < this.optionNodes.length; i++) {
+				if (this.isOptionSelected(i)) {
+					opts.push(this.optionNodes[i].getAttribute("data-value"));
+				}
+			}
+			return opts;
+		},
+		/*
+		 * Method: 'toggleSelected'
+		 * Only applicable when this combobox allows selection of multiple
+		 * values. This looks at the selected value and toggles the selection
+		 * state
+		 *
+		 * @param: index of the selected option
+		 */
+		toggleSelected: function(index) {
+			this.setOptionSelState(index,!this.isOptionSelected(index));
+		},
+		/*
+		 * Method: 'isOptionSelected'
+		 * Only applicable when this combobox allows selection of multiple
+		 * values.
+		 *
+		 * @param: index of the selected option
+		 * @return: bool
+		 */
+		isOptionSelected: function(index) {
+			return (this.optionNodes[index].getAttribute("data-selected") === "true");
+		},
+		/*
+		 * Method: 'setOptionSelState'
+		 * Only applicable when this combobox allows selection of multiple
+		 * values. Sets the state of the option
+		 *
+		 * @param: index of the selected option
+		 * @param: bool (true: option selected, false: option not selected)
+		 */
+		setOptionSelState: function(index, state) {
+			var n = this.optionNodes[index];
+			n.setAttribute("data-selected", state.toString());
+			if (state) {
+				n.getElementsByClassName("slds-listbox__option")[0].classList.add("slds-is-selected");
+				n.getElementsByClassName("slds-icon_container")[0].classList.remove("slds-hide");
+			} else {
+				n.getElementsByClassName("slds-listbox__option")[0].classList.remove("slds-is-selected");
+				n.getElementsByClassName("slds-icon_container")[0].classList.add("slds-hide");
+			}
 		}
+
 	}
 
 	/**
@@ -5727,6 +5843,67 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		}
 	}
 
+	window.ldsComboBoxes = [];
 	return ldsCombobox;
 
 });
+
+/*
+ * General scroll handler
+ * 
+ * @var sy    : window.scrollY alias
+ * @var di    : direction, are we going up or down?
+ * @var psy   : window.scrollY - 1
+ */
+(function cbOnScrollHandler(e) {
+	var di = null,
+	    sy = window.scrollY,
+	    psy = window.scrollY - 1;
+
+	window.cbOnDownScrollers = [];
+	window.cbOnUpScrollers = [];
+
+	window.addEventListener("scroll", cbOnScroll);
+
+	function cbOnScroll(e) {
+		window.requestAnimationFrame(function(){
+			sy = window.scrollY,
+			di = sy > psy ? "down" : "up",
+			psy = sy - 1;
+
+			if (di === "down") {
+				for (var i = 0; i < window.cbOnDownScrollers.length; i++) {
+					if (typeof window.cbOnDownScrollers[i] === "function") {
+						window.cbOnDownScrollers[i].apply();
+					}
+				}
+			}
+			if (di === "up") {
+				for (var i = 0; i < window.cbOnUpScrollers.length; i++) {
+					if (typeof window.cbOnUpScrollers[i] === "function") {
+						window.cbOnUpScrollers[i].apply();
+					}
+				}
+			}
+		});
+	}
+})();
+
+function headerOnDownScroll() {
+	var h = document.getElementById("global-header");
+	h.classList.add("header-scrolling");
+}
+window.cbOnDownScrollers.push(headerOnDownScroll);
+
+function headerOnUpScroll() {
+	var h = document.getElementById("global-header"),
+	    csy = window.scrollY;
+
+	window.setTimeout(checkHeaderScroll,80);
+	function checkHeaderScroll() {
+		if (csy <= window.scrollY) {
+			h.classList.remove("header-scrolling");
+		}
+	}
+}
+window.cbOnUpScrollers.push(headerOnUpScroll);

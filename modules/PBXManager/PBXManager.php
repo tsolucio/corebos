@@ -21,6 +21,8 @@ class PBXManager extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-log-a-call', 'class' => 'slds-icon', 'icon'=>'log_a_call');
+
 	// Mandatory for function getGroupName
 	// array(groupTableName, groupColumnId)
 	// groupTableName should have (groupname column)

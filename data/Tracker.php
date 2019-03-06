@@ -22,11 +22,11 @@ class Tracker {
 
 	// Tracker table
 	public $column_fields = array(
-		"id",
-		"user_id",
-		"module_name",
-		"item_id",
-		"item_summary"
+		'id',
+		'user_id',
+		'module_name',
+		'item_id',
+		'item_summary'
 	);
 
 	public function __construct() {
@@ -42,8 +42,7 @@ class Tracker {
 	 * If the new item is the same as the most recent item then do not change the list
 	 */
 	public function track_view($user_id, $current_module, $item_id, $item_summary) {
-		global $adb, $log, $default_charset;
-		$log->info("in track view method ".$current_module);
+		global $adb, $default_charset;
 		$this->delete_history($user_id, $item_id);
 		// change the query so that it puts the tracker entry whenever you touch on the DetailView of the required entity
 		// get the first name and last name from the respective modules
@@ -73,7 +72,6 @@ class Tracker {
 		#if condition added to skip faq in last viewed history
 		$query = "INSERT into $this->table_name (user_id, module_name, item_id, item_summary) values (?,?,?,?)";
 		$qparams = array($user_id, $current_module, $item_id, $item_summary);
-		$this->log->info('Track Item View: '.$query);
 		$this->db->pquery($query, $qparams, true);
 		$this->prune_history($user_id);
 	}
@@ -93,7 +91,6 @@ class Tracker {
 		$query = "SELECT *
 			from {$this->table_name}
 			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_tracker.item_id WHERE user_id=? and vtiger_crmentity.deleted=0 ORDER BY id DESC";
-		$this->log->debug("About to retrieve list: $query");
 		$result = $this->db->pquery($query, array($user_id), true);
 		$list = array();
 		while ($row = $this->db->fetchByAssoc($result, -1, false)) {
@@ -111,6 +108,11 @@ class Tracker {
 					$per = isPermitted($module, 'DetailView', $entity_id);
 				}
 				if ($per == 'yes') {
+					$curMod = CRMEntity::getInstance($module);
+					$row['__ICONLibrary'] = $curMod->moduleIcon['library'];
+					$row['__ICONContainerClass'] = $curMod->moduleIcon['containerClass'];
+					$row['__ICONClass'] = $curMod->moduleIcon['class'];
+					$row['__ICONName'] = $curMod->moduleIcon['icon'];
 					$list[] = $row;
 				}
 			}
@@ -139,7 +141,6 @@ class Tracker {
 	 * This function will clean out old history records for this user if necessary.
 	 */
 	private function prune_history($user_id) {
-		$this->log->debug("Enter prune_history($user_id)");
 		// Check to see if the number of items in the list is now greater than the config max.
 		$rs = $this->db->pquery("SELECT count(*) from {$this->table_name} WHERE user_id=?", array($user_id));
 		$count = $this->db->query_result($rs, 0, 0);

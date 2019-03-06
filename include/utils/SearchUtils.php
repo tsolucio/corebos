@@ -28,7 +28,7 @@ $table_col_array=array('vtiger_account.accountname','vtiger_contactdetails.first
 */
 function getSearchListHeaderValues($focus, $module, $sort_qry = '', $sorder = '', $order_by = '', $relatedlist = '', $oCv = '') {
 	global $log, $adb, $app_strings, $mod_strings, $current_user;
-	$log->debug("Entering getSearchListHeaderValues($module, $sort_qry, $sorder, $order_by, $relatedlist) method ...");
+	$log->debug("> getSearchListHeaderValues $module, $sort_qry, $sorder, $order_by, $relatedlist");
 
 	$search_header = array();
 
@@ -152,7 +152,7 @@ function getSearchListHeaderValues($focus, $module, $sort_qry = '', $sorder = ''
 			$search_header[$fld_name] = getTranslatedString($name);
 		}
 	}
-	$log->debug('Exiting getSearchListHeaderValues method ...');
+	$log->debug('< getSearchListHeaderValues');
 	return $search_header;
 }
 
@@ -167,7 +167,7 @@ function Search($module, $input = '') {
 		$input = $_REQUEST;
 	}
 
-	$log->debug("Entering Search(".$module.") method ...");
+	$log->debug('> Search '.$module);
 	$url_string='';
 	if (isset($input['search_field']) && $input['search_field'] !="") {
 		$search_column=vtlib_purify($input['search_field']);
@@ -190,7 +190,7 @@ function Search($module, $input = '') {
 		if (isset($input['type']) && $input['type'] != '') {
 			$url_string .= '&type='.vtlib_purify($input['type']);
 		}
-		$log->debug('Exiting Search method ...');
+		$log->debug('< Search');
 		return $where."#@@#".$url_string;
 	}
 }
@@ -203,10 +203,10 @@ function Search($module, $input = '') {
 */
 function get_usersid($table_name, $column_name, $search_string) {
 	global $log;
-	$log->debug("Entering get_usersid(".$table_name.",".$column_name.",".$search_string.") method ...");
+	$log->debug('> get_usersid '.$table_name.','.$column_name.','.$search_string);
 	$concatSql = getSqlForNameInDisplayFormat(array('last_name'=>'vtiger_users.last_name', 'first_name'=>'vtiger_users.first_name'), 'Users');
 	$where.="(trim($concatSql) like '". formatForSqlLike($search_string)  . "' or vtiger_groups.groupname like '". formatForSqlLike($search_string) ."')";
-	$log->debug('Exiting get_usersid method ...');
+	$log->debug('< get_usersid');
 	return $where;
 }
 
@@ -217,7 +217,7 @@ function get_usersid($table_name, $column_name, $search_string) {
 */
 function getValuesforColumns($column_name, $search_string, $criteria = 'cts', $input = '') {
 	global $log, $column_array, $table_col_array;
-	$log->debug("Entering getValuesforColumns($column_name, $search_string) method ...");
+	$log->debug("> getValuesforColumns $column_name, $search_string");
 
 	if (empty($input)) {
 		$input = $_REQUEST;
@@ -256,7 +256,7 @@ function getValuesforColumns($column_name, $search_string, $criteria = 'cts', $i
 			break 1;
 		}
 	}
-	$log->debug('Exiting getValuesforColumns method ...');
+	$log->debug('< getValuesforColumns');
 	return $where;
 }
 
@@ -268,7 +268,7 @@ function getValuesforColumns($column_name, $search_string, $criteria = 'cts', $i
 */
 function BasicSearch($module, $search_field, $search_string, $input = '') {
 	global $log, $mod_strings, $current_user, $adb, $column_array;
-	$log->debug("Entering BasicSearch(".$module.",".$search_field.",".$search_string.") method ...");
+	$log->debug('> BasicSearch '.$module.','.$search_field.','.$search_string);
 	$search_string = ltrim(rtrim($adb->sql_escape_string($search_string)));
 
 	if (empty($input)) {
@@ -462,7 +462,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 		$where = "($where) ";
 	}
 
-	$log->debug('Exiting BasicSearch method ...');
+	$log->debug('< BasicSearch');
 	return $where;
 }
 
@@ -472,7 +472,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 */
 function getAdvSearchfields($module) {
 	global $log, $adb, $current_user, $mod_strings,$app_strings;
-	$log->debug("Entering getAdvSearchfields($module) method ...");
+	$log->debug('> getAdvSearchfields '.$module);
 	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 
 	$tabid = getTabid($module);
@@ -631,7 +631,7 @@ function getAdvSearchfields($module) {
 		}
 		$OPTION_SET .= "<option value=\'vtiger_activity.activitytype:".$fieldname."::".$fieldtypeofdata."\'>".$mod_fieldlabel.'</option>';
 	}
-	$log->debug('Exiting getAdvSearchfields method ...');
+	$log->debug('< getAdvSearchfields');
 	return $OPTION_SET;
 }
 
@@ -643,7 +643,7 @@ function getAdvSearchfields($module) {
 */
 function getSearch_criteria($criteria, $searchstring, $searchfield) {
 	global $log;
-	$log->debug("Entering getSearch_criteria(".$criteria.",".$searchstring.",".$searchfield.") method ...");
+	$log->debug('> getSearch_criteria '.$criteria.','.$searchstring.','.$searchfield);
 	$searchstring = ltrim(rtrim($searchstring));
 	if (($searchfield != 'vtiger_troubletickets.update_log')
 		&& ($searchfield == 'vtiger_crmentity.modifiedtime' || $searchfield == 'vtiger_crmentity.createdtime' || false !== stripos($searchfield, 'date'))
@@ -728,7 +728,7 @@ function getSearch_criteria($criteria, $searchstring, $searchfield) {
 			$where_string = $searchfield." <= '".$searchstring."' ";
 			break;
 	}
-	$log->debug('Exiting getSearch_criteria method ...');
+	$log->debug('< getSearch_criteria');
 	return $where_string;
 }
 
@@ -738,7 +738,7 @@ function getSearch_criteria($criteria, $searchstring, $searchfield) {
 */
 function getWhereCondition($currentModule, $input = '') {
 	global $log;
-	$log->debug("Entering getWhereCondition($currentModule) method ...");
+	$log->debug('> getWhereCondition '.$currentModule);
 
 	if (empty($input)) {
 		$input = $_REQUEST;
@@ -766,7 +766,7 @@ function getWhereCondition($currentModule, $input = '') {
 	} else {
 		$where = Search($currentModule, $input);
 	}
-	$log->debug('Exiting getWhereCondition method ...');
+	$log->debug('< getWhereCondition');
 	return $where;
 }
 
@@ -1387,7 +1387,7 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 }
 
 function getAdvancedSearchParentEntityValue($comparator, $value, $datatype, $tablename, $fieldname) {
-	global $log, $adb;
+	global $adb;
 	$adv_chk_value = $value;
 	$value = '(';
 	$sql = 'select distinct(setype) from vtiger_crmentity c INNER JOIN '.$adb->sql_escape_string($tablename).' t ON t.'.$adb->sql_escape_string($fieldname).' = c.crmid';
@@ -1480,7 +1480,6 @@ function getAdvancedSearchParentEntityValue($comparator, $value, $datatype, $tab
 		$value .= getAdvancedSearchComparator($comparator, $adv_chk_value, $datatype);
 	}
 	$value .= ')';
-	$log->info("in getSalesRelatedName ".$comparator."==".$value."==".$datatype."==".$tablename."==".$fieldname);
 	return $value;
 }
 

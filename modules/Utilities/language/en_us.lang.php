@@ -37,5 +37,9 @@ $mod_strings = array(
 	'zendesk_apiurl' => 'API Domain',
 	'zendesk_accessCode' => 'Zendesk Access Token',
 	'zendesk_username' => 'Zendesk User Name',
+		'Whatsapp Activation' => 'Whatsapp Activation',
+		'whatsapp_sid' => 'Whatsapp SID',
+		'whatsapp_token' => 'Whatsapp Token',
+		'whatsapp_senderphone'=> 'Whatsapp Sender Phone'
 );
 ?>

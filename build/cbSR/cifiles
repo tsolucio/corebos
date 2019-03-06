@@ -1,4 +1,4 @@
---ignore=modules/cbMap/libs/crXml.php,*css,*.js,modules/Project/BURAK_Gantt.class.php,checkthese/*
+--ignore=modules/cbMap/libs/crXml.php,*css,*.js,modules/Project/BURAK_Gantt.class.php,checkthese/*,include/integrations/zendesk/vendor
 modules/Accounts
 modules/Assets
 modules/BusinessActions

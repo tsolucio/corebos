@@ -17,7 +17,7 @@
 class picklist_translations extends cbupdaterWorker {
 
 	public function applyChange() {
-		global $adb;
+		global $adb, $default_charset;
 		if ($this->hasError()) {
 			$this->sendError();
 		}
@@ -28,29 +28,33 @@ class picklist_translations extends cbupdaterWorker {
 			set_time_limit(0);
 			ini_set('memory_limit', '1024M');
 			if (!vtlib_isModuleActive('cbtranslation')) {
-				include_once "include/utils/VtlibUtils.php";
+				include_once 'include/utils/VtlibUtils.php';
 				vtlib_toggleModuleAccess('cbtranslation', true);
 			}
 			include_once 'include/Webservices/Create.php';
 			include_once 'modules/cbtranslation/cbtranslation.php';
 			$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
-			$default_values =  array(
+			$rec = array(
 				'proofread' => '1',
 				'assigned_user_id' => $usrwsid,
 			);
-			$rec = $default_values;
 			$import_langs = array('en_us','es_es','de_de','en_gb','es_mx','fr_fr','hu_hu','it_it','nl_nl','pt_br');
 			$import_modules = getAllowedPicklistModules(1);
 			$import_modules = array_merge($import_modules, array('Rss','Recyclebin'));
-			$chksql = 'select 1
+			$chksql = 'select cbtranslationid
 				from vtiger_cbtranslation
 				where translation_module=? and translation_key=? and forpicklist=? and locale=?';
-			foreach ($import_modules as $impmod) {
+			foreach ($import_modules as $impmod) {  // FOREACH MODULE
+				if ($impmod=='Emails') {
+					continue;
+				}
 				set_time_limit(0);
-				foreach ($import_langs as $lang) {
+				$rec['translation_module'] = $impmod;
+				foreach ($import_langs as $lang) {  // FOREACH LANGUAGE
 					if (file_exists('modules/' . $impmod . '/language/' . $lang . '.lang.php')) {
 						include 'modules/' . $impmod . '/language/' . $lang . '.lang.php';
 						include 'include/language/' . $lang . '.lang.php';
+						$rec['locale'] = $lang;
 						$query = $adb->pquery(
 							"select fieldname
 								from vtiger_tab
@@ -59,16 +63,18 @@ class picklist_translations extends cbupdaterWorker {
 							array($impmod)
 						);
 						$count = $adb->num_rows($query);
-						for ($i=0; $i<$count; $i++) {
+						for ($i=0; $i<$count; $i++) {  // FOREACH PICKLIST IN THE MODULE
 							$fieldname = $adb->query_result($query, $i, 0);
+							$rec['forpicklist'] = $impmod.'::'.$fieldname;
 							$table = 'vtiger_'.$fieldname;
 							$columns = $adb->query("select $fieldname from $table");
 							$countcol = $adb->num_rows($columns);
-							for ($j=0; $j<$countcol; $j++) {
+							for ($j=0; $j<$countcol; $j++) {  // FOREACH PICKLIST VALUE IN THE PICKLIST
 								$key = $adb->query_result($columns, $j, 0);
 								if (empty($key)) {
 									continue;
 								}
+								$key = html_entity_decode($key, ENT_QUOTES, $default_charset);
 								if (isset($mod_strings[$key])) {
 									$value = $mod_strings[$key];
 								} elseif (isset($app_strings[$key])) {
@@ -76,22 +82,21 @@ class picklist_translations extends cbupdaterWorker {
 								} else {
 									$value = $key;
 								}
-								$rec['translation_module'] = $impmod;
 								$rec['translation_key'] = $key;
-								$rec['forpicklist'] = $impmod.'::'.$fieldname;
-								$rec['i18n'] = $value;
-								$rec['locale'] = $lang;
 								$rs = $adb->pquery($chksql, array($rec['translation_module'], $rec['translation_key'], $rec['forpicklist'], $rec['locale']));
 								if ($adb->num_rows($rs)>0) {
-									continue;
+									$cbtrid = $adb->query_result($rs, 0, 'cbtranslationid');
+									$adb->pquery('update vtiger_cbtranslation set i18n=? where cbtranslationid=?', array($value, $cbtrid));
+								} else {
+									$rec['i18n'] = $value;
+									vtws_create('cbtranslation', $rec, $current_user);
 								}
-								vtws_create('cbtranslation', $rec, $current_user);
 							}
 						}
 					}
 				}
 			}
-
+			$this->ExecuteQuery("update vtiger_cbupdater set blocked='1', systemupdate='0' where cbupdaterid=?", array($this->cbupdid));
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}

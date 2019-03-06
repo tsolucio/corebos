@@ -17,8 +17,8 @@ global $oCustomView;
 //<<<<<>>>>>>
 
 $error_msg = '';
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 require_once 'modules/CustomView/CustomView.php';
 
 $cv_module = vtlib_purify($_REQUEST['module']);
@@ -41,7 +41,7 @@ $smarty->assign('STATUS', '');
 if ($recordid == '') {
 	$oCustomView = new CustomView();
 	$modulecollist = $oCustomView->getModuleColumnsList($cv_module);
-	$log->info('CustomView :: Successfully got ColumnsList for the module'.$cv_module);
+	$log->debug('CustomView :: ColumnsList for the module'.$cv_module);
 	if (isset($modulecollist)) {
 		$choosecolslist = getByModule_ColumnsList($cv_module, $modulecollist);
 	}
@@ -74,10 +74,10 @@ if ($recordid == '') {
 	$now_action = vtlib_purify($_REQUEST['action']);
 	if ($oCustomView->isPermittedCustomView($recordid, $now_action, $oCustomView->customviewmodule) == 'yes') {
 		$customviewdtls = $oCustomView->getCustomViewByCvid($recordid);
-		$log->info('CustomView :: Successfully got ViewDetails for the Viewid'.$recordid);
+		$log->debug('CustomView :: ViewDetails for the Viewid'.$recordid);
 		$modulecollist = $oCustomView->getModuleColumnsList($cv_module);
 		$selectedcolumnslist = $oCustomView->getColumnsListByCvid($recordid);
-		$log->info('CustomView :: Successfully got ColumnsList for the Viewid'.$recordid);
+		$log->debug('CustomView :: ColumnsList for the Viewid'.$recordid);
 
 		$smarty->assign("VIEWNAME", $customviewdtls["viewname"]);
 
@@ -96,7 +96,7 @@ if ($recordid == '') {
 		$smarty->assign('ListView_MaxColumns', $Application_ListView_MaxColumns);
 		$smarty->assign('FILTERROWS', ceil($Application_ListView_MaxColumns/4)+1);
 		$stdfilterlist = $oCustomView->getStdFilterByCvid($recordid);
-		$log->info('CustomView :: Successfully got Standard Filter for the Viewid'.$recordid);
+		$log->debug('CustomView :: Standard Filter for the Viewid'.$recordid);
 		$stdfilterlist["stdfilter"] = ($stdfilterlist["stdfilter"] != "") ? ($stdfilterlist["stdfilter"]) : ("custom");
 		$stdfilterhtml = $oCustomView->getStdFilterCriteria($stdfilterlist["stdfilter"]);
 		$stdfiltercolhtml = getStdFilterHTML($cv_module, $stdfilterlist["columnname"]);
