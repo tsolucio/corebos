@@ -12,27 +12,27 @@
         <xs:element name="dependencies">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="dependency" maxOccurs="unbounded" minOccurs="0">
+              <xs:element name="dependency" maxOccurs="unbounded" minOccurs="1">
                 <xs:complexType mixed="true">
                   <xs:sequence>
-                    <xs:element type="xs:string" name="field" minOccurs="0"/>
+                    <xs:element type="xs:string" name="field" minOccurs="1"/>
                     <xs:element type="xs:string" name="condition" minOccurs="0"/>
-                    <xs:element name="actions" minOccurs="0">
+                    <xs:element name="actions" minOccurs="1">
                       <xs:complexType>
                         <xs:choice maxOccurs="unbounded">
                           <xs:element name="setoptions" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
-                                <xs:element type="xs:string" name="field"/>
-                                <xs:element type="xs:string" name="option"/>
+                                <xs:element type="xs:string" name="field" minOccurs="1"/>
+                                <xs:element type="xs:string" name="option" minOccurs="1"/>
                               </xs:sequence>
                             </xs:complexType>
                           </xs:element>
                            <xs:element name="deloptions" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
-                                <xs:element type="xs:string" name="field"/>
-                                <xs:element type="xs:string" name="option" maxOccurs="unbounded" minOccurs="0"/>
+                                <xs:element type="xs:string" name="field" minOccurs="1"/>
+                                <xs:element type="xs:string" name="option" maxOccurs="unbounded" minOccurs="1"/>
                               </xs:sequence>
                             </xs:complexType>
                           </xs:element>
@@ -68,22 +68,23 @@
                           <xs:element name="collapse" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
-                                <xs:element type="xs:string" name="field" minOccurs="0"/>
-                                <xs:element type="xs:string" name="block" minOccurs="0"/>
+                                <xs:element type="xs:string" name="field"  minOccurs="1"/>
+                                <xs:element type="xs:string" name="block"  minOccurs="1"/>
                               </xs:sequence>
                             </xs:complexType>
                           </xs:element>
                           <xs:element name="show" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
-                                <xs:element type="xs:string" name="field"/>
+                                <xs:element type="xs:string" name="field" minOccurs="1"/>
+                                <xs:element type="xs:string" name="block" minOccurs="1"/>
                               </xs:sequence>
                             </xs:complexType>
                           </xs:element>
                            <xs:element name="function" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
-                                <xs:element type="xs:string" name="field"/>
+                                <xs:element type="xs:string" name="field" minOccurs="1"/>
                                 <xs:element type="xs:string" name="name"/>
                                 <xs:element name="parameters" minOccurs="0">
                                   <xs:complexType>
@@ -98,7 +99,7 @@
                           <xs:element name="disappear" minOccurs="0">
                             <xs:complexType>
                               <xs:sequence>
-                                <xs:element type="xs:string" name="block"/>
+                                <xs:element type="xs:string" name="block" minOccurs="1"/>
                               </xs:sequence>
                             </xs:complexType>
                           </xs:element>    
