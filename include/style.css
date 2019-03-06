@@ -7,124 +7,290 @@
 * All Rights Reserved.
 ********************************************************************************/
 
-body {
-	font-family: Helvetica, Arial, san-serif;
-	margin: 0;
-	margin-top: 40px;
-	background-color: #f5f5f5;
+/* =========================================================== */
+/* ========================== CBDS =========================== */
+/* =========================================================== */
+
+/* ---- CBDS Color schemes ---- */
+
+.cbds-bg-white {
+	background-color: #ffffff;
 }
 
-a {
-	text-decoration: none;
-	color: #717171;
+.cbds-bg-blue--main {
+	background-color: #1589EE;
 }
 
-a:hover {
-	text-decoration: underline;
-	color: #424242;
+.cbds-bg-blue--gray {
+	background-color: #0B497F;
 }
 
-.loginContainer {
-    width: 100%;
-	height: 100%;
-        margin: 0px auto;
-	width: 100%;
-
-
+.cbds-bg-blue--light {
+	background-color: #1693FF;
 }
 
-#loginWrapper {
-	background-image: url('../themes/login/images/bg.png');
-	background-repeat: no-repeat;
-	width: 849px;
-	height: 416px;
-	margin: 0 auto;
-	/*border: 1px solid black;*/
-	z-index: 1;
+.cbds-bg-blue--dark {
+	background-color: #062540;
 }
 
-#loginTop{
-	height: 60px;
-	padding-top: 69px;
-      /*border: 1px solid black;*/
+.cbds-bg-blue--bright {
+	background-color: #1484E5;
 }
 
-#loginBody{
-	height: 177px;
-	/*border: 1px solid black;*/
+.cbds-bg-compl-red--bright {
+	background-color: #EE1F15;
 }
 
-.importantLinks {
-	text-align: center;
-	padding: 30px;
-	padding-top: 6px;
-	font-size: 0.8em;
-	margin-right: 120px;
+.cbds-bg-compl-red--sober {
+	background-color: #CC2E26;
 }
 
-.loginForm {
+.cbds-bg-compl-red--faint {
+	background-color: #FF7656;
+}
+
+.cbds-bg-compl-green--light {
+	background-color: #C2CC26;
+}
+
+.cbds-bg-compl-green--dark {
+	background-color: #A8B207;
+}
+
+.cbds-bg-compl-orange--dark {
+	background-color: #B26E00;
+}
+
+.cbds-bg-compl-orange--light {
+	background-color: #FFA516;
+}
+
+.cbds-bg-compl-grey--light {
+	background-color: rgb(235, 237, 238);
+}
+
+.cbds-bg-compl-grey--medium {
+	background-color: #aeafaf;
+}
+
+.cbds-bg-compl-grey--dark {
+	background-color: #7e7f7f;
+}
+
+/* ---- CBDS Layering ---- */
+
+/* Small, centered box shadow */
+.cbds-shadow-c--small {
+	-webkit-box-shadow: 0px 0px 4px -1px rgba(0,0,0,0.25);
+	-moz-box-shadow: 0px 0px 4px -1px rgba(0,0,0,0.25);
+	box-shadow: 0px 0px 4px -1px rgba(0,0,0,0.25);
+}
+
+/* ---- CBDS coreBOS components ---- */
+.cbds-last-visited {
+	right: 0;
+	top: 90px;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+    z-index: 99;
+}
+
+.cbds-tooltip--listview .slds-popover {
+	position: absolute;
+	top: -50%;
+	right: 0;
+	transform: translateY(-100%);
+	opacity: 0;
 	text-align: left;
-	width: 552px;
-	height: 127px;
-	background-image: url('../themes/login/images/box_login.png');
-	padding-top:50px;
-	padding-left:30px;
-	z-index: 2;
+	transition: opacity 100ms linear;
 }
 
-.loginForm2FA {
-	height: 190px;
+.cbds-tooltip-parent:hover .slds-popover {
+	opacity: 1;
 }
 
-.loginForm input{
-	width: 225px; 
-	border: 1px solid #fff;
-	background-color: #fff;
-	border-radius: 10px;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
+.cbds-massedit {
+	position: absolute;
+	opacity: 0;
+	z-index: -1;
+	transition: opacity 100ms linear 0ms, z-index 0ms linear 100ms;
+	-moz-transition: opacity 100ms linear 0ms, z-index 0ms linear 100ms;
+	-webkit-transition: opacity 100ms linear 0ms, z-index 0ms linear 100ms;
 }
 
-.loginForm #submitButton{
-	border:none;
-	border-radius: 0px;
-	-moz-border-radius: 0px;
-	-webkit-border-radius: 0px;
-	background-image: url('../themes/login/images/enter.png');
-	width: 51px;
-	height: 48px;
-	margin-left: 40px;
+.cbds-massedit--active {
+	opacity: 1;
+	z-index: 100000;
+	transition: opacity 150ms linear 50ms, z-index 0ms linear 0ms;
+	-moz-transition: opacity 150ms linear 50ms, z-index 0ms linear 0ms;
+	-webkit-transition: opacity 150ms linear 50ms, z-index 0ms linear 0ms;
 }
 
-.loginForm tr td{
-	height: 40px;
+.cbds-advanced-search--inactive {
+	overflow: hidden;
+	opacity: 0;
+	height: 0;
+	transition: opacity 100ms linear 0ms, height 0ms linear 0ms;
 }
 
-.loginForm .input input:focus {
-	border: 2px solid #3D698E;
+.cbds-advanced-search--active {
+	opacity: 1;
+	height: auto;
+	transition: opacity 100ms linear 50ms, height 0ms linear 0ms;
 }
 
-.loginForm .button #submitButton {
-	cursor: pointer;
-/*	background-color: #3D698E;
-	color: #ffffff;
-	text-align: center;
-	font-size: medium;
-	font-weight: bold;
-	border: 2px outset #3D698E;
-	width: 10em;*/
+/* ---- CBDS expansion on LDS components ---- */
+#global-header {
+  -webkit-transform: translateY(0);
+  -moz-transform: translateY(0);
+  transform: translateY(0);
+  transition: transform 100ms linear;
+}
+#global-header.header-scrolling {
+  -webkit-transform: translateY(-3.125rem);
+  -moz-transform: translateY(-3.125rem);
+  transform: translateY(-3.125rem);
 }
 
-.errorMessage {
-	font-size: 11px;
-	color: #323232;
+/* ---- CBDS animations ---- */
+/* -- Source: animate.css */
+
+.cbds-anim-slidein--left {
+	-webkit-animation-name: slideInLeft;
+	animation-name: slideInLeft;
+	-webkit-animation-duration: 0.1s;
+	animation-duration: 0.1s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;	
 }
 
-#loginFooter{
-	height: 73px;
-	padding-top: 11px;
+.cbds-anim-slidein--right {
+	-webkit-animation-name: slideInRight;
+	animation-name: slideInRight;
+	-webkit-animation-duration: 0.1s;
+	animation-duration: 0.1s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;	
 }
 
-#loginFooter img{
-	padding-right: 20px;
+.cbds-anim-slideout--left {
+	-webkit-animation-name: slideOutLeft;
+	animation-name: slideOutLeft;
+	-webkit-animation-duration: 0.1s;
+	animation-duration: 0.1s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;	
+}
+
+.cbds-anim-slideout--right {
+	-webkit-animation-name: slideOutRight;
+	animation-name: slideOutRight;
+	-webkit-animation-duration: 0.1s;
+	animation-duration: 0.1s;
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;	
+}
+
+@-webkit-keyframes slideInLeft {
+  from {
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@-webkit-keyframes slideInRight {
+  from {
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+    visibility: visible;
+  }
+
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@-webkit-keyframes slideOutLeft {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@keyframes slideOutLeft {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@-webkit-keyframes slideOutRight {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    visibility: hidden;
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
 }

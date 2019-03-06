@@ -21,6 +21,7 @@
 	<link rel="stylesheet" href="include/LD/assets/styles/salesforce-lightning-design-system.css" type="text/css" />
 	<link rel="stylesheet" href="include/LD/assets/styles/mainmenu.css" type="text/css" />
 	<link rel="stylesheet" href="include/LD/assets/styles/override_lds.css" type="text/css" />
+	<link rel="stylesheet" href="include/style.css" type="text/css" />
 {* vtlib customization: Inclusion of custom javascript and css as registered *}
 {if $HEADERCSS}
 	<!-- Custom Header CSS -->
@@ -99,32 +100,32 @@
 
 <!-- LDS Global header -->
 
-<header class="slds-global-header_container">
-	<a href="javascript:void(0);" class="slds-assistive-text slds-assistive-text_focus">Skip to Navigation</a>
-    <a href="javascript:void(0);" class="slds-assistive-text slds-assistive-text_focus">Skip to Main Content</a>
+<header class="slds-global-header_container" id="global-header">
 	<div class="slds-global-header slds-grid slds-grid_align-spread">
 		<div class="slds-global-header__item">
 			<div class="slds-global-header__logo" style="background-image: url('{$COMPANY_DETAILS.applogo}');"></div>
 		</div>
+		{if $Application_Global_Search_Active}
+		{if (isset($GS_AUTOCOMP) && isset($GS_AUTOCOMP['searchin']))}{$GLOBAL_AC = true}{else}{$GLOBAL_AC = false}{/if}
 		<div class="slds-global-header__item slds-global-header__item_search">
 			<div class="slds-form-element">
 				<div class="slds-form-element__control">
 					<div class="slds-combobox-group">
 						<div class="slds-combobox_object-switcher slds-combobox-addon_start">
 							<div class="slds-form-element">
-								<label class="slds-form-element__label slds-assistive-text" for="objectswitcher-combobox-id-1">Filter Search by:</label>
+								<label class="slds-form-element__label slds-assistive-text" for="globalsearch-moduleselect">{$APP.LBL_SELECT_MODULES_FOR_SEARCH}</label>
 								<div class="slds-form-element__control">
-                  <div class="slds-combobox_container">
-										<div id="globalsearch-moduleselect" class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-controls="primary-search-combobox-id-1" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+                  					<div class="slds-combobox_container">
+										<div id="globalsearch-moduleselect" class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-controls="globalsearch-moduleselect" aria-expanded="false" aria-haspopup="listbox" role="combobox">
 											<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
-												<input type="text" class="slds-input slds-combobox__input slds-combobox__input-value" id="objectswitcher-combobox-id-1" aria-controls="UnifiedSearch_moduleformwrapper" autoComplete="off" role="textbox" placeholder="{$APP.LBL_SELECT_MODULES_FOR_SEARCH}" value="" onfocus="document.getElementById('globalsearch-moduleselect').classList.add('slds-is-open'); UnifiedSearch_SelectModuleForm(this);" onblur="document.getElementById('globalsearch-moduleselect').classList.remove('slds-is-open');" />
+												<input type="text" class="slds-input slds-combobox__input slds-combobox__input-value" id="globalsearch-moduleselect-input" aria-controls="UnifiedSearch_moduleformwrapper" autoComplete="off" role="textbox" placeholder="{$APP.LBL_SELECT_MODULES_FOR_SEARCH}" value="" onfocus="UnifiedSearch_GetModules();" />
 												<span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
 													<svg class="slds-icon slds-icon slds-icon_xx-small slds-icon-text-default" aria-hidden="true">
 														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
 													</svg>
 												</span>
 											</div>
-											<div id="UnifiedSearch_moduleformwrapper" class="slds-dropdown slds-dropdown_length-5 slds-dropdown_x-small" role="listbox">
+											<div id="UnifiedSearch_modulelistwrapper" class="slds-dropdown slds-dropdown_length-10 slds-dropdown_x-small" role="listbox">
 											</div>											
 										</div>	
 									</div>
@@ -132,26 +133,23 @@
 							</div>
 						</div>
 						<div class="slds-combobox_container slds-combobox-addon_end">
-							{if $Application_Global_Search_Active}
 							<form name="UnifiedSearch" method="post" action="index.php" style="margin:0px" onsubmit="if (document.getElementById('query_string').value=='') return false; VtigerJS_DialogBox.block();">
-							{else}
-							<form name="UnifiedSearch" style="margin:0px" onsubmit="return false;">
-							{/if}
 								<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false" aria-haspopup="listbox" id="primary-search-combobox-id-1" role="combobox">
-									{if $Application_Global_Search_Active || (isset($GS_AUTOCOMP) && isset($GS_AUTOCOMP['searchin']))}
-									<input type="hidden" name="action" value="UnifiedSearch" style="margin:0px">
-									<input type="hidden" name="module" value="Home" style="margin:0px">
-									<input type="hidden" name="parenttab" value="{$CATEGORY}" style="margin:0px">
-									<input type="hidden" name="search_onlyin" value="--USESELECTED--" style="margin:0px">
+									<input type="hidden" name="action" value="UnifiedSearch">
+									<input type="hidden" name="module" value="Home">
+									<input type="hidden" name="parenttab" value="{$CATEGORY}">
+									<input type="hidden" name="search_onlyin" value="--USESELECTED--">
 									<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left slds-global-search__form-element" role="none">
 										<span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_left">
 												<svg class="slds-icon slds-icon slds-icon_xx-small slds-icon-text-default" aria-hidden="true">
 													<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 												</svg>
 											</span>
-										<input  name="query_string" id="query_string" class="slds-input slds-combobox__input" type="text" role="textbox" placeholder="{$APP.LBL_SEARCH_TITLE}{$coreBOS_app_name}" onFocus="this.value=''" aria-autocomplete="list" aria-controls="search-listbox-id-1" autoComplete="off" data-autocomp='{$GS_AUTOCOMP|@json_encode}' />
+										<input name="query_string" id="query_string" class="slds-input slds-combobox__input{if $GLOBAL_AC} autocomplete-input{/if}" type="text" role="textbox" placeholder="{$APP.LBL_SEARCH_TITLE}{$coreBOS_app_name}" aria-autocomplete="list" autoComplete="off" data-autocomp='{$GS_AUTOCOMP|@json_encode}' />
+										<div role="listbox" class="">
+											<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0;display:block;visibility: visible;" role="presentation"></ul>
+										</div>										
 									</div>
-									{/if}
 								</div>
 							</form>
 						</div>
@@ -159,6 +157,7 @@
 				</div>
 			</div>
 		</div>
+		{/if}
 		<div class="slds-global-header__item">
 			<ul class="slds-global-actions">
 				<li class="slds-global-actions__item">
@@ -170,7 +169,7 @@
 									</svg>
 									<span class="slds-assistive-text">{$APP.LNK_HELP}</span>
 							</button>
-							<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-pressed="false" title="{$APP.LBL_LAST_VIEWED}" onclick="document.getElementById('cbds-last-visited').style.display = 'block';">
+							<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-pressed="false" title="{$APP.LBL_LAST_VIEWED}" onclick="document.getElementById('cbds-last-visited').classList.add('cbds-anim-slidein--right');document.getElementById('cbds-last-visited').classList.remove('cbds-anim-slideout--right');">
 								<svg class="slds-button__icon" aria-hidden="true">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#attach"></use>
 								</svg>
@@ -188,7 +187,6 @@
 							<span class="slds-assistive-text">{$APP.LBL_MORE}</span>
 						</button>
 						<div class="slds-dropdown slds-dropdown_right">
-							
 							<ul class="slds-dropdown__list" role="menu" aria-label="{$APP.LBL_MORE}">
 								{foreach key=actionlabel item=actionlink from=$HEADERS}
 									<li class="slds-dropdown__item" role="presentation">
@@ -364,11 +362,10 @@
 </div>
 
 <!-- Last visited panel -->
-<div id="cbds-last-visited" style="z-index:100000001; position: absolute;right: 0px; top: 50px; display:none;" class="slds-panel slds-size_medium slds-panel_docked-right cbds-last-visited" aria-hidden="false">
-  <div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default">
+<div id="cbds-last-visited" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited" aria-hidden="false">  <div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default slds-text-color_inverse">
     <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Panel Header">{$APP.LBL_LAST_VIEWED}</h2>
-    <button class="slds-button slds-button_icon slds-button_icon-small slds-panel__close" title="Collapse Panel Header" onclick="document.getElementById('cbds-last-visited').style.display = 'none';">
-      <svg class="slds-button__icon slds-text-color_default" aria-hidden="true">
+    <button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__close" title="Collapse Panel Header" onclick="document.getElementById('cbds-last-visited').classList.add('cbds-anim-slideout--right');document.getElementById('cbds-last-visited').classList.remove('cbds-anim-slidein--right');">
+      <svg class="slds-button__icon" aria-hidden="true">
         <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
       </svg>
       <span class="slds-assistive-text">Close panel</span>
