@@ -133,6 +133,8 @@ class MsgTemplate extends CRMEntity {
 	 */
 	public function vtlib_handler($modulename, $event_type) {
 		if ($event_type == 'module.postinstall') {
+			$moduleInstance = Vtiger_Module::getInstance($modulename);
+			$moduleInstance->addLink('HEADERSCRIPT', 'vtigerwebservice', 'modules/com_vtiger_workflow/resources/vtigerwebservices.js', '', 0, null, true);
 			// TODO Handle post installation actions
 			$this->setModuleSeqNumber('configure', $modulename, 'MSGT-', '0000001');
 			global $adb, $default_charset, $current_user;
