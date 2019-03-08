@@ -14,31 +14,31 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-    class addfieldtouserprofile extends cbupdaterWorker {
+class movingsettingsblock extends cbupdaterWorker {
 
-        public function applyChange() {
-            if ($this->hasError()) {
-                $this->sendError();
-            }
-            if ($this->isApplied()) {
-                $this->sendMsg('Changeset '.get_class($this).' already applied!');
-            } else {
-                global $adb;
-                $query = "select blockid from vtiger_settings_blocks where label = ?";
-                $result = $adb->pquery($query, array('LBL_COMMUNICATION_TEMPLATES'));
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
+		if ($this->isApplied()) {
+			$this->sendMsg('Changeset '.get_class($this).' already applied!');
+		} else {
+			global $adb;
+			$query = 'select blockid from vtiger_settings_blocks where label = ?';
+			$result = $adb->pquery($query, array('LBL_COMMUNICATION_TEMPLATES'));
 
-            if ($adb->num_rows($result) == 1) {
-                $blockid = $adb->query_result($result, 0, 'blockid');
-                $labelstomove = array(
-                'LBL_MAIL_SCANNER',
-                'LBL_LIST_WORKFLOWS',
-                'Scheduler'
-                 );
-
-               $this->ExecuteQuery('update vtiger_settings_field set blockid =? 
-               WHERE name in ('. generateQuestionMarks($labelstomove) .')', 
-               array($blockid, $labelstomove));
-           }
-          }     
-     }
+			if ($adb->num_rows($result) == 1) {
+				$blockid = $adb->query_result($result, 0, 'blockid');
+				$labelstomove = array(
+					'LBL_MAIL_SCANNER',
+					'LBL_LIST_WORKFLOWS',
+					'Scheduler'
+				);
+				$this->ExecuteQuery(
+					'update vtiger_settings_field set blockid=? WHERE name in ('. generateQuestionMarks($labelstomove) .')',
+					array($blockid, $labelstomove)
+				);
+			}
+		}
+	}
 }
