@@ -42,4 +42,10 @@
 	<classname>unblockpicklist_translations</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>glorymoshi</author>
+	<description>moving settings blocks</description>
+	<filename>build/changeSets/2019/movingsettingsblock.php</filename>
+	<classname>movingsettingsblock</classname>
+</changeSet>
 </updatesChangeLog>
