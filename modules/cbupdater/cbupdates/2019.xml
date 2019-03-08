@@ -28,4 +28,24 @@
 	<classname>incrementFiletypeSize</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>george1806</author>
+	<description>Install New Module (cbPulse)</description>
+	<filename>build/changeSets/2019/installcbPulse.php</filename>
+	<classname>installcbPulse</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>make picklist translation executable on demand</description>
+	<filename>build/changeSets/2019/unblockpicklist_translations.php</filename>
+	<classname>unblockpicklist_translations</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>glorymoshi</author>
+	<description>moving settings blocks</description>
+	<filename>build/changeSets/2019/movingsettingsblock.php</filename>
+	<classname>movingsettingsblock</classname>
+</changeSet>
 </updatesChangeLog>
