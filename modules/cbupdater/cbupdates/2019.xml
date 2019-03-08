@@ -30,9 +30,9 @@
 </changeSet>
 <changeSet>
 	<author>glorymoshi</author>
-	<description>settings changes</description>
-	<filename>build/changeSets/2019/addfieldtouserprofile.php</filename>
-	<classname>addfieldtouserprofile</classname>
+	<description>moving settings blocks</description>
+	<filename>build/changeSets/2019/movingsettingsblock.php</filename>
+	<classname>movingsettingsblock</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
 </updatesChangeLog>
