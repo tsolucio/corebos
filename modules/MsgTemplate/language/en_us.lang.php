@@ -24,6 +24,7 @@ $mod_strings = array(
 	'msgt_language' => 'Language',
 	'msgt_module' => 'Module',
 	'msgt_fields' => 'Fields',
+	'message category' => 'Message Category',
 	'template' => 'Message Template',
 	'templateonlytext' => 'Text Only',
 	'tags' => 'Tags',

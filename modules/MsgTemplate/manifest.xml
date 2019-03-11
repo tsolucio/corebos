@@ -46,6 +46,7 @@
   `template` mediumtext,
   `templateonlytext` text,
   `tags` text,
+  `msgt_category` varchar(100) DEFAULT '--None--',
   PRIMARY KEY (`msgtemplateid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;]]></sql>
 </table>
@@ -109,6 +110,31 @@
 <picklistvalue>SMS</picklistvalue>
 <picklistvalue>Mattermost</picklistvalue>
 <picklistvalue>Whatsapp</picklistvalue>
+</picklistvalues>
+</field>
+<field>
+<fieldname>msgt_category</fieldname>
+<uitype>15</uitype>
+<columnname>msgt_category</columnname>
+<tablename>vtiger_msgtemplate</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>message category</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>6</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+<picklistvalues>
+<picklistvalue>--None--</picklistvalue>
+<picklistvalue>Application</picklistvalue>
+<picklistvalue>User</picklistvalue>
 </picklistvalues>
 </field>
 <field>
@@ -480,6 +506,17 @@
 </action>
 </actions>
 <relatedlists>
+<relatedlist>
+<function>get_attachments</function>
+<label>Documents</label>
+<sequence>3</sequence>
+<presence>0</presence>
+<actions>
+<action>ADD</action>
+<action>SELECT</action>
+</actions>
+<relatedmodule>Documents</relatedmodule>
+</relatedlist>
 </relatedlists>
 <events>
 </events>
