@@ -54,5 +54,9 @@ if (typeof window.opener.document.getElementById('subject') != 'undefined' && wi
 	window.opener.addOption(<?php echo $row['notesid']; ?>, attachment);
 <?php } ?>
 }
+if(window.opener.document.getElementById('save_subject') != null && window.opener.CKEDITOR.instances.save_content != 'undefined') {
+	window.opener.document.getElementById('save_subject').value = window.document.frmrepstr.subject.value;
+	window.opener.CKEDITOR.instances.save_content.insertHtml(window.document.frmrepstr.repstr.value);
+}
 window.close();
 </script>
