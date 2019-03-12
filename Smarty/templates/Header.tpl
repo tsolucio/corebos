@@ -178,6 +178,36 @@
 						</div>
 					</div>
 				</li>
+				{if $HEADERLINKS}
+				<li class="slds-global-actions__item">
+					<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
+						<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-haspopup="true" title="{$APP.LBL_MORE}">
+							<svg class="slds-button__icon" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+							</svg>
+							<span class="slds-assistive-text">{$APP.LBL_MORE}</span>
+						</button>
+						<div class="slds-dropdown slds-dropdown_right">
+							<ul class="slds-dropdown__list" role="menu" aria-label="{$APP.LBL_MORE}">
+								{foreach key=actionlabel item=HEADERLINK from=$HEADERLINKS}
+									{assign var="headerlink_href" value=$HEADERLINK->linkurl}
+									{assign var="headerlink_label" value=$HEADERLINK->linklabel}
+									{if $headerlink_label eq ''}
+										{assign var="headerlink_label" value=$headerlink_href}
+									{else}
+										{assign var="headerlink_label" value=$headerlink_label|@getTranslatedString:$HEADERLINK->module()}
+									{/if}
+									<li class="slds-dropdown__item" role="presentation">
+										<a href="{$headerlink_href}" role="menuitem" title="{$headerlink_label}">
+											<span class="slds-truncate" >{$headerlink_label}</span>
+										</a>
+									</li>
+								{/foreach}
+							</ul>
+						</div>
+					</div> 
+				</li>
+				{/if}
 				<li class="slds-global-actions__item">
 					<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
 						<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-haspopup="true" title="{$APP.LBL_MORE}">
