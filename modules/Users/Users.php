@@ -527,11 +527,49 @@ class Users extends CRMEntity {
 			$this->error_string = $mod_strings['ERR_PASSWORD_INCORRECT_OLD'];
 			return false;
 		}
-
 		//set new password
 		$crypt_type = $this->DEFAULT_PASSWORD_CRYPT_TYPE;
 		$encrypted_new_password = $this->encrypt_password($new_password, $crypt_type);
 
+		if (isset($new_password) || $new_password != '') {
+		global $default_charset, $adb;
+		$error_str = '';
+		require_once 'modules/Emails/mail.php';
+
+		$query='SELECT subject,body FROM vtiger_emailtemplates WHERE templatename="Password Change Template"';
+
+		$user_emailid = $this->column_fields['email1'];
+		
+		$subject = getTranslatedString('MSG_SUB');
+		
+		$result = $adb->pquery($query, array());
+		
+		$body=$adb->query_result($result, 0, 'body');
+		
+		$main_body = html_entity_decode($body, ENT_QUOTES, $default_charset);
+		
+		$main_body = str_replace('$user_name$', $usr_name, $main_body);
+		
+		$main_body = str_replace('$user_password$', $new_password, $main_body);
+
+		$main_body = getMergedDescription($main_body, $this->id, 'Users');
+		
+		//$email_body = htmlentities($email_body, ENT_QUOTES, $default_charset);  // not needed anymore, PHPMailer takes care of it
+
+		$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
+		$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name', 'your-support name', 'HelpDesk');
+		$mail_status = send_mail('Users', $user_emailid, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_ID, $subject, $main_body);
+
+		if ($mail_status != 1) {
+			$mail_status_str = $user_emailid."=".$mail_status."&&&";
+			$error_str = getMailErrorString($mail_status_str);
+		}
+
+			$sql = "UPDATE $this->table_name
+			SET failed_login_attempts=0 where id=?";
+			$this->db->pquery($sql, array($this->id)); 
+			return true;
+		}
 		// Set change password at next login to 0 if resetting your own password
 		if (!empty($current_user) && $current_user->id == $this->id) {
 			$change_password_next_login = 0;

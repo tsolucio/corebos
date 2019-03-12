@@ -57,6 +57,7 @@ $mod_strings = array(
 'LBL_ERROR'=>'Error:',
 'LBL_PASSWORD'=>'Password',
 'LBL_USER_NAME'=>'User Name',
+'MSG_SUB'=>'User change password details',
 'LBL_2FACODE' => 'Code',
 'LBL_2FAGETCODE' => 'Get another code',
 '2FA_NEWCODESENT' => 'New code has been sent.',
