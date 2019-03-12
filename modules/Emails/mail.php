@@ -108,44 +108,44 @@ function send_mail($module, $to_email, $from_name, $from_email, $subject, $conte
 		$from_email = $femail;
 	}
 
-	if ($module != 'Calendar') {
-		$contents = addSignature($contents, $from_name);
-	}
-
-	$mail = new PHPMailer();
-
 	// Add main HTML tags when missing
 	if (!preg_match('/^\s*<\!DOCTYPE/', $contents) && !preg_match('/^\s*<html/i', $contents)) {
 		$contents = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /></head><body>" . $contents . "</body></html>";
 	}
-
-	setMailerProperties($mail, $subject, $contents, $from_email, $from_name, trim($to_email, ','), $attachment, $emailid, $logo, $qrScan);
-
-	setCCAddress($mail, 'cc', $cc);
-	setCCAddress($mail, 'bcc', $bcc);
-	if (!empty($replyToEmail)) {
-		$mail->AddReplyTo($replyToEmail);
+	if ($module != 'Calendar') {
+		$contents = addSignature($contents, $from_name);
 	}
 
-	// mailscanner customization: If Support Reply To is defined use it.
-	$HELPDESK_SUPPORT_EMAIL_REPLY_ID = GlobalVariable::getVariable('HelpDesk_Support_Reply_EMail', $HELPDESK_SUPPORT_EMAIL_ID, 'HelpDesk');
-	if ($HELPDESK_SUPPORT_EMAIL_REPLY_ID && $HELPDESK_SUPPORT_EMAIL_ID != $HELPDESK_SUPPORT_EMAIL_REPLY_ID) {
-		$mail->AddReplyTo($HELPDESK_SUPPORT_EMAIL_REPLY_ID);
+	// always merge against user module
+	$rs = $adb->pquery('select id from vtiger_users where email1=? or email2=?', array($from_email, $from_email));
+	if ($adb->num_rows($rs) > 0) {
+		$subject = getMergedDescription($subject, $adb->query_result($rs, 0, 'id'), 'Users');
+		$contents = getMergedDescription($contents, $adb->query_result($rs, 0, 'id'), 'Users');
 	}
 
-	// Return immediately if Outgoing server not configured
-	if (empty($mail->Host)) {
-		return 0;
+	list($systemEmailClassName, $systemEmailClassPath) = cbEventHandler::do_filter('corebos.filter.systemEmailClass.getname', array('Emails', 'modules/Emails/Emails.php'));
+	require_once $systemEmailClassPath;
+	if (!call_user_func(array($systemEmailClassName, 'useEmailHook'))) {
+		$systemEmailClassName = 'Emails'; // default system method
 	}
-
-	$mail_status = MailSend($mail);
-	if ($mail_status != 1) {
-		$mail_error = getMailError($mail, $mail_status);
-	} else {
-		$mail_error = $mail_status;
-	}
-
-	return $mail_error;
+	return call_user_func_array(
+		array($systemEmailClassName, 'sendEMail'),
+		array(
+			$to_email,
+			$from_name,
+			$from_email,
+			$subject,
+			$contents,
+			$cc,
+			$bcc,
+			$attachment,
+			$emailid,
+			$logo,
+			$qrScan,
+			$replyto,
+			$replyToEmail
+		)
+	);
 }
 
 /** Function to get the user Email id based on column name and column value
