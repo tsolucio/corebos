@@ -28,44 +28,48 @@ if (isset($_REQUEST['page'])) {
 } else {
 	$page = 1;
 }
-if (isset($_REQUEST['trigger_list']) && is_numeric($_REQUEST['trigger_list'])) {
-	$executioncondtionid = vtlib_purify($_REQUEST['trigger_list']);
+if (isset($_REQUEST['adminstatus'])) {
+	$adminstatus = vtlib_purify($_REQUEST['adminstatus']);
 } else {
-	$executioncondtionid = 0;
+	$adminstatus = 'all';
 }
-if (isset($_REQUEST['module_list'])) {
-	$modulename = vtlib_purify($_REQUEST['module_list']);
+if (isset($_REQUEST['userstatus'])) {
+	$userstatus = vtlib_purify($_REQUEST['userstatus']);
 } else {
-	$modulename = 'all';
+	$userstatus = 'all';
 }
-if (isset($_REQUEST['desc_search'])) {
-	$desc_search = vtlib_purify($_REQUEST['desc_search']);
+if (isset($_REQUEST['email_search'])) {
+	$email_search = vtlib_purify($_REQUEST['email_search']);
 } else {
-	$desc_search = '';
+	$email_search = '';
 }
-if (isset($_REQUEST['purpose_search'])) {
-	$purpose_search = vtlib_purify($_REQUEST['purpose_search']);
+if (isset($_REQUEST['namerole_search'])) {
+	$namerole_search = vtlib_purify($_REQUEST['namerole_search']);
 } else {
-	$purpose_search = '';
+	$namerole_search = '';
 }
 if (isset($_REQUEST['order_by']) && is_numeric($_REQUEST['order_by'])) {
 	$order_by = vtlib_purify($_REQUEST['order_by']);
 	switch ($order_by) {
 		case 0:
-			$order_by = $focus->list_fields_name['Module'];
+			$order_by = $focus->list_fields_name['User Name'];
 			break;
 		case 1:
-			$order_by = $focus->list_fields_name['Module'];
+			$order_by = $focus->list_fields_name['User Name'];
 			break;
 		case 2:
-			$order_by = $focus->list_fields_name['Module'];
+			$order_by = $focus->list_fields_name['Email'];
 			break;
 		case 3:
-			$order_by = $focus->list_fields_name['Module'];
+			$order_by = $focus->list_fields_name['Admin'];
+		case 4:
+			$order_by = $focus->list_fields_name['Email2'];
+			break;
+		case 5:
+			$order_by = $focus->list_fields_name['Status'];
 			break;
 		default:
-		case 4:
-			$order_by = $focus->list_fields_name['Module'];
+			$order_by = $focus->list_fields_name['User Name'];
 			break;
 	}
 } else {
@@ -74,8 +78,8 @@ if (isset($_REQUEST['order_by']) && is_numeric($_REQUEST['order_by'])) {
 if (isset($_REQUEST['order_rule'])) {
 	$sorder = vtlib_purify($_REQUEST['order_rule']);
 } else {
-	$sorder = 'DESC';
+	$sorder = 'ASC';
 }
-$log->debug('Entering getWorkFlowJSON() method ...');
-$response = $focus->getUserJSON($modulename, $executioncondtionid, $page, $order_by, $sorder, $desc_search, $purpose_search);
+$log->debug('Entering getUsersJSON() method ...');
+$response = $focus->getUsersJSON($adminstatus, $userstatus, $page, $order_by, $sorder, $email_search, $namerole_search);
 echo $response;

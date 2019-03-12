@@ -115,8 +115,7 @@ function transferUser(del_userid)
 				method:"POST",
 				url:'index.php?module=Users&action=UsersAjax&file=DeleteUser&ajax=true&delete_user_id='+del_userid+'&transfer_user_id='+trans_userid
 		}).done(function(response) {
-				document.getElementById("status").style.display="none";
-				document.getElementById("ListViewContents").innerHTML= response;
+				location.reload(true);
 			}
 		);
 }

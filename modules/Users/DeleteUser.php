@@ -24,6 +24,6 @@ $userObj->transformOwnerShipAndDelete($del_id, $tran_id);
 if (isset($_REQUEST['ajax_delete']) && $_REQUEST['ajax_delete'] == 'false') {
 	header('Location: index.php?action=ListView&module=Users');
 } else {
-	header('Location: index.php?action=UsersAjax&module=Users&file=ListView&ajax=true');
+	echo 'success';
 }
 ?>

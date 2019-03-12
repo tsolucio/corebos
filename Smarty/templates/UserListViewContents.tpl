@@ -47,21 +47,21 @@
 </tr>
 </table>
 <div id="view" class="workflows-list">
-	<datatable url="index.php?module=Users&action=index&file=getJSON" template="userlist_row_template">
+<datatable url="index.php?module=Users&action=UsersAjax&file=getJSON" template="userlist_row_template">
 	<header>
 			<div class="slds-grid slds-gutters" style="width: 650px;">
 				<div class="slds-col">
 					<div class="slds-form-element slds-lookup" data-select="single" style="width: 162px; margin-bottom: 6px;">
-						<label class="slds-form-element__label" for="lookup-339">{'LBL_MODULE'|getTranslatedString:'Reports'} {'LBL_Search'|getTranslatedString:'MailManager'}</label>
+						<label class="slds-form-element__label" for="lookup-339">{'LBL_STATUS'|getTranslatedString:'Reports'} {'LBL_Search'|getTranslatedString:'MailManager'}</label>
 						<div class="slds-form-element__control slds-grid slds-box_border">
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
 								<svg aria-hidden="true" class="slds-input__icon">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 								</svg>
-								<select name="list_module" id="list_module" class="slds-lookup__search-input slds-input_bare" type="search" style="height: 30px;"
-									aria-owns="list_module" role="combobox" aria-activedescendent="" aria-expanded="false" aria-autocomplete="list">
+								<select name="userstatus" id="userstatus" class="slds-lookup__search-input slds-input_bare" type="search" style="height: 30px;"
+									aria-owns="userstatus" role="combobox" aria-activedescendent="" aria-expanded="false" aria-autocomplete="list">
 									<option value="all" selected="true">{$APP.LBL_ALLPICKLIST}</option>
-									{$modulelist}
+									{$LIST_USER_STATUS}
 								</select>
 							</div>
 						</div>
@@ -70,14 +70,14 @@
 				<div class="slds-col">
 					<div class="slds-form-element" style="width: 162px; margin-bottom: 6px;">
 						<label class="slds-form-element__label" for="text-input-id-1">
-						{'LBL_DESCRIPTION'|getTranslatedString:'Reports'} {'LBL_Search'|getTranslatedString:'MailManager'}
+						{'LBL_USERNAME'|getTranslatedString:'Settings'} {'LBL_SEARCH'|getTranslatedString:'Settings'}
 						</label>
 						<div class="slds-form-element__control">
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
 								<svg aria-hidden="true" class="slds-input__icon">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 								</svg>
-								<input type="text"  name="desc_search" id="desc_search" class="slds-input" style="height: 30px;"/>
+								<input type="text"  name="namerole_search" id="namerole_search" class="slds-input" style="height: 30px;"/>
 							</div>
 						</div>
 					</div>
@@ -85,30 +85,30 @@
 				<div class="slds-col">
 					<div class="slds-form-element" style="width: 162px;">
 						<label class="slds-form-element__label" for="text-input-id-1">
-						{'LBL_PURPOSE'|getTranslatedString:'Reports'} {'LBL_Search'|getTranslatedString:'MailManager'}
+						{'LBL_EMAIL'|getTranslatedString:'Settings'} {'LBL_SEARCH'|getTranslatedString:'Settings'}
 						</label>
 						<div class="slds-form-element__control">
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
 								<svg aria-hidden="true" class="slds-input__icon">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 								</svg>
-								<input type="text"  name="purpose_search" id="purpose_search" class="slds-input" style="height: 30px;"/>
+								<input type="text"  name="email_search" id="email_search" class="slds-input" style="height: 30px;"/>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="slds-col">
 					<div class="slds-form-element slds-lookup" data-select="single" style="width: 162px; margin-bottom: 6px;">
-						<label class="slds-form-element__label" for="lookup-339">{'LBL_TRIGGER'|getTranslatedString:'Reports'} {'LBL_Search'|getTranslatedString:'MailManager'}</label>
+						<label class="slds-form-element__label" for="lookup-339">{'LBL_ADMIN'|getTranslatedString:'Settings'} {'LBL_SEARCH'|getTranslatedString:'Settings'}</label>
 						<div class="slds-form-element__control slds-grid slds-box_border">
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
 								<svg aria-hidden="true" class="slds-input__icon">
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
 								</svg>
-								<select name="trigger_list" id="trigger_list" class="slds-lookup__search-input slds-input_bare" type="search" style="height: 30px;"
-									aria-owns="trigger_list" role="combobox" aria-activedescendent="" aria-expanded="false" aria-autocomplete="list">
+								<select name="adminstatus" id="adminstatus" class="slds-lookup__search-input slds-input_bare" type="search" style="height: 30px;"
+									aria-owns="adminstatus" role="combobox" aria-activedescendent="" aria-expanded="false" aria-autocomplete="list">
 									<option value="all" selected="true">{$APP.LBL_ALLPICKLIST}</option>
-									{$triggerlist}
+									{$LIST_ADMIN_STATUS}
 								</select>
 							</div>
 						</div>
@@ -117,7 +117,7 @@
 			</div>
 		</header>
 		<footer>
-			<pagination limit={$PAGINATION_LIMIT} outer></pagination>
+			<pagination limit=12 outer></pagination>
 		</footer>
 		<table class="rptTable">
 			<tr>
@@ -131,28 +131,86 @@
 <table id="userlist_row_template" hidden>
 	<tr>
 		{foreach key=dtkey item=dtheader from=$LIST_FIELDS}
-			{if $dtheader eq 'workflow_id'}
+			{if $dtheader eq 'id'}
 			<td class="rptData">
-				<a av="href:Record"><span>
-				<img border="0" title="{'LBL_EDIT'|@getTranslatedString}" alt="{'LBL_EDIT'|@getTranslatedString}"
-					style="cursor: pointer;" src="{'editfield.gif'|@vtiger_imageurl:$THEME}"/></span></a>
-				<a av="href:RecordDel"><span av="id:workflow_id"><img border="0" title="{'LBL_DELETE'|@getTranslatedString}" alt="{'LBL_DELETE'|@getTranslatedString}"
-					src="{'delete.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;"</span>
+				<a av="href:edituser">
+					<span>
+						<img border="0" title="{'LBL_EDIT'|@getTranslatedString}" alt="{'LBL_EDIT'|@getTranslatedString}" style="cursor: pointer;" src="{'editfield.gif'|@vtiger_imageurl:$THEME}"/>
+					</span>
+				</a>
+				<a av="href:RecordDel" data-handler="deleteUser">
+					<span av="id:id">
+						<img border="0" title="{'LBL_DELETE'|@getTranslatedString}" alt="{'LBL_DELETE'|@getTranslatedString}" src="{'delete.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;"/>
+					</span>
+				</a>
+				<a av="href:Record">
+					<span>
+						<img src="{'logout.png'|@vtiger_imageurl:$THEME}" data-handler="logoutUser" border="0" alt="{$APP.LBL_LOGOUT}" title="{$APP.LBL_LOGOUT}" style="cursor:pointer;width:16px;"/>
+					</span>
+				</a>
+				<a av="href:duplicateuser">
+					<span>
+						<img border="0" alt="{$APP.LBL_DUPLICATE_BUTTON}" title="{$APP.LBL_DUPLICATE_BUTTON}" src="{'settingsActBtnDuplicate.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;"/>
+					</span>
 				</a>
 			</td>
+			{elseif $dtheader eq 'user_name'}
+			<td class="rptData">
+				<a av="href:viewusername"><span v="username"></span></a>
+				<table> 
+					<tr>
+						<td style="padding:0; margin:0;">
+							<a av="href:viewuser"><span v="firstname"></span>&nbsp;<span v="lastname"></span></a>&nbsp;&#10088;&nbsp;<a av="href:viewrole"><span v="rolename"></span></a>&nbsp;&#10089;
+						</td>
+					</tr>
+				</table>
+			</td>
+			{elseif $dtheader eq 'status'}
+				<td v="statustag" class="rptData"></td>
+			{elseif $dtheader eq 'email1'}
+				<td class="rptData"><a av="href:sendmail"><span v="sendmail"></span></a></td>
 			{else}
-			<td v="{$dtkey}" class="rptData"></td>
+				<td v="{$dtkey}" class="rptData"></td>
 			{/if}
 		{/foreach}
 	</tr>
 </table>
+	
 <script type="text/javascript">
 {literal}
-Template.define('userlist_row_template', {});
+Template.define('userlist_row_template', {
+	deleteUser:function(obj,data) {
+		obj.addEventListener('click', function (event) {
+			event.preventDefault();
+			jQuery.ajax({
+					method:"POST",
+					url:'index.php?module=Users&action=UsersAjax&file=UserDeleteStep1&record='+data.id
+				}).done(function(response) {
+					document.getElementById("tempdiv").innerHTML= response;
+					fnvshobj(obj,"tempdiv");
+				}
+			);
+		});
+	},
+	logoutUser:function(obj, data) {
+		obj.addEventListener('click', function (event) {
+			event.preventDefault();
+			jQuery.ajax({
+					method:"POST",
+					url:'index.php?module=Users&action=UsersAjax&file=LogoutUser&logoutuserid='+data.id
+				}).done(function(response) {
+					console.log(data.id,response);
+					document.getElementById("status").style.display="none";
+					alert(response);
+				}
+			);
+		});
+	}
+});
 DataTable.onRedraw(document.getElementsByTagName('datatable')[0], function (data) {
 	for (index in data.data) {
-		if (data.data[index].isDefaultWorkflow) {
-			document.getElementById(data.data[index].workflow_id).style.display = "none";
+		if (((data.data[index].Status == 'Active') && data.data[index].iscurrentuser && data.data[index].isblockeduser) || (data.data[index].Status == 'Inactive')) {
+			document.getElementById(data.data[index].id).style.display = "none";
 		}
 	}
 });
@@ -164,7 +222,8 @@ Pagination._config.langNext = "{$APP.LNK_LIST_NEXT} >";
 {literal}
 Pagination._config.langStats = "{from}-{to} {/literal}{$APP.LBL_LIST_OF}{literal} {total} ({/literal}{$APP.Page}{literal} {currentPage} {/literal}{$APP.LBL_LIST_OF}{literal} {lastPage})";
 DataTableConfig.loadingImg = 'themes/images/loading.svg';
-DataTableConfig.searchInputName = 'trigger_list';
-DataTableConfig.searchInputName = 'list_module';
+DataTableConfig.searchInputName = 'adminstatus';
+DataTableConfig.searchInputName = 'namerole_search';
+DataTableConfig.searchInputName = 'userstatus';
 </script>
 {/literal}

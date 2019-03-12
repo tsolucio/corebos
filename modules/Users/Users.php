@@ -103,6 +103,15 @@ class Users extends CRMEntity {
 		'Phone' => 'phone_work',
 	);
 
+	public $list_fields_names = array(
+		'Tools' => 'id',
+		'username' => 'user_name',
+		'Email' => 'email1',
+		'Admin' => 'is_admin',
+		'Email2' => 'email2',
+		'Status' => 'status',
+	);
+
 	public $popup_fields = array('last_name');
 
 	// This is the list of fields that are in the lists.
@@ -118,11 +127,11 @@ class Users extends CRMEntity {
 		$log->debug('Entering getUserListHeader() method ...');
 		$header_array = array(
 			"Tools",
-			"User ID, Name & Role",
-			"Email",
-			"Admin",
-			"Email2",
-			"Status"
+			"<a>User ID, Name & Role</a>",
+			"<a>Email</a>",
+			"<a>Admin</a>",
+			"<a>Email2</a>",
+			"<a>Status</a>"
 		);
 		$log->debug('Exiting getUserListHeader() method ...');
 		return $header_array;
@@ -1580,52 +1589,42 @@ class Users extends CRMEntity {
 	}
 
 	/**
+	 * $adminstatus, $userstatus, $page, $order_by, $sorder, $email_search, $namerole_search
 	 * public function getUsersJSON($userid, $page, $order_by = 'module_name', $sorder = 'DESC', $action_search = '')
 	 */
-	public function getUsersJSON($modulename, $executioncondtionid, $page, $order_by = 'module_name', $sorder = 'DESC', $desc_search = '', $purpose_search = '') {
-		global $log, $adb;
-		$log->debug('> getWorkFlowJSON');
-
-		// $workflow_execution_condtion_list = array(
-		// 	VTWorkflowManager::$ON_FIRST_SAVE => 'LBL_ONLY_ON_FIRST_SAVE',
-		// 	VTWorkflowManager::$ONCE => 'LBL_UNTIL_FIRST_TIME_CONDITION_TRUE',
-		// 	VTWorkflowManager::$ON_EVERY_SAVE => 'LBL_EVERYTIME_RECORD_SAVED',
-		// 	VTWorkflowManager::$ON_MODIFY => 'LBL_ON_MODIFY',
-		// 	VTWorkflowManager::$ON_DELETE => 'LBL_ON_DELETE',
-		// 	VTWorkflowManager::$ON_SCHEDULE => 'LBL_ON_SCHEDULE',
-		// 	VTWorkflowManager::$MANUAL => 'LBL_MANUAL',
-		// 	VTWorkflowManager::$RECORD_ACCESS_CONTROL => 'LBL_RECORD_ACCESS_CONTROL',
-		// );
+	public function getUsersJSON($adminstatus, $userstatus, $page, $order_by = 'user_name', $sorder = 'DESC', $email_search = '', $namerole_search = '') {
+		global $log, $adb, $current_user;
+		$log->debug('> getUserJSON');
 
 		$where = ' where 1 ';
 		$params = array();
-		if (!empty($modulename) && $modulename != 'all') {
-			$where .= ' and module_name = ? ';
-			array_push($params, $modulename);
+		if (!empty($adminstatus) && $adminstatus != 'all') {
+			$where .= ' and is_admin = ? ';
+			array_push($params, $adminstatus);
 		}
-		if (!empty($executioncondtionid)) {
-			$where .= ' and execution_condition = ? ';
-			array_push($params, $executioncondtionid);
+		if (!empty($userstatus) && $userstatus != 'all') {
+			$where .= ' and status = ? ';
+			array_push($params, $userstatus);
 		}
-		if (!empty($desc_search)) {
-			$where .= " and summary like ? ";
-			array_push($params, "%" . $desc_search . "%");
+		if (!empty($email_search)) {
+			$where .= " and email1 like ? ";
+			array_push($params, "%" . $email_search . "%");
 		}
-		if (!empty($purpose_search)) {
-			$where .= " and purpose like ? ";
-			array_push($params, "%" . $purpose_search . "%");
+		if (!empty($namerole_search)) {
+			$where .= " and user_name like ? ";
+			array_push($params, "%" . $namerole_search . "%");
 		}
 		if ($sorder != '' && $order_by != '') {
-			$list_query = "Select * from com_vtiger_workflows $where order by $order_by $sorder";
+			$list_query = "Select * from vtiger_users $where order by $order_by $sorder";
 		} else {
-			$list_query = "Select * from com_vtiger_workflows $where order by ".$this->default_order_by." ".$this->default_sort_order;
+			$list_query = "Select * from vtiger_users $where order by ".$this->default_order_by." ".$this->default_sort_order;
 		}
-		$rowsperpage = GlobalVariable::getVariable('Workflow_ListView_PageSize', 20);
+		$rowsperpage = GlobalVariable::getVariable('Workflow_ListView_PageSize', 10);
 		$from = ($page-1)*$rowsperpage;
 		$limit = " limit $from,$rowsperpage";
 
 		$result = $adb->pquery($list_query.$limit, $params);
-		$rscnt = $adb->pquery("select count(*) from com_vtiger_workflows $where", array($params));
+		$rscnt = $adb->pquery("select count(*) from vtiger_users $where", array($params));
 		$noofrows = $adb->query_result($rscnt, 0, 0);
 		$last_page = ceil($noofrows/$rowsperpage);
 		if ($page*$rowsperpage>$noofrows-($noofrows % $rowsperpage)) {
@@ -1649,36 +1648,59 @@ class Users extends CRMEntity {
 		if ($islastpage && $page!=1) {
 			$entries_list['next_page_url'] = null;
 		} else {
-			$entries_list['next_page_url'] = 'index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getJSON&page='.($islastpage ? $page : $page+1);
+			$entries_list['next_page_url'] = 'index.php?module=Users&action=UsersAjax&file=getJSON&page='.($islastpage ? $page : $page+1);
 		}
-		$entries_list['prev_page_url'] = 'index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getJSON&page='.($page == 1 ? 1 : $page-1);
-		$edit_return_url = 'index.php?module=com_vtiger_workflow&action=workflowlist&parenttab=Settings';
-		$vtwfappObject= new VTWorkflowApplication('workflowlist', $edit_return_url);
+		$entries_list['prev_page_url'] = 'index.php?module=Users&action=UsersAjax&file=getJSON&page='.($page == 1 ? 1 : $page-1);
+		$edit_return_url = 'index.php?module=Users&action=index&parenttab=Settings';
+
 		while ($lgn = $adb->fetch_array($result)) {
 			$entry = array();
-			$entry['isDefaultWorkflow'] = true;
-			if (empty($lgn['defaultworkflow']) && getTranslatedString($workflow_execution_condtion_list[$lgn['execution_condition']], 'Settings') != 'MANUAL') {
-				$entry['isDefaultWorkflow'] = false;
-			}
-			$entry['Module'] = getTranslatedString($lgn['module_name'], $lgn['module_name']);
-			$entry['Description'] = getTranslatedString($lgn['summary'], 'com_vtiger_workflow');
-			if (empty($lgn['workflow_id'])) {
-				$rurl = '';
-				$delurl = '';
+
+			if ($_SESSION['internal_mailer'] == 1) {
+				$recordId = $lgn['id'];
+				$module = "Users";
+				$tabid = getTabid($module);
+				$fieldId = $adb->getone("select fieldid from vtiger_field where tabid=".$tabid." and tablename='vtiger_users' and fieldname='email1'");
+				$fieldName = "email1";
+				$value = $lgn['email1'];
+				$entry['sendmail'] = "<a href=\"javascript:InternalMailer($recordId,$fieldId,"."'$fieldName','$module','record_id');\">".textlength_check($value)."</a>";
 			} else {
-				if ($lgn['module_name']=='Reports') {
-					$rurl = 'index.php?module=Reports&action=SaveAndRun&record='.$lgn['workflow_id'];
-				} else {
-					$rurl = $vtwfappObject->editWorkflowUrl($lgn['workflow_id']);
-					$delurl = $vtwfappObject->deleteWorkflowUrl($lgn['workflow_id']);
-				}
+				$entry['sendmail'] = '<a href="mailto:'.$rawValue.'">'.textlength_check($value).'</a>';
 			}
-			$entry['Record'] = $rurl;
-			$entry['RecordDel'] = $delurl;
-			$entry['RecordDetail'] = $lgn['workflow_id'];
-			$entry['workflow_id'] = $lgn['workflow_id'];
-			$entry['Purpose'] = $lgn['purpose'];
-			$entry['Trigger'] = getTranslatedString($workflow_execution_condtion_list[$lgn['execution_condition']], 'Settings');
+
+			$entry['iscurrentuser'] = false;
+			if ($current_user->id == $lgn['id']) {
+				$entry['iscurrentuser'] = true;
+			}
+			$entry['isadmin'] = false;
+			if ($lgn['is_admin'] == 'on') {
+				$entry['isadmin'] = true;
+			}
+			$entry['isblockeduser'] = false;
+			if ($lgn['user_name'] == 'admin') {
+				$entry['isblockeduser'] = true;
+			}
+			$entry['duplicateuser'] = "index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record=".$lgn['id']."&isDuplicate=true";
+			$entry['viewuser'] = "index.php?module=Users&action=DetailView&parenttab=Settings&record=".$lgn['id'];
+			$entry['viewusername'] = "index.php?module=Users&action=DetailView&parenttab=Settings&record=".$lgn['id'];
+			$entry['edituser'] = "index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record=".$lgn['id'];
+			$entry['Admin'] = $lgn['is_admin'];
+			$entry['Email'] = $lgn['email1'];
+			$entry['Email2'] = $lgn['email2'];
+			$entry['username'] = $lgn['user_name'];
+			$entry['id'] = $lgn['id'];
+			$entry['firstname'] = $lgn['first_name'];
+			$entry['lastname'] = $lgn['last_name'];
+			$entry['Status'] = $lgn['status'];
+			if ($lgn['status'] == 'Active') {
+				$entry['statustag'] ='<span class="active">'.$lgn['status'].'</span>';
+			} else {
+				$entry['statustag'] ='<span class="inactive">'.$lgn['status'].'</span>';
+			}
+			$entry['roleid'] = fetchUserRole($lgn['id']);
+			$rolename = $adb->getone("select rolename from vtiger_role where roleid='".$entry['roleid']."'");
+			$entry['rolename'] = $rolename;
+			$entry['viewrole'] = 'index.php?action=RoleDetailView&module=Settings&parenttab=Settings&roleid='.$entry['roleid'];
 			$entries_list['data'][] = $entry;
 		}
 		$log->debug('< getUsersJSON');
