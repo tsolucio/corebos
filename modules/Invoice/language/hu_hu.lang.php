@@ -57,6 +57,7 @@ $mod_strings = array(
 	'LBL_POSTAL_CODE' => 'Irányítószám:',
 	'LBL_COUNTRY' => 'Ország:',
 	'LBL_DESCRIPTION_INFORMATION' => 'Leírás',
+	'LBL_Invoice_FINANCIALINFO' => 'Financial Information',
 	'LBL_DESCRIPTION' => 'Leírás:',
 	'LBL_TERMS_INFORMATION' => 'Határidők és Feltételek',
 	'NTC_COPY_BILLING_ADDRESS' => 'Számlázási cím másolása a Szállítási címhez',

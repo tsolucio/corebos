@@ -242,9 +242,9 @@ class Validations extends processcbMap {
 						break;
 					case 'notDuplicate':
 						if (isset($val['msg'])) {
-							$v->rule($rule, $valfield, $mapping['origin'], $arguments[1])->message($val['msg'])->label($i18n);
+							$v->rule($rule, $valfield, $mapping['origin'], $arguments[1], $restrictions)->message($val['msg'])->label($i18n);
 						} else {
-							$v->rule($rule, $valfield, $mapping['origin'], $arguments[1])->label($i18n);
+							$v->rule($rule, $valfield, $mapping['origin'], $arguments[1], $restrictions)->label($i18n);
 						}
 						break;
 					case 'expression':

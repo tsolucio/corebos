@@ -48,6 +48,7 @@ $mod_strings = array(
 	'LBL_ADDRESS_INFORMATION' => 'Cím adatok',
 	'LBL_Quote_INFORMATION' => 'Cég Információ',
 	'LBL_CUSTOM_INFORMATION' => 'Egyedi Információ',
+	'LBL_SalesOrder_FINANCIALINFO' => 'Financial Information',
 	'LBL_BILLING_ADDRESS' => 'Számlázási cím:',
 	'LBL_SHIPPING_ADDRESS' => 'Szállítási cím:',
 	'LBL_ANY_ADDRESS' => 'Bármilyen cím:',

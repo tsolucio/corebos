@@ -59,6 +59,7 @@ $mod_strings = array(
 'LBL_POSTAL_CODE'=>'CEP:',
 'LBL_COUNTRY'=>'País:',
 'LBL_DESCRIPTION_INFORMATION'=>'Descrição',
+'LBL_Invoice_FINANCIALINFO' => 'Financial Information',
 'LBL_DESCRIPTION'=>'Descrição:',
 'LBL_TERMS_INFORMATION'=>'Termos e condições',
 'NTC_COPY_BILLING_ADDRESS'=>'Copiar endereço de faturação para endereço de entrega',
