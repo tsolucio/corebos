@@ -380,6 +380,6 @@ class VTFieldExpressionEvaluater {
 
 // Load expression functions
 foreach (glob('modules/com_vtiger_workflow/expression_functions/*.php') as $fcode) {
-	include $fcode;
+	include_once $fcode;
 }
 ?>
