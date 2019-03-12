@@ -126,8 +126,8 @@
 												</span>
 											</div>
 											<div id="UnifiedSearch_modulelistwrapper" class="slds-dropdown slds-dropdown_length-10 slds-dropdown_x-small" role="listbox">
-											</div>											
-										</div>	
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -148,7 +148,7 @@
 										<input name="query_string" id="query_string" class="slds-input slds-combobox__input{if $GLOBAL_AC} autocomplete-input{/if}" type="text" role="textbox" placeholder="{$APP.LBL_SEARCH_TITLE}{$coreBOS_app_name}" aria-autocomplete="list" autoComplete="off" data-autocomp='{$GS_AUTOCOMP|@json_encode}' />
 										<div role="listbox" class="">
 											<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0;display:block;visibility: visible;" role="presentation"></ul>
-										</div>										
+										</div>
 									</div>
 								</div>
 							</form>
@@ -174,7 +174,7 @@
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#attach"></use>
 								</svg>
 								<span class="slds-assistive-text">{$APP.LBL_LAST_VIEWED}</span>
-							</button>							
+							</button>
 						</div>
 					</div>
 				</li>
@@ -233,7 +233,7 @@
 								</li>
 							</ul>
 						</div>
-					</div>                        
+					</div>
 				</li>
 				<li class="slds-global-actions__item">
 					<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
@@ -255,12 +255,12 @@
 									</a>
 								</li>
 							</ul>
-						</div>                            
+						</div>
 					</div>
 				</li>
 				<li class="slds-global-actions__item">
 					<span class="slds-text-title slds-truncate" title="{$USER}">{$USER}</span>
-				</li>                    
+				</li>
 			</ul>
 		</div>
 	</div>
@@ -393,40 +393,41 @@
 
 <!-- Last visited panel -->
 <div id="cbds-last-visited" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited" aria-hidden="false">  <div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default slds-text-color_inverse">
-    <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Panel Header">{$APP.LBL_LAST_VIEWED}</h2>
-    <button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__close" title="Collapse Panel Header" onclick="document.getElementById('cbds-last-visited').classList.add('cbds-anim-slideout--right');document.getElementById('cbds-last-visited').classList.remove('cbds-anim-slidein--right');">
-      <svg class="slds-button__icon" aria-hidden="true">
-        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-      </svg>
-      <span class="slds-assistive-text">Close panel</span>
-    </button>
-  </div>
-  <div class="slds-panel__body">
-		{foreach name=trackinfo item=trackelements from=$TRACINFO}
-			<article class="slds-card">
-				<div class="slds-card__header slds-grid">
-					<header class="slds-media slds-media_center slds-has-flexi-truncate">
-						<div class="slds-media__figure">
-							<span class="{$trackelements.__ICONContainerClass}" title="{$trackelements.module_name}">
-								<svg class="{$trackelements.__ICONClass}" aria-hidden="true">
-									<use xlink:href="include/LD/assets/icons/{$trackelements.__ICONLibrary}-sprite/svg/symbols.svg#{$trackelements.__ICONName}"></use> 
-								</svg>
-							<span class="slds-assistive-text">{$trackelements.module_name}</span>
-						</span>
-						</div>
-						<div class="slds-media__body">
-							<h2 class="slds-card__header-title">
-								<a href="index.php?module={$trackelements.module_name}&action=DetailView&record={$trackelements.crmid}&parenttab={$CATEGORY}" class="slds-card__header-link" title="{$trackelements.module_name}">
-									<span>{$trackelements.item_summary}</span>
-								</a>
-							</h2>
-							<span></span>
-						</div>
-					</header>
-				</div>
-			</article>
-		{/foreach}
-  </div>
+	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Panel Header">				{$APP.LBL_LAST_VIEWED}
+	</h2>
+	<button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__close" title="Collapse Panel Header" onclick="document.getElementById('cbds-last-visited').classList.add('cbds-anim-slideout--right');document.getElementById('cbds-last-visited').classList.remove('cbds-anim-slidein--right');">
+		<svg class="slds-button__icon" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+		</svg>
+		<span class="slds-assistive-text">Close panel</span>
+	</button>
+</div>
+<div class="slds-panel__body">
+	{foreach name=trackinfo item=trackelements from=$TRACINFO}
+		<article class="slds-card">
+			<div class="slds-card__header slds-grid">
+				<header class="slds-media slds-media_center slds-has-flexi-truncate">
+					<div class="slds-media__figure">
+						<span class="{$trackelements.__ICONContainerClass}" title="{$trackelements.module_name}">
+							<svg class="{$trackelements.__ICONClass}" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/{$trackelements.__ICONLibrary}-sprite/svg/symbols.svg#{$trackelements.__ICONName}"></use> 
+							</svg>
+						<span class="slds-assistive-text">{$trackelements.module_name}</span>
+					</span>
+					</div>
+					<div class="slds-media__body">
+						<h2 class="slds-card__header-title">
+							<a href="index.php?module={$trackelements.module_name}&action=DetailView&record={$trackelements.crmid}&parenttab={$CATEGORY}" class="slds-card__header-link" title="{$trackelements.module_name}">
+								<span>{$trackelements.item_summary}</span>
+							</a>
+						</h2>
+						<span></span>
+					</div>
+				</header>
+			</div>
+		</article>
+	{/foreach}
+</div>
 </div>
 
 <!-- Last // visited panel -->
@@ -437,13 +438,13 @@
 		{foreach key=actionlabel item=actionlink from=$HEADERS}
 			<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_hover" aria-haspopup="true">
 				<a href="{$actionlink}" class="slds-context-bar__label-action" title="{$actionlabel}">
-						<span class="slds-truncate">{$actionlabel}</span>
+					<span class="slds-truncate">{$actionlabel}</span>
 				</a>
 			</li>
 		{/foreach}
 		<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_hover" aria-haspopup="true">
 			<a href="index.php?module=Settings&action=index&parenttab=" class="slds-context-bar__label-action" title="{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}">
-					<span class="slds-truncate">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</span>
+				<span class="slds-truncate">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</span>
 			</a>
 		</li>
 	</ul>
