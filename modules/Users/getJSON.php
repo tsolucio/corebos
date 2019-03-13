@@ -17,6 +17,11 @@
  *************************************************************************************************/
 require_once 'include/utils/utils.php';
 require_once 'Users.php';
+global $app_strings, $current_user;
+if ($current_user->is_admin != 'on') {
+	die('<br><br><center>'.$app_strings['LBL_PERMISSION']." <a href='javascript:window.history.back()'>".$app_strings['LBL_GO_BACK'].'.</a></center>');
+}
+
 $response = array(
 	'total' => 0,
 	'data' => array(),

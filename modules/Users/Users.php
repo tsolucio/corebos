@@ -125,13 +125,14 @@ class Users extends CRMEntity {
 	public function getUserListHeader() {
 		global $log, $app_strings;
 		$log->debug('Entering getUserListHeader() method ...');
+		$module = 'Users';
 		$header_array = array(
-			"Tools",
-			"<a>User ID, Name & Role</a>",
-			"<a>Email</a>",
-			"<a>Admin</a>",
-			"<a>Email2</a>",
-			"<a>Status</a>"
+			getTranslatedString('LBL_TOOLS', $module ),
+			'<a>'.getTranslatedString('LBL_LIST_USER_NAME_ROLE', $module ).'</a>',
+			'<a>'.getTranslatedString('LBL_EMAILS', $module).'</a>',
+			'<a>'.getTranslatedString('LBL_ADMIN', $module).'</a>',
+			'<a>'.getTranslatedString('LBL_EMAILS2', $module).'</a>',
+			'<a>'.getTranslatedString('LBL_STATUS', $module).'</a>'
 		);
 		$log->debug('Exiting getUserListHeader() method ...');
 		return $header_array;
