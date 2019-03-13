@@ -27,11 +27,31 @@ class bqAnswer_DetailViewBlock extends DeveloperBlock {
 
 	// This one is called to get the contents to show on screen
 	public function process($context = false) {
+		global $current_user, $currentModule;
 		$this->context = $context;
 		$sourceRecordId = $this->getFromContext('QID');
 		if (!empty($sourceRecordId)) {
-			$return = cbQuestion::getFormattedAnswer($sourceRecordId);
-			return $return;
+			$recordid = $this->getFromContext('RECORDID');
+			$module = $this->getFromContext('MODULE');
+			if (empty($module)) {
+				$module = $currentModule;
+			}
+			$params = array(
+				'$RECORD$' => $recordid,
+				'$MODULE$' => $module,
+				'$USERID$' => $current_user->id,
+			);
+			if (isset($recordid)) {
+				$ctxtmodule = getSalesEntityType($recordid);
+				$params['$MODULE$'] = $ctxtmodule;
+				$ent = CRMEntity::getInstance($ctxtmodule);
+				$ent->id = $recordid;
+				$ent->retrieve_entity_info($recordid, $ctxtmodule, false, true);
+				foreach ($ent->column_fields as $fname => $fvalue) {
+					$params['$'.$fname.'$'] = $fvalue;
+				}
+			}
+			return cbQuestion::getFormattedAnswer($sourceRecordId, $params);
 		}
 		return getTranslatedString('LBL_PERMISSION');
 	}
