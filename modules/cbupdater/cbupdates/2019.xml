@@ -48,4 +48,11 @@
 	<filename>build/changeSets/2019/movingsettingsblock.php</filename>
 	<classname>movingsettingsblock</classname>
 </changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>adding SMS support for vendors</description>
+	<filename>build/changeSets/2019/smsNotifierToVendors.php</filename>
+	<classname>smsNotifierToVendors</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
