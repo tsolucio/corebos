@@ -254,8 +254,8 @@ class Emails extends CRMEntity {
 			$mail->AddReplyTo($replyToEmail);
 		}
 		// mailscanner customization: If Support Reply To is defined use it.
-		$HELPDESK_SUPPORT_EMAIL_REPLY_ID = GlobalVariable::getVariable('HelpDesk_Support_Reply_EMail', $HELPDESK_SUPPORT_EMAIL_ID, 'HelpDesk');
-		if ($HELPDESK_SUPPORT_EMAIL_REPLY_ID && $HELPDESK_SUPPORT_EMAIL_ID != $HELPDESK_SUPPORT_EMAIL_REPLY_ID) {
+		$HELPDESK_SUPPORT_EMAIL_REPLY_ID = GlobalVariable::getVariable('HelpDesk_Support_Reply_EMail', $replyto, 'HelpDesk');
+		if ($HELPDESK_SUPPORT_EMAIL_REPLY_ID && $replyto != $HELPDESK_SUPPORT_EMAIL_REPLY_ID) {
 			$mail->AddReplyTo($HELPDESK_SUPPORT_EMAIL_REPLY_ID);
 		}
 		$mail_status = MailSend($mail);
