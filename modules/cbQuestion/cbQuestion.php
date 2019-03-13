@@ -266,9 +266,11 @@ class cbQuestion extends CRMEntity {
 			$properties = json_decode($ans['properties']);
 			$labels = array();
 			$values = array();
+			$rc = array();
 			for ($x = 0; $x < count($answer); $x++) {
 				$labels[] = getTranslatedString($answer[$x][$properties->key_label], $module);
 				$values[] = $answer[$x][$properties->key_value];
+				$rc[] = 'getRandomColor()';
 			}
 			$chartID = uniqid('chartAns');
 			$chart .= '<script src="include/chart.js/Chart.min.js"></script>
@@ -294,7 +296,7 @@ class cbQuestion extends CRMEntity {
 							labels: '.json_encode($labels).',
 							datasets: [{
 								data: '.json_encode($values).',
-								backgroundColor: [getRandomColor(),getRandomColor()]
+								backgroundColor: ['.implode(',', $rc).']
 							}]
 						};
 						var maxnum = Math.max.apply(Math, chartDataObject.datasets[0].data);
