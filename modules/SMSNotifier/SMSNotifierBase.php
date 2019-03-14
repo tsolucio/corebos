@@ -142,6 +142,10 @@ class SMSNotifierBase extends CRMEntity {
 			$accountsModuleInstance = Vtiger_Module::getInstance('Accounts');
 			$accountsModuleInstance->deleteLink('LISTVIEWBASIC', 'Send SMS');
 			$accountsModuleInstance->deleteLink('DETAILVIEWBASIC', 'Send SMS');
+
+			$vendorsModuleInstance = Vtiger_Module::getInstance('Vendors');
+			$vendorsModuleInstance->deleteLink('LISTVIEWBASIC', 'Send SMS');
+			$vendorsModuleInstance->deleteLink('DETAILVIEWBASIC', 'Send SMS');
 		}
 
 		if ($registerLinks) {
@@ -160,6 +164,10 @@ class SMSNotifierBase extends CRMEntity {
 			$accountsModuleInstance = Vtiger_Module::getInstance('Accounts');
 			$accountsModuleInstance->addLink('LISTVIEWBASIC', 'Send SMS', "SMSNotifierCommon.displaySelectWizard(this, '\$MODULE\$');");
 			$accountsModuleInstance->addLink('DETAILVIEWBASIC', 'Send SMS', "javascript:SMSNotifierCommon.displaySelectWizard_DetailView('\$MODULE\$', '\$RECORD\$');");
+
+			$vendorsModuleInstance = Vtiger_Module::getInstance('Vendors');
+			$vendorsModuleInstance->addLink('LISTVIEWBASIC', 'Send SMS', "SMSNotifierCommon.displaySelectWizard(this, '\$MODULE\$');");
+			$vendorsModuleInstance->addLink('DETAILVIEWBASIC', 'Send SMS', "javascript:SMSNotifierCommon.displaySelectWizard_DetailView('\$MODULE\$', '\$RECORD\$');");
 		}
 	}
 
