@@ -95,7 +95,8 @@ var __attinfo = {$task->dzattinfo|json_encode};
 			<input type="hidden" id="attachmentCount" name="attachmentCount" value="{if isset($task->attachmentids)}{$task->attachmentids|substr_count:','}{else}0{/if}" >
 			<input name="listofids" id="listofids" type="hidden" value="{if isset($LISTID)}{$LISTID}{/if}">
 			<input type='hidden' class='small' name="msgtpopup_type" id="msgtpopup_type" value="MsgTemplate">
-			<input title="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE}" accessKey="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_KEY}" class="crmbutton small edit" onclick='return vtlib_open_popup_window("","msgtpopup","MsgTemplate","");' type="button" name="button" value=" {$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL} ">
+			<input type='hidden' class='small' name="calltype" id="calltype" value="emailworkflow">
+			<input title="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE}" accessKey="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_KEY}" class="crmbutton small edit" onclick="jQuery('#file-uploader').show();return vtlib_open_popup_window('','msgtpopup','MsgTemplate','');" type="button" name="button" value=" {$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL} ">
 			<input type="hidden" id="attachmentids"  name="attachmentids" value="{if isset($task->attachmentids)}{$task->attachmentids}{/if}" >
 			<button onclick="jQuery('#file-uploader').show();attachmentManager.getDocuments();return false;" class="crmbutton small edit slds-m-left_xx-small slds-m-top_xx-small">{'LBL_SELECT_DOCUMENTS'|@getTranslatedString:'MailManager'}</button><br>
 			<button onclick="jQuery('#file-uploader').toggle();return false;" class="crmbutton small edit slds-m-left_xx-small slds-m-top_xx-small">{'LBL_Attachments'|@getTranslatedString:'MailManager'}</button><br>
