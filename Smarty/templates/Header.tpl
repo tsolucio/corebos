@@ -100,7 +100,7 @@
 
 <!-- LDS Global header -->
 
-<header class="slds-global-header_container" id="global-header">
+<header class="slds-global-header_container noprint" id="global-header">
 	<div class="slds-global-header slds-grid slds-grid_align-spread">
 		<div class="slds-global-header__item">
 			<div class="slds-global-header__logo" style="background-image: url('{$COMPANY_DETAILS.applogo}');"></div>
@@ -210,7 +210,7 @@
 				{/if}
 				<li class="slds-global-actions__item">
 					<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
-						<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-haspopup="true" title="{$APP.LBL_MORE}">
+						<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-haspopup="true" title="{$APP.LBL_MORE}" onclick="window.location.assign('index.php?module=Settings&action=index&parenttab=')">
 							<svg class="slds-button__icon" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#settings"></use>
 							</svg>
@@ -237,13 +237,23 @@
 				</li>
 				<li class="slds-global-actions__item">
 					<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
-						<button class="slds-button slds-global-actions__avatar slds-global-actions__item-action" title="{$USER}" aria-haspopup="true">
+						<button class="slds-button slds-global-actions__avatar slds-global-actions__item-action" title="{$USER}" aria-haspopup="true" onclick="window.location.assign('index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}&modechk=prefview')">
 							<span class="slds-avatar slds-avatar_circle slds-avatar_medium">
-									<img alt="{$USER}" src="include/LD/assets/images/avatar2.jpg" title="{$USER}" />
-								</span>
+								{if $CURRENT_USER_IMAGE}
+								<img alt="{$USER}" src="{$CURRENT_USER_IMAGE}" />
+								{else}
+								<img alt="{$USER}" src="include/LD/assets/images/avatar2.jpg" />
+								{/if}
+							</span>
 						</button>
-						<div class="slds-dropdown slds-dropdown_left">
+						<div class="slds-dropdown slds-dropdown_right">
 							<ul class="slds-dropdown__list" role="menu" aria-label="Show More">
+								<li class="slds-dropdown__item" role="presentation">
+									<a href="" role="menuitem" tabindex="0">
+										<span class="slds-truncate" title="{$USER}">{$USER}</span>
+									</a>
+								</li>
+								<li class="slds-has-divider_top-space" role="separator"></li>
 								<li class="slds-dropdown__item" role="presentation">
 									<a href="index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}&modechk=prefview" role="menuitem" tabindex="0">
 										<span class="slds-truncate" title="{$APP.LBL_MY_PREFERENCES}">{$APP.LBL_MY_PREFERENCES}</span>
@@ -258,12 +268,27 @@
 						</div>
 					</div>
 				</li>
-				<li class="slds-global-actions__item">
-					<span class="slds-text-title slds-truncate" title="{$USER}">{$USER}</span>
-				</li>
+				{* <li class="slds-global-actions__item">
+					<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-haspopup="true" title="{$APP.LBL_LOGOUT}" onclick="window.location.assign('index.php?module=Users&action=Logout')">
+						<svg class="slds-button__icon" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#logout"></use>
+						</svg>
+						<span class="slds-assistive-text">{$APP.LBL_LOGOUT}</span>
+					</button>
+				</li> *}
 			</ul>
 		</div>
 	</div>
+	{if $COREBOS_HEADER_PREMENU}
+	<div style="width:100%; background-color:#fff;">
+	{$COREBOS_HEADER_PREMENU}
+	</div>
+	<script>
+		$(function() {
+			$("#blankDiv").height($("#global-header").outerHeight(true));
+		})
+	</script>
+	{/if}
 	<div class="noprint">
 		<div class="slds-context-bar">
 			<div class="slds-context-bar__primary slds-context-bar__item_divider-right">
@@ -292,7 +317,7 @@
 		</div>
 	</div>
 </header>
-<div style="width: 1px; height: 90px;"></div>
+<div id = "blankDiv" style="width: 1px; height: 90px;"></div>
 
 <!-- END LDS Global header -->
 
@@ -376,7 +401,6 @@
 		</form>
 	</div>
 {/if}
-{$COREBOS_HEADER_PREMENU}
 <!-- header - master tabs -->
 
 <div id="calculator_cont" style="position:absolute; z-index:100001;" ></div>

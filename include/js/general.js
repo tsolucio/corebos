@@ -5337,7 +5337,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 /****
 	* ldsCombobox
 	* @author: MajorLabel <info@majorlabel.nl>
-	* @license GNUv2
+	* @license VPL
 	*/
 (function ldscomboboxModule(factory){
 
