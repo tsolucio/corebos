@@ -339,6 +339,7 @@ jQuery(document).ready(function () {
 		var dzelem = document.getElementById('file-uploader');
 		for (var i=0; i<__attinfo.length; i++) {
 			dzelem.dropzone.emit('addedfile', {name:__attinfo[i]['name'], size:__attinfo[i]['size'], docid:__attinfo[i]['docid']});
+			dzelem.dropzone.emit('complete', {name:__attinfo[i]['name'], size:__attinfo[i]['size'], docid:__attinfo[i]['docid']});
 		}
 	}
 });
