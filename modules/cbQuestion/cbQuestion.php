@@ -173,7 +173,7 @@ class cbQuestion extends CRMEntity {
 	 */
 	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 
-	public static function getAnswer($qid) {
+	public static function getAnswer($qid, $params = array()) {
 		global $current_user, $default_charset;
 		if (isPermitted('cbQuestion', 'DetailView', $qid) != 'yes') {
 			return array('type' => 'ERROR', 'answer' => 'LBL_PERMISSION');
@@ -183,13 +183,17 @@ class cbQuestion extends CRMEntity {
 		$q->retrieve_entity_info($qid, 'cbQuestion');
 		$query = 'SELECT '.$q->column_fields['qcolumns'].' FROM '.$q->column_fields['qmodule'];
 		if (!empty($q->column_fields['qcondition'])) {
-			$query .= ' WHERE '.$q->column_fields['qcondition'];
-		}
-		if (!empty($q->column_fields['orderby'])) {
-			$query .= ' ORDER BY '.$q->column_fields['orderby'];
+			$conds = $q->column_fields['qcondition'];
+			foreach ($params as $param => $value) {
+				$conds = str_replace($param, $value, $conds);
+			}
+			$query .= ' WHERE '.$conds;
 		}
 		if (!empty($q->column_fields['groupby'])) {
 			$query .= ' GROUP BY '.$q->column_fields['groupby'];
+		}
+		if (!empty($q->column_fields['orderby'])) {
+			$query .= ' ORDER BY '.$q->column_fields['orderby'];
 		}
 		if (!empty($q->column_fields['qpagesize'])) {
 			$query .= ' LIMIT '.$q->column_fields['qpagesize'];
@@ -205,8 +209,8 @@ class cbQuestion extends CRMEntity {
 		);
 	}
 
-	public static function getFormattedAnswer($qid) {
-		$ans = self::getAnswer($qid);
+	public static function getFormattedAnswer($qid, $params = array()) {
+		$ans = self::getAnswer($qid, $params);
 		switch ($ans['type']) {
 			case 'Table':
 				$ret = self::getTableFromAnswer($ans);
@@ -262,9 +266,11 @@ class cbQuestion extends CRMEntity {
 			$properties = json_decode($ans['properties']);
 			$labels = array();
 			$values = array();
+			$rc = array();
 			for ($x = 0; $x < count($answer); $x++) {
 				$labels[] = getTranslatedString($answer[$x][$properties->key_label], $module);
 				$values[] = $answer[$x][$properties->key_value];
+				$rc[] = 'getRandomColor()';
 			}
 			$chartID = uniqid('chartAns');
 			$chart .= '<script src="include/chart.js/Chart.min.js"></script>
@@ -290,7 +296,7 @@ class cbQuestion extends CRMEntity {
 							labels: '.json_encode($labels).',
 							datasets: [{
 								data: '.json_encode($values).',
-								backgroundColor: [getRandomColor(),getRandomColor()]
+								backgroundColor: ['.implode(',', $rc).']
 							}]
 						};
 						var maxnum = Math.max.apply(Math, chartDataObject.datasets[0].data);

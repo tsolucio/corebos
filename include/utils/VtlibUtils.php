@@ -513,10 +513,6 @@ function vtlib_process_widget($widgetLinkInfo, $context = false) {
 			if ($widgetInstance) {
 				if (isset($widgetInfo[2])) {
 					parse_str($widgetInfo[2], $widgetContext);
-					$context = array_merge($context, $widgetContext);
-				}
-				if (isset($widgetInfo[2])) {
-					parse_str($widgetInfo[2], $widgetContext);
 					if (!$context) {
 						$context = [];
 					}
