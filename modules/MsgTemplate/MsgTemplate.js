@@ -9,7 +9,13 @@
 
 function submittemplate(recordid, value, target_fieldname, formname) {
 	let idlist = window.opener.document.getElementById('listofids').value;
-	window.document.location.href = 'index.php?module=MsgTemplate&action=MsgTemplateAjax&file=TemplateMerge&listofids='+idlist+'&action_id='+recordid;
+	var calltype = (window.opener.document.getElementById('calltype') != null ? window.opener.document.getElementById('calltype').value : 'normalcall'); 
+	if(calltype =='normalcall'){
+		window.document.location.href = 'index.php?module=MsgTemplate&action=MsgTemplateAjax&file=TemplateMerge&listofids='+idlist+'&action_id='+recordid+'&calltype='+calltype;
+	}
+	if(calltype =='emailworkflow'){
+		window.document.location.href = 'index.php?module=MsgTemplate&action=MsgTemplateAjax&file=TemplateMergeEmailTask&listofids='+idlist+'&action_id='+recordid+'&calltype='+calltype;
+	}
 }
 
 function msgtFillInModuleFields() {
