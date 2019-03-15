@@ -24,7 +24,7 @@ class cbcalendaractionpermissions extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$module = Vtiger_Module::getInstance('cbCalendar');
-			$module->enableTools(Array('Merge', 'Import', 'Export', 'DuplicatesHandling'));
+			$module->enableTools(array('Merge', 'Import', 'Export', 'DuplicatesHandling'));
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}

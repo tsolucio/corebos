@@ -851,6 +851,7 @@ if (typeof(MailManager) == 'undefined') {
 					for (var i=0; i<attachments.length; i++) {
 						var fsize = MailManager.computeFileSizeToBytes(attachments[i]['size']);
 						dzelem.dropzone.emit('addedfile', {name:attachments[i]['name'], size:fsize, emailid:id, docid:attachments[i]['docid']});
+						dzelem.dropzone.emit('complete', {name:attachments[i]['name'], size:fsize, emailid:id, docid:attachments[i]['docid']});
 					}
 				}
 				jQuery('#attachmentCount').val(attachments.length);
@@ -1417,10 +1418,11 @@ if (typeof(MailManager) == 'undefined') {
 			}
 			if (dzelem.dropzone) {
 				dzelem.dropzone.emit('addedfile', {name:res.name, size:res.size, emailid:res.emailid, docid:res.docid});
+				dzelem.dropzone.emit('complete', {name:res.name, size:res.size, emailid:res.emailid, docid:res.docid});
 			}
 			// Update the attachment counter
 			MailManager.uploadCountUpdater();
-			if (window.opener) {
+			if (window.opener && document.getElementById('closewindow').value=='true') {
 				window.close();
 			}
 		},

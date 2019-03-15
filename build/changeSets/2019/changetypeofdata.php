@@ -15,6 +15,7 @@
 *************************************************************************************************/
 
 class changetypeofdata extends cbupdaterWorker {
+
 	public function applyChange() {
 		if ($this->hasError()) {
 			$this->sendError();
@@ -22,9 +23,18 @@ class changetypeofdata extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery("update vtiger_field set typeofdata=? where tablename=? and columname=?", array('D~M', 'vtiger_assets', 'datesold'));
-			$this->ExecuteQuery("update vtiger_field set typeofdata=? where tablename=? and columname=?", array('D~M~OTH~GE~datesold~Date Sold', 'vtiger_assets', 'dateinservice'));
-			$this->ExecuteQuery("update vtiger_field set typeofdata=? where tablename=? and columname=?", array('D~O~OTH~GE~date_start~Start Date & Time', 'vtiger_activity', 'due_date'));
+			$this->ExecuteQuery(
+				'update vtiger_field set typeofdata=? where tablename=? and columname=?',
+				array('D~M', 'vtiger_assets', 'datesold')
+			);
+			$this->ExecuteQuery(
+				'update vtiger_field set typeofdata=? where tablename=? and columname=?',
+				array('D~M~OTH~GE~datesold~Date Sold', 'vtiger_assets', 'dateinservice')
+			);
+			$this->ExecuteQuery(
+				'update vtiger_field set typeofdata=? where tablename=? and columname=?',
+				array('D~O~OTH~GE~date_start~Start Date & Time', 'vtiger_activity', 'due_date')
+			);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}
@@ -32,4 +42,3 @@ class changetypeofdata extends cbupdaterWorker {
 	}
 }
 ?>
-  
