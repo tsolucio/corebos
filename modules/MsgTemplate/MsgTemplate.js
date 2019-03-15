@@ -9,11 +9,11 @@
 
 function submittemplate(recordid, value, target_fieldname, formname) {
 	let idlist = window.opener.document.getElementById('listofids').value;
-	var calltype = (window.opener.document.getElementById('calltype') != null ? window.opener.document.getElementById('calltype').value : 'normalcall'); 
-	if(calltype =='normalcall'){
+	var calltype = (window.opener.document.getElementById('calltype') != null ? window.opener.document.getElementById('calltype').value : 'normalcall');
+	if (calltype =='normalcall') {
 		window.document.location.href = 'index.php?module=MsgTemplate&action=MsgTemplateAjax&file=TemplateMerge&listofids='+idlist+'&action_id='+recordid+'&calltype='+calltype;
 	}
-	if(calltype =='emailworkflow'){
+	if (calltype =='emailworkflow') {
 		window.document.location.href = 'index.php?module=MsgTemplate&action=MsgTemplateAjax&file=TemplateMergeEmailTask&listofids='+idlist+'&action_id='+recordid+'&calltype='+calltype;
 	}
 }
@@ -23,8 +23,8 @@ function msgtFillInModuleFields() {
 	var vtinst = new VtigerWebservices('webservice.php');
 	vtinst.extendSession(handleError(function (result) {
 		vtinst.listTypes(handleError(function (accessibleModules) {
-				getDescribeObjects(accessibleModules, moduleName, handleError(function (modules) {
-				fillSelectBox('msgt_fields',modules, moduleName,null);
+			getDescribeObjects(accessibleModules, moduleName, handleError(function (modules) {
+				fillSelectBox('msgt_fields', modules, moduleName, null);
 			}));
 		}));
 	}));
@@ -102,66 +102,65 @@ function fillSelectBox(id, modules, parentModule, filterPred) {
 function getDescribeObjects(accessibleModules, moduleName, callback) {
 	var vtinst = new VtigerWebservices('webservice.php');
 	vtinst.extendSession(handleError(function (result) {
-	vtinst.describeObject(moduleName, handleError(function (result) {
-		var parent = referencify(result);
-		var fields = parent['fields'];
-		var referenceFields = filter(
-			function (e) {
-				return e['type']['name']=='reference';
-			},
-			fields
-		);
-		var referenceFieldModules = map(
-			function (e) {
-				return e['type']['refersTo'];
-			},
-			referenceFields
-		);
-		function union(a, b) {
-			var newfields = filter(
+		vtinst.describeObject(moduleName, handleError(function (result) {
+			var parent = referencify(result);
+			var fields = parent['fields'];
+			var referenceFields = filter(
 				function (e) {
-					return !contains(a, e);
+					return e['type']['name']=='reference';
 				},
-				b
+				fields
 			);
-			return a.concat(newfields);
-		}
-		var relatedModules = reduceR(union, referenceFieldModules, [parent['name']]);
-		
-
-		// Remove modules that is no longer accessible
-		//relatedModules = diff(accessibleModules, relatedModules);
-
-		function executer(parameters) {
-			var failures = filter(function (e) {
-				return e[0]==false;
-			}, parameters);
-			if (failures.length!=0) {
-				var firstFailure = failures[0];
-				callback(false, firstFailure[1]);
-			} else {
-				var moduleDescriptions = map(
+			var referenceFieldModules = map(
+				function (e) {
+					return e['type']['refersTo'];
+				},
+				referenceFields
+			);
+			function union(a, b) {
+				var newfields = filter(
 					function (e) {
-						return referencify(e[1]);
+						return !contains(a, e);
 					},
-					parameters
+					b
 				);
-				var modules = dict(map(
-					function (e) {
-						return [e['name'], e];
-					},
-					moduleDescriptions
-				));
-				callback(true, modules);
+				return a.concat(newfields);
 			}
-		}
-		var p = parallelExecuter(executer, relatedModules.length);
-		$.each(relatedModules, function (i, v) {
-			p(function (callback) {
-				vtinst.describeObject(v, callback);
+			var relatedModules = reduceR(union, referenceFieldModules, [parent['name']]);
+
+			// Remove modules that is no longer accessible
+			//relatedModules = diff(accessibleModules, relatedModules);
+
+			function executer(parameters) {
+				var failures = filter(function (e) {
+					return e[0]==false;
+				}, parameters);
+				if (failures.length!=0) {
+					var firstFailure = failures[0];
+					callback(false, firstFailure[1]);
+				} else {
+					var moduleDescriptions = map(
+						function (e) {
+							return referencify(e[1]);
+						},
+						parameters
+					);
+					var modules = dict(map(
+						function (e) {
+							return [e['name'], e];
+						},
+						moduleDescriptions
+					));
+					callback(true, modules);
+				}
+			}
+			var p = parallelExecuter(executer, relatedModules.length);
+			$.each(relatedModules, function (i, v) {
+				p(function (callback) {
+					vtinst.describeObject(v, callback);
+				});
 			});
-		});
-	}));
+		}));
 	}));
 }
 
@@ -275,7 +274,7 @@ $(document).ready(function () {
 				ops += '<option value='+JSON.stringify(options[g])+'>'+g+'</option>';
 			}
 			document.getElementById('msgt_metavars').innerHTML = ops;
-		}).error(function(error){
+		}).error(function (error) {
 			console.log(error);
 		});
 		$('#msgt_metavars').change(function () {
