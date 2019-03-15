@@ -264,22 +264,24 @@ function concat(lista, listb) {
 }
 let fileurl = 'module=MsgTemplate&action=MsgTemplateAjax&file=MsgFunctions';
 $(document).ready(function () {
-	jQuery.ajax({
-		method:'GET',
-		url: 'index.php?' + fileurl
-	}).done(function (response) {
-		var options = JSON.parse(response);
-		var ops;
-		for(var g in options) {
-			ops += '<option value='+JSON.stringify(options[g])+'>'+g+'</option>';
-		 }
-		document.getElementById('msgt_metavars').innerHTML = ops;
-	}).error(function(error){
-		console.log(error);
-	});
-	$('#msgt_metavars').change(function () {
-		var textarea = CKEDITOR.instances.template;
-		var value = '$'+$(this).val();
-		textarea.insertHtml(value);
-	});
+	if (document.getElementById('msgt_metavars') != null) {
+		jQuery.ajax({
+			method:'GET',
+			url: 'index.php?' + fileurl
+		}).done(function (response) {
+			var options = JSON.parse(response);
+			var ops;
+			for (var g in options) {
+				ops += '<option value='+JSON.stringify(options[g])+'>'+g+'</option>';
+			}
+			document.getElementById('msgt_metavars').innerHTML = ops;
+		}).error(function(error){
+			console.log(error);
+		});
+		$('#msgt_metavars').change(function () {
+			var textarea = CKEDITOR.instances.template;
+			var value = '$'+$(this).val();
+			textarea.insertHtml(value);
+		});
+	}
 });
