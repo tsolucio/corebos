@@ -180,7 +180,7 @@ function get_assigned_user_name($assigned_user_id) {
   * @param $private -- sharing type:: Type string
   * @returns $user_array -- user array:: Type array
 */
-function get_user_array($add_blank = true, $status = "Active", $assigned_user = "", $private = "") {
+function get_user_array($add_blank = true, $status = 'Active', $assigned_user = '', $private = '') {
 	global $log, $current_user;
 	$log->debug('> get_user_array '.$add_blank.','. $status.','.$assigned_user.','.$private);
 	if (isset($current_user) && $current_user->id != '') {
@@ -194,24 +194,38 @@ function get_user_array($add_blank = true, $status = "Active", $assigned_user = 
 		require_once 'include/database/PearDatabase.php';
 		$db = PearDatabase::getInstance();
 		$temp_result = array();
+		$userOrder = GlobalVariable::getVariable('Application_User_SortBy', 'user_name ASC', $module, $current_user->id);
 		// Including deleted users for now.
 		if (empty($status)) {
-			$query = "SELECT id, user_name from vtiger_users";
+			$query = 'SELECT id, user_name from vtiger_users';
 			$params = array();
 		} else {
 			$assignUP = GlobalVariable::getVariable('Application_Permit_Assign_Up', 0, $module, $current_user->id);
 			if ($private == 'private' && empty($assignUP)) {
+				if ($userOrder != 'DO NOT SORT') {
+					$orderFields = preg_replace('/ asc\s*$| asc\s*,| desc\s*$| desc\s*,/i', ',', $userOrder);
+					$orderFields = preg_replace('/\s*/', '', $orderFields);
+					$orderFields = str_replace(array('user_name,','first_name,','last_name,'), '', $orderFields);
+					$orderFields = str_replace(array('user_name','first_name','last_name'), '', $orderFields);
+					$orderFields = str_replace(',,', ',', $orderFields);
+					$orderFields = trim($orderFields, ',');
+					if (strlen($orderFields)>1) {
+						$orderFields .= ',';
+					}
+				} else {
+					$orderFields = '';
+				}
 				$assignBrothers = GlobalVariable::getVariable('Application_Permit_Assign_SameRole', 0, $module, $current_user->id);
-				$query = "select id as id,user_name as user_name,first_name,last_name
+				$query = "select $orderFields id as id,user_name as user_name,first_name,last_name
 					from vtiger_users
 					where id=? and status='Active'
 					union
-					select vtiger_user2role.userid as id,vtiger_users.user_name as user_name, vtiger_users.first_name as first_name, vtiger_users.last_name as last_name
+					select $orderFields vtiger_user2role.userid as id,vtiger_users.user_name as user_name, vtiger_users.first_name as first_name, vtiger_users.last_name as last_name
 					from vtiger_user2role
 					inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 					inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
 					where vtiger_role.parentrole like ? and status='Active'
-					union select shareduserid as id,vtiger_users.user_name as user_name, vtiger_users.first_name as first_name, vtiger_users.last_name as last_name
+					union select $orderFields shareduserid as id,vtiger_users.user_name as user_name, vtiger_users.first_name as first_name, vtiger_users.last_name as last_name
 					from vtiger_tmp_write_user_sharing_per
 					inner join vtiger_users on vtiger_users.id=vtiger_tmp_write_user_sharing_per.shareduserid
 					where status='Active' and vtiger_tmp_write_user_sharing_per.userid=? and vtiger_tmp_write_user_sharing_per.tabid=?";
@@ -222,22 +236,25 @@ function get_user_array($add_blank = true, $status = "Active", $assigned_user = 
 					getTabid($module)
 				);
 			} else {
-				$query = "SELECT id, user_name,first_name,last_name from vtiger_users WHERE status=?";
+				$query = 'SELECT id, user_name,first_name,last_name from vtiger_users WHERE status=?';
 				$params = array($status);
 			}
 		}
 		if (!empty($assigned_user)) {
-			$query .= " OR id=?";
+			$query .= ' OR id=?';
 			$params[] = $assigned_user;
 		}
 
-		$userOrder = GlobalVariable::getVariable('Application_User_SortBy', 'user_name ASC', $module, $current_user->id);
 		if ($userOrder != 'DO NOT SORT') {
 			$orderByCol = $db->convert2Sql('?', array($userOrder));
-			$query .= ' order by '.str_replace("'", "", $orderByCol);
+			if (strpos($query, 'union')) {
+				$query = 'SELECT * FROM ('.$query.') AS USRSEL order by '.str_replace("'", '', $orderByCol);
+			} else {
+				$query .= ' order by '.str_replace("'", '', $orderByCol);
+			}
 		}
 
-		$result = $db->pquery($query, $params, true, "Error filling in user array: ");
+		$result = $db->pquery($query, $params, true, 'Error filling in user array');
 
 		if ($add_blank==true) {
 			// Add in a blank row
@@ -256,7 +273,7 @@ function get_user_array($add_blank = true, $status = "Active", $assigned_user = 
 	return $user_array;
 }
 
-function get_group_array($add_blank = true, $status = "Active", $assigned_user = "", $private = "") {
+function get_group_array($add_blank = true, $status = 'Active', $assigned_user = '', $private = '') {
 	global $log, $current_user, $currentModule;
 	$log->debug('> get_group_array '.$add_blank.','. $status.','.$assigned_user.','.$private);
 	$current_user_groups = array();
@@ -738,9 +755,8 @@ function getTabModuleName($tabid) {
 			$tabname = array_search($tabid, $tab_info_array);
 		}
 		if ($tabname === false) {
-			$sql = "select name from vtiger_tab where tabid=?";
-			$result = $adb->pquery($sql, array($tabid));
-			$tabname = $adb->query_result($result, 0, "name");
+			$result = $adb->pquery('select name from vtiger_tab where tabid=?', array($tabid));
+			$tabname = $adb->query_result($result, 0, 'name');
 		}
 		// Update information to cache for re-use
 		VTCacheUtils::updateTabidInfo($tabid, $tabname);
@@ -767,8 +783,8 @@ function getColumnFields($module) {
 		}
 
 		// Let us pick up all the fields first so that we can cache information
-		$sql = "SELECT tabid, fieldname, fieldid, fieldlabel, columnname, tablename, uitype, typeofdata, presence
-			FROM vtiger_field WHERE tabid in (" . generateQuestionMarks($tabid) . ")";
+		$sql = 'SELECT tabid, fieldname, fieldid, fieldlabel, columnname, tablename, uitype, typeofdata, presence FROM vtiger_field WHERE tabid in ('
+			.generateQuestionMarks($tabid).')';
 
 		$result = $adb->pquery($sql, array($tabid));
 		$noofrows = $adb->num_rows($result);
@@ -1238,7 +1254,7 @@ function updateSubTotal($module, $tablename, $colname, $colname1, $entid_fld, $e
 	global $log, $adb;
 	$log->debug('> updateSubTotal '.$module.','.$tablename.','.$colname.','.$colname1.','.$entid_fld.','.$entid.','.$prod_total);
 	//getting the subtotal
-	$query = "select ".$colname.",".$colname1." from ".$tablename." where ".$entid_fld."=?";
+	$query = 'select '.$colname.','.$colname1.' from '.$tablename.' where '.$entid_fld.'=?';
 	$result1 = $adb->pquery($query, array($entid));
 	$subtot = $adb->query_result($result1, 0, $colname);
 	$subtot_upd = $subtot - $prod_total;

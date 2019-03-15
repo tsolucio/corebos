@@ -54,6 +54,7 @@ $mod_strings = array(
 'Description'=>'Descrição',
 
 'Price Book Name'=>'Nome Lista Preço',
+'LBL_PRODUCT_PRICES' => 'Service Prices',
 
 'LBL_NO_TAXES_ASSOCIATED'=>'Não existe nenhum Imposto associado a este Serviço',
 '--None--'=>'--Nenhum --',

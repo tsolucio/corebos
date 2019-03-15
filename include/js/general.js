@@ -268,7 +268,7 @@ function patternValidateObject(fldObject, fldLabel, type) {
 	}
 
 	if (typeUC=='TIME') { //TIME validation
-		var re = /^\d{1,2}\:\d{2}:\d{2}$|^\d{1,2}\:\d{2}$/;
+		var re = /^\d{1,3}\:\d{2}:\d{2}$|^\d{1,2}\:\d{2}$/;
 		if (checkval.indexOf(' ')>0) {
 			var dt = checkval.split(' ');
 			checkval = dt[1];
@@ -736,7 +736,7 @@ function timeValidate(fldName, fldLabel, type) {
 	var secval=parseInt(timeval.substring(timeval.indexOf(':')+4, timeval.length));
 	var currObj=getObj(fldName);
 
-	if (hourval>23 || minval>59 || secval>59) {
+	if (hourval>838 || minval>59 || secval>59) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
 			currObj.focus();

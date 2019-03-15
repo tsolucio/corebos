@@ -88,6 +88,8 @@ $mod_strings = array(
 'groupEmailList' => 'Lista de e-mail do grupo',
 
 'Workflow'=>'Workflow',
+'WORKFLOW_DELETE_CONFIRMATION' => 'Are you sure you want to delete this Workflow?',
+'LBL_DELETE_WORKFLOW' => 'Delete Workflow',
 
 'VTCreateEntityTask' => 'Criar entidade',
 'LBL_ENTITY_TYPE' => 'Tipo entidade',
@@ -97,6 +99,8 @@ $mod_strings = array(
 'LBL_PARENT_OWNER' => 'Proprietário de registro pai',
 'LBL_SPECIAL_OPTIONS' => 'Opções Especiais',
 'CBTagTask' => 'Adicionar/Apagar Tag',
+'CBMassiveUpdateRelatedTask' => 'Update Related Records',
+'DuplicateRecords' => 'Duplicate Records',
 'Add Tag' => 'Adicionar Tag',
 'Delete Tag' => 'Apagar Tag',
 'Tags' => 'Tags',

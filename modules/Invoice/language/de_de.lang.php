@@ -56,6 +56,7 @@ $mod_strings = array(
 	'LBL_STATE'=>'Bundesland:',
 	'LBL_POSTAL_CODE'=>'PLZ:',
 	'LBL_COUNTRY'=>'Land:',
+	'LBL_Invoice_FINANCIALINFO' => 'Financial Information',
 	'LBL_DESCRIPTION_INFORMATION'=>'Zusatzinformationen',
 	'LBL_DESCRIPTION'=>'Beschreibung:',
 	'LBL_TERMS_INFORMATION'=>'Konditionen',

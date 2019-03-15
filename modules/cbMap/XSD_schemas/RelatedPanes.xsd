@@ -10,30 +10,36 @@
           </xs:complexType>
         </xs:element>
         <xs:element name="panes">
-          <xs:complexType>
+          <xs:complexType mixed="true">
             <xs:sequence>
-              <xs:element name="pane" maxOccurs="unbounded" minOccurs="0">
-                <xs:complexType>
+              <xs:element name="pane" maxOccurs="unbounded" minOccurs="1">
+                <xs:complexType mixed="true">
                   <xs:sequence>
                     <xs:element type="xs:string" name="label"/>
-                    <xs:element type="xs:byte" name="sequence"/>
-                    <xs:element name="blocks" minOccurs="0">
+                    <xs:element type="xs:string" name="sequence"/>
+                    <xs:choice maxOccurs="1" minOccurs="1">
+                    <xs:element type="xs:string" name="defaultMoreInformation"/>
+                    <xs:element name="blocks">
                       <xs:complexType>
                         <xs:sequence>
-                          <xs:element name="block" maxOccurs="unbounded" minOccurs="0">
-                            <xs:complexType>
+                          <xs:element name="block" maxOccurs="unbounded" minOccurs="1">
+                            <xs:complexType mixed="true">
                               <xs:sequence>
                                 <xs:element type="xs:string" name="label"/>
                                 <xs:element type="xs:byte" name="sequence"/>
                                 <xs:element type="xs:string" name="type"/>
                                 <xs:element type="xs:string" name="loadfrom"/>
+                                <xs:element type="xs:string" name="loadphp" minOccurs="0"/>
+                                <xs:element type="xs:string" name="handler_path" minOccurs="0"/>
+                                <xs:element type="xs:string" name="handler_class" minOccurs="0"/>
+                                <xs:element type="xs:string" name="handler" minOccurs="0"/>
                               </xs:sequence>
                             </xs:complexType>
                           </xs:element>
                         </xs:sequence>
                       </xs:complexType>
                     </xs:element>
-                    <xs:element type="xs:byte" name="defaultMoreInformation" minOccurs="0"/>
+                    </xs:choice>
                   </xs:sequence>
                 </xs:complexType>
               </xs:element>

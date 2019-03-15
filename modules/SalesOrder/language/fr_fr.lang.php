@@ -45,6 +45,7 @@ $mod_strings = array (
 	'LBL_ADDRESS_INFORMATION' => 'Information adresse',
 	'LBL_Quote_INFORMATION' => 'Information compte',
 	'LBL_CUSTOM_INFORMATION' => 'Informations personnalisées',
+	'LBL_SalesOrder_FINANCIALINFO' => 'Financial Information',
 	'LBL_BILLING_ADDRESS' => 'Adresse (facturation) :',
 	'LBL_SHIPPING_ADDRESS' => 'Adresse (livraison) :',
 	'LBL_ANY_ADDRESS' => 'Adresse (alt.) :',

@@ -369,7 +369,7 @@ function createUserSharingPrivilegesfile($userid) {
 	}
 }
 
-/** Gives an array which contains the information for what all roles, groups and user data is to be shared with the spcified user for the specified module
+/** Gives an array which contains the information for what all roles, groups and user data is to be shared with the specified user for the specified module
   * @param $module -- module name:: Type varchar
   * @param $userid -- user id:: Type integer
   * @param $def_org_share -- default organization sharing permission array:: Type array

@@ -55,6 +55,7 @@ $mod_strings = array(
 'LBL_COUNTRY'=>'Land:',
 'LBL_DESCRIPTION_INFORMATION'=>'Zusatzinformationen',
 'LBL_TERMS_INFORMATION'=>'Liefer- und Zahlungsbedingungen',
+'LBL_PurchaseOrder_FINANCIALINFO' => 'Financial Information',
 'LBL_DESCRIPTION'=>'Beschreibung:',
 'NTC_COPY_BILLING_ADDRESS'=>'kopiere Rechnungsadressea auf Lieferadresse',
 'NTC_COPY_SHIPPING_ADDRESS'=>'kopiere Lieferadresse auf Rechnungsadresse',

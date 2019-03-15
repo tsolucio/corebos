@@ -51,6 +51,7 @@ $mod_strings = array(
 'LBL_ANNUAL_REVENUE'=>'Facturación Anual:',
 'LBL_ADDRESS_INFORMATION'=>'Información de la Dirección',
 'LBL_Quote_INFORMATION'=>'Información del Presupuesto',
+'LBL_Quotes_FINANCIALINFO' => 'Información Financiera',
 'LBL_CUSTOM_INFORMATION'=>'Información Personalizada',
 'LBL_BILLING_ADDRESS'=>'Dirección (Factura):',
 'LBL_SHIPPING_ADDRESS'=>'Dirección (Envío):',

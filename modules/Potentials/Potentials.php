@@ -131,10 +131,10 @@ class Potentials extends CRMEntity {
 			$sql = 'insert into vtiger_potstagehistory (potentialid, amount, stage, probability, expectedrevenue, closedate, lastmodified) values (?,?,?,?,?,?,?)';
 			$params = array(
 				$this->id,
-				$this->column_fields['amount'],
+				empty($this->column_fields['amount']) ? 0 : $this->column_fields['amount'],
 				decode_html($this->sales_stage),
 				$this->column_fields['probability'],
-				$this->column_fields['forecast_amount'],
+				empty($this->column_fields['forecast_amount']) ? 0 : $this->column_fields['forecast_amount'],
 				$adb->formatDate($closingdate, true),
 				$adb->formatDate($date_var, true)
 			);
@@ -505,15 +505,27 @@ class Potentials extends CRMEntity {
 		global $adb,$log;
 		$log->debug("> transferRelatedRecords $module, $transferEntityIds, $entityId");
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
-		$rel_table_arr = array("Contacts"=>"vtiger_contpotentialrel","Products"=>"vtiger_seproductsrel",
-						"Attachments"=>"vtiger_seattachmentsrel","Quotes"=>"vtiger_quotes","SalesOrder"=>"vtiger_salesorder");
-
-		$tbl_field_arr = array("vtiger_contpotentialrel"=>"contactid","vtiger_seproductsrel"=>"productid",
-						"vtiger_seattachmentsrel"=>"attachmentsid","vtiger_quotes"=>"quoteid","vtiger_salesorder"=>"salesorderid");
-
-		$entity_tbl_field_arr = array("vtiger_contpotentialrel"=>"potentialid","vtiger_seproductsrel"=>"crmid",
-						"vtiger_seattachmentsrel"=>"crmid","vtiger_quotes"=>"potentialid","vtiger_salesorder"=>"potentialid");
-
+		$rel_table_arr = array(
+			'Contacts'=>'vtiger_contpotentialrel',
+			'Products'=>'vtiger_seproductsrel',
+			'Attachments'=>'vtiger_seattachmentsrel',
+			'Quotes'=>'vtiger_quotes',
+			'SalesOrder'=>'vtiger_salesorder',
+		);
+		$tbl_field_arr = array(
+			'vtiger_contpotentialrel'=>'contactid',
+			'vtiger_seproductsrel'=>'productid',
+			'vtiger_seattachmentsrel'=>'attachmentsid',
+			'vtiger_quotes'=>'quoteid',
+			'vtiger_salesorder'=>'salesorderid',
+		);
+		$entity_tbl_field_arr = array(
+			'vtiger_contpotentialrel'=>'potentialid',
+			'vtiger_seproductsrel'=>'crmid',
+			'vtiger_seattachmentsrel'=>'crmid',
+			'vtiger_quotes'=>'potentialid',
+			'vtiger_salesorder'=>'potentialid',
+		);
 		foreach ($transferEntityIds as $transferId) {
 			foreach ($rel_table_arr as $rel_table) {
 				$id_field = $tbl_field_arr[$rel_table];

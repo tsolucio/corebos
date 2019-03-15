@@ -56,6 +56,7 @@ $mod_strings = array(
 	'LBL_POSTAL_CODE' => 'Postcode:',
 	'LBL_COUNTRY' => 'Country:',
 	'LBL_DESCRIPTION_INFORMATION' => 'Description Information',
+	'LBL_Invoice_FINANCIALINFO' => 'Financial Information',
 	'LBL_DESCRIPTION' => 'Description:',
 	'LBL_TERMS_INFORMATION' => 'Terms and Conditions',
 	'NTC_COPY_BILLING_ADDRESS' => 'Copy invoice address to delivery address',

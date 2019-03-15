@@ -16,9 +16,10 @@
 
 class dropdocumentwrite extends cbupdaterWorker {
 
-	function applyChange() {
-		global $adb;
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -26,24 +27,23 @@ class dropdocumentwrite extends cbupdaterWorker {
 			$mods = array('Accounts','Quotes','SalesOrder','PurchaseOrder','Invoice');
 			foreach ($mods as $module) {
 				$moduleInstance = Vtiger_Module::getInstance($module);
-				$moduleInstance->addLink('HEADERSCRIPT', 'InventoryJS', 'include/js/Inventory.js', '', 1, null, TRUE);
+				$moduleInstance->addLink('HEADERSCRIPT', 'InventoryJS', 'include/js/Inventory.js', '', 1, null, true);
 			}
 			// Add Mail.js
 			$mods = array('Accounts','Contacts','HelpDesk','Leads','Potentials','Project','ProjectTask','Users','Vendors');
 			foreach ($mods as $module) {
 				$moduleInstance = Vtiger_Module::getInstance($module);
-				$moduleInstance->addLink('HEADERSCRIPT', 'MailJS', 'include/js/Mail.js', '', 1, null, TRUE);
+				$moduleInstance->addLink('HEADERSCRIPT', 'MailJS', 'include/js/Mail.js', '', 1, null, true);
 			}
 			// Add multifile.js
 			$mods = array('Products');
 			foreach ($mods as $module) {
 				$moduleInstance = Vtiger_Module::getInstance($module);
-				$moduleInstance->addLink('HEADERSCRIPT', 'MultifileJS', 'modules/Products/multifile.js', '', 1, null, TRUE);
+				$moduleInstance->addLink('HEADERSCRIPT', 'MultifileJS', 'modules/Products/multifile.js', '', 1, null, true);
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-
 }

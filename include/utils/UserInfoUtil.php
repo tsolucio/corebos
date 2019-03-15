@@ -1599,7 +1599,7 @@ function getRoleAndSubordinatesHierarchy() {
 	return $hrarray;
 }
 
-/** Function to get delete the spcified role
+/** Function to get delete the specified role
  * @param $roleid -- RoleId :: Type varchar
  * @param $transferRoleId -- RoleId to which users of the role that is being deleted are transferred:: Type varchar
  */

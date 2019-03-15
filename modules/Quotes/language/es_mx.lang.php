@@ -56,6 +56,7 @@ $mod_strings = array(
 'LBL_Quote_INFORMATION'=>'Información de la Cotización',
 'LBL_CUSTOM_INFORMATION'=>'Información Personalizada',
 'LBL_BILLING_ADDRESS'=>'Dirección (Factura):',
+'LBL_Quotes_FINANCIALINFO' => 'Información Financiera',
 'LBL_SHIPPING_ADDRESS'=>'Dirección (Envío):',
 'LBL_ANY_ADDRESS'=>'Dirección (Alternativa):',
 'LBL_CITY'=>'Deleg./Mpio.:',

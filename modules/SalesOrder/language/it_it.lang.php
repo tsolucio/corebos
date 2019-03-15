@@ -45,6 +45,7 @@ $mod_strings = array (
   'LBL_ANNUAL_REVENUE' => 'Fatturato Annuo:',
   'LBL_ADDRESS_INFORMATION' => 'Informazioni Indirizzo',
   'LBL_Quote_INFORMATION' => 'Informazioni Azienda',
+  'LBL_SalesOrder_FINANCIALINFO' => 'Financial Information',
   'LBL_CUSTOM_INFORMATION' => 'Informazioni Personalizzate',
   'LBL_BILLING_ADDRESS' => 'Indirizzo (fatturazione)',
   'LBL_SHIPPING_ADDRESS' => 'Indirizzo (spedizione)',

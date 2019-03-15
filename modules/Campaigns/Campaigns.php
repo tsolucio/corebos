@@ -612,29 +612,36 @@ class Campaigns extends CRMEntity {
 		global $adb,$log;
 		$log->debug("> transferRelatedRecords $module, $transferEntityIds, $entityId");
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
-		$rel_table_arr = array("Contacts"=>"vtiger_campaigncontrel","Potentials"=>"vtiger_potential",
-					"Leads"=>"vtiger_campaignleadrel",
-					"Attachments"=>"vtiger_seattachmentsrel",
-					"Campaigns"=>"vtiger_campaignaccountrel","CobroPago"=>"vtiger_cobropago");
-
-		$tbl_field_arr = array("vtiger_campaigncontrel"=>"contactid","vtiger_potential"=>"potentialid",
-					"vtiger_campaignleadrel"=>"leadid",
-					"vtiger_seattachmentsrel"=>"attachmentsid",
-					"vtiger_campaignaccountrel"=>"accountid","vtiger_cobropago"=>"cobropagoid");
-
-		$entity_tbl_field_arr = array("vtiger_campaigncontrel"=>"campaignid","vtiger_potential"=>"campaignid",
-					"vtiger_campaignleadrel"=>"campaignid",
-					"vtiger_seattachmentsrel"=>"crmid",
-					"vtiger_campaignaccountrel"=>"campaignid","vtiger_cobropago"=>"related_id");
-
+		$rel_table_arr = array(
+			'Contacts'=>'vtiger_campaigncontrel',
+			'Potentials'=>'vtiger_potential',
+			'Leads'=>'vtiger_campaignleadrel',
+			'Attachments'=>'vtiger_seattachmentsrel',
+			'Campaigns'=>'vtiger_campaignaccountrel',
+			'CobroPago'=>'vtiger_cobropago',
+		);
+		$tbl_field_arr = array(
+			'vtiger_campaigncontrel'=>'contactid',
+			'vtiger_potential'=>'potentialid',
+			'vtiger_campaignleadrel'=>'leadid',
+			'vtiger_seattachmentsrel'=>'attachmentsid',
+			'vtiger_campaignaccountrel'=>'accountid','vtiger_cobropago'=>'cobropagoid',
+		);
+		$entity_tbl_field_arr = array(
+			'vtiger_campaigncontrel'=>'campaignid',
+			'vtiger_potential'=>'campaignid',
+			'vtiger_campaignleadrel'=>'campaignid',
+			'vtiger_seattachmentsrel'=>'crmid',
+			'vtiger_campaignaccountrel'=>'campaignid',
+			'vtiger_cobropago'=>'related_id',
+		);
 		foreach ($transferEntityIds as $transferId) {
 			foreach ($rel_table_arr as $rel_table) {
 				$id_field = $tbl_field_arr[$rel_table];
 				$entity_id_field = $entity_tbl_field_arr[$rel_table];
 				// IN clause to avoid duplicate entries
 				$sel_result =  $adb->pquery(
-					"select $id_field from $rel_table where $entity_id_field=? " .
-						" and $id_field not in (select $id_field from $rel_table where $entity_id_field=?)",
+					"select $id_field from $rel_table where $entity_id_field=? and $id_field not in (select $id_field from $rel_table where $entity_id_field=?)",
 					array($transferId,$entityId)
 				);
 				$res_cnt = $adb->num_rows($sel_result);
@@ -649,7 +656,6 @@ class Campaigns extends CRMEntity {
 				}
 			}
 		}
-		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$log->debug('< transferRelatedRecords');
 	}
 }

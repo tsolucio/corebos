@@ -323,10 +323,10 @@ function VTUpdateFieldsTask($, fieldvaluemapping) {
 					resetFields(fieldtype[fullFieldName], fullFieldName, mappingno, '', '');
 					//set property name on hidden field
 					var fv = $('#save_fieldvalues_'+mappingno+'_value');
-					var frn=$('#save_fieldvalues10_'+mappingno+'_fieldname').val().split('-');
-					var fldrelname=frn[1];
+					var fldrelname=$('#save_fieldvalues10_'+mappingno+'_fieldname').val();
 					if (fldrelname!='' && fldrelname!=undefined && fldrelname!=null) {
-						fv.prop('name', fldrelname);
+						var frn=fldrelname.split('-');
+						fv.prop('name', frn[1]);
 					} else {
 						fv.prop('name', fullFieldName);
 					}
@@ -571,15 +571,15 @@ function VTUpdateFieldsTask($, fieldvaluemapping) {
 					var fieldvaluemapping = [];
 					$('#save_fieldvaluemapping').children().each(function (i) {
 						var fieldname = $(this).children('.fieldname').val();
-						var frn=$(this).children('.fieldname1').val().split('-');
-						var fldrelname=frn[1];
+						var fldrelname=$(this).children('.fieldname1').val();
 						var type = $(this).children('.type').val();
 						var value = $(this).children('.expressionvalue').val();
-						if (fldrelname!='none' && fldrelname!=undefined) {
+						if (fldrelname!='none' && fldrelname!=undefined && fldrelname!=null) {
+							var frn=fldrelname.split('-');
 							var fldmodule=$(this).children('.type1').val();
 							var fieldvaluemap = {
 								fieldname:fieldname,
-								fldrelname:fldrelname,
+								fldrelname:frn[1],
 								fldmodule:fldmodule,
 								valuetype:type,
 								value:value

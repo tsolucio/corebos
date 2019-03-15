@@ -38,6 +38,8 @@ $mod_strings = array(
 'LBL_MESSAGE'=>'Mensaje',
 'VTPDFMakerTask'=>'Guardar documento de PDFMaker',  // ITS4YOU-CR PDF Maker
 'LBL_SEND_ALL_ATTACHMENT'=>'Enviar todos los adjuntos',
+'VTPDFMakerTask'=>'Guardar documento de PDFMaker',  // ITS4YOU-CR PDF Maker
+'LBL_SEND_ALL_ATTACHMENT'=>'Enviar todos los adjuntos',
 'LBL_SET_FIELD_VALUES'=>'Establecer valor de campo',
 'LBL_ADD_FIELD'=>'Agregar campo',
 
@@ -85,6 +87,8 @@ $mod_strings = array(
 'groupEmailList' => 'Emails de Grupo',
 
 'Workflow'=>'Flujo de Trabajo',
+'WORKFLOW_DELETE_CONFIRMATION' => '¿Seguro que quieres eliminar este flujo de trabajo?',
+'LBL_DELETE_WORKFLOW' => 'Eliminar Flujo de Trabajo',
 
 'VTCreateEntityTask' => 'Crear Entidad',
 'LBL_ENTITY_TYPE' => 'Tipo Entidad',
@@ -94,6 +98,8 @@ $mod_strings = array(
 'LBL_PARENT_OWNER' => 'Dueño del Registro Superior',
 'LBL_SPECIAL_OPTIONS' => 'Opciones Especiales',
 'CBTagTask' => 'Añadir/Eliminar Etiqueta',
+'CBMassiveUpdateRelatedTask' => 'Actualizar Registros Relacionados',
+'DuplicateRecords' => 'Duplicar Registros',
 'Add Tag' => 'Añadir Etiqueta',
 'Delete Tag' => 'Eliminar Etiqueta',
 'Tags' => 'Etiquetas',

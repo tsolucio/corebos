@@ -2217,7 +2217,6 @@ function validateImageFile($file_details) {
 	return $saveimage;
 }
 
-
 /**
  * Validate image metadata.
  * @param mixed $data
@@ -2251,6 +2250,9 @@ function validateImageMetadata($data) {
  */
 function validateImageContents($filename) {
 
+	if (!file_exists($filename)) {
+		return true;
+	}
 	// Check for php code injection
 	$contents = file_get_contents($filename);
 	if (preg_match('/(<\?php?(.*?))/si', $contents) === 1
@@ -3242,9 +3244,12 @@ function getEntityField($module, $fqn = false) {
  * @return array $data - the entity information for the module
  */
 function getEntityFieldNames($module) {
-	$adb = PearDatabase::getInstance();
-	$data = array();
+	global $adb;
+	static $data = array();
 	if (!empty($module)) {
+		if (isset($data[$module])) {
+			return $data[$module];
+		}
 		$result = $adb->pquery('select fieldname,modulename,tablename,entityidfield from vtiger_entityname where modulename=?', array($module));
 		$fieldsName = $adb->query_result($result, 0, 'fieldname');
 		$tableName = $adb->query_result($result, 0, 'tablename');
@@ -3253,14 +3258,14 @@ function getEntityFieldNames($module) {
 		if (!(strpos($fieldsName, ',') === false)) {
 			$fieldsName = explode(',', $fieldsName);
 		}
+		$data[$module] = array('tablename' => $tableName, 'modulename' => $moduleName, 'fieldname' => $fieldsName, 'entityidfield' => $entityIdField);
 	} else {
 		$fieldsName = '';
 		$tableName = '';
 		$entityIdField = '';
 		$moduleName = '';
 	}
-	$data = array('tablename' => $tableName, 'modulename' => $moduleName, 'fieldname' => $fieldsName, 'entityidfield' => $entityIdField);
-	return $data;
+	return array('tablename' => $tableName, 'modulename' => $moduleName, 'fieldname' => $fieldsName, 'entityidfield' => $entityIdField);
 }
 
 /**

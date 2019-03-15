@@ -26,7 +26,7 @@ class updateCityFieldType extends cbupdaterWorker {
 		} else {
 			$adb->query('ALTER TABLE vtiger_accountbillads modify bill_city VARCHAR(200)');
 			$adb->query('ALTER TABLE vtiger_accountshipads modify ship_city VARCHAR(200)');
-            $adb->query('ALTER TABLE vtiger_contactaddress modify mailingcity VARCHAR(200)');
+			$adb->query('ALTER TABLE vtiger_contactaddress modify mailingcity VARCHAR(200)');
 			$adb->query('ALTER TABLE vtiger_contactaddress modify othercity VARCHAR(200)');
 			$adb->query('ALTER TABLE vtiger_leadaddress modify city VARCHAR(200)');
 			$adb->query('ALTER TABLE vtiger_vendor modify city VARCHAR(200)');
@@ -34,23 +34,8 @@ class updateCityFieldType extends cbupdaterWorker {
 			$adb->query('ALTER TABLE vtiger_pobillads modify bill_city VARCHAR(200)');
 			$adb->query('ALTER TABLE vtiger_quotesbillads modify bill_city VARCHAR(200)');
 			$adb->query('ALTER TABLE vtiger_sobillads modify bill_city VARCHAR(200)');
-            
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
-		}
-		$this->finishExecution();
-	}
-
-	public function undoChange() {
-		if ($this->hasError()) {
-			$this->sendError();
-		}
-		if ($this->isApplied()) {
-			// undo magic
-
-			$this->markUndone();
-		} else {
-			$this->sendMsg('Changeset '.get_class($this).' not applied!');
 		}
 		$this->finishExecution();
 	}

@@ -45,6 +45,11 @@ $mod_strings = array(
 	'LBL_ADD_BUTTON' => 'Elem hozzáadása ',
 	'LBL_EDIT_BUTTON' => 'Elem átnevezése',
 	'LBL_DELETE_BUTTON' => 'Elem törlése',
+	'LBL_MOVE_UP' => 'Move Up',
+	'LBL_MOVE_DOWN' => 'Move Down',
+	'LBL_MOVE_LEFT' => 'Move Left',
+	'LBL_MOVE_RIGHT' => 'Move Right',
+	'LBL_REMOVE' => 'Remove',
 	'NTC_DELETE_CONFIRMATION' => 'Biztos vagy abban, hogy törölni akarod ezt a kiválasztó lista függőséget?'
 );
 ?>

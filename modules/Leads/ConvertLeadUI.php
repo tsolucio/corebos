@@ -147,7 +147,7 @@ class ConvertLeadUI {
 			$pick_list_values = getAssignedPicklistValues('industry', $this->current_user->roleid, $adb);
 		}
 		foreach ($pick_list_values as $value) {
-			$industry_list[$value]["value"] = $value;
+			$industry_list[$value]['value'] = $value;
 		}
 		return $industry_list;
 	}

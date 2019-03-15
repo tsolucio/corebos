@@ -43,6 +43,19 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
+	<author>glorymoshi</author>
+	<description>moving settings blocks</description>
+	<filename>build/changeSets/2019/movingsettingsblock.php</filename>
+	<classname>movingsettingsblock</classname>
+</changeSet>
+<changeSet>
+	<author>glorymoshi</author>
+	<description>change typeofdata in Assets and Calendar date fields</description>
+	<filename>build/changeSets/2019/changetypeofdata.php</filename>
+	<classname>changetypeofdata</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
 	<author>joebordes</author>
 	<description>Install Message Template module</description>
 	<filename>build/changeSets/2019/addMsgTemplateModule.php</filename>

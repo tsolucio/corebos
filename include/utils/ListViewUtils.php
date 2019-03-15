@@ -3349,7 +3349,7 @@ function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 				$skip_id[] = $adb->query_result($result, $k, $selectfield);
 			}
 			$skipids = implode(',', constructList($skip_id, 'INTEGER'));
-			if (count($skipids) > 0) {
+			if (!empty($skipids)) {
 				$where_relquery = 'and ' . $table . '.' . $field . ' not in (' . $skipids . ')';
 			}
 		}
