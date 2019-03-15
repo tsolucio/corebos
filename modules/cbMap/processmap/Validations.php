@@ -103,6 +103,10 @@
 	creditCard - Field is a valid credit card number
 		restrictions: list of accepted credit cards, if none given all supported cards will be checked
 		supported cards: Visa visa, Mastercard mastercard, Dinersclub dinersclub, American Express amex or Discover discover
+	requiredWith - Field is required if any other fields are present
+		restrictions: list of fields
+	requiredWithout - Field is required if any other fields are NOT present
+		restrictions: list of fields
 	IBAN_BankAccount - validate IBAN Bank Account number
 		restrictions: none
 	EU_VAT - validate EU VAT number
@@ -238,6 +242,14 @@ class Validations extends processcbMap {
 							} else {
 								$v->rule($rule, $valfield)->label($i18n);
 							}
+						}
+						break;
+					case 'requiredWith':
+					case 'requiredWithout':
+						if (isset($val['msg'])) {
+							$v->rule($rule, $valfield, $restrictions)->message($val['msg'])->label($i18n);
+						} else {
+							$v->rule($rule, $valfield, $restrictions)->label($i18n);
 						}
 						break;
 					case 'notDuplicate':
