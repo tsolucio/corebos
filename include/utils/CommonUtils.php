@@ -2250,6 +2250,9 @@ function validateImageMetadata($data) {
  */
 function validateImageContents($filename) {
 
+	if (!file_exists($filename)) {
+		return true;
+	}
 	// Check for php code injection
 	$contents = file_get_contents($filename);
 	if (preg_match('/(<\?php?(.*?))/si', $contents) === 1
