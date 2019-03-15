@@ -736,7 +736,7 @@ function timeValidate(fldName, fldLabel, type) {
 	var secval=parseInt(timeval.substring(timeval.indexOf(':')+4, timeval.length));
 	var currObj=getObj(fldName);
 
-	if (hourval>999 || minval>59 || secval>59) {
+	if (hourval>838 || minval>59 || secval>59) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
 			currObj.focus();
