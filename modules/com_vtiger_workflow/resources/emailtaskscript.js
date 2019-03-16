@@ -498,23 +498,24 @@ function addDocs(entity_id, recordid, mod, popupmode, callback) {
 		}).done(function (response) {
 			VtigerJS_DialogBox.unblock();
 			var res = JSON.parse(response);
-				if (res.error != undefined) {
-					alert('error');
-					window.close();
-					return false;
-				}
-				if (window.opener) {
-					var dzelem = window.opener.document.getElementById('file-uploader');
-				} else {
-					var dzelem = document.getElementById('file-uploader');
-				}
-				if (dzelem.dropzone) {
-					dzelem.dropzone.emit('addedfile', {name:res.name, size:res.size, emailid:res.emailid, docid:res.docid});
-				}
-				uploadCountUpdater();
-				if (window.opener) {
-					window.close();
-				}
+			if (res.error != undefined) {
+				alert('error');
+				window.close();
+				return false;
+			}
+			if (window.opener) {
+				var dzelem = window.opener.document.getElementById('file-uploader');
+			} else {
+				var dzelem = document.getElementById('file-uploader');
+			}
+			if (dzelem.dropzone) {
+				dzelem.dropzone.emit('addedfile', {name:res.name, size:res.size, emailid:res.emailid, docid:res.docid});
+				dzelem.dropzone.emit('complete', {name:res.name, size:res.size, emailid:res.emailid, docid:res.docid});
+			}
+			uploadCountUpdater();
+			if (window.opener) {
+				window.close();
+			}
 		});
 		return false;
 	} else {
