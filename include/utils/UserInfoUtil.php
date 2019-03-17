@@ -410,7 +410,13 @@ function insertUsers2GroupMapping($groupname, $userid) {
 function fetchWordTemplateList($module) {
 	global $log, $adb;
 	$log->debug('> fetchWordTemplateList '.$module);
-	$result=$adb->pquery('select templateid, filename from vtiger_wordtemplates where module=?', array($module));
+	$result=$adb->pquery(
+		'select notesid, filename
+			from vtiger_notes
+			inner join vtiger_crmentity on crmid=notesid
+			where deleted=0 and template_for=?',
+		array($module)
+	);
 	$log->debug('< fetchWordTemplateList');
 	return $result;
 }
