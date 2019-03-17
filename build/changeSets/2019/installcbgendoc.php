@@ -24,6 +24,13 @@ class installcbgendoc extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			global $adb, $current_user;
+			$module = 'EtiquetasOO';
+			if ($this->isModuleInstalled($module)) {
+				vtlib_toggleModuleAccess($module, true);
+				$this->sendMsg("$module activated!");
+			} else {
+				$this->installManifestModule($module);
+			}
 			$module = 'evvtgendoc';
 			if ($this->isModuleInstalled($module)) {
 				vtlib_toggleModuleAccess($module, true);

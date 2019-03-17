@@ -1,13 +1,13 @@
-<?xml version='1.0'?>
+<?xml version="1.0"?>
 <module>
-<name>evvtgendoc</name>
-<label>OOMerge GENDOC</label>
-<parent>Tools</parent>
 <type>extension</type>
-<version>1.0</version>
+<name>EtiquetasOO</name>
+<label>OOMerge Labels</label>
+<parent>Tools</parent>
+<version>1.1</version>
 <dependencies>
-<vtiger_version>5.1.0</vtiger_version>
-<vtiger_max_version>5.*</vtiger_max_version>
+  <vtiger_version>5.1.0</vtiger_version>
+  <vtiger_max_version>5.*</vtiger_max_version>
 </dependencies>
 <license>
 <inline><![CDATA[
@@ -24,26 +24,10 @@
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  *************************************************************************************************
- *  Module       : OOMerge GENDOC
- *  Version      : 5.4.0
+ *  Module       : EtiquetasOO
+ *  Version      : 1.1
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************
 ]]></inline>
 </license>
-<tables>
-</tables>
-<customlinks>
-<customlink>
-<linktype>HEADERSCRIPT</linktype>
-<linklabel>evvtgendoc.js</linklabel>
-<linkurl><![CDATA[modules/evvtgendoc/evvtgendoc.js]]></linkurl>
-<linkicon><![CDATA[]]></linkicon>
-<sequence>0</sequence>
-<handler_path><![CDATA[]]></handler_path>
-<handler_class><![CDATA[]]></handler_class>
-<handler><![CDATA[]]></handler>
-</customlink>
-</customlinks>
-<crons>
-</crons>
 </module>
