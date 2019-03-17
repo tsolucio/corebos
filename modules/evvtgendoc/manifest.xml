@@ -1,0 +1,40 @@
+<?xml version='1.0'?>
+<module>
+<name>evvtgendoc</name>
+<label>OOMerge GENDOC</label>
+<parent>Tools</parent>
+<type>extension</type>
+<version>1.0</version>
+<dependencies>
+<vtiger_version>5.1.0</vtiger_version>
+<vtiger_max_version>5.*</vtiger_max_version>
+</dependencies>
+<license>
+<inline><![CDATA[
+ *************************************************************************************************
+ * The contents of these files are subject to JPL TSolucio, S.L. Copyright License (c)
+ * You may not use this extension except in the coreBOS install for which it was given
+ *************************************************************************************************
+ *  Module       : OOMerge GENDOC
+ *  Version      : 5.4.0
+ *  Author       : JPL TSolucio, S. L./Opencubed shpk
+ *************************************************************************************************
+]]></inline>
+</license>
+<tables>
+</tables>
+<customlinks>
+<customlink>
+<linktype>HEADERSCRIPT</linktype>
+<linklabel>evvtgendoc.js</linklabel>
+<linkurl><![CDATA[modules/evvtgendoc/evvtgendoc.js]]></linkurl>
+<linkicon><![CDATA[]]></linkicon>
+<sequence>0</sequence>
+<handler_path><![CDATA[]]></handler_path>
+<handler_class><![CDATA[]]></handler_class>
+<handler><![CDATA[]]></handler>
+</customlink>
+</customlinks>
+<crons>
+</crons>
+</module>

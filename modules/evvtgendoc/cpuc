@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Paths
+JAVADIR=/usr/lib/jvm/java-6-sun
+OOODIR=/opt/openoffice.org
+GENDOCDIR=$(realpath "$(dirname "$0")")
+CLASSPATH=$GENDOCDIR:$OOODIR/ure/share/java/juh.jar:$OOODIR/ure/share/java/jurt.jar:$OOODIR/ure/share/java/ridl.jar:/usr/lib/openoffice/basis-link/program/classes/unoil.jar
+
+PATH=$JAVADIR/bin:$PATH
+
+# Compile class if it doesn't exist
+rm $GENDOCDIR/UnoService.class
+javac -cp $CLASSPATH $GENDOCDIR/UnoService.java

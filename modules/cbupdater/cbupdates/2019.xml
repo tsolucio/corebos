@@ -55,4 +55,11 @@
 	<classname>changetypeofdata</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Install gendoc</description>
+	<filename>build/changeSets/2019/installcbgendoc.php</filename>
+	<classname>installcbgendoc</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

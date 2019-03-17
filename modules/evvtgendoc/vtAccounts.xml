@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<accounts>
+<account id="{Accounts.record_id}">
+<name>{Accounts.accountname}</name>
+<genxmlifexist entity="Contacts" condition="Contacts.title=VP Operations">
+<fixedinfo attr="XMLExport Test">
+<date>{fecha}</date>
+<contact id="{Contacts.record_id}">
+<name>{Contacts.firstname} {Contacts.lastname}</name>
+<email>{Contacts.email}</email>
+</contact>
+</fixedinfo>
+</genxmlifexist>
+<genxmlifnotexist entity="Contacts" condition="Contacts.title=non_existent">
+<fixedinfo attr="XMLExport Test">
+<date>{fecha}</date>
+<noneofthese>noneofthese</noneofthese>
+</fixedinfo>
+</genxmlifnotexist>
+<genxmlcount entity='Contacts' nodename='countcontacts'></genxmlcount>
+<genxmlforeach entity="Contacts" conditions="">
+<contact id="{Contacts.record_id}">
+<contactnum>{repeticion}</contactnum>
+<name>{Contacts.firstname} {Contacts.lastname}</name>
+<email>{Contacts.email}</email>
+<genxmlforeach entity="HelpDesk">
+<ticket>
+<hdnum>{HelpDesk.ticket_no}</hdnum>
+<hdtitle>{HelpDesk.ticket_title}</hdtitle>
+</ticket>
+</genxmlforeach>
+</contact>
+</genxmlforeach>
+<countcontacts attr='attr'>{genxmlcount.Contacts}</countcontacts>
+<genxmlforeach entity="Contacts" condition="Contacts.title=VP Operations">
+<contact id="{Contacts.record_id}">
+<name>{Contacts.firstname} {Contacts.lastname}</name>
+<email>{Contacts.email}</email>
+</contact>
+</genxmlforeach>
+<genxmlcount entity='Invoice' nodename='countinvoices'></genxmlcount>
+<genxmlsum entity='Invoice' field='hdnGrandTotal' nodename='totalsuminvoices'></genxmlsum>
+<genxmlforeach entity="Invoice">
+<invoice id="{Invoice.record_id}">
+<name>{Invoice.invoice_no} {Invoice.subject}</name>
+<total>{Invoice.hdnGrandTotal}</total>
+<totalenletras>{Invoice.hdnGrandTotal.enletras}</totalenletras>
+<genxmlforeach entity="ProductList">
+<pdoline>
+<pdoname>{ProductList.productname}</pdoname>
+<pdocode>{ProductList.productcode}</pdocode>
+</pdoline>
+</genxmlforeach>
+</invoice>
+</genxmlforeach>
+<countinvoices attr='total count of invoices'>{genxmlcount.Invoice}</countinvoices>
+<totalsuminvoices attr='total sum of invoice totals'>{genxmlsum.Invoice.hdnGrandTotal}</totalsuminvoices>
+</account>
+</accounts>
