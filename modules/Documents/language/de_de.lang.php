@@ -35,7 +35,7 @@ $mod_strings = array(
 
 	'Template'=>'Template',
 	'Template For' => 'Template For',
-
+	'Merge Template' => 'Merge Template',
 	'LBL_FILENAME'=>'Anhang:',
 	'LBL_NOTE_INFORMATION'=>'Dokumentinformation',
 	'File Information'=>'Dateiinformation',

@@ -36,6 +36,7 @@ $mod_strings = array(
 	'LBL_LIST_FILENAME' => 'Bestandsnaam',
 	'Template'=>'Template',
 	'Template For' => 'Template For',
+	'Merge Template' => 'Merge Template',
 	'LBL_FILENAME' => 'Bijlage:',
 	'LBL_NOTE_INFORMATION' => 'Standaard Informatie',
 	'File Information' => 'Bestandsinformatie',
