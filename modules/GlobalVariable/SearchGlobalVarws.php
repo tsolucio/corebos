@@ -42,7 +42,11 @@ function cbws_SearchGlobalVar($gvname, $defaultvalue, $gvmodule, $user) {
 	}
 
 	require_once 'modules/GlobalVariable/GlobalVariable.php';
-	$rdo = GlobalVariable::getVariable($gvname, $defaultvalue, $gvmodule, $user->id);
+	if (substr($gvname, 0, 16)=='BusinessMapping_') {
+		$rdo = GlobalVariable::getVariable($gvname, cbMap::getMapIdByName(substr($gvname, 16)), $gvmodule, $user->id);
+	} else {
+		$rdo = GlobalVariable::getVariable($gvname, $defaultvalue, $gvmodule, $user->id);
+	}
 	VTWS_PreserveGlobal::flush();
 	return $rdo;
 }
