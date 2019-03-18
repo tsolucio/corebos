@@ -13,7 +13,7 @@ $moduleFilepath = 'modules/'.$_REQUEST['module'].'/'.$_REQUEST['file'].'.php';
 
 if (isset($_REQUEST["actionname"])) {
 	require_once 'vtlib/Vtiger/controllers/ActionController.php';
-	require_once 'vtlib/Vtiger/Request.php';
+	require_once 'include/utils/Request.php';
 	$moduleFilepath = 'modules/' . $_REQUEST["module"] . '/actions/'. $_REQUEST['actionname'].'.php';
 } elseif (file_exists($moduleFilepath) == false) {
 	$moduleFilepath = 'modules/Vtiger/'.$_REQUEST['file'].'.php';
@@ -23,7 +23,7 @@ checkFileAccessForInclusion($moduleFilepath);
 require_once $moduleFilepath;
 
 if (class_exists($_REQUEST['actionname'] . "_Action")) {
-	$request = new CoreBOS_Request($_REQUEST);
+	$request = new Vtiger_Request($_REQUEST);
 	$action = $_REQUEST['actionname'] . "_Action";
 	$init = new $action($request);
 }

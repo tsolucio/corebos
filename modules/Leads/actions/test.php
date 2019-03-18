@@ -2,6 +2,10 @@
 
 class test_Action extends CoreBOS_ActionController {
 
+	public function main() {
+		echo "default function";
+	}
+
 	public function init() {
 		echo "init method";
 
