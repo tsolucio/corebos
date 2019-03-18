@@ -15,8 +15,8 @@
  *************************************************************************************************/
 
 function checkAccountPIVA($fieldname, $fieldvalue, $params, $entity) {
-	$type = $params[0];
-	$piva = $entity['siccode'];
+	$type = $entiyy[$params[0]];
+	$piva = $entity[$fieldname];
 	$pattern1 = '^IT\d{11}$';
 	$pattern2 = '^(AF|AX|AL|DZ|VI|AD|AO|AI|AQ|AG|AR|AM|AW|AU|AT|AZ|BS|BH|BD|BB|BY|BE|BZ|BJ|BM|BT|BO|BA|BW|BV|BR|IO|VG|\
         BN|BG|BF|BI|KH|CM|CA|CV|KY|CF|TD|CL|CN|CX|CC|CO|KM|CG|CD|CK|CR|HR|CU|CY|CZ|DK|DJ|DM|DO|AN|TL|EC|EG|SV|GQ|\
