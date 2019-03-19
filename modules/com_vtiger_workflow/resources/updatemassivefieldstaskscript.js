@@ -499,6 +499,9 @@ function CBMassiveUpdateRelatedTask($, fieldvaluemapping) {
 				$('#save').bind('click', function () {
 					var validateFieldValues = new Array();
 					var fieldvaluemapping = [];
+					var mod = [];
+					var ind = 0;
+					var duplicate = 0;
 					$('#save_fieldvaluemapping').children().each(function (i) {
 						var fieldmodule = $(this).children('.fieldmodule').val();
 						var fieldname=$(this).children('.fieldname').val();
@@ -510,24 +513,36 @@ function CBMassiveUpdateRelatedTask($, fieldvaluemapping) {
 							value:value,
 							fieldmodule:fieldmodule
 						};
-
+						var module = fieldmodule.split('_');
+						if (mod.indexOf(module[0])==-1) {
+							mod[ind] = module[0];
+							ind++;
+						}
+						if (mod.length>1) {
+							duplicate = 1;
+						}
 						fieldvaluemapping[i]=fieldvaluemap;
 
 						if (type == '' || type == 'rawtext') {
 							validateFieldValues.push(fieldname);
 						}
 					});
-					if (fieldvaluemapping.length==0) {
-						var out = '';
-					} else {
-						var out = JSON.stringify(fieldvaluemapping);
-					}
-					$('#save_fieldvaluemapping_json').val(out);
-
-					for (var fieldName in validator.validateFieldData) {
-						if (validateFieldValues.indexOf(fieldName) < 0) {
-							delete validator.validateFieldData[fieldName];
+					if (duplicate == 0) {
+						if (fieldvaluemapping.length==0) {
+							var out = '';
+						} else {
+							out = JSON.stringify(fieldvaluemapping);
 						}
+						$('#save_fieldvaluemapping_json').val(out);
+
+						for (var fieldName in validator.validateFieldData) {
+							if (validateFieldValues.indexOf(fieldName) < 0) {
+								delete validator.validateFieldData[fieldName];
+							}
+						}
+					} else {
+						alert(alert_arr.duplicatednotallowed);
+						return false;
 					}
 				});
 

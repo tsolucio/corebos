@@ -395,11 +395,12 @@ var alert_arr = {
 	'JSLBL_SAVE': 'Salva',
 	'JSLBL_PREVIOUS': 'Precedente',
 	'JSLBL_NEXT': 'Prossimo',
-	'JSLBL_CURRENT': 'current step:',
+	'JSLBL_CURRENT': 'Step Attuale:',
 	'JSLBL_PAGINATION': 'Paginazione',
 	'JSLBL_FINISH': 'Fine',
 	'SHOWING' : 'Mostrando',
 	'OF' : 'di',
-	'ERR_Massedit' : 'Errorre di Mass Edit',
-	'ProcessFINISHED' : 'Process Finished'
+	'ERR_Massedit' : 'Errore di Mass Edit',
+	'ProcessFINISHED' : 'Processo Terminato',
+	'duplicatednotallowed' : 'Non sono permessi Moduli Duplicati'
 };

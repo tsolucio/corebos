@@ -416,5 +416,6 @@ var alert_arr = {
 	'SHOWING' : 'Mostrando',
 	'OF' : 'de',
 	'ERR_Massedit' : 'Error en Edición Masiva',
-	'ProcessFINISHED' : 'Proceso Terminado'
+	'ProcessFINISHED' : 'Proceso Terminado',
+	'duplicatednotallowed' : 'Duplicated Modules Not Allowed'
 };
