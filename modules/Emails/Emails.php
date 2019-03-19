@@ -258,10 +258,12 @@ class Emails extends CRMEntity {
 			$query .= " LEFT JOIN vtiger_users AS vtiger_usersEmails ON vtiger_usersEmails.id = vtiger_crmentityEmails.smownerid";
 		}
 		if ($queryPlanner->requireTable("vtiger_lastModifiedByEmails")) {
-			$query .= " LEFT JOIN vtiger_users AS vtiger_lastModifiedByEmails ON vtiger_lastModifiedByEmails.id = vtiger_crmentityEmails.modifiedby and vtiger_seactivityreltmpEmails.activityid = vtiger_activityEmails.activityid";
+			$query .= " LEFT JOIN vtiger_users AS vtiger_lastModifiedByEmails ON vtiger_lastModifiedByEmails.id = vtiger_crmentityEmails.modifiedby and
+			 vtiger_seactivityreltmpEmails.activityid = vtiger_activityEmails.activityid";
 		}
 		if ($queryPlanner->requireTable("vtiger_CreatedByEmails")) {
-			$query .= " left join vtiger_users as vtiger_CreatedByEmails on vtiger_CreatedByEmails.id = vtiger_crmentityEmails.smcreatorid and vtiger_seactivityreltmpEmails.activityid = vtiger_activityEmails.activityid";
+			$query .= " left join vtiger_users as vtiger_CreatedByEmails on vtiger_CreatedByEmails.id = vtiger_crmentityEmails.smcreatorid and
+			 vtiger_seactivityreltmpEmails.activityid = vtiger_activityEmails.activityid";
 		}
 		if ($queryPlanner->requireTable("vtiger_email_track")) {
 			$query .= " LEFT JOIN vtiger_email_track ON vtiger_email_track.mailid = vtiger_emaildetails.emailid and vtiger_email_track.crmid = vtiger_crmentity.crmid";
@@ -379,11 +381,13 @@ class Emails extends CRMEntity {
 		$id = $_REQUEST['record'];
 
 		$button = '<input title="' . getTranslatedString('LBL_BULK_MAILS') . '" accessykey="F" class="crmbutton small create"
-			onclick="this.form.action.value=\"sendmail\";this.form.return_action.value=\"DetailView\";this.form.module.value=\"Emails\";this.form.return_module.value=\"Emails\";"
+			onclick="this.form.action.value=\"sendmail\";this.form.return_action.value=\"DetailView\";this.form.module.value=\"Emails\";
+			this.form.return_module.value=\"Emails\";"
 			name="button" value="' . getTranslatedString('LBL_BULK_MAILS') . '" type="submit">&nbsp;
 			<input title="' . getTranslatedString('LBL_BULK_MAILS') . '" accesskey="" tabindex="2" class="crmbutton small edit"
 			value="' . getTranslatedString('LBL_SELECT_USER_BUTTON_LABEL') . '" name="Button"
-			onclick=\"return window.open("index.php?module=Users&return_module=Emails&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=true&return_id='.
+			onclick=\"return window.open("index.php?module=Users&return_module=Emails&action=Popup&popuptype=
+			detailview&select=enable&form=EditView&form_submit=true&return_id='.
 			$id . '&recordid=' . $id . '","test","width=640,height=520,resizable=0,scrollbars=0");\"type="button">';
 
 		$query = 'SELECT vtiger_users.id, vtiger_users.first_name, vtiger_users.last_name, vtiger_users.user_name, vtiger_users.email1, vtiger_users.email2,
@@ -523,6 +527,29 @@ class Emails extends CRMEntity {
 		}
 		unset($list_buttons['mass_edit']);
 		return $list_buttons;
+	}
+
+	public static function sendEmailTemplate($templateName, $context, $module, $to_email, $par_id, $from_name = 'Administrator', $from_email = 'noreply@tsolucio.com') {
+		global $adb;
+		require_once 'mail.php';
+
+		$error_str = '';
+		global $adb, $default_charset;
+		$sql = fetchEmailTemplateInfo($templateName);
+
+		$sub = $adb->query_result($sql, 0, 'subject');
+
+		$body = $adb->query_result($sql, 0, 'body');
+
+		$mail_body = html_entity_decode($body, ENT_QUOTES, $default_charset);
+
+		$mail_body = str_replace('$user_name$', $context['$user_name$'], $mail_body);
+
+		$mail_body = str_replace('$user_password$', $context['$user_password$'], $mail_body);
+
+		$mail_body = getMergedDescription($mail_body, $par_id, $module);
+
+		send_mail($module, $to_email, $from_name, $from_email, $sub, $mail_body);
 	}
 }
 
