@@ -44,6 +44,13 @@ function cbws_SearchGlobalVar($gvname, $defaultvalue, $gvmodule, $user) {
 	require_once 'modules/GlobalVariable/GlobalVariable.php';
 	if (substr($gvname, 0, 16)=='BusinessMapping_') {
 		$rdo = GlobalVariable::getVariable($gvname, cbMap::getMapIdByName(substr($gvname, 16)), $gvmodule, $user->id);
+		if (!empty($rdo)) {
+			$rs = $adb->pquery('select contentjson from vtiger_cbmap where cbmapid=?', array($rdo));
+			$rdo = array(
+				'id' => vtws_getEntityID('cbMap').'x'.$rdo,
+				'map' => $adb->query_result($rs, 0, 0),
+			);
+		}
 	} else {
 		$rdo = GlobalVariable::getVariable($gvname, $defaultvalue, $gvmodule, $user->id);
 	}
