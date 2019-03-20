@@ -44,6 +44,10 @@
 	</parameters>
   </function>
  </map>
+ 
+ <map>
+ 	<template>The user assigned to the record is: $(assigned_user_id : (Users) first_name) $(assigned_user_id : (Users) last_name)</template>
+ </map>
 
  *************************************************************************************************/
 
@@ -97,6 +101,13 @@ class ConditionExpression extends processcbMap {
 			}
 			$testexpression = trim($testexpression, ',') . ');';
 			eval($testexpression);
+		} elseif (isset($xml->template)) {
+			$template = (String)$xml->template;
+			$testexpression = trim($template);
+			$entityCache = new VTEntityCache($current_user);
+			$ct = new VTSimpleTemplate($testexpression);
+			$delim = '';
+			$exprEvaluation = $ct->render($entityCache, $entityId).$delim;
 		}
 		return $exprEvaluation;
 	}
