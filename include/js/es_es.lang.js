@@ -417,5 +417,5 @@ var alert_arr = {
 	'OF' : 'de',
 	'ERR_Massedit' : 'Error en Edición Masiva',
 	'ProcessFINISHED' : 'Proceso Terminado',
-	'duplicatednotallowed' : 'Duplicated Modules Not Allowed'
+	'duplicatednotallowed' : 'No se permiten módulos duplicados'
 };
