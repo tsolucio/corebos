@@ -51,7 +51,7 @@
 <changeSet>
 	<author>glorymoshi</author>
 	<description>change typeofdata in Assets and Calendar date fields</description>
-	<filename>build/changeSets/2019/changetypeofdatainassetsandcalendar.php</filename>
+	<filename>build/changeSets/2019/changetypeofdata.php</filename>
 	<classname>changetypeofdata</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
