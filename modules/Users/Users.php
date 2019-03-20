@@ -527,33 +527,19 @@ class Users extends CRMEntity {
 			$this->error_string = $mod_strings['ERR_PASSWORD_INCORRECT_OLD'];
 			return false;
 		}
+
 		//set new password
 		$crypt_type = $this->DEFAULT_PASSWORD_CRYPT_TYPE;
 		$encrypted_new_password = $this->encrypt_password($new_password, $crypt_type);
-
-		global $adb;
 		require_once 'modules/Emails/Emails.php';
-
-		$emailObj = new Emails;
-
-		$par_id = $this->id;
-
 		$to_email = $this->column_fields['email1'];
-
 		$templateName = 'Password Change Template';
-
-		$subject = getTranslatedString('MSG_SUB');
-
 		$context = array(
-			'$subject$' => $subject,
 			'$user_name$'=> $usr_name,
 			'$user_password$'=> $new_password
 		);
-
 		$module = 'Users';
-
-		$emailObj->sendEmailTemplate($templateName, $context, $module, $to_email, $par_id);
-
+		Emails::sendEmailTemplate($templateName, $context, $module, $to_email);
 		$sql = "UPDATE $this->table_name SET failed_login_attempts=0 where id=?";
 		$this->db->pquery($sql, array($this->id));
 
@@ -721,6 +707,7 @@ class Users extends CRMEntity {
 	 * @returns user info in $this->column_fields array:: Type array
 	 */
 	public function retrieveCurrentUserInfoFromFile($userid) {
+		global $adb, $site_URL;
 		checkFileAccessForInclusion('user_privileges/user_privileges_' . $userid . '.php');
 		require 'user_privileges/user_privileges_' . $userid . '.php';
 		foreach ($this->column_fields as $field => $value_iter) {
@@ -730,6 +717,28 @@ class Users extends CRMEntity {
 			}
 		}
 		$this->id = $userid;
+		$imageurl = '';
+		$image_name = $this->column_fields['imagename'];
+		if ($image_name != '') {
+			$sql = "select vtiger_attachments.*
+			from vtiger_attachments
+			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
+			where vtiger_crmentity.setype='Users Attachment' and vtiger_attachments.name = ?";
+			$image_res = $adb->pquery($sql, array(str_replace(' ', '_', decode_html($image_name))));
+			if ($adb->num_rows($image_res)>0) {
+				$image_id = $adb->query_result($image_res, 0, 'attachmentsid');
+				$image_path = $adb->query_result($image_res, 0, 'path');
+				$image_name = decode_html($adb->query_result($image_res, 0, 'name'));
+				$imageurl = array(
+					'name' => $image_name,
+					'path' => $image_path . $image_id . '_' . urlencode($image_name),
+					'fullpath' => $site_URL.'/'.$image_path . $image_id . '_' . urlencode($image_name),
+					'type' => $adb->query_result($image_res, 0, 'type'),
+					'id' => $image_id,
+				);
+			}
+		}
+		$this->column_fields['imagenameimagenfo'] = $imageurl;
 		return $this;
 	}
 
