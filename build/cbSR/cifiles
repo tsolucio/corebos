@@ -184,5 +184,6 @@ include/cbmqtm/cbmqtm_manager.php
 include/cbmqtm/cbmqtm_memusage.php
 include/cbmqtm/directrun.php
 include/cbmqtm/run.php
+build/changeSets/2017
 build/changeSets/2018
 build/changeSets/2019

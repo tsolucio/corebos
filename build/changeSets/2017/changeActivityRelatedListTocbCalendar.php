@@ -16,19 +16,22 @@
 
 class changeActivityRelatedListTocbCalendar extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery('UPDATE vtiger_relatedlists SET related_tabid=? WHERE related_tabid=9 and name=? and label=?',
-				array(getTabid('cbCalendar'),'get_activities','Activities'));
+			$this->ExecuteQuery(
+				'UPDATE vtiger_relatedlists SET related_tabid=? WHERE related_tabid=9 and name=? and label=?',
+				array(getTabid('cbCalendar'),'get_activities','Activities')
+			);
 			$this->ExecuteQuery('DELETE FROM vtiger_relatedlists WHERE related_tabid=9 and name=? and label=?', array('get_history','Activity History'));
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
-
 }

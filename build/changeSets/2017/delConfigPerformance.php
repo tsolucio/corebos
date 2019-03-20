@@ -16,8 +16,10 @@
 
 class delConfigPerformance extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -33,7 +35,7 @@ class delConfigPerformance extends cbupdaterWorker {
 			global $current_user;
 			$module = 'GlobalVariable';
 			if ($this->isModuleInstalled($module)) {
-				vtlib_toggleModuleAccess($module,true);
+				vtlib_toggleModuleAccess($module, true);
 				$this->sendMsg("$module activated!");
 			} else {
 				$this->installManifestModule($module);
@@ -48,37 +50,37 @@ class delConfigPerformance extends cbupdaterWorker {
 				'in_module_list' => '',
 				'assigned_user_id' => $usrwsid,
 			);
-			if (isset($PERFORMANCE_CONFIG) and isset($PERFORMANCE_CONFIG['LISTVIEW_RECORD_CHANGE_INDICATOR']) and !$PERFORMANCE_CONFIG['LISTVIEW_RECORD_CHANGE_INDICATOR']) {
+			if (isset($PERFORMANCE_CONFIG) && isset($PERFORMANCE_CONFIG['LISTVIEW_RECORD_CHANGE_INDICATOR']) && !$PERFORMANCE_CONFIG['LISTVIEW_RECORD_CHANGE_INDICATOR']) {
 				$rec = $default_values;
 				$rec['gvname'] = 'Application_ListView_Record_Change_Indicator';
 				$rec['value'] = 0;
 				vtws_create('GlobalVariable', $rec, $current_user);
 			}
-			if (isset($PERFORMANCE_CONFIG) and isset($PERFORMANCE_CONFIG['LISTVIEW_DEFAULT_SORTING']) and $PERFORMANCE_CONFIG['LISTVIEW_DEFAULT_SORTING']) {
+			if (isset($PERFORMANCE_CONFIG) && isset($PERFORMANCE_CONFIG['LISTVIEW_DEFAULT_SORTING']) && $PERFORMANCE_CONFIG['LISTVIEW_DEFAULT_SORTING']) {
 				$rec = $default_values;
 				$rec['gvname'] = 'Application_ListView_Default_Sorting';
 				$rec['value'] = 1;
 				vtws_create('GlobalVariable', $rec, $current_user);
 			}
-			if (isset($PERFORMANCE_CONFIG) and isset($PERFORMANCE_CONFIG['LISTVIEW_COMPUTE_PAGE_COUNT']) and $PERFORMANCE_CONFIG['LISTVIEW_COMPUTE_PAGE_COUNT']) {
+			if (isset($PERFORMANCE_CONFIG) && isset($PERFORMANCE_CONFIG['LISTVIEW_COMPUTE_PAGE_COUNT']) && $PERFORMANCE_CONFIG['LISTVIEW_COMPUTE_PAGE_COUNT']) {
 				$rec = $default_values;
 				$rec['gvname'] = 'Application_ListView_Compute_Page_Count';
 				$rec['value'] = 1;
 				vtws_create('GlobalVariable', $rec, $current_user);
 			}
-			if (isset($PERFORMANCE_CONFIG) and isset($PERFORMANCE_CONFIG['DETAILVIEW_RECORD_NAVIGATION']) and !$PERFORMANCE_CONFIG['DETAILVIEW_RECORD_NAVIGATION']) {
+			if (isset($PERFORMANCE_CONFIG) && isset($PERFORMANCE_CONFIG['DETAILVIEW_RECORD_NAVIGATION']) && !$PERFORMANCE_CONFIG['DETAILVIEW_RECORD_NAVIGATION']) {
 				$rec = $default_values;
 				$rec['gvname'] = 'Application_DetailView_Record_Navigation';
 				$rec['value'] = 0;
 				vtws_create('GlobalVariable', $rec, $current_user);
 			}
-			if (isset($PERFORMANCE_CONFIG) and isset($PERFORMANCE_CONFIG['NOTIFY_OWNER_EMAILS']) and !$PERFORMANCE_CONFIG['NOTIFY_OWNER_EMAILS']) {
+			if (isset($PERFORMANCE_CONFIG) && isset($PERFORMANCE_CONFIG['NOTIFY_OWNER_EMAILS']) && !$PERFORMANCE_CONFIG['NOTIFY_OWNER_EMAILS']) {
 				$rec = $default_values;
 				$rec['gvname'] = 'HelpDesk_Notify_Owner_EMail';
 				$rec['value'] = 0;
 				vtws_create('GlobalVariable', $rec, $current_user);
 			}
-			if (isset($PERFORMANCE_CONFIG) and isset($PERFORMANCE_CONFIG['HOME_PAGE_WIDGET_GROUP_SIZE']) and $PERFORMANCE_CONFIG['HOME_PAGE_WIDGET_GROUP_SIZE'] != 12) {
+			if (isset($PERFORMANCE_CONFIG) && isset($PERFORMANCE_CONFIG['HOME_PAGE_WIDGET_GROUP_SIZE']) && $PERFORMANCE_CONFIG['HOME_PAGE_WIDGET_GROUP_SIZE'] != 12) {
 				$rec = $default_values;
 				$rec['gvname'] = 'HomePage_Widget_Group_Size';
 				$rec['value'] = $PERFORMANCE_CONFIG['HOME_PAGE_WIDGET_GROUP_SIZE'];
@@ -89,5 +91,4 @@ class delConfigPerformance extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

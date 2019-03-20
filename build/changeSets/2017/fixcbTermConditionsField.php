@@ -16,8 +16,10 @@
 
 class fixcbTermConditionsField extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -30,7 +32,7 @@ class fixcbTermConditionsField extends cbupdaterWorker {
 				$mod = Vtiger_Module::getInstance($module);
 				$field1 = Vtiger_Field::getInstance('tandc', $mod);
 				if ($field1) {
-					$this->ExecuteQuery('update vtiger_field set tablename=? where fieldid=?',array($table,$field1->id));
+					$this->ExecuteQuery('update vtiger_field set tablename=? where fieldid=?', array($table,$field1->id));
 					$this->ExecuteQuery("ALTER TABLE $table ADD `tandc` INT(11) NULL");
 				}
 			}
@@ -40,5 +42,4 @@ class fixcbTermConditionsField extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

@@ -16,20 +16,30 @@
 
 class fixCalendarTaskStatusToEventStatus extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery("UPDATE vtiger_selectcolumn SET columnname = 'vtiger_activity:eventstatus:cbCalendar_Status:eventstatus:V' WHERE columnname=?", array('vtiger_activity:status:cbCalendar_Status:taskstatus:V'));
-			$this->ExecuteQuery("UPDATE vtiger_cvadvfilter SET columnname = 'vtiger_activity:eventstatus:eventstatus:cbCalendar_Status:V' WHERE columnname=?", array('vtiger_activity:status:taskstatus:cbCalendar_Status:V'));
-			$this->ExecuteQuery("UPDATE vtiger_cvcolumnlist SET columnname = 'vtiger_activity:eventstatus:eventstatus:cbCalendar_Status:V' WHERE columnname=?", array('vtiger_activity:status:taskstatus:cbCalendar_Status:V'));
+			$this->ExecuteQuery(
+				"UPDATE vtiger_selectcolumn SET columnname = 'vtiger_activity:eventstatus:cbCalendar_Status:eventstatus:V' WHERE columnname=?",
+				array('vtiger_activity:status:cbCalendar_Status:taskstatus:V')
+			);
+			$this->ExecuteQuery(
+				"UPDATE vtiger_cvadvfilter SET columnname = 'vtiger_activity:eventstatus:eventstatus:cbCalendar_Status:V' WHERE columnname=?",
+				array('vtiger_activity:status:taskstatus:cbCalendar_Status:V')
+			);
+			$this->ExecuteQuery(
+				"UPDATE vtiger_cvcolumnlist SET columnname = 'vtiger_activity:eventstatus:eventstatus:cbCalendar_Status:V' WHERE columnname=?",
+				array('vtiger_activity:status:taskstatus:cbCalendar_Status:V')
+			);
 			$this->ExecuteQuery("UPDATE vtiger_field SET presence = '1' WHERE fieldname=? and columnname = ?", array('taskstatus','status'));
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
-
 }

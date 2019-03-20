@@ -16,15 +16,17 @@
 
 class installcbcalendar extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$toinstall = array('cbCalendar');
 			foreach ($toinstall as $module) {
 				if ($this->isModuleInstalled($module)) {
-					vtlib_toggleModuleAccess($module,true);
+					vtlib_toggleModuleAccess($module, true);
 					$this->sendMsg("$module activated!");
 				} else {
 					$this->installManifestModule($module);
@@ -35,5 +37,4 @@ class installcbcalendar extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

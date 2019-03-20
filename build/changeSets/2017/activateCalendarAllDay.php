@@ -16,15 +16,17 @@
 
 class activateCalendarAllDay extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$cbcal = Vtiger_Module::getInstance('cbCalendar');
-			$field = Vtiger_Field::getInstance('notime',$cbcal);
+			$field = Vtiger_Field::getInstance('notime', $cbcal);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set displaytype=1 where fieldid=?',array($field->id));
+				$this->ExecuteQuery('update vtiger_field set displaytype=1 where fieldid=?', array($field->id));
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
