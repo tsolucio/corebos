@@ -9,15 +9,8 @@
  *********************************************************************************/
 
 class ListViewController {
-	/**
-	 *
-	 * @var QueryGenerator
-	 */
+
 	private $queryGenerator;
-	/**
-	 *
-	 * @var PearDatabase
-	 */
 	private $db;
 	private $nameList;
 	private $typeList;
