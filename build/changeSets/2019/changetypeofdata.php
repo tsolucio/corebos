@@ -24,15 +24,15 @@ class changetypeofdata extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$this->ExecuteQuery(
-				'update vtiger_field set typeofdata=? where tablename=? and columname=?',
+				'update vtiger_field set typeofdata=? where tablename=? and columnname=?',
 				array('D~M', 'vtiger_assets', 'datesold')
 			);
 			$this->ExecuteQuery(
-				'update vtiger_field set typeofdata=? where tablename=? and columname=?',
+				'update vtiger_field set typeofdata=? where tablename=? and columnname=?',
 				array('D~M~OTH~GE~datesold~Date Sold', 'vtiger_assets', 'dateinservice')
 			);
 			$this->ExecuteQuery(
-				'update vtiger_field set typeofdata=? where tablename=? and columname=?',
+				'update vtiger_field set typeofdata=? where tablename=? and columnname=?',
 				array('D~O~OTH~GE~date_start~Start Date & Time', 'vtiger_activity', 'due_date')
 			);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
