@@ -25,7 +25,7 @@ class updatePortalinfoUsernameFieldType extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$adb->query('ALTER TABLE vtiger_portalinfo modify user_name VARCHAR(255)');
-            
+
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}

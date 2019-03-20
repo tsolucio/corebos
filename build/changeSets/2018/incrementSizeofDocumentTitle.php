@@ -16,23 +16,23 @@
 
 class incrementSizeofDocumentTitle extends cbupdaterWorker {
 
-    public function applyChange() {
-        if ($this->isBlocked()) {
-            return true;
-        }
-        if ($this->hasError()) {
-            $this->sendError();
-        }
-        if ($this->isApplied()) {
-            $this->sendMsg('Changeset '.get_class($this).' already applied!');
-        } else {
-            $mod = Vtiger_Module::getInstance('Documents');
-            if ($mod) {
-                $this->ExecuteQuery("ALTER TABLE `vtiger_notes` CHANGE `title` `title` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL");
-                $this->sendMsg('Changeset '.get_class($this).' applied!');
-                $this->markApplied();
-            }
-        }
-        $this->finishExecution();
-    }
+	public function applyChange() {
+		if ($this->isBlocked()) {
+			return true;
+		}
+		if ($this->hasError()) {
+			$this->sendError();
+		}
+		if ($this->isApplied()) {
+			$this->sendMsg('Changeset '.get_class($this).' already applied!');
+		} else {
+			$mod = Vtiger_Module::getInstance('Documents');
+			if ($mod) {
+				$this->ExecuteQuery("ALTER TABLE `vtiger_notes` CHANGE `title` `title` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL");
+				$this->sendMsg('Changeset '.get_class($this).' applied!');
+				$this->markApplied();
+			}
+		}
+		$this->finishExecution();
+	}
 }

@@ -16,23 +16,23 @@
 
 class changePaymentFieldsUitypeTo71 extends cbupdaterWorker {
 
-    public function applyChange() {
-        if ($this->isBlocked()) {
-            return true;
-        }
-        if ($this->hasError()) {
-            $this->sendError();
-        }
-        if ($this->isApplied()) {
-            $this->sendMsg('Changeset '.get_class($this).' already applied!');
-        } else {
-            $mod = Vtiger_Module::getInstance('CobroPago');
-            if ($mod){
-                $this->ExecuteQuery("update vtiger_field set uitype=71 where tablename='vtiger_cobropago' and fieldname in ('amount','cost','benefit')");
-                $this->sendMsg('Changeset '.get_class($this).' applied!');
-                $this->markApplied();
-            }
-        }
-        $this->finishExecution();
-    }		
+	public function applyChange() {
+		if ($this->isBlocked()) {
+			return true;
+		}
+		if ($this->hasError()) {
+			$this->sendError();
+		}
+		if ($this->isApplied()) {
+			$this->sendMsg('Changeset '.get_class($this).' already applied!');
+		} else {
+			$mod = Vtiger_Module::getInstance('CobroPago');
+			if ($mod) {
+				$this->ExecuteQuery("update vtiger_field set uitype=71 where tablename='vtiger_cobropago' and fieldname in ('amount','cost','benefit')");
+				$this->sendMsg('Changeset '.get_class($this).' applied!');
+				$this->markApplied();
+			}
+		}
+		$this->finishExecution();
+	}
 }

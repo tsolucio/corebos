@@ -13,43 +13,39 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-class validateMap extends cbupdaterWorker
-{
-    private $label = 'Validate Map';
-    public function applyChange()
-    {
-        global $adb;
-        if ($this->hasError()) {
-            $this->sendError();
-        }
+class validateMap extends cbupdaterWorker {
+	private $label = 'Validate Map';
+	public function applyChange() {
+		global $adb;
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 
-        if ($this->isApplied()) {
-            $this->sendMsg('Changeset ' . get_class($this) . ' already applied!');
-        } else {
-            $moduleInstance = Vtiger_Module::getInstance('cbMap');
-            $moduleInstance->addLink('DETAILVIEWWIDGET', $this->label, 'module=cbMap&action=cbMapAjax&file=showMapValidation&record=$RECORD$');
-            $this->sendMsg('Changeset ' . get_class($this) . ' applied!');
-            $this->markApplied();
-        }
-        $this->finishExecution();
-    }
+		if ($this->isApplied()) {
+			$this->sendMsg('Changeset ' . get_class($this) . ' already applied!');
+		} else {
+			$moduleInstance = Vtiger_Module::getInstance('cbMap');
+			$moduleInstance->addLink('DETAILVIEWWIDGET', $this->label, 'module=cbMap&action=cbMapAjax&file=showMapValidation&record=$RECORD$');
+			$this->sendMsg('Changeset ' . get_class($this) . ' applied!');
+			$this->markApplied();
+		}
+		$this->finishExecution();
+	}
 
-    public function undoChange()
-    {
-        if ($this->hasError()) {
-            $this->sendError();
-        }
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 
-        if ($this->isApplied()) {
-            // undo your magic here
-            $moduleInstance = Vtiger_Module::getInstance('cbMap');
-            $moduleInstance->deleteLink('DETAILVIEWWIDGET', $this->label, 'module=cbMap&action=cbMapAjax&file=showMapValidation&record=$RECORD$');
-            $this->sendMsg('Changeset ' . get_class($this) . ' undone!');
-            $this->markUndone();
-        } else {
-            $this->sendMsg('Changeset ' . get_class($this) . ' not applied!');
-        }
-        $this->finishExecution();
-    }
-
+		if ($this->isApplied()) {
+			// undo your magic here
+			$moduleInstance = Vtiger_Module::getInstance('cbMap');
+			$moduleInstance->deleteLink('DETAILVIEWWIDGET', $this->label, 'module=cbMap&action=cbMapAjax&file=showMapValidation&record=$RECORD$');
+			$this->sendMsg('Changeset ' . get_class($this) . ' undone!');
+			$this->markUndone();
+		} else {
+			$this->sendMsg('Changeset ' . get_class($this) . ' not applied!');
+		}
+		$this->finishExecution();
+	}
 }
