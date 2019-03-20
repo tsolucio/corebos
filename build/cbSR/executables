@@ -1,3 +1,4 @@
+./build/cbSR/chksyntax
 ./build/HelperScripts/bettersafe.sh
 ./build/HelperScripts/createuserfiles
 ./build/HelperScripts/dumpdatabase.sh

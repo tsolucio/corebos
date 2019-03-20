@@ -34,24 +34,14 @@ class Notificationdrivers extends cbupdaterWorker {
 					) ENGINE=InnoDB DEFAULT CHARSET=utf8',
 				array()
 			);
-			$this->ExecuteQuery("INSERT INTO vtiger_notificationdrivers (type,path,functionname) VALUES ('whatsapp','include/integrations/whatsapp/whatsappsync.php','whatsappsync')");
-			$this->ExecuteQuery("INSERT INTO vtiger_notificationdrivers (type,path,functionname) VALUES ('googlecal','modules/Calendar4You/googlecalsync.php','googlecalsync')");
+			$this->ExecuteQuery(
+				"INSERT INTO vtiger_notificationdrivers (type,path,functionname) VALUES ('whatsapp','include/integrations/whatsapp/whatsappsync.php','whatsappsync')"
+			);
+			$this->ExecuteQuery(
+				"INSERT INTO vtiger_notificationdrivers (type,path,functionname) VALUES ('googlecal','modules/Calendar4You/googlecalsync.php','googlecalsync')"
+			);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
-		}
-		$this->finishExecution();
-	}
-
-	public function undoChange() {
-		if ($this->hasError()) {
-			$this->sendError();
-		}
-		if ($this->isApplied()) {
-			// undo magic
-
-			$this->markUndone();
-		} else {
-			$this->sendMsg('Changeset '.get_class($this).' not applied!');
 		}
 		$this->finishExecution();
 	}

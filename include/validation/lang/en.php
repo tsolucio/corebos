@@ -34,5 +34,7 @@ return array(
     'lengthMax'      => "must not exceed %d characters",
     'instanceOf'     => "must be an instance of '%s'",
     'containsUnique' => "must contain unique elements only",
+    'requiredWith'   => "is required with",
+    'requiredWithout'=> "is required without",
     'subset'         => "contains an item that is not in the list",
 );

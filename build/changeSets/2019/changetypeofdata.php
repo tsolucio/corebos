@@ -15,6 +15,7 @@
 *************************************************************************************************/
 
 class changetypeofdata extends cbupdaterWorker {
+
 	public function applyChange() {
 		if ($this->hasError()) {
 			$this->sendError();
@@ -32,4 +33,3 @@ class changetypeofdata extends cbupdaterWorker {
 	}
 }
 ?>
-  
