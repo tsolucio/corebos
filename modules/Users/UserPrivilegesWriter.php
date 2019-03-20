@@ -21,7 +21,7 @@ class UserPrivilegesWriter {
 	public static function setUserPrivileges($userId) {
 		if (self::WRITE_TO == 'file') {
 			self::createUserPrivilegesFile($userId);
-		} else if(self::WRITE_TO == 'db'){
+		} elseif (self::WRITE_TO == 'db') {
 			self::createUserPrivileges($userId);
 		}
 	}
@@ -29,7 +29,7 @@ class UserPrivilegesWriter {
 	private static function setSharingPrivileges($userId) {
 		if (self::WRITE_TO == 'file') {
 			self::createSharingPrivilegesFile($userId);
-		} else if(self::WRITE_TO == 'db'){
+		} elseif (self::WRITE_TO == 'db') {
 			self::createSharingPrivileges($userId);
 		}
 	}
@@ -51,7 +51,7 @@ class UserPrivilegesWriter {
 	 */
 	private function createSharingPrivilegesFile($userId) {
 		require_once 'modules/Users/CreateUserPrivilegeFile.php';
- 		createUserSharingPrivilegesfile($userId);
+		createUserSharingPrivilegesfile($userId);
 	}
 
 	/**
@@ -82,7 +82,7 @@ class UserPrivilegesWriter {
 		$userGroupFocus = new GetUserGroups();
 		$userGroupFocus->getAllUserGroups($userId);
 
-		if(!$privs["is_admin"]) {
+		if (!$privs["is_admin"]) {
 			$privs["current_user_roles"] = $userRole;
 			$privs["current_user_parent_role_seq"] = $userRoleParent;
 			$privs["current_user_profiles"] = getUserProfile($userId);
@@ -103,7 +103,6 @@ class UserPrivilegesWriter {
 			user_data = ?",
 			array($userId, $encodedPrivs, $encodedPrivs)
 		);
-
 	}
 
 	/**
@@ -114,7 +113,7 @@ class UserPrivilegesWriter {
 	private function createSharingPrivileges($userId) {
 
 		$sharingPrivs = array();
-		if(empty($userId)) {
+		if (empty($userId)) {
 			return false;
 		}
 
@@ -129,7 +128,6 @@ class UserPrivilegesWriter {
 		$sharingPrivs["defaultOrgSharingPermission"] = getAllDefaultSharingAction();
 		$sharingPrivs["related_module_share"] = self::relatedModuleSharing();
 
-
 		self::LeadsPrivileges($userFocus, $sharingPrivs);
 		self::AccountsPrivileges($userFocus, $sharingPrivs);
 		self::PotentialsPrivileges($userFocus, $sharingPrivs);
@@ -141,6 +139,8 @@ class UserPrivilegesWriter {
 		self::ModulePrivileges('Campaigns', $user, $sharingPrivs);
 		self::ModulePrivileges('PurchaseOrder', $user, $sharingPrivs);
 		self::ModulePrivileges('Invoice', $user, $sharingPrivs);
+
+		self::Depricated_populateSharingTmpTables($userId, $sharingPrivs);
 	}
 
 	/**
@@ -151,7 +151,7 @@ class UserPrivilegesWriter {
 	private function relatedModuleSharing() {
 		global $adb;
 
-		$relModSharArr = Array();
+		$relModSharArr = array();
 		$query = "SELECT * from vtiger_datashare_relatedmodules";
 		$result = $adb->query($query);
 		while ($row = $adb->fetchByAssoc($result)) {
@@ -161,7 +161,7 @@ class UserPrivilegesWriter {
 				$temArr = $relModSharArr[$relTabId];
 				$temArr[] = $parTabId;
 			} else {
-				$temArr = Array();
+				$temArr = array();
 				$temArr[] = $parTabId;
 			}
 			$relModSharArr[$relTabId] = $temArr;
@@ -408,7 +408,7 @@ class UserPrivilegesWriter {
 	 *
 	 * @return void
 	 */
-	private function constructRelatedSharing($module, $relModule, $modSharing, &$sharingPrivs ) {
+	private function constructRelatedSharing($module, $relModule, $modSharing, &$sharingPrivs) {
 
 		$relatedModSharing = getRelatedModuleSharingArray(
 			$module,
@@ -425,6 +425,7 @@ class UserPrivilegesWriter {
 		$sharingPrivs["{$module}_{$relModule}_share_read_permission"] = array(
 			'ROLE' => $readPermission['ROLE'],
 			'GROUP'=> $readPermission['GROUP']
+		);
 
 		$sharingPrivs["{$module}_{$relModule}_share_write_permission"] = array(
 			'ROLE' => $writePermission['ROLE'],
@@ -432,4 +433,272 @@ class UserPrivilegesWriter {
 		);
 	}
 
+	private function clearTmpSharingTables($userId) {
+		global $adb;
+
+		$table_arr = array(
+			'vtiger_tmp_read_user_sharing_per',
+			'vtiger_tmp_write_user_sharing_per',
+			'vtiger_tmp_read_group_sharing_per',
+			'vtiger_tmp_write_group_sharing_per',
+			'vtiger_tmp_read_user_rel_sharing_per',
+			'vtiger_tmp_write_user_rel_sharing_per',
+			'vtiger_tmp_read_group_rel_sharing_per',
+			'vtiger_tmp_write_group_rel_sharing_per'
+		);
+		foreach ($table_arr as $tabname) {
+			$query = "delete from " . $tabname . " where userid=?";
+			$adb->pquery($query, array($userId));
+		}
+	}
+
+	/**
+	 * Depricated function from CreateUserPrivilegeFile.php
+	 */
+	private function Depricated_populateSharingTmpTables($userId, $sharingPrivs) {
+		self::clearTmpSharingTables($userId);
+
+		// Look up for modules for which sharing access is enabled.
+		$sharingArray = array('Emails');
+		$otherModules = getSharingModuleList();
+		$sharingArray = array_merge($sharingArray, $otherModules);
+
+		foreach ($sharingArray as $module) {
+			$module_sharing_read_permvar  = $module.'_share_read_permission';
+			$module_sharing_write_permvar = $module.'_share_write_permission';
+			Depricated_populateSharingPrivileges(
+				'USER',
+				$userId,
+				$module,
+				'read',
+				$sharingPrivs[$module_sharing_read_permvar],
+				$sharingPrivs
+			);
+			Depricated_populateSharingPrivileges(
+				'USER',
+				$userId,
+				$module,
+				'write',
+				$sharingPrivs[$module_sharing_write_permvar],
+				$sharingPrivs
+			);
+			Depricated_populateSharingPrivileges(
+				'GROUP',
+				$userId,
+				$module,
+				'read',
+				$sharingPrivs[$module_sharing_read_permvar],
+				$sharingPrivs
+			);
+			Depricated_populateSharingPrivileges(
+				'GROUP',
+				$userId,
+				$module,
+				'write',
+				$sharingPrivs[$module_sharing_write_permvar],
+				$sharingPrivs
+			);
+		}
+
+		foreach ($related_module_share as $rel_tab_id => $tabid_arr) {
+			$rel_tab_name=getTabname($rel_tab_id);
+			foreach ($tabid_arr as $taid) {
+				$tab_name=getTabname($taid);
+				$relmodule_sharing_read_permvar  = $tab_name.'_'.$rel_tab_name.'_share_read_permission';
+				$relmodule_sharing_write_permvar = $tab_name.'_'.$rel_tab_name.'_share_write_permission';
+				Depricated_populateRelatedSharingPrivileges(
+					'USER',
+					$userid,
+					$tab_name,
+					$rel_tab_name,
+					'read',
+					$sharingPrivs[$relmodule_sharing_read_permvar],
+					$sharingPrivs
+				);
+				Depricated_populateRelatedSharingPrivileges(
+					'USER',
+					$userid,
+					$tab_name,
+					$rel_tab_name,
+					'write',
+					$sharingPrivs[$relmodule_sharing_write_permvar],
+					$sharingPrivs
+				);
+				Depricated_populateRelatedSharingPrivileges(
+					'GROUP',
+					$userid,
+					$tab_name,
+					$rel_tab_name,
+					'read',
+					$sharingPrivs[$relmodule_sharing_read_permvar],
+					$sharingPrivs
+				);
+				Depricated_populateRelatedSharingPrivileges(
+					'GROUP',
+					$userid,
+					$tab_name,
+					$rel_tab_name,
+					'write',
+					$sharingPrivs[$relmodule_sharing_write_permvar],
+					$sharingPrivs
+				);
+			}
+		}
+	}
+
+	/**
+	 * Depricated function from CreateUserPrivilegeFile.php
+	 */
+	private function Depricated_populateSharingPrivileges(
+		$enttype,
+		$userid,
+		$module,
+		$pertype,
+		$var_name_arr = false,
+		$sharingPrivs
+	) {
+		global $adb;
+		$tabid=getTabid($module);
+
+		if ($enttype=='USER') {
+			if ($pertype =='read') {
+				$table_name='vtiger_tmp_read_user_sharing_per';
+				$var_name=$module.'_share_read_permission';
+			} elseif ($pertype == 'write') {
+				$table_name='vtiger_tmp_write_user_sharing_per';
+				$var_name=$module.'_share_write_permission';
+			}
+
+			// Lookup for the variable if not set through function argument
+			if (!$var_name_arr) {
+				$var_name_arr=$sharingPrivs[$var_name];
+			}
+			$user_arr=array();
+			if (sizeof($var_name_arr['ROLE']) > 0) {
+				foreach ($var_name_arr['ROLE'] as $roleid => $roleusers) {
+					foreach ($roleusers as $user_id) {
+						if (! in_array($user_id, $user_arr)) {
+							$query="insert into ".$table_name." values(?,?,?)";
+							$adb->pquery($query, array($userid, $tabid, $user_id));
+							$user_arr[]=$user_id;
+						}
+					}
+				}
+			}
+			if (sizeof($var_name_arr['GROUP']) > 0) {
+				foreach ($var_name_arr['GROUP'] as $grpid => $grpusers) {
+					foreach ($grpusers as $user_id) {
+						if (! in_array($user_id, $user_arr)) {
+							$query="insert into ".$table_name." values(?,?,?)";
+							$adb->pquery($query, array($userid, $tabid, $user_id));
+							$user_arr[]=$user_id;
+						}
+					}
+				}
+			}
+		} elseif ($enttype=='GROUP') {
+			if ($pertype =='read') {
+				$table_name='vtiger_tmp_read_group_sharing_per';
+				$var_name=$module.'_share_read_permission';
+			} elseif ($pertype == 'write') {
+				$table_name='vtiger_tmp_write_group_sharing_per';
+				$var_name=$module.'_share_write_permission';
+			}
+
+			// Lookup for the variable if not set through function argument
+			if (!$var_name_arr) {
+				$var_name_arr = $$var_name;
+			}
+			$grp_arr = array();
+			if (sizeof($var_name_arr['GROUP']) > 0) {
+				foreach ($var_name_arr['GROUP'] as $grpid => $grpusers) {
+					if (!in_array($grpid, $grp_arr)) {
+						$query="insert into ".$table_name." values(?,?,?)";
+						$adb->pquery($query, array($userid, $tabid, $grpid));
+						$grp_arr[]=$grpid;
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Depricated function from CreateUserPrivilegeFile.php
+	 */
+	private function Depricated_populateRelatedSharingPrivileges(
+		$enttype,
+		$userid,
+		$module,
+		$relmodule,
+		$pertype,
+		$var_name_arr = false,
+		$sharingPrivs
+	) {
+		global $adb;
+		$tabid=getTabid($module);
+		$reltabid=getTabid($relmodule);
+
+		if ($enttype=='USER') {
+			if ($pertype =='read') {
+				$table_name='vtiger_tmp_read_user_rel_sharing_per';
+				$var_name=$module.'_'.$relmodule.'_share_read_permission';
+			} elseif ($pertype == 'write') {
+				$table_name='vtiger_tmp_write_user_rel_sharing_per';
+				$var_name=$module.'_'.$relmodule.'_share_write_permission';
+			}
+
+			// Lookup for the variable if not set through function argument
+			if (!$var_name_arr) {
+				$var_name_arr=$$var_name;
+			}
+			$user_arr = array();
+
+			if (sizeof($var_name_arr['ROLE']) > 0) {
+				foreach ($var_name_arr['ROLE'] as $roleid => $roleusers) {
+					foreach ($roleusers as $user_id) {
+						if (!in_array($user_id, $user_arr)) {
+							$query="insert into ".$table_name." values(?,?,?,?)";
+							$adb->pquery($query, array($userid, $tabid, $reltabid, $user_id));
+							$user_arr[]=$user_id;
+						}
+					}
+				}
+			}
+
+			if (sizeof($var_name_arr['GROUP']) > 0) {
+				foreach ($var_name_arr['GROUP'] as $grpid => $grpusers) {
+					foreach ($grpusers as $user_id) {
+						if (!in_array($user_id, $user_arr)) {
+							$query="insert into ".$table_name." values(?,?,?,?)";
+							$adb->pquery($query, array($userid, $tabid, $reltabid, $user_id));
+							$user_arr[]=$user_id;
+						}
+					}
+				}
+			}
+		} elseif ($enttype=='GROUP') {
+			if ($pertype =='read') {
+				$table_name='vtiger_tmp_read_group_rel_sharing_per';
+				$var_name=$module.'_'.$relmodule.'_share_read_permission';
+			} elseif ($pertype == 'write') {
+				$table_name='vtiger_tmp_write_group_rel_sharing_per';
+				$var_name=$module.'_'.$relmodule.'_share_write_permission';
+			}
+
+			if (!$var_name_arr) {
+				$var_name_arr = $sharingPrivs[$var_name];
+			}
+			$grp_arr=array();
+
+			if (sizeof($var_name_arr['GROUP']) > 0) {
+				foreach ($var_name_arr['GROUP'] as $grpid => $grpusers) {
+					if (!in_array($grpid, $grp_arr)) {
+						$query="insert into ".$table_name." values(?,?,?,?)";
+						$adb->pquery($query, array($userid, $tabid, $reltabid, $grpid));
+						$grp_arr[]=$grpid;
+					}
+				}
+			}
+		}
+	}
 }
