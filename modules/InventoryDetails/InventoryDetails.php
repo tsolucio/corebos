@@ -282,7 +282,7 @@ class InventoryDetails extends CRMEntity {
 			FROM vtiger_inventoryproductrel
 			LEFT JOIN vtiger_products ON vtiger_products.productid=vtiger_inventoryproductrel.productid
 			LEFT JOIN vtiger_service ON vtiger_service.serviceid=vtiger_inventoryproductrel.productid
-			WHERE id = ?";
+			WHERE id = ? ORDER BY sequence_no";
 		} elseif ($taxtype == 'individual') {
 			$query = "SELECT id as related_to, vtiger_inventoryproductrel.productid, sequence_no, lineitem_id, quantity, listprice, comment as description,
 			$txsql
@@ -298,7 +298,7 @@ class InventoryDetails extends CRMEntity {
 			FROM vtiger_inventoryproductrel
 			LEFT JOIN vtiger_products ON vtiger_products.productid=vtiger_inventoryproductrel.productid
 			LEFT JOIN vtiger_service ON vtiger_service.serviceid=vtiger_inventoryproductrel.productid
-			WHERE id = ?";
+			WHERE id = ? ORDER BY sequence_no";
 		}
 		$res_inv_lines = $adb->pquery($query, array($related_to));
 
