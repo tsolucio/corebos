@@ -1656,3 +1656,63 @@ if (typeof(MailManager) == 'undefined') {
 		}
 	};
 }
+/** Adding Attachment associated with the template to the drop-zone */
+function addAttachments(entity_id, recordid, mod, popupmode, callback) {
+	var emailId;
+	var return_module = 'MailManager';
+	var baseurl = MailManager._baseurl();
+	MailManager.Request('index.php?'+baseurl,'', function (response) {
+		if (typeof(response)=='string') {
+			var responseText = JSON.parse(response);
+		} else if (typeof(response)=='object') {
+			var responseText = JSON.parse(response.responseText);
+		}
+		emailId = responseText.result.emailid;
+	});
+	if (popupmode == 'ajax') {
+		VtigerJS_DialogBox.block();
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module='+return_module+'&action='+return_module+'Ajax&file=updateRelations&destination_module='+mod+'&entityid='+entity_id+'&parentid='+emailId+'&mode=Ajax'
+		}).done(function (response) {
+			VtigerJS_DialogBox.unblock();
+			var res = JSON.parse(response);
+				if (res.error != undefined) {
+					alert('error');
+					window.close();
+					return false;
+				}
+				if (window.opener) {
+					var dzelem = window.opener.document.getElementById('file-uploader');
+				} else {
+					var dzelem = document.getElementById('file-uploader');
+				}
+				if (dzelem.dropzone) {
+					dzelem.dropzone.emit('addedfile', {name:res.name, size:res.size, emailid:res.emailid, docid:res.docid});
+				}
+				uploadCountUpdater();
+				if (window.opener) {
+					window.close();
+				}
+		});
+		return false;
+	} else {
+		opener.document.location.href='index.php?module='+return_module+'&action=updateRelations&destination_module='+mod+'&entityid='+entity_id+'&parentid='+recordid+'&return_module='+return_module+'&return_action='+gpopupReturnAction;
+		if (document.getElementById('closewindow').value=='true') {
+			window.close();
+		}
+	}
+}
+function uploadCountUpdater() {
+	var countElement;
+	if (jQuery('#attachmentCount').length) {
+		countElement = jQuery('#attachmentCount');
+	} else {
+		countElement = jQuery(window.opener.document).find('#attachmentCount');
+	}
+	var MailManagerCurrentUploadCount = countElement.val();
+	if (MailManagerCurrentUploadCount == null || MailManagerCurrentUploadCount == '') {
+		MailManagerCurrentUploadCount = 0;
+	}
+	countElement.val(++MailManagerCurrentUploadCount);
+}

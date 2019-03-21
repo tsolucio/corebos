@@ -54,12 +54,4 @@ do {
 ?>
 </table>
 </body>
-<script>
-function submitMailMergetemplate(templateid) {
-	var sub = '_mail_replyfrm_subject_';
-	var tbody = '_mail_replyfrm_body_';
-	var url = 'index.php?module=MailManager&action=MailManagerAjax&file=TemplateMergeMailManager&templateid='+templateid+'&subject='+sub+'&textbody='+tbody;
-	window.document.location.href = url;
-}
-</script>
 </html>

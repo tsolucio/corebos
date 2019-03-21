@@ -8,13 +8,19 @@
  ************************************************************************************/
 
 function submittemplate(recordid, value, target_fieldname, formname) {
-	let idlist = window.opener.document.getElementById('listofids').value;
+	let idlist = (window.opener.document.getElementById('listofids')) !=null ? window.opener.document.getElementById('listofids').value: '';
 	var calltype = (window.opener.document.getElementById('calltype') != null ? window.opener.document.getElementById('calltype').value : 'normalcall');
 	if (calltype =='normalcall') {
 		window.document.location.href = 'index.php?module=MsgTemplate&action=MsgTemplateAjax&file=TemplateMerge&listofids='+idlist+'&action_id='+recordid+'&calltype='+calltype;
 	}
 	if (calltype =='emailworkflow') {
 		window.document.location.href = 'index.php?module=MsgTemplate&action=MsgTemplateAjax&file=TemplateMergeEmailTask&listofids='+idlist+'&action_id='+recordid+'&calltype='+calltype;
+	}
+	if (calltype =='mailManager') {
+		var sub = '_mail_replyfrm_subject_';
+		var tbody = '_mail_replyfrm_body_';
+		var url = 'index.php?module=MailManager&action=MailManagerAjax&file=TemplateMergeMailManager&templateid='+recordid+'&subject='+sub+'&textbody='+tbody;
+		window.document.location.href = url;
 	}
 }
 
