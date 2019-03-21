@@ -1057,7 +1057,7 @@ class CRMEntity {
 				//Here we check if user has permissions to access this field.
 				//If it is allowed then it will get the actual value, otherwise it gets an empty string.
 				$setittoempty = false;
-				if (!isset($from_wf) || !$from_wf) {
+				if (!$from_wf) {
 					$setittoempty = (getFieldVisibilityPermission($module, $current_user->id, $fieldname) != '0');
 				}
 				// To avoid ADODB execption pick the entries that are in $tablename
@@ -1066,7 +1066,7 @@ class CRMEntity {
 						$isRecordDeleted = $adb->query_result($result['vtiger_crmentity'], $cn, 'deleted');
 						if ($isRecordDeleted==0) {
 							$tempid = $adb->query_result($result['vtiger_crmentity'], $cn, 'crmid');
-							if (!isset($cachedIDPermissions[$tempid])) {
+							if (!$from_wf && !isset($cachedIDPermissions[$tempid])) {
 								$cachedIDPermissions[$tempid] = isPermitted($module, 'DetailView', $tempid);
 							}
 							//Here we check if user can see this record.
@@ -1085,6 +1085,14 @@ class CRMEntity {
 					for ($cn = 0; $cn < $adb->num_rows($result['vtiger_crmentity']); $cn++) {
 						$isRecordDeleted = $adb->query_result($result['vtiger_crmentity'], $cn, 'deleted');
 						if ($isRecordDeleted==0) {
+							$tempid = $adb->query_result($result['vtiger_crmentity'], $cn, 'crmid');
+							if (!$from_wf && !isset($cachedIDPermissions[$tempid])) {
+								$cachedIDPermissions[$tempid] = isPermitted($module, 'DetailView', $tempid);
+							}
+							//Here we check if user can see this record.
+							if (!$from_wf && $cachedIDPermissions[$tempid] != 'yes') {
+								continue;
+							}
 							$tempid = $adb->query_result($result['vtiger_crmentity'], $cn, 'crmid');
 							$fld_value = '';
 							$this->fetched_records[$tempid][$fieldname] = $fld_value;
