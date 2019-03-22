@@ -539,7 +539,7 @@ class Users extends CRMEntity {
 			'$user_password$'=> $new_password
 		);
 		$module = 'Users';
-		Emails::sendEmailTemplate($templateName, $context, $module, $to_email);
+		Emails::sendEmailTemplate($templateName, $context, $module, $to_email, $this->id);
 		$sql = "UPDATE $this->table_name SET failed_login_attempts=0 where id=?";
 		$this->db->pquery($sql, array($this->id));
 
