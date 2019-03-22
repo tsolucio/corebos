@@ -524,6 +524,19 @@ class Emails extends CRMEntity {
 		unset($list_buttons['mass_edit']);
 		return $list_buttons;
 	}
+
+	public static function sendEmailTemplate($templateName, $context, $module, $to_email, $par_id, $from_name = '', $from_email = '') {
+		require_once 'modules/Emails/mail.php';
+		global $adb, $default_charset;
+		$sql = fetchEmailTemplateInfo($templateName);
+		$sub = $adb->query_result($sql, 0, 'subject');
+		$body = $adb->query_result($sql, 0, 'body');
+		$mail_body = html_entity_decode($body, ENT_QUOTES, $default_charset);
+		$mail_body = str_replace('$user_name$', $context['$user_name$'], $mail_body);
+		$mail_body = str_replace('$user_password$', $context['$user_password$'], $mail_body);
+		$mail_body = getMergeDescription($mail_body, $par_id, $module);
+		send_mail($module, $to_email, $from_name, $from_email, $sub, $mail_body);
+	}
 }
 
 /** Function to get the emailids for the given ids form the request parameters
