@@ -80,8 +80,10 @@
 						<option value='{$name}' {if isset($trigger.field) && $trigger.field eq $name}selected{/if}>
 							{$label}
 						</option>
+						
 		{/foreach}
 					</select>
+					<input type="checkbox" name="reevaluate" id="reevaluate" {if isset($task->reevaluate) && $task->reevaluate eq 1}checked{/if}>&nbsp;{$MOD.LBL_REEVALCONDITIONS}
 				</div>
 			</td>
 		</tr>
