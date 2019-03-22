@@ -418,5 +418,6 @@ var alert_arr = {
 	'SHOWING' : 'Exibindo',
 	'OF' : 'de',
 	'ERR_Massedit' : 'Error on Mass Edit',
-	'ProcessFINISHED' : 'Process Finished'
+	'ProcessFINISHED' : 'Process Finished',
+	'duplicatednotallowed' : 'Duplicated Modules Not Allowed'
 };

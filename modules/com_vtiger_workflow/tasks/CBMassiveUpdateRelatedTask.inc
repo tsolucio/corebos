@@ -10,12 +10,13 @@
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/com_vtiger_workflow/VTTaskQueue.inc';
+require_once 'modules/cbMap/cbMap.php';
 
 class CBMassiveUpdateRelatedTask extends VTTask {
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
-		return array('field_value_mapping');
+		return array('field_value_mapping','bmapid', 'bmapid_display');
 	}
 
 	public function doTask(&$entity) {
@@ -30,11 +31,22 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 		$entityId = $entity->getId();
 		$recordId = vtws_getIdComponents($entityId);
 		$recordId = $recordId[1];
+		$bmapid = $this->bmapid;
 		$logbg->debug("Module: $moduleName, Record: $entityId");
 		$moduleHandler = vtws_getModuleHandlerFromName($moduleName, Users::getActiveAdminUser());
 		$handlerMeta = $moduleHandler->getMeta();
 		$moduleFields = $handlerMeta->getModuleFields();
 		$fieldValueMapping = array();
+		if (!empty($bmapid)) {
+			// Business Map
+			$focusmap = new cbMap();
+			$focusmap->id = $bmapid;
+			$focusmap->mode = '';
+			$focusmap->retrieve_entity_info($bmapid, 'cbMap');
+			$businessMap = $focusmap->column_fields['maptype'];
+		} else {
+			$businessMap = '';
+		}
 		if (!empty($this->field_value_mapping)) {
 			$fieldValueMapping = json_decode($this->field_value_mapping, true);
 		}
@@ -67,9 +79,6 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 					$fieldmodule = explode('__', trim($fieldInfo['fieldmodule']));
 				}
 				$module = $fieldmodule[0];
-				if (!in_array($fldmod, $relmodule)) {
-					$relmodule[] = $fldmod;
-				}
 				$moduleHandlerrel = vtws_getModuleHandlerFromName($module, Users::getActiveAdminUser());
 				$handlerMetarel[$fldmod] = $moduleHandlerrel->getMeta();
 				$moduleFieldsrel = $handlerMetarel[$fldmod]->getModuleFields();
@@ -77,38 +86,40 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 			}
 			$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 			$_REQUEST['ajxaction'] = 'Workflow';
-			if (count($relmodule)>0) {
+			if ($fldmod!='') {
 				$focusrel[] = array();
-				if (count($relmodule)>3 && $isqueue==false) {
-					$delay = strtotime(' +5 minutes');
-					$taskQueue->queueTask($this->id, $entityId, $delay);
-					$util->revertUser();
-					$from_wf = false;
-					$_REQUEST['ajxaction'] = $hold_ajxaction;
-					$logbg->debug('< CBMassiveUpdateRelatedTask: queued');
-					return;
-				} else {
-					foreach ($relmodule as $mod) {
-						$fieldmodule = explode('__', $mod);
-						$relmodule = $fieldmodule[0];
-						$relfield = $fieldmodule[1];
-						$focusrel[$mod] = CRMEntity::getInstance($relmodule);
-						$maintable = $focusrel[$mod]->table_name;
-						$mainid = $focusrel[$mod]->table_index;
-						$records=$adb->query("select $mainid from $maintable join vtiger_crmentity on crmid=$mainid where deleted=0 and $relfield='$recordId'");
-						for ($nr=0; $nr<$adb->num_rows($records); $nr++) {
-							$relId = $adb->query_result($records, $nr, '0');
-							$focusrel[$mod]->id = $relId;
-							$focusrel[$mod]->mode = 'edit';
-							$focusrel[$mod]->retrieve_entity_info($relId, $relmodule, false, $from_wf);
-							$focusrel[$mod]->clearSingletonSaveFields();
-							$fval = $fieldValue[$mod];
-							foreach ($fval as $key => $value) {
-								$focusrel[$mod]->column_fields[$key]=$value;
-							}
-							$focusrel[$mod]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel[$mod]->column_fields, $handlerMetarel[$mod]);
-							$focusrel[$mod]->saveentity($relmodule);
+				$fieldmodule = explode('__', $fldmod);
+				$relmodule = $fieldmodule[0];
+				$relfield = $fieldmodule[1];
+				$focusrel[$fldmod] = CRMEntity::getInstance($relmodule);
+				$maintable = $focusrel[$fldmod]->table_name;
+				$mainid = $focusrel[$fldmod]->table_index;
+				if ($businessMap == 'Condition Query') {
+					$ids = $focusmap->ConditionQuery($recordId);
+					foreach ($ids as $recid) {
+						$getids[] = $recid["$mainid"];
+					}
+					if (count($getids)>0) {
+						$condition = " and $mainid in (".implode(",", $getids).")";
+					} else {
+						$condition = "";
+					}
+				}
+				$records=$adb->query("select $mainid from $maintable join vtiger_crmentity on crmid=$mainid where deleted=0 and $relfield='$recordId' $condition");
+				for ($nr=0; $nr<$adb->num_rows($records); $nr++) {
+					$relId = $adb->query_result($records, $nr, '0');
+					$entity = vtws_getEntityId($relmodule);
+					if ($businessMap != 'Condition Expression'  || ($businessMap == 'Condition Expression' && $focusmap->ConditionExpression($entity.'x'.$relId))) {
+						$focusrel[$fldmod]->id = $relId;
+						$focusrel[$fldmod]->mode = 'edit';
+						$focusrel[$fldmod]->retrieve_entity_info($relId, $relmodule, false, $from_wf);
+						$focusrel[$fldmod]->clearSingletonSaveFields();
+						$fval = $fieldValue[$fldmod];
+						foreach ($fval as $key => $value) {
+							$focusrel[$fldmod]->column_fields[$key]=$value;
 						}
+						$focusrel[$fldmod]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel[$fldmod]->column_fields, $handlerMetarel[$fldmod]);
+						$focusrel[$fldmod]->saveentity($relmodule);
 					}
 				}
 			}

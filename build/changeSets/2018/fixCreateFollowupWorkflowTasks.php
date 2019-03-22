@@ -30,7 +30,7 @@ class fixCreateFollowupWorkflowTasks extends cbupdaterWorker {
 				$workflowManager = new VTWorkflowManager($adb);
 				$taskManager = new VTTaskManager($adb);
 				$calendarWorkflow = $workflowManager->newWorkFlow("cbCalendar");
-				$calendarWorkflow->test = '[{"fieldname":"followupcreate","operation":"is","value":"true:boolean","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
+				$calendarWorkflow->test='[{"fieldname":"followupcreate","operation":"is","value":"true:boolean","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
 				$calendarWorkflow->description = "Create Calendar Follow Up on create";
 				$calendarWorkflow->executionCondition = VTWorkflowManager::$ON_FIRST_SAVE;
 				$calendarWorkflow->defaultworkflow = 1;
@@ -38,9 +38,26 @@ class fixCreateFollowupWorkflowTasks extends cbupdaterWorker {
 				$task = $taskManager->createTask('VTCreateEntityTask', $calendarWorkflow->id);
 				$task->active = true;
 				$task->summary = 'Create Calendar Follow Up';
-				$task->entity_type = "cbCalendar";
-				$task->reference_field = "relatedwith";
-				$task->field_value_mapping = '[{"fieldname":"subject","modulename":"cbCalendar","valuetype":"expression","value":"concat('."'Follow up: '".',subject )"},{"fieldname":"assigned_user_id","modulename":"cbCalendar","valuetype":"fieldname","value":"assigned_user_id "},{"fieldname":"dtstart","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt  "},{"fieldname":"dtend","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt "},{"fieldname":"eventstatus","modulename":"cbCalendar","valuetype":"rawtext","value":"Planned"},{"fieldname":"taskpriority","modulename":"cbCalendar","valuetype":"rawtext","value":"Medium"},{"fieldname":"sendnotification","modulename":"cbCalendar","valuetype":"rawtext","value":"true:boolean"},{"fieldname":"activitytype","modulename":"cbCalendar","valuetype":"fieldname","value":"followuptype "},{"fieldname":"visibility","modulename":"cbCalendar","valuetype":"rawtext","value":"Private"},{"fieldname":"location","modulename":"cbCalendar","valuetype":"fieldname","value":"location "},{"fieldname":"reminder_time","modulename":"cbCalendar","valuetype":"rawtext","value":"0"},{"fieldname":"recurringtype","modulename":"cbCalendar","valuetype":"rawtext","value":"--None--"},{"fieldname":"description","modulename":"cbCalendar","valuetype":"fieldname","value":"description "},{"fieldname":"followupcreate","modulename":"cbCalendar","valuetype":"rawtext","value":"false:boolean"},{"fieldname":"date_start","modulename":"cbCalendar","valuetype":"fieldname","value":"dtstart "},{"fieldname":"time_start","modulename":"cbCalendar","valuetype":"rawtext","value":"00:00"},{"fieldname":"due_date","modulename":"cbCalendar","valuetype":"fieldname","value":"dtend "},{"fieldname":"time_end","modulename":"cbCalendar","valuetype":"rawtext","value":"00:00"}]';
+				$task->entity_type = 'cbCalendar';
+				$task->reference_field = 'relatedwith';
+				$task->field_value_mapping = '[{"fieldname":"subject","modulename":"cbCalendar","valuetype":"expression","value":"concat('."'Follow up: '".',subject )"},'
+					.'{"fieldname":"assigned_user_id","modulename":"cbCalendar","valuetype":"fieldname","value":"assigned_user_id "},'
+					.'{"fieldname":"dtstart","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt  "},'
+					.'{"fieldname":"dtend","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt "},'
+					.'{"fieldname":"eventstatus","modulename":"cbCalendar","valuetype":"rawtext","value":"Planned"},'
+					.'{"fieldname":"taskpriority","modulename":"cbCalendar","valuetype":"rawtext","value":"Medium"},'
+					.'{"fieldname":"sendnotification","modulename":"cbCalendar","valuetype":"rawtext","value":"true:boolean"},'
+					.'{"fieldname":"activitytype","modulename":"cbCalendar","valuetype":"fieldname","value":"followuptype "},'
+					.'{"fieldname":"visibility","modulename":"cbCalendar","valuetype":"rawtext","value":"Private"},'
+					.'{"fieldname":"location","modulename":"cbCalendar","valuetype":"fieldname","value":"location "},'
+					.'{"fieldname":"reminder_time","modulename":"cbCalendar","valuetype":"rawtext","value":"0"},'
+					.'{"fieldname":"recurringtype","modulename":"cbCalendar","valuetype":"rawtext","value":"--None--"},'
+					.'{"fieldname":"description","modulename":"cbCalendar","valuetype":"fieldname","value":"description "},'
+					.'{"fieldname":"followupcreate","modulename":"cbCalendar","valuetype":"rawtext","value":"false:boolean"},'
+					.'{"fieldname":"date_start","modulename":"cbCalendar","valuetype":"fieldname","value":"dtstart "},'
+					.'{"fieldname":"time_start","modulename":"cbCalendar","valuetype":"rawtext","value":"00:00"},'
+					.'{"fieldname":"due_date","modulename":"cbCalendar","valuetype":"fieldname","value":"dtend "},'
+					.'{"fieldname":"time_end","modulename":"cbCalendar","valuetype":"rawtext","value":"00:00"}]';
 				$task->test = '';
 				$task->reevaluate = 0;
 				$taskManager->saveTask($task);

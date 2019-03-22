@@ -12,27 +12,28 @@
  * either express or implied. See the License for the specific language governing
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
-*************************************************************************************************/
+ *************************************************************************************************
+ *  Module       : Controller
+ *  Version      : 5.4.0
+ *  Author       : JPL TSolucio, S. L.
+ *************************************************************************************************/
 
-class changePaymentFieldsUitypeTo71 extends cbupdaterWorker {
+require_once 'Smarty_setup.php';
 
-	public function applyChange() {
-		if ($this->isBlocked()) {
-			return true;
-		}
-		if ($this->hasError()) {
-			$this->sendError();
-		}
-		if ($this->isApplied()) {
-			$this->sendMsg('Changeset '.get_class($this).' already applied!');
-		} else {
-			$mod = Vtiger_Module::getInstance('CobroPago');
-			if ($mod) {
-				$this->ExecuteQuery("update vtiger_field set uitype=71 where tablename='vtiger_cobropago' and fieldname in ('amount','cost','benefit')");
-				$this->sendMsg('Changeset '.get_class($this).' applied!');
-				$this->markApplied();
-			}
-		}
-		$this->finishExecution();
+class CoreBOS_Controller {
+
+	private $viewer;
+
+	public function __construct() {
+		$this->viewer = new vtigerCRM_Smarty();
+	}
+
+	/**
+	 * Get viewer instance
+	 *
+	 * @return vtigerCRM_Smarty Smarty instance
+	 */
+	public function getViewer() {
+		return $this->viewer;
 	}
 }

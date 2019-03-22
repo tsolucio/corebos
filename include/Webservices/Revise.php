@@ -7,6 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
+include_once 'include/Webservices/CustomerPortalWS.php';
+include_once 'include/Webservices/getRecordImages.php';
 
 function vtws_revise($element, $user) {
 	global $log, $adb, $root_directory;
@@ -118,6 +120,38 @@ function vtws_revise($element, $user) {
 		foreach ($_FILES as $file) {
 			if (file_exists($file['tmp_name'])) {
 				unlink($file['tmp_name']);
+			}
+		}
+	}
+	// Dereference WSIDs
+	$r = $meta->getReferenceFieldDetails();
+	$listofrelfields = array();
+	if (!empty($entity['assigned_user_id'])) {
+		$r['assigned_user_id'] = array('Users');
+		$listofrelfields[] = $entity['assigned_user_id'];
+	}
+	foreach ($r as $relfield => $mods) {
+		if (!empty($entity[$relfield])) {
+			$listofrelfields[] = $entity[$relfield];
+		}
+	}
+	if (count($listofrelfields)>0) {
+		$deref = unserialize(vtws_getReferenceValue(serialize($listofrelfields), $user));
+		foreach ($r as $relfield => $mods) {
+			if (!empty($entity[$relfield])) {
+				$entity[$relfield.'ename'] = $deref[$entity[$relfield]];
+			}
+		}
+	}
+	// Add attachment information
+	$imgs = $meta->getImageFields();
+	if (count($imgs)>0) {
+		$imginfo = cbws_getrecordimageinfo($element['id'], $user);
+		if ($imginfo['results']>0) {
+			foreach ($imgs as $img) {
+				if (!empty($entity[$img])) {
+					$entity[$img.'imageinfo'] = $imginfo['images'][$img];
+				}
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2018 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2019 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
  * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
  * file except in compliance with the License. You can redistribute it and/or modify it
  * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -12,27 +12,35 @@
  * either express or implied. See the License for the specific language governing
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
-*************************************************************************************************/
+ *************************************************************************************************
+ *  Module       : ActionController
+ *  Version      : 5.4.0
+ *  Author       : JPL TSolucio, S. L.
+ *************************************************************************************************/
 
-class changePaymentFieldsUitypeTo71 extends cbupdaterWorker {
+require_once 'vtlib/Vtiger/controllers/Controller.php';
 
-	public function applyChange() {
-		if ($this->isBlocked()) {
-			return true;
-		}
-		if ($this->hasError()) {
-			$this->sendError();
-		}
-		if ($this->isApplied()) {
-			$this->sendMsg('Changeset '.get_class($this).' already applied!');
-		} else {
-			$mod = Vtiger_Module::getInstance('CobroPago');
-			if ($mod) {
-				$this->ExecuteQuery("update vtiger_field set uitype=71 where tablename='vtiger_cobropago' and fieldname in ('amount','cost','benefit')");
-				$this->sendMsg('Changeset '.get_class($this).' applied!');
-				$this->markApplied();
+class CoreBOS_ActionController extends CoreBOS_Controller {
+
+	protected $request;
+
+	/**
+	 * Constructor method, calls another controller method
+	 * if it exists
+	 *
+	 * @param CoreBOS_Request $request [description]
+	 */
+	public function __construct(Vtiger_Request $request) {
+		$this->request = $request;
+		$method = $request->get("method");
+		if ($method != '') {
+			if (method_exists($this, $method)) {
+				$this->$method();
+			} else {
+				new Exception("Method does not Exist", 404);
 			}
+		} else {
+			$this->main();
 		}
-		$this->finishExecution();
 	}
 }

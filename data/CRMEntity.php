@@ -884,10 +884,10 @@ class CRMEntity {
 		return $filename;
 	}
 
-	/** Function to retrive the information of the given recordid ,module
+	/** Function to retrieve the information of the given recordid
 	 * @param $record -- Id:: Type Integer
-	 * @param $module -- module:: Type varchar
-	 * This function retrives the information from the database and sets the value in the class columnfields array
+	 * @param $module -- module:: Type String
+	 * This function retrieves the information from the database and sets the value in the class column_fields array
 	 */
 	public function retrieve_entity_info($record, $module, $deleted = false, $from_wf = false) {
 		global $adb, $app_strings, $current_user;
@@ -965,7 +965,7 @@ class CRMEntity {
 				$fieldcolname = $fieldinfo['columnname'];
 				$tablename = $fieldinfo['tablename'];
 				$fieldname = $fieldinfo['fieldname'];
-				//Here we check if user have the paermission to access this field.
+				//Here we check if user has permissions to access this field.
 				//If it is allowed then it will get the actual value, otherwise it gets an empty string.
 				if (!isset($from_wf) || !$from_wf) {
 					if (getFieldVisibilityPermission($module, $current_user->id, $fieldname) != '0') {
@@ -974,8 +974,6 @@ class CRMEntity {
 					}
 				}
 				// To avoid ADODB execption pick the entries that are in $tablename
-				// (ex. when we don't have attachment for troubletickets, $result[vtiger_attachments]
-				// will not be set so here we should not retrieve)
 				if (isset($result[$tablename])) {
 					$fld_value = $adb->query_result($result[$tablename], 0, $fieldcolname);
 				} else {
@@ -995,8 +993,114 @@ class CRMEntity {
 			}
 		}
 
-		$this->column_fields["record_id"] = $record;
-		$this->column_fields["record_module"] = $module;
+		$this->column_fields['record_id'] = $record;
+		$this->column_fields['record_module'] = $module;
+	}
+
+	/** Function to retrieve the information of the given recordidS
+	 * @param $records -- Array of CRMIds
+	 * @param $module -- String module
+	 * This function retrieves the information from the database and sets the value in the class fetched_records array
+	 */
+	public function retrieve_entities_info($records, $module, $from_wf = false) {
+		global $adb, $current_user;
+		$result = array();
+		$this->fetched_records = array();
+		foreach ($this->tab_name_index as $table_name => $index) {
+			$result[$table_name] = $adb->pquery("select * from $table_name where $index IN (" . generateQuestionMarks($records) . ') ', $records);
+		}
+
+		if (isset($this->table_name)) {
+			$mod_index_col = $this->tab_name_index[$this->table_name];
+		}
+
+		// Lookup in cache for information
+		$cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($module);
+
+		if ($cachedModuleFields === false) {
+			$tabid = getTabid($module);
+
+			// Let us pick up all the fields first so that we can cache information
+			$sql1 = 'SELECT fieldname, fieldid, fieldlabel, columnname, tablename, uitype, typeofdata, presence FROM vtiger_field WHERE tabid=?';
+
+			// NOTE: Need to skip in-active fields which we will be done later.
+			$result1 = $adb->pquery($sql1, array($tabid));
+			$noofrows = $adb->num_rows($result1);
+
+			if ($noofrows) {
+				while ($resultrow = $adb->fetch_array($result1)) {
+					// Update information to cache for re-use
+					VTCacheUtils::updateFieldInfo(
+						$tabid,
+						$resultrow['fieldname'],
+						$resultrow['fieldid'],
+						$resultrow['fieldlabel'],
+						$resultrow['columnname'],
+						$resultrow['tablename'],
+						$resultrow['uitype'],
+						$resultrow['typeofdata'],
+						$resultrow['presence']
+					);
+				}
+			}
+
+			// Get only active field information
+			$cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($module);
+		}
+
+		if ($cachedModuleFields) {
+			$cachedIDPermissions = array();
+			foreach ($cachedModuleFields as $fieldname => $fieldinfo) {
+				$fieldcolname = $fieldinfo['columnname'];
+				$tablename = $fieldinfo['tablename'];
+				$fieldname = $fieldinfo['fieldname'];
+				//Here we check if user has permissions to access this field.
+				//If it is allowed then it will get the actual value, otherwise it gets an empty string.
+				$setittoempty = false;
+				if (!$from_wf) {
+					$setittoempty = (getFieldVisibilityPermission($module, $current_user->id, $fieldname) != '0');
+				}
+				// To avoid ADODB execption pick the entries that are in $tablename
+				if (isset($result[$tablename]) && !$setittoempty) {
+					for ($cn = 0; $cn < $adb->num_rows($result[$tablename]); $cn++) {
+						$isRecordDeleted = $adb->query_result($result['vtiger_crmentity'], $cn, 'deleted');
+						if ($isRecordDeleted==0) {
+							$tempid = $adb->query_result($result['vtiger_crmentity'], $cn, 'crmid');
+							if (!$from_wf && !isset($cachedIDPermissions[$tempid])) {
+								$cachedIDPermissions[$tempid] = isPermitted($module, 'DetailView', $tempid);
+							}
+							//Here we check if user can see this record.
+							if (!$from_wf && $cachedIDPermissions[$tempid] != 'yes') {
+								continue;
+							}
+							$fld_value = $adb->query_result($result[$tablename], $cn, $fieldcolname);
+							$this->fetched_records[$tempid][$fieldname] = $fld_value;
+							if (!isset($this->fetched_records[$tempid]['record_id'])) {
+									$this->fetched_records[$tempid]['record_id'] = $tempid;
+									$this->fetched_records[$tempid]['record_module'] = $module;
+							}
+						}
+					}
+				} else {
+					for ($cn = 0; $cn < $adb->num_rows($result['vtiger_crmentity']); $cn++) {
+						$isRecordDeleted = $adb->query_result($result['vtiger_crmentity'], $cn, 'deleted');
+						if ($isRecordDeleted==0) {
+							$tempid = $adb->query_result($result['vtiger_crmentity'], $cn, 'crmid');
+							if (!$from_wf && !isset($cachedIDPermissions[$tempid])) {
+								$cachedIDPermissions[$tempid] = isPermitted($module, 'DetailView', $tempid);
+							}
+							//Here we check if user can see this record.
+							if (!$from_wf && $cachedIDPermissions[$tempid] != 'yes') {
+								continue;
+							}
+							$tempid = $adb->query_result($result['vtiger_crmentity'], $cn, 'crmid');
+							$fld_value = '';
+							$this->fetched_records[$tempid][$fieldname] = $fld_value;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/* Validate values trying to be saved.

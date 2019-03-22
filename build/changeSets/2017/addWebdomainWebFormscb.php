@@ -16,23 +16,27 @@
  *************************************************************************************************/
 
 class addWebdomainWebFormscb extends cbupdaterWorker {
-	
-	function applyChange() {
+
+	public function applyChange() {
 		global $adb;
-		if ($this->isBlocked()) return true;
-		if ($this->hasError()) $this->sendError();
+		if ($this->isBlocked()) {
+			return true;
+		}
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$restb = $adb->query("SHOW TABLES LIKE 'vtiger_webforms'");
-			if($adb->num_rows($restb) > 0){
+			if ($adb->num_rows($restb) > 0) {
 				$res = $adb->query("SHOW COLUMNS FROM vtiger_webforms LIKE 'web_domain'");
-				if($adb->num_rows($res) == 0){
+				if ($adb->num_rows($res) == 0) {
 					$this->ExecuteQuery("ALTER TABLE vtiger_webforms ADD web_domain VARCHAR( 250 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL");
-				}else{
+				} else {
 					$this->sendMsg('Field web_domain exists!');
 				}
-			}else{
+			} else {
 				$this->sendMsg('Table vtiger_webforms doesn\'t exist!');
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');

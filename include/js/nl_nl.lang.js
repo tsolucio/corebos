@@ -418,5 +418,6 @@ var alert_arr = {
 	'SHOWING' : 'Toont nu',
 	'OF' : 'van',
 	'ERR_Massedit' : 'Fout tijdens massa wijzig',
-	'ProcessFINISHED' : 'Proces beëindigd'
+	'ProcessFINISHED' : 'Proces beëindigd',
+	'duplicatednotallowed' : 'Duplicated Modules Not Allowed'
 };

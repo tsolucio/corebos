@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2018 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2015 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
  * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
  * file except in compliance with the License. You can redistribute it and/or modify it
  * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -12,27 +12,12 @@
  * either express or implied. See the License for the specific language governing
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
-*************************************************************************************************/
+ *************************************************************************************************/
 
-class changePaymentFieldsUitypeTo71 extends cbupdaterWorker {
+function __cb_is_numeric($arr) {
+    return is_numeric($arr[0]);
+}
 
-	public function applyChange() {
-		if ($this->isBlocked()) {
-			return true;
-		}
-		if ($this->hasError()) {
-			$this->sendError();
-		}
-		if ($this->isApplied()) {
-			$this->sendMsg('Changeset '.get_class($this).' already applied!');
-		} else {
-			$mod = Vtiger_Module::getInstance('CobroPago');
-			if ($mod) {
-				$this->ExecuteQuery("update vtiger_field set uitype=71 where tablename='vtiger_cobropago' and fieldname in ('amount','cost','benefit')");
-				$this->sendMsg('Changeset '.get_class($this).' applied!');
-				$this->markApplied();
-			}
-		}
-		$this->finishExecution();
-	}
+function __cb_is_string($arr) {
+    return is_string($arr[0]);
 }
