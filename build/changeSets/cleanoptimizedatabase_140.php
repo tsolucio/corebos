@@ -15,9 +15,11 @@
 *************************************************************************************************/
 
 class cleandatabase_140 extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -30,28 +32,28 @@ class cleandatabase_140 extends cbupdaterWorker {
 				'vtiger_licencekeystatus', 'vtiger_revenuetype', 'vtiger_usertype', 'vtiger_lar',
 				'vtiger_contacttype', 'vtiger_crmentitynotesrel', 'vtiger_files', 'vtiger_headers',
 			);
-			
+
 			foreach ($droptable as $table) {
 				$this->ExecuteQuery("DROP TABLE $table");
 			}
-			
+
 			$dropflds = array(
 				'vtiger_leaddetails.purpose','vtiger_leaddetails.evaluationstatus','vtiger_potential.evaluationstatus',
 				'vtiger_leaddetails.licencekeystatus','vtiger_leaddetails.revenuetype',
 				'vtiger_contactdetails.usertype', 'vtiger_contactdetails.contacttype'
 			);
-			
+
 			foreach ($dropflds as $fqfn) {
 				list($table,$field) = explode('.', $fqfn);
 				$this->ExecuteQuery("ALTER TABLE $table DROP $field");
 			}
-			
+
 			/////////////////////////////////
 			//  VTIGER CRM 6.0  interesting changes
 			/////////////////////////////////
 			$this->ExecuteQuery("ALTER TABLE vtiger_account MODIFY COLUMN annualrevenue decimal(25,5)", array());
 			$this->ExecuteQuery("ALTER TABLE vtiger_leaddetails MODIFY COLUMN annualrevenue decimal(25,5)", array());
-			$this->ExecuteQuery("UPDATE vtiger_field SET typeofdata='N~O' WHERE fieldlabel='Annual Revenue' and typeofdata='I~O'",array());
+			$this->ExecuteQuery("UPDATE vtiger_field SET typeofdata='N~O' WHERE fieldlabel='Annual Revenue' and typeofdata='I~O'", array());
 			/* // Currency changes
 			$this->ExecuteQuery("ALTER TABLE vtiger_currency_info MODIFY COLUMN conversion_rate decimal(12,5)", array());
 			$this->ExecuteQuery("ALTER TABLE vtiger_productcurrencyrel MODIFY COLUMN actual_price decimal(28,8)", array());
@@ -65,12 +67,12 @@ class cleandatabase_140 extends cbupdaterWorker {
 			$this->ExecuteQuery('UPDATE vtiger_field SET typeofdata=? WHERE fieldname=?',array('N~O', 'quantity'));
 			$this->ExecuteQuery('UPDATE vtiger_field SET typeofdata=?, uitype =?, fieldlabel=? WHERE fieldname =? and tablename=?', array('N~O', 71, 'Discount', 'discount_amount', 'vtiger_inventoryproductrel'));
 			*/
-			
+
 			$this->ExecuteQuery('ALTER TABLE vtiger_assets CHANGE account account INT(19) NULL', array());
 			$this->ExecuteQuery('ALTER TABLE vtiger_assets CHANGE datesold datesold date NULL', array());
 			$this->ExecuteQuery('ALTER TABLE vtiger_assets CHANGE dateinservice dateinservice date NULL', array());
 			$this->ExecuteQuery('ALTER TABLE vtiger_assets CHANGE serialnumber serialnumber varchar(200) NULL', array());
-			$this->ExecuteQuery('UPDATE vtiger_field SET defaultvalue=1 WHERE fieldname = ?',array("filestatus"));
+			$this->ExecuteQuery('UPDATE vtiger_field SET defaultvalue=1 WHERE fieldname = ?', array("filestatus"));
 			$this->ExecuteQuery('ALTER TABLE vtiger_inventoryproductrel MODIFY comment text', array());
 			$this->ExecuteQuery("ALTER TABLE vtiger_cvadvfilter MODIFY value VARCHAR(512)", array());
 			$this->ExecuteQuery('ALTER TABLE vtiger_cvadvfilter MODIFY comparator VARCHAR(20)', array());
@@ -78,36 +80,36 @@ class cleandatabase_140 extends cbupdaterWorker {
 			$this->ExecuteQuery('UPDATE vtiger_cvadvfilter SET comparator = ? WHERE comparator = ?', array('next120days', 'next120day'));
 			$this->ExecuteQuery('UPDATE vtiger_cvadvfilter SET comparator = ? WHERE comparator = ?', array('last120days', 'last120day'));
 			$this->ExecuteQuery('ALTER TABLE vtiger_users MODIFY signature TEXT', array());
-			$this->ExecuteQuery('ALTER TABLE vtiger_mailscanner_ids modify column messageid varchar(512)' , array());
+			$this->ExecuteQuery('ALTER TABLE vtiger_mailscanner_ids modify column messageid varchar(512)', array());
 			$this->ExecuteQuery('ALTER TABLE vtiger_links MODIFY column linktype VARCHAR(50)', array());
 			$this->ExecuteQuery('ALTER TABLE vtiger_links MODIFY column linklabel VARCHAR(50)', array());
 			$this->ExecuteQuery('ALTER TABLE vtiger_links MODIFY column linkurl VARCHAR(512)', array());
 			$this->ExecuteQuery('ALTER TABLE vtiger_links MODIFY column handler_class VARCHAR(50)', array());
 			$this->ExecuteQuery('ALTER TABLE vtiger_links MODIFY column handler VARCHAR(50)', array());
-			$this->ExecuteQuery('ALTER TABLE vtiger_cron_task MODIFY COLUMN laststart INT(11) UNSIGNED',Array());
-			$this->ExecuteQuery('ALTER TABLE vtiger_cron_task MODIFY COLUMN lastend INT(11) UNSIGNED',Array());
+			$this->ExecuteQuery('ALTER TABLE vtiger_cron_task MODIFY COLUMN laststart INT(11) UNSIGNED', array());
+			$this->ExecuteQuery('ALTER TABLE vtiger_cron_task MODIFY COLUMN lastend INT(11) UNSIGNED', array());
 			$this->ExecuteQuery("ALTER TABLE vtiger_relcriteria MODIFY value VARCHAR(512)", array());
-			
+
 			// Indexes
-			$this->ExecuteQuery('ALTER TABLE vtiger_invoice_recurring_info ADD PRIMARY KEY (salesorderid)',array());
+			$this->ExecuteQuery('ALTER TABLE vtiger_invoice_recurring_info ADD PRIMARY KEY (salesorderid)', array());
 			$this->ExecuteQuery('ALTER TABLE vtiger_modtracker_basic ADD INDEX crmidx (crmid)', array());
 			$this->ExecuteQuery('ALTER TABLE vtiger_modtracker_detail ADD INDEX idx (id)', array());
 			$this->ExecuteQuery('ALTER TABLE vtiger_leaddetails add index email_idx (email)', array());
 			$this->ExecuteQuery('ALTER TABLE vtiger_contactdetails add index email_idx (email)', array());
 			$this->ExecuteQuery('ALTER TABLE vtiger_account add index email_idx (email1, email2)', array());
-			$this->ExecuteQuery('ALTER TABLE com_vtiger_workflowtask_queue DROP INDEX com_vtiger_workflowtask_queue_idx',array());
+			$this->ExecuteQuery('ALTER TABLE com_vtiger_workflowtask_queue DROP INDEX com_vtiger_workflowtask_queue_idx', array());
 			$this->ExecuteQuery('ALTER TABLE vtiger_mailscanner_ids add index scanner_message_ids_idx (scannerid, messageid)', array());
-			
+
 			$adb->getUniqueID("vtiger_inventoryproductrel");
-			$this->ExecuteQuery("UPDATE vtiger_inventoryproductrel_seq SET id=(select max(lineitem_id) from vtiger_inventoryproductrel);",array());
-			
+			$this->ExecuteQuery("UPDATE vtiger_inventoryproductrel_seq SET id=(select max(lineitem_id) from vtiger_inventoryproductrel);", array());
+
 			$adb->getUniqueID("vtiger_modtracker_basic");
-			$this->ExecuteQuery("UPDATE vtiger_modtracker_basic_seq SET id=(select max(id) from vtiger_modtracker_basic);",array());
+			$this->ExecuteQuery("UPDATE vtiger_modtracker_basic_seq SET id=(select max(id) from vtiger_modtracker_basic);", array());
 
 			/////////////////////////////////
 			//  VTIGER CRM 6.0  interesting changes
 			/////////////////////////////////
-			
+
 			/////////////////////////////////
 			//  SQL Optimizations
 			/////////////////////////////////
@@ -178,7 +180,7 @@ class cleandatabase_140 extends cbupdaterWorker {
 			$this->ExecuteQuery('ALTER TABLE `vtiger_project` ADD PRIMARY KEY ( `projectid` )');
 			$this->ExecuteQuery('ALTER TABLE `vtiger_projectmilestone` ADD INDEX `projectmilestone_projectid_idx` ( `projectid` )');
 			$this->ExecuteQuery('ALTER TABLE `vtiger_projecttask` ADD INDEX `projecttask_projectid_idx` ( `projectid` )');
-			
+
 			/* int(11) vs int(anything-else)
 			 *   http://stackoverflow.com/questions/7552223/int11-vs-intanything-else
 			 *   http://stackoverflow.com/questions/5562322/difference-between-int-and-int3-data-types-in-my-sql
@@ -186,11 +188,10 @@ class cleandatabase_140 extends cbupdaterWorker {
 			/////////////////////////////////
 			//  SQL Optimizations
 			/////////////////////////////////
-			
+
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
-	
 }

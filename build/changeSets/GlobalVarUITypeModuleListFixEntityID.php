@@ -15,18 +15,20 @@
 *************************************************************************************************/
 
 class GlobalVarUITypeModuleListFixEntityID extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			global $adb;
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
 			// change uitype and label
-			$field = Vtiger_Field::getInstance('module_list',$moduleInstance);
+			$field = Vtiger_Field::getInstance('module_list', $moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery("update vtiger_field set uitype=3313,fieldlabel='Module List' where fieldid=?",array($field->id));
+				$this->ExecuteQuery("update vtiger_field set uitype=3313,fieldlabel='Module List' where fieldid=?", array($field->id));
 			}
 			// convert all existing records to new format
 			$gvrs = $adb->pquery('select globalvariableid,module_list from vtiger_globalvariable', array());
@@ -35,7 +37,7 @@ class GlobalVarUITypeModuleListFixEntityID extends cbupdaterWorker {
 				if (trim($gv['module_list'])!='') {
 					$ml = array_map('trim', explode(',', $gv['module_list']));
 					$ml = implode(' |##| ', $ml);
-					$this->ExecuteQuery($updsql,array($ml,$gv['globalvariableid']));
+					$this->ExecuteQuery($updsql, array($ml,$gv['globalvariableid']));
 				}
 			}
 			// fix incorrect entiyidentifier
@@ -49,5 +51,4 @@ class GlobalVarUITypeModuleListFixEntityID extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

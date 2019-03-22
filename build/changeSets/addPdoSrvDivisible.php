@@ -14,16 +14,18 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 class addPdoSrvDivisible extends cbupdaterWorker {
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$modname = 'Products';
 			$module = Vtiger_Module::getInstance($modname);
 			$block = Vtiger_Block::getInstance('LBL_STOCK_INFORMATION', $module);
-			$field = Vtiger_Field::getInstance('divisible',$module);
+			$field = Vtiger_Field::getInstance('divisible', $module);
 			if (!$field) {
 				$field1 = new Vtiger_Field();
 				$field1->name = 'divisible';
@@ -39,7 +41,7 @@ class addPdoSrvDivisible extends cbupdaterWorker {
 			$modname = 'Services';
 			$module = Vtiger_Module::getInstance($modname);
 			$block = Vtiger_Block::getInstance('LBL_PRICING_INFORMATION', $module);
-			$field = Vtiger_Field::getInstance('divisible',$module);
+			$field = Vtiger_Field::getInstance('divisible', $module);
 			if (!$field) {
 				$field1 = new Vtiger_Field();
 				$field1->name = 'divisible';

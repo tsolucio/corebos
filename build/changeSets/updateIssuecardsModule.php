@@ -16,8 +16,10 @@
 
 class updateIssuecardsModule extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -38,10 +40,12 @@ class updateIssuecardsModule extends cbupdaterWorker {
 		$this->finishExecution();
 	}
 
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
-			vtlib_toggleModuleAccess('Issuecards',false);
+			vtlib_toggleModuleAccess('Issuecards', false);
 			$this->sendMsg('Issuecards deactivated!');
 			$this->markUndone(false);
 			$this->sendMsg('Changeset '.get_class($this).' undone!');
@@ -50,5 +54,4 @@ class updateIssuecardsModule extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

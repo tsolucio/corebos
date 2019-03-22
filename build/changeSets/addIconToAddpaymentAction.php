@@ -15,19 +15,20 @@
 *************************************************************************************************/
 
 class addIconToAddpaymentAction extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			global $adb;
 			$this->ExecuteQuery("UPDATE vtiger_links SET linkicon ='themes/images/actionGenerateInvoice.gif' WHERE linklabel = 'Add Payment' ");
-			
+
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-	
 }

@@ -15,10 +15,14 @@
 *************************************************************************************************/
 
 class SendEmailFromAddress extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->isBlocked()) return true;
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->isBlocked()) {
+			return true;
+		}
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {

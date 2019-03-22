@@ -15,20 +15,21 @@
  *************************************************************************************************/
 
 class RemoveMomentLink extends cbupdaterWorker {
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$query=$adb->query("select tabid from vtiger_tab where name='Calendar4You'");
-			$tabid=$adb->query_result($query,0,0);
-			$link = Vtiger_Link::deleteLink($tabid, 'HEADERSCRIPT', 'Calendar4You_HeaderScript3','modules/Calendar4You/fullcalendar/lib/moment.min.js');
+			$tabid=$adb->query_result($query, 0, 0);
+			$link = Vtiger_Link::deleteLink($tabid, 'HEADERSCRIPT', 'Calendar4You_HeaderScript3', 'modules/Calendar4You/fullcalendar/lib/moment.min.js');
 
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-
 }

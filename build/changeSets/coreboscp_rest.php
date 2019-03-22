@@ -15,13 +15,15 @@
 *************************************************************************************************/
 
 class coreboscp_rest extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			foreach (glob('build/wsChanges/*.php',GLOB_BRACE) as $restOp) {
+			foreach (glob('build/wsChanges/*.php', GLOB_BRACE) as $restOp) {
 				include $restOp;
 				if (!empty($operationInfo)) {
 					ob_start();
@@ -29,10 +31,11 @@ class coreboscp_rest extends cbupdaterWorker {
 					$out = ob_get_contents();
 					ob_end_clean();
 					$this->sendMsg($out);
-					if ($rdo)
+					if ($rdo) {
 						$this->sendMsg("Registered WS Operation: <b>".$operationInfo['name']."</b><br>");
-					else
+					} else {
 						$this->sendMsg("WS Operation: <b>".$operationInfo['name']."</b> already registered<br>");
+					}
 				}
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
@@ -40,5 +43,4 @@ class coreboscp_rest extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

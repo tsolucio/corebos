@@ -15,9 +15,11 @@
 *************************************************************************************************/
 
 class add_workflow_tags extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -35,17 +37,19 @@ class add_workflow_tags extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			global $adb;
-			$result = $adb->pquery("SELECT * FROM `com_vtiger_workflowtasks` WHERE `task` like '%CBTagTask%'",array());
-			if ($result and $adb->num_rows($result)>0) {
+			$result = $adb->pquery("SELECT * FROM `com_vtiger_workflowtasks` WHERE `task` like '%CBTagTask%'", array());
+			if ($result && $adb->num_rows($result)>0) {
 				$this->sendMsg('<span style="font-size:large;weight:bold;">Workflows that use this task exist!! Please eliminate them before undoing this change.</span>');
 			} else {
 				$adb->pquery("DELETE FROM com_vtiger_workflow_tasktypes WHERE
-						tasktypename = 'CBTagTask' and label = 'CBTagTask' and classname = 'CBTagTask'",array());
+						tasktypename = 'CBTagTask' and label = 'CBTagTask' and classname = 'CBTagTask'", array());
 				$this->markUndone(false);
 				$this->sendMsg('Changeset '.get_class($this).' undone!');
 			}
@@ -54,15 +58,14 @@ class add_workflow_tags extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
-	function isApplied() {
+
+	public function isApplied() {
 		$done = parent::isApplied();
 		if (!$done) {
 			global $adb;
-			$result = $adb->pquery("SELECT * FROM com_vtiger_workflow_tasktypes where tasktypename='CBTagTask'",array());
-			$done = ($result and $adb->num_rows($result)==1);
+			$result = $adb->pquery("SELECT * FROM com_vtiger_workflow_tasktypes where tasktypename='CBTagTask'", array());
+			$done = ($result && $adb->num_rows($result)==1);
 		}
 		return $done;
 	}
-	
 }
