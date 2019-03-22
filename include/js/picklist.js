@@ -528,7 +528,8 @@ function saveAssignedValues(moduleName, fieldName, roleid) {
 	document.getElementById('status').style.display='inline';
 	jQuery.ajax({
 		method: 'POST',
-		url: 'index.php?action=PickListAjax&module=PickList&file=SaveAssignedValues&moduleName='+encodeURIComponent(moduleName)+'&fieldname='+encodeURIComponent(fieldName)+'&roleid='+roleid+'&values='+encodeURIComponent(values)+'&otherRoles='+encodeURIComponent(otherRoles)
+		data: {values:encodeURIComponent(values), otherRoles:encodeURIComponent(otherRoles)},
+		url: 'index.php?action=PickListAjax&module=PickList&file=SaveAssignedValues&moduleName='+encodeURIComponent(moduleName)+'&fieldname='+encodeURIComponent(fieldName)+'&roleid='+roleid
 	}).done(function (response) {
 		if (response == 'SUCCESS') {
 			document.getElementById('status').style.display='none';
