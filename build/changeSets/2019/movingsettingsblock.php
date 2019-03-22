@@ -39,6 +39,9 @@ class movingsettingsblock extends cbupdaterWorker {
 					array($blockid, $labelstomove)
 				);
 			}
+			$this->sendMsg('Changeset '.get_class($this).' applied!');
+			$this->markApplied(false);
 		}
+		$this->finishExecution();
 	}
 }
