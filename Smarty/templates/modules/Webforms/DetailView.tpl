@@ -138,7 +138,7 @@
 														{'LBL_RETURNURL'|@getTranslatedString:$MODULE}
 													</td>
 													<td class="dvtCellInfo" align="left" >
-														http://{$WEBFORMMODEL->getReturnUrl()}
+														{$WEBFORMMODEL->getReturnUrl()}
 													</td>
 												</tr>
 												<tr style="height:25px;">

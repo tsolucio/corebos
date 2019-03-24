@@ -123,7 +123,11 @@ class Webform_Capture {
 				echo $response;
 			}
 		} else {
-			header(sprintf("Location: http://%s?%s=%s", $url, ($success? 'success' : 'error'), ($success? $success: $failure)));
+			if (strpos($url, '://')) {
+				header(sprintf('Location: %s?%s=%s', $url, ($success? 'success' : 'error'), ($success? $success: $failure)));
+			} else {
+				header(sprintf('Location: http://%s?%s=%s', $url, ($success? 'success' : 'error'), ($success? $success: $failure)));
+			}
 		}
 	}
 }
