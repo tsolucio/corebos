@@ -209,13 +209,13 @@ class CurrencyField {
 		if (is_string($value)) {
 			$value = (float)$value;
 		}
-		if ($value == 0) {
-			return '0';
-		}
 		$currencyPattern = $this->currencyFormat;
 		$currencySeparator = $this->currencySeparator;
 		$decimalSeparator = $this->decimalSeparator;
 		$currencyDecimalPlaces = $this->numberOfDecimal;
+		if ($value == 0) {
+			return number_format($value, $currencyDecimalPlaces, $decimalSeparator, '');
+		}
 		$value = number_format($value, $currencyDecimalPlaces, '.', '');
 		if (empty($currencySeparator)) {
 			$currencySeparator = ' ';

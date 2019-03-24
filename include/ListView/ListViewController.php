@@ -388,10 +388,7 @@ class ListViewController {
 							$currencyValue = CurrencyField::convertToUserFormat($value, null, true);
 							$value = CurrencyField::appendCurrencySymbol($currencyValue, $currencySymbol);
 						} else {
-							//changes made to remove currency symbol in front of each potential amount
-							if ($value != 0) {
-								$value = CurrencyField::convertToUserFormat($value);
-							}
+							$value = CurrencyField::convertToUserFormat($value);
 						}
 						$value = '<span style="float:right">'.$value.'</span>';
 					}
