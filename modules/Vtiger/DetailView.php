@@ -153,7 +153,7 @@ if ($isPresentRelatedListBlock) {
 		$keys = array_keys($rl);
 		if (array_key_exists($keys[0], $_SESSION['BLOCKINITIALSTATUS']) && $_SESSION['BLOCKINITIALSTATUS'][$keys[0]] == 1) {
 			$open_related_modules[] = $keys[0];
-			$smarty->assign("SELECTEDHEADERS", $open_related_modules);
+			$smarty->assign('SELECTEDHEADERS', $open_related_modules);
 		}
 	}
 	$smarty->assign('RELATEDLISTBLOCK', $related_list_block);
