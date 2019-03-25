@@ -22,8 +22,6 @@
 		</td>
 	</tr>
 </table>
-{if $showreeval eq 'true'}
-{/if}
 <br>
 <div id="save_conditions"></div>
 <br>
