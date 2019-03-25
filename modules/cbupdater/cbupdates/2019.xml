@@ -55,4 +55,11 @@
 	<classname>changetypeofdata</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>creation of email templates</description>
+	<filename>build/changeSets/2019/addEmailTemplates.php</filename>
+	<classname>addEmailTemplates</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
