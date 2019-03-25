@@ -532,9 +532,11 @@ class Emails extends CRMEntity {
 		$sub = $adb->query_result($sql, 0, 'subject');
 		$body = $adb->query_result($sql, 0, 'body');
 		$mail_body = html_entity_decode($body, ENT_QUOTES, $default_charset);
-		$mail_body = str_replace('$user_name$', $context['$user_name$'], $mail_body);
-		$mail_body = str_replace('$user_password$', $context['$user_password$'], $mail_body);
-		$mail_body = getMergeDescription($mail_body, $par_id, $module);
+		foreach ($context as $value => $val) {
+			$mail_body = str_replace($value, $val, $mail_body);
+		}
+		$mail_body = getMergedDescription($mail_body, $par_id, $module);
+		$sub = getMergedDescription($sub, $par_id, $module);
 		send_mail($module, $to_email, $from_name, $from_email, $sub, $mail_body);
 	}
 }
