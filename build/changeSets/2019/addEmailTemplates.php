@@ -13,11 +13,6 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-
-include_once 'modules/Emails/Emails.php';
-include_once 'modules/Users/Users.php';
-include_once 'include/Emails/mail.php';
-
 class addEmailTemplates extends cbupdaterWorker {
 
 	public function applyChange() {
@@ -29,19 +24,17 @@ class addEmailTemplates extends cbupdaterWorker {
 		} else {
             global $adb;
             $fieldList  = 
-                "'<p>Dear $user_name$,</p>
+                "<p>Dear \$user_name$,</p>
 
                 <p> </p>
                 
-                <p>Your password is successful changed and your new password is $user_password$</p>
-                
-                <p>Thank you</p>
-                '";
+                <p>Your password has been successfully changed, your new password is \$user_password$</p>
+                ";
             $this->ExecuteQuery(
-                "INSERT INTO vtiger_emailtemplates (`foldername`, `templatename`, `subject`, `description`, `body`, `deleted`, `sendemailfrom`) VALUES ('Public','Password Change Template','User change password details','Send password change email to user',$fieldList,'0','')"
+                "INSERT INTO vtiger_emailtemplates (`foldername`, `templatename`, `subject`, `description`, `body`, `deleted`, `sendemailfrom`) VALUES ('Public','Password Change Template','User change password details','Send password change email to user','$fieldList','0','')"
             );
             $this->sendMsg('Changeset ' . get_class($this) . ' applied!');
-            // $this->markApplied();
+            $this->markApplied();
 		}
 		$this->finishExecution();
 	}
