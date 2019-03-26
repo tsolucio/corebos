@@ -31,14 +31,17 @@ if (isset($_REQUEST['templateid']) && $_REQUEST['templateid'] !='') {
 </textarea>
 </form>
 <script type="text/javascript">
-if(typeof window.opener.document.getElementById('_mail_replyfrm_subject_') != 'undefined' &&
-	window.opener.document.getElementById('_mail_replyfrm_subject_') != null){
+if (typeof window.opener.document.getElementById('_mail_replyfrm_subject_') != 'undefined' && window.opener.document.getElementById('_mail_replyfrm_subject_') != null) {
 	window.opener.document.getElementById('_mail_replyfrm_subject_').value = window.document.frmrepstr.subject.value;
 	window.opener.document.getElementById('_mail_replyfrm_body_').value = window.document.frmrepstr.repstr.value;
 	window.opener.MailManager.mail_reply_rteinit(window.document.frmrepstr.repstr.value);
-	<?php while ($row = $adb->getNextRow($result, false)) { ?>
+<?php
+while ($row = $adb->getNextRow($result, false)) {
+?>
 	window.opener.addAttachments(<?php echo $row['notesid']; ?>, '','Documents','ajax', '');
-<?php } ?>
+<?php
+}
+?>
 	window.close();
 }
 </script>
