@@ -2363,7 +2363,7 @@ function getMergedDescription($description, $id, $parent_type) {
 		$parent_type = getSalesEntityType($id);
 	}
 	if (empty($parent_type) || empty($id)) {
-		$log->debug('< from getMergedDescription due to no record information ...');
+		$log->debug('< from getMergedDescription: no record information');
 		return $description;
 	}
 	if (strpos($id, 'x')>0) {
