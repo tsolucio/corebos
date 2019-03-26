@@ -10,8 +10,9 @@
 
 //check for mail server configuration through ajax
 if (isset($_REQUEST['server_check']) && $_REQUEST['server_check'] == 'true') {
-	$emailcfg = $adb->pquery('select 1 from vtiger_systems where server_type = ?', array('email'));
-	if ($adb->num_rows($emailcfg)>0) {
+	list($systemEmailClassName, $systemEmailClassPath) = cbEventHandler::do_filter('corebos.filter.systemEmailClass.getname', array('Emails', 'modules/Emails/Emails.php'));
+	require_once $systemEmailClassPath;
+	if (call_user_func(array($systemEmailClassName, 'emailServerCheck'))) {
 		$upload_file_path = decideFilePath();
 		if (!is_writable($upload_file_path)) {
 			echo 'FAILURESTORAGE';

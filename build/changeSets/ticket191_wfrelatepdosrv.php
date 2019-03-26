@@ -15,9 +15,11 @@
 *************************************************************************************************/
 
 class ticket191 extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -32,24 +34,26 @@ class ticket191 extends cbupdaterWorker {
 			VTTaskType::registerTaskType($taskType);
 			$vnd = Vtiger_Module::getInstance('Vendors');
 			$srv = Vtiger_Module::getInstance('Services');
-			$vnd->setRelatedList($srv,'Services',array('Select'));
-			$srv->setRelatedList($vnd,'Vendors',array('Select'));
+			$vnd->setRelatedList($srv, 'Services', array('Select'));
+			$srv->setRelatedList($vnd, 'Vendors', array('Select'));
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-	
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			global $adb;
-			$result = $adb->pquery("SELECT * FROM `com_vtiger_workflowtasks` WHERE `task` like '%CBRelateSales%'",array());
-			if ($result and $adb->num_rows($result)>0) {
+			$result = $adb->pquery("SELECT * FROM `com_vtiger_workflowtasks` WHERE `task` like '%CBRelateSales%'", array());
+			if ($result && $adb->num_rows($result)>0) {
 				$this->sendMsg('<span style="font-size:large;weight:bold;">Workflows that use this task exist!! Please eliminate them before undoing this change.</span>');
 			} else {
 				$adb->pquery("DELETE FROM com_vtiger_workflow_tasktypes WHERE
-						tasktypename = 'CBRelateSales' and label = 'CBRelateSales' and classname = 'CBRelateSales'",array());
+						tasktypename = 'CBRelateSales' and label = 'CBRelateSales' and classname = 'CBRelateSales'", array());
 				$this->markUndone(false);
 				$this->sendMsg('Changeset '.get_class($this).' undone!');
 			}
@@ -58,15 +62,14 @@ class ticket191 extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
-	function isApplied() {
+
+	public function isApplied() {
 		$done = parent::isApplied();
 		if (!$done) {
 			global $adb;
-			$result = $adb->pquery("SELECT * FROM com_vtiger_workflow_tasktypes where tasktypename='CBRelateSales'",array());
-			$done = ($result and $adb->num_rows($result)==1);
+			$result = $adb->pquery("SELECT * FROM com_vtiger_workflow_tasktypes where tasktypename='CBRelateSales'", array());
+			$done = ($result && $adb->num_rows($result)==1);
 		}
 		return $done;
 	}
-	
 }

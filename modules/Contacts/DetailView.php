@@ -22,25 +22,6 @@ if (isPermitted('Emails', 'CreateView', '') == 'yes') {
 	$smarty->assign('HIDDEN_PARENTS_LIST', $parent_email);
 }
 
-if (isPermitted('Contacts', 'Merge', '') == 'yes') {
-	$wordTemplateResult = fetchWordTemplateList('Contacts');
-	$tempCount = $adb->num_rows($wordTemplateResult);
-	$tempVal = $adb->fetch_array($wordTemplateResult);
-	$optionString = array();
-	for ($templateCount=0; $templateCount<$tempCount; $templateCount++) {
-		$optionString[$tempVal['templateid']]=$tempVal['filename'];
-		$tempVal = $adb->fetch_array($wordTemplateResult);
-	}
-	if (is_admin($current_user)) {
-		$smarty->assign('MERGEBUTTON', 'permitted');
-	} elseif ($tempCount >0) {
-		$smarty->assign('MERGEBUTTON', 'permitted');
-	}
-	$smarty->assign('TEMPLATECOUNT', $tempCount);
-	$smarty->assign('WORDTEMPLATEOPTIONS', $app_strings['LBL_SELECT_TEMPLATE_TO_MAIL_MERGE']);
-	$smarty->assign('TOPTIONS', $optionString);
-}
-
 $smarty->assign('CONTACT_PERMISSION', CheckFieldPermission('contact_id', 'Calendar'));
 
 require_once 'modules/Vtiger/DetailView.php';

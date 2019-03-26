@@ -16,17 +16,19 @@
 
 class PdoDiscontinuedToCheckbox extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$moduleInstance = Vtiger_Module::getInstance('Products');
-			$field = Vtiger_Field::getInstance('discontinued',$moduleInstance);
+			$field = Vtiger_Field::getInstance('discontinued', $moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery("update vtiger_field set typeofdata='C~O' where typeofdata='V~O' and fieldid=?",array($field->id));
-				$this->ExecuteQuery("update vtiger_field set typeofdata='C~M' where typeofdata='V~M' and fieldid=?",array($field->id));
+				$this->ExecuteQuery("update vtiger_field set typeofdata='C~O' where typeofdata='V~O' and fieldid=?", array($field->id));
+				$this->ExecuteQuery("update vtiger_field set typeofdata='C~M' where typeofdata='V~M' and fieldid=?", array($field->id));
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();

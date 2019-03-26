@@ -21,6 +21,7 @@
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
 <script type="text/javascript" src="modules/Products/multifile.js"></script>
 <script type="text/javascript" src="modules/Emails/Emails.js"></script>
+<script type="text/javascript" src="include/js/vtlib.js"></script>
 </head>
 <body marginheight="0" marginwidth="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
 {literal}
@@ -63,6 +64,7 @@
 	<tr>
 	<td class="mailSubHeader" align="right"><font color="red">*</font><b>{$MOD.LBL_TO}</b></td>
 	<td class="cellText" style="padding: 5px;">
+		<input name="listofids" id="listofids" type="hidden" value="{if isset($LISTID)}{$LISTID}{/if}">
 		<input name="{$elements.2.0}" id="{$elements.2.0}" type="hidden" value="{if isset($IDLISTS)}{$IDLISTS}{/if}">
 		<input type="hidden" name="saved_toid" value="{if isset($TO_MAIL)}{$TO_MAIL}{/if}">
 		<input id="parent_name" name="parent_name" readonly class="txtBox" type="text" value="{if isset($TO_MAIL)}{$TO_MAIL}{/if}" style="width: 525px;">&nbsp;
@@ -171,7 +173,8 @@
 	</tr>
 	<tr>
 	<td colspan="3" class="mailSubHeader" style="padding: 5px;" align="center">
-		 <input title="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE}" accessKey="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_KEY}" class="crmbutton small edit" onclick="window.open('index.php?module=Users&action=lookupemailtemplates','emailtemplate','top=100,left=200,height=400,width=500,resizable=yes,scrollbars=yes,menubar=no,addressbar=no,status=yes')" type="button" name="button" value=" {$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL} ">
+		<input type='hidden' class='small' name="msgtpopup_type" id="msgtpopup_type" value="MsgTemplate">
+		<input title="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE}" accessKey="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_KEY}" class="crmbutton small edit" onclick='return vtlib_open_popup_window("","msgtpopup","MsgTemplate","");' type="button" name="button" value=" {$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL} ">
 		<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="return email_validate(this.form,'save');" type="button" name="button" value=" {$APP.LBL_SAVE_BUTTON_LABEL} " >&nbsp;
 		<input name="{$MOD.LBL_SEND}" value=" {$APP.LBL_SEND} " class="crmbutton small save" type="button" onclick="return email_validate(this.form,'send');">&nbsp;
 		<input value="{$MOD.LBL_ATTACH_DOCUMENTS}" class="crmbutton small edit" type="button" onclick="searchDocuments()">
@@ -189,7 +192,7 @@
 {/foreach}
 	<tr>
 	<td colspan="3" class="mailSubHeader" style="padding: 5px;" align="center">
-		 <input title="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE}" accessKey="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_KEY}" class="crmbutton small edit" onclick="window.open('index.php?module=Users&action=lookupemailtemplates','emailtemplate','top=100,left=200,height=400,width=500,menubar=no,addressbar=no,status=yes')" type="button" name="button" value=" {$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL} ">
+		<input title="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE}" accessKey="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_KEY}" class="crmbutton small edit" onclick='return vtlib_open_popup_window("","msgtpopup","MsgTemplate","");' type="button" name="button" value=" {$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL} ">
 		<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="return email_validate(this.form,'save');" type="button" name="button" value=" {$APP.LBL_SAVE_BUTTON_LABEL} " >&nbsp;
 		<input name="{$MOD.LBL_SEND}" value=" {$APP.LBL_SEND} " class="crmbutton small save" type="button" onclick="return email_validate(this.form,'send');">&nbsp;
 		<input value="{$MOD.LBL_ATTACH_DOCUMENTS}" class="crmbutton small edit" type="button" onclick="searchDocuments()">

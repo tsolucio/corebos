@@ -16,8 +16,10 @@
 
 class fixIssuecardsCurrencyFieldsBlock extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -26,9 +28,9 @@ class fixIssuecardsCurrencyFieldsBlock extends cbupdaterWorker {
 				global $adb;
 				$package = new Vtiger_Package();
 				$IssuecarId = getTabid($module);
-				$correct_block = $adb->run_query_field("SELECT blockid FROM vtiger_blocks WHERE tabid = ".$IssuecarId." AND blocklabel = 'LBL_ISSUECARDS_INFO'",'blockid');
-				$bad_block = $adb->run_query_field("SELECT blockid FROM vtiger_blocks WHERE tabid = ".$IssuecarId." AND blocklabel = 'LBL_RELATED_PRODUCTS'",'blockid');
-				$this->ExecuteQuery("UPDATE vtiger_field SET block = ? WHERE block = ? AND tabid = ?",array($correct_block,$bad_block,$IssuecarId));
+				$correct_block = $adb->run_query_field("SELECT blockid FROM vtiger_blocks WHERE tabid = ".$IssuecarId." AND blocklabel = 'LBL_ISSUECARDS_INFO'", 'blockid');
+				$bad_block = $adb->run_query_field("SELECT blockid FROM vtiger_blocks WHERE tabid = ".$IssuecarId." AND blocklabel = 'LBL_RELATED_PRODUCTS'", 'blockid');
+				$this->ExecuteQuery("UPDATE vtiger_field SET block = ? WHERE block = ? AND tabid = ?", array($correct_block,$bad_block,$IssuecarId));
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();

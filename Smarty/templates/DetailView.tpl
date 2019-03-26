@@ -418,31 +418,6 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 												<!-- Action links END -->
 
 												{include file="TagCloudDisplay.tpl"}
-												<!-- Mail Merge-->
-												<br>
-												{if isset($MERGEBUTTON) && $MERGEBUTTON eq 'permitted'}
-													<form action="index.php" method="post" name="TemplateMerge" id="form">
-														<input type="hidden" name="module" value="{$MODULE}">
-														<input type="hidden" name="parenttab" value="{$CATEGORY}">
-														<input type="hidden" name="record" value="{$ID}">
-														<input type="hidden" name="action">
-														<table border=0 cellspacing=0 cellpadding=0 width=100% class="rightMailMerge">
-															<tr>
-																<td class="rightMailMergeHeader"><b>{$WORDTEMPLATEOPTIONS}</b></td>
-															</tr>
-															<tr style="height:25px">
-																<td class="rightMailMergeContent">
-																	{if $TEMPLATECOUNT neq 0}
-																		<select name="mergefile">{foreach key=templid item=tempflname from=$TOPTIONS}<option value="{$templid}">{$tempflname}</option>{/foreach}</select>
-																		<input class="crmbutton small create" value="{$APP.LBL_MERGE_BUTTON_LABEL}" onclick="this.form.action.value='Merge';" type="submit"></input>
-																	{else}
-																		<a href=index.php?module=Settings&action=upload&tempModule={$MODULE}&parenttab=Settings>{$APP.LBL_CREATE_MERGE_TEMPLATE}</a>
-																	{/if}
-																</td>
-															</tr>
-														</table>
-													</form>
-												{/if}
 
 												{if !empty($CUSTOM_LINKS.DETAILVIEWWIDGET)}
 													{foreach key=CUSTOMLINK_NO item=CUSTOMLINK from=$CUSTOM_LINKS.DETAILVIEWWIDGET}

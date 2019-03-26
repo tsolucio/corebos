@@ -12,8 +12,9 @@ use \RobThree\Auth\TwoFactorAuth;
 
 class VTSimpleTemplate {
 
-	public function __construct($templateString) {
+	public function __construct($templateString, $keepvariable = false) {
 		$this->template = $templateString;
+		$this->keepvariable = $keepvariable;
 	}
 
 	public function render($entityCache, $entityId, $void = array()) {
@@ -51,7 +52,11 @@ class VTSimpleTemplate {
 					$result = $data[$fieldname];
 				}
 			} else {
-				$result ='';
+				if ($this->keepvariable) {
+					$result = '$'.$fieldname;
+				} else {
+					$result = '';
+				}
 			}
 		} else {
 			list($full, $referenceField, $referenceModule, $fieldname) = $matches;
@@ -102,10 +107,18 @@ class VTSimpleTemplate {
 									$result = $data[$fieldname];
 								}
 							} else {
-								$result = '';
+								if ($this->keepvariable) {
+									$result = '$'.$fieldname;
+								} else {
+									$result = '';
+								}
 							}
 						} else {
-							$result = '';
+							if ($this->keepvariable) {
+								$result = '$'.$fieldname;
+							} else {
+								$result = '';
+							}
 						}
 					} catch (Exception $e) {
 						$result = '';

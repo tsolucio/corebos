@@ -16,8 +16,10 @@
 
 class makeEmailsShareable extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -26,7 +28,7 @@ class makeEmailsShareable extends cbupdaterWorker {
 			Vtiger_Access::deleteSharing($emailsInstance);
 			Vtiger_Access::initSharing($emailsInstance);
 			Vtiger_Access::allowSharing($emailsInstance);
-			Vtiger_Access::setDefaultSharing($emailsInstance,'private');
+			Vtiger_Access::setDefaultSharing($emailsInstance, 'private');
 			Vtiger_Profile::initForModule($emailsInstance);
 			// Email Reporting - set reports to public because access is private by default and configurable now
 			$emrpts = "UPDATE vtiger_report SET sharingtype='Public' WHERE reportname in ('Contacts Email Report','Accounts Email Report','Leads Email Report','Vendors Email Report')";
@@ -36,5 +38,4 @@ class makeEmailsShareable extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

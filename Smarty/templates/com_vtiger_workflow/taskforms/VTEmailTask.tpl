@@ -2,6 +2,7 @@
 <link rel="stylesheet" type="text/css" href="include/dropzone/custom.css">
 <script src="modules/com_vtiger_workflow/resources/vtigerwebservices.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" src="include/dropzone/dropzone.js"></script>
+<script type="text/javascript" src="include/js/vtlib.js"></script>
 <script type="text/javascript" charset="utf-8">
 Dropzone.autoDiscover = false;
 var moduleName = '{$entityName}';
@@ -92,6 +93,10 @@ var __attinfo = {$task->dzattinfo|json_encode};
 		</td>
 		<td valign="top" align="left" style="white-space:nowrap;">
 			<input type="hidden" id="attachmentCount" name="attachmentCount" value="{if isset($task->attachmentids)}{$task->attachmentids|substr_count:','}{else}0{/if}" >
+			<input name="listofids" id="listofids" type="hidden" value="{if isset($LISTID)}{$LISTID}{/if}">
+			<input type='hidden' class='small' name="msgtpopup_type" id="msgtpopup_type" value="MsgTemplate">
+			<input type='hidden' class='small' name="calltype" id="calltype" value="emailworkflow">
+			<input title="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE}" accessKey="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_KEY}" class="crmbutton small edit" onclick="jQuery('#file-uploader').show();return vtlib_open_popup_window('','msgtpopup','MsgTemplate','');" type="button" name="button" value=" {$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL} ">
 			<input type="hidden" id="attachmentids"  name="attachmentids" value="{if isset($task->attachmentids)}{$task->attachmentids}{/if}" >
 			<button onclick="jQuery('#file-uploader').show();attachmentManager.getDocuments();return false;" class="crmbutton small edit slds-m-left_xx-small slds-m-top_xx-small">{'LBL_SELECT_DOCUMENTS'|@getTranslatedString:'MailManager'}</button><br>
 			<button onclick="jQuery('#file-uploader').toggle();return false;" class="crmbutton small edit slds-m-left_xx-small slds-m-top_xx-small">{'LBL_Attachments'|@getTranslatedString:'MailManager'}</button><br>

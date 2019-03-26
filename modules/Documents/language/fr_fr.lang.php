@@ -37,7 +37,7 @@ $mod_strings = array(
 
 	'Template'=>'Template',
 	'Template For' => 'Template For',
-
+	'Merge Template' => 'Merge Template',
 	'LBL_TOOL_FORM_TITLE'=>'Outils documents',
 	'Contact Name'=>'Nom du contact',
 	'Related To'=>'Lié à',

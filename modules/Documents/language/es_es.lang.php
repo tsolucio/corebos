@@ -41,7 +41,7 @@ $mod_strings = array(
 
 'Template'=>'Plantilla',
 'Template For' => 'Plantilla Para',
-
+'Merge Template' => 'Plantilla Combinación',
 'LBL_FILENAME'=>'Adjunto:',
 'LBL_NOTE_INFORMATION'=>'Información Documento',
 'File Information'=>'Información Archivo',

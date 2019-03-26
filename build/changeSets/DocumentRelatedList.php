@@ -15,10 +15,12 @@
 *************************************************************************************************/
 
 class document_relatedlist extends cbupdaterWorker {
-	
-	function applyChange() {
+
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -33,9 +35,11 @@ class document_relatedlist extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			// undo your magic here
 			$this->ExecuteQuery("DELETE FROM vtiger_relatedlists where tabid=8 and related_tabid=0 and name='getEntities' and label='Related To';");
@@ -46,5 +50,4 @@ class document_relatedlist extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
 }

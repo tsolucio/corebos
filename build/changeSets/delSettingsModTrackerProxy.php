@@ -16,8 +16,10 @@
 
 class delSettingsModTrackerProxy extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -33,8 +35,10 @@ class delSettingsModTrackerProxy extends cbupdaterWorker {
 		$this->finishExecution();
 	}
 
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isSystemUpdate()) {
 			$this->sendMsg('Changeset '.get_class($this).' is a system update, it cannot be undone!');
 		} else {

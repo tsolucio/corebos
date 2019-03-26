@@ -1228,7 +1228,7 @@ function getDetailAssociatedProducts($module, $focus) {
 	}
 
 	$cbMap = cbMap::getMapByName($module.'InventoryDetails', 'MasterDetailLayout');
-	$MDMapFound = ($cbMap!=null);
+	$MDMapFound = ($cbMap!=null && isPermitted('InventoryDetails', 'index')=='yes');
 	if ($MDMapFound) {
 		$cbMapFields = $cbMap->MasterDetailLayout();
 	}
@@ -1395,6 +1395,9 @@ function getDetailAssociatedProducts($module, $focus) {
 		if ($MDMapFound) {
 			$invdTabid = getTabid('InventoryDetails');
 			foreach ($cbMapFields['detailview']['fields'] as $mdfield) {
+				if ($mdfield['fieldinfo']['name']=='id') {
+					continue;
+				}
 				$output .= '<br>';
 				$output .= '<b>'.$mdfield['fieldinfo']['label'].'</b>:&nbsp;';
 				$mdrs = $adb->pquery(

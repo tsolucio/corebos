@@ -16,8 +16,10 @@
 
 class delSettingsAuditLogin extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -27,12 +29,12 @@ class delSettingsAuditLogin extends cbupdaterWorker {
 			$this->ExecuteQuery('DELETE FROM vtiger_settings_field WHERE vtiger_settings_field.name = ?', array('LBL_AUDIT_TRAIL'));
 			$this->ExecuteQuery('DELETE FROM vtiger_settings_field WHERE vtiger_settings_field.name = ?', array('LBL_LOGIN_HISTORY_DETAILS'));
 			$toinstall = array('cbAuditTrail','cbLoginHistory');
-			foreach ( $toinstall as $module ) {
+			foreach ($toinstall as $module) {
 				if ($this->isModuleInstalled($module)) {
-					vtlib_toggleModuleAccess( $module, true );
-					$this->sendMsg( "$module activated!" );
+					vtlib_toggleModuleAccess($module, true);
+					$this->sendMsg("$module activated!");
 				} else {
-					$this->installManifestModule( $module );
+					$this->installManifestModule($module);
 				}
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
@@ -40,5 +42,4 @@ class delSettingsAuditLogin extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

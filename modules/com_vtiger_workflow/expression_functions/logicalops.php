@@ -15,9 +15,16 @@
  *************************************************************************************************/
 
 function __cb_is_numeric($arr) {
-    return is_numeric($arr[0]);
+	return is_numeric($arr[0]);
 }
 
 function __cb_is_string($arr) {
-    return is_string($arr[0]);
+	return is_string($arr[0]);
+}
+
+function __cb_or($arr) {
+	return $arr[0] || $arr[1];
+}
+function __cb_and($arr) {
+	return $arr[0] && $arr[1];
 }

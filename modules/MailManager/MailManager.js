@@ -1065,7 +1065,8 @@ if (typeof(MailManager) == 'undefined') {
 			MailManager.progress_show(MailManager.i18n('JSLBL_Sending'), ' ...');
 
 			var params = {
-				'_operation':'mail', '_operationarg':'send',
+				'_operation':'mail',
+				'_operationarg':'send',
 				'_msgid':msguid,
 				'to':encodeURIComponent(form.to.value),
 				'cc':encodeURIComponent(form.cc.value),
@@ -1655,4 +1656,53 @@ if (typeof(MailManager) == 'undefined') {
 			}
 		}
 	};
+}
+/** Adding Attachment associated with the template to the drop-zone */
+function addAttachments(entity_id, recordid, mod, popupmode, callback) {
+	var return_module = 'MailManager';
+	var emailId = jQuery('#emailid').val();
+	if (emailId == '') {
+		var to = jQuery('#_mail_replyfrm_to_').val();
+		var cc = jQuery('#_mail_replyfrm_cc_').val();
+		var bcc = jQuery('#_mail_replyfrm_bcc_').val();
+		VtigerJS_DialogBox.block();
+		var params = {
+			'_operation':'mail',
+			'_operationarg':'save',
+			'to':encodeURIComponent(to),
+			'cc':encodeURIComponent(cc),
+			'bcc':encodeURIComponent(bcc),
+			'subject':'',
+			'body':''
+		};
+		var baseurl = MailManager._baseurl();
+		MailManager.Request('index.php?'+baseurl, params, function (response) {
+			if (typeof(response)=='string') {
+				var responseText = JSON.parse(response);
+			} else if (typeof(response)=='object') {
+				var responseText = JSON.parse(response.responseText);
+			}
+			emailId = responseText.result.emailid;
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?module='+return_module+'&action='+return_module+'Ajax&file=updateRelations&destination_module='+mod+'&entityid='+entity_id+'&parentid='+emailId+'&mode=Ajax'
+			}).done(function (response) {
+				VtigerJS_DialogBox.unblock();
+				var res = JSON.parse(response);
+				jQuery('#emailid').val(res.emailid);
+				MailManager.add_data_to_relatedlist(res);
+			});
+		});
+	} else {
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module='+return_module+'&action='+return_module+'Ajax&file=updateRelations&destination_module='+mod+'&entityid='+entity_id+'&parentid='+emailId+'&mode=Ajax'
+		}).done(function (response) {
+			VtigerJS_DialogBox.unblock();
+			var res = JSON.parse(response);
+			jQuery('#emailid').val(res.emailid);
+			MailManager.add_data_to_relatedlist(res);
+		});
+	}
+	return false;
 }

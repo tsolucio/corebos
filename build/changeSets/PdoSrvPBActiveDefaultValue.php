@@ -16,26 +16,28 @@
 
 class PdoSrvPBActiveDefaultValue extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$moduleInstance = Vtiger_Module::getInstance('Products');
-			$field = Vtiger_Field::getInstance('discontinued',$moduleInstance);
+			$field = Vtiger_Field::getInstance('discontinued', $moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery("update vtiger_field set defaultvalue='1' where fieldid=?",array($field->id));
+				$this->ExecuteQuery("update vtiger_field set defaultvalue='1' where fieldid=?", array($field->id));
 			}
 			$moduleInstance = Vtiger_Module::getInstance('Services');
-			$field = Vtiger_Field::getInstance('discontinued',$moduleInstance);
+			$field = Vtiger_Field::getInstance('discontinued', $moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery("update vtiger_field set defaultvalue='1' where fieldid=?",array($field->id));
+				$this->ExecuteQuery("update vtiger_field set defaultvalue='1' where fieldid=?", array($field->id));
 			}
 			$moduleInstance = Vtiger_Module::getInstance('PriceBooks');
-			$field = Vtiger_Field::getInstance('active',$moduleInstance);
+			$field = Vtiger_Field::getInstance('active', $moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery("update vtiger_field set defaultvalue='1' where fieldid=?",array($field->id));
+				$this->ExecuteQuery("update vtiger_field set defaultvalue='1' where fieldid=?", array($field->id));
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
