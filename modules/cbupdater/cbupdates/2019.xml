@@ -69,4 +69,11 @@
 	<classname>addMsgTemplateModule</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>creation of change password email template</description>
+	<filename>build/changeSets/2019/addChgPWDEmailTemplate.php</filename>
+	<classname>addChgPWDEmailTemplate</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
