@@ -133,6 +133,7 @@ class MailManager_Model_DraftEmail {
 				WHERE vtiger_crmentity.deleted = 0',
 			array($crmid)
 		);
+		$draftMail = array();
 		if ($adb->num_rows($documentRes)) {
 			for ($i=0; $i<$adb->num_rows($documentRes); $i++) {
 				$draftMail[$i]['name'] = $adb->query_result($documentRes, $i, 'filename');

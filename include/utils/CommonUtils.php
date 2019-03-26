@@ -2301,8 +2301,8 @@ function validateImageContents($filename) {
  * 	@param integer $templateid  - Template Id for an Email Template
  * 	return array $returndata - Returns Subject, Body of Template of the the particular email template.
  */
-function getTemplateDetails($templateid) {
-	global $adb, $log;
+function getTemplateDetails($templateid, $crmid = null) {
+	global $adb, $log, $current_user;
 	$log->debug("> into getTemplateDetails $templateid");
 	$returndata = array();
 	$result = $adb->pquery('select * from vtiger_emailtemplates where templateid=? or templatename=?', array($templateid,$templateid));
@@ -2311,6 +2311,38 @@ function getTemplateDetails($templateid) {
 		$returndata[] = $adb->query_result($result, 0, 'body');
 		$returndata[] = $adb->query_result($result, 0, 'subject');
 		$returndata[] = $adb->query_result($result, 0, 'sendemailfrom');
+	} else { // we look for it in message templates
+		$result = $adb->pquery(
+			'select * from vtiger_msgtemplate
+				inner join vtiger_crmentity on crmid=msgtemplateid
+				where deleted=0 and msgtemplateid=? or reference=?',
+			array($templateid, $templateid)
+		);
+		if ($result && $adb->num_rows($result)>0) {
+			$returndata[] = $templateid;
+			$returndata[] = $adb->query_result($result, 0, 'template');
+			$returndata[] = $adb->query_result($result, 0, 'subject');
+			$returndata[] = ''; //$adb->query_result($result, 0, 'sendemailfrom');
+		}
+	}
+	if (!empty($crmid)) {
+		require_once 'include/Webservices/DescribeObject.php';
+		$type = getSalesEntityType($crmid);
+		$obj = vtws_describe($type, $current_user);
+		$focus = CRMEntity::getInstance($type);
+		$focus->retrieve_entity_info($crmid, $type);
+		$returndata[1] = getMergedDescription($returndata[1], $crmid, $type);
+		$returndata[2] = getMergedDescription($returndata[2], $crmid, $type);
+		foreach ($obj['fields'] as $field) {
+			if (isset($field['uitype']) && $field['uitype'] == '10') {
+				$relid = $focus->column_fields[$field['name']];
+				if (!empty($relid)) {
+					$reltype = getSalesEntityType($relid);
+					$returndata[1] = getMergedDescription($returndata[1], $relid, $reltype);
+					$returndata[2] = getMergedDescription($returndata[2], $relid, $reltype);
+				}
+			}
+		}
 	}
 	$log->debug('< from getTemplateDetails');
 	return $returndata;
@@ -2331,7 +2363,7 @@ function getMergedDescription($description, $id, $parent_type) {
 		$parent_type = getSalesEntityType($id);
 	}
 	if (empty($parent_type) || empty($id)) {
-		$log->debug('< from getMergedDescription due to no record information ...');
+		$log->debug('< from getMergedDescription: no record information');
 		return $description;
 	}
 	if (strpos($id, 'x')>0) {
@@ -3411,12 +3443,8 @@ function fetch_logo($type) {
 function getmail_contents_portalUser($request_array, $password, $type = '') {
 	global $mod_strings ,$adb;
 
-	//$subject = $mod_strings['Customer Portal Login Details'];
-
-	// id is hardcoded: it is for support start notification in vtiger_notificationscheduler
-	$query='SELECT subject,body FROM vtiger_emailtemplates WHERE templateid=10';
-
-	$result = $adb->pquery($query, array());
+	$query='SELECT subject,template FROM vtiger_msgtemplate WHERE reference=?';
+	$result = $adb->pquery($query, array('Customer Login Details'));
 	$body=$adb->query_result($result, 0, 'body');
 	$contents=$body;
 	$contents = str_replace('$contact_name$', $request_array['first_name']." ".$request_array['last_name'], $contents);

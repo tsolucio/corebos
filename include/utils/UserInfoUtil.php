@@ -428,7 +428,7 @@ function fetchWordTemplateList($module) {
 function fetchEmailTemplateInfo($templateName) {
 	global $log, $adb;
 	$log->debug('> fetchEmailTemplateInfo '.$templateName);
-	$result = $adb->pquery('select * from vtiger_emailtemplates where templatename=?', array($templateName));
+	$result = $adb->pquery('select * from vtiger_msgtemplate where reference=?', array($templateName));
 	$log->debug('< fetchEmailTemplateInfo');
 	return $result;
 }

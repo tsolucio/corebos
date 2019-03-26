@@ -62,4 +62,11 @@
 	<classname>installcbgendoc</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Install Message Template module</description>
+	<filename>build/changeSets/2019/addMsgTemplateModule.php</filename>
+	<classname>addMsgTemplateModule</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
