@@ -13,7 +13,9 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-class addEmailTemplates extends cbupdaterWorker {
+include_once 'include/Webservices/Create.php';
+
+class addChgPWDEmailTemplate extends cbupdaterWorker {
 
 	public function applyChange() {
 		if ($this->hasError()) {
@@ -22,19 +24,33 @@ class addEmailTemplates extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset ' . get_class($this) . ' already applied!');
 		} else {
-            global $adb;
-            $fieldList  = 
-                "<p>Dear \$user_name$,</p>
+			global $adb, $current_user;
+			$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
+			$rec = array(
+				'assigned_user_id' => $usrwsid,
+				'reference' => 'Password Change Template',
+				'msgt_type' => 'Email',
+				'msgt_status' => 'Active',
+				'msgt_language' => 'en',
+				'msgt_module' => 'Users',
+				'msgt_fields' => '',
+				'msgt_metavars' => '',
+				'subject' => 'User password change details',
+				'template' => '<p>Dear $user_name$,</p>
 
-                <p> </p>
-                
-                <p>Your password has been successfully changed, your new password is \$user_password$</p>
-                ";
-            $this->ExecuteQuery(
-                "INSERT INTO vtiger_emailtemplates (`foldername`, `templatename`, `subject`, `description`, `body`, `deleted`, `sendemailfrom`) VALUES ('Public','Password Change Template','User change password details','Send password change email to user','$fieldList','0','')"
-            );
-            $this->sendMsg('Changeset ' . get_class($this) . ' applied!');
-            $this->markApplied();
+<p> </p>
+
+<p>Your password has been successfully changed, your new password is $user_password$</p>',
+				'templateonlytext' => 'Dear $user_name$,
+
+Your password has been successfully changed, your new password is $user_password$',
+				'tags' => '',
+				'msgt_category' => '--None--',
+				'description' => 'Send password change email to user',
+			);
+			vtws_create('MsgTemplate', $rec, $current_user);
+			$this->sendMsg('Changeset ' . get_class($this) . ' applied!');
+			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
