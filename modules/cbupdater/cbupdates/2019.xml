@@ -76,4 +76,11 @@
 	<classname>addChgPWDEmailTemplate</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Migrate EMail templates</description>
+	<filename>build/changeSets/2019/migrateemailtemplates.php</filename>
+	<classname>migrateemailtemplates</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

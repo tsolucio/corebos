@@ -137,50 +137,6 @@ class MsgTemplate extends CRMEntity {
 			$moduleInstance->addLink('HEADERSCRIPT', 'vtigerwebservice', 'modules/com_vtiger_workflow/resources/vtigerwebservices.js', '', 0, null, true);
 			// TODO Handle post installation actions
 			$this->setModuleSeqNumber('configure', $modulename, 'MSGT-', '0000001');
-			global $adb, $default_charset, $current_user;
-			$rsAccs = $adb->query("show TABLES like 'vtiger_emailtemplates'");
-			if ($adb->num_rows($rsAccs)>0) {
-				$rsAccs = $adb->query('SELECT * FROM vtiger_emailtemplates WHERE deleted = 0');
-				while ($acc = $adb->fetch_array($rsAccs)) {
-					$focus = new MsgTemplate();
-					$focus->id = '';
-					$focus->mode = '';
-					$focus->column_fields['reference'] = html_entity_decode($acc['templatename'], ENT_QUOTES, $default_charset);
-					$focus->column_fields['msgt_type'] = 'Email';
-					$focus->column_fields['msgt_status'] = 'Active';
-					$focus->column_fields['msgt_language'] = 'en';
-					$focus->column_fields['subject'] = html_entity_decode($acc['subject'], ENT_QUOTES, $default_charset);
-					$focus->column_fields['template'] = html_entity_decode($acc['body'], ENT_QUOTES, $default_charset);
-					$focus->column_fields['templateonlytext'] = html_entity_decode(strip_tags(html_entity_decode($acc['body'], ENT_QUOTES, $default_charset)), ENT_QUOTES, $default_charset);
-					$focus->column_fields['tags'] = '';
-					$focus->column_fields['description'] = html_entity_decode($acc['description'], ENT_QUOTES, $default_charset);
-					$focus->column_fields['assigned_user_id'] = $current_user->id;
-					$_REQUEST['assigntype'] = 'U';
-					$focus->save('MsgTemplate');
-				}
-				$adb->query("delete from vtiger_settings_field where name='EMAILTEMPLATES'");
-			}
-			$rsAccs = $adb->query("show TABLES like 'vtiger_actions'");
-			if ($adb->num_rows($rsAccs)>0) {
-				$rsAccs = $adb->query('SELECT * FROM vtiger_actions INNER join vtiger_crmentity ON crmid=actionsid WHERE deleted=0');
-				while ($acc = $adb->fetch_array($rsAccs)) {
-					$focus = new MsgTemplate();
-					$focus->id = '';
-					$focus->mode = '';
-					$focus->column_fields['reference'] = html_entity_decode($acc['reference'], ENT_QUOTES, $default_charset);
-					$focus->column_fields['msgt_type'] = $acc['action_type'];
-					$focus->column_fields['msgt_status'] = $acc['action_status'];
-					$focus->column_fields['msgt_language'] = $acc['action_language'];
-					$focus->column_fields['subject'] = html_entity_decode($acc['subject'], ENT_QUOTES, $default_charset);
-					$focus->column_fields['template'] = html_entity_decode($acc['template'], ENT_QUOTES, $default_charset);
-					$focus->column_fields['templateonlytext'] = html_entity_decode(strip_tags(html_entity_decode($acc['templateonlytext'], ENT_QUOTES, $default_charset)), ENT_QUOTES, $default_charset);
-					$focus->column_fields['tags'] = $acc['tags'];
-					$focus->column_fields['description'] = html_entity_decode($acc['description'], ENT_QUOTES, $default_charset);
-					$focus->column_fields['assigned_user_id'] = $acc['smownerid'];
-					$_REQUEST['assigntype'] = 'U';
-					$focus->save('MsgTemplate');
-				}
-			}
 			include_once 'modules/cbMap/cbMap.php';
 			$focusnew = new cbMap();
 			$focusnew->column_fields['assigned_user_id'] = Users::getActiveAdminID();
