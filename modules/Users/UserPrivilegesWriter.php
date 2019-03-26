@@ -26,7 +26,7 @@ class UserPrivilegesWriter {
 		}
 	}
 
-	private static function setSharingPrivileges($userId) {
+	public static function setSharingPrivileges($userId) {
 		if (self::WRITE_TO == 'file') {
 			self::createSharingPrivilegesFile($userId);
 		} elseif (self::WRITE_TO == 'db') {
@@ -95,9 +95,8 @@ class UserPrivilegesWriter {
 			$privs["subordinate_roles_users"] = getSubordinateRoleAndUsers($userRole);
 		}
 		$encodedPrivs = json_encode($privs);
-
-		$adb->pquery(
-			"INSERT ON user_privileges(userid, user_data)
+		$data = $adb->pquery(
+			"INSERT INTO user_privileges(userid, user_data)
 			VALUES (?, ?)
 			ON DUPLICATE KEY UPDATE
 			user_data = ?",
@@ -111,6 +110,7 @@ class UserPrivilegesWriter {
 	 * @param  int $userId [description]
 	 */
 	private function createSharingPrivileges($userId) {
+		global $adb;
 
 		$sharingPrivs = array();
 		if (empty($userId)) {
@@ -118,6 +118,7 @@ class UserPrivilegesWriter {
 		}
 
 		$userFocus = new Users();
+		$userFocus->id = $userId;
 		$userFocus->retrieve_entity_info($userId, "Users");
 		if ($userFocus->is_admin == 'on') {
 			return;
@@ -134,13 +135,22 @@ class UserPrivilegesWriter {
 		self::QuotesPrivileges($userFocus, $sharingPrivs);
 		self::SalesOrderPrivileges($userFocus, $sharingPrivs);
 
-		self::ModulePrivileges('HelpDesk', $user, $sharingPrivs);
-		self::ModulePrivileges('Emails', $user, $sharingPrivs);
-		self::ModulePrivileges('Campaigns', $user, $sharingPrivs);
-		self::ModulePrivileges('PurchaseOrder', $user, $sharingPrivs);
-		self::ModulePrivileges('Invoice', $user, $sharingPrivs);
+		self::ModulePrivileges('HelpDesk', $userFocus, $sharingPrivs);
+		self::ModulePrivileges('Emails', $userFocus, $sharingPrivs);
+		self::ModulePrivileges('Campaigns', $userFocus, $sharingPrivs);
+		self::ModulePrivileges('PurchaseOrder', $userFocus, $sharingPrivs);
+		self::ModulePrivileges('Invoice', $userFocus, $sharingPrivs);
 
 		self::Depricated_populateSharingTmpTables($userId, $sharingPrivs);
+
+		$encodedPrivs = json_encode($sharingPrivs);
+		$data = $adb->pquery(
+			"INSERT INTO sharing_privileges(userid, sharing_data)
+			VALUES (?, ?)
+			ON DUPLICATE KEY UPDATE
+			sharing_data = ?",
+			array($userId, $encodedPrivs, $encodedPrivs)
+		);
 	}
 
 	/**
@@ -353,6 +363,9 @@ class UserPrivilegesWriter {
 	 * @return Array 	$userModSharing
 	 */
 	private function ModulePrivileges($module, Users $user, &$sharingPrivs) {
+
+		require_once 'modules/Users/CreateUserPrivilegeFile.php';
+
 		$userPrivs = $user->getPrivileges();
 
 		$userModSharing = getUserModuleSharingObjects(
@@ -466,7 +479,7 @@ class UserPrivilegesWriter {
 		foreach ($sharingArray as $module) {
 			$module_sharing_read_permvar  = $module.'_share_read_permission';
 			$module_sharing_write_permvar = $module.'_share_write_permission';
-			Depricated_populateSharingPrivileges(
+			self::Depricated_populateSharingPrivileges(
 				'USER',
 				$userId,
 				$module,
@@ -474,7 +487,7 @@ class UserPrivilegesWriter {
 				$sharingPrivs[$module_sharing_read_permvar],
 				$sharingPrivs
 			);
-			Depricated_populateSharingPrivileges(
+			self::Depricated_populateSharingPrivileges(
 				'USER',
 				$userId,
 				$module,
@@ -482,7 +495,7 @@ class UserPrivilegesWriter {
 				$sharingPrivs[$module_sharing_write_permvar],
 				$sharingPrivs
 			);
-			Depricated_populateSharingPrivileges(
+			self::Depricated_populateSharingPrivileges(
 				'GROUP',
 				$userId,
 				$module,
@@ -490,7 +503,7 @@ class UserPrivilegesWriter {
 				$sharingPrivs[$module_sharing_read_permvar],
 				$sharingPrivs
 			);
-			Depricated_populateSharingPrivileges(
+			self::Depricated_populateSharingPrivileges(
 				'GROUP',
 				$userId,
 				$module,
