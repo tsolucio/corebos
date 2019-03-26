@@ -56,7 +56,7 @@ class UserPrivileges {
 		checkFileAccessForInclusion('user_privileges/user_privileges_' . $userid . '.php');
 		require "user_privileges/user_privileges_$userid.php";
 		$this->is_admin = (bool) $is_admin;
-		// 	$this->roles = $current_user_roles;
+		$this->roles = $current_user_roles;
 		if (!$this->is_admin) {
 			$this->parent_role_seq = $current_user_parent_role_seq;
 			$this->profiles = $current_user_profiles;
@@ -112,6 +112,8 @@ class UserPrivileges {
 		$user_data = json_decode($adb->query_result($query,0,'user_data'), true);
 
 		$this->is_admin = (bool)$user_data["is_admin"];
+		$this->roles = $user_data["current_user_roles"];
+
 		if (!$this->is_admin) {
 			$this->parent_role_seq = $user_data["current_user_parent_role_seq"];
 			$this->profiles = $user_data["current_user_profiles"];
@@ -294,6 +296,10 @@ class UserPrivileges {
 
 	public function isAdmin() {
 		return $this->is_admin;
+	}
+
+	public function getRoles() {
+		return $this->roles;
 	}
 
 	/**
