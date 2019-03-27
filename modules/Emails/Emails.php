@@ -568,7 +568,7 @@ class Emails extends CRMEntity {
 		global $adb, $default_charset;
 		$sql = fetchEmailTemplateInfo($templateName);
 		$sub = $adb->query_result($sql, 0, 'subject');
-		$body = $adb->query_result($sql, 0, 'body');
+		$body = $adb->query_result($sql, 0, 'template');
 		$mail_body = html_entity_decode($body, ENT_QUOTES, $default_charset);
 		foreach ($context as $value => $val) {
 			$mail_body = str_replace($value, $val, $mail_body);
