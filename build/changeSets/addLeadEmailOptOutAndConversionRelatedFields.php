@@ -15,8 +15,10 @@
  *************************************************************************************************/
 class addLeadEmailOptOutAndConversionRelatedFields extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -24,9 +26,9 @@ class addLeadEmailOptOutAndConversionRelatedFields extends cbupdaterWorker {
 			$module = Vtiger_Module::getInstance($modname);
 			// Add Email Opt-out for Leads
 			$block = Vtiger_Block::getInstance('LBL_LEAD_INFORMATION', $module);
-			$field = Vtiger_Field::getInstance('emailoptout',$module);
+			$field = Vtiger_Field::getInstance('emailoptout', $module);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?', array($field->id));
 			} else {
 				$leadsOptOutField = new Vtiger_Field();
 				$leadsOptOutField->name = 'emailoptout';
@@ -104,7 +106,6 @@ class addLeadEmailOptOutAndConversionRelatedFields extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }
 
 ?>

@@ -25,7 +25,8 @@ require_once 'include/utils/CommonUtils.php';
 					current: get file name from $_REQUEST['filename_hidden'] or $_FILES['filename']['name']
 					all: all files directly related with the crmid record, this is mostly only useful for email records
 					attReports: get file name from $_REQUEST['filename_hidden_pdf'] and $_REQUEST['filename_hidden_xls']
-					array of filenames or document IDs: array('themes/images/webcam.png','themes/images/Meetings.gif', 42525);
+					array of filenames or document IDs or array file name and path: array('themes/images/webcam.png','themes/images/Meetings.gif', 42525);
+					array of filenames as array of name and full path: array('fname'=> {basename}, 'fpath'=> {full path including base name})
 					array of direct content:
 						array(
 							'direct' => true,
@@ -107,44 +108,44 @@ function send_mail($module, $to_email, $from_name, $from_email, $subject, $conte
 		$from_email = $femail;
 	}
 
-	if ($module != 'Calendar') {
-		$contents = addSignature($contents, $from_name);
-	}
-
-	$mail = new PHPMailer();
-
 	// Add main HTML tags when missing
 	if (!preg_match('/^\s*<\!DOCTYPE/', $contents) && !preg_match('/^\s*<html/i', $contents)) {
 		$contents = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" /></head><body>" . $contents . "</body></html>";
 	}
-
-	setMailerProperties($mail, $subject, $contents, $from_email, $from_name, trim($to_email, ','), $attachment, $emailid, $logo, $qrScan);
-
-	setCCAddress($mail, 'cc', $cc);
-	setCCAddress($mail, 'bcc', $bcc);
-	if (!empty($replyToEmail)) {
-		$mail->AddReplyTo($replyToEmail);
+	if ($module != 'Calendar') {
+		$contents = addSignature($contents, $from_name);
 	}
 
-	// mailscanner customization: If Support Reply To is defined use it.
-	$HELPDESK_SUPPORT_EMAIL_REPLY_ID = GlobalVariable::getVariable('HelpDesk_Support_Reply_EMail', $HELPDESK_SUPPORT_EMAIL_ID, 'HelpDesk');
-	if ($HELPDESK_SUPPORT_EMAIL_REPLY_ID && $HELPDESK_SUPPORT_EMAIL_ID != $HELPDESK_SUPPORT_EMAIL_REPLY_ID) {
-		$mail->AddReplyTo($HELPDESK_SUPPORT_EMAIL_REPLY_ID);
+	// always merge against user module
+	$rs = $adb->pquery('select id from vtiger_users where email1=? or email2=?', array($from_email, $from_email));
+	if ($adb->num_rows($rs) > 0) {
+		$subject = getMergedDescription($subject, $adb->query_result($rs, 0, 'id'), 'Users');
+		$contents = getMergedDescription($contents, $adb->query_result($rs, 0, 'id'), 'Users');
 	}
 
-	// Return immediately if Outgoing server not configured
-	if (empty($mail->Host)) {
-		return 0;
+	list($systemEmailClassName, $systemEmailClassPath) = cbEventHandler::do_filter('corebos.filter.systemEmailClass.getname', array('Emails', 'modules/Emails/Emails.php'));
+	require_once $systemEmailClassPath;
+	if (!call_user_func(array($systemEmailClassName, 'useEmailHook'))) {
+		$systemEmailClassName = 'Emails'; // default system method
 	}
-
-	$mail_status = MailSend($mail);
-	if ($mail_status != 1) {
-		$mail_error = getMailError($mail, $mail_status);
-	} else {
-		$mail_error = $mail_status;
-	}
-
-	return $mail_error;
+	return call_user_func_array(
+		array($systemEmailClassName, 'sendEMail'),
+		array(
+			$to_email,
+			$from_name,
+			$from_email,
+			$subject,
+			$contents,
+			$cc,
+			$bcc,
+			$attachment,
+			$emailid,
+			$logo,
+			$qrScan,
+			$replyto,
+			$replyToEmail
+		)
+	);
 }
 
 /** Function to get the user Email id based on column name and column value
@@ -200,8 +201,7 @@ function addSignature($contents, $fromname) {
   * $from_name	-- from name which will be displayed in the mail
   * $to_email	-- to email address  -- This can be an email in a single string, a comma separated
   * 		   list of emails or an array of email addresses
-  * $attachment	-- whether we want to attach the currently selected file or all files.
-				  [values = current,all] - optional
+  * $attachment	-- see sendmail explanation
   * $emailid	-- id of the email object which will be used to get the vtiger_attachments - optional
   */
 function setMailerProperties($mail, $subject, $contents, $from_email, $from_name, $to_email, $attachment = '', $emailid = '', $logo = '', $qrScan = '') {
@@ -289,7 +289,11 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
 			}
 		} else {
 			foreach ($attachment as $file) {
-				addAttachment($mail, $file, $emailid);
+				if (is_array($file)) {
+					addAttachment($mail, $file['fname'], $emailid);
+				} else {
+					addAttachment($mail, $file, $emailid);
+				}
 			}
 		}
 	}
@@ -434,6 +438,34 @@ function addAllAttachments($mail, $record) {
 			$mail->AddAttachment($filewithpath, $filename);
 		}
 	}
+}
+
+/** Function to get all the related files as attachments
+ * @param integer $record - email id: record id which is used to get all the related attachments
+ */
+function getAllAttachments($record) {
+	global $adb, $log, $root_directory;
+	$log->debug('> getAllAttachments');
+	$res = $adb->pquery(
+		'select vtiger_attachments.*
+			from vtiger_attachments
+			inner join vtiger_seattachmentsrel on vtiger_attachments.attachmentsid = vtiger_seattachmentsrel.attachmentsid
+			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
+			where vtiger_crmentity.deleted=0 and vtiger_seattachmentsrel.crmid=?',
+		array($record)
+	);
+	$attachments = array();
+	while ($att = $adb->fetch_array($res)) {
+		$fileid = $att['attachmentsid'];
+		$filename = decode_html($att['name']);
+		$filepath = $att['path'];
+		$filewithpath = $root_directory.$filepath.$fileid.'_'.$filename;
+		if (is_file($filewithpath)) {
+			$attachments[]=array('fname'=>$filename,'fpath'=>$filewithpath);
+		}
+	}
+	$log->debug('< getAllAttachments');
+	return $attachments;
 }
 
 /** Function to set the CC or BCC addresses in the mail

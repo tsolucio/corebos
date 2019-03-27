@@ -16,37 +16,45 @@
 
 class addfixCurrencies01 extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			global $adb;
 
 			//Changed the Currency Symbol of Moroccan, Dirham to DH
-			$this->ExecuteQuery('UPDATE vtiger_currencies SET currency_symbol=? WHERE currency_name=? AND currency_code=?',
-				array('DH', 'Moroccan, Dirham', 'MAD'));
-			$this->ExecuteQuery('UPDATE vtiger_currencies SET currency_name = ? where currency_name = ? and currency_code = ?',
-				array('Hong Kong, Dollars', 'LvHong Kong, Dollars', 'HKD'));
-			$this->ExecuteQuery('UPDATE vtiger_currency_info SET currency_name = ? where currency_name = ?',
-				array('Hong Kong, Dollars', 'LvHong Kong, Dollars'));
+			$this->ExecuteQuery(
+				'UPDATE vtiger_currencies SET currency_symbol=? WHERE currency_name=? AND currency_code=?',
+				array('DH', 'Moroccan, Dirham', 'MAD')
+			);
+			$this->ExecuteQuery(
+				'UPDATE vtiger_currencies SET currency_name = ? where currency_name = ? and currency_code = ?',
+				array('Hong Kong, Dollars', 'LvHong Kong, Dollars', 'HKD')
+			);
+			$this->ExecuteQuery(
+				'UPDATE vtiger_currency_info SET currency_name = ? where currency_name = ?',
+				array('Hong Kong, Dollars', 'LvHong Kong, Dollars')
+			);
 
 			$checkQuery = 'SELECT 1 FROM vtiger_currencies  WHERE currency_name=?';
 			$insertCurrency = 'INSERT INTO vtiger_currencies (currencyid, currency_name, currency_code, currency_symbol) VALUES(?, ?, ?, ?)';
-			$checkResult = $adb->pquery($checkQuery,array('Iraqi Dinar'));
-			if($adb->num_rows($checkResult) <= 0) {
+			$checkResult = $adb->pquery($checkQuery, array('Iraqi Dinar'));
+			if ($adb->num_rows($checkResult) <= 0) {
 				$this->ExecuteQuery($insertCurrency, array($adb->getUniqueID('vtiger_currencies'), 'Iraqi Dinar', 'IQD', 'ID'));
 			}
-			$checkResult = $adb->pquery($checkQuery,array('Maldivian Ruffiya'));
-			if($adb->num_rows($checkResult) <= 0) {
+			$checkResult = $adb->pquery($checkQuery, array('Maldivian Ruffiya'));
+			if ($adb->num_rows($checkResult) <= 0) {
 				$this->ExecuteQuery($insertCurrency, array($adb->getUniqueID('vtiger_currencies'), 'Maldivian Ruffiya', 'MVR', 'MVR'));
 			}
 			$checkResult = $adb->pquery($checkQuery, array('Ugandan Shilling'));
-			if(!$adb->num_rows($checkResult)) {
+			if (!$adb->num_rows($checkResult)) {
 				$this->ExecuteQuery($insertCurrency, array($adb->getUniqueID('vtiger_currencies'), 'Ugandan Shilling', 'UGX', 'Sh'));
 			}
 			$checkResult = $adb->pquery($checkQuery, array('CFP Franc'));
-			if(!$adb->num_rows($checkResult)) {
+			if (!$adb->num_rows($checkResult)) {
 				$this->ExecuteQuery($insertCurrency, array($adb->getUniqueID('vtiger_currencies'), 'CFP Franc', 'XPF', 'F'));
 			}
 
@@ -55,5 +63,4 @@ class addfixCurrencies01 extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
 }

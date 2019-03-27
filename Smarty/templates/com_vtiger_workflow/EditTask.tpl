@@ -82,6 +82,9 @@
 						</option>
 		{/foreach}
 					</select>
+					<div style="float:right">
+					<input  type="checkbox" name="reevaluate" id="reevaluate" {if isset($task->reevaluate) && $task->reevaluate eq 1}checked{/if}>&nbsp;{$MOD.LBL_REEVALCONDITIONS}
+				    </div>
 				</div>
 			</td>
 		</tr>
@@ -90,7 +93,7 @@
 		<table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
 		<tr>
 			<td width='100%' nowrap="nowrap">
-			{include file='com_vtiger_workflow/ListConditions.tpl' showreeval='true'}
+			{include file='com_vtiger_workflow/ListConditions.tpl' }
 			</td>
 		</tr>
 		</table>

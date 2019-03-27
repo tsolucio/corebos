@@ -16,27 +16,29 @@
 
 class fixEventHandlerPathForConvertTZ extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			global $adb;
-			if(vtlib_isModuleActive("Timecontrol") && !vtlib_isModuleActive("Task")){
-				$result = $adb->pquery("SELECT eventhandler_id FROM vtiger_eventhandlers WHERE handler_path = 'modules/Timecontrol/convertTZListView.php'",array());
-				if($adb->num_rows($result) == 0){
-					$result = $adb->pquery("SELECT eventhandler_id FROM vtiger_eventhandlers WHERE handler_path = 'modules/Task/convertTZListView.php'",array());
-					if($adb->num_rows($result) == 1){
+			if (vtlib_isModuleActive("Timecontrol") && !vtlib_isModuleActive("Task")) {
+				$result = $adb->pquery("SELECT eventhandler_id FROM vtiger_eventhandlers WHERE handler_path = 'modules/Timecontrol/convertTZListView.php'", array());
+				if ($adb->num_rows($result) == 0) {
+					$result = $adb->pquery("SELECT eventhandler_id FROM vtiger_eventhandlers WHERE handler_path = 'modules/Task/convertTZListView.php'", array());
+					if ($adb->num_rows($result) == 1) {
 						$handler_id = $adb->query_result($result, 0, 'eventhandler_id');
-						$this->ExecuteQuery("UPDATE vtiger_eventhandlers SET handler_path = 'modules/Timecontrol/convertTZListView.php', handler_class = 'convertTZListViewOnTimecontrol' WHERE eventhandler_id = ?",array($handler_id));
-					}else{
+						$this->ExecuteQuery("UPDATE vtiger_eventhandlers SET handler_path = 'modules/Timecontrol/convertTZListView.php', handler_class = 'convertTZListViewOnTimecontrol' WHERE eventhandler_id = ?", array($handler_id));
+					} else {
 						$em = new VTEventsManager($adb);
 						$em->registerHandler('corebos.filter.listview.render', 'modules/Timecontrol/convertTZListView.php', 'convertTZListViewOnTimecontrol');
 					}
 				}
-			}elseif(vtlib_isModuleActive("Timecontrol") && vtlib_isModuleActive("Task")){
-				$result = $adb->pquery("SELECT eventhandler_id FROM vtiger_eventhandlers WHERE handler_path = 'modules/Timecontrol/convertTZListView.php'",array());
-				if($adb->num_rows($result) == 0){
+			} elseif (vtlib_isModuleActive("Timecontrol") && vtlib_isModuleActive("Task")) {
+				$result = $adb->pquery("SELECT eventhandler_id FROM vtiger_eventhandlers WHERE handler_path = 'modules/Timecontrol/convertTZListView.php'", array());
+				if ($adb->num_rows($result) == 0) {
 					$em = new VTEventsManager($adb);
 					$em->registerHandler('corebos.filter.listview.render', 'modules/Timecontrol/convertTZListView.php', 'convertTZListViewOnTimecontrol');
 				}
@@ -46,5 +48,4 @@ class fixEventHandlerPathForConvertTZ extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

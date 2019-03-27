@@ -1,0 +1,527 @@
+<?xml version='1.0'?>
+<module>
+<name>MsgTemplate</name>
+<label>MsgTemplate</label>
+<parent>Marketing</parent>
+<version>1.0</version>
+<short_description>Message templates.</short_description>
+<dependencies>
+<vtiger_version>5.4.0</vtiger_version>
+<vtiger_max_version>5.*</vtiger_max_version>
+</dependencies>
+<license>
+<inline><![CDATA[
+ *************************************************************************************************
+ * Copyright 2019 TSolucio  --  This file is a part of coreBOS.
+ * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
+ * Vizsage Public License (the "License"). You may not use this file except in compliance with the
+ * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
+ * and share improvements. However, for proper details please read the full License, available at
+ * http://vizsage.com/license/Vizsage-License-BY-NC-SA.html and the handy reference for understanding
+ * the full license at http://vizsage.com/license/Vizsage-Deed-BY-NC-SA.html. Unless required by
+ * applicable law or agreed to in writing, any software distributed under the License is distributed
+ * on an  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and limitations under the
+ * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
+ *************************************************************************************************
+ *  Module       : MsgTemplate
+ *  Version      : 1.0
+ *  Author       : TSolucio
+ *************************************************************************************************
+]]></inline>
+</license>
+<tables>
+<table>
+<name>vtiger_msgtemplate</name>
+<sql><![CDATA[CREATE TABLE IF NOT EXISTS `vtiger_msgtemplate` (
+  `msgtemplateid` int(11) NOT NULL DEFAULT '0',
+  `reference` varchar(100) DEFAULT NULL,
+  `msgt_type` varchar(100) DEFAULT NULL,
+  `msgt_status` varchar(100) DEFAULT NULL,
+  `msgt_language` varchar(100) DEFAULT NULL,
+  `msgt_module` varchar(100) DEFAULT NULL,
+  `msgt_fields` varchar(150) DEFAULT NULL,
+  `msgt_metavars` varchar(150) DEFAULT NULL,
+  `subject` text,
+  `template` mediumtext,
+  `templateonlytext` text,
+  `tags` text,
+  `msgt_category` varchar(100) DEFAULT '--None--',
+  PRIMARY KEY (`msgtemplateid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;]]></sql>
+</table>
+<table>
+<name>vtiger_msgtemplatecf</name>
+<sql><![CDATA[CREATE TABLE `vtiger_msgtemplatecf` (
+  `msgtemplateid` int(11) NOT NULL,
+  PRIMARY KEY (`msgtemplateid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+</tables>
+<blocks>
+<block>
+<label>LBL_MESSAGE_INFORMATION</label>
+<fields>
+<field>
+<fieldname>reference</fieldname>
+<uitype>1</uitype>
+<columnname>reference</columnname>
+<tablename>vtiger_msgtemplate</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>reference</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>1</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<entityidentifier>
+<entityidfield>msgtemplateid</entityidfield>
+<entityidcolumn>msgtemplateid</entityidcolumn>
+</entityidentifier>
+</field>
+<field>
+<fieldname>msgt_type</fieldname>
+<uitype>15</uitype>
+<columnname>msgt_type</columnname>
+<tablename>vtiger_msgtemplate</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>msgt_type</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>2</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<picklistvalues>
+<picklistvalue>Email</picklistvalue>
+<picklistvalue>SMS</picklistvalue>
+<picklistvalue>Mattermost</picklistvalue>
+<picklistvalue>Whatsapp</picklistvalue>
+</picklistvalues>
+</field>
+<field>
+<fieldname>msgt_module</fieldname>
+<uitype>1613</uitype>
+<columnname>msgt_module</columnname>
+<tablename>vtiger_msgtemplate</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>msgt_module</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>3</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>msgt_status</fieldname>
+<uitype>15</uitype>
+<columnname>msgt_status</columnname>
+<tablename>vtiger_msgtemplate</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>msgt_status</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>4</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<picklistvalues>
+<picklistvalue>Active</picklistvalue>
+<picklistvalue>Inactive</picklistvalue>
+</picklistvalues>
+</field>
+<field>
+<fieldname>msgt_language</fieldname>
+<uitype>15</uitype>
+<columnname>msgt_language</columnname>
+<tablename>vtiger_msgtemplate</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>msgt_language</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>5</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<picklistvalues>
+	<picklistvalue>en</picklistvalue>
+	<picklistvalue>es</picklistvalue>
+	<picklistvalue>fr</picklistvalue>
+	<picklistvalue>nl</picklistvalue>
+	<picklistvalue>de</picklistvalue>
+	<picklistvalue>it</picklistvalue>
+	<picklistvalue>pt</picklistvalue>
+</picklistvalues>
+</field>
+<field>
+<fieldname>msgt_category</fieldname>
+<uitype>15</uitype>
+<columnname>msgt_category</columnname>
+<tablename>vtiger_msgtemplate</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>message category</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>6</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+<picklistvalues>
+<picklistvalue>--None--</picklistvalue>
+<picklistvalue>Application</picklistvalue>
+<picklistvalue>User</picklistvalue>
+</picklistvalues>
+</field>
+<field>
+<fieldname>tags</fieldname>
+<uitype>1</uitype>
+<columnname>tags</columnname>
+<tablename>vtiger_msgtemplate</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>tags</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>7</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>assigned_user_id</fieldname>
+<uitype>53</uitype>
+<columnname>smownerid</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Assigned To</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>8</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>createdtime</fieldname>
+<uitype>70</uitype>
+<columnname>createdtime</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Created Time</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>9</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>DT~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
+<fieldname>created_user_id</fieldname>
+<uitype>52</uitype>
+<columnname>smcreatorid</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Created By</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>10</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>1</quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
+<fieldname>modifiedtime</fieldname>
+<uitype>70</uitype>
+<columnname>modifiedtime</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Modified Time</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>11</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>DT~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+</fields>
+</block>
+<block>
+<label>LBL_CUSTOM_INFORMATION</label>
+</block>
+<block>
+<label>LBL_DESCRIPTION_INFORMATION</label>
+<fields>
+<field>
+<fieldname>description</fieldname>
+<uitype>19</uitype>
+<columnname>description</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Description</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>1</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+</fields>
+</block>
+<block>
+<label>LBL_TEMPLATE_INFORMATION</label>
+<fields>
+<field>
+<fieldname>subject</fieldname>
+<uitype>1</uitype>
+<columnname>subject</columnname>
+<tablename>vtiger_msgtemplate</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>subject</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>1</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+</fields>
+</block>
+<block>
+<label></label>
+<fields>
+<field>
+<fieldname>msgt_fields</fieldname>
+<uitype>15</uitype>
+<columnname>msgt_fields</columnname>
+<tablename>vtiger_msgtemplate</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>msgt_fields</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>1</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
+<fieldname>msgt_metavars</fieldname>
+<uitype>15</uitype>
+<columnname>msgt_metavars</columnname>
+<tablename>vtiger_msgtemplate</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>msgt_metavars</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>2</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
+<fieldname>template</fieldname>
+<uitype>19</uitype>
+<columnname>template</columnname>
+<tablename>vtiger_msgtemplate</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>template</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>3</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>templateonlytext</fieldname>
+<uitype>19</uitype>
+<columnname>templateonlytext</columnname>
+<tablename>vtiger_msgtemplate</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>templateonlytext</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>4</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+</fields>
+</block>
+</blocks>
+<customviews>
+<customview>
+<viewname>All</viewname>
+<setdefault>true</setdefault>
+<setmetrics>false</setmetrics>
+<fields>
+<field>
+<fieldname>reference</fieldname>
+<columnindex>0</columnindex>
+</field>
+<field>
+<fieldname>description</fieldname>
+<columnindex>1</columnindex>
+</field>
+<field>
+<fieldname>msgt_language</fieldname>
+<columnindex>2</columnindex>
+</field>
+<field>
+<fieldname>msgt_status</fieldname>
+<columnindex>3</columnindex>
+</field>
+<field>
+<fieldname>msgt_type</fieldname>
+<columnindex>4</columnindex>
+</field>
+<field>
+<fieldname>assigned_user_id</fieldname>
+<columnindex>5</columnindex>
+</field>
+<field>
+<fieldname>tags</fieldname>
+<columnindex>6</columnindex>
+</field>
+</fields>
+</customview>
+</customviews>
+<sharingaccess>
+<default>private</default>
+</sharingaccess>
+<actions>
+<action>
+<name><![CDATA[Import]]></name>
+<status>enabled</status>
+</action>
+<action>
+<name><![CDATA[Export]]></name>
+<status>enabled</status>
+</action>
+<action>
+<name><![CDATA[Merge]]></name>
+<status>enabled</status>
+</action>
+</actions>
+<relatedlists>
+<relatedlist>
+<function>get_attachments</function>
+<label>Documents</label>
+<sequence>3</sequence>
+<presence>0</presence>
+<actions>
+<action>ADD</action>
+<action>SELECT</action>
+</actions>
+<relatedmodule>Documents</relatedmodule>
+</relatedlist>
+</relatedlists>
+<events>
+</events>
+<customlinks>
+</customlinks>
+<crons>
+</crons>
+</module>

@@ -1,15 +1,19 @@
 <?php
 /*************************************************************************************************
- 
+
   PUT YOUR LICENSE HERE
- 
+
 *************************************************************************************************/
 
 class your_update_classname extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->isBlocked()) return true;
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->isBlocked()) {
+			return true;
+		}
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -21,10 +25,14 @@ class your_update_classname extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
-	function undoChange() {
-		if ($this->isBlocked()) return true;
-		if ($this->hasError()) $this->sendError();
+
+	public function undoChange() {
+		if ($this->isBlocked()) {
+			return true;
+		}
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isSystemUpdate()) {
 			$this->sendMsg('Changeset '.get_class($this).' is a system update, it cannot be undone!');
 		} else {
@@ -40,5 +48,4 @@ class your_update_classname extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
 }

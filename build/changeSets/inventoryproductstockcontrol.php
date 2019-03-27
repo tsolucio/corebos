@@ -57,9 +57,9 @@ class inventoryproductstockcontrol extends cbupdaterWorker {
 		$done = parent::isApplied();
 		if (!$done) {
 			global $adb;
-			$result = $adb->pquery("SELECT * FROM com_vtiger_workflowtasks_entitymethod where module_name = 'PurchaseOrder' and method_name= 'UpdateInventory'",array());
+			$result = $adb->pquery("SELECT * FROM com_vtiger_workflowtasks_entitymethod where module_name = 'PurchaseOrder' and method_name= 'UpdateInventory'", array());
 			$done = ($result && $adb->num_rows($result)==1);
-			$result = $adb->pquery("SELECT `workflow_id` FROM `com_vtiger_workflows` WHERE `module_name` = 'PurchaseOrder' and `summary`='UpdateInventoryProducts On Every Save'",array());
+			$result = $adb->pquery("SELECT `workflow_id` FROM `com_vtiger_workflows` WHERE `module_name` = 'PurchaseOrder' and `summary`='UpdateInventoryProducts On Every Save'", array());
 			$done = ($done && $result && $adb->num_rows($result)==1);
 		}
 		return $done;

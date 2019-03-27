@@ -16,25 +16,30 @@
 
 class CalendarEnhanceFieldInfoRelatedModules extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			global $adb;
-			$rdo = $adb->pquery('SELECT efid,event,fieldname FROM its4you_calendar4you_event_fields',array());
+			$rdo = $adb->pquery('SELECT efid,event,fieldname FROM its4you_calendar4you_event_fields', array());
 			while ($rev = $adb->fetch_array($rdo)) {
-				$fidrs = $adb->pquery('select fieldid from vtiger_field where tabid=? and fieldname=?',
-					array(($rev['event']=='1'?16:9),$rev['fieldname']));
+				$fidrs = $adb->pquery(
+					'select fieldid from vtiger_field where tabid=? and fieldname=?',
+					array(($rev['event']=='1'?16:9),$rev['fieldname'])
+				);
 				$fid = $adb->query_result($fidrs, 0, 0);
 				$fname = $rev['fieldname'].':'.$fid;
-				$this->ExecuteQuery('update its4you_calendar4you_event_fields set fieldname=? where efid=?',
-					array($fname,$rev['efid']));
+				$this->ExecuteQuery(
+					'update its4you_calendar4you_event_fields set fieldname=? where efid=?',
+					array($fname,$rev['efid'])
+				);
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-
 }

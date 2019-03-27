@@ -37,6 +37,7 @@ $mod_strings = array(
 	'LBL_FILENAME' => 'Melléklet:',
 	'Template'=>'Template',
 	'Template For' => 'Template For',
+	'Merge Template' => 'Merge Template',
 	'LBL_NOTE_INFORMATION' => 'Dokumentum adatai',
 	'File Information' => 'Fájl adatok',
 	'LBL_TOOL_FORM_TITLE' => 'Dokumentumok Eszközök',

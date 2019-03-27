@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2012 JPL TSolucio, S.L.  --  This file is a part of SIGPAC.
+ * Copyright 2012 JPL TSolucio, S.L.  --  This file is a part of coreBOS.
 * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
 * Vizsage Public License (the "License"). You may not use this file except in compliance with the
 * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit

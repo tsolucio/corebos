@@ -16,12 +16,13 @@
 
 class addCreatedByField extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError ())
-			$this->sendError ();
-		if ($this->isApplied ()) {
-			$this->sendMsg ( 'Changeset ' . get_class ( $this ) . ' already applied!' );
+		if ($this->hasError()) {
+			$this->sendError();
+		}
+		if ($this->isApplied()) {
+			$this->sendMsg('Changeset ' . get_class($this) . ' already applied!');
 		} else {
 			global $adb;
 			$sql = "SELECT tabid,name FROM vtiger_tab WHERE name not in ('Calendar','Events','PBXManager','Webmails','Emails','Integration','Dashboard','ModComments') and isentitytype=1";
@@ -34,21 +35,21 @@ class addCreatedByField extends cbupdaterWorker {
 					$block = $adb->query_result($result, 0, 'blocklabel');
 					if ($block) {
 						$blockInstance = Vtiger_Block::getInstance($block, $moduleInstance);
-						$field = Vtiger_Field::getInstance('created_user_id',$moduleInstance);
+						$field = Vtiger_Field::getInstance('created_user_id', $moduleInstance);
 						if ($field) {
-							$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
+							$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?', array($field->id));
 						} else {
-						$field = new Vtiger_Field ();
-						$field->name = 'created_user_id';
-						$field->label = 'Created By';
-						$field->table = 'vtiger_crmentity';
-						$field->column = 'smcreatorid';
-						$field->uitype = 52;
-						$field->typeofdata = 'V~O';
-						$field->displaytype = 2;
-						$field->quickcreate = 3;
-						$field->masseditable = 0;
-						$blockInstance->addField($field);
+							$field = new Vtiger_Field();
+							$field->name = 'created_user_id';
+							$field->label = 'Created By';
+							$field->table = 'vtiger_crmentity';
+							$field->column = 'smcreatorid';
+							$field->uitype = 52;
+							$field->typeofdata = 'V~O';
+							$field->displaytype = 2;
+							$field->quickcreate = 3;
+							$field->masseditable = 0;
+							$blockInstance->addField($field);
 						}
 						$this->sendMsg("Creator field added for $module <br>");
 					}
@@ -57,8 +58,8 @@ class addCreatedByField extends cbupdaterWorker {
 				}
 			}
 			$this->sendMsg('Changeset ' . get_class($this) . ' applied!');
-			$this->markApplied ();
+			$this->markApplied();
 		}
-		$this->finishExecution ();
+		$this->finishExecution();
 	}
 }

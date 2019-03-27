@@ -16,20 +16,21 @@
 
 class fixAddNotesURLToEstablishLink extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			global $adb;
 
 			$this->ExecuteQuery("UPDATE vtiger_links SET linkurl = concat(linkurl,'&createmode=link')
-				WHERE linklabel = 'Add Note' OR linklabel = 'LBL_ADD_NOTE'",array());
+				WHERE linklabel = 'Add Note' OR linklabel = 'LBL_ADD_NOTE'", array());
 
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
-
 }

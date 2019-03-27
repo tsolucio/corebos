@@ -40,7 +40,7 @@ class movingsettingsblock extends cbupdaterWorker {
 				);
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}

@@ -32,7 +32,7 @@ if (!empty($_REQUEST['entityid'])) {
 	if (!empty($parentId)) {
 		$draft->saveEmailDocumentRel($parentId, $entityId);
 		//link the attachment to emails
-		$attachRes = $adb->pquery("SELECT attachmentsid FROM vtiger_seattachmentsrel WHERE crmid = ?", array($entityId));
+		$attachRes = $adb->pquery('SELECT attachmentsid FROM vtiger_seattachmentsrel WHERE crmid=?', array($entityId));
 		$attachId = $adb->query_result($attachRes, 0, 'attachmentsid');
 		$draft->saveAttachmentRel($parentId, $attachId);
 	}

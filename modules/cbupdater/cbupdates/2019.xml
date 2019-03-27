@@ -55,4 +55,32 @@
 	<classname>changetypeofdata</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Install gendoc</description>
+	<filename>build/changeSets/2019/installcbgendoc.php</filename>
+	<classname>installcbgendoc</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Install Message Template module</description>
+	<filename>build/changeSets/2019/addMsgTemplateModule.php</filename>
+	<classname>addMsgTemplateModule</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>creation of change password email template</description>
+	<filename>build/changeSets/2019/addChgPWDEmailTemplate.php</filename>
+	<classname>addChgPWDEmailTemplate</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Migrate EMail templates</description>
+	<filename>build/changeSets/2019/migrateemailtemplates.php</filename>
+	<classname>migrateemailtemplates</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

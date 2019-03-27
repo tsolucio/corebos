@@ -16,23 +16,28 @@
 
 class fixProjectRelatedLists extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			global $adb;
 
-			$this->ExecuteQuery("UPDATE vtiger_relatedlists SET actions = ? WHERE tabid = ? AND related_tabid IN (?, ?)",
-				array('ADD', getTabid('Project'), getTabid('ProjectTask'), getTabid('ProjectMilestone')));
+			$this->ExecuteQuery(
+				"UPDATE vtiger_relatedlists SET actions = ? WHERE tabid = ? AND related_tabid IN (?, ?)",
+				array('ADD', getTabid('Project'), getTabid('ProjectTask'), getTabid('ProjectMilestone'))
+			);
 
-			$this->ExecuteQuery('UPDATE vtiger_relatedlists SET actions=? WHERE tabid in(?, ?) and related_tabid in (?)',
-				array('ADD', getTabid('Contacts'), getTabid('Accounts'), getTabid('Project')));
+			$this->ExecuteQuery(
+				'UPDATE vtiger_relatedlists SET actions=? WHERE tabid in(?, ?) and related_tabid in (?)',
+				array('ADD', getTabid('Contacts'), getTabid('Accounts'), getTabid('Project'))
+			);
 
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
-
 }

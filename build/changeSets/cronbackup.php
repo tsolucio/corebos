@@ -15,24 +15,27 @@
 *************************************************************************************************/
 
 class cbcronbackup extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			global $adb;
-			$res_crons = $adb->pquery("SELECT name FROM vtiger_cron_task WHERE name ='Native Backup'",array());
-			if($adb->num_rows($res_crons) == 0)
+			$res_crons = $adb->pquery("SELECT name FROM vtiger_cron_task WHERE name ='Native Backup'", array());
+			if ($adb->num_rows($res_crons) == 0) {
 				$this->ExecuteQuery("INSERT INTO vtiger_cron_task (name ,handler_file ,frequency ,laststart ,lastend ,status ,module ,sequence ,description) VALUES ('Native Backup', 'cron/modules/VtigerBackup/VtigerBackup.service', '86400', '0', '0', '0', 'VtigerBackup', '7', 'Backup with no external tools. Can easily run into memory limitations and really slow down the server. Good for smaller sets of information.')");
-			$res_crons = $adb->pquery("SELECT name FROM vtiger_cron_task WHERE name ='External Backup'",array());
-			if($adb->num_rows($res_crons) == 0)
+			}
+			$res_crons = $adb->pquery("SELECT name FROM vtiger_cron_task WHERE name ='External Backup'", array());
+			if ($adb->num_rows($res_crons) == 0) {
 				$this->ExecuteQuery("INSERT INTO vtiger_cron_task (name ,handler_file ,frequency ,laststart ,lastend ,status ,module ,sequence ,description) VALUES ('External Backup', 'cron/modules/VtigerBackup/ExternalBackup.service', '86400', '0', '0', '0', 'VtigerBackup', '7', 'Backup with external tools. mysqldump and zip must be available on server. Fast and good for big sets of information.')");
-			
+			}
+
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-
 }

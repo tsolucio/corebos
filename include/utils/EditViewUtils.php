@@ -1410,13 +1410,13 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 	}
 	if ($module != $currentModule && in_array($currentModule, getInventoryModules())) {
 		$cbMap = cbMap::getMapByName($currentModule.'InventoryDetails', 'MasterDetailLayout');
-		$MDMapFound = ($cbMap!=null);
+		$MDMapFound = ($cbMap!=null && isPermitted('InventoryDetails', 'EditView')=='yes');
 		if ($MDMapFound) {
 			$cbMapFields = $cbMap->MasterDetailLayout();
 		}
 	} else {
 		$cbMap = cbMap::getMapByName($module.'InventoryDetails', 'MasterDetailLayout');
-		$MDMapFound = ($cbMap!=null);
+		$MDMapFound = ($cbMap!=null && isPermitted('InventoryDetails', 'EditView')=='yes');
 		if ($MDMapFound) {
 			$cbMapFields = $cbMap->MasterDetailLayout();
 		}

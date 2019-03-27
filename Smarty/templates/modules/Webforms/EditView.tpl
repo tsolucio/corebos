@@ -149,7 +149,7 @@
 														{'LBL_RETURNURL'|@getTranslatedString:$MODULE}
 													</td>
 													<td class="dvtCellInfo" align="left" >
-														http:// <input type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="returnurl" name="returnurl" value="{$WEBFORM->getReturnUrl()}">
+														<input type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="returnurl" name="returnurl" value="{$WEBFORM->getReturnUrl()}">
 													</td>
 												</tr>
 												{if $WEBFORM->hasId()}

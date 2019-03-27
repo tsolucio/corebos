@@ -361,7 +361,7 @@ if ($current_user->mustChangePassword() && $_REQUEST['action']!='Logout' && $_RE
 ) {
 	$currentModule = 'Users';
 	$currentModuleFile = 'modules/Users/DetailView.php';
-	$_REQUEST['action'] = $action = 'DeatilView';
+	$_REQUEST['action'] = $action = 'DetailView';
 	$_REQUEST['module'] = $module = 'Users';
 	$_REQUEST['record'] = $current_user->id;
 }

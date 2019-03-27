@@ -16,15 +16,17 @@
 
 class installcbTermConditions extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$toinstall = array('cbTermConditions');
 			foreach ($toinstall as $module) {
 				if ($this->isModuleInstalled($module)) {
-					vtlib_toggleModuleAccess($module,true);
+					vtlib_toggleModuleAccess($module, true);
 					$this->sendMsg("$module activated!");
 				} else {
 					$this->installManifestModule($module);
@@ -36,7 +38,7 @@ class installcbTermConditions extends cbupdaterWorker {
 			global $current_user, $adb;
 			$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
 			$tacrs = $adb->query('select tandc from vtiger_inventory_tandc limit 1');
-			if ($tacrs and $adb->num_rows($tacrs)>0) {
+			if ($tacrs && $adb->num_rows($tacrs)>0) {
 				$tac = $adb->query_result($tacrs, 0, 0);
 			} else {
 				$tac = '';
@@ -66,7 +68,7 @@ class installcbTermConditions extends cbupdaterWorker {
 					$modblock = Vtiger_Block::getInstance('LBL_TERMS_INFORMATION', $mod);
 					$field1 = Vtiger_Field::getInstance('tandc', $mod);
 					if ($field1) {
-						$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field1->id));
+						$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?', array($field1->id));
 					} else {
 						$field1 = new Vtiger_Field();
 						$field1->name = 'tandc';
@@ -78,9 +80,9 @@ class installcbTermConditions extends cbupdaterWorker {
 						$field1->uitype = '10';
 						$field1->masseditable = '0';
 						$modblock->addField($field1);
-						$field1->setRelatedModules(Array('cbTermConditions'));
+						$field1->setRelatedModules(array('cbTermConditions'));
 					}
-					$cbtandc->setRelatedList($mod, $module, Array('ADD'), 'get_dependents_list');
+					$cbtandc->setRelatedList($mod, $module, array('ADD'), 'get_dependents_list');
 				}
 			}
 
@@ -95,5 +97,4 @@ class installcbTermConditions extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

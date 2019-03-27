@@ -16,21 +16,24 @@
 
 class importexport_inventorymodules extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$imods = getInventoryModules();
 			foreach ($imods as $mod) {
 				$module = Vtiger_Module::getInstance($mod);
-				if ($module) $module->enableTools(Array('Import', 'Export'));
+				if ($module) {
+					$module->enableTools(array('Import', 'Export'));
+				}
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-
 }

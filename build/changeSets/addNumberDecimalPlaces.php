@@ -16,8 +16,10 @@
 
 class addNumberDecimalPlaces extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -43,12 +45,12 @@ class addNumberDecimalPlaces extends cbupdaterWorker {
 			$this->ExecuteQuery("UPDATE vtiger_field SET uitype=71 where tablename='vtiger_inventorydetails' and 
 				columnname in ('listprice','extgross','discount_amount','extnet','linetax','linetotal')", array());
 			// all the others
-			$result = $adb->pquery("SELECT fieldname,tablename,columnname FROM vtiger_field WHERE uitype IN (?,?)",array('71','72'));
+			$result = $adb->pquery("SELECT fieldname,tablename,columnname FROM vtiger_field WHERE uitype IN (?,?)", array('71','72'));
 			$count = $adb->num_rows($result);
-			for($i=0;$i<$count;$i++) {
-				$fieldName = $adb->query_result($result,$i,'fieldname');
-				$tableName = $adb->query_result($result,$i,'tablename');
-				$columnName = $adb->query_result($result,$i,'columnname');
+			for ($i=0; $i<$count; $i++) {
+				$fieldName = $adb->query_result($result, $i, 'fieldname');
+				$tableName = $adb->query_result($result, $i, 'tablename');
+				$columnName = $adb->query_result($result, $i, 'columnname');
 				$tableAndColumnSize = array();
 				$tableInfo = $adb->database->MetaColumns($tableName);
 				foreach ($tableInfo as $column) {
@@ -57,13 +59,17 @@ class addNumberDecimalPlaces extends cbupdaterWorker {
 					$tableAndColumnSize[$tableName][$column->name]['max_length'] = $max_length;
 					$tableAndColumnSize[$tableName][$column->name]['scale'] = $scale;
 				}
-				if(!empty($tableAndColumnSize[$tableName][$columnName]['scale'])) {
+				if (!empty($tableAndColumnSize[$tableName][$columnName]['scale'])) {
 					$decimalsToChange = CurrencyField::$maxNumberOfDecimals - $tableAndColumnSize[$tableName][$columnName]['scale'];
-					if($decimalsToChange != 0) {
+					if ($decimalsToChange != 0) {
 						$maxlength = $tableAndColumnSize[$tableName][$columnName]['max_length'] + $decimalsToChange;
-						if ($maxlength>65) $maxlength = 65;
+						if ($maxlength>65) {
+							$maxlength = 65;
+						}
 						$decimalDigits = $tableAndColumnSize[$tableName][$columnName]['scale'] + $decimalsToChange;
-						if ($decimalDigits>10) $decimalDigits = 10;
+						if ($decimalDigits>10) {
+							$decimalDigits = 10;
+						}
 						$this->ExecuteQuery("ALTER TABLE " .$tableName." MODIFY COLUMN ".$columnName." decimal(?,?)", array($maxlength, $decimalDigits));
 					}
 				}
@@ -93,5 +99,4 @@ class addNumberDecimalPlaces extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
 }

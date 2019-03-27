@@ -16,14 +16,16 @@
 
 class mysqlstrictMailManager extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			global $adb;
 			$smrs = $adb->query('SELECT @@SESSION.sql_mode');
-			$sm = $adb->query_result($smrs,0,0);
+			$sm = $adb->query_result($smrs, 0, 0);
 			$adb->query("SET SESSION sql_mode = ''");
 			$this->ExecuteQuery('ALTER TABLE `vtiger_mailmanager_mailrecord` CHANGE `mplainmessage` `mplainmessage` TEXT NULL DEFAULT NULL');
 			$this->ExecuteQuery('ALTER TABLE `vtiger_mailmanager_mailrecord` CHANGE `mhtmlmessage` `mhtmlmessage` TEXT NULL DEFAULT NULL');
@@ -33,5 +35,4 @@ class mysqlstrictMailManager extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

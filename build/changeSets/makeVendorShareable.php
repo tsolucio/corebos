@@ -16,18 +16,20 @@
 
 class makeVendorShareable extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			global $adb;
 			$vendorsInstance = Vtiger_Module::getInstance('Vendors');
 			$blockInstance = Vtiger_Block::getInstance('LBL_VENDOR_INFORMATION', $vendorsInstance);
-			$field = Vtiger_Field::getInstance('assigned_user_id',$vendorsInstance);
+			$field = Vtiger_Field::getInstance('assigned_user_id', $vendorsInstance);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?', array($field->id));
 			} else {
 				$field = new Vtiger_Field();
 				$field->name = 'assigned_user_id';
@@ -48,11 +50,10 @@ class makeVendorShareable extends cbupdaterWorker {
 				Vtiger_Access::allowSharing($vendorsInstance);
 				Vtiger_Access::setDefaultSharing($vendorsInstance);
 			}
-			
+
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-
 }
