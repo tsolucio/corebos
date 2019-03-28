@@ -170,12 +170,15 @@
 }
 
 .sep1 {
-	background: #fff;
+	background: #FAFAF9;
 	padding-left: 1px;
 }
 
 .showPanelBg {
-	background:url(images/homePageSeperator.gif) no-repeat;
+	background: #FFF;
+	border-radius:10px;
+	border:1px solid #9E9E9E;
+
 }
 
 a {
@@ -285,12 +288,15 @@ a:hover {
 	border-right:1px solid #e0dddd;
 	padding-left:20px;
 	padding-right:20px;
+	padding-top: 4px;
+	padding-bottom: 4px;
 	/*background-color:#dedede;*/
 	/*background:#d9dde6 url(images/light-bg11.png) bottom repeat-x; */
 	background:#ffffff url(images/tab.gif) top repeat-x;
 	font-weight:bold;
 	color: black;
 	line-height:20px;
+	border-radius: 10px 10px 0px 0px;
 }
 
 .dvtSelectedCellBottom {
