@@ -103,11 +103,40 @@ class Users extends CRMEntity {
 		'Phone' => 'phone_work',
 	);
 
+	public $list_fields_names = array(
+		'Tools' => 'id',
+		'username' => 'user_name',
+		'Email' => 'email1',
+		'Admin' => 'is_admin',
+		'Email2' => 'email2',
+		'Status' => 'status',
+	);
+
 	public $popup_fields = array('last_name');
 
 	// This is the list of fields that are in the lists.
 	public $default_order_by = "user_name";
 	public $default_sort_order = 'ASC';
+
+	/**
+	 * Function to get the Headers of Users Information like User ID, Name, Role, Email.
+	 * Returns Header Values like User ID, Email etc in an array format.
+	**/
+	public function getUserListHeader() {
+		global $log, $app_strings;
+		$log->debug('Entering getUserListHeader() method ...');
+		$module = 'Users';
+		$header_array = array(
+			getTranslatedString('LBL_TOOLS', $module ),
+			'<a>'.getTranslatedString('LBL_LIST_USER_NAME_ROLE', $module ).'</a>',
+			'<a>'.getTranslatedString('LBL_EMAILS', $module).'</a>',
+			'<a>'.getTranslatedString('LBL_ADMIN', $module).'</a>',
+			'<a>'.getTranslatedString('LBL_EMAILS2', $module).'</a>',
+			'<a>'.getTranslatedString('LBL_STATUS', $module).'</a>'
+		);
+		$log->debug('Exiting getUserListHeader() method ...');
+		return $header_array;
+	}
 
 	public $record_id;
 
@@ -1590,6 +1619,125 @@ class Users extends CRMEntity {
 			$log->debug('< create_export_query');
 		}
 		return $query;
+	}
+
+	/**
+	 * $adminstatus, $userstatus, $page, $order_by, $sorder, $email_search, $namerole_search
+	 * public function getUsersJSON($userid, $page, $order_by = 'module_name', $sorder = 'DESC', $action_search = '')
+	 */
+	public function getUsersJSON($adminstatus, $userstatus, $page, $order_by = 'user_name', $sorder = 'DESC', $email_search = '', $namerole_search = '') {
+		global $log, $adb, $current_user;
+		$log->debug('> getUserJSON');
+
+		$where = ' where 1 ';
+		$params = array();
+		if (!empty($adminstatus) && $adminstatus != 'all') {
+			$where .= ' and is_admin = ? ';
+			array_push($params, $adminstatus);
+		}
+		if (!empty($userstatus) && $userstatus != 'all') {
+			$where .= ' and status = ? ';
+			array_push($params, $userstatus);
+		}
+		if (!empty($email_search)) {
+			$where .= " and email1 like ? ";
+			array_push($params, "%" . $email_search . "%");
+		}
+		if (!empty($namerole_search)) {
+			$where .= " and user_name like ? ";
+			array_push($params, "%" . $namerole_search . "%");
+		}
+		if ($sorder != '' && $order_by != '') {
+			$list_query = "Select * from vtiger_users $where order by $order_by $sorder";
+		} else {
+			$list_query = "Select * from vtiger_users $where order by ".$this->default_order_by." ".$this->default_sort_order;
+		}
+		$rowsperpage = GlobalVariable::getVariable('Workflow_ListView_PageSize', 10);
+		$from = ($page-1)*$rowsperpage;
+		$limit = " limit $from,$rowsperpage";
+
+		$result = $adb->pquery($list_query.$limit, $params);
+		$rscnt = $adb->pquery("select count(*) from vtiger_users $where", array($params));
+		$noofrows = $adb->query_result($rscnt, 0, 0);
+		$last_page = ceil($noofrows/$rowsperpage);
+		if ($page*$rowsperpage>$noofrows-($noofrows % $rowsperpage)) {
+			$islastpage = true;
+			$to = $noofrows;
+		} else {
+			$islastpage = false;
+			$to = $page*$rowsperpage;
+		}
+		$entries_list = array(
+			'total' => $noofrows,
+			'per_page' => $rowsperpage,
+			'current_page' => $page,
+			'last_page' => $last_page,
+			'next_page_url' => '',
+			'prev_page_url' => '',
+			'from' => $from+1,
+			'to' => $to,
+			'data' => array(),
+		);
+		if ($islastpage && $page!=1) {
+			$entries_list['next_page_url'] = null;
+		} else {
+			$entries_list['next_page_url'] = 'index.php?module=Users&action=UsersAjax&file=getJSON&page='.($islastpage ? $page : $page+1);
+		}
+		$entries_list['prev_page_url'] = 'index.php?module=Users&action=UsersAjax&file=getJSON&page='.($page == 1 ? 1 : $page-1);
+		$edit_return_url = 'index.php?module=Users&action=index&parenttab=Settings';
+
+		while ($lgn = $adb->fetch_array($result)) {
+			$entry = array();
+
+			if ($_SESSION['internal_mailer'] == 1) {
+				$recordId = $lgn['id'];
+				$module = "Users";
+				$tabid = getTabid($module);
+				$fieldId = $adb->getone("select fieldid from vtiger_field where tabid=".$tabid." and tablename='vtiger_users' and fieldname='email1'");
+				$fieldName = "email1";
+				$value = $lgn['email1'];
+				$entry['sendmail'] = "<a href=\"javascript:InternalMailer($recordId,$fieldId,"."'$fieldName','$module','record_id');\">".textlength_check($value)."</a>";
+			} else {
+				$entry['sendmail'] = '<a href="mailto:'.$rawValue.'">'.textlength_check($value).'</a>';
+			}
+
+			$entry['iscurrentuser'] = false;
+			if ($current_user->id == $lgn['id']) {
+				$entry['iscurrentuser'] = true;
+			}
+			$entry['isadmin'] = false;
+			if ($lgn['is_admin'] == 'on') {
+				$entry['isadmin'] = true;
+			}
+			$entry['isblockeduser'] = false;
+			if ($lgn['user_name'] == 'admin') {
+				$entry['isblockeduser'] = true;
+			}
+			$entry['duplicateuser'] = "index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record=".$lgn['id']."&isDuplicate=true";
+			$entry['viewuser'] = "index.php?module=Users&action=DetailView&parenttab=Settings&record=".$lgn['id'];
+			$entry['viewusername'] = "index.php?module=Users&action=DetailView&parenttab=Settings&record=".$lgn['id'];
+			$entry['edituser'] = "index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record=".$lgn['id'];
+			$entry['Admin'] = $lgn['is_admin'];
+			$entry['Email'] = $lgn['email1'];
+			$entry['Email2'] = $lgn['email2'];
+			$entry['username'] = $lgn['user_name'];
+			$entry['id'] = $lgn['id'];
+			$entry['firstname'] = $lgn['first_name'];
+			$entry['lastname'] = $lgn['last_name'];
+			$entry['Status'] = $lgn['status'];
+			if ($lgn['status'] == 'Active') {
+				$entry['statustag'] ='<span class="active">'.$lgn['status'].'</span>';
+			} else {
+				$entry['statustag'] ='<span class="inactive">'.$lgn['status'].'</span>';
+			}
+			$entry['roleid'] = fetchUserRole($lgn['id']);
+			$rolename = $adb->getone("select rolename from vtiger_role where roleid='".$entry['roleid']."'");
+			$entry['rolename'] = $rolename;
+			$entry['viewrole'] = 'index.php?action=RoleDetailView&module=Settings&parenttab=Settings&roleid='.$entry['roleid'];
+			$entries_list['data'][] = $entry;
+		}
+		$log->debug('< getUsersJSON');
+		return json_encode($entries_list);
 	}
 }
 ?>
