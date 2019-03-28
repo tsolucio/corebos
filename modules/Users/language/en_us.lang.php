@@ -156,6 +156,7 @@ $mod_strings = array(
 'LBL_TASKS'=>'Tasks',
 'LBL_CASES'=>'Cases',
 'LBL_EMAILS'=>'Email',
+'LBL_EMAILS2' => 'Email2',
 'LBL_NOTES'=>'Documents',
 'LBL_MEETINGS'=>'Meetings',
 'LBL_CALLS'=>'Calls',
