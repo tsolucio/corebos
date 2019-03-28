@@ -153,5 +153,12 @@ $mod_strings = array(
 	'Contacts' => 'Contacten',
 	'Users' => 'Gebruikers',
 	'Documents' => 'Documenten',
+	'Bounce' => 'Bounce',
+	'Clicked' => 'Clicked',
+	'Spam' => 'Spam',
+	'Delivered' => 'Delivered',
+	'Dropped' => 'Dropped',
+	'Open' => 'Open',
+	'Unsubscribe' => 'Unsubscribe',
 );
 ?>

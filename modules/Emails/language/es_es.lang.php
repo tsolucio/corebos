@@ -153,5 +153,12 @@ $mod_strings = array(
 
 'LBL_ATTACH_DOCUMENTS' => 'Adjuntar documentos',
 'Access Count' => 'Número Accesos',
+'Bounce' => 'Rebote',
+'Clicked' => 'Clicked',
+'Spam' => 'Spam',
+'Delivered' => 'Entregado',
+'Dropped' => 'Descartado',
+'Open' => 'Abierto',
+'Unsubscribe' => 'Baja',
 );
 ?>

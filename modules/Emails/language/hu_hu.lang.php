@@ -144,5 +144,12 @@ $mod_strings = array(
 	'Activtiy Type' => 'Aktivitás típus',
 	'CHOSE_EMAIL' => 'Válassz email-t',
 	'LBL_ATTACH_DOCUMENTS' => 'Attach documents',
+	'Bounce' => 'Bounce',
+	'Clicked' => 'Clicked',
+	'Spam' => 'Spam',
+	'Delivered' => 'Delivered',
+	'Dropped' => 'Dropped',
+	'Open' => 'Open',
+	'Unsubscribe' => 'Unsubscribe',
 );
 ?>

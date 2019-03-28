@@ -136,5 +136,12 @@ $mod_strings = array (
 	'LBL_PRINT_EMAIL'=> 'Imprimer',
 	'LBL_ATTACH_DOCUMENTS' => 'Attacher documents',
 	'Access Count' => 'Nombre d\'accés',
+	'Bounce' => 'Bounce',
+	'Clicked' => 'Clicked',
+	'Spam' => 'Spam',
+	'Delivered' => 'Delivered',
+	'Dropped' => 'Dropped',
+	'Open' => 'Open',
+	'Unsubscribe' => 'Unsubscribe',
 );
 ?>
