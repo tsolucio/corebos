@@ -1640,19 +1640,19 @@ class Users extends CRMEntity {
 			array_push($params, $userstatus);
 		}
 		if (!empty($email_search)) {
-			$where .= " and email1 like ? ";
-			array_push($params, "%" . $email_search . "%");
+			$where .= ' and email1 like ? ';
+			array_push($params, '%' . $email_search . '%');
 		}
 		if (!empty($namerole_search)) {
-			$where .= " and user_name like ? ";
-			array_push($params, "%" . $namerole_search . "%");
+			$where .= ' and user_name like ? ';
+			array_push($params, '%' . $namerole_search . '%');
 		}
 		if ($sorder != '' && $order_by != '') {
 			$list_query = "Select * from vtiger_users $where order by $order_by $sorder";
 		} else {
 			$list_query = "Select * from vtiger_users $where order by ".$this->default_order_by." ".$this->default_sort_order;
 		}
-		$rowsperpage = GlobalVariable::getVariable('Workflow_ListView_PageSize', 10);
+		$rowsperpage = GlobalVariable::getVariable('Workflow_ListView_PageSize', 30);
 		$from = ($page-1)*$rowsperpage;
 		$limit = " limit $from,$rowsperpage";
 

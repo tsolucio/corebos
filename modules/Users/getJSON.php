@@ -85,6 +85,5 @@ if (isset($_REQUEST['order_rule'])) {
 } else {
 	$sorder = 'ASC';
 }
-$log->debug('Entering getUsersJSON() method ...');
 $response = $focus->getUsersJSON($adminstatus, $userstatus, $page, $order_by, $sorder, $email_search, $namerole_search);
 echo $response;
