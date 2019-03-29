@@ -43,8 +43,8 @@ $mod_strings = array(
 	'307-Service-Hardware Labor'=>'307-Einkommen Service',
 	'308-Sales-Books'=>'308-Einkommen Buchverkauf',
 
-	'Created Time'=>'erzeugt',
-	'Modified Time'=>'geändert',
+	'Created Time'=>'Erzeugt',
+	'Modified Time'=>'Geändert',
 
 	'Vendor No' => 'Lieferanten Nummer',
 	'LBL_MODULE_NAME'=>'Lieferanten',

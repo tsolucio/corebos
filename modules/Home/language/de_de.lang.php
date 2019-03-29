@@ -20,9 +20,9 @@ $mod_strings = array(
 	'LBL_TOTAL'=>'Total: ',
 
 	'LBL_MY_HOME'=>'Meine Startseite',
-	'LBL_MODIFIED_TIME'=>'geändert',
+	'LBL_MODIFIED_TIME'=>'Geändert',
 	'LBL_LOGIN_ID'=>'ID',
-	'LBL_MODIFIED_BY'=>'geändert von',
+	'LBL_MODIFIED_BY'=>'Geändert von',
 	'LBL_TYPE'=>'Typ',
 
 	'LBL_PIPELINE_FORM_TITLE'=>'Meine Verkäufe',

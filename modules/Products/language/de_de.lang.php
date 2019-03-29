@@ -83,7 +83,7 @@ $mod_strings = array(
 	'Commission Rate'=>'Kommission (%)',
 	'Qty/Unit'=>'Menge/Einheit',
 	'Unit Price'=>'Einheitenpreis',
-	'Cost Price' => 'Cost Price',
+	'Cost Price' => 'Selbstkostenpreis',
 	'Manufacturer'=>'Hersteller',
 	'Product Category'=>'Produktkategorie',
 	'Support Start Date'=>'Support Start',
@@ -91,8 +91,8 @@ $mod_strings = array(
 	'Purchase Date'=>'Kaufdatum',
 	'Sales Start Date'=>'Verkaufsstart',
 	'Sales End Date'=>'Verkaufsende',
-	'Created Time'=>'erstellt',
-	'Modified Time'=>'geändert',
+	'Created Time'=>'Erstellt',
+	'Modified Time'=>'Geändert',
 	'Related To'=>'zuständig',
 	'Usage Unit'=>'Mengeneinheit',
 	'Handler'=>'Verantwortlicher',
@@ -187,7 +187,7 @@ $mod_strings = array(
 	'Pages'=>'Seiten',
 	'Pieces'=>'Teile',
 	'Quantity'=>'Menge',
-	'Reams'=>'Gebiete',
+	'Reams'=>'Bände',
 	'Sheet'=>'Lagen',
 	'Spiral Binder'=>'Spiralen',
 	'Sq Ft'=>'Quadratmeter',
@@ -211,12 +211,12 @@ $mod_strings = array(
 	// END
 
 	'LBL_NO_TAXES_ASSOCIATED'=>'mit diesem Produkt sind keine Steuern verbunden',
-	'Parent Product' => 'Übergeordnetes Product',
+	'Parent Product' => 'Übergeordnetes Produkt',
 
 	'Products ID' => 'Produkt-ID',
-	'Divisible' => 'Divisible',
-	'DIVISIBLE_WARNING' => 'can only be sold in multiplies of one',
-	'DIVISIBLE_WARNING_PURCHASE' => 'can only be purchased in multiplies of one',
-	'IS_DISCONTINUED' => 'is discontinued',
+	'Divisible' => 'Teilbar',
+	'DIVISIBLE_WARNING' => 'kann nur in Vielfachen geliefert werden',
+	'DIVISIBLE_WARNING_PURCHASE' => 'kann nur in Vielfachen verkauft werden',
+	'IS_DISCONTINUED' => 'nicht mehr lieferbar',
 );
 ?>
