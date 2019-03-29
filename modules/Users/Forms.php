@@ -79,7 +79,7 @@ function get_validate_record_js() {
 	list($extensions, $fullnames) = getAsteriskExtensions();
 	$extensions_list = json_encode($extensions);
 	$fullnames_list = json_encode($fullnames);
-	$esteriskmessage = $mod_strings['LBL_ASTERISKEXTENSIONS_EXIST'].$mod_strings[ 'LBL_FORUSER'];
+	$esteriskmessage = addslashes($mod_strings['LBL_ASTERISKEXTENSIONS_EXIST'].$mod_strings[ 'LBL_FORUSER']);
 //check asteriskdetails end
 
 	$the_script = <<<EOQ
