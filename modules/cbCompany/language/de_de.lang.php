@@ -9,14 +9,33 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Modulname',
-	'SINGLE_ModuleName' => 'Modulname',
-	'ModuleName ID' => 'Modulname ID',
+	'cbCompany' => 'Firmen',
+	'SINGLE_cbCompany' => 'Firma',
+	'Company Name' => 'Firmenname',
+	'Company No' => 'Firmen-Nr.',
+	'Comercial Name' => 'Öffentlicher Name',
+	'SIC Code' => 'SIC Code',
+	'Related Account' => 'Verknüpfte Organisation',
+	'Phone' => 'Telefon',
+	'Address' => 'Addresse',
+	'Fax' => 'Fax',
+	'City' => 'Stadt',
+	'Email' => 'Email',
+	'State' => 'Bundesland',
+	'Website' => 'Webseite',
+	'Postal Code' => 'PLZ',
+	'Business Registration' => 'Registernummer',
+	'Country' => 'Land',
+	'Data Protection' => 'Datenschutz',
+	'Default Company' => 'Standard-Firma',
+	'Company Logo' => 'Firmenlogo',
+	'Application Logo' => 'Anwendungs-Logo',
+	'Favicon' => 'Favicon',
 
-	'LBL_CUSTOM_INFORMATION' => 'zusätzliche Information',
-	'LBL_MODULEBLOCK_INFORMATION' => 'ModuleBlock Information',
+	'LBL_COMPANY_EXISTS' => 'Only one record can have the "Default Company" set to true',
+	'LBL_COMPANY_INFORMATION' => 'Firmen-Information',
+	'LBL_COMPANY_LOGO' => 'Firmenlogo',
+	'LBL_APPLICATION_LOGOS' => 'Anwendungslogos',
 	'LBL_DESCRIPTION_INFORMATION' => 'Beschreibung',
-
-	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
 );
 ?>

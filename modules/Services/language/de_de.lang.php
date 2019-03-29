@@ -36,15 +36,15 @@ $mod_strings = array(
 'Incidents'=>'Ereignisse',
 'No of Units'=>'Anzahl der Einheiten',
 'Commission Rate'=>'Provision (%)',
-'Unit Price'=>'EInheitenpreis',
-'Cost Price' => 'Cost Price',
+'Unit Price'=>'Einheitenpreis',
+'Cost Price' => 'Selbstkostenpreis',
 'Price'=>'Preis',
 'Support Start Date'=>'Support Startdatum',
 'Support Expiry Date'=>'Support Endedatum',
 'Sales Start Date'=>'Verkauf Startdatum',
 'Sales End Date'=>'Verkauf Endedatum',
-'Created Time'=>'erzeugt',
-'Modified Time'=>'geändert',
+'Created Time'=>'Erzeugt',
+'Modified Time'=>'Geändert',
 'Related To'=>'bezogen auf',
 'Usage Unit'=>'Einheit',
 'Currency'=>'Währung',
@@ -53,7 +53,7 @@ $mod_strings = array(
 'Description'=>'Beschreibung',
 
 'Price Book Name'=>'Name der Preisliste',
-'LBL_PRODUCT_PRICES' => 'Service Prices',
+'LBL_PRODUCT_PRICES' => 'Dienstleistungs-Preise',
 
 'LBL_NO_TAXES_ASSOCIATED'=>'mit dieser Dienstleistung sind keine Steuern verbunden',
 '--None--'=>'--ohne--',
@@ -62,6 +62,6 @@ $mod_strings = array(
 'Customization'=>'Anpassung',
 'Training'=>'Schulung',
 'Services ID'=>'Dienstleistungs-ID',
-'Divisible'=>'Divisible',
+'Divisible'=>'Teilbar',
 );
 ?>
