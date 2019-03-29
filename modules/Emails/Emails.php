@@ -567,15 +567,19 @@ class Emails extends CRMEntity {
 		require_once 'modules/Emails/mail.php';
 		global $adb, $default_charset;
 		$sql = fetchEmailTemplateInfo($templateName);
-		$sub = $adb->query_result($sql, 0, 'subject');
-		$body = $adb->query_result($sql, 0, 'template');
-		$mail_body = html_entity_decode($body, ENT_QUOTES, $default_charset);
-		foreach ($context as $value => $val) {
-			$mail_body = str_replace($value, $val, $mail_body);
+		if ($sql && $adb->num_rows($sql)>0) {
+			$sub = $adb->query_result($sql, 0, 'subject');
+			$body = $adb->query_result($sql, 0, 'template');
+			$mail_body = html_entity_decode($body, ENT_QUOTES, $default_charset);
+			foreach ($context as $value => $val) {
+				$mail_body = str_replace($value, $val, $mail_body);
+			}
+			$mail_body = getMergedDescription($mail_body, $par_id, $module);
+			$sub = getMergedDescription($sub, $par_id, $module);
+			return send_mail($module, $to_email, $from_name, $from_email, $sub, $mail_body);
+		} else {
+			return false;
 		}
-		$mail_body = getMergedDescription($mail_body, $par_id, $module);
-		$sub = getMergedDescription($sub, $par_id, $module);
-		send_mail($module, $to_email, $from_name, $from_email, $sub, $mail_body);
 	}
 }
 
