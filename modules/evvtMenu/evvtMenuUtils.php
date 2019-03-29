@@ -267,7 +267,7 @@ function i18nMenuLabel($mlabel, $mvalue, $type) {
 			$i18nlabel = getTranslatedString($mlabel, 'evvtMenu');
 			break;
 		case 'module':
-			$i18nlabel = getTranslatedString($mvalue, $mvalue);
+			$i18nlabel = getTranslatedString($mlabel, $mvalue);
 			break;
 		default:
 			$i18nlabel = $mlabel;
