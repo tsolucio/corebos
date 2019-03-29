@@ -90,8 +90,8 @@ $mod_strings = array(
 	'Probability'=>'Wahrscheinlichkeit (%)',
 	'Campaign Source'=>'Kampagne',
 	'Description'=>'Beschreibung',
-	'Created Time'=>'erstellt',
-	'Modified Time'=>'geändert',
+	'Created Time'=>'Erstellt',
+	'Modified Time'=>'Geändert',
 	'Potential'=>'Verkaufspotential',
 	'Expected Close'=>'erwarteter Abschluss',
 

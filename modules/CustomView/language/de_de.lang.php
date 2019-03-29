@@ -76,15 +76,15 @@ $mod_strings = array(
 
 	//Strings added for helpdesk module fields
 	'Title'=>'Titel',
-	'Assigned To'=>'zuständig',
-	'Related to'=>'bezogen auf',
+	'Assigned To'=>'Zuständig',
+	'Related to'=>'Bezogen auf',
 	'Priority'=>'Priorität',
 	'Product Name'=>'Produktname',
 	'Severity'=>'Gewichtung',
 	'Status'=>'Status',
 	'Category'=>'Kategorie',
-	'Created Time'=>'erstellt',
-	'Modified Time'=>'geändert',
+	'Created Time'=>'Erstellt',
+	'Modified Time'=>'Geändert',
 	'Attachment'=>'Anhang',
 
 	//Strings added for Leads module fields
@@ -116,7 +116,7 @@ $mod_strings = array(
 	'Ownership'=>'Eigentümer',
 	'industry'=>'Branche',
 	'SIC Code'=>'SIC Code',
-	'Email Opt Out'=>'E-Mail Opt. aus',
+	'Email Opt Out'=>'Nicht per E-Mail kontaktieren',
 	'Billing Address'=>'Rechnungsadresse Strasse',
 	'Shipping Address'=>'Lieferadresse Strasse',
 	'Shipping Po Box'=>'Lieferadresse Postfachnr.',

@@ -15,9 +15,9 @@ $mod_strings = array (
 'LBL_OTHER_INFORMATION' => 'andere Information',
 'LBL_CUSTOM_INFORMATION' => 'zusätzliche Information',
 
-'Assigned To' => 'zuständig',
+'Assigned To' => 'Zuständig',
 'Created Time' => 'erstellt',
-'Modified Time' => 'bearbeitet',
+'Modified Time' => 'Bearbeitet',
 'Comment' => 'Kommentar',
 'Comments' => 'Kommentare',
 'Related To' => 'bezogen auf',

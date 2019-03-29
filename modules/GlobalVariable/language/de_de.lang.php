@@ -9,15 +9,38 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Modulname',
-	'SINGLE_ModuleName' => 'Modulname',
-	'ModuleName ID' => 'Modulname ID',
+	'GlobalVariable' =>'Globale Variablen',
+	'SINGLE_GlobalVariable' => 'Globale Variable',
+	'GlobalVariable ID' => 'Globale Variable ID',
 
-	'LBL_CUSTOM_INFORMATION' => 'zusätzliche Information',
-	'LBL_MODULEBLOCK_INFORMATION' => 'ModuleBlock Information',
-	'LBL_DESCRIPTION_INFORMATION' => 'Beschreibung',
+	'LBL_CUSTOM_INFORMATION' => 'Zusätzliche Information',
+	'LBL_GLOBAL_VARIABLE_INFORMATION'=>'Information zur Variablen',
+	'LBL_DESCRIPTION_INFORMATION'=>'Beschreibung',
+	'Definitions' => 'Definitionen',
 
-	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
+	'Name' => 'Name',
+	'Default' => 'Standard',
+	'Value' => 'Wert',
+	'Mandatory' => 'Pflicht',
+	'User' => 'Benutzer',
+	'Blocked' => 'Gesperrt',
+	'Module List' => 'Modulliste',
+	'Category' => 'Kategorie',
+	'In Module List' => 'In der Modulliste',
+	'Globalno' => 'Global-Variablen-Nr.',
+	'Test' => 'Test',
+	'Search Value' => 'Suchwert',
+	'LBL_MANDATORY_VALUE'=>'Je Modul und Variable ist nur ein <b>Pflichtfeld</b> erlaubt.',
+	'LBL_MANDATORY_VALUEJS'=>'Je Modul und Variable ist nur ein "Pflichtfeld" erlaubt.',
+
+	'System' => 'System',
+	'User Interface' => 'Benutzeroberfläche',
+	'Performance' => 'Performance',
+	'Module Functionality' => 'Modul-Funktion',
+	'Other' => 'Andere',
+	'GVarDefinitions' => 'Variablen-Definitionen',
+	'cbMap' => 'Business Map',
+	'Role' => 'Rolle',
 );
 
 ?>
