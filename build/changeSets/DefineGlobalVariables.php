@@ -90,6 +90,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Permit_Assign_SameRole',
 				'Application_Permit_Assign_AllGroups',
 				'Application_User_SortBy',
+				'Application_SendUserPasswordByEmail',
 				'Application_Pagination_Limit',
 
 				'RelatedList_Activity_DefaultStatusFilter',

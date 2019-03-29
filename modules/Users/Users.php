@@ -561,12 +561,14 @@ class Users extends CRMEntity {
 		$crypt_type = $this->DEFAULT_PASSWORD_CRYPT_TYPE;
 		$encrypted_new_password = $this->encrypt_password($new_password, $crypt_type);
 
-		require_once 'modules/Emails/Emails.php';
-		$context = array(
-			'$user_name$'=> $usr_name,
-			'$user_password$'=> $new_password
-		);
-		Emails::sendEmailTemplate('Password Change Template', $context, 'Users', $this->column_fields['email1'], $this->id);
+		if (GlobalVariable::getVariable('Application_SendUserPasswordByEmail', 0, 'Users')) {
+			require_once 'modules/Emails/Emails.php';
+			$context = array(
+				'$user_name$'=> $usr_name,
+				'$user_password$'=> $new_password
+			);
+			Emails::sendEmailTemplate('Password Change Template', $context, 'Users', $this->column_fields['email1'], $this->id);
+		}
 		$sql = "UPDATE $this->table_name SET failed_login_attempts=0 where id=?";
 		$this->db->pquery($sql, array($this->id));
 

@@ -48,6 +48,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Example: 127.0.0.1,192.168.0.100',
 	'definition' => 'Comma separated list of IP addresses from which users will be permitted to login',
 ),
+'Application_SendUserPasswordByEmail' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Security',
+	'values' => '0 | 1',
+	'definition' => 'If true, the application will send an email with the user password everytime the password is changed using the "Password Change Template"',
+),
 'Debug_Record_Not_Found' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
