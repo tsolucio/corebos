@@ -115,7 +115,7 @@ function getMenuArray($mparent) {
 		while ($menu = $adb->fetch_array($menurs)) {
 			if (empty($menu['mpermission']) && $menu['mtype']=='module') {
 				// apply vtiger CRM permissions
-				if (isPermitted($menu['mvalue'], 'index')=='no') {
+				if (isPermitted($menu['mvalue'], 'index')=='no' || !vtlib_isModuleActive($menu['mvalue'])) {
 					continue;
 				}
 			} elseif (!empty($menu['mpermission'])) {
