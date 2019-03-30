@@ -1979,21 +1979,21 @@ function getUserslist($setdefval = true, $selecteduser = '') {
 	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
 	require 'user_privileges/sharing_privileges_' . $current_user->id . '.php';
 	$tabid = getTabid($module);
-	if ($is_admin==false && $profileGlobalPermission[2]==1 && (is_null($tabid) || $defaultOrgSharingPermission[$tabid]==3 || $defaultOrgSharingPermission[$tabid]==0)) {
-		$user_array = get_user_array(false, "Active", $current_user->id, 'private');
+	if ($is_admin==false && $profileGlobalPermission[2]==1 && (is_null($tabid) || empty($defaultOrgSharingPermission[$tabid]) || $defaultOrgSharingPermission[$tabid]==3)) {
+		$user_array = get_user_array(false, 'Active', $current_user->id, 'private');
 	} else {
-		$user_array = get_user_array(false, "Active", $current_user->id);
+		$user_array = get_user_array(false, 'Active', $current_user->id);
 	}
 	$users_combo = get_select_options_array($user_array, $current_user->id);
 	$change_owner = '';
 	foreach ($users_combo as $userid => $value) {
 		foreach ($value as $username => $selected) {
 			if ($setdefval == false) {
-				$change_owner .= "<option value=$userid>" . $username . "</option>";
+				$change_owner .= "<option value=$userid>" . $username . '</option>';
 			} elseif (is_numeric($selecteduser)) {
-				$change_owner .= "<option value=$userid ". ($userid==$selecteduser ? 'selected' : '') .">" . $username . "</option>";
+				$change_owner .= "<option value=$userid ". ($userid==$selecteduser ? 'selected' : '') .'>'. $username . '</option>';
 			} else {
-				$change_owner .= "<option value=$userid $selected>" . $username . "</option>";
+				$change_owner .= "<option value=$userid $selected>" . $username . '</option>';
 			}
 		}
 	}
@@ -2009,7 +2009,7 @@ function getGroupslist() {
 
 	//Commented to avoid security check for groups
 	$tabid = getTabid($module);
-	if ($is_admin==false && $profileGlobalPermission[2]==1 && ($defaultOrgSharingPermission[$tabid]==3 || $defaultOrgSharingPermission[$tabid]==0)) {
+	if ($is_admin==false && $profileGlobalPermission[2]==1 && (is_null($tabid) || empty($defaultOrgSharingPermission[$tabid]) || $defaultOrgSharingPermission[$tabid]==3)) {
 		$result = get_current_user_access_groups($module);
 	} else {
 		$result = get_group_options();
@@ -2019,10 +2019,10 @@ function getGroupslist() {
 		$nameArray = $adb->fetch_array($result);
 	}
 	if (!empty($nameArray)) {
-		if ($is_admin == false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabid] == 3 || $defaultOrgSharingPermission[$tabid] == 0)) {
-			$group_array = get_group_array(false, "Active", $current_user->id, 'private');
+		if ($is_admin==false && $profileGlobalPermission[2]==1 && (is_null($tabid) || empty($defaultOrgSharingPermission[$tabid]) || $defaultOrgSharingPermission[$tabid]==3)) {
+			$group_array = get_group_array(false, 'Active', $current_user->id, 'private');
 		} else {
-			$group_array = get_group_array(false, "Active", $current_user->id);
+			$group_array = get_group_array(false, 'Active', $current_user->id);
 		}
 		$groups_combo = get_select_options_array($group_array, $current_user->id);
 	}
@@ -2030,7 +2030,7 @@ function getGroupslist() {
 	if (count($groups_combo) > 0) {
 		foreach ($groups_combo as $groupid => $value) {
 			foreach ($value as $groupname => $selected) {
-				$change_groups_owner .= "<option value=$groupid $selected >" . $groupname . "</option>";
+				$change_groups_owner .= "<option value=$groupid $selected >" . $groupname . '</option>';
 			}
 		}
 	}
