@@ -1207,6 +1207,35 @@ class QueryGenerator {
 			$sql[] = (($operator=='ni' || $operator=='nin') ? ' NOT ':'').'IN ('.implode(',', $vals).')';
 			return $sql;
 		}
+		if ($operator=='[]' || $operator=='[[' || $operator==']]' || $operator=='][') {
+			$valueArray = explode(',', $value);
+			$vals = array_map(
+				function ($v) {
+					$db = PearDatabase::getInstance();
+					if (!is_numeric($v)) {
+						$v = $db->quote($v);
+					}
+					return $v;
+				},
+				$valueArray
+			);
+			$rangeFName = ($referenceFieldName=='' ? $this->getSQLColumn($field->getFieldName(), false) : $referenceFieldName.'.'.$field->getColumnName());
+			switch ($operator) {
+				case '[]':
+					$sql[] = sprintf('>= %s AND %s <= %s', $vals[0], $rangeFName, $vals[1]);
+					break;
+				case '[[':
+					$sql[] = sprintf('>= %s AND %s < %s', $vals[0], $rangeFName, $vals[1]);
+					break;
+				case ']]':
+					$sql[] = sprintf('> %s AND %s <= %s', $vals[0], $rangeFName, $vals[1]);
+					break;
+				case '][':
+					$sql[] = sprintf('> %s AND %s < %s', $vals[0], $rangeFName, $vals[1]);
+					break;
+			}
+			return $sql;
+		}
 		if ($operator == 'between' || $operator == 'bw' || $operator == 'notequal') {
 			if ($field->getFieldName() == 'birthday') {
 				$valueArray[0] = getValidDBInsertDateTimeValue($valueArray[0]);
