@@ -39,7 +39,7 @@ if (!empty($_REQUEST['selFiltername'])) {
 	$oHomestuff->selFiltername = vtlib_purify($_REQUEST['selFiltername']);
 }
 
-if(!empty($_REQUEST['selAggregatename'])){
+if (!empty($_REQUEST['selAggregatename'])) {
 	$oHomestuff->selAggregatename= vtlib_purify($_REQUEST['selAggregatename']);
 }
 

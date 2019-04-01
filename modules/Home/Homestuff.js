@@ -61,7 +61,7 @@ function chooseType(typeName) {
 		document.getElementById('reportNameRow').style.display='none';
 		document.getElementById('reportTypeRow').style.display='none';
 		//document.getElementById('homeURLField').style.display = "none";
-	} else if(typeName=='CustomWidget') {
+	} else if (typeName=='CustomWidget') {
 		document.getElementById('moduleNameRow').style.display="block";
 		document.getElementById('showrow').style.display="none";
 		document.getElementById('rssRow').style.display="none";
@@ -75,7 +75,7 @@ function chooseType(typeName) {
 		document.getElementById('filterby').style.display="none";
 		document.getElementById('selModFilter_id').style.display="table-cell";
 		//$('homeURLField').style.display = "none";
-	}else if (typeName=='DashBoard') {
+	} else if (typeName=='DashBoard') {
 		document.getElementById('moduleNameRow').style.display='none';
 		document.getElementById('rssRow').style.display='none';
 		document.getElementById('showrow').style.display='none';
@@ -552,9 +552,7 @@ function frmValidate() {
 		} else if (stufftype=='ReportCharts') {
 			selreport = document.getElementById('selreportchart_id').value;
 			selreportcharttype = document.getElementById('selreportcharttype_id').value;
-		}/*else if (stufftype=="URL") {
-			txtURL=document.getElementById('url_id').value;
-		}*/
+		}
 		
 		var url=decodeURIComponent("stufftype="+stufftype+"&stufftitle="+stufftitle+"&selmodule="+selmodule+"&maxentries="+maxentries+"&selFiltername="+selFiltername+"&selAggregatename="+selAggregatename+"&fldname="+encodeURIComponent(fldname)+"&txtRss="+txtRss+"&seldashbd="+seldashbd+"&seldashtype="+seldashtype+"&seldeftype="+seldeftype+"&selreport="+selreport+"&selreportcharttype="+selreportcharttype);
 		var stuffarr=new Array();
@@ -656,13 +654,10 @@ function filterValidate() {
 	} else if (stufftype=="RSS") {
 		txtRss=document.getElementById('txtRss_id').value;
 		maxentries =document.getElementById('maxentryid').value;
-	}/*else if(stufftype=="URL"){
-		txtURL=$('url_id').value;
-	}*/
-	else if (stufftype=="DashBoard") {
+	} else if (stufftype=="DashBoard") {
 		seldashbd=document.getElementById('seldashbd_id').value;
 		seldashtype=document.getElementById('seldashtype_id').value;
-	}else if (stufftype=="Default") {
+	} else if (stufftype=="Default") {
 		seldeftype=document.Homestuff.seldeftype[document.Homestuff.seldeftype.selectedIndex].value;
 	} else if (stufftype=='ReportCharts') {
 		selreport = document.getElementById('selreportchart_id').value;
