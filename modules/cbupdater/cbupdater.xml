@@ -1319,4 +1319,11 @@
 	<classname>Attachment</classname>
 	<systemupdate>1</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mocodertz</author>
+	<description>Add Aggregate Filter widget</description>
+	<filename>build/changeSets/2019/addWidgetTables.php</filename>
+	<classname>AddWidgetTables</classname>
+	<systemupdate>1</systemupdate>
+</changeSet>
 </updatesChangeLog>

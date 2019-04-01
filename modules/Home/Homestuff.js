@@ -32,8 +32,6 @@ function chooseType(typeName) {
 			placeAtCenter(document.getElementById('addWidgetsDiv'));
 			document.getElementById('homewidget').style.display='block';
 			document.getElementById('moduleNameRow').style.display='none';
-			document.getElementById('moduleFilterRow').style.display='none';
-			document.getElementById('modulePrimeRow').style.display='none';
 			document.getElementById('rssRow').style.display='none';
 			document.getElementById('showrow').style.display='none';
 			document.getElementById('dashTypeRow').style.display='none';
@@ -48,26 +46,45 @@ function chooseType(typeName) {
 	}
 	if (typeName=='Module') {
 		document.getElementById('moduleNameRow').style.display='block';
-		document.getElementById('moduleFilterRow').style.display='block';
-		document.getElementById('modulePrimeRow').style.display='block';
 		document.getElementById('showrow').style.display='block';
 		document.getElementById('rssRow').style.display='none';
 		document.getElementById('dashNameRow').style.display='none';
 		document.getElementById('dashTypeRow').style.display='none';
 		document.getElementById('StuffTitleId').style.display='block';
+		document.getElementById('moduleLabelsRow').style.display="none";
+		document.getElementById('moduleCombosRow').style.display="block";
+		document.getElementById('moduleFilters').style.display="block";
+		document.getElementById('filterby').style.display="table-cell";
+		document.getElementById('filterbyim').style.display="none";
+		document.getElementById('selModFilter_id').style.display="table-cell";
 		document.getElementById('homewidget').style.display='none';
 		document.getElementById('reportNameRow').style.display='none';
 		document.getElementById('reportTypeRow').style.display='none';
 		//document.getElementById('homeURLField').style.display = "none";
-	} else if (typeName=='DashBoard') {
+	} else if(typeName=='CustomWidget') {
+		document.getElementById('moduleNameRow').style.display="block";
+		document.getElementById('showrow').style.display="none";
+		document.getElementById('rssRow').style.display="none";
+		document.getElementById('dashNameRow').style.display="none";
+		document.getElementById('dashTypeRow').style.display="none";
+		document.getElementById('StuffTitleId').style.display="block";
+		document.getElementById('moduleLabelsRow').style.display="block";
+		document.getElementById('moduleCombosRow').style.display="block";
+		document.getElementById('moduleFilters').style.display="block";
+		document.getElementById('filterbyim').style.display="table-cell";
+		document.getElementById('filterby').style.display="none";
+		document.getElementById('selModFilter_id').style.display="table-cell";
+		//$('homeURLField').style.display = "none";
+	}else if (typeName=='DashBoard') {
 		document.getElementById('moduleNameRow').style.display='none';
-		document.getElementById('moduleFilterRow').style.display='none';
-		document.getElementById('modulePrimeRow').style.display='none';
 		document.getElementById('rssRow').style.display='none';
 		document.getElementById('showrow').style.display='none';
 		document.getElementById('dashNameRow').style.display='block';
 		document.getElementById('dashTypeRow').style.display='block';
 		document.getElementById('StuffTitleId').style.display='block';
+		document.getElementById('moduleLabelsRow').style.display="none";
+		document.getElementById('moduleCombosRow').style.display="none";
+		document.getElementById('moduleFilters').style.display="none";
 		document.getElementById('reportNameRow').style.display='none';
 		document.getElementById('reportTypeRow').style.display='none';
 		document.getElementById('homewidget').style.display='none';
@@ -84,8 +101,6 @@ function chooseType(typeName) {
 		});
 	} else if (typeName=='RSS') {
 		document.getElementById('moduleNameRow').style.display='none';
-		document.getElementById('moduleFilterRow').style.display='none';
-		document.getElementById('modulePrimeRow').style.display='none';
 		document.getElementById('showrow').style.display='block';
 		document.getElementById('rssRow').style.display='block';
 		document.getElementById('dashNameRow').style.display='none';
@@ -95,24 +110,26 @@ function chooseType(typeName) {
 		VtigerJS_DialogBox.hidebusy();
 		document.getElementById('reportNameRow').style.display='none';
 		document.getElementById('reportTypeRow').style.display='none';
+		document.getElementById('moduleLabelsRow').style.display="none";
+		document.getElementById('moduleCombosRow').style.display="none";
+		document.getElementById('moduleFilters').style.display="none";
 		//document.getElementById('homeURLField').style.display = "none";
 	} else if (typeName=='Default') {
 		document.getElementById('moduleNameRow').style.display='none';
-		document.getElementById('moduleFilterRow').style.display='none';
-		document.getElementById('modulePrimeRow').style.display='none';
 		document.getElementById('showrow').style.display='none';
 		document.getElementById('rssRow').style.display='none';
 		document.getElementById('dashNameRow').style.display='none';
 		document.getElementById('dashTypeRow').style.display='none';
 		document.getElementById('StuffTitleId').style.display='none';
+		document.getElementById('moduleLabelsRow').style.display="none";
+		document.getElementById('moduleCombosRow').style.display="none";
+		document.getElementById('moduleFilters').style.display="none";
 		document.getElementById('homewidget').style.display='none';
 		document.getElementById('url_id').style.display = 'none';
 		document.getElementById('reportNameRow').style.display='none';
 		document.getElementById('reportTypeRow').style.display='none';
 	} else if (typeName == 'Notebook') {
 		document.getElementById('moduleNameRow').style.display='none';
-		document.getElementById('moduleFilterRow').style.display='none';
-		document.getElementById('modulePrimeRow').style.display='none';
 		document.getElementById('showrow').style.display='none';
 		document.getElementById('rssRow').style.display='none';
 		document.getElementById('dashNameRow').style.display='none';
@@ -122,11 +139,14 @@ function chooseType(typeName) {
 		document.getElementById('homewidget').style.display='none';
 		document.getElementById('reportNameRow').style.display='none';
 		document.getElementById('reportTypeRow').style.display='none';
+		document.getElementById('moduleLabelsRow').style.display="none";
+		document.getElementById('moduleCombosRow').style.display="none";
+		document.getElementById('moduleFilters').style.display="none";
 		//document.getElementById('homeURLField').style.display = "none";
 	} else if (typeName == 'ReportCharts') {
 		document.getElementById('moduleNameRow').style.display='none';
-		document.getElementById('moduleFilterRow').style.display='none';
-		document.getElementById('modulePrimeRow').style.display='none';
+		//document.getElementById('moduleFilterRow').style.display='none';
+		//document.getElementById('modulePrimeRow').style.display='none';
 		document.getElementById('rssRow').style.display='none';
 		document.getElementById('showrow').style.display='none';
 		document.getElementById('StuffTitleId').style.display='block';
@@ -476,7 +496,7 @@ function frmValidate() {
 				return false;
 			}
 		}*/
-		if (document.getElementById('stufftype_id').value=='Module') {
+		if (document.getElementById('stufftype_id').value=='Module' || document.getElementById('stufftype_id').value=="CustomWidget") {
 			var selLen;
 			var fieldval=new Array();
 			var cnt=0;
@@ -500,6 +520,7 @@ function frmValidate() {
 		document.getElementById('stufftitle_id').value = '';
 		var selFiltername='';
 		var fldname='';
+		var selAggregatename='';
 		var selmodule='';
 		var maxentries='';
 		var txtRss='';
@@ -513,8 +534,13 @@ function frmValidate() {
 		if (stufftype=='Module') {
 			selFiltername =document.Homestuff.selFiltername[document.Homestuff.selFiltername.selectedIndex].value;
 			fldname = fieldval;
-			selmodule =document.getElementById('selmodule_id').value;
-			maxentries =document.getElementById('maxentryid').value;
+			selmodule = document.getElementById('selmodule_id').value;
+			maxentries = document.getElementById('maxentryid').value;
+		} else if (stufftype=="CustomWidget") {
+			fldname = fieldval;
+			selFiltername = document.Homestuff.selFiltername[document.Homestuff.selFiltername.selectedIndex].value;
+			selmodule = document.getElementById('selmodule_id').value;
+			selAggregatename = document.getElementById('selAggregateid').value;
 		} else if (stufftype=='RSS') {
 			txtRss=document.getElementById('txtRss_id').value;
 			maxentries =document.getElementById('maxentryid').value;
@@ -529,10 +555,8 @@ function frmValidate() {
 		}/*else if (stufftype=="URL") {
 			txtURL=document.getElementById('url_id').value;
 		}*/
-
-		var url='stufftype='+stufftype+'&stufftitle='+stufftitle+'&selmodule='+selmodule+'&maxentries='+maxentries+'&selFiltername='+selFiltername+'&fldname='
-			+ encodeURIComponent(fldname)+'&txtRss='+txtRss+'&seldashbd='+seldashbd+'&seldashtype='+seldashtype+'&seldeftype='+seldeftype+'&selreport='+selreport
-			+ '&selreportcharttype='+selreportcharttype;//+'&txtURL='+txtURL;
+		
+		var url=decodeURIComponent("stufftype="+stufftype+"&stufftitle="+stufftitle+"&selmodule="+selmodule+"&maxentries="+maxentries+"&selFiltername="+selFiltername+"&selAggregatename="+selAggregatename+"&fldname="+encodeURIComponent(fldname)+"&txtRss="+txtRss+"&seldashbd="+seldashbd+"&seldashtype="+seldashtype+"&seldeftype="+seldeftype+"&selreport="+selreport+"&selreportcharttype="+selreportcharttype);
 		var stuffarr=new Array();
 		VtigerJS_DialogBox.showbusy();
 
@@ -540,6 +564,7 @@ function frmValidate() {
 			method: 'POST',
 			url: 'index.php?module=Home&action=HomeAjax&file=Homestuff&'+url
 		}).done(function (response) {
+			// alert(response);
 			var responseVal=response;
 			if (!response) {
 				alert(alert_arr.LBL_ADD_HOME_WIDGET);
@@ -553,10 +578,121 @@ function frmValidate() {
 				document.getElementById('stufftitle_id').value='';
 				document.getElementById('txtRss_id').value='';
 				eval(response);
+				window.location.reload();
 			}
 		});
 	}
 }
+
+/**
+ * this function validates the form for adding a new widget filter
+ */
+function filterValidate() {
+	if (trim(document.getElementById('stufftitle_id').value)=="") {
+		alert("Please enter Window Title");
+		document.getElementById('stufftitle_id').focus();
+		return false;
+	}
+	if (document.getElementById('stufftype_id').value=="RSS") {
+		if (document.getElementById('txtRss_id').value=="") {
+			alert("Please enter RSS URL");
+			document.getElementById('txtRss_id').focus();
+			return false;
+		}
+	}
+	/*if($('stufftype_id').value=="URL"){
+		if($('url_id').value==""){
+			alert("Please enter URL");
+			$('url_id').focus();
+			return false;
+		}
+	}*/
+	if (document.getElementById('stufftype_id').value=="CustomWidget" ) {
+		var selLen;
+		var fieldval=new Array();
+		var cnt=0;
+		selVal=document.Homestuff.PrimeFld;
+		for (k=0;k<selVal.options.length;k++) {
+			if (selVal.options[k].selected) {
+				fieldval[cnt]=selVal.options[k].value;
+				cnt= cnt+1;
+			}
+		}
+		if (cnt > 2) {
+			alert("Please select only two fields");
+			selVal.focus();
+			return false;
+		} else {
+			document.Homestuff.fldname.value=fieldval;
+		}
+	}
+	var stufftype=document.getElementById('stufftype_id').value;
+	var stufftitle=document.getElementById('stufftitle_id').value;
+
+   //	$('stufftitle_id').value = '';
+	var selFiltername='';
+	var fldname='';
+    var selAggregatename='';
+	var selmodule='';
+	var maxentries='';
+	var txtRss='';
+	var seldashbd='';
+	var seldashtype='';
+	var seldeftype='';
+	var selreport='';
+	var selreportcharttype='';
+	//var txtURL = '';
+
+	if (stufftype=="Module") {
+		selFiltername =document.Homestuff.selFiltername[document.Homestuff.selFiltername.selectedIndex].value;
+		fldname = fieldval;
+		selmodule =document.getElementById('selmodule_id').value;
+		maxentries =document.getElementById('maxentryid').value;
+	} else if (stufftype=="CustomWidget") {
+		fldname = fieldval;
+		selFiltername = document.Homestuff.selFiltername[document.Homestuff.selFiltername.selectedIndex].value;
+		selmodule = document.getElementById('selmodule_id').value;
+		selAggregatename = document.getElementById('selAggregateid').value;
+	} else if (stufftype=="RSS") {
+		txtRss=document.getElementById('txtRss_id').value;
+		maxentries =document.getElementById('maxentryid').value;
+	}/*else if(stufftype=="URL"){
+		txtURL=$('url_id').value;
+	}*/
+	else if (stufftype=="DashBoard") {
+		seldashbd=document.getElementById('seldashbd_id').value;
+		seldashtype=document.getElementById('seldashtype_id').value;
+	}else if (stufftype=="Default") {
+		seldeftype=document.Homestuff.seldeftype[document.Homestuff.seldeftype.selectedIndex].value;
+	} else if (stufftype=='ReportCharts') {
+		selreport = document.getElementById('selreportchart_id').value;
+		selreportcharttype = document.getElementById('selreportcharttype_id').value;
+	}
+
+	var url=decodeURIComponent("stufftype="+stufftype+"&stufftitle="+stufftitle+"&selmodule="+selmodule+"&maxentries="+maxentries+"&selFiltername="+selFiltername+"&selAggregatename="+selAggregatename+"&fldname="+encodeURIComponent(fldname)+"&txtRss="+txtRss+"&seldashbd="+seldashbd+"&seldashtype="+seldashtype+"&seldeftype="+seldeftype+"&selreport="+selreport+"&selreportcharttype="+selreportcharttype);
+	var stuffarr=new Array();
+	document.getElementById('vtbusy_info').style.display="inline";
+
+	jQuery.ajax({
+		type : 'post',
+		url : 'index.php?module=Home&action=HomeAjax&file=Homestuffilter&'+url
+	}).done(function (response) {
+		if (!response) {
+			alert("Unable to add Filter! Please try again");
+			document.getElementById('vtbusy_info').style.display="none";
+			document.getElementById('txtRss_id').value='';
+			return false;
+		} else {
+			document.getElementById('vtbusy_info').style.display="none";
+			document.getElementById('txtRss_id').value='';
+			eval(response);
+		}
+	}).fail(function () {
+		//Error while asking file
+		alert('Error with AJAX');
+		VtigerJS_DialogBox.unblock();
+	});
+ }
 
 /**
  * this function is used to hide the default widgets
