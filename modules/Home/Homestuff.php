@@ -39,6 +39,10 @@ if (!empty($_REQUEST['selFiltername'])) {
 	$oHomestuff->selFiltername = vtlib_purify($_REQUEST['selFiltername']);
 }
 
+if (!empty($_REQUEST['selAggregatename'])) {
+	$oHomestuff->selAggregatename= vtlib_purify($_REQUEST['selAggregatename']);
+}
+
 if (!empty($_REQUEST['fldname'])) {
 	$oHomestuff->fieldvalue = vtlib_purify($_REQUEST['fldname']);
 }
@@ -79,6 +83,6 @@ if (isset($_REQUEST['selreportcharttype']) && $_REQUEST['selreportcharttype']!='
 	$oHomestuff->selreportcharttype = vtlib_purify($_REQUEST['selreportcharttype']);
 }
 
-$loaddetail=$oHomestuff->addStuff();
+$loaddetail = $oHomestuff->addStuff();
 echo $loaddetail;
 ?>

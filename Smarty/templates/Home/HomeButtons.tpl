@@ -73,6 +73,11 @@
 				{$MOD.LBL_HOME_MODULE}
 			</a>
 		</li>
+		<li>
+			<a href='javascript:chooseType("CustomWidget");fnRemoveWindow();setFilter(document.getElementById("selmodule_id"));' class='drop_down' id="addcustomwidget">
+				{$MOD.LBL_HOME_CUSTOM_WIDGET}
+			</a>
+		</li>
 {if $ALLOW_RSS eq "yes"}
 		<li>
 			<a href='javascript:;' class='drop_down' id="addrss">
@@ -172,15 +177,24 @@
 					<input type="hidden" name="fldname">
 				</td>
 			</tr>
-			<tr id="moduleFilterRow" style="display:block">
-				<td class="dvtCellLabel" align="right" width="110" >{$MOD.LBL_HOME_FILTERBY}</td>
-				<td id="selModFilter_id" colspan="2" class="dvtCellInfo" width="300">
+			<tr id="moduleFilters" style="display:block">
+				<td class="dvtCellLabel" id="filterby" align="right" width="110" >{$MOD.LBL_HOME_FILTERBY}</td>
+				<td class="dvtCellLabel" id="filterbyim" align="right" width="110" ><img width="27" height="27" alt"{$MOD.LBL_HOME_ADDWINDOW}" onClick='filterValidate();' onMouseOut='fnRemoveWindow();' src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" border="0" title="{$MOD.LBL_HOME_ADDWINDOW}"  style="cursor:pointer;">
+					&nbsp;{$MOD.LBL_HOME_FILTERBY}
+				</td>
+				<td id="selModFilter_id"  width="300" colspan="2"  class="dvtCellInfo"> </td>
+			 </tr>
+			 <tr id="moduleLabelsRow" style="display:block">
+			 	<td class="dvtCellLabel" align="right" id="aggr" width="110">{$MOD.LBL_HOME_AGGREGATE}</td>
+				<td id="selModAggregate_id"  width="300" colspan="2"  class="dvtCellInfo">
+					<select class="detailedViewTextBox" id="selAggregateid" name="selAggregatename" style="width:60%">
+					<option value="sum">Sum</option><option value="avg">Average</option><option value="max">Maximum</option>
+					<option value="min">Minimum</option><option value="count">Count</option></select>
 				</td>
 			</tr>
-			<tr id="modulePrimeRow" style="display:block">
-				<td class="dvtCellLabel" width="110" align="right" valign="top">{$MOD.LBL_HOME_Fields}</td>
-				<td id="selModPrime_id" colspan="2" class="dvtCellInfo" width="300">
-				</td>
+			<tr id="moduleCombosRow" style="display:block">
+				<td class="dvtCellLabel" align="right" id="fields" width="110">{$MOD.LBL_HOME_AG_FIELDS}</td>
+				<td id="selModPrime_id"  width="300"  colspan="2" class="dvtCellInfo"></td>
 			</tr>
 			<tr id="rssRow" style="display:none">
 				<td class="dvtCellLabel"  width="110" align="right">{$MOD.LBL_HOME_RSSURL}<font color='red'>*</font></td>

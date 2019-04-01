@@ -177,6 +177,14 @@ if (!empty($_REQUEST['reportVal'])) {
 if (!empty($_REQUEST['homestuffid'])) {
 	$sid=$_REQUEST['homestuffid'];
 	global $adb;
+	$q="select stufftype from vtiger_homestuff where stuffid=?";
+	$res=$adb->query_result($adb->pquery($q, array($sid)), 0);
+	if ($res=="CustomWidget") {
+		$qdelw="delete from vtiger_home_cw_fields where stuffid=?";
+		$resultw=$adb->pquery($qdelw, array($sid));
+		$qdelf="delete from vtiger_home_customwidget where stuffid=?";
+		$resultf=$adb->pquery($qdelf, array($sid));
+	}
 	$query='delete from vtiger_homestuff where stuffid=?';
 	$result=$adb->pquery($query, array($sid));
 	echo 'SUCCESS';
