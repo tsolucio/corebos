@@ -918,11 +918,11 @@ class CustomView extends CRMEntity {
 
 		$advfilter = $this->getAdvFilterByCvid($cvid);
 
-		$advcvsql = "";
+		$advcvsql = '';
 
 		foreach ($advfilter as $groupid => $groupinfo) {
-			$groupcolumns = $groupinfo["columns"];
-			$groupcondition = $groupinfo["condition"];
+			$groupcolumns = $groupinfo['columns'];
+			$groupcondition = $groupinfo['condition'];
 			$advfiltergroupsql = "";
 
 			foreach ($groupcolumns as $columnindex => $columninfo) {
@@ -932,13 +932,13 @@ class CustomView extends CRMEntity {
 				$columncondition = $columninfo['column_condition'];
 
 				$columns = explode(":", $columnname);
-				$datatype = (isset($columns[4])) ? $columns[4] : "";
+				$datatype = (isset($columns[4])) ? $columns[4] : '';
 
-				if ($columnname != "" && $comparator != "") {
-					$valuearray = explode(",", trim($value));
+				if ($columnname != '' && $comparator != '') {
+					$valuearray = explode(',', trim($value));
 
 					if (isset($valuearray) && count($valuearray) > 1 && $comparator != 'bw') {
-						$advorsql = "";
+						$advorsql = array();
 						for ($n = 0; $n < count($valuearray); $n++) {
 							$advorsql[] = $this->getRealValues($columns[0], $columns[1], $comparator, trim($valuearray[$n]), $datatype);
 						}

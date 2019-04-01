@@ -7,15 +7,14 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once 'include/home.php';
 require_once 'modules/Rss/Rss.php';
+
 $iHomestuff=new Homestuff();
+
 if (!empty($_REQUEST['stufftype'])) {
 	$iHomestuff->stufftype=$_REQUEST['stufftype'];
 }
-
-
 
 if (!empty($_REQUEST['selmodule'])) {
 	$iHomestuff->selmodule=$_REQUEST['selmodule'];
@@ -28,7 +27,6 @@ if (!empty($_REQUEST['maxentries'])) {
 if (!empty($_REQUEST['selFiltername'])) {
 	$iHomestuff->selFiltername=$_REQUEST['selFiltername'];
 }
-
 
 if (!empty($_REQUEST['selAggregatename'])) {
 	$iHomestuff->selAggregatename=$_REQUEST['selAggregatename'];
