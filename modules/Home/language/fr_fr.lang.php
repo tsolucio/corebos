@@ -43,6 +43,7 @@ $mod_strings = array (
 	'User List' => 'Liste des utilisateurs',
 
 	'LBL_HOME_MODULE' => 'Module',
+	'LBL_HOME_CUSTOM_WIDGET' => 'Aggregate Filter',
 	'LBL_HOME_RSS' => 'RSS',
 	'LBL_HOME_DASHBOARD' => 'Tableau de bord',
 	'LBL_HOME_STUFFTITLE' => 'Nom du bloc',
@@ -51,6 +52,8 @@ $mod_strings = array (
 	'LBL_HOME_Fields' => 'Champs à afficher',
 	'LBL_HOME_PRESSCTRL' => '(Appuyez sur "Ctrl"
 	pour en sélectionner plusieurs)',
+	'LBL_HOME_AGGREGATE'=>'Aggregate',
+	'LBL_HOME_AG_FIELDS'=>'On field',
 	'LBL_HOME_RSSURL' => 'RSS URL',
 	'LBL_HOME_DASHBOARD_NAME' => 'Nom du Tableau de bord',
 	'LBL_HOME_DASHBOARD_TYPE' => 'Type de Tableau de bord',

@@ -53,6 +53,7 @@ $mod_strings = array(
 
 	//ADDED for Home Page Customization
 	'LBL_HOME_MODULE' => 'Modul',
+	'LBL_HOME_CUSTOM_WIDGET' => 'Aggregate Filter',
 	'LBL_HOME_RSS' => 'RSS',
 	'LBL_HOME_DASHBOARD' => 'Cockpit',
 	'LBL_HOME_STUFFTITLE'=>'Fenstertitel',
@@ -60,6 +61,8 @@ $mod_strings = array(
 	'LBL_HOME_FILTERBY'=>'Listenansicht',
 	'LBL_HOME_Fields'=>'anzuzeigende Inhalte',
 	'LBL_HOME_PRESSCTRL'=>'(nutze "Strg" <br> für Mehrfachauswahl)',
+	'LBL_HOME_AGGREGATE'=>'Aggregate',
+	'LBL_HOME_AG_FIELDS'=>'On field',
 	'LBL_HOME_RSSURL'=>'RSS URL',
 	'LBL_HOME_DASHBOARD_NAME'=>'Cockpit Name',
 	'LBL_HOME_DASHBOARD_TYPE'=>'Cockpit Typ',

@@ -57,6 +57,7 @@ $mod_strings = array(
 'User List'=>'Gebruikerslijst',
 
 'LBL_HOME_MODULE' => 'Module',
+'LBL_HOME_CUSTOM_WIDGET' => 'Aggregate Filter',
 'LBL_HOME_RSS' => 'RSS',
 'LBL_HOME_DASHBOARD' => 'Dashboard',
 'LBL_HOME_STUFFTITLE'=>'Venster titel',
@@ -64,6 +65,8 @@ $mod_strings = array(
 'LBL_HOME_FILTERBY'=>'Filter op',
 'LBL_HOME_Fields'=>'Weer te geven velden',
 'LBL_HOME_PRESSCTRL'=>'(Klik "Ctrl" <br> voor meerdere selecties)',
+'LBL_HOME_AGGREGATE'=>'Aggregate',
+'LBL_HOME_AG_FIELDS'=>'On field',
 'LBL_HOME_RSSURL'=>'RSS URL',
 'LBL_HOME_DASHBOARD_NAME'=>'DashBoard Naam',
 'LBL_HOME_DASHBOARD_TYPE'=>'DashBoard Type',

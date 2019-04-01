@@ -90,22 +90,22 @@
 	{assign var='cvid' value=$HOME_STUFF.cvid}
 	{assign var='modulename' value=$HOME_STUFF.ModuleName}
 	<tr>
-		<td width=5%>
+		<td width=4%>
 			&nbsp;
 		</td>
 		{foreach item=header from=$HOME_STUFF.Header}
-		<td width=39% align="left">
-			<b>{$header}</b>
+		<td width=40% align="left">
+			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$header}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
 		</td>
 		{/foreach}
 	</tr>
 		{foreach item=row key=crmid from=$HOME_STUFF.Entries}
 		<tr>
-			<td width=5%>
+			<td width=4%>
 				&nbsp;
 			</td>
-			{foreach item=element from=$row}
-			<td align="left" nowrap width=39%>
+			{foreach item=element from=$row name=aggrow}
+			<td {if $smarty.foreach.aggrow.last}style="text-align: right;"{/if} nowrap width=40%>
 				{$element}
 			</td>
 			{/foreach}

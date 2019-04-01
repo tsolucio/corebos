@@ -60,6 +60,7 @@ $mod_strings = array(
 
 //ADDED for Home Page Customization
 'LBL_HOME_MODULE' => 'Módulo',
+'LBL_HOME_CUSTOM_WIDGET' => 'Agregar Filtro',
 'LBL_HOME_RSS' => 'RSS',
 'LBL_HOME_DASHBOARD' => 'Análisis',
 'LBL_HOME_STUFFTITLE'=>'Título Ventana',
@@ -67,6 +68,8 @@ $mod_strings = array(
 'LBL_HOME_FILTERBY'=>'Filtrar Por',
 'LBL_HOME_Fields'=>'Campos a Mostrar',
 'LBL_HOME_PRESSCTRL'=>'(Pulsa "Ctrl" <br> para seleccionar varios)',
+'LBL_HOME_AGGREGATE'=>'Agregación',
+'LBL_HOME_AG_FIELDS'=>'en el campo',
 'LBL_HOME_RSSURL'=>'RSS URL',
 'LBL_HOME_DASHBOARD_NAME'=>'Nombre Análisis',
 'LBL_HOME_DASHBOARD_TYPE'=>'Tipo Análisis',
