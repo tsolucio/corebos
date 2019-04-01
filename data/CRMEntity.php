@@ -2616,7 +2616,7 @@ class CRMEntity {
 	 * @param <type> $user
 	 */
 	function getNonAdminModuleAccessQuery($module, $user) {
-		$userprivs = new UserPrivileges($user->id);
+		$userprivs = $user->getPrivileges();
 		$tabId = getTabid($module);
 		$sharingRuleInfo = $userprivs->getModuleSharingRules($module, 'read');
 		$sharedTabId = null;
@@ -2659,7 +2659,7 @@ class CRMEntity {
 	 * @return String Access control Query for the user.
 	 */
 	function getNonAdminAccessControlQuery($module, $user, $scope = '') {
-		$userprivs = new UserPrivileges($user->id);
+		$userprivs = $user->getPrivileges();
 		$query = ' ';
 		$tabId = getTabid($module);
 		if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing($tabId)) {
