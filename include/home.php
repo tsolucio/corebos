@@ -140,7 +140,7 @@ class Homestuff {
 	/**
 	 * this function adds a widget filter
 	 */
-	function addCustomWidgetFilter() {
+	public function addCustomWidgetFilter() {
 		global $adb;
 		$q=$adb->query_result($adb->pquery("select count(value) from vtiger_seq_temp"));
 		$stuffid=$adb->getUniqueId('vtiger_homestuff');

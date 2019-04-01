@@ -553,7 +553,6 @@ function frmValidate() {
 			selreport = document.getElementById('selreportchart_id').value;
 			selreportcharttype = document.getElementById('selreportcharttype_id').value;
 		}
-		
 		var url=decodeURIComponent("stufftype="+stufftype+"&stufftitle="+stufftitle+"&selmodule="+selmodule+"&maxentries="+maxentries+"&selFiltername="+selFiltername+"&selAggregatename="+selAggregatename+"&fldname="+encodeURIComponent(fldname)+"&txtRss="+txtRss+"&seldashbd="+seldashbd+"&seldashtype="+seldashtype+"&seldeftype="+seldeftype+"&selreport="+selreport+"&selreportcharttype="+selreportcharttype);
 		var stuffarr=new Array();
 		VtigerJS_DialogBox.showbusy();
@@ -627,10 +626,10 @@ function filterValidate() {
 	var stufftype=document.getElementById('stufftype_id').value;
 	var stufftitle=document.getElementById('stufftitle_id').value;
 
-   //	$('stufftitle_id').value = '';
+	//	$('stufftitle_id').value = '';
 	var selFiltername='';
 	var fldname='';
-    var selAggregatename='';
+	var selAggregatename='';
 	var selmodule='';
 	var maxentries='';
 	var txtRss='';
