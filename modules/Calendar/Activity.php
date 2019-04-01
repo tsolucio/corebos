@@ -773,7 +773,7 @@ function insertIntoRecurringTable(& $recurObj)
 	}
 
 	public function getNonAdminAccessControlQuery($module, $user,$scope='') {
-		$userprivs = new UserPrivileges($user->id);
+		$userprivs = $user->getPrivileges();
 		$query = ' ';
 		$tabId = getTabid($module);
 		if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing($tabId)) {

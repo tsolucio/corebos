@@ -3618,7 +3618,7 @@ function getFieldVisibilityPermission($fld_module, $userid, $fieldname, $accessm
 	}
 
 	if (empty($userid)) $userid = $current_user->id;
-	$userprivs = new UserPrivileges($userid);
+	$userprivs = $current_user->getPrivileges();
 
 	/* Users with View all and Edit all permission will also have visibility permission for all fields */
 	if ($userprivs->hasGlobalReadPermission())

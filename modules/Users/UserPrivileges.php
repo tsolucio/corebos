@@ -101,15 +101,12 @@ class UserPrivileges {
 		global $adb;
 
 		$query = $adb->pquery(
-			"SELECT * FROM user_privileges WHERE userid = ?",
+			"SELECT user_data FROM user_privileges WHERE userid = ?",
 			array($userid)
 		);
+		$result = $adb->query_result($query,0,0);
 
-		if($adb->num_rows($query) != 1) {
-			throw new Exception("User has no Access Rights");
-		}
-
-		$user_data = json_decode($adb->query_result($query,0,'user_data'), true);
+		$user_data = json_decode($result, TRUE);
 
 		$this->is_admin = (bool)$user_data["is_admin"];
 		$this->roles = $user_data["current_user_roles"];
@@ -139,15 +136,15 @@ class UserPrivileges {
 		global $adb;
 
 		$query = $adb->pquery(
-			"SELECT * FROM sharing_privileges WHERE userid = ?",
+			"SELECT sharing_data FROM sharing_privileges WHERE userid = ?",
 			array($userid)
 		);
 
 		if ($adb->num_rows($query) != 1) {
-			throw new Exception("User has no sharing privileges");
+			return;
 		}
 
-		$sharing_data = json_decode($adb->query_result($query, 0, 'sharing_data'), true);
+		$sharing_data = json_decode($adb->query_result($query, 0, 0), TRUE);
 
 		foreach($sharing_data as $key => $data) {
 			$this->$key = $data;
@@ -355,4 +352,16 @@ class UserPrivileges {
 			sleep(3);
 		}
 	}
+
+	static public function hasPrivileges($userId) {
+		global $adb;
+
+		$query = $adb->pquery(
+			"SELECT count(*) FROM user_privileges WHERE userid = ?",
+			array($userId)
+		);
+		$result = $adb->query_result($query,0,0);
+		return ($result == 1);
+	}
+
 }

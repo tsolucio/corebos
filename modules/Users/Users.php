@@ -18,6 +18,8 @@ require_once ('data/Tracker.php');
 require_once 'include/utils/CommonUtils.php';
 require_once 'include/Webservices/Utils.php';
 require_once ('modules/Users/UserTimeZonesArray.php');
+require_once 'modules/Users/UserPrivilegesWriter.php';
+require_once 'modules/Users/UserPrivileges.php';
 
 class Users extends CRMEntity {
 	var $db, $log; // Used in class functions of CRMEntity
@@ -1351,6 +1353,13 @@ class Users extends CRMEntity {
 	 * @return UserPrivileges
 	 */
 	public function getPrivileges() {
+
+		if(!UserPrivileges::hasPrivileges($this->id)) {
+			UserPrivilegesWriter::setUserPrivileges($this->id);
+			UserPrivilegesWriter::setSharingPrivileges($this->id);
+			$this->privileges = new UserPrivileges($this->id);
+		}
+
 		if (!$this->privileges) {
 			$this->privileges = new UserPrivileges($this->id);
 		}
