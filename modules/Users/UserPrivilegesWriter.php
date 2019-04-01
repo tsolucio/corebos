@@ -124,8 +124,6 @@ class UserPrivilegesWriter {
 			return;
 		}
 
-		$userPrivs = $userFocus->getPrivileges();
-
 		$sharingPrivs["defaultOrgSharingPermission"] = getAllDefaultSharingAction();
 		$sharingPrivs["related_module_share"] = self::relatedModuleSharing();
 
@@ -135,11 +133,20 @@ class UserPrivilegesWriter {
 		self::QuotesPrivileges($userFocus, $sharingPrivs);
 		self::SalesOrderPrivileges($userFocus, $sharingPrivs);
 
-		self::ModulePrivileges('HelpDesk', $userFocus, $sharingPrivs);
-		self::ModulePrivileges('Emails', $userFocus, $sharingPrivs);
-		self::ModulePrivileges('Campaigns', $userFocus, $sharingPrivs);
-		self::ModulePrivileges('PurchaseOrder', $userFocus, $sharingPrivs);
-		self::ModulePrivileges('Invoice', $userFocus, $sharingPrivs);
+		$custom_modules = getSharingModuleList(
+			array(
+				'Leads',
+				'Accounts',
+				'Contacts',
+				'Potentials',
+				'Quotes',
+				'SalesOrder'
+			)
+		);
+
+		foreach($custom_modules as $module) {
+			self::ModulePrivileges($module, $userFocus, $sharingPrivs);
+		}
 
 		self::Depricated_populateSharingTmpTables($userId, $sharingPrivs);
 
