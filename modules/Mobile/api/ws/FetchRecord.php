@@ -106,7 +106,7 @@ class crmtogo_WS_FetchRecord extends crmtogo_WS_Controller {
 
 		if (!empty($fieldnamesToResolve)) {
 			foreach ($fieldnamesToResolve as $resolveFieldname) {
-				if ($ignoreUnsetFields === false || isset($record[$resolveFieldname])) {
+				if ($ignoreUnsetFields === true || isset($record[$resolveFieldname])) {
 					$fieldvalueid = $record[$resolveFieldname];
 					$fieldvalue = $this->fetchRecordLabelForId($fieldvalueid, $user);
 					$record[$resolveFieldname] = array('value' => $fieldvalueid, 'label'=>$fieldvalue);
