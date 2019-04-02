@@ -387,9 +387,11 @@ class Homestuff {
 				if ($isCurrencyField) {
 					$currencyField = new CurrencyField($r);
 					$list[$i][] = $currencyField->getDisplayValueWithSymbol($current_user);
-				} else {
+				} elseif (is_numeric($r)) {
 					$currencyField = new CurrencyField($r);
 					$list[$i][]= $currencyField->getDisplayValue($current_user);
+				} else {
+					$list[$i][]= $r;
 				}
 			} else {
 				echo "<font color='red'>Filter You have Selected is Not Found</font>";
