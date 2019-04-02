@@ -34,6 +34,25 @@ class UserPrivilegesWriter {
 		}
 	}
 
+
+	public static function flushPrivileges($userId) {
+		global $adb;
+		$adb->pquery(
+			"DELETE FROM user_privileges WHERE userid = ?",
+			array($userId)
+		);
+		$adb->pquery(
+			"DELETE FROM sharing_privileges WHERE userid = ?",
+			array($userId)
+		);
+	}
+
+	public static function flushAllPrivileges() {
+		global $adb;
+		$adb->query("DELETE FROM user_privileges");
+		$adb->query("DELETE FROM sharing_privileges");
+	}
+
 	/**
 	 * Method to write user privileges in a file
 	 *
@@ -73,7 +92,7 @@ class UserPrivilegesWriter {
 				$userInfo[$field] = $userFocus->$field;
 			}
 		}
-		$privs["user_info"] = $userFocus;
+		$privs["user_info"] = $userInfo;
 		$privs["is_admin"] = ($userFocus->is_admin == 'on') ? true : false;
 
 		$userRole = fetchUserRole($userId);

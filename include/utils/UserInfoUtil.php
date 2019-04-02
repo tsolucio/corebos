@@ -3817,15 +3817,9 @@ function RecalculateSharingRules()
 	global $log, $adb;
 	$log->debug("Entering RecalculateSharingRules() method ...");
 	require_once('modules/Users/UserPrivilegesWriter.php');
-	$query="select id from vtiger_users where deleted=0";
-	$result=$adb->pquery($query, array());
-	$num_rows=$adb->num_rows($result);
-	for($i=0;$i<$num_rows;$i++)
-	{
-		$id=$adb->query_result($result,$i,'id');
-		UserPrivilegesWriter::setUserPrivileges($id);
-		UserPrivilegesWriter::setSharingPrivileges($id);
-	}
+
+	UserPrivilegesWriter::flushPrivileges();
+
 	$log->debug("Exiting RecalculateSharingRules method ...");
 }
 
