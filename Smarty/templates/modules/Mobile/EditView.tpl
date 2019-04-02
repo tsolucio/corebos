@@ -67,7 +67,7 @@
 							<div>
 								{if $_FIELD->uitype() eq '1' || $_FIELD->uitype() eq '2' || $_FIELD->uitype() eq '55' || $_FIELD->uitype() eq '255' || $_FIELD->uitype() eq '11'  || $_FIELD->uitype() eq '13'  || $_FIELD->uitype() eq '17' || $_FIELD->uitype() eq '72' || $_FIELD->uitype() eq '22'  || $_FIELD->uitype() eq '20'}
 										<label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
-										<input  type="text" name="{$_FIELD->name()}" id="{$_FIELD->label()}" value="{$_FIELD->valueLabel()}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
+										<input  type="text" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$_FIELD->valueLabel()}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
 			   				    {/if}
 								{if $_FIELD->uitype() eq '23' || $_FIELD->uitype() eq '5' || $_FIELD->uitype() eq '6' || $_FIELD->uitype() eq '252'}
 										{foreach key=date_value item=time_value from=$_FIELD->value()}
@@ -108,7 +108,7 @@
 								{/if}
 								{if $_FIELD->uitype() eq '4'}
 									<label for="{$_FIELD->name()}" >{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
-									<input  type="text" class="ui-disabled" name="{$_FIELD->name()}" id="{$_FIELD->label()}" value="{$_FIELD->value()}"  />
+									<input  type="text" class="ui-disabled" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$_FIELD->value()}"  />
 								{/if}
 								{if $_FIELD->uitype() eq '15'}
 									    <label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
@@ -210,7 +210,7 @@
  								{if $_FIELD->uitype() eq '56'}
 									<div>
 										<label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
-										<input type="checkbox" name="{$_FIELD->name()}" id="{$_FIELD->label()}" {if $_FIELD->value() eq 1} checked {/if} class="custom" />
+										<input type="checkbox" name="{$_FIELD->name()}" id="{$_FIELD->name()}" {if $_FIELD->value() eq 1} checked {/if} class="custom" />
 									</div>
 								{/if}
 								{if ($_FIELD->uitype() eq '10')||  ($_FIELD->uitype() eq '51')|| ($_FIELD->uitype() eq '68')}
@@ -249,7 +249,7 @@
 								{if $_FIELD->uitype() eq '9'}
 								    <div>
 										<label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->name() eq 'probability'} %{/if}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
-										<input  type="text" name="{$_FIELD->name()}" id="{$_FIELD->label()}" value="{$_FIELD->valueLabel()}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
+										<input  type="text" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$_FIELD->valueLabel()}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
 								    </div>
 							    {/if}
 								{if $_FIELD->uitype() eq '69'}
@@ -266,7 +266,7 @@
  								{if $_FIELD->uitype() eq '71' || $_FIELD->uitype() eq '7'}
 								    <div>
 										<label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
-										<input  type="text" name="{$_FIELD->name()}" id="{$_FIELD->label()}" value="{$_FIELD->valueLabel()}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
+										<input  type="text" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$_FIELD->valueLabel()}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
 								    </div>
 							    {/if}
 								{if $_FIELD->uitype() eq 26}
