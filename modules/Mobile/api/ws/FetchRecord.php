@@ -65,8 +65,8 @@ class crmtogo_WS_FetchRecord extends crmtogo_WS_Controller {
 			}
 			$relatedlistcontent['id']=$record['id'];
 			$ret_arr['relatedlistcontent'] = $relatedlistcontent;
-		} //crm-now: fetch ModComments if active, but not for trouble tickets
-		elseif (vtlib_isModuleActive('ModComments') && $module!='HelpDesk') {
+		} elseif (vtlib_isModuleActive('ModComments') && $module!='HelpDesk') {
+			//crm-now: fetch ModComments if active, but not for trouble tickets
 			include_once 'include/Webservices/Query.php';
 			$comments = vtws_query("SELECT * FROM ModComments WHERE related_to = '".$record['id']."' ORDER BY createdtime DESC LIMIT 5;", $current_user);
 			if (count($comments) > 0) {
@@ -78,8 +78,8 @@ class crmtogo_WS_FetchRecord extends crmtogo_WS_Controller {
 			} else {
 				$ret_arr['comments'] = array();
 			}
-		} //crm-now: fetch Comments for trouble tickets
-		elseif ($module =='HelpDesk') {
+		} elseif ($module =='HelpDesk') {
+			//crm-now: fetch Comments for trouble tickets
 			//there is currently no vtws service for ticket comments
 			$comments = crmtogo_WS_Utils::getTicketComments($record);
 			if (!empty($comments)) {
