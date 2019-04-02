@@ -129,6 +129,43 @@
 						alert('Select related entries error, please contact your CRM Administrator.');
 						return false;
 					});
+				})
+				.change('referenceselect', function(e) {
+					var wsrecord_selected = e.target.value;
+					var modulename = $('#module').val();
+					var parentselector = selectmenu.prop('id');
+
+					if (modulename == 'Timecontrol' && parentselector == 'product_id') {
+						ExecuteFunctions('detectModulenameFromRecordId', 'wsrecordid='+wsrecord_selected).then(function (response) {
+							var obj = JSON.parse(response);
+							wsrecord_selected_arr = wsrecord_selected.split('x');
+							if (obj.name == 'Products') {
+								//hide service fields
+								$('#date_start').parent().parent().hide();
+								$('#time_start').parent().parent().hide();
+								$('#date_end').parent().parent().hide();
+								$('#time_end').parent().parent().hide();
+								$('#totaltime').val('');
+								$('#totaltime').parent().parent().hide();
+								$('#units').parent().parent().show();
+							} else if (obj.name == 'Services') {
+								$('#date_start').parent().parent().show();
+								$('#time_start').parent().parent().show();
+								$('#date_end').parent().parent().show();
+								$('#time_end').parent().parent().show();
+								$('#totaltime').parent().parent().show();
+								$('#units').val('');
+								$('#units').parent().parent().hide();
+							}
+						}, function (error) {
+								$('#date_start').parent().parent().show();
+								$('#time_start').parent().parent().show();
+								$('#date_end').parent().parent().show();
+								$('#time_end').parent().parent().show();
+								$('#totaltime').parent().parent().show();
+								$('#units').parent().parent().show();
+						});
+					}
 				});
 		})
 		// The custom select list may show up as either a popup or a dialog, depending on how much
