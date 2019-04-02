@@ -110,11 +110,12 @@ if (isset($default_timezone) && function_exists('date_default_timezone_set')) {
 // Enable log4php debugging only if requried
 $LOG4PHP_DEBUG = false;
 
-$dbconfig['db_server'] = getenv('COREBOS_DBSERVER');
-$dbconfig['db_username'] = getenv('COREBOS_DBUSER');
-$dbconfig['db_password'] = getenv('COREBOS_DBPASS');
-$dbconfig['db_name'] = getenv('COREBOS_DBNAME');
-$site_URL = getenv('COREBOS_SITEURL');
+// Override database with enviroment variables
+$dbconfig['db_server'] = getenv('COREBOS_DBSERVER') ? getenv('COREBOS_DBSERVER') : $dbconfig['db_server'];
+$dbconfig['db_username'] = getenv('COREBOS_DBUSER') ? getenv('COREBOS_DBUSER') : $dbconfig['db_username'];
+$dbconfig['db_password'] = getenv('COREBOS_DBPASS') ? getenv('COREBOS_DBPASS') : $dbconfig['db_password'];
+$dbconfig['db_name'] = getenv('COREBOS_DBNAME') ? getenv('COREBOS_DBNAME') : $dbconfig['db_name'];
+$site_URL = getenv('COREBOS_SITEURL') ? getenv('COREBOS_SITEURL') : $site_URL;
 
 // Override with developer settings
 if (file_exists('config-dev.inc.php')) {
