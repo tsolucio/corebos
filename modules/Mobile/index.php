@@ -62,6 +62,7 @@ class crmtogo_Index_Controller {
 		'getScrollcontent'        => array('file' => '/actions/getScrollContent.php', 'class' => 'crmtogo_UI_GetScrollRecords' ),
 		'changeGUISettings'       => array('file' => '/actions/changeGUISettings.php', 'class' => 'crmtogo_UI_ChangeSettings' ),
 		'saveSignature'			  => array('file' => '/views/saveSignature.php', 'class' => 'UI_saveSignature'),
+		'ExecuteFunctions'  	  => array('file' => '/actions/ExecuteFunctions.php', 'class' => 'crmtogo_UI_ExecuteFunctions'),
 	);
 
 	public static function process(crmtogo_API_Request $request) {

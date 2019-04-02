@@ -9,6 +9,36 @@
  ************************************************************************************/
 //handle search for related entries
 ( function ($) {
+	function ExecuteFunctions(functiontocall, params) {
+		var baseurl = 'index.php?_operation=ExecuteFunctions';
+
+		// Return a new promise avoiding jquery and prototype
+		return new Promise(function (resolve, reject) {
+			var url = baseurl+'&functiontocall='+functiontocall;
+			var req = new XMLHttpRequest();
+			req.open('POST', url, true);  // make call asynchronous
+
+			req.onload = function () {
+				// check the status
+				if (req.status == 200) {
+					// Resolve the promise with the response text
+					resolve(req.response);
+				} else {
+					// Otherwise reject with the status text which will hopefully be a meaningful error
+					reject(Error(req.statusText));
+				}
+			};
+
+			// Handle errors
+			req.onerror = function () {
+				reject(Error('Network/Script Error'));
+			};
+
+			// Make the request
+			req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+			req.send(params);
+		});
+	}
 	function pageIsSelectmenuDialog(page) {
 		var isDialog = false;
 		var id = page && page.prop('id');
