@@ -119,7 +119,7 @@ function vtlib_isModuleActive($module) {
  */
 function vtlib_RecreateUserPrivilegeFiles() {
 	require_once "modules/Users/UserPrivilegesWriter.php";
-	UserPrivilegesWriter::flushPrivileges();
+	UserPrivilegesWriter::flushAllPrivileges();
 }
 
 /**

@@ -3818,7 +3818,7 @@ function RecalculateSharingRules()
 	$log->debug("Entering RecalculateSharingRules() method ...");
 	require_once('modules/Users/UserPrivilegesWriter.php');
 
-	UserPrivilegesWriter::flushPrivileges();
+	UserPrivilegesWriter::flushAllPrivileges();
 
 	$log->debug("Exiting RecalculateSharingRules method ...");
 }
