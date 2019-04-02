@@ -355,13 +355,16 @@ class UserPrivileges {
 
 	static public function hasPrivileges($userId) {
 		global $adb;
-
-		$query = $adb->pquery(
-			"SELECT count(*) FROM user_privileges WHERE userid = ?",
-			array($userId)
-		);
-		$result = $adb->query_result($query,0,0);
-		return ($result == 1);
+		if(self::READ_PRIVILEGES_FROM == 'db') {
+			$query = $adb->pquery(
+				"SELECT count(*) FROM user_privileges WHERE userid = ?",
+				array($userId)
+			);
+			$result = $adb->query_result($query,0,0);
+			return ($result == 1);
+		} else {
+			return file_exists("user_privileges/user_privileges_{$userId}.php");
+		}
 	}
 
 }

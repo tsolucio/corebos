@@ -7,6 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+require_once "modules/Users/UserPrivileges.php";
+
 class VTSimpleTemplate{
 
 	function __construct($templateString){
@@ -122,7 +124,7 @@ class VTSimpleTemplate{
 		$datefmtuserid = $this->parent->get('assigned_user_id');
 		if (!empty($datefmtuserid)) {
 			list($void,$dfuid) = explode('x',$datefmtuserid);
-			if (file_exists('user_privileges/user_privileges_' . $userid . '.php')) {
+			if (UserPrivileges::hasPrivileges($dfuid)) {
 				$datefmtuser = new Users();
 				$datefmtuser->retrieveCurrentUserInfoFromFile($dfuid);
 			} else {
