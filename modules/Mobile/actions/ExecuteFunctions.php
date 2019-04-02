@@ -19,14 +19,13 @@ global $adb, $log;
 class crmtogo_UI_ExecuteFunctions extends crmtogo_WS_Controller {
 
 	public function process(crmtogo_API_Request $request) {
-		global  $adb, $log, $current_language, $current_user;
+		global  $current_language, $current_user;
 
 		if (empty($current_language)) {
 			$current_language = crmtogo_WS_Controller::sessionGet('language');
 		}
 		$response = new crmtogo_API_Response();
 		$functiontocall = vtlib_purify($request->get('functiontocall'));
-
 
 		switch ($functiontocall) {
 			case 'getFieldValuesFromRecord':

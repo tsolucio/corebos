@@ -130,7 +130,7 @@
 						return false;
 					});
 				})
-				.change('referenceselect', function(e) {
+				.change('referenceselect', function (e) {
 					var wsrecord_selected = e.target.value;
 					var modulename = $('#module').val();
 					var parentselector = selectmenu.prop('id');
@@ -138,7 +138,6 @@
 					if (modulename == 'Timecontrol' && parentselector == 'product_id') {
 						ExecuteFunctions('detectModulenameFromRecordId', 'wsrecordid='+wsrecord_selected).then(function (response) {
 							var obj = JSON.parse(response);
-							wsrecord_selected_arr = wsrecord_selected.split('x');
 							if (obj.name == 'Products') {
 								//hide service fields
 								$('#date_start').parent().parent().hide();
@@ -158,12 +157,12 @@
 								$('#units').parent().parent().hide();
 							}
 						}, function (error) {
-								$('#date_start').parent().parent().show();
-								$('#time_start').parent().parent().show();
-								$('#date_end').parent().parent().show();
-								$('#time_end').parent().parent().show();
-								$('#totaltime').parent().parent().show();
-								$('#units').parent().parent().show();
+							$('#date_start').parent().parent().show();
+							$('#time_start').parent().parent().show();
+							$('#date_end').parent().parent().show();
+							$('#time_end').parent().parent().show();
+							$('#totaltime').parent().parent().show();
+							$('#units').parent().parent().show();
 						});
 					}
 				});
