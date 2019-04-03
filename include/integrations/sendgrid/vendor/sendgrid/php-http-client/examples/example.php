@@ -3,8 +3,8 @@
 // If running this outside of this context, use the following include and
 // comment out the two includes below
 // require __DIR__ . '/vendor/autoload.php';
-include(dirname(__DIR__) . '/lib/Client.php');
-include(dirname(__DIR__) . '/lib/Response.php');
+include dirname(__DIR__) . '/lib/Client.php';
+include dirname(__DIR__) . '/lib/Response.php';
 // This gets the parent directory, for your current directory use getcwd()
 $path_to_config = dirname(__DIR__);
 $apiKey = getenv('SENDGRID_API_KEY');
@@ -27,12 +27,12 @@ $response = $client->api_keys()->get(null, $queryParams, $requestHeaders, $retry
 
 // POST /v3/api_keys - create a new user API Key
 $requestBody = [
-    'name' => 'My PHP API Key',
-    'scopes' => [
-        'mail.send',
-        'alerts.create',
-        'alerts.read'
-    ]
+	'name' => 'My PHP API Key',
+	'scopes' => [
+		'mail.send',
+		'alerts.create',
+		'alerts.read'
+	]
 ];
 $response = $client->api_keys()->post($requestBody);
 $responseBody = json_decode($response->body(), true);
@@ -43,17 +43,17 @@ $response = $client->api_keys()->_($apiKeyId)->get();
 
 // PATCH /v3/api_keys/{api_key_id} - update the name of an existing API Key
 $requestBody = [
-    'name' => 'A New Hope'
+	'name' => 'A New Hope'
 ];
 $response = $client->api_keys()->_($apiKeyId)->patch($requestBody);
 
 // PUT /v3/api_keys/{api_key_id} - update the name and scopes of a given API Key
 $requestBody = [
-    'name' => 'A New Hope',
-    'scopes' => [
-        'user.profile.read',
-        'user.profile.update'
-    ]
+	'name' => 'A New Hope',
+	'scopes' => [
+		'user.profile.read',
+		'user.profile.update'
+	]
 ];
 $response = $client->api_keys()->_($apiKeyId)->put($requestBody);
 

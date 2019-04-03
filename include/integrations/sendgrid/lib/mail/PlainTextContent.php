@@ -19,15 +19,14 @@ namespace SendGrid\Mail;
  *
  * @package SendGrid\Mail
  */
-class PlainTextContent extends Content
-{
-    /**
-     * Create a Content object with a plain text mime type
-     *
-     * @param string $value plain text formatted content
-     */
-    public function __construct($value)
-    {
-        parent::__construct(MimeType::TEXT, $value);
-    }
+class PlainTextContent extends Content {
+
+	/**
+	 * Create a Content object with a plain text mime type
+	 *
+	 * @param string $value plain text formatted content
+	 */
+	public function __construct($value) {
+		parent::__construct(MimeType::TEXT, $value);
+	}
 }

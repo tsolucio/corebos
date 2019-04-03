@@ -19,62 +19,58 @@ namespace SendGrid\Mail;
  *
  * @package SendGrid\Mail
  */
-class SandBoxMode implements \JsonSerializable
-{
-    // @var bool Indicates if this setting is enabled
-    private $enable;
+class SandBoxMode implements \JsonSerializable {
 
-    /**
-     * Optional constructor
-     *
-     * @param bool|null $enable Indicates if this setting is enabled
-     */
-    public function __construct($enable = null)
-    {
-        if (isset($enable)) {
-            $this->setEnable($enable);
-        }
-    }
+	// @var bool Indicates if this setting is enabled
+	private $enable;
 
-    /**
-     * Update the enable setting on a SandBoxMode object
-     *
-     * @param bool $enable Indicates if this setting is enabled
-     * 
-     * @throws TypeException
-     */ 
-    public function setEnable($enable)
-    {
-        if (!is_bool($enable)) {
-            throw new TypeException('$enable must be of type bool.');
-        }
-        $this->enable = $enable;
-    }
+	/**
+	 * Optional constructor
+	 *
+	 * @param bool|null $enable Indicates if this setting is enabled
+	 */
+	public function __construct($enable = null) {
+		if (isset($enable)) {
+			$this->setEnable($enable);
+		}
+	}
 
-    /**
-     * Retrieve the enable setting on a SandBoxMode object
-     *
-     * @return bool
-     */
-    public function getEnable()
-    {
-        return $this->enable;
-    }
+	/**
+	 * Update the enable setting on a SandBoxMode object
+	 *
+	 * @param bool $enable Indicates if this setting is enabled
+	 *
+	 * @throws TypeException
+	 */
+	public function setEnable($enable) {
+		if (!is_bool($enable)) {
+			throw new TypeException('$enable must be of type bool.');
+		}
+		$this->enable = $enable;
+	}
 
-    /**
-     * Return an array representing a SandBoxMode object for the SendGrid API
-     *
-     * @return null|array
-     */
-    public function jsonSerialize()
-    {
-        return array_filter(
-            [
-                'enable' => $this->getEnable()
-            ],
-            function ($value) {
-                return $value !== null;
-            }
-        ) ?: null;
-    }
+	/**
+	 * Retrieve the enable setting on a SandBoxMode object
+	 *
+	 * @return bool
+	 */
+	public function getEnable() {
+		return $this->enable;
+	}
+
+	/**
+	 * Return an array representing a SandBoxMode object for the SendGrid API
+	 *
+	 * @return null|array
+	 */
+	public function jsonSerialize() {
+		return array_filter(
+			[
+				'enable' => $this->getEnable()
+			],
+			function ($value) {
+				return $value !== null;
+			}
+		) ?: null;
+	}
 }

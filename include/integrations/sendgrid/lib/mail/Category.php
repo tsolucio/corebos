@@ -19,59 +19,55 @@ namespace SendGrid\Mail;
  *
  * @package SendGrid\Mail
  */
-class Category implements \JsonSerializable
-{
-    /** @var $category string A category name for an email message. Each category name may not exceed 255 characters */
-    private $category;
+class Category implements \JsonSerializable {
 
-    /**
-     * Optional constructor
-     *
-     * @param string|null $category A category name for an email message.
-     *                              Each category name may not exceed 255
-     *                              characters
-     */
-    public function __construct($category = null)
-    {
-        if (isset($category)) {
-            $this->setCategory($category);
-        }
-    }
+	/** @var $category string A category name for an email message. Each category name may not exceed 255 characters */
+	private $category;
 
-    /**
-     * Add a category to a Category object
-     *
-     * @param string $category A category name for an email message.
-     *                         Each category name may not exceed 255
-     *                         characters
-     *
-     * @throws TypeException
-     */ 
-    public function setCategory($category)
-    {
-        if (!is_string($category)) {
-            throw new TypeException('$category must be of type string.');
-        }
-        $this->category = $category;
-    }
+	/**
+	 * Optional constructor
+	 *
+	 * @param string|null $category A category name for an email message.
+	 *                              Each category name may not exceed 255
+	 *                              characters
+	 */
+	public function __construct($category = null) {
+		if (isset($category)) {
+			$this->setCategory($category);
+		}
+	}
 
-    /**
-     * Retrieve a category from a Category object
-     *
-     * @return string
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
+	/**
+	 * Add a category to a Category object
+	 *
+	 * @param string $category A category name for an email message.
+	 *                         Each category name may not exceed 255
+	 *                         characters
+	 *
+	 * @throws TypeException
+	 */
+	public function setCategory($category) {
+		if (!is_string($category)) {
+			throw new TypeException('$category must be of type string.');
+		}
+		$this->category = $category;
+	}
 
-    /**
-     * Return an array representing a Category object for the SendGrid API
-     *
-     * @return string
-     */
-    public function jsonSerialize()
-    {
-        return $this->getCategory();
-    }
+	/**
+	 * Retrieve a category from a Category object
+	 *
+	 * @return string
+	 */
+	public function getCategory() {
+		return $this->category;
+	}
+
+	/**
+	 * Return an array representing a Category object for the SendGrid API
+	 *
+	 * @return string
+	 */
+	public function jsonSerialize() {
+		return $this->getCategory();
+	}
 }

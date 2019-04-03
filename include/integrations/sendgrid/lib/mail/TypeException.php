@@ -1,7 +1,7 @@
 <?php
 namespace SendGrid\Mail;
 
-class TypeException extends \Exception
-{
+class TypeException extends \Exception {
+
 
 }

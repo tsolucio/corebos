@@ -19,56 +19,52 @@ namespace SendGrid\Mail;
  *
  * @package SendGrid\Mail
  */
-class Subject implements \JsonSerializable
-{
-    /** @var $subject string The email subject */
-    private $subject;
+class Subject implements \JsonSerializable {
 
-    /**
-     * Optional constructor
-     *
-     * @param string|null $subject The email subject
-     */
-    public function __construct($subject = null)
-    {
-        if (isset($subject)) {
-            $this->setSubject($subject);
-        }
-    }
+	/** @var $subject string The email subject */
+	private $subject;
 
-    /**
-     * Set the subject on a Subject object
-     *
-     * @param string $subject The email subject
-     * 
-     * @throws TypeException
-     */ 
-    public function setSubject($subject)
-    {
-        if (!is_string($subject)) {
-            throw new TypeException('$subject must be of type string.');
-        }
+	/**
+	 * Optional constructor
+	 *
+	 * @param string|null $subject The email subject
+	 */
+	public function __construct($subject = null) {
+		if (isset($subject)) {
+			$this->setSubject($subject);
+		}
+	}
 
-        $this->subject = $subject;
-    }
+	/**
+	 * Set the subject on a Subject object
+	 *
+	 * @param string $subject The email subject
+	 *
+	 * @throws TypeException
+	 */
+	public function setSubject($subject) {
+		if (!is_string($subject)) {
+			throw new TypeException('$subject must be of type string.');
+		}
 
-    /**
-     * Retrieve the subject from a Subject object
-     *
-     * @return string
-     */
-    public function getSubject()
-    {
-        return mb_convert_encoding($this->subject, 'UTF-8', 'UTF-8');
-    }
+		$this->subject = $subject;
+	}
 
-    /**
-     * Return an array representing a Subject object for the SendGrid API
-     *
-     * @return string
-     */
-    public function jsonSerialize()
-    {
-        return $this->getSubject();
-    }
+	/**
+	 * Retrieve the subject from a Subject object
+	 *
+	 * @return string
+	 */
+	public function getSubject() {
+		return mb_convert_encoding($this->subject, 'UTF-8', 'UTF-8');
+	}
+
+	/**
+	 * Return an array representing a Subject object for the SendGrid API
+	 *
+	 * @return string
+	 */
+	public function jsonSerialize() {
+		return $this->getSubject();
+	}
 }

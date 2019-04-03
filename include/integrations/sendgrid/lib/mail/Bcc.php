@@ -19,6 +19,6 @@ namespace SendGrid\Mail;
  *
  * @package SendGrid\Mail
  */
-class Bcc extends EmailAddress implements \JsonSerializable
-{
+class Bcc extends EmailAddress implements \JsonSerializable {
+
 }

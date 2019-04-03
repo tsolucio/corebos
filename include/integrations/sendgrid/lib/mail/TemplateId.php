@@ -19,68 +19,64 @@ namespace SendGrid\Mail;
  *
  * @package SendGrid\Mail
  */
-class TemplateId implements \JsonSerializable
-{
-    /**
-     * @var $template_id string The id of a template that you would like to use. If you use a
-     * template that contains a subject and content (either text or html), you do
-     * not need to specify those at the personalizations nor message level
-     */
-    private $template_id;
+class TemplateId implements \JsonSerializable {
 
-    /**
-     * Optional constructor
-     *
-     * @param string|null $template_id The id of a template that you would like
-     *                                 to use. If you use a template that contains
-     *                                 a subject and content (either text or html),
-     *                                 you do not need to specify those at the
-     *                                 personalizations nor message level
-     */
-    public function __construct($template_id = null)
-    {
-        if (isset($template_id)) {
-            $this->setTemplateId($template_id);
-        }
-    }
+	/**
+	 * @var $template_id string The id of a template that you would like to use. If you use a
+	 * template that contains a subject and content (either text or html), you do
+	 * not need to specify those at the personalizations nor message level
+	 */
+	private $template_id;
 
-    /**
-     * Add a template id to a TemplateId object
-     *
-     * @param string $template_id The id of a template that you would like
-     *                            to use. If you use a template that contains
-     *                            a subject and content (either text or html),
-     *                            you do not need to specify those at the
-     *                            personalizations nor message level
-     * 
-     * @throws TypeException
-     */ 
-    public function setTemplateId($template_id)
-    {
-        if (!is_string($template_id)) {
-            throw new TypeException('$template_id must be of type string.');
-        }
+	/**
+	 * Optional constructor
+	 *
+	 * @param string|null $template_id The id of a template that you would like
+	 *                                 to use. If you use a template that contains
+	 *                                 a subject and content (either text or html),
+	 *                                 you do not need to specify those at the
+	 *                                 personalizations nor message level
+	 */
+	public function __construct($template_id = null) {
+		if (isset($template_id)) {
+			$this->setTemplateId($template_id);
+		}
+	}
 
-        $this->template_id = $template_id;
-    }
+	/**
+	 * Add a template id to a TemplateId object
+	 *
+	 * @param string $template_id The id of a template that you would like
+	 *                            to use. If you use a template that contains
+	 *                            a subject and content (either text or html),
+	 *                            you do not need to specify those at the
+	 *                            personalizations nor message level
+	 *
+	 * @throws TypeException
+	 */
+	public function setTemplateId($template_id) {
+		if (!is_string($template_id)) {
+			throw new TypeException('$template_id must be of type string.');
+		}
 
-    /**
-     * Retrieve a template id from a TemplateId object
-     *
-     * @return string
-     */
-    public function getTemplateId()
-    {
-        return $this->template_id;
-    }
+		$this->template_id = $template_id;
+	}
 
-    /**
-     * Return an array representing a TemplateId object for the SendGrid API
-     *
-     * @return string
-     */
-    public function jsonSerialize()
-    {
-        return $this->getTemplateId();
-    }
+	/**
+	 * Retrieve a template id from a TemplateId object
+	 *
+	 * @return string
+	 */
+	public function getTemplateId() {
+		return $this->template_id;
+	}
+
+	/**
+	 * Return an array representing a TemplateId object for the SendGrid API
+	 *
+	 * @return string
+	 */
+	public function jsonSerialize() {
+		return $this->getTemplateId();
+	}
 }

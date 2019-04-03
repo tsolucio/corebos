@@ -19,100 +19,94 @@ namespace SendGrid\Mail;
  *
  * @package SendGrid\Mail
  */
-class BccSettings implements \JsonSerializable
-{
-    /** @var $enable bool Indicates if this setting is enabled */
-    private $enable;
-    /** @var $email string The email address that you would like to receive the BCC */
-    private $email;
+class BccSettings implements \JsonSerializable {
 
-    /**
-     * Optional constructor
-     *
-     * @param bool|null $enable Indicates if this setting is enabled
-     * @param string|null $email The email address that you would like
-     *                            to receive the BCC
-     */
-    public function __construct($enable = null, $email = null)
-    {
-        if (isset($enable)) {
-            $this->setEnable($enable);
-        }
-        if (isset($email)) {
-            $this->setEmail($email);
-        }
-    }
+	/** @var $enable bool Indicates if this setting is enabled */
+	private $enable;
+	/** @var $email string The email address that you would like to receive the BCC */
+	private $email;
 
-    /**
-     * Update the enable setting on a BccSettings object
-     *
-     * @param bool $enable Indicates if this setting is enabled
-     * 
-     * @throws TypeException
-     */ 
-    public function setEnable($enable)
-    {
-        if (!is_bool($enable)) {
-            throw new TypeException('$enable must be of type bool.');
-        }
-        $this->enable = $enable;
-    }
+	/**
+	 * Optional constructor
+	 *
+	 * @param bool|null $enable Indicates if this setting is enabled
+	 * @param string|null $email The email address that you would like
+	 *                            to receive the BCC
+	 */
+	public function __construct($enable = null, $email = null) {
+		if (isset($enable)) {
+			$this->setEnable($enable);
+		}
+		if (isset($email)) {
+			$this->setEmail($email);
+		}
+	}
 
-    /**
-     * Retrieve the enable setting on a BccSettings object
-     *
-     * @return bool
-     */
-    public function getEnable()
-    {
-        return $this->enable;
-    }
+	/**
+	 * Update the enable setting on a BccSettings object
+	 *
+	 * @param bool $enable Indicates if this setting is enabled
+	 *
+	 * @throws TypeException
+	 */
+	public function setEnable($enable) {
+		if (!is_bool($enable)) {
+			throw new TypeException('$enable must be of type bool.');
+		}
+		$this->enable = $enable;
+	}
 
-    /**
-     * Add the email setting on a BccSettings object
-     *
-     * @param string $email The email address that you would like
-     *                      to receive the BCC
-     * 
-     * @throws TypeException
-     */ 
-    public function setEmail($email)
-    {
-        if (!is_string($email) &&
-            filter_var($email, FILTER_VALIDATE_EMAIL)
-        ) {
-            throw new TypeException(
-                '$email must valid and be of type string.'
-            );
-        }
-        $this->email = $email;
-    }
+	/**
+	 * Retrieve the enable setting on a BccSettings object
+	 *
+	 * @return bool
+	 */
+	public function getEnable() {
+		return $this->enable;
+	}
 
-    /**
-     * Retrieve the email setting on a BccSettings object
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
+	/**
+	 * Add the email setting on a BccSettings object
+	 *
+	 * @param string $email The email address that you would like
+	 *                      to receive the BCC
+	 *
+	 * @throws TypeException
+	 */
+	public function setEmail($email) {
+		if (!is_string($email) &&
+			filter_var($email, FILTER_VALIDATE_EMAIL)
+		) {
+			throw new TypeException(
+				'$email must valid and be of type string.'
+			);
+		}
+		$this->email = $email;
+	}
 
-    /**
-     * Return an array representing a BccSettings object for the SendGrid API
-     *
-     * @return null|array
-     */
-    public function jsonSerialize()
-    {
-        return array_filter(
-            [
-                'enable' => $this->getEnable(),
-                'email' => $this->getEmail()
-            ],
-            function ($value) {
-                return $value !== null;
-            }
-        ) ?: null;
-    }
+	/**
+	 * Retrieve the email setting on a BccSettings object
+	 *
+	 * @return string
+	 */
+	public function getEmail() {
+		return $this->email;
+	}
+
+	/**
+	 * Return an array representing a BccSettings object for the SendGrid API
+	 *
+	 * @return null|array
+	 */
+	public function jsonSerialize() {
+		return array_filter(
+			[
+				'enable' => $this->getEnable(),
+				'email' => $this->getEmail()
+			],
+			function ($value) {
+				return $value !== null;
+			}
+		) ?: null;
+	}
 }

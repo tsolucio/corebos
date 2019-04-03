@@ -26,94 +26,88 @@ namespace SendGrid\Mail;
  *
  * @package SendGrid\Mail
  */
-class CustomArg implements \JsonSerializable
-{
-    /** @var $key string Custom arg key */
-    private $key;
-    /** @var $value string Custom arg value */
-    private $value;
+class CustomArg implements \JsonSerializable {
 
-    /**
-     * Optional constructor
-     *
-     * @param string|null $key Custom arg key
-     * @param string|null $value Custom arg value
-     */
-    public function __construct($key = null, $value = null)
-    {
-        if (isset($key)) {
-            $this->setKey($key);
-        }
-        if (isset($value)) {
-            $this->setValue($value);
-        }
-    }
+	/** @var $key string Custom arg key */
+	private $key;
+	/** @var $value string Custom arg value */
+	private $value;
 
-    /**
-     * Add a custom arg key on a CustomArg object
-     *
-     * @param string $key Custom arg key
-     * 
-     * @throws TypeException
-     */ 
-    public function setKey($key)
-    {
-        if (!is_string($key)) {
-            throw new TypeException('$key must be of type string');
-        }
-        $this->key = (string) $key;
-    }
+	/**
+	 * Optional constructor
+	 *
+	 * @param string|null $key Custom arg key
+	 * @param string|null $value Custom arg value
+	 */
+	public function __construct($key = null, $value = null) {
+		if (isset($key)) {
+			$this->setKey($key);
+		}
+		if (isset($value)) {
+			$this->setValue($value);
+		}
+	}
 
-    /**
-     * Retrieve a custom arg key on a CustomArg object
-     *
-     * @return string
-     */
-    public function getKey()
-    {
-        return $this->key;
-    }
+	/**
+	 * Add a custom arg key on a CustomArg object
+	 *
+	 * @param string $key Custom arg key
+	 *
+	 * @throws TypeException
+	 */
+	public function setKey($key) {
+		if (!is_string($key)) {
+			throw new TypeException('$key must be of type string');
+		}
+		$this->key = (string) $key;
+	}
 
-    /**
-     * Add a custom arg value on a CustomArg object
-     *
-     * @param string $value Custom arg value
-     * 
-     * @throws TypeException
-     */ 
-    public function setValue($value)
-    {
-        if (!is_string($value)) {
-            throw new TypeException('$value must be of type string.');
-        }
-        $this->value = (string) $value;
-    }
+	/**
+	 * Retrieve a custom arg key on a CustomArg object
+	 *
+	 * @return string
+	 */
+	public function getKey() {
+		return $this->key;
+	}
 
-    /**
-     * Retrieve a custom arg key on a CustomArg object
-     *
-     * @return string
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
+	/**
+	 * Add a custom arg value on a CustomArg object
+	 *
+	 * @param string $value Custom arg value
+	 *
+	 * @throws TypeException
+	 */
+	public function setValue($value) {
+		if (!is_string($value)) {
+			throw new TypeException('$value must be of type string.');
+		}
+		$this->value = (string) $value;
+	}
 
-    /**
-     * Return an array representing a CustomArg object for the SendGrid API
-     *
-     * @return null|array
-     */
-    public function jsonSerialize()
-    {
-        return array_filter(
-            [
-                'key' => $this->getKey(),
-                'value' => $this->getValue()
-            ],
-            function ($value) {
-                return $value !== null;
-            }
-        ) ?: null;
-    }
+	/**
+	 * Retrieve a custom arg key on a CustomArg object
+	 *
+	 * @return string
+	 */
+	public function getValue() {
+		return $this->value;
+	}
+
+	/**
+	 * Return an array representing a CustomArg object for the SendGrid API
+	 *
+	 * @return null|array
+	 */
+	public function jsonSerialize() {
+		return array_filter(
+			[
+				'key' => $this->getKey(),
+				'value' => $this->getValue()
+			],
+			function ($value) {
+				return $value !== null;
+			}
+		) ?: null;
+	}
 }

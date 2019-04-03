@@ -19,6 +19,6 @@ namespace SendGrid\Mail;
  *
  * @package SendGrid\Mail
  */
-class ReplyTo extends EmailAddress implements \JsonSerializable
-{
+class ReplyTo extends EmailAddress implements \JsonSerializable {
+
 }

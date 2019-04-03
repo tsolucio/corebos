@@ -21,35 +21,32 @@ namespace SendGrid\Contacts;
  *
  * @package SendGrid\Contacts
  */
-class RecipientForm
-{
-    /** @var $html string HTML content for the form */
-    private $html;
+class RecipientForm {
 
-    /**
-     * Form constructor
-     *
-     * @param string $url The url the form should submit to
-     */
-    public function __construct($url)
-    {
-        $html = '<form action="' . $url . '" method="post">
+	/** @var $html string HTML content for the form */
+	private $html;
+
+	/**
+	 * Form constructor
+	 *
+	 * @param string $url The url the form should submit to
+	 */
+	public function __construct($url) {
+		$html = '<form action="' . $url . '" method="post">
     First Name: <input type="text" name="first-name"><br>
     Last Name: <input type="text" name="last-name"><br>
     E-mail: <input type="text" name="email"><br>
     <input type="submit">
 </form>';
-        $this->html = $html;
-    }
+		$this->html = $html;
+	}
 
-    /**
-     * Return the HTML form
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->html;
-    }
-
+	/**
+	 * Return the HTML form
+	 *
+	 * @return string
+	 */
+	public function __toString() {
+		return $this->html;
+	}
 }

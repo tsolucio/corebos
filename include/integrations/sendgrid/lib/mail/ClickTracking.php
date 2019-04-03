@@ -19,96 +19,90 @@ namespace SendGrid\Mail;
  *
  * @package SendGrid\Mail
  */
-class ClickTracking implements \JsonSerializable
-{
-    /** @var $enable bool Indicates if this setting is enabled */
-    private $enable;
-    /* @var $enable_text bool Indicates if this setting should be included in the text/plain portion of your email */
-    private $enable_text;
+class ClickTracking implements \JsonSerializable {
 
-    /**
-     * Optional constructor
-     *
-     * @param bool|null $enable Indicates if this setting is enabled
-     * @param bool|null $enable_text Indicates if this setting should be
-     *                               included in the text/plain portion of
-     *                               your email
-     */
-    public function __construct($enable = null, $enable_text = null)
-    {
-        if (isset($enable)) {
-            $this->setEnable($enable);
-        }
-        if (isset($enable_text)) {
-            $this->setEnableText($enable_text);
-        }
-    }
+	/** @var $enable bool Indicates if this setting is enabled */
+	private $enable;
+	/* @var $enable_text bool Indicates if this setting should be included in the text/plain portion of your email */
+	private $enable_text;
 
-    /**
-     * Update the enable setting on a ClickTracking object
-     *
-     * @param bool $enable Indicates if this setting is enabled
-     * 
-     * @throws TypeException
-     */ 
-    public function setEnable($enable)
-    {
-        if (!is_bool($enable)) {
-            throw new TypeException('$enable must be of type bool.');
-        }
-        $this->enable = $enable;
-    }
+	/**
+	 * Optional constructor
+	 *
+	 * @param bool|null $enable Indicates if this setting is enabled
+	 * @param bool|null $enable_text Indicates if this setting should be
+	 *                               included in the text/plain portion of
+	 *                               your email
+	 */
+	public function __construct($enable = null, $enable_text = null) {
+		if (isset($enable)) {
+			$this->setEnable($enable);
+		}
+		if (isset($enable_text)) {
+			$this->setEnableText($enable_text);
+		}
+	}
 
-    /**
-     * Retrieve the enable setting on a ClickTracking object
-     *
-     * @return bool
-     */
-    public function getEnable()
-    {
-        return $this->enable;
-    }
+	/**
+	 * Update the enable setting on a ClickTracking object
+	 *
+	 * @param bool $enable Indicates if this setting is enabled
+	 *
+	 * @throws TypeException
+	 */
+	public function setEnable($enable) {
+		if (!is_bool($enable)) {
+			throw new TypeException('$enable must be of type bool.');
+		}
+		$this->enable = $enable;
+	}
 
-    /**
-     * Update the enable text setting on a ClickTracking object
-     *
-     * @param bool $enable_text Indicates if this setting is enabled
-     * 
-     * @throws TypeException
-     */ 
-    public function setEnableText($enable_text)
-    {
-        if (!is_bool($enable_text)) {
-            throw new TypeException('$enable_text must be of type bool');
-        }
-        $this->enable_text = $enable_text;
-    }
+	/**
+	 * Retrieve the enable setting on a ClickTracking object
+	 *
+	 * @return bool
+	 */
+	public function getEnable() {
+		return $this->enable;
+	}
 
-    /**
-     * Retrieve the enable_text setting on a ClickTracking object
-     *
-     * @return bool
-     */
-    public function getEnableText()
-    {
-        return $this->enable_text;
-    }
+	/**
+	 * Update the enable text setting on a ClickTracking object
+	 *
+	 * @param bool $enable_text Indicates if this setting is enabled
+	 *
+	 * @throws TypeException
+	 */
+	public function setEnableText($enable_text) {
+		if (!is_bool($enable_text)) {
+			throw new TypeException('$enable_text must be of type bool');
+		}
+		$this->enable_text = $enable_text;
+	}
 
-    /**
-     * Return an array representing a ClickTracking object for the SendGrid API
-     *
-     * @return null|array
-     */
-    public function jsonSerialize()
-    {
-        return array_filter(
-            [
-                'enable' => $this->getEnable(),
-                'enable_text' => $this->getEnableText()
-            ],
-            function ($value) {
-                return $value !== null;
-            }
-        ) ?: null;
-    }
+	/**
+	 * Retrieve the enable_text setting on a ClickTracking object
+	 *
+	 * @return bool
+	 */
+	public function getEnableText() {
+		return $this->enable_text;
+	}
+
+	/**
+	 * Return an array representing a ClickTracking object for the SendGrid API
+	 *
+	 * @return null|array
+	 */
+	public function jsonSerialize() {
+		return array_filter(
+			[
+				'enable' => $this->getEnable(),
+				'enable_text' => $this->getEnableText()
+			],
+			function ($value) {
+				return $value !== null;
+			}
+		) ?: null;
+	}
 }
