@@ -75,14 +75,14 @@ $smarty->assign("APP", $app_strings);
 $smarty->assign("THEME", $theme);
 $smarty->assign("CMOD", $mod_strings);
 
-require_once('user_privileges/enable_backup.php');
+require_once 'include/utils/cbSettings.php';
 
-if($enable_local_backup == 'true')
+if(coreBOS_Settings::getSetting("enable_local_backup", false))
 	$local_backup_status = 'enabled';
 else
 	$local_backup_status = 'disabled';
 
-if($enable_ftp_backup == 'true')
+if(coreBOS_Settings::getSetting("enable_ftp_backup", false))
 	$ftp_backup_status = 'enabled';
 else
 	$ftp_backup_status = 'disabled';
