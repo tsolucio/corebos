@@ -119,7 +119,12 @@ $default_admin_status_value_filters ='';
 if ($noadminstatusrows > 0) {
 	for ($i=0; $i < $noadminstatusrows; $i++) {
 		$status = $adb->query_result($adminStatusValues, $i, 'is_admin');
-		$default_admin_status_value_filters = $default_admin_status_value_filters.'<option value='.$status.'>'.$status.'</option>';
+		if ($status == 'on') {
+			$lbl_trans_key = 'LBL_ON';
+		} else {
+			$lbl_trans_key = 'LBL_OFF';
+		}
+		$default_admin_status_value_filters = $default_admin_status_value_filters.'<option value='.$status.'>'.getTranslatedString($lbl_trans_key, 'Users').'</option>';
 	}
 }
 
@@ -128,7 +133,12 @@ $default_user_status_value_filters ='';
 if ($nouserstatusrows > 0) {
 	for ($i=0; $i < $nouserstatusrows; $i++) {
 		$status = $adb->query_result($userStatusValues, $i, 'status');
-		$default_user_status_value_filters = $default_user_status_value_filters.'<option value='.$status.'>'.$status.'</option>';
+		if ($status == 'Active') {
+			$lbl_trans_key = 'LBL_ACTIVE'; 
+		} else {
+			$lbl_trans_key = 'LBL_INACTIVE';
+		}
+		$default_user_status_value_filters = $default_user_status_value_filters.'<option value='.$status.'>'.getTranslatedString($lbl_trans_key, 'Users').'</option>';
 	}
 }
 

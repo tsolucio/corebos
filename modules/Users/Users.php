@@ -1720,6 +1720,11 @@ class Users extends CRMEntity {
 			$entry['viewusername'] = "index.php?module=Users&action=DetailView&parenttab=Settings&record=".$lgn['id'];
 			$entry['edituser'] = "index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record=".$lgn['id'];
 			$entry['Admin'] = $lgn['is_admin'];
+			if ($lgn['is_admin'] == 'on') {
+				$entry['Admin'] = getTranslatedString('LBL_ON', 'Users');
+			} else {
+				$entry['Admin'] = getTranslatedString('LBL_OFF', 'Users');
+			}
 			$entry['Email'] = $lgn['email1'];
 			$entry['Email2'] = $lgn['email2'];
 			$entry['username'] = $lgn['user_name'];
@@ -1728,9 +1733,9 @@ class Users extends CRMEntity {
 			$entry['lastname'] = $lgn['last_name'];
 			$entry['Status'] = $lgn['status'];
 			if ($lgn['status'] == 'Active') {
-				$entry['statustag'] ='<span class="active">'.$lgn['status'].'</span>';
+				$entry['statustag'] ='<span class="active">'.getTranslatedString('LBL_ACTIVE', 'Users').'</span>';
 			} else {
-				$entry['statustag'] ='<span class="inactive">'.$lgn['status'].'</span>';
+				$entry['statustag'] ='<span class="inactive">'.getTranslatedString('LBL_INACTIVE', 'Users').'</span>';
 			}
 			$entry['roleid'] = fetchUserRole($lgn['id']);
 			$rolename = $adb->getone("select rolename from vtiger_role where roleid='".$entry['roleid']."'");

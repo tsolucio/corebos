@@ -52,7 +52,7 @@
 			<div class="slds-grid slds-gutters" style="width: 650px;">
 				<div class="slds-col">
 					<div class="slds-form-element slds-lookup" data-select="single" style="width: 162px; margin-bottom: 6px;">
-						<label class="slds-form-element__label" for="lookup-339">{'LBL_STATUS'|getTranslatedString:'Reports'} {'LBL_Search'|getTranslatedString:'MailManager'}</label>
+						<label class="slds-form-element__label" for="lookup-339">{'LBL_STATUS'|getTranslatedString:'Users'} {'LBL_SEARCH'|getTranslatedString:'Settings'}</label>
 						<div class="slds-form-element__control slds-grid slds-box_border">
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
 								<svg aria-hidden="true" class="slds-input__icon">
