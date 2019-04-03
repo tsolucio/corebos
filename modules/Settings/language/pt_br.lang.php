@@ -6,7 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contribuitor: Ranieri Slemer | 27-05-2018 | Translate Brazilian Portuguese | www.ecrmweb.com.br
+ * Contribuitor: Ranieri Slemer | 02-03-2019 | Translate Brazilian Portuguese | www.ecrmweb.com.br
  ********************************************************************************/
 
 $mod_strings = array(
@@ -178,7 +178,7 @@ $mod_strings = array(
 'LBL_PICKLIST_SETTINGS'=>'Configuração da lista de opções',
 'LBL_EDIT_PICKLIST_VALUES'=>' - Editar os valores dos campos da lista de opções',
 'LBL_EDIT'=>'Editando',
-'LBL_COMMUNICATION_TEMPLATES'=>'Business Process Management',
+'LBL_COMMUNICATION_TEMPLATES'=>'Gestor de Processos (BPM)',
 'LBL_CREATE_EMAIL_TEMPLATES'=>'Novo modelo de e-mail',
 'LBL_UPLOAD_MSWORD_TEMPLATES'=>' - Transferir modelos do MS Word para mesclar correspondência',
 'LBL_SCHEDULE_EMAIL_NOTIFICATION'=>' - Agendar notificações por e-mail',
@@ -194,7 +194,7 @@ $mod_strings = array(
 'LBL_PROXY_SERVER_INFO'=>'Informação do servidor proxy',
 'LBL_PROXY_SERVER_SETTINGS'=>'Servidor proxy',
 'LBL_CONFIGURE_PROXY_SERVER'=>' - Configurar servidor proxy',
-'LBL_PROXY_PORT'=>'Número porta',
+'LBL_PROXY_PORT'=>'Número da porta',
 
 //Field Types for custom fields
 'LBL_URL'=>'URL',
@@ -963,6 +963,6 @@ $mod_strings = array(
 'cl_mapping_nf' => 'Campo não foi encontrado em nenhum mapeamento de conversão de lead',
 'Site Maintenance' => 'CRM em manutenção',
 'SM_BeBackSoon' => 'Estaremos de volta em breve!',
-'SM_SorryInconvenience' => 'Estamos fazendo uma manutenção no momento. Estaremos de volta on-line em o mais breve possível!',
+'SM_SorryInconvenience' => 'Estamos fazendo uma manutenção no momento. Estaremos de volta on-line o mais breve possível!',
 );
 ?>
