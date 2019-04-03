@@ -40,6 +40,11 @@ $mod_strings = array(
 		'Whatsapp Activation' => 'Whatsapp Activation',
 		'whatsapp_sid' => 'Whatsapp SID',
 		'whatsapp_token' => 'Whatsapp Token',
-		'whatsapp_senderphone'=> 'Whatsapp Sender Phone'
+		'whatsapp_senderphone'=> 'Whatsapp Sender Phone',
+	'SendGrid Activation' => 'SendGrid Activation',
+	'TransEmail_title' => 'Configuration for Transactional Email',
+	'TransEmail_subtitle' => 'Substitutes outgoing email server',
+	'MktEmail_title' => 'Configuration for Marketing Email',
+	'MktEmail_subtitle' => 'Only for messages, programmed emails and specificaly programmed processes',
 );
 ?>
