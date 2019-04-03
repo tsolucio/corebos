@@ -74,6 +74,10 @@ switch ($_REQUEST['_op']) {
 	case 'setconfigwhatsapp':
 		include_once 'include/integrations/whatsapp/settings.php';
 		break;
+	case 'getconfigsendgrid':
+	case 'setconfigsendgrid':
+		include_once 'include/integrations/sendgrid/settings.php';
+		break;
 	default:
 		$smarty = new vtigerCRM_Smarty();
 		$titlemessage = getTranslatedString('Available Integrations', $currentModule);
