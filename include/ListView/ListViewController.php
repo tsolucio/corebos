@@ -235,7 +235,7 @@ class ListViewController {
 				$uitype = $field->getUIType();
 				if ($fieldName!='assigned_user_id' && false !== strpos($fieldName, '.assigned_user_id')) {
 					$modrel=getTabModuleName($field->getTabId());
-					$rawValue = $this->db->query_result($result, $i, "smowner".strtolower($modrel));
+					$rawValue = $this->db->query_result($result, $i, 'smowner'.strtolower($modrel));
 				} elseif (getTabid($currentModule)!=$field->getTabId()) {
 					$modrel=getTabModuleName($field->getTabId());
 					$relfieldname = strtolower($modrel).$field->getColumnName();
@@ -274,7 +274,7 @@ class ListViewController {
 					$fileIdRes = $db->pquery($fileIdQuery, array($docid));
 					$fileId = $db->query_result($fileIdRes, 0, 'attachmentsid');
 					if ($downloadtype == 'I') {
-						$ext =substr($value, strrpos($value, ".") + 1);
+						$ext =substr($value, strrpos($value, '.') + 1);
 						$ext = strtolower($ext);
 						if ($value != '') {
 							if ($ext == 'bin' || $ext == 'exe' || $ext == 'rpm') {
@@ -304,11 +304,11 @@ class ListViewController {
 					if ($fileName != '' && $status == 1) {
 						if ($downloadtype == 'I') {
 							$value = "<a href='index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile".
-									"&entityid=$docid&fileid=$fileId' title='".getTranslatedString("LBL_DOWNLOAD_FILE", $module).
+									"&entityid=$docid&fileid=$fileId' title='".getTranslatedString('LBL_DOWNLOAD_FILE', $module).
 									"' onclick='javascript:dldCntIncrease($docid);'>".textlength_check($value).'</a>';
 						} elseif ($downloadtype == 'E') {
 							$value = "<a target='_blank' href='$fileName' onclick='javascript:".
-									"dldCntIncrease($docid);' title='".getTranslatedString("LBL_DOWNLOAD_FILE", $module)."'>".textlength_check($value).'</a>';
+									"dldCntIncrease($docid);' title='".getTranslatedString('LBL_DOWNLOAD_FILE', $module)."'>".textlength_check($value).'</a>';
 						} else {
 							$value = ' --';
 						}
@@ -409,7 +409,7 @@ class ListViewController {
 						//check added for email link in user detailview
 						$fieldId = $field->getFieldId();
 						$value = "<a href=\"javascript:InternalMailer($recordId,$fieldId,".
-						"'$fieldName','$module','record_id');\">".textlength_check($value)."</a>";
+						"'$fieldName','$module','record_id');\">".textlength_check($value).'</a>';
 					} else {
 						$value = '<a href="mailto:'.$rawValue.'">'.textlength_check($value).'</a>';
 					}
@@ -457,7 +457,7 @@ class ListViewController {
 					$image_id = $this->db->query_result($image_res, 0, 'attachmentsid');
 					$image_path = $this->db->query_result($image_res, 0, 'path');
 					$image_name = decode_html($this->db->query_result($image_res, 0, 'name'));
-					$imgpath = $image_path . $image_id . "_" . urlencode($image_name);
+					$imgpath = $image_path . $image_id . '_' . urlencode($image_name);
 					if ($image_name != '') {
 						$ftype = $this->db->query_result($image_res, 0, 'type');
 						$isimage = stripos($ftype, 'image') !== false;
@@ -473,16 +473,16 @@ class ListViewController {
 						$value = '';
 					}
 				} elseif ($field->getFieldDataType() == 'multipicklist') {
-					$value = ($value != "") ? str_replace(' |##| ', ', ', $value) : "";
+					$value = ($value != '') ? str_replace(' |##| ', ', ', $value) : '';
 					if (!$is_admin && $value != '') {
-						$valueArray = ($rawValue != "") ? explode(' |##| ', $rawValue) : array();
+						$valueArray = ($rawValue != '') ? explode(' |##| ', $rawValue) : array();
 						$tmp = '';
 						$tmpArray = array();
 						foreach ($valueArray as $val) {
 							if (!$is_admin && !in_array(trim(decode_html($val)), $this->picklistValueMap[$field->getFieldName()])) {
 								continue;
 							}
-							if (!$listview_max_textlength || !(strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i", "", $tmp)) > $listview_max_textlength)) {
+							if (!$listview_max_textlength || !(strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i", '', $tmp)) > $listview_max_textlength)) {
 								$tmpArray[] = $val;
 								$tmp .= ', '.$val;
 							} else {
@@ -524,11 +524,11 @@ class ListViewController {
 					}
 					$value = textlength_check(implode(', ', $content));
 				} elseif ($field->getFieldDataType() == 'skype') {
-					$value = ($value != "") ? "<a href='skype:$value?call'>".textlength_check($value)."</a>" : "";
+					$value = ($value != '') ? "<a href='skype:$value?call'>".textlength_check($value).'</a>' : '';
 				} elseif ($field->getFieldDataType() == 'phone') {
 					if ($useAsterisk == 'true') {
 						$value = "<a href='javascript:;' onclick='startCall(&quot;$value&quot;, ".
-							"&quot;$recordId&quot;)'>".textlength_check($value)."</a>";
+							"&quot;$recordId&quot;)'>".textlength_check($value).'</a>';
 					} else {
 						$value = textlength_check($value);
 					}
@@ -536,7 +536,7 @@ class ListViewController {
 					$referenceFieldInfoList = $this->queryGenerator->getReferenceFieldInfoList();
 					if (getTabid($currentModule)!=$field->getTabId()) {
 						$modrel=getTabModuleName($field->getTabId());
-						$fieldName=str_replace($modrel.'.', "", $fieldName);
+						$fieldName=str_replace($modrel.'.', '', $fieldName);
 					}
 					if (isset($referenceFieldInfoList[$fieldName])) {
 						$moduleList = $referenceFieldInfoList[$fieldName];
@@ -560,7 +560,7 @@ class ListViewController {
 						if (!empty($parentModule)) {
 							$parentMeta = $this->queryGenerator->getMeta($parentModule);
 							$value = textlength_check($this->nameList[$fieldName][$value]);
-							if ($parentMeta->isModuleEntity() && $parentModule != "Users") {
+							if ($parentMeta->isModuleEntity() && $parentModule != 'Users') {
 								$value = "<a href='index.php?module=$parentModule&action=DetailView&".
 									"record=$rawValue' title='".getTranslatedString($parentModule, $parentModule)."'>$value</a>";
 								$modMetaInfo=getEntityFieldNames($parentModule);
@@ -585,7 +585,7 @@ class ListViewController {
 						$value = vt_suppressHTMLTags(implode(',', json_decode($temp_val, true)));
 					}
 				} elseif (in_array($uitype, array(7,9,90))) {
-					$value = "<span align='right'>".textlength_check($value)."</div>";
+					$value = "<span align='right'>".textlength_check($value).'</div>';
 				} elseif ($field->getUIType() == 55) {
 					$value = getTranslatedString($value, $currentModule);
 				} elseif ($module == 'Emails' && ($fieldName == 'subject')) {
@@ -607,12 +607,12 @@ class ListViewController {
 							$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record=".
 								"$recordId' title='".getTranslatedString($module, $module)."'>$value</a>";
 						} elseif ($opennewtab=='window') {
-							$value = "<a href='#' onclick='window.open(\"index.php?module=$module&parenttab=$parenttab&action=DetailView&record=".
-								"$recordId\", \"$module_$recordId\", \"width=1300, height=900, scrollbars=yes\"); return false;' title='".
-								getTranslatedString($module, $module)."'>$value</a>";
+							$value = "<a href='#' onclick='window.open(\"index.php?module=$module&parenttab=$parenttab&action=DetailView&record="
+								."$recordId\", \"$module".'_'."$recordId\", \"width=1300, height=900, scrollbars=yes\"); return false;' title='"
+								.getTranslatedString($module, $module)."'>$value</a>";
 						} else {
-							$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record=".
-								"$recordId' title='".getTranslatedString($module, $module)."' target='_blank'>$value</a>";
+							$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record="
+								."$recordId' title='".getTranslatedString($module, $module)."' target='_blank'>$value</a>";
 						}
 					}
 					// vtlib customization: For listview javascript triggers
@@ -654,8 +654,7 @@ class ListViewController {
 					$actionLinkInfo .= " | <img src='" . vtiger_imageurl('important1.gif', $theme) . "' border=0>";
 				}
 			}
-			// END
-			if ($actionLinkInfo != "" && !$skipActions) {
+			if ($actionLinkInfo != '' && !$skipActions) {
 				$row[] = $actionLinkInfo;
 			}
 			list($row,$unused,$unused2) = cbEventHandler::do_filter('corebos.filter.listview.render', array($row,$this->db->query_result_rowdata($result, $i),$recordId));
@@ -682,7 +681,7 @@ class ListViewController {
 			return 'javascript:;" onclick="OpenCompose(\''.$recordId.'\',\'edit\');';
 		}
 		if ($module != 'Calendar') {
-			$return_action = "index";
+			$return_action = 'index';
 		} else {
 			$return_action = 'ListView';
 		}
@@ -783,15 +782,15 @@ class ListViewController {
 				}
 				if ($module == 'Users' && $fieldName == 'User Name') {
 					$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"".$module.
-						"\",\"parenttab=".$tabname."&order_by=".$field->getFieldName()."&sorder=".
+						"\",\"parenttab=".$tabname.'&order_by='.$field->getFieldName().'&sorder='.
 						$temp_sorder.$sort_qry."\");' class='listFormHeaderLinks'>".
-						getTranslatedString('LBL_LIST_USER_NAME_ROLE', $module)."".$arrow."</a>";
+						getTranslatedString('LBL_LIST_USER_NAME_ROLE', $module).$arrow.'</a>';
 				} else {
 					if ($this->isHeaderSortingEnabled()) {
 						$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"".$module.
-							"\",\"parenttab=".$tabname."&foldername=Default&order_by=".$field->getFieldName()."&start=".
+							"\",\"parenttab=".$tabname.'&foldername=Default&order_by='.$field->getFieldName().'&start='.
 							(isset($_SESSION['lvs'][$module]['start']) ? $_SESSION['lvs'][$module]['start'] : '').
-							"&sorder=".$temp_sorder."".$sort_qry."\");' class='listFormHeaderLinks'>".$label."".$arrow."</a>";
+							'&sorder='.$temp_sorder.$sort_qry."\");' class='listFormHeaderLinks'>".$label.$arrow.'</a>';
 					} else {
 						$name = $label;
 					}
@@ -805,7 +804,7 @@ class ListViewController {
 
 		//Added for Action - edit and delete link header in listview
 		if (!$skipActions && (isPermitted($module, 'EditView', '') == 'yes' || isPermitted($module, 'Delete', '') == 'yes')) {
-			$header[] = getTranslatedString("LBL_ACTION", $module);
+			$header[] = getTranslatedString('LBL_ACTION', $module);
 		}
 		$header = cbEventHandler::do_filter('corebos.filter.listview.header', $header);
 		return $header;
@@ -841,7 +840,7 @@ class ListViewController {
 				$typeOfData = 'C';
 			} else {
 				$typeOfData = $field->getTypeOfData();
-				$typeOfData = explode("~", $typeOfData);
+				$typeOfData = explode('~', $typeOfData);
 				$typeOfData = $typeOfData[0];
 			}
 			$label = getTranslatedString($field->getFieldLabelKey(), $module);
@@ -854,15 +853,15 @@ class ListViewController {
 // 			}
 			$selected = '';
 			if ($i++ == 0) {
-				$selected = "selected";
+				$selected = 'selected';
 			}
 
 			// place option in array for sorting later
 			//$blockName = getTranslatedString(getBlockName($field->getBlockId()), $module);
 			$blockName = getTranslatedString($field->getBlockName(), $module);
 
-			$fieldLabelEscaped = str_replace(" ", "_", $field->getFieldLabelKey());
-			$optionvalue = $field->getTableName().":".$field->getColumnName().":".$fieldName.":".$module."_".$fieldLabelEscaped.":".$typeOfData;
+			$fieldLabelEscaped = str_replace(' ', '_', $field->getFieldLabelKey());
+			$optionvalue = $field->getTableName().':'.$field->getColumnName().':'.$fieldName.':'.$module.'_'.$fieldLabelEscaped.':'.$typeOfData;
 
 			$OPTION_SET[$blockName][$label] = "<option value=\'$optionvalue\' $selected>$label</option>";
 		}

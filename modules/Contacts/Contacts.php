@@ -550,7 +550,7 @@ class Contacts extends CRMEntity {
 	 * @returns list of campaigns in array format
 	 */
 	public function get_campaigns($id, $cur_tab_id, $rel_tab_id, $actions = false) {
-		global $log, $singlepane_view,$currentModule,$current_user;
+		global $log, $singlepane_view, $currentModule;
 		$log->debug('> get_campaigns '.$id);
 		$this_module = $currentModule;
 
@@ -942,7 +942,6 @@ class Contacts extends CRMEntity {
 	 *                 all values introduced by the user will be preloaded
 	 */
 	public function preSaveCheck($request) {
-		global $adb;
 		$saveerror = false;
 		$errmsg = '';
 		if ($_REQUEST['action'] != 'ContactsAjax' && !empty($_FILES)) {
@@ -975,7 +974,7 @@ class Contacts extends CRMEntity {
 	 * @param Integer Id of the the Record to which the related records are to be moved
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
-		global $adb,$log;
+		global $adb, $log;
 		$log->debug("> transferRelatedRecords $module, $transferEntityIds, $entityId");
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$rel_table_arr = array(
