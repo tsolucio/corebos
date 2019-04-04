@@ -1306,8 +1306,9 @@ function getDetailAssociatedProducts($module, $focus) {
 		}
 		$comment = $adb->query_result($result, $i - 1, 'comment');
 		$qtyinstock = $adb->query_result($result, $i - 1, 'qtyinstock');
+		$qtyinstockshow = CurrencyField::convertToUserFormat($qtyinstock, null, true);
 		$qty = $adb->query_result($result, $i - 1, 'quantity');
-		$qty = number_format($qty, 2, '.', ''); //Convert to 2 decimals
+		$qtyshow = CurrencyField::convertToUserFormat($qty, null, true);
 		//$unitprice = $adb->query_result($result, $i - 1, 'unit_price');
 		$listprice = $adb->query_result($result, $i - 1, 'listprice');
 		$total = $qty * $listprice;
@@ -1390,7 +1391,7 @@ function getDetailAssociatedProducts($module, $focus) {
 
 		$output .= '<td class="crmTableRow small lineOnTop detailview_inventory_stockcell">';
 		if ($module != 'PurchaseOrder' && $hide_stock == 'no') {
-			$output .= '<b>'.$app_strings['LBL_QTY_IN_STOCK'].':</b>&nbsp;'.$qtyinstock;
+			$output .= '<b>'.$app_strings['LBL_QTY_IN_STOCK'].':</b>&nbsp;'.$qtyinstockshow;
 		}
 		if ($MDMapFound) {
 			$invdTabid = getTabid('InventoryDetails');
@@ -1422,7 +1423,7 @@ function getDetailAssociatedProducts($module, $focus) {
 			}
 		}
 		$output .= '</td>';
-		$output .= '<td class="crmTableRow small lineOnTop detailview_inventory_qtycell">' . $qty . '</td>';
+		$output .= '<td class="crmTableRow small lineOnTop detailview_inventory_qtycell">' . $qtyshow . '</td>';
 		$output .= '
 			<td class="crmTableRow small lineOnTop detailview_inventory_lpricecell" align="right">
 				<table width="100%" border="0" cellpadding="5" cellspacing="0">
