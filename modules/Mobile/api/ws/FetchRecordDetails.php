@@ -184,6 +184,10 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 					if ($fieldinfo['uitype'] == '69m') {
 						$resultRecord[$fieldname]= crmtogo_WS_Utils::getProductBase64Image($resultRecord['id']);
 					}
+					if ($fieldinfo['uitype'] == '50') {
+						$date = new DateTimeField($resultRecord[$fieldname]);
+						$resultRecord[$fieldname] = $date->getDisplayDateTimeValue();
+					}
 					$field = array(
 						'name'  => $fieldname,
 						'value' => $resultRecord[$fieldname],
