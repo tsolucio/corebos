@@ -399,7 +399,7 @@ if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language 
 					$reemplazo = '{'.$marcador.'}';
 				}
 			} elseif ($token_pair[0] == 'CurrentUser') {
-				$reemplazo = isset($current_user->column_fields[$token_pair[1]]) ? $current_user->column_fields[$token_pair[1]] : '';
+				$reemplazo = isset($current_user->column_fields[$token_pair[1]]) ? getTranslatedString($current_user->column_fields[$token_pair[1]], 'Users') : '';
 			} elseif ($token_pair[0] == 'CreatedBy' || $token_pair[0] == 'ModifiedBy') {
 				$uid = ($token_pair[0] == 'CreatedBy' ? $focus->column_fields['created_user_id'] : $focus->column_fields['modifiedby']);
 				require_once 'modules/Users/Users.php';
@@ -408,7 +408,7 @@ if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language 
 					return false;
 				}
 				$usr->retrieve_entity_info($uid, 'Users');
-				$reemplazo = isset($usr->column_fields[$token_pair[1]]) ? $usr->column_fields[$token_pair[1]] : '';
+				$reemplazo = isset($usr->column_fields[$token_pair[1]]) ? getTranslatedString($usr->column_fields[$token_pair[1]], 'Users') : '';
 			} elseif (array_key_exists($token_pair[0], $iter_modules)) {
 				if ($token_pair[0] == 'ProductList' || $token_pair[0] == 'ServiceList' || $token_pair[0] == 'QuestionList' || $token_pair[0] == 'QuestionListCat') {
 					if (array_key_exists($token_pair[1], $iter_modules[$token_pair[0]][0])) {
