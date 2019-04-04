@@ -15,8 +15,8 @@ global $adb, $current_user;
 $moduleName = vtlib_purify($_REQUEST['moduleName']);
 $tableName = vtlib_purify($_REQUEST['fieldname']);
 $roleid = vtlib_purify($_REQUEST['roleid']);
-$values = vtlib_purify($_REQUEST['values']);
-$otherRoles = vtlib_purify($_REQUEST['otherRoles']);
+$values = vtlib_purify(urldecode($_REQUEST['values']));
+$otherRoles = vtlib_purify(urldecode($_REQUEST['otherRoles']));
 
 if (empty($tableName)) {
 	echo 'Table name is empty';
