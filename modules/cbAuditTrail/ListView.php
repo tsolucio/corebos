@@ -13,7 +13,7 @@ require_once('modules/cbAuditTrail/AuditTrail.php');
 require_once('modules/Users/Users.php');
 require_once('include/logging.php');
 require_once('include/utils/utils.php');
-
+require_once 'include/utils/cbSettings.php';
 global $app_strings, $mod_strings, $current_language, $current_user, $adb, $theme, $currentModule;
 
 $log = LoggerManager::getLogger('audit_trail');
@@ -36,7 +36,7 @@ $smarty->assign("CATEGORY",$category);
 $smarty->assign("USERLIST", getUserslist(false));
 $smarty->assign("LIST_HEADER",$focus->getAuditTrailHeader());
 $smarty->assign("LIST_FIELDS",$focus->list_fields_name);
-$smarty->assign("ATENABLED", $current_user->getPrivileges()->auditTrail());
+$smarty->assign("ATENABLED", coreBOS_Settings::getSetting('audit_trail',false));
 
 $smarty->display('modules/cbAuditTrail/index.tpl');
 ?>

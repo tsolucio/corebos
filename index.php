@@ -23,6 +23,7 @@ if(version_compare(phpversion(), '5.2.0') < 0 or version_compare(phpversion(), '
 }
 
 require_once('include/utils/utils.php');
+require_once 'include/utils/cbSettings.php';
 
 global $currentModule;
 
@@ -392,7 +393,7 @@ if($use_current_login)
 	}
 	/* END */
 	$privileges = $current_user->getPrivileges();
-	if($privileges->auditTrail() and !$skip_auditing) {
+	if(coreBOS_Settings::getSetting('audit_trail',false) and !$skip_auditing) {
 		$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
 		$query = "insert into vtiger_audit_trial values(?,?,?,?,?,?)";
 		$qparams = array($adb->getUniqueID('vtiger_audit_trial'), $current_user->id, $module, $action, $record, $date_var);
