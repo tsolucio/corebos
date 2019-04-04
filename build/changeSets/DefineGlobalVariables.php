@@ -64,6 +64,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_ListView_Max_Text_Length',
 				'Application_ListView_PageSize',
 				'Application_ListView_Default_Sort_Order',
+				'Application_ListView_Default_OrderDirection',
+				'Application_ListView_Default_OrderField',
 				'Application_ListView_Record_Change_Indicator',
 				'Application_ListView_Default_Sorting',
 				'Application_ListView_Compute_Page_Count',

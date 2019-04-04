@@ -279,6 +279,21 @@ $GlobalVariableDefinitons = array(
 	'values' => 'ASC | DESC',
 	'definition' => 'Orden inicial de los registros al hacer clic en el encabezado de vista de lista. El orden por defecto es ASC',
 ),
+'Application_ListView_Default_OrderDirection' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'ASC | DESC',
+	'definition' => 'Sort order for records of a module. If not defined the internal default value of each module will be used.',
+	'definition' => 'Dirección de ordenación de los registros de un módulo. Si no es definido se utilizará el valor interno de cada módulo.',
+),
+'Application_ListView_Default_OrderField' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'columna del módulo',
+	'definition' => 'Campo del módulo por el que hay que ordenar. Si no es definido se utilizará el valor interno de cada módulo.',
+),
 'Application_ListView_Record_Change_Indicator' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',

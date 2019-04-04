@@ -754,7 +754,7 @@ class ListViewController {
 		$listViewFields = array_intersect($fields, $accessibleFieldList);
 		$change_sorder = array('ASC'=>'DESC','DESC'=>'ASC');
 		$arrow_gif = array('ASC'=>'arrow_down.gif','DESC'=>'arrow_up.gif');
-		$default_sort_order = GlobalVariable::getVariable('Application_ListView_Default_Sort_Order', 'ASC', $module);
+		$default_sort_order = strtoupper(GlobalVariable::getVariable('Application_ListView_Default_Sort_Order', 'ASC', $module));
 		foreach ($listViewFields as $fieldName) {
 			if (!empty($moduleFields[$fieldName])) {
 				$field = $moduleFields[$fieldName];

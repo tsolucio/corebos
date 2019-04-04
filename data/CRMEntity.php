@@ -3324,7 +3324,7 @@ class CRMEntity {
 	public function getSortOrder() {
 		global $log,$currentModule;
 		$log->debug('> getSortOrder');
-		$sorder = $this->default_sort_order;
+		$sorder = strtoupper(GlobalVariable::getVariable('Application_ListView_Default_OrderDirection', $this->default_sort_order, $currentModule));
 		if (isset($_REQUEST['sorder'])) {
 			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
 		} elseif (!empty($_SESSION[$currentModule.'_Sort_Order'])) {
@@ -3344,7 +3344,7 @@ class CRMEntity {
 
 		$order_by = '';
 		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $currentModule)) {
-			$order_by = $this->default_order_by;
+			$order_by = GlobalVariable::getVariable('Application_ListView_Default_OrderField', $this->default_order_by, $currentModule);
 		}
 
 		if (isset($_REQUEST['order_by'])) {

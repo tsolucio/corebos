@@ -279,6 +279,20 @@ $GlobalVariableDefinitons = array(
 	'values' => 'ASC | DESC',
 	'definition' => 'Initial sort order for records when clicking on list view header. The default is ASC',
 ),
+'Application_ListView_Default_OrderDirection' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'string',
+	'category' => 'Application',
+	'values' => 'ASC | DESC',
+	'definition' => 'Sort order for records of a module. If not defined the internal default value of each module will be used.',
+),
+'Application_ListView_Default_OrderField' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'string',
+	'category' => 'Application',
+	'values' => 'module column name',
+	'definition' => 'Field of the module to sort by. If not defined the internal default value of each module will be used.',
+),
 'Application_ListView_Record_Change_Indicator' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
