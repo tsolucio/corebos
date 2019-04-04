@@ -8,5 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-global $current_user;
-$current_user->getPrivileges()->setAuditTrail();
+require_once 'include/utils/cbSettings.php';
+
+$audit_trail = coreBOS_Settings::getSetting("audit_trail", false);
+coreBOS_Settings::setSetting("audit_trail", !$audit_trail);
