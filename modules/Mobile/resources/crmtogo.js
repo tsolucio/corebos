@@ -146,15 +146,15 @@
 								$('#time_end').parent().parent().hide();
 								$('#totaltime').val('');
 								$('#totaltime').parent().parent().hide();
-								$('#units').parent().parent().show();
+								$('#tcunits').parent().parent().show();
 							} else if (obj.name == 'Services') {
 								$('#date_start').parent().parent().show();
 								$('#time_start').parent().parent().show();
 								$('#date_end').parent().parent().show();
 								$('#time_end').parent().parent().show();
 								$('#totaltime').parent().parent().show();
-								$('#units').val('');
-								$('#units').parent().parent().hide();
+								$('#tcunits').val('');
+								$('#tcunits').parent().parent().hide();
 							}
 						}, function (error) {
 							$('#date_start').parent().parent().show();
@@ -162,7 +162,7 @@
 							$('#date_end').parent().parent().show();
 							$('#time_end').parent().parent().show();
 							$('#totaltime').parent().parent().show();
-							$('#units').parent().parent().show();
+							$('#tcunits').parent().parent().show();
 						});
 					}
 				});
