@@ -273,7 +273,7 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 	return $user_array;
 }
 
-function get_group_array($add_blank = true, $status = 'Active', $assigned_user = '', $private = '') {
+function get_group_array($add_blank = true, $status = 'Active', $assigned_user = '', $private = '', $force = false) {
 	global $log, $current_user, $currentModule;
 	$log->debug('> get_group_array '.$add_blank.','. $status.','.$assigned_user.','.$private);
 	$current_user_groups = array();
@@ -285,7 +285,7 @@ function get_group_array($add_blank = true, $status = 'Active', $assigned_user =
 	static $group_array = null;
 	$module= (isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : $currentModule);
 
-	if ($group_array == null) {
+	if ($group_array == null || $force) {
 		require_once 'include/database/PearDatabase.php';
 		$db = PearDatabase::getInstance();
 		$temp_result = array();
