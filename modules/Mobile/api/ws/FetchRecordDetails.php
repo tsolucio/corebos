@@ -158,6 +158,7 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 				$fieldlabel = $fieldinfo['label'];
 
 				// get field information
+				$field = array();
 				if (isset($resultRecord[$fieldname])) {
 					$value = $resultRecord[$fieldname];
 					//get standard content & perform special settings
@@ -253,7 +254,9 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 						$date = new DateTimeField($field['value']);
 						$field['value'] = $date->getDisplayDateTimeValue();
 					}
-					$fields[] = $field;
+					if (!empty($field)) {
+						$fields[] = $field;
+					}
 				}
 			}
 			// build address for "open address in maps" button
@@ -338,14 +341,8 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 					'displaytype' => 1,
 				);
 			}
-			$blocks[] = array( 'label' => $blocklabel, 'fields' => $fields );
-		}
-		$sections = array();
-		$moduleFieldGroupKeys = array_keys($moduleFieldGroups);
-		foreach ($moduleFieldGroupKeys as $blocklabel) {
-			// eliminate empty blocks
-			if (isset($groups[$blocklabel]) && !empty($groups[$blocklabel])) {
-				$sections[] = array( 'label' => $blocklabel, 'count' => count($groups[$blocklabel]) );
+			if (!empty($fields)) {
+				$blocks[] = array( 'label' => $blocklabel, 'fields' => $fields );
 			}
 		}
 		$modifiedResult = array('blocks' => $blocks, 'id' => $resultRecord['id']);
