@@ -71,7 +71,7 @@ class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 					$fields[] = $field;
 				}
 			}
-			if(!empty($fields)) {
+			if (!empty($fields)) {
 				$blocks[] = array( 'label' => $blocklabel, 'fields' => $fields );
 			}
 		}
