@@ -17,8 +17,10 @@ class crmtogo_WS_FetchRecord extends crmtogo_WS_Controller {
 	protected $resolvedValueCache = array();
 
 	protected function detectModuleName($recordid) {
-		if ($this->module === false) {
+		if (!empty($recordid)) {
 			$this->module = crmtogo_WS_Utils::detectModulenameFromRecordId($recordid);
+		} else {
+			$this->module = false;
 		}
 		return $this->module;
 	}
