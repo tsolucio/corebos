@@ -20,7 +20,10 @@
 function cv_getCVNames() {
 	require_once 'modules/PickList/PickListUtils.php';
 	$picklistValues = getPicklistValuesSpecialUitypes('1616', '', '');
-	$options = array('-1' => 'Get Default View for Module');
+	$options = array(
+		'-1' => 'Get Default View for Module/User',
+		'-2' => 'Get All Views for Module/User',
+	);
 	foreach ($picklistValues as $pickListValue) {
 		$options[$pickListValue[1]] = $pickListValue[2];
 	}

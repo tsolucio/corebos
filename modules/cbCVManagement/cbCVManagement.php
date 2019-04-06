@@ -185,7 +185,7 @@ class cbCVManagement extends CRMEntity {
 			from vtiger_cbcvmanagement
 			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
-			where vtiger_crmentity.deleted=0 and mandatory='1' and cvdefault='1' and entitytype=? limit 1";
+			where vtiger_crmentity.deleted=0 and mandatory='1' and cvdefault='1' and entitytype=? and cvretrieve='1' limit 1";
 		$cvrs = $adb->pquery($cvsql, array($module));
 		if ($cvrs && $adb->num_rows($cvrs)>0) {
 			self::$validationinfo[] = 'mandatory records found';
@@ -198,7 +198,7 @@ class cbCVManagement extends CRMEntity {
 			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
 			left join vtiger_user2role on vtiger_user2role.userid=?
-			where vtiger_crmentity.deleted=0 and cvdefault='1' and cvrole like concat('%', vtiger_user2role.roleid, '%')) and entitytype=? limit 1";
+			where vtiger_crmentity.deleted=0 and cvdefault='1' and cvrole like concat('%', vtiger_user2role.roleid, '%')) and entitytype=? and cvretrieve='1' limit 1";
 		self::$validationinfo[] = '---';
 		self::$validationinfo[] = 'search for role records';
 		$cvrs = $adb->pquery($cvsql, array($cvuserid, $module));
@@ -212,7 +212,7 @@ class cbCVManagement extends CRMEntity {
 			from vtiger_cbcvmanagement
 			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
-			where vtiger_crmentity.deleted=0 and cvdefault='1' and smownerid=? and entitytype=? limit 1";
+			where vtiger_crmentity.deleted=0 and cvdefault='1' and smownerid=? and entitytype=? and cvretrieve='1' limit 1";
 		self::$validationinfo[] = '---';
 		self::$validationinfo[] = 'search for user records';
 		$cvrs = $adb->pquery($cvsql, array($cvuserid, $module));
@@ -231,7 +231,7 @@ class cbCVManagement extends CRMEntity {
 				from vtiger_cbcvmanagement
 				inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 				inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
-				where vtiger_crmentity.deleted=0 and cvdefault='1' and smownerid in ($groups) and entitytype=? limit 1";
+				where vtiger_crmentity.deleted=0 and cvdefault='1' and smownerid in ($groups) and entitytype=? and cvretrieve='1' limit 1";
 			self::$validationinfo[] = '---';
 			self::$validationinfo[] = 'search for group records';
 			$cvrs = $adb->pquery($cvsql, array($module));
@@ -248,7 +248,7 @@ class cbCVManagement extends CRMEntity {
 			from vtiger_cbcvmanagement
 			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
 			inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
-			where vtiger_crmentity.deleted=0 and cvdefault='1' and default_setting='1' and module_list REGEXP ? and entitytype=? limit 1";
+			where vtiger_crmentity.deleted=0 and cvdefault='1' and default_setting='1' and module_list REGEXP ? and entitytype=? and cvretrieve='1' limit 1";
 		self::$validationinfo[] = '---';
 		self::$validationinfo[] = 'search for default setting record';
 		$cvrs = $adb->pquery($cvsql, array(' *'.$module.' *', $module));
@@ -271,6 +271,126 @@ class cbCVManagement extends CRMEntity {
 		self::$validationinfo[] = '---';
 		self::$validationinfo[] = 'no view found';
 		return false;
+	}
+
+	/* returns all the Custom Views available for the given module and user applying escalation rules
+	 * param $module: the module we need the views for, will use current module if no value is given
+	 * param $cvuserid: user for which we want to get the views, will use current user if no value is given
+	 * returns: custom view ID
+	 *   search for mandatory default record
+	 *   search for non-mandatory record that belongs to the role of the user
+	 *   search for non-mandatory record assigned to the user
+	 *   search for non-mandatory record assigned to any group of the user
+	 *   search for non-mandatory record as default setting for the module
+	 *   if no record is found then the ALL view for the module will be returned
+	 *   if no record is found then an empty array will be returned
+	 */
+	public static function getAllViews($module = '', $cvuserid = '') {
+		global $adb, $current_user, $currentModule;
+		$allViews = array();
+		if (empty($module)) {
+			$module = $currentModule;
+		}
+		if (empty($cvuserid) && !empty($current_user)) {
+			$cvuserid = $current_user->id;
+		}
+		if (empty($cvuserid) || empty($module)) {
+			return $allViews;
+		}
+		self::$validationinfo = array();
+		self::$validationinfo[] = "search for default CV on $module for user '$cvuserid'";
+		$key = 'cvdcache'.$module.$cvuserid;
+		list($value,$found) = VTCacheUtils::lookupCachedInformation($key);
+		if ($found) {
+			self::$validationinfo[] = 'default CV found in cache';
+			$allViews[] = $value;
+		}
+		self::$validationinfo[] = '---';
+		self::$validationinfo[] = 'search for mandatory records';
+		$cvsql = "select vtiger_cbcvmanagement.cvid
+			from vtiger_cbcvmanagement
+			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
+			inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
+			where vtiger_crmentity.deleted=0 and mandatory='1' and entitytype=? and cvretrieve='1' limit 1";
+		$cvrs = $adb->pquery($cvsql, array($module));
+		if ($cvrs && $adb->num_rows($cvrs)>0) {
+			self::$validationinfo[] = 'mandatory records found';
+			$value = $adb->query_result($cvrs, 0, 0);
+			$allViews[] = $value;
+		}
+		$cvsql = "select vtiger_cbcvmanagement.cvid
+			from vtiger_cbcvmanagement
+			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
+			inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
+			left join vtiger_user2role on vtiger_user2role.userid=?
+			where vtiger_crmentity.deleted=0 and cvrole like concat('%', vtiger_user2role.roleid, '%')) and entitytype=? and cvretrieve='1' limit 1";
+		self::$validationinfo[] = '---';
+		self::$validationinfo[] = 'search for role records';
+		$cvrs = $adb->pquery($cvsql, array($cvuserid, $module));
+		if ($cvrs && $adb->num_rows($cvrs)>0) {
+			self::$validationinfo[] = 'role records found';
+			$value = $adb->query_result($cvrs, 0, 0);
+			$allViews[] = $value;
+		}
+		$cvsql = "select vtiger_cbcvmanagement.cvid
+			from vtiger_cbcvmanagement
+			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
+			inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
+			where vtiger_crmentity.deleted=0 and smownerid=? and entitytype=? and cvretrieve='1' limit 1";
+		self::$validationinfo[] = '---';
+		self::$validationinfo[] = 'search for user records';
+		$cvrs = $adb->pquery($cvsql, array($cvuserid, $module));
+		if ($cvrs && $adb->num_rows($cvrs)>0) {
+			self::$validationinfo[] = 'user records found';
+			$value = $adb->query_result($cvrs, 0, 0);
+			$allViews[] = $value;
+		}
+		require_once 'include/utils/GetUserGroups.php';
+		$UserGroups = new GetUserGroups();
+		$UserGroups->getAllUserGroups($cvuserid);
+		if (count($UserGroups->user_groups)>0) {
+			$groups=implode(',', $UserGroups->user_groups);
+			$cvsql = "select vtiger_cbcvmanagement.cvid
+				from vtiger_cbcvmanagement
+				inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
+				inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
+				where vtiger_crmentity.deleted=0 and smownerid in ($groups) and entitytype=? and cvretrieve='1' limit 1";
+			self::$validationinfo[] = '---';
+			self::$validationinfo[] = 'search for group records';
+			$cvrs = $adb->pquery($cvsql, array($module));
+			if ($cvrs && $adb->num_rows($cvrs)>0) {
+				self::$validationinfo[] = 'group records found';
+				$value = $adb->query_result($cvrs, 0, 0);
+				$allViews[] = $value;
+			}
+		} else {
+			self::$validationinfo[] = 'no groups to search in';
+		}
+		$cvsql = "select vtiger_cbcvmanagement.cvid
+			from vtiger_cbcvmanagement
+			inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_cbcvmanagement.cbcvmanagementid
+			inner join vtiger_customview on vtiger_customview.cvid=vtiger_cbcvmanagement.cvid
+			where vtiger_crmentity.deleted=0 and default_setting='1' and module_list REGEXP ? and entitytype=? and cvretrieve='1' limit 1";
+		self::$validationinfo[] = '---';
+		self::$validationinfo[] = 'search for default setting record';
+		$cvrs = $adb->pquery($cvsql, array(' *'.$module.' *', $module));
+		if ($cvrs && $adb->num_rows($cvrs)>0) {
+			self::$validationinfo[] = 'default setting records found';
+			$value = $adb->query_result($cvrs, 0, 0);
+			$allViews[] = $value;
+		}
+		$cvsql = 'select vtiger_customview.cvid from vtiger_customview where viewname=? and entitytype=? limit 1';
+		self::$validationinfo[] = '---';
+		self::$validationinfo[] = 'search for CV default records';
+		$cvrs = $adb->pquery($cvsql, array('All', $module));
+		if ($cvrs && $adb->num_rows($cvrs)>0) {
+			self::$validationinfo[] = 'CV default records found';
+			$value = $adb->query_result($cvrs, 0, 0);
+			$allViews[] = $value;
+		}
+		self::$validationinfo[] = '---';
+		self::$validationinfo[] = 'no view found';
+		return $allViews;
 	}
 
 	public static function getApprovers($cvid) {
