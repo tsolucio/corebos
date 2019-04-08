@@ -46,16 +46,16 @@ class OpenDocument_ElementStyle extends OpenDocument_Style {
 	 * List of properties
 	 *
 	 */
-	protected $fontWeight,
-			$fontStyle,
-			$fontName,
-			$fontSize,
-			$backgroundColor,
-			$color,
-			$lineHeight,
-			$underlineStyle,
-			$underlineWidth,
-			$underlineColor;
+	protected $fontWeight;
+	protected $fontStyle;
+	protected $fontName;
+	protected $fontSize;
+	protected $backgroundColor;
+	protected $color;
+	protected $lineHeight;
+	protected $underlineStyle;
+	protected $underlineWidth;
+	protected $underlineColor;
 
 	/**
 	 * Constructor

@@ -58,7 +58,7 @@ class OpenDocument_Footnote extends OpenDocument_StyledElement {
 
 	public $id;
 	public $noteclass;
-	static $id_counter=0;
+	public static $id_counter=0;
 
 		/**
 	 * Constructor

@@ -16,10 +16,10 @@
  *  Version      : 1.0
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-include_once('config.inc.php');
-require_once('include/logging.php');
-require_once('include/utils/utils.php');
-require_once('modules/evvtgendoc/compile.php');
+include_once 'config.inc.php';
+require_once 'include/logging.php';
+require_once 'include/utils/utils.php';
+require_once 'modules/evvtgendoc/compile.php';
 
 echo '
 <script src="modules/EtiquetasOO/clipboard.min.js"></script>
@@ -42,10 +42,6 @@ $eoo_strings = return_module_language($current_language, $currentModule);
 echo '<div style="margin-left: 15px;">';
 echo '<h1>'.$eoo_strings['EOO_Title'].'</h1>';
 
-require('user_privileges/user_privileges_'.$current_user->id.'.php');
-if (!isset($current_user_profiles)) {
-	$current_user_profiles=array(1); // es admin
-}
 $SQL = "SELECT tabid, name, tablabel FROM vtiger_tab WHERE name='Users' or isentitytype";
 $res_tab = $adb->query($SQL);
 $num_tabs = $adb->num_rows($res_tab);
@@ -82,8 +78,8 @@ while ($tab = $adb->fetch_array($res_tab)) {
 	$etiq_tab = (empty($app_strings[$tab['tablabel']]) ? $tab['tablabel'] : $app_strings[$tab['tablabel']] );
 	echo '<li><a name="'.$tab['name'].'"></a><h2>'.$etiq_tab.'</h2>';
 	echo '<table border="0">';
-	$SQL_FIELDS = "SELECT fieldname,fieldlabel FROM vtiger_field WHERE presence IN (0,2) AND tabid=?";
-	$res_field = $adb->pquery($SQL_FIELDS,array($tab['tabid']));
+	$SQL_FIELDS = 'SELECT fieldname,fieldlabel FROM vtiger_field WHERE presence IN (0,2) AND tabid=?';
+	$res_field = $adb->pquery($SQL_FIELDS, array($tab['tabid']));
 	while ($field = $adb->fetch_array($res_field)) {
 		$etiqueta = (empty($mod_strings[$field['fieldlabel']]) ? $field['fieldlabel'] : $mod_strings[$field['fieldlabel']]);
 		echo '<tr><td><b>'.$etiqueta.'</b>:</td><td>{'.$tab['name'].'.'.$field['fieldname'].'}';
@@ -93,7 +89,7 @@ while ($tab = $adb->fetch_array($res_tab)) {
 	echo '</table>';
 	echo '<h3>'.$eoo_strings['RelatedModules'].'</h3>';
 	echo '<ul>';
-	if (array_key_exists($tab['name'],$related_module)) {
+	if (array_key_exists($tab['name'], $related_module)) {
 		echo '<li>'.$eoo_strings['OneEntity'];
 		echo '<table>';
 		foreach ($related_module[$tab['name']] as $rel_key => $rel_value) {
@@ -109,18 +105,18 @@ while ($tab = $adb->fetch_array($res_tab)) {
 		echo '</li>';
 	}
 	$SQL_REL = 'SELECT related_tabid, label FROM vtiger_relatedlists WHERE tabid=? AND related_tabid<>0 AND name<>\'get_history\'';
-	$res_rel = $adb->pquery($SQL_REL,array($tab['tabid']));
+	$res_rel = $adb->pquery($SQL_REL, array($tab['tabid']));
 	if ($adb->num_rows($res_rel) > 0) {
 		echo '<li>'.$eoo_strings['VariosEntity'];
 		echo '<table>';
 		while ($rel_varios = $adb->fetch_array($res_rel)) {
 			$SQL_RELN = "SELECT name, tablabel FROM vtiger_tab WHERE tabid=?";
 			$res_reln = $adb->pquery($SQL_RELN, array($rel_varios['related_tabid']));
-			$rel_label = $adb->query_result($res_reln,0,'tablabel');
+			$rel_label = $adb->query_result($res_reln, 0, 'tablabel');
 			if (!array_key_exists($rel_label, $arr_options)) {
 				continue;
 			}
-			if (array_key_exists($rel_varios['label'],$special_modules)) {
+			if (array_key_exists($rel_varios['label'], $special_modules)) {
 				$rel_name = $rel_varios['label'];
 				if (empty($app_strings[$rel_varios['label']])) {
 					$etiq_reltab = $rel_varios['label'];
@@ -128,7 +124,7 @@ while ($tab = $adb->fetch_array($res_tab)) {
 					$etiq_reltab = $app_strings[$rel_varios['label']];
 				}
 			} else {
-				$rel_name = $adb->query_result($res_reln,0,'name');
+				$rel_name = $adb->query_result($res_reln, 0, 'name');
 				if (empty($app_strings[$rel_varios['label']])) {
 					if (empty($app_strings[$rel_label])) {
 						$etiq_reltab = $rel_label;
@@ -159,7 +155,7 @@ foreach ($special_modules as $sp_key => $sp_value) {
 		foreach ($sp_value as $sp_valmod) {
 			$mod_strings = return_module_language($current_language, $sp_valmod);
 			$SQL_FIELDS = "SELECT fieldname,fieldlabel FROM vtiger_field WHERE presence IN (0,2) AND tabid=?";
-			$res_field = $adb->pquery($SQL_FIELDS,array($sp_tab[$sp_valmod]));
+			$res_field = $adb->pquery($SQL_FIELDS, array($sp_tab[$sp_valmod]));
 			echo '<tr><td colspan="2"><h3>'.$sp_valmod.'</h3></td></tr>';
 			while ($field = $adb->fetch_array($res_field)) {
 				$etiqueta = (empty($mod_strings[$field['fieldlabel']]) ? $field['fieldlabel'] : $mod_strings[$field['fieldlabel']]);
@@ -170,8 +166,8 @@ foreach ($special_modules as $sp_key => $sp_value) {
 		}
 	} else {
 		$mod_strings = return_module_language($current_language, $sp_value);
-		$SQL_FIELDS = "SELECT fieldname,fieldlabel FROM vtiger_field WHERE presence IN (0,2) AND tabid=?";
-		$res_field = $adb->pquery($SQL_FIELDS,array($sp_tab[$sp_value]));
+		$SQL_FIELDS = 'SELECT fieldname,fieldlabel FROM vtiger_field WHERE presence IN (0,2) AND tabid=?';
+		$res_field = $adb->pquery($SQL_FIELDS, array($sp_tab[$sp_value]));
 		while ($field = $adb->fetch_array($res_field)) {
 			$etiqueta = (empty($mod_strings[$field['fieldlabel']]) ? $field['fieldlabel'] : $mod_strings[$field['fieldlabel']]);
 			echo '<tr><td><b>'.$etiqueta.'</b>:</td><td>{'.$sp_key.'.'.$field['fieldname'].'}';
@@ -180,7 +176,7 @@ foreach ($special_modules as $sp_key => $sp_value) {
 		}
 	}
 	echo '</table>';
-	if (array_key_exists($sp_key,$related_module)) {
+	if (array_key_exists($sp_key, $related_module)) {
 		echo '<h3>'.$eoo_strings['RelatedModules'].'</h3>';
 		echo '<ul>';
 		foreach ($related_module[$tab['name']] as $rel_key => $rel_value) {

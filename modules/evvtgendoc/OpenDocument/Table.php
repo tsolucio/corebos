@@ -214,7 +214,7 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 	 * @access      public
 	 * @since       0.5.0 - 08. Feb. 2007
 	 */
-	function getCell($col, $row) {
+	public function getCell($col, $row) {
 		$ret = null;
 		if (isset($this->cells[$row]) && isset($this->cells[$row][$col])) {
 			$ret = $this->cells[$row][$col];
@@ -264,7 +264,7 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 	 * @since       0.5.0 - 08. Feb. 2007
 	 * @return      TableCell
 	 */
-	function setCellContent($content, $col, $row) {
+	public function setCellContent($content, $col, $row) {
 		$tmp = $this->getCell($col, $row);
 		$tmp->setContent($content);
 		return $tmp;
@@ -310,7 +310,7 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 	 * @access      public
 	 * @since       0.5.0 - 08. Feb. 2007
 	 */
-	function getDocumentFragment() {
+	public function getDocumentFragment() {
 		$this->includeCells();
 		return $this;
 	}
