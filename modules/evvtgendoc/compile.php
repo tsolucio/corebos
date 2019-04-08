@@ -433,6 +433,7 @@ if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language 
 					if (empty($accid) || $token_pair[1] == 'rm') {
 						switch ($token_pair[1]) {
 							case 'accountname':
+							case 'organizationname':
 								$token_pair[1] = 'companyname';
 								break;
 							case 'rm':
