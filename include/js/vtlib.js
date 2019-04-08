@@ -46,11 +46,11 @@ function vtlib_setvalue_from_popup(recordid, value, target_fieldname, formname) 
 	var func = window.opener.gVTModule + 'setValueFromCapture';
 	if (typeof window.opener[func] == 'function') {
 		if (target_fieldname == 'relModlist') {
-		  var seldiv = window.opener.document.getElementById('selected_recordsDiv');
-		  var retrecList = window.opener.addrecList(recordid, value);
-		  var idinputval = window.opener.document.getElementById('idlist').value;
-		  window.opener.document.getElementById('idlist').value = (idinputval == "") ? recordid : idinputval+','+recordid;
-		  seldiv.innerHTML +=retrecList;
+			var seldiv = window.opener.document.getElementById('selected_recordsDiv');
+			var retrecList = window.opener.addrecList(recordid, value);
+			var idinputval = window.opener.document.getElementById('idlist').value;
+			window.opener.document.getElementById('idlist').value = (idinputval == "") ? recordid : idinputval+','+recordid;
+			seldiv.innerHTML +=retrecList;
 		}
 		window.opener[func](recordid, value, target_fieldname);
 		ret = true;
