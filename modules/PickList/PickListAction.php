@@ -61,10 +61,10 @@ if ($mode == 'add') {
 		exit;
 	}
 
-	$qry = 'select tablename,columnname from vtiger_field where fieldname=? and presence in (0,2)';
+	$qry = 'select tablename,columnname,uitype from vtiger_field where fieldname=? and presence in (0,2)';
 	$result = $adb->pquery($qry, array($tableName));
 	$num = $adb->num_rows($result);
-
+	$uitype = $adb->query_result($result, 0, 'uitype');
 	for ($i=0; $i<count($newValues); $i++) {
 		$newVal = array('encodedValue'=>html_entity_decode($newValues[$i], ENT_QUOTES, $default_charset), 'rawValue'=>$newValues[$i]);
 		$oldVal = $oldValues[$i];
@@ -73,8 +73,30 @@ if ($mode == 'add') {
 			$oldVal = array('encodedValue'=>html_entity_decode($oldVal, ENT_QUOTES, $default_charset),'rawValue'=>$oldVal);
 			$sql = "UPDATE vtiger_$tableName SET $tableName=? WHERE $tableName=?";
 			$adb->pquery($sql, array($newVal['encodedValue'], $oldVal['encodedValue']));
-			//replace the value of this piclist with new one in all records
-			if ($num > 0) {
+			//replace the value of this picklist with new one in all records
+			if ($uitype==33) {
+				for ($n=0; $n<$num; $n++) {
+					$table_name = $adb->query_result($result, $n, 'tablename');
+					$columnName = $adb->query_result($result, $n, 'columnname');
+					// unique value
+					$sql = "update $table_name set $columnName=? where $columnName=?";
+					$adb->pquery($sql, array($newVal['rawValue'], $oldVal['rawValue']));
+					// middle value
+					$sql = "update $table_name set $columnName=REPLACE($columnName, ?, ?)";
+					$adb->pquery($sql, array('|##| '.$oldVal['rawValue'].' |##|', '|##| '.$newVal['rawValue'].' |##|'));
+					// initial value
+					$sql = "update $table_name set $columnName=REPLACE($columnName, ?, ?)";
+					$adb->pquery($sql, array($oldVal['rawValue'].' |##|', $newVal['rawValue'].' |##|'));
+					// final value
+					$sql = "update $table_name set $columnName=REPLACE($columnName, ?, ?)";
+					$adb->pquery($sql, array('|##| '.$oldVal['rawValue'], '|##| '.$newVal['rawValue']));
+					// meta info
+					$sql = 'UPDATE vtiger_field SET defaultvalue=? WHERE defaultvalue=? AND tablename=? AND columnname=?';
+					$adb->pquery($sql, array($newVal['rawValue'], $oldVal['rawValue'], $table_name, $columnName));
+					$sql = 'UPDATE vtiger_picklist_dependency SET sourcevalue=? WHERE sourcevalue=? AND sourcefield=? AND tabid=?';
+					$adb->pquery($sql, array($newVal['rawValue'], $oldVal['rawValue'], $tableName, getTabid($moduleName)));
+				}
+			} else {
 				for ($n=0; $n<$num; $n++) {
 					$table_name = $adb->query_result($result, $n, 'tablename');
 					$columnName = $adb->query_result($result, $n, 'columnname');
@@ -95,7 +117,7 @@ if ($mode == 'add') {
 	if (!empty($replaceVal)) {
 		$sql = "select * from vtiger_$tableName where $tableName=?";
 		$result = $adb->pquery($sql, array($replaceVal));
-		$replacePicklistID = $adb->query_result($result, 0, "picklist_valueid");
+		$replacePicklistID = $adb->query_result($result, 0, 'picklist_valueid');
 	}
 	for ($i=0; $i<count($values); $i++) {
 		$sql = "select * from vtiger_$tableName where $tableName=?";
@@ -118,11 +140,32 @@ if ($mode == 'add') {
 		$adb->pquery($sql, array($origPicklistID));
 		$sql = 'DELETE FROM vtiger_picklist_dependency WHERE sourcevalue=? AND sourcefield=? AND tabid=?';
 		$adb->pquery($sql, array($values[$i]['encodedValue'], $tableName, getTabid($moduleName)));
-		//replace the value of this piclist with new one in all records
-		$qry = 'select tablename,columnname from vtiger_field where fieldname=? and presence in (0,2)';
+		//replace the value of this picklist with new one in all records
+		$qry = 'select tablename,columnname,uitype from vtiger_field where fieldname=? and presence in (0,2)';
 		$result = $adb->pquery($qry, array($tableName));
 		$num = $adb->num_rows($result);
-		if ($num > 0) {
+		$uitype = $adb->query_result($result, 0, 'uitype');
+		if ($uitype==33) {
+			for ($n=0; $n<$num; $n++) {
+				$table_name = $adb->query_result($result, $n, 'tablename');
+				$columnName = $adb->query_result($result, $n, 'columnname');
+				// unique value
+				$sql = "update $table_name set $columnName=? where $columnName=?";
+				$adb->pquery($sql, array($replaceVal, $values[$i]['rawValue']));
+				// middle value
+				$sql = "update $table_name set $columnName=REPLACE($columnName, ?, ?)";
+				$adb->pquery($sql, array('|##| '.$values[$i]['rawValue'].' |##|', '|##| '.$replaceVal.' |##|'));
+				// initial value
+				$sql = "update $table_name set $columnName=REPLACE($columnName, ?, ?)";
+				$adb->pquery($sql, array($values[$i]['rawValue'].' |##|', $replaceVal.' |##|'));
+				// final value
+				$sql = "update $table_name set $columnName=REPLACE($columnName, ?, ?)";
+				$adb->pquery($sql, array('|##| '.$values[$i]['rawValue'], '|##| '.$replaceVal));
+				// meta info
+				$sql = 'UPDATE vtiger_field SET defaultvalue=? WHERE defaultvalue=? AND tablename=? AND columnname=?';
+				$adb->pquery($sql, array($replaceVal, $values[$i]['rawValue'], $table_name, $columnName));
+			}
+		} else {
 			for ($n=0; $n<$num; $n++) {
 				$table_name = $adb->query_result($result, $n, 'tablename');
 				$columnName = $adb->query_result($result, $n, 'columnname');
