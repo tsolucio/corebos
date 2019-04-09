@@ -1686,8 +1686,6 @@ class Users extends CRMEntity {
 			$entries_list['next_page_url'] = 'index.php?module=Users&action=UsersAjax&file=getJSON&page='.($islastpage ? $page : $page+1);
 		}
 		$entries_list['prev_page_url'] = 'index.php?module=Users&action=UsersAjax&file=getJSON&page='.($page == 1 ? 1 : $page-1);
-		$edit_return_url = 'index.php?module=Users&action=index&parenttab=Settings';
-
 		while ($lgn = $adb->fetch_array($result)) {
 			$entry = array();
 
@@ -1700,7 +1698,7 @@ class Users extends CRMEntity {
 				$value = $lgn['email1'];
 				$entry['sendmail'] = "<a href=\"javascript:InternalMailer($recordId,$fieldId,"."'$fieldName','$module','record_id');\">".textlength_check($value)."</a>";
 			} else {
-				$entry['sendmail'] = '<a href="mailto:'.$rawValue.'">'.textlength_check($value).'</a>';
+				$entry['sendmail'] = '<a href="mailto:'.$value.'">'.textlength_check($value).'</a>';
 			}
 
 			$entry['iscurrentuser'] = false;
