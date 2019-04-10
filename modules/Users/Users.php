@@ -1755,7 +1755,7 @@ class Users extends CRMEntity {
 	 * @return UserPrivileges
 	 */
 	public function getPrivileges() {
-		if (!UserPrivileges::hasPrivileges($this->id)) {
+		if (!UserPrivileges::hasPrivileges($this->id, $this->is_admin)) {
 			UserPrivilegesWriter::setUserPrivileges($this->id);
 			UserPrivilegesWriter::setSharingPrivileges($this->id);
 			$this->privileges = new UserPrivileges($this->id);

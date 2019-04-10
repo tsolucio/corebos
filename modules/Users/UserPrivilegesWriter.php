@@ -378,7 +378,7 @@ class UserPrivilegesWriter {
 
 		require_once 'modules/Users/CreateUserPrivilegeFile.php';
 
-		$userPrivs = $user->getPrivileges();
+		$userPrivs = UserPrivileges::privsWithoutSharing($user->id);
 
 		$userModSharing = getUserModuleSharingObjects(
 			$module,

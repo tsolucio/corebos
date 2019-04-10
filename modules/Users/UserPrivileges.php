@@ -53,7 +53,7 @@ class UserPrivileges {
 	 * @param int $userid
 	 * @return void
 	 */
-	private function loadUserPrivilegesFile($userid) {
+	private function loadUserPrivilegesFile($userid, $withot_sharing = false) {
 		checkFileAccessForInclusion('user_privileges/user_privileges_' . $userid . '.php');
 		require "user_privileges/user_privileges_$userid.php";
 		$this->is_admin = (bool) $is_admin;
@@ -72,7 +72,9 @@ class UserPrivileges {
 			$this->subordinate_roles = $subordinate_roles;
 			$this->parent_roles = $parent_roles;
 			$this->subordinate_roles_users = $subordinate_roles_users;
-			$this->loadSharingPrivilegesFile($userid);
+			if(!$withot_sharing) {
+				$this->loadSharingPrivilegesFile($userid);
+			}
 		}
 		$this->user_info = $user_info;
 	}
@@ -102,7 +104,7 @@ class UserPrivileges {
 	 * @param int $userid
 	 * @return void
 	 */
-	private function loadUserPrivilegesDB($userid) {
+	private function loadUserPrivilegesDB($userid, $withot_sharing = false) {
 		global $adb;
 
 		$query = $adb->pquery('SELECT user_data FROM user_privileges WHERE userid=?', array($userid));
@@ -123,7 +125,9 @@ class UserPrivileges {
 			$this->subordinate_roles = $user_data["subordinate_roles"];
 			$this->parent_roles = $user_data["parent_roles"];
 			$this->subordinate_roles_users = $user_data["subordinate_roles_users"];
-			$this->loadSharingPrivilegesDB($userid);
+			if(!$withot_sharing) {
+				$this->loadSharingPrivilegesDB($userid);
+			}
 		}
 		$this->user_info = $user_data["user_info"];
 	}
@@ -298,7 +302,7 @@ class UserPrivileges {
 		return $this->roles;
 	}
 
-	public static function hasPrivileges($userId) {
+	public static function hasPrivileges($userId, $is_admin = true) {
 		global $adb;
 		if (self::READ_PRIVILEGES_FROM == 'db') {
 			$query = $adb->pquery(
@@ -306,9 +310,32 @@ class UserPrivileges {
 				array($userId)
 			);
 			$result = $adb->query_result($query, 0, 0);
+
+			if($is_admin == "off" || !$is_admin) {
+				$query = $adb->pquery(
+					"SELECT count(*) FROM sharing_privileges WHERE userid = ?",
+					array($userId)
+				);
+				$sharing_result = $adb->query_result($query, 0, 0);
+				echo "<br> result : " . $result;
+				echo "<br> sharing result : " . $sharing_result;
+				return (($result == 1) && ($sharing_result == 1));
+			}
+
 			return ($result == 1);
 		} else {
 			return file_exists("user_privileges/user_privileges_{$userId}.php");
 		}
 	}
+
+	public static function privsWithoutSharing($userId) {
+		$instance = new self();
+		if (self::READ_PRIVILEGES_FROM == 'file') {
+			$instance->loadUserPrivilegesFile($userId, true);
+		} elseif (self::READ_PRIVILEGES_FROM == 'db') {
+			$instance->loadUserPrivilegesDB($userId, true);
+		}
+		return $instance;
+	}
+
 }
