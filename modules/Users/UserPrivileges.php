@@ -335,5 +335,4 @@ class UserPrivileges {
 		}
 		return $instance;
 	}
-
 }

@@ -238,7 +238,6 @@ class Users extends CRMEntity {
 		// encrypt the password.
 		$salt = substr($this->column_fields["user_name"], 0, 2);
 
-		// Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/4923
 		if ($crypt_type == '') {
 			// Try to get the crypt_type which is in database for the user
 			$crypt_type = $this->get_user_crypt_type();
@@ -490,7 +489,6 @@ class Users extends CRMEntity {
 
 	/**
 	 * Get crypt type to use for password for the user.
-	 * Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/4923
 	 */
 	public function get_user_crypt_type() {
 		$crypt_res = null;

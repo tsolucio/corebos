@@ -134,7 +134,7 @@ if ($nouserstatusrows > 0) {
 	for ($i=0; $i < $nouserstatusrows; $i++) {
 		$status = $adb->query_result($userStatusValues, $i, 'status');
 		if ($status == 'Active') {
-			$lbl_trans_key = 'LBL_ACTIVE'; 
+			$lbl_trans_key = 'LBL_ACTIVE';
 		} else {
 			$lbl_trans_key = 'LBL_INACTIVE';
 		}
