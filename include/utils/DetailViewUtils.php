@@ -29,8 +29,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	$image_path = $theme_path . 'images/';
 	$value = '';
 	$label_fld = array();
-	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
-	require 'user_privileges/sharing_privileges_' . $current_user->id . '.php';
+	$userprivs = $current_user->getPrivileges();
 
 	// vtlib customization: New uitype to handle relation between modules
 	if ($uitype == '10') {
@@ -307,9 +306,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$label_fld[] = $user_name;
 		}
 		$tabidmodule = getTabid($module);
-		if ($is_admin == false && $profileGlobalPermission[2] == 1 && isset($defaultOrgSharingPermission[$tabidmodule])
-			&& ($defaultOrgSharingPermission[$tabidmodule] == 3 || $defaultOrgSharingPermission[$tabidmodule] == 0)
-		) {
+		if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabidmodule)) {
 			$ua = get_user_array(false, 'Active', $assigned_user_id, 'private');
 			$users_combo = get_select_options_array($ua, $assigned_user_id);
 		} else {
@@ -347,9 +344,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 
 		//Security Checks
 		$tabidmodule = getTabid($module);
-		if ($fieldname == 'assigned_user_id' && $is_admin == false && $profileGlobalPermission[2] == 1
-			&& ($defaultOrgSharingPermission[$tabidmodule] == 3 || $defaultOrgSharingPermission[$tabidmodule] == 0)
-		) {
+		if ($fieldname == 'assigned_user_id' && !$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabidmodule)) {
 			$result = get_current_user_access_groups($module);
 		} else {
 			$result = get_group_options();
@@ -388,9 +383,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$team_style = 'display:none';
 		}
 
-		if ($fieldname == 'assigned_user_id' && $is_admin == false && $profileGlobalPermission[2] == 1
-			&& ($defaultOrgSharingPermission[getTabid($module)] == 3 || $defaultOrgSharingPermission[getTabid($module)] == 0)
-		) {
+		if ($fieldname == 'assigned_user_id' && !$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabidmodule)) {
 			$user_array = get_user_array(false, 'Active', $current_user->id, 'private');
 		} else {
 			$user_array = get_user_array(false, 'Active', $current_user->id);
@@ -399,9 +392,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 
 		$groups_combo = '';
 		if ($noof_group_rows != 0) {
-			if ($fieldname == 'assigned_user_id' && $is_admin == false && $profileGlobalPermission[2] == 1
-				&& ($defaultOrgSharingPermission[getTabid($module)] == 3 || $defaultOrgSharingPermission[getTabid($module)] == 0)
-			) {
+			if ($fieldname == 'assigned_user_id' && !$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabidmodule)) {
 				$group_array = get_group_array(false, 'Active', $current_user->id, 'private');
 			} else {
 				$group_array = get_group_array(false, 'Active', $current_user->id);
@@ -431,7 +422,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			} else {
 				$roleids = $roleid;
 			}
-			if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+			if ($userprivs->hasGlobalReadPermission()) {
 				$pick_query = 'select salutationtype from vtiger_salutationtype order by salutationtype';
 				$params = array();
 			} else {
@@ -1587,7 +1578,7 @@ function getDetailAssociatedProducts($module, $focus) {
 	return $output;
 }
 
-/** This function returns the related vtiger_tab details for a given entity or a module.
+/** This function returns the related tab details for a given entity or a module.
  * Param $module - module name
  * Param $focus - module object
  * Return type is an array
@@ -1596,7 +1587,8 @@ function getDetailAssociatedProducts($module, $focus) {
 function getRelatedListsInformation($module, $focus) {
 	global $log, $adb, $current_user;
 	$log->debug('> getRelatedListsInformation ' . $module . ',' . get_class($focus));
-	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
+	$userprivs = $current_user->getPrivileges();
+	$is_admin = is_admin($current_user);
 
 	$cur_tab_id = getTabid($module);
 
@@ -1614,8 +1606,8 @@ function getRelatedListsInformation($module, $focus) {
 		$actions = $adb->query_result($result, $i, 'actions');
 		//$relationId = $adb->query_result($result, $i, 'relation_id');
 		if ($rel_tab_id != 0) {
-			if ($is_admin || $profileTabsPermission[$rel_tab_id] == 0) {
-				if ($is_admin || $profileActionPermission[$rel_tab_id][3] == 0) {
+			if ($is_admin || $userprivs->hasModuleAccess($rel_tab_id)) {
+				if ($is_admin || $userprivs->getModulePermission($rel_tab_id, 3) == 0) {
 					// vtlib customization: Send more information (from module, related module) to the callee
 					$focus_list[$label] = $focus->$function_name($focus->id, $cur_tab_id, $rel_tab_id, $actions);
 				}
@@ -1638,7 +1630,8 @@ function getRelatedListsInformation($module, $focus) {
 function getRelatedLists($module, $focus, $restrictedRelations = null) {
 	global $log, $adb, $current_user;
 	$log->debug('> getRelatedLists ' . $module);
-	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
+	$userprivs = $current_user->getPrivileges();
+	$is_admin = is_admin($current_user);
 
 	$cur_tab_id = getTabid($module);
 
@@ -1661,8 +1654,8 @@ function getRelatedLists($module, $focus, $restrictedRelations = null) {
 		$actions = $adb->query_result($result, $i, 'actions');
 		$relationId = $adb->query_result($result, $i, 'relation_id');
 		if ($rel_tab_id != 0) {
-			if ($is_admin || $profileTabsPermission[$rel_tab_id] == 0) {
-				if ($is_admin || $profileActionPermission[$rel_tab_id][3] == 0) {
+			if ($is_admin || $userprivs->hasModuleAccess($rel_tab_id)) {
+				if ($is_admin || $userprivs->getModulePermission($rel_tab_id, 3) == 0) {
 					// vtlib customization: Send more information (from module, related module) to the callee
 					$focus_list[$label] = array('related_tabid' => $rel_tab_id, 'relationId' => $relationId, 'actions' => $actions);
 				}
@@ -1716,7 +1709,7 @@ function isPresentRelatedLists($module, $activity_mode = '') {
 	if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
 		include 'tabdata.php';
 	}
-	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
+	$userprivs = $current_user->getPrivileges();
 	$tab_id = getTabid($module);
 	// We need to check if there is at least 1 relation, no need to use count(*)
 	$result = $adb->pquery('select relation_id,related_tabid,label from vtiger_relatedlists where tabid=? order by sequence', array($tab_id));
@@ -1733,7 +1726,7 @@ function isPresentRelatedLists($module, $activity_mode = '') {
 				$retval[$relatedId] = $relationLabel;
 			} else {
 				if (isset($tab_seq_array[$relatedTabId]) && $tab_seq_array[$relatedTabId] === 0) {
-					if ($is_admin || $profileTabsPermission[$relatedTabId] === 0) {
+					if ($userprivs->isAdmin() || $userprivs->hasModuleAccess($relatedTabId)) {
 						$retval[$relatedId] = $relationLabel;
 					}
 				}

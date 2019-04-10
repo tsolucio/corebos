@@ -9,7 +9,7 @@
  ************************************************************************************/
 global $adb, $current_user;
 
-require 'user_privileges/user_privileges_'.$current_user->id.'.php';
+$userprivs = $current_user->getPrivileges();
 require_once 'include/utils/GetUserGroups.php';
 $params = array();
 $userGroups = new GetUserGroups();
@@ -28,7 +28,7 @@ if (!is_admin($current_user)) {
 	$summaryReportQuery .= " and ( (".$non_admin_query.") or vtiger_report.sharingtype='Public' or vtiger_report.owner = ? or";
 	$summaryReportQuery .= " vtiger_report.owner in (select vtiger_user2role.userid from vtiger_user2role
 		inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
-		where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%'))";
+		where vtiger_role.parentrole like '".$userprivs->getParentRoleSequence()."::%'))";
 	$params[] = $current_user->id;
 	$params[] = $current_user->id;
 }

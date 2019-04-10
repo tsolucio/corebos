@@ -70,12 +70,5 @@ if (!is_file('modules/Users/Users.php')) {
 	exit();
 }
 
-require_once 'modules/Users/Users.php';
-$user = Users::getActiveAdminUser();
-if (!is_file('user_privileges/user_privileges_'.$user->id.'.php')) {
-	echo 'NOK: missing admin user file';
-	exit();
-}
-
 echo 'OK: basic testing has passed';
 ?>

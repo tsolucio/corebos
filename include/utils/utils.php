@@ -184,8 +184,10 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 	global $log, $current_user;
 	$log->debug('> get_user_array '.$add_blank.','. $status.','.$assigned_user.','.$private);
 	if (isset($current_user) && $current_user->id != '') {
-		require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
-		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
+		$userprivs = $current_user->getPrivileges();
+		$current_user_parent_role_seq = $userprivs->getParentRoleSequence();
+	} else {
+		$current_user_parent_role_seq = '';
 	}
 	static $user_array = null;
 	$module = isset($_REQUEST['module']) ? $_REQUEST['module'] : '';
@@ -276,11 +278,15 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 function get_group_array($add_blank = true, $status = 'Active', $assigned_user = '', $private = '', $force = false) {
 	global $log, $current_user, $currentModule;
 	$log->debug('> get_group_array '.$add_blank.','. $status.','.$assigned_user.','.$private);
-	$current_user_groups = array();
-	$current_user_parent_role_seq = '';
 	if (isset($current_user) && $current_user->id != '') {
-		require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
-		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
+		$userprivs = $current_user->getPrivileges();
+		$current_user_parent_role_seq = $userprivs->getParentRoleSequence();
+		$current_user_groups = $userprivs->getGroups();
+		$parent_roles = $userprivs->getParentRoles();
+	} else {
+		$current_user_parent_role_seq = '';
+		$current_user_groups = array();
+		$parent_roles = array();
 	}
 	static $group_array = null;
 	$module= (isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : $currentModule);
@@ -2896,9 +2902,8 @@ function getSecParameterforMerge($module) {
 	global $current_user;
 	$tab_id = getTabid($module);
 	$sec_parameter='';
-	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
-	require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
-	if ($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3) {
+	$userprivs = $current_user->getPrivileges();
+	if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing($tab_id)) {
 		$sec_parameter=getListViewSecurityParameter($module);
 		if ($module == 'Accounts') {
 			$sec_parameter .= ' AND (vtiger_crmentity.smownerid IN ('.$current_user->id.")
@@ -2907,7 +2912,7 @@ function getSecParameterforMerge($module) {
 				FROM vtiger_user2role
 				INNER JOIN vtiger_users ON vtiger_users.id = vtiger_user2role.userid
 				INNER JOIN vtiger_role ON vtiger_role.roleid = vtiger_user2role.roleid
-				WHERE vtiger_role.parentrole LIKE '".$current_user_parent_role_seq."::%')
+				WHERE vtiger_role.parentrole LIKE '".$userprivs->getParentRoleSequence()."::%')
 				OR vtiger_crmentity.smownerid IN (
 				SELECT shareduserid
 				FROM vtiger_tmp_read_user_sharing_per
@@ -2915,7 +2920,7 @@ function getSecParameterforMerge($module) {
 				OR (vtiger_crmentity.smownerid in (0)
 				AND (';
 
-			if (count($current_user_groups) > 0) {
+			if ($userprivs->hasGroups()) {
 				$sec_parameter .= ' vtiger_groups.groupname IN (
 					SELECT groupname
 					FROM vtiger_groups

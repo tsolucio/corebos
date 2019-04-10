@@ -8,9 +8,8 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once 'modules/Users/Users.php';
-require_once 'modules/Users/CreateUserPrivilegeFile.php';
+require_once 'modules/Users/UserPrivilegesWriter.php';
 require_once 'include/logging.php';
-require_once 'user_privileges/audit_trail.php';
 
 global $mod_strings, $default_charset, $adb, $cbodUniqueUserConnection;
 
@@ -45,7 +44,7 @@ if ($focus->is_authenticated() && !$focus->is_twofaauthenticated()) {
 if ($focus->is_authenticated() && $focus->is_twofaauthenticated()) {
 	coreBOS_Session::destroy();
 	//Inserting entries for audit trail during login
-	if ($audit_trail == 'true') {
+	if (coreBOS_Settings::getSetting('audit_trail', false)) {
 		$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
 		$query = 'insert into vtiger_audit_trial values(?,?,?,?,?,?)';
 		$params = array($adb->getUniqueID('vtiger_audit_trial'), $focus->id, 'Users','Authenticate','',$date_var);
@@ -61,7 +60,7 @@ if ($focus->is_authenticated() && $focus->is_twofaauthenticated()) {
 	$Signin = $loghistory->user_login($focus->column_fields['user_name'], $usip, $intime);
 
 	require_once 'include/utils/UserInfoUtil.php';
-	createUserPrivilegesfile($focus->id);
+	UserPrivilegesWriter::setUserPrivileges($focus->id);
 
 	coreBOS_Session::delete('login_password');
 	coreBOS_Session::delete('login_error');

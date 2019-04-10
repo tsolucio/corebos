@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-@include 'user_privileges/default_module_view.php';
+@include 'modules/Vtiger/default_module_view.php';
 
 global $adb, $currentModule;
 $idlist            = isset($_REQUEST['idlist']) ? vtlib_purify($_REQUEST['idlist']) : '';

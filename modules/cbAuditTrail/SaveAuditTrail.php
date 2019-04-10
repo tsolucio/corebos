@@ -7,33 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-global $root_directory;
-$filename = $root_directory.'user_privileges/audit_trail.php';
-if (is_writable($filename)) {
-	$readhandle = @fopen($filename, 'r+');
 
-	if ($readhandle) {
-		$buffer = '';
-		$new_buffer = '';
-		while (!feof($readhandle)) {
-			$buffer = fgets($readhandle, 5200);
-			list($starter, $tmp) = explode(" = ", $buffer);
+require_once 'include/utils/cbSettings.php';
 
-			if ($starter == '$audit_trail' && stristr($tmp, 'false')) {
-				$new_buffer .= "\$audit_trail = 'true';\n";
-			} elseif ($starter == '$audit_trail' && stristr($tmp, 'true')) {
-				$new_buffer .= "\$audit_trail = 'false';\n";
-			} else {
-				$new_buffer .= $buffer;
-			}
-		}
-		fclose($readhandle);
-	}
-
-	$handle = fopen($filename, 'w');
-	fputs($handle, $new_buffer);
-	fflush($handle);
-	fclose($handle);
-	sleep(3);
-}
-?>
+$audit_trail = coreBOS_Settings::getSetting('audit_trail', false);
+coreBOS_Settings::setSetting('audit_trail', !$audit_trail);

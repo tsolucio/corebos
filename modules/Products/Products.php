@@ -9,7 +9,7 @@
  ************************************************************************************/
 require_once 'include/utils/utils.php';
 require_once 'include/RelatedListView.php';
-require 'user_privileges/default_module_view.php';
+require 'modules/Vtiger/default_module_view.php';
 
 class Products extends CRMEntity {
 	public $db;

@@ -1262,32 +1262,32 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	}
 
 	// Retrieve the profile list from database
-	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
+	$userprivs = $current_user->getPrivileges();
 
 	$selectSql = 'vtiger_field.tablename,'
-		. 'vtiger_field.columnname,'
-		. 'vtiger_field.uitype,'
-		. 'vtiger_field.fieldname,'
-		. 'vtiger_field.fieldid,'
-		. 'vtiger_field.fieldlabel,'
-		. 'vtiger_field.maximumlength,'
-		. 'vtiger_field.block,'
-		. 'vtiger_field.generatedtype,'
-		. 'vtiger_field.tabid,'
-		. 'vtiger_field.defaultvalue,'
-		. 'vtiger_field.typeofdata,'
-		. 'vtiger_field.sequence,'
-		. 'vtiger_field.displaytype';
+		.'vtiger_field.columnname,'
+		.'vtiger_field.uitype,'
+		.'vtiger_field.fieldname,'
+		.'vtiger_field.fieldid,'
+		.'vtiger_field.fieldlabel,'
+		.'vtiger_field.maximumlength,'
+		.'vtiger_field.block,'
+		.'vtiger_field.generatedtype,'
+		.'vtiger_field.tabid,'
+		.'vtiger_field.defaultvalue,'
+		.'vtiger_field.typeofdata,'
+		.'vtiger_field.sequence,'
+		.'vtiger_field.displaytype';
 
-	if ($disp_view == "detail_view") {
-		if ($is_admin == true || $profileGlobalPermission[2] == 0 || $module == 'Users' || $module == 'Emails') {
+	if ($disp_view == 'detail_view') {
+		if ($userprivs->hasGlobalWritePermission() || $module == 'Users' || $module == 'Emails') {
 			$uniqueFieldsRestriction = 'vtiger_field.fieldid IN
 				(select max(vtiger_field.fieldid) from vtiger_field where vtiger_field.tabid=? GROUP BY vtiger_field.columnname)';
 			$sql = "SELECT distinct $selectSql, '0' as readonly
 				FROM vtiger_field WHERE $uniqueFieldsRestriction AND vtiger_field.block IN (".
 				generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4,5) and vtiger_field.presence in (0,2) ORDER BY block,sequence';
 			$params = array($tabid, $blockid_list);
-		} elseif ($profileGlobalPermission[1] == 0) { // view all
+		} elseif ($userprivs->hasGlobalViewPermission()) { // view all
 			$profileList = getCurrentUserProfileList();
 			$sql = "SELECT distinct $selectSql, vtiger_profile2field.readonly
 				FROM vtiger_field
@@ -1314,7 +1314,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 		$getBlockInfo = getDetailBlockInformation($module, $result, $col_fields, $tabid, $block_label);
 	} else {
 		if ($info_type != '') {
-			if ($is_admin == true || $profileGlobalPermission[2] == 0 || $module == 'Users' || $module == "Emails") {
+			if ($userprivs->hasGlobalWritePermission() || $module == 'Users' || $module == 'Emails') {
 				$sql = "SELECT $selectSql, vtiger_field.readonly
 					FROM vtiger_field
 					WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND $display_type_check AND info_type = ? and ".
@@ -1332,7 +1332,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 				$params = array($tabid, $blockid_list, $info_type, $profileList);
 			}
 		} else {
-			if ($is_admin == true || $profileGlobalPermission[2] == 0 || $module == 'Users' || $module == "Emails") {
+			if ($userprivs->hasGlobalWritePermission() || $module == 'Users' || $module == 'Emails') {
 				$sql = "SELECT $selectSql, vtiger_field.readonly
 					FROM vtiger_field
 					WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND $display_type_check and ".
@@ -1908,8 +1908,8 @@ function QuickCreate($module) {
 	$tabid = getTabid($module);
 
 	//Adding Security Check
-	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
-	if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+	$userprivs = $current_user->getPrivileges();
+	if ($userprivs->hasGlobalReadPermission()) {
 		$quickcreate_query = "select *
 			from vtiger_field
 			where (quickcreate in (0,2) or typeofdata like '%~M%') and tabid = ? and vtiger_field.presence in (0,2) and displaytype != 2 order by quickcreatesequence";
@@ -1976,10 +1976,8 @@ function QuickCreate($module) {
 function getUserslist($setdefval = true, $selecteduser = '') {
 	global $log, $current_user, $module;
 	$log->debug('> getUserslist');
-	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
-	require 'user_privileges/sharing_privileges_' . $current_user->id . '.php';
-	$tabid = getTabid($module);
-	if ($is_admin==false && $profileGlobalPermission[2]==1 && (is_null($tabid) || empty($defaultOrgSharingPermission[$tabid]) || $defaultOrgSharingPermission[$tabid]==3)) {
+	$userprivs = $current_user->getPrivileges();
+	if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid($module))) {
 		$user_array = get_user_array(false, 'Active', $current_user->id, 'private');
 	} else {
 		$user_array = get_user_array(false, 'Active', $current_user->id);
@@ -2004,12 +2002,11 @@ function getUserslist($setdefval = true, $selecteduser = '') {
 function getGroupslist() {
 	global $log, $adb, $module, $current_user;
 	$log->debug('> getGroupslist');
-	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
-	require 'user_privileges/sharing_privileges_' . $current_user->id . '.php';
+	$userprivs = $current_user->getPrivileges();
 
 	//Commented to avoid security check for groups
 	$tabid = getTabid($module);
-	if ($is_admin==false && $profileGlobalPermission[2]==1 && (is_null($tabid) || empty($defaultOrgSharingPermission[$tabid]) || $defaultOrgSharingPermission[$tabid]==3)) {
+	if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabid)) {
 		$result = get_current_user_access_groups($module);
 	} else {
 		$result = get_group_options();
@@ -2019,7 +2016,7 @@ function getGroupslist() {
 		$nameArray = $adb->fetch_array($result);
 	}
 	if (!empty($nameArray)) {
-		if ($is_admin==false && $profileGlobalPermission[2]==1 && (is_null($tabid) || empty($defaultOrgSharingPermission[$tabid]) || $defaultOrgSharingPermission[$tabid]==3)) {
+		if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabid)) {
 			$group_array = get_group_array(false, 'Active', $current_user->id, 'private');
 		} else {
 			$group_array = get_group_array(false, 'Active', $current_user->id);

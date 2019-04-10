@@ -17,6 +17,8 @@ require_once 'data/Tracker.php';
 require_once 'include/utils/CommonUtils.php';
 require_once 'include/Webservices/Utils.php';
 require_once 'modules/Users/UserTimeZonesArray.php';
+require_once 'modules/Users/UserPrivilegesWriter.php';
+require_once 'modules/Users/UserPrivileges.php';
 include_once 'modules/Users/authTypes/TwoFactorAuth/autoload.php';
 use \RobThree\Auth\TwoFactorAuth;
 
@@ -118,30 +120,15 @@ class Users extends CRMEntity {
 	public $default_order_by = "user_name";
 	public $default_sort_order = 'ASC';
 
-	/**
-	 * Function to get the Headers of Users Information like User ID, Name, Role, Email.
-	 * Returns Header Values like User ID, Email etc in an array format.
-	**/
-	public function getUserListHeader() {
-		global $log, $app_strings;
-		$log->debug('Entering getUserListHeader() method ...');
-		$module = 'Users';
-		$header_array = array(
-			getTranslatedString('LBL_TOOLS', $module ),
-			'<a>'.getTranslatedString('LBL_LIST_USER_NAME_ROLE', $module ).'</a>',
-			'<a>'.getTranslatedString('LBL_EMAILS', $module).'</a>',
-			'<a>'.getTranslatedString('LBL_ADMIN', $module).'</a>',
-			'<a>'.getTranslatedString('Other Email', $module).'</a>',
-			'<a>'.getTranslatedString('LBL_STATUS', $module).'</a>'
-		);
-		$log->debug('Exiting getUserListHeader() method ...');
-		return $header_array;
-	}
-
 	public $record_id;
 
 	public $DEFAULT_PASSWORD_CRYPT_TYPE;
 	//'BLOWFISH', /* before PHP5.3*/ MD5;
+
+	/**
+	 * @var UserPrivileges
+	 */
+	private $privileges;
 
 	/** constructor function for the main user class
 	 instantiates the Logger class and PearDatabase Class
@@ -590,8 +577,8 @@ class Users extends CRMEntity {
 			where id=?";
 		$this->db->pquery($query, array($encrypted_new_password, $encrypted_new_password, $crypt_type, $change_password_next_login, $this->id));
 		$this->createAccessKey();
-		require_once 'modules/Users/CreateUserPrivilegeFile.php';
-		createUserPrivilegesfile($this->id);
+		require_once 'modules/Users/UserPrivilegesWriter.php';
+		UserPrivilegesWriter::setUserPrivileges($this->id);
 		return true;
 	}
 
@@ -737,15 +724,15 @@ class Users extends CRMEntity {
 	 */
 	public function retrieveCurrentUserInfoFromFile($userid) {
 		global $adb, $site_URL;
-		checkFileAccessForInclusion('user_privileges/user_privileges_' . $userid . '.php');
-		require 'user_privileges/user_privileges_' . $userid . '.php';
+		$this->id = $userid;
+		$userprivs = $this->getPrivileges();
+		$user_info = $userprivs->getUserInfo();
 		foreach ($this->column_fields as $field => $value_iter) {
 			if (isset($user_info[$field])) {
 				$this->$field = $user_info[$field];
 				$this->column_fields[$field] = $user_info[$field];
 			}
 		}
-		$this->id = $userid;
 		$imageurl = '';
 		$image_name = $this->column_fields['imagename'];
 		if ($image_name != '') {
@@ -797,8 +784,8 @@ class Users extends CRMEntity {
 				$this->insertIntoEntityTable($table_name, $module, $fileid);
 			}
 		}
-		require_once 'modules/Users/CreateUserPrivilegeFile.php';
-		createUserPrivilegesfile($this->id);
+		require_once 'modules/Users/UserPrivilegesWriter.php';
+		UserPrivilegesWriter::setUserPrivileges($this->id);
 		coreBOS_Session::delete('next_reminder_interval');
 		coreBOS_Session::delete('next_reminder_time');
 		if ($insertion_mode != 'edit') {
@@ -1156,10 +1143,10 @@ class Users extends CRMEntity {
 		if (isset($this->column_fields['roleid'])) {
 			updateUser2RoleMapping($this->column_fields['roleid'], $this->id);
 		}
-		require_once 'modules/Users/CreateUserPrivilegeFile.php';
+		require_once 'modules/Users/UserPrivilegesWriter.php';
 		//createUserPrivilegesfile($this->id); // done in saveentity above
 		if ($this->mode!='edit' || $oldrole != $this->column_fields['roleid']) {
-			createUserSharingPrivilegesfile($this->id);
+			UserPrivilegesWriter::setUserPrivileges($this->id);
 		}
 		// ODController
 		if ($cbodUserLog) {
@@ -1402,7 +1389,6 @@ class Users extends CRMEntity {
 				where vtiger_homestuff.stuffid=vtiger_homedefault.stuffid and vtiger_homestuff.userid=? and vtiger_homedefault.hometype=?';
 			foreach ($this->homeorder_array as $key => $value) {
 				if ($_REQUEST[$key] != '') {
-					$save_array[] = $key;
 					$visible = 0; //To show the default Homestuff on the the Home Page
 				} else {
 					$visible = 1; //To hide the default Homestuff on the the Home Page
@@ -1624,6 +1610,26 @@ class Users extends CRMEntity {
 	}
 
 	/**
+	 * Function to get the Headers of Users Information like User ID, Name, Role, Email.
+	 * Returns Header Values like User ID, Email etc in an array format.
+	**/
+	public function getUserListHeader() {
+		global $log;
+		$log->debug('Entering getUserListHeader() method ...');
+		$module = 'Users';
+		$header_array = array(
+			getTranslatedString('LBL_TOOLS', $module),
+			'<a>'.getTranslatedString('LBL_LIST_USER_NAME_ROLE', $module).'</a>',
+			'<a>'.getTranslatedString('LBL_EMAILS', $module).'</a>',
+			'<a>'.getTranslatedString('LBL_ADMIN', $module).'</a>',
+			'<a>'.getTranslatedString('Other Email', $module).'</a>',
+			'<a>'.getTranslatedString('LBL_STATUS', $module).'</a>'
+		);
+		$log->debug('Exiting getUserListHeader() method ...');
+		return $header_array;
+	}
+
+	/**
 	 * $adminstatus, $userstatus, $page, $order_by, $sorder, $email_search, $namerole_search
 	 * public function getUsersJSON($userid, $page, $order_by = 'module_name', $sorder = 'DESC', $action_search = '')
 	 */
@@ -1696,7 +1702,7 @@ class Users extends CRMEntity {
 				$fieldId = $adb->getone("select fieldid from vtiger_field where tabid=".$tabid." and tablename='vtiger_users' and fieldname='email1'");
 				$fieldName = "email1";
 				$value = $lgn['email1'];
-				$entry['sendmail'] = "<a href=\"javascript:InternalMailer($recordId,$fieldId,"."'$fieldName','$module','record_id');\">".textlength_check($value)."</a>";
+				$entry['sendmail'] = "<a href=\"javascript:InternalMailer($recordId, $fieldId, '$fieldName', '$module', 'record_id');\">".textlength_check($value).'</a>';
 			} else {
 				$entry['sendmail'] = '<a href="mailto:'.$value.'">'.textlength_check($value).'</a>';
 			}
@@ -1743,6 +1749,21 @@ class Users extends CRMEntity {
 		}
 		$log->debug('< getUsersJSON');
 		return json_encode($entries_list);
+	}
+
+	/**
+	 * @return UserPrivileges
+	 */
+	public function getPrivileges() {
+		if (!UserPrivileges::hasPrivileges($this->id, $this->is_admin)) {
+			UserPrivilegesWriter::setUserPrivileges($this->id);
+			UserPrivilegesWriter::setSharingPrivileges($this->id);
+			$this->privileges = new UserPrivileges($this->id);
+		}
+		if (!$this->privileges) {
+			$this->privileges = new UserPrivileges($this->id);
+		}
+		return $this->privileges;
 	}
 }
 ?>

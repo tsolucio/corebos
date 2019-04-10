@@ -23,7 +23,7 @@ $smarty->assign('MOD', $mod_strings);
 
 $Calendar4You = new Calendar4You();
 
-$Calendar4You->GetDefPermission($current_user->id);
+$Calendar4You->GetDefPermission($current_user);
 $Calendar4You->setgoogleaccessparams($current_user->id);
 $Ch_Views = $Calendar4You->GetView();
 
