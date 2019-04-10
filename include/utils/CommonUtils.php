@@ -1265,21 +1265,21 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	$userprivs = $current_user->getPrivileges();
 
 	$selectSql = 'vtiger_field.tablename,'
-		. 'vtiger_field.columnname,'
-		. 'vtiger_field.uitype,'
-		. 'vtiger_field.fieldname,'
-		. 'vtiger_field.fieldid,'
-		. 'vtiger_field.fieldlabel,'
-		. 'vtiger_field.maximumlength,'
-		. 'vtiger_field.block,'
-		. 'vtiger_field.generatedtype,'
-		. 'vtiger_field.tabid,'
-		. 'vtiger_field.defaultvalue,'
-		. 'vtiger_field.typeofdata,'
-		. 'vtiger_field.sequence,'
-		. 'vtiger_field.displaytype';
+		.'vtiger_field.columnname,'
+		.'vtiger_field.uitype,'
+		.'vtiger_field.fieldname,'
+		.'vtiger_field.fieldid,'
+		.'vtiger_field.fieldlabel,'
+		.'vtiger_field.maximumlength,'
+		.'vtiger_field.block,'
+		.'vtiger_field.generatedtype,'
+		.'vtiger_field.tabid,'
+		.'vtiger_field.defaultvalue,'
+		.'vtiger_field.typeofdata,'
+		.'vtiger_field.sequence,'
+		.'vtiger_field.displaytype';
 
-	if ($disp_view == "detail_view") {
+	if ($disp_view == 'detail_view') {
 		if ($userprivs->hasGlobalWritePermission() || $module == 'Users' || $module == 'Emails') {
 			$uniqueFieldsRestriction = 'vtiger_field.fieldid IN
 				(select max(vtiger_field.fieldid) from vtiger_field where vtiger_field.tabid=? GROUP BY vtiger_field.columnname)';

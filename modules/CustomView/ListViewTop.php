@@ -39,7 +39,7 @@ function getKeyMetrics($maxval, $calCnt) {
 	require_once 'include/logging.php';
 	require_once 'include/ListView/ListView.php';
 
-	global $app_strings, $adb, $log, $current_language;
+	global $app_strings, $adb, $log;
 
 	$log = LoggerManager::getLogger('metrics');
 

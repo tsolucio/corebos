@@ -269,7 +269,7 @@ function NOPermissionDiv() {
 }
 
 function getCalendar4YouListQuery($userid, $invites, $where = '', $type = '1') {
-	global $log, $adb, $current_user;
+	global $log, $adb;
 	$log->debug('> getCalendar4YouListQuery '.$userid.','.$where);
 	//$tab_id = getTabid('Calendar4You');
 	//$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' =>'vtiger_users.last_name'), 'Users');

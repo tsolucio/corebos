@@ -2777,7 +2777,6 @@ function getRelatedToEntity($module, $list_result, $rset) {
 //used in home page listTop files
 function getRelatedTo($module, $list_result, $rset) {
 	global $adb, $log, $app_strings;
-	$tabname = getParentTab();
 	if ($module == 'Documents') {
 		$notesid = $adb->query_result($list_result, $rset, 'notesid');
 		$evt_query = 'SELECT vtiger_senotesrel.crmid, vtiger_crmentity.setype

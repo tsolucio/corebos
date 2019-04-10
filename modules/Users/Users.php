@@ -1409,7 +1409,6 @@ class Users extends CRMEntity {
 				where vtiger_homestuff.stuffid=vtiger_homedefault.stuffid and vtiger_homestuff.userid=? and vtiger_homedefault.hometype=?';
 			foreach ($this->homeorder_array as $key => $value) {
 				if ($_REQUEST[$key] != '') {
-					$save_array[] = $key;
 					$visible = 0; //To show the default Homestuff on the the Home Page
 				} else {
 					$visible = 1; //To hide the default Homestuff on the the Home Page
@@ -1705,7 +1704,7 @@ class Users extends CRMEntity {
 				$fieldId = $adb->getone("select fieldid from vtiger_field where tabid=".$tabid." and tablename='vtiger_users' and fieldname='email1'");
 				$fieldName = "email1";
 				$value = $lgn['email1'];
-				$entry['sendmail'] = "<a href=\"javascript:InternalMailer($recordId,$fieldId,"."'$fieldName','$module','record_id');\">".textlength_check($value)."</a>";
+				$entry['sendmail'] = "<a href=\"javascript:InternalMailer($recordId, $fieldId, '$fieldName', '$module', 'record_id');\">".textlength_check($value).'</a>';
 			} else {
 				$entry['sendmail'] = '<a href="mailto:'.$rawValue.'">'.textlength_check($value).'</a>';
 			}

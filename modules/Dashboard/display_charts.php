@@ -10,7 +10,7 @@
 
 function dashBoardDisplayChart() {
 	require_once 'modules/Dashboard/Entity_charts.php';
-	global $tmp_dir,$adb, $mod_strings,$app_strings, $current_user, $current_language;
+	global $adb, $mod_strings, $current_user, $current_language;
 	$userprivs = $current_user->getPrivileges();
 	$is_admin = is_admin($current_user);
 	$mod_strings = return_module_language($current_language, 'Dashboard');

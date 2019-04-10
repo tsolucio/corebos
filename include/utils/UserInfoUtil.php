@@ -527,7 +527,7 @@ function isPermitted($module, $actionname, $record_id = '') {
  * @returns yes or no. If Yes means this action is allowed for the currently logged in user. If no means this action is not allowed for the currently logged in user
  */
 function _vtisPermitted($module, $actionname, $record_id = '') {
-	global $log, $adb, $current_user, $seclog;
+	global $log, $adb, $current_user;
 	$log->debug('> isPermitted '.$module.','.$actionname.','.$record_id);
 	if (strpos($record_id, 'x')>0) { // is webserviceid
 		list($void,$record_id) = explode('x', $record_id);
@@ -659,7 +659,7 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 			return $permission;
 		}
 		//Checking if the Record Owner is the Subordinate User
-		foreach ($userprivs->getSubordinateRoles2Users() as $roleid => $userids) {
+		foreach ($userprivs->getSubordinateRoles2Users() as $userids) {
 			if (in_array($recOwnId, $userids)) {
 				$permission = 'yes';
 				$log->debug('< isPermitted');
@@ -2815,7 +2815,7 @@ function getSubordinateUsersList() {
 	$user_array=array();
 	$userprivs = $current_user->getPrivileges();
 
-	foreach ($userprivs->getSubordinateRoles2Users() as $roleid => $userArray) {
+	foreach ($userprivs->getSubordinateRoles2Users() as $userArray) {
 		foreach ($userArray as $userid) {
 			if (!in_array($userid, $user_array)) {
 				$user_array[]=$userid;
