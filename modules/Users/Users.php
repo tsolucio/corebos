@@ -17,6 +17,8 @@ require_once 'data/Tracker.php';
 require_once 'include/utils/CommonUtils.php';
 require_once 'include/Webservices/Utils.php';
 require_once 'modules/Users/UserTimeZonesArray.php';
+require_once 'modules/Users/UserPrivilegesWriter.php';
+require_once 'modules/Users/UserPrivileges.php';
 include_once 'modules/Users/authTypes/TwoFactorAuth/autoload.php';
 use \RobThree\Auth\TwoFactorAuth;
 
@@ -142,6 +144,11 @@ class Users extends CRMEntity {
 
 	public $DEFAULT_PASSWORD_CRYPT_TYPE;
 	//'BLOWFISH', /* before PHP5.3*/ MD5;
+
+	/**
+	 * @var UserPrivileges
+	 */
+	private $privileges;
 
 	/** constructor function for the main user class
 	 instantiates the Logger class and PearDatabase Class
@@ -590,8 +597,8 @@ class Users extends CRMEntity {
 			where id=?";
 		$this->db->pquery($query, array($encrypted_new_password, $encrypted_new_password, $crypt_type, $change_password_next_login, $this->id));
 		$this->createAccessKey();
-		require_once 'modules/Users/CreateUserPrivilegeFile.php';
-		createUserPrivilegesfile($this->id);
+		require_once 'modules/Users/UserPrivilegesWriter.php';
+		UserPrivilegesWriter::setUserPrivileges($this->id);
 		return true;
 	}
 
@@ -737,15 +744,15 @@ class Users extends CRMEntity {
 	 */
 	public function retrieveCurrentUserInfoFromFile($userid) {
 		global $adb, $site_URL;
-		checkFileAccessForInclusion('user_privileges/user_privileges_' . $userid . '.php');
-		require 'user_privileges/user_privileges_' . $userid . '.php';
+		$this->id = $userid;
+		$userprivs = $this->getPrivileges();
+		$user_info = $userprivs->getUserInfo();
 		foreach ($this->column_fields as $field => $value_iter) {
 			if (isset($user_info[$field])) {
 				$this->$field = $user_info[$field];
 				$this->column_fields[$field] = $user_info[$field];
 			}
 		}
-		$this->id = $userid;
 		$imageurl = '';
 		$image_name = $this->column_fields['imagename'];
 		if ($image_name != '') {
@@ -797,8 +804,8 @@ class Users extends CRMEntity {
 				$this->insertIntoEntityTable($table_name, $module, $fileid);
 			}
 		}
-		require_once 'modules/Users/CreateUserPrivilegeFile.php';
-		createUserPrivilegesfile($this->id);
+		require_once 'modules/Users/UserPrivilegesWriter.php';
+		UserPrivilegesWriter::setUserPrivileges($this->id);
 		coreBOS_Session::delete('next_reminder_interval');
 		coreBOS_Session::delete('next_reminder_time');
 		if ($insertion_mode != 'edit') {
@@ -1156,10 +1163,10 @@ class Users extends CRMEntity {
 		if (isset($this->column_fields['roleid'])) {
 			updateUser2RoleMapping($this->column_fields['roleid'], $this->id);
 		}
-		require_once 'modules/Users/CreateUserPrivilegeFile.php';
+		require_once 'modules/Users/UserPrivilegesWriter.php';
 		//createUserPrivilegesfile($this->id); // done in saveentity above
 		if ($this->mode!='edit' || $oldrole != $this->column_fields['roleid']) {
-			createUserSharingPrivilegesfile($this->id);
+			UserPrivilegesWriter::setUserPrivileges($this->id);
 		}
 		// ODController
 		if ($cbodUserLog) {
@@ -1745,6 +1752,21 @@ class Users extends CRMEntity {
 		}
 		$log->debug('< getUsersJSON');
 		return json_encode($entries_list);
+	}
+
+	/**
+	 * @return UserPrivileges
+	 */
+	public function getPrivileges() {
+		if (!UserPrivileges::hasPrivileges($this->id)) {
+			UserPrivilegesWriter::setUserPrivileges($this->id);
+			UserPrivilegesWriter::setSharingPrivileges($this->id);
+			$this->privileges = new UserPrivileges($this->id);
+		}
+		if (!$this->privileges) {
+			$this->privileges = new UserPrivileges($this->id);
+		}
+		return $this->privileges;
 	}
 }
 ?>

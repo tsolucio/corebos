@@ -59,8 +59,7 @@ class Appointment
 	function readAppointment($userid, &$from_datetime, &$to_datetime, $view)
 	{
 		global $current_user,$adb;
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+		$userprivs = $current_user->getPrivileges();
 		$and = "AND (
 					(
 						(
@@ -113,24 +112,22 @@ class Appointment
 			$startDate->getDBInsertDateTimeValue(), $endDate->getDBInsertDateTimeValue(),
 			$startDate->getDBInsertDateTimeValue(), $endDate->getDBInsertDateTimeValue()
 		);
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[16] == 3)
+		if(!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing(getTabid('Events')))
 		{
 			//Added for User Based Custom View for Calendar
 			$sec_parameter=getCalendarViewSecurityParameter();
 			$q .= $sec_parameter;
 		}
-									
-        $q .= " AND vtiger_recurringevents.activityid is NULL ";
-        $q .= " group by vtiger_activity.activityid ORDER by vtiger_activity.date_start,vtiger_activity.time_start";
+
+		$q .= " AND vtiger_recurringevents.activityid is NULL ";
+		$q .= " group by vtiger_activity.activityid ORDER by vtiger_activity.date_start,vtiger_activity.time_start";
 
 		$r = $adb->pquery($q, $params);
 		$n = $adb->getRowCount($r);
-        $a = 0;
+		$a = 0;
 		$list = Array();
 		
-        while ( $a < $n )
-        {
-			
+		while ( $a < $n ) {
 			$result = $adb->fetchByAssoc($r);
 			$from = strtotime($result['date_start']);
 			$to = strtotime($result['due_date']. ' '. $result["time_end"]);

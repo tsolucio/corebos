@@ -646,10 +646,9 @@ function AddContacts($username, $session, $cntdtls) {
 
 	$contact = new Contacts();
 
-	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
-	require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
+	$userprivs = $current_user->getPrivileges();
 
-	if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+	if ($userprivs->hasGlobalReadPermission()) {
 		$sql1 = 'select fieldname,columnname from vtiger_field where tabid=4 and vtiger_field.presence in (0,2)';
 		$params1 = array();
 	} else {
@@ -731,10 +730,9 @@ function UpdateContacts($username, $session, $cntdtls) {
 	$current_user->retrieve_entity_info($user_id, "Users");
 
 	$contact = new Contacts();
-	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
-	require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
+	$userprivs = $current_user->getPrivileges();
 
-	if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+	if ($userprivs->hasGlobalReadPermission()) {
 		$sql1 = 'select fieldname,columnname from vtiger_field where tabid=4 and vtiger_field.presence in (0,2)';
 		$params1 = array();
 	} else {
@@ -939,10 +937,9 @@ function AddTasks($username, $session, $taskdtls) {
 	$current_user = $seed_user;
 	$current_user->retrieve_entity_info($user_id, "Users");
 
-	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
-	require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
+	$userprivs = $current_user->getPrivileges();
 
-	if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+	if ($userprivs->hasGlobalReadPermission()) {
 		$sql1 = 'select fieldname,columnname from vtiger_field where tabid=9 and vtiger_field.presence in (0,2)';
 		$params1 = array();
 	} else {
@@ -1020,10 +1017,9 @@ function UpdateTasks($username, $session, $taskdtls) {
 	$current_user = $seed_user;
 	$current_user->retrieve_entity_info($user_id, "Users");
 
-	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
-	require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
+	$userprivs = $current_user->getPrivileges();
 
-	if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+	if ($userprivs->hasGlobalReadPermission()) {
 		$sql1 = 'select fieldname,columnname from vtiger_field where tabid=9 and vtiger_field.presence in (0,2)';
 		$params1 = array();
 	} else {
@@ -1184,10 +1180,9 @@ function AddClndr($username, $session, $clndrdtls) {
 	$current_user = $seed_user;
 	$current_user->retrieve_entity_info($user_id, "Users");
 
-	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
-	require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
+	$userprivs = $current_user->getPrivileges();
 
-	if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+	if ($userprivs->hasGlobalReadPermission()) {
 		$sql1 = 'select fieldname,columnname from vtiger_field where tabid=16 and vtiger_field.presence in (0,2)';
 		$params1 = array();
 	} else {
@@ -1259,10 +1254,9 @@ function UpdateClndr($username, $session, $clndrdtls) {
 	$current_user = $seed_user;
 	$current_user->retrieve_entity_info($user_id, "Users");
 
-	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
-	require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
+	$userprivs = $current_user->getPrivileges();
 
-	if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+	if ($userprivs->hasGlobalReadPermission()) {
 		$sql1 = 'select fieldname,columnname from vtiger_field where tabid=16 and vtiger_field.presence in (0,2)';
 		$params1 = array();
 	} else {

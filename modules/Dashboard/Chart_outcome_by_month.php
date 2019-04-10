@@ -9,11 +9,10 @@
  ********************************************************************************/
 require_once 'include/utils/utils.php';
 require_once 'include/logging.php';
-require_once "modules/Dashboard/DashboardCharts.php";
-global $current_language, $currentModule, $action, $theme;
+require_once 'modules/Dashboard/DashboardCharts.php';
+global $current_language, $currentModule, $action, $theme, $current_user;
 $current_module_strings = return_module_language($current_language, 'Dashboard');
-require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
-require 'user_privileges/user_privileges_'.$current_user->id.'.php';
+$userprivs = $current_user->getPrivileges();
 
 $log = LoggerManager::getLogger('outcome_by_month');
 
@@ -115,8 +114,7 @@ if (isset($_SESSION['obm_date_end'])) {
 </tr><tr>
 <td nowrap><?php echo $current_module_strings['LBL_USERS'];?></td>
 <?php
-$pottabid = getTabid('Potentials');
-if ($is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$pottabid] == 3 || $defaultOrgSharingPermission[$pottabid] == 0)) {
+if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid('Potentials'))) {
 ?>
 	<td valign='top' ><select name="obm_ids[]" multiple size='3'><?php
 	$usrarray = get_user_array(false, 'Active', $current_user->id, 'private');

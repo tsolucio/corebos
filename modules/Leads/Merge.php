@@ -46,8 +46,8 @@ if ($mass_merge != '') {
 
 //<<<<<<<<<<<<<<<<header for csv and select columns for query>>>>>>>>>>>>>>>>>>>>>>>>
 global $current_user;
-require 'user_privileges/user_privileges_'.$current_user->id.'.php';
-if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0 || $module == "Users" || $module == "Emails") {
+$userprivs = $current_user->getPrivileges();
+if ($userprivs->hasGlobalReadPermission() || $module == 'Users' || $module == 'Emails') {
 	$query1="select vtiger_field.tablename,vtiger_field.columnname,vtiger_field.fieldlabel
 		from vtiger_field
 		where vtiger_field.tabid=7 and vtiger_field.presence in (0,2)

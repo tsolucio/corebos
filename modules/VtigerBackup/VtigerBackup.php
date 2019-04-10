@@ -135,13 +135,13 @@ class VtigerBackup {
 	}
 
 	public function isLocalBackupEnabled() {
-		require 'user_privileges/enable_backup.php';
-		return $enable_local_backup == 'true';
+		require_once 'include/utils/cbSettings.php';
+		return coreBOS_Settings::getSetting('enable_local_backup', false);
 	}
 
 	public function isFTPBackupEnabled() {
-		require 'user_privileges/enable_backup.php';
-		return $enable_ftp_backup == 'true';
+		require_once 'include/utils/cbSettings.php';
+		return coreBOS_Settings::getSetting('enable_ftp_backup', false);
 	}
 
 	 /**

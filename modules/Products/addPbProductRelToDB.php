@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once 'include/database/PearDatabase.php';
-require 'user_privileges/default_module_view.php';
+require 'modules/Vtiger/default_module_view.php';
 global $adb, $log;
 $idlist = vtlib_purify($_POST['idlist']);
 $returnmodule = urlencode(vtlib_purify($_REQUEST['return_module']));

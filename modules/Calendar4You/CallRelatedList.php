@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once 'Smarty_setup.php';
-require 'user_privileges/default_module_view.php';
+require 'modules/Vtiger/default_module_view.php';
 require_once 'modules/Calendar4You/Calendar4You.php';
 require_once 'modules/Calendar4You/CalendarUtils.php';
 
