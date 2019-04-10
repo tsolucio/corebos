@@ -52,7 +52,7 @@
 			<div class="slds-grid slds-gutters" style="width: 650px;">
 				<div class="slds-col">
 					<div class="slds-form-element slds-lookup" data-select="single" style="width: 162px; margin-bottom: 6px;">
-						<label class="slds-form-element__label" for="lookup-339">{'LBL_STATUS'|getTranslatedString:'Users'} {'LBL_SEARCH'|getTranslatedString:'Settings'}</label>
+						<label class="slds-form-element__label" for="lookup-339">{'LBL_STATUS'|getTranslatedString:'Users'}</label>
 						<div class="slds-form-element__control slds-grid slds-box_border">
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
 								<svg aria-hidden="true" class="slds-input__icon">
@@ -70,8 +70,7 @@
 				<div class="slds-col">
 					<div class="slds-form-element" style="width: 162px; margin-bottom: 6px;">
 						<label class="slds-form-element__label" for="text-input-id-1">
-						{'LBL_USERNAME'|getTranslatedString:'Settings'} {'LBL_SEARCH'|getTranslatedString:'Settings'}
-						</label>
+						{'LBL_USERNAME'|getTranslatedString:'Settings'}</label>
 						<div class="slds-form-element__control">
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
 								<svg aria-hidden="true" class="slds-input__icon">
@@ -85,8 +84,7 @@
 				<div class="slds-col">
 					<div class="slds-form-element" style="width: 162px;">
 						<label class="slds-form-element__label" for="text-input-id-1">
-						{'LBL_EMAIL'|getTranslatedString:'Settings'} {'LBL_SEARCH'|getTranslatedString:'Settings'}
-						</label>
+						{'LBL_EMAIL'|getTranslatedString:'Settings'}</label>
 						<div class="slds-form-element__control">
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
 								<svg aria-hidden="true" class="slds-input__icon">
@@ -99,7 +97,7 @@
 				</div>
 				<div class="slds-col">
 					<div class="slds-form-element slds-lookup" data-select="single" style="width: 162px; margin-bottom: 6px;">
-						<label class="slds-form-element__label" for="lookup-339">{'LBL_ADMIN'|getTranslatedString:'Settings'} {'LBL_SEARCH'|getTranslatedString:'Settings'}</label>
+						<label class="slds-form-element__label" for="lookup-339">{'LBL_ADMIN'|getTranslatedString:'Settings'}</label>
 						<div class="slds-form-element__control slds-grid slds-box_border">
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
 								<svg aria-hidden="true" class="slds-input__icon">
