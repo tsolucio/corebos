@@ -72,7 +72,7 @@ class UserPrivileges {
 			$this->subordinate_roles = $subordinate_roles;
 			$this->parent_roles = $parent_roles;
 			$this->subordinate_roles_users = $subordinate_roles_users;
-			if(!$withot_sharing) {
+			if (!$withot_sharing) {
 				$this->loadSharingPrivilegesFile($userid);
 			}
 		}
@@ -125,7 +125,7 @@ class UserPrivileges {
 			$this->subordinate_roles = $user_data["subordinate_roles"];
 			$this->parent_roles = $user_data["parent_roles"];
 			$this->subordinate_roles_users = $user_data["subordinate_roles_users"];
-			if(!$withot_sharing) {
+			if (!$withot_sharing) {
 				$this->loadSharingPrivilegesDB($userid);
 			}
 		}
@@ -311,14 +311,12 @@ class UserPrivileges {
 			);
 			$result = $adb->query_result($query, 0, 0);
 
-			if($is_admin == "off" || !$is_admin) {
+			if ($is_admin == "off" || !$is_admin) {
 				$query = $adb->pquery(
-					"SELECT count(*) FROM sharing_privileges WHERE userid = ?",
+					'SELECT count(*) FROM sharing_privileges WHERE userid = ?',
 					array($userId)
 				);
 				$sharing_result = $adb->query_result($query, 0, 0);
-				echo "<br> result : " . $result;
-				echo "<br> sharing result : " . $sharing_result;
 				return (($result == 1) && ($sharing_result == 1));
 			}
 
@@ -329,7 +327,7 @@ class UserPrivileges {
 	}
 
 	public static function privsWithoutSharing($userId) {
-		$instance = new self();
+		$instance = new self($userId);
 		if (self::READ_PRIVILEGES_FROM == 'file') {
 			$instance->loadUserPrivilegesFile($userId, true);
 		} elseif (self::READ_PRIVILEGES_FROM == 'db') {
