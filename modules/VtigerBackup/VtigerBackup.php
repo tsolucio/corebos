@@ -94,7 +94,7 @@ class VtigerBackup {
 			case 'test':
 				return $this->getTestFolderPath();
 			case 'user_privileges':
-				return $this->getUserPreviligesPath();
+				return $this->getUserPrivilegesPath();
 		}
 	}
 
@@ -128,7 +128,7 @@ class VtigerBackup {
 		return $rootPath.'test'.DIRECTORY_SEPARATOR;
 	}
 
-	public function getUserPreviligesPath() {
+	public function getUserPrivilegesPath() {
 		require 'config.inc.php';
 		$rootPath = $this->addTrailingSlash($this->fixPathSeparator($root_directory));
 		return $rootPath.'user_privileges'.DIRECTORY_SEPARATOR;
