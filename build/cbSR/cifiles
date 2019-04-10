@@ -1,4 +1,4 @@
---ignore=modules/cbMap/libs/crXml.php,*css,*.js,modules/Project/BURAK_Gantt.class.php,checkthese/*,include/integrations/zendesk/vendor
+--ignore=modules/cbMap/libs/crXml.php,*css,*.js,modules/Project/BURAK_Gantt.class.php,authTypes/*,checkthese/*,include/integrations/zendesk/vendor
 modules/Accounts
 modules/Assets
 modules/BusinessActions
@@ -9,6 +9,7 @@ modules/cbCompany
 modules/cbCVManagement
 modules/cbLoginHistory
 modules/cbMap
+modules/cbPulse
 modules/cbQuestion
 modules/cbSurvey
 modules/cbSurveyAnswer
@@ -26,6 +27,8 @@ modules/CustomerPortal
 modules/CustomView
 modules/Dashboard
 modules/Documents
+modules/EtiquetasOO
+modules/evvtgendoc
 modules/evvtMenu
 modules/Faq
 modules/GlobalVariable
@@ -36,9 +39,11 @@ modules/InventoryDetails
 modules/Invoice
 modules/Leads
 modules/MailManager
+modules/Messages
 modules/Mobile
 modules/ModComments
 modules/ModTracker
+modules/MsgTemplate
 modules/PBXManager
 modules/PickList
 modules/Portal
@@ -60,6 +65,7 @@ modules/Services
 modules/Settings
 modules/SMSNotifier
 modules/Tooltip
+modules/Users
 modules/Utilities
 modules/Vendors
 modules/Vtiger
@@ -132,6 +138,7 @@ cron
 data
 index.php
 Mobile.php
+notifications.php
 phpversionfail.php
 ping.php
 Popup.php
@@ -173,6 +180,8 @@ include/wsClient
 include/validation/example.php
 include/validation/load_validations.php
 include/validation/validateCPFCNPJ.php
+include/validation/validateEmailWithZB.php
+include/validation/validatePIVA.php
 include/validation/Validations.php
 include/validation/validatorESIDNumber.php
 include/cbmqtm/cbmqtm_dbdistributor.php
