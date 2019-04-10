@@ -105,7 +105,7 @@ class OpenDocument_TextTime extends OpenDocument_StyledElement {
 	 * @return OpenDocument_TextTime
 	 * @throws OpenDocument_Exception
 	 */
-	public static function instance($object, $content, $tval = '', $fval, $sname = '') {
+	public static function instance($object, $content, $tval = '', $fval = '', $sname = '') {
 		if ($object instanceof OpenDocument) {
 			$document = $object;
 			$node = $object->cursor;

@@ -422,8 +422,7 @@ if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language 
 			} elseif (areModulesRelated($token_pair[0], $module)) {
 				$reemplazo = retrieve_from_db($marcador, $focus->column_fields[$related_module[$module][$token_pair[0]]], $token_pair[0]);
 			} elseif ($token_pair[0] == 'Organization') {
-				$SQL = "SELECT * FROM vtiger_cbcompany WHERE defaultcompany=1";
-				$res = $adb->query($SQL);
+				$res = $adb->query('SELECT * FROM vtiger_cbcompany WHERE defaultcompany=1');
 				$org_fields = $adb->getFieldsArray($res);
 				if (in_array($token_pair[1], $org_fields)) {
 					$reemplazo = $adb->query_result($res, 0, $token_pair[1]);
@@ -433,6 +432,7 @@ if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language 
 					if (empty($accid) || $token_pair[1] == 'rm') {
 						switch ($token_pair[1]) {
 							case 'accountname':
+							case 'organizationname':
 								$token_pair[1] = 'companyname';
 								break;
 							case 'rm':

@@ -118,7 +118,7 @@ class Potentials extends CRMEntity {
 	}
 
 	public function save_module($module) {
-		global $adb;
+		global $adb, $current_user;
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);
 		}
@@ -129,12 +129,19 @@ class Potentials extends CRMEntity {
 				$this->column_fields['closingdate'] :
 				$closingDateField->getDBInsertDateValue();
 			$sql = 'insert into vtiger_potstagehistory (potentialid, amount, stage, probability, expectedrevenue, closedate, lastmodified) values (?,?,?,?,?,?,?)';
+			$amountField = empty($this->column_fields['amount']) ? 0 : $this->column_fields['amount'];
+			$amountField = new CurrencyField($amountField);
+			$amountField = $amountField->getDBInsertedValue($current_user, false);
+			$prbField = empty($this->column_fields['probability']) ? 0 : $this->column_fields['probability'];
+			$prbField = new CurrencyField($prbField);
+			$prbField = $prbField->getDBInsertedValue($current_user, false);
+			$forecast_amount = ($amountField==0 || $prbField==0) ? 0 : ($amountField * $prbField / 100);
 			$params = array(
 				$this->id,
-				empty($this->column_fields['amount']) ? 0 : $this->column_fields['amount'],
+				$amountField,
 				decode_html($this->sales_stage),
-				$this->column_fields['probability'],
-				empty($this->column_fields['forecast_amount']) ? 0 : $this->column_fields['forecast_amount'],
+				$prbField,
+				$forecast_amount,
 				$adb->formatDate($closingdate, true),
 				$adb->formatDate($date_var, true)
 			);

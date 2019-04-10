@@ -4046,7 +4046,7 @@ function retrieveCompanyDetails() {
  */
 function setDefaultCompanyParams($companyDetails) {
 	$imageArray = array('companylogo','applogo');
-	for ($i=0; $i<sizeof($imageArray); $i++) {
+	for ($i=0; $i<count($imageArray); $i++) {
 		$imagename = $imageArray[$i];
 		if (empty($companyDetails[$imagename])) {
 			$companyDetails[$imagename] = 'test/logo/noimageloaded.png';
