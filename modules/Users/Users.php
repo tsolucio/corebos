@@ -120,26 +120,6 @@ class Users extends CRMEntity {
 	public $default_order_by = "user_name";
 	public $default_sort_order = 'ASC';
 
-	/**
-	 * Function to get the Headers of Users Information like User ID, Name, Role, Email.
-	 * Returns Header Values like User ID, Email etc in an array format.
-	**/
-	public function getUserListHeader() {
-		global $log, $app_strings;
-		$log->debug('Entering getUserListHeader() method ...');
-		$module = 'Users';
-		$header_array = array(
-			getTranslatedString('LBL_TOOLS', $module ),
-			'<a>'.getTranslatedString('LBL_LIST_USER_NAME_ROLE', $module ).'</a>',
-			'<a>'.getTranslatedString('LBL_EMAILS', $module).'</a>',
-			'<a>'.getTranslatedString('LBL_ADMIN', $module).'</a>',
-			'<a>'.getTranslatedString('Other Email', $module).'</a>',
-			'<a>'.getTranslatedString('LBL_STATUS', $module).'</a>'
-		);
-		$log->debug('Exiting getUserListHeader() method ...');
-		return $header_array;
-	}
-
 	public $record_id;
 
 	public $DEFAULT_PASSWORD_CRYPT_TYPE;
@@ -1627,6 +1607,26 @@ class Users extends CRMEntity {
 			$log->debug('< create_export_query');
 		}
 		return $query;
+	}
+
+	/**
+	 * Function to get the Headers of Users Information like User ID, Name, Role, Email.
+	 * Returns Header Values like User ID, Email etc in an array format.
+	**/
+	public function getUserListHeader() {
+		global $log;
+		$log->debug('Entering getUserListHeader() method ...');
+		$module = 'Users';
+		$header_array = array(
+			getTranslatedString('LBL_TOOLS', $module),
+			'<a>'.getTranslatedString('LBL_LIST_USER_NAME_ROLE', $module).'</a>',
+			'<a>'.getTranslatedString('LBL_EMAILS', $module).'</a>',
+			'<a>'.getTranslatedString('LBL_ADMIN', $module).'</a>',
+			'<a>'.getTranslatedString('Other Email', $module).'</a>',
+			'<a>'.getTranslatedString('LBL_STATUS', $module).'</a>'
+		);
+		$log->debug('Exiting getUserListHeader() method ...');
+		return $header_array;
 	}
 
 	/**
