@@ -26,9 +26,9 @@ class Addneweventsforworkflow extends cbupdaterWorker {
 		} else {
 			$ev = new VTEventsManager($adb);
 			$ev->registerHandler('corebos.beforesave.workflow', 'data/VTEntityDelta.php', 'VTEntityDelta');
-            $ev->registerHandler('corebos.aftersave.workflow', 'data/VTEntityDelta.php', 'VTEntityDelta');
-            $ev->registerHandler('corebos.beforedelete.workflow', 'data/VTEntityDelta.php', 'VTEntityDelta');
-            $ev->registerHandler('corebos.afterdelete.workflow', 'data/VTEntityDelta.php', 'VTEntityDelta');
+			$ev->registerHandler('corebos.aftersave.workflow', 'data/VTEntityDelta.php', 'VTEntityDelta');
+			$ev->registerHandler('corebos.beforedelete.workflow', 'data/VTEntityDelta.php', 'VTEntityDelta');
+			$ev->registerHandler('corebos.afterdelete.workflow', 'data/VTEntityDelta.php', 'VTEntityDelta');
 			$ev->registerHandler('corebos.beforesave.workflow', 'data/VTEntityDelta.php', 'VTEntityDelta');
 			$ev->registerHandler('corebos.aftersave.workflow.final', 'modules/ModTracker/ModTrackerHandler.php', 'ModTrackerHandler');
 			$ev->registerHandler('corebos.beforedelete.workflow', 'modules/ModTracker/ModTrackerHandler.php', 'ModTrackerHandler');

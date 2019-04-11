@@ -122,17 +122,16 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 						}
 						$focusrel[$fldmod]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel[$fldmod]->column_fields, $handlerMetarel[$fldmod]);
 						global $adb;
-                        $em = new VTEventsManager($adb);
-                        // Initialize Event trigger cache
-                        $em->initTriggerCache();
-                        $entityData = VTEntityData::fromCRMEntity($focusrel[$fldmod]);
-                        $em->triggerEvent('corebos.beforesave.workflow', $entityData);
+						$em = new VTEventsManager($adb);
+						// Initialize Event trigger cache
+						$em->initTriggerCache();
+						$entityData = VTEntityData::fromCRMEntity($focusrel[$fldmod]);
+						$em->triggerEvent('corebos.beforesave.workflow', $entityData);
 
 						$focusrel[$fldmod]->saveentity($relmodule);
 
-                        $em->triggerEvent('corebos.aftersave.workflow', $entityData);
-        				$em->triggerEvent('corebos.aftersave.workflow.final',$entityData);
-
+						$em->triggerEvent('corebos.aftersave.workflow', $entityData);
+						$em->triggerEvent('corebos.aftersave.workflow.final', $entityData);
 					}
 				}
 			}
