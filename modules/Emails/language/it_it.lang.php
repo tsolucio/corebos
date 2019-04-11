@@ -149,5 +149,12 @@ $mod_strings = array (
   'LBL_NO_RECORDS' => 'Nessun record trovato',
 	'LBL_PRINT_EMAIL' => 'Stampa',
 	'Access Count' => 'Access Count',
+	'Bounce' => 'Bounce',
+	'Clicked' => 'Clicked',
+	'Spam' => 'Spam',
+	'Delivered' => 'Delivered',
+	'Dropped' => 'Dropped',
+	'Open' => 'Open',
+	'Unsubscribe' => 'Unsubscribe',
 );
 ?>

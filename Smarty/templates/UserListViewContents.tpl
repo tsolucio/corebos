@@ -8,6 +8,20 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
+<!-- BunnyJs Script Files -->
+<link rel="stylesheet" href="include/bunnyjs/css/svg-icons.css">
+<script src="include/bunnyjs/utils-dom.min.js"></script>
+<script src="include/bunnyjs/ajax.min.js"></script>
+<script src="include/bunnyjs/template.min.js"></script>
+<script src="include/bunnyjs/pagination.min.js"></script>
+<script src="include/bunnyjs/url.min.js"></script>
+<script src="include/bunnyjs/utils-svg.min.js"></script>
+<script src="include/bunnyjs/spinner.min.js"></script>
+<script src="include/bunnyjs/datatable.min.js"></script>
+<script src="include/bunnyjs/datatable.icons.min.js"></script>
+<script src="include/bunnyjs/element.min.js"></script>
+<script src="include/bunnyjs/datatable.scrolltop.min.js"></script>
+<!-- BunnyJs Script Files -->
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 <tr>
@@ -18,15 +32,6 @@
 
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="listTableTopButtons">
 <tr>
-	<td class="small" nowrap align="left">
-		{$recordListRange}
-	</td>
-	<!-- Page Navigation -->
-	<td nowrap width="35%" align="center">
-		<table border=0 cellspacing=0 cellpadding=0 class="small">
-			<tr>{$NAVIGATION}</tr>
-		</table>
-	</td>
 	<td class="big" nowrap align="right">
 		<div align="right">
 		<input title="{$CMOD.LBL_NEW_USER_BUTTON_TITLE}" accessyKey="{$CMOD.LBL_NEW_USER_BUTTON_KEY}" type="submit" name="button" value="{$CMOD.LBL_NEW_USER_BUTTON_LABEL}" class="crmButton create small">
@@ -39,79 +44,184 @@
 	{$ERROR_MSG}
 </tr>
 {/if}
+</tr>
 </table>
-
-<table border=0 cellspacing=0 cellpadding=5 width=100% class="listTable">
-<tr>
-	<td class="colHeader small cblds-p-v_mediumsmall" valign=top>#</td>
-	<td class="colHeader small cblds-p-v_mediumsmall" valign=top>{$APP.Tools}</td>
-	<td class="colHeader small cblds-p-v_mediumsmall" valign=top>{$LIST_HEADER.3}</td>
-	<td class="colHeader small cblds-p-v_mediumsmall" valign=top>{$LIST_HEADER.5}</td>
-	<td class="colHeader small cblds-p-v_mediumsmall" valign=top>{$LIST_HEADER.7}</td>
-	<td class="colHeader small cblds-p-v_mediumsmall" valign=top>{$LIST_HEADER.6}</td>
-	<td class="colHeader small cblds-p-v_mediumsmall" valign=top>{$LIST_HEADER.4}</td>
-</tr>
-	{foreach name=userlist item=listvalues key=userid from=$LIST_ENTRIES}
-		{assign var=flag value=0}
-		{assign var=flag_edit value=0}
-<tr>
-	<td class="listTableRow small" valign=top>{math equation="x + y" x=$smarty.foreach.userlist.iteration y=$PAGE_START_RECORD}</td>
-	<td class="listTableRow small" nowrap valign=top>
-	{foreach item=name key=id from=$USERNOEDIT}
-		{if $userid eq $id && $userid neq $CURRENT_USERID}
-			{assign var=flag_edit value=1}
-		{/if}
-	{/foreach}
-	{if $flag_edit eq 0}
-		<a href="index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record={$userid}"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_EDIT_BUTTON}" title="{$APP.LBL_EDIT_BUTTON}" border="0"></a>
-	{/if}
-	{foreach item=name key=id from=$USERNODELETE}
-		{if $userid eq $id || $userid eq $CURRENT_USERID}
-			{assign var=flag value=1}
-		{/if}
-	{/foreach}
-	{if $flag eq 0 && $listvalues.4|@strip_tags|@trim eq 'Active'}
-		<img src="{'delete.gif'|@vtiger_imageurl:$THEME}" onclick="deleteUser(this,'{$userid}')" border="0"  alt="{$APP.LBL_DELETE_BUTTON}" title="{$APP.LBL_DELETE_BUTTON}" style="cursor:pointer;"/>
-	{/if}
-	{if $listvalues.4|@strip_tags|@trim eq 'Active'}
-		<img src="{'logout.png'|@vtiger_imageurl:$THEME}" onclick="logoutUser('{$userid}')" border="0" alt="{$APP.LBL_LOGOUT}" title="{$APP.LBL_LOGOUT}" style="cursor:pointer;width:16px;"/>
-	{/if}
-	<a href="index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record={$userid}&isDuplicate=true"><img src="{'settingsActBtnDuplicate.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_DUPLICATE_BUTTON}" title="{$APP.LBL_DUPLICATE_BUTTON}" border="0"></a>
-</td>
-	<td class="listTableRow small" valign=top><b>
-	{if $flag_edit eq 0}
-		<a href="index.php?module=Users&action=DetailView&parenttab=Settings&record={$userid}"> {$listvalues.3} </a></b><br><a href="index.php?module=Users&action=DetailView&parenttab=Settings&record={$userid}"> {$listvalues.1} </a> ({$listvalues.2})</td>
-	{else}
-		{$listvalues.3} </b></td>
-	{/if}
-	<td class="listTableRow small" valign=top>{$listvalues.5}&nbsp;</td>
-	<td class="listTableRow small" valign=top>{$listvalues.7}&nbsp;</td>
-	<td class="listTableRow small" valign=top>{$listvalues.6}&nbsp;</td>
-	{if $listvalues.4|@strip_tags|@trim eq 'Active'}
-	<td class="listTableRow small active" valign=top>{$APP.Active}</td>
-	{else}
-	<td class="listTableRow small inactive" valign=top>{$APP.Inactive}</td>
-	{/if}	
-
-</tr>
-	{foreachelse}
+<div id="view" class="workflows-list">
+<datatable url="index.php?module=Users&action=UsersAjax&file=getJSON" template="userlist_row_template">
+	<header>
+			<div class="slds-grid slds-gutters" style="width: 650px;">
+				<div class="slds-col">
+					<div class="slds-form-element slds-lookup" data-select="single" style="width: 162px; margin-bottom: 6px;">
+						<label class="slds-form-element__label" for="lookup-339">{'LBL_STATUS'|getTranslatedString:'Users'}</label>
+						<div class="slds-form-element__control slds-grid slds-box_border">
+							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
+								<svg aria-hidden="true" class="slds-input__icon">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+								</svg>
+								<select name="userstatus" id="userstatus" class="slds-lookup__search-input slds-input_bare" type="search" style="height: 30px;"
+									aria-owns="userstatus" role="combobox" aria-activedescendent="" aria-expanded="false" aria-autocomplete="list">
+									<option value="all" selected="true">{$APP.LBL_ALLPICKLIST}</option>
+									{$LIST_USER_STATUS}
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="slds-col">
+					<div class="slds-form-element" style="width: 162px; margin-bottom: 6px;">
+						<label class="slds-form-element__label" for="text-input-id-1">
+						{'LBL_USERNAME'|getTranslatedString:'Settings'}</label>
+						<div class="slds-form-element__control">
+							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
+								<svg aria-hidden="true" class="slds-input__icon">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+								</svg>
+								<input type="text"  name="namerole_search" id="namerole_search" class="slds-input" style="height: 30px;"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="slds-col">
+					<div class="slds-form-element" style="width: 162px;">
+						<label class="slds-form-element__label" for="text-input-id-1">
+						{'LBL_EMAIL'|getTranslatedString:'Settings'}</label>
+						<div class="slds-form-element__control">
+							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
+								<svg aria-hidden="true" class="slds-input__icon">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+								</svg>
+								<input type="text"  name="email_search" id="email_search" class="slds-input" style="height: 30px;"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="slds-col">
+					<div class="slds-form-element slds-lookup" data-select="single" style="width: 162px; margin-bottom: 6px;">
+						<label class="slds-form-element__label" for="lookup-339">{'LBL_ADMIN'|getTranslatedString:'Settings'}</label>
+						<div class="slds-form-element__control slds-grid slds-box_border">
+							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
+								<svg aria-hidden="true" class="slds-input__icon">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+								</svg>
+								<select name="adminstatus" id="adminstatus" class="slds-lookup__search-input slds-input_bare" type="search" style="height: 30px;"
+									aria-owns="adminstatus" role="combobox" aria-activedescendent="" aria-expanded="false" aria-autocomplete="list">
+									<option value="all" selected="true">{$APP.LBL_ALLPICKLIST}</option>
+									{$LIST_ADMIN_STATUS}
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+		<footer>
+			<pagination limit=12 outer></pagination>
+		</footer>
+		<table class="rptTable">
+			<tr>
+			{foreach key=dtkey item=dtheader from=$LIST_HEADER}
+				<th pid="{$dtkey}" class="rptCellLabel">{$dtheader}</th>
+			{/foreach}
+			</tr>
+		</table>
+	</datatable>
+</div>
+<table id="userlist_row_template" hidden>
 	<tr>
-		<td colspan="7">
-			<table width="100%">
-				<tr>
-					<td rowspan="2" width="45%" align="right"><img src="{'empty.jpg'|@vtiger_imageurl:$THEME}" height="60" width="61"></td>
-					<td nowrap="nowrap" width="65%" align="left">
-						<span class="genHeaderSmall">
-							{$APP.LBL_NO} {$MOD.LBL_USERS} {$APP.LBL_FOUND} !
-						</span>
-					</td>
-				</tr>
-			</table>
-		</td>
+		{foreach key=dtkey item=dtheader from=$LIST_FIELDS}
+			{if $dtheader eq 'id'}
+			<td class="rptData">
+				<a av="href:edituser">
+					<span>
+						<img border="0" title="{'LBL_EDIT'|@getTranslatedString}" alt="{'LBL_EDIT'|@getTranslatedString}" style="cursor: pointer;" src="{'editfield.gif'|@vtiger_imageurl:$THEME}"/>
+					</span>
+				</a>
+				<a av="href:RecordDel" data-handler="deleteUser">
+					<span av="id:id">
+						<img border="0" title="{'LBL_DELETE'|@getTranslatedString}" alt="{'LBL_DELETE'|@getTranslatedString}" src="{'delete.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;"/>
+					</span>
+				</a>
+				<a av="href:Record">
+					<span>
+						<img src="{'logout.png'|@vtiger_imageurl:$THEME}" data-handler="logoutUser" border="0" alt="{$APP.LBL_LOGOUT}" title="{$APP.LBL_LOGOUT}" style="cursor:pointer;width:16px;"/>
+					</span>
+				</a>
+				<a av="href:duplicateuser">
+					<span>
+						<img border="0" alt="{$APP.LBL_DUPLICATE_BUTTON}" title="{$APP.LBL_DUPLICATE_BUTTON}" src="{'settingsActBtnDuplicate.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;"/>
+					</span>
+				</a>
+			</td>
+			{elseif $dtheader eq 'user_name'}
+			<td class="rptData">
+				<a av="href:viewusername"><span v="username"></span></a>
+				<table> 
+					<tr>
+						<td style="padding:0; margin:0;">
+							<a av="href:viewuser"><span v="firstname"></span>&nbsp;<span v="lastname"></span></a>&nbsp;&#10088;&nbsp;<a av="href:viewrole"><span v="rolename"></span></a>&nbsp;&#10089;
+						</td>
+					</tr>
+				</table>
+			</td>
+			{elseif $dtheader eq 'status'}
+				<td v="statustag" class="rptData"></td>
+			{elseif $dtheader eq 'email1'}
+				<td class="rptData"><a av="href:sendmail"><span v="sendmail"></span></a></td>
+			{else}
+				<td v="{$dtkey}" class="rptData"></td>
+			{/if}
+		{/foreach}
 	</tr>
-	{/foreach}
 </table>
-<table border=0 cellspacing=0 cellpadding=5 width=100% >
-	<tr><td class="small cblds-t-align_right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
-</table>
-
+	
+<script type="text/javascript">
+{literal}
+Template.define('userlist_row_template', {
+	deleteUser:function(obj,data) {
+		obj.addEventListener('click', function (event) {
+			event.preventDefault();
+			jQuery.ajax({
+					method:"POST",
+					url:'index.php?module=Users&action=UsersAjax&file=UserDeleteStep1&record='+data.id
+				}).done(function(response) {
+					document.getElementById("tempdiv").innerHTML= response;
+					fnvshobj(obj,"tempdiv");
+				}
+			);
+		});
+	},
+	logoutUser:function(obj, data) {
+		obj.addEventListener('click', function (event) {
+			event.preventDefault();
+			jQuery.ajax({
+					method:"POST",
+					url:'index.php?module=Users&action=UsersAjax&file=LogoutUser&logoutuserid='+data.id
+				}).done(function(response) {
+					console.log(data.id,response);
+					document.getElementById("status").style.display="none";
+					alert(response);
+				}
+			);
+		});
+	}
+});
+DataTable.onRedraw(document.getElementsByTagName('datatable')[0], function (data) {
+	for (index in data.data) {
+		if (((data.data[index].Status == 'Active') && data.data[index].iscurrentuser && data.data[index].isblockeduser) || (data.data[index].Status == 'Inactive')) {
+			document.getElementById(data.data[index].id).style.display = "none";
+		}
+	}
+});
+{/literal}
+Pagination._config.langFirst = "{$APP.LNK_LIST_START}";
+Pagination._config.langLast = "{$APP.LNK_LIST_END}";
+Pagination._config.langPrevious = "< {$APP.LNK_LIST_PREVIOUS}";
+Pagination._config.langNext = "{$APP.LNK_LIST_NEXT} >";
+{literal}
+Pagination._config.langStats = "{from}-{to} {/literal}{$APP.LBL_LIST_OF}{literal} {total} ({/literal}{$APP.Page}{literal} {currentPage} {/literal}{$APP.LBL_LIST_OF}{literal} {lastPage})";
+DataTableConfig.loadingImg = 'themes/images/loading.svg';
+DataTableConfig.searchInputName = 'adminstatus';
+DataTableConfig.searchInputName = 'namerole_search';
+DataTableConfig.searchInputName = 'userstatus';
+</script>
+{/literal}

@@ -7,8 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor: Ranieri Slemer, translate missing terms to brazilian portuguese | 22-Jan-2018 | www.ecrmweb.com.br
- * Contributor: Ranieri Slemer, translate missing terms to brazilian portuguese | 16-10-2018 | www.ecrmweb.com.br
+ * Contributor: Ranieri Slemer, translate missing terms to brazilian portuguese | 02-04-2019 | www.ecrmweb.com.br
  ********************************************************************************/
 
 $mod_strings = array(
@@ -152,7 +151,7 @@ $mod_strings = array(
 'LBL_OPPURTUNITIES'=>'Oportunidades',
 'LBL_TASKS'=>'Tarefas',
 'LBL_CASES'=>'Casos',
-'LBL_EMAILS'=>'E-mails',
+'LBL_EMAILS'=>'E-mail',
 'LBL_NOTES'=>'Documentos',
 'LBL_MEETINGS'=>'Reuniões',
 'LBL_CALLS'=>'Chamadas',
@@ -342,6 +341,8 @@ $mod_strings = array(
 'LBL_EMAIL_SCHDS_DESC'=>'Abaixo está a lista de notificações ativadas automaticamente quando o evento correspondente ocorrer.',
 'LBL_ACTIVE'=>'Ativo',
 'LBL_INACTIVE'=>'Inativo',
+'LBL_ON' => 'Ligado',
+'LBL_OFF' => 'Desligado',
 'LBL_NOTIFICATION'=>'Notificação',
 'LBL_DESCRIPTION'=>'Descrição',
 'LBL_TASK_NOTIFICATION'=>'Notificação de tarefas atrasadas',
@@ -568,7 +569,7 @@ $mod_strings = array(
 'LBL_CONTACT_US'=>'Contacte-nos',
 'LBL_READ_LICENSE'=>'Ler Licença',
 'LBL_VERSION'=>'Versão',
-'LBL_TEAM'=>'Equipa',
+'LBL_TEAM'=>'Equipe',
 'LBL_CREDITS'=>'Créditos',
 'LBL_THIRD_PARTY'=>'Terceiros',
 
@@ -612,7 +613,7 @@ $mod_strings = array(
 'LBL_EMAIL_ADDRESS'=>'E-mail',
 'LBL_NAME_EXAMPLE'=>'(exemplo : João da Silva)',
 'LBL_EMAIL_EXAMPLE'=>'(exemplo : joaosilva@xyz.com.br)',
-'LBL_REFRESH_TIMEOUT'=>'Atualizar timeout',
+'LBL_REFRESH_TIMEOUT'=>'Refresh',
 'LBL_1_MIN'=>'1 minuto',
 'LBL_2_MIN'=>'2 minutos',
 'LBL_3_MIN'=>'3 minutos',

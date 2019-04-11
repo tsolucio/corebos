@@ -30,7 +30,8 @@ $to_email = getUserEmailId('id', $current_user->id);
 $from_email = $to_email;
 $subject = 'Test mail about the mail server configuration.';
 $description = 'Dear '.$current_user->user_name.', <br><br><b> This is a test mail sent to confirm if a mail is actually being sent through the smtp server that you'
-	.'have configured. </b><br>Feel free to delete this mail.<br><br>Thanks and Regards,<br> '.$HELPDESK_SUPPORT_NAME.' <br>';
+	.' have configured. </b><br>Feel free to delete this mail.<br><br>Thanks and Regards,<br> '.$HELPDESK_SUPPORT_NAME.' <br>';
+
 if ($to_email != '') {
 	$mail_status = send_mail('Users', $to_email, $current_user->user_name, $from_email, $subject, $description);
 	$mail_status_str = $to_email.'='.$mail_status.'&&&';

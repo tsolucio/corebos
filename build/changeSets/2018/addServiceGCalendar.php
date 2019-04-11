@@ -24,13 +24,13 @@ class addServiceGCalendar extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-		    $columns=$adb->getColumnNames('its4you_googlesync4you_access');
-		    if (!in_array('service', $columns)) {
-		        $adb->query("ALTER TABLE `its4you_googlesync4you_access` ADD `service` varchar(255) NULL ;");
-		    }
-		    $sql='Update its4you_googlesync4you_access set service = "GoogleCalendar" where service = "" or service is null';
-		    $adb->query($sql);
-		    
+			$columns=$adb->getColumnNames('its4you_googlesync4you_access');
+			if (!in_array('service', $columns)) {
+				$adb->query("ALTER TABLE `its4you_googlesync4you_access` ADD `service` varchar(255) NULL ;");
+			}
+			$sql='Update its4you_googlesync4you_access set service = "GoogleCalendar" where service = "" or service is null';
+			$adb->query($sql);
+
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}

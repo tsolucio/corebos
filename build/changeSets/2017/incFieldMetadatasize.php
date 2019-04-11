@@ -16,7 +16,7 @@
 
 class incFieldMetadatasize extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
 		if ($this->hasError()) {
 			$this->sendError();

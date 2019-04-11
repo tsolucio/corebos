@@ -16,17 +16,18 @@
 
 class addUIType1613and3313WebserviceFieldType extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery('insert into vtiger_ws_fieldtype(uitype,fieldtype) values(?,?)',array('3313', 'multipicklist'));
-			$this->ExecuteQuery('insert into vtiger_ws_fieldtype(uitype,fieldtype) values(?,?)',array('1613', 'picklist'));
+			$this->ExecuteQuery('insert into vtiger_ws_fieldtype(uitype,fieldtype) values(?,?)', array('3313', 'multipicklist'));
+			$this->ExecuteQuery('insert into vtiger_ws_fieldtype(uitype,fieldtype) values(?,?)', array('1613', 'picklist'));
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-
 }

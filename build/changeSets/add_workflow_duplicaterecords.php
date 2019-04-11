@@ -16,19 +16,25 @@
 
 class add_workflow_duplicaterecords extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			require_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
 			$taskTypes = array();
 			$defaultModules = array('include' => array(), 'exclude'=>array());
-			$taskType= array("name"=>"DuplicateRecords", "label"=>"DuplicateRecords", "classname"=>"DuplicateRecords",
-					 "classpath"=>"modules/com_vtiger_workflow/tasks/DuplicateRecords.inc",
-					 "templatepath"=>"com_vtiger_workflow/taskforms/DuplicateRecords.tpl",
-					 "modules"=>$defaultModules,
-					 "sourcemodule"=>'');
+			$taskType= array(
+				"name"=>"DuplicateRecords",
+				"label"=>"DuplicateRecords",
+				"classname"=>"DuplicateRecords",
+				"classpath"=>"modules/com_vtiger_workflow/tasks/DuplicateRecords.inc",
+				"templatepath"=>"com_vtiger_workflow/taskforms/DuplicateRecords.tpl",
+				"modules"=>$defaultModules,
+				"sourcemodule"=>''
+			);
 			VTTaskType::registerTaskType($taskType);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
@@ -36,16 +42,18 @@ class add_workflow_duplicaterecords extends cbupdaterWorker {
 		$this->finishExecution();
 	}
 
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			global $adb;
-			$result = $adb->pquery("SELECT * FROM `com_vtiger_workflowtasks` WHERE `task` like '%DuplicateRecords%'",array());
-			if ($result and $adb->num_rows($result)>0) {
+			$result = $adb->pquery("SELECT * FROM `com_vtiger_workflowtasks` WHERE `task` like '%DuplicateRecords%'", array());
+			if ($result && $adb->num_rows($result)>0) {
 				$this->sendMsg('<span style="font-size:large;weight:bold;">Workflows that use this task exist!! Please eliminate them before undoing this change.</span>');
 			} else {
 				$adb->pquery("DELETE FROM com_vtiger_workflow_tasktypes WHERE
-						tasktypename = 'DuplicateRecords' and label = 'DuplicateRecords' and classname = 'DuplicateRecords'",array());
+						tasktypename = 'DuplicateRecords' and label = 'DuplicateRecords' and classname = 'DuplicateRecords'", array());
 				$this->markUndone(false);
 				$this->sendMsg('Changeset '.get_class($this).' undone!');
 			}
@@ -55,14 +63,13 @@ class add_workflow_duplicaterecords extends cbupdaterWorker {
 		$this->finishExecution();
 	}
 
-	function isApplied() {
+	public function isApplied() {
 		$done = parent::isApplied();
 		if (!$done) {
 			global $adb;
-			$result = $adb->pquery("SELECT * FROM com_vtiger_workflow_tasktypes where tasktypename='DuplicateRecords'",array());
-			$done = ($result and $adb->num_rows($result)==1);
+			$result = $adb->pquery("SELECT * FROM com_vtiger_workflow_tasktypes where tasktypename='DuplicateRecords'", array());
+			$done = ($result && $adb->num_rows($result)==1);
 		}
 		return $done;
 	}
-
 }

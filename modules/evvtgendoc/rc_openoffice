@@ -1,0 +1,35 @@
+#!/bin/sh
+LOCALE=es_ES.UTF-8
+SOFFICEBIN=/usr/lib/openoffice/program/soffice.bin
+SOFFICEPORT=2002
+PIDFILE="/var/run/soffice.pid"
+
+case "$1" in
+  start)
+    echo "Starting OpenOffice as service on port $SOFFICEPORT..."
+    
+    if [ -f $PIDFILE ]; then 
+      echo "(already running)."
+    else
+      cd /
+      LC_ALL=$LOCALE /usr/bin/xvfb-run $SOFFICEBIN -invisible -nofirststartwizard "-accept=socket,host=localhost,port=$SOFFICEPORT;urp;StarOffice.Service" &
+      echo $! >$PIDFILE
+    fi
+    ;;
+  stop)
+    if [ ! -f "$PIDFILE" ];
+    then
+      echo "Not running."
+    else
+      PID=$(cat $PIDFILE)
+      pkill -P $PID
+      kill $PID
+      rm "$PIDFILE"
+    fi
+    ;;
+  *)
+    echo "Usage: $0 start|stop" >&2
+    exit 3
+    ;;
+esac
+exit 0

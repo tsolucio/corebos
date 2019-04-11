@@ -16,9 +16,11 @@
 
 class corebossettingstable extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -35,5 +37,4 @@ class corebossettingstable extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

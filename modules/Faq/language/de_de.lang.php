@@ -86,8 +86,8 @@ $mod_strings = array(
 	'Answer'=>'Antwort',
 	'Comments'=>'Kommentare',
 	'LBL_COMMENTS'=>'Kommentare',//give the same value given to the above string 'Comments'
-	'Created Time'=>'erstellt',
-	'Modified Time'=>'geändert',
+	'Created Time'=>'Erstellt',
+	'Modified Time'=>'Geändert',
 
 	'LBL_TICKETS'=>'Tickets',
 	'LBL_FAQ'=>'Wissensbasis',

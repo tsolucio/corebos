@@ -9,7 +9,7 @@
  ************************************************************************************/
 require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
-require 'user_privileges/default_module_view.php';
+require 'modules/Vtiger/default_module_view.php';
 
 class HelpDesk extends CRMEntity {
 	public $db;
@@ -252,8 +252,8 @@ class HelpDesk extends CRMEntity {
 	public function getColumnNames_Hd() {
 		global $log,$current_user;
 		$log->debug('> getColumnNames_Hd');
-		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
-		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+		$userprivs = $current_user->getPrivileges();
+		if ($userprivs->hasGlobalReadPermission()) {
 			$sql1 = "select fieldlabel from vtiger_field where tabid=13 and block <> 30 and vtiger_field.uitype <> '61' and vtiger_field.presence in (0,2)";
 			$params1 = array();
 		} else {

@@ -44,10 +44,10 @@ class crmtogo_WS_FetchModuleFilters extends crmtogo_WS_Controller {
 		$parameters = array($moduleName);
 
 		if (!is_admin($user)) {
-			require 'user_privileges/user_privileges_'.$user->id.'.php';
+			$userprivs = $user->getPrivileges();
 			$sql .= " AND (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status = 3 or vtiger_customview.userid IN
 			(SELECT vtiger_user2role.userid FROM vtiger_user2role INNER JOIN vtiger_users on vtiger_users.id=vtiger_user2role.userid 
-			INNER JOIN vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid WHERE vtiger_role.parentrole LIKE '".$current_user_parent_role_seq."::%'))";
+			INNER JOIN vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid WHERE vtiger_role.parentrole LIKE '".$userprivs->getParentRoleSequence()."::%'))";
 			$parameters[] = $current_user->id;
 		}
 

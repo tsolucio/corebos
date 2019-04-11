@@ -6,6 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 27/03/2019 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ************************************************************************************/
 
 $mod_strings = array(
@@ -14,39 +15,39 @@ $mod_strings = array(
 	'Messages ID' => 'ID Mensagens',
 
 	'LBL_CUSTOM_INFORMATION' => 'Informação personalizada',
-	'LBL_MESSAGE_INFORMATION' => 'Informação Mensagem',
-	'LBL_MESSAGES_INFORMATION' => 'Informação Mensagem',
+	'LBL_MESSAGE_INFORMATION' => 'Informação mensagem',
+	'LBL_MESSAGES_INFORMATION' => 'Informação mensagem',
 	'LBL_DESCRIPTION_INFORMATION' => 'Descrição',
 
-	'Messages No' => 'Número Mensagens',
-	'Message Name' => 'Nome Mensagem',
-	'Messages Name' => 'Nome Mensagem',
+	'Messages No' => 'Número mensagens',
+	'Message Name' => 'Nome mensagem',
+	'Messages Name' => 'Nome mensagem',
 	'Status' => 'Estado',
-	'Bounce' => 'Rejeitar',
-	'Clicked' => 'Clicado',
+	'Bounce' => 'Errada',
+	'Clicked' => 'Cliques',
 	'Spam' => 'Spam',
 	'Delivered' => 'Entregue',
 	'Dropped' => 'Descartada',
-	'Open' => 'Abrir',
-	'Unsubscribe' => 'Anular Subscrição',
+	'Open' => 'Aberturas',
+	'Unsubscribe' => 'Desinscrição',
 	'Campaign' => 'Campanha',
 	'Account' => 'Contas',
 	'Accounts' => 'Contas',
-	'Lead' => 'Pré-contacto',
-	'Contact' => 'Contacto',
-	'Related To' => 'Related To',
+	'Lead' => 'Lead',
+	'Contact' => 'Contato',
+	'Related To' => 'Relacionado à',
 	'--None--' => '--Nenhum--',
 	'Prospective' => 'Expectativa',
 	'Done' => 'Feito',
-	'Messages Type' => 'Tipo de Mensagem',
-	'messagetype' => 'Tipo de Mensagem',
-	'email' => 'E-mail',
+	'Messages Type' => 'Tipo de mensagem',
+	'messagetype' => 'Tipo de mensagem',
+	'email' => 'eMail',
 	'document' => 'Documento',
 	'sms' => 'SMS',
-	'email_tplid' => 'Template de E-mail',
-	'no_mail' => 'E-mail Vazio',
-	'lasteventtime' => 'Hora do Último Evento',
-	'lasturlclicked' => 'Último URL Clicado',
-	'messagesuniqueid' => 'Messages UniqueId',
+	'email_tplid' => 'Modelo de eMail',
+	'no_mail' => 'eMail vazio',
+	'lasteventtime' => 'Hora do último evento',
+	'lasturlclicked' => 'Última URL clicado',
+	'messagesuniqueid' => 'Mensagens UniqueId',
 );
 ?>

@@ -52,6 +52,7 @@ $mod_strings = array (
   'User List' => 'Lista Utenti',
 
 'LBL_HOME_MODULE' => 'Modulo',
+'LBL_HOME_CUSTOM_WIDGET' => 'Aggregate Filter',
 'LBL_HOME_RSS' => 'RSS',
 'LBL_HOME_DASHBOARD' => 'Cruscotto',
 'LBL_HOME_STUFFTITLE' => 'Titolo Finestra',
@@ -59,6 +60,8 @@ $mod_strings = array (
 'LBL_HOME_FILTERBY' => 'Filtra per',
 'LBL_HOME_Fields' => 'Campi da visualizzare',
 'LBL_HOME_PRESSCTRL' => '(Premere "Ctrl" per selezioni multiple)',
+'LBL_HOME_AGGREGATE'=>'Aggregate',
+'LBL_HOME_AG_FIELDS'=>'On field',
 'LBL_HOME_RSSURL' => 'RSS URL',
 'LBL_HOME_DASHBOARD_NAME' => 'Nome Cruscotto',
 'LBL_HOME_DASHBOARD_TYPE' => 'Tipo Cruscotto',

@@ -12,6 +12,16 @@ global $default_charset;
 
 if (isset($_REQUEST['templateid']) && $_REQUEST['templateid'] !='') {
 	$templatedetails = getTemplateDetails($_REQUEST['templateid']);
+	$crmid = null;
+	$tpl = getTemplateDetails($_REQUEST['templateid'], $crmid);
+	// Get Related Documents
+	$query='select vtiger_notes.notesid,vtiger_notes.filename
+		from vtiger_notes
+		inner join vtiger_senotesrel on vtiger_senotesrel.notesid= vtiger_notes.notesid
+		inner join vtiger_crmentity on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
+		inner join vtiger_crmentity crm2 on crm2.crmid=vtiger_senotesrel.crmid
+		where crm2.crmid=?';
+	$result = $adb->pquery($query, array($_REQUEST['templateid']));
 }
 ?>
 <form name="frmrepstr" onsubmit="VtigerJS_DialogBox.block();">
@@ -21,11 +31,17 @@ if (isset($_REQUEST['templateid']) && $_REQUEST['templateid'] !='') {
 </textarea>
 </form>
 <script type="text/javascript">
-if(typeof window.opener.document.getElementById('_mail_replyfrm_subject_') != 'undefined' &&
-	window.opener.document.getElementById('_mail_replyfrm_subject_') != null){
+if (typeof window.opener.document.getElementById('_mail_replyfrm_subject_') != 'undefined' && window.opener.document.getElementById('_mail_replyfrm_subject_') != null) {
 	window.opener.document.getElementById('_mail_replyfrm_subject_').value = window.document.frmrepstr.subject.value;
 	window.opener.document.getElementById('_mail_replyfrm_body_').value = window.document.frmrepstr.repstr.value;
 	window.opener.MailManager.mail_reply_rteinit(window.document.frmrepstr.repstr.value);
+<?php
+while ($row = $adb->getNextRow($result, false)) {
+?>
+	window.opener.addAttachments(<?php echo $row['notesid']; ?>, '','Documents','ajax', '');
+<?php
+}
+?>
 	window.close();
 }
 </script>

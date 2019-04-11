@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2012 JPL TSolucio, S.L.  --  This file is a part of SIGPAC.
+ * Copyright 2012 JPL TSolucio, S.L.  --  This file is a part of coreBOS.
 * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
 * Vizsage Public License (the "License"). You may not use this file except in compliance with the
 * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
@@ -40,7 +40,7 @@ function cbws_getCustomViewCombo($viewid, $module, $customView, $markselected = 
 	global $adb, $current_user, $app_strings;
 	$tabid = getTabid($module);
 	$_REQUEST['action'] = '';
-	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
+	$userprivs = $current_user->getPrivileges();
 
 	$shtml_user = '';
 	$shtml_pending = '';
@@ -66,7 +66,7 @@ function cbws_getCustomViewCombo($viewid, $module, $customView, $markselected = 
 			from vtiger_user2role
 			inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 			inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
-			where vtiger_role.parentrole like '" . $current_user_parent_role_seq . "::%'))";
+			where vtiger_role.parentrole like '" . $userprivs->getParentRoleSequence() . "::%'))";
 		$sparams[] = $current_user->id;
 	}
 	$ssql .= ' ORDER BY viewname';

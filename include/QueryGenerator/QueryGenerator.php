@@ -1203,22 +1203,50 @@ class QueryGenerator {
 			return $sql;
 		}
 		if ($operator=='i' || $operator=='in' || $operator=='ni' || $operator=='nin') {
-			$vals = array_map(array( $db, 'quote'), $valueArray);
+			$vals = array_map(array($db, 'quote'), $valueArray);
 			$sql[] = (($operator=='ni' || $operator=='nin') ? ' NOT ':'').'IN ('.implode(',', $vals).')';
+			return $sql;
+		}
+		if ($operator=='[]' || $operator=='[[' || $operator==']]' || $operator=='][') {
+			$valueArray = explode(',', $value);
+			$vals = array_map(
+				function ($v) {
+					$db = PearDatabase::getInstance();
+					if (!is_numeric($v)) {
+						$v = $db->quote($v);
+					}
+					return $v;
+				},
+				$valueArray
+			);
+			$rangeFName = ($referenceFieldName=='' ? $this->getSQLColumn($field->getFieldName(), false) : $referenceFieldName.'.'.$field->getColumnName());
+			switch ($operator) {
+				case '[]':
+					$sql[] = sprintf('>= %s AND %s <= %s', $vals[0], $rangeFName, $vals[1]);
+					break;
+				case '[[':
+					$sql[] = sprintf('>= %s AND %s < %s', $vals[0], $rangeFName, $vals[1]);
+					break;
+				case ']]':
+					$sql[] = sprintf('> %s AND %s <= %s', $vals[0], $rangeFName, $vals[1]);
+					break;
+				case '][':
+					$sql[] = sprintf('> %s AND %s < %s', $vals[0], $rangeFName, $vals[1]);
+					break;
+			}
 			return $sql;
 		}
 		if ($operator == 'between' || $operator == 'bw' || $operator == 'notequal') {
 			if ($field->getFieldName() == 'birthday') {
 				$valueArray[0] = getValidDBInsertDateTimeValue($valueArray[0]);
 				$valueArray[1] = getValidDBInsertDateTimeValue($valueArray[1]);
-				$sql[] = "BETWEEN DATE_FORMAT(".$db->quote($valueArray[0]).", '%m%d') AND ".
-						"DATE_FORMAT(".$db->quote($valueArray[1]).", '%m%d')";
+				$sql[] = 'BETWEEN DATE_FORMAT('.$db->quote($valueArray[0]).", '%m%d') AND DATE_FORMAT(".$db->quote($valueArray[1]).", '%m%d')";
 			} else {
 				if ($this->isDateType($field->getFieldDataType())) {
 					$valueArray[0] = getValidDBInsertDateTimeValue($valueArray[0]);
 					$valueArray[1] = getValidDBInsertDateTimeValue($valueArray[1]);
 				}
-				$sql[] = "BETWEEN ".$db->quote($valueArray[0])." AND ". $db->quote($valueArray[1]);
+				$sql[] = 'BETWEEN '.$db->quote($valueArray[0]).' AND '. $db->quote($valueArray[1]);
 			}
 			return $sql;
 		}
@@ -1298,52 +1326,52 @@ class QueryGenerator {
 
 			switch ($operator) {
 				case 'e':
-					$sqlOperator = "=";
+					$sqlOperator = '=';
 					break;
 				case 'n':
-					$sqlOperator = "<>";
+					$sqlOperator = '<>';
 					break;
 				case 's':
-					$sqlOperator = "LIKE";
+					$sqlOperator = 'LIKE';
 					$value = "$value%";
 					break;
 				case 'ew':
-					$sqlOperator = "LIKE";
+					$sqlOperator = 'LIKE';
 					$value = "%$value";
 					break;
 				case 'c':
-					$sqlOperator = "LIKE";
+					$sqlOperator = 'LIKE';
 					$value = "%$value%";
 					break;
 				case 'k':
-					$sqlOperator = "NOT LIKE";
+					$sqlOperator = 'NOT LIKE';
 					$value = "%$value%";
 					break;
 				case 'dnsw':
-					$sqlOperator = "NOT LIKE";
+					$sqlOperator = 'NOT LIKE';
 					$value = "$value%";
 					break;
 				case 'dnew':
-					$sqlOperator = "NOT LIKE";
+					$sqlOperator = 'NOT LIKE';
 					$value = "%$value";
 					break;
 				case 'l':
-					$sqlOperator = "<";
+					$sqlOperator = '<';
 					break;
 				case 'g':
-					$sqlOperator = ">";
+					$sqlOperator = '>';
 					break;
 				case 'm':
-					$sqlOperator = "<=";
+					$sqlOperator = '<=';
 					break;
 				case 'h':
-					$sqlOperator = ">=";
+					$sqlOperator = '>=';
 					break;
 				case 'a':
-					$sqlOperator = ">";
+					$sqlOperator = '>';
 					break;
 				case 'b':
-					$sqlOperator = "<";
+					$sqlOperator = '<';
 					break;
 			}
 			if ($this->requiresQuoteSearchOperators($operator) || (!$this->isNumericType($field->getFieldDataType()) &&

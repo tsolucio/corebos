@@ -13,21 +13,12 @@ global $app_strings, $default_charset;
 
 $randomfilename = 'vt_' . str_replace(array('.',' '), '', microtime());
 
-$templateid = $_REQUEST['mergefile'];
-if ($templateid == '') {
-	die('Select Mail Merge Template');
-}
-//get the particular file from db and store it in the local hard disk.
-//store the path to the location where the file is stored and pass it  as parameter to the method
-$result = $adb->pquery('select filename,data,filesize from vtiger_wordtemplates where templateid=?', array($templateid));
-$temparray = $adb->fetch_array($result);
-
-$fileContent = $temparray['data'];
-$filename=html_entity_decode($temparray['filename'], ENT_QUOTES, $default_charset);
-$extension=GetFileExtension($filename);
+// $mergeTemplatePath and $mergeTemplateName are set in module/evvtgendoc/odt.php
+$fileContent = base64_encode(file_get_contents($mergeTemplatePath));
+$extension=GetFileExtension($mergeTemplateName);
 $filename= $randomfilename . "_mmrg.$extension";
 
-$filesize=$temparray['filesize'];
+$filesize=filesize($mergeTemplatePath);
 $wordtemplatedownloadpath =$root_directory .'/cache/wordtemplatedownload/';
 if (!is_dir($wordtemplatedownloadpath)) {
 	@mkdir($wordtemplatedownloadpath);
@@ -37,8 +28,8 @@ fwrite($handle, base64_decode($fileContent), $filesize);
 fclose($handle);
 
 //for mass merge
-$mass_merge = isset($_REQUEST['allselectedboxes']) ? $_REQUEST['allselectedboxes'] : '';
-$single_record = isset($_REQUEST['record']) ? $_REQUEST['record'] : 0;
+$single_record = isset($_REQUEST['recordval']) ? trim($_REQUEST['recordval'], ';') : 0;
+$mass_merge = strpos($single_record, ';') ? $single_record : '';
 
 if ($mass_merge != '') {
 	$mass_merge = explode(';', $mass_merge);
@@ -47,7 +38,7 @@ if ($mass_merge != '') {
 		array_pop($mass_merge);
 	}
 	//$mass_merge = implode(",",$mass_merge);
-} elseif ($single_record != "") {
+} elseif ($single_record != '') {
 	$mass_merge = $single_record;
 } else {
 	die('Record Id is not found, cannot merge the document');
@@ -69,8 +60,8 @@ if (count($deleted_id) > 0) {
 
 //<<<<<<<<<<<<<<<<header for csv and select columns for query>>>>>>>>>>>>>>>>>>>>>>>>
 global $current_user;
-require 'user_privileges/user_privileges_'.$current_user->id.'.php';
-if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0 || $module == 'Users' || $module == 'Emails') {
+$userprivs = $current_user->getPrivileges();
+if ($userprivs->hasGlobalReadPermission() || $module == 'Users' || $module == 'Emails') {
 	$query1="select vtiger_tab.name,vtiger_field.tablename,vtiger_field.columnname,vtiger_field.fieldlabel
 		from vtiger_field
 		inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid

@@ -13,7 +13,6 @@ class Calendar4You extends CRMEntity {
 	private $profilesActions;
 	private $profilesPermissions;
 
-	private $profile_Global_Permission = array();
 	private $subordinate_roles_users = array();
 	private $current_user_groups = array();
 
@@ -89,32 +88,30 @@ class Calendar4You extends CRMEntity {
 		}
 	}
 
-	public function GetDefPermission($userid) {
-		require 'user_privileges/user_privileges_'.$userid.'.php';
-		require 'user_privileges/sharing_privileges_'.$userid.'.php';
+	public function GetDefPermission(Users $user) {
+		$priv = $user->getPrivileges();
+		$this->privileges = $priv;
+		$this->is_admin = $priv->isAdmin();
 
-		$this->is_admin = $is_admin;
-
-		if ($this->is_admin==false) {
+		if (!$this->is_admin) {
 			if (empty($this->tabid)) {
 				$this->tabid = getTabid('Calendar4You');
 			}
 
-			$this->profile_Global_Permission = $profileGlobalPermission;
-			$this->subordinate_roles_users = $subordinate_roles_users;
-			$this->current_user_groups = $current_user_groups;
+			$this->subordinate_roles_users = $priv->getSubordinateRoles2Users();
+			$this->current_user_groups = $priv->getGroups();
 
-			if ($this->profile_Global_Permission[1] == '0') {
+			if ($priv->hasGlobalViewPermission()) {
 				$this->view_all = true;
 			}
 
-			if ($this->profile_Global_Permission[2] == '0') {
+			if ($priv->hasGlobalWritePermission()) {
 				$this->edit_all = true;
 			}
 
-			$dosp = $defaultOrgSharingPermission[$this->tabid];
+			$dosp = $priv->getModuleSharingPermission($this->tabid);
 
-				//0 - Public: Read Only
+			//0 - Public: Read Only
 			//1 - Public: Read, Create/Edit
 			//2 - Public: Read, Create/Edit, Delete
 			//3 - private
@@ -166,9 +163,6 @@ class Calendar4You extends CRMEntity {
 				$this->tabid = getTabid('Calendar4You');
 			}
 
-			require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
-			require 'user_privileges/user_privileges_'.$current_user->id.'.php';
-
 			$query = "select status as status, id as id,user_name as user_name,first_name,last_name from vtiger_users where id=?
 				union
 				select status as status,vtiger_user2role.userid as id,vtiger_users.user_name as user_name,vtiger_users.first_name as first_name,vtiger_users.last_name as last_name
@@ -187,7 +181,7 @@ class Calendar4You extends CRMEntity {
 					inner join vtiger_sharedcalendar on vtiger_sharedcalendar.userid = vtiger_users.id
 					where sharedid=?
 				ORDER BY $sortusersby";
-			$params = array($current_user->id, $current_user_parent_role_seq.'::%', $current_user->id, $this->tabid, $current_user->id);
+			$params = array($current_user->id, $this->privileges->getParentRoleSequence().'::%', $current_user->id, $this->tabid, $current_user->id);
 		}
 		$result = $this->db->pquery($query, $params);
 
@@ -430,16 +424,16 @@ class Calendar4You extends CRMEntity {
 		global $current_user;
 
 		if (empty($this->view_all)) {
-			$this->GetDefPermission($current_user->id);
+			$this->GetDefPermission($current_user);
 		}
 
 		if ($this->is_admin) {
 			return true;
 		}
 
-		if ($this->profile_Global_Permission[1] == '0' && $actionKey == 'DETAIL') {
+		if ($this->view_all && $actionKey == 'DETAIL') {
 			return true;
-		} elseif ($this->profile_Global_Permission[2] == '0' && ($actionKey == 'EDIT' || $actionKey == 'CREATE')) {
+		} elseif ($this->edit_all && ($actionKey == 'EDIT' || $actionKey == 'CREATE')) {
 			return true;
 		} else {
 			//$profileid = fetchUserProfileId($current_user->id);
@@ -505,7 +499,6 @@ class Calendar4You extends CRMEntity {
 
 	public function getActStatusFieldValues($fieldname, $tablename) {
 		global $adb, $current_user, $default_charset;
-		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 
 		if (count($this->View) > 0) {
 			$load_ch = true;
@@ -525,7 +518,7 @@ class Calendar4You extends CRMEntity {
 
 		$Data = array();
 
-		if ($is_admin) {
+		if (is_admin($current_user)) {
 			$q = 'select * from '.$tablename;
 		} else {
 			$roleid=$current_user->roleid;

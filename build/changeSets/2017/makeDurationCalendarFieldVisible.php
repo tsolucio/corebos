@@ -16,16 +16,17 @@
 
 class makeDurationCalendarFieldVisible extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery("UPDATE `vtiger_field` SET `displaytype`=2 WHERE `fieldname` = 'duration_hours' and `tablename`='vtiger_activity';",array());
+			$this->ExecuteQuery("UPDATE `vtiger_field` SET `displaytype`=2 WHERE `fieldname` = 'duration_hours' and `tablename`='vtiger_activity';", array());
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-
 }

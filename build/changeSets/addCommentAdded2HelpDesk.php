@@ -15,17 +15,19 @@
  *************************************************************************************************/
 class addCommentAdded2HelpDesk extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$modname = 'HelpDesk';
 			$module = Vtiger_Module::getInstance($modname);
 			$block = Vtiger_Block::getInstance('LBL_TICKET_INFORMATION', $module);
-			$field = Vtiger_Field::getInstance('commentadded',$module);
+			$field = Vtiger_Field::getInstance('commentadded', $module);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?', array($field->id));
 			} else {
 				$fieldInstance = new Vtiger_Field();
 				$fieldInstance->name = 'commentadded';
@@ -42,7 +44,6 @@ class addCommentAdded2HelpDesk extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }
 
 ?>

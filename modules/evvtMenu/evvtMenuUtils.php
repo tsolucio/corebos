@@ -115,7 +115,7 @@ function getMenuArray($mparent) {
 		while ($menu = $adb->fetch_array($menurs)) {
 			if (empty($menu['mpermission']) && $menu['mtype']=='module') {
 				// apply vtiger CRM permissions
-				if (isPermitted($menu['mvalue'], 'index')=='no') {
+				if (isPermitted($menu['mvalue'], 'index')=='no' || !vtlib_isModuleActive($menu['mvalue'])) {
 					continue;
 				}
 			} elseif (!empty($menu['mpermission'])) {
@@ -267,7 +267,7 @@ function i18nMenuLabel($mlabel, $mvalue, $type) {
 			$i18nlabel = getTranslatedString($mlabel, 'evvtMenu');
 			break;
 		case 'module':
-			$i18nlabel = getTranslatedString($mvalue, $mvalue);
+			$i18nlabel = getTranslatedString($mlabel, $mvalue);
 			break;
 		default:
 			$i18nlabel = $mlabel;

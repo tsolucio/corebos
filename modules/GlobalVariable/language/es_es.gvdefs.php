@@ -48,6 +48,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Ejemplo: 127.0.0.1,192.168.0.100',
 	'definition' => 'Lista separada por comas de direcciones IP desde las que se permitirá el acceso a la aplicación de los usuarios',
 ),
+'Application_SendUserPasswordByEmail' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Seguridad',
+	'values' => '0 | 1',
+	'definition' => 'Si es verdadero, la aplicación enviará un correo electrónico con la contraseña del usuario cada vez que se cambie la contraseña utilizando la plantilla "Password Change Template"',
+),
 'Debug_Record_Not_Found' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -271,6 +278,21 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => 'ASC | DESC',
 	'definition' => 'Orden inicial de los registros al hacer clic en el encabezado de vista de lista. El orden por defecto es ASC',
+),
+'Application_ListView_Default_OrderDirection' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'ASC | DESC',
+	'definition' => 'Sort order for records of a module. If not defined the internal default value of each module will be used.',
+	'definition' => 'Dirección de ordenación de los registros de un módulo. Si no es definido se utilizará el valor interno de cada módulo.',
+),
+'Application_ListView_Default_OrderField' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'columna del módulo',
+	'definition' => 'Campo del módulo por el que hay que ordenar. Si no es definido se utilizará el valor interno de cada módulo.',
 ),
 'Application_ListView_Record_Change_Indicator' => array(
 	'status' => 'Implementada',

@@ -15,9 +15,11 @@
 *************************************************************************************************/
 
 class vt54_cb54 extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -57,11 +59,12 @@ class vt54_cb54 extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		$this->sendMsg('Changeset '.get_class($this).' is a system update, it cannot be undone!');
 		$this->finishExecution();
 	}
-	
 }

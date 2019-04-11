@@ -309,8 +309,6 @@ if ($use_current_login) {
 	}
 	coreBOS_Session::setUserGlobalSessionVariables();
 
-	//auditing
-	require_once 'user_privileges/audit_trail.php';
 	/* Skip audit trail log for special request types */
 	$skip_auditing = false;
 	if (($action == 'ActivityReminderCallbackAjax' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'ActivityReminderCallbackAjax')) && $module == 'Calendar') {
@@ -318,7 +316,8 @@ if ($use_current_login) {
 	} elseif (($action == 'TraceIncomingCall' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'TraceIncomingCall')) && $module == 'PBXManager') {
 		$skip_auditing = true;
 	}
-	if ($audit_trail == 'true' && !$skip_auditing) {
+	$privileges = $current_user->getPrivileges();
+	if (coreBOS_Settings::getSetting('audit_trail', false) && !$skip_auditing) {
 		$auditaction = $action;
 		if ($action=='Save') {
 			if (empty($record)) {
@@ -361,7 +360,7 @@ if ($current_user->mustChangePassword() && $_REQUEST['action']!='Logout' && $_RE
 ) {
 	$currentModule = 'Users';
 	$currentModuleFile = 'modules/Users/DetailView.php';
-	$_REQUEST['action'] = $action = 'DeatilView';
+	$_REQUEST['action'] = $action = 'DetailView';
 	$_REQUEST['module'] = $module = 'Users';
 	$_REQUEST['record'] = $current_user->id;
 }

@@ -282,7 +282,7 @@ class InventoryDetails extends CRMEntity {
 			FROM vtiger_inventoryproductrel
 			LEFT JOIN vtiger_products ON vtiger_products.productid=vtiger_inventoryproductrel.productid
 			LEFT JOIN vtiger_service ON vtiger_service.serviceid=vtiger_inventoryproductrel.productid
-			WHERE id = ?";
+			WHERE id = ? ORDER BY sequence_no";
 		} elseif ($taxtype == 'individual') {
 			$query = "SELECT id as related_to, vtiger_inventoryproductrel.productid, sequence_no, lineitem_id, quantity, listprice, comment as description,
 			$txsql
@@ -298,7 +298,7 @@ class InventoryDetails extends CRMEntity {
 			FROM vtiger_inventoryproductrel
 			LEFT JOIN vtiger_products ON vtiger_products.productid=vtiger_inventoryproductrel.productid
 			LEFT JOIN vtiger_service ON vtiger_service.serviceid=vtiger_inventoryproductrel.productid
-			WHERE id = ?";
+			WHERE id = ? ORDER BY sequence_no";
 		}
 		$res_inv_lines = $adb->pquery($query, array($related_to));
 
@@ -348,6 +348,8 @@ class InventoryDetails extends CRMEntity {
 		while (isset($_REQUEST['deleted'.$requestindex]) && $_REQUEST['deleted'.$requestindex] == 1) {
 			$requestindex++;
 		}
+		$handler = vtws_getModuleHandlerFromName('InventoryDetails', $current_user);
+		$meta = $handler->getMeta();
 		// read $res_inv_lines result to create a new InventoryDetail for each register.
 		// Remember to take the Vendor if the Product is related with this.
 		while ($row = $adb->getNextRow($res_inv_lines, false)) {
@@ -368,6 +370,12 @@ class InventoryDetails extends CRMEntity {
 				$invdet_focus->id = '';
 				$invdet_focus->mode = '';
 			}
+			foreach ($invdet_focus->column_fields as $fieldname => $val) {
+				if (isset($row[$fieldname])) {
+					$invdet_focus->column_fields[$fieldname] = $row[$fieldname];
+				}
+			}
+			$invdet_focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($invdet_focus->column_fields, $meta);
 
 			foreach ($invdet_focus->column_fields as $fieldname => $val) {
 				if (isset($_REQUEST[$fieldname.$requestindex])) {
@@ -379,8 +387,6 @@ class InventoryDetails extends CRMEntity {
 						$_REQUEST[$fieldname.'_canvas_image'] = vtlib_purify($_REQUEST[$fieldname.$requestindex.'_canvas_image']);
 						$_REQUEST[$fieldname.'_canvas_image_set'] = vtlib_purify($_REQUEST[$fieldname.$requestindex.'_canvas_image_set']);
 					}
-				} elseif (isset($row[$fieldname])) {
-					$invdet_focus->column_fields[$fieldname] = $row[$fieldname];
 				}
 			}
 			$invdet_focus->column_fields['lineitem_id'] = $row['lineitem_id'];
@@ -393,9 +399,6 @@ class InventoryDetails extends CRMEntity {
 				$invdet_focus->column_fields['tax_percent'] = 0;
 				$invdet_focus->column_fields['linetax'] = 0;
 			}
-			$handler = vtws_getModuleHandlerFromName('InventoryDetails', $current_user);
-			$meta = $handler->getMeta();
-			$invdet_focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($invdet_focus->column_fields, $meta);
 			$invdet_focus->save('InventoryDetails');
 			$requestindex++;
 			while (isset($_REQUEST['deleted'.$requestindex]) && $_REQUEST['deleted'.$requestindex] == 1) {

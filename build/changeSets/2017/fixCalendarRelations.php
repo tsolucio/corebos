@@ -16,14 +16,16 @@
 
 class fixCalendarRelations extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$cbcal = Vtiger_Module::getInstance('cbCalendar');
-			$relfld = Vtiger_Field::getInstance('rel_id',$cbcal);
+			$relfld = Vtiger_Field::getInstance('rel_id', $cbcal);
 			$rsrels = $adb->query("select vtiger_tab.tabid,vtiger_tab.name from vtiger_relatedlists inner join vtiger_tab on vtiger_tab.tabid=vtiger_relatedlists.tabid WHERE vtiger_relatedlists.name = 'get_activities'");
 			while ($rel = $adb->fetch_array($rsrels)) {
 				$dependentFieldSql = $adb->pquery('SELECT fieldid FROM vtiger_fieldmodulerel WHERE relmodule=? AND module=?', array($rel['name'], 'cbCalendar'));
@@ -37,5 +39,4 @@ class fixCalendarRelations extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

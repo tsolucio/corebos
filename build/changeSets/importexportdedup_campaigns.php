@@ -16,18 +16,19 @@
 
 class importexportdedup_campaigns extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$module = Vtiger_Module::getInstance('Campaigns');
-			$module->enableTools(Array('Merge','Import', 'Export'));
+			$module->enableTools(array('Merge','Import', 'Export'));
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-
 }

@@ -83,7 +83,36 @@
 		<div class="componentName">{$APP.LBL_NO_DATA}</div>
 	{/if}
 	</table>
-
+{elseif $HOME_STUFFTYPE eq "CustomWidget"}
+	<input type=hidden id=more_{$HOME_STUFFID} value="{$HOME_STUFF.ModuleName}"/>
+	<input type=hidden id=cvid_{$HOME_STUFFID} value="{$HOME_STUFF.cvid}">
+	<table border=0 cellspacing=0 cellpadding=2 width=100%>
+	{assign var='cvid' value=$HOME_STUFF.cvid}
+	{assign var='modulename' value=$HOME_STUFF.ModuleName}
+	<tr>
+		<td width=4%>
+			&nbsp;
+		</td>
+		{foreach item=header from=$HOME_STUFF.Header}
+		<td width=40% align="left">
+			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$header}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+		</td>
+		{/foreach}
+	</tr>
+		{foreach item=row key=crmid from=$HOME_STUFF.Entries}
+		<tr>
+			<td width=4%>
+				&nbsp;
+			</td>
+			{foreach item=element from=$row name=aggrow}
+			<td {if $smarty.foreach.aggrow.last}style="text-align: right;"{/if} nowrap width=40%>
+				{$element}
+			</td>
+			{/foreach}
+		</tr>
+		{/foreach}
+	</table>
+	
 {elseif $HOME_STUFFTYPE eq "Default"}
 	<input type=hidden id=more_{$HOME_STUFFID} value="{if isset($HOME_STUFF.Details.ModuleName)}{$HOME_STUFF.Details.ModuleName}{/if}"/>
 	{if is_array($HOME_STUFF.Details.Entries) && $HOME_STUFF.Details.Entries|@count > 0}

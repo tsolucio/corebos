@@ -45,13 +45,13 @@ class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 		foreach ($moduleFieldGroups as $blocklabel => $fieldgroups) {
 			$fields = array();
 			foreach ($fieldgroups as $fieldname => $fieldinfo) {
-				$field['name'] = $fieldname;
-				$field['value'] = '';
-				$field['label'] = $fieldinfo['label'];
-				$field['uitype'] = $fieldinfo['uitype'];
-				$field['typeofdata'] = $fieldinfo['typeofdata'];
+				$field = array();
 				foreach ($describeInfo['fields'] as $describeField) {
 					if ($describeField['name']== $fieldname) {
+						$field['name'] = $fieldname;
+						$field['label'] = $fieldinfo['label'];
+						$field['uitype'] = $fieldinfo['uitype'];
+						$field['typeofdata'] = $fieldinfo['typeofdata'];
 						$field['type'] = '';
 						$field['value'] = $describeField['default'];
 						if (!empty($describeField['type']) && !empty($describeField['type']['picklistValues'])) {
@@ -62,21 +62,17 @@ class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 							$field['quickcreate'] = $describeField['quickcreate'];
 							$field['displaytype'] = $describeField['displaytype'];
 						}
+						if ($field['uitype'] == '51' || $field['uitype'] == '10') {
+							$field['relatedmodule'] = crmtogo_WS_Utils::getEntityName($field['name'], $module);
+						}
 					}
 				}
-				if ($field['uitype'] == '51' || $field['uitype'] == '10') {
-					$field['relatedmodule'] = crmtogo_WS_Utils::getEntityName($field['name'], $module);
+				if (!empty($field)) {
+					$fields[] = $field;
 				}
-				$fields[] = $field;
 			}
-			$blocks[] = array( 'label' => $blocklabel, 'fields' => $fields );
-		}
-		$sections = array();
-		$moduleFieldGroupKeys = array_keys($moduleFieldGroups);
-		foreach ($moduleFieldGroupKeys as $blocklabel) {
-			// eliminate empty blocks
-			if (isset($groups[$blocklabel]) && !empty($groups[$blocklabel])) {
-				$sections[] = array( 'label' => $blocklabel, 'count' => count($groups[$blocklabel]) );
+			if (!empty($fields)) {
+				$blocks[] = array( 'label' => $blocklabel, 'fields' => $fields );
 			}
 		}
 		$modifiedResult = array('blocks' => $blocks, 'id' => '');

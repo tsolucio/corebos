@@ -184,8 +184,10 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 	global $log, $current_user;
 	$log->debug('> get_user_array '.$add_blank.','. $status.','.$assigned_user.','.$private);
 	if (isset($current_user) && $current_user->id != '') {
-		require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
-		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
+		$userprivs = $current_user->getPrivileges();
+		$current_user_parent_role_seq = $userprivs->getParentRoleSequence();
+	} else {
+		$current_user_parent_role_seq = '';
 	}
 	static $user_array = null;
 	$module = isset($_REQUEST['module']) ? $_REQUEST['module'] : '';
@@ -273,19 +275,23 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 	return $user_array;
 }
 
-function get_group_array($add_blank = true, $status = 'Active', $assigned_user = '', $private = '') {
+function get_group_array($add_blank = true, $status = 'Active', $assigned_user = '', $private = '', $force = false) {
 	global $log, $current_user, $currentModule;
 	$log->debug('> get_group_array '.$add_blank.','. $status.','.$assigned_user.','.$private);
-	$current_user_groups = array();
-	$current_user_parent_role_seq = '';
 	if (isset($current_user) && $current_user->id != '') {
-		require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
-		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
+		$userprivs = $current_user->getPrivileges();
+		$current_user_parent_role_seq = $userprivs->getParentRoleSequence();
+		$current_user_groups = $userprivs->getGroups();
+		$parent_roles = $userprivs->getParentRoles();
+	} else {
+		$current_user_parent_role_seq = '';
+		$current_user_groups = array();
+		$parent_roles = array();
 	}
 	static $group_array = null;
 	$module= (isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : $currentModule);
 
-	if ($group_array == null) {
+	if ($group_array == null || $force) {
 		require_once 'include/database/PearDatabase.php';
 		$db = PearDatabase::getInstance();
 		$temp_result = array();
@@ -2895,38 +2901,36 @@ function getFieldValues($module) {
 function getSecParameterforMerge($module) {
 	global $current_user;
 	$tab_id = getTabid($module);
-	$sec_parameter="";
-	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
-	require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
-	if ($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3) {
+	$sec_parameter='';
+	$userprivs = $current_user->getPrivileges();
+	if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing($tab_id)) {
 		$sec_parameter=getListViewSecurityParameter($module);
-		if ($module == "Accounts") {
-			$sec_parameter .= " AND (vtiger_crmentity.smownerid IN (".$current_user->id.")
-					OR vtiger_crmentity.smownerid IN (
-					SELECT vtiger_user2role.userid
-					FROM vtiger_user2role
-					INNER JOIN vtiger_users ON vtiger_users.id = vtiger_user2role.userid
-					INNER JOIN vtiger_role ON vtiger_role.roleid = vtiger_user2role.roleid
-					WHERE vtiger_role.parentrole LIKE '".$current_user_parent_role_seq."::%')
-					OR vtiger_crmentity.smownerid IN (
-					SELECT shareduserid
-					FROM vtiger_tmp_read_user_sharing_per
-					WHERE userid=".$current_user->id."
-					AND tabid=".$tab_id.")
-					OR (vtiger_crmentity.smownerid in (0)
-					AND (";
+		if ($module == 'Accounts') {
+			$sec_parameter .= ' AND (vtiger_crmentity.smownerid IN ('.$current_user->id.")
+				OR vtiger_crmentity.smownerid IN (
+				SELECT vtiger_user2role.userid
+				FROM vtiger_user2role
+				INNER JOIN vtiger_users ON vtiger_users.id = vtiger_user2role.userid
+				INNER JOIN vtiger_role ON vtiger_role.roleid = vtiger_user2role.roleid
+				WHERE vtiger_role.parentrole LIKE '".$userprivs->getParentRoleSequence()."::%')
+				OR vtiger_crmentity.smownerid IN (
+				SELECT shareduserid
+				FROM vtiger_tmp_read_user_sharing_per
+				WHERE userid=".$current_user->id.' AND tabid='.$tab_id.')
+				OR (vtiger_crmentity.smownerid in (0)
+				AND (';
 
-			if (count($current_user_groups) > 0) {
-				$sec_parameter .= " vtiger_groups.groupname IN (
-								SELECT groupname
-								FROM vtiger_groups
-								WHERE groupid IN (". implode(",", getCurrentUserGroupList()) .")) OR ";
+			if ($userprivs->hasGroups()) {
+				$sec_parameter .= ' vtiger_groups.groupname IN (
+					SELECT groupname
+					FROM vtiger_groups
+					WHERE groupid IN ('. implode(',', getCurrentUserGroupList()) .')) OR ';
 			}
-			$sec_parameter .= " vtiger_groups.groupname IN (
+			$sec_parameter .= ' vtiger_groups.groupname IN (
 				SELECT vtiger_groups.groupname
 				FROM vtiger_tmp_read_group_sharing_per
 				INNER JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_tmp_read_group_sharing_per.sharedgroupid
-				WHERE userid=".$current_user->id." AND tabid=".$tab_id.")))) ";
+				WHERE userid='.$current_user->id.' AND tabid='.$tab_id.')))) ';
 		}
 	}
 	return $sec_parameter;
@@ -4042,7 +4046,7 @@ function retrieveCompanyDetails() {
  */
 function setDefaultCompanyParams($companyDetails) {
 	$imageArray = array('companylogo','applogo');
-	for ($i=0; $i<sizeof($imageArray); $i++) {
+	for ($i=0; $i<count($imageArray); $i++) {
 		$imagename = $imageArray[$i];
 		if (empty($companyDetails[$imagename])) {
 			$companyDetails[$imagename] = 'test/logo/noimageloaded.png';

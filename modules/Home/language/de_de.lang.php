@@ -20,9 +20,9 @@ $mod_strings = array(
 	'LBL_TOTAL'=>'Total: ',
 
 	'LBL_MY_HOME'=>'Meine Startseite',
-	'LBL_MODIFIED_TIME'=>'geändert',
+	'LBL_MODIFIED_TIME'=>'Geändert',
 	'LBL_LOGIN_ID'=>'ID',
-	'LBL_MODIFIED_BY'=>'geändert von',
+	'LBL_MODIFIED_BY'=>'Geändert von',
 	'LBL_TYPE'=>'Typ',
 
 	'LBL_PIPELINE_FORM_TITLE'=>'Meine Verkäufe',
@@ -53,6 +53,7 @@ $mod_strings = array(
 
 	//ADDED for Home Page Customization
 	'LBL_HOME_MODULE' => 'Modul',
+	'LBL_HOME_CUSTOM_WIDGET' => 'Aggregate Filter',
 	'LBL_HOME_RSS' => 'RSS',
 	'LBL_HOME_DASHBOARD' => 'Cockpit',
 	'LBL_HOME_STUFFTITLE'=>'Fenstertitel',
@@ -60,6 +61,8 @@ $mod_strings = array(
 	'LBL_HOME_FILTERBY'=>'Listenansicht',
 	'LBL_HOME_Fields'=>'anzuzeigende Inhalte',
 	'LBL_HOME_PRESSCTRL'=>'(nutze "Strg" <br> für Mehrfachauswahl)',
+	'LBL_HOME_AGGREGATE'=>'Aggregate',
+	'LBL_HOME_AG_FIELDS'=>'On field',
 	'LBL_HOME_RSSURL'=>'RSS URL',
 	'LBL_HOME_DASHBOARD_NAME'=>'Cockpit Name',
 	'LBL_HOME_DASHBOARD_TYPE'=>'Cockpit Typ',
@@ -68,8 +71,8 @@ $mod_strings = array(
 	'LBL_HOME_PIE_CHART'=>'Tortendiagramm',
 	'LBL_HOME_HORIZONTAL'=>'horizontales',
 	'LBL_HOME_VERTICAL'=>'vertikales',
-	'LBL_HOME_PIE_'=>'Torten',
-	'Layout Saved' => 'Layout Saved',
+	'LBL_HOME_PIE_'=>'Tortendiagramm',
+	'Layout Saved' => 'Layout gespeichert',
 	'LBL_HOME_ITEMS'=>'Einträge',
 	'LBL_MORE'=>'mehr',
 	'LBL_SCROLL'=>'scrollen',
@@ -114,12 +117,12 @@ $mod_strings = array(
 	//added for Default Widgets
 	'LBL_DEFAULT_WIDGET'=>'Standardfenster',
 	'LBL_NO_WIDGETS_HIDDEN'=>'Keine versteckten Standardfenster',
-	'UpdateExchangeRate' => 'Update Exchange Rate',
-	'LBL_HOME_ADDWINDOW' => 'Add Window',
-	'LBL_GETTING_STARTED' => 'Getting Started',
-	'ExpirePasswordAfterDays' => 'Expire Password After Days',
-	'FieldsNotFoundInFilter' => 'Fields not found in Selected Filter',
-	'FilterNotFound' => 'Filter You have Selected is Not Found',
-	'Permission Denied' => 'Permission Denied',
+	'UpdateExchangeRate' => 'Wechselkurs aktualisieren',
+	'LBL_HOME_ADDWINDOW' => 'Neues Fenster',
+	'LBL_GETTING_STARTED' => 'Hier beginnen',
+	'ExpirePasswordAfterDays' => 'Passwort nach so vielen Tagen ungültig machen',
+	'FieldsNotFoundInFilter' => 'Mit diesem Filter wurden keine Felder gefunden',
+	'FilterNotFound' => 'Der ausgewählte Filter wurde nicht gefunden',
+	'Permission Denied' => 'Zugang verweigert',
 );
 ?>

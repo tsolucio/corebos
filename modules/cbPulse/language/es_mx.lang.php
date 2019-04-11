@@ -9,12 +9,22 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Module Name',
-	'SINGLE_ModuleName' => 'Module Name',
-	'ModuleName ID' => 'Module Name ID',
-
+	'cbpulse_no' => 'Nº Latido',
+	'questionid' => 'ID Pregunta',
+	'pactive' => 'Activo',
+	'sendmethod' => 'Método de Envío',
+	'schtypeid' => 'Tipo Pulso',
+	'schtime' => 'Hora',
+	'schdayofmonth' => 'Día del Mes',
+	'schdayofweek' => 'Día la Semana',
+	'schannualdates' => 'Fechas',
+	'schminuteinterval' => 'Minuto',
+	'nexttrigger_time' => 'Hora de Lanzamiento',
+	'cbPulse' => 'Latidos',
+	'SINGLE_cbPulse' => 'Latido',
 	'LBL_CUSTOM_INFORMATION' => 'Información Personalizada',
-	'LBL_MODULEBLOCK_INFORMATION' => 'Información ModuleName',
 	'LBL_DESCRIPTION_INFORMATION' => 'Descripción',
+	'LBL_PULSE_INFORMATION' => 'Información Latido',
+	'LBL_PULSE_SCHEDULE' => 'PULSE SCHEDULE',
 );
 ?>

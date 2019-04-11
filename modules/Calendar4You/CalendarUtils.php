@@ -271,10 +271,6 @@ function NOPermissionDiv() {
 function getCalendar4YouListQuery($userid, $invites, $where = '', $type = '1') {
 	global $log, $adb;
 	$log->debug('> getCalendar4YouListQuery '.$userid.','.$where);
-	if ($userid != '') {
-		require 'user_privileges/user_privileges_' . $userid . '.php';
-		require 'user_privileges/sharing_privileges_' . $userid . '.php';
-	}
 	//$tab_id = getTabid('Calendar4You');
 	//$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' =>'vtiger_users.last_name'), 'Users');
 
@@ -316,40 +312,11 @@ function getCalendar4YouListQuery($userid, $invites, $where = '', $type = '1') {
 		$query.= "INNER JOIN vtiger_invitees ON vtiger_invitees.activityid = vtiger_activity.activityid AND vtiger_invitees.inviteeid = '".$userid."' ";
 	}
 
-	//$query .= getCalendar4YouNonAdminAccessControlQuery($userid);
 	$query.=" WHERE vtiger_crmentity.deleted = 0 AND activitytype != 'Emails' " . $where;
 
 	$query = listQueryNonAdminChange($query, 'Calendar');
 
 	$log->debug('< getListQuery');
-	return $query;
-}
-
-function getCalendar4YouNonAdminAccessControlQuery($userid, $scope = '') {
-	require 'user_privileges/user_privileges_'.$userid.'.php';
-	require 'user_privileges/sharing_privileges_'.$userid.'.php';
-	$module = 'Calendar';
-	$query = ' ';
-	$tabId = getTabid($module);
-	if ($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2]
-			== 1 && $defaultOrgSharingPermission[$tabId] == 3) {
-		$tableName = 'vt_tmp_u'.$userid.'_t'.$tabId;
-		$sharingRuleInfoVariable = $module.'_share_read_permission';
-		$sharingRuleInfo = $$sharingRuleInfoVariable;
-		$sharedTabId = null;
-		setupCalendar4YouTemporaryTable(
-			$tableName,
-			$sharedTabId,
-			$userid,
-			$current_user_parent_role_seq,
-			$current_user_groups
-		);
-		$query = " INNER JOIN $tableName $tableName$scope ON ($tableName$scope.id = vtiger_crmentity$scope.smownerid and $tableName$scope.shared=0) ";
-		$sharedIds = getCalendar4YouSharedCalendarId($userid);
-		if (!empty($sharedIds)) {
-			$query .= "or ($tableName$scope.id = vtiger_crmentity$scope.smownerid AND $tableName$scope.shared=1 and vtiger_activity.visibility = 'Public') ";
-		}
-	}
 	return $query;
 }
 
@@ -403,7 +370,7 @@ function getCalendar4YouNonAdminAccessQuery($module, $userid, $parentRole, $user
  * @param <type> $parentRole
  * @param <type> $userGroups
  */
-function getCalendar4YouNonAdminUserAccessQuery($user, $parentRole, $userGroups) {
+function getCalendar4YouNonAdminUserAccessQuery($userid, $parentRole, $userGroups) {
 	$query = "(SELECT $userid as id)
 		UNION
 		(SELECT vtiger_user2role.userid AS userid
@@ -423,11 +390,10 @@ function getCalendar4YouNonAdminUserAccessQuery($user, $parentRole, $userGroups)
  * @param <type> $user
  */
 function getCalendar4YouNonAdminModuleAccessQuery($module, $userid) {
-	require 'user_privileges/sharing_privileges_' . $userid . '.php';
+	global $current_user;
+	$privileges = $current_user->getPrivileges();
 	$tabId = getTabid($module);
-	$sharingRuleInfoVariable = $module . '_share_read_permission';
-	$sharingRuleInfo = $$sharingRuleInfoVariable;
-	$sharedTabId = null;
+	$sharingRuleInfo = $privileges->getModuleSharingRules($module, 'read');
 	$query = '';
 	if (!empty($sharingRuleInfo) && (count($sharingRuleInfo['ROLE']) > 0 || count($sharingRuleInfo['GROUP']) > 0)) {
 		$query = " (SELECT shareduserid
@@ -521,7 +487,6 @@ function getEventActivityMode($id) {
 
 function getITSActFieldCombo($fieldname, $tablename, $from_module = '', $follow_activitytype = false) {
 	global $adb, $current_user, $default_charset;
-	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
 	$combo = '';
 	$js_fn = '';
 	$def = '';
@@ -545,7 +510,7 @@ function getITSActFieldCombo($fieldname, $tablename, $from_module = '', $follow_
 	} else {
 		$combo .= '<select name="'.$fieldname.'" id="'.$fieldname.'" class=small '.$js_fn.'>';
 	}
-	if ($is_admin) {
+	if ($current_user->getPrivileges()->isAdmin()) {
 		$q = 'select * from '.$tablename;
 	} else {
 		$roleid=$current_user->roleid;

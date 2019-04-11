@@ -26,8 +26,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	global $log,$app_strings, $adb,$default_charset, $current_user;
 	$log->debug('> getOutputHtml '.$uitype.','. $fieldname.','. $fieldlabel.','. $maxlength.','. print_r($col_fields, true).','.$generatedtype.','.$module_name);
 
-	require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
-	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
+	$userprivs = $current_user->getPrivileges();
 
 	$fieldvalue = array();
 	$final_arr = array();
@@ -309,7 +308,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$combo_lbl_name = 'assigned_user_id1';
 		}
 
-		if ($is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module_name)] == 3 || $defaultOrgSharingPermission[getTabid($module_name)] == 0)) {
+		if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid($module_name))) {
 			$ua = get_user_array(false, 'Active', $assigned_user_id, 'private');
 		} else {
 			$ua = get_user_array(false, 'Active', $assigned_user_id);
@@ -320,7 +319,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		global $noof_group_rows;
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		// Get Group calculations > $noof_group_rows
-		if ($fieldname == 'assigned_user_id' && $is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module_name)] == 3 || $defaultOrgSharingPermission[getTabid($module_name)] == 0)) {
+		if ($fieldname == 'assigned_user_id' && !$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid($module_name))) {
 			$result = get_current_user_access_groups($module_name);
 		} else {
 			$result = get_group_options();
@@ -328,7 +327,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 		$assigned_user_id = empty($value) ? $current_user->id : $value;
 
-		if ($fieldname == 'assigned_user_id' && $is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module_name)] == 3 || $defaultOrgSharingPermission[getTabid($module_name)] == 0)) {
+		if ($fieldname == 'assigned_user_id' && !$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid($module_name))) {
 			$ua = get_user_array(false, 'Active', $assigned_user_id, 'private');
 		} else {
 			$ua = get_user_array(false, 'Active', $assigned_user_id);
@@ -336,7 +335,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$users_combo = get_select_options_array($ua, $assigned_user_id);
 		$groups_combo = '';
 		if ($noof_group_rows!=0) {
-			if ($fieldname == 'assigned_user_id' && $is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module_name)] == 3 || $defaultOrgSharingPermission[getTabid($module_name)] == 0)) {
+			if ($fieldname == 'assigned_user_id' && !$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid($module_name))) {
 				$ga = get_group_array(false, 'Active', $assigned_user_id, 'private');
 			} else {
 				$ga = get_group_array(false, 'Active', $assigned_user_id);
@@ -1410,13 +1409,13 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 	}
 	if ($module != $currentModule && in_array($currentModule, getInventoryModules())) {
 		$cbMap = cbMap::getMapByName($currentModule.'InventoryDetails', 'MasterDetailLayout');
-		$MDMapFound = ($cbMap!=null);
+		$MDMapFound = ($cbMap!=null && isPermitted('InventoryDetails', 'EditView')=='yes');
 		if ($MDMapFound) {
 			$cbMapFields = $cbMap->MasterDetailLayout();
 		}
 	} else {
 		$cbMap = cbMap::getMapByName($module.'InventoryDetails', 'MasterDetailLayout');
-		$MDMapFound = ($cbMap!=null);
+		$MDMapFound = ($cbMap!=null && isPermitted('InventoryDetails', 'EditView')=='yes');
 		if ($MDMapFound) {
 			$cbMapFields = $cbMap->MasterDetailLayout();
 		}

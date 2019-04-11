@@ -7,9 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese | 13/04/2012 |Curitiba/Paraná/Brasil.| www.ttcasolucoes.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 15/01/2018 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 13/05/2018 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 21/05/2018 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese | 05/04/2019 |Sao Paulo/SP/Brasil.| www.slemernet.com.br
  ********************************************************************************/
 $app_strings = array (
 'LBL_BROWSER_TITLE' => 'coreBOS',
@@ -1305,15 +1303,15 @@ $app_strings = array (
 'Subscribe' => 'Subscrever',
 'View History' => 'Ver histórico',
 'SYNCH_NOW' => 'Sincronizar agora',
-'Updated' => 'Updated',
+'Updated' => 'Atualizado',
 'id' => 'id',
-'data' => 'data',
-'record' => 'Record',
-'saved' => 'saved',
-'notsaved' => 'notsaved',
-'processcomplete' => 'Process Complete',
-'typetosearch_prodser' => 'Type to search products or services',
-'RecordIsAssignedToInactiveUser' => 'The record is assigned to an inactive user. Please select another user.',
+'data' => 'dados',
+'record' => 'Registro',
+'saved' => 'salvo',
+'notsaved' => 'não foi salvo',
+'processcomplete' => 'Processo Completo',
+'typetosearch_prodser' => 'Digite p/pesquisar produto/serviço',
+'RecordIsAssignedToInactiveUser' => 'O registro é atribuído a um usuário inativo. Por favor, selecione outro usuário.',
 );
 
 // Translation for currency names

@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-global $current_user;
 require_once 'include/utils/ListViewUtils.php';
 require_once 'modules/CustomView/CustomView.php';
 require_once 'include/DatabaseUtil.php';
@@ -36,9 +35,10 @@ class Homestuff {
 		if (!empty($this->defaulttitle)) {
 			$this->stufftitle = $this->defaulttitle;
 		}
-		$query="insert into vtiger_homestuff(stuffid, stuffsequence, stufftype, userid, visible, stufftitle) values(?, ?, ?, ?, ?, ?)";
-		$params= array($stuffid,$sequence,$this->stufftype,$current_user->id,0,$this->stufftitle);
-		$result=$adb->pquery($query, $params);
+		$query= $query="insert into vtiger_homestuff(stuffid,stuffsequence,stufftype, userid, visible, stufftitle) values(?, ?, ?, ?, ?, ?)";
+		$params = array($stuffid,$sequence,$this->stufftype,$current_user->id,0,$this->stufftitle);
+		$result= $adb->pquery($query, $params);
+
 		if (!$result) {
 			return false;
 		}
@@ -53,14 +53,39 @@ class Homestuff {
 			}
 
 			foreach ($fieldarray as $field) {
-				$queryfld="insert into vtiger_homemoduleflds values(? ,?);";
-				$params = array($stuffid,$field);
-				$result=$adb->pquery($queryfld, $params);
+				$result=$adb->pquery('insert into vtiger_homemoduleflds values(? ,?)', array($stuffid, $field));
 			}
 
 			if (!$result) {
 				return false;
 			}
+		} elseif ($this->stufftype=='CustomWidget') {
+			$rs = $adb->query('select count(value) from vtiger_seq_temp');
+			$q=$adb->query_result($rs, 0, 0);
+			if ($q > 0) {
+				$rs = $adb->query('select min(value) from vtiger_seq_temp');
+				$id=$adb->query_result($rs, 0, 0);
+			} else {
+				$id = $stuffid;
+			}
+			$adb->pquery('update vtiger_homestuff_seq set id=?', array($id-1));
+			$adb->pquery('update vtiger_homestuff set stuffid=? where stuffid=?', array($id,$stuffid));
+			$adb->query('delete from vtiger_seq_temp');
+			$stuffid=$adb->getUniqueId('vtiger_homestuff');
+			$fieldarray=explode(",", $this->fieldvalue);
+			$result=$adb->pquery('insert into vtiger_home_customwidget values(?,?,?)', array($id, $this->selmodule, $this->selmodule));
+
+			if (!$result) {
+				return false;
+			}
+
+			$params = array($stuffid,$this->selFiltername,$this->selAggregatename,$fieldarray[0]);
+			$result=$adb->pquery('insert into vtiger_home_cw_fields values (?,?,?,?)', $params);
+			if (!$result) {
+				return false;
+			}
+
+			$stuffid=$adb->getUniqueId('vtiger_homestuff');
 		} elseif ($this->stufftype=="RSS") {
 			$queryrss="insert into vtiger_homerss values(?,?,?)";
 			$params = array($stuffid,$this->txtRss,$this->maxentries);
@@ -106,6 +131,24 @@ class Homestuff {
 			}
 		}
 		return "loadAddedDiv($stuffid,'".$this->stufftype."')";
+	}
+
+	/**
+	 * this function adds a widget filter
+	 */
+	public function addCustomWidgetFilter() {
+		global $adb;
+		$stuffid=$adb->getUniqueId('vtiger_homestuff');
+		$result=$adb->pquery('insert into vtiger_seq_temp values(?)', array($stuffid));
+		$rs = $adb->pquery('select min(value) from vtiger_seq_temp', array());
+		$id=$adb->query_result($rs, 0, 0);
+		$fieldarray=explode(',', $this->fieldvalue);
+		$result=$adb->pquery('insert into vtiger_home_cw_fields values(? ,?,?,?)', array($id, $this->selFiltername, $this->selAggregatename, $fieldarray[0]));
+		if (!$result) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	/**
@@ -217,6 +260,8 @@ class Homestuff {
 			$details=$this->getModuleFilters($sid);
 		} elseif ($stuffType=='RSS') {
 			$details=$this->getRssDetails($sid);
+		} elseif ($stuffType=='CustomWidget') {
+			$details=$this->getCWDetails($sid);
 		} elseif ($stuffType=='DashBoard' && vtlib_isModuleActive('Dashboard')) {
 			$details=$this->getDashDetails($sid);
 		} elseif ($stuffType=='Default') {
@@ -225,6 +270,144 @@ class Homestuff {
 			$details = $this->getReportChartDetails($sid);
 		}
 		return $details;
+	}
+
+	/**
+	 * function to get Custom Widget Details
+	 */
+	private function getCWDetails($sid) {
+		$list=array();
+		global $adb, $current_user;
+		$querycvid = 'select vtiger_home_cw_fields.filtername,vtiger_home_cw_fields.aggregate,vtiger_home_cw_fields.field, vtiger_home_customwidget.modulename
+			from vtiger_home_cw_fields
+			left join vtiger_home_customwidget on vtiger_home_customwidget.stuffid=vtiger_home_cw_fields.stuffid
+			where vtiger_home_cw_fields.stuffid=?';
+		$resultcvid=$adb->pquery($querycvid, array($sid));
+		$nr=$adb->num_rows($resultcvid);
+		for ($i=0; $i<$nr; $i++) {
+			$list[$i]=array();
+			$modname=$adb->query_result($resultcvid, $i, 'modulename');
+			if (isPermitted($modname, 'index') != 'yes') {
+				continue;
+			}
+			$aggr=$adb->query_result($resultcvid, $i, 'aggregate');
+			$cvid=$adb->query_result($resultcvid, $i, 'filtername');
+			$column_count = $adb->num_rows($resultcvid);
+			$cvid_check_query = $adb->pquery('SELECT * FROM vtiger_customview WHERE cvid=?', array($cvid));
+			if ($adb->num_rows($cvid_check_query) > 0) {
+				$focus = CRMEntity::getInstance($modname);
+				$oCustomView = new CustomView($modname);
+				$listquery = getListQuery($modname);
+
+				if (trim($listquery) == '') {
+					$listquery = $focus->getListQuery($modname);
+				}
+
+				$query = $oCustomView->getModifiedCvListQuery($cvid, $listquery, $modname);
+				$count_result = $adb->query(mkCountQuery($query));
+				$noofrows = $adb->query_result($count_result, 0, 'count');
+
+				//To get the current language file
+				global $current_language,$app_strings;
+				$fieldmod_strings = return_module_language($current_language, $modname);
+
+				if ($modname == 'Calendar') {
+					$query .= "AND vtiger_activity.activitytype NOT IN ('Emails')";
+				}
+
+				for ($l=0; $l < $column_count; $l++) {
+					$fieldinfo = $adb->query_result($resultcvid, $i, 'field');
+					list($tabname,$colname,$fldname,$fieldmodlabel) = explode(':', $fieldinfo);
+					$fieldheader=explode('_', $fieldmodlabel, 2);
+					$fldlabel=$fieldheader[1];
+					$pos=strpos($fldlabel, '_');
+
+					if ($pos==true) {
+						$fldlabel=str_replace('_', ' ', $fldlabel);
+					}
+
+					$field_label=isset($app_strings[$fldlabel])?$app_strings[$fldlabel]:(isset($fieldmod_strings[$fldlabel])?$fieldmod_strings[$fldlabel]:$fldlabel);
+					$cv_presence=$adb->pquery("SELECT * from vtiger_cvcolumnlist WHERE cvid = ? and columnname LIKE '%".$fldname."%'", array($cvid));
+
+					if (!is_admin($current_user)) {
+						$fld_permission = getFieldVisibilityPermission($modname, $current_user->id, $fldname);
+					} else {
+						$fld_permission = 0;
+					}
+
+					if ($fld_permission == 0 && $adb->num_rows($cv_presence)) {
+						$field_query = $adb->pquery(
+							'SELECT fieldlabel FROM vtiger_field WHERE fieldname=? AND tablename=? and vtiger_field.presence in (0,2)',
+							array($fldname,$tabname)
+						);
+						$field_label = $adb->query_result($field_query, 0, 'fieldlabel');
+					}
+					//$fieldcolumns[$fldlabel] = array($tabname=>$colname);
+				}
+
+				// $list= getListViewEntries($focus,$modname,$list_result,6,"","","","",$oCustomView,'HomePage',$fieldcolumns);
+				if (getUItype($modname, $colname) == 71) {
+					$isCurrencyField = true;
+				} else {
+					$isCurrencyField = false;
+				}
+
+				$rs = $adb->pquery('SELECT viewname,entitytype FROM vtiger_customview WHERE cvid=?', array($cvid));
+				$cvid_ch = $adb->query_result($rs, 0, 'viewname');
+				$c1 = $adb->query_result($rs, 0, 'entitytype');
+				$rs = $adb->pquery('SELECT modulename FROM vtiger_entityname where modulename=?', array($c1));
+				$tab2 = $adb->query_result($rs, 0, 'modulename');
+				$c=$tabname.'.'.$colname;
+				$listquery = getListQuery($tab2);
+				$query = $oCustomView->getModifiedCvListQuery($cvid, $listquery, $tab2);
+				switch ($aggr) {
+					case 'sum':
+						$count_result = $adb->query(mkSumQuery($query, $c));
+						break;
+					case 'min':
+						$count_result = $adb->query(mkMinQuery($query, $c));
+						break;
+					case 'max':
+						$count_result = $adb->query(mkMaxQuery($query, $c));
+						break;
+					case 'count':
+						$count_result = $adb->query(mkCountQuery($query));
+						break;
+					case 'avg':
+						$count_result = $adb->query(mkAvgQuery($query, $c));
+						break;
+				}
+
+				$r = $adb->query_result($count_result, 0, 0);
+				if (trim($r)===',') {
+					$r='-';
+				}
+				$list[$i][]=$cvid_ch;
+				$list[$i][]=$aggr.'('.$field_label.')';
+				if ($isCurrencyField) {
+					$currencyField = new CurrencyField($r);
+					$list[$i][] = $currencyField->getDisplayValueWithSymbol($current_user);
+				} elseif (is_numeric($r)) {
+					$currencyField = new CurrencyField($r);
+					$list[$i][]= $currencyField->getDisplayValue($current_user);
+				} else {
+					$list[$i][]= $r;
+				}
+			} else {
+				echo "<font color='red'>Filter You have Selected is Not Found</font>";
+			}
+		}
+		$header = array();
+		$header[]=getTranslatedString('LBL_HOME_METRICS', 'Home');
+		$header[]='Aggregate(Field)';
+		$header[]='Value';
+		$return_value = array('ModuleName'=>'Home', 'cvid'=>0, 'Header'=>$header, 'Entries'=>$list);
+
+		if (count($header)!=0) {
+			 return $return_value;
+		} else {
+			echo 'Fields not found in Selected Filter';
+		}
 	}
 
 	/**

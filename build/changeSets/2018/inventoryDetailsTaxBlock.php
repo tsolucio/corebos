@@ -25,7 +25,7 @@ class inventoryDetailsTaxBlock extends cbupdaterWorker {
 			global $adb;
 
 			// Install new block and fields
-			require_once('vtlib/Vtiger/Module.php');
+			require_once 'vtlib/Vtiger/Module.php';
 			$mod = Vtiger_Module::getInstance('InventoryDetails');
 
 			$block = new Vtiger_Block();
@@ -75,7 +75,7 @@ class inventoryDetailsTaxBlock extends cbupdaterWorker {
 		}
 		if ($this->isApplied()) {
 			global $adb;
-			require_once('vtlib/Vtiger/Module.php');
+			require_once 'vtlib/Vtiger/Module.php';
 
 			$mod = Vtiger_Module::getInstance('InventoryDetails');
 			$block = Vtiger_Block::getInstance('InventoryDetailsTaxBlock', $mod);

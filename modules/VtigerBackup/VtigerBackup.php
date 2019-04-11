@@ -94,7 +94,7 @@ class VtigerBackup {
 			case 'test':
 				return $this->getTestFolderPath();
 			case 'user_privileges':
-				return $this->getUserPreviligesPath();
+				return $this->getUserPrivilegesPath();
 		}
 	}
 
@@ -128,20 +128,20 @@ class VtigerBackup {
 		return $rootPath.'test'.DIRECTORY_SEPARATOR;
 	}
 
-	public function getUserPreviligesPath() {
+	public function getUserPrivilegesPath() {
 		require 'config.inc.php';
 		$rootPath = $this->addTrailingSlash($this->fixPathSeparator($root_directory));
 		return $rootPath.'user_privileges'.DIRECTORY_SEPARATOR;
 	}
 
 	public function isLocalBackupEnabled() {
-		require 'user_privileges/enable_backup.php';
-		return $enable_local_backup == 'true';
+		require_once 'include/utils/cbSettings.php';
+		return coreBOS_Settings::getSetting('enable_local_backup', false);
 	}
 
 	public function isFTPBackupEnabled() {
-		require 'user_privileges/enable_backup.php';
-		return $enable_ftp_backup == 'true';
+		require_once 'include/utils/cbSettings.php';
+		return coreBOS_Settings::getSetting('enable_ftp_backup', false);
 	}
 
 	 /**

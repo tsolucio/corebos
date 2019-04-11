@@ -15,7 +15,7 @@ require_once 'modules/Campaigns/Campaigns.php';
 require_once 'modules/Documents/Documents.php';
 require_once 'modules/Emails/Emails.php';
 require_once 'modules/HelpDesk/HelpDesk.php';
-require 'user_privileges/default_module_view.php';
+require 'modules/Vtiger/default_module_view.php';
 
 class Contacts extends CRMEntity {
 	public $db;
@@ -145,8 +145,8 @@ class Contacts extends CRMEntity {
 		global $log, $adb, $current_user,$currentModule;
 		$log->debug('> plugin_process_list_query '.$query);
 		$permitted_field_lists = array();
-		require 'user_privileges/user_privileges_' . $current_user->id . '.php';
-		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+		$userprivs = $current_user->getPrivileges();
+		if ($userprivs->hasGlobalReadPermission()) {
 			$sql1 = 'select columnname from vtiger_field where tabid=4 and block <> 75 and vtiger_field.presence in (0,2)';
 			$params1 = array();
 		} else {
@@ -550,7 +550,7 @@ class Contacts extends CRMEntity {
 	 * @returns list of campaigns in array format
 	 */
 	public function get_campaigns($id, $cur_tab_id, $rel_tab_id, $actions = false) {
-		global $log, $singlepane_view,$currentModule,$current_user;
+		global $log, $singlepane_view, $currentModule;
 		$log->debug('> get_campaigns '.$id);
 		$this_module = $currentModule;
 
@@ -785,8 +785,8 @@ class Contacts extends CRMEntity {
 	public function getColumnNames() {
 		global $log, $current_user;
 		$log->debug('> getColumnNames');
-		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
-		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+		$userprivs = $current_user->getPrivileges();
+		if ($userprivs->hasGlobalReadPermission()) {
 			$sql1 = 'select fieldlabel from vtiger_field where tabid=4 and block <> 75 and vtiger_field.presence in (0,2)';
 			$params1 = array();
 		} else {
@@ -875,10 +875,9 @@ class Contacts extends CRMEntity {
 		$user_id=$seed_user->retrieve_user_id($user_name);
 		$current_user=$seed_user;
 		$current_user->retrieve_entity_info($user_id, 'Users');
-		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
-		require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
+		$userprivs = $current_user->getPrivileges();
 
-		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+		if ($userprivs->hasGlobalReadPermission()) {
 			$sql1 = 'select tablename,columnname from vtiger_field where tabid=4 and vtiger_field.presence in (0,2)';
 			$params1 = array();
 		} else {
@@ -942,7 +941,6 @@ class Contacts extends CRMEntity {
 	 *                 all values introduced by the user will be preloaded
 	 */
 	public function preSaveCheck($request) {
-		global $adb;
 		$saveerror = false;
 		$errmsg = '';
 		if ($_REQUEST['action'] != 'ContactsAjax' && !empty($_FILES)) {
@@ -975,7 +973,7 @@ class Contacts extends CRMEntity {
 	 * @param Integer Id of the the Record to which the related records are to be moved
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
-		global $adb,$log;
+		global $adb, $log;
 		$log->debug("> transferRelatedRecords $module, $transferEntityIds, $entityId");
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$rel_table_arr = array(
@@ -1205,25 +1203,26 @@ class Contacts extends CRMEntity {
 		$portalURL = '<a href="'.$PORTAL_URL.'" style="font-family:Arial, Helvetica, sans-serif;font-size:12px; font-weight:bolder;text-decoration:none;color: #4242FD;">'
 			.getTranslatedString('Please Login Here', $moduleName).'</a>';
 
-		//here id is hardcoded with 5. it is for support start notification in vtiger_notificationscheduler
-		$query='SELECT subject,body FROM vtiger_emailtemplates WHERE templateid=10';
+		$result = $adb->pquery('SELECT subject,template FROM vtiger_msgtemplate WHERE reference=?', array('Customer Login Details'));
+		if ($result && $adb->num_rows($result)>0) {
+			$body=$adb->query_result($result, 0, 'body');
+			$contents = html_entity_decode($body, ENT_QUOTES, $default_charset);
+			$contents = str_replace('$contact_name$', $entityData->get('firstname').' '.$entityData->get('lastname'), $contents);
+			$contents = str_replace('$login_name$', $entityData->get('email'), $contents);
+			$contents = str_replace('$password$', $password, $contents);
+			$contents = str_replace('$URL$', $portalURL, $contents);
+			$contents = str_replace('$support_team$', getTranslatedString('Support Team', $moduleName), $contents);
+			$contents = str_replace('$logo$', '<img src="cid:logo" />', $contents);
+			$contents = getMergedDescription($contents, $entityData->getId(), 'Contacts');
 
-		$result = $adb->pquery($query, array());
-		$body=$adb->query_result($result, 0, 'body');
-		$contents = html_entity_decode($body, ENT_QUOTES, $default_charset);
-		$contents = str_replace('$contact_name$', $entityData->get('firstname').' '.$entityData->get('lastname'), $contents);
-		$contents = str_replace('$login_name$', $entityData->get('email'), $contents);
-		$contents = str_replace('$password$', $password, $contents);
-		$contents = str_replace('$URL$', $portalURL, $contents);
-		$contents = str_replace('$support_team$', getTranslatedString('Support Team', $moduleName), $contents);
-		$contents = str_replace('$logo$', '<img src="cid:logo" />', $contents);
-		$contents = getMergedDescription($contents, $entityData->getId(), 'Contacts');
-
-		if ($type == 'LoginDetails') {
-			$temp=$contents;
-			$value['subject']=$adb->query_result($result, 0, 'subject');
-			$value['body']=$temp;
-			return $value;
+			if ($type == 'LoginDetails') {
+				$temp=$contents;
+				$value['subject']=$adb->query_result($result, 0, 'subject');
+				$value['body']=$temp;
+				return $value;
+			}
+		} else {
+			$contents = '';
 		}
 		return $contents;
 	}

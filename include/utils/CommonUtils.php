@@ -1262,32 +1262,32 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	}
 
 	// Retrieve the profile list from database
-	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
+	$userprivs = $current_user->getPrivileges();
 
 	$selectSql = 'vtiger_field.tablename,'
-		. 'vtiger_field.columnname,'
-		. 'vtiger_field.uitype,'
-		. 'vtiger_field.fieldname,'
-		. 'vtiger_field.fieldid,'
-		. 'vtiger_field.fieldlabel,'
-		. 'vtiger_field.maximumlength,'
-		. 'vtiger_field.block,'
-		. 'vtiger_field.generatedtype,'
-		. 'vtiger_field.tabid,'
-		. 'vtiger_field.defaultvalue,'
-		. 'vtiger_field.typeofdata,'
-		. 'vtiger_field.sequence,'
-		. 'vtiger_field.displaytype';
+		.'vtiger_field.columnname,'
+		.'vtiger_field.uitype,'
+		.'vtiger_field.fieldname,'
+		.'vtiger_field.fieldid,'
+		.'vtiger_field.fieldlabel,'
+		.'vtiger_field.maximumlength,'
+		.'vtiger_field.block,'
+		.'vtiger_field.generatedtype,'
+		.'vtiger_field.tabid,'
+		.'vtiger_field.defaultvalue,'
+		.'vtiger_field.typeofdata,'
+		.'vtiger_field.sequence,'
+		.'vtiger_field.displaytype';
 
-	if ($disp_view == "detail_view") {
-		if ($is_admin == true || $profileGlobalPermission[2] == 0 || $module == 'Users' || $module == 'Emails') {
+	if ($disp_view == 'detail_view') {
+		if ($userprivs->hasGlobalWritePermission() || $module == 'Users' || $module == 'Emails') {
 			$uniqueFieldsRestriction = 'vtiger_field.fieldid IN
 				(select max(vtiger_field.fieldid) from vtiger_field where vtiger_field.tabid=? GROUP BY vtiger_field.columnname)';
 			$sql = "SELECT distinct $selectSql, '0' as readonly
 				FROM vtiger_field WHERE $uniqueFieldsRestriction AND vtiger_field.block IN (".
 				generateQuestionMarks($blockid_list) . ') AND vtiger_field.displaytype IN (1,2,4,5) and vtiger_field.presence in (0,2) ORDER BY block,sequence';
 			$params = array($tabid, $blockid_list);
-		} elseif ($profileGlobalPermission[1] == 0) { // view all
+		} elseif ($userprivs->hasGlobalViewPermission()) { // view all
 			$profileList = getCurrentUserProfileList();
 			$sql = "SELECT distinct $selectSql, vtiger_profile2field.readonly
 				FROM vtiger_field
@@ -1314,7 +1314,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 		$getBlockInfo = getDetailBlockInformation($module, $result, $col_fields, $tabid, $block_label);
 	} else {
 		if ($info_type != '') {
-			if ($is_admin == true || $profileGlobalPermission[2] == 0 || $module == 'Users' || $module == "Emails") {
+			if ($userprivs->hasGlobalWritePermission() || $module == 'Users' || $module == 'Emails') {
 				$sql = "SELECT $selectSql, vtiger_field.readonly
 					FROM vtiger_field
 					WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND $display_type_check AND info_type = ? and ".
@@ -1332,7 +1332,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 				$params = array($tabid, $blockid_list, $info_type, $profileList);
 			}
 		} else {
-			if ($is_admin == true || $profileGlobalPermission[2] == 0 || $module == 'Users' || $module == "Emails") {
+			if ($userprivs->hasGlobalWritePermission() || $module == 'Users' || $module == 'Emails') {
 				$sql = "SELECT $selectSql, vtiger_field.readonly
 					FROM vtiger_field
 					WHERE vtiger_field.tabid=? AND vtiger_field.block IN (" . generateQuestionMarks($blockid_list) . ") AND $display_type_check and ".
@@ -1908,8 +1908,8 @@ function QuickCreate($module) {
 	$tabid = getTabid($module);
 
 	//Adding Security Check
-	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
-	if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+	$userprivs = $current_user->getPrivileges();
+	if ($userprivs->hasGlobalReadPermission()) {
 		$quickcreate_query = "select *
 			from vtiger_field
 			where (quickcreate in (0,2) or typeofdata like '%~M%') and tabid = ? and vtiger_field.presence in (0,2) and displaytype != 2 order by quickcreatesequence";
@@ -1976,24 +1976,22 @@ function QuickCreate($module) {
 function getUserslist($setdefval = true, $selecteduser = '') {
 	global $log, $current_user, $module;
 	$log->debug('> getUserslist');
-	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
-	require 'user_privileges/sharing_privileges_' . $current_user->id . '.php';
-	$tabid = getTabid($module);
-	if ($is_admin==false && $profileGlobalPermission[2]==1 && (is_null($tabid) || $defaultOrgSharingPermission[$tabid]==3 || $defaultOrgSharingPermission[$tabid]==0)) {
-		$user_array = get_user_array(false, "Active", $current_user->id, 'private');
+	$userprivs = $current_user->getPrivileges();
+	if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid($module))) {
+		$user_array = get_user_array(false, 'Active', $current_user->id, 'private');
 	} else {
-		$user_array = get_user_array(false, "Active", $current_user->id);
+		$user_array = get_user_array(false, 'Active', $current_user->id);
 	}
 	$users_combo = get_select_options_array($user_array, $current_user->id);
 	$change_owner = '';
 	foreach ($users_combo as $userid => $value) {
 		foreach ($value as $username => $selected) {
 			if ($setdefval == false) {
-				$change_owner .= "<option value=$userid>" . $username . "</option>";
+				$change_owner .= "<option value=$userid>" . $username . '</option>';
 			} elseif (is_numeric($selecteduser)) {
-				$change_owner .= "<option value=$userid ". ($userid==$selecteduser ? 'selected' : '') .">" . $username . "</option>";
+				$change_owner .= "<option value=$userid ". ($userid==$selecteduser ? 'selected' : '') .'>'. $username . '</option>';
 			} else {
-				$change_owner .= "<option value=$userid $selected>" . $username . "</option>";
+				$change_owner .= "<option value=$userid $selected>" . $username . '</option>';
 			}
 		}
 	}
@@ -2004,12 +2002,11 @@ function getUserslist($setdefval = true, $selecteduser = '') {
 function getGroupslist() {
 	global $log, $adb, $module, $current_user;
 	$log->debug('> getGroupslist');
-	require 'user_privileges/user_privileges_' . $current_user->id . '.php';
-	require 'user_privileges/sharing_privileges_' . $current_user->id . '.php';
+	$userprivs = $current_user->getPrivileges();
 
 	//Commented to avoid security check for groups
 	$tabid = getTabid($module);
-	if ($is_admin==false && $profileGlobalPermission[2]==1 && ($defaultOrgSharingPermission[$tabid]==3 || $defaultOrgSharingPermission[$tabid]==0)) {
+	if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabid)) {
 		$result = get_current_user_access_groups($module);
 	} else {
 		$result = get_group_options();
@@ -2019,10 +2016,10 @@ function getGroupslist() {
 		$nameArray = $adb->fetch_array($result);
 	}
 	if (!empty($nameArray)) {
-		if ($is_admin == false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabid] == 3 || $defaultOrgSharingPermission[$tabid] == 0)) {
-			$group_array = get_group_array(false, "Active", $current_user->id, 'private');
+		if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabid)) {
+			$group_array = get_group_array(false, 'Active', $current_user->id, 'private');
 		} else {
-			$group_array = get_group_array(false, "Active", $current_user->id);
+			$group_array = get_group_array(false, 'Active', $current_user->id);
 		}
 		$groups_combo = get_select_options_array($group_array, $current_user->id);
 	}
@@ -2030,7 +2027,7 @@ function getGroupslist() {
 	if (count($groups_combo) > 0) {
 		foreach ($groups_combo as $groupid => $value) {
 			foreach ($value as $groupname => $selected) {
-				$change_groups_owner .= "<option value=$groupid $selected >" . $groupname . "</option>";
+				$change_groups_owner .= "<option value=$groupid $selected >" . $groupname . '</option>';
 			}
 		}
 	}
@@ -2301,8 +2298,8 @@ function validateImageContents($filename) {
  * 	@param integer $templateid  - Template Id for an Email Template
  * 	return array $returndata - Returns Subject, Body of Template of the the particular email template.
  */
-function getTemplateDetails($templateid) {
-	global $adb, $log;
+function getTemplateDetails($templateid, $crmid = null) {
+	global $adb, $log, $current_user;
 	$log->debug("> into getTemplateDetails $templateid");
 	$returndata = array();
 	$result = $adb->pquery('select * from vtiger_emailtemplates where templateid=? or templatename=?', array($templateid,$templateid));
@@ -2311,6 +2308,38 @@ function getTemplateDetails($templateid) {
 		$returndata[] = $adb->query_result($result, 0, 'body');
 		$returndata[] = $adb->query_result($result, 0, 'subject');
 		$returndata[] = $adb->query_result($result, 0, 'sendemailfrom');
+	} else { // we look for it in message templates
+		$result = $adb->pquery(
+			'select * from vtiger_msgtemplate
+				inner join vtiger_crmentity on crmid=msgtemplateid
+				where deleted=0 and msgtemplateid=? or reference=?',
+			array($templateid, $templateid)
+		);
+		if ($result && $adb->num_rows($result)>0) {
+			$returndata[] = $templateid;
+			$returndata[] = $adb->query_result($result, 0, 'template');
+			$returndata[] = $adb->query_result($result, 0, 'subject');
+			$returndata[] = ''; //$adb->query_result($result, 0, 'sendemailfrom');
+		}
+	}
+	if (!empty($crmid)) {
+		require_once 'include/Webservices/DescribeObject.php';
+		$type = getSalesEntityType($crmid);
+		$obj = vtws_describe($type, $current_user);
+		$focus = CRMEntity::getInstance($type);
+		$focus->retrieve_entity_info($crmid, $type);
+		$returndata[1] = getMergedDescription($returndata[1], $crmid, $type);
+		$returndata[2] = getMergedDescription($returndata[2], $crmid, $type);
+		foreach ($obj['fields'] as $field) {
+			if (isset($field['uitype']) && $field['uitype'] == '10') {
+				$relid = $focus->column_fields[$field['name']];
+				if (!empty($relid)) {
+					$reltype = getSalesEntityType($relid);
+					$returndata[1] = getMergedDescription($returndata[1], $relid, $reltype);
+					$returndata[2] = getMergedDescription($returndata[2], $relid, $reltype);
+				}
+			}
+		}
 	}
 	$log->debug('< from getTemplateDetails');
 	return $returndata;
@@ -2331,7 +2360,7 @@ function getMergedDescription($description, $id, $parent_type) {
 		$parent_type = getSalesEntityType($id);
 	}
 	if (empty($parent_type) || empty($id)) {
-		$log->debug('< from getMergedDescription due to no record information ...');
+		$log->debug('< from getMergedDescription: no record information');
 		return $description;
 	}
 	if (strpos($id, 'x')>0) {
@@ -2362,6 +2391,11 @@ function getMergedDescription($description, $id, $parent_type) {
 			$token_data = '$users-'.$columnname.'$';
 			$description = str_replace($token_data, $adb->query_result($result, 0, $columnname), $description);
 		}
+	}
+	if ($parent_type != 'Users' && preg_match('/\$\w+-\w+\$/', $description)==0) { // no old format anymore
+		$entityCache = new VTEntityCache($current_user);
+		$ct = new VTSimpleTemplate($description, true);
+		$description = $ct->render($entityCache, vtws_getEntityId($parent_type).'x'.$id);
 	}
 	$log->debug('< from getMergedDescription');
 	return $description;
@@ -3411,12 +3445,8 @@ function fetch_logo($type) {
 function getmail_contents_portalUser($request_array, $password, $type = '') {
 	global $mod_strings ,$adb;
 
-	//$subject = $mod_strings['Customer Portal Login Details'];
-
-	// id is hardcoded: it is for support start notification in vtiger_notificationscheduler
-	$query='SELECT subject,body FROM vtiger_emailtemplates WHERE templateid=10';
-
-	$result = $adb->pquery($query, array());
+	$query='SELECT subject,template FROM vtiger_msgtemplate WHERE reference=?';
+	$result = $adb->pquery($query, array('Customer Login Details'));
 	$body=$adb->query_result($result, 0, 'body');
 	$contents=$body;
 	$contents = str_replace('$contact_name$', $request_array['first_name']." ".$request_array['last_name'], $contents);

@@ -9,14 +9,22 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Module Name',
-	'SINGLE_ModuleName' => 'Module Name',
-	'ModuleName ID' => 'Module Name ID',
-
+	'cbpulse_no' => 'Pulse No',
+	'questionid' => 'Question ID',
+	'pactive' => 'pactive',
+	'sendmethod' => 'send method',
+	'schtypeid' => 'Type Id',
+	'schtime' => 'Time',
+	'schdayofmonth' => 'Day of Month',
+	'schdayofweek' => 'Day of Week',
+	'schannualdates' => 'Annual Dates',
+	'schminuteinterval' => 'Minute Interval',
+	'nexttrigger_time' => 'Trigger Time',
+	'cbPulse' => 'Pulses',
+	'SINGLE_cbPulse' => 'Pulse',
 	'LBL_CUSTOM_INFORMATION' => 'Custom Information',
-	'LBL_MODULEBLOCK_INFORMATION' => 'ModuleBlock Information',
 	'LBL_DESCRIPTION_INFORMATION' => 'Description',
-
-	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
+	'LBL_PULSE_INFORMATION' => 'PULSE INFORMATION',
+	'LBL_PULSE_SCHEDULE' => 'PULSE SCHEDULE',
 );
 ?>

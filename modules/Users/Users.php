@@ -17,6 +17,8 @@ require_once 'data/Tracker.php';
 require_once 'include/utils/CommonUtils.php';
 require_once 'include/Webservices/Utils.php';
 require_once 'modules/Users/UserTimeZonesArray.php';
+require_once 'modules/Users/UserPrivilegesWriter.php';
+require_once 'modules/Users/UserPrivileges.php';
 include_once 'modules/Users/authTypes/TwoFactorAuth/autoload.php';
 use \RobThree\Auth\TwoFactorAuth;
 
@@ -103,6 +105,15 @@ class Users extends CRMEntity {
 		'Phone' => 'phone_work',
 	);
 
+	public $list_fields_names = array(
+		'Tools' => 'id',
+		'username' => 'user_name',
+		'Email' => 'email1',
+		'Admin' => 'is_admin',
+		'Email2' => 'email2',
+		'Status' => 'status',
+	);
+
 	public $popup_fields = array('last_name');
 
 	// This is the list of fields that are in the lists.
@@ -113,6 +124,11 @@ class Users extends CRMEntity {
 
 	public $DEFAULT_PASSWORD_CRYPT_TYPE;
 	//'BLOWFISH', /* before PHP5.3*/ MD5;
+
+	/**
+	 * @var UserPrivileges
+	 */
+	private $privileges;
 
 	/** constructor function for the main user class
 	 instantiates the Logger class and PearDatabase Class
@@ -222,7 +238,6 @@ class Users extends CRMEntity {
 		// encrypt the password.
 		$salt = substr($this->column_fields["user_name"], 0, 2);
 
-		// Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/4923
 		if ($crypt_type == '') {
 			// Try to get the crypt_type which is in database for the user
 			$crypt_type = $this->get_user_crypt_type();
@@ -474,7 +489,6 @@ class Users extends CRMEntity {
 
 	/**
 	 * Get crypt type to use for password for the user.
-	 * Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/4923
 	 */
 	public function get_user_crypt_type() {
 		$crypt_res = null;
@@ -532,6 +546,17 @@ class Users extends CRMEntity {
 		$crypt_type = $this->DEFAULT_PASSWORD_CRYPT_TYPE;
 		$encrypted_new_password = $this->encrypt_password($new_password, $crypt_type);
 
+		if (GlobalVariable::getVariable('Application_SendUserPasswordByEmail', 0, 'Users')) {
+			require_once 'modules/Emails/Emails.php';
+			$context = array(
+				'$user_name$'=> $usr_name,
+				'$user_password$'=> $new_password
+			);
+			Emails::sendEmailTemplate('Password Change Template', $context, 'Users', $this->column_fields['email1'], $this->id);
+		}
+		$sql = "UPDATE $this->table_name SET failed_login_attempts=0 where id=?";
+		$this->db->pquery($sql, array($this->id));
+
 		// Set change password at next login to 0 if resetting your own password
 		if (!empty($current_user) && $current_user->id == $this->id) {
 			$change_password_next_login = 0;
@@ -550,8 +575,8 @@ class Users extends CRMEntity {
 			where id=?";
 		$this->db->pquery($query, array($encrypted_new_password, $encrypted_new_password, $crypt_type, $change_password_next_login, $this->id));
 		$this->createAccessKey();
-		require_once 'modules/Users/CreateUserPrivilegeFile.php';
-		createUserPrivilegesfile($this->id);
+		require_once 'modules/Users/UserPrivilegesWriter.php';
+		UserPrivilegesWriter::setUserPrivileges($this->id);
 		return true;
 	}
 
@@ -697,15 +722,15 @@ class Users extends CRMEntity {
 	 */
 	public function retrieveCurrentUserInfoFromFile($userid) {
 		global $adb, $site_URL;
-		checkFileAccessForInclusion('user_privileges/user_privileges_' . $userid . '.php');
-		require 'user_privileges/user_privileges_' . $userid . '.php';
+		$this->id = $userid;
+		$userprivs = $this->getPrivileges();
+		$user_info = $userprivs->getUserInfo();
 		foreach ($this->column_fields as $field => $value_iter) {
 			if (isset($user_info[$field])) {
 				$this->$field = $user_info[$field];
 				$this->column_fields[$field] = $user_info[$field];
 			}
 		}
-		$this->id = $userid;
 		$imageurl = '';
 		$image_name = $this->column_fields['imagename'];
 		if ($image_name != '') {
@@ -757,8 +782,8 @@ class Users extends CRMEntity {
 				$this->insertIntoEntityTable($table_name, $module, $fileid);
 			}
 		}
-		require_once 'modules/Users/CreateUserPrivilegeFile.php';
-		createUserPrivilegesfile($this->id);
+		require_once 'modules/Users/UserPrivilegesWriter.php';
+		UserPrivilegesWriter::setUserPrivileges($this->id);
 		coreBOS_Session::delete('next_reminder_interval');
 		coreBOS_Session::delete('next_reminder_time');
 		if ($insertion_mode != 'edit') {
@@ -1116,10 +1141,10 @@ class Users extends CRMEntity {
 		if (isset($this->column_fields['roleid'])) {
 			updateUser2RoleMapping($this->column_fields['roleid'], $this->id);
 		}
-		require_once 'modules/Users/CreateUserPrivilegeFile.php';
+		require_once 'modules/Users/UserPrivilegesWriter.php';
 		//createUserPrivilegesfile($this->id); // done in saveentity above
 		if ($this->mode!='edit' || $oldrole != $this->column_fields['roleid']) {
-			createUserSharingPrivilegesfile($this->id);
+			UserPrivilegesWriter::setUserPrivileges($this->id);
 		}
 		// ODController
 		if ($cbodUserLog) {
@@ -1362,7 +1387,6 @@ class Users extends CRMEntity {
 				where vtiger_homestuff.stuffid=vtiger_homedefault.stuffid and vtiger_homestuff.userid=? and vtiger_homedefault.hometype=?';
 			foreach ($this->homeorder_array as $key => $value) {
 				if ($_REQUEST[$key] != '') {
-					$save_array[] = $key;
 					$visible = 0; //To show the default Homestuff on the the Home Page
 				} else {
 					$visible = 1; //To hide the default Homestuff on the the Home Page
@@ -1581,6 +1605,163 @@ class Users extends CRMEntity {
 			$log->debug('< create_export_query');
 		}
 		return $query;
+	}
+
+	/**
+	 * Function to get the Headers of Users Information like User ID, Name, Role, Email.
+	 * Returns Header Values like User ID, Email etc in an array format.
+	**/
+	public function getUserListHeader() {
+		global $log;
+		$log->debug('Entering getUserListHeader() method ...');
+		$module = 'Users';
+		$header_array = array(
+			getTranslatedString('LBL_TOOLS', $module),
+			'<a>'.getTranslatedString('LBL_LIST_USER_NAME_ROLE', $module).'</a>',
+			'<a>'.getTranslatedString('LBL_EMAILS', $module).'</a>',
+			'<a>'.getTranslatedString('LBL_ADMIN', $module).'</a>',
+			'<a>'.getTranslatedString('Other Email', $module).'</a>',
+			'<a>'.getTranslatedString('LBL_STATUS', $module).'</a>'
+		);
+		$log->debug('Exiting getUserListHeader() method ...');
+		return $header_array;
+	}
+
+	/**
+	 * $adminstatus, $userstatus, $page, $order_by, $sorder, $email_search, $namerole_search
+	 * public function getUsersJSON($userid, $page, $order_by = 'module_name', $sorder = 'DESC', $action_search = '')
+	 */
+	public function getUsersJSON($adminstatus, $userstatus, $page, $order_by = 'user_name', $sorder = 'DESC', $email_search = '', $namerole_search = '') {
+		global $log, $adb, $current_user;
+		$log->debug('> getUserJSON');
+
+		$where = ' where 1 ';
+		$params = array();
+		if (!empty($adminstatus) && $adminstatus != 'all') {
+			$where .= ' and is_admin = ? ';
+			array_push($params, $adminstatus);
+		}
+		if (!empty($userstatus) && $userstatus != 'all') {
+			$where .= ' and status = ? ';
+			array_push($params, $userstatus);
+		}
+		if (!empty($email_search)) {
+			$where .= ' and email1 like ? ';
+			array_push($params, '%' . $email_search . '%');
+		}
+		if (!empty($namerole_search)) {
+			$where .= ' and user_name like ? ';
+			array_push($params, '%' . $namerole_search . '%');
+		}
+		if ($sorder != '' && $order_by != '') {
+			$list_query = "Select * from vtiger_users $where order by $order_by $sorder";
+		} else {
+			$list_query = "Select * from vtiger_users $where order by ".$this->default_order_by." ".$this->default_sort_order;
+		}
+		$rowsperpage = GlobalVariable::getVariable('Workflow_ListView_PageSize', 30);
+		$from = ($page-1)*$rowsperpage;
+		$limit = " limit $from,$rowsperpage";
+
+		$result = $adb->pquery($list_query.$limit, $params);
+		$rscnt = $adb->pquery("select count(*) from vtiger_users $where", array($params));
+		$noofrows = $adb->query_result($rscnt, 0, 0);
+		$last_page = ceil($noofrows/$rowsperpage);
+		if ($page*$rowsperpage>$noofrows-($noofrows % $rowsperpage)) {
+			$islastpage = true;
+			$to = $noofrows;
+		} else {
+			$islastpage = false;
+			$to = $page*$rowsperpage;
+		}
+		$entries_list = array(
+			'total' => $noofrows,
+			'per_page' => $rowsperpage,
+			'current_page' => $page,
+			'last_page' => $last_page,
+			'next_page_url' => '',
+			'prev_page_url' => '',
+			'from' => $from+1,
+			'to' => $to,
+			'data' => array(),
+		);
+		if ($islastpage && $page!=1) {
+			$entries_list['next_page_url'] = null;
+		} else {
+			$entries_list['next_page_url'] = 'index.php?module=Users&action=UsersAjax&file=getJSON&page='.($islastpage ? $page : $page+1);
+		}
+		$entries_list['prev_page_url'] = 'index.php?module=Users&action=UsersAjax&file=getJSON&page='.($page == 1 ? 1 : $page-1);
+		while ($lgn = $adb->fetch_array($result)) {
+			$entry = array();
+
+			if ($_SESSION['internal_mailer'] == 1) {
+				$recordId = $lgn['id'];
+				$module = "Users";
+				$tabid = getTabid($module);
+				$fieldId = $adb->getone("select fieldid from vtiger_field where tabid=".$tabid." and tablename='vtiger_users' and fieldname='email1'");
+				$fieldName = "email1";
+				$value = $lgn['email1'];
+				$entry['sendmail'] = "<a href=\"javascript:InternalMailer($recordId, $fieldId, '$fieldName', '$module', 'record_id');\">".textlength_check($value).'</a>';
+			} else {
+				$entry['sendmail'] = '<a href="mailto:'.$value.'">'.textlength_check($value).'</a>';
+			}
+
+			$entry['iscurrentuser'] = false;
+			if ($current_user->id == $lgn['id']) {
+				$entry['iscurrentuser'] = true;
+			}
+			$entry['isadmin'] = false;
+			if ($lgn['is_admin'] == 'on') {
+				$entry['isadmin'] = true;
+			}
+			$entry['isblockeduser'] = false;
+			if ($lgn['user_name'] == 'admin') {
+				$entry['isblockeduser'] = true;
+			}
+			$entry['duplicateuser'] = "index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record=".$lgn['id']."&isDuplicate=true";
+			$entry['viewuser'] = "index.php?module=Users&action=DetailView&parenttab=Settings&record=".$lgn['id'];
+			$entry['viewusername'] = "index.php?module=Users&action=DetailView&parenttab=Settings&record=".$lgn['id'];
+			$entry['edituser'] = "index.php?action=EditView&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record=".$lgn['id'];
+			$entry['Admin'] = $lgn['is_admin'];
+			if ($lgn['is_admin'] == 'on') {
+				$entry['Admin'] = getTranslatedString('LBL_ON', 'Users');
+			} else {
+				$entry['Admin'] = getTranslatedString('LBL_OFF', 'Users');
+			}
+			$entry['Email'] = $lgn['email1'];
+			$entry['Email2'] = $lgn['email2'];
+			$entry['username'] = $lgn['user_name'];
+			$entry['id'] = $lgn['id'];
+			$entry['firstname'] = $lgn['first_name'];
+			$entry['lastname'] = $lgn['last_name'];
+			$entry['Status'] = $lgn['status'];
+			if ($lgn['status'] == 'Active') {
+				$entry['statustag'] ='<span class="active">'.getTranslatedString('LBL_ACTIVE', 'Users').'</span>';
+			} else {
+				$entry['statustag'] ='<span class="inactive">'.getTranslatedString('LBL_INACTIVE', 'Users').'</span>';
+			}
+			$entry['roleid'] = fetchUserRole($lgn['id']);
+			$rolename = $adb->getone("select rolename from vtiger_role where roleid='".$entry['roleid']."'");
+			$entry['rolename'] = $rolename;
+			$entry['viewrole'] = 'index.php?action=RoleDetailView&module=Settings&parenttab=Settings&roleid='.$entry['roleid'];
+			$entries_list['data'][] = $entry;
+		}
+		$log->debug('< getUsersJSON');
+		return json_encode($entries_list);
+	}
+
+	/**
+	 * @return UserPrivileges
+	 */
+	public function getPrivileges() {
+		if (!UserPrivileges::hasPrivileges($this->id, $this->is_admin)) {
+			UserPrivilegesWriter::setUserPrivileges($this->id);
+			UserPrivilegesWriter::setSharingPrivileges($this->id);
+			$this->privileges = new UserPrivileges($this->id);
+		}
+		if (!$this->privileges) {
+			$this->privileges = new UserPrivileges($this->id);
+		}
+		return $this->privileges;
 	}
 }
 ?>

@@ -15,9 +15,11 @@
 *************************************************************************************************/
 
 class installGlobalVarDefinitions extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -31,10 +33,10 @@ class installGlobalVarDefinitions extends cbupdaterWorker {
 			$block->label = 'GVarDefinitions';
 			$moduleInstance->addBlock($block);
 			if (!empty($block->id)) {
-				$this->ExecuteQuery('update vtiger_blocks set display_status=0 where blockid=?',array($block->id));
+				$this->ExecuteQuery('update vtiger_blocks set display_status=0 where blockid=?', array($block->id));
 			}
-			$moduleInstance->addLink('LISTVIEWBASIC', 'Definitions', "javascript:gotourl('index.php?module=GlobalVariable&action=GlobalVariableDefinitions&parenttab=Tools')",'',4);
-			$field = Vtiger_Field::getInstance('gvname',$moduleInstance);
+			$moduleInstance->addLink('LISTVIEWBASIC', 'Definitions', "javascript:gotourl('index.php?module=GlobalVariable&action=GlobalVariableDefinitions&parenttab=Tools')", '', 4);
+			$field = Vtiger_Field::getInstance('gvname', $moduleInstance);
 			if ($field) {
 				foreach ($global_variables as $gvar) {
 					$sql = 'select * from vtiger_gvname where gvname=?';
@@ -53,5 +55,4 @@ class installGlobalVarDefinitions extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
 }

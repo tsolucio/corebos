@@ -42,7 +42,7 @@
 </tr>
 	{assign var=tdclass value='IvtColdata'}
 	{foreach key=key1 item=data from=$ALL_VALUES}
-		{assign var=cnt value=$data|@sizeof}
+		{assign var=cnt value=$data|@count}
 		{assign var=cnt2 value=0}
 		{if $tdclass eq 'IvtColdata'}
 			{assign var=tdclass value='sep1'}

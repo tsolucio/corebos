@@ -152,7 +152,7 @@ $smarty->assign('FIELDS', $focus->column_fields);
 if (isset($_REQUEST['name']) && is_null($focus->name)) {
 	$focus->name = $_REQUEST['name'];
 }
-if (isset($_REQUEST['vendorid']) && is_null($focus->vendorid)) {
+if (isset($_REQUEST['vendorid']) && empty($focus->vendorid)) {
 	$focus->vendorid = $_REQUEST['vendorid'];
 }
 

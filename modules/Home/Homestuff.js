@@ -26,14 +26,11 @@ function chooseType(typeName) {
 			method: 'POST',
 			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&home=homewidget'
 		}).done(function (response) {
-			var responseVal=response;
 			document.getElementById('home').innerHTML=response;
 			show('addWidgetsDiv');
 			placeAtCenter(document.getElementById('addWidgetsDiv'));
 			document.getElementById('homewidget').style.display='block';
 			document.getElementById('moduleNameRow').style.display='none';
-			document.getElementById('moduleFilterRow').style.display='none';
-			document.getElementById('modulePrimeRow').style.display='none';
 			document.getElementById('rssRow').style.display='none';
 			document.getElementById('showrow').style.display='none';
 			document.getElementById('dashTypeRow').style.display='none';
@@ -48,26 +45,45 @@ function chooseType(typeName) {
 	}
 	if (typeName=='Module') {
 		document.getElementById('moduleNameRow').style.display='block';
-		document.getElementById('moduleFilterRow').style.display='block';
-		document.getElementById('modulePrimeRow').style.display='block';
 		document.getElementById('showrow').style.display='block';
 		document.getElementById('rssRow').style.display='none';
 		document.getElementById('dashNameRow').style.display='none';
 		document.getElementById('dashTypeRow').style.display='none';
 		document.getElementById('StuffTitleId').style.display='block';
+		document.getElementById('moduleLabelsRow').style.display='none';
+		document.getElementById('moduleCombosRow').style.display='block';
+		document.getElementById('moduleFilters').style.display='block';
+		document.getElementById('filterby').style.display='table-cell';
+		document.getElementById('filterbyim').style.display='none';
+		document.getElementById('selModFilter_id').style.display='table-cell';
 		document.getElementById('homewidget').style.display='none';
 		document.getElementById('reportNameRow').style.display='none';
 		document.getElementById('reportTypeRow').style.display='none';
 		//document.getElementById('homeURLField').style.display = "none";
+	} else if (typeName=='CustomWidget') {
+		document.getElementById('moduleNameRow').style.display='block';
+		document.getElementById('showrow').style.display='none';
+		document.getElementById('rssRow').style.display='none';
+		document.getElementById('dashNameRow').style.display='none';
+		document.getElementById('dashTypeRow').style.display='none';
+		document.getElementById('StuffTitleId').style.display='block';
+		document.getElementById('moduleLabelsRow').style.display='block';
+		document.getElementById('moduleCombosRow').style.display='block';
+		document.getElementById('moduleFilters').style.display='block';
+		document.getElementById('filterbyim').style.display='table-cell';
+		document.getElementById('filterby').style.display='none';
+		document.getElementById('selModFilter_id').style.display='table-cell';
+		//$('homeURLField').style.display = "none";
 	} else if (typeName=='DashBoard') {
 		document.getElementById('moduleNameRow').style.display='none';
-		document.getElementById('moduleFilterRow').style.display='none';
-		document.getElementById('modulePrimeRow').style.display='none';
 		document.getElementById('rssRow').style.display='none';
 		document.getElementById('showrow').style.display='none';
 		document.getElementById('dashNameRow').style.display='block';
 		document.getElementById('dashTypeRow').style.display='block';
 		document.getElementById('StuffTitleId').style.display='block';
+		document.getElementById('moduleLabelsRow').style.display='none';
+		document.getElementById('moduleCombosRow').style.display='none';
+		document.getElementById('moduleFilters').style.display='none';
 		document.getElementById('reportNameRow').style.display='none';
 		document.getElementById('reportTypeRow').style.display='none';
 		document.getElementById('homewidget').style.display='none';
@@ -76,7 +92,6 @@ function chooseType(typeName) {
 			method: 'POST',
 			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&dash=dashboard'
 		}).done(function (response) {
-			var responseVal=response;
 			document.getElementById('selDashName').innerHTML=response;
 			show('addWidgetsDiv');
 			placeAtCenter(document.getElementById('addWidgetsDiv'));
@@ -84,8 +99,6 @@ function chooseType(typeName) {
 		});
 	} else if (typeName=='RSS') {
 		document.getElementById('moduleNameRow').style.display='none';
-		document.getElementById('moduleFilterRow').style.display='none';
-		document.getElementById('modulePrimeRow').style.display='none';
 		document.getElementById('showrow').style.display='block';
 		document.getElementById('rssRow').style.display='block';
 		document.getElementById('dashNameRow').style.display='none';
@@ -95,24 +108,26 @@ function chooseType(typeName) {
 		VtigerJS_DialogBox.hidebusy();
 		document.getElementById('reportNameRow').style.display='none';
 		document.getElementById('reportTypeRow').style.display='none';
+		document.getElementById('moduleLabelsRow').style.display='none';
+		document.getElementById('moduleCombosRow').style.display='none';
+		document.getElementById('moduleFilters').style.display='none';
 		//document.getElementById('homeURLField').style.display = "none";
 	} else if (typeName=='Default') {
 		document.getElementById('moduleNameRow').style.display='none';
-		document.getElementById('moduleFilterRow').style.display='none';
-		document.getElementById('modulePrimeRow').style.display='none';
 		document.getElementById('showrow').style.display='none';
 		document.getElementById('rssRow').style.display='none';
 		document.getElementById('dashNameRow').style.display='none';
 		document.getElementById('dashTypeRow').style.display='none';
 		document.getElementById('StuffTitleId').style.display='none';
+		document.getElementById('moduleLabelsRow').style.display='none';
+		document.getElementById('moduleCombosRow').style.display='none';
+		document.getElementById('moduleFilters').style.display='none';
 		document.getElementById('homewidget').style.display='none';
 		document.getElementById('url_id').style.display = 'none';
 		document.getElementById('reportNameRow').style.display='none';
 		document.getElementById('reportTypeRow').style.display='none';
 	} else if (typeName == 'Notebook') {
 		document.getElementById('moduleNameRow').style.display='none';
-		document.getElementById('moduleFilterRow').style.display='none';
-		document.getElementById('modulePrimeRow').style.display='none';
 		document.getElementById('showrow').style.display='none';
 		document.getElementById('rssRow').style.display='none';
 		document.getElementById('dashNameRow').style.display='none';
@@ -122,11 +137,14 @@ function chooseType(typeName) {
 		document.getElementById('homewidget').style.display='none';
 		document.getElementById('reportNameRow').style.display='none';
 		document.getElementById('reportTypeRow').style.display='none';
+		document.getElementById('moduleLabelsRow').style.display='none';
+		document.getElementById('moduleCombosRow').style.display='none';
+		document.getElementById('moduleFilters').style.display='none';
 		//document.getElementById('homeURLField').style.display = "none";
 	} else if (typeName == 'ReportCharts') {
 		document.getElementById('moduleNameRow').style.display='none';
-		document.getElementById('moduleFilterRow').style.display='none';
-		document.getElementById('modulePrimeRow').style.display='none';
+		//document.getElementById('moduleFilterRow').style.display='none';
+		//document.getElementById('modulePrimeRow').style.display='none';
 		document.getElementById('rssRow').style.display='none';
 		document.getElementById('showrow').style.display='none';
 		document.getElementById('StuffTitleId').style.display='block';
@@ -172,7 +190,6 @@ function setFilter(modName) {
 			method: 'POST',
 			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&modname='+modval
 		}).done(function (response) {
-			var responseVal=response;
 			document.getElementById('selModFilter_id').innerHTML=response;
 			setPrimaryFld(document.getElementById('selFilterid'));
 			show('addWidgetsDiv');
@@ -186,13 +203,12 @@ function setFilter(modName) {
  * @param string modName - the modula name for which you want the field list
  */
 function setPrimaryFld(Primeval) {
-	primecvid=Primeval.value;
+	var primecvid=Primeval.value;
 	var fldmodule = document.getElementById('selmodule_id').options[document.getElementById('selmodule_id').selectedIndex].value;
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&primecvid='+primecvid+'&fieldmodname='+fldmodule
 	}).done(function (response) {
-		var responseVal=response;
 		document.getElementById('selModPrime_id').innerHTML=response;
 		document.getElementById('selPrimeFldid').selectedIndex = 0;
 		VtigerJS_DialogBox.hidebusy();
@@ -221,8 +237,8 @@ function cancelEntries(editRow) {
  * @param string selMaxName - the widget name
  */
 function saveEntries(selMaxName) {
-	sidarr=selMaxName.split('_');
-	sid=sidarr[1];
+	var sidarr=selMaxName.split('_');
+	var sid=sidarr[1];
 	document.getElementById('refresh_'+sid).innerHTML=document.getElementById('vtbusy_homeinfo').innerHTML;
 	cancelEntries('editRowmodrss_'+sid);
 	showmax=document.getElementById(selMaxName).value;
@@ -249,12 +265,11 @@ function saveEditDash(dashRowId) {
 			dashVal=document.getElementById('dashradio_'+[iter]).value;
 		}
 	}
-	did=dashRowId;
+	var did=dashRowId;
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&dashVal='+dashVal+'&did='+did
 	}).done(function (response) {
-		var responseVal=response;
 		eval(response);
 		document.getElementById('refresh_'+did).innerHTML='';
 	});
@@ -270,7 +285,6 @@ function DelStuff(sid) {
 			method: 'POST',
 			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&homestuffid='+sid,
 		}).done(function (response) {
-			var responseVal=response;
 			if (response.indexOf('SUCCESS') > -1) {
 				var delchild = document.getElementById('stuff_'+sid);
 				odeletedChild = document.getElementById('MainMatrix').removeChild(delchild);
@@ -294,12 +308,11 @@ function DelStuff(sid) {
  * @param string stufftype - the stuff type for the new div (for e.g. rss)
  */
 function loadAddedDiv(stuffid, stufftype) {
-	gstuffId = stuffid;
+	var gstuffId = stuffid;
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?module=Home&action=HomeAjax&file=NewBlock&stuffid='+stuffid+'&stufftype='+stufftype
 	}).done(function (response) {
-		var responseVal=response;
 		document.getElementById('MainMatrix').style.display= 'none';
 		document.getElementById('MainMatrix').innerHTML = response + document.getElementById('MainMatrix').innerHTML;
 		positionDivInAccord('stuff_'+gstuffId, '', stufftype);
@@ -320,7 +333,6 @@ function loadStuff(stuffid, stufftype) {
 		method: 'POST',
 		url: 'index.php?module=Home&action=HomeAjax&file=HomeBlock&homestuffid='+stuffid+'&blockstufftype='+stufftype
 	}).done(function (response) {
-		var responseVal=response;
 		document.getElementById('stuffcont_'+stuffid).innerHTML=response;
 		vtlib_executeJavascriptInElement(document.getElementById('stuffcont_'+stuffid));
 		if (stufftype=='Module') {
@@ -405,8 +417,7 @@ function loadAllWidgets(widgetInfoList, batchSize) {
 						} else if (widgetType=='RSS') {
 							document.getElementById('a_'+widgetId).href = document.getElementById('more_'+widgetId).value;
 						} else if (widgetType=='DashBoard') {
-							document.getElementById('a_'+widgetId).href = 'index.php?module=Dashboard&action='+
-								'index&type='+document.getElementById('more_'+stuffid).value;
+							document.getElementById('a_'+widgetId).href = 'index.php?module=Dashboard&action=index&type='+document.getElementById('more_'+widgetId).value;
 						} else if (widgetType=='Tag Cloud') {
 							tagcloudfound = true;
 						}
@@ -476,12 +487,11 @@ function frmValidate() {
 				return false;
 			}
 		}*/
-		if (document.getElementById('stufftype_id').value=='Module') {
-			var selLen;
+		if (document.getElementById('stufftype_id').value=='Module' || document.getElementById('stufftype_id').value=='CustomWidget') {
 			var fieldval=new Array();
 			var cnt=0;
-			selVal=document.Homestuff.PrimeFld;
-			for (k=0; k<selVal.options.length; k++) {
+			var selVal=document.Homestuff.PrimeFld;
+			for (var k=0; k<selVal.options.length; k++) {
 				if (selVal.options[k].selected) {
 					fieldval[cnt]=selVal.options[k].value;
 					cnt= cnt+1;
@@ -500,6 +510,7 @@ function frmValidate() {
 		document.getElementById('stufftitle_id').value = '';
 		var selFiltername='';
 		var fldname='';
+		var selAggregatename='';
 		var selmodule='';
 		var maxentries='';
 		var txtRss='';
@@ -513,8 +524,13 @@ function frmValidate() {
 		if (stufftype=='Module') {
 			selFiltername =document.Homestuff.selFiltername[document.Homestuff.selFiltername.selectedIndex].value;
 			fldname = fieldval;
-			selmodule =document.getElementById('selmodule_id').value;
-			maxentries =document.getElementById('maxentryid').value;
+			selmodule = document.getElementById('selmodule_id').value;
+			maxentries = document.getElementById('maxentryid').value;
+		} else if (stufftype=='CustomWidget') {
+			fldname = fieldval;
+			selFiltername = document.Homestuff.selFiltername[document.Homestuff.selFiltername.selectedIndex].value;
+			selmodule = document.getElementById('selmodule_id').value;
+			selAggregatename = document.getElementById('selAggregateid').value;
 		} else if (stufftype=='RSS') {
 			txtRss=document.getElementById('txtRss_id').value;
 			maxentries =document.getElementById('maxentryid').value;
@@ -526,21 +542,15 @@ function frmValidate() {
 		} else if (stufftype=='ReportCharts') {
 			selreport = document.getElementById('selreportchart_id').value;
 			selreportcharttype = document.getElementById('selreportcharttype_id').value;
-		}/*else if (stufftype=="URL") {
-			txtURL=document.getElementById('url_id').value;
-		}*/
-
-		var url='stufftype='+stufftype+'&stufftitle='+stufftitle+'&selmodule='+selmodule+'&maxentries='+maxentries+'&selFiltername='+selFiltername+'&fldname='
-			+ encodeURIComponent(fldname)+'&txtRss='+txtRss+'&seldashbd='+seldashbd+'&seldashtype='+seldashtype+'&seldeftype='+seldeftype+'&selreport='+selreport
-			+ '&selreportcharttype='+selreportcharttype;//+'&txtURL='+txtURL;
-		var stuffarr=new Array();
+		}
+		var url=decodeURIComponent('stufftype='+stufftype+'&stufftitle='+stufftitle+'&selmodule='+selmodule+'&maxentries='+maxentries+'&selFiltername='+selFiltername+'&selAggregatename='+selAggregatename+'&fldname='+encodeURIComponent(fldname)+'&txtRss='+txtRss+'&seldashbd='+seldashbd+'&seldashtype='+seldashtype+'&seldeftype='+seldeftype+'&selreport='+selreport+'&selreportcharttype='+selreportcharttype);
 		VtigerJS_DialogBox.showbusy();
 
 		jQuery.ajax({
 			method: 'POST',
 			url: 'index.php?module=Home&action=HomeAjax&file=Homestuff&'+url
 		}).done(function (response) {
-			var responseVal=response;
+			// alert(response);
 			if (!response) {
 				alert(alert_arr.LBL_ADD_HOME_WIDGET);
 				VtigerJS_DialogBox.hidebusy();
@@ -553,9 +563,115 @@ function frmValidate() {
 				document.getElementById('stufftitle_id').value='';
 				document.getElementById('txtRss_id').value='';
 				eval(response);
+				window.location.reload();
 			}
 		});
 	}
+}
+
+/**
+ * this function validates the form for adding a new widget filter
+ */
+function filterValidate() {
+	if (trim(document.getElementById('stufftitle_id').value)=='') {
+		alert('Please enter Window Title');
+		document.getElementById('stufftitle_id').focus();
+		return false;
+	}
+	if (document.getElementById('stufftype_id').value=='RSS') {
+		if (document.getElementById('txtRss_id').value=='') {
+			alert('Please enter RSS URL');
+			document.getElementById('txtRss_id').focus();
+			return false;
+		}
+	}
+	/*if($('stufftype_id').value=="URL"){
+		if($('url_id').value==""){
+			alert("Please enter URL");
+			$('url_id').focus();
+			return false;
+		}
+	}*/
+	if (document.getElementById('stufftype_id').value=='CustomWidget' ) {
+		var fieldval=new Array();
+		var cnt=0;
+		var selVal=document.Homestuff.PrimeFld;
+		for (var k=0; k<selVal.options.length; k++) {
+			if (selVal.options[k].selected) {
+				fieldval[cnt]=selVal.options[k].value;
+				cnt= cnt+1;
+			}
+		}
+		if (cnt > 2) {
+			alert('Please select only two fields');
+			selVal.focus();
+			return false;
+		} else {
+			document.Homestuff.fldname.value=fieldval;
+		}
+	}
+	var stufftype=document.getElementById('stufftype_id').value;
+	var stufftitle=document.getElementById('stufftitle_id').value;
+
+	//	$('stufftitle_id').value = '';
+	var selFiltername='';
+	var fldname='';
+	var selAggregatename='';
+	var selmodule='';
+	var maxentries='';
+	var txtRss='';
+	var seldashbd='';
+	var seldashtype='';
+	var seldeftype='';
+	var selreport='';
+	var selreportcharttype='';
+	//var txtURL = '';
+
+	if (stufftype=='Module') {
+		selFiltername =document.Homestuff.selFiltername[document.Homestuff.selFiltername.selectedIndex].value;
+		fldname = fieldval;
+		selmodule =document.getElementById('selmodule_id').value;
+		maxentries =document.getElementById('maxentryid').value;
+	} else if (stufftype=='CustomWidget') {
+		fldname = fieldval;
+		selFiltername = document.Homestuff.selFiltername[document.Homestuff.selFiltername.selectedIndex].value;
+		selmodule = document.getElementById('selmodule_id').value;
+		selAggregatename = document.getElementById('selAggregateid').value;
+	} else if (stufftype=='RSS') {
+		txtRss=document.getElementById('txtRss_id').value;
+		maxentries =document.getElementById('maxentryid').value;
+	} else if (stufftype=='DashBoard') {
+		seldashbd=document.getElementById('seldashbd_id').value;
+		seldashtype=document.getElementById('seldashtype_id').value;
+	} else if (stufftype=='Default') {
+		seldeftype=document.Homestuff.seldeftype[document.Homestuff.seldeftype.selectedIndex].value;
+	} else if (stufftype=='ReportCharts') {
+		selreport = document.getElementById('selreportchart_id').value;
+		selreportcharttype = document.getElementById('selreportcharttype_id').value;
+	}
+
+	var url=decodeURIComponent('stufftype='+stufftype+'&stufftitle='+stufftitle+'&selmodule='+selmodule+'&maxentries='+maxentries+'&selFiltername='+selFiltername+'&selAggregatename='+selAggregatename+'&fldname='+encodeURIComponent(fldname)+'&txtRss='+txtRss+'&seldashbd='+seldashbd+'&seldashtype='+seldashtype+'&seldeftype='+seldeftype+'&selreport='+selreport+'&selreportcharttype='+selreportcharttype);
+	document.getElementById('vtbusy_info').style.display='inline';
+
+	jQuery.ajax({
+		type : 'post',
+		url : 'index.php?module=Home&action=HomeAjax&file=Homestuffilter&'+url
+	}).done(function (response) {
+		if (!response) {
+			alert('Unable to add Filter! Please try again');
+			document.getElementById('vtbusy_info').style.display='none';
+			document.getElementById('txtRss_id').value='';
+			return false;
+		} else {
+			document.getElementById('vtbusy_info').style.display='none';
+			document.getElementById('txtRss_id').value='';
+			eval(response);
+		}
+	}).fail(function () {
+		//Error while asking file
+		alert('Error with AJAX');
+		VtigerJS_DialogBox.unblock();
+	});
 }
 
 /**
@@ -567,7 +683,6 @@ function HideDefault(sid) {
 		method: 'POST',
 		url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&stuffid='+sid+'&act=hide'
 	}).done(function (response) {
-		var responseVal=response;
 		if (response.indexOf('SUCCESS') > -1) {
 			var delchild = document.getElementById('stuff_'+sid);
 			odeletedChild = document.getElementById('MainMatrix').removeChild(delchild);
@@ -668,10 +783,10 @@ initHomePage = function () {
 	jQuery('#MainMatrix').sortable({
 		constraint: false, tag: 'div', overlap: 'Horizontal', handle: '.headerrow', opacity:0.7,
 		update: function () {
-			matrixarr = jQuery(this).sortable('serialize').split('&');
-			matrixseqarr = new Array();
-			seqarr = new Array();
-			for (x = 0; x < matrixarr.length; x++) {
+			var matrixarr = jQuery(this).sortable('serialize').split('&');
+			var matrixseqarr = new Array();
+			var seqarr = new Array();
+			for (var x = 0; x < matrixarr.length; x++) {
 				matrixseqarr[x] = matrixarr[x].split('=')[1];
 			}
 			BlockSorting(matrixseqarr);
@@ -762,6 +877,7 @@ function saveLayout() {
 		window.location.reload();
 	});
 }
+
 function saveEditReportCharts(dashRowId) {
 	document.getElementById('refresh_'+dashRowId).innerHTML=document.getElementById('vtbusy_homeinfo').innerHTML;
 	cancelEntries('editRowmodrss_'+dashRowId);
@@ -776,7 +892,6 @@ function saveEditReportCharts(dashRowId) {
 		method: 'POST',
 		url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&reportVal='+reportVal+'&stuffid='+dashRowId
 	}).done(function (response) {
-		var responseVal=response;
 		eval(response);
 		document.getElementById('refresh_'+dashRowId).innerHTML='';
 	});

@@ -9,6 +9,36 @@
  ************************************************************************************/
 //handle search for related entries
 ( function ($) {
+	function ExecuteFunctions(functiontocall, params) {
+		var baseurl = 'index.php?_operation=ExecuteFunctions';
+
+		// Return a new promise avoiding jquery and prototype
+		return new Promise(function (resolve, reject) {
+			var url = baseurl+'&functiontocall='+functiontocall;
+			var req = new XMLHttpRequest();
+			req.open('POST', url, true);  // make call asynchronous
+
+			req.onload = function () {
+				// check the status
+				if (req.status == 200) {
+					// Resolve the promise with the response text
+					resolve(req.response);
+				} else {
+					// Otherwise reject with the status text which will hopefully be a meaningful error
+					reject(Error(req.statusText));
+				}
+			};
+
+			// Handle errors
+			req.onerror = function () {
+				reject(Error('Network/Script Error'));
+			};
+
+			// Make the request
+			req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+			req.send(params);
+		});
+	}
 	function pageIsSelectmenuDialog(page) {
 		var isDialog = false;
 		var id = page && page.prop('id');
@@ -99,6 +129,42 @@
 						alert('Select related entries error, please contact your CRM Administrator.');
 						return false;
 					});
+				})
+				.change('referenceselect', function (e) {
+					var wsrecord_selected = e.target.value;
+					var modulename = $('#module').val();
+					var parentselector = selectmenu.prop('id');
+
+					if (modulename == 'Timecontrol' && parentselector == 'product_id') {
+						ExecuteFunctions('detectModulenameFromRecordId', 'wsrecordid='+wsrecord_selected).then(function (response) {
+							var obj = JSON.parse(response);
+							if (obj.name == 'Products') {
+								//hide service fields
+								$('#date_start').parent().parent().hide();
+								$('#time_start').parent().parent().hide();
+								$('#date_end').parent().parent().hide();
+								$('#time_end').parent().parent().hide();
+								$('#totaltime').val('');
+								$('#totaltime').parent().parent().hide();
+								$('#tcunits').parent().parent().show();
+							} else if (obj.name == 'Services') {
+								$('#date_start').parent().parent().show();
+								$('#time_start').parent().parent().show();
+								$('#date_end').parent().parent().show();
+								$('#time_end').parent().parent().show();
+								$('#totaltime').parent().parent().show();
+								$('#tcunits').val('');
+								$('#tcunits').parent().parent().hide();
+							}
+						}, function (error) {
+							$('#date_start').parent().parent().show();
+							$('#time_start').parent().parent().show();
+							$('#date_end').parent().parent().show();
+							$('#time_end').parent().parent().show();
+							$('#totaltime').parent().parent().show();
+							$('#tcunits').parent().parent().show();
+						});
+					}
 				});
 		})
 		// The custom select list may show up as either a popup or a dialog, depending on how much

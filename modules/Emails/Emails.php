@@ -14,6 +14,7 @@ require_once 'modules/Contacts/Contacts.php';
 require_once 'modules/Accounts/Accounts.php';
 require_once 'modules/Potentials/Potentials.php';
 require_once 'modules/Users/Users.php';
+require_once 'modules/Emails/mail.php';
 
 class Emails extends CRMEntity {
 	public $db;
@@ -227,6 +228,43 @@ class Emails extends CRMEntity {
 		$result = $adb->pquery($sql, array($emailid));
 		$email_flag = $adb->query_result($result, 0, 'email_flag');
 		return  ($email_flag == 'SENT');
+	}
+
+	public static function emailServerCheck() {
+		global $adb;
+		$emailcfg = $adb->pquery('select 1 from vtiger_systems where server_type = ?', array('email'));
+		return ($adb->num_rows($emailcfg)>0);
+	}
+
+	public static function useEmailHook() {
+		return true;
+	}
+
+	public static function sendEMail($to_email, $from_name, $from_email, $subject, $contents, $cc, $bcc, $attachment, $emailid, $logo, $qrScan, $replyto, $replyToEmail) {
+		global $adb;
+		$mail = new PHPMailer();
+		setMailerProperties($mail, $subject, $contents, $from_email, $from_name, trim($to_email, ','), $attachment, $emailid, $logo, $qrScan);
+		// Return immediately if Outgoing server not configured
+		if (empty($mail->Host)) {
+			return 0;
+		}
+		setCCAddress($mail, 'cc', $cc);
+		setCCAddress($mail, 'bcc', $bcc);
+		if (!empty($replyToEmail)) {
+			$mail->AddReplyTo($replyToEmail);
+		}
+		// mailscanner customization: If Support Reply To is defined use it.
+		$HELPDESK_SUPPORT_EMAIL_REPLY_ID = GlobalVariable::getVariable('HelpDesk_Support_Reply_EMail', $replyto, 'HelpDesk');
+		if ($HELPDESK_SUPPORT_EMAIL_REPLY_ID && $replyto != $HELPDESK_SUPPORT_EMAIL_REPLY_ID) {
+			$mail->AddReplyTo($HELPDESK_SUPPORT_EMAIL_REPLY_ID);
+		}
+		$mail_status = MailSend($mail);
+		if ($mail_status != 1) {
+			$mail_error = getMailError($mail, $mail_status);
+		} else {
+			$mail_error = $mail_status;
+		}
+		return $mail_error;
 	}
 
 	/*
@@ -523,6 +561,25 @@ class Emails extends CRMEntity {
 		}
 		unset($list_buttons['mass_edit']);
 		return $list_buttons;
+	}
+
+	public static function sendEmailTemplate($templateName, $context, $module, $to_email, $par_id, $from_name = '', $from_email = '') {
+		require_once 'modules/Emails/mail.php';
+		global $adb, $default_charset;
+		$sql = fetchEmailTemplateInfo($templateName);
+		if ($sql && $adb->num_rows($sql)>0) {
+			$sub = $adb->query_result($sql, 0, 'subject');
+			$body = $adb->query_result($sql, 0, 'template');
+			$mail_body = html_entity_decode($body, ENT_QUOTES, $default_charset);
+			foreach ($context as $value => $val) {
+				$mail_body = str_replace($value, $val, $mail_body);
+			}
+			$mail_body = getMergedDescription($mail_body, $par_id, $module);
+			$sub = getMergedDescription($sub, $par_id, $module);
+			return send_mail($module, $to_email, $from_name, $from_email, $sub, $mail_body);
+		} else {
+			return false;
+		}
 	}
 }
 

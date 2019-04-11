@@ -15,17 +15,19 @@
  *************************************************************************************************/
 class addStatus2ProjectTask extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$modname = 'ProjectTask';
 			$module = Vtiger_Module::getInstance($modname);
 			$block = Vtiger_Block::getInstance('LBL_PROJECT_TASK_INFORMATION', $module);
-			$field = Vtiger_Field::getInstance('projecttaskstatus',$module);
+			$field = Vtiger_Field::getInstance('projecttaskstatus', $module);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?', array($field->id));
 			} else {
 				$fieldInstance = new Vtiger_Field();
 				$fieldInstance->name = 'projecttaskstatus';
@@ -45,14 +47,16 @@ class addStatus2ProjectTask extends cbupdaterWorker {
 		$this->finishExecution();
 	}
 
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			// undo your magic here
 			$moduleInstance=Vtiger_Module::getInstance('ProjectTask');
-			$field = Vtiger_Field::getInstance('projecttaskstatus',$moduleInstance);
+			$field = Vtiger_Field::getInstance('projecttaskstatus', $moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=1 where fieldid=?',array($field->id));
+				$this->ExecuteQuery('update vtiger_field set presence=1 where fieldid=?', array($field->id));
 			}
 			$this->sendMsg('Changeset '.get_class($this).' undone!');
 			$this->markUndone();
@@ -61,7 +65,6 @@ class addStatus2ProjectTask extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }
 
 ?>

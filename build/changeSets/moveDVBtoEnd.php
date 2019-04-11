@@ -15,10 +15,14 @@
 *************************************************************************************************/
 
 class moveDVBtoEnd extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->isBlocked()) return true;
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->isBlocked()) {
+			return true;
+		}
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -28,10 +32,10 @@ class moveDVBtoEnd extends cbupdaterWorker {
 			while ($link = $adb->fetch_array($rs)) {
 				if ($link['tabid']!=$tabid) {
 					$tabid = $link['tabid'];
-					$rsseq = $adb->pquery('select max(sequence) from vtiger_blocks where tabid=?',array($tabid));
-					$cnt = $adb->query_result($rsseq,0,0)+1;
+					$rsseq = $adb->pquery('select max(sequence) from vtiger_blocks where tabid=?', array($tabid));
+					$cnt = $adb->query_result($rsseq, 0, 0)+1;
 				}
-				$this->ExecuteQuery('update vtiger_links set sequence=? where linkid=?',array($cnt,$link['linkid']));
+				$this->ExecuteQuery('update vtiger_links set sequence=? where linkid=?', array($cnt,$link['linkid']));
 				$cnt++;
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');

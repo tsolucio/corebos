@@ -200,32 +200,7 @@
 			<table border=0 cellspacing=0 cellpadding=2 width=100%>
 			<tr>
 				<td style="padding-right:20px" nowrap>{include file='ListViewButtons.tpl'}</td>
-				<td align="right" width=40%>
-					<table border=0 cellspacing=0 cellpadding=0 class="small">
-					<tr>
-						{if !empty($WORDTEMPLATES)}
-							{if $WORDTEMPLATES|@count gt 0}
-								<td>{'LBL_SELECT_TEMPLATE_TO_MAIL_MERGE'|@getTranslatedString:$MODULE}</td>
-								<td style="padding-left:5px;padding-right:5px">
-									<select class="small" name="mergefile">
-									{foreach key=_TEMPLATE_ID item=_TEMPLATE_NAME from=$WORDTEMPLATES}
-										<option value="{$_TEMPLATE_ID}">{$_TEMPLATE_NAME}</option>
-									{/foreach}
-									</select>
-								</td>
-								<td>
-									<input title="{'LBL_MERGE_BUTTON_TITLE'|@getTranslatedString:$MODULE}" accessKey="{'LBL_MERGE_BUTTON_KEY'|@getTranslatedString:$MODULE}"
-										class="crmbutton small create" onclick="return massMerge('{$MODULE}')" type="submit" name="Merge" value="{'LBL_MERGE_BUTTON_LABEL'|@getTranslatedString:$MODULE}">
-								</td>
-							{elseif $IS_ADMIN eq 'true'}
-								<td>
-									<a href='index.php?module=Settings&action=upload&tempModule={$MODULE}&parenttab=Settings'>{'LBL_CREATE_MERGE_TEMPLATE'|@getTranslatedString:$MODULE}</a>
-								</td>
-							{/if}
-						{/if}
-					</tr>
-					</table>
-				</td>
+				<td align="right" width=40%>&nbsp;</td>
 			</tr>
 			</table>
 		</td>

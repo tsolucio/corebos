@@ -155,9 +155,9 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 			$fields = array();
 			foreach ($fieldgroups as $fieldname => $fieldinfo) {
 				$value = '';
-				$fieldlabel = $fieldinfo['label'];
 
 				// get field information
+				$field = array();
 				if (isset($resultRecord[$fieldname])) {
 					$value = $resultRecord[$fieldname];
 					//get standard content & perform special settings
@@ -183,6 +183,10 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 					}
 					if ($fieldinfo['uitype'] == '69m') {
 						$resultRecord[$fieldname]= crmtogo_WS_Utils::getProductBase64Image($resultRecord['id']);
+					}
+					if ($fieldinfo['uitype'] == '50') {
+						$date = new DateTimeField($resultRecord[$fieldname]);
+						$resultRecord[$fieldname] = $date->getDisplayDateTimeValue();
 					}
 					$field = array(
 						'name'  => $fieldname,
@@ -249,16 +253,46 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 						$date = new DateTimeField($field['value']);
 						$field['value'] = $date->getDisplayDateTimeValue();
 					}
-					$fields[] = $field;
+					if (!empty($field)) {
+						$fields[] = $field;
+					}
 				}
 			}
 			// build address for "open address in maps" button
 			// array with all different address fieldnames for each module
 			$fieldnamesByModule = array(
-				'Accounts'	=> array('bill_street', 'ship_street', 'bill_city', 'ship_city', 'bill_state', 'ship_state', 'bill_code', 'ship_code', 'bill_country', 'ship_country', 'ship_address', 'bill_address'),
-				'SalesOrder'=> array('bill_street', 'ship_street', 'bill_city', 'ship_city', 'bill_state', 'ship_state', 'bill_code', 'ship_code', 'bill_country', 'ship_country', 'ship_address', 'bill_address'),
-				'Contacts'	=> array('mailingstreet', 'otherstreet', 'mailingcity', 'othercity', 'mailingstate', 'otherstate', 'mailingzip', 'otherzip', 'mailingcountry', 'othercountry', 'mailingaddress', 'otheraddress'),
-				'Leads'		=> array('lane', '', 'city', '', 'state', '', 'code', '', 'country', '', 'mailingaddress', ''),
+				'Accounts' => array(
+					 'bill_street', 'ship_street',
+					 'bill_city', 'ship_city',
+					 'bill_state', 'ship_state',
+					 'bill_code', 'ship_code',
+					 'bill_country', 'ship_country',
+					 'ship_address', 'bill_address'
+					),
+				'SalesOrder' => array(
+					 'bill_street', 'ship_street',
+					 'bill_city', 'ship_city',
+					 'bill_state', 'ship_state',
+					 'bill_code', 'ship_code',
+					 'bill_country', 'ship_country',
+					 'ship_address', 'bill_address'
+					),
+				'Contacts' => array(
+					 'mailingstreet', 'otherstreet',
+					 'mailingcity', 'othercity',
+					 'mailingstate', 'otherstate',
+					 'mailingzip', 'otherzip',
+					 'mailingcountry', 'othercountry',
+					 'mailingaddress', 'otheraddress'
+					),
+				'Leads' => array(
+					'lane', '',
+					'city', '',
+					'state', '',
+					'code', '',
+					'country', '',
+					'mailingaddress', ''
+				),
 			);
 
 			// get the right array depending on current module
@@ -286,19 +320,19 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 							} else {
 								$mailingAddressOK = -1;
 							}
-						} // check street and city for second address
-						elseif ($otherAddressOK != -1 && ($fieldname == $fieldnames[1] || $fieldname == $fieldnames[3])) {
+						} elseif ($otherAddressOK != -1 && ($fieldname == $fieldnames[1] || $fieldname == $fieldnames[3])) {
+							// check street and city for second address
 							$otherAddressOK = 1;
 							if (strlen($value)>0) {
 								$otherAddress .= $value.' ';
 							} else {
 								$otherAddressOK = -1;
 							}
-						} // check state and ZIP for first address
-						elseif (in_array($fieldname, array($fieldnames[4], $fieldnames[6])) && strlen($value)>0) {
+						} elseif (in_array($fieldname, array($fieldnames[4], $fieldnames[6])) && strlen($value)>0) {
+							// check state and ZIP for first address
 							$mailingAddress .= $value." ";
-						} // check state and ZIP for second address
-						elseif (in_array($fieldname, array($fieldnames[5],$fieldnames[7])) && strlen($value)>0) {
+						} elseif (in_array($fieldname, array($fieldnames[5],$fieldnames[7])) && strlen($value)>0) {
+							// check state and ZIP for second address
 							$otherAddress .= $value." ";
 						}
 					}
@@ -334,14 +368,8 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 					'displaytype' => 1,
 				);
 			}
-			$blocks[] = array( 'label' => $blocklabel, 'fields' => $fields );
-		}
-		$sections = array();
-		$moduleFieldGroupKeys = array_keys($moduleFieldGroups);
-		foreach ($moduleFieldGroupKeys as $blocklabel) {
-			// eliminate empty blocks
-			if (isset($groups[$blocklabel]) && !empty($groups[$blocklabel])) {
-				$sections[] = array( 'label' => $blocklabel, 'count' => count($groups[$blocklabel]) );
+			if (!empty($fields)) {
+				$blocks[] = array( 'label' => $blocklabel, 'fields' => $fields );
 			}
 		}
 		$modifiedResult = array('blocks' => $blocks, 'id' => $resultRecord['id']);

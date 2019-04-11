@@ -21,7 +21,7 @@ global $adb, $log, $current_user;
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
 
-require 'user_privileges/user_privileges_'.$current_user->id.'.php';
+$userprivs = $current_user->getPrivileges();
 
 $smarty = new vtigerCRM_Smarty;
 // Identify this module as custom module.
@@ -52,7 +52,7 @@ $module_data =array();
 if ($noofrows > 0) {
 	for ($x=0,$y=0; $x<$noofrows; $x++) {
 		$tabid = $adb->query_result($result, $x, 'tabid');
-		if ($is_admin || $profileGlobalPermission[2]==0 || $profileGlobalPermission[1]==0 || $profileTabsPermission[$tabid]==0) {
+		if ($userprivs->hasGlobalReadPermission() || $userprivs->hasModuleAccess($tabid)) {
 			$mod_name = $adb->query_result($result, $x, "name");
 			$module_name[$y] = $mod_name;
 			$y++;

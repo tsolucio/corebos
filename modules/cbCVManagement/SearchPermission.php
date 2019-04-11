@@ -25,6 +25,8 @@ $retval = vtlib_purify($_REQUEST['returnvalidation']);
 $startTime = microtime(true);
 if ($cvid==-1) {
 	$rdo = cbCVManagement::getDefaultView($cvmod, $cvuserid);
+} elseif ($cvid==-2) {
+	$rdo = cbCVManagement::getAllViews($cvmod, $cvuserid);
 } else {
 	$rdo = cbCVManagement::getPermission($cvid, $cvuserid);
 }

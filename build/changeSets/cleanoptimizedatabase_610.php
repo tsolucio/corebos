@@ -15,9 +15,11 @@
 *************************************************************************************************/
 
 class cleandatabase_610 extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -35,44 +37,51 @@ class cleandatabase_610 extends cbupdaterWorker {
 			/////////////////////////////////
 			$query = 'SELECT 1 FROM vtiger_currencies WHERE currency_name=?';
 			$result = $adb->pquery($query, array('Sudanese Pound'));
-			if($adb->num_rows($result) <= 0){
+			if ($adb->num_rows($result) <= 0) {
 				//Inserting Currency Sudanese Pound to vtiger_currencies
-				$this->ExecuteQuery('INSERT INTO vtiger_currencies (currencyid,currency_name,currency_code,currency_symbol) VALUES ('.$adb->getUniqueID("vtiger_currencies").',"Sudanese Pound","SDG","£")',array());
+				$this->ExecuteQuery('INSERT INTO vtiger_currencies (currencyid,currency_name,currency_code,currency_symbol) VALUES ('.$adb->getUniqueID("vtiger_currencies").',"Sudanese Pound","SDG","£")', array());
 			}
 			$result = $adb->pquery('SELECT 1 FROM vtiger_currencies WHERE currency_name = ?', array('CFA Franc BCEAO'));
-			if(!$adb->num_rows($result)) {
-				$this->ExecuteQuery('INSERT INTO vtiger_currencies (currencyid, currency_name, currency_code, currency_symbol) VALUES(?, ?, ?, ?)',
-					array($adb->getUniqueID('vtiger_currencies'), 'CFA Franc BCEAO', 'XOF', 'CFA'));
+			if (!$adb->num_rows($result)) {
+				$this->ExecuteQuery(
+					'INSERT INTO vtiger_currencies (currencyid, currency_name, currency_code, currency_symbol) VALUES(?, ?, ?, ?)',
+					array($adb->getUniqueID('vtiger_currencies'), 'CFA Franc BCEAO', 'XOF', 'CFA')
+				);
 			}
 			$result = $adb->pquery('SELECT 1 FROM vtiger_currencies WHERE currency_name = ?', array('CFA Franc BEAC'));
-			if(!$adb->num_rows($result)) {
-				$this->ExecuteQuery('INSERT INTO vtiger_currencies (currencyid, currency_name, currency_code, currency_symbol) VALUES(?, ?, ?, ?)',
-					array($adb->getUniqueID('vtiger_currencies'), 'CFA Franc BEAC', 'XAF', 'CFA'));
+			if (!$adb->num_rows($result)) {
+				$this->ExecuteQuery(
+					'INSERT INTO vtiger_currencies (currencyid, currency_name, currency_code, currency_symbol) VALUES(?, ?, ?, ?)',
+					array($adb->getUniqueID('vtiger_currencies'), 'CFA Franc BEAC', 'XAF', 'CFA')
+				);
 			}
 			$result = $adb->pquery('SELECT 1 FROM vtiger_currencies WHERE currency_name = ?', array('Haiti, Gourde'));
-			if(!$adb->num_rows($result)) {
-				$this->ExecuteQuery('INSERT INTO vtiger_currencies (currencyid, currency_name, currency_code, currency_symbol) VALUES(?, ?, ?, ?)',
-					array($adb->getUniqueID('vtiger_currencies'), 'Haiti, Gourde', 'HTG', 'G'));
+			if (!$adb->num_rows($result)) {
+				$this->ExecuteQuery(
+					'INSERT INTO vtiger_currencies (currencyid, currency_name, currency_code, currency_symbol) VALUES(?, ?, ?, ?)',
+					array($adb->getUniqueID('vtiger_currencies'), 'Haiti, Gourde', 'HTG', 'G')
+				);
 			}
 			$this->ExecuteQuery("UPDATE vtiger_currencies SET currency_symbol=? WHERE currency_code=?", array('₹','INR'));
 			$this->ExecuteQuery("UPDATE vtiger_currency_info SET currency_symbol=? WHERE currency_code=?", array('₹','INR'));
 			$result = $adb->pquery('SELECT 1 FROM vtiger_currencies WHERE currency_name = ?', array('Libya, Dinar'));
-			if(!$adb->num_rows($result)) {
-				$this->ExecuteQuery('INSERT INTO vtiger_currencies (currencyid, currency_name, currency_code, currency_symbol) VALUES(?, ?, ?, ?)',
-					array($adb->getUniqueID('vtiger_currencies'), 'Libya, Dinar', 'LYD', 'LYD'));
+			if (!$adb->num_rows($result)) {
+				$this->ExecuteQuery(
+					'INSERT INTO vtiger_currencies (currencyid, currency_name, currency_code, currency_symbol) VALUES(?, ?, ?, ?)',
+					array($adb->getUniqueID('vtiger_currencies'), 'Libya, Dinar', 'LYD', 'LYD')
+				);
 			}
 
 			$sql = "ALTER TABLE vtiger_products MODIFY productname VARCHAR( 100 )";
-			$this->ExecuteQuery($sql,array());
-			
+			$this->ExecuteQuery($sql, array());
+
 			$query = "ALTER table vtiger_relcriteria modify comparator varchar(20)";
 			$this->ExecuteQuery($query, array());
-			$this->ExecuteQuery('ALTER TABLE vtiger_webforms MODIFY COLUMN description TEXT',array());
+			$this->ExecuteQuery('ALTER TABLE vtiger_webforms MODIFY COLUMN description TEXT', array());
 
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
-	
 }

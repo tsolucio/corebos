@@ -51,7 +51,8 @@ $mod_strings = array(
 
 'User List'=>'Lista Usuários',
 
-'LBL_HOME_MODULE' => 'Modulo',
+'LBL_HOME_MODULE' => 'Módulo',
+'LBL_HOME_CUSTOM_WIDGET' => 'Filtro totalizar',
 'LBL_HOME_RSS' => 'RSS',
 'LBL_HOME_DASHBOARD' => 'Painel',
 'LBL_HOME_STUFFTITLE'=>'Título Janela',
@@ -59,6 +60,8 @@ $mod_strings = array(
 'LBL_HOME_FILTERBY'=>'Filtrar por',
 'LBL_HOME_Fields'=>'Campos para Mostrar',
 'LBL_HOME_PRESSCTRL'=>'(Aperte a tecla "Ctrl" <br> para seleção múltipla)',
+'LBL_HOME_AGGREGATE'=>'Tipo de soma',
+'LBL_HOME_AG_FIELDS'=>'Campos',
 'LBL_HOME_RSSURL'=>'URL RSS',
 'LBL_HOME_DASHBOARD_NAME'=>'Nome do Painel',
 'LBL_HOME_DASHBOARD_TYPE'=>'Tipo de Painel',

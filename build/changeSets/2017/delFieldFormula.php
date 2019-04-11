@@ -16,8 +16,10 @@
 
 class delFieldFormula extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -36,5 +38,4 @@ class delFieldFormula extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

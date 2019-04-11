@@ -14,17 +14,19 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 class changeTypeOfCampaignNumSent extends cbupdaterWorker {
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$modname = 'Campaigns';
 			$module = Vtiger_Module::getInstance($modname);
-			$field = Vtiger_Field::getInstance('numsent',$module);
+			$field = Vtiger_Field::getInstance('numsent', $module);
 			if ($field) {
-				$this->ExecuteQuery("update vtiger_field set typeofdata='N~O',uitype=7 where fieldid=?",array($field->id));
+				$this->ExecuteQuery("update vtiger_field set typeofdata='N~O',uitype=7 where fieldid=?", array($field->id));
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
@@ -32,5 +34,4 @@ class changeTypeOfCampaignNumSent extends cbupdaterWorker {
 		$this->finishExecution();
 	}
 }
-
 ?>

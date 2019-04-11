@@ -94,12 +94,12 @@ if (!empty($fldname) && !empty($modname)) {
 				echo "Field not found in custom view date conditions<br>";
 			}
 			// Email Templates
-			$crs = $adb->query("SELECT templateid,templatename
-				FROM `vtiger_emailtemplates`
-				WHERE subject like '%$fldname%' or body like '%$fldname%'");
+			$crs = $adb->query("SELECT msgtemplateid,reference
+				FROM `vtiger_msgtemplate`
+				WHERE subject like '%$fldname%' or template like '%$fldname%'");
 			if ($crs && $adb->num_rows($crs)>0) {
 				while ($fnd=$adb->fetch_array($crs)) {
-					echo "Field found in Email Template: ".$fnd['templateid'].' :: '.$fnd['templatename'];
+					echo "Field found in Message Template: <a href='index.php?module=MsgTemplate&action=DetailView&record=".$fnd['msgtemplateid']."'>".$fnd['reference'].'</a>';
 					echo "<br>";
 				}
 			} else {
