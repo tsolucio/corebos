@@ -92,18 +92,18 @@ class DecisionTable extends processcbMap {
                 $rule['decisionTable']['conditions'] = array();
                 foreach ($value->decisionTable->conditions->condition as $k => $v) {
                   $condition = array();
-                  $condition['input'] = $v->input;
-                  $condition['operation'] = $v->operation;
-                  $condition['field'] = $v->field;
+                  $condition['input'] = (String)$v->input;
+                  $condition['operation'] = (String)$v->operation;
+                  $condition['field'] = (String)$v->field;
                   $rule['decisionTable']['conditions'][] = $condition;
                 }
                 $rule['decisionTable']['orderby'] = (String)$value->decisionTable->orderby;
                 $rule['decisionTable']['searches'] = array();
                 foreach ($value->decisionTable->searches->search as $k => $v) {
                   $search = array();
-                  $search['input'] = $v->input;
-                  $search['operation'] = $v->operation;
-                  $search['field'] = $v->field;
+                  $search['input'] = (String)$v->input;
+                  $search['operation'] = (String)$v->operation;
+                  $search['field'] = (String)$v->field;
                   $rule['decisionTable']['searches'][] = $condition;
                 }
             }
