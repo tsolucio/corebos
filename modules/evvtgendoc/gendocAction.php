@@ -66,7 +66,7 @@ if ($mergetemplate=='1') {
 			header('Content-Disposition: attachment; filename="'.$entityid.$filename);
 			readfile('cache/wordtemplatedownload/'.$entityid.$filename);
 		}
-} else {
+	} else {
 		$smarty = new vtigerCRM_Smarty();
 		$smarty->assign('APP', $app_strings);
 		$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
