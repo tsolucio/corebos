@@ -75,7 +75,9 @@ class DecisionTable extends processcbMap {
         $xml = $this->getXMLContent();
         $mapping = array();
         $mapping['hitPolicy'] = (String)$xml->hitPolicy;
-        $mapping['aggregate'] = (String)$xml->aggregate;
+        if ($mapping['hitPolicy'] == 'G') {
+          $mapping['aggregate'] = (String)$xml->aggregate;
+        }
         $mapping['rules'] = array();
 
         foreach ($xml->rules->rule as $key => $value) {
@@ -106,6 +108,7 @@ class DecisionTable extends processcbMap {
                 }
             }
             $rule['output'] = (String)$value->output;
+            $mapping['rules'][] = $rule;
         }
     }
 }
