@@ -19,7 +19,7 @@ class ModTrackerHandler extends VTEventHandler {
 		$flag = ModTracker::isTrackingEnabledForModule($moduleName);
 
 		if ($flag) {
-			if ($eventName == 'vtiger.entity.aftersave.final') {
+			if ($eventName == 'vtiger.entity.aftersave.final' || $eventName == 'corebos.aftersave.workflow.final') {
 				$recordId = $data->getId();
 				$columnFields = $data->getData();
 				$vtEntityDelta = new VTEntityDelta();
@@ -58,7 +58,7 @@ class ModTrackerHandler extends VTEventHandler {
 				}
 			}
 
-			if ($eventName == 'vtiger.entity.beforedelete') {
+			if ($eventName == 'vtiger.entity.beforedelete' || $eventName == 'corebos.beforedelete.workflow') {
 				$recordId = $data->getId();
 				$columnFields = $data->getData();
 				$id = $adb->getUniqueId('vtiger_modtracker_basic');

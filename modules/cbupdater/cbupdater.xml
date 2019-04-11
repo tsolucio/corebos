@@ -1319,4 +1319,11 @@
 	<classname>Attachment</classname>
 	<systemupdate>1</systemupdate>
 </changeSet>
+<changeSet>
+	<author>loridacito</author>
+	<description>add new events for wf</description>
+	<filename>build/changeSets/2019/addneweventsforworkflow.php</filename>
+	<classname>Addneweventsforworkflow</classname>
+	<systemupdate>1</systemupdate>
+</changeSet>
 </updatesChangeLog>
