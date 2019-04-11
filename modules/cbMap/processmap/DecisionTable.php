@@ -35,25 +35,25 @@
 <rule>
   <sequence></sequence>
   <decisionTable>
-    <module></module>
-    <conditions>  <!-- QueryGenerator conditions -->
-        <condition>
-          <input></input>  <!-- context variable name -->
-          <operation></operation>  <!-- QueryGenerator operators -->
-          <field></field>  <!-- fieldname of module -->
-        </condition>
-    </conditions>
-    <orderby></orderby>  <!-- column to order the records by -->
-    <searches>
-      <search>
-        <condition>
-          <input></input>  <!-- context variable name -->
-          <operation></operation>  <!-- QueryGenerator operators -->
-          <field></field>  <!-- fieldname of module -->
-        </condition>
-      </search>
-    </searches>
-    <output></output>  <!-- fieldname -->
+	<module></module>
+	<conditions>  <!-- QueryGenerator conditions -->
+		<condition>
+		  <input></input>  <!-- context variable name -->
+		  <operation></operation>  <!-- QueryGenerator operators -->
+		  <field></field>  <!-- fieldname of module -->
+		</condition>
+	</conditions>
+	<orderby></orderby>  <!-- column to order the records by -->
+	<searches>
+	  <search>
+		<condition>
+		  <input></input>  <!-- context variable name -->
+		  <operation></operation>  <!-- QueryGenerator operators -->
+		  <field></field>  <!-- fieldname of module -->
+		</condition>
+	  </search>
+	</searches>
+	<output></output>  <!-- fieldname -->
   </decisionTable>
   <output></output>  <!-- ExpressionResult, FieldValue, crmObject -->
 </rule>
@@ -62,53 +62,51 @@
  *************************************************************************************************/
 
 class DecisionTable extends processcbMap {
+	public $mapping = array();
 
-    public $mapping = array();
+	public function processMap($arguments) {
+		$this->mapping = $this->convertMap2Array();
+		return $this->mapping;
+	}
 
-    public function processMap($arguments) {
-        global $adb, $current_user;
-        $this->mapping = $this->convertMap2Array();
-        return $this->mapping;
-    }
+	private function convertMap2Array() {
+		$xml = $this->getXMLContent();
+		$mapping = array();
+		$mapping['hitPolicy'] = (String)$xml->hitPolicy;
+		if ($mapping['hitPolicy'] == 'G') {
+			$mapping['aggregate'] = (String)$xml->aggregate;
+		}
+		$mapping['rules'] = array();
 
-    private function convertMap2Array() {
-        $xml = $this->getXMLContent();
-        $mapping = array();
-        $mapping['hitPolicy'] = (String)$xml->hitPolicy;
-        if ($mapping['hitPolicy'] == 'G') {
-          $mapping['aggregate'] = (String)$xml->aggregate;
-        }
-        $mapping['rules'] = array();
-
-        foreach ($xml->rules->rule as $key => $value) {
-            $rule = array();
-            $rule['sequence'] = (String)$value->sequence;
-            if (isset($value->expression)) {
-                $rule['expression'] = (String)$value->expression;
-            } else if (isset($value->mapid)) {
-                $rule['mapid'] = (String)$value->mapid;
-            } else if (isset($value->decisionTable)) {
-                $rule['decisionTable']['module'] = (String)$value->decisionTable->module;
-                $rule['decisionTable']['conditions'] = array();
-                foreach ($value->decisionTable->conditions->condition as $k => $v) {
-                  $condition = array();
-                  $condition['input'] = (String)$v->input;
-                  $condition['operation'] = (String)$v->operation;
-                  $condition['field'] = (String)$v->field;
-                  $rule['decisionTable']['conditions'][] = $condition;
-                }
-                $rule['decisionTable']['orderby'] = (String)$value->decisionTable->orderby;
-                $rule['decisionTable']['searches'] = array();
-                foreach ($value->decisionTable->searches->search as $k => $v) {
-                  $search = array();
-                  $search['input'] = (String)$v->input;
-                  $search['operation'] = (String)$v->operation;
-                  $search['field'] = (String)$v->field;
-                  $rule['decisionTable']['searches'][] = $condition;
-                }
-            }
-            $rule['output'] = (String)$value->output;
-            $mapping['rules'][] = $rule;
-        }
-    }
+		foreach ($xml->rules->rule as $key => $value) {
+			$rule = array();
+			$rule['sequence'] = (String)$value->sequence;
+			if (isset($value->expression)) {
+				$rule['expression'] = (String)$value->expression;
+			} elseif (isset($value->mapid)) {
+				$rule['mapid'] = (String)$value->mapid;
+			} elseif (isset($value->decisionTable)) {
+				$rule['decisionTable']['module'] = (String)$value->decisionTable->module;
+				$rule['decisionTable']['conditions'] = array();
+				foreach ($value->decisionTable->conditions->condition as $k => $v) {
+					$condition = array();
+					$condition['input'] = (String)$v->input;
+					$condition['operation'] = (String)$v->operation;
+					$condition['field'] = (String)$v->field;
+					$rule['decisionTable']['conditions'][] = $condition;
+				}
+				$rule['decisionTable']['orderby'] = (String)$value->decisionTable->orderby;
+				$rule['decisionTable']['searches'] = array();
+				foreach ($value->decisionTable->searches->search as $k => $v) {
+					$search = array();
+					$search['input'] = (String)$v->input;
+					$search['operation'] = (String)$v->operation;
+					$search['field'] = (String)$v->field;
+					$rule['decisionTable']['searches'][] = $condition;
+				}
+			}
+			$rule['output'] = (String)$value->output;
+			$mapping['rules'][] = $rule;
+		}
+	}
 }
