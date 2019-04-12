@@ -39,17 +39,9 @@ function is_admin($user) {
  * Check if user id belongs to a system admin.
  */
 function is_adminID($userID) {
-	global $log;
-	if (empty($userID) || !is_numeric($userID)) {
-		return false;
-	}
-	$log->debug('> is_adminID ' . $userID);
-	$is_admin = false;
-	if (file_exists('user_privileges/user_privileges_' . $userID . '.php')) {
-		require 'user_privileges/user_privileges_' . $userID . '.php';
-	}
-	$log->debug('< is_adminID');
-	return ($is_admin == true);
+	require_once 'modules/Users/Users.php';
+	$privs = UserPrivileges::privsWithoutSharing($userID);
+	return $privs->isAdmin();
 }
 
 /**

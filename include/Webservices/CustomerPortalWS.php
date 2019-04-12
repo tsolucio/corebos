@@ -133,10 +133,11 @@ function vtws_getAssignedGroupList($module, $user) {
 	$log->debug('> vtws_getAssignedGroupList '.$module);
 	$hcuser = $current_user;
 	$current_user = $user;
-	require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
-	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
+
+	$userPrivs = $user->getPrivileges();
+
 	$tabid=getTabid($module);
-	if (!is_admin($user) && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabid] == 3 || $defaultOrgSharingPermission[$tabid] == 0)) {
+	if (!$userPrivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabid)) {
 		$users = get_group_array(false, 'Active', $user->id, 'private');
 	} else {
 		$users = get_group_array(false, 'Active', $user->id);
