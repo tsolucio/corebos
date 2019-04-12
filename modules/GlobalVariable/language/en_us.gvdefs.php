@@ -454,6 +454,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'The version of the application that will be shown on screen.',
 ),
+'Application_Popup_Address_Selection'=> array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Shows option to select an address in Account and Contact(by default is 1),if set to 0 then the whole option to select an address will not be shown.',
+),
 'Application_UI_URL' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'URL',

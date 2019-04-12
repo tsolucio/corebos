@@ -23,5 +23,6 @@ $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
 $smarty->assign('BillAddressChecked', GlobalVariable::getVariable('Application_Billing_Address_Checked', 0));
 $smarty->assign('ShipAddressChecked', GlobalVariable::getVariable('Application_Shipping_Address_Checked', 1));
+$smarty->assign('PopupAddressSelection', GlobalVariable::getVariable('Application_Popup_Address_Selection', 1));
 $smarty->display('modules/Contacts/SetReturnAddress.tpl');
 ?>

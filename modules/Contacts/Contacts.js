@@ -238,7 +238,8 @@ function set_return_address(contact_id, contact_name, mailingstreet, otherstreet
 	jQuery.ajax({
 		url: 'index.php?module=Contacts&action=ContactsAjax&file=SelectContactAddress',
 		context: document.body
-	}).done(function (response) {
+	})
+	.done(function (response) {
 		jQuery('#setaddresscontactdiv').html(response);
 		jQuery('#setaddresscontactdiv').show();
 		fnvshNrm('setaddresscontactdiv');
@@ -256,8 +257,20 @@ function set_return_address(contact_id, contact_name, mailingstreet, otherstreet
 		jQuery('#otherzip').val(otherzip);
 		jQuery('#othercountry').val(othercountry);
 		jQuery('#otherpobox').val(otherpobox);
+
+		var Application_Popup_Address_Selection = 1; // define the variable and set it's default value
+        GlobalVariable_getVariable('Application_Popup_Address_Selection', 1).then(function(response) {
+        var obj = JSON.parse(response);
+		Application_Popup_Address_Selection = obj.Application_Popup_Address_Selection;
+        if(Application_Popup_Address_Selection == 0) {  // set value from application
+           sca_fillinvalues();
+        }
+        }, function(error) {
+			Application_Popup_Address_Selection = 1; // set default value on error
+        });	
 	});
 }
+
 
 function sca_fillinvalues() {
 	var contact_id = jQuery('#contact_id').val();
