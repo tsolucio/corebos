@@ -679,6 +679,20 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Al llamar o recibir una llamada de un contacto desconocido, esta cadena se usará como el identificador de nombre de registro junto al número marcado. El valor predeterminado es Unknown',
 ),
+'PBX_SearchOnTheseFields' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'nombres de campos',
+	'definition' => 'Lista de campos en los que buscar al recibir una llamada de Asterisk. Se devolverá el primer resultado encontrado.',
+),
+'PBX_callerNumberField' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'nombre de campo PBX',
+	'definition' => 'Nombre del campo proveniente del PBX que debemos utilizar para buscar en la aplicación. Por defecto se utiliza CallerID',
+),
 'Mobile_Module_by_default' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Texto',
@@ -1266,13 +1280,6 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => 'Cualquier Clave API válida de Zero Bounce',
 	'definition' => 'Una clave válida para el API de Zero Bounce para poder validar cuentas de correo.',
-),
-'PBXManager_SearchOnlyOnTheseFields' => array(
-	'status' => 'Implementada',
-	'valuetype' => 'Cadena',
-	'category' => 'Aplicación',
-	'values' => 'nombres de campos',
-	'definition' => 'Lista de campos en los que buscar al recibir una llamada de Asterisk. Se devolverá el primer resultado encontrado.',
 ),
 'GenDoc_CopyLabelToClipboard' => array(
 	'status' => 'Implementada',

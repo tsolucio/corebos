@@ -155,6 +155,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Lead_Convert_ContactSelected',
 				'PBX_Get_Line_Prefix',
 				'PBX_Unknown_CallerID',
+				'PBX_callerNumberField',
 				'Product_Copy_Bundle_OnDuplicate',
 				'Product_Show_Subproducts_Popup',
 				'Product_Permit_Relate_Bundle_Parent',
@@ -208,7 +209,6 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'CustomerPortal_PDFTemplate_SalesOrder',
 				'CustomerPortal_PDFTemplate_Invoice',
 				'CustomerPortal_PDFTemplate_PurchaseOrder',
-				'PBXManager_SearchOnlyOnTheseFields',
 			);
 			$delete_these = array(
 				'preload_prototype',
@@ -334,6 +334,9 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				),
 				'Application_Search_Panel_Open' => array(
 					'to' => 'Application_ListView_SearchPanel_Open',
+				),
+				'PBXManager_SearchOnlyOnTheseFields' => array(
+					'to' => 'PBX_SearchOnTheseFields',
 				),
 			);
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');

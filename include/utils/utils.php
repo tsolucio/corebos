@@ -3045,7 +3045,7 @@ function getCallerInfo($number) {
 		return false;
 	}
 
-	$fieldsString = GlobalVariable::getVariable('PBXManager_SearchOnlyOnTheseFields', '');
+	$fieldsString = GlobalVariable::getVariable('PBX_SearchOnTheseFields', '');
 	if ($fieldsString != '') {
 		$fieldsArray = explode(',', $fieldsString);
 		foreach ($fieldsArray as $field) {
@@ -3067,24 +3067,22 @@ function getCallerInfo($number) {
 				}
 			}
 		}
-	} else {
-		$name = array('Contacts', 'Accounts', 'Leads');
-		foreach ($name as $module) {
-			$focus = CRMEntity::getInstance($module);
-			$query = $focus->buildSearchQueryForFieldTypes(11, $number);
-			if (empty($query)) {
-				return false;
-			}
+	}
+	$name = array('Contacts', 'Accounts', 'Leads');
+	foreach ($name as $module) {
+		$focus = CRMEntity::getInstance($module);
+		$query = $focus->buildSearchQueryForFieldTypes(11, $number);
+		if (empty($query)) {
+			return false;
+		}
 
-			$result = $adb->pquery($query, array());
-			if ($adb->num_rows($result) > 0) {
-				$callerName = $adb->query_result($result, 0, 'name');
-				$callerID = $adb->query_result($result, 0, 'id');
-				return array('name'=>$callerName, 'module'=>$module, 'id'=>$callerID);
-			}
+		$result = $adb->pquery($query, array());
+		if ($adb->num_rows($result) > 0) {
+			$callerName = $adb->query_result($result, 0, 'name');
+			$callerID = $adb->query_result($result, 0, 'id');
+			return array('name'=>$callerName, 'module'=>$module, 'id'=>$callerID);
 		}
 	}
-
 	return false;
 }
 
