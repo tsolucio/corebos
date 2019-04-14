@@ -156,6 +156,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'PBX_Get_Line_Prefix',
 				'PBX_Unknown_CallerID',
 				'PBX_callerNumberField',
+				'PBX_callerNumberSeparator',
 				'Product_Copy_Bundle_OnDuplicate',
 				'Product_Show_Subproducts_Popup',
 				'Product_Permit_Relate_Bundle_Parent',

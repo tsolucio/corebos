@@ -693,6 +693,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'nombre de campo PBX',
 	'definition' => 'Nombre del campo proveniente del PBX que debemos utilizar para buscar en la aplicación. Por defecto se utiliza CallerID',
 ),
+'PBX_callerNumberSeparator' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Carácter',
+	'category' => 'Aplicación',
+	'values' => 'carácter',
+	'definition' => 'El número entrante del PBX se separará por este caracter y se buscará cada parte de manera individual. Por defecto no se separa el número.',
+),
 'Mobile_Module_by_default' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Texto',

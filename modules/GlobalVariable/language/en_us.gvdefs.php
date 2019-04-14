@@ -692,6 +692,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'PBX field name',
 	'definition' => 'Field name coming from PBX which we should use to search inside the application. By default it is CallerID',
 ),
+'PBX_callerNumberSeparator' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Character',
+	'category' => 'Application',
+	'values' => 'character',
+	'definition' => 'Incoming number from PBX will be split by this character if given and each element will be searched individually. The default is to not split the number',
+),
 'Mobile_Module_by_default' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
