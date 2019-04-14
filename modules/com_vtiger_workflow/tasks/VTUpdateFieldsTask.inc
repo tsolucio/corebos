@@ -111,7 +111,16 @@ class VTUpdateFieldsTask extends VTTask {
 					if ($this->launchrelwf) {
 						$focusrel[$mod]->save($mod);
 					} else {
+						$em = new VTEventsManager($adb);
+						// Initialize Event trigger cache
+						$em->initTriggerCache();
+						$entityData = VTEntityData::fromCRMEntity($focusrel[$mod]);
+						$em->triggerEvent('corebos.beforesave.workflow', $entityData);
+
 						$focusrel[$mod]->saveentity($mod);
+
+						$em->triggerEvent('corebos.aftersave.workflow', $entityData);
+						$em->triggerEvent('corebos.aftersave.workflow.final', $entityData);
 					}
 				}
 			}

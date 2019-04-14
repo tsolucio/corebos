@@ -3169,9 +3169,9 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
 		$callto = $unknownCaller;
 	}
 
+	$sql = 'select * from vtiger_asteriskextensions where asterisk_extension=?';
 	if ($status == 'outgoing') {
 		//call is from user to record
-		$sql = "select * from vtiger_asteriskextensions where asterisk_extension=?";
 		$result = $adb->pquery($sql, array($callfrom));
 		if ($adb->num_rows($result)>0) {
 			$userid = $adb->query_result($result, 0, "userid");
@@ -3186,23 +3186,23 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
 		}
 	} else {
 		//call is from record to user
-		$sql = "select * from vtiger_asteriskextensions where asterisk_extension=?";
 		$result = $adb->pquery($sql, array($callto));
 		if ($adb->num_rows($result)>0) {
-			$userid = $adb->query_result($result, 0, "userid");
+			$userid = $adb->query_result($result, 0, 'userid');
 			$receiver = getUserFullName($userid);
 		}
 		$callerName = $useCallerInfo;
 		if (empty($callerName)) {
 			$callerName = $unknownCaller.' '.$callfrom;
 		} else {
-			$callerName = "<a href='index.php?module=".$callerName['module']."&action=DetailView&record=".$callerName['id']."'>".decode_html($callerName['name'])."</a>";
+			$callerName = "<a href='index.php?module=".$callerName['module'].'&action=DetailView&record='.$callerName['id']."'>".decode_html($callerName['name']).'</a>';
 		}
 	}
 
-	$sql = 'insert into vtiger_pbxmanager (pbxmanagerid,callfrom,callto,timeofcall,status)values (?,?,?,?,?)';
-	$params = array($crmID, $callerName, $receiver, $timeOfCall, $status);
+	$sql = 'insert into vtiger_pbxmanager (pbxmanagerid,callfrom,callto,timeofcall,status,pbxuuid) values (?,?,?,?,?,?)';
+	$params = array($crmID, $callerName, $receiver, $timeOfCall, $status, $pbxuuid);
 	$adb->pquery($sql, $params);
+	cbEventHandler::do_action('corebos.pbxmanager.aftersave', $params);
 	return $crmID;
 }
 //functions for asterisk integration end

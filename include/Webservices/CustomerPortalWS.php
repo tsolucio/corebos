@@ -133,10 +133,11 @@ function vtws_getAssignedGroupList($module, $user) {
 	$log->debug('> vtws_getAssignedGroupList '.$module);
 	$hcuser = $current_user;
 	$current_user = $user;
-	require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
-	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
+
+	$userPrivs = $user->getPrivileges();
+
 	$tabid=getTabid($module);
-	if (!is_admin($user) && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabid] == 3 || $defaultOrgSharingPermission[$tabid] == 0)) {
+	if (!$userPrivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabid)) {
 		$users = get_group_array(false, 'Active', $user->id, 'private');
 	} else {
 		$users = get_group_array(false, 'Active', $user->id);
@@ -907,7 +908,8 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		    vtiger_crmentity.crmid AS id, 
 		    vtiger_products.unit_price AS unit_price 
 		    FROM vtiger_products 
-		    INNER JOIN vtiger_crmentity ON vtiger_products.productid = vtiger_crmentity.crmid 
+			INNER JOIN vtiger_crmentity ON vtiger_products.productid = vtiger_crmentity.crmid 
+			".getNonAdminAccessControlQuery('Products', $current_user)."
 			WHERE (vtiger_products.productname LIKE '%{$term}%' OR vtiger_products.mfr_part_no LIKE '%{$term}%' OR vtiger_products.vendor_part_no LIKE '%{$term}%')
 				AND vtiger_products.discontinued = 1 AND vtiger_crmentity.deleted = 0
 		UNION
@@ -924,7 +926,8 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		    vtiger_crmentity.crmid AS id, 
 		    vtiger_service.unit_price AS unit_price 
 		    FROM vtiger_service 
-		    INNER JOIN vtiger_crmentity ON vtiger_service.serviceid = vtiger_crmentity.crmid 
+			INNER JOIN vtiger_crmentity ON vtiger_service.serviceid = vtiger_crmentity.crmid 
+			".getNonAdminAccessControlQuery('Services', $current_user)."
 			WHERE vtiger_service.servicename LIKE '%{$term}%' AND vtiger_service.discontinued = 1 AND vtiger_crmentity.deleted = 0
 		LIMIT $limit");
 	$ret = array();

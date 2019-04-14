@@ -240,7 +240,8 @@ function asterisk_handleResponse3($mainresponse, $adb, $asterisk) {
 					$extensionCalled,
 					"incoming-$status",
 					$adb,
-					$receiver_callerinfo
+					$receiver_callerinfo,
+					$uid
 				);
 				$adb->pquery('UPDATE vtiger_asteriskincomingevents SET pbxrecordid = ? WHERE uid = ?', array($pbxrecordid, $uid));
 				if (!empty($receiver_callerinfo['id'])) {
