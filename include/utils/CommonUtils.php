@@ -1469,10 +1469,13 @@ function getParentTab() {
 function updateInfo($id) {
 	global $log, $adb, $app_strings;
 	$log->debug('> updateInfo ' . $id);
-	$query = 'SELECT modifiedtime, modifiedby FROM vtiger_crmentity WHERE crmid = ?';
+	$query = 'SELECT modifiedtime, modifiedby, smcreatorid FROM vtiger_crmentity WHERE crmid = ?';
 	$result = $adb->pquery($query, array($id));
 	$modifiedtime = $adb->query_result($result, 0, 'modifiedtime');
 	$modifiedby_id = $adb->query_result($result, 0, 'modifiedby');
+	if (empty($modifiedby_id)) {
+		$modifiedby_id = $adb->query_result($result, 0, 'smcreatorid');
+	}
 	$modifiedby = $app_strings['LBL_BY'] . getOwnerName($modifiedby_id);
 	$date = new DateTimeField($modifiedtime);
 	$modifiedtime = DateTimeField::convertToDBFormat($date->getDisplayDate());
