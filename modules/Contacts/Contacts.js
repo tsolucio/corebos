@@ -256,21 +256,21 @@ function set_return_address(contact_id, contact_name, mailingstreet, otherstreet
 		jQuery('#otherpobox').val(otherpobox);
 
 		var Application_Popup_Address_Selection = 1; // define the variable and set it's default value
-        GlobalVariable_getVariable('Application_Popup_Address_Selection', 1).then(function(response) {
-        var obj = JSON.parse(response);
-		Application_Popup_Address_Selection = obj.Application_Popup_Address_Selection;
-        if(Application_Popup_Address_Selection == 0) {  // set value from application
-           sca_fillinvalues();
-		}
-		if(Application_Popup_Address_Selection == 1){
-			jQuery('#setaddresscontactdiv').show();
-			fnvshNrm('setaddresscontactdiv');
-		}
-        }, function(error) {
-		
+		GlobalVariable_getVariable('Application_Popup_Address_Selection', 1).then(function (response) {
+			var obj = JSON.parse(response);
+			Application_Popup_Address_Selection = obj.Application_Popup_Address_Selection;
+			if (Application_Popup_Address_Selection == 0) {  // set value from application
+				sca_fillinvalues();
+			}
+			if (Application_Popup_Address_Selection == 1) {
+				jQuery('#setaddresscontactdiv').show();
+				fnvshNrm('setaddresscontactdiv');
+			}
+		}, function (error) {
+
 			Application_Popup_Address_Selection = 1; // set default value on error
 
-        });	
+		});
 	});
 }
 
