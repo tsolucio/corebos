@@ -112,24 +112,24 @@ class UserPrivileges {
 
 		$user_data = json_decode($result, true);
 
-		$this->is_admin = (bool)$user_data["is_admin"];
-		$this->roles = $user_data["current_user_roles"];
+		$this->is_admin = (bool)$user_data['is_admin'];
+		$this->roles = isset($user_data['current_user_roles']) ? $user_data['current_user_roles'] : '';
 
 		if (!$this->is_admin) {
-			$this->parent_role_seq = $user_data["current_user_parent_role_seq"];
-			$this->profiles = $user_data["current_user_profiles"];
-			$this->profileGlobalPermission = $user_data["profileGlobalPermission"];
-			$this->profileTabsPermission = $user_data["profileTabsPermission"];
-			$this->profileActionPermission = $user_data["profileActionPermission"];
-			$this->groups = $user_data["current_user_groups"];
-			$this->subordinate_roles = $user_data["subordinate_roles"];
-			$this->parent_roles = $user_data["parent_roles"];
-			$this->subordinate_roles_users = $user_data["subordinate_roles_users"];
+			$this->parent_role_seq = $user_data['current_user_parent_role_seq'];
+			$this->profiles = $user_data['current_user_profiles'];
+			$this->profileGlobalPermission = $user_data['profileGlobalPermission'];
+			$this->profileTabsPermission = $user_data['profileTabsPermission'];
+			$this->profileActionPermission = $user_data['profileActionPermission'];
+			$this->groups = $user_data['current_user_groups'];
+			$this->subordinate_roles = $user_data['subordinate_roles'];
+			$this->parent_roles = $user_data['parent_roles'];
+			$this->subordinate_roles_users = $user_data['subordinate_roles_users'];
 			if (!$withot_sharing) {
 				$this->loadSharingPrivilegesDB($userid);
 			}
 		}
-		$this->user_info = $user_data["user_info"];
+		$this->user_info = $user_data['user_info'];
 	}
 
 	/**
