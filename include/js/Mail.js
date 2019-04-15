@@ -144,7 +144,7 @@ function sendmail(module, idstrings, url) {
 		url: 'index.php?module=Emails&return_module='+module+'&action=EmailsAjax&file=mailSelect&idlist='+idstrings+url
 	}).done(function (response) {
 		if (response == 'Mail Ids not permitted' || response == 'No Mail Ids') {
-			var url= 'index.php?module=Emails&action=EmailsAjax&pmodule='+module+'&file=EditView&sendmail=true';
+			var url= 'index.php?module=Emails&action=EmailsAjax&pmodule='+module+'&file=EditView&sendmail=true&templatename=Send_Email_Template_Module_Faq';
 			openPopUp('xComposeEmail', this, url, 'createemailWin', 820, 689, 'menubar=no,toolbar=no,location=no,status=no,resizable=no');
 		} else {
 			getObj('sendmail_cont').innerHTML = response;
