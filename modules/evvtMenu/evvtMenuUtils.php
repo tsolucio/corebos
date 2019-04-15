@@ -186,7 +186,7 @@ function getAdminevvtMenu() {
 					break;
 				case 'separator':
 				case 'menu':
-					continue;
+					continue 2;
 					break;
 				case 'module':
 					$label = getTranslatedString($menu['mvalue'], $menu['mvalue']);
