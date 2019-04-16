@@ -1106,6 +1106,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Al seleccionar una Cuenta/Contacto/Vendedor en la ventana emergente, la aplicación te pregunta si debe rellenar las direcciones. Esta variable establece la casilla de verificación Dirección de Envío.',
 ),
+'Application_Popup_Address_Selection'=> array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Muestra la opción para seleccionar una dirección en Cuenta y Contacto (por defecto es 1), si se establece en 0, no se mostrará la opción completa para seleccionar una dirección.',
+),
 'Application_Show_Copy_Address' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',

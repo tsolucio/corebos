@@ -1105,6 +1105,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'true | false',
 	'definition' => ' Lors de la sélection d\'un Compte, d\'un Fournisseur ou d\'un Contact dans une fenêtre popup, l\'application demande l\'adresse à utiliser. Cette variable présélectionne (1) l\'adresse de livraise.',
 ),
+'Application_Popup_Address_Selection'=> array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Shows option to select an address in Account and Contact(by default is 1),if set to 0 then the whole option to select an address will not be shown.',
+),
 'Application_Show_Copy_Address' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Booléen',
