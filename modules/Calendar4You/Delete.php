@@ -13,7 +13,7 @@ global $currentModule, $current_user;
 
 $Calendar4You = new Calendar4You();
 
-$Calendar4You->GetDefPermission($current_user->id);
+$Calendar4You->GetDefPermission($current_user);
 
 $delete_permissions = $Calendar4You->CheckPermissions('DELETE', $_REQUEST['record']);
 

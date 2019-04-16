@@ -19,7 +19,7 @@ $local_log = LoggerManager::getLogger('index');
 
 $Calendar4You = new Calendar4You();
 
-$Calendar4You->GetDefPermission($current_user->id);
+$Calendar4You->GetDefPermission($current_user);
 
 if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 	$edit_permissions = $Calendar4You->CheckPermissions('EDIT', $_REQUEST['record']);
