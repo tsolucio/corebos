@@ -1145,9 +1145,19 @@ function send_mail_for_password($mailid) {
 	$initialfrom = $adb->query_result($from_res, 0, 'user_name');
 	$from = $adb->query_result($from_res, 0, 'email1');
 
+	require_once 'modules/Emails/Emails.php';
+	$context = array(
+		'$user_name$'=> $usr_name,
+		'$user_password$'=> $new_password
+	);
+	Emails::sendEmailTemplate('CustomerPortal_Mail_Password', $context, 'MsgTemplate', $from, $mailid);
+
 	$contents = $mod_strings['LBL_LOGIN_DETAILS'];
-	$contents .= "<br><br>".$mod_strings['LBL_USERNAME']." ".$user_name;
-	$contents .= "<br>".$mod_strings['LBL_PASSWORD']." ".$password;
+	$contents .= "<br><br>".$mod_strings['LBL_USERNAME']." ".'$user_name$';
+	$contents .= "<br>".$mod_strings['LBL_PASSWORD']." ".'$password$';
+
+	$sql = $adb->pquery('SELECT template_language FROM vtiger_contactdetails WHERE contactid=?', array($mailid));
+    $lan = $adb->query_result($sql, 0, 'template_language');
 
 	$mail = new PHPMailer();
 

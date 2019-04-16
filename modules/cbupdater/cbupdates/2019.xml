@@ -83,4 +83,11 @@
 	<classname>migrateemailtemplates</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet> 
+	<author>mohamed-shibeJR</author> 
+	<description>creation of CustomerPortal_Mail_Password Msgtemplate</description> 
+	<filename>build/changeSets/2019/emailmsgTemplate.php</filename> 
+	<classname>emailmsgTemplate</classname> 
+	<systemupdate>true</systemupdate> 
+</changeSet>
 </updatesChangeLog>
