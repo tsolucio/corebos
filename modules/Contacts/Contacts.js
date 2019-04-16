@@ -255,8 +255,7 @@ function set_return_address(contact_id, contact_name, mailingstreet, otherstreet
 			Application_Popup_Address_Selection = obj.Application_Popup_Address_Selection;
 			if (Application_Popup_Address_Selection == 0) {  // set value from application
 				sca_fillinvalues();
-			}
-			if (Application_Popup_Address_Selection == 1) {
+			} else {
 				jQuery('#setaddresscontactdiv').show();
 				fnvshNrm('setaddresscontactdiv');
 			}
