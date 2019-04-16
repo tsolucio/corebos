@@ -1013,6 +1013,7 @@ $app_strings = array(
 	'Issue Date' => 'Kibocsátás dátuma',
 	'Shipping Address' => 'Szállítási cím',
 	'Page' => 'Oldal',
+	'Pages'=>'Pages',
 	'Tracking No.' => 'Nyomkövető szám',
 	'Req. No.' => 'Regisztrációs szám',
 	'Customer Name' => 'Vásárló neve',

@@ -1047,6 +1047,7 @@ $app_strings = array (
 'Issue Date'=>'Emissão',
 'Shipping Address'=>'Endereço entrega',
 'Page'=>'Página',
+'Pages'=>'Pages',
 'Tracking No.'=>'No. rastrear',
 'Req. No.'=>'No. Req.',
 'Customer Name'=>'Cliente',

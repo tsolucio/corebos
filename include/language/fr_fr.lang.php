@@ -1019,6 +1019,7 @@ $app_strings = array(
 	'Issue Date' => 'Échéance',
 	'Shipping Address' => 'Adresse (livraison)',
 	'Page' => 'Page',
+	'Pages'=>'Pages',
 	'Tracking No.' => 'N° suivi ',
 	'Req. No.' => 'N° demande',
 	'Customer Name' => 'Nom client',
