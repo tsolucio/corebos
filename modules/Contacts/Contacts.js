@@ -12,9 +12,7 @@ GlobalVariable_getVariable('Application_Popup_Address_Selection', 1, 'Contacts')
 	var obj = JSON.parse(response);
 	Application_Popup_Address_Selection = obj.Application_Popup_Address_Selection;
 }, function (error) {
-
 	Application_Popup_Address_Selection = 1; // set default value on error
-
 });
 document.addEventListener('DOMContentLoaded', function () {
 	var accdiv = document.createElement('div');

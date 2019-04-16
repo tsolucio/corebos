@@ -2885,9 +2885,9 @@ function constructList($array, $data_type) {
 	if (count($array) > 0) {
 		$i=0;
 		foreach ($array as $value) {
-			if ($data_type == "INTEGER") {
+			if ($data_type == 'INTEGER') {
 				$list[] = $value;
-			} elseif ($data_type == "VARCHAR") {
+			} elseif ($data_type == 'VARCHAR') {
 				$list[] = "'".$value."'";
 			}
 			$i++;
