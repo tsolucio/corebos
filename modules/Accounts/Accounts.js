@@ -7,6 +7,15 @@
  * All Rights Reserved.
  ********************************************************************************/
 
+var Application_Popup_Address_Selection = 1; // define the variable and set it's default value
+GlobalVariable_getVariable('Application_Popup_Address_Selection', 1, 'Accounts').then(function (response) {
+	var obj = JSON.parse(response);
+	Application_Popup_Address_Selection = obj.Application_Popup_Address_Selection;
+}, function (error) {
+
+	Application_Popup_Address_Selection = 1; // set default value on error
+
+});
 document.addEventListener('DOMContentLoaded', function () {
 	var accdiv = document.createElement('div');
 	accdiv.style.zIndex = '12';
@@ -164,21 +173,12 @@ function set_return_shipbilladdress(account_id, account_name, bill_street, ship_
 		jQuery('#ship_code').val(ship_code);
 		jQuery('#ship_country').val(ship_country);
 		jQuery('#ship_pobox').val(ship_pobox);
-		var Application_Popup_Address_Selection = 1; // define the variable and set it's default value
-		GlobalVariable_getVariable('Application_Popup_Address_Selection', 1).then(function (response) {
-			var obj = JSON.parse(response);
-			Application_Popup_Address_Selection = obj.Application_Popup_Address_Selection;
-			if (Application_Popup_Address_Selection == 0) {  // set value from application
-				saa_fillinvalues();
-			}else {
-				jQuery('#setaddressaccountdiv').show();
-				fnvshNrm('setaddressaccountdiv');
-			}
-		}, function (error) {
-
-			Application_Popup_Address_Selection = 1; // set default value on error
-
-		});
+		if (Application_Popup_Address_Selection == 0) {  // set value from application
+			saa_fillinvalues();
+		} else {
+			jQuery('#setaddressaccountdiv').show();
+			fnvshNrm('setaddressaccountdiv');
+		}
 	});
 }
 
