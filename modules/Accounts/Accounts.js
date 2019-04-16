@@ -150,8 +150,6 @@ function set_return_shipbilladdress(account_id, account_name, bill_street, ship_
 		context : document.body
 	}).done(function (response) {
 		jQuery('#setaddressaccountdiv').html(response);
-		jQuery('#setaddressaccountdiv').show();
-		fnvshNrm('setaddressaccountdiv');
 		jQuery('#account_id').val(account_id);
 		jQuery('#account_name').val(account_name);
 		jQuery('#bill_street').val(bill_street);
@@ -166,6 +164,22 @@ function set_return_shipbilladdress(account_id, account_name, bill_street, ship_
 		jQuery('#ship_code').val(ship_code);
 		jQuery('#ship_country').val(ship_country);
 		jQuery('#ship_pobox').val(ship_pobox);
+		var Application_Popup_Address_Selection = 1; // define the variable and set it's default value
+		GlobalVariable_getVariable('Application_Popup_Address_Selection', 1).then(function (response) {
+			var obj = JSON.parse(response);
+			Application_Popup_Address_Selection = obj.Application_Popup_Address_Selection;
+			if (Application_Popup_Address_Selection == 0) {  // set value from application
+				saa_fillinvalues();
+			}
+			if (Application_Popup_Address_Selection == 1) {
+				jQuery('#setaddressaccountdiv').show();
+				fnvshNrm('setaddressaccountdiv');
+			}
+		}, function (error) {
+
+			Application_Popup_Address_Selection = 1; // set default value on error
+
+		});
 	});
 }
 

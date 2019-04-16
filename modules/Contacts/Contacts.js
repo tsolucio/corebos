@@ -235,8 +235,6 @@ function set_return_address(contact_id, contact_name, mailingstreet, otherstreet
 		context: document.body
 	}).done(function (response) {
 		jQuery('#setaddresscontactdiv').html(response);
-		jQuery('#setaddresscontactdiv').show();
-		fnvshNrm('setaddresscontactdiv');
 		jQuery('#contact_id').val(contact_id);
 		jQuery('#contact_name').val(contact_name);
 		jQuery('#mailingstreet').val(mailingstreet);
@@ -251,6 +249,22 @@ function set_return_address(contact_id, contact_name, mailingstreet, otherstreet
 		jQuery('#otherzip').val(otherzip);
 		jQuery('#othercountry').val(othercountry);
 		jQuery('#otherpobox').val(otherpobox);
+		var Application_Popup_Address_Selection = 1; // define the variable and set it's default value
+		GlobalVariable_getVariable('Application_Popup_Address_Selection', 1).then(function (response) {
+			var obj = JSON.parse(response);
+			Application_Popup_Address_Selection = obj.Application_Popup_Address_Selection;
+			if (Application_Popup_Address_Selection == 0) {  // set value from application
+				sca_fillinvalues();
+			}
+			if (Application_Popup_Address_Selection == 1) {
+				jQuery('#setaddresscontactdiv').show();
+				fnvshNrm('setaddresscontactdiv');
+			}
+		}, function (error) {
+
+			Application_Popup_Address_Selection = 1; // set default value on error
+
+		});
 	});
 }
 

@@ -1105,6 +1105,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'When selecting an Account/Contact/Vendor in the popup window, the application asks if it must fill in addresses. This variable sets the Shipping Address check box.',
 ),
+'Application_Popup_Address_Selection'=> array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Shows option to select an address in Account and Contact(by default is 1),if set to 0 then the whole option to select an address will not be shown.',
+),
 'Application_Show_Copy_Address' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
