@@ -171,6 +171,9 @@ function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, 
 		);
 		$adb->pquery('insert ignore into '.$tablename[$callerInfo['module']].' values (?,?)', array($callerInfo['id'], $focus->id));
 	}
+	$callerInfo['activityid'] = $focus->id;
+	$callerInfo['pbxdirection'] = 'IN';
+	cbEventHandler::do_action('corebos.pbxmanager.aftersaveactivity', $callerInfo);
 	return $focus->id;
 }
 
@@ -200,6 +203,15 @@ function addOutgoingcallHistory($current_user, $extension, $record, $adb) {
 	}
 	$focus->save('cbCalendar');
 	$focus->setActivityReminder('off');
+	$callerInfo = array();
+	$ename = getEntityName($setype, $record);
+	$callerInfo['module'] = $setype;
+	$callerInfo['name'] = $ename[$record];
+	$callerInfo['id'] = $record;
+	$callerInfo['activityid'] = $focus->id;
+	$callerInfo['pbxuuid'] = 0;
+	$callerInfo['pbxdirection'] = 'OUT';
+	cbEventHandler::do_action('corebos.pbxmanager.aftersaveactivity', $callerInfo);
 
 	if (!empty($setype)) {
 		$tablename = array('Contacts'=>'vtiger_cntactivityrel', 'Accounts'=>'vtiger_seactivityrel', 'Leads'=>'vtiger_seactivityrel');

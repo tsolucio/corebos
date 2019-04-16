@@ -77,6 +77,7 @@
 			</td>
 		{elseif $keyid eq '33' || $keyid eq '3313' || $keyid eq '3314'}
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;
+				{assign var=selected_val value=''}
 				{foreach item=sel_val from=$keyoptions }
 					{if $sel_val[2] eq 'selected'}
 						{if $selected_val neq ''}

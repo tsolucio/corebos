@@ -1150,6 +1150,11 @@ function run_massedit() {
 				sentForm[myFields[f].name] = CKEDITOR.instances[myFields[f].name].getData();
 			} else if (myFields[f].type == 'radio' && myFields[f].checked) {
 				sentForm[myFields[f].name] = myFields[f].value;
+			} else if (myFields[f].type == 'select-multiple') {
+				var myFieldValue = Array.prototype.map.call(myFields[f].selectedOptions, function (x) {
+					return x.value;
+				}).join(' |##| ');
+				sentForm[myFields[f].name.substring(0, myFields[f].name.length-2)] = myFieldValue;
 			} else if (myFields[f].type != 'radio' && myFields[f].type != 'button') {
 				sentForm[myFields[f].name] = myFields[f].value;
 			}

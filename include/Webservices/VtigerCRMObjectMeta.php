@@ -85,8 +85,8 @@ class VtigerCRMObjectMeta extends EntityMeta {
 			return;
 		}
 
-		require 'user_privileges/user_privileges_'.$this->user->id.'.php';
-		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+		$userprivs = $this->user->getPrivileges();
+		if ($userprivs->hasGlobalReadPermission()) {
 			$this->hasAccess = true;
 			$this->hasReadAccess = true;
 			$this->hasWriteAccess = true;
@@ -387,8 +387,8 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		} else {
 			$condition = $uniqueFieldsRestriction;
 		}
-		require 'user_privileges/user_privileges_'.$this->user->id.'.php';
-		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0) {
+		$userprivs = $this->user->getPrivileges();
+		if ($userprivs->hasGlobalReadPermission()) {
 			$sql = "SELECT vtiger_field.*, '0' as readonly, vtiger_blocks.sequence as blkseq
 				FROM vtiger_field
 				LEFT JOIN vtiger_blocks ON vtiger_field.block=vtiger_blocks.blockid

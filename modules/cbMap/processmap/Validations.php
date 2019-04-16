@@ -281,7 +281,7 @@ class Validations extends processcbMap {
 						}
 						break;
 					default:
-						continue;
+						//continue;
 						break;
 				}
 			}

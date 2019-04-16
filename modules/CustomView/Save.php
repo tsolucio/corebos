@@ -34,6 +34,7 @@ $cvid = (int) vtlib_purify($_REQUEST['record']);
 if (!empty($_REQUEST['newsave'])) {
 	unset($cvid);
 	$_REQUEST['viewName'] = cvGetNewViewName();
+	$_REQUEST['setStatus'] = CV_STATUS_PENDING;
 }
 $cvmodule = vtlib_purify($_REQUEST['cvmodule']);
 $parenttab = getParentTab();

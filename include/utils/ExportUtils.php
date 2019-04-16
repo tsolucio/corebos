@@ -44,13 +44,13 @@ function getPermittedFieldsQuery($module, $disp_view) {
 	global $log, $current_user;
 	$log->debug("> getPermittedFieldsQuery $module, $disp_view");
 
-	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
+	$userprivs = $current_user->getPrivileges();
 
 	//To get the permitted blocks
 	$blockid_list = getPermittedBlocks($module, $disp_view);
 
 	$tabid = getTabid($module);
-	if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0 || $module == 'Users') {
+	if ($userprivs->hasGlobalReadPermission() || $module == 'Users') {
 		$sql = 'SELECT vtiger_field.columnname, vtiger_field.fieldlabel, vtiger_field.tablename
 			FROM vtiger_field
 			WHERE vtiger_field.tabid='.$tabid." AND vtiger_field.block IN $blockid_list AND vtiger_field.displaytype IN (1,2,4) and vtiger_field.presence in (0,2)

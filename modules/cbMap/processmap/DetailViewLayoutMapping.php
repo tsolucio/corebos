@@ -74,7 +74,7 @@ class DetailViewLayoutMapping extends processcbMap {
 
 	private function convertMap2Array($crmid) {
 		global $adb, $current_user;
-		require 'user_privileges/user_privileges_' . $current_user->id . '.php';
+		$userPrivs = $current_user->getPrivileges();
 
 		$xml = $this->getXMLContent();
 		$mapping = array();
@@ -148,7 +148,7 @@ class DetailViewLayoutMapping extends processcbMap {
 					$idx++;
 				}
 			} elseif ($block['type']=='ApplicationFields') {
-				if ($is_admin == true || $profileGlobalPermission[2] == 0 || $mapping['origin'] == 'Users' || $mapping['origin'] == 'Emails') {
+				if ($userPrivs->hasGlobalWritePermission() || $mapping['origin'] == 'Users' || $mapping['origin'] == 'Emails') {
 					$sql = "SELECT distinct vtiger_field.columnname, vtiger_field.uitype, sequence
 						FROM vtiger_field
 						WHERE vtiger_field.fieldid IN (
@@ -156,7 +156,7 @@ class DetailViewLayoutMapping extends processcbMap {
 							) AND vtiger_field.block=? AND vtiger_field.displaytype IN (1,2,4) AND vtiger_field.presence IN (0,2)
 						ORDER BY sequence";
 					$params = array($origintab, $block['blockid']);
-				} elseif ($profileGlobalPermission[1] == 0) { // view all
+				} elseif ($userPrivs->hasGlobalViewPermission()) { // view all
 					$profileList = getCurrentUserProfileList();
 					$sql = "SELECT distinct vtiger_field.columnname, vtiger_field.uitype, sequence
 						FROM vtiger_field

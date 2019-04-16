@@ -112,10 +112,9 @@ function vtws_getAssignedUserList($module, $user) {
 	$log->debug('> getAssignedUserList '.$module);
 	$hcuser = $current_user;
 	$current_user = $user;
-	require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
-	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
+	$userprivs = $current_user->getPrivileges();
 	$tabid=getTabid($module);
-	if (!is_admin($user) && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabid] == 3 || $defaultOrgSharingPermission[$tabid] == 0)) {
+	if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabid)) {
 		$users = get_user_array(false, 'Active', $user->id, 'private');
 	} else {
 		$users = get_user_array(false, 'Active', $user->id);
@@ -134,10 +133,11 @@ function vtws_getAssignedGroupList($module, $user) {
 	$log->debug('> vtws_getAssignedGroupList '.$module);
 	$hcuser = $current_user;
 	$current_user = $user;
-	require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
-	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
+
+	$userPrivs = $user->getPrivileges();
+
 	$tabid=getTabid($module);
-	if (!is_admin($user) && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabid] == 3 || $defaultOrgSharingPermission[$tabid] == 0)) {
+	if (!$userPrivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabid)) {
 		$users = get_group_array(false, 'Active', $user->id, 'private');
 	} else {
 		$users = get_group_array(false, 'Active', $user->id);
@@ -401,7 +401,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 
 	//Added to reduce the no. of queries logging for non-admin user
 	$field_list = array();
-	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
+	$userprivs = $current_user->getPrivileges();
 	foreach ($focus->list_fields as $name => $tableinfo) {
 		if ($oCv && isset($oCv->list_fields_name)) {
 			$fieldname = $oCv->list_fields_name[$name];
@@ -521,7 +521,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 				} else {
 					continue;
 				}
-				if ($is_admin==true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0 || in_array($fieldname, $field) || $fieldname == '') {
+				if ($userprivs->hasGlobalReadPermission() || in_array($fieldname, $field) || $fieldname == '') {
 					if ($fieldname == '') {
 						$table_name = '';
 						$column_name = '';
@@ -908,7 +908,8 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		    vtiger_crmentity.crmid AS id, 
 		    vtiger_products.unit_price AS unit_price 
 		    FROM vtiger_products 
-		    INNER JOIN vtiger_crmentity ON vtiger_products.productid = vtiger_crmentity.crmid 
+			INNER JOIN vtiger_crmentity ON vtiger_products.productid = vtiger_crmentity.crmid 
+			".getNonAdminAccessControlQuery('Products', $current_user)."
 			WHERE (vtiger_products.productname LIKE '%{$term}%' OR vtiger_products.mfr_part_no LIKE '%{$term}%' OR vtiger_products.vendor_part_no LIKE '%{$term}%')
 				AND vtiger_products.discontinued = 1 AND vtiger_crmentity.deleted = 0
 		UNION
@@ -925,7 +926,8 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		    vtiger_crmentity.crmid AS id, 
 		    vtiger_service.unit_price AS unit_price 
 		    FROM vtiger_service 
-		    INNER JOIN vtiger_crmentity ON vtiger_service.serviceid = vtiger_crmentity.crmid 
+			INNER JOIN vtiger_crmentity ON vtiger_service.serviceid = vtiger_crmentity.crmid 
+			".getNonAdminAccessControlQuery('Services', $current_user)."
 			WHERE vtiger_service.servicename LIKE '%{$term}%' AND vtiger_service.discontinued = 1 AND vtiger_crmentity.deleted = 0
 		LIMIT $limit");
 	$ret = array();

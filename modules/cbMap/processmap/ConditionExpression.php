@@ -66,10 +66,11 @@ class ConditionExpression extends processcbMap {
 		$xml = $this->getXMLContent();
 		$entityId = $arguments[0];
 		$holduser = $current_user;
-		$current_user = Users::getActiveAdminUser(); // evaluate condition as admin user
+		$current_user = Users::getActiveAdminUser(); // in order to retrieve all entity data for evaluation
 		if (!empty($entityId)) {
 			$entity = new VTWorkflowEntity($current_user, $entityId, true);
 			if (is_null($entity->data)) { // invalid context
+				$current_user = $holduser;
 				return false;
 			}
 		}
@@ -88,6 +89,7 @@ class ConditionExpression extends processcbMap {
 			$function = (String)$xml->function->name;
 			$testexpression = '$exprEvaluation = ' . $function . '(';
 			if (isset($xml->function->parameters) && isset($xml->function->parameters->parameter)) {
+				$GLOBALS['currentuserID'] = $current_user->id;
 				foreach ($xml->function->parameters->parameter as $v) {
 					if (isset($entity->data[(String)$v])) {
 						$testexpression.= "'" . $entity->data[(String)$v] . "',";
@@ -97,6 +99,7 @@ class ConditionExpression extends processcbMap {
 						$testexpression.= "'" . (String)$v . "',";
 					}
 				}
+				unset($GLOBALS['currentuserID']);
 			}
 			$testexpression = trim($testexpression, ',') . ');';
 			eval($testexpression);

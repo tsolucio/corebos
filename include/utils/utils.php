@@ -184,8 +184,10 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 	global $log, $current_user;
 	$log->debug('> get_user_array '.$add_blank.','. $status.','.$assigned_user.','.$private);
 	if (isset($current_user) && $current_user->id != '') {
-		require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
-		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
+		$userprivs = $current_user->getPrivileges();
+		$current_user_parent_role_seq = $userprivs->getParentRoleSequence();
+	} else {
+		$current_user_parent_role_seq = '';
 	}
 	static $user_array = null;
 	$module = isset($_REQUEST['module']) ? $_REQUEST['module'] : '';
@@ -276,11 +278,15 @@ function get_user_array($add_blank = true, $status = 'Active', $assigned_user = 
 function get_group_array($add_blank = true, $status = 'Active', $assigned_user = '', $private = '', $force = false) {
 	global $log, $current_user, $currentModule;
 	$log->debug('> get_group_array '.$add_blank.','. $status.','.$assigned_user.','.$private);
-	$current_user_groups = array();
-	$current_user_parent_role_seq = '';
 	if (isset($current_user) && $current_user->id != '') {
-		require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
-		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
+		$userprivs = $current_user->getPrivileges();
+		$current_user_parent_role_seq = $userprivs->getParentRoleSequence();
+		$current_user_groups = $userprivs->getGroups();
+		$parent_roles = $userprivs->getParentRoles();
+	} else {
+		$current_user_parent_role_seq = '';
+		$current_user_groups = array();
+		$parent_roles = array();
 	}
 	static $group_array = null;
 	$module= (isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : $currentModule);
@@ -2896,9 +2902,8 @@ function getSecParameterforMerge($module) {
 	global $current_user;
 	$tab_id = getTabid($module);
 	$sec_parameter='';
-	require 'user_privileges/user_privileges_'.$current_user->id.'.php';
-	require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
-	if ($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tab_id] == 3) {
+	$userprivs = $current_user->getPrivileges();
+	if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing($tab_id)) {
 		$sec_parameter=getListViewSecurityParameter($module);
 		if ($module == 'Accounts') {
 			$sec_parameter .= ' AND (vtiger_crmentity.smownerid IN ('.$current_user->id.")
@@ -2907,7 +2912,7 @@ function getSecParameterforMerge($module) {
 				FROM vtiger_user2role
 				INNER JOIN vtiger_users ON vtiger_users.id = vtiger_user2role.userid
 				INNER JOIN vtiger_role ON vtiger_role.roleid = vtiger_user2role.roleid
-				WHERE vtiger_role.parentrole LIKE '".$current_user_parent_role_seq."::%')
+				WHERE vtiger_role.parentrole LIKE '".$userprivs->getParentRoleSequence()."::%')
 				OR vtiger_crmentity.smownerid IN (
 				SELECT shareduserid
 				FROM vtiger_tmp_read_user_sharing_per
@@ -2915,7 +2920,7 @@ function getSecParameterforMerge($module) {
 				OR (vtiger_crmentity.smownerid in (0)
 				AND (';
 
-			if (count($current_user_groups) > 0) {
+			if ($userprivs->hasGroups()) {
 				$sec_parameter .= ' vtiger_groups.groupname IN (
 					SELECT groupname
 					FROM vtiger_groups
@@ -3039,32 +3044,40 @@ function getCallerInfo($number) {
 	if (empty($number)) {
 		return false;
 	}
-
-	$fieldsString = GlobalVariable::getVariable('PBXManager_SearchOnlyOnTheseFields', '');
+	$pbxNumberSeparator = GlobalVariable::getVariable('PBX_callerNumberSeparator', '', 'PBXManager');
+	if ($pbxNumberSeparator=='') {
+		$numArray = (array)$number;
+	} else {
+		$numArray = explode($pbxNumberSeparator, $number);
+	}
+	$fieldsString = GlobalVariable::getVariable('PBX_SearchOnTheseFields', '', 'PBXManager');
 	if ($fieldsString != '') {
 		$fieldsArray = explode(',', $fieldsString);
-		foreach ($fieldsArray as $field) {
-			$result = $adb->pquery("SELECT tabid, uitype FROM vtiger_field WHERE columnname = ?", array($field));
-			for ($i = 0; $i< $adb->num_rows($result); $i++) {
-				$module = vtlib_getModuleNameById($adb->query_result($result, $i, 0));
-				$uitype = $adb->query_result($result, $i, 1);
-				$focus = CRMEntity::getInstance($module);
-				$query = $focus->buildSearchQueryForFieldTypes($uitype, $number);
-				if (empty($query)) {
-					continue;
-				}
+		foreach ($numArray as $number) {
+			foreach ($fieldsArray as $field) {
+				$result = $adb->pquery("SELECT tabid, uitype FROM vtiger_field WHERE columnname = ?", array($field));
+				for ($i = 0; $i< $adb->num_rows($result); $i++) {
+					$module = vtlib_getModuleNameById($adb->query_result($result, $i, 0));
+					$uitype = $adb->query_result($result, $i, 1);
+					$focus = CRMEntity::getInstance($module);
+					$query = $focus->buildSearchQueryForFieldTypes($uitype, $number);
+					if (empty($query)) {
+						continue;
+					}
 
-				$result = $adb->pquery($query, array());
-				if ($adb->num_rows($result) > 0) {
-					$callerName = $adb->query_result($result, 0, 'name');
-					$callerID = $adb->query_result($result, 0, 'id');
-					return array('name'=>$callerName, 'module'=>$module, 'id'=>$callerID);
+					$result = $adb->pquery($query, array());
+					if ($adb->num_rows($result) > 0) {
+						$callerName = $adb->query_result($result, 0, 'name');
+						$callerID = $adb->query_result($result, 0, 'id');
+						return array('name'=>$callerName, 'module'=>$module, 'id'=>$callerID);
+					}
 				}
 			}
 		}
-	} else {
-		$name = array('Contacts', 'Accounts', 'Leads');
-		foreach ($name as $module) {
+	}
+	$name = array('Contacts', 'Accounts', 'Leads');
+	foreach ($name as $module) {
+		foreach ($numArray as $number) {
 			$focus = CRMEntity::getInstance($module);
 			$query = $focus->buildSearchQueryForFieldTypes(11, $number);
 			if (empty($query)) {
@@ -3079,7 +3092,6 @@ function getCallerInfo($number) {
 			}
 		}
 	}
-
 	return false;
 }
 
@@ -3157,9 +3169,9 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
 		$callto = $unknownCaller;
 	}
 
+	$sql = 'select * from vtiger_asteriskextensions where asterisk_extension=?';
 	if ($status == 'outgoing') {
 		//call is from user to record
-		$sql = "select * from vtiger_asteriskextensions where asterisk_extension=?";
 		$result = $adb->pquery($sql, array($callfrom));
 		if ($adb->num_rows($result)>0) {
 			$userid = $adb->query_result($result, 0, "userid");
@@ -3174,23 +3186,23 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
 		}
 	} else {
 		//call is from record to user
-		$sql = "select * from vtiger_asteriskextensions where asterisk_extension=?";
 		$result = $adb->pquery($sql, array($callto));
 		if ($adb->num_rows($result)>0) {
-			$userid = $adb->query_result($result, 0, "userid");
+			$userid = $adb->query_result($result, 0, 'userid');
 			$receiver = getUserFullName($userid);
 		}
 		$callerName = $useCallerInfo;
 		if (empty($callerName)) {
 			$callerName = $unknownCaller.' '.$callfrom;
 		} else {
-			$callerName = "<a href='index.php?module=".$callerName['module']."&action=DetailView&record=".$callerName['id']."'>".decode_html($callerName['name'])."</a>";
+			$callerName = "<a href='index.php?module=".$callerName['module'].'&action=DetailView&record='.$callerName['id']."'>".decode_html($callerName['name']).'</a>';
 		}
 	}
 
-	$sql = 'insert into vtiger_pbxmanager (pbxmanagerid,callfrom,callto,timeofcall,status)values (?,?,?,?,?)';
-	$params = array($crmID, $callerName, $receiver, $timeOfCall, $status);
+	$sql = 'insert into vtiger_pbxmanager (pbxmanagerid,callfrom,callto,timeofcall,status,pbxuuid) values (?,?,?,?,?,?)';
+	$params = array($crmID, $callerName, $receiver, $timeOfCall, $status, $pbxuuid);
 	$adb->pquery($sql, $params);
+	cbEventHandler::do_action('corebos.pbxmanager.aftersave', $params);
 	return $crmID;
 }
 //functions for asterisk integration end

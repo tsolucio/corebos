@@ -24,7 +24,7 @@ class VTEntityDelta extends VTEventHandler {
 		$moduleName = $entityData->getModuleName();
 		$recordId = $entityData->getId();
 
-		if ($eventName == 'vtiger.entity.beforesave') {
+		if ($eventName == 'vtiger.entity.beforesave' || $eventName == 'corebos.beforesave.workflow') {
 			if (!empty($recordId)) {
 				$entityData = VTEntityData::fromEntityId($adb, $recordId);
 				if ($moduleName == 'HelpDesk') {
@@ -44,7 +44,7 @@ class VTEntityDelta extends VTEventHandler {
 			}
 		}
 
-		if ($eventName == 'vtiger.entity.aftersave') {
+		if ($eventName == 'vtiger.entity.aftersave' || $eventName == 'corebos.aftersave.workflow') {
 			$this->fetchEntity($moduleName, $recordId);
 			if ($moduleName=='Products') {
 				self::$newEntity_pimages = array();

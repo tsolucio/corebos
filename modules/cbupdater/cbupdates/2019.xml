@@ -83,6 +83,13 @@
 	<classname>migrateemailtemplates</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add PBXUUID field to PBXManager</description>
+	<filename>build/changeSets/2019/addFieldPBXUUID.php</filename>
+	<classname>addFieldPBXUUID</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 <changeSet> 
 	<author>mohamed-shibeJR</author> 
 	<description>creation of CustomerPortal_Mail_Password Msgtemplate</description> 

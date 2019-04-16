@@ -102,7 +102,10 @@ function asterisk_handleResponse1($mainresponse, $state, $adb) {
 	) {
 		$uniqueid = $mainresponse['Uniqueid'];
 
-		if (!empty($mainresponse['CallerID'])) {
+		$callerNumberField = GlobalVariable::getVariable('PBX_callerNumberField', 'CallerID', 'PBXManager', Users::getActiveAdminId());
+		if (!empty($mainresponse[$callerNumberField])) {
+			$callerNumber = $mainresponse[$callerNumberField];
+		} elseif (!empty($mainresponse['CallerID'])) {
 			$callerNumber = $mainresponse['CallerID'];
 		} elseif (!empty($mainresponse['CallerIDNum'])) {
 			$callerNumber = $mainresponse['CallerIDNum'];
@@ -169,10 +172,11 @@ function asterisk_handleResponse3($mainresponse, $adb, $asterisk) {
 	if ($mainresponse['Event'] == 'Link' || ($mainresponse['Event'] == 'Bridge' && $mainresponse['Bridgestate'] == 'Link')) {
 		$uid = $mainresponse['Uniqueid1'];
 		$uid2 = $mainresponse['Uniqueid2'];
-		$callerNumber = $mainresponse['CallerID1'];
+		$callerNumberField = GlobalVariable::getVariable('PBX_callerNumberField', 'CallerID1', 'PBXManager', Users::getActiveAdminId());
+		$callerNumber = !empty($mainresponse[$callerNumberField]) ? $mainresponse[$callerNumberField] : $mainresponse['CallerID1'];
 		$extensionCalled = $mainresponse['CallerID2'];
 
-		// Ignore the case wheren CallerIDs are same!
+		// Ignore the case where CallerIDs are same!
 		if ($callerNumber == $extensionCalled) {
 			// case handled but we ignored.
 			return false;
@@ -192,7 +196,7 @@ function asterisk_handleResponse3($mainresponse, $adb, $asterisk) {
 			array($uid)
 		);
 		if ($adb->num_rows($checkres) > 0) {
-			$unknownCaller = GlobalVariable::getVariable('PBX_Unknown_CallerID', 'Unknown', 'PBXManager');
+			$unknownCaller = GlobalVariable::getVariable('PBX_Unknown_CallerID', 'Unknown', 'PBXManager', Users::getActiveAdminId());
 			if (empty($checkresrow['from_name'])) {
 				$checkresrow['from_name'] = $unknownCaller;
 			}
@@ -236,7 +240,8 @@ function asterisk_handleResponse3($mainresponse, $adb, $asterisk) {
 					$extensionCalled,
 					"incoming-$status",
 					$adb,
-					$receiver_callerinfo
+					$receiver_callerinfo,
+					$uid
 				);
 				$adb->pquery('UPDATE vtiger_asteriskincomingevents SET pbxrecordid = ? WHERE uid = ?', array($pbxrecordid, $uid));
 				if (!empty($receiver_callerinfo['id'])) {
