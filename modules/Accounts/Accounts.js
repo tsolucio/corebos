@@ -170,8 +170,7 @@ function set_return_shipbilladdress(account_id, account_name, bill_street, ship_
 			Application_Popup_Address_Selection = obj.Application_Popup_Address_Selection;
 			if (Application_Popup_Address_Selection == 0) {  // set value from application
 				saa_fillinvalues();
-			}
-			if (Application_Popup_Address_Selection == 1) {
+			}else {
 				jQuery('#setaddressaccountdiv').show();
 				fnvshNrm('setaddressaccountdiv');
 			}
