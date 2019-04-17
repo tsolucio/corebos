@@ -898,6 +898,10 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	$servicesearchfields = array('servicename');
 	$productsearchquery = '';
 	$servicesearchquery = '';
+	$prodconds = array();
+	$servconds = array();
+	$prodcondquery = '';
+	$servcondquery = '';
 
 	require_once 'include/fields/CurrencyField.php';
 	require_once 'include/utils/CommonUtils.php';
@@ -910,6 +914,11 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			$sf = $cbMapFI['cbProductServiceField']['searchfields'];
 			$productsearchfields = array_key_exists('Products', $sf) ? explode(',', $sf['Products']) : $productsearchfields;
 			$servicesearchfields = array_key_exists('Service', $sf) ? explode(',', $sf['Service']) : $servicesearchfields;
+		}
+		if (array_key_exists('cbProductServiceField',$cbMapFI) && array_key_exists('searchcondition',$cbMapFI['cbProductServiceField'])) {
+			$sc = json_decode($cbMapFI['cbProductServiceField']['searchcondition'], true);
+			$prodconds = array_key_exists('Products', $sc) ? $sc['Products'] : $prodconds;
+			$servconds = array_key_exists('Service', $sc) ? $sc['Service'] : $servconds;
 		}
 	}
 
@@ -925,6 +934,26 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			$servicesearchquery .= ' OR ';
 		}
 	}
+
+	$prodcondquery .= count($prodconds) > 0 ? 'AND (' : '';
+	for ($i=0; $i < count($prodconds); $i++) {
+		if ($i % 2 == 0) {
+			$prodcondquery .= substr($prodconds[$i], 0, 3) == 'cf_' ? 'vtiger_productcf.'.$prodconds[$i] : 'vtiger_products.'.$prodconds[$i];
+		} else {
+			$prodcondquery .= ' ' . $prodconds[$i] . ' ';
+		}
+	}
+	$prodcondquery .= count($prodconds) > 0 ? ')' : '';
+
+	$servcondquery .= count($servconds) > 0 ? 'AND (' : '';
+	for ($i=0; $i < count($servconds); $i++) {
+		if ($i % 2 == 0) {
+			$servcondquery .= substr($servconds[$i], 0, 3) == 'cf_' ? 'vtiger_servicecf.'.$servconds[$i] : 'vtiger_service.'.$servconds[$i];
+		} else {
+			$servcondquery .= ' ' . $servconds[$i] . ' ';
+		}
+	}
+	$servcondquery .= count($servconds) > 0 ? ')' : '';
 
 	$r = $adb->query("
 		SELECT 
@@ -943,6 +972,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			INNER JOIN vtiger_crmentity ON vtiger_products.productid = vtiger_crmentity.crmid 
 			".getNonAdminAccessControlQuery('Products', $current_user)."
 			WHERE ({$productsearchquery}) 
+			{$prodcondquery} 
 			AND vtiger_products.discontinued = 1 AND vtiger_crmentity.deleted = 0
 		UNION
 		SELECT
@@ -961,6 +991,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			INNER JOIN vtiger_crmentity ON vtiger_service.serviceid = vtiger_crmentity.crmid 
 			".getNonAdminAccessControlQuery('Services', $current_user)."
 			WHERE ({$servicesearchquery}) 
+			{$servcondquery} 
 			AND vtiger_service.discontinued = 1 AND vtiger_crmentity.deleted = 0
 		LIMIT $limit");
 	$ret = array();
