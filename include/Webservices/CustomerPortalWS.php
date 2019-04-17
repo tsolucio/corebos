@@ -970,6 +970,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		    vtiger_products.unit_price AS unit_price 
 		    FROM vtiger_products 
 			INNER JOIN vtiger_crmentity ON vtiger_products.productid = vtiger_crmentity.crmid 
+			INNER JOIN vtiger_productcf ON vtiger_products.productid = vtiger_productcf.productid 
 			".getNonAdminAccessControlQuery('Products', $current_user)."
 			WHERE ({$productsearchquery}) 
 			{$prodcondquery} 
@@ -989,6 +990,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		    vtiger_service.unit_price AS unit_price 
 		    FROM vtiger_service 
 			INNER JOIN vtiger_crmentity ON vtiger_service.serviceid = vtiger_crmentity.crmid 
+			INNER JOIN vtiger_servicecf ON vtiger_service.serviceid = vtiger_servicecf.serviceid 
 			".getNonAdminAccessControlQuery('Services', $current_user)."
 			WHERE ({$servicesearchquery}) 
 			{$servcondquery} 
