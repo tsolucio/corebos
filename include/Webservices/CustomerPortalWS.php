@@ -890,9 +890,41 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	$cur_user_decimals = $current_user->column_fields['no_of_currency_decimals'];
 	$term = $adb->sql_escape_string(vtlib_purify($term));
 	$limit = $adb->sql_escape_string(vtlib_purify($limit));
+	$sourceModule = $adb->sql_escape_string(vtlib_purify($_REQUEST['sourceModule']));
+
+	$bmapname = $sourceModule . '_FieldInfo';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_' . $bmapname, cbMap::getMapIdByName($bmapname));
+	$productsearchfields = array('productname','mfr_part_no','vendor_part_no');
+	$servicesearchfields = array('servicename');
+	$productsearchquery = '';
+	$servicesearchquery = '';
 
 	require_once 'include/fields/CurrencyField.php';
 	require_once 'include/utils/CommonUtils.php';
+
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapFI = $cbMap->FieldInfo();
+		$cbMapFI = $cbMapFI['fields'];
+		if (array_key_exists('cbProductServiceField', $cbMapFI) && array_key_exists('searchfields', $cbMapFI['cbProductServiceField'])) {
+			$sf = $cbMapFI['cbProductServiceField']['searchfields'];
+			$productsearchfields = array_key_exists('Products', $sf) ? explode(',', $sf['Products']) : $productsearchfields;
+			$servicesearchfields = array_key_exists('Service', $sf) ? explode(',', $sf['Service']) : $servicesearchfields;
+		}
+	}
+
+	for ($i=0; $i < count($productsearchfields); $i++) {
+		$productsearchquery .= 'vtiger_products.' . $productsearchfields[$i] . ' LIKE \'%' . $term . '%\'';
+		if (($i + 1) < count($productsearchfields)) {
+			$productsearchquery .= ' OR ';
+		}
+	}
+	for ($i=0; $i < count($servicesearchfields); $i++) {
+		$servicesearchquery .= 'vtiger_service.' . $servicesearchfields[$i] . ' LIKE \'%' . $term . '%\'';
+		if (($i + 1) < count($servicesearchfields)) {
+			$servicesearchquery .= ' OR ';
+		}
+	}
 
 	$r = $adb->query("
 		SELECT 
@@ -910,8 +942,8 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		    FROM vtiger_products 
 			INNER JOIN vtiger_crmentity ON vtiger_products.productid = vtiger_crmentity.crmid 
 			".getNonAdminAccessControlQuery('Products', $current_user)."
-			WHERE (vtiger_products.productname LIKE '%{$term}%' OR vtiger_products.mfr_part_no LIKE '%{$term}%' OR vtiger_products.vendor_part_no LIKE '%{$term}%')
-				AND vtiger_products.discontinued = 1 AND vtiger_crmentity.deleted = 0
+			WHERE ({$productsearchquery}) 
+			AND vtiger_products.discontinued = 1 AND vtiger_crmentity.deleted = 0
 		UNION
 		SELECT
 		    vtiger_service.servicename AS name, 
@@ -928,7 +960,8 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		    FROM vtiger_service 
 			INNER JOIN vtiger_crmentity ON vtiger_service.serviceid = vtiger_crmentity.crmid 
 			".getNonAdminAccessControlQuery('Services', $current_user)."
-			WHERE vtiger_service.servicename LIKE '%{$term}%' AND vtiger_service.discontinued = 1 AND vtiger_crmentity.deleted = 0
+			WHERE ({$servicesearchquery}) 
+			AND vtiger_service.discontinued = 1 AND vtiger_crmentity.deleted = 0
 		LIMIT $limit");
 	$ret = array();
 
