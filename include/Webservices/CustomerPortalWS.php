@@ -902,6 +902,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	$servconds = array();
 	$prodcondquery = '';
 	$servcondquery = '';
+	$opmap = array('equals' => '=','smaller'=>'<','greater'=>'>');
 
 	require_once 'include/fields/CurrencyField.php';
 	require_once 'include/utils/CommonUtils.php';
@@ -936,9 +937,10 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	}
 
 	$prodcondquery .= count($prodconds) > 0 ? 'AND (' : '';
-	for ($i=0; $i < count($prodconds); $i++) {
+	for ($i=0; $i < count($prodconds); $i++) { 
 		if ($i % 2 == 0) {
-			$prodcondquery .= substr($prodconds[$i], 0, 3) == 'cf_' ? 'vtiger_productcf.'.$prodconds[$i] : 'vtiger_products.'.$prodconds[$i];
+			$prodcondoperation = $prodconds[$i]['field'] . ' ' . $opmap[$prodconds[$i]['operator']] . ' ' . $prodconds[$i]['value'];
+			$prodcondquery .= substr($prodconds[$i], 0, 3) == 'cf_' ? 'vtiger_productcf.'.$prodcondoperation : 'vtiger_products.'.$prodcondoperation;
 		} else {
 			$prodcondquery .= ' ' . $prodconds[$i] . ' ';
 		}
@@ -946,9 +948,10 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	$prodcondquery .= count($prodconds) > 0 ? ')' : '';
 
 	$servcondquery .= count($servconds) > 0 ? 'AND (' : '';
-	for ($i=0; $i < count($servconds); $i++) {
+	for ($i=0; $i < count($servconds); $i++) { 
 		if ($i % 2 == 0) {
-			$servcondquery .= substr($servconds[$i], 0, 3) == 'cf_' ? 'vtiger_servicecf.'.$servconds[$i] : 'vtiger_service.'.$servconds[$i];
+			$servcondoperation = $servconds[$i]['field'] . ' ' . $opmap[$servconds[$i]['operator']] . ' ' . $servconds[$i]['value'];
+			$servcondquery .= substr($servconds[$i], 0, 3) == 'cf_' ? 'vtiger_servicecf.'.$servcondoperation : 'vtiger_service.'.$servcondoperation;
 		} else {
 			$servcondquery .= ' ' . $servconds[$i] . ' ';
 		}
