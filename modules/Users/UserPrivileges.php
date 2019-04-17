@@ -26,7 +26,6 @@ class UserPrivileges {
 	const SHARING_READWRITE = 1;
 	const SHARING_READWRITEDELETE = 2;
 	const SHARING_PRIVATE = 3;
-	const READ_PRIVILEGES_FROM = 'file';
 
 	private $parent_role_seq = null;
 	private $profiles = null;
@@ -40,9 +39,10 @@ class UserPrivileges {
 	private $defaultOrgSharingPermission = null;
 
 	public function __construct($userid) {
-		if (self::READ_PRIVILEGES_FROM == 'file') {
+		global $cbodUserPrivilegesStorage;
+		if ($cbodUserPrivilegesStorage == 'file') {
 			$this->loadUserPrivilegesFile($userid);
-		} elseif (self::READ_PRIVILEGES_FROM == 'db') {
+		} elseif ($cbodUserPrivilegesStorage == 'db') {
 			$this->loadUserPrivilegesDB($userid);
 		}
 	}
@@ -303,8 +303,8 @@ class UserPrivileges {
 	}
 
 	public static function hasPrivileges($userId, $is_admin = true) {
-		global $adb;
-		if (self::READ_PRIVILEGES_FROM == 'db') {
+		global $adb, $cbodUserPrivilegesStorage;
+		if ($cbodUserPrivilegesStorage == 'db') {
 			$query = $adb->pquery(
 				"SELECT count(*) FROM user_privileges WHERE userid = ?",
 				array($userId)
@@ -327,10 +327,11 @@ class UserPrivileges {
 	}
 
 	public static function privsWithoutSharing($userId) {
+		global $cbodUserPrivilegesStorage;
 		$instance = new self($userId);
-		if (self::READ_PRIVILEGES_FROM == 'file') {
+		if ($cbodUserPrivilegesStorage == 'file') {
 			$instance->loadUserPrivilegesFile($userId, true);
-		} elseif (self::READ_PRIVILEGES_FROM == 'db') {
+		} elseif ($cbodUserPrivilegesStorage == 'db') {
 			$instance->loadUserPrivilegesDB($userId, true);
 		}
 		return $instance;

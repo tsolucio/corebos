@@ -16,20 +16,20 @@
 
 class UserPrivilegesWriter {
 
-	const WRITE_TO = 'file'; // file | db
-
 	public static function setUserPrivileges($userId) {
-		if (self::WRITE_TO == 'file') {
+		global $cbodUserPrivilegesStorage;
+		if ($cbodUserPrivilegesStorage == 'file') {
 			self::createUserPrivilegesFile($userId);
-		} elseif (self::WRITE_TO == 'db') {
+		} elseif ($cbodUserPrivilegesStorage == 'db') {
 			self::createUserPrivileges($userId);
 		}
 	}
 
 	public static function setSharingPrivileges($userId) {
-		if (self::WRITE_TO == 'file') {
+		global $cbodUserPrivilegesStorage;
+		if ($cbodUserPrivilegesStorage == 'file') {
 			self::createSharingPrivilegesFile($userId);
-		} elseif (self::WRITE_TO == 'db') {
+		} elseif ($cbodUserPrivilegesStorage == 'db') {
 			self::createSharingPrivileges($userId);
 		}
 	}
