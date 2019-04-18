@@ -893,7 +893,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	$sourceModule = $adb->sql_escape_string(vtlib_purify($_REQUEST['sourceModule']));
 
 	$bmapname = $sourceModule . '_FieldInfo';
-	$cbMapid = GlobalVariable::getVariable('BusinessMapping_' . $bmapname, cbMap::getMapIdByName($bmapname));
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_FieldInfo', cbMap::getMapIdByName($bmapname), $sourceModule, $current_user->id);
 	$productsearchfields = array('productname','mfr_part_no','vendor_part_no');
 	$servicesearchfields = array('servicename');
 	$productsearchquery = '';
