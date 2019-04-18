@@ -916,7 +916,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			$productsearchfields = array_key_exists('Products', $sf) ? explode(',', $sf['Products']) : $productsearchfields;
 			$servicesearchfields = array_key_exists('Service', $sf) ? explode(',', $sf['Service']) : $servicesearchfields;
 		}
-		if (array_key_exists('cbProductServiceField',$cbMapFI) && array_key_exists('searchcondition',$cbMapFI['cbProductServiceField'])) {
+		if (array_key_exists('cbProductServiceField', $cbMapFI) && array_key_exists('searchcondition', $cbMapFI['cbProductServiceField'])) {
 			$sc = json_decode($cbMapFI['cbProductServiceField']['searchcondition'], true);
 			$prodconds = array_key_exists('Products', $sc) ? $sc['Products'] : $prodconds;
 			$servconds = array_key_exists('Service', $sc) ? $sc['Service'] : $servconds;
@@ -937,7 +937,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	}
 
 	$prodcondquery .= count($prodconds) > 0 ? 'AND (' : '';
-	for ($i=0; $i < count($prodconds); $i++) { 
+	for ($i=0; $i < count($prodconds); $i++) {
 		if ($i % 2 == 0) {
 			$prodcondoperation = $prodconds[$i]['field'] . ' ' . $opmap[$prodconds[$i]['operator']] . ' ' . $prodconds[$i]['value'];
 			$prodcondquery .= substr($prodconds[$i], 0, 3) == 'cf_' ? 'vtiger_productcf.'.$prodcondoperation : 'vtiger_products.'.$prodcondoperation;
@@ -948,7 +948,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	$prodcondquery .= count($prodconds) > 0 ? ')' : '';
 
 	$servcondquery .= count($servconds) > 0 ? 'AND (' : '';
-	for ($i=0; $i < count($servconds); $i++) { 
+	for ($i=0; $i < count($servconds); $i++) {
 		if ($i % 2 == 0) {
 			$servcondoperation = $servconds[$i]['field'] . ' ' . $opmap[$servconds[$i]['operator']] . ' ' . $servconds[$i]['value'];
 			$servcondquery .= substr($servconds[$i], 0, 3) == 'cf_' ? 'vtiger_servicecf.'.$servcondoperation : 'vtiger_service.'.$servcondoperation;
