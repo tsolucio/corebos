@@ -137,7 +137,7 @@ function vtws_getAssignedGroupList($module, $user) {
 	$userPrivs = $user->getPrivileges();
 
 	$tabid=getTabid($module);
-	if (!$userPrivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabid)) {
+	if (!$userPrivs->hasGlobalWritePermission() && !$userPrivs->hasModuleWriteSharing($tabid)) {
 		$users = get_group_array(false, 'Active', $user->id, 'private');
 	} else {
 		$users = get_group_array(false, 'Active', $user->id);
