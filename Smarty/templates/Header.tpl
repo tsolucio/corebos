@@ -46,7 +46,7 @@
 </head>
 {include file='BrowserVariables.tpl'}
 {include file="Components.tpl"}
-<body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small>
+<body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small style="min-width:1100px; width: 100%"> 
 	<a name="top"></a>
 	<!-- header -->
 	<script type="text/javascript" src="include/sw-precache/service-worker-registration.js"></script>
@@ -100,7 +100,7 @@
 
 <!-- LDS Global header -->
 
-<header class="slds-global-header_container noprint" id="global-header">
+<header class="slds-global-header_container noprint" id="global-header" style="position:sticky;">
 	<div class="slds-global-header slds-grid slds-grid_align-spread">
 		<div class="slds-global-header__item">
 			<div class="slds-global-header__logo" style="background-image: url('{$COMPANY_DETAILS.applogo}');"></div>
@@ -283,11 +283,6 @@
 	<div style="width:100%; background-color:#fff;">
 	{$COREBOS_HEADER_PREMENU}
 	</div>
-	<script>
-		$(function() {
-			$("#blankDiv").height($("#global-header").outerHeight(true));
-		})
-	</script>
 	{/if}
 	<div class="noprint">
 		<div class="slds-context-bar">
@@ -317,7 +312,7 @@
 		</div>
 	</div>
 </header>
-<div id = "blankDiv" style="width: 1px; height: 90px;"></div>
+<div id = "blankDiv" style="width: 1px; height: 0px;" ></div>
 
 <!-- END LDS Global header -->
 
