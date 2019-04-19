@@ -90,4 +90,11 @@
 	<classname>addFieldPBXUUID</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>george1806</author>
+	<description>Install Workflow Task for Setting Many To Many Relation</description>
+	<filename>build/changeSets/2019/installMany2ManyRelationwf.php</filename>
+	<classname>installMany2ManyRelationwf</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
