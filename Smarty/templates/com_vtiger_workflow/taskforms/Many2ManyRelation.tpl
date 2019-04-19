@@ -64,7 +64,7 @@ var relrecords = {$task->relrecords|json_encode};
             </select>
           </div>
         </td>
-        <td> 
+        <td>
           <svg class="slds-icon slds-icon-text-default" aria-hidden="true" onclick='return vtlib_open_popup_window("","relModlist","{$entityName}","");'>
             <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#new"></use>
           </svg>
