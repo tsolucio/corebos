@@ -92,7 +92,7 @@ var relrecords = {$task->relrecords|json_encode};
       <th class="slds-text-align_right" scope="col" style="width: 3.25rem;">
         <div class="slds-th__action slds-th__action_form">
           <div class="slds-checkbox">
-            <input type="checkbox" name="options1" disabled id="checkbox-0" tabindex="-1" aria-labelledby="check-select-all-label column-group-header" value="checkbox-0" />
+            <input type="checkbox" name="options1" id="checkbox-0" tabindex="-1" aria-labelledby="check-select-all-label column-group-header" value="checkbox-0" checked onchange="doGlobalGridSelect();" />
             <label class="slds-checkbox__label" for="checkbox-0" id="check-select-all-label">
               <span class="slds-checkbox_faux"></span>
             </label>

@@ -23,6 +23,23 @@ function changeIdlistVal(recval) {
 	}
 }
 
+function doGlobalGridSelect() {
+	let ops = document.querySelectorAll("input[name='options[]']");
+	let globalcheck = document.getElementById('checkbox-0').checked;
+	let idlist = '';
+	for (let op = 0; op < ops.length; ++op) {
+		ops[op].checked = globalcheck;
+		if (globalcheck) {
+			if (idlist=='') {
+				idlist = ops[op].value;
+			} else {
+				idlist += ','+ops[op].value;
+			}
+		}
+	}
+	document.getElementById('idlist').value = idlist;
+}
+
 function addrecList(recId, recvalue) {
 	var reclist ='<tr id="row-'+recId+'" aria-level="1" aria-posinset="1" aria-selected="false" aria-setsize="4">'+
 		'<td class="slds-text-align_right" role="gridcell" style="width: 3.25rem;">'+
@@ -42,6 +59,7 @@ function addrecList(recId, recvalue) {
 		'</td>';
 	return reclist;
 }
+
 jQuery(document).ready(function () {
 	var recsavedDiv='';
 	if (relrecords.length > 0) {
