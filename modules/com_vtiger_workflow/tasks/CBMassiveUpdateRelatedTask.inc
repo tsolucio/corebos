@@ -96,42 +96,60 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 				$focusrel[$fldmod] = CRMEntity::getInstance($relmodule);
 				$maintable = $focusrel[$fldmod]->table_name;
 				$mainid = $focusrel[$fldmod]->table_index;
+				$condition = '';
 				if ($businessMap == 'Condition Query') {
 					$ids = $focusmap->ConditionQuery($recordId);
 					foreach ($ids as $recid) {
-						$getids[] = $recid["$mainid"];
+						$getids[] = $recid[$mainid];
 					}
 					if (count($getids)>0) {
-						$condition = " and $mainid in (".implode(",", $getids).")";
-					} else {
-						$condition = "";
+						$condition = " and $mainid in (".implode(',', $getids).')';
 					}
 				}
-				$records=$adb->query("select $mainid from $maintable join vtiger_crmentity on crmid=$mainid where deleted=0 and $relfield='$recordId' $condition");
-				for ($nr=0; $nr<$adb->num_rows($records); $nr++) {
-					$relId = $adb->query_result($records, $nr, '0');
-					$entity = vtws_getEntityId($relmodule);
-					if ($businessMap != 'Condition Expression'  || ($businessMap == 'Condition Expression' && $focusmap->ConditionExpression($entity.'x'.$relId))) {
-						$focusrel[$fldmod]->id = $relId;
-						$focusrel[$fldmod]->mode = 'edit';
-						$focusrel[$fldmod]->retrieve_entity_info($relId, $relmodule, false, $from_wf);
-						$focusrel[$fldmod]->clearSingletonSaveFields();
-						$fval = $fieldValue[$fldmod];
-						foreach ($fval as $key => $value) {
-							$focusrel[$fldmod]->column_fields[$key]=$value;
+
+				global $GetRelatedList_ReturnOnlyQuery;
+				$holdValue = $GetRelatedList_ReturnOnlyQuery;
+				$GetRelatedList_ReturnOnlyQuery = true;
+				$rectabid = getTabid($moduleName);
+				$relatedModuleId = getTabid($relmodule);
+				$relationResult = $adb->pquery(
+					'SELECT name FROM vtiger_relatedlists WHERE tabid=? AND related_tabid=? limit 1',
+					array($rectabid, $relatedModuleId)
+				);
+				$relationInfo = $adb->fetch_array($relationResult);
+				$params = array($recordId, $rectabid, $relatedModuleId);
+				$relationData = call_user_func_array(array($focus, $relationInfo['name']), $params);
+				$GetRelatedList_ReturnOnlyQuery = $holdValue;
+				if (isset($relationData['query'])) {
+					$query = $relationData['query'];
+					preg_match('/[\t ]from /i', $query, $matches, PREG_OFFSET_CAPTURE);
+					$query = 'select vtiger_crmentity.crmid'.substr($query, $matches[0][1]).$condition;
+					$rs = $adb->query($query);
+					while ($row = $adb->fetch_array($rs)) {
+						$relId = $row['crmid'];
+						$entity = vtws_getEntityId($relmodule);
+						if ($businessMap == '' || ($businessMap == 'Condition Expression' && $focusmap->ConditionExpression($entity.'x'.$relId))) {
+							$focusrel[$fldmod]->id = $relId;
+							$focusrel[$fldmod]->mode = 'edit';
+							$focusrel[$fldmod]->retrieve_entity_info($relId, $relmodule, false, $from_wf);
+							$focusrel[$fldmod]->clearSingletonSaveFields();
+							$fval = $fieldValue[$fldmod];
+							foreach ($fval as $key => $value) {
+								$focusrel[$fldmod]->column_fields[$key]=$value;
+							}
+							$focusrel[$fldmod]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel[$fldmod]->column_fields, $handlerMetarel[$fldmod]);
+							global $adb;
+							$em = new VTEventsManager($adb);
+							// Initialize Event trigger cache
+							$em->initTriggerCache();
+							$entityData = VTEntityData::fromCRMEntity($focusrel[$fldmod]);
+							$em->triggerEvent('corebos.beforesave.workflow', $entityData);
+
+							$focusrel[$fldmod]->saveentity($relmodule);
+
+							$em->triggerEvent('corebos.aftersave.workflow', $entityData);
+							$em->triggerEvent('corebos.aftersave.workflow.final', $entityData);
 						}
-						$focusrel[$fldmod]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel[$fldmod]->column_fields, $handlerMetarel[$fldmod]);
-						global $adb;
-						$em = new VTEventsManager($adb);
-						// Initialize Event trigger cache
-						$em->initTriggerCache();
-						$entityData = VTEntityData::fromCRMEntity($focusrel[$fldmod]);
-						$em->triggerEvent('corebos.beforesave.workflow', $entityData);
-
-						$focusrel[$fldmod]->saveentity($relmodule);
-
-						$em->triggerEvent('corebos.aftersave.workflow', $entityData);
-						$em->triggerEvent('corebos.aftersave.workflow.final', $entityData);
 					}
 				}
 			}
