@@ -1305,6 +1305,12 @@ $app_strings = array (
 	'processcomplete' => 'Proceso Terminado',
 	'typetosearch_prodser' => 'Busca productos o servicios',
 	'RecordIsAssignedToInactiveUser' => 'El registro está asignado a un usuario inactivo. Por favor selecciona otro usuario.',
+	'Add Relation' => 'Añadir Relación',
+	'Delete Relation' => 'Eliminar Relación',
+	'Delete All Relation' => 'Eliminar Todas las Relaciones',
+	'Select Related Module' => 'Selecciona Módulo Relacionado',
+	'No Module' => 'No tiene módulos relacionados',
+	'Entity Name' => 'Nombre Entidad',
 );
 
 // Translation for currency names
