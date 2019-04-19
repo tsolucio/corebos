@@ -23,8 +23,12 @@ if (isset($_REQUEST['currentmodule'])) {
 }
 $relatedMods = getRelatedModulesInfomation($module, $current_user);
 $listres = '';
-foreach ($relatedMods as $keymod => $modval) {
-	$listres =$listres .'<option value='.$modval['related_module'].'>'.$keymod.'</option>';
+foreach ($relatedMods as $modval) {
+	$rs = $adb->pquery('select relationtype from vtiger_relatedlists where relation_id=?', array($modval['relationId']));
+	$reltype = $adb->query_result($rs, 0, 'relationtype');
+	if ($reltype == 'N:N' && $modval['related_module'] != 'Emails') {
+		$listres =$listres .'<option value='.$modval['related_module'].'>'.$modval['labeli18n'].'</option>';
+	}
 }
 echo $listres;
 ?>
