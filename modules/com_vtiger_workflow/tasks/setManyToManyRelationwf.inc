@@ -45,15 +45,12 @@ class setManyToManyRelationwf extends VTTask {
 		}
 		if ($this->relAction == 'dellAllrel' || $this->relAction == 'delrel') {
 			list($modid,$recid) = explode('x', $entity->getId());
-			$recmod = getSalesEntityType($recid);
-			require_once 'modules/'.$recmod.'/'.$recmod.'.php';
-			$modobj = new $recmod;
-			if (count($idlistArr) == 1) {
-				$modobj->unlinkRelationship($idlistArr[0], $recmod, $recid);
-			} else {
-				foreach ($idlistArr as $rid) {
-					$res = $modobj->unlinkRelationship($rid, $recmod, $recid);
-				}
+			$recmod = $entity->getModuleName();
+			$modobj = CRMEntity::getInstance($recmod);
+			foreach ($idlistArr as $rid) {
+				$return_module = getSalesEntityType($rid);
+				$modobj->unlinkRelationship($recid, $return_module, $rid);
+				$modobj->trackUnLinkedInfo($return_module, $rid, $recmod, $recid);
 			}
 		}
 	}
