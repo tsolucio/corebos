@@ -2,12 +2,12 @@
 /***********************************************************
 *  Module       : Invoice
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
-$mod_strings = array (
+$mod_strings = array(
 	'LBL_MODULE_NAME' => 'Facture',
 	'LBL_SO_MODULE_NAME' => 'Facture',
 	'LBL_RELATED_PRODUCTS' => 'Produits en relation',
@@ -56,6 +56,7 @@ $mod_strings = array (
 	'LBL_COUNTRY' => 'Pays :',
 	'LBL_DESCRIPTION_INFORMATION' => 'Information description',
 	'LBL_DESCRIPTION' => 'Description :',
+	'LBL_Invoice_FINANCIALINFO' => 'Financial Information',
 	'LBL_TERMS_INFORMATION' => 'Conditions particulières',
 	'NTC_COPY_BILLING_ADDRESS' => 'Utiliser adresse de facturation pour la livraison',
 	'NTC_COPY_SHIPPING_ADDRESS' => 'Utiliser adresse de livraison pour la facturation',

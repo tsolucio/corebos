@@ -12,12 +12,13 @@ require_once 'data/CRMEntity.php';
 
 $draft = new MailManager_Model_DraftEmail();
 
-if(!empty($_REQUEST['entityid'])) {
+if (!empty($_REQUEST['entityid'])) {
 	global $current_user, $adb, $currentModule;
 	$entityId = vtlib_purify($_REQUEST['entityid']);
 
-	if(!MailManager::checkModuleReadAccessForCurrentUser('Documents'))  {
-		$errorMessage = getTranslatedString('LBL_READ_ACCESS_FOR', $currentModule)." ".getTranslatedString('Documents')." ".getTranslatedString('LBL_MODULE_DENIED', $currentModule);
+	if (!MailManager::checkModuleReadAccessForCurrentUser('Documents')) {
+		$errorMessage = getTranslatedString('LBL_READ_ACCESS_FOR', $currentModule).' '
+			.getTranslatedString('Documents', 'Documents').' '.getTranslatedString('LBL_MODULE_DENIED', $currentModule);
 		$res = $adb->pquery("SELECT filename, filesize FROM vtiger_notes WHERE notesid = ?", array($entityId));
 		$fileName = $adb->query_result($res, 0, 'filename');
 		$size = $adb->query_result($res, 0, 'filesize');
@@ -31,7 +32,7 @@ if(!empty($_REQUEST['entityid'])) {
 	if (!empty($parentId)) {
 		$draft->saveEmailDocumentRel($parentId, $entityId);
 		//link the attachment to emails
-		$attachRes = $adb->pquery("SELECT attachmentsid FROM vtiger_seattachmentsrel WHERE crmid = ?", array($entityId));
+		$attachRes = $adb->pquery('SELECT attachmentsid FROM vtiger_seattachmentsrel WHERE crmid=?', array($entityId));
 		$attachId = $adb->query_result($attachRes, 0, 'attachmentsid');
 		$draft->saveAttachmentRel($parentId, $attachId);
 	}

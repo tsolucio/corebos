@@ -28,13 +28,11 @@ $mod_strings = array (
   'LBL_LIST_PHONE' => 'Telefono',
   'LBL_LIST_CONTACT_ROLE' => 'Ruolo',
 
-
   'db_last_name' => 'LBL_LIST_LAST_NAME',
   'db_first_name' => 'LBL_LIST_FIRST_NAME',
   'db_title' => 'LBL_LIST_TITLE',
   'db_email1' => 'LBL_LIST_EMAIL_ADDRESS',
   'db_email2' => 'LBL_LIST_EMAIL_ADDRESS',
-
 
   'LBL_EXISTING_CONTACT' => 'Utilizza un contatto esistente',
   'LBL_CREATED_CONTACT' => 'Crea un nuovo contatto',
@@ -280,5 +278,4 @@ $mod_strings = array (
 'SYNC_RESULTS'=>'Risultati della sincronizzazione',
 'ERR_GContactsSync'=>'Si è verificato un errore di accesso a Google. Le impostazioni sono state eliminate, configurare nuovamente l\'accesso.',
 );
-
 ?>

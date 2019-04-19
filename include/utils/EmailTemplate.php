@@ -19,7 +19,7 @@ class EmailTemplate {
 	protected $templateFields;
 	protected $user;
 
-	public function __construct($module,$description,$recordId,$user) {
+	public function __construct($module, $description, $recordId, $user) {
 		$this->module = $module;
 		$this->recordId = $recordId;
 		$this->processed = false;
@@ -28,16 +28,18 @@ class EmailTemplate {
 		$this->processed = false;
 	}
 
-	public function setDescription($description){
+	public function setDescription($description) {
 		$this->rawDescription = $description;
 		$this->processedDescription = $description;
-		$templateVariablePair = explode('$',$this->rawDescription);
-		$this->templateFields = Array();
-		for($i=1, $iMax = count($templateVariablePair); $i < $iMax; $i+=2) {
-			if (strpos($templateVariablePair[$i], '-') === false) continue;
-			list($module,$fieldName) = explode('-',$templateVariablePair[$i]);
-			if ($pos = strpos($fieldName,'_fullpath')) {
-				list($field,$fpath) = explode('_',$fieldName);
+		$templateVariablePair = explode('$', $this->rawDescription);
+		$this->templateFields = array();
+		for ($i=1, $iMax = count($templateVariablePair); $i < $iMax; $i+=2) {
+			if (strpos($templateVariablePair[$i], '-') === false) {
+				continue;
+			}
+			list($module,$fieldName) = explode('-', $templateVariablePair[$i]);
+			if (strpos($fieldName, '_fullpath')) {
+				list($field,$fpath) = explode('_', $fieldName);
 				$this->templateFields[$module][] = $field;
 			}
 			$this->templateFields[$module][] = $fieldName;
@@ -45,18 +47,18 @@ class EmailTemplate {
 		$this->processed = false;
 	}
 
-	private function getTemplateVariableListForModule($module){
+	private function getTemplateVariableListForModule($module) {
 		$mname = strtolower($module);
 		return isset($this->templateFields[$mname]) ? $this->templateFields[$mname] : array();
 	}
 
-	public function process(){
+	public function process() {
 		global $site_URL;
 		$imagefound = false;
 		$variableList = $this->getTemplateVariableListForModule($this->module);
 		$handler = vtws_getModuleHandlerFromName($this->module, $this->user);
 		$meta = $handler->getMeta();
-		$referenceFields = $meta->getReferenceFieldDetails();
+		$meta->getReferenceFieldDetails();
 		$fieldColumnMapping = $meta->getFieldColumnMapping();
 		$columnTableMapping = $meta->getColumnTableMapping();
 		$tableList = array();
@@ -64,25 +66,25 @@ class EmailTemplate {
 		$columnList_full = array();
 		$allColumnList = $meta->getUserAccessibleColumns();
 
-		if(count($variableList) > 0){
+		if (count($variableList) > 0) {
 			foreach ($variableList as $column) {
-				if(in_array($column,$allColumnList)){
+				if (in_array($column, $allColumnList)) {
 					$columnList[] = $column;
 					$columnList_full[] = $columnTableMapping[$column].'.'.$column;
 				}
 			}
 
 			foreach ($columnList as $column) {
-				if(!empty($columnTableMapping[$column])){
+				if (!empty($columnTableMapping[$column])) {
 					$tableList[$columnTableMapping[$column]]='';
 				}
 			}
 			$tableList = array_keys($tableList);
 			$defaultTableList = $meta->getEntityDefaultTableList();
-			$tableList = array_merge($tableList,$defaultTableList);
+			$tableList = array_merge($tableList, $defaultTableList);
 			$leadtables = array('vtiger_leadsubdetails','vtiger_leadaddress','vtiger_leadscf');
-			$leadmerge = array_intersect($tableList,$leadtables);
-			if (count($leadmerge)>0 and !in_array('vtiger_leaddetails', $tableList)) {
+			$leadmerge = array_intersect($tableList, $leadtables);
+			if (count($leadmerge)>0 && !in_array('vtiger_leaddetails', $tableList)) {
 				// we need this one because the where condition for Leads uses the converted column from the main table
 				$tableList[] = 'vtiger_leaddetails';
 			}
@@ -92,11 +94,11 @@ class EmailTemplate {
 			// record type from the given record id. non webservice id.
 			// can extend to non-module entity without many changes as long as the reference field
 			// refers to one type of entity, either module entities or non-module entities.
-			if(count($tableList) > 0){
+			if (count($tableList) > 0) {
 				$sql = 'select '.implode(', ', $columnList_full).' from '.$tableList[0];
 				$moduleTableIndexList = $meta->getEntityTableIndexList();
-				foreach ($tableList as $index=>$tableName) {
-					if($tableName != $tableList[0]){
+				foreach ($tableList as $tableName) {
+					if ($tableName != $tableList[0]) {
 						$sql .=' INNER JOIN '.$tableName.' ON '.$tableList[0].'.'.
 						$moduleTableIndexList[$tableList[0]].'='.$tableName.'.'.
 						$moduleTableIndexList[$tableName];
@@ -104,7 +106,7 @@ class EmailTemplate {
 				}
 				$sql .= ' WHERE';
 				$deleteQuery = $meta->getEntityDeletedQuery();
-				if(!empty($deleteQuery)){
+				if (!empty($deleteQuery)) {
 					$sql .= " $deleteQuery AND";
 				}
 				$sql .= ' '.$tableList[0].'.'.$moduleTableIndexList[$tableList[0]].'=?';
@@ -120,33 +122,34 @@ class EmailTemplate {
 					}
 				}
 				$moduleFields = $meta->getModuleFields();
-				foreach ($moduleFields as $fieldName=>$webserviceField) {
-					if(isset($values[$fieldColumnMapping[$fieldName]]) &&
-						$values[$fieldColumnMapping[$fieldName]] !== null){
+				foreach ($moduleFields as $fieldName => $webserviceField) {
+					if (isset($values[$fieldColumnMapping[$fieldName]]) &&
+						$values[$fieldColumnMapping[$fieldName]] !== null) {
 						$fieldtype = $webserviceField->getFieldDataType();
-						if(strcasecmp($fieldtype,'reference') === 0){
+						if (strcasecmp($fieldtype, 'reference') === 0) {
 							$details = $webserviceField->getReferenceList();
-							if(count($details)==1){
-								$referencedObjectHandler = vtws_getModuleHandlerFromName($details[0],$this->user);
-							}else{
+							if (count($details)==1) {
+								$referencedObjectHandler = vtws_getModuleHandlerFromName($details[0], $this->user);
+							} else {
 								$type = getSalesEntityType($values[$fieldColumnMapping[$fieldName]]);
 								$referencedObjectHandler = vtws_getModuleHandlerFromName($type, $this->user);
 							}
 							$referencedObjectMeta = $referencedObjectHandler->getMeta();
 							$values[$fieldColumnMapping[$fieldName]] =
-								$referencedObjectMeta->getName(vtws_getId($referencedObjectMeta->getEntityId(),$values[$fieldColumnMapping[$fieldName]]));
-						}elseif(strcasecmp($fieldtype,'owner') === 0){
-							$referencedObjectHandler = vtws_getModuleHandlerFromName(vtws_getOwnerType($values[$fieldColumnMapping[$fieldName]]),$this->user);
+								$referencedObjectMeta->getName(vtws_getId($referencedObjectMeta->getEntityId(), $values[$fieldColumnMapping[$fieldName]]));
+						} elseif (strcasecmp($fieldtype, 'owner') === 0) {
+							$referencedObjectHandler = vtws_getModuleHandlerFromName(vtws_getOwnerType($values[$fieldColumnMapping[$fieldName]]), $this->user);
 							$referencedObjectMeta = $referencedObjectHandler->getMeta();
-							$values[$fieldColumnMapping[$fieldName]] = $referencedObjectMeta->getName(vtws_getId($referencedObjectMeta->getEntityId(),$values[$fieldColumnMapping[$fieldName]]));
-						}elseif(strcasecmp($fieldtype,'picklist') === 0 or $fieldName== 'salutationtype'){
+							$values[$fieldColumnMapping[$fieldName]] =
+								$referencedObjectMeta->getName(vtws_getId($referencedObjectMeta->getEntityId(), $values[$fieldColumnMapping[$fieldName]]));
+						} elseif (strcasecmp($fieldtype, 'picklist') === 0 || $fieldName== 'salutationtype') {
 							$values[$fieldColumnMapping[$fieldName]] = getTranslatedString($values[$fieldColumnMapping[$fieldName]], $this->module);
-						}elseif(strcasecmp($fieldtype,'datetime') === 0){
+						} elseif (strcasecmp($fieldtype, 'datetime') === 0) {
 							$values[$fieldColumnMapping[$fieldName]] = $values[$fieldColumnMapping[$fieldName]] .' '. DateTimeField::getDBTimeZone();
-						}elseif(strcasecmp($fieldtype,'currency') === 0 or strcasecmp($fieldtype,'double') === 0){
+						} elseif (strcasecmp($fieldtype, 'currency') === 0 || strcasecmp($fieldtype, 'double') === 0) {
 							$currencyField = new CurrencyField($values[$fieldColumnMapping[$fieldName]]);
 							$values[$fieldColumnMapping[$fieldName]] = $currencyField->getDisplayValue(null, true);
-						}elseif($webserviceField->getUIType() == 69){
+						} elseif ($webserviceField->getUIType() == 69) {
 							$query = 'select vtiger_attachments.name, vtiger_attachments.type, vtiger_attachments.attachmentsid, vtiger_attachments.path
 									from vtiger_attachments
 									inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
@@ -172,22 +175,21 @@ class EmailTemplate {
 				foreach ($columnList as $column) {
 					if ($imagefound) {
 						$needle = '$'.strtolower($this->module)."-$column".'_fullpath$';
-						$this->processedDescription = str_replace($needle,$values[$column.'_fullpath'],$this->processedDescription);
+						$this->processedDescription = str_replace($needle, $values[$column.'_fullpath'], $this->processedDescription);
 					}
 					$needle = '$'.strtolower($this->module)."-$column$";
-					$this->processedDescription = str_replace($needle,$values[$column],$this->processedDescription);
+					$this->processedDescription = str_replace($needle, $values[$column], $this->processedDescription);
 				}
 			}
 		}
 		$this->processed = true;
 	}
 
-	public function getProcessedDescription(){
-		if(!$this->processed){
+	public function getProcessedDescription() {
+		if (!$this->processed) {
 			$this->process();
 		}
 		return $this->processedDescription;
 	}
-
 }
 ?>

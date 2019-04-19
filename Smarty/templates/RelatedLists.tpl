@@ -25,7 +25,16 @@
 				{* Module Record numbering, used MOD_SEQ_ID instead of ID *}
 				{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
 				{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
-				<span class="dvHeaderText">[ {$USE_ID_VALUE} ] {$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>&nbsp;&nbsp;&nbsp;<span class="small">{$UPDATEINFO}</span>&nbsp;<span id="vtbusy_info" style="display:none;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
+				<span class="dvHeaderText">[ {$USE_ID_VALUE} ] {$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>
+				&nbsp;&nbsp;&nbsp;
+				<span class="small">{$UPDATEINFO}</span>
+				&nbsp;
+				<span id="vtbusy_info" style="display:none;" valign="bottom">
+				<div role="status" class="slds-spinner slds-spinner_brand slds-spinner_x-small" style="position:relative; top:6px;">
+					<div class="slds-spinner__dot-a"></div>
+					<div class="slds-spinner__dot-b"></div>
+				</div>
+				</span>
 				</td></tr>
 			</table>
 			<br>

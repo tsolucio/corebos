@@ -2,6 +2,7 @@
 <link rel="stylesheet" type="text/css" href="include/dropzone/custom.css">
 <script src="modules/com_vtiger_workflow/resources/vtigerwebservices.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" src="include/dropzone/dropzone.js"></script>
+<script type="text/javascript" src="include/js/vtlib.js"></script>
 <script type="text/javascript" charset="utf-8">
 Dropzone.autoDiscover = false;
 var moduleName = '{$entityName}';
@@ -85,18 +86,22 @@ var __attinfo = {$task->dzattinfo|json_encode};
 	<tr>
 		<td colspan="4">
 			<span id="_messagediv_" style="display: none;z-index:22;" class="cb-alert-info"></span>
-			<div id="file-uploader" class="dropzone mm-dz-div slds-m-top--xx-small" style="display: none;">
+			<div id="file-uploader" class="dropzone mm-dz-div slds-m-top_xx-small" style="display: none;">
 				<span class="dz-message mmdzmessage"><img alt="{'Drag attachment here or click to upload'|@getTranslatedString}" src="include/dropzone/upload_32.png"></span>
 				<span class="dz-message mmdzmessage" id="file-uploader-message">&nbsp;{'Drag attachment here or click to upload'|@getTranslatedString}</span>
 			</div>
 		</td>
 		<td valign="top" align="left" style="white-space:nowrap;">
 			<input type="hidden" id="attachmentCount" name="attachmentCount" value="{if isset($task->attachmentids)}{$task->attachmentids|substr_count:','}{else}0{/if}" >
+			<input name="listofids" id="listofids" type="hidden" value="{if isset($LISTID)}{$LISTID}{/if}">
+			<input type='hidden' class='small' name="msgtpopup_type" id="msgtpopup_type" value="MsgTemplate">
+			<input type='hidden' class='small' name="calltype" id="calltype" value="emailworkflow">
+			<input title="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE}" accessKey="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_KEY}" class="crmbutton small edit" onclick="jQuery('#file-uploader').show();return vtlib_open_popup_window('','msgtpopup','MsgTemplate','');" type="button" name="button" value=" {$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL} ">
 			<input type="hidden" id="attachmentids"  name="attachmentids" value="{if isset($task->attachmentids)}{$task->attachmentids}{/if}" >
-			<button onclick="jQuery('#file-uploader').show();attachmentManager.getDocuments();return false;" class="crmbutton small edit slds-m-left--xx-small slds-m-top--xx-small">{'LBL_SELECT_DOCUMENTS'|@getTranslatedString:'MailManager'}</button><br>
-			<button onclick="jQuery('#file-uploader').toggle();return false;" class="crmbutton small edit slds-m-left--xx-small slds-m-top--xx-small">{'LBL_Attachments'|@getTranslatedString:'MailManager'}</button><br>
-			<span class="slds-m-left--xx-small slds-m-top--x-small"><b>{'LBL_AttachmentInField'|@getTranslatedString:$MODULE_NAME}</b></span><br>
-			<select id='attfieldnames' name='attfieldnames' class="small slds-m-left--xx-small slds-m-top--xx-small"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select><br>
+			<button onclick="jQuery('#file-uploader').show();attachmentManager.getDocuments();return false;" class="crmbutton small edit slds-m-left_xx-small slds-m-top_xx-small">{'LBL_SELECT_DOCUMENTS'|@getTranslatedString:'MailManager'}</button><br>
+			<button onclick="jQuery('#file-uploader').toggle();return false;" class="crmbutton small edit slds-m-left_xx-small slds-m-top_xx-small">{'LBL_Attachments'|@getTranslatedString:'MailManager'}</button><br>
+			<span class="slds-m-left_xx-small slds-m-top_x-small"><b>{'LBL_AttachmentInField'|@getTranslatedString:$MODULE_NAME}</b></span><br>
+			<select id='attfieldnames' name='attfieldnames' class="small slds-m-left_xx-small slds-m-top_xx-small"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select><br>
 		</td>
 	</tr>
 </table>

@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ******************************************************************************/
-require_once("include/events/SqlResultIterator.inc");
+require_once 'include/events/SqlResultIterator.inc';
 
 class VTEntityMethodManager {
 
@@ -46,7 +46,7 @@ class VTEntityMethodManager {
 			$data = $adb->raw_query_result_rowdata($result, 0);
 			$functionPath = $data['function_path'];
 			$functionName = $data['function_name'];
-			require_once($functionPath);
+			require_once $functionPath;
 			$functionName($entityData);
 		}
 	}

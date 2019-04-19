@@ -7,37 +7,36 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/database/PearDatabase.php');
+require_once 'include/database/PearDatabase.php';
 
 $rel_table = '';
 $rel_field = '';
 switch ($_REQUEST['relatedmodule']) {
-	case 'Accounts' :
+	case 'Accounts':
 		$rel_table = 'vtiger_campaignaccountrel';
 		$rel_field = 'accountid';
 		break;
-	case 'Contacts' :
+	case 'Contacts':
 		$rel_table = 'vtiger_campaigncontrel';
 		$rel_field = 'contactid';
 		break;
-	case 'Leads' :
+	case 'Leads':
 		$rel_table = 'vtiger_campaignleadrel';
 		$rel_field = 'leadid';
 		break;
-	case 'Potentials' :
+	case 'Potentials':
 		break;
 	default:
-		echo ":#:FAILURE";
+		echo ':#:FAILURE';
 		exit;
 }
 
 $sql = "UPDATE $rel_table SET campaignrelstatusid = ? WHERE campaignid = ? AND $rel_field = ?;";
 $params = array($_REQUEST['campaignrelstatusid'], $_REQUEST['campaignid'], $_REQUEST['crmid']);
 if ($adb->pquery($sql, $params)) {
-	echo ":#:SUCCESS";
+	echo ':#:SUCCESS';
 } else {
-	echo ":#:FAILURE";
+	echo ':#:FAILURE';
 }
-
 exit;
 ?>

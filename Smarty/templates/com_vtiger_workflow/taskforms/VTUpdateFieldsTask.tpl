@@ -37,14 +37,14 @@
                 <b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0">
             </span>
             <span id="save_fieldvaluemapping_add-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-            <input type="button" class="crmButton create small"
-                   value="{$MOD.LBL_ADD_FIELD}" id="save_fieldvaluemapping_add" style='display: none;'/>
+            <input type="button" class="crmButton create small" value="{$MOD.LBL_ADD_FIELD}" id="save_fieldvaluemapping_add" style='display: none;'/>
         </td>
     </tr>
 </table>
 <br>
 {include file="com_vtiger_workflow/FieldExpressions.tpl"}
-<br>
+<input type="checkbox" name="launchrelwf" id="launchrelwf" {if $task->launchrelwf}checked{/if}/>&nbsp;&nbsp;{$MOD.launchrelwf}
+<br><br>
 <input type="hidden" name="field_value_mapping" value="" id="save_fieldvaluemapping_json"/>
 <div id="dump" style="display:None;"></div>
 <div id="save_fieldvaluemapping"></div>

@@ -17,7 +17,6 @@
  ********************************************************************************/
 
 $mod_strings = array (
-
 'LBL_VENDOR_INFORMATION'=>'Información sobre Proveedores:',
 'LBL_CUSTOM_INFORMATION'=>'Información Personalizada',
 'LBL_VENDOR_ADDRESS_INFORMATION'=>'Información sobre la Dirección:',
@@ -56,6 +55,5 @@ $mod_strings = array (
 'Vendor No' => 'Núm. Proveedor',
 'Vendors ID'=>'Id Proveedor',
 'LBL_MODULE_NAME'=>'Proveedores',
-
 );
 ?>

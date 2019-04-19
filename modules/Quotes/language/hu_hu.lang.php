@@ -5,16 +5,10 @@
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
- * All Rights Reserved.
- ********************************************************************************/
-/*********************************************************************************
- * $Header:  \modules\Quotes\language\hu_hu.lang.php - 22:01 2011.11.12. $
- * Description:  Defines the Hungarian language pack for the Quotes module vtiger 5.3.x
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
+ * All Rights Reserved.
  ********************************************************************************/
- 
+
 $mod_strings = array(
 	'LBL_MODULE_NAME' => 'Ajánlatok',
 	'LBL_MODULE_TITLE' => 'Ajánlatok: Kezdőlap',
@@ -51,6 +45,7 @@ $mod_strings = array(
 	'LBL_ADDRESS_INFORMATION' => 'Cím adatok',
 	'LBL_Quote_INFORMATION' => 'Ajánlat adatai',
 	'LBL_CUSTOM_INFORMATION' => 'Egyedi adatok',
+	'LBL_Quotes_FINANCIALINFO' => 'Financial Information',
 	'LBL_BILLING_ADDRESS' => 'Számlázási cím:',
 	'LBL_SHIPPING_ADDRESS' => 'Szállítási cím:',
 	'LBL_ANY_ADDRESS' => 'Bármilyen cím:',

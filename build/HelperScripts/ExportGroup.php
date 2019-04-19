@@ -16,15 +16,17 @@
 *  Version      : 5.4.0
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
-include_once('vtlib/Vtiger/Module.php');
-include_once('modules/Users/Users.php');
-require_once('include/logging.php');
-require_once('include/utils/UserInfoUtil.php');
-include_once('config.inc.php');
+include_once 'vtlib/Vtiger/Module.php';
+include_once 'modules/Users/Users.php';
+require_once 'include/logging.php';
+require_once 'include/utils/UserInfoUtil.php';
+include_once 'config.inc.php';
 global $adb,$root_directory;
 $uri = 'build/group.xml';
 $xmlwriter = new XMLWriter();
-if (file_exists($uri)) unlink($uri);
+if (file_exists($uri)) {
+	unlink($uri);
+}
 touch($uri);
 $uri = realpath($uri);
 $xmlwriter->openURI($uri);
@@ -38,11 +40,10 @@ $xmlwriter->startElement('vtcrm_groups');
 // order is very important for importing
 $pfrs = $adb->query('select * from vtiger_groups order by groupid');
 while ($pf = $adb->fetch_array($pfrs)) {
-
 	$xmlwriter->startElement('vtcrm_group');
 	// Start the element for group definition
 	$xmlwriter->startElement('vtcrm_definition');
-	
+
 	// Start the element for name field
 	$xmlwriter->startElement('vtcrm_groupname');
 	$xmlwriter->writeAttribute('groupid', $pf['groupid']);
@@ -59,7 +60,7 @@ while ($pf = $adb->fetch_array($pfrs)) {
 
 	// Start the parent group2role element
 	$xmlwriter->startElement('vtcrm_group2roles');
-	
+
 	$tab_perr_result = $adb->pquery("select * from vtiger_group2role where groupid=?", array($first_groupid));
 	while ($p2t = $adb->fetch_array($tab_perr_result)) {
 		$xmlwriter->startElement('vtcrm_group2role');
@@ -71,7 +72,7 @@ while ($pf = $adb->fetch_array($pfrs)) {
 
 	// Start the parent group2rolesub element
 	$xmlwriter->startElement('vtcrm_group2rolesubs');
-	
+
 	$tab_perr_result = $adb->pquery("select * from vtiger_group2rs where groupid=?", array($first_groupid));
 	while ($p2t = $adb->fetch_array($tab_perr_result)) {
 		$xmlwriter->startElement('vtcrm_group2rolesub');
@@ -83,7 +84,7 @@ while ($pf = $adb->fetch_array($pfrs)) {
 
 	// Start the parent group2group element
 	$xmlwriter->startElement('vtcrm_group2groups');
-	
+
 	$tab_perr_result = $adb->pquery("select * from vtiger_group2grouprel where groupid=?", array($first_groupid));
 	while ($p2t = $adb->fetch_array($tab_perr_result)) {
 		$xmlwriter->startElement('vtcrm_group2group');

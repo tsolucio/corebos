@@ -7,28 +7,27 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once("Smarty_setup.php");
-require_once("include/utils/CommonUtils.php");
-require_once("include/events/SqlResultIterator.inc");
-require_once("include/events/VTWSEntityType.inc");
-require_once("VTWorkflowManager.inc");
-require_once("VTTaskManager.inc");
-require_once("VTWorkflowApplication.inc");
-require_once "VTWorkflowTemplateManager.inc";
-require_once "VTWorkflowUtils.php";
+require_once 'Smarty_setup.php';
+require_once 'include/utils/CommonUtils.php';
+require_once 'include/events/SqlResultIterator.inc';
+require_once 'include/events/VTWSEntityType.inc';
+require_once 'VTWorkflowManager.inc';
+require_once 'VTTaskManager.inc';
+require_once 'VTWorkflowApplication.inc';
+require_once 'VTWorkflowTemplateManager.inc';
+require_once 'VTWorkflowUtils.php';
 
-function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_strings){
-
+function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_strings) {
 	global $theme, $current_user;
 	$util = new VTWorkflowUtils();
 
 	$image_path = "themes/$theme/images/";
 
-	$module = new VTWorkflowApplication("editworkflow");
+	$module = new VTWorkflowApplication('editworkflow');
 
 	$mod = return_module_language($current_language, $module->name);
 
-	if(!$util->checkAdminAccess()){
+	if (!$util->checkAdminAccess()) {
 		$errorUrl = $module->errorPageUrl($mod['LBL_ERROR_NOT_ADMIN']);
 		$util->redirectTo($errorUrl, $mod['LBL_ERROR_NOT_ADMIN']);
 		return;
@@ -36,24 +35,30 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 
 	$smarty = new vtigerCRM_Smarty();
 	$wfs = new VTWorkflowManager($adb);
-	if(isset($request['source']) and $request['source']=='from_template'){
+	if (isset($request['source']) && $request['source']=='from_template') {
 		$tm = new VTWorkflowTemplateManager($adb);
 		$template = $tm->retrieveTemplate($request['template_id']);
 		$workflow = $tm->createWorkflow($template);
-	}else{
-		if(isset($request["workflow_id"])){
-			$workflow = $wfs->retrieve($request["workflow_id"]);
-		}else{
-			$moduleName=$request["module_name"];
+		$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getMaxAllowedScheduledWorkflows());
+	} else {
+		if (isset($request['workflow_id'])) {
+			$workflow = $wfs->retrieve($request['workflow_id']);
+			if ($workflow->executionCondition!=VTWorkflowManager::$ON_SCHEDULE) {
+				$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getMaxAllowedScheduledWorkflows());
+			} else {
+				$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getScheduledWorkflowsCount());
+			}
+		} else {
+			$moduleName=$request['module_name'];
 			$workflow = $wfs->newWorkflow($moduleName);
+			$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getMaxAllowedScheduledWorkflows());
 		}
 	}
 	$smarty->assign('ScheduledWorkflowsCount', $wfs->getScheduledWorkflowsCount());
-	$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getMaxAllowedScheduledWorkflows());
 	if (empty($workflow->schtime)) {
-		$smarty->assign('schdtime_12h',date('h:ia'));
+		$smarty->assign('schdtime_12h', date('h:ia'));
 	} else {
-		$smarty->assign('schdtime_12h',date('h:ia', strtotime(substr($workflow->schtime,0,strrpos($workflow->schtime, ':')))));
+		$smarty->assign('schdtime_12h', date('h:ia', strtotime(substr($workflow->schtime, 0, strrpos($workflow->schtime, ':')))));
 	}
 	if (!empty($workflow->schannualdates)) {
 		$schannualdates = json_decode($workflow->schannualdates);
@@ -61,24 +66,24 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	} else {
 		$schannualdates = '';
 	}
-	$smarty->assign('schdate',$schannualdates);
+	$smarty->assign('schdate', $schannualdates);
 	if (empty($workflow->schdayofmonth)) {
-		$smarty->assign('selected_days1_31','');
+		$smarty->assign('selected_days1_31', '');
 	} else {
-		$smarty->assign('selected_days1_31',json_decode($workflow->schdayofmonth));
+		$smarty->assign('selected_days1_31', json_decode($workflow->schdayofmonth));
 	}
 	if (empty($workflow->schminuteinterval)) {
-		$smarty->assign('selected_minute_interval','');
+		$smarty->assign('selected_minute_interval', '');
 	} else {
-		$smarty->assign('selected_minute_interval',json_decode($workflow->schminuteinterval));
+		$smarty->assign('selected_minute_interval', json_decode($workflow->schminuteinterval));
 	}
 	if (empty($workflow->schdayofweek)) {
-		$smarty->assign('dayOfWeek','');
+		$smarty->assign('dayOfWeek', '');
 	} else {
-		$smarty->assign('dayOfWeek',json_decode($workflow->schdayofweek));
+		$smarty->assign('dayOfWeek', json_decode($workflow->schdayofweek));
 	}
 
-	if($workflow==null){
+	if ($workflow==null) {
 		$errorUrl = $module->errorPageUrl($mod['LBL_ERROR_NO_WORKFLOW']);
 		$util->redirectTo($errorUrl, $mod['LBL_ERROR_NO_WORKFLOW']);
 		return;
@@ -86,36 +91,41 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	$workflow->test = !empty($workflow->test) ? addslashes($workflow->test) : '';
 	$tm = new VTTaskManager($adb);
 	$tasks = !empty($workflow->id) ? $tm->getTasksForWorkflow($workflow->id) : array();
-	$smarty->assign("tasks", $tasks);
+	$smarty->assign('tasks', $tasks);
 	$taskTypes = $tm->getTaskTypes($workflow->moduleName);
-	$smarty->assign("taskTypes", $taskTypes);
-	$smarty->assign("newTaskReturnUrl", vtlib_purify($requestUrl));
+	$smarty->assign('taskTypes', $taskTypes);
+	$smarty->assign('newTaskReturnUrl', vtlib_purify($requestUrl));
 	$dayrange = array();
 	$intervalrange=array();
-	for ($d=1;$d<=31;$d++) $dayrange[$d] = $d;
-	for ($interval=5;$interval<=50;$interval+=5) $intervalrange[$interval]=$interval;
-	$smarty->assign('days1_31', $dayrange);
-	$smarty->assign('interval_range',$intervalrange);
-	if (empty($workflow->nexttrigger_time)) {
-		$smarty->assign('wfnexttrigger_time','');
-	} else {
-		$smarty->assign('wfnexttrigger_time',DateTimeField::convertToUserFormat($workflow->nexttrigger_time));
+	for ($d=1; $d<=31; $d++) {
+		$dayrange[$d] = $d;
 	}
-	$smarty->assign("dateFormat", parse_calendardate($current_user->date_format));
+	for ($interval=5; $interval<=50; $interval+=5) {
+		$intervalrange[$interval]=$interval;
+	}
+	$smarty->assign('days1_31', $dayrange);
+	$smarty->assign('interval_range', $intervalrange);
+	if (empty($workflow->nexttrigger_time)) {
+		$smarty->assign('wfnexttrigger_time', '');
+	} else {
+		$smarty->assign('wfnexttrigger_time', DateTimeField::convertToUserFormat($workflow->nexttrigger_time));
+	}
+	$smarty->assign('dateFormat', parse_calendardate($current_user->date_format));
 	$smarty->assign('returnUrl', isset($request['return_url']) ? vtlib_purify($request['return_url']) : '');
-	$smarty->assign("APP", $app_strings);
-	$smarty->assign("MOD", array_merge(
-	return_module_language($current_language,'Settings'),
-	return_module_language($current_language, $module->name)));
-	$smarty->assign("THEME", $theme);
-	$smarty->assign("IMAGE_PATH", $image_path);
-	$smarty->assign("MODULE_NAME", $module->label);
-	$smarty->assign("PAGE_NAME", $mod['LBL_EDIT_WORKFLOW']);
-	$smarty->assign("PAGE_TITLE", $mod['LBL_EDIT_WORKFLOW_TITLE']);
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('MOD', array_merge(
+		return_module_language($current_language, 'Settings'),
+		return_module_language($current_language, $module->name)
+	));
+	$smarty->assign('THEME', $theme);
+	$smarty->assign('IMAGE_PATH', $image_path);
+	$smarty->assign('MODULE_NAME', $module->label);
+	$smarty->assign('PAGE_NAME', $mod['LBL_EDIT_WORKFLOW']);
+	$smarty->assign('PAGE_TITLE', $mod['LBL_EDIT_WORKFLOW_TITLE']);
 
-	$smarty->assign("workflow", $workflow);
-	$smarty->assign("saveType", !empty($workflow->id)?"edit":"new");
-	$smarty->assign("module", $module);
+	$smarty->assign('workflow', $workflow);
+	$smarty->assign('saveType', !empty($workflow->id) ? 'edit' : 'new');
+	$smarty->assign('module', $module);
 
 	$smarty->display("{$module->name}/EditWorkflow.tpl");
 }

@@ -21,7 +21,7 @@ class DuocomSMS implements ISMSProvider {
 	const SERVICE_URI = 'https://scgi.duocom.es/cgi-bin/telefacil2/apisms';
 	private static $REQUIRED_PARAMETERS = array('mascara');
 
-	function __construct() {
+	public function __construct() {
 	}
 
 	/**
@@ -41,8 +41,8 @@ class DuocomSMS implements ISMSProvider {
 		$this->_parameters[$key] = $value;
 	}
 
-	public function getParameter($key, $defvalue = false)  {
-		if(isset($this->_parameters[$key])) {
+	public function getParameter($key, $defvalue = false) {
+		if (isset($this->_parameters[$key])) {
 			return $this->_parameters[$key];
 		}
 		return $defvalue;
@@ -53,12 +53,15 @@ class DuocomSMS implements ISMSProvider {
 	}
 
 	public function getServiceURL($type = false) {
-		if($type) {
-			switch(strtoupper($type)) {
-				case self::SERVICE_AUTH: return  self::SERVICE_URI . '/http/auth';
+		if ($type) {
+			switch (strtoupper($type)) {
+				case self::SERVICE_AUTH:
+					return  self::SERVICE_URI . '/http/auth';
 				//case self::SERVICE_SEND: return  self::SERVICE_URI . '/http/sendmsg';
-				case self::SERVICE_SEND: return  self::SERVICE_URI;
-				case self::SERVICE_QUERY: return self::SERVICE_URI . '/http/querymsg';
+				case self::SERVICE_SEND:
+					return  self::SERVICE_URI;
+				case self::SERVICE_QUERY:
+					return self::SERVICE_URI . '/http/querymsg';
 			}
 		}
 		return false;
@@ -82,11 +85,12 @@ class DuocomSMS implements ISMSProvider {
 		$params['pin'] = $this->_password;
 
 		if (count($tonumbers) <= 5) { //envio normal
-			for ($i = 1; $i <= count($tonumbers); $i++)
+			for ($i = 1; $i <= count($tonumbers); $i++) {
 				$params['movil'.$i] = $tonumbers[$i-1];
-		}
-		else  //envio masivo
+			}
+		} else { //envio masivo
 			$params['moviles'] = implode('_', $tonumbers);
+		}
 
 		$serviceURL = $this->getServiceURL(self::SERVICE_SEND);
 		$httpClient = new Vtiger_Net_Client($serviceURL);
@@ -95,26 +99,30 @@ class DuocomSMS implements ISMSProvider {
 		$responseLines = split("\n", $response);
 
 		$results = array();
-		foreach($responseLines as $responseLine) {
+		foreach ($responseLines as $responseLine) {
 			$responseLine = trim($responseLine);
-			if(empty($responseLine)) continue;
+			if (empty($responseLine)) {
+				continue;
+			}
 
 			$result = array( 'error' => false, 'statusmessage' => '' );
-			if(preg_match("/ERROR:(.*)/", trim($responseLine), $matches)) {
+			if (preg_match("/ERROR:(.*)/", trim($responseLine), $matches)) {
 				$result['error'] = true;
-				if (count($tonumbers) > 1)
-					$result['to'] = $tonumbers[0]."...";
-				else
+				if (count($tonumbers) > 1) {
+					$result['to'] = $tonumbers[0].'...';
+				} else {
 					$result['to'] = $tonumbers[0];
+				}
 				$result['statusmessage'] = $matches[0]; // Complete error message
 				$result['status'] = self::MSG_STATUS_FAILED;
-			} else if (strcmp($responseLine, "1") == 0) {
+			} elseif (strcmp($responseLine, "1") == 0) {
 				$result['error'] = false;
 				$result['status'] = self::MSG_STATUS_DELIVERED;
-				if (count($tonumbers) > 1)
-					$result['to'] = $tonumbers[0]."...";
-				else
+				if (count($tonumbers) > 1) {
+					$result['to'] = $tonumbers[0].'...';
+				} else {
 					$result['to'] = $tonumbers[0];
+				}
 				$result['statusmessage'] = 'OK';
 				$result['id'] = '1';
 			} else {

@@ -13,7 +13,7 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
- 
+
 $mod_strings = array (
   'LBL_MODULE_NAME' => 'FAQ',
   'LBL_MODULE_TITLE' => 'FAQ: Home',
@@ -113,7 +113,6 @@ $mod_strings = array (
   'Obsolete' => 'Obsoleto',
 
 	'Faq No' => 'Nr. Faq',
-    'Faq ID' => 'FAQ ID',
+	'Faq ID' => 'FAQ ID',
 );
-
 ?>

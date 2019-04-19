@@ -15,9 +15,11 @@
 *************************************************************************************************/
 
 class updateMobileModuleToCrmNow2 extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -26,7 +28,7 @@ class updateMobileModuleToCrmNow2 extends cbupdaterWorker {
 				global $adb;
 				$Mobilers = $adb->query("SELECT version FROM vtiger_tab WHERE name = 'Mobile'");
 				$version = $adb->query_result($Mobilers, 0, 'version');
-				if($version == '3.0'){
+				if ($version == '3.0') {
 					//Update module
 					$package = new Vtiger_Package();
 
@@ -36,7 +38,7 @@ class updateMobileModuleToCrmNow2 extends cbupdaterWorker {
 					//delete unused table
 					$this->ExecuteQuery("DROP TABLE vtiger_mobile_alerts");
 					$this->sendMsg('Module updated: '.$module);
-				}else{
+				} else {
 					$this->sendMsg($module.' was updated before ');
 				}
 			} else {
@@ -47,11 +49,13 @@ class updateMobileModuleToCrmNow2 extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
-			vtlib_toggleModuleAccess('Mobile',false);
+			vtlib_toggleModuleAccess('Mobile', false);
 			$this->sendMsg('Mobile deactivated!');
 			$this->markUndone(false);
 			$this->sendMsg('Changeset '.get_class($this).' undone!');
@@ -60,5 +64,4 @@ class updateMobileModuleToCrmNow2 extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
 }

@@ -15,28 +15,31 @@
 *************************************************************************************************/
 
 class cffaq extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$this->ExecuteQuery("ALTER TABLE vtiger_faq ENGINE=InnoDB");
 			$this->ExecuteQuery("CREATE TABLE IF NOT EXISTS vtiger_faqcf (
-						faqid int(19),
-						PRIMARY KEY (faqid),
-						CONSTRAINT fk_1_vtiger_faqcf FOREIGN KEY (faqid) REFERENCES vtiger_faq(id) ON DELETE CASCADE
-						) ENGINE=InnoDB DEFAULT CHARSET=utf8", array());
+				faqid int(19),
+				PRIMARY KEY (faqid),
+				CONSTRAINT fk_1_vtiger_faqcf FOREIGN KEY (faqid) REFERENCES vtiger_faq(id) ON DELETE CASCADE
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8", array());
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-	
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		$this->sendMsg('Changeset '.get_class($this).' is a system update, it cannot be undone!');
 		$this->finishExecution();
 	}
-	
 }

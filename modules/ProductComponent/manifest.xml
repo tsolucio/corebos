@@ -1,0 +1,383 @@
+<?xml version='1.0'?>
+<module>
+<name>ProductComponent</name>
+<label>Product Component</label>
+<parent>Inventory</parent>
+<dependencies>
+<vtiger_version>5.5.0</vtiger_version>
+</dependencies>
+<license>
+<inline><![CDATA[/*************************************************************************************************
+ * Copyright 2018 TSolucio -- This file is a part of TSOLUCIO coreBOS customizations.
+ * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
+ * Vizsage Public License (the "License"). You may not use this file except in compliance with the
+ * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
+ * and share improvements. However, for proper details please read the full License, available at
+ * http://vizsage.com/license/Vizsage-License-BY-NC-SA.html and the handy reference for understanding
+ * the full license at http://vizsage.com/license/Vizsage-Deed-BY-NC-SA.html. Unless required by
+ * applicable law or agreed to in writing, any software distributed under the License is distributed
+ * on an  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and limitations under the
+ * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
+ *************************************************************************************************
+ *  Module       : coreBOS Product Component
+ *  Version      : 5.4.0
+ *  Author       : Opencubed
+ *************************************************************************************************/
+]]></inline>
+</license>
+<tables>
+<table>
+<name>vtiger_productcomponent</name>
+<sql><![CDATA[CREATE TABLE IF NOT EXISTS `vtiger_productcomponent` (
+  `productcomponentid` int(11) NOT NULL DEFAULT '0',
+  `relno` varchar(255) NOT NULL,
+  `frompdo` int(11) DEFAULT NULL,
+  `topdo` int(11) DEFAULT NULL,
+  `relmode` varchar(100) DEFAULT NULL,
+  `relfrom` date DEFAULT NULL,
+  `relto` date DEFAULT NULL,
+  `quantity` decimal(25,6) DEFAULT NULL,
+  `instructions` text DEFAULT NULL,
+  index (`frompdo`),
+  index (`topdo`),
+  index (`frompdo`,`topdo`,`relmode`),
+  index (`relfrom`,`relto`),
+  PRIMARY KEY (`productcomponentid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+<table>
+<name>vtiger_productcomponentcf</name>
+<sql><![CDATA[CREATE TABLE `vtiger_productcomponentcf` (
+  `productcomponentid` int(11) NOT NULL,
+  PRIMARY KEY (`productcomponentid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+</tables>
+<blocks>
+<block>
+<label>LBL_PRODUCTCOMPONENT_INFORMATION</label>
+<fields>
+<field>
+<fieldname>frompdo</fieldname>
+<uitype>10</uitype>
+<columnname>frompdo</columnname>
+<tablename>vtiger_productcomponent</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>frompdo</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>1</sequence>
+<maximumlength>11</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<relatedmodules>
+<relatedmodule>Products</relatedmodule>
+</relatedmodules>
+</field>
+<field>
+<fieldname>topdo</fieldname>
+<uitype>10</uitype>
+<columnname>topdo</columnname>
+<tablename>vtiger_productcomponent</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>topdo</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>3</sequence>
+<maximumlength>11</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<relatedmodules>
+<relatedmodule>Products</relatedmodule>
+</relatedmodules>
+</field>
+<field>
+<fieldname>relmode</fieldname>
+<uitype>15</uitype>
+<columnname>relmode</columnname>
+<tablename>vtiger_productcomponent</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Relation Mode</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>7</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<picklistvalues>
+<picklistvalue>Required</picklistvalue>
+<picklistvalue>Optional</picklistvalue>
+<picklistvalue>Substituable</picklistvalue>
+<picklistvalue>Incompatible</picklistvalue>
+</picklistvalues>
+</field>
+<field>
+<fieldname>relfrom</fieldname>
+<uitype>5</uitype>
+<columnname>relfrom</columnname>
+<tablename>vtiger_productcomponent</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Relation from</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>2</sequence>
+<maximumlength>11</maximumlength>
+<typeofdata>D~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>relno</fieldname>
+<uitype>4</uitype>
+<columnname>relno</columnname>
+<tablename>vtiger_productcomponent</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Relation Number</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>6</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>4</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+<entityidentifier>
+<entityidfield>productcomponentid</entityidfield>
+<entityidcolumn>productcomponentid</entityidcolumn>
+</entityidentifier>
+</field>
+<field>
+<fieldname>relto</fieldname>
+<uitype>5</uitype>
+<columnname>relto</columnname>
+<tablename>vtiger_productcomponent</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Relation to</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>4</sequence>
+<maximumlength>11</maximumlength>
+<typeofdata>D~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>quantity</fieldname>
+<uitype>7</uitype>
+<columnname>quantity</columnname>
+<tablename>vtiger_productcomponent</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>quantity</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>5</sequence>
+<maximumlength>11</maximumlength>
+<typeofdata>N~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>assigned_user_id</fieldname>
+<uitype>53</uitype>
+<columnname>smownerid</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Assigned To</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>8</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>createdtime</fieldname>
+<uitype>70</uitype>
+<columnname>createdtime</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Created Time</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>9</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>DT~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>modifiedtime</fieldname>
+<uitype>70</uitype>
+<columnname>modifiedtime</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Modified Time</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>10</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>DT~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+</fields>
+</block>
+<block>
+<label>LBL_DESCRIPTION_INFORMATION</label>
+<fields>
+<field>
+<fieldname>description</fieldname>
+<uitype>19</uitype>
+<columnname>description</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Description</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>1</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>instructions</fieldname>
+<uitype>19</uitype>
+<columnname>instructions</columnname>
+<generatedtype>1</generatedtype>
+<fieldlabel>instructions</fieldlabel>
+<tablename>vtiger_productcomponent</tablename>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>2</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+</fields>
+</block>
+</blocks>
+<customviews>
+<customview>
+<viewname>All</viewname>
+<setdefault>true</setdefault>
+<setmetrics>false</setmetrics>
+<fields>
+<field>
+<fieldname>relno</fieldname>
+<columnindex>0</columnindex>
+</field>
+<field>
+<fieldname>frompdo</fieldname>
+<columnindex>1</columnindex>
+</field>
+<field>
+<fieldname>topdo</fieldname>
+<columnindex>2</columnindex>
+</field>
+<field>
+<fieldname>relmode</fieldname>
+<columnindex>3</columnindex>
+</field>
+<field>
+<fieldname>relfrom</fieldname>
+<columnindex>4</columnindex>
+</field>
+<field>
+<fieldname>relto</fieldname>
+<columnindex>5</columnindex>
+</field>
+</fields>
+</customview>
+</customviews>
+<sharingaccess>
+<default>public</default>
+</sharingaccess>
+<actions>
+<action>
+<name><![CDATA[Import]]></name>
+<status>enabled</status>
+</action>
+<action>
+<name><![CDATA[Export]]></name>
+<status>enabled</status>
+</action>
+<action>
+<name><![CDATA[Merge]]></name>
+<status>enabled</status>
+</action>
+</actions>
+<relatedlists>
+</relatedlists>
+<events>
+</events>
+<customlinks>
+</customlinks>
+<crons>
+</crons>
+</module>

@@ -68,7 +68,7 @@
 			</form>
 			<div class="row">
 				<div class="col-8 ml-auto" style="margin-top:100px;">
-					<img src="test/logo/{$COMPANY_DETAILS.logo}">
+					<img src="{$COMPANY_DETAILS.companylogo}">
 				</div>
 			</div>
 		</div>

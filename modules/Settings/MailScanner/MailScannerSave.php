@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('modules/Settings/MailScanner/core/MailScannerInfo.php');
-require_once('modules/Settings/MailScanner/core/MailBox.php');
+require_once 'modules/Settings/MailScanner/core/MailScannerInfo.php';
+require_once 'modules/Settings/MailScanner/core/MailBox.php';
 
 $scannername = vtlib_purify(trim($_REQUEST['mailboxinfo_scannername']));
 if (!empty($scannername) && !validateAlphanumericInput($scannername)) {
@@ -56,7 +56,7 @@ if (!$scannerinfo->compare($newscannerinfo)) {
 }
 
 if (!$isconnected) {
-	require_once('Smarty_setup.php');
+	require_once 'Smarty_setup.php';
 	global $app_strings, $mod_strings, $currentModule, $theme, $current_language;
 
 	$smarty = new vtigerCRM_Smarty;
@@ -80,6 +80,6 @@ if (!$isconnected) {
 		}
 	}
 
-	require('modules/Settings/MailScanner/MailScannerInfo.php');
+	require 'modules/Settings/MailScanner/MailScannerInfo.php';
 }
 ?>

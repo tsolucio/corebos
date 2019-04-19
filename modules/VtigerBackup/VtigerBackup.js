@@ -1,1 +1,0 @@
-/** YOUR LICENSE TEXT HERE **/

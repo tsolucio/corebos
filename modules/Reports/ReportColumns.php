@@ -7,11 +7,11 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('Smarty_setup.php');
-require_once("data/Tracker.php");
-require_once('include/logging.php');
-require_once('include/utils/utils.php');
-require_once('modules/Reports/Reports.php');
+require_once 'Smarty_setup.php';
+require_once 'data/Tracker.php';
+require_once 'include/logging.php';
+require_once 'include/utils/utils.php';
+require_once 'modules/Reports/Reports.php';
 global $app_strings, $mod_strings;
 $current_module_strings = return_module_language($current_language, 'Reports');
 
@@ -22,69 +22,63 @@ $theme_path="themes/".$theme."/";
 $report_column=new vtigerCRM_Smarty;
 $report_column->assign("MOD", $mod_strings);
 $report_column->assign("APP", $app_strings);
-$report_column->assign("IMAGE_PATH",$image_path);
-$report_column->assign("THEME_PATH",$theme_path);
-if(isset($_REQUEST["record"]) && $_REQUEST['record']!='')
-{
+$report_column->assign("IMAGE_PATH", $image_path);
+$report_column->assign("THEME_PATH", $theme_path);
+if (isset($_REQUEST["record"]) && $_REQUEST['record']!='') {
 	$recordid = vtlib_purify($_REQUEST["record"]);
 	$oReport = new Reports($recordid);
 	$BLOCK1 = getPrimaryColumnsHTML($oReport->primodule);
 
 	$oRep = new Reports();
 	$secondarymodule = '';
-	$secondarymodules =Array();
-	if(!empty($oRep->related_modules[$oReport->primodule])) {
-		foreach($oRep->related_modules[$oReport->primodule] as $key=>$value){
-			if(isset($_REQUEST["secondarymodule_".$value]))$secondarymodules []= $_REQUEST["secondarymodule_".$value];
+	$secondarymodules =array();
+	if (!empty($oRep->related_modules[$oReport->primodule])) {
+		foreach ($oRep->related_modules[$oReport->primodule] as $value) {
+			if (isset($_REQUEST["secondarymodule_".$value])) {
+				$secondarymodules []= $_REQUEST["secondarymodule_".$value];
+			}
 		}
 	}
-	$secondarymodule = implode(":",$secondarymodules);
+	$secondarymodule = implode(":", $secondarymodules);
 
 	$oReport->secmodule = $secondarymodule;
 	$BLOCK1 .= getSecondaryColumnsHTML($oReport->secmodule);
 	$BLOCK2 = $oReport->getSelectedColumnsList($recordid);
-	$report_column->assign("BLOCK1",$BLOCK1);
-	$report_column->assign("BLOCK2",$BLOCK2);
-}else
-{
+	$report_column->assign("BLOCK1", $BLOCK1);
+	$report_column->assign("BLOCK2", $BLOCK2);
+} else {
 	$primarymodule = vtlib_purify($_REQUEST["primarymodule"]);
 	$BLOCK1 = getPrimaryColumnsHTML($primarymodule);
 	$ogReport = new Reports();
-	if(!empty($ogReport->related_modules[$primarymodule])) {
-		foreach($ogReport->related_modules[$primarymodule] as $key=>$value){
+	if (!empty($ogReport->related_modules[$primarymodule])) {
+		foreach ($ogReport->related_modules[$primarymodule] as $value) {
 			$BLOCK1 .= getSecondaryColumnsHTML($_REQUEST["secondarymodule_".$value]);
 		}
 	}
-	$report_column->assign("BLOCK1",$BLOCK1);
+	$report_column->assign("BLOCK1", $BLOCK1);
 }
 
 /** Function to formulate the fields for the primary modules
  *  This function accepts the module name as an argument and generates
  *  the fields for the primary module as an HTML Combo values
  */
-function getPrimaryColumnsHTML($module)
-{
+function getPrimaryColumnsHTML($module) {
 	global $ogReport, $current_language;
 	$id_added=false;
-	$mod_strings = return_module_language($current_language,$module);
+	$mod_strings = return_module_language($current_language, $module);
 	$block_listed = array();
-	foreach($ogReport->module_list[$module] as $key=>$value)
-	{
-		if(isset($ogReport->pri_module_columnslist[$module][$value]) && !$block_listed[$value])
-		{
+	foreach ($ogReport->module_list[$module] as $value) {
+		if (isset($ogReport->pri_module_columnslist[$module][$value]) && !$block_listed[$value]) {
 			$block_listed[$value] = true;
 			$shtml .= "<optgroup label=\"".getTranslatedString($module, $module)." ".getTranslatedString($value)."\" class=\"select\" style=\"border:none\">";
-			if($id_added==false){
+			if ($id_added==false) {
 				$shtml .= "<option value=\"vtiger_crmentity:crmid:".$module."_ID:crmid:I\">".getTranslatedString($module.' ID', $module)."</option>";
 				$id_added=true;
 			}
-			foreach($ogReport->pri_module_columnslist[$module][$value] as $field=>$fieldlabel)
-			{
-				if(isset($mod_strings[$fieldlabel]))
-				{
+			foreach ($ogReport->pri_module_columnslist[$module][$value] as $field => $fieldlabel) {
+				if (isset($mod_strings[$fieldlabel])) {
 					$shtml .= "<option value=\"".$field."\">".$mod_strings[$fieldlabel]."</option>";
-				}else
-				{
+				} else {
 					$shtml .= "<option value=\"".$field."\">".$fieldlabel."</option>";
 				}
 			}
@@ -98,32 +92,24 @@ function getPrimaryColumnsHTML($module)
  *  as arguments and generates the vtiger_fields for the secondary module as
  *  a HTML Combo values
  */
-function getSecondaryColumnsHTML($module)
-{
+function getSecondaryColumnsHTML($module) {
 	global $ogReport, $current_language;
 
-	if($module != "")
-	{
-		$secmodule = explode(":",$module);
-		for($i=0;$i < count($secmodule) ;$i++)
-		{
-			$mod_strings = return_module_language($current_language,$secmodule[$i]);
-			if(vtlib_isModuleActive($secmodule[$i])){
+	if ($module != "") {
+		$secmodule = explode(":", $module);
+		for ($i=0; $i < count($secmodule); $i++) {
+			$mod_strings = return_module_language($current_language, $secmodule[$i]);
+			if (vtlib_isModuleActive($secmodule[$i])) {
 				$block_listed = array();
-				$i18nModule = getTranslatedString($secmodule[$i],$secmodule[$i]);
-				foreach($ogReport->module_list[$secmodule[$i]] as $key=>$value)
-				{
-					if(isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && !$block_listed[$value])
-					{
+				$i18nModule = getTranslatedString($secmodule[$i], $secmodule[$i]);
+				foreach ($ogReport->module_list[$secmodule[$i]] as $value) {
+					if (isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && !$block_listed[$value]) {
 						$block_listed[$value] = true;
 						$shtml .= "<optgroup label=\"".$i18nModule." ".getTranslatedString($value)."\" class=\"select\" style=\"border:none\">";
-						foreach($ogReport->sec_module_columnslist[$secmodule[$i]][$value] as $field=>$fieldlabel)
-						{
-							if(isset($mod_strings[$fieldlabel]))
-							{
+						foreach ($ogReport->sec_module_columnslist[$secmodule[$i]][$value] as $field => $fieldlabel) {
+							if (isset($mod_strings[$fieldlabel])) {
 								$shtml .= "<option value=\"".$field."\">".$mod_strings[$fieldlabel]."</option>";
-							}else
-							{
+							} else {
 								$shtml .= "<option value=\"".$field."\">".$fieldlabel."</option>";
 							}
 						}
@@ -135,5 +121,5 @@ function getSecondaryColumnsHTML($module)
 	return $shtml;
 }
 
-$report_column->display("ReportColumns.tpl");
+$report_column->display('ReportColumns.tpl');
 ?>

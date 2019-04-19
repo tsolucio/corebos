@@ -56,5 +56,4 @@ class ReportRunQueryDependencyMatrix {
 		return $merged;
 	}
 }
-
 ?>

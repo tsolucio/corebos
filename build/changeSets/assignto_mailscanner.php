@@ -15,38 +15,39 @@
 *************************************************************************************************/
 
 class assignto_mailscanner extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset assignto_mailscanner already applied!');
 		} else {
-                        $mod_hd = Vtiger_Module::getInstance('HelpDesk');
-                        $block_hd = Vtiger_Block::getInstance('LBL_TICKET_INFORMATION', $mod_hd);
-                        $field1 = new Vtiger_Field();
-                        $field1->name = 'from_mailscanner';
-                        $field1->label= 'From mailscanner';
-                        $field1->column = 'from_mailscanner';
-                        $field1->columntype = 'VARCHAR(3)';
-                        $field1->sequence = 1;
-                        $field1->uitype = 56;
-                        $field1->typeofdata = 'C~O';
-                        $field1->displaytype = 3;
-                        $field1->presence = 0;
-                        $field1->readonly = 1;
-                        $block_hd->addField($field1);
-                        
-                        $this->ExecuteQuery('ALTER TABLE vtiger_mailscanner_rules ADD assign_to INT(11)');
-                         
+			$mod_hd = Vtiger_Module::getInstance('HelpDesk');
+			$block_hd = Vtiger_Block::getInstance('LBL_TICKET_INFORMATION', $mod_hd);
+			$field1 = new Vtiger_Field();
+			$field1->name = 'from_mailscanner';
+			$field1->label= 'From mailscanner';
+			$field1->column = 'from_mailscanner';
+			$field1->columntype = 'VARCHAR(3)';
+			$field1->sequence = 1;
+			$field1->uitype = 56;
+			$field1->typeofdata = 'C~O';
+			$field1->displaytype = 3;
+			$field1->presence = 0;
+			$field1->readonly = 1;
+			$block_hd->addField($field1);
+			$this->ExecuteQuery('ALTER TABLE vtiger_mailscanner_rules ADD assign_to INT(11)');
 			$this->sendMsg('Changeset assignto_mailscanner applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-	
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		$this->finishExecution();
 	}
-	
 }

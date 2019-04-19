@@ -10,9 +10,9 @@
  ************************************************************************************/
 include_once __DIR__ . '/../api/ws/Controller.php';
 
-class crmtogo_UI_ChangeSettings extends crmtogo_WS_Controller{
+class crmtogo_UI_ChangeSettings extends crmtogo_WS_Controller {
 
-	function process(crmtogo_API_Request $request) {
+	public function process(crmtogo_API_Request $request) {
 		global $current_user,$adb;
 		$adb = PearDatabase::getInstance();
 		$response = new crmtogo_API_Response();
@@ -22,44 +22,38 @@ class crmtogo_UI_ChangeSettings extends crmtogo_WS_Controller{
 			$idsInOrder = vtlib_purify($request->get('idsInOrder'));
 			//ignore first (header) entry
 			array_shift($idsInOrder);
-			$query = "UPDATE berli_crmtogo_modules SET order_num = ? WHERE crmtogo_user = ? AND crmtogo_module = ?";
+			$query = 'UPDATE berli_crmtogo_modules SET order_num = ? WHERE crmtogo_user = ? AND crmtogo_module = ?';
 			$k=0;
 			foreach ($idsInOrder as $modulename) {
 				$adb->pquery($query, array($k, $current_user->id, $modulename));
 				$k=$k+1;
 			}
 			$response->setResult(json_encode('OK'));
-		}
-		elseif ($settings_operation == 'changenavi') {
+		} elseif ($settings_operation == 'changenavi') {
 			$navi_limit = vtlib_purify($request->get('sliderVar'));
-			$query = "UPDATE berli_crmtogo_config SET navi_limit = ? where crmtogouser =?";
-			$adb->pquery($query, array($navi_limit, $current_user->id));
+			$adb->pquery('UPDATE berli_crmtogo_config SET navi_limit = ? where crmtogouser =?', array($navi_limit, $current_user->id));
 			$response->setResult(json_encode('OK'));
-		}
-		elseif ($settings_operation == 'changetheme') {
+		} elseif ($settings_operation == 'changetheme') {
 			$theme = vtlib_purify($request->get('theme'));
-			$query = "UPDATE berli_crmtogo_config SET theme_color = ? where crmtogouser =?";
-			$adb->pquery($query, array($theme,$current_user->id));
+			$adb->pquery('UPDATE berli_crmtogo_config SET theme_color = ? where crmtogouser =?', array($theme,$current_user->id));
 			$response->setResult(json_encode('OK'));
-		}
-		elseif ($settings_operation == 'changemodule') {
+		} elseif ($settings_operation == 'changemodule') {
 			$moduleid = vtlib_purify($request->get('moduleid'));
 			$checkvalue = vtlib_purify($request->get('checkvalue'));
 			if ($checkvalue=='true') {
 				$moduleactive = 1;
-			}
-			else {
+			} else {
 				$moduleactive = 0;
 			}
-			$module_info = explode("_", $moduleid);
-			$query = "UPDATE berli_crmtogo_modules SET crmtogo_active = ? where crmtogo_module=? and crmtogo_user=?";
-			$adb->pquery($query, array($moduleactive, $module_info[1], $current_user->id));
+			$module_info = explode('_', $moduleid);
+			$adb->pquery(
+				'UPDATE berli_crmtogo_modules SET crmtogo_active = ? where crmtogo_module=? and crmtogo_user=?',
+				array($moduleactive, $module_info[1], $current_user->id)
+			);
 			$response->setResult(json_encode('OK'));
-		}
-		else {
+		} else {
 			$response->setResult('ERROR');
 		}
-		
 		return $response;
 	}
 }

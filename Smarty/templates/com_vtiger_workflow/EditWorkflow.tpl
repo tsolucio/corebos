@@ -10,7 +10,7 @@
 <!--Done popups-->
 
 {include file='SetMenu.tpl'}
-<div id="view">
+<div id="view" class="workflows-edit">
 	{include file='com_vtiger_workflow/ModuleTitle.tpl'}
 	<form name="edit_workflow_form" action="index.php" method="POST" id="edit_workflow_form" onsubmit="VtigerJS_DialogBox.block();">
 		{include file='com_vtiger_workflow/EditWorkflowMeta.tpl'}
@@ -19,7 +19,7 @@
 		<br>
 		{include file='com_vtiger_workflow/EditWorkflowTriggerTypes.tpl'}
 		<br>
-		{include file='com_vtiger_workflow/ListConditions.tpl' showreeval='false'}
+		{include file='com_vtiger_workflow/ListConditions.tpl' }
 	</form>
 
 	{if $saveType eq "edit"}

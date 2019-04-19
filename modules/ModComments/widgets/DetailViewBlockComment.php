@@ -7,21 +7,21 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('Smarty_setup.php');
+require_once 'Smarty_setup.php';
 
 class ModComments_DetailViewBlockCommentWidget {
 	private $_name = 'DetailViewBlockCommentWidget';
-	
+
 	private $defaultCriteria = 'All';
-	
+
 	protected $context = false;
 	protected $criteria= false;
-	
-	function __construct() {
-		$this->defaultCriteria = GlobalVariable::getVariable('ModComments_DefaultCriteria',$this->defaultCriteria);
+
+	public function __construct() {
+		$this->defaultCriteria = GlobalVariable::getVariable('ModComments_DefaultCriteria', $this->defaultCriteria);
 	}
-	
-	function getFromContext($key, $purify=false) {
+
+	public function getFromContext($key, $purify = false) {
 		if ($this->context) {
 			$value = $this->context[$key];
 			if ($purify && !empty($value)) {
@@ -31,87 +31,93 @@ class ModComments_DetailViewBlockCommentWidget {
 		}
 		return false;
 	}
-	
-	function title() {
+
+	public function title() {
 		return getTranslatedString('LBL_MODCOMMENTS_INFORMATION', 'ModComments');
 	}
-	
-	function name() {
+
+	public function name() {
 		return $this->_name;
 	}
-	
-	function uikey() {
-		return "ModCommentsDetailViewBlockCommentWidget";
+
+	public function uikey() {
+		return 'ModCommentsDetailViewBlockCommentWidget';
 	}
-	
-	function setCriteria($newCriteria) {
+
+	public function setCriteria($newCriteria) {
 		$this->criteria = $newCriteria;
 	}
-	
-	function getViewer() {
+
+	public function getViewer() {
 		global $theme, $app_strings, $current_language;
-		
+
 		$smarty = new vtigerCRM_Smarty();
 		$smarty->assign('APP', $app_strings);
-		$smarty->assign('MOD', return_module_language($current_language,'ModComments'));
+		$smarty->assign('MOD', return_module_language($current_language, 'ModComments'));
 		$smarty->assign('THEME', $theme);
 		$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
-		
+
 		$smarty->assign('UIKEY', $this->uikey());
 		$smarty->assign('WIDGET_TITLE', $this->title());
 		$smarty->assign('WIDGET_NAME', $this->name());
-		
+
 		return $smarty;
 	}
-	
+
 	protected function getModels($parentRecordId, $criteria) {
 		global $adb, $current_user;
 
 		$moduleName = 'ModComments';
-		if(vtlib_isModuleActive($moduleName)) {
+		if (vtlib_isModuleActive($moduleName)) {
 			$entityInstance = CRMEntity::getInstance($moduleName);
-			
+
 			$queryCriteria  = '';
-			switch($criteria) {
-				case 'All': $queryCriteria = sprintf(" ORDER BY %s.%s DESC ", $entityInstance->table_name, $entityInstance->table_index); break;
-				case 'Last5': $queryCriteria =  sprintf(" ORDER BY %s.%s DESC LIMIT 5", $entityInstance->table_name, $entityInstance->table_index) ;break;
-				case 'Mine': $queryCriteria = ' AND vtiger_crmentity.smcreatorid=' . $current_user->id.sprintf(" ORDER BY %s.%s DESC ", $entityInstance->table_name, $entityInstance->table_index); break;
+			switch ($criteria) {
+				case 'All':
+					$queryCriteria = sprintf(' ORDER BY %s.%s DESC ', $entityInstance->table_name, $entityInstance->table_index);
+					break;
+				case 'Last5':
+					$queryCriteria =  sprintf(' ORDER BY %s.%s DESC LIMIT 5', $entityInstance->table_name, $entityInstance->table_index) ;
+					break;
+				case 'Mine':
+					$queryCriteria = ' AND vtiger_crmentity.smcreatorid=' . $current_user->id.
+						sprintf(' ORDER BY %s.%s DESC ', $entityInstance->table_name, $entityInstance->table_index);
+					break;
 			}
-			list($void,$queryCriteria) = cbEventHandler::do_filter('corebos.filter.ModComments.queryCriteria', array($parentRecordId, $queryCriteria));
-			$query = $entityInstance->getListQuery($moduleName, sprintf(" AND %s.related_to=?", $entityInstance->table_name));
+			list($void, $queryCriteria) = cbEventHandler::do_filter('corebos.filter.ModComments.queryCriteria', array($parentRecordId, $queryCriteria));
+			$query = $entityInstance->getListQuery($moduleName, sprintf(' AND %s.related_to=?', $entityInstance->table_name));
 			$query .= $queryCriteria;
 			$result = $adb->pquery($query, array($parentRecordId));
 			$instances = array();
-			if($adb->num_rows($result)) {
-				while($resultrow = $adb->fetch_array($result)) {
+			if ($adb->num_rows($result)) {
+				while ($resultrow = $adb->fetch_array($result)) {
 					$instances[] = new ModComments_CommentsModel($resultrow);
 				}
 			}
 		}
 		return $instances;
 	}
-	
-	function processItem($model) {
+
+	public function processItem($model) {
 		$viewer = $this->getViewer();
 		$viewer->assign('COMMENTMODEL', $model);
-		return $viewer->fetch(vtlib_getModuleTemplate("ModComments","widgets/DetailViewBlockCommentItem.tpl"));
+		return $viewer->fetch(vtlib_getModuleTemplate('ModComments', 'widgets/DetailViewBlockCommentItem.tpl'));
 	}
-	
-	function process($context = false) {
+
+	public function process($context = false) {
 		$this->context = $context;
 		$sourceRecordId =  $this->getFromContext('ID', true);
 		$usecriteria = ($this->criteria === false)? $this->defaultCriteria : $this->criteria;
-		
+
 		$viewer = $this->getViewer();
 		$viewer->assign('ID', $sourceRecordId);
 		$viewer->assign('CRITERIA', $usecriteria);
-		$BLOCKOPEN = GlobalVariable::getVariable('ModComments_DefaultBlockStatus',1);
+		$BLOCKOPEN = GlobalVariable::getVariable('ModComments_DefaultBlockStatus', 1);
 		$viewer->assign('BLOCKOPEN', $BLOCKOPEN);
-		list($void,$canaddcomments) = cbEventHandler::do_filter('corebos.filter.ModComments.canAdd', array($sourceRecordId, true));
+		list($void, $canaddcomments) = cbEventHandler::do_filter('corebos.filter.ModComments.canAdd', array($sourceRecordId, true));
 		$viewer->assign('CANADDCOMMENTS', ($canaddcomments ? 'YES' : 'NO'));
-		$viewer->assign('COMMENTS', $this->getModels($sourceRecordId, $usecriteria) );
-		
-		return $viewer->fetch(vtlib_getModuleTemplate("ModComments","widgets/DetailViewBlockComment.tpl"));
+		$viewer->assign('COMMENTS', $this->getModels($sourceRecordId, $usecriteria));
+
+		return $viewer->fetch(vtlib_getModuleTemplate('ModComments', 'widgets/DetailViewBlockComment.tpl'));
 	}
-	
 }

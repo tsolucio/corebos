@@ -32,7 +32,7 @@ function evvt_strip_html_links($text) {
 
 function vtws_changePortalUserPassword($email, $newPass) {
 	global $adb,$log;
-	$log->debug('Entering schangePortalUserPassword');
+	$log->debug('>< changePortalUserPassword');
 	$nra = $adb->pquery('update vtiger_portalinfo set user_password=? where user_name=?', array($newPass,$email));
 	if ($nra) {
 		return true;
@@ -43,20 +43,15 @@ function vtws_changePortalUserPassword($email, $newPass) {
 
 function vtws_findByPortalUserName($username) {
 	global $adb,$log;
-	$log->debug('Entering function vtws_findByPortalUserName');
-	$nra=$adb->query_result($adb->pquery('select count(*) from vtiger_portalinfo where isactive=1 and user_name=?', array($username)), 0, 0);
-	if (empty($nra)) {
-		$output=false;
-	} else {
-		$output=true;
-	}
-	$log->debug('Exiting function vtws_findByPortalUserName');
-	return $output;
+	$log->debug('>< vtws_findByPortalUserName');
+	$rs = $adb->pquery('select count(*) from vtiger_portalinfo where isactive=1 and user_name=?', array($username));
+	$nra=$adb->query_result($rs, 0, 0);
+	return !empty($nra);
 }
 
 function vtws_sendRecoverPassword($username) {
 	global $adb,$log,$current_user;
-	$log->debug('Entering function vtws_sendRecoverPassword');
+	$log->debug('> vtws_sendRecoverPassword');
 
 	$ctors=$adb->pquery('select contactid,email,user_password
 			from vtiger_contactdetails
@@ -74,7 +69,7 @@ function vtws_sendRecoverPassword($username) {
 	$subject = getTranslatedString('Customer Portal Login Details', 'Contacts');
 	$mail_status = send_mail('Contacts', $cto['email'], $current_user->user_name, '', $subject, $contents);
 
-	$log->debug('Exiting function vtws_sendRecoverPassword');
+	$log->debug('< vtws_sendRecoverPassword');
 	return $mail_status;
 }
 
@@ -97,15 +92,29 @@ function vtws_getPortalUserInfo($user) {
 	return $usrinfo;
 }
 
+function vtws_getAllUsers() {
+	global $log;
+	$log->debug('> vtws_getAllUsers');
+
+	$usrwsid = vtyiicpng_getWSEntityId('Users');
+	$usrs = getAllUserName();
+	$usr_array = array();
+	foreach ($usrs as $id => $usr) {
+		$usr_array[$usrwsid.$id] = $usr;
+	}
+
+	$log->debug('< vtws_getAllUsers');
+	return $usr_array;
+}
+
 function vtws_getAssignedUserList($module, $user) {
 	global $log,$current_user,$default_charset;
-	$log->debug('Entering getAssignedUserList function with parameter modulename: '.$module);
+	$log->debug('> getAssignedUserList '.$module);
 	$hcuser = $current_user;
 	$current_user = $user;
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 	$tabid=getTabid($module);
-	if (!is_admin($user) && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabid] == 3 || $defaultOrgSharingPermission[$tabid] == 0)) {
+	if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabid)) {
 		$users = get_user_array(false, 'Active', $user->id, 'private');
 	} else {
 		$users = get_user_array(false, 'Active', $user->id);
@@ -119,9 +128,32 @@ function vtws_getAssignedUserList($module, $user) {
 	return json_encode($usrinfo);
 }
 
+function vtws_getAssignedGroupList($module, $user) {
+	global $log,$current_user,$default_charset;
+	$log->debug('> vtws_getAssignedGroupList '.$module);
+	$hcuser = $current_user;
+	$current_user = $user;
+
+	$userPrivs = $user->getPrivileges();
+
+	$tabid=getTabid($module);
+	if (!$userPrivs->hasGlobalWritePermission() && !$userPrivs->hasModuleWriteSharing($tabid)) {
+		$users = get_group_array(false, 'Active', $user->id, 'private');
+	} else {
+		$users = get_group_array(false, 'Active', $user->id);
+	}
+	$usrwsid = vtyiicpng_getWSEntityId('Groups');
+	$usrinfo = array();
+	foreach ($users as $id => $usr) {
+		$usrinfo[] = array('groupid' => $usrwsid.$id,'groupname'=> trim(html_entity_decode($usr, ENT_QUOTES, $default_charset)));
+	}
+	$current_user = $hcuser;
+	return json_encode($usrinfo);
+}
+
 function vtws_AuthenticateContact($email, $password) {
 	global $adb,$log;
-	$log->debug('Entering AuthenticateContact function with parameter email: '.$email.' password:'.$password);
+	$log->debug('> AuthenticateContact '.$email.','.$password);
 
 	$rs = $adb->pquery('select id
 		from vtiger_portalinfo
@@ -141,7 +173,7 @@ function vtws_AuthenticateContact($email, $password) {
 function vtws_getPicklistValues($fld_module) {
 	global $adb,$log;
 	include_once 'modules/PickList/PickListUtils.php';
-	$log->debug('Entering getPicklistValues function with parameter: '.$fld_module);
+	$log->debug('> getPicklistValues '.$fld_module);
 	$res=array();
 	$all=array();
 	if ($fld_module == 'Documents') {
@@ -165,7 +197,7 @@ function vtws_getPicklistValues($fld_module) {
 
 function vtws_getUItype($module, $user) {
 	global $adb,$log;
-	$log->debug('Entering getUItype function with parameter modulename: '.$module);
+	$log->debug('> getUItype '.$module);
 	$tabid=getTabid($module);
 	$res=$adb->pquery('select uitype,fieldname from vtiger_field where tabid=? and presence in (0,2) ', array($tabid));
 	$nr=$adb->num_rows($res);
@@ -177,17 +209,17 @@ function vtws_getUItype($module, $user) {
 	return $resp;
 }
 
-function vtws_getReferenceValue($strids) {
-	global $log,$adb;
+function vtws_getReferenceValue($strids, $user) {
+	global $log, $adb, $default_charset;
 	$ids=unserialize($strids);
-	$log->debug('Entering vtws_getReferenceValue with id '.implode(',', $ids));
+	$log->debug('> vtws_getReferenceValue '.$strids);
 	foreach ($ids as $id) {
 		list($wsid,$realid)=explode('x', $id);
 		$rs = $adb->pquery('select name from vtiger_ws_entity where id=?', array($wsid));
 		$modulename = $adb->query_result($rs, 0, 0);
 		if ($modulename=='DocumentFolders') {
 			$rs1 = $adb->pquery('select foldername from vtiger_attachmentsfolder where folderid = ?', array($realid));
-			$result[$id]=array('module'=>$modulename,'reference'=>$adb->query_result($rs1, 0, 0));
+			$result[$id]=array('module'=>$modulename,'reference'=>html_entity_decode($adb->query_result($rs1, 0, 0), ENT_QUOTES, $default_charset));
 		} elseif ($modulename=='Groups') {
 			$rs1 = $adb->pquery('select groupname from vtiger_groups where groupid = ?', array($realid));
 			$result[$id]=array('module'=>$modulename,'reference'=>$adb->query_result($rs1, 0, 0));
@@ -196,6 +228,9 @@ function vtws_getReferenceValue($strids) {
 				$entityinfo[$realid] = getCurrencyName($realid, true);
 			} else {
 				$entityinfo = getEntityName($modulename, $realid);
+				if (isset($entityinfo[$realid])) {
+					$entityinfo[$realid] = html_entity_decode($entityinfo[$realid], ENT_QUOTES, $default_charset);
+				}
 			}
 			if (empty($entityinfo[$realid])) {
 				$entityinfo[$realid] = '';
@@ -203,7 +238,7 @@ function vtws_getReferenceValue($strids) {
 			$result[$id]=array('module'=>$modulename,'reference'=>$entityinfo[$realid]);
 		}
 	}
-	$log->debug('Exit vtws_getReferenceValue with'.serialize($result));
+	$log->debug('< vtws_getReferenceValue');
 	return serialize($result);
 }
 
@@ -230,8 +265,8 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 	}
 	// connected user must have access to account and contact > this will be restricted by the coreBOS system and the rest of the code
 	// start work
-	require_once('modules/CustomView/CustomView.php');
-	require_once('include/utils/utils.php');
+	require_once 'modules/CustomView/CustomView.php';
+	require_once 'include/utils/utils.php';
 	// Was the search limited by user for specific modules?
 	$search_onlyin = (empty($search_onlyin) ? array() : explode(',', $search_onlyin));
 	$object_array = getSearchModules($search_onlyin);
@@ -279,7 +314,7 @@ function vtws_getSearchResults($query, $search_onlyin, $restrictionids, $user) {
 		$listview_entries = getSearchingListViewEntries($focus, $module, $list_result, $navigation_array, '', '', '', '', $oCustomView, '', '', '', true);
 		$total_record_count = $total_record_count + $noofrows;
 		if (!empty($listview_entries)) {
-			foreach ($listview_entries as $key => $element) {
+			foreach ($listview_entries as $element) {
 				$res[$j]=$element;
 				$j++;
 			}
@@ -337,44 +372,19 @@ function evvt_PortalModuleRestrictions($module, $accountId, $contactId) {
 	return $condition;
 }
 
-/**
- * To get the modules allowed for global search this function returns all the
- * modules which supports global search as an array in the following structure
- * array($module_name1=>$object_name1,$module_name2=>$object_name2,$module_name3=>$object_name3,$module_name4=>$object_name4,-----);
- */
-function getSearchModules($filter = array()) {
-	global $adb;
-	// vtlib customization: Ignore disabled modules.
-	$sql = 'select distinct vtiger_field.tabid,name
-		from vtiger_field
-		inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
-		where vtiger_tab.tabid not in (16,29) and vtiger_tab.presence != 1 and vtiger_field.presence in (0,2)';
-	$result = $adb->pquery($sql, array());
-	while ($module_result = $adb->fetch_array($result)) {
-		$modulename = $module_result['name'];
-		// Do we need to filter the module selection?
-		if (!empty($filter) && is_array($filter) && !in_array($modulename, $filter)) {
-			continue;
-		}
-		if ($modulename != 'Calendar') {
-			$return_arr[$modulename] = $modulename;
-		} else {
-			$return_arr[$modulename] = 'Activity';
-		}
+// To get the modules allowed for global search
+if (!function_exists('getSearchModules')) {
+	function getSearchModules($filter = array()) {
+		return getSearchModulesCommon($filter);
 	}
-	return $return_arr;
 }
 
 function getSearchingListViewEntries($focus, $module, $list_result, $navigation_array, $relatedlist = '', $returnset = '', $edit_action = 'EditView', $del_action = 'Delete', $oCv = '', $page = '', $selectedfields = '', $contRelatedfields = '', $skipActions = false, $linksallowed = false) {
-	global $log, $mod_strings, $adb, $current_user, $app_strings, $theme;
-	$log->debug('Entering getSearchingListViewEntries in CPWS('.get_class($focus).','. $module.') method ...');
-	$tabname = getParentTab();
+	global $log, $adb, $current_user, $theme;
+	$log->debug('> getSearchingListViewEntries in CPWS '.get_class($focus).','. $module);
 	$noofrows = $adb->num_rows($list_result);
 	$list_block = array();
-	$evt_status = '';
-	$theme_path="themes/".$theme."/";
-	$image_path=$theme_path."images/";
-	//getting the vtiger_fieldtable entries from database
+	//getting the field table entries from database
 	$tabid = getTabid($module);
 
 	if ($oCv) {
@@ -389,15 +399,16 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 	// Remove fields which are made inactive
 	$focus->filterInactiveFields($module);
 
-	//Added to reduce the no. of queries logging for non-admin user -- by minnie-start
+	//Added to reduce the no. of queries logging for non-admin user
 	$field_list = array();
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 	foreach ($focus->list_fields as $name => $tableinfo) {
-		$fieldname = $focus->list_fields_name[$name];
-		if ($oCv) {
-			if (isset($oCv->list_fields_name)) {
-				$fieldname = $oCv->list_fields_name[$name];
-			}
+		if ($oCv && isset($oCv->list_fields_name)) {
+			$fieldname = $oCv->list_fields_name[$name];
+		} elseif (isset($focus->list_fields_name[$name])) {
+			$fieldname = $focus->list_fields_name[$name];
+		} else {
+			continue;
 		}
 		if ($fieldname == 'accountname' && $module != 'Accounts') {
 			$fieldname = 'account_id';
@@ -469,20 +480,18 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 		$tempArr[$uitype]=$columnname;
 		$ui_col_array[$field_name]=$tempArr;
 	}
-	//end
+
 	if ($navigation_array['start'] !=0) {
 		for ($i=1; $i<=$noofrows; $i++) {
 			$list_header =array();
 			//Getting the entityid
 			if ($module != 'Users') {
 				$entity_id = $adb->query_result($list_result, $i-1, 'crmid');
-				$owner_id = $adb->query_result($list_result, $i-1, 'smownerid');
+				//$owner_id = $adb->query_result($list_result, $i-1, 'smownerid');
 			} else {
 				$entity_id = $adb->query_result($list_result, $i-1, 'id');
 			}
 			foreach ($focus->list_fields as $name => $tableinfo) {
-				$fieldname = $focus->list_fields_name[$name];
-
 				if ($oCv) {
 					if (isset($oCv->list_fields_name)) {
 						$fieldname = $oCv->list_fields_name[$name];
@@ -498,7 +507,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 					} else {
 						$fieldname = $focus->list_fields_name[$name];
 					}
-				} else {
+				} elseif (isset($focus->list_fields_name[$name])) {
 					$fieldname = $focus->list_fields_name[$name];
 					if ($fieldname == 'accountname' && $module != 'Accounts') {
 						$fieldname = 'account_id';
@@ -509,8 +518,10 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 					if ($fieldname == 'productname' && $module != 'Products') {
 						$fieldname = 'product_id';
 					}
+				} else {
+					continue;
 				}
-				if ($is_admin==true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0 || in_array($fieldname, $field) || $fieldname == '') {
+				if ($userprivs->hasGlobalReadPermission() || in_array($fieldname, $field) || $fieldname == '') {
 					if ($fieldname == '') {
 						$table_name = '';
 						$column_name = '';
@@ -626,7 +637,7 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 
 								$file_name = $adb->query_result($list_result, $i-1, 'filename');
 								$notes_id = $adb->query_result($list_result, $i-1, 'crmid');
-								$folder_id = $adb->query_result($list_result, $i-1, 'folderid');
+								//$folder_id = $adb->query_result($list_result, $i-1, 'folderid');
 								$download_type = $adb->query_result($list_result, $i-1, 'filelocationtype');
 								$file_status = $adb->query_result($list_result, $i-1, 'filestatus');
 								$fileidQuery = 'select attachmentsid from vtiger_seattachmentsrel where crmid=?';
@@ -772,19 +783,19 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 							$value = evvt_strip_html_links($value);
 						}
 					}
-					$list_header[] = $value;
+					$list_header[$name] = $value;
 				}
 			}
 			$varreturnset = '';
 
 			$varreturnset = $returnset;
 			$webserviceEntityId=vtyiicpng_getWSEntityId($module);
-			$list_header[]=$webserviceEntityId.$entity_id;
-			$list_header[]=$module;
+			$list_header['id']=$webserviceEntityId.$entity_id;
+			$list_header['search_module_name']=$module;
 			$list_block[$entity_id] = $list_header;
 		}
 	}
-	$log->debug('Exiting getSearchingListViewEntries method ...');
+	$log->debug('< getSearchingListViewEntries CPWS');
 	return $list_block;
 }
 
@@ -870,6 +881,166 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
 
 /**
  * @param String $term: search term
+ * @param Array $returnfields: array of fields to return as result, maybe for the future
+ * @param Number $limit: maximum number of values to return
+ * @return Array values found
+ */
+function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 5) {
+	global $adb, $current_user;
+	$cur_user_decimals = $current_user->column_fields['no_of_currency_decimals'];
+	$term = $adb->sql_escape_string(vtlib_purify($term));
+	$limit = $adb->sql_escape_string(vtlib_purify($limit));
+	$sourceModule = $adb->sql_escape_string(vtlib_purify($_REQUEST['sourceModule']));
+
+	$bmapname = $sourceModule . '_FieldInfo';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_FieldInfo', cbMap::getMapIdByName($bmapname), $sourceModule, $current_user->id);
+	$productsearchfields = array('productname','mfr_part_no','vendor_part_no');
+	$servicesearchfields = array('servicename');
+	$productsearchquery = '';
+	$servicesearchquery = '';
+	$prodconds = array();
+	$servconds = array();
+	$prodcondquery = '';
+	$servcondquery = '';
+	$opmap = array('equals' => '=','smaller'=>'<','greater'=>'>');
+
+	require_once 'include/fields/CurrencyField.php';
+	require_once 'include/utils/CommonUtils.php';
+
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapFI = $cbMap->FieldInfo();
+		$cbMapFI = $cbMapFI['fields'];
+		if (array_key_exists('cbProductServiceField', $cbMapFI) && array_key_exists('searchfields', $cbMapFI['cbProductServiceField'])) {
+			$sf = $cbMapFI['cbProductServiceField']['searchfields'];
+			$productsearchfields = array_key_exists('Products', $sf) ? explode(',', $sf['Products']) : $productsearchfields;
+			$servicesearchfields = array_key_exists('Service', $sf) ? explode(',', $sf['Service']) : $servicesearchfields;
+		}
+		if (array_key_exists('cbProductServiceField', $cbMapFI) && array_key_exists('searchcondition', $cbMapFI['cbProductServiceField'])) {
+			$sc = json_decode($cbMapFI['cbProductServiceField']['searchcondition'], true);
+			$prodconds = array_key_exists('Products', $sc) ? $sc['Products'] : $prodconds;
+			$servconds = array_key_exists('Service', $sc) ? $sc['Service'] : $servconds;
+		}
+	}
+
+	for ($i=0; $i < count($productsearchfields); $i++) {
+		$productsearchquery .= 'vtiger_products.' . $productsearchfields[$i] . ' LIKE \'%' . $term . '%\'';
+		if (($i + 1) < count($productsearchfields)) {
+			$productsearchquery .= ' OR ';
+		}
+	}
+	for ($i=0; $i < count($servicesearchfields); $i++) {
+		$servicesearchquery .= 'vtiger_service.' . $servicesearchfields[$i] . ' LIKE \'%' . $term . '%\'';
+		if (($i + 1) < count($servicesearchfields)) {
+			$servicesearchquery .= ' OR ';
+		}
+	}
+
+	$prodcondquery .= count($prodconds) > 0 ? 'AND (' : '';
+	for ($i=0; $i < count($prodconds); $i++) {
+		if ($i % 2 == 0) {
+			$prodcondoperation = $prodconds[$i]['field'] . ' ' . $opmap[$prodconds[$i]['operator']] . ' ' . $prodconds[$i]['value'];
+			$prodcondquery .= substr($prodconds[$i], 0, 3) == 'cf_' ? 'vtiger_productcf.'.$prodcondoperation : 'vtiger_products.'.$prodcondoperation;
+		} else {
+			$prodcondquery .= ' ' . $prodconds[$i] . ' ';
+		}
+	}
+	$prodcondquery .= count($prodconds) > 0 ? ')' : '';
+
+	$servcondquery .= count($servconds) > 0 ? 'AND (' : '';
+	for ($i=0; $i < count($servconds); $i++) {
+		if ($i % 2 == 0) {
+			$servcondoperation = $servconds[$i]['field'] . ' ' . $opmap[$servconds[$i]['operator']] . ' ' . $servconds[$i]['value'];
+			$servcondquery .= substr($servconds[$i], 0, 3) == 'cf_' ? 'vtiger_servicecf.'.$servcondoperation : 'vtiger_service.'.$servcondoperation;
+		} else {
+			$servcondquery .= ' ' . $servconds[$i] . ' ';
+		}
+	}
+	$servcondquery .= count($servconds) > 0 ? ')' : '';
+
+	$r = $adb->query("
+		SELECT 
+		    vtiger_products.productname AS name, 
+		    vtiger_products.divisible AS divisible, 
+		    'Products' AS type, 
+		    vtiger_products.vendor_part_no AS ven_no, 
+		    vtiger_products.cost_price AS cost_price, 
+		    vtiger_products.mfr_part_no AS mfr_no, 
+		    vtiger_products.qtyinstock AS qtyinstock, 
+		    vtiger_crmentity.description AS description, 
+		    vtiger_crmentity.deleted AS deleted, 
+		    vtiger_crmentity.crmid AS id, 
+		    vtiger_products.unit_price AS unit_price 
+		    FROM vtiger_products 
+			INNER JOIN vtiger_crmentity ON vtiger_products.productid = vtiger_crmentity.crmid 
+			INNER JOIN vtiger_productcf ON vtiger_products.productid = vtiger_productcf.productid 
+			".getNonAdminAccessControlQuery('Products', $current_user)."
+			WHERE ({$productsearchquery}) 
+			{$prodcondquery} 
+			AND vtiger_products.discontinued = 1 AND vtiger_crmentity.deleted = 0
+		UNION
+		SELECT
+		    vtiger_service.servicename AS name, 
+		    vtiger_service.divisible AS divisible, 
+		    'Services' AS type,
+		    '' AS ven_no, 
+		    '' AS mfr_no,
+		    0 AS qtyinstock,
+		    '' AS cost_price,
+		    vtiger_crmentity.description AS description, 
+		    vtiger_crmentity.deleted AS deleted, 
+		    vtiger_crmentity.crmid AS id, 
+		    vtiger_service.unit_price AS unit_price 
+		    FROM vtiger_service 
+			INNER JOIN vtiger_crmentity ON vtiger_service.serviceid = vtiger_crmentity.crmid 
+			INNER JOIN vtiger_servicecf ON vtiger_service.serviceid = vtiger_servicecf.serviceid 
+			".getNonAdminAccessControlQuery('Services', $current_user)."
+			WHERE ({$servicesearchquery}) 
+			{$servcondquery} 
+			AND vtiger_service.discontinued = 1 AND vtiger_crmentity.deleted = 0
+		LIMIT $limit");
+	$ret = array();
+
+	while ($prodser = $adb->fetch_array($r)) {
+		$ret_prodser = array(
+			'meta' => array(
+				'image' => '',
+				'name' => $prodser['name'],
+				'divisible' => $prodser['divisible'],
+				'comments' => $prodser['description'],
+				'ven_no' => $prodser['ven_no'],
+				'mfr_no' => $prodser['mfr_no'],
+				'type' => $prodser['type'],
+				'id' => $prodser['id'],
+			),
+			'pricing' => array(
+				'unit_price' => number_format((float)$prodser['unit_price'], $cur_user_decimals, '.', ''),
+				'unit_cost' => number_format((float)$prodser['cost_price'], $cur_user_decimals, '.', ''),
+			),
+			'logistics' => array(
+				'qtyinstock' => number_format((float)$prodser['qtyinstock'], $cur_user_decimals, '.', ''),
+			),
+			'translations' => array(
+				'ven_no' => getTranslatedString('Mfr PartNo', 'Products'),
+				'mfr_no' => getTranslatedString('Vendor PartNo', 'Products'),
+			),
+		);
+		$multic = $adb->pquery('select * from vtiger_productcurrencyrel where productid=?', array($prodser['id']));
+		$mc = array();
+		while ($mcinfo = $adb->fetch_array($multic)) {
+			$mc[$mcinfo['currencyid']] = array(
+				'converted_price' => number_format((float)$mcinfo['converted_price'], $cur_user_decimals, '.', ''),
+				'actual_price' => number_format((float)$mcinfo['actual_price'], $cur_user_decimals, '.', ''),
+			);
+		}
+		$ret_prodser['pricing']['multicurrency'] = $mc;
+		$ret[] = $ret_prodser;
+	}
+	return $ret;
+}
+
+/**
+ * @param String $term: search term
  * @param String $filter: operator to use: eq, neq, startswith, endswith, contains
  * @param String $searchinmodule: valid module to search in
  * @param String $fields: comma separated list of fields to search in
@@ -879,7 +1050,7 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
  * @return Array values found: crmid => array($returnfields)
  */
 function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnfields, $limit, $user) {
-	global $current_user,$log,$adb,$default_charset;
+	global $current_user, $adb, $default_charset;
 
 	$respuesta=array();
 	if (empty($searchinmodule) || empty($fields)) {
@@ -929,10 +1100,11 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 	$flds = array_unique(array_merge($rfields, $sfields, array('id')));
 
 	$queryGenerator->setFields($flds);
+	$queryGenerator->startGroup();
 	foreach ($sfields as $sfld) {
 		$queryGenerator->addCondition($sfld, $term, $op, $queryGenerator::$OR);
 	}
-
+	$queryGenerator->endGroup();
 	$query = $queryGenerator->getQuery();
 	$rsemp=$adb->query($query);
 	$wsid = vtyiicpng_getWSEntityId($searchinmodule);

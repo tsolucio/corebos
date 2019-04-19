@@ -11,12 +11,12 @@ require_once 'include/Webservices/Query.php';
 
 class MailManager {
 
-	static function updateMailAssociation($mailuid, $emailid, $crmid) {
+	public static function updateMailAssociation($mailuid, $emailid, $crmid) {
 		global $adb;
-		$adb->pquery("INSERT INTO vtiger_mailmanager_mailrel (mailuid, emailid, crmid) VALUES (?,?,?)", array($mailuid, $emailid, $crmid));
+		$adb->pquery('INSERT INTO vtiger_mailmanager_mailrel (mailuid, emailid, crmid) VALUES (?,?,?)', array($mailuid, $emailid, $crmid));
 	}
 
-	static function lookupMailInVtiger($searchTerm, $user) {
+	public static function lookupMailInVtiger($searchTerm, $user) {
 		$handler = vtws_getModuleHandlerFromName('Emails', $user);
 		$meta = $handler->getMeta();
 		$moduleFields = $meta->getModuleFields();
@@ -24,31 +24,33 @@ class MailManager {
 		$referenceModules = $parentIdFieldInstance->getReferenceList();
 
 		$filteredResult = array();
-		foreach($referenceModules as $referenceModule) {
+		foreach ($referenceModules as $referenceModule) {
 			$referenceModuleHandler = vtws_getModuleHandlerFromName($referenceModule, $user);
 			$referenceModuleMeta = $referenceModuleHandler->getMeta();
 			$referenceModuleEmailFields = $referenceModuleMeta->getEmailFields();
 			$referenceModuleEntityFields = $referenceModuleMeta->getNameFields();
 			$referenceModuleEntityFieldsArray = explode(',', $referenceModuleEntityFields);
 			$searchFieldList = array_merge($referenceModuleEmailFields, $referenceModuleEntityFieldsArray);
-			if(!empty($searchFieldList) && !empty($referenceModuleEmailFields)) {
+			if (!empty($searchFieldList) && !empty($referenceModuleEmailFields)) {
 				$searchFieldListString = implode(',', $referenceModuleEmailFields);
 				$where = null;
-				for($i=0; $i<count($searchFieldList); $i++) {
-					if($i == count($searchFieldList) - 1) {
+				for ($i=0; $i<count($searchFieldList); $i++) {
+					if ($i == count($searchFieldList) - 1) {
 						$where .= sprintf($searchFieldList[$i]." like '%s'", $searchTerm);
 					} else {
 						$where .= sprintf($searchFieldList[$i]." like '%s' or ", $searchTerm);
 					}
 				}
-				if(!empty($where)) $where = "WHERE $where";
+				if (!empty($where)) {
+					$where = "WHERE $where";
+				}
 				$result = vtws_query("select $searchFieldListString from $referenceModule $where;", $user);
-				foreach($result as $record) {
-					foreach($searchFieldList as $searchField) {
-						if(!empty($record[$searchField])) {
+				foreach ($result as $record) {
+					foreach ($searchFieldList as $searchField) {
+						if (!empty($record[$searchField])) {
 							$filteredResult[] = array(
 								'id' => $record[$searchField],
-								'name' => $record[$searchField].' - '.getTranslatedString($referenceModule,$referenceModule),
+								'name' => $record[$searchField].' - '.getTranslatedString($referenceModule, $referenceModule),
 								'record' => $record['id'],
 								'module' => $referenceModule
 							);
@@ -60,44 +62,43 @@ class MailManager {
 		return $filteredResult;
 	}
 
-	static function lookupMailAssociation($mailuid) {
+	public static function lookupMailAssociation($mailuid) {
 		global $adb;
 
 		// Mail could get associated with two-or-more records if they get deleted after linking.
 		$result = $adb->pquery(
-			"SELECT vtiger_mailmanager_mailrel.* FROM vtiger_mailmanager_mailrel INNER JOIN
-			vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_mailmanager_mailrel.crmid AND vtiger_crmentity.deleted=0
-			AND vtiger_mailmanager_mailrel.mailuid=? LIMIT 1", array(decode_html($mailuid)));
+			'SELECT vtiger_mailmanager_mailrel.*
+				FROM vtiger_mailmanager_mailrel
+				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_mailmanager_mailrel.crmid
+					AND vtiger_crmentity.deleted=0 AND vtiger_mailmanager_mailrel.mailuid=?
+				LIMIT 1',
+			array(decode_html($mailuid))
+		);
 		if ($adb->num_rows($result)) {
 			return $adb->fetch_array($result);
 		}
 		return false;
 	}
 
-	static function lookupVTEMailAssociation($emailId) {
+	public static function isEMailAssociatedWithCRMID($mailuid, $crmid) {
 		global $adb;
 		$result = $adb->pquery(
-			"SELECT vtiger_mailmanager_mailrel.* FROM vtiger_mailmanager_mailrel INNER JOIN
-			vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_mailmanager_mailrel.crmid AND vtiger_crmentity.deleted=0
-			AND vtiger_mailmanager_mailrel.mailuid=? LIMIT 1", array(decode_html($mailuid)));
-		if ($adb->num_rows($result)) {
-			return $adb->fetch_array($result);
-		}
-		return false;
-	}
-
-	static function isEMailAssociatedWithCRMID($mailuid,$crmid) {
-		global $adb;
-		$result = $adb->pquery(
-			"SELECT vtiger_mailmanager_mailrel.* FROM vtiger_mailmanager_mailrel INNER JOIN
-			vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_mailmanager_mailrel.crmid AND vtiger_crmentity.deleted=0
-			AND vtiger_mailmanager_mailrel.mailuid=? and vtiger_mailmanager_mailrel.crmid=? LIMIT 1",
-			array(decode_html($mailuid),$crmid));
+			'SELECT vtiger_mailmanager_mailrel.*
+				FROM vtiger_mailmanager_mailrel
+				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_mailmanager_mailrel.crmid
+					AND vtiger_crmentity.deleted=0 AND vtiger_mailmanager_mailrel.mailuid=? and vtiger_mailmanager_mailrel.crmid=?
+				LIMIT 1',
+			array(decode_html($mailuid),$crmid)
+		);
 		return ($adb->num_rows($result)>0);
 	}
 
-	static function checkModuleWriteAccessForCurrentUser($module) {
-		return isPermitted($module, 'EditView') == "yes" && vtlib_isModuleActive($module);
+	public static function checkModuleWriteAccessForCurrentUser($module) {
+		return (isPermitted($module, 'EditView') == 'yes' && vtlib_isModuleActive($module));
+	}
+
+	public static function checkModuleCreateAccessForCurrentUser($module) {
+		return (isPermitted($module, 'CreateView') == 'yes' && vtlib_isModuleActive($module));
 	}
 
 	/**
@@ -106,8 +107,8 @@ class MailManager {
 	 * @param String $module - Name of the module
 	 * @return Boolean
 	 */
-	static function checkModuleReadAccessForCurrentUser($module) {
-		return isPermitted($module, 'DetailView') == "yes" && vtlib_isModuleActive($module);
+	public static function checkModuleReadAccessForCurrentUser($module) {
+		return (isPermitted($module, 'DetailView') == 'yes' && vtlib_isModuleActive($module));
 	}
 
 	/**
@@ -115,21 +116,20 @@ class MailManager {
 	 * @param String $modulename - Module name
 	 * @param String $event_type - Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
 	 */
-	function vtlib_handler($modulename, $event_type) {
-		if($event_type == 'module.postinstall') {
+	public function vtlib_handler($modulename, $event_type) {
+		if ($event_type == 'module.postinstall') {
 			// TODO Handle actions when this module is installed.
-		} else if($event_type == 'module.disabled') {
+		} elseif ($event_type == 'module.disabled') {
 			// TODO Handle actions when this module is disabled.
-		} else if($event_type == 'module.enabled') {
+		} elseif ($event_type == 'module.enabled') {
 			// TODO Handle actions when this module is enabled.
-		} else if($event_type == 'module.preuninstall') {
+		} elseif ($event_type == 'module.preuninstall') {
 			// TODO Handle actions when this module is about to be deleted.
-		} else if($event_type == 'module.preupdate') {
+		} elseif ($event_type == 'module.preupdate') {
 			// TODO Handle actions before this module is updated.
-		} else if($event_type == 'module.postupdate') {
+		} elseif ($event_type == 'module.postupdate') {
 			// TODO Handle actions when this module is updated.
 		}
 	}
 }
-
 ?>

@@ -20,7 +20,7 @@
 abstract class cbmqtm_manager {
 	static protected $instance = null;
 
-	static public function getInstance() {
+	public static function getInstance() {
 
 		if (null === static::$instance) {
 			static::$instance = new static;
@@ -29,14 +29,16 @@ abstract class cbmqtm_manager {
 		return static::$instance;
 	}
 
-	protected function __construct() {}
+	protected function __construct() {
+	}
 
-	protected function __clone() {}
+	protected function __clone() {
+	}
 
-	public abstract function sendMessage($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information);
-	public abstract function getMessage($channel, $consumer, $producer='*', $userid='*');
-	public abstract function isMessageWaiting($channel, $consumer, $producer='*', $userid='*');
-	public abstract function rejectMessage($message, $invalidreason);
-	public abstract function subscribeToChannel($channel, $producer, $consumer, $callback);
-	public abstract function unsubscribeToChannel($channel, $producer, $consumer, $callback);
+	abstract public function sendMessage($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information);
+	abstract public function getMessage($channel, $consumer, $producer = '*', $userid = '*');
+	abstract public function isMessageWaiting($channel, $consumer, $producer = '*', $userid = '*');
+	abstract public function rejectMessage($message, $invalidreason);
+	abstract public function subscribeToChannel($channel, $producer, $consumer, $callback);
+	abstract public function unsubscribeToChannel($channel, $producer, $consumer, $callback);
 }

@@ -80,11 +80,9 @@ function getSharingUserName($id) {
 	global $adb,$current_user;
 	$user_details=Array();
 	$assigned_user_id = $current_user->id;
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	if($is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid('Calendar')] == 3 or $defaultOrgSharingPermission[getTabid('Calendar')] == 0))
-	{
-		$role_seq = implode($parent_roles, "::");
+	$userprivs = $current_user->getPrivileges();
+	if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid('Calendar'))) {
+		$role_seq = implode($userprivs->getParentRoles(), "::");
 		$query = "select id as id,user_name as user_name from vtiger_users where id=? and status='Active' union select vtiger_user2role.userid as id,vtiger_users.user_name as user_name from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like ? and status='Active' union select shareduserid as id,vtiger_users.user_name as user_name from vtiger_tmp_write_user_sharing_per inner join vtiger_users on vtiger_users.id=vtiger_tmp_write_user_sharing_per.shareduserid where status='Active' and vtiger_tmp_write_user_sharing_per.userid=? and vtiger_tmp_write_user_sharing_per.tabid=9";
 		$params = array($current_user->id, $role_seq."::%", $current_user->id);
 		if (!empty($assigned_user_id)) {
@@ -273,35 +271,24 @@ function getAssignedTo($tabid)
 {
 	global $current_user,$noof_group_rows,$adb;
 	$assigned_user_id = $current_user->id;
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	if($is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabid] == 3 or $defaultOrgSharingPermission[$tabid] == 0))
+	$userprivs = $current_user->getPrivileges();
+	if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabid))
 	{
 		$result=get_current_user_access_groups('Calendar');
+		$users_combo = get_select_options_array(get_user_array(FALSE, "Active", $assigned_user_id,'private'), $assigned_user_id);
 	}
 	else
 	{
 		$result = get_group_options();
+		$users_combo = get_select_options_array(get_user_array(FALSE, "Active", $assigned_user_id), $assigned_user_id);
 	}
-	if($result) $nameArray = $adb->fetch_array($result);
+	if ($result) $nameArray = $adb->fetch_array($result);
 
-	if($is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabid] == 3 or $defaultOrgSharingPermission[$tabid] == 0))
-	{
-		$user_array = get_user_array(FALSE, 'Active', $assigned_user_id,'private');
-	}
-	else
-	{
-		$user_array = get_user_array(FALSE, 'Active', $assigned_user_id);
-	}
-	$users_combo = get_select_options_array($user_array, $assigned_user_id);
-	$group_option = array();
 	if ($noof_group_rows!=0) {
-		do
-		{
+		do {
 			$groupname=$nameArray["groupname"];
-			$group_option[] = array($groupname=>false);
-
-		}while($nameArray = $adb->fetch_array($result));
+			$group_option[] = array($groupname=>$selected);
+		} while($nameArray = $adb->fetch_array($result));
 	}
 	$fieldvalue[] = $users_combo;
 	$fieldvalue[] = $group_option;
@@ -351,7 +338,7 @@ function getActivityDetails($description,$user_id,$from='') {
 	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$end_date_lable.' : '.$etdatetime->getDisplayDateTimeValue($inviteuser).' '.$inviteuser->column_fields['time_zone'];
 	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["LBL_STATUS"].': '.$status;
 	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["Priority"].': '.getTranslatedString($description['taskpriority']);
-	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["Related To"].': '.getTranslatedString($description['relatedto']);
+	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings['Related To'].': '.$description['relatedto'];
 	if(!empty($description['contact_name'])) {
 		$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["LBL_CONTACT_LIST"].' '.$description['contact_name'];
 	} else {

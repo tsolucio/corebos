@@ -7,7 +7,7 @@
 *  Author       : Odin Consultores S de RL de CV
 *  License      : MPL 1.1
 ***********************************************************/
-$mod_strings = Array (
+$mod_strings = array (
 'SINGLE_ModTracker' => 'Control de Cambios',
 'ModTracker' => 'Control de Cambios',
 'Visible'=>'Visibilidad de Módulos',

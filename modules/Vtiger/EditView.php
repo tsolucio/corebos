@@ -8,11 +8,46 @@
  * All Rights Reserved.
  ************************************************************************************/
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $adb;
-require_once('Smarty_setup.php');
+require_once 'Smarty_setup.php';
 
 $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
 
+$massedit1x1 = isset($_REQUEST['massedit1x1']) ? vtlib_purify($_REQUEST['massedit1x1']) : '0';
+if ($massedit1x1=='s') { // mass edit 1x1 start
+	$idstring = getSelectedRecords(
+		$_REQUEST,
+		$currentModule,
+		(isset($_REQUEST['allselectedboxes']) ? trim($_REQUEST['allselectedboxes'], ';') : ''),
+		(isset($_REQUEST['excludedRecords']) ? trim($_REQUEST['excludedRecords'], ';') : '')
+	);
+	coreBOS_Session::set('ME1x1Info', array(
+		'complete' => $idstring,
+		'processed' => array(),
+		'pending' => $idstring,
+		'next' => $idstring[0],
+	));
+}
+if (coreBOS_Session::has('ME1x1Info')) {
+	$ME1x1Info = coreBOS_Session::get('ME1x1Info', array());
+	$smarty->assign('MED1x1MODE', 1);
+	$smarty->assign('CANCELGO', 'index.php?action=ListView&massedit1x1=c&module='.$currentModule);
+	$_REQUEST['record'] = $ME1x1Info['next'];
+	$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-info');
+	$memsg = getTranslatedString('LBL_MASS_EDIT').':&nbsp;'.getTranslatedString('LBL_RECORD').(count($ME1x1Info['processed'])+1).'/'.count($ME1x1Info['complete']);
+	$smarty->assign('ERROR_MESSAGE', $memsg);
+	$smarty->assign('gobackBTN', count($ME1x1Info['processed'])==0);
+} else {
+	$smarty->assign('MED1x1MODE', 0);
+}
+if (!empty($_REQUEST['saverepeat'])) {
+	$_REQUEST = array_merge($_REQUEST, coreBOS_Session::get('saverepeatRequest', array()));
+	if (isset($_REQUEST['CANCELGO'])) {
+		$smarty->assign('CANCELGO', vtlib_purify($_REQUEST['CANCELGO']));
+	}
+} else {
+	coreBOS_Session::set('saverepeatRequest', $_REQUEST);
+}
 $smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 
 $category = getParentTab($currentModule);
@@ -34,7 +69,7 @@ if ($isduplicate == 'true') {
 	$smarty->assign('__cbisduplicatedfromrecordid', $record);
 }
 $focus->preEditCheck($_REQUEST, $smarty);
-if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
+if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == "true") {
 	if (!empty($_REQUEST['encode_val'])) {
 		global $current_user;
 		$encode_val = vtlib_purify($_REQUEST['encode_val']);
@@ -154,14 +189,14 @@ if ($focus->mode != 'edit' && $mod_seq_field != null) {
 	}
 	if ($adb->num_rows($mod_seq_string) == 0 || $focus->checkModuleSeqNumber($focus->table_name, $mod_seq_field['column'], $mod_seq_prefix.$mod_seq_no)) {
 		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
-		$smarty->assign('ERROR_MESSAGE', '<b>'. getTranslatedString($mod_seq_field['label']). ' '. getTranslatedString('LBL_NOT_CONFIGURED').' - '.
-			getTranslatedString('LBL_PLEASE_CLICK') .' <a href="index.php?module=Settings&action=CustomModEntityNo&parenttab=Settings&selmodule='.$currentModule.'">'.
-			getTranslatedString('LBL_HERE').'</a> '. getTranslatedString('LBL_TO_CONFIGURE'). ' '. getTranslatedString($mod_seq_field['label']) .'</b>');
+		$smarty->assign('ERROR_MESSAGE', '<b>'. getTranslatedString($mod_seq_field['label']). ' '. getTranslatedString('LBL_NOT_CONFIGURED')
+			.' - '. getTranslatedString('LBL_PLEASE_CLICK') .' <a href="index.php?module=Settings&action=CustomModEntityNo&parenttab=Settings&selmodule='
+			.$currentModule.'">'.getTranslatedString('LBL_HERE').'</a> '.getTranslatedString('LBL_TO_CONFIGURE').' '.getTranslatedString($mod_seq_field['label']).'</b>');
 	} else {
-		$smarty->assign("MOD_SEQ_ID", $autostr);
+		$smarty->assign('MOD_SEQ_ID', $autostr);
 	}
 } else {
-	if (!empty($mod_seq_field) and !empty($mod_seq_field['name']) and !empty($focus->column_fields[$mod_seq_field['name']])) {
+	if (!empty($mod_seq_field) && !empty($mod_seq_field['name']) && !empty($focus->column_fields[$mod_seq_field['name']])) {
 		$smarty->assign('MOD_SEQ_ID', $focus->column_fields[$mod_seq_field['name']]);
 	} else {
 		$smarty->assign('MOD_SEQ_ID', '');
@@ -171,7 +206,7 @@ if ($focus->mode != 'edit' && $mod_seq_field != null) {
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtlib_purify($_REQUEST['Module_Popup_Edit']) : 0);
-
-$picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
-$smarty->assign('PICKIST_DEPENDENCY_DATASOURCE', json_encode($picklistDependencyDatasource));
+$smarty->assign('SandRActive', GlobalVariable::getVariable('Application_SaveAndRepeatActive', 0, $currentModule));
+$cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
+$smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 ?>

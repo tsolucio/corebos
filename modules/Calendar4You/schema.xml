@@ -61,7 +61,8 @@
   `google_clientid` varchar(250) NOT NULL,
   `refresh_token` varchar(250) NOT NULL,
   `synctoken` varchar(250) NOT NULL,
-  `googleinsert` varchar(10) NOT NULL
+  `googleinsert` varchar(10) NOT NULL,
+  `service` varchar(30) NOT NULL
 ) ENGINE=InnoDB]]></sql>
 		</table>
 		<table>

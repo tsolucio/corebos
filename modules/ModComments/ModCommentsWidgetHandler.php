@@ -16,4 +16,4 @@ $widgetController = CRMEntity::getInstance($currentModule);
 $widgetInstance = $widgetController->getWidget($widgetName);
 $widgetInstance->setCriteria($criteria);
 
-echo $widgetInstance->process( array('ID' => vtlib_purify($_REQUEST['parentid'])) );
+echo $widgetInstance->process(array('ID' => vtlib_purify($_REQUEST['parentid'])));

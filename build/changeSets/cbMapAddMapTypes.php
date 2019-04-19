@@ -16,9 +16,11 @@
 
 class cbMapAddMapTypes extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -36,9 +38,11 @@ class cbMapAddMapTypes extends cbupdaterWorker {
 				'RelatedPanes',
 				'FieldInfo',
 				'GlobalSearchAutocomplete',
+				'Field Set Mapping',
+				'Detail View Layout Mapping',
 			);
 			$moduleInstance = Vtiger_Module::getInstance('cbMap');
-			$field = Vtiger_Field::getInstance('maptype',$moduleInstance);
+			$field = Vtiger_Field::getInstance('maptype', $moduleInstance);
 			if ($field) {
 				$field->setPicklistValues($cbmaptypes);
 			}
@@ -47,5 +51,4 @@ class cbMapAddMapTypes extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

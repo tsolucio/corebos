@@ -20,72 +20,74 @@
  * The accepted format is:
  <map>
   <originmodule>
-    <originname>Accounts</originname>
+	<originname>Accounts</originname>
   </originmodule>
   <panes>
-    <pane>
-      <label></label>
-      <sequence></sequence>
-      <defaultMoreInformation></defaultMoreInformation> special marker to get default application more information, if present the blocks sections is ignored
-      <blocks>
-       <block>
-        <label></label>
-        <sequence></sequence>
-        <type></type> RelatedList | Widget | CodeWithHeader | CodeWithoutHeader
-        <loadfrom></loadfrom> related list label or module id | file to load | widget reference
-        <loadphp></loadphp>
-        <handler_path></handler_path>
-        <handler_class></handler_class>
-        <handler></handler>
-       </block>
-      </blocks>
-    </pane>
-    .....
+	<pane>
+	  <label></label>
+	  <sequence></sequence>
+	  <defaultMoreInformation></defaultMoreInformation> special marker to get default application more information, if present the blocks sections is ignored
+	  <blocks>
+	   <block>
+		<label></label>
+		<sequence></sequence>
+		<type></type> RelatedList | Widget | CodeWithHeader | CodeWithoutHeader
+		<loadfrom></loadfrom> related list label or module id | file to load | widget reference
+		<loadphp></loadphp>
+		<handler_path></handler_path>
+		<handler_class></handler_class>
+		<handler></handler>
+	   </block>
+	  </blocks>
+	</pane>
+	.....
   </panes>
  </map>
  *************************************************************************************************/
-include_once('vtlib/Vtiger/Link.php');
+include_once 'vtlib/Vtiger/Link.php';
 
 class RelatedPanes extends processcbMap {
 
-	function getRelationIds($origintab,$mlist) {
+	private function getRelationIds($origintab, $mlist) {
 		global $adb;
 		$mlist = (array)$mlist;
 		$mlist_ids=array();
 		foreach ($mlist as $rellabel) {
 			$tid=getTabid($rellabel);
 			if (is_numeric($tid)) {
-				$resid=$adb->pquery('select relation_id,label from vtiger_relatedlists where tabid=? and related_tabid=?',array($origintab,$tid));
+				$resid=$adb->pquery('select relation_id,label from vtiger_relatedlists where tabid=? and related_tabid=?', array($origintab,$tid));
 			} else {
-				$resid=$adb->pquery('select relation_id,label from vtiger_relatedlists where tabid=? and label=?',array($origintab,$rellabel));
+				$resid=$adb->pquery('select relation_id,label from vtiger_relatedlists where tabid=? and label=?', array($origintab,$rellabel));
 			}
-			if($resid) {
+			if ($resid) {
 				$relid=$adb->fetch_row($resid);
-				if ($relid) $mlist_ids[$rellabel]=$relid[0];
+				if ($relid) {
+					$mlist_ids[$rellabel]=$relid[0];
+				}
 			}
 		}
 		return $mlist_ids;
 	}
 
-	function processMap($arguments) {
+	public function processMap($arguments) {
 		return $this->convertMap2Array($arguments[0]);
 	}
 
-	function convertMap2Array($crmid) {
+	private function convertMap2Array($crmid) {
 		global $current_user;
 		$xml = $this->getXMLContent();
 		$mapping=array();
 		$mapping['origin'] = (String)$xml->originmodule->originname;
 		$origintab=getTabid($mapping['origin']);
 		$mapping['panes'] = array();
-		foreach($xml->panes->pane as $k=>$v) {
-			$pane = array('label'=>getTranslatedString((String)$v->label,$mapping['origin']));
+		foreach ($xml->panes->pane as $k => $v) {
+			$pane = array('label'=>getTranslatedString((String)$v->label, $mapping['origin']));
 			$pane['blocks'] = $restrictedRelations = array();
 			if (isset($v->defaultMoreInformation)) {
 				$pane['label'] = getTranslatedString('LBL_MORE').' '.getTranslatedString('LBL_INFORMATION');
 				$rltb = getRelatedLists($mapping['origin'], '');
 				$seq=0;
-				foreach ($rltb as $label=>$relinfo) {
+				foreach ($rltb as $label => $relinfo) {
 					$block = array();
 					$block['type'] = 'RelatedList';
 					$block['sequence'] = $seq++;
@@ -96,26 +98,36 @@ class RelatedPanes extends processcbMap {
 				}
 				$pane['restrictedRelations'] = null;
 			} else {
-				foreach($v->blocks->block as $key=>$value) {
+				foreach ($v->blocks->block as $key => $value) {
 					$block = array();
 					$block['type'] = (String)$value->type;
 					$block['sequence'] = (String)$value->sequence;
-					$block['label'] = getTranslatedString((String)$value->label,$mapping['origin']);
+					$block['label'] = getTranslatedString((String)$value->label, $mapping['origin']);
 					$block['loadfrom'] = (String)$value->loadfrom;
 					$block['loadphp'] = (isset($value->loadphp) ? (String)$value->loadphp : '');
 					if ($block['type']=='RelatedList') {
-						if (is_numeric($block['loadfrom']) and !vtlib_isModuleActive($block['loadfrom'])) continue;
-						$rels = $this->getRelationIds($origintab,$block['loadfrom']);
-						$block['relatedid'] = $rels[$block['loadfrom']];
-						if (empty($block['label'])) $block['label'] = getTranslatedString($block['loadfrom'],$block['loadfrom']);
-						if (!empty($rels[$block['loadfrom']])) $restrictedRelations[] = $rels[$block['loadfrom']];
+						if (is_numeric($block['loadfrom']) && !vtlib_isModuleActive($block['loadfrom'])) {
+							continue;
+						}
+						$rels = $this->getRelationIds($origintab, $block['loadfrom']);
+						if (empty($block['label'])) {
+							$block['label'] = getTranslatedString($block['loadfrom'], $block['loadfrom']);
+						}
+						if (!empty($rels[$block['loadfrom']])) {
+							$block['relatedid'] = $rels[$block['loadfrom']];
+							$restrictedRelations[] = $rels[$block['loadfrom']];
+						} else {
+							$block['relatedid'] = 0;
+						}
 					} elseif ($block['type']=='Widget') {
 						$instance = new Vtiger_Link();
 						$row['tabid'] = $origintab;
 						$row['linkid'] = 0;
 						$row['linktype'] = 'DETAILVIEWWIDGET';
 						$row['linklabel'] = $block['label'];
-						if ($block['label']=='DetailViewBlockCommentWidget') $block['label'] = getTranslatedString('ModComments','ModComments');
+						if ($block['label']=='DetailViewBlockCommentWidget') {
+							$block['label'] = getTranslatedString('ModComments', 'ModComments');
+						}
 						$row['linkurl']  = decode_html($block['loadfrom']);
 						$row['linkicon'] = '';
 						$row['sequence'] = $block['sequence'];
@@ -129,7 +141,7 @@ class RelatedPanes extends processcbMap {
 							require_once $row['handler_path'];
 							$linkData = new Vtiger_LinkData($instance, $current_user);
 							$ignore = call_user_func(array($row['handler_class'], $row['handler']), $linkData);
-							if(!$ignore) {
+							if (!$ignore) {
 								continue; // Ignoring Link
 							}
 						}
@@ -149,6 +161,5 @@ class RelatedPanes extends processcbMap {
 		ksort($mapping['panes']);
 		return $mapping;
 	}
-
 }
 ?>

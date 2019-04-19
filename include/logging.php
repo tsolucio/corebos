@@ -18,7 +18,7 @@ require_once 'config.inc.php';
 // Performance Optimization: Configure the log folder
 if (!empty($LOG4PHP_DEBUG)) {
 	define('LOG4PHP_DIR', 'include/log4php.debug');
-	require_once(LOG4PHP_DIR.'/Logger.php');
+	require_once LOG4PHP_DIR.'/Logger.php';
 	Logger::configure('log4php.properties');
 	class LoggerManager {
 		public static function getlogger($name = 'ROOT') {

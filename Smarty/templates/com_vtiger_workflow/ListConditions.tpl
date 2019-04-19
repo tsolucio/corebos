@@ -14,7 +14,7 @@
 		<td class="big" nowrap="nowrap">
 			<strong>{$MOD.LBL_CONDITIONS}</strong>
 		</td>
-		<td class="small" align="right">
+		<td class="small cblds-t-align_right" align="right">
 			<span id="workflow_loading" style="display:none">
 			<b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0">
 			</span>
@@ -22,13 +22,6 @@
 		</td>
 	</tr>
 </table>
-{if $showreeval eq 'true'}
-<table class="tableHeading" width="100%" border="0" cellspacing="0" cellpadding="5">
-	<tr>
-	<td colspan=2><input type="checkbox" name="reevaluate" id="reevaluate" {if !$edit || !isset($task->reevaluate) || $task->reevaluate eq 1}checked{/if}>&nbsp;{$MOD.LBL_REEVALCONDITIONS}</td>
-	</tr>
-</table>
-{/if}
 <br>
 <div id="save_conditions"></div>
 <br>

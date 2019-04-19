@@ -16,8 +16,10 @@
 
 class delSettingsNotifications extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -28,49 +30,49 @@ class delSettingsNotifications extends cbupdaterWorker {
 			$this->sendMsg('You can find some additional information on our documentation site.');
 			// Send Reminder Notification
 			$wfrs = $adb->query("SELECT workflow_id FROM com_vtiger_workflows WHERE summary='Send Reminder Template' and module_name='Events'");
-			if ($wfrs and $adb->num_rows($wfrs)==1) {
+			if ($wfrs && $adb->num_rows($wfrs)==1) {
 				$this->sendMsg('Workfolw Send Reminder already exists!');
 			} else {
 				$workflowManager = new VTWorkflowManager($adb);
 				$taskManager = new VTTaskManager($adb);
-				
+
 				$potentailsWorkFlow = $workflowManager->newWorkFlow("Events");
 				$potentailsWorkFlow->test = '';
 				$potentailsWorkFlow->description = "Send Reminder Template";
 				$potentailsWorkFlow->executionCondition = VTWorkflowManager::$MANUAL;
 				$potentailsWorkFlow->defaultworkflow = 1;
 				$workflowManager->save($potentailsWorkFlow);
-				
+
 				$task = $taskManager->createTask('VTEmailTask', $potentailsWorkFlow->id);
 				$sql = 'select active,notificationsubject,notificationbody from vtiger_notificationscheduler where schedulednotificationid=8';
 				$result_main = $adb->pquery($sql, array());
 				$subject = '';
 				$content = '';
-				if ($result_main and $adb->num_rows($result_main)) {
+				if ($result_main && $adb->num_rows($result_main)) {
 					if ($adb->query_result($result_main, 0, 'active')==1) {
 						$task->active = true;
 					} else {
 						$task->active = false;
 					}
 					$subject = $adb->query_result($result_main, 0, 'notificationsubject');
-					$subject = getTranslatedString('Reminder','Calendar').' $activitytype @ $date_start $time_start'.
-						'] ($(general : (__VtigerMeta__) dbtimezone)) '.getTranslatedString($adb->query_result($result_main,0,'notificationsubject'),'Calendar');
-					$content = nl2br(getTranslatedString($adb->query_result($result_main,0,'notificationbody'),'Calendar')) ."\n\n ".
-						getTranslatedString('Subject','Calendar').' : $subject'."\n ".
-						getTranslatedString('Date & Time','Calendar').' : $date_start $time_start&nbsp;($(general : (__VtigerMeta__) dbtimezone))'."\n\n ".
-						getTranslatedString('Visit_Link','Calendar')." <a href='$(general : (__VtigerMeta__) crmdetailviewurl)'>".getTranslatedString('Click here','Calendar').'</a>';
+					$subject = getTranslatedString('Reminder', 'Calendar').' $activitytype @ $date_start $time_start'.
+						'] ($(general : (__VtigerMeta__) dbtimezone)) '.getTranslatedString($adb->query_result($result_main, 0, 'notificationsubject'), 'Calendar');
+					$content = nl2br(getTranslatedString($adb->query_result($result_main, 0, 'notificationbody'), 'Calendar')) ."\n\n ".
+						getTranslatedString('Subject', 'Calendar').' : $subject'."\n ".
+						getTranslatedString('Date & Time', 'Calendar').' : $date_start $time_start&nbsp;($(general : (__VtigerMeta__) dbtimezone))'."\n\n ".
+						getTranslatedString('Visit_Link', 'Calendar')." <a href='$(general : (__VtigerMeta__) crmdetailviewurl)'>".getTranslatedString('Click here', 'Calendar').'</a>';
 				} else {
 					$task->active = false;
 				}
 				if (empty($subject)) {
-					$subject = getTranslatedString('Reminder','Calendar').' $activitytype @ @$date_start $time_start'.
+					$subject = getTranslatedString('Reminder', 'Calendar').' $activitytype @ @$date_start $time_start'.
 						'] ($(general : (__VtigerMeta__) dbtimezone)) ';
 				}
 				if (empty($content)) {
 					$content = '<p>This is a reminder notification for the Activity<br />'."\n\n<br /> ".
-						getTranslatedString('Subject','Calendar').' : $subject'."\n ".
-						getTranslatedString('Date & Time','Calendar').' : $date_start $time_start&nbsp;($(general : (__VtigerMeta__) dbtimezone))'."\n\n ".
-						getTranslatedString('Visit_Link','Calendar')." <a href='$(general : (__VtigerMeta__) crmdetailviewurl)'>".getTranslatedString('Click here','Calendar').'</a></p>';
+						getTranslatedString('Subject', 'Calendar').' : $subject'."\n ".
+						getTranslatedString('Date & Time', 'Calendar').' : $date_start $time_start&nbsp;($(general : (__VtigerMeta__) dbtimezone))'."\n\n ".
+						getTranslatedString('Visit_Link', 'Calendar')." <a href='$(general : (__VtigerMeta__) crmdetailviewurl)'>".getTranslatedString('Click here', 'Calendar').'</a></p>';
 				}
 				$task->subject = $subject;
 				$task->content = $content;
@@ -86,12 +88,12 @@ class delSettingsNotifications extends cbupdaterWorker {
 			$this->ExecuteQuery('DELETE FROM vtiger_notificationscheduler WHERE schedulednotificationid = 8');
 			// Notify when a task is delayed beyond 24 hrs
 			$wfrs = $adb->query("SELECT workflow_id FROM com_vtiger_workflows WHERE summary='Notify when a task is delayed beyond 24 hrs' and module_name='Calendar'");
-			if ($wfrs and $adb->num_rows($wfrs)==1) {
+			if ($wfrs && $adb->num_rows($wfrs)==1) {
 				$this->sendMsg('Workfolw 24hrs already exists!');
 			} else {
 				$workflowManager = new VTWorkflowManager($adb);
 				$taskManager = new VTTaskManager($adb);
-				
+
 				$potentailsWorkFlow = $workflowManager->newWorkFlow("Calendar");
 				$potentailsWorkFlow->test = '[{"fieldname":"taskstatus","operation":"is not","value":"Completed","valuetype":"rawtext","joincondition":"and","groupid":"0"},{"fieldname":"date_start","operation":"less than days ago","value":"1","valuetype":"expression","joincondition":"and","groupid":"0"}]';
 				$potentailsWorkFlow->description = "Notify when a task is delayed beyond 24 hrs";
@@ -105,11 +107,11 @@ class delSettingsNotifications extends cbupdaterWorker {
 				$potentailsWorkFlow->nexttrigger_time = null;
 				$potentailsWorkFlow->schminuteinterval = 5;
 				$workflowManager->save($potentailsWorkFlow);
-				
+
 				$task = $taskManager->createTask('VTEmailTask', $potentailsWorkFlow->id);
 				$sql = 'select active,notificationsubject,notificationbody from vtiger_notificationscheduler where schedulednotificationid=1';
 				$result_main = $adb->pquery($sql, array());
-				if ($result_main and $adb->num_rows($result_main)) {
+				if ($result_main && $adb->num_rows($result_main)) {
 					if ($adb->query_result($result_main, 0, 'active')==1) {
 						$task->active = true;
 					} else {
@@ -118,10 +120,10 @@ class delSettingsNotifications extends cbupdaterWorker {
 				} else {
 					$task->active = false;
 				}
-				$subject = getTranslatedString('Task_Not_completed','Calendar').' : $subject';
-				$content = getTranslatedString('Dear_Admin_tasks_not_been_completed','Calendar')." ".getTranslatedString('LBL_SUBJECT','Calendar').
-					": $subject<br> ".getTranslatedString('LBL_ASSIGNED_TO','Calendar').": $(assigned_user_id : (Users) first_name) $(assigned_user_id : (Users) last_name)<br><br>".
-					getTranslatedString('Task_sign','Calendar');
+				$subject = getTranslatedString('Task_Not_completed', 'Calendar').' : $subject';
+				$content = getTranslatedString('Dear_Admin_tasks_not_been_completed', 'Calendar')." ".getTranslatedString('LBL_SUBJECT', 'Calendar').
+					": $subject<br> ".getTranslatedString('LBL_ASSIGNED_TO', 'Calendar').": $(assigned_user_id : (Users) first_name) $(assigned_user_id : (Users) last_name)<br><br>".
+					getTranslatedString('Task_sign', 'Calendar');
 				$task->subject = $subject;
 				$task->content = $content;
 				$task->summary = 'Delayed Task Notification';
@@ -146,12 +148,12 @@ class delSettingsNotifications extends cbupdaterWorker {
 			$this->ExecuteQuery('DELETE FROM vtiger_notificationscheduler WHERE schedulednotificationid = 4');
 			// Product Support Start Notification
 			$wfrs = $adb->query("SELECT workflow_id FROM com_vtiger_workflows WHERE summary='Product Support Starting' and module_name='Products'");
-			if ($wfrs and $adb->num_rows($wfrs)==1) {
+			if ($wfrs && $adb->num_rows($wfrs)==1) {
 				$this->sendMsg('Workfolw Product support starts already exists!');
 			} else {
 				$workflowManager = new VTWorkflowManager($adb);
 				$taskManager = new VTTaskManager($adb);
-				
+
 				$potentailsWorkFlow = $workflowManager->newWorkFlow("Products");
 				$potentailsWorkFlow->test = '[{"fieldname":"start_date","operation":"is","value":"get_date(\'today\')","valuetype":"expression","joincondition":"and","groupid":"0"}]';
 				$potentailsWorkFlow->description = "Product Support Starting";
@@ -165,11 +167,11 @@ class delSettingsNotifications extends cbupdaterWorker {
 				$potentailsWorkFlow->nexttrigger_time = null;
 				$potentailsWorkFlow->schminuteinterval = 5;
 				$workflowManager->save($potentailsWorkFlow);
-				
+
 				$task = $taskManager->createTask('VTEmailTask', $potentailsWorkFlow->id);
 				$sql = 'select active,notificationsubject,notificationbody from vtiger_notificationscheduler where schedulednotificationid=5';
 				$result_main = $adb->pquery($sql, array());
-				if ($result_main and $adb->num_rows($result_main)) {
+				if ($result_main && $adb->num_rows($result_main)) {
 					if ($adb->query_result($result_main, 0, 'active')==1) {
 						$task->active = true;
 					} else {
@@ -178,8 +180,8 @@ class delSettingsNotifications extends cbupdaterWorker {
 				} else {
 					$task->active = false;
 				}
-				$subject = getTranslatedString('Support_starting','Products');
-				$content = getTranslatedString('Hello_Support','Products').' $productname'."\n ".getTranslatedString('Congratulations');
+				$subject = getTranslatedString('Support_starting', 'Products');
+				$content = getTranslatedString('Hello_Support', 'Products').' $productname'."\n ".getTranslatedString('Congratulations');
 				$task->subject = $subject;
 				$task->content = $content;
 				$task->summary = 'Product Support Starting';
@@ -193,12 +195,12 @@ class delSettingsNotifications extends cbupdaterWorker {
 			}
 			// Product Support End Notification
 			$wfrs = $adb->query("SELECT workflow_id FROM com_vtiger_workflows WHERE summary='Product Support Ended' and module_name='Products'");
-			if ($wfrs and $adb->num_rows($wfrs)==1) {
+			if ($wfrs && $adb->num_rows($wfrs)==1) {
 				$this->sendMsg('Workfolw Product support Ended already exists!');
 			} else {
 				$workflowManager = new VTWorkflowManager($adb);
 				$taskManager = new VTTaskManager($adb);
-				
+
 				$potentailsWorkFlow = $workflowManager->newWorkFlow("Products");
 				$potentailsWorkFlow->test = '[{"fieldname":"expiry_date","operation":"is","value":"get_date(\'today\')","valuetype":"expression","joincondition":"and","groupid":"0"}]';
 				$potentailsWorkFlow->description = "Product Support Ended";
@@ -212,11 +214,11 @@ class delSettingsNotifications extends cbupdaterWorker {
 				$potentailsWorkFlow->nexttrigger_time = null;
 				$potentailsWorkFlow->schminuteinterval = 5;
 				$workflowManager->save($potentailsWorkFlow);
-				
+
 				$task = $taskManager->createTask('VTEmailTask', $potentailsWorkFlow->id);
 				$sql = 'select active,notificationsubject,notificationbody from vtiger_notificationscheduler where schedulednotificationid=5';
 				$result_main = $adb->pquery($sql, array());
-				if ($result_main and $adb->num_rows($result_main)) {
+				if ($result_main && $adb->num_rows($result_main)) {
 					if ($adb->query_result($result_main, 0, 'active')==1) {
 						$task->active = true;
 					} else {
@@ -225,8 +227,8 @@ class delSettingsNotifications extends cbupdaterWorker {
 				} else {
 					$task->active = false;
 				}
-				$subject = getTranslatedString('Support_Ending_Subject','Products');
-				$content = getTranslatedString('Support_Ending_Content','Products').' $productname'."\n ".getTranslatedString('kindly_renew');
+				$subject = getTranslatedString('Support_Ending_Subject', 'Products');
+				$content = getTranslatedString('Support_Ending_Content', 'Products').' $productname'."\n ".getTranslatedString('kindly_renew');
 				$task->subject = $subject;
 				$task->content = $content;
 				$task->summary = 'Product Support Ended';
@@ -241,12 +243,12 @@ class delSettingsNotifications extends cbupdaterWorker {
 			$this->ExecuteQuery('DELETE FROM vtiger_notificationscheduler WHERE schedulednotificationid = 5');
 			// Client End Support Notification 1 month
 			$wfrs = $adb->query("SELECT workflow_id FROM com_vtiger_workflows WHERE summary='Client End Support Notification 1 month' and module_name='Contacts'");
-			if ($wfrs and $adb->num_rows($wfrs)==1) {
+			if ($wfrs && $adb->num_rows($wfrs)==1) {
 				$this->sendMsg('Workfolw Client End Support Notification 1 month already exists!');
 			} else {
 				$workflowManager = new VTWorkflowManager($adb);
 				$taskManager = new VTTaskManager($adb);
-				
+
 				$potentailsWorkFlow = $workflowManager->newWorkFlow("Contacts");
 				$potentailsWorkFlow->test = '[{"fieldname":"support_end_date","operation":"is","value":"add_days(get_date(\'today\'), 30)","valuetype":"expression","joincondition":"and","groupid":"0"}]';
 				$potentailsWorkFlow->description = "Client End Support Notification 1 month";
@@ -260,7 +262,7 @@ class delSettingsNotifications extends cbupdaterWorker {
 				$potentailsWorkFlow->nexttrigger_time = null;
 				$potentailsWorkFlow->schminuteinterval = 5;
 				$workflowManager->save($potentailsWorkFlow);
-				
+
 				$task = $taskManager->createTask('VTEmailTask', $potentailsWorkFlow->id);
 				$task->active = false; // I leave this one deactivated, if it is needed the user must activate it
 				$subject = 'End of Support Notification';
@@ -282,12 +284,12 @@ class delSettingsNotifications extends cbupdaterWorker {
 			$this->ExecuteQuery('DELETE FROM vtiger_notificationscheduler WHERE schedulednotificationid = 6');
 			// Client End Support Notification week
 			$wfrs = $adb->query("SELECT workflow_id FROM com_vtiger_workflows WHERE summary='Client End Support Notification 1 week' and module_name='Contacts'");
-			if ($wfrs and $adb->num_rows($wfrs)==1) {
+			if ($wfrs && $adb->num_rows($wfrs)==1) {
 				$this->sendMsg('Workfolw Client End Support Notification 1 week already exists!');
 			} else {
 				$workflowManager = new VTWorkflowManager($adb);
 				$taskManager = new VTTaskManager($adb);
-				
+
 				$potentailsWorkFlow = $workflowManager->newWorkFlow("Contacts");
 				$potentailsWorkFlow->test = '[{"fieldname":"support_end_date","operation":"is","value":"add_days(get_date(\'today\'), 7)","valuetype":"expression","joincondition":"and","groupid":"0"}]';
 				$potentailsWorkFlow->description = "Client End Support Notification 1 week";
@@ -301,7 +303,7 @@ class delSettingsNotifications extends cbupdaterWorker {
 				$potentailsWorkFlow->nexttrigger_time = null;
 				$potentailsWorkFlow->schminuteinterval = 5;
 				$workflowManager->save($potentailsWorkFlow);
-				
+
 				$task = $taskManager->createTask('VTEmailTask', $potentailsWorkFlow->id);
 				$task->active = false; // I leave this one deactivated, if it is needed the user must activate it
 				$subject = 'End of Support Notification';
@@ -336,7 +338,7 @@ class delSettingsNotifications extends cbupdaterWorker {
 			$modname = 'InventoryDetails';
 			$module = Vtiger_Module::getInstance($modname);
 			$block = Vtiger_Block::getInstance('LBL_INVENTORYDETAILS_INFORMATION', $module);
-			$field = Vtiger_Field::getInstance('total_stock',$module);
+			$field = Vtiger_Field::getInstance('total_stock', $module);
 			if (!$field) {
 				$field1 = new Vtiger_Field();
 				$field1->name = 'total_stock';
@@ -368,5 +370,4 @@ class delSettingsNotifications extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

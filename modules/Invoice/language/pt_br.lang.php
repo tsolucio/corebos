@@ -1,196 +1,179 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
- * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the English language pack for Invoice module.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- ********************************************************************************/
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 13/05/2018 |Sao Paulo/SP/Brasil.|www.ecrmwen.com.br
+ * All Rights Reserved.
+ ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Fatura',
 'LBL_SO_MODULE_NAME'=>'Fatura',
-'LBL_RELATED_PRODUCTS'=>'Detalhes do Produto',
+'LBL_RELATED_PRODUCTS'=>'Detalhes do produto',
 'LBL_MODULE_TITLE'=>'Fatura: Principal',
-'LBL_SEARCH_FORM_TITLE'=>'Pesquisar Fatura',
-'LBL_LIST_FORM_TITLE'=>'Listar Fatura',
-'LBL_LIST_SO_FORM_TITLE'=>'Listar Pedidos Vendas',
-'LBL_NEW_FORM_TITLE'=>'Nova Fatura',
-'LBL_NEW_FORM_SO_TITLE'=>'Novo Pedido Vendas',
-'LBL_MEMBER_ORG_FORM_TITLE'=>'Organizações Membro',
+'LBL_SEARCH_FORM_TITLE'=>'Pesquisar fatura',
+'LBL_LIST_FORM_TITLE'=>'Listar fatura',
+'LBL_LIST_SO_FORM_TITLE'=>'Listar pedidos de vendas',
+'LBL_NEW_FORM_TITLE'=>'Nova fatura',
+'LBL_NEW_FORM_SO_TITLE'=>'Novo pedido de vendas',
+'LBL_MEMBER_ORG_FORM_TITLE'=>'Conta membro',
 
-'LBL_LIST_ACCOUNT_NAME'=>'Nome Organização',
+'LBL_LIST_ACCOUNT_NAME'=>'Nome de conta',
 'LBL_LIST_CITY'=>'Cidade',
 'LBL_LIST_WEBSITE'=>'Website',
 'LBL_LIST_STATE'=>'Estado',
 'LBL_LIST_PHONE'=>'Fone',
-'LBL_LIST_EMAIL_ADDRESS'=>'Endereço E-mail',
-'LBL_LIST_CONTACT_NAME'=>'Nome Contato',
-'LBL_ACCOUNT'=>'Organização:',
-'LBL_ACCOUNT_NAME'=>'Nome Organização:',
+'LBL_LIST_EMAIL_ADDRESS'=>'Endereço de E-mail',
+'LBL_LIST_CONTACT_NAME'=>'Nome de contato',
+'LBL_ACCOUNT'=>'Conta:',
+'LBL_ACCOUNT_NAME'=>'Nome de conta:',
 'LBL_PHONE'=>'Fone:',
 'LBL_WEBSITE'=>'Website:',
 'LBL_FAX'=>'Fax:',
 'LBL_TICKER_SYMBOL'=>'Cod. Bolsa:',
-'LBL_OTHER_PHONE'=>'Fone Alternativo:',
-'LBL_ANY_PHONE'=>'Outro Fone:',
+'LBL_OTHER_PHONE'=>'Telefone alternativo:',
+'LBL_ANY_PHONE'=>'Outro telefone:',
 'LBL_MEMBER_OF'=>'Membro de:',
 'LBL_EMAIL'=>'E-mail:',
 'LBL_EMPLOYEES'=>'Empregados:',
-'LBL_OTHER_EMAIL_ADDRESS'=>'E-mail Alternativo:',
+'LBL_OTHER_EMAIL_ADDRESS'=>'E-mail alternativo:',
 'LBL_ANY_EMAIL'=>'Outro E-mail:',
 'LBL_OWNERSHIP'=>'Propriedade:',
 'LBL_RATING'=>'Avaliação:',
 'LBL_INDUSTRY'=>'Atividade:',
-'LBL_SIC_CODE'=>'Cod CNAE:',
+'LBL_SIC_CODE'=>'Cód. CNAE:',
 'LBL_TYPE'=>'Tipo:',
-'LBL_ANNUAL_REVENUE'=>'Receita Anual:',
-'LBL_ADDRESS_INFORMATION'=>'Dados do Endereço',
-'LBL_Quote_INFORMATION'=>'Dados da Organização',
-'LBL_CUSTOM_INFORMATION'=>'Informação Customizada',
-'LBL_BILLING_ADDRESS'=>'Endereço Faturamento:',
-'LBL_SHIPPING_ADDRESS'=>'Endereço Entrega:',
-'LBL_ANY_ADDRESS'=>'Outro Endereço:',
+'LBL_ANNUAL_REVENUE'=>'Receita anual:',
+'LBL_ADDRESS_INFORMATION'=>'Dados do endereço',
+'LBL_Quote_INFORMATION'=>'Dados da conta',
+'LBL_CUSTOM_INFORMATION'=>'Informação personalizada',
+'LBL_BILLING_ADDRESS'=>'Endereço de faturação:',
+'LBL_SHIPPING_ADDRESS'=>'Endereço de entrega:',
+'LBL_ANY_ADDRESS'=>'Outro endereço:',
 'LBL_CITY'=>'Cidade:',
 'LBL_STATE'=>'Estado:',
 'LBL_POSTAL_CODE'=>'CEP:',
 'LBL_COUNTRY'=>'País:',
 'LBL_DESCRIPTION_INFORMATION'=>'Descrição',
+'LBL_Invoice_FINANCIALINFO' => 'Informação financeira',
 'LBL_DESCRIPTION'=>'Descrição:',
-'LBL_TERMS_INFORMATION'=>'Termos & Condições',
-'NTC_COPY_BILLING_ADDRESS'=>'Copiar endereço Faturamento para endereço de Entrega',
-'NTC_COPY_SHIPPING_ADDRESS'=>'Copiar endereço de Entrega para endereço de Faturamento',
-'NTC_REMOVE_MEMBER_ORG_CONFIRMATION'=>'Tem certeza que deseja remover este registro como um membro da organização?',
-'LBL_DUPLICATE'=>'Possibilidade Duplicação de Organizações',
-'MSG_DUPLICATE' => 'Criando esta Organização pode ser que a mesma seja duplicada. Você pode selecionar também uma Organização da lista abaixo ou clicar sobre Criar Nova Organização para continuar criando uma nova Organização com os dados inseridos anteriormente.',
+'LBL_TERMS_INFORMATION'=>'Termos e condições',
+'NTC_COPY_BILLING_ADDRESS'=>'Copiar endereço de faturação para endereço de entrega',
+'NTC_COPY_SHIPPING_ADDRESS'=>'Copiar endereço de entrega para endereço de faturação',
+'NTC_REMOVE_MEMBER_ORG_CONFIRMATION'=>'Tem a certeza que deseja remover este registo como membro da conta?',
+'LBL_DUPLICATE'=>'Possibilidade de duplicação de contas',
+'MSG_DUPLICATE' => 'Ao criar esta conta pode duplicá-la. Pode selecionar também uma conta da lista abaixo ou clicar sobre criar nova conta para continuar a criar uma nova conta com os dados inseridos anteriormente.',
 
 'LBL_INVITEE'=>'Contatos',
-'ERR_DELETE_RECORD'=>"Defina um número de registro para deletar a Organização.",
+'ERR_DELETE_RECORD'=>'Defina um número de registro para deletar a conta.',
 
-'LBL_SELECT_ACCOUNT'=>'Selecione a Organização',
-'LBL_GENERAL_INFORMATION'=>'Informação Geral',
+'LBL_SELECT_ACCOUNT'=>'Selecione a conta',
+'LBL_GENERAL_INFORMATION'=>'Informação geral',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nova Oportunidade',
 'LBL_POTENTIAL_TITLE' => 'Oportunidades',
 
-'LBL_NEW_TASK'=>'Nova Tarefa',
+'LBL_NEW_TASK'=>'Nova tarefa',
 'LBL_TASK_TITLE'=>'Tarefas',
-'LBL_NEW_CALL'=>'Nova Chamada',
+'LBL_NEW_CALL'=>'Nova chamada',
 'LBL_CALL_TITLE'=>'Chamadas',
-'LBL_NEW_MEETING'=>'Nova Reunião',
+'LBL_NEW_MEETING'=>'Nova reunião',
 'LBL_MEETING_TITLE'=>'Reuniões',
 'LBL_NEW_EMAIL'=>'Novo E-mail',
 'LBL_EMAIL_TITLE'=>'E-mails',
-'LBL_NEW_CONTACT'=>'Novo Contato',
+'LBL_NEW_CONTACT'=>'Novo contato',
 'LBL_CONTACT_TITLE'=>'Contatos',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'Todos',
 'LBL_PROSPECT'=>'Prospect',
 'LBL_INVESTOR'=>'Investidor',
 'LBL_RESELLER'=>'Revendedor',
 'LBL_PARTNER'=>'Parceiro',
 
-// Added for 4GA
-'LBL_TOOL_FORM_TITLE'=>'Ferramentas Organização',
-//Added for 4GA
+'LBL_TOOL_FORM_TITLE'=>'Ferramentas da Conta',
 'Subject'=>'Assunto',
-'Quote Name'=>'Nome Cotação',
-'Vendor Name'=>'Nome Fornecedor',
-'Invoice Terms'=>'Condições Fatura',
-'Contact Name'=>'Nome Contato', //to include contact name vtiger_field in Invoice
-'Invoice Date'=>'Data Fatura',
-'Sub Total'=>'Sub-Total',
-'S&H Amount' => 'Total Frete',
-'Due Date'=>'Data Vencimento',
+'Quote Name'=>'Nome cotação',
+'Vendor Name'=>'Nome fornecedor',
+'Invoice Terms'=>'Condições fatura',
+'Contact Name'=>'Nome contato',
+'Invoice Date'=>'Data da fatura',
+'Sub Total'=>'Sub-total',
+'S&H Amount' => 'Total frete',
+'Due Date'=>'Data de vencimento',
 'Carrier'=>'Transportador',
 'Type'=>'Tipo',
 'Sales Tax'=>'ICMS',
-'Sales Commission'=>'Comissão Vendas',
-'Excise Duty'=>'IPI',
+'Sales Commission'=>'Comissão de vendas',
+'Excise Duty'=>'IOF',
 'Total'=>'Total',
-'Product Name'=>'Nome Produto',
+'Product Name'=>'Nome do produto',
 'Assigned To'=>'Responsável',
-'Billing Address'=>'Endereço Faturamento',
-'Shipping Address'=>'Endereço Entrega',
-'Billing City'=>'Cidade Faturamento',
-'Billing State'=>'Estado Faturamento',
-'Billing Code'=>'CEP Faturamento',
-'Billing Country'=>'País Faturamento',
-'Billing Po Box'=>'Cx Postal Faturamento',
-'Shipping Po Box'=>'Cx Postal Entrega',
-'Shipping City'=>'Cidade Entrega',
-'Shipping State'=>'Estado Entrega',
-'Shipping Code'=>'CEP Entrega',
-'Shipping Country'=>'País Entrega',
+'Billing Address'=>'Endereço faturamento',
+'Shipping Address'=>'Endereço entrega',
+'Billing City'=>'Cidade faturamento',
+'Billing State'=>'Estado faturamento',
+'Billing Code'=>'CEP faturamento',
+'Billing Country'=>'País faturamento',
+'Billing Po Box'=>'Cx Postal faturamento',
+'Shipping Po Box'=>'Cx Postal entrega',
+'Shipping City'=>'Cidade entrega',
+'Shipping State'=>'Estado entrega',
+'Shipping Code'=>'CEP entrega',
+'Shipping Country'=>'País entrega',
 'City'=>'Cidade',
 'State'=>'Estado',
 'Code'=>'CEP',
 'Country'=>'País',
-'Created Time'=>'Data Criação',
-'Modified Time'=>'Data Modificação',
+'Created Time'=>'Data e hora da criação',
+'Modified Time'=>'Data e hora da modificação',
 'Description'=>'Descrição',
-'Potential Name'=>'Nome Oportunidade',
+'Potential Name'=>'Nome da Oportunidade',
 'Customer No'=>'Cod. Cliente',
-'Sales Order'=>'Pedido Vendas',
+'Sales Order'=>'Pedido de vendas',
 'Pending'=>'Pendente',
-'Account Name'=>'Nome Organização',
-'Terms & Conditions'=>'Prazos & Condições',
-//Quote Info
-'LBL_INVOICE_INFORMATION'=>'Informação Fatura',
+'Account Name'=>'Nome de Conta',
+'Terms & Conditions'=>'Termos e condições',
+'LBL_INVOICE_INFORMATION'=>'Informação da fatura',
 'LBL_INVOICE'=>'Fatura:',
-'LBL_SO_INFORMATION'=>'Dados do Pedido de Vendas',
-'LBL_SO'=>'Pedido Vendas:',
+'LBL_SO_INFORMATION'=>'Dados do pedido de vendas',
+'LBL_SO'=>'Pedido de vendas:',
 
-//Added in release 4.2
 'LBL_SUBJECT'=>'Assunto:',
-'LBL_SALES_ORDER'=>'Pedido Vendas:',
-'LBL_MY_TOP_INVOICE'=>'Principais Faturas Abertas',
-'LBL_INVOICE_NAME'=>'Nome Fatura:',
-'Purchase Order'=>'Pedido Compra:',
+'LBL_SALES_ORDER'=>'Pedido de vendas:',
+'LBL_MY_TOP_INVOICE'=>'Principais faturas abertas',
+'LBL_INVOICE_NAME'=>'Nome fatura:',
+'Purchase Order'=>'Pedido de compra:',
 'Status'=>'Status',
 'Id'=>'No. Fatura',
 'Invoice'=>'Fatura',
 
-//Added for existing Picklist Entries
-
 'Created'=>'Criada',
 'Approved'=>'Aprovada',
 'Sent'=>'Enviada',
-'Credit Invoice'=>'Creditar Fatura',
+'Credit Invoice'=>'Creditar fatura',
 'Paid'=>'Paga',
 'AutoCreated'=>'Auto Criado',
-//Added to Custom Invoice Number
-'Invoice No'=>'No. Fatura',
+'Invoice No'=>'No. fatura',
 'Adjustment'=>'Ajuste',
 
-//Added for Reports (5.0.4)
-'Tax Type'=>'Tipo Imposto',
-'Discount Percent'=>'Percentual Desconto',
-'Discount Amount'=>'Total Desconto',
+'Tax Type'=>'Tipo de imposto',
+'Discount Percent'=>'Percentual desconto',
+'Discount Amount'=>'Total desconto',
 'No'=>'Não',
 'Date'=>'Data',
 
-// Added affter 5.0.4 GA
-//Added for Documents module
 'Documents'=>'Documentos',
 
 'SINGLE_Invoice'=>'Fatura',
 'Invoice ID'=>'ID Fatura',
-);
 
+'LBL_PARTIAL_PAYMENTS_INFO' => 'Informação sobre Pagamentos Parciais (a Prestações)',
+'Amount Due'=>'Total a Pagar',
+'Amount Paid'=>'Total Pago',
+'Total Amount'=>'Total',
+);
 ?>

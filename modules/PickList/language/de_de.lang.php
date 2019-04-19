@@ -24,7 +24,6 @@ $mod_strings = array(
 	'LBL_PICKLIST_VALUES_ASSIGNED_TO'=>'Listeneintrag zuweisen für ',
 	'LBL_ADD_TO_OTHER_ROLES'=>'zu anderen Rollen hinzufügen',
 	'LBL_OK_BUTTON_LABEL'=>'OK',
-	'LBL_SELECT_ROLES'=>'Rollen auswählen',
 	'LBL_DISPLAYED_VALUES'=>'Alle Listeneinträge für die Rolle sind unten angezeigt',
 
 	// For Dependency picklist
@@ -45,6 +44,11 @@ $mod_strings = array(
 	'LBL_ADD_BUTTON' => 'Wert hinzufügen',
 	'LBL_EDIT_BUTTON' => 'Wert umbenennen',
 	'LBL_DELETE_BUTTON' => 'Wert löschen',
+	'LBL_MOVE_UP' => 'Nach oben bewegen',
+	'LBL_MOVE_DOWN' => 'Nach unten bewegen',
+	'LBL_MOVE_LEFT' => 'Nach links',
+	'LBL_MOVE_RIGHT' => 'Nach rechts',
+	'LBL_REMOVE' => 'Entfernen',
 	'NTC_DELETE_CONFIRMATION'=>'Sind Sie sicher, dass Sie diese Auswahllistabhängigkeit löschen wollen?',
 );
 ?>

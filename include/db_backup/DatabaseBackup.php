@@ -7,16 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-include_once('include/adodb/adodb.inc.php');
+include_once 'include/adodb/adodb.inc.php';
 
-$langString = array(
-	'SourceConnectFailed'=>'Source database connect failed',
-	'DestConnectFailed'=>'Destination database connect failed',
-	'TableListFetchError'=>'Failed to get Table List for database',
-	'SqlExecutionError'=>'Execution of following query failed',
-);
-
-class DatabaseConfig{
+class DatabaseConfig {
 	private $hostName = null;
 	private $username = null;
 	private $password = null;
@@ -25,7 +18,7 @@ class DatabaseConfig{
 	private $rootPassword = null;
 	private $dbType = null;
 
-	function __construct($dbserver, $username, $password,$dbName, $dbType = 'mysql', $rootusername='', $rootpassword='') {
+	public function __construct($dbserver, $username, $password, $dbName, $dbType = 'mysql', $rootusername = '', $rootpassword = '') {
 		$this->hostName = $dbserver;
 		$this->username = $username;
 		$this->password = $password;
@@ -41,9 +34,15 @@ class DatabaseConfig{
 	 */
 	public static function getInstanceFromConfigFile() {
 		require 'config.inc.php';
-		$config = new DatabaseConfig($dbconfig['db_hostname'], $dbconfig['db_username'],
-				$dbconfig['db_password'], $dbconfig['db_name'], $dbconfig['db_type'],
-				$dbconfig['db_username'], $dbconfig['db_password']);
+		$config = new DatabaseConfig(
+			$dbconfig['db_hostname'],
+			$dbconfig['db_username'],
+			$dbconfig['db_password'],
+			$dbconfig['db_name'],
+			$dbconfig['db_type'],
+			$dbconfig['db_username'],
+			$dbconfig['db_password']
+		);
 		return $config;
 	}
 
@@ -53,52 +52,57 @@ class DatabaseConfig{
 	 * @return DatabaseConfig
 	 */
 	public static function getInstanceFromOtherConfig($config) {
-		$newConfig = new DatabaseConfig($config->getHostName(), $config->getUsername(),
-				$config->getPassword(), $config->getDatabaseName(), $config->getDBType(),
-				$config->getRootUsername(), $config->getRootUsername());
+		$newConfig = new DatabaseConfig(
+			$config->getHostName(),
+			$config->getUsername(),
+			$config->getPassword(),
+			$config->getDatabaseName(),
+			$config->getDBType(),
+			$config->getRootUsername(),
+			$config->getRootUsername()
+		);
 		return $newConfig;
 	}
 
-	function getHostName(){
+	public function getHostName() {
 		return $this->hostName;
 	}
-	
-	function getUsername(){
+
+	public function getUsername() {
 		return $this->username;
 	}
-	
-	function getPassword(){
+
+	public function getPassword() {
 		return $this->password;
 	}
-	
-	function getRootUsername(){
+
+	public function getRootUsername() {
 		return $this->rootUsername;
 	}
-	
-	function getRootPassword(){
+
+	public function getRootPassword() {
 		return $this->rootPassword;
 	}
-	
-	function getDatabaseName(){
+
+	public function getDatabaseName() {
 		return $this->dbName;
 	}
 
-	function getDBType() {
+	public function getDBType() {
 		return $this->dbType;
 	}
 
-	function setDatabaseName($dbName) {
+	public function setDatabaseName($dbName) {
 		$this->dbName = $dbName;
 	}
 
-	function setRootUsername($rootUsername) {
+	public function setRootUsername($rootUsername) {
 		$this->rootUsername = $rootUsername;
 	}
 
-	function setRootPassword($rootPassword) {
+	public function setRootPassword($rootPassword) {
 		$this->rootPassword = $rootPassword;
 	}
-
 }
 
 class DatabaseBackup {
@@ -106,39 +110,34 @@ class DatabaseBackup {
 	private $source = null;
 	private $target = null;
 	private $skipStages = null;
-	public static $langString = null;
+	public static $langString = array(
+		'SourceConnectFailed'=>'Source database connect failed',
+		'DestConnectFailed'=>'Destination database connect failed',
+		'TableListFetchError'=>'Failed to get Table List for database',
+		'SqlExecutionError'=>'Execution of following query failed',
+	);
 
-	function __construct($source, $target,$skipStages = array()) {
-		if(!is_array(DatabaseBackup::$langString)){
-			DatabaseBackup::$langString = getLanguageStrings();
-		}
+	public function __construct($source, $target, $skipStages = array()) {
 		$this->skipStages = $skipStages;
 		$this->source = $source;
 		$this->target = $target;
 	}
 
-	function setSource($source){
+	public function setSource($source) {
 		$this->source = $source;
 	}
-	
-	function setTarget($target){
+
+	public function setTarget($target) {
 		$this->target = $target;
 	}
 
-	function backup(){
-		while($this->source->valid()) {
+	public function backup() {
+		while ($this->source->valid()) {
 			$info = $this->source->next();
-			if(!in_array($info['stage'],$this->skipStages)) {
-				$this->target->addStageData($info['stage'],$info['data']);
+			if (!in_array($info['stage'], $this->skipStages)) {
+				$this->target->addStageData($info['stage'], $info['data']);
 			}
 		}
 	}
-	
 }
-
-function getLanguageStrings(){
-	global $langString;
-	return $langString;
-}
-
 ?>

@@ -8,12 +8,12 @@
  * All Rights Reserved.
  *********************************************************************************/
 
-if($ajaxaction == "LOADRELATEDLIST") {
+if ($ajaxaction == 'LOADRELATEDLIST') {
 	global $relationId;
 	$relationId = vtlib_purify($_REQUEST['relation_id']);
-	if(!empty($relationId) && ((int)$relationId) > 0) {
+	if (!empty($relationId) && ((int)$relationId) > 0) {
 		$recordid = vtlib_purify($_REQUEST['record']);
-		if(empty($_SESSION['rlvs'][$currentModule][$relationId]['currentRecord']) or $_SESSION['rlvs'][$currentModule][$relationId]['currentRecord'] != $recordid) {
+		if (empty($_SESSION['rlvs'][$currentModule][$relationId]['currentRecord']) || $_SESSION['rlvs'][$currentModule][$relationId]['currentRecord'] != $recordid) {
 			$resetCookie = true;
 		} else {
 			$resetCookie = false;
@@ -25,63 +25,63 @@ if($ajaxaction == "LOADRELATEDLIST") {
 		$relationInfo = getRelatedListInfoById($relationId);
 		$relatedModule = getTabModuleName($relationInfo['relatedTabId']);
 		$function_name = $relationInfo['functionName'];
-		if (!method_exists($modObj,$function_name)) {
+		if (!method_exists($modObj, $function_name)) {
 			@include_once 'modules/'.$relatedModule.'/'.$function_name.'.php';
 			if (function_exists($function_name)) {
 				$modObj->registerMethod($function_name);
 			}
 		}
-		$relatedListData = $modObj->$function_name($recordid, getTabid($currentModule),$relationInfo['relatedTabId'], $actions);
-		require_once('Smarty_setup.php');
+		$relatedListData = $modObj->$function_name($recordid, getTabid($currentModule), $relationInfo['relatedTabId'], $actions);
+		require_once 'Smarty_setup.php';
 		global $theme, $mod_strings, $app_strings;
-		$theme_path="themes/".$theme."/";
-		$image_path=$theme_path."images/";
+		$theme_path='themes/'.$theme.'/';
+		$image_path=$theme_path.'images/';
 
 		$smarty = new vtigerCRM_Smarty;
 		$smarty->assign('RESET_COOKIE', $resetCookie);
 		// vtlib customization: Related module could be disabled, check it
-		if(is_array($relatedListData)) {
-			if( ($relatedModule == "Contacts" || $relatedModule == "Leads" || $relatedModule == "Accounts") && $currentModule == 'Campaigns' && !$resetCookie) {
+		if (is_array($relatedListData)) {
+			if (($relatedModule == 'Contacts' || $relatedModule == 'Leads' || $relatedModule == 'Accounts') && $currentModule == 'Campaigns' && !$resetCookie) {
 				// this logic is used for listview checkbox selection propagation.
-				$checkedRecordIdString = (empty($_REQUEST[$relatedModule.'_all']) ? (empty($_COOKIE[$relatedModule.'_all']) ? '' : $_COOKIE[$relatedModule.'_all']) : $_REQUEST[$relatedModule.'_all']);
-				$checkedRecordIdString = rtrim($checkedRecordIdString,';');
+				$checkedRecordIdString = (empty($_REQUEST[$relatedModule.'_all']) ?
+					(empty($_COOKIE[$relatedModule.'_all']) ? '' : $_COOKIE[$relatedModule.'_all']) : $_REQUEST[$relatedModule.'_all']);
+				$checkedRecordIdString = rtrim($checkedRecordIdString, ';');
 				$checkedRecordIdList = explode(';', $checkedRecordIdString);
-				$relatedListData["checked"]=array();
+				$relatedListData['checked']=array();
 				if (isset($relatedListData['entries'])) {
-					foreach($relatedListData['entries'] as $key=>$val) {
-						if(in_array($key,$checkedRecordIdList)) {
-							$relatedListData["checked"][$key] = 'checked';
+					foreach ($relatedListData['entries'] as $key => $val) {
+						if (in_array($key, $checkedRecordIdList)) {
+							$relatedListData['checked'][$key] = 'checked';
 						} else {
-							$relatedListData["checked"][$key] = '';
+							$relatedListData['checked'][$key] = '';
 						}
 					}
 				}
-				$smarty->assign("SELECTED_RECORD_LIST", $checkedRecordIdString);
+				$smarty->assign('SELECTED_RECORD_LIST', $checkedRecordIdString);
 			}
 		}
-		// END
-		require_once('include/ListView/RelatedListViewSession.php');
-		RelatedListViewSession::addRelatedModuleToSession($relationId,$header);
+		require_once 'include/ListView/RelatedListViewSession.php';
+		RelatedListViewSession::addRelatedModuleToSession($relationId, $header);
 
-		$smarty->assign("MOD", $mod_strings);
-		$smarty->assign("APP", $app_strings);
-		$smarty->assign("THEME", $theme);
-		$smarty->assign("IMAGE_PATH", $image_path);
-		$smarty->assign("ID",$recordid);
-		$smarty->assign("MODULE",$currentModule);
-		$smarty->assign("RELATED_MODULE",$relatedModule);
-		$smarty->assign("HEADER",$header);
-		$smarty->assign("RELATEDLISTDATA", $relatedListData);
+		$smarty->assign('MOD', $mod_strings);
+		$smarty->assign('APP', $app_strings);
+		$smarty->assign('THEME', $theme);
+		$smarty->assign('IMAGE_PATH', $image_path);
+		$smarty->assign('ID', $recordid);
+		$smarty->assign('MODULE', $currentModule);
+		$smarty->assign('RELATED_MODULE', $relatedModule);
+		$smarty->assign('HEADER', $header);
+		$smarty->assign('RELATEDLISTDATA', $relatedListData);
 
-		$smarty->display("RelatedListDataContents.tpl");
+		$smarty->display('RelatedListDataContents.tpl');
 	}
-}else if($ajaxaction == "DISABLEMODULE"){
+} elseif ($ajaxaction == 'DISABLEMODULE') {
 	$relationId = vtlib_purify($_REQUEST['relation_id']);
-	if(!empty($relationId) && ((int)$relationId) > 0) {
+	if (!empty($relationId) && ((int)$relationId) > 0) {
 		$header = vtlib_purify($_REQUEST['header']);
-		require_once('include/ListView/RelatedListViewSession.php');
-		RelatedListViewSession::removeRelatedModuleFromSession($relationId,$header);
+		require_once 'include/ListView/RelatedListViewSession.php';
+		RelatedListViewSession::removeRelatedModuleFromSession($relationId, $header);
 	}
-	echo "SUCCESS";
+	echo 'SUCCESS';
 }
 ?>

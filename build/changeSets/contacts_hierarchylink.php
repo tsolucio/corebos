@@ -21,24 +21,30 @@ class contacts_hierarchylink extends cbupdaterWorker {
 	private $link_url = 'index.php?module=Contacts&action=ContactHierarchy&contactid=$RECORD$';
 	private $link_order = 5;
 	private $link_image = 'themes/images/hierarchy_color16.png';
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$moduleInstance = Vtiger_Module::getInstance($this->link_module);
-			$moduleInstance->addLink($this->link_type, $this->label, $this->link_url, $this->link_image,$this->link_order);
-			$this->ExecuteQuery("UPDATE vtiger_links SET linkicon='themes/images/hierarchy_color16.png' WHERE linklabel=? and linktype=? and tabid=6",
-				array('LBL_SHOW_ACCOUNT_HIERARCHY','DETAILVIEWBASIC'));
+			$moduleInstance->addLink($this->link_type, $this->label, $this->link_url, $this->link_image, $this->link_order);
+			$this->ExecuteQuery(
+				"UPDATE vtiger_links SET linkicon='themes/images/hierarchy_color16.png' WHERE linklabel=? and linktype=? and tabid=6",
+				array('LBL_SHOW_ACCOUNT_HIERARCHY','DETAILVIEWBASIC')
+			);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
 
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			// undo your magic here
 			$moduleInstance = Vtiger_Module::getInstance($this->link_module);
@@ -50,5 +56,4 @@ class contacts_hierarchylink extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

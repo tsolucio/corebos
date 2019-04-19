@@ -7,30 +7,32 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
+include_once 'include/Webservices/CustomerPortalWS.php';
+include_once 'include/Webservices/getRecordImages.php';
 
-function vtws_update($element,$user) {
+function vtws_update($element, $user) {
 	global $log,$adb,$root_directory;
 	$idList = vtws_getIdComponents($element['id']);
-	if ((vtws_getEntityId('Calendar')==$idList[0] or vtws_getEntityId('Events')==$idList[0]) and getSalesEntityType($idList[1])=='cbCalendar') {
+	if ((vtws_getEntityId('Calendar')==$idList[0] || vtws_getEntityId('Events')==$idList[0]) && getSalesEntityType($idList[1])=='cbCalendar') {
 		$idList[0] = vtws_getEntityId('cbCalendar') . 'x' . $idList[1];
 	}
-	if (vtws_getEntityId('cbCalendar')==$idList[0] and getSalesEntityType($idList[1])=='Calendar') {
+	if (vtws_getEntityId('cbCalendar')==$idList[0] && getSalesEntityType($idList[1])=='Calendar') {
 		$rs = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($idList[1]));
-		if ($rs and $adb->num_rows($rs)==1) {
-			if ($adb->query_result($rs,0,0)=='Task') {
+		if ($rs && $adb->num_rows($rs)==1) {
+			if ($adb->query_result($rs, 0, 0)=='Task') {
 				$idList[0] = vtws_getEntityId('Calendar') . 'x' . $idList[1];
 			} else {
 				$idList[0] = vtws_getEntityId('Events') . 'x' . $idList[1];
 			}
 		}
 	}
-	$webserviceObject = VtigerWebserviceObject::fromId($adb,$idList[0]);
+	$webserviceObject = VtigerWebserviceObject::fromId($adb, $idList[0]);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
 
 	require_once $handlerPath;
 
-	$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
+	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 	$meta = $handler->getMeta();
 	$entityName = $meta->getObjectEntityName($element['id']);
 
@@ -50,46 +52,44 @@ function vtws_update($element,$user) {
 	}
 
 	$types = vtws_listtypes(null, $user);
-	if (!in_array($entityName,$types['types'])) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to perform the operation is denied");
+	if (!in_array($entityName, $types['types'])) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
 	}
 
 	if ($entityName !== $webserviceObject->getEntityName()) {
-		throw new WebServiceException(WebServiceErrorCode::$INVALIDID,"Id specified is incorrect");
+		throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
 	}
 
-	if (!$meta->hasPermission(EntityMeta::$UPDATE,$element['id'])) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to read given object is denied");
+	if (!$meta->hasPermission(EntityMeta::$UPDATE, $element['id'])) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
 	}
 
 	if (!$meta->exists($idList[1])) {
-		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND,"Record you are trying to access is not found");
+		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
 	}
 
 	if ($meta->hasWriteAccess()!==true) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to write is denied");
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to write is denied');
 	}
 
 	$referenceFields = $meta->getReferenceFieldDetails();
-	foreach ($referenceFields as $fieldName=>$details) {
+	foreach ($referenceFields as $fieldName => $details) {
 		if (isset($element[$fieldName]) && strlen($element[$fieldName]) > 0) {
 			$ids = vtws_getIdComponents($element[$fieldName]);
 			$elemTypeId = $ids[0];
-			$elemId = $ids[1];
-			$referenceObject = VtigerWebserviceObject::fromId($adb,$elemTypeId);
-			if (!in_array($referenceObject->getEntityName(),$details)) {
+			$referenceObject = VtigerWebserviceObject::fromId($adb, $elemTypeId);
+			if (!in_array($referenceObject->getEntityName(), $details)) {
 				throw new WebServiceException(WebServiceErrorCode::$REFERENCEINVALID, "Invalid reference specified for $fieldName");
 			}
 			if ($referenceObject->getEntityName() == 'Users') {
-				if(!$meta->hasAssignPrivilege($element[$fieldName])) {
-					throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Cannot assign record to the given user");
+				if (!$meta->hasAssignPrivilege($element[$fieldName])) {
+					throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Cannot assign record to the given user');
 				}
 			}
 			if (!in_array($referenceObject->getEntityName(), $types['types']) && $referenceObject->getEntityName() != 'Users') {
-				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,
-					"Permission to access reference type is denied ".$referenceObject->getEntityName());
+				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to access reference type is denied '.$referenceObject->getEntityName());
 			}
-		} else if (isset($element[$fieldName]) and $element[$fieldName] !== NULL) {
+		} elseif (isset($element[$fieldName]) && $element[$fieldName] !== null) {
 			unset($element[$fieldName]);
 		}
 	}
@@ -100,7 +100,7 @@ function vtws_update($element,$user) {
 	if (is_array($ownerFields)) {
 		foreach ($ownerFields as $ownerField) {
 			if (isset($element[$ownerField]) && $element[$ownerField]!==null && !$meta->hasAssignPrivilege($element[$ownerField])) {
-				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Cannot assign record to the given user");
+				throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Cannot assign record to the given user');
 			}
 		}
 	}
@@ -114,8 +114,8 @@ function vtws_update($element,$user) {
 	if ($entityName == 'HelpDesk') {
 		//Added to construct the update log for Ticket history
 		$colflds = $element;
-		list($void,$colflds['assigned_user_id']) = explode('x', $colflds['assigned_user_id']);
-		$updlog = HelpDesk::getUpdateLogEditMessage($idList[1], $colflds);
+		list($void, $colflds['assigned_user_id']) = explode('x', $colflds['assigned_user_id']);
+		$updlog = HelpDesk::getUpdateLogEditMessage($idList[1], $colflds, 'U');
 	}
 	$entity = $handler->update($element);
 	if ($entityName == 'HelpDesk') {
@@ -123,11 +123,42 @@ function vtws_update($element,$user) {
 	}
 	VTWS_PreserveGlobal::flush();
 	if (!empty($_FILES)) {
-		foreach ($_FILES as $field => $file) {
+		foreach ($_FILES as $file) {
 			unlink($file['tmp_name']);
+		}
+	}
+	// Dereference WSIDs
+	$r = $meta->getReferenceFieldDetails();
+	$listofrelfields = array();
+	if (!empty($entity['assigned_user_id'])) {
+		$r['assigned_user_id'] = array('Users');
+		$listofrelfields[] = $entity['assigned_user_id'];
+	}
+	foreach ($r as $relfield => $mods) {
+		if (!empty($entity[$relfield])) {
+			$listofrelfields[] = $entity[$relfield];
+		}
+	}
+	if (count($listofrelfields)>0) {
+		$deref = unserialize(vtws_getReferenceValue(serialize($listofrelfields), $user));
+		foreach ($r as $relfield => $mods) {
+			if (!empty($entity[$relfield])) {
+				$entity[$relfield.'ename'] = $deref[$entity[$relfield]];
+			}
+		}
+	}
+	// Add attachment information
+	$imgs = $meta->getImageFields();
+	if (count($imgs)>0) {
+		$imginfo = cbws_getrecordimageinfo($element['id'], $user);
+		if ($imginfo['results']>0) {
+			foreach ($imgs as $img) {
+				if (!empty($entity[$img])) {
+					$entity[$img.'imageinfo'] = $imginfo['images'][$img];
+				}
+			}
 		}
 	}
 	return $entity;
 }
-
 ?>

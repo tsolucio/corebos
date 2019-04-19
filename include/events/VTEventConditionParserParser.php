@@ -32,20 +32,20 @@ class VTEventConditionParserParser extends AntlrParser {
 	// delegates
 	// delegators
 
-	static $FOLLOW_comparision_in_statement57;
-	static $FOLLOW_inclause_in_statement63;
-	static $FOLLOW_SYMBOL_in_comparision78;
-	static $FOLLOW_13_in_comparision80;
-	static $FOLLOW_value_in_comparision84;
-	static $FOLLOW_SYMBOL_in_inclause101;
-	static $FOLLOW_IN_in_inclause103;
-	static $FOLLOW_listelement_in_inclause107;
-	static $FOLLOW_14_in_listelement122;
-	static $FOLLOW_value_in_listelement126;
-	static $FOLLOW_15_in_listelement137;
-	static $FOLLOW_value_in_listelement141;
-	static $FOLLOW_16_in_listelement147;
-	static $FOLLOW_STRING_in_value162;
+	public static $FOLLOW_comparision_in_statement57;
+	public static $FOLLOW_inclause_in_statement63;
+	public static $FOLLOW_SYMBOL_in_comparision78;
+	public static $FOLLOW_13_in_comparision80;
+	public static $FOLLOW_value_in_comparision84;
+	public static $FOLLOW_SYMBOL_in_inclause101;
+	public static $FOLLOW_IN_in_inclause103;
+	public static $FOLLOW_listelement_in_inclause107;
+	public static $FOLLOW_14_in_listelement122;
+	public static $FOLLOW_value_in_listelement126;
+	public static $FOLLOW_15_in_listelement137;
+	public static $FOLLOW_value_in_listelement141;
+	public static $FOLLOW_16_in_listelement147;
+	public static $FOLLOW_STRING_in_value162;
 
 	public function __construct($input, $state = null) {
 		if ($state==null) {
@@ -72,7 +72,7 @@ class VTEventConditionParserParser extends AntlrParser {
 
 	// $ANTLR start "statement"
 	///* VTEventConditionParser.g:33:1: statement returns [result] : (exp= comparision | exp= inclause ) ; */
-	public function statement(){
+	public function statement() {
 		$result = null;
 		$exp = null;
 
@@ -80,51 +80,53 @@ class VTEventConditionParserParser extends AntlrParser {
 			$alt1=2;
 			$LA1_0 = $this->input->LA(1);
 
-			if ( ($LA1_0==$this->getToken('SYMBOL')) ) {
+			if (($LA1_0==$this->getToken('SYMBOL'))) {
 				$LA1_1 = $this->input->LA(2);
 
-				if ( ($LA1_1==$this->getToken('13')) ) {
+				if (($LA1_1==$this->getToken('13'))) {
 					$alt1=1;
-				} else if ( ($LA1_1==$this->getToken('IN')) ) {
+				} elseif (($LA1_1==$this->getToken('IN'))) {
 					$alt1=2;
 				} else {
 					if ($this->state->backtracking>0) {
-						$this->state->failed=true; return $result;
+						$this->state->failed=true;
+						return $result;
 					}
 					$nvae = new NoViableAltException("", 1, 1, $this->input);
 					throw $nvae;
 				}
 			} else {
 				if ($this->state->backtracking>0) {
-					$this->state->failed=true; return $result;
+					$this->state->failed=true;
+					return $result;
 				}
 				$nvae = new NoViableAltException("", 1, 0, $this->input);
 				throw $nvae;
 			}
 			switch ($alt1) {
-				case 1 :
+				case 1:
 					$this->pushFollow(self::$FOLLOW_comparision_in_statement57);
 					$exp=$this->comparision();
 					$this->state->_fsp--;
-					if ($this->state->failed)
+					if ($this->state->failed) {
 						return $result;
+					}
 					break;
-				case 2 :
+				case 2:
 					$this->pushFollow(self::$FOLLOW_inclause_in_statement63);
 					$exp=$this->inclause();
 					$this->state->_fsp--;
-					if ($this->state->failed)
+					if ($this->state->failed) {
 						return $result;
+					}
 					break;
 			}
-			if ( $this->state->backtracking==0 ) {
+			if ($this->state->backtracking==0) {
 				$result=$exp;
 			}
-		}
-		catch (RecognitionException $e) {
+		} catch (RecognitionException $e) {
 			throw $e;
-		}
-		catch (Exception $e) {
+		} catch (Exception $e) {
 			throw $e;
 		}
 
@@ -139,22 +141,26 @@ class VTEventConditionParserParser extends AntlrParser {
 		$lhs=null;
 		$rhs = null;
 		try {
-			$lhs=$this->match($this->input,$this->getToken('SYMBOL'),self::$FOLLOW_SYMBOL_in_comparision78);
-			if ($this->state->failed) return $result;
-			$this->match($this->input,$this->getToken('13'),self::$FOLLOW_13_in_comparision80);
-			if ($this->state->failed) return $result;
+			$lhs=$this->match($this->input, $this->getToken('SYMBOL'), self::$FOLLOW_SYMBOL_in_comparision78);
+			if ($this->state->failed) {
+				return $result;
+			}
+			$this->match($this->input, $this->getToken('13'), self::$FOLLOW_13_in_comparision80);
+			if ($this->state->failed) {
+				return $result;
+			}
 			$this->pushFollow(self::$FOLLOW_value_in_comparision84);
 			$rhs=$this->value();
 			$this->state->_fsp--;
-			if ($this->state->failed) return $result;
-			if ( $this->state->backtracking==0 ) {
+			if ($this->state->failed) {
+				return $result;
+			}
+			if ($this->state->backtracking==0) {
 				$result=array('==', new VTEventConditionSymbol(($lhs!=null?$lhs->getText():null)), $rhs);
 			}
-		}
-		catch (RecognitionException $e) {
+		} catch (RecognitionException $e) {
 			throw $e;
-		}
-		catch (Exception $e) {
+		} catch (Exception $e) {
 			throw $e;
 		}
 		return $result;
@@ -168,22 +174,26 @@ class VTEventConditionParserParser extends AntlrParser {
 		$lhs=null;
 		$rhs = null;
 		try {
-			$lhs=$this->match($this->input,$this->getToken('SYMBOL'),self::$FOLLOW_SYMBOL_in_inclause101);
-			if ($this->state->failed) return $result;
-			$this->match($this->input,$this->getToken('IN'),self::$FOLLOW_IN_in_inclause103);
-			if ($this->state->failed) return $result;
+			$lhs=$this->match($this->input, $this->getToken('SYMBOL'), self::$FOLLOW_SYMBOL_in_inclause101);
+			if ($this->state->failed) {
+				return $result;
+			}
+			$this->match($this->input, $this->getToken('IN'), self::$FOLLOW_IN_in_inclause103);
+			if ($this->state->failed) {
+				return $result;
+			}
 			$this->pushFollow(self::$FOLLOW_listelement_in_inclause107);
 			$rhs=$this->listelement();
 			$this->state->_fsp--;
-			if ($this->state->failed) return $result;
-			if ( $this->state->backtracking==0 ) {
+			if ($this->state->failed) {
+				return $result;
+			}
+			if ($this->state->backtracking==0) {
 				$result=array('in', new VTEventConditionSymbol(($lhs!=null?$lhs->getText():null)), $rhs);
 			}
-		}
-		catch (RecognitionException $e) {
+		} catch (RecognitionException $e) {
 			throw $e;
-		}
-		catch (Exception $e) {
+		} catch (Exception $e) {
 			throw $e;
 		}
 		return $result;
@@ -196,13 +206,17 @@ class VTEventConditionParserParser extends AntlrParser {
 		$result = null;
 		$val = null;
 		try {
-			$this->match($this->input,$this->getToken('14'),self::$FOLLOW_14_in_listelement122);
-			if ($this->state->failed) return $result;
+			$this->match($this->input, $this->getToken('14'), self::$FOLLOW_14_in_listelement122);
+			if ($this->state->failed) {
+				return $result;
+			}
 			$this->pushFollow(self::$FOLLOW_value_in_listelement126);
 			$val=$this->value();
 			$this->state->_fsp--;
-			if ($this->state->failed) return $result;
-			if ($this->state->backtracking==0 ) {
+			if ($this->state->failed) {
+				return $result;
+			}
+			if ($this->state->backtracking==0) {
 				$result = array('list', $val);
 			}
 			//loop2:
@@ -210,34 +224,38 @@ class VTEventConditionParserParser extends AntlrParser {
 				$alt2=2;
 				$LA2_0 = $this->input->LA(1);
 
-				if ( ($LA2_0==$this->getToken('15')) ) {
+				if (($LA2_0==$this->getToken('15'))) {
 					$alt2=1;
 				}
 
 				switch ($alt2) {
-					case 1 :
-						$this->match($this->input,$this->getToken('15'),self::$FOLLOW_15_in_listelement137);
-						if ($this->state->failed) return $result;
+					case 1:
+						$this->match($this->input, $this->getToken('15'), self::$FOLLOW_15_in_listelement137);
+						if ($this->state->failed) {
+							return $result;
+						}
 						$this->pushFollow(self::$FOLLOW_value_in_listelement141);
 						$val=$this->value();
 						$this->state->_fsp--;
-						if ($this->state->failed) return $result;
-						if ( $this->state->backtracking==0 ) {
+						if ($this->state->failed) {
+							return $result;
+						}
+						if ($this->state->backtracking==0) {
 							$result[] = $val;
 						}
 						break;
-					default :
+					default:
 						break 2;//loop2;
 				}
 			} while (true);
 
-			$this->match($this->input,$this->getToken('16'),self::$FOLLOW_16_in_listelement147);
-			if ($this->state->failed) return $result;
-		}
-		catch (RecognitionException $e) {
+			$this->match($this->input, $this->getToken('16'), self::$FOLLOW_16_in_listelement147);
+			if ($this->state->failed) {
+				return $result;
+			}
+		} catch (RecognitionException $e) {
 			throw $e;
-		}
-		catch (Exception $e) {
+		} catch (Exception $e) {
 			throw $e;
 		}
 		return $result;
@@ -246,20 +264,20 @@ class VTEventConditionParserParser extends AntlrParser {
 
 	// $ANTLR start "value"
 	///* VTEventConditionParser.g:44:1: value returns [result] : val= STRING ; */
-	public function value(){
+	public function value() {
 		$result = null;
 		$val=null;
 		try {
-			$val=$this->match($this->input,$this->getToken('STRING'),self::$FOLLOW_STRING_in_value162);
-			if ($this->state->failed) return $result;
-			if ( $this->state->backtracking==0 ) {
+			$val=$this->match($this->input, $this->getToken('STRING'), self::$FOLLOW_STRING_in_value162);
+			if ($this->state->failed) {
+				return $result;
+			}
+			if ($this->state->backtracking==0) {
 				$result = stripcslashes(substr(($val!=null?$val->getText():null), 1, strlen(($val!=null?$val->getText():null))-2));
 			}
-		}
-		catch (RecognitionException $e) {
+		} catch (RecognitionException $e) {
 			throw $e;
-		}
-		catch (Exception $e) {
+		} catch (Exception $e) {
 			throw $e;
 		}
 		return $result;

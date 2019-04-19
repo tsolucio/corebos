@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$mod_strings = Array (
-	
+
+$mod_strings = array (
 	'ConfigEditor' => 'ConfigEditor',
 	'LBL_CONFIG_EDITOR' => 'Configurazione',
 	'LBL_CONFIG_EDIT'=>'Modificare i dettagli di configurazione di vtiger CRM',
@@ -41,7 +41,5 @@ $mod_strings = Array (
 	'LBL_DOUBLE_CHECK_INFO'=>'controlla bene prima di salvare.',
 	'LBL_HELP_INFO'=>"Questo campo viene utilizzato come una 'From email-id' per inviare una mail a un nuovo utente creato sulle sue credenziali di accesso,
 inviare una mail di problemi/reclami al proprietario riguardo al ticket assegnato, inviare una mail di promemoria e notifica.",
-
 );
-
 ?>

@@ -2,7 +2,7 @@
 /***********************************************************
 *  Module       : Campaigns
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
@@ -62,12 +62,10 @@ $mod_strings = array(
 	'Average' => 'Moyen',
 	'Poor' => 'Faible',
 	'Campaign No' => 'Campagne n°',
-	// 5.4.0
 	'--None--'=>'--Aucun--',
 	'Contacted - Successful' => 'Contacté - avec succès',
 	'Contacted - Unsuccessful' => 'Contacté - sans succès',
 	'Contacted - Never Contact Again' => 'Contacté - Ne pas recontacter',
 	'Campaigns ID' => 'Campagnes ID',
 );
-
 ?>

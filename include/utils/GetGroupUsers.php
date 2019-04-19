@@ -9,8 +9,8 @@
  ********************************************************************************/
 
 /** Class to retreive all the users present in a group */
-require_once('include/utils/UserInfoUtil.php');
-require_once('include/utils/GetParentGroups.php');
+require_once 'include/utils/UserInfoUtil.php';
+require_once 'include/utils/GetParentGroups.php';
 
 class GetGroupUsers {
 
@@ -24,7 +24,7 @@ class GetGroupUsers {
 	 */
 	public function getAllUsersInGroup($groupid) {
 		global $adb, $log;
-		$log->debug("Entering getAllUsersInGroup(".$groupid.") method...");
+		$log->debug('> getAllUsersInGroup '.$groupid);
 		//Retreiving from the user2grouptable
 		$query='select userid from vtiger_users2group where groupid=?';
 		$result = $adb->pquery($query, array($groupid));
@@ -74,7 +74,7 @@ class GetGroupUsers {
 			$focus = new GetGroupUsers();
 			$focus->getAllUsersInGroup($now_grp_id);
 			$now_grp_users=$focus->group_users;
-			$now_grp_grps=$focus->group_subgroups;
+			//$now_grp_grps=$focus->group_subgroups;
 			if (!array_key_exists($now_grp_id, $this->group_subgroups)) {
 				$this->group_subgroups[$now_grp_id]=$now_grp_users;
 			}
@@ -91,7 +91,7 @@ class GetGroupUsers {
 				}
 			}
 		}
-		$log->debug('Exiting getAllUsersInGroup method...');
+		$log->debug('< getAllUsersInGroup');
 	}
 }
 ?>

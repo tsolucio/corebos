@@ -9,37 +9,38 @@
  ************************************************************************************/
 include_once 'include/InventoryPDFController.php';
 include_once __DIR__ . '/SalesOrderPDFHeaderViewer.php';
-class Vtiger_SalesOrderPDFController extends Vtiger_InventoryPDFController{
-	function buildHeaderModelTitle() {
+
+class Vtiger_SalesOrderPDFController extends Vtiger_InventoryPDFController {
+	public function buildHeaderModelTitle() {
 		$singularModuleNameKey = 'SINGLE_'.$this->moduleName;
 		$translatedSingularModuleLabel = getTranslatedString($singularModuleNameKey, $this->moduleName);
-		if($translatedSingularModuleLabel == $singularModuleNameKey) {
+		if ($translatedSingularModuleLabel == $singularModuleNameKey) {
 			$translatedSingularModuleLabel = getTranslatedString($this->moduleName, $this->moduleName);
 		}
 		return sprintf("%s: %s", $translatedSingularModuleLabel, $this->focusColumnValue('salesorder_no'));
 	}
 
-	function getHeaderViewer() {
+	public function getHeaderViewer() {
 		$headerViewer = new SalesOrderPDFHeaderViewer();
 		$headerViewer->setModel($this->buildHeaderModel());
 		return $headerViewer;
 	}
 
-	function buildHeaderModelColumnLeft() {
+	public function buildHeaderModelColumnLeft() {
 		return parent::buildHeaderModelColumnLeft();
 	}
 
-	function buildHeaderModelColumnCenter() {
+	public function buildHeaderModelColumnCenter() {
 		$subject = $this->focusColumnValue('subject');
 		$customerName = $this->resolveReferenceLabel($this->focusColumnValue('account_id'), 'Accounts');
 		$contactName = $this->resolveReferenceLabel($this->focusColumnValue('contact_id'), 'Contacts');
-		$purchaseOrder = $this->focusColumnValue('vtiger_purchaseorder');
+		//$purchaseOrder = $this->focusColumnValue('vtiger_purchaseorder');
 		$quote = $this->resolveReferenceLabel($this->focusColumnValue('quote_id'), 'Quotes');
 
 		$subjectLabel = getTranslatedString('Subject', $this->moduleName);
 		$customerNameLabel = getTranslatedString('Customer Name', $this->moduleName);
 		$contactNameLabel = getTranslatedString('Contact Name', $this->moduleName);
-		$purchaseOrderLabel = getTranslatedString('Purchase Order', $this->moduleName);
+		//$purchaseOrderLabel = getTranslatedString('Purchase Order', $this->moduleName);
 		$quoteLabel = getTranslatedString('Quote Name', $this->moduleName);
 
 		$modelColumn1 = array(
@@ -52,12 +53,11 @@ class Vtiger_SalesOrderPDFController extends Vtiger_InventoryPDFController{
 		return $modelColumn1;
 	}
 
-	function buildHeaderModelColumnRight() {
+	public function buildHeaderModelColumnRight() {
 		$issueDateLabel = getTranslatedString('Issued Date', $this->moduleName);
 		$validDateLabel = getTranslatedString('Due Date', $this->moduleName);
 		$billingAddressLabel = getTranslatedString('Billing Address', $this->moduleName);
 		$shippingAddressLabel = getTranslatedString('Shipping Address', $this->moduleName);
-
 
 		$modelColumn2 = array(
 				'dates' => array(
@@ -70,7 +70,7 @@ class Vtiger_SalesOrderPDFController extends Vtiger_InventoryPDFController{
 		return $modelColumn2;
 	}
 
-	function getWatermarkContent() {
+	public function getWatermarkContent() {
 		return $this->focusColumnValue('sostatus');
 	}
 }

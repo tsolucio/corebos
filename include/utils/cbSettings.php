@@ -29,7 +29,7 @@ class coreBOS_Settings {
 			return self::$cached_values[$skey];
 		} else {
 			$cbstrs = $adb->pquery('select setting_value from cb_settings where setting_key=?', array($skey));
-			if ($cbstrs and $adb->num_rows($cbstrs)==1) {
+			if ($cbstrs && $adb->num_rows($cbstrs)==1) {
 				$value = $adb->query_result($cbstrs, 0, 0);
 				self::$cached_values[$skey] = $value;
 			} else {
@@ -69,7 +69,7 @@ class coreBOS_Settings {
 	public static function settingExists($skey) {
 		global $adb;
 		$cbstrs = $adb->pquery('select 1 from cb_settings where setting_key=?', array($skey));
-		return ($cbstrs and $adb->num_rows($cbstrs)==1);
+		return ($cbstrs && $adb->num_rows($cbstrs)==1);
 	}
 }
 

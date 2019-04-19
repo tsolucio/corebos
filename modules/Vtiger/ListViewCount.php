@@ -13,9 +13,9 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-require_once('modules/Users/Users.php');
-require_once('include/QueryGenerator/QueryGenerator.php');
-require_once('include/utils/utils.php');
+require_once 'modules/Users/Users.php';
+require_once 'include/QueryGenerator/QueryGenerator.php';
+require_once 'include/utils/utils.php';
 
 $idlist = (isset($_REQUEST['idlist'])? vtlib_purify($_REQUEST['idlist']) : '');
 $viewid = (isset($_REQUEST['viewname']) ? vtlib_purify($_REQUEST['viewname']) :'');

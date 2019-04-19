@@ -112,16 +112,15 @@ function tagvalidate()
 {rdelim}
 function DeleteTag(id,recordid)
 {ldelim}
-	document.getElementById("vtbusy_info").style.display="inline";
+	VtigerJS_DialogBox.showbusy();
 	jQuery('#tag_'+id).fadeOut();
 	jQuery.ajax({ldelim}
 		method:"POST",
 		url:"index.php?file=TagCloud&module={$MODULE}&action={$MODULE}Ajax&ajxaction=DELETETAG&recordid="+recordid+"&tagid=" +id
 	{rdelim}).done(function(response) {ldelim}
-				getTagCloud();
-				document.getElementById("vtbusy_info").style.display="none";
-		{rdelim}
-	 );
+		getTagCloud();
+		VtigerJS_DialogBox.hidebusy();
+	{rdelim});
 {rdelim}
 
 //Added to send a file, in Documents module, as an attachment in an email
@@ -184,7 +183,11 @@ function sendfile_email()
 				{* Module Record numbering, used MOD_SEQ_ID instead of ID *}
 				{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
 				{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
-				<span class="dvHeaderText">[ {$USE_ID_VALUE} ] {$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>&nbsp;&nbsp;&nbsp;<span class="small">{$UPDATEINFO}</span>&nbsp;<span id="vtbusy_info" style="display:none;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span><span id="vtbusy_info" style="visibility:hidden;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
+				<span class="dvHeaderText">[ {$USE_ID_VALUE} ] {$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>
+				&nbsp;&nbsp;&nbsp;
+				<span class="small">{$UPDATEINFO}</span>
+				&nbsp;
+				<span id="vtbusy_info" style="display:none;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
 			</td></tr>
 		</table>
 		<br>
@@ -392,7 +395,6 @@ function sendfile_email()
 		</td>
 		<td width=22% valign=top style="border-left:1px dashed #cccccc;padding:13px">
 			<!-- right side relevant info -->
-			<!-- Action links for Event & Todo START-by Minnie -->
 			{if $MODULE eq 'Potentials' || $MODULE eq 'HelpDesk' || $MODULE eq 'Contacts' || $MODULE eq 'Accounts' || $MODULE eq 'Leads' || ($MODULE eq 'Documents' && ($ADMIN eq 'yes' || $FILE_STATUS eq '1') && $FILE_EXIST eq 'yes')}
   			<table width="100%" border="0" cellpadding="5" cellspacing="0">
 				<tr><td>&nbsp;</td></tr>
@@ -558,33 +560,8 @@ function sendfile_email()
 		</table>
 		<!-- End Tag cloud display -->
 		{/if}
-			<!-- Mail Merge-->
-				<br>
-				{if isset($MERGEBUTTON) && $MERGEBUTTON eq 'permitted'}
-				<form action="index.php" method="post" name="TemplateMerge" id="form">
-				<input type="hidden" name="module" value="{$MODULE}">
-				<input type="hidden" name="parenttab" value="{$CATEGORY}">
-				<input type="hidden" name="record" value="{$ID}">
-				<input type="hidden" name="action">
-				<table border=0 cellspacing=0 cellpadding=0 width=100% class="rightMailMerge">
-					<tr>
-						<td class="rightMailMergeHeader"><b>{$WORDTEMPLATEOPTIONS}</b></td>
-					</tr>
-					<tr style="height:25px">
-					<td class="rightMailMergeContent">
-						{if $TEMPLATECOUNT neq 0}
-						<select name="mergefile">{foreach key=templid item=tempflname from=$TOPTIONS}<option value="{$templid}">{$tempflname}</option>{/foreach}</select>
-						<input class="crmbutton small create" value="{$APP.LBL_MERGE_BUTTON_LABEL}" onclick="this.form.action.value='Merge';" type="submit"></input>
-						{else}
-						<a href=index.php?module=Settings&action=upload&tempModule={$MODULE}&parenttab=Settings>{$APP.LBL_CREATE_MERGE_TEMPLATE}</a>
-						{/if}
-					</td>
-					</tr>
-				</table>
-				</form>
-				{/if}
 
-				{if !empty($CUSTOM_LINKS.DETAILVIEWWIDGET)}
+			{if !empty($CUSTOM_LINKS.DETAILVIEWWIDGET)}
 				{foreach key=CUSTOMLINK_NO item=CUSTOMLINK from=$CUSTOM_LINKS.DETAILVIEWWIDGET}
 					{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
 					{assign var="customlink_label" value=$CUSTOMLINK->linklabel}

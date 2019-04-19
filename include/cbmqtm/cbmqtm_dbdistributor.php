@@ -23,7 +23,7 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 	static protected $db = null;
 	protected $version = '1.0';
 
-	static public function getInstance() {
+	public static function getInstance() {
 		self::setDB();
 		return parent::getInstance();
 	}
@@ -34,14 +34,14 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 	}
 
 	public function sendMessage($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information) {
-		if ($share != '1:M' and $share != 'P:S') {
+		if ($share != '1:M' && $share != 'P:S') {
 			$share = '1:M';
 		}
-		if ($share == '1:M' or !$this->subscriptionExist($channel, $producer, $consumer)) {
+		if ($share == '1:M' || !$this->subscriptionExist($channel, $producer, $consumer)) {
 			$this->insertMsg($channel, $producer, $consumer, $type, $share, $sequence, $expires, $deliverafter, $userid, $information);
 		} else {
 			self::setDB();
-			$subrs = static::$db->pquery('select * from cb_mqsubscriptions where channel=?',array($channel));
+			$subrs = static::$db->pquery('select * from cb_mqsubscriptions where channel=?', array($channel));
 			while ($subscriber = static::$db->fetch_array($subrs)) {
 				$this->insertMsg($channel, $producer, $subscriber['consumer'], $type, $share, $sequence, $expires, $deliverafter, $userid, $information);
 			}
@@ -56,7 +56,7 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 		self::setDB();
 		static::$db->pquery('insert into cb_messagequeue
 			(channel, producer, consumer, type, share, sequence, senton, deliverafter, expires, version, invalid, invalidreason, userid, information)
-			values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',array(
+			values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)', array(
 				'channel' => $channel,
 				'producer' => $producer,
 				'consumer' => $consumer,
@@ -74,7 +74,7 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 		));
 	}
 
-	public function getMessage($channel, $consumer, $producer='*', $userid='*') {
+	public function getMessage($channel, $consumer, $producer = '*', $userid = '*') {
 		self::setDB();
 		$sql = 'select * from cb_messagequeue where deliverafter<=? and channel=? and consumer=?';
 		$params = array(date('Y-m-d H:i:s', time()), $channel, $consumer);
@@ -87,11 +87,11 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 			$params[] = $userid;
 		}
 		$sql .= ' order by deliverafter,sequence asc limit 1';
-		$msgrs = static::$db->pquery($sql,$params);
-		if ($msgrs and static::$db->num_rows($msgrs)==1) {
+		$msgrs = static::$db->pquery($sql, $params);
+		if ($msgrs && static::$db->num_rows($msgrs)==1) {
 			global $default_charset;
 			$msg = static::$db->fetch_array($msgrs);
-			static::$db->pquery('delete from cb_messagequeue where idx=?',array($msg['idx']));
+			static::$db->pquery('delete from cb_messagequeue where idx=?', array($msg['idx']));
 			return array(
 				'channel' => $msg['channel'],
 				'producer' => $msg['producer'],
@@ -106,14 +106,14 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 				'invalid' => $msg['invalid'],
 				'invalidreason' => $msg['invalidreason'],
 				'userid' => $msg['userid'],
-				'information' => html_entity_decode($msg['information'],ENT_QUOTES,$default_charset),
+				'information' => html_entity_decode($msg['information'], ENT_QUOTES, $default_charset),
 			);
 		} else {
 			return false;
 		}
 	}
 
-	public function isMessageWaiting($channel, $consumer, $producer='*', $userid='*') {
+	public function isMessageWaiting($channel, $consumer, $producer = '*', $userid = '*') {
 		self::setDB();
 		$sql = 'select count(*) from cb_messagequeue where deliverafter<=? and channel=? and consumer=?';
 		$params = array(date('Y-m-d H:i:s', time()), $channel, $consumer);
@@ -125,8 +125,8 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 			$sql .= ' and userid=?';
 			$params[] = $userid;
 		}
-		$msgrs = static::$db->pquery($sql,$params);
-		return ($msgrs and static::$db->query_result($msgrs,0,0) > 0);
+		$msgrs = static::$db->pquery($sql, $params);
+		return ($msgrs && static::$db->query_result($msgrs, 0, 0) > 0);
 	}
 
 	public function rejectMessage($message, $invalidreason) {
@@ -137,7 +137,7 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 		$message['invalidreason'] = $channel.'::'.$invalidreason;
 		static::$db->pquery('insert into cb_messagequeue
 			(channel, producer, consumer, type, share, sequence, senton, deliverafter, expires, version, invalid, invalidreason, userid, information)
-			values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',$message);
+			values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)', $message);
 	}
 
 	public function subscribeToChannel($channel, $producer, $consumer, $callback) {
@@ -145,8 +145,10 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 			self::setDB();
 			$sercallback = serialize($callback);
 			$md5idx = md5($channel . $producer . $consumer . $sercallback);
-			static::$db->pquery('insert into cb_mqsubscriptions (md5idx, channel, producer, consumer, callback) values (?,?,?,?,?)',
-				array($md5idx, $channel, $producer, $consumer, $sercallback));
+			static::$db->pquery(
+				'insert into cb_mqsubscriptions (md5idx, channel, producer, consumer, callback) values (?,?,?,?,?)',
+				array($md5idx, $channel, $producer, $consumer, $sercallback)
+			);
 		}
 	}
 
@@ -154,29 +156,29 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 		self::setDB();
 		$sercallback = serialize($callback);
 		$md5idx = md5($channel . $producer . $consumer . $sercallback);
-		static::$db->pquery('delete from cb_mqsubscriptions where md5idx=?',array($md5idx));
+		static::$db->pquery('delete from cb_mqsubscriptions where md5idx=?', array($md5idx));
 	}
 
-	private function subscriptionExist($channel, $producer, $consumer, $callback='') {
+	private function subscriptionExist($channel, $producer, $consumer, $callback = '') {
 		self::setDB();
 		if ($callback!='') {
 			$sercallback = serialize($callback);
 			$md5idx = md5($channel . $producer . $consumer . $sercallback);
-			$chkrs = static::$db->pquery('select 1 from cb_mqsubscriptions where md5idx=?',array($md5idx));
+			$chkrs = static::$db->pquery('select 1 from cb_mqsubscriptions where md5idx=?', array($md5idx));
 		} else {
-			$chkrs = static::$db->pquery('select 1 from cb_mqsubscriptions where channel=? and producer=? and consumer=? limit 1',array($channel, $producer, $consumer));
+			$chkrs = static::$db->pquery('select 1 from cb_mqsubscriptions where channel=? and producer=? and consumer=? limit 1', array($channel, $producer, $consumer));
 		}
-		return ($chkrs and static::$db->num_rows($chkrs)==1);
+		return ($chkrs && static::$db->num_rows($chkrs)==1);
 	}
 
 	public function getSubscriptionWakeUps() {
 		self::setDB();
 		$wakeups = array();
-		$subrs = static::$db->pquery('select * from cb_mqsubscriptions',array());
+		$subrs = static::$db->pquery('select * from cb_mqsubscriptions', array());
 		while ($subscription = static::$db->fetch_array($subrs)) {
 			$msg = $this->isMessageWaiting($subscription['channel'], $subscription['consumer'], $subscription['producer']);
 			if ($msg) {
-				$wakeups[] = unserialize(html_entity_decode($subscription['callback'],ENT_QUOTES,'UTF-8'));
+				$wakeups[] = unserialize(html_entity_decode($subscription['callback'], ENT_QUOTES, 'UTF-8'));
 			}
 		}
 		return $wakeups;
@@ -184,12 +186,13 @@ class cbmqtm_dbdistributor extends cbmqtm_manager {
 
 	public function expireMessages() {
 		self::setDB();
-		static::$db->pquery("update cb_messagequeue set invalid=1, invalidreason=concat(channel,'::Expired'), channel=? where expires<? and invalid=0",
-			array('cbINVALID',date('Y-m-d H:i:s')));
+		static::$db->pquery(
+			"update cb_messagequeue set invalid=1, invalidreason=concat(channel,'::Expired'), channel=? where expires<? and invalid=0",
+			array('cbINVALID',date('Y-m-d H:i:s'))
+		);
 		//static::$db->pquery("update cb_messagequeue set invalid=1, invalidreason=concat(channel,'::Expired') where expires<? and invalid=0",array(date('Y-m-d H:i:s')));
 		//static::$db->pquery('update cb_messagequeue set channel=? where invalid=1 and channel!=?',array('cbINVALID','cbINVALID'));
 	}
-
 }
 
 /*

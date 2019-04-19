@@ -8,12 +8,11 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'cbAuditTrail' => 'User Audit Trail',
 	'SINGLE_cbAuditTrail' => 'User Audit Trail',
 	'LBL_AUDIT_TRAIL'=>'Nyomkövetések',
 	'AuditTrailEnabled' => 'Audit Trail Enabled',
 	'AuditTrailDisabled' => 'Audit Trail Disabled',
 );
-
 ?>

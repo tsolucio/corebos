@@ -216,6 +216,7 @@ $mod_strings = array(
 
 'LBL_ASTERISKEXTENSIONS_EXIST' => 'Extensión Asterisk ya Existe!',
 'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'El Separador Decimal y de Agrupamiento de Dígitos no puede ser el mismo.',
+'LBL_FORUSER' => ' en el Usuario ',
 
 'LBL_CREATE_NEW_GROUP'=>'Crear nuevo grupo',
 'LBL_NEW_GROUP'=>'Nuevo Grupo',
@@ -336,6 +337,8 @@ $mod_strings = array(
 'LBL_EMAIL_SCHDS_DESC'=>'Lo que sigue es la lista de las notificaciones que se activan automáticamente cuando el correspondiente evento ha ocurrido.',
 'LBL_ACTIVE'=>'Activo',
 'LBL_INACTIVE'=>'Inactivo',
+'LBL_ON'=>'On',
+'LBL_OFF'=>'Off',
 'LBL_NOTIFICATION'=>'Notificación',
 'LBL_DESCRIPTION'=>'Descripción',
 'LBL_TASK_NOTIFICATION'=>'Notificación de tarea retrasada',

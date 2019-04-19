@@ -10,7 +10,7 @@
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Pedido Vendas',
 'LBL_SO_MODULE_NAME'=>'Pedido Vendas',
 'LBL_RELATED_PRODUCTS'=>'Detalhes do Produto',
@@ -47,17 +47,18 @@ $mod_strings = Array(
 'LBL_TYPE'=>'Tipo:',
 'LBL_ANNUAL_REVENUE'=>'Receita Anual:',
 'LBL_ADDRESS_INFORMATION'=>'Dados do Endereço',
-'LBL_Quote_INFORMATION'=>'Dados da Organização',
-'LBL_CUSTOM_INFORMATION'=>'Informação Customizada',
-'LBL_BILLING_ADDRESS'=>'Endereço Faturamento:',
-'LBL_SHIPPING_ADDRESS'=>'Endereço Entrega:',
+'LBL_Quote_INFORMATION'=>'Dados da Cotação',
+'LBL_CUSTOM_INFORMATION'=>'Informação Personalizada',
+'LBL_SalesOrder_FINANCIALINFO' => 'Informação financeira',
+'LBL_BILLING_ADDRESS'=>'Endereço de Faturação:',
+'LBL_SHIPPING_ADDRESS'=>'Endereço de Entrega:',
 'LBL_ANY_ADDRESS'=>'Outro Endereço:',
 'LBL_CITY'=>'Cidade:',
 'LBL_STATE'=>'Estado:',
 'LBL_POSTAL_CODE'=>'CEP:',
 'LBL_COUNTRY'=>'País:',
 'LBL_DESCRIPTION_INFORMATION'=>'Descrição',
-'LBL_TERMS_INFORMATION'=>'Prazos & Condições',
+'LBL_TERMS_INFORMATION'=>'Prazos e Condições',
 'LBL_DESCRIPTION'=>'Descrição:',
 'NTC_COPY_BILLING_ADDRESS'=>'Copiar endereço de Cobrança para endereço de Entrega',
 'NTC_COPY_SHIPPING_ADDRESS'=>'Copiar endereço de Entrega para endereço de Cobrança',
@@ -71,7 +72,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Selecione a Organização',
 'LBL_GENERAL_INFORMATION'=>'Informação Geral',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nova Oportunidade',
 'LBL_POTENTIAL_TITLE'=>'Oportunidades',
 
@@ -86,30 +86,27 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'Novo Contato',
 'LBL_CONTACT_TITLE'=>'Contatos',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'Todos',
 'LBL_PROSPECT'=>'Prospect',
 'LBL_INVESTOR'=>'Investidor',
 'LBL_RESELLER'=>'Revendedor',
 'LBL_PARTNER'=>'Parceiro',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Ferramentas Organização',
-//Added for 4GA
 'Subject'=>'Assunto',
 'Quote Name'=>'Nome Cotação',
 'Vendor Name'=>'Nome Fornecedor',
 'Requisition No'=>'No. Requisição',
 'Tracking Number'=>'No. Rastreamento',
-'Contact Name'=>'Nome Contato',
-'Due Date'=>'Data Vencimento',
+'Contact Name'=>'Nome de Contato',
+'Due Date'=>'Data de Vencimento',
 'Carrier'=>'Transportadora',
 'Type'=>'Tipo',
 'Sales Tax'=>'ICMS',
-'Sales Commission'=>'Comissão Vendas',
+'Sales Commission'=>'Comissão de Vendas',
 'Excise Duty'=>'IPI',
 'Total'=>'Total',
-'Product Name'=>'Nome Produto',
+'Product Name'=>'Nome do Produto',
 'Assigned To'=>'Responsável',
 'Billing Address'=>'Endereço Faturamento',
 'Shipping Address'=>'Endereço Entrega',
@@ -136,12 +133,11 @@ $mod_strings = Array(
 'Vendor Terms'=>'Condições Fornecedor',
 'Pending'=>'Pendente',
 'Account Name'=>'Nome Organização',
-'Terms & Conditions'=>'Prazos & Condições',
+'Terms & Conditions'=>'Prazos e Condições',
 //Quote Info
 'LBL_SO_INFORMATION'=>'Informação Pedido Venda',
 'LBL_SO'=>'Pedido Venda:',
 
- //Added for 5.0 GA
 'LBL_SO_FORM_TITLE'=>'Vendas',
 'LBL_SUBJECT_TITLE'=>'Assunto',
 'LBL_VENDOR_NAME_TITLE'=>'Nome Fornecedor',
@@ -167,19 +163,16 @@ $mod_strings = Array(
 'Cancelled'=>'Cancelado',
 'Adjustment'=>'Ajuste',
 'Sub Total'=>'Sub-Total',
-'AutoCreated'=>'Auto Criado',
+'AutoCreated'=>'Criado Automaticamente',
 'Sent'=>'Enviado',
 'Credit Invoice'=>'Fatura Crédito',
 'Paid'=>'Pago',
 
-
-//Added for Reports (5.0.4)
-'Tax Type'=>'Tipo Imposto',
+'Tax Type'=>'Tipo de Imposto',
 'Discount Percent'=>'Percentual Desconto',
 'Discount Amount'=>'Total Desconto',
 'S&H Amount'=>'Total Frete',
 
-//Added after 5.0.4 GA
 'SalesOrder No'=>'No. Pedido Vendas',
 
 'Recurring Invoice Information' => 'Informação Fatura Recorrente',
@@ -188,7 +181,7 @@ $mod_strings = Array(
 'Frequency' => 'Frequencia',
 'Start Period' => 'Início Período',
 'End Period' => 'Final Período',
-'Payment Duration' => 'Duração Pagamento',
+'Payment Duration' => 'Duração do Pagamento',
 'Invoice Status' => 'Status Fatura',
 
 'SINGLE_SalesOrder'=>'Pedido Venda',
@@ -197,16 +190,20 @@ $mod_strings = Array(
 'Net 60 days' => '60 DD',
 'SalesOrder ID' => 'ID Pedido Venda',
 
-'Daily' => 'Daily',
-'Weekly' => 'Weekly',
-'Monthly' => 'Monthly',
-'Quarterly' => 'Quarterly',
-'Yearly' => 'Yearly',
-'half-year'=>'Half Year',
-'2years' => '2 Years',
-'3years' => '3 Years',
-'4years' => '4 Years',
-'5years' => '5 Years',
-);
+'Daily' => 'Diariamente',
+'Weekly' => 'Semanalmente',
+'Monthly' => 'Mensalmente',
+'Quarterly' => 'Trimestralmente',
+'Yearly' => 'Anualmente',
+'half-year'=>'Semestralmente',
+'2years' => '2 anos',
+'3years' => '3 anos',
+'4years' => '4 anos',
+'5years' => '5 anos',
 
+'LBL_PARTIAL_PAYMENTS_INFO' => 'Informações de Pagamentos a Prestações ',
+'Amount Due'=>'Total em falta',
+'Amount Paid'=>'Total pago',
+'Total Amount'=>'Total',
+);
 ?>

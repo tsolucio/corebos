@@ -41,7 +41,7 @@ function entpack($filename, $wordtemplatedownloadpath, $filecontent) {
 	$filecontent = base64_decode($filecontent);
 	fwrite($handle, $filecontent);
 	fclose($handle);
-	include_once('vtlib/Vtiger/Unzip.php');
+	include_once 'vtlib/Vtiger/Unzip.php';
 	$archive = new Vtiger_Unzip($wordtemplatedownloadpath.'/'.$filename);
 	//unzip all files
 	$archive->unzipAll($wordtemplatedownloadpath.'/'.$temp_dir);
@@ -61,7 +61,7 @@ function packen($filename, $wordtemplatedownloadpath, $temp_dir, $concontent, $s
 	$handle2=fopen($wordtemplatedownloadpath.'/'.$temp_dir.'/styles.xml', 'w');
 	fwrite($handle2, $stylecontent);
 	fclose($handle2);
-	include_once('vtlib/Vtiger/Zip.php');
+	include_once 'vtlib/Vtiger/Zip.php';
 	$archive = new Vtiger_Zip($wordtemplatedownloadpath.'/'.$filename);
 	//make a new archive (or .odt file)
 	$archive->copyDirectoryFromDiskNoOffset($wordtemplatedownloadpath.$temp_dir);

@@ -18,9 +18,11 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 class changeUitype58To10 extends cbupdaterWorker {
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -29,8 +31,10 @@ class changeUitype58To10 extends cbupdaterWorker {
 					inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
 					where uitype = '58'");
 			while ($ui58 = $adb->fetch_array($ui58rs)) {
-				$this->ExecuteQuery("insert into vtiger_fieldmodulerel (fieldid,module,relmodule,status,sequence) values (?,?,'Campaigns',null,0)",
-					array($ui58['fieldid'],$ui58['name']));
+				$this->ExecuteQuery(
+					"insert into vtiger_fieldmodulerel (fieldid,module,relmodule,status,sequence) values (?,?,'Campaigns',null,0)",
+					array($ui58['fieldid'],$ui58['name'])
+				);
 			}
 			$this->ExecuteQuery("UPDATE vtiger_field SET uitype = '10' WHERE uitype = '58'");
 			$this->ExecuteQuery("UPDATE vtiger_relatedlists SET name = 'get_dependents_list' WHERE tabid = '26' and related_tabid='2'");

@@ -149,10 +149,10 @@ class VTTaskManager {
 	private function requireTask($taskType, $taskTypeInstance = '') {
 		if (!empty($taskTypeInstance)) {
 			$taskClassPath = $taskTypeInstance->get('classpath');
-			require_once($taskClassPath);
+			require_once $taskClassPath;
 		} else {
 			if (!empty($taskType)) {
-				require_once("tasks/".$taskType.".inc");
+				require_once 'tasks/'.$taskType.'.inc';
 			}
 		}
 	}
@@ -216,9 +216,11 @@ abstract class VTTask {
 			'LBL_HELPDESK_SUPPORT_NAME' => '(general : (__VtigerMeta__) supportName)',
 			'LBL_HELPDESK_SUPPORT_EMAILID' => '(general : (__VtigerMeta__) supportEmailId)',
 			'Comments' => '(general : (__VtigerMeta__) comments)',
+			'InventoryDetails' => '(general : (__VtigerMeta__) inventorydetails)',
 			'groupEmailList' => '(general : (__VtigerMeta__) groupEmailList_Put_Group_Name_Here)',
 			'invitedUsers' => '(general : (__VtigerMeta__) Events_Users_Invited)',
-			'WorkflowFunction' => '(general : (__WorkflowFunction__) Put_Function_Here ) ',
+			'WorkflowFunction' => '(general : (__WorkflowFunction__) Put_Function_Here )',
+			'scan QRCode' => '(general : (__VtigerMeta__) scanQRCode->FieldName)'
 		);
 	}
 }
@@ -323,7 +325,7 @@ class VTTaskType {
 	public static function getInstanceFromTaskType($taskType) {
 		$adb = PearDatabase::getInstance();
 
-		$result = $adb->pquery('SELECT * FROM com_vtiger_workflow_tasktypes where tasktypename=?', array($taskType));
+		$result = $adb->pquery('SELECT * FROM com_vtiger_workflow_tasktypes where tasktypename=? or classname=? limit 1', array($taskType, $taskType));
 		$taskTypes['name'] = $adb->query_result($result, 0, 'tasktypename');
 		$taskTypes['label'] = $adb->query_result($result, 0, 'label');
 		$taskTypes['classname'] = $adb->query_result($result, 0, 'classname');

@@ -10,6 +10,7 @@ var alert_arr = {
 	'DELETE':'Voulez-vous supprimer ',
 	'RECORDS':' enregistrement(s) ?',
 	'SELECT':'Merci de sélectionner au moins une entité',
+	'SELECTCONDITION':'Please select at least one condition',
 	'SELECTTEMPLATE':'Please select at least one document Template',
 	'SELECTMERGE':'Please select an entity to merge!',
 	'GENDOCSAVED':'Document saved. Please verify that it has been created correctly.',
@@ -104,6 +105,10 @@ var alert_arr = {
 	'GREATER_THAN':'supérieur à',
 	'LESS_OR_EQUALS':'inférieur ou égal',
 	'GREATER_OR_EQUALS':'supérieur ou égal',
+	'LBL_DOES_NOT_START_WITH' : 'does not start with',
+	'LBL_DOES_NOT_END_WITH' : 'does not end with',
+	'DOES_NOT_START_WITH':'does not start with',
+	'DOES_NOT_END_WITH':'does not end with',
 
 	'NO_SPECIAL_CHARS':'Les caractères spéciaux comme les guillemets, backslash, symboles mathématiques, pourcentages et de ponctuation ne sont pas autorisés',
 	'PLS_SELECT_VALID_FILE':'Choisir un fichier avec l\'extension suivante:\n',
@@ -199,6 +204,7 @@ var alert_arr = {
 	'LBL_PLEASE_CHANGE_REPLACEMENT': 'Changer la valeur de remplacement car elle est déjà sélectionner pour la suppression',
 	'BLOCK_NAME_CANNOT_BE_BLANK': 'Le nom du bloc ne peut être vide',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE' : 'Etes vous sûr de vouloir supprimer?',
+	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_EXACT_DUPLICATE': 'Are you sure you want to Delete All Exact record duplicates?',
 	'PLEASE_MOVE_THE_FIELDS_TO_ANOTHER_BLOCK' : 'Merci de déplacer les champs dans un autre bloc',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_BLOCK' : 'Etes vous sûr de vouloir supprimer le bloc?',
 	'LABEL_CANNOT_NOT_EMPTY' : 'Le label ne peut être vide',
@@ -336,6 +342,7 @@ var alert_arr = {
 	'LBL_ENDS_WITH' : 'termine par',
 	'LBL_HAS_CHANGED' : 'a changé',
 	'LBL_HAS_CHANGED_TO' : 'a changé à',
+	'LBL_WAS' : 'was',
 	'LBL_IS_EMPTY': 'est vide',
 	'LBL_IS_NOT_EMPTY' : 'n\'est pas vide',
 	'LBL_EQUAL_TO' : 'égal à',
@@ -395,5 +402,8 @@ var alert_arr = {
 	'JSLBL_PAGINATION': 'Pagination',
 	'JSLBL_FINISH': 'Finish',
 	'SHOWING' : 'Showing',
-	'OF' : 'of'
+	'OF' : 'of',
+	'ERR_Massedit' : 'Error on Mass Edit',
+	'ProcessFINISHED' : 'Process Finished',
+	'duplicatednotallowed' : 'Duplicated Modules Not Allowed'
 };

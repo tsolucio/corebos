@@ -19,14 +19,13 @@ class ModComments extends ModCommentsCore {
 	 * @param String Module name
 	 * @param String Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
 	 */
-	function vtlib_handler($modulename, $event_type) {
+	public function vtlib_handler($modulename, $event_type) {
 		parent::vtlib_handler($modulename, $event_type);
 		if ($event_type == 'module.postinstall') {
 			self::addWidgetTo(array('Leads', 'Contacts', 'Accounts', 'Potentials', 'Project', 'ProjectTask'));
 			global $adb;
 			// Mark the module as Standard module
 			$adb->pquery('UPDATE vtiger_tab SET customized=0 WHERE name=?', array($modulename));
-
 		} elseif ($event_type == 'module.postupdate') {
 			self::addWidgetTo(array('Potentials'));
 		}
@@ -37,7 +36,7 @@ class ModComments extends ModCommentsCore {
 	 * @param CRMID Source parent record id
 	 * @param CRMID Target parent record id
 	 */
-	static function transferRecords($currentParentId, $targetParentId) {
+	public static function transferRecords($currentParentId, $targetParentId) {
 		global $adb;
 		$adb->pquery("UPDATE vtiger_modcomments SET related_to=? WHERE related_to=?", array($targetParentId, $currentParentId));
 	}
@@ -45,9 +44,8 @@ class ModComments extends ModCommentsCore {
 	/**
 	 * Get widget instance by name
 	 */
-	static function getWidget($name) {
-		if ($name == 'DetailViewBlockCommentWidget' &&
-				isPermitted('ModComments', 'DetailView') == 'yes') {
+	public static function getWidget($name) {
+		if ($name == 'DetailViewBlockCommentWidget' && isPermitted('ModComments', 'DetailView') == 'yes') {
 			require_once __DIR__ . '/widgets/DetailViewBlockComment.php';
 			return (new ModComments_DetailViewBlockCommentWidget());
 		}
@@ -59,18 +57,22 @@ class ModComments extends ModCommentsCore {
 	 * @param unknown_type $moduleNames
 	 * @return unknown_type
 	 */
-	static function addWidgetTo($moduleNames, $widgetType='DETAILVIEWWIDGET', $widgetName='DetailViewBlockCommentWidget') {
-		if (empty($moduleNames)) return;
+	public static function addWidgetTo($moduleNames, $widgetType = 'DETAILVIEWWIDGET', $widgetName = 'DetailViewBlockCommentWidget') {
+		if (empty($moduleNames)) {
+			return;
+		}
 
 		include_once 'vtlib/Vtiger/Module.php';
 
-		if (is_string($moduleNames)) $moduleNames = array($moduleNames);
+		if (is_string($moduleNames)) {
+			$moduleNames = array($moduleNames);
+		}
 
 		$commentWidgetModules = array();
-		foreach($moduleNames as $moduleName) {
+		foreach ($moduleNames as $moduleName) {
 			$module = Vtiger_Module::getInstance($moduleName);
-			if($module) {
-				$module->addLink($widgetType, $widgetName, "block://ModComments:modules/ModComments/ModComments.php");
+			if ($module) {
+				$module->addLink($widgetType, $widgetName, 'block://ModComments:modules/ModComments/ModComments.php');
 				$commentWidgetModules[] = $moduleName;
 			}
 		}
@@ -89,17 +91,21 @@ class ModComments extends ModCommentsCore {
 	 * @param unknown_type $widgetName
 	 * @return unknown_type
 	 */
-	static function removeWidgetFrom($moduleNames, $widgetType='DETAILVIEWWIDGET', $widgetName='DetailViewBlockCommentWidget') {
-		if (empty($moduleNames)) return;
+	public static function removeWidgetFrom($moduleNames, $widgetType = 'DETAILVIEWWIDGET', $widgetName = 'DetailViewBlockCommentWidget') {
+		if (empty($moduleNames)) {
+			return;
+		}
 
 		include_once 'vtlib/Vtiger/Module.php';
 
-		if (is_string($moduleNames)) $moduleNames = array($moduleNames);
+		if (is_string($moduleNames)) {
+			$moduleNames = array($moduleNames);
+		}
 
 		$commentWidgetModules = array();
-		foreach($moduleNames as $moduleName) {
+		foreach ($moduleNames as $moduleName) {
 			$module = Vtiger_Module::getInstance($moduleName);
-			if($module) {
+			if ($module) {
 				$module->deleteLink($widgetType, $widgetName, "block://ModComments:modules/ModComments/ModComments.php");
 				$commentWidgetModules[] = $moduleName;
 			}
@@ -114,9 +120,8 @@ class ModComments extends ModCommentsCore {
 	/**
 	 * Wrap this instance as a model
 	 */
-	function getAsCommentModel() {
+	public function getAsCommentModel() {
 		return new ModComments_CommentsModel($this->column_fields);
 	}
-
 }
 ?>

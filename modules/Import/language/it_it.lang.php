@@ -8,11 +8,7 @@
  * All Rights Reserved.
  *************************************************************************************/
 
-$mod_strings = array (
-  'LBL_IMPORT_MODULE_NO_DIRECTORY' => 'La cartella',
-  'LBL_IMPORT_MODULE_NO_DIRECTORY_END' => 'non esiste o non &egrave; scrivibile',
-  'LBL_IMPORT_MODULE_ERROR_NO_UPLOAD' => 'Il file non &egrave; stato caricato con successo, prova di nuovo',
-  'LBL_IMPORT_MODULE_ERROR_LARGE_FILE' => 'Il file &egrave; troppo grande. Massimo:',
+$mod_strings = array(
   'LBL_MODULE_NAME' => 'Importa',
   'LBL_TRY_AGAIN' => 'Prova di nuovo',
   'LBL_ERROR' => 'Errore:',
@@ -23,7 +19,6 @@ $mod_strings = array (
   'LBL_SELECT_FILE' => 'Seleziona file:',
   'LBL_CUSTOM' => 'Customizzato',
   'LBL_DONT_MAP' => '-- Non mappare questo campo -',
-  'LBL_STEP_1_TITLE' => 'Seleziona il file .CSV',
   'LBL_WHAT_IS' => 'Seleziona un fonte dati tra le seguenti:',
   'LBL_MICROSOFT_OUTLOOK' => 'Microsoft Outlook',
   'LBL_ACT' => 'Act!',

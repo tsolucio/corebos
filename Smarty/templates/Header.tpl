@@ -12,13 +12,13 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
+	<meta name="robots" content="noindex">
 	<title>{$USER} - {$MODULE_NAME|@getTranslatedString:$MODULE_NAME} - {$coreBOS_app_name}</title>
-	<link REL="SHORTCUT ICON" HREF="{$FAVICON}">
+	<link REL="SHORTCUT ICON" HREF="{$COMPANY_DETAILS.favicon}">
 	<style type="text/css">@import url("themes/{$THEME}/style.css");</style>
 	{if $Application_JSCalendar_Load neq 0}<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">{/if}
 	<link rel="stylesheet" href="include/print.css" type="text/css" media="print" />
 	<link rel="stylesheet" href="include/LD/assets/styles/salesforce-lightning-design-system.css" type="text/css" />
-	<link rel="stylesheet" href="include/LD/assets/styles/slds-combobox.css" type="text/css" />
 	<link rel="stylesheet" href="include/LD/assets/styles/mainmenu.css" type="text/css" />
 	<link rel="stylesheet" href="include/LD/assets/styles/override_lds.css" type="text/css" />
 {* vtlib customization: Inclusion of custom javascript and css as registered *}
@@ -98,7 +98,7 @@
 {if empty($Module_Popup_Edit)}
 <TABLE border=0 cellspacing=0 cellpadding=0 width=100% class="small">
 	<tr>
-		<td valign=top align=left><img src="test/logo/{$FRONTLOGO}" alt="{$COMPANY_DETAILS.name}" title="{$COMPANY_DETAILS.name}" border=0 style="width: 15em;height: 4.2em;"></td>
+		<td valign=top align=left><img src="{$COMPANY_DETAILS.applogo}" alt="{$COMPANY_DETAILS.companyname}" title="{$COMPANY_DETAILS.companyname}" border=0 style="width: 15em;height: 4.2em;"></td>
 		<td align="center" valign=bottom>
 			<div align ="center" width ="50%" border='3' style="padding:5px;" class="noprint">
 				{if $Application_Global_Search_Active || (isset($GS_AUTOCOMP) && isset($GS_AUTOCOMP['searchin']))}
@@ -119,14 +119,14 @@
 								<input type="hidden" name="parenttab" value="{$CATEGORY}" style="margin:0px">
 								<input type="hidden" name="search_onlyin" value="--USESELECTED--" style="margin:0px">
 								<input type="text" name="query_string" id="query_string" value="{$QUERY_STRING}" class="searchBox" onFocus="this.value=''" autocomplete="off" data-autocomp='{$GS_AUTOCOMP|@json_encode}'>
-									<div id="listbox-unique-id" role="listbox" class="">
-										<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%;left:45%;" role="presentation"></ul>
+									<div id="listbox-unique-id" role="listbox" class="" style="position: relative;">
+										<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; width: 100%;" role="presentation"></ul>
 									</div>
 								{/if}
 							</td>
 							{if $Application_Global_Search_Active}
 							<td align ="right" style="background-color:#FFFFEF; vertical-align:middle;padding:5px;" onclick="UnifiedSearch_SelectModuleForm(this);">
-								<a href='javascript:void(0);' ><img src="{'arrow_down_black.png'|@vtiger_imageurl:$THEME}" align='left' border=0></a>
+								<a href='javascript:void(0);'><img src="{'arrow_down_black.png'|@vtiger_imageurl:$THEME}" align='left' style="max-width:initial;"></a>
 							</td>
 							<td style="background-color:#cccccc">
 								<input type="image" class="searchBtn" alt="{$APP.LBL_FIND}" title="{$APP.LBL_FIND}" width="70%" height="70%" src="{'searchicon.PNG'|@vtiger_imageurl:$THEME}" align='left' border=1>
@@ -137,8 +137,8 @@
 				</table>
 			</div>
 		</td>
-		<td class=small nowrap align="right" style="padding-right:10px;">
-			<table border=0 cellspacing=0 cellpadding=0>
+		<td nowrap align="right" style="padding-right:10px;" class="cblds-float_right small cblds-p-top_small">
+			<table border=0 cellspacing=0 cellpadding=0 class="cblds-width_auto" id="usermenu-headerlinks">
 				<tr>
 					<td valign="top" class="genHeaderSmall" style="padding-left:10px;padding-top:3px;">
 						<span class="userName">{$USER}</span>
@@ -159,7 +159,7 @@
 										{else}
 											{assign var="headerlink_label" value=$headerlink_label|@getTranslatedString:$HEADERLINK->module()}
 										{/if}
-										<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
+										<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_hover" aria-haspopup="true">
 											<a href="{$headerlink_href}" class="slds-context-bar__label-action" title="{$headerlink_label}">
 													<span class="slds-truncate">{$headerlink_label}</span>
 											</a>
@@ -265,8 +265,8 @@
 <!-- header - master tabs -->
 <div class="noprint">
 <div class="slds-context-bar">
-	<div class="slds-context-bar__primary slds-context-bar__item--divider-right">
-		<div class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--click slds-no-hover">
+	<div class="slds-context-bar__primary slds-context-bar__item_divider-right">
+		<div class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_click slds-no-hover">
 			<div class="slds-context-bar__icon-action">
 				<a href="index.php" class="slds-icon-waffle_container slds-context-bar__button">
 					<div class="slds-icon-waffle">
@@ -283,7 +283,7 @@
 				</a>
 			</div>
 			<span class="slds-context-bar__label-action slds-context-bar__app-name">
-				<span class="slds-truncate" title="{$coreBOS_app_name}">{$coreBOS_app_name}</span>
+				<span class="slds-truncate" title="{$coreBOS_app_name}">{$coreBOS_app_nameHTML}</span>
 			</span>
 		</div>
 	</div>
@@ -300,7 +300,12 @@
 <!-- Unified Search module selection feature -->
 <div id="UnifiedSearch_moduleformwrapper" style="position:absolute;width:417px;z-index:100002;display:none;"></div>
 
-<div id="status" style="position:absolute;display:none;left:850px;top:{if $ANNOUNCEMENT}130{else}95{/if}px;height:27px;white-space:nowrap;"><img src="{'status.gif'|@vtiger_imageurl:$THEME}"></div>
+<div id="status" style="position:absolute;display:none;left:850px;top:{if $ANNOUNCEMENT}130{else}95{/if}px;height:27px;white-space:nowrap;">
+	<div role="status" class="slds-spinner slds-spinner_small slds-spinner_brand">
+		<div class="slds-spinner__dot-a"></div>
+		<div class="slds-spinner__dot-b"></div>
+	</div>
+</div>
 
 <div id="tracker" style="display:none;position:absolute;z-index:100000001;" class="layerPopup">
 	<table border="0" cellpadding="5" cellspacing="0" width="200">
@@ -322,13 +327,13 @@
 <div id="mainsettings" class="drop_mnu_user" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnvshNrm('mainsettings');" style="width:180px;">
 	<ul>
 		{foreach key=actionlabel item=actionlink from=$HEADERS}
-			<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
+			<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_hover" aria-haspopup="true">
 				<a href="{$actionlink}" class="slds-context-bar__label-action" title="{$actionlabel}">
 						<span class="slds-truncate">{$actionlabel}</span>
 				</a>
 			</li>
 		{/foreach}
-		<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
+		<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_hover" aria-haspopup="true">
 			<a href="index.php?module=Settings&action=index&parenttab=" class="slds-context-bar__label-action" title="{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}">
 					<span class="slds-truncate">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</span>
 			</a>

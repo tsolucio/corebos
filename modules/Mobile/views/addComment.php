@@ -11,13 +11,12 @@
 include_once __DIR__ . '/../api/ws/addComment.php';
 
 class crmtogo_UI_AddComment extends crmtogo_WS_AddComment {
-	function process(crmtogo_API_Request $request) {
+	public function process(crmtogo_API_Request $request) {
 		$wsResponse = parent::process($request);
 		$response = false;
-		if($wsResponse->hasError()) {
+		if ($wsResponse->hasError()) {
 			$response = $wsResponse;
-		} 
-		else {
+		} else {
 			$wsResponseResult = $wsResponse->getResult();
 			$viewer = new crmtogo_UI_Viewer();
 			$viewer->assign('_COMMENTS', array($wsResponseResult['comment']));

@@ -20,7 +20,7 @@
 function delMenuBranch($topofbranch) {
 	global $adb;
 	$mnurs = $adb->pquery('select evvtmenuid,mtype from vtiger_evvtmenu where mparent=?', array($topofbranch));
-	if ($mnurs and $adb->num_rows($mnurs)>0) {
+	if ($mnurs && $adb->num_rows($mnurs)>0) {
 		while ($mnu = $adb->fetch_array($mnurs)) {
 			if ($mnu['mtype']=='menu') {
 				delMenuBranch($mnu['evvtmenuid']);

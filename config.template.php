@@ -7,11 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
-include('vtigerversion.php');
+include 'vtigerversion.php';
 
 // memory limit default value = 64M
-ini_set('memory_limit','1024M');
+ini_set('memory_limit', '1024M');
 error_reporting(E_ERROR);
 /* database configuration
  db_server
@@ -104,16 +103,22 @@ $php_max_execution_time = 0;
 $default_timezone = 'UTC';
 
 /** If timezone is configured, try to set it */
-if(isset($default_timezone) && function_exists('date_default_timezone_set')) {
+if (isset($default_timezone) && function_exists('date_default_timezone_set')) {
 	@date_default_timezone_set($default_timezone);
 }
 
 // Enable log4php debugging only if requried
 $LOG4PHP_DEBUG = false;
 
-// Override with developer settings
-if(file_exists('config-dev.inc.php')){
-	include('config-dev.inc.php');
-}
+// Override database with enviroment variables
+$dbconfig['db_server'] = getenv('COREBOS_DBSERVER') ? getenv('COREBOS_DBSERVER') : $dbconfig['db_server'];
+$dbconfig['db_username'] = getenv('COREBOS_DBUSER') ? getenv('COREBOS_DBUSER') : $dbconfig['db_username'];
+$dbconfig['db_password'] = getenv('COREBOS_DBPASS') ? getenv('COREBOS_DBPASS') : $dbconfig['db_password'];
+$dbconfig['db_name'] = getenv('COREBOS_DBNAME') ? getenv('COREBOS_DBNAME') : $dbconfig['db_name'];
+$site_URL = getenv('COREBOS_SITEURL') ? getenv('COREBOS_SITEURL') : $site_URL;
 
+// Override with developer settings
+if (file_exists('config-dev.inc.php')) {
+	include 'config-dev.inc.php';
+}
 ?>

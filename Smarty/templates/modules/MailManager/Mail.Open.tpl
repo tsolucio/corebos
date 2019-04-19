@@ -15,21 +15,20 @@
 			<a href='javascript:void(0);' onclick="MailManager.mail_close();"><b style="font-size:14px">&#171; {'LBL_Go_Back'|@getTranslatedString}</b></a>&nbsp;&nbsp;&nbsp;
 			<span class="dvHeaderText" id="_mailopen_subject">{$MAIL->subject()}</span>
 		</td>
-		<td align="right" nowrap="nowrap">
+		<td align="right" nowrap="nowrap" class="cblds-t-align_right">
 			{if $MAIL->msgno() < $FOLDER->count()}
 				<a href='javascript:void(0);' onclick="MailManager.mail_open( '{$FOLDER->name()}', {$MAIL->msgno(1)} );">
-					<img border="0" src="modules/Webmails/images/previous.gif" title="{'LBL_Previous'|@getTranslatedString}"></a>
+					<img border="0" src="themes/images/previous.gif" title="{'LBL_Previous'|@getTranslatedString}"></a>
 			{/if}
 			{if $MAIL->msgno() > 1}
 				<a href='javascript:void(0);' onclick="MailManager.mail_open( '{$FOLDER->name()}', {$MAIL->msgno(-1)} );">
-				<img border="0" src="modules/Webmails/images/next.gif" title="{'LBL_Next'|@getTranslatedString}"></a>
+				<img border="0" src="themes/images/next.gif" title="{'LBL_Next'|@getTranslatedString}"></a>
 			{/if}
 		</td>
 	</tr>
 {strip}
 <tr valign=top>
-	<td>
-		 
+	<td class="cblds-p_medium">
 		&nbsp;<button class="crmbutton small edit" onclick="MailManager.mail_reply(true);">{'LBL_Reply_All'|@getTranslatedString}</button>
 		&nbsp;<button class="crmbutton small edit" onclick="MailManager.mail_reply(false);">{'LBL_Reply'|@getTranslatedString}</button>
 		&nbsp;<button class="crmbutton small edit" onclick="MailManager.mail_forward({$MAIL->msgno()});">{'LBL_Forward'|@getTranslatedString}</button>
@@ -40,9 +39,9 @@
 		<table cellpadding=0 cellspacing=0 border=0 width="100%">
 		<tr>		
 			<td colspan=2 nowrap="nowrap">
-				<table width=100% cellpadding=0 cellspacing=0 border=0 class="rightMailMerge">
+				<table width=100% cellpadding=0 cellspacing=0 border=0 class="rightMailMerge cblds-table-border_sep">
 				<tr>
-					<td class="rightMailMergeHeader" align="center"><b>{'LBL_RELATED_RECORDS'|@getTranslatedString}</b></td>
+					<td class="rightMailMergeHeader cblds-p_large cblds-t-align_center" align="center"><b>{'LBL_RELATED_RECORDS'|@getTranslatedString}</b></td>
 				</tr>
 				<tr>
 					<td class="rightMailMergeContent" align="center">
@@ -56,13 +55,12 @@
 		</table>
 	</td>
 </tr>
-		
 <tr valign=top>
 	<td>
 		<span id="_mailopen_msgid_" style="display:none;">{$MAIL->_uniqueid|@escape:'UTF-8'}</span>
-		<table width="100%" cellpadding=2 cellspacing=0 border=0 class="small">
+		<table width="100%" cellpadding=2 cellspacing=0 border=0 class="small cblds-table-border_sep cblds-table-bordersp_medium">
 		<tr>
-			<td width="100px" align=right>{'LBL_FROM'|@getTranslatedString}:</td>
+			<td width="100px" align=right class="cblds-t-align_right">{'LBL_FROM'|@getTranslatedString}:</td>
 			<td id="_mailopen_from">
 				{foreach item=SENDER from=$MAIL->from()}
 					{$SENDER}
@@ -71,7 +69,7 @@
 		</tr>
 		{if $MAIL->to()}
 		<tr>
-			<td width="100px" align=right>{'LBL_TO'|@getTranslatedString}:</td>
+			<td width="100px" align=right class="cblds-t-align_right">{'LBL_TO'|@getTranslatedString}:</td>
 			<td id="_mailopen_to">
 				{foreach item=RECEPIENT from=$MAIL->to() name="TO"}
 					{if $smarty.foreach.TO.index > 0}, {/if}{$RECEPIENT}
@@ -82,7 +80,7 @@
 		
 		{if $MAIL->cc()}
 		<tr>
-			<td width="100px" align=right>{'LBL_CC'|@getTranslatedString}:</td>
+			<td width="100px" align=right class="cblds-t-align_right">{'LBL_CC'|@getTranslatedString}:</td>
 			<td id="_mailopen_cc">
 				{foreach item=CC from=$MAIL->cc() name="CC"}
 					{if $smarty.foreach.CC.index > 0}, {/if}{$CC}
@@ -93,7 +91,7 @@
 		
 		{if $MAIL->bcc()}
 		<tr>
-			<td width="100px" align=right>{'LBL_BCC'|@getTranslatedString}:</td>
+			<td width="100px" align=right class="cblds-t-align_right">{'LBL_BCC'|@getTranslatedString}:</td>
 			<td id="_mailopen_bcc">
 				{foreach item=BCC from=$MAIL->bcc() name="BCC"}
 					{if $smarty.foreach.BCC.index > 0}, {/if}{$BCC}
@@ -103,13 +101,13 @@
 		{/if}
 		
 		<tr>
-			<td width="100px" align=right>{'LBL_Date'|@getTranslatedString}:</td>
+			<td width="100px" align=right class="cblds-t-align_right">{'LBL_Date'|@getTranslatedString}:</td>
 			<td id="_mailopen_date">{$MAIL->date()}</td>
 		</tr>
 		
 		{if $MAIL->attachments(false)}
 		<tr>
-			<td width="100px" align=right>{'LBL_Attachments'|@getTranslatedString}:</td>
+			<td width="100px" align=right class="cblds-t-align_right">{'LBL_Attachments'|@getTranslatedString}:</td>
 			<td>
 				{foreach item=ATTACHVALUE key=ATTACHNAME from=$MAIL->attachments(false) name="attach"}
 					<img border=0 src="{'attachments.gif'|@vtiger_imageurl:$THEME}">&nbsp;

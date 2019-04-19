@@ -46,13 +46,13 @@ WHERE ce.deleted=0 AND vtiger_account.accountid =?
 </map>
 
  *************************************************************************************************/
-require_once('include/events/SqlResultIterator.inc');
-require_once('modules/com_vtiger_workflow/VTWorkflowManager.inc');
-require_once('modules/com_vtiger_workflow/VTSimpleTemplate.inc');
+require_once 'include/events/SqlResultIterator.inc';
+require_once 'modules/com_vtiger_workflow/VTWorkflowManager.inc';
+require_once 'modules/com_vtiger_workflow/VTSimpleTemplate.inc';
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
-require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
+require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/com_vtiger_workflow/include.inc';
-require_once('modules/com_vtiger_workflow/WorkFlowScheduler.php');
+require_once 'modules/com_vtiger_workflow/WorkFlowScheduler.php';
 
 class ConditionQuery extends processcbMap {
 

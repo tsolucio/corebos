@@ -21,7 +21,7 @@ if (!empty($_SESSION['__UnifiedSearch_SelectedModules__']) && is_array($_SESSION
 	}
 }
 
-$doNotSearchThese = array('Dashboard','Home','Calendar','Events','Rss','Reports','Portal','Webmails','Users','ConfigEditor','Import','MailManager','Mobile','ModTracker',
+$doNotSearchThese = array('Dashboard','Home','Calendar','Events','Rss','Reports','Portal','Users','ConfigEditor','Import','MailManager','Mobile','ModTracker',
 	'PBXManager','VtigerBackup','WSAPP','cbupdater','CronTasks','RecycleBin','Tooltip','Webforms','Calendar4You','GlobalVariable','cbMap','evvtMenu','cbAuditTrail',
 	'cbLoginHistory','cbtranslation');
 $doNotSearchTheseTabids = array();
@@ -48,7 +48,7 @@ uasort($allowed_modules, function ($a, $b) {
 	return (strtolower($a['label']) < strtolower($b['label'])) ? -1 : 1;
 });
 
-require_once('Smarty_setup.php');
+require_once 'Smarty_setup.php';
 
 $smarty = new vtigerCRM_Smarty();
 $smarty->assign('MOD', $mod_strings);

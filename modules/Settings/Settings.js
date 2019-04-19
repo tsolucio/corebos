@@ -7,13 +7,11 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-function getData(fieldname, modulename, divid){
-	$.ajax({
+function getData(fieldname, modulename, divid) {
+	jQuery.ajax({
 		url: 'index.php?module=Settings&action=SettingsAjax&file=loaddata&fieldname='+fieldname+'&modulename='+modulename,
-		success: function(html) {
-			var ajaxDisplay = document.getElementById(divid);
-			ajaxDisplay.innerHTML = html;
+		success: function (html) {
+			document.getElementById(divid).innerHTML = html;
 		}
 	});
 }
-

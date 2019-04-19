@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updatesChangeLog>
+    <changeSet>
+        <author>george1806</author>
+        <description>Change Signature Uitype to 19 and move to new block(Signature) in Users Module</description>
+        <filename>build/changeSets/changeSignatureUitype.php</filename>
+        <classname>changeSignatureUitype</classname>
+        <systemupdate>true</systemupdate>
+        <perspective>false</perspective>
+        <continuous>false</continuous>
+    </changeSet>
+</updatesChangeLog>    

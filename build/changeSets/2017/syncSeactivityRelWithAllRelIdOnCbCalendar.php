@@ -16,19 +16,21 @@
 
 class syncSeactivityRelWithAllRelIdOnCbCalendar extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$res_cal = $adb->pquery("SELECT activityid,rel_id FROM vtiger_activity WHERE activitytype != 'Emails' and rel_id is not null and rel_id>0",array());
+			$res_cal = $adb->pquery("SELECT activityid,rel_id FROM vtiger_activity WHERE activitytype != 'Emails' and rel_id is not null and rel_id>0", array());
 			$noofrows = $adb->num_rows($res_cal);
 			for ($i = 0; $i < $noofrows; $i++) {
-				$activityid = $adb->query_result($res_cal,$i,'activityid');
-				$rel_id = $adb->query_result($res_cal,$i,'rel_id');
+				$activityid = $adb->query_result($res_cal, $i, 'activityid');
+				$rel_id = $adb->query_result($res_cal, $i, 'rel_id');
 				//Insert into seactivity rel
-				$adb->pquery('insert IGNORE into vtiger_seactivityrel(crmid,activityid) values(?,?)',array($rel_id,$activityid));
+				$adb->pquery('insert IGNORE into vtiger_seactivityrel(crmid,activityid) values(?,?)', array($rel_id,$activityid));
 				if ($i % 1000 == 0) {
 					$this->sendMsg('RELATING ACTIVITIES: '.$i.'/'.$noofrows);
 				}
@@ -38,5 +40,4 @@ class syncSeactivityRelWithAllRelIdOnCbCalendar extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

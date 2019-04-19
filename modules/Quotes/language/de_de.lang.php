@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Angebote',
 'LBL_MODULE_TITLE'=>'Angebote: Home',
 'LBL_SEARCH_FORM_TITLE'=>'Angebote suchen',
@@ -53,9 +53,10 @@ $mod_strings = Array(
 'LBL_POSTAL_CODE'=>'PLZ:',
 'LBL_COUNTRY'=>'Land:',
 'LBL_DESCRIPTION_INFORMATION'=>'Zusatzinformationen',
+'LBL_Quotes_FINANCIALINFO' => 'Angebots-Berechnung',
 'LBL_DESCRIPTION'=>'Beschreibung:',
-'NTC_COPY_BILLING_ADDRESS'=>'kopiere Rechnungsadressea auf Lieferadresse',
-'NTC_COPY_SHIPPING_ADDRESS'=>'kopiere Lieferadresse auf Rechnungsadresse',
+'NTC_COPY_BILLING_ADDRESS'=>'kopiere Rechnungsadresse als Lieferadresse',
+'NTC_COPY_SHIPPING_ADDRESS'=>'kopiere Lieferadresse als Rechnungsadresse',
 'NTC_REMOVE_MEMBER_ORG_CONFIRMATION'=>'Möchten Sie diesen Eintrag löschen?',
 'LBL_DUPLICATE'=>'eventuell doppelte Organisation angelegt',
 'MSG_DUPLICATE' => 'Das Anlegen dieser Organisation führt möglicherweise zu einer doppelten Eintragung. Sie können entweder mit der Auswahl einer Organisation aus der untenstehenden Liste fortfahren oder einen neue Organisation anlegen.',
@@ -66,7 +67,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Organisation wählen',
 'LBL_GENERAL_INFORMATION'=>'Allgemein',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Neues Verkaufspotential',
 'LBL_POTENTIAL_TITLE'=>'Verkaufspotentiale',
 
@@ -74,23 +74,20 @@ $mod_strings = Array(
 'LBL_TASK_TITLE'=>'Aufgaben',
 'LBL_NEW_CALL'=>'neuer Anruf',
 'LBL_CALL_TITLE'=>'Anrufe',
-'LBL_NEW_MEETING'=>'neue Beprechung',
+'LBL_NEW_MEETING'=>'Neue Beprechung',
 'LBL_MEETING_TITLE'=>'Besprechungen',
-'LBL_NEW_EMAIL'=>'neue E-Mail',
+'LBL_NEW_EMAIL'=>'Neue E-Mail',
 'LBL_EMAIL_TITLE'=>'E-Mails',
-'LBL_NEW_CONTACT'=>'neue Person',
+'LBL_NEW_CONTACT'=>'Neue Person',
 'LBL_CONTACT_TITLE'=>'Personen',
 
-//Added fields after RC1 - Release
 'LBL_ALL'=>'All',
 'LBL_PROSPECT'=>'potentieller Kunde',
 'LBL_INVESTOR'=>'Investor',
 'LBL_RESELLER'=>'Wiederverkäufer',
 'LBL_PARTNER'=>'Partner',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Organisations-Tools',
-//Added for 4GA
 'Subject'=>'Titel',
 'Potential Name'=>'Verkaufspotential',
 'Quote Stage'=>'Angebotsstufe',
@@ -98,7 +95,7 @@ $mod_strings = Array(
 'Team'=>'Team',
 'Contact Name'=>'Person',
 'Currency'=>'Währung',
-'Carrier'=>'Transporteur',
+'Carrier'=>'Spediteur',
 'Sub Total'=>'Zwischensumme',
 'Shipping'=>'Versanddatum',
 'Inventory Manager'=>'Bestandsmanager',
@@ -119,26 +116,20 @@ $mod_strings = Array(
 'Shipping State'=>'Lieferadresse Bundesland',
 'Shipping Code'=>'Lieferadresse PLZ',
 'Shipping Country'=>'Lieferadresse Land',
-'Created Time'=>'erstellt',
-'Modified Time'=>'geändert',
+'Created Time'=>'Erstellt',
+'Modified Time'=>'Geändert',
 'Description'=>'Beschreibung',
 'Account Name'=>'Organisation',
-'Terms & Conditions'=>'Konditionen',
-//Quote Info
 'LBL_QUOTE_INFORMATION'=>'Angebot',
 'LBL_TERMS_INFORMATION'=>'Liefer- und Zahlungsbedingungen',
 'LBL_QUOTE'=>'Angebot:',
 
-//Added during 4.2 release
 'LBL_SUBJECT'=>'Titel:',
 'LBL_POTENTIAL_NAME'=>'Verkaufspotential:',
 'LBL_ACCOUNT_NAME'=>'Organisation:',
 'LBL_QUOTE_STAGE'=>'Angebotsstufe:',
-'LBL_MY_TOP_QUOTE'=>'meine top Angebote',
-//'Quote ID'=>'Angebots-ID',
+'LBL_MY_TOP_QUOTE'=>'Meine Top-Angebote',
 'Quote'=>'Angebot',
-
-//Added for existing Picklist Entries
 
 'Created'=>'erzeugt',
 'Delivered'=>'geliefert',
@@ -153,14 +144,12 @@ $mod_strings = Array(
 'BlueDart'=>'Post',
 'Sales Tax'=>'MwSt.',
 
-//fehlende Einträge für Berichte
 'Tax Type'=>'Steuertyp',
 'Discount Percent'=>'Rabatt (%)',
 'Discount Amount'=>'Rabatt',
 'Adjustment'=>'Anpassung',
 'S&H Amount'=>'Versandkosten',
 
-//Added after 5.0.4 GA
 'Quote No'=>'Angebotsnr.',
 
 'SINGLE_Quotes'=>'Angebot',
@@ -169,5 +158,4 @@ $mod_strings = Array(
 
 'Terms & Conditions'=>'Geschäftsbedingungen',
 );
-
 ?>

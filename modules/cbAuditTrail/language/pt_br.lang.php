@@ -8,12 +8,11 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
-	'cbAuditTrail' => 'User Audit Trail',
-	'SINGLE_cbAuditTrail' => 'User Audit Trail',
-	'LBL_AUDIT_TRAIL'=>'Informação Auditoria',
-	'AuditTrailEnabled' => 'Audit Trail Enabled',
-	'AuditTrailDisabled' => 'Audit Trail Disabled',
+$mod_strings = array(
+	'cbAuditTrail' => 'Auditoria Usuários',
+	'SINGLE_cbAuditTrail' => 'Auditoria Usuário',
+	'LBL_AUDIT_TRAIL'=>'Informação sobre Auditoria',
+	'AuditTrailEnabled' => 'Auditoria ativa',
+	'AuditTrailDisabled' => 'Auditoria desativada',
 );
-
 ?>

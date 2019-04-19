@@ -47,6 +47,5 @@ $mod_strings = array(
 'Vendor No' => 'Vendor No',
 'LBL_MODULE_NAME'=>'Vendors',
 'Vendors ID'=>'Vendors ID',
-
 );
 ?>

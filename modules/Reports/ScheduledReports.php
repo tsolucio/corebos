@@ -124,14 +124,14 @@ class VTScheduledReport extends Reports {
 	}
 
 	public function sendEmail() {
-		require_once('modules/Emails/mail.php');
-		require_once('modules/Emails/Emails.php');
+		require_once 'modules/Emails/mail.php';
+		require_once 'modules/Emails/Emails.php';
 
 		global $currentModule, $root_directory, $site_URL;
 
 		$recipientEmails = $this->getRecipientEmails();
 		$emails_to = '';
-		foreach ($recipientEmails as $name => $email) {
+		foreach ($recipientEmails as $email) {
 			$emails_to .= $email.',';
 		}
 		$emails_to = trim($emails_to, ',');
@@ -156,25 +156,23 @@ class VTScheduledReport extends Reports {
 		if ($reportFormat == 'pdf' || $reportFormat == 'both') {
 			$fileName = $baseFileName.'.pdf';
 			$filePath = $root_directory.'cache/'.$fileName;
-			$attachments[$fileName] = 'cache/'.$fileName;
-			$_REQUEST['filename_hidden_pdf'] = 'cache/'.$fileName;
+			$attachments[] = array('fname'=>$fileName, 'fpath'=>$filePath);
 			$pdf = $oReportRun->getReportPDF(null);
 			$pdf->Output($filePath, 'F');
 		}
 		if ($reportFormat == 'excel' || $reportFormat == 'both') {
 			$fileName = $baseFileName.'.xls';
-			$filePath = 'cache/'.$fileName;
-			$attachments[$fileName] = $filePath;
-			$_REQUEST['filename_hidden_xls'] = $filePath;
+			$filePath = $root_directory.'cache/'.$fileName;
+			$attachments[] = array('fname'=>$fileName, 'fpath'=>$filePath);
 			$oReportRun->writeReportToExcelFile($filePath, null);
 		}
 		$sendifempty = GlobalVariable::getVariable('Report_Send_Scheduled_ifEmpty', 1);
-		if ($sendifempty or $oReportRun->number_of_rows>0) {
+		if ($sendifempty || $oReportRun->number_of_rows>0) {
 			$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
 			$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name', 'your-support name', 'HelpDesk');
-			$mail_status = send_mail('Emails', $emails_to, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_ID, $subject, $contents, '', '', 'attReports');
-			foreach ($attachments as $attachmentName => $path) {
-				unlink($path);
+			$mail_status = send_mail('Emails', $emails_to, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_ID, $subject, $contents, '', '', $attachments);
+			foreach ($attachments as $path) {
+				unlink($path['fpath']);
 			}
 		}
 	}
@@ -252,13 +250,7 @@ class VTScheduledReport extends Reports {
 	}
 
 	public function updateNextTriggerTime() {
-		$adb = $this->db;
-
-		$currentTime = date('Y-m-d H:i:s');
-		$scheduledInterval = $this->scheduledInterval;
-		$nextTriggerTime = $this->getNextTriggerTime(); // Compute based on the frequency set
-
-		$adb->pquery('UPDATE vtiger_scheduled_reports SET next_trigger_time=? WHERE reportid=?', array($nextTriggerTime, $this->id));
+		$this->db->pquery('UPDATE vtiger_scheduled_reports SET next_trigger_time=? WHERE reportid=?', array($this->getNextTriggerTime(), $this->id));
 	}
 
 	public static function generateRecipientOption($type, $value, $name = '') {

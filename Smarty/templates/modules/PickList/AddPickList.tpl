@@ -46,13 +46,13 @@
 				<b>{$MOD.LBL_SELECT_ROLES} </b><br />
 				<select id="add_availRoles" multiple="multiple" wrap size="5" name="add_availRoles" style="width:250px;border:1px solid #666666;font-family:Arial, Helvetica, sans-serif;font-size:11px;">
 					{foreach key=role_id item=role_details from=$ROLEDETAILS}
-						<option value="{$role_id}">{$role_details.0}</option>
+						<option value="{$role_id}" selected>{$role_details.0}</option>
 					{/foreach}
 				</select>
 			</td>
 		</tr>
 		<tr>
-			<td valign=top align=right>
+			<td valign=top align=right class="cblds-t-align_right">
 				<input type="button" value="{$APP.LBL_SAVE_BUTTON_LABEL}" id="saveAddButton" name="save" class="crmButton small edit" onclick="validateAdd('{$FIELDNAME}','{$MODULE}');">
 				<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" name="cancel" class="crmButton small cancel" onclick="fnhide('actiondiv');">
 			</td>

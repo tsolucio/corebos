@@ -68,4 +68,20 @@ function __cbwf_getimageurl($arr) {
 	return $imageurl;
 }
 
+function __cb_globalvariable($arr) {
+	$ret = null;
+	if (!empty($arr[0])) {
+		$ret = GlobalVariable::getVariable($arr[0], null);
+	}
+	return $ret;
+}
+
+function __cb_getcrudmode($arr) {
+	$entity = $arr[0];
+	if ($entity->isNew()) {
+		return 'create';
+	} else {
+		return 'edit';
+	}
+}
 ?>

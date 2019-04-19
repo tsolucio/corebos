@@ -18,7 +18,7 @@ $Vtiger_Utils_Log = true;
 echo "\n";
 $start = microtime(true);
 include_once 'build/cbHeader.inc';
-require_once('modules/Contacts/Contacts.php');
+require_once 'modules/Contacts/Contacts.php';
 $time_elapsed_us = microtime(true) - $start;
 echo "Load time: $time_elapsed_us\n";
 
@@ -26,7 +26,7 @@ $num2create = 100;
 $_REQUEST['assigntype'] == 'U';
 $recs2del = array();
 $start = microtime(true);
-for ($i=0;$i<$num2create;$i++) {
+for ($i=0; $i<$num2create; $i++) {
 	$focus = new Contacts();
 	$focus->column_fields['firstname'] = 'firstname'.$i;
 	$focus->column_fields['lastname'] = 'lastname'.$i;
@@ -40,7 +40,7 @@ for ($i=0;$i<$num2create;$i++) {
 		foreach ($recs2del as $c) {
 			$f2 = new Contacts();
 			$f2->retrieve_entity_info($c, 'Contacts');
-			DeleteEntity('Contacts','Contacts',$f2,$c,$c);
+			DeleteEntity('Contacts', 'Contacts', $f2, $c, $c);
 		}
 		$recs2del = array();
 	}
@@ -48,7 +48,7 @@ for ($i=0;$i<$num2create;$i++) {
 foreach ($recs2del as $c) {
 	$f2 = new Contacts();
 	$f2->retrieve_entity_info($c, 'Contacts');
-	DeleteEntity('Contacts','Contacts',$f2,$c,$c);
+	DeleteEntity('Contacts', 'Contacts', $f2, $c, $c);
 }
 $time_elapsed_us = microtime(true) - $start;
 echo "Operation time: $time_elapsed_us\n";

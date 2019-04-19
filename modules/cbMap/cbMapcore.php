@@ -18,7 +18,7 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 
-require_once('modules/cbMap/libs/crXml.php');
+require_once 'modules/cbMap/libs/crXml.php';
 
 class cbMapcore {
 	private $Map;

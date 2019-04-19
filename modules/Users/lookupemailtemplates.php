@@ -7,11 +7,11 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/utils/utils.php');
+require_once 'include/utils/utils.php';
 
 global $theme,$current_user;
 $theme = basename(vtlib_purify($theme));
-$theme_path="themes/".$theme."/";
+$theme_path='themes/'.$theme.'/';
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -31,29 +31,23 @@ $theme_path="themes/".$theme."/";
 		<th width="65%" class="lvtCol"><b><?php echo $mod_strings['LBL_DESCRIPTION']; ?></b></td>
 		</tr>
 <?php
-$sql = 'select * from vtiger_emailtemplates order by templateid desc';
-$result = $adb->pquery($sql, array());
+$result = $adb->pquery('select * from vtiger_emailtemplates order by templateid desc', array());
 $temprow = $adb->fetch_array($result);
 $cnt=1;
-require_once('include/utils/UserInfoUtil.php');
-do
-{
-	$templatename = $temprow["templatename"];
-	if (!is_admin($current_user))
-	{
+require_once 'include/utils/UserInfoUtil.php';
+do {
+	$templatename = $temprow['templatename'];
+	if (!is_admin($current_user)) {
 		$folderName = $temprow['foldername'];
-		if($folderName != 'Personal')
-		{
-			printf("<tr class='lvtColData' onmouseover=\"this.className='lvtColDataHover'\" onmouseout=\"this.className='lvtColData'\" bgcolor='white'> <td height='25'>");
+		if ($folderName != 'Personal') {
+			printf("<tr class='lvtColData' onmouseover=\"this.className='lvtColDataHover'\" onmouseout=\"this.className='lvtColData'\" bgcolor='white'><td height='25'>");
 			echo "<a href='javascript:submittemplate(".$temprow['templateid'].");'>".$temprow["templatename"]."</a></td>";
-			printf("<td height='25'>%s</td>",$temprow["description"]);
+			printf("<td height='25'>%s</td>", $temprow["description"]);
 		}
-	}
-	else
-	{
+	} else {
 		printf("<tr class='lvtColData' onmouseover=\"this.className='lvtColDataHover'\" onmouseout=\"this.className='lvtColData'\" bgcolor='white'> <td height='25'>");
 		echo "<a href='javascript:submittemplate(".$temprow['templateid'].");'>".$temprow["templatename"]."</a></td>";
-		printf("<td height='25'>%s</td>",$temprow["description"]);
+		printf("<td height='25'>%s</td>", $temprow['description']);
 	}
 	$cnt++;
 } while ($temprow = $adb->fetch_array($result));
@@ -61,8 +55,7 @@ do
 </table>
 </body>
 <script>
-function submittemplate(templateid)
-{
+function submittemplate(templateid) {
 	window.document.location.href = 'index.php?module=Users&action=UsersAjax&file=TemplateMerge&templateid='+templateid;
 }
 </script>

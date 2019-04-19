@@ -8,30 +8,29 @@
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Produtos',
 'SINGLE_Products'=>'Produto',
-'LBL_LIST_PRODUCT_NAME'=>'Nome Produto',
+'LBL_LIST_PRODUCT_NAME'=>'Nome do Produto',
 'LBL_TOOL_FORM_TITLE'=>'Ferramentas Produto',
 'LBL_SEARCH_FORM_TITLE'=>'Pesquisa Produto',
-'LBL_PRODUCT_NAME'=>'Nome Produto:',
-'LBL_VENDOR_NAME'=>'Nome Fornecedor:',
-'LBL_PRICEBOOK_NAME'=>'Nome Lista Preço:',
+'LBL_PRODUCT_NAME'=>'Nome do Produto:',
+'LBL_VENDOR_NAME'=>'Nome do Fornecedor:',
+'LBL_PRICEBOOK_NAME'=>'Nome da Lista de Preços:',
 'LBL_VENDOR'=>'Fornecedor',
-'LBL_PRICEBOOK'=>'Lista Preço',
+'LBL_PRICEBOOK'=>'Lista de Preços',
 'LBL_VENDOR_INFORMATION'=>'Dados do Fornecedor:',
 'LBL_PRICEBOOK_INFORMATION'=>'Dados da Lista de Preços:',
 'LBL_VENDOR_ADDRESS_INFORMATION'=>'Dados do Endereço:',
-'LBL_DESCRIPTION_INFORMATION'=>'Descrição',
 'LBL_PRICING_INFORMATION'=>'Informação de Preços:',
 'LBL_STOCK_INFORMATION'=>'Informação do Estoque:',
 'LBL_LIST_FORM_TITLE'=>'Lista de Produtos',
 'LBL_LIST_VENDOR_FORM_TITLE'=>'Lista de Fonecedores',
-'LBL_LIST_PRICEBOOK_FORM_TITLE'=>'Lista de Lista Preço',
-'LBL_LIST_CATEGORY'=>'Categoria Produto',
-'LBL_CATEGORY'=>'Categoria Produto:',
-'LBL_PRODUCT_CODE'=>'Código Produto',
-'LBL_LIST_PRODUCT_CODE'=>'Código Produto:',
+'LBL_LIST_PRICEBOOK_FORM_TITLE'=>'Lista de Preços',
+'LBL_LIST_CATEGORY'=>'Categoria do Produto',
+'LBL_CATEGORY'=>'Categoria do Produto:',
+'LBL_PRODUCT_CODE'=>'Código do Produto',
+'LBL_LIST_PRODUCT_CODE'=>'Lista Códigos de Produtos:',
 'LBL_PRODUCT_ACTIVE'=>'Produto Ativo',
 'LBL_PRODUCT_COMMISSION_RATE'=>'Comissão (%)',
 'LBL_PRODUCT_QTY_PER_UNIT'=>'Qde/Un',
@@ -41,10 +40,9 @@ $mod_strings = Array(
 'LBL_PRODUCT_IMAGE'=>'Imagem',
 'LBL_NEW_FORM_TITLE'=>'Novo Produto',
 'LBL_PRODUCT_INFORMATION'=>'Dados do Produto',
-'LBL_CUSTOM_INFORMATION'=>'Informação Customizada',
+'LBL_CUSTOM_INFORMATION'=>'Informação Personalizada',
 'LBL_DESCRIPTION_INFORMATION'=>'Descrição',
 
-//New entry
 'LBL_UPLOAD'=>'Transferir Arquivo',
 
 'LBL_PRODUCT'=>'Produto',
@@ -56,7 +54,6 @@ $mod_strings = Array(
 'LBL_DESCRIPTION'=>'Descrição',
 'LBL_FILE'=>'Nome Arquivo',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nova Oportunidade',
 'LBL_POTENTIAL_TITLE'=>'Oportunidades',
 
@@ -72,41 +69,38 @@ $mod_strings = Array(
 'LBL_NEW_ATTACHMENT'=>'Novo Anexo',
 'LBL_ATTACHMENT_TITLE'=>'Anexos',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_MANUFACTURER'=>'Fabricante',
-'LBL_PRODUCTCATEGORY'=>'Categoria Produto',
-'LBL_SUPPORT_START_DATE'=>'Data Início Suporte',
-'LBL_SUPPORT_EXPIRY_DATE'=>'Data Expira Suporte',
-'LBL_PURCHASE_DATE'=>'Data Compra',
+'LBL_PRODUCTCATEGORY'=>'Categoria do Produto',
+'LBL_SUPPORT_START_DATE'=>'Data de Início do Suporte',
+'LBL_SUPPORT_EXPIRY_DATE'=>'Data em que Expira o Suporte',
+'LBL_PURCHASE_DATE'=>'Data de Compra',
 
-//Added for 4GA
-'Product Name'=>'Nome Produto',
 //'Product Code'=>'Part Number',
-'Part Number'=>'Part Number',
+'Part Number'=>'Número da peça',
 'Product Active'=>'Produto Ativo',
 'Commission Rate'=>'Comissão(%)',
 'Qty/Unit'=>'Qde/Un',
 'Unit Price'=>'Preço Unitário',
-'Cost Price'=>'Preço Coste',
+'Cost Price'=>'Preço de Custo',
 'Manufacturer'=>'Fabricante',
-'Product Category'=>'Categoria de Produto',
-'Support Start Date'=>'Data Início Suporte',
+'Product Category'=>'Categoria do Produto',
+'Support Start Date'=>'Data de Início do Suporte',
 'Support Expiry Date'=>'Data em que Expira o Suporte',
-'Purchase Date'=>'Data Compra',
-'Sales Start Date'=>'Data Início Vendas',
-'Sales End Date'=>'Data Final Vendas',
-'Created Time'=>'Data Criação',
-'Modified Time'=>'Data Modificação',
-'Related To'=>'Relacionado à',
+'Purchase Date'=>'Data de Compra',
+'Sales Start Date'=>'Data de Início de Vendas',
+'Sales End Date'=>'Data de Fim de Vendas',
+'Created Time'=>'Criado em',
+'Modified Time'=>'Modificado em',
+'Related To'=>'Relacionado com',
 'Usage Unit'=>'Unidade Utilizada',
 'Handler'=>'Responsável',
 'Contact Name'=>'Nome Contato',
 'Currency'=>'Moeda',
-'Reorder Level'=>'Nível Reabastecimento',
+'Reorder Level'=>'Nível de Reabastecimento',
 'Tax Class'=>'Categoria de Impostos',
 'Mfr PartNo'=>'Cód. Fabricante',
 'Vendor PartNo'=>'Cód. Fornecedor',
-'Serial No'=>'No. Série',
+'Serial No'=>'No. de Série',
 'Qty In Stock'=>'Qde. em Estoque',
 'Product Sheet'=>'Ficha do Produto',
 'Qty In Demand'=>'Qde. Comprada',
@@ -115,7 +109,7 @@ $mod_strings = Array(
 
 //Mapping for Name
 'Name'=>'Nome',
-'Company Name'=>'Nome Empresa',
+'Company Name'=>'Nome da Empresa',
 'Phone'=>'Fone',
 'Email'=>'E-mail',
 'Website'=>'Website',
@@ -129,40 +123,37 @@ $mod_strings = Array(
 'Po Box'=>'Cx Postal',
 
 //Mapping for price book
-'Price Book Name'=>'Nome Lista Preço',
-'Product Name'=>'Nome Produto',
+'Price Book Name'=>'Nome da Lista de Preços',
+'Product Name'=>'Nome do Produto',
 'Active'=>'Ativo',
 
-//Added for 4.2 Release -- CustomView
 'LBL_ALL'=>'Todos',
 'LBL_VENDOR_SEARCH_FORM_TITLE'=>'Pesquisar Fornecedor',
-'LBL_PRICEBOOK_SEARCH_FORM_TITLE'=>'Pesquisar Lista Preços',
+'LBL_PRICEBOOK_SEARCH_FORM_TITLE'=>'Pesquisar Lista de Preços',
 'LBL_VENDOR_TITLE'=>'Fornecedores',
 'LBL_PRICEBOOK_TITLE'=>'Lista de Preços',
 'LBL_PRODUCTS_TITLE'=>'Produtos',
-'LBL_COMPANY_NAME'=>'Nome Empresa',
+'LBL_COMPANY_NAME'=>'Nome da Empresa',
 'LBL_CATEGORY_TITLE'=>'Categoria',
 'LBL_ACTIVE_TITLE'=>'Ativo',
-'LBL_LIST_VENDOR_NAME'=>'Nome Fornecedor',
-'LBL_IMAGE_INFORMATION'=>'Informação Imagem Produto:',
-'Product Image'=>'Imagem Produto',
+'LBL_LIST_VENDOR_NAME'=>'Nome do Fornecedor',
+'LBL_IMAGE_INFORMATION'=>'Informação Imagem do Produto:',
+'Product Image'=>'Imagem do Produto',
 'LBL_ADD_PRICEBOOK_BUTTON_TITLE'=>'Adicionar à Lista de Preços [Alt+B]',
 'LBL_ADD_PRICEBOOK_BUTTON_KEY'=>'B',
 'LBL_ADD_PRICEBOOK_BUTTON_LABEL'=>'Adicionar à Lista de Preços',
 'LBL_ADD_PRODUCT_PRICEBOOKS'=>'Adicionar Produto na Lista de Preços',
 'LBL_ADD_PRODUCTS_PRICEBOOK'=>'Adicionar Produtos na Lista de Preços',
 
-//Added for 4.2 patch2 release
 'LBL_MAXIMUM_LIMIT_ERROR'=>'Desculpe, os arquivos transferidos excederam o limite máximo file size. Por favor, tente um arquivo menor que 800000 bytes',
 'LBL_UPLOAD_ERROR'=>'Problemas na transferência do arquivo. Por favor tente novamente!',
 'LBL_IMAGE_ERROR'=>'O arquivo não é do tipo imagem(.gif/.jpg/.png)',
 'LBL_INVALID_IMAGE'=>'Arquivo inválido ou vazio',
 'LBL_EMAIL'=>'Email',
 'Product'=>'Produto',
-'LBL_EDITLISTPRICE'=>'Editar Lista Preço',
+'LBL_EDITLISTPRICE'=>'Editar Lista de Preços',
 
 //Added for existing picklist entries
-
 '--None--'=>'--Nada--',
 
 'Hardware'=>'Hardware',
@@ -181,23 +172,21 @@ $mod_strings = Array(
 
 'Box'=>'Cx',
 'Carton'=>'Cartão',
-'Caton'=>'',
-'Dozen'=>'Dz',
+'Dozen'=>'Dúzia',
 'Each'=>'Cada',
 'Hours'=>'Hora',
 'Impressions'=>'Impressão',
 'Lb'=>'Lb',
 'M'=>'M',
-'Pack'=>'Pct',
+'Pack'=>'Pacote',
 'Pages'=>'Páginas',
 'Pieces'=>'Peças',
 'Quantity'=>'Quantidade',
 'Reams'=>'Resma',
 'Sheet'=>'Folhas',
-'Spiral Binder'=>'',
-'Sq Ft'=>'', // Square Foot = Pé quadrado
+'Spiral Binder'=>'Espiral de encadernação',
+'Sq Ft'=>'', // Square Foot = pe quadrados
 
-//Added for 5.0.3
 'MSG_STOCK_LEVEL'=>'O Nível de Estoque está baixo',
 'MSG_DEAR'=>'Caro',
 'MSG_CURRENT_STOCK'=>'O estoque atual de',
@@ -206,22 +195,19 @@ $mod_strings = Array(
 'MSG_SEVERITY'=>'Gravidade: Elevada',
 'MSG_THANKS'=>'Obrigado,',
 
-// Added after 5.0.4 GA
-
-'LBL_PRODUCT_PRICES'=>'Preços Produtos',
+'LBL_PRODUCT_PRICES'=>'Preços dos Produtos',
 'Member Of'=>'Membro de',
 
 // Module Sequence Numbering
 'Product No' => 'Cod. Produto',
-// END
 
 'LBL_NO_TAXES_ASSOCIATED'=>'Nenhum Imposto associado a este Produto',
 'Parent Product' => 'Produto Pai',
 
 'Products ID' => 'ID Produtos',
-'Divisible' => 'Divisible',
-'DIVISIBLE_WARNING' => 'can only be sold in multiplies of one',
-'DIVISIBLE_WARNING_PURCHASE' => 'can only be purchased in multiplies of one',
+'Divisible' => 'Divisível',
+'DIVISIBLE_WARNING' => 'Pode apenas ser vendido em múltiplos de um',
+'DIVISIBLE_WARNING_PURCHASE' => 'apenas pode ser comprada em múltiplos de um',
+'IS_DISCONTINUED' => 'is discontinued',
 );
-
 ?>

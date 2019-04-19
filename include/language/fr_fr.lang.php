@@ -2,12 +2,12 @@
 /***********************************************************
 *  Module       : General
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
-$app_strings = array (
+$app_strings = array(
 	'LBL_BROWSER_TITLE' => 'coreBOS',
 	'LBL_MY_ACCOUNT' => 'Mon compte',
 	'LBL_MY_PREFERENCES' => 'Mes préférences',
@@ -34,11 +34,15 @@ $app_strings = array (
 	'LBL_APPLY_BUTTON_LABEL' => 'Appliquer',
 	'LBL_SEND_MAIL_BUTTON' => 'Envoyer email',
 	'LBL_SAVE_BUTTON_TITLE' => 'Enregistrer [Alt+S]',
+	'LBL_SAVEREPEAT_BUTTON_TITLE' => 'Save+Repeat [Alt+H]',
+	'LBL_SKIP_BUTTON_TITLE' => 'Skip [Alt+K]',
+	'LBL_GOBACK_BUTTON_TITLE' => 'Go back [Alt+B]',
 	'LBL_EDIT_BUTTON_TITLE' => 'Editer [Alt+E]',
 	'LBL_RECALCULATE_BUTTON_TITLE' => 'Recalculer [Alt+R]',
 	'LBL_CONVERTSO_BUTTON_TITLE' => 'Nouveau bon de commande',
 	'LBL_CONVERTINVOICE_BUTTON_TITLE' => 'Facturer',
 	'LBL_EDIT_BUTTON' => 'Editer',
+	'LBL_COPY_BUTTON'=>'Copier',
 	'LBL_DUPLICATE_BUTTON_TITLE' => 'Copier [Alt+U]',
 	'LBL_DUPLICATE_BUTTON' => 'Copier',
 	'LBL_TABCUSTOMISE_BUTTON_TITLE' => 'Personnaliser [Alt+C]',
@@ -68,6 +72,9 @@ $app_strings = array (
 	'LBL_CREATE_BUTTON_LABEL' => 'Créer',
 	'LBL_GENERATE' => 'Générer',
 	'LBL_SAVE_BUTTON_KEY' => 'S',
+	'LBL_SAVEREPEAT_BUTTON_KEY' => 'H',
+	'LBL_SKIP_BUTTON_KEY' => 'K',
+	'LBL_GOBACK_BUTTON_KEY' => 'B',
 	'LBL_EDIT_BUTTON_KEY' => 'E',
 	'LBL_CONVERTSO_BUTTON_KEY' => 'S',
 	'LBL_CONVERTINVOICE_BUTTON_KEY' => 'I',
@@ -81,6 +88,9 @@ $app_strings = array (
 	'LBL_CLEAR_BUTTON_KEY' => 'C',
 	'LBL_SELECT_BUTTON_KEY' => 'T',
 	'LBL_SAVE_BUTTON_LABEL' => 'Sauver',
+	'LBL_SAVEREPEAT_BUTTON_LABEL' => 'Save+Repeat',
+	'LBL_SKIP_BUTTON_LABEL' => 'Skip',
+	'LBL_GOBACK_BUTTON_LABEL' => 'Go back',
 	'LBL_EDIT_BUTTON_LABEL' => 'Editer',
 	'LBL_CONVERTSO_BUTTON_LABEL' => 'Convertir en bon de commande',
 	'LBL_CONVERTINVOICE_BUTTON_LABEL' => 'Convertir en facture',
@@ -137,6 +147,8 @@ $app_strings = array (
 	'LNK_HELP' => 'Aide',
 	'LNK_ABOUT' => 'A propos',
 	'LNK_OUTLOOK' => './include/images/outlook_download.gif',
+	'LBL_ACTIVATE' => 'Activer',
+	'LBL_DEACTIVATE' => 'Désactiver',
 	'SINGLE_Accounts' => 'Compte',
 	'SINGLE_Contacts' => 'Contact',
 	'SINGLE_Campaigns' => 'Campagne',
@@ -159,7 +171,6 @@ $app_strings = array (
 	'SINGLE_Rss' => 'Rss',
 	'SINGLE_Reports' => 'Rapport',
 	'SINGLE_Portal' => 'Marque-page',
-	'SINGLE_Webmails' => 'Messagerie',
 	'SINGLE_Users' => 'Collaborateur',
 	'NEW' => 'Créer',
 	'NTC_REQUIRED' => 'Indique des champs requis',
@@ -193,6 +204,7 @@ $app_strings = array (
 	'LBL_CURRENT_USER_FILTER' => 'Seulement les miens :',
 	'NTC_LOGIN_MESSAGE' => 'Veuillez vous identifier.',
 	'LBL_NONE' => '--Aucun--',
+	'LBL_ALLPICKLIST' => '--All--',
 	'LBL_BACK' => 'Retour',
 	'LBL_TIMEFIELD'=>'(HH:mm:ss)',
 	'LBL_IMPORT' => 'Importer',
@@ -243,6 +255,9 @@ $app_strings = array (
 	'LBL_CHANGE_OWNER' => 'Changer assignation',
 	'LBL_CHANGE_STATUS' => 'Changer statut',
 	'LBL_MASS_DELETE' => 'Supprimer',
+	'LBL_DUPLICATE_DELETE' =>'Duplicates Deleted Successfully',
+	'LBL_DUPLICATE_DELETE_FAIL' =>'Fail to Delete Duplicate Records Below',
+	'LBL_DELETE_DUPLICATES' => 'Delete Exact Duplicates',
 	'LBL_ADD_ITEM' => 'Ajouter',
 	'LBL_ADD_NEW' => 'Créer',
 	'LBL_DEDUCT' => 'Déduire',
@@ -280,6 +295,8 @@ $app_strings = array (
 	'LBL_LAST_MODIFIED' => 'Modifié le',
 	'LBL_CREATED' => 'Créé le',
 	'LBL_DESCRIPTION' => 'Description',
+	'LBL_PURPOSE' => 'Purpose',
+	'LBL_TRIGGER' => 'Trigger',
 	'LBL_NEW_TASK' => 'Nouvelle tâche',
 	'LBL_NEW_EVENT' => 'Nouvelle activité',
 	'LBL_ATTACHMENT_AND_NOTES' => 'Pièces jointes & Notes',
@@ -352,7 +369,6 @@ $app_strings = array (
 	'Sales Stage' => 'Phase de vente',
 	'Amount' => 'Montant',
 	'Expected Close' => 'Échéance',
-	'Contact Name' => 'Contact',
 	'Related to' => 'Relatif à',
 	'File' => 'Fichier',
 	'Last Modified' => 'Modifié le',
@@ -387,7 +403,6 @@ $app_strings = array (
 	'Events' => 'Activités',
 	'Tasks' => 'Tâches',
 	'Todo' => 'Tâche en attente',
-	'Meeting' => 'Rencontre',
 	'PriceBook' => 'Grille tarifaire',
 	'Calendar' => 'Tâches Agenda',
 	'Home' => 'Accueil',
@@ -399,7 +414,6 @@ $app_strings = array (
 	'Vendors' => 'Fournisseurs',
 	'Rss' => 'RSS',
 	'Portal' => 'Mes sites',
-	'Webmails' => 'Webmail',
 	'Activity History' => 'Historique activitées',
 	'Ticket History' => 'Historique ticket',
 	'Purchase Order' => 'Commande Fournisseurs',
@@ -447,7 +461,6 @@ $app_strings = array (
 	'LBL_RSS_FEEDS' => 'Canal RSS',
 	'LBL_ADD_RSS_FEEDS' => 'Ajouter canal RSS',
 	'LNK_NEW_FAQ' => 'Nouvelle FAQ',
-	'Vendor Name' => 'Nom fournisseur',
 	'LNK_WEARE' => 'A propos',
 	'LBL_DISCUSS' => 'Discuter avec d\'autres utilisateurs',
 	'Quote Stage' => 'Phase devis',
@@ -494,6 +507,7 @@ $app_strings = array (
 	'LBL_QTY' => 'Qté',
 	'LBL_UNIT_PRICE' => 'Tarif unitaire',
 	'LBL_LIST_PRICE' => 'Grille tarifaire',
+	'LBL_PURCHASE_PRICE' => 'Tarif Achat',
 	'List Price' => 'Grille tarifaire',
 	'LBL_TOTAL' => 'Total',
 	'LBL_ADD_PRODUCT' => 'Ajouter un produit',
@@ -588,7 +602,7 @@ $app_strings = array (
 	'LBL_TOOLS' => 'Outils',
 	'LBL_DISCOUNT' => 'Remise',
 	'LBL_TOTAL_AFTER_DISCOUNT' => 'Total après remise',
-	'LBL_NET_TOTAL' => 'Total HT',
+	'LBL_NET_TOTAL' => 'Total Net (bGD)',
 	'LBL_SHIPPING_AND_HANDLING_CHARGES' => 'Frais d\'expédition',
 	'LBL_TAX_FOR_SHIPPING_AND_HANDLING' => 'Taxe d\'expédition',
 	'LBL_FINISH' => 'Terminer',
@@ -608,6 +622,24 @@ $app_strings = array (
 	'LBL_TOTAL_TAX_AMOUNT' => 'Total taxes',
 	'LBL_FINAL_DISCOUNT_AMOUNT' => 'Montant remise',
 	'LBL_SHIPPING_AND_HANDLING_CHARGE' => 'Expédition et transport',
+	'Gross Total' => 'Gross Total',
+	'Line Discount' => 'Line Discount',
+	'Global Discount' => 'Global Discount',
+	'Total Discount' => 'Total Discount',
+	'Net Total (aGD)' => 'Net Total (aGD)',
+	'Net Total (bGD)' => 'Net Total (bGD)',
+	'bGD' => 'before Global Discount',
+	'aGD' => 'after Global Discount',
+	'SH Total' => 'SH Total',
+	'SH Tax' => 'SH Tax',
+	'Final Adjustment' => 'Final Adjustment',
+	'Grand Total' => 'Grand Total',
+	'Total Tax' => 'Total Tax',
+	'Total Tax Retention' => 'Total Tax Retention',
+	'LBL_Invoice_FINANCIALINFO' => 'Financial Information',
+	'LBL_PurchaseOrder_FINANCIALINFO' => 'Financial Information',
+	'LBL_Quotes_FINANCIALINFO' => 'Financial Information',
+	'LBL_SalesOrder_FINANCIALINFO' => 'Financial Information',
 	'LBL_GO_BACK' => 'Retour',
 	'LBL_RECORD_DELETE' => 'L\'enregistrement que vous tentez de visualiser a été supprimé.',
 	'Part Number' => 'Ref',
@@ -646,7 +678,6 @@ $app_strings = array (
 	'less_than' => 'inférieur à',
 	'greater_or_equal' => 'supérieur ou égal',
 	'less_or_equal' => 'inférieur ou égal',
-	
 
 	'LABEL_SET_DISCOUNT_FOR_COLON' => 'Fixer une remise pour :',
 	'LABEL_SET_TAX_FOR' => 'Fixer la taxe pour',
@@ -684,6 +715,8 @@ $app_strings = array (
 	'Task_Not_completed' => 'Tâche non terminée',
 	'DELETE_CONFIRMATION' => 'Etes-vous certain de vouloir supprimer la sélection ?',
 	'SELECT_ATLEAST_ONE' => 'Sélectionner au moins un enregistrement',
+	'SELECT_ATLEAST_ONECONDITION' => 'Please select at least one condition',
+	'Select Condition' => 'Select Condition',
 	'DELETING_ACCOUNT' => 'Supprimer ce(s) compte(s) entraînera la suppression des données en relation (affaires, devis, commandes, factures). Etes-vous certain de vouloir supprimer ? ',
 	'DELETING_VENDOR' => 'Supprimer ce(s) fournisseur(s) entraînera la suppression des données en relation (commandes fournisseur). Etes-vous certain de vouloir supprimer la sélection ? ',
 	'PLEASE_SELECT_MAILID' => 'Veuillez sélectionner une adresse email',
@@ -900,7 +933,7 @@ $app_strings = array (
 	'LBL_ALL_DATA' => 'Exporter toutes les données',
 	'LBL_DATA_IN_CURRENT_PAGE' => 'Exporter les données de la page courante',
 	'LBL_ONLY_SELECTED_RECORDS' => 'Exporter les entrées sélectionnées',
-	'LBL_YES' => 'Oui',	
+	'LBL_YES' => 'Oui',
 	'Planned' => 'Planifiée',
 	'Held' => 'A eu lieu',
 	'Not Held' => 'N\'a pas eu lieu',
@@ -986,6 +1019,7 @@ $app_strings = array (
 	'Issue Date' => 'Échéance',
 	'Shipping Address' => 'Adresse (livraison)',
 	'Page' => 'Page',
+	'Pages'=>'Pages',
 	'Tracking No.' => 'N° suivi ',
 	'Req. No.' => 'N° demande',
 	'Customer Name' => 'Nom client',
@@ -1078,8 +1112,6 @@ $app_strings = array (
 	'LBL_CALLER_INFORMATION'=>'Information correspondant',
 	'LBL_CALLER_NUMBER'=>'Numéro :',
 	'LBL_CALLER_NAME'=>'Nom :',
-
-
 	'LBL_DUPLICATE' => 'Dupliquer',
 	'LBL_CLICK' => 'Clic',
 	'LBL_TO_CONFIGURE' => 'pour configurer le',
@@ -1095,6 +1127,7 @@ $app_strings = array (
 	'LBL_DUP_PERMISSION' => 'Vous n\'êtes pas autorisé à supprimer ',
 	'recordid' => 'recordid',
 	'Entity Type' => 'Type d\'entité',
+	'RecordDuplicated'=>'Record has been duplicated. This is the new record.',
 	'LBL_GMAIL' => 'Gmail',
 	'LBL_BOOKMARKLET' => 'Favoris',
 	'PRIVATE_FILTER' => 'Privé',
@@ -1117,12 +1150,11 @@ $app_strings = array (
 
 	'Todos' => 'faire A',
 
-
 	'LBL_POSTPONE'=>'Reporté',
 
 	// Unified Search extended support
 	'LBL_SELECT_MODULES_FOR_SEARCH' => 'Sélectionnez les modules dans lesquels la recherche sera effectuée',
-	'LBL_SELECT_ALL' => 'Tous', 
+	'LBL_SELECT_ALL' => 'Tous',
 	'LBL_UNSELECT_ALL' => 'Aucun',
 	'LBL_FIELD_FOR_COMPARISION' => 'Champs à comparer',
 	'LBL_DONE' => ' OK ',
@@ -1133,7 +1165,7 @@ $app_strings = array (
 	// For note link on the detailview
 	'LBL_ADD_NOTE'=>'Ajouter une note',
 
-	// For Layout Editor 
+	// For Layout Editor
 	'LBL_UNHIDE_FIELDS'=>'Champs cachés',
 
 	// For Mass Edit
@@ -1150,8 +1182,6 @@ $app_strings = array (
 	'LBL_REFRESH' => 'Rafraîchir',
 	'LBL_Reminder' => 'Rappel',
 	'LBL_RESET_PASSWORD' => 'Regénérer le mot de passe',
-
-
 
 	'LBL_CRITERIA_AND'=>'et',
 	'LBL_CRITERIA_OR'=>'ou',
@@ -1184,10 +1214,9 @@ $app_strings = array (
 	'Shipping & Handling Charges' => 'Frais d\'expédition',
 	'Shipping & Handling Tax:' => 'Taxe d\'expédition:',
 	'Quantity' => 'Quantité',
-	'Net Total' => 'Total Net',
+	'Net Total' => 'Total Net (bGD)',
 	'Send SMS' => 'Envoyer un SMS',
 
-	'LBL_MORE'=>'Plus',
 	'LBL_CRM_SETTINGS' => 'Configuration CRM ',
 	'LBL_RELATED_TO_THIS' =>'relatif à ce(tte)',
 	'LBL_DESELECT_ALL' => 'Désélectionner tout',
@@ -1207,6 +1236,15 @@ $app_strings = array (
 	'Subscribe' => 'Souscrire',
 	'View History' => 'Voir Historique',
 	'SYNCH_NOW' => 'Sync Now',
+	'Updated' => 'Updated',
+	'id' => 'id',
+	'data' => 'data',
+	'record' => 'Record',
+	'saved' => 'saved',
+	'notsaved' => 'notsaved',
+	'processcomplete' => 'Process Complete',
+	'typetosearch_prodser' => 'Type to search products or services',
+	'RecordIsAssignedToInactiveUser' => 'The record is assigned to an inactive user. Please select another user.',
 );
 
 // Translation for currency names
@@ -1328,7 +1366,6 @@ $app_currency_strings = array(
 	'Venezuela, Bolivares Fuertes' => 'Venezuela, Bolivares Fuertes',
 	'Vietnam, Dong' 		=> 'Vietnam, Dong',
 	'Zimbabwe Dollars' 		=> 'Zimbabwe Dollars',
-	'China, Yuan Renminbi' 	=> 'China, Yuan Renminbi',
 	'Afghanistan, Afghanis' => 'Afghanistan, Afghanis',
 	'Cambodia, Riels' 		=> 'Cambodia, Riels',
 	'China, Yuan Renminbi'	=> 'China, Yuan Renminbi',

@@ -7,40 +7,40 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('include/logging.php');
-require_once('include/utils/utils.php');
-require_once('modules/Contacts/Contacts.php');
-require_once('modules/Leads/Leads.php');
-require('user_privileges/default_module_view.php');
+require_once 'include/logging.php';
+require_once 'include/utils/utils.php';
+require_once 'modules/Contacts/Contacts.php';
+require_once 'modules/Leads/Leads.php';
+require 'modules/Vtiger/default_module_view.php';
 
 class Campaigns extends CRMEntity {
-	var $db, $log; // Used in class functions of CRMEntity
+	public $db;
+	public $log;
 
-	var $table_name = "vtiger_campaign";
-	var $table_index= 'campaignid';
-	var $column_fields = Array();
+	public $table_name = 'vtiger_campaign';
+	public $table_index= 'campaignid';
+	public $column_fields = array();
 
 	/** Indicator if this is a custom module or standard module */
-	var $IsCustomModule = false;
-	var $HasDirectImageField = false;
+	public $IsCustomModule = false;
+	public $HasDirectImageField = false;
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
-	var $customFieldTable = Array('vtiger_campaignscf', 'campaignid');
+	public $customFieldTable = array('vtiger_campaignscf', 'campaignid');
 
-	var $tab_name = Array('vtiger_crmentity','vtiger_campaign','vtiger_campaignscf');
-	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_campaign'=>'campaignid','vtiger_campaignscf'=>'campaignid');
+	public $tab_name = array('vtiger_crmentity','vtiger_campaign','vtiger_campaignscf');
+	public $tab_name_index = array('vtiger_crmentity'=>'crmid','vtiger_campaign'=>'campaignid','vtiger_campaignscf'=>'campaignid');
 
-	var $list_fields = Array(
-		'Campaign Name'=>Array('campaign'=>'campaignname'),
-		'Campaign Type'=>Array('campaign'=>'campaigntype'),
-		'Campaign Status'=>Array('campaign'=>'campaignstatus'),
-		'Expected Revenue'=>Array('campaign'=>'expectedrevenue'),
-		'Expected Close Date'=>Array('campaign'=>'closingdate'),
-		'Assigned To' => Array('crmentity'=>'smownerid')
+	public $list_fields = array(
+		'Campaign Name'=>array('campaign'=>'campaignname'),
+		'Campaign Type'=>array('campaign'=>'campaigntype'),
+		'Campaign Status'=>array('campaign'=>'campaignstatus'),
+		'Expected Revenue'=>array('campaign'=>'expectedrevenue'),
+		'Expected Close Date'=>array('campaign'=>'closingdate'),
+		'Assigned To' => array('crmentity'=>'smownerid')
 	);
-
-	var $list_fields_name = Array(
+	public $list_fields_name = array(
 		'Campaign Name'=>'campaignname',
 		'Campaign Type'=>'campaigntype',
 		'Campaign Status'=>'campaignstatus',
@@ -50,59 +50,45 @@ class Campaigns extends CRMEntity {
 	);
 
 	// Make the field link to detail view from list view (Fieldname)
-	var $list_link_field= 'campaignname';
+	public $list_link_field= 'campaignname';
 
-	var $search_fields = Array(
-		'Campaign Name'=>Array('vtiger_campaign'=>'campaignname'),
-		'Campaign Type'=>Array('vtiger_campaign'=>'campaigntype'),
+	// For Popup listview and UI type support
+	public $search_fields = array(
+		'Campaign Name'=>array('vtiger_campaign'=>'campaignname'),
+		'Campaign Type'=>array('vtiger_campaign'=>'campaigntype'),
 	);
-
-	var $search_fields_name = Array(
+	public $search_fields_name = array(
 		'Campaign Name'=>'campaignname',
 		'Campaign Type'=>'campaigntype',
 	);
 
 	// For Popup window record selection
-	var $popup_fields = Array('campaignname');
+	public $popup_fields = array('campaignname');
 
 	// Placeholder for sort fields - All the fields will be initialized for Sorting through initSortFields
-	var $sortby_fields = Array('campaignname','smownerid','campaigntype','productname','expectedrevenue','closingdate','campaignstatus','expectedresponse','targetaudience','expectedcost');
+	public $sortby_fields = array();
 
 	// For Alphabetical search
-	var $def_basicsearch_col = 'campaignname';
+	public $def_basicsearch_col = 'campaignname';
 
 	// Column value to use on detail view record text display
-	var $def_detailview_recname = 'campaignname';
+	public $def_detailview_recname = 'campaignname';
 
 	// Required Information for enabling Import feature
-	var $required_fields = Array('campaignname'=>1);
+	public $required_fields = array('campaignname'=>1);
 
 	// Callback function list during Importing
-	var $special_functions = Array('set_import_assigned_user');
+	public $special_functions = array('set_import_assigned_user');
 
-	var $default_order_by = 'crmid';
-	var $default_sort_order = 'DESC';
+	public $default_order_by = 'crmid';
+	public $default_sort_order = 'DESC';
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
 	public $mandatory_fields = array('campaignname','createdtime' ,'modifiedtime');
 
-	function __construct() {
-		global $log;
-		$this_module = get_class($this);
-		$this->column_fields = getColumnFields($this_module);
-		$this->db = PearDatabase::getInstance();
-		$this->log = $log;
-		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ? limit 1';
-		$tabid = getTabid($this_module);
-		$result = $this->db->pquery($sql, array($tabid));
-		if ($result and $this->db->num_rows($result)==1) {
-			$this->HasDirectImageField = true;
-		}
-	}
-
-	function save_module($module) {
+	public function save_module($module) {
 		if ($this->HasDirectImageField) {
-			$this->insertIntoAttachment($this->id,$module);
+			$this->insertIntoAttachment($this->id, $module);
 		}
 	}
 
@@ -111,18 +97,18 @@ class Campaigns extends CRMEntity {
 	 * @param  integer   $id      - campaignid
 	 * returns related Accounts record in array format
 	 */
-	function get_accounts($id, $cur_tab_id, $rel_tab_id, $actions = false) {
+	public function get_accounts($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view,$currentModule;
-		$log->debug("Entering get_accounts(".$id.") method ...");
+		$log->debug('> get_accounts '.$id);
 		$this_module = $currentModule;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
-		require_once("modules/$related_module/$related_module.php");
+		require_once "modules/$related_module/$related_module.php";
 		$other = new $related_module();
 
 		$is_CampaignStatusAllowed = false;
 		global $current_user;
-		if(getFieldVisibilityPermission('Accounts', $current_user->id, 'campaignrelstatus') == '0') {
+		if (getFieldVisibilityPermission('Accounts', $current_user->id, 'campaignrelstatus') == '0') {
 			$other->list_fields['Status'] = array('vtiger_campaignrelstatus'=>'campaignrelstatus');
 			$other->list_fields_name['Status'] = 'campaignrelstatus';
 			$other->sortby_fields[] = 'campaignrelstatus';
@@ -131,18 +117,20 @@ class Campaigns extends CRMEntity {
 
 		$parenttab = getParentTab();
 
-		if($singlepane_view == 'true')
+		if ($singlepane_view == 'true') {
 			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
-		else
+		} else {
 			$returnset = '&return_module='.$this_module.'&return_action=CallRelatedList&return_id='.$id;
+		}
 
 		$button = '';
 
 		// Send mail button for selected Accounts
-		$button .= "<input title='".getTranslatedString('LBL_SEND_MAIL_BUTTON')."' class='crmbutton small edit' value='".getTranslatedString('LBL_SEND_MAIL_BUTTON')."' type='button' name='button' onclick='rel_eMail(\"$this_module\",this,\"$related_module\")'>";
+		$button .= "<input title='".getTranslatedString('LBL_SEND_MAIL_BUTTON')."' class='crmbutton small edit' value='".getTranslatedString('LBL_SEND_MAIL_BUTTON');
+		$button .= "' type='button' name='button' onclick='rel_eMail(\"$this_module\",this,\"$related_module\")'>";
 		$button .= '&nbsp;&nbsp;&nbsp;&nbsp';
 		/* To get Accounts CustomView -START */
-		require_once('modules/CustomView/CustomView.php');
+		require_once 'modules/CustomView/CustomView.php';
 		$ahtml = "<select id='".$related_module."_cv_list' class='small'><option value='None'>-- ".getTranslatedString('Select One')." --</option>";
 		$oCustomView = new CustomView($related_module);
 		$viewid = $oCustomView->getViewId($related_module);
@@ -151,19 +139,25 @@ class Campaigns extends CRMEntity {
 		$ahtml .= "</select>";
 		/* To get Accounts CustomView -END */
 
-		$button .= $ahtml."<input title='".getTranslatedString('LBL_LOAD_LIST',$this_module)."' class='crmbutton small edit' value='".getTranslatedString('LBL_LOAD_LIST',$this_module)."' type='button' name='button' onclick='loadCvList(\"$related_module\",\"$id\")'>";
+		$button .= $ahtml."<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
+		$button .= getTranslatedString('LBL_LOAD_LIST', $this_module)."' type='button' name='button' onclick='loadCvList(\"$related_module\",\"$id\")'>";
 		$button .= '&nbsp;&nbsp;';
-		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST',$this_module)."' class='crmbutton small edit' value='".getTranslatedString('LBL_EMPTY_LIST',$this_module)."' type='button' name='button' onclick='emptyCvList(\"$related_module\",\"$id\")'>";
+		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST', $this_module)."' class='crmbutton small edit' value='";
+		$button .= getTranslatedString('LBL_EMPTY_LIST', $this_module)."' type='button' name='button' onclick='emptyCvList(\"$related_module\",\"$id\")'>";
 		$button .= '&nbsp;&nbsp;&nbsp;&nbsp;';
 
 		if ($actions) {
 			if (is_string($actions)) {
 				$actions = explode(',', strtoupper($actions));
 			}
-			if (in_array('SELECT', $actions) && isPermitted($related_module,4, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
+			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
+				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module).
+					"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
+					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
+					"'width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). ' '.
+					getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
-			if (in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
+			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
 				$button .= "<input type='hidden' name='createmode' value='link' />".
 					"<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='crmbutton small create'" .
@@ -188,16 +182,16 @@ class Campaigns extends CRMEntity {
 
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
 
-		if ($return_value == null)
-			$return_value = Array();
-		else if ($is_CampaignStatusAllowed and !empty($return_value['header'])) {
+		if ($return_value == null) {
+			$return_value = array();
+		} elseif ($is_CampaignStatusAllowed && !empty($return_value['header'])) {
 			$statusPos = count($return_value['header']) - 2; // Last column is for Actions, exclude that. Also the index starts from 0, so reduce one more count.
-			$return_value = $this->add_status_popup($return_value, $statusPos, 'Accounts');
+			$return_value = $this->addStatusPopup($return_value, $statusPos, 'Accounts');
 		}
 
 		$return_value['CUSTOM_BUTTON'] = $button;
 
-		$log->debug("Exiting get_accounts method ...");
+		$log->debug('< get_accounts');
 		return $return_value;
 	}
 
@@ -206,18 +200,18 @@ class Campaigns extends CRMEntity {
 	 * @param  integer   $id      - campaignid
 	 * returns related Contacts record in array format
 	 */
-	function get_contacts($id, $cur_tab_id, $rel_tab_id, $actions=false) {
+	public function get_contacts($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view,$currentModule;
-		$log->debug("Entering get_contacts(".$id.") method ...");
+		$log->debug('> get_contacts '.$id);
 		$this_module = $currentModule;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
-		require_once("modules/$related_module/$related_module.php");
+		require_once "modules/$related_module/$related_module.php";
 		$other = new $related_module();
 
 		$is_CampaignStatusAllowed = false;
 		global $current_user;
-		if(getFieldVisibilityPermission('Contacts', $current_user->id, 'campaignrelstatus') == '0') {
+		if (getFieldVisibilityPermission('Contacts', $current_user->id, 'campaignrelstatus') == '0') {
 			$other->list_fields['Status'] = array('vtiger_campaignrelstatus'=>'campaignrelstatus');
 			$other->list_fields_name['Status'] = 'campaignrelstatus';
 			$other->sortby_fields[] = 'campaignrelstatus';
@@ -226,19 +220,21 @@ class Campaigns extends CRMEntity {
 
 		$parenttab = getParentTab();
 
-		if($singlepane_view == 'true')
+		if ($singlepane_view == 'true') {
 			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
-		else
+		} else {
 			$returnset = '&return_module='.$this_module.'&return_action=CallRelatedList&return_id='.$id;
+		}
 
 		$button = '';
 
 		// Send mail button for selected Leads
-		$button .= "<input title='".getTranslatedString('LBL_SEND_MAIL_BUTTON')."' class='crmbutton small edit' value='".getTranslatedString('LBL_SEND_MAIL_BUTTON')."' type='button' name='button' onclick='rel_eMail(\"$this_module\",this,\"$related_module\")'>";
+		$button .= "<input title='".getTranslatedString('LBL_SEND_MAIL_BUTTON')."' class='crmbutton small edit' value='";
+		$button .= getTranslatedString('LBL_SEND_MAIL_BUTTON')."' type='button' name='button' onclick='rel_eMail(\"$this_module\",this,\"$related_module\")'>";
 		$button .= '&nbsp;&nbsp;&nbsp;&nbsp';
 
 		/* To get Leads CustomView -START */
-		require_once('modules/CustomView/CustomView.php');
+		require_once 'modules/CustomView/CustomView.php';
 		$lhtml = "<select id='".$related_module."_cv_list' class='small'><option value='None'>-- ".getTranslatedString('Select One')." --</option>";
 		$oCustomView = new CustomView($related_module);
 		$viewid = $oCustomView->getViewId($related_module);
@@ -247,19 +243,25 @@ class Campaigns extends CRMEntity {
 		$lhtml .= "</select>";
 		/* To get Leads CustomView -END */
 
-		$button .= $lhtml."<input title='".getTranslatedString('LBL_LOAD_LIST',$this_module)."' class='crmbutton small edit' value='".getTranslatedString('LBL_LOAD_LIST',$this_module)."' type='button' name='button' onclick='loadCvList(\"$related_module\",\"$id\")'>";
+		$button .= $lhtml."<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
+		$button .= getTranslatedString('LBL_LOAD_LIST', $this_module)."' type='button' name='button' onclick='loadCvList(\"$related_module\",\"$id\")'>";
 		$button .= '&nbsp;&nbsp;';
-		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST',$this_module)."' class='crmbutton small edit' value='".getTranslatedString('LBL_EMPTY_LIST',$this_module)."' type='button' name='button' onclick='emptyCvList(\"$related_module\",\"$id\")'>";
+		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST', $this_module)."' class='crmbutton small edit' value='";
+		$button .= getTranslatedString('LBL_EMPTY_LIST', $this_module)."' type='button' name='button' onclick='emptyCvList(\"$related_module\",\"$id\")'>";
 		$button .= '&nbsp;&nbsp;&nbsp;&nbsp;';
 
 		if ($actions) {
 			if (is_string($actions)) {
 				$actions = explode(',', strtoupper($actions));
 			}
-			if (in_array('SELECT', $actions) && isPermitted($related_module,4, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
+			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
+				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module).
+					"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
+					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
+					"'width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). ' '.
+					getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
-			if (in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
+			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
 				$button .= "<input type='hidden' name='createmode' value='link' />".
 					"<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='crmbutton small create'" .
@@ -288,16 +290,16 @@ class Campaigns extends CRMEntity {
 
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
 
-		if ($return_value == null)
-			$return_value = Array();
-		else if ($is_CampaignStatusAllowed and !empty($return_value['header'])) {
+		if ($return_value == null) {
+			$return_value = array();
+		} elseif ($is_CampaignStatusAllowed && !empty($return_value['header'])) {
 			$statusPos = count($return_value['header']) - 2; // Last column is for Actions, exclude that. Also the index starts from 0, so reduce one more count.
-			$return_value = $this->add_status_popup($return_value, $statusPos, 'Contacts');
+			$return_value = $this->addStatusPopup($return_value, $statusPos, 'Contacts');
 		}
 
 		$return_value['CUSTOM_BUTTON'] = $button;
 
-		$log->debug("Exiting get_contacts method ...");
+		$log->debug('< get_contacts');
 		return $return_value;
 	}
 
@@ -306,18 +308,18 @@ class Campaigns extends CRMEntity {
 	 * @param  integer   $id      - campaignid
 	 * returns related Leads record in array format
 	 */
-	function get_leads($id, $cur_tab_id, $rel_tab_id, $actions=false) {
+	public function get_leads($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule;
-		$log->debug("Entering get_leads(".$id.") method ...");
+		$log->debug('> get_leads '.$id);
 		$this_module = $currentModule;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
-		require_once("modules/$related_module/$related_module.php");
+		require_once "modules/$related_module/$related_module.php";
 		$other = new $related_module();
 
 		$is_CampaignStatusAllowed = false;
 		global $current_user;
-		if(getFieldVisibilityPermission('Leads', $current_user->id, 'campaignrelstatus') == '0') {
+		if (getFieldVisibilityPermission('Leads', $current_user->id, 'campaignrelstatus') == '0') {
 			$other->list_fields['Status'] = array('vtiger_campaignrelstatus'=>'campaignrelstatus');
 			$other->list_fields_name['Status'] = 'campaignrelstatus';
 			$other->sortby_fields[] = 'campaignrelstatus';
@@ -326,19 +328,21 @@ class Campaigns extends CRMEntity {
 
 		$parenttab = getParentTab();
 
-		if($singlepane_view == 'true')
+		if ($singlepane_view == 'true') {
 			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
-		else
+		} else {
 			$returnset = '&return_module='.$this_module.'&return_action=CallRelatedList&return_id='.$id;
+		}
 
 		$button = '';
 
 		// Send mail button for selected Leads
-		$button .= "<input title='".getTranslatedString('LBL_SEND_MAIL_BUTTON')."' class='crmbutton small edit' value='".getTranslatedString('LBL_SEND_MAIL_BUTTON')."' type='button' name='button' onclick='rel_eMail(\"$this_module\",this,\"$related_module\")'>";
+		$button .= "<input title='".getTranslatedString('LBL_SEND_MAIL_BUTTON')."' class='crmbutton small edit' value='".getTranslatedString('LBL_SEND_MAIL_BUTTON');
+		$button .= "' type='button' name='button' onclick='rel_eMail(\"$this_module\",this,\"$related_module\")'>";
 		$button .= '&nbsp;&nbsp;&nbsp;&nbsp';
 
 		/* To get Leads CustomView -START */
-		require_once('modules/CustomView/CustomView.php');
+		require_once 'modules/CustomView/CustomView.php';
 		$lhtml = "<select id='".$related_module."_cv_list' class='small'><option value='None'>-- ".getTranslatedString('Select One')." --</option>";
 		$oCustomView = new CustomView($related_module);
 		$viewid = $oCustomView->getViewId($related_module);
@@ -347,19 +351,25 @@ class Campaigns extends CRMEntity {
 		$lhtml .= "</select>";
 		/* To get Leads CustomView -END */
 
-		$button .= $lhtml."<input title='".getTranslatedString('LBL_LOAD_LIST',$this_module)."' class='crmbutton small edit' value='".getTranslatedString('LBL_LOAD_LIST',$this_module)."' type='button' name='button' onclick='loadCvList(\"$related_module\",\"$id\")'>";
+		$button .= $lhtml."<input title='".getTranslatedString('LBL_LOAD_LIST', $this_module)."' class='crmbutton small edit' value='";
+		$button .= getTranslatedString('LBL_LOAD_LIST', $this_module)."' type='button' name='button' onclick='loadCvList(\"$related_module\",\"$id\")'>";
 		$button .= '&nbsp;&nbsp;';
-		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST',$this_module)."' class='crmbutton small edit' value='".getTranslatedString('LBL_EMPTY_LIST',$this_module)."' type='button' name='button' onclick='emptyCvList(\"$related_module\",\"$id\")'>";
+		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST', $this_module)."' class='crmbutton small edit' value='";
+		$button .= getTranslatedString('LBL_EMPTY_LIST', $this_module)."' type='button' name='button' onclick='emptyCvList(\"$related_module\",\"$id\")'>";
 		$button .= '&nbsp;&nbsp;&nbsp;&nbsp;';
 
 		if ($actions) {
 			if (is_string($actions)) {
 				$actions = explode(',', strtoupper($actions));
 			}
-			if (in_array('SELECT', $actions) && isPermitted($related_module,4, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
+			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
+				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module, $related_module).
+					"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
+					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
+					"'width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). ' '.
+					getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 			}
-			if (in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
+			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
 				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
 				$button .= "<input type='hidden' name='createmode' value='link' />".
 					"<input title='".getTranslatedString('LBL_ADD_NEW'). " ". $singular_modname ."' class='crmbutton small create'" .
@@ -385,16 +395,16 @@ class Campaigns extends CRMEntity {
 
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
 
-		if ($return_value == null)
-			$return_value = Array();
-		else if ($is_CampaignStatusAllowed and !empty($return_value['header'])) {
+		if ($return_value == null) {
+			$return_value = array();
+		} elseif ($is_CampaignStatusAllowed && !empty($return_value['header'])) {
 			$statusPos = count($return_value['header']) - 2; // Last column is for Actions, exclude that. Also the index starts from 0, so reduce one more count.
-			$return_value = $this->add_status_popup($return_value, $statusPos, 'Leads');
+			$return_value = $this->addStatusPopup($return_value, $statusPos, 'Leads');
 		}
 
 		$return_value['CUSTOM_BUTTON'] = $button;
 
-		$log->debug("Exiting get_leads method ...");
+		$log->debug('< get_leads');
 		return $return_value;
 	}
 
@@ -404,7 +414,7 @@ class Campaigns extends CRMEntity {
 	 * @param - $status_column index of the status column in the list.
 	 * returns true on success
 	 */
-	function add_status_popup($related_list, $status_column = 7, $related_module) {
+	private function addStatusPopup($related_list, $status_column, $related_module) {
 		global $adb;
 		if (empty($this->campaignrelstatus)) {
 			$this->campaignrelstatus = array();
@@ -413,7 +423,7 @@ class Campaigns extends CRMEntity {
 			$result = $adb->query('SELECT * FROM vtiger_campaignrelstatus;');
 			while ($row = $adb->fetchByAssoc($result)) {
 				$r = $row;
-				$r['campaignrelstatusi18n'] = getTranslatedString($row['campaignrelstatus'],'Campaigns');
+				$r['campaignrelstatusi18n'] = getTranslatedString($row['campaignrelstatus'], 'Campaigns');
 				$this->campaignrelstatus[$row['campaignrelstatus']] = $r;
 			}
 		}
@@ -422,10 +432,15 @@ class Campaigns extends CRMEntity {
 				$popupitemshtml = '';
 				foreach ($this->campaignrelstatus as $campaingrelstatus) {
 					$camprelstatus = $campaingrelstatus['campaignrelstatusi18n'];
-					$popupitemshtml .= "<a onmouseover=\"javascript: showBlock('campaignstatus_popup_$key')\" href=\"javascript:updateCampaignRelationStatus('$related_module', '".$this->id."', '$key', '".$campaingrelstatus['campaignrelstatusid']."', '".addslashes($camprelstatus)."');\">$camprelstatus</a><br />";
+					$popupitemshtml .= "<a onmouseover=\"javascript: showBlock('campaignstatus_popup_$key')\" href=\"javascript:updateCampaignRelationStatus('".
+						"$related_module', '".$this->id."', '$key', '".$campaingrelstatus['campaignrelstatusid']."', '".addslashes($camprelstatus).
+						"');\">$camprelstatus</a><br />";
 				}
-				$popuphtml = '<div onmouseover="javascript:clearTimeout(statusPopupTimer);" onmouseout="javascript:closeStatusPopup(\'campaignstatus_popup_'.$key.'\');" style="margin-top: -14px; width: 200px;" id="campaignstatus_popup_'.$key.'" class="calAction"><div style="background-color: #FFFFFF; padding: 8px;">'.$popupitemshtml.'</div></div>';
-				$entry[$status_column] = "<a href=\"javascript: showBlock('campaignstatus_popup_$key');\">[+]</a> <span id='campaignstatus_$key'>".$entry[$status_column]."</span>".$popuphtml;
+				$popuphtml = '<div onmouseover="javascript:clearTimeout(statusPopupTimer);" onmouseout="javascript:closeStatusPopup(\'campaignstatus_popup_'.$key.
+					'\');" style="margin-top: -14px; width: 200px;" id="campaignstatus_popup_'.$key.'" class="calAction">'.
+					'<div style="background-color: #FFFFFF; padding: 8px;">'.$popupitemshtml.'</div></div>';
+				$entry[$status_column] = "<a href=\"javascript: showBlock('campaignstatus_popup_$key');\">[+]</a> <span id='campaignstatus_$key'>".$entry[$status_column].
+					"</span>".$popuphtml;
 			}
 		}
 		return $related_list;
@@ -436,7 +451,7 @@ class Campaigns extends CRMEntity {
 	 * @param - $secmodule secondary module name
 	 * returns the array with table names and fieldnames storing relations between module and this module
 	 */
-	function setRelationTables($secmodule){
+	public function setRelationTables($secmodule) {
 		$rel_tables = array (
 			"Contacts" => array("vtiger_campaigncontrel"=>array("campaignid","contactid"),"vtiger_campaign"=>"campaignid"),
 			"Leads" => array("vtiger_campaignleadrel"=>array("campaignid","leadid"),"vtiger_campaign"=>"campaignid"),
@@ -449,17 +464,18 @@ class Campaigns extends CRMEntity {
 	}
 
 	// Function to unlink an entity with given Id from another entity
-	function unlinkRelationship($id, $return_module, $return_id) {
-		global $log;
-		if(empty($return_module) || empty($return_id)) return;
+	public function unlinkRelationship($id, $return_module, $return_id) {
+		if (empty($return_module) || empty($return_id)) {
+			return;
+		}
 
-		if($return_module == 'Leads') {
+		if ($return_module == 'Leads') {
 			$sql = 'DELETE FROM vtiger_campaignleadrel WHERE campaignid=? AND leadid=?';
 			$this->db->pquery($sql, array($id, $return_id));
-		} elseif($return_module == 'Contacts') {
+		} elseif ($return_module == 'Contacts') {
 			$sql = 'DELETE FROM vtiger_campaigncontrel WHERE campaignid=? AND contactid=?';
 			$this->db->pquery($sql, array($id, $return_id));
-		} elseif($return_module == 'Accounts') {
+		} elseif ($return_module == 'Accounts') {
 			$sql = 'DELETE FROM vtiger_campaignaccountrel WHERE campaignid=? AND accountid=?';
 			$this->db->pquery($sql, array($id, $return_id));
 			$sql = 'DELETE FROM vtiger_campaigncontrel WHERE campaignid=? AND contactid IN (SELECT contactid FROM vtiger_contactdetails WHERE accountid=?)';
@@ -469,7 +485,7 @@ class Campaigns extends CRMEntity {
 		}
 	}
 
-	function save_related_module($module, $crmid, $with_module, $with_crmids) {
+	public function save_related_module($module, $crmid, $with_module, $with_crmids) {
 		$adb = PearDatabase::getInstance();
 
 		$with_crmids = (array)$with_crmids;
@@ -507,7 +523,7 @@ class Campaigns extends CRMEntity {
 		}
 	}
 
-	function delete_related_module($module, $crmid, $with_module, $with_crmid) {
+	public function delete_related_module($module, $crmid, $with_module, $with_crmid) {
 		global $adb;
 		$with_crmid = (array)$with_crmid;
 		$data = array();
@@ -516,32 +532,34 @@ class Campaigns extends CRMEntity {
 		$data['destinationModule'] = $with_module;
 		foreach ($with_crmid as $relcrmid) {
 			$data['destinationRecordId'] = $relcrmid;
-			cbEventHandler::do_action('corebos.entity.link.delete',$data);
+			cbEventHandler::do_action('corebos.entity.link.delete', $data);
 			if ($with_module == 'Documents') {
-				$adb->pquery('DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?', Array($crmid, $relcrmid));
+				$adb->pquery('DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?', array($crmid, $relcrmid));
 			} elseif ($with_module == 'Leads') {
-				$adb->pquery('DELETE FROM vtiger_campaignleadrel WHERE campaignid=? AND leadid=?', Array($crmid, $relcrmid));
+				$adb->pquery('DELETE FROM vtiger_campaignleadrel WHERE campaignid=? AND leadid=?', array($crmid, $relcrmid));
 			} elseif ($with_module == 'Contacts') {
-				$adb->pquery('DELETE FROM vtiger_campaigncontrel WHERE campaignid=? AND contactid=?', Array($crmid, $relcrmid));
+				$adb->pquery('DELETE FROM vtiger_campaigncontrel WHERE campaignid=? AND contactid=?', array($crmid, $relcrmid));
 			} elseif ($with_module == 'Accounts') {
-				$adb->pquery('DELETE FROM vtiger_campaignaccountrel WHERE campaignid=? AND accountid=?', Array($crmid, $relcrmid));
+				$adb->pquery('DELETE FROM vtiger_campaignaccountrel WHERE campaignid=? AND accountid=?', array($crmid, $relcrmid));
 			} else {
-				$adb->pquery('DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND module=? AND relcrmid=? AND relmodule=?) OR (relcrmid=? AND relmodule=? AND crmid=? AND module=?)',
-					Array($crmid, $module, $relcrmid, $with_module,$crmid, $module, $relcrmid, $with_module));
+				$adb->pquery(
+					'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND module=? AND relcrmid=? AND relmodule=?) OR (relcrmid=? AND relmodule=? AND crmid=? AND module=?)',
+					array($crmid, $module, $relcrmid, $with_module,$crmid, $module, $relcrmid, $with_module)
+				);
 			}
-			cbEventHandler::do_action('corebos.entity.link.delete.final',$data);
+			cbEventHandler::do_action('corebos.entity.link.delete.final', $data);
 		}
 	}
 
 	/* Create potential */
-	public static function createPotentialRelatedTo($relatedto,$campaignid) {
+	public static function createPotentialRelatedTo($relatedto, $campaignid) {
 		global $adb, $current_user;
 		$checkrs = $adb->pquery('select 1
 			from vtiger_potential
 			inner join vtiger_crmentity on crmid=potentialid
-			where deleted=0 and related_to=? and campaignid=?',array($relatedto,$campaignid));
+			where deleted=0 and related_to=? and campaignid=?', array($relatedto,$campaignid));
 		if ($adb->num_rows($checkrs)==0) {
-			require_once('modules/Potentials/Potentials.php');
+			require_once 'modules/Potentials/Potentials.php';
 			$entity = new Potentials();
 			$entity->mode = '';
 			$cname = getEntityName('Campaigns', $campaignid);
@@ -561,7 +579,7 @@ class Campaigns extends CRMEntity {
 					$cmp->column_fields['ContactName'] = $rname;
 				}
 				$cbMap = cbMap::getMapByID($cbMapid);
-				$entity->column_fields = $cbMap->Mapping($cmp->column_fields,array());
+				$entity->column_fields = $cbMap->Mapping($cmp->column_fields, array());
 			}
 			if (empty($entity->column_fields['assigned_user_id'])) {
 				$entity->column_fields['assigned_user_id'] = $current_user->id;
@@ -590,46 +608,55 @@ class Campaigns extends CRMEntity {
 	 * @param Array List of Entity Id's from which related records need to be transfered
 	 * @param Integer Id of the the Record to which the related records are to be moved
 	 */
-	function transferRelatedRecords($module, $transferEntityIds, $entityId) {
+	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
-		$log->debug("Entering function transferRelatedRecords ($module, $transferEntityIds, $entityId)");
-
-		$rel_table_arr = Array("Contacts"=>"vtiger_campaigncontrel","Potentials"=>"vtiger_potential",
-					"Leads"=>"vtiger_campaignleadrel","Activities"=>"vtiger_seactivityrel",
-					"Documents"=>"vtiger_senotesrel","Attachments"=>"vtiger_seattachmentsrel",
-					"Campaigns"=>"vtiger_campaignaccountrel","CobroPago"=>"vtiger_cobropago");
-
-		$tbl_field_arr = Array("vtiger_campaigncontrel"=>"contactid","vtiger_potential"=>"potentialid",
-					"vtiger_campaignleadrel"=>"leadid","vtiger_seactivityrel"=>"activityid",
-					"vtiger_senotesrel"=>"notesid","vtiger_seattachmentsrel"=>"attachmentsid",
-					"vtiger_campaignaccountrel"=>"accountid","vtiger_cobropago"=>"cobropagoid");
-
-		$entity_tbl_field_arr = Array("vtiger_campaigncontrel"=>"campaignid","vtiger_potential"=>"campaignid",
-					"vtiger_campaignleadrel"=>"campaignid","vtiger_seactivityrel"=>"crmid",
-					"vtiger_senotesrel"=>"crmid","vtiger_seattachmentsrel"=>"crmid",
-					"vtiger_campaignaccountrel"=>"campaignid","vtiger_cobropago"=>"related_id");
-
-		foreach($transferEntityIds as $transferId) {
-			foreach($rel_table_arr as $rel_module=>$rel_table) {
+		$log->debug("> transferRelatedRecords $module, $transferEntityIds, $entityId");
+		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
+		$rel_table_arr = array(
+			'Contacts'=>'vtiger_campaigncontrel',
+			'Potentials'=>'vtiger_potential',
+			'Leads'=>'vtiger_campaignleadrel',
+			'Attachments'=>'vtiger_seattachmentsrel',
+			'Campaigns'=>'vtiger_campaignaccountrel',
+			'CobroPago'=>'vtiger_cobropago',
+		);
+		$tbl_field_arr = array(
+			'vtiger_campaigncontrel'=>'contactid',
+			'vtiger_potential'=>'potentialid',
+			'vtiger_campaignleadrel'=>'leadid',
+			'vtiger_seattachmentsrel'=>'attachmentsid',
+			'vtiger_campaignaccountrel'=>'accountid','vtiger_cobropago'=>'cobropagoid',
+		);
+		$entity_tbl_field_arr = array(
+			'vtiger_campaigncontrel'=>'campaignid',
+			'vtiger_potential'=>'campaignid',
+			'vtiger_campaignleadrel'=>'campaignid',
+			'vtiger_seattachmentsrel'=>'crmid',
+			'vtiger_campaignaccountrel'=>'campaignid',
+			'vtiger_cobropago'=>'related_id',
+		);
+		foreach ($transferEntityIds as $transferId) {
+			foreach ($rel_table_arr as $rel_table) {
 				$id_field = $tbl_field_arr[$rel_table];
 				$entity_id_field = $entity_tbl_field_arr[$rel_table];
 				// IN clause to avoid duplicate entries
-				$sel_result =  $adb->pquery("select $id_field from $rel_table where $entity_id_field=? " .
-						" and $id_field not in (select $id_field from $rel_table where $entity_id_field=?)",
-						array($transferId,$entityId));
+				$sel_result =  $adb->pquery(
+					"select $id_field from $rel_table where $entity_id_field=? and $id_field not in (select $id_field from $rel_table where $entity_id_field=?)",
+					array($transferId,$entityId)
+				);
 				$res_cnt = $adb->num_rows($sel_result);
-				if($res_cnt > 0) {
-					for($i=0;$i<$res_cnt;$i++) {
-						$id_field_value = $adb->query_result($sel_result,$i,$id_field);
-						$adb->pquery("update $rel_table set $entity_id_field=? where $entity_id_field=? and $id_field=?",
-							array($entityId,$transferId,$id_field_value));
+				if ($res_cnt > 0) {
+					for ($i=0; $i<$res_cnt; $i++) {
+						$id_field_value = $adb->query_result($sel_result, $i, $id_field);
+						$adb->pquery(
+							"update $rel_table set $entity_id_field=? where $entity_id_field=? and $id_field=?",
+							array($entityId,$transferId,$id_field_value)
+						);
 					}
 				}
 			}
 		}
-		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
-		$log->debug("Exiting transferRelatedRecords...");
+		$log->debug('< transferRelatedRecords');
 	}
-
 }
 ?>

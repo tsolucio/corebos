@@ -16,8 +16,7 @@ $recordId = vtlib_purify($_REQUEST["record"]);
 $leadId = vtws_getWebserviceEntityId('Leads', $recordId);
 $entityValues=array();
 //make sure that either contacts or accounts is selected
-if(!empty($_REQUEST['entities']))
-{
+if (!empty($_REQUEST['entities'])) {
 	$entities=vtlib_purify($_REQUEST['entities']);
 
 	$assigned_to = vtlib_purify($_REQUEST["c_assigntype"]);
@@ -30,21 +29,21 @@ if(!empty($_REQUEST['entities']))
 	}
 
 	$transferRelatedRecordsTo = vtlib_purify($_REQUEST['transferto']);
-	if (empty($transferRelatedRecordsTo))
+	if (empty($transferRelatedRecordsTo)) {
 		$transferRelatedRecordsTo = 'Contacts';
-
+	}
 	$entityValues['transferRelatedRecordsTo']=$transferRelatedRecordsTo;
 	$entityValues['assignedTo']=$assignedTo;
 	$entityValues['leadId']=$leadId;
 
-	if(vtlib_isModuleActive('Accounts')&& in_array('Accounts', $entities)){
+	if (vtlib_isModuleActive('Accounts')&& in_array('Accounts', $entities)) {
 		$entityValues['entities']['Accounts']['create']=true;
 		$entityValues['entities']['Accounts']['name']='Accounts';
 		$entityValues['entities']['Accounts']['accountname'] = vtlib_purify($_REQUEST['accountname']);
 		$entityValues['entities']['Accounts']['industry']=vtlib_purify($_REQUEST['industry']);
 	}
 
-	if(vtlib_isModuleActive('Potentials')&& in_array('Potentials', $entities)){
+	if (vtlib_isModuleActive('Potentials')&& in_array('Potentials', $entities)) {
 		$entityValues['entities']['Potentials']['create']=true;
 		$entityValues['entities']['Potentials']['name']='Potentials';
 		$entityValues['entities']['Potentials']['potentialname']=  vtlib_purify($_REQUEST['potentialname']);
@@ -53,7 +52,7 @@ if(!empty($_REQUEST['entities']))
 		$entityValues['entities']['Potentials']['amount']=  vtlib_purify($_REQUEST['amount']);
 	}
 
-	if(vtlib_isModuleActive('Contacts')&& in_array('Contacts', $entities)){
+	if (vtlib_isModuleActive('Contacts')&& in_array('Contacts', $entities)) {
 		$entityValues['entities']['Contacts']['create']=true;
 		$entityValues['entities']['Contacts']['name']='Contacts';
 		$entityValues['entities']['Contacts']['lastname']=  vtlib_purify($_REQUEST['lastname']);
@@ -61,9 +60,9 @@ if(!empty($_REQUEST['entities']))
 		$entityValues['entities']['Contacts']['email']=  vtlib_purify($_REQUEST['email']);
 	}
 
-	try{
-		$result = vtws_convertlead($entityValues,$current_user);
-	}catch(Exception $e){
+	try {
+		$result = vtws_convertlead($entityValues, $current_user);
+	} catch (Exception $e) {
 		echo "<br><div style='margin:auto;text-align:center;font-weight:bold;'>".$e->message.'</div><br>';
 		showError($entityValues);
 		die();
@@ -91,9 +90,9 @@ if (!empty($accountId)) {
 	showError($entityValues);
 }
 
-function showError($entityValues){
+function showError($entityValues) {
 	require_once 'include/utils/VtlibUtils.php';
-	global $current_user, $currentModule, $theme, $app_strings,$log;
+	global $current_user, $currentModule, $theme;
 	$theme = vtlib_purify($theme);
 	echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";
 	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
@@ -103,7 +102,7 @@ function showError($entityValues){
 		<td rowspan='2' width='11%'><img src='" . vtiger_imageurl('denied.gif', $theme) . "' ></td>
 		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'>
 			<span class='genHeaderSmall'>". getTranslatedString('SINGLE_'.$currentModule, $currentModule)." ".
-			getTranslatedString('CANNOT_CONVERT', $currentModule)  ."
+			getTranslatedString('CANNOT_CONVERT', $currentModule) ."
 		<br>
 		<ul> ". getTranslatedString('LBL_FOLLOWING_ARE_POSSIBLE_REASONS', $currentModule) .":
 			<li>". getTranslatedString('LBL_LEADS_FIELD_MAPPING_INCOMPLETE', $currentModule) ."</li>
@@ -120,7 +119,8 @@ function showError($entityValues){
 		<tr>
 		<td class='small' align='right' nowrap='nowrap'>";
 	if (is_admin($current_user)) {
-		echo "<a href='index.php?module=Settings&action=CustomFieldList&parenttab=Settings&formodule=Leads'>". getTranslatedString('LBL_LEADS_FIELD_MAPPING', $currentModule) ."</a><br>";
+		echo "<a href='index.php?module=Settings&action=CustomFieldList&parenttab=Settings&formodule=Leads'>".
+			getTranslatedString('LBL_LEADS_FIELD_MAPPING', $currentModule) . '</a><br>';
 	}
 	echo "<a href='javascript:window.history.back();'>". getTranslatedString('LBL_GO_BACK', $currentModule) ."</a><br>";
 	echo "</td>
@@ -134,8 +134,8 @@ function showMandatoryFieldsAndValues($entityValues) {
 	global $log,$adb,$current_user;
 	$yes = getTranslatedString('LBL_YES');
 	$no = getTranslatedString('LBL_NO');
-	echo "<table width=100% border=0>";
-	echo "<tr><td>".getTranslatedString('LBL_MANDATORY_FIELDS','Settings')."</td></tr>";
+	echo '<table width=100% border=0>';
+	echo '<tr><td>'.getTranslatedString('LBL_MANDATORY_FIELDS', 'Settings').'</td></tr>';
 	$availableModules = array('Accounts','Contacts','Potentials');
 	$leadObject = VtigerWebserviceObject::fromName($adb, 'Leads');
 	$handlerPath = $leadObject->getHandlerPath();
@@ -144,7 +144,9 @@ function showMandatoryFieldsAndValues($entityValues) {
 	$leadHandler = new $handlerClass($leadObject, $current_user, $adb, $log);
 	$leadInfo = vtws_retrieve($entityValues['leadId'], $current_user);
 	foreach ($availableModules as $entityName) {
-		if (!isset($entityValues['entities'][$entityName])) continue;
+		if (!isset($entityValues['entities'][$entityName])) {
+			continue;
+		}
 		$tabid = getTabid($entityName);
 		$entityvalue = $entityValues['entities'][$entityName];
 		$entityObject = VtigerWebserviceObject::fromName($adb, $entityvalue['name']);
@@ -156,35 +158,24 @@ function showMandatoryFieldsAndValues($entityValues) {
 		$entityObjectValues['assigned_user_id'] = $entityValues['assignedTo'];
 		$entityObjectValues = vtws_populateConvertLeadEntities($entityvalue, $entityObjectValues, $entityHandler, $leadHandler, $leadInfo);
 
-		if ($entityvalue['name'] == 'Potentials') {
-			if (!empty($entityIds['Accounts'])) {
-				$entityObjectValues['related_to'] = $entityIds['Accounts'];
-			} else {
-				$entityObjectValues['related_to'] = $entityIds['Contacts'];
-			}
-		}
-		if ($entityvalue['name'] == 'Contacts') {
-			if (!empty($entityIds['Accounts'])) {
-				$entityObjectValues['account_id'] = $entityIds['Accounts'];
-			}
-		}
-		echo "<tr><td colspan=3><b>".getTranslatedString($entityvalue['name'],$entityvalue['name'])."</b></td></tr>";
-		echo "<tr><td><b>".getTranslatedString('FieldName','Settings').
-			"</b></td><td><b>".getTranslatedString('LBL_MANDATORY_FIELD','Settings').
-			"</b></td><td><b>".getTranslatedString('Values','Settings')."</b></td></tr>";
+		echo "<tr><td colspan=3><b>".getTranslatedString($entityvalue['name'], $entityvalue['name'])."</b></td></tr>";
+		echo "<tr><td><b>".getTranslatedString('FieldName', 'Settings').
+			"</b></td><td><b>".getTranslatedString('LBL_MANDATORY_FIELD', 'Settings').
+			"</b></td><td><b>".getTranslatedString('Values', 'Settings')."</b></td></tr>";
 		foreach ($entityObjectValues as $fname => $value) {
-			if ($fname == 'create' or $fname == 'name') continue;
-			echo "<tr>";
-			$frs = $adb->pquery('select fieldlabel,typeofdata from vtiger_field where tabid=? and fieldname=?',
-				array($tabid,$fname));
+			if ($fname == 'create' || $fname == 'name') {
+				continue;
+			}
+			echo '<tr>';
+			$frs = $adb->pquery('select fieldlabel,typeofdata from vtiger_field where tabid=? and fieldname=?', array($tabid, $fname));
 			$finfo = $adb->fetch_array($frs);
-			$flbl = getTranslatedString($finfo['fieldlabel'],$entityName);
+			$flbl = getTranslatedString($finfo['fieldlabel'], $entityName);
 			echo "<td>$flbl ($fname)</td>";
-			echo "<td>".(strpos($finfo['typeofdata'],'~M')>0 ? $yes:$no)."</td>";
+			echo '<td>'.(strpos($finfo['typeofdata'], '~M') > 0 ? $yes : $no).'</td>';
 			echo "<td>$value</td>";
-			echo "</tr>";
+			echo '</tr>';
 		}
 	}
-	echo "</table>";
+	echo '</table>';
 }
 ?>

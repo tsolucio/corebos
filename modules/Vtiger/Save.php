@@ -12,6 +12,28 @@ global $current_user, $currentModule, $singlepane_view;
 checkFileAccessForInclusion("modules/$currentModule/$currentModule.php");
 require_once "modules/$currentModule/$currentModule.php";
 
+if (isset($_REQUEST['saverepeat']) && $_REQUEST['saverepeat']=='skip' && coreBOS_Session::has('ME1x1Info')) {
+	$ME1x1Info = coreBOS_Session::get('ME1x1Info', array());
+	if (count($ME1x1Info['pending'])==1) {
+		coreBOS_Session::delete('ME1x1Info');// we are done
+		header('Location: index.php?action=ListView&module='.$currentModule);
+		die();
+	}
+	array_shift($ME1x1Info['pending']); // this one is skipped
+	$ME1x1Info['processed'][] = $ME1x1Info['next'];
+	$ME1x1Info['next'] = $ME1x1Info['pending'][0];
+	coreBOS_Session::set('ME1x1Info', $ME1x1Info);
+	header('Location: index.php?action=EditView&record='.$ME1x1Info['pending'][0].'&module='.$currentModule);
+	die();
+}
+if (isset($_REQUEST['saverepeat']) && $_REQUEST['saverepeat']=='goback' && coreBOS_Session::has('ME1x1Info')) {
+	$ME1x1Info = coreBOS_Session::get('ME1x1Info', array());
+	$ME1x1Info['next'] = array_pop($ME1x1Info['processed']); // this one is go back
+	array_unshift($ME1x1Info['pending'], $ME1x1Info['next']);
+	coreBOS_Session::set('ME1x1Info', $ME1x1Info);
+	header('Location: index.php?action=EditView&record='.$ME1x1Info['next'].'&module='.$currentModule);
+	die();
+}
 if (isset($_REQUEST['search_url'])) {
 	$search = vtlib_purify($_REQUEST['search_url']);
 	if (substr($search, 0, 1) != '&') {
@@ -56,7 +78,7 @@ if (isset($_REQUEST['inventory_currency'])) {
 	$cur_sym_rate = getCurrencySymbolandCRate(vtlib_purify($_REQUEST['inventory_currency']));
 	$focus->column_fields['conversion_rate'] = $cur_sym_rate['rate'];
 }
-if (empty($_REQUEST['assigned_user_id']) and empty($_REQUEST['assigned_group_id'])) {
+if (empty($_REQUEST['assigned_user_id']) && empty($_REQUEST['assigned_group_id'])) {
 	if ($focus->mode != 'edit') {
 		$focus->column_fields['assigned_user_id'] = $current_user->id;
 	} else {
@@ -73,7 +95,7 @@ if (empty($_REQUEST['assigned_user_id']) and empty($_REQUEST['assigned_group_id'
 list($saveerror,$errormessage,$error_action,$returnvalues) = $focus->preSaveCheck($_REQUEST);
 if ($saveerror) { // there is an error so we go back to EditView.
 	$return_module=$return_id=$return_action='';
-	if (isset($_REQUEST['return_id']) and $_REQUEST['return_id'] != '') {
+	if (isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != '') {
 		$req->set('RETURN_ID', $_REQUEST['return_id']);
 	}
 	$field_values_passed = '';
@@ -114,10 +136,33 @@ if (isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != '') {
 }
 
 if (!isset($__cbSaveSendHeader) || $__cbSaveSendHeader) {
-	if (isset($_REQUEST['Module_Popup_Edit']) and $_REQUEST['Module_Popup_Edit']==1) {
+	if (isset($_REQUEST['Module_Popup_Edit']) && $_REQUEST['Module_Popup_Edit']==1) {
 		echo '<script>window.close();</script>';
 	} else {
-		header('Location: index.php?' . $req->getReturnURL() . $search);
+		if (!empty($_REQUEST['saverepeat'])) {
+			$sesreq = coreBOS_Session::get('saverepeatRequest', array());
+			$sesreq['CANCELGO'] = 'index.php?' . $req->getReturnURL() . $search;
+			coreBOS_Session::set('saverepeatRequest', $sesreq);
+			header('Location: index.php?action=EditView&saverepeat=1&module='.$currentModule);
+		} else {
+			if (coreBOS_Session::has('ME1x1Info')) {
+				$ME1x1Info = coreBOS_Session::get('ME1x1Info', array());
+				if (count($ME1x1Info['pending'])==1) {
+					coreBOS_Session::delete('ME1x1Info');// we are done
+					header('Location: index.php?' . $req->getReturnURL() . $search);
+				} else {
+					array_shift($ME1x1Info['pending']); // this one is done
+					$ME1x1Info['processed'][] = $ME1x1Info['next'];
+					$ME1x1Info['next'] = $ME1x1Info['pending'][0];
+					coreBOS_Session::set('ME1x1Info', $ME1x1Info);
+					$ME1x1Info = coreBOS_Session::get('ME1x1Info', array());
+					header('Location: index.php?action=EditView&record='.$ME1x1Info['pending'][0].'&module='.$currentModule);
+				}
+			} else {
+				header('Location: index.php?' . $req->getReturnURL() . $search);
+			}
+		}
 	}
+	die();
 }
 ?>

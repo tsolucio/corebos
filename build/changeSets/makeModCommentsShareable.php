@@ -16,9 +16,11 @@
 
 class makeModCommentsShareable extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -28,15 +30,14 @@ class makeModCommentsShareable extends cbupdaterWorker {
 			Vtiger_Access::deleteSharing($vendorsInstance);
 			Vtiger_Access::initSharing($vendorsInstance);
 			Vtiger_Access::allowSharing($vendorsInstance);
-			Vtiger_Access::setDefaultSharing($vendorsInstance,'public_readonly');
+			Vtiger_Access::setDefaultSharing($vendorsInstance, 'public_readonly');
 			// set primary key
 			$this->ExecuteQuery('ALTER TABLE vtiger_modcomments ADD PRIMARY KEY(`modcommentsid`)');
 			$this->ExecuteQuery('ALTER TABLE vtiger_modcomments DROP INDEX modcomments_modcommentsid_idx');
 
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
-
 }

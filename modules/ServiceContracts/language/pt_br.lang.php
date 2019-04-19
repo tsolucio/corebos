@@ -6,31 +6,32 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|20/10/2018|São Paulo/SP/Brasil.|www.ecrmweb.com.br
  ************************************************************************************/
 
-$mod_strings = Array (
-'Service Contracts' => 'Contratos Serviços',
-'ServiceContracts' => 'Contratos Serviços',
-'SINGLE_ServiceContracts' => 'Contrato Serviço',
-'LBL_SERVICE_CONTRACT_INFORMATION' => 'Informação Contrato Serviço',
-'LBL_CUSTOM_INFORMATION' => 'Informação Customizada',
+$mod_strings = array (
+'Service Contracts' => 'Contratos de Serviços',
+'ServiceContracts' => 'Contratos de Serviços',
+'SINGLE_ServiceContracts' => 'Contrato de Serviço',
+'LBL_SERVICE_CONTRACT_INFORMATION' => 'Informação Contrato de Serviço',
+'LBL_CUSTOM_INFORMATION' => 'Informação Personalizada',
 
 'Contract No' => 'No. Contrato',
 'Assigned To' => 'Responsável',
-'Created Time' => 'Hora Criação',
-'Modified Time' => 'Hora Modificação',
-'Start Date' => 'Data Início',
-'Due date' => 'Data Vencimento',
-'End Date' => 'Data Término',
+'Created Time' => 'Data & hora criação',
+'Modified Time' => 'Data & hora modificação',
+'Start Date' => 'Data início',
+'Due date' => 'Data vencimento',
+'End Date' => 'Data término',
 'Related to' => 'Relacionado à',
-'Tracking Unit' => 'Unidade Rastreamento',
-'Total Units' => 'Unidades Totais',
-'Used Units' => 'Unidades Utilizadas',
+'Tracking Unit' => 'Unidade rastreamento',
+'Total Units' => 'Unidades totais',
+'Used Units' => 'Unidades utilizadas',
 'Subject' => 'Assunto',
-'Progress'=> 'Progresso (em %)',
+'Progress'=> 'Progresso',
 'Type' => 'Tipo',
-'Planned Duration' => 'Duração Planejada (em Dias)',
-'Actual Duration' => 'Duração Atual (em Dias)',
+'Planned Duration' => 'Duração planejada (em dias)',
+'Actual Duration' => 'Duração atual (em dias)',
 'Status' => 'Status',
 'Priority' => 'Prioridade',
 
@@ -53,11 +54,7 @@ $mod_strings = Array (
 'Hours'=>'Horas',
 'Days'=>'Dias',
 'Incidents'=>'Incidentes',
-/*
- * 5.2.0 changes 
- */
-'LBL_MODULE_NAME'=>'Contratos Serviços',
-'Service Requests'=>'Tickets',
+'LBL_MODULE_NAME'=>'Contratos de Serviços',
+'Service Requests'=>'Solicitação de Serviços',
 );
-
 ?>

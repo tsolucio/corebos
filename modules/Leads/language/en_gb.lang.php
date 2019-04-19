@@ -16,7 +16,7 @@ if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
 	$toggle_name = 'Leads';
 }
 
-$mod_strings = Array(
+$mod_strings = array(
 	'LBL_TGL_HISTORICOS' => $toggle_historicos,
 	'LBL_MODULE_NAME'=>$toggle_name,
 	'Leads' => $toggle_name,

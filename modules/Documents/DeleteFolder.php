@@ -7,45 +7,37 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('modules/Documents/Documents.php');
-require_once('include/logging.php');
-require_once('include/database/PearDatabase.php');
+require_once 'modules/Documents/Documents.php';
+require_once 'include/logging.php';
+require_once 'include/database/PearDatabase.php';
 
 global $adb, $current_user;
-if($current_user->is_admin != 'on')
-{
+if ($current_user->is_admin != 'on') {
 	echo 'NOT_PERMITTED';
 	die;
-}
-else
-{	
+} else {
 	$local_log = LoggerManager::getLogger('index');
-	if(isset($_REQUEST['folderid']) && $_REQUEST['folderid'] != '')
+	if (isset($_REQUEST['folderid']) && $_REQUEST['folderid'] != '') {
 		$folderId = $_REQUEST['folderid'];
-	else
-	{
+	} else {
 		echo 'FAILURE';
 		die;
 	}
-	if(isset($_REQUEST['deletechk']) && $_REQUEST['deletechk'] == 'true')
-	{
-		$query = 'select notesid from vtiger_notes INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_notes.notesid WHERE vtiger_notes.folderid = ? and vtiger_crmentity.deleted = 0';
-		$result = $adb->pquery($query,array($folderId));
-		if($adb->num_rows($result) > 0)
-		{
+	if (isset($_REQUEST['deletechk']) && $_REQUEST['deletechk'] == 'true') {
+		$query = 'select notesid
+			from vtiger_notes
+			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_notes.notesid
+			WHERE vtiger_notes.folderid = ? and vtiger_crmentity.deleted = 0';
+		$result = $adb->pquery($query, array($folderId));
+		if ($adb->num_rows($result) > 0) {
 			echo 'FAILURE';
-		}
-		else
-		{
-			header("Location: index.php?action=DocumentsAjax&file=ListView&mode=ajax&ajax=true&module=Documents");
+		} else {
+			header('Location: index.php?action=DocumentsAjax&file=ListView&mode=ajax&ajax=true&module=Documents');
 			exit;
 		}
-	}
-	else
-	{
-		$sql="delete from vtiger_attachmentsfolder where (folderid=? and folderid != 1)";
-		$adb->pquery($sql,array($folderId));
-		header("Location: index.php?action=DocumentsAjax&file=ListView&mode=ajax&ajax=true&module=Documents");
+	} else {
+		$adb->pquery('delete from vtiger_attachmentsfolder where (folderid=? and folderid != 1)', array($folderId));
+		header('Location: index.php?action=DocumentsAjax&file=ListView&mode=ajax&ajax=true&module=Documents');
 		exit;
 	}
 }

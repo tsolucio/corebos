@@ -1,37 +1,13 @@
 <?php
-
-/*******************************************************************************
- * The contents of this file are subject to the following licences:
- * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
- * - vtiger CRM Public License Version 1.0 
- * You may not use this file except in compliance with the License
- * Software distributed under the License is distributed on an  "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is: SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
- * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
- * Feel free to use / redistribute these languagefiles under the VPL 1.0.
- * This translations is based on earlier work of: 
- * - IT-Online.nl <www.it-online.nl>
- * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
-
-/*******************************************************************************
- * Vicus eBusiness Solutions Version Control
- * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.4.x
- * @author	$Author: luuk $
- * @version 	$Revision: 1.2 $ $Date: 2012/04/22 12:16:58 $
- * @source	$Source: /var/lib/cvs/vtiger540/Dutch/modules/Dashboard/language/nl_nl.lang.php,v $
- * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
- * @license	vtiger CRM Public License Version 1.0 (by definition)
- ********************************************************************************/
- 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_SALES_STAGE_FORM_TITLE'=>'Pijplijn per verkoopstadium',
 'LBL_SALES_STAGE_FORM_DESC'=>'Laat de cumulatieve bedragen van uw verkoopkansen zien. Geselecteerd op verkoopstadium en verkoopdatum.',
 'LBL_MONTH_BY_OUTCOME'=>'Pijplijn per maand en resultaat',
@@ -61,7 +37,6 @@ $mod_strings = Array(
 'LBL_LEAD_SOURCES'=>'Lead bronnen:',
 'LBL_DATE_START'=>'Startdatum:',
 'LBL_DATE_END'=>'Einddatum:',
-//Added for 5.0 
 'LBL_NO_PERMISSION'=>'U heeft geen toegang tot deze module',
 'LBL_NO_PERMISSION_FIELD'=>'U heeft geen toegang tot deze module of velden',
 
@@ -69,7 +44,6 @@ $mod_strings = Array(
 "leadstatus" => "Leads per status",
 "leadindustry" => "Leads per industrie",
 "salesbyleadsource" => "Verkopen per lead bron",
-"salesbyaccount" => "Verkoop aan accounts",
 "salesbyuser" => "Verkoop door gebruiker",
 "salesbyteam"=>"Verkoop door team",
 "salesbyaccount" => "Verkopen per accounts",
@@ -107,7 +81,6 @@ $mod_strings = Array(
 'VIEWCHART'=>'Bekijk grafiek',
 'LBL_DASHBOARD'=>'Dashboard',
 
-// Added/Updated for vtiger CRM 5.0.4
 "Approved"=>"Goedgekeurd",
 "Created"=>"Gemaakt",
 "Cancelled"=>"Geannuleerd",
@@ -199,10 +172,8 @@ $mod_strings = Array(
 "Negotiation/Review"=>"Onderhandeling/Afronding",
 "Closed Won"=>"Gesloten Gewonnen",
 "Closed Lost"=>"Gesloten Verloren",
-//	Vicus - T6909
 'LBL_AMOUNT_FORM_TITLE_TKS'=>'Pijplijn op gewaardeerde omzet (waarde x slagingskans)',
 'LBL_TOTAL_PIPELINE_TKS'=>'Totaal gewaardeerde omzet is ',
 'LBL_SALES_STAGE_FORM_DESC_TKS'=>'Toont cummulatieve opportunity bedragen bij geselecteerde verkoopstadia voor geselecteerde gebruikers waar de verwachte slutiignsdatum ligt binnen de gespecificeerde datumrange.'
-
 );
 ?>

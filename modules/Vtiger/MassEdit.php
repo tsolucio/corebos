@@ -9,8 +9,8 @@
  ************************************************************************************/
 global $mod_strings,$app_strings,$theme,$currentModule,$current_user;
 
-require_once('Smarty_setup.php');
-require_once('include/utils/utils.php');
+require_once 'Smarty_setup.php';
+require_once 'include/utils/utils.php';
 
 $excludedRecords = vtlib_purify($_REQUEST['excludedRecords']);
 
@@ -46,6 +46,7 @@ $smarty->assign("CATEGORY", getParentTab());
 $upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize', 3000000, $currentModule);
 $smarty->assign("UPLOADSIZE", $upload_maxsize/1000000); //Convert to MB
 $smarty->assign("UPLOAD_MAXSIZE", $upload_maxsize);
+$smarty->assign('MAX_FILE_SIZE', $upload_maxsize);
 
 // Field Validation Information
 $tabid = getTabid($currentModule);
@@ -55,8 +56,8 @@ $validationArray = split_validationdataArray($validationData);
 $smarty->assign("VALIDATION_DATA_FIELDNAME", $validationArray['fieldname']);
 $smarty->assign("VALIDATION_DATA_FIELDDATATYPE", $validationArray['datatype']);
 $smarty->assign("VALIDATION_DATA_FIELDLABEL", $validationArray['fieldlabel']);
-$picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
-$smarty->assign('PICKIST_DEPENDENCY_DATASOURCE', json_encode($picklistDependencyDatasource));
+$cbMapFDEP = Vtiger_DependencyPicklist::getFieldDependencyDatasource($currentModule);
+$smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 $smarty->display('MassEditForm.tpl');
 ?>

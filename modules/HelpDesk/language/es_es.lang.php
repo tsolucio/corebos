@@ -16,7 +16,7 @@
 *  Author       : Joe Bordes
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME' => 'Incidencias',
 'LBL_GROUP' => 'Grupo',
 'LBL_ACCOUNT_NAME' => 'Nombre de Cuenta',
@@ -161,7 +161,6 @@ $mod_strings = Array(
 'LBL_REGARDS' => 'Atentamente,',
 'LBL_TEAM' => 'Equipo de Soporte Técnico',
 'LBL_TICKET_DETAILS' => 'Detalles de la Incidencia',
-'LBL_SUBJECT' => 'Asunto : ',
 'created' => 'creado',
 'replied' => 'respondido',
 'reply' => 'Hay una respuesta a',
@@ -178,10 +177,9 @@ $mod_strings = Array(
 'LBL_COULDNOT_CLOSED' => 'La Incidencia no puede ser',
 'LBL_CUSTOMER_COMMENTS' => 'EL Cliente ha incluido la siguiente información a su respuesta:',
 'LBL_RESPOND'=> 'Por favor responde a la incidencia lo más pronto posible.',
-'LBL_REGARDS' =>'Saludos Cordiales,',
 'LBL_SUPPORT_ADMIN' => 'Atención al Cliente',
 'LBL_RESPONDTO_TICKETID' =>'Responde al Nº de Incidencia',
-'LBL_CUSTOMER_PORTAL' => 'en el Portal del Cliente - URGENTE', 
+'LBL_CUSTOMER_PORTAL' => 'en el Portal del Cliente - URGENTE',
 'LBL_LOGIN_DETAILS' => 'Sus datos de conexión al Portal de Cliente son:',
 'LBL_MAIL_COULDNOT_SENT' =>'No se puede enviar el correo',
 'LBL_USERNAME' => 'Usuario :',
@@ -202,5 +200,4 @@ $mod_strings = Array(
 'Comment Added' => 'Comentario Añadido',
 'HelpDesk ID' => 'Id Incidencia',
 );
-
 ?>

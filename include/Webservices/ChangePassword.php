@@ -9,10 +9,6 @@
  *********************************************************************************/
 
 /**
- * @author Musavir Ahmed Khan<musavir at vtiger.com>
- */
-
-/**
  * @param WebserviceId $id
  * @param String $oldPassword
  * @param String $newPassword
@@ -20,13 +16,13 @@
  * @param Users $user
  */
 function vtws_changePassword($id, $oldPassword, $newPassword, $confirmPassword, $user) {
-	vtws_preserveGlobal('current_user',$user);
+	vtws_preserveGlobal('current_user', $user);
 	$idComponents = vtws_getIdComponents($id);
 	if ($idComponents[1] == $user->id || is_admin($user)) {
 		$newUser = new Users();
 		$newUser->retrieveCurrentUserInfoFromFile($idComponents[1]);
 		if (!is_admin($user)) {
-			if(empty($oldPassword)) {
+			if (empty($oldPassword)) {
 				throw new WebServiceException(WebServiceErrorCode::$INVALIDOLDPASSWORD, vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$INVALIDOLDPASSWORD));
 			}
 			if (!$user->verifyPassword($oldPassword)) {
@@ -53,5 +49,4 @@ function vtws_changePassword($id, $oldPassword, $newPassword, $confirmPassword, 
 		return array('message' => 'Changed password successfully');
 	}
 }
-
 ?>

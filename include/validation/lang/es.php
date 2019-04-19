@@ -13,6 +13,8 @@ return array(
     'in'            => "contiene un valor inválido",
     'notIn'         => "contiene un valor inválido",
     'ip'            => "no es una dirección IP",
+    'ipv4'          => "no es una dirección IPv4",
+    'ipv6'          => "no es una dirección IPv6",
     'email'         => "no es un correo electrónico válido",
     'url'           => "no es una URL",
     'urlActive'     => "debe ser un dominio activo",
@@ -30,5 +32,7 @@ return array(
     'creditCard'    => "debe ser un numero de tarjeta de crédito válido",
     "lengthMin"     => "debe tener al menos %d caracteres",
     "lengthMax"     => "debe tener menos de %d caracteres",
-    "instanceOf"    => "debe ser una instancia de '%s'"
+    "instanceOf"    => "debe ser una instancia de '%s'",
+    'containsUnique' => "debe contener solo elementos únicos",
+    'subset'         => "contiene un elemento que no está en la lista",
 );

@@ -17,7 +17,7 @@
 				{/if}
 
 				{if $keyid eq 11 && $USE_ASTERISK eq 'true'}
-					&nbsp;&nbsp;<span id="dtlview_{$keyfldname}"><a href='javascript:;' onclick='startCall("{$keyval}", "{$ID}")'>{$keyval}</a></span>
+					&nbsp;&nbsp;<span id="dtlview_{$keyfldname}"><a href='javascript:;' onclick='startCall("{$keyval}", "{$ID}");event.stopPropagation();'>{$keyval}</a></span>
 				{else}
 					&nbsp;&nbsp;<span id="dtlview_{$keyfldname}">{$keyval}</span>
 				{/if}
@@ -31,10 +31,10 @@
                     	{$APP.LBL_CANCEL_BUTTON_LABEL}
                     </a>
                 </div>
-                {if $keyid eq '71' && $keyfldname eq 'unit_price'}
+                {if $keyid eq '72' && $keyfldname eq 'unit_price'}
                 	{if $PRICE_DETAILS|@count > 0}
 						<span id="multiple_currencies" width="38%" style="align:right;">
-							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="toggleShowHide('currency_class','multiple_currencies');">{$APP.LBL_MORE_CURRENCIES} &raquo;</a>
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="toggleShowHide('currency_class','multiple_currencies');event.stopPropagation();">{$APP.LBL_MORE_CURRENCIES} &raquo;</a>
 						</span>
 
 						<div id="currency_class" class="multiCurrencyDetailUI">
@@ -43,8 +43,8 @@
 								<th colspan="2">
 									<b>{$MOD.LBL_PRODUCT_PRICES}</b>
 								</th>
-								<th align="right">
-									<img border="0" style="cursor: pointer;" onclick="toggleShowHide('multiple_currencies','currency_class');" src="{'close.gif'|@vtiger_imageurl:$THEME}"/>
+								<th class='cblds-t-align--right' style="text-align:right;">
+									<img border="0" style="cursor: pointer;" onclick="toggleShowHide('multiple_currencies','currency_class');event.stopPropagation();" src="{'close.gif'|@vtiger_imageurl:$THEME}"/>
 								</th>
 							</tr>
 							<tr class="detailedViewHeader">
@@ -147,8 +147,7 @@
                							</td>
 						{elseif $keyid eq '115'} <!--ComboBox Status edit only for admin Users-->
                							<td width=25% class="dvtCellInfo" align="left">{$keyval}</td>
-						{elseif $keyid eq '116' || $keyid eq '117'} <!--ComboBox currency id edit only for admin Users-->
-								{if $keyadmin eq 1 || $keyid eq '117'}
+						{elseif $keyid eq '117'} <!--ComboBox currency id edit only for admin Users-->
 									<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{$keyval}</span>
 								<div id="editarea_{$keyfldname}" style="display:none;">
                     							   <select id="txtbox_{$keyfldname}" name="{$keyfldname}" class="small">
@@ -161,11 +160,6 @@
                     							   <br><a class="detailview_ajaxbutton ajax_save_detailview" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();">{$APP.LBL_SAVE_LABEL}</a>
                                               		   <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                     							</div>
-								{else}
-               							<td width=25% class="dvtCellInfo" align="left">{$keyval}
-								{/if}
-
-
                							</td>
                                              {elseif $keyid eq '17'} <!--WebSite-->
                                                   <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}"><a href="{$keyval}" target="_blank" onclick="event.stopPropagation();">{$keyval}</a></span>
@@ -190,7 +184,7 @@
 						{/if}
 							<!--{assign var="DESCRIPTION_SEPARATOR_STRING" value=" "}  {* Separates Description *}-->
 							<!--{assign var="DESCRIPTION_WORDWRAP_WIDTH" value="70"} {* No. of chars for word wrapping long lines of Description *}-->
-							{if $MODULE eq 'Documents'}
+							{if $MODULE eq 'Documents' || ($MODULE eq 'Users' && $keyfldname eq 'signature')}
 							<!--To give hyperlink to URL-->
 								<td width="100%" colspan="3" class="dvtCellInfo" align="left">{$keyval|regex_replace:"/(^|[\n ])([\w]+?:\/\/.*?[^ \"\n\r\t<]*)/":"\\1<a href=\"\\2\" target=\"_blank\">\\2</a>"|regex_replace:"/(^|[\n ])((www|ftp)\.[\w\-]+\.[\w\-.\~]+(?:\/[^ \"\t\n\r<]*)?)/":"\\1<a href=\"http://\\2\" target=\"_blank\">\\2</a>"|regex_replace:"/(^|[\n ])([a-z0-9&\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)/i":"\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>"|regex_replace:"/,\"|\.\"|\)\"|\)\.\"|\.\)\"/":"\""}&nbsp;</td>
 							{else}
@@ -219,9 +213,6 @@
                                              {elseif $keyid eq '57'} <!--ContactPopup-->
 						<!-- Ajax edit link not provided for contact - Reports To -->
                                                   	<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a></td>
-                                             {elseif $keyid eq '75' || $keyid eq '81'} <!--VendorPopup-->
-                                                  <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a>
-                                                  </td>
                                              {elseif $keyid eq 76} <!--PotentialPopup-->
                                                   <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a>
                                                   </td>
@@ -297,8 +288,8 @@
                     </div>
                     </td>
 						{elseif $keyid eq '99'}<!-- Password Field-->
-						<td width=25% class="dvtCellInfo" align="left">{$CHANGE_PW_BUTTON}</td>	
-					    {elseif $keyid eq '56'} <!--CheckBox--> 
+						<td width=25% class="dvtCellInfo" align="left">{$CHANGE_PW_BUTTON}</td>
+					    {elseif $keyid eq '56'} <!--CheckBox-->
                       <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onMouseOver="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{$keyval}&nbsp;</span>
                     	<div id="editarea_{$keyfldname}" style="display:none;">
                     	{if $MODULE neq 'Documents'}
@@ -321,7 +312,7 @@
                         </td>
 			{elseif $keyid eq '156'} <!--CheckBox for is admin-->
 			{if $smarty.request.record neq $CURRENT_USERID && $keyadmin eq 1}
-                      <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onMouseOver="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{if $APP.$keyval!=''}{$APP.$keyval}{elseif $MOD.$keyval!=''}{$MOD.$keyval}{else}{$keyval}{/if}&nbsp;</span>
+                      <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onMouseOver="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">{$keyval|getTranslatedString:$MODULE}&nbsp;</span>
                     	<div id="editarea_{$keyfldname}" style="display:none;">
                         {if $keyval eq 'on'}
                             <input id="txtbox_{$keyfldname}" name="{$keyfldname}" type="checkbox" style="border:1px solid #bababa;" checked value="1">
@@ -422,7 +413,7 @@
 								</select>
 							{/if}
 							<input id="txtbox_{$keyfldname}" name="{$keyfldname}" type="hidden" value="{$data.extendedfieldinfo.entityid}">
-							<input id="{$keyfldname}_display" name="{$keyfldname}_display" readonly type="text" style="border:1px solid #bababa;" value="{$data.extendedfieldinfo.displayvalue}">&nbsp;
+							<input id="{$keyfldname}_display" name="{$keyfldname}_display" readonly type="text" style="border:1px solid #bababa;" value="{$data.extendedfieldinfo.displayvalue}" onclick='return {$vtui10func}("DetailView","{$keyfldname}","{$MODULE}","{$ID}");'>&nbsp;
 							<img src="{'select.gif'|@vtiger_imageurl:$THEME}"
 								alt="{'LBL_SELECT'|@getTranslatedString}" title="{'LBL_SELECT'|@getTranslatedString}" onclick='return {$vtui10func}("DetailView","{$keyfldname}","{$MODULE}","{$ID}");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 							<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}"

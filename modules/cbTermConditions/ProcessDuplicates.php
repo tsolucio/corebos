@@ -7,5 +7,5 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-include_once('modules/Vtiger/ProcessDuplicates.php');
+include_once 'modules/Vtiger/ProcessDuplicates.php';
 ?>

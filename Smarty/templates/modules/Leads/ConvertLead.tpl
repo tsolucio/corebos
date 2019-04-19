@@ -140,8 +140,11 @@
 					<table border="0" cellspacing="0" cellpadding="0" width="95%" align="center" bgcolor="white">
 						<tr>
 							<td colspan="4" class="detailedViewHeader">
-								<input type="checkbox" checked="checked" onclick="javascript:showHideStatus('contact_block',null,null);" id="select_contact" name="entities[]" value="Contacts"></input>
+								<input type="checkbox" {if $LeadConvertContactSelected neq 'false'}checked{/if} onclick="javascript:showHideStatus('contact_block',null,null);" id="select_contact" name="entities[]" value="Contacts"></input>
 								<b>{'SINGLE_Contacts'|@getTranslatedString:$MODULE}</b>
+								{if $LeadConvertContactSelected eq 'false'}
+								<script type="text/javascript">showHideStatus('contact_block', null, null);</script>
+								{/if}
 							</td>
 						</tr>
 						<tr>

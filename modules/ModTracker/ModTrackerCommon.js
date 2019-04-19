@@ -7,10 +7,10 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-ModTrackerCommon = {
+var ModTrackerCommon = {
 	OVERLAYID : '__ModTrackerCommonOverlay__',
 
-	initOverlay : function() {
+	initOverlay : function () {
 		if (document.getElementById(ModTrackerCommon.OVERLAYID)) {
 			return;
 		}
@@ -21,51 +21,51 @@ ModTrackerCommon = {
 		document.body.appendChild(overlaynode);
 	},
 
-	showdiff : function(record, atpoint, highlight) {
+	showdiff : function (record, atpoint, highlight) {
 		ModTrackerCommon.initOverlay();
 
-		if ( typeof (atpoint) == 'undefined')
+		if ( typeof (atpoint) == 'undefined') {
 			atpoint = 0;
-		if ( typeof (highlight) == 'undefined')
+		}
+		if ( typeof (highlight) == 'undefined') {
 			highlight = true;
+		}
 
-		document.getElementById('status').style.display="inline";
+		document.getElementById('status').style.display='inline';
 		jQuery.ajax({
 			method: 'POST',
 			url: 'index.php?module=ModTracker&action=ModTrackerAjax&file=ShowDiff&id=' + encodeURIComponent(record) + '&atpoint=' + encodeURIComponent(atpoint) + '&highlight=' + encodeURIComponent(highlight),
 		}).done(function (response) {
-				document.getElementById('status').style.display="none";
-				var responseVal = response;
-				document.getElementById(ModTrackerCommon.OVERLAYID).style.display="inline";
-				document.getElementById(ModTrackerCommon.OVERLAYID).innerHTML = response;
-				document.getElementById(ModTrackerCommon.OVERLAYID).style.display = 'block';
-				placeAtCenter(document.getElementById(ModTrackerCommon.OVERLAYID));
-			}
-		);
+			document.getElementById('status').style.display='none';
+			document.getElementById(ModTrackerCommon.OVERLAYID).style.display='inline';
+			document.getElementById(ModTrackerCommon.OVERLAYID).innerHTML = response;
+			document.getElementById(ModTrackerCommon.OVERLAYID).style.display = 'block';
+			placeAtCenter(document.getElementById(ModTrackerCommon.OVERLAYID));
+		});
 	},
 
-	showhistory : function(record, atpoint, highlight) {
+	showhistory : function (record, atpoint, highlight) {
 		ModTrackerCommon.initOverlay();
 
-		if ( typeof (atpoint) == 'undefined')
+		if ( typeof (atpoint) == 'undefined') {
 			atpoint = 0;
-		if ( typeof (highlight) == 'undefined')
+		}
+		if ( typeof (highlight) == 'undefined') {
 			highlight = false;
+		}
 
-		document.getElementById('status').style.display="inline";
+		document.getElementById('status').style.display='inline';
 		jQuery.ajax({
 			method: 'POST',
 			url: 'index.php?module=ModTracker&action=ModTrackerAjax&file=ShowDiff&mode=history&id=' + encodeURIComponent(record) + '&atpoint=' + encodeURIComponent(atpoint) + '&highlight=' + encodeURIComponent(highlight),
 		}).done(function (response) {
-				document.getElementById('status').style.display="none";
-				var responseVal = response;
-				document.getElementById(ModTrackerCommon.OVERLAYID).innerHTML = response;
-				document.getElementById(ModTrackerCommon.OVERLAYID).style.display = 'block';
-				placeAtCenter(document.getElementById(ModTrackerCommon.OVERLAYID));
-			}
-		);
+			document.getElementById('status').style.display='none';
+			document.getElementById(ModTrackerCommon.OVERLAYID).innerHTML = response;
+			document.getElementById(ModTrackerCommon.OVERLAYID).style.display = 'block';
+			placeAtCenter(document.getElementById(ModTrackerCommon.OVERLAYID));
+		});
 	},
-	hide : function() {
-		document.getElementById(ModTrackerCommon.OVERLAYID).style.display="none";
+	hide : function () {
+		document.getElementById(ModTrackerCommon.OVERLAYID).style.display='none';
 	}
 };

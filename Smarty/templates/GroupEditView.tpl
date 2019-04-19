@@ -172,7 +172,7 @@ function validate()
 		<input type="hidden" name="groupId" value="{$GROUPID}">
 		<input type="hidden" name="returnaction" value="{$RETURN_ACTION}">
 			<tr>
-				<td width=50 rowspan=2 valign=top><img src="{'ico-groups.gif'|@vtiger_imageurl:$THEME}" alt="{$CMOD.LBL_GROUPS}" title="{$CMOD.LBL_GROUPS}" width="48" height="48" border=0 ></td>
+				<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'ico-groups.gif'|@vtiger_imageurl:$THEME}" alt="{$CMOD.LBL_GROUPS}" title="{$CMOD.LBL_GROUPS}" width="48" height="48" border=0 ></td>
 				{if $MODE eq 'edit'}
 				<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=listgroups&parenttab=Settings">{$CMOD.LBL_GROUPS}</a> &gt; {$MOD.LBL_EDIT} &quot;{$GROUPNAME}&quot; </b></td>
 				{else}
@@ -181,9 +181,9 @@ function validate()
 			</tr>
 			<tr>
 				{if $MODE eq 'edit'}
-				<td valign=top class="small">{$MOD.LBL_EDIT} {$CMOD.LBL_PROPERTIES} &quot;{$GROUPNAME}&quot; {$CMOD.LBL_GROUP}</td>
+				<td valign=top class="small cblds-p-v_none">{$MOD.LBL_EDIT} {$CMOD.LBL_PROPERTIES} &quot;{$GROUPNAME}&quot; {$CMOD.LBL_GROUP}</td>
 				{else}
-				<td valign=top class="small">{$CMOD.LBL_NEW_GROUP}</td>
+				<td valign=top class="small cblds-p-v_none">{$CMOD.LBL_NEW_GROUP}</td>
 				{/if}
 			</tr>
 		</table>
@@ -281,7 +281,7 @@ function validate()
 					</table>
 					<br>
 					<table border=0 cellspacing=0 cellpadding=5 width=100% >
-					<tr><td class="small" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
+					<tr><td class="small cblds-t-align_right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
 					</table>
 				</td></tr></table>
 				</td></tr></table>

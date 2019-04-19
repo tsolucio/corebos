@@ -13,7 +13,7 @@
 			<td align="right" class="homePageMatrixHdr" style="height:30px;" width=35% nowrap>
 
 {*<!-- the edit button for widgets :: don't show for key metrics and dasboard widget -->*}
-{if ($tablestuff.Stufftype neq "Default" || $tablestuff.Stufftitle neq $keymetrics_title) && ($tablestuff.Stufftype neq "Default" || $tablestuff.Stufftitle neq $homepagedashboard_title) && ($tablestuff.Stufftype neq "Tag Cloud") && ($tablestuff.Stufftype neq "Notebook")}
+{if ($tablestuff.Stufftype neq "Default" || $tablestuff.Stufftitle neq $keymetrics_title) && ($tablestuff.Stufftype neq "Default" || $tablestuff.Stufftitle neq $homepagedashboard_title) && ($tablestuff.Stufftype neq "Tag Cloud") && ($tablestuff.Stufftype neq "Notebook") && ( $tablestuff.Stufftype neq "CustomWidget")}
 				<a style='cursor:pointer;' onclick="showEditrow({$tablestuff.Stuffid})">
 					<img src="{'windowSettings.gif'|@vtiger_imageurl:$THEME}" border="0" alt="{$APP.LBL_EDIT_BUTTON}" title="{$APP.LBL_EDIT_BUTTON_TITLE}" hspace="2" align="absmiddle"/>
 				</a>
@@ -83,13 +83,13 @@
 {if $tablestuff.Stufftype neq "Tag Cloud"}
 	<table width="100%" cellpadding="0" cellspacing="0" class="small scrollLink">
 	<tr>
-		<td align="left">
+		<td align="left" class="slds-p-left_small">
 			<a href="javascript:;" onclick="addScrollBar({$tablestuff.Stuffid});">
 				{$MOD.LBL_SCROLL}
 			</a>
 		</td>
 {if $tablestuff.Stufftype eq "Module" || ($tablestuff.Stufftype eq "Default" && $tablestuff.Stufftitle neq "Key Metrics" && $tablestuff.Stufftitle neq $homepagedashboard_title && $tablestuff.Stufftitle neq "My Group Allocation" ) || $tablestuff.Stufftype eq "RSS" || $tablestuff.Stufftype eq "DashBoard"|| $tablestuff.Stufftype eq "ReportCharts"}
-		<td align="right">
+		<td style="text-align: right;" class="slds-p-right_small">
 			<a href="#" id="a_{$tablestuff.Stuffid}">
 				{$MOD.LBL_MORE}
 			</a>

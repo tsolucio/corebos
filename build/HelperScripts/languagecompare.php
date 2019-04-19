@@ -23,24 +23,24 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Compare Language Files</title>
-    <style type="text/css">
-      body { font-size: 80%; font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif; }
-      ul#tabs { list-style-type: none; margin: 30px 0 0 0; padding: 0 0 0.3em 0;  }
-      ul#tabs li { display: block; }
-      ul#tabs li a { color: #42454a; background-color: #dedbde; border: 1px solid #c9c3ba; border-bottom: none; padding: 0.3em; text-decoration: none;  line-height: 30px; }
-      ul#tabs li a:hover { background-color: #f1f0ee; }
-      ul#tabs li a.selected { color: #000; background-color: #f1f0ee; font-weight: bold; padding: 0.7em 0.3em 0.38em 0.3em; }
-      div.tabContent { border: 1px solid #c9c3ba; padding: 0.5em; background-color: #f1f0ee; }
-      div.tabContent.hide { display: none; }
+	<style type="text/css">
+	  body { font-size: 80%; font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif; }
+	  ul#tabs { list-style-type: none; margin: 30px 0 0 0; padding: 0 0 0.3em 0;  }
+	  ul#tabs li { display: block; }
+	  ul#tabs li a { color: #42454a; background-color: #dedbde; border: 1px solid #c9c3ba; border-bottom: none; padding: 0.3em; text-decoration: none;  line-height: 30px; }
+	  ul#tabs li a:hover { background-color: #f1f0ee; }
+	  ul#tabs li a.selected { color: #000; background-color: #f1f0ee; font-weight: bold; padding: 0.7em 0.3em 0.38em 0.3em; }
+	  div.tabContent { border: 1px solid #c9c3ba; padding: 0.5em; background-color: #f1f0ee; }
+	  div.tabContent.hide { display: none; }
 	  input { border:none; background-color:#f1f0ee;}
-    </style>
+	</style>
 </head>
 <body>
 <?php
-function diff ($lo, $ln) {
-	$equ = array_intersect_key ($lo, $ln);
-	$ins = array_diff_key ($ln, $lo);
-	$del = array_diff_key ($lo, $ln);
+function diff($lo, $ln) {
+	$equ = array_intersect_key($lo, $ln);
+	$ins = array_diff_key($ln, $lo);
+	$del = array_diff_key($lo, $ln);
 	echo "<h2>Insert</h2>";
 	echo "<pre>";
 	foreach ($ins as $key => $value) {
@@ -53,7 +53,7 @@ function diff ($lo, $ln) {
 	}
 }
 
-if (empty($_REQUEST['org']) or empty($_REQUEST['dst'])) {
+if (empty($_REQUEST['org']) || empty($_REQUEST['dst'])) {
 	echo "<br>languagecompare script compares two language files and shows you the differences between them<br>";
 	echo "It's goal is to make a little easier the translation of modules<br>";
 	echo "You can compare between different language files as the comparision is done on the keys, not the translations<br>";
@@ -64,7 +64,7 @@ if (empty($_REQUEST['org']) or empty($_REQUEST['dst'])) {
 	$arrdest = $mod_strings;
 	include $_REQUEST['dst'];
 	$arrnew = $mod_strings;
-	echo diff ($arrdest, $arrnew);
+	echo diff($arrdest, $arrnew);
 	echo "<h2>---------</h2>";
 }
 ?>

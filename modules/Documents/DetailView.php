@@ -102,6 +102,9 @@ if ($flag == 1) {
 if (is_admin($current_user)) {
 	$smarty->assign('CHECK_INTEGRITY_PERMISSION', 'yes');
 	$smarty->assign('ADMIN', 'yes');
+} else {
+	$smarty->assign('CHECK_INTEGRITY_PERMISSION', 'no');
+	$smarty->assign('ADMIN', 'no');
 }
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
@@ -153,7 +156,7 @@ if ($singlepane_view == 'true') {
 	$related_array = getRelatedLists($currentModule, $focus);
 	$smarty->assign("RELATEDLISTS", $related_array);
 
-	require_once('include/ListView/RelatedListViewSession.php');
+	require_once 'include/ListView/RelatedListViewSession.php';
 	if (!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
 		RelatedListViewSession::addRelatedModuleToSession(vtlib_purify($_REQUEST['relation_id']), vtlib_purify($_REQUEST['selected_header']));
 	}
@@ -174,9 +177,10 @@ if (isPermitted($currentModule, 'Delete', $record) == 'yes') {
 }
 $smarty->assign('BLOCKINITIALSTATUS', $_SESSION['BLOCKINITIALSTATUS']);
 // Gather the custom link information to display
-include_once('vtlib/Vtiger/Link.php');
+include_once 'vtlib/Vtiger/Link.php';
 $customlink_params = array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));
-$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('DETAILVIEWBASIC', 'DETAILVIEW', 'DETAILVIEWWIDGET'), $customlink_params));
+$document_links = Vtiger_Link::getAllByType(getTabid($currentModule), array('DETAILVIEWBASIC', 'DETAILVIEW', 'DETAILVIEWWIDGET'), $customlink_params, null, $focus->id);
+$smarty->assign('CUSTOM_LINKS', $document_links);
 
 // Hide Action Panel
 $DEFAULT_ACTION_PANEL_STATUS = GlobalVariable::getVariable('Application_DetailView_ActionPanel_Open', 1);
@@ -185,6 +189,15 @@ $smarty->assign('Module_Popup_Edit', isset($_REQUEST['Module_Popup_Edit']) ? vtl
 
 // Record Change Notification
 $focus->markAsViewed($current_user->id);
+$bmapname = $currentModule.'_FieldDependency';
+$cbMapFDEP = array();
+$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+if ($cbMapid) {
+	$cbMap = cbMap::getMapByID($cbMapid);
+	$cbMapFDEP = $cbMap->FieldDependency();
+	$cbMapFDEP = $cbMapFDEP['fields'];
+}
+$smarty->assign('FIELD_DEPENDENCY_DATASOURCE', json_encode($cbMapFDEP));
 
 $smarty->assign('DETAILVIEW_AJAX_EDIT', GlobalVariable::getVariable('Application_DetailView_Inline_Edit', 1));
 

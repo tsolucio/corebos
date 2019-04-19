@@ -7,5 +7,5 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include('modules/CustomView/index.php');
+include 'modules/CustomView/index.php';
 ?>

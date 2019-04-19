@@ -99,7 +99,7 @@ class MasterDetailLayout extends processcbMap {
 		return $this->mapping;
 	}
 
-	public function convertMap2Array() {
+	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
 		$mapping=array();
 		$mapping['originmodule'] = (String)$xml->originmodule;
@@ -124,7 +124,7 @@ class MasterDetailLayout extends processcbMap {
 			);
 		}
 		$mapping['listview']['fields'] = array();
-		if (isset($xml->listview->fields->field) and is_object($xml->listview->fields->field)) {
+		if (isset($xml->listview->fields->field) && is_object($xml->listview->fields->field)) {
 			foreach ($xml->listview->fields->field as $k => $v) {
 				$fieldtype = isset($v->fieldtype) ? (String)$v->fieldtype : '';
 				$fieldname = isset($v->fieldname) ? (String)$v->fieldname : '';
@@ -236,7 +236,7 @@ class MasterDetailLayout extends processcbMap {
 	public function getRelatedFieldInfo($fieldname) {
 		global $current_user;
 		list($module,$fieldname) = explode('.', $fieldname);
-		if (count($this->relatedfieldsinfo)==0 or !isset($this->relatedfieldsinfo[$module])) {
+		if (count($this->relatedfieldsinfo)==0 || !isset($this->relatedfieldsinfo[$module])) {
 			$wsfieldsinfo = vtws_describe($module, $current_user);
 			$this->relatedfieldsinfo[$module] = $wsfieldsinfo['fields'];
 		}

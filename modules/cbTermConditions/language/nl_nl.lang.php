@@ -8,16 +8,21 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
-	'ModuleName' => 'Module Name',
-	'SINGLE_ModuleName' => 'Module Name',
-	'ModuleName ID' => 'Module Name ID',
+$mod_strings = array(
+	'cbTermConditions' => 'Algemene voorwaarden',
+	'SINGLE_cbTermConditions' => 'Algemene voorwaarde',
+	'TandC No' => 'Algemene voorwaarde Nr',
+	'Reference' => 'Referentie',
+	'Is Default' => 'Is standaard',
+	'Terms and Conditions' => 'Voorwaarden',
+	'formodule' => 'Voor module',
+	'Quotes' => 'Offertes',
+	'SalesOrder' => 'Verkooporder',
+	'PurchaseOrder' => 'Inkooporder',
+	'Invoice' => 'Factuur',
 
-	'LBL_CUSTOM_INFORMATION' => 'Custom Information',
-	'LBL_MODULEBLOCK_INFORMATION' => 'ModuleBlock Information',
-	'LBL_DESCRIPTION_INFORMATION' => 'Verkoopkans omschrijving',
-
-	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
+	'LBL_CBTERMCONDITIONS_INFORMATION' => 'Algemene voorwaarde informatie',
+	'LBL_TERMANDCONDITIONS' => 'Algemene voorwaarde',
+	'LBL_DESCRIPTION_INFORMATION' => 'Omschrijving',
 );
-
 ?>

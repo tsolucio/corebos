@@ -33,17 +33,23 @@ class MysqlSource extends BackupSource {
 
 	private function setup() {
 		$this->connection = NewADOConnection($this->dbConfig->getDBType());
-		$ok = $this->connection->NConnect($this->dbConfig->getHostName(),$this->dbConfig->getUserName(),
-			$this->dbConfig->getPassword(),$this->dbConfig->getDatabaseName());
-		if(!$ok){
-			throw new DatabaseBackupException(DatabaseBackupErrorCode::$DB_CONNECT_ERROR,
-				DatabaseBackup::$langString['SourceConnectFailed']);
+		$ok = $this->connection->NConnect(
+			$this->dbConfig->getHostName(),
+			$this->dbConfig->getUserName(),
+			$this->dbConfig->getPassword(),
+			$this->dbConfig->getDatabaseName()
+		);
+		if (!$ok) {
+			throw new DatabaseBackupException(
+				DatabaseBackupErrorCode::$DB_CONNECT_ERROR,
+				DatabaseBackup::$langString['SourceConnectFailed']
+			);
 		}
-		$this->connection->_Execute("SET NAMES 'utf8'",false);
-		$result = $this->connection->_Execute("SET interactive_timeout=28800",false);
-		$result = $this->connection->_Execute("SET wait_timeout=28800",false);
-		$result = $this->connection->_Execute("SET net_write_timeout=900",false);
-		$result = $this->connection->_Execute("SET net_read_timeout=900",false);
+		$this->connection->_Execute("SET NAMES 'utf8'", false);
+		$result = $this->connection->_Execute("SET interactive_timeout=28800", false);
+		$result = $this->connection->_Execute("SET wait_timeout=28800", false);
+		$result = $this->connection->_Execute("SET net_write_timeout=900", false);
+		$result = $this->connection->_Execute("SET net_read_timeout=900", false);
 	}
 
 	public function next() {
@@ -58,86 +64,105 @@ class MysqlSource extends BackupSource {
 	}
 
 	public function getNextStage($stage) {
-		switch($stage) {
-			case -1: return $this->startBackupStage;
-			case $this->startBackupStage: return $this->tableCreateStage;
-			case $this->tableCreateStage: return $this->startTableBackupStage;
-			case $this->startTableBackupStage: return $this->processStatementStage;
+		switch ($stage) {
+			case -1:
+				return $this->startBackupStage;
+			case $this->startBackupStage:
+				return $this->tableCreateStage;
+			case $this->tableCreateStage:
+				return $this->startTableBackupStage;
+			case $this->startTableBackupStage:
+				return $this->processStatementStage;
 				break;
-			case $this->processStatementStage: $rowCount = $this->result->RecordCount();
-				if($this->start < $rowCount) {
+			case $this->processStatementStage:
+				$rowCount = $this->result->RecordCount();
+				if ($this->start < $rowCount) {
 					return $this->processStatementStage;
-				}else{
+				} else {
 					return $this->finishTableBackupStage;
 				}
-			case $this->finishTableBackupStage: $index = array_search($this->currentTable,
-					$this->tableNameList);
-				if($index+1 == count($this->tableNameList)) {
+			case $this->finishTableBackupStage:
+				$index = array_search(
+					$this->currentTable,
+					$this->tableNameList
+				);
+				if ($index+1 == count($this->tableNameList)) {
 					return $this->finishBackupStage;
-				}else{
+				} else {
 					return $this->tableCreateStage;
 				}
-			case $this->finishBackupStage: return false;
+			case $this->finishBackupStage:
+				return false;
 		}
 	}
 
-	function getStageData($stage) {
-		switch($stage) {
-			case $this->startBackupStage: $this->initTableList();
+	public function getStageData($stage) {
+		switch ($stage) {
+			case $this->startBackupStage:
+				$this->initTableList();
 				return array(null);
-			case $this->tableCreateStage: if(empty($this->currentTable)) {
+			case $this->tableCreateStage:
+				if (empty($this->currentTable)) {
 					$index = -1;
 				} else {
-					$index = array_search($this->currentTable,
-						$this->tableNameList);
+					$index = array_search(
+						$this->currentTable,
+						$this->tableNameList
+					);
 				}
 				$this->setCurrentTable($this->tableNameList[$index+1]);
 				$stmt = $this->getTableCreateStatement($this->currentTable);
-					return array($this->currentTable,$stmt);
-			case $this->startTableBackupStage: return array($this->currentTable);
+				return array($this->currentTable,$stmt);
+			case $this->startTableBackupStage:
+				return array($this->currentTable);
 				break;
-			case $this->processStatementStage: return array(
+			case $this->processStatementStage:
+				return array(
 					$this->getInsertStatement($this->currentTable)
 				);
 				break;
-			case $this->finishTableBackupStage: return array($this->currentTable);
+			case $this->finishTableBackupStage:
+				return array($this->currentTable);
 				break;
-			case $this->finishBackupStage: return array(null);
+			case $this->finishBackupStage:
+				return array(null);
 		}
 	}
 
-	function initTableList() {
+	public function initTableList() {
 		$this->tableNameList = $this->connection->MetaTables('TABLES');
-		if($this->tableNameList === false){
-			throw new DatabaseBackupException(DatabaseBackupErrorCode::$TABLE_NAME_ERROR,
-				DatabaseBackup::$langString['TableListFetchError']);
+		if ($this->tableNameList === false) {
+			throw new DatabaseBackupException(
+				DatabaseBackupErrorCode::$TABLE_NAME_ERROR,
+				DatabaseBackup::$langString['TableListFetchError']
+			);
 		}
 	}
 
-	function setCurrentTable($tableName) {
+	public function setCurrentTable($tableName) {
 		$this->result = null;
 		$this->start = 0;
 		$this->currentTable = $tableName;
 	}
 
-	function getInsertStatement($tableName) {
-		if(empty($this->result)) {
+	public function getInsertStatement($tableName) {
+		if (empty($this->result)) {
 			$sql = "select * from $tableName";
-			$this->result = $this->connection->_Execute($sql,false);
-			$this->checkError($this->result,$sql.' '.$this->connection->ErrorMsg().' '. $this->connection->ErrorNo());
+			$this->result = $this->connection->_Execute($sql, false);
+			$this->checkError($this->result, $sql.' '.$this->connection->ErrorMsg().' '. $this->connection->ErrorNo());
 			$this->start = 0;
 		}
 		$rowCount = $this->result->RecordCount();
 		$i =0;
 		$sql = 'INSERT INTO '.$tableName;//
-		while($i < $this->valueListSize && $this->start < $rowCount) {
+		while ($i < $this->valueListSize && $this->start < $rowCount) {
 			$row = $this->result->GetRowAssoc(2);
-			if($i ==0 ) {
+			if ($i ==0) {
 				$sql .= ' ( '.$this->getInsertNames($this->connection, $this->result, $row).' )';
 				$sql .= ' VALUES ';
 			}
 			$values = $this->getInsertValues($this->connection, $this->result, $row);
-			if($i > 0) {
+			if ($i > 0) {
 				$sql .= ', ';
 			}
 			$sql .= '( '.$values.' )';
@@ -145,34 +170,30 @@ class MysqlSource extends BackupSource {
 			$this->start++;
 			$this->result->MoveNext();
 		}
-		if($i ==0) {
+		if ($i ==0) {
 			return '';
 		}
 		$sql .= ';';
 		return $sql;
 	}
 
-	function getTableCreateStatement($tableName) {
+	public function getTableCreateStatement($tableName) {
 		$sql = "show create table $tableName";
-		$result = $this->connection->_Execute($sql,false);
-		$this->checkError($result,$sql.' '.$this->connection->ErrorMsg().' '.
+		$result = $this->connection->_Execute($sql, false);
+		$this->checkError($result, $sql.' '.$this->connection->ErrorMsg().' '.
 				$this->connection->ErrorNo());
 		$data = $result->FetchRow();
 		return $data[1];
 	}
 
-	static $cacheRS = false;
-	static $cacheSig = 0;
-	static $cacheCols;
+	public static $cacheRS = false;
+	public static $cacheSig = 0;
+	public static $cacheCols;
 
-
-	function getInsertNames(&$zthis,&$rs,$arrFields,$magicq=false,$force=2) {
+	public function getInsertNames(&$zthis, &$rs, $arrFields, $magicq = false, $force = 2) {
 		$tableName = '';
-		$values = '';
-		$fields = '';
 		$recordSet = null;
 		$arrFields = _array_change_key_case($arrFields);
-		$fieldInsertedCount = 0;
 
 		if (is_string($rs)) {
 			//ok we have a table name
@@ -183,53 +204,54 @@ class MysqlSource extends BackupSource {
 			//because we have to call MetaType.
 			//php can't do a $rsclass::MetaType()
 			$rsclass = $zthis->rsPrefix.$zthis->databaseType;
-			$recordSet = new $rsclass(-1,$zthis->fetchMode);
+			$recordSet = new $rsclass(-1, $zthis->fetchMode);
 			$recordSet->connection = &$zthis;
 
 			if (is_string(self::$cacheRS) && self::$cacheRS == $rs) {
 				$columns =& self::$cacheCols;
 			} else {
-				$columns = $zthis->MetaColumns( $tableName );
+				$columns = $zthis->MetaColumns($tableName);
 				self::$cacheRS = $tableName;
 				self::$cacheCols = $columns;
 			}
-		} else if (is_subclass_of($rs, 'adorecordset')) {
+		} elseif (is_subclass_of($rs, 'adorecordset')) {
 			if (isset($rs->insertSig) && is_integer(self::$cacheRS) &&
 					self::$cacheRS == $rs->insertSig) {
 				$columns =& self::$cacheCols;
 			} else {
-				for ($i=0, $max=$rs->FieldCount(); $i < $max; $i++)
+				for ($i=0, $max=$rs->FieldCount(); $i < $max; $i++) {
 					$columns[] = $rs->FetchField($i);
-			self::$cacheRS = self::$cacheSig;
-			self::$cacheCols = $columns;
-			$rs->insertSig = self::$cacheSig++;
-		}
-		$recordSet =& $rs;
+				}
+				self::$cacheRS = self::$cacheSig;
+				self::$cacheCols = $columns;
+				$rs->insertSig = self::$cacheSig++;
+			}
+			$recordSet =& $rs;
 		} else {
-			printf(ADODB_BAD_RS,'GetInsertSQL');
+			printf(ADODB_BAD_RS, 'GetInsertSQL');
 			return false;
 		}
 
 		// Loop through all of the fields in the recordset
-		foreach( $columns as $field ) {
+		$fields = array();
+		foreach ($columns as $field) {
 			$upperfname = strtoupper($field->name);
-			if (adodb_key_exists($upperfname,$arrFields,$force)) {
-				$bad = false;
-				if (strpos($upperfname,' ') !== false)
+			if (adodb_key_exists($upperfname, $arrFields, $force)) {
+				if (strpos($upperfname, ' ') !== false) {
 					$fnameq = $zthis->nameQuote.$upperfname.$zthis->nameQuote;
-				else
+				} else {
 					$fnameq = $upperfname;
-
+				}
 				// Get the name of the fields to insert
 				$fields[] = $fnameq;
 			}
 		}
 
-		$fields = implode(', ',$fields);
+		$fields = implode(', ', $fields);
 		return $fields;
 	}
 
-	function getInsertValues(&$zthis,&$rs,$arrFields,$magicq=false,$force=2) {
+	public function getInsertValues(&$zthis, &$rs, $arrFields, $magicq = false, $force = 2) {
 		$tableName = '';
 		$values = '';
 		$fields = '';
@@ -246,42 +268,44 @@ class MysqlSource extends BackupSource {
 			//because we have to call MetaType.
 			//php can't do a $rsclass::MetaType()
 			$rsclass = $zthis->rsPrefix.$zthis->databaseType;
-			$recordSet = new $rsclass(-1,$zthis->fetchMode);
+			$recordSet = new $rsclass(-1, $zthis->fetchMode);
 			$recordSet->connection = &$zthis;
 
 			if (is_string(self::$cacheRS) && self::$cacheRS == $rs) {
 				$columns =& self::$cacheCols;
 			} else {
-				$columns = $zthis->MetaColumns( $tableName );
+				$columns = $zthis->MetaColumns($tableName);
 				self::$cacheRS = $tableName;
 				self::$cacheCols = $columns;
 			}
-		} else if (is_subclass_of($rs, 'adorecordset')) {
+		} elseif (is_subclass_of($rs, 'adorecordset')) {
 			if (isset($rs->insertSig) && is_integer(self::$cacheRS) &&
 					self::$cacheRS == $rs->insertSig) {
 				$columns =& self::$cacheCols;
 			} else {
-				for ($i=0, $max=$rs->FieldCount(); $i < $max; $i++)
+				for ($i=0, $max=$rs->FieldCount(); $i < $max; $i++) {
 					$columns[] = $rs->FetchField($i);
-			self::$cacheRS = self::$cacheSig;
-			self::$cacheCols = $columns;
-			$rs->insertSig = self::$cacheSig++;
-		}
-		$recordSet =& $rs;
+				}
+				self::$cacheRS = self::$cacheSig;
+				self::$cacheCols = $columns;
+				$rs->insertSig = self::$cacheSig++;
+			}
+			$recordSet =& $rs;
 		} else {
-			printf(ADODB_BAD_RS,'GetInsertSQL');
+			printf(ADODB_BAD_RS, 'GetInsertSQL');
 			return false;
 		}
 
 		// Loop through all of the fields in the recordset
-		foreach( $columns as $field ) {
+		foreach ($columns as $field) {
 			$upperfname = strtoupper($field->name);
-			if (adodb_key_exists($upperfname,$arrFields,$force)) {
+			if (adodb_key_exists($upperfname, $arrFields, $force)) {
 				$bad = false;
-				if (strpos($upperfname,' ') !== false)
+				if (strpos($upperfname, ' ') !== false) {
 					$fnameq = $zthis->nameQuote.$upperfname.$zthis->nameQuote;
-				else
+				} else {
 					$fnameq = $upperfname;
+				}
 
 				$type = $recordSet->MetaType($field->type);
 
@@ -322,7 +346,9 @@ class MysqlSource extends BackupSource {
 					$values .= _adodb_column_sql($zthis, 'I', $type, $upperfname, $fnameq, $arrFields, $magicq);
 				}
 
-				if ($bad) continue;
+				if ($bad) {
+					continue;
+				}
 				// Set the counter for the number of fields that will be inserted.
 				$fieldInsertedCount++;
 
@@ -332,15 +358,19 @@ class MysqlSource extends BackupSource {
 		}
 
 		// If there were any inserted fields then build the rest of the insert query.
-		if ($fieldInsertedCount <= 0)  return false;
+		if ($fieldInsertedCount <= 0) {
+			return false;
+		}
 
 		// Get the table name from the existing query.
 		if (!$tableName) {
-			if (!empty($rs->tableName)) $tableName = $rs->tableName;
-			else if (preg_match("/FROM\s+".ADODB_TABLE_REGEX."/is", $rs->sql, $tableName))
+			if (!empty($rs->tableName)) {
+				$tableName = $rs->tableName;
+			} elseif (preg_match("/FROM\s+".ADODB_TABLE_REGEX."/is", $rs->sql, $tableName)) {
 				$tableName = $tableName[1];
-			else
+			} else {
 				return false;
+			}
 		}
 
 		// Strip off the comma and space on the end of both the fields
@@ -350,12 +380,13 @@ class MysqlSource extends BackupSource {
 		return $values;
 	}
 
-	function checkError($result,$sql){
-		if($result === false){
-			throw new DatabaseBackupException(DatabaseBackupErrorCode::$SQL_EXECUTION_ERROR,
-				DatabaseBackup::$langString['SqlExecutionError'].' '.$sql);
+	public function checkError($result, $sql) {
+		if ($result === false) {
+			throw new DatabaseBackupException(
+				DatabaseBackupErrorCode::$SQL_EXECUTION_ERROR,
+				DatabaseBackup::$langString['SqlExecutionError'].' '.$sql
+			);
 		}
 	}
-
 }
 ?>

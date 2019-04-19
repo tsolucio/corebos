@@ -9,8 +9,8 @@
  ************************************************************************************/
 require_once 'modules/Vtiger/EditView.php';
 
-if(isset($_REQUEST['campaignid'])) {
-	$smarty->assign('campaignid',vtlib_purify($_REQUEST['campaignid']));
+if (isset($_REQUEST['campaignid'])) {
+	$smarty->assign('campaignid', vtlib_purify($_REQUEST['campaignid']));
 }
 $smarty->display('salesEditView.tpl');
 ?>

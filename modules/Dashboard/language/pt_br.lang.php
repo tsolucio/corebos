@@ -1,24 +1,13 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
- * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Dashboard/language/en_us.lang.php,v 1.4 2005/01/25 06:01:38 jack Exp $
- * Description:  Defines the English language pack for the DashBoard module.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese - Un Assigned | 17/11/2017 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
+ * All Rights Reserved.
  ********************************************************************************/
 
 $mod_strings = array(
@@ -64,12 +53,12 @@ $mod_strings = array(
 "accountindustry" => "Organizações por Atividade",
 "productcategory" => "Produtos por Categoria",
 "productbyqtyinstock" => "Produtos por Quantidade em Estoque",
-"productbypo" => "Produtos por Pedido Compra",
+"productbypo" => "Produtos por Pedido de Compra",
 "productbyquotes" => "Produtos por Cotação",
 "productbyinvoice" => "Produtos por Fatura",
-"sobyaccounts" => "Pedidos Vendas por Organização",
-"sobystatus" => "Pedidos Vendas por Status",
-"pobystatus" => "Pedido Compra por Status",
+"sobyaccounts" => "Pedidos de Vendas por Organização",
+"sobystatus" => "Pedidos de Vendas por Status",
+"pobystatus" => "Pedido de Compra por Status",
 "quotesbyaccounts" => "Cotações por Organização",
 "quotesbystage" => "Cotações por Estágio",
 "invoicebyacnts" => "Faturas por Organização",
@@ -85,8 +74,8 @@ $mod_strings = array(
 "ticketsbycontact"=>"Tickets por Contato",
 
 'LBL_DASHBRD_HOME'=>'Painel Principal',
-'LBL_HORZ_BAR_CHART'=>'Gráfico Barras Horizontal',
-'LBL_VERT_BAR_CHART'=>'Gráfico Barras Vertical',
+'LBL_HORZ_BAR_CHART'=>'Gráfico de Barras Horizontal',
+'LBL_VERT_BAR_CHART'=>'Gráfico de Barras Vertical',
 'LBL_PIE_CHART'=>'Gráfico Pizza',
 'LBL_NO_DATA'=>'Dados não disponíveis',
 'DashboardHome'=>'Página Painel',
@@ -112,12 +101,12 @@ $mod_strings = array(
 "Public Relations"=>"Relações Públicas",
 "Direct Mail"=>"Mala Direta",
 "Conference"=>"Conferência",
-"Trade Show"=>"Feiras Negócios",
-"Web Site"=>"Web Site",
-"Word of mouth"=>"Boca-Boca",
+"Trade Show"=>"Feiras de Negócios",
+"Web Site"=>"Website",
+"Word of mouth"=>"Boca-a-Boca",
 "Other"=>"Outro",
 "--None--"=>"Nada",
-"Attempted to Contact"=>"Tentativa Contato",
+"Attempted to Contact"=>"Tentativa de Contato",
 "Cold"=>"Frio",
 "Contact in Future"=>"Contactar no Futuro",
 "Contacted"=>"Contactado",
@@ -142,7 +131,7 @@ $mod_strings = array(
 "Entertainment"=>"Entretenimento",
 "Environmental"=>"Meio Ambiente",
 "Finance"=>"Finanças",
-"Food & Beverage"=>"Alimentação & Bebidas",
+"Food & Beverage"=>"Alimentação e Bebidas",
 "Government"=>"Governo",
 "Healthcare"=>"Saúde",
 "Hospitality"=>"Hotelaria",
@@ -176,8 +165,8 @@ $mod_strings = array(
 "Rejected"=>"Rejeitado",
 "Prospecting"=>"Prospectando",
 "Qualification"=>"Qualificação",
-"Needs Analysis"=>"Necessita Análise",
-"Value Proposition"=>"Proposta Valor",
+"Needs Analysis"=>"Necessita de Análise",
+"Value Proposition"=>"Proposta de Valor",
 "Id. Decision Makers"=>"Identif. Decisor",
 "Perception Analysis"=>"Análise Percepção",
 "Proposal/Price Quote"=>"Proposta/Cotação",
@@ -185,5 +174,4 @@ $mod_strings = array(
 "Closed Won"=>"Fechado Vencido",
 "Closed Lost"=>"Fechado Perdido",
 );
-
 ?>

@@ -28,11 +28,11 @@ $field = Vtiger_Field::getInstance($fldname, $mod);
 
 // Workflow Conditions
 $crs = $adb->pquery('SELECT workflow_id,summary FROM `com_vtiger_workflows` WHERE test like ?', array('%'.$fldname.'%'));
-if ($crs and $adb->num_rows($crs)>0) {
+if ($crs && $adb->num_rows($crs)>0) {
 	while ($fnd=$adb->fetch_array($crs)) {
-		echo $mod_strings['wf_conditions_found'];
+		echo '<span style="color:red">'.$mod_strings['wf_conditions_found'];
 		echo $fnd['workflow_id']. ' / ' .$fnd['summary'];
-		echo '<br>';
+		echo '</span><br>';
 	}
 } else {
 	echo $mod_strings['wf conditions'].'<br>';
@@ -40,10 +40,10 @@ if ($crs and $adb->num_rows($crs)>0) {
 
 // Workflow Tasks
 $crs = $adb->pquery('SELECT workflow_id,task_id,summary FROM `com_vtiger_workflowtasks` WHERE task like ?', array('%'.$fldname.'%'));
-if ($crs and $adb->num_rows($crs)>0) {
+if ($crs && $adb->num_rows($crs)>0) {
 	while ($fnd=$adb->fetch_array($crs)) {
-		echo $mod_strings['wf_tasks_found'].'('.$fnd['workflow_id'].') '.$mod_strings['LBL_TASK'].' ('.$fnd['task_id'].'): ';
-		echo $fnd['summary'].'<br>';
+		echo '<span style="color:red">'.$mod_strings['wf_tasks_found'].'('.$fnd['workflow_id'].') '.$mod_strings['LBL_TASK'].' ('.$fnd['task_id'].'): ';
+		echo $fnd['summary'].'</span><br>';
 	}
 } else {
 	echo $mod_strings['wf_tasks'].'<br>';
@@ -54,9 +54,9 @@ $crs = $adb->pquery(
 	'SELECT vtiger_customview.viewname FROM vtiger_cvcolumnlist INNER JOIN vtiger_customview on vtiger_customview.cvid=vtiger_cvcolumnlist.cvid WHERE columnname like ?',
 	array('%'.$fldname.'%')
 );
-if ($crs and $adb->num_rows($crs)>0) {
+if ($crs && $adb->num_rows($crs)>0) {
 	while ($fnd=$adb->fetch_array($crs)) {
-		echo $mod_strings['cv_column'].$fnd['viewname'].'<br>';
+		echo '<span style="color:red">'.$mod_strings['cv_column'].$fnd['viewname'].'</span><br>';
 	}
 } else {
 	echo  $mod_strings['cv_column_nf'].'<br>';
@@ -67,9 +67,9 @@ $crs = $adb->pquery(
 	'SELECT vtiger_customview.viewname FROM `vtiger_cvadvfilter` INNER JOIN vtiger_customview on vtiger_customview.cvid=vtiger_cvadvfilter.cvid WHERE columnname like ?',
 	array('%'.$fldname.'%')
 );
-if ($crs and $adb->num_rows($crs)>0) {
+if ($crs && $adb->num_rows($crs)>0) {
 	while ($fnd=$adb->fetch_array($crs)) {
-		echo $mod_strings['cv_advfilter'].$fnd['viewname'].'<br>';
+		echo '<span style="color:red">'.$mod_strings['cv_advfilter'].$fnd['viewname'].'</span><br>';
 	}
 } else {
 	echo $mod_strings['cv_advfilter_nf'].'<br>';
@@ -80,9 +80,9 @@ $crs = $adb->pquery(
 	'SELECT vtiger_customview.viewname FROM `vtiger_cvstdfilter` INNER JOIN vtiger_customview on vtiger_customview.cvid=vtiger_cvstdfilter.cvid WHERE columnname like ?',
 	array('%'.$fldname.'%')
 );
-if ($crs and $adb->num_rows($crs)>0) {
+if ($crs && $adb->num_rows($crs)>0) {
 	while ($fnd=$adb->fetch_array($crs)) {
-		echo $mod_strings['cv_stdfilter'].$fnd['viewname'].'<br>';
+		echo '<span style="color:red">'.$mod_strings['cv_stdfilter'].$fnd['viewname'].'</span><br>';
 	}
 } else {
 	echo $mod_strings['cv_stdfilter_nf'].'<br>';
@@ -90,9 +90,9 @@ if ($crs and $adb->num_rows($crs)>0) {
 
 // Email Templates
 $crs = $adb->pquery('SELECT templateid,templatename FROM `vtiger_emailtemplates` WHERE subject like ? or body like ?', array('%'.$fldname.'%', '%'.$fldname.'%'));
-if ($crs and $adb->num_rows($crs)>0) {
+if ($crs && $adb->num_rows($crs)>0) {
 	while ($fnd=$adb->fetch_array($crs)) {
-		echo $mod_strings['email_templates'].$fnd['templateid'].' :: '.$fnd['templatename'].'<br>';
+		echo '<span style="color:red">'.$mod_strings['email_templates'].$fnd['templateid'].' :: '.$fnd['templatename'].'</span><br>';
 	}
 } else {
 	echo $mod_strings['email_templates_nf'].'<br>';
@@ -106,9 +106,9 @@ $crs = $adb->pquery(
 		WHERE columnname like ?',
 	array('%'.$fldname.'%')
 );
-if ($crs and $adb->num_rows($crs)>0) {
+if ($crs && $adb->num_rows($crs)>0) {
 	while ($fnd=$adb->fetch_array($crs)) {
-		echo $mod_strings['select_column'].$fnd['reportid'].' :: '.$fnd['reportname'].'<br>';
+		echo '<span style="color:red">'.$mod_strings['select_column'].$fnd['reportid'].' :: '.$fnd['reportname'].'</span><br>';
 	}
 } else {
 	echo $mod_strings['select_column_nf'].'<br>';
@@ -122,9 +122,9 @@ $crs = $adb->pquery(
 		WHERE datecolumnname like ?',
 	array('%'.$fldname.'%')
 );
-if ($crs and $adb->num_rows($crs)>0) {
+if ($crs && $adb->num_rows($crs)>0) {
 	while ($fnd=$adb->fetch_array($crs)) {
-		echo $mod_strings['report_dtfilter'].$fnd['reportid'].' :: '.$fnd['reportname'].'<br>';
+		echo '<span style="color:red">'.$mod_strings['report_dtfilter'].$fnd['reportid'].' :: '.$fnd['reportname'].'</span><br>';
 	}
 } else {
 	echo $mod_strings['report_dtfilter_nf'].'<br>';
@@ -138,9 +138,9 @@ $crs = $adb->pquery(
 		WHERE sortcolname like ?',
 	array('%'.$fldname.'%')
 );
-if ($crs and $adb->num_rows($crs)>0) {
+if ($crs && $adb->num_rows($crs)>0) {
 	while ($fnd=$adb->fetch_array($crs)) {
-		echo $mod_strings['report'].$fnd['reportid'].' :: '.$fnd['reportname'].'<br>';
+		echo '<span style="color:red">'.$mod_strings['report'].$fnd['reportid'].' :: '.$fnd['reportname'].'</span><br>';
 	}
 } else {
 	echo $mod_strings['report_nf'].'<br>';
@@ -154,9 +154,9 @@ $crs = $adb->pquery(
 		WHERE columnname like ?',
 	array('%'.$fldname.'%')
 );
-if ($crs and $adb->num_rows($crs)>0) {
+if ($crs && $adb->num_rows($crs)>0) {
 	while ($fnd=$adb->fetch_array($crs)) {
-		echo $mod_strings['report_sort'].$fnd['reportid'].' :: '.$fnd['reportname'].'<br>';
+		echo '<span style="color:red">'.$mod_strings['report_sort'].$fnd['reportid'].' :: '.$fnd['reportname'].'</span><br>';
 	}
 } else {
 	echo $mod_strings['report_sort_nf'].'<br>';
@@ -170,9 +170,9 @@ $crs = $adb->pquery(
 		WHERE columnname like ?',
 	array('%'.$fldname.'%')
 );
-if ($crs and $adb->num_rows($crs)>0) {
+if ($crs && $adb->num_rows($crs)>0) {
 	while ($fnd=$adb->fetch_array($crs)) {
-		echo $mod_strings['report_summary'].$fnd['reportid'].' :: '.$fnd['reportname'].'<br>';
+		echo '<span style="color:red">'.$mod_strings['report_summary'].$fnd['reportid'].' :: '.$fnd['reportname'].'</span><br>';
 	}
 } else {
 	echo $mod_strings['report_summary_nf'].'<br>';
@@ -196,7 +196,7 @@ if (in_array($modname, array('Contacts','Accounts','Potentials','Leads'))) {
 	}
 	$crs = $adb->pquery("SELECT 1 FROM `vtiger_convertleadmapping` WHERE $searchon = ?", array($field->id));
 	if ($crs && $adb->num_rows($crs)>0) {
-		echo $mod_strings['cl_mapping'].'<br>';
+		echo '<span style="color:red">'.$mod_strings['cl_mapping'].'</span><br>';
 	} else {
 		echo $mod_strings['cl_mapping_nf'].'<br>';
 	}

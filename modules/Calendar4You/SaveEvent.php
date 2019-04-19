@@ -16,13 +16,13 @@ if ($_REQUEST['mode'] == 'event_drop' || $_REQUEST['mode'] == 'event_resize') {
 	}
 
 	$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : 0);
-	if (!empty($record) && isPermitted('cbCalendar','EditView',$record) == 'yes') {
+	if (!empty($record) && isPermitted('cbCalendar', 'EditView', $record) == 'yes') {
 		if ($current_user->date_format == 'dd-mm-yyyy') {
-			$dt_fmt = "d-m-Y";
+			$dt_fmt = 'd-m-Y';
 		} elseif ($current_user->date_format == 'mm-dd-yyyy') {
-			$dt_fmt = "m-d-Y";
+			$dt_fmt = 'm-d-Y';
 		} elseif ($current_user->date_format == 'yyyy-mm-dd') {
-			$dt_fmt = "Y-m-d";
+			$dt_fmt = 'Y-m-d';
 		}
 		$hr_fmt = ($current_user->hour_format=='24' ? '24' : '12');
 
@@ -30,7 +30,7 @@ if ($_REQUEST['mode'] == 'event_drop' || $_REQUEST['mode'] == 'event_resize') {
 		$entityModuleHandler = vtws_getModuleHandlerFromName('cbCalendar', $current_user);
 		$meta = $entityModuleHandler->getMeta();
 		$focus->id = $record;
-		$focus->retrieve_entity_info($focus->id,'cbCalendar');
+		$focus->retrieve_entity_info($focus->id, 'cbCalendar');
 		$focus->mode = 'edit';
 
 		$ActStart = $focus->column_fields['dtstart'];
@@ -39,11 +39,15 @@ if ($_REQUEST['mode'] == 'event_drop' || $_REQUEST['mode'] == 'event_resize') {
 
 		$day_drop = vtlib_purify($_REQUEST['day']);
 		if ($day_drop > 0) {
-			$d = "+";
+			$d = '+';
 		} else {
-			$d = "-";
+			$d = '-';
 		}
-		$allday = ($_REQUEST['allday']=='true' ? '1' : '0');
+		if (empty($_REQUEST['allday'])) {
+			$allday = $focus->column_fields['notime'];
+		} else {
+			$allday = ($_REQUEST['allday']=='true' ? '1' : '0');
+		}
 		if ($allday != $focus->column_fields['notime']) {
 			$minute_drop = 0;
 		} else {
@@ -51,12 +55,12 @@ if ($_REQUEST['mode'] == 'event_drop' || $_REQUEST['mode'] == 'event_resize') {
 		}
 		$focus->column_fields['notime'] = $allday;
 		if ($minute_drop > 0) {
-			$m = "+";
+			$m = '+';
 		} else {
-			$m = "-";
+			$m = '-';
 		}
 		$date = new DateTime($ActStart);
-		if ($_REQUEST['mode'] == "event_drop") {
+		if ($_REQUEST['mode'] == 'event_drop') {
 			if ($day_drop != 0) {
 				$date->modify($d.abs($day_drop).' day');
 			}
@@ -67,9 +71,11 @@ if ($_REQUEST['mode'] == 'event_drop' || $_REQUEST['mode'] == 'event_resize') {
 			$new_time_start = $date->format('H:i:s');
 			if ($new_date_start.$new_time_start>date('Y-m-dH:i:s')) {
 				// event in the future so we make sure the reminder is set to send
-				$adb->pquery('update vtiger_activity_reminder set reminder_sent=0 where activity_id=?',array($focus->id));
-				$adb->pquery('update vtiger_activity_reminder_popup set date_start=?,time_start=?,status=0 where recordid=?',
-					array($new_date_start,$new_time_start,$focus->id));
+				$adb->pquery('update vtiger_activity_reminder set reminder_sent=0 where activity_id=?', array($focus->id));
+				$adb->pquery(
+					'update vtiger_activity_reminder_popup set date_start=?,time_start=?,status=0 where recordid=?',
+					array($new_date_start,$new_time_start,$focus->id)
+				);
 			}
 		}
 		$new_time_start_time = $date->format('U');
@@ -91,8 +97,8 @@ if ($_REQUEST['mode'] == 'event_drop' || $_REQUEST['mode'] == 'event_resize') {
 		$tzendtime = $tzenddatetime->format('H:i:s');
 		$focus->column_fields['dtend'] = $date->format($dt_fmt) . ' ' . DateTimeField::formatUserTimeString($tzendtime, $hr_fmt);
 
-		if ($_REQUEST['mode'] == "event_resize") {
-			$focus->column_fields["time_end"] = $new_time_end;
+		if ($_REQUEST['mode'] == 'event_resize') {
+			$focus->column_fields['time_end'] = $new_time_end;
 		} else {
 			$focus->column_fields['dtstart'] = $newdtstart;
 		}

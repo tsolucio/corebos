@@ -51,7 +51,7 @@
 									{assign var=label value=$data.name|@getTranslatedString:'Settings'}
 									{/if}
 									{assign var=count value=$smarty.foreach.itr.iteration}
-									<td rowspan=2 valign=top>
+									<td width="74px" rowspan=2 valign=top>
 										<a href="{$data.link}">
 											<img src="{$data.icon|@vtiger_imageurl:$THEME}" alt="{$label}" width="48" height="48" border=0 title="{$label}">
 										</a>

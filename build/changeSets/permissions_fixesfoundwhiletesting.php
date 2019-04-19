@@ -16,22 +16,23 @@
 
 class permissions_fixesfoundwhiletesting extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$module = Vtiger_Module::getInstance('Campaigns');
-			$module->enableTools(Array('DuplicatesHandling'));
-			$module->disableTools(Array('Merge'));
+			$module->enableTools(array('DuplicatesHandling'));
+			$module->disableTools(array('Merge'));
 			$module = Vtiger_Module::getInstance('PriceBooks');
-			$module->enableTools(Array('Import', 'Export'));
+			$module->enableTools(array('Import', 'Export'));
 			RecalculateSharingRules();
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-
 }

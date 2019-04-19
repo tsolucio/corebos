@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('include/events/include.inc');
+require_once 'include/events/include.inc';
 require_once 'modules/WSAPP/Utils.php';
 
 class WSAPP {
@@ -17,31 +17,31 @@ class WSAPP {
 	 * @param String Module name
 	 * @param String Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
 	 */
-	function vtlib_handler($modulename, $event_type) {
-		if($event_type == 'module.postinstall') {
+	public function vtlib_handler($modulename, $event_type) {
+		if ($event_type == 'module.postinstall') {
 			$this->initCustomWebserviceOperations();
 			$this->registerHandlers();
 			$this->registerVtigerCRMApp();
 			$this->registerWsappWorkflowhandler();
 			$this->registerSynclibEventHandler();
-		} else if($event_type == 'module.disabled') {
+		} elseif ($event_type == 'module.disabled') {
 			// TODO Handle actions when this module is disabled.
 			return;
-		} else if($event_type == 'module.enabled') {
+		} elseif ($event_type == 'module.enabled') {
 			// TODO Handle actions when this module is enabled.
 			return;
-		} else if($event_type == 'module.preuninstall') {
+		} elseif ($event_type == 'module.preuninstall') {
 			// TODO Handle actions when this module is about to be deleted.
-			return;		
-		} else if($event_type == 'module.preupdate') {
+			return;
+		} elseif ($event_type == 'module.preupdate') {
 			// TODO Handle actions before this module is updated.
-			return;			
-		} else if($event_type == 'module.postupdate') {
+			return;
+		} elseif ($event_type == 'module.postupdate') {
 			$this->registerSynclibEventHandler();
 		}
 	}
 
-	function initCustomWebserviceOperations() {
+	public function initCustomWebserviceOperations() {
 		$operations = array();
 
 		$wsapp_register_parameters    = array('type' => 'string','synctype'=>'string');
@@ -67,24 +67,24 @@ class WSAPP {
 		$operations['wsapp_map'] = array(
 			'file' => 'modules/WSAPP/api/ws/Map.php', 'handler' => 'wsapp_map', 'reqtype' => 'POST', 'prelogin' => '0',
 			'parameters' => $wsapp_put_parameters );
-		$this->registerCustomWebservices( $operations );
+		$this->registerCustomWebservices($operations);
 	}
 
-	function registerCustomWebservices( $operations ) {
+	public function registerCustomWebservices($operations) {
 		global $adb;
 
 		foreach ($operations as $operation_name => $operation_info) {
 			$checkres = $adb->pquery("SELECT operationid FROM vtiger_ws_operation WHERE name=?", array($operation_name));
-			if($checkres && $adb->num_rows($checkres) < 1) {
+			if ($checkres && $adb->num_rows($checkres) < 1) {
 				$operation_id = $adb->getUniqueId('vtiger_ws_operation');
-				$operation_res = $adb->pquery(
+				$adb->pquery(
 					"INSERT INTO vtiger_ws_operation (operationid, name, handler_path, handler_method, type, prelogin) VALUES (?,?,?,?,?,?)",
 					array($operation_id, $operation_name, $operation_info['file'], $operation_info['handler'], $operation_info['reqtype'], $operation_info['prelogin'])
 				);
 
 				$operation_parameters = $operation_info['parameters'];
 				$parameter_index = 0;
-				foreach($operation_parameters as $parameter_name => $parameter_type) {
+				foreach ($operation_parameters as $parameter_name => $parameter_type) {
 					$adb->pquery(
 						"INSERT INTO vtiger_ws_operation_parameters (operationid, name, type, sequence) VALUES(?,?,?,?)",
 						array($operation_id, $parameter_name, $parameter_type, ($parameter_index+1))
@@ -98,49 +98,58 @@ class WSAPP {
 		}
 	}
 
-	function registerHandlers(){
+	public function registerHandlers() {
 		global $adb;
 
 		$handlerDetails = array();
 
 		$appTypehandler = array();
-		$appTypehandler['type'] = "Outlook";
-		$appTypehandler['handlerclass'] = "OutlookHandler";
-		$appTypehandler['handlerpath'] = "modules/WSAPP/Handlers/OutlookHandler.php";
+		$appTypehandler['type'] = 'Outlook';
+		$appTypehandler['handlerclass'] = 'OutlookHandler';
+		$appTypehandler['handlerpath'] = 'modules/WSAPP/Handlers/OutlookHandler.php';
 		$handlerDetails[] = $appTypehandler;
 
 		$appTypehandler = array();
-		$appTypehandler['type'] = "vtigerCRM";
-		$appTypehandler['handlerclass'] = "vtigerCRMHandler";
-		$appTypehandler['handlerpath'] = "modules/WSAPP/Handlers/vtigerCRMHandler.php";
+		$appTypehandler['type'] = 'vtigerCRM';
+		$appTypehandler['handlerclass'] = 'vtigerCRMHandler';
+		$appTypehandler['handlerpath'] = 'modules/WSAPP/Handlers/vtigerCRMHandler.php';
 		$handlerDetails[] = $appTypehandler;
 
-		foreach($handlerDetails as $appHandlerDetails)
-			$adb->pquery("INSERT INTO vtiger_wsapp_handlerdetails VALUES(?,?,?)",array($appHandlerDetails['type'],$appHandlerDetails['handlerclass'],$appHandlerDetails['handlerpath']));
+		foreach ($handlerDetails as $appHandlerDetails) {
+			$adb->pquery(
+				'INSERT INTO vtiger_wsapp_handlerdetails VALUES(?,?,?)',
+				array($appHandlerDetails['type'], $appHandlerDetails['handlerclass'], $appHandlerDetails['handlerpath'])
+			);
+		}
 	}
 
-	function registerVtigerCRMApp(){
+	public function registerVtigerCRMApp() {
 		$db = PearDatabase::getInstance();
-		$appName = "vtigerCRM";
-		$type  ="user";
+		$appName = 'vtigerCRM';
+		$type  ='user';
 		$uid = uniqid();
-		$db->pquery("INSERT INTO vtiger_wsapp (name, appkey,type) VALUES(?,?,?)", array($appName, $uid,$type));
+		$db->pquery('INSERT INTO vtiger_wsapp (name, appkey,type) VALUES(?,?,?)', array($appName, $uid,$type));
 	}
 
-	function registerWsappWorkflowhandler(){
+	public function registerWsappWorkflowhandler() {
 		$db = PearDatabase::getInstance();
 		$em = new VTEventsManager($db);
 		$dependentEventHandlers = array('VTEntityDelta');
 		$dependentEventHandlersJson = json_encode($dependentEventHandlers);
-		$em->registerHandler('vtiger.entity.aftersave', 'modules/WSAPP/WorkFlowHandlers/WSAPPAssignToTracker.php', 'WSAPPAssignToTracker','',$dependentEventHandlersJson);
+		$em->registerHandler(
+			'vtiger.entity.aftersave',
+			'modules/WSAPP/WorkFlowHandlers/WSAPPAssignToTracker.php',
+			'WSAPPAssignToTracker',
+			'',
+			$dependentEventHandlersJson
+		);
 	}
 
-	function registerSynclibEventHandler(){
+	public function registerSynclibEventHandler() {
 		$className='WSAPP_VtigerSyncEventHandler';
 		$path = 'modules/WSAPP/synclib/handlers/VtigerSyncEventHandler.php';
 		$type = 'vtigerSyncLib';
 		wsapp_RegisterHandler($type, $className, $path);
 	}
 }
-
 ?>

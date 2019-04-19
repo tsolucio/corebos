@@ -13,8 +13,8 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-require_once("include/tcpdf/tcpdf.php");
-require_once("include/fpdi/fpdi.php");
+require_once 'include/tcpdf/tcpdf.php';
+require_once 'include/fpdi/fpdi.php';
 
 class concat_pdf extends FPDI {
 
@@ -25,8 +25,8 @@ class concat_pdf extends FPDI {
 	}
 
 	public function concat() {
-		 $this->setPrintHeader(false);
-		 $this->setPrintFooter(false);
+		$this->setPrintHeader(false);
+		$this->setPrintFooter(false);
 		foreach ($this->files as $file) {
 			 $pagecount = $this->setSourceFile($file);
 			for ($i = 1; $i <= $pagecount; $i++) {

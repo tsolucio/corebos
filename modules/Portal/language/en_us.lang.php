@@ -8,7 +8,7 @@
 * All Rights Reserved.
 ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_BOOKMARKED_URL'=>"BookMarked URL's",
 'LBL_MANAGE_BOOKMARKS'=>'Manage Bookmarks',
 'LBL_BOOKMARK_LIST'=>'Bookmark List',

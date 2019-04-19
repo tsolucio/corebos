@@ -214,9 +214,9 @@ $mod_strings = array(
 'LBL_VIEWING'=>'Viewing',
 'LBL_PROPERTIES'=>'Properties of',
 
-'LBL_ASTERISKEXTENSIONS_EXIST' => 'Asterisk Extension Already Exists!',
+'LBL_ASTERISKEXTENSIONS_EXIST' => 'Asterisk Extension Already Exists',
 'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'Decimal Separator and Digit Grouping Separator cannot be the same.',
-
+'LBL_FORUSER' => ' for User ',
 // Added fields in createnewgroup.php
 'LBL_CREATE_NEW_GROUP'=>'Create New Group',
 'LBL_NEW_GROUP'=>'New Group',
@@ -345,6 +345,8 @@ $mod_strings = array(
 'LBL_EMAIL_SCHDS_DESC'=>'The following is the list of notifications that are activated automatically when the corresponding event has happened.',
 'LBL_ACTIVE'=>'Active',
 'LBL_INACTIVE'=>'Inactive',
+'LBL_ON'=>'On',
+'LBL_OFF'=>'Off',
 'LBL_NOTIFICATION'=>'Notification',
 'LBL_DESCRIPTION'=>'Description',
 'LBL_TASK_NOTIFICATION'=>'Delayed Task Notification',

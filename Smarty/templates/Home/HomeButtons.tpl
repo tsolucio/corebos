@@ -22,39 +22,42 @@
 	</td>
 
 	<td align='left'>
-		<img width="27" height="27" onClick='fnAddWindow(this,"addWidgetDropDown");' onMouseOut='fnRemoveWindow();' src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" border="0" title="{$MOD.LBL_HOME_ADDWINDOW}" alt"{$MOD.LBL_HOME_ADDWINDOW}" style="cursor:pointer;">
+		<img width="27" height="27" onClick='fnAddWindow(this,"addWidgetDropDown");' onMouseOut='fnRemoveWindow();' src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" title="{$MOD.LBL_HOME_ADDWINDOW}" alt"{$MOD.LBL_HOME_ADDWINDOW}" style="cursor:pointer;border:0;max-width:initial;">
 	</td>
 
 {if $CHECK.Calendar eq 'yes' && $CALENDAR_ACTIVE eq 'yes' && $CALENDAR_DISPLAY eq 'true'}
 	<td id="LB_CalButton" class="LB_Button" style="padding-right:0px;padding-left:10px;">
 		<a href="javascript:;" onclick="fnvshobj(this,'miniCal');getITSMiniCal('');">
-		<img src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CALENDAR_ALT}" title="{$APP.LBL_CALENDAR_TITLE}" border=0>
+		<img src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CALENDAR_ALT}" title="{$APP.LBL_CALENDAR_TITLE}" style="border:0;max-width:initial;">
 		</a>
 	</td>
 {/if}
 {if $WORLD_CLOCK_DISPLAY eq 'true' }
 	<td id="LB_ClockButton" class="LB_Button" style="padding-right:0px">
-		<a href="javascript:;"><img src="{$IMAGE_PATH}btnL3Clock.gif" alt="{$APP.LBL_CLOCK_ALT}" title="{$APP.LBL_CLOCK_TITLE}" border=0 onClick="fnvshobj(this,'wclock');"></a>
+		<a href="javascript:;"><img src="{$IMAGE_PATH}btnL3Clock.gif" alt="{$APP.LBL_CLOCK_ALT}" title="{$APP.LBL_CLOCK_TITLE}" style="border:0;max-width:initial;" onClick="fnvshobj(this,'wclock');"></a>
 	</td>
 {/if}
 {if $CALCULATOR_DISPLAY eq 'true' }
 	<td>
 	<td id="LB_CalcButton" class="LB_Button" style="padding-right:0px">
-		<a href="#"><img src="{$IMAGE_PATH}btnL3Calc.gif" alt="{$APP.LBL_CALCULATOR_ALT}" title="{$APP.LBL_CALCULATOR_TITLE}" border=0 onClick="fnvshobj(this,'calculator_cont');fetch_calc();"></a>
+		<a href="#"><img src="{$IMAGE_PATH}btnL3Calc.gif" alt="{$APP.LBL_CALCULATOR_ALT}" title="{$APP.LBL_CALCULATOR_TITLE}" style="border:0;max-width:initial;" onClick="fnvshobj(this,'calculator_cont');fetch_calc();"></a>
 	</td>
 {/if}
 	<td>
-		<img width="27" height="27" src="{'btnL3Tracker.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_LAST_VIEWED}" title="{$APP.LBL_LAST_VIEWED}" border="0" onClick="fnvshobj(this,'tracker');">
+		<img width="27" height="27" src="{'btnL3Tracker.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_LAST_VIEWED}" title="{$APP.LBL_LAST_VIEWED}" style="border:0;max-width:initial;" onClick="fnvshobj(this,'tracker');">
 	</td>
 
 	<td align='left'>
-		<img width="27" height="27" onClick='showOptions("changeLayoutDiv");' src="{'orgshar.gif'|@vtiger_imageurl:$THEME}" border="0" title="{$MOD.LBL_HOME_LAYOUT}" alt"{$MOD.LBL_HOME_LAYOUT}" style="cursor:pointer;">
+		<img width="27" height="27" onClick='showOptions("changeLayoutDiv");' src="{'orgshar.gif'|@vtiger_imageurl:$THEME}" style="border:0;max-width:initial;" title="{$MOD.LBL_HOME_LAYOUT}" alt"{$MOD.LBL_HOME_LAYOUT}" style="cursor:pointer;">
 	</td>
 
 	<td width="100%" align="center">
-		<div id="vtbusy_info" style="display: none;">
-			<img src="{'status.gif'|@vtiger_imageurl:$THEME}" border="0" />
+		<span id="vtbusy_info" style="display:none;" valign="bottom">
+		<div role="status" class="slds-spinner slds-spinner_brand slds-spinner_x-small" style="position:relative; top:6px;">
+			<div class="slds-spinner__dot-a"></div>
+			<div class="slds-spinner__dot-b"></div>
 		</div>
+		</span>
 	</td>
 </tr>
 </table>
@@ -68,6 +71,11 @@
 		<li>
 			<a href='javascript:;' class='drop_down' id="addmodule">
 				{$MOD.LBL_HOME_MODULE}
+			</a>
+		</li>
+		<li>
+			<a href='javascript:chooseType("CustomWidget");fnRemoveWindow();setFilter(document.getElementById("selmodule_id"));' class='drop_down' id="addcustomwidget">
+				{$MOD.LBL_HOME_CUSTOM_WIDGET}
 			</a>
 		</li>
 {if $ALLOW_RSS eq "yes"}
@@ -117,7 +125,9 @@
 		<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
 		<tr>
 			<td class="layerPopupHeading" align="left" id="divHeader"></td>
-			<td align="right"><a href="javascript:;" onclick="fnhide('addWidgetsDiv');document.getElementById('stufftitle_id').value='';"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"  align="absmiddle" /></a></td>
+			<td align="right"><a href="javascript:;" onclick="fnhide('addWidgetsDiv');document.getElementById('stufftitle_id').value='';">
+				<img src="{'close.gif'|@vtiger_imageurl:$THEME}" style="border:0;max-width:initial;" align="absmiddle" /></a>
+			</td>
 		</tr>
 		</table>
 		<table border=0 cellspacing=0 cellpadding=5 width=95% align=center>
@@ -167,15 +177,24 @@
 					<input type="hidden" name="fldname">
 				</td>
 			</tr>
-			<tr id="moduleFilterRow" style="display:block">
-				<td class="dvtCellLabel" align="right" width="110" >{$MOD.LBL_HOME_FILTERBY}</td>
-				<td id="selModFilter_id" colspan="2" class="dvtCellInfo" width="300">
+			<tr id="moduleFilters" style="display:block">
+				<td class="dvtCellLabel" id="filterby" align="right" width="110" >{$MOD.LBL_HOME_FILTERBY}</td>
+				<td class="dvtCellLabel" id="filterbyim" align="right" width="110" ><img width="27" height="27" alt"{$MOD.LBL_HOME_ADDWINDOW}" onClick='filterValidate();' onMouseOut='fnRemoveWindow();' src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" border="0" title="{$MOD.LBL_HOME_ADDWINDOW}"  style="cursor:pointer;">
+					&nbsp;{$MOD.LBL_HOME_FILTERBY}
+				</td>
+				<td id="selModFilter_id"  width="300" colspan="2"  class="dvtCellInfo"> </td>
+			 </tr>
+			 <tr id="moduleLabelsRow" style="display:block">
+			 	<td class="dvtCellLabel" align="right" id="aggr" width="110">{$MOD.LBL_HOME_AGGREGATE}</td>
+				<td id="selModAggregate_id"  width="300" colspan="2"  class="dvtCellInfo">
+					<select class="detailedViewTextBox" id="selAggregateid" name="selAggregatename" style="width:60%">
+					<option value="sum">Sum</option><option value="avg">Average</option><option value="max">Maximum</option>
+					<option value="min">Minimum</option><option value="count">Count</option></select>
 				</td>
 			</tr>
-			<tr id="modulePrimeRow" style="display:block">
-				<td class="dvtCellLabel" width="110" align="right" valign="top">{$MOD.LBL_HOME_Fields}</td>
-				<td id="selModPrime_id" colspan="2" class="dvtCellInfo" width="300">
-				</td>
+			<tr id="moduleCombosRow" style="display:block">
+				<td class="dvtCellLabel" align="right" id="fields" width="110">{$MOD.LBL_HOME_AG_FIELDS}</td>
+				<td id="selModPrime_id"  width="300"  colspan="2" class="dvtCellInfo"></td>
 			</tr>
 			<tr id="rssRow" style="display:none">
 				<td class="dvtCellLabel"  width="110" align="right">{$MOD.LBL_HOME_RSSURL}<font color='red'>*</font></td>
@@ -241,7 +260,7 @@
 			{$MOD.LBL_HOME_LAYOUT}
 		</td>
 		<td>
-			<img onclick="hideOptions('changeLayoutDiv');" src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="right" style="cursor: pointer;"/>
+			<img onclick="hideOptions('changeLayoutDiv');" src="{'close.gif'|@vtiger_imageurl:$THEME}" align="right" style="cursor: pointer;border:0;max-width:initial;"/>
 		</td>
 	</tr>
 	<tr id="numberOfColumns">

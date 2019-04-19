@@ -12,7 +12,6 @@
  * Function to get the field information from module name and field label
  */
 function getFieldByReportLabel($module, $label) {
-
 	// this is required so the internal cache is populated or reused.
 	getColumnFields($module);
 	//lookup all the accessible fields
@@ -40,21 +39,13 @@ function getFieldByReportLabel($module, $label) {
 }
 
 function isReferenceUIType($uitype) {
-	static $options = array('101', '116', '117', '26', '357', '51', '52', '53', '57', '66', '73', '75', '76', '77', '78', '80', '81');
-
-	if (in_array($uitype, $options)) {
-		return true;
-	}
-	return false;
+	static $options = array('101', '117', '26', '357', '51', '52', '53', '57', '66', '73', '76', '77', '78', '80');
+	return in_array($uitype, $options);
 }
 
 function isPicklistUIType($uitype) {
 	static $options = array('15','16','1613','1614','1615','33','3313','3314','1024');
-
-	if (in_array($uitype, $options)) {
-		return true;
-	}
-	return false;
+	return in_array($uitype, $options);
 }
 
 /**
@@ -150,6 +141,15 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 		require_once 'modules/PickList/PickListUtils.php';
 		$content = getPicklistValuesSpecialUitypes($field->getUIType(), $field->getFieldName(), $value, 'DetailView');
 		$fieldvalue = strip_tags(implode(', ', $content));
+	} elseif ($fieldInfo['uitype'] == '1616' && !empty($value)) {
+		global $adb;
+		$cvrs = $adb->pquery('select viewname,entitytype from vtiger_customview where cvid=?', array($value));
+		if ($cvrs && $adb->num_rows($cvrs)>0) {
+			$cv = $adb->fetch_array($cvrs);
+			$fieldvalue = $cv['viewname'].' ('.getTranslatedString($cv['entitytype'], $cv['entitytype']).')';
+		} else {
+			$fieldvalue = $value;
+		}
 	}
 	if ($fieldvalue == "") {
 		return "-";
@@ -166,12 +166,17 @@ function getReportFieldValue($report, $picklistArray, $dbField, $valueArray, $fi
 		$date = new DateTimeField($fieldvalue);
 		$fieldvalue = $date->getDisplayDateTimeValue();
 	}
-
+	if ($module != 'Reports' && vtlib_isModuleActive($module)) {
+		$modobj = CRMEntity::getInstance($module);
+		if (!empty($valueArray['lbl_action']) && method_exists($modobj, 'formatValueForReport')) {
+			$fieldvalue = $modobj->formatValueForReport($dbField, $fieldType, $value, $fieldvalue, $valueArray['lbl_action']);
+		}
+	}
 	return $fieldvalue;
 }
 
 function report_getMoreInfoFromRequest($cbreporttype, $pmodule, $smodule, $pivotcolumns) {
-	global $adb;
+	global $adb, $default_charset;
 	if (isset($_REQUEST['cbreporttype']) && $_REQUEST['cbreporttype']=='external') {
 		if (isset($_REQUEST['adduserinfo']) && ($_REQUEST['adduserinfo'] == 'on' || $_REQUEST['adduserinfo'] == 1)) {
 			$aui = 1;
@@ -184,7 +189,7 @@ function report_getMoreInfoFromRequest($cbreporttype, $pmodule, $smodule, $pivot
 		));
 		$cbreporttype = 'external';
 	} elseif (isset($_REQUEST['cbreporttype']) && $_REQUEST['cbreporttype']=='directsql') {
-		$minfo = vtlib_purify($_REQUEST['directsqlcommand']);
+		$minfo = html_entity_decode(vtlib_purify($_REQUEST['directsqlcommand']), ENT_QUOTES, $default_charset);
 		$cbreporttype = 'directsql';
 	} elseif (isset($_REQUEST['cbreporttype']) && $_REQUEST['cbreporttype']=='crosstabsql') {
 		require_once 'include/adodb/pivottable.inc.php';
@@ -193,7 +198,7 @@ function report_getMoreInfoFromRequest($cbreporttype, $pmodule, $smodule, $pivot
 		$moduleInstance = Vtiger_Module::getInstance($pmodule);
 		$refs = $moduleInstance->getFieldsByType('reference');
 		$found = false;
-		foreach ($refs as $fname => $field) {
+		foreach ($refs as $field) {
 			$rs = $adb->pquery('select relmodule from vtiger_fieldmodulerel where fieldid=?', array($field->id));
 			$relmod = $adb->query_result($rs, 0, 0);
 			if ($relmod==$smodule) {
@@ -250,5 +255,96 @@ function report_getMoreInfoFromRequest($cbreporttype, $pmodule, $smodule, $pivot
 		$cbreporttype,
 		$minfo
 	);
+}
+
+/** Function to get visible criteria for a report
+ *  This function accepts The reportid as an argument
+ *  It returns an array of selected option of sharing along with other options
+ */
+function getVisibleCriteria($recordid = '', $selectedBoolean = true) {
+	global $adb;
+	$filter = array();
+	$selcriteria = '';
+	if ($recordid!='') {
+		$result = $adb->pquery('select sharingtype from vtiger_report where reportid=?', array($recordid));
+		$selcriteria=$adb->query_result($result, 0, 'sharingtype');
+	}
+	if ($selcriteria == '') {
+		$selcriteria = 'Public';
+	}
+	$filter_result = $adb->query('select name from vtiger_reportfilters');
+	$numrows = $adb->num_rows($filter_result);
+	for ($j=0; $j<$numrows; $j++) {
+		$filtername = $adb->query_result($filter_result, $j, 'name');
+		if ($filtername == 'Private') {
+			$FilterKey='Private';
+			$FilterValue=getTranslatedString('PRIVATE_FILTER');
+		} elseif ($filtername=='Shared') {
+			$FilterKey='Shared';
+			$FilterValue=getTranslatedString('SHARE_FILTER');
+		} else {
+			$FilterKey='Public';
+			$FilterValue=getTranslatedString('PUBLIC_FILTER');
+		}
+		$shtml['value'] = $FilterKey;
+		$shtml['label'] = $FilterValue;
+		$shtml['text'] = $FilterValue;
+		if ($FilterKey == $selcriteria) {
+			$shtml['selected'] = ($selectedBoolean ? true : 'selected');
+		} else {
+			$shtml['selected'] = ($selectedBoolean ? false : '');
+		}
+		$filter[] = $shtml;
+	}
+	return $filter;
+}
+
+function getShareInfo($recordid = '', $idname = true) {
+	global $adb;
+	$member_data = array();
+	$member_query = $adb->pquery(
+		"SELECT vtiger_reportsharing.setype,vtiger_users.id,vtiger_users.user_name
+			FROM vtiger_reportsharing
+			INNER JOIN vtiger_users on vtiger_users.id = vtiger_reportsharing.shareid
+			WHERE vtiger_reportsharing.setype='users' AND vtiger_reportsharing.reportid = ?",
+		array($recordid)
+	);
+	$noofrows = $adb->num_rows($member_query);
+	if ($noofrows > 0) {
+		for ($i=0; $i<$noofrows; $i++) {
+			$userid = $adb->query_result($member_query, $i, 'id');
+			$username = $adb->query_result($member_query, $i, 'user_name');
+			$setype = $adb->query_result($member_query, $i, 'setype');
+			if ($idname) {
+				$mdata = array('id'=>$setype.'::'.$userid, 'name'=>$setype.'::'.$username);
+			} else {
+				$mdata = array('value'=>$setype.'::'.$userid, 'label'=>$setype.'::'.$username);
+			}
+			$member_data[] = $mdata;
+		}
+	}
+
+	$member_query = $adb->pquery(
+		"SELECT vtiger_reportsharing.setype,vtiger_groups.groupid,vtiger_groups.groupname
+			FROM vtiger_reportsharing
+			INNER JOIN vtiger_groups on vtiger_groups.groupid = vtiger_reportsharing.shareid
+			WHERE vtiger_reportsharing.setype='groups' AND vtiger_reportsharing.reportid = ?",
+		array($recordid)
+	);
+	$noofrows = $adb->num_rows($member_query);
+	if ($noofrows > 0) {
+		for ($i=0; $i<$noofrows; $i++) {
+			$grpid = $adb->query_result($member_query, $i, 'groupid');
+			$grpname = $adb->query_result($member_query, $i, 'groupname');
+			$setype = $adb->query_result($member_query, $i, 'setype');
+			if ($idname) {
+				$mdata = array('id'=>$setype.'::'.$grpid, 'name'=>$setype.'::'.$grpname);
+			} else {
+				$mdata = array('value'=>$setype.'::'.$grpid, 'label'=>$setype.'::'.$grpname);
+			}
+			$member_data[] = $mdata;
+		}
+	}
+	return $member_data;
 }
 ?>

@@ -55,6 +55,7 @@ $mod_strings = array(
 'LBL_POSTAL_CODE'=>'Postal Code:',
 'LBL_COUNTRY'=>'Country:',
 'LBL_DESCRIPTION_INFORMATION'=>'Description Information',
+'LBL_SalesOrder_FINANCIALINFO' => 'Financial Information',
 'LBL_TERMS_INFORMATION'=>'Terms & Conditions',
 'LBL_DESCRIPTION'=>'Description:',
 'NTC_COPY_BILLING_ADDRESS'=>'Copy billing address to shipping address',
@@ -195,6 +196,5 @@ $mod_strings = array(
 '3years' => '3 Years',
 '4years' => '4 Years',
 '5years' => '5 Years',
-
 );
 ?>

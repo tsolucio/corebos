@@ -5,14 +5,9 @@
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
+ * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  * All Rights Reserved.
  ************************************************************************************/
- /*********************************************************************************
- * $Header:  \modules\ConfigEditor\language\hu_hu.lang.php - 9:46 2011.11.11. $
- * Description:  Defines the Hungarian language pack for the ConfigEditor module vtiger 5.3.x
- * All Rights Reserved.
- * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
- ********************************************************************************/
 
 $mod_strings = array(
 	'LBL_NEW_FORM_TITLE' => 'Új Kapcsolat',
@@ -48,6 +43,7 @@ $mod_strings = array(
 	'Last Ten Days' => 'Elmúlt 10 nap',
 	'User List' => 'Felhasználó Lista',
 	'LBL_HOME_MODULE' => 'Modul',
+	'LBL_HOME_CUSTOM_WIDGET' => 'Aggregate Filter',
 	'LBL_HOME_RSS' => 'RSS Hírfolyam',
 	'LBL_HOME_DASHBOARD' => 'Műszerfal',
 	'LBL_HOME_STUFFTITLE' => 'Ablak cím',
@@ -55,6 +51,8 @@ $mod_strings = array(
 	'LBL_HOME_FILTERBY' => 'Szűrő: ',
 	'LBL_HOME_Fields' => 'Mutatandó Mezők',
 	'LBL_HOME_PRESSCTRL' => '(Nyomd meg a "Ctrl"-t <br> a többszörös kiválasztáshoz)',
+	'LBL_HOME_AGGREGATE'=>'Aggregate',
+	'LBL_HOME_AG_FIELDS'=>'On field',
 	'LBL_HOME_RSSURL' => 'RSS URL',
 	'LBL_HOME_DASHBOARD_NAME' => 'Műszerfal neve',
 	'LBL_HOME_DASHBOARD_TYPE' => 'Műszerfal típusa',

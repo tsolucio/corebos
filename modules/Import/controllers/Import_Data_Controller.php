@@ -24,22 +24,22 @@ require_once 'vtlib/Vtiger/Mailer.php';
 
 class Import_Data_Controller {
 
-	var $id;
-	var $user;
-	var $module;
-	var $fieldMapping;
-	var $mergeType;
-	var $mergeFields;
-	var $defaultValues;
-	var $importedRecordInfo = array();
-	var $batchImport = true;
+	public $id;
+	public $user;
+	public $module;
+	public $fieldMapping;
+	public $mergeType;
+	public $mergeFields;
+	public $defaultValues;
+	public $importedRecordInfo = array();
+	public $batchImport = true;
 
-	static $IMPORT_RECORD_NONE = 0;
-	static $IMPORT_RECORD_CREATED = 1;
-	static $IMPORT_RECORD_SKIPPED = 2;
-	static $IMPORT_RECORD_UPDATED = 3;
-	static $IMPORT_RECORD_MERGED = 4;
-	static $IMPORT_RECORD_FAILED = 5;
+	public static $IMPORT_RECORD_NONE = 0;
+	public static $IMPORT_RECORD_CREATED = 1;
+	public static $IMPORT_RECORD_SKIPPED = 2;
+	public static $IMPORT_RECORD_UPDATED = 3;
+	public static $IMPORT_RECORD_MERGED = 4;
+	public static $IMPORT_RECORD_FAILED = 5;
 
 	public function __construct($importInfo, $user) {
 		$this->id = $importInfo['id'];
@@ -60,10 +60,10 @@ class Import_Data_Controller {
 
 		$defaultValues = array();
 		if (!empty($this->defaultValues)) {
-			if(!is_array($this->defaultValues)) {
-				$this->defaultValues = json_decode($this->defaultValues,true);
+			if (!is_array($this->defaultValues)) {
+				$this->defaultValues = json_decode($this->defaultValues, true);
 			}
-			if($this->defaultValues != null) {
+			if ($this->defaultValues != null) {
 				$defaultValues = $this->defaultValues;
 			}
 		}
@@ -72,9 +72,9 @@ class Import_Data_Controller {
 		foreach ($moduleMandatoryFields as $mandatoryFieldName) {
 			if (empty($defaultValues[$mandatoryFieldName])) {
 				$fieldInstance = $moduleFields[$mandatoryFieldName];
-				if($fieldInstance->getFieldDataType() == 'owner') {
+				if ($fieldInstance->getFieldDataType() == 'owner') {
 					$defaultValues[$mandatoryFieldName] = $this->user->id;
-				} elseif($fieldInstance->getFieldDataType() != 'datetime'
+				} elseif ($fieldInstance->getFieldDataType() != 'datetime'
 						&& $fieldInstance->getFieldDataType() != 'date'
 						&& $fieldInstance->getFieldDataType() != 'time') {
 					$defaultValues[$mandatoryFieldName] = '????';
@@ -83,10 +83,10 @@ class Import_Data_Controller {
 		}
 		foreach ($moduleFields as $fieldName => $fieldInstance) {
 			$fieldDefaultValue = $fieldInstance->getDefault();
-			if(empty ($defaultValues[$fieldName])) {
-				if($fieldInstance->getUIType() == '52') {
+			if (empty($defaultValues[$fieldName])) {
+				if ($fieldInstance->getUIType() == '52') {
 					$defaultValues[$fieldName] = $this->user->id;
-				} elseif(!empty($fieldDefaultValue)) {
+				} elseif (!empty($fieldDefaultValue)) {
 					$defaultValues[$fieldName] = $fieldDefaultValue;
 				}
 			}
@@ -96,14 +96,16 @@ class Import_Data_Controller {
 	}
 
 	public function import() {
-		if(!$this->initializeImport()) return false;
+		if (!$this->initializeImport()) {
+			return false;
+		}
 		$this->importData();
 		$this->finishImport();
 	}
 
 	public function importData() {
 		$focus = CRMEntity::getInstance($this->module);
-		if(method_exists($focus, 'createRecords')) {
+		if (method_exists($focus, 'createRecords')) {
 			$focus->createRecords($this);
 		} else {
 			$this->createRecords();
@@ -114,7 +116,7 @@ class Import_Data_Controller {
 	public function initializeImport() {
 		$lockInfo = Import_Lock_Controller::isLockedForModule($this->module);
 		if ($lockInfo != null) {
-			if($lockInfo['userid'] != $this->user->id) {
+			if ($lockInfo['userid'] != $this->user->id) {
 				Import_Utils::showImportLockedError($lockInfo);
 				return false;
 			} else {
@@ -144,8 +146,10 @@ class Import_Data_Controller {
 			$entityIdComponents = vtws_getIdComponents($entityInfo['id']);
 			$recordId = $entityIdComponents[1];
 		}
-		$adb->pquery('UPDATE ' . Import_Utils::getDbTableName($this->user) . ' SET status=?, recordid=? WHERE id=?',
-				array($entityInfo['status'], $recordId, $entryId));
+		$adb->pquery(
+			'UPDATE ' . Import_Utils::getDbTableName($this->user) . ' SET status=?, recordid=? WHERE id=?',
+			array($entityInfo['status'], $recordId, $entryId)
+		);
 	}
 
 	public function createRecords() {
@@ -161,9 +165,11 @@ class Import_Data_Controller {
 		$tableName = Import_Utils::getDbTableName($this->user);
 		$sql = 'SELECT * FROM ' . $tableName . ' WHERE status = '. Import_Data_Controller::$IMPORT_RECORD_NONE;
 
-		if($this->batchImport) {
-			$importBatchLimit = GlobalVariable::getVariable('Import_Batch_Limit',250);
-			if (!is_numeric($importBatchLimit)) $importBatchLimit = 250;
+		if ($this->batchImport) {
+			$importBatchLimit = GlobalVariable::getVariable('Import_Batch_Limit', 250);
+			if (!is_numeric($importBatchLimit)) {
+				$importBatchLimit = 250;
+			}
 			$sql .= ' LIMIT '. $importBatchLimit;
 		}
 		$result = $adb->query($sql);
@@ -182,27 +188,23 @@ class Import_Data_Controller {
 			$entityInfo = null;
 			$fieldData = array();
 			foreach ($fieldMapping as $fieldName => $index) {
-				$fieldData[$fieldName] = $row[$fieldName];
+				$fieldData[$fieldName] = (isset($row[$fieldName]) ? $row[$fieldName] : '');
 			}
 
 			$mergeType = $this->mergeType;
 			$createRecord = false;
 
-			if(method_exists($focus, 'importRecord')) {
+			if (method_exists($focus, 'importRecord')) {
 				$entityInfo = $focus->importRecord($this, $fieldData);
 			} else {
 				if (!empty($mergeType) && $mergeType != Import_Utils::$AUTO_MERGE_NONE) {
-
 					$queryGenerator = new QueryGenerator($moduleName, $this->user);
 					$queryGenerator->initForDefaultCustomView();
 					$fieldsList = array('id');
 					$queryGenerator->setFields($fieldsList);
 
 					$mergeFields = $this->mergeFields;
-					foreach ($mergeFields as $index => $mergeField) {
-						if ($index != 0) {
-							$queryGenerator->addConditionGlue(QueryGenerator::$AND);
-						}
+					foreach ($mergeFields as $mergeField) {
 						$comparisonValue = $fieldData[$mergeField];
 						$fieldInstance = $moduleFields[$mergeField];
 						if ($fieldInstance->getFieldDataType() == 'owner') {
@@ -210,7 +212,7 @@ class Import_Data_Controller {
 							$comparisonValue = getUserFullName($userId);
 						}
 						if ($fieldInstance->getFieldDataType() == 'reference') {
-							if(strpos($comparisonValue, '::::') > 0) {
+							if (strpos($comparisonValue, '::::') > 0) {
 								$referenceFileValueComponents = explode('::::', $comparisonValue);
 							} else {
 								$referenceFileValueComponents = explode(':::', $comparisonValue);
@@ -230,7 +232,6 @@ class Import_Data_Controller {
 							$entityInfo['status'] = self::$IMPORT_RECORD_SKIPPED;
 						} elseif ($mergeType == Import_Utils::$AUTO_MERGE_OVERWRITE ||
 								$mergeType == Import_Utils::$AUTO_MERGE_MERGEFIELDS) {
-
 							for ($index = 0; $index < $noOfDuplicates - 1; ++$index) {
 								$duplicateRecordId = $adb->query_result($duplicatesResult, $index, $fieldColumnMapping['id']);
 								$entityId = vtws_getId($moduleObjectId, $duplicateRecordId);
@@ -252,7 +253,7 @@ class Import_Data_Controller {
 								$entityData['fieldData'] = $fieldData;
 								$entityData['moduleName'] = $moduleName;
 								$entityData['user'] = $this->user;
-								cbEventHandler::do_action('corebos.entity.import.overwrite',$entityData);
+								cbEventHandler::do_action('corebos.entity.import.overwrite', $entityData);
 							}
 
 							if ($mergeType == Import_Utils::$AUTO_MERGE_MERGEFIELDS) {
@@ -283,7 +284,7 @@ class Import_Data_Controller {
 								$entityData['fieldData'] = $fieldData;
 								$entityData['moduleName'] = $moduleName;
 								$entityData['user'] = $this->user;
-								cbEventHandler::do_action('corebos.entity.import.merge',$entityData);
+								cbEventHandler::do_action('corebos.entity.import.merge', $entityData);
 							}
 						} else {
 							$createRecord = true;
@@ -296,7 +297,7 @@ class Import_Data_Controller {
 				}
 				if ($createRecord) {
 					$fieldData = $this->transformForImport($fieldData, $moduleMeta);
-					if($fieldData == null) {
+					if ($fieldData == null) {
 						$entityInfo = null;
 					} else {
 						$entityInfo = vtws_create($moduleName, $fieldData, $this->user);
@@ -309,12 +310,12 @@ class Import_Data_Controller {
 						$entityData['fieldData'] = $fieldData;
 						$entityData['moduleName'] = $moduleName;
 						$entityData['user'] = $this->user;
-						cbEventHandler::do_action('corebos.entity.import.create',$entityData);
+						cbEventHandler::do_action('corebos.entity.import.create', $entityData);
 					}
 				}
 			}
 
-			if($entityInfo == null) {
+			if ($entityInfo == null) {
 				$entityInfo = array('id' => null, 'status' => self::$IMPORT_RECORD_FAILED);
 			}
 
@@ -325,15 +326,17 @@ class Import_Data_Controller {
 		return true;
 	}
 
-	public function transformForImport($fieldData, $moduleMeta, $fillDefault=true, $mergeMode = false) {
+	public function transformForImport($fieldData, $moduleMeta, $fillDefault = true, $mergeMode = false) {
 		$moduleFields = $moduleMeta->getModuleFields();
 		$defaultFieldValues = $this->getDefaultFieldValues($moduleMeta);
 		foreach ($fieldData as $fieldName => $fieldValue) {
 			$fieldInstance = $moduleFields[$fieldName];
-			if (!is_object($fieldInstance)) continue; // specially for Inventory module import which has virtual item line fields
+			if (!is_object($fieldInstance)) {
+				continue; // specially for Inventory module import which has virtual item line fields
+			}
 			if ($fieldInstance->getFieldDataType() == 'owner') {
 				global $adb;
-				if(strpos($fieldValue, '::::') > 0) {
+				if (strpos($fieldValue, '::::') > 0) {
 					$fieldValueDetails = explode('::::', $fieldValue);
 				} else {
 					$fieldValueDetails = explode(':::', $fieldValue);
@@ -345,8 +348,8 @@ class Import_Data_Controller {
 					$user_qry='select vtiger_users.id from vtiger_users where deleted = 0 and '.$fieldValueDetails[2].' = ?';
 					$res = $adb->pquery($user_qry, array($fieldValueDetails[1]));
 					$ownerId = 0;
-					if ($res and $adb->num_rows($res)>0) {
-						$ownerId = $adb->query_result($res,0,'id');
+					if ($res && $adb->num_rows($res)>0) {
+						$ownerId = $adb->query_result($res, 0, 'id');
 					}
 				} else {
 					$ownerId = getUserId_Ol($fieldValue);
@@ -357,16 +360,15 @@ class Import_Data_Controller {
 				if (empty($ownerId) && isset($defaultFieldValues[$fieldName])) {
 					$ownerId = $defaultFieldValues[$fieldName];
 				}
-				if(empty($ownerId) ||
+				if (empty($ownerId) ||
 							!Import_Utils::hasAssignPrivilege($moduleMeta->getEntityName(), $ownerId)) {
 					$ownerId = $this->user->id;
 				}
 				$fieldData[$fieldName] = $ownerId;
-
 			} elseif ($fieldInstance->getFieldDataType() == 'reference') {
 				$entityId = false;
 				if (!empty($fieldValue)) {
-					if(strpos($fieldValue, '::::') > 0) {
+					if (strpos($fieldValue, '::::') > 0) {
 						$fieldValueDetails = explode('::::', $fieldValue);
 					} else {
 						$fieldValueDetails = explode(':::', $fieldValue);
@@ -386,8 +388,7 @@ class Import_Data_Controller {
 							$referenceModuleName = $referenceModule;
 							if ($referenceModule == 'Users') {
 								$referenceEntityId = getUserId_Ol($entityLabel);
-								if(empty($referenceEntityId) ||
-										!Import_Utils::hasAssignPrivilege($moduleMeta->getEntityName(), $referenceEntityId)) {
+								if (empty($referenceEntityId) || !Import_Utils::hasAssignPrivilege($moduleMeta->getEntityName(), $referenceEntityId)) {
 									$referenceEntityId = $this->user->id;
 								}
 							} elseif ($referenceModule == 'Currency') {
@@ -401,9 +402,20 @@ class Import_Data_Controller {
 							}
 						}
 					}
-					if ((empty($entityId) || $entityId == 0) && (!empty($referenceModuleName) and !in_array($referenceModuleName, getInventoryModules()) and $referenceModuleName!='Users')) {
-						if(isPermitted($referenceModuleName, 'CreateView') == 'yes') {
-							$wsEntityIdInfo = $this->createEntityRecord($referenceModuleName, $entityLabel);
+					if ((empty($entityId) || $entityId == 0)
+						&& (!empty($referenceModuleName) && !in_array($referenceModuleName, getInventoryModules()) && $referenceModuleName!='Users')
+					) {
+						if (isPermitted($referenceModuleName, 'CreateView') == 'yes') {
+							try {
+								$wsEntityIdInfo = $this->createEntityRecord($referenceModuleName, $entityLabel);
+							} catch (WebServiceException $e) {
+								echo '<br><br>';
+								$smarty = new vtigerCRM_Smarty();
+								$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-danger');
+								$smarty->assign('ERROR_MESSAGE', getTranslatedString('ERR_CREATING_TABLE')." $referenceModuleName $entityLabel : ".$e->message);
+								$smarty->display('applicationmessage.tpl');
+								die();
+							}
 							$wsEntityId = $wsEntityIdInfo['id'];
 							$entityIdComponents = vtws_getIdComponents($wsEntityId);
 							$entityId = $entityIdComponents[1];
@@ -413,20 +425,17 @@ class Import_Data_Controller {
 				} else {
 					$referencedModules = $fieldInstance->getReferenceList();
 					if ($referencedModules[0] == 'Users') {
-						if(isset($defaultFieldValues[$fieldName])) {
+						if (isset($defaultFieldValues[$fieldName])) {
 							$fieldData[$fieldName] = $defaultFieldValues[$fieldName];
 						}
-						if(empty($fieldData[$fieldName]) ||
-								!Import_Utils::hasAssignPrivilege($moduleMeta->getEntityName(), $fieldData[$fieldName])) {
+						if (empty($fieldData[$fieldName]) || !Import_Utils::hasAssignPrivilege($moduleMeta->getEntityName(), $fieldData[$fieldName])) {
 							$fieldData[$fieldName] = $this->user->id;
 						}
 					} else {
 						$fieldData[$fieldName] = '';
 					}
 				}
-
 			} elseif ($fieldInstance->getFieldDataType() == 'picklist') {
-				global $default_charset;
 				if (empty($fieldValue) && isset($defaultFieldValues[$fieldName])) {
 					$fieldData[$fieldName] = $fieldValue = $defaultFieldValues[$fieldName];
 				}
@@ -442,7 +451,7 @@ class Import_Data_Controller {
 					$fieldObject->setPicklistValues(array($fieldValue));
 				}
 			} elseif ($fieldInstance->getFieldDataType() == 'boolean') {
-				if (empty($fieldValue) or strtolower($fieldValue)==strtolower(getTranslatedString('LBL_NO'))) {
+				if (empty($fieldValue) || strtolower($fieldValue)==strtolower(getTranslatedString('LBL_NO'))) {
 					$fieldValue = 0;
 				} else {
 					$fieldValue = 1;
@@ -454,20 +463,24 @@ class Import_Data_Controller {
 				// We do not need this as we correctly support currency formatting on webservice
 			} else {
 				if ($fieldInstance->getFieldDataType() == 'datetime' && !empty($fieldValue)) {
-					if($fieldValue == null || $fieldValue == '0000-00-00 00:00:00') {
+					if ($fieldValue == null || $fieldValue == '0000-00-00 00:00:00') {
 						$fieldValue = '';
 					}
 					$valuesList = explode(' ', $fieldValue);
-					if(count($valuesList) == 1) $fieldValue = '';
+					if (count($valuesList) == 1) {
+						$fieldValue = '';
+					}
 					$fieldValue = getValidDBInsertDateTimeValue($fieldValue);
-					if (preg_match("/^[0-9]{2,4}[-][0-1]{1,2}?[0-9]{1,2}[-][0-3]{1,2}?[0-9]{1,2} ([0-1][0-9]|[2][0-3])([:][0-5][0-9]){1,2}$/",
-							$fieldValue) == 0) {
+					if (preg_match(
+						"/^[0-9]{2,4}[-][0-1]{1,2}?[0-9]{1,2}[-][0-3]{1,2}?[0-9]{1,2} ([0-1][0-9]|[2][0-3])([:][0-5][0-9]){1,2}$/",
+						$fieldValue
+					) == 0) {
 						$fieldValue = '';
 					}
 					$fieldData[$fieldName] = $fieldValue;
 				}
 				if ($fieldInstance->getFieldDataType() == 'date' && !empty($fieldValue)) {
-					if($fieldValue == null || $fieldValue == '0000-00-00') {
+					if ($fieldValue == null || $fieldValue == '0000-00-00') {
 						$fieldValue = '';
 					}
 					$fieldValue = getValidDBInsertDateValue($fieldValue);
@@ -481,21 +494,21 @@ class Import_Data_Controller {
 				}
 			}
 		}
-		if($fillDefault) {
-			foreach($defaultFieldValues as $fieldName => $fieldValue) {
+		if ($fillDefault) {
+			foreach ($defaultFieldValues as $fieldName => $fieldValue) {
 				if (!isset($fieldData[$fieldName])) {
 					$fieldData[$fieldName] = $defaultFieldValues[$fieldName];
 				}
 			}
 		}
 
-        if(!$mergeMode){ //Do not check mandatory fields on merge !
-            foreach ($moduleFields as $fieldName => $fieldInstance) {
-                if(empty($fieldData[$fieldName]) && $fieldInstance->isMandatory()) {
-                    return null;
-                }
-            }
-        }
+		if (!$mergeMode) { //Do not check mandatory fields on merge !
+			foreach ($moduleFields as $fieldName => $fieldInstance) {
+				if (empty($fieldData[$fieldName]) && $fieldInstance->isMandatory()) {
+					return null;
+				}
+			}
+		}
 
 		return DataTransform::sanitizeData($fieldData, $moduleMeta);
 	}
@@ -542,53 +555,55 @@ class Import_Data_Controller {
 		$tableName = Import_Utils::getDbTableName($this->user);
 		$result = $adb->query('SELECT status FROM '.$tableName);
 
-		$statusCount = array('TOTAL' => 0, 'IMPORTED' => 0, 'FAILED' => 0, 'PENDING' => 0,
-								'CREATED' => 0, 'SKIPPED' => 0, 'UPDATED' => 0, 'MERGED' => 0);
+		$statusCount = array('TOTAL' => 0, 'IMPORTED' => 0, 'FAILED' => 0, 'PENDING' => 0, 'CREATED' => 0, 'SKIPPED' => 0, 'UPDATED' => 0, 'MERGED' => 0);
 
-		if($result) {
+		if ($result) {
 			$noOfRows = $adb->num_rows($result);
 			$statusCount['TOTAL'] = $noOfRows;
-			for($i=0; $i<$noOfRows; ++$i) {
+			for ($i=0; $i<$noOfRows; ++$i) {
 				$status = $adb->query_result($result, $i, 'status');
-				if(self::$IMPORT_RECORD_NONE == $status) {
+				if (self::$IMPORT_RECORD_NONE == $status) {
 					$statusCount['PENDING']++;
-
-				} elseif(self::$IMPORT_RECORD_FAILED == $status) {
+				} elseif (self::$IMPORT_RECORD_FAILED == $status) {
 					$statusCount['FAILED']++;
-
 				} else {
 					$statusCount['IMPORTED']++;
-					switch($status) {
-						case self::$IMPORT_RECORD_CREATED	:	$statusCount['CREATED']++;
-																break;
-						case self::$IMPORT_RECORD_SKIPPED	:	$statusCount['SKIPPED']++;
-																break;
-						case self::$IMPORT_RECORD_UPDATED	:	$statusCount['UPDATED']++;
-																break;
-						case self::$IMPORT_RECORD_MERGED	:	$statusCount['MERGED']++;
-																break;
+					switch ($status) {
+						case self::$IMPORT_RECORD_CREATED:
+							$statusCount['CREATED']++;
+							break;
+						case self::$IMPORT_RECORD_SKIPPED:
+							$statusCount['SKIPPED']++;
+							break;
+						case self::$IMPORT_RECORD_UPDATED:
+							$statusCount['UPDATED']++;
+							break;
+						case self::$IMPORT_RECORD_MERGED:
+							$statusCount['MERGED']++;
+							break;
 					}
 				}
-
 			}
 		}
 		return $statusCount;
 	}
 
 	public static function runScheduledImport() {
-		require_once('modules/Emails/mail.php');
-		require_once('modules/Emails/Emails.php');
+		require_once 'modules/Emails/mail.php';
+		require_once 'modules/Emails/Emails.php';
 		global $current_user,$coreBOS_app_name;
-		$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk');
-		$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name','your-support name','HelpDesk');
-		$coreBOS_uiapp_name = GlobalVariable::getVariable('Application_UI_Name',$coreBOS_app_name);
+		$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
+		$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name', 'your-support name', 'HelpDesk');
+		$coreBOS_uiapp_name = GlobalVariable::getVariable('Application_UI_Name', $coreBOS_app_name);
 		$scheduledImports = self::getScheduledImport();
 
-		foreach ($scheduledImports as $scheduledId => $importDataController) {
+		foreach ($scheduledImports as $importDataController) {
 			$current_user = $importDataController->user;
 			$importDataController->batchImport = false;
 
-			if(!$importDataController->initializeImport()) { continue; }
+			if (!$importDataController->initializeImport()) {
+				continue;
+			}
 			$importDataController->importData();
 
 			$importStatusCount = $importDataController->getImportStatusCount();
@@ -600,23 +615,22 @@ class Import_Data_Controller {
 			$importResult = $viewer->fetch('Import_Result_Details.tpl');
 			$importResult = str_replace('align="center"', '', $importResult);
 			$emailData = $coreBOS_uiapp_name . ' has just completed your import process. <br/><br/>' .
-							$importResult . '<br/><br/>'.
-							'We recommend you to login and check a few records to confirm that the import has been successful.';
+				$importResult . '<br/><br/>'.
+				'We recommend you to login and check a few records to confirm that the import has been successful.';
 
-			$userName = getFullNameFromArray('Users', $importDataController->user->column_fields);
+			//$userName = getFullNameFromArray('Users', $importDataController->user->column_fields);
 			$userEmail = $importDataController->user->email1;
 
-			send_mail('Emails',$userEmail,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$emailSubject,$emailData,'','');
+			send_mail('Emails', $userEmail, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_ID, $emailSubject, $emailData, '', '');
 
 			$importDataController->finishImport();
 		}
 	}
 
 	public static function getScheduledImport() {
-
 		$scheduledImports = array();
 		$importQueue = Import_Queue_Controller::getAll(Import_Queue_Controller::$IMPORT_STATUS_SCHEDULED);
-		foreach($importQueue as $importId => $importInfo) {
+		foreach ($importQueue as $importId => $importInfo) {
 			$userId = $importInfo['user_id'];
 			$user = new Users();
 			$user->id = $userId;
@@ -630,16 +644,26 @@ class Import_Data_Controller {
 	public function getImportRecordStatus($value) {
 		$status = '';
 		switch ($value) {
-			case 'created': $status = self::$IMPORT_RECORD_CREATED;	break;
-			case 'skipped': $status = self::$IMPORT_RECORD_SKIPPED;	break;
-			case 'updated': $status = self::$IMPORT_RECORD_UPDATED;	break;
-			case 'merged' :	$status = self::$IMPORT_RECORD_MERGED;	break;
-			case 'failed' :	$status = self::$IMPORT_RECORD_FAILED;	break;
-			case 'none' :	$status = self::$IMPORT_RECORD_NONE;	break;
+			case 'created':
+				$status = self::$IMPORT_RECORD_CREATED;
+				break;
+			case 'skipped':
+				$status = self::$IMPORT_RECORD_SKIPPED;
+				break;
+			case 'updated':
+				$status = self::$IMPORT_RECORD_UPDATED;
+				break;
+			case 'merged':
+				$status = self::$IMPORT_RECORD_MERGED;
+				break;
+			case 'failed':
+				$status = self::$IMPORT_RECORD_FAILED;
+				break;
+			case 'none':
+				$status = self::$IMPORT_RECORD_NONE;
+				break;
 		}
 		return $status;
 	}
-
 }
-
 ?>

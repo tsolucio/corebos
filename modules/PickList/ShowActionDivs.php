@@ -7,13 +7,13 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *********************************************************************************/
-require_once('include/database/PearDatabase.php');
+require_once 'include/database/PearDatabase.php';
 require_once 'modules/PickList/PickListUtils.php';
-require_once('Smarty_setup.php');
+require_once 'Smarty_setup.php';
 
 global $app_strings, $current_language,$adb, $theme;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 
 $smarty = new vtigerCRM_Smarty;
 $smarty->assign('IMAGE_PATH', $image_path);

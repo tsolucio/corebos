@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('data/CRMEntity.php');
-require_once('data/Tracker.php');
+require_once 'data/CRMEntity.php';
+require_once 'data/Tracker.php';
 
 class cbCalendar extends CRMEntity {
 	public $db;
@@ -167,7 +167,7 @@ class cbCalendar extends CRMEntity {
 			unset($_REQUEST['recurringcheck']);
 			$this->column_fields['parent_id'] = $this->column_fields['rel_id'];
 			$this->column_fields['contact_id'] = $this->column_fields['cto_id'];
-			include_once('modules/Calendar/RepeatEvents.php');
+			include_once 'modules/Calendar/RepeatEvents.php';
 			Calendar_RepeatEvents::repeatFromRequest($this);
 			//Insert into vtiger_recurring event table
 			if (isset($this->column_fields['recurringtype']) && $this->column_fields['recurringtype']!='' && $this->column_fields['recurringtype']!='--None--') {
@@ -185,8 +185,8 @@ class cbCalendar extends CRMEntity {
 			} else {
 				$adb->pquery('insert into vtiger_seactivityrel(crmid,activityid) values(?,?)', array($this->column_fields['rel_id'],$this->id));
 			}
-		} elseif (($this->column_fields['rel_id']=='' || $this->column_fields['rel_id']=='0') && $this->mode=="edit") {
-			$this->deleteRelation("vtiger_seactivityrel");
+		} elseif (($this->column_fields['rel_id']=='' || $this->column_fields['rel_id']=='0') && $this->mode=='edit') {
+			$this->deleteRelation('vtiger_seactivityrel');
 		}
 		//Insert into cntactivity rel
 		if (empty($this->column_fields['contact_id']) && !empty($this->column_fields['cto_id'])) {
@@ -196,6 +196,9 @@ class cbCalendar extends CRMEntity {
 			$listofctos = explode(';', $this->column_fields['contact_id']);
 			foreach ($listofctos as $cto) {
 				if (!empty($cto)) {
+					if (getSalesEntityType($cto)!='Contacts') {
+						continue;
+					}
 					if (strpos($cto, 'x')) {
 						list($wsid,$cto) = explode('x', $cto);
 					}
@@ -223,13 +226,11 @@ class cbCalendar extends CRMEntity {
 	 */
 	public function insertIntoRecurringTable(&$recurObj) {
 		global $log,$adb;
-		$log->info("in insertIntoRecurringTable  ");
+		$log->debug('> insertIntoRecurringTable');
 		$st_date = $recurObj->startdate->get_DB_formatted_date();
-		$log->debug("st_date ".$st_date);
 		$end_date = $recurObj->enddate->get_DB_formatted_date();
-		$log->debug("end_date is set ".$end_date);
 		$type = $recurObj->getRecurringType();
-		$log->debug("type is ".$type);
+		$log->debug("st_date=$st_date, end_date=$end_date, type=".$type);
 		$flag="true";
 
 		if ($_REQUEST['mode'] == 'edit') {
@@ -270,16 +271,15 @@ class cbCalendar extends CRMEntity {
 		$recur_freq = $recurObj->getRecurringFrequency();
 		$recurringinfo = $recurObj->getDBRecurringInfoString();
 
-		if ($flag=="true") {
-			$max_recurid_qry = 'select max(recurringid) AS recurid from vtiger_recurringevents;';
-			$result = $adb->pquery($max_recurid_qry, array());
+		if ($flag=='true') {
+			$result = $adb->pquery('select max(recurringid) AS recurid from vtiger_recurringevents', array());
 			$noofrows = $adb->num_rows($result);
 			$recur_id = 0;
 			if ($noofrows > 0) {
-				$recur_id = $adb->query_result($result, 0, "recurid");
+				$recur_id = $adb->query_result($result, 0, 'recurid');
 			}
 			$current_id =$recur_id+1;
-			$recurring_insert = "insert into vtiger_recurringevents values (?,?,?,?,?,?)";
+			$recurring_insert = 'insert into vtiger_recurringevents values (?,?,?,?,?,?)';
 			$rec_params = array($current_id, $this->id, $st_date, $type, $recur_freq, $recurringinfo);
 			$adb->pquery($recurring_insert, $rec_params);
 			coreBOS_Session::delete('next_reminder_time');
@@ -287,6 +287,7 @@ class cbCalendar extends CRMEntity {
 				$this->insertIntoReminderTable($current_id);
 			}
 		}
+		$log->debug('< insertIntoRecurringTable');
 	}
 
 	/** Function to insert values in activity_reminder_popup table for the specified module
@@ -321,23 +322,19 @@ class cbCalendar extends CRMEntity {
 		}
 	}
 
-	/** Function to insert values in vtiger_activity_remainder table for the specified module,
-	  * @param $table_name -- table name:: Type varchar
-	  * @param $module -- module:: Type varchar
+	/** Function to insert values in vtiger_activity_remainder table
+	  * @param $recurid
 	 */
 	public function insertIntoReminderTable($recurid) {
 		global $log;
+		$log->debug('> insertIntoReminderTables '.$recurid);
 		if (isset($_REQUEST['set_reminder']) && $_REQUEST['set_reminder'] == 'Yes') {
 			coreBOS_Session::delete('next_reminder_time');
-			$log->debug("set reminder is set");
 			$rem_days = $_REQUEST['remdays'];
-			$log->debug("rem_days is ".$rem_days);
 			$rem_hrs = $_REQUEST['remhrs'];
-			$log->debug("rem_hrs is ".$rem_hrs);
 			$rem_min = $_REQUEST['remmin'];
-			$log->debug("rem_minutes is ".$rem_min);
 			$reminder_time = $rem_days * 24 * 60 + $rem_hrs * 60 + $rem_min;
-			$log->debug("reminder_time is ".$reminder_time);
+			$log->debug("reminder_time ($rem_days $rem_hrs $rem_min): ".$reminder_time);
 			if ($recurid == 0) {
 				if ($_REQUEST['mode'] == 'edit') {
 					$this->activity_reminder($this->id, $reminder_time, 0, $recurid, 'edit');
@@ -350,6 +347,7 @@ class cbCalendar extends CRMEntity {
 		} elseif (isset($_REQUEST['set_reminder']) && $_REQUEST['set_reminder'] == 'No') {
 			$this->activity_reminder($this->id, '0', 0, $recurid, 'delete');
 		}
+		$log->debug('< insertIntoReminderTables');
 	}
 
 	/**
@@ -362,7 +360,7 @@ class cbCalendar extends CRMEntity {
 	 */
 	public function activity_reminder($activity_id, $reminder_time, $reminder_sent = 0, $recurid = 0, $remindermode = '') {
 		global $log;
-		$log->debug("Entering activity_reminder(".$activity_id.",".$reminder_time.",".$reminder_sent.",".$recurid.",".$remindermode.") method ...");
+		$log->debug('> activity_reminder '.$activity_id.','.$reminder_time.','.$reminder_sent.','.$recurid.','.$remindermode);
 		// Check for activityid already present in the reminder_table
 		$query_exist = "SELECT activity_id FROM ".$this->reminder_table." WHERE activity_id = ?";
 		$result_exist = $this->db->pquery($query_exist, array($activity_id));
@@ -385,7 +383,7 @@ class cbCalendar extends CRMEntity {
 			$params = array($activity_id, $reminder_time, 0, $recurid);
 			$this->db->pquery($query, $params, true, "Error in processing table $this->reminder_table");
 		}
-		$log->debug("Exiting vtiger_activity_reminder method ...");
+		$log->debug('< vtiger_activity_reminder');
 	}
 
 	/** Function to insert values in vtiger_invitees table for the specified module,tablename ,invitees_array
@@ -395,7 +393,7 @@ class cbCalendar extends CRMEntity {
 	 */
 	public function insertIntoInviteeTable($module, $invitees_array) {
 		global $log,$adb;
-		$log->debug("Entering insertIntoInviteeTable($module,".print_r($invitees_array, true).") method ...");
+		$log->debug('> insertIntoInviteeTable '.$module.','.print_r($invitees_array, true));
 		if ($this->mode == 'edit') {
 			$adb->pquery('delete from vtiger_invitees where activityid=?', array($this->id));
 		}
@@ -404,7 +402,7 @@ class cbCalendar extends CRMEntity {
 				$adb->pquery('insert into vtiger_invitees values(?,?)', array($this->id, $inviteeid));
 			}
 		}
-		$log->debug('Exiting insertIntoInviteeTable method ...');
+		$log->debug('< insertIntoInviteeTable');
 	}
 
 	/** Function to insert values in vtiger_salesmanactivityrel table for the specified module
@@ -438,8 +436,10 @@ class cbCalendar extends CRMEntity {
 
 	private function getRequestData($return_id) {
 		global $adb;
-		$cont_qry = "select contactid from vtiger_cntactivityrel where activityid=?";
-		$cont_res = $adb->pquery($cont_qry, array($return_id));
+		$cont_qry = 'select contactid from vtiger_cntactivityrel where activityid=?
+			UNION
+			select cto_id from vtiger_activity where activityid=?';
+		$cont_res = $adb->pquery($cont_qry, array($return_id, $return_id));
 		$noofrows = $adb->num_rows($cont_res);
 		$cont_id = array();
 		if ($noofrows > 0) {
@@ -490,7 +490,7 @@ class cbCalendar extends CRMEntity {
 
 	public function sendInvitation($inviteesid, $subject, $desc) {
 		global $current_user;
-		require_once('modules/Emails/mail.php');
+		require_once 'modules/Emails/mail.php';
 		$invites = getTranslatedString('INVITATION', 'cbCalendar');
 		$invitees_array = explode(';', $inviteesid);
 		$subject = $invites.' : '.$subject;
@@ -508,8 +508,7 @@ class cbCalendar extends CRMEntity {
 	 */
 	public function getListViewSecurityParameter($module) {
 		global $current_user;
-		require 'user_privileges/user_privileges_'.$current_user->id.'.php';
-		require 'user_privileges/sharing_privileges_'.$current_user->id.'.php';
+		$userprivs = $current_user->getPrivileges();
 
 		$sec_query = '';
 		$tabid = getTabid($module);
@@ -520,7 +519,7 @@ class cbCalendar extends CRMEntity {
 					SELECT vtiger_user2role.userid FROM vtiger_user2role
 					INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid
 					INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid
-					WHERE vtiger_role.parentrole LIKE '".$current_user_parent_role_seq."::%'
+					WHERE vtiger_role.parentrole LIKE '".$userprivs->getParentRoleSequence()."::%'
 				)
 				OR vtiger_crmentity.smownerid IN
 				(
@@ -530,17 +529,17 @@ class cbCalendar extends CRMEntity {
 				OR (";
 
 			// Build the query based on the group association of current user.
-			if (count($current_user_groups) > 0) {
-				$sec_query .= " vtiger_groups.groupid IN (". implode(",", $current_user_groups) .") OR ";
+			if ($userprivs->hasGroups()) {
+				$sec_query .= ' vtiger_groups.groupid IN ('. implode(',', $userprivs->getGroups()) .') OR ';
 			}
-			$sec_query .= " vtiger_groups.groupid IN
+			$sec_query .= ' vtiger_groups.groupid IN
 				(
 					SELECT vtiger_tmp_read_group_sharing_per.sharedgroupid
 					FROM vtiger_tmp_read_group_sharing_per
-					WHERE userid=".$current_user->id." and tabid=".$tabid."
-				)";
-			$sec_query .= ")
-			)";
+					WHERE userid='.$current_user->id.' and tabid='.$tabid.'
+				)';
+			$sec_query .= ')
+			)';
 		}
 		return $sec_query;
 	}
@@ -552,11 +551,11 @@ class cbCalendar extends CRMEntity {
 	 */
 	public function get_contacts($id, $cur_tab_id, $rel_tab_id, $actions = false) {
 		global $log, $singlepane_view, $currentModule, $adb;
-		$log->debug("Entering get_contacts(".$id.") method ...");
+		$log->debug('> get_contacts '.$id);
 		$this_module = $currentModule;
 
 		$related_module = vtlib_getModuleNameById($rel_tab_id);
-		require_once("modules/$related_module/$related_module.php");
+		require_once "modules/$related_module/$related_module.php";
 		$other = new $related_module();
 
 		// To make the edit or del link actions to return back to same view.
@@ -611,7 +610,7 @@ class cbCalendar extends CRMEntity {
 				if (empty($relmap[2])) {
 					$relmap[2] = $relmap[0];
 				}
-						$more_relation .= " LEFT JOIN $tname ON $tname.$relmap[0] = $relmap[1].$relmap[2]";
+				$more_relation .= " LEFT JOIN $tname ON $tname.$relmap[0] = $relmap[1].$relmap[2]";
 			}
 		}
 
@@ -627,7 +626,7 @@ class cbCalendar extends CRMEntity {
 			$return_value = array();
 		}
 		$return_value['CUSTOM_BUTTON'] = $button;
-		$log->debug("Exiting get_contacts method ...");
+		$log->debug('< get_contacts');
 		return $return_value;
 	}
 
@@ -716,7 +715,7 @@ class cbCalendar extends CRMEntity {
 			$taskManager->saveTask($task);
 			// Calendar workflow create follow up
 			$calendarWorkflow = $workflowManager->newWorkFlow("cbCalendar");
-			$calendarWorkflow->test = '[{"fieldname":"followupcreate","operation":"has changed to","value":"true:boolean","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
+			$calendarWorkflow->test='[{"fieldname":"followupcreate","operation":"has changed to","value":"true:boolean","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
 			$calendarWorkflow->description = "Create Calendar Follow Up on change";
 			$calendarWorkflow->executionCondition = VTWorkflowManager::$ON_MODIFY;
 			$calendarWorkflow->defaultworkflow = 1;
@@ -726,12 +725,29 @@ class cbCalendar extends CRMEntity {
 			$task->summary = 'Create Calendar Follow Up';
 			$task->entity_type = "cbCalendar";
 			$task->reference_field = "relatedwith";
-			$task->field_value_mapping = '[{"fieldname":"subject","modulename":"cbCalendar","valuetype":"expression","value":"concat('."'Follow up: '".',subject )"},{"fieldname":"assigned_user_id","modulename":"cbCalendar","valuetype":"fieldname","value":"assigned_user_id "},{"fieldname":"dtstart","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt  "},{"fieldname":"dtend","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt "},{"fieldname":"eventstatus","modulename":"cbCalendar","valuetype":"rawtext","value":"Planned"},{"fieldname":"taskpriority","modulename":"cbCalendar","valuetype":"rawtext","value":"Medium"},{"fieldname":"sendnotification","modulename":"cbCalendar","valuetype":"rawtext","value":"true:boolean"},{"fieldname":"activitytype","modulename":"cbCalendar","valuetype":"fieldname","value":"followuptype "},{"fieldname":"visibility","modulename":"cbCalendar","valuetype":"rawtext","value":"Private"},{"fieldname":"location","modulename":"cbCalendar","valuetype":"fieldname","value":"location "},{"fieldname":"reminder_time","modulename":"cbCalendar","valuetype":"rawtext","value":"0"},{"fieldname":"recurringtype","modulename":"cbCalendar","valuetype":"rawtext","value":"--None--"},{"fieldname":"description","modulename":"cbCalendar","valuetype":"fieldname","value":"description "},{"fieldname":"followupcreate","modulename":"cbCalendar","valuetype":"rawtext","value":"false:boolean"},{"fieldname":"date_start","modulename":"cbCalendar","valuetype":"fieldname","value":"dtstart "},{"fieldname":"time_start","modulename":"cbCalendar","valuetype":"rawtext","value":"00:00"},{"fieldname":"due_date","modulename":"cbCalendar","valuetype":"fieldname","value":"dtend "},{"fieldname":"time_end","modulename":"cbCalendar","valuetype":"rawtext","value":"00:00"}]';
+			$task->field_value_mapping = '[{"fieldname":"subject","modulename":"cbCalendar","valuetype":"expression","value":"concat('."'Follow up: '".',subject )"},'
+				.'{"fieldname":"assigned_user_id","modulename":"cbCalendar","valuetype":"fieldname","value":"assigned_user_id "},'
+				.'{"fieldname":"dtstart","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt  "},'
+				.'{"fieldname":"dtend","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt "},'
+				.'{"fieldname":"eventstatus","modulename":"cbCalendar","valuetype":"rawtext","value":"Planned"},'
+				.'{"fieldname":"taskpriority","modulename":"cbCalendar","valuetype":"rawtext","value":"Medium"},'
+				.'{"fieldname":"sendnotification","modulename":"cbCalendar","valuetype":"rawtext","value":"true:boolean"},'
+				.'{"fieldname":"activitytype","modulename":"cbCalendar","valuetype":"fieldname","value":"followuptype "},'
+				.'{"fieldname":"visibility","modulename":"cbCalendar","valuetype":"rawtext","value":"Private"},'
+				.'{"fieldname":"location","modulename":"cbCalendar","valuetype":"fieldname","value":"location "},'
+				.'{"fieldname":"reminder_time","modulename":"cbCalendar","valuetype":"rawtext","value":"0"},'
+				.'{"fieldname":"recurringtype","modulename":"cbCalendar","valuetype":"rawtext","value":"--None--"},'
+				.'{"fieldname":"description","modulename":"cbCalendar","valuetype":"fieldname","value":"description "},'
+				.'{"fieldname":"followupcreate","modulename":"cbCalendar","valuetype":"rawtext","value":"false:boolean"},'
+				.'{"fieldname":"date_start","modulename":"cbCalendar","valuetype":"fieldname","value":"dtstart "},'
+				.'{"fieldname":"time_start","modulename":"cbCalendar","valuetype":"rawtext","value":"00:00"},'
+				.'{"fieldname":"due_date","modulename":"cbCalendar","valuetype":"fieldname","value":"dtend "},'
+				.'{"fieldname":"time_end","modulename":"cbCalendar","valuetype":"rawtext","value":"00:00"}]';
 			$task->test = '';
 			$task->reevaluate = 0;
 			$taskManager->saveTask($task);
 			$calendarWorkflow = $workflowManager->newWorkFlow("cbCalendar");
-			$calendarWorkflow->test = '[{"fieldname":"followupcreate","operation":"is","value":"true:boolean","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
+			$calendarWorkflow->test='[{"fieldname":"followupcreate","operation":"is","value":"true:boolean","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
 			$calendarWorkflow->description = "Create Calendar Follow Up on create";
 			$calendarWorkflow->executionCondition = VTWorkflowManager::$ON_FIRST_SAVE;
 			$calendarWorkflow->defaultworkflow = 1;
@@ -741,7 +757,24 @@ class cbCalendar extends CRMEntity {
 			$task->summary = 'Create Calendar Follow Up';
 			$task->entity_type = "cbCalendar";
 			$task->reference_field = "relatedwith";
-			$task->field_value_mapping = '[{"fieldname":"subject","modulename":"cbCalendar","valuetype":"expression","value":"concat('."'Follow up: '".',subject )"},{"fieldname":"assigned_user_id","modulename":"cbCalendar","valuetype":"fieldname","value":"assigned_user_id "},{"fieldname":"dtstart","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt  "},{"fieldname":"dtend","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt "},{"fieldname":"eventstatus","modulename":"cbCalendar","valuetype":"rawtext","value":"Planned"},{"fieldname":"taskpriority","modulename":"cbCalendar","valuetype":"rawtext","value":"Medium"},{"fieldname":"sendnotification","modulename":"cbCalendar","valuetype":"rawtext","value":"true:boolean"},{"fieldname":"activitytype","modulename":"cbCalendar","valuetype":"fieldname","value":"followuptype "},{"fieldname":"visibility","modulename":"cbCalendar","valuetype":"rawtext","value":"Private"},{"fieldname":"location","modulename":"cbCalendar","valuetype":"fieldname","value":"location "},{"fieldname":"reminder_time","modulename":"cbCalendar","valuetype":"rawtext","value":"0"},{"fieldname":"recurringtype","modulename":"cbCalendar","valuetype":"rawtext","value":"--None--"},{"fieldname":"description","modulename":"cbCalendar","valuetype":"fieldname","value":"description "},{"fieldname":"followupcreate","modulename":"cbCalendar","valuetype":"rawtext","value":"false:boolean"},{"fieldname":"date_start","modulename":"cbCalendar","valuetype":"fieldname","value":"dtstart "},{"fieldname":"time_start","modulename":"cbCalendar","valuetype":"rawtext","value":"00:00"},{"fieldname":"due_date","modulename":"cbCalendar","valuetype":"fieldname","value":"dtend "},{"fieldname":"time_end","modulename":"cbCalendar","valuetype":"rawtext","value":"00:00"}]';
+			$task->field_value_mapping = '[{"fieldname":"subject","modulename":"cbCalendar","valuetype":"expression","value":"concat('."'Follow up: '".',subject )"},'
+				.'{"fieldname":"assigned_user_id","modulename":"cbCalendar","valuetype":"fieldname","value":"assigned_user_id "},'
+				.'{"fieldname":"dtstart","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt  "},'
+				.'{"fieldname":"dtend","modulename":"cbCalendar","valuetype":"fieldname","value":"followupdt "},'
+				.'{"fieldname":"eventstatus","modulename":"cbCalendar","valuetype":"rawtext","value":"Planned"},'
+				.'{"fieldname":"taskpriority","modulename":"cbCalendar","valuetype":"rawtext","value":"Medium"},'
+				.'{"fieldname":"sendnotification","modulename":"cbCalendar","valuetype":"rawtext","value":"true:boolean"},'
+				.'{"fieldname":"activitytype","modulename":"cbCalendar","valuetype":"fieldname","value":"followuptype "},'
+				.'{"fieldname":"visibility","modulename":"cbCalendar","valuetype":"rawtext","value":"Private"},'
+				.'{"fieldname":"location","modulename":"cbCalendar","valuetype":"fieldname","value":"location "},'
+				.'{"fieldname":"reminder_time","modulename":"cbCalendar","valuetype":"rawtext","value":"0"},'
+				.'{"fieldname":"recurringtype","modulename":"cbCalendar","valuetype":"rawtext","value":"--None--"},'
+				.'{"fieldname":"description","modulename":"cbCalendar","valuetype":"fieldname","value":"description "},'
+				.'{"fieldname":"followupcreate","modulename":"cbCalendar","valuetype":"rawtext","value":"false:boolean"},'
+				.'{"fieldname":"date_start","modulename":"cbCalendar","valuetype":"fieldname","value":"dtstart "},'
+				.'{"fieldname":"time_start","modulename":"cbCalendar","valuetype":"rawtext","value":"00:00"},'
+				.'{"fieldname":"due_date","modulename":"cbCalendar","valuetype":"fieldname","value":"dtend "},'
+				.'{"fieldname":"time_end","modulename":"cbCalendar","valuetype":"rawtext","value":"00:00"}]';
 			$task->test = '';
 			$task->reevaluate = 0;
 			$taskManager->saveTask($task);
@@ -770,7 +803,7 @@ class cbCalendar extends CRMEntity {
 				$field1->helpinfo = $fldrow['helpinfo'];
 				$block->addField($field1);
 			}
-			require_once('include/events/include.inc');
+			require_once 'include/events/include.inc';
 			$em = new VTEventsManager($adb);
 			$em->registerHandler('corebos.permissions.accessquery', 'modules/cbCalendar/PublicInvitePermission.php', 'PublicInvitePermissionHandler');
 			echo "<h4>Permission Event accessquery registered.</h4>";
@@ -818,7 +851,11 @@ class cbCalendar extends CRMEntity {
 				$calwf['test'] = str_replace('taskstatus', 'eventstatus', $calwf['test']);
 				$calendarWorkflow = $workflowManager->newWorkFlow("cbCalendar");
 				if ($calwf['summary']=='Notify when a task is delayed beyond 24 hrs') {
-					$calendarWorkflow->test = '[{"fieldname":"date_start","operation":"days ago","value":"1","valuetype":"expression","joincondition":"and","groupid":"0"},{"fieldname":"activitytype","operation":"is","value":"Task","valuetype":"rawtext","joincondition":"and","groupid":"0"},{"fieldname":"eventstatus","operation":"is not","value":"Held","valuetype":"rawtext","joincondition":"and","groupid":"0"},{"fieldname":"eventstatus","operation":"is not","value":"Completed","valuetype":"rawtext","joincondition":"and","groupid":"0"},{"fieldname":"eventstatus","operation":"is not","value":"In Progress","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
+					$calendarWorkflow->test='[{"fieldname":"date_start","operation":"days ago","value":"1","valuetype":"expression","joincondition":"and","groupid":"0"},'
+						.'{"fieldname":"activitytype","operation":"is","value":"Task","valuetype":"rawtext","joincondition":"and","groupid":"0"},'
+						.'{"fieldname":"eventstatus","operation":"is not","value":"Held","valuetype":"rawtext","joincondition":"and","groupid":"0"},'
+						.'{"fieldname":"eventstatus","operation":"is not","value":"Completed","valuetype":"rawtext","joincondition":"and","groupid":"0"},'
+						.'{"fieldname":"eventstatus","operation":"is not","value":"In Progress","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
 				} else {
 					$calendarWorkflow->test = $calwf['test'];
 				}
@@ -833,7 +870,10 @@ class cbCalendar extends CRMEntity {
 				$calendarWorkflow->schannualdates = $calwf['schannualdates'];
 				$calendarWorkflow->schminuteinterval = $calwf['schminuteinterval'];
 				$workflowManager->save($calendarWorkflow);
-				$adb->pquery("UPDATE com_vtiger_workflows SET nexttrigger_time=? WHERE workflow_id=?", array((isset($calwf['nexttriger_time']) ? $calwf['nexttriger_time'] : null), $calendarWorkflow->id));
+				$adb->pquery(
+					'UPDATE com_vtiger_workflows SET nexttrigger_time=? WHERE workflow_id=?',
+					array((isset($calwf['nexttriger_time']) ? $calwf['nexttriger_time'] : null), $calendarWorkflow->id)
+				);
 				// get workflow tasks.
 				$rescaltk = $adb->pquery("SELECT summary, task_id FROM com_vtiger_workflowtasks WHERE workflow_id = ?", array($calwf['workflow_id']));
 				while ($caltk = $adb->getNextRow($rescaltk, false)) {
@@ -980,15 +1020,31 @@ class cbCalendar extends CRMEntity {
 	 * @param $activityid integer : activity id
 	 */
 	public static function changeStatus($status, $activityid) {
-		global $log, $$current_user;
-		$log->debug("Entering changeStatus($status, $activityid) method");
+		global $log, $current_user;
+		$log->debug("> changeStatus $status, $activityid");
 		include_once 'include/Webservices/Revise.php';
 		$element = array(
 			'id' => vtws_getEntityId('cbCalendar') . 'x' . $activityid,
 			'eventstatus' => $status
 		);
 		vtws_revise($element, $current_user);
-		$log->debug('Exiting changeStatus method');
+		$log->debug('< changeStatus');
+	}
+
+	/*
+	 * Function to get the primary query part of a report
+	 * @param - $module primary module name
+	 * returns the query string formed on fetching the related data for report for secondary module
+	 */
+	public function generateReportsQuery($module, $queryPlanner) {
+		$query = parent::generateReportsQuery($module, $queryPlanner);
+		if ($queryPlanner->requireTable('vtiger_activity_reminder')) {
+			$query .= ' left join vtiger_activity_reminder on vtiger_activity_reminder.activity_id = vtiger_activity.activityid';
+		}
+		if ($queryPlanner->requireTable('vtiger_recurringevents')) {
+			$query .= ' left join vtiger_recurringevents on vtiger_recurringevents.activityid = vtiger_activity.activityid';
+		}
+		return $query;
 	}
 }
 ?>

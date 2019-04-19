@@ -21,7 +21,6 @@ module.exports = {
     'modules/com_vtiger_workflow/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
     'modules/GlobalVariable/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
     'modules/evvtMenu/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
-    'modules/Webmails/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
     'modules/MailManager/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
     'modules/Tooltip/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
     'modules/Accounts/Accounts.png',

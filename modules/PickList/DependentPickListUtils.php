@@ -25,7 +25,6 @@ class Vtiger_DependencyPicklist {
 
 		$dependentPicklists = array();
 		if ($noofrows > 0) {
-			$fieldlist = array();
 			for ($i=0; $i<$noofrows; ++$i) {
 				$fieldTabId = $adb->query_result($result, $i, 'tabid');
 				$sourceField = $adb->query_result($result, $i, 'sourcefield');
@@ -41,16 +40,18 @@ class Vtiger_DependencyPicklist {
 				$fieldResult = $adb->pquery('SELECT fieldlabel FROM vtiger_field WHERE fieldname = ?', array($targetField));
 				$targetFieldLabel = $adb->query_result($fieldResult, 0, 'fieldlabel');
 
-				$dependentPicklists[] = array('sourcefield'=>$sourceField, 'sourcefieldlabel'=>$sourceFieldLabel,
-						'targetfield'=>$targetField, 'targetfieldlabel'=>$targetFieldLabel,
-						'module'=>getTabModuleName($fieldTabId));
+				$dependentPicklists[] = array(
+					'sourcefield'=>$sourceField, 'sourcefieldlabel'=>$sourceFieldLabel,
+					'targetfield'=>$targetField, 'targetfieldlabel'=>$targetFieldLabel,
+					'module'=>getTabModuleName($fieldTabId)
+				);
 			}
 		}
 		return $dependentPicklists;
 	}
 
 	public static function getAvailablePicklists($module) {
-		global $adb, $log;
+		global $adb;
 		$tabId = getTabid($module);
 
 		$query="select vtiger_field.fieldlabel,vtiger_field.fieldname" .
@@ -140,7 +141,6 @@ class Vtiger_DependencyPicklist {
 		$noOfMapping = $adb->num_rows($result);
 
 		$valueMapping = array();
-		$mappedSourceValues = array();
 		for ($i=0; $i<$noOfMapping; ++$i) {
 			$sourceValue = $adb->query_result($result, $i, 'sourcevalue');
 			$targetValues = $adb->query_result($result, $i, 'targetvalues');
@@ -197,6 +197,44 @@ class Vtiger_DependencyPicklist {
 	public static function getJSPicklistDependencyDatasource($module) {
 		$picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($module);
 		return json_encode($picklistDependencyDatasource);
+	}
+
+	public static function getMapPicklistDependencyDatasource($module) {
+		$picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($module);
+		$fields = array();
+		foreach ($picklistDependencyDatasource as $field => $deps) {
+			foreach ($deps as $value => $subpl) {
+				$deparr['conditions'] = '[{"columnname":"'.CustomView::getFilterFieldDefinition($field, $module).'",'
+					.'"comparator":"e",'
+					.'"value":"'.$value.'",'
+					.'"columncondition":"",'
+					.'"groupid":"1"}]';
+				$setopts = array();
+				foreach ($subpl as $subfld => $options) {
+					$setopts[] = array(
+						'field' => $subfld,
+						'options' => $options,
+					);
+				}
+				$deparr['actions']['setoptions'] = $setopts;
+				$fields[$field][] = $deparr;
+			}
+		}
+		return $fields;
+	}
+
+	public static function getFieldDependencyDatasource($module) {
+		$bmapname = $module.'_FieldDependency';
+		$cbMapFDEP = array();
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$cbMapFDEP = $cbMap->FieldDependency();
+			$cbMapFDEP = $cbMapFDEP['fields'];
+		} else {
+			$cbMapFDEP = self::getMapPicklistDependencyDatasource($module);
+		}
+		return $cbMapFDEP;
 	}
 
 	public static function checkCyclicDependency($module, $sourceField, $targetField) {

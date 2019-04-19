@@ -7,8 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('modules/Settings/MailScanner/core/MailScannerInfo.php');
-require_once('Smarty_setup.php');
+require_once 'modules/Settings/MailScanner/core/MailScannerInfo.php';
+require_once 'Smarty_setup.php';
 
 $scannername = vtlib_purify($_REQUEST['scannername']);
 $scannerinfo = new Vtiger_MailScannerInfo($scannername);
@@ -22,5 +22,5 @@ foreach ($_REQUEST as $key => $value) {
 }
 $scannerinfo->enableFoldersForScan($folderinfo);
 
-include('modules/Settings/MailScanner/MailScannerInfo.php');
+include 'modules/Settings/MailScanner/MailScannerInfo.php';
 ?>

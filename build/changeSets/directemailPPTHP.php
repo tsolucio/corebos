@@ -15,32 +15,34 @@
 *************************************************************************************************/
 
 class directemailPPTHP extends cbupdaterWorker {
-	
-	function applyChange() {
+
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			global $adb;
 			$em = new VTEventsManager($adb);
 			$em->registerHandler('vtiger.entity.aftersave', 'modules/Emails/evcbrcHandler.php', 'evcbrcHandler');
-			
+
 			$modPrj = Vtiger_Module::getInstance('Project');
 			$modPrjTsk = Vtiger_Module::getInstance('ProjectTask');
 			$modPot = Vtiger_Module::getInstance('Potentials');
 			$modHD = Vtiger_Module::getInstance('HelpDesk');
 			$modEmail = Vtiger_Module::getInstance('Emails');
-			
-			$modPrj->setRelatedList($modEmail, 'Emails', Array('add'), 'get_emails');
-			$modPrjTsk->setRelatedList($modEmail, 'Emails', Array('add'), 'get_emails');
-			$modPot->setRelatedList($modEmail, 'Emails', Array('add'), 'get_emails');
-			$modHD->setRelatedList($modEmail, 'Emails', Array('add'), 'get_emails');
-			
+
+			$modPrj->setRelatedList($modEmail, 'Emails', array('add'), 'get_emails');
+			$modPrjTsk->setRelatedList($modEmail, 'Emails', array('add'), 'get_emails');
+			$modPot->setRelatedList($modEmail, 'Emails', array('add'), 'get_emails');
+			$modHD->setRelatedList($modEmail, 'Emails', array('add'), 'get_emails');
+
 			$block = VTiger_Block::getInstance('LBL_PROJECT_INFORMATION', $modPrj);
-			$field = Vtiger_Field::getInstance('email',$modPrj);
+			$field = Vtiger_Field::getInstance('email', $modPrj);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?', array($field->id));
 			} else {
 				$field = new Vtiger_Field();
 				$field->name = 'email';
@@ -53,9 +55,9 @@ class directemailPPTHP extends cbupdaterWorker {
 			}
 
 			$block = VTiger_Block::getInstance('LBL_PROJECT_TASK_INFORMATION', $modPrjTsk);
-			$field = Vtiger_Field::getInstance('email',$modPrjTsk);
+			$field = Vtiger_Field::getInstance('email', $modPrjTsk);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?', array($field->id));
 			} else {
 				$field = new Vtiger_Field();
 				$field->name = 'email';
@@ -68,9 +70,9 @@ class directemailPPTHP extends cbupdaterWorker {
 			}
 
 			$block = VTiger_Block::getInstance('LBL_OPPORTUNITY_INFORMATION', $modPot);
-			$field = Vtiger_Field::getInstance('email',$modPot);
+			$field = Vtiger_Field::getInstance('email', $modPot);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?', array($field->id));
 			} else {
 				$field = new Vtiger_Field();
 				$field->name = 'email';
@@ -83,9 +85,9 @@ class directemailPPTHP extends cbupdaterWorker {
 			}
 
 			$block = VTiger_Block::getInstance('LBL_TICKET_INFORMATION', $modHD);
-			$field = Vtiger_Field::getInstance('email',$modHD);
+			$field = Vtiger_Field::getInstance('email', $modHD);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid=?', array($field->id));
 			} else {
 				$field = new Vtiger_Field();
 				$field->name = 'email';
@@ -102,5 +104,4 @@ class directemailPPTHP extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

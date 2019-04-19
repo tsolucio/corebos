@@ -25,7 +25,6 @@
 	'values' => 'list of possible values',
 	'definition' => 'explanation and purpose',
 ),
-
  *************************************************************************************************/
 $GlobalVariableDefinitonsHeader = array(
 	'valuetype' => 'Value Type',
@@ -48,6 +47,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Security',
 	'values' => 'Example: 127.0.0.1,192.168.0.100',
 	'definition' => 'Comma separated list of IP addresses from which users will be permitted to login',
+),
+'Application_SendUserPasswordByEmail' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Security',
+	'values' => '0 | 1',
+	'definition' => 'If true, the application will send an email with the user password everytime the password is changed using the "Password Change Template"',
 ),
 'Debug_Record_Not_Found' => array(
 	'status' => 'Implemented',
@@ -245,6 +251,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'all | admin | none',
 	'definition' => 'Global security check to permit exporting. "all" to allow anyone to use exports, "admin" to only allow admins to export, "none" to block exports completely. Default value = all',
 ),
+'Application_SaveAndRepeatActive' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Activate "Save and Repeat" action in edit mode. Default deactivated',
+),
 'Application_ListView_Max_Text_Length' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',
@@ -265,6 +278,20 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'ASC | DESC',
 	'definition' => 'Initial sort order for records when clicking on list view header. The default is ASC',
+),
+'Application_ListView_Default_OrderDirection' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'string',
+	'category' => 'Application',
+	'values' => 'ASC | DESC',
+	'definition' => 'Sort order for records of a module. If not defined the internal default value of each module will be used.',
+),
+'Application_ListView_Default_OrderField' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'string',
+	'category' => 'Application',
+	'values' => 'module column name',
+	'definition' => 'Field of the module to sort by. If not defined the internal default value of each module will be used.',
 ),
 'Application_ListView_Record_Change_Indicator' => array(
 	'status' => 'Implemented',
@@ -293,6 +320,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Performance',
 	'values' => '0 | 1',
 	'definition' => 'Show total sum of currency columns. The default is 1',
+),
+'Application_ListView_SearchColumns' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show search columns in the list view table',
 ),
 'Application_DetailView_Record_Navigation' => array(
 	'status' => 'Implemented',
@@ -343,6 +377,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'If set to 1 an email will be sent to the owner of the HelpDesk Ticket when it changes, if set to 0 no email will be sent to the owner. This can be overridden with workflows, it only applies to the default workflows. The default value is 1.',
 ),
+'HelpDesk_Sort_Comments_ASC' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'If set to 1, ticket comments will be presented from the oldest to the newest (this is the default), if set to zero the comments will be presented from newest to oldest.',
+),
 'HomePage_Widget_Group_Size' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',
@@ -370,6 +411,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'URL for customer portal (Example: http://your_support_domain.tld/portal). Used mostly for email template communications.',
+),
+'Application_Customer_Portal_BeingUsed' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'vtigercrmportal | coreboscp',
+	'definition' => 'Indicate the customer portal connected to this coreBOS so we can adapt outputs accordingly. Used mostly for email template communications.',
 ),
 'Debug_Calculate_Response_Time' => array(
 	'status' => 'Implemented',
@@ -511,6 +559,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'individual | group',
 	'definition' => 'Establish the tax mode on inventory modules to Individual line or Group tax',
 ),
+'Inventory_Show_ShippingHandlingCharges' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show or hide Shipping and Handling charges',
+),
 'Application_Global_Search_Active' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -622,6 +677,27 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'When calling or receiving a call to an unknown party this string will be used as the record name identifier next to the number dialed. The default value is Unknown',
+),
+'PBX_SearchOnTheseFields' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'list of field names',
+	'definition' => 'List of fields to search in when we get a call from Asterisk. The first result found will be returned.',
+),
+'PBX_callerNumberField' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'PBX field name',
+	'definition' => 'Field name coming from PBX which we should use to search inside the application. By default it is CallerID',
+),
+'PBX_callerNumberSeparator' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Character',
+	'category' => 'Application',
+	'values' => 'character',
+	'definition' => 'Incoming number from PBX will be split by this character if given and each element will be searched individually. The default is to not split the number',
 ),
 'Mobile_Module_by_default' => array(
 	'status' => 'Implemented',
@@ -762,6 +838,20 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'Show or hide the modules list in the calendar. The default value of 1 shows the list and 0 hides it.',
+),
+'Calendar_Status_Panel_Visible' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show or hide the Status panel in the calendar. The default value of 1 shows it and 0 hides it.',
+),
+'Calendar_Priority_Panel_Visible' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show or hide the Priority panel in the calendar. The default value of 1 shows it and 0 hides it.',
 ),
 'Calendar_Default_Reminder_Minutes' => array(
 	'status' => 'Implemented',
@@ -910,6 +1000,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'false | true',
 	'definition' => 'If set to the string "true", the Opportunity section will be selected when converting a Lead. By default, the section is not selected.',
 ),
+'Lead_Convert_ContactSelected' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'false | true',
+	'definition' => 'If set to the string "true", the Contact section will be selected when converting a Lead. By default, the section is selected.',
+),
 'Product_Show_Subproducts_Popup' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
@@ -930,6 +1027,20 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'yes | no',
 	'definition' => 'Permit assigning subproducts to a subproduct',
+),
+'Product_SubProduct_PriceRollUp' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Calculate product unit price based on the unit price and quantity of its subproducts.',
+),
+'Product_SubProduct_CostRollUp' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Calculate product cost price based on the cost price and quantity of its subproducts.',
 ),
 'Product_Maximum_Number_Images' => array(
 	'status' => 'Implemented',
@@ -993,6 +1104,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'When selecting an Account/Contact/Vendor in the popup window, the application asks if it must fill in addresses. This variable sets the Shipping Address check box.',
+),
+'Application_Popup_Address_Selection'=> array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Shows option to select an address in Account and Contact(by default is 1),if set to 0 then the whole option to select an address will not be shown.',
 ),
 'Application_Show_Copy_Address' => array(
 	'status' => 'Implemented',
@@ -1099,37 +1217,127 @@ $GlobalVariableDefinitons = array(
 	'values' => 'ID or name of template to use',
 	'definition' => 'When the CustomerPortal_PDF variable is set to PDFMaker or GenDoc, this variable indicates which template should be used to generate Sales Order PDF. If it is empty the first template found will be used.',
 ),
-'CustomerPortal_PDFTemplate_Invoice'  => array(
+'CustomerPortal_PDFTemplate_Invoice' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
 	'category' => 'Integration',
 	'values' => 'ID or name of template to use',
 	'definition' => 'When the CustomerPortal_PDF variable is set to PDFMaker or GenDoc, this variable indicates which template should be used to generate Invoice PDF. If it is empty the first template found will be used.',
 ),
-'CustomerPortal_PDFTemplate_PurchaseOrder'  => array(
+'CustomerPortal_PDFTemplate_PurchaseOrder' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
 	'category' => 'Integration',
 	'values' => 'ID or name of template to use',
 	'definition' => 'When the CustomerPortal_PDF variable is set to PDFMaker or GenDoc, this variable indicates which template should be used to generate Purchase Order PDF. If it is empty the first template found will be used.',
 ),
-'Application_Permit_Assign_Up'  => array(
+'Application_Permit_Assign_Up' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'In modules with private sharing privileges, permit assigning the record to any active user in the application.',
 ),
-'Application_Permit_Assign_SameRole'  => array(
+'Application_Permit_Assign_SameRole' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
 	'values' => '0 | 1',
 	'definition' => 'In modules with private sharing privileges, permit assigning the record to any active user in the application with the same role as the current user.',
 ),
+'Application_Permit_Assign_AllGroups' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'In modules with private sharing privileges, permit assigning the record to any defined group in the application.',
+),
+'MailManager_Show_SentTo_Links' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'MailManager shows, by default, on the left panel a set of links to filter emails related to Accounts, Contacts and some other modules. Setting this variable to 0 will hide those quick actions.',
+),
+'Calendar_Show_WeekNumber' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Module Functionality',
+	'values' => '0 | 1',
+	'definition' => 'When Calendar_Show_WeekNumber is active, the week numbers will appear on the Calendar.',
+),
+'Report_HeaderOnXLS' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'When Report_HeaderOnXLS is active, the name of the report will appear as the header in the XLS file.',
+),
+'Report_HeaderOnPDF' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'When Report_HeaderOnPDF is active, the name of the report will appear as the header in the PDF file.',
+),
+'RelatedList_Activity_DefaultStatusFilter' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Any valid Activity Status',
+	'definition' => 'Initial Activity filter on Related List. Default is "all".',
+),
+'Zero_Bounce_API_KEY' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Any valid Zero Bounce API KEY',
+	'definition' => 'The valid Zero Bounce API KEY',
+),
+'GenDoc_CopyLabelToClipboard' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Extension',
+	'values' => '0|1',
+	'definition' => 'Make the copy links in Detail View copy GenDoc labels instead of field values. By default deactivated.',
+),
+'BusinessQuestion_TableAnswer_Limit' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Maximum number of returned table rows as output of the Business Question answer.',
+),
+'PurchaseOrder_TransferCostPrice' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0|1',
+	'definition' => 'When set to \'1\', creating a PurchaseOrder from another record (i.e. SalesOrder, Product) will use the product/service costprice in inventorylines rather than the selling price. You can further specify this behavior by checking the \'In Module List\' box and selecting the source modules you want this to happen for in the module list.',
+),
+'PurchaseOrder_IgnoreTransferDiscount' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0|1',
+	'definition' => 'When set to \'1\', transferring a line from for instance a salesorder to a purschaseorder will set all discounts to zero regardless of what the source module lists for that line. You can fine-tune the source modules by checking \'In Module list\' and selecting the source modules.',
+),
+'Application_User_SortBy' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'SQL sort specification|DO NOT SORT',
+	'definition' => 'If given will be feeded directly into the SQL query to retrieve users that appear in the Assigned To dropdown permitting us to customize the sort order of these users.',
+),
+'Workflow_ListView_PageSize' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Number of rows to show per page in the workflow list view grid. The default is 20.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php', GLOB_BRACE) as $tcode) {
-	include($tcode);
+	include $tcode;
 }
-

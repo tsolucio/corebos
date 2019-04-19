@@ -12,7 +12,7 @@ $image_path="themes/$theme/images/";
 
 //Function added to convert line breaks to space in description during export
 function br2nl_int($str) {
-	$str = preg_replace("/(\r\n)/", " ", $str);
+	$str = preg_replace("/(\r\n)/", ' ', $str);
 	return $str;
 }
 
@@ -28,10 +28,7 @@ $step = vtlib_purify($_REQUEST['step']);
 $export_type = isset($_POST['export_type']) ? vtlib_purify($_POST['export_type']) : '';
 
 function getStdContactFlds($queryFields, $adb, $valueArray) {
-	global $current_language, $mod_strings;
-	require_once('modules/Contacts/language/'.$current_language.'.lang.php');
-	$query = "SELECT fieldid, columnname, fieldlabel FROM vtiger_field
-		WHERE tablename='vtiger_contactdetails' AND uitype='56' and vtiger_field.presence in (0,2)";
+	$query = "SELECT fieldid, columnname, fieldlabel FROM vtiger_field WHERE tablename='vtiger_contactdetails' AND uitype='56' and vtiger_field.presence in (0,2)";
 	$result = $adb->query($query, true, "Error: <BR>$query");
 	for ($tmp=0; $tmp < $adb->num_rows($result); $tmp++) {
 		$myData = $adb->fetchByAssoc($result);
@@ -46,7 +43,7 @@ function getStdContactFlds($queryFields, $adb, $valueArray) {
 }
 
 if ($step == 'ask') {
-	require_once('Smarty_setup.php');
+	require_once 'Smarty_setup.php';
 	$smarty = new vtigerCRM_Smarty;
 	if (isset($tool_buttons)==false) {
 		$tool_buttons = Button_Check($currentModule);
@@ -67,8 +64,7 @@ if ($step == 'ask') {
 	$smarty->assign('EXPORTWHERE', $exportWhere);
 	$queryFields = array();
 	// get the Contacts CF fields
-	$cfquery = "SELECT columnname,fieldlabel,uitype FROM vtiger_field
-		WHERE tablename='vtiger_contactscf' and vtiger_field.presence in (0,2)";
+	$cfquery = "SELECT columnname,fieldlabel,uitype FROM vtiger_field WHERE tablename='vtiger_contactscf' and vtiger_field.presence in (0,2)";
 	$result = $adb->query($cfquery, true, "Error: <BR>$cfquery");
 	for ($tmp=0; $tmp < $adb->num_rows($result); $tmp++) {
 		$cfTmp = $adb->fetchByAssoc($result);

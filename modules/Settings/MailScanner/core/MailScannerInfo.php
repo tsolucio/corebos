@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('modules/Settings/MailScanner/core/MailScannerRule.php');
+require_once 'modules/Settings/MailScanner/core/MailScannerRule.php';
 
 /**
  * Mail Scanner information manager.
@@ -62,7 +62,7 @@ class Vtiger_MailScannerInfo {
 	 * @access private
 	 */
 	public function __crypt($password, $encrypt = true) {
-		require_once('include/utils/encryption.php');
+		require_once 'include/utils/encryption.php';
 		$cryptobj = new Encryption();
 		if ($encrypt) {
 			return $cryptobj->encrypt(trim($password));
@@ -134,7 +134,6 @@ class Vtiger_MailScannerInfo {
 	 */
 	public function updateAllFolderRescan($rescanFlag = false) {
 		global $adb;
-		$useRescanFlag = $rescanFlag? 1 : 0;
 		$adb->pquery(
 			'UPDATE vtiger_mailscanner_folders set rescan=? WHERE scannerid=?',
 			array($rescanFlag, $this->scannerid)
@@ -272,7 +271,7 @@ class Vtiger_MailScannerInfo {
 		if ($this->scannerid) {
 			global $adb;
 			$adb->pquery('UPDATE vtiger_mailscanner_folders set enabled=0 WHERE scannerid=?', array($this->scannerid));
-			foreach ($folderinfo as $foldername => $foldervalue) {
+			foreach ($folderinfo as $foldervalue) {
 				$folderid = $foldervalue['folderid'];
 				$enabled = $foldervalue['enabled'];
 				$adb->pquery(

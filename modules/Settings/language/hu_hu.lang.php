@@ -5,14 +5,8 @@
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
- * All Rights Reserved.
- ********************************************************************************
- ********************************************************************************
- * $Header: /modules/Settings/language/hu_hu.lang.php - 22:17 2011.02.24. $
- * Description:  Defines the Hungarian language pack for the Settings module vtiger 5.2.x
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
+ * All Rights Reserved.
  ********************************************************************************/
 
 $mod_strings = array(
@@ -170,7 +164,7 @@ $mod_strings = array(
 	'LBL_PICKLIST_SETTINGS' => 'Kiválasztólista Beállítások',
 	'LBL_EDIT_PICKLIST_VALUES' => ' - Kiválasztólista mezők értékeinek Szerkesztése',
 	'LBL_EDIT' => 'Editing',
-	'LBL_COMMUNICATION_TEMPLATES' => 'Kommunikációs Sablonok',
+	'LBL_COMMUNICATION_TEMPLATES' => 'Business Process Management',
 	'LBL_CREATE_EMAIL_TEMPLATES' => 'Új Email sablon',
 	'LBL_UPLOAD_MSWORD_TEMPLATES' => ' - MS Word Sablon Feltöltés Levél Összefésülés részére',
 	'LBL_SCHEDULE_EMAIL_NOTIFICATION' => ' - Email Értesítések Beütemezése',
@@ -243,6 +237,8 @@ $mod_strings = array(
 	'LBL_QUOTE_STAGE' => 'Ajánlati Fázis',
 	'LBL_CARRIER' => 'Futár',
 	'LBL_TAXCLASS' => 'Adó osztály',
+	'LBL_RETENTION'=>'Retention',
+	'LBL_PERCENTAGE'=>'Percentage',
 	'LBL_MY_DETAILS' => 'Részletek',
 	'LBL_MY_MAIL_SERVER_DET' => 'Bejövő Email Szerver adatai',
 	'LBL_EMAIL_ID' => 'Email azonosító',
@@ -680,6 +676,7 @@ $mod_strings = array(
 	'LBL_AFTER_SCAN' => 'Vizsgálat után',
 	'LBL_MESSAGES_FROM_LASTSCAN' => 'Üzenetek utolsó vizsgálatból',
 	'LBL_MARK_MESSAGE_AS' => 'Megjelölés mint',
+	'LBL_ASSIGN' => 'Assign to',
 	'LBL_LIST_WORKFLOWS' => 'Automatikus Munkafolyamatok',
 	'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Automatikus Munkafolyamat létrehozás és szerkesztés vtiger-hez',
 	'LBL_TASK_TITLE' => 'Feladat Megnevezés',
@@ -698,11 +695,15 @@ $mod_strings = array(
 	'LBL_ON_MODIFY' => 'A rekord módosításakor mindig',
 	'LBL_ON_SCHEDULE' => 'Időzített pillanatban',
 	'LBL_ON_DELETE' => 'When record is deleted',
+	'LBL_MANUAL' => 'Manual',
+	'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
 	'LBL_CONDITIONS' => 'Feltételek',
 	'LBL_NEW_CONDITION_BUTTON_LABEL' => 'Új Feltétel',
 	'LBL_TASKS' => 'Feladatok',
 	'LBL_NEW_TASK_BUTTON_LABEL' => 'Új Feladatok',
 	'LBL_TASK' => 'Feladat',
+	'LBL_DELAY' => 'Delay',
+
 	'LBL_MANDATORY_FIELDS' => 'Kötelező Mezők',
 	'LBL_MANDATORY_FIELDS_DESCRIPTION' => 'Kötelező Mezők Beállítása minden modulhoz',
 	'LBL_CUSTOMIZE_MODENT_NUMBER' => 'Rekord számozás beállítás',
@@ -816,17 +817,13 @@ $mod_strings = array(
 	'LBL_ALL_MODULES' => 'Minden modul',
 	'LBL_SELECTED_MODULES' => 'Kiválasztott modulok',
 	'LBL_CRM_SETTINGS' => 'CRM Beállítások',
-	'LBL_PICKLIST_GLOBAL_DELETE' => 'Kiválasztó lista törlése',
 	'Assets' => 'Vagyontárgyak',
-	'Update configuration file of the application' => 'A vtiger CRM konfigurációs beállításainak szerkesztése',
 	'LBL_UNSUBSCRIBE' => 'Leiratkozás',
 	'Save' => 'Módosítások mentése',
 	'Workflow' => 'Munkafolymatok',
 	'LBL_LANGUAGES' => 'Nyelvek',
 	'LBL_LANGUAGES_DESCRIPTION' => 'Nyelvek leírása',
 	'LUpgradeBL_BIG_DEAL' => 'Nagy üzlet',
-	'LBL_COMPANY_INFO' => 'Cégadatok',
-	// language translation strings
 	'LBL_LANGUAGES_PACKS' => 'Language Extension',
 	'LBL_EDIT_LANGUAGE_FILE' => 'Translate modules strings',
 	'LBL_SELECT_TRANSLATE_MODULE' => 'Select a module to translate :',
@@ -844,7 +841,6 @@ $mod_strings = array(
 	'RLNotTranslated' => 'List Title Not Translated',
 	'FieldsTranslated' => 'Fields Translated',
 	'FieldsNotTranslated' => 'Fields Not Translated',
-	// language translation strings
 	'SendEmailFrom' => 'Send Email From',
 	'LeaveEmptyForUserEmail' => 'Leave empty to use your user email',
 	'LBL_OPENSSL_SUPPORT' => 'OpenSSL Support',
@@ -874,5 +870,8 @@ $mod_strings = array(
 	'report_summary_nf' => 'Field not found in Report Summary',
 	'cl_mapping' => 'Field found in Lead Conversion Mapping',
 	'cl_mapping_nf' => 'Field not found in Lead Conversion Mapping',
+	'Site Maintenance' => 'Site Maintenance',
+	'SM_BeBackSoon' => 'We&rsquo;ll be back soon!',
+	'SM_SorryInconvenience' => 'Sorry for the inconvenience but we&rsquo;re performing some maintenance at the moment. We&rsquo;ll be back online shortly!',
 );
 ?>

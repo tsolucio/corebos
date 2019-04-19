@@ -9,7 +9,7 @@
  *********************************************************************************/
 require_once 'modules/VtigerBackup/Locations/Location.php';
 
-class Vtiger_FTPBackup extends Vtiger_Location{
+class Vtiger_FTPBackup extends Vtiger_Location {
 
 	protected $server;
 	protected $username;
@@ -20,16 +20,12 @@ class Vtiger_FTPBackup extends Vtiger_Location{
 	public function __construct($limit) {
 		parent::__construct($limit);
 		$db = PearDatabase::getInstance();
-		$details = array();
-		$query = "select * from vtiger_systems where server_type=?";
-		$result = $db->pquery($query, array('ftp_backup'));
+		$result = $db->pquery('select * from vtiger_systems where server_type=?', array('ftp_backup'));
 		$rowCount = $db->num_rows($result);
-		if($rowCount > 0) {
-			$this->server = $db->query_result($result,0,'server');
-			$this->username = $db->query_result($result,0,'server_username');
-			$this->password = $db->query_result($result,0,'server_password');
-		}else{
-			//TODO handler error;
+		if ($rowCount > 0) {
+			$this->server = $db->query_result($result, 0, 'server');
+			$this->username = $db->query_result($result, 0, 'server_username');
+			$this->password = $db->query_result($result, 0, 'server_password');
 		}
 	}
 
@@ -37,19 +33,24 @@ class Vtiger_FTPBackup extends Vtiger_Location{
 
 		list($host,$port) = explode(':', $this->server);
 
-		if(empty($port))
+		if (empty($port)) {
 			$this->connection = @ftp_connect($this->server);
-		else
-			$this->connection = @ftp_connect($host,$port);
+		} else {
+			$this->connection = @ftp_connect($host, $port);
+		}
 
-		if(empty($this->connection)) {
-			throw new VtigerBackupException(VtigerBackupErrorCode::$FTP_CONNECT_FAILED,
-					getTranslatedString('LBL_FTP_CONNECT_FAILED', 'VtigerBackup'));
+		if (empty($this->connection)) {
+			throw new VtigerBackupException(
+				VtigerBackupErrorCode::$FTP_CONNECT_FAILED,
+				getTranslatedString('LBL_FTP_CONNECT_FAILED', 'VtigerBackup')
+			);
 		}
 		$result = @ftp_login($this->connection, $this->username, $this->password);
-		if(empty($result)) {
-			throw new VtigerBackupException(VtigerBackupErrorCode::$FTP_LOGIN_FAILED,
-					getTranslatedString('LBL_FTP_LOGIN_FAILED', 'VtigerBackup'));
+		if (empty($result)) {
+			throw new VtigerBackupException(
+				VtigerBackupErrorCode::$FTP_LOGIN_FAILED,
+				getTranslatedString('LBL_FTP_LOGIN_FAILED', 'VtigerBackup')
+			);
 		}
 		ftp_pasv($this->connection, true);
 		$this->initialized = true;
@@ -58,7 +59,7 @@ class Vtiger_FTPBackup extends Vtiger_Location{
 	public function limitbackup() {
 		$fileList = $this->getBackupTimeList();
 		$connection = $this->getConnection();
-		for ($index=0; count($fileList) > $this->limit -1 ; ++$index) {
+		for ($index=0; count($fileList) > $this->limit -1; ++$index) {
 			$fileName = Vtiger_BackupZip::getDefaultFileName($fileList[$index]);
 			@ftp_delete($connection, $fileName);
 			unset($fileList[$index]);
@@ -73,12 +74,12 @@ class Vtiger_FTPBackup extends Vtiger_Location{
 			if ($file == "." || $file == "..") {
 				continue;
 			}
-			$fileName = $this->getFileName($file,'/');
-			$fileName = explode('-',$fileName);
+			$fileName = $this->getFileName($file, '/');
+			$fileName = explode('-', $fileName);
 			$fileName = $fileName[1];
-			$date = substr($fileName, 0, strrpos($fileName,'.'));
-			$date = str_replace('_',':',$date);
-			if(strtotime($date) !== false) {
+			$date = substr($fileName, 0, strrpos($fileName, '.'));
+			$date = str_replace('_', ':', $date);
+			if (strtotime($date) !== false) {
 				$backupFileList[] = strtotime($date);
 			}
 		}
@@ -95,11 +96,11 @@ class Vtiger_FTPBackup extends Vtiger_Location{
 				continue;
 			}
 			$origFileName = $this->getFileName($file, '/');
-			$fileName = explode('-',$origFileName);
+			$fileName = explode('-', $origFileName);
 			$fileName = $fileName[1];
-			$date = substr($fileName, 0, strrpos($fileName,'.'));
-			$date = str_replace('_',':',$date);
-			if(strtotime($date) !== false) {
+			$date = substr($fileName, 0, strrpos($fileName, '.'));
+			$date = str_replace('_', ':', $date);
+			if (strtotime($date) !== false) {
 				$backupFileList[] = $origFileName;
 			}
 		}
@@ -115,7 +116,7 @@ class Vtiger_FTPBackup extends Vtiger_Location{
 			//TODO handle error
 		}
 		$this->close();
-		if(file_exists($source)){
+		if (file_exists($source)) {
 			unlink($source);
 		}
 	}
@@ -127,7 +128,7 @@ class Vtiger_FTPBackup extends Vtiger_Location{
 	}
 
 	public function getConnection() {
-		if(!$this->initialized) {
+		if (!$this->initialized) {
 			$this->init();
 		}
 		return $this->connection;

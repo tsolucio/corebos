@@ -12,62 +12,63 @@ include_once __DIR__ . '/Viewer.php';
 class Vtiger_PDF_FooterViewer extends Vtiger_PDF_Viewer {
 
 	protected $model;
-	
+
 	protected $onEveryPage = true;
 	protected $onLastPage = false;
-	
-	function setOnEveryPage() {
+
+	public function setOnEveryPage() {
 		$this->onEveryPage = true;
 		$this->onLastPage = false;
 	}
-	
-	function onEveryPage() {
+
+	public function onEveryPage() {
 		return $this->onEveryPage;
 	}
-	
-	function setOnLastPage() {
+
+	public function setOnLastPage() {
 		$this->onEveryPage = false;
 		$this->onLastPage = true;
 	}
-	
-	function onLastPage() {
+
+	public function onLastPage() {
 		return $this->onLastPage;
 	}
-	
-	function setModel($m) {
+
+	public function setModel($m) {
 		$this->model = $m;
 	}
-	
-	function totalHeight($parent) {
+
+	public function totalHeight($parent) {
 		$height = 0.1;
-		
-		if($this->model && $this->onEveryPage()) {
+
+		if ($this->model && $this->onEveryPage()) {
 			$pdf = $parent->getPDF();
 
 			$contentText = $this->model->get('content');
 			$height = $pdf->GetStringHeight($contentText, $parent->getTotalWidth());
-		}		
+		}
 
-		if($this->onEveryPage) return $height;
-		if($this->onLastPage && $parent->onLastPage()) return $height;
+		if ($this->onEveryPage) {
+			return $height;
+		}
+		if ($this->onLastPage && $parent->onLastPage()) {
+			return $height;
+		}
 		return 0;
 	}
-	
-	function initDisplay($parent) {
-		
+
+	public function initDisplay($parent) {
 	}
 
-	function display($parent) {
+	public function display($parent) {
 
 		$pdf = $parent->getPDF();
 		$footerFrame = $parent->getFooterFrame();
-		
-		if($this->model) {
+
+		if ($this->model) {
 			$targetFooterHeight = ($this->onEveryPage())? $footerFrame->h : 0;
-				
+
 			$pdf->MultiCell($footerFrame->w, $targetFooterHeight, $this->model->get('content'), 1, 'L', 0, 1, $footerFrame->x, $footerFrame->y);
 		}
-		
 	}
-	
 }

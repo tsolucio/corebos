@@ -4,7 +4,7 @@
 ** Distributed under MPL 1.1
 * Es_mx Author: Francisco Hernandez Odin Consultores www.odin.mx
 */
-$mod_strings = Array (
+$mod_strings = array (
 'CustomerPortal' => 'Portal Cliente',
 'LBL_BASIC_SETTINGS'=>'Configuración Básica',
 'LBL_CUSTOMERPORTAL_SETTINGS'=>'Configuración Portal',
@@ -21,11 +21,7 @@ $mod_strings = Array (
 'LBL_DEFAULT_USERS'=>'Asignado por defecto',
 'LBL_DISABLE'=>'Deshabilitar',
 'LBL_ENABLE' =>'Habilitar',
-'LBL_MODULE' => 'Módulo',
 'LBL_SEQUENCE' =>'Secuencia',
 'LBL_VISIBLE'=>'Visible'
-
-
 );
-
 ?>

@@ -2,7 +2,7 @@
 /***********************************************************
 *  Module       : RSS
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
@@ -29,7 +29,6 @@ $mod_strings = array (
 	'LBL_FEEDS_LIST' => 'Listes des flux de :',
 	'LBL_ERROR_MSG' => 'Aucun flux RSS sélectionné ou votre proxy est mal configuré',
 	'LBL_REGRET_MSG' => 'Erreur : impossible de lire ce flux RSS',
-	'UNABLE_TO_SAVE' => 'Erreur : impossible de sauvegarder ce flux RSS',
 	'NOT_A_VALID' => 'Flux RSS non valide ou proxy incorrecte.',
 	'INVALID_RSS_URL' => 'URL de RSS invalide',
 	'UNABLE_TO_SAVE' => 'Impossible d\'enregistrer l\'URL',

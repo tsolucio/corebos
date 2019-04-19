@@ -13,12 +13,14 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
-include_once('vtlib/Vtiger/Module.php');
+include_once 'vtlib/Vtiger/Module.php';
 class mass_document_download extends cbupdaterWorker {
 	private $label = 'LNK_DOWNLOAD';
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -30,8 +32,10 @@ class mass_document_download extends cbupdaterWorker {
 		$this->finishExecution();
 	}
 
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			// undo your magic here
 			$moduleInstance = Vtiger_Module::getInstance('Documents');

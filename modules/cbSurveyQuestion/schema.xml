@@ -1,0 +1,25 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_cbsurveyquestion</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_cbsurveyquestion` (
+  `cbsurveyquestionid` int(11) NOT NULL,
+  `cbsurveyquestion_no` varchar(26) default NULL,
+  `cbsurvey` int(11) default NULL,
+  `cbsq_providerid` varchar(126) default NULL,
+  `cbsquestion` text,
+  `cbsanswer` text,
+  PRIMARY KEY (`cbsurveyquestionid`),
+  KEY `cbsurvey` (`cbsurvey`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_cbsurveyquestioncf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_cbsurveyquestioncf` (
+  `cbsurveyquestionid` int(11) NOT NULL,
+  PRIMARY KEY (`cbsurveyquestionid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

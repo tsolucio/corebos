@@ -34,15 +34,13 @@
 *	)
 */
 function getKeyMetrics($maxval, $calCnt) {
-	require_once("data/Tracker.php");
-	require_once('modules/CustomView/CustomView.php');
-	require_once('include/logging.php');
-	require_once('include/ListView/ListView.php');
+	require_once 'data/Tracker.php';
+	require_once 'modules/CustomView/CustomView.php';
+	require_once 'include/logging.php';
+	require_once 'include/ListView/ListView.php';
 
-	global $app_strings, $adb, $log, $current_language;
-	$metricviewnames = "'Hot Leads'";
+	global $app_strings, $adb, $log;
 
-	$current_module_strings = return_module_language($current_language, 'CustomView');
 	$log = LoggerManager::getLogger('metrics');
 
 	$metriclists = getMetricList();
@@ -52,7 +50,6 @@ function getKeyMetrics($maxval, $calCnt) {
 		return count($metriclists);
 	}
 
-	$log->info("Metrics :: Successfully got MetricList to be displayed");
 	if (isset($metriclists)) {
 		global $current_user;
 		foreach ($metriclists as $key => $metriclist) {
@@ -78,7 +75,6 @@ function getKeyMetrics($maxval, $calCnt) {
 				}
 			}
 		}
-		$log->info('Metrics :: Successfully build the Metrics');
 	}
 	$title=array();
 	$title[]='keyMetrics.gif';
@@ -90,7 +86,6 @@ function getKeyMetrics($maxval, $calCnt) {
 	$header[]=$app_strings['LBL_HOME_COUNT'];
 	$entries=array();
 	if (isset($metriclists)) {
-		$oddRow = true;
 		foreach ($metriclists as $metriclist) {
 			$value=array();
 			$CVname = (strlen($metriclist['name']) > 20) ? (substr($metriclist['name'], 0, 20).'...') : $metriclist['name'];
@@ -116,19 +111,19 @@ function getKeyMetrics($maxval, $calCnt) {
 */
 function getMetricList() {
 	global $adb, $current_user;
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 
 	$ssql = "select vtiger_customview.* from vtiger_customview inner join vtiger_tab on vtiger_tab.name = vtiger_customview.entitytype";
 	$ssql .= " where vtiger_customview.setmetrics = 1 ";
 	$sparams = array();
 
-	if ($is_admin == false) {
+	if (!$userprivs->isAdmin()) {
 		$ssql .= " and (vtiger_customview.status=0 or vtiger_customview.userid = ? or vtiger_customview.status =3 or vtiger_customview.userid in
 			(select vtiger_user2role.userid
 				from vtiger_user2role
 				inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid
 				inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid
-				where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%'))";
+				where vtiger_role.parentrole like '".$userprivs->getParentRoleSequence()."::%'))";
 		$sparams[] = $current_user->id;
 	}
 	$ssql .= " order by vtiger_customview.entitytype";
@@ -146,8 +141,6 @@ function getMetricList() {
 			}
 		}
 	}
-
 	return $metriclists;
 }
-
 ?>

@@ -22,7 +22,6 @@ $mod_strings = array (
   'LBL_VENDOR_INFORMATION' => 'Informazioni Fornitore:',
   'LBL_PRICEBOOK_INFORMATION' => 'Informazioni Listino:',
   'LBL_VENDOR_ADDRESS_INFORMATION' => 'Informazioni Indirizzo:',
-  'LBL_DESCRIPTION_INFORMATION' => 'Informazioni Descrizione',
   'LBL_PRICING_INFORMATION' => 'Informazioni Prezzo:',
   'LBL_STOCK_INFORMATION' => 'Informazioni Stock:',
   'LBL_LIST_FORM_TITLE' => 'Lista Prodotto',
@@ -66,7 +65,6 @@ $mod_strings = array (
   'LBL_SUPPORT_START_DATE' => 'Data Inizio Supporto',
   'LBL_SUPPORT_EXPIRY_DATE' => 'Data Termine Supporto',
   'LBL_PURCHASE_DATE' => 'Data Acquisto',
-  'Product Name' => 'Nome Prodotto',
   'Part Number' => 'Numero di serie',
   'Product Active' => 'Prodotto Attivo',
   'Commission Rate' => 'Tasso commissione (%)',
@@ -152,7 +150,6 @@ $mod_strings = array (
   '308-Sales-Books' => '308-Vendite-Libri',
   'Box' => 'Box',
   'Carton' => 'Cartone',
-  'Caton' => 'Scatola',
   'Dozen' => 'Vetro',
   'Each' => 'Ogni',
   'Hours' => 'Ore',
@@ -182,7 +179,6 @@ $mod_strings = array (
 'Divisible' => 'Divisible',
 'DIVISIBLE_WARNING' => 'can only be sold in multiplies of one',
 'DIVISIBLE_WARNING_PURCHASE' => 'can only be purchased in multiplies of one',
-
+'IS_DISCONTINUED' => 'is discontinued',
 );
-
 ?>

@@ -75,6 +75,7 @@ $mod_strings = array(
 	'LIST_MODULES' => 'Lijst van alle modules',
 	'Documents' => 'Documenten',
 	'LBL_SHOW_HIDE_SIDEBAR' => 'Verberg/Toon opties',
-        'Gmail_ChangeAccount'=>'If you want to change the Gmail Account please clear the tokens',
+	'Gmail_ChangeAccount'=>'If you want to change the Gmail Account please clear the tokens',
+	'Click2PickColor' => 'Click here to pick color',
 );
 ?>

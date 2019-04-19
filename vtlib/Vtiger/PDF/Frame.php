@@ -8,5 +8,8 @@
  * All Rights Reserved.
  ************************************************************************************/
 class Vtiger_PDF_Frame {
-	var $x, $y, $h, $w;
+	public $x;
+	public $y;
+	public $h;
+	public $w;
 }

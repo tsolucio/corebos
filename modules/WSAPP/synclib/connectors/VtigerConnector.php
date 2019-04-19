@@ -22,7 +22,7 @@ class WSAPP_VtigerConnector extends WSAPP_BaseConnector {
 	protected $db;
 	protected $nextSyncSate;
 
-	function __construct() {
+	public function __construct() {
 		$this->db = PearDatabase::getInstance();
 	}
 
@@ -53,16 +53,19 @@ class WSAPP_VtigerConnector extends WSAPP_BaseConnector {
 
 	public function getSyncState() {
 		$result = null;
-		if($this->getSynchronizeController()->getSyncType() == "app"){
-			$result = $this->db->pquery("SELECT * FROM vtiger_wsapp_sync_state WHERE name=?", array($this->getName()));
+		if ($this->getSynchronizeController()->getSyncType() == "app") {
+			$result = $this->db->pquery('SELECT * FROM vtiger_wsapp_sync_state WHERE name=?', array($this->getName()));
 		} else {
-			$result = $this->db->pquery("SELECT * FROM vtiger_wsapp_sync_state WHERE name=? and userid=?", array($this->getName(), $this->getSynchronizeController()->user->id));//$this->getSYnchronizeController()->getSyncType();
+			$result = $this->db->pquery(
+				'SELECT * FROM vtiger_wsapp_sync_state WHERE name=? and userid=?',
+				array($this->getName(), $this->getSynchronizeController()->user->id)
+			); //$this->getSYnchronizeController()->getSyncType();
 		}
 		if ($this->db->num_rows($result) <= 0) {
 			return $this->intialSync();
 		}
 		$rowData = $this->db->raw_query_result_rowdata($result);
-		$stateValues = json_decode($rowData['stateencodedvalues'],true);
+		$stateValues = json_decode($rowData['stateencodedvalues'], true);
 		return WSAPP_SyncStateModel::getInstanceFromQueryResult($stateValues);
 	}
 
@@ -82,22 +85,28 @@ class WSAPP_VtigerConnector extends WSAPP_BaseConnector {
 		return $syncStateModel;
 	}
 
-	function registerWithTracker() {
+	public function registerWithTracker() {
 		global $current_user;
 		return wsapp_register($this->getSyncTrackerHandlerName(), $this->getSynchronizeController()->getSyncType(), $current_user);
 	}
 
-	function updateSyncState(WSAPP_SyncStateModel $syncStateModel) {
-		$encodedValues = json_encode(array('synctrackerid' => $syncStateModel->getSyncTrackerId(), 'synctoken' => $syncStateModel->getSyncToken(), 'more' => $syncStateModel->get('more')));
+	public function updateSyncState(WSAPP_SyncStateModel $syncStateModel) {
+		$encodedValues = json_encode(
+			array(
+				'synctrackerid' => $syncStateModel->getSyncTrackerId(),
+				'synctoken' => $syncStateModel->getSyncToken(),
+				'more' => $syncStateModel->get('more')
+			)
+		);
 		$query = 'INSERT INTO vtiger_wsapp_sync_state(stateencodedvalues,name,userid) VALUES (?,?,?)';
 		$parameters = array($encodedValues, $this->getName(), $this->getSynchronizeController()->user->id);
 		if ($this->isSyncStateExists()) {
 			$query		= '';
 			$parameters = array();
-			if($this->getSynchronizeController()->getSyncType() == "app"){
+			if ($this->getSynchronizeController()->getSyncType() == "app") {
 				$query = 'UPDATE vtiger_wsapp_sync_state SET stateencodedvalues=? where name=?';
 				$parameters = array($encodedValues, $this->getName());
-			}else {
+			} else {
 				$query = 'UPDATE vtiger_wsapp_sync_state SET stateencodedvalues=? where name=? and userid=?';
 				$parameters = array($encodedValues, $this->getName(), $this->getSynchronizeController()->user->id);
 			}
@@ -109,12 +118,15 @@ class WSAPP_VtigerConnector extends WSAPP_BaseConnector {
 		return false;
 	}
 
-	function isSyncStateExists() {
+	public function isSyncStateExists() {
 		$result = null;
-		if($this->getSynchronizeController()->getSyncType() == "app"){
+		if ($this->getSynchronizeController()->getSyncType() == "app") {
 			$result = $this->db->pquery('SELECT 1 FROM vtiger_wsapp_sync_state where name=?', array($this->getName()));
 		} else {
-			$result = $this->db->pquery('SELECT 1 FROM vtiger_wsapp_sync_state where name=? and userid=?', array($this->getName(), $this->getSynchronizeController()->user->id));
+			$result = $this->db->pquery(
+				'SELECT 1 FROM vtiger_wsapp_sync_state where name=? and userid=?',
+				array($this->getName(), $this->getSynchronizeController()->user->id)
+			);
 		}
 		return $this->db->num_rows($result) > 0;
 	}
@@ -158,7 +170,7 @@ class WSAPP_VtigerConnector extends WSAPP_BaseConnector {
 		foreach ($pushResult as $mode => $records) {
 			if ($mode == 'created') {
 				$recordMode = WSAPP_SyncRecordModel::WSAPP_CREATE_MODE;
-			} else if ($mode == 'updated') {
+			} elseif ($mode == 'updated') {
 				$recordMode = WSAPP_SyncRecordModel::WSAPP_UPDATE_MODE;
 			} else {
 				$recordMode = WSAPP_SyncRecordModel::WSAPP_DELETE_MODE;
@@ -190,7 +202,7 @@ class WSAPP_VtigerConnector extends WSAPP_BaseConnector {
 				$mapFormatedRecords['create'][$destinationRecord->getId()] = array('serverid' => $sourceRecord->getId(),
 					'modifiedtime' => $destinationRecord->getModifiedTime(),
 					'_modifiedtime' => $sourceRecord->getModifiedTime());
-			} else if ($destinationRecord->isDeleteMode()) {
+			} elseif ($destinationRecord->isDeleteMode()) {
 				$mapFormatedRecords['delete'][] = $destinationRecord->getId();
 			} else {
 				$mapFormatedRecords['update'][$destinationRecord->getId()] = array('serverid' => $sourceRecord->getId(),
@@ -214,8 +226,8 @@ class WSAPP_VtigerConnector extends WSAPP_BaseConnector {
 				$syncTrackerRecord['values']['modifiedtime'] = $record->getModifiedTime();
 				$syncTrackerRecord['values']['id'] = $record->getId();
 			} else {
-               $syncTrackerRecord['_syncidentificationkey'] = $record->get('_syncidentificationkey');
-            }
+				$syncTrackerRecord['_syncidentificationkey'] = $record->get('_syncidentificationkey');
+			}
 			$syncTrackerRecordList[] = $syncTrackerRecord;
 		}
 		return $syncTrackerRecordList;
@@ -242,7 +254,7 @@ class WSAPP_VtigerConnector extends WSAPP_BaseConnector {
 				}
 				//Dont fill mandatory fields if empty is passed and if the record is in update mode
 				//Since sync app is using revise to update
-				if($record->getMode() == WSAPP_SyncRecordModel::WSAPP_UPDATE_MODE) {
+				if ($record->getMode() == WSAPP_SyncRecordModel::WSAPP_UPDATE_MODE) {
 					continue;
 				}
 				$fieldDataType = $fieldInstance->getFieldDataType();
@@ -276,7 +288,5 @@ class WSAPP_VtigerConnector extends WSAPP_BaseConnector {
 		}
 		return $transformedRecords;
 	}
-
 }
-
 ?>

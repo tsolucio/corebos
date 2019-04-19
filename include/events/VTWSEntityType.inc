@@ -8,14 +8,14 @@
  * All Rights Reserved.
  *************************************************************************************/
 require_once 'include/Webservices/Utils.php';
-require_once("modules/Users/Users.php");
-require_once("include/Webservices/VtigerCRMObject.php");
-require_once("include/Webservices/VtigerCRMObjectMeta.php");
-require_once("include/Webservices/DataTransform.php");
-require_once("include/Webservices/WebServiceError.php");
+require_once 'modules/Users/Users.php';
+require_once 'include/Webservices/VtigerCRMObject.php';
+require_once 'include/Webservices/VtigerCRMObjectMeta.php';
+require_once 'include/Webservices/DataTransform.php';
+require_once 'include/Webservices/WebServiceError.php';
 require_once 'include/utils/utils.php';
 require_once 'include/Webservices/ModuleTypes.php';
-require_once('include/Webservices/DescribeObject.php');
+require_once 'include/Webservices/DescribeObject.php';
 require_once 'include/Webservices/WebserviceField.php';
 require_once 'include/Webservices/EntityMeta.php';
 require_once 'include/Webservices/VtigerWebserviceObject.php';
@@ -25,7 +25,7 @@ require_once 'include/Webservices/VtigerWebserviceObject.php';
  */
 class VTWSEntityType {
 
-	function __construct($entityTypeName, $user) {
+	public function __construct($entityTypeName, $user) {
 		$describeResult = vtws_describe($entityTypeName, $user);
 		$this->entityTypeName = $entityTypeName;
 		$this->description = $describeResult;
@@ -40,39 +40,39 @@ class VTWSEntityType {
 		return new VTWSEntityType($entityTypeName, $user);
 	}
 
-	function getTabId() {
+	public function getTabId() {
 		global $adb;
 		if (!isset($this->tabId)) {
-			$result = $adb->pquery("select tabid from vtiger_tab where name=?", array($this->entityTypeName));
-			$this->tabId = $adb->query_result($result,0,"tabid");
+			$result = $adb->pquery('select tabid from vtiger_tab where name=?', array($this->entityTypeName));
+			$this->tabId = $adb->query_result($result, 0, 'tabid');
 		}
 		return $this->tabId;
 	}
 
-	function getModuleName() {
+	public function getModuleName() {
 		return $this->entityTypeName;
 	}
 
-	function getFieldNames() {
+	public function getFieldNames() {
 		if (!isset($this->fieldNames)) {
 			$fields = $this->description['fields'];
 			$arr = array();
 			foreach ($fields as $field) {
-				$arr[]=$field["name"];
+				$arr[]=$field['name'];
 			}
 			$this->fieldNames = $arr;
 		}
 		return $this->fieldNames;
 	}
 
-	function getFieldLabel($fieldName) {
+	public function getFieldLabel($fieldName) {
 		if (!isset($this->fieldLabels)) {
 			$this->getFieldLabels();
 		}
 		return $this->fieldLabels[$fieldName];
 	}
 
-	function getFieldLabels() {
+	public function getFieldLabels() {
 		if (!isset($this->fieldLabels)) {
 			$fields = $this->description['fields'];
 			foreach ($fields as $field) {
@@ -82,7 +82,7 @@ class VTWSEntityType {
 		return $this->fieldLabels;
 	}
 
-	function getFieldType($fieldName) {
+	public function getFieldType($fieldName) {
 		if (!isset($this->fieldTypes[$fieldName])) {
 			$fields = $this->description['fields'];
 			foreach ($fields as $field) {
@@ -165,7 +165,7 @@ class VTWSEntityType {
 							break;
 						default:
 							print_r($type);
-							throw new Exception($type["name"]." is not supported yet.");
+							throw new Exception($type['name'].' is not supported yet.');
 					}
 					$this->fieldTypes[$fieldName] = $et;
 					break;
@@ -175,7 +175,7 @@ class VTWSEntityType {
 		return $this->fieldTypes[$fieldName];
 	}
 
-	function getFieldTypes() {
+	public function getFieldTypes() {
 		$fieldNames = $this->getFieldNames();
 		$fieldTypes = array();
 		foreach ($fieldNames as $fieldName) {
@@ -183,11 +183,10 @@ class VTWSEntityType {
 		}
 		return $fieldTypes;
 	}
-
 }
 
 class VTWSFieldType {
-	function toArray() {
+	public function toArray() {
 		$ro = new ReflectionObject($this);
 		$props = $ro->getProperties();
 		$arr = array();

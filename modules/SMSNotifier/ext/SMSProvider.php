@@ -9,14 +9,14 @@
  ************************************************************************************/
 class SMSProvider {
 
-	static function getInstance($providername) {
-		if(!empty($providername)) {
+	public static function getInstance($providername) {
+		if (!empty($providername)) {
 			$providername = trim($providername);
 
 			$filepath = __DIR__ . "/providers/{$providername}.php";
 			checkFileAccessForInclusion($filepath);
-			
-			if(!class_exists($providername)) { 
+
+			if (!class_exists($providername)) {
 				include_once $filepath;
 			}
 			return new $providername();
@@ -24,12 +24,12 @@ class SMSProvider {
 		return false;
 	}
 
-	static function listAll() {
+	public static function listAll() {
 		$providers = array();
-		if ($handle = opendir( __DIR__ . '/providers')){
+		if ($handle = opendir(__DIR__ . '/providers')) {
 			while (false !== ($file = readdir($handle))) {
 				if (!in_array($file, array('.', '..', '.svn', 'CVS'))) {
-					if(preg_match("/(.*)\.php$/", $file, $matches)) {
+					if (preg_match("/(.*)\.php$/", $file, $matches)) {
 						$providers[] = $matches[1];
 					}
 				}

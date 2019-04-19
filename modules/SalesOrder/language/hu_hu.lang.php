@@ -9,7 +9,7 @@
  ********************************************************************************
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  ********************************************************************************/
- 
+
 $mod_strings = array(
 	'LBL_MODULE_NAME' => 'Megrendelések',
 	'LBL_SO_MODULE_NAME' => 'Megrendelések',
@@ -48,6 +48,7 @@ $mod_strings = array(
 	'LBL_ADDRESS_INFORMATION' => 'Cím adatok',
 	'LBL_Quote_INFORMATION' => 'Cég Információ',
 	'LBL_CUSTOM_INFORMATION' => 'Egyedi Információ',
+	'LBL_SalesOrder_FINANCIALINFO' => 'Financial Information',
 	'LBL_BILLING_ADDRESS' => 'Számlázási cím:',
 	'LBL_SHIPPING_ADDRESS' => 'Szállítási cím:',
 	'LBL_ANY_ADDRESS' => 'Bármilyen cím:',
@@ -178,10 +179,10 @@ $mod_strings = array(
 	'Quarterly' => 'Negyedéves',
 	'Yearly' => 'Évente',
 	'Order Id' => 'Megrendelés AZ',
-        'half-year'=>'Half Year',
-        '2years' => '2 Years',
-        '3years' => '3 Years',
-        '4years' => '4 Years',
-        '5years' => '5 Years',
+	'half-year'=>'Half Year',
+	'2years' => '2 Years',
+	'3years' => '3 Years',
+	'4years' => '4 Years',
+	'5years' => '5 Years',
 );
 ?>

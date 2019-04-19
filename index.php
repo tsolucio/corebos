@@ -14,7 +14,7 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 
-if (version_compare(phpversion(), '5.4.0') < 0 || version_compare(phpversion(), '7.2.0') >= 0) {
+if (version_compare(phpversion(), '5.4.0') < 0 || version_compare(phpversion(), '7.4.0') >= 0) {
 	header('Content-Type: text/html; charset=UTF-8');
 	$serverPhpVersion = phpversion();
 	require_once 'phpversionfail.php';
@@ -135,8 +135,8 @@ if (isset($_SESSION['authenticated_user_id']) && (isset($_SESSION['app_unique_ke
 
 // Prevent loading Login again if there is an authenticated user in the session.
 if (isset($_SESSION["authenticated_user_id"]) && isset($module) && $module == 'Users' && $action == 'Login') {
-	$default_action = GlobalVariable::getVariable('Application_Default_Action', 'index', '', $_SESSION["authenticated_user_id"]);
-	$default_module = GlobalVariable::getVariable('Application_Default_Module', 'Home', '', $_SESSION["authenticated_user_id"]);
+	$default_action = GlobalVariable::getVariable('Application_Default_Action', 'index', 'Home', $_SESSION["authenticated_user_id"]);
+	$default_module = GlobalVariable::getVariable('Application_Default_Module', 'Home', 'Home', $_SESSION["authenticated_user_id"]);
 	$result = $adb->pquery('select tabid from vtiger_tab where name=?', array($default_module));
 	if (!$result || $adb->num_rows($result)==0) {
 		$default_module = 'Home';
@@ -150,14 +150,18 @@ if ($use_current_login) {
 		$qry_res = $adb->pquery("select internal_mailer from vtiger_users where id=?", array($_SESSION["authenticated_user_id"]));
 		coreBOS_Session::set('internal_mailer', $adb->query_result($qry_res, 0, 'internal_mailer'));
 	}
-	$log->debug("We have an authenticated user id: ".$_SESSION["authenticated_user_id"]);
+	$log->debug('authenticated user: '.$_SESSION['authenticated_user_id']);
+	if (coreBOS_Settings::getSetting('cbSMActive', 0) && !is_adminID($_SESSION['authenticated_user_id'])) {
+		include 'modules/Vtiger/maintenance.php';
+		exit;
+	}
 } elseif (isset($action) && isset($module) && $action=="Authenticate" && $module=="Users") {
-	$log->debug("We are authenticating user now");
+	$log->debug('authenticating user');
 } else {
 	if (!isset($_REQUEST['action']) || ($_REQUEST['action'] != 'Logout' && $_REQUEST['action'] != 'Login')) {
 		coreBOS_Session::set('lastpage', $_SERVER['QUERY_STRING']);
 	}
-	$log->debug('The current user does not have a session. Going to the login page');
+	$log->debug('no session > login page');
 	if (isset($_REQUEST['action']) && substr($_REQUEST['action'], -4)=='Ajax') {
 		echo 'Login';
 		die();
@@ -168,14 +172,13 @@ if ($use_current_login) {
 	exit;
 }
 
-$log->debug($_REQUEST);
 $skipHeaders=false;
 $skipFooters=false;
 $viewAttachment = false;
 $skipSecurityCheck= false;
 
 if (isset($action) && isset($module)) {
-	$log->info("About to take action ".$action);
+	$log->debug('action '.$action);
 	if (preg_match("/^Popup/", $action) ||
 		preg_match("/^".$module."Ajax/", $action) ||
 		preg_match("/^Save/", $action) ||
@@ -190,17 +193,17 @@ if (isset($action) && isset($module)) {
 		preg_match("/^UserInfoUtil/", $action) ||
 		preg_match("/^deleteRole/", $action) ||
 		preg_match("/^minical/", $action) ||
-		preg_match("/^send_mail/", $action) ||
 		preg_match("/^populatetemplate/", $action) ||
 		preg_match("/^TemplateMerge/", $action) ||
 		preg_match("/^testemailtemplateusage/", $action) ||
 		preg_match("/^saveemailtemplate/", $action) ||
 		preg_match("/^ProcessDuplicates/", $action) ||
+		preg_match("/^deleteattachments/", $action) ||
+		preg_match("/^CreateXL/", $action) ||
 		preg_match("/^lastImport/", $action) ||
 		preg_match("/^lookupemailtemplate/", $action) ||
 		preg_match("/^deleteemailtemplate/", $action) ||
 		preg_match("/^CurrencyDelete/", $action) ||
-		preg_match("/^deleteattachments/", $action) ||
 		preg_match("/^UpdateFieldLevelAccess/", $action) ||
 		preg_match("/^UpdateDefaultFieldLevelAccess/", $action) ||
 		preg_match("/^UpdateProfile/", $action) ||
@@ -210,36 +213,25 @@ if (isset($action) && isset($module)) {
 		preg_match("/^addPbProductRelToDB/", $action) ||
 		preg_match("/^UpdateListPrice/", $action) ||
 		preg_match("/^PriceListPopup/", $action) ||
-		preg_match("/^SalesOrderPopup/", $action) ||
 		preg_match("/^CreatePDF/", $action) ||
 		preg_match("/^CreateSOPDF/", $action) ||
 		preg_match("/^redirect/", $action) ||
 		preg_match("/^webmail/", $action) ||
-		preg_match("/^folders_create/", $action) ||
-		preg_match("/^imap_general/", $action) ||
 		preg_match("/^download/", $action) ||
-		preg_match("/^SendMailAction/", $action) ||
-		preg_match("/^CreateXL/", $action) ||
 		preg_match("/^home_rss/", $action) ||
 		preg_match("/^ConvertAsFAQ/", $action) ||
 		preg_match("/^ActivityAjax/", $action) ||
 		preg_match("/^updateCalendarSharing/", $action) ||
 		preg_match("/^disable_sharing/", $action) ||
-		preg_match("/^TodoSave/", $action) ||
 		preg_match("/^RecalculateSharingRules/", $action) ||
-		(preg_match("/^body/", $action) && preg_match("/^Webmails/", $module)) ||
-		(preg_match("/^dlAttachments/", $action) && preg_match("/^Webmails/", $module)) ||
-		(preg_match("/^DetailView/", $action) && preg_match("/^Webmails/", $module)) ||
 		preg_match("/^savewordtemplate/", $action) ||
 		preg_match("/^deletewordtemplate/", $action) ||
 		preg_match("/^mailmergedownloadfile/", $action) ||
-		(preg_match("/^Webmails/", $module) && preg_match("/^get_img/", $action)) ||
-		preg_match("/^download/", $action) ||
 		preg_match("/^getListOfRecords/", $action) ||
 		preg_match("/^iCalExport/", $action)
 		) {
 		$skipHeaders=true;
-		//skip headers for all these invocations as they are mostly popups
+		//skip headers for all these invocations
 		if (preg_match("/^Popup/", $action) ||
 			preg_match("/^".$module."Ajax/", $action) ||
 			preg_match("/^MassEditSave/", $action) ||
@@ -248,22 +240,16 @@ if (isset($action) && isset($module)) {
 			preg_match("/^home_rss/", $action) ||
 			preg_match("/^massdelete/", $action) ||
 			preg_match("/^mailmergedownloadfile/", $action) ||
-			preg_match("/^get_img/", $action) ||
 			preg_match("/^download/", $action) ||
 			preg_match("/^ProcessDuplicates/", $action) ||
 			preg_match("/^lastImport/", $action) ||
-			preg_match("/^massdelete/", $action) ||
 			preg_match("/^getListOfRecords/", $action) ||
 			preg_match("/^iCalExport/", $action)
 			) {
 			$skipFooters=true;
 		}
-		//skip footers for all these invocations as they are mostly popups
-		if (preg_match("/^mailmergedownloadfile/", $action)
-		|| preg_match("/^get_img/", $action)
-		|| preg_match("/^dlAttachments/", $action)
-		|| preg_match("/^iCalExport/", $action)
-		) {
+		//skip footers for all these invocations
+		if (preg_match("/^mailmergedownloadfile/", $action) || preg_match("/^iCalExport/", $action)) {
 			$viewAttachment = true;
 		}
 		if ($action == ' Delete ') {
@@ -296,8 +282,8 @@ if (isset($action) && isset($module)) {
 	} else {
 		$userid = 1;
 	}
-	$default_action = GlobalVariable::getVariable('Application_Default_Action', 'index', '', $userid);
-	$default_module = GlobalVariable::getVariable('Application_Default_Module', 'Home', '', $userid);
+	$default_action = GlobalVariable::getVariable('Application_Default_Action', 'index', 'Home', $userid);
+	$default_module = GlobalVariable::getVariable('Application_Default_Module', 'Home', 'Home', $userid);
 	$result = $adb->pquery('select tabid from vtiger_tab where name=?', array($default_module));
 	if (!$result || $adb->num_rows($result)==0) {
 		$default_module = 'Home';
@@ -305,8 +291,6 @@ if (isset($action) && isset($module)) {
 	header("Location: index.php?action=$default_action&module=$default_module");
 	exit();
 }
-
-$log->info("current page is $currentModuleFile current module is $currentModule ");
 
 $module = (isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : '');
 $action = (isset($_REQUEST['action']) ? vtlib_purify($_REQUEST['action']) : '');
@@ -325,8 +309,6 @@ if ($use_current_login) {
 	}
 	coreBOS_Session::setUserGlobalSessionVariables();
 
-	//auditing
-	require_once 'user_privileges/audit_trail.php';
 	/* Skip audit trail log for special request types */
 	$skip_auditing = false;
 	if (($action == 'ActivityReminderCallbackAjax' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'ActivityReminderCallbackAjax')) && $module == 'Calendar') {
@@ -334,23 +316,43 @@ if ($use_current_login) {
 	} elseif (($action == 'TraceIncomingCall' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'TraceIncomingCall')) && $module == 'PBXManager') {
 		$skip_auditing = true;
 	}
-	if ($audit_trail == 'true' && !$skip_auditing) {
+	$privileges = $current_user->getPrivileges();
+	if (coreBOS_Settings::getSetting('audit_trail', false) && !$skip_auditing) {
+		$auditaction = $action;
 		if ($action=='Save') {
 			if (empty($record)) {
-				$action = 'Save (Create)';
+				$auditaction = 'Save (Create)';
 			} else {
-				$action = 'Save (Edit)';
+				$auditaction = 'Save (Edit)';
+			}
+		} elseif ($action=='ReportsAjax') {
+			switch ($_REQUEST['file']) {
+				case 'CreatePDF':
+					$auditaction = 'Report Export PDF';
+					break;
+				case 'CreateCSV':
+					$auditaction = 'Report Export CSV';
+					break;
+				case 'CreateXL':
+					$auditaction = 'Report Export XLS';
+					break;
+				case 'PrintReport':
+					$auditaction = 'Report Print';
+					break;
+				case 'getJSON':
+				default:
+					$auditaction = 'Report View';
+					break;
 			}
 		}
 		$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
 		$query = 'insert into vtiger_audit_trial values(?,?,?,?,?,?)';
-		$qparams = array($adb->getUniqueID('vtiger_audit_trial'), $current_user->id, $module, $action, $record, $date_var);
+		$qparams = array($adb->getUniqueID('vtiger_audit_trial'), $current_user->id, $module, $auditaction, $record, $date_var);
 		$adb->pquery($query, $qparams);
 	}
 	if (!$skip_auditing) {
 		cbEventHandler::do_action('corebos.audit.action', array($current_user->id, $module, $action, $record, date('Y-m-d H:i:s')));
 	}
-	$log->debug('Current user is: '.$current_user->user_name);
 }
 // Force password change
 if ($current_user->mustChangePassword() && $_REQUEST['action']!='Logout' && $_REQUEST['action']!='CalendarAjax' && $_REQUEST['action']!='UsersAjax'
@@ -358,7 +360,7 @@ if ($current_user->mustChangePassword() && $_REQUEST['action']!='Logout' && $_RE
 ) {
 	$currentModule = 'Users';
 	$currentModuleFile = 'modules/Users/DetailView.php';
-	$_REQUEST['action'] = $action = 'DeatilView';
+	$_REQUEST['action'] = $action = 'DetailView';
 	$_REQUEST['module'] = $module = 'Users';
 	$_REQUEST['record'] = $current_user->id;
 }
@@ -373,10 +375,6 @@ if (isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_aut
 	}
 }
 $theme = basename(vtlib_purify($theme));
-$log->debug('Current theme is: '.$theme);
-
-//Used for current record focus
-$focus = "";
 
 // if the language is not set yet, then set it to the default language.
 if (isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] != '') {
@@ -388,7 +386,6 @@ if (isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_
 		$current_language = $default_language;
 	}
 }
-$log->debug('current_language is: '.$current_language);
 
 //set module and application string arrays based upon selected language
 $app_currency_strings = return_app_currency_strings_language($current_language);
@@ -396,23 +393,14 @@ $app_strings = return_application_language($current_language);
 $mod_strings = return_module_language($current_language, $currentModule);
 
 //If DetailView, set focus to record passed in
-if ($action == "DetailView") {
+if ($action == 'DetailView') {
 	if (empty($_REQUEST['record'])) {
 		die('A record number must be specified to view details.');
 	}
-
 	// If we are going to a detail form, load up the record now and use the record to track the viewing.
-	switch ($currentModule) {
-		case 'Webmails':
-			//No need to create a webmail object here
-			break;
-		default:
-			$focus = CRMEntity::getInstance($currentModule);
-			break;
-	}
-
-	if (isset($_REQUEST['record']) && $_REQUEST['record']!='' && $_REQUEST["module"] != "Webmails" && $current_user->id != '') {
+	if (!empty($_REQUEST['record']) && !empty($current_user->id)) {
 		// Only track a viewing if the record was retrieved.
+		$focus = CRMEntity::getInstance($currentModule);
 		$focus->track_view($current_user->id, $currentModule, $_REQUEST['record']);
 	}
 }
@@ -421,7 +409,6 @@ if ($action == "DetailView") {
 $siteURLParts = parse_url($site_URL);
 $cookieDomain = $siteURLParts['host'];
 if (isset($_SESSION['authenticated_user_id'])) {
-	$log->debug("setting cookie ck_login_id_vtiger to ".$_SESSION['authenticated_user_id']);
 	setcookie('ck_login_id_vtiger', $_SESSION['authenticated_user_id'], 0, null, $cookieDomain, false, true);
 }
 
@@ -433,7 +420,6 @@ if ($_REQUEST['module'] == 'Documents' && $action == 'DownloadFile') {
 
 //skip headers for popups, deleting, saving, importing and other actions
 if (!$skipHeaders) {
-	$log->debug("including headers");
 	if ($use_current_login) {
 		include 'modules/Vtiger/header.php';
 	}
@@ -444,7 +430,6 @@ if (!$skipHeaders) {
 		getBrowserVariables($vartpl);
 		$vartpl->display('BrowserVariables.tpl');
 	}*/
-	$log->debug("skipping headers");
 }
 
 //logging the security Information
@@ -528,7 +513,7 @@ if ((!$viewAttachment) && (!$viewAttachment && $action!='home_rss') && $action!=
 			echo '&nbsp;('.($coreBOS_uiapp_showgitversion ? $gitversion : '').($coreBOS_uiapp_showgitdate ? $gitdate : '').')';
 		}
 		echo '</span></td>';
-		echo "<td class=small align=right><span>&copy; 2004-".date('Y')." <a href='$coreBOS_uiapp_url' target='_blank'>$coreBOS_uiapp_companyname</a></span></td></tr></table>";
+		echo "<td class='cblds-t-align_right small' align=right><span>&copy; 2004-".date('Y')." <a href='$coreBOS_uiapp_url' target='_blank'>$coreBOS_uiapp_companyname</a></span></td></tr></table>";
 		if ($calculate_response_time) {
 			$endTime = microtime(true);
 			echo "<table align='center'><tr><td align='center'>";

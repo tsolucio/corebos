@@ -17,17 +17,27 @@
 *  Version      : 5.5.0
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
-require_once('vtlib/Vtiger/Unzip.php');
+require_once 'vtlib/Vtiger/Unzip.php';
 
 global $adb;
 $cspath = 'build/changeSets/imported';
 if (!is_dir($cspath)) {
 	mkdir($cspath);
 }
+
+if (isOnDemandActive()) {
+	require_once 'Smarty_setup.php';
+	$smarty = new vtigerCRM_Smarty();
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('OPERATION_MESSAGE', getTranslatedString('LBL_PERMISSION'));
+	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
+	die();
+}
+
 $zipfile = '';
-if (count($_FILES)==1 and !empty($_FILES['zipfile'])
- and !empty($_FILES['zipfile']['tmp_name']) and !empty($_FILES['zipfile']['type'])
- and $_FILES['zipfile']['type']=='application/zip') {
+if (count($_FILES)==1 && !empty($_FILES['zipfile'])
+ && !empty($_FILES['zipfile']['tmp_name']) && !empty($_FILES['zipfile']['type'])
+ && $_FILES['zipfile']['type']=='application/zip') {
 	$zipfile = $_FILES['zipfile']['tmp_name'];
 }
 
@@ -62,18 +72,18 @@ function cbupd_import($zipfile) {
 			echo "XML File found: $filename <br>";
 			$cbupdates= new DOMDocument();
 			if ($cbupdates->load($cspath.'/'.$filename)) {
-				echo "XML File loaded!<br>";
+				echo 'XML File loaded!<br>';
 				if ($cbupdates->schemaValidate('modules/cbupdater/cbupdater.xsd')) {
-					echo "XML File validated!<br>";
+					echo 'XML File validated!<br>';
 					$csxmlfound = true;
 					$w=new XMLWriter();
 					$w->openMemory();
 					$w->setIndent(true);
 					$w->startDocument('1.0', 'UTF-8');
-					$w->startElement("updatesChangeLog");
+					$w->startElement('updatesChangeLog');
 					$root = $cbupdates->documentElement;
 					foreach ($root->childNodes as $node) {
-						if (get_class($node)=='DOMElement' and $node->nodeName=='changeSet') {
+						if (get_class($node)=='DOMElement' && $node->nodeName=='changeSet') {
 							$elems = $node->getElementsByTagName('*');
 							$upd = array();
 							foreach ($elems as $elem) {
@@ -85,26 +95,31 @@ function cbupd_import($zipfile) {
 								}
 							}
 							echo $processing.getTranslatedString('ChangeSet', 'cbupdater').' '.$upd['classname'].'<br>';
-							$w->startElement("changeSet");
+							$w->startElement('changeSet');
 							if (!empty($upd['author'])) {
-								$w->startElement("author");
+								$w->startElement('author');
 								$w->text($upd['author']);
 								$w->endElement();
 							}
 							if (!empty($upd['description'])) {
-								$w->startElement("description");
+								$w->startElement('description');
 								$w->text($upd['description']);
 								$w->endElement();
 							}
-								$w->startElement("filename");
-								$w->text($upd['filename']);
+							$w->startElement('filename');
+							$w->text($upd['filename']);
+							$w->endElement();
+							$w->startElement('classname');
+							$w->text($upd['classname']);
+							$w->endElement();
+							$w->startElement('systemupdate');
+							$w->text($upd['systemupdate'] == '1' ? 'true' : 'false');
+							$w->endElement();
+							if (isset($upd['continuous'])) {
+								$w->startElement('continuous');
+								$w->text($upd['continuous']);
 								$w->endElement();
-								$w->startElement("classname");
-								$w->text($upd['classname']);
-								$w->endElement();
-								$w->startElement("systemupdate");
-								$w->text($upd['systemupdate'] == '1' ? 'true' : 'false');
-								$w->endElement();
+							}
 							$w->endElement();
 						}
 					}
@@ -124,6 +139,8 @@ function cbupd_import($zipfile) {
 		echo getTranslatedString('ImportError', 'cbupdater').'<br>';
 		echo getTranslatedString('CleanUp', 'cbupdater').'<br>';
 		cbupd_cleanup($filelist);
+	} else {
+		include_once 'modules/cbupdater/getupdates.php';
 	}
 }
 

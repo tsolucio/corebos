@@ -20,7 +20,7 @@ $operationInfo = array(
 	 'prelogin'=> 1,
 	 'type'    => 'GET',
 	 'parameters' => array(
-	 	array('name' => 'username','type' => 'string'),
-	 	array('name' => 'password','type' => 'string'),
+		 array('name' => 'username','type' => 'string'),
+		 array('name' => 'password','type' => 'string'),
 	 )
 );

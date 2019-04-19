@@ -10,7 +10,7 @@
 /**
  * Russian tranlsation by Mihail Alasheyev [mihail.alasheyev@gmail.com] 2009.11.27
  **/
-$mod_strings = Array(
+$mod_strings = array(
 	'LBL_MODULE_NAME'=>'Проекты',
 	'LBL_MODULE_TITLE'=>'Проекты',
 	'LBL_NEW_PROJECT'=>'Новый проект',
@@ -22,7 +22,6 @@ $mod_strings = Array(
 	'LBL_CUSTOM_INFORMATION' => 'Пользовательская информация',
 	'LBL_PROJECT_INFORMATION' => 'Информация о проекте',
 	'LBL_DESCRIPTION_INFORMATION' => 'Описание проекта',
-	'projectid' => 'Идентификатор проекта',
 	'Project ID'=>'Идентификатор проекта',
 	'Assigned To' => 'Кому поручено',
 	'startdate' => 'Дата начала',
@@ -48,5 +47,4 @@ $mod_strings = Array(
 	'--none--' => '--ничего--',
 	'Project Name' => 'Наименование проекта',
 );
-
 ?>

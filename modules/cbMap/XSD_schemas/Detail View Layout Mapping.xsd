@@ -1,0 +1,60 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="map">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="originmodule" minOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="originname"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="blocks" minOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="block" minOccurs="1">
+                <xs:complexType mixed="true">
+                  <xs:sequence>
+                    <xs:element type="xs:string" name="label"/>
+                    <xs:element type="xs:string" name="sequence"/>    
+                    <xs:element name="type">
+                  <xs:simpleType>
+                 <xs:restriction base="xs:string">
+                <xs:enumeration value="ApplicationFields"/>
+             <xs:enumeration value="FieldList"/>
+           <xs:enumeration value="RelatedList"/>
+          <xs:enumeration value="Widget"/>
+        <xs:enumeration value="CodeWithHeader"/>
+        <xs:enumeration value="CodeWithoutHeader"/>
+          </xs:restriction>
+            </xs:simpleType>
+               </xs:element> 
+                    <xs:element type="xs:string" name="blockid"/>
+                    <xs:element name="layout">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="row">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="column"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element type="xs:string" name="loadfrom"/>
+                    <xs:element type="xs:string" name="loadcode"/>
+                    <xs:element type="xs:string" name="handler_path"/>
+                    <xs:element type="xs:string" name="handler_class"/>
+                    <xs:element type="xs:string" name="handler"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

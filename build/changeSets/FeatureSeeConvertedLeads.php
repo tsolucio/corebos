@@ -18,9 +18,11 @@ class FeatureSeeConvertedLeads extends cbupdaterWorker {
 
 	private $label = 'LBL_TGL_HISTORICOS';
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -32,8 +34,10 @@ class FeatureSeeConvertedLeads extends cbupdaterWorker {
 		$this->finishExecution();
 	}
 
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			// undo your magic here
 			$moduleInstance = Vtiger_Module::getInstance('Leads');

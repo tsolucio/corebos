@@ -20,9 +20,9 @@ $operationInfo = array(
 	 'prelogin'=> 0,
 	 'type'    => 'POST',
 	 'parameters' => array(
-	 	array('name' => 'id','type' => 'String'),
-	 	array('name' => 'module','type' => 'String'),
-	 	array('name' => 'relatedModule','type' => 'String'),
-	 	array('name' => 'queryParameters','type' => 'encoded')
+		 array('name' => 'id','type' => 'String'),
+		 array('name' => 'module','type' => 'String'),
+		 array('name' => 'relatedModule','type' => 'String'),
+		 array('name' => 'queryParameters','type' => 'encoded')
 	 )
 );

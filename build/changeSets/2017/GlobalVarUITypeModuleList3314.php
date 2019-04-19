@@ -16,21 +16,22 @@
 
 class GlobalVarUITypeModuleList3314 extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
 			// change uitype
-			$field = Vtiger_Field::getInstance('module_list',$moduleInstance);
+			$field = Vtiger_Field::getInstance('module_list', $moduleInstance);
 			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set uitype=3314 where fieldid=?',array($field->id));
+				$this->ExecuteQuery('update vtiger_field set uitype=3314 where fieldid=?', array($field->id));
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-
 }

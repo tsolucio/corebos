@@ -9,13 +9,13 @@
  *********************************************************************************/
 require_once 'modules/VtigerBackup/Locations/Location.php';
 
-class Vtiger_LocalBackup extends Vtiger_Location{
+class Vtiger_LocalBackup extends Vtiger_Location {
 	protected $path;
 	public function __construct($limit) {
 		parent::__construct($limit);
 		$db = PearDatabase::getInstance();
-		$result = $db->pquery('SELECT * FROM vtiger_systems WHERE server_type = ?',array('local_backup'));
-		$this->path = $db->query_result($result,0,'server_path');
+		$result = $db->pquery('SELECT * FROM vtiger_systems WHERE server_type = ?', array('local_backup'));
+		$this->path = $db->query_result($result, 0, 'server_path');
 		$this->path = $this->addTrailingSlash($this->path);
 	}
 
@@ -26,7 +26,7 @@ class Vtiger_LocalBackup extends Vtiger_Location{
 	public function limitbackup() {
 		$directoryPath = $this->getPath();
 		$fileList = $this->getBackupTimeList();
-		for ($index=0; count($fileList) > $this->limit -1 ; ++$index) {
+		for ($index=0; count($fileList) > $this->limit -1; ++$index) {
 			$fileName = Vtiger_BackupZip::getDefaultFileName($fileList[$index]);
 			unlink($directoryPath.$fileName);
 			unset($fileList[$index]);
@@ -46,13 +46,13 @@ class Vtiger_LocalBackup extends Vtiger_Location{
 			$file = realpath($file);
 			if (is_file($file) === true) {
 				$fileName = $this->getFileName($file);
-				if (strpos($fileName,'-')!==false) {
-					$fileName = explode('-',$fileName);
+				if (strpos($fileName, '-')!==false) {
+					$fileName = explode('-', $fileName);
 					$fileName = $fileName[1];
 				}
-				$date = substr($fileName, 0, strrpos($fileName,'.'));
-				$date = str_replace('_',':',$date);
-				if(strtotime($date) !== false) {
+				$date = substr($fileName, 0, strrpos($fileName, '.'));
+				$date = str_replace('_', ':', $date);
+				if (strtotime($date) !== false) {
 					$fileList[] = strtotime($date);
 				}
 			}
@@ -66,8 +66,10 @@ class Vtiger_LocalBackup extends Vtiger_Location{
 		$directoryPath = $this->getPath();
 		// initialize an iterator
 		// pass it the directory to be processed
-		$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directoryPath),
-				RecursiveIteratorIterator::SELF_FIRST);
+		$iterator = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator($directoryPath),
+			RecursiveIteratorIterator::SELF_FIRST
+		);
 
 		// iterate over the directory
 		// add each file found to the archive
@@ -75,11 +77,11 @@ class Vtiger_LocalBackup extends Vtiger_Location{
 			$file = realpath($file);
 			if (is_file($file) === true) {
 				$origFileName = $this->getFileName($file);
-				$fileName = explode('-',$origFileName);
+				$fileName = explode('-', $origFileName);
 				$fileName = $fileName[1];
-				$date = substr($fileName, 0, strrpos($fileName,'.'));
-				$date = str_replace('_',':',$date);
-				if(strtotime($date) !== false) {
+				$date = substr($fileName, 0, strrpos($fileName, '.'));
+				$date = str_replace('_', ':', $date);
+				if (strtotime($date) !== false) {
 					$fileList[] = $origFileName;
 				}
 			}
@@ -92,8 +94,10 @@ class Vtiger_LocalBackup extends Vtiger_Location{
 		$directoryPath = $this->getPath();
 		// initialize an iterator
 		// pass it the directory to be processed
-		$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directoryPath),
-				RecursiveIteratorIterator::SELF_FIRST);
+		$iterator = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator($directoryPath),
+			RecursiveIteratorIterator::SELF_FIRST
+		);
 
 		// iterate over the directory
 		// add each file found to the archive
@@ -102,11 +106,11 @@ class Vtiger_LocalBackup extends Vtiger_Location{
 			$file = realpath($file);
 			if (is_file($file) === true) {
 				$origFileName = $this->getFileName($file);
-				$fileName = explode('-',$origFileName);
+				$fileName = explode('-', $origFileName);
 				$fileName = $fileName[1];
-				$date = substr($fileName, 0, strrpos($fileName,'.'));
-				$date = str_replace('_',':',$date);
-				if(strtotime($date) !== false) {
+				$date = substr($fileName, 0, strrpos($fileName, '.'));
+				$date = str_replace('_', ':', $date);
+				if (strtotime($date) !== false) {
 					$info['time'] = $date;
 					$info['name'] = $origFileName;
 					$info['size'] = filesize($file).' Bytes';

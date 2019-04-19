@@ -373,7 +373,7 @@ function getMapFieldDependency(){
 
      function initListOfModules(){
             global $adb;
-            $restricted_modules = array('Emails','Events','Webmails');
+            $restricted_modules = array('Emails','Events');
             $restricted_blocks = array('LBL_IMAGE_INFORMATION','LBL_COMMENTS','LBL_COMMENT_INFORMATION');
             //tabid and name of modules
             $this->module_id = array();
@@ -1306,7 +1306,6 @@ function getBlocksPortal1($module, $disp_view, $mode, $col_fields = '', $info_ty
 	  } */
 
 	//retreive the vtiger_profileList from database
-	require('user_privileges/user_privileges_' . $current_user->id . '.php');
 	if ($disp_view == "detail_view") {
 		
 			$profileList = array($profile);

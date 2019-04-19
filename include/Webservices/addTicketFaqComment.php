@@ -25,47 +25,47 @@ require_once 'include/Webservices/Revise.php';
  * 		'parent_id' webservice id of the contact creating the comment from the portal
  * 		'comments' string, comment to add
 */
-	function vtws_addTicketFaqComment($id, $values, $user){
-		global $log,$adb,$current_user;
+function vtws_addTicketFaqComment($id, $values, $user) {
+	global $log,$adb,$current_user;
 
-		$webserviceObject = VtigerWebserviceObject::fromId($adb,$id);
-		$handlerPath = $webserviceObject->getHandlerPath();
-		$handlerClass = $webserviceObject->getHandlerClass();
+	$webserviceObject = VtigerWebserviceObject::fromId($adb, $id);
+	$handlerPath = $webserviceObject->getHandlerPath();
+	$handlerClass = $webserviceObject->getHandlerClass();
 
-		require_once $handlerPath;
-		
-		$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
-		$meta = $handler->getMeta();
-		$entityName = $meta->getObjectEntityName($id);
+	require_once $handlerPath;
 
-		if($entityName !== 'HelpDesk' and $entityName !== 'Faq'){
-			throw new WebServiceException(WebServiceErrorCode::$INVALIDID,"Invalid module specified. Must be HelpDesk or Faq");
-		}
+	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
+	$meta = $handler->getMeta();
+	$entityName = $meta->getObjectEntityName($id);
 
-		if($meta->hasReadAccess()!==true){
-			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to write is denied");
-		}
-
-		if($entityName !== $webserviceObject->getEntityName()){
-			throw new WebServiceException(WebServiceErrorCode::$INVALIDID,"Id specified is incorrect");
-		}
-		
-		if(!$meta->hasPermission(EntityMeta::$RETRIEVE,$id)){
-			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to read given object is denied");
-		}
-		
-		$idComponents = vtws_getIdComponents($id);
-		if(!$meta->exists($idComponents[1])){
-			throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND,"Record you are trying to access is not found");
-		}
-
-		$comment = trim($values['comments']);
-		if (empty($comment)) {
-			throw new WebServiceException(WebServiceErrorCode::$MANDFIELDSMISSING,"Comment empty.");
-		}
-
-		vtws_revise(array('id'=>$id,'comments'=>$comment,'from_portal'=>vtlib_purify($values['from_portal'])),$current_user);
-		VTWS_PreserveGlobal::flush();
-		return array('success'=>true);
+	if ($entityName !== 'HelpDesk' && $entityName !== 'Faq') {
+		throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Invalid module specified. Must be HelpDesk or Faq');
 	}
+
+	if ($meta->hasReadAccess()!==true) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to write is denied');
+	}
+
+	if ($entityName !== $webserviceObject->getEntityName()) {
+		throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
+	}
+
+	if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $id)) {
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
+	}
+
+	$idComponents = vtws_getIdComponents($id);
+	if (!$meta->exists($idComponents[1])) {
+		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
+	}
+
+	$comment = trim($values['comments']);
+	if (empty($comment)) {
+		throw new WebServiceException(WebServiceErrorCode::$MANDFIELDSMISSING, 'Comment empty.');
+	}
+
+	vtws_revise(array('id'=>$id, 'comments'=>$comment, 'from_portal'=>vtlib_purify($values['from_portal'])), $current_user);
+	VTWS_PreserveGlobal::flush();
+	return array('success'=>true);
+}
 ?>

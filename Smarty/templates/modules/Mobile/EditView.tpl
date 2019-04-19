@@ -17,6 +17,7 @@
 	<link rel="stylesheet" href="resources/css/theme.css" >
 	<script type="text/javascript" src="resources/jquery.blockUI.js" ></script>
 	<script type="text/javascript" src="resources/crmtogo.js"></script>
+	<script type="text/javascript" src="resources/documents.js"></script>
 	<script type="text/javascript" src="resources/lang/{$LANGUAGE}.lang.js"></script>
 	<style>
 	</style>
@@ -63,10 +64,10 @@
 					<p>
 					{foreach item=_FIELD from=$_FIELDS}
 						{if $_FIELD->displaytype() eq '1' || ($_FIELD->name() eq 'time_start' || $_FIELD->name() eq 'time_end' || $_FIELD->name() eq 'date_start' || $_FIELD->name() eq 'due_date' || $_FIELD->name() eq 'followupdt')}
-							<div>   
+							<div>
 								{if $_FIELD->uitype() eq '1' || $_FIELD->uitype() eq '2' || $_FIELD->uitype() eq '55' || $_FIELD->uitype() eq '255' || $_FIELD->uitype() eq '11'  || $_FIELD->uitype() eq '13'  || $_FIELD->uitype() eq '17' || $_FIELD->uitype() eq '72' || $_FIELD->uitype() eq '22'  || $_FIELD->uitype() eq '20'}
 										<label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
-										<input  type="text" name="{$_FIELD->name()}" id="{$_FIELD->label()}" value="{$_FIELD->valueLabel()}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
+										<input  type="text" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$_FIELD->valueLabel()}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
 			   				    {/if}
 								{if $_FIELD->uitype() eq '23' || $_FIELD->uitype() eq '5' || $_FIELD->uitype() eq '6' || $_FIELD->uitype() eq '252'}
 										{foreach key=date_value item=time_value from=$_FIELD->value()}
@@ -75,7 +76,7 @@
 										{/foreach}
 										{assign var=dateFormat value="$SMARTYDATEFORMAT"}
 										{assign var=dateStr value="$HOURFORMATFORMAT"}
-										
+
 										{if $_FIELD->name() neq 'time_start' && $_FIELD->name() neq 'time_end' && $_FIELD->name() neq 'followupdt'}
 											{if $_FIELD->name() eq 'date_start'}
 												<input type="hidden" name="dateformat" id="dateformat" value="{$DATEFORMAT}" />
@@ -104,10 +105,10 @@
 											<input type="time" name="followupdt_time" id="followupdt_time" value="{if isset($fldtime[1])}{$fldtime[1]}{/if}" />
 											<div id="format_note_followupdt_time" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">Format: HH:MM (24 H)</div>
 										{/if}
-								{/if}	
+								{/if}
 								{if $_FIELD->uitype() eq '4'}
 									<label for="{$_FIELD->name()}" >{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
-									<input  type="text" class="ui-disabled" name="{$_FIELD->name()}" id="{$_FIELD->label()}" value="{$_FIELD->value()}"  />
+									<input  type="text" class="ui-disabled" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$_FIELD->value()}"  />
 								{/if}
 								{if $_FIELD->uitype() eq '15'}
 									    <label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
@@ -168,7 +169,7 @@
 											<input id="User"  type="radio"  name="assigntype" {$select_user} value="U" >
 											<label for="Group">{$MOD.LBL_GROUP}</label>
 											<input  id="Group" type="radio" name="assigntype" {$select_group} value="T" >
-										</fieldset>   
+										</fieldset>
 									</div>
 									<span id="assign_user" style="{$style_user}">
 										<select name="assigned_user_id"  data-mini="true"   class="select" data-native-menu="false">
@@ -209,7 +210,7 @@
  								{if $_FIELD->uitype() eq '56'}
 									<div>
 										<label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
-										<input type="checkbox" name="{$_FIELD->name()}" id="{$_FIELD->label()}" class="custom" />
+										<input type="checkbox" name="{$_FIELD->name()}" id="{$_FIELD->name()}" {if $_FIELD->value() eq 1} checked {/if} class="custom" />
 									</div>
 								{/if}
 								{if ($_FIELD->uitype() eq '10')||  ($_FIELD->uitype() eq '51')|| ($_FIELD->uitype() eq '68')}
@@ -244,30 +245,54 @@
 								    <div>
 										<input  type="hidden" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$_FIELD->value()}"  />
 								    </div>
-							    {/if}		
+							    {/if}
 								{if $_FIELD->uitype() eq '9'}
 								    <div>
 										<label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->name() eq 'probability'} %{/if}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
-										<input  type="text" name="{$_FIELD->name()}" id="{$_FIELD->label()}" value="{$_FIELD->valueLabel()}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
+										<input  type="text" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$_FIELD->valueLabel()}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
 								    </div>
-							    {/if}		
+							    {/if}
 								{if $_FIELD->uitype() eq '69'}
 								    <div>
 										<button id="chooseFile">{$_FIELD->label()}</button>
 										<div style="display: none;">
-											<input type="file" id="file-input" data-clear-btn="false" name="image" accept="image/*" capture>
+											<input type="file" id="{$_FIELD->name()}" data-clear-btn="false" name="{$_FIELD->name()}" accept="image/*" capture>
 										</div>
 										<div id="preview">
 											<img  id="contactimage" src="{$_FIELD->valueLabel()}" >
 										</div>
 								    </div>
-							    {/if}		
+							    {/if}
  								{if $_FIELD->uitype() eq '71' || $_FIELD->uitype() eq '7'}
 								    <div>
 										<label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
-										<input  type="text" name="{$_FIELD->name()}" id="{$_FIELD->label()}" value="{$_FIELD->valueLabel()}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
+										<input  type="text" name="{$_FIELD->name()}" id="{$_FIELD->name()}" value="{$_FIELD->valueLabel()}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
 								    </div>
 							    {/if}
+								{if $_FIELD->uitype() eq 26}
+									<label for="{$_FIELD->label()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
+									<select id="{$_FIELD->name()}" name="{$_FIELD->name()}" data-mini="true" class="select" data-native-menu="false">
+											{foreach item=arr from=$_FIELD->value()}
+												<option value="{$arr.value}" {if isset($arr.selected)}{$arr.selected}{/if}>
+													{$arr.label}
+												</option>
+											{/foreach}
+									</select>
+								{/if}
+								{if $_FIELD->uitype() eq '28'}
+									<input name="{$_FIELD->name()}" id="{$_FIELD->name()}" type="file" value="{$_FIELD->valueLabel()}" onchange="validateFilename(this);validateFileSize(this,'{$UPLOAD_MAXSIZE}');"/>
+									<input type="hidden" name="{$_FIELD->name()}_hidden" value="{$_FIELD->valueLabel()}"/>
+									<div id="displaySize"></div>
+									<span id="{$_FIELD->name()}_value" style="display:none;">
+									{if {$_FIELD->name()} neq ''}
+										{$_FIELD->name()}
+									{/if}
+									<input typè="hidden" id="filetype" name="filetype" value=""/>
+									<input typè="hidden" id="filesize" name="filesize" value="0"/>
+									<input typè="hidden" id="filelocationtype" name="filelocationtype" value="I"/>
+									</span>
+									<span id="limitmsg" style= "color:red; display:block;"> {'LBL_MAX_SIZE'|@getTranslatedString:$MODULE} {$UPLOADSIZE}{'LBL_FILESIZEIN_MB'|@getTranslatedString:$_MODULE->name()}</span>
+								{/if}
                           </div>
 						{/if}
 					{/foreach}

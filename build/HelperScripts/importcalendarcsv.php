@@ -30,23 +30,23 @@
 
 $Vtiger_Utils_Log = true;
 
-include_once('vtlib/Vtiger/Module.php');
+include_once 'vtlib/Vtiger/Module.php';
 
 $current_user = Users::getActiveAdminUser();
 
 $file = $argv[1];
 
-if(!file_exists($file) || !is_readable($file)) {
+if (!file_exists($file) || !is_readable($file)) {
 	echo "No suitable file specified" . PHP_EOL;
 	die;
 }
 
-function csv_to_array($file='', $length = 0, $delimiter=',') {
-	$header = NULL;
+function csv_to_array($file = '', $length = 0, $delimiter = ',') {
+	$header = null;
 	$data = array();
-	if (($handle = fopen($file, 'r')) !== FALSE) {
-		while (($row = fgetcsv($handle, $length, $delimiter)) !== FALSE) {
-			if(!$header) {
+	if (($handle = fopen($file, 'r')) !== false) {
+		while (($row = fgetcsv($handle, $length, $delimiter)) !== false) {
+			if (!$header) {
 				$header = $row;
 			} else {
 				$data[] = array_combine($header, $row);
@@ -70,82 +70,82 @@ foreach (csv_to_array($file) as $row) {
 		}
 		$row['recurringtype'] = '--None--';
 		//Validate if we have the parent_id
-		$relate_to = explode('x',$row['parent_id']);
-		if(count($relate_to) == 2){
-			if(is_numeric($relate_to[0]) && is_numeric($relate_to[0])){
-				$wsrs = $adb->pquery('select name FROM vtiger_ws_entity where id=?',array($relate_to[0]));
-				if (!$wsrs or $adb->num_rows($wsrs)==0){
+		$relate_to = explode('x', $row['parent_id']);
+		if (count($relate_to) == 2) {
+			if (is_numeric($relate_to[0]) && is_numeric($relate_to[0])) {
+				$wsrs = $adb->pquery('select name FROM vtiger_ws_entity where id=?', array($relate_to[0]));
+				if (!$wsrs || $adb->num_rows($wsrs)==0) {
 					$setype = getSalesEntityType($relate_to[1]);
-					$wsrs = $adb->pquery('select id FROM vtiger_ws_entity where name=?',array($setype));
-					if ($wsrs or $adb->num_rows($wsrs)==1){
+					$wsrs = $adb->pquery('select id FROM vtiger_ws_entity where name=?', array($setype));
+					if ($wsrs || $adb->num_rows($wsrs)==1) {
 						$wsid = $adb->query_result($wsrs, 0, 'id');
 						$row['parent_id'] = $wsid.'x'.$relate_to[1];
-					}else{
+					} else {
 						$row['parent_id'] = '';
 					}
-				}else{
+				} else {
 					$wsname = $adb->query_result($wsrs, 0, 'name');
 					$setype = getSalesEntityType($relate_to[1]);
-					if($wsname != $setype){
+					if ($wsname != $setype) {
 						$row['parent_id'] = '';
 					}
 				}
-			}elseif(is_numeric($relate_to[1])){
+			} elseif (is_numeric($relate_to[1])) {
 				$setype = getSalesEntityType($relate_to[1]);
-				$wsrs = $adb->pquery('select id FROM vtiger_ws_entity where name=?',array($setype));
-				if ($wsrs or $adb->num_rows($wsrs)==1){
+				$wsrs = $adb->pquery('select id FROM vtiger_ws_entity where name=?', array($setype));
+				if ($wsrs || $adb->num_rows($wsrs)==1) {
 					$wsid = $adb->query_result($wsrs, 0, 'name');
 					$row['parent_id'] = $wsid.'x'.$relate_to[1];
-				}else{
+				} else {
 					$row['parent_id'] = '';
 				}
-			}else{
+			} else {
 				$row['parent_id'] = '';
 			}
-		}else{
+		} else {
 			$queryLeads = "SELECT crmid,id FROM vtiger_crmentity INNER JOIN vtiger_leaddetails ON vtiger_leaddetails.leadid = vtiger_crmentity.crmid and vtiger_leaddetails.lastname = ? INNER JOIN vtiger_ws_entity ON vtiger_ws_entity.name = vtiger_crmentity.setype";
-			$resultLeads = $adb->pquery($queryLeads,array($row['parent_id']));
+			$resultLeads = $adb->pquery($queryLeads, array($row['parent_id']));
 
 			$queryAcc = "SELECT crmid,id FROM vtiger_crmentity INNER JOIN vtiger_account ON vtiger_account.accountid = vtiger_crmentity.crmid and vtiger_account.accountname = ? INNER JOIN vtiger_ws_entity ON vtiger_ws_entity.name = vtiger_crmentity.setype";
-			$resultAcc = $adb->pquery($queryAcc,array($row['parent_id']));
+			$resultAcc = $adb->pquery($queryAcc, array($row['parent_id']));
 
 			$queryPot = "SELECT crmid,id FROM vtiger_crmentity INNER JOIN vtiger_potential ON vtiger_potential.potentialid = vtiger_crmentity.crmid and vtiger_potential.potentialname = ? INNER JOIN vtiger_ws_entity ON vtiger_ws_entity.name = vtiger_crmentity.setype";
-			$resultPot = $adb->pquery($queryPot,array($row['parent_id']));
+			$resultPot = $adb->pquery($queryPot, array($row['parent_id']));
 
 			$queryHD = "SELECT crmid,id FROM vtiger_crmentity INNER JOIN vtiger_troubletickets ON vtiger_troubletickets.ticketid = vtiger_crmentity.crmid and vtiger_troubletickets.title = ? INNER JOIN vtiger_ws_entity ON vtiger_ws_entity.name = vtiger_crmentity.setype";
-			$resultHD = $adb->pquery($queryHD,array($row['parent_id']));
+			$resultHD = $adb->pquery($queryHD, array($row['parent_id']));
 
 			$queryCmp = "SELECT crmid,id FROM vtiger_crmentity INNER JOIN vtiger_campaign ON vtiger_campaign.campaignid = vtiger_crmentity.crmid and vtiger_campaign.campaignname = ? INNER JOIN vtiger_ws_entity ON vtiger_ws_entity.name = vtiger_crmentity.setype";
-			$resultCmp = $adb->pquery($queryCmp,array($row['parent_id']));
+			$resultCmp = $adb->pquery($queryCmp, array($row['parent_id']));
 
 			$queryVnd = "SELECT crmid,id FROM vtiger_crmentity INNER JOIN  vtiger_vendor ON  vtiger_vendor.vendorid =  vtiger_crmentity.crmid and vtiger_vendor.vendorname = ? INNER JOIN vtiger_ws_entity ON vtiger_ws_entity.name = vtiger_crmentity.setype";
-			$resultVnd = $adb->pquery($queryVnd,array($row['parent_id']));
+			$resultVnd = $adb->pquery($queryVnd, array($row['parent_id']));
 
-			if($resultLeads and $adb->num_rows($resultLeads)>= 1){
+			if ($resultLeads && $adb->num_rows($resultLeads)>= 1) {
 				$wsid = $adb->query_result($resultLeads, 0, 'id');
 				$parentid = $adb->query_result($resultLeads, 0, 'crmid');
 				$row['parent_id'] = $wsid.'x'.$parentid;
-			}elseif($resultAcc and $adb->num_rows($resultAcc) >= 1){
+			} elseif ($resultAcc && $adb->num_rows($resultAcc) >= 1) {
 				$wsid = $adb->query_result($resultAcc, 0, 'id');
 				$parentid = $adb->query_result($resultAcc, 0, 'crmid');
 				$row['parent_id'] = $wsid.'x'.$parentid;
-			}elseif($resultPot and $adb->num_rows($resultPot) >= 1){
+			} elseif ($resultPot && $adb->num_rows($resultPot) >= 1) {
 				$wsid = $adb->query_result($resultPot, 0, 'id');
 				$parentid = $adb->query_result($resultPot, 0, 'crmid');
 				$row['parent_id'] = $wsid.'x'.$parentid;
-			}elseif($resultHD and $adb->num_rows($resultHD) >= 1){
+			} elseif ($resultHD && $adb->num_rows($resultHD) >= 1) {
 				$wsid = $adb->query_result($resultHD, 0, 'id');
 				$parentid = $adb->query_result($resultHD, 0, 'crmid');
 				$row['parent_id'] = $wsid.'x'.$parentid;
-			}elseif($resultCmp and $adb->num_rows($resultCmp) >= 1){
+			} elseif ($resultCmp && $adb->num_rows($resultCmp) >= 1) {
 				$wsid = $adb->query_result($resultCmp, 0, 'id');
 				$parentid = $adb->query_result($resultCmp, 0, 'crmid');
 				$row['parent_id'] = $wsid.'x'.$parentid;
-			}elseif($resultVnd and $adb->num_rows($resultVnd )>= 1){
+			} elseif ($resultVnd && $adb->num_rows($resultVnd)>= 1) {
 				$wsid = $adb->query_result($resultVnd, 0, 'id');
 				$parentid = $adb->query_result($resultVnd, 0, 'crmid');
 				$row['parent_id'] = $wsid.'x'.$parentid;
-			}else{
+			} else {
 				$row['parent_id'] = '';
 			}
 		}
@@ -154,7 +154,7 @@ foreach (csv_to_array($file) as $row) {
 		echo $mod.": " . $row['id'] . PHP_EOL;
 	} catch (WebServiceException $ex) {
 		$msg = $ex->getMessage();
-		$msg .= print_r($row,true) . "\n";
+		$msg .= print_r($row, true) . "\n";
 		error_log($msg, 3, $file . "-error.log");
 		echo $msg;
 	}

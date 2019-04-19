@@ -27,11 +27,8 @@ $mod_strings = array(
 	'LBL_AF_HDR4'=>'Wenn Sie einen Aktivitätentyp ausgewählt haben, müssen Sie
     "Anruf","Meeting" oder "Aufgabe" auswählen.',
 
-	//strings added for vtiger 5, date format...
 	'LBL_NONE'=>'Keine',
-	'View_Name'=>'Namen sehen',
 	'LBL_AND'=>'AND',
-	'LBL_DATE_FORMAT_CUSTOMVIEW'=>'Y-m-d',
 	//Strings added for filter
 	'Custom'=>'benutzerdefiniert',
 	'Previous FY'=>'vorheriges Jahr',
@@ -79,15 +76,15 @@ $mod_strings = array(
 
 	//Strings added for helpdesk module fields
 	'Title'=>'Titel',
-	'Assigned To'=>'zuständig',
-	'Related to'=>'bezogen auf',
+	'Assigned To'=>'Zuständig',
+	'Related to'=>'Bezogen auf',
 	'Priority'=>'Priorität',
 	'Product Name'=>'Produktname',
 	'Severity'=>'Gewichtung',
 	'Status'=>'Status',
 	'Category'=>'Kategorie',
-	'Created Time'=>'erstellt',
-	'Modified Time'=>'geändert',
+	'Created Time'=>'Erstellt',
+	'Modified Time'=>'Geändert',
 	'Attachment'=>'Anhang',
 
 	//Strings added for Leads module fields
@@ -119,7 +116,7 @@ $mod_strings = array(
 	'Ownership'=>'Eigentümer',
 	'industry'=>'Branche',
 	'SIC Code'=>'SIC Code',
-	'Email Opt Out'=>'E-Mail Opt. aus',
+	'Email Opt Out'=>'Nicht per E-Mail kontaktieren',
 	'Billing Address'=>'Rechnungsadresse Strasse',
 	'Shipping Address'=>'Lieferadresse Strasse',
 	'Shipping Po Box'=>'Lieferadresse Postfachnr.',
@@ -245,13 +242,10 @@ $mod_strings = array(
 	'End_Date'=>'Endedatum',
 	'LBL_RULE'=>'Regel',
 
-	// Added/Updated for vtiger CRM 5.0.4
 	'not equal to'=>'nicht gleich zu',
 	'starts with'=>'beginnt mit',
 	'ends with'=>'endet mit',
 	//'Product Code'=>'Produktcode',
-
-	// Added after 5.0.4 GA
 
 	//Added for Role based Custom filters
 	'LBL_SET_AS_PUBLIC'=>'öffentlich machen ',

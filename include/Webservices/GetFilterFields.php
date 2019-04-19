@@ -13,17 +13,27 @@
 * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
 *************************************************************************************************/
 
-function vtws_getfilterfields($module, $user){
-	global $log,$adb,$default_language;
-	$log->debug("Entering function vtws_getfilterfields");
-
-	include_once("modules/$module/$module.php");
-	$focus = new $module();
+function vtws_getfilterfields($module, $user) {
+	if ($module=='Users') {
+		return array(
+			'fields'=>array('first_name', 'last_name', 'email1'),
+			'linkfields'=>array('first_name', 'last_name'),
+			'pagesize' => intval(GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module)),
+		);
+	}
+	if (!vtlib_isEntityModule($module)) {
+		return array(
+			'fields'=>'',
+			'linkfields'=>'',
+			'pagesize' => intval(GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module)),
+		);
+	}
+	$focus = CRMEntity::getInstance($module);
 
 	$linkfields=array($focus->list_link_field);
-	if ($module=='Contacts' or $module=='Leads')
-		$linkfields=array('firstname','lastname');
-
+	if ($module=='Contacts' || $module=='Leads') {
+		$linkfields=array('firstname', 'lastname');
+	}
 	$customView = new CustomView($module);
 	$viewid = $customView->getViewId($module);
 	$viewinfo = $customView->getColumnsListByCvid($viewid);
@@ -36,7 +46,7 @@ function vtws_getfilterfields($module, $user){
 	return array(
 		'fields'=>$fields,
 		'linkfields'=>$linkfields,
+		'pagesize' => intval(GlobalVariable::getVariable('Application_ListView_PageSize', 20, $module)),
 	);
 }
-
 ?>

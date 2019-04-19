@@ -16,21 +16,20 @@ require_once 'include/utils/utils.php';
  */
 class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 
-	function __construct() {
+	public function __construct() {
 	}
 
 	/**
-     * Create new Email record (and link to given record) including attachments
-     * @global Users $current_user
-     * @global PearDataBase $adb
-     * @param  MailManager_Model_Message $mailrecord
-     * @param String $module
-     * @param CRMEntity $linkfocus
-     * @return Integer
-     */
-	function __CreateNewEmail($mailrecord, $module, $linkfocus) {
-		global $current_user, $adb;
-		if(!$current_user) {
+	 * Create new Email record (and link to given record) including attachments
+	 * @global Users $current_user
+	 * @param  MailManager_Model_Message $mailrecord
+	 * @param String $module
+	 * @param CRMEntity $linkfocus
+	 * @return Integer
+	 */
+	public function __CreateNewEmail($mailrecord, $module, $linkfocus) {
+		global $current_user;
+		if (!$current_user) {
 			$current_user = Users::getActiveAdminUser();
 		}
 		$handler = vtws_getModuleHandlerFromName('Emails', $current_user);
@@ -43,8 +42,12 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 		$focus->column_fields['activitytype'] = 'Emails';
 		$focus->column_fields['subject'] = $mailrecord->_subject;
 
-		if(!empty($module)) $focus->column_fields['parent_type'] = $module;
-		if(!empty($linkfocus->id)) $focus->column_fields['parent_id'] = "$linkfocus->id@-1|";
+		if (!empty($module)) {
+			$focus->column_fields['parent_type'] = $module;
+		}
+		if (!empty($linkfocus->id)) {
+			$focus->column_fields['parent_id'] = "$linkfocus->id@-1|";
+		}
 
 		$focus->column_fields['description'] = $mailrecord->getBodyHTML();
 		$focus->column_fields['assigned_user_id'] = $linkfocus->column_fields['assigned_user_id'];
@@ -72,86 +75,89 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 	}
 
 	/**
-     * Save attachments from the email and add it to the module record.
-     * @global PearDataBase $adb
-     * @global String $root_directory
-     * @param MailManager_Model_Message $mailrecord
-     * @param String $basemodule
-     * @param CRMEntity $basefocus
-     */
-	function __SaveAttachements($mailrecord, $basemodule, $basefocus, $relate2module='', $relate2focus='') {
+	 * Save attachments from the email and add it to the module record.
+	 * @global PearDataBase $adb
+	 * @global String $root_directory
+	 * @param MailManager_Model_Message $mailrecord
+	 * @param String $basemodule
+	 * @param CRMEntity $basefocus
+	 */
+	public function __SaveAttachements($mailrecord, $basemodule, $basefocus, $relate2module = '', $relate2focus = '') {
 		global $adb, $root_directory;
 
 		// If there is no attachments return
-		if(!$mailrecord->_attachments) return;
+		if (!$mailrecord->_attachments) {
+			return;
+		}
 
 		$userid = $basefocus->column_fields['assigned_user_id'];
 		$setype = "$basemodule Attachment";
 
 		$date_var = $adb->formatDate(date('YmdHis'), true);
 
-		foreach($mailrecord->_attachments as $filename=>$filecontent) {
-
-            if(empty($filecontent)) continue;
+		foreach ($mailrecord->_attachments as $filename => $filecontent) {
+			if (empty($filecontent)) {
+				continue;
+			}
 
 			$attachid = $adb->getUniqueId('vtiger_crmentity');
 			$description = $filename;
 			$usetime = $adb->formatDate($date_var, true);
 
-			$adb->pquery("INSERT INTO vtiger_crmentity(crmid, smcreatorid, smownerid,
-				modifiedby, setype, description, createdtime, modifiedtime, presence, deleted)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-				Array($attachid, $userid, $userid, $userid, $setype, $description, $usetime, $usetime, 1, 0));
+			$adb->pquery(
+				'INSERT INTO vtiger_crmentity (crmid, smcreatorid, smownerid, modifiedby, setype, description, createdtime, modifiedtime, presence, deleted)
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+				array($attachid, $userid, $userid, $userid, $setype, $description, $usetime, $usetime, 1, 0)
+			);
 
 			$issaved = $this->__SaveAttachmentFile($attachid, $filename, $filecontent);
 
-			if($issaved) {
-                // To compute file size & type
-                $attachRes = $adb->pquery("SELECT * FROM vtiger_attachments WHERE attachmentsid = ?", array($attachid));
-                if($adb->num_rows($attachRes)) {
-                    $filePath = $adb->query_result($attachRes, 0, 'path');
-                    $completeFilePath = $root_directory.$filePath. $attachid.'_'. $filename;
-                    if(file_exists($completeFilePath))  {
-                        $fileSize = filesize($completeFilePath);
-                        $mimetype = MailAttachmentMIME::detect($completeFilePath);
-                    }
-                }
+			if ($issaved) {
+				// To compute file size & type
+				$attachRes = $adb->pquery('SELECT * FROM vtiger_attachments WHERE attachmentsid = ?', array($attachid));
+				if ($adb->num_rows($attachRes)) {
+					$filePath = $adb->query_result($attachRes, 0, 'path');
+					$completeFilePath = $root_directory.$filePath. $attachid.'_'. $filename;
+					if (file_exists($completeFilePath)) {
+						$fileSize = filesize($completeFilePath);
+						$mimetype = MailAttachmentMIME::detect($completeFilePath);
+					}
+				}
 
 				// Create document record
-				$docInfo = array('title'=>$filename, 'filename'=>$filename, 'assigneduser'=>$userid,
-                                    'size'=> $fileSize, 'filetype'=>$mimetype);
+				$docInfo = array('title'=>$filename, 'filename'=>$filename, 'assigneduser'=>$userid, 'size'=> $fileSize, 'filetype'=>$mimetype);
 				$documentId = $this->createDocument($docInfo);
 
 				// Link file attached to document
-				if(!empty($documentId) && !empty($attachid)) {
+				if (!empty($documentId) && !empty($attachid)) {
 					$this->relateAttachment($documentId, $attachid);
 				}
 
 				// Link document to base record
-				if(!empty($basefocus->id) && !empty($documentId)) {
+				if (!empty($basefocus->id) && !empty($documentId)) {
 					$this->relatedDocument($basefocus->id, $documentId);
 				}
 
 				// Link file attached to emails also, for it to appear on email's page
-				if(!empty($basefocus->id) && !empty($attachid)) {
+				if (!empty($basefocus->id) && !empty($attachid)) {
 					$this->relateAttachment($basefocus->id, $attachid);
 				}
 
 				// Link document to related record
-				if(!empty($relate2focus) && !empty($relate2focus->id) && !empty($documentId)) {
+				if (!empty($relate2focus) && !empty($relate2focus->id) && !empty($documentId)) {
 					$this->relatedDocument($relate2focus->id, $documentId);
 				}
 			}
 		}
 	}
 
-    /**
-     * Creates a Document
-     * @global Users $current_user
-     * @param Array $info
-     * @return Integer
-     */
-	function createDocument($info) {
+	/**
+	 * Creates a Document
+	 * @global Users $current_user
+	 * @param Array $info
+	 * @return Integer
+	 */
+	public function createDocument($info) {
 		global $current_user;
 		$handler = vtws_getModuleHandlerFromName('Documents', $current_user);
 		$meta = $handler->getMeta();
@@ -171,15 +177,13 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 		return $document->id;
 	}
 
-    /**
-     *
-     * @global Users $current_user
-     * @param MailManager_Model_Message $mailrecord
-     * @param Integer $linkto
-     * @return Array
-     */
-	static function associate($mailrecord, $linkto) {
-		global $current_user;
+	/**
+	 *
+	 * @param MailManager_Model_Message $mailrecord
+	 * @param Integer $linkto
+	 * @return Array
+	 */
+	public static function associate($mailrecord, $linkto) {
 		$instance = new self();
 
 		$modulename = getSalesEntityType($linkto);
@@ -198,27 +202,25 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 		return $detailInformation;
 	}
 
-    /**
-     * Returns the information about the Parent 
-     * @param String $module
-     * @param Integer $record
-     * @param String $label
-     * @return Array
-     */
-	static function buildDetailViewLink($module, $record, $label) {
+	/**
+	 * Returns the information about the Parent
+	 * @param String $module
+	 * @param Integer $record
+	 * @param String $label
+	 * @return Array
+	 */
+	public static function buildDetailViewLink($module, $record, $label) {
 		$detailViewLink = sprintf("<a target='_blank' href='index.php?module=%s&action=DetailView&record=%s'>%s</a>", $module, $record, textlength_check($label));
 		return array('record'=>$record, 'module'=>$module, 'label'=>$label, 'detailviewlink'=> $detailViewLink);
 	}
 
-    /**
-     * Returns the related entity for a Mail
-     * @global PearDataBase $adb
-     * @param integer $mailuid - Mail Number
-     * @return Array
-     */
-	static function associatedLink($mailuid) {
-		global $adb;
-
+	/**
+	 * Returns the related entity for a Mail
+	 * @global PearDataBase $adb
+	 * @param integer $mailuid - Mail Number
+	 * @return Array
+	 */
+	public static function associatedLink($mailuid) {
 		$info = MailManager::lookupMailAssociation($mailuid);
 		if ($info) {
 			return self::getSalesEntityInfo($info['crmid']);
@@ -226,15 +228,15 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 		return false;
 	}
 
-    /**
-     * Returns the information about the Parent
-     * @global PearDataBase $adb
-     * @param Integer $crmid
-     * @return Array
-     */
-	static function getSalesEntityInfo($crmid){
+	/**
+	 * Returns the information about the Parent
+	 * @global PearDataBase $adb
+	 * @param Integer $crmid
+	 * @return Array
+	 */
+	public static function getSalesEntityInfo($crmid) {
 		global $adb;
-		$result = $adb->pquery("SELECT setype FROM vtiger_crmentity WHERE crmid=? AND deleted=0", array($crmid));
+		$result = $adb->pquery('SELECT setype FROM vtiger_crmentity WHERE crmid=? AND deleted=0', array($crmid));
 		if ($adb->num_rows($result)) {
 			$modulename = $adb->query_result($result, 0, 'setype');
 			$recordlabels = getEntityName($modulename, array($crmid));
@@ -242,41 +244,41 @@ class MailManager_RelationControllerAction extends Vtiger_MailScannerAction {
 		}
 	}
 
-    /**
-     *
-     * @global PearDataBase $adb
-     * @param <type> $modulewsid
-     * @return <type> 
-     */
-	static function ws_modulename($modulewsid) {
+	/**
+	 *
+	 * @global PearDataBase $adb
+	 * @param <type> $modulewsid
+	 * @return <type>
+	 */
+	public static function ws_modulename($modulewsid) {
 		global $adb;
-		$result = $adb->pquery("SELECT name FROM vtiger_ws_entity WHERE id=?", array($modulewsid));
-		if ($adb->num_rows($result)) return $adb->query_result($result, 0, 'name');
+		$result = $adb->pquery('SELECT name FROM vtiger_ws_entity WHERE id=?', array($modulewsid));
+		if ($adb->num_rows($result)) {
+			return $adb->query_result($result, 0, 'name');
+		}
 		return false;
 	}
 
-    /**
-     * Related an attachment to a Email record
-     * @global PearDataBase $adb
-     * @param Integer $crmId
-     * @param Integer $attachId
-     */
-	function relateAttachment($crmId, $attachId) {
+	/**
+	 * Related an attachment to a Email record
+	 * @global PearDataBase $adb
+	 * @param Integer $crmId
+	 * @param Integer $attachId
+	 */
+	public function relateAttachment($crmId, $attachId) {
 		global $adb;
-		$adb->pquery("INSERT INTO vtiger_seattachmentsrel(crmid, attachmentsid) VALUES(?,?)",
-			array($crmId, $attachId));
+		$adb->pquery('INSERT INTO vtiger_seattachmentsrel(crmid, attachmentsid) VALUES(?,?)', array($crmId, $attachId));
 	}
 
-    /**
-     * Related a Document to a record
-     * @global PearDataBase $adb
-     * @param Integer $crmId
-     * @param Integer $docId
-     */
-	function relatedDocument($crmId, $docId) {
+	/**
+	 * Related a Document to a record
+	 * @global PearDataBase $adb
+	 * @param Integer $crmId
+	 * @param Integer $docId
+	 */
+	public function relatedDocument($crmId, $docId) {
 		global $adb;
-		$adb->pquery("INSERT INTO vtiger_senotesrel(crmid, notesid) VALUES(?,?)",
-					Array($crmId, $docId));
+		$adb->pquery('INSERT INTO vtiger_senotesrel(crmid, notesid) VALUES(?,?)', array($crmId, $docId));
 	}
 }
 ?>

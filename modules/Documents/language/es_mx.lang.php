@@ -41,7 +41,7 @@ $mod_strings = array(
 
 'Template'=>'Plantilla',
 'Template For' => 'Plantilla Para',
-
+'Merge Template' => 'Plantilla Combinación',
 'LBL_FILENAME'=>'Adjunto:',
 'LBL_NOTE_INFORMATION'=>'Información Documento',
 'File Information'=>'Información Archivo',
@@ -96,12 +96,9 @@ $mod_strings = array(
 'File Name'=>'Nombre Archivo',
 'File Type'=>'Tipo Archivo',
 'File Size'=>'Tamaño',
-'LBL_INTERNAL'=>'Interno',
 'LBL_URL'=>'URL',
-'LBL_EXTERNAL'=>'Externo',
 'LBL_EXTERNAL_LNK'=>'Enlace Externo',
 'LBL_ACTIVE'=>'Activo',
-'LBL_INACTIVE'=>'Inactivo',
 'LBL_PLATFORM_INDEPENDENT'=>'Plataforma Independiente',
 'LNK_DOWNLOAD'=>'descarga',
 'LBL_MOVE_DOCUMENTS'=>'Mover Documento(s)',

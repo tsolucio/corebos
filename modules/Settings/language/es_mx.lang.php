@@ -164,7 +164,7 @@ $mod_strings = array (
 	  'LBL_PICKLIST_SETTINGS' => 'Configurar listados',
 	  'LBL_EDIT_PICKLIST_VALUES' => ' - Editar valores de listados',
 	  'LBL_EDIT' => 'Editando',
-	  'LBL_COMMUNICATION_TEMPLATES' => 'Plantillas de comunicación',
+	  'LBL_COMMUNICATION_TEMPLATES' => 'Procesos de Negocio',
 	  'LBL_CREATE_EMAIL_TEMPLATES' => ' - Crear Plantillas de Email',
 	  'LBL_UPLOAD_MSWORD_TEMPLATES' => ' - Procesar plantillas de MS Word para Mailings',
 	  'LBL_SCHEDULE_EMAIL_NOTIFICATION' => ' - Programar notificaciones de Email',
@@ -234,6 +234,8 @@ $mod_strings = array (
 	  'LBL_QUOTE_STAGE' => 'Fase de la Cotización',
 	  'LBL_CARRIER' => 'Transportista',
 	  'LBL_TAXCLASS' => 'Tipo de Impuesto',
+	'LBL_RETENTION'=>'Retención',
+	'LBL_PERCENTAGE'=>'Porcentaje',
 	  'LBL_MY_DETAILS' => 'Mis Detalles',
 	  'LBL_MY_MAIL_SERVER_DET' => 'Detalles de mi Servidor de Correo',
 	  'LBL_EMAIL_ID' => 'Email ID',
@@ -720,14 +722,15 @@ $mod_strings = array (
 	  'LBL_ON_MODIFY' => 'Cada vez que se modifica la entidad',
 	  'LBL_ON_SCHEDULE' => 'Programado',
 	  'LBL_ON_DELETE' => 'Al Borrar',
+	  'LBL_MANUAL' => 'Manual',
+	  'LBL_RECORD_ACCESS_CONTROL' => 'Control de Acceso a Registro',
 	  'LBL_CONDITIONS'=>'Condiciones',
 	  'LBL_NEW_CONDITION_BUTTON_LABEL'=>'Nueva Condición',
 	  'LBL_TASKS'=>'Tareas',
 	  'LBL_NEW_TASK_BUTTON_LABEL'=>'Nueva Tarea',
 	  'LBL_TASK'=>'Tarea',
-	  // END
+	  'LBL_DELAY' => 'Delay',
 
-	  //Added for vantage customization (Mandatory fields) -- Pavani
 	  'LBL_MANDATORY_FIELDS'=>'Campos obligatorios',
 	  'LBL_MANDATORY_FIELDS_DESCRIPTION'=>'Administrar campos obligatorios en todos los módulos',
 	  // Module Sequence Numbering
@@ -777,8 +780,8 @@ $mod_strings = array (
 	  'VTLIB_LBL_NOT_WRITEABLE'=>'no escribible',
 	  'VTLIB_LBL_PACKAGE_VERSION'=>'Versión',
 
-		  'LBL_UPGRADE'=>'Actualizar',
-	  'VTLIB_LBL_UPDATE_FAILURE'=>'Actualización Falida',
+	  'LBL_UPGRADE'=>'Actualizar',
+	  'VTLIB_LBL_UPDATE_FAILURE'=>'Actualización Fallida',
 	  'VTLIB_LBL_MODULENAME_MISMATCH'=>'Nombres de módulos no coinciden',
 	  'VTLIB_LBL_TRY_AGAIN'=>'Inténtalo de nuevo',
 	  'VTLIB_LBL_VERIFY_UPDATE_DETAILS'=>'Verifica la información de actualización',
@@ -830,8 +833,6 @@ $mod_strings = array (
 	  'LBL_MODULE_NUMBERING_FIX_MISSING' => 'Actualizar secuencia errónea ahora',
 
 	  'LBL_SHARING_ACCESS_HELPNOTE' => 'Trás las modificaciones, pulsa el botón de Recalcular para aplicar los cambios.',
-
-	  'ERR_INVALID_PROFILE_ID' => 'Identificador perfil inválido. Por favor, indique un identificador válido',
 
 	  'LBL_ADD_CUSTOMFIELD' => 'Agregar Campo Personalizado',
 
@@ -921,5 +922,8 @@ $mod_strings = array (
 	'report_summary_nf' => 'Campo NO encontrado en Informes (Agregaciones)',
 	'cl_mapping' => 'Campo encontrado en la Conversión de PreContactos',
 	'cl_mapping_nf' => 'Campo NO encontrado en la Conversión de PreContactos',
+	'Site Maintenance' => 'Mantenimiento Aplicación',
+	'SM_BeBackSoon' => 'Volveremos pronto!',
+	'SM_SorryInconvenience' => 'Disculpa las molestias, pero estamos realizando un mantenimiento en este momento. ¡Pronto volveremos a estar en línea!',
 );
 ?>

@@ -16,26 +16,24 @@
 
 class workflowexpressionfunctions extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-
-$this->ExecuteQuery("CREATE TABLE `com_vtiger_workflows_expfunctions` (
+			$this->ExecuteQuery("CREATE TABLE `com_vtiger_workflows_expfunctions` (
   `expname` varchar(180) NOT NULL,
   `expinfo` varchar(250) NOT NULL,
   `funcname` varchar(180) NOT NULL,
   `funcfile` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ");
-$this->ExecuteQuery("ALTER TABLE `com_vtiger_workflows_expfunctions`
-  ADD PRIMARY KEY (`expname`);
-");
+			$this->ExecuteQuery("ALTER TABLE `com_vtiger_workflows_expfunctions` ADD PRIMARY KEY (`expname`);");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-
 }

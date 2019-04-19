@@ -2,12 +2,12 @@
 /***********************************************************
 *  Module       : PurchaseOrder
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
-$mod_strings = array (
+$mod_strings = array(
 	'LBL_MODULE_NAME' => 'Commandes fournisseur',
 	'LBL_RELATED_PRODUCTS' => 'Détails produits',
 	'LBL_MODULE_TITLE' => 'Commandes : accueil',
@@ -44,6 +44,7 @@ $mod_strings = array (
 	'LBL_ADDRESS_INFORMATION' => 'Détail adresse',
 	'LBL_Quote_INFORMATION' => 'Compte',
 	'LBL_CUSTOM_INFORMATION' => 'Informations personnalisées',
+	'LBL_PurchaseOrder_FINANCIALINFO' => 'Financial Information',
 	'LBL_BILLING_ADDRESS' => 'Adresse (facturation) :',
 	'LBL_SHIPPING_ADDRESS' => 'Adresse (livraison) :',
 	'LBL_ANY_ADDRESS' => 'Adresse (alt.) :',
@@ -153,7 +154,6 @@ $mod_strings = array (
 	'Sub Total' => 'Sous-total',
 	'S&H Amount' => 'Frais de transport',
 	'PurchaseOrder No' => 'Commande n°',
-	
 'SINGLE_PurchaseOrder'=>'Cammande fournisseur',
 'PurchaseOrder ID'=>'Cammande fournisseur ID',
 );

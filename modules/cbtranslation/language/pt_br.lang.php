@@ -6,18 +6,30 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ * Contributor(s) - Brazilian Portuguese Translator: Ranieri Slemer | www.slemernet.com.br - 30/08/2018
  ************************************************************************************/
 
-$mod_strings = Array(
-	'ModuleName' => 'Nome Módulo',
-	'SINGLE_ModuleName' => 'Nome Módulo',
-	'ModuleName ID' => 'ID Nome Módulo',
+$mod_strings = array(
+	'cbtranslation' => 'Traduções',
+	'SINGLE_cbtranslation' => 'Tradução',
+	'cbtranslation ID' => 'ID Tradução',
 
-	'LBL_CUSTOM_INFORMATION' => 'Imformação Customizada',
-	'LBL_MODULEBLOCK_INFORMATION' => 'Informação Bloco Módulo',
+	'LBL_CUSTOM_INFORMATION' => 'Imformação customizada',
+	'LBL_CBTRANSLATION_INFORMATION' => 'Imformação Tradução',
 	'LBL_DESCRIPTION_INFORMATION' => 'Descrição',
 
-	'ModuleFieldLabel' => 'Texto Etiqueta Campo Módulo',
+	'Picklist' => 'Lista de opções',
+	'cbtranslation No' => 'Nr tradução',
+	'Locale'  => 'Código da Linguagem',
+	'Module' => 'Módulo',
+	'Translates' => 'Traduções',
+	'Proof Read'	=> 	'Revisado',
+	'Key' => 'Chave',
+	'Field' => 'Campo',
+	'Module' => 'Traduções',
+	'i18n' => 'Tradução',
+	'Export CSV' => 'Exportar CSV',
+	'Export JSON' => 'Exportar JSON',
+	'Translates' => 'Traduções',
 );
-
 ?>

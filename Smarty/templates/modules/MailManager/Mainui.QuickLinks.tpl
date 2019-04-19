@@ -12,7 +12,7 @@
 </tr>
 <tr>
 	<td style="padding-left: 5px;" class="dvtContentSpace">
-	<table cellpadding=2 cellspacing=0 border=0 class="small" width="100%">
+	<table cellpadding=2 cellspacing=0 border=0 class="small cblds-table-bordersp_medium cblds-table-bordersp_medium" width="100%">
 
 		{if $MAILBOX && $MAILBOX->exists()}
 		<tr>
@@ -22,22 +22,22 @@
 			</td>
 		</tr>
 		<tr>
-			<td nowrap="nowrap"><img src="{'compose.gif'|@vtiger_imageurl:$THEME}" border='0'></td>
-			<td><a href="#Compose" id="_mailfolder_mm_compose" onclick="MailManager.mail_compose();">{'LBL_Compose'|@getTranslatedString}</a></td>
+			<td nowrap="nowrap" class="cblds-p_medium"><img class="cblds-autowidth" src="{'compose.gif'|@vtiger_imageurl:$THEME}" border='0'></td>
+			<td class="cblds-p_medium"><a href="#Compose" id="_mailfolder_mm_compose" onclick="MailManager.mail_compose();">{'LBL_Compose'|@getTranslatedString}</a></td>
 		</tr>
 		<tr>
-			<td nowrap="nowrap"><img src="{'reload.gif'|@vtiger_imageurl:$THEME}" border='0'/></td>
-			<td><a href='#Reload' id="_mailfolder_mm_reload" onclick="MailManager.reload_now();">{'LBL_Refresh'|@getTranslatedString}</a></td>
+			<td nowrap="nowrap" class="cblds-p_medium"><img src="{'reload.gif'|@vtiger_imageurl:$THEME}" border='0'/></td>
+			<td class="cblds-p_medium"><a href='#Reload' id="_mailfolder_mm_reload" onclick="MailManager.reload_now();">{'LBL_Refresh'|@getTranslatedString}</a></td>
 		</tr>
 		{/if}
 
 		<tr>
-			<td nowrap="nowrap"><img align="absbottom" src="{'settings_top.gif'|@vtiger_imageurl:$THEME}" border='0'/></td>
-			<td><a href='#Settings' id="_mailfolder_mm_settings" onclick="MailManager.open_settings();">{'JSLBL_Settings'|@getTranslatedString}</a></td>
+			<td nowrap="nowrap" class="cblds-p_medium"><img align="absbottom" src="{'settings_top.gif'|@vtiger_imageurl:$THEME}" border='0'/></td>
+			<td class="cblds-p_medium"><a href='#Settings' id="_mailfolder_mm_settings" onclick="MailManager.open_settings();">{'JSLBL_Settings'|@getTranslatedString}</a></td>
 		</tr>
 		<tr>
-			<td width="5px" nowrap="nowrap"><img src="{'mymail.gif'|@vtiger_imageurl:$THEME}" border='0'/></td>
-            <td><a href="#Drafts" id="_mailfolder_mm_drafts" onclick="MailManager.folder_drafts();">{'LBL_Drafts'|@getTranslatedString}</a></td>
+			<td width="5px" nowrap="nowrap" class="cblds-p_medium"><img src="{'mymail.gif'|@vtiger_imageurl:$THEME}" border='0'/></td>
+            <td class="cblds-p_medium"><a href="#Drafts" id="_mailfolder_mm_drafts" onclick="MailManager.folder_drafts();">{'LBL_Drafts'|@getTranslatedString}</a></td>
 		</tr>
 	</table>
 		{include file="SentMailFolders.tpl"}

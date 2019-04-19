@@ -42,7 +42,7 @@
 <!-- This table is used to display the Tax Configuration values-->
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 	<tr>
-	<td width=50 rowspan=2 valign=top><img src="{'taxConfiguration.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" width="48" height="48" border=0 title="{$MOD.LBL_USERS}"></td>
+	<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'taxConfiguration.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" width="48" height="48" border=0 title="{$MOD.LBL_USERS}"></td>
 	<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > 
 		{if $EDIT_MODE eq 'true'}
 			<strong>{$MOD.LBL_EDIT} {$MOD.LBL_TAX_SETTINGS} </strong>
@@ -53,7 +53,7 @@
 	</td>
 	</tr>
 	<tr>
-	<td valign=top class="small">{$MOD.LBL_TAX_DESC}</td>
+	<td valign=top class="small cblds-p-v_none">{$MOD.LBL_TAX_DESC}</td>
 	</tr>
 </table>
 
@@ -77,12 +77,12 @@
 			</tr>
 			<tr>
 			<td>&nbsp;</td>
-			<td id="td_add_tax" class="small" colspan="2" align="right" nowrap>
+			<td id="td_add_tax" class="small cblds-t-align_right" colspan="2" align="right" nowrap>
 				{if $EDIT_MODE neq 'true'}
 					<input title="{$MOD.LBL_ADD_TAX_BUTTON}" accessKey="{$MOD.LBL_ADD_TAX_BUTTON}" onclick="fnAddTaxConfigRow('');" type="button" name="button" value="{$MOD.LBL_ADD_TAX_BUTTON}" class="crmButton small edit">
 				{/if}
 			</td>
-			<td class="small" align=right nowrap>
+			<td class="small cblds-t-align_right" align=right nowrap>
 			{if $EDIT_MODE eq 'true'}
 				<input class="crmButton small save" title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.save_tax.value='true'; this.form.parenttab.value='Settings'; return validateTaxes('tax_count');" type="submit" name="button2" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">&nbsp;
 				<input class="crmButton small cancel" title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.module.value='Settings'; this.form.save_tax.value='false'; this.form.parenttab.value='Settings';" type="submit" name="button22" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
@@ -99,6 +99,7 @@
 		{if $TAX_COUNT eq 0}
 			<tr><td>{$MOD.LBL_NO_TAXES_AVAILABLE}. {$MOD.LBL_PLEASE} {$MOD.LBL_ADD_TAX_BUTTON}.</td></tr>
 		{else}
+			<tr><th>{$MOD.LBL_TAXCLASS}</th><th>{$MOD.LBL_PERCENTAGE}</th><th>{$MOD.LBL_RETENTION}</th><th>{$MOD.LBL_ENABLED}</th></tr>
 			{foreach item=tax key=count from=$TAX_VALUES}
 
 				<!-- To set the color coding for the taxes which are active and inactive-->
@@ -118,11 +119,18 @@
 						{$tax.taxlabel}
 					{/if}
 				</td>
-				<td width=55% class="cellText small">
+				<td width=45% class="cellText small">
 					{if $EDIT_MODE eq 'true'}
-						<input name="{$tax.taxname}" id="{$tax.taxname}" type="text" value="{$tax.percentage}" class="detailedViewTextBox small">&nbsp;%
+						<input name="{$tax.taxname}" id="{$tax.taxname}" type="text" value="{$tax.percentage}" style="width:65%" class="detailedViewTextBox small">&nbsp;%
 					{else}
 						{$tax.percentage}&nbsp;%
+					{/if}
+				</td>
+				<td width=10% class="cellText small">
+					{if $EDIT_MODE eq 'true'}
+						<input name="{$tax.taxname}retention" id="{$tax.taxname}retention" type="checkbox" {if $tax.retention neq 0}checked{/if}>
+					{else}
+						{if $tax.retention eq 0}{$APP.LBL_NO}{else}{$APP.LBL_YES}{/if}
 					{/if}
 				</td>
 				<td width=10% class="cellText small">
@@ -160,12 +168,12 @@
 			</tr>
 			<tr>
 			<td>&nbsp;</td>
-				<td id="td_sh_add_tax" class="small" colspan="2" align="right" nowrap>
+				<td id="td_sh_add_tax" class="small cblds-t-align_right" colspan="2" align="right" nowrap>
 				{if $SH_EDIT_MODE neq 'true'}
 					<input title="{$MOD.LBL_ADD_TAX_BUTTON}" accessKey="{$MOD.LBL_ADD_TAX_BUTTON}" onclick="fnAddTaxConfigRow('sh');" type="button" name="button" value="  {$MOD.LBL_ADD_TAX_BUTTON}  " class="crmButton small edit">
 				{/if}
 			</td>
-			<td class="small" align=right nowrap>
+			<td class="small cblds-t-align_right" align=right nowrap>
 				{if $SH_EDIT_MODE eq 'true'}
 					<input class="crmButton small save" title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.sh_save_tax.value='true'; this.form.parenttab.value='Settings'; return validateTaxes('sh_tax_count');" type="submit" name="button2" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
 					&nbsp;
@@ -232,7 +240,7 @@
 
 <table border=0 cellspacing=0 cellpadding=5 width=100% >
 <tr>
-<td class="small" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td>
+<td class="small cblds-t-align_right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td>
 </tr>
 </table>
 			</td>

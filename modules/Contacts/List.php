@@ -15,7 +15,7 @@ require_once 'modules/Contacts/models/Module.php';
 require_once 'modules/Contacts/connectors/Vtiger.php';
 require_once 'modules/Contacts/models/Contacts.php';
 require_once 'modules/Contacts/helpers/Utils.php';
-require_once('Smarty_setup.php');
+require_once 'Smarty_setup.php';
 
 global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 

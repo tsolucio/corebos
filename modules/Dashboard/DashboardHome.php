@@ -9,8 +9,8 @@
  ********************************************************************************/
 
 global $theme;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 ?>
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
 	<tr>
@@ -36,7 +36,7 @@ $image_path=$theme_path."images/";
 		</td>
 	</tr>
 	<tr>
-		<td height="200" colspan="2"><?php include ("modules/Dashboard/Chart_pipeline_by_sales_stage.php");?></td>
+		<td height="200" colspan="2"><?php include 'modules/Dashboard/Chart_pipeline_by_sales_stage.php';?></td>
 	</tr>
 	<tr>
 		<td colspan="2" class="dash_chart_btm">&nbsp;</td>
@@ -66,7 +66,7 @@ $image_path=$theme_path."images/";
 		</td>
 	</tr>
 	<tr>
-		<td height="200" colspan="2"><?php include ("modules/Dashboard/Chart_outcome_by_month.php"); ?></td>
+		<td height="200" colspan="2"><?php include 'modules/Dashboard/Chart_outcome_by_month.php'; ?></td>
 	</tr>
 	<tr>
 		<td colspan="2" class="dash_chart_btm">&nbsp;</td>
@@ -94,7 +94,7 @@ $image_path=$theme_path."images/";
 		</td>
 	</tr>
 	<tr>
-		<td height="200" colspan="2"><?php include ("modules/Dashboard/Chart_lead_source_by_outcome.php");?></td>
+		<td height="200" colspan="2"><?php include 'modules/Dashboard/Chart_lead_source_by_outcome.php';?></td>
 	</tr>
 	<tr>
 		<td colspan="2" class="dash_chart_btm">&nbsp;</td>
@@ -122,7 +122,7 @@ $image_path=$theme_path."images/";
 		</td>
 	</tr>
 	<tr>
-		<td height="200" colspan="2"><?php include("modules/Dashboard/Chart_pipeline_by_lead_source.php") ?></td>
+		<td height="200" colspan="2"><?php include 'modules/Dashboard/Chart_pipeline_by_lead_source.php'; ?></td>
 	</tr>
 	<tr>
 		<td colspan="2" class="dash_chart_btm">&nbsp;</td>

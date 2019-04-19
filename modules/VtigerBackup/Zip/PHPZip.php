@@ -24,18 +24,17 @@ class Vtiger_PHPZip extends Vtiger_BackupZip {
 	}
 
 	public function addFile($filePath, $parentDirectory) {
-		if(empty($parentDirectory)) {
+		if (empty($parentDirectory)) {
 			$this->addTrailingSlash($parentDirectory);
 		}
-		$filedata = implode("", file($filePath));
-		$this->createZip->addFile($filedata,$parentDirectory.'database.sql');
+		$filedata = implode('', file($filePath));
+		$this->createZip->addFile($filedata, $parentDirectory.'database.sql');
 	}
 
 	public function close() {
-		$fd = fopen ($this->fileName, 'wb');
-		$out = fwrite ($fd, $this->createZip->getZippedfile());
-		fclose ($fd);
+		$fd = fopen($this->fileName, 'wb');
+		fwrite($fd, $this->createZip->getZippedfile());
+		fclose($fd);
 	}
-
 }
 ?>

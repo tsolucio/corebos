@@ -2,7 +2,7 @@
 /***********************************************************
 *  Module       : Quotes
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr/
 ***********************************************************/
@@ -43,6 +43,7 @@ $mod_strings = array (
 	'LBL_ADDRESS_INFORMATION' => 'Adresse',
 	'LBL_Quote_INFORMATION' => 'Détail compte',
 	'LBL_CUSTOM_INFORMATION' => 'Informations personnalisées',
+	'LBL_Quotes_FINANCIALINFO' => 'Financial Information',
 	'LBL_BILLING_ADDRESS' => 'Adresse (facturation) :',
 	'LBL_SHIPPING_ADDRESS' => 'Adresse (livraison) :',
 	'LBL_ANY_ADDRESS' => 'Adresse (alt.)',

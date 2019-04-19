@@ -69,6 +69,7 @@ $mod_strings = array(
 	'Sales Order' => 'Verkoop Orders',
 	'Invoice' => 'Facturen',
 	'PriceBooks' => 'Prijslijsten',
+	'LBL_PRODUCT_PRICES' => 'Service Prices',
 	'Leads' => 'Leads',
 	'Accounts' => 'Klanten',
 	'Contacts' => 'Contacten',

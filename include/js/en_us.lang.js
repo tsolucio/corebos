@@ -11,6 +11,7 @@ var alert_arr = {
 	'DELETE':'Are you sure you want to delete the selected ',
 	'RECORDS':' records?',
 	'SELECT':'Please select at least one entity',
+	'SELECTCONDITION':'Please select at least one condition',
 	'SELECTTEMPLATE':'Please select at least one document Template',
 	'SELECTMERGE':'Please select an entity to merge!',
 	'GENDOCSAVED':'Document saved. Please verify that it has been created correctly.',
@@ -105,6 +106,8 @@ var alert_arr = {
 	'GREATER_THAN':'greater than',
 	'LESS_OR_EQUALS':'less or equal',
 	'GREATER_OR_EQUALS':'greater or equal',
+	'DOES_NOT_START_WITH':'does not start with',
+	'DOES_NOT_END_WITH':'does not end with',
 
 	'NO_SPECIAL_CHARS':'Special Characters are not allowed in Invoice String',
 	'PLS_SELECT_VALID_FILE':'Please select a file with the following extension:\n',
@@ -206,6 +209,7 @@ var alert_arr = {
 	/*layout Editor changes*/
 	'BLOCK_NAME_CANNOT_BE_BLANK': 'Block name can not be blank',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE': 'Are you sure you want to delete ?',
+	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_EXACT_DUPLICATE': 'Are you sure you want to Delete All Exact record duplicates?',
 	'PLEASE_MOVE_THE_FIELDS_TO_ANOTHER_BLOCK': 'Please move the fields to another block',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_BLOCK': 'Are you sure you want to delete block?',
 	'LABEL_CANNOT_NOT_EMPTY': 'Label cannot be Emtpy',
@@ -350,8 +354,11 @@ var alert_arr = {
 	'LBL_ENDS_WITH' : 'ends with',
 	'LBL_HAS_CHANGED' : 'has changed',
 	'LBL_HAS_CHANGED_TO' : 'has changed to',
+	'LBL_WAS' : 'was',
 	'LBL_IS_EMPTY': 'is empty',
 	'LBL_IS_NOT_EMPTY' : 'is not empty',
+	'LBL_DOES_NOT_START_WITH' : 'does not start with',
+	'LBL_DOES_NOT_END_WITH' : 'does not end with',
 	'LBL_EQUAL_TO' : 'equal to',
 	'LBL_LESS_THAN' : 'less than',
 	'LBL_GREATER_THAN' : 'greater than',
@@ -409,5 +416,8 @@ var alert_arr = {
 	'JSLBL_PAGINATION': 'Pagination',
 	'JSLBL_FINISH': 'Finish',
 	'SHOWING' : 'Showing',
-	'OF' : 'of'
+	'OF' : 'of',
+	'ERR_Massedit' : 'Error on Mass Edit',
+	'ProcessFINISHED' : 'Process Finished',
+	'duplicatednotallowed' : 'Duplicated Modules Not Allowed'
 };

@@ -215,6 +215,7 @@ $mod_strings = array(
 
 'LBL_ASTERISKEXTENSIONS_EXIST' => 'Extensión Asterisk ya Existe!',
 'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'El Separador Decimal y de Agrupamiento de Dígitos no puede ser el mismo.',
+'LBL_FORUSER' => ' en el Usuario ',
 
 'LBL_CREATE_NEW_GROUP'=>'Crear nuevo grupo',
 'LBL_NEW_GROUP'=>'Nuevo Grupo',
@@ -335,6 +336,8 @@ $mod_strings = array(
 'LBL_EMAIL_SCHDS_DESC'=>'Lo que sigue es la lista de las notificaciones que se activan automáticamente cuando el correspondiente evento ha ocurrido.',
 'LBL_ACTIVE'=>'Activo',
 'LBL_INACTIVE'=>'Inactivo',
+'LBL_ON'=>'Activo',
+'LBL_OFF'=>'Inactivo',
 'LBL_NOTIFICATION'=>'Notificación',
 'LBL_DESCRIPTION'=>'Descripción',
 'LBL_TASK_NOTIFICATION'=>'Notificación de tarea retrasada',
@@ -397,11 +400,9 @@ $mod_strings = array(
 'INV_TANDC'=>'Condiciones Generales',
 'INV_TERMSANDCONDITIONS'=>'Inventario - Condiciones Generales',
 'LBL_INV_TERMSANDCONDITIONS'=>'Gestión de Inventario',
-
-
 'INVENTORYNOTIFICATION'=>'Notificaciones de Inventario',
 'LBL_INVENTORY_NOTIFICATIONS'=>'Editar Notificaciones de Inventario',
-'LBL_INV_NOT_DESC'=>'Listado de las notificaciones que se envían a los proveedores cuando durante la creación de un presupuesto, orden de venta o factura, no hay cantidad suficiente de producto .',
+'LBL_INV_NOT_DESC'=>'Listado de las notificaciones que se envían a los proveedores cuando, durante la creación de un presupuesto, orden de venta o factura, no hay cantidad suficiente de producto.',
 
 'InvoiceNotification'=>'Notificación de stock de producto bajo durante la generación de una factura',
 'InvoiceNotificationDescription'=>'Si durante la Factura el stock del producto almacenado es menor que la cantidad demandada en la orden de venta, se enviará esta notificación al responsable del producto',

@@ -22,8 +22,7 @@ function vtws_loginportal($username, $password) {
 	if (empty($userId)) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALIDUSERPWD, "User $uname does not exist");
 	}
-	global $adb, $log;
-	$log->debug('Entering LoginPortal function with parameter username: '.$username);
+	global $adb;
 
 	$ctors = $adb->pquery(
 		'select id

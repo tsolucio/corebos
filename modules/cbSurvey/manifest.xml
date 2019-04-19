@@ -1,0 +1,420 @@
+<?xml version='1.0'?>
+<module>
+<name>cbSurvey</name>
+<label>cbSurvey</label>
+<parent>Marketing</parent>
+<version>1.0</version>
+<short_description>Survey control module.</short_description>
+<dependencies>
+<vtiger_version>5.4.0</vtiger_version>
+<vtiger_max_version>5.*</vtiger_max_version>
+</dependencies>
+<license>
+<inline><![CDATA[
+ ********************************************************************************
+ * Copyright 2014 JPL TSolucio, S.L. -- This file is a part of coreBOS CRM.
+ * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+ * file except in compliance with the License. You can redistribute it and/or modify it
+ * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+ * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License. You may obtain a copy of the License
+ * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ ********************************************************************************
+ *  Module       : Survey control module.
+ *  Version      : 1.0
+ *  Author       : JPL TSolucio, S. L.   Joe Bordes
+ ********************************************************************************
+]]></inline>
+</license>
+<tables>
+<table>
+<name>vtiger_cbsurvey</name>
+<sql><![CDATA[CREATE TABLE `vtiger_cbsurvey` (
+  `cbsurveyid` int(11) NOT NULL,
+  `cbsurvey_no` varchar(26) default NULL,
+  `cbsurveyname` varchar(166) default NULL,
+  `cbsurveyprovider` varchar(166) default NULL,
+  `cbsurveyurl` varchar(246) default NULL,
+  `cbsurveystart` date default NULL,
+  `cbsurveyend` date default NULL,
+  `cbslastsync` datetime default NULL,
+  `total` int(11) default NULL,
+  `completed` int(11) default NULL,
+  PRIMARY KEY (`cbsurveyid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+<table>
+<name>vtiger_cbsurveycf</name>
+<sql><![CDATA[CREATE TABLE `vtiger_cbsurveycf` (
+  `cbsurveyid` int(11) NOT NULL,
+  PRIMARY KEY (`cbsurveyid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+</tables>
+<blocks>
+<block>
+<label>LBL_MODULEBLOCK_INFORMATION</label>
+<fields>
+<field>
+<fieldname>cbsurveyname</fieldname>
+<uitype>1</uitype>
+<columnname>cbsurveyname</columnname>
+<tablename>vtiger_cbsurvey</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>cbsurveyname</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>1</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>cbsurvey_no</fieldname>
+<uitype>4</uitype>
+<columnname>cbsurvey_no</columnname>
+<tablename>vtiger_cbsurvey</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>cbsurvey_no</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>2</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<entityidentifier>
+<entityidfield>cbsurveyid</entityidfield>
+<entityidcolumn>cbsurveyid</entityidcolumn>
+</entityidentifier>
+</field>
+<field>
+<fieldname>cbsurveyprovider</fieldname>
+<uitype>1</uitype>
+<columnname>cbsurveyprovider</columnname>
+<tablename>vtiger_cbsurvey</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>cbsurveyprovider</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>3</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>cbsurveystart</fieldname>
+<uitype>5</uitype>
+<columnname>cbsurveystart</columnname>
+<tablename>vtiger_cbsurvey</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>cbsurveystart</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>4</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>cbsurveyurl</fieldname>
+<uitype>17</uitype>
+<columnname>cbsurveyurl</columnname>
+<tablename>vtiger_cbsurvey</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>cbsurveyurl</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>5</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>cbsurveyend</fieldname>
+<uitype>5</uitype>
+<columnname>cbsurveyend</columnname>
+<tablename>vtiger_cbsurvey</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>cbsurveyend</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>6</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>total</fieldname>
+<uitype>7</uitype>
+<columnname>total</columnname>
+<tablename>vtiger_cbsurvey</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>total</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>7</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>I~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>completed</fieldname>
+<uitype>7</uitype>
+<columnname>completed</columnname>
+<tablename>vtiger_cbsurvey</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>completed</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>8</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>I~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>cbslastsync</fieldname>
+<uitype>70</uitype>
+<columnname>cbslastsync</columnname>
+<tablename>vtiger_cbsurvey</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>cbslastsync</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>9</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>T~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>8</quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>assigned_user_id</fieldname>
+<uitype>53</uitype>
+<columnname>smownerid</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Assigned To</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>10</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence>1</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>created_user_id</fieldname>
+<uitype>52</uitype>
+<columnname>smcreatorid</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Created By</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>11</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>1</quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
+<fieldname>createdtime</fieldname>
+<uitype>70</uitype>
+<columnname>createdtime</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Created Time</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>12</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>DT~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>8</quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
+<fieldname>modifiedtime</fieldname>
+<uitype>70</uitype>
+<columnname>modifiedtime</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Modified Time</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>13</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>DT~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>9</quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+</fields>
+</block>
+<block>
+<label>LBL_CUSTOM_INFORMATION</label>
+</block>
+<block>
+<label>LBL_DESCRIPTION_INFORMATION</label>
+<fields>
+<field>
+<fieldname>description</fieldname>
+<uitype>19</uitype>
+<columnname>description</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Description</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<selected>0</selected>
+<sequence>1</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence>10</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+</fields>
+</block>
+</blocks>
+<customviews>
+<customview>
+<viewname>All</viewname>
+<setdefault>false</setdefault>
+<setmetrics>false</setmetrics>
+<fields>
+<field>
+<fieldname>cbsurvey_no</fieldname>
+<columnindex>0</columnindex>
+</field>
+<field>
+<fieldname>cbsurveyname</fieldname>
+<columnindex>1</columnindex>
+</field>
+<field>
+<fieldname>cbsurveyprovider</fieldname>
+<columnindex>2</columnindex>
+</field>
+<field>
+<fieldname>cbsurveyurl</fieldname>
+<columnindex>3</columnindex>
+</field>
+<field>
+<fieldname>cbsurveystart</fieldname>
+<columnindex>4</columnindex>
+</field>
+<field>
+<fieldname>cbsurveyend</fieldname>
+<columnindex>5</columnindex>
+</field>
+<field>
+<fieldname>assigned_user_id</fieldname>
+<columnindex>6</columnindex>
+</field>
+</fields>
+</customview>
+</customviews>
+<sharingaccess>
+<default>private</default>
+</sharingaccess>
+<actions>
+<action>
+<name><![CDATA[Merge]]></name>
+<status>enabled</status>
+</action>
+<action>
+<name><![CDATA[Import]]></name>
+<status>enabled</status>
+</action>
+<action>
+<name><![CDATA[Export]]></name>
+<status>enabled</status>
+</action>
+</actions>
+<relatedlists>
+</relatedlists>
+<events>
+</events>
+<customlinks>
+</customlinks>
+<crons>
+</crons>
+</module>

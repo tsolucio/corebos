@@ -49,7 +49,6 @@ $mod_strings = array(
 'LBL_COLUMNS_AVERAGE'=>'Promedio',
 'LBL_COLUMNS_LOW_VALUE'=>'El valor más bajo',
 'LBL_COLUMNS_LARGE_VALUE'=>'El valor más alto',
-'LBL_NONE'=>'Ninguno',
 'LBL_GROUPING_SORT'=>'Orden del grupo:',
 'LBL_GROUPING_SUMMARIZE'=>'Resumir la información por:',
 'LBL_GROUPING_THEN_BY'=>'y despues por:',
@@ -306,5 +305,6 @@ $mod_strings = array(
 'LBL_COLUMNS_COUNT'=>'Contar',
 'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Error eliminando la carpeta.',
 'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error eliminando los informes de la carpeta',
+'ERR_CREATE_REPORT' => 'Error creando el informe.',
 );
 ?>

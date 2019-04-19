@@ -7,20 +7,18 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ******************************************************************************* */
-
-require_once('data/Tracker.php');
-require_once('include/utils/utils.php');
-require_once('include/utils/UserInfoUtil.php');
+require_once 'data/Tracker.php';
+require_once 'include/utils/utils.php';
+require_once 'include/utils/UserInfoUtil.php';
 require_once 'include/Webservices/DescribeObject.php';
-require_once('Smarty_setup.php');
+require_once 'Smarty_setup.php';
 
 global $currentModule, $app_strings, $log, $current_user, $theme;
 
-$theme_path = "themes/" . $theme . "/";
+$theme_path = 'themes/' . $theme . '/';
 
 if (isset($_REQUEST['record'])) {
 	$id = vtlib_purify($_REQUEST['record']);
-	$log->debug(" the id is " . $id);
 }
 $category = getParentTab();
 
@@ -36,5 +34,6 @@ $smarty->assign('DATE_FORMAT', $current_user->date_format);
 $smarty->assign('CAL_DATE_FORMAT', parse_calendardate($app_strings['NTC_DATE_FORMAT']));
 $smarty->assign('LeadConvertTransferToAccount', GlobalVariable::getVariable('Lead_Convert_TransferToAccount', 'false'));
 $smarty->assign('LeadConvertOpportunitySelected', GlobalVariable::getVariable('Lead_Convert_OpportunitySelected', 'false'));
+$smarty->assign('LeadConvertContactSelected', GlobalVariable::getVariable('Lead_Convert_ContactSelected', 'false'));
 $smarty->display(vtlib_getModuleTemplate($currentModule, 'ConvertLead.tpl'));
 ?>

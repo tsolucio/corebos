@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'cbtranslation' => 'Translations',
 	'SINGLE_cbtranslation' => 'Translation',
 	'cbtranslation ID' => 'Translation ID',

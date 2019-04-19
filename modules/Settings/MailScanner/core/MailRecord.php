@@ -102,10 +102,8 @@ class Vtiger_MailRecord {
 		if ($this->_plainmessage) {
 			$bodytext = $this->_plainmessage;
 		} elseif ($this->_isbodyhtml) {
-			// TODO This conversion can added multiple lines if
-			// content is displayed directly on HTML page
-			$bodytext = preg_replace("/<br>/", "\n", $bodytext);
-			$bodytext = strip_tags($bodytext);
+			$bodytext = preg_replace('/<br>/', "\n", $bodytext);
+			$bodytext = ($striptags ? strip_tags($bodytext) : $bodytext);
 		}
 		return $bodytext;
 	}
@@ -318,14 +316,13 @@ class Vtiger_MailRecord {
 		// so an attached text file (type 0) is not mistaken as the message.
 		if (isset($params['filename']) || isset($params['name'])) {
 			// filename may be given as 'Filename' or 'Name' or both
-			$filename = ($params['filename'])? $params['filename'] : $params['name'];
+			$filename = isset($params['filename']) ? $params['filename'] : $params['name'];
 			// filename may be encoded, so see imap_mime_header_decode()
 			if (!$this->_attachments) {
 				$this->_attachments = array();
 			}
 			$this->_attachments[$filename] = $data;  // TODO: this is a problem if two files have same name
-		} // TEXT
-		elseif ($p->type==0 && $data) {
+		} elseif ($p->type==0 && $data) { // TEXT
 			$this->_charset = $params['charset'];  // assume all parts are same charset
 			$data = self::__convert_encoding($data, 'UTF-8', $this->_charset);
 			// Messages may be split in different parts because of inline attachments,

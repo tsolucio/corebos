@@ -1256,4 +1256,88 @@
 	<classname>addNewReportTypeColumn</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mikelkasneci</author>
+	<description>Make ConvertInventoryModule to appear and on non inventory modules</description>
+	<filename>build/changeSets/2018/modifyConvertInventoryModuleTask.php</filename>
+	<classname>modifyConvertInventoryModuleTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+       <author>etlevabiba</author>
+       <description>Create contentjson field for cbMap Module </description>
+       <filename>build/changeSets/2018/add_contentjsonfieldcbMap.php</filename>
+       <classname>createcontentjsonfield</classname>
+       <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+       <author>etlevabiba</author>
+       <description>Create a new vtlib module : BusinessActions Module </description>
+       <filename>build/changeSets/2018/create_modBusinessActions.php</filename>
+       <classname>modbusinessactions</classname>
+       <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mikelkasneci</author>
+	<description>Change type of setting_value column to TEXT</description>
+	<filename>build/changeSets/2018/updateSettingValueField.php</filename>
+	<classname>updateSettingValueField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>besart</author>
+	<description>Add validate map feature</description>
+	<filename>build/changeSets/2018/validateMap.php</filename>
+	<classname>validateMap</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>jonidasinaj</author>
+	<description>Product-Subproduct Roll Up handler</description>
+	<filename>build/changeSets/2018/ProdSubprodHandlerEvent.php</filename>
+	<classname>ProdSubprodHandlerEvent</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>loridacito</author>
+	<description>notification driver tables</description>
+	<filename>build/changeSets/2019/notificationdrivers.php</filename>
+	<classname>Notificationdrivers</classname>
+	<systemupdate>1</systemupdate>
+</changeSet>
+<changeSet>
+	<author>loridacito</author>
+	<description>add Messages module</description>
+	<filename>build/changeSets/2019/addmodulemessages.php</filename>
+	<classname>Addmodulemessages</classname>
+	<systemupdate>1</systemupdate>
+</changeSet>
+<changeSet>
+	<author>loridacito</author>
+	<description>attachment</description>
+	<filename>build/changeSets/2019/attachment.php</filename>
+	<classname>Attachment</classname>
+	<systemupdate>1</systemupdate>
+</changeSet>
+<changeSet>
+	<author>loridacito</author>
+	<description>add new events for wf</description>
+	<filename>build/changeSets/2019/addneweventsforworkflow.php</filename>
+	<classname>Addneweventsforworkflow</classname>
+	<systemupdate>1</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mocodertz</author>
+	<description>Add Aggregate Filter widget</description>
+	<filename>build/changeSets/2019/addWidgetTables.php</filename>
+	<classname>AddWidgetTables</classname>
+	<systemupdate>1</systemupdate>
+</changeSet>
+<changeSet>
+	<author>albertxhani</author>
+	<description>Creates user privileges and sharing privileges tables</description>
+	<filename>build/changeSets/2019/CreateUserPrivTables.php</filename>
+	<classname>CreateUserPrivTables</classname>
+	<systemupdate>1</systemupdate>
+</changeSet>
 </updatesChangeLog>

@@ -12,11 +12,9 @@ $mod_strings = array(
 	'cbCalendar' => 'To Dos',
 	'SINGLE_cbCalendar' => 'To Do',
 	'cbCalendar ID' => 'To Do ID',
-
 	'LBL_CUSTOM_INFORMATION' => 'Custom Information',
 	'LBL_TASK_INFORMATION' => 'To Do Information',
 	'EventAdvancedOptions' => 'Advanced Information',
-
 	'Subject' => 'Subject',
 	'Start Date Time' => 'Start Date Time',
 	'End Date Time' => 'End Date Time',
@@ -62,6 +60,7 @@ $mod_strings = array(
 	'LBL_YEAR'=>'Year',
 	'LBL_UNTIL' => 'Until',
 	'LBL_SET_DATE'=>'Set Date',
+	'LBL_SET_DATE_TIME'=>'Set Date and Time',
 	'LBL_SM_MON' => 'Mon',
 	'LBL_SM_TUE' => 'Tue',
 	'LBL_SM_WED' => 'Wed',

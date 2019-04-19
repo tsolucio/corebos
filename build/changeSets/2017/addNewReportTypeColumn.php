@@ -16,18 +16,19 @@
 
 class addNewReportTypeColumn extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$this->ExecuteQuery("ALTER TABLE  vtiger_report  ADD  cbreporttype VARCHAR(50) NOT NULL");
-			$this->ExecuteQuery("UPDATE  vtiger_report  SET  cbreporttype=? WHERE state=?",array('corebos','SAVED'));
+			$this->ExecuteQuery("UPDATE  vtiger_report  SET  cbreporttype=? WHERE state=?", array('corebos','SAVED'));
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-
 }

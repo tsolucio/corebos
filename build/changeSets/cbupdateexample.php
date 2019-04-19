@@ -15,9 +15,11 @@
 *************************************************************************************************/
 
 class cbupdate_example extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset cbupdate_example already applied!');
 		} else {
@@ -30,20 +32,25 @@ class cbupdate_example extends cbupdaterWorker {
 			$out = ob_get_contents();
 			ob_end_clean();
 			$this->sendMsg($out);
-			if ($rdo) $this->sendMsg('french installed!');
-			else $this->sendMsg('NO french!');
+			if ($rdo) {
+				$this->sendMsg('french installed!');
+			} else {
+				$this->sendMsg('NO french!');
+			}
 			$this->sendMsg('Changeset cbupdate_example applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-	
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			// undo your magic here
 			// Deactivate French modules
-			vtlib_toggleLanguageAccess('fr_fr',false);
+			vtlib_toggleLanguageAccess('fr_fr', false);
 			$this->sendMsg('NO french!');
 			$this->sendMsg('Changeset cbupdate_example undone!');
 			$this->markUndone();
@@ -52,5 +59,4 @@ class cbupdate_example extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
 }

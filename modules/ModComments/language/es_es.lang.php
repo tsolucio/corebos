@@ -14,7 +14,7 @@
 *  Author       : JPL TSolucio, S.L.
 *  License      : MPL 1.1
  ************************************************************************************/
-$mod_strings = Array (
+$mod_strings = array (
 'ModComments' => 'Comentarios',
 'SINGLE_ModComments' => 'Comentario',
 
@@ -41,5 +41,4 @@ $mod_strings = Array (
 'LBL_CONFIGURATION_DESCRIPTION' => 'Activar/Desactivar la funcionalidad para cada módulo.',
 'LBL_ModComments_SETTINGS' => 'Módulos Activados',
 );
-
 ?>

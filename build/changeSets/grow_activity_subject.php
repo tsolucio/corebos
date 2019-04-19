@@ -15,10 +15,14 @@
 *************************************************************************************************/
 
 class grow_activity_subject extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->isBlocked()) return true;
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->isBlocked()) {
+			return true;
+		}
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -28,10 +32,14 @@ class grow_activity_subject extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
-	function undoChange() {
-		if ($this->isBlocked()) return true;
-		if ($this->hasError()) $this->sendError();
+
+	public function undoChange() {
+		if ($this->isBlocked()) {
+			return true;
+		}
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isSystemUpdate()) {
 			$this->sendMsg('Changeset '.get_class($this).' is a system update, it cannot be undone!');
 		} else {
@@ -45,5 +53,4 @@ class grow_activity_subject extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
 }

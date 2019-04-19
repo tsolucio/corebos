@@ -8,16 +8,26 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
-	'ModuleName' => 'Modulname',
-	'SINGLE_ModuleName' => 'Modulname',
-	'ModuleName ID' => 'Modulname ID',
+$mod_strings = array(
 
-	'LBL_CUSTOM_INFORMATION' => 'zusätzliche Information',
-	'LBL_MODULEBLOCK_INFORMATION' => 'ModuleBlock Information',
+	'cbtranslation' => 'Übersetzungen',
+	'SINGLE_cbtranslation' => 'Übersetzung',
+	'cbtranslation ID' => 'Übersetzungs-ID',
+
+	'LBL_CUSTOM_INFORMATION' => 'Zusatz-Information',
+	'LBL_CBTRANSLATION_INFORMATION' => 'Übersetzungs-Information',
 	'LBL_DESCRIPTION_INFORMATION' => 'Beschreibung',
 
-	'ModuleFieldLabel' => 'ModuleFieldLabel Text',	
+	'cbtranslation No' => 'Übersetzungs-Nr.',
+	'Locale' => 'Sprach-Code',
+	'Module' => 'Modul',
+	'Key' => 'Schlüssel',
+	'i18n' => 'Übersetzung',
+	'Proof Read' => 'Überprüft',
+	'Export CSV' => 'Export CSV',
+	'Export JSON' => 'Export JSON',
+	'Translates' => 'Übersetzung für',
+	'Field' => 'Feld',
+	'Picklist' => 'Auswahlliste',
 );
-
 ?>

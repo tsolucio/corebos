@@ -10,32 +10,40 @@
 include_once __DIR__ . '/Viewer.php';
 
 class Vtiger_PDF_PagerViewer extends Vtiger_PDF_Viewer {
-	
+
 	protected $model;
 
-	function setModel($m) {
+	public function setModel($m) {
 		$this->model = $m;
 	}
 
-	function totalHeight($parent) {
+	public function totalHeight($parent) {
 		return 10;
 	}
 
-	function initDisplay($parent) {
+	public function initDisplay($parent) {
 	}
-	
-	function display($parent) {
+
+	public function display($parent) {
 		$pdf = $parent->getPDF();
 		$headerFrame = $parent->getHeaderFrame();
 
 		$displayFormat = '-%s-';
-		if($this->model) {
+		if ($this->model) {
 			$displayFormat = $this->model->get('format', $displayFormat);
 		}
 		$contentHeight = $pdf->GetStringHeight($displayFormat, $headerFrame->w/2.0);
-		$pdf->MultiCell($headerFrame->w/2.0, $contentHeight, sprintf($displayFormat, $pdf->getPage()), 0, 'L', 0, 1,
-			$headerFrame->x+$headerFrame->w/2.0, $headerFrame->y);
+		$pdf->MultiCell(
+			$headerFrame->w/2.0,
+			$contentHeight,
+			sprintf($displayFormat, $pdf->getPage()),
+			0,
+			'L',
+			0,
+			1,
+			$headerFrame->x+$headerFrame->w/2.0,
+			$headerFrame->y
+		);
 	}
 }
-
 ?>

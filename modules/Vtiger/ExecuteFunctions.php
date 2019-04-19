@@ -70,6 +70,11 @@ switch ($functiontocall) {
 		}
 		$ret = getReferenceAutocomplete($term, $op, $searchinmodule, $limit, $current_user);
 		break;
+	case 'getProductServiceAutocomplete':
+		include_once 'include/Webservices/CustomerPortalWS.php';
+		$limit =  isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 5;
+		$ret = getProductServiceAutocomplete($_REQUEST['term'], array(), $limit);
+		break;
 	case 'getFieldValuesFromRecord':
 		$ret = array();
 		$crmid = vtlib_purify($_REQUEST['getFieldValuesFrom']);
@@ -108,6 +113,8 @@ switch ($functiontocall) {
 			include_once 'modules/cbMap/processmap/Validations.php';
 			if (Validations::ValidationsExist($valmod)) {
 				echo 'yes';
+			} elseif (recordIsAssignedToInactiveUser(vtlib_purify($_REQUEST['crmid']))) {
+				echo 'yes';
 			} else {
 				echo 'no';
 			}
@@ -117,6 +124,10 @@ switch ($functiontocall) {
 	case 'ValidationLoad':
 		$valmod = vtlib_purify($_REQUEST['valmodule']);
 		include_once 'modules/cbMap/processmap/Validations.php';
+		if (Validations::recordIsAssignedToInactiveUser()) {
+			echo getTranslatedString('RecordIsAssignedToInactiveUser');
+			die();
+		}
 		if (Validations::ValidationsExist($valmod)) {
 			$validation = Validations::processAllValidationsFor($valmod);
 			if ($validation!==true) {
@@ -143,7 +154,7 @@ switch ($functiontocall) {
 		$newssid = vtlib_purify($_REQUEST['newtabssid']);
 		$oldssid = vtlib_purify($_REQUEST['oldtabssid']);
 		foreach ($_SESSION as $key => $value) {
-			if (strpos($key, $oldssid) !== false and strpos($key, $oldssid.'__prev') === false) {
+			if (strpos($key, $oldssid) !== false && strpos($key, $oldssid.'__prev') === false) {
 				$newkey = str_replace($oldssid, $newssid, $key);
 				coreBOS_Session::set($newkey, $value);
 				coreBOS_Session::set($key, (isset($_SESSION[$key.'__prev']) ? $_SESSION[$key.'__prev'] : ''));
@@ -198,8 +209,9 @@ switch ($functiontocall) {
 		}
 		break;
 	case 'getGloalSearch':
+	case 'getGlobalSearch':
 		include_once 'include/Webservices/CustomerPortalWS.php';
-		$data = json_decode(file_get_contents('php://input'), true);
+		$data = json_decode($_REQUEST['data'], true);
 		$searchin = vtlib_purify($data['searchin']);
 		$limit = isset($data['maxresults']) ? vtlib_purify($data['maxresults']) : '';
 		$term = vtlib_purify($data['term']);
@@ -212,6 +224,73 @@ switch ($functiontocall) {
 				'query_string' => $value['query_string'],
 				'total' => $retvals['total']
 			) + $value['crmfields'];
+		}
+		break;
+	case 'getRelatedListInfo':
+		$sql = 'SELECT rl.tabid,rl.related_tabid,rl.label,tab.name as name, tabrel.name as relname
+			FROM vtiger_relatedlists rl
+			LEFT JOIN vtiger_tab tab ON rl.tabid=tab.tabid
+			LEFT JOIN vtiger_tab tabrel ON rl.related_tabid=tabrel.tabid
+			WHERE relation_id=?';
+		$res = $adb->pquery($sql, array($_REQUEST['relation_id']));
+		$ret = array();
+		if ($adb->num_rows($res) > 0) {
+			$tabid = $adb->query_result($res, 0, 'tabid');
+			$tabidrel = $adb->query_result($res, 0, 'related_tabid');
+			$label = $adb->query_result($res, 0, 'label');
+			$mod = $adb->query_result($res, 0, 'name');
+			$modrel = $adb->query_result($res, 0, 'relname');
+			$ret = array(
+				'tabid'=>$tabid,
+				'tabidrel'=>$tabidrel,
+				'label'=>$label,
+				'module'=>$mod,
+				'modulerel'=>$modrel,
+			);
+		}
+		break;
+	case 'getSetting':
+		$skey = vtlib_purify($_REQUEST['skey']);
+		if (!empty($_REQUEST['default'])) {
+			$default = vtlib_purify($_REQUEST['default']);
+			$ret = coreBOS_Settings::getSetting($skey, $default);
+		} else {
+			$ret = coreBOS_Settings::getSetting($skey, null);
+		}
+		break;
+	case 'setSetting':
+		$skey = vtlib_purify($_REQUEST['skey']);
+		$svalue = vtlib_purify($_REQUEST['svalue']);
+		$ret = coreBOS_Settings::setSetting($skey, $svalue);
+		break;
+	case 'delSetting':
+		$skey = vtlib_purify($_REQUEST['skey']);
+		$ret = coreBOS_Settings::delSetting($skey);
+		break;
+	case 'getTranslatedStrings':
+		global $currentModule;
+		$i18nm = empty($_REQUEST['i18nmodule']) ? $currentModule : vtlib_purify($_REQUEST['i18nmodule']);
+		$tkeys = vtlib_purify($_REQUEST['tkeys']);
+		$tkeys = explode(';', $tkeys);
+		$ret = array();
+		foreach ($tkeys as $tr) {
+			$ret[$tr] = getTranslatedString($tr, $i18nm);
+		}
+		break;
+	case 'execwf':
+		include_once 'include/Webservices/ExecuteWorkflow.php';
+		$wfid = vtlib_purify($_REQUEST['wfid']);
+		$ids = explode(';', vtlib_purify($_REQUEST['ids']));
+		$id = reset($ids);
+		$wsid = vtws_getEntityId(getSalesEntityType($id)).'x';
+		$crmids = array();
+		foreach ($ids as $crmid) {
+			$crmids[] = $wsid.$crmid;
+		}
+		try {
+			$ret = cbwsExecuteWorkflow($wfid, json_encode($crmids), $current_user);
+		} catch (Exception $e) {
+			$ret = false;
 		}
 		break;
 	case 'ismoduleactive':

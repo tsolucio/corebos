@@ -10,7 +10,7 @@
 -->*}
 <script type="text/javascript" src="include/js/ColorPicker2.js"></script>
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
-
+<script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
 var cp2 = new ColorPicker('window');
 
@@ -132,7 +132,7 @@ function check_duplicate()
 		{include file='SetMenu.tpl'}
 	{/if}
 
-		<form name="EditView" method="POST" action="index.php" ENCTYPE="multipart/form-data" onsubmit="VtigerJS_DialogBox.block();">
+	<form name="EditView" method="POST" action="index.php" ENCTYPE="multipart/form-data" onsubmit="VtigerJS_DialogBox.block();">
 		<input type="hidden" name="module" value="Users">
 		<input type="hidden" name="record" value="{if isset($ID)}{$ID}{/if}">
 		<input type="hidden" name="mode" value="{$MODE}">
@@ -191,7 +191,7 @@ function check_duplicate()
 	</tr>
 	<tr><td>&nbsp;</td></tr>
 	<tr>
-		<td nowrap align="right">
+		<td nowrap align="right" class="cblds-t-align_right">
 			{if $LDAP_BUTTON neq ''}
 				<input type="text" id="LdapSearchUser" class="detailedViewTextBox" style="width:150px;" placeholder="{$UMOD.LBL_FORE_LASTNAME}">
 				<input type="button" class="crmbutton small create" value="{$UMOD.LBL_QUERY} {$LDAP_BUTTON}" onClick="QueryLdap('LdapSearchUser');">
@@ -230,7 +230,7 @@ function check_duplicate()
 						<td class="small" align="right">&nbsp;</td>
 					</tr>
 				</table>
-				<table border="0" cellpadding="5" cellspacing="0" width="100%">
+				<table border="0" cellpadding="5" cellspacing="0" width="100%" id="useredit__homeorder">
 				{foreach item=homeitems key=values from=$HOMEORDER}
 					<tr>
 						<td class="dvtCellLabel" align="right" width="30%">{$UMOD.$values|@getTranslatedString:'Home'}</td>
@@ -275,7 +275,7 @@ function check_duplicate()
 				<br>
 				<tr><td colspan=4>&nbsp;</td></tr>
 						<tr>
-							<td colspan=4 align="right">
+							<td colspan=4 align="right" class="cblds-t-align_right">
 							<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accesskey="{$APP.LBL_SAVE_BUTTON_KEY}" class="small crmbutton save" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " onclick="this.form.action.value='Save'; return verify_data(EditView)" type="button" />
 							<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accesskey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="small crmbutton cancel" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " onclick="window.history.back()" type="button" />
 							</td>
@@ -287,7 +287,7 @@ function check_duplicate()
 				</table>
 				<br>
 				</td></tr>
-				<tr><td class="small"><div align="right"><a href="#top">{$MOD.LBL_SCROLL}</a></div></td></tr>
+				<tr><td class="small cblds-t-align_right"><div align="right"><a href="#top">{$MOD.LBL_SCROLL}</a></div></td></tr>
 				</table>
 			</td>
 			</tr>

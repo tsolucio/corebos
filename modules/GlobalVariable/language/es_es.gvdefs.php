@@ -25,7 +25,6 @@
 	'values' => 'list of possible values',
 	'definition' => 'explanation and purpose',
 ),
-
  *************************************************************************************************/
 $GlobalVariableDefinitonsHeader = array(
 	'valuetype' => 'Tipo de Valor',
@@ -48,6 +47,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Seguridad',
 	'values' => 'Ejemplo: 127.0.0.1,192.168.0.100',
 	'definition' => 'Lista separada por comas de direcciones IP desde las que se permitirá el acceso a la aplicación de los usuarios',
+),
+'Application_SendUserPasswordByEmail' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Seguridad',
+	'values' => '0 | 1',
+	'definition' => 'Si es verdadero, la aplicación enviará un correo electrónico con la contraseña del usuario cada vez que se cambie la contraseña utilizando la plantilla "Password Change Template"',
 ),
 'Debug_Record_Not_Found' => array(
 	'status' => 'Implementada',
@@ -245,6 +251,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'all | admin | none',
 	'definition' => 'Comprobación global de seguridad que permite la exportación de información. "all" para permitir que cualquiera con permiso pueda exportar, "admin" para permitir solo a los usuarios administradores exportar, "none" para bloquear la exportación completamente. El valor por defecto es "all"',
 ),
+'Application_SaveAndRepeatActive' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Activar la acción de "Guardar y Repetir" en modo edición. Por defecto desactivado',
+),
 'Application_ListView_Max_Text_Length' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Entero',
@@ -265,6 +278,21 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => 'ASC | DESC',
 	'definition' => 'Orden inicial de los registros al hacer clic en el encabezado de vista de lista. El orden por defecto es ASC',
+),
+'Application_ListView_Default_OrderDirection' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'ASC | DESC',
+	'definition' => 'Sort order for records of a module. If not defined the internal default value of each module will be used.',
+	'definition' => 'Dirección de ordenación de los registros de un módulo. Si no es definido se utilizará el valor interno de cada módulo.',
+),
+'Application_ListView_Default_OrderField' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'columna del módulo',
+	'definition' => 'Campo del módulo por el que hay que ordenar. Si no es definido se utilizará el valor interno de cada módulo.',
 ),
 'Application_ListView_Record_Change_Indicator' => array(
 	'status' => 'Implementada',
@@ -293,6 +321,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Rendimiento',
 	'values' => '0 | 1',
 	'definition' => 'Mostrar la suma total de columnas de tipo moneda. El valor por defecto es 1',
+),
+'Application_ListView_SearchColumns' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Mostrar columnas de búsqueda en la tabla de la lista de vista',
 ),
 'Application_DetailView_Record_Navigation' => array(
 	'status' => 'Implementada',
@@ -343,6 +378,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Si se establece en 1, se enviará un correo electrónico al propietario del ticket de HelpDesk cuando cambie, si se establece en 0, no se enviará ningún correo electrónico al propietario. Esto puede anularse con los flujos de trabajo, sólo se aplica a los flujos de trabajo predeterminados. El valor predeterminado es 1.',
 ),
+'HelpDesk_Sort_Comments_ASC' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Si se establece en 1, los comentarios del ticket se presentarán del más antiguo al más reciente (este es el valor predeterminado), si se establece en cero, los comentarios se presentarán del más reciente al más antiguo.',
+),
 'HomePage_Widget_Group_Size' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Entero',
@@ -370,6 +412,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '',
 	'definition' => 'URL del portal del cliente (Ejemplo: http://your_support_domain.tld/portal). Utilizado principalmente en las plantillas de correo.',
+),
+'Application_Customer_Portal_BeingUsed' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'vtigercrmportal | coreboscp',
+	'definition' => 'Indica el portal de ciente conectado a este coreBOS para que podamos adaptar algunas salidas correctamente. Utilizado principalmente en las plantillas de correo.',
 ),
 'Debug_Calculate_Response_Time' => array(
 	'status' => 'Implementada',
@@ -511,6 +560,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'individual | group',
 	'definition' => 'Establecer el modo de impuesto en módulos de inventario a línea individual o grupo de impuestos',
 ),
+'Inventory_Show_ShippingHandlingCharges' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Muestra o esconde la sección de cargos de Manipulación y Transporte.',
+),
 'Application_Global_Search_Active' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -622,6 +678,27 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '',
 	'definition' => 'Al llamar o recibir una llamada de un contacto desconocido, esta cadena se usará como el identificador de nombre de registro junto al número marcado. El valor predeterminado es Unknown',
+),
+'PBX_SearchOnTheseFields' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'nombres de campos',
+	'definition' => 'Lista de campos en los que buscar al recibir una llamada de Asterisk. Se devolverá el primer resultado encontrado.',
+),
+'PBX_callerNumberField' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'nombre de campo PBX',
+	'definition' => 'Nombre del campo proveniente del PBX que debemos utilizar para buscar en la aplicación. Por defecto se utiliza CallerID',
+),
+'PBX_callerNumberSeparator' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Carácter',
+	'category' => 'Aplicación',
+	'values' => 'carácter',
+	'definition' => 'El número entrante del PBX se separará por este caracter y se buscará cada parte de manera individual. Por defecto no se separa el número.',
 ),
 'Mobile_Module_by_default' => array(
 	'status' => 'Implementada',
@@ -762,6 +839,20 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'Mostrar u ocultar la lista de módulos en el calendario. El valor predeterminado de 1 muestra la lista y 0 la oculta.',
+),
+'Calendar_Status_Panel_Visible' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Mostrar u ocultar el panel de Estado en el calendario. El valor predeterminado de 1 muestra el panel y 0 lo oculta.',
+),
+'Calendar_Priority_Panel_Visible' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Mostrar u ocultar el panel de Prioridad en el calendario. El valor predeterminado de 1 muestra el panel y 0 lo oculta.',
 ),
 'Calendar_Default_Reminder_Minutes' => array(
 	'status' => 'Implementada',
@@ -910,6 +1001,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'false | true',
 	'definition' => 'Si se establece a "true", la sección de la Oportunidad se seleccionará al convertir un PreContacto. De forma predeterminada, la sección no está activada.',
 ),
+'Lead_Convert_ContactSelected' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Texto',
+	'category' => 'Aplicación',
+	'values' => 'false | true',
+	'definition' => 'Si se establece a "true", la sección del Contacto se seleccionará al convertir un PreContacto. De forma predeterminada, la sección está activada.',
+),
 'Product_Show_Subproducts_Popup' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -930,6 +1028,20 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => 'yes | no',
 	'definition' => 'Permitir asignar subproductos a subproducto',
+),
+'Product_SubProduct_PriceRollUp' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Calcula el precio unitario del producto según el precio unitario y la cantidad de sus subproductos.',
+),
+'Product_SubProduct_CostRollUp' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Calcula el precio de coste del producto según el coste y la cantidad de sus subproductos.',
 ),
 'Product_Maximum_Number_Images' => array(
 	'status' => 'Implementada',
@@ -993,6 +1105,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'Al seleccionar una Cuenta/Contacto/Vendedor en la ventana emergente, la aplicación te pregunta si debe rellenar las direcciones. Esta variable establece la casilla de verificación Dirección de Envío.',
+),
+'Application_Popup_Address_Selection'=> array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Muestra la opción para seleccionar una dirección en Cuenta y Contacto (por defecto es 1), si se establece en 0, no se mostrará la opción completa para seleccionar una dirección.',
 ),
 'Application_Show_Copy_Address' => array(
 	'status' => 'Implementada',
@@ -1099,37 +1218,127 @@ $GlobalVariableDefinitons = array(
 	'values' => 'ID o nombre de la plantilla a utilizar',
 	'definition' => 'Cuando la variable CustomerPortal_PDF se establece en PDFMaker o GenDoc, esta variable indica qué plantilla se debe utilizar para generar el PDF de ordenes de venta. Si está vacía, se utilizará la primera plantilla encontrada.',
 ),
-'CustomerPortal_PDFTemplate_Invoice'  => array(
+'CustomerPortal_PDFTemplate_Invoice' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Texto',
 	'category' => 'Integración',
 	'values' => 'ID o nombre de la plantilla a utilizar',
 	'definition' => 'Cuando la variable CustomerPortal_PDF se establece en PDFMaker o GenDoc, esta variable indica qué plantilla se debe utilizar para generar el PDF de facturas. Si está vacía, se utilizará la primera plantilla encontrada.',
 ),
-'CustomerPortal_PDFTemplate_PurchaseOrder'  => array(
+'CustomerPortal_PDFTemplate_PurchaseOrder' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Texto',
 	'category' => 'Integración',
 	'values' => 'ID o nombre de la plantilla a utilizar',
 	'definition' => 'Cuando la variable CustomerPortal_PDF se establece en PDFMaker o GenDoc, esta variable indica qué plantilla se debe utilizar para generar el PDF de ordenes de compra. Si está vacía, se utilizará la primera plantilla encontrada.',
 ),
-'Application_Permit_Assign_Up'  => array(
+'Application_Permit_Assign_Up' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'En módulos con privilegios de compartición privados, permite asignar el registro a cualquier usuario activo de la aplicación.',
 ),
-'Application_Permit_Assign_SameRole'  => array(
+'Application_Permit_Assign_SameRole' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
 	'category' => 'Aplicación',
 	'values' => '0 | 1',
 	'definition' => 'En módulos con privilegios de compartición privados, permite asignar el registro a cualquier usuario activo de la aplicación con el mismo rol que el usuario actual.',
 ),
+'Application_Permit_Assign_AllGroups' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'En módulos con privilegios de compartición privados, permite asignar el registro a cualquier grupo definido en la aplicación.',
+),
+'MailManager_Show_SentTo_Links' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'MailManager muestra, de manera predeterminada, en el panel izquierdo un conjunto de enlaces para filtrar los correos electrónicos relacionados con Cuentas, Contactos y algunos otros módulos. Establecer esta variable a 0 ocultará esas acciones rápidas.',
+),
+'Calendar_Show_WeekNumber' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Cuando la variable está activa se mostrará el número de semana en el calendario.',
+),
+'Report_HeaderOnXLS' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Cuando Report_HeaderOnXLS está activo, el nombre del informe aparecerá como el encabezado en el archivo XLS.',
+),
+'Report_HeaderOnPDF' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Cuando Report_HeaderOnPDF está activo, el nombre del informe aparecerá como el encabezado en el archivo PDF.',
+),
+'RelatedList_Activity_DefaultStatusFilter' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'Valor válido de la lista de estados de Actividad',
+	'definition' => 'Filtro inicial de Actividades en la lista relacionada. Por defecto muestra "todos".',
+),
+'Zero_Bounce_API_KEY' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'Cualquier Clave API válida de Zero Bounce',
+	'definition' => 'Una clave válida para el API de Zero Bounce para poder validar cuentas de correo.',
+),
+'GenDoc_CopyLabelToClipboard' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Extensión',
+	'values' => '0|1',
+	'definition' => 'Haz que los enlaces de Copiar generen las etiquetas GenDoc en vez de los valores de los campos. Por defecto desactivado.',
+),
+'BusinessQuestion_TableAnswer_Limit' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'Número máximo de filas devueltas como resultado de la respuesta de una Pregunta de Negocio.',
+),
+'PurchaseOrder_TransferCostPrice' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0|1',
+	'definition' => 'Cuando se establece en 1, la creación de una orden de compra a partir de otro registro (es decir, la orden de venta, la factura y/o el producto) utilizará el costo del producto/servicio en las líneas de inventario en lugar del precio de venta. Puedes especificar aún más este comportamiento marcando la casilla "En la lista de módulos" y seleccionando los módulos de origen para los que quieres que esto suceda en el desplegable.',
+),
+'PurchaseOrder_IgnoreTransferDiscount' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0|1',
+	'definition' => 'Cuando se establece en 1, la transferencia de una línea de, por ejemplo, una orden de venta a una orden de compra, establecerá todos los descuentos a cero, independientemente de lo que el módulo de origen tenga. Puedes ajustar los módulos de origen marcando "En la lista de módulos" y seleccionando los módulos de origen.',
+),
+'Application_User_SortBy' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'Especificación SQL para order by|DO NOT SORT',
+	'definition' => 'Si se proporciona, se incorporará directamente a la consulta SQL para recuperar los usuarios que aparecen en el menú desplegable Asignado a, lo que nos permite personalizar el orden de aparición de estos usuarios.',
+),
+'Workflow_ListView_PageSize' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'Aplicación',
+	'values' => '',
+	'definition' => 'Número de filas a mostrar por página en la vista de lista de flujos de trabajo. El valor predeterminado es 20.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {
-	include($tcode);
+	include $tcode;
 }
-

@@ -84,8 +84,8 @@ class Install_InitSchema {
 		$newUser->retrieve_entity_info(1, 'Users');
 		$newUser->change_password('admin', $adminPassword, false);
 		$this->db->pquery('UPDATE `vtiger_users` SET `change_password` = ? where id=1', array(($adminPassword=='admin' ? 1 : 0)));
-		require_once('modules/Users/CreateUserPrivilegeFile.php');
-		createUserPrivilegesfile(1);
+		require_once 'modules/Users/UserPrivilegesWriter.php';
+		UserPrivilegesWriter::setUserPrivileges(1);
 	}
 
 	private function splitQueries($query) {

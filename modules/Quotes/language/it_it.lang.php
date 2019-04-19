@@ -7,14 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the English language pack for Quotes module.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
- 
+
 $mod_strings = array (
   'LBL_MODULE_NAME' => 'Preventivi',
   'LBL_MODULE_TITLE' => 'Preventivi: Home',
@@ -51,6 +44,7 @@ $mod_strings = array (
   'LBL_ADDRESS_INFORMATION' => 'Informazioni Indirizzo',
   'LBL_Quote_INFORMATION' => 'Informazioni Azienda',
   'LBL_CUSTOM_INFORMATION' => 'Informazioni Personalizzate',
+  'LBL_Quotes_FINANCIALINFO' => 'Financial Information',
   'LBL_BILLING_ADDRESS' => 'Indirizzo (fatturazione):',
   'LBL_SHIPPING_ADDRESS' => 'Indirizzo (spedizione)',
   'LBL_ANY_ADDRESS' => 'Ogni altro indirizzo:',
@@ -150,5 +144,4 @@ $mod_strings = array (
   'Add Service Contract'=>'Aggiungi Servizio a Contratto',
   'Quotes ID'=>'ID Preventivi',
 );
-
 ?>

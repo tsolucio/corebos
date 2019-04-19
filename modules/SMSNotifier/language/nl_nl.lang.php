@@ -11,17 +11,7 @@
  * This translations is based on earlier work of:
  * - IT-Online.nl <www.it-online.nl>
  * - Weltevree.org <www.Weltevree.org>
- ********************************************************************************/
-
-/*******************************************************************************
  * Vicus eBusiness Solutions Version Control
- * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.3.x
- * @author	$Author: luuk $
- * @version 	$Revision: 1.3 $ $Date: 2011/11/14 17:07:26 $
- * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/SMSNotifier/language/nl_nl.lang.php,v $
- * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
- * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
 
 $mod_strings = array (
@@ -54,7 +44,9 @@ $mod_strings = array (
 'ServerNotConfigured' => 'Server Not Configured?',
 'ReviewModuleSettings' => 'Please review SMS Settings.',
 'ContactAdmin' => 'Please contact your administrator.',
-
+'SelectPhoneNumbers' => 'Select Phone Numbers',
+'SelectNumberTypes' => 'Please select the number types to send the SMS',
+'ComposeSMS' => 'Compose SMS',
+'characters' => 'characters',
 );
-
 ?>

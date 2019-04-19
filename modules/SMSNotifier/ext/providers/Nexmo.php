@@ -22,7 +22,7 @@ class Nexmo implements ISMSProvider {
 	const SERVICE_URI = 'https://rest.nexmo.com';
 	private static $REQUIRED_PARAMETERS = array('api_key', 'api_secret','from');
 
-	function __construct() {
+	public function __construct() {
 	}
 
 	/**
@@ -43,7 +43,7 @@ class Nexmo implements ISMSProvider {
 	}
 
 	public function getParameter($key, $defvalue = false) {
-		if(isset($this->_parameters[$key])) {
+		if (isset($this->_parameters[$key])) {
 			return $this->_parameters[$key];
 		}
 		return $defvalue;
@@ -54,11 +54,14 @@ class Nexmo implements ISMSProvider {
 	}
 
 	public function getServiceURL($type = false) {
-		if($type) {
-			switch(strtoupper($type)) {
-				case self::SERVICE_AUTH: return  self::SERVICE_URI . '/sms/json';
-				case self::SERVICE_SEND: return  self::SERVICE_URI . '/sms/json';
-				case self::SERVICE_QUERY: return self::SERVICE_URI . '/search/message';
+		if ($type) {
+			switch (strtoupper($type)) {
+				case self::SERVICE_AUTH:
+					return  self::SERVICE_URI . '/sms/json';
+				case self::SERVICE_SEND:
+					return  self::SERVICE_URI . '/sms/json';
+				case self::SERVICE_QUERY:
+					return self::SERVICE_URI . '/search/message';
 			}
 		}
 		return false;
@@ -79,28 +82,27 @@ class Nexmo implements ISMSProvider {
 		$params = $this->prepareParameters();
 		$params['text'] = $message;
 		//Nexmo's SMS API can only accept one message per request.
-		foreach ($tonumbers	as $to_key => $to_number) {
+		foreach ($tonumbers	as $to_number) {
 			if (trim($to_number) !='') {
 				$params['to'] = $to_number;
 				$url = 'https://rest.nexmo.com/sms/json?' . http_build_query($params);
 				$ch = curl_init($url);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				$response = curl_exec($ch);
-				$response_arr[] = get_object_vars(json_decode( $response ));
+				$response_arr[] = get_object_vars(json_decode($response));
 			}
 		}
 		$results = array();
 
-		foreach($response_arr as $message_response) {
+		foreach ($response_arr as $message_response) {
 			$message_content = get_object_vars($message_response['messages'][0]);
 			//if(empty($message_response)) continue;
 			$result = array( 'error' => false, 'statusmessage' => '' );
-			if(isset ($message_content['error-text'])) {
-				$result['error'] = true; 
+			if (isset($message_content['error-text'])) {
+				$result['error'] = true;
 				$result['to'] =  $message_content['to'];
 				$result['statusmessage'] = $message_content['messages'][0]['error-text'];
-			} 
-			else {
+			} else {
 				$result['id'] = $message_content['message-id'];
 				$result['to'] = $message_content['to'];
 				$result['status'] = self::MSG_STATUS_DISPATCHED;
@@ -111,41 +113,35 @@ class Nexmo implements ISMSProvider {
 	}
 
 	public function query($messageid) {
-
 		$params = $this->prepareParameters();
 		$url = 'https://rest.nexmo.com/search/message/'.$params['api_key'].'/'.$params['api_secret'].'/'.$messageid;
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$response = curl_exec($ch);
-		$response_obj = json_decode( $response );
+		$response_obj = json_decode($response);
 		$message_arr = get_object_vars($response_obj);
 		$result = array( 'error' => false, 'needlookup' => 1 );
 		//the following is not perfect and needs a rework
-		if(isset ($message_arr['error-text'])) {
-			$result['error'] = true; 
+		if (isset($message_arr['error-text'])) {
+			$result['error'] = true;
 			$result['needlookup'] = 0;
 			$result['statusmessage'] = trim($message_arr['final-status']);
-		} 
-		else  {
-			if (isset ($message_arr['final-status'])) {
+		} else {
+			if (isset($message_arr['final-status'])) {
 				$result['status'] = self::MSG_STATUS_DISPATCHED;
 				$result['needlookup'] = 0;
-			}
-			else {
-				if($message_arr['status'] == 'BUFFERED' ) {
+			} else {
+				if ($message_arr['status'] == 'BUFFERED') {
 					$result['status'] = self::MSG_STATUS_PROCESSING;
-				} 
-				else if($status == 'DELIVRD') {
+				} elseif ($message_arr['status'] == 'DELIVRD') {
 					$result['status'] = self::MSG_STATUS_DISPATCHED;
 					$result['needlookup'] = 0;
-				} 
-				else {
+				} else {
 					$result['status'] = self::MSG_STATUS_DISPATCHED;
 					$result['needlookup'] = 0;
 				}
 			}
 		}
-
 		return $result;
 	}
 }
