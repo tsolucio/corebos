@@ -1308,6 +1308,7 @@ $app_strings = array (
 	'Add Relation' => 'Añadir Relación',
 	'Delete Relation' => 'Eliminar Relación',
 	'Delete All Relation' => 'Eliminar Todas las Relaciones',
+	'SelectOneRecordOfModule' => 'Selecciona cualquier registro del módulo, se eliminará la relación con todos los registros relacionados de ese módulo',
 	'Select Related Module' => 'Selecciona Módulo Relacionado',
 	'No Module' => 'No tiene módulos relacionados',
 	'Entity Name' => 'Nombre Entidad',

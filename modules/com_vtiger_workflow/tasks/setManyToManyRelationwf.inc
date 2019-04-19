@@ -42,8 +42,7 @@ class setManyToManyRelationwf extends VTTask {
 		}
 		if ($this->relAction == 'addrel') {
 			vtws_setrelation($entity->id, $idlistNewArr, $current_user);
-		}
-		if ($this->relAction == 'delAllrel' || $this->relAction == 'delrel') {
+		} elseif ($this->relAction == 'delrel') {
 			list($modid,$recid) = explode('x', $entity->getId());
 			$recmod = $entity->getModuleName();
 			$modobj = CRMEntity::getInstance($recmod);
@@ -51,6 +50,40 @@ class setManyToManyRelationwf extends VTTask {
 				$return_module = getSalesEntityType($rid);
 				$modobj->unlinkRelationship($recid, $return_module, $rid);
 				$modobj->trackUnLinkedInfo($return_module, $rid, $recmod, $recid);
+			}
+		} elseif ($this->relAction == 'delAllrel') {
+			list($modid,$recid) = explode('x', $entity->getId());
+			$recmod = $entity->getModuleName();
+			$rectabid = getTabid($recmod);
+			$modobj = CRMEntity::getInstance($recmod);
+			$done = array();
+			foreach ($idlistArr as $rid) {
+				$mod2unrelate = getSalesEntityType($rid);
+				if (!in_array($mod2unrelate, $done)) {
+					$done[] = $mod2unrelate;
+					$relatedModuleId = getTabid($mod2unrelate);
+					$relationResult = $adb->pquery(
+						'SELECT name FROM vtiger_relatedlists WHERE tabid=? AND related_tabid=?',
+						array($rectabid, $relatedModuleId)
+					);
+					$relationInfo = $adb->fetch_array($relationResult);
+					global $GetRelatedList_ReturnOnlyQuery;
+					$holdValue = $GetRelatedList_ReturnOnlyQuery;
+					$GetRelatedList_ReturnOnlyQuery = true;
+					$params = array($recid, $rectabid, $relatedModuleId);
+					$relationData = call_user_func_array(array($modobj, $relationInfo['name']), $params);
+					$GetRelatedList_ReturnOnlyQuery = $holdValue;
+					if (isset($relationData['query'])) {
+						$query = $relationData['query'];
+						preg_match('/[\t ]from /i', $query, $matches, PREG_OFFSET_CAPTURE);
+						$query = 'select vtiger_crmentity.crmid'.substr($query, $matches[0][1]);
+						$rs = $adb->query($query);
+						while ($row = $adb->fetch_array($rs)) {
+							$modobj->unlinkRelationship($recid, $mod2unrelate, $row['crmid']);
+							$modobj->trackUnLinkedInfo($mod2unrelate, $row['crmid'], $recmod, $recid);
+						}
+					}
+				}
 			}
 		}
 	}

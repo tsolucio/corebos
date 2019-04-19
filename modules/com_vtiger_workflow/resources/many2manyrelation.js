@@ -35,7 +35,7 @@ function addrecList(recId, recvalue) {
 		'</div>'+
 		'</td>'+
 		'<td class="slds-tree__item" data-label="Entity Name" scope="row">'+
-			'<div class="slds-truncate">'+recvalue+'</div>'+
+			'<div class="slds-truncate">'+(document.getElementById('radio-5').checked ? '*' : recvalue)+'</div>'+
 		'</td>'+
 		'<td data-label="Entity" role="gridcell" style="width: 18rem;">'+
 			'<div class="slds-truncate">'+document.getElementById('relModlist_type').value+'</div>'+
@@ -57,7 +57,7 @@ jQuery(document).ready(function () {
 				'</div>'+
 				'</td>'+
 				'<td class="slds-tree__item" data-label="Entity Name" scope="row">'+
-					'<div class="slds-truncate">'+relrecords[i].entityName+'</div>'+
+					'<div class="slds-truncate">'+(document.getElementById('radio-5').checked ? '*' : relrecords[i].entityName)+'</div>'+
 				'</td>'+
 				'<td data-label="Entity" role="gridcell" style="width: 18rem;">'+
 					'<div class="slds-truncate">'+relrecords[i].entityType+'</div>'+

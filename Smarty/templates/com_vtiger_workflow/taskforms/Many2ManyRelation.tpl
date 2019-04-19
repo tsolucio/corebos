@@ -44,7 +44,18 @@ var relrecords = {$task->relrecords|json_encode};
       <input type="radio" id="radio-5" name="relAction" {if ($task->selAct eq "delAllrel")}{"checked"}{/if} value="delAllrel" />
       <label class="slds-radio__label" for="radio-5">
         <span class="slds-radio_faux"></span>
-        <span class="slds-form-element__label"> {'Delete All Relation'|@getTranslatedString}</span>
+        <span class="slds-form-element__label">{'Delete All Relation'|@getTranslatedString}&nbsp;
+          <span>
+            <span class="slds-icon_container slds-icon-utility-info" onmouseover="document.getElementById('delallhelp').style.display='block';" onmouseout="document.getElementById('delallhelp').style.display='none';">
+              <svg class="slds-icon slds-icon slds-icon_xx-small slds-icon-text-default" aria-hidden="true">
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info" />
+              </svg>
+            </span>
+            <div class="slds-popover slds-popover_tooltip slds-nubbin_left" role="tooltip" id="delallhelp" style="display:none; position: absolute; top: 12px; left: 240px;">
+              <div class="slds-popover__body">{'SelectOneRecordOfModule'|@getTranslatedString}</div>
+            </div>
+          </span>
+        </span>
       </label>
     </span>
   </div>
