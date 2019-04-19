@@ -991,7 +991,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		    vtiger_products.cost_price AS cost_price, 
 		    vtiger_products.mfr_part_no AS mfr_no, 
 		    vtiger_products.qtyinstock AS qtyinstock, 
-		    {$proddescquery},
+		    {$prod_aliasquery},
 		    vtiger_crmentity.deleted AS deleted, 
 		    vtiger_crmentity.crmid AS id, 
 		    vtiger_products.unit_price AS unit_price 
@@ -1011,7 +1011,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		    '' AS mfr_no,
 		    0 AS qtyinstock,
 		    '' AS cost_price,
-		    {$servdescquery},
+		    {$serv_aliasquery},
 		    vtiger_crmentity.deleted AS deleted, 
 		    vtiger_crmentity.crmid AS id, 
 		    vtiger_service.unit_price AS unit_price 
