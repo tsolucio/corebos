@@ -62,6 +62,7 @@ class setManyToManyRelationwf extends VTTask {
 		}
 		if (!empty($this->idlist)) {
 			$idlistArr = explode(',', $this->idlist);
+			$this->relrecords = array();
 			foreach ($idlistArr as $relcrmid) {
 				$rmod = getSalesEntityType($relcrmid);
 				$this->relrecords[] = array(

@@ -50,7 +50,7 @@ var relrecords = {$task->relrecords|json_encode};
   </div>
 </fieldset>
 <br/>
-<input type="hidden" name="idlist" value="" id="idlist">
+<input type="hidden" name="idlist" value="{$task->idlist}" id="idlist">
 
 <div class="slds-form-element">
   <label class="slds-form-element__label" for="relModlist">{'Select Related Module'|@getTranslatedString}</label><br>
