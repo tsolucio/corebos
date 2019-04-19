@@ -1210,6 +1210,13 @@ $app_strings = array(
 	'processcomplete' => 'Process Complete',
 	'typetosearch_prodser' => 'Type om producten of diensten te zoeken',
 	'RecordIsAssignedToInactiveUser' => 'The record is assigned to an inactive user. Please select another user.',
+	'Add Relation' => 'Add Relation',
+	'Delete Relation' => 'Delete Relation',
+	'SelectOneRecordOfModule' => 'Select any record of the module, all related records with that module will be unrelated',
+	'Delete All Relation' => 'Delete All Relation',
+	'Select Related Module' => 'Select Related Module',
+	'No Module' => 'No related Module',
+	'Entity Name' => 'Entity Name',
 );
 
 // Translation for currency names

@@ -1313,6 +1313,13 @@ $app_strings = array (
 'processcomplete' => 'Processo Completo',
 'typetosearch_prodser' => 'Digite p/pesquisar produto/serviço',
 'RecordIsAssignedToInactiveUser' => 'O registro é atribuído a um usuário inativo. Por favor, selecione outro usuário.',
+'Add Relation' => 'Add Relation',
+'Delete Relation' => 'Delete Relation',
+'Delete All Relation' => 'Delete All Relation',
+'SelectOneRecordOfModule' => 'Select any record of the module, all related records with that module will be unrelated',
+'Select Related Module' => 'Select Related Module',
+'No Module' => 'No related Module',
+'Entity Name' => 'Entity Name',
 );
 
 // Translation for currency names

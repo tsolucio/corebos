@@ -371,6 +371,13 @@ function fieldExpressionPopup(moduleName, $) {
 }
 
 function com_vtiger_workflowsetValueFromCapture(recordid, value, target_fieldname) {
+	if (target_fieldname == 'relModlist') {
+		var seldiv = window.document.getElementById('selected_recordsDiv');
+		var retrecList = window.addrecList(recordid, value);
+		var idinputval = window.document.getElementById('idlist').value;
+		window.document.getElementById('idlist').value = (idinputval == '') ? recordid : idinputval+','+recordid;
+		seldiv.innerHTML +=retrecList;
+	}
 	$('#editpopup_expression').val(recordid);
 	document.getElementById('wfrelfield').value = recordid;
 	document.getElementById('wfrelfield_display').value = value;
