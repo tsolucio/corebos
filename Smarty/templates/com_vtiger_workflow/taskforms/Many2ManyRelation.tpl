@@ -18,7 +18,7 @@
 -->*}
 <script type="text/javascript">var moduleName = '{$entityName}';</script>
 <script src="modules/com_vtiger_workflow/resources/vtigerwebservices.js" type="text/javascript" charset="utf-8"></script>
-<script src="modules/com_vtiger_workflow/resources/many2mayrelationscript.js" type="text/javascript" charset="utf-8"></script>
+<script src="modules/com_vtiger_workflow/resources/many2manyrelation.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" src="include/js/vtlib.js"></script>
 <script type="text/javascript" charset="utf-8">
 var relrecords = {$task->relrecords|json_encode};
@@ -41,7 +41,7 @@ var relrecords = {$task->relrecords|json_encode};
       </label>
     </span>
     <span class="slds-radio">
-      <input type="radio" id="radio-5" name="relAction" {if ($task->selAct eq "dellAllrel")}{"checked"}{/if} value="dellAllrel" />
+      <input type="radio" id="radio-5" name="relAction" {if ($task->selAct eq "delAllrel")}{"checked"}{/if} value="delAllrel" />
       <label class="slds-radio__label" for="radio-5">
         <span class="slds-radio_faux"></span>
         <span class="slds-form-element__label"> {'Delete All Relation'|@getTranslatedString}</span>
@@ -81,55 +81,22 @@ var relrecords = {$task->relrecords|json_encode};
       <th class="slds-text-align_right" scope="col" style="width: 3.25rem;">
         <div class="slds-th__action slds-th__action_form">
           <div class="slds-checkbox">
-            <input type="checkbox" name="options1" disabled id="checkbox-6" tabindex="-1" aria-labelledby="check-select-all-label column-group-header" value="checkbox-6" />
-            <label class="slds-checkbox__label" for="checkbox-6" id="check-select-all-label">
+            <input type="checkbox" name="options1" disabled id="checkbox-0" tabindex="-1" aria-labelledby="check-select-all-label column-group-header" value="checkbox-0" />
+            <label class="slds-checkbox__label" for="checkbox-0" id="check-select-all-label">
               <span class="slds-checkbox_faux"></span>
             </label>
           </div>
         </div>
       </th>
-      <th aria-label="Entity Name" aria-sort="none" class="slds-has-button-menu slds-is-resizable slds-is-sortable" scope="col">
-        <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="-1">
-          <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
-            <span class="slds-truncate" title="Entity Name">{'Entity Name'|@getTranslatedString}</span>
-            <span class="slds-icon_container slds-icon-utility-arrowdown">
-              <svg class="slds-icon slds-icon-text-default slds-is-sortable__icon " aria-hidden="true" >
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#arrowdown" />
-              </svg>
-            </span>
-          </div>
-        </a>
-        <button class="slds-button slds-button_icon slds-th__action-button slds-button_icon-x-small" aria-haspopup="true" tabindex="-1" title="Show Entity Name column actions">
-          <svg class="slds-button__icon slds-button__icon_hint slds-button__icon_small" aria-hidden="true">
-            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevrondown" />
-          </svg>
-        </button>
-        <div class="slds-resizable">
-          <input aria-label="Entity Name column width" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-6" max="1000" min="20" tabindex="-1" type="range" />
-          <span class="slds-resizable__handle">
-            <span class="slds-resizable__divider"></span>
-          </span>
+      <th aria-label="{'Entity Name'|@getTranslatedString}" aria-sort="none" scope="col">
+        <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+          <span class="slds-truncate" title="{'Entity Name'|@getTranslatedString}">{'Entity Name'|@getTranslatedString}</span>
         </div>
       </th>
-      <th aria-label="Entity" aria-sort="none" class="slds-has-button-menu slds-is-resizable slds-is-sortable" scope="col">
-        <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="-1">
-          <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
-            <span class="slds-truncate" title="Entity">{'Entity Type'|@getTranslatedString}</span>
-            <span class="slds-icon_container slds-icon-utility-arrowdown">
-              <svg class="slds-icon slds-icon-text-default slds-is-sortable__icon " aria-hidden="true">
-                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#arrowdown" />
-              </svg>
-            </span>
-          </div>
-        </a>
-        <div class="slds-resizable">
-          <input aria-label="Entity column width" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-7" max="1000" min="20" tabindex="-1" type="range" />
-          <span class="slds-resizable__handle">
-            <span class="slds-resizable__divider"></span>
-          </span>
+      <th aria-label="{'Entity Type'|@getTranslatedString}" aria-sort="none" scope="col" style="width: 18rem;">
+        <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+          <span class="slds-truncate" title="{'Entity Type'|@getTranslatedString}">{'Entity Type'|@getTranslatedString}</span>
         </div>
-      </th>
-      <th class="" scope="col" style="width: 3.25rem;">
       </th>
     </tr>
   </thead>

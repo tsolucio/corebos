@@ -43,7 +43,7 @@ class setManyToManyRelationwf extends VTTask {
 		if ($this->relAction == 'addrel') {
 			vtws_setrelation($entity->id, $idlistNewArr, $current_user);
 		}
-		if ($this->relAction == 'dellAllrel' || $this->relAction == 'delrel') {
+		if ($this->relAction == 'delAllrel' || $this->relAction == 'delrel') {
 			list($modid,$recid) = explode('x', $entity->getId());
 			$recmod = $entity->getModuleName();
 			$modobj = CRMEntity::getInstance($recmod);
