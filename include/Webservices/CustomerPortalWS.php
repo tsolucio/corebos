@@ -924,7 +924,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			$prodconds = array_key_exists('Products', $sc) ? $sc['Products'] : $prodconds;
 			$servconds = array_key_exists('Service', $sc) ? $sc['Service'] : $servconds;
 		}
-		if (array_key_exists('cbProductServiceField',$cbMapFI) && array_key_exists('fillfields',$cbMapFI['cbProductServiceField'])) {
+		if (array_key_exists('cbProductServiceField', $cbMapFI) && array_key_exists('fillfields', $cbMapFI['cbProductServiceField'])) {
 			$ff = $cbMapFI['cbProductServiceField']['fillfields'];
 			$prodffs = array_key_exists('Products', $ff) ? explode(',', $ff['Products']) : $prodffs;
 			$servffs = array_key_exists('Service', $ff) ? explode(',', $ff['Service']) : $servffs;
