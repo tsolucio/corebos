@@ -110,6 +110,8 @@ class Tracker {
 				if ($per == 'yes') {
 					$curMod = CRMEntity::getInstance($module);
 					$row['__ICONLibrary'] = $curMod->moduleIcon['library'];
+					$row['__ICONContainerClass'] = $curMod->moduleIcon['containerClass'];
+					$row['__ICONClass'] = $curMod->moduleIcon['class'];
 					$row['__ICONName'] = $curMod->moduleIcon['icon'];
 					$list[] = $row;
 				}
