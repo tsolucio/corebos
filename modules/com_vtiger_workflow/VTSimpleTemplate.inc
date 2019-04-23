@@ -425,22 +425,24 @@ class VTSimpleTemplate {
 
 	public function parseTemplate() {
 		global $current_user;
-		$data = $this->parent->getData();
 		$backCurrentUser = $current_user;
-		list($wsId,$assigned_user_id) = explode('x', $data['assigned_user_id']);
-		if (vtws_getOwnerType($assigned_user_id) == 'Groups') {
-			require_once 'include/utils/GetGroupUsers.php';
-			$ggu = new GetGroupUsers();
-			$ggu->getAllUsersInGroup($assigned_user_id);
-			$users = $ggu->group_users;
-			if (!empty($users)) {
-				$assigned_user_id = $users[0];
-			} else {
-				$assigned_user_id = $backCurrentUser->id;
+		$data = $this->parent->getData();
+		if (!empty($data['assigned_user_id'])) {
+			list($wsId,$assigned_user_id) = explode('x', $data['assigned_user_id']);
+			if (vtws_getOwnerType($assigned_user_id) == 'Groups') {
+				require_once 'include/utils/GetGroupUsers.php';
+				$ggu = new GetGroupUsers();
+				$ggu->getAllUsersInGroup($assigned_user_id);
+				$users = $ggu->group_users;
+				if (!empty($users)) {
+					$assigned_user_id = $users[0];
+				} else {
+					$assigned_user_id = $backCurrentUser->id;
+				}
 			}
+			$current_user = new Users();
+			$current_user->retrieveCurrentUserInfoFromFile($assigned_user_id);
 		}
-		$current_user = new Users();
-		$current_user->retrieveCurrentUserInfoFromFile($assigned_user_id);
 		$return = preg_replace_callback(
 			'/\\$(\w+?|\(general : \(__WorkflowFunction__\) (.+?) \)[ |&._\-\]}<>\/!"%ºª?,;]|\((\w+) : \(([_\w]+)\) (.+)\))/U',
 			array($this, 'matchHandler'),
