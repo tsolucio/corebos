@@ -7,9 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 $moduleFilepath = 'modules/'.$_REQUEST['module'].'/'.$_REQUEST['file'].'.php';
-
 if (isset($_REQUEST['actionname'])) {
 	require_once 'vtlib/Vtiger/controllers/ActionController.php';
 	require_once 'include/utils/Request.php';

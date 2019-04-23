@@ -354,7 +354,7 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 												{if !isset($CUSTOM_LINKS) || empty($CUSTOM_LINKS)}
 													<br>
 												{/if}
-
+                                                 {*$CUSTOM_LINKS|print_r*}
 												{* vtlib customization: Custom links on the Detail view basic links *}
 												{if $CUSTOM_LINKS && $CUSTOM_LINKS.DETAILVIEWBASIC}
 													<table width="100%" border="0" cellpadding="5" cellspacing="0">
@@ -380,7 +380,6 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 														{/foreach}
 													</table>
 												{/if}
-
 												{* vtlib customization: Custom links on the Detail view *}
 												{if $CUSTOM_LINKS && $CUSTOM_LINKS.DETAILVIEW}
 													<br>
@@ -509,6 +508,7 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 	<td align=right valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 </tr></table>
 
+{$MODULE|print_r}
 {if $MODULE|hasEmailField}
 	<form name="SendMail" method="post"><div id="sendmail_cont" style="z-index:100001;position:absolute;"></div></form>
 {/if}
