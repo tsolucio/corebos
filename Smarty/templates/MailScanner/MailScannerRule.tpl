@@ -97,8 +97,8 @@
 							</td>
 						</tr>
 						<tr>
-                            <td nowrap class="small cellLabel" width="20%"><strong>{$MOD.LBL_CC}</strong></td>
-                            <td nowrap class="small cellText" width="80%" colspan=2>
+							<td nowrap class="small cellLabel" width="20%"><strong>{$MOD.LBL_CC}</strong></td>
+							<td nowrap class="small cellText" width="80%" colspan=2>
 								{$SCANNERRULE->cc}
 							</td>
  						</tr>

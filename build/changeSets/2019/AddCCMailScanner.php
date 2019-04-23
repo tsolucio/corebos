@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2014 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2019 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
 * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
 * file except in compliance with the License. You can redistribute it and/or modify it
 * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -16,9 +16,10 @@
 
 class AddCCMailScanner extends cbupdaterWorker {
 
-	function applyChange() {
-		global $adb;
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -35,12 +36,10 @@ class AddCCMailScanner extends cbupdaterWorker {
 		}
 		if ($this->isApplied()) {
 			$this->ExecuteQuery("ALTER TABLE `vtiger_mailscanner_rules` DROP COLUMN `cc`");
-
 			$this->markUndone();
 		} else {
 			$this->sendMsg('Changeset '.get_class($this).' not applied!');
 		}
 		$this->finishExecution();
 	}
-
 }

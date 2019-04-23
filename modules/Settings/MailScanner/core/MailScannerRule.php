@@ -237,10 +237,12 @@ class Vtiger_MailScannerRule {
 					}
 					break;
 				case 'CC':
-					if($this->cc) {
-						foreach($mailrecord->_cc as $toemail) {
+					if ($this->cc) {
+						foreach ($mailrecord->_cc as $toemail) {
 							$matchfound = $this->find($subrule, 'Contains', $toemail, $this->cc);
-							if($matchfound) break;
+							if ($matchfound) {
+								break;
+							}
 						}
 					} else {
 						$matchfound = $this->__CreateDefaultMatchResult($subrule);
@@ -388,7 +390,7 @@ class Vtiger_MailScannerRule {
 				$this->bodyop, $this->body,$this->matchusing,$this->assign_to, $this->cc, $this->ruleid)
 			);
 		} else {
-			$this->sequence = $this->__nextsequence();var_dump($this->cc);
+			$this->sequence = $this->__nextsequence();
 			$adb->pquery(
 				'INSERT INTO vtiger_mailscanner_rules(scannerid,fromaddress,toaddress,subjectop,subject,bodyop,body,matchusing,sequence,assign_to,cc)
 				VALUES(?,?,?,?,?,?,?,?,?,?,?)',
