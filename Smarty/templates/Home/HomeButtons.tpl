@@ -54,6 +54,15 @@
 			<div class="slds-spinner__dot-b"></div>
 		</div>
 		</span>
+		{assign var=ANNOUNCEMENT value=get_announcements()}
+		{if $ANNOUNCEMENT}
+			<div width="100%">
+				<div align=center>
+					<marquee id="rss" style="margin-left:12px;width:90%;" direction="left" scrolldelay="10" scrollamount="3" behavior="scroll" class="marStyle slds-float_left" onMouseOver="javascript:stop();" onMouseOut="javascript:start();">&nbsp;{$ANNOUNCEMENT}</marquee>
+					<div align="right" style="padding-right:38px;width:8%;" class="slds-float_right"><img src="{'Announce.PNG'|@vtiger_imageurl:$THEME}"></div>
+				</div>
+			</div>
+		{/if}
 	</td>
 </tr>
 </table>

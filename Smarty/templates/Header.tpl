@@ -318,17 +318,6 @@
 
 <!-- END LDS Global header -->
 
-{if $ANNOUNCEMENT}
-	<table width ="100%">
-		<tr colspan="3" width="100%">
-			<td width="90%" align=center>
-				<marquee id="rss" direction="left" scrolldelay="10" scrollamount="3" behavior="scroll" class="marStyle" onMouseOver="javascript:stop();" onMouseOut="javascript:start();">&nbsp;{$ANNOUNCEMENT}</marquee>
-			</td>
-			<td width="10%" align="right" style="padding-right:38px;"><img src="{'Announce.PNG'|@vtiger_imageurl:$THEME}"></td>
-		</tr>
-	</table>
-{/if}
-
 <div id='miniCal' style='width:300px; position:absolute; display:none; left:100px; top:100px; z-index:100000'></div>
 
 {if $MODULE_NAME eq 'Calendar'}
@@ -405,7 +394,7 @@
 
 <div id="qcform" style="position:absolute;width:700px;top:80px;left:450px;z-index:90000;"></div>
 
-<div id="status" style="position:absolute;display:none;left:50%;top:{if $ANNOUNCEMENT}130{else}95{/if}px;height:27px;white-space:nowrap;">
+<div id="status" style="position:absolute;display:none;left:50%;top:95px;height:27px;white-space:nowrap;">
 	<div role="status" class="slds-spinner slds-spinner_small slds-spinner_brand">
 		<div class="slds-spinner__dot-a"></div>
 		<div class="slds-spinner__dot-b"></div>

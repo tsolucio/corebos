@@ -23,7 +23,7 @@
 	{/if}
 	{assign var="MODULELABEL" value=$MODULE|@getTranslatedString:$MODULE}
 	<td style="padding-left:10px;padding-right:50px" class="moduleName" nowrap><a class="hdrLink" href="index.php?action={$action}&module={$MODULE}&parenttab={$CATEGORY}">{$MODULELABEL}</a></td>
-	<td width=100% nowrap>
+	<td width=40% nowrap>
 		<table border="0" cellspacing="0" cellpadding="0" >
 		<tr>
 		<td class="sep1" style="width:1px;"></td>
@@ -123,6 +123,19 @@
 		</tr>
 		</table>
 	</td>
+	{assign var=ANNOUNCEMENT value=get_announcements()}
+	{if $ANNOUNCEMENT}
+	<td class="small" width="100%">
+		<table width="100%">
+			<tr width="100%">
+				<td width="85%" align=center>
+					<marquee id="rss" direction="left" scrolldelay="10" scrollamount="3" behavior="scroll" class="marStyle" onMouseOver="javascript:stop();" onMouseOut="javascript:start();">&nbsp;{$ANNOUNCEMENT}</marquee>
+				</td>
+				<td width="15%" align="right" style="padding-right:38px;"><img src="{'Announce.PNG'|@vtiger_imageurl:$THEME}"></td>
+			</tr>
+		</table>
+	</td>
+	{/if}
 </tr>
 <tr><td style="height:2px"></td></tr>
 </TABLE>
