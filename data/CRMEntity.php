@@ -24,9 +24,9 @@ class CRMEntity {
 	public $linkmodemodule = '';
 	public $DirectImageFieldValues = array();
 	public $HasDirectImageField = false;
-	static protected $methods = array();
-	static protected $dbvalues = array();
-	static protected $todvalues = array();
+	protected static $methods = array();
+	protected static $dbvalues = array();
+	protected static $todvalues = array();
 	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-recent', 'class' => 'slds-icon', 'icon'=>'recent');
 
 	public function __construct() {

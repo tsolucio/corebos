@@ -28,7 +28,7 @@ class Accounts extends CRMEntity {
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
 	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-account', 'class' => 'slds-icon', 'icon'=>'account');
-	
+
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */

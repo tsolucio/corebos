@@ -4863,7 +4863,7 @@ function UnifiedSearch_OnComboSelect(value) {
 		url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(prepVal)
 	}).done(function (response) {
 		// continue
-	});	
+	});
 }
 
 /**
@@ -5463,7 +5463,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 */
 		getValueHolder: function() {
 			var valueHolderLoc = this.input.getAttribute("data-valueholder"),
-			    vhLocArray = valueHolderLoc != null ? valueHolderLoc.split("---") : [];
+			vhLocArray = valueHolderLoc != null ? valueHolderLoc.split("---") : [];
 
 			switch (vhLocArray[0]) {
 				case "nextsibling":
@@ -5512,9 +5512,9 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 			this.fallBackIndex = this.getCurSelIndex(),
 			this.fallBackSel = this.curSel;
 
-			this.getOpener().classList.add("slds-is-open");
+			this.getOpener().classList.add('slds-is-open');
 			// Set first option active on open? Need to update hidden val as well then
-			// this.setOptionState(this.curSelIndex, "selected");
+			// this.setOptionState(this.curSelIndex, 'selected');
 			this.active = true;
 		},
 
@@ -5524,14 +5524,14 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 *
 		 */
 		close: function(e) {
-			this.getOpener().classList.remove("slds-is-open");
+			this.getOpener().classList.remove('slds-is-open');
 			this.active = false;
 		},
 
 		/*
 		 * Method: 'handleClick'
 		 * Searches upwards for a listbox item to see if this was an option
-		 * Then de-selects all other options and selects the clicked one 
+		 * Then de-selects all other options and selects the clicked one
 		 *
 		 * @param: Event object
 		 */
@@ -5750,9 +5750,8 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		/*
 		 * Method: 'getSelNodesArray'
 		 * Only applicable when this combobox allows selection of multiple
-		 * values. Gets an array of the currently selected values based on
-		 * the DOM options. Typically only used when initializing the 
-		 * Combobox instance
+		 * values. Gets an array of the currently selected values based on the
+		 * DOM options. Typically only used when initializing the Combobox instance
 		 *
 		 */
 		getSelNodesArray: function(index) {
@@ -5822,9 +5821,9 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 	function _findUp(element, searchterm) {
 		element = element.children[0] != undefined ? element.children[0] : element; // Include the current element
 		while (element = element.parentElement) {
-			if ( (searchterm.charAt(0) === "#" && element.id === searchterm.slice(1) )
-				|| ( searchterm.charAt(0) === "." && element.classList.contains(searchterm.slice(1) ) 
-				|| ( searchterm.charAt(0) === "$" && element.tagName === searchterm.slice(1) ) 
+			if ( (searchterm.charAt(0) === "#" && element.id === searchterm.slice(1))
+				|| ( searchterm.charAt(0) === "." && element.classList.contains(searchterm.slice(1))
+				|| ( searchterm.charAt(0) === "$" && element.tagName === searchterm.slice(1))
 				|| ( element.hasAttribute(searchterm) ))) {
 				return element;
 			} else if (element == document.body) {
@@ -5836,16 +5835,16 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 	/*
 	 * Globals
 	 */
-	if (!window.hasOwnProperty("dropdownKeycodeMap")) {
+	if (!window.hasOwnProperty('dropdownKeycodeMap')) {
 		window.dropdownKeycodeMap = {
-			38: "up",
-			40: "down",
-			37: "left",
-			39: "right",
-			27: "esc",
-			9:  "tab",
-			13: "enter",
-			27: "esc"
+			38: 'up',
+			40: 'down',
+			37: 'left',
+			39: 'right',
+			27: 'esc',
+			9:  'tab',
+			13: 'enter',
+			27: 'esc'
 		}
 	}
 
@@ -5869,24 +5868,24 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 	window.cbOnDownScrollers = [];
 	window.cbOnUpScrollers = [];
 
-	window.addEventListener("scroll", cbOnScroll);
+	window.addEventListener('scroll', cbOnScroll);
 
 	function cbOnScroll(e) {
 		window.requestAnimationFrame(function(){
 			sy = window.scrollY,
-			di = sy > psy ? "down" : "up",
+			di = sy > psy ? 'down' : 'up',
 			psy = sy - 1;
 
-			if (di === "down") {
+			if (di === 'down') {
 				for (var i = 0; i < window.cbOnDownScrollers.length; i++) {
-					if (typeof window.cbOnDownScrollers[i] === "function") {
+					if (typeof window.cbOnDownScrollers[i] === 'function') {
 						window.cbOnDownScrollers[i].apply();
 					}
 				}
 			}
-			if (di === "up") {
+			if (di === 'up') {
 				for (var i = 0; i < window.cbOnUpScrollers.length; i++) {
-					if (typeof window.cbOnUpScrollers[i] === "function") {
+					if (typeof window.cbOnUpScrollers[i] === 'function') {
 						window.cbOnUpScrollers[i].apply();
 					}
 				}
