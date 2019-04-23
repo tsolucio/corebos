@@ -37,12 +37,6 @@
 		<a href="javascript:;"><img src="{$IMAGE_PATH}btnL3Clock.gif" alt="{$APP.LBL_CLOCK_ALT}" title="{$APP.LBL_CLOCK_TITLE}" style="border:0;max-width:initial;" onClick="fnvshobj(this,'wclock');"></a>
 	</td>
 {/if}
-{if $CALCULATOR_DISPLAY eq 'true' }
-	<td>
-	<td id="LB_CalcButton" class="LB_Button" style="padding-right:0px">
-		<a href="#"><img src="{$IMAGE_PATH}btnL3Calc.gif" alt="{$APP.LBL_CALCULATOR_ALT}" title="{$APP.LBL_CALCULATOR_TITLE}" style="border:0;max-width:initial;" onClick="fnvshobj(this,'calculator_cont');fetch_calc();"></a>
-	</td>
-{/if}
 	<td align='left'>
 		<img width="27" height="27" onClick='showOptions("changeLayoutDiv");' src="{'orgshar.gif'|@vtiger_imageurl:$THEME}" style="border:0;max-width:initial;" title="{$MOD.LBL_HOME_LAYOUT}" alt"{$MOD.LBL_HOME_LAYOUT}" style="cursor:pointer;">
 	</td>

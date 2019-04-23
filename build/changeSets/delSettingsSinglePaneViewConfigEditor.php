@@ -31,7 +31,7 @@ class delSettingsSinglePaneViewConfigEditor extends cbupdaterWorker {
 			$this->ExecuteQuery('UPDATE vtiger_settings_field SET active=? WHERE vtiger_settings_field.name = ?', array('1', 'Configuration Editor'));
 			/* Migrate these variables to Global Variables
 			 **********************************************************/
-			// $CALENDAR_DISPLAY, $WORLD_CLOCK_DISPLAY, $CALCULATOR_DISPLAY, $USE_RTE, $HELPDESK_SUPPORT_EMAIL_ID, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_REPLY_ID;
+			// $CALENDAR_DISPLAY, $WORLD_CLOCK_DISPLAY, $USE_RTE, $HELPDESK_SUPPORT_EMAIL_ID, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_REPLY_ID;
 			// $upload_maxsize, $allow_exports, $list_max_entries_per_page, $default_module, $default_action,  $listview_max_textlength, $cors_enabled_domains;
 			include 'config.inc.php';
 			include_once 'include/Webservices/Create.php';
@@ -62,12 +62,6 @@ class delSettingsSinglePaneViewConfigEditor extends cbupdaterWorker {
 			if (!empty($WORLD_CLOCK_DISPLAY) && $WORLD_CLOCK_DISPLAY != 'true') {
 				$rec = $default_values;
 				$rec['gvname'] = 'Application_Display_World_Clock';
-				$rec['value'] = 0;
-				vtws_create('GlobalVariable', $rec, $current_user);
-			}
-			if (!empty($CALCULATOR_DISPLAY) && $CALCULATOR_DISPLAY != 'true') {
-				$rec = $default_values;
-				$rec['gvname'] = 'Application_Display_Calculator';
 				$rec['value'] = 0;
 				vtws_create('GlobalVariable', $rec, $current_user);
 			}

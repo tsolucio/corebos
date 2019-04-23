@@ -58,9 +58,6 @@
 	<script type="text/javascript" src="include/js/vtlib.js"></script>
 	<script type="text/javascript" id="_current_language_" src="include/js/{$LANGUAGE}.lang.js"></script>
 	<script type="text/javascript" src="include/js/QuickCreate.js"></script>
-	{if $CALCULATOR_DISPLAY eq 'true'}
-	<script type="text/javascript" src="include/calculator/calc.js"></script>
-	{/if}
 	<script type="text/javascript" src="modules/Calendar/script.js"></script>
 	<script type="text/javascript" src="include/js/notificationPopup.js"></script>
 	<script type="text/javascript" src="modules/Calendar4You/fullcalendar/lib/moment.min.js"></script>
