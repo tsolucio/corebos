@@ -14,37 +14,35 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 
-class AddCCMailScanner extends cbupdaterWorker
-{
+class AddCCMailScanner extends cbupdaterWorker {
 
-    function applyChange() 
-    {
-        global $adb;
-        if ($this->hasError()) { $this->sendError();
-        }
-        if ($this->isApplied()) {
-            $this->sendMsg('Changeset '.get_class($this).' already applied!');
-        } else {
-            $this->ExecuteQuery('ALTER TABLE `vtiger_mailscanner_rules` ADD `cc` VARCHAR(255) NOT NULL AFTER `toaddress`;', array());
-            $this->sendMsg('Changeset '.get_class($this).' applied!');
-            $this->markApplied(false);
-        }
-        $this->finishExecution();
-    }
 
-    public function undoChange() 
-    {
-        if ($this->hasError()) {
-            $this->sendError();
-        }
-        if ($this->isApplied()) {
-            $this->ExecuteQuery("ALTER TABLE `vtiger_mailscanner_rules` DROP COLUMN `cc`");
+	function applyChange() {
+		global $adb;
+		if ($this->hasError()) {
+			$this->sendError();
+		}
+		if ($this->isApplied()) {
+			$this->sendMsg('Changeset '.get_class($this).' already applied!');
+		} else {
+			$this->ExecuteQuery('ALTER TABLE `vtiger_mailscanner_rules` ADD `cc` VARCHAR(255) NOT NULL AFTER `toaddress`;', array());
+			$this->sendMsg('Changeset '.get_class($this).' applied!');
+			$this->markApplied(false);
+		}
+		$this->finishExecution();
+	}
 
-            $this->markUndone();
-        } else {
-            $this->sendMsg('Changeset '.get_class($this).' not applied!');
-        }
-        $this->finishExecution();
-    }
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
+		if ($this->isApplied()) {
+			$this->ExecuteQuery("ALTER TABLE `vtiger_mailscanner_rules` DROP COLUMN `cc`");
 
+			$this->markUndone();
+		} else {
+			$this->sendMsg('Changeset '.get_class($this).' not applied!');
+		}
+		$this->finishExecution();
+	}
 }
