@@ -23,6 +23,8 @@ class PurchaseOrder extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-product-consumed', 'class' => 'slds-icon', 'icon'=>'product_consumed');
+
 	public $tab_name = array('vtiger_crmentity','vtiger_purchaseorder','vtiger_pobillads','vtiger_poshipads','vtiger_purchaseordercf');
 	public $tab_name_index = array(
 		'vtiger_crmentity' => 'crmid',

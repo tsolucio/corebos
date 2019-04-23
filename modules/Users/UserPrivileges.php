@@ -290,7 +290,7 @@ class UserPrivileges {
 	}
 
 	public function hasModuleWriteSharing($tabid) {
-		$sharing = $this->defaultOrgSharingPermission[$tabid];
+		$sharing = (empty($this->defaultOrgSharingPermission[$tabid]) ? self::SHARING_PRIVATE : $this->defaultOrgSharingPermission[$tabid]);
 		return (self::SHARING_PRIVATE != $sharing) && (self::SHARING_READONLY != $sharing);
 	}
 

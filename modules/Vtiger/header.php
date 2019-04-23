@@ -42,6 +42,7 @@ $smarty->assign('DATE', $date->getDisplayDateTimeValue());
 $smarty->assign('CURRENT_USER_MAIL', $current_user->email1);
 $smarty->assign('CURRENT_USER', $current_user->user_name);
 $smarty->assign('CURRENT_USER_ID', $current_user->id);
+$smarty->assign('CURRENT_USER_IMAGE', ($current_user->column_fields['imagenameimageinfo']!='' ? $current_user->column_fields['imagenameimageinfo']['path'] : ''));
 $smarty->assign('CATEGORY', getParentTab());
 $smarty->assign('CALC', get_calc($image_path));
 $smarty->assign('ANNOUNCEMENT', get_announcements());

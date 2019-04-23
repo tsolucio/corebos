@@ -75,7 +75,6 @@
 					{if $CALCULATOR_DISPLAY eq 'true'}
 						<td id="LB_CalcButton" class="LB_Button" style="padding-right:0px"><a href="#"><img src="{$IMAGE_PATH}btnL3Calc.gif" alt="{$APP.LBL_CALCULATOR_ALT}" title="{$APP.LBL_CALCULATOR_TITLE}" border=0 onClick="fnvshobj(this,'calculator_cont');fetch_calc();"></a></td>
 					{/if}
-					<td id="LB_TrackButton" class="LB_Button" style="padding-right:10px"><img src="{$IMAGE_PATH}btnL3Tracker.gif" alt="{$APP.LBL_LAST_VIEWED}" title="{$APP.LBL_LAST_VIEWED}" border=0 onClick="fnvshobj(this,'tracker');"></td>
 				</tr>
 				</table>
 		</td>

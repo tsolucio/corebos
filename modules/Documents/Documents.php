@@ -22,6 +22,7 @@ class Documents extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-document', 'class' => 'slds-icon', 'icon'=>'document');
 
 	public $customFieldTable = array('vtiger_notescf', 'notesid');
 
