@@ -402,7 +402,8 @@ function dateTimeValidateObject(dateFldObj, timeFldObj, fldLabel, type) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
 			dateFldObj.focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	}
 
@@ -410,7 +411,8 @@ function dateTimeValidateObject(dateFldObj, timeFldObj, fldLabel, type) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
 			dateFldObj.focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	}
 
@@ -418,7 +420,8 @@ function dateTimeValidateObject(dateFldObj, timeFldObj, fldLabel, type) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
 			dateFldObj.focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	}
 
@@ -432,7 +435,8 @@ function dateTimeValidateObject(dateFldObj, timeFldObj, fldLabel, type) {
 			alert(alert_arr.ENTER_VALID+fldLabel);
 			try {
 				dateFldObj.focus();
-			} catch (error) { }
+			} catch (error) {
+			}
 			return false;
 		}
 	}
@@ -454,7 +458,8 @@ function dateTimeValidateObject(dateFldObj, timeFldObj, fldLabel, type) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
 			currObj.focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	}
 
@@ -471,7 +476,8 @@ function dateTimeValidateObject(dateFldObj, timeFldObj, fldLabel, type) {
 		if (!compareDates(chkdate, fldLabel, currdate, 'current date & time', type)) {
 			try {
 				dateFldObj.focus();
-			} catch (error) { }
+			} catch (error) {
+			}
 			return false;
 		} else {
 			return true;
@@ -524,7 +530,8 @@ function dateTimeComparison(dateFldName1, timeFldName1, fldLabel1, dateFldName2,
 		if (!compareDates(date1, fldLabel1, date2, fldLabel2, type)) {
 			try {
 				getObj(dateFldName1).focus();
-			} catch (error) { }
+			} catch (error) {
+			}
 			return false;
 		} else {
 			return true;
@@ -595,7 +602,8 @@ function dateTimeFieldComparison(dateFld1, fldLabel1, dateFld2, fldLabel2, type,
 		if (!compareDates(date1, fldLabel1, date2, fldLabel2, type, message)) {
 			try {
 				getObj(dateFld1).focus();
-			} catch (error) { }
+			} catch (error) {
+			}
 			return false;
 		} else {
 			return true;
@@ -625,7 +633,8 @@ function dateValidateObject(fldObj, fldLabel, type) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
 			fldObj.focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	}
 
@@ -633,7 +642,8 @@ function dateValidateObject(fldObj, fldLabel, type) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
 			fldObj.focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	}
 
@@ -641,7 +651,8 @@ function dateValidateObject(fldObj, fldLabel, type) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
 			fldObj.focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	}
 
@@ -655,7 +666,8 @@ function dateValidateObject(fldObj, fldLabel, type) {
 			alert(alert_arr.ENTER_VALID+fldLabel);
 			try {
 				fldObj.focus();
-			} catch (error) { }
+			} catch (error) {
+			}
 			return false;
 		}
 	}
@@ -671,7 +683,8 @@ function dateValidateObject(fldObj, fldLabel, type) {
 		if (!compareDates(chkdate, fldLabel, currdate, 'current date', type)) {
 			try {
 				fldObj.focus();
-			} catch (error) { }
+			} catch (error) {
+			}
 			return false;
 		} else {
 			return true;
@@ -715,7 +728,8 @@ function dateComparisonObject(fldObj1, fldLabel1, fldObj2, fldLabel2, type) {
 		if (!compareDates(date1, fldLabel1, date2, fldLabel2, type)) {
 			try {
 				fldObj1.focus();
-			} catch (error) { }
+			} catch (error) {
+			}
 			return false;
 		} else {
 			return true;
@@ -740,7 +754,8 @@ function timeValidate(fldName, fldLabel, type) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
 			currObj.focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	}
 
@@ -755,7 +770,8 @@ function timeValidate(fldName, fldLabel, type) {
 		if (!compareDates(chktime, fldLabel, currtime, 'current time', type)) {
 			try {
 				getObj(fldName).focus();
-			} catch (error) { }
+			} catch (error) {
+			}
 			return false;
 		} else {
 			return true;
@@ -779,7 +795,8 @@ function timeValidateObject(fldObject, fldLabel, type) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
 			fldObject.focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	}
 
@@ -794,7 +811,8 @@ function timeValidateObject(fldObject, fldLabel, type) {
 		if (!compareDates(chktime, fldLabel, currtime, 'current time', type)) {
 			try {
 				fldObject.focus();
-			} catch (error) { }
+			} catch (error) {
+			}
 			return false;
 		} else {
 			return true;
@@ -850,7 +868,8 @@ function timeComparison(fldName1, fldLabel1, fldName2, fldLabel2, type) {
 		if (!compareDates(time1, fldLabel1, time2, fldLabel2, type)) {
 			try {
 				getObj(fldName1).focus();
-			} catch (error) { }
+			} catch (error) {
+			}
 			return false;
 		} else {
 			return true;
@@ -907,7 +926,8 @@ function numValidate(fldName, fldLabel, format, neg) {
 			alert(alert_arr.INVALID+fldLabel);
 			try {
 				getObj(fldName).focus();
-			} catch (error) { }
+			} catch (error) {
+			}
 			return false;
 		} else {
 			return true;
@@ -926,7 +946,8 @@ function numValidate(fldName, fldLabel, format, neg) {
 				alert(alert_arr.INVALID+fldLabel);
 				try {
 					getObj(fldName).focus();
-				} catch (error) { }
+				} catch (error) {
+				}
 				return false;
 			} else if (splitval[0] > 100 || len > 3 || (splitval[0] >= 100 && splitval[1] > 0)) {
 				alert(fldLabel + alert_arr.EXCEEDS_MAX);
@@ -947,7 +968,7 @@ function numValidate(fldName, fldLabel, format, neg) {
 		}
 	}
 
-	//for precision check. ie.number must contains only one "."
+	//for precision check. ie.number must contains only one '.'
 	var dotcount=0;
 	for (var i = 0; i < val.length; i++) {
 		if (val.charAt(i) == '.') {
@@ -959,7 +980,8 @@ function numValidate(fldName, fldLabel, format, neg) {
 		alert(alert_arr.INVALID+fldLabel);
 		try {
 			getObj(fldName).focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	}
 
@@ -967,7 +989,8 @@ function numValidate(fldName, fldLabel, format, neg) {
 		alert(alert_arr.INVALID+fldLabel);
 		try {
 			getObj(fldName).focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	} else {
 		return true;
@@ -985,7 +1008,8 @@ function intValidate(fldName, fldLabel) {
 		alert(alert_arr.INVALID+fldLabel);
 		try {
 			getObj(fldName).focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	} else if ((fldName != 'employees' || fldName != 'noofemployees') && (val < -2147483648 || val > 2147483647)) {
 		alert(fldLabel +alert_arr.OUT_OF_RANGE);
@@ -1049,7 +1073,8 @@ function numConstCompObject(fldObj, fldLabel, type, constval) {
 	if (ret==false) {
 		try {
 			fldObj.focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	} else {
 		return true;
@@ -1525,7 +1550,8 @@ function doformValidation(edit_type) {
 				if (!dateValidate(fieldname[i], fieldlabel[i], currdatechk)) {
 					try {
 						getObj(datefield).focus();
-					} catch (error) { }
+					} catch (error) {
+					}
 					return false;
 				} else {
 					var datearr=splitDateVal(datevalue);
@@ -1539,7 +1565,8 @@ function doformValidation(edit_type) {
 					if (!compareDates(datecheck, datelabel, now, 'Current Date', 'L')) {
 						try {
 							getObj(datefield).focus();
-						} catch (error) { }
+						} catch (error) {
+						}
 						return false;
 					}
 				}
@@ -2542,7 +2569,7 @@ function CharValidation(s, type) {
 /** Check Upload file is in specified format(extension).
   * @param fldName -- name of the file field
   * @param filter -- List of file extensions to allow. each extension must be seperated with a | sybmol.
-  * Example: upload_filter("imagename","Image", "jpg|gif|bmp|png")
+  * Example: upload_filter('imagename','Image', 'jpg|gif|bmp|png')
   * @returns true -- if the extension is IN  specified extension.
   * @returns false -- if the extension is NOT IN specified extension.
   *
@@ -3457,7 +3484,7 @@ function lastImport(module, req_module) {
 	if (module == '') {
 		return false;
 	} else {
-		//alert("index.php?module="+module_name+"&action=lastImport&req_mod="+req_module+"&parenttab="+parent_tab);
+		//alert('index.php?module='+module_name+'&action=lastImport&req_mod='+req_module+'&parenttab='+parent_tab);
 		window.open('index.php?module='+module_name+'&action=lastImport&req_mod='+req_module+'&parenttab='+parent_tab, 'lastImport', 'width=750,height=602,menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
 	}
 }
@@ -4197,7 +4224,7 @@ function validateInputData(value, fieldLabel, typeofdata) {
 			}
 		}
 
-		//for precision check. ie.number must contains only one "."
+		//for precision check. ie.number must contains only one '.'
 		var dotcount=0;
 		for (var i = 0; i < value.length; i++) {
 			if (value.charAt(i) == '.') {
@@ -4837,7 +4864,7 @@ function fetch_calc() {
 }
 
 function UnifiedSearch_GetModules() {
-	if (document.getElementById("UnifiedSearch_modulelistwrapper").children.length === 0) {
+	if (document.getElementById('UnifiedSearch_modulelistwrapper').children.length === 0) {
 		jQuery('#status').show();
 		jQuery.ajax({
 			method:'POST',
@@ -4851,12 +4878,12 @@ function UnifiedSearch_GetModules() {
 }
 
 function UnifiedSearch_StartCombo() {
-	var params = {"isMulti" : true, "onSelect" : UnifiedSearch_OnComboSelect};
-	window.ldsComboBoxes.push(new ldsCombobox(document.getElementById("globalsearch-moduleselect"), params));
+	var params = {'isMulti' : true, 'onSelect' : UnifiedSearch_OnComboSelect};
+	window.ldsComboBoxes.push(new ldsCombobox(document.getElementById('globalsearch-moduleselect'), params));
 }
 
 function UnifiedSearch_OnComboSelect(value) {
-	var prepVal = value.join(",").replace(/ /g, "");
+	var prepVal = value.join(',').replace(/ /g, '');
 	document.forms.UnifiedSearch.search_onlyin.value = prepVal;
 	jQuery.ajax({
 		method:'POST',
@@ -5261,7 +5288,7 @@ AutocompleteRelation.prototype.isReferenceField = function (e) {
 		var reference_type_field = document.getElementsByName(field_root_name + '_type');
 		if (reference_type_field.length > 0) {
 			var ref_module = reference_type_field[0].value;
-			var ref_field_id = document.getElementsByName(field_root_name);
+			//var ref_field_id = document.getElementsByName(field_root_name);
 			//var ref_record_id = ref_field_id[0].value;
 			this.data.referencefield = {module:ref_module, fieldname:field_root_name};
 			this.extendFillFields([field_root_name +'='+field_root_name, field_root_name+'_display='+field_root_name+'_display']);
@@ -5345,17 +5372,15 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 	* @author: MajorLabel <info@majorlabel.nl>
 	* @license VPL
 	*/
-(function ldscomboboxModule(factory){
-
-	if (typeof define === "function" && define.amd) {
+(function ldscomboboxModule(factory) {
+	if (typeof define === 'function' && define.amd) {
 		define(factory);
-	} else if (typeof module != "undefined" && typeof module.exports != "undefined") {
+	} else if (typeof module != 'undefined' && typeof module.exports != 'undefined') {
 		module.exports = factory();
 	} else {
-		window["ldsCombobox"] = factory();
+		window['ldsCombobox'] = factory();
 	}
-
-})(function ldscomboboxFactory(){
+})(function ldscomboboxFactory() {
 
 	/**
 	 * @class ldsCombobox
@@ -5363,41 +5388,41 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 	 */
 	function ldsCombobox(el, params) {
 		/* Set some default values */
-		var params = params || {},
-		    me = this;
+		params = params || {};
+		var me = this;
 		params.onSelect = params.onSelect || false,
 		params.isMulti = params.isMulti || false;
 
 		/* Public attributes */
 		this.el 	= el,
-		this.input 	= el.getElementsByClassName("slds-combobox__input")[0],
-		this.specialKeys = ["up","down","enter","esc"],
+		this.input 	= el.getElementsByClassName('slds-combobox__input')[0],
+		this.specialKeys = ['up', 'down', 'enter', 'esc'],
 		this.optionNodes = this.getOptionNodes(),
 		this.active = false,
 		this.curSel = this.input.value,
 		this.fallBackSel = null,
 		this.curSelIndex = this.getCurSelIndex(),
 		this.fallBackIndex = this.getCurSelIndex(),
-		this.onSelect = typeof params.onSelect == "function" ? params.onSelect : false,
-		this._val = params.isMulti ? this.getSelNodesArray() : this.optionNodes[this.curSelIndex].getAttribute("data-value"),
-		this.parentForm = _findUp(this.input, "$FORM"),
+		this.onSelect = typeof params.onSelect == 'function' ? params.onSelect : false,
+		this._val = params.isMulti ? this.getSelNodesArray() : this.optionNodes[this.curSelIndex].getAttribute('data-value'),
+		this.parentForm = _findUp(this.input, '$FORM'),
 		this.valueHolder = this.getValueHolder(),
 		this.isMulti = params.isMulti,
 		this.labels = {};
 
 		/* Instance listeners */
-		_on(el, "mousedown", this.handleClick, this);
-		_on(el, "click", this.trigger, this);
-		_on(this.input, "focus", this.trigger, this);
-		_on(this.input, "keyup", this.trigger, this);
-		_on(this.input, "blur", this.close, this);
+		_on(el, 'mousedown', this.handleClick, this);
+		_on(el, 'click', this.trigger, this);
+		_on(this.input, 'focus', this.trigger, this);
+		_on(this.input, 'keyup', this.trigger, this);
+		_on(this.input, 'blur', this.close, this);
 
 		if (this.parentForm !== undefined) {
-			_on(this.parentForm, "keydown", this.preventFormSubmit, this);
+			_on(this.parentForm, 'keydown', this.preventFormSubmit, this);
 		}
 
-		ExecuteFunctions("getTranslatedStrings", "i18nmodule=Utilities&tkeys=LBL_MULTIPLE;LBL_NONE").then(function (data) {
-				me.labels = JSON.parse(data);
+		ExecuteFunctions('getTranslatedStrings', 'i18nmodule=Utilities&tkeys=LBL_MULTIPLE;LBL_NONE').then(function (data) {
+			me.labels = JSON.parse(data);
 		});
 
 		// TO-DO: Error throwing. We need to check the markup for all the neccesary markup and data attributes
@@ -5413,7 +5438,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 *
 		 * @param: Event object
 		 */
-		trigger: function(e) {
+		trigger: function (e) {
 			if (!this.active) {
 				this.open();
 			} else {
@@ -5429,8 +5454,8 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 *
 		 * @param: Event object
 		 */
-		preventFormSubmit: function(e) {
-			if (_getKey(e.keyCode) === "enter" && this.active) {
+		preventFormSubmit: function (e) {
+			if (_getKey(e.keyCode) === 'enter' && this.active) {
 				e.preventDefault();
 			}
 		},
@@ -5441,13 +5466,14 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 * of 'slds-truncate'
 		 *
 		 */
-		getOptionNodes: function() {
-			var optionNodes = this.el.getElementsByClassName("slds-listbox__item");
+		getOptionNodes: function () {
+			var optionNodes = this.el.getElementsByClassName('slds-listbox__item');
 			var filteredOptionNodes = [];
 			for (var i = 0; i < optionNodes.length; i++) {
-				if (optionNodes[i].getElementsByClassName("slds-truncate").length !== 0) filteredOptionNodes.push(optionNodes[i]);
+				if (optionNodes[i].getElementsByClassName('slds-truncate').length !== 0) {
+					filteredOptionNodes.push(optionNodes[i]);
+				}
 			}
-
 			return filteredOptionNodes;
 		},
 
@@ -5455,27 +5481,27 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 * Method: 'getValueHolder'
 		 * Retrieves the hidden input that holds the actual value for the dropdown
 		 * from the 'data-valueholder' attribute of the main combo input
-		 * 
+		 *
 		 * Options:
-		 * - "nextsibling":      The node immediately following the main input element
-		 * - "id---SOMEID":      Provide the prefix 'id---' followed by the ID of the node
+		 * - 'nextsibling':      The node immediately following the main input element
+		 * - 'id---SOMEID':      Provide the prefix 'id---' followed by the ID of the node
 		 *
 		 */
-		getValueHolder: function() {
-			var valueHolderLoc = this.input.getAttribute("data-valueholder"),
-			vhLocArray = valueHolderLoc != null ? valueHolderLoc.split("---") : [];
+		getValueHolder: function () {
+			var valueHolderLoc = this.input.getAttribute('data-valueholder'),
+				vhLocArray = valueHolderLoc != null ? valueHolderLoc.split('---') : [];
 
 			switch (vhLocArray[0]) {
-				case "nextsibling":
-					return this.input.nextElementSibling
-					break;
-				case "id":
-					var vh = document.getElementById(vhLocArray[1]);
-					if (!vh) {throw("ldsComboBox.getValueHolder: No node with id " + vhLocArray[1] + " found");}
-					return vh;
-					break;
-				default:
-					return false;
+			case 'nextsibling':
+				return this.input.nextElementSibling;
+			case 'id':
+				var vh = document.getElementById(vhLocArray[1]);
+				if (!vh) {
+					throw ('ldsComboBox.getValueHolder: No node with id ' + vhLocArray[1] + ' found');
+				}
+				return vh;
+			default:
+				return false;
 			}
 		},
 
@@ -5484,9 +5510,10 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 * Sets the value for the (hidden) valueHolder input, if there was one
 		 *
 		 */
-		updateValueHolder: function(val) {
-			if (this.valueHolder)
+		updateValueHolder: function (val) {
+			if (this.valueHolder) {
 				this.valueHolder.value = val;
+			}
 		},
 
 		/*
@@ -5495,11 +5522,12 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 * or remove it from when opening and closing
 		 *
 		 */
-		getOpener: function() {
-			if ( this.el.classList.contains("slds-combobox") )
+		getOpener: function () {
+			if ( this.el.classList.contains('slds-combobox') ) {
 				return this.el;
-			else
-				return this.el.getElementsByClassName("slds-combobox")[0];
+			} else {
+				return this.el.getElementsByClassName('slds-combobox')[0];
+			}
 		},
 
 		/*
@@ -5508,7 +5536,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 * item in the list
 		 *
 		 */
-		open: function() {
+		open: function () {
 			this.fallBackIndex = this.getCurSelIndex(),
 			this.fallBackSel = this.curSel;
 
@@ -5523,7 +5551,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 * Closes the dropdown
 		 *
 		 */
-		close: function(e) {
+		close: function (e) {
 			this.getOpener().classList.remove('slds-is-open');
 			this.active = false;
 		},
@@ -5535,13 +5563,13 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 *
 		 * @param: Event object
 		 */
-		handleClick: function(e) {
-			var isOption = _findUp(e.target, ".slds-listbox__item");
+		handleClick: function (e) {
+			var isOption = _findUp(e.target, '.slds-listbox__item');
 			if (isOption != undefined) {
 				e.preventDefault(); // Stop bubbling up
 				var index = this.getIndexByNode(isOption);
 				this.unselectAll();
-				this.setOptionState(index, "selected");
+				this.setOptionState(index, 'selected');
 				this.curSelIndex = index;
 				this.select();
 			}
@@ -5554,7 +5582,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 *
 		 * @param: Event object
 		 */
-		handleKeys: function(e) {
+		handleKeys: function (e) {
 			if (this.isSpecialKey(e.keyCode)) {
 				this.handleKey(_getKey(e.keyCode));
 			}
@@ -5567,21 +5595,21 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 *
 		 * @param: Keyname string
 		 */
-		handleKey: function(keyName) {
-			switch(keyName) {
-				case "up":
-					this.selectPrevious();
-					break;
-				case "down":
-					this.selectNext();
-					break;
-				case "enter":
-					this.select();
-					break;
-				case "esc":
-					this.close();
-					this.fallBack();
-					break;
+		handleKey: function (keyName) {
+			switch (keyName) {
+			case 'up':
+				this.selectPrevious();
+				break;
+			case 'down':
+				this.selectNext();
+				break;
+			case 'enter':
+				this.select();
+				break;
+			case 'esc':
+				this.close();
+				this.fallBack();
+				break;
 			}
 		},
 
@@ -5592,7 +5620,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 * 'esc' without selecting anything
 		 *
 		 */
-		fallBack: function() {
+		fallBack: function () {
 			this.unselectAll();
 			this.curSelIndex = this.fallBackIndex,
 			this.curSel = this.fallBackSel;
@@ -5605,11 +5633,12 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 *
 		 * @param: Keycode INT
 		 */
-		isSpecialKey: function(code) {
-			if (window.dropdownKeycodeMap[code] !== undefined)
+		isSpecialKey: function (code) {
+			if (window.dropdownKeycodeMap[code] !== undefined) {
 				return this.specialKeys.indexOf(window.dropdownKeycodeMap[code]) == -1 ? false : true;
-			else
+			} else {
 				return false;
+			}
 		},
 
 		/*
@@ -5617,9 +5646,9 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 * Convenience method to unselect all options
 		 *
 		 */
-		unselectAll: function() {
+		unselectAll: function () {
 			for (var i = 0; i < this.optionNodes.length; i++) {
-				this.setOptionState(i, "unselected");
+				this.setOptionState(i, 'unselected');
 			}
 		},
 
@@ -5629,16 +5658,16 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 * visual frontend side as the instance properties
 		 *
 		 * @param: index: index of the nodelist of options
-		 * @param: state: either "selected", or anything else
+		 * @param: state: either 'selected', or anything else
 		 */
 		setOptionState(index, state) {
-			if (state == "selected") {
-				this.optionNodes[index].children[0].classList.add("slds-has-focus");
-				this.curSel = this.optionNodes[index].getElementsByClassName("slds-truncate")[0].innerText;
+			if (state == 'selected') {
+				this.optionNodes[index].children[0].classList.add('slds-has-focus');
+				this.curSel = this.optionNodes[index].getElementsByClassName('slds-truncate')[0].innerText;
 				this.input.value = this.curSel;
 			} else {
-				this.optionNodes[index].children[0].classList.remove("slds-has-focus");
-				this.curSel = "";
+				this.optionNodes[index].children[0].classList.remove('slds-has-focus');
+				this.curSel = '';
 			}
 		},
 
@@ -5648,11 +5677,11 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 * the current is not the first one.
 		 *
 		 */
-		selectPrevious: function() {
+		selectPrevious: function () {
 			if (this.curSelIndex != 0) {
-				this.setOptionState(this.curSelIndex, "unselected");
+				this.setOptionState(this.curSelIndex, 'unselected');
 				this.curSelIndex--;
-				this.setOptionState(this.curSelIndex, "selected");
+				this.setOptionState(this.curSelIndex, 'selected');
 			}
 		},
 
@@ -5662,11 +5691,11 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 * the current is not the last one.
 		 *
 		 */
-		selectNext: function() {
+		selectNext: function () {
 			if (this.curSelIndex != this.optionNodes.length - 1) {
-				this.setOptionState(this.curSelIndex, "unselected");
+				this.setOptionState(this.curSelIndex, 'unselected');
 				this.curSelIndex++;
-				this.setOptionState(this.curSelIndex, "selected");
+				this.setOptionState(this.curSelIndex, 'selected');
 			}
 		},
 
@@ -5676,7 +5705,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 * 'curSel'. Also closes the dropdown.
 		 *
 		 */
-		select: function() {
+		select: function () {
 			var val = this.getCurSelIndexVal();
 			this._val = val;
 			this.updateValueHolder(val);
@@ -5686,16 +5715,18 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 				this.close();
 			} else {
 				this.toggleSelected(this.curSelIndex);
-				if (this._val.length == 1)
+				if (this._val.length == 1) {
 					this.input.value = this.curSel;
-				else if (this._val.length > 1)
-					this.input.value = this.labels["LBL_MULTIPLE"];
-				else if (this._val.length == 0)
-					this.input.value = this.labels["LBL_NONE"];
+				} else if (this._val.length > 1) {
+					this.input.value = this.labels['LBL_MULTIPLE'];
+				} else if (this._val.length == 0) {
+					this.input.value = this.labels['LBL_NONE'];
+				}
 			}
 
-			if (this.onSelect)
+			if (this.onSelect) {
 				this.onSelect(this._val);
+			}
 		},
 
 		/*
@@ -5707,18 +5738,22 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 *
 		 * @return: string
 		 */
-		getCurSelIndexVal: function() {
+		getCurSelIndexVal: function () {
 			if (this.isMulti) {
-				var val  = this.optionNodes[this.curSelIndex].getAttribute("data-value");
+				var val  = this.optionNodes[this.curSelIndex].getAttribute('data-value');
 				if (this.isOptionSelected(this.curSelIndex)) {
 					var ci = this._val.indexOf(val);
-					if (ci > -1) this._val.splice(ci,1);
+					if (ci > -1) {
+						this._val.splice(ci, 1);
+					}
 				} else {
-					if (this._val.indexOf(val) === -1) this._val.push(val);
+					if (this._val.indexOf(val) === -1) {
+						this._val.push(val);
+					}
 				}
 				return this._val;
 			} else {
-				return this.optionNodes[this.curSelIndex].getAttribute("data-value");
+				return this.optionNodes[this.curSelIndex].getAttribute('data-value');
 			}
 		},
 
@@ -5729,9 +5764,11 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 *
 		 * @param: node (DOM)
 		 */
-		getIndexByNode: function(node) {
+		getIndexByNode: function (node) {
 			for (var i = 0; i < this.optionNodes.length; i++) {
-				if (node.isSameNode(this.optionNodes[i])) return i;
+				if (node.isSameNode(this.optionNodes[i])) {
+					return i;
+				}
 			}
 		},
 		/*
@@ -5740,10 +5777,12 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 * the value of the input field
 		 *
 		 */
-		getCurSelIndex: function() {
+		getCurSelIndex: function () {
 			var curSelIndex = 0;
 			for (var i = 0; i < this.optionNodes.length; i++) {
-				if (this.optionNodes[i].getElementsByClassName("slds-truncate")[0].innerHTML == this.input.value) curSelIndex = i;
+				if (this.optionNodes[i].getElementsByClassName('slds-truncate')[0].innerHTML == this.input.value) {
+					curSelIndex = i;
+				}
 			}
 			return curSelIndex;
 		},
@@ -5754,11 +5793,11 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 * DOM options. Typically only used when initializing the Combobox instance
 		 *
 		 */
-		getSelNodesArray: function(index) {
+		getSelNodesArray: function (index) {
 			var opts = [];
 			for (var i = 0; i < this.optionNodes.length; i++) {
 				if (this.isOptionSelected(i)) {
-					opts.push(this.optionNodes[i].getAttribute("data-value"));
+					opts.push(this.optionNodes[i].getAttribute('data-value'));
 				}
 			}
 			return opts;
@@ -5771,8 +5810,8 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 *
 		 * @param: index of the selected option
 		 */
-		toggleSelected: function(index) {
-			this.setOptionSelState(index,!this.isOptionSelected(index));
+		toggleSelected: function (index) {
+			this.setOptionSelState(index, !this.isOptionSelected(index));
 		},
 		/*
 		 * Method: 'isOptionSelected'
@@ -5782,8 +5821,8 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 * @param: index of the selected option
 		 * @return: bool
 		 */
-		isOptionSelected: function(index) {
-			return (this.optionNodes[index].getAttribute("data-selected") === "true");
+		isOptionSelected: function (index) {
+			return (this.optionNodes[index].getAttribute('data-selected') === 'true');
 		},
 		/*
 		 * Method: 'setOptionSelState'
@@ -5793,24 +5832,23 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 		 * @param: index of the selected option
 		 * @param: bool (true: option selected, false: option not selected)
 		 */
-		setOptionSelState: function(index, state) {
+		setOptionSelState: function (index, state) {
 			var n = this.optionNodes[index];
-			n.setAttribute("data-selected", state.toString());
+			n.setAttribute('data-selected', state.toString());
 			if (state) {
-				n.getElementsByClassName("slds-listbox__option")[0].classList.add("slds-is-selected");
-				n.getElementsByClassName("slds-icon_container")[0].classList.remove("slds-hide");
+				n.getElementsByClassName('slds-listbox__option')[0].classList.add('slds-is-selected');
+				n.getElementsByClassName('slds-icon_container')[0].classList.remove('slds-hide');
 			} else {
-				n.getElementsByClassName("slds-listbox__option")[0].classList.remove("slds-is-selected");
-				n.getElementsByClassName("slds-icon_container")[0].classList.add("slds-hide");
+				n.getElementsByClassName('slds-listbox__option')[0].classList.remove('slds-is-selected');
+				n.getElementsByClassName('slds-icon_container')[0].classList.add('slds-hide');
 			}
 		}
-
-	}
+	};
 
 	/**
 	  * Section with factory tools
 	  */
-	function _on(el,type,func,context) {
+	function _on(el, type, func, context) {
 		el.addEventListener(type, func.bind(context));
 	}
 
@@ -5821,9 +5859,9 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 	function _findUp(element, searchterm) {
 		element = element.children[0] != undefined ? element.children[0] : element; // Include the current element
 		while (element = element.parentElement) {
-			if ( (searchterm.charAt(0) === "#" && element.id === searchterm.slice(1))
-				|| ( searchterm.charAt(0) === "." && element.classList.contains(searchterm.slice(1))
-				|| ( searchterm.charAt(0) === "$" && element.tagName === searchterm.slice(1))
+			if ( (searchterm.charAt(0) === '#' && element.id === searchterm.slice(1))
+				|| ( searchterm.charAt(0) === '.' && element.classList.contains(searchterm.slice(1))
+				|| ( searchterm.charAt(0) === '$' && element.tagName === searchterm.slice(1))
 				|| ( element.hasAttribute(searchterm) ))) {
 				return element;
 			} else if (element == document.body) {
@@ -5841,29 +5879,27 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 			40: 'down',
 			37: 'left',
 			39: 'right',
-			27: 'esc',
 			9:  'tab',
 			13: 'enter',
 			27: 'esc'
-		}
+		};
 	}
 
 	window.ldsComboBoxes = [];
 	return ldsCombobox;
-
 });
 
 /*
  * General scroll handler
- * 
+ *
  * @var sy    : window.scrollY alias
  * @var di    : direction, are we going up or down?
  * @var psy   : window.scrollY - 1
  */
 (function cbOnScrollHandler(e) {
 	var di = null,
-	    sy = window.scrollY,
-	    psy = window.scrollY - 1;
+		sy = window.scrollY,
+		psy = window.scrollY - 1;
 
 	window.cbOnDownScrollers = [];
 	window.cbOnUpScrollers = [];
@@ -5871,20 +5907,20 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 	window.addEventListener('scroll', cbOnScroll);
 
 	function cbOnScroll(e) {
-		window.requestAnimationFrame(function(){
+		window.requestAnimationFrame(function () {
 			sy = window.scrollY,
 			di = sy > psy ? 'down' : 'up',
 			psy = sy - 1;
-
+			var i = 0;
 			if (di === 'down') {
-				for (var i = 0; i < window.cbOnDownScrollers.length; i++) {
+				for (i = 0; i < window.cbOnDownScrollers.length; i++) {
 					if (typeof window.cbOnDownScrollers[i] === 'function') {
 						window.cbOnDownScrollers[i].apply();
 					}
 				}
 			}
 			if (di === 'up') {
-				for (var i = 0; i < window.cbOnUpScrollers.length; i++) {
+				for (i = 0; i < window.cbOnUpScrollers.length; i++) {
 					if (typeof window.cbOnUpScrollers[i] === 'function') {
 						window.cbOnUpScrollers[i].apply();
 					}
@@ -5895,31 +5931,31 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 })();
 
 function headerOnDownScroll() {
-	var h = document.getElementById("global-header");
-	h.classList.add("header-scrolling");
+	var h = document.getElementById('global-header');
+	h.classList.add('header-scrolling');
 	if ($(document).scrollLeft() >= 0 && $(document).scrollTop() == 0) {
-		h.classList.remove("header-scrolling");
+		h.classList.remove('header-scrolling');
 	}
 }
 window.cbOnDownScrollers.push(headerOnDownScroll);
 
 function headerOnUpScroll() {
-	var h = document.getElementById("global-header"),
-	    csy = window.scrollY;
+	var h = document.getElementById('global-header'),
+		csy = window.scrollY;
 
-	window.setTimeout(checkHeaderScroll,80);
+	window.setTimeout(checkHeaderScroll, 80);
 	function checkHeaderScroll() {
 		if (csy <= window.scrollY) {
-			h.classList.remove("header-scrolling");
+			h.classList.remove('header-scrolling');
 		}
 	}
 }
 window.cbOnUpScrollers.push(headerOnUpScroll);
 
-$(document).ready(function(){
-	$("#blankDiv").height($("#global-header").outerHeight(true)-90);
+$(document).ready(function () {
+	$('#blankDiv').height($('#global-header').outerHeight(true)-90);
 });
 
-$(window).on('resize',function() {
-	$("#blankDiv").height($("#global-header").outerHeight(true)-90);
+$(window).on('resize', function () {
+	$('#blankDiv').height($('#global-header').outerHeight(true)-90);
 });
