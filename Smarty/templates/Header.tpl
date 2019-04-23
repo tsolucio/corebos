@@ -46,7 +46,7 @@
 </head>
 {include file='BrowserVariables.tpl'}
 {include file="Components.tpl"}
-<body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small>
+<body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small style="min-width:1100px; width: 100%"> 
 	<a name="top"></a>
 	<!-- header -->
 	<script type="text/javascript" src="include/sw-precache/service-worker-registration.js"></script>
@@ -100,7 +100,7 @@
 
 <!-- LDS Global header -->
 
-<header class="slds-global-header_container" id="global-header">
+<header class="slds-global-header_container noprint" id="global-header" style="position:sticky;">
 	<div class="slds-global-header slds-grid slds-grid_align-spread">
 		<div class="slds-global-header__item">
 			<div class="slds-global-header__logo" style="background-image: url('{$COMPANY_DETAILS.applogo}');"></div>
@@ -126,8 +126,8 @@
 												</span>
 											</div>
 											<div id="UnifiedSearch_modulelistwrapper" class="slds-dropdown slds-dropdown_length-10 slds-dropdown_x-small" role="listbox">
-											</div>											
-										</div>	
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -148,7 +148,7 @@
 										<input name="query_string" id="query_string" class="slds-input slds-combobox__input{if $GLOBAL_AC} autocomplete-input{/if}" type="text" role="textbox" placeholder="{$APP.LBL_SEARCH_TITLE}{$coreBOS_app_name}" aria-autocomplete="list" autoComplete="off" data-autocomp='{$GS_AUTOCOMP|@json_encode}' />
 										<div role="listbox" class="">
 											<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0;display:block;visibility: visible;" role="presentation"></ul>
-										</div>										
+										</div>
 									</div>
 								</div>
 							</form>
@@ -174,13 +174,43 @@
 									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#attach"></use>
 								</svg>
 								<span class="slds-assistive-text">{$APP.LBL_LAST_VIEWED}</span>
-							</button>							
+							</button>
 						</div>
 					</div>
 				</li>
+				{if $HEADERLINKS}
 				<li class="slds-global-actions__item">
 					<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
 						<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-haspopup="true" title="{$APP.LBL_MORE}">
+							<svg class="slds-button__icon" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+							</svg>
+							<span class="slds-assistive-text">{$APP.LBL_MORE}</span>
+						</button>
+						<div class="slds-dropdown slds-dropdown_right">
+							<ul class="slds-dropdown__list" role="menu" aria-label="{$APP.LBL_MORE}">
+								{foreach key=actionlabel item=HEADERLINK from=$HEADERLINKS}
+									{assign var="headerlink_href" value=$HEADERLINK->linkurl}
+									{assign var="headerlink_label" value=$HEADERLINK->linklabel}
+									{if $headerlink_label eq ''}
+										{assign var="headerlink_label" value=$headerlink_href}
+									{else}
+										{assign var="headerlink_label" value=$headerlink_label|@getTranslatedString:$HEADERLINK->module()}
+									{/if}
+									<li class="slds-dropdown__item" role="presentation">
+										<a href="{$headerlink_href}" role="menuitem" title="{$headerlink_label}">
+											<span class="slds-truncate" >{$headerlink_label}</span>
+										</a>
+									</li>
+								{/foreach}
+							</ul>
+						</div>
+					</div> 
+				</li>
+				{/if}
+				<li class="slds-global-actions__item">
+					<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
+						<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-haspopup="true" title="{$APP.LBL_MORE}" onclick="window.location.assign('index.php?module=Settings&action=index&parenttab=')">
 							<svg class="slds-button__icon" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#settings"></use>
 							</svg>
@@ -203,17 +233,27 @@
 								</li>
 							</ul>
 						</div>
-					</div>                        
+					</div>
 				</li>
 				<li class="slds-global-actions__item">
 					<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
-						<button class="slds-button slds-global-actions__avatar slds-global-actions__item-action" title="{$USER}" aria-haspopup="true">
+						<button class="slds-button slds-global-actions__avatar slds-global-actions__item-action" title="{$USER}" aria-haspopup="true" onclick="window.location.assign('index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}&modechk=prefview')">
 							<span class="slds-avatar slds-avatar_circle slds-avatar_medium">
-									<img alt="{$USER}" src="include/LD/assets/images/avatar2.jpg" title="{$USER}" />
-								</span>
+								{if $CURRENT_USER_IMAGE}
+								<img alt="{$USER}" src="{$CURRENT_USER_IMAGE}" />
+								{else}
+								<img alt="{$USER}" src="include/LD/assets/images/avatar2.jpg" />
+								{/if}
+							</span>
 						</button>
-						<div class="slds-dropdown slds-dropdown_left">
+						<div class="slds-dropdown slds-dropdown_right">
 							<ul class="slds-dropdown__list" role="menu" aria-label="Show More">
+								<li class="slds-dropdown__item" role="presentation">
+									<a href="" role="menuitem" tabindex="0">
+										<span class="slds-truncate" title="{$USER}">{$USER}</span>
+									</a>
+								</li>
+								<li class="slds-has-divider_top-space" role="separator"></li>
 								<li class="slds-dropdown__item" role="presentation">
 									<a href="index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}&modechk=prefview" role="menuitem" tabindex="0">
 										<span class="slds-truncate" title="{$APP.LBL_MY_PREFERENCES}">{$APP.LBL_MY_PREFERENCES}</span>
@@ -225,15 +265,25 @@
 									</a>
 								</li>
 							</ul>
-						</div>                            
+						</div>
 					</div>
 				</li>
-				<li class="slds-global-actions__item">
-					<span class="slds-text-title slds-truncate" title="{$USER}">{$USER}</span>
-				</li>                    
+				{* <li class="slds-global-actions__item">
+					<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-haspopup="true" title="{$APP.LBL_LOGOUT}" onclick="window.location.assign('index.php?module=Users&action=Logout')">
+						<svg class="slds-button__icon" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#logout"></use>
+						</svg>
+						<span class="slds-assistive-text">{$APP.LBL_LOGOUT}</span>
+					</button>
+				</li> *}
 			</ul>
 		</div>
 	</div>
+	{if $COREBOS_HEADER_PREMENU}
+	<div style="width:100%; background-color:#fff;">
+	{$COREBOS_HEADER_PREMENU}
+	</div>
+	{/if}
 	<div class="noprint">
 		<div class="slds-context-bar">
 			<div class="slds-context-bar__primary slds-context-bar__item_divider-right">
@@ -262,7 +312,7 @@
 		</div>
 	</div>
 </header>
-<div style="width: 1px; height: 90px;"></div>
+<div id = "blankDiv" style="width: 1px; height: 0px;" ></div>
 
 <!-- END LDS Global header -->
 
@@ -346,7 +396,6 @@
 		</form>
 	</div>
 {/if}
-{$COREBOS_HEADER_PREMENU}
 <!-- header - master tabs -->
 
 <div id="calculator_cont" style="position:absolute; z-index:100001;" ></div>
@@ -363,40 +412,41 @@
 
 <!-- Last visited panel -->
 <div id="cbds-last-visited" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited" aria-hidden="false">  <div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default slds-text-color_inverse">
-    <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Panel Header">{$APP.LBL_LAST_VIEWED}</h2>
-    <button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__close" title="Collapse Panel Header" onclick="document.getElementById('cbds-last-visited').classList.add('cbds-anim-slideout--right');document.getElementById('cbds-last-visited').classList.remove('cbds-anim-slidein--right');">
-      <svg class="slds-button__icon" aria-hidden="true">
-        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-      </svg>
-      <span class="slds-assistive-text">Close panel</span>
-    </button>
-  </div>
-  <div class="slds-panel__body">
-		{foreach name=trackinfo item=trackelements from=$TRACINFO}
-			<article class="slds-card">
-				<div class="slds-card__header slds-grid">
-					<header class="slds-media slds-media_center slds-has-flexi-truncate">
-						<div class="slds-media__figure">
-							<span class="{$trackelements.__ICONContainerClass}" title="{$trackelements.module_name}">
-								<svg class="{$trackelements.__ICONClass}" aria-hidden="true">
-									<use xlink:href="include/LD/assets/icons/{$trackelements.__ICONLibrary}-sprite/svg/symbols.svg#{$trackelements.__ICONName}"></use> 
-								</svg>
-							<span class="slds-assistive-text">{$trackelements.module_name}</span>
-						</span>
-						</div>
-						<div class="slds-media__body">
-							<h2 class="slds-card__header-title">
-								<a href="index.php?module={$trackelements.module_name}&action=DetailView&record={$trackelements.crmid}&parenttab={$CATEGORY}" class="slds-card__header-link" title="{$trackelements.module_name}">
-									<span>{$trackelements.item_summary}</span>
-								</a>
-							</h2>
-							<span></span>
-						</div>
-					</header>
-				</div>
-			</article>
-		{/foreach}
-  </div>
+	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Panel Header">				{$APP.LBL_LAST_VIEWED}
+	</h2>
+	<button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__close" title="Collapse Panel Header" onclick="document.getElementById('cbds-last-visited').classList.add('cbds-anim-slideout--right');document.getElementById('cbds-last-visited').classList.remove('cbds-anim-slidein--right');">
+		<svg class="slds-button__icon" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+		</svg>
+		<span class="slds-assistive-text">Close panel</span>
+	</button>
+</div>
+<div class="slds-panel__body">
+	{foreach name=trackinfo item=trackelements from=$TRACINFO}
+		<article class="slds-card">
+			<div class="slds-card__header slds-grid">
+				<header class="slds-media slds-media_center slds-has-flexi-truncate">
+					<div class="slds-media__figure">
+						<span class="{$trackelements.__ICONContainerClass}" title="{$trackelements.module_name}">
+							<svg class="{$trackelements.__ICONClass}" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/{$trackelements.__ICONLibrary}-sprite/svg/symbols.svg#{$trackelements.__ICONName}"></use> 
+							</svg>
+						<span class="slds-assistive-text">{$trackelements.module_name}</span>
+					</span>
+					</div>
+					<div class="slds-media__body">
+						<h2 class="slds-card__header-title">
+							<a href="index.php?module={$trackelements.module_name}&action=DetailView&record={$trackelements.crmid}&parenttab={$CATEGORY}" class="slds-card__header-link" title="{$trackelements.module_name}">
+								<span>{$trackelements.item_summary}</span>
+							</a>
+						</h2>
+						<span></span>
+					</div>
+				</header>
+			</div>
+		</article>
+	{/foreach}
+</div>
 </div>
 
 <!-- Last // visited panel -->
@@ -407,13 +457,13 @@
 		{foreach key=actionlabel item=actionlink from=$HEADERS}
 			<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_hover" aria-haspopup="true">
 				<a href="{$actionlink}" class="slds-context-bar__label-action" title="{$actionlabel}">
-						<span class="slds-truncate">{$actionlabel}</span>
+					<span class="slds-truncate">{$actionlabel}</span>
 				</a>
 			</li>
 		{/foreach}
 		<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_hover" aria-haspopup="true">
 			<a href="index.php?module=Settings&action=index&parenttab=" class="slds-context-bar__label-action" title="{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}">
-					<span class="slds-truncate">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</span>
+				<span class="slds-truncate">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</span>
 			</a>
 		</li>
 	</ul>

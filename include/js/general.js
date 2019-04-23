@@ -5337,7 +5337,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 /****
 	* ldsCombobox
 	* @author: MajorLabel <info@majorlabel.nl>
-	* @license GNUv2
+	* @license VPL
 	*/
 (function ldscomboboxModule(factory){
 
@@ -5892,6 +5892,9 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 function headerOnDownScroll() {
 	var h = document.getElementById("global-header");
 	h.classList.add("header-scrolling");
+	if ($(document).scrollLeft() >= 0 && $(document).scrollTop() == 0) {
+		h.classList.remove("header-scrolling");
+	}
 }
 window.cbOnDownScrollers.push(headerOnDownScroll);
 
@@ -5907,3 +5910,11 @@ function headerOnUpScroll() {
 	}
 }
 window.cbOnUpScrollers.push(headerOnUpScroll);
+
+$(document).ready(function(){
+	$("#blankDiv").height($("#global-header").outerHeight(true)-90);
+});
+
+$(window).on('resize',function() {
+	$("#blankDiv").height($("#global-header").outerHeight(true)-90);
+});
