@@ -37,9 +37,14 @@ $mod_strings = array(
 	'zendesk_apiurl' => 'API Domain',
 	'zendesk_accessCode' => 'Zendesk Access Token',
 	'zendesk_username' => 'Zendesk User Name',
-		'Whatsapp Activation' => 'Whatsapp Activation',
-		'whatsapp_sid' => 'Whatsapp SID',
-		'whatsapp_token' => 'Whatsapp Token',
-		'whatsapp_senderphone'=> 'Whatsapp Sender Phone'
+	'Whatsapp Activation' => 'Whatsapp Activation',
+	'whatsapp_sid' => 'Whatsapp SID',
+	'whatsapp_token' => 'Whatsapp Token',
+	'whatsapp_senderphone'=> 'Whatsapp Sender Phone',
+	'SendGrid Activation' => 'SendGrid Activation',
+	'TransEmail_title' => 'Configuration for Transactional Email',
+	'TransEmail_subtitle' => 'Substitutes outgoing email server',
+	'MktEmail_title' => 'Configuration for Marketing Email',
+	'MktEmail_subtitle' => 'Only for messages, programmed emails and specificaly programmed processes',
 );
 ?>
