@@ -1340,4 +1340,11 @@
 	<classname>CreateUserPrivTables</classname>
 	<systemupdate>1</systemupdate>
 </changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Add CC Condition To MailScanner</description>
+	<filename>build/changeSets/2019/AddCCMailScanner.php</filename>
+	<classname>AddCCMailScanner</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

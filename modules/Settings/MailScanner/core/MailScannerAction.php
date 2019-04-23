@@ -292,6 +292,8 @@ class Vtiger_MailScannerAction {
 			$useemail = $mailrecord->_from;
 		} elseif ($this->lookup == 'TO') {
 			$useemail = $mailrecord->_to;
+		} elseif ($this->lookup == 'CC') {
+			$useemail = $mailrecord->_cc;
 		}
 
 		if ($this->module == 'Contacts') {

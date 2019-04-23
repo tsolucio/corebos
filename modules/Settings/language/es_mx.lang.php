@@ -925,5 +925,6 @@ $mod_strings = array (
 	'Site Maintenance' => 'Mantenimiento Aplicación',
 	'SM_BeBackSoon' => 'Volveremos pronto!',
 	'SM_SorryInconvenience' => 'Disculpa las molestias, pero estamos realizando un mantenimiento en este momento. ¡Pronto volveremos a estar en línea!',
+	'LBL_CC' => 'CC',
 );
 ?>
