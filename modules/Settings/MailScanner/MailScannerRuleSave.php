@@ -36,5 +36,5 @@ $scannerrule->update();
 
 $scannerrule->updateAction($scanneractionid, vtlib_purify($_REQUEST['rule_actiontext']));
 
-include 'modules/Settings/MailScanner/MailScannerRule.php';
+require 'modules/Settings/MailScanner/MailScannerRule.php';
 ?>
