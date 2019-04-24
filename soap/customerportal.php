@@ -1147,7 +1147,7 @@ function send_mail_for_password($mailid) {
 	$contactID = $adb->query_result($from_res, 0, 'contactid');
 
 	$sql = $adb->pquery('SELECT template_language FROM vtiger_contactdetails WHERE contactid=?', array($contactID));
-    $lan = $adb->query_result($sql, 0, 'template_language');
+	$lan = $adb->query_result($sql, 0, 'template_language');
 	require_once 'modules/Emails/Emails.php';
 	$context = array(
 		'$user_name$'=> $usr_name,
