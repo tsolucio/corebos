@@ -24,7 +24,7 @@ class addFieldPBXUUID extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$mod = Vtiger_Module::getInstance('PBXmanager');
+			$mod = Vtiger_Module::getInstance('PBXManager');
 			$block = Vtiger_Block::getInstance('LBL_CALL_INFORMATION', $mod);
 			$field = new Vtiger_Field();
 			$field->name = 'pbxuuid';
