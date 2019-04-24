@@ -401,7 +401,7 @@ class Homestuff {
 		$header = array();
 		$header[]=getTranslatedString('LBL_HOME_METRICS', 'Home');
 		$header[]=getTranslatedString('LBL_HOME_AGGREGATEFIELD');
-		$header[]=getTranslatedString('LBL_HOME_VALUE');;
+		$header[]=getTranslatedString('LBL_HOME_VALUE');
 		$return_value = array('ModuleName'=>'Home', 'cvid'=>0, 'Header'=>$header, 'Entries'=>$list);
 
 		if (count($header)!=0) {
