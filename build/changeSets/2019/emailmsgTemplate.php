@@ -28,7 +28,7 @@ class emailmsgTemplate extends cbupdaterWorker {
 
 			$langs = array('de'=>'de_de','en'=>'en_us','es'=>'es_es','fr'=>'fr_fr','hu'=>'hu_hu','it'=>'it_it','nl'=>'nl_nl','pt'=>'pt_br');
 			foreach ($langs as $shortcode => $longcode) {
-				$mod_strings = return_module_language($longcode, 'HelpDesk');
+				@include "modules/HelpDesk/language/$longcode.lang.php";
 				$contents = $mod_strings['LBL_LOGIN_DETAILS'];
 				$contents .= '<br><br>'.$mod_strings['LBL_USERNAME'].' $user_name$';
 				$contents .= '<br>'.$mod_strings['LBL_PASSWORD'].' $user_password$';
