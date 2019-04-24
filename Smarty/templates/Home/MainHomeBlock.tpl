@@ -91,7 +91,6 @@
 {if $tablestuff.Stufftype eq "Module" || ($tablestuff.Stufftype eq "Default" && $tablestuff.Stufftitle neq "Key Metrics" && $tablestuff.Stufftitle neq $homepagedashboard_title && $tablestuff.Stufftitle neq "My Group Allocation" ) || $tablestuff.Stufftype eq "RSS" || $tablestuff.Stufftype eq "DashBoard"|| $tablestuff.Stufftype eq "ReportCharts"}
 		<td style="text-align: right;" class="slds-p-right_small">
 			<a href="#" id="a_{$tablestuff.Stuffid}">
-				{$MOD.LBL_MORE}
 			</a>
 		</td>
 {/if}
@@ -100,8 +99,4 @@
 {/if}
 </div>
 
-<script>
-	{*<!-- position the div in the page -->*}
-	window.onresize = function(){ldelim}positionDivInAccord('stuff_{$tablestuff.Stuffid}','{$tablestuff.Stufftitle|escape:'quotes'}','{$tablestuff.Stufftype}');{rdelim};
-	positionDivInAccord('stuff_{$tablestuff.Stuffid}','{$tablestuff.Stufftitle|escape:'quotes'}','{$tablestuff.Stufftype}');
-</script>
+
