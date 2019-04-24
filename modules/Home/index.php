@@ -77,9 +77,7 @@ $freetag = new freetag();
 $numberofcols = getNumberOfColumns();
 
 $smarty->assign('CHECK', $buttoncheck);
-if (vtlib_isModuleActive('Calendar')) {
-	$smarty->assign('CALENDAR_ACTIVE', 'yes');
-}
+$smarty->assign('CALENDAR_ACTIVE', (vtlib_isModuleActive('Calendar') ? 'yes' : 'no'));
 $smarty->assign('IMAGE_PATH', $image_path);
 $smarty->assign('MODULE', 'Home');
 $smarty->assign('CATEGORY', getParenttab('Home'));
