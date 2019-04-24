@@ -399,14 +399,15 @@
 </div>
 
 <!-- Last visited panel -->
-<div id="cbds-last-visited" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited" aria-hidden="false">  <div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default slds-text-color_inverse">
-	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Panel Header">				{$APP.LBL_LAST_VIEWED}
+<div id="cbds-last-visited" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited" aria-hidden="false">
+<div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default slds-text-color_inverse">
+	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{$APP.LBL_LAST_VIEWED}">{$APP.LBL_LAST_VIEWED}
 	</h2>
-	<button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__close" title="Collapse Panel Header" onclick="document.getElementById('cbds-last-visited').classList.add('cbds-anim-slideout--right');document.getElementById('cbds-last-visited').classList.remove('cbds-anim-slidein--right');">
+	<button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__close" title="{'Close LAST_VIEWED'|@getTranslatedString}" onclick="document.getElementById('cbds-last-visited').classList.add('cbds-anim-slideout--right');document.getElementById('cbds-last-visited').classList.remove('cbds-anim-slidein--right');">
 		<svg class="slds-button__icon" aria-hidden="true">
 			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
 		</svg>
-		<span class="slds-assistive-text">Close panel</span>
+		<span class="slds-assistive-text">{'Close LAST_VIEWED'|@getTranslatedString}</span>
 	</button>
 </div>
 <div class="slds-panel__body">
@@ -436,9 +437,7 @@
 	{/foreach}
 </div>
 </div>
-
 <!-- Last // visited panel -->
-
 
 <div id="mainsettings" class="drop_mnu_user" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnvshNrm('mainsettings');" style="width:180px;">
 	<ul>

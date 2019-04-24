@@ -16,6 +16,7 @@ $app_strings = array(
 	'LBL_LOGOUT' => 'Kilépés',
 	'LBL_SEARCH' => 'Keresés',
 	'LBL_LAST_VIEWED' => 'Utoljára nézett',
+	'Close LAST_VIEWED' => 'Close Last Viewed',
 	'LBL_TODAY' => 'Ma',
 	'LBL_ALL' => 'Minden',
 	'LBL_SHOW' => 'Mutat :',

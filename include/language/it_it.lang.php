@@ -15,6 +15,7 @@ $app_strings = array (
   'LBL_LOGOUT' => 'Esci',
   'LBL_SEARCH' => 'Ricerca',
   'LBL_LAST_VIEWED' => 'I pi&ugrave; recenti',
+  'Close LAST_VIEWED' => 'Close Last Viewed',
   'LBL_TODAY' => 'Oggi',
   'LBL_ALL' => 'Tutti',
   'LBL_SHOW' => 'Mostra :',

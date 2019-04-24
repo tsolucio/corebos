@@ -21,6 +21,7 @@ $app_strings = array(
 	'LBL_LOGOUT' => 'Log-uit',
 	'LBL_SEARCH' => 'Zoek',
 	'LBL_LAST_VIEWED' => 'Laatst bekeken',
+	'Close LAST_VIEWED' => 'Close Last Viewed',
 	'LBL_TODAY' => 'Vandaag',
 	'LBL_ALL' => 'Alle',
 	'LBL_SHOW' => 'Bekijk :',

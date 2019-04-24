@@ -66,29 +66,7 @@ if (GlobalVariable::getVariable('Application_Display_World_Clock', 1, $currentMo
 	</td>
 <?php
 }
-if (GlobalVariable::getVariable('Application_Display_Calculator', 1, $currentModule)) {
 ?>
-	<td style="padding-right:0px">
-		<a href="#">
-		<img src="<?php echo vtiger_imageurl('btnL3Calc.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_CALCULATOR_ALT']; ?>" title="<?php echo $app_strings['LBL_CALCULATOR_TITLE']; ?>" border=0 onClick="fnvshobj(this,'calculator_cont');fetch_calc();">
-		</a>
-	</td>
-<?php
-}
-?>
-</td>
-				<td style="padding-right: 10px;">
-					<img src="<?php echo vtiger_imageurl('btnL3Tracker.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_LAST_VIEWED']; ?>" title="<?php echo $app_strings['LBL_LAST_VIEWED']; ?>" onclick="fnvshobj(this,'tracker');" style="cursor:pointer;" border="0">
-				</td>
-			</tr>
-		</table>
-	</td>
-	<td width="1">&nbsp;</td>
-	<td class="small" align="left" width="5%">
-		<table border=0 cellspacing=0 cellpadding=5>
-			<tr>
-				<td style="padding-right:0px;padding-left:10px;"><img src="<?php echo vtiger_imageurl('tbarImport-Faded.gif', $theme) ?>" border="0"></td>
-				<td style="padding-right:10px"><img src="<?php echo vtiger_imageurl('tbarExport-Faded.gif', $theme) ?>" border="0"></td>
 			</tr>
 		</table>
 	</td>
