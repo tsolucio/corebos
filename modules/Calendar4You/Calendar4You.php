@@ -29,6 +29,7 @@ class Calendar4You extends CRMEntity {
 
 	public $db;
 	public $log;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-event', 'class' => 'slds-icon', 'icon'=>'event');
 
 	// constructor of Calendar4You class
 	public function __construct() {
