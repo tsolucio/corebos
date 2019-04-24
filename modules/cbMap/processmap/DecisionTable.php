@@ -61,12 +61,71 @@
 </decision>
  *************************************************************************************************/
 
+require_once 'modules/com_vtiger_workflow/include.inc';
+require_once 'modules/com_vtiger_workflow/tasks/VTEntityMethodTask.inc';
+require_once 'modules/com_vtiger_workflow/VTEntityMethodManager.inc';
+require_once 'modules/com_vtiger_workflow/VTSimpleTemplate.inc';
+require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
+require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
+require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
+
 class DecisionTable extends processcbMap {
 	public $mapping = array();
 
 	public function processMap($arguments) {
-		$this->mapping = $this->convertMap2Array();
-		return $this->mapping;
+		global $adb, $current_user;
+		$mapping = $this->convertMap2Array();
+		$entityId = $arguments[0];
+		$holduser = $current_user;
+		$current_user = Users::getActiveAdminUser(); // evaluate condition as admin user
+		if (!empty($entityId)) {
+			$entity = new VTWorkflowEntity($current_user, $entityId, true);
+			if (is_null($entity->data)) { // invalid context
+				return false;
+			}
+		}
+		$current_user = $holduser;
+		$outputs = array();
+		foreach ($mapping['rules'] as $rules => $rule) {
+			if (isset($rule['expression'])) {
+				$testexpression = $rule['expression'];
+				$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($testexpression)));
+				$expression = $parser->expression();
+				$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+				$exprEvaluation = $exprEvaluater->evaluate($entity);
+				$outputs[] = $exprEvaluation;
+			} elseif (isset($rule['mapid'])) {
+				$outputs[] = coreBOS_Rule::evaluate($rule['mapid'], $entityId);
+			} elseif (isset($rule['decisionTable'])) {
+				$module = $rule['decisionTable']['module'];
+				$queryGenerator = new QueryGenerator($module, $current_user);
+				if (isset($rule['decisionTable']['conditions'])) {
+					foreach ($rule['decisionTable']['conditions'] as $k => $v) {
+						$queryGenerator->addCondition($v['field'], $v['input'], $v['operation'], $queryGenerator::$AND);
+					}
+				}
+				if (isset($rule['decisionTable']['searches'])) {
+					foreach ($rule['decisionTable']['searches'] as $k => $v) {
+						$queryGenerator->addCondition($v['field'], $v['input'], $v['operation'], $queryGenerator::$AND);
+					}
+				}
+				$output = $rule['decisionTable']['output'];
+				$queryGenerator->setFields(array($output));
+				$query = $queryGenerator->getQuery();
+				$result = $adb->pquery($query, array());
+				if ($result) {
+					$row = $adb->fetch_array($result);
+					if (isset($row[$output])) {
+						$outputs[] = $row[$output];
+					} else {
+						$outputs[] = '__DoesNotPass__';
+					}
+				} else {
+					$outputs[] = '__DoesNotPass__';
+				}
+			}
+		}
+		return $outputs;
 	}
 
 	private function convertMap2Array() {
@@ -99,14 +158,20 @@ class DecisionTable extends processcbMap {
 				$rule['decisionTable']['searches'] = array();
 				foreach ($value->decisionTable->searches->search as $k => $v) {
 					$search = array();
-					$search['input'] = (String)$v->input;
-					$search['operation'] = (String)$v->operation;
-					$search['field'] = (String)$v->field;
-					$rule['decisionTable']['searches'][] = $condition;
+					foreach ($v->condition as $k => $v) {
+						$condition = array();
+						$condition['input'] = (String)$v->input;
+						$condition['operation'] = (String)$v->operation;
+						$condition['field'] = (String)$v->field;
+						$search['conditions'][] = $condition;
+					}
+					$rule['decisionTable']['searches'][] = $search;
+					$rule['decisionTable']['output'] = (String)$value->decisionTable->output;
 				}
 			}
 			$rule['output'] = (String)$value->output;
 			$mapping['rules'][] = $rule;
 		}
+		return $mapping;
 	}
 }
