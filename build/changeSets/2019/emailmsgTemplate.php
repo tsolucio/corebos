@@ -23,15 +23,15 @@ class emailmsgTemplate extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset ' . get_class($this) . ' already applied!');
 		} else {
-			global $adb, $default_charset, $current_user, $mod_strings;
+			global $current_user;
 			include_once 'modules/MsgTemplate/MsgTemplate.php';
 
-			$langs = array('en'=>'en_us','es'=>'es_es');
+			$langs = array('de'=>'de_de','en'=>'en_us','es'=>'es_es','fr'=>'fr_fr','hu'=>'hu_hu','it'=>'it_it','nl'=>'nl_nl','pt'=>'pt_br');
 			foreach ($langs as $shortcode => $longcode) {
 				$mod_strings = return_module_language($longcode, 'HelpDesk');
 				$contents = $mod_strings['LBL_LOGIN_DETAILS'];
-				$contents .= "<br><br>".$mod_strings['LBL_USERNAME']." ".'$user_name$';
-				$contents .= "<br>".$mod_strings['LBL_PASSWORD']." ".'$user_password$';
+				$contents .= '<br><br>'.$mod_strings['LBL_USERNAME'].' $user_name$';
+				$contents .= '<br>'.$mod_strings['LBL_PASSWORD'].' $user_password$';
 				$focus = new MsgTemplate();
 				$focus->id = '';
 				$focus->mode = '';
@@ -44,7 +44,7 @@ class emailmsgTemplate extends cbupdaterWorker {
 				$focus->column_fields['template'] = $contents;
 				$focus->column_fields['templateonlytext'] = $contents;
 				$focus->column_fields['tags'] = '';
-				$focus->column_fields['description'] = 'template that will be sent when customer portal user requests a new password';
+				$focus->column_fields['description'] = 'template that will be sent when customer portal contact requests a new password';
 				$focus->column_fields['assigned_user_id'] = $current_user->id;
 				$focus->save('MsgTemplate');
 			}
@@ -60,6 +60,7 @@ class emailmsgTemplate extends cbupdaterWorker {
 			$field->typeofdata = 'V~O';
 			$block->addField($field);
 			// Adding picklist on module Contacts
+			$langs = array_keys($langs);
 			$field->setPicklistValues($langs);
 
 			$this->sendMsg('Changeset ' . get_class($this) . ' applied!');
