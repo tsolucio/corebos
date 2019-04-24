@@ -435,12 +435,16 @@ function fetchEmailTemplateInfo($templateName, $desired_lang = null, $default_la
 	if (empty($default_lang)) {
 		$default_lang = cbtranslation::getShortLanguageName($default_language);
 	}
-	$result = $adb->pquery('select * from vtiger_msgtemplate where reference=? and msgt_language=?', array($templateName, $desired_lang));
+	$sql = 'select *
+		from vtiger_msgtemplate
+		inner join vtiger_crmentity on crmid=msgtemplateid
+		where deleted=0 and reference=?';
+	$result = $adb->pquery($sql.' and msgt_language=?', array($templateName, $desired_lang));
 	if (!$result) {
-		$result = $adb->pquery('select * from vtiger_msgtemplate where reference=? and msgt_language=?', array($templateName, $default_lang));
+		$result = $adb->pquery($sql.' and msgt_language=?', array($templateName, $default_lang));
 	}
 	if (!$result) {
-		$result = $adb->pquery('select * from vtiger_msgtemplate where reference=?', array($templateName));
+		$result = $adb->pquery($sql, array($templateName));
 	}
 
 	$log->debug('< fetchEmailTemplateInfo');

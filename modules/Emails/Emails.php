@@ -570,6 +570,7 @@ class Emails extends CRMEntity {
 		if ($sql && $adb->num_rows($sql)>0) {
 			$sub = $adb->query_result($sql, 0, 'subject');
 			$body = $adb->query_result($sql, 0, 'template');
+			$sub = html_entity_decode($sub, ENT_QUOTES, $default_charset);
 			$mail_body = html_entity_decode($body, ENT_QUOTES, $default_charset);
 			foreach ($context as $value => $val) {
 				$mail_body = str_replace($value, $val, $mail_body);
