@@ -2453,6 +2453,16 @@ function get_announcements() {
 	return $announcement;
 }
 
+function getModuleIcon($module) {
+	$curMod = CRMEntity::getInstance($module);
+	$iconinfo = array();
+	$iconinfo['__ICONLibrary'] = $curMod->moduleIcon['library'];
+	$iconinfo['__ICONContainerClass'] = $curMod->moduleIcon['containerClass'];
+	$iconinfo['__ICONClass'] = $curMod->moduleIcon['class'];
+	$iconinfo['__ICONName'] = $curMod->moduleIcon['icon'];
+	return $iconinfo;
+}
+
 /**
  *  Function to get recurring info depending on the recurring type
  *  return  $recurObj       - Object of class RecurringType
