@@ -564,10 +564,10 @@ class Emails extends CRMEntity {
 		return $list_buttons;
 	}
 
-	public static function sendEmailTemplate($templateName, $context, $module, $to_email, $par_id, $from_name = '', $from_email = '') {
+	public static function sendEmailTemplate($templateName, $context, $module, $to_email, $par_id, $from_name = '', $from_email = '', $desired_lang = null, $default_lang = null) {
 		require_once 'modules/Emails/mail.php';
 		global $adb, $default_charset;
-		$sql = fetchEmailTemplateInfo($templateName);
+		$sql = fetchEmailTemplateInfo($templateName, $desired_lang, $default_lang);
 		if ($sql && $adb->num_rows($sql)>0) {
 			$sub = $adb->query_result($sql, 0, 'subject');
 			$body = $adb->query_result($sql, 0, 'template');

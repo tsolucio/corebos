@@ -1136,7 +1136,7 @@ function send_mail_for_password($mailid) {
 	$password = $adb->query_result($res, 0, 'user_password');
 	$isactive = $adb->query_result($res, 0, 'isactive');
 
-	$fromquery = 'select vtiger_users.user_name, vtiger_users.email1
+	$fromquery = 'select vtiger_users.user_name, vtiger_users.email1, vtiger_contactdetails.contactid
 		from vtiger_users
 		inner join vtiger_crmentity on vtiger_users.id = vtiger_crmentity.smownerid
 		inner join vtiger_contactdetails on vtiger_contactdetails.contactid=vtiger_crmentity.crmid
@@ -1144,6 +1144,16 @@ function send_mail_for_password($mailid) {
 	$from_res = $adb->pquery($fromquery, array($mailid));
 	$initialfrom = $adb->query_result($from_res, 0, 'user_name');
 	$from = $adb->query_result($from_res, 0, 'email1');
+	$contactID = $adb->query_result($from_res, 0, 'contactid');
+
+	$sql = $adb->pquery('SELECT template_language FROM vtiger_contactdetails WHERE contactid=?', array($contactID));
+	$lan = $adb->query_result($sql, 0, 'template_language');
+	require_once 'modules/Emails/Emails.php';
+	$context = array(
+		'$user_name$'=> $usr_name,
+		'$user_password$'=> $new_password
+	);
+	Emails::sendEmailTemplate('CustomerPortal_Mail_Password', $context, 'MsgTemplate', $from, $contactID, '', '', $lan);
 
 	$contents = $mod_strings['LBL_LOGIN_DETAILS'];
 	$contents .= "<br><br>".$mod_strings['LBL_USERNAME']." ".$user_name;
