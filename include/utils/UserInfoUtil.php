@@ -429,13 +429,11 @@ function fetchEmailTemplateInfo($templateName, $desired_lang = null, $default_la
 	require_once 'modules/cbtranslation/cbtranslation.php';
 	global $log, $adb, $current_user, $default_language;
 	$log->debug('> fetchEmailTemplateInfo '.$templateName);
-	if (!$desired_lang) {
-		$desired_lang = $current_user->language;
-		$desired_lang = cbtranslation::getShortLanguageName($desired_lang);
+	if (empty($desired_lang)) {
+		$desired_lang = cbtranslation::getShortLanguageName($current_user->language);
 	}
-	if (!$default_lang) {
-		$default_lang = $default_language;
-		$default_lang = cbtranslation::getShortLanguageName($default_lang);
+	if (empty($default_lang)) {
+		$default_lang = cbtranslation::getShortLanguageName($default_language);
 	}
 	$result = $adb->pquery('select * from vtiger_msgtemplate where reference=? and msgt_language=?', array($templateName, $desired_lang));
 	if (!$result) {
