@@ -242,7 +242,6 @@ class Emails extends CRMEntity {
 	}
 
 	public static function sendEMail($to_email, $from_name, $from_email, $subject, $contents, $cc, $bcc, $attachment, $emailid, $logo, $qrScan, $replyto, $replyToEmail) {
-		global $adb;
 		$mail = new PHPMailer();
 		setMailerProperties($mail, $subject, $contents, $from_email, $from_name, trim($to_email, ','), $attachment, $emailid, $logo, $qrScan);
 		// Return immediately if Outgoing server not configured
@@ -412,7 +411,7 @@ class Emails extends CRMEntity {
 
 	/** Returns a list of the associated users */
 	public function get_users($id) {
-		global $log, $adb, $app_strings, $current_user;
+		global $log, $adb, $app_strings;
 		$log->debug('> get_users '.$id);
 
 		$id = $_REQUEST['record'];
