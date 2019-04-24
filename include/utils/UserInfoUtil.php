@@ -425,10 +425,24 @@ function fetchWordTemplateList($module) {
  * @param $templateName -- Template Name:: Type varchar
  * @returns Type:: resultset
  */
-function fetchEmailTemplateInfo($templateName) {
-	global $log, $adb;
+function fetchEmailTemplateInfo($templateName, $desired_lang = null, $default_lang = null) {
+	require_once 'modules/cbtranslation/cbtranslation.php';
+	global $log, $adb, $current_user, $default_language;
 	$log->debug('> fetchEmailTemplateInfo '.$templateName);
-	$result = $adb->pquery('select * from vtiger_msgtemplate where reference=?', array($templateName));
+	if (empty($desired_lang)) {
+		$desired_lang = cbtranslation::getShortLanguageName($current_user->language);
+	}
+	if (empty($default_lang)) {
+		$default_lang = cbtranslation::getShortLanguageName($default_language);
+	}
+	$result = $adb->pquery('select * from vtiger_msgtemplate where reference=? and msgt_language=?', array($templateName, $desired_lang));
+	if (!$result) {
+		$result = $adb->pquery('select * from vtiger_msgtemplate where reference=? and msgt_language=?', array($templateName, $default_lang));
+	}
+	if (!$result) {
+		$result = $adb->pquery('select * from vtiger_msgtemplate where reference=?', array($templateName));
+	}
+
 	$log->debug('< fetchEmailTemplateInfo');
 	return $result;
 }
