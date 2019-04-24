@@ -88,12 +88,6 @@
 				{$MOD.LBL_SCROLL}
 			</a>
 		</td>
-{if $tablestuff.Stufftype eq "Module" || ($tablestuff.Stufftype eq "Default" && $tablestuff.Stufftitle neq "Key Metrics" && $tablestuff.Stufftitle neq $homepagedashboard_title && $tablestuff.Stufftitle neq "My Group Allocation" ) || $tablestuff.Stufftype eq "RSS" || $tablestuff.Stufftype eq "DashBoard"|| $tablestuff.Stufftype eq "ReportCharts"}
-		<td style="text-align: right;" class="slds-p-right_small">
-			<a href="#" id="a_{$tablestuff.Stuffid}">
-			</a>
-		</td>
-{/if}
 	</tr>
 	</table>
 {/if}
