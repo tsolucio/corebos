@@ -426,27 +426,27 @@ function fetchWordTemplateList($module) {
  * @returns Type:: resultset
  */
 function fetchEmailTemplateInfo($templateName, $desired_lang = null, $default_lang = null) {
-    require_once 'modules/cbtranslation/cbtranslation.php';
-    global $log, $adb, $current_user, $default_language;
-    $log->debug('> fetchEmailTemplateInfo '.$templateName);
-    if (!$desired_lang) {
-        $desired_lang = $current_user->language;
-        $desired_lang = cbtranslation::getShortLanguageName($desired_lang);
-    }
-    if (!$default_lang) {
-        $default_lang = $default_language;
-        $default_lang = cbtranslation::getShortLanguageName($default_lang);
-    }
-    $result = $adb->pquery('select * from vtiger_msgtemplate where reference=? and msgt_language=?', array($templateName, $desired_lang));
-    if (!$result) {
-        $result = $adb->pquery('select * from vtiger_msgtemplate where reference=? and msgt_language=?', array($templateName, $default_lang));
-    }
-    if (!$result) {
-        $result = $adb->pquery('select * from vtiger_msgtemplate where reference=?', array($templateName));
-    }
+	require_once 'modules/cbtranslation/cbtranslation.php';
+	global $log, $adb, $current_user, $default_language;
+	$log->debug('> fetchEmailTemplateInfo '.$templateName);
+	if (!$desired_lang) {
+		$desired_lang = $current_user->language;
+		$desired_lang = cbtranslation::getShortLanguageName($desired_lang);
+	}
+	if (!$default_lang) {
+		$default_lang = $default_language;
+		$default_lang = cbtranslation::getShortLanguageName($default_lang);
+	}
+	$result = $adb->pquery('select * from vtiger_msgtemplate where reference=? and msgt_language=?', array($templateName, $desired_lang));
+	if (!$result) {
+		$result = $adb->pquery('select * from vtiger_msgtemplate where reference=? and msgt_language=?', array($templateName, $default_lang));
+	}
+	if (!$result) {
+		$result = $adb->pquery('select * from vtiger_msgtemplate where reference=?', array($templateName));
+	}
 
-    $log->debug('< fetchEmailTemplateInfo');
-    return $result;
+	$log->debug('< fetchEmailTemplateInfo');
+	return $result;
 }
 
 /** Function to substitute the tokens in the specified file
