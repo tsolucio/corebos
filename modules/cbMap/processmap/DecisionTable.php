@@ -70,46 +70,56 @@ require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 
 class DecisionTable extends processcbMap {
-	public $mapping = array();
 
 	public function processMap($arguments) {
 		global $adb, $current_user;
-		$mapping = $this->convertMap2Array();
+		$xml = $this->getXMLContent();
 		$entityId = $arguments[0];
 		$holduser = $current_user;
-		$current_user = Users::getActiveAdminUser(); // evaluate condition as admin user
+		$current_user = Users::getActiveAdminUser(); // in order to retrieve all entity data for evaluation
 		if (!empty($entityId)) {
 			$entity = new VTWorkflowEntity($current_user, $entityId, true);
 			if (is_null($entity->data)) { // invalid context
+				$current_user = $holduser;
 				return false;
 			}
 		}
 		$current_user = $holduser;
 		$outputs = array();
-		foreach ($mapping['rules'] as $rules => $rule) {
-			if (isset($rule['expression'])) {
-				$testexpression = $rule['expression'];
+		$hitpolicy = (String)$xml->hitPolicy;
+		if ($hitpolicy == 'G') {
+			$aggregate = (String)$xml->aggregate;
+		}
+		foreach ($xml->rules->rule as $key => $value) {
+			$sequence = (String)$value->sequence;
+			if (isset($value->expression)) {
+				$testexpression = (String)$value->expression;
 				$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($testexpression)));
 				$expression = $parser->expression();
 				$exprEvaluater = new VTFieldExpressionEvaluater($expression);
 				$exprEvaluation = $exprEvaluater->evaluate($entity);
 				$outputs[] = $exprEvaluation;
-			} elseif (isset($rule['mapid'])) {
-				$outputs[] = coreBOS_Rule::evaluate($rule['mapid'], $entityId);
-			} elseif (isset($rule['decisionTable'])) {
-				$module = $rule['decisionTable']['module'];
+			} elseif (isset($value->mapid)) {
+				$mapid = (String)$value->mapid;
+				$crmobj = CRMEntity::getInstance(getSalesEntityType($mapid));
+				$crmobj->retrieve_entity_info($mapid);
+				$outputs[] = $crmobj;
+			} elseif (isset($value->decisionTable)) {
+				$module = (String)$value->decisionTable->module;
 				$queryGenerator = new QueryGenerator($module, $current_user);
-				if (isset($rule['decisionTable']['conditions'])) {
-					foreach ($rule['decisionTable']['conditions'] as $k => $v) {
-						$queryGenerator->addCondition($v['field'], $v['input'], $v['operation'], $queryGenerator::$AND);
+				if (isset($value->decisionTable->conditions)) {
+					foreach ($value->decisionTable->conditions->condition as $k => $v) {
+						$queryGenerator->addCondition((String)$v->field, (String)$v->input, (String)$v->operation, $queryGenerator::$AND);
 					}
 				}
-				if (isset($rule['decisionTable']['searches'])) {
-					foreach ($rule['decisionTable']['searches'] as $k => $v) {
-						$queryGenerator->addCondition($v['field'], $v['input'], $v['operation'], $queryGenerator::$AND);
+				if (isset($value->decisionTable->searches)) {
+					foreach ($value->decisionTable->searches->search as $k => $v) {
+						foreach ($v->condition as $k => $v) {
+							$queryGenerator->addCondition((String)$v->field, (String)$v->input, (String)$v->operation, $queryGenerator::$AND);
+						}
 					}
 				}
-				$output = $rule['decisionTable']['output'];
+				$output = (String)$value->decisionTable->output;
 				$queryGenerator->setFields(array($output));
 				$query = $queryGenerator->getQuery();
 				$result = $adb->pquery($query, array());
@@ -126,52 +136,5 @@ class DecisionTable extends processcbMap {
 			}
 		}
 		return $outputs;
-	}
-
-	private function convertMap2Array() {
-		$xml = $this->getXMLContent();
-		$mapping = array();
-		$mapping['hitPolicy'] = (String)$xml->hitPolicy;
-		if ($mapping['hitPolicy'] == 'G') {
-			$mapping['aggregate'] = (String)$xml->aggregate;
-		}
-		$mapping['rules'] = array();
-
-		foreach ($xml->rules->rule as $key => $value) {
-			$rule = array();
-			$rule['sequence'] = (String)$value->sequence;
-			if (isset($value->expression)) {
-				$rule['expression'] = (String)$value->expression;
-			} elseif (isset($value->mapid)) {
-				$rule['mapid'] = (String)$value->mapid;
-			} elseif (isset($value->decisionTable)) {
-				$rule['decisionTable']['module'] = (String)$value->decisionTable->module;
-				$rule['decisionTable']['conditions'] = array();
-				foreach ($value->decisionTable->conditions->condition as $k => $v) {
-					$condition = array();
-					$condition['input'] = (String)$v->input;
-					$condition['operation'] = (String)$v->operation;
-					$condition['field'] = (String)$v->field;
-					$rule['decisionTable']['conditions'][] = $condition;
-				}
-				$rule['decisionTable']['orderby'] = (String)$value->decisionTable->orderby;
-				$rule['decisionTable']['searches'] = array();
-				foreach ($value->decisionTable->searches->search as $k => $v) {
-					$search = array();
-					foreach ($v->condition as $k => $v) {
-						$condition = array();
-						$condition['input'] = (String)$v->input;
-						$condition['operation'] = (String)$v->operation;
-						$condition['field'] = (String)$v->field;
-						$search['conditions'][] = $condition;
-					}
-					$rule['decisionTable']['searches'][] = $search;
-					$rule['decisionTable']['output'] = (String)$value->decisionTable->output;
-				}
-			}
-			$rule['output'] = (String)$value->output;
-			$mapping['rules'][] = $rule;
-		}
-		return $mapping;
 	}
 }
