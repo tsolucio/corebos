@@ -23,16 +23,16 @@ class cbQuestionContextParameter extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-            global $adb;
-            $result = $adb->pquery('SELECT operationid FROM vtiger_ws_operation WHERE name = ?', array('cbQuestionAnswer'));
-            if ($result) {
-                $operationid = $adb->query_result($result, 0, 'operationid');
-                if (isset($operationid)) {
-                    $this->ExecuteQuery("INSERT INTO `vtiger_ws_operation_parameters`
+			global $adb;
+			$result = $adb->pquery('SELECT operationid FROM vtiger_ws_operation WHERE name = ?', array('cbQuestionAnswer'));
+			if ($result) {
+				$operationid = $adb->query_result($result, 0, 'operationid');
+				if (isset($operationid)) {
+					$this->ExecuteQuery("INSERT INTO `vtiger_ws_operation_parameters`
                         (`operationid`, `name`, `type`, `sequence`) VALUES
                         ($operationid, 'params', 'String', 2);");
-                }
-            }
+				}
+			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
