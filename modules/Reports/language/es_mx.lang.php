@@ -202,6 +202,7 @@ $mod_strings = array(
 'AVG'=>'PROM',
 'MAX'=>'MAX',
 'MIN'=>'MIN',
+'COUNT'=>'CUENTA',
 'LBL_CUSTOM_REPORTS'=>'Informes Personalizados',
 
 'ticketid'=>'Id de Caso',

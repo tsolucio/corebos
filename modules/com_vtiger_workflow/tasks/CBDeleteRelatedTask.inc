@@ -151,20 +151,32 @@ class CBDeleteRelatedTask extends VTTask {
 			$queryGenerator->setFields(array('id'));
 			$queryGenerator->addReferenceModuleFieldCondition($module, $reffield, 'id', $masterRecord, 'e');
 			$query = $queryGenerator->getQuery();
+
 			$updquery = 'UPDATE vtiger_crmentity set deleted=1 where crmid=?';
 			$relrecs = $adb->query($query);
 
 			for ($relrec=0; $relrec<$adb->num_rows($relrecs); $relrec++) {
+				$focus = CRMEntity::getInstance($relatedModule);
+				$focus->id = $adb->query_result($relrecs, $relrec, 0);
+				$focus->mode = 'edit';
+				$focus->retrieve_entity_info($adb->query_result($relrecs, $relrec, 0), $relatedModule);
+				$em = new VTEventsManager($adb);
+				// Initialize Event trigger cache
+				$em->initTriggerCache();
+				$entityData = VTEntityData::fromCRMEntity($focus);
 				// direct delete to avoid relaunching workflows > I am not sure this is correct (!)
 				if ($businessMap == 'Condition Query') {
 					if (in_array($adb->query_result($relrecs, $relrec, 0), $ids)) {
+						$em->triggerEvent('corebos.beforedelete.workflow', $entityData);
 						$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
 					}
 				} elseif ($businessMap == 'Condition Expression') {
 					if ($focus->ConditionExpression($webserviceObject->getEntityId().'x'.$adb->query_result($relrecs, $relrec, 0))) {
+						$em->triggerEvent('corebos.beforedelete.workflow', $entityData);
 						$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
 					}
 				} else {
+					$em->triggerEvent('corebos.beforedelete.workflow', $entityData);
 					$adb->pquery($updquery, array($adb->query_result($relrecs, $relrec, 0)));
 				}
 			}

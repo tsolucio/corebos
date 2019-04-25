@@ -291,7 +291,7 @@
 									<input typè="hidden" id="filesize" name="filesize" value="0"/>
 									<input typè="hidden" id="filelocationtype" name="filelocationtype" value="I"/>
 									</span>
-									<span id="limitmsg" style= "color:red; display:block;"> {'LBL_MAX_SIZE'|@getTranslatedString:$MODULE} {$UPLOADSIZE}{'LBL_FILESIZEIN_MB'|@getTranslatedString:$_MODULE->name()}</span>
+									<span id="limitmsg" style= "color:red; display:block;"> {'LBL_MAX_SIZE'|@getTranslatedString:$_MODULE->name()} {$UPLOADSIZE}{'LBL_FILESIZEIN_MB'|@getTranslatedString:$_MODULE->name()}</span>
 								{/if}
                           </div>
 						{/if}

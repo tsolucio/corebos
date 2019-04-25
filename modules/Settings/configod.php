@@ -56,3 +56,6 @@ $cbodCSKey = '';
 
 // User IDs with permission to get full sync information
 $cbodCSAppSyncUser = array(1);
+
+// Where to save user privileges information
+$cbodUserPrivilegesStorage = 'file'; // file | db

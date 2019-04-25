@@ -75,11 +75,11 @@ function get_validate_record_js() {
 //check asteriskdetails start
 	$checkAsteriskDetails = checkAsteriskDetails();
 	$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : 'false'); // used to check the asterisk extension in edit mode
-	$mode = (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true')?'true':'false';
+	$mode = (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') ? 'true' : 'false';
 	list($extensions, $fullnames) = getAsteriskExtensions();
 	$extensions_list = json_encode($extensions);
 	$fullnames_list = json_encode($fullnames);
-	$esteriskmessage = addslashes($mod_strings['LBL_ASTERISKEXTENSIONS_EXIST'].$mod_strings[ 'LBL_FORUSER']);
+	$esteriskmessage = addslashes($mod_strings['LBL_ASTERISKEXTENSIONS_EXIST'].$mod_strings['LBL_FORUSER']);
 //check asteriskdetails end
 
 	$the_script = <<<EOQ

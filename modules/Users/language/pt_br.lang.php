@@ -209,9 +209,9 @@ $mod_strings = array(
 'LBL_TEMPLATE_MESSAGE'=>'Mensagem do e-mail',
 'LBL_VIEWING'=>'A visualizar',
 'LBL_PROPERTIES'=>'Propriedade de',
-'LBL_ASTERISKEXTENSIONS_EXIST' => 'Extensão iPBX já existe!',
+'LBL_ASTERISKEXTENSIONS_EXIST' => 'Extensão iPBX já está em uso',
 'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'O separador décimal e o separador de agrupamento de dígitos não podem coincidir.',
-'LBL_FORUSER' => ' for User ',
+'LBL_FORUSER' => ' pelo usuário ',
 
 // Added fields in createnewgroup.php
 'LBL_CREATE_NEW_GROUP'=>'Criar novo Grupo',

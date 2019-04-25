@@ -13,35 +13,7 @@
 <script type="text/javascript" src="modules/Reports/Reports.js"></script>
 
 <!-- Toolbar -->
-<TABLE border=0 cellspacing=0 cellpadding=0 width=100% class=small>
-	<tr><td style="height:2px"></td></tr>
-	<tr>
-	<td class=small width="60%">
-
-	<table border=0 cellspacing=0 cellpadding=0>
-	<tr>
-	<td>{include file="Buttons_List.tpl"}</td>
-	<td style="width:20px">&nbsp;</td>
-	<td>
-		<table border=0 cellspacing=0 cellpadding=0>
-			<tr>
-				<td style="padding-right:5px"><a href="javascript:;" onclick="gcurrepfolderid=0;fnvshobj(this,'reportLay');"><img src="{'reportsCreate.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_CREATE_REPORT}..." title="{$MOD.LBL_CREATE_REPORT}..." border=0></a></td>
-				<td>&nbsp;</td>
-				<td style="padding-right:5px"><a href="javascript:;" onclick="createrepFolder(this,'orgLay');"><img src="{'reportsFolderCreate.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.Create_New_Folder}..." title="{$MOD.Create_New_Folder}..." border=0></a></td>
-				<td>&nbsp;</td>
-				<td style="padding-right:5px"><a href="javascript:;" onclick="fnvshobj(this,'folderLay');"><img src="{'reportsMove.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.Move_Reports}..." title="{$MOD.Move_Reports}..." border=0></a></td>
-				<td>&nbsp;</td>
-				<td style="padding-right:5px"><a href="javascript:;" onClick="massDeleteReport();"><img src="{'reportsDelete.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_DELETE_FOLDER}..." title="{$MOD.Delete_Report}..." border=0></a></td>
-			</tr>
-		</table>
-	</td>
-	</tr>
-	</table>
-
-	</td>
-	</tr>
-	<tr><td style="height:2px"></td></tr>
-</TABLE>
+{include file="Buttons_List.tpl"}</td>
 
 <div id="reportContents">
 	{include file="ReportContents.tpl"}

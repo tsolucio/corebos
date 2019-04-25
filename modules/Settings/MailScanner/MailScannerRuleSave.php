@@ -29,6 +29,7 @@ $scannerrule->subject   = vtlib_purify($_REQUEST['rule_subject']);
 $scannerrule->bodyop    = vtlib_purify($_REQUEST['rule_bodyop']);
 $scannerrule->body      = vtlib_purify($_REQUEST['rule_body']);
 $scannerrule->matchusing= vtlib_purify($_REQUEST['rule_matchusing']);
+$scannerrule->cc = vtlib_purify($_REQUEST['rule_cc']);
 $scannerrule->assign_to= vtlib_purify(($_REQUEST['assigntype'] == 'U' ? $_REQUEST['assigned_user_id'] : $_REQUEST['assigned_group_id']));
 
 $scannerrule->update();

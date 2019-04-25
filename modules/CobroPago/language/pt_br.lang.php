@@ -67,12 +67,12 @@ $mod_strings = array(
 'CobroPago ID'=>'Cód. Contas Pagar/Receber',
 'cobropagoid'=>'Cód. Contas Pagar/Receber',
 'DueDate'=>'Data de Vencimento',
-'Comercial'=>'Usuário relacionado',
+'Comercial'=>'Usuário Comissionado',
 'Recibo'=>'Recibo',
 'Historico de Cobros y Pagos'=>'Histórico de Contas Pagar/Receber',
-'Payment Paid'=>'Contas Pagar/Receber marcadas como PAGO por',
+'Payment Paid'=>'Contas Pagar/Receber marcadas como PAGO por ',
 'PaidOn'=>' em ',
-'RecieptOpen'=>'Recibo aberto para impressão por',
+'RecieptOpen'=>'Recibo aberto para impressão por ',
 'CyP No'=>'Pagar/Receber No',
 'PaymentDate'=>'Data Pagamento',
 
@@ -114,5 +114,4 @@ $mod_strings = array(
 'Redirecting to payment gateway...' => 'A redirecionar para portal de pagamento...',
 'Payment error.' => 'Erro de Pagamento.',
 );
-
 ?>

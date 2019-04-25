@@ -13,7 +13,7 @@
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  ************************************************************************************/
 
-function getBusinessActions($view, $module, $id, $linktype) {
+function getBusinessActions($view, $module, $id, $linktype, $user) {
 	global $adb, $log, $current_user;
 
 	$tabid = getTabid($module);

@@ -37,16 +37,6 @@
 		<a href="javascript:;"><img src="{$IMAGE_PATH}btnL3Clock.gif" alt="{$APP.LBL_CLOCK_ALT}" title="{$APP.LBL_CLOCK_TITLE}" style="border:0;max-width:initial;" onClick="fnvshobj(this,'wclock');"></a>
 	</td>
 {/if}
-{if $CALCULATOR_DISPLAY eq 'true' }
-	<td>
-	<td id="LB_CalcButton" class="LB_Button" style="padding-right:0px">
-		<a href="#"><img src="{$IMAGE_PATH}btnL3Calc.gif" alt="{$APP.LBL_CALCULATOR_ALT}" title="{$APP.LBL_CALCULATOR_TITLE}" style="border:0;max-width:initial;" onClick="fnvshobj(this,'calculator_cont');fetch_calc();"></a>
-	</td>
-{/if}
-	<td>
-		<img width="27" height="27" src="{'btnL3Tracker.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_LAST_VIEWED}" title="{$APP.LBL_LAST_VIEWED}" style="border:0;max-width:initial;" onClick="fnvshobj(this,'tracker');">
-	</td>
-
 	<td align='left'>
 		<img width="27" height="27" onClick='showOptions("changeLayoutDiv");' src="{'orgshar.gif'|@vtiger_imageurl:$THEME}" style="border:0;max-width:initial;" title="{$MOD.LBL_HOME_LAYOUT}" alt"{$MOD.LBL_HOME_LAYOUT}" style="cursor:pointer;">
 	</td>
@@ -58,6 +48,15 @@
 			<div class="slds-spinner__dot-b"></div>
 		</div>
 		</span>
+		{assign var=ANNOUNCEMENT value=get_announcements()}
+		{if $ANNOUNCEMENT}
+			<div width="100%">
+				<div align=center>
+					<marquee id="rss" style="margin-left:12px;width:90%;" direction="left" scrolldelay="10" scrollamount="3" behavior="scroll" class="marStyle slds-float_left" onMouseOver="javascript:stop();" onMouseOut="javascript:start();">&nbsp;{$ANNOUNCEMENT}</marquee>
+					<div align="right" style="padding-right:38px;width:8%;" class="slds-float_right"><img src="{'Announce.PNG'|@vtiger_imageurl:$THEME}"></div>
+				</div>
+			</div>
+		{/if}
 	</td>
 </tr>
 </table>

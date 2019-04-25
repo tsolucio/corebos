@@ -23,6 +23,8 @@ class Vtiger_MailScannerRule {
 	public $toaddress  = false;
 	// subject criteria operator
 	public $subjectop = false;
+	// cc criteria
+	public $cc  = false;
 	// subject criteria
 	public $subject   = false;
 	// body criteria operator
@@ -68,7 +70,7 @@ class Vtiger_MailScannerRule {
 	 */
 	public function __toString() {
 		$tostring = '';
-		$tostring .= "FROM $this->fromaddress, TO $this->toaddress";
+		$tostring .= "FROM $this->fromaddress, TO $this->toaddress, CC $this->cc";
 		$tostring .= ",SUBJECT $this->subjectop $this->subject, BODY $this->bodyop $this->body, MATCH USING, $this->matchusing";
 		return $tostring;
 	}
@@ -91,6 +93,7 @@ class Vtiger_MailScannerRule {
 			$this->body       = $adb->query_result($result, 0, 'body');
 			$this->sequence   = $adb->query_result($result, 0, 'sequence');
 			$this->matchusing = $adb->query_result($result, 0, 'matchusing');
+			$this->cc 		  = $adb->query_result($result, 0, 'cc');
 			$this->isvalid    = true;
 			//User | Group to assign
 			$this->assign_to  = $adb->query_result($result, 0, 'assign_to');
@@ -167,7 +170,7 @@ class Vtiger_MailScannerRule {
 		$matchfound = null;
 
 		if ($this->hasACondition()) {
-			$subrules = array('FROM', 'TO', 'SUBJECT', 'BODY');
+			$subrules = array('FROM', 'TO', 'CC', 'SUBJECT', 'BODY');
 			foreach ($subrules as $subrule) {
 				// Body rule could be defered later to improve performance
 				// in that case skip it.
@@ -203,7 +206,8 @@ class Vtiger_MailScannerRule {
 		$hasToAddress   = $this->toaddress? true : false;
 		$hasSubjectOp   = $this->subjectop? true : false;
 		$hasBodyOp      = $this->bodyop? true : false;
-		return ($hasFromAddress || $hasToAddress || $hasSubjectOp || $hasBodyOp);
+		$hasCC          = $this->cc? true : false;
+		return ($hasFromAddress || $hasToAddress || $hasSubjectOp || $hasBodyOp || $hasCC);
 	}
 
 	/**
@@ -224,6 +228,18 @@ class Vtiger_MailScannerRule {
 					if ($this->toaddress) {
 						foreach ($mailrecord->_to as $toemail) {
 							$matchfound = $this->find($subrule, 'Contains', $toemail, $this->toaddress);
+							if ($matchfound) {
+								break;
+							}
+						}
+					} else {
+						$matchfound = $this->__CreateDefaultMatchResult($subrule);
+					}
+					break;
+				case 'CC':
+					if ($this->cc) {
+						foreach ($mailrecord->_cc as $toemail) {
+							$matchfound = $this->find($subrule, 'Contains', $toemail, $this->cc);
 							if ($matchfound) {
 								break;
 							}
@@ -369,21 +385,22 @@ class Vtiger_MailScannerRule {
 		global $adb;
 		if ($this->ruleid) {
 			$adb->pquery(
-				'UPDATE vtiger_mailscanner_rules SET scannerid=?,fromaddress=?,toaddress=?,subjectop=?,subject=?,bodyop=?,body=?,matchusing=?,assign_to=? WHERE ruleid=?',
+				'UPDATE vtiger_mailscanner_rules SET scannerid=?,fromaddress=?,toaddress=?,subjectop=?,subject=?,bodyop=?,body=?,matchusing=?,assign_to=?,cc=? WHERE ruleid=?',
 				array($this->scannerid, $this->fromaddress, $this->toaddress, $this->subjectop, $this->subject,
-				$this->bodyop, $this->body,$this->matchusing,$this->assign_to,$this->ruleid)
+				$this->bodyop, $this->body,$this->matchusing,$this->assign_to, $this->cc, $this->ruleid)
 			);
 		} else {
 			$this->sequence = $this->__nextsequence();
 			$adb->pquery(
-				'INSERT INTO vtiger_mailscanner_rules(scannerid,fromaddress,toaddress,subjectop,subject,bodyop,body,matchusing,sequence,assign_to)
-				VALUES(?,?,?,?,?,?,?,?,?,?)',
+				'INSERT INTO vtiger_mailscanner_rules(scannerid,fromaddress,toaddress,subjectop,subject,bodyop,body,matchusing,sequence,assign_to,cc)
+				VALUES(?,?,?,?,?,?,?,?,?,?,?)',
 				array($this->scannerid,$this->fromaddress,$this->toaddress,$this->subjectop,$this->subject,
 				$this->bodyop,
 				$this->body,
 				$this->matchusing,
 				$this->sequence,
-				$this->assign_to)
+				$this->assign_to,
+				$this->cc)
 			);
 			$this->ruleid = $adb->database->Insert_ID();
 		}

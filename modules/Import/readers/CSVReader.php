@@ -67,7 +67,7 @@ class Import_CSV_Reader extends Import_File_Reader {
 		}
 
 		$fieldMapping = $this->userInputObject->get('field_mapping');
-
+		$fullcsv = 'false';
 		$i=-1;
 		while ($data = fgetcsv($fileHandler, 0, $this->userInputObject->get('delimiter'))) {
 			$i++;

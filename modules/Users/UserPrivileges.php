@@ -26,7 +26,6 @@ class UserPrivileges {
 	const SHARING_READWRITE = 1;
 	const SHARING_READWRITEDELETE = 2;
 	const SHARING_PRIVATE = 3;
-	const READ_PRIVILEGES_FROM = 'file';
 
 	private $parent_role_seq = null;
 	private $profiles = null;
@@ -40,9 +39,10 @@ class UserPrivileges {
 	private $defaultOrgSharingPermission = null;
 
 	public function __construct($userid) {
-		if (self::READ_PRIVILEGES_FROM == 'file') {
+		global $cbodUserPrivilegesStorage;
+		if ($cbodUserPrivilegesStorage == 'file') {
 			$this->loadUserPrivilegesFile($userid);
-		} elseif (self::READ_PRIVILEGES_FROM == 'db') {
+		} elseif ($cbodUserPrivilegesStorage == 'db') {
 			$this->loadUserPrivilegesDB($userid);
 		}
 	}
@@ -112,24 +112,24 @@ class UserPrivileges {
 
 		$user_data = json_decode($result, true);
 
-		$this->is_admin = (bool)$user_data["is_admin"];
-		$this->roles = $user_data["current_user_roles"];
+		$this->is_admin = (bool)$user_data['is_admin'];
+		$this->roles = isset($user_data['current_user_roles']) ? $user_data['current_user_roles'] : '';
 
 		if (!$this->is_admin) {
-			$this->parent_role_seq = $user_data["current_user_parent_role_seq"];
-			$this->profiles = $user_data["current_user_profiles"];
-			$this->profileGlobalPermission = $user_data["profileGlobalPermission"];
-			$this->profileTabsPermission = $user_data["profileTabsPermission"];
-			$this->profileActionPermission = $user_data["profileActionPermission"];
-			$this->groups = $user_data["current_user_groups"];
-			$this->subordinate_roles = $user_data["subordinate_roles"];
-			$this->parent_roles = $user_data["parent_roles"];
-			$this->subordinate_roles_users = $user_data["subordinate_roles_users"];
+			$this->parent_role_seq = $user_data['current_user_parent_role_seq'];
+			$this->profiles = $user_data['current_user_profiles'];
+			$this->profileGlobalPermission = $user_data['profileGlobalPermission'];
+			$this->profileTabsPermission = $user_data['profileTabsPermission'];
+			$this->profileActionPermission = $user_data['profileActionPermission'];
+			$this->groups = $user_data['current_user_groups'];
+			$this->subordinate_roles = $user_data['subordinate_roles'];
+			$this->parent_roles = $user_data['parent_roles'];
+			$this->subordinate_roles_users = $user_data['subordinate_roles_users'];
 			if (!$withot_sharing) {
 				$this->loadSharingPrivilegesDB($userid);
 			}
 		}
-		$this->user_info = $user_data["user_info"];
+		$this->user_info = $user_data['user_info'];
 	}
 
 	/**
@@ -290,7 +290,7 @@ class UserPrivileges {
 	}
 
 	public function hasModuleWriteSharing($tabid) {
-		$sharing = $this->defaultOrgSharingPermission[$tabid];
+		$sharing = (empty($this->defaultOrgSharingPermission[$tabid]) ? self::SHARING_PRIVATE : $this->defaultOrgSharingPermission[$tabid]);
 		return (self::SHARING_PRIVATE != $sharing) && (self::SHARING_READONLY != $sharing);
 	}
 
@@ -303,8 +303,8 @@ class UserPrivileges {
 	}
 
 	public static function hasPrivileges($userId, $is_admin = true) {
-		global $adb;
-		if (self::READ_PRIVILEGES_FROM == 'db') {
+		global $adb, $cbodUserPrivilegesStorage;
+		if ($cbodUserPrivilegesStorage == 'db') {
 			$query = $adb->pquery(
 				"SELECT count(*) FROM user_privileges WHERE userid = ?",
 				array($userId)
@@ -327,10 +327,11 @@ class UserPrivileges {
 	}
 
 	public static function privsWithoutSharing($userId) {
+		global $cbodUserPrivilegesStorage;
 		$instance = new self($userId);
-		if (self::READ_PRIVILEGES_FROM == 'file') {
+		if ($cbodUserPrivilegesStorage == 'file') {
 			$instance->loadUserPrivilegesFile($userId, true);
-		} elseif (self::READ_PRIVILEGES_FROM == 'db') {
+		} elseif ($cbodUserPrivilegesStorage == 'db') {
 			$instance->loadUserPrivilegesDB($userId, true);
 		}
 		return $instance;

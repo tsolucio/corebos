@@ -1383,7 +1383,7 @@ function InventorySelectAll(mod, image_pth) {
 		this.specialKeys = ['up', 'down', 'esc', 'enter'],
 		this.threshold = 3,
 		this.input = el.getElementsByTagName('input')[0],
-		this.source = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getProductServiceAutocomplete&limit=10&term=',
+		this.source = 'index.php?module=Utilities&sourceModule='+gVTModule+'&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getProductServiceAutocomplete&limit=10&term=',
 		this.active = false,
 		this.resultContainer,
 		this.resultBox,

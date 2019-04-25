@@ -35,7 +35,7 @@ if ($ajaxaction == 'DETAILVIEW') {
 			$params = array(trim($fieldvalue),$userid);
 			$result = $adb->pquery($query, $params);
 			if ($adb->num_rows($result) > 0) {
-				echo ':#:ERR'.$mod_strings['LBL_ASTERISKEXTENSIONS_EXIST'].$mod_strings[ 'LBL_FORUSER'].getUserFullName($fieldvalue);
+				echo ':#:ERR'.$mod_strings['LBL_ASTERISKEXTENSIONS_EXIST'].$mod_strings['LBL_FORUSER'].getUserFullName($userid);
 				return false;
 			}
 		}

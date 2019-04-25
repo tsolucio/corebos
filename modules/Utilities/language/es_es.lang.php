@@ -42,9 +42,14 @@ $mod_strings = array(
 	'zendesk_apiurl' => 'Dominio API',
 	'zendesk_accessCode' => 'Token Acceso Zendesk',
 	'zendesk_username' => 'Nombre Usuario Zendesk',
-		'Whatsapp Activation' => 'Whatsapp Activation',
-		'whatsapp_sid' => 'Whatsapp SID',
-		'whatsapp_token' => 'Whatsapp Token',
-		'whatsapp_senderphone'=> 'Whatsapp Sender Phone'
+	'Whatsapp Activation' => 'Activación Whatsapp',
+	'whatsapp_sid' => 'Whatsapp SID',
+	'whatsapp_token' => 'Token Acceso Whatsapp',
+	'whatsapp_senderphone'=> 'Whatsapp Teléfono Envíos',
+	'SendGrid Activation' => 'Activación SendGrid',
+	'TransEmail_title' => 'Configuración para Email Transaccional',
+	'TransEmail_subtitle' => 'Sustituye el servidor de correo saliente',
+	'MktEmail_title' => 'Configuración para Email Marketing',
+	'MktEmail_subtitle' => 'Solo para mensajes, emails programados y procesos creados especificamente',
 );
 ?>

@@ -54,7 +54,6 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_TrackerMaxHistory',
 				'Application_Announcement',
 				'Application_Display_World_Clock',
-				'Application_Display_Calculator',
 				'Application_Display_Mini_Calendar',
 				'Application_Use_RTE',
 				'Application_Default_Action',
@@ -94,6 +93,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_User_SortBy',
 				'Application_SendUserPasswordByEmail',
 				'Application_Pagination_Limit',
+				'Application_Popup_Address_Selection',
 
 				'RelatedList_Activity_DefaultStatusFilter',
 
@@ -155,6 +155,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Lead_Convert_ContactSelected',
 				'PBX_Get_Line_Prefix',
 				'PBX_Unknown_CallerID',
+				'PBX_callerNumberField',
+				'PBX_callerNumberSeparator',
 				'Product_Copy_Bundle_OnDuplicate',
 				'Product_Show_Subproducts_Popup',
 				'Product_Permit_Relate_Bundle_Parent',
@@ -208,7 +210,6 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'CustomerPortal_PDFTemplate_SalesOrder',
 				'CustomerPortal_PDFTemplate_Invoice',
 				'CustomerPortal_PDFTemplate_PurchaseOrder',
-				'PBXManager_SearchOnlyOnTheseFields',
 			);
 			$delete_these = array(
 				'preload_prototype',
@@ -217,6 +218,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'calendar_display',
 				'world_clock_display',
 				'calculator_display',
+				'Application_Display_Calculator',
 				'history_max_viewed',
 				'default_module',
 				'default_action',
@@ -334,6 +336,9 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				),
 				'Application_Search_Panel_Open' => array(
 					'to' => 'Application_ListView_SearchPanel_Open',
+				),
+				'PBXManager_SearchOnlyOnTheseFields' => array(
+					'to' => 'PBX_SearchOnTheseFields',
 				),
 			);
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');

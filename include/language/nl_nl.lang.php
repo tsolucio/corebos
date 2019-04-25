@@ -21,6 +21,7 @@ $app_strings = array(
 	'LBL_LOGOUT' => 'Log-uit',
 	'LBL_SEARCH' => 'Zoek',
 	'LBL_LAST_VIEWED' => 'Laatst bekeken',
+	'Close LAST_VIEWED' => 'Close Last Viewed',
 	'LBL_TODAY' => 'Vandaag',
 	'LBL_ALL' => 'Alle',
 	'LBL_SHOW' => 'Bekijk :',
@@ -548,6 +549,10 @@ $app_strings = array(
 	'LBL_HOME_KEY_METRICS' => 'Kerngetallen',
 	'LBL_HOME_METRICS' => 'Kerngetallen',
 	'LBL_HOME_COUNT' => 'Teller',
+	'LBL_HOME_AGGREGATEFIELD' =>'Aggregate(Field)',
+	'LBL_HOME_VALUE' => 'Value',
+	'LBL_FILTERSELECTEDNOTFOUND'=>'Filter You have Selected is Not Found',
+	'LBL_FIELDINFILTERNOTFOUND'=>'Fields not found in Selected Filter',
 	'LBL_JSCALENDAR_LANG' => 'nl',
 	'LNK_CV_EDIT' => 'Bewerk',
 	'LNK_CV_DELETE' => 'Verwijder',
@@ -1210,6 +1215,13 @@ $app_strings = array(
 	'processcomplete' => 'Process Complete',
 	'typetosearch_prodser' => 'Type om producten of diensten te zoeken',
 	'RecordIsAssignedToInactiveUser' => 'The record is assigned to an inactive user. Please select another user.',
+	'Add Relation' => 'Add Relation',
+	'Delete Relation' => 'Delete Relation',
+	'SelectOneRecordOfModule' => 'Select any record of the module, all related records with that module will be unrelated',
+	'Delete All Relation' => 'Delete All Relation',
+	'Select Related Module' => 'Select Related Module',
+	'No Module' => 'No related Module',
+	'Entity Name' => 'Entity Name',
 );
 
 // Translation for currency names

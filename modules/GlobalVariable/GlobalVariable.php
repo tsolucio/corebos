@@ -30,6 +30,8 @@ class GlobalVariable extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = true;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-system-and-global-variable', 'class' => 'slds-icon', 'icon'=>'system_and_global_variable');
+
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
@@ -365,7 +367,7 @@ class GlobalVariable extends CRMEntity {
 		}
 
 		$userrole = $adb->convert2Sql('inner join vtiger_user2role on vtiger_user2role.userid=?', array($gvuserid));
-		$sql=$select.$userrole.$where."and rolegv like concat('%', vtiger_user2role.roleid, '%')";
+		$sql=$select.$userrole.$where."and concat(rolegv, ' ') like concat('%', vtiger_user2role.roleid, ' %')";
 		self::$validationinfo[] = '---';
 		$value=self::returnGVValue($sql, $var, $module);
 		self::$validationinfo[] = "search as set per user $gvuserid ROLE in module $module: $value";

@@ -52,7 +52,9 @@ function TraceIncomingCall() {
 					}
 				}
 				$adb->pquery('update vtiger_asteriskincomingcalls set flag = ? where to_number = ?', array($flag, $asterisk_extension));
-				$activityid = asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, $adb, $current_user->id, $relcrmid, getCallerInfo($callerNumber));
+				$cinfo = getCallerInfo($callerNumber);
+				$cinfo['pbxuuid'] = $refuid;
+				$activityid = asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, $adb, $current_user->id, $relcrmid, $cinfo);
 			}
 			$callerLinks = '';
 			if (!empty($callerNumber)) {
@@ -62,6 +64,7 @@ function TraceIncomingCall() {
 					'callerNumber' => $callerNumber,
 					'callerType' => $callerType,
 					'activityid' => $activityid,
+					'pbxuuid' => $refuid,
 				);
 				$tracedCallerInfo = getTraceIncomingCallerInfo($callerNumber, $callerName, $createActivityInfo);
 				$callerLinks = $tracedCallerInfo['callerLinks'];

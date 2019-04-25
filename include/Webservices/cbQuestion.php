@@ -22,7 +22,7 @@ include_once 'modules/cbQuestion/cbQuestion.php';
  * Get answer from the question
  * qid: ID of the question
  */
-function cbwsGetAnswer($qid, $user) {
+function cbwsGetAnswer($qid, $params, $user) {
 	global $adb, $log;
 
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $qid);
@@ -51,5 +51,5 @@ function cbwsGetAnswer($qid, $user) {
 	if (!$meta->exists($qidComponents[1])) {
 		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
 	}
-	return cbQuestion::getAnswer($qidComponents[1]);
+	return cbQuestion::getAnswer($qidComponents[1], $params);
 }

@@ -3044,32 +3044,40 @@ function getCallerInfo($number) {
 	if (empty($number)) {
 		return false;
 	}
-
-	$fieldsString = GlobalVariable::getVariable('PBXManager_SearchOnlyOnTheseFields', '');
+	$pbxNumberSeparator = GlobalVariable::getVariable('PBX_callerNumberSeparator', '', 'PBXManager');
+	if ($pbxNumberSeparator=='') {
+		$numArray = (array)$number;
+	} else {
+		$numArray = explode($pbxNumberSeparator, $number);
+	}
+	$fieldsString = GlobalVariable::getVariable('PBX_SearchOnTheseFields', '', 'PBXManager');
 	if ($fieldsString != '') {
 		$fieldsArray = explode(',', $fieldsString);
-		foreach ($fieldsArray as $field) {
-			$result = $adb->pquery("SELECT tabid, uitype FROM vtiger_field WHERE columnname = ?", array($field));
-			for ($i = 0; $i< $adb->num_rows($result); $i++) {
-				$module = vtlib_getModuleNameById($adb->query_result($result, $i, 0));
-				$uitype = $adb->query_result($result, $i, 1);
-				$focus = CRMEntity::getInstance($module);
-				$query = $focus->buildSearchQueryForFieldTypes($uitype, $number);
-				if (empty($query)) {
-					continue;
-				}
+		foreach ($numArray as $number) {
+			foreach ($fieldsArray as $field) {
+				$result = $adb->pquery("SELECT tabid, uitype FROM vtiger_field WHERE columnname = ?", array($field));
+				for ($i = 0; $i< $adb->num_rows($result); $i++) {
+					$module = vtlib_getModuleNameById($adb->query_result($result, $i, 0));
+					$uitype = $adb->query_result($result, $i, 1);
+					$focus = CRMEntity::getInstance($module);
+					$query = $focus->buildSearchQueryForFieldTypes($uitype, $number);
+					if (empty($query)) {
+						continue;
+					}
 
-				$result = $adb->pquery($query, array());
-				if ($adb->num_rows($result) > 0) {
-					$callerName = $adb->query_result($result, 0, 'name');
-					$callerID = $adb->query_result($result, 0, 'id');
-					return array('name'=>$callerName, 'module'=>$module, 'id'=>$callerID);
+					$result = $adb->pquery($query, array());
+					if ($adb->num_rows($result) > 0) {
+						$callerName = $adb->query_result($result, 0, 'name');
+						$callerID = $adb->query_result($result, 0, 'id');
+						return array('name'=>$callerName, 'module'=>$module, 'id'=>$callerID);
+					}
 				}
 			}
 		}
-	} else {
-		$name = array('Contacts', 'Accounts', 'Leads');
-		foreach ($name as $module) {
+	}
+	$name = array('Contacts', 'Accounts', 'Leads');
+	foreach ($name as $module) {
+		foreach ($numArray as $number) {
 			$focus = CRMEntity::getInstance($module);
 			$query = $focus->buildSearchQueryForFieldTypes(11, $number);
 			if (empty($query)) {
@@ -3084,7 +3092,6 @@ function getCallerInfo($number) {
 			}
 		}
 	}
-
 	return false;
 }
 
@@ -3162,9 +3169,9 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
 		$callto = $unknownCaller;
 	}
 
+	$sql = 'select * from vtiger_asteriskextensions where asterisk_extension=?';
 	if ($status == 'outgoing') {
 		//call is from user to record
-		$sql = "select * from vtiger_asteriskextensions where asterisk_extension=?";
 		$result = $adb->pquery($sql, array($callfrom));
 		if ($adb->num_rows($result)>0) {
 			$userid = $adb->query_result($result, 0, "userid");
@@ -3179,23 +3186,23 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
 		}
 	} else {
 		//call is from record to user
-		$sql = "select * from vtiger_asteriskextensions where asterisk_extension=?";
 		$result = $adb->pquery($sql, array($callto));
 		if ($adb->num_rows($result)>0) {
-			$userid = $adb->query_result($result, 0, "userid");
+			$userid = $adb->query_result($result, 0, 'userid');
 			$receiver = getUserFullName($userid);
 		}
 		$callerName = $useCallerInfo;
 		if (empty($callerName)) {
 			$callerName = $unknownCaller.' '.$callfrom;
 		} else {
-			$callerName = "<a href='index.php?module=".$callerName['module']."&action=DetailView&record=".$callerName['id']."'>".decode_html($callerName['name'])."</a>";
+			$callerName = "<a href='index.php?module=".$callerName['module'].'&action=DetailView&record='.$callerName['id']."'>".decode_html($callerName['name']).'</a>';
 		}
 	}
 
-	$sql = 'insert into vtiger_pbxmanager (pbxmanagerid,callfrom,callto,timeofcall,status)values (?,?,?,?,?)';
-	$params = array($crmID, $callerName, $receiver, $timeOfCall, $status);
+	$sql = 'insert into vtiger_pbxmanager (pbxmanagerid,callfrom,callto,timeofcall,status,pbxuuid) values (?,?,?,?,?,?)';
+	$params = array($crmID, $callerName, $receiver, $timeOfCall, $status, $pbxuuid);
 	$adb->pquery($sql, $params);
+	cbEventHandler::do_action('corebos.pbxmanager.aftersave', $params);
 	return $crmID;
 }
 //functions for asterisk integration end

@@ -117,6 +117,8 @@ $mod_strings = array(
 'whatsappworkflowtask' => 'Enviar Mensaje WhatsApp',
 'Whatsapp Workflow Task' => 'Enviar Mensaje WhatsApp',
 'WhatsappWorkflowTask' => 'Enviar Mensaje WhatsApp',
+'Many to Many Relation Task' => 'Relación Muchos a Muchos',
+'Set Many to Many Relation' => 'Establecer Relación Muchos a Muchos',
 
 'LBL_EVENTNAME' => 'Nombre de Evento',
 'LBL_DESCRIPTION' => 'Descripción',

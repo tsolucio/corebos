@@ -22,6 +22,8 @@ class CobroPago extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = true;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'utility', 'containerClass' => 'slds-icon_container slds-icon-standard-contract', 'class' => 'slds-icon slds-box--xx-small ', 'icon'=>'money');
+
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
@@ -113,7 +115,7 @@ class CobroPago extends CRMEntity {
 			if ($this->mode != 'edit') {
 				$update_after = true;
 				$update_log = getTranslatedString('Payment Paid', 'CobroPago').$current_user->user_name.getTranslatedString('PaidOn', 'CobroPago');
-				$update_log .= date("l dS F Y h:i:s A").'--//--';
+				$update_log .= date('Y-m-d H:i:s').'--//--';
 			} else {
 				$result = $adb->pquery('SELECT paid,update_log FROM vtiger_cobropago WHERE cobropagoid=?', array($this->id));
 				$old_paid = $adb->query_result($result, 0, 'paid');
@@ -121,7 +123,7 @@ class CobroPago extends CRMEntity {
 					$update_after = true;
 					$update_log = $adb->query_result($result, 0, 'update_log');
 					$update_log .= getTranslatedString('Payment Paid', 'CobroPago').$current_user->user_name.getTranslatedString('PaidOn', 'CobroPago');
-					$update_log .= date("l dS F Y h:i:s A").'--//--';
+					$update_log .= date('Y-m-d H:i:s').'--//--';
 				}
 			}
 		}

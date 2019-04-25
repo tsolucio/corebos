@@ -195,6 +195,7 @@ $mod_strings = array(
 	'AVG'=>'Durchschnitt',
 	'MAX'=>'Maximum',
 	'MIN'=>'Minimum',
+	'COUNT'=>'COUNT',
 	'LBL_CUSTOM_REPORTS'=>'benutzerdefinierte Berichte',
 
 	'ticketid'=>'Ticket ID',

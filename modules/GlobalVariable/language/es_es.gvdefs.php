@@ -679,6 +679,27 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Al llamar o recibir una llamada de un contacto desconocido, esta cadena se usará como el identificador de nombre de registro junto al número marcado. El valor predeterminado es Unknown',
 ),
+'PBX_SearchOnTheseFields' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'nombres de campos',
+	'definition' => 'Lista de campos en los que buscar al recibir una llamada de Asterisk. Se devolverá el primer resultado encontrado.',
+),
+'PBX_callerNumberField' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Aplicación',
+	'values' => 'nombre de campo PBX',
+	'definition' => 'Nombre del campo proveniente del PBX que debemos utilizar para buscar en la aplicación. Por defecto se utiliza CallerID',
+),
+'PBX_callerNumberSeparator' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Carácter',
+	'category' => 'Aplicación',
+	'values' => 'carácter',
+	'definition' => 'El número entrante del PBX se separará por este caracter y se buscará cada parte de manera individual. Por defecto no se separa el número.',
+),
 'Mobile_Module_by_default' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Texto',
@@ -1085,6 +1106,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Al seleccionar una Cuenta/Contacto/Vendedor en la ventana emergente, la aplicación te pregunta si debe rellenar las direcciones. Esta variable establece la casilla de verificación Dirección de Envío.',
 ),
+'Application_Popup_Address_Selection'=> array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Muestra la opción para seleccionar una dirección en Cuenta y Contacto (por defecto es 1), si se establece en 0, no se mostrará la opción completa para seleccionar una dirección.',
+),
 'Application_Show_Copy_Address' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
@@ -1266,13 +1294,6 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => 'Cualquier Clave API válida de Zero Bounce',
 	'definition' => 'Una clave válida para el API de Zero Bounce para poder validar cuentas de correo.',
-),
-'PBXManager_SearchOnlyOnTheseFields' => array(
-	'status' => 'Implementada',
-	'valuetype' => 'Cadena',
-	'category' => 'Aplicación',
-	'values' => 'nombres de campos',
-	'definition' => 'Lista de campos en los que buscar al recibir una llamada de Asterisk. Se devolverá el primer resultado encontrado.',
 ),
 'GenDoc_CopyLabelToClipboard' => array(
 	'status' => 'Implementada',

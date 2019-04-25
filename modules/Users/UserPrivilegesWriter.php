@@ -16,20 +16,20 @@
 
 class UserPrivilegesWriter {
 
-	const WRITE_TO = 'file'; // file | db
-
 	public static function setUserPrivileges($userId) {
-		if (self::WRITE_TO == 'file') {
+		global $cbodUserPrivilegesStorage;
+		if ($cbodUserPrivilegesStorage == 'file') {
 			self::createUserPrivilegesFile($userId);
-		} elseif (self::WRITE_TO == 'db') {
+		} elseif ($cbodUserPrivilegesStorage == 'db') {
 			self::createUserPrivileges($userId);
 		}
 	}
 
 	public static function setSharingPrivileges($userId) {
-		if (self::WRITE_TO == 'file') {
+		global $cbodUserPrivilegesStorage;
+		if ($cbodUserPrivilegesStorage == 'file') {
 			self::createSharingPrivilegesFile($userId);
-		} elseif (self::WRITE_TO == 'db') {
+		} elseif ($cbodUserPrivilegesStorage == 'db') {
 			self::createSharingPrivileges($userId);
 		}
 	}
@@ -104,13 +104,28 @@ class UserPrivilegesWriter {
 			$privs['current_user_groups'] = $userGroupFocus->user_groups;
 			$privs['subordinate_roles'] = getRoleSubordinates($userRole);
 			$privs['parent_roles'] = getParentRole($userRole);
-			$privs['subordinate_roles_users'] = getSubordinateRoleAndUsers($userRole);
+			$subRoleAndUsers = getSubordinateRoleAndUsers($userRole);
+			$privs['subordinate_roles_users'] = self::constructTwoDimensionalCharIntSingleArray($subRoleAndUsers);
 		}
 		$encodedPrivs = json_encode($privs);
 		$adb->pquery(
 			'INSERT INTO user_privileges(userid, user_data) VALUES (?, ?) ON DUPLICATE KEY UPDATE user_data=?',
 			array($userId, $encodedPrivs, $encodedPrivs)
 		);
+	}
+
+	private static function constructTwoDimensionalCharIntSingleArray($var) {
+		if (is_array($var)) {
+			$code = array();
+			foreach ($var as $key => $secarr) {
+				$code[$key] = array();
+				foreach ($secarr as $seckey => $secvalue) {
+					$code[$key][] = $seckey;
+				}
+			}
+			$var = $code;
+		}
+		return $var;
 	}
 
 	/**
@@ -523,8 +538,7 @@ class UserPrivilegesWriter {
 				$sharingPrivs
 			);
 		}
-
-		foreach ($related_module_share as $rel_tab_id => $tabid_arr) {
+		foreach ($sharingPrivs['related_module_share'] as $rel_tab_id => $tabid_arr) {
 			$rel_tab_name=getTabname($rel_tab_id);
 			foreach ($tabid_arr as $taid) {
 				$tab_name=getTabname($taid);
@@ -532,7 +546,7 @@ class UserPrivilegesWriter {
 				$relmodule_sharing_write_permvar = $tab_name.'_'.$rel_tab_name.'_share_write_permission';
 				self::Deprecated_populateRelatedSharingPrivileges(
 					'USER',
-					$userid,
+					$userId,
 					$tab_name,
 					$rel_tab_name,
 					'read',
@@ -541,7 +555,7 @@ class UserPrivilegesWriter {
 				);
 				self::Deprecated_populateRelatedSharingPrivileges(
 					'USER',
-					$userid,
+					$userId,
 					$tab_name,
 					$rel_tab_name,
 					'write',
@@ -550,7 +564,7 @@ class UserPrivilegesWriter {
 				);
 				self::Deprecated_populateRelatedSharingPrivileges(
 					'GROUP',
-					$userid,
+					$userId,
 					$tab_name,
 					$rel_tab_name,
 					'read',
@@ -559,7 +573,7 @@ class UserPrivilegesWriter {
 				);
 				self::Deprecated_populateRelatedSharingPrivileges(
 					'GROUP',
-					$userid,
+					$userId,
 					$tab_name,
 					$rel_tab_name,
 					'write',

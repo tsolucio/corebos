@@ -39,17 +39,9 @@ function is_admin($user) {
  * Check if user id belongs to a system admin.
  */
 function is_adminID($userID) {
-	global $log;
-	if (empty($userID) || !is_numeric($userID)) {
-		return false;
-	}
-	$log->debug('> is_adminID ' . $userID);
-	$is_admin = false;
-	if (file_exists('user_privileges/user_privileges_' . $userID . '.php')) {
-		require 'user_privileges/user_privileges_' . $userID . '.php';
-	}
-	$log->debug('< is_adminID');
-	return ($is_admin == true);
+	require_once 'modules/Users/Users.php';
+	$privs = UserPrivileges::privsWithoutSharing($userID);
+	return $privs->isAdmin();
 }
 
 /**
@@ -1477,10 +1469,13 @@ function getParentTab() {
 function updateInfo($id) {
 	global $log, $adb, $app_strings;
 	$log->debug('> updateInfo ' . $id);
-	$query = 'SELECT modifiedtime, modifiedby FROM vtiger_crmentity WHERE crmid = ?';
+	$query = 'SELECT modifiedtime, modifiedby, smcreatorid FROM vtiger_crmentity WHERE crmid = ?';
 	$result = $adb->pquery($query, array($id));
 	$modifiedtime = $adb->query_result($result, 0, 'modifiedtime');
 	$modifiedby_id = $adb->query_result($result, 0, 'modifiedby');
+	if (empty($modifiedby_id)) {
+		$modifiedby_id = $adb->query_result($result, 0, 'smcreatorid');
+	}
 	$modifiedby = $app_strings['LBL_BY'] . getOwnerName($modifiedby_id);
 	$date = new DateTimeField($modifiedtime);
 	$modifiedtime = DateTimeField::convertToDBFormat($date->getDisplayDate());
@@ -2456,6 +2451,16 @@ function get_announcements() {
 		$announcement = vtlib_purify($announcement);
 	}
 	return $announcement;
+}
+
+function getModuleIcon($module) {
+	$curMod = CRMEntity::getInstance($module);
+	$iconinfo = array();
+	$iconinfo['__ICONLibrary'] = $curMod->moduleIcon['library'];
+	$iconinfo['__ICONContainerClass'] = $curMod->moduleIcon['containerClass'];
+	$iconinfo['__ICONClass'] = $curMod->moduleIcon['class'];
+	$iconinfo['__ICONName'] = $curMod->moduleIcon['icon'];
+	return $iconinfo;
 }
 
 /**

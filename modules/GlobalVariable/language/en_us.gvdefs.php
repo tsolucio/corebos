@@ -678,6 +678,27 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'When calling or receiving a call to an unknown party this string will be used as the record name identifier next to the number dialed. The default value is Unknown',
 ),
+'PBX_SearchOnTheseFields' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'list of field names',
+	'definition' => 'List of fields to search in when we get a call from Asterisk. The first result found will be returned.',
+),
+'PBX_callerNumberField' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'PBX field name',
+	'definition' => 'Field name coming from PBX which we should use to search inside the application. By default it is CallerID',
+),
+'PBX_callerNumberSeparator' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Character',
+	'category' => 'Application',
+	'values' => 'character',
+	'definition' => 'Incoming number from PBX will be split by this character if given and each element will be searched individually. The default is to not split the number',
+),
 'Mobile_Module_by_default' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'String',
@@ -1084,6 +1105,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'When selecting an Account/Contact/Vendor in the popup window, the application asks if it must fill in addresses. This variable sets the Shipping Address check box.',
 ),
+'Application_Popup_Address_Selection'=> array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Shows option to select an address in Account and Contact(by default is 1),if set to 0 then the whole option to select an address will not be shown.',
+),
 'Application_Show_Copy_Address' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
@@ -1265,13 +1293,6 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'Any valid Zero Bounce API KEY',
 	'definition' => 'The valid Zero Bounce API KEY',
-),
-'PBXManager_SearchOnlyOnTheseFields' => array(
-	'status' => 'Implemented',
-	'valuetype' => 'String',
-	'category' => 'Application',
-	'values' => 'list of field names',
-	'definition' => 'List of fields to search in when we get a call from Asterisk. The first result found will be returned.',
 ),
 'GenDoc_CopyLabelToClipboard' => array(
 	'status' => 'Implemented',

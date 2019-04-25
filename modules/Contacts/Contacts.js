@@ -7,6 +7,13 @@
  * All Rights Reserved.
  ********************************************************************************/
 
+var Application_Popup_Address_Selection = 1; // define the variable and set it's default value
+GlobalVariable_getVariable('Application_Popup_Address_Selection', 1, 'Contacts').then(function (response) {
+	var obj = JSON.parse(response);
+	Application_Popup_Address_Selection = obj.Application_Popup_Address_Selection;
+}, function (error) {
+	Application_Popup_Address_Selection = 1; // set default value on error
+});
 document.addEventListener('DOMContentLoaded', function () {
 	var accdiv = document.createElement('div');
 	accdiv.style.zIndex = '12';
@@ -235,8 +242,6 @@ function set_return_address(contact_id, contact_name, mailingstreet, otherstreet
 		context: document.body
 	}).done(function (response) {
 		jQuery('#setaddresscontactdiv').html(response);
-		jQuery('#setaddresscontactdiv').show();
-		fnvshNrm('setaddresscontactdiv');
 		jQuery('#contact_id').val(contact_id);
 		jQuery('#contact_name').val(contact_name);
 		jQuery('#mailingstreet').val(mailingstreet);
@@ -251,6 +256,12 @@ function set_return_address(contact_id, contact_name, mailingstreet, otherstreet
 		jQuery('#otherzip').val(otherzip);
 		jQuery('#othercountry').val(othercountry);
 		jQuery('#otherpobox').val(otherpobox);
+		if (Application_Popup_Address_Selection == 0) {  // set value from application
+			sca_fillinvalues();
+		} else {
+			jQuery('#setaddresscontactdiv').show();
+			fnvshNrm('setaddresscontactdiv');
+		}
 	});
 }
 
