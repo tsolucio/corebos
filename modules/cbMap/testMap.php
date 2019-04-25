@@ -168,6 +168,9 @@ switch ($focus->column_fields['maptype']) {
 	case 'Detail View Layout Mapping':
 			$mapinfo = $focus->DetailViewLayoutMapping();
 		break;
+	case 'DecisionTable':
+		$mapinfo = $focus->DecisionTable();
+		break;
 	default:
 		break;
 }
