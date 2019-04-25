@@ -382,31 +382,32 @@ class Homestuff {
 				if (trim($r)===',') {
 					$r='-';
 				}
-				$list[$i][]=$cvid_ch;
-				$list[$i][]=$aggr.'('.$field_label.')';
+				$wlisturl = 'index.php?action=ListView&module='.$modname.'&viewname='.$cvid;
+				$list[$i][]='<a href="'.$wlisturl.'">'.getTranslatedString($cvid_ch, $modname).'</a>';
+				$list[$i][]='<a href="'.$wlisturl.'">'.getTranslatedString(strtoupper($aggr), 'Reports').'('.getTranslatedString($field_label, $modname).')</a>';
 				if ($isCurrencyField) {
 					$currencyField = new CurrencyField($r);
-					$list[$i][] = $currencyField->getDisplayValueWithSymbol($current_user);
+					$list[$i][] = '<a href="'.$wlisturl.'">'.$currencyField->getDisplayValueWithSymbol($current_user).'</a>';
 				} elseif (is_numeric($r)) {
 					$currencyField = new CurrencyField($r);
-					$list[$i][]= $currencyField->getDisplayValue($current_user);
+					$list[$i][]= '<a href="'.$wlisturl.'">'.$currencyField->getDisplayValue($current_user).'</a>';
 				} else {
-					$list[$i][]= $r;
+					$list[$i][]='<a href="'.$wlisturl.'">'.$r.'</a>' ;
 				}
 			} else {
-				echo "<font color='red'>Filter You have Selected is Not Found</font>";
+				echo "<font color='red'>getTranslatedString('LBL_FILTERSELECTEDNOTFOUND')</font>";
 			}
 		}
 		$header = array();
 		$header[]=getTranslatedString('LBL_HOME_METRICS', 'Home');
-		$header[]='Aggregate(Field)';
-		$header[]='Value';
+		$header[]=getTranslatedString('LBL_HOME_AGGREGATEFIELD');
+		$header[]=getTranslatedString('LBL_HOME_VALUE');
 		$return_value = array('ModuleName'=>'Home', 'cvid'=>0, 'Header'=>$header, 'Entries'=>$list);
 
 		if (count($header)!=0) {
 			 return $return_value;
 		} else {
-			echo 'Fields not found in Selected Filter';
+			echo getTranslatedString('LBL_FIELDINFILTERNOTFOUND');
 		}
 	}
 
