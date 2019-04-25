@@ -531,6 +531,8 @@ $app_strings = array(
 'LBL_HOME_COUNT' => 'Count',
 'LBL_HOME_AGGREGATEFIELD' =>'Aggregate(Field)',
 'LBL_HOME_VALUE' => 'Value',
+'LBL_FILTERSELECTEDNOTFOUND'=>'Filter You have Selected is Not Found',
+'LBL_FIELDINFILTERNOTFOUND'=>'Fields not found in Selected Filter',
 'LBL_JSCALENDAR_LANG' => 'en',
 'LNK_CV_EDIT' => 'Edit',
 'LNK_CV_DELETE' => 'Delete',
@@ -672,8 +674,6 @@ $app_strings = array(
 'LBL_END_DATE_TIME'=>'End Date & Time (System Date)',
 'LBL_CREATE_MERGE_TEMPLATE'=>'Create Mail Merge templates ',
 'LBL_IMG_FORMATS'=>'(Only jpg, gif, bmp and png images)',
-'LBL_FILTERSELECTEDNOTFOUND'=>'Filter You have Selected is Not Found',
-'LBL_FIELDINFILTERNOTFOUND'=>'Fields not found in Selected Filter',
 
 //Added for Taxmode in detail view of Product Details.
 'group'=>'Group',

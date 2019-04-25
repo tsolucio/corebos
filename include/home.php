@@ -383,8 +383,8 @@ class Homestuff {
 					$r='-';
 				}
 				$wlisturl = 'index.php?action=ListView&module='.$modname.'&viewname='.$cvid;
-				$list[$i][]='<a href="'.$wlisturl.'">'.$cvid_ch.'</a>';
-				$list[$i][]='<a href="'.$wlisturl.'">'.$aggr.'('.$field_label.  '</a>';
+				$list[$i][]='<a href="'.$wlisturl.'">'.getTranslatedString($cvid_ch, $modname).'</a>';
+				$list[$i][]='<a href="'.$wlisturl.'">'.getTranslatedString(strtoupper($aggr), 'Reports').'('.getTranslatedString($field_label, $modname).')</a>';
 				if ($isCurrencyField) {
 					$currencyField = new CurrencyField($r);
 					$list[$i][] = '<a href="'.$wlisturl.'">'.$currencyField->getDisplayValueWithSymbol($current_user).'</a>';
