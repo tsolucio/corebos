@@ -92,18 +92,17 @@ class DecisionTable extends processcbMap {
 		}
 		foreach ($xml->rules->rule as $key => $value) {
 			$sequence = (String)$value->sequence;
+			$eval = "";
 			if (isset($value->expression)) {
 				$testexpression = (String)$value->expression;
 				$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($testexpression)));
 				$expression = $parser->expression();
 				$exprEvaluater = new VTFieldExpressionEvaluater($expression);
 				$exprEvaluation = $exprEvaluater->evaluate($entity);
-				$outputs[] = $exprEvaluation;
+				$eval = $exprEvaluation;
 			} elseif (isset($value->mapid)) {
 				$mapid = (String)$value->mapid;
-				$crmobj = CRMEntity::getInstance(getSalesEntityType($mapid));
-				$crmobj->retrieve_entity_info($mapid);
-				$outputs[] = $crmobj;
+				$eval = coreBOS_Rule::evaluate($mapid, $entityId);
 			} elseif (isset($value->decisionTable)) {
 				$module = (String)$value->decisionTable->module;
 				$queryGenerator = new QueryGenerator($module, $current_user);
@@ -126,13 +125,21 @@ class DecisionTable extends processcbMap {
 				if ($result) {
 					$row = $adb->fetch_array($result);
 					if (isset($row[$output])) {
-						$outputs[] = $row[$output];
-					} else {
-						$outputs[] = '__DoesNotPass__';
+						$eval = $row[$output];
 					}
-				} else {
-					$outputs[] = '__DoesNotPass__';
 				}
+			}
+			$ruleOutput = (String)$value->output;
+			if ($ruleOutput == 'ExpressionResult') {
+				$outputs[] = $eval;
+			} elseif ($ruleOutput == 'crmObject') {
+				$crmobj = CRMEntity::getInstance(getSalesEntityType($eval));
+				$crmobj->retrieve_entity_info($eval);
+				$outputs[] = $crmobj;
+			} elseif ($ruleOutput == 'FieldValue') {
+				$outputs[] = $entity->data[$eval];
+			} else {
+				$outputs[] = '__DoesNotPass__';
 			}
 		}
 		return $outputs;
