@@ -61,18 +61,13 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 	}
 	$smarty->assign('TO_MAIL', $to_add);
 	$smarty->assign('IDLISTS', $mailids['idlists']);
-	if ($_REQUEST['templatename'] == 'Send_Email_Template_Module_Faq' && $_REQUEST['pmodule'] == 'Faq') {
-		$focus->column_fields['subject'] = "Email for FAQ module";
-		$focus->column_fields['description'] = "Description Email for FAQ module";
-	} else {
-		$Users_Default_Send_Email_Template = GlobalVariable::getVariable('Users_Default_Send_Email_Template', 0);
-		if (!empty($Users_Default_Send_Email_Template)) {
-			$emltpl = getTemplateDetails($Users_Default_Send_Email_Template);
-			if (count($emltpl) > 0) {
-				$focus->column_fields['subject'] = $emltpl[2];
-				$focus->column_fields['description'] = $emltpl[1];
-				$focus->column_fields['from_email'] = $emltpl[3];
-			}
+	$Users_Default_Send_Email_Template = GlobalVariable::getVariable('Users_Default_Send_Email_Template', 0);
+	if (!empty($Users_Default_Send_Email_Template)) {
+		$emltpl = getTemplateDetails($Users_Default_Send_Email_Template);
+		if (count($emltpl)>0) {
+			$focus->column_fields['subject'] = $emltpl[2];
+			$focus->column_fields['description'] = $emltpl[1];
+			$focus->column_fields['from_email'] = $emltpl[3];
 		}
 	}
 	setObjectValuesFromRequest($focus);
