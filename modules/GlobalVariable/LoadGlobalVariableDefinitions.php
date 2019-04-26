@@ -27,4 +27,3 @@ require_once $moduleFilepath;
 ksort($GlobalVariableDefinitons);
 $smarty->assign('GlobalVariableDefinitonsHeader', $GlobalVariableDefinitonsHeader);
 $smarty->assign('GlobalVariableDefinitons', $GlobalVariableDefinitons);
-//var_dump($GlobalVariableDefinitons);

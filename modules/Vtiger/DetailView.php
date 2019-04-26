@@ -15,7 +15,6 @@ if (isset($tool_buttons)==false) {
 }
 
 $record = vtlib_purify($_REQUEST['record']);
-//echo $record."\n";
 $isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : '';
 $tabid = getTabid($currentModule);
 $category = getParentTab($currentModule);
