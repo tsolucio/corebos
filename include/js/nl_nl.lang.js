@@ -290,6 +290,7 @@ var alert_arr = {
 	'Default': 'Standaard',
 	'Notebook': 'Notitieblok',
 	'ReportCharts': 'Rapport grafieken',
+	'CustomWidget': 'Aggregate Filter',
 	'SPECIAL_CHARS':'\\ / < > + \' " ',
 
 	'BETWEEN': 'tussen',
