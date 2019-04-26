@@ -20,12 +20,12 @@ class VTScheduledReport extends Reports {
 	public $scheduledFormat = null;
 	public $scheduledRecipients = null;
 
-	static public $SCHEDULED_HOURLY = 1;
-	static public $SCHEDULED_DAILY = 2;
-	static public $SCHEDULED_WEEKLY = 3;
-	static public $SCHEDULED_BIWEEKLY = 4;
-	static public $SCHEDULED_MONTHLY = 5;
-	static public $SCHEDULED_ANNUALLY = 6;
+	public static $SCHEDULED_HOURLY = 1;
+	public static $SCHEDULED_DAILY = 2;
+	public static $SCHEDULED_WEEKLY = 3;
+	public static $SCHEDULED_BIWEEKLY = 4;
+	public static $SCHEDULED_MONTHLY = 5;
+	public static $SCHEDULED_ANNUALLY = 6;
 
 	public function __construct($adb, $user, $reportid = "") {
 		$this->db	= $adb;
