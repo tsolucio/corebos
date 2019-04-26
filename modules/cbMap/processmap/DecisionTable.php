@@ -118,30 +118,143 @@ class DecisionTable extends processcbMap {
 						}
 					}
 				}
-				$output = (String)$value->decisionTable->output;
-				$queryGenerator->setFields(array($output));
+				$field = (String)$value->decisionTable->output;
+				$queryGenerator->setFields(array($field));
 				$query = $queryGenerator->getQuery();
+				$orderby = (String)$value->decisionTable->orderby;
+				if (!empty($orderby)) {
+					$query .= ' ORDER BY '.$queryGenerator->getOrderByColumn($orderby);
+				}
 				$result = $adb->pquery($query, array());
 				if ($result) {
 					$row = $adb->fetch_array($result);
-					if (isset($row[$output])) {
-						$eval = $row[$output];
+					if (isset($row[$field])) {
+						$eval = $row[$field];
 					}
 				}
 			}
 			$ruleOutput = (String)$value->output;
 			if ($ruleOutput == 'ExpressionResult') {
-				$outputs[] = $eval;
+				$outputs[$sequence] = $eval;
 			} elseif ($ruleOutput == 'crmObject') {
 				$crmobj = CRMEntity::getInstance(getSalesEntityType($eval));
 				$crmobj->retrieve_entity_info($eval);
-				$outputs[] = $crmobj;
+				$outputs[$sequence] = $crmobj;
 			} elseif ($ruleOutput == 'FieldValue') {
-				$outputs[] = $entity->data[$eval];
+				$outputs[$sequence] = $entity->data[$eval];
 			} else {
-				$outputs[] = '__DoesNotPass__';
+				$outputs[$sequence] = '__DoesNotPass__';
 			}
 		}
-		return $outputs;
+		// Checking hitpolicy
+		$output = null;
+		if ($hitpolicy == 'U') {
+			$desiredoutput = null;
+			$unique = false;
+			$count = 0;
+			foreach ($outputs as $k => $v) {
+				if ($v != '__DoesNotPass__') {
+					if (!$desiredoutput) {
+						$desiredoutput = $v;
+						$unique = true;
+					}
+					$count++;
+					if ($count > 1) {
+						$unique = false;
+						break;
+					}
+				}
+			}
+			if ($unique) {
+				$output = $desiredoutput;
+			}
+		} elseif ($hitpolicy == 'F') {
+			foreach ($outputs as $k => $v) {
+				if ($v != '__DoesNotPass__') {
+					$output = $v;
+					break;
+				}
+			}
+		} elseif ($hitpolicy == 'C') {
+			foreach ($outputs as $k => $v) {
+				if ($v != '__DoesNotPass__') {
+					$output[] = $v;
+				}
+			}
+		} elseif ($hitpolicy == 'A') {
+			$desiredoutput = null;
+			$sameoutput = false;
+			foreach ($outputs as $k => $v) {
+				if ($v != '__DoesNotPass__') {
+					if (!$desiredoutput) {
+						$desiredoutput = $v;
+						$sameoutput = true;
+					}
+					if ($v != $desiredoutput) {
+						$sameoutput = false;
+					}
+				}
+			}
+			if ($sameoutput) {
+				$output = $desiredoutput;
+			}
+		} elseif ($hitpolicy == 'R') {
+			ksort($outputs);
+			foreach ($outputs as $k => $v) {
+				if ($v != '__DoesNotPass__') {
+					$output[] = $v;
+				}
+			}
+		} elseif ($hitpolicy == 'G') {
+			if (isset($aggregate)) {
+				if ($aggregate == 'sum') {
+					$sum = 0;
+					foreach ($outputs as $k => $v) {
+						if (is_numeric($v)) {
+							$sum += $v;
+						}
+					}
+					$output = $sum;
+				} elseif ($aggregate == 'min') {
+					$min = null;
+					foreach ($outputs as $k => $v) {
+						if (is_numeric($v)) {
+							if (!$min) {
+								$min = $v;
+							}
+							if ($v < $min) {
+								$min = $v;
+							}
+						}
+					}
+					$output = $min;
+				} elseif ($aggregate == 'max') {
+					$max = null;
+					foreach ($outputs as $k => $v) {
+						if (is_numeric($v)) {
+							if (!$max) {
+								$max = $v;
+							}
+							if ($v > $max) {
+								$max = $v;
+							}
+						}
+					}
+					$output = $max;
+				} elseif ($aggregate == 'count') {
+					$count = 0;
+					foreach ($outputs as $k => $v) {
+						if (is_numeric($v)) {
+							$count++;
+						}
+					}
+					$output = $count;
+				}
+			}
+		}
+		if (!$output) {
+			$output = '__DoesNotPass__';
+		}
+		return $output;
 	}
 }
