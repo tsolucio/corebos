@@ -136,7 +136,7 @@ function validate_sendmail(idlist, module) {
 }
 
 function sendmail(module, idstrings, url) {
-	var template_name = '&templatename='+url;
+	var template_name = '&templatename='+url; //Load email template
 	if (url == undefined) {
 		url = '';
 	}

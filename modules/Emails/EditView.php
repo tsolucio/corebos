@@ -67,7 +67,6 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 	} else {
 		$Users_Default_Send_Email_Template = GlobalVariable::getVariable('Users_Default_Send_Email_Template', 0);
 	}
-	//$Users_Default_Send_Email_Template = GlobalVariable::getVariable('Users_Default_Send_Email_Template', 0);
 	if (!empty($Users_Default_Send_Email_Template)) {
 		$emltpl = getTemplateDetails($Users_Default_Send_Email_Template, $crm_id);
 		if (count($emltpl)>0) {
