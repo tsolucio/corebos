@@ -62,7 +62,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 	$smarty->assign('TO_MAIL', $to_add);
 	$smarty->assign('IDLISTS', $mailids['idlists']);
 	$crm_id = $_REQUEST['pmoduleid'];
-	if (!empty($_REQUEST['templatename'])) { //Request for msgTemplate
+	if (!empty($_REQUEST['templatename'])) {
 		$Users_Default_Send_Email_Template = $_REQUEST['templatename'];
 	} else {
 		$Users_Default_Send_Email_Template = GlobalVariable::getVariable('Users_Default_Send_Email_Template', 0);
