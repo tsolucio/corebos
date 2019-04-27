@@ -21,7 +21,7 @@
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
 {/if}
 
-{include file='Buttons_List.tpl'}
+{include file='Buttons_List.tpl' isEditView=true}
 
 {*<!-- Contents -->*}
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
@@ -31,22 +31,6 @@
 	<td class="showPanelBg" valign=top width=100%>
 		{*<!-- PUBLIC CONTENTS STARTS-->*}
 		<div class="small" style="padding:20px">
-			{if $OP_MODE eq 'edit_view'}
-				{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
-				{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
-				<span class="lvtHeaderText"><font color="purple">[ {$USE_ID_VALUE} ] </font>{$NAME} - {$APP.LBL_EDITING} {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span> <br>
-				{$UPDATEINFO}
-			{/if}
-			{if $OP_MODE eq 'create_view'}
-				{if $DUPLICATE neq 'true'}
-					<span class="lvtHeaderText">{$APP.LBL_CREATING} {$SINGLE_MOD|@getTranslatedString:$MODULE}</span> <br>
-				{else}
-					<span class="lvtHeaderText">{$APP.LBL_DUPLICATING} "{$NAME}" </span> <br>
-				{/if}
-			{/if}
-
-			<hr noshade size=1>
-			<br>
 			{include file='EditViewHidden.tpl'}
 
 			{*<!-- Account details tabs -->*}
