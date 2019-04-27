@@ -390,7 +390,7 @@
 
 <div id="qcform" style="position:absolute;width:700px;top:80px;left:450px;z-index:90000;"></div>
 
-<div id="status" style="position:absolute;display:none;left:50%;top:95px;height:27px;white-space:nowrap;">
+<div id="status" style="position:absolute;display:none;left:65%;top:95px;height:27px;white-space:nowrap;">
 	<div role="status" class="slds-spinner slds-spinner_small slds-spinner_brand">
 		<div class="slds-spinner__dot-a"></div>
 		<div class="slds-spinner__dot-b"></div>
