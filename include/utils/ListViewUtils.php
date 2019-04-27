@@ -3676,9 +3676,13 @@ function getParentId($parent_name) {
 }
 
 //function added to check the text length in the listview.
-function textlength_check($field_val) {
+function textlength_check($field_val, $overrideLength = 0) {
 	global $default_charset,$currentModule;
-	$listview_max_textlength = GlobalVariable::getVariable('Application_ListView_Max_Text_Length', 40, $currentModule);
+	if ($overrideLength>0) {
+		$listview_max_textlength = $overrideLength;
+	} else {
+		$listview_max_textlength = GlobalVariable::getVariable('Application_ListView_Max_Text_Length', 40, $currentModule);
+	}
 	if ($listview_max_textlength && $listview_max_textlength > 0) {
 		$temp_val = preg_replace("/(<\/?)(\w+)([^>]*>)/i", '', $field_val);
 		if (function_exists('mb_strlen')) {
