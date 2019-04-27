@@ -346,13 +346,13 @@ function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
 				}
 			} else {
 				// Otherwise reject with the status text which will hopefully be a meaningful error
-				reject(Error(req.statusText));
+				reject(new Error(req.statusText));
 			}
 		};
 
 		// Handle errors
 		req.onerror = function () {
-			reject(Error('Network/Script Error'));
+			reject(new Error('Network/Script Error'));
 		};
 
 		// Make the request
@@ -376,13 +376,13 @@ function ExecuteFunctions(functiontocall, params) {
 				resolve(req.response);
 			} else {
 				// Otherwise reject with the status text which will hopefully be a meaningful error
-				reject(Error(req.statusText));
+				reject(new Error(req.statusText));
 			}
 		};
 
 		// Handle errors
 		req.onerror = function () {
-			reject(Error('Network/Script Error'));
+			reject(new Error('Network/Script Error'));
 		};
 
 		// Make the request
