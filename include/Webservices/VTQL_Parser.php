@@ -138,11 +138,12 @@ Array (
 )*/
 	private $out;
 	public $lex;
-	private $success ;
-	private $query ;
+	private $success;
+	private $query;
 	private $error_msg;
 	private $syntax_error;
 	private $user;
+
 	public function __construct($user, $lex, $out) {
 		if (!is_array($out)) {
 			$out = array();
