@@ -4853,16 +4853,6 @@ function fetch_clock() {
 	});
 }
 
-function fetch_calc() {
-	jQuery.ajax({
-		method:'POST',
-		url:'index.php?module=Utilities&action=UtilitiesAjax&file=Calculator'
-	}).done(function (response) {
-		jQuery('#calculator_cont').html(response);
-		execJS(document.getElementById('calculator_cont'));
-	});
-}
-
 function UnifiedSearch_GetModules() {
 	if (document.getElementById('UnifiedSearch_modulelistwrapper').children.length === 0) {
 		jQuery('#status').show();

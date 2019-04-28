@@ -385,7 +385,6 @@
 {/if}
 <!-- header - master tabs -->
 
-<div id="calculator_cont" style="position:absolute; z-index:100001;" ></div>
 {include file="Clock.tpl"}
 
 <div id="qcform" style="position:absolute;width:700px;top:80px;left:450px;z-index:90000;"></div>
