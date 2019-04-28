@@ -207,14 +207,14 @@
 				{if !empty($ADMIN_LINK)}
 				<li class="slds-global-actions__item">
 					<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
-						<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-haspopup="true" title="{$APP.LBL_MORE}" onclick="window.location.assign('index.php?module=Settings&action=index&parenttab=')">
+						<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-haspopup="true" title="{$APP.LBL_CRM_SETTINGS}" onclick="window.location.assign('index.php?module=Settings&action=index&parenttab=')">
 							<svg class="slds-button__icon" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#settings"></use>
 							</svg>
 							<span class="slds-assistive-text">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</span>
 						</button>
 						<div class="slds-dropdown slds-dropdown_right">
-							<ul class="slds-dropdown__list" role="menu" aria-label="{$APP.LBL_MORE}">
+							<ul class="slds-dropdown__list" role="menu" aria-label="{$APP.LBL_CRM_SETTINGS}">
 								{foreach key=actionlabel item=actionlink from=$HEADERS}
 									<li class="slds-dropdown__item" role="presentation">
 									<a href="{$actionlink}" role="menuitem" tabindex="0">
