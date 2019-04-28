@@ -4011,17 +4011,16 @@ function retrieveCompanyDetails() {
 	);
 	if ($query && $adb->num_rows($query) > 0) {
 		$record = $adb->query_result($query, 0, 'cbcompanyid');
-		$companyDetails['name']     = $companyDetails['companyname'] = $adb->query_result($query, 0, 'companyname');
+		$companyDetails['name']     = $companyDetails['companyname'] = decode_html($adb->query_result($query, 0, 'companyname'));
 		$companyDetails['website']  = $adb->query_result($query, 0, 'website');
 		$companyDetails['email']  = $adb->query_result($query, 0, 'email');
 		$companyDetails['siccode']  = $adb->query_result($query, 0, 'siccode');
 		$companyDetails['accid']  = $adb->query_result($query, 0, 'accid');
-		$companyDetails['address']  = $adb->query_result($query, 0, 'address');
-		$companyDetails['city']     = $adb->query_result($query, 0, 'city');
-		$companyDetails['state']    = $adb->query_result($query, 0, 'state');
-		$companyDetails['country']  = $adb->query_result($query, 0, 'country');
-		$companyDetails['postalcode'] = $adb->query_result($query, 0, 'postalcode');
-		$companyDetails['code'] = $adb->query_result($query, 0, 'postalcode');
+		$companyDetails['address']  = decode_html($adb->query_result($query, 0, 'address'));
+		$companyDetails['city']     = decode_html($adb->query_result($query, 0, 'city'));
+		$companyDetails['state']    = decode_html($adb->query_result($query, 0, 'state'));
+		$companyDetails['country']  = decode_html($adb->query_result($query, 0, 'country'));
+		$companyDetails['postalcode'] = $companyDetails['code'] = decode_html($adb->query_result($query, 0, 'postalcode'));
 		$companyDetails['phone']    = $adb->query_result($query, 0, 'phone');
 		$companyDetails['fax']      = $adb->query_result($query, 0, 'fax');
 		for ($i=0; $i<$adb->num_rows($query); $i++) {
