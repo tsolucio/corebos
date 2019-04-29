@@ -2151,6 +2151,13 @@ class CRMEntity {
 				}
 
 				$adb->pquery("INSERT INTO vtiger_senotesrel(crmid, notesid) VALUES(?,?)", array($crmid, $relcrmid));
+			} elseif ($with_module == 'Emails') {
+				$checkpresence = $adb->pquery('SELECT 1 FROM vtiger_seactivityrel WHERE crmid=? AND activityid=?', array($crmid, $relcrmid));
+				// Relation already exists? No need to add again
+				if ($checkpresence && $adb->num_rows($checkpresence)) {
+					continue;
+				}
+				$adb->pquery('INSERT INTO vtiger_seactivityrel(crmid, activityid) VALUES(?,?)', array($crmid, $relcrmid));
 			} else {
 				$checkpresence = $adb->pquery("SELECT crmid FROM vtiger_crmentityrel WHERE
 					crmid = ? AND module = ? AND relcrmid = ? AND relmodule = ?", array($crmid, $module, $relcrmid, $with_module));
