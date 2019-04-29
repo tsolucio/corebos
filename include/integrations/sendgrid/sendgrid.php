@@ -171,7 +171,7 @@ class corebos_sendgrid {
 	 * @param string $cc_bcc - comma separated list of emails to set as CC or BCC in the mail
 	 */
 	public function setSendGridCCAddress($cc_bcc) {
-		global $adb, $log;
+		global $log;
 		$log->debug('> setSendGridCCAddress');
 		if ($cc_bcc != '') {
 			$address = '';
