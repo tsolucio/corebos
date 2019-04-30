@@ -135,11 +135,11 @@ function validate_sendmail(idlist, module) {
 	}
 }
 
-function sendmail(module, idstrings, url) {
-	var template_name = '&templatename='+url; //Load email template
+function sendmail(module, idstrings, url,template) {
 	if (url == undefined) {
 		url = '';
 	}
+	var template_name = '&templatename='+template; //Load email template name
 	jQuery.ajax({
 		method: 'POST',
 		url: 'index.php?module=Emails&return_module='+module+'&action=EmailsAjax&file=mailSelect&idlist='+idstrings+url
