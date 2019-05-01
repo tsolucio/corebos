@@ -37,7 +37,8 @@ function getViewsByModule($module, $user) {
  * @return array view information
  */
 function cbws_getViewsInformation($viewids, $module) {
-	global $adb, $current_user, $app_strings;
+	global $adb, $current_user, $app_strings, $currentModule;
+	$currentModule = $module;
 	$dft = cbCVManagement::getDefaultView($module);
 	$customView = new CustomView($module);
 	$ssql = 'select vtiger_customview.* from vtiger_customview where vtiger_customview.cvid=?';
@@ -83,9 +84,21 @@ function cbws_getViewsInformation($viewids, $module) {
 				$groupnum++;
 			}
 		}
-		$advft_criteria = json_encode($advft);
-		$filter['advcriteria'] = $advft_criteria;
-		$filter['stdcriteria'] = $customView->getCVStdFilterSQL($cvrow['cvid']);
+		$filter['advcriteria'] = json_encode($advft);
+		$filter['advcriteriaWQL'] = $customView->getCVAdvFilterSQL($cvrow['cvid'], true);
+		$stdfilter = $customView->getStdFilterByCvid($cvrow['cvid']);
+		if (is_null($stdfilter['columnname'])) {
+			$filter['stdcriteria'] = '[]';
+		} else {
+			$stdfltcol = explode(':', $stdfilter['columnname']);
+			$filter['stdcriteria'] = json_encode(array(
+				'columnname' => $stdfltcol[2],
+				'comparator' => 'bw',
+				'value' => $stdfilter['startdate'].','.$stdfilter['enddate'],
+				'column_condition' => '',
+			));
+		}
+		$filter['stdcriteriaWQL'] = $customView->getCVStdFilterSQL($cvrow['cvid'], true);
 		$filter['default'] = ($dft==$cvrow['cvid']);
 		$filters[$cvrow['cvid']] = $filter;
 	}
