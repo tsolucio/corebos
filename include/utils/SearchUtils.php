@@ -1293,7 +1293,7 @@ function getAdvancedSearchComparator($comparator, $value, $datatype = '') {
 	return $rtvalue;
 }
 
-function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $datatype) {
+function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $datatype, $webserviceQL = false) {
 	//we have to add the fieldname/tablename.fieldname and the corresponding value (which we want).
 	// So that when these LHS field comes then RHS value will be replaced for LHS in the where condition of the query
 	global $adb, $currentModule, $current_user;
@@ -1330,18 +1330,22 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 		'vtiger_pricebook.currency_id'=>'vtiger_currency_info.currency_name',
 	);
 	if ($fieldname == 'smownerid' || $fieldname == 'modifiedby') {
-		if ($fieldname == 'smownerid') {
-			$tableNameSuffix = '';
-		} elseif ($fieldname == 'modifiedby') {
-			$tableNameSuffix = '2';
+		if ($webserviceQL) {
+			$value = $fld.getAdvancedSearchComparator($comparator, $value, $datatype);
+		} else {
+			if ($fieldname == 'smownerid') {
+				$tableNameSuffix = '';
+			} elseif ($fieldname == 'modifiedby') {
+				$tableNameSuffix = '2';
+			}
+			$userNameSql = getSqlForNameInDisplayFormat(
+				array('first_name'=>'vtiger_users'.$tableNameSuffix.'.first_name', 'last_name'=>'vtiger_users'.$tableNameSuffix.'.last_name'),
+				'Users'
+			);
+			$temp_value = "( trim($userNameSql)".getAdvancedSearchComparator($comparator, $value, $datatype);
+			$temp_value.= " OR vtiger_groups$tableNameSuffix.groupname".getAdvancedSearchComparator($comparator, $value, $datatype);
+			$value = $temp_value . ')';
 		}
-		$userNameSql = getSqlForNameInDisplayFormat(
-			array('first_name'=>'vtiger_users'.$tableNameSuffix.'.first_name', 'last_name'=>'vtiger_users'.$tableNameSuffix.'.last_name'),
-			'Users'
-		);
-		$temp_value = "( trim($userNameSql)".getAdvancedSearchComparator($comparator, $value, $datatype);
-		$temp_value.= " OR vtiger_groups$tableNameSuffix.groupname".getAdvancedSearchComparator($comparator, $value, $datatype);
-		$value = $temp_value . ')';
 	} elseif ($fieldname == "inventorymanager") {
 		$value = $tablename.".".$fieldname.getAdvancedSearchComparator($comparator, getUserId_Ol($value), $datatype);
 	} elseif (!empty($change_table_field[$fieldname])) { //Added to handle special cases
@@ -1375,14 +1379,18 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 		} elseif ($comparator == 'e' && (trim($value) == 'NULL' || trim($value) == '')) {
 			$value = '('.$tablename.".".$fieldname.' IS NULL OR '.$tablename.'.'.$fieldname.' = \'\')';
 		} else {
-			if (is_uitype($field_uitype, '_picklist_')) {
-				$value = $tablename.".".$fieldname.' IN (select translation_key from vtiger_cbtranslation
-					where locale="'.$current_user->language.'" and forpicklist="'.$currentModule.'::'.$fld
-					.'" and i18n '.getAdvancedSearchComparator($comparator, $value, $datatype).')'
-					.(in_array($comparator, array('n', 'k', 'dnsw', 'dnew')) ? ' AND ' : ' OR ')
-					.$tablename.'.'.$fieldname.getAdvancedSearchComparator($comparator, $value, $datatype);
+			if ($webserviceQL) {
+				$value = $fld.getAdvancedSearchComparator($comparator, $value, $datatype);
 			} else {
-				$value = $tablename.".".$fieldname.getAdvancedSearchComparator($comparator, $value, $datatype);
+				if (is_uitype($field_uitype, '_picklist_')) {
+					$value = $tablename.".".$fieldname.' IN (select translation_key from vtiger_cbtranslation
+						where locale="'.$current_user->language.'" and forpicklist="'.$currentModule.'::'.$fld
+						.'" and i18n '.getAdvancedSearchComparator($comparator, $value, $datatype).')'
+						.(in_array($comparator, array('n', 'k', 'dnsw', 'dnew')) ? ' AND ' : ' OR ')
+						.$tablename.'.'.$fieldname.getAdvancedSearchComparator($comparator, $value, $datatype);
+				} else {
+					$value = $tablename.".".$fieldname.getAdvancedSearchComparator($comparator, $value, $datatype);
+				}
 			}
 		}
 	}
