@@ -67,7 +67,7 @@ function cbws_getViewsInformation($viewids, $module) {
 					$value = $columninfo['value'];
 					$columncondition = $columninfo['column_condition'];
 
-					$columns = explode(":", $columnname);
+					$columns = explode(':', $columnname);
 					$name = $columns[1];
 
 					$advft[$columnindex]['columname'] = $name;

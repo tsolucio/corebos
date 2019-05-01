@@ -946,13 +946,13 @@ class CustomView extends CRMEntity {
 						}
 						//If negative logic filter ('not equal to', 'does not contain') is used, 'and' condition should be applied instead of 'or'
 						if ($comparator == 'n' || $comparator == 'k') {
-							$advorsqls = implode(" and ", $advorsql);
+							$advorsqls = implode(' and ', $advorsql);
 						} else {
-							$advorsqls = implode(" or ", $advorsql);
+							$advorsqls = implode(' or ', $advorsql);
 						}
-						$advfiltersql = " (" . $advorsqls . ") ";
+						$advfiltersql = ' (' . $advorsqls . ') ';
 					} elseif ($comparator == 'bw' && count($valuearray) == 2) {
-						$advfiltersql = "(" . $columns[0] . "." . $columns[1] . " between '" .
+						$advfiltersql = '(' . $columns[0] . '.' . $columns[1] . " between '" .
 							getValidDBInsertDateTimeValue(trim($valuearray[0]), $datatype) .
 							"' and '" . getValidDBInsertDateTimeValue(trim($valuearray[1]), $datatype) . "')";
 					} else {
@@ -965,17 +965,17 @@ class CustomView extends CRMEntity {
 							} else {
 								$advfiltersql = "vtiger_activity.eventstatus" . $this->getAdvComparator($comparator, trim($value), $datatype);
 							}
-						} elseif ($this->customviewmodule == "Documents" && $columns[1] == 'folderid') {
-							$advfiltersql = "vtiger_attachmentsfolder.foldername" . $this->getAdvComparator($comparator, trim($value), $datatype);
-						} elseif ($this->customviewmodule == "Assets") {
+						} elseif ($this->customviewmodule == 'Documents' && $columns[1] == 'folderid') {
+							$advfiltersql = 'vtiger_attachmentsfolder.foldername' . $this->getAdvComparator($comparator, trim($value), $datatype);
+						} elseif ($this->customviewmodule == 'Assets') {
 							if ($columns[1] == 'account') {
-								$advfiltersql = "vtiger_account.accountname" . $this->getAdvComparator($comparator, trim($value), $datatype);
+								$advfiltersql = 'vtiger_account.accountname' . $this->getAdvComparator($comparator, trim($value), $datatype);
 							}
 							if ($columns[1] == 'product') {
-								$advfiltersql = "vtiger_products.productname" . $this->getAdvComparator($comparator, trim($value), $datatype);
+								$advfiltersql = 'vtiger_products.productname' . $this->getAdvComparator($comparator, trim($value), $datatype);
 							}
 							if ($columns[1] == 'invoiceid') {
-								$advfiltersql = "vtiger_invoice.subject" . $this->getAdvComparator($comparator, trim($value), $datatype);
+								$advfiltersql = 'vtiger_invoice.subject' . $this->getAdvComparator($comparator, trim($value), $datatype);
 							}
 						} else {
 							$advfiltersql = $this->getRealValues($columns[0], $columns[1], $comparator, trim($value), $datatype, $webserviceQL);
