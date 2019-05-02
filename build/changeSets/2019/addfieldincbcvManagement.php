@@ -27,7 +27,7 @@ class addfieldincbcvManagement extends cbupdaterWorker {
 			$this->sendMsg('This changeset add new fields to cbCVManagement module');
 			global $adb;
 			// Add Field in cbCVManagement module
-			
+
 			$fieldLayout=array(
 				'cbCVManagement' => array(
 					'LBL_DAFAULT_VALUE'=> array(
@@ -36,7 +36,7 @@ class addfieldincbcvManagement extends cbupdaterWorker {
 							'typeofdata'=>'V~O',
 							'uitype'=>'56',
 							'displaytype'=>'1',
-							'label'=>'Set Public', 
+							'label'=>'Set Public',
 						),
 					),
 				),
@@ -44,7 +44,7 @@ class addfieldincbcvManagement extends cbupdaterWorker {
 			$this->massCreateFields($fieldLayout);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
-			
+
 			$cvManageWorkFlow = new VTWorkflowManager($adb);
 			$cvManageWorkFlow = $cvManageWorkFlow->newWorkFlow("cbCVManagement");
 			$cvManageWorkFlow->description = "Send email on public filter";
@@ -69,7 +69,6 @@ class addfieldincbcvManagement extends cbupdaterWorker {
 			$task->test = '';
 			$task->reevaluate = 0;
 			$tm->saveTask($task);
-
 		}
 		$this->finishExecution();
 	}
