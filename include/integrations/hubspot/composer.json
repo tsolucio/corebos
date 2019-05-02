@@ -1,0 +1,5 @@
+{
+    "require": {
+        "ryanwinchester/hubspot-php": "~1.0"
+    }
+}
