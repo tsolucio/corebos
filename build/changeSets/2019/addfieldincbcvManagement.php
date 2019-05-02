@@ -44,7 +44,6 @@ class addfieldincbcvManagement extends cbupdaterWorker {
 			$this->massCreateFields($fieldLayout);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
-		}
 			
 			$cvManageWorkFlow = new VTWorkflowManager($adb);
 			$cvManageWorkFlow = $cvManageWorkFlow->newWorkFlow("cbCVManagement");
@@ -66,12 +65,12 @@ class addfieldincbcvManagement extends cbupdaterWorker {
 			$task->entity_type = "cbCVManagement";
 			$task->recepient = "$(assigned_user_id : (Users) email1)";
 			$task->subject = "Filter made public notification";
-			$task->content = 'A filter named' .'$cvid '.'has been set to public';
+			$task->content = 'A filter named $cvid has been set to public';
 			$task->test = '';
 			$task->reevaluate = 0;
 			$tm->saveTask($task);
 
-          
+		}
 		$this->finishExecution();
 	}
 }
