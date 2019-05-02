@@ -26,39 +26,33 @@ class addfieldincbcvManagement extends cbupdaterWorker {
 		} else {
 			$this->sendMsg('This changeset add new fields to cbCVManagement module');
 			global $adb;
-			// Fields preparations
-			$moduleInstance = Vtiger_Module::getInstance('cbCVManagement');
-			//var_dump($moduleInstance);
-			$block = Vtiger_Block::getInstance('LBL_DAFAULT_VALUE', $moduleInstance );
-			//var_dump($block);
-			//die();
-            if (!$block) {
-                $block = new Vtiger_Block();
-                $block->label = 'LBL_DAFAULT_VALUE';
-                $block->sequence = 5;
-                $moduleInstance->addBlock($block);
-            }
-			$fieldLayout = array(
+			// Add Field in cbCVManagement module
+			
+			$fieldLayout=array(
 				'cbCVManagement' => array(
-					'Default Value' => array(
-						'LBL_DAFAULT_VALUE' => array(
+					'LBL_DAFAULT_VALUE'=> array(
+						'Set Public' => array(
 							'columntype'=>'checkbox',
 							'typeofdata'=>'V~O',
-							'uitype'=>56,
-							'label' => 'Set Public',
+							'uitype'=>'56',
 							'displaytype'=>'1',
+							'label'=>'Set Public', 
 						),
 					),
 				),
 			);
+			$this->massCreateFields($fieldLayout);
+			$this->sendMsg('Changeset '.get_class($this).' applied!');
+			$this->markApplied(false);
+		}
+			
 			$cvManageWorkFlow = new VTWorkflowManager($adb);
 			$cvManageWorkFlow = $cvManageWorkFlow->newWorkFlow("cbCVManagement");
-			$cvManageWorkFlow->test = '';
 			$cvManageWorkFlow->description = "Send email on public filter";
 			$invWorkFlow->executionCondition = VTWorkflowManager::$ON_EVERY_SAVE;
 			$cvManageWorkFlow->defaultworkflow = 1;
 			$cvManageWorkFlow->schtypeid = 0;
-			$cvManageWorkFlow->test = '';
+			$cvManageWorkFlow->test = '{"fieldname":"set_public","operation":"has changed to","value":"true:boolean","valuetype":"rawtext","joincondition":"and","groupid":"0"}]';
 			$cvManageWorkFlow->schtime = '00:00:00';
 			$cvManageWorkFlow->schdayofmonth = '';
 			$cvManageWorkFlow->schdayofweek = '';
@@ -69,19 +63,15 @@ class addfieldincbcvManagement extends cbupdaterWorker {
 			$tm = new VTTaskManager($adb);
 			$task = $tm->createTask('VTEmailTask', $cvManageWorkFlow->id);
 			$task->active = false;
-			$task->summary = $caltk['summary'];
 			$task->entity_type = "cbCVManagement";
-			$task->recepient = "admin user";
-			$task->subject = "Send email on public filter";
-			$task->content = 'A filter named $cvid has been set to public';
+			$task->recepient = "$(assigned_user_id : (Users) email1)";
+			$task->subject = "Filter made public notification";
+			$task->content = 'A filter named' .'$cvid '.'has been set to public';
 			$task->test = '';
-			$task->reevaluate = 1;
+			$task->reevaluate = 0;
 			$tm->saveTask($task);
 
-            $this->massCreateFields($fieldLayout);
-			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied(false);
-		}
+          
 		$this->finishExecution();
 	}
 }
