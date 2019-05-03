@@ -27,7 +27,7 @@ class CRMEntity {
 	protected static $methods = array();
 	protected static $dbvalues = array();
 	protected static $todvalues = array();
-	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-recent', 'class' => 'slds-icon', 'icon'=>'recent');
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-recent', 'class' => 'slds-icon', 'icon'=>'entity');
 
 	public function __construct() {
 		global $log;
