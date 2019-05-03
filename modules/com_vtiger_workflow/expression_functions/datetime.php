@@ -295,4 +295,32 @@ function __cb_next_dateLaborable($arr) {
 		return '';
 	}
 }
+
+function __cb_add_workdays($arr) {
+	$startDate = new DateTime($arr[0]);
+	$endDate = new DateTime(__vt_add_days(array($arr[0],180))); // 180 days to make sure we catch next occurrence
+	$numofdays = explode(',', $arr[1]);
+	if (empty($arr[2])) {
+		$lastdow = 6;
+	} else {
+		$lastdow = 8;
+	}
+	if (isset($arr[3]) && trim($arr[3])!='') {
+		$holidays = explode(',', $arr[3]);
+	} else {
+		$holidays = array();
+	}
+	$interval = new DateInterval('P1D'); // set the interval as 1 day
+	$daterange = new DatePeriod($startDate, $interval, $endDate);
+	$result = '';
+	foreach ($daterange as $date) {
+		if ($date->format('N') < $lastdow && !in_array($date->format('Y-m-d'), $holidays)) {
+			if (in_array($date->format('d'), $numofdays)) {
+				$result = $date->format('Y-m-d');
+				break;
+			}
+		}
+	}
+	return $result;
+}
 ?>
