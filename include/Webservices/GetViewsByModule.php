@@ -92,10 +92,12 @@ function cbws_getViewsInformation($viewids, $module) {
 		} else {
 			$stdfltcol = explode(':', $stdfilter['columnname']);
 			$filter['stdcriteria'] = json_encode(array(
-				'columnname' => $stdfltcol[2],
-				'comparator' => 'bw',
-				'value' => $stdfilter['startdate'].','.$stdfilter['enddate'],
-				'column_condition' => '',
+				array(
+					'columnname' => $stdfltcol[2],
+					'comparator' => 'bw',
+					'value' => $stdfilter['startdate'].','.$stdfilter['enddate'],
+					'column_condition' => '',
+				),
 			));
 		}
 		$filter['stdcriteriaWQL'] = $customView->getCVStdFilterSQL($cvrow['cvid'], true);
