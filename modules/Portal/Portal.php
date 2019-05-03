@@ -35,4 +35,11 @@ function UpdatePortal($portalname, $portalurl, $portalid) {
 	$adb->pquery('update vtiger_portal set portalname=? ,portalurl=? where portalid=?', $params);
 	return $portalid;
 }
+
+require_once 'data/CRMEntity.php';
+require_once 'data/Tracker.php';
+
+class Portal extends CRMEntity {
+	public $moduleIcon = array('library' => 'action', 'containerClass' => 'slds-icon_container slds-icon-standard-account', 'class' => 'slds-icon', 'icon'=>'web_link');
+}
 ?>
