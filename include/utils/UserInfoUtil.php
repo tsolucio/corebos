@@ -708,7 +708,7 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 	//Checking for Default Org Sharing permission
 	if ($others_permission_id == UserPrivileges::SHARING_READONLY) {
 		if ($actionid == 1 || $actionid == 0) {
-			if ($module == 'Calendar') {
+			if ($module == 'cbCalendar') {
 				if ($recOwnType == 'Users') {
 					$permission = isCalendarPermittedBySharing($record_id);
 				} else {
@@ -750,7 +750,7 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 		}
 	} elseif ($others_permission_id == UserPrivileges::SHARING_PRIVATE) {
 		if ($actionid == 3 || $actionid == 4) {
-			if ($module == 'Calendar' || $module == 'cbCalendar') {
+			if ($module == 'cbCalendar') {
 				if ($recOwnType == 'Users') {
 					$permission = isCalendarPermittedBySharing($record_id);
 				} else {
@@ -771,20 +771,16 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 			$log->debug('< isPermitted');
 			return $permission;
 		} elseif ($actionid ==0 || $actionid ==1) {
-			if ($module == 'Calendar') {
-				$permission='no';
-			} else {
-				$wfs = new VTWorkflowManager($adb);
-				$racbr = $wfs->getRACRuleForRecord($module, $record_id);
-				if ($racbr) {
-					if ($actionid == 0 && !$racbr->hasDetailViewPermissionTo('create')) {
-						return 'no';
-					} elseif ($actionid == 1 && !$racbr->hasDetailViewPermissionTo('update')) {
-						return 'no';
-					}
+			$wfs = new VTWorkflowManager($adb);
+			$racbr = $wfs->getRACRuleForRecord($module, $record_id);
+			if ($racbr) {
+				if ($actionid == 0 && !$racbr->hasDetailViewPermissionTo('create')) {
+					return 'no';
+				} elseif ($actionid == 1 && !$racbr->hasDetailViewPermissionTo('update')) {
+					return 'no';
 				}
-				$permission = isReadWritePermittedBySharing($module, $tabid, $actionid, $record_id);
 			}
+			$permission = isReadWritePermittedBySharing($module, $tabid, $actionid, $record_id);
 			$log->debug('< isPermitted');
 			return $permission;
 		} elseif ($actionid ==2) {
@@ -1022,7 +1018,7 @@ function isAllowed_Outlook($module, $action, $user_id, $record_id) {
 	$log->debug('> isAllowed_Outlook '.$module.','.$action.','.$user_id.','.$record_id);
 
 	$permission = "no";
-	if ($module == 'Users' || $module == 'Home' ||  $module == 'Settings' || $module == 'Calendar') {
+	if ($module == 'Users' || $module == 'Home' ||  $module == 'Settings') {
 		//These modules do not have security
 		$permission = "yes";
 	} else {
@@ -2972,19 +2968,6 @@ function getListViewSecurityParameter($module) {
 		$sec_query .= " vtiger_groups.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
 	} elseif ($module == 'Emails') {
 		$sec_query = " and vtiger_crmentity.smownerid=".$current_user->id." ";
-	} elseif ($module == 'Calendar') {
-		require_once 'modules/Calendar/CalendarCommon.php';
-		$shared_ids = getSharedCalendarId($current_user->id);
-		if (isset($shared_ids) && $shared_ids != '') {
-			$condition = " or (vtiger_crmentity.smownerid in($shared_ids) and vtiger_activity.visibility = 'Public')";
-		} else {
-			$condition = '';
-		}
-		$sec_query = " and (vtiger_crmentity.smownerid in($current_user->id) $condition or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%')";
-		if (!empty($current_user_groups)) {
-			$sec_query .= " or ((vtiger_groups.groupid in (". implode(',', $current_user_groups) .")))";
-		}
-		$sec_query .= ")";
 	} elseif ($module == 'Quotes') {
 		$sec_query = " and (vtiger_crmentity.smownerid in($current_user->id) or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")";
 		//Adding criteria for group sharing
@@ -3098,19 +3081,6 @@ function getSecListViewSecurityParameter($module) {
 			$sec_query .= " vtiger_groups$module.groupid in (". implode(',', $current_user_groups) .') or ';
 		}
 		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
-	} elseif ($module == 'Calendar') {
-		require_once 'modules/Calendar/CalendarCommon.php';
-		$shared_ids = getSharedCalendarId($current_user->id);
-		if (isset($shared_ids) && $shared_ids != '') {
-			$condition = " or (vtiger_crmentity$module.smownerid in($shared_ids) and vtiger_activity.visibility = 'Public')";
-		} else {
-			$condition = null;
-		}
-		$sec_query = " and (vtiger_crmentity$module.smownerid in($current_user->id) $condition or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%')";
-		if (!empty($current_user_groups)) {
-			$sec_query .= " or ((vtiger_groups$module.groupid in (". implode(',', $current_user_groups) .")))";
-		}
-		$sec_query .= ')';
 	} elseif ($module == 'Quotes') {
 		$sec_query = " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity$module.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")";
 		//Adding criteria for account related quotes sharing

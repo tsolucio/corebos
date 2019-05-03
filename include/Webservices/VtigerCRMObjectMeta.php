@@ -59,8 +59,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 	}
 
 	/**
-	 * returns tabid that can be consumed for database lookup purpose generally, events and
-	 * calendar are treated as the same module
+	 * returns tabid that can be consumed for database lookup
 	 * @return Integer
 	 */
 	public function getEffectiveTabId() {
@@ -68,9 +67,6 @@ class VtigerCRMObjectMeta extends EntityMeta {
 	}
 
 	public function getTabName() {
-		if ($this->objectName == 'Events') {
-			return 'Calendar';
-		}
 		return $this->objectName;
 	}
 
@@ -381,12 +377,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		global $adb;
 		$tabid = $this->getTabId();
 		$uniqueFieldsRestriction = 'vtiger_field.fieldid IN (select min(vtiger_field.fieldid) from vtiger_field where vtiger_field.tabid=? GROUP BY vtiger_field.columnname)';
-		//Select condition if we are in Calendar
-		if ($tabid == '9') {
-			$condition = "($uniqueFieldsRestriction or vtiger_field.tablename='vtiger_activitycf')";
-		} else {
-			$condition = $uniqueFieldsRestriction;
-		}
+		$condition = $uniqueFieldsRestriction;
 		$userprivs = $this->user->getPrivileges();
 		if ($userprivs->hasGlobalReadPermission()) {
 			$sql = "SELECT vtiger_field.*, '0' as readonly, vtiger_blocks.sequence as blkseq
@@ -457,9 +448,6 @@ class VtigerCRMObjectMeta extends EntityMeta {
 			if ($result != null && isset($result)) {
 				if ($adb->num_rows($result)>0) {
 					$seType = $adb->query_result($result, 0, 'setype');
-					if ($seType == 'Calendar') {
-						$seType = vtws_getCalendarEntityType($id);
-					}
 				}
 			}
 		}

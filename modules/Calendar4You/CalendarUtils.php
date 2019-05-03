@@ -314,7 +314,7 @@ function getCalendar4YouListQuery($userid, $invites, $where = '', $type = '1') {
 
 	$query.=" WHERE vtiger_crmentity.deleted = 0 AND activitytype != 'Emails' " . $where;
 
-	$query = listQueryNonAdminChange($query, 'Calendar');
+	$query = listQueryNonAdminChange($query, 'cbCalendar');
 
 	$log->debug('< getListQuery');
 	return $query;
@@ -812,5 +812,25 @@ function Calendar_getReferenceFieldColumnsList($module, $sort = true) {
 		});
 	}
 	return $ret_module_list;
+}
+
+/**
+ * To get userid and username of all users except the current user
+ * @param $id -- The user id :: Type integer
+ * @return array $user_details -- in the following format:
+ *    $user_details=Array($userid1=>$username, $userid2=>$username,...,$useridn=>$username);
+ */
+function getOtherUserName($id) {
+	global $adb;
+	$user_details = array();
+	$query = "select * from vtiger_users where deleted=0 and status='Active' and id!=? order by concat( first_name, ' ', last_name )";
+	$result = $adb->pquery($query, array($id));
+	$num_rows = $adb->num_rows($result);
+	for ($i = 0; $i<$num_rows; $i++) {
+		$userid = $adb->query_result($result, $i, 'id');
+		$username = getFullNameFromQResult($result, $i, 'Users');
+		$user_details[$userid]=$username;
+	}
+	return $user_details;
 }
 ?>

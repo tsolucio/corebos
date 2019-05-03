@@ -230,7 +230,7 @@ function VTEmailTask($) {
 				select.append('<option class="'+optionClass+'" value="'+plval+'">' + v.groupname + '</option>');
 			});
 		}
-		if (parentModule=='Events') {
+		if (parentModule=='cbCalendar') {
 			select.append('<option class="'+optionClass+'" value="(general : (__VtigerMeta__) Events_Users_Invited)">Invited Users</option>');
 		}
 	}

@@ -72,12 +72,12 @@ if (isPermitted('Reports', 'DetailView') == 'yes' && vtlib_isModuleActive('Repor
 $homedetails = $homeObj->getHomePageFrame();
 $maxdiv = count($homedetails)-1;
 $user_name = $current_user->column_fields['user_name'];
-$buttoncheck['Calendar'] = isPermitted('Calendar', 'index');
+$buttoncheck['Calendar'] = isPermitted('cbCalendar', 'index');
 $freetag = new freetag();
 $numberofcols = getNumberOfColumns();
 
 $smarty->assign('CHECK', $buttoncheck);
-$smarty->assign('CALENDAR_ACTIVE', (vtlib_isModuleActive('Calendar') ? 'yes' : 'no'));
+$smarty->assign('CALENDAR_ACTIVE', (vtlib_isModuleActive('cbCalendar') ? 'yes' : 'no'));
 $smarty->assign('IMAGE_PATH', $image_path);
 $smarty->assign('MODULE', 'Home');
 $smarty->assign('CATEGORY', getParenttab('Home'));

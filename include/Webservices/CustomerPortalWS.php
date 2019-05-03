@@ -434,12 +434,8 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 			INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid = vtiger_field.fieldid
 			INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid = vtiger_field.fieldid';
 
-			if ($module == 'Calendar') {
-				$query .=' WHERE vtiger_field.tabid in (9,16) and vtiger_field.presence in (0,2)';
-			} else {
-				$query .=' WHERE vtiger_field.tabid = ? and vtiger_field.presence in (0,2)';
-				$params[] = $tabid;
-			}
+			$query .=' WHERE vtiger_field.tabid = ? and vtiger_field.presence in (0,2)';
+			$params[] = $tabid;
 
 			$query .=' AND vtiger_profile2field.visible = 0
 			AND vtiger_profile2field.visible = 0
@@ -461,12 +457,8 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 	$params = array();
 	$query = 'SELECT uitype, columnname, fieldname FROM vtiger_field ';
 
-	if ($module == 'Calendar') {
-		$query .=' WHERE vtiger_field.tabid in (9,16) and vtiger_field.presence in (0,2)';
-	} else {
-		$query .=' WHERE vtiger_field.tabid = ? and vtiger_field.presence in (0,2)';
-		$params[] = $tabid;
-	}
+	$query .=' WHERE vtiger_field.tabid = ? and vtiger_field.presence in (0,2)';
+	$params[] = $tabid;
 	$query .= ' AND fieldname IN ('. generateQuestionMarks($field_list).') ';
 	$params[] = $field_list;
 
@@ -531,62 +523,27 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 						}
 						$value = $adb->query_result($list_result, $i-1, $colname);
 					} else {
-						if ($module == 'Calendar') {
-							$act_id = $adb->query_result($list_result, $i-1, 'activityid');
-
-							$cal_sql = 'select activitytype from vtiger_activity where activityid=?';
-							$cal_res = $adb->pquery($cal_sql, array($act_id));
-							if ($adb->num_rows($cal_res)>=0) {
-								$activitytype = $adb->query_result($cal_res, 0, 'activitytype');
-							}
-						}
 						if (($module=='Emails' || $module=='HelpDesk' || $module=='Invoice' || $module=='Leads' || $module=='Contacts')
 							&& (($fieldname=='parent_id') || ($name=='Contact Name') || ($fieldname == 'firstname'))
 						) {
-							if ($module == 'Calendar') {
-								if ($fieldname=='status') {
-									if ($activitytype == 'Task') {
-										$fieldname='taskstatus';
-									} else {
-										$fieldname='eventstatus';
-									}
+							if ($fieldname=='parent_id') {
+								$value=getRelatedTo($module, $list_result, $i-1);
+							}
+							if ($name=='Contact Name') {
+								$contact_id = $adb->query_result($list_result, $i-1, 'contactid');
+								$contact_name = getFullNameFromQResult($list_result, $i-1, 'Contacts');
+								$value='';
+								//Added to get the contactname for activities custom view - t=2190
+								if ($contact_id != '' && !empty($contact_name)) {
+									$contact_name = getContactName($contact_id);
 								}
-								if ($activitytype == 'Task') {
-									if (getFieldVisibilityPermission('Calendar', $current_user->id, $fieldname) == '0') {
-										$has_permission = 'yes';
-									} else {
-										$has_permission = 'no';
-									}
-								} else {
-									if (getFieldVisibilityPermission('Events', $current_user->id, $fieldname) == '0') {
-										$has_permission = 'yes';
-									} else {
-										$has_permission = 'no';
-									}
+								if (($contact_name != '') && ($contact_id !='NULL')) {
+									$value = $contact_name;
 								}
 							}
-							if ($module != 'Calendar' || ($module == 'Calendar' && $has_permission == 'yes')) {
-								if ($fieldname=='parent_id') {
-									$value=getRelatedTo($module, $list_result, $i-1);
-								}
-								if ($name=='Contact Name') {
-									$contact_id = $adb->query_result($list_result, $i-1, 'contactid');
-									$contact_name = getFullNameFromQResult($list_result, $i-1, 'Contacts');
-									$value='';
-									//Added to get the contactname for activities custom view - t=2190
-									if ($contact_id != '' && !empty($contact_name)) {
-										$contact_name = getContactName($contact_id);
-									}
-									if (($contact_name != '') && ($contact_id !='NULL')) {
-										$value = $contact_name;
-									}
-								}
-								if ($fieldname == 'firstname') {
-									$first_name = textlength_check($adb->query_result($list_result, $i-1, 'firstname'));
-									$value =$first_name;
-								}
-							} else {
-								$value = '';
+							if ($fieldname == 'firstname') {
+								$first_name = textlength_check($adb->query_result($list_result, $i-1, 'firstname'));
+								$value =$first_name;
 							}
 						} elseif ($module=='Documents'
 							&& ($fieldname=='filelocationtype' || $fieldname=='filename' || $fieldname=='filesize' || $fieldname=='filestatus' || $fieldname=='filetype')
@@ -753,24 +710,6 @@ function getSearchingListViewEntries($focus, $module, $list_result, $navigation_
 								$result=$adb->pquery($sql, array($entity_id));
 								$email_flag=$adb->query_result($result, 0, 'email_flag');
 								if ($email_flag != 'SAVED') {
-									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '', $returnset, $oCv->setdefaultviewid, false);
-									$value = evvt_strip_html_links($value);
-								} else {
-									$value = '';
-								}
-							}
-						} elseif ($module == 'Calendar' && ($fieldname!='taskstatus' && $fieldname!='eventstatus')) {
-							if ($activitytype == 'Task') {
-								if (getFieldVisibilityPermission('Calendar', $current_user->id, $fieldname) == '0') {
-									$list_result_count = $i-1;
-									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '', $returnset, $oCv->setdefaultviewid, false);
-									$value = evvt_strip_html_links($value);
-								} else {
-									$value = '';
-								}
-							} else {
-								if (getFieldVisibilityPermission('Events', $current_user->id, $fieldname) == '0') {
-									$list_result_count = $i-1;
 									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '', $returnset, $oCv->setdefaultviewid, false);
 									$value = evvt_strip_html_links($value);
 								} else {

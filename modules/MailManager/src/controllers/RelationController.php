@@ -113,13 +113,7 @@ class MailManager_RelationController extends MailManager_Controller {
 
 			$qcreate_array['form'] = $this->processFormData($qcreate_array['form'], $mail);
 			$viewer->assign('QUICKCREATE', $qcreate_array['form']);
-			if ($moduleName == 'Calendar') {
-				$viewer->assign('QCMODULE', getTranslatedString('Todo', 'Calendar'));
-			} elseif ($moduleName == 'HelpDesk') {
-				$viewer->assign('QCMODULE', getTranslatedString('Ticket', 'HelpDesk'));
-			} else {
-				$viewer->assign('QCMODULE', getTranslatedString('SINGLE_'.$moduleName, $moduleName));
-			}
+			$viewer->assign('QCMODULE', getTranslatedString('SINGLE_'.$moduleName, $moduleName));
 			$viewer->assign('PARENT', $parent);
 			$viewer->assign('MODULE', $moduleName);
 			$viewer->assign('MSGNO', $request->get('_msgno'));
@@ -164,27 +158,6 @@ class MailManager_RelationController extends MailManager_Controller {
 			$linkedto = MailManager_RelationControllerAction::getSalesEntityInfo($parent);
 
 			switch ($linkModule) {
-				case 'Calendar':
-					if (empty($focus->column_fields['activitytype'])) {
-						$focus->column_fields['activitytype'] = 'Task';
-					}
-
-					if (empty($focus->column_fields['due_date'])) {
-						if (!empty($focus->column_fields['date_start'])) {
-							$dateStart = getValidDBInsertDateValue($focus->column_fields['date_start']);
-							$focus->column_fields['due_date'] = date("Y-m-d", strtotime(date("Y-m-d", strtotime($dateStart)) . " +1 day"));
-						} else {
-							$focus->column_fields['due_date'] = date('Y-m-d', strtotime("+1 day"));
-						}
-					}
-					if (!empty($parent)) {
-						if ($linkedto['module'] == 'Contacts') {
-							$focus->column_fields['contact_id'] = $parent;
-						} else {
-							$focus->column_fields['parent_id'] = $parent;
-						}
-					}
-					break;
 				case 'HelpDesk':
 					$from = $mail->from();
 					$focus->column_fields['parent_id'] = $this->setParentForHelpDesk($parent, $from);

@@ -192,26 +192,9 @@
 			        	    	<tbody>
 						{if !empty($FIELD_PRIVILEGES[$tabid])}
 						<tr>
-							{if $modulename eq 'Calendar'}
-								<td class="small colHeader cblds-p-v_mediumsmall" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN} ({$APP.Tasks})</td>
-							{else}
-								<td class="small colHeader cblds-p-v_mediumsmall" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN}</td>
-							{/if}
-					        </tr>
-						{foreach item=row_values from=$FIELD_PRIVILEGES[$tabid]}
-				            	<tr>
-						      {foreach item=element from=$row_values}
-					              <td valign="top">{$element.2}{$element.1}{$element.3}</td>
-					              <td>{$element.0}</td>
-						      {/foreach}
-				                </tr>
-						{/foreach}
-						{/if}
-						{if $modulename eq 'Calendar'}
-						<tr>
-							<td class="small colHeader" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN} ({$APP.Events})</td>
+							<td class="small colHeader cblds-p-v_mediumsmall" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN}</td>
 						</tr>
-						{foreach item=row_values from=$FIELD_PRIVILEGES[16]}
+						{foreach item=row_values from=$FIELD_PRIVILEGES[$tabid]}
 				            	<tr>
 						      {foreach item=element from=$row_values}
 					              <td valign="top">{$element.2}{$element.1}{$element.3}</td>

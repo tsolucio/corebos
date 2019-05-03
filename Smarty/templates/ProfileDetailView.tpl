@@ -248,29 +248,9 @@ function UpdateProfile() {
 			        	    	<tbody>
 						{if !empty($FIELD_PRIVILEGES[$tabid])}
 						<tr>
-							{if $modulename eq 'Calendar'}
-								<td class="small colHeader cblds-p-v_medium" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN} ({$APP.Tasks})</td>
-							{else}
-								<td class="small colHeader cblds-p-v_medium" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN}</td>
-							{/if}
+							<td class="small colHeader cblds-p-v_medium" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN}</td>
 						</tr>
 						{foreach item=row_values from=$FIELD_PRIVILEGES[$tabid]}
-				            	<tr>
-						      {foreach item=element from=$row_values}
-					              <td valign="top" class="cblds-p_none cblds-p-v_mediumsmall">
-									  <span>{$element.1}</span>
-									  <span>{$element.2}</span>
-								  </td>
-					              <td class="cblds-p_none cblds-p-v_mediumsmall">{$element.0}</td>
-						      {/foreach}
-				                </tr>
-						{/foreach}
-						{/if}
-						{if $modulename eq 'Calendar'}
-						<tr>
-							<td class="small colHeader cblds-p-v_medium" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN}  ({$APP.Events})</td>
-						</tr>
-						{foreach item=row_values from=$FIELD_PRIVILEGES[16]}
 				            	<tr>
 						      {foreach item=element from=$row_values}
 					              <td valign="top" class="cblds-p_none cblds-p-v_mediumsmall">

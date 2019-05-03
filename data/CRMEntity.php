@@ -65,10 +65,6 @@ class CRMEntity {
 
 	public static function getInstance($module) {
 		$modName = $module;
-		if ($module == 'Calendar' || $module == 'Events') {
-			$module = 'Calendar';
-			$modName = 'Activity';
-		}
 		// File access security check
 		if (!class_exists($modName)) {
 			checkFileAccessForInclusion("modules/$module/$modName.php");
@@ -430,9 +426,6 @@ class CRMEntity {
 			}
 		}
 
-		if ($module == 'Events') {
-			$module = 'Calendar';
-		}
 		$description_val = (empty($this->column_fields['description']) ? '' : $this->column_fields['description']);
 		if ($this->mode == 'edit') {
 			$userprivs = $current_user->getPrivileges();
@@ -541,9 +534,6 @@ class CRMEntity {
 		$selectFields = 'fieldname, columnname, uitype, typeofdata';
 
 		$tabid = getTabid($module);
-		if ($module == 'Calendar' && $this->column_fields["activitytype"] != null && $this->column_fields["activitytype"] != 'Task') {
-			$tabid = getTabid('Events');
-		}
 		$uniqueFieldsRestriction = 'vtiger_field.fieldid IN (select min(vtiger_field.fieldid) from vtiger_field where vtiger_field.tabid=? GROUP BY vtiger_field.columnname)';
 		if ($insertion_mode == 'edit') {
 			$update = array();
@@ -1760,9 +1750,6 @@ class CRMEntity {
 		$exclude_uitypes = array();
 
 		$tabid = getTabId($module);
-		if ($module == 'Calendar') {
-			$tabid = array('9', '16');
-		}
 		$sql = 'SELECT columnname FROM vtiger_field WHERE tabid in (' . generateQuestionMarks($tabid) . ') and vtiger_field.presence in (0,2)';
 		$params = array($tabid);
 		if (count($exclude_columns) > 0) {
@@ -3229,7 +3216,7 @@ class CRMEntity {
 			if (!empty($sharingRuleInfo) && (count($sharingRuleInfo['ROLE']) > 0 || count($sharingRuleInfo['GROUP']) > 0)) {
 				$tableName = $tableName . '_t' . $tabId;
 				$sharedTabId = $tabId;
-			} elseif ($module == 'Calendar' || !empty($scope)) {
+			} elseif (!empty($scope)) {
 				$tableName .= '_t' . $tabId;
 			}
 			list($tsSpecialAccessQuery, $typeOfPermissionOverride, $unused1, $unused2, $SpecialPermissionMayHaveDuplicateRows) = cbEventHandler::do_filter(

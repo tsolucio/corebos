@@ -2124,20 +2124,15 @@ function SelectAll(mod, parmod) {
 	if (document.selectall.selected_id != undefined) {
 		x = document.selectall.selected_id.length;
 		var y=0;
-		if (parmod != 'Calendar') {
-			var module = window.opener.document.getElementById('RLreturn_module').value;
-			var entity_id = window.opener.document.getElementById('RLparent_id').value;
-			var parenttab = window.opener.document.getElementById('parenttab').value;
-		}
+		var module = window.opener.document.getElementById('RLreturn_module').value;
+		var entity_id = window.opener.document.getElementById('RLparent_id').value;
+		var parenttab = window.opener.document.getElementById('parenttab').value;
 		idstring = '';
 		namestr = '';
 
 		if (x == undefined) {
 			if (document.selectall.selected_id.checked) {
 				idstring = document.selectall.selected_id.value;
-				if (parmod == 'Calendar') {
-					namestr = document.getElementById('calendarCont'+idstring).innerHTML;
-				}
 				y=1;
 			} else {
 				alert(alert_arr.SELECT);
@@ -2148,10 +2143,6 @@ function SelectAll(mod, parmod) {
 			for (i = 0; i < x; i++) {
 				if (document.selectall.selected_id[i].checked) {
 					idstring = document.selectall.selected_id[i].value +';'+idstring;
-					if (parmod == 'Calendar') {
-						idval = document.selectall.selected_id[i].value;
-						namestr = document.getElementById('calendarCont'+idval).innerHTML+'\n'+namestr;
-					}
 					y=y+1;
 				}
 			}
@@ -2163,47 +2154,7 @@ function SelectAll(mod, parmod) {
 			return false;
 		}
 		if (confirm(alert_arr.ADD_CONFIRMATION+y+alert_arr.RECORDS)) {
-			if (parmod == 'Calendar') {
-				//this blcok has been modified to provide delete option for contact in Calendar
-				idval = window.opener.document.EditView.contactidlist.value;
-				if (idval != '') {
-					var avalIds = new Array();
-					avalIds = idstring.split(';');
-
-					var selectedIds = new Array();
-					selectedIds = idval.split(';');
-
-					for (i=0; i < (avalIds.length-1); i++) {
-						var rowFound=false;
-						for (k=0; k < selectedIds.length; k++) {
-							if (selectedIds[k]==avalIds[i]) {
-								rowFound=true;
-								break;
-							}
-						}
-						if (rowFound != true) {
-							idval = idval+';'+avalIds[i];
-							window.opener.document.EditView.contactidlist.value = idval;
-							var str=document.getElementById('calendarCont'+avalIds[i]).innerHTML;
-							window.opener.addOption(avalIds[i], str);
-						}
-					}
-				} else {
-					window.opener.document.EditView.contactidlist.value = idstring;
-					var temp = new Array();
-					temp = namestr.split('\n');
-
-					var tempids = new Array();
-					tempids = idstring.split(';');
-
-					for (k=0; k < temp.length; k++) {
-						window.opener.addOption(tempids[k], temp[k]);
-					}
-				}
-			//end
-			} else {
-				opener.document.location.href='index.php?module='+module+'&parentid='+entity_id+'&action=updateRelations&destination_module='+mod+'&idlist='+idstring+'&parenttab='+parenttab;
-			}
+			opener.document.location.href='index.php?module='+module+'&parentid='+entity_id+'&action=updateRelations&destination_module='+mod+'&idlist='+idstring+'&parenttab='+parenttab;
 			if (document.getElementById('closewindow').value=='true') {
 				self.close();
 			}
@@ -2354,28 +2305,6 @@ function selectContact(check, type, frmName) {
 			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView'+module_string+'&relmod_id='+record_id, 'test', 'width=640,height=602,resizable=0,scrollbars=0');
 		} else {
 			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
-		}
-	} else if ((document.getElementById('parentid')) && type != 'task') {
-		if (getObj('parent_type')) {
-			rel_parent_module = frmName.parent_type.value;
-			record_id = frmName.parent_id.value;
-			module = rel_parent_module.split('&');
-			if (record_id != '' && module[0] == 'Leads') {
-				alert(alert_arr.CANT_SELECT_CONTACTS);
-			} else {
-				if (check == 'true') {
-					search_string = '&return_module=Calendar&select=enable&popuptype=detailview&form_submit=false';
-				} else {
-					search_string='&popuptype=specific';
-				}
-				if (record_id != '') {
-					window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&form=EditView'+search_string+'&relmod_id='+record_id+'&parent_module='+module[0], 'test', 'width=640,height=602,resizable=0,scrollbars=0');
-				} else {
-					window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&form=EditView'+search_string, 'test', 'width=640,height=602,resizable=0,scrollbars=0');
-				}
-			}
-		} else {
-			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&return_module=Calendar&select=enable&popuptype=detailview&form=EditView&form_submit=false', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
 		}
 	} else if ((document.getElementById('contact_name')) && type == 'task') {
 		var formName = frmName.name;

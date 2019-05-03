@@ -76,13 +76,7 @@ class ModTracker_Basic {
 		if (isset($current_user) && is_admin($current_user)) {
 			return true;
 		}
-		// Does current user has access to view the record that was tracked?
-		if ($this->module == 'Events') {
-			$moduleName = 'Calendar';
-		} else {
-			$moduleName = $this->module;
-		}
-		return (isPermitted($moduleName, 'DetailView', $this->crmid) == "yes");
+		return (isPermitted($this->module, 'DetailView', $this->crmid) == 'yes');
 	}
 
 	public static function getById($id) {

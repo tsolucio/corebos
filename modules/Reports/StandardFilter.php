@@ -79,9 +79,6 @@ function getPrimaryStdFilterHTML($module, $selected = "") {
 	if (isset($result)) {
 		$i18nModule = getTranslatedString($module, $module);
 		foreach ($result as $key => $value) {
-			if ($module == 'Calendar' || $module == 'Events') {
-				$key = str_replace('&amp;', 'and', $key);
-			}
 			if ($key == $selected) {
 				$shtml .= '<option selected value="'.$key.'">'.$i18nModule.' - '.getTranslatedString($value, $secmodule[$i]).'</option>';
 			} else {

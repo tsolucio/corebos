@@ -9,7 +9,6 @@
  ************************************************************************************/
 require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
-require_once 'modules/Calendar/Activity.php';
 require_once 'modules/Campaigns/Campaigns.php';
 require_once 'modules/Documents/Documents.php';
 require_once 'modules/Emails/Emails.php';

@@ -26,11 +26,6 @@ for ($i=0; $i<$num_rows; $i++) {
 		$sql8='update vtiger_def_org_share set permission=? where tabid=4';
 		$adb->pquery($sql8, array($permission));
 	}
-
-	if ($tabid == 9) {
-		$sql8='update vtiger_def_org_share set permission=? where tabid=16';
-		$adb->pquery($sql8, array($permission));
-	}
 }
 $loc = 'Location: index.php?action=OrgSharingDetailView&module=Settings&parenttab=Settings';
 header($loc);

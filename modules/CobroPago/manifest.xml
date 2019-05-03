@@ -608,19 +608,12 @@
 <action>ADD</action>
 <action>SELECT</action>
 </actions>
-<relatedmodule>Calendar</relatedmodule>
-</relatedlist>
-<relatedlist>
-<function>get_history</function>
-<label>Activity History</label>
-<sequence>2</sequence>
-<presence>0</presence>
-<relatedmodule>Calendar</relatedmodule>
+<relatedmodule>cbCalendar</relatedmodule>
 </relatedlist>
 <relatedlist>
 <function>get_attachments</function>
 <label>Documents</label>
-<sequence>3</sequence>
+<sequence>2</sequence>
 <presence>0</presence>
 <actions>
 <action>ADD</action>
@@ -631,7 +624,7 @@
 <relatedlist>
 <function>get_history_cobropago</function>
 <label>Historico de Cobros y Pagos</label>
-<sequence>4</sequence>
+<sequence>3</sequence>
 <presence>0</presence>
 <actions>
 <action>ADD</action>

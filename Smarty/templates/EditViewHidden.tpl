@@ -41,10 +41,6 @@
 {elseif $MODULE eq 'Potentials'}
 	<input type="hidden" name="contact_id" value="{if isset($CONTACT_ID)}{$CONTACT_ID}{/if}">
 
-{elseif $MODULE eq 'Calendar'}
-	<input type="hidden" name="activity_mode" value="{$ACTIVITY_MODE}">
-	<input type="hidden" name="product_id" value="{$PRODUCTID}">
-
 {elseif $MODULE eq 'Leads'}
 	<input type="hidden" name="campaignid" value="{if isset($campaignid)}{$campaignid}{/if}">
 

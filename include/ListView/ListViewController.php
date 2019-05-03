@@ -680,11 +680,7 @@ class ListViewController {
 		if ($module == 'Emails') {
 			return 'javascript:;" onclick="OpenCompose(\''.$recordId.'\',\'edit\');';
 		}
-		if ($module != 'Calendar') {
-			$return_action = 'index';
-		} else {
-			$return_action = 'ListView';
-		}
+		$return_action = 'index';
 		//Added to fix 4600
 		$url = getBasic_Advance_SearchURL();
 		$parent = getParentTab();
@@ -692,14 +688,6 @@ class ListViewController {
 		$link = "index.php?module=$module&action=EditView&record=$recordId&return_module=$module".
 			"&return_action=$return_action&parenttab=$parent".$url."&return_viewname=".
 			((isset($_SESSION['lvs']) && isset($_SESSION['lvs'][$module])) ? $_SESSION['lvs'][$module]['viewname'] : '');
-
-		if ($module == 'Calendar') {
-			if ($activityType == 'Task') {
-				$link .= '&activity_mode=Task';
-			} else {
-				$link .= '&activity_mode=Events';
-			}
-		}
 		return $link;
 	}
 
@@ -708,11 +696,7 @@ class ListViewController {
 		$viewname = ((isset($_SESSION['lvs']) && isset($_SESSION['lvs'][$module])) ? $_SESSION['lvs'][$module]['viewname'] : '');
 		//Added to fix 4600
 		$url = getBasic_Advance_SearchURL();
-		if ($module == "Calendar") {
-			$return_action = "ListView";
-		} else {
-			$return_action = "index";
-		}
+		$return_action = "index";
 		//This is added to avoid the del link in Product related list for the following modules
 		$link = "index.php?module=$module&action=Delete&record=$recordId".
 			"&return_module=$module&return_action=$return_action".

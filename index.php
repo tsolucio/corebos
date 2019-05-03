@@ -493,9 +493,6 @@ if (isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_aut
 }
 $theme = basename(vtlib_purify($theme));
 $Ajx_module = (isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : $module);
-if ($Ajx_module == 'Events') {
-	$Ajx_module = 'Calendar';
-}
 if ((!$viewAttachment) && (!$viewAttachment && $action!='home_rss') && $action!=$Ajx_module.'Ajax' && $action!='massdelete' && $action!='DashboardAjax' && $action!='ActivityAjax') {
 	if ((!$skipFooters) && $action != "ChangePassword" && $action != "body" && $action != $Ajx_module."Ajax" && $action!='Popup' && $action != 'ImportStep3' && $action != 'ActivityAjax' && $action != 'getListOfRecords') {
 		cbEventHandler::do_action('corebos.footer.prefooter');

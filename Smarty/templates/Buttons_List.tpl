@@ -78,7 +78,7 @@
 		</div>
 	</div>
 	<div class="slds-p-right_medium">
-		{if $CHECK.CreateView eq 'yes' && ($MODULE eq 'Calendar' || $MODULE eq 'Calendar4You')}
+		{if $CHECK.CreateView eq 'yes' && $MODULE eq 'Calendar4You'}
 			<span id="LB_AddButton" class="LB_Button slds-p-left_small slds-p-right_none"><img src="{$IMAGE_PATH}btnL3Add.gif" alt="{$MOD.LBL_ADD_EVENT}" title="{$MOD.LBL_ADD_EVENT}" border=0 {$ADD_ONMOUSEOVER}></span>
 		{elseif $CHECK.CreateView eq 'yes' && $MODULE neq 'Emails'}
 			<span id="LB_AddButton" class="LB_Button slds-p-left_small slds-p-right_none"><a href="index.php?module={$MODULE}&action=EditView&return_action=DetailView&parenttab={$CATEGORY}"><img src="{$IMAGE_PATH}btnL3Add.gif" alt="{$APP.LBL_CREATE_BUTTON_LABEL} {$SINGLE_MOD|getTranslatedString:$MODULE}..." title="{$APP.LBL_CREATE_BUTTON_LABEL} {$SINGLE_MOD|getTranslatedString:$MODULE}..." border=0></a></span>
@@ -105,17 +105,13 @@
 		{if $WORLD_CLOCK_DISPLAY eq 'true'}
 			<span id="LB_ClockButton" class="LB_Button slds-p-left_none slds-p-right_x-small"><a href="javascript:;"><img src="{$IMAGE_PATH}btnL3Clock.gif" alt="{$APP.LBL_CLOCK_ALT}" title="{$APP.LBL_CLOCK_TITLE}" border=0 onClick="fnvshobj(this,'wclock');"></a></span>
 		{/if}
-		{if $CHECK.Import eq 'yes' && $MODULE neq 'Documents' && $MODULE neq 'Calendar' && $MODULE neq 'Calendar4You'}
+		{if $CHECK.Import eq 'yes' && $MODULE neq 'Documents' && $MODULE neq 'Calendar4You'}
 			<span id="LB_ImportButton" class="LB_Button slds-p-left_x-small slds-p-right_none"><a href="index.php?module={$MODULE}&action=Import&step=1&return_module={$MODULE}&return_action=index&parenttab={$CATEGORY}"><img src="{$IMAGE_PATH}tbarImport.gif" alt="{$APP.LBL_IMPORT} {$MODULE|getTranslatedString:$MODULE}" title="{$APP.LBL_IMPORT} {$MODULE|getTranslatedString:$MODULE}" border="0"></a></span>
-		{elseif $CHECK.Import eq 'yes' && $MODULE eq 'Calendar'}
-			<span id="LB_ImportButton" class="LB_Button slds-p-left_x-small slds-p-right_none"><a name='import_link' href="javascript:void(0);" onclick="fnvshobj(this,'CalImport');" ><img src="{$IMAGE_PATH}tbarImport.gif" alt="{$APP.LBL_IMPORT} {$MODULE|getTranslatedString:$MODULE}" title="{$APP.LBL_IMPORT} {$MODULE|getTranslatedString:$MODULE}" border="0"></a></span>
 		{else}
 			<span id="LB_ImportButtonFaded" class="LB_Button slds-p-left_x-small slds-p-right_none"><img src="{'tbarImport-Faded.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
 		{/if}
-		{if $CHECK.Export eq 'yes' && $MODULE neq 'Calendar' && $MODULE neq 'Calendar4You'}
+		{if $CHECK.Export eq 'yes' && $MODULE neq 'Calendar4You'}
 			<span id="LB_ExportButton" class="LB_Button slds-p-left_none slds-p-right_xx-small"><a name='export_link' href="javascript:void(0)" onclick="return selectedRecords('{$MODULE}','{$CATEGORY}')"><img src="{$IMAGE_PATH}tbarExport.gif" alt="{$APP.LBL_EXPORT} {$MODULE|getTranslatedString:$MODULE}" title="{$APP.LBL_EXPORT} {$MODULE|getTranslatedString:$MODULE}" border="0"></a></span>
-		{elseif $CHECK.Export eq 'yes' && $MODULE eq 'Calendar'}
-			<span id="LB_ExportButton" class="LB_Button slds-p-left_none slds-p-right_xx-small"><a name='export_link' href="javascript:void(0);" onclick="fnvshobj(this,'CalExport');" ><img src="{$IMAGE_PATH}tbarExport.gif" alt="{$APP.LBL_EXPORT} {$MODULE|getTranslatedString:$MODULE}" title="{$APP.LBL_EXPORT} {$MODULE|getTranslatedString:$MODULE}" border="0"></a></sp>
 		{else}
 			<span id="LB_ExportButtonFaded" class="LB_Button slds-p-left_none slds-p-right_xx-small"><img src="{'tbarExport-Faded.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
 		{/if}

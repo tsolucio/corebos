@@ -110,7 +110,7 @@ class DataTransform {
 				}
 				$row['contact_id'] = implode(';', $ctowsids);
 			}
-		} elseif (strtolower($meta->getEntityName()) == 'calendar') {
+		} elseif (strtolower($meta->getEntityName()) == 'cbcalendar') {
 			if (empty($row['sendnotification']) || strtolower($row['sendnotification'])=='no'
 				|| $row['sendnotification'] == '0' || $row['sendnotification'] == 'false'
 				|| strtolower($row['sendnotification']) == 'n'

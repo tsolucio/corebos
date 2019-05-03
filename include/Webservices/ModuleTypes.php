@@ -31,10 +31,6 @@ function vtws_listtypes($fieldTypeList, $user) {
 		vtws_preserveGlobal('current_user', $user);
 		//get All the modules the current user is permitted to Access.
 		$allModuleNames = getPermittedModuleNames();
-		if (in_array('Calendar', $allModuleNames)) {
-			$allModuleNames[] = 'Events';
-		}
-
 		if (!empty($fieldTypeList)) {
 			$sql = 'SELECT distinct(vtiger_field.tabid) as tabid
 				FROM vtiger_field LEFT JOIN vtiger_ws_fieldtype ON vtiger_field.uitype=vtiger_ws_fieldtype.uitype
@@ -114,11 +110,10 @@ function vtws_listtypes($fieldTypeList, $user) {
 
 	$informationArray = array();
 	foreach ($accessibleModules as $module) {
-		$vtigerModule = ($module == 'Events') ? 'Calendar' : $module;
 		$informationArray[$module] = array(
 			'isEntity'=>true,
-			'label'=>getTranslatedString($module, $vtigerModule),
-			'singular'=>getTranslatedString('SINGLE_'.$module, $vtigerModule)
+			'label'=>getTranslatedString($module, $module),
+			'singular'=>getTranslatedString('SINGLE_'.$module, $module)
 		);
 	}
 

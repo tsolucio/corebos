@@ -363,14 +363,6 @@ class WebserviceField {
 				$referenceTypes[] = $this->pearDB->query_result($result, $i, "type");
 			}
 
-			//to handle hardcoding done for Calendar module todo activities.
-			if ($this->tabid == 9 && $this->fieldName =='parent_id') {
-				$referenceTypes[] = 'Invoice';
-				$referenceTypes[] = 'Quotes';
-				$referenceTypes[] = 'PurchaseOrder';
-				$referenceTypes[] = 'SalesOrder';
-				$referenceTypes[] = 'Campaigns';
-			}
 			if ($this->getUIType()==26) { // DocumentFolders
 				$referenceTypes[] = 'DocumentFolders';
 			}
@@ -483,9 +475,6 @@ class WebserviceField {
 
 		$default_charset = VTWS_PreserveGlobal::getGlobal('default_charset');
 		$moduleName = getTabModuleName($this->getTabId());
-		if ($moduleName == 'Events') {
-			$moduleName = 'Calendar';
-		}
 		$temp_mod_strings = ($moduleName != '' ) ? return_module_language($current_language, $moduleName) : $mod_strings;
 		if (array_key_exists($moduleName.$fieldName, $purified_plcache)) {
 			return $purified_plcache[$moduleName.$fieldName];
@@ -543,9 +532,6 @@ class WebserviceField {
 		$fieldName = $this->getFieldName();
 
 		$moduleName = getTabModuleName($this->getTabId());
-		if ($moduleName == 'Events') {
-			$moduleName = 'Calendar';
-		}
 
 		if (array_key_exists($moduleName.$fieldName, $purified_plcache)) {
 			return $purified_plcache[$moduleName.$fieldName];

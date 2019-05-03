@@ -122,11 +122,7 @@ class ChartUtils {
 				if ($fieldDetails != '') {
 					if ($dateField) {
 						$advanceSearchCondition = CustomReportUtils::getAdvanceSearchCondition($fieldDetails, $criteria, $groupFieldValue);
-						if ($module == 'Calendar') {
-							$link_val = "index.php?module=" . $module . "&query=true&action=ListView&" . $advanceSearchCondition;
-						} else {
-							$link_val = "index.php?module=" . $module . "&query=true&action=index&" . $advanceSearchCondition;
-						}
+						$link_val = "index.php?module=" . $module . "&query=true&action=index&" . $advanceSearchCondition;
 					} else {
 						$cvid = getCvIdOfAll($module);
 						$esc_search_str = urlencode($decodedGroupFieldValue);
@@ -142,13 +138,8 @@ class ChartUtils {
 							$colname = 'smownerid';
 						}
 
-						if ($module == 'Calendar') {
-							$link_val = 'index.php?module=' . $module . '&action=ListView&search_text=' . $esc_search_str.
-								'&search_field=' . $fieldname . '&searchtype=BasicSearch&query=true&operator=e&viewname=' . $cvid;
-						} else {
-							$link_val = 'index.php?module=' . $module . '&action=index&search_text=' . $esc_search_str.
-								'&search_field=' . $fieldname . '&searchtype=BasicSearch&query=true&operator=e&viewname=' . $cvid;
-						}
+						$link_val = 'index.php?module=' . $module . '&action=index&search_text=' . $esc_search_str
+							.'&search_field=' . $fieldname . '&searchtype=BasicSearch&query=true&operator=e&viewname=' . $cvid;
 					}
 
 					$target_val[] = $link_val;

@@ -311,10 +311,6 @@ class Homestuff {
 				global $current_language,$app_strings;
 				$fieldmod_strings = return_module_language($current_language, $modname);
 
-				if ($modname == 'Calendar') {
-					$query .= "AND vtiger_activity.activitytype NOT IN ('Emails')";
-				}
-
 				for ($l=0; $l < $column_count; $l++) {
 					$fieldinfo = $adb->query_result($resultcvid, $i, 'field');
 					list($tabname,$colname,$fldname,$fieldmodlabel) = explode(':', $fieldinfo);
@@ -679,7 +675,7 @@ function getGroupTaskLists($maxval) {
 
 	//Check for permission before constructing the query.
 	if (vtlib_isModuleActive('Leads') && count($groupids) > 0 &&
-		(isPermitted('Leads', 'index') == 'yes' || isPermitted('Calendar', 'index') == "yes" || isPermitted('HelpDesk', 'index') == "yes" ||
+		(isPermitted('Leads', 'index') == 'yes' || isPermitted('cbCalendar', 'index') == "yes" || isPermitted('HelpDesk', 'index') == "yes" ||
 		isPermitted('Potentials', 'index') == "yes" || isPermitted('Accounts', 'index') == "yes" || isPermitted('Contacts', 'index') =='yes' ||
 		isPermitted('Campaigns', 'index') =='yes' || isPermitted('SalesOrder', 'index') =='yes' || isPermitted('Invoice', 'index') =='yes' ||
 		isPermitted('PurchaseOrder', 'index') == 'yes')
@@ -692,24 +688,6 @@ function getGroupTaskLists($maxval) {
 				inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_leaddetails.leadid
 				inner join vtiger_groups on vtiger_crmentity.smownerid=vtiger_groups.groupid
 				where vtiger_crmentity.deleted=0 and vtiger_leaddetails.leadid > 0";
-			if (count($groupids) > 0) {
-				$query .= ' and vtiger_groups.groupid in ('. generateQuestionMarks($groupids). ')';
-				$params[] = $groupids;
-			}
-			$query .= " LIMIT $maxval)";
-		}
-
-		if (vtlib_isModuleActive("Calendar") && isPermitted('Calendar', 'index') == "yes") {
-			if ($query !='') {
-				$query .= ' union all ';
-			}
-			//Get the activities assigned to group
-			$query .= "(select vtiger_activity.activityid as id,vtiger_activity.subject as name,vtiger_groups.groupname as groupname,'Activities' as Type
-				from vtiger_activity
-				inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_activity.activityid
-				inner join vtiger_groups on vtiger_crmentity.smownerid=vtiger_groups.groupid
-				where vtiger_crmentity.deleted=0 and ((vtiger_activity.eventstatus != 'held' and (vtiger_activity.status is null or vtiger_activity.status = '')) or
-					(vtiger_activity.status!='completed' and (vtiger_activity.eventstatus is null or vtiger_activity.eventstatus=''))) and vtiger_activity.activityid>0";
 			if (count($groupids) > 0) {
 				$query .= ' and vtiger_groups.groupid in ('. generateQuestionMarks($groupids). ')';
 				$params[] = $groupids;
@@ -906,16 +884,6 @@ function getGroupTaskLists($maxval) {
 				$row["type"]=trim($row["type"]);
 				if ($row["type"] == "Tickets") {
 					$list = '<a href=index.php?module=HelpDesk';
-					$list .= '&action=DetailView&record='.$row["id"].'>'.$row["name"].'</a>';
-				} elseif ($row["type"] == "Activities") {
-					$row["type"] = 'Calendar';
-					$acti_type = getActivityType($row["id"]);
-					$list = '<a href=index.php?module='.$row["type"];
-					if ($acti_type == 'Task') {
-						$list .= '&activity_mode=Task';
-					} elseif ($acti_type == 'Call' || $acti_type == 'Meeting') {
-						$list .= '&activity_mode=Events';
-					}
 					$list .= '&action=DetailView&record='.$row["id"].'>'.$row["name"].'</a>';
 				} else {
 					$list = '<a href=index.php?module='.$row["type"];

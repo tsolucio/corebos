@@ -151,10 +151,10 @@ class VTWorkflowUtils {
 	public static function toWSModuleName($entityData) {
 		$moduleName = $entityData->getModuleName();
 		if ($moduleName == 'Activity') {
-			$arr = array('Task' => 'Calendar', 'Emails' => 'Emails');
+			$arr = array('Task' => 'cbCalendar', 'Emails' => 'Emails');
 			$moduleName = $arr[getActivityType($entityData->getId())];
 			if ($moduleName == null) {
-				$moduleName = 'Events';
+				$moduleName = 'cbCalendar';
 			}
 		}
 		return $moduleName;

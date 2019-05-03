@@ -7,6 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+require_once 'modules/Calendar4You/CalendarUtils.php';
 
 $record = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : null;
 $focus = CRMEntity::getInstance($currentModule);
@@ -183,8 +184,7 @@ if ($record && cbCalendar::getCalendarActivityType($record)=='Emails') {
 	}
 	$smarty->assign('ACTIVITYDATA', $value);
 	$smarty->assign('LABEL', $fldlabel);
-	$userDetails = getOtherUserName($current_user->id);
-	$smarty->assign('USERSLIST', $userDetails);
+	$smarty->assign('USERSLIST', getOtherUserName($current_user->id));
 
 	$smarty->assign('REPEAT_LIMIT_DATEFORMAT', parse_calendardate($app_strings['NTC_DATE_FORMAT']));
 	$smarty->display('salesEditView.tpl');

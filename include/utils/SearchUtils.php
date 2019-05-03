@@ -301,7 +301,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 		//Check ends
 
 		//Added to search contact name by lastname
-		if (($module=='Calendar' || $module=='Invoice' || $module=='Documents' || $module=='SalesOrder' || $module=='PurchaseOrder') && ($search_field=='contact_id')) {
+		if (($module=='Invoice' || $module=='Documents' || $module=='SalesOrder' || $module=='PurchaseOrder') && ($search_field=='contact_id')) {
 			$module = 'Contacts';
 			$search_field = 'lastname';
 		}
@@ -386,24 +386,14 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 							// Use strict type comparision, refer strpos for more details
 							if ($stridx !== 0) {
 								$search_string = $mod_key;
-								if ($input['operator'] == 'e' && getFieldVisibilityPermission("Calendar", $current_user->id, 'taskstatus') == '0' && ($column_name == "status" || $column_name == "eventstatus")) {
-									$where="(vtiger_activity.status IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n='". formatForSqlLike($search_string) ."') OR vtiger_activity.eventstatus IN (select translation_key from vtiger_cbtranslation where forpicklist='$module::$field_name' and i18n='". formatForSqlLike($search_string) ."') OR vtiger_activity.status ='". $search_string ."' or vtiger_activity.eventstatus ='". $search_string ."')";
-								} elseif (getFieldVisibilityPermission("Calendar", $current_user->id, 'taskstatus') == '0' && ($column_name == "status" || $column_name == "eventstatus")) {
-									$where="(vtiger_activity.status IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR vtiger_activity.eventstatus IN (select translation_key from vtiger_cbtranslation where forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR vtiger_activity.status ='". $search_string ."' or vtiger_activity.eventstatus ='". $search_string ."')";
-								} else {
-									$where="$table_name.$column_name IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR $table_name.$column_name like '". formatForSqlLike($search_string) ."'";
-								}
+								$where="$table_name.$column_name IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR $table_name.$column_name like '". formatForSqlLike($search_string) ."'";
 								break;
 							} else { //if the mod strings cointains LBL , just return the original search string. Not the key
 								$where="$table_name.$column_name IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR $table_name.$column_name like '". formatForSqlLike($search_string) ."'";
 							}
 						}
 					} else {
-						if (getFieldVisibilityPermission("Calendar", $current_user->id, 'taskstatus') == '0' && ($table_name == "vtiger_activity" && ($column_name == "status" || $column_name == "eventstatus"))) {
-							$where="(vtiger_activity.status IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR vtiger_activity.eventstatus IN (select translation_key from vtiger_cbtranslation where forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR vtiger_activity.status ='". $search_string ."' or vtiger_activity.eventstatus ='". $search_string ."')";
-						} else {
-							$where="$table_name.$column_name IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR $table_name.$column_name like '". formatForSqlLike($search_string) ."'";
-						}
+						$where="$table_name.$column_name IN (select translation_key from vtiger_cbtranslation where locale='$currlang' and forpicklist='$module::$field_name' and i18n LIKE '". formatForSqlLike($search_string) ."') OR $table_name.$column_name like '". formatForSqlLike($search_string) ."'";
 					}
 				}
 			} elseif ($table_name == "vtiger_crmentity" && $column_name == "smownerid") {
@@ -423,11 +413,7 @@ function BasicSearch($module, $search_field, $search_string, $input = '') {
 	if (false !== stripos($where, "like '%%'")) {
 		$where_cond0=str_replace("like '%%'", "like ''", $where);
 		$where_cond1=str_replace("like '%%'", "is NULL", $where);
-		if ($module == 'Calendar') {
-			$where = '('.$where_cond0.' and '.$where_cond1.')';
-		} else {
-			$where = '('.$where_cond0.' or '.$where_cond1.')';
-		}
+		$where = '('.$where_cond0.' or '.$where_cond1.')';
 	}
 	// commented to support searching "%" with the search string.
 	if (isset($input['type']) && $input['type'] == 'alpbt') {
@@ -476,9 +462,6 @@ function getAdvSearchfields($module) {
 	$userprivs = $current_user->getPrivileges();
 
 	$tabid = getTabid($module);
-	if ($tabid==9) {
-		$tabid='9,16';
-	}
 
 	if ($userprivs->hasGlobalReadPermission()) {
 		$sql = 'select vtiger_field.* from vtiger_field where vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2)';
@@ -487,9 +470,6 @@ function getAdvSearchfields($module) {
 		}
 		if ($tabid == 14) {
 			$sql.= " and vtiger_field.fieldlabel != 'Product Image'";
-		}
-		if ($tabid == 9 || $tabid==16) {
-			$sql.= " and vtiger_field.fieldname not in('notime','duration_minutes','duration_hours')";
 		}
 		if ($tabid == 4) {
 			$sql.= " and vtiger_field.fieldlabel != 'Contact Image'";
@@ -521,9 +501,6 @@ function getAdvSearchfields($module) {
 		}
 		if ($tabid == 14) {
 			$sql.= " and vtiger_field.fieldlabel != 'Product Image'";
-		}
-		if ($tabid == 9 || $tabid==16) {
-			$sql.= " and vtiger_field.fieldname not in('notime','duration_minutes','duration_hours')";
 		}
 		if ($tabid == 4) {
 			$sql.= " and vtiger_field.fieldlabel != 'Contact Image'";
@@ -1155,15 +1132,7 @@ function generateAdvancedSearchSql($advfilterlist) {
 						$advfiltersql = '('.$columns[0].'.'.$columns[1]." between '".getValidDBInsertDateTimeValue(trim($valuearray[0]), $datatype)."' and '"
 							.getValidDBInsertDateTimeValue(trim($valuearray[1]), $datatype)."')";
 					} else {
-						//Added for getting activity Status
-						if ($currentModule == "Calendar" && ($columns[1] == "status" || $columns[1] == "eventstatus")) {
-							if (getFieldVisibilityPermission("Calendar", $current_user->id, 'taskstatus') == '0') {
-								$advfiltersql = "case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end"
-									.getAdvancedSearchComparator($comparator, trim($value), $datatype);
-							} else {
-								$advfiltersql = "vtiger_activity.eventstatus".getAdvancedSearchComparator($comparator, trim($value), $datatype);
-							}
-						} elseif ($currentModule == "Documents" && $columns[1]=='folderid') {
+						if ($currentModule == "Documents" && $columns[1]=='folderid') {
 							$advfiltersql = "vtiger_attachmentsfolder.foldername".getAdvancedSearchComparator($comparator, trim($value), $datatype);
 						} elseif ($currentModule == "Assets") {
 							if ($columns[1]=='account') {
@@ -1369,14 +1338,7 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 				$value = 0;
 			}
 		}
-		if ($currentModule == "Calendar" && ($fieldname=="status" || $fieldname=="taskstatus" || $fieldname=="eventstatus")) {
-			if (getFieldVisibilityPermission("Calendar", $current_user->id, 'taskstatus') == '0') {
-				$value = " (case when (vtiger_activity.status not like '') then vtiger_activity.status else vtiger_activity.eventstatus end)"
-					.getAdvancedSearchComparator($comparator, $value, $datatype);
-			} else {
-				$value = " vtiger_activity.eventstatus ".getAdvancedSearchComparator($comparator, $value, $datatype);
-			}
-		} elseif ($comparator == 'e' && (trim($value) == 'NULL' || trim($value) == '')) {
+		if ($comparator == 'e' && (trim($value) == 'NULL' || trim($value) == '')) {
 			$value = '('.$tablename.'.'.$fieldname.' IS NULL OR '.$tablename.'.'.$fieldname.' = \'\')';
 		} else {
 			if ($webserviceQL) {

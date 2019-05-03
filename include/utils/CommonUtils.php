@@ -905,20 +905,6 @@ function getRelatedAccountContact($entityid, $module = '') {
 				$rspot = $adb->pquery("select parent_id from vtiger_cobropago where cobropagoid=?", array($crmid));
 				$acid = $adb->query_result($rspot, 0, 'parent_id');
 				break;
-			case 'Calendar':
-			case 'Events':
-				if ($module=='Accounts') {
-					$rspot = $adb->pquery("select crmid from vtiger_seactivityrel where activityid=?", array($crmid));
-					if ($rspot && $adb->num_rows($rspot)>0) {
-						$acid = $adb->query_result($rspot, 0, 'crmid');
-					}
-				} else {
-					$rspot = $adb->pquery("select contactid from vtiger_cntactivityrel where activityid=?", array($crmid));
-					if ($rspot && $adb->num_rows($rspot)>0) {
-						$acid = $adb->query_result($rspot, 0, 'contactid');
-					}
-				}
-				break;
 			default:  // we look for uitype 10
 				$rsfld = $adb->pquery('SELECT fieldname from vtiger_fieldmodulerel
 					INNER JOIN vtiger_field on vtiger_field.fieldid=vtiger_fieldmodulerel.fieldid
@@ -2051,7 +2037,7 @@ function Button_Check($module) {
 		$tempPer = isPermitted($module, $action, '');
 		$permit_arr[$action] = $tempPer;
 	}
-	$permit_arr['Calendar'] = isPermitted('Calendar', 'index', '');
+	$permit_arr['Calendar'] = isPermitted('cbCalendar', 'index', '');
 	$permit_arr['moduleSettings'] = isModuleSettingPermitted($module);
 	$log->debug('< Button_Check');
 	return $permit_arr;
@@ -2067,9 +2053,6 @@ function Button_Check($module) {
 function getEntityName($module, $ids_list) {
 	global $log;
 	$log->debug('> getEntityName '.$module);
-	if ($module == 'Events') {
-		$module = 'Calendar';
-	}
 	if ($module != '') {
 		$ids_list = (array)$ids_list;
 		if (count($ids_list) <= 0) {
@@ -2678,14 +2661,7 @@ function makeRandomPassword() {
 function getUItypeByFieldName($module, $fieldname) {
 	global $log, $adb;
 	$log->debug('> getUItypeByFieldName ' . $module);
-	$tabIdList = array();
-	//To find tabid for this module
-	$tabIdList[] = getTabid($module);
-	if ($module == 'Calendar') {
-		$tabIdList[] = getTabid('Events');
-	}
-	$sql = 'select uitype from vtiger_field where tabid IN (' . generateQuestionMarks($tabIdList) . ') and fieldname=?';
-	$result = $adb->pquery($sql, array($tabIdList, $fieldname));
+	$result = $adb->pquery('select uitype from vtiger_field where tabid=? and fieldname=?', array(getTabid($module), $fieldname));
 	$uitype = $adb->query_result($result, 0, 'uitype');
 	$log->debug('< getUItypeByFieldName');
 	return $uitype;
@@ -2699,15 +2675,8 @@ function getUItypeByFieldName($module, $fieldname) {
 function getUItype($module, $columnname) {
 	global $log, $adb;
 	$log->debug('> getUItype ' . $module);
-	$tabIdList = array();
-	//To find tabid for this module
-	$tabIdList[] = getTabid($module);
-	if ($module == 'Calendar') {
-		$tabIdList[] = getTabid('Events');
-	}
-	$sql = 'select uitype from vtiger_field where tabid IN (' . generateQuestionMarks($tabIdList) . ') and columnname=?';
-	$result = $adb->pquery($sql, array($tabIdList, $columnname));
-	$uitype = $adb->query_result($result, 0, "uitype");
+	$result = $adb->pquery('select uitype from vtiger_field where tabid=? and columnname=?', array(getTabid($module), $columnname));
+	$uitype = $adb->query_result($result, 0, 'uitype');
 	$log->debug('< getUItype');
 	return $uitype;
 }
@@ -2990,11 +2959,7 @@ function getEmailTemplateVariables($modules_list = null) {
 
 	foreach ($modules_list as $module) {
 		$allFields = array();
-		if ($module == 'Calendar') {
-			$focus = new Activity();
-		} else {
-			$focus = CRMEntity::getInstance($module);
-		}
+		$focus = CRMEntity::getInstance($module);
 		$tabid = getTabid($module);
 		//many to many relation information field campaignrelstatus(this is the column name of the field) has block set to '0', which should be ignored.
 		$result = $adb->pquery(

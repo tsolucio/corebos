@@ -17,7 +17,7 @@ $tool_buttons = array(
 	'DuplicatesHandling' => '',
 );
 $tool_buttons['moduleSettings'] = isModuleSettingPermitted($currentModule);
-$tool_buttons['Calendar'] = isPermitted('Calendar', 'index', '');
+$tool_buttons['Calendar'] = isPermitted('cbCalendar', 'index', '');
 
 include_once 'modules/Vtiger/ListView.php';
 ?>

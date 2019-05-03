@@ -74,11 +74,7 @@ class crmtogo_UI_GlobalSearch extends crmtogo_WS_ListModuleRecords {
 					if (!empty($filter) && is_array($filter) && !in_array($modulename, $filter)) {
 						continue;
 					}
-					if ($modulename != 'Calendar') {
-						$return_arr[$modulename] = $modulename;
-					} else {
-						$return_arr[$modulename] = 'Activity';
-					}
+					$return_arr[$modulename] = $modulename;
 				}
 				return $return_arr;
 			}
@@ -112,14 +108,6 @@ class crmtogo_UI_GlobalSearch extends crmtogo_WS_ListModuleRecords {
 						$viewid = $db->query_result($cv_res, 0, 'cvid');
 
 						$listquery = $oCustomView->getModifiedCvListQuery($viewid, $listquery, $module);
-						if ($module == "Calendar") {
-							if (!isset($oCustomView->list_fields['Close'])) {
-								$oCustomView->list_fields['Close']=array('activity' => 'status');
-							}
-							if (!isset($oCustomView->list_fields_name['Close'])) {
-								$oCustomView->list_fields_name['Close']='status';
-							}
-						}
 
 						//This is for Global search
 						$where = crmtogo_WS_Utils::getUnifiedWhere($listquery, $module, $search_val, $current_user);

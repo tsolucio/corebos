@@ -1714,7 +1714,7 @@ function isPresentRelatedLists($module, $activity_mode = '') {
 	// We need to check if there is at least 1 relation, no need to use count(*)
 	$result = $adb->pquery('select relation_id,related_tabid,label from vtiger_relatedlists where tabid=? order by sequence', array($tab_id));
 	$count = $adb->num_rows($result);
-	if ($count < 1 || ($module == 'Calendar' && $activity_mode == 'task')) {
+	if ($count < 1) {
 		$retval = 'false';
 	} elseif (empty($moduleRelatedListCache[$module])) {
 		for ($i = 0; $i < $count; ++$i) {

@@ -80,9 +80,6 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 			$entityDefaultBaseTables = $moduleMeta->getEntityDefaultTableList();
 			//since there will be only one base table for all entities
 			$baseCRMTable = $entityDefaultBaseTables[0];
-		if ($elementType=='Calendar' || $elementType=='Events') {
-			$baseCRMTable = getSyncQueryBaseTable($elementType);
-		}
 	} else {
 		$baseCRMTable = ' vtiger_crmentity ';
 	}
@@ -91,9 +88,6 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 	$q = "SELECT modifiedtime FROM $baseCRMTable WHERE  modifiedtime>? and setype IN(".generateQuestionMarks($accessableModules).') ';
 	$params = array($datetime);
 	foreach ($accessableModules as $entityModule) {
-		if ($entityModule == 'Events') {
-			$entityModule = 'Calendar';
-		}
 		$params[] = $entityModule;
 	}
 	if (!$applicationSync) {
@@ -181,9 +175,6 @@ function vtws_sync($mtime, $elementType, $syncType = '', $user = '') {
 	$params = array($maxModifiedTime);
 
 	foreach ($accessableModules as $entityModule) {
-		if ($entityModule == 'Events') {
-			$entityModule = 'Calendar';
-		}
 		$params[] = $entityModule;
 	}
 	if (!$applicationSync) {
@@ -250,13 +241,7 @@ function vtws_getEmailFromClause() {
 }
 
 function getSyncQueryBaseTable($elementType) {
-	if ($elementType!='Calendar' && $elementType!='Events') {
-		return 'vtiger_crmentity';
-	} else {
-		$activityCondition = getCalendarTypeCondition($elementType);
-		$query = "vtiger_crmentity INNER JOIN vtiger_activity ON (vtiger_crmentity.crmid = vtiger_activity.activityid and $activityCondition)";
-		return $query;
-	}
+	return 'vtiger_crmentity';
 }
 
 function getCalendarTypeCondition($elementType) {

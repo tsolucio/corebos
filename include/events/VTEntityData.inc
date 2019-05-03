@@ -27,16 +27,9 @@ class VTEntityData {
 		$obj->entityId = $entityId;
 		$result = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($entityId));
 		$setype = $adb->query_result($result, 0, 'setype');
-
-		if ($setype == 'Calendar') {
-			$setype = vtws_getCalendarEntityType($entityId);
-		}
-
 		$obj->moduleName = $setype;
-
 		require_once 'data/CRMEntity.php';
 		$focus = CRMEntity::getInstance($setype);
-
 		$focus->retrieve_entity_info($entityId, $setype);
 		$focus->id = $entityId;
 		$obj->isNew = false;

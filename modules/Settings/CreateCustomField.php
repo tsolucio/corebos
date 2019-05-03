@@ -23,17 +23,6 @@ if (empty($tabid)) {
 	$tabid = getTabid($fieldModule);
 }
 
-// Set the tab type only during Custom Field creation for Calendar module based on the activity type
-if ($fieldid == '' && $fieldModule == 'Calendar' && isset($_REQUEST['activity_type'])) {
-	$activitytype = vtlib_purify($_REQUEST['activity_type']);
-	if ($activitytype == 'E') {
-		$tabid = '16';
-	}
-	if ($activitytype == 'T') {
-		$tabid = '9';
-	}
-}
-
 $blockid = getBlockId($tabid, 'LBL_CUSTOM_INFORMATION');
 
 if (isset($_REQUEST['uitype']) && $_REQUEST['uitype'] != '') {
