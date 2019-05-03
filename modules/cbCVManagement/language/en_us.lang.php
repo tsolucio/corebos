@@ -18,7 +18,7 @@ $mod_strings = array(
 	'LBL_CVMGMT_DEFAULTS'=>'Custom View Defaults',
 	'LBL_CVMGMT_INFORMATION'=>'Custom View Permission',
 	'LBL_DESCRIPTION_INFORMATION'=>'Description',
-	
+
 	'Name' => 'Name',
 	'setpublic' => 'Set Public',
 	'cvcreate' => 'Create',
