@@ -70,7 +70,7 @@ function cbws_getViewsInformation($viewids, $module) {
 					$columns = explode(':', $columnname);
 					$name = $columns[1];
 
-					$advft[$columnindex]['columname'] = $name;
+					$advft[$columnindex]['columnname'] = $name;
 					$advft[$columnindex]['comparator'] = $comparator;
 					if ($value == 'yes') {
 						$advft[$columnindex]['value'] = 1;
