@@ -36,7 +36,7 @@ class addfieldincbcvManagement extends cbupdaterWorker {
 							'typeofdata'=>'V~O',
 							'uitype'=>'56',
 							'displaytype'=>'1',
-							'label'=>getTranslatedString('setpublic'),
+							'label'=>'setpublic',
 						),
 					),
 				),
