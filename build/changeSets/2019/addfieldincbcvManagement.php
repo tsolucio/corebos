@@ -30,13 +30,13 @@ class addfieldincbcvManagement extends cbupdaterWorker {
 
 			$fieldLayout=array(
 				'cbCVManagement' => array(
-					'LBL_DAFAULT_VALUE'=> array(
+					'LBL_CVMGMT_DEFAULTS'=> array(
 						'Set Public' => array(
 							'columntype'=>'checkbox',
 							'typeofdata'=>'V~O',
 							'uitype'=>'56',
 							'displaytype'=>'1',
-							'label'=>'Set Public',
+							'label'=>getTranslatedString('setpublic'),
 						),
 					),
 				),

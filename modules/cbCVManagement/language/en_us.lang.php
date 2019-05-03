@@ -21,6 +21,7 @@ $mod_strings = array(
 	'LBL_DAFAULT_VALUE' => 'Default Value',
 
 	'Name' => 'Name',
+	'setpublic' => 'Set Public',
 	'cvcreate' => 'Create',
 	'cvretrieve' => 'Retrieve',
 	'cvupdate' => 'Update',
