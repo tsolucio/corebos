@@ -2762,30 +2762,21 @@ function getCvIdOfAll($module) {
 	return $cvid;
 }
 
-/** gives the option  to display  the tagclouds or not for the current user
- * * @param $id -- user id:: Type integer
- * * @returns true or false in $tag_cloud_view
- * * Added to provide User based Tagcloud
- * */
+/** gives the option  to display  the tagclouds or not for the given user
+ * @param $id -- user id:: Type integer
+ * @returns boolean
+ */
 function getTagCloudView($id = '') {
 	global $log, $adb;
 	$log->debug("> getTagCloudView $id");
 	if ($id == '') {
 		$tag_cloud_status = 1;
 	} else {
-		$query = "select visible from vtiger_homestuff where userid=? and stufftype='Tag Cloud'";
-		$tagcloudstatusrs = $adb->pquery($query, array($id));
+		$tagcloudstatusrs = $adb->pquery("select visible from vtiger_homestuff where userid=? and stufftype='Tag Cloud'", array($id));
 		$tag_cloud_status = $adb->query_result($tagcloudstatusrs, 0, 'visible');
 	}
-
-	if ($tag_cloud_status == 0) {
-		$tag_cloud_view = 'true';
-	} else {
-		$tag_cloud_view = 'false';
-	}
-
 	$log->debug('< getTagCloudView');
-	return $tag_cloud_view;
+	return ($tag_cloud_status == 0);
 }
 
 /** Stores the option in database to display  the tagclouds or not for the current user

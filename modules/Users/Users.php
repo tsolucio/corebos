@@ -1233,7 +1233,7 @@ class Users extends CRMEntity {
 		if ($id == '' && isset($this->column_fields['tagcloudview'])) {
 			$return_array['Tag Cloud'] = $this->column_fields['tagcloudview'];
 		} else {
-			$return_array['Tag Cloud'] = getTagCloudView($id);
+			$return_array['Tag Cloud'] = (getTagCloudView($id) ? 'true' : 'false');
 		}
 		if ($id == '' && isset($this->column_fields['showtagas'])) {
 			$return_array['showtagas'] = $this->column_fields['showtagas'];

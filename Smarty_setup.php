@@ -17,7 +17,7 @@ class vtigerCRM_Smarty extends Smarty {
 
 	public static function lookupTagCloudView($userid) {
 		if (!isset(self::$_tagcloud_display_cache[$userid])) {
-			self::$_tagcloud_display_cache[$userid] = getTagCloudView($userid);
+			self::$_tagcloud_display_cache[$userid] = (getTagCloudView($userid) ? 'true' : 'false');
 		}
 		return self::$_tagcloud_display_cache[$userid];
 	}
