@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2014 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2019 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
 * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
 * file except in compliance with the License. You can redistribute it and/or modify it
 * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -19,9 +19,11 @@ include_once 'include/Webservices/Create.php';
 include_once 'include/utils/CommonUtils.php';
 
 class addMassTagFunctionality extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -37,8 +39,8 @@ class addMassTagFunctionality extends cbupdaterWorker {
 <function>
 	<name>getTagCloudView</name>
 	<parameters>
-        <parameter>currentuserID</parameter>
-    </parameters>
+		<parameter>currentuserID</parameter>
+	</parameters>
 </function>
 </map>',
 					'description' => 'Condition to show/hide the mass tag button',
@@ -47,23 +49,14 @@ class addMassTagFunctionality extends cbupdaterWorker {
 				$brule = vtws_create('cbMap', $rec, $current_user);
 				$idComponents = vtws_getIdComponents($brule['id']);
 				$bruleId = isset($idComponents[1]) ? $idComponents[1] : 0;
+				foreach (array('Accounts', 'Contacts', 'Leads') as $modulename) {
+					BusinessActions::addLink(getTabid($modulename), 'LISTVIEWBASIC', 'Mass Tag', 'javascript:showMassTag();', '', 0, null, false, $bruleId);
+				}
+				$this->sendMsg('Changeset '.get_class($this).' applied!');
+				$this->markApplied();
 			}
-			foreach (array('Accounts', 'Contacts', 'Leads') as $modulename) {
-				$tabid = getTabid($modulename);
-				BusinessActions::addLink($tabid, 'LISTVIEWBASIC', 'Mass Tag', 'javascript:showMassTag();', '', 0, null, false, $bruleId);
-			}
-			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-	
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
-		$this->sendMsg('Changeset '.get_class($this).' is a system update, it cannot be undone!');
-		$this->finishExecution();
-	}
-
 }
-
 ?>

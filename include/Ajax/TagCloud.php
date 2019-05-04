@@ -11,10 +11,10 @@ $ajaxaction = vtlib_purify($_REQUEST['ajxaction']);
 global $current_user, $default_charset;
 
 if ($ajaxaction == 'MASSTAG') {
-	require_once('include/freetag/freetag.class.php');
+	require_once 'include/freetag/freetag.class.php';
 	$ids = explode(';', trim($_REQUEST['ids'], ';'));
-	$addTag = $_REQUEST['add_tag'];
-	$removeTag = $_REQUEST['remove_tag'];
+	$addTag    = vtlib_purify($_REQUEST['add_tag']);
+	$removeTag = vtlib_purify($_REQUEST['remove_tag']);
 	$freetag = new freetag();
 	if (!empty($addTag)) {
 		$freetag->tag_object($current_user->id, implode(',', $ids), $addTag, $currentModule);
