@@ -295,4 +295,31 @@ function __cb_next_dateLaborable($arr) {
 		return '';
 	}
 }
+
+function __cb_add_workdays($arr) {
+	$date = new DateTime($arr[0]);
+	$numofdays = $arr[1];
+	$addsaturday = isset($arr[2]) ? $arr[2] : 1;
+	if ($addsaturday == 0) {
+		$lastdow = 6;
+	} else {
+		$lastdow = 7;
+	}
+	if (isset($arr[3]) && trim($arr[3])!='') {
+		$holidays = explode(',', $arr[3]);
+	} else {
+		$holidays = array();
+	}
+	$interval = new DateInterval('P1D');
+	$result = '';
+	$x = 0;
+	while ($x < $numofdays) {
+		$date = $date->add($interval);
+		if ($date->format('N') < $lastdow && !in_array($date->format('Y-m-d'), $holidays)) {
+			$x++;
+		}
+	}
+	$result = $date->format('Y-m-d');
+	return $result;
+}
 ?>
