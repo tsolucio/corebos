@@ -37,7 +37,7 @@ $smarty->assign('CATEGORY', $category);
 $smarty->assign('USERLIST', getUserslist(false));
 $smarty->assign('LIST_HEADER', $focus->getAuditTrailHeader());
 $smarty->assign('LIST_FIELDS', $focus->list_fields_name);
-$smarty->assign('ATENABLED', coreBOS_Settings::getSetting('audit_trail', false));
+$smarty->assign('ATENABLED', coreBOS_Settings::getSetting('audit_trail', false) ? 'true' : 'false');
 
 $smarty->display('modules/cbAuditTrail/index.tpl');
 ?>
