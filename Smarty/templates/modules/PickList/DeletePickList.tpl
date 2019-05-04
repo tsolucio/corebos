@@ -13,6 +13,7 @@
 		<tr>
 			<td class="layerPopupHeading" align="left" nowrap>
 				{$MOD.DELETE_PICKLIST_VALUES} - {$FIELDLABEL}
+				{if picklistHasDependency($FIELDNAME, $MODULE)}<p class="small slds-theme_warning">&nbsp;{$MOD.picklisthasdependency}</p>{/if}
 			</td>
 		</tr>
 	</table>

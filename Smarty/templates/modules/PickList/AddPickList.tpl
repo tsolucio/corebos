@@ -11,7 +11,9 @@
 <div style="position:relative;display: block;" id="orgLay" class="layerPopup">
 	<table border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
 		<tr>
-			<td class="layerPopupHeading" align="left" width="40%" nowrap>{$MOD.ADD_PICKLIST_VALUES} - {$FIELDLABEL}</td>
+			<td class="layerPopupHeading" align="left" width="40%" nowrap>{$MOD.ADD_PICKLIST_VALUES} - {$FIELDLABEL}
+			{if picklistHasDependency($FIELDNAME, $MODULE)}<p class="small slds-theme_warning">&nbsp;{$MOD.picklisthasdependency}</p>{/if}
+			</td>
 		</tr>
 	</table>
 

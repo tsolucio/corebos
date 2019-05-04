@@ -50,5 +50,6 @@ $mod_strings = array(
 	'LBL_MOVE_RIGHT' => 'Move Right',
 	'LBL_REMOVE' => 'Remove',
 	'NTC_DELETE_CONFIRMATION'=>'Are you sure you want to delete this picklist dependency?',
+	'picklisthasdependency' => 'Warning: this list has dependencies configured',
 );
 ?>
