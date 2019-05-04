@@ -9,6 +9,7 @@
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="include/js/ListView.js"></script>
+<script type="text/javascript" src="include/js/massive.js"></script>
 <script type="text/javascript" src="include/js/search.js"></script>
 <script type="text/javascript" src="include/js/Merge.js"></script>
 <script type="text/javascript" src="include/js/dtlviewajax.js"></script>
@@ -108,6 +109,7 @@
 	</table>
 </form><br>
 </div>
+{include file='masstag.tpl'}
 {*<!-- Searching UI -->*}
 
 <div id="mergeDup" style="z-index:1;display:none;position:relative;">
