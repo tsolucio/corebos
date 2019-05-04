@@ -82,6 +82,7 @@ class VTExpressionsManager {
 			'time_diff(a)' => 'time_diff(a)',
 			'aggregate_time' => 'aggregate_time(relatedModuleName, relatedModuleField, conditions)',
 			'add_days' => 'add_days(datefield, noofdays)',
+			'add_workdays' => 'add_workdays(date, numofdays, addsaturday, holidays)',
 			'sub_days' => 'sub_days(datefield, noofdays)',
 			'add_months' => 'add_months(datefield, noofmonths)',
 			'sub_months' => 'sub_months(datefield, noofmonths)',
@@ -132,7 +133,6 @@ class VTExpressionsManager {
 			'getGEODistanceFromUser2ContactShipping' => 'getGEODistanceFromUser2ContactShipping(contact,address_specification)',
 			'getGEODistanceFromAssignUser2ContactShipping' => 'getGEODistanceFromAssignUser2ContactShipping(contact,assigned_user,address_specification)',
 			'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
-			'add_workdays' => "add_workdays(date,numofdays,addsaturday,holidays)",
 		);
 		$wfexpfuncs = $adb->query('select expname,expinfo from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {
