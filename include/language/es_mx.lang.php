@@ -1282,6 +1282,10 @@ $app_strings = array (
 	//added for creating a custom lead map row in UI
 	'LBL_ADD_MAPPING'=> 'Agregar Vinculación',
 	'LBL_FIELD_MAPPING' => 'Vinculación de Campos',
+	'LBL_MASSTAG_FORM_HEADER' => 'Mass Tag Operations',
+	'LBL_REMOVE_TAG' => 'Remove Tag',
+	'LBL_EXECUTE_MASSTAG' => 'Execute',
+	'LBL_CANCEL_MASSTAG' => 'Cancel',
 
 	'LBL_NEXT_BUTTON_LABEL' => 'Siguiente',
 	'ERROR_GETTING_FILTER' => 'ERROR Aplicando Filtro. Por favor elimínalo y crealo de nuevo.',
