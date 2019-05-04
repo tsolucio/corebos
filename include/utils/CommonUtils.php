@@ -2751,7 +2751,7 @@ function is_emailId($entity_id) {
 
 /**
  * This function is used to get cvid of default "all" view for any module.
- * @return a cvid of a module
+ * @return integer cvid of a module
  */
 function getCvIdOfAll($module) {
 	global $adb, $log;
