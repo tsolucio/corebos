@@ -111,4 +111,11 @@
 	<classname>cbQuestionContextParameter</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>glory moshi</author>
+	<description>Adding new field and workflow in cbCVManagement</description>
+	<filename>build/changeSets/2019/addfieldincbcvManagement.php</filename>
+	<classname>addfieldincbcvManagement</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
