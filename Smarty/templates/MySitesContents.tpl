@@ -8,22 +8,22 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<!-- BEGIN: main -->
 <table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
 <tr>
 	<td colwidth=90% align=left class=small>
-		<table border=0 cellspacing=0 cellpadding=5>
-		<tr>
-			<td align=left><a href="#" onclick="fetchContents('manage');"><img src="{'webmail_settings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border=0 /></a></td>
-			<td class=small align=left><a href="#" onclick="fetchContents('manage');">{$MOD.LBL_MANAGE_SITES}</a></td>
-			<td align="right"><input type="button" name="setdefault" value=" {$MOD.LBL_SET_DEFAULT_BUTTON}  " class="crmbutton small create" onClick="defaultMysites(this);"/>
-		</tr>
-		</table>
+		<a href="#" onclick="fetchContents('manage');">
+		<p class="slds-accordion__summary-heading">
+		<span class="slds-icon_container slds-icon-utility-announcement" title="{'SINGLE_Portal'|@getTranslatedString}">
+			<svg class="slds-icon slds-icon-text-default" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#web_link"></use>
+			</svg>
+		</span>
+		<span class="slds-m-left_small">{$MOD.LBL_MANAGE_SITES}</span>
+		</p>
+		</a>
 	</td>
-	<td align=right width=10%>
-		<table border=0 cellspacing=0 cellpadding=0>
-		<tr><td nowrap class="componentName">{$MOD.LBL_MY_SITES}</td></tr>
-		</table>
+	<td align=right width=15%>
+		<input type="button" name="setdefault" value=" {$MOD.LBL_SET_DEFAULT_BUTTON} " class="crmbutton small create" onClick="defaultMysites(this);"/>
 	</td>
 </tr>
 </table>
