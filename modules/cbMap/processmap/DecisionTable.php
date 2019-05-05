@@ -71,17 +71,16 @@ require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 
 class DecisionTable extends processcbMap {
 
-	public function processMap($arguments) {
+	public function processMap($ctx) {
 		global $adb, $current_user;
 		$xml = $this->getXMLContent();
-		$entityId = $arguments[0];
+		$context = $ctx[0];
 		$holduser = $current_user;
 		$current_user = Users::getActiveAdminUser(); // in order to retrieve all entity data for evaluation
-		if (!empty($entityId)) {
-			$entity = new VTWorkflowEntity($current_user, $entityId, true);
-			if (is_null($entity->data)) { // invalid context
-				$current_user = $holduser;
-				return false;
+		if (!empty($context['record_id'])) {
+			$entity = new VTWorkflowEntity($current_user, $context['record_id'], true);
+			if (is_array($entity->data)) { // valid context
+				$context = array_merge($entity->data, $context);
 			}
 		}
 		$current_user = $holduser;
@@ -102,26 +101,30 @@ class DecisionTable extends processcbMap {
 				$eval = $exprEvaluation;
 			} elseif (isset($value->mapid)) {
 				$mapid = (String)$value->mapid;
-				$eval = coreBOS_Rule::evaluate($mapid, $entityId);
+				$eval = coreBOS_Rule::evaluate($mapid, $context);
 			} elseif (isset($value->decisionTable)) {
 				$module = (String)$value->decisionTable->module;
 				$queryGenerator = new QueryGenerator($module, $current_user);
 				if (isset($value->decisionTable->conditions)) {
 					foreach ($value->decisionTable->conditions->condition as $k => $v) {
-						$queryGenerator->addCondition((String)$v->field, (String)$v->input, (String)$v->operation, $queryGenerator::$AND);
+						$queryGenerator->addCondition((String)$v->field, $context[(String)$v->input], (String)$v->operation, $queryGenerator::$AND);
 					}
 				}
 				if (isset($value->decisionTable->searches)) {
 					foreach ($value->decisionTable->searches->search as $k => $v) {
 						foreach ($v->condition as $k => $v) {
-							$queryGenerator->addCondition((String)$v->field, (String)$v->input, (String)$v->operation, $queryGenerator::$AND);
+							$queryGenerator->addCondition((String)$v->field, $context[(String)$v->input], (String)$v->operation, $queryGenerator::$AND);
 						}
 					}
 				}
 				$field = (String)$value->decisionTable->output;
-				$queryGenerator->setFields(array($field));
-				$query = $queryGenerator->getQuery();
 				$orderby = (String)$value->decisionTable->orderby;
+				$queryFields = array($field);
+				if (!empty($orderby)) {
+					$queryFields[] = $orderby;
+				}
+				$queryGenerator->setFields($queryFields);
+				$query = $queryGenerator->getQuery();
 				if (!empty($orderby)) {
 					$query .= ' ORDER BY '.$queryGenerator->getOrderByColumn($orderby);
 				}
@@ -134,14 +137,12 @@ class DecisionTable extends processcbMap {
 				}
 			}
 			$ruleOutput = (String)$value->output;
-			if ($ruleOutput == 'ExpressionResult') {
+			if ($ruleOutput == 'ExpressionResult' || $ruleOutput == 'FieldValue') {
 				$outputs[$sequence] = $eval;
 			} elseif ($ruleOutput == 'crmObject') {
 				$crmobj = CRMEntity::getInstance(getSalesEntityType($eval));
 				$crmobj->retrieve_entity_info($eval);
 				$outputs[$sequence] = $crmobj;
-			} elseif ($ruleOutput == 'FieldValue') {
-				$outputs[$sequence] = $entity->data[$eval];
 			} else {
 				$outputs[$sequence] = '__DoesNotPass__';
 			}

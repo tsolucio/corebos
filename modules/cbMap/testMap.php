@@ -169,7 +169,11 @@ switch ($focus->column_fields['maptype']) {
 			$mapinfo = $focus->DetailViewLayoutMapping();
 		break;
 	case 'DecisionTable':
-		$mapinfo = $focus->DecisionTable();
+		$context = array(
+			'season' => isset($_REQUEST['season']) ? $_REQUEST['season'] : 'Fall',
+			'guestcount' => isset($_REQUEST['guest']) ? $_REQUEST['guest'] : 8,
+		);
+		$mapinfo = $focus->DecisionTable($context);
 		break;
 	default:
 		break;
