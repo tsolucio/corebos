@@ -172,6 +172,7 @@ switch ($focus->column_fields['maptype']) {
 		$context = array(
 			'season' => isset($_REQUEST['season']) ? $_REQUEST['season'] : 'Fall',
 			'guestcount' => isset($_REQUEST['guest']) ? $_REQUEST['guest'] : 8,
+			'numyears' => isset($_REQUEST['numyears']) ? $_REQUEST['numyears'] : 2,
 		);
 		$mapinfo = $focus->DecisionTable($context);
 		break;
