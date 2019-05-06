@@ -61,7 +61,11 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 	}
 	$smarty->assign('TO_MAIL', $to_add);
 	$smarty->assign('IDLISTS', $mailids['idlists']);
-	$Users_Default_Send_Email_Template = GlobalVariable::getVariable('Users_Default_Send_Email_Template', 0);
+	if (!empty($_REQUEST['templatename'])) {
+		$Users_Default_Send_Email_Template = vtlib_purify($_REQUEST['templatename']);
+	} else {
+		$Users_Default_Send_Email_Template = GlobalVariable::getVariable('Users_Default_Send_Email_Template', 0);
+	}
 	if (!empty($mailids['idlists'])) {
 		$crmidsinfo = explode('|', trim($mailids['idlists'], '|'));
 		if (count($crmidsinfo)==1) {
