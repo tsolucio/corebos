@@ -153,8 +153,8 @@ function sendmail(module, idstrings, url) {
 }
 
 function sendmailtemplate(template, module, crmid) {
-	var url= 'index.php?module=Emails&action=EmailsAjax&file=EditView&sendmail=true&pmodule='+module+'&templatename='+template+'&idlist='+crmid;
-	openPopUp('xComposeEmail', this, url, 'createemailWin', 820, 689, 'menubar=no,toolbar=no,location=no,status=no,resizable=no');
+	var url= 'index.php?module=Emails&action=EmailsAjax&file=EditView&sendmail=true&field_lists=0&pmodule='+module+'&templatename='+template+'&idlist='+crmid;
+	openPopUp('xComposeEmail', this, url, 'createemailWin', 920, 789, 'menubar=no,toolbar=no,location=no,status=no,resizable=no');
 }
 
 function rel_eMail(module, oButton, relmod) {
