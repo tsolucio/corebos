@@ -2387,10 +2387,21 @@ function getMergedDescription($description, $id, $parent_type) {
 			$description = str_replace($token_data, $adb->query_result($result, 0, $columnname), $description);
 		}
 	}
-	if ($parent_type != 'Users' && preg_match('/\$\w+-\w+\$/', $description)==0) { // no old format anymore
-		$entityCache = new VTEntityCache($current_user);
+	//if ($parent_type != 'Users' && preg_match('/\$\w+-\w+\$/', $description)==0) { // no old format anymore
+	$entityCache = new VTEntityCache($current_user);
+	$ct = new VTSimpleTemplate($description, true);
+	$description = $ct->render($entityCache, vtws_getEntityId($parent_type).'x'.$id);
+	//}
+	$cmprs = $adb->pquery(
+		'SELECT c.cbcompanyid
+			FROM vtiger_cbcompany c
+			JOIN vtiger_crmentity on vtiger_crmentity.crmid = c.cbcompanyid
+			WHERE c.defaultcompany=1 and vtiger_crmentity.deleted=0',
+		array()
+	);
+	if ($cmprs && $adb->num_rows($cmprs)>0) {
 		$ct = new VTSimpleTemplate($description, true);
-		$description = $ct->render($entityCache, vtws_getEntityId($parent_type).'x'.$id);
+		$description = $ct->render($entityCache, vtws_getEntityId('cbCompany').'x'.$adb->query_result($cmprs, 0, 0));
 	}
 	$log->debug('< from getMergedDescription');
 	return $description;
