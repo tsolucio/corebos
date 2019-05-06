@@ -78,6 +78,9 @@ class DecisionTable extends processcbMap {
 		$holduser = $current_user;
 		$current_user = Users::getActiveAdminUser(); // in order to retrieve all entity data for evaluation
 		if (!empty($context['record_id'])) {
+			if (strpos($context['record_id'], 'x')===false) {
+				$context['record_id'] = vtws_getEntityId(getSalesEntityType($context['record_id'])).'x'.$context['record_id'];
+			}
 			$entity = new VTWorkflowEntity($current_user, $context['record_id'], true);
 			if (is_array($entity->data)) { // valid context
 				$context = array_merge($entity->data, $context);
@@ -95,6 +98,11 @@ class DecisionTable extends processcbMap {
 			$eval = '';
 			if (isset($value->expression)) {
 				$testexpression = (String)$value->expression;
+				if (is_array($context)) {
+					foreach ($context as $key => $value) {
+						$testexpression = str_ireplace('$['.$key.']', $value, $testexpression);
+					}
+				}
 				$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($testexpression)));
 				$expression = $parser->expression();
 				$exprEvaluater = new VTFieldExpressionEvaluater($expression);
