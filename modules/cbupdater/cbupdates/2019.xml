@@ -125,4 +125,11 @@
 	<classname>addMassTagFunctionality</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add FAQ template and send email action</description>
+	<filename>build/changeSets/2019/addSendEmailAction2FAQ.php</filename>
+	<classname>addSendEmailAction2FAQ</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
