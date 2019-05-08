@@ -7,9 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
 $mod_strings = array(
 'CobroPago'=>'Pagamenti',
+'CobroPago ID'=>'Id Pagamento',
 'SINGLE_CobroPago'=>'Pagamento',
 'LBL_MODULE_TITLE'=>'Pagamenti: Home',
 'LBL_SEARCH_FORM_TITLE'=>'Cerca Pagamenti',
@@ -22,29 +22,24 @@ $mod_strings = array(
 'LBL_LIST_ACCOUNT_NAME'=>'Nome Account',
 'LBL_PRODUCT_NAME'=>'Nome Prodotto',
 'LBL_LIST_AMOUNT'=>'Ammontare',
-
 'LBL_ACCOUNT_NAME'=>'Nome Account:',
 'LBL_AMOUNT'=>'Ammontare:',
 'LBL_TYPE'=>'Tipo:',
-'LBL_PROBABILITY'=>'Probabilit&agrave; (%):',
+'LBL_PROBABILITY'=>'Probabilità (%):',
 'LBL_DESCRIPTION'=>'Descrizione:',
 'LBL_COBROPAGO_INFORMATION'=>'Informazioni Pagamenti:',
 'LBL_DESCRIPTION_INFORMATION'=>'Informazioni Descrizione:',
 'LBL_CUSTOM_INFORMATION'=>'Informazioni Personalizzate',
-
+'SERVER_CONFIGURATION' => 'Configurazione Pagamento',
+'SERVER_CONFIGURATION_DESCRIPTION' => 'Configura Parametri del Modulo Pagamento',
 'LBL_NEW_FORM_TITLE'=>'Nuovo Pagamento',
-
 'ERR_DELETE_RECORD'=>'Necessario specificare un record per cancellare un Pagamento.',
 'LBL_TOP_PAYMENTS'=>'I miei top 10 Pagamenti aperti',
-
 'NTC_NONE_SCHEDULED'=>'Nessuno Programmato.',
-
 'LBL_SELECT_COBROPAGO'=>'Seleziona Pagamento',
 'LBL_GENERAL_INFORMATION'=>'Informazioni Generali',
-
 'LBL_NEW_CobroPago'=>'Nuovo Pagamento',
 'LBL_CobroPago_TITLE'=>'Pagamenti',
-
 'LBL_TOOL_FORM_TITLE'=>'Strumenti Pagamenti',
 'CobroPago Name'=>'Rif Pagamento',
 'Reference'=>'Rif Pagamento',
@@ -52,18 +47,17 @@ $mod_strings = array(
 'Paid'=>'Pagato',
 'Credit'=>'Credito',
 'Amount'=>'Ammontare',
-'Benefit'=>'Benefit',
+'Benefit'=>'Beneficiare',
 'Cost'=>'Costo',
 'Account Name'=>'Nome Account',
 'Parent'=>'Account/Contatto',
 'Currency'=>'Valuta',
-'RelatedTo'=>'Entit&agrave; relazionata',
-'PaymentMode'=>'Modalit&agrave; di Pagamento',
+'RelatedTo'=>'Entita relazionata',
+'PaymentMode'=>'Modalita di Pagamento',
 'Category'=>'Categoria Pagamento',
 'CobroPago Type'=>'Tipo di Pagamento',
 'Type'=>'Tipo',
-'Probability'=>'Probabilit&agrave; (%)',
-'CobroPago ID'=>'Id Pagamento',
+'Probability'=>'Probabilità (%)',
 'cobropagoid'=>'Id Pagamento',
 'DueDate'=>'Da Pagare entro il',
 'Comercial'=>'Utente Relazionato',
@@ -74,21 +68,16 @@ $mod_strings = array(
 'RecieptOpen'=>'Ricevuta aperta per la stampa da ',
 'CyP No'=>'Pagamento No',
 'PaymentDate'=>'Data di Pagamento',
-
 //Added for Existing Picklist Strings
-
 'Cash'=>'Contanti',
 'Check'=>'Assegno',
 'Credit card'=>'Carta di Credito',
 'Infrastructure'=>'Infrastruttura',
 'Stock'=>'Stock',
 'Sale'=>'Vendita',
-
 'Other'=>'Altro',
-
 '--None--'=>'--Nessuno--',
 'LBLLINKTOACCOUNTS'=>'Azienda relazionata',
-
 'LBL_CARD_INFORMATION' => 'Informazione Carta',
 'CARD_ACCOUNT' => 'Numero Carta:',
 'CARD_CVV' => 'CVV2:',
@@ -99,10 +88,8 @@ $mod_strings = array(
 'ACH_ROUTING_NUMBER' => 'Numero Routing:',
 'ACH_SUBMIT' => 'Send',
 'Receive BluePay Payment'=>'Ricevi Pagamento BluePay',
-
 'ERR_ALREADY_PAID' => "Questo pagamento è già stato effettuato",
 'ERR_NO_ACCOUNT' => "Non ci sono account relazionati.",
 'ERR_NO_TOKEN' => "Non esiste un token per questo account.",
 );
-
 ?>
