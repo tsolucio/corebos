@@ -928,6 +928,15 @@ class Contacts extends CRMEntity {
 		return $query;
 	}
 
+	public function save($module, $fileid = '') {
+		global $adb;
+		if ($this->mode=='edit') {
+			$rs = $adb->pquery('select convertedfromlead from vtiger_contactdetails where contactid = ?', array($this->id));
+			$this->column_fields['convertedfromlead'] = $adb->query_result($rs, 0, 'convertedfromlead');
+		}
+		parent::save($module, $fileid);
+	}
+
 	/** Function to handle module specific operations when saving a entity */
 	public function save_module($module) {
 		$this->insertIntoAttachment($this->id, $module);
