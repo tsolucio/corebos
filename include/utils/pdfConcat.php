@@ -28,12 +28,12 @@ class concat_pdf extends FPDI {
 		$this->setPrintHeader(false);
 		$this->setPrintFooter(false);
 		foreach ($this->files as $file) {
-			 $pagecount = $this->setSourceFile($file);
+			$pagecount = $this->setSourceFile($file);
 			for ($i = 1; $i <= $pagecount; $i++) {
-				 $tplidx = $this->ImportPage($i);
-				 $s = $this->getTemplatesize($tplidx);
-				 $this->AddPage('P', array($s['w'], $s['h']));
-				 $this->useTemplate($tplidx);
+				$tplidx = $this->ImportPage($i);
+				$s = $this->getTemplatesize($tplidx);
+				$this->AddPage('P', array($s['w'], $s['h']));
+				$this->useTemplate($tplidx);
 			}
 		}
 	}
