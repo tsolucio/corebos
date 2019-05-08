@@ -203,7 +203,15 @@ class FieldDependency extends processcbMap {
 				$target_fields[(String)$fld][] = array('conditions'=>$conditions,'actions'=>$actions);
 			}
 		}
-		$mapping['fields'] = array_merge(Vtiger_DependencyPicklist::getMapPicklistDependencyDatasource($mapping['origin']), $target_fields);
+		$picklistdep = Vtiger_DependencyPicklist::getMapPicklistDependencyDatasource($mapping['origin']);
+		foreach ($picklistdep as $key => $value) {
+			if (array_key_exists($key, $target_fields)) {
+				$target_fields[$key] = array_merge($value, $target_fields[$key]);
+			} else {
+				$target_fields[$key] = $value;
+			}
+		}
+		$mapping['fields'] = $target_fields;
 		return $mapping;
 	}
 }
