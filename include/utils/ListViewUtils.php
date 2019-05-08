@@ -833,7 +833,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							if (empty($account_name)) {
 								$account_name = getAccountName($account_id);
 							}
-							$acc_name = textlength_check(decode_html($account_name));
+							$acc_name = textlength_check($account_name);
 							$value = '<a href="index.php?module=Accounts&action=DetailView&record=' . $account_id . '&parenttab=' . $tabname . '">' . htmlspecialchars($acc_name, ENT_QUOTES, $default_charset) . '</a>';
 						} elseif (( $module == 'HelpDesk' || $module == 'PriceBook' || $module == 'Quotes' || $module == 'PurchaseOrder' || $module == 'Faq') && $name == 'Product Name') {
 							if ($module == 'HelpDesk' || $module == 'Faq') {
@@ -3683,6 +3683,7 @@ function textlength_check($field_val, $overrideLength = 0) {
 	} else {
 		$listview_max_textlength = GlobalVariable::getVariable('Application_ListView_Max_Text_Length', 40, $currentModule);
 	}
+	$field_val = decode_html($field_val);
 	if ($listview_max_textlength && $listview_max_textlength > 0) {
 		$temp_val = preg_replace("/(<\/?)(\w+)([^>]*>)/i", '', $field_val);
 		if (function_exists('mb_strlen')) {
