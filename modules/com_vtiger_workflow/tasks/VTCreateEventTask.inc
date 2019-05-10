@@ -119,7 +119,10 @@ class VTCreateEventTask extends VTTask {
 			}
 		}
 
+		$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
+		$_REQUEST['ajxaction'] = 'Workflow';
 		$event = vtws_create('Events', $fields, $adminUser);
+		$_REQUEST['ajxaction'] = $hold_ajxaction;
 		$eventIdDetails = vtws_getIdComponents($event['id']);
 		$entityIdDetails = vtws_getIdComponents($id);
 
