@@ -4047,6 +4047,7 @@ function getListColumnSearch($list, $mod) {
 
 	$l_array = array();
 	$user_data = array();
+	$focus = CRMEntity::getInstance($mod);
 	$ftype = 'text';
 	$ui = 1;
 	$keys = array_keys($list);
@@ -4062,7 +4063,6 @@ function getListColumnSearch($list, $mod) {
 		$f_name = $adb->query_result($tks_res, $i, 'fieldname');
 		switch ($ui) {
 			case 56:
-			case 156:
 				$ftype = 'checkbox';
 				break;
 
@@ -4081,8 +4081,6 @@ function getListColumnSearch($list, $mod) {
 				break;
 
 			case 5:
-			case 6:
-			case 23:
 				$ftype = 'date';
 				break;
 
@@ -4095,6 +4093,17 @@ function getListColumnSearch($list, $mod) {
 				$ftype = 'number';
 				break;
 
+			case 10:
+				$ftype = 'reference';
+				$firstmod = getFirstModule($mod, $f_name);
+				$ffmod = CRMEntity::getInstance($firstmod);
+				$user_data = array(
+					'module' => $firstmod,
+					'fieldname' => $ffmod->list_link_field,
+					'entityfield' => $ffmod->list_link_field,
+				);
+				break;
+
 			case 71:
 			case 72:
 				$ftype = 'currency';
@@ -4102,6 +4111,11 @@ function getListColumnSearch($list, $mod) {
 
 			default:
 				$ftype = 'text';
+				$user_data = array(
+					'module' => $mod,
+					'fieldname' => $f_name,
+					'entityfield' => $focus->list_link_field,
+				);
 		}
 
 		$list[$f_name] = array(

@@ -4967,6 +4967,10 @@ var throttle = function (func, limit) {
 
 document.addEventListener('DOMContentLoaded', function (event) {
 	/* ======= Auto complete part relations ====== */
+	AutocompleteSetup();
+});
+
+function AutocompleteSetup() {
 	var acInputs = document.querySelectorAll('.autocomplete-input');
 	for (var i = 0; i < acInputs.length; i++) {
 		(function (_i) {
@@ -4980,7 +4984,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 			});
 		})(i);
 	}
-});
+}
 
 function AutocompleteRelation(target, i) {
 	this.inputField 	= target;

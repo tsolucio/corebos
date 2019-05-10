@@ -9,6 +9,7 @@
  ********************************************************************************/
 -->*}
 {if isset($LVCSearchActive) && $LVCSearchActive!=0}
+<script>AutocompleteSetup();</script>
 <tr bgcolor='white' name='customAdvanceSearch' id='customAdvanceSearch'>
 	<td>&nbsp;
 		<a onclick="clearAllField()">
@@ -134,7 +135,27 @@
 		<table style="width:100%;">
 			<tr>
 				<td width="70%">
-					<input type="text" id="tks_{$arr.fieldname}" name="tks_{$arr.fieldname}" value="" style="width:100%;" onkeypress="return disableEnterKey(event,'{$MODULE}')" />
+					<input
+						type="text"
+						id="tks_{$arr.fieldname}"
+						name="tks_{$arr.fieldname}"
+						value=""
+						style="width:100%;"
+						onkeypress="return disableEnterKey(event,'{$MODULE}')"
+						autocomplete="off"
+						class="autocomplete-input"
+						data-autocomp='{
+							"searchmodule":"{$arr.pickdata.module}",
+							"searchfields":"{$arr.pickdata.fieldname}",
+							"searchcondition":"contains",
+							"entityfield":"{$arr.pickdata.fieldname}",
+							"showfields":"{$arr.pickdata.fieldname}",
+							"fillfields":"tks_{$arr.fieldname}={$arr.pickdata.fieldname}"
+						}'
+					/>
+					<div id="listbox-unique-id{$val}" role="listbox" class="">
+						<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; list-style-type: none; width: 70%; max-width: none;" role="presentation"></ul>
+					</div>
 				</td>
 				<td align="right">
 					<a onblur="disableDiv('div_{$arr.fieldname}')" onclick="enableDiv('div_{$arr.fieldname}')">
