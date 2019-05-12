@@ -135,6 +135,7 @@ class RelatedPanes extends processcbMap {
 						$row['handler_path'] = (isset($value->handler_path) ? (String)$value->handler_path : '');
 						$row['handler_class'] = (isset($value->handler_class) ? (String)$value->handler_class : '');
 						$row['handler'] = (isset($value->handler) ? (String)$value->handler : '');
+						$row['onlyonmymodule'] = 1;
 						$instance->initialize($row);
 						if (!empty($row['handler_path']) && isInsideApplication($row['handler_path'])) {
 							checkFileAccessForInclusion($row['handler_path']);
