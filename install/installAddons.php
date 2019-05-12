@@ -17,9 +17,7 @@ require_once 'vtlib/Vtiger/Module.php';
 
 function installAddons() {
 	$packageList = array('module' => array(
-		'ConfigEditor',
 		'Import',
-		'Integration',
 		'MailManager',
 		'Mobile',
 		'ModTracker',
