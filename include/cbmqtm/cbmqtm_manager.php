@@ -18,14 +18,12 @@
  *************************************************************************************************/
 
 abstract class cbmqtm_manager {
-	static protected $instance = null;
+	protected static $instance = null;
 
 	public static function getInstance() {
-
 		if (null === static::$instance) {
 			static::$instance = new static;
 		}
-
 		return static::$instance;
 	}
 
