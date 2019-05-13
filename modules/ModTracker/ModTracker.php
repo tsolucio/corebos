@@ -33,9 +33,9 @@ class ModTracker {
 	* @param String Event Type
 	*/
 	public function vtlib_handler($moduleName, $eventType) {
-		global $adb, $currentModule;
+		global $adb;
 
-		$modtrackerModule = Vtiger_Module::getInstance($currentModule);
+		$modtrackerModule = Vtiger_Module::getInstance($moduleName);
 		$this->getModTrackerEnabledModules();
 
 		if ($eventType == 'module.postinstall') {
