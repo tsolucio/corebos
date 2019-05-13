@@ -88,10 +88,9 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				$disp_value = getNewDisplayDate();
 			}
 
-			//Added to display the Contact - Support End Date as one year future instead of
-			//today's date -- 30-11-2005
+			//Added to display the Contact - Support End Date as one year future instead of today's date
 			if ($fieldname == 'support_end_date' && $_REQUEST['module'] == 'Contacts') {
-				$addyear = strtotime("+1 year");
+				$addyear = strtotime('+1 year');
 				$disp_value = DateTimeField::convertToUserFormat(date('Y-m-d', $addyear));
 			} elseif ($fieldname == 'validtill' && $_REQUEST['module'] == 'Quotes') {
 				$disp_value = '';
