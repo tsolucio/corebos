@@ -5006,7 +5006,9 @@ function AutocompleteRelation(target, i) {
 			(function () {
 				var allAcLists = document.getElementsByClassName('relation-autocomplete__target');
 				for (var i = 0; i < allAcLists.length; i++) {
-					allAcLists[i].hide();
+					if (typeof allAcLists[i].hide == 'function') {
+						allAcLists[i].hide();
+					}
 				}
 			})();
 			this.style.opacity = 1;
