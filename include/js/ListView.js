@@ -583,6 +583,7 @@ function showDefaultCustomView(selectView, module, parenttab) {
 		document.getElementById('status').style.display = 'none';
 		var result = response.split('&#&#&#');
 		document.getElementById('ListViewContents').innerHTML = result[2];
+		vtlib_executeJavascriptInElement(document.getElementById('ListViewContents'));
 		if (result[1] != '') {
 			alert(result[1]);
 		}
