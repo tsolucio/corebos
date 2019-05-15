@@ -64,6 +64,7 @@ class pdfutil {
 	 * @return boolean if successful or not
 	 */
 	public static function PDFUnProtect($input, $password, $output) {
+		// This functionality require a paid service
 	}
 
 	/**
@@ -73,7 +74,7 @@ class pdfutil {
 	 * @return concat_pdf
 	 */
 	public static function PDFIdentifyByNIF($filename, $module, $fieldname) {
-		global $adb;
+		global $adb, $current_user;
 		$pdfinfo = file_get_contents($filename);
 		$f = new TCPDF_PARSER($pdfinfo);
 		$pd = $f->getParsedData()[1];
@@ -94,13 +95,13 @@ class pdfutil {
 		$nif = strrev($str[0]);
 		$crmid = -1;
 		if (!empty($nif)) {
-			$mod = VTiger_Module::getInstance($module);
-			$query = "SELECT crmid FROM $mod->basetable ";
-			$query .= " INNER JOIN vtiger_crmentity ON $mod->basetable.$mod->basetableid = vtiger_crmentity.crmid AND deleted = 0 ";
-			$query .= " WHERE $fieldname = ?";
-			$result = $adb->pquery($query, array($nif));
+			$queryGenerator = new QueryGenerator($module, $current_user);
+			$queryGenerator->setFields(array('id'));
+			$queryGenerator->addCondition($fieldname, $nif, 'e');
+			$query = $queryGenerator->getQuery();
+			$result = $adb->pquery($query, array());
 			if ($adb->num_rows($result) > 0) {
-				$crmid = $adb->query_result($result, 0, 'crmid');
+				$crmid = $adb->query_result($result, 0, 0);
 			}
 		}
 		return $crmid;
