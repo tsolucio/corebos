@@ -2979,7 +2979,7 @@ class ReportRun extends CRMEntity {
 						if ($fieldlist[2]=='totaltime') {
 							$stdfilterlist[$fieldcolname] = "sec_to_time(sum(time_to_sec(".$query_columnalias."))) '".$field_columnalias."'";
 						} else {
-							$stdfilterlist[$fieldcolname] = "sum($query_columnalias) '".$field_columnalias."'";
+							$stdfilterlist[$fieldcolname] = "sum(`$query_columnalias`) '".$field_columnalias."'";
 						}
 					}
 					if ($fieldlist[4] == 3) {
@@ -2988,21 +2988,21 @@ class ReportRun extends CRMEntity {
 						if ($fieldlist[2]=='totaltime') {
 							$stdfilterlist[$fieldcolname] = 'sec_to_time(sum(time_to_sec('.$query_columnalias."))/count(*)) '".$field_columnalias."'";
 						} else {
-							$stdfilterlist[$fieldcolname] = "(sum($query_columnalias)/count(*)) '".$field_columnalias."'";
+							$stdfilterlist[$fieldcolname] = "(sum(`$query_columnalias`)/count(*)) '".$field_columnalias."'";
 						}
 					}
 					if ($fieldlist[4] == 4) {
 						if ($fieldlist[2]=='totaltime') {
 							$stdfilterlist[$fieldcolname] = 'sec_to_time(min(time_to_sec('.$query_columnalias."))) '".$field_columnalias."'";
 						} else {
-							$stdfilterlist[$fieldcolname] = "min($query_columnalias) '".$field_columnalias."'";
+							$stdfilterlist[$fieldcolname] = "min(`$query_columnalias`) '".$field_columnalias."'";
 						}
 					}
 					if ($fieldlist[4] == 5) {
 						if ($fieldlist[2]=='totaltime') {
 							$stdfilterlist[$fieldcolname] = 'sec_to_time(max(time_to_sec('.$query_columnalias."))) '".$field_columnalias."'";
 						} else {
-							$stdfilterlist[$fieldcolname] = "max($query_columnalias) '".$field_columnalias."'";
+							$stdfilterlist[$fieldcolname] = "max(`$query_columnalias`) '".$field_columnalias."'";
 						}
 					}
 				}
