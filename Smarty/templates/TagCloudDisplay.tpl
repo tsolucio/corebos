@@ -31,6 +31,14 @@
 	</tr>
 	</table>
 <script>
+function tagvalidate() {
+	if (trim(document.getElementById('txtbox_tagfields').value) != '') {
+		SaveTag('txtbox_tagfields', '{$ID}', '{$MODULE}');
+	} else {
+		alert('{$APP.PLEASE_ENTER_TAG}');
+		return false;
+	}
+}
 getTagCloud({$ID});
 </script>
 <!-- End Tag cloud display -->
