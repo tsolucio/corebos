@@ -14,6 +14,13 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 require_once 'include/utils/pdfConcat.php';
+require_once 'include/tcpdf/tcpdf_parser.php';
+
+use setasign\FpdiProtection\FpdiProtection;
+
+require_once 'include/fpdf/fpdf.php';
+require_once 'include/fpdi/src/autoload.php';
+require_once 'include/fpdi_protection/src/autoload.php';
 
 class pdfutil {
 
@@ -34,6 +41,20 @@ class pdfutil {
 	 * @return boolean if successful or not
 	 */
 	public static function PDFProtect($input, $password, $output) {
+		$pdf = new FpdiProtection();
+		$pagecount = $pdf->setSourceFile($input);
+		for ($loop = 1; $loop <= $pagecount; $loop++) {
+			$tplidx = $pdf->importPage($loop);
+			$pdf->addPage();
+			$pdf->useTemplate($tplidx);
+		}
+		$pdf->SetProtection(array(FpdiProtection::PERM_PRINT, FpdiProtection::PERM_DIGITAL_PRINT), $password);
+		try {
+			$pdf->Output($output, 'F');
+			return true;
+		} catch (Exception $e) {
+			return false;
+		}
 	}
 
 	/**
@@ -44,6 +65,7 @@ class pdfutil {
 	 * @return boolean if successful or not
 	 */
 	public static function PDFUnProtect($input, $password, $output) {
+		// This functionality require a paid service
 	}
 
 	/**
@@ -53,6 +75,37 @@ class pdfutil {
 	 * @return concat_pdf
 	 */
 	public static function PDFIdentifyByNIF($filename, $module, $fieldname) {
+		global $adb, $current_user;
+		$pdfinfo = file_get_contents($filename);
+		$f = new TCPDF_PARSER($pdfinfo);
+		$pd = $f->getParsedData()[1];
+		$pdp = array();
+		$string = "";
+		foreach ($pd as $key => $value) {
+			if ($key=='5_0') {
+				$string = $value[1][3][0];
+			}
+			$pdp[$key] = $value;
+		}
+		$keyword = '/N.I.F/';
+		$str = preg_split('/N.I.F/', $string);
+		$str = strrev($str[0]);
+		$str = preg_split("/jT/", $str);
+		$str = preg_replace("/[\s)]/", '', $str[1]);
+		$str = explode("(", $str);
+		$nif = strrev($str[0]);
+		$crmid = -1;
+		if (!empty($nif)) {
+			$queryGenerator = new QueryGenerator($module, $current_user);
+			$queryGenerator->setFields(array('id'));
+			$queryGenerator->addCondition($fieldname, $nif, 'e');
+			$query = $queryGenerator->getQuery();
+			$result = $adb->pquery($query, array());
+			if ($adb->num_rows($result) > 0) {
+				$crmid = $adb->query_result($result, 0, 0);
+			}
+		}
+		return $crmid;
 	}
 }
 ?>
