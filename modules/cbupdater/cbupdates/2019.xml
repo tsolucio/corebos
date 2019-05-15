@@ -132,4 +132,11 @@
 	<classname>addSendEmailAction2FAQ</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>fix Message EmailTpl Field related module</description>
+	<filename>build/changeSets/2019/fixMessageEmailTplField.php</filename>
+	<classname>fixMessageEmailTplField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
