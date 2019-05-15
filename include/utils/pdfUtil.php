@@ -17,6 +17,7 @@ require_once 'include/utils/pdfConcat.php';
 require_once 'include/tcpdf/tcpdf_parser.php';
 
 use setasign\FpdiProtection\FpdiProtection;
+
 require_once 'include/fpdf/fpdf.php';
 require_once 'include/fpdi/src/autoload.php';
 require_once 'include/fpdi_protection/src/autoload.php';
@@ -47,11 +48,11 @@ class pdfutil {
 			$pdf->addPage();
 			$pdf->useTemplate($tplidx);
 		}
-		$pdf->SetProtection(array(FpdiProtection::PERM_PRINT, FpdiProtection::PERM_DIGITAL_PRINT),$password);
+		$pdf->SetProtection(array(FpdiProtection::PERM_PRINT, FpdiProtection::PERM_DIGITAL_PRINT), $password);
 		try {
 			$pdf->Output($output, 'F');
 			return true;
-		} catch(Exception $e) {
+		} catch (Exception $e) {
 			return false;
 		}
 	}
