@@ -16,8 +16,9 @@
 require_once 'include/tcpdf/tcpdf.php';
 
 use setasign\Fpdi\Fpdi;
-require_once('include/fpdf/fpdf.php');
-require_once('include/fpdi/src/autoload.php');
+
+require_once 'include/fpdf/fpdf.php';
+require_once 'include/fpdi/src/autoload.php';
 
 class concat_pdf extends FPDI {
 
