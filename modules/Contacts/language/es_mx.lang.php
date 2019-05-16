@@ -289,5 +289,6 @@ $mod_strings = array (
 'SYNC_SETT_TITLE'=>'Establece la configuración para el proceso de sincronización',
 'SYNC_RESULTS'=>'Resultados de la Sincronización',
 'ERR_GContactsSync'=>'Se ha producido un error accediendo a Google. La configuración ha sido eliminada, por favor configurala de nuevo.',
+'Template Language' => 'Idioma Plantillas',
 );
 ?>

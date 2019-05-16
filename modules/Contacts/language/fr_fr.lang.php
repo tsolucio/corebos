@@ -255,5 +255,6 @@ $mod_strings = array (
 		'SYNC_SETT_TITLE'=>'Set default user parameters for the Sync Process',
 		'SYNC_RESULTS'=>'Sync Results',
 		'ERR_GContactsSync'=>'There has been an error accessing Google. The settings have been deleted, please configure the access again.',
+		'Template Language' => 'Template Language',
 );
 ?>
