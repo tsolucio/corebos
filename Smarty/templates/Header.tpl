@@ -101,12 +101,13 @@
 		<div class="slds-global-header__item">
 			<div class="slds-global-header__logo" style="background-image: url('{$COMPANY_DETAILS.applogo}');"></div>
 		</div>
-		{if $Application_Global_Search_Active}
+		{if $Application_Global_Search_Active || (isset($GS_AUTOCOMP) && isset($GS_AUTOCOMP['searchin']))}
 		{if (isset($GS_AUTOCOMP) && isset($GS_AUTOCOMP['searchin']))}{$GLOBAL_AC = true}{else}{$GLOBAL_AC = false}{/if}
 		<div class="slds-global-header__item slds-global-header__item_search">
 			<div class="slds-form-element">
 				<div class="slds-form-element__control">
 					<div class="slds-combobox-group">
+						{if $Application_Global_Search_Active}
 						<div class="slds-combobox_object-switcher slds-combobox-addon_start">
 							<div class="slds-form-element">
 								<label class="slds-form-element__label slds-assistive-text" for="globalsearch-moduleselect">{$APP.LBL_SELECT_MODULES_FOR_SEARCH}</label>
@@ -128,8 +129,14 @@
 								</div>
 							</div>
 						</div>
+						{/if}
+						{if $GLOBAL_AC}
 						<div class="slds-combobox_container slds-combobox-addon_end">
+							{if $Application_Global_Search_Active}
 							<form name="UnifiedSearch" method="post" action="index.php" style="margin:0px" onsubmit="if (document.getElementById('query_string').value=='') return false; VtigerJS_DialogBox.block();">
+							{else}
+							<form name="UnifiedSearch" style="margin:0px" onsubmit="return false;">
+							{/if}
 								<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false" aria-haspopup="listbox" id="primary-search-combobox-id-1" role="combobox">
 									<input type="hidden" name="action" value="UnifiedSearch">
 									<input type="hidden" name="module" value="Home">
@@ -149,6 +156,7 @@
 								</div>
 							</form>
 						</div>
+						{/if}
 					</div>
 				</div>
 			</div>
