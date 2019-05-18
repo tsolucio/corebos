@@ -322,7 +322,7 @@ class UserPrivileges {
 
 			return ($result == 1);
 		} else {
-			return file_exists("user_privileges/user_privileges_{$userId}.php");
+			return file_exists("user_privileges/sharing_privileges_{$userId}.php");
 		}
 	}
 

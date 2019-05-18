@@ -38,12 +38,14 @@ class UserPrivilegesWriter {
 		global $adb;
 		$adb->pquery('DELETE FROM user_privileges WHERE userid=?', array($userId));
 		$adb->pquery('DELETE FROM sharing_privileges WHERE userid=?', array($userId));
+		@unlink("user_privileges/sharing_privileges_{$userId}.php");
 	}
 
 	public static function flushAllPrivileges() {
 		global $adb;
 		$adb->query('DELETE FROM user_privileges');
 		$adb->query('DELETE FROM sharing_privileges');
+		array_map('unlink', glob('user_privileges/sharing_privileges_*.php'));
 	}
 
 	/**
