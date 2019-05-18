@@ -2399,7 +2399,7 @@ function getMergedDescription($description, $id, $parent_type) {
 			WHERE c.defaultcompany=1 and vtiger_crmentity.deleted=0',
 		array()
 	);
-	if ($cmprs && $adb->num_rows($cmprs)>0) {
+	if ($cmprs && $adb->num_rows($cmprs)>0 && isPermitted('cbCompany', 'DetailView', $adb->query_result($cmprs, 0, 0))=='yes') {
 		$ct = new VTSimpleTemplate($description, true);
 		$description = $ct->render($entityCache, vtws_getEntityId('cbCompany').'x'.$adb->query_result($cmprs, 0, 0));
 	}
