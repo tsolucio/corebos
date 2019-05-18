@@ -12,21 +12,6 @@
 {* If duplicate merge is within same module show the headers ... *}
 {if $MODULE eq $smarty.request.module}
 {include file='Buttons_List.tpl'}
-				<div id="searchingUI" style="display:none;">
-					<table border=0 cellspacing=0 cellpadding=0 width=100%>
-						<tr>
-							<td align=center>
-								<img src="{'searching.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SEARCHING}"  title="{$APP.LBL_SEARCHING}">
-							</td>
-						</tr>
-					</table>
-				</div>
-			</td>
-		</tr>
-	</table>
-</td>
-</tr>
-</table>
 {/if}
 
 {*<!-- Contents -->*}

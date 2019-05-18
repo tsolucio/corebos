@@ -12,28 +12,9 @@
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <script type='text/javascript' src='include/js/Merge.js'></script>
 <script type='text/javascript' src='modules/RecycleBin/language/{$LANGUAGE}.lang.js'></script>
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 {include file='Buttons_List.tpl'}
-					<div id="searchingUI" style="display:none;">
-						<table border=0 cellspacing=0 cellpadding=0 width=100%>
-							<tr>
-								<td align=center>
-									<img src="{'searching.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SEARCHING}"  title="{$APP.LBL_SEARCHING}">
-								</td>
-							</tr>
-						</table>
-					</div>
-				</td>
-			</tr>
-		</table>
-	</td>
-</tr>
-</table>
-
 {*<!-- Contents -->*}
-
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
-
 <tr><td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 	<td class="showPanelBg" valign="top" width=100% style="padding:10px;">
 
