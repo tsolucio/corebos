@@ -16,7 +16,6 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 require_once 'include/utils/utils.php';
-require_once 'include/utils/CommonUtils.php';
 global $adb, $log, $current_user;
 
 $functiontocall = vtlib_purify($_REQUEST['functiontocall']);
