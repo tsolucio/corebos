@@ -1328,6 +1328,25 @@ function doServerValidation(edit_type, formName, callback) {
 					} else {
 						submitFormForAction(formName, action);
 					}
+				} else if (msg.search('%%%FUNCTION%%%') > -1) { //call user function
+					var callfunc = msg.split('%%%FUNCTION%%%');
+					var params = '';
+					if (callfunc[1].search('%%%PARAMS%%%') > -1) { //function has params string
+						var cfp = callfunc[1].split('%%%PARAMS%%%');
+						callfunc = cfp[0];
+						params = cfp[1];
+					} else {
+						callfunc = callfunc[1];
+					}
+					if (typeof window[callfunc] == 'function') {
+						window[callfunc](edit_type, formName, callback, params);
+					} else {
+						if (typeof callback == 'function') {
+							callback('submit');
+						} else {
+							submitFormForAction(formName, action);
+						}
+					}
 				} else { //Error
 					alert(msg);
 					VtigerJS_DialogBox.unblock();
