@@ -130,7 +130,7 @@
 							</div>
 						</div>
 						{/if}
-						{if $GLOBAL_AC}
+						{if $GLOBAL_AC || $Application_Global_Search_Active}
 						<div class="slds-combobox_container slds-combobox-addon_end">
 							{if $Application_Global_Search_Active}
 							<form name="UnifiedSearch" method="post" action="index.php" style="margin:0px" onsubmit="if (document.getElementById('query_string').value=='') return false; VtigerJS_DialogBox.block();">
