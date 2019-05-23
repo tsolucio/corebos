@@ -242,7 +242,7 @@ if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == 'true') {
 	$errormessage = isset($_REQUEST['error_msg']) ? vtlib_purify($_REQUEST['error_msg']) : '';
 	$smarty->assign('ERROR_MESSAGE_CLASS', $errormessageclass);
 	$smarty->assign('ERROR_MESSAGE', $errormessage);
-} elseif ($focus->mode != 'edit') {
+} elseif ($focus->mode != 'edit' && (!isset($_REQUEST['convertmode']) || ($_REQUEST['convertmode']!='update_quote_val' && $_REQUEST['convertmode'] != 'update_so_val'))) {
 	setObjectValuesFromRequest($focus);
 }
 if (isset($_REQUEST['opportunity_id']) && $_REQUEST['opportunity_id'] != '') {
