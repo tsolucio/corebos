@@ -69,6 +69,20 @@ class pdfutil {
 	}
 
 	/**
+	 * decrypt PDF FlateDecode streams in input file and save them to output file
+	 * @param string $input full path to the PDF file to decode
+	 * @param string $output full path to where the decoded PDF should be saved (will be overwritten if exists)
+	 * @return boolean if successful or not
+	 */
+	public static function PDFFlateDecode2File($input, $output) {
+		$f = @fopen($input, 'rb');
+		$c = fread($f, filesize($input));
+		$u = @gzuncompress($c); // exactly fits for /FlateDecode filter
+		$out = fopen('php://output', 'wb');
+		return fwrite($out, $u);
+	}
+
+	/**
 	 * Search the given PDF for a NIF value (custom PDF layout), if found, search the indicated module and field for that NIF value
 	 *  and return the CRMID of the record found. In case no record is found return -1
 	 * @param string $filename full path to the inital PDF file
