@@ -15,7 +15,7 @@
  *************************************************************************************************
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-include 'modules/Users/UserPrivilegesWriter.php';
+require_once 'modules/Users/UserPrivilegesWriter.php';
 $record = vtlib_purify($_REQUEST['record']);
 if (!empty($record) && is_numeric($record)) {
 	UserPrivilegesWriter::setUserPrivileges($record);
