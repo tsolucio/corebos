@@ -41,11 +41,16 @@ class UserPrivilegesWriter {
 		@unlink("user_privileges/sharing_privileges_{$userId}.php");
 	}
 
-	public static function flushAllPrivileges() {
-		global $adb;
-		$adb->query('DELETE FROM user_privileges');
-		$adb->query('DELETE FROM sharing_privileges');
-		array_map('unlink', glob('user_privileges/sharing_privileges_*.php'));
+	public static function flushAllPrivileges($role_id) {
+		global $adb, $cbodUserPrivilegesStorage;
+
+		if ($cbodUserPrivilegesStorage == 'file') {
+			self::recalculateSharingFile($role_id);
+		} else {
+			$adb->query('DELETE FROM user_privileges');
+			$adb->query('DELETE FROM sharing_privileges');
+			array_map('unlink', glob('user_privileges/sharing_privileges_*.php'));
+		}
 	}
 
 	/**
@@ -66,6 +71,26 @@ class UserPrivilegesWriter {
 	private static function createSharingPrivilegesFile($userId) {
 		require_once 'modules/Users/CreateUserPrivilegeFile.php';
 		createUserSharingPrivilegesfile($userId);
+	}
+
+	private static function recalculateSharingFile($role_id) {
+		global $adb;
+
+		if ($role_id == 0) {
+			$query = "SELECT id FROM vtiger_users WHERE deleted = 0";
+			$result = $adb->query($query);
+		} else {
+			$query = "
+				SELECT id FROM vtiger_users u
+				INNER JOIN vtiger_user2role r ON u.id = r.userid
+				WHERE deleted = 0 AND roleid LIKE ?";
+			$result = $adb->pquery($query, array($role_id));
+		}
+
+		while ($row = $adb->fetchByAssoc($result)) {
+			self::setUserPrivileges($row["id"]);
+			self::setSharingPrivileges($row["id"]);
+		}
 	}
 
 	/**

@@ -3466,7 +3466,7 @@ function RecalculateSharingRules($roleId = 0) {
 	global $log;
 	$log->debug('> RecalculateSharingRules');
 	require_once 'modules/Users/UserPrivilegesWriter.php';
-	UserPrivilegesWriter::flushAllPrivileges();
+	UserPrivilegesWriter::flushAllPrivileges($roleId);
 	$log->debug('< RecalculateSharingRules');
 }
 
