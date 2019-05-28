@@ -41,7 +41,7 @@ class UserPrivilegesWriter {
 		@unlink("user_privileges/sharing_privileges_{$userId}.php");
 	}
 
-	public static function flushAllPrivileges($role_id) {
+	public static function flushAllPrivileges($role_id = 0) {
 		global $adb, $cbodUserPrivilegesStorage;
 
 		if ($cbodUserPrivilegesStorage == 'file') {
