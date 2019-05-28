@@ -355,20 +355,12 @@ function getTabid($module) {
 	// Lookup information in cache first
 	$tabid = VTCacheUtils::lookupTabid($module);
 	if ($tabid === false) {
-		if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
-			include 'tabdata.php';
-			if (!empty($tab_info_array[$module])) {
-				$tabid = $tab_info_array[$module];
-			}
+		global $adb;
+		$result = $adb->pquery('select tabid from vtiger_tab where name=?', array($module));
+		if (!$result || $adb->num_rows($result)==0) {
+			return null;
 		}
-		if ($tabid === false) {
-			global $adb;
-			$result = $adb->pquery('select tabid from vtiger_tab where name=?', array($module));
-			if (!$result || $adb->num_rows($result)==0) {
-				return null;
-			}
-			$tabid = $adb->query_result($result, 0, 'tabid');
-		}
+		$tabid = $adb->query_result($result, 0, 'tabid');
 		// Update information to cache for re-use
 		VTCacheUtils::updateTabidInfo($tabid, $module);
 	}
@@ -485,19 +477,11 @@ function getCVname($cvid) {
  * returns the tabid, integer type
  */
 function getTabOwnedBy($module) {
-	global $log;
+	global $log, $adb;
 	$log->debug('> getTabOwnedBy ' . $module);
-
 	$tabid = getTabid($module);
-
-	if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
-		include 'tabdata.php';
-		$tab_ownedby = $tab_ownedby_array[$tabid];
-	} else {
-		global $adb;
-		$result = $adb->pquery('select ownedby from vtiger_tab where name=?', array($module));
-		$tab_ownedby = $adb->query_result($result, 0, "ownedby");
-	}
+	$result = $adb->pquery('select ownedby from vtiger_tab where name=?', array($module));
+	$tab_ownedby = $adb->query_result($result, 0, 'ownedby');
 	$log->debug('< getTabOwnedBy');
 	return $tab_ownedby;
 }

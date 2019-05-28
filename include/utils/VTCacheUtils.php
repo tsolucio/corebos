@@ -53,6 +53,33 @@ class VTCacheUtils {
 		self::$_tabidinfo_cache = array();
 	}
 
+	/** Tab sequence/presence information caching */
+	public static $_tabpresenceinfo_cache = null;
+	public static function lookupTabSequence($tabid) {
+		if (isset(self::$_tabpresenceinfo_cache[$tabid])) {
+			return self::$_tabpresenceinfo_cache[$tabid];
+		}
+		return false;
+	}
+
+	public static function updateTabSequence($tabid, $presence) {
+		if (!empty($tabid)) {
+			self::$_tabpresenceinfo_cache[$tabid] = $presence;
+		}
+	}
+
+	public static function emptyTabSequence() {
+		self::$_tabpresenceinfo_cache = null;
+	}
+
+	public static function getTabSequence() {
+		return self::$_tabpresenceinfo_cache;
+	}
+
+	public static function setTabSequence($ts) {
+		self::$_tabpresenceinfo_cache = $ts;
+	}
+
 	/** All tab information caching */
 	public static $_alltabrows_cache = false;
 	public static function lookupAllTabsInfo() {

@@ -756,14 +756,8 @@ function getTabModuleName($tabid) {
 	// Lookup information in cache first
 	$tabname = VTCacheUtils::lookupModulename($tabid);
 	if ($tabname === false) {
-		if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
-			include 'tabdata.php';
-			$tabname = array_search($tabid, $tab_info_array);
-		}
-		if ($tabname === false) {
-			$result = $adb->pquery('select name from vtiger_tab where tabid=?', array($tabid));
-			$tabname = $adb->query_result($result, 0, 'name');
-		}
+		$result = $adb->pquery('select name from vtiger_tab where tabid=?', array($tabid));
+		$tabname = $adb->query_result($result, 0, 'name');
 		// Update information to cache for re-use
 		VTCacheUtils::updateTabidInfo($tabid, $tabname);
 	}
@@ -880,15 +874,8 @@ function getUserId_Ol($username) {
 function getActionid($action) {
 	global $log, $adb;
 	$log->debug('> getActionid '.$action);
-	$actionid = '';
-	if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
-		include 'tabdata.php';
-		$actionid = (isset($action_id_array[$action]) ? $action_id_array[$action] : '');
-	}
-	if ($actionid == '') {
-		$result =$adb->pquery('select actionid from vtiger_actionmapping where actionname=?', array($action));
-		$actionid=$adb->query_result($result, 0, 'actionid');
-	}
+	$result = $adb->pquery('select actionid from vtiger_actionmapping where actionname=?', array($action));
+	$actionid = $adb->query_result($result, 0, 'actionid');
 	$log->debug('< getActionid '.$actionid);
 	return $actionid;
 }
@@ -901,14 +888,8 @@ function getActionname($actionid) {
 	global $log, $adb;
 	$log->debug('> getActionname '.$actionid);
 	$actionname='';
-	if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
-		include 'tabdata.php';
-		$actionname = (isset($action_name_array[$actionid]) ? $action_name_array[$actionid] : '');
-	}
-	if ($actionname == '') {
-		$result =$adb->pquery('select actionname from vtiger_actionmapping where actionid=? and securitycheck=0', array($actionid));
-		$actionname=$adb->query_result($result, 0, 'actionname');
-	}
+	$result = $adb->pquery('select actionname from vtiger_actionmapping where actionid=? and securitycheck=0', array($actionid));
+	$actionname = $adb->query_result($result, 0, 'actionname');
 	$log->debug('< getActionname');
 	return $actionname;
 }

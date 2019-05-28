@@ -94,15 +94,15 @@ function vtlib_prefetchModuleActiveInfo($force = true) {
  * Check if module is set active (or enabled)
  */
 function vtlib_isModuleActive($module) {
-	global $__cache_module_activeinfo;
+	global $__cache_module_activeinfo, $adb;
 
 	if (in_array($module, vtlib_moduleAlwaysActive())) {
 		return true;
 	}
 
 	if (!isset($__cache_module_activeinfo[$module])) {
-		include 'tabdata.php';
-		$presence = isset($tab_info_array[$module])? 0: 1;
+		$result = $adb->pquery('select presence from vtiger_tab where tabid=?', array(getTabId($module)));
+		$presence = $adb->query_result($result, 0, 'presence');
 		$__cache_module_activeinfo[$module] = $presence;
 	} else {
 		$presence = $__cache_module_activeinfo[$module];

@@ -17,15 +17,12 @@ global $adb,$current_user;
 $formodule = vtlib_purify($_REQUEST['formodule']);
 $singlepane_view = GlobalVariable::getVariable('Application_Single_Pane_View', 0, $formodule);
 $singlepane_view = empty($singlepane_view) ? 'false' : 'true';
-if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
-	include 'tabdata.php';
-}
 $userprivs = $current_user->getPrivileges();
 $is_admin = $userprivs->isAdmin();
 $fortabid = getTabid($formodule);
 $forrecord = vtlib_purify($_REQUEST['forrecord']);
 $rls = array();
-$query = 'select relation_id,related_tabid,label,vtiger_tab.name,actions,relationfieldid
+$query = 'select relation_id,related_tabid,label,vtiger_tab.name,actions,relationfieldid,vtiger_tab.presence
 	from vtiger_relatedlists
 	inner join vtiger_tab on vtiger_tab.tabid=vtiger_relatedlists.related_tabid
 	where vtiger_relatedlists.tabid=? order by sequence';
@@ -35,7 +32,7 @@ while ($rel = $adb->fetch_array($result)) {
 	$relationLabel = $rel['label'];
 	$relatedTabId = $rel['related_tabid'];
 	//check for disabled module.
-	$permitted = $tab_seq_array[$relatedTabId];
+	$permitted = $rel['presence'];
 	if ($permitted === 0 || empty($relatedTabId)) {
 		if ($is_admin || $userprivs->hasModuleAccess($relatedTabId) || empty($relatedTabId)) {
 			$rls[$relatedId] = array(

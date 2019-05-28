@@ -813,7 +813,6 @@ class Common_Install_Wizard_Utils {
 
 	public static $writableFilesAndFolders = array (
 		'Configuration File' => './config.inc.php',
-		'Tabdata File' => './tabdata.php',
 		'Installation File' => './install.php',
 		'Cache Directory' => './cache/',
 		'Image Cache Directory' => './cache/images/',
