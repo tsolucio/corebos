@@ -120,7 +120,7 @@ function vtlib_isModuleActive($module) {
  * Recreate user privileges files.
  */
 function vtlib_RecreateUserPrivilegeFiles() {
-	require_once "modules/Users/UserPrivilegesWriter.php";
+	require_once 'modules/Users/UserPrivilegesWriter.php';
 	UserPrivilegesWriter::flushAllPrivileges();
 }
 

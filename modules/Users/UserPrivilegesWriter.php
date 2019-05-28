@@ -77,19 +77,14 @@ class UserPrivilegesWriter {
 		global $adb;
 
 		if ($role_id == 0) {
-			$query = "SELECT id FROM vtiger_users WHERE deleted = 0";
-			$result = $adb->query($query);
+			$result = $adb->query('SELECT id FROM vtiger_users WHERE deleted=0');
 		} else {
-			$query = "
-				SELECT id FROM vtiger_users u
-				INNER JOIN vtiger_user2role r ON u.id = r.userid
-				WHERE deleted = 0 AND roleid LIKE ?";
-			$result = $adb->pquery($query, array($role_id));
+			$result = $adb->pquery('SELECT id FROM vtiger_users u INNER JOIN vtiger_user2role r ON u.id=r.userid WHERE deleted=0 AND roleid LIKE ?', array($role_id));
 		}
 
 		while ($row = $adb->fetchByAssoc($result)) {
-			self::setUserPrivileges($row["id"]);
-			self::setSharingPrivileges($row["id"]);
+			self::setUserPrivileges($row['id']);
+			self::setSharingPrivileges($row['id']);
 		}
 	}
 
