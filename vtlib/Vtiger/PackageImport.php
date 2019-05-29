@@ -459,7 +459,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		if ($menuInstance = Vtiger_Menu::getInstance($parenttab)) {
 			$moduleInstance->parent=$parenttab;
 		} else {
-			$moduleInstance->parent="Tools";
+			$moduleInstance->parent='Tools';
 		}
 		$moduleInstance->isentitytype = ($isextension != true);
 		$moduleInstance->version = (!$tabversion)? 0 : $tabversion;
@@ -470,7 +470,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		if (!empty($parenttab)) {
 			$menuInstance = Vtiger_Menu::getInstance($parenttab);
 			if ($menuInstance == null) {
-				$menuInstance = Vtiger_Menu::getInstance("Tools");
+				$menuInstance = Vtiger_Menu::getInstance('Tools');
 				self::log("Module attached to Tools because $parenttab does not exist");
 			}
 			$menuInstance->addModule($moduleInstance);
