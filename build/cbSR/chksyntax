@@ -1,11 +1,12 @@
 #!/bin/sh
-touch /tmp/chksyntax
-if [ "$1." != "." ]
-then
-  php -l $1 > /dev/null
-  if [ $? -ne 0 ]
-  then
-	  echo "$1" >> /tmp/chksyntax
-  fi
-fi
+set -e
+find . -not -path "./build/WebserviceVQLParser/*" -not -path "./include/PhpSpreadsheet/*" -not -path "./include/install/resources/gdinfo.php" -type f \( -name \*.php -o -name \*.service -o -name \*.inc \) -exec php -l {} > /dev/null \;
+#if [ "$1." != "." ]
+#then
+#  php -l $1 > /dev/null
+#  if [ $? -ne 0 ]
+#  then
+#	  echo "$1" >> /tmp/chksyntax
+#  fi
+#fi
 
