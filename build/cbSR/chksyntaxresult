@@ -1,7 +1,0 @@
-#!/bin/sh
-#if [ -f cache/chksyntax ]
-#then
-	exit $(stat -c %s /tmp/chksyntax)
-#else
-#	exit 0
-#fi
