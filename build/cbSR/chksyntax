@@ -1,6 +1,6 @@
 #!/bin/sh
 if [ "$1." != "." ]
 then
-  php -l $1 > /dev/null
+  php -l $1 > /dev/null 2>>cache/chksyntax
 fi
 

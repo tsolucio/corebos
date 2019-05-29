@@ -1,0 +1,2 @@
+#!/bin/sh
+exit $(stat --format=%s cache/chksyntax)
