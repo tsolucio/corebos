@@ -2373,7 +2373,7 @@ function getMergedDescription($description, $id, $parent_type) {
 		}
 	}
 	$entityCache = new VTEntityCache($current_user);
-	if ($parent_type != 'Users') { // && preg_match('/\$\w+-\w+\$/', $description)==0) { // no old format anymore
+	if ($parent_type != 'Users' && isPermitted($parent_type, 'DetailView', $id)=='yes') { // && preg_match('/\$\w+-\w+\$/', $description)==0) { // no old format anymore
 		$ct = new VTSimpleTemplate($description, true);
 		$description = $ct->render($entityCache, vtws_getEntityId($parent_type).'x'.$id);
 	}
