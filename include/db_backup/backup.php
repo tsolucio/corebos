@@ -65,7 +65,7 @@ class DatabaseDump {
 
 		// Meta information which helps to import into mysql database.
 		$this->writeln('SET FOREIGN_KEY_CHECKS=0;');
-		$this->writeln('SET SQL_MODE='NO_AUTO_VALUE_ON_ZERO';');
+		$this->writeln("SET SQL_MODE='NO_AUTO_VALUE_ON_ZERO';");
 		$this->writeln('');
 
 		// Get all table names from database
@@ -137,7 +137,7 @@ class DatabaseDump {
 	}
 
 	public function file_open($filename) {
-		$this->fhandle = fopen($filename, "w+");
+		$this->fhandle = fopen($filename, 'w+');
 	}
 
 	public function file_close() {
@@ -145,7 +145,7 @@ class DatabaseDump {
 	}
 
 	public function write($string) {
-		fprintf($this->fhandle, "%s", $string);
+		fprintf($this->fhandle, '%s', $string);
 	}
 
 	public function writeln($string) {
