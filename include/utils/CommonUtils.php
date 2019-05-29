@@ -2372,8 +2372,8 @@ function getMergedDescription($description, $id, $parent_type) {
 			$description = str_replace($token_data, $adb->query_result($result, 0, $columnname), $description);
 		}
 	}
+	$entityCache = new VTEntityCache($current_user);
 	if ($parent_type != 'Users') { // && preg_match('/\$\w+-\w+\$/', $description)==0) { // no old format anymore
-		$entityCache = new VTEntityCache($current_user);
 		$ct = new VTSimpleTemplate($description, true);
 		$description = $ct->render($entityCache, vtws_getEntityId($parent_type).'x'.$id);
 	}
