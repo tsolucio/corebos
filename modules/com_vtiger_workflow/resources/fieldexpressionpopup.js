@@ -35,7 +35,7 @@ function fieldExpressionPopup(moduleName, $) {
 		el.css({
 			width: '650px'
 		});
-		placeAtCenter(el.get(0));
+		//placeAtCenter(el.get(0));
 	}
 
 	function showElement(ele, displaytype) {

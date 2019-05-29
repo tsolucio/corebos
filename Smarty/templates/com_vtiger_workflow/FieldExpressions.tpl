@@ -9,7 +9,7 @@
  ************************************************************************************/
 -->*}
 
-<div id='editpopup' class='layerPopup' style='display:none;' >
+<div id='editpopup' class='layerPopup slds-align_absolute-center' style='display:none;top:35%;' >
     <div id='editpopup_draghandle' style='cursor: move;'>
         <table width="100%" cellspacing="0" cellpadding="5" border="0" class="layerHeadingULine">
             <tr>
