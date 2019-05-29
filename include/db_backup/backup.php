@@ -18,7 +18,7 @@ function save_structure($filename, $root_directory) {
 	global $log;
 	$log->debug('> save_structure '.$filename.','.$root_directory);
 	$dbdump = new DatabaseDump(DBSERVER, DBUSER, DBPASS);
-	$dumpfile = $root_directory.'/'.$filename;
+	$dumpfile = $root_directory.$filename;
 	$dbdump->save(DBNAME, $dumpfile) ;
 	$log->debug('< save_structure');
 }
