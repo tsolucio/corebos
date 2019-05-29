@@ -1,2 +1,7 @@
 #!/bin/sh
-exit $(stat -c %s cache/chksyntax)
+if [ -f cache/chksyntax ]
+then
+	exit $(stat -c %s cache/chksyntax)
+else
+	exit 0
+fi
