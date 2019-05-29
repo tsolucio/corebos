@@ -1793,6 +1793,7 @@ function create_tab_data_file() {
 
 	$filename = 'tabdata.php';
 	VTCacheUtils::emptyTabidInfo();
+	VTCacheUtils::emptyTabSequence();
 	if (function_exists('opcache_invalidate')) {
 		opcache_invalidate('tabdata.php', true);
 	}

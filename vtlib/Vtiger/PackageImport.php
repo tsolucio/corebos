@@ -479,13 +479,13 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		$this->import_Tables($this->_modulexml);
 		$this->import_Blocks($this->_modulexml, $moduleInstance);
 		$this->import_CustomViews($this->_modulexml, $moduleInstance);
+		$moduleInstance->initWebservice();
 		$this->import_SharingAccess($this->_modulexml, $moduleInstance);
 		$this->import_Events($this->_modulexml, $moduleInstance);
 		$this->import_Actions($this->_modulexml, $moduleInstance);
 		$this->import_RelatedLists($this->_modulexml, $moduleInstance);
 		$this->import_CustomLinks($this->_modulexml, $moduleInstance);
 		$this->import_CronTasks($this->_modulexml);
-		$moduleInstance->initWebservice();
 		Vtiger_Module::fireEvent($moduleInstance->name, Vtiger_Module::EVENT_MODULE_POSTINSTALL);
 	}
 
