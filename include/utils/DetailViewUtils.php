@@ -1729,7 +1729,7 @@ function isPresentRelatedLists($module, $activity_mode = '') {
 				$retval[$relatedId] = $relationLabel;
 			} else {
 				$presence = $adb->query_result($result, $i, 'presence');
-				if ($presence === 0 && ($userprivs->isAdmin() || $userprivs->hasModuleAccess($relatedTabId))) {
+				if ($presence == 0 && ($userprivs->isAdmin() || $userprivs->hasModuleAccess($relatedTabId))) {
 					$retval[$relatedId] = $relationLabel;
 				}
 			}
