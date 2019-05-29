@@ -1,6 +1,10 @@
 #!/bin/sh
 if [ "$1." != "." ]
 then
-  php -l $1 > /dev/null 2>>cache/chksyntax
+  php -l $1 > /dev/null
+  if [ $? -ne 0 ]
+  then
+	  echo $1 >> cache/chksyntax
+  fi
 fi
 
