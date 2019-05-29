@@ -965,7 +965,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		}
 	}
 	$servcondquery .= count($servconds) > 0 ? ')' : '';
-
+	$prod_aliasquery = '';
 	foreach ($prodffs as $prodff) {
 		list($palias, $pcolumn) = explode('=', $prodff);
 		$table = in_array($pcolumn, $entitytablemap) ? 'vtiger_crmentity' : 'vtiger_products';
@@ -973,7 +973,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		$selector = $pcolumn == '\'\'' ? $pcolumn : $table . '.' . $pcolumn;
 		$prod_aliasquery .= $selector . ' AS ' . $palias . ',';
 	}
-
+	$serv_aliasquery = '';
 	foreach ($servffs as $servff) {
 		list($salias, $scolumn) = explode('=', $servff);
 		$table = in_array($scolumn, $entitytablemap) ? 'vtiger_crmentity' : 'vtiger_service';
