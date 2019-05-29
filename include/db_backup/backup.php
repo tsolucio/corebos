@@ -65,7 +65,7 @@ class DatabaseDump {
 
 		// Meta information which helps to import into mysql database.
 		$this->writeln('SET FOREIGN_KEY_CHECKS=0;');
-		$this->writeln('SET SQL_MODE='NO_AUTO_VALUE_ON_ZERO';');
+		$this->writeln("SET SQL_MODE='NO_AUTO_VALUE_ON_ZERO';");
 		$this->writeln('');
 
 		// Get all table names from database
