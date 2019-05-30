@@ -101,9 +101,14 @@ function vtlib_isModuleActive($module) {
 	}
 
 	if (!isset($__cache_module_activeinfo[$module])) {
-		$result = $adb->pquery('select presence from vtiger_tab where tabid=?', array(getTabId($module)));
-		$presence = $adb->query_result($result, 0, 'presence');
-		$__cache_module_activeinfo[$module] = $presence;
+		$tabid = getTabId($module);
+		if (!is_null($tabid)) {
+			$result = $adb->pquery('select presence from vtiger_tab where tabid=?', array($tabid));
+			$presence = $adb->query_result($result, 0, 'presence');
+			$__cache_module_activeinfo[$module] = $presence;
+		} else {
+			$presence = 1;
+		}
 	} else {
 		$presence = $__cache_module_activeinfo[$module];
 	}
