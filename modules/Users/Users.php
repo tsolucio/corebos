@@ -1248,6 +1248,8 @@ class Users extends CRMEntity {
 		if ($inVal == 'postinstall') {
 			if ($_REQUEST[$home_string] != '') {
 				$homeModComptVisibility = 0;
+			} else {
+				$homeModComptVisibility = 1;
 			}
 		}
 		return $homeModComptVisibility;
