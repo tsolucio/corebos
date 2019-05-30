@@ -269,7 +269,7 @@ class VTEmailTask extends VTTask {
 				$etinfo = getEntityName('MsgTemplate', array($templateid));
 				$focus->column_fields['description'] = $etinfo[$templateid];
 			} else {
-				$focus->column_fields['description'] = "\n".getTranslatedString('Workflow', 'com_vtger_workflow').' '.getTranslatedString('Task').': '.$desc_name."\n\n";
+				$focus->column_fields['description'] = "\n".getTranslatedString('Workflow', 'com_vtiger_workflow').' '.getTranslatedString('Task').': '.$desc_name."\n\n";
 			}
 			$focus->column_fields['assigned_user_id'] = $current_user->id;
 			$focus->mode = '';
