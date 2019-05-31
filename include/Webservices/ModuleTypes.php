@@ -11,7 +11,6 @@
 function vtws_listtypes($fieldTypeList, $user) {
 	// Bulk Save Mode: For re-using information
 	static $webserviceEntities = false;
-	// END
 
 	static $types = array();
 	if (!empty($fieldTypeList)) {
@@ -57,20 +56,6 @@ function vtws_listtypes($fieldTypeList, $user) {
 				$moduleList[] = getTabModuleName($row->tabid);
 			}
 			$allModuleNames = array_intersect($moduleList, $allModuleNames);
-
-			$params = $fieldTypeList;
-
-			$sql = "select name from vtiger_ws_entity inner join vtiger_ws_entity_tables on ".
-			"vtiger_ws_entity.id=vtiger_ws_entity_tables.webservice_entity_id inner join ".
-			"vtiger_ws_entity_fieldtype on vtiger_ws_entity_fieldtype.table_name=".
-			"vtiger_ws_entity_tables.table_name where fieldtype=(".
-			generateQuestionMarks($fieldTypeList).')';
-			$result = $db->pquery($sql, $params);
-			$it = new SqlResultIterator($db, $result);
-			$entityList = array();
-			foreach ($it as $row) {
-				$entityList[] = $row->name;
-			}
 		}
 		//get All the CRM entity names.
 		if ($webserviceEntities === false || !CRMEntity::isBulkSaveMode()) {
