@@ -350,13 +350,27 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$editable = $this->isEditable($webserviceField);
 
 		$blkname = $webserviceField->getBlockName();
-		$describeArray = array('name'=>$webserviceField->getFieldName(),'label'=>$fieldLabeli18n,'label_raw'=>$fieldLabel,
-			'mandatory'=>$webserviceField->isMandatory(),'type'=>$typeDetails,'nullable'=>$webserviceField->isNullable(),
-			"editable"=>$editable,'uitype'=>$webserviceField->getUIType(),'typeofdata'=>$webserviceField->getTypeOfData(),
-			'sequence'=>$webserviceField->getFieldSequence(),'quickcreate'=>$webserviceField->getQuickCreate(),'displaytype'=>$webserviceField->getDisplayType(),
+		$describeArray = array(
+			'name' => $webserviceField->getFieldName(),
+			'label' => $fieldLabeli18n,
+			'label_raw' => $fieldLabel,
+			'mandatory' => $webserviceField->isMandatory(),
+			'type' => $typeDetails,
+			'nullable' => $webserviceField->isNullable(),
+			'editable' => $editable,
+			'uitype' => $webserviceField->getUIType(),
+			'typeofdata' => $webserviceField->getTypeOfData(),
+			'sequence' => $webserviceField->getFieldSequence(),
+			'quickcreate' => $webserviceField->getQuickCreate(),
+			'displaytype' => $webserviceField->getDisplayType(),
 			'summary' => $webserviceField->getSummary(),
-			'block'=>array('blockid'=>$webserviceField->getBlockId(),'blocksequence'=>$webserviceField->getBlockSequence(),
-				'blocklabel'=>$blkname,'blockname'=>getTranslatedString($blkname, $this->meta->getTabName())));
+			'block' => array(
+				'blockid' => $webserviceField->getBlockId(),
+				'blocksequence' => $webserviceField->getBlockSequence(),
+				'blocklabel' => $blkname,
+				'blockname' => getTranslatedString($blkname, $this->meta->getTabName())
+			)
+		);
 		if ($webserviceField->hasDefault()) {
 			$describeArray['default'] = $webserviceField->getDefault();
 		}
