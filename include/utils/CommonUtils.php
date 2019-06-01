@@ -3009,11 +3009,11 @@ function getEmailTemplateVariables($modules_list = null) {
 	return $allOptions;
 }
 
-/** Function to get picklist values for the given field that are accessible for the given role.
- *  @ param $tablename picklist fieldname.
- *  It gets the picklist values for the given fieldname
- *  	$fldVal = Array(0=>value,1=>value1,-------------,n=>valuen)
- *  @return Array of picklist values accessible by the user.
+/** Function to get picklist values for the given field that are accessible for the given role NOT including subordinate roles
+ * use getAssignedPicklistValues if you need also subordinate roles
+ *  @param string $tablename picklist fieldname
+ *  @param string $roleid user role
+ *  @return array picklist values accessible by the user. array(0=>value,1=>value1,-------------,n=>valuen)
  */
 function getPickListValues($tablename, $roleid) {
 	global $adb;
