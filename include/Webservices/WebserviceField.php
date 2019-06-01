@@ -477,7 +477,7 @@ class WebserviceField {
 	}
 
 	public function getPickListOptions() {
-		global $app_strings, $mod_strings, $current_language;
+		global $app_strings, $mod_strings, $current_language, $adb;
 		static $purified_plcache = array();
 		$fieldName = $this->getFieldName();
 
@@ -512,11 +512,10 @@ class WebserviceField {
 			}
 		} else {
 			$user = VTWS_PreserveGlobal::getGlobal('current_user');
-			$details = getPickListValues($fieldName, $user->roleid);
-			$numdetails = count($details);
-			for ($i=0; $i < $numdetails; ++$i) {
+			$details = getAssignedPicklistValues($fieldName, $user->roleid, $adb);
+			foreach ($details as $plval) {
 				$elem = array();
-				$picklistValue = decode_html($details[$i]);
+				$picklistValue = decode_html($plval);
 				$trans_str = (!empty($temp_mod_strings[$picklistValue])) ?
 					$temp_mod_strings[$picklistValue] :
 					((!empty($app_strings[$picklistValue])) ? $app_strings[$picklistValue] : $picklistValue);
