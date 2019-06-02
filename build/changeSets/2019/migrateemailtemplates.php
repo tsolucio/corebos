@@ -55,9 +55,9 @@ class migrateemailtemplates extends cbupdaterWorker {
 					$focus->id = '';
 					$focus->mode = '';
 					$focus->column_fields['reference'] = html_entity_decode($acc['reference'], ENT_QUOTES, $default_charset);
-					$focus->column_fields['msgt_type'] = $acc['action_type'];
-					$focus->column_fields['msgt_status'] = $acc['action_status'];
-					$focus->column_fields['msgt_language'] = $acc['action_language'];
+					$focus->column_fields['msgt_type'] = $acc['actions_type'];
+					$focus->column_fields['msgt_status'] = $acc['actions_status'];
+					$focus->column_fields['msgt_language'] = $acc['actions_language'];
 					$focus->column_fields['subject'] = html_entity_decode($acc['subject'], ENT_QUOTES, $default_charset);
 					$focus->column_fields['template'] = html_entity_decode($acc['template'], ENT_QUOTES, $default_charset);
 					$focus->column_fields['templateonlytext'] = html_entity_decode(strip_tags(html_entity_decode($acc['templateonlytext'], ENT_QUOTES, $default_charset)), ENT_QUOTES, $default_charset);
