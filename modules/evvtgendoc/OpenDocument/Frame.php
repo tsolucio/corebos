@@ -44,7 +44,7 @@ class OpenDocument_Frame extends OpenDocument_StyledElement {
 	 */
 	public $children;
 
-		// Attribs
+	// Attribs
 	public $anchortype;
 	public $width;
 	public $height;
@@ -64,12 +64,12 @@ class OpenDocument_Frame extends OpenDocument_StyledElement {
 	 */
 	const nodePrefix = 'draw';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'frame';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'fr';
@@ -83,9 +83,9 @@ class OpenDocument_Frame extends OpenDocument_StyledElement {
 	public function __construct(DOMNode $node, OpenDocument $document, $text = '', $aanchortype = '', $awidth = '', $aheight = '', $azindex = '', $aframename = '', $ax = '', $ay = '', $aanchorpagenumber = '') {
 		parent::__construct($node, $document);
 		$this->allowedElements = array(
-		   'OpenDocument_FrameTextBox',
-		   'OpenDocument_FrameImage',
-		   'OpenDocument_DrawObject',
+			'OpenDocument_FrameTextBox',
+			'OpenDocument_FrameImage',
+			'OpenDocument_DrawObject',
 		);
 		return true;
 		$anchortype = $node->getAttributeNS(OpenDocument::NS_TEXT, 'anchor-type');
@@ -153,9 +153,9 @@ class OpenDocument_Frame extends OpenDocument_StyledElement {
 			$this->anchorpagenumber = $anchorpagenumber;
 		}
 
-				$this->allowedElements = array(
-		   'OpenDocument_FrameTextBox',
-		   'OpenDocument_FrameImage'
+		$this->allowedElements = array(
+			'OpenDocument_FrameTextBox',
+			'OpenDocument_FrameImage'
 		);
 	}
 
@@ -178,7 +178,7 @@ class OpenDocument_Frame extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-				$element = new OpenDocument_Frame($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $text, $anchortype, $width, $height, $zindex, $framename, $x, $y, $anchorpagenumber);
+		$element = new OpenDocument_Frame($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $text, $anchortype, $width, $height, $zindex, $framename, $x, $y, $anchorpagenumber);
 		$node->appendChild($element->node);
 
 		return $element;
@@ -194,7 +194,7 @@ class OpenDocument_Frame extends OpenDocument_StyledElement {
 		return $this->document->getStyle($this->getStyleName(), $properties);
 	}
 
-		/**
+	/**
 	 * Get style name
 	 *
 	 * @return string
@@ -203,7 +203,7 @@ class OpenDocument_Frame extends OpenDocument_StyledElement {
 		return $this->node->getAttributeNS(OpenDocument::NS_TEXT, 'style-name');
 	}
 
-		/**
+	/**
 	 * Get style name prefix
 	 *
 	 * @return string
@@ -212,7 +212,7 @@ class OpenDocument_Frame extends OpenDocument_StyledElement {
 		return $this->styleNamePrefix;
 	}
 
-		/**
+	/**
 	 * Generate new style name
 	 *
 	 * @return string $stylename
@@ -235,7 +235,7 @@ class OpenDocument_Frame extends OpenDocument_StyledElement {
 	}
 	/************** Elements ****************/
 
-		/**
+	/**
 	 * Create OpenDocument_TextElement
 	 *
 	 * @param string $text
@@ -256,7 +256,7 @@ class OpenDocument_Frame extends OpenDocument_StyledElement {
 		return OpenDocument_FrameTextBox::instance($this, $text, $minheight);
 	}
 
-		/**
+	/**
 	 * Create OpenDocument_FrameImage
 	 *
 	 * @param string $text optional

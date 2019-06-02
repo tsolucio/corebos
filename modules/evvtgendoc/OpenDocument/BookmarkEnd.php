@@ -46,12 +46,12 @@ class OpenDocument_BookmarkEnd extends OpenDocument_StyledElement {
 	 */
 	const nodePrefix = 'text';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'bookmark-end';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'bme';
@@ -64,8 +64,7 @@ class OpenDocument_BookmarkEnd extends OpenDocument_StyledElement {
 	 */
 	public function __construct(DOMNode $node, OpenDocument $document, $content) {
 		parent::__construct($node, $document);
-		$this->allowedElements = array(
-		);
+		$this->allowedElements = array();
 	}
 
 	/**
@@ -87,7 +86,7 @@ class OpenDocument_BookmarkEnd extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-				$element = new OpenDocument_BookmarkEnd($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $content);
+		$element = new OpenDocument_BookmarkEnd($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $content);
 		$node->appendChild($element->node);
 
 		if (is_scalar($content)) {
@@ -106,7 +105,7 @@ class OpenDocument_BookmarkEnd extends OpenDocument_StyledElement {
 		return self::styleNamePrefix . self::$styleNameMaxNumber;
 	}
 
-		/**
+	/**
 	 * Create OpenDocument_TextElement
 	 *
 	 * @param string $text

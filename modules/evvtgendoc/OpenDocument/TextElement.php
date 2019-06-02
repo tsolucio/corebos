@@ -52,7 +52,7 @@ class OpenDocument_TextElement extends OpenDocument_Element {
 	 */
 	private $text;
 
-		/**
+	/**
 	 * Constructor
 	 *
 	 * @param DOMNode $node
@@ -86,7 +86,7 @@ class OpenDocument_TextElement extends OpenDocument_Element {
 		return $element;
 	}
 
-		/**
+	/**
 	 * Magic method
 	 * Set property value
 	 *
@@ -103,7 +103,7 @@ class OpenDocument_TextElement extends OpenDocument_Element {
 		}
 	}
 
-		/**
+	/**
 	 * Magic method
 	 * Get property value
 	 *
@@ -116,7 +116,7 @@ class OpenDocument_TextElement extends OpenDocument_Element {
 		}
 	}
 
-		/**
+	/**
 	 * Set element text
 	 *
 	 * @param string $text

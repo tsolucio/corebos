@@ -817,7 +817,6 @@ class OpenDocument {
 				$prefix = $adb->query_result($res, 0, 'attachmentsid').'_';
 				$incFilename = $path.$prefix.$name;
 				$properties['match.'.$match] = escapeshellarg('file://'.$root_directory.$incFilename);
-				;
 			}
 		}
 		$pFilename = tempnam('/tmp', 'gendoc-');

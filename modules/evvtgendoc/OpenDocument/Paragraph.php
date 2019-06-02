@@ -53,12 +53,12 @@ class OpenDocument_Paragraph extends OpenDocument_StyledElement {
 	 */
 	const nodePrefix = 'text';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'p';
 
-		/**
+	/**
 	 * Element style name prefix
 	 *
 	 */
@@ -72,8 +72,7 @@ class OpenDocument_Paragraph extends OpenDocument_StyledElement {
 	 */
 	public function __construct(DOMNode $node, OpenDocument $document) {
 		parent::__construct($node, $document);
-
-				$this->allowedElements = array(
+		$this->allowedElements = array(
 			'OpenDocument_Span',
 			'OpenDocument_Hyperlink',
 			'OpenDocument_Frame',
@@ -118,7 +117,7 @@ class OpenDocument_Paragraph extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-				$element = new OpenDocument_Paragraph($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
+		$element = new OpenDocument_Paragraph($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
 		$node->appendChild($element->node);
 
 		if (is_scalar($content)) {
@@ -133,13 +132,13 @@ class OpenDocument_Paragraph extends OpenDocument_StyledElement {
 	 * @return string
 	 */
 	public function generateStyleName() {
-		self::$styleNameMaxNumber ++;
+		self::$styleNameMaxNumber++;
 		return self::styleNamePrefix . self::$styleNameMaxNumber;
 	}
 
 	/************** Elements ****************/
 
-		/**
+	/**
 	 * Create OpenDocument_TextElement
 	 *
 	 * @param string $text
@@ -167,7 +166,7 @@ class OpenDocument_Paragraph extends OpenDocument_StyledElement {
 		return OpenDocument_Hyperlink::instance($this, $text, $location, $type, $target, $name);
 	}
 
-		/**
+	/**
 	 * Create OpenDocument_Span element
 	 *
 	 * @param string $text

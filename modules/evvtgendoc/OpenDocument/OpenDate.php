@@ -46,12 +46,12 @@ class OpenDocument_TextDate extends OpenDocument_StyledElement {
 	 */
 	const nodePrefix = 'text';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'date';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'N';
@@ -59,7 +59,7 @@ class OpenDocument_TextDate extends OpenDocument_StyledElement {
 	public $datevalue;
 	public $fixed;
 
-		/**
+	/**
 	 * Constructor
 	 *
 	 * @param DOMNode $node
@@ -93,8 +93,7 @@ class OpenDocument_TextDate extends OpenDocument_StyledElement {
 			$this->fixed = $fixedvalue;
 		}
 
-				$this->allowedElements = array(
-		);
+		$this->allowedElements = array();
 	}
 
 	/**
@@ -116,7 +115,7 @@ class OpenDocument_TextDate extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-				$element = new OpenDocument_TextDate($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $content, $dval, $fval, $sname);
+		$element = new OpenDocument_TextDate($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $content, $dval, $fval, $sname);
 		$node->appendChild($element->node);
 
 		if (is_scalar($content)) {
@@ -149,7 +148,7 @@ class OpenDocument_TextDate extends OpenDocument_StyledElement {
 		}
 	}
 
-		/**
+	/**
 	 * Generate new style name
 	 *
 	 * @return string $stylename
@@ -162,7 +161,7 @@ class OpenDocument_TextDate extends OpenDocument_StyledElement {
 		return $this->node->getAttributeNS(OpenDocument::NS_STYLE, 'data-style-name');
 	}
 
-		/**
+	/**
 	 * Create OpenDocument_TextElement
 	 *
 	 * @param string $text

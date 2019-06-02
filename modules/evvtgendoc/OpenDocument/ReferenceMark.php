@@ -71,8 +71,7 @@ class OpenDocument_ReferenceMark extends OpenDocument_StyledElement {
 			$this->name = $name;
 		}
 
-		$this->allowedElements = array(
-		);
+		$this->allowedElements = array();
 	}
 
 	/**

@@ -60,19 +60,19 @@ abstract class OpenDocument_StyledElement extends OpenDocument_Element {
 	 */
 	protected static $styleNameMaxNumber = 0;
 
-		/**
+	/**
 	 * Style name prefix
 	 *
 	 */
 	const styleNamePrefix = 'E';
 
-		/**
+	/**
 	 * Generate new style name
 	 *
 	 */
 	abstract public function generateStyleName();
 
-		/**
+	/**
 	 * Constructor
 	 *
 	 * @param DOMNode $node
@@ -83,7 +83,7 @@ abstract class OpenDocument_StyledElement extends OpenDocument_Element {
 		$this->style = new OpenDocument_ElementStyle($this);
 	}
 
-		/**
+	/**
 	 * Magic method
 	 * Get property value
 	 *
@@ -96,7 +96,7 @@ abstract class OpenDocument_StyledElement extends OpenDocument_Element {
 		}
 	}
 
-		/**
+	/**
 	 * Get style information
 	 *
 	 * @param array $properties
@@ -106,7 +106,7 @@ abstract class OpenDocument_StyledElement extends OpenDocument_Element {
 		return $this->document->getStyle($this->getStyleName(), $properties);
 	}
 
-		/**
+	/**
 	 * Get style name
 	 *
 	 * @return string
@@ -115,7 +115,7 @@ abstract class OpenDocument_StyledElement extends OpenDocument_Element {
 		return $this->node->getAttributeNS(OpenDocument::NS_TEXT, 'style-name');
 	}
 
-		/**
+	/**
 	 * Get style name prefix
 	 *
 	 * @return string
@@ -124,7 +124,7 @@ abstract class OpenDocument_StyledElement extends OpenDocument_Element {
 		return $this->styleNamePrefix;
 	}
 
-		/**
+	/**
 	 * Get style name suffix max value
 	 *
 	 * @return integer
@@ -133,7 +133,7 @@ abstract class OpenDocument_StyledElement extends OpenDocument_Element {
 		return self::$styleNameMaxNumber;
 	}
 
-		/**
+	/**
 	 * Set style name suxxif max value
 	 *
 	 * @param integer $number

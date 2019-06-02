@@ -77,8 +77,7 @@ class OpenDocument_ReferenceRef extends OpenDocument_StyledElement {
 			$this->refformat = $refname;
 		}
 
-		$this->allowedElements = array(
-		);
+		$this->allowedElements = array();
 	}
 
 	/**
