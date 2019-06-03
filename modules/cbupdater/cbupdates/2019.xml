@@ -146,4 +146,11 @@
 	<classname>addValueOnBusinessAction</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add sendgrid notification driver</description>
+	<filename>build/changeSets/2019/sendgridnotificationdriver.php</filename>
+	<classname>sendgridnotificationdriver</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
