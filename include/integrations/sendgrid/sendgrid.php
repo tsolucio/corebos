@@ -232,6 +232,13 @@ class corebos_sendgrid {
 	public static function convertAttachmentArray($attachments) {
 		$atts = array();
 		foreach ($attachments as $att) {
+			if (!isset($att['fpath']) && !isset($att[0])) {
+				continue;
+			}
+			if (!isset($att['fpath'])) {
+				$att['fpath'] = $att[0];
+				$att['fname'] = basename($att[0]);
+			}
 			$attype = isset($att['attachtype']) ? $att['attachtype'] : 'attachment';
 			$atposition = isset($att['attachmarker']) ? $att['attachmarker'] : '';
 			$atts[] = array(
