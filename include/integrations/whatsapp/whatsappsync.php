@@ -19,7 +19,7 @@
  *************************************************************************************************/
 function whatsappsync($input) {
 	global $adb;
-	$logFile='whatsapp.log';
+	$logFile='logs/whatsapp.log';
 	$date=date('l jS \of F Y h:i:s A');
 	$LogContent = "WHATSAPP Notification $date \n";
 	error_log($LogContent.' \n', 3, $logFile);
