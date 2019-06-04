@@ -158,6 +158,26 @@ class corebos_sendgrid {
 				$file_name = $_REQUEST['filename_hidden_gendoc'];
 				$atts[]=array('fname'=>$file_name,'fpath'=>$file_name);
 			}
+			if ($logo == 1) {
+				$cmp = retrieveCompanyDetails();
+				$atts[]=array(
+					'fname' => basename($cmp['companylogo']),
+					'fpath' => $cmp['companylogo'],
+					'attachtype' => 'inline',
+					'attachmarker' => 'logo', // '<img src="cid:logo" />',
+				);
+			}
+			preg_match_all('/<img src="cid:(qrcode.*)"/', $contents, $matches);
+			if ($qrScan == 1 || count($matches[1])>0) {
+				foreach ($matches[1] as $qrname) {
+					$atts[]=array(
+						'fname' => $qrname.'.png',
+						'fpath' => 'cache/images/'.$qrname.'.png',
+						'attachtype' => 'inline',
+						'attachmarker' => $qrname, //'<img src="cid:'.$qrname.'" />',
+					);
+				}
+			}
 			$rs = $adb->pquery('select first_name,last_name from vtiger_users where user_name=?', array($from_name));
 			if ($adb->num_rows($rs) > 0) {
 				$from_name = decode_html($adb->query_result($rs, 0, 'first_name').' '.$adb->query_result($rs, 0, 'last_name'));
