@@ -502,8 +502,7 @@ class VTSimpleTemplate {
 			}
 		}
 		if (substr($fieldname, 0, 10) == 'scanQRCode') {
-			$field = substr($fieldname, 16);
-			$fieldname = 'scanQRCode';
+			list($fieldname, $field) = explode('->', decode_html($fieldname));
 		}
 		if (substr($fieldname, 0, 16)=='inventorydetails') {
 			$inventoryspec = explode('_', $fieldname);
@@ -582,14 +581,18 @@ class VTSimpleTemplate {
 				$moduleName = $this->parent->getModuleName();
 				$focus = CRMEntity::getInstance($moduleName);
 				$focus->retrieve_entity_info($recordId, $moduleName);
-				$fieldValue = $focus->column_fields[$field];
-				$tfa = new TwoFactorAuth('emailwfqrcode');
-				$qrcodeprovider = $tfa->getQrCodeProvider();
-				$img = $qrcodeprovider->getQRCodeImage($fieldValue, 150);
-				$fname = uniqid('qrcode');
-				@unlink('cache/images/'.$fname.'.png');
-				file_put_contents('cache/images/'.$fname.'.png', $img);
-				return '<img src="cid:'.$fname.'" />';
+				if (!empty($focus->column_fields[$field])) {
+					$fieldValue = $focus->column_fields[$field];
+					$tfa = new TwoFactorAuth('emailwfqrcode');
+					$qrcodeprovider = $tfa->getQrCodeProvider();
+					$img = $qrcodeprovider->getQRCodeImage($fieldValue, 150);
+					$fname = uniqid('qrcode');
+					@unlink('cache/images/'.$fname.'.png');
+					file_put_contents('cache/images/'.$fname.'.png', $img);
+					return '<img src="cid:'.$fname.'" />';
+				} else {
+					return '';
+				}
 			default:
 				'';
 		}
