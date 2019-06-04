@@ -2335,7 +2335,6 @@ function getTemplateDetails($templateid, $crmid = null) {
 function getMergedDescription($description, $id, $parent_type) {
 	global $adb, $log, $current_user;
 	$log->debug("> getMergedDescription $id, $parent_type");
-	$token_data_pair = explode('$', $description);
 	if (empty($parent_type)) {
 		$parent_type = getSalesEntityType($id);
 	}
