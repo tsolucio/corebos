@@ -2350,14 +2350,17 @@ function getMergedDescription($description, $id, $parent_type) {
 		$emailTemplate = new EmailTemplate($parent_type, $description, $id, $current_user);
 		$description = $emailTemplate->getProcessedDescription();
 	}
+	$pmods = array('users', 'custom');
 	$token_data_pair = explode('$', $description);
 	$fields = array();
-	for ($i = 1, $iMax = count($token_data_pair); $i < $iMax; $i+=2) {
+	for ($i = 1, $iMax = count($token_data_pair); $i < $iMax; $i++) {
 		if (strpos($token_data_pair[$i], '-') === false) {
 			continue;
 		}
 		$module = explode('-', $token_data_pair[$i]);
-		$fields[$module[0]][] = $module[1];
+		if (in_array($module[0], $pmods)) {
+			$fields[$module[0]][] = $module[1];
+		}
 	}
 	if (isset($fields['custom']) && is_array($fields['custom']) && count($fields['custom']) > 0) {
 		// Custom date & time fields
