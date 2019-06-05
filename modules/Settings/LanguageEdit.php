@@ -185,12 +185,11 @@ if ($pmodule=='' || $pmodule=='General') {
 		if (is_array($tr_string)) {
 			foreach ($tr_string as $skey => $str_string) {
 				$tr_list[$key][$skey][0]=htmlentities($str_string, ENT_QUOTES, $ref_encoding);
-				$tr_list[$key][$skey][1]=htmlentities($mod_strings[$key][$skey], ENT_QUOTES, $trans_encoding);
+				$trans_str=!empty($ref_mod_strings[$key][$skey]) ? $ref_mod_strings[$key][$skey] : cbtranslation::get($skey, $pmodule);
+				$tr_list[$key][$skey][1]=htmlentities($trans_str, ENT_QUOTES, $trans_encoding);
 				$tr_list[$key][$skey][2]=($skey=='') ? '#empty#' : $skey;
 				$tr_list[$key][$skey][3]='not_translated';
-				if (!isset($mod_strings[$key][$skey])) {
-					$tr_list[$key][$skey][3]='new';
-				} elseif ($str_string!=$mod_strings[$key][$skey]) {
+				if ($str_string!=$trans_str) {
 					$tr_list[$key][$skey][3]='translated';
 					$translated_string++;
 				}
@@ -198,7 +197,7 @@ if ($pmodule=='' || $pmodule=='General') {
 			}
 		} else {
 			$result2[$key][0]=htmlentities($tr_string, ENT_QUOTES, $ref_encoding);
-			$trans_str=!empty($mod_strings[$key]) ? $mod_strings[$key] : (!empty($ref_app_strings[$key]) ? $ref_app_strings[$key] : cbtranslation::get($key, $pmodule));
+			$trans_str=!empty($ref_mod_strings[$key]) ? $ref_mod_strings[$key] : (!empty($ref_app_strings[$key]) ? $ref_app_strings[$key] : cbtranslation::get($key, $pmodule));
 			$result2[$key][1]=htmlentities($trans_str, ENT_QUOTES, $trans_encoding);
 			$result2[$key][2]=($key=='') ? '#empty#' : $key;
 			$result2[$key][3]='not_translated';
@@ -213,7 +212,7 @@ if ($pmodule=='' || $pmodule=='General') {
 		$key=$adb->query_result($query, $i);
 		$tr_string=$key;
 		$result2[$key][0]=htmlentities($tr_string, ENT_QUOTES, $ref_encoding);
-		$trans_str=!empty($mod_strings[$key]) ? $mod_strings[$key] : (!empty($ref_app_strings[$key]) ? $ref_app_strings[$key] : cbtranslation::get($key, $pmodule));
+		$trans_str=!empty($ref_mod_strings[$key]) ? $ref_mod_strings[$key] : (!empty($ref_app_strings[$key]) ? $ref_app_strings[$key] : cbtranslation::get($key, $pmodule));
 		$result2[$key][1]= htmlentities($trans_str, ENT_QUOTES, $trans_encoding);
 		$result2[$key][2]=($key=='') ? '#empty#' : $key;
 		$result2[$key][3]='fieldsnontranslated';
@@ -227,7 +226,7 @@ if ($pmodule=='' || $pmodule=='General') {
 		$key=$adb->query_result($queryRelatedList, $i);
 		$tr_string=$key;
 		$result2[$key][0]=htmlentities($tr_string, ENT_QUOTES, $ref_encoding);
-		$trans_str=!empty($mod_strings[$key]) ? $mod_strings[$key] : (!empty($ref_app_strings[$key]) ? $ref_app_strings[$key] : cbtranslation::get($key, $pmodule));
+		$trans_str=!empty($ref_mod_strings[$key]) ? $ref_mod_strings[$key] : (!empty($ref_app_strings[$key]) ? $ref_app_strings[$key] : cbtranslation::get($key, $pmodule));
 		$result2[$key][1]=htmlentities($trans_str, ENT_QUOTES, $trans_encoding);
 		$result2[$key][2]=($key=='') ? '#empty#' : $key;
 		$result2[$key][3]='rlnontranslated';
