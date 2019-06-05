@@ -464,9 +464,9 @@ function return_module_language($language, $module) {
 	$log->debug('> return_module_language '.$language.','. $module);
 	static $cachedModuleStrings = array();
 
-	if (!empty($cachedModuleStrings[$module])) {
+	if (!empty($cachedModuleStrings[$module.$language])) {
 		$log->debug('< return_module_language');
-		return $cachedModuleStrings[$module];
+		return $cachedModuleStrings[$module.$language];
 	}
 
 	$temp_mod_strings = $mod_strings;
@@ -505,7 +505,7 @@ function return_module_language($language, $module) {
 	$mod_strings = $temp_mod_strings;
 
 	$log->debug('< return_module_language');
-	$cachedModuleStrings[$module] = $return_value;
+	$cachedModuleStrings[$module.$language] = $return_value;
 	return $return_value;
 }
 
