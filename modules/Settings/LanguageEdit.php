@@ -36,6 +36,7 @@ $smarty->assign('PARENTTAB', $_REQUEST['parenttab']);
 $smarty->assign('APP', $app_strings);
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';
+$smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
 $langid = vtlib_purify($_REQUEST['languageid']);
 $pmodule = isset($_REQUEST['pick_module']) ? vtlib_purify($_REQUEST['pick_module']) : 'General';
@@ -44,15 +45,13 @@ $smarty->assign('MODULE', ($pmodule!='')?$pmodule:'General');
 
 //REF_LANGUAGE
 $ref_language = $default_language;
-$dbQuery = 'SELECT prefix,label FROM vtiger_language WHERE prefix=?';
-$result = $adb->pquery($dbQuery, array($ref_language));
+$result = $adb->pquery('SELECT prefix,label FROM vtiger_language WHERE prefix=?', array($ref_language));
 $row = $adb->fetch_array($result);
 $ref_encoding = 'UTF-8';
 $smarty->assign('REF_LANGUAGE', $row['label']);
 
 //Get languguage info
-$dbQuery='SELECT prefix,label FROM vtiger_language WHERE id=?';
-$result = $adb->pquery($dbQuery, array($langid));
+$result = $adb->pquery('SELECT prefix,label FROM vtiger_language WHERE id=?', array($langid));
 $row = $adb->fetch_array($result);
 $trans_encoding = 'UTF-8';
 $smarty->assign('LANGUAGE', $row['label']);
@@ -62,13 +61,13 @@ $module_array['JavaScript']= $mod_strings['JavaScript'];
 //Get Modules and languages files
 if ($dh = opendir($modulesDirectory)) {
 	while (($folder = readdir($dh)) !== false) {
-		if (is_dir($modulesDirectory.'/'.$folder)&&$folder!='..'&&$folder!='.'&&file_exists($modulesDirectory.'/'.$folder.'/language/'.$ref_language.'.lang.php')) {
+		if (is_dir($modulesDirectory.'/'.$folder) && $folder!='..' && $folder!='.' && file_exists($modulesDirectory.'/'.$folder.'/language/'.$ref_language.'.lang.php')) {
 			if (!empty($app_strings[$folder])) {
 				$module_array[$folder]=$app_strings[$folder];
 			} elseif (!empty($mod_strings[$folder])) {
 				$module_array[$folder]=$mod_strings[$folder];
 			} else {
-				$module_array[$folder]=ucfirst($folder);
+				$module_array[$folder]=getTranslatedString($folder, $folder);
 			}
 		}
 	}
@@ -88,16 +87,17 @@ if ($pmodule=='' || $pmodule=='General') {
 		$handle=fopen('include/language/'.$row['prefix'].'.lang.php', 'w');
 		fclose($handle);
 	}
-	$error=(is_writable('include/language/'.$row['prefix'].'.lang.php'))?'':$mod_strings['ERROR_GENERAL_FILE_WRITE'];
+	$error=(is_writable('include/language/'.$row['prefix'].'.lang.php')) ? '' : $mod_strings['ERROR_GENERAL_FILE_WRITE'];
 	include 'include/language/'.$row['prefix'].'.lang.php';
 
 	//Merge the two languages stings in array and make some poor stats :)
 	$total_strings=0;
 	$translated_string=0;
+	$result2 = array();
 	foreach ($ref_app_strings as $key => $tr_string) {
 		$result2[$key][0]=htmlentities($tr_string, ENT_QUOTES, $ref_encoding);
 		$result2[$key][1]=htmlentities((isset($app_strings[$key]) ? $app_strings[$key] : ''), ENT_QUOTES, $trans_encoding);
-		$result2[$key][2]=($key=='')?'#empty#':$key;
+		$result2[$key][2]=($key=='') ? '#empty#' : $key;
 		$result2[$key][3]='not_translated';
 		if (!isset($app_strings[$key])) {
 			$result2[$key][3]='new';
@@ -107,8 +107,7 @@ if ($pmodule=='' || $pmodule=='General') {
 		}
 		$total_strings++;
 	}
-} //JavaScript strings
-elseif ($pmodule=='JavaScript') {
+} elseif ($pmodule=='JavaScript') { //JavaScript strings
 	//js to php
 	$patterns[0] = '/var\s*alert_arr\s*=\s*{/';
 	$patterns[1] = '/(\S*)(\s*)(:)(\s*.*,?)/';
@@ -130,7 +129,7 @@ elseif ($pmodule=='JavaScript') {
 
 	//Get your languague strings
 	$filename='include/js/'.$row['prefix'].'.lang.js';
-	$error=(is_writable($filename))?'':$mod_strings['ERROR_GENERAL_FILE_WRITE'];
+	$error=(is_writable($filename)) ? '' : $mod_strings['ERROR_GENERAL_FILE_WRITE'];
 	if (!file_exists($filename)) {
 		$handle=fopen($filename, 'w');
 		fclose($handle);
@@ -147,7 +146,7 @@ elseif ($pmodule=='JavaScript') {
 	foreach ($ref_app_strings as $key => $tr_string) {
 		$result2[$key][0]=htmlentities($tr_string, ENT_QUOTES, $ref_encoding);
 		$result2[$key][1]=htmlentities($app_strings[$key], ENT_QUOTES, $trans_encoding);
-		$result2[$key][2]=($key=='')?'#empty#':$key;
+		$result2[$key][2]=($key=='') ? '#empty#' : $key;
 		$result2[$key][3]='not_translated';
 		if (!isset($app_strings[$key])) {
 			$result2[$key][3]='new';
@@ -157,8 +156,7 @@ elseif ($pmodule=='JavaScript') {
 		}
 		$total_strings++;
 	}
-} //Modules language strings
-else {
+} else { //Modules language strings
 	$error_msg=$mod_strings['ERROR_MODULE_FILE_WRITE'];
 	//Get Default Strings
 	include 'modules/'.$pmodule.'/language/'.$ref_language.'.lang.php';
@@ -169,7 +167,7 @@ else {
 		$handle=fopen('modules/'.$pmodule.'/language/'.$row['prefix'].'.lang.php', 'w');
 		fclose($handle);
 	}
-	$error=(is_writable('modules/'.$pmodule.'/language/'.$row['prefix'].'.lang.php'))?'':$error_msg;
+	$error=(is_writable('modules/'.$pmodule.'/language/'.$row['prefix'].'.lang.php')) ? '' : $error_msg;
 	include 'modules/'.$pmodule.'/language/'.$row['prefix'].'.lang.php';
 
 	$tabid=getTabid($pmodule);
@@ -185,7 +183,7 @@ else {
 			foreach ($tr_string as $skey => $str_string) {
 				$tr_list[$key][$skey][0]=htmlentities($str_string, ENT_QUOTES, $ref_encoding);
 				$tr_list[$key][$skey][1]=htmlentities($mod_strings[$key][$skey], ENT_QUOTES, $trans_encoding);
-				$tr_list[$key][$skey][2]=($skey=='')?'#empty#':$skey;
+				$tr_list[$key][$skey][2]=($skey=='') ? '#empty#' : $skey;
 				$tr_list[$key][$skey][3]='not_translated';
 				if (!isset($mod_strings[$key][$skey])) {
 					$tr_list[$key][$skey][3]='new';
@@ -198,7 +196,7 @@ else {
 		} else {
 			$result2[$key][0]=htmlentities($tr_string, ENT_QUOTES, $ref_encoding);
 			$result2[$key][1]=htmlentities($mod_strings[$key], ENT_QUOTES, $trans_encoding);
-			$result2[$key][2]=($key=='')?'#empty#':$key;
+			$result2[$key][2]=($key=='') ? '#empty#' : $key;
 			$result2[$key][3]='not_translated';
 			if (!isset($mod_strings[$key])) {
 				$result2[$key][3]='new';
@@ -210,38 +208,44 @@ else {
 		}
 	}
 	for ($i=0; $i<$nrfields; $i++) {
-			$key=$adb->query_result($query, $i);
-			$tr_string=$key;
-			$result2[$key][0]=htmlentities($tr_string, ENT_QUOTES, $ref_encoding);
-			$result2[$key][1]=htmlentities($mod_strings[$key], ENT_QUOTES, $trans_encoding);
-			$result2[$key][2]=($key=='')?'#empty#':$key;
-			$result2[$key][3]='fieldsnontranslated';
+		$key=$adb->query_result($query, $i);
+		$tr_string=$key;
+		$result2[$key][0]=htmlentities($tr_string, ENT_QUOTES, $ref_encoding);
+		$result2[$key][1]= htmlentities($mod_strings[$key], ENT_QUOTES, $trans_encoding);
+		$result2[$key][2]=($key=='') ? '#empty#' : $key;
+		$result2[$key][3]='fieldsnontranslated';
 		if (!isset($mod_strings[$key])) {
 			$result2[$key][3]='fieldsnontranslated';
 		} elseif ($tr_string!=$mod_strings[$key]) {
 			$result2[$key][3]='fieldstranslated';
 			$translated_string++;
 		}
-			$total_strings++;
+		$total_strings++;
 	}
 	for ($i=0; $i<$nrofrelations; $i++) {
-			$key=$adb->query_result($queryRelatedList, $i);
-			$tr_string=$key;
-			$result2[$key][0]=htmlentities($tr_string, ENT_QUOTES, $ref_encoding);
-			$result2[$key][1]=htmlentities($mod_strings[$key], ENT_QUOTES, $trans_encoding);
-			$result2[$key][2]=($key=='')?'#empty#':$key;
-			$result2[$key][3]='rlnontranslated';
+		$key=$adb->query_result($queryRelatedList, $i);
+		$tr_string=$key;
+		$result2[$key][0]=htmlentities($tr_string, ENT_QUOTES, $ref_encoding);
+		$result2[$key][1]=htmlentities($mod_strings[$key], ENT_QUOTES, $trans_encoding);
+		$result2[$key][2]=($key=='') ? '#empty#' : $key;
+		$result2[$key][3]='rlnontranslated';
 		if (!isset($mod_strings[$key])) {
 			$result2[$key][3]='rlnontranslated';
 		} elseif ($tr_string!=$mod_strings[$key]) {
 			$result2[$key][3]='rltranslated';
 			$translated_string++;
 		}
-			$total_strings++;
+		$total_strings++;
 	}
 }
 $filter = isset($_REQUEST['filter_translate']) ? vtlib_purify($_REQUEST['filter_translate']) : '';
 $hidden_fields = array();
+$resultnt = array();
+$resultt = array();
+$resultfnt = array();
+$resultft = array();
+$resultrt = array();
+$resultrnt = array();
 if (!empty($filter)) {
 	foreach ($result2 as $key => $resulttrl) {
 		if ($filter=='not_translated') {
