@@ -63,7 +63,7 @@ function addLabel() {
 								<!-- table --> <!-- SetMenu.tpl -->
 									<!-- tr --> <!-- SetMenu.tpl -->
 										<!-- td --> <!-- SetMenu.tpl -->
-											<form id="modulefrom" action="index.php" method="POST">
+											<form id="modulefrom" name="modulefrom" action="index.php" method="POST" enctype="multipart/form-data">
 												<input type="hidden" name="action" value="SettingsAjax">
 												<input type="hidden" name="module" value="Settings">
 												<input type="hidden" name="file">
