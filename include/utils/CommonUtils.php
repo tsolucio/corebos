@@ -3440,8 +3440,7 @@ function getmail_contents_portalUser($request_array, $password, $type = '') {
 
 	$query='SELECT subject,template FROM vtiger_msgtemplate WHERE reference=?';
 	$result = $adb->pquery($query, array('Customer Login Details'));
-	$body=$adb->query_result($result, 0, 'body');
-	$contents=$body;
+	$contents = $adb->query_result($result, 0, 'template');
 	$contents = str_replace('$contact_name$', $request_array['first_name']." ".$request_array['last_name'], $contents);
 	$contents = str_replace('$login_name$', $request_array['username'], $contents);
 	$contents = str_replace('$password$', $password, $contents);

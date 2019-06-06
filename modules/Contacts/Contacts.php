@@ -1215,7 +1215,7 @@ class Contacts extends CRMEntity {
 
 		$result = $adb->pquery('SELECT subject,template FROM vtiger_msgtemplate WHERE reference=?', array('Customer Login Details'));
 		if ($result && $adb->num_rows($result)>0) {
-			$body=$adb->query_result($result, 0, 'body');
+			$body=$adb->query_result($result, 0, 'template');
 			$contents = html_entity_decode($body, ENT_QUOTES, $default_charset);
 			$contents = str_replace('$contact_name$', $entityData->get('firstname').' '.$entityData->get('lastname'), $contents);
 			$contents = str_replace('$login_name$', $entityData->get('email'), $contents);
