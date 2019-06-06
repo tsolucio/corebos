@@ -40,7 +40,18 @@ $app_list_strings = return_app_list_strings_language($current_language);
 $eoo_strings = return_module_language($current_language, $currentModule);
 //echo '<pre>';var_dump($app_strings);echo '</pre>';
 echo '<div style="margin-left: 15px;">';
-echo '<h1>'.$eoo_strings['EOO_Title'].'</h1>';
+echo '<div class="slds-media__body">
+	  <span class="slds-avatar">
+  <img alt="Person name" src="include/LD/assets/icons/utility/text_template_120.png" title="Person name" />
+</span>
+<div class="slds-page-header__name">
+			<div class="slds-page-header__name-title">
+			<span class="slds-page-header__title slds-truncate" title="Merge Labels"><a class="hdrLink" href="index.php?action=index&module=EtiquetasOO">'.$eoo_strings['EOO_Title'].'</a>
+			</span>
+			</div>
+		</div>
+	</div>';
+echo '</br>';
 
 $SQL = "SELECT tabid, name, tablabel FROM vtiger_tab WHERE name='Users' or isentitytype";
 $res_tab = $adb->query($SQL);
@@ -76,7 +87,9 @@ while ($tab = $adb->fetch_array($res_tab)) {
 	$sp_tab[$tab['name']] = $tab['tabid'];
 	$mod_strings = return_module_language($current_language, $tab['name']);
 	$etiq_tab = (empty($app_strings[$tab['tablabel']]) ? $tab['tablabel'] : $app_strings[$tab['tablabel']] );
-	echo '<li><a name="'.$tab['name'].'"></a><h2>'.$etiq_tab.'</h2>';
+	echo '<li><a name="'.$tab['name'].'"></a></br><h1>
+                <span class="slds-page-header__title slds-truncate" title="etiq">'.$etiq_tab.'</span>
+              </h1></br>';
 	echo '<table border="0">';
 	$SQL_FIELDS = 'SELECT fieldname,fieldlabel FROM vtiger_field WHERE presence IN (0,2) AND tabid=?';
 	$res_field = $adb->pquery($SQL_FIELDS, array($tab['tabid']));
@@ -87,10 +100,12 @@ while ($tab = $adb->fetch_array($res_tab)) {
 		echo '</td></tr>';
 	}
 	echo '</table>';
-	echo '<h3>'.$eoo_strings['RelatedModules'].'</h3>';
+	echo '<div class="slds-page-header__col-meta">
+        	<h3 class="slds-text-heading_small">'.$eoo_strings['RelatedModules'].'</h3>
+      	</div>';
 	echo '<ul>';
 	if (array_key_exists($tab['name'], $related_module)) {
-		echo '<li>'.$eoo_strings['OneEntity'];
+		echo '<p class="slds-page-header__name-meta">'.$eoo_strings['OneEntity'].'</p>';
 		echo '<table>';
 		foreach ($related_module[$tab['name']] as $rel_key => $rel_value) {
 			$etiq_reltab = (empty($app_strings[$rel_key]) ? $rel_key : $app_strings[$rel_key] );
@@ -107,7 +122,7 @@ while ($tab = $adb->fetch_array($res_tab)) {
 	$SQL_REL = 'SELECT related_tabid, label FROM vtiger_relatedlists WHERE tabid=? AND related_tabid<>0 AND name<>\'get_history\'';
 	$res_rel = $adb->pquery($SQL_REL, array($tab['tabid']));
 	if ($adb->num_rows($res_rel) > 0) {
-		echo '<li>'.$eoo_strings['VariosEntity'];
+		echo '<p class="slds-page-header__name-meta" title="various">'.$eoo_strings['VariosEntity'].'</p>';
 		echo '<table>';
 		while ($rel_varios = $adb->fetch_array($res_rel)) {
 			$SQL_RELN = "SELECT name, tablabel FROM vtiger_tab WHERE tabid=?";
