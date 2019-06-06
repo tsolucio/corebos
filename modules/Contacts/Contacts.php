@@ -1226,9 +1226,8 @@ class Contacts extends CRMEntity {
 			$contents = getMergedDescription($contents, $entityData->getId(), 'Contacts');
 
 			if ($type == 'LoginDetails') {
-				$temp=$contents;
 				$value['subject']=$adb->query_result($result, 0, 'subject');
-				$value['body']=$temp;
+				$value['body']=$contents;
 				return $value;
 			}
 		} else {

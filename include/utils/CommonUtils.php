@@ -3449,9 +3449,8 @@ function getmail_contents_portalUser($request_array, $password, $type = '') {
 	$contents = str_replace('$logo$', '<img src="cid:logo" />', $contents);
 
 	if ($type == 'LoginDetails') {
-		$temp=$contents;
 		$value['subject']=$adb->query_result($result, 0, 'subject');
-		$value['body']=$temp;
+		$value['body']=$contents;
 		return $value;
 	}
 
