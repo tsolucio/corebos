@@ -11,6 +11,7 @@ require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 
 class evvtgendoc extends CRMEntity {
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-account', 'class' => 'slds-icon', 'icon'=>'template');
 
 	/**
 	 * Invoked when special actions are performed on the module.
