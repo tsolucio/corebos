@@ -1206,7 +1206,16 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 		</td>
 
 		{elseif $uitype eq 83} <!-- Handle the Tax in Inventory -->
+			{if $rowiteration==2}
+				<td colspan="2" class="dvtCellInfo">&nbsp;</td></tr>
+			{/if}
+			{assign var=rloopit value=$rowiteration}
 			{foreach item=tax key=count from=$TAX_DETAILS}
+				{if $rloopit==2}
+					<tr>
+				{else}
+					{assign var=rloopit value=2}
+				{/if}
 				{if $tax.check_value eq 1}
 					{assign var=check_value value="checked"}
 					{assign var=show_value value="visible"}
@@ -1222,10 +1231,10 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					<span style='display:none;' id='{$fldname}_hidden'></span>
 					<input type="text" class="detailedViewTextBox" name="{$tax.taxname}" id="{$tax.taxname}" value="{$tax.percentage}" style="visibility:{$show_value};" onBlur="fntaxValidation('{$tax.taxname}')">
 				</td>
+				<td colspan="2" class="dvtCellInfo">&nbsp;</td>
 				</tr>
 			{/foreach}
 
-			<td colspan="2" class="dvtCellInfo">&nbsp;</td>
 		{else}
 			{* just show field on screen *}
 			<td id="td_{$fldname}" width=20% class="dvtCellLabel" align=right>{$fldlabel}</td>
