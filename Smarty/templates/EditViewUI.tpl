@@ -1214,15 +1214,15 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					{assign var=check_value value=""}
 					{assign var=show_value value="hidden"}
 				{/if}
-				<td id="td_{$fldname}" align="right" class="dvtCellLabel" style="border:0px solid red;">
+				<td id="td_{$tax.check_name}" align="right" class="dvtCellLabel" style="border:0px solid red;">
 					{$tax.taxlabel} {$APP.COVERED_PERCENTAGE}
 					<input type="checkbox" name="{$tax.check_name}" id="{$tax.check_name}" class="small" onclick="fnshowHide(this,'{$tax.taxname}')" {$check_value}>
 				</td>
-				<td id="td_val_{$fldname}" class="dvtCellInfo" align="left" style="border:0px solid red;">
+				<td id="td_val_{$tax.check_name}" class="dvtCellInfo" align="left" style="border:0px solid red;">
 					<span style='display:none;' id='{$fldname}_hidden'></span>
 					<input type="text" class="detailedViewTextBox" name="{$tax.taxname}" id="{$tax.taxname}" value="{$tax.percentage}" style="visibility:{$show_value};" onBlur="fntaxValidation('{$tax.taxname}')">
 				</td>
-			   </tr>
+				</tr>
 			{/foreach}
 
 			<td colspan="2" class="dvtCellInfo">&nbsp;</td>
