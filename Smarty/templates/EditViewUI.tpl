@@ -762,7 +762,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					<img tabindex="{$vt_tab}" src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&fromlink={$fromlink}","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" onClick="this.form.parent_id.value=''; this.form.parent_name.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
 				{/if}
 			</td>
-		   <tr style="height:25px">
+			<tr style="height:25px">
 			<td width="20%" class="dvtCellLabel" align=right>CC:&nbsp;</td>
 			<td width="30%" align=left class="dvtCellInfo">
 				<input name="ccmail" type="text" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"  value="">
@@ -771,7 +771,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			<td width="30%" align=left class="dvtCellInfo">
 				<input name="bccmail" type="text" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"  value="">
 			</td>
-		   </tr>
+			</tr>
 
 		{elseif $uitype eq 55 || $uitype eq 255}
 			<td id="td_{$fldname}" width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
@@ -824,7 +824,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
 			</td>
 			<td id="td_val_{$fldname}" width="30%" align=left class="dvtCellInfo">
-                <span style='display:none;' id='{$fldname}_hidden'></span>
+				<span style='display:none;' id='{$fldname}_hidden'></span>
 				<textarea name="{$fldname}" cols="30" tabindex="{$vt_tab}" rows="2">{$fldvalue}</textarea>
 			</td>
 		{elseif $uitype eq 14}
@@ -1110,9 +1110,9 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 		<td id="td_{$fldname}" width="20%" class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align="right" >
 			<font color="red">{$mandatory_field}</font>{$fldlabel_other}&nbsp;
 			{if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}" id="{$fldname}_mass_edit_check" class="small" >{/if}
-        </td>
-        <td id="td_val_{$fldname}" width="30%" align=left class="dvtCellInfo">
-            <span style='display:none;' id='{$fldname}_hidden'></span>
+		</td>
+		<td id="td_val_{$fldname}" width="30%" align=left class="dvtCellInfo">
+			<span style='display:none;' id='{$fldname}_hidden'></span>
 			<select class="small" name="{$fldname}" onchange="changeDldType((this.value=='I')? 'file': 'text');">
 				{section name=combo loop=$fldlabel}
 					<option value="{$fldlabel_combo[combo]}" {$fldlabel_sel[combo]} >{$fldlabel[combo]} </option>
