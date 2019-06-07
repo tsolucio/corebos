@@ -42,11 +42,11 @@ $eoo_strings = return_module_language($current_language, $currentModule);
 echo '<div style="margin-left: 15px;">';
 echo '<div class="slds-media__body">
 	  <span class="slds-avatar">
-  <img alt="Person name" src="include/LD/assets/icons/utility/text_template_120.png" title="Person name" />
+  <img alt="OpenOffice Document Merge Labels" src="include/LD/assets/icons/utility/text_template_120.png" title="OpenOffice Document Merge Labels" />
 </span>
 <div class="slds-page-header__name">
 			<div class="slds-page-header__name-title">
-			<span class="slds-page-header__title slds-truncate" title="Merge Labels"><a class="hdrLink" href="index.php?action=index&module=EtiquetasOO">'.$eoo_strings['EOO_Title'].'</a>
+			<span class="slds-page-header__title slds-truncate" title="'.getTranslatedString($eoo_strings['EOO_Title']).'"><a class="hdrLink" href="index.php?action=index&module=EtiquetasOO">'.$eoo_strings['EOO_Title'].'</a>
 			</span>
 			</div>
 		</div>
@@ -88,7 +88,7 @@ while ($tab = $adb->fetch_array($res_tab)) {
 	$mod_strings = return_module_language($current_language, $tab['name']);
 	$etiq_tab = (empty($app_strings[$tab['tablabel']]) ? $tab['tablabel'] : $app_strings[$tab['tablabel']] );
 	echo '<li><a name="'.$tab['name'].'"></a></br><h1>
-                <span class="slds-page-header__title slds-truncate" title="etiq">'.$etiq_tab.'</span>
+                <span class="slds-page-header__title slds-truncate" title="'.getTranslatedString($etiq_tab).'">'.$etiq_tab.'</span>
               </h1></br>';
 	echo '<table border="0">';
 	$SQL_FIELDS = 'SELECT fieldname,fieldlabel FROM vtiger_field WHERE presence IN (0,2) AND tabid=?';
@@ -122,7 +122,7 @@ while ($tab = $adb->fetch_array($res_tab)) {
 	$SQL_REL = 'SELECT related_tabid, label FROM vtiger_relatedlists WHERE tabid=? AND related_tabid<>0 AND name<>\'get_history\'';
 	$res_rel = $adb->pquery($SQL_REL, array($tab['tabid']));
 	if ($adb->num_rows($res_rel) > 0) {
-		echo '<p class="slds-page-header__name-meta" title="various">'.$eoo_strings['VariosEntity'].'</p>';
+		echo '<p class="slds-page-header__name-meta" title="'.getTranslatedString($eoo_strings['VariosEntity']).'">'.$eoo_strings['VariosEntity'].'</p>';
 		echo '<table>';
 		while ($rel_varios = $adb->fetch_array($res_rel)) {
 			$SQL_RELN = "SELECT name, tablabel FROM vtiger_tab WHERE tabid=?";
