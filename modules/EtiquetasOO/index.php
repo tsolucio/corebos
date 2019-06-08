@@ -140,7 +140,7 @@ while ($tab = $adb->fetch_array($res_tab)) {
 	$res_field = $adb->pquery($SQL_FIELDS, array($tab['tabid']));
 	while ($field = $adb->fetch_array($res_field)) {
 		$etiqueta = (empty($mod_strings[$field['fieldlabel']]) ? $field['fieldlabel'] : $mod_strings[$field['fieldlabel']]);
-		echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>'.$etiqueta.'</b>:</td><td>{'.$tab['name'].'.'.$field['fieldname'].'}';
+		echo '<tr class="slds-hint-parent" data-clipboard-text="{'.$tab['name'].'.'.$field['fieldname'].'}"><td style="width:350px;"><b>'.$etiqueta.'</b>:</td><td>{'.$tab['name'].'.'.$field['fieldname'].'}';
 		echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{'.$tab['name'].'.'.$field['fieldname'].'}">' . $btnclose;
 		echo '</td></tr>';
 	}
@@ -157,7 +157,7 @@ while ($tab = $adb->fetch_array($res_tab)) {
 			if (!in_array($etiq_reltab, $arr_options)) {
 				continue;
 			}
-			echo '<tr class="slds-hint-parent"><td style="width:350px;"><a href="#'.$rel_key.'"><b>'.$etiq_reltab.':</b></a></<a><td>{'.$rel_key.'}';
+			echo '<tr class="slds-hint-parent" data-clipboard-text="{'.$rel_key.'}"><td style="width:350px;"><a href="#'.$rel_key.'"><b>'.$etiq_reltab.':</b></a></<a><td>{'.$rel_key.'}';
 			echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{'.$rel_key.'}">' . $btnclose;
 			echo '</td></tr>';
 		}
@@ -195,7 +195,7 @@ while ($tab = $adb->fetch_array($res_tab)) {
 					$etiq_reltab = $app_strings[$rel_varios['label']];
 				}
 			}
-			echo '<tr class="slds-hint-parent"><td style="width:350px;"><a href="#'.$rel_name.'"><b>'.$etiq_reltab.':</b></a></td><td>{'.$rel_name.'}';
+			echo '<tr class="slds-hint-parent" data-clipboard-text="{'.$rel_name.'}"><td style="width:350px;"><a href="#'.$rel_name.'"><b>'.$etiq_reltab.':</b></a></td><td>{'.$rel_name.'}';
 			echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{'.$rel_name.'}">' . $btnclose;
 			echo '</td></tr>';
 		}
@@ -224,7 +224,7 @@ foreach ($special_modules as $sp_key => $sp_value) {
 			echo '</td></tr>';
 			while ($field = $adb->fetch_array($res_field)) {
 				$etiqueta = (empty($mod_strings[$field['fieldlabel']]) ? $field['fieldlabel'] : $mod_strings[$field['fieldlabel']]);
-				echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>'.$etiqueta.'</b>:</td><td>{'.$sp_key.'.'.$field['fieldname'].'}';
+				echo '<tr class="slds-hint-parent" data-clipboard-text="{'.$sp_key.'.'.$field['fieldname'].'}"><td style="width:350px;"><b>'.$etiqueta.'</b>:</td><td>{'.$sp_key.'.'.$field['fieldname'].'}';
 				echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{'.$sp_key.'.'.$field['fieldname'].'}">' . $btnclose;
 				echo '</td></tr>';
 			}
@@ -235,7 +235,7 @@ foreach ($special_modules as $sp_key => $sp_value) {
 		$res_field = $adb->pquery($SQL_FIELDS, array($sp_tab[$sp_value]));
 		while ($field = $adb->fetch_array($res_field)) {
 			$etiqueta = (empty($mod_strings[$field['fieldlabel']]) ? $field['fieldlabel'] : $mod_strings[$field['fieldlabel']]);
-			echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>'.$etiqueta.'</b>:</td><td>{'.$sp_key.'.'.$field['fieldname'].'}';
+			echo '<tr class="slds-hint-parent" data-clipboard-text="{'.$sp_key.'.'.$field['fieldname'].'}"><td style="width:350px;"><b>'.$etiqueta.'</b>:</td><td>{'.$sp_key.'.'.$field['fieldname'].'}';
 			echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{'.$sp_key.'.'.$field['fieldname'].'}">' . $btnclose;
 			echo '</td></tr>';
 		}
@@ -259,64 +259,64 @@ include 'modules/evvtgendoc/commands_' . substr($current_language, 0, 2) . '.php
 echo '<li><a name="speciallabels"></a>';
 outputOONoIconHeader($eoo_strings['SpecialVars']);
 echo '<table class="slds-table slds-table_cell-buffer slds-table_bordered">';
-echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>'.$foreachGD.'</b>:</td><td>'.$foreachGD.'}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="'.$foreachGD.'}'.$foreachEndGD.'"><td style="width:350px;"><b>'.$foreachGD.'</b>:</td><td>'.$foreachGD.'}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="'.$foreachGD.'}'.$foreachEndGD.'">' . $btnclose;
 echo '</td></tr>';
-echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>'.$ifexistsGD.'</b>:</td><td>'.$ifexistsGD.'}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="'.$ifexistsGD.'}'.$ifexistsEndGD.'"><td style="width:350px;"><b>'.$ifexistsGD.'</b>:</td><td>'.$ifexistsGD.'}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="'.$ifexistsGD.'}'.$ifexistsEndGD.'">' . $btnclose;
 echo '</td></tr>';
-echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>'.$ifnotexistsGD.'</b>:</td><td>'.$ifnotexistsGD.'}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="'.$ifnotexistsGD.'}'.$ifnotexistsEndGD.'"><td style="width:350px;"><b>'.$ifnotexistsGD.'</b>:</td><td>'.$ifnotexistsGD.'}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="'.$ifnotexistsGD.'}'.$ifnotexistsEndGD.'">' . $btnclose;
 echo '</td></tr>';
-echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>'.$imageGD.'</b>:</td><td>'.$imageGD.'}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="'.$imageGD.'}"><td style="width:350px;"><b>'.$imageGD.'</b>:</td><td>'.$imageGD.'}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="'.$imageGD.'}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>'.$includeGD.'</b>:</td><td>'.$includeGD.'}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="'.$includeGD.'}"><td style="width:350px;"><b>'.$includeGD.'</b>:</td><td>'.$includeGD.'}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="'.$includeGD.'}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>'.$insertindexGD.'</b>:</td><td>'.$insertindexGD.'';
+echo '<tr class="slds-hint-parent" data-clipboard-text="'.$insertindexGD.'"><td style="width:350px;"><b>'.$insertindexGD.'</b>:</td><td>'.$insertindexGD.'';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="'.$insertindexGD.'">' . $btnclose;
 echo '</td></tr>';
-echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>'.$dateGD.'</b>:</td><td>{'.$dateGD.':'.$eoo_strings['format'].'}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{'.$dateGD.'}"><td style="width:350px;"><b>'.$dateGD.'</b>:</td><td>{'.$dateGD.':'.$eoo_strings['format'].'}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{'.$dateGD.'}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>'.$repeticionGD.'</b>:</td><td>{'.$repeticionGD.'}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{'.$repeticionGD.'}"><td style="width:350px;"><b>'.$repeticionGD.'</b>:</td><td>{'.$repeticionGD.'}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{'.$repeticionGD.'}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>'.$expressionGD.'</b>:</td><td>{'.$expressionGD.$eoo_strings['WorkflowExpresion'].'}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{'.$expressionGD.'}"><td style="width:350px;"><b>'.$expressionGD.'</b>:</td><td>{'.$expressionGD.$eoo_strings['WorkflowExpresion'].'}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{'.$expressionGD.'}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>'.$lineGD.'</b>:</td><td>{'.$lineGD.'}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{'.$lineGD.'}"><td style="width:350px;"><b>'.$lineGD.'</b>:</td><td>{'.$lineGD.'}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{'.$lineGD.'}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.organizationname}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{Organization.organizationname}"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.organizationname}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{Organization.organizationname}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.address}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{Organization.address}"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.address}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{Organization.address}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.city}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{Organization.city}"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.city}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{Organization.city}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.state}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{Organization.state}"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.state}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{Organization.state}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.code}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{Organization.code}"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.code}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{Organization.code}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.country}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{Organization.country}"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.country}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{Organization.country}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.phone}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{Organization.phone}"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.phone}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{Organization.phone}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.fax}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{Organization.fax}"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.fax}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{Organization.fax}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.website}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{Organization.website}"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.website}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{Organization.website}">' . $btnclose;
 echo '</td></tr>';
-echo '<tr class="slds-hint-parent"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.'.$eoo_strings['field'].'}';
+echo '<tr class="slds-hint-parent" data-clipboard-text="{Organization.}"><td style="width:350px;"><b>Organization</b>:</td><td>{Organization.'.$eoo_strings['field'].'}';
 echo '&nbsp;&nbsp;<button class="btn" data-clipboard-text="{Organization.}">' . $btnclose;
 echo '</td></tr>';
 echo '</table>';
@@ -328,4 +328,5 @@ echo '</div>'; // container
 ?>
 <script>
 new Clipboard('.btn');
+new Clipboard('.slds-hint-parent');
 </script>
