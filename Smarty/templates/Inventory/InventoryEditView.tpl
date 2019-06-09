@@ -9,6 +9,7 @@
  ********************************************************************************/
 -->*}
 <script type="text/javascript" src="modules/Services/Services.js"></script>
+<script type="text/javascript" src="include/js/Inventory.js"></script>
 {if $FIELD_DEPENDENCY_DATASOURCE neq ''}
 <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
 <script type="text/javascript" src="include/js/FieldDepFunc.js"></script>
