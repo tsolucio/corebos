@@ -256,7 +256,7 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 																											{assign var=_readonly value=$data.readonly}
 																											{assign var=extendedfieldinfo value=$data.extendedfieldinfo}
 
-																											{if $label ne ''}
+																											{if $label ne '' && ($keyid ne 83 || count($TAX_DETAILS)>0)}
 																												<td class="dvtCellLabel" align=right width=25% style="white-space: normal;">{strip}
 																												{if $keycntimage ne ''}
 																													{$keycntimage}
