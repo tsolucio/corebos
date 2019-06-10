@@ -699,6 +699,9 @@ function dateComparison(fldName1, fldLabel1, fldName2, fldLabel2, type) {
 }
 
 function dateComparisonObject(fldObj1, fldLabel1, fldObj2, fldLabel2, type) {
+	if (typeof fldObj1=='undefined' || typeof fldObj2=='undefined') {
+		return true;
+	}
 	var dateval1=fldObj1.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 	var dateval2=fldObj2.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 
