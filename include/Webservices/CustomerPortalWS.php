@@ -965,7 +965,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		}
 	}
 	$servcondquery .= count($servconds) > 0 ? ')' : '';
-
+	$prod_aliasquery = '';
 	foreach ($prodffs as $prodff) {
 		list($palias, $pcolumn) = explode('=', $prodff);
 		$table = in_array($pcolumn, $entitytablemap) ? 'vtiger_crmentity' : 'vtiger_products';
@@ -973,7 +973,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		$selector = $pcolumn == '\'\'' ? $pcolumn : $table . '.' . $pcolumn;
 		$prod_aliasquery .= $selector . ' AS ' . $palias . ',';
 	}
-
+	$serv_aliasquery = '';
 	foreach ($servffs as $servff) {
 		list($salias, $scolumn) = explode('=', $servff);
 		$table = in_array($scolumn, $entitytablemap) ? 'vtiger_crmentity' : 'vtiger_service';
@@ -991,7 +991,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		    vtiger_products.cost_price AS cost_price, 
 		    vtiger_products.mfr_part_no AS mfr_no, 
 		    vtiger_products.qtyinstock AS qtyinstock, 
-		    {$prod_aliasquery},
+		    {$prod_aliasquery}
 		    vtiger_crmentity.deleted AS deleted, 
 		    vtiger_crmentity.crmid AS id, 
 		    vtiger_products.unit_price AS unit_price 
@@ -1011,7 +1011,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		    '' AS mfr_no,
 		    0 AS qtyinstock,
 		    '' AS cost_price,
-		    {$serv_aliasquery},
+		    {$serv_aliasquery}
 		    vtiger_crmentity.deleted AS deleted, 
 		    vtiger_crmentity.crmid AS id, 
 		    vtiger_service.unit_price AS unit_price 

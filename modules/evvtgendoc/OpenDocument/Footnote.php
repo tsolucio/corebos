@@ -46,12 +46,12 @@ class OpenDocument_Footnote extends OpenDocument_StyledElement {
 	 */
 	const nodePrefix = 'text';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'note';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'N';
@@ -60,7 +60,7 @@ class OpenDocument_Footnote extends OpenDocument_StyledElement {
 	public $noteclass;
 	public static $id_counter=0;
 
-		/**
+	/**
 	 * Constructor
 	 *
 	 * @param DOMNode $node
@@ -69,8 +69,8 @@ class OpenDocument_Footnote extends OpenDocument_StyledElement {
 	public function __construct(DOMNode $node, OpenDocument $document, $content, $idval = '', $ncval = 'footnote') {
 		parent::__construct($node, $document);
 		$this->allowedElements = array(
-		 'OpenDocument_NoteCitation',
-		 'OpenDocument_NoteBody'
+			'OpenDocument_NoteCitation',
+			'OpenDocument_NoteBody'
 		);
 		return true;
 		$id = $node->getAttributeNS(OpenDocument::NS_TEXT, 'id');
@@ -110,7 +110,7 @@ class OpenDocument_Footnote extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-				$element = new OpenDocument_Footnote($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $content, $idval, $ncval);
+		$element = new OpenDocument_Footnote($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $content, $idval, $ncval);
 		$node->appendChild($element->node);
 
 		if (is_scalar($content)) {
@@ -143,7 +143,7 @@ class OpenDocument_Footnote extends OpenDocument_StyledElement {
 		}
 	}
 
-		/**
+	/**
 	 * Generate new style name
 	 *
 	 * @return string $stylename
@@ -153,7 +153,7 @@ class OpenDocument_Footnote extends OpenDocument_StyledElement {
 		return self::styleNamePrefix . self::$styleNameMaxNumber;
 	}
 
-		/**
+	/**
 	 * Create OpenDocument_TextElement
 	 *
 	 * @param string $text

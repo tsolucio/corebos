@@ -53,12 +53,12 @@ class OpenDocument_Span extends OpenDocument_StyledElement {
 	 */
 	const nodePrefix = 'text';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'span';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'T';
@@ -71,8 +71,7 @@ class OpenDocument_Span extends OpenDocument_StyledElement {
 	 */
 	public function __construct(DOMNode $node, OpenDocument $document) {
 		parent::__construct($node, $document);
-
-				$this->allowedElements = array(
+		$this->allowedElements = array(
 			'OpenDocument_Span',
 			'OpenDocument_TextTab',
 			'OpenDocument_TextSpace',
@@ -111,7 +110,7 @@ class OpenDocument_Span extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-				$element = new OpenDocument_Span($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
+		$element = new OpenDocument_Span($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
 		$node->appendChild($element->node);
 
 		if (is_scalar($content)) {
@@ -133,7 +132,7 @@ class OpenDocument_Span extends OpenDocument_StyledElement {
 
 	/************** Elements ****************/
 
-		/**
+	/**
 	 * Create OpenDocument_TextElement
 	 *
 	 * @param string $text

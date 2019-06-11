@@ -928,6 +928,15 @@ class Contacts extends CRMEntity {
 		return $query;
 	}
 
+	public function save($module, $fileid = '') {
+		global $adb;
+		if ($this->mode=='edit') {
+			$rs = $adb->pquery('select convertedfromlead from vtiger_contactdetails where contactid = ?', array($this->id));
+			$this->column_fields['convertedfromlead'] = $adb->query_result($rs, 0, 'convertedfromlead');
+		}
+		parent::save($module, $fileid);
+	}
+
 	/** Function to handle module specific operations when saving a entity */
 	public function save_module($module) {
 		$this->insertIntoAttachment($this->id, $module);
@@ -1206,7 +1215,7 @@ class Contacts extends CRMEntity {
 
 		$result = $adb->pquery('SELECT subject,template FROM vtiger_msgtemplate WHERE reference=?', array('Customer Login Details'));
 		if ($result && $adb->num_rows($result)>0) {
-			$body=$adb->query_result($result, 0, 'body');
+			$body=$adb->query_result($result, 0, 'template');
 			$contents = html_entity_decode($body, ENT_QUOTES, $default_charset);
 			$contents = str_replace('$contact_name$', $entityData->get('firstname').' '.$entityData->get('lastname'), $contents);
 			$contents = str_replace('$login_name$', $entityData->get('email'), $contents);
@@ -1217,9 +1226,8 @@ class Contacts extends CRMEntity {
 			$contents = getMergedDescription($contents, $entityData->getId(), 'Contacts');
 
 			if ($type == 'LoginDetails') {
-				$temp=$contents;
 				$value['subject']=$adb->query_result($result, 0, 'subject');
-				$value['body']=$temp;
+				$value['body']=$contents;
 				return $value;
 			}
 		} else {

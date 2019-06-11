@@ -24,7 +24,7 @@ global $log;
 //General Directory structure information
 $modulesDirectory='modules';
 //Make backups when changing filecontents
-$make_backups =false;
+$make_backups = false;
 // Line Break
 $line_break=chr(10);
 // Language Encoding
@@ -68,52 +68,45 @@ function cbGetHeaderToUseInLanguageFile($filename) {
 
 $langid = vtlib_purify($_REQUEST['languageid']);
 $pmodule = vtlib_purify($_REQUEST['pick_module']);
-if (isset($langid) && $langid !='' && $pmodule!='') {
+if (!empty($langid) && !empty($pmodule)) {
 	//Get languguage info
-	$dbQuery='SELECT prefix FROM vtiger_language WHERE id=?';
-	$result = $adb->pquery($dbQuery, array($langid));
+	$result = $adb->pquery('SELECT prefix FROM vtiger_language WHERE id=?', array($langid));
 	if ($result && $adb->num_rows($result)==1) {
 		$langprefix = $adb->query_result($result, 0, 0);
 		$now=date('Y-m-d H:i:s');
-
 		if ($pmodule=='General') {
-			$filename='include/language/'.$langprefix.'.lang.php';
-			if (file_exists($filename) && is_writable($filename)) {
-				if ($make_backups == true) {
-					@unlink($filename.'.bak');
-					@copy($filename, $filename.'.bak');
-				}
-				$header = cbGetHeaderToUseInLanguageFile($filename);
-				// we have to save the $app_currency_strings array which is constant
-				include 'include/language/en_us.lang.php';
+			$langfile='include/language/'.$langprefix.'.lang.php';
+			if (file_exists($langfile)) {
+				$filename='include/language/'.$langprefix.'.custom.php';
 				$fd = fopen($filename, 'w');
-				fwrite($fd, '<?php'.$line_break.$header.'$app_strings = array('.$line_break);
-				if (is_array($_REQUEST['translate_value'])) {
-					$_REQUEST['translate_value'] = array_map('quote_replace', $_REQUEST['translate_value']);
-				}
-				foreach ($_REQUEST['translate_value'] as $key => $string) {
-					$_key = ($key=='#empty#')?'':$key;
-					fwrite($fd, "	'$_key' => '".iconv('UTF-8', $langencoding, $string)."',".$line_break);
-				}
-				if (is_array($_REQUEST['newLabels'])) {
-					$_REQUEST['newLabels'] = array_map('quote_replace', $_REQUEST['newLabels']);
-					foreach ($_REQUEST['newLabels'] as $key1 => $arr) {
-						if (is_array($arr)) {
-							$_key = $arr['key'];
-							$value = $arr['value'];
-							fwrite($fd, "	'$_key' => '".iconv('UTF-8', $langencoding, $value)."',".$line_break);
+				if ($fd) {
+					if ($make_backups == true) {
+						@unlink($filename.'.bak');
+						@copy($filename, $filename.'.bak');
+					}
+					$header = cbGetHeaderToUseInLanguageFile($langfile);
+					fwrite($fd, '<?php'.$line_break.$header.'$custom_strings = array('.$line_break);
+					if (is_array($_REQUEST['translate_value'])) {
+						$_REQUEST['translate_value'] = array_map('quote_replace', $_REQUEST['translate_value']);
+					}
+					foreach ($_REQUEST['translate_value'] as $key => $string) {
+						$_key = ($key=='#empty#') ? '' : $key;
+						fwrite($fd, "	'$_key' => '".iconv('UTF-8', $langencoding, $string)."',".$line_break);
+					}
+					if (is_array($_REQUEST['newLabels'])) {
+						$_REQUEST['newLabels'] = array_map('quote_replace', $_REQUEST['newLabels']);
+						foreach ($_REQUEST['newLabels'] as $key1 => $arr) {
+							if (is_array($arr)) {
+								$_key = $arr['key'];
+								$value = $arr['value'];
+								fwrite($fd, "	'$_key' => '".iconv('UTF-8', $langencoding, $value)."',".$line_break);
+							}
 						}
 					}
+					fwrite($fd, ');'.$line_break.'?>');
+					$result = $adb->pquery('UPDATE vtiger_language SET lastupdated=? WHERE languageid=?', array($now,$langid));
 				}
-			  // Translation for currency names :: $app_currency_strings
-				fwrite($fd, ');'.$line_break.'// Translation for currency names'.$line_break.'$app_currency_strings = array('.$line_break);
-				foreach ($app_currency_strings as $key1 => $value) {
-					fwrite($fd, "	'$key1' => '$value',".$line_break);
-				}
-				fwrite($fd, ');'.$line_break.'?>');
 				fclose($fd);
-				$dbQuery='UPDATE vtiger_language SET lastupdated=? WHERE languageid=?';
-				$result = $adb->pquery($dbQuery, array($now,$langid));
 			}
 		} elseif ($pmodule=='JavaScript') {
 			$filename='include/js/'.$langprefix.'.lang.js';
@@ -141,57 +134,58 @@ if (isset($langid) && $langid !='' && $pmodule!='') {
 				}
 				fwrite($fd, $line_break.'};');
 				fclose($fd);
-				$dbQuery='UPDATE vtiger_language SET lastupdated=? WHERE languageid=?';
-				$result = $adb->pquery($dbQuery, array($now,$langid));
+				$result = $adb->pquery('UPDATE vtiger_language SET lastupdated=? WHERE languageid=?', array($now,$langid));
 			}
 		} else {
-			$filename=$modulesDirectory.'/'.$pmodule.'/language/'.$langprefix.'.lang.php';
-			if (file_exists($filename) && is_writable($filename)) {
-				if ($make_backups == true) {
-					@unlink($filename.'.bak');
-					@copy($filename, $filename.'.bak');
-				}
-				$header = cbGetHeaderToUseInLanguageFile($filename);
-				$fd = fopen($filename, 'w');
-				fwrite($fd, '<?php'.$line_break.$header.'$mod_strings = array('.$line_break);
-				$_REQUEST['translate_value'] = array_map('quote_replace', $_REQUEST['translate_value']);
-				foreach ($_REQUEST['translate_value'] as $key => $string) {
-					$_key = ($key=='#empty#')?'':$key;
-					if ($string=='') {
-						$string = $key;
+			$langfile=$modulesDirectory.'/'.$pmodule.'/language/'.$langprefix.'.lang.php';
+			if (file_exists($langfile)) {
+				$filename=$modulesDirectory.'/'.$pmodule.'/language/'.$langprefix.'.custom.php';
+				$fd = @fopen($filename, 'w');
+				if ($fd) {
+					if ($make_backups == true) {
+						@unlink($filename.'.bak');
+						@copy($filename, $filename.'.bak');
 					}
-					fwrite($fd, "	'$_key' => '".iconv('UTF-8', $langencoding, $string)."',".$line_break);
-				}
-				if (is_array($_REQUEST['translate_list_value'])) {
-					$_REQUEST['translate_list_value'] = array_map('quote_replace', $_REQUEST['translate_list_value']);
-					foreach ($_REQUEST['translate_list_value'] as $key1 => $arr) {
-						if (is_array($arr)) {
-							fwrite($fd, "	'$key1' => array(".$line_break);
-							foreach ($arr as $key2 => $value) {
-								$_key = ($key2=='#empty#')?'':$key2;
-								if ($value=='') {
-									$value = $key2;
+					$header = cbGetHeaderToUseInLanguageFile($langfile);
+					fwrite($fd, '<?php'.$line_break.$header.'$custom_strings = array('.$line_break);
+					$_REQUEST['translate_value'] = array_map('quote_replace', $_REQUEST['translate_value']);
+					foreach ($_REQUEST['translate_value'] as $key => $string) {
+						$_key = ($key=='#empty#')?'':$key;
+						if ($string=='') {
+							$string = $key;
+						}
+						fwrite($fd, "	'$_key' => '".iconv('UTF-8', $langencoding, $string)."',".$line_break);
+					}
+					if (isset($_REQUEST['translate_list_value']) && is_array($_REQUEST['translate_list_value'])) {
+						$_REQUEST['translate_list_value'] = array_map('quote_replace', $_REQUEST['translate_list_value']);
+						foreach ($_REQUEST['translate_list_value'] as $key1 => $arr) {
+							if (is_array($arr)) {
+								fwrite($fd, "	'$key1' => array(".$line_break);
+								foreach ($arr as $key2 => $value) {
+									$_key = ($key2=='#empty#')?'':$key2;
+									if ($value=='') {
+										$value = $key2;
+									}
+									fwrite($fd, "		'$_key' => '".iconv('UTF-8', $langencoding, $value)."',".$line_break);
 								}
-								fwrite($fd, "		'$_key' => '".iconv('UTF-8', $langencoding, $value)."',".$line_break);
+								fwrite($fd, '	),'.$line_break);
 							}
-							fwrite($fd, '	),'.$line_break);
 						}
 					}
-				}
-				if (is_array($_REQUEST['newLabels'])) {
-					$_REQUEST['newLabels'] = array_map('quote_replace', $_REQUEST['newLabels']);
-					foreach ($_REQUEST['newLabels'] as $key1 => $arr) {
-						if (is_array($arr)) {
-							$_key = $arr['key'];
-							$value = $arr['value'];
-							fwrite($fd, "	'$_key' => '".iconv('UTF-8', $langencoding, $value)."',".$line_break);
+					if (isset($_REQUEST['newLabels']) && is_array($_REQUEST['newLabels'])) {
+						$_REQUEST['newLabels'] = array_map('quote_replace', $_REQUEST['newLabels']);
+						foreach ($_REQUEST['newLabels'] as $key1 => $arr) {
+							if (is_array($arr)) {
+								$_key = $arr['key'];
+								$value = $arr['value'];
+								fwrite($fd, "	'$_key' => '".iconv('UTF-8', $langencoding, $value)."',".$line_break);
+							}
 						}
 					}
+					fwrite($fd, ');'.$line_break.'?>');
+					$result = $adb->pquery('UPDATE vtiger_language SET lastupdated=? WHERE languageid=?', array($now,$langid));
 				}
-				fwrite($fd, ');'.$line_break.'?>');
 				fclose($fd);
-				$dbQuery='UPDATE vtiger_language SET lastupdated=? WHERE languageid=?';
-				$result = $adb->pquery($dbQuery, array($now,$langid));
 			}
 		} // if no language prefix
 	}

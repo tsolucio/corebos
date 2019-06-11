@@ -104,14 +104,14 @@ $mod_strings = array(
 
 'Receive BluePay Payment'=>'Receber Pagamento BluePay',
 
-'ERR_ALREADY_PAID' => "Este pagamento já foi pago.",
+'ERR_ALREADY_PAID' => "Este pagamento já foi marcado como pago.",
 'ERR_NO_ACCOUNT' => "Não há Conta relacionada.",
 'ERR_NO_TOKEN' => "Nenhum token para essa Conta.",
 
 'Pay' => 'Pagamento',
 'Invalid payment.' => 'Pagamento inválido.',
 'Payment done.' => 'Pagamento efetuado.',
-'Redirecting to payment gateway...' => 'A redirecionar para portal de pagamento...',
-'Payment error.' => 'Erro de Pagamento.',
+'Redirecting to payment gateway...' => 'Redirecionando para portal de pagamento...',
+'Payment error.' => 'Erro no pagamento.',
 );
 ?>

@@ -83,7 +83,7 @@ function vtws_retrieve($id, $user) {
 		$imginfo = cbws_getrecordimageinfo($id, $user);
 		if ($imginfo['results']>0) {
 			foreach ($imgs as $img) {
-				if (!empty($entity[$img])) {
+				if (!empty($entity[$img]) && !empty($imginfo['images'][$img])) {
 					$entity[$img.'imageinfo'] = $imginfo['images'][$img];
 				}
 			}

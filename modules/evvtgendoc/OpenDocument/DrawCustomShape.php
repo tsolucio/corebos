@@ -46,12 +46,12 @@ class OpenDocument_DrawCustomShape extends OpenDocument_StyledElement {
 	 */
 	const nodePrefix = 'draw';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'custom-shape';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'dcs';
@@ -65,8 +65,8 @@ class OpenDocument_DrawCustomShape extends OpenDocument_StyledElement {
 	public function __construct(DOMNode $node, OpenDocument $document) {
 		parent::__construct($node, $document);
 		$this->allowedElements = array(
-		   'OpenDocument_Paragraph',
-		   'OpenDocument_DrawEGeometry'
+			'OpenDocument_Paragraph',
+			'OpenDocument_DrawEGeometry'
 		);
 	}
 
@@ -89,7 +89,7 @@ class OpenDocument_DrawCustomShape extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-				$element = new OpenDocument_DrawCustomShape($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
+		$element = new OpenDocument_DrawCustomShape($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
 		$node->appendChild($element->node);
 
 		return $element;

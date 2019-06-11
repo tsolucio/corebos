@@ -33,8 +33,7 @@ if (isset($cvid) && $cvid != '') {
 			$action .= 'OK)';
 			echo ':#:SUCCESS:#:';
 		}
-		include 'user_privileges/audit_trail.php';
-		if ($audit_trail == 'true') {
+		if (coreBOS_Settings::getSetting('audit_trail', false)) {
 			$query = 'insert into vtiger_audit_trial values(?,?,?,?,?,?)';
 			$qparams = array($adb->getUniqueID('vtiger_audit_trial'), $current_user->id, 'CustomView', $action, $cvid, date('Y-m-d H:i:s'));
 			$adb->pquery($query, $qparams);

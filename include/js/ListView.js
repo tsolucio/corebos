@@ -178,7 +178,7 @@ function activateCustomSearch(module) {
 			var searchField = getObj('tks_'+p1.value);
 
 			if (searchField != null && searchField != undefined && searchField.value != '') {
-				if (p4.value == 'text' || p4.value == 'number' || p4.value == 'currency') {
+				if (p4.value == 'text' || p4.value == 'reference' || p4.value == 'number' || p4.value == 'currency') {
 					var p5 = getObj('op_cond_'+iterator[i]).value;
 					criteriaConditions[k++] =
 					{
@@ -237,9 +237,9 @@ function activateCustomSearch(module) {
 					}
 				}
 			}
-			if (p4.value == 'date'	|| p4.value == 'datetime') {
-				var d1	=  document.getElementById('jscal_field_'+p1.value+'_date1');
-				var d2	=  document.getElementById('jscal_field_'+p1.value+'_date2');
+			if (p4.value == 'date' || p4.value == 'datetime') {
+				var d1 = document.getElementById('jscal_field_'+p1.value+'_date1');
+				var d2 = document.getElementById('jscal_field_'+p1.value+'_date2');
 
 				if (d1 != null && d1 != undefined && d1.value != '' && d2 != null && d2 != undefined && d2.value != '') {
 					criteriaConditions[k++] =
@@ -583,6 +583,7 @@ function showDefaultCustomView(selectView, module, parenttab) {
 		document.getElementById('status').style.display = 'none';
 		var result = response.split('&#&#&#');
 		document.getElementById('ListViewContents').innerHTML = result[2];
+		vtlib_executeJavascriptInElement(document.getElementById('ListViewContents'));
 		if (result[1] != '') {
 			alert(result[1]);
 		}

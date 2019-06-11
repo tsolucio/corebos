@@ -11,7 +11,7 @@
 <script type="text/javascript" src="modules/PriceBooks/PriceBooks.js"></script>
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <script type="text/javascript" src="include/js/RelatedLists.js"></script>
-{include file='Buttons_List.tpl'}
+{include file='Buttons_List.tpl' isDetailView=true}
 <!-- Contents -->
 <div id="editlistprice" style="position:absolute;width:300px;"></div>
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
@@ -20,25 +20,6 @@
 	<td class="showPanelBg" valign=top width=100%>
 		<!-- PUBLIC CONTENTS STARTS-->
 		<div class="small" style="padding:14px">
-			<table align="center" border="0" cellpadding="0" cellspacing="0" width="95%">
-				<tr><td>
-				{* Module Record numbering, used MOD_SEQ_ID instead of ID *}
-				{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
-				{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
-				<span class="dvHeaderText">[ {$USE_ID_VALUE} ] {$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>
-				&nbsp;&nbsp;&nbsp;
-				<span class="small">{$UPDATEINFO}</span>
-				&nbsp;
-				<span id="vtbusy_info" style="display:none;" valign="bottom">
-				<div role="status" class="slds-spinner slds-spinner_brand slds-spinner_x-small" style="position:relative; top:6px;">
-					<div class="slds-spinner__dot-a"></div>
-					<div class="slds-spinner__dot-b"></div>
-				</div>
-				</span>
-				</td></tr>
-			</table>
-			<br>
-
 			<!-- Account details tabs -->
 			<table border=0 cellspacing=0 cellpadding=0 width=95% align=center>
 			<tr>

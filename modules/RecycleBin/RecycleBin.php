@@ -9,6 +9,7 @@
  *******************************************************************************/
 
 class RecycleBin {
+	public $moduleIcon = array('library' => 'utility', 'containerClass' => 'slds-icon_container slds-icon-standard-account', 'class' => 'slds-icon', 'icon'=>'undelete');
 
 	/**
 	* Invoked when special actions are performed on the module.

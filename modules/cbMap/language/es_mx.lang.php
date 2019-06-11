@@ -45,5 +45,6 @@ $mod_strings = array(
 	'MAP_NOT_VALID'=> 'Mapa no es válido!',
 	'MAP_VALID'=> 'Mapa es válido',
 	'MAP_NOT_IMPLEMENTED_YET'=> 'No hay una validación para este mapa',
+	'DecisionTable' => 'Tabla de Decisión',
 );
 ?>

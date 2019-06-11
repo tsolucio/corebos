@@ -46,12 +46,12 @@ class OpenDocument_DrawConnector extends OpenDocument_StyledElement {
 	 */
 	const nodePrefix = 'draw';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'connector';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'dcn';
@@ -65,7 +65,7 @@ class OpenDocument_DrawConnector extends OpenDocument_StyledElement {
 	public function __construct(DOMNode $node, OpenDocument $document) {
 		parent::__construct($node, $document);
 		$this->allowedElements = array(
-		   'OpenDocument_Paragraph',
+			'OpenDocument_Paragraph',
 		);
 	}
 
@@ -88,7 +88,7 @@ class OpenDocument_DrawConnector extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-				$element = new OpenDocument_DrawConnector($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
+		$element = new OpenDocument_DrawConnector($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
 		$node->appendChild($element->node);
 
 		return $element;

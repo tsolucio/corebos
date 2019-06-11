@@ -46,12 +46,12 @@ class OpenDocument_TextSoftPageBreak extends OpenDocument_StyledElement {
 	 */
 	const nodePrefix = 'text';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'soft-page-break';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'SPB';
@@ -75,13 +75,13 @@ class OpenDocument_TextSoftPageBreak extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-				$element = new OpenDocument_TextSoftPageBreak($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
+		$element = new OpenDocument_TextSoftPageBreak($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
 		$node->appendChild($element->node);
 
 		return $element;
 	}
 
-		/**
+	/**
 	 * Generate new style name
 	 *
 	 * @return string $stylename

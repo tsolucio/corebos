@@ -14,7 +14,11 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 require_once 'include/tcpdf/tcpdf.php';
-require_once 'include/fpdi/fpdi.php';
+
+use setasign\Fpdi\Fpdi;
+
+require_once 'include/fpdf/fpdf.php';
+require_once 'include/fpdi/src/autoload.php';
 
 class concat_pdf extends FPDI {
 
@@ -28,12 +32,12 @@ class concat_pdf extends FPDI {
 		$this->setPrintHeader(false);
 		$this->setPrintFooter(false);
 		foreach ($this->files as $file) {
-			 $pagecount = $this->setSourceFile($file);
+			$pagecount = $this->setSourceFile($file);
 			for ($i = 1; $i <= $pagecount; $i++) {
-				 $tplidx = $this->ImportPage($i);
-				 $s = $this->getTemplatesize($tplidx);
-				 $this->AddPage('P', array($s['w'], $s['h']));
-				 $this->useTemplate($tplidx);
+				$tplidx = $this->ImportPage($i);
+				$s = $this->getTemplatesize($tplidx);
+				$this->AddPage('P', array($s['w'], $s['h']));
+				$this->useTemplate($tplidx);
 			}
 		}
 	}

@@ -44,13 +44,13 @@ class OpenDocument_FrameImage extends OpenDocument_StyledElement {
 	 */
 	public $children;
 
-		// Atributos
+	// Atributos
 	public $href;
 	public $type;
 	public $show;
 	public $actuate;
 
-		/**
+	/**
 	 * Node namespace
 	 */
 	const nodeNS = OpenDocument::NS_DRAW;
@@ -60,12 +60,12 @@ class OpenDocument_FrameImage extends OpenDocument_StyledElement {
 	 */
 	const nodePrefix = 'draw';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'image';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'img';
@@ -79,9 +79,9 @@ class OpenDocument_FrameImage extends OpenDocument_StyledElement {
 	public function __construct(DOMNode $node, OpenDocument $document, $text = '', $ahref = '', $atype = '', $ashow = '', $aactuate = '') {
 		parent::__construct($node, $document);
 		$this->allowedElements = array(
-		   'OpenDocument_Paragraph',
-		   'OpenDocument_Span',
-		   'OpenDocument_Hyperlink',
+			'OpenDocument_Paragraph',
+			'OpenDocument_Span',
+			'OpenDocument_Hyperlink',
 		);
 		return true;
 		$href = $node->getAttributeNS(OpenDocument::NS_XLINK, 'href');
@@ -117,14 +117,14 @@ class OpenDocument_FrameImage extends OpenDocument_StyledElement {
 			$this->actuate = $actuate;
 		}
 
-				$this->allowedElements = array(
-		   'OpenDocument_Paragraph',
-		   'OpenDocument_Span',
-		   'OpenDocument_Hyperlink',
+		$this->allowedElements = array(
+			'OpenDocument_Paragraph',
+			'OpenDocument_Span',
+			'OpenDocument_Hyperlink',
 		);
 	}
 
-		/**
+	/**
 	 * Create element instance
 	 *
 	 * @param mixed $object
@@ -143,7 +143,7 @@ class OpenDocument_FrameImage extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-				$element = new OpenDocument_FrameImage($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $text, $href, $type, $show, $actuate);
+		$element = new OpenDocument_FrameImage($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $text, $href, $type, $show, $actuate);
 		$node->appendChild($element->node);
 
 		return $element;
@@ -181,7 +181,7 @@ class OpenDocument_FrameImage extends OpenDocument_StyledElement {
 		$this->node->setAttributeNS(OpenDocument::NS_DRAW, 'style-name', $style_name);
 	}
 
-		/**
+	/**
 	 * Get children FrameImage
 	 *
 	 * @return ArrayIterator

@@ -345,7 +345,7 @@ class InventoryDetails extends CRMEntity {
 		}
 
 		$requestindex = 1;
-		$inputFiles = $_FILES;
+		$inputFiles = isset($_FILES) ? $_FILES : array();
 		unset($_FILES);
 		while (isset($_REQUEST['deleted'.$requestindex]) && $_REQUEST['deleted'.$requestindex] == 1) {
 			$requestindex++;

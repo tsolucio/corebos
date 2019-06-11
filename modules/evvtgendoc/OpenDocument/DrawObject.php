@@ -44,7 +44,7 @@ class OpenDocument_DrawObject extends OpenDocument_StyledElement {
 	 */
 	public $children;
 
-		// Atributos
+	// Atributos
 	public $href;
 	public $type;
 	public $show;
@@ -60,12 +60,12 @@ class OpenDocument_DrawObject extends OpenDocument_StyledElement {
 	 */
 	const nodePrefix = 'draw';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'object';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'obj';
@@ -78,8 +78,7 @@ class OpenDocument_DrawObject extends OpenDocument_StyledElement {
 	 */
 	public function __construct(DOMNode $node, OpenDocument $document) {
 		parent::__construct($node, $document);
-		$this->allowedElements = array(
-		);
+		$this->allowedElements = array();
 		return true;
 		$href = $node->getAttributeNS(OpenDocument::NS_XLINK, 'href');
 		if (empty($href)) {
@@ -122,11 +121,10 @@ class OpenDocument_DrawObject extends OpenDocument_StyledElement {
 			$this->draw_notifyonupdateofranges = $draw_notifyonupdateofranges;
 		}
 
-		$this->allowedElements = array(
-		);
+		$this->allowedElements = array();
 	}
 
-		/**
+	/**
 	 * Create element instance
 	 *
 	 * @param mixed $object

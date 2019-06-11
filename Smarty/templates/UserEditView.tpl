@@ -26,32 +26,28 @@ function openPopup(){ldelim}
 </script>
 
 <script>
-function check_duplicate()
-{ldelim}
+function check_duplicate() {ldelim}
 	var user_name = window.document.EditView.user_name.value;
 	var status = CharValidation(user_name,'name');
-	
 	VtigerJS_DialogBox.block();
-	if(status)
-	{ldelim}
-	jQuery.ajax({ldelim}
-				method:"POST",
-				url:'index.php?module=Users&action=UsersAjax&file=Save&ajax=true&dup_check=true&userName='+user_name
-	{rdelim}).done(function(response) {ldelim}
-				if(response.indexOf('SUCCESS') > -1)
-				{ldelim}
+	if (status) {ldelim}
+		jQuery.ajax({ldelim}
+			method:'POST',
+			url:'index.php?module=Users&action=UsersAjax&file=Save&ajax=true&dup_check=true&userName='+user_name
+		{rdelim}).done(function(response) {ldelim}
+			if (response.indexOf('SUCCESS') > -1) {ldelim}
 				//	$('user_status').disabled = false;
-					document.EditView.submit();
-				{rdelim}
-					else {ldelim}
-						VtigerJS_DialogBox.unblock();
-						alert(response);
-					{rdelim}
+				document.EditView.submit();
+			{rdelim} else {ldelim}
+				VtigerJS_DialogBox.unblock();
+				alert(response);
 			{rdelim}
+		{rdelim}
 		);
+	{rdelim} else {ldelim}
+		alert(alert_arr.NO_SPECIAL+alert_arr.IN_USERNAME);
+		VtigerJS_DialogBox.unblock();
 	{rdelim}
-	else
-		alert(alert_arr.NO_SPECIAL+alert_arr.IN_USERNAME)
 {rdelim}
 
 	// sCommand = "LdapSearchUser" --> search a user which meets the name entered by the admin --> fill Drop Down box

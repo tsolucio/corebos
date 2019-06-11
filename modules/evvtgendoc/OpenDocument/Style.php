@@ -52,14 +52,14 @@ abstract class OpenDocument_Style {
 	 */
 	protected $element;
 
-		/**
+	/**
 	 * Style map of properties
 	 *
 	 * @var array
 	 */
 	protected $map;
 
-		/**
+	/**
 	 * Constructor
 	 *
 	 * @param OpenDocument_StyledElement $element
@@ -69,7 +69,7 @@ abstract class OpenDocument_Style {
 		//$this->loadStyle();
 	}
 
-		/**
+	/**
 	 * Load element style information
 	 *
 	 */
@@ -83,7 +83,7 @@ abstract class OpenDocument_Style {
 		}
 	}
 
-		/**
+	/**
 	 * Magic method
 	 * Set property value
 	 *
@@ -97,7 +97,7 @@ abstract class OpenDocument_Style {
 		}
 	}
 
-		/**
+	/**
 	 * Magic method
 	 * Get property value
 	 *
@@ -112,7 +112,7 @@ abstract class OpenDocument_Style {
 		}
 	}
 
-		/**
+	/**
 	 * Export style information
 	 *
 	 * @return array
@@ -125,7 +125,7 @@ abstract class OpenDocument_Style {
 		return $style;
 	}
 
-		/**
+	/**
 	 * Import style information
 	 *
 	 * @param array $style
@@ -138,7 +138,7 @@ abstract class OpenDocument_Style {
 		}
 	}
 
-		/**
+	/**
 	 * Copy style from another element
 	 *
 	 * @param OpenDocument_Style $styleObject

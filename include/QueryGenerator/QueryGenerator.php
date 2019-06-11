@@ -107,7 +107,7 @@ class QueryGenerator {
 	}
 
 	public function setFields($fields) {
-		$this->fields = $fields;
+		$this->fields = array_unique($fields);
 		$this->setReferenceFields();
 	}
 

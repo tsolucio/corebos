@@ -1,11 +1,11 @@
 module.exports = {
-  staticFileGlobs: [
+  globPatterns: [
     'include/sw-precache/service-worker-registration.js',
     'jscalendar/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
     'modules/Calendar4You/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
     'modules/Mobile/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
     'kcfinder/{adapters,css,js,themes}/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
-    'include/LD/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
+    'include/LD/**/*.{js,css,svg,eot,ttf,woff}',
     'include/ckeditor/{adapters,images,lang,plugins,skins,themes}/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
     'include/ckeditor/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
     'include/bunnyjs/**/*.{js,css,png,jpg,gif,svg,eot,ttf,woff}',
@@ -118,7 +118,6 @@ module.exports = {
     'modules/PriceBooks/PriceBooks.js',
     'modules/Quotes/Quotes.js',
     'modules/PurchaseOrder/PurchaseOrder.js',
-    'include/calculator/calc.js',
     'include/Webservices/WSClient.js',
     'include/freetag/jquery.tagcanvas.js',
     'include/freetag/jquery.tagcanvas.min.js',

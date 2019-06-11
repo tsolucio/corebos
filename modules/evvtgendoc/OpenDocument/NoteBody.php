@@ -46,12 +46,12 @@ class OpenDocument_NoteBody extends OpenDocument_StyledElement {
 	 */
 	const nodePrefix = 'text';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'note-body';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'N';
@@ -64,9 +64,8 @@ class OpenDocument_NoteBody extends OpenDocument_StyledElement {
 	 */
 	public function __construct(DOMNode $node, OpenDocument $document) {
 		parent::__construct($node, $document);
-
 		$this->allowedElements = array(
-		  'OpenDocument_Paragraph'
+			'OpenDocument_Paragraph'
 		);
 	}
 
@@ -89,7 +88,7 @@ class OpenDocument_NoteBody extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-				$element = new OpenDocument_NoteBody($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
+		$element = new OpenDocument_NoteBody($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
 		$node->appendChild($element->node);
 
 		return $element;

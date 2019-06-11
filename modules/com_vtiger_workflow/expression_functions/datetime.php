@@ -58,8 +58,8 @@ function __vt_time_diffdays($arr) {
 function __cb_time_diffyears($arr) {
 	$time_operand1 = $time_operand2 = 0;
 	if (count($arr) > 1) {
-		$time_operand1 = $time1 = $arr[0];
-		$time_operand2 = $time2 = $arr[1];
+		$time_operand1 = $arr[0];
+		$time_operand2 = $arr[1];
 	} else {
 		$time_operand1 = date('Y-m-d H:i:s'); // Current time
 		$time_operand2 = $arr[0];
@@ -294,5 +294,30 @@ function __cb_next_dateLaborable($arr) {
 	} else {
 		return '';
 	}
+}
+
+function __cb_add_workdays($arr) {
+	$date = new DateTime($arr[0]);
+	$numofdays = $arr[1];
+	$addsaturday = isset($arr[2]) ? $arr[2] : 1;
+	if ($addsaturday == 0) {
+		$lastdow = 6;
+	} else {
+		$lastdow = 7;
+	}
+	if (isset($arr[3]) && trim($arr[3])!='') {
+		$holidays = explode(',', $arr[3]);
+	} else {
+		$holidays = array();
+	}
+	$interval = new DateInterval('P1D');
+	$x = 0;
+	while ($x < $numofdays) {
+		$date = $date->add($interval);
+		if ($date->format('N') < $lastdow && !in_array($date->format('Y-m-d'), $holidays)) {
+			$x++;
+		}
+	}
+	return $date->format('Y-m-d');
 }
 ?>

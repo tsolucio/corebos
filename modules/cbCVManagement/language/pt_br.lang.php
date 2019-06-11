@@ -20,6 +20,7 @@ $mod_strings = array(
 	'LBL_DESCRIPTION_INFORMATION'=>'Descrição',
 
 	'Name' => 'Nome',
+	'setpublic' => 'Set Public',
 	'cvcreate' => 'Criar',
 	'cvretrieve' => 'Ler',
 	'cvupdate' => 'Atualizar',

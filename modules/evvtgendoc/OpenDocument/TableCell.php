@@ -44,7 +44,7 @@ class OpenDocument_TableCell extends OpenDocument_StyledElement {
 	 */
 	public $children;
 
-		/**
+	/**
 	 * Node namespace
 	 */
 	const nodeNS = OpenDocument::NS_TABLE;
@@ -54,12 +54,12 @@ class OpenDocument_TableCell extends OpenDocument_StyledElement {
 	 */
 	const nodePrefix = 'table';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'table-cell';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'T';
@@ -93,11 +93,10 @@ class OpenDocument_TableCell extends OpenDocument_StyledElement {
 			$this->numberrowsspanned = $numberrowsspanned;
 		}
 
-				$this->allowedElements = array(
-		);
+		$this->allowedElements = array();
 	}
 
-		/**
+	/**
 	 * Create element instance
 	 *
 	 * @param mixed $object
@@ -116,7 +115,7 @@ class OpenDocument_TableCell extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-				$element = new OpenDocument_TableCell($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $colspan, $rowspan);
+		$element = new OpenDocument_TableCell($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $colspan, $rowspan);
 		$node->appendChild($element->node);
 
 		if (is_scalar($content)) {
@@ -136,7 +135,7 @@ class OpenDocument_TableCell extends OpenDocument_StyledElement {
 		return $this->document->getStyle($this->getStyleName(), $properties);
 	}
 
-		/**
+	/**
 	 * Get style name
 	 *
 	 * @return string
@@ -145,7 +144,7 @@ class OpenDocument_TableCell extends OpenDocument_StyledElement {
 		return $this->node->getAttributeNS(OpenDocument::NS_TABLE, 'style-name');
 	}
 
-		/**
+	/**
 	 * Get style name prefix
 	 *
 	 * @return string
@@ -154,7 +153,7 @@ class OpenDocument_TableCell extends OpenDocument_StyledElement {
 		return $this->styleNamePrefix;
 	}
 
-		/**
+	/**
 	 * Generate new style name
 	 *
 	 * @return string $stylename
@@ -164,7 +163,7 @@ class OpenDocument_TableCell extends OpenDocument_StyledElement {
 		return self::styleNamePrefix . self::$styleNameMaxNumber;
 	}
 
-		/**
+	/**
 	 * Apply style information
 	 *
 	 * @param string $name
@@ -178,7 +177,7 @@ class OpenDocument_TableCell extends OpenDocument_StyledElement {
 
 	/************** Elements ****************/
 
-		/**
+	/**
 	 * Create OpenDocument_Table
 	 *
 	 * @param string $text optional
@@ -189,7 +188,7 @@ class OpenDocument_TableCell extends OpenDocument_StyledElement {
 		return OpenDocument_Table::instance($this, $subtable);
 	}
 
-		/**
+	/**
 	 * Create OpenDocument_TextElement
 	 *
 	 * @param string $text
@@ -213,7 +212,7 @@ class OpenDocument_TableCell extends OpenDocument_StyledElement {
 		return OpenDocument_Heading::instance($this, $text, $level);
 	}
 
-		/**
+	/**
 	 * Get children list
 	 *
 	 * @return ArrayIterator

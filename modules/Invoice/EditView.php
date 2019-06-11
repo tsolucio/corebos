@@ -129,7 +129,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 		$soid = $focus->column_fields['salesorder_id'];
 		$so_focus = new SalesOrder();
 		$so_focus->id = $soid;
-		$so_focus->retrieve_entity_info($soid, "SalesOrder");
+		$so_focus->retrieve_entity_info($soid, 'SalesOrder');
 		$focus = getConvertSoToInvoice($focus, $so_focus, $soid);
 		$focus->id = $_REQUEST['record'];
 		$focus->mode = 'edit';
@@ -209,7 +209,7 @@ if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == 'true') {
 		$explode_decode_val = explode('&', trim($decode_val, '&'));
 		$tabid = getTabid($currentModule);
 		foreach ($explode_decode_val as $fieldvalue) {
-			$value = explode("=", $fieldvalue);
+			$value = explode('=', $fieldvalue);
 			$field_name_val = $value[0];
 			$field_value =urldecode($value[1]);
 			$finfo = VTCacheUtils::lookupFieldInfo($tabid, $field_name_val);
@@ -242,7 +242,7 @@ if (!empty($_REQUEST['save_error']) && $_REQUEST['save_error'] == 'true') {
 	$errormessage = isset($_REQUEST['error_msg']) ? vtlib_purify($_REQUEST['error_msg']) : '';
 	$smarty->assign('ERROR_MESSAGE_CLASS', $errormessageclass);
 	$smarty->assign('ERROR_MESSAGE', $errormessage);
-} elseif ($focus->mode != 'edit') {
+} elseif ($focus->mode != 'edit' && (!isset($_REQUEST['convertmode']) || ($_REQUEST['convertmode']!='update_quote_val' && $_REQUEST['convertmode'] != 'update_so_val'))) {
 	setObjectValuesFromRequest($focus);
 }
 if (isset($_REQUEST['opportunity_id']) && $_REQUEST['opportunity_id'] != '') {
@@ -408,37 +408,37 @@ if ($cbMap!=null && isPermitted('InventoryDetails', 'EditView')=='yes') {
 $smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
 
 if (isset($_REQUEST['return_module'])) {
-	$smarty->assign("RETURN_MODULE", vtlib_purify($_REQUEST['return_module']));
+	$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
 } else {
-	$smarty->assign("RETURN_MODULE", "Invoice");
+	$smarty->assign('RETURN_MODULE', 'Invoice');
 }
 if (isset($_REQUEST['return_action'])) {
-	$smarty->assign("RETURN_ACTION", vtlib_purify($_REQUEST['return_action']));
+	$smarty->assign('RETURN_ACTION', vtlib_purify($_REQUEST['return_action']));
 } else {
-	$smarty->assign("RETURN_ACTION", "index");
+	$smarty->assign('RETURN_ACTION', 'index');
 }
 if (isset($_REQUEST['return_id'])) {
-	$smarty->assign("RETURN_ID", vtlib_purify($_REQUEST['return_id']));
+	$smarty->assign('RETURN_ID', vtlib_purify($_REQUEST['return_id']));
 }
 if (isset($_REQUEST['return_viewname'])) {
-	$smarty->assign("RETURN_VIEWNAME", vtlib_purify($_REQUEST['return_viewname']));
+	$smarty->assign('RETURN_VIEWNAME', vtlib_purify($_REQUEST['return_viewname']));
 }
 $upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize', 3000000, $currentModule);
-$smarty->assign("UPLOADSIZE", $upload_maxsize/1000000); //Convert to MB
-$smarty->assign("UPLOAD_MAXSIZE", $upload_maxsize);
+$smarty->assign('UPLOADSIZE', $upload_maxsize/1000000); //Convert to MB
+$smarty->assign('UPLOAD_MAXSIZE', $upload_maxsize);
 
 // Field Validation Information
 $tabid = getTabid($currentModule);
 $validationData = getDBValidationData($focus->tab_name, $tabid);
 $validationArray = split_validationdataArray($validationData);
 
-$smarty->assign("VALIDATION_DATA_FIELDNAME", $validationArray['fieldname']);
-$smarty->assign("VALIDATION_DATA_FIELDDATATYPE", $validationArray['datatype']);
-$smarty->assign("VALIDATION_DATA_FIELDLABEL", $validationArray['fieldlabel']);
+$smarty->assign('VALIDATION_DATA_FIELDNAME', $validationArray['fieldname']);
+$smarty->assign('VALIDATION_DATA_FIELDDATATYPE', $validationArray['datatype']);
+$smarty->assign('VALIDATION_DATA_FIELDLABEL', $validationArray['fieldlabel']);
 
 // In case you have a date field
-$smarty->assign("CALENDAR_LANG", $app_strings['LBL_JSCALENDAR_LANG']);
-$smarty->assign("CALENDAR_DATEFORMAT", parse_calendardate($app_strings['NTC_DATE_FORMAT']));
+$smarty->assign('CALENDAR_LANG', $app_strings['LBL_JSCALENDAR_LANG']);
+$smarty->assign('CALENDAR_DATEFORMAT', parse_calendardate($app_strings['NTC_DATE_FORMAT']));
 
 // Module Sequence Numbering
 $mod_seq_field = getModuleSequenceField($currentModule);

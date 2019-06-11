@@ -630,6 +630,19 @@ function SaveTag(tagfield, crmId, module) {
 		VtigerJS_DialogBox.hidebusy();
 	});
 }
+
+function DeleteTag(id, recordid) {
+	VtigerJS_DialogBox.showbusy();
+	jQuery('#tag_'+id).fadeOut();
+	jQuery.ajax({
+		method:'POST',
+		url:'index.php?file=TagCloud&module=' + module + '&action=' + module + 'Ajax&ajxaction=DELETETAG&recordid='+recordid+'&tagid='+id
+	}).done(function (response) {
+		getTagCloud();
+		VtigerJS_DialogBox.hidebusy();
+	});
+}
+
 function setSelectValue(fieldLabel) {
 	var selCombo= '';
 	if (globaluitype == 53) {

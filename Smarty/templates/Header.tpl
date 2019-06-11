@@ -47,7 +47,6 @@
 {include file='BrowserVariables.tpl'}
 {include file="Components.tpl"}
 <body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small style="min-width:1100px; width: 100%"> 
-	<a name="top"></a>
 	<!-- header -->
 	<script type="text/javascript" src="include/sw-precache/service-worker-registration.js"></script>
 	<script type="text/javascript" src="include/jquery/jquery.js"></script>
@@ -102,17 +101,18 @@
 		<div class="slds-global-header__item">
 			<div class="slds-global-header__logo" style="background-image: url('{$COMPANY_DETAILS.applogo}');"></div>
 		</div>
-		{if $Application_Global_Search_Active}
+		{if $Application_Global_Search_Active || (isset($GS_AUTOCOMP) && isset($GS_AUTOCOMP['searchin']))}
 		{if (isset($GS_AUTOCOMP) && isset($GS_AUTOCOMP['searchin']))}{$GLOBAL_AC = true}{else}{$GLOBAL_AC = false}{/if}
 		<div class="slds-global-header__item slds-global-header__item_search">
 			<div class="slds-form-element">
 				<div class="slds-form-element__control">
 					<div class="slds-combobox-group">
+						{if $Application_Global_Search_Active}
 						<div class="slds-combobox_object-switcher slds-combobox-addon_start">
 							<div class="slds-form-element">
 								<label class="slds-form-element__label slds-assistive-text" for="globalsearch-moduleselect">{$APP.LBL_SELECT_MODULES_FOR_SEARCH}</label>
 								<div class="slds-form-element__control">
-                  					<div class="slds-combobox_container">
+									<div class="slds-combobox_container">
 										<div id="globalsearch-moduleselect" class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-controls="globalsearch-moduleselect" aria-expanded="false" aria-haspopup="listbox" role="combobox">
 											<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
 												<input type="text" class="slds-input slds-combobox__input slds-combobox__input-value" id="globalsearch-moduleselect-input" aria-controls="UnifiedSearch_moduleformwrapper" autoComplete="off" role="textbox" placeholder="{$APP.LBL_SELECT_MODULES_FOR_SEARCH}" value="" onfocus="UnifiedSearch_GetModules();" />
@@ -129,8 +129,14 @@
 								</div>
 							</div>
 						</div>
+						{/if}
+						{if $GLOBAL_AC || $Application_Global_Search_Active}
 						<div class="slds-combobox_container slds-combobox-addon_end">
+							{if $Application_Global_Search_Active}
 							<form name="UnifiedSearch" method="post" action="index.php" style="margin:0px" onsubmit="if (document.getElementById('query_string').value=='') return false; VtigerJS_DialogBox.block();">
+							{else}
+							<form name="UnifiedSearch" style="margin:0px" onsubmit="return false;">
+							{/if}
 								<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false" aria-haspopup="listbox" id="primary-search-combobox-id-1" role="combobox">
 									<input type="hidden" name="action" value="UnifiedSearch">
 									<input type="hidden" name="module" value="Home">
@@ -150,6 +156,7 @@
 								</div>
 							</form>
 						</div>
+						{/if}
 					</div>
 				</div>
 			</div>
@@ -208,14 +215,14 @@
 				{if !empty($ADMIN_LINK)}
 				<li class="slds-global-actions__item">
 					<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
-						<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-haspopup="true" title="{$APP.LBL_MORE}" onclick="window.location.assign('index.php?module=Settings&action=index&parenttab=')">
+						<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-haspopup="true" title="{$APP.LBL_CRM_SETTINGS}" onclick="window.location.assign('index.php?module=Settings&action=index&parenttab=')">
 							<svg class="slds-button__icon" aria-hidden="true">
 								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#settings"></use>
 							</svg>
 							<span class="slds-assistive-text">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</span>
 						</button>
 						<div class="slds-dropdown slds-dropdown_right">
-							<ul class="slds-dropdown__list" role="menu" aria-label="{$APP.LBL_MORE}">
+							<ul class="slds-dropdown__list" role="menu" aria-label="{$APP.LBL_CRM_SETTINGS}">
 								{foreach key=actionlabel item=actionlink from=$HEADERS}
 									<li class="slds-dropdown__item" role="presentation">
 									<a href="{$actionlink}" role="menuitem" tabindex="0">
@@ -312,8 +319,8 @@
 	</div>
 </header>
 <div id = "blankDiv" style="width: 1px; height: 0px;" ></div>
-
 <!-- END LDS Global header -->
+<a name="top"></a>
 
 <div id='miniCal' style='width:300px; position:absolute; display:none; left:100px; top:100px; z-index:100000'></div>
 
@@ -386,12 +393,11 @@
 {/if}
 <!-- header - master tabs -->
 
-<div id="calculator_cont" style="position:absolute; z-index:100001;" ></div>
 {include file="Clock.tpl"}
 
 <div id="qcform" style="position:absolute;width:700px;top:80px;left:450px;z-index:90000;"></div>
 
-<div id="status" style="position:absolute;display:none;left:50%;top:95px;height:27px;white-space:nowrap;">
+<div id="status" style="position:absolute;display:none;left:65%;top:95px;height:27px;white-space:nowrap;">
 	<div role="status" class="slds-spinner slds-spinner_small slds-spinner_brand">
 		<div class="slds-spinner__dot-a"></div>
 		<div class="slds-spinner__dot-b"></div>

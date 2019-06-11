@@ -182,13 +182,17 @@
 					&nbsp;{$MOD.LBL_HOME_FILTERBY}
 				</td>
 				<td id="selModFilter_id"  width="300" colspan="2"  class="dvtCellInfo"> </td>
-			 </tr>
-			 <tr id="moduleLabelsRow" style="display:block">
-			 	<td class="dvtCellLabel" align="right" id="aggr" width="110">{$MOD.LBL_HOME_AGGREGATE}</td>
+			</tr>
+			<tr id="moduleLabelsRow" style="display:block">
+				<td class="dvtCellLabel" align="right" id="aggr" width="110">{$MOD.LBL_HOME_AGGREGATE}</td>
 				<td id="selModAggregate_id"  width="300" colspan="2"  class="dvtCellInfo">
 					<select class="detailedViewTextBox" id="selAggregateid" name="selAggregatename" style="width:60%">
-					<option value="sum">Sum</option><option value="avg">Average</option><option value="max">Maximum</option>
-					<option value="min">Minimum</option><option value="count">Count</option></select>
+					<option value="sum">{'SUM'|getTranslatedString:'Reports'}</option>
+					<option value="avg">{'AVG'|getTranslatedString:'Reports'}</option>
+					<option value="max">{'MAX'|getTranslatedString:'Reports'}</option>
+					<option value="min">{'MIN'|getTranslatedString:'Reports'}</option>
+					<option value="count">{'COUNT'|getTranslatedString:'Reports'}</option>
+					</select>
 				</td>
 			</tr>
 			<tr id="moduleCombosRow" style="display:block">

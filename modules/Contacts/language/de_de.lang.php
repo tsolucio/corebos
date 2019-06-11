@@ -289,5 +289,6 @@ $mod_strings = array(
 'SYNC_SETT_TITLE'=>' Geben Sie die Standard-Parameter für den Synchronisierungsprozess an.',
 'SYNC_RESULTS'=>'Synchronisierung-Ergebnisse',
 'ERR_GContactsSync'=>'Es gab einen Fehler beim Zugriff auf Google. Die Einstellungen wurden gelöscht. Bitte konfigurieren Sie den Zugang neu.',
+'Template Language' => 'Template Language',
 );
 ?>

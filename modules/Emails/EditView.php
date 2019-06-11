@@ -61,9 +61,24 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 	}
 	$smarty->assign('TO_MAIL', $to_add);
 	$smarty->assign('IDLISTS', $mailids['idlists']);
-	$Users_Default_Send_Email_Template = GlobalVariable::getVariable('Users_Default_Send_Email_Template', 0);
+	if (!empty($mailids['idlists'])) {
+		$crmidsinfo = explode('|', trim($mailids['idlists'], '|'));
+		if (count($crmidsinfo)==1) {
+			list($crmid, $fldinfo) = explode('@', $crmidsinfo[0]);
+		} else {
+			$crmid = null;
+		}
+	} else {
+		$crmid = null;
+	}
+	if (!empty($_REQUEST['templatename'])) {
+		$Users_Default_Send_Email_Template = vtlib_purify($_REQUEST['templatename']);
+		$crmid = (int)vtlib_purify($_REQUEST['idlist']);
+	} else {
+		$Users_Default_Send_Email_Template = GlobalVariable::getVariable('Users_Default_Send_Email_Template', 0, $_REQUEST['pmodule']);
+	}
 	if (!empty($Users_Default_Send_Email_Template)) {
-		$emltpl = getTemplateDetails($Users_Default_Send_Email_Template);
+		$emltpl = getTemplateDetails($Users_Default_Send_Email_Template, $crmid);
 		if (count($emltpl)>0) {
 			$focus->column_fields['subject'] = $emltpl[2];
 			$focus->column_fields['description'] = $emltpl[1];

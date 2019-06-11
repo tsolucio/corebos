@@ -20,7 +20,7 @@
 
 class coreBOS_Rule {
 
-	private static $supportedBusinessMaps = array('Condition Query', 'Condition Expression');
+	private static $supportedBusinessMaps = array('Condition Query', 'Condition Expression', 'DecisionTable');
 
 	public static function evaluate($conditionid, $context) {
 		global $log,$adb,$current_user;
@@ -80,6 +80,9 @@ class coreBOS_Rule {
 			case 'Condition Query':
 				$idComponents = vtws_getIdComponents($contextid);
 				$ruleinfo = $cbmap->ConditionQuery($idComponents[1]);
+				break;
+			case 'DecisionTable':
+				$ruleinfo = $cbmap->DecisionTable($contextid);
 				break;
 			case 'Condition Expression':
 			default:

@@ -699,6 +699,9 @@ function dateComparison(fldName1, fldLabel1, fldName2, fldLabel2, type) {
 }
 
 function dateComparisonObject(fldObj1, fldLabel1, fldObj2, fldLabel2, type) {
+	if (typeof fldObj1=='undefined' || typeof fldObj2=='undefined') {
+		return true;
+	}
 	var dateval1=fldObj1.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 	var dateval2=fldObj2.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 
@@ -1327,6 +1330,25 @@ function doServerValidation(edit_type, formName, callback) {
 						callback('submit');
 					} else {
 						submitFormForAction(formName, action);
+					}
+				} else if (msg.search('%%%FUNCTION%%%') > -1) { //call user function
+					var callfunc = msg.split('%%%FUNCTION%%%');
+					var params = '';
+					if (callfunc[1].search('%%%PARAMS%%%') > -1) { //function has params string
+						var cfp = callfunc[1].split('%%%PARAMS%%%');
+						callfunc = cfp[0];
+						params = cfp[1];
+					} else {
+						callfunc = callfunc[1];
+					}
+					if (typeof window[callfunc] == 'function') {
+						window[callfunc](edit_type, formName, callback, params);
+					} else {
+						if (typeof callback == 'function') {
+							callback('submit');
+						} else {
+							submitFormForAction(formName, action);
+						}
 					}
 				} else { //Error
 					alert(msg);
@@ -4853,16 +4875,6 @@ function fetch_clock() {
 	});
 }
 
-function fetch_calc() {
-	jQuery.ajax({
-		method:'POST',
-		url:'index.php?module=Utilities&action=UtilitiesAjax&file=Calculator'
-	}).done(function (response) {
-		jQuery('#calculator_cont').html(response);
-		execJS(document.getElementById('calculator_cont'));
-	});
-}
-
 function UnifiedSearch_GetModules() {
 	if (document.getElementById('UnifiedSearch_modulelistwrapper').children.length === 0) {
 		jQuery('#status').show();
@@ -4977,6 +4989,10 @@ var throttle = function (func, limit) {
 
 document.addEventListener('DOMContentLoaded', function (event) {
 	/* ======= Auto complete part relations ====== */
+	AutocompleteSetup();
+});
+
+function AutocompleteSetup() {
 	var acInputs = document.querySelectorAll('.autocomplete-input');
 	for (var i = 0; i < acInputs.length; i++) {
 		(function (_i) {
@@ -4990,7 +5006,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 			});
 		})(i);
 	}
-});
+}
 
 function AutocompleteRelation(target, i) {
 	this.inputField 	= target;
@@ -5012,7 +5028,9 @@ function AutocompleteRelation(target, i) {
 			(function () {
 				var allAcLists = document.getElementsByClassName('relation-autocomplete__target');
 				for (var i = 0; i < allAcLists.length; i++) {
-					allAcLists[i].hide();
+					if (typeof allAcLists[i].hide == 'function') {
+						allAcLists[i].hide();
+					}
 				}
 			})();
 			this.style.opacity = 1;

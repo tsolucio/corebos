@@ -99,6 +99,15 @@ class Accounts extends CRMEntity {
 	// Refers to vtiger_field.fieldname values.
 	public $mandatory_fields = array('createdtime', 'modifiedtime', 'accountname');
 
+	public function save($module, $fileid = '') {
+		global $adb;
+		if ($this->mode=='edit') {
+			$rs = $adb->pquery('select convertedfromlead from vtiger_account where accountid = ?', array($this->id));
+			$this->column_fields['convertedfromlead'] = $adb->query_result($rs, 0, 'convertedfromlead');
+		}
+		parent::save($module, $fileid);
+	}
+
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id, $module);

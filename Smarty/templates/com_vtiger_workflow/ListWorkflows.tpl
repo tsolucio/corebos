@@ -116,12 +116,22 @@
 	<tr>
 		{foreach key=dtkey item=dtheader from=$LIST_FIELDS}
 			{if $dtheader eq 'workflow_id'}
-			<td class="rptData">
-				<a av="href:Record"><span>
-				<img border="0" title="{'LBL_EDIT'|@getTranslatedString}" alt="{'LBL_EDIT'|@getTranslatedString}"
-					style="cursor: pointer;" src="{'editfield.gif'|@vtiger_imageurl:$THEME}"/></span></a>
-				<a av="href:RecordDel" data-handler="remove" class="deleteanchor"><span av="id:workflow_id"><img border="0" title="{'LBL_DELETE'|@getTranslatedString}" alt="{'LBL_DELETE'|@getTranslatedString}"
-					src="{'delete.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;"</span>
+			<td class="rptData" style="min-width:90px;">
+				<a av="href:Record">
+				<span class="slds-icon_container slds-icon_container_circle slds-icon-action-edit" title="{'LBL_EDIT_BUTTON'|@getTranslatedString:$MODULE_NAME}">
+					<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#edit"></use>
+					</svg>
+					<span class="slds-assistive-text">{'LBL_EDIT_BUTTON'|@getTranslatedString:$MODULE_NAME}</span>
+				</span>
+				</a>
+				<a av="href:RecordDel" data-handler="remove" class="deleteanchor">
+				<span av="id:workflow_id" class="slds-icon_container slds-icon_container_circle slds-icon-action-delete" title="{'LBL_DELETE_BUTTON'|@getTranslatedString:$MODULE_NAME}">
+					<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#delete"></use>
+					</svg>
+					<span class="slds-assistive-text">{'LBL_DELETE_BUTTON'|@getTranslatedString:$MODULE_NAME}</span>
+				</span>
 				</a>
 			</td>
 			{else}

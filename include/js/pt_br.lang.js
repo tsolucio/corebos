@@ -6,7 +6,7 @@
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|01/03/2012|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|6/12/2017|Sao Paulo/SP/Brasil.|www.slemernet.com.br
- * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|7/05/2018|Sao Paulo/SP/Brasil.|www.slemernet.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese|4/05/2019|Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ********************************************************************************/
 
 var alert_arr = {
@@ -101,8 +101,8 @@ var alert_arr = {
 	'MAIL':'correio',
 	'EQUALS':'igual',
 	'NOT_EQUALS_TO':'diferente de',
-	'STARTS_WITH':'iniciar com',
-	'CONTAINS':'contem',
+	'STARTS_WITH':'começa com',
+	'CONTAINS':'contém',
 	'DOES_NOT_CONTAINS':'não contém',
 	'LESS_THAN':'menor que',
 	'GREATER_THAN':'maior que',
@@ -292,6 +292,7 @@ var alert_arr = {
 	'Default': 'Padrão',
 	'Notebook': 'Bloco notas',
 	'ReportCharts': 'Gráficos relatórios',
+	'CustomWidget': 'Totalizador',
 	'SPECIAL_CHARS':'\\ / < > + \' " ',
 
 	'BETWEEN': 'entre',
@@ -355,8 +356,8 @@ var alert_arr = {
 	'LBL_STARTS_WITH' : 'começa com',
 	'LBL_ENDS_WITH' : 'termina com',
 	'LBL_HAS_CHANGED' : 'foi alterado',
-	'LBL_HAS_CHANGED_TO' : 'não foi alterado',
-	'LBL_WAS' : 'was',
+	'LBL_HAS_CHANGED_TO' : 'foi alterado para',
+	'LBL_WAS' : 'era',
 	'LBL_IS_EMPTY': 'está vazio',
 	'LBL_IS_NOT_EMPTY' : 'não está vazio',
 	'LBL_EQUAL_TO' : 'igual a',
@@ -417,7 +418,7 @@ var alert_arr = {
 	'JSLBL_FINISH': 'Finalização',
 	'SHOWING' : 'Exibindo',
 	'OF' : 'de',
-	'ERR_Massedit' : 'Error on Mass Edit',
-	'ProcessFINISHED' : 'Process Finished',
-	'duplicatednotallowed' : 'Duplicated Modules Not Allowed'
+	'ERR_Massedit' : 'Erro na edição em massa',
+	'ProcessFINISHED' : 'Processo Finalizado',
+	'duplicatednotallowed' : 'Módulos duplicados não são permitidos'
 };

@@ -133,9 +133,6 @@
 					{assign var=vowel_conf value='LBL_AN'}
 				{/if}
 				{assign var=MODULE_CREATE value=$SINGLE_MOD}
-				{if $MODULE eq 'HelpDesk'}
-					{assign var=MODULE_CREATE value='Ticket'}
-				{/if}
 
 				{if $SQLERROR}
 					<table border="0" cellpadding="5" cellspacing="0" width="98%">

@@ -589,7 +589,7 @@
 <helpinfo><![CDATA[]]></helpinfo>
 <masseditable>1</masseditable>
 <relatedmodules>
-<relatedmodule>Actions</relatedmodule>
+<relatedmodule>MsgTemplate</relatedmodule>
 </relatedmodules>
 </field>
 <field>

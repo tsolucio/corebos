@@ -23,11 +23,12 @@ function getUserFldArray($fld_module, $roleid) {
 	$user_fld = array();
 	$tabid = getTabid($fld_module);
 
-	$query="select vtiger_field.fieldlabel,vtiger_field.columnname,vtiger_field.fieldname, vtiger_field.uitype" .
-			" FROM vtiger_field inner join vtiger_picklist on vtiger_field.fieldname = vtiger_picklist.name" .
-			" where (displaytype in (1,2,4) and vtiger_field.tabid=? and vtiger_field.uitype in ('15','55','33','16') " .
-			" or (vtiger_field.tabid=? and fieldname='salutationtype' and fieldname !='vendortype')) " .
-			" and vtiger_field.presence in (0,2) ORDER BY vtiger_picklist.picklistid ASC";
+	$query="SELECT vtiger_field.fieldlabel,vtiger_field.columnname,vtiger_field.fieldname, vtiger_field.uitype
+		FROM vtiger_field inner
+		JOIN vtiger_picklist on vtiger_field.fieldname = vtiger_picklist.name
+		WHERE (displaytype in (1,2,4) and vtiger_field.tabid=? and vtiger_field.uitype in ('15','55','33','16')
+			or (vtiger_field.tabid=? and fieldname='salutationtype' and fieldname !='vendortype'))
+			and vtiger_field.presence in (0,2) ORDER BY vtiger_picklist.picklistid ASC";
 
 	$result = $adb->pquery($query, array($tabid, $tabid));
 	$noofrows = $adb->num_rows($result);
@@ -186,7 +187,7 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang = array()) {
 
 	$arr = array();
 
-	$result = $adb->pquery('select 1 from vtiger_picklist where name = ?', array($tableName));
+	$result = $adb->pquery('select 1 from vtiger_picklist where name=?', array($tableName));
 	if ($adb->num_rows($result)) {
 		if (!isset($paramLists[$roleid])) {
 			$roleids = array_merge(array($roleid), array_keys(getSubordinateRoleAndUsers($roleid, false)));
@@ -195,8 +196,8 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang = array()) {
 		}
 		$tname = $adb->sql_escape_string("vtiger_$tableName");
 		$sql = 'SELECT '.$adb->sql_escape_string($tableName).' FROM '. $tname
-			. ' inner join vtiger_role2picklist on '.$tname.'.picklist_valueid=vtiger_role2picklist.picklistvalueid'
-			. ' and roleid in ('.$questionMarkLists[$roleid].') order by field(roleid,'.$questionMarkLists[$roleid].'), sortid';
+			.' inner join vtiger_role2picklist on '.$tname.'.picklist_valueid=vtiger_role2picklist.picklistvalueid'
+			.' and roleid in ('.$questionMarkLists[$roleid].') order by field(roleid,'.$questionMarkLists[$roleid].'), sortid';
 		$result = $adb->pquery($sql, $paramLists[$roleid]);
 
 		if (!empty($result)) {
@@ -215,6 +216,7 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang = array()) {
 	$cache[$cacheId] = $arr;
 	return $arr;
 }
+
 /**
  * Function to list all modules for userid
  * It gets all the allowed entities to be shown in a picklist uitype 1613. 1633 and return an array in the following format

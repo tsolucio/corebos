@@ -140,7 +140,7 @@ function createInvoice($salesorder_id) {
 	// Cleanup focus object, to duplicate the Invoice.
 	$focus->id = '';
 	$focus->mode = '';
-	$focus->column_fields['invoicestatus'] = $so_focus->column_fields['invoicestatus'];
+	$focus->column_fields['invoicestatus'] = empty($so_focus->column_fields['invoicestatus']) ? 'AutoCreated' : $so_focus->column_fields['invoicestatus'];
 	$focus->column_fields['invoicedate'] = date('Y-m-d');
 	$focus->column_fields['duedate'] = date('Y-m-d', $durationinsec);
 

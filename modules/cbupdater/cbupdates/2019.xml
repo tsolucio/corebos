@@ -104,4 +104,53 @@
 	<classname>emailmsgTemplate</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Adding cbQuestionAnswer context parameter</description>
+	<filename>build/changeSets/2019/cbQuestionContextParameter.php</filename>
+	<classname>cbQuestionContextParameter</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>glory moshi</author>
+	<description>Adding new field and workflow in cbCVManagement</description>
+	<filename>build/changeSets/2019/addfieldincbcvManagement.php</filename>
+	<classname>addfieldincbcvManagement</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>jonidasinaj</author>
+	<description>Add mass tag button</description>
+	<filename>build/changeSets/2019/addMassTagFunctionality.php</filename>
+	<classname>addMassTagFunctionality</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add FAQ template and send email action</description>
+	<filename>build/changeSets/2019/addSendEmailAction2FAQ.php</filename>
+	<classname>addSendEmailAction2FAQ</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>fix Message EmailTpl Field related module</description>
+	<filename>build/changeSets/2019/fixMessageEmailTplField.php</filename>
+	<classname>fixMessageEmailTplField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>To adding value to buisness action picklist</description>
+	<filename>build/changeSets/2019/addValueOnBusinessAction.php</filename>
+	<classname>addValueOnBusinessAction</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add sendgrid notification driver</description>
+	<filename>build/changeSets/2019/sendgridnotificationdriver.php</filename>
+	<classname>sendgridnotificationdriver</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

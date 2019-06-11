@@ -464,9 +464,9 @@ function return_module_language($language, $module) {
 	$log->debug('> return_module_language '.$language.','. $module);
 	static $cachedModuleStrings = array();
 
-	if (!empty($cachedModuleStrings[$module])) {
+	if (!empty($cachedModuleStrings[$module.$language])) {
 		$log->debug('< return_module_language');
-		return $cachedModuleStrings[$module];
+		return $cachedModuleStrings[$module.$language];
 	}
 
 	$temp_mod_strings = $mod_strings;
@@ -505,7 +505,7 @@ function return_module_language($language, $module) {
 	$mod_strings = $temp_mod_strings;
 
 	$log->debug('< return_module_language');
-	$cachedModuleStrings[$module] = $return_value;
+	$cachedModuleStrings[$module.$language] = $return_value;
 	return $return_value;
 }
 
@@ -756,14 +756,8 @@ function getTabModuleName($tabid) {
 	// Lookup information in cache first
 	$tabname = VTCacheUtils::lookupModulename($tabid);
 	if ($tabname === false) {
-		if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
-			include 'tabdata.php';
-			$tabname = array_search($tabid, $tab_info_array);
-		}
-		if ($tabname === false) {
-			$result = $adb->pquery('select name from vtiger_tab where tabid=?', array($tabid));
-			$tabname = $adb->query_result($result, 0, 'name');
-		}
+		$result = $adb->pquery('select name from vtiger_tab where tabid=?', array($tabid));
+		$tabname = $adb->query_result($result, 0, 'name');
 		// Update information to cache for re-use
 		VTCacheUtils::updateTabidInfo($tabid, $tabname);
 	}
@@ -880,15 +874,8 @@ function getUserId_Ol($username) {
 function getActionid($action) {
 	global $log, $adb;
 	$log->debug('> getActionid '.$action);
-	$actionid = '';
-	if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
-		include 'tabdata.php';
-		$actionid = (isset($action_id_array[$action]) ? $action_id_array[$action] : '');
-	}
-	if ($actionid == '') {
-		$result =$adb->pquery('select actionid from vtiger_actionmapping where actionname=?', array($action));
-		$actionid=$adb->query_result($result, 0, 'actionid');
-	}
+	$result = $adb->pquery('select actionid from vtiger_actionmapping where actionname=?', array($action));
+	$actionid = $adb->query_result($result, 0, 'actionid');
 	$log->debug('< getActionid '.$actionid);
 	return $actionid;
 }
@@ -901,14 +888,8 @@ function getActionname($actionid) {
 	global $log, $adb;
 	$log->debug('> getActionname '.$actionid);
 	$actionname='';
-	if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
-		include 'tabdata.php';
-		$actionname = (isset($action_name_array[$actionid]) ? $action_name_array[$actionid] : '');
-	}
-	if ($actionname == '') {
-		$result =$adb->pquery('select actionname from vtiger_actionmapping where actionid=? and securitycheck=0', array($actionid));
-		$actionname=$adb->query_result($result, 0, 'actionname');
-	}
+	$result = $adb->pquery('select actionname from vtiger_actionmapping where actionid=? and securitycheck=0', array($actionid));
+	$actionname = $adb->query_result($result, 0, 'actionname');
 	$log->debug('< getActionname');
 	return $actionname;
 }
@@ -3750,7 +3731,7 @@ function hasEmailField($module) {
 	global $adb;
 	$querystr = 'SELECT fieldid FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)';
 	$queryres = $adb->pquery($querystr, array(getTabid($module)));
-	return (($queryres && $adb->num_rows($queryres)>0) || $module=='Campaigns');
+	return (($queryres && $adb->num_rows($queryres)>0) || $module=='Campaigns' || $module=='Faq');
 }
 
 function getFirstEmailField($module) {
@@ -4011,17 +3992,16 @@ function retrieveCompanyDetails() {
 	);
 	if ($query && $adb->num_rows($query) > 0) {
 		$record = $adb->query_result($query, 0, 'cbcompanyid');
-		$companyDetails['name']     = $companyDetails['companyname'] = $adb->query_result($query, 0, 'companyname');
+		$companyDetails['name']     = $companyDetails['companyname'] = decode_html($adb->query_result($query, 0, 'companyname'));
 		$companyDetails['website']  = $adb->query_result($query, 0, 'website');
 		$companyDetails['email']  = $adb->query_result($query, 0, 'email');
 		$companyDetails['siccode']  = $adb->query_result($query, 0, 'siccode');
 		$companyDetails['accid']  = $adb->query_result($query, 0, 'accid');
-		$companyDetails['address']  = $adb->query_result($query, 0, 'address');
-		$companyDetails['city']     = $adb->query_result($query, 0, 'city');
-		$companyDetails['state']    = $adb->query_result($query, 0, 'state');
-		$companyDetails['country']  = $adb->query_result($query, 0, 'country');
-		$companyDetails['postalcode'] = $adb->query_result($query, 0, 'postalcode');
-		$companyDetails['code'] = $adb->query_result($query, 0, 'postalcode');
+		$companyDetails['address']  = decode_html($adb->query_result($query, 0, 'address'));
+		$companyDetails['city']     = decode_html($adb->query_result($query, 0, 'city'));
+		$companyDetails['state']    = decode_html($adb->query_result($query, 0, 'state'));
+		$companyDetails['country']  = decode_html($adb->query_result($query, 0, 'country'));
+		$companyDetails['postalcode'] = $companyDetails['code'] = decode_html($adb->query_result($query, 0, 'postalcode'));
 		$companyDetails['phone']    = $adb->query_result($query, 0, 'phone');
 		$companyDetails['fax']      = $adb->query_result($query, 0, 'fax');
 		for ($i=0; $i<$adb->num_rows($query); $i++) {

@@ -10,6 +10,7 @@
 require_once 'include/Webservices/Query.php';
 
 class MailManager {
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-contact', 'class' => 'slds-icon', 'icon'=>'email');
 
 	public static function updateMailAssociation($mailuid, $emailid, $crmid) {
 		global $adb;

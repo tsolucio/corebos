@@ -94,16 +94,21 @@ function vtlib_prefetchModuleActiveInfo($force = true) {
  * Check if module is set active (or enabled)
  */
 function vtlib_isModuleActive($module) {
-	global $__cache_module_activeinfo;
+	global $__cache_module_activeinfo, $adb;
 
 	if (in_array($module, vtlib_moduleAlwaysActive())) {
 		return true;
 	}
 
 	if (!isset($__cache_module_activeinfo[$module])) {
-		include 'tabdata.php';
-		$presence = isset($tab_info_array[$module])? 0: 1;
-		$__cache_module_activeinfo[$module] = $presence;
+		$tabid = getTabId($module);
+		if (!is_null($tabid)) {
+			$result = $adb->pquery('select presence from vtiger_tab where tabid=?', array($tabid));
+			$presence = $adb->query_result($result, 0, 'presence');
+			$__cache_module_activeinfo[$module] = $presence;
+		} else {
+			$presence = 1;
+		}
 	} else {
 		$presence = $__cache_module_activeinfo[$module];
 	}
@@ -120,7 +125,7 @@ function vtlib_isModuleActive($module) {
  * Recreate user privileges files.
  */
 function vtlib_RecreateUserPrivilegeFiles() {
-	require_once "modules/Users/UserPrivilegesWriter.php";
+	require_once 'modules/Users/UserPrivilegesWriter.php';
 	UserPrivilegesWriter::flushAllPrivileges();
 }
 

@@ -44,7 +44,7 @@ class OpenDocument_List extends OpenDocument_StyledElement {
 	 */
 	public $children;
 
-		/**
+	/**
 	 * Node namespace
 	 */
 	const nodeNS = OpenDocument::NS_TEXT;
@@ -54,19 +54,19 @@ class OpenDocument_List extends OpenDocument_StyledElement {
 	 */
 	const nodePrefix = 'text';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'list';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'L';
 
 	public $continuenum;
 
-		/**
+	/**
 	 * Constructor
 	 *
 	 * @param DOMNode $node
@@ -83,8 +83,7 @@ class OpenDocument_List extends OpenDocument_StyledElement {
 			$this->continuenum = $continuenum;
 		}
 
-		$this->allowedElements = array(
-		);
+		$this->allowedElements = array();
 	}
 
 	/**
@@ -106,7 +105,7 @@ class OpenDocument_List extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-				$element = new OpenDocument_List($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $contnum);
+		$element = new OpenDocument_List($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $contnum);
 		$node->appendChild($element->node);
 
 		return $element;
@@ -122,7 +121,7 @@ class OpenDocument_List extends OpenDocument_StyledElement {
 		return $this->document->getStyle($this->getStyleName(), $properties);
 	}
 
-		/**
+	/**
 	 * Get style name
 	 *
 	 * @return string
@@ -131,7 +130,7 @@ class OpenDocument_List extends OpenDocument_StyledElement {
 		return $this->node->getAttributeNS(OpenDocument::NS_TEXT, 'style-name');
 	}
 
-		/**
+	/**
 	 * Get style name prefix
 	 *
 	 * @return string
@@ -140,7 +139,7 @@ class OpenDocument_List extends OpenDocument_StyledElement {
 		return $this->styleNamePrefix;
 	}
 
-		/**
+	/**
 	 * Generate new style name
 	 *
 	 * @return string $stylename
@@ -163,7 +162,7 @@ class OpenDocument_List extends OpenDocument_StyledElement {
 	}
 	/************** Elements ****************/
 
-		/**
+	/**
 	 * Create OpenDocument_TextElement
 	 *
 	 * @param string $text
@@ -184,7 +183,7 @@ class OpenDocument_List extends OpenDocument_StyledElement {
 		return OpenDocument_ListItem::instance($this, $text);
 	}
 
-		/**
+	/**
 	 * Get children list
 	 *
 	 * @return ArrayIterator

@@ -236,7 +236,7 @@ class Vtiger_MailRecord {
 		$this->_flags['Draft'] = $mailheader->Draft;
 
 		$this->_from = $this->__getEmailIdList($mailheader->from);
-		$this->_to   = $this->__getEmailIdList($mailheader->to);
+		$this->_to   = $this->__getEmailIdList(isset($mailheader->to) ? $mailheader->to : '');
 		$this->_cc   = $this->__getEmailIdList(isset($mailheader->cc) ? $mailheader->cc : '');
 		$this->_bcc  = $this->__getEmailIdList(isset($mailheader->bcc) ? $mailheader->bcc : '');
 		$this->_reply_to  = $this->__getEmailIdList(isset($mailheader->reply_to) ? $mailheader->reply_to : '');

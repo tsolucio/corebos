@@ -69,7 +69,7 @@ function cbwsValidateInformation($context, $user) {
 	// Product line support
 	$elementType = $_REQUEST['module'];
 	if (in_array($elementType, getInventoryModules()) && isset($element['pdoInformation']) && (is_array($element['pdoInformation']))) {
-		include_once 'include/Webservices/ProductLines.php';
+		include 'include/Webservices/ProductLines.php';
 	}
 	include_once 'modules/cbMap/processmap/Validations.php';
 	$validation = Validations::processAllValidationsFor($_REQUEST['module']);

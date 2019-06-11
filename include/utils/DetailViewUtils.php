@@ -1706,13 +1706,16 @@ function isPresentRelatedLists($module, $activity_mode = '') {
 
 	global $adb, $current_user;
 	$retval = array();
-	if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
-		include 'tabdata.php';
-	}
 	$userprivs = $current_user->getPrivileges();
 	$tab_id = getTabid($module);
 	// We need to check if there is at least 1 relation, no need to use count(*)
-	$result = $adb->pquery('select relation_id,related_tabid,label from vtiger_relatedlists where tabid=? order by sequence', array($tab_id));
+	$result = $adb->pquery(
+		'select relation_id,vtiger_relatedlists.related_tabid,label,vtiger_tab.presence
+			from vtiger_relatedlists
+			inner join vtiger_tab on vtiger_tab.tabid=vtiger_relatedlists.related_tabid
+			where vtiger_relatedlists.tabid=? order by sequence',
+		array($tab_id)
+	);
 	$count = $adb->num_rows($result);
 	if ($count < 1 || ($module == 'Calendar' && $activity_mode == 'task')) {
 		$retval = 'false';
@@ -1725,10 +1728,9 @@ function isPresentRelatedLists($module, $activity_mode = '') {
 			if (empty($relatedTabId)) {
 				$retval[$relatedId] = $relationLabel;
 			} else {
-				if (isset($tab_seq_array[$relatedTabId]) && $tab_seq_array[$relatedTabId] === 0) {
-					if ($userprivs->isAdmin() || $userprivs->hasModuleAccess($relatedTabId)) {
-						$retval[$relatedId] = $relationLabel;
-					}
+				$presence = $adb->query_result($result, $i, 'presence');
+				if ($presence == 0 && ($userprivs->isAdmin() || $userprivs->hasModuleAccess($relatedTabId))) {
+					$retval[$relatedId] = $relationLabel;
 				}
 			}
 		}

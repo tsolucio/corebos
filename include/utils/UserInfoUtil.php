@@ -3380,6 +3380,25 @@ function getModuleAccessArray() {
 	return $fldModArr;
 }
 
+/**
+ * this function returns presence information of all active modules
+ */
+function getTabSequence() {
+	global $adb;
+	$tab_seq_array = VTCacheUtils::getTabSequence();
+	if (is_array($tab_seq_array)) {
+		return $tab_seq_array;
+	}
+
+	$result = $adb->pquery('select tabid,presence from vtiger_tab where presence in (0,2) order by tabid', array());
+	$seq_array = array();
+	while ($tp = $adb->fetch_array($result)) {
+		$seq_array[(string)$tp['tabid']] = (int)$tp['presence'];
+	}
+	VTCacheUtils::setTabSequence($seq_array);
+	return $seq_array;
+}
+
 /** Function to get the permitted module name Array with presence as 0
   * @returns permitted module name Array :: Type Array
  */
@@ -3389,7 +3408,7 @@ function getPermittedModuleNames() {
 	$permittedModules = array();
 	$userprivs = $current_user->getPrivileges();
 	$profileTabsPermission = $userprivs->getprofileTabsPermission();
-	include 'tabdata.php';
+	$tab_seq_array = getTabSequence();
 
 	if (defined('COREBOS_INSIDE_MOBILE')) {
 		foreach ($userprivs->getProfiles() as $profid) {
@@ -3428,7 +3447,7 @@ function getPermittedModuleIdList() {
 	$permittedModules=array();
 	$userprivs = $current_user->getPrivileges();
 	$profileTabsPermission = $userprivs->getprofileTabsPermission();
-	include 'tabdata.php';
+	$tab_seq_array = getTabSequence();
 
 	if (defined('COREBOS_INSIDE_MOBILE')) {
 		foreach ($userprivs->getProfiles() as $profid) {
@@ -3466,7 +3485,7 @@ function RecalculateSharingRules($roleId = 0) {
 	global $log;
 	$log->debug('> RecalculateSharingRules');
 	require_once 'modules/Users/UserPrivilegesWriter.php';
-	UserPrivilegesWriter::flushAllPrivileges();
+	UserPrivilegesWriter::flushAllPrivileges($roleId);
 	$log->debug('< RecalculateSharingRules');
 }
 

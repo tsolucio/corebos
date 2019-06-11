@@ -44,7 +44,7 @@ class OpenDocument_ListItem extends OpenDocument_StyledElement {
 	 */
 	public $children;
 
-		/**
+	/**
 	 * Node namespace
 	 */
 	const nodeNS = OpenDocument::NS_TEXT;
@@ -54,12 +54,12 @@ class OpenDocument_ListItem extends OpenDocument_StyledElement {
 	 */
 	const nodePrefix = 'text';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'list-item';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'L';
@@ -83,7 +83,7 @@ class OpenDocument_ListItem extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-				$element = new OpenDocument_ListItem($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
+		$element = new OpenDocument_ListItem($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
 		$node->appendChild($element->node);
 
 		return $element;
@@ -99,7 +99,7 @@ class OpenDocument_ListItem extends OpenDocument_StyledElement {
 		return $this->document->getStyle($this->getStyleName(), $properties);
 	}
 
-		/**
+	/**
 	 * Get style name
 	 *
 	 * @return string
@@ -108,7 +108,7 @@ class OpenDocument_ListItem extends OpenDocument_StyledElement {
 		return $this->node->getAttributeNS(OpenDocument::NS_TEXT, 'style-name');
 	}
 
-		/**
+	/**
 	 * Get style name prefix
 	 *
 	 * @return string
@@ -117,7 +117,7 @@ class OpenDocument_ListItem extends OpenDocument_StyledElement {
 		return $this->styleNamePrefix;
 	}
 
-		/**
+	/**
 	 * Generate new style name
 	 *
 	 * @return string $stylename
@@ -140,7 +140,7 @@ class OpenDocument_ListItem extends OpenDocument_StyledElement {
 	}
 	/************** Elements ****************/
 
-		/**
+	/**
 	 * Create OpenDocument_TextElement
 	 *
 	 * @param string $text
@@ -167,7 +167,7 @@ class OpenDocument_ListItem extends OpenDocument_StyledElement {
 		return OpenDocument_Heading::instance($this, $text, $level);
 	}
 
-		/**
+	/**
 	 * Get children ListItem
 	 *
 	 * @return ArrayIterator

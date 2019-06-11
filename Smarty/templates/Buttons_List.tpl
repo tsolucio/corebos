@@ -18,29 +18,63 @@
 {else}
 	{assign var="action" value="ListView"}
 {/if}
-{assign var='MODULELABEL' value=$MODULE|@getTranslatedString:$MODULE}
+{if !empty($isDetailView)}
+	{* Module Record numbering, used MOD_SEQ_ID instead of ID *}
+	{assign var='TITLEPREFIX' value=$MOD_SEQ_ID}
+	{if $TITLEPREFIX eq ''} {assign var='TITLEPREFIX' value=$ID} {/if}
+	{assign var='MODULELABEL' value=$NAME}
+{elseif !empty($isEditView)}
+	{if $OP_MODE eq 'edit_view'}
+		{assign var='TITLEPREFIX' value=$APP.LBL_EDITING}
+		{assign var='MODULELABEL' value=$NAME}
+	{elseif $OP_MODE eq 'create_view'}
+		{if $DUPLICATE neq 'true'}
+			{assign var='TITLEPREFIX' value=$APP.LBL_CREATING}
+			{assign var='MODULELABEL' value=$SINGLE_MOD|@getTranslatedString:$MODULE}
+		{else}
+			{assign var='TITLEPREFIX' value=$APP.LBL_DUPLICATING}
+			{assign var='MODULELABEL' value=$NAME}
+		{/if}
+		{assign var='UPDATEINFO' value=''}
+	{/if}
+{else}
+	{assign var='MODULELABEL' value=$MODULE|@getTranslatedString:$MODULE}
+{/if}
 {assign var='MODULEICON' value=$MODULE|@getModuleIcon}
 <div class="slds-page-header" style="width:100%">
   <div class="slds-page-header__row">
 	<div class="slds-p-right_medium">
 		<div class="slds-media">
-		<div class="slds-media__figure">
-			<span class="{$MODULEICON.__ICONContainerClass}" title="{$MODULELABEL}">
-			<svg class="slds-icon slds-page-header__icon" aria-hidden="true">
-				<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="include/LD/assets/icons/{$MODULEICON.__ICONLibrary}-sprite/svg/symbols.svg#{$MODULEICON.__ICONName}" />
-			</svg>
-			<span class="slds-assistive-text">{$MODULELABEL}</span>
-			</span>
-		</div>
-		<div class="slds-media__body">
-			<div class="slds-page-header__name">
-			<div class="slds-page-header__name-title">
-				<h1>
-				<span class="slds-page-header__title slds-truncate" title="{$MODULELABEL}"><a class="hdrLink" href="index.php?action={$action}&module={$MODULE}&parenttab={$CATEGORY}">{$MODULELABEL}</a></span>
-				</h1>
+			<div class="slds-media__figure">
+				<a class="hdrLink" href="index.php?action={$action}&module={$MODULE}">
+				<span class="{$MODULEICON.__ICONContainerClass}" title="{$MODULE|@getTranslatedString:$MODULE}">
+				<svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+					<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="include/LD/assets/icons/{$MODULEICON.__ICONLibrary}-sprite/svg/symbols.svg#{$MODULEICON.__ICONName}" />
+				</svg>
+				<span class="slds-assistive-text">{$MODULELABEL}</span>
+				</span>
+				</a>
 			</div>
+			<div class="slds-media__body">
+				<div class="slds-page-header__name">
+					<div class="slds-page-header__name-title">
+						<span class="slds-page-header__title slds-truncate" title="{$MODULELABEL|@addslashes}">
+						{if !empty($isDetailView) || !empty($isEditView)}
+							<h1>
+								<span class="slds-page-header__title slds-truncate" title="{$MODULELABEL|@addslashes}">
+									<span class="slds-page-header__name-meta">[ {$TITLEPREFIX} ]</span> {$MODULELABEL|textlength_check:30}
+								</span>
+							</h1>
+						{else}
+							<a class="hdrLink" href="index.php?action={$action}&module={$MODULE}">{$MODULELABEL}</a>
+						{/if}
+						</span>
+					</div>
+				</div>
+				{if !empty($isDetailView) || !empty($isEditView)}
+					<p class="slds-page-header__name-meta">{$UPDATEINFO}</p>
+				{/if}
 			</div>
-		</div>
 		</div>
 	</div>
 	<div class="slds-p-right_medium">
@@ -129,4 +163,10 @@
 	</div>
   </div>
 </div>
+<span id="vtbusy_info" style="display:none;" valign="bottom">
+<div role="status" class="slds-spinner slds-spinner_brand slds-spinner_x-small" style="position:relative; top:6px;">
+	<div class="slds-spinner__dot-a"></div>
+	<div class="slds-spinner__dot-b"></div>
+</div>
+</span>
 {/if}
