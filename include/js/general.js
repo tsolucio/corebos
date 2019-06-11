@@ -5965,6 +5965,73 @@ function headerOnUpScroll() {
 		}
 	}
 }
+
+function dqrevCreate(crmid, module) {
+	var dwait = document.getElementById('dlgwait');
+	if (dwait != undefined) {
+		dwait.open('Creando nueva revisión...');
+	}
+	document.getElementById('dqrevisionmsg').style.display='block';
+	var url = 'index.php?module=Utilities&action=UtilitiesAjax&file=createrevision';
+	url = url + '&function=createrevision';
+	url = url + '&crmid=' + crmid;
+	url = url + '&dupmodule=' + module;
+	jQuery.ajax({
+		method: 'GET',
+		url: url
+	}).done(function (response) {
+		if (response=='nok') {
+			alert(alert_arr.ERROR);
+			if (dwait != undefined) {
+				dwait.close();
+			}
+			document.getElementById('dqrevisionmsg').style.display='none';
+		} else {
+			gotourl('index.php?module='+module+'&action=DetailView&record='+response);
+		}
+	});
+}
+
+function dqrevRecover(crmid, module) {
+	if (checkOneRevisionSelected()) {
+		var dwait = document.getElementById('dlgwait');
+		if (dwait != undefined) {
+			dwait.open('Recuperando revisión...');
+		}
+		document.getElementById('dqrevisionmsg').style.display='block';
+		var newrev = jQuery('#dqrevision').val();
+		var url = 'index.php?module=Utilities&action=UtilitiesAjax&file=createrevision';
+		url = url + '&function=recoverrevision';
+		url = url + '&currentcrmid=' + crmid;
+		url = url + '&newcrmid=' + newrev;
+		url = url + '&dupmodule=' + module;
+		jQuery.ajax({
+			method: 'GET',
+			url: url
+		}).done(function (response) {
+			if (response=='nok') {
+				alert(alert_arr.ERROR);
+				if (dwait != undefined) {
+					dwait.close();
+				}
+				document.getElementById('dqrevisionmsg').style.display='none';
+			} else {
+				gotourl('index.php?module='+module+'&action=DetailView&record='+newrev);
+			}
+		});
+	}
+}
+
+function checkOneRevisionSelected() {
+	if (document.getElementById('dqrevision').selectedIndex==-1) {
+		alert(alert_arr.SELECT);
+		return false;
+	} else {
+		return true;
+	}
+}
+
+
 window.cbOnUpScrollers.push(headerOnUpScroll);
 
 $(document).ready(function () {
