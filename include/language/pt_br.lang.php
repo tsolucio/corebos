@@ -681,6 +681,10 @@ $app_strings = array (
 
 'Revision' => 'Version',
 'Active Revision' => 'Active Version',
+'Revisiones' => 'Version Control',
+'Recover' => 'Recover Version',
+'CRevision' => 'Create Version',
+'CreatingRevision' => 'Saving all your work for future reference. Please be patient...',
 
 'contains'=>'contém',
 'does_not_contains'=>'não contém',
