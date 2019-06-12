@@ -17,8 +17,8 @@
  *  Author    : JPL TSolucio, S. L.
  *************************************************************************************************/
 chdir('../../..');
-include_once('vtlib/Vtiger/Module.php');
-include_once('include/integrations/hubspot/HubSpot.php');
+include_once 'vtlib/Vtiger/Module.php';
+include_once 'include/integrations/hubspot/HubSpot.php';
 global $site_URL;
 
 if (isset($_GET['code'])) {
