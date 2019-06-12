@@ -23,16 +23,16 @@ $hs = new corebos_hubspot();
 
 $isadmin = is_admin($current_user);
 
-if ($isadmin and isset($_REQUEST['clientId'])) {
-	$isActive = ((empty($_REQUEST['hubspot_active']) or $_REQUEST['hubspot_active']!='on') ? '0' : '1');
-	$msSync = ((empty($_REQUEST['hubspot_mssync']) or $_REQUEST['hubspot_mssync']!='on') ? '0' : '1');
+if ($isadmin && isset($_REQUEST['clientId'])) {
+	$isActive = ((empty($_REQUEST['hubspot_active']) || $_REQUEST['hubspot_active']!='on') ? '0' : '1');
+	$msSync = ((empty($_REQUEST['hubspot_mssync']) || $_REQUEST['hubspot_mssync']!='on') ? '0' : '1');
 	$clientId = (empty($_REQUEST['clientId']) ? '' : vtlib_purify($_REQUEST['clientId']));
 	$oauthclientId = (empty($_REQUEST['oauthclientId']) ? '' : vtlib_purify($_REQUEST['oauthclientId']));
 	$clientSecret = (empty($_REQUEST['clientSecret']) ? '' : vtlib_purify($_REQUEST['clientSecret']));
 	$API_URL = (empty($_REQUEST['API_URL']) ? '' : vtlib_purify($_REQUEST['API_URL']));
 	$pollFrequency = (empty($_REQUEST['pollFrequency']) ? '360' : vtlib_purify($_REQUEST['pollFrequency']));
 	$relateDealWith = (empty($_REQUEST['relateDealWith']) ? 'Contacts' : vtlib_purify($_REQUEST['relateDealWith']));
-	$hs->saveSettings($isActive, $clientId, $oauthclientId, $clientSecret, $API_URL,$pollFrequency,$relateDealWith,$msSync);
+	$hs->saveSettings($isActive, $clientId, $oauthclientId, $clientSecret, $API_URL, $pollFrequency, $relateDealWith, $msSync);
 	$hs->unregisterEvents();
 	if ($isActive=='1') {
 		$hs->activateFields();
@@ -42,7 +42,7 @@ if ($isadmin and isset($_REQUEST['clientId'])) {
 	}
 }
 
-$smarty->assign('TITLE_MESSAGE', getTranslatedString('HubSpot Activation',$currentModule));
+$smarty->assign('TITLE_MESSAGE', getTranslatedString('HubSpot Activation', $currentModule));
 $hssettings = $hs->getSettings();
 $smarty->assign('isActive', $hs->isActive());
 $smarty->assign('mssyncActive', $hssettings['masterslaveSync']);
@@ -59,7 +59,7 @@ $smarty->assign('MODULE', $currentModule);
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('THEME', $theme);
-include('modules/cbupdater/forcedButtons.php');
+include 'modules/cbupdater/forcedButtons.php';
 $smarty->assign('CHECK', $tool_buttons);
 $smarty->assign('ISADMIN', $isadmin);
 $smarty->display('modules/Utilities/hubspot.tpl');

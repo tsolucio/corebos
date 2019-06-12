@@ -24,7 +24,7 @@ global $site_URL;
 if (isset($_GET['code'])) {
 	$hs = new corebos_hubspot();
 	$acode = vtlib_purify($_GET['code']);
-	coreBOS_Settings::setSetting(corebos_hubspot::key_accessCode, $acode);
+	coreBOS_Settings::setSetting(corebos_hubspot::KEY_ACCESSCODE, $acode);
 	$err = $hs->getOAuthTokens($acode);
 	if ($err == $hs::$ERROR_NONE) {
 		header("Location: $site_URL/index.php?module=Utilities&action=integration&_op=Success&integration=Hubspot");

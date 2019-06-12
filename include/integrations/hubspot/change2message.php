@@ -20,19 +20,19 @@
 
 class hubspotchange2message extends VTEventHandler {
 
-	var $cbmq;
-	var $ttl = 43200; // seconds: 12hours
+	public $cbmq;
+	public $ttl = 43200; // seconds: 12hours
 
-	function __construct() {
+	public function __construct() {
 		$this->cbmq = coreBOS_MQTM::getInstance();
 	}
 
-	function handleEvent($eventName, $entityData) {
+	public function handleEvent($eventName, $entityData) {
 		global $log, $current_user;
 		$moduleName = $entityData->getModuleName();
 		$recordId = $entityData->getId();
 		$modssupported = array('Accounts','Contacts','Leads','Potentials');
-		if (in_array($moduleName, $modssupported) and $this->isSyncActiveForRecord($moduleName, $recordId)) {
+		if (in_array($moduleName, $modssupported) && $this->isSyncActiveForRecord($moduleName, $recordId)) {
 			switch ($eventName) {
 				case 'vtiger.entity.aftersave.final':
 					$vtEntityDelta = new VTEntityDelta();
@@ -78,21 +78,22 @@ class hubspotchange2message extends VTEventHandler {
 	private function isSyncActiveForRecord($module, $crmid) {
 		global $adb, $current_user;
 		$syncing = coreBOS_Settings::getSetting('hubspot_pollsyncing', null);
-		if ($syncing==$crmid or $syncing=='creating') return false;
+		if ($syncing==$crmid || $syncing=='creating') {
+			return false;
+		}
 		$queryGenerator = new QueryGenerator($module, $current_user);
 		$queryGenerator->setFields(array('hubspotsyncwith','hubspotdeleted'));
-		$queryGenerator->addCondition('id',$crmid,'e');
+		$queryGenerator->addCondition('id', $crmid, 'e');
 		$query = $queryGenerator->getQuery();
 		$query = str_ireplace('vtiger_crmentity.deleted=0 AND', '', $query); // for afterdelete event
-		$rs = $adb->pquery($query,array());
-		if ($rs and $adb->num_rows($rs)==1) {
+		$rs = $adb->pquery($query, array());
+		if ($rs && $adb->num_rows($rs)==1) {
 			$sw = $adb->query_result($rs, 0, 'hubspotsyncwith');
 			$dl = $adb->query_result($rs, 0, 'hubspotdeleted');
-			return ($sw == '1' and $dl!='1');
+			return ($sw == '1' && $dl!='1');
 		}
 		return false;
 	}
-
 }
 
 ?>
