@@ -679,6 +679,9 @@ $app_strings = array (
 'group'=>'Grupo',
 'individual'=>'individual',
 
+'Revision' => 'Version',
+'Active Revision' => 'Active Version',
+
 'contains'=>'contém',
 'does_not_contains'=>'não contém',
 'is'=>'é',

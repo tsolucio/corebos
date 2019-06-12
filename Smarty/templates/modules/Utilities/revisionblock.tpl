@@ -19,7 +19,7 @@
     <td align="left" style="padding-left:10px;">
 	<a class="webMnu" href="javascript:dqrevCreate('{$ID}','{$MODULE}');">
             <span class="fa fa-file-text-o" aria-hidden="true" style="padding-right: 0.5em;"></span>
-            <span class="glyphicon-class">{'Crear revision'|@getTranslatedString:'Crear Revision'}</span>
+            <span class="glyphicon-class">{'CRevision'|@getTranslatedString:'CRevision'}</span>
 	</a>
     </td>
 </tr>

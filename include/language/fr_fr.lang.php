@@ -673,6 +673,8 @@ $app_strings = array(
 
 	'group' => 'Groupe',
 	'individual' => 'individuel',
+		'Revision' => 'Version',
+		'Active Revision' => 'Active Version',
 	'contains' => 'contient',
 	'does_not_contains' => 'ne contient pas',
 	'is' => 'est',

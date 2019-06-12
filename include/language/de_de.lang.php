@@ -672,6 +672,9 @@ $app_strings = array(
 'group'=>'Gruppe',
 'individual'=>'Individuell',
 
+'Revision' => 'Version',
+'Active Revision' => 'Active Version',
+
 //Added for values of picklist in Advanced Search filter
 //Modified for 5.0.3 GA release
 'contains'=>'beinhaltet',
