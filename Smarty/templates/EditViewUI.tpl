@@ -1216,7 +1216,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				{else}
 					{assign var=rloopit value=2}
 				{/if}
-				{if $tax.check_value eq 1}
+				{if $tax.check_value eq 1 || ($MODE=='' && $tax.default==1)}
 					{assign var=check_value value="checked"}
 					{assign var=show_value value="visible"}
 				{else}

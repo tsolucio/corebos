@@ -19,15 +19,20 @@ $sh_tax_details = getAllTaxes('all', 'sh');
 $getlist = false;
 //To save the edited value
 if (isset($_REQUEST['save_tax']) && $_REQUEST['save_tax'] == 'true') {
-	$new_labels = $new_retentions = $new_percentages = array();
+	$new_labels = $new_retentions = $new_percentages = $new_cfields = array();
 	for ($i=0; $i<count($tax_details); $i++) {
 		$new_labels[$tax_details[$i]['taxid']] = vtlib_purify($_REQUEST[bin2hex($tax_details[$i]['taxlabel'])]);
 		$retention = isset($_REQUEST[$tax_details[$i]['taxname'].'retention']) ? vtlib_purify($_REQUEST[$tax_details[$i]['taxname'].'retention']) : '';
 		$retention = ($retention=='on' ? 1 : 0);
 		$new_retentions[$tax_details[$i]['taxid']] = $retention;
 		$new_percentages[$tax_details[$i]['taxid']] = vtlib_purify($_REQUEST[$tax_details[$i]['taxname']]);
+		$new_cfields[$tax_details[$i]['taxid']] = array(
+			isset($_REQUEST[$tax_details[$i]['taxname'].'default']) ? ($_REQUEST[$tax_details[$i]['taxname'].'default']=='on' ? 1 : 0) : 0,
+			isset($_REQUEST[$tax_details[$i]['taxname'].'qcreate']) ? ($_REQUEST[$tax_details[$i]['taxname'].'qcreate']=='on' ? 1 : 0) : '0',
+		);
 	}
 	updateTaxPercentages($new_percentages);
+	updateTaxConfigFields($new_cfields);
 	updateTaxRetentions($new_retentions);
 	echo updateTaxLabels($new_labels);
 	$getlist = true;
@@ -140,6 +145,16 @@ function updateTaxRetentions($retentions) {
 		}
 	}
 	$log->debug('< updateTaxRetentions');
+}
+
+function updateTaxConfigFields($configfields) {
+	global $adb, $log;
+	$log->debug('> updateTaxConfigFields');
+	$query = 'update vtiger_inventorytaxinfo set tdefault=?, qcreate=? where taxid=?';
+	foreach ($configfields as $taxid => $new_val) {
+		$adb->pquery($query, array($new_val[0], $new_val[1], $taxid));
+	}
+	$log->debug('< updateTaxConfigFields');
 }
 
 /**	Function to update the list of Tax Labels for the taxes
@@ -284,8 +299,12 @@ function addTaxType($taxlabel, $taxvalue, $sh = '', $retention = 0) {
 			$query1 = "insert into vtiger_shippingtaxinfo (taxid,taxname,taxlabel,percentage,deleted) values(?,?,?,?,?)";
 			$params1 = array($taxid, $taxname, $taxlabel, $taxvalue, 0);
 		} else {
-			$query1 = "insert into vtiger_inventorytaxinfo (taxid,taxname,taxlabel,percentage,retention,deleted) values(?,?,?,?,?,?)";
-			$params1 = array($taxid, $taxname, $taxlabel, $taxvalue, $retention, 0);
+			$query1 = 'insert into vtiger_inventorytaxinfo (taxid,taxname,taxlabel,percentage,retention,tdefault,qcreate,deleted) values(?,?,?,?,?,?,?,?)';
+			$retention = ($_REQUEST['addTaxLabelretention']=='on' ? 1 : 0);
+			$taxdefault = ($_REQUEST['addTaxLabeldefault']=='on' ? 1 : 0);
+			$taxqcreate = ($_REQUEST['addTaxLabelqcreate']=='on' ? 1 : 0);
+			$log->fatal($_REQUEST);
+			$params1 = array($taxid, $taxname, $taxlabel, $taxvalue, $retention, $taxdefault, $taxqcreate, 0);
 		}
 		$res1 = $adb->pquery($query1, $params1);
 	}

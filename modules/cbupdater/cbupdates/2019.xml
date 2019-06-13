@@ -153,4 +153,11 @@
 	<classname>sendgridnotificationdriver</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add default and quick create fields to Taxes</description>
+	<filename>build/changeSets/2019/AddConfigFieldsToTaxes.php</filename>
+	<classname>AddConfigFieldsToTaxes</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
