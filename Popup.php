@@ -531,4 +531,5 @@ if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
 } else {
 	$smarty->display('Popup.tpl');
 }
+cbEventHandler::do_action('corebos.popup.footer');
 ?>
