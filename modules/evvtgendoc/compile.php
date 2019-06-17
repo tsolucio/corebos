@@ -99,6 +99,9 @@ if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language 
 			'SalesOrder' => 'related_to',
 			'PurchaseOrder' => 'related_to',
 		),
+		'Organization' => array(
+			'Accounts' => 'accid'
+		),
 	);
 
 	//Array de mapeig de moduls especials, p.e. el presciptors son comptes
@@ -640,7 +643,7 @@ if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language 
 			return false;
 		}
 		if ($module == 'Organization') {
-			$module = 'Accounts';
+			$module = 'cbCompany';
 		}
 		preg_match('/(.+)\s*(>|<|=|!=|<=|>=| '.$enGD.' | !'.$enGD.' )\s*(.+)/', $condition, $splitcondition);
 		if (count($splitcondition)>0) {
