@@ -1336,6 +1336,14 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Number of rows to show per page in the workflow list view grid. The default is 20.',
 ),
+'Inventory_TaxFillInMode' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'All | Default | None',
+	'definition' => 'in group tax mode will permit selecting the activated taxes. By default, the "All" value is applied which is the behavior before the existence of this variable. "All" calculates all active taxes, None, sets all taxes to 0 and "Default" activates the taxes marked as default in settings',	
+),
+
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php', GLOB_BRACE) as $tcode) {
