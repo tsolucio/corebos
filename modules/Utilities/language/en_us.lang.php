@@ -46,5 +46,14 @@ $mod_strings = array(
 	'TransEmail_subtitle' => 'Substitutes outgoing email server',
 	'MktEmail_title' => 'Configuration for Marketing Email',
 	'MktEmail_subtitle' => 'Only for messages, programmed emails and specificaly programmed processes',
+	'LBL_CONFIG_INCOMING_MAIL_SERVER' => 'Configure Incoming Mail Server',
+	'LBL_SUBSTITUTE_INCOMING_MAIL_SERVER' => 'Substitute Incoming Mail Server',
+	'LBL_SELECT_SERVER_TYPE' => 'Select Server Type',
+	'LBL_REFRESH_TIME' => 'Refresh Time',
+	'LBL_CONFIG_OUTGOING_MAIL_SERVER' => 'Configure Outgoing Mail Server',
+	'LBL_SUBSTITUTE_OUTGOING_MAIL_SERVER' => 'Substitute Outgoing Mail Server',
+	'LBL_FROM_EMAIL' => 'From Mail',
+	'LBL_REQUIRES_AUTHENTICATION' => 'Requires Authentication',
+	'LBL_USER_SMTP_CONFIG' => 'User SMTP Configuration'
 );
 ?>
