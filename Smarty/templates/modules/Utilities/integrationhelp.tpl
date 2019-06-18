@@ -29,7 +29,8 @@
 		<li><div class="slds-box"><a href="index.php?action=integration&module=Utilities&_op=getconfig2fa">{'GoTo2FAActivation'|@getTranslatedString:'Utilities'}</a></div></li>
 		<li><div class="slds-box"><a href="index.php?action=integration&module=Utilities&_op=getconfiggcontact">{'GOOGLE_CONTACTS'|@getTranslatedString:'Contacts'}</a></div></li>
 		<li><div class="slds-box"><a href="index.php?action=integration&module=Utilities&_op=getconfighubspot">{'HubSpot Activation'|@getTranslatedString:'Utilities'}</a></div></li>
-		</ul>
+		<li><div class="slds-box"><a href="index.php?action=integration&module=Utilities&_op=getconfigrecordversioning">{'Record Versioning'|@getTranslatedString:'Utilities'}</a></div></li>
+                </ul>
 	</div>
 	<div class="slds-col">
 		<ul class="slds-list_vertical slds-m-left_large slds-m-right_large">

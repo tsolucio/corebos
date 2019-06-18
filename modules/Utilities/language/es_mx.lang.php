@@ -52,5 +52,6 @@ $mod_strings = array(
 	'TransEmail_subtitle' => 'Sustituye el servidor de correo saliente',
 	'MktEmail_title' => 'Configuración para Email Marketing',
 	'MktEmail_subtitle' => 'Solo para mensajes, emails programados y procesos creados especificamente',
+	'Record Versioning' => 'Record Versioning',
 );
 ?>

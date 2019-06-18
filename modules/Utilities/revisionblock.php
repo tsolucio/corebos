@@ -36,6 +36,7 @@ class REVISIONBLOCK_DetailViewBlock extends DeveloperBlock {
 		$smarty = $this->getViewer();
 		$id = $this->getFromContext('record');
 		$currmodule = $this->getFromContext('currmodule');
+		include_once "modules/$currmodule/$currmodule.php";
 		$focus = new $currmodule;
 		$entityidfield = $focus->table_index;
 		$table_name  = $focus->table_name;

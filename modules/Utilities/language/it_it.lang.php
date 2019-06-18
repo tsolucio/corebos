@@ -46,5 +46,6 @@ $mod_strings = array (
 	'TransEmail_subtitle' => 'Substitutes outgoing email server',
 	'MktEmail_title' => 'Configuration for Marketing Email',
 	'MktEmail_subtitle' => 'Only for messages, programmed emails and specificaly programmed processes',
+	'Record Versioning' => 'Versioni Record',
 );
 ?>
