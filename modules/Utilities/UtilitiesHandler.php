@@ -27,13 +27,13 @@ class UtilitiesEventsHandler extends VTEventHandler {
 
 	public function handleFilter($handlerType, $parameter) {
 		global $currentModule;
-                $activemodule = GlobalVariable::getVariable('RecordVersioningModules', '', $currentModule);
+		$activemodule = GlobalVariable::getVariable('RecordVersioningModules', '', $currentModule);
 		if ($activemodule == 1) {
-			switch($handlerType) {
+			switch ($handlerType) {
 				case 'corebos.filter.listview.querygenerator.before':
 					// $parameter is the QueryGenerator Object
-					$parameter->addCondition('revisionactiva',1,'e');
-					break;
+					$parameter->addCondition('revisionactiva', 1, 'e');
+				break;
 			}
 		}
 		return $parameter;
