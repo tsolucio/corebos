@@ -499,6 +499,8 @@ $smarty->assign('PRODUCT_OR_SERVICE', GlobalVariable::getVariable('Inventory_Pro
 $smarty->assign('Inventory_ListPrice_ReadOnly', GlobalVariable::getVariable('Inventory_ListPrice_ReadOnly', '0', $currentModule, $current_user->id));
 //Set taxt type group or individual by default when create
 $smarty->assign('TAX_TYPE', GlobalVariable::getVariable('Inventory_Tax_Type_Default', 'individual', $currentModule, $current_user->id));
+//Set Inventory Tax Fillin global varible
+$smarty->assign('TAXFILLINMODE', GlobalVariable::getVariable('Inventory_TaxFillInMode', 'All', $currentModule, $current_user->id));
 //Show or not the Header to copy address to left or right
 $smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Application_Show_Copy_Address', 1, $currentModule, $current_user->id));
 $smarty->assign('SHOW_SHIPHAND_CHARGES', GlobalVariable::getVariable('Inventory_Show_ShippingHandlingCharges', 1, $currentModule, $current_user->id));
