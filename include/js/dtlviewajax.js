@@ -431,8 +431,6 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 			getObj(dtlView).innerHTML = '<a href="index.php?module=Accounts&action=DetailView&record='+tagValue+'">'+popObj.value+'&nbsp;</a>';
 		} else if (uitype == '57') {
 			getObj(dtlView).innerHTML = '<a href="index.php?module=Contacts&action=DetailView&record='+tagValue+'">'+popObj.value+'&nbsp;</a>';
-		} else if (uitype == '76') {
-			getObj(dtlView).innerHTML = '<a href="index.php?module=Potentials&action=DetailView&record='+tagValue+'">'+popObj.value+'&nbsp;</a>';
 		} else if (uitype == '78') {
 			getObj(dtlView).innerHTML = '<a href="index.php?module=Quotes&action=DetailView&record='+tagValue+'">'+popObj.value+'&nbsp;</a>';
 		} else if (uitype == '80') {
