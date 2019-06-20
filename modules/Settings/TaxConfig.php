@@ -228,8 +228,8 @@ function addTaxType($taxlabel, $taxvalue, $sh = '', $retention = 0) {
 	//if the tax is not available then add this tax.
 	//Add this tax as a column in related table
 	if ($sh != '' && $sh == 'sh') {
-		$taxid = $adb->getUniqueID("vtiger_shippingtaxinfo");
-		$taxname = "shtax".$taxid;
+		$taxid = $adb->getUniqueID('vtiger_shippingtaxinfo');
+		$taxname = 'shtax'.$taxid;
 		$query = "alter table vtiger_inventoryshippingrel add column $taxname decimal(7,3) default NULL";
 
 		$event_data = array(
@@ -239,8 +239,8 @@ function addTaxType($taxlabel, $taxvalue, $sh = '', $retention = 0) {
 			'tax_value' => $taxvalue
 		);
 	} else {
-		$taxid = $adb->getUniqueID("vtiger_inventorytaxinfo");
-		$taxname = "tax".$taxid;
+		$taxid = $adb->getUniqueID('vtiger_inventorytaxinfo');
+		$taxname = 'tax'.$taxid;
 		$query = "alter table vtiger_inventoryproductrel add column $taxname decimal(7,3) default NULL";
 
 		$modules = array(
