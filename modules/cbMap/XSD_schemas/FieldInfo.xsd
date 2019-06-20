@@ -12,7 +12,7 @@
         <xs:element name="fields">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="field">
+              <xs:element name="field" minOccurs="1" maxOccurs="unbounded">
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element type="xs:string" name="fieldname"/>
