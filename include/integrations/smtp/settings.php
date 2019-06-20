@@ -19,40 +19,9 @@
 include_once 'include/integrations/smtp/smtp.php';
 
 $smarty = new vtigerCRM_Smarty();
-$sd = new corebos_smtp();
+$smtpconfig = new corebos_smtp();
 
-$isadmin = is_admin($current_user);
-
-if ($isadmin && isset($_REQUEST['sg_user']) && isset($_REQUEST['sg_pass'])) {
-    /**
-     * For Incoming Mail Server
-     *  */
-	$isActive = ((empty($_REQUEST['sendgrid_active']) || $_REQUEST['sendgrid_active']!='on') ? '0' : '1');
-	$sg_user = (empty($_REQUEST['sg_user']) ? '' : vtlib_purify($_REQUEST['sg_user']));
-	$sg_pass = (empty($_REQUEST['sg_pass']) ? '' : vtlib_purify($_REQUEST['sg_pass']));
-	$usesg_transactional = (empty($_REQUEST['usesg_transactional']) ? '' : vtlib_purify($_REQUEST['usesg_transactional']));
-	$srv_transactional = (empty($_REQUEST['srv_transactional']) ? '' : vtlib_purify($_REQUEST['srv_transactional']));
-	$user_transactional = (empty($_REQUEST['user_transactional']) ? '' : vtlib_purify($_REQUEST['user_transactional']));
-	$pass_transactional = (empty($_REQUEST['pass_transactional']) ? '' : vtlib_purify($_REQUEST['pass_transactional']));
-	$usesg_marketing = (empty($_REQUEST['usesg_marketing']) ? '' : vtlib_purify($_REQUEST['usesg_marketing']));
-	$srv_marketing = (empty($_REQUEST['srv_marketing']) ? '' : vtlib_purify($_REQUEST['srv_marketing']));
-	$user_marketing = (empty($_REQUEST['user_marketing']) ? '' : vtlib_purify($_REQUEST['user_marketing']));
-	$pass_marketing = (empty($_REQUEST['pass_marketing']) ? '' : vtlib_purify($_REQUEST['pass_marketing']));
-	$sd->saveSettings(
-		$isActive,
-		$sg_user,
-		$sg_pass,
-		$usesg_transactional,
-		$srv_transactional,
-		$user_transactional,
-		$pass_transactional,
-		$usesg_marketing,
-		$srv_marketing,
-		$user_marketing,
-		$pass_marketing
-    );
-
-
+if (isset($_REQUEST['ic_mail_server_name']) || isset($_REQUEST['og_mail_server_username'])) {
     /**
      * for Incoming Mail Server Configuration
      */
@@ -69,7 +38,7 @@ if ($isadmin && isset($_REQUEST['sg_user']) && isset($_REQUEST['sg_pass'])) {
     $ic_mail_server_ssltype = vtlib_purify($_REQUEST['ic_mail_server_ssltype']);
     $ic_mail_server_sslmeth = vtlib_purify($_REQUEST['ic_mail_server_sslmeth']);
 
-    $sd->saveIncomingMailServerConfiguration(
+    $smtpconfig->saveIncomingMailServerConfiguration(
         $ic_mail_server_active,
         $ic_mail_server_displayname,
         $ic_mail_server_account_name,
@@ -82,12 +51,12 @@ if ($isadmin && isset($_REQUEST['sg_user']) && isset($_REQUEST['sg_pass'])) {
         $ic_mail_server_ssltype,
         $ic_mail_server_sslmeth
     );
-    
+
     /**
      * for Outgoing Mail Server Configuration
      *  */
     $og_mail_server_active = ((empty($_REQUEST['og_mail_server_active']) || $_REQUEST['og_mail_server_active']!='on') ? '0' : '1');
-	$og_mail_server_username = (empty($_REQUEST['og_mail_server_username']) ? '' : vtlib_purify($_REQUEST['og_mail_server_username']));
+    $og_mail_server_username = (empty($_REQUEST['og_mail_server_username']) ? '' : vtlib_purify($_REQUEST['og_mail_server_username']));
     $og_mail_server_password = (empty($_REQUEST['og_mail_server_password']) ? '' : vtlib_purify($_REQUEST['og_mail_server_password']));
     $og_mail_server_smtp_auth = (empty($_REQUEST['og_mail_server_smtp_auth']) ? '' : vtlib_purify($_REQUEST['og_mail_server_smtp_auth']));
     $og_mail_server_from_email = (empty($_REQUEST['og_mail_server_from_email']) ? '' : vtlib_purify($_REQUEST['og_mail_server_from_email']));
@@ -96,7 +65,7 @@ if ($isadmin && isset($_REQUEST['sg_user']) && isset($_REQUEST['sg_pass'])) {
     $og_mail_server_type = vtlib_purify($_REQUEST['server_type']);
     $og_mail_server_path = isset($_REQUEST['server_path']) ? vtlib_purify($_REQUEST['server_path']) : '';
 
-    $sd->saveOutGoingMailServerConfiguration(
+    $smtpconfig->saveOutGoingMailServerConfiguration(
         $og_mail_server_active,
         $og_mail_server_username,
         $og_mail_server_password,
@@ -110,18 +79,29 @@ if ($isadmin && isset($_REQUEST['sg_user']) && isset($_REQUEST['sg_pass'])) {
 }
 
 $smarty->assign('TITLE_MESSAGE', getTranslatedString('LBL_USER_SMTP_CONFIG', $currentModule));
-$sdsettings = $sd->getSettings();
-$smarty->assign('isActive', $sd->isActive());
-$smarty->assign('sg_user', $sdsettings['sg_user']);
-$smarty->assign('sg_pass', $sdsettings['sg_pass']);
-$smarty->assign('usesg_transactional', $sdsettings['usesg_transactional']);
-$smarty->assign('srv_transactional', $sdsettings['srv_transactional']);
-$smarty->assign('user_transactional', $sdsettings['user_transactional']);
-$smarty->assign('pass_transactional', $sdsettings['pass_transactional']);
-$smarty->assign('usesg_marketing', $sdsettings['usesg_marketing']);
-$smarty->assign('srv_marketing', $sdsettings['srv_marketing']);
-$smarty->assign('user_marketing', $sdsettings['user_marketing']);
-$smarty->assign('pass_marketing', $sdsettings['pass_marketing']);
+# incoming mail server config values
+$smarty->assign('ic_mail_server_active', $smtpconfig->getIncomingMailServerActiveStatus());
+$smarty->assign('ic_mail_server_displayname', $smtpconfig->getIncomingMailServerDisplayName());
+$smarty->assign('ic_mail_server_email', $smtpconfig->getIncomingMailServerEmail());
+$smarty->assign('ic_mail_server_account_name', $smtpconfig->getIncomingMailServerAccountName());
+$smarty->assign('ic_mail_server_protocol', $smtpconfig->getIncomingMailServerProtocol());
+$smarty->assign('ic_mail_server_username', $smtpconfig->getIncomingMailServerUsername());
+$smarty->assign('ic_mail_server_password', $smtpconfig->getIncomingMailServerPassword());
+$smarty->assign('ic_mail_server_name', $smtpconfig->getIncomingMailServerName());
+$smarty->assign('ic_mail_server_refresh_time', $smtpconfig->getIncomingMailServerRefreshTime());
+$smarty->assign('ic_mail_server_mails_per_page', $smtpconfig->getIncomingMailServerMailsPerPage());
+$smarty->assign('ic_mail_server_ssltype', $smtpconfig->getIncomingMailServerSSLTYPE());
+$smarty->assign('ic_mail_server_sslmeth', $smtpconfig->getIncomingMailServerSSLMETH());
+# outgoing mail server config values
+$smarty->assign('og_mail_server_active', $smtpconfig->getOutgoingMailServerActiveStatus());
+$smarty->assign('og_mail_server_username', $smtpconfig->getOutgoingMailServerUsername());
+$smarty->assign('og_mail_server_password', $smtpconfig->getOutgoingMailServerPassword());
+$smarty->assign('og_mail_server_smtp_auth', $smtpconfig->getOutgoingMailServerSMTPAuthetication());
+$smarty->assign('og_mail_server_from_email', $smtpconfig->getOutgoingMailsServerFromEmail());
+$smarty->assign('server', $smtpconfig->getOutgoingMailServer());
+$smarty->assign('port', $smtpconfig->getOutgoingMailServerPort());
+$smarty->assign('server_type', $smtpconfig->getOutgoingMailServerType());
+$smarty->assign('server_path', $smtpconfig->getOutgoingMailServerPath());
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
@@ -130,5 +110,5 @@ $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('THEME', $theme);
 include 'modules/cbupdater/forcedButtons.php';
 $smarty->assign('CHECK', $tool_buttons);
-$smarty->assign('ISADMIN', $isadmin);
+#$smarty->assign('ISADMIN', $isadmin);
 $smarty->display('modules/Utilities/smtp.tpl');

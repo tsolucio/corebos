@@ -43,19 +43,6 @@ class corebos_smtp {
     public $og_mail_server_type;
 	public $og_mail_server_path;
 
-	// Configuration Keys
-	const KEY_CUSTOM_SMTP_CONFIGURATION = 'custom_smtp_cofiguration';
-	const KEY_SG_USER = 'sguser';
-	const KEY_SG_PASS = 'sgpass';
-	const KEY_USESG_TRANSACTIONAL = 'usesgtransactional';
-	const KEY_SRV_TRANSACTIONAL = 'srvtransactional';
-	const KEY_USER_TRANSACTIONAL = 'usertransactional';
-	const KEY_PASS_TRANSACTIONAL = 'passwordtransactional';
-	const KEY_USESG_MARKETING = 'usesgmarketing';
-	const KEY_SRV_MARKETING = 'srvmarketing';
-	const KEY_USER_MARKETING = 'usermarketing';
-	const KEY_PASS_MARKETING = 'passwordmarketing';
-
 	# Errors
 	public static $ERROR_NONE = 0;
 	public static $ERROR_NOTCONFIGURED = 1;
@@ -64,71 +51,34 @@ class corebos_smtp {
 	public function __construct() {
 		$this->initGlobalScope();
 	}
-
-	public function initGlobalScope() { 
-		$this->sg_user = coreBOS_Settings::getSetting(self::KEY_SG_USER, '');
-		$this->sg_pass = coreBOS_Settings::getSetting(self::KEY_SG_PASS, '');
-		$this->usesg_transactional = coreBOS_Settings::getSetting(self::KEY_USESG_TRANSACTIONAL, '');
-		$this->srv_transactional = coreBOS_Settings::getSetting(self::KEY_SRV_TRANSACTIONAL, '');
-		$this->user_transactional = coreBOS_Settings::getSetting(self::KEY_USER_TRANSACTIONAL, '');
-		$this->pass_transactional = coreBOS_Settings::getSetting(self::KEY_PASS_TRANSACTIONAL, '');
-		$this->usesg_marketing = coreBOS_Settings::getSetting(self::KEY_USESG_MARKETING, '');
-		$this->srv_marketing = coreBOS_Settings::getSetting(self::KEY_SRV_MARKETING, '');
-		$this->user_marketing = coreBOS_Settings::getSetting(self::KEY_USER_MARKETING, '');
-		$this->pass_marketing = coreBOS_Settings::getSetting(self::KEY_PASS_MARKETING, '');
-	}
 	
-
-	public function getSettings() {
-		return array(
-			'isActive' => coreBOS_Settings::getSetting(self::KEY_ISACTIVE, ''),
-			'sg_user' => coreBOS_Settings::getSetting(self::KEY_SG_USER, ''),
-			'sg_pass' => coreBOS_Settings::getSetting(self::KEY_SG_PASS, ''),
-			'usesg_transactional' => coreBOS_Settings::getSetting(self::KEY_USESG_TRANSACTIONAL, ''),
-			'srv_transactional' => coreBOS_Settings::getSetting(self::KEY_SRV_TRANSACTIONAL, ''),
-			'user_transactional' => coreBOS_Settings::getSetting(self::KEY_USER_TRANSACTIONAL, ''),
-			'pass_transactional' => coreBOS_Settings::getSetting(self::KEY_PASS_TRANSACTIONAL, ''),
-			'usesg_marketing' => coreBOS_Settings::getSetting(self::KEY_USESG_MARKETING, ''),
-			'srv_marketing' => coreBOS_Settings::getSetting(self::KEY_SRV_MARKETING, ''),
-			'user_marketing' => coreBOS_Settings::getSetting(self::KEY_USER_MARKETING, ''),
-			'pass_marketing' => coreBOS_Settings::getSetting(self::KEY_PASS_MARKETING, ''),
-		);
-	}
-
-	public static function activeInstance() {
+	public function initGlobalScope() {
 		global $adb, $current_user;
-		$instance = new corebos_smtp();
 
 		$result = $adb->pquery("SELECT * FROM vtiger_mail_accounts WHERE user_id=? AND status=1 AND set_default=0", array($current_user->id));
 		if ($adb->num_rows($result)) {
 			# for Incoming Mail Server
-			$instance->ic_mail_server_name = trim($adb->query_result($result, 0, 'mail_servername'));
-			$instance->ic_mail_server_username = trim($adb->query_result($result, 0, 'mail_username'));
-			$instance->ic_mail_server_password = trim($adb->query_result($result, 0, 'mail_password'));
-			$instance->ic_mail_server_protocol = trim($adb->query_result($result, 0, 'mail_protocol'));
-			$instance->ic_mail_server_ssltype = trim($adb->query_result($result, 0, 'ssltype'));
-			$instance->ic_mail_server_sslmeth = trim($adb->query_result($result, 0, 'sslmeth'));
-			$instance->mId = trim($adb->query_result($result, 0, 'account_id'));
-			$instance->ic_mail_server_box_refresh = trim($adb->query_result($result, 0, 'box_refresh'));
-			$instance->mServerName = self::setServerName($instance->ic_mail_server_name);
+			$this->ic_mail_server_name = trim($adb->query_result($result, 0, 'mail_servername'));
+			$this->ic_mail_server_username = trim($adb->query_result($result, 0, 'mail_username'));
+			$this->ic_mail_server_password = trim($adb->query_result($result, 0, 'mail_password'));
+			$this->ic_mail_server_protocol = trim($adb->query_result($result, 0, 'mail_protocol'));
+			$this->ic_mail_server_ssltype = trim($adb->query_result($result, 0, 'ssltype'));
+			$this->ic_mail_server_sslmeth = trim($adb->query_result($result, 0, 'sslmeth'));
+			$this->mId = trim($adb->query_result($result, 0, 'account_id'));
+			$this->ic_mail_server_box_refresh = trim($adb->query_result($result, 0, 'box_refresh'));
+			$this->mServerName = self::setServerName($instance->ic_mail_server_name);
 
 			# for Outgoing Mail Server
-			$instance->$og_mail_server_active = trim($adb->query_result($result, 0, ''));
-			$instance->$og_mail_server_username = trim($adb->query_result($result, 0, 'server_username'));
-			$instance->$og_mail_server_password = trim($adb->query_result($result, 0, 'server_password'));
-			$instance->$og_mail_server_smtp_auth = trim($adb->query_result($result, 0, 'smtp_auth'));
-			$instance->$og_mail_server_from_email = trim($adb->query_result($result, 0, 'from_email_field'));
-			$instance->$og_mail_server = trim($adb->query_result($result, 0, 'server'));
-			$instance->$og_mail_server_port = trim($adb->query_result($result, 0, 'server_port'));
-			$instance->$og_mail_server_type = trim($adb->query_result($result, 0, 'server_type'));
-			$instance->$og_mail_server_path = trim($adb->query_result($result, 0, 'server_path'));
+			$this->$og_mail_server_active = trim($adb->query_result($result, 0, ''));
+			$this->$og_mail_server_username = trim($adb->query_result($result, 0, 'server_username'));
+			$this->$og_mail_server_password = trim($adb->query_result($result, 0, 'server_password'));
+			$this->$og_mail_server_smtp_auth = trim($adb->query_result($result, 0, 'smtp_auth'));
+			$this->$og_mail_server_from_email = trim($adb->query_result($result, 0, 'from_email_field'));
+			$this->$og_mail_server = trim($adb->query_result($result, 0, 'server'));
+			$this->$og_mail_server_port = trim($adb->query_result($result, 0, 'server_port'));
+			$this->$og_mail_server_type = trim($adb->query_result($result, 0, 'server_type'));
+			$this->$og_mail_server_path = trim($adb->query_result($result, 0, 'server_path'));
 		}
-		return $instance;
-	}
-
-	public static function isActive() {
-		$isactive = coreBOS_Settings::getSetting(self::KEY_ISACTIVE, '0');
-		return ($isactive=='1');
 	}
 
     /**
@@ -136,13 +86,14 @@ class corebos_smtp {
      * Function to Save OutGoing Mail Server Configuration
      */
     public function saveOutGoingMailServerConfiguration(
-		$isOutgoingMailServerActive, 
-		$server_username, 
-		$server_password, 
-		$smtp_auth, 
-		$from_email_field, 
-		$server, $port, 
-		$server_type, 
+		$isOutgoingMailServerActive,
+		$server_username,
+		$server_password,
+		$smtp_auth,
+		$from_email_field,
+		$server,
+		$port,
+		$server_type,
 		$og_mail_server_path
 		) {
 			global $adb, $log, $current_user;
@@ -181,6 +132,7 @@ class corebos_smtp {
 					$sql = 'insert into vtiger_mail_account (server, server_username, server_password, smtp_auth, server_type, server_port,from_email_field) values(?,?,?,?,?,?,?,?)';
 					$params = array($server, $port, $server_username, $server_password, $server_type, $smtp_auth, '',$from_email_field);
 				}
+				var_dump($sql);
 				$adb->pquery($sql, $params);
 			}
 	}
@@ -248,6 +200,174 @@ class corebos_smtp {
 			$mServerName = 'other';
 		}
 		return $mServerName;
+	}
+
+	/**
+	 * Get the value of ic_mail_server_active
+	 */ 
+	public function getIncomingMailServerActiveStatus()
+	{
+		return $this->ic_mail_server_active;
+	}
+
+    /**
+     * Get the value of ic_mail_server_displayname
+     */ 
+    public function getIncomingMailServerDisplayName()
+    {
+        return $this->ic_mail_server_displayname;
+    }
+
+    /**
+     * Get the value of ic_mail_server_email
+     */ 
+    public function getIncomingMailServerEmail()
+    {
+        return $this->ic_mail_server_email;
+    }
+
+    /**
+     * Get the value of ic_mail_server_account_name
+     */ 
+    public function getIncomingMailServerAccountName()
+    {
+        return $this->ic_mail_server_account_name;
+    }
+
+    /**
+     * Get the value of ic_mail_server_protocol
+     */ 
+    public function getIncomingMailServerProtocol()
+    {
+        return $this->ic_mail_server_protocol;
+    }
+
+    /**
+     * Get the value of ic_mail_server_username
+     */ 
+    public function getIncomingMailServerUsername()
+    {
+        return $this->ic_mail_server_username;
+    }
+
+    /**
+     * Get the value of ic_mail_server_password
+     */ 
+    public function getIncomingMailServerPassword()
+    {
+        return $this->ic_mail_server_password;
+    }
+
+    /**
+     * Get the value of ic_mail_server_name
+     */ 
+    public function getIncomingMailServerName()
+    {
+        return $this->ic_mail_server_name;
+    }
+
+    /**
+     * Get the value of ic_mail_server_box_refresh
+     */ 
+    public function getIncomingMailServerRefreshTime()
+    {
+        return $this->ic_mail_server_box_refresh;
+    }
+
+    /**
+     * Get the value of ic_mail_server_mails_per_page
+     */ 
+    public function getIncomingMailServerMailsPerPage()
+    {
+        return $this->ic_mail_server_mails_per_page;
+    }
+
+    /**
+     * Get the value of ic_mail_server_ssltype
+     */ 
+    public function getIncomingMailServerSSLTYPE()
+    {
+        return $this->ic_mail_server_ssltype;
+    }
+
+	/**
+	 * Get the value of ic_mail_server_sslmeth
+	 */ 
+	public function getIncomingMailServerSSLMETH()
+	{
+		return $this->ic_mail_server_sslmeth;
+	}
+
+	/**
+	 * Get the value of og_mail_server_active
+	 */ 
+	public function getOutgoingMailServerActiveStatus()
+	{
+		return $this->og_mail_server_active;
+	}
+
+	/**
+	 * Get the value of og_mail_server_username
+	 */ 
+	public function getOutgoingMailServerUsername()
+	{
+		return $this->og_mail_server_username;
+	}
+
+    /**
+     * Get the value of og_mail_server_password
+     */ 
+    public function getOutgoingMailServerPassword()
+    {
+        return $this->og_mail_server_password;
+    }
+
+    /**
+     * Get the value of og_mail_server_smtp_auth
+     */ 
+    public function getOutgoingMailServerSMTPAuthetication()
+    {
+        return $this->og_mail_server_smtp_auth;
+    }
+
+    /**
+     * Get the value of og_mail_server_from_email
+     */ 
+    public function getOutgoingMailsServerFromEmail()
+    {
+        return $this->og_mail_server_from_email;
+    }
+
+    /**
+     * Get the value of og_mail_server
+     */ 
+    public function getOutgoingMailServer()
+    {
+        return $this->og_mail_server;
+    }
+
+    /**
+     * Get the value of og_mail_server_port
+     */ 
+    public function getOutgoingMailServerPort()
+    {
+        return $this->og_mail_server_port;
+    }
+
+    /**
+     * Get the value of og_mail_server_type
+     */ 
+    public function getOutgoingMailServerType()
+    {
+        return $this->og_mail_server_type;
+    }
+
+	/**
+	 * Get the value of og_mail_server_path
+	 */ 
+	public function getOutgoingMailServerPath()
+	{
+		return $this->og_mail_server_path;
 	}
 }
 ?>

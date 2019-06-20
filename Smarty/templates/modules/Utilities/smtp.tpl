@@ -23,11 +23,11 @@
 	</div>
 </div>
 <br>
-{if $ISADMIN}
+{* {if $ISADMIN} *}
 <form role="form" style="margin:0 100px;">
 <input type="hidden" name="module" value="Utilities">
 <input type="hidden" name="action" value="integration">
-<input type="hidden" name="_op" value="setconfigsendgrid">
+<input type="hidden" name="_op" value="setconfigsmtp">
 <div class="slds-form-element">
 	<label class="slds-checkbox--toggle slds-grid">
 	<span class="slds-form-element__label slds-m-bottom--none">{'_active'|@getTranslatedString:$MODULE}</span>
@@ -112,9 +112,9 @@
         </div>
         <div class="slds-form-element slds-m-top--small">
             <font color="red">*</font>&nbsp;
-            <label class="slds-form-element__label" for="og_mail_server_username">{'LBL_OUTGOING_MAIL_SERVER'|@getTranslatedString:'Settings'}</label>
+            <label class="slds-form-element__label" for="og_mail_server">{'LBL_OUTGOING_MAIL_SERVER'|@getTranslatedString:'Settings'}</label>
             <div class="slds-form-element__control">
-                <input type="text" id="og_mail_server_username" name="og_mail_server_username" class="slds-input" value="{$og_mail_server_username}" />
+                <input type="text" id="og_mail_server" name="og_mail_server" class="slds-input" value="{$og_mail_server}" />
             </div>
         </div>
         <div class="slds-form-element slds-m-top--small">
@@ -151,4 +151,4 @@
 	<button type="submit" class="slds-button slds-button--brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
 </div>
 </form>
-{/if}
+{* {/if} *}
