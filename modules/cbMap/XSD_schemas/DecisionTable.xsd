@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Created with Liquid Technologies Online Tools 1.0 (https://www.liquid-technologies.com) -->
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="decision">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="hitPolicy" />
+        <xs:element name="aggregate" minOccurs="0"/>
+        <xs:element name="rules">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="rule">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="sequence" />
+                    <xs:element minOccurs="0" name="decisionTable">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="module" />
+                          <xs:element name="conditions" minOccurs="0">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="condition">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="input" />
+                                      <xs:element name="operation" />
+                                      <xs:element name="field" />
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="orderby" minOccurs="0"/>
+                          <xs:element name="searches">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="search" maxOccurs="unbounded">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="condition" maxOccurs="unbounded">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="input" />
+                                            <xs:element name="operation" />
+                                            <xs:element name="field" />
+                                          </xs:sequence>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="output" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="mapid" />
+                    <xs:element minOccurs="0" name="expression" />
+                    <xs:element name="output" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
