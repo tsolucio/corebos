@@ -269,7 +269,7 @@ if (isset($action) && isset($module)) {
 	}
 
 	if ($action == 'UnifiedSearch') {
-		$currentModuleFile = 'modules/Home/'.$action.'.php';
+		$currentModuleFile = 'modules/Utilities/'.$action.'.php';
 	} else {
 		$currentModuleFile = 'modules/'.$module.'/'.$action.'.php';
 	}

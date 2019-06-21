@@ -4880,7 +4880,7 @@ function UnifiedSearch_GetModules() {
 		jQuery('#status').show();
 		jQuery.ajax({
 			method:'POST',
-			url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModules&ajax=true'
+			url:'index.php?module=Utilities&action=UtilitiesAjax&file=UnifiedSearchModules&ajax=true'
 		}).done(function (response) {
 			jQuery('#status').hide();
 			jQuery('#UnifiedSearch_modulelistwrapper').html(response);
@@ -4899,7 +4899,7 @@ function UnifiedSearch_OnComboSelect(value) {
 	document.forms.UnifiedSearch.search_onlyin.value = prepVal;
 	jQuery.ajax({
 		method:'POST',
-		url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(prepVal)
+		url:'index.php?module=Utilities&action=UtilitiesAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(prepVal)
 	}).done(function (response) {
 		// continue
 	});
