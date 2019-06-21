@@ -7,5 +7,5 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *********************************************************************************/
-require_once 'modules/Home/UnifiedSearch.php';
+require_once 'modules/Utilities/UnifiedSearch.php';
 ?>
