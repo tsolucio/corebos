@@ -32,7 +32,7 @@ class UtilitiesEventsHandler extends VTEventHandler {
 			switch ($handlerType) {
 				case 'corebos.filter.listview.querygenerator.before':
 					// $parameter is the QueryGenerator Object
-					$parameter->addCondition('revisionactiva', 1, 'e','and');
+					$parameter->addCondition('revisionactiva', 1, 'e', 'and');
 					break;
 			}
 		}
