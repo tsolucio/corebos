@@ -19,7 +19,7 @@ class Utilities extends CRMEntity {
 	public $column_fields = array();
 
 	/** Indicator if this is a custom module or standard module */
-	public $IsCustomModule = true;
+	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
 	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-account', 'class' => 'slds-icon', 'icon'=>'data_integration_hub');
 
