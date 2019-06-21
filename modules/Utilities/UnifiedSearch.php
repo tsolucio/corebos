@@ -243,7 +243,11 @@ document.getElementById("global_search_total_count").innerHTML = " <?php echo $a
 <?php
 	}
 } else {
-	echo "<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>".$mod_strings['ERR_ONE_CHAR']."</em>";
+	echo '<br><br>';
+	$smarty = new vtigerCRM_Smarty();
+	$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-error');
+	$smarty->assign('ERROR_MESSAGE', getTranslatedString('ERR_ONE_CHAR', 'Home'));
+	$smarty->display('applicationmessage.tpl');
 }
 
 /**

@@ -46,6 +46,5 @@ $mod_strings = array(
 	'TransEmail_subtitle' => 'Substitutes outgoing email server',
 	'MktEmail_title' => 'Configuration for Marketing Email',
 	'MktEmail_subtitle' => 'Only for messages, programmed emails and specificaly programmed processes',
-	'ERR_ONE_CHAR'=>'Please enter at least one letter or number for your search ...',
 );
 ?>
