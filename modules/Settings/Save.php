@@ -28,9 +28,10 @@ $HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name', 'y
 
 $to_email = getUserEmailId('id', $current_user->id);
 $from_email = $to_email;
-$subject = getTranslatedString('mail_server_configuration');
-$description = getTranslatedString('dear').$current_user->user_name.', <br><br><b> '.getTranslatedString('testing_email_confirmation')
-	.getTranslatedString('config').'</b><br>'.getTranslatedString('free_delete').'<br><br>'.getTranslatedString('thanks_sms').',<br> '.$HELPDESK_SUPPORT_NAME.' <br>';
+$subject = getTranslatedString('mail_server_configuration','Settings');
+$description = getTranslatedString('dear','Settings').$current_user->user_name.', <br><br><b> '.getTranslatedString('testing_email_confirmation','Settings')
+	.getTranslatedString('config','Settings').'</b><br>'.getTranslatedString('free_delete','Settings').'<br><br>'.getTranslatedString('thanks_sms','Settings').',<br> '.$HELPDESK_SUPPORT_NAME.' <br>';
+	
 
 if ($to_email != '') {
 	$mail_status = send_mail('Users', $to_email, $current_user->user_name, $from_email, $subject, $description);
