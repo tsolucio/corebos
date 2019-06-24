@@ -631,7 +631,7 @@ class DefaultDataPopulator extends CRMEntity {
 
 		$this->db->query("insert into vtiger_field values (20," . $this->db->getUniqueID("vtiger_field") . ",'quote_no','vtiger_quotes',1,'4','quote_no','Quote No',1,0,'',100,3,$quotesbasicblock,1,'V~O',3,null,'BAS',0)");
 		$this->db->query("insert into vtiger_field values (20," . $this->db->getUniqueID("vtiger_field") . ",'subject','vtiger_quotes',1,'2','subject','Subject',1,0,'',100,1,$quotesbasicblock,1,'V~M',1,null,'BAS',1)");
-		$this->db->query("insert into vtiger_field values (20," . $this->db->getUniqueID("vtiger_field") . ",'potentialid','vtiger_quotes',1,'76','potential_id','Potential Name',1,2,'',100,2,$quotesbasicblock,1,'I~O',3,null,'BAS',1)");
+		$this->db->query("insert into vtiger_field values (20," . $this->db->getUniqueID("vtiger_field") . ",'potentialid','vtiger_quotes',1,'potential_id','Potential Name',1,2,'',100,2,$quotesbasicblock,1,'I~O',3,null,'BAS',1)");
 		$this->db->query("insert into vtiger_field values (20," . $this->db->getUniqueID("vtiger_field") . ",'quotestage','vtiger_quotes',1,'15','quotestage','Quote Stage',1,2,'',100,4,$quotesbasicblock,1,'V~M',3,null,'BAS',1)");
 
 		$this->db->query("insert into vtiger_field values (20," . $this->db->getUniqueID("vtiger_field") . ",'validtill','vtiger_quotes',1,'5','validtill','Valid Till',1,2,'',100,5,$quotesbasicblock,1,'D~O',3,null,'BAS',1)");
@@ -749,7 +749,7 @@ class DefaultDataPopulator extends CRMEntity {
 		//Block63
 		$this->db->query("insert into vtiger_field values (22," . $this->db->getUniqueID("vtiger_field") . ",'salesorder_no','vtiger_salesorder',1,'4','salesorder_no','SalesOrder No',1,0,'',100,4,$sobasicblock ,1,'V~O',3,null,'BAS',0)");
 		$this->db->query("insert into vtiger_field values (22," . $this->db->getUniqueID("vtiger_field") . ",'subject','vtiger_salesorder',1,'2','subject','Subject',1,0,'',100,1,$sobasicblock ,1,'V~M',3,null,'BAS',1)");
-		$this->db->query("insert into vtiger_field values (22," . $this->db->getUniqueID("vtiger_field") . ",'potentialid','vtiger_salesorder',1,'76','potential_id','Potential Name',1,2,'',100,2,$sobasicblock ,1,'I~O',3,null,'BAS',1)");
+		$this->db->query("insert into vtiger_field values (22," . $this->db->getUniqueID("vtiger_field") . ",'potentialid','vtiger_salesorder',1,'potential_id','Potential Name',1,2,'',100,2,$sobasicblock ,1,'I~O',3,null,'BAS',1)");
 		$this->db->query("insert into vtiger_field values (22," . $this->db->getUniqueID("vtiger_field") . ",'customerno','vtiger_salesorder',1,'1','customerno','Customer No',1,2,'',100,3,$sobasicblock ,1,'V~O',3,null,'BAS',1)");
 		$this->db->query("insert into vtiger_field values (22," . $this->db->getUniqueID("vtiger_field") . ",'quoteid','vtiger_salesorder',1,'78','quote_id','Quote Name',1,2,'',100,5,$sobasicblock ,1,'I~O',3,null,'BAS',1)");
 		$this->db->query("insert into vtiger_field values (22," . $this->db->getUniqueID("vtiger_field") . ",'purchaseorder','vtiger_salesorder',1,'1','vtiger_purchaseorder','Purchase Order',1,2,'',100,5,$sobasicblock ,1,'V~O',3,null,'BAS',1)");
