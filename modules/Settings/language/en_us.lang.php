@@ -9,6 +9,13 @@
  ********************************************************************************/
 
 $mod_strings = array(
+'mail_server_configuration'=>'Test mail about the mail server configuration',
+'dear'=>'Dear ',
+'testing_email_confirmation'=>'This is a test mail sent to confirm if a mail is actually being sent through the smtp server that you',
+'config'=>'have configured.',
+'free_delete'=>'Feel free to delete this mail.',
+'thanks_sms'=>'Thanks and Regards.',
+
 'LBL_MODULE_NAME'=>'Settings',
 'LBL_MODULE_TITLE'=>'Settings: Home',
 'LBL_LIST_CONTACT_ROLE'=>'Role',
@@ -982,3 +989,4 @@ $mod_strings = array(
 'LBL_CC' => 'CC',
 );
 ?>
+
