@@ -160,4 +160,11 @@
 	<classname>AddConfigFieldsToTaxes</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+       <author>mohamed-shibeJR</author>
+       <description>migrate uitype 76 (potential capture) to uitype 10 (standard capture)</description>
+       <filename>build/changeSets/2019/migrateUIType76to10.php</filename>
+       <classname>migrateUIType76to10</classname>
+       <systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

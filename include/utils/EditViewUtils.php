@@ -917,18 +917,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$currencySymbol = $currencyField->getCurrencySymbol();
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name).': ('.$currencySymbol.')';
-	} elseif ($uitype == 76) {
-		if ($value != '') {
-			$potential_name = getPotentialName($value);
-		} elseif (isset($_REQUEST['potential_id']) && $_REQUEST['potential_id'] != '') {
-			$value = $_REQUEST['potental_id'];
-			$potential_name = getPotentialName($value);
-		} else {
-			$potential_name = '';
-		}
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[] = $potential_name;
-		$fieldvalue[] = $value;
 	} elseif ($uitype == 78) {
 		if ($value != '') {
 			$quote_name = getQuoteName($value);
