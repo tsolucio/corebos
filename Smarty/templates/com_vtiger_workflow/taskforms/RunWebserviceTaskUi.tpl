@@ -33,7 +33,7 @@
 		{"groupid":"1",
 		 "columnname":"vtiger_cbmap:maptype:maptype:cbMap_Map_Type:V",
 		 "comparator":"e",
-		 "value":"Mapping",
+		 "value":"Webservice Mapping",
 		 "columncondition":""}
 	];
 	var advSearch = '&query=true&searchtype=advance&advft_criteria='+convertArrayOfJsonObjectsToString(searchConditions);

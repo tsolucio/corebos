@@ -27,7 +27,6 @@ class RunWebserviceWorkflowTask extends VTTask {
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
 
-		$moduleName = $entity->getModuleName();
 		$entityId = $entity->getId();
 		$recordId = vtws_getIdComponents($entityId);
 		$therecid = $recordId[1];
@@ -52,16 +51,25 @@ class RunWebserviceWorkflowTask extends VTTask {
 		$method = $wsconfig['wshttpmethod'];
 		$methodname = $wsconfig['methodname'];
 		$wstype = $wsconfig['wstype'];
+		$inputtype = $wsconfig['inputtype'];
+		$outputtype = $wsconfig['outputtype'];
 		$headers = $wsconfig['wsheader'];
 
 		if ($wstype == 'REST') {
 			$arrconv = array();
 			foreach ($target_fields as $key2 => $value2) {
 				if ($key2 != 'Response' && $key2 != 'WSConfig') {
-					$arrconv[$key2] = $value2;
+					if ($inputtype == "JSON") {
+						$arrconv[$key2] = $value2;
+					} elseif ($inputtype == "URL") {
+						$arrconv = "$key2=$value2";
+					} elseif ($inputtype == "URLRESTFUL") {
+						$url = str_replace("$$key2", "$value2", $url);
+					}
 				}
 			}
-			$listreq = str_replace('&amp;', '&', $arrconv);
+
+			$listreq = $arrconv;
 
 			//write logs for request
 			$logname = 'logs/'.$methodname;
@@ -72,14 +80,19 @@ class RunWebserviceWorkflowTask extends VTTask {
 			error_log("\nMethod Called: $method $url", 3, $logname.".log");
 			error_log("\nParameters: ".json_encode($listreq), 3, $logname.".log");
 
-			$indx=array_search("Authorization:Bearer :access_token", $headers);
-			if ($indx!='') {
-					$headers[$indx]=str_replace(":access_token", str_replace('"', '', $request["access_token"]), $headers[$indx]);
-			} else {
-					$indx=array_search("Authorization:Bearer:access_token", $headers);
-				if ($indx!='') {
-						$headers[$indx]=str_replace(":access_token", ' '.str_replace('"', '', $request["access_token"]), $headers[$indx]);
+			//authorization code replacement
+			$nr = 0;
+			foreach ($headers as $head) {
+				$findauth = explode(":", $head);
+				if ($findauth[0] == "Authorization") {
+					$replace = "Authorization:Bearer:".$focus2->column_fields[$findauth[2]];
+					$headers[$nr] = $replace;
 				}
+				$nr++;
+			}
+
+			if ($inputtype == "URL") {
+				$url.= "?".$listreq;
 			}
 
 			//call REST Webservice
@@ -91,10 +104,12 @@ class RunWebserviceWorkflowTask extends VTTask {
 			} else {
 				curl_setopt($channel, CURLOPT_CUSTOMREQUEST, "$method");
 			}
-			if (in_array("Content-type:application/x-www-form-urlencoded", $headers)) {
-				curl_setopt($channel, CURLOPT_POSTFIELDS, http_build_query($listreq));
-			} else {
-				curl_setopt($channel, CURLOPT_POSTFIELDS, json_encode($listreq));
+			if ($inputtype != "URL") {
+				if (in_array("Content-type:application/x-www-form-urlencoded", $headers)) {
+					curl_setopt($channel, CURLOPT_POSTFIELDS, http_build_query($listreq));
+				} else {
+					curl_setopt($channel, CURLOPT_POSTFIELDS, json_encode($listreq));
+				}
 			}
 			curl_setopt($channel, CURLOPT_RETURNTRANSFER, true);
 			$respp = curl_exec($channel);
@@ -114,36 +129,39 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 			//write response to record fields
 			if (count($target_fields['Response']) > 0) {
-				foreach ($target_fields['Response'] as $k => $v) {
-					$fld = $v['field']['fieldname'];
-					if (count($ar) > 1) {
-						if (is_array($response2)) {
-							$r1 = $response2[0];
+				if ($outputtype == "JSON") {
+					foreach ($target_fields['Response'] as $k => $v) {
+						$fld = $v['field']['fieldname'];
+						$ar = explode(",", $k);
+						if (count($ar) > 1) {
+							if (is_array($response2)) {
+								$r1 = $response2[0];
+							} else {
+								$r1 = $response2;
+							}
+							for ($j = 0; $j < count($ar); $j++) {
+								$r1 = $r1->$ar[$j];
+							}
+							$r2 = str_replace('"', '', $r1);
 						} else {
-							$r1 = $response2;
+							if (is_array($response2)) {
+								$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2[0]->$k));
+							} else {
+								$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$k));
+							}
 						}
-						for ($j = 0; $j < count($ar); $j++) {
-							$r1 = $r1->$ar[$j];
+						if ($r2 == 'null') {
+							$r2 = "";
 						}
-						$r2 = str_replace('"', '', $r1);
-					} else {
-						if (is_array($response2)) {
-							$r2 = str_replace('"', '', json_encode($response2[0]->$k));
-						} else {
-							$r2 = str_replace('"', '', json_encode($response2->$k));
-						}
+						$conds[] = "$fld=\"$r2\"";
 					}
-					if ($r2 == 'null') {
-						$r2 = "";
-					}
-					$conds[] = "$fld=\"$r2\"";
+					$conditions = implode(",", $conds);
+					$q = $adb->query("select * from vtiger_entityname where modulename='$origin_module'");
+					$table = $adb->query_result($q, 0, 'tablename');
+					$id = $adb->query_result($q, 0, 'entityidfield');
+					$adb->pquery("update $table set $conditions where $id=$therecid", array());
 				}
 			}
-			$conditions = implode(",", $conds);
-			$q = $adb->query("select * from vtiger_entityname where modulename='$origin_module'");
-			$table = $adb->query_result($q, 0, 'tablename');
-			$id = $adb->query_result($q, 0, 'entityidfield');
-			$adb->pquery("update $table set $conditions where $id=$therecid", array());
 		}
 
 		$util->revertUser();
