@@ -160,5 +160,8 @@ $mod_strings = array(
 	'NO_METHOD_AVAILABLE' => 'No method is available for this module.',
 	'launchrelwf' => 'Launch workflows on related updates',
 	'LBL_WFPURPOSE' => 'Purpose',
+	'runwebserviceworkflowtask' => 'Run Webservice',
+	'Select IO Map' => 'Select IO Map',
+	'Select Config Map' => 'Select Configuration Map',
 );
 ?>

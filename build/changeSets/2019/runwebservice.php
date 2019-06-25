@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2016 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2014 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
 * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
 * file except in compliance with the License. You can redistribute it and/or modify it
 * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -14,7 +14,7 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-class cbMapAddMapTypes extends cbupdaterWorker {
+class Runwebservice extends cbupdaterWorker {
 
 	public function applyChange() {
 		global $adb;
@@ -24,32 +24,35 @@ class cbMapAddMapTypes extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$cbmaptypes = array(
-				'Record Access Control',
-				'Record Set Mapping',
-				'Module Set Mapping',
-				'ListColumns',
-				'DuplicateRelations',
-				'MasterDetailLayout',
-				'IOMap',
-				'FieldDependency',
-				'Validations',
-				'Import',
-				'RelatedPanes',
-				'FieldInfo',
-				'GlobalSearchAutocomplete',
-				'Field Set Mapping',
-				'Detail View Layout Mapping',
-				'DecisionTable',
-				'Webservice Mapping',
+			include_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
+			$defaultModules = array('include' => array(), 'exclude'=>array());
+			$taskType= array(
+				"name"=>"runwebserviceworkflowtask",
+				"label"=>"Run Webservice Workflow Task",
+				"classname"=>"RunWebserviceWorkflowTask",
+				"classpath"=>"modules/com_vtiger_workflow/tasks/RunWebserviceWorkflowTask.inc",
+				"templatepath"=>"com_vtiger_workflow/taskforms/RunWebserviceTaskUi.tpl",
+				"modules"=>$defaultModules,
+				"sourcemodule"=>'',
 			);
-			$moduleInstance = Vtiger_Module::getInstance('cbMap');
-			$field = Vtiger_Field::getInstance('maptype', $moduleInstance);
-			if ($field) {
-				$field->setPicklistValues($cbmaptypes);
-			}
+			VTTaskType::registerTaskType($taskType);
+
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
+		}
+		$this->finishExecution();
+	}
+
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
+		if ($this->isApplied()) {
+			// undo magic
+
+			$this->markUndone();
+		} else {
+			$this->sendMsg('Changeset '.get_class($this).' not applied!');
 		}
 		$this->finishExecution();
 	}
