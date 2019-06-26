@@ -21,11 +21,10 @@
  <?xml version="1.0"?>
  <map>
  <originmodule>
- <originid>49</originid>
  <originname>Accounts</originname>
  </originmodule>
  <wsconfig>
- <wsurl>http://159.89.12.204:3000/api/v1/dealerorganization</wsurl>
+ <wsurl>http://wsurl:port/api/v1/dealerorganization</wsurl>
  <wshttpmethod>POST</wshttpmethod>
 <methodname>dealerorganizationcreation</methodname>
  <wsresponsetime></wsresponsetime>
