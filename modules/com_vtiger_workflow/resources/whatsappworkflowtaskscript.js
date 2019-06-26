@@ -192,6 +192,14 @@ function WhatsappTask($) {
 			vtinst.listTypes(handleError(function (accessibleModules) {
 				accessibleModulesInfo = accessibleModules;
 				getDescribeObjects(accessibleModules, moduleName, handleError(function (modules) {
+					fillSelectBox('task-fieldnames', modules, moduleName);
+					$('#task-fieldnames-busyicon').hide();
+					$('#task-fieldnames').show();
+					$('#task-fieldnames').change(function () {
+						var textarea = CKEDITOR.instances.save_content;
+						var value = '$'+jQuery(this).val();
+						textarea.insertHtml(value);
+					});
 					fillSelectBox('task_phonefields', modules, moduleName, function (e) {
 						return e['type']['name']=='phone';
 					});
