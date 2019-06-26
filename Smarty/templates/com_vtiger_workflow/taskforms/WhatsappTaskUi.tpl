@@ -51,15 +51,22 @@ var __attinfo = {$task->dzattinfo|json_encode};
 	<table border="0" cellpadding="0" cellspacing="0" width="100%" class="small">
 		<tr>
 			<td class='' style="padding-top: 10px; width: 50%">
-				<b>{$MOD.LBL_MESSAGE}</b>
+				<span id="task-fieldnames-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
+				<select id='task-fieldnames' class="small" style="display: none;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select>
 			</td>
+			<td>&nbsp</td>
 			<td style="padding-top: 10px; width: 50%;">
 				<select class="small" id="task_timefields" name="metavariable">
-						<option value="">{'Select Meta Variables'|@getTranslatedString:$MODULE_NAME}</option>
-						{foreach key=META_LABEL item=META_VALUE from=$META_VARIABLES}
-						<option value="{$META_VALUE}">{$META_LABEL|@getTranslatedString:$MODULE_NAME}</option>
-						{/foreach}
+					<option value="">{'Select Meta Variables'|@getTranslatedString:$MODULE_NAME}</option>
+					{foreach key=META_LABEL item=META_VALUE from=$META_VARIABLES}
+					<option value="{$META_VALUE}">{$META_LABEL|@getTranslatedString:$MODULE_NAME}</option>
+					{/foreach}
 				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class='' style="padding-top: 10px; width: 50%">
+				<b>{$MOD.LBL_MESSAGE}</b>
 			</td>
 		</tr>
 	</table>
