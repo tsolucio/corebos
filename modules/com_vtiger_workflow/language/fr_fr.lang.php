@@ -162,7 +162,9 @@ $mod_strings = array(
 	'NO_METHOD_AVAILABLE' => 'Aucune méthode disponible pour ce module.',
 	'launchrelwf' => 'Launch workflows on related updates',
 	'LBL_WFPURPOSE' => 'Purpose',
-	'runwebserviceworkflowtask' => 'Run Webservice',
+	'Run Webservice Workflow Task' => 'Run Web Service',
+	'RunWebserviceWorkflowTask' => 'Run Web Service',
+	'runwebserviceworkflowtask' => 'Run Web Service',
 	'Select IO Map' => 'Select IO Map',
 	'Select Config Map' => 'Select Configuration Map',
 );

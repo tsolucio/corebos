@@ -178,7 +178,9 @@ $mod_strings = array(
 'Templates'=>'Modelos',
 'launchrelwf' => 'Executar workflows em atualizações relacionadas',
 'LBL_WFPURPOSE' => 'Propósito',
-'runwebserviceworkflowtask' => 'Run Webservice',
+'Run Webservice Workflow Task' => 'Run Web Service',
+'RunWebserviceWorkflowTask' => 'Run Web Service',
+'runwebserviceworkflowtask' => 'Run Web Service',
 'Select IO Map' => 'Select IO Map',
 'Select Config Map' => 'Select Configuration Map',
 );

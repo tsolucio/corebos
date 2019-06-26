@@ -46,6 +46,6 @@ $mod_strings = array(
 	'MAP_VALID'=> 'Mapa es válido',
 	'MAP_NOT_IMPLEMENTED_YET'=> 'No hay una validación para este mapa',
 	'DecisionTable' => 'Tabla de Decisión',
-	'Webservice Mapping' => 'Webservice Mapping',
+	'Webservice Mapping' => 'Llamada Web Service',
 );
 ?>
