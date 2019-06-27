@@ -5891,7 +5891,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 	/*
 	 * Globals
 	 */
-	if (!window.hasOwnProperty('dropdownKeycodeMap')) {
+	if (!Object.prototype.hasOwnProperty.call(window, 'dropdownKeycodeMap')) {
 		window.dropdownKeycodeMap = {
 			38: 'up',
 			40: 'down',
