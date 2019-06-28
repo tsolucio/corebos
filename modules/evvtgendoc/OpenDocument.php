@@ -2210,7 +2210,7 @@ class OpenDocument {
 		$doc->column_fields['docyear'] = date('Y');
 		$doc->column_fields['template'] = 0;
 		$doc->column_fields['filelocationtype'] = 'I';
-		$gdfolder = GlobalVariable::getVariable('GenDoc_Save_Document_Folder', '');
+		$gdfolder = GlobalVariable::getVariable('GenDoc_Save_Document_Folder', '', $module);
 		if ($gdfolder!='') {
 			$res = $adb->pquery('select folderid from vtiger_attachmentsfolder where foldername=?', array($gdfolder));
 			if ($adb->num_rows($res)==0) {
