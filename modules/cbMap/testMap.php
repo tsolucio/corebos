@@ -114,7 +114,7 @@ switch ($focus->column_fields['maptype']) {
 			$mapinfo = $rsm->getCompleteMapping();
 		break;
 	case 'RelatedPanes':
-			$mapinfo = $focus->RelatedPanes();
+			$mapinfo = $focus->RelatedPanes(array(74));
 		break;
 	case 'Import':
 		$mapinfo = $focus->Import()->getCompleteMapping();
