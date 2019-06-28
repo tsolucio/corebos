@@ -57,11 +57,22 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 </div>
 </td></tr>
 
-<tr><td style="padding: 18px;"><label class="slds-form-element__label" for="form-element-01">{'LBL_DEBUG'|@getTranslatedString:'evvtgendoc'}</label></td><td><div class="slds-checkbox_add-button">
-	<input type="checkbox" class="slds-assistive-text" id="add-checkbox-14" value="add-checkbox-14" />
-	<label for="add-checkbox-14" class="slds-checkbox_faux">
+<tr><td style="padding: 18px;">
+	<label class="slds-form-element__label" for="form-element-01">{'LBL_DEBUG'|@getTranslatedString:'evvtgendoc'}</label>
+	</td>
+	<td>
+	<div class="slds-form-element">
+	<label class="slds-checkbox_toggle slds-grid">
+		<span class="slds-form-element__label slds-m-bottom_none"></span>
+		<input type="checkbox" name="debug" aria-describedby="checkbox-toggle-14" />
+		<span id="debug" class="slds-checkbox_faux_container" aria-live="assertive">
+		<span class="slds-checkbox_faux"></span>
+		<span class="slds-checkbox_on"></span>
+		<span class="slds-checkbox_off"></span>
+		</span>
 	</label>
-</div></td></tr>
+	</div>
+</td></tr>
 
 <tr><td colspan=2 align="center">
 <br>
