@@ -1301,6 +1301,20 @@ $GlobalVariableDefinitons = array(
 	'values' => '0|1',
 	'definition' => 'Make the copy links in Detail View copy GenDoc labels instead of field values. By default deactivated.',
 ),
+'GenDoc_Save_Document_Folder' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Extension',
+	'values' => 'Documents folder name',
+	'definition' => 'Name of the folder where GenDoc will save generated documents. By default the first folder found will be used.',
+),
+'GenDoc_Default_Compile_Language' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Extension',
+	'values' => 'supported GenDoc languages: en es it pl',
+	'definition' => 'Language in which the templates are created and compiled. By default, the selected language of the current user is used.',
+),
 'BusinessQuestion_TableAnswer_Limit' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',

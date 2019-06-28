@@ -1302,6 +1302,20 @@ $GlobalVariableDefinitons = array(
 	'values' => '0|1',
 	'definition' => 'Haz que los enlaces de Copiar generen las etiquetas GenDoc en vez de los valores de los campos. Por defecto desactivado.',
 ),
+'GenDoc_Save_Document_Folder' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Extensión',
+	'values' => 'Nombre de carpeta en Documentos',
+	'definition' => 'Nombre de la carpeta donde GenDoc guardará los documentos generados. Por defecto se utilizará la primera carpeta encontrada.',
+),
+'GenDoc_Default_Compile_Language' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Extensión',
+	'values' => 'idiomas soportados por GenDoc: en es it pl',
+	'definition' => 'Idioma en el que se crean y compilan las plantillas. Por defecto, se usa el idioma seleccionado del usuario actual.',
+),
 'BusinessQuestion_TableAnswer_Limit' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Entero',
