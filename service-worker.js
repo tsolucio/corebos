@@ -1,266 +1,9948 @@
-/**
- * Copyright 2016 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
-*/
-
-// DO NOT EDIT THIS GENERATED OUTPUT DIRECTLY!
-// This file should be overwritten as part of your build process.
-// If you need to extend the behavior of the generated service worker, the best approach is to write
-// additional code and include it using the importScripts option:
-//   https://github.com/GoogleChrome/sw-precache#importscripts-arraystring
-//
-// Alternatively, it's possible to make changes to the underlying template file and then use that as the
-// new base for generating output, via the templateFilePath option:
-//   https://github.com/GoogleChrome/sw-precache#templatefilepath-string
-//
-// If you go that route, make sure that whenever you update your sw-precache dependency, you reconcile any
-// changes made to this original template file with your modified copy.
-
-// This generated service worker JavaScript will precache your site's resources.
-// The code needs to be saved in a .js file at the top-level of your site, and registered
-// from your pages in order to be used. See
-// https://github.com/googlechrome/sw-precache/blob/master/demo/app/js/service-worker-registration.js
-// for an example of how you can register this script and handle various service worker events.
-
-/* eslint-env worker, serviceworker */
-/* eslint-disable indent, no-unused-vars, no-multiple-empty-lines, max-nested-callbacks, space-before-function-paren, quotes, comma-spacing */
 'use strict';
 
-var precacheConfig = [["include/LD/assets/fonts/SalesforceSans-Bold.ttf","bab6f1ee9617b3f4375b4b4ccb818b01"],["include/LD/assets/fonts/SalesforceSans-BoldItalic.ttf","ff2f4aa51976e26f3f356a3e16a4a1f8"],["include/LD/assets/fonts/SalesforceSans-Book.ttf","23b8e087ecb40a02e3a2bf50b2da72a3"],["include/LD/assets/fonts/SalesforceSans-Italic.ttf","d0c0958fee01a679b1dad7db640e1835"],["include/LD/assets/fonts/SalesforceSans-Light.ttf","76d3c8425c3ee7c56dd3dad04b9016ca"],["include/LD/assets/fonts/SalesforceSans-LightItalic.ttf","30b63ac5063e7500299c0a9895332691"],["include/LD/assets/fonts/SalesforceSans-Regular.ttf","6c9ddaa8a8cfa8df9d612612753d00b2"],["include/LD/assets/fonts/SalesforceSans-Semibold.ttf","c3506dbc4b756695f9faf15eb9caebd1"],["include/LD/assets/fonts/SalesforceSans-Thin.ttf","b4b52fea9d4b0e87eb7a302197295cad"],["include/LD/assets/fonts/SalesforceSans-ThinItalic.ttf","388a242283418317e04f2a7105bb0835"],["include/LD/assets/fonts/webfonts/SalesforceSans-Bold.eot","7126a8f76526e1d11b7e96e590524af6"],["include/LD/assets/fonts/webfonts/SalesforceSans-Bold.svg","8aecdcc4aa68e15aefcb0d1d0e590d81"],["include/LD/assets/fonts/webfonts/SalesforceSans-Bold.woff","1a99b4b58efca0b3c1b1ea9c29d981e4"],["include/LD/assets/fonts/webfonts/SalesforceSans-BoldItalic.eot","430e3065b81b4b2abec9687be9dcecfe"],["include/LD/assets/fonts/webfonts/SalesforceSans-BoldItalic.svg","8152c6eb3b7a34653208166c7cb60c2b"],["include/LD/assets/fonts/webfonts/SalesforceSans-BoldItalic.woff","41ae6b36a1f81e8c5d2aafe12c409f30"],["include/LD/assets/fonts/webfonts/SalesforceSans-Italic.eot","60d1fa1975c08d8c67abd5ea6ee5417d"],["include/LD/assets/fonts/webfonts/SalesforceSans-Italic.svg","c944a148692ed1743f976c168fcf1629"],["include/LD/assets/fonts/webfonts/SalesforceSans-Italic.woff","882515c44aafee22611dbcbc904a792b"],["include/LD/assets/fonts/webfonts/SalesforceSans-Light.eot","db0b0031bf4eeb01aabdb6830a918912"],["include/LD/assets/fonts/webfonts/SalesforceSans-Light.svg","d5a0b582f31fe3e2cb49f85480e9d823"],["include/LD/assets/fonts/webfonts/SalesforceSans-Light.woff","2edec8788fdf09212e4fecdfeed96a7e"],["include/LD/assets/fonts/webfonts/SalesforceSans-LightItalic.eot","545e3e4d690f6d7d4a89e0783929a0c0"],["include/LD/assets/fonts/webfonts/SalesforceSans-LightItalic.svg","8575578fa11d310d1dd4295ec7e495fa"],["include/LD/assets/fonts/webfonts/SalesforceSans-LightItalic.woff","8080e8bc6c523ed5c657931fdd80e032"],["include/LD/assets/fonts/webfonts/SalesforceSans-Regular.eot","e49dcb01a490f0e54b047e69cc5ba537"],["include/LD/assets/fonts/webfonts/SalesforceSans-Regular.svg","ada994ed9b2acac21ceedf8e5d97484a"],["include/LD/assets/fonts/webfonts/SalesforceSans-Regular.woff","401b32ddc80c4c66d0558df1bc202d9b"],["include/LD/assets/fonts/webfonts/SalesforceSans-Thin.eot","0f5f0d78694ea287e7f43ff54a0056ad"],["include/LD/assets/fonts/webfonts/SalesforceSans-Thin.svg","a564e763588be50117b9624867e4cf8c"],["include/LD/assets/fonts/webfonts/SalesforceSans-Thin.woff","179b04066d1d2f2122b410e7194c7044"],["include/LD/assets/fonts/webfonts/SalesforceSans-ThinItalic.eot","78b1ce67f1f64198543dc1b92bd28d47"],["include/LD/assets/fonts/webfonts/SalesforceSans-ThinItalic.svg","ee6131f0b7cd6021b2de99f5c7a0dc83"],["include/LD/assets/fonts/webfonts/SalesforceSans-ThinItalic.woff","7affc86cb811009ddeda6363ef2605ab"],["include/LD/assets/icons/action-sprite/svg/symbols.svg","6bd23e6679a8752ec93e0545200fcd84"],["include/LD/assets/icons/action/add_contact.svg","8213f8c1af6fc1a5f45b9e68d3370883"],["include/LD/assets/icons/action/add_file.svg","1d087065bc495e0b2b2cd3a7ea51c1da"],["include/LD/assets/icons/action/add_photo_video.svg","005cf618ccbd7626e4f0dd5cfcafb8bd"],["include/LD/assets/icons/action/add_relationship.svg","0a095c9731c059b328d3d1b238c9130f"],["include/LD/assets/icons/action/announcement.svg","3363818115295fbc44b75ac74bc87c04"],["include/LD/assets/icons/action/apex.svg","10f87560dd726ad9da9b8bb606c72db1"],["include/LD/assets/icons/action/approval.svg","42f167b8fedebe4bcf08fcc92c791c97"],["include/LD/assets/icons/action/back.svg","4480dec54ab9729244271d09f9c45d41"],["include/LD/assets/icons/action/call.svg","eb966d0df9365dc826b5aa706820bcc9"],["include/LD/assets/icons/action/canvas.svg","92294a386cfeb597239bebde2ff9ff3e"],["include/LD/assets/icons/action/change_owner.svg","92d871f9cf8e07a4923874bb3c8f63f2"],["include/LD/assets/icons/action/change_record_type.svg","6bb2a79175bba89d782d70de18b112c2"],["include/LD/assets/icons/action/check.svg","a7fb6b1d178bab3a40731120babe0dd5"],["include/LD/assets/icons/action/clone.svg","5eb96dff92abe1d34aa01fdb8ad1e2f7"],["include/LD/assets/icons/action/close.svg","8df3fa2eefea162616b7720dbc211489"],["include/LD/assets/icons/action/defer.svg","f990fd06d32b73e8f0a3a3e62e5599d6"],["include/LD/assets/icons/action/delete.svg","5a727b715b796a063ea365f41a060666"],["include/LD/assets/icons/action/description.svg","1784efb133e92dcf6dd4d4f3ff0dbad8"],["include/LD/assets/icons/action/dial_in.svg","9c5c820a4e1b61269875de44db7b072d"],["include/LD/assets/icons/action/download.svg","bebdb605afbb5eceb453afd7126bac69"],["include/LD/assets/icons/action/edit.svg","a6528100cb184b81f8ec282a2878dcd4"],["include/LD/assets/icons/action/edit_groups.svg","868c58df1a39725661d4410de1029f28"],["include/LD/assets/icons/action/edit_relationship.svg","3784a087b713bd14c6e06bb4a3df900a"],["include/LD/assets/icons/action/email.svg","7458bf7f5ef5feaf561526e8291d1c27"],["include/LD/assets/icons/action/fallback.svg","b746999da8e9f9f77ee4936760673edf"],["include/LD/assets/icons/action/filter.svg","d53d43eb22125dc69823a1f1e46d3cde"],["include/LD/assets/icons/action/flow.svg","5a8e73c3b53a5ec132bc178bf8c3ab55"],["include/LD/assets/icons/action/follow.svg","c23e77a1f1cb06b9fdce3756ad11a69a"],["include/LD/assets/icons/action/following.svg","70299b31268b128788ce678b35a86d06"],["include/LD/assets/icons/action/freeze_user.svg","af1167e1ee824a67baac4ce633e64f5b"],["include/LD/assets/icons/action/goal.svg","0b44a8ec035f7a6d1db4d3dcbd774ce8"],["include/LD/assets/icons/action/google_news.svg","e28746a9097b0f97b0051f7a056728cd"],["include/LD/assets/icons/action/info.svg","eba3730c5c02615a98f8a5935d7172df"],["include/LD/assets/icons/action/join_group.svg","9a515a486e9990fb5e88351103a83c23"],["include/LD/assets/icons/action/lead_convert.svg","128e3311634f40be931b3508c7c16027"],["include/LD/assets/icons/action/leave_group.svg","a39eb4d9bf4af4a43024cf96b76ac1dd"],["include/LD/assets/icons/action/log_a_call.svg","1c67cbb49ddd9a67fed194337c91fe1f"],["include/LD/assets/icons/action/log_event.svg","b77da229b8a26dc3aa5d1f7cf0c58ac9"],["include/LD/assets/icons/action/manage_perm_sets.svg","f4403b5973e94731a8f98ed87fcb0e5f"],["include/LD/assets/icons/action/map.svg","321dce93fa2e442bb440f4de9cbe6355"],["include/LD/assets/icons/action/more.svg","6446b98ddcaaf5ad04298f9bb6a92cc5"],["include/LD/assets/icons/action/new.svg","1867ec504cd6bcdf955b7fffa8d51b4a"],["include/LD/assets/icons/action/new_account.svg","0bac65edac20af13332525ce4697f2d8"],["include/LD/assets/icons/action/new_campaign.svg","cbe5f8daac8ea26277f043295eaec0ce"],["include/LD/assets/icons/action/new_case.svg","44ac8e486e3689366efd3cbe602e3ab5"],["include/LD/assets/icons/action/new_child_case.svg","6e4a7883a4127d37f4c23d57eb8ee39b"],["include/LD/assets/icons/action/new_contact.svg","8213f8c1af6fc1a5f45b9e68d3370883"],["include/LD/assets/icons/action/new_custom1.svg","94034e1718801b7f8575b922ffddf20a"],["include/LD/assets/icons/action/new_custom10.svg","debd6911cb454838ff05ee616b97c473"],["include/LD/assets/icons/action/new_custom100.svg","a48c07ae28c22b533351947f2f0ca69f"],["include/LD/assets/icons/action/new_custom11.svg","d8ec488ee9730cb9927cd42fb542b0d5"],["include/LD/assets/icons/action/new_custom12.svg","ae0710fe3fb29c9d51d27e095d8219d6"],["include/LD/assets/icons/action/new_custom13.svg","70df76cbd28208fb826553c86ea591cd"],["include/LD/assets/icons/action/new_custom14.svg","0e65a0bd3601d889a3845f907f6482e2"],["include/LD/assets/icons/action/new_custom15.svg","42fff31ae41f0903e32da38aef3c0f03"],["include/LD/assets/icons/action/new_custom16.svg","335c2efd4903fed6d72a56e067be704f"],["include/LD/assets/icons/action/new_custom17.svg","25d89035764bf7cc074a435b280101ec"],["include/LD/assets/icons/action/new_custom18.svg","6ecc943f3260d31f99156e5a688acba8"],["include/LD/assets/icons/action/new_custom19.svg","4c28d8c88c0e1dbb597c03d227a6de16"],["include/LD/assets/icons/action/new_custom2.svg","bc525a017169359d34705dd4bc8aa117"],["include/LD/assets/icons/action/new_custom20.svg","233eb341b4c7d3057cdfd90570cbeb3d"],["include/LD/assets/icons/action/new_custom21.svg","d7d817f06ef1bb7c60cbe9bd45c18fa7"],["include/LD/assets/icons/action/new_custom22.svg","02830bc9ecb11449a88725df5d393dd6"],["include/LD/assets/icons/action/new_custom23.svg","ca7b264b9005923adf67338b1d5e1d71"],["include/LD/assets/icons/action/new_custom24.svg","3f953a6750378757d691489697a170dc"],["include/LD/assets/icons/action/new_custom25.svg","54d648cf67b4cb919f745507c379e6c1"],["include/LD/assets/icons/action/new_custom26.svg","af06832d04d12c140e7e4db738efb97f"],["include/LD/assets/icons/action/new_custom27.svg","a85a54ddde660f2e86d7a5b5adb89cc7"],["include/LD/assets/icons/action/new_custom28.svg","f5d6c6e7cdecbac0cf3ebf114fb46265"],["include/LD/assets/icons/action/new_custom29.svg","dae8ff75b9b72319d33ad24e1123c81e"],["include/LD/assets/icons/action/new_custom3.svg","06cebf29445bb133d3feb52aee044ce2"],["include/LD/assets/icons/action/new_custom30.svg","0528aafbc2a47d177841af50bc38c17e"],["include/LD/assets/icons/action/new_custom31.svg","c15f827e3a38474b4b62fc55bf0b1d29"],["include/LD/assets/icons/action/new_custom32.svg","b6e0301b4229cecd657c962473137fa1"],["include/LD/assets/icons/action/new_custom33.svg","9ee8ec948d097e9db179311a4b8884d2"],["include/LD/assets/icons/action/new_custom34.svg","bd84f8d9dedd972e96a6dac465009c88"],["include/LD/assets/icons/action/new_custom35.svg","d0814c569026e27a40d544d4beacd406"],["include/LD/assets/icons/action/new_custom36.svg","203d3db78a413e71a372485739ff501c"],["include/LD/assets/icons/action/new_custom37.svg","f73c0011aa5bbdf23dc82804c769dd51"],["include/LD/assets/icons/action/new_custom38.svg","449df704dd6a110f239c4ea144745bb0"],["include/LD/assets/icons/action/new_custom39.svg","66ac702d271a722ccf4255a86c198711"],["include/LD/assets/icons/action/new_custom4.svg","7d36627c26583586ff3227028f883e2c"],["include/LD/assets/icons/action/new_custom40.svg","8566f4d2e31464d0c6cac3329365c9a9"],["include/LD/assets/icons/action/new_custom41.svg","fa9828cd6c11fd4652976da434ae1391"],["include/LD/assets/icons/action/new_custom42.svg","70df76cbd28208fb826553c86ea591cd"],["include/LD/assets/icons/action/new_custom43.svg","175c884afda6de8f41df75c1a7035d7a"],["include/LD/assets/icons/action/new_custom44.svg","c121efe045dd6605e9c616ee723e54db"],["include/LD/assets/icons/action/new_custom45.svg","7ca903d2dc4f5f633f0a073ce2ff22dd"],["include/LD/assets/icons/action/new_custom46.svg","4c42c3dae1c826c7a6844e2f214d5d0c"],["include/LD/assets/icons/action/new_custom47.svg","d039579af28f0293c36353c4341889d8"],["include/LD/assets/icons/action/new_custom48.svg","f328de125540ea0b60abb05d300d8882"],["include/LD/assets/icons/action/new_custom49.svg","380779215c86ac2f5f606d95699671d6"],["include/LD/assets/icons/action/new_custom5.svg","a23b5d43462ccd831f6be4b8bdc42c40"],["include/LD/assets/icons/action/new_custom50.svg","80acb568a42a7b3e334482e50936b8e8"],["include/LD/assets/icons/action/new_custom51.svg","fddc26f50a5353bdb0c0da8a87487448"],["include/LD/assets/icons/action/new_custom52.svg","0ce684e1dd04b5b67e6c012c911db01b"],["include/LD/assets/icons/action/new_custom53.svg","03f771df9678d079100c0ebe6cdcc723"],["include/LD/assets/icons/action/new_custom54.svg","4716099024e2e4d7032a9ccb7ad9441a"],["include/LD/assets/icons/action/new_custom55.svg","754762d16de6b98f7e7d0d5faff73889"],["include/LD/assets/icons/action/new_custom56.svg","6149f3111ab6f2413cae8146f8c78f88"],["include/LD/assets/icons/action/new_custom57.svg","43bc8edc2ef6193f96291b58d3058274"],["include/LD/assets/icons/action/new_custom58.svg","94d63ab4b7ec5bc59425b9b8d929e738"],["include/LD/assets/icons/action/new_custom59.svg","9ea0543c9400930ff17ae80b06e086dd"],["include/LD/assets/icons/action/new_custom6.svg","4818335bf07a480aedc7c641c647243d"],["include/LD/assets/icons/action/new_custom60.svg","a2b1c608e6e638ab0f05359705f4ed45"],["include/LD/assets/icons/action/new_custom61.svg","cf550a625493e32bf456f7bbde5fba83"],["include/LD/assets/icons/action/new_custom62.svg","7de743e53f8fe4aab054d91b4ca2a333"],["include/LD/assets/icons/action/new_custom63.svg","1ca3171b90418044dbbb055926870d88"],["include/LD/assets/icons/action/new_custom64.svg","53c6652a9583a10f7297c351cc4246cc"],["include/LD/assets/icons/action/new_custom65.svg","0c8549fe2969aa48c83c5cd9842c2c28"],["include/LD/assets/icons/action/new_custom66.svg","19b0278b151f20bef559eccd05708320"],["include/LD/assets/icons/action/new_custom67.svg","fb3224656890cba8c3c5eb63dc193774"],["include/LD/assets/icons/action/new_custom68.svg","cbfd33a3db75189e5e7d456d3ba25690"],["include/LD/assets/icons/action/new_custom69.svg","68d1c5bea12c98117a89cdabc63403eb"],["include/LD/assets/icons/action/new_custom7.svg","66c06e52d7121203f0eb076d0cb6ebb0"],["include/LD/assets/icons/action/new_custom70.svg","07e1f6363e85608b653bb4b77dcd4459"],["include/LD/assets/icons/action/new_custom71.svg","b1a2c50f43e282d9dec52d310a3ce57e"],["include/LD/assets/icons/action/new_custom72.svg","507213244199bba0a3adc8208e4ca42e"],["include/LD/assets/icons/action/new_custom73.svg","cc00d18fa10d9953577ceb5a9708f081"],["include/LD/assets/icons/action/new_custom74.svg","9ed8be8f4901b198bae01d1a1fe270eb"],["include/LD/assets/icons/action/new_custom75.svg","0e383b3be78d4f9d94dd6c37c7061b84"],["include/LD/assets/icons/action/new_custom76.svg","335717d2559fb34c6150b4e761ef9e64"],["include/LD/assets/icons/action/new_custom77.svg","5bbb0a7c9189b53ccb1d0e23fe2aef70"],["include/LD/assets/icons/action/new_custom78.svg","a80e3d9985c6748a5f3a3c71f627443f"],["include/LD/assets/icons/action/new_custom79.svg","62ac20813583ec4d758a9ed2b261f40c"],["include/LD/assets/icons/action/new_custom8.svg","73eb2ce4939a5b403d7aa7ef7d653019"],["include/LD/assets/icons/action/new_custom80.svg","c660ade0d317bb8e56ce4e9357ccd8b1"],["include/LD/assets/icons/action/new_custom81.svg","1953121bce9f323689d0039cc0633084"],["include/LD/assets/icons/action/new_custom82.svg","3604b82d3b82cf1de7d168dc66d5d923"],["include/LD/assets/icons/action/new_custom83.svg","5de8649aa5a9b27041d84e93c26c3823"],["include/LD/assets/icons/action/new_custom84.svg","83dce573b4fd91fdb75594b1ebe49890"],["include/LD/assets/icons/action/new_custom85.svg","01aa16b05176d25fe25e2ed6c22b9f32"],["include/LD/assets/icons/action/new_custom86.svg","a2d5b498669ca89907407ead0b0739dd"],["include/LD/assets/icons/action/new_custom87.svg","bc2d0aaf946d8f5366b1e61e307eac4f"],["include/LD/assets/icons/action/new_custom88.svg","bdb668efa8d14958c2e455d5a566c1db"],["include/LD/assets/icons/action/new_custom89.svg","ce6dcd2dda5a77b2df4f79d4a50fa1bf"],["include/LD/assets/icons/action/new_custom9.svg","01ec6e7a2a321b3439b143d11782f7ae"],["include/LD/assets/icons/action/new_custom90.svg","84d37c3a4faba123c6a13554707b2002"],["include/LD/assets/icons/action/new_custom91.svg","07bc0253e0ddebae3e507dcfe89eb241"],["include/LD/assets/icons/action/new_custom92.svg","2d758a0e547efbf264c5851d7c777932"],["include/LD/assets/icons/action/new_custom93.svg","e340238e8cf5cd94cb6b8f07ca09d2ca"],["include/LD/assets/icons/action/new_custom94.svg","e42d087c0a17617482516e2b5e65953e"],["include/LD/assets/icons/action/new_custom95.svg","3d701979b64fd7ee4ea8714bf527c1cf"],["include/LD/assets/icons/action/new_custom96.svg","b3020cc1af210f4052d15d5deb6e0940"],["include/LD/assets/icons/action/new_custom97.svg","f389e55ebae20cb52b6c2bf198a0bfb2"],["include/LD/assets/icons/action/new_custom98.svg","e465521420765865fdbf9b43e281bd24"],["include/LD/assets/icons/action/new_custom99.svg","a45a0b9363139d4a001eedc82554dbec"],["include/LD/assets/icons/action/new_event.svg","feeedb395459c47a6f4fd6b51bc0691b"],["include/LD/assets/icons/action/new_group.svg","df3fc1d8963a3eaadf898eb42fb0cda3"],["include/LD/assets/icons/action/new_lead.svg","d7330315e0a2c124145bb9606de29a70"],["include/LD/assets/icons/action/new_note.svg","71352fc56fc16ea7a4662766ed8b0b6f"],["include/LD/assets/icons/action/new_notebook.svg","8afe66ff0cb9a81776e7c4ba4c05bb1d"],["include/LD/assets/icons/action/new_opportunity.svg","babc67970bcf099f01513d1826add76b"],["include/LD/assets/icons/action/new_person_account.svg","520fa00271cc9abef0f7b706be9bef4b"],["include/LD/assets/icons/action/new_task.svg","3cd52d70366ec9f7a97a9867100e3a52"],["include/LD/assets/icons/action/password_unlock.svg","959116234fc751cbe27b3db489e3d708"],["include/LD/assets/icons/action/preview.svg","12ad8cbeb2b4486adb7fec8abf8397b3"],["include/LD/assets/icons/action/priority.svg","037437751a74cb8103477d45a7274cfc"],["include/LD/assets/icons/action/question_post_action.svg","0f762422b4e72ffb4e5c236df19d36e1"],["include/LD/assets/icons/action/quote.svg","f642b96cf42e48663073e5b34f5bef3b"],["include/LD/assets/icons/action/recall.svg","0fc40f0167d1f532c5e874f02f2a1a76"],["include/LD/assets/icons/action/record.svg","adfcac8e9f67a8205565a91cc70e5b37"],["include/LD/assets/icons/action/refresh.svg","3cf7d2a5ea45a0abe3066b257146cbda"],["include/LD/assets/icons/action/reject.svg","8df3fa2eefea162616b7720dbc211489"],["include/LD/assets/icons/action/remove.svg","8df3fa2eefea162616b7720dbc211489"],["include/LD/assets/icons/action/remove_relationship.svg","c1c8fc526196ef796c20696ad5b39d72"],["include/LD/assets/icons/action/reset_password.svg","3cf7d2a5ea45a0abe3066b257146cbda"],["include/LD/assets/icons/action/script.svg","94161c56d723f2c2160cac4b612ec877"],["include/LD/assets/icons/action/share.svg","d9c46349e91dc62065659d66438156f9"],["include/LD/assets/icons/action/share_file.svg","ee87e138f87e45132f2fb616e702de6e"],["include/LD/assets/icons/action/share_link.svg","d876ec47e93af49da332d469408be53f"],["include/LD/assets/icons/action/share_poll.svg","858d9d0b09b5fb75b96579468623c340"],["include/LD/assets/icons/action/share_post.svg","ee77077bbd46815bbb752eb3f9d07b9e"],["include/LD/assets/icons/action/share_thanks.svg","723cc95e1da63ac807408dbc7da2153a"],["include/LD/assets/icons/action/sort.svg","beca2649fcb6cd20d9efa6394248b00c"],["include/LD/assets/icons/action/submit_for_approval.svg","973ada77057d4ea4346ce34d0b53340e"],["include/LD/assets/icons/action/update.svg","ce68e09bdef560e600515dacf7372081"],["include/LD/assets/icons/action/update_status.svg","09e57bc164441064f5fa366be5b667a7"],["include/LD/assets/icons/action/upload.svg","c7a865ee55d392c0146e79737d4f9acf"],["include/LD/assets/icons/action/user.svg","eaf556fe598cd7822ef415c390df15dd"],["include/LD/assets/icons/action/user_activation.svg","e0c8b7224a6bd287f05f99d4c5c489a7"],["include/LD/assets/icons/action/view_relationship.svg","a2f76d085e93967443b2594a8ef7bb96"],["include/LD/assets/icons/action/web_link.svg","eb9a74852adcbb338206cd3d9174a5b4"],["include/LD/assets/icons/custom-sprite/svg/symbols.svg","3eeb1bd682daedabcdc71243ae64099f"],["include/LD/assets/icons/custom/custom1.svg","e11274a2928044a549a6d85d09a31cc0"],["include/LD/assets/icons/custom/custom10.svg","c95a1f566398a48a50628120a404e657"],["include/LD/assets/icons/custom/custom100.svg","81b56bdd2353de6877cbf027f4a9709e"],["include/LD/assets/icons/custom/custom101.svg","7449bf8cd0adfb5c9e890ef67f029a24"],["include/LD/assets/icons/custom/custom102.svg","24a009db677f96fedee954679dc010d7"],["include/LD/assets/icons/custom/custom103.svg","a055997724607e657f2870e4c562b747"],["include/LD/assets/icons/custom/custom104.svg","2b1f235f7dbdae67637035b554936984"],["include/LD/assets/icons/custom/custom105.svg","b5405030c8c5a07e31a19001f23898e4"],["include/LD/assets/icons/custom/custom106.svg","63722f24533d0ac5324a7e4bb16b998a"],["include/LD/assets/icons/custom/custom107.svg","7d206516860458fad3c942d81eab5960"],["include/LD/assets/icons/custom/custom108.svg","58188d896775a194673d620dc2c5e53f"],["include/LD/assets/icons/custom/custom109.svg","bce2e755f0700241715cc7253dca5e34"],["include/LD/assets/icons/custom/custom11.svg","6fa0e806eceb83ac7f20152c1a77f7b2"],["include/LD/assets/icons/custom/custom110.svg","d97d5851cad11b2ccb6e313fce374ef0"],["include/LD/assets/icons/custom/custom111.svg","356f59548ddff1cbf5deb3e8ef06ebab"],["include/LD/assets/icons/custom/custom112.svg","38ebfe25b3d5dddc507f36cdfe90a76e"],["include/LD/assets/icons/custom/custom113.svg","448aa7a81990975ae4b5e6e65e818dd6"],["include/LD/assets/icons/custom/custom12.svg","18ec8646ee4704c0244750012d3058a8"],["include/LD/assets/icons/custom/custom13.svg","c41dfa6aa178f08a1db08484ca5be041"],["include/LD/assets/icons/custom/custom14.svg","1ed0852d71605209fe2dbea9dfd9c19b"],["include/LD/assets/icons/custom/custom15.svg","947db169f6fd625040bc0f50c50c9821"],["include/LD/assets/icons/custom/custom16.svg","62254f356889c2c0097d92c22f1431bf"],["include/LD/assets/icons/custom/custom17.svg","0e8f591addc0d5810a8e11d1918c7630"],["include/LD/assets/icons/custom/custom18.svg","d47df4201afd9cb4bada172f8ec41fe1"],["include/LD/assets/icons/custom/custom19.svg","0ed1283494abbe20657992596738a0e0"],["include/LD/assets/icons/custom/custom2.svg","e7fe09ff64f5116129ff1414e7ae335f"],["include/LD/assets/icons/custom/custom20.svg","6e0ab5eb2a927ea142872d16a0291f01"],["include/LD/assets/icons/custom/custom21.svg","1da066b454326f9bef91654144f0d0db"],["include/LD/assets/icons/custom/custom22.svg","80cbae2b313517d2955bd8a0cee82b64"],["include/LD/assets/icons/custom/custom23.svg","3001d76a01c82b0b162a442c1dcd3fde"],["include/LD/assets/icons/custom/custom24.svg","03d4fde3a3b8cff13f3370796dc112f6"],["include/LD/assets/icons/custom/custom25.svg","7959a16dcac05a2d4db416c6aae32427"],["include/LD/assets/icons/custom/custom26.svg","7b4f24ff4958187ec0fd05aede08a74a"],["include/LD/assets/icons/custom/custom27.svg","e8d949e39ab1a7fff29427b492bb57c7"],["include/LD/assets/icons/custom/custom28.svg","c4c4d15c8fe95804c94ca45bdb86827c"],["include/LD/assets/icons/custom/custom29.svg","6b3c9eff081fe5e3674bfbbd4e218115"],["include/LD/assets/icons/custom/custom3.svg","d7d6fe86f3d0b488bb9443d241faa21e"],["include/LD/assets/icons/custom/custom30.svg","9a3ce0d7bcd0a3546ebf7c3a9bd7ca2b"],["include/LD/assets/icons/custom/custom31.svg","d0fd986ace4166106690f99c825ccfdd"],["include/LD/assets/icons/custom/custom32.svg","cac789c58726b586c59de4c3b90d2351"],["include/LD/assets/icons/custom/custom33.svg","52d193840d70a3c39e15e63c8f0e0699"],["include/LD/assets/icons/custom/custom34.svg","ab565efa322435a68f207cd0e9009123"],["include/LD/assets/icons/custom/custom35.svg","0c72c28466d9facc87d3f09504ae60f1"],["include/LD/assets/icons/custom/custom36.svg","7a555c167a8d2f2ba2f2bd30b9e58149"],["include/LD/assets/icons/custom/custom37.svg","08c2228d108f678b944e262bf2efd93d"],["include/LD/assets/icons/custom/custom38.svg","e3a49fb6664ba414130b68e7df44d2c3"],["include/LD/assets/icons/custom/custom39.svg","8cab6f4768cbe78ca5a2665eab8fa228"],["include/LD/assets/icons/custom/custom4.svg","6c5b6ad594e4a1472f5ed559e539ce1b"],["include/LD/assets/icons/custom/custom40.svg","5176082c68d5f5809c861eaaa0174e56"],["include/LD/assets/icons/custom/custom41.svg","72f3d2b8086cb78774fcc9bb8c8c7fab"],["include/LD/assets/icons/custom/custom42.svg","c41dfa6aa178f08a1db08484ca5be041"],["include/LD/assets/icons/custom/custom43.svg","7aa3899b8049eeaf38e7654c70fa176b"],["include/LD/assets/icons/custom/custom44.svg","c43361dd8718bb47a02fe1c693bbb99b"],["include/LD/assets/icons/custom/custom45.svg","c3631ed88c131abaac26dd9bc269fffa"],["include/LD/assets/icons/custom/custom46.svg","c399dc7a985b9b265dd65f2aafdd45b3"],["include/LD/assets/icons/custom/custom47.svg","6e0f46b6b15c782876d8c9014a92e0af"],["include/LD/assets/icons/custom/custom48.svg","f48c9a7c24d290a97c9e1ab2841ce4f9"],["include/LD/assets/icons/custom/custom49.svg","f9b9fb019aeae0fccd8ad54c0a6654c2"],["include/LD/assets/icons/custom/custom5.svg","39db62b6a1f6925ccc2563537976ea68"],["include/LD/assets/icons/custom/custom50.svg","84ce04eb35de5ee9fb911a00ed44d1b5"],["include/LD/assets/icons/custom/custom51.svg","ab53bac46166923a6b20e5a721c04adc"],["include/LD/assets/icons/custom/custom52.svg","cf858c5056b52c1a4ac34f4000b439c8"],["include/LD/assets/icons/custom/custom53.svg","6349525282d6b10c4ea049d560abeffe"],["include/LD/assets/icons/custom/custom54.svg","c764d2679564d539c2e1caebeec0fde7"],["include/LD/assets/icons/custom/custom55.svg","88b3a6d4ac2b69ac138a450f79d40772"],["include/LD/assets/icons/custom/custom56.svg","daceb8f126edd695b3a90e8fe6375206"],["include/LD/assets/icons/custom/custom57.svg","44fc31759b44b61fede0fab6d6751bac"],["include/LD/assets/icons/custom/custom58.svg","a37384ac6e525cee771ab189725aa1dc"],["include/LD/assets/icons/custom/custom59.svg","96482fddfaf95e6ecb88d8f3c573370a"],["include/LD/assets/icons/custom/custom6.svg","eb9aade4edb9df7299b6870a842edcf0"],["include/LD/assets/icons/custom/custom60.svg","fd409af584d5f897c25811c58b3c7a46"],["include/LD/assets/icons/custom/custom61.svg","0093854f2f818a8ded61f3d60f730d7a"],["include/LD/assets/icons/custom/custom62.svg","25a2801293b8c4796c317531463b8e56"],["include/LD/assets/icons/custom/custom63.svg","bcef9a5b18fdc34ca4be1ef38851e3d9"],["include/LD/assets/icons/custom/custom64.svg","2dca3819aa6fbae9d98107e7f18ae398"],["include/LD/assets/icons/custom/custom65.svg","75627fad4de18881bfa97b9b02a2d680"],["include/LD/assets/icons/custom/custom66.svg","50a238d52f972af7851403c558d58c1f"],["include/LD/assets/icons/custom/custom67.svg","c5402e37292cec38b38df04456ff1cb1"],["include/LD/assets/icons/custom/custom68.svg","d41769ced7274fafb8eb4b593929b564"],["include/LD/assets/icons/custom/custom69.svg","2780edafbd505e23366484ffa2e1f847"],["include/LD/assets/icons/custom/custom7.svg","981bb9d27c82d2aac23f6fc135a648ac"],["include/LD/assets/icons/custom/custom70.svg","53704ff16df494965a544789c5c70400"],["include/LD/assets/icons/custom/custom71.svg","e918b562bb78d79feaef6f4181c0e120"],["include/LD/assets/icons/custom/custom72.svg","750daecd2741000a4f0a981eb7e86755"],["include/LD/assets/icons/custom/custom73.svg","c68681e5cc0e981c05d86fda604b8385"],["include/LD/assets/icons/custom/custom74.svg","c3659d9e177968cf42457c80b3582dfd"],["include/LD/assets/icons/custom/custom75.svg","a7181505c76fcf8f58ff0db6ee313637"],["include/LD/assets/icons/custom/custom76.svg","5519d4ce220ceeaf72e4d567fe7e19d7"],["include/LD/assets/icons/custom/custom77.svg","c2782b7c2339c2bc889d90e33eb21edf"],["include/LD/assets/icons/custom/custom78.svg","bbabab20c17265cfb5220cfff6484441"],["include/LD/assets/icons/custom/custom79.svg","775b59d75d122e077b0dca71d170212a"],["include/LD/assets/icons/custom/custom8.svg","ad82e04c5f61e7c4743703e23c95ae60"],["include/LD/assets/icons/custom/custom80.svg","aeff6280e6379eea2feef98199b46ae0"],["include/LD/assets/icons/custom/custom81.svg","fe021220f6cb6c65ecf8464f4a1e53b1"],["include/LD/assets/icons/custom/custom82.svg","49ac97858cf072278d42b1490f2fb950"],["include/LD/assets/icons/custom/custom83.svg","138188e0dbaf1addb9563347663da228"],["include/LD/assets/icons/custom/custom84.svg","2c3c2beca11788b7ca4053ab92160176"],["include/LD/assets/icons/custom/custom85.svg","ea30eb530d9e052dee7fb191a938611a"],["include/LD/assets/icons/custom/custom86.svg","0edaf3e2e56738e085e8c2be93cc4903"],["include/LD/assets/icons/custom/custom87.svg","21ee279f8fbbbcfdc878ac1633283ea6"],["include/LD/assets/icons/custom/custom88.svg","b01d575af1b19fa1b8f5d4ab6f9dff65"],["include/LD/assets/icons/custom/custom89.svg","ecf7c7896c0411c278bf48f0adc773fe"],["include/LD/assets/icons/custom/custom9.svg","e159aa4bc079cb55c62d1b3d7d3f57af"],["include/LD/assets/icons/custom/custom90.svg","10664f230c672aa301ff36be24cbc800"],["include/LD/assets/icons/custom/custom91.svg","8360e1e365daba0b269cd4be968e19f5"],["include/LD/assets/icons/custom/custom92.svg","3c08ddf594bce9465d7d23814e4b29c5"],["include/LD/assets/icons/custom/custom93.svg","c9c363e1601496a68590ab1eb475863d"],["include/LD/assets/icons/custom/custom94.svg","e6f880c34b999db1a673406da61e0d81"],["include/LD/assets/icons/custom/custom95.svg","d300412c4a8b078511e0a146f13b3351"],["include/LD/assets/icons/custom/custom96.svg","9c45624634cf2537d91fd254c03e8ec1"],["include/LD/assets/icons/custom/custom97.svg","18c22ae46d6010e0492c2ea3ae80a960"],["include/LD/assets/icons/custom/custom98.svg","edcf327dbe2de7f133bf713d92aee9d9"],["include/LD/assets/icons/custom/custom99.svg","b0363502d3a25ad3f9f0a07a716a65a0"],["include/LD/assets/icons/doctype-sprite/svg/symbols.svg","56d22387c555429bb26579f512ec0689"],["include/LD/assets/icons/doctype/ai.svg","0ecd8226c7fef2b3ff45be98628a4881"],["include/LD/assets/icons/doctype/attachment.svg","54574525b11121669ac899db0ba65dc5"],["include/LD/assets/icons/doctype/audio.svg","831bf5ccf2032da86ccaa606a8397cdb"],["include/LD/assets/icons/doctype/box_notes.svg","12f3f1ee189a2afb6ad6548d465301be"],["include/LD/assets/icons/doctype/csv.svg","bf6fb5ca1ef8e9909ea56d55501bac2f"],["include/LD/assets/icons/doctype/eps.svg","d2b0ce82758e0e19a7a19f326f8de7fa"],["include/LD/assets/icons/doctype/excel.svg","b40d03d841485a5312e921e7c71a1765"],["include/LD/assets/icons/doctype/exe.svg","d5b641ce11a1462359f2627a9b05e64a"],["include/LD/assets/icons/doctype/flash.svg","a62d5a699c2afdc90932e4bfb81bf727"],["include/LD/assets/icons/doctype/folder.svg","5e0543f198ea5454272edc6d06b21ba1"],["include/LD/assets/icons/doctype/gdoc.svg","d9a596444da8709070ab8352a69ca4c3"],["include/LD/assets/icons/doctype/gdocs.svg","7d7ced055e19230c64e56a096cef3f7d"],["include/LD/assets/icons/doctype/gform.svg","7c0fdad722e0e80824d5c6c611576cd7"],["include/LD/assets/icons/doctype/gpres.svg","575faaeb144f107fc4893862d8c94edc"],["include/LD/assets/icons/doctype/gsheet.svg","b1ea4a583e41207664510b34e9b0499d"],["include/LD/assets/icons/doctype/html.svg","302a22ecebbd0b27f0a957ef725208a9"],["include/LD/assets/icons/doctype/image.svg","5295b645acd4143f11788ebf0d571cb8"],["include/LD/assets/icons/doctype/keynote.svg","4f8a1176e0d3d3b2d405dbfb88278f98"],["include/LD/assets/icons/doctype/library_folder.svg","c28ce78251c04f3acf648948a28950fd"],["include/LD/assets/icons/doctype/link.svg","29c725f37f51c09dcba36902d9df2a35"],["include/LD/assets/icons/doctype/mp4.svg","107541bd124636d925d63a777e9c2388"],["include/LD/assets/icons/doctype/overlay.svg","3158671ed83aac4807bf85e87547aaad"],["include/LD/assets/icons/doctype/pack.svg","e7bdd3c1ee2c9202df7e785682277b3d"],["include/LD/assets/icons/doctype/pages.svg","659986515cf433c3942cb2f9aa74eb09"],["include/LD/assets/icons/doctype/pdf.svg","8c426522b596af0a71d2afef67a17e0a"],["include/LD/assets/icons/doctype/ppt.svg","6326298a23be79a57ad974ef17dd84b3"],["include/LD/assets/icons/doctype/psd.svg","49594ef4509c9e90a85163f134b0ea60"],["include/LD/assets/icons/doctype/quip_doc.svg","07b5b63bfc0b568b36b8ea0fc8050429"],["include/LD/assets/icons/doctype/quip_sheet.svg","0c3f6dae3e994d8aa52662266066a5a8"],["include/LD/assets/icons/doctype/rtf.svg","77a07e3925b631176ab5e97c916faba9"],["include/LD/assets/icons/doctype/slide.svg","375973828e5893d3711a2058967e1eea"],["include/LD/assets/icons/doctype/stypi.svg","802f99c81ccfb00627849f91a9c38126"],["include/LD/assets/icons/doctype/txt.svg","b34e4ed5790537fe35c19e2934c171da"],["include/LD/assets/icons/doctype/unknown.svg","99b509624d232eb06c423d07c6e51e84"],["include/LD/assets/icons/doctype/video.svg","b6ef22ec70bf35c1eb77f1346fdf3a18"],["include/LD/assets/icons/doctype/visio.svg","82debd6620682c33cd78d060f4e0888a"],["include/LD/assets/icons/doctype/webex.svg","1fbd69f4c64a27e02155e6b30cc81414"],["include/LD/assets/icons/doctype/word.svg","52c76dfa5fa71448c5d954455f71fd06"],["include/LD/assets/icons/doctype/xml.svg","7524dace22c7de84fe82675b40b2ed5d"],["include/LD/assets/icons/doctype/zip.svg","5c8edbb90bf5f9300e6a04192ca00332"],["include/LD/assets/icons/standard-sprite/svg/symbols.svg","3c91235df42aae12f89898333bd48a0f"],["include/LD/assets/icons/standard/account.svg","abe646477566bf7244dc34d041686f6d"],["include/LD/assets/icons/standard/action_list_component.svg","4f29def4c8044062fc1249322252e9c2"],["include/LD/assets/icons/standard/address.svg","d500b97e3eb64aac8ea82f78b1be2574"],["include/LD/assets/icons/standard/agent_session.svg","2e47aa4a3c94aa0a721590b581e5876c"],["include/LD/assets/icons/standard/all.svg","9297f763202c64b3bd79e2971fcb1cfc"],["include/LD/assets/icons/standard/announcement.svg","1f3ee691e8ff9194d97e1e006b367dd4"],["include/LD/assets/icons/standard/answer_best.svg","d402b8c490498588141cd5842928a505"],["include/LD/assets/icons/standard/answer_private.svg","55dd82f0bc774fe864b4cb50229e232a"],["include/LD/assets/icons/standard/answer_public.svg","7c5e61a8560f40253debf53afb1e0ddb"],["include/LD/assets/icons/standard/apex.svg","0c2fabda3aacb7482854c84c0d6e9366"],["include/LD/assets/icons/standard/apex_plugin.svg","f2d5fd1d60b2356796a8b947e6ba331f"],["include/LD/assets/icons/standard/approval.svg","a06057773e58d10308af47d059fa9d24"],["include/LD/assets/icons/standard/apps.svg","fec5e4e7e92bf0fdaa8f0a389ad286e6"],["include/LD/assets/icons/standard/apps_admin.svg","d744ef3ecaeda679ee3dc0918941b85d"],["include/LD/assets/icons/standard/article.svg","cbc881a1c9224c09d6edda3b704ed46a"],["include/LD/assets/icons/standard/asset_relationship.svg","c157cb67952c8ef9cb090f9c5b1c0ce1"],["include/LD/assets/icons/standard/assigned_resource.svg","c93f6407cd8f2933d7f692856bf777e5"],["include/LD/assets/icons/standard/assignment.svg","e271261db7c260e120b2a75f7cfa2b74"],["include/LD/assets/icons/standard/avatar.svg","55c51356065facdfcda2a6064b08a9cb"],["include/LD/assets/icons/standard/avatar_loading.svg","da372795dd0e9f3f7d0b44096ac83e11"],["include/LD/assets/icons/standard/bot.svg","85d6216a5f9fd15603088848f02482cb"],["include/LD/assets/icons/standard/bot_training.svg","9a3056dfe6d4e3da284bd3f7aff105b8"],["include/LD/assets/icons/standard/branch_merge.svg","93f8f9796544daff3e9de5943bddb674"],["include/LD/assets/icons/standard/brand.svg","9e2659363bec74ed23e871dbb3e2dc91"],["include/LD/assets/icons/standard/business_hours.svg","e49e93413d3017df3e84710218bca1cc"],["include/LD/assets/icons/standard/calibration.svg","20f6a8d90b7e279a086872e0d43ce1e0"],["include/LD/assets/icons/standard/call.svg","80cbae2b313517d2955bd8a0cee82b64"],["include/LD/assets/icons/standard/call_history.svg","1c74918374fb15af0dc2ee09860c2c4f"],["include/LD/assets/icons/standard/campaign.svg","3563d73e8f3d97f2619550b1de01cc9a"],["include/LD/assets/icons/standard/campaign_members.svg","c36dd61941ac983052e481a0a70d2363"],["include/LD/assets/icons/standard/canvas.svg","9710f5c14c8953089b0c03b2cb188d4c"],["include/LD/assets/icons/standard/carousel.svg","9521133fc942d732f04ff98a24722e89"],["include/LD/assets/icons/standard/case.svg","ee400a23a97646a54caab05336c08b30"],["include/LD/assets/icons/standard/case_change_status.svg","24d420dabb338c7296636e482189ffef"],["include/LD/assets/icons/standard/case_comment.svg","14235379d3f9dee48e77287b182fa60b"],["include/LD/assets/icons/standard/case_email.svg","f3cfaa7db60cc108db66e66d865f2796"],["include/LD/assets/icons/standard/case_log_a_call.svg","945f69182f84d15e3d4f7ec960c46be4"],["include/LD/assets/icons/standard/case_milestone.svg","3befdef263cfaa06bfb648708448bebe"],["include/LD/assets/icons/standard/case_transcript.svg","9f9ce13316540ba785a044d8e8a643d5"],["include/LD/assets/icons/standard/channel_program_history.svg","c2e4013086e659784940c288111e45cb"],["include/LD/assets/icons/standard/channel_program_levels.svg","4d0e1e8e1dd570c1b124845fd511f488"],["include/LD/assets/icons/standard/channel_program_members.svg","8a019d3c0b80a85b6dcdbe7b56eef644"],["include/LD/assets/icons/standard/channel_programs.svg","b778b3199c5a54a38e924961cb7584bf"],["include/LD/assets/icons/standard/choice.svg","84eb74de4e8b2e6b452b6609fe0ccbbd"],["include/LD/assets/icons/standard/client.svg","2fd7e3cd53af1da3ccacec4fff577e50"],["include/LD/assets/icons/standard/cms.svg","8c0ff3364502cd61fb0c296a472fdd49"],["include/LD/assets/icons/standard/coaching.svg","af220e45b95dfa536a452a4b90a16cd4"],["include/LD/assets/icons/standard/code_playground.svg","20306bfdcd1a4cce98fbfbc280da86d9"],["include/LD/assets/icons/standard/collection_variable.svg","e18a1b477084c092e9fe8abfbb66aa5e"],["include/LD/assets/icons/standard/connected_apps.svg","ea6114f2ba4c6b46dd5eced0730199ec"],["include/LD/assets/icons/standard/constant.svg","36eb2113204cdaea5433d3f75b74fb41"],["include/LD/assets/icons/standard/contact.svg","93760c429c87b0c2893723a807014a6c"],["include/LD/assets/icons/standard/contact_list.svg","3fe73cdc28ac16beb051f05468368cb6"],["include/LD/assets/icons/standard/contact_request.svg","0358863754d6bb6ba7ecc9033a866c2c"],["include/LD/assets/icons/standard/contract.svg","a1b6cc1b68335bb3a22577339f265883"],["include/LD/assets/icons/standard/contract_line_item.svg","0afdaf70816ea4b8fa31d50e33ba5fb3"],["include/LD/assets/icons/standard/currency.svg","51928d573a5c93fa61ebf0e4ff06fc58"],["include/LD/assets/icons/standard/currency_input.svg","6f3998ed2479c79169e794215a28632c"],["include/LD/assets/icons/standard/custom.svg","0ed1283494abbe20657992596738a0e0"],["include/LD/assets/icons/standard/custom_notification.svg","885225a68fd72e2897771921a460e166"],["include/LD/assets/icons/standard/customer_portal_users.svg","3f2c6df261b8a1d70c3ab91f73f6d4df"],["include/LD/assets/icons/standard/customers.svg","195c842f04310fde226cd83b270f7c73"],["include/LD/assets/icons/standard/dashboard.svg","17ca577a6ac8c41d14d3514b6637f1ac"],["include/LD/assets/icons/standard/data_integration_hub.svg","bc420fa730d8570a7a55b4ae36fef15b"],["include/LD/assets/icons/standard/datadotcom.svg","818268da2835b1ad46dca1771e04b0f2"],["include/LD/assets/icons/standard/date_input.svg","4b35fcbea1b8f0d2622de81b69b38a6d"],["include/LD/assets/icons/standard/date_time.svg","1a5cae468291cbd96c2f27979b124ed8"],["include/LD/assets/icons/standard/decision.svg","71e2c9cbbf5c58ee9e06360d26eee1ef"],["include/LD/assets/icons/standard/default.svg","776fa46dafcc71bb1c59702212525dc3"],["include/LD/assets/icons/standard/display_rich_text.svg","e42df585f83028f9d4f756a9757a1f8f"],["include/LD/assets/icons/standard/display_text.svg","a20b029a4dcc526b4d4eeaf40218011d"],["include/LD/assets/icons/standard/document.svg","4818ca8248c4c24666fcae7e24b77305"],["include/LD/assets/icons/standard/drafts.svg","38b015c87555fa6adba2b6f724a1b943"],["include/LD/assets/icons/standard/dynamic_record_choice.svg","546d57e1cfba081035b078ae422acf8c"],["include/LD/assets/icons/standard/email.svg","1823ba0303260e4c3752a3281774087a"],["include/LD/assets/icons/standard/email_chatter.svg","1823ba0303260e4c3752a3281774087a"],["include/LD/assets/icons/standard/empty.svg","620dbcd993a5c760ced27e2ec365d57d"],["include/LD/assets/icons/standard/endorsement.svg","75119b280368598425a8dd3c17248ee5"],["include/LD/assets/icons/standard/entitlement.svg","2ad92d86cd270e66c38e051116987818"],["include/LD/assets/icons/standard/entitlement_process.svg","4c92a9f48361810752fb27af62a477b1"],["include/LD/assets/icons/standard/entitlement_template.svg","eb36eded65bed19a5ac873dfb2370dc5"],["include/LD/assets/icons/standard/entity.svg","c87517e6b757f9f4c357e12b5aed9ddc"],["include/LD/assets/icons/standard/entity_milestone.svg","f2e9d1f3ea791fca80ecdeaa33d0ca88"],["include/LD/assets/icons/standard/environment_hub.svg","5f782c1886f018a0fecb2c9a512bced3"],["include/LD/assets/icons/standard/event.svg","3f0137c043a0d045fd4fb18c3612bec3"],["include/LD/assets/icons/standard/feed.svg","d76a498ab2b9db3b713dbf7574b6a3ea"],["include/LD/assets/icons/standard/feedback.svg","9f54bde8eda984e876eea62c33386fa3"],["include/LD/assets/icons/standard/file.svg","0d3eb96abce8ca98c0801793fbbb7f86"],["include/LD/assets/icons/standard/filter.svg","f58a8b97deafbbea7e0ba3a79130a3c4"],["include/LD/assets/icons/standard/first_non_empty.svg","00e6fe62d74fb5b75191f7d2160c6cd7"],["include/LD/assets/icons/standard/flow.svg","8f83b8cca415401aff62ed2a598591c2"],["include/LD/assets/icons/standard/folder.svg","1d5f7ab0932757e236592c18353f50d2"],["include/LD/assets/icons/standard/forecasts.svg","21301029a700b074a1769b2bf0f1dd4d"],["include/LD/assets/icons/standard/formula.svg","7acf5904b54900f7a141025f2de9b023"],["include/LD/assets/icons/standard/generic_loading.svg","782f85a63451e493542e14beb27ced53"],["include/LD/assets/icons/standard/global_constant.svg","d0416bceeeab7545a7b02cadf427d295"],["include/LD/assets/icons/standard/goals.svg","c7f0837c315f35609550b0bb0ccf814f"],["include/LD/assets/icons/standard/group_loading.svg","09be219e7db27edc6259c529fafc83ad"],["include/LD/assets/icons/standard/groups.svg","d730cef517f7d369169ae8b049cd451e"],["include/LD/assets/icons/standard/hierarchy.svg","13b9f54d9231c966a2ba8538766b6766"],["include/LD/assets/icons/standard/home.svg","e836614fc06d1536ec4364cf5047d430"],["include/LD/assets/icons/standard/household.svg","fa51e4a34607d46fc268fef4dd6981b9"],["include/LD/assets/icons/standard/individual.svg","f1d8907ba9a54b9591045aa9f9f2014b"],["include/LD/assets/icons/standard/insights.svg","0ef2d6f5dfb43e87025e05872fa61b17"],["include/LD/assets/icons/standard/investment_account.svg","e44ac0d159c5a8c79fd01000492aa539"],["include/LD/assets/icons/standard/iot_context.svg","af0d61b2d58c65efb778d56fbd95e5c3"],["include/LD/assets/icons/standard/iot_orchestrations.svg","4792c97d2ac6d9c47c2e622f1a23c0aa"],["include/LD/assets/icons/standard/kanban.svg","6bc9d2babb79b548d0c4153fd1eb81db"],["include/LD/assets/icons/standard/knowledge.svg","cbc881a1c9224c09d6edda3b704ed46a"],["include/LD/assets/icons/standard/lead.svg","1554b323d7e66ac451cebe0a9cc5a145"],["include/LD/assets/icons/standard/lead_insights.svg","e65766e481f2bb9eba9b73b53401f726"],["include/LD/assets/icons/standard/lead_list.svg","2c98fdc7eb4e681f4363cab410384bf4"],["include/LD/assets/icons/standard/lightning_component.svg","5fa513243348388b55173ca2794feb33"],["include/LD/assets/icons/standard/lightning_usage.svg","6655cfef2ac164e6bdc7bf325ef7f494"],["include/LD/assets/icons/standard/link.svg","d424918a9d5b2219b4bfc41f795db0c3"],["include/LD/assets/icons/standard/list_email.svg","b628fa622e77b0207027bf75adac251e"],["include/LD/assets/icons/standard/live_chat.svg","a044bb1e9eb88c8e6a1bcf8d561db3ea"],["include/LD/assets/icons/standard/live_chat_visitor.svg","5fedc89b1c177901f3adbf78d81c1e58"],["include/LD/assets/icons/standard/location.svg","8aad13e25599d2d8e7471c3229391027"],["include/LD/assets/icons/standard/log_a_call.svg","2d93bab55eb211eb8c2f70c7417bc4cd"],["include/LD/assets/icons/standard/logging.svg","8e32b58a46c10fb2a609c6b0b617f301"],["include/LD/assets/icons/standard/loop.svg","6ac8e8f66a47097ef82542cea55735b5"],["include/LD/assets/icons/standard/macros.svg","0d3abd2220760aef917b205f13033fd3"],["include/LD/assets/icons/standard/maintenance_asset.svg","c7b5a260d77dfeb337dd2aa8b0c5afb5"],["include/LD/assets/icons/standard/maintenance_plan.svg","2a4ebcb703fde1c01ed21583e58c56ca"],["include/LD/assets/icons/standard/marketing_actions.svg","6a6a184d8568f4ddf30705ff8f0d0fdc"],["include/LD/assets/icons/standard/merge.svg","4e4ddbe0c57f14ab38ff778fe8acaa0e"],["include/LD/assets/icons/standard/messaging_conversation.svg","26dc1448dd43a215db82e8060744987e"],["include/LD/assets/icons/standard/messaging_session.svg","fe95834aa83b707dfa32ffb7b34df201"],["include/LD/assets/icons/standard/messaging_user.svg","f5d2d1f0a7870d5cfbd065f552030b3f"],["include/LD/assets/icons/standard/metrics.svg","c2a208ec4939355b8dc0a12e04483e80"],["include/LD/assets/icons/standard/multi_picklist.svg","8be5beef4dbfca683a5eaddfc41de2d1"],["include/LD/assets/icons/standard/multi_select_checkbox.svg","ecfda61165a6cf7e4a81307ea7ad6ac0"],["include/LD/assets/icons/standard/news.svg","0ef2d6f5dfb43e87025e05872fa61b17"],["include/LD/assets/icons/standard/note.svg","e1d18c7c6a5a28d0ea94f8dc94ab8be9"],["include/LD/assets/icons/standard/number_input.svg","4dbbaf4743ee75de6f96474221728610"],["include/LD/assets/icons/standard/omni_supervisor.svg","bb8f4ed031fae3dd10e247a1b45f32bd"],["include/LD/assets/icons/standard/operating_hours.svg","1c08521b2c10c38cd25071e206654090"],["include/LD/assets/icons/standard/opportunity.svg","007b200cc4e392e078d353ec8f3d1255"],["include/LD/assets/icons/standard/opportunity_splits.svg","08bb2fa7ea28e9cb16dc4727b5cb8305"],["include/LD/assets/icons/standard/orders.svg","a0405ccb18e7ddf146c06f6deba46b58"],["include/LD/assets/icons/standard/outcome.svg","d8c5009d454ce74fece6b6ded64c8176"],["include/LD/assets/icons/standard/output.svg","1560c4d125741c9d48031501ab9dd694"],["include/LD/assets/icons/standard/partner_fund_allocation.svg","b6cdb653a420b1e51e9f44a99787bc56"],["include/LD/assets/icons/standard/partner_fund_claim.svg","edaf576bfde73ab9ed0a7356a2fe878e"],["include/LD/assets/icons/standard/partner_fund_request.svg","396b53b578887cf95b00cd4bdb57bd5a"],["include/LD/assets/icons/standard/partner_marketing_budget.svg","887c2563e935fb20e693bc658f4199cf"],["include/LD/assets/icons/standard/partners.svg","4904c502502b6e19bf47896094c6b6c0"],["include/LD/assets/icons/standard/password.svg","9279b3df70bddabb5659b06e1e7acd7e"],["include/LD/assets/icons/standard/past_chat.svg","cf46d415e85f620f234a35f39d6f3aef"],["include/LD/assets/icons/standard/people.svg","55c51356065facdfcda2a6064b08a9cb"],["include/LD/assets/icons/standard/performance.svg","e639587b4603fd84281d9b469aba5422"],["include/LD/assets/icons/standard/person_account.svg","13afbca801422354508f52565cf46464"],["include/LD/assets/icons/standard/photo.svg","8463e24b7821af816268cedc25e7414c"],["include/LD/assets/icons/standard/picklist_choice.svg","39067418d247c96c10a71730aad88e95"],["include/LD/assets/icons/standard/picklist_type.svg","6339c2f8ca1c93f4839838e3a00c60da"],["include/LD/assets/icons/standard/planogram.svg","cf0f1019c3003a648ad4eeb414beff5e"],["include/LD/assets/icons/standard/poll.svg","f4eb52f1a547120f18dbc90bcded78d0"],["include/LD/assets/icons/standard/portal.svg","58ff8267d2a0bf1a393f68071f2dfdfe"],["include/LD/assets/icons/standard/portal_roles.svg","6f9ff00beb309f3ccade3e81fb085b56"],["include/LD/assets/icons/standard/portal_roles_and_subordinates.svg","9087d7ec0c58bcacb2be00b019399b6e"],["include/LD/assets/icons/standard/post.svg","0eecbff8b397edb660eeef48a4f71642"],["include/LD/assets/icons/standard/pricebook.svg","875ab6b8b0a0970d5b52a507a1e325d5"],["include/LD/assets/icons/standard/process.svg","67ad0e120a870a102603dc38cc12dc1b"],["include/LD/assets/icons/standard/product.svg","85e82972f4c66e8bb8d2e241b08d550a"],["include/LD/assets/icons/standard/product_consumed.svg","9ea8ad7928c39830003555efed625bfa"],["include/LD/assets/icons/standard/product_item.svg","601088c8f325c3a0b3270b972768502c"],["include/LD/assets/icons/standard/product_item_transaction.svg","67250813a655764a5842ab7d73e658ab"],["include/LD/assets/icons/standard/product_request.svg","20ad116444f898d3ec9401c24aa6149a"],["include/LD/assets/icons/standard/product_request_line_item.svg","53ffa96fc83159868cba45d96003c717"],["include/LD/assets/icons/standard/product_required.svg","00f97d14bb79e153d3522c6673a90aac"],["include/LD/assets/icons/standard/product_transfer.svg","28a926a4967964e1d6a23beab5b7c3cb"],["include/LD/assets/icons/standard/proposition.svg","37f93da8cc784fccb2e5316a94f8ebd5"],["include/LD/assets/icons/standard/question_best.svg","bd3eca9d0e6c51b33930148bdd6206dc"],["include/LD/assets/icons/standard/question_feed.svg","e8e48462cb888596251c2c923c8ad5d5"],["include/LD/assets/icons/standard/queue.svg","739e19a7769b10b7a906efb3d831db65"],["include/LD/assets/icons/standard/quick_text.svg","e059cf347f1be3f33e1028eea3e4c332"],["include/LD/assets/icons/standard/quip.svg","c57733467ac3ad8d61fa4ced11579abd"],["include/LD/assets/icons/standard/quip_sheet.svg","b82289b376b08ed1f38eebda5a724ff5"],["include/LD/assets/icons/standard/quotes.svg","a80215462a6ef4a45927c5f48d7515d0"],["include/LD/assets/icons/standard/radio_button.svg","aeebfdc41979e3043940478810cff76e"],["include/LD/assets/icons/standard/read_receipts.svg","9b890623be9a2c757a02b6f3e4a444c6"],["include/LD/assets/icons/standard/recent.svg","d773f5099c406eb95befc7b943729e92"],["include/LD/assets/icons/standard/record.svg","aa174a30df068300093e61b9bc3125c6"],["include/LD/assets/icons/standard/record_create.svg","01653055d1d35ee5905d2f7237272f1e"],["include/LD/assets/icons/standard/record_delete.svg","8aa5e74e49cd3daf7f6f330a6f4e97c4"],["include/LD/assets/icons/standard/record_lookup.svg","ad679969ade7c167a2be289a8a9089c0"],["include/LD/assets/icons/standard/record_update.svg","895de1643a4a49710983d887e91284c1"],["include/LD/assets/icons/standard/related_list.svg","f5d2b7bf4f1e46a40991d9c1eb6b4806"],["include/LD/assets/icons/standard/relationship.svg","48fd3a347169f3045a7c73f9dd8c6b5a"],["include/LD/assets/icons/standard/report.svg","0ea8b3f9b58c7238317e438c0dec4006"],["include/LD/assets/icons/standard/resource_absence.svg","9f8fab7fe52a9ff5f0600c1465ac52f6"],["include/LD/assets/icons/standard/resource_capacity.svg","04a7755d89d4e3d79e545fecf201e1f9"],["include/LD/assets/icons/standard/resource_preference.svg","5243dcda316ca41b3d6af87eab234a8c"],["include/LD/assets/icons/standard/resource_skill.svg","a29ab0203aa1511d4cab2e0dcfbd254c"],["include/LD/assets/icons/standard/return_order.svg","303cc7d86784631d146b93dae4fc5321"],["include/LD/assets/icons/standard/return_order_line_item.svg","58ac71423c8dfde0159b78df5fa00bf1"],["include/LD/assets/icons/standard/reward.svg","7be4cbfcf4c77292e2b55cb18579ad3e"],["include/LD/assets/icons/standard/rtc_presence.svg","ff75633d29de74aae2c79e34e5c09f1a"],["include/LD/assets/icons/standard/sales_cadence.svg","5500f6d3298f064c95da8fae7d5f8a14"],["include/LD/assets/icons/standard/sales_path.svg","dac9b6fcd28dd55a508bf087b2794336"],["include/LD/assets/icons/standard/scan_card.svg","0cb7d39eca496d0eb4149bbc2c728ddd"],["include/LD/assets/icons/standard/screen.svg","dbbb1b1ca843bbcf716a6fc60fe42f6d"],["include/LD/assets/icons/standard/search.svg","81f931012789333721efd119ba2d1530"],["include/LD/assets/icons/standard/service_appointment.svg","c4e9a09c24415a10dd8449efe1617076"],["include/LD/assets/icons/standard/service_appointment_capacity_usage.svg","c1511d9d293653427e278c4072b0ec61"],["include/LD/assets/icons/standard/service_contract.svg","e26c6e888a04e211b2514bb754a8d5c7"],["include/LD/assets/icons/standard/service_crew.svg","5505947f54ad8d282e5d6b6dd961d646"],["include/LD/assets/icons/standard/service_crew_member.svg","5b1ace05c72136c82629ecb41889d216"],["include/LD/assets/icons/standard/service_report.svg","f4580ee1ecb091066297926db9ac6941"],["include/LD/assets/icons/standard/service_resource.svg","a6a0a947b1dd60078270ab78a879a30b"],["include/LD/assets/icons/standard/service_territory.svg","cd22366c913a7295e151740a78f1cbd3"],["include/LD/assets/icons/standard/service_territory_location.svg","5d48a663182d6a8c87ea9e56d4ea704e"],["include/LD/assets/icons/standard/service_territory_member.svg","8459f709d0996c87f5b190deb4f76192"],["include/LD/assets/icons/standard/shipment.svg","6cb66698ac9761fac1365723006f5009"],["include/LD/assets/icons/standard/skill.svg","8b0e0813cd3d928f0b9bbd3e6da26040"],["include/LD/assets/icons/standard/skill_entity.svg","b9f728a81c533423218641435bd6d306"],["include/LD/assets/icons/standard/skill_requirement.svg","baf735c5b7f6e887acc69ee09990dfb1"],["include/LD/assets/icons/standard/sms.svg","a27860fc3ea8eff2be2bec55e8873976"],["include/LD/assets/icons/standard/snippet.svg","90183242c0a4ae0ad8654ef7e2601ad0"],["include/LD/assets/icons/standard/sobject.svg","4b60d2415469d01121ae4503e1ca391a"],["include/LD/assets/icons/standard/sobject_collection.svg","50e49284bb0c7cc821c3727dbb19b840"],["include/LD/assets/icons/standard/social.svg","9aabfd3a3987ede4b416ab1f8ad4660c"],["include/LD/assets/icons/standard/solution.svg","a9c880bd73d4942413a3ab530c08a45f"],["include/LD/assets/icons/standard/sort.svg","288e48f3824d2da5dec353341d780501"],["include/LD/assets/icons/standard/sossession.svg","3298790e7df67dfba9cd3ba4069df077"],["include/LD/assets/icons/standard/stage.svg","0313526316d12dd8a72b1e7ff9ede826"],["include/LD/assets/icons/standard/stage_collection.svg","fef2309ed75b8ef38563dfdc030a29da"],["include/LD/assets/icons/standard/steps.svg","e73edf063d74d105c46fa9b9dc3383a1"],["include/LD/assets/icons/standard/strategy.svg","7663b2ac537131297ab94e9cc16bab4a"],["include/LD/assets/icons/standard/survey.svg","a8989df57e8f755b43d7f829df9cef8a"],["include/LD/assets/icons/standard/system_and_global_variable.svg","36274f668e63af2fb6e75d091de2b6c2"],["include/LD/assets/icons/standard/task.svg","b4b875dd310f0eb1216e23d7c8ceadc4"],["include/LD/assets/icons/standard/task2.svg","d329739d9d5fb14d76b0e5f8abe3ddbc"],["include/LD/assets/icons/standard/team_member.svg","e9fa0cb17aba1bede23e682c5ff2534b"],["include/LD/assets/icons/standard/template.svg","509e92374637532306ecef36753c71dc"],["include/LD/assets/icons/standard/text.svg","cf31675be0cf7e8839ec9e6c198fcc11"],["include/LD/assets/icons/standard/text_template.svg","857ed4ed01e27a4945e63b19f1ee5e28"],["include/LD/assets/icons/standard/textarea.svg","c0787ab448aa3276e828128b6a60e242"],["include/LD/assets/icons/standard/textbox.svg","69bbcddb1c5904102bb9f14d6c8ef084"],["include/LD/assets/icons/standard/thanks.svg","86ab26cc07bffa6b021bf79343da2768"],["include/LD/assets/icons/standard/thanks_loading.svg","ccdd121f49564ae1c03d6eaf8a84d73f"],["include/LD/assets/icons/standard/timesheet.svg","72011cfdaa47be5e3402c4ee9fd65574"],["include/LD/assets/icons/standard/timesheet_entry.svg","2606f6efce2c0d5ddebfa05a795cb0d3"],["include/LD/assets/icons/standard/timeslot.svg","20998c4e0b35b0bffd6a51af960ea4fa"],["include/LD/assets/icons/standard/today.svg","fbb1486a046387586e45cccda54c321d"],["include/LD/assets/icons/standard/topic.svg","9cef056f68f43f3a28e48395b8246e7a"],["include/LD/assets/icons/standard/topic2.svg","090ec35abdadc24b61a4d5585fea0f95"],["include/LD/assets/icons/standard/trailhead.svg","233bed9baab23fa136898fb2caf31afd"],["include/LD/assets/icons/standard/unmatched.svg","f79cfe0f35c444b79f75eea399c4afbb"],["include/LD/assets/icons/standard/user.svg","55c51356065facdfcda2a6064b08a9cb"],["include/LD/assets/icons/standard/user_role.svg","cf9c5fc5049033e013b9424efe6f8cb9"],["include/LD/assets/icons/standard/variable.svg","8290953a64f7908202b2e066865fc220"],["include/LD/assets/icons/standard/visits.svg","b66e49339779adc5c3b3372d1cbc04a6"],["include/LD/assets/icons/standard/waits.svg","17004885025b4b2135543f2a2890438b"],["include/LD/assets/icons/standard/work_capacity_limit.svg","a54a4d66394f2db9a5f16506e6d7a609"],["include/LD/assets/icons/standard/work_capacity_usage.svg","70d46b8cc4945e4218948a256b53157a"],["include/LD/assets/icons/standard/work_order.svg","29e7e541f5ddd34815b9deb4d133ce51"],["include/LD/assets/icons/standard/work_order_item.svg","9e2b7016ca0addb3ae600a31eea1915d"],["include/LD/assets/icons/standard/work_queue.svg","f3197591bff30c12fd53a3834cb83155"],["include/LD/assets/icons/standard/work_type.svg","ad2bb8b463a2fa19eb0e594d1534b8b7"],["include/LD/assets/icons/standard/work_type_group.svg","433667b735b90d011f9a669e803bf4eb"],["include/LD/assets/icons/utility-sprite/svg/symbols.svg","40951c85ed00738ba67c883ab7b12e6f"],["include/LD/assets/icons/utility/activity.svg","01fd42ad941ba0f0908b7238a051de1e"],["include/LD/assets/icons/utility/ad_set.svg","ec676228d19edf214c331bbe09ba2801"],["include/LD/assets/icons/utility/add.svg","1867ec504cd6bcdf955b7fffa8d51b4a"],["include/LD/assets/icons/utility/adduser.svg","15b6019b83206d007de92b5ad748f008"],["include/LD/assets/icons/utility/advanced_function.svg","6ea969ec64d859f3186753e8196a4156"],["include/LD/assets/icons/utility/advertising.svg","aa494eb91eee7cf0a5081189c175faae"],["include/LD/assets/icons/utility/agent_session.svg","41a014f3cf8619618d6bdf6671f2133d"],["include/LD/assets/icons/utility/alert.svg","975f5ab5abbbf7e9937fb4328616fe40"],["include/LD/assets/icons/utility/all.svg","cd1e7540a6a5c8676923b3da42d13df1"],["include/LD/assets/icons/utility/anchor.svg","9a77fcacbb7cfb912ed986c6322f8efd"],["include/LD/assets/icons/utility/animal_and_nature.svg","f0846c52de67bc241d9e3250e83524ce"],["include/LD/assets/icons/utility/announcement.svg","3363818115295fbc44b75ac74bc87c04"],["include/LD/assets/icons/utility/answer.svg","2018b72f67117a71cd7fb16444a6c410"],["include/LD/assets/icons/utility/answered_twice.svg","2c73f543b1e566f713dee50db9de8110"],["include/LD/assets/icons/utility/apex.svg","db7e7484a38f69afdef41247a763a896"],["include/LD/assets/icons/utility/apex_plugin.svg","21317ebfbe3448d00a54f8f059a71056"],["include/LD/assets/icons/utility/approval.svg","973ada77057d4ea4346ce34d0b53340e"],["include/LD/assets/icons/utility/apps.svg","511641fba7b29dbcf70c8d9f9d138567"],["include/LD/assets/icons/utility/archive.svg","3e5e8e544637be0f0603de207a45cc69"],["include/LD/assets/icons/utility/arrowdown.svg","31157bf2414f0786efce72788193a523"],["include/LD/assets/icons/utility/arrowup.svg","ee4dd4640c06ecfa863edd12b48be8ad"],["include/LD/assets/icons/utility/assignment.svg","ff4ab5e6ccd3e3877e8265c19d0940d5"],["include/LD/assets/icons/utility/attach.svg","9f4804cec1e296e8de3388bcf965202d"],["include/LD/assets/icons/utility/automate.svg","923428033a97d962ed717608097c1321"],["include/LD/assets/icons/utility/away.svg","75971b4521bbba088be99d67238663a8"],["include/LD/assets/icons/utility/back.svg","7780a19449fba300b218bbbbbbf06dc7"],["include/LD/assets/icons/utility/ban.svg","522a3a7630f017f493b73ebb3cd7c20a"],["include/LD/assets/icons/utility/block_visitor.svg","42da3bef4cf58f53a357219dc1a24360"],["include/LD/assets/icons/utility/bold.svg","2e2b1ba7aee097af9d6a213c7da62d0b"],["include/LD/assets/icons/utility/bookmark.svg","463122d81c1c1d35ea17d54aea9505bc"],["include/LD/assets/icons/utility/breadcrumbs.svg","6c899fb4b06911ca641dcebdcd3e73d7"],["include/LD/assets/icons/utility/broadcast.svg","af2ad4e31d9d4a55a221becd2d80f768"],["include/LD/assets/icons/utility/brush.svg","09c83b732d734b70049fa3abf9e243b2"],["include/LD/assets/icons/utility/bucket.svg","1cb97c956f5acd50d5730e817f29c0c0"],["include/LD/assets/icons/utility/builder.svg","dfbdeec7e11b5ee0eaf1943b431ad9f7"],["include/LD/assets/icons/utility/call.svg","ef45b16896ae6a28d9c0af6204d81d53"],["include/LD/assets/icons/utility/campaign.svg","e68f8a25069dcb0610ca2a590bcf0487"],["include/LD/assets/icons/utility/cancel_file_request.svg","c318cc1a6618e2152c7c421d708a815a"],["include/LD/assets/icons/utility/cancel_transfer.svg","228bc8ddaed9b36998458bc311fd096c"],["include/LD/assets/icons/utility/capslock.svg","06b6755a787678c587c54de50174cd0f"],["include/LD/assets/icons/utility/cart.svg","f3a172b5ae1451c626f30ddb3886cf78"],["include/LD/assets/icons/utility/case.svg","76de36157caa27b477d49970af773bdf"],["include/LD/assets/icons/utility/cases.svg","0db3c4a2a9fb4461e1b18fe08ad58480"],["include/LD/assets/icons/utility/center_align_text.svg","24d68f4410d78196dfa18488a1182e1a"],["include/LD/assets/icons/utility/change_owner.svg","92d871f9cf8e07a4923874bb3c8f63f2"],["include/LD/assets/icons/utility/change_record_type.svg","6bb2a79175bba89d782d70de18b112c2"],["include/LD/assets/icons/utility/chart.svg","4c95a45cbccbd63834b3d924e6bd6fd0"],["include/LD/assets/icons/utility/chat.svg","76d09b1642cdb1f3c011ee452f4dcf38"],["include/LD/assets/icons/utility/check.svg","a7fb6b1d178bab3a40731120babe0dd5"],["include/LD/assets/icons/utility/checkin.svg","7da6cb33a87e2935457f327d62fbf630"],["include/LD/assets/icons/utility/chevrondown.svg","c9fc7a9b850fce2485ba39d3b3952389"],["include/LD/assets/icons/utility/chevronleft.svg","57eaecac1f61eb67761cdf4d52356d62"],["include/LD/assets/icons/utility/chevronright.svg","ebd70232aa52ec181d7e490d0bb71751"],["include/LD/assets/icons/utility/chevronup.svg","8e80a34e72409de1f7936d1b1373b5b0"],["include/LD/assets/icons/utility/choice.svg","86faf6f151e9e0b3a4f792d2c248d7cb"],["include/LD/assets/icons/utility/classic_interface.svg","b21dc5e164cae971f53f76c402195135"],["include/LD/assets/icons/utility/clear.svg","1b14982ce83bcec67fd68e62951818cc"],["include/LD/assets/icons/utility/clock.svg","f990fd06d32b73e8f0a3a3e62e5599d6"],["include/LD/assets/icons/utility/close.svg","f8e43528a0b5031f7d87d4de0432e0c3"],["include/LD/assets/icons/utility/collapse_all.svg","0a8314470c968fbb2983c8c34115e9f2"],["include/LD/assets/icons/utility/collection_variable.svg","4d21664ef4c46a530f4b91c37026cead"],["include/LD/assets/icons/utility/color_swatch.svg","1650f1b10d82da1b9819d12829178f5a"],["include/LD/assets/icons/utility/comments.svg","04539a8c4fd8ac980d4cb6523249e188"],["include/LD/assets/icons/utility/company.svg","d868a230712970b06b1335e88997ad41"],["include/LD/assets/icons/utility/connected_apps.svg","e7412492cf6f80b951c30696cd31e80b"],["include/LD/assets/icons/utility/constant.svg","e77be8d987f8e8806550f380ec0a8e7f"],["include/LD/assets/icons/utility/contact_request.svg","e110f714f0da07fce11a9b860bab8984"],["include/LD/assets/icons/utility/contract.svg","975c92ff2dc2121dc154910bd0a43808"],["include/LD/assets/icons/utility/contract_alt.svg","284693746f6617447fef1aae2eadb8b1"],["include/LD/assets/icons/utility/copy.svg","ea35d6550044c39be121976f97ebaa68"],["include/LD/assets/icons/utility/copy_to_clipboard.svg","d6555c7b01d78ac8084f744e008e1b73"],["include/LD/assets/icons/utility/crossfilter.svg","732c0988815923d3b82e3bf66899749d"],["include/LD/assets/icons/utility/currency.svg","d4721d96555f899d59483dbb73125e44"],["include/LD/assets/icons/utility/currency_input.svg","ee9696138b1868d51365ecb3710100cc"],["include/LD/assets/icons/utility/custom_apps.svg","4c28d8c88c0e1dbb597c03d227a6de16"],["include/LD/assets/icons/utility/cut.svg","ede706ffe10adb86a0e0390a86994557"],["include/LD/assets/icons/utility/dash.svg","dd5915a60ab7354fa2e71e49d39b5309"],["include/LD/assets/icons/utility/database.svg","b71bfabeaddfd3f4ef87d43b4a89e92b"],["include/LD/assets/icons/utility/datadotcom.svg","828eac6646bf3ec2ac10517a1718042d"],["include/LD/assets/icons/utility/date_input.svg","157c870874412cb5ee8438d18c336888"],["include/LD/assets/icons/utility/date_time.svg","57cace2f09334e29594ca6dc16345afd"],["include/LD/assets/icons/utility/dayview.svg","1881e18fb5e31ef0afb947575df8a3f2"],["include/LD/assets/icons/utility/delete.svg","5a727b715b796a063ea365f41a060666"],["include/LD/assets/icons/utility/deprecate.svg","641fd73cada62946325efadc10427610"],["include/LD/assets/icons/utility/description.svg","1784efb133e92dcf6dd4d4f3ff0dbad8"],["include/LD/assets/icons/utility/desktop.svg","125ec92f588a9e30ddea24750163d35d"],["include/LD/assets/icons/utility/desktop_console.svg","7d68afed369dcfd326d6e0ed1d5f8d53"],["include/LD/assets/icons/utility/dialing.svg","6b4f74f2baab5c62cb9593a39360edd3"],["include/LD/assets/icons/utility/dislike.svg","28917b33b0cb403ae048ac554bb0e8da"],["include/LD/assets/icons/utility/display_rich_text.svg","fddd45f017e501bce7e55fc41a6517dc"],["include/LD/assets/icons/utility/display_text.svg","e8d8b9afb86bfcf693f8bfc4eefe0702"],["include/LD/assets/icons/utility/dock_panel.svg","b0907f6edd9b53fdab7fdad80e49c401"],["include/LD/assets/icons/utility/down.svg","2cfacf405a91ef0d08316476d2e52d4b"],["include/LD/assets/icons/utility/download.svg","bebdb605afbb5eceb453afd7126bac69"],["include/LD/assets/icons/utility/drag.svg","2d1f30edeee2c8ea06b275f95bec0ccb"],["include/LD/assets/icons/utility/drag_and_drop.svg","b1e8dbfb06747e4761224d7ad07730b3"],["include/LD/assets/icons/utility/dynamic_record_choice.svg","893af8ad81aa78b1b6ab3c3d17bc710b"],["include/LD/assets/icons/utility/edit.svg","faca53a2140b7efff05a3ff3df2b34b3"],["include/LD/assets/icons/utility/edit_form.svg","6ecc943f3260d31f99156e5a688acba8"],["include/LD/assets/icons/utility/einstein.svg","815883ea6bfe11f48662022b7ac6725d"],["include/LD/assets/icons/utility/email.svg","7f3c6df6cdea1d957e4f9be9dac240b4"],["include/LD/assets/icons/utility/email_open.svg","e4e7b03f54ebc08c9815334df144efa8"],["include/LD/assets/icons/utility/emoji.svg","59104c8954316001e2fca3a0b7d9db65"],["include/LD/assets/icons/utility/end_call.svg","fd54df9cc8f45040b2fe5dee9d9b571e"],["include/LD/assets/icons/utility/end_chat.svg","0e25c7c1ec78ca2840a01e856338503a"],["include/LD/assets/icons/utility/end_messaging_session.svg","a2b60d62bff4f193ab50f76a20752ed4"],["include/LD/assets/icons/utility/erect_window.svg","9ea3d5cbe59219bbdcf5e316dadd5c92"],["include/LD/assets/icons/utility/error.svg","12888620ebe85f153cd223db0e28301a"],["include/LD/assets/icons/utility/event.svg","feeedb395459c47a6f4fd6b51bc0691b"],["include/LD/assets/icons/utility/events.svg","7ac1593b3cd30845cce82c7a5ac1ed7b"],["include/LD/assets/icons/utility/expand.svg","a9d389f9921d7a60b73f948863b4af90"],["include/LD/assets/icons/utility/expand_all.svg","02423b010dcc6862835d783635336aa7"],["include/LD/assets/icons/utility/expand_alt.svg","7a09a8d3bd2489d82f249612340fc885"],["include/LD/assets/icons/utility/fallback.svg","b746999da8e9f9f77ee4936760673edf"],["include/LD/assets/icons/utility/favorite.svg","dd52aafae68298b7a07261cacef18ce8"],["include/LD/assets/icons/utility/feed.svg","ccb177ef2674bdd7b619a3021a645cbb"],["include/LD/assets/icons/utility/file.svg","cbcc4e5bdc02346aa7216d76f773539f"],["include/LD/assets/icons/utility/filter.svg","9592b412549b77619e371464909d02a7"],["include/LD/assets/icons/utility/filterList.svg","2a2ec090edffb4ffd165f95531a96859"],["include/LD/assets/icons/utility/flow.svg","2d8a199b6221328f148488137904d77b"],["include/LD/assets/icons/utility/food_and_drink.svg","1d3bfa0323ffcf7b1482b8b087ba041d"],["include/LD/assets/icons/utility/formula.svg","d9bceb0aa6fa69354d7a75752a504b3a"],["include/LD/assets/icons/utility/forward.svg","c3eae6cf81759c1565ba37323fede4dd"],["include/LD/assets/icons/utility/forward_up.svg","25b0998252d22f56d98657ea7ceada3b"],["include/LD/assets/icons/utility/frozen.svg","af1167e1ee824a67baac4ce633e64f5b"],["include/LD/assets/icons/utility/fulfillment_order.svg","7e5dc8c126f7b63f7f059acca63a5259"],["include/LD/assets/icons/utility/full_width_view.svg","04374d2c5231703a6eb6e8ede4b27319"],["include/LD/assets/icons/utility/global_constant.svg","69780e15342f0617733a99a7280ec327"],["include/LD/assets/icons/utility/graph.svg","573b093c8dce6d321579e888e13aa9f0"],["include/LD/assets/icons/utility/groups.svg","9a4c9c7da0b015cf840c46caeba542d8"],["include/LD/assets/icons/utility/help.svg","0f762422b4e72ffb4e5c236df19d36e1"],["include/LD/assets/icons/utility/help_center.svg","9235302189ad13e68b29b7f17c1c4609"],["include/LD/assets/icons/utility/hide.svg","f0aa93f60c3f0584b810d8652ad7e474"],["include/LD/assets/icons/utility/hide_mobile.svg","6fdda512e5b6be16a3d78786018f7dbc"],["include/LD/assets/icons/utility/hierarchy.svg","ee646a613606263120aa47d91a96332e"],["include/LD/assets/icons/utility/home.svg","6c0e38efba2cae90d2aad50529d8cb9f"],["include/LD/assets/icons/utility/identity.svg","4392af61ae4f97c72cd32726a26d1941"],["include/LD/assets/icons/utility/image.svg","4f355209b7f1a2eb62eb2d869d4c90e4"],["include/LD/assets/icons/utility/in_app_assistant.svg","916524cb1473b366165d7a083495cf17"],["include/LD/assets/icons/utility/inbox.svg","8fbcb2b2bbc1a4468751aba7729cc39b"],["include/LD/assets/icons/utility/incoming_call.svg","3dae067fabc1c91615d472c562bf82aa"],["include/LD/assets/icons/utility/info.svg","eba3730c5c02615a98f8a5935d7172df"],["include/LD/assets/icons/utility/info_alt.svg","b33d9a6b3455e2adf66887dbe671b970"],["include/LD/assets/icons/utility/insert_tag_field.svg","a656627d6cf81a436d3c2c3329a5a337"],["include/LD/assets/icons/utility/insert_template.svg","362cf14ac17a8a995cbc5a0d59ac873e"],["include/LD/assets/icons/utility/inspector_panel.svg","907b370a22accd8e1ffab7eac7a12492"],["include/LD/assets/icons/utility/internal_share.svg","95dacb40b892185c5229932ae78f09f3"],["include/LD/assets/icons/utility/italic.svg","409d07b4c57dd6d65542cc008ae3b818"],["include/LD/assets/icons/utility/jump_to_bottom.svg","96684eaa68e0e3109e75b1f1c36f7139"],["include/LD/assets/icons/utility/jump_to_top.svg","8b9f251a1abfa93324a4fca5f4fcb3d1"],["include/LD/assets/icons/utility/justify_text.svg","3c4bc79bba3109659d1cad505bb0d039"],["include/LD/assets/icons/utility/kanban.svg","81ddfe5a5ec5683ed4fe119c27cf06e1"],["include/LD/assets/icons/utility/keyboard_dismiss.svg","936c07fc4ca6130a8f68539005b73dcc"],["include/LD/assets/icons/utility/knowledge_base.svg","776457d52341d7ba12e71ed106bd1f90"],["include/LD/assets/icons/utility/layers.svg","a70f16e2e49d75e82a639fe6a4c28f1e"],["include/LD/assets/icons/utility/layout.svg","9eec2b5c99f9aaa9da3dccaebd21305e"],["include/LD/assets/icons/utility/leave_conference.svg","3bd595d0e2e0f4545af97eb65bfe2ab6"],["include/LD/assets/icons/utility/left.svg","be1ce07dc156a826bc535b6fae55f39f"],["include/LD/assets/icons/utility/left_align_text.svg","539077e1b3db194ee3e267c0c255ae06"],["include/LD/assets/icons/utility/level_down.svg","161c4137c05200c31c70c2dfe6d8950d"],["include/LD/assets/icons/utility/level_up.svg","ce0e3d562966903d107e1396f3d71854"],["include/LD/assets/icons/utility/light_bulb.svg","607f3c00bdd09e4035c31dcab8432697"],["include/LD/assets/icons/utility/lightning_inspector.svg","e1e6d4fbbf787e805545fe5a966473b4"],["include/LD/assets/icons/utility/like.svg","365b1a3d05d3eeffec68363b82c72081"],["include/LD/assets/icons/utility/link.svg","d876ec47e93af49da332d469408be53f"],["include/LD/assets/icons/utility/linked.svg","baee8ee8011531f35a8373c2217729ba"],["include/LD/assets/icons/utility/list.svg","ce9301e6b3cbc2b641cc7e23c99f38d2"],["include/LD/assets/icons/utility/listen.svg","689b33d4ece04e437afcbe3fa28b4e40"],["include/LD/assets/icons/utility/live_message.svg","4c00486cfd940c0889c87e7e0618cf71"],["include/LD/assets/icons/utility/location.svg","321dce93fa2e442bb440f4de9cbe6355"],["include/LD/assets/icons/utility/lock.svg","06bface8b83b5d3bca8e02ad5a03b10c"],["include/LD/assets/icons/utility/locker_service_api_viewer.svg","cde150397bce4aff03ee668e97da5375"],["include/LD/assets/icons/utility/locker_service_console.svg","89882b967f6da34e4483ede750be6e5c"],["include/LD/assets/icons/utility/log_a_call.svg","9bf20a70227e457dee4c44938e8c8fa4"],["include/LD/assets/icons/utility/logout.svg","3a8a38678c69b15abeb149f94ac5d982"],["include/LD/assets/icons/utility/loop.svg","287af05e24bf1114972b174fdad62a00"],["include/LD/assets/icons/utility/lower_flag.svg","9c4e00d347dcb367df80812c55072f76"],["include/LD/assets/icons/utility/macros.svg","9ed83702adf52bfca3f7a0d9fc8cb6c9"],["include/LD/assets/icons/utility/magicwand.svg","259f63521d37b820ccbb1a771a96f370"],["include/LD/assets/icons/utility/mark_all_as_read.svg","d47efec96f2bb1015a5c1d2307f5b996"],["include/LD/assets/icons/utility/matrix.svg","67be604669e8595c721157411e9cbe81"],["include/LD/assets/icons/utility/merge.svg","5f28f8b744683708befd1c745f419de8"],["include/LD/assets/icons/utility/merge_field.svg","6600ca05dc02f6798ce5a7856bc222da"],["include/LD/assets/icons/utility/metrics.svg","e555fc5e34f95b65b8bf6d6baeb5aa5f"],["include/LD/assets/icons/utility/minimize_window.svg","67ee23b84ebebd4281e31453e60b404d"],["include/LD/assets/icons/utility/missed_call.svg","304a3b84fdff98f47f63ec25ba2a4b17"],["include/LD/assets/icons/utility/money.svg","4f6922c23144310bba9269c08039ff6e"],["include/LD/assets/icons/utility/moneybag.svg","e085925f337e0ba6ce302ea3920df41f"],["include/LD/assets/icons/utility/monthlyview.svg","433587d92001a27af06c22591ed9bc1a"],["include/LD/assets/icons/utility/move.svg","6d7fac2a7b6feb2c39a112aaf3365972"],["include/LD/assets/icons/utility/multi_picklist.svg","b4d4190af263e022e31d56343c678274"],["include/LD/assets/icons/utility/multi_select_checkbox.svg","bd6779453c72bc4ffbab6b72f399b507"],["include/LD/assets/icons/utility/muted.svg","e70cf32f860f3966e8c79eaf687482d2"],["include/LD/assets/icons/utility/new.svg","280df80a84aa76fffa3f1c7d866c3f30"],["include/LD/assets/icons/utility/new_direct_message.svg","8052a7ad69dca36244f9c099e40cc980"],["include/LD/assets/icons/utility/new_window.svg","3885deabb9d0b664e080af1e0c3255b4"],["include/LD/assets/icons/utility/news.svg","d13ccf808f2b39e373b7690090d0952c"],["include/LD/assets/icons/utility/note.svg","ae23cacb66e001392b1abf137a387f94"],["include/LD/assets/icons/utility/notebook.svg","8afe66ff0cb9a81776e7c4ba4c05bb1d"],["include/LD/assets/icons/utility/notification.svg","177f5a9f622f3b2367d39ddbde684a66"],["include/LD/assets/icons/utility/number_input.svg","7f341f7d56a6b2bb5e4c31e51bb4e7bf"],["include/LD/assets/icons/utility/office365.svg","9b1b747b5008b56e37a98ba546ec78e1"],["include/LD/assets/icons/utility/offline.svg","87e394d5fcc64064a5572e9e6fd3709d"],["include/LD/assets/icons/utility/offline_cached.svg","4819e8272fa1e5f2a793e6d472bb0a14"],["include/LD/assets/icons/utility/omni_channel.svg","c6acc5098d67214bb1647cb24f4a0158"],["include/LD/assets/icons/utility/open.svg","cd59f762662792b803879acb1559c6f2"],["include/LD/assets/icons/utility/open_folder.svg","fb99f5a02f6559ed536c014479aeb8a9"],["include/LD/assets/icons/utility/opened_folder.svg","2a1b377777165fd1c019ec0b4c1c1209"],["include/LD/assets/icons/utility/outbound_call.svg","faae3ed1cd70814605e39581b94bd756"],["include/LD/assets/icons/utility/outcome.svg","848c596406db331cc92b6a3c0442eb85"],["include/LD/assets/icons/utility/overflow.svg","e1bf30a0d8aaabda3004a1a81150e999"],["include/LD/assets/icons/utility/package.svg","ba02ab69637b730ad0591799ca40ea44"],["include/LD/assets/icons/utility/package_org.svg","c652b73c05df04b6370286f382228a71"],["include/LD/assets/icons/utility/package_org_beta.svg","0975c8985e5e3dd8d65ff99901452899"],["include/LD/assets/icons/utility/page.svg","389598e2a3f7e2798c68e6882cb74cb9"],["include/LD/assets/icons/utility/palette.svg","01ec6e7a2a321b3439b143d11782f7ae"],["include/LD/assets/icons/utility/password.svg","ec7a916120bc62f1bd404f46ef949dd4"],["include/LD/assets/icons/utility/paste.svg","9c259fea5455b4662105b902c469a137"],["include/LD/assets/icons/utility/pause.svg","be681a26f791ea52127299749bb186f8"],["include/LD/assets/icons/utility/people.svg","1f23b638cff6e4325e0c2b2effe84357"],["include/LD/assets/icons/utility/phone_landscape.svg","07f5b92f7e6f57d8c16a33903b340ebb"],["include/LD/assets/icons/utility/phone_portrait.svg","fde5c6333ceea7a2065dc8e77c8bb51d"],["include/LD/assets/icons/utility/photo.svg","56adfbf2822047f46dfe5dac89068767"],["include/LD/assets/icons/utility/picklist.svg","e1b5a697f84d52eda1c76a718ec12982"],["include/LD/assets/icons/utility/picklist_choice.svg","61717e6729bce815119cbae49c9051fc"],["include/LD/assets/icons/utility/picklist_type.svg","8abe07adc16cc58de410fd952d31a6c1"],["include/LD/assets/icons/utility/pin.svg","ef2bbb670fe07dca456e6edf0d0782d7"],["include/LD/assets/icons/utility/pinned.svg","fe168503b1b87a06b42c281341c39e6d"],["include/LD/assets/icons/utility/play.svg","d5c4b5220f9a726aa6a9aa36eb45370e"],["include/LD/assets/icons/utility/podcast_webinar.svg","4f3cc01183374194fbdbc49a78423b3e"],["include/LD/assets/icons/utility/pop_in.svg","bb44e4014ae66fb3ddb6de9a3b4c57af"],["include/LD/assets/icons/utility/power.svg","0dc2d87280538ea0f71ec6269e8aba63"],["include/LD/assets/icons/utility/preview.svg","12ad8cbeb2b4486adb7fec8abf8397b3"],["include/LD/assets/icons/utility/print.svg","a9b4b150d791e6fd50a0a57869b4340c"],["include/LD/assets/icons/utility/priority.svg","037437751a74cb8103477d45a7274cfc"],["include/LD/assets/icons/utility/privately_shared.svg","a84c58a955502f11ca9c55b2ac57b30a"],["include/LD/assets/icons/utility/process.svg","aa57ee21bc14a08eca42d04fe33b4134"],["include/LD/assets/icons/utility/push.svg","4e5f10808c0392d7d22939a2f89d33f1"],["include/LD/assets/icons/utility/puzzle.svg","92294a386cfeb597239bebde2ff9ff3e"],["include/LD/assets/icons/utility/question.svg","0f762422b4e72ffb4e5c236df19d36e1"],["include/LD/assets/icons/utility/question_mark.svg","d29892042a9d3e81dbd440f8bae7ae1e"],["include/LD/assets/icons/utility/questions_and_answers.svg","c1bb1861af2046991dae5b1ad42a3e0b"],["include/LD/assets/icons/utility/quick_text.svg","86e8c060630aec106d4c47aed4c376ce"],["include/LD/assets/icons/utility/quotation_marks.svg","b4da577be3e205a1bd36a5c13603c60d"],["include/LD/assets/icons/utility/quote.svg","8c4b27d52cc6a6baf9db23a5aea64eb4"],["include/LD/assets/icons/utility/radio_button.svg","f922d58638f31da4e6bc60ead5172af0"],["include/LD/assets/icons/utility/rating.svg","1cd4d6fa5abfb41455c12848f0e8e91c"],["include/LD/assets/icons/utility/reassign.svg","e6b1a64158da940d6eb8ffa5c6fe9535"],["include/LD/assets/icons/utility/record.svg","c5a457a7f16fc3b7dd5c61acb99d7aa4"],["include/LD/assets/icons/utility/record_create.svg","7512caabfe0b79f9bf107d75b54c99a7"],["include/LD/assets/icons/utility/record_delete.svg","684c3bca36424d62e311c3e6414fa4a8"],["include/LD/assets/icons/utility/record_lookup.svg","a915fd9950fd0fcbbe238f0b7d0050d5"],["include/LD/assets/icons/utility/record_update.svg","85b37d9a26bf4d10eefd3dd089bb2504"],["include/LD/assets/icons/utility/recurring_exception.svg","bf751a1ec8dea3c4fa56f2965c385d72"],["include/LD/assets/icons/utility/redo.svg","a960ad77e1d3aa48f52689860d02d3f8"],["include/LD/assets/icons/utility/refresh.svg","3cf7d2a5ea45a0abe3066b257146cbda"],["include/LD/assets/icons/utility/relate.svg","0a095c9731c059b328d3d1b238c9130f"],["include/LD/assets/icons/utility/reminder.svg","6e9e55ba014d5155debbc7002d7085f7"],["include/LD/assets/icons/utility/remove_formatting.svg","0ec127d1c1abd730284acbf75b0d1324"],["include/LD/assets/icons/utility/remove_link.svg","4046f30d6252fde5565bf37a9a021762"],["include/LD/assets/icons/utility/replace.svg","6bb2a79175bba89d782d70de18b112c2"],["include/LD/assets/icons/utility/reply.svg","437330bd80e03c4213adf43f694f09b1"],["include/LD/assets/icons/utility/reply_all.svg","8ac848cef86697fd10e8f271a6860f04"],["include/LD/assets/icons/utility/reset_password.svg","04628c1ccd425c18f672b25831614415"],["include/LD/assets/icons/utility/resource_absence.svg","51876ccc92312f22511799ca949f1af4"],["include/LD/assets/icons/utility/resource_capacity.svg","551f856f31091db7c858a59da4b77a14"],["include/LD/assets/icons/utility/resource_territory.svg","8f112d7e3e6b97a468689f5cf7d97858"],["include/LD/assets/icons/utility/retweet.svg","4bb64acfbc61ee1571809eb229c3e2e0"],["include/LD/assets/icons/utility/ribbon.svg","56f7f9e69e0ecf203b57acd0173c5979"],["include/LD/assets/icons/utility/richtextbulletedlist.svg","f11bce992dcc14740d9fdc6dadfebd62"],["include/LD/assets/icons/utility/richtextindent.svg","6a940574dbdf499efec15c03f78ad14e"],["include/LD/assets/icons/utility/richtextnumberedlist.svg","293fc38b06d9d43c63a2050ea5410ede"],["include/LD/assets/icons/utility/richtextoutdent.svg","81e36c7bc21563a6c8f2caef81778c5a"],["include/LD/assets/icons/utility/right.svg","5a0583eaab4a2e8b4637fa679a8326fc"],["include/LD/assets/icons/utility/right_align_text.svg","e68bbcc58f09d59b8e15b89d0b27ed6b"],["include/LD/assets/icons/utility/rotate.svg","ddda42b90a0a8bf5469843aa4d3bb261"],["include/LD/assets/icons/utility/routing_offline.svg","ec91544f65e99415fddcf0b3ce90d923"],["include/LD/assets/icons/utility/rows.svg","164e48bb4892fc94270f972efe902608"],["include/LD/assets/icons/utility/rules.svg","b901a76b66d07b6f797628968379c97b"],["include/LD/assets/icons/utility/salesforce1.svg","d1075d43c6a8e137ab5be2a30d536869"],["include/LD/assets/icons/utility/save.svg","76c0b04130246f7af3daf966a7f2b133"],["include/LD/assets/icons/utility/screen.svg","9e6732f53fc29867d9e1f7a0ca432846"],["include/LD/assets/icons/utility/search.svg","fd30d81f3e1b51331c2904da55fa3008"],["include/LD/assets/icons/utility/send.svg","2a187df564cc5efcbf68ed23c1dd0f2d"],["include/LD/assets/icons/utility/sentiment_negative.svg","859459cd586d28839a14dae864ddc7cf"],["include/LD/assets/icons/utility/sentiment_neutral.svg","ca1081f6faa63e495e8024b617bc2bc6"],["include/LD/assets/icons/utility/settings.svg","987fca88383aabb572ee5c0af6a34232"],["include/LD/assets/icons/utility/setup.svg","f787cc087b66178371634d4b0e7001f1"],["include/LD/assets/icons/utility/setup_assistant_guide.svg","967e6084d76906152182f604c407b912"],["include/LD/assets/icons/utility/share.svg","085e91beb9fa163cc41381193a4156be"],["include/LD/assets/icons/utility/share_file.svg","fcf67888d066a51928036d4bf9b5d73d"],["include/LD/assets/icons/utility/share_mobile.svg","479b33c44059368aaa9fc999350a7b99"],["include/LD/assets/icons/utility/share_post.svg","ee77077bbd46815bbb752eb3f9d07b9e"],["include/LD/assets/icons/utility/shield.svg","3c976923e3333941445fb7bf58feb0b1"],["include/LD/assets/icons/utility/shopping_bag.svg","67d9bdd5016d87bb8bc69f8ae3610cd5"],["include/LD/assets/icons/utility/shortcuts.svg","07cac871fc9d0aa7c84eea1cbf063c4e"],["include/LD/assets/icons/utility/side_list.svg","a4561019174de0a8cd606c694c6f76ce"],["include/LD/assets/icons/utility/signpost.svg","b3020cc1af210f4052d15d5deb6e0940"],["include/LD/assets/icons/utility/skip.svg","74a8a0ae167e19627169992875139e07"],["include/LD/assets/icons/utility/smiley_and_people.svg","7152d43ec2e3cf98d60258079b4e2514"],["include/LD/assets/icons/utility/sms.svg","7cd496ff6c9560a7e9923b9def1994af"],["include/LD/assets/icons/utility/snippet.svg","001fc9d7c9852b58c149a31ebff03c84"],["include/LD/assets/icons/utility/sobject.svg","d1212ab04e14b66333453cb447001d79"],["include/LD/assets/icons/utility/sobject_collection.svg","ff7fd01d1883238db0b0594705a5e161"],["include/LD/assets/icons/utility/socialshare.svg","062a68fecd1ff033bbac1cbf71989069"],["include/LD/assets/icons/utility/sort.svg","beca2649fcb6cd20d9efa6394248b00c"],["include/LD/assets/icons/utility/spinner.svg","40c8d310003dc0955e322150119a2bd1"],["include/LD/assets/icons/utility/stage.svg","6930f9d4c39b9fb6843dd38de25a9518"],["include/LD/assets/icons/utility/stage_collection.svg","ddbdb4aaa9bac6a99f22438f7d1630bc"],["include/LD/assets/icons/utility/standard_objects.svg","ca0e997de9ad547a1bf06d298f556f57"],["include/LD/assets/icons/utility/steps.svg","27b663cdd56bcbaffd84dab4a63087be"],["include/LD/assets/icons/utility/stop.svg","5c675b9b6bf5c87d5efdf6929832f14a"],["include/LD/assets/icons/utility/strategy.svg","1044d0ab00d4933d5182d81e18f0b69c"],["include/LD/assets/icons/utility/strikethrough.svg","ff74a368212cafdb8646e0b8b53a06f9"],["include/LD/assets/icons/utility/success.svg","ec48c944a774b12fb9697e2f823cc755"],["include/LD/assets/icons/utility/summary.svg","fec811cffc5b51c516a0d529dd7cf5aa"],["include/LD/assets/icons/utility/summarydetail.svg","f91b95f9f1ab2bbe54f21c6862a20d4f"],["include/LD/assets/icons/utility/survey.svg","b0d3f1d71f983f580ef3767f2e022ebf"],["include/LD/assets/icons/utility/switch.svg","5ef4c0939670f727c9b8892358cd7def"],["include/LD/assets/icons/utility/symbols.svg","755f5bd901d89c8620319ac3da4198b2"],["include/LD/assets/icons/utility/sync.svg","8180cb0b08868fd48f6f2206138bc827"],["include/LD/assets/icons/utility/system_and_global_variable.svg","2169490b11a65d439bf4d5c291cb9cc4"],["include/LD/assets/icons/utility/table.svg","fbce293e43ffb76eaa57332513fa8436"],["include/LD/assets/icons/utility/tablet_landscape.svg","d1c40e5233d46f5f13c79616ab851bed"],["include/LD/assets/icons/utility/tablet_portrait.svg","1396ff68e337b400860a746306af791f"],["include/LD/assets/icons/utility/tabset.svg","a8ed0eb89681af11fa5a66ddee60dd2f"],["include/LD/assets/icons/utility/task.svg","3cd52d70366ec9f7a97a9867100e3a52"],["include/LD/assets/icons/utility/text.svg","11e7fb6c1dfb6457fcfba6cbf1176ee5"],["include/LD/assets/icons/utility/text_background_color.svg","e7d444e1fe0bebf7ad3f22ee02639242"],["include/LD/assets/icons/utility/text_color.svg","9baf6f2327e8e6a9b1e9572935ac3e88"],["include/LD/assets/icons/utility/text_template.svg","18fecee370abe420f4daf8ba86e782f4"],["include/LD/assets/icons/utility/textarea.svg","18392fcbf0cc9dcf5c5fd645101355af"],["include/LD/assets/icons/utility/textbox.svg","c5c66cd214d60730bae676011351fede"],["include/LD/assets/icons/utility/threedots.svg","6446b98ddcaaf5ad04298f9bb6a92cc5"],["include/LD/assets/icons/utility/threedots_vertical.svg","3dd1b3ca5ad80f43cd404d9985697455"],["include/LD/assets/icons/utility/thunder.svg","a161d9b4d889d1ae45cdda0c9938c19b"],["include/LD/assets/icons/utility/tile_card_list.svg","903c7c0da60fe33cc4e1586db91f181b"],["include/LD/assets/icons/utility/toggle_panel_bottom.svg","f8e35941865c8ceb6bd2ca5794abedea"],["include/LD/assets/icons/utility/toggle_panel_left.svg","2d8a589fe7a774417ca83e917ea22ca9"],["include/LD/assets/icons/utility/toggle_panel_right.svg","dcac6ca55acb96bfe14948b54e213213"],["include/LD/assets/icons/utility/toggle_panel_top.svg","8588cfcce698c117ae269bada52f3a1b"],["include/LD/assets/icons/utility/topic.svg","ab918c1914708f061eeb5bbfc0eb688e"],["include/LD/assets/icons/utility/topic2.svg","dba5467434c7d2e34831a94a1251c97f"],["include/LD/assets/icons/utility/touch_action.svg","f5c1c660f8eca0b7fc060ba19cfe70a6"],["include/LD/assets/icons/utility/tracker.svg","7823df10d734a7fe985406ae46f42211"],["include/LD/assets/icons/utility/trail.svg","6dd3dece365fdd3abb8302dc2d68599a"],["include/LD/assets/icons/utility/trailhead.svg","58a3c8e186194761298e01606ce26b81"],["include/LD/assets/icons/utility/travel_and_places.svg","ba0c42bce439342c80a84d5e3a4dd686"],["include/LD/assets/icons/utility/trending.svg","c0f1b19359d9d4c3353d645adfbe6e38"],["include/LD/assets/icons/utility/turn_off_notifications.svg","7b414a34a99fbb176ae4364be4cd3324"],["include/LD/assets/icons/utility/type.svg","463ab3c2e828b0b51f6999cb2fec474d"],["include/LD/assets/icons/utility/type_tool.svg","00226b5b1a57250e68478b1e76f5256a"],["include/LD/assets/icons/utility/undelete.svg","e8af8b634f35dd640b028fcfde6b497f"],["include/LD/assets/icons/utility/undeprecate.svg","e0f9b6e5633b6ca439f07449a662a522"],["include/LD/assets/icons/utility/underline.svg","a32ae67bd1fcc0ec76fa208a1c2d2311"],["include/LD/assets/icons/utility/undo.svg","003bcb6137420c27dbf3041f519baf3e"],["include/LD/assets/icons/utility/unlinked.svg","71605fcdd50bac2812c185f5c3308c97"],["include/LD/assets/icons/utility/unlock.svg","959116234fc751cbe27b3db489e3d708"],["include/LD/assets/icons/utility/unmuted.svg","dd1a09769a1012ec8cef818620cb5d3b"],["include/LD/assets/icons/utility/up.svg","6c51cfd6332b131434a2701756f1b4e6"],["include/LD/assets/icons/utility/upload.svg","c7a865ee55d392c0146e79737d4f9acf"],["include/LD/assets/icons/utility/user.svg","eaf556fe598cd7822ef415c390df15dd"],["include/LD/assets/icons/utility/user_role.svg","d896c5a615d6892603b9318808318f48"],["include/LD/assets/icons/utility/variable.svg","57bc2d7f7d813d807ef5e7c3a200919b"],["include/LD/assets/icons/utility/video.svg","83c12d9af3b4a3e39505a12505a9038c"],["include/LD/assets/icons/utility/voicemail_drop.svg","fd42a57c15e3b3d06b5aa2ec1f5d457b"],["include/LD/assets/icons/utility/volume_high.svg","2ff9e49eed31145d7c51d673b4fc2ba9"],["include/LD/assets/icons/utility/volume_low.svg","ee65496756f0bd2ef2d01188465673f9"],["include/LD/assets/icons/utility/volume_off.svg","402179568f57ceef12aec48fb0b94685"],["include/LD/assets/icons/utility/waits.svg","38ff3da8a7b18d3c6bb4bb5537b244c0"],["include/LD/assets/icons/utility/warning.svg","61e1dc42e363aecd75d1dd5e1f69a545"],["include/LD/assets/icons/utility/weeklyview.svg","3db68a6d5c6671f9d2a5aee9373609eb"],["include/LD/assets/icons/utility/wifi.svg","c4e561e3fbf45d9d08a2bd03def042bf"],["include/LD/assets/icons/utility/work_order_type.svg","e1cb42a9644a23267cb82784c0cd9070"],["include/LD/assets/icons/utility/world.svg","75fcd62e1d38cb6c1bfbbad392341114"],["include/LD/assets/icons/utility/yubi_key.svg","be3db1fa4ccc946b17202ad4bbe8dd82"],["include/LD/assets/icons/utility/zoomin.svg","0ce7e611bf2174e09a18e31b4ad9b80b"],["include/LD/assets/icons/utility/zoomout.svg","961827106ab42735edb481000074aa1b"],["include/LD/assets/images/einstein-headers/einstein-figure.svg","67eb8aa0687137e2ae66c70243c22c5d"],["include/LD/assets/images/einstein-headers/einstein-header-background.svg","a2beabec80f992be10c0a89936b43a45"],["include/LD/assets/images/illustrations/empty-state-assistant.svg","4cc06cc52170075d75eabe04efa2d63d"],["include/LD/assets/images/illustrations/empty-state-events.svg","d5d9da61dc25ac2d08d1a7ccaa278cdb"],["include/LD/assets/images/illustrations/empty-state-tasks.svg","484bce73174ef30246c9553509be2663"],["include/LD/assets/images/logo-noname.svg","5a82e699441ab63b3afb2a7449485375"],["include/LD/assets/images/logo.svg","5a82e699441ab63b3afb2a7449485375"],["include/LD/assets/styles/mainmenu.css","60718c9174ed712f0c6a240e34adec1d"],["include/LD/assets/styles/override_lds.css","acd3370a2580b31984e0c0fae9dc7bbd"],["include/LD/assets/styles/salesforce-lightning-design-system.css","83801568bc51c09cc4e3a51eab5dceee"],["include/LD/assets/styles/salesforce-lightning-design-system.min.css","dba16f862f9581e2df7788845d9e9514"],["include/Webservices/WSClient.js","ce5b9c7843df949930c6521cb685b0bd"],["include/bunnyjs/ajax.min.js","2029b517ce294867c673ccbeb4b51fb6"],["include/bunnyjs/api.min.js","8ad974884a5943e36cb819496dbea0bb"],["include/bunnyjs/autocomplete.icons.min.js","142390f3b7436ac6cc1316849138912b"],["include/bunnyjs/autocomplete.min.js","9a4befac9319e5f52b96604d509a9890"],["include/bunnyjs/component.min.js","c673e18a38ec56337d23ac1ba0fbe1f8"],["include/bunnyjs/core-helpers.min.js","94aafe1e985e31d66565ef96a2cd23e2"],["include/bunnyjs/css/fade.css","710d7b27d35263441cb8160e94033db5"],["include/bunnyjs/css/svg-icons.css","34bae8c10bd58dc3e34f00bc039dd87d"],["include/bunnyjs/customselect.min.js","8c1eafda5642fe0d2f38df66b8263c33"],["include/bunnyjs/datatable.icons.min.js","d686a435a7c27e4ef3fb946f7e1b7c1a"],["include/bunnyjs/datatable.min.js","bbd4566b6dc1b15244870876cfb8f066"],["include/bunnyjs/datatable.scrolltop.min.js","8f9c366732c0cd6ea7ed8b4e4d494385"],["include/bunnyjs/date.min.js","abd3441c461c3ad2693bf8ee365c29a1"],["include/bunnyjs/datepicker.min.js","6a7d6737ace00ac060dfa82c439ea4a9"],["include/bunnyjs/dropdown.min.js","7b04ae08d9e638918d1f401566ae8a75"],["include/bunnyjs/element.min.js","a525d0b41dbc2c31ff7b4de6a3921f3b"],["include/bunnyjs/file.min.js","b8eba89bdbacf51ab930af93897b9bce"],["include/bunnyjs/image-processor.min.js","7bf8433ba456f650f59db6419eddcc97"],["include/bunnyjs/image-upload.min.js","51a751a8de78e631e3530a315d378661"],["include/bunnyjs/image.min.js","46137431845fbb082873ca715a8f26ed"],["include/bunnyjs/modal.min.js","f0c6398cebf1f5a98680dca2e38e19a9"],["include/bunnyjs/normalize.min.js","e897275ba28810cac0db7d44cee75ded"],["include/bunnyjs/notify.min.js","1b8378505682c4b12fc6ee6081791460"],["include/bunnyjs/pagination.min.js","de34123ebd5a33a5f60aa3480f9bccd1"],["include/bunnyjs/polyfill-array-from.min.js","2923b3afb41872e425b9f8f87df1be69"],["include/bunnyjs/polyfill-fetch.min.js","52aae16e223e161def5451f805fd8aa5"],["include/bunnyjs/polyfill-object-assign.min.js","6018ae6b100151001ee113b5efa6c486"],["include/bunnyjs/polyfill-promise.min.js","2db587acd482aa7bebcda1a96daf3b45"],["include/bunnyjs/polyfill-template.min.js","79bca0401ba4d91a7df92164659e649c"],["include/bunnyjs/polyfills.min.js","1b851aa95bb123015474db0e9e55f803"],["include/bunnyjs/route.min.js","805bf87fb5c12f05e8e59531dbada208"],["include/bunnyjs/spinner.min.js","9f54a6c1e97f5ae61652fed67b83ad38"],["include/bunnyjs/sprites.svg","0b48192dd2f786878ce9c5b5e557c975"],["include/bunnyjs/svg/check.svg","17ac532875e2931d1940cd9f1a1bbfdb"],["include/bunnyjs/svg/search.svg","9df51d4e640dadfd9884b1a61c7b5642"],["include/bunnyjs/svg/spinner.svg","f9eb5fc3c2e44f37ad8a79de44ff182d"],["include/bunnyjs/tabsection.min.js","9717408591ba07ce9efe7e4142990e78"],["include/bunnyjs/template.min.js","9f421b33d36d7c679368836db0350a37"],["include/bunnyjs/url.min.js","0785fb5e7f89b051afaa7ff598886fbb"],["include/bunnyjs/utils-dom.min.js","9c52a30a0ff3f06d926ecd58e922f0f0"],["include/bunnyjs/utils-string.min.js","caacdd4f9e5e3466edd47b50c09c0d25"],["include/bunnyjs/utils-svg.min.js","484edd16fb4c1afd9f284b6a5a6547d6"],["include/bunnyjs/validation.min.js","6c3b63a761701b52fbd0b85c20a0aa98"],["include/chart.js/Chart.bundle.js","22b07a45d5f33013972b848726c9d051"],["include/chart.js/Chart.bundle.min.js","658dca7101c0e348da6a8898f04a383f"],["include/chart.js/Chart.js","f6453d2882447c18d2f61772182c44b5"],["include/chart.js/Chart.min.js","c8fbc7d4d33bcac909ba682cf6739691"],["include/chart.js/randomColor.js","45019dacca57c65149a9e1a52ae798e6"],["include/ckeditor/adapters/jquery.js","ccef5f71850287b35f32909cae86f96e"],["include/ckeditor/build-config.js","e52e28c8c917d705929bd9e9e250ff54"],["include/ckeditor/ckeditor.js","3c5d15bc77fb94797ad22446130e54a2"],["include/ckeditor/ckeditor_basic.js","1a4c2d2cd8aa2778ac85e314a05d5640"],["include/ckeditor/ckeditor_basic_source.js","096da3b66c5ae820810315e6843e4883"],["include/ckeditor/ckeditor_source.js","44165cdde8b0bf4101dbc1a5dae63c7c"],["include/ckeditor/config.js","5d2cc082f697602fa8913660b4cfcdc6"],["include/ckeditor/contents.css","8a98d75ebe8e89a86e3eb722bc4958ca"],["include/ckeditor/images/spacer.gif","df3e567d6f16d040326c7a0ea29a4f41"],["include/ckeditor/lang/af.js","f6d371af49c2e1b1279b7c5eb5b50853"],["include/ckeditor/lang/ar.js","064c31eebc9541def15e61b276dd92cd"],["include/ckeditor/lang/bg.js","f29058b47dfaea7865204627d40cf7e2"],["include/ckeditor/lang/bn.js","2b15cd493bb3bc40074a9307ecca608e"],["include/ckeditor/lang/bs.js","cace049dad1dace2d8e242964721d8c5"],["include/ckeditor/lang/ca.js","d5bfffa4351f20f6d724933ea44dd84f"],["include/ckeditor/lang/cs.js","af573449cf73cc29fbbe88d4aba5d1c4"],["include/ckeditor/lang/cy.js","d1a5d44df6e09139dfdd2e9abbafc70c"],["include/ckeditor/lang/da.js","1620ac787996e4b56126bcf43aa97e90"],["include/ckeditor/lang/de-ch.js","002da4efce3a25611d7ae61795c21fd1"],["include/ckeditor/lang/de.js","90fc6b41c0f4d1037655ae248b0030aa"],["include/ckeditor/lang/el.js","fc4933158aaa499b180c5093459ee90f"],["include/ckeditor/lang/en-au.js","12403a66a23b1924cafa8ac18df86608"],["include/ckeditor/lang/en-ca.js","dcdd9c1bbee1abb13169cd343cd86bcf"],["include/ckeditor/lang/en-gb.js","7eebff3bc2f7c72cd610f4e256e45c8b"],["include/ckeditor/lang/en.js","3f98edc405308347d7e54e0649013cbc"],["include/ckeditor/lang/eo.js","6f4e5de867d65d46e1f13f3c7d8eb951"],["include/ckeditor/lang/es.js","0e113155a98cfb4cdedc0c07f235ec1c"],["include/ckeditor/lang/et.js","eee60e223e7b5d8190d41de130d33d03"],["include/ckeditor/lang/eu.js","e98616df677f18f9dd60ea041f9fa9aa"],["include/ckeditor/lang/fa.js","8cd7bc976b49f4d77b73362f1b6cae4d"],["include/ckeditor/lang/fi.js","d54fac4d907fe05bab61fb883935ff48"],["include/ckeditor/lang/fo.js","168119e2b5fcf3558f4284e9e711f25c"],["include/ckeditor/lang/fr-ca.js","de2f6818db81023df747fd11d461357b"],["include/ckeditor/lang/fr.js","7d2885960d8d2cbe717ce2f9e60c02f7"],["include/ckeditor/lang/gl.js","dc039af05d6693f9f1f269efee04e3bd"],["include/ckeditor/lang/gu.js","900622ce3611edee75c0b77b92af2214"],["include/ckeditor/lang/he.js","c3de2035f2a7a5560f6191bb720edc71"],["include/ckeditor/lang/hi.js","51d529deac4c920738082875258f7ff0"],["include/ckeditor/lang/hr.js","65ab1a4378775a1ffaf0a9e14c7e5db8"],["include/ckeditor/lang/hu.js","3c8ba198d400aca7703020ad9196a053"],["include/ckeditor/lang/id.js","adeb65253375e0c7d83b2244f9ed4a01"],["include/ckeditor/lang/is.js","b50c87b69fb853e491a1be015b0a55b6"],["include/ckeditor/lang/it.js","2b6c88cc7d2ff683f78fbd50e2118ce2"],["include/ckeditor/lang/ja.js","4a8b6a7a661fd205a1012297d8cbacc7"],["include/ckeditor/lang/ka.js","ca3b1261c167f06c83163cb0cd262567"],["include/ckeditor/lang/km.js","7b0a903154ba7b61b79acad560dbb661"],["include/ckeditor/lang/ko.js","9991aa0c7fefcbacc65a437199a510be"],["include/ckeditor/lang/ku.js","17defa6f7961b85d33a9ff230fba428b"],["include/ckeditor/lang/lt.js","2fe654d257b4d88f81c18b14136b9d37"],["include/ckeditor/lang/lv.js","ef8f495f1c671f33b5ce119f7f27809e"],["include/ckeditor/lang/mk.js","dae421b5e0d579b31cdf10b20c82ecb2"],["include/ckeditor/lang/mn.js","5707c68ace6fce5262bb994a9a5c2cab"],["include/ckeditor/lang/ms.js","5049dd5eddcc4e02223040b6f88a7f2d"],["include/ckeditor/lang/nb.js","2dab24c29e6eee6288decf44935383f9"],["include/ckeditor/lang/nl.js","9e62f2be2671bbc389ac8dee10586aa9"],["include/ckeditor/lang/no.js","8023dd2a9b8149288fe983074389d061"],["include/ckeditor/lang/pl.js","37bc032fddae2ca549748c7c4f1718a4"],["include/ckeditor/lang/pt-br.js","2f24393ae106d670e69e7a639374afcb"],["include/ckeditor/lang/pt.js","c2a419c948a6088c54552981d4d0bb41"],["include/ckeditor/lang/ro.js","02b6fbcecf9f7b08ece0e19e8f58e568"],["include/ckeditor/lang/ru.js","a7b9e19f688a34b8707d78fa1fcb6bb2"],["include/ckeditor/lang/si.js","40301b3af237d3e473c36bfea7bd436a"],["include/ckeditor/lang/sk.js","2a6c16571288d69c5b2649f99cafdabc"],["include/ckeditor/lang/sl.js","a3822a5d7cdb531311c183ed48c72e01"],["include/ckeditor/lang/sq.js","99a33673f7a9e49b8e91961decd64875"],["include/ckeditor/lang/sr-latn.js","0bb41197f51a815689e426c02fa68cfe"],["include/ckeditor/lang/sr.js","5a816b8ca0ee9df43040205994a0a5a5"],["include/ckeditor/lang/sv.js","9af8fc5999f93e6b7b8d8a4362568459"],["include/ckeditor/lang/th.js","94ca015609f6773d55652410ed6d1e4e"],["include/ckeditor/lang/tr.js","804482e3b76041293eba5fd6178db04f"],["include/ckeditor/lang/tt.js","5fdff97c0777a6db0f3e3e066b30e50d"],["include/ckeditor/lang/ug.js","d9746fb84c4b809aeaaedfa31fc87a81"],["include/ckeditor/lang/uk.js","ad97b6dd01c71ed0dde922a644c1b7cf"],["include/ckeditor/lang/vi.js","a734d135fe107139d3da66b39d0aac63"],["include/ckeditor/lang/zh-cn.js","451f3a29d132b4030223f0fc0c8f9b5e"],["include/ckeditor/lang/zh.js","3ade1f9afeb618db4425b82ce44d27bc"],["include/ckeditor/plugins/a11yhelp/dialogs/a11yhelp.js","c906ae04cdebc6cbc3921d50003b4bde"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/af.js","553e745a570b423461a9093199acb4c6"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/ar.js","dd2b314a2669755bb543b54ddaffda26"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/bg.js","bccb22cdb8371f0f70710856a3aefc49"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/ca.js","abc036c3a90c5f5197ac1f8dbd56c244"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/cs.js","77098065f5d86f215bbfa3e0a8b6d195"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/cy.js","d193057322cc82bd2d15912f7639611d"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/da.js","d3fea6f1a9c66de78f5de496a7bb6e83"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/de-ch.js","f97042007621a5b973407c11969d7c59"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/de.js","1d0599e93873e55ec6e11bcaf32115ae"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/el.js","0b74dc52aa225184a06a5751961a7f12"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/en-gb.js","d894d758bf5af1a12832483a8354ec0a"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/en.js","68a16ffd3231909cc0a39d894aba89aa"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/eo.js","45a1cd2a6f6a77c7e179e9bfe896f6e4"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/es.js","38dd0a3caef280c5e0c504853ff2180d"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/et.js","86364a93769cab8ef19d883db5b0e09c"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/eu.js","f43bf6be385f21c393deffc22d0c3482"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/fa.js","5bc46bb815cf50c16bb4673aa04d4787"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/fi.js","e426b048f06165595ab2413ca50e4da4"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/fo.js","d961766bd87d0a18de30827cd73ce61f"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/fr-ca.js","2dc13aa30a4ba040b5880840a7e2175e"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/fr.js","f32361e216e30d3784ad5920f034a07b"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/gl.js","3bba8421a304291a7e0348f519b381aa"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/gu.js","5e0a3caab18ca1c2910d373b5d4e0723"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/he.js","e898c0cd185ba8e61c49c250f0cf592d"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/hi.js","e6dae7713f0b6948e92c74c3d5a98698"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/hr.js","79c930a378a786e66d9b7bc967ca44ca"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/hu.js","5a950600a4244106921edc76f108d171"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/id.js","9fb9560ae70043c5e8045622822b36fa"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/it.js","d9bd2a6940a345a76c783d80bc52bf21"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/ja.js","cf30da3d4b4f9a8026529a0c3b09ae2f"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/km.js","2f27233cf2186024f1df752075b46eef"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/ko.js","03a292571d70db2c4a3b3c5d5518b0e9"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/ku.js","3e34cf99f581d84268c22caabc7c4c8f"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/lt.js","962c8badbdc62a2f83cd9329837f06aa"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/lv.js","28417f0950f211fc8f6cfaf7f63df97b"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/mk.js","bcf317fcf6f52e7c5ccbaf9f4b17b3ce"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/mn.js","b2b5a688a76eb4ece381c15a8e9f6d96"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/nb.js","2be1b55b0c2327fbb2521fccdb7e2540"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/nl.js","134b2dc245f472b4f43e57c23de520d8"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/no.js","71437c83ac15064606315a66f047e59b"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/pl.js","e7151ebd23aa5e2893dead061b40f61c"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/pt-br.js","f047f098673e46bae83a01c015c525e9"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/pt.js","879e2bdf34819cf10c25c31cbdb2f66e"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/ro.js","2729fa55289b2ddcd3ba286f3b43a66d"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/ru.js","754fe9ca70dedf67210b9b7f6a2712fa"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/si.js","d6ee00f42cf411de41f0e4157820d283"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/sk.js","7f18259c7a6e3a42789b16805b574435"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/sl.js","acdcb8ab80249ed32f16557f352d4ec7"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/sq.js","af903a3367c70761f672c00af89d80a4"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/sr-latn.js","7b15bd3e9800336a8f4c34b6defd350e"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/sr.js","062aa900420c3bd5ab46b74f10a67163"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/sv.js","f3fa00db64880849abbd926627bed1e4"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/th.js","429bfd0a36687a17e733994975f5e9d6"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/tr.js","c7c58fa20bbb9d9de80b64f7aea257b5"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/tt.js","9bb4109d579bd746d39bd093c850b203"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/ug.js","9f92226887f9ad02428732844e92fcd2"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/uk.js","e90d16420b20027a8c882499630b046f"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/vi.js","4f6cc5bf09c491223482b7d71d945f12"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/zh-cn.js","6ec54c26306a2c1815e91ac7e3e1dca8"],["include/ckeditor/plugins/a11yhelp/dialogs/lang/zh.js","28944d626fa02b95a2f99307ade00e09"],["include/ckeditor/plugins/a11yhelp/lang/en.js","e7e238d9e4ad38e663fe99ead9c19f80"],["include/ckeditor/plugins/about/dialogs/about.js","1a3a3b27cd4c3c376600a330df359122"],["include/ckeditor/plugins/about/dialogs/hidpi/logo_ckeditor.png","6318d2b6f7fc79b4ed0404ffbc2dac1e"],["include/ckeditor/plugins/about/dialogs/logo_ckeditor.png","70dd831c761a20467a6ba9e5ae736f91"],["include/ckeditor/plugins/clipboard/dialogs/paste.js","d6cab4f06e855d651de6b232a00bf8bd"],["include/ckeditor/plugins/colordialog/dialogs/colordialog.js","01fe01366fe59d5247fd6e4095d65fbd"],["include/ckeditor/plugins/dialog/dialogDefinition.js","9083322f743544942de24acaa732cb05"],["include/ckeditor/plugins/div/dialogs/div.js","574ec1e97ae1e74720ae4f746a6af29a"],["include/ckeditor/plugins/fakeobjects/images/spacer.gif","df3e567d6f16d040326c7a0ea29a4f41"],["include/ckeditor/plugins/find/dialogs/find.js","7b6c648619e4239fe8e23909a89aa657"],["include/ckeditor/plugins/flash/dialogs/flash.js","417ba136b89581f0474fc79f91f72ce8"],["include/ckeditor/plugins/flash/images/placeholder.png","e9ac9384237d8d1cdaab68d31a22005d"],["include/ckeditor/plugins/forms/dialogs/button.js","805085df88d3a01ea89816a203119337"],["include/ckeditor/plugins/forms/dialogs/checkbox.js","5968b1bdff8181080fafb04e16d312fa"],["include/ckeditor/plugins/forms/dialogs/form.js","a01c8011353066fae9d7583ec9d3c363"],["include/ckeditor/plugins/forms/dialogs/hiddenfield.js","0eaa5504a3a7c2fbf0e82b8e05aad8b2"],["include/ckeditor/plugins/forms/dialogs/radio.js","3c8b933e734d1febdd5753521718e96e"],["include/ckeditor/plugins/forms/dialogs/select.js","c707a4d77fe37d18e2b91433b996f93d"],["include/ckeditor/plugins/forms/dialogs/textarea.js","ac76075932fc24d952d7e46e5ca038d2"],["include/ckeditor/plugins/forms/dialogs/textfield.js","20d91bc5a44c8910f7c2e8ac1923ab87"],["include/ckeditor/plugins/forms/images/hiddenfield.gif","6e7765b0483daffb25f2b7bf5098e0d9"],["include/ckeditor/plugins/icons.png","e1e5259ef4d132ac5cb3655a4f41cf95"],["include/ckeditor/plugins/icons_hidpi.png","16af6f6d04e4cd2180690cfcab4a7f9d"],["include/ckeditor/plugins/iframe/dialogs/iframe.js","1a210f09025841007c1c5cdf61db2731"],["include/ckeditor/plugins/iframe/images/placeholder.png","a5ab5364efc6f7cea525e76a7bb619ae"],["include/ckeditor/plugins/iframedialog/plugin.js","a0be666d0b8efdc9be16dd29ca23dc3e"],["include/ckeditor/plugins/image/dialogs/image.js","66da3f2e5bfa417837f2d4030935be3f"],["include/ckeditor/plugins/image/images/noimage.png","3eed23f5021065a8351126936bbe1e95"],["include/ckeditor/plugins/link/dialogs/anchor.js","b217b01fd0802ef49daf0db0f9facf34"],["include/ckeditor/plugins/link/dialogs/link.js","d0ef3ba60976b556710f37b7fccb9844"],["include/ckeditor/plugins/link/images/anchor.gif","60a2121d55f9238f529458ee5f2e6e4e"],["include/ckeditor/plugins/link/images/anchor.png","c23e1c6b52f6ca6678b77f38fef61789"],["include/ckeditor/plugins/link/images/hidpi/anchor.png","9df1a4e40cabf35907a16ea59f3f9df1"],["include/ckeditor/plugins/liststyle/dialogs/liststyle.js","740bcbdf7333ce748cd92dc6fcacd5a8"],["include/ckeditor/plugins/magicline/images/hidpi/icon-rtl.png","b37d0404583c0ac273a27873451c3234"],["include/ckeditor/plugins/magicline/images/hidpi/icon.png","5ba2e7b6aa50c7843ae9ca01ce08b606"],["include/ckeditor/plugins/magicline/images/icon-rtl.png","a29eda8cd2b1ebcbd3379654acebfb85"],["include/ckeditor/plugins/magicline/images/icon.png","baf6974c98b636142c7b0b5ba19bd96c"],["include/ckeditor/plugins/markdown/css/codemirror.min.css","e7b6c35da3a02c05fbd75748b4674c93"],["include/ckeditor/plugins/markdown/icons/hidpi/markdown.png","07a325c84b4a1698fbd6725862d97ed6"],["include/ckeditor/plugins/markdown/icons/markdown.png","4e353c073dcf2e931b6eedee9d43ca09"],["include/ckeditor/plugins/markdown/js/codemirror-gfm-min.js","fc5507436d1979168e19568e52f4a065"],["include/ckeditor/plugins/markdown/js/marked.js","4e8365c19f29ed6b00310ba62a7816df"],["include/ckeditor/plugins/markdown/js/to-markdown.js","8134cb0fdc13bc9df4a934a3bd3958e6"],["include/ckeditor/plugins/markdown/plugin.js","2358b315ea5a22e19af7f9a632e7b23b"],["include/ckeditor/plugins/markdown/theme/3024-day.css","68406c1477a4cb1b7ae9dc51be92a486"],["include/ckeditor/plugins/markdown/theme/3024-night.css","90a9b887c1aaea63c629bdce48f95230"],["include/ckeditor/plugins/markdown/theme/ambiance-mobile.css","256f2dd130b80c6afaa40fddf700d12a"],["include/ckeditor/plugins/markdown/theme/ambiance.css","c65e357d96162daabe78bca2dbdce79c"],["include/ckeditor/plugins/markdown/theme/base16-dark.css","bce9dddb84941d09a75dd3797a5dc11a"],["include/ckeditor/plugins/markdown/theme/base16-light.css","38ded826fdb13e8fad57bc58553b96e3"],["include/ckeditor/plugins/markdown/theme/blackboard.css","cf7fadda1ebdb98bbdc9c3144ec5894e"],["include/ckeditor/plugins/markdown/theme/cobalt.css","7ac99f19422299b4d0ff8535556b94f8"],["include/ckeditor/plugins/markdown/theme/eclipse.css","7c2f7b4b44b33fc9a5f857f542d007ac"],["include/ckeditor/plugins/markdown/theme/elegant.css","c98914a034be0b11803bd3c24fba25dd"],["include/ckeditor/plugins/markdown/theme/erlang-dark.css","75398b59ceeed0bba76357d6395a0018"],["include/ckeditor/plugins/markdown/theme/lesser-dark.css","8cded6b0441648f1964788f80d944753"],["include/ckeditor/plugins/markdown/theme/mbo.css","6ca14e2533afc4d47b697f199ce4cee4"],["include/ckeditor/plugins/markdown/theme/mdn-like.css","770bc206c1fc62fe40e729b799380f66"],["include/ckeditor/plugins/markdown/theme/midnight.css","96e728f928af79eb4c594c836c461db2"],["include/ckeditor/plugins/markdown/theme/monokai.css","24b4f26461aa59004318db8561c2bdb6"],["include/ckeditor/plugins/markdown/theme/neat.css","673552ecebac76569063801293e9c76c"],["include/ckeditor/plugins/markdown/theme/neo.css","f65035d751bacec07f189e3477f50bda"],["include/ckeditor/plugins/markdown/theme/night.css","25ac42da92cb242ce365efe6b34da645"],["include/ckeditor/plugins/markdown/theme/paraiso-dark.css","3e29c028e094d75b203945bcdccdf02e"],["include/ckeditor/plugins/markdown/theme/paraiso-light.css","6c4ff0ddd6f3c25f2c1494fe7ec0ce55"],["include/ckeditor/plugins/markdown/theme/pastel-on-dark.css","b9c0773d5747bb5deb0dc1194d3221d7"],["include/ckeditor/plugins/markdown/theme/rubyblue.css","9912ce413e966aabe603573ab5bb0d83"],["include/ckeditor/plugins/markdown/theme/solarized.css","1ac07f4d1544921fe5beec04c19ffe8b"],["include/ckeditor/plugins/markdown/theme/the-matrix.css","cc9d5612106e040187f780d897786cef"],["include/ckeditor/plugins/markdown/theme/tomorrow-night-eighties.css","e73b9d5d85f48ebe7f55a8245046f546"],["include/ckeditor/plugins/markdown/theme/twilight.css","ae5dfb3ea25d320f6c15284c1a4145bd"],["include/ckeditor/plugins/markdown/theme/vibrant-ink.css","596536b3f6ca3d80729fa943a40e1ccb"],["include/ckeditor/plugins/markdown/theme/xq-dark.css","1b5bb146d6fcc235103072589a347cc8"],["include/ckeditor/plugins/markdown/theme/xq-light.css","481023ea9d2e1d4c1707a1867c500326"],["include/ckeditor/plugins/pagebreak/images/pagebreak.gif","05dcfa6e3332b3ab7ac9218bf420cb58"],["include/ckeditor/plugins/pastefromword/filter/default.js","0d9bb38c0b4fef01beb354de7964e9db"],["include/ckeditor/plugins/pastetext/dialogs/pastetext.js","c889dda445f8c70cdfb5e6be15fb3d19"],["include/ckeditor/plugins/scayt/dialogs/options.js","a56ca25171107cbb0b71f73c93636769"],["include/ckeditor/plugins/scayt/dialogs/toolbar.css","abb7173bc76c982641101d81cc544ab0"],["include/ckeditor/plugins/showblocks/images/block_address.png","9bec74c765f8a0938f50875912c07282"],["include/ckeditor/plugins/showblocks/images/block_blockquote.png","6a75769ebc3efc29bea72ca39f2706d5"],["include/ckeditor/plugins/showblocks/images/block_div.png","245b9fa9b31d1a230be294a4824ebc2a"],["include/ckeditor/plugins/showblocks/images/block_h1.png","9c7fce3d77cc205e7bd2a52043ea93e3"],["include/ckeditor/plugins/showblocks/images/block_h2.png","23e0bd942da90db8f0d1f02de9c102df"],["include/ckeditor/plugins/showblocks/images/block_h3.png","e46278c31f23cea32eec3cdeaf4fd344"],["include/ckeditor/plugins/showblocks/images/block_h4.png","e7f71965bd30638bdb845e46bb996487"],["include/ckeditor/plugins/showblocks/images/block_h5.png","4eb09981f4bd28f37cb01ffde72937bd"],["include/ckeditor/plugins/showblocks/images/block_h6.png","c59baac0a87734e16b44cdbac4fa5429"],["include/ckeditor/plugins/showblocks/images/block_p.png","c3a4ca41007690fb063166eb94c6c40a"],["include/ckeditor/plugins/showblocks/images/block_pre.png","2dd09308dc4573029ded1030ecea1a66"],["include/ckeditor/plugins/smiley/dialogs/smiley.js","156cbc1b9467a2810a80caff0288315c"],["include/ckeditor/plugins/smiley/images/angel_smile.gif","eb0d289bc2b6cf81cdcb3d172de01be3"],["include/ckeditor/plugins/smiley/images/angel_smile.png","35de693f510be6092087e76fbd8d4858"],["include/ckeditor/plugins/smiley/images/angry_smile.gif","01f7bf4165ed0ea9c575047512e6b254"],["include/ckeditor/plugins/smiley/images/angry_smile.png","b1b142807ce4bb8784c5291e66c77e59"],["include/ckeditor/plugins/smiley/images/broken_heart.gif","80bd5b8b6d380de82de62caacfdc5c31"],["include/ckeditor/plugins/smiley/images/broken_heart.png","54051abe9b11365442eb133431055e4e"],["include/ckeditor/plugins/smiley/images/confused_smile.gif","2c0fac96ca9ffc7946345f6bbb3f756f"],["include/ckeditor/plugins/smiley/images/confused_smile.png","71ddba0809eaf8772a4f959c476dfd45"],["include/ckeditor/plugins/smiley/images/cry_smile.gif","14eaed2d73022fca3bebfae0052b0c6b"],["include/ckeditor/plugins/smiley/images/cry_smile.png","9f8eedc515716b59ffb31e0975ed70c6"],["include/ckeditor/plugins/smiley/images/devil_smile.gif","e9421d09d8e14616be9571c92125933c"],["include/ckeditor/plugins/smiley/images/devil_smile.png","9ebcc5258594dea600706f079ca84b48"],["include/ckeditor/plugins/smiley/images/embaressed_smile.gif","666d0000b06a5dd44693b2d3ced7f547"],["include/ckeditor/plugins/smiley/images/embarrassed_smile.gif","666d0000b06a5dd44693b2d3ced7f547"],["include/ckeditor/plugins/smiley/images/embarrassed_smile.png","b99d286c8d3da9f3e91207bc6c829233"],["include/ckeditor/plugins/smiley/images/envelope.gif","1448c4f72550074a49132c2895dafc4f"],["include/ckeditor/plugins/smiley/images/envelope.png","579ad38a28eb7aa15daf8751a81ab246"],["include/ckeditor/plugins/smiley/images/heart.gif","140f63f60c8cbdd8b54c10a43272c623"],["include/ckeditor/plugins/smiley/images/heart.png","818362c20066b60184a5a0e8187baa79"],["include/ckeditor/plugins/smiley/images/kiss.gif","5647a7d8a3f0e1e1536ce4156f5c2e25"],["include/ckeditor/plugins/smiley/images/kiss.png","9615f97979a3674603cfd03bfeca451f"],["include/ckeditor/plugins/smiley/images/lightbulb.gif","30d7063a64990b3b4c02566b4caa82e9"],["include/ckeditor/plugins/smiley/images/lightbulb.png","952ab995f4cf77d7686d0ec853d2f232"],["include/ckeditor/plugins/smiley/images/omg_smile.gif","23f1297b1e0bf882f47c2e7f99c5be7c"],["include/ckeditor/plugins/smiley/images/omg_smile.png","10b2eb3edfab4bf94357bf8578f24377"],["include/ckeditor/plugins/smiley/images/regular_smile.gif","d2eec284220e320bf730c56a1ac599e5"],["include/ckeditor/plugins/smiley/images/regular_smile.png","bc23f5aef97ef9f12ac3b0d49bcd8afb"],["include/ckeditor/plugins/smiley/images/sad_smile.gif","00185a83031165eee6389f74aefde902"],["include/ckeditor/plugins/smiley/images/sad_smile.png","937e65674e30bd0f026d7260df698dc6"],["include/ckeditor/plugins/smiley/images/shades_smile.gif","5adc692cc4db4637563136033890692b"],["include/ckeditor/plugins/smiley/images/shades_smile.png","d25c5ca52217e776f33a709833f0cbfd"],["include/ckeditor/plugins/smiley/images/teeth_smile.gif","98f94c05a790e302b74cfc8a02436571"],["include/ckeditor/plugins/smiley/images/teeth_smile.png","82d6f950227d76aded2600aceac80f67"],["include/ckeditor/plugins/smiley/images/thumbs_down.gif","b372f9ed85d5312d45a16b90e94f38f7"],["include/ckeditor/plugins/smiley/images/thumbs_down.png","b2d9c5d63108c03b6ac62c1ae49c52d2"],["include/ckeditor/plugins/smiley/images/thumbs_up.gif","aa9b9c654637e4416f6fa04a58a8f614"],["include/ckeditor/plugins/smiley/images/thumbs_up.png","bb6ce02a0a423ef270217de51374f107"],["include/ckeditor/plugins/smiley/images/tongue_smile.gif","1bea0b1184b1e5c3940ec8c5d6e81f86"],["include/ckeditor/plugins/smiley/images/tongue_smile.png","d80a35ee23e3ee9cb6d32372a3182e39"],["include/ckeditor/plugins/smiley/images/tounge_smile.gif","1bea0b1184b1e5c3940ec8c5d6e81f86"],["include/ckeditor/plugins/smiley/images/whatchutalkingabout_smile.gif","381881cfa2765138a4c2e7f3da56bced"],["include/ckeditor/plugins/smiley/images/whatchutalkingabout_smile.png","6e562cb0be0aa525d9a5b8b23759d4e4"],["include/ckeditor/plugins/smiley/images/wink_smile.gif","1aab746a15472e6e4675369158ffb420"],["include/ckeditor/plugins/smiley/images/wink_smile.png","9a5c2bebf35175e98a54c7edb62ae3cd"],["include/ckeditor/plugins/specialchar/dialogs/lang/af.js","71479f26d18da271a5251c1339dbc102"],["include/ckeditor/plugins/specialchar/dialogs/lang/ar.js","242e3d1c669cde291c2c0ec1a2ca81b5"],["include/ckeditor/plugins/specialchar/dialogs/lang/bg.js","267cc43f587c3b514e3bfa76f852613b"],["include/ckeditor/plugins/specialchar/dialogs/lang/ca.js","c1405614da9b8c106ca93dfcb1c4ee4c"],["include/ckeditor/plugins/specialchar/dialogs/lang/cs.js","1e3ca4eb94ef05bac32e4fce7f3dffcb"],["include/ckeditor/plugins/specialchar/dialogs/lang/cy.js","a19226091d8c0722657dc82152849ad5"],["include/ckeditor/plugins/specialchar/dialogs/lang/da.js","f04bab6366652883e229078aa3f97d72"],["include/ckeditor/plugins/specialchar/dialogs/lang/de-ch.js","ad2f02e0e8c2790560de0bb848604bc2"],["include/ckeditor/plugins/specialchar/dialogs/lang/de.js","7de71236111561aad3cb4c05e6040d6d"],["include/ckeditor/plugins/specialchar/dialogs/lang/el.js","105f389f4a77e279deeb38281f499a7c"],["include/ckeditor/plugins/specialchar/dialogs/lang/en-gb.js","fa9ed9233d66865b8730ca23a564fada"],["include/ckeditor/plugins/specialchar/dialogs/lang/en.js","64d91a1320d6dd6309d911524f4274c5"],["include/ckeditor/plugins/specialchar/dialogs/lang/eo.js","e3df19977f054dba444ff5d7d679f38e"],["include/ckeditor/plugins/specialchar/dialogs/lang/es.js","f9a1866732229f7a716dfbe973f9475f"],["include/ckeditor/plugins/specialchar/dialogs/lang/et.js","b809e64d03f58ce863de23092211ee93"],["include/ckeditor/plugins/specialchar/dialogs/lang/eu.js","5ab2dd603f22810a649922660b239275"],["include/ckeditor/plugins/specialchar/dialogs/lang/fa.js","c5501ff684654c809c1dcf081ec4b047"],["include/ckeditor/plugins/specialchar/dialogs/lang/fi.js","9962779efbd245da05bf64f48f9c4964"],["include/ckeditor/plugins/specialchar/dialogs/lang/fr-ca.js","e341518a81cdbbcb43921514f50060e9"],["include/ckeditor/plugins/specialchar/dialogs/lang/fr.js","8656042b9e548541b0a50c4b4c3413f0"],["include/ckeditor/plugins/specialchar/dialogs/lang/gl.js","a040710cdf41b2e65f70d1f050dbfcb3"],["include/ckeditor/plugins/specialchar/dialogs/lang/he.js","d963066572ca7c196469b8e293f9a9c9"],["include/ckeditor/plugins/specialchar/dialogs/lang/hr.js","2569616cba41d645817fdf217056d808"],["include/ckeditor/plugins/specialchar/dialogs/lang/hu.js","19f2c26e6b945c667f1697a0083ec82f"],["include/ckeditor/plugins/specialchar/dialogs/lang/id.js","c4e8a9e851fd7452672eee08b6247008"],["include/ckeditor/plugins/specialchar/dialogs/lang/it.js","0bb5416f936da3ca7f7d7c7073fe8797"],["include/ckeditor/plugins/specialchar/dialogs/lang/ja.js","e6ad5309e1cbc000d32b088587cfaeb0"],["include/ckeditor/plugins/specialchar/dialogs/lang/km.js","f155ab50c0dd87b2fe10620608e7792f"],["include/ckeditor/plugins/specialchar/dialogs/lang/ko.js","98ceacf77d2f8596e1d093323c2beb46"],["include/ckeditor/plugins/specialchar/dialogs/lang/ku.js","bdb43db60fa0d95dd2ceb87cac6480c1"],["include/ckeditor/plugins/specialchar/dialogs/lang/lt.js","6332821a9fd06d54db32a20528f987ad"],["include/ckeditor/plugins/specialchar/dialogs/lang/lv.js","30f4b6f543dd7535b0b351585ff6e835"],["include/ckeditor/plugins/specialchar/dialogs/lang/nb.js","14ac8c2a4964ecd5a3d01f3e4c078ed1"],["include/ckeditor/plugins/specialchar/dialogs/lang/nl.js","45aa3587f4d7f06be783c3a60e2655be"],["include/ckeditor/plugins/specialchar/dialogs/lang/no.js","2968ac3f78688849ceae5dce2aa9170b"],["include/ckeditor/plugins/specialchar/dialogs/lang/pl.js","07d2f8ffcc3b335bcb4b0f87281466e7"],["include/ckeditor/plugins/specialchar/dialogs/lang/pt-br.js","80cebdc4c6de643f25f747cef54259c6"],["include/ckeditor/plugins/specialchar/dialogs/lang/pt.js","106ab2d7670770e848c8fb7a3593cb59"],["include/ckeditor/plugins/specialchar/dialogs/lang/ru.js","0381daa5e893e2d23f2aa18b8d54791e"],["include/ckeditor/plugins/specialchar/dialogs/lang/si.js","c7f4759e7746b42f52576d120ce9c110"],["include/ckeditor/plugins/specialchar/dialogs/lang/sk.js","7ba061095626489d7ff71b184e8d9392"],["include/ckeditor/plugins/specialchar/dialogs/lang/sl.js","cced0c682e7357fdd019e8a2b8955b7e"],["include/ckeditor/plugins/specialchar/dialogs/lang/sq.js","69b7ae0cbaac040db832a45d5a8bbfdc"],["include/ckeditor/plugins/specialchar/dialogs/lang/sv.js","462e8b53b50756055be48182598b7152"],["include/ckeditor/plugins/specialchar/dialogs/lang/th.js","87a660a76a82b8a02378814598917316"],["include/ckeditor/plugins/specialchar/dialogs/lang/tr.js","6c52016576fee6b4f1df73fa9358a3fb"],["include/ckeditor/plugins/specialchar/dialogs/lang/tt.js","4c11ae70558865c4fb8e212832a0b531"],["include/ckeditor/plugins/specialchar/dialogs/lang/ug.js","ff9ff87722657daa79c568a92cbccb60"],["include/ckeditor/plugins/specialchar/dialogs/lang/uk.js","0e70ad688b02c8dcf03282f984ad0ca8"],["include/ckeditor/plugins/specialchar/dialogs/lang/vi.js","24525eba46f6c3e90b6353f58d7c56b5"],["include/ckeditor/plugins/specialchar/dialogs/lang/zh-cn.js","88cb0cad1971353eaf714fc5fb2971ab"],["include/ckeditor/plugins/specialchar/dialogs/lang/zh.js","3ab3180d28689735b6d15ecdd8be2ff1"],["include/ckeditor/plugins/specialchar/dialogs/specialchar.js","9c37cab95ec0ed9d4c99170e3ea62e77"],["include/ckeditor/plugins/styles/styles/default.js","c050e18279257bd47e06293119f96f94"],["include/ckeditor/plugins/table/dialogs/table.js","323208d23b11e838078ac418d7af15f6"],["include/ckeditor/plugins/tabletools/dialogs/tableCell.js","5ed56499c4458e34fe44e0f8815ec011"],["include/ckeditor/plugins/templates/dialogs/templates.css","c0895a50e0b3648de77fce7af4664c1b"],["include/ckeditor/plugins/templates/dialogs/templates.js","91f3edf0ad84c5ff359083a6ce381544"],["include/ckeditor/plugins/templates/templates/default.js","6e83568f3898f1a8f35cfdf927becd7e"],["include/ckeditor/plugins/templates/templates/images/template1.gif","fc667c4366fe133c30ab122fe2ee7f20"],["include/ckeditor/plugins/templates/templates/images/template2.gif","8a4d45166ebeef73e222270a8113d66f"],["include/ckeditor/plugins/templates/templates/images/template3.gif","b8650f06582ac88ece68948bac1bf734"],["include/ckeditor/plugins/uicolor/dialogs/uicolor.js","59a3c518ef6b28036ab887196c462525"],["include/ckeditor/plugins/uicolor/lang/en.js","1c6d5616881f101039fcc13fb4c8cfc8"],["include/ckeditor/plugins/uicolor/plugin.js","973fab87a5ab79cc5c16460c3cad6c52"],["include/ckeditor/plugins/uicolor/uicolor.gif","83be344f9d97ac22ccfb90a07d128b04"],["include/ckeditor/plugins/uicolor/yui/assets/hue_bg.png","85c2fc9570abba39f203039c948c5779"],["include/ckeditor/plugins/uicolor/yui/assets/hue_thumb.png","8dfa46d350f447a5b09e1e3f6e6dc7b4"],["include/ckeditor/plugins/uicolor/yui/assets/picker_mask.png","3193f0b5f7bd03ec403b9466148622c2"],["include/ckeditor/plugins/uicolor/yui/assets/picker_thumb.png","d806b36442a90e313b76138ce0d1eabf"],["include/ckeditor/plugins/uicolor/yui/assets/yui.css","cff6d0aae50e3b59ba3d29c3dbeb5849"],["include/ckeditor/plugins/uicolor/yui/yui.js","71783bfee52c7f4433db88c20ca50441"],["include/ckeditor/plugins/wsc/dialogs/wsc.css","9f63e9dd90b207fdf884bb6e8b5dfbaf"],["include/ckeditor/plugins/wsc/dialogs/wsc.js","a326fbeed01112e6a2a905f5f5c33792"],["include/ckeditor/plugins/wsc/dialogs/wsc_ie.js","47e6654b545a57f00589137476a68fdc"],["include/ckeditor/skins/kama/dialog.css","ab9c6317743da7bc97e314770529157a"],["include/ckeditor/skins/kama/editor.css","0a1f1ef636d0eea6bfae512c39077618"],["include/ckeditor/skins/kama/icons.png","6f5de214381b2850c8fc61ac8cce4e05"],["include/ckeditor/skins/kama/images/dialog_sides.gif","120d7ec1d25b985eeaa6b8e33cfe532b"],["include/ckeditor/skins/kama/images/dialog_sides.png","7b4484847ba0490140a20e8021d50031"],["include/ckeditor/skins/kama/images/dialog_sides_rtl.png","e91e6dbf0680e420d5b118dbe8ac328e"],["include/ckeditor/skins/kama/images/mini.gif","44047e297a6b8de4c228e763b2fcd89a"],["include/ckeditor/skins/kama/images/noimage.png","1c5c947a5325e0946a32bc33261fe22f"],["include/ckeditor/skins/kama/images/sprites.png","f559dc4a2764a4fb4da397f87883adcf"],["include/ckeditor/skins/kama/images/sprites_ie6.png","25955ee66bc4753bef361c33519a588e"],["include/ckeditor/skins/kama/images/toolbar_start.gif","7ed13749e9da48abea49e9b22543120b"],["include/ckeditor/skins/kama/skin.js","9920fd41362befb7163f36c068c7447a"],["include/ckeditor/skins/kama/templates.css","57583f1dcc78ae6972a5e51fac088482"],["include/ckeditor/skins/moono/dialog.css","aa427e03c64e38df1b9b568fdab8e6eb"],["include/ckeditor/skins/moono/dialog_ie.css","2ce5cadec903da77f56fd93489758db1"],["include/ckeditor/skins/moono/dialog_ie7.css","ea4e7c0149a1ca6c101105072519e262"],["include/ckeditor/skins/moono/dialog_ie8.css","c2c250f64f7a4414947c9699c3df60ee"],["include/ckeditor/skins/moono/dialog_iequirks.css","2102ff4c45282f2a6981713a11335566"],["include/ckeditor/skins/moono/dialog_opera.css","250fef2d6f64ed9113a3f1c82b969057"],["include/ckeditor/skins/moono/editor.css","ba10052c65982f87092fdeba85f59b50"],["include/ckeditor/skins/moono/editor_gecko.css","1d01944cb45572938c8bab3d8fd9ff23"],["include/ckeditor/skins/moono/editor_ie.css","55560a85a47811d6929fd2e48bb1ae85"],["include/ckeditor/skins/moono/editor_ie7.css","355bc353d132eac2cfe304e640bc662b"],["include/ckeditor/skins/moono/editor_ie8.css","2dfd70714fd314f1f0c5f56880c020ea"],["include/ckeditor/skins/moono/editor_iequirks.css","f22e4b002363ed22e1b67062d1b66779"],["include/ckeditor/skins/moono/icons.png","e1e5259ef4d132ac5cb3655a4f41cf95"],["include/ckeditor/skins/moono/icons_hidpi.png","16af6f6d04e4cd2180690cfcab4a7f9d"],["include/ckeditor/skins/moono/images/arrow.png","5b9854a7f865788fff62fe32b0324ca0"],["include/ckeditor/skins/moono/images/close.png","9b497b65c0909aa80b21aa989363a0bb"],["include/ckeditor/skins/moono/images/hidpi/close.png","cd269135b1c31c9044974c3d17059b04"],["include/ckeditor/skins/moono/images/hidpi/lock-open.png","4f6b9606513757e04d4de3268a123eb7"],["include/ckeditor/skins/moono/images/hidpi/lock.png","f6cf4b23d39107db8aaf907f686a0052"],["include/ckeditor/skins/moono/images/hidpi/refresh.png","33ebeddcb7b69137ffbfca121b0f6213"],["include/ckeditor/skins/moono/images/lock-open.png","e9dff089035fee4ac979a340ef8d4fcf"],["include/ckeditor/skins/moono/images/lock.png","68f4c2f5309e4dbc0f98c4be79dc66c7"],["include/ckeditor/skins/moono/images/mini.png","94486bdf738306e36bf7d144f4268f84"],["include/ckeditor/skins/moono/images/refresh.png","0f54df868f75482f99157807f6f68ee0"],["include/ckeditor/skins/moono/images/spinner.gif","7f32b6e67f42a0ef3e1ddb0b9401f6c5"],["include/ckeditor/skins/office2003/dialog.css","8b946c91fb5e37e3a08632925aa520c7"],["include/ckeditor/skins/office2003/editor.css","4d5e94c57913c94832e756bcc8faa14e"],["include/ckeditor/skins/office2003/icons.png","6f5de214381b2850c8fc61ac8cce4e05"],["include/ckeditor/skins/office2003/images/dialog_sides.gif","0347236eef1ae590f8f4da8d88d050d3"],["include/ckeditor/skins/office2003/images/dialog_sides.png","99cec08e2ff5d144662f2390eeeb344b"],["include/ckeditor/skins/office2003/images/dialog_sides_rtl.png","de1a31b0b8955a8b8895dd6011b752c8"],["include/ckeditor/skins/office2003/images/mini.gif","44047e297a6b8de4c228e763b2fcd89a"],["include/ckeditor/skins/office2003/images/noimage.png","1c5c947a5325e0946a32bc33261fe22f"],["include/ckeditor/skins/office2003/images/sprites.png","24714a341e673b22797953b1f6c40037"],["include/ckeditor/skins/office2003/images/sprites_ie6.png","547a271da89b430cc11806ba9e00492a"],["include/ckeditor/skins/office2003/skin.js","5131f5f8fca63766062d8066b3c42b33"],["include/ckeditor/skins/office2003/templates.css","1895f261fecaba4c9b2e3939aa89a8a2"],["include/ckeditor/skins/v2/dialog.css","3e8978652d921f40f5035300242d5e29"],["include/ckeditor/skins/v2/editor.css","73763bfc77e646de13db8cb1b5d08ead"],["include/ckeditor/skins/v2/icons.png","6f5de214381b2850c8fc61ac8cce4e05"],["include/ckeditor/skins/v2/images/dialog_sides.gif","120d7ec1d25b985eeaa6b8e33cfe532b"],["include/ckeditor/skins/v2/images/dialog_sides.png","7b4484847ba0490140a20e8021d50031"],["include/ckeditor/skins/v2/images/dialog_sides_rtl.png","e91e6dbf0680e420d5b118dbe8ac328e"],["include/ckeditor/skins/v2/images/mini.gif","44047e297a6b8de4c228e763b2fcd89a"],["include/ckeditor/skins/v2/images/noimage.png","1c5c947a5325e0946a32bc33261fe22f"],["include/ckeditor/skins/v2/images/sprites.png","30e053624aee547b168af65a5aaed5bf"],["include/ckeditor/skins/v2/images/sprites_ie6.png","f8734fb1c22b17417e48ab7d8e5e05c0"],["include/ckeditor/skins/v2/images/toolbar_start.gif","7ed13749e9da48abea49e9b22543120b"],["include/ckeditor/skins/v2/skin.js","aef2dec3b2c15d74388eabfb73abd95f"],["include/ckeditor/skins/v2/templates.css","0898636a85ffdb0425f28dfc5459e0e1"],["include/ckeditor/styles.js","36461354bd2b4245f83f86250d5b9dad"],["include/ckeditor/themes/default/theme.js","e72c3603b61fdfc673dc40b943724494"],["include/csrfmagic/csrf-magic.js","143302dc3175324824d718937e339fff"],["include/dropzone/custom.css","d6b63d223d69da7c7f169edbd6b9091d"],["include/dropzone/dropzone.css","5e018ddcbacdc772d8ad3f48b8615657"],["include/dropzone/dropzone.js","0885a777c714486ecdb35160f9045174"],["include/dropzone/upload_120.png","2d2419776b214009a53a46d40915c4d3"],["include/dropzone/upload_32.png","20ecfe994bcc1d1c4524eb9409976c68"],["include/freetag/jquery.tagcanvas.js","0be5cdb88030adc8bdeeaef233fdb1a4"],["include/freetag/jquery.tagcanvas.min.js","3e99f6e7297378ccbcdcfd0b907a511a"],["include/freetag/tagcanvas.js","88dd1cf2eb131225f8aab090d5fce221"],["include/freetag/tagcanvas.min.js","82199e635f5096bfb6a5cf79ce023933"],["include/images/Blogs.png","4cdf34a644f1ea4358432f43f5323b04"],["include/images/Facebook.png","e4ac82cfe4f4593c1add6045f535747d"],["include/images/Forums.png","518056c760dd96335d91af3daf6c71d4"],["include/images/Linkedin.png","148588e982b051aa5aa878077aed9211"],["include/images/Manuals.png","c719d39c861d4a8eddd9fe460ba5d86b"],["include/images/Twitter.png","319205c5f60c0d12f4be4dfe624d20b7"],["include/images/Youtube.png","321798c3a4f90cafc07df60d8a8f0f2f"],["include/images/announ.gif","6ac2364bce104334b23b9652adb9315b"],["include/images/bgcolor.gif","903015da7796376b5a9df5e16baa4370"],["include/images/blank.gif","fc94fb0c3ed8a8f909dbc7630a0987ff"],["include/images/installing.gif","62572865757be59dc388808f7fe03dea"],["include/images/noimage.gif","07378cab4ad25735cc94ab6f74253583"],["include/images/right_arc.gif","07ec4a686a96f0b84ee73fc13e225292"],["include/images/spacer.gif","41c9bc7f3f78ed71115cc062c1c67b09"],["include/images/topBg.gif","a93a2692f708bce1ae5e39d9f680d0aa"],["include/jquery.steps.css","17c65e7385c544455d2235531d60c29d"],["include/jquery/jquery-ui.js","9f508c8b3b387f6c46f76df16c7b3c69"],["include/jquery/jquery.js","4f252523d4af0b478c810c2547a63e19"],["include/jquery/jquery.steps.min.js","e1d5a5b0229a7ad0f0f92969064558c0"],["include/js/ColorPicker2.js","60d39426c70ba2d12e821f934728ac2a"],["include/js/FieldDepFunc.js","c87b487b3785ae87d8edfc5e3c8119fe"],["include/js/FieldDependencies.js","e402631525953bc457e64601a1a4f2a2"],["include/js/Inventory.js","c7cb3e20987100af8faadb17087b5e38"],["include/js/ListView.js","592e52d859dceee1b288805939c06ed7"],["include/js/Mail.js","22e1a51b143bc27361107aa9d40490b5"],["include/js/Merge.js","92db09ac10a555be4bfc0398f2a93379"],["include/js/PasswordManagement.js","d871391e97faa107c84bfdf8e770f113"],["include/js/QuickCreate.js","e5029e6a617bfb7f9114191938738069"],["include/js/RelatedLists.js","a52c834078fdf0b0cbd156ef4aa05fdb"],["include/js/advancefilter.js","fd8009cb447a3e22d14c7855ebae42ba"],["include/js/asterisk.js","a1ecfb23bb0eabf3ae8ad819497766d7"],["include/js/clipboard.min.js","3f3688138a1b9fc4ef669ce9056b6674"],["include/js/clock.js","d63a09ae85fd37aee6be32fd9c9ca9ab"],["include/js/corebosjshooks.js","b21bd8c9efd56f95368fd6f393a8bf6c"],["include/js/customview.js","fac2826174b3ef2d807edd9524c029f3"],["include/js/de_de.lang.js","1d3b31aebd935c0ecdb13160e7fe17ce"],["include/js/dedup.js","3aab10a82c3f05de285ce73b6dc3be35"],["include/js/dtlviewajax.js","a9b9d61685961e757a752ce8a64c2855"],["include/js/en_gb.lang.js","fc011fd0d339ded88f5399fbc74bee6b"],["include/js/en_us.lang.js","098ac46c2433343c60be22a053385c90"],["include/js/es_es.lang.js","938e834895ecb0134e8af216f9eb0837"],["include/js/es_mx.lang.js","13d25ff34cbdbe213e4142a1758e3585"],["include/js/fr_fr.lang.js","453401910bc9e70bb6705532f0727604"],["include/js/general.js","1908145fda007ac4d83fc4fc3db0d2c3"],["include/js/hu_hu.lang.js","56ab475116f8ad32eb5ab70474f4f45b"],["include/js/it_it.lang.js","c1b3e7cba24a06bfdafae4c033008c14"],["include/js/jslog.js","31c7a760819a0277d2cdb75b82c2c66f"],["include/js/loadjslog.js","d5317a375aa85d10e53f5989b1be0524"],["include/js/massive.js","88c141893042950229a9ac13a5a8afc7"],["include/js/meld.js","7c3894eb22d16cb4743a7ea226557ed1"],["include/js/nl_nl.lang.js","bfba2e1d28a126b255f3008106a222b6"],["include/js/notebook.js","d944ea5145ae45ecbafab41bcbd112f3"],["include/js/notificationPopup.js","3cfd7e34e7fee928b8c27cd0e9f1f46c"],["include/js/picklist.js","2b72e46b2012116ecbb8c7cfb872d98a"],["include/js/popup.js","59c8473aba27363b30e73c68471e15ba"],["include/js/pt_br.lang.js","ef846f5d6cba64d3c5945310039ef90d"],["include/js/search.js","63fa7f4c39690b7520726ebcd341f1aa"],["include/js/smoothscroll.js","008f3e9768bd2d226e65ea69999c9f14"],["include/js/vtlib.js","251b48eeaa3fa02ca58a467aea6dbd03"],["include/print.css","6b1e0c714dd4c389fb51b840e4cf01d2"],["include/style.css","803a672304ab2471038b853b719ce480"],["include/sw-precache/service-worker-registration.js","fbc12f5273769a64c1cd5aca240b6308"],["jscalendar/calendar-setup.js","1d6c5bf60a74c0700cc5a98b345ea68a"],["jscalendar/calendar-win2k-cold-1.css","6abca10115d091d0ed4b5dfbc05945d2"],["jscalendar/calendar.js","0f5478de5833a3865c255b072c5635d9"],["jscalendar/img.gif","c1e5255bd358fcd5a0779a0cc310a2fe"],["jscalendar/lang/calendar-af.js","65fc5963bf1f044c7f0d89be381cb87a"],["jscalendar/lang/calendar-br.js","65fb4100d35f121f0b45981e61158fa0"],["jscalendar/lang/calendar-ca.js","00e83a2121db4d21c059d3335f67eb42"],["jscalendar/lang/calendar-cs-win.js","3556760402191331e9ebdc868992cf78"],["jscalendar/lang/calendar-da.js","14ba236068dd2666d30e1a34055e9e7e"],["jscalendar/lang/calendar-de.js","cce502a97461d1732c8932c66d2592f8"],["jscalendar/lang/calendar-du.js","82ab1eabcc24cba821b950d12aaba8b3"],["jscalendar/lang/calendar-el.js","8eb26742d8354ca3833e9be4d72e3bec"],["jscalendar/lang/calendar-en.js","7ff36b7944c535271983566ac10a041b"],["jscalendar/lang/calendar-es.js","26d7a6308d9dc6088978710726abaae2"],["jscalendar/lang/calendar-fi.js","8d0194ed53abae22c8e98d633aee4626"],["jscalendar/lang/calendar-fr.js","fadd88e8ac9444357a1426007927b3f2"],["jscalendar/lang/calendar-hr-utf8.js","8d3bc284f3c2bfad26b38c6224fbc1ca"],["jscalendar/lang/calendar-hr.js","921e18e1c60ba3425fbc6eb2f12984f6"],["jscalendar/lang/calendar-hu.js","10409c671140a39b91e9f96dcedbe1b1"],["jscalendar/lang/calendar-it.js","a947e189174be4d737ac034abe9db957"],["jscalendar/lang/calendar-jp.js","b47ddea3200306ace5d9493ef98eca8e"],["jscalendar/lang/calendar-ko-utf8.js","a9868c0d85ce1cec22cadf007c3f0661"],["jscalendar/lang/calendar-ko.js","22bce81d786dfdbcc91654b23cb89afe"],["jscalendar/lang/calendar-lt-utf8.js","ff0c26d46b71feeb3e536144ac566690"],["jscalendar/lang/calendar-lt.js","06b3f5ddc2465af49ac476efdfead122"],["jscalendar/lang/calendar-nl.js","6e570069acfffe65ba50608436221bd6"],["jscalendar/lang/calendar-no.js","4ac0b8870fa93c6f49c183f71cd4baf9"],["jscalendar/lang/calendar-pl-utf8.js","4df2bd769a1ebf7bb9ff4e634a80fd1c"],["jscalendar/lang/calendar-pl.js","34c066e72e565b3a09af07c85a56de7a"],["jscalendar/lang/calendar-pt.js","177f8bcab8ce4300dfffc1edbfa25e2c"],["jscalendar/lang/calendar-ro.js","b2e4098f50eb62ad3fd4d44c1202c0b7"],["jscalendar/lang/calendar-ru.js","b38f5c1915147fbcd4d7e47c9205b478"],["jscalendar/lang/calendar-si.js","b66bac0654b4309f577ed89392e80132"],["jscalendar/lang/calendar-sk.js","782c204921fac0922f297d2418b05756"],["jscalendar/lang/calendar-sp.js","b8fd8524ae91fe7a4d27742fb30eb9bc"],["jscalendar/lang/calendar-sv.js","76d3d0e80ee3f36e96875442567682cd"],["jscalendar/lang/calendar-tr.js","bbbb0d304d90b89fd7336538088f2ba0"],["jscalendar/lang/calendar-zh.js","304eef7561e91ed20df0ceddb155314b"],["jscalendar/menuarrow.gif","b5a91d7a2755198b2eb729541ad3288c"],["jscalendar/menuarrow2.gif","1f8c673c8f76832febaeeac88a5f4353"],["kcfinder/adapters/jquery-min.js","7d737fc770c43a38d2b9026fe03c8608"],["kcfinder/adapters/jquery.js","f246c9d6f4b280dc6bef646b6662c379"],["kcfinder/css/000.base.css","7a3956ddf686d2f7051de54b2c887374"],["kcfinder/css/001.transForm.css","d8768f59df1cc93059944053645ea348"],["kcfinder/css/999.agent.css","443a85f2f65df5dea35f3e01d727d99e"],["kcfinder/js/000._jquery.js","52d16e147b5346147d0f3269cd4d0f80"],["kcfinder/js/002._jqueryui.js","4549e5882cbcd79619a49e9b1bf3ae8d"],["kcfinder/js/006.jquery.transForm.js","50ba6cfcd46c88ad381778dac4d331a2"],["kcfinder/js/010.jquery.fixes.js","f7459e62cdff631529c5dca3d663cdf0"],["kcfinder/js/020.jquery.rightClick.js","31d0d6b98ae067f2a363568f6b043982"],["kcfinder/js/021.jquery.taphold.js","b3274f0bcf212a23db9f36bd0b64bd3d"],["kcfinder/js/022.jquery.shDropUpload.js","3e420181dcb76e2a862a39652cb2a049"],["kcfinder/js/029.jquery.agent.js","d7998efe21a6669340eefdbef2883db6"],["kcfinder/js/030.jquery.helper.js","e4bb3b90303fd6e48bf4ae178b6f1166"],["kcfinder/js/031.jquery.md5.js","b4c1ed5bfbb1f378ed384e5a3d687e26"],["kcfinder/js/040.object.js","61728f2ca17836a38769a43d3510306a"],["kcfinder/js/041.dialogs.js","2fbfe8a703357d196bf4fdbcc94f087b"],["kcfinder/js/050.init.js","44c944bcfaf558a81a0eeeb0320a21f8"],["kcfinder/js/060.toolbar.js","ea2835310ebd4d9a2f99feb7faae96a2"],["kcfinder/js/070.settings.js","6cd7eb37f5e99b73e7fb218c47e7fbbe"],["kcfinder/js/080.files.js","7bbaebf73318804843e1bc3f6e8183a5"],["kcfinder/js/090.folders.js","b099f2ce3c59837d5ede55aefcc5234b"],["kcfinder/js/091.menus.js","076c69969f3ac063403dd46ea351d355"],["kcfinder/js/091.viewImage.js","dada4c8cf4b96f73e93a52e30c78cc6e"],["kcfinder/js/100.clipboard.js","928e545e384b71fcd7f9437a23cdbd3e"],["kcfinder/js/110.dropUpload.js","53c4b90e35b921772c0f8897bf2b01f2"],["kcfinder/js/120.misc.js","6c691ef6219b5162535378fbfa3f0adb"],["kcfinder/themes/dark/01.ui.css","5525d1c384994f07d3cc92b3d12c5c4a"],["kcfinder/themes/dark/02.transForm.css","731b4889bbba5d4bc6d728e42a6ca7a8"],["kcfinder/themes/dark/03.misc.css","2ebf2f61c4e968870f5cadced53ba487"],["kcfinder/themes/dark/img/bg_transparent.png","7c85f000c77022603d72e8ef976756ac"],["kcfinder/themes/dark/img/files/big/avi.png","b796cb8587ce723d48ea5d24d9dd0d51"],["kcfinder/themes/dark/img/files/big/bat.png","3db21e1a732089979b26986402d49cd0"],["kcfinder/themes/dark/img/files/big/bmp.png","bfa41aea0226a49465cf488651de4366"],["kcfinder/themes/dark/img/files/big/bz2.png","a0554ca9d3746f639122d7d4999b2046"],["kcfinder/themes/dark/img/files/big/ccd.png","61611e0e4071e8a80e44114d19a59cfa"],["kcfinder/themes/dark/img/files/big/cgi.png","3db21e1a732089979b26986402d49cd0"],["kcfinder/themes/dark/img/files/big/com.png","ef7cb6752a845c2038ae752f54713883"],["kcfinder/themes/dark/img/files/big/csh.png","3db21e1a732089979b26986402d49cd0"],["kcfinder/themes/dark/img/files/big/cue.png","61611e0e4071e8a80e44114d19a59cfa"],["kcfinder/themes/dark/img/files/big/deb.png","0027b959f2b82f90e75d25cf5b2bf6a5"],["kcfinder/themes/dark/img/files/big/dll.png","7a71e998c9348fa02e636a8adf58cde7"],["kcfinder/themes/dark/img/files/big/doc.png","26a06a2ff6098b8437685bc283c2041c"],["kcfinder/themes/dark/img/files/big/docx.png","26a06a2ff6098b8437685bc283c2041c"],["kcfinder/themes/dark/img/files/big/exe.png","ef7cb6752a845c2038ae752f54713883"],["kcfinder/themes/dark/img/files/big/fla.png","f353e9fa95f7d30af29f136dadc5d94e"],["kcfinder/themes/dark/img/files/big/flv.png","b796cb8587ce723d48ea5d24d9dd0d51"],["kcfinder/themes/dark/img/files/big/fon.png","2d4004d2af5eb5fd3a4801c41a1a2a8d"],["kcfinder/themes/dark/img/files/big/gif.png","bfa41aea0226a49465cf488651de4366"],["kcfinder/themes/dark/img/files/big/gz.png","a0554ca9d3746f639122d7d4999b2046"],["kcfinder/themes/dark/img/files/big/htm.png","54d3b4a0d20897276af9b467d2c014fe"],["kcfinder/themes/dark/img/files/big/html.png","54d3b4a0d20897276af9b467d2c014fe"],["kcfinder/themes/dark/img/files/big/ini.png","34f6ef1f537af2513b90c5b98d0ace79"],["kcfinder/themes/dark/img/files/big/iso.png","61611e0e4071e8a80e44114d19a59cfa"],["kcfinder/themes/dark/img/files/big/jar.png","d1e7813a2e5b85e7d5a86df2998e7771"],["kcfinder/themes/dark/img/files/big/java.png","e4de49aa3f9d254d1e8a149611444016"],["kcfinder/themes/dark/img/files/big/jpeg.png","bfa41aea0226a49465cf488651de4366"],["kcfinder/themes/dark/img/files/big/jpg.png","bfa41aea0226a49465cf488651de4366"],["kcfinder/themes/dark/img/files/big/js.png","e2d486ea7e98654aad5cc4a69e9be65d"],["kcfinder/themes/dark/img/files/big/mds.png","61611e0e4071e8a80e44114d19a59cfa"],["kcfinder/themes/dark/img/files/big/mdx.png","61611e0e4071e8a80e44114d19a59cfa"],["kcfinder/themes/dark/img/files/big/mid.png","8b63cd34121a5aa0810ab290274b19a8"],["kcfinder/themes/dark/img/files/big/midi.png","8b63cd34121a5aa0810ab290274b19a8"],["kcfinder/themes/dark/img/files/big/mkv.png","b796cb8587ce723d48ea5d24d9dd0d51"],["kcfinder/themes/dark/img/files/big/mov.png","b796cb8587ce723d48ea5d24d9dd0d51"],["kcfinder/themes/dark/img/files/big/mp3.png","0b301a786c0f3978fe05927f24928395"],["kcfinder/themes/dark/img/files/big/mp4.png","b796cb8587ce723d48ea5d24d9dd0d51"],["kcfinder/themes/dark/img/files/big/mpeg.png","b796cb8587ce723d48ea5d24d9dd0d51"],["kcfinder/themes/dark/img/files/big/mpg.png","b796cb8587ce723d48ea5d24d9dd0d51"],["kcfinder/themes/dark/img/files/big/nfo.png","34f6ef1f537af2513b90c5b98d0ace79"],["kcfinder/themes/dark/img/files/big/nrg.png","61611e0e4071e8a80e44114d19a59cfa"],["kcfinder/themes/dark/img/files/big/ogg.png","0b301a786c0f3978fe05927f24928395"],["kcfinder/themes/dark/img/files/big/pdf.png","dbd20bfa045d965ad9ac071fb20def86"],["kcfinder/themes/dark/img/files/big/php.png","4512f251e567191e1c6677901b2703ad"],["kcfinder/themes/dark/img/files/big/phps.png","4512f251e567191e1c6677901b2703ad"],["kcfinder/themes/dark/img/files/big/pl.png","9ad71d8ee41be29ab64b31c5e7096ea9"],["kcfinder/themes/dark/img/files/big/pm.png","9ad71d8ee41be29ab64b31c5e7096ea9"],["kcfinder/themes/dark/img/files/big/png.png","bfa41aea0226a49465cf488651de4366"],["kcfinder/themes/dark/img/files/big/ppt.png","e638989e04132df68a63003fc835da6e"],["kcfinder/themes/dark/img/files/big/pptx.png","e638989e04132df68a63003fc835da6e"],["kcfinder/themes/dark/img/files/big/psd.png","bfa41aea0226a49465cf488651de4366"],["kcfinder/themes/dark/img/files/big/qt.png","b796cb8587ce723d48ea5d24d9dd0d51"],["kcfinder/themes/dark/img/files/big/rar.png","a0554ca9d3746f639122d7d4999b2046"],["kcfinder/themes/dark/img/files/big/rpm.png","ff4d91ee2466c503fb51213d6dacee54"],["kcfinder/themes/dark/img/files/big/rtf.png","34f6ef1f537af2513b90c5b98d0ace79"],["kcfinder/themes/dark/img/files/big/sh.png","3db21e1a732089979b26986402d49cd0"],["kcfinder/themes/dark/img/files/big/sql.png","9b458ee9f254709811c24e77291e2664"],["kcfinder/themes/dark/img/files/big/srt.png","34f6ef1f537af2513b90c5b98d0ace79"],["kcfinder/themes/dark/img/files/big/sub.png","34f6ef1f537af2513b90c5b98d0ace79"],["kcfinder/themes/dark/img/files/big/swf.png","872bf413980a37c17eda80a1875fc860"],["kcfinder/themes/dark/img/files/big/tgz.png","e7c32280bfe4992b469313584ec62610"],["kcfinder/themes/dark/img/files/big/tif.png","bfa41aea0226a49465cf488651de4366"],["kcfinder/themes/dark/img/files/big/tiff.png","bfa41aea0226a49465cf488651de4366"],["kcfinder/themes/dark/img/files/big/torrent.png","de99ae3506fb97ac67e7e0893270a049"],["kcfinder/themes/dark/img/files/big/ttf.png","640982ca75b713b4583aa58502f8ca8c"],["kcfinder/themes/dark/img/files/big/txt.png","34f6ef1f537af2513b90c5b98d0ace79"],["kcfinder/themes/dark/img/files/big/wav.png","0b301a786c0f3978fe05927f24928395"],["kcfinder/themes/dark/img/files/big/wma.png","0b301a786c0f3978fe05927f24928395"],["kcfinder/themes/dark/img/files/big/xls.png","513a56c3b24b93c29cb02c8f9a075cbd"],["kcfinder/themes/dark/img/files/big/xlsx.png","513a56c3b24b93c29cb02c8f9a075cbd"],["kcfinder/themes/dark/img/files/big/zip.png","a0554ca9d3746f639122d7d4999b2046"],["kcfinder/themes/dark/img/files/small/avi.png","669214cffe7b913296246e90c372818e"],["kcfinder/themes/dark/img/files/small/bat.png","f438e488078834934cd62c8c616c8bc7"],["kcfinder/themes/dark/img/files/small/bmp.png","02709989af27569d20280bd017651195"],["kcfinder/themes/dark/img/files/small/bz2.png","621703fa3710ba61b6eb05cf0f3c59b2"],["kcfinder/themes/dark/img/files/small/ccd.png","11e31a8ab5d57e70cd1789cf1a13fd2c"],["kcfinder/themes/dark/img/files/small/cgi.png","f438e488078834934cd62c8c616c8bc7"],["kcfinder/themes/dark/img/files/small/com.png","86729340ae0d76d4fe823009991839a7"],["kcfinder/themes/dark/img/files/small/csh.png","f438e488078834934cd62c8c616c8bc7"],["kcfinder/themes/dark/img/files/small/cue.png","11e31a8ab5d57e70cd1789cf1a13fd2c"],["kcfinder/themes/dark/img/files/small/deb.png","621703fa3710ba61b6eb05cf0f3c59b2"],["kcfinder/themes/dark/img/files/small/dll.png","db49f2c0f68155c38201228411f2b87f"],["kcfinder/themes/dark/img/files/small/doc.png","a441226ae0288bdfa96a1828cdabe8ab"],["kcfinder/themes/dark/img/files/small/docx.png","a441226ae0288bdfa96a1828cdabe8ab"],["kcfinder/themes/dark/img/files/small/exe.png","86729340ae0d76d4fe823009991839a7"],["kcfinder/themes/dark/img/files/small/fla.png","600bd9e16bfa3083c2ff3db3f50615d5"],["kcfinder/themes/dark/img/files/small/flv.png","669214cffe7b913296246e90c372818e"],["kcfinder/themes/dark/img/files/small/fon.png","7078c74fee4a70390417c0e95962f3db"],["kcfinder/themes/dark/img/files/small/gif.png","02709989af27569d20280bd017651195"],["kcfinder/themes/dark/img/files/small/gz.png","621703fa3710ba61b6eb05cf0f3c59b2"],["kcfinder/themes/dark/img/files/small/htm.png","8df519faea5f1a9b414325ac20a6ab39"],["kcfinder/themes/dark/img/files/small/html.png","8df519faea5f1a9b414325ac20a6ab39"],["kcfinder/themes/dark/img/files/small/ini.png","24e6b797e0a778e78b7ce2c6a0229baa"],["kcfinder/themes/dark/img/files/small/iso.png","11e31a8ab5d57e70cd1789cf1a13fd2c"],["kcfinder/themes/dark/img/files/small/jar.png","621703fa3710ba61b6eb05cf0f3c59b2"],["kcfinder/themes/dark/img/files/small/java.png","cf43f436c57342e281b9edb8e1387424"],["kcfinder/themes/dark/img/files/small/jpeg.png","02709989af27569d20280bd017651195"],["kcfinder/themes/dark/img/files/small/jpg.png","02709989af27569d20280bd017651195"],["kcfinder/themes/dark/img/files/small/js.png","7109810830148823eacaa7951904474e"],["kcfinder/themes/dark/img/files/small/mds.png","11e31a8ab5d57e70cd1789cf1a13fd2c"],["kcfinder/themes/dark/img/files/small/mdx.png","11e31a8ab5d57e70cd1789cf1a13fd2c"],["kcfinder/themes/dark/img/files/small/mid.png","433e55560fceaf20721671bc16bac4d6"],["kcfinder/themes/dark/img/files/small/midi.png","433e55560fceaf20721671bc16bac4d6"],["kcfinder/themes/dark/img/files/small/mkv.png","669214cffe7b913296246e90c372818e"],["kcfinder/themes/dark/img/files/small/mov.png","669214cffe7b913296246e90c372818e"],["kcfinder/themes/dark/img/files/small/mp3.png","e2eb2abc9786a1f32cd9f3b93021d994"],["kcfinder/themes/dark/img/files/small/mp4.png","669214cffe7b913296246e90c372818e"],["kcfinder/themes/dark/img/files/small/mpeg.png","669214cffe7b913296246e90c372818e"],["kcfinder/themes/dark/img/files/small/mpg.png","669214cffe7b913296246e90c372818e"],["kcfinder/themes/dark/img/files/small/nfo.png","24e6b797e0a778e78b7ce2c6a0229baa"],["kcfinder/themes/dark/img/files/small/nrg.png","11e31a8ab5d57e70cd1789cf1a13fd2c"],["kcfinder/themes/dark/img/files/small/ogg.png","e2eb2abc9786a1f32cd9f3b93021d994"],["kcfinder/themes/dark/img/files/small/pdf.png","e686949b4c31d52da8bbc964a9b5ee30"],["kcfinder/themes/dark/img/files/small/php.png","fbd20eba7ecdab05a2395873cdc7c4f3"],["kcfinder/themes/dark/img/files/small/phps.png","fbd20eba7ecdab05a2395873cdc7c4f3"],["kcfinder/themes/dark/img/files/small/pl.png","24e6b797e0a778e78b7ce2c6a0229baa"],["kcfinder/themes/dark/img/files/small/pm.png","24e6b797e0a778e78b7ce2c6a0229baa"],["kcfinder/themes/dark/img/files/small/png.png","02709989af27569d20280bd017651195"],["kcfinder/themes/dark/img/files/small/ppt.png","01bcdf5f17f28121d8a068b7d7569908"],["kcfinder/themes/dark/img/files/small/pptx.png","01bcdf5f17f28121d8a068b7d7569908"],["kcfinder/themes/dark/img/files/small/psd.png","02709989af27569d20280bd017651195"],["kcfinder/themes/dark/img/files/small/qt.png","669214cffe7b913296246e90c372818e"],["kcfinder/themes/dark/img/files/small/rar.png","621703fa3710ba61b6eb05cf0f3c59b2"],["kcfinder/themes/dark/img/files/small/rpm.png","621703fa3710ba61b6eb05cf0f3c59b2"],["kcfinder/themes/dark/img/files/small/rtf.png","24e6b797e0a778e78b7ce2c6a0229baa"],["kcfinder/themes/dark/img/files/small/sh.png","f438e488078834934cd62c8c616c8bc7"],["kcfinder/themes/dark/img/files/small/sql.png","b539cb41069d13b28c548843b756555e"],["kcfinder/themes/dark/img/files/small/srt.png","24e6b797e0a778e78b7ce2c6a0229baa"],["kcfinder/themes/dark/img/files/small/sub.png","24e6b797e0a778e78b7ce2c6a0229baa"],["kcfinder/themes/dark/img/files/small/swf.png","910c7aa2cbc755d8822e65eeb62e1d8c"],["kcfinder/themes/dark/img/files/small/tgz.png","621703fa3710ba61b6eb05cf0f3c59b2"],["kcfinder/themes/dark/img/files/small/tif.png","02709989af27569d20280bd017651195"],["kcfinder/themes/dark/img/files/small/tiff.png","02709989af27569d20280bd017651195"],["kcfinder/themes/dark/img/files/small/torrent.png","11708f7a86cdb8c4f98d7d935314752c"],["kcfinder/themes/dark/img/files/small/ttf.png","14b20b653866d0d5fb98d7497e8595e0"],["kcfinder/themes/dark/img/files/small/txt.png","24e6b797e0a778e78b7ce2c6a0229baa"],["kcfinder/themes/dark/img/files/small/wav.png","e2eb2abc9786a1f32cd9f3b93021d994"],["kcfinder/themes/dark/img/files/small/wma.png","e2eb2abc9786a1f32cd9f3b93021d994"],["kcfinder/themes/dark/img/files/small/xls.png","ac70ce6ad43c38b2d641747e86f9ffde"],["kcfinder/themes/dark/img/files/small/xlsx.png","ac70ce6ad43c38b2d641747e86f9ffde"],["kcfinder/themes/dark/img/files/small/zip.png","621703fa3710ba61b6eb05cf0f3c59b2"],["kcfinder/themes/dark/img/icons/about.png","3750c701d2ec35a45d289b9b9c1a0667"],["kcfinder/themes/dark/img/icons/clipboard-add.png","479446e25607f16529f7744d7b636b05"],["kcfinder/themes/dark/img/icons/clipboard-clear.png","8a3e6c20ba362842e66ad828495b9ce0"],["kcfinder/themes/dark/img/icons/clipboard.png","0deaad6ffb62dc35f74b2fd5daa74130"],["kcfinder/themes/dark/img/icons/copy.png","38de59d96ecaa147d8b5f440b4c4b0e6"],["kcfinder/themes/dark/img/icons/delete.png","42492684e24356a4081134894eabeb9e"],["kcfinder/themes/dark/img/icons/download.png","86d3d6909693e4e5e0d850be316911bc"],["kcfinder/themes/dark/img/icons/folder-new.png","4fd0ba998b55abd333f81f9318f89748"],["kcfinder/themes/dark/img/icons/maximize.png","3f4f61a6af60e51cff3e67f466033e40"],["kcfinder/themes/dark/img/icons/move.png","08cbb971307a4420839b409ea2eccf3d"],["kcfinder/themes/dark/img/icons/refresh.png","5d4d84cf2a3b2e9be202bf9eb6173107"],["kcfinder/themes/dark/img/icons/rename.png","4a0b6e47d66ed0f302f76a7b55fd77a1"],["kcfinder/themes/dark/img/icons/select.png","c9b528b9541e127967eda62f79118ef0"],["kcfinder/themes/dark/img/icons/settings.png","a137eb4441860564ce1655357af26de8"],["kcfinder/themes/dark/img/icons/upload.png","41e3781d96abfaf1541d6af5454fb426"],["kcfinder/themes/dark/img/icons/view.png","530887306aa20d3aaf2b5c6191bdaf72"],["kcfinder/themes/dark/img/kcf_logo.png","644ade7d0b564d0c77c0e161d3398751"],["kcfinder/themes/dark/img/loading.gif","856c387a1073192db1e249ebdd3d51f4"],["kcfinder/themes/dark/img/tree/denied.png","551bbaae9998f1b2f33e3de33ea8b915"],["kcfinder/themes/dark/img/tree/folder.png","fbd3929a893b147ae0940d48d533e023"],["kcfinder/themes/dark/img/tree/minus.png","0e3d94086367ea0bc61513c2ccf0119c"],["kcfinder/themes/dark/img/tree/plus.png","4c1dbdc7e1933b101743fd2b8199b9a5"],["kcfinder/themes/dark/img/ui-icons_black.png","c6736cdb254390c71a9ea2584d7f92d7"],["kcfinder/themes/dark/img/ui-icons_grey.png","0cc0e6dd865a3da7ccb04f4fcd7072db"],["kcfinder/themes/dark/img/ui-icons_white.png","07d238be34eb3c035f8fa31e1792a178"],["kcfinder/themes/dark/init.js","60f55be6372ad389e83812e9a5835624"],["kcfinder/themes/default/01.ui.css","4188233c7094cc86bccafb985b05dec3"],["kcfinder/themes/default/02.transForm.css","64edb73fa8284c315e904d96a9e8327a"],["kcfinder/themes/default/03.misc.css","85e05b6bc52f83fe4b11f2a9d3465762"],["kcfinder/themes/default/img/bg_transparent.png","2eee3b487cf0a09681eee137c125d7ff"],["kcfinder/themes/default/img/files/big/avi.png","b796cb8587ce723d48ea5d24d9dd0d51"],["kcfinder/themes/default/img/files/big/bat.png","3db21e1a732089979b26986402d49cd0"],["kcfinder/themes/default/img/files/big/bmp.png","bfa41aea0226a49465cf488651de4366"],["kcfinder/themes/default/img/files/big/bz2.png","a0554ca9d3746f639122d7d4999b2046"],["kcfinder/themes/default/img/files/big/ccd.png","61611e0e4071e8a80e44114d19a59cfa"],["kcfinder/themes/default/img/files/big/cgi.png","3db21e1a732089979b26986402d49cd0"],["kcfinder/themes/default/img/files/big/com.png","ef7cb6752a845c2038ae752f54713883"],["kcfinder/themes/default/img/files/big/csh.png","3db21e1a732089979b26986402d49cd0"],["kcfinder/themes/default/img/files/big/cue.png","61611e0e4071e8a80e44114d19a59cfa"],["kcfinder/themes/default/img/files/big/deb.png","0027b959f2b82f90e75d25cf5b2bf6a5"],["kcfinder/themes/default/img/files/big/dll.png","7a71e998c9348fa02e636a8adf58cde7"],["kcfinder/themes/default/img/files/big/doc.png","26a06a2ff6098b8437685bc283c2041c"],["kcfinder/themes/default/img/files/big/docx.png","26a06a2ff6098b8437685bc283c2041c"],["kcfinder/themes/default/img/files/big/exe.png","ef7cb6752a845c2038ae752f54713883"],["kcfinder/themes/default/img/files/big/fla.png","f353e9fa95f7d30af29f136dadc5d94e"],["kcfinder/themes/default/img/files/big/flv.png","b796cb8587ce723d48ea5d24d9dd0d51"],["kcfinder/themes/default/img/files/big/fon.png","2d4004d2af5eb5fd3a4801c41a1a2a8d"],["kcfinder/themes/default/img/files/big/gif.png","bfa41aea0226a49465cf488651de4366"],["kcfinder/themes/default/img/files/big/gz.png","a0554ca9d3746f639122d7d4999b2046"],["kcfinder/themes/default/img/files/big/htm.png","54d3b4a0d20897276af9b467d2c014fe"],["kcfinder/themes/default/img/files/big/html.png","54d3b4a0d20897276af9b467d2c014fe"],["kcfinder/themes/default/img/files/big/ini.png","34f6ef1f537af2513b90c5b98d0ace79"],["kcfinder/themes/default/img/files/big/iso.png","61611e0e4071e8a80e44114d19a59cfa"],["kcfinder/themes/default/img/files/big/jar.png","d1e7813a2e5b85e7d5a86df2998e7771"],["kcfinder/themes/default/img/files/big/java.png","e4de49aa3f9d254d1e8a149611444016"],["kcfinder/themes/default/img/files/big/jpeg.png","bfa41aea0226a49465cf488651de4366"],["kcfinder/themes/default/img/files/big/jpg.png","bfa41aea0226a49465cf488651de4366"],["kcfinder/themes/default/img/files/big/js.png","e2d486ea7e98654aad5cc4a69e9be65d"],["kcfinder/themes/default/img/files/big/mds.png","61611e0e4071e8a80e44114d19a59cfa"],["kcfinder/themes/default/img/files/big/mdx.png","61611e0e4071e8a80e44114d19a59cfa"],["kcfinder/themes/default/img/files/big/mid.png","8b63cd34121a5aa0810ab290274b19a8"],["kcfinder/themes/default/img/files/big/midi.png","8b63cd34121a5aa0810ab290274b19a8"],["kcfinder/themes/default/img/files/big/mkv.png","b796cb8587ce723d48ea5d24d9dd0d51"],["kcfinder/themes/default/img/files/big/mov.png","b796cb8587ce723d48ea5d24d9dd0d51"],["kcfinder/themes/default/img/files/big/mp3.png","0b301a786c0f3978fe05927f24928395"],["kcfinder/themes/default/img/files/big/mp4.png","b796cb8587ce723d48ea5d24d9dd0d51"],["kcfinder/themes/default/img/files/big/mpeg.png","b796cb8587ce723d48ea5d24d9dd0d51"],["kcfinder/themes/default/img/files/big/mpg.png","b796cb8587ce723d48ea5d24d9dd0d51"],["kcfinder/themes/default/img/files/big/nfo.png","34f6ef1f537af2513b90c5b98d0ace79"],["kcfinder/themes/default/img/files/big/nrg.png","61611e0e4071e8a80e44114d19a59cfa"],["kcfinder/themes/default/img/files/big/ogg.png","0b301a786c0f3978fe05927f24928395"],["kcfinder/themes/default/img/files/big/pdf.png","dbd20bfa045d965ad9ac071fb20def86"],["kcfinder/themes/default/img/files/big/php.png","4512f251e567191e1c6677901b2703ad"],["kcfinder/themes/default/img/files/big/phps.png","4512f251e567191e1c6677901b2703ad"],["kcfinder/themes/default/img/files/big/pl.png","9ad71d8ee41be29ab64b31c5e7096ea9"],["kcfinder/themes/default/img/files/big/pm.png","9ad71d8ee41be29ab64b31c5e7096ea9"],["kcfinder/themes/default/img/files/big/png.png","bfa41aea0226a49465cf488651de4366"],["kcfinder/themes/default/img/files/big/ppt.png","e638989e04132df68a63003fc835da6e"],["kcfinder/themes/default/img/files/big/pptx.png","e638989e04132df68a63003fc835da6e"],["kcfinder/themes/default/img/files/big/psd.png","bfa41aea0226a49465cf488651de4366"],["kcfinder/themes/default/img/files/big/qt.png","b796cb8587ce723d48ea5d24d9dd0d51"],["kcfinder/themes/default/img/files/big/rar.png","a0554ca9d3746f639122d7d4999b2046"],["kcfinder/themes/default/img/files/big/rpm.png","ff4d91ee2466c503fb51213d6dacee54"],["kcfinder/themes/default/img/files/big/rtf.png","34f6ef1f537af2513b90c5b98d0ace79"],["kcfinder/themes/default/img/files/big/sh.png","3db21e1a732089979b26986402d49cd0"],["kcfinder/themes/default/img/files/big/sql.png","9b458ee9f254709811c24e77291e2664"],["kcfinder/themes/default/img/files/big/srt.png","34f6ef1f537af2513b90c5b98d0ace79"],["kcfinder/themes/default/img/files/big/sub.png","34f6ef1f537af2513b90c5b98d0ace79"],["kcfinder/themes/default/img/files/big/swf.png","872bf413980a37c17eda80a1875fc860"],["kcfinder/themes/default/img/files/big/tgz.png","e7c32280bfe4992b469313584ec62610"],["kcfinder/themes/default/img/files/big/tif.png","bfa41aea0226a49465cf488651de4366"],["kcfinder/themes/default/img/files/big/tiff.png","bfa41aea0226a49465cf488651de4366"],["kcfinder/themes/default/img/files/big/torrent.png","de99ae3506fb97ac67e7e0893270a049"],["kcfinder/themes/default/img/files/big/ttf.png","640982ca75b713b4583aa58502f8ca8c"],["kcfinder/themes/default/img/files/big/txt.png","34f6ef1f537af2513b90c5b98d0ace79"],["kcfinder/themes/default/img/files/big/wav.png","0b301a786c0f3978fe05927f24928395"],["kcfinder/themes/default/img/files/big/wma.png","0b301a786c0f3978fe05927f24928395"],["kcfinder/themes/default/img/files/big/xls.png","513a56c3b24b93c29cb02c8f9a075cbd"],["kcfinder/themes/default/img/files/big/xlsx.png","513a56c3b24b93c29cb02c8f9a075cbd"],["kcfinder/themes/default/img/files/big/zip.png","a0554ca9d3746f639122d7d4999b2046"],["kcfinder/themes/default/img/files/small/avi.png","669214cffe7b913296246e90c372818e"],["kcfinder/themes/default/img/files/small/bat.png","f438e488078834934cd62c8c616c8bc7"],["kcfinder/themes/default/img/files/small/bmp.png","02709989af27569d20280bd017651195"],["kcfinder/themes/default/img/files/small/bz2.png","621703fa3710ba61b6eb05cf0f3c59b2"],["kcfinder/themes/default/img/files/small/ccd.png","11e31a8ab5d57e70cd1789cf1a13fd2c"],["kcfinder/themes/default/img/files/small/cgi.png","f438e488078834934cd62c8c616c8bc7"],["kcfinder/themes/default/img/files/small/com.png","86729340ae0d76d4fe823009991839a7"],["kcfinder/themes/default/img/files/small/csh.png","f438e488078834934cd62c8c616c8bc7"],["kcfinder/themes/default/img/files/small/cue.png","11e31a8ab5d57e70cd1789cf1a13fd2c"],["kcfinder/themes/default/img/files/small/deb.png","621703fa3710ba61b6eb05cf0f3c59b2"],["kcfinder/themes/default/img/files/small/dll.png","db49f2c0f68155c38201228411f2b87f"],["kcfinder/themes/default/img/files/small/doc.png","a441226ae0288bdfa96a1828cdabe8ab"],["kcfinder/themes/default/img/files/small/docx.png","a441226ae0288bdfa96a1828cdabe8ab"],["kcfinder/themes/default/img/files/small/exe.png","86729340ae0d76d4fe823009991839a7"],["kcfinder/themes/default/img/files/small/fla.png","600bd9e16bfa3083c2ff3db3f50615d5"],["kcfinder/themes/default/img/files/small/flv.png","669214cffe7b913296246e90c372818e"],["kcfinder/themes/default/img/files/small/fon.png","7078c74fee4a70390417c0e95962f3db"],["kcfinder/themes/default/img/files/small/gif.png","02709989af27569d20280bd017651195"],["kcfinder/themes/default/img/files/small/gz.png","621703fa3710ba61b6eb05cf0f3c59b2"],["kcfinder/themes/default/img/files/small/htm.png","8df519faea5f1a9b414325ac20a6ab39"],["kcfinder/themes/default/img/files/small/html.png","8df519faea5f1a9b414325ac20a6ab39"],["kcfinder/themes/default/img/files/small/ini.png","24e6b797e0a778e78b7ce2c6a0229baa"],["kcfinder/themes/default/img/files/small/iso.png","11e31a8ab5d57e70cd1789cf1a13fd2c"],["kcfinder/themes/default/img/files/small/jar.png","621703fa3710ba61b6eb05cf0f3c59b2"],["kcfinder/themes/default/img/files/small/java.png","cf43f436c57342e281b9edb8e1387424"],["kcfinder/themes/default/img/files/small/jpeg.png","02709989af27569d20280bd017651195"],["kcfinder/themes/default/img/files/small/jpg.png","02709989af27569d20280bd017651195"],["kcfinder/themes/default/img/files/small/js.png","7109810830148823eacaa7951904474e"],["kcfinder/themes/default/img/files/small/mds.png","11e31a8ab5d57e70cd1789cf1a13fd2c"],["kcfinder/themes/default/img/files/small/mdx.png","11e31a8ab5d57e70cd1789cf1a13fd2c"],["kcfinder/themes/default/img/files/small/mid.png","433e55560fceaf20721671bc16bac4d6"],["kcfinder/themes/default/img/files/small/midi.png","433e55560fceaf20721671bc16bac4d6"],["kcfinder/themes/default/img/files/small/mkv.png","669214cffe7b913296246e90c372818e"],["kcfinder/themes/default/img/files/small/mov.png","669214cffe7b913296246e90c372818e"],["kcfinder/themes/default/img/files/small/mp3.png","e2eb2abc9786a1f32cd9f3b93021d994"],["kcfinder/themes/default/img/files/small/mp4.png","669214cffe7b913296246e90c372818e"],["kcfinder/themes/default/img/files/small/mpeg.png","669214cffe7b913296246e90c372818e"],["kcfinder/themes/default/img/files/small/mpg.png","669214cffe7b913296246e90c372818e"],["kcfinder/themes/default/img/files/small/nfo.png","24e6b797e0a778e78b7ce2c6a0229baa"],["kcfinder/themes/default/img/files/small/nrg.png","11e31a8ab5d57e70cd1789cf1a13fd2c"],["kcfinder/themes/default/img/files/small/ogg.png","e2eb2abc9786a1f32cd9f3b93021d994"],["kcfinder/themes/default/img/files/small/pdf.png","e686949b4c31d52da8bbc964a9b5ee30"],["kcfinder/themes/default/img/files/small/php.png","fbd20eba7ecdab05a2395873cdc7c4f3"],["kcfinder/themes/default/img/files/small/phps.png","fbd20eba7ecdab05a2395873cdc7c4f3"],["kcfinder/themes/default/img/files/small/pl.png","24e6b797e0a778e78b7ce2c6a0229baa"],["kcfinder/themes/default/img/files/small/pm.png","24e6b797e0a778e78b7ce2c6a0229baa"],["kcfinder/themes/default/img/files/small/png.png","02709989af27569d20280bd017651195"],["kcfinder/themes/default/img/files/small/ppt.png","01bcdf5f17f28121d8a068b7d7569908"],["kcfinder/themes/default/img/files/small/pptx.png","01bcdf5f17f28121d8a068b7d7569908"],["kcfinder/themes/default/img/files/small/psd.png","02709989af27569d20280bd017651195"],["kcfinder/themes/default/img/files/small/qt.png","669214cffe7b913296246e90c372818e"],["kcfinder/themes/default/img/files/small/rar.png","621703fa3710ba61b6eb05cf0f3c59b2"],["kcfinder/themes/default/img/files/small/rpm.png","621703fa3710ba61b6eb05cf0f3c59b2"],["kcfinder/themes/default/img/files/small/rtf.png","24e6b797e0a778e78b7ce2c6a0229baa"],["kcfinder/themes/default/img/files/small/sh.png","f438e488078834934cd62c8c616c8bc7"],["kcfinder/themes/default/img/files/small/sql.png","b539cb41069d13b28c548843b756555e"],["kcfinder/themes/default/img/files/small/srt.png","24e6b797e0a778e78b7ce2c6a0229baa"],["kcfinder/themes/default/img/files/small/sub.png","24e6b797e0a778e78b7ce2c6a0229baa"],["kcfinder/themes/default/img/files/small/swf.png","910c7aa2cbc755d8822e65eeb62e1d8c"],["kcfinder/themes/default/img/files/small/tgz.png","621703fa3710ba61b6eb05cf0f3c59b2"],["kcfinder/themes/default/img/files/small/tif.png","02709989af27569d20280bd017651195"],["kcfinder/themes/default/img/files/small/tiff.png","02709989af27569d20280bd017651195"],["kcfinder/themes/default/img/files/small/torrent.png","11708f7a86cdb8c4f98d7d935314752c"],["kcfinder/themes/default/img/files/small/ttf.png","14b20b653866d0d5fb98d7497e8595e0"],["kcfinder/themes/default/img/files/small/txt.png","24e6b797e0a778e78b7ce2c6a0229baa"],["kcfinder/themes/default/img/files/small/wav.png","e2eb2abc9786a1f32cd9f3b93021d994"],["kcfinder/themes/default/img/files/small/wma.png","e2eb2abc9786a1f32cd9f3b93021d994"],["kcfinder/themes/default/img/files/small/xls.png","ac70ce6ad43c38b2d641747e86f9ffde"],["kcfinder/themes/default/img/files/small/xlsx.png","ac70ce6ad43c38b2d641747e86f9ffde"],["kcfinder/themes/default/img/files/small/zip.png","621703fa3710ba61b6eb05cf0f3c59b2"],["kcfinder/themes/default/img/icons/about.png","3750c701d2ec35a45d289b9b9c1a0667"],["kcfinder/themes/default/img/icons/clipboard-add.png","479446e25607f16529f7744d7b636b05"],["kcfinder/themes/default/img/icons/clipboard-clear.png","8a3e6c20ba362842e66ad828495b9ce0"],["kcfinder/themes/default/img/icons/clipboard.png","0deaad6ffb62dc35f74b2fd5daa74130"],["kcfinder/themes/default/img/icons/copy.png","38de59d96ecaa147d8b5f440b4c4b0e6"],["kcfinder/themes/default/img/icons/delete.png","42492684e24356a4081134894eabeb9e"],["kcfinder/themes/default/img/icons/download.png","86d3d6909693e4e5e0d850be316911bc"],["kcfinder/themes/default/img/icons/folder-new.png","4fd0ba998b55abd333f81f9318f89748"],["kcfinder/themes/default/img/icons/maximize.png","3f4f61a6af60e51cff3e67f466033e40"],["kcfinder/themes/default/img/icons/move.png","08cbb971307a4420839b409ea2eccf3d"],["kcfinder/themes/default/img/icons/refresh.png","5d4d84cf2a3b2e9be202bf9eb6173107"],["kcfinder/themes/default/img/icons/rename.png","4a0b6e47d66ed0f302f76a7b55fd77a1"],["kcfinder/themes/default/img/icons/select.png","c9b528b9541e127967eda62f79118ef0"],["kcfinder/themes/default/img/icons/settings.png","a137eb4441860564ce1655357af26de8"],["kcfinder/themes/default/img/icons/upload.png","41e3781d96abfaf1541d6af5454fb426"],["kcfinder/themes/default/img/icons/view.png","530887306aa20d3aaf2b5c6191bdaf72"],["kcfinder/themes/default/img/kcf_logo.png","644ade7d0b564d0c77c0e161d3398751"],["kcfinder/themes/default/img/loading.gif","4817dab8b118ae548890b9fb15a5b647"],["kcfinder/themes/default/img/tree/denied.png","551bbaae9998f1b2f33e3de33ea8b915"],["kcfinder/themes/default/img/tree/folder.png","fbd3929a893b147ae0940d48d533e023"],["kcfinder/themes/default/img/tree/minus.png","0e3d94086367ea0bc61513c2ccf0119c"],["kcfinder/themes/default/img/tree/plus.png","4c1dbdc7e1933b101743fd2b8199b9a5"],["kcfinder/themes/default/img/ui-icons_black.png","a3f7b7d66f301cff7d43b2f13c0b8368"],["kcfinder/themes/default/img/ui-icons_blue.png","864f6bb3e7aeecb673415250cdbc696d"],["kcfinder/themes/default/img/ui-icons_white.png","e340015df9b7d83d3db0e4fc6e2ce5c6"],["kcfinder/themes/default/init.js","dd6ecb973c7d558767cbbfa2a354682e"],["modules/Accounts/Accounts.js","04cb9261dc739144dabd4e3df9eb8466"],["modules/Accounts/Accounts.png","f67a467753048c2b24896fea369f94c7"],["modules/Assets/Assets.js","141a6ee0aca308dafbcd94c375d4db6c"],["modules/Assets/Assets.png","1731082fd75d2dd046cd8d2b205f205c"],["modules/Calendar/Calendar.js","c36c43d8af1b7bdc134c6b5ab8ca3aa3"],["modules/Calendar/Events.png","d272fe117e3a9104236b81d78dbf7a7c"],["modules/Calendar/script.js","9f872b7749fd4ed1dfbded728fe8cfd1"],["modules/Calendar4You/Calendar4You.js","2bda1467d524098a0830a66c0605ce26"],["modules/Calendar4You/Calendar4You.png","af2cca5b0d51fbfc4248fee073bb75eb"],["modules/Calendar4You/fullcalendar/demos/js/theme-chooser.js","27f96a7feaff03a223268b12165b35cf"],["modules/Calendar4You/fullcalendar/fullcalendar.css","47f6229cce431d267654ed013368eeb5"],["modules/Calendar4You/fullcalendar/fullcalendar.js","0068d4028e1e83203a153d09d0fcfc6a"],["modules/Calendar4You/fullcalendar/fullcalendar.min.css","7359f6ebc56c4ba9309895ed0ff48f45"],["modules/Calendar4You/fullcalendar/fullcalendar.min.js","846152635d7e89526179ac13fbd1483a"],["modules/Calendar4You/fullcalendar/fullcalendar.print.css","e26ff154c0948181dac143a4b361662d"],["modules/Calendar4You/fullcalendar/fullcalendar.print.min.css","1712640f1c08b5e9412e06caf3bfebfe"],["modules/Calendar4You/fullcalendar/gcal.js","5155e8f8435d60d5e9a3dc3ad4b6076e"],["modules/Calendar4You/fullcalendar/gcal.min.js","0a8420923a7aaa5fa5bdfb83884452ae"],["modules/Calendar4You/fullcalendar/lib/jquery-ui.min.js","c15b1008dec3c8967ea657a7bb4baaec"],["modules/Calendar4You/fullcalendar/lib/jquery.min.js","a09e13ee94d51c524b7e2a728c7d4039"],["modules/Calendar4You/fullcalendar/lib/moment.min.js","de82f2f2bd52ead2e0dbe58983236395"],["modules/Calendar4You/fullcalendar/locale-all.js","c61d63888b913a98ea1c292d5e9fae94"],["modules/Calendar4You/fullcalendar/locale/af.js","4cc8fff4e0eae2beceb28852407d8ee1"],["modules/Calendar4You/fullcalendar/locale/ar-dz.js","bdebe3cc6c859fe19a39c4dcaeb8f46f"],["modules/Calendar4You/fullcalendar/locale/ar-kw.js","c99dc3d59530da6680fd7ab4f4a59764"],["modules/Calendar4You/fullcalendar/locale/ar-ly.js","56ead35e6aacb17c5b2348bb4393346b"],["modules/Calendar4You/fullcalendar/locale/ar-ma.js","e71fc413afe12229dd32c450f31b924c"],["modules/Calendar4You/fullcalendar/locale/ar-sa.js","37b2642147cf798072f41e6db0ff9e24"],["modules/Calendar4You/fullcalendar/locale/ar-tn.js","6688881ac22f904e20d475b4f7d8e502"],["modules/Calendar4You/fullcalendar/locale/ar.js","318ee308a3338e650e21eef9bfec4454"],["modules/Calendar4You/fullcalendar/locale/be.js","ee704412608520b4a15461067bf10e80"],["modules/Calendar4You/fullcalendar/locale/bg.js","611a2797fc737fdd91f4ff1475841375"],["modules/Calendar4You/fullcalendar/locale/bs.js","ccbff7000925c53198d4994d2b020920"],["modules/Calendar4You/fullcalendar/locale/ca.js","9f4daf05cbd58dac565e862548362e50"],["modules/Calendar4You/fullcalendar/locale/cs.js","c6425a5c310fa6e4f8daee83b2dbd642"],["modules/Calendar4You/fullcalendar/locale/da.js","c5e64b64407b8711626d0b341dbe6aa7"],["modules/Calendar4You/fullcalendar/locale/de-at.js","f58ebbf82fd65ff7a547e47ecffa9a87"],["modules/Calendar4You/fullcalendar/locale/de-ch.js","1ff636a1d3f423fc532bf18a3ca77657"],["modules/Calendar4You/fullcalendar/locale/de.js","15d5d4e179318560629fa0eea56a8510"],["modules/Calendar4You/fullcalendar/locale/el.js","0cc55851e13048a37c3218ebdeb94307"],["modules/Calendar4You/fullcalendar/locale/en-au.js","87eb7d91bfd405f2b1fa748dd944ec2e"],["modules/Calendar4You/fullcalendar/locale/en-ca.js","a21ff12d18dd973274e8d83726abfb46"],["modules/Calendar4You/fullcalendar/locale/en-gb.js","e957c4fa13bca1f4a29528b8729eff9c"],["modules/Calendar4You/fullcalendar/locale/en-ie.js","38239bb17bb2795159fb869af42f3ed6"],["modules/Calendar4You/fullcalendar/locale/en-nz.js","536427f5c3395b42415533f189aba586"],["modules/Calendar4You/fullcalendar/locale/es-do.js","3f973a3cc32a8dfd98ba2cc768543b41"],["modules/Calendar4You/fullcalendar/locale/es-us.js","22226a5ec23b1305c566e7604af18e75"],["modules/Calendar4You/fullcalendar/locale/es.js","96dea70e8dad2e4403103a88629794b6"],["modules/Calendar4You/fullcalendar/locale/et.js","e968806ddef3a40ac8ee3beb4630b876"],["modules/Calendar4You/fullcalendar/locale/eu.js","e7a94e494c802877f4563f38d92f6d0e"],["modules/Calendar4You/fullcalendar/locale/fa.js","283ef4df61fb25f14077a8cbae5becbf"],["modules/Calendar4You/fullcalendar/locale/fi.js","8da8595594a3664a85e471e21d203a82"],["modules/Calendar4You/fullcalendar/locale/fr-ca.js","e8153da9dc2ca4ad6a0b4dd29f217f72"],["modules/Calendar4You/fullcalendar/locale/fr-ch.js","10d15457f413e7e46a68cd79658f30d6"],["modules/Calendar4You/fullcalendar/locale/fr.js","140a7e017212fcfcb7969f2adadc499a"],["modules/Calendar4You/fullcalendar/locale/gl.js","40672764b9b4e830fa5231a8c33d6d71"],["modules/Calendar4You/fullcalendar/locale/he.js","e340e0ad6d7324a4a01b1329ff5e8e8c"],["modules/Calendar4You/fullcalendar/locale/hi.js","3be62d0ccf23cdc983f81fcffebf8fad"],["modules/Calendar4You/fullcalendar/locale/hr.js","ec038ba8c412e64a752f28082f977697"],["modules/Calendar4You/fullcalendar/locale/hu.js","c69c977c4698337ef02bc6d680f87171"],["modules/Calendar4You/fullcalendar/locale/id.js","3ad379acdd2a9c87636116db9c31a374"],["modules/Calendar4You/fullcalendar/locale/is.js","6756a2b553dfe63771134dd621836150"],["modules/Calendar4You/fullcalendar/locale/it.js","fadc0b1ec8f55f7cdcbc3b2cf8089162"],["modules/Calendar4You/fullcalendar/locale/ja.js","65064401b0da655f340018ee20d79e22"],["modules/Calendar4You/fullcalendar/locale/ka.js","68373ec74e30e3f90b67df1aa56e4f05"],["modules/Calendar4You/fullcalendar/locale/kk.js","a1a408d0934f8efee6b2e251d981aff9"],["modules/Calendar4You/fullcalendar/locale/ko.js","baa216ba89b4cd77221c2bdf4cd7a51b"],["modules/Calendar4You/fullcalendar/locale/lb.js","c383c75a5e9b54fa9d23afa1c33d81f6"],["modules/Calendar4You/fullcalendar/locale/lt.js","2973703128bcb2ebada18ff239407825"],["modules/Calendar4You/fullcalendar/locale/lv.js","316fba27f32475d6a2deef6c3932cba9"],["modules/Calendar4You/fullcalendar/locale/mk.js","0392f05fd92c81754ac5001f6c8f03a6"],["modules/Calendar4You/fullcalendar/locale/ms-my.js","9b11dd8ab04790934e73026d0be5c105"],["modules/Calendar4You/fullcalendar/locale/ms.js","6775cf3c9ec6a867a01f63865ea2b02e"],["modules/Calendar4You/fullcalendar/locale/nb.js","eafaeca16ab9f245a2a85c469ee0ffe0"],["modules/Calendar4You/fullcalendar/locale/nl-be.js","a290d39d6d9956e66f33592c91f03db5"],["modules/Calendar4You/fullcalendar/locale/nl.js","0104eea0e4be0f98dc258ad3e2331eb4"],["modules/Calendar4You/fullcalendar/locale/nn.js","bfb236dc35f50e798205e652c9d568e2"],["modules/Calendar4You/fullcalendar/locale/pl.js","5c5178c680aa3391867239eaa12ca85c"],["modules/Calendar4You/fullcalendar/locale/pt-br.js","9e99177e1aff4f252f331e21b5345312"],["modules/Calendar4You/fullcalendar/locale/pt.js","d0d6e93cca316749b60f842603f624b8"],["modules/Calendar4You/fullcalendar/locale/ro.js","ea3eac43b6f7094e136bf274477e1063"],["modules/Calendar4You/fullcalendar/locale/ru.js","d870d9459ac48f242fd78769a558711e"],["modules/Calendar4You/fullcalendar/locale/sk.js","47ac02a362d43c11bedb68c9a26c8ca7"],["modules/Calendar4You/fullcalendar/locale/sl.js","bacd5fdefce08e1291eec50fdd1bf5f3"],["modules/Calendar4You/fullcalendar/locale/sq.js","9b1c029280b5e0a71c89c5f7180386ef"],["modules/Calendar4You/fullcalendar/locale/sr-cyrl.js","3dbdeb11141d10d9c9e822a82ec3c5bd"],["modules/Calendar4You/fullcalendar/locale/sr.js","e1717b43e0b03035a76803733c0502be"],["modules/Calendar4You/fullcalendar/locale/sv.js","420404cb45137c7bc8e05cb2fadc8c2e"],["modules/Calendar4You/fullcalendar/locale/th.js","6f333da064dee1aae8ed587329324c29"],["modules/Calendar4You/fullcalendar/locale/tr.js","759160f2f78b84f51820fc3a4f866889"],["modules/Calendar4You/fullcalendar/locale/uk.js","97cf63b777614f0ccb6e05c083cf2b16"],["modules/Calendar4You/fullcalendar/locale/vi.js","72dad7af17539b670e390ede1b8e3df6"],["modules/Calendar4You/fullcalendar/locale/zh-cn.js","7b45b1072b1d5ba71a8f5d3e7ca350fd"],["modules/Calendar4You/fullcalendar/locale/zh-hk.js","2291c08b7e8bad263e9d0f566c385a47"],["modules/Calendar4You/fullcalendar/locale/zh-tw.js","300ef3323eea3f21cdce972384dab937"],["modules/Calendar4You/fullcalendar/themes/cupertino/images/animated-overlay.gif","2b912f7c0653008ca28ebacda49025e7"],["modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-bg_diagonals-thick_90_eeeeee_40x40.png","254973041f2f3ff094034cf79e1dd669"],["modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-bg_flat_15_cd0a0a_40x100.png","4dd12b2014e983dcd555358219ce81d7"],["modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-bg_glass_100_e4f1fb_1x400.png","cec0b018d99ce30327d69d3c4faaca11"],["modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-bg_glass_50_3baae3_1x400.png","bb06e6a2f7440ca2a11050057fe7926d"],["modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-bg_glass_80_d7ebf9_1x400.png","286b528907dfbc11dc44a4cc89681635"],["modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-bg_highlight-hard_100_f2f5f7_1x100.png","dc0a7dd2653b260113c92c1936198b21"],["modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-bg_highlight-hard_70_000000_1x100.png","3ad15b0b6700a003dabeb7052e80be64"],["modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-bg_highlight-soft_100_deedf7_1x100.png","c04e9ad1e86ced01d2295fa5df2d7b56"],["modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-bg_highlight-soft_25_ffef8f_1x100.png","870e4da769784845bf381570ac584621"],["modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-icons_2694e8_256x240.png","a1ce3cc448b059968bb35b71a5c91874"],["modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-icons_2e83ff_256x240.png","db3b908bd060c6f278fde9e11b3b94e3"],["modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-icons_3d80b3_256x240.png","8370749a3e90577fdb876d72e6935f8e"],["modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-icons_72a7cf_256x240.png","505f6857cba9aad738957a7d3bb226a9"],["modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-icons_ffffff_256x240.png","2e2a588883eebc04ad50854a6ecfbac1"],["modules/Calendar4You/fullcalendar/themes/cupertino/jquery-ui.min.css","c5518025b115c73bbeb9b8518ec0499b"],["modules/Calendar4You/fullcalendar/themes/cupertino/theme.css","5e885f2a9f6890b2c8e5a041654d66cc"],["modules/Calendar4You/images/color_picker.gif","765a90c24ad2f3969b53e542bdf2e32f"],["modules/Calendar4You/images/icon-left.png","adee43d7f579110baaf8f9a67b51e995"],["modules/Calendar4You/images/icon-right.png","c95c5cf609a39a56758307cd99b1f989"],["modules/Calendar4You/images/sync_icon.png","95a2902cd634118555aa10b92ee387f2"],["modules/Calendar4You/images/sync_icon_small.png","ef6abcdd3e3b265354af8667d77c66e8"],["modules/Calendar4You/images/sync_icon_small2.png","b583b2cbc0c3c0017a981611efc88c2e"],["modules/Campaigns/Campaigns.js","12de06af8b7cc1f09fb8e27c69736dbf"],["modules/Campaigns/Campaigns.png","9025d280f0e8b147e104dacec651c980"],["modules/CobroPago/CobroPago.js","c240060c1b952bba5d36d4a506fa0e6e"],["modules/CobroPago/CobroPago.png","b3bd0c5f6a7d8c353aa5372337ededf9"],["modules/CobroPago/settings.png","c85d74bdf7c2100636d21a3e167d1f2d"],["modules/Contacts/Contacts.js","25530e91e96304253196890027011051"],["modules/Contacts/Contacts.png","bff9fd764212760ee140c48e30985900"],["modules/CronTasks/CronTasks.js","c28cdd8d0cd619f7830c25cdb0170d96"],["modules/CustomView/CustomView.js","65682db92a471ba46f12737f6f6b3e4d"],["modules/CustomerPortal/CustomerPortal.js","a0025e2eae5e58bf58564524adadca0c"],["modules/Dashboard/Dashboard.js","8ab2b632de69afd4fefcd5daccab5af6"],["modules/Documents/Documents.js","45233005c8905586dace1d05e3ed6576"],["modules/Documents/Documents.png","3494f23ed389037fba208eb171ed54b1"],["modules/Emails/Emails.js","d37ea32077a5434152b2ca683c19042f"],["modules/Emails/Emails.png","205bb82676beb92ec2dfa978a93277a2"],["modules/Faq/Faq.js","875ace6df1888378e0ca00db366abd62"],["modules/Faq/Faq.png","dea034cc2268d01a96bde50176e3648a"],["modules/GlobalVariable/GlobalVariable.js","c240060c1b952bba5d36d4a506fa0e6e"],["modules/GlobalVariable/GlobalVariable.png","e883ee9182ef7d21303bf992915b141b"],["modules/GlobalVariable/GlobalVariable64.png","383f72ca2b714b85ec925ee42240cfd3"],["modules/GlobalVariable/tablesorter/jquery.tablesorter.min.js","28f91818bc0e61a9b5445eed72e45ee5"],["modules/GlobalVariable/tablesorter/themes/blue/asc.gif","f8a1940c9cf44ab8870319169f3a14ff"],["modules/GlobalVariable/tablesorter/themes/blue/bg.gif","c01ad2e7c59d1a20a433cb873c21bd88"],["modules/GlobalVariable/tablesorter/themes/blue/desc.gif","a54846803de3cc786eec3d69f9ac2d38"],["modules/GlobalVariable/tablesorter/themes/blue/style.css","5b98d0810fb7dbb9fcbc2362655f0dd7"],["modules/GlobalVariable/tablesorter/themes/green/asc.png","47d431b1524d523eae100b66b09babdc"],["modules/GlobalVariable/tablesorter/themes/green/bg.png","7b0a5fe32e94b1595e48810a3df45648"],["modules/GlobalVariable/tablesorter/themes/green/desc.png","0f7f4fd46fe145ed6ed4c81c3b26a93f"],["modules/GlobalVariable/tablesorter/themes/green/style.css","8c047013d96b74708da195dac43980b7"],["modules/HelpDesk/HelpDesk.js","a1d67a7ccdf46c451b108ae99930bba8"],["modules/HelpDesk/HelpDesk.png","597044722eefba6d7a8d0a1857a7c636"],["modules/Home/Homestuff.js","79d7c9a5e0281b04b2eaee143a94abf9"],["modules/Home/js/HelpMeNow.js","3facd26fc8ea33e48ec5c19fcef2472d"],["modules/Import/resources/Import.js","1d9d802faaadb8f35f2f79f8c43b7698"],["modules/Import/resources/ImportStep2.js","45c632cf97d1f03c7f6805c1f78ae0a7"],["modules/InventoryDetails/InventoryDetails.js","c240060c1b952bba5d36d4a506fa0e6e"],["modules/Invoice/Invoice.js","9313f7a8d83ca5f1cd8a666086c3605d"],["modules/Invoice/Invoice.png","e12a8943e4b3f34872b3e59d000b1fa9"],["modules/Leads/Leads.js","d8a574e37e07159969aa561099764d56"],["modules/Leads/Leads.png","e9de77faccaef8c53e8faae287eb0ca1"],["modules/MailManager/MailManager.js","ebb8b80b7ee9494a39ca3dfb57848470"],["modules/MailManager/MailManager.png","1c045d808355b6ed581cd4971f3436f9"],["modules/MailManager/resources/jquery.tokeninput.js","2225af5abe843f40dc29d79e0b1ea565"],["modules/MailManager/resources/token-input-facebook.css","35d8aea3992991060bddd7dd035717c5"],["modules/Mobile/apple-touch-icon-precomposed.png","89744856c32a6fa01ec83cf86b78f27f"],["modules/Mobile/apple-touch-icon.png","89744856c32a6fa01ec83cf86b78f27f"],["modules/Mobile/resources/crmtogo.js","ae01304427dd8dab540c2eec0aa80c11"],["modules/Mobile/resources/css/images/ui-bg_diagonals-thick_18_b81900_40x40.png","e9c44fa4ccdc5d2d4c5e2bf65fc166aa"],["modules/Mobile/resources/css/images/ui-bg_diagonals-thick_20_666666_40x40.png","9ae6fe136a5be5e41944408c245e4496"],["modules/Mobile/resources/css/images/ui-bg_flat_10_000000_40x100.png","d37c642004b462889ab774e3fa9d1b82"],["modules/Mobile/resources/css/images/ui-bg_glass_100_f6f6f6_1x400.png","becd0bda9ac1f3bdc1caae0d1e25469f"],["modules/Mobile/resources/css/images/ui-bg_glass_100_fdf5ce_1x400.png","b9e2e007ea2f8410bd56d6caaf5920b1"],["modules/Mobile/resources/css/images/ui-bg_glass_65_ffffff_1x400.png","04b555466770e66a3ed8c6fc2c7bf897"],["modules/Mobile/resources/css/images/ui-bg_gloss-wave_35_f6a828_500x100.png","2d40290132e66b322ff28f9197af0a71"],["modules/Mobile/resources/css/images/ui-bg_highlight-soft_100_eeeeee_1x100.png","67ce8280f78b7043b7c096432450afbd"],["modules/Mobile/resources/css/images/ui-bg_highlight-soft_75_ffe45c_1x100.png","f81da2f75a8967177352a62872e53bcd"],["modules/Mobile/resources/css/images/ui-icons_222222_256x240.png","b8f844f3f13060d832e089c783435683"],["modules/Mobile/resources/css/images/ui-icons_228ef1_256x240.png","464fab5837b02773a19e770bd2670932"],["modules/Mobile/resources/css/images/ui-icons_ef8c08_256x240.png","f5912e64e68ca6c6d6be3f8186a62607"],["modules/Mobile/resources/css/images/ui-icons_ffd27a_256x240.png","b81d996790dc58a0a5477f756a9dff04"],["modules/Mobile/resources/css/images/ui-icons_ffffff_256x240.png","89c7f81db0a270cbc7cf8a9fb5749595"],["modules/Mobile/resources/css/jquery-ui.min.css","e56443e3a7143d279057f675dc25d115"],["modules/Mobile/resources/css/jquery.mobile-1.4.5.min.css","b835b04bbff5a8020c31ce21714e389b"],["modules/Mobile/resources/css/jquery.mobile.icons.min.css","1299bcc0c86b9c76f6c8730d3ea5a8ae"],["modules/Mobile/resources/css/jquery.mobile.structure-1.4.5.min.css","1544ca9f803edff31be0577b9f985853"],["modules/Mobile/resources/css/jw-jqm-cal.css","7546978657cc41eac63743013463b106"],["modules/Mobile/resources/css/jw-jqm-cal.ios7.css","bca9e7f6e3bdbf2179ef949e6cbac603"],["modules/Mobile/resources/css/mobiscroll.custom-2.6.2.min.css","29c9b4f741888f6cf71e27c434e4c362"],["modules/Mobile/resources/css/signature-pad.css","53beeb9c71b1a21aa389919c8c32b7b9"],["modules/Mobile/resources/css/style.css","0f03bf37b48e916eedc374fc7181dd7a"],["modules/Mobile/resources/css/theme.css","3ad2cc4a1e7c3b6c566726883e414b15"],["modules/Mobile/resources/css/tinyselect.css","df87e74765c600edb73159d1dfd5b9ab"],["modules/Mobile/resources/documents.js","351e44a8f5939b2fa6d5c498a65bcdc9"],["modules/Mobile/resources/getScrollcontent.js","6ac55c0e399455103faaa0704252b03b"],["modules/Mobile/resources/images/ajax-loader.gif","8fd7e719b06cd3f701c791adb62bd7a6"],["modules/Mobile/resources/images/ajax-loader.png","d66e82db53d9d7e63b00fb02a271dedd"],["modules/Mobile/resources/images/icons-18-black.png","951fbc0ce7edbbee9137073b63a0e77b"],["modules/Mobile/resources/images/icons-18-white.png","1c58818bbee0d727686b0995aecbde84"],["modules/Mobile/resources/images/icons-36-black.png","149e75b7045d6c873b0408e91c2d3e5c"],["modules/Mobile/resources/images/icons-36-white.png","8ad3678f02e860c055be0953d8e4bffe"],["modules/Mobile/resources/images/icons-png/action-black.png","9a19edc87343cefa0ea5fbfc38c45b92"],["modules/Mobile/resources/images/icons-png/action-white.png","13d2742979c0abdff486ffc0c2765efb"],["modules/Mobile/resources/images/icons-png/alert-black.png","09364128a6be0cc59f1fc6e9fade366f"],["modules/Mobile/resources/images/icons-png/alert-white.png","86373cf5fcb815be2adc0c06a87eb6f1"],["modules/Mobile/resources/images/icons-png/arrow-d-black.png","f85e79a0dcf3d65491e6bb99b40c0fda"],["modules/Mobile/resources/images/icons-png/arrow-d-l-black.png","27790e799f740daee527b1ca3c9971f9"],["modules/Mobile/resources/images/icons-png/arrow-d-l-white.png","14b3bcde3ed10d0be18d5fcc90fe8ce0"],["modules/Mobile/resources/images/icons-png/arrow-d-r-black.png","5bad1e7e859eb120f4d136af29084460"],["modules/Mobile/resources/images/icons-png/arrow-d-r-white.png","fec8ef05dd2b57134a284515eb5ecabf"],["modules/Mobile/resources/images/icons-png/arrow-d-white.png","a7ed65414584a456e4608c2bc3d85065"],["modules/Mobile/resources/images/icons-png/arrow-l-black.png","ee7f9b8e2abb96a61fe8d4cf11ca7697"],["modules/Mobile/resources/images/icons-png/arrow-l-white.png","434675e67d80715862db88c75a7df577"],["modules/Mobile/resources/images/icons-png/arrow-r-black.png","d96c7bba4b98ec14e62790584b139a61"],["modules/Mobile/resources/images/icons-png/arrow-r-white.png","34350abeb7bd36e979c0aa4d6e038d2d"],["modules/Mobile/resources/images/icons-png/arrow-u-black.png","5e086bd389bca6a7793a8741a6c6fad3"],["modules/Mobile/resources/images/icons-png/arrow-u-l-black.png","9891529976aef3fa1c23308dbbbe0485"],["modules/Mobile/resources/images/icons-png/arrow-u-l-white.png","eb17742486f621a31bfb1aaabdc30d5c"],["modules/Mobile/resources/images/icons-png/arrow-u-r-black.png","25267137bba768f6f2b595398c6a2b92"],["modules/Mobile/resources/images/icons-png/arrow-u-r-white.png","ce2d1de04f61355443949d6061f4ea37"],["modules/Mobile/resources/images/icons-png/arrow-u-white.png","9f6cd65e48648b4823e236b0da1e54b0"],["modules/Mobile/resources/images/icons-png/audio-black.png","d3cfac47faf40513c646c1f16b087e88"],["modules/Mobile/resources/images/icons-png/audio-white.png","7c90c384a65cbfef572bbdd02b9d8edb"],["modules/Mobile/resources/images/icons-png/back-black.png","0759505d2298fdee60b52b5126dfcfc6"],["modules/Mobile/resources/images/icons-png/back-white.png","e78ad3c61a492b120a7ba0a789d4b2e0"],["modules/Mobile/resources/images/icons-png/bars-black.png","d638db196907b36c3e0bfefb8a698cc8"],["modules/Mobile/resources/images/icons-png/bars-white.png","f4d15b9a0fdcf961fe8d749703b20f20"],["modules/Mobile/resources/images/icons-png/bullets-black.png","63e8e96e2deb4d60b69a68d6d9765df8"],["modules/Mobile/resources/images/icons-png/bullets-white.png","b74986306e8ee76bd1f2a4293d56c3c4"],["modules/Mobile/resources/images/icons-png/calendar-black.png","9116cef9549b26ddc4d9e96bec5dfd41"],["modules/Mobile/resources/images/icons-png/calendar-white.png","215a42df136361f8b54b056a0ca6ae15"],["modules/Mobile/resources/images/icons-png/camera-black.png","434dcb1c736b2da8247a1e59372bc64b"],["modules/Mobile/resources/images/icons-png/camera-white.png","054a64f6a2886570ed734a26a804a66a"],["modules/Mobile/resources/images/icons-png/carat-d-black.png","9708c21592cabb6f7fe4272e6daa7853"],["modules/Mobile/resources/images/icons-png/carat-d-white.png","52f8e9ceafe00b0360bce803f5236a0c"],["modules/Mobile/resources/images/icons-png/carat-l-black.png","01df9e30c853da8996684cd08c3a7917"],["modules/Mobile/resources/images/icons-png/carat-l-white.png","32a1036e056d5a5831f6e8d40d4d1faf"],["modules/Mobile/resources/images/icons-png/carat-r-black.png","01945aeb9182966e0e02cd0cd2f74abd"],["modules/Mobile/resources/images/icons-png/carat-r-white.png","41c4ab4735f66dd007c2689a87695863"],["modules/Mobile/resources/images/icons-png/carat-u-black.png","76904bfc235fd12caacfc2858f8e1eef"],["modules/Mobile/resources/images/icons-png/carat-u-white.png","3bde6d2e6ab2936a25b69767de4ac7c3"],["modules/Mobile/resources/images/icons-png/check-black.png","358363d39df6c2d2e0afbad366b14231"],["modules/Mobile/resources/images/icons-png/check-white.png","0bc57ed512131d2e4b507055552f7277"],["modules/Mobile/resources/images/icons-png/clock-black.png","c92ab62b3c0ca2ca1ae11bcc940c20a6"],["modules/Mobile/resources/images/icons-png/clock-white.png","44cffb967f09ddf5fb8d13380745f273"],["modules/Mobile/resources/images/icons-png/cloud-black.png","c0c7bf5a98f76f252d14f1af232a0ee1"],["modules/Mobile/resources/images/icons-png/cloud-white.png","c71b429d726c0b8c94fc6dd33f885574"],["modules/Mobile/resources/images/icons-png/comment-black.png","81a45d4b2b64e4321667542b75eb6754"],["modules/Mobile/resources/images/icons-png/comment-white.png","0917e96ac998c0d191d7b81d880927a9"],["modules/Mobile/resources/images/icons-png/delete-black.png","fb456b3f7f0b805ac7be21d97b443f9a"],["modules/Mobile/resources/images/icons-png/delete-white.png","478fa064c1e2234032e7a3de1884f4ed"],["modules/Mobile/resources/images/icons-png/edit-black.png","3bed8f0eeea77c23adcce4870c391286"],["modules/Mobile/resources/images/icons-png/edit-white.png","a41a9a4e6b71ae9829dd8fa24e695be9"],["modules/Mobile/resources/images/icons-png/eye-black.png","03ce5e4016e1f8ab8d7b02a72d45e600"],["modules/Mobile/resources/images/icons-png/eye-white.png","0bf7b7e9cb0aee2da885a86629744cf2"],["modules/Mobile/resources/images/icons-png/forbidden-black.png","fcf54d3cda520f292d34592d4ae6d9ae"],["modules/Mobile/resources/images/icons-png/forbidden-white.png","d124846cb27f0a6e07764e114895e335"],["modules/Mobile/resources/images/icons-png/forward-black.png","54bf8c0856e1a1b2b18fbf8161d8dadf"],["modules/Mobile/resources/images/icons-png/forward-white.png","486c47d6f12f7872c04a16a28f7ae6c3"],["modules/Mobile/resources/images/icons-png/gear-black.png","957fed4d5d46498e93cb74af8384f4b2"],["modules/Mobile/resources/images/icons-png/gear-white.png","592af245bec551ffa61392b9e363c8ee"],["modules/Mobile/resources/images/icons-png/grid-black.png","536fe23332253922017d3145f06258a6"],["modules/Mobile/resources/images/icons-png/grid-white.png","ab90c7666595f04b9374518ece4fd0e2"],["modules/Mobile/resources/images/icons-png/heart-black.png","7e2aaea1b42b5d462a7d098d5814433a"],["modules/Mobile/resources/images/icons-png/heart-white.png","86b007f62248a968255c50b3d5c0e696"],["modules/Mobile/resources/images/icons-png/home-black.png","3ef58401159dce7cdb4ca66bd1e1c475"],["modules/Mobile/resources/images/icons-png/home-white.png","1c80eb5b00855d8494116db68af3242c"],["modules/Mobile/resources/images/icons-png/info-black.png","ecc9460bc8b0a3de72a6638c8fc39d36"],["modules/Mobile/resources/images/icons-png/info-white.png","a776b029342f4ef75889d2b9853a0e59"],["modules/Mobile/resources/images/icons-png/location-black.png","173cf9e0989ea6f0bb6254a1fc0334ab"],["modules/Mobile/resources/images/icons-png/location-white.png","359f3b2435bb7ea11c9b62f46d712b2f"],["modules/Mobile/resources/images/icons-png/lock-black.png","28a57a211fa4c6a69055a91cd3e2b688"],["modules/Mobile/resources/images/icons-png/lock-white.png","827adbd30b32a8089a39bd5a40d956ca"],["modules/Mobile/resources/images/icons-png/mail-black.png","13106c83b8c7a9e78e5d0fbcf275f027"],["modules/Mobile/resources/images/icons-png/mail-white.png","006089860dcf971fe6f65ec3ad289e3a"],["modules/Mobile/resources/images/icons-png/minus-black.png","92cc19063926bda68541c1c6213e0637"],["modules/Mobile/resources/images/icons-png/minus-white.png","9e2ff829356531c31e954eb48d69b1c5"],["modules/Mobile/resources/images/icons-png/navigation-black.png","f36cc2c09123d935278e9fdbe1722769"],["modules/Mobile/resources/images/icons-png/navigation-white.png","59bdad3cbad70b98a5580f59f4b0f89d"],["modules/Mobile/resources/images/icons-png/phone-black.png","c78bd6ae6d2074f201518d5e504120d9"],["modules/Mobile/resources/images/icons-png/phone-white.png","3f351a2cf1b17acf767294695eb9a825"],["modules/Mobile/resources/images/icons-png/plus-black.png","96410e386e61459b3bf045ae72449b72"],["modules/Mobile/resources/images/icons-png/plus-white.png","d8256afa69d9ed42bdbeb1232acddc0e"],["modules/Mobile/resources/images/icons-png/power-black.png","d9a9cd79c18b61953483b15e78b7b6b6"],["modules/Mobile/resources/images/icons-png/power-white.png","4e785618f27780944e6d8a13fee251b0"],["modules/Mobile/resources/images/icons-png/recycle-black.png","04ae75ab4410ec64093da3b298fef31e"],["modules/Mobile/resources/images/icons-png/recycle-white.png","8a46b6ed030cee2db774928b81d1e6e3"],["modules/Mobile/resources/images/icons-png/refresh-black.png","1da2deb97177b5676c80be327ddc82e3"],["modules/Mobile/resources/images/icons-png/refresh-white.png","705e7dd6e46b24381e9d123be4721787"],["modules/Mobile/resources/images/icons-png/search-black.png","8fdc32864a50e0359972f7caaa6a4fac"],["modules/Mobile/resources/images/icons-png/search-white.png","615d54abf8ffe2159c6418996e73b86f"],["modules/Mobile/resources/images/icons-png/shop-black.png","34776eb5710390641a48b2ef933b42d8"],["modules/Mobile/resources/images/icons-png/shop-white.png","bed77b8b0aa66b98bb2c53d5ace2d736"],["modules/Mobile/resources/images/icons-png/star-black.png","741986dbcdfb3f8e4b86a58a5de62b4e"],["modules/Mobile/resources/images/icons-png/star-white.png","f62c7807aed9d236a22b8672290f845d"],["modules/Mobile/resources/images/icons-png/tag-black.png","d5fc58dc0ecabd4e37cb41e2a8c6f871"],["modules/Mobile/resources/images/icons-png/tag-white.png","63d500360386f0352234ea160a235650"],["modules/Mobile/resources/images/icons-png/user-black.png","72109232660715674c269a748b6d3b94"],["modules/Mobile/resources/images/icons-png/user-white.png","291b0ebdb48850f539026ccd24ade8ff"],["modules/Mobile/resources/images/icons-png/video-black.png","3e9650ab48d52565ff42b9f67e1ea617"],["modules/Mobile/resources/images/icons-png/video-white.png","d180c9f44b809cd008ea4c32a4450bd2"],["modules/Mobile/resources/images/icons-svg/action-black.svg","67275db7ead5c13b17248764737e1941"],["modules/Mobile/resources/images/icons-svg/action-white.svg","797865c23a9a7fd58f879c06ea5f3373"],["modules/Mobile/resources/images/icons-svg/alert-black.svg","36f5ec26786ba00eb754c08e54482a45"],["modules/Mobile/resources/images/icons-svg/alert-white.svg","62b7c0f9ef04d0e883874cd17beb67f9"],["modules/Mobile/resources/images/icons-svg/arrow-d-black.svg","8f16783cae829210adb04701c7c56e8a"],["modules/Mobile/resources/images/icons-svg/arrow-d-l-black.svg","ee21b9e7833a9e2b379860f3a618b1e3"],["modules/Mobile/resources/images/icons-svg/arrow-d-l-white.svg","01a113d82aba147674d5c3f02a964d62"],["modules/Mobile/resources/images/icons-svg/arrow-d-r-black.svg","97a158a3980bc8a4ec4fb17d2f73a350"],["modules/Mobile/resources/images/icons-svg/arrow-d-r-white.svg","0a090129d1927e101076a432d621a6d7"],["modules/Mobile/resources/images/icons-svg/arrow-d-white.svg","6edf191c7866180081b7eefedb0dba70"],["modules/Mobile/resources/images/icons-svg/arrow-l-black.svg","c8dbdfc79c8e80d1ea94b87aa3912b8e"],["modules/Mobile/resources/images/icons-svg/arrow-l-white.svg","359f958a031112b9520608597719d379"],["modules/Mobile/resources/images/icons-svg/arrow-r-black.svg","00df078716e101e98d97f3716cc08ada"],["modules/Mobile/resources/images/icons-svg/arrow-r-white.svg","8185b003c91161784c2f459cd1841653"],["modules/Mobile/resources/images/icons-svg/arrow-u-black.svg","892fff5096355d1d137d604b2cd59a60"],["modules/Mobile/resources/images/icons-svg/arrow-u-l-black.svg","1db1daead125330f1a7bf3e7fe72f275"],["modules/Mobile/resources/images/icons-svg/arrow-u-l-white.svg","fad90887ad3b93dd743c3fe55ab10d17"],["modules/Mobile/resources/images/icons-svg/arrow-u-r-black.svg","0eac866257c85e1d8b09b315337a2b07"],["modules/Mobile/resources/images/icons-svg/arrow-u-r-white.svg","1a8f30eea2937a267e65d0074db54f15"],["modules/Mobile/resources/images/icons-svg/arrow-u-white.svg","ec482d18e3e5eca475988f736385f83b"],["modules/Mobile/resources/images/icons-svg/audio-black.svg","bf7400a0a0aeb0bef6a40d17cf542c1e"],["modules/Mobile/resources/images/icons-svg/audio-white.svg","79fe8db54c1bf84120a2d83a3321809f"],["modules/Mobile/resources/images/icons-svg/back-black.svg","299d8fddcf7aefe01fcda1e3d36c539e"],["modules/Mobile/resources/images/icons-svg/back-white.svg","28b170be258eb94dd59a5aebede55ca0"],["modules/Mobile/resources/images/icons-svg/bars-black.svg","30b70e23bcdb1582a62d0ea37518c218"],["modules/Mobile/resources/images/icons-svg/bars-white.svg","b28b198349a23f1bb70adfd3c3928bec"],["modules/Mobile/resources/images/icons-svg/bullets-black.svg","8592b97a7ff92d49c4a4500825c38a24"],["modules/Mobile/resources/images/icons-svg/bullets-white.svg","28e926450152e985c4373e1573a62011"],["modules/Mobile/resources/images/icons-svg/calendar-black.svg","afb432ae012246d38cf48b40b75b4661"],["modules/Mobile/resources/images/icons-svg/calendar-white.svg","683b7091302672384f03633fae4cf8e0"],["modules/Mobile/resources/images/icons-svg/camera-black.svg","bc31967f8a33cfbcbb1283910848f3d2"],["modules/Mobile/resources/images/icons-svg/camera-white.svg","07c295ce297a2c08d81b85982bb7f5ce"],["modules/Mobile/resources/images/icons-svg/carat-d-black.svg","ca571e71da5ea3b3aa366f4565c101b4"],["modules/Mobile/resources/images/icons-svg/carat-d-white.svg","44fe6b4ec96e6f324e23fc6d6906fc92"],["modules/Mobile/resources/images/icons-svg/carat-l-black.svg","0fd1f5d1dd111f9a39d2b12d626a9538"],["modules/Mobile/resources/images/icons-svg/carat-l-white.svg","c7f967d6d7d2cd246d3313737fb609a5"],["modules/Mobile/resources/images/icons-svg/carat-r-black.svg","bad5e7f56576d11e67fb476dfc16a413"],["modules/Mobile/resources/images/icons-svg/carat-r-white.svg","3afee5c3be598fd31a861956308085df"],["modules/Mobile/resources/images/icons-svg/carat-u-black.svg","5c696a49dfe8cdc1d944ff23c4ce45fa"],["modules/Mobile/resources/images/icons-svg/carat-u-white.svg","2be4a9d2a9193bcdbcd53fa75130589b"],["modules/Mobile/resources/images/icons-svg/check-black.svg","821dc8547ced9cc0698d0dd4ed9d06e3"],["modules/Mobile/resources/images/icons-svg/check-white.svg","88eb12a3c79959eeb743b48b16d511ab"],["modules/Mobile/resources/images/icons-svg/clock-black.svg","009a91daa40bc2d5f8814d653f8434ad"],["modules/Mobile/resources/images/icons-svg/clock-white.svg","56cf9aa2dc1c162096903ac41dff13fa"],["modules/Mobile/resources/images/icons-svg/cloud-black.svg","b5fa9f83217d9c7d8a9b260f8702aece"],["modules/Mobile/resources/images/icons-svg/cloud-white.svg","97cb950227497b3ce36f0d342e6dab86"],["modules/Mobile/resources/images/icons-svg/comment-black.svg","1bebdcbea0e1aa92b8a003f25dae320c"],["modules/Mobile/resources/images/icons-svg/comment-white.svg","1c88d821a8088bf13e11c42f51a2cb79"],["modules/Mobile/resources/images/icons-svg/delete-black.svg","a47df270172eb9e4aa2f53a8d49a747c"],["modules/Mobile/resources/images/icons-svg/delete-white.svg","1545461b20b7e130257e9d8a3fbbe9fe"],["modules/Mobile/resources/images/icons-svg/edit-black.svg","aa68f894234d3877204b56a1f29f56df"],["modules/Mobile/resources/images/icons-svg/edit-white.svg","6ef800ecc6836e5572f29941e2c94883"],["modules/Mobile/resources/images/icons-svg/eye-black.svg","4b5188538a87aff30ca0a8ae073448bf"],["modules/Mobile/resources/images/icons-svg/eye-white.svg","815468019d233b42706fe5accb6d4634"],["modules/Mobile/resources/images/icons-svg/forbidden-black.svg","0f1f6127b30576bef03089ed4a54963c"],["modules/Mobile/resources/images/icons-svg/forbidden-white.svg","bf4eb7e1a4f5a7f2eb92afa3c0caa5cf"],["modules/Mobile/resources/images/icons-svg/forward-black.svg","93d89c376ee9fc61eaddc8acc88f79bf"],["modules/Mobile/resources/images/icons-svg/forward-white.svg","7dce88ed7e26c973e49d6b5d63c69438"],["modules/Mobile/resources/images/icons-svg/gear-black.svg","83717679bfeec2bac44f61bf2c2fdb07"],["modules/Mobile/resources/images/icons-svg/gear-white.svg","d973b195dd62c5f30900ec2ddbeeaf15"],["modules/Mobile/resources/images/icons-svg/grid-black.svg","729b4b585cd8008e420b9c7288d473f4"],["modules/Mobile/resources/images/icons-svg/grid-white.svg","631da228c4a3f8e9cee2b8bdb16f99c7"],["modules/Mobile/resources/images/icons-svg/heart-black.svg","8946674e6081a099c5003e12d014b727"],["modules/Mobile/resources/images/icons-svg/heart-white.svg","7d8835566b2c5181f98cc3619317d2d2"],["modules/Mobile/resources/images/icons-svg/home-black.svg","c0f3930a0ba1e46c3aedb4d422dc674d"],["modules/Mobile/resources/images/icons-svg/home-white.svg","315a466d71a7357747511dec557827b4"],["modules/Mobile/resources/images/icons-svg/info-black.svg","293e7f6124a6f6c8e57d94523d9b3aaa"],["modules/Mobile/resources/images/icons-svg/info-white.svg","31af5be157e2fa395cd31cdf2cfb2d19"],["modules/Mobile/resources/images/icons-svg/location-black.svg","f9f9c4a0b82be059f8ea20f3e5324a84"],["modules/Mobile/resources/images/icons-svg/location-white.svg","5e8eefb85b6d22fe477b32bd82a8376a"],["modules/Mobile/resources/images/icons-svg/lock-black.svg","dcc507ffc396bc2a851fe4d10cffe207"],["modules/Mobile/resources/images/icons-svg/lock-white.svg","7b91f4c76a72fa47314a629de5afd2d9"],["modules/Mobile/resources/images/icons-svg/mail-black.svg","72a01ba4327cf1f0b14738d9d6950da6"],["modules/Mobile/resources/images/icons-svg/mail-white.svg","4e89f20bc80df577d2b306afbe3da21f"],["modules/Mobile/resources/images/icons-svg/minus-black.svg","c8a533902d2d8346b16ec3056a24215d"],["modules/Mobile/resources/images/icons-svg/minus-white.svg","51ad8ba2fffae02ba35ea6d732fdf49c"],["modules/Mobile/resources/images/icons-svg/navigation-black.svg","65a0b299b9ea5401717848c88520ea26"],["modules/Mobile/resources/images/icons-svg/navigation-white.svg","37eb89d6300e305be01a560fcecc551f"],["modules/Mobile/resources/images/icons-svg/phone-black.svg","f62c567527b2b5e0a346b831a8731de6"],["modules/Mobile/resources/images/icons-svg/phone-white.svg","bee327d659d00c409047ca9004978844"],["modules/Mobile/resources/images/icons-svg/plus-black.svg","242deb48861062f78e2cc4c19f9cfe75"],["modules/Mobile/resources/images/icons-svg/plus-white.svg","472f41b23eed8edfcd9524a02f6fd3b1"],["modules/Mobile/resources/images/icons-svg/power-black.svg","01f5e002762fbd375ca25f096b0a459f"],["modules/Mobile/resources/images/icons-svg/power-white.svg","2efec04180b4d9b8933bbe692b1abdf8"],["modules/Mobile/resources/images/icons-svg/recycle-black.svg","42d586529aff8f677f93c2bf75f9f10c"],["modules/Mobile/resources/images/icons-svg/recycle-white.svg","bcf1c2ef6444eff7e84138ba066c6419"],["modules/Mobile/resources/images/icons-svg/refresh-black.svg","111f67f8800111970f0684f37de60d28"],["modules/Mobile/resources/images/icons-svg/refresh-white.svg","d17451ae1ab9ce9b60b10cae760c5de1"],["modules/Mobile/resources/images/icons-svg/search-black.svg","a33a2d282639e95496f7b0ba743b8dd3"],["modules/Mobile/resources/images/icons-svg/search-white.svg","67ec6b224fd71699bad087b88fa3884b"],["modules/Mobile/resources/images/icons-svg/shop-black.svg","dd3498094e4587df4d2f93f46fbfb56d"],["modules/Mobile/resources/images/icons-svg/shop-white.svg","35c5498ca57890e0763d000147e39dca"],["modules/Mobile/resources/images/icons-svg/star-black.svg","028a29b556652a25dc9f6713c8ead3a7"],["modules/Mobile/resources/images/icons-svg/star-white.svg","cc0a9ecae004d7ae84945a1417cdc356"],["modules/Mobile/resources/images/icons-svg/tag-black.svg","2f00ae8c1629d9b78e8b0a3a6e524aa5"],["modules/Mobile/resources/images/icons-svg/tag-white.svg","c1bd8cf3fa1f28b8b12aafa9ebcc41ec"],["modules/Mobile/resources/images/icons-svg/user-black.svg","b1450949596cf32dbd0677dea1501b85"],["modules/Mobile/resources/images/icons-svg/user-white.svg","7dab217ef0edb74466854f49a5e7aebd"],["modules/Mobile/resources/images/icons-svg/video-black.svg","406a4bc63094ceb5e3655c8f28318c88"],["modules/Mobile/resources/images/icons-svg/video-white.svg","322d59e56994f993a42bcede51344a16"],["modules/Mobile/resources/images/images.png","d4b4025f9b8d1d31c3ad36b363e475af"],["modules/Mobile/resources/jquery-1.11.2.min.js","5790ead7ad3ba27397aedfa3d263b867"],["modules/Mobile/resources/jquery-ui.js","b5f3656496ccb995aacdccc0e91437c2"],["modules/Mobile/resources/jquery-ui.min.js","870b75c273a97501e7d1fb27776bafd0"],["modules/Mobile/resources/jquery.blockUI.js","5c98c0cbfacee6dab0783112cb0e233d"],["modules/Mobile/resources/jquery.easing-1.3.min.js","07e36bf95f7c90e4b47c66b2d4311be3"],["modules/Mobile/resources/jquery.mobile-1.4.5.min.js","fccb67b52239d374598b00ad388015c9"],["modules/Mobile/resources/jw-jqm-cal.js","d44637254943525f26e61bf555301c81"],["modules/Mobile/resources/lang/de_de.lang.js","ae79d7d7a78e70cbb6045300b9b69047"],["modules/Mobile/resources/lang/en_gb.lang.js","ae989aa845cd40bce24cadefa3363b52"],["modules/Mobile/resources/lang/en_us.lang.js","ae989aa845cd40bce24cadefa3363b52"],["modules/Mobile/resources/lang/es_es.lang.js","f657034c4a672e24b6f1d61ae7c04bbc"],["modules/Mobile/resources/lang/es_mx.lang.js","f657034c4a672e24b6f1d61ae7c04bbc"],["modules/Mobile/resources/lang/fr_fr.lang.js","6b620d239f6e3a12a9484b33213ee4f1"],["modules/Mobile/resources/lang/nl_nl.lang.js","113dffdaddb2cf254d0879d0402349aa"],["modules/Mobile/resources/lang/pt_br.lang.js","84613dd324df8bf134a0f41941757cd7"],["modules/Mobile/resources/settings.js","7fab3007e1698eeb90371ff591b7f77c"],["modules/Mobile/resources/signature_pad.js","7314c126d7a2316ca8e00a1d405d0771"],["modules/Mobile/resources/xdate.js","12342c1101cdbfa8a77a9d022b50da24"],["modules/ModComments/ModComments.js","253c82414388480dd8d07ec5f899968d"],["modules/ModComments/ModComments.png","6f257d77b24a2d0f79a3796ab9e3ff7f"],["modules/ModComments/ModCommentsCommon.js","90cb31321c92bc6d3f1e73e5ecd0255a"],["modules/ModTracker/ModTracker.js","c822e17c71c3f3e039528c4311f4cbae"],["modules/ModTracker/ModTrackerCommon.js","48ce6d6bb5df591b73ef0c17dd9e0f37"],["modules/PBXManager/PBXManager.js","c663d6d8dfeba2b51a542382c8623087"],["modules/PBXManager/PBXManager.png","755e4bbf9003cbad9cea23fe6cdae5d2"],["modules/PickList/DependencyPicklist.js","8b38e7858ab48183ba87dc24e60178bc"],["modules/Portal/Portal.js","01b10c9bbf410ef98cc023a2821412e1"],["modules/Portal/Portal.png","1befaba9851212e8ed11d32ad2891a84"],["modules/Potentials/Potentials.js","de1459b79e171a9b5cfa2f584da66549"],["modules/Potentials/Potentials.png","1bcca2dd8d1c68f38da968e86f4f1bc4"],["modules/PriceBooks/PriceBooks.js","1975335374a344be4e3f98dbfe6756b4"],["modules/PriceBooks/PriceBooks.png","f428aeafd5255f815189e02bd8a09a4b"],["modules/Products/Products.js","82d4c0a3737ff481b5b9facca909dd38"],["modules/Products/Products.png","88ad151939905891d2d3aee1795932f4"],["modules/Products/Productsslide.js","09bb586ac917dcb7ac9e67c36d20c0da"],["modules/Products/multifile.js","2469a9d75b05798558ca746bff88ef36"],["modules/Products/placeholder.gif","df6770aa59bb302b5cbc84554e391e26"],["modules/Project/Project.js","c240060c1b952bba5d36d4a506fa0e6e"],["modules/Project/Project.png","d9c5ebde5ef3312548a7fd407fc52635"],["modules/ProjectMilestone/ProjectMilestone.js","c240060c1b952bba5d36d4a506fa0e6e"],["modules/ProjectMilestone/ProjectMilestone.png","d0d3d5804ea8bd519024102a85a4c5da"],["modules/ProjectTask/ProjectTask.js","c240060c1b952bba5d36d4a506fa0e6e"],["modules/ProjectTask/ProjectTask.png","31c3a0e0d0e7b541611c878118994769"],["modules/PurchaseOrder/PurchaseOrder.js","3dff644c53c450fc2e197316662b3a8f"],["modules/PurchaseOrder/PurchaseOrder.png","4979e62d7ef03142607b7afe14b6544d"],["modules/Quotes/Quotes.js","ea218806a1ac1a128df0453c43ecee63"],["modules/Quotes/Quotes.png","e31f403bcc7013a1cc89b7cdfa0957a1"],["modules/RecycleBin/RecycleBin.png","02e5a4e4236aa0c59788e8ee84a6272a"],["modules/Reports/Reports.js","9c44d0d7c463d90ac507e927487731dd"],["modules/Reports/Reports.png","9b6aa0d9feeb3715ce0b178e65e3a185"],["modules/Reports/ReportsSteps.js","8c9fdc9a60f962d277a3a86473d22d2d"],["modules/Rss/Rss.js","9e93cf2f8dddbea42be801f31e1f73f3"],["modules/Rss/Rss.png","c631db4abb5bc1e64e28fae877ed98c7"],["modules/SMSNotifier/SMSConfigServer.js","9e48754306aea76b1653bc67e96b1f03"],["modules/SMSNotifier/SMSNotifier.js","59ec7ddb3604584d1377ecd5c281aa91"],["modules/SMSNotifier/SMSNotifier.png","7cfdd1c8aa1d269dfe6643b3d4bdc35d"],["modules/SMSNotifier/SMSNotifierCommon.js","2bc5785bbc8662d43972828563d8e11a"],["modules/SMSNotifier/workflow/VTSMSTask.js","8120de0e05492fe510dd0d89ae500002"],["modules/SalesOrder/SalesOrder.js","af220612482a9b15fe2507532944700c"],["modules/SalesOrder/SalesOrder.png","c218a0f935a156ab3306b0503a36d2fd"],["modules/ServiceContracts/ServiceContracts.js","c240060c1b952bba5d36d4a506fa0e6e"],["modules/ServiceContracts/ServiceContracts.png","87c55137d73585a39a76ee6c6859f0c8"],["modules/Services/Services.js","25e0046eba629feba6d87b9d1a28c20e"],["modules/Services/Services.png","329befd4ae1808bf677acdd8dcff2f57"],["modules/Services/placeholder.gif","df6770aa59bb302b5cbc84554e391e26"],["modules/Settings/Settings.js","1001255e02a066e3fab9687eb4f7ec79"],["modules/Settings/Settings.png","e6ae8afae0c601b790617737ef78f02a"],["modules/Settings/profilePrivileges.js","873d28313b837a168de03db9649567cf"],["modules/Tooltip/Tooltip.js","651680d2a9ffb37861fcac6d52d83f24"],["modules/Tooltip/Tooltip.png","fc384192e4fa1a8cf362dd13fc9795b4"],["modules/Tooltip/TooltipHeaderScript.js","dfe4e586e0044d9973576b5c5b79065b"],["modules/Tooltip/TooltipSettings.js","62977aea32e2ee795041c7de5641e6dd"],["modules/Users/Users.js","e9be4cf50f50eedc61a491219ac3fc86"],["modules/Users/Users.png","0ee1f4360eea0b2ff9f13550bb9d536f"],["modules/Vendors/Vendors.js","29077a91b5317da8237274d0436bbc73"],["modules/Vendors/Vendors.png","bad0f7ffab917e6e2a06966f0c91d277"],["modules/WSAPP/WSAPP.js","36b3093ded85fbdb78336ed100dae8ac"],["modules/cbCalendar/cbCalendar.js","bcd3380f272036dbfa858a337d17ce70"],["modules/cbMap/cbMap.js","d5c244bdeb7a46b2fcc0756827d3c2ca"],["modules/cbTermConditions/cbTermConditions.js","c240060c1b952bba5d36d4a506fa0e6e"],["modules/cbupdater/cbupdater.js","cde88c33da015b3b7e277c8906c50457"],["modules/com_vtiger_workflow/com_vtiger_workflow.png","240870f4b7d77ee89301eb4aff5cde47"],["modules/com_vtiger_workflow/resources/Whatsappckeditor.js","fab39532561524488d757c60df5fedd7"],["modules/com_vtiger_workflow/resources/add.png","15a73d14b6e91db79ae7847c2c0de1a1"],["modules/com_vtiger_workflow/resources/createentitytaskscript.js","570fca99d6a15a9a601d21663a0f5f3a"],["modules/com_vtiger_workflow/resources/createeventtaskscript.js","0a5bfde4da94aac9acaa17c70276988d"],["modules/com_vtiger_workflow/resources/createtodotaskscript.js","d303f6bc780e5b5367842b29220bbf67"],["modules/com_vtiger_workflow/resources/edittaskscript.js","79775e4b09927588274d515f5b4f90ec"],["modules/com_vtiger_workflow/resources/editworkflowscript.js","9ffbee5848d336b4c69f43fe681782be"],["modules/com_vtiger_workflow/resources/emailtaskscript.js","7b030711073308450f8902923523de06"],["modules/com_vtiger_workflow/resources/fieldexpressionpopup.js","904edad383dcb6916900292f3a75145b"],["modules/com_vtiger_workflow/resources/fieldvalidator.js","cde6fec9119f368a5eb21d4e506209db"],["modules/com_vtiger_workflow/resources/functional.js","507e0618da87701f11b973970362e3cf"],["modules/com_vtiger_workflow/resources/ico-workflow.png","851ca4caa867fa005174afec1fea762f"],["modules/com_vtiger_workflow/resources/jquery.timepicker.js","cf04488523916947850d381c20427f50"],["modules/com_vtiger_workflow/resources/many2manyrelation.js","8778e149e296ca91f9c4c941007fc17c"],["modules/com_vtiger_workflow/resources/parallelexecuter.js","c75586a43f6d52d0528ae16a16ea689b"],["modules/com_vtiger_workflow/resources/remove.png","c00f6462ceeb5ab01f6cdf297e0e8735"],["modules/com_vtiger_workflow/resources/style.css","8dbebc4f9a6404f68569281b684f3707"],["modules/com_vtiger_workflow/resources/updatefieldstaskscript.js","75a9576a9821cbeff3fa8085288ff41d"],["modules/com_vtiger_workflow/resources/updatemassivefieldstaskscript.js","930d4f19d56c1ee69988d6604bd68e80"],["modules/com_vtiger_workflow/resources/vtigerwebservices.js","2d675d620dd72cf882fccfc6205fd2c3"],["modules/com_vtiger_workflow/resources/whatsappworkflowtaskscript.js","5afd629769a4624ed49745a888d51077"],["modules/com_vtiger_workflow/resources/workflowlistscript.js","00e3a63fff9e973d6d8ad24f452089f4"],["modules/evvtMenu/32px.png","db49c8de4f267eede40a9a8843efcdec"],["modules/evvtMenu/40px.png","1f075735090412ed7eb8077d819b19c6"],["modules/evvtMenu/collapse.png","875d8fec724352381ca879bad8d7b7d6"],["modules/evvtMenu/coloricons-sprite.png","e0d204f0961bb6aa4aa4fb79fa262025"],["modules/evvtMenu/evvtMenu.css","3897d24cb8412c6c611bc55029d1f341"],["modules/evvtMenu/evvtMenu.js","efec034bd12e4fb466f225408965f4eb"],["modules/evvtMenu/evvtMenu.png","27f4168de5f147e0300e7391174c75b0"],["modules/evvtMenu/expand.png","a3f51f6bbdf0ac0ae90a52ef8975ce22"],["modules/evvtMenu/jquery.fancytree-all.min.js","118faab2469b8a3e4a567545f42ec0f5"],["modules/evvtMenu/jstree.min.js","8505b45e8cf71b1f556e97f3a34734a5"],["modules/evvtMenu/style.min.css","5064bed2e1319fa871d2c6f2d18789e2"],["modules/evvtMenu/throbber.gif","9ed4669f524bec38319be63a2ee4ba26"]];
-var cacheName = 'sw-precache-v3-sw-precache-' + (self.registration ? self.registration.scope : '');
+importScripts('include/sw-precache/workbox/workbox-sw.js');
 
-
-var ignoreUrlParametersMatching = [/^utm_/];
-
-
-
-var addDirectoryIndex = function(originalUrl, index) {
-    var url = new URL(originalUrl);
-    if (url.pathname.slice(-1) === '/') {
-      url.pathname += index;
-    }
-    return url.toString();
-  };
-
-var cleanResponse = function(originalResponse) {
-    // If this is not a redirected response, then we don't have to do anything.
-    if (!originalResponse.redirected) {
-      return Promise.resolve(originalResponse);
-    }
-
-    // Firefox 50 and below doesn't support the Response.body stream, so we may
-    // need to read the entire body to memory as a Blob.
-    var bodyPromise = 'body' in originalResponse ?
-      Promise.resolve(originalResponse.body) :
-      originalResponse.blob();
-
-    return bodyPromise.then(function(body) {
-      // new Response() is happy when passed either a stream or a Blob.
-      return new Response(body, {
-        headers: originalResponse.headers,
-        status: originalResponse.status,
-        statusText: originalResponse.statusText
-      });
-    });
-  };
-
-var createCacheKey = function(originalUrl, paramName, paramValue,
-                           dontCacheBustUrlsMatching) {
-    // Create a new URL object to avoid modifying originalUrl.
-    var url = new URL(originalUrl);
-
-    // If dontCacheBustUrlsMatching is not set, or if we don't have a match,
-    // then add in the extra cache-busting URL parameter.
-    if (!dontCacheBustUrlsMatching ||
-        !(url.pathname.match(dontCacheBustUrlsMatching))) {
-      url.search += (url.search ? '&' : '') +
-        encodeURIComponent(paramName) + '=' + encodeURIComponent(paramValue);
-    }
-
-    return url.toString();
-  };
-
-var isPathWhitelisted = function(whitelist, absoluteUrlString) {
-    // If the whitelist is empty, then consider all URLs to be whitelisted.
-    if (whitelist.length === 0) {
-      return true;
-    }
-
-    // Otherwise compare each path regex to the path of the URL passed in.
-    var path = (new URL(absoluteUrlString)).pathname;
-    return whitelist.some(function(whitelistedPathRegex) {
-      return path.match(whitelistedPathRegex);
-    });
-  };
-
-var stripIgnoredUrlParameters = function(originalUrl,
-    ignoreUrlParametersMatching) {
-    var url = new URL(originalUrl);
-
-    url.search = url.search.slice(1) // Exclude initial '?'
-      .split('&') // Split into an array of 'key=value' strings
-      .map(function(kv) {
-        return kv.split('='); // Split each 'key=value' string into a [key, value] array
-      })
-      .filter(function(kv) {
-        return ignoreUrlParametersMatching.every(function(ignoredRegex) {
-          return !ignoredRegex.test(kv[0]); // Return true iff the key doesn't match any of the regexes.
-        });
-      })
-      .map(function(kv) {
-        return kv.join('='); // Join each [key, value] array into a 'key=value' string
-      })
-      .join('&'); // Join the array of 'key=value' strings into a string with '&' in between each
-
-    return url.toString();
-  };
-
-
-var hashParamName = '_sw-precache';
-var urlsToCacheKeys = new Map(
-  precacheConfig.map(function(item) {
-    var relativeUrl = item[0];
-    var hash = item[1];
-    var absoluteUrl = new URL(relativeUrl, self.location);
-    var cacheKey = createCacheKey(absoluteUrl, hashParamName, hash, false);
-    return [absoluteUrl.toString(), cacheKey];
-  })
-);
-
-function setOfCachedUrls(cache) {
-  return cache.keys().then(function(requests) {
-    return requests.map(function(request) {
-      return request.url;
-    });
-  }).then(function(urls) {
-    return new Set(urls);
-  });
-}
-
-self.addEventListener('install', function(event) {
-  event.waitUntil(
-    caches.open(cacheName).then(function(cache) {
-      return setOfCachedUrls(cache).then(function(cachedUrls) {
-        return Promise.all(
-          Array.from(urlsToCacheKeys.values()).map(function(cacheKey) {
-            // If we don't have a key matching url in the cache already, add it.
-            if (!cachedUrls.has(cacheKey)) {
-              var request = new Request(cacheKey, {credentials: 'same-origin'});
-              return fetch(request).then(function(response) {
-                // Bail out of installation unless we get back a 200 OK for
-                // every request.
-                if (!response.ok) {
-                  throw new Error('Request for ' + cacheKey + ' returned a ' +
-                    'response with status ' + response.status);
-                }
-
-                return cleanResponse(response).then(function(responseToCache) {
-                  return cache.put(cacheKey, responseToCache);
-                });
-              });
-            }
-          })
-        );
-      });
-    }).then(function() {
-      
-      // Force the SW to transition from installing -> active state
-      return self.skipWaiting();
-      
-    })
-  );
+workbox.setConfig({
+	modulePathPrefix: 'include/sw-precache/workbox/',
+	debug: false
+});
+self.addEventListener('message', (event) => {
+	if (event.data && event.data.type === 'SKIP_WAITING') {
+		self.skipWaiting();
+	}
 });
 
-self.addEventListener('activate', function(event) {
-  var setOfExpectedUrls = new Set(urlsToCacheKeys.values());
-
-  event.waitUntil(
-    caches.open(cacheName).then(function(cache) {
-      return cache.keys().then(function(existingRequests) {
-        return Promise.all(
-          existingRequests.map(function(existingRequest) {
-            if (!setOfExpectedUrls.has(existingRequest.url)) {
-              return cache.delete(existingRequest);
-            }
-          })
-        );
-      });
-    }).then(function() {
-      
-      return self.clients.claim();
-      
-    })
-  );
-});
-
-
-self.addEventListener('fetch', function(event) {
-  if (event.request.method === 'GET') {
-    // Should we call event.respondWith() inside this fetch event handler?
-    // This needs to be determined synchronously, which will give other fetch
-    // handlers a chance to handle the request if need be.
-    var shouldRespond;
-
-    // First, remove all the ignored parameter and see if we have that URL
-    // in our cache. If so, great! shouldRespond will be true.
-    var url = stripIgnoredUrlParameters(event.request.url, ignoreUrlParametersMatching);
-    shouldRespond = urlsToCacheKeys.has(url);
-
-    // If shouldRespond is false, check again, this time with 'index.html'
-    // (or whatever the directoryIndex option is set to) at the end.
-    var directoryIndex = 'index.html';
-    if (!shouldRespond && directoryIndex) {
-      url = addDirectoryIndex(url, directoryIndex);
-      shouldRespond = urlsToCacheKeys.has(url);
-    }
-
-    // If shouldRespond is still false, check to see if this is a navigation
-    // request, and if so, whether the URL matches navigateFallbackWhitelist.
-    var navigateFallback = '';
-    if (!shouldRespond &&
-        navigateFallback &&
-        (event.request.mode === 'navigate') &&
-        isPathWhitelisted([], event.request.url)) {
-      url = new URL(navigateFallback, self.location).toString();
-      shouldRespond = urlsToCacheKeys.has(url);
-    }
-
-    // If shouldRespond was set to true at any point, then call
-    // event.respondWith(), using the appropriate cache key.
-    if (shouldRespond) {
-      event.respondWith(
-        caches.open(cacheName).then(function(cache) {
-          return cache.match(urlsToCacheKeys.get(url)).then(function(response) {
-            if (response) {
-              return response;
-            }
-            throw Error('The cached response that was expected is missing.');
-          });
-        }).catch(function(e) {
-          // Fall back to just fetch()ing the request if some unexpected error
-          // prevented the cached response from being valid.
-          console.warn('Couldn\'t serve response for "%s" from cache: %O', event.request.url, e);
-          return fetch(event.request);
-        })
-      );
-    }
+if (workbox) {
+	workbox.precaching.precacheAndRoute([
+  {
+    "url": "include/sw-precache/service-worker-registration.js",
+    "revision": "fbc12f5273769a64c1cd5aca240b6308"
+  },
+  {
+    "url": "jscalendar/calendar-setup.js",
+    "revision": "1d6c5bf60a74c0700cc5a98b345ea68a"
+  },
+  {
+    "url": "jscalendar/calendar-win2k-cold-1.css",
+    "revision": "6abca10115d091d0ed4b5dfbc05945d2"
+  },
+  {
+    "url": "jscalendar/calendar.js",
+    "revision": "0f5478de5833a3865c255b072c5635d9"
+  },
+  {
+    "url": "jscalendar/img.gif",
+    "revision": "c1e5255bd358fcd5a0779a0cc310a2fe"
+  },
+  {
+    "url": "jscalendar/lang/calendar-af.js",
+    "revision": "65fc5963bf1f044c7f0d89be381cb87a"
+  },
+  {
+    "url": "jscalendar/lang/calendar-br.js",
+    "revision": "65fb4100d35f121f0b45981e61158fa0"
+  },
+  {
+    "url": "jscalendar/lang/calendar-ca.js",
+    "revision": "00e83a2121db4d21c059d3335f67eb42"
+  },
+  {
+    "url": "jscalendar/lang/calendar-cs-win.js",
+    "revision": "3556760402191331e9ebdc868992cf78"
+  },
+  {
+    "url": "jscalendar/lang/calendar-da.js",
+    "revision": "14ba236068dd2666d30e1a34055e9e7e"
+  },
+  {
+    "url": "jscalendar/lang/calendar-de.js",
+    "revision": "cce502a97461d1732c8932c66d2592f8"
+  },
+  {
+    "url": "jscalendar/lang/calendar-du.js",
+    "revision": "82ab1eabcc24cba821b950d12aaba8b3"
+  },
+  {
+    "url": "jscalendar/lang/calendar-el.js",
+    "revision": "8eb26742d8354ca3833e9be4d72e3bec"
+  },
+  {
+    "url": "jscalendar/lang/calendar-en.js",
+    "revision": "7ff36b7944c535271983566ac10a041b"
+  },
+  {
+    "url": "jscalendar/lang/calendar-es.js",
+    "revision": "26d7a6308d9dc6088978710726abaae2"
+  },
+  {
+    "url": "jscalendar/lang/calendar-fi.js",
+    "revision": "8d0194ed53abae22c8e98d633aee4626"
+  },
+  {
+    "url": "jscalendar/lang/calendar-fr.js",
+    "revision": "fadd88e8ac9444357a1426007927b3f2"
+  },
+  {
+    "url": "jscalendar/lang/calendar-hr-utf8.js",
+    "revision": "8d3bc284f3c2bfad26b38c6224fbc1ca"
+  },
+  {
+    "url": "jscalendar/lang/calendar-hr.js",
+    "revision": "921e18e1c60ba3425fbc6eb2f12984f6"
+  },
+  {
+    "url": "jscalendar/lang/calendar-hu.js",
+    "revision": "10409c671140a39b91e9f96dcedbe1b1"
+  },
+  {
+    "url": "jscalendar/lang/calendar-it.js",
+    "revision": "a947e189174be4d737ac034abe9db957"
+  },
+  {
+    "url": "jscalendar/lang/calendar-jp.js",
+    "revision": "b47ddea3200306ace5d9493ef98eca8e"
+  },
+  {
+    "url": "jscalendar/lang/calendar-ko-utf8.js",
+    "revision": "a9868c0d85ce1cec22cadf007c3f0661"
+  },
+  {
+    "url": "jscalendar/lang/calendar-ko.js",
+    "revision": "22bce81d786dfdbcc91654b23cb89afe"
+  },
+  {
+    "url": "jscalendar/lang/calendar-lt-utf8.js",
+    "revision": "ff0c26d46b71feeb3e536144ac566690"
+  },
+  {
+    "url": "jscalendar/lang/calendar-lt.js",
+    "revision": "06b3f5ddc2465af49ac476efdfead122"
+  },
+  {
+    "url": "jscalendar/lang/calendar-nl.js",
+    "revision": "6e570069acfffe65ba50608436221bd6"
+  },
+  {
+    "url": "jscalendar/lang/calendar-no.js",
+    "revision": "4ac0b8870fa93c6f49c183f71cd4baf9"
+  },
+  {
+    "url": "jscalendar/lang/calendar-pl-utf8.js",
+    "revision": "4df2bd769a1ebf7bb9ff4e634a80fd1c"
+  },
+  {
+    "url": "jscalendar/lang/calendar-pl.js",
+    "revision": "34c066e72e565b3a09af07c85a56de7a"
+  },
+  {
+    "url": "jscalendar/lang/calendar-pt.js",
+    "revision": "177f8bcab8ce4300dfffc1edbfa25e2c"
+  },
+  {
+    "url": "jscalendar/lang/calendar-ro.js",
+    "revision": "b2e4098f50eb62ad3fd4d44c1202c0b7"
+  },
+  {
+    "url": "jscalendar/lang/calendar-ru.js",
+    "revision": "b38f5c1915147fbcd4d7e47c9205b478"
+  },
+  {
+    "url": "jscalendar/lang/calendar-si.js",
+    "revision": "b66bac0654b4309f577ed89392e80132"
+  },
+  {
+    "url": "jscalendar/lang/calendar-sk.js",
+    "revision": "782c204921fac0922f297d2418b05756"
+  },
+  {
+    "url": "jscalendar/lang/calendar-sp.js",
+    "revision": "b8fd8524ae91fe7a4d27742fb30eb9bc"
+  },
+  {
+    "url": "jscalendar/lang/calendar-sv.js",
+    "revision": "76d3d0e80ee3f36e96875442567682cd"
+  },
+  {
+    "url": "jscalendar/lang/calendar-tr.js",
+    "revision": "bbbb0d304d90b89fd7336538088f2ba0"
+  },
+  {
+    "url": "jscalendar/lang/calendar-zh.js",
+    "revision": "304eef7561e91ed20df0ceddb155314b"
+  },
+  {
+    "url": "jscalendar/menuarrow.gif",
+    "revision": "b5a91d7a2755198b2eb729541ad3288c"
+  },
+  {
+    "url": "jscalendar/menuarrow2.gif",
+    "revision": "1f8c673c8f76832febaeeac88a5f4353"
+  },
+  {
+    "url": "modules/Calendar4You/Calendar4You.js",
+    "revision": "2bda1467d524098a0830a66c0605ce26"
+  },
+  {
+    "url": "modules/Calendar4You/Calendar4You.png",
+    "revision": "af2cca5b0d51fbfc4248fee073bb75eb"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/demos/js/theme-chooser.js",
+    "revision": "27f96a7feaff03a223268b12165b35cf"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/fullcalendar.css",
+    "revision": "47f6229cce431d267654ed013368eeb5"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/fullcalendar.js",
+    "revision": "0068d4028e1e83203a153d09d0fcfc6a"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/fullcalendar.min.css",
+    "revision": "7359f6ebc56c4ba9309895ed0ff48f45"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/fullcalendar.min.js",
+    "revision": "846152635d7e89526179ac13fbd1483a"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/fullcalendar.print.css",
+    "revision": "e26ff154c0948181dac143a4b361662d"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/fullcalendar.print.min.css",
+    "revision": "1712640f1c08b5e9412e06caf3bfebfe"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/gcal.js",
+    "revision": "5155e8f8435d60d5e9a3dc3ad4b6076e"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/gcal.min.js",
+    "revision": "0a8420923a7aaa5fa5bdfb83884452ae"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/lib/jquery-ui.min.js",
+    "revision": "c15b1008dec3c8967ea657a7bb4baaec"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/lib/jquery.min.js",
+    "revision": "a09e13ee94d51c524b7e2a728c7d4039"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/lib/moment.min.js",
+    "revision": "de82f2f2bd52ead2e0dbe58983236395"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale-all.js",
+    "revision": "c61d63888b913a98ea1c292d5e9fae94"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/af.js",
+    "revision": "4cc8fff4e0eae2beceb28852407d8ee1"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/ar-dz.js",
+    "revision": "bdebe3cc6c859fe19a39c4dcaeb8f46f"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/ar-kw.js",
+    "revision": "c99dc3d59530da6680fd7ab4f4a59764"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/ar-ly.js",
+    "revision": "56ead35e6aacb17c5b2348bb4393346b"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/ar-ma.js",
+    "revision": "e71fc413afe12229dd32c450f31b924c"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/ar-sa.js",
+    "revision": "37b2642147cf798072f41e6db0ff9e24"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/ar-tn.js",
+    "revision": "6688881ac22f904e20d475b4f7d8e502"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/ar.js",
+    "revision": "318ee308a3338e650e21eef9bfec4454"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/be.js",
+    "revision": "ee704412608520b4a15461067bf10e80"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/bg.js",
+    "revision": "611a2797fc737fdd91f4ff1475841375"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/bs.js",
+    "revision": "ccbff7000925c53198d4994d2b020920"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/ca.js",
+    "revision": "9f4daf05cbd58dac565e862548362e50"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/cs.js",
+    "revision": "c6425a5c310fa6e4f8daee83b2dbd642"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/da.js",
+    "revision": "c5e64b64407b8711626d0b341dbe6aa7"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/de-at.js",
+    "revision": "f58ebbf82fd65ff7a547e47ecffa9a87"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/de-ch.js",
+    "revision": "1ff636a1d3f423fc532bf18a3ca77657"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/de.js",
+    "revision": "15d5d4e179318560629fa0eea56a8510"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/el.js",
+    "revision": "0cc55851e13048a37c3218ebdeb94307"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/en-au.js",
+    "revision": "87eb7d91bfd405f2b1fa748dd944ec2e"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/en-ca.js",
+    "revision": "a21ff12d18dd973274e8d83726abfb46"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/en-gb.js",
+    "revision": "e957c4fa13bca1f4a29528b8729eff9c"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/en-ie.js",
+    "revision": "38239bb17bb2795159fb869af42f3ed6"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/en-nz.js",
+    "revision": "536427f5c3395b42415533f189aba586"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/es-do.js",
+    "revision": "3f973a3cc32a8dfd98ba2cc768543b41"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/es-us.js",
+    "revision": "22226a5ec23b1305c566e7604af18e75"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/es.js",
+    "revision": "96dea70e8dad2e4403103a88629794b6"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/et.js",
+    "revision": "e968806ddef3a40ac8ee3beb4630b876"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/eu.js",
+    "revision": "e7a94e494c802877f4563f38d92f6d0e"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/fa.js",
+    "revision": "283ef4df61fb25f14077a8cbae5becbf"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/fi.js",
+    "revision": "8da8595594a3664a85e471e21d203a82"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/fr-ca.js",
+    "revision": "e8153da9dc2ca4ad6a0b4dd29f217f72"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/fr-ch.js",
+    "revision": "10d15457f413e7e46a68cd79658f30d6"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/fr.js",
+    "revision": "140a7e017212fcfcb7969f2adadc499a"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/gl.js",
+    "revision": "40672764b9b4e830fa5231a8c33d6d71"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/he.js",
+    "revision": "e340e0ad6d7324a4a01b1329ff5e8e8c"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/hi.js",
+    "revision": "3be62d0ccf23cdc983f81fcffebf8fad"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/hr.js",
+    "revision": "ec038ba8c412e64a752f28082f977697"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/hu.js",
+    "revision": "c69c977c4698337ef02bc6d680f87171"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/id.js",
+    "revision": "3ad379acdd2a9c87636116db9c31a374"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/is.js",
+    "revision": "6756a2b553dfe63771134dd621836150"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/it.js",
+    "revision": "fadc0b1ec8f55f7cdcbc3b2cf8089162"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/ja.js",
+    "revision": "65064401b0da655f340018ee20d79e22"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/ka.js",
+    "revision": "68373ec74e30e3f90b67df1aa56e4f05"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/kk.js",
+    "revision": "a1a408d0934f8efee6b2e251d981aff9"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/ko.js",
+    "revision": "baa216ba89b4cd77221c2bdf4cd7a51b"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/lb.js",
+    "revision": "c383c75a5e9b54fa9d23afa1c33d81f6"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/lt.js",
+    "revision": "2973703128bcb2ebada18ff239407825"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/lv.js",
+    "revision": "316fba27f32475d6a2deef6c3932cba9"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/mk.js",
+    "revision": "0392f05fd92c81754ac5001f6c8f03a6"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/ms-my.js",
+    "revision": "9b11dd8ab04790934e73026d0be5c105"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/ms.js",
+    "revision": "6775cf3c9ec6a867a01f63865ea2b02e"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/nb.js",
+    "revision": "eafaeca16ab9f245a2a85c469ee0ffe0"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/nl-be.js",
+    "revision": "a290d39d6d9956e66f33592c91f03db5"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/nl.js",
+    "revision": "0104eea0e4be0f98dc258ad3e2331eb4"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/nn.js",
+    "revision": "bfb236dc35f50e798205e652c9d568e2"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/pl.js",
+    "revision": "5c5178c680aa3391867239eaa12ca85c"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/pt-br.js",
+    "revision": "9e99177e1aff4f252f331e21b5345312"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/pt.js",
+    "revision": "d0d6e93cca316749b60f842603f624b8"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/ro.js",
+    "revision": "ea3eac43b6f7094e136bf274477e1063"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/ru.js",
+    "revision": "d870d9459ac48f242fd78769a558711e"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/sk.js",
+    "revision": "47ac02a362d43c11bedb68c9a26c8ca7"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/sl.js",
+    "revision": "bacd5fdefce08e1291eec50fdd1bf5f3"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/sq.js",
+    "revision": "9b1c029280b5e0a71c89c5f7180386ef"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/sr-cyrl.js",
+    "revision": "3dbdeb11141d10d9c9e822a82ec3c5bd"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/sr.js",
+    "revision": "e1717b43e0b03035a76803733c0502be"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/sv.js",
+    "revision": "420404cb45137c7bc8e05cb2fadc8c2e"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/th.js",
+    "revision": "6f333da064dee1aae8ed587329324c29"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/tr.js",
+    "revision": "759160f2f78b84f51820fc3a4f866889"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/uk.js",
+    "revision": "97cf63b777614f0ccb6e05c083cf2b16"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/vi.js",
+    "revision": "72dad7af17539b670e390ede1b8e3df6"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/zh-cn.js",
+    "revision": "7b45b1072b1d5ba71a8f5d3e7ca350fd"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/zh-hk.js",
+    "revision": "2291c08b7e8bad263e9d0f566c385a47"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/locale/zh-tw.js",
+    "revision": "300ef3323eea3f21cdce972384dab937"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/themes/cupertino/images/animated-overlay.gif",
+    "revision": "2b912f7c0653008ca28ebacda49025e7"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-bg_diagonals-thick_90_eeeeee_40x40.png",
+    "revision": "254973041f2f3ff094034cf79e1dd669"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-bg_flat_15_cd0a0a_40x100.png",
+    "revision": "4dd12b2014e983dcd555358219ce81d7"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-bg_glass_100_e4f1fb_1x400.png",
+    "revision": "cec0b018d99ce30327d69d3c4faaca11"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-bg_glass_50_3baae3_1x400.png",
+    "revision": "bb06e6a2f7440ca2a11050057fe7926d"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-bg_glass_80_d7ebf9_1x400.png",
+    "revision": "286b528907dfbc11dc44a4cc89681635"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-bg_highlight-hard_100_f2f5f7_1x100.png",
+    "revision": "dc0a7dd2653b260113c92c1936198b21"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-bg_highlight-hard_70_000000_1x100.png",
+    "revision": "3ad15b0b6700a003dabeb7052e80be64"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-bg_highlight-soft_100_deedf7_1x100.png",
+    "revision": "c04e9ad1e86ced01d2295fa5df2d7b56"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-bg_highlight-soft_25_ffef8f_1x100.png",
+    "revision": "870e4da769784845bf381570ac584621"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-icons_2694e8_256x240.png",
+    "revision": "a1ce3cc448b059968bb35b71a5c91874"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-icons_2e83ff_256x240.png",
+    "revision": "db3b908bd060c6f278fde9e11b3b94e3"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-icons_3d80b3_256x240.png",
+    "revision": "8370749a3e90577fdb876d72e6935f8e"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-icons_72a7cf_256x240.png",
+    "revision": "505f6857cba9aad738957a7d3bb226a9"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/themes/cupertino/images/ui-icons_ffffff_256x240.png",
+    "revision": "2e2a588883eebc04ad50854a6ecfbac1"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/themes/cupertino/jquery-ui.min.css",
+    "revision": "c5518025b115c73bbeb9b8518ec0499b"
+  },
+  {
+    "url": "modules/Calendar4You/fullcalendar/themes/cupertino/theme.css",
+    "revision": "5e885f2a9f6890b2c8e5a041654d66cc"
+  },
+  {
+    "url": "modules/Calendar4You/images/color_picker.gif",
+    "revision": "765a90c24ad2f3969b53e542bdf2e32f"
+  },
+  {
+    "url": "modules/Calendar4You/images/icon-left.png",
+    "revision": "adee43d7f579110baaf8f9a67b51e995"
+  },
+  {
+    "url": "modules/Calendar4You/images/icon-right.png",
+    "revision": "c95c5cf609a39a56758307cd99b1f989"
+  },
+  {
+    "url": "modules/Calendar4You/images/sync_icon_small.png",
+    "revision": "ef6abcdd3e3b265354af8667d77c66e8"
+  },
+  {
+    "url": "modules/Calendar4You/images/sync_icon_small2.png",
+    "revision": "b583b2cbc0c3c0017a981611efc88c2e"
+  },
+  {
+    "url": "modules/Calendar4You/images/sync_icon.png",
+    "revision": "95a2902cd634118555aa10b92ee387f2"
+  },
+  {
+    "url": "modules/Mobile/apple-touch-icon-precomposed.png",
+    "revision": "89744856c32a6fa01ec83cf86b78f27f"
+  },
+  {
+    "url": "modules/Mobile/apple-touch-icon.png",
+    "revision": "89744856c32a6fa01ec83cf86b78f27f"
+  },
+  {
+    "url": "modules/Mobile/resources/crmtogo.js",
+    "revision": "ae01304427dd8dab540c2eec0aa80c11"
+  },
+  {
+    "url": "modules/Mobile/resources/css/images/ui-bg_diagonals-thick_18_b81900_40x40.png",
+    "revision": "e9c44fa4ccdc5d2d4c5e2bf65fc166aa"
+  },
+  {
+    "url": "modules/Mobile/resources/css/images/ui-bg_diagonals-thick_20_666666_40x40.png",
+    "revision": "9ae6fe136a5be5e41944408c245e4496"
+  },
+  {
+    "url": "modules/Mobile/resources/css/images/ui-bg_flat_10_000000_40x100.png",
+    "revision": "d37c642004b462889ab774e3fa9d1b82"
+  },
+  {
+    "url": "modules/Mobile/resources/css/images/ui-bg_glass_100_f6f6f6_1x400.png",
+    "revision": "becd0bda9ac1f3bdc1caae0d1e25469f"
+  },
+  {
+    "url": "modules/Mobile/resources/css/images/ui-bg_glass_100_fdf5ce_1x400.png",
+    "revision": "b9e2e007ea2f8410bd56d6caaf5920b1"
+  },
+  {
+    "url": "modules/Mobile/resources/css/images/ui-bg_glass_65_ffffff_1x400.png",
+    "revision": "04b555466770e66a3ed8c6fc2c7bf897"
+  },
+  {
+    "url": "modules/Mobile/resources/css/images/ui-bg_gloss-wave_35_f6a828_500x100.png",
+    "revision": "2d40290132e66b322ff28f9197af0a71"
+  },
+  {
+    "url": "modules/Mobile/resources/css/images/ui-bg_highlight-soft_100_eeeeee_1x100.png",
+    "revision": "67ce8280f78b7043b7c096432450afbd"
+  },
+  {
+    "url": "modules/Mobile/resources/css/images/ui-bg_highlight-soft_75_ffe45c_1x100.png",
+    "revision": "f81da2f75a8967177352a62872e53bcd"
+  },
+  {
+    "url": "modules/Mobile/resources/css/images/ui-icons_222222_256x240.png",
+    "revision": "b8f844f3f13060d832e089c783435683"
+  },
+  {
+    "url": "modules/Mobile/resources/css/images/ui-icons_228ef1_256x240.png",
+    "revision": "464fab5837b02773a19e770bd2670932"
+  },
+  {
+    "url": "modules/Mobile/resources/css/images/ui-icons_ef8c08_256x240.png",
+    "revision": "f5912e64e68ca6c6d6be3f8186a62607"
+  },
+  {
+    "url": "modules/Mobile/resources/css/images/ui-icons_ffd27a_256x240.png",
+    "revision": "b81d996790dc58a0a5477f756a9dff04"
+  },
+  {
+    "url": "modules/Mobile/resources/css/images/ui-icons_ffffff_256x240.png",
+    "revision": "89c7f81db0a270cbc7cf8a9fb5749595"
+  },
+  {
+    "url": "modules/Mobile/resources/css/jquery-ui.min.css",
+    "revision": "e56443e3a7143d279057f675dc25d115"
+  },
+  {
+    "url": "modules/Mobile/resources/css/jquery.mobile-1.4.5.min.css",
+    "revision": "b835b04bbff5a8020c31ce21714e389b"
+  },
+  {
+    "url": "modules/Mobile/resources/css/jquery.mobile.icons.min.css",
+    "revision": "1299bcc0c86b9c76f6c8730d3ea5a8ae"
+  },
+  {
+    "url": "modules/Mobile/resources/css/jquery.mobile.structure-1.4.5.min.css",
+    "revision": "1544ca9f803edff31be0577b9f985853"
+  },
+  {
+    "url": "modules/Mobile/resources/css/jw-jqm-cal.css",
+    "revision": "7546978657cc41eac63743013463b106"
+  },
+  {
+    "url": "modules/Mobile/resources/css/jw-jqm-cal.ios7.css",
+    "revision": "bca9e7f6e3bdbf2179ef949e6cbac603"
+  },
+  {
+    "url": "modules/Mobile/resources/css/mobiscroll.custom-2.6.2.min.css",
+    "revision": "29c9b4f741888f6cf71e27c434e4c362"
+  },
+  {
+    "url": "modules/Mobile/resources/css/signature-pad.css",
+    "revision": "53beeb9c71b1a21aa389919c8c32b7b9"
+  },
+  {
+    "url": "modules/Mobile/resources/css/style.css",
+    "revision": "0f03bf37b48e916eedc374fc7181dd7a"
+  },
+  {
+    "url": "modules/Mobile/resources/css/theme.css",
+    "revision": "3ad2cc4a1e7c3b6c566726883e414b15"
+  },
+  {
+    "url": "modules/Mobile/resources/css/tinyselect.css",
+    "revision": "df87e74765c600edb73159d1dfd5b9ab"
+  },
+  {
+    "url": "modules/Mobile/resources/documents.js",
+    "revision": "351e44a8f5939b2fa6d5c498a65bcdc9"
+  },
+  {
+    "url": "modules/Mobile/resources/getScrollcontent.js",
+    "revision": "6ac55c0e399455103faaa0704252b03b"
+  },
+  {
+    "url": "modules/Mobile/resources/images/ajax-loader.gif",
+    "revision": "8fd7e719b06cd3f701c791adb62bd7a6"
+  },
+  {
+    "url": "modules/Mobile/resources/images/ajax-loader.png",
+    "revision": "d66e82db53d9d7e63b00fb02a271dedd"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-18-black.png",
+    "revision": "951fbc0ce7edbbee9137073b63a0e77b"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-18-white.png",
+    "revision": "1c58818bbee0d727686b0995aecbde84"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-36-black.png",
+    "revision": "149e75b7045d6c873b0408e91c2d3e5c"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-36-white.png",
+    "revision": "8ad3678f02e860c055be0953d8e4bffe"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/action-black.png",
+    "revision": "9a19edc87343cefa0ea5fbfc38c45b92"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/action-white.png",
+    "revision": "13d2742979c0abdff486ffc0c2765efb"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/alert-black.png",
+    "revision": "09364128a6be0cc59f1fc6e9fade366f"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/alert-white.png",
+    "revision": "86373cf5fcb815be2adc0c06a87eb6f1"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/arrow-d-black.png",
+    "revision": "f85e79a0dcf3d65491e6bb99b40c0fda"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/arrow-d-l-black.png",
+    "revision": "27790e799f740daee527b1ca3c9971f9"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/arrow-d-l-white.png",
+    "revision": "14b3bcde3ed10d0be18d5fcc90fe8ce0"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/arrow-d-r-black.png",
+    "revision": "5bad1e7e859eb120f4d136af29084460"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/arrow-d-r-white.png",
+    "revision": "fec8ef05dd2b57134a284515eb5ecabf"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/arrow-d-white.png",
+    "revision": "a7ed65414584a456e4608c2bc3d85065"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/arrow-l-black.png",
+    "revision": "ee7f9b8e2abb96a61fe8d4cf11ca7697"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/arrow-l-white.png",
+    "revision": "434675e67d80715862db88c75a7df577"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/arrow-r-black.png",
+    "revision": "d96c7bba4b98ec14e62790584b139a61"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/arrow-r-white.png",
+    "revision": "34350abeb7bd36e979c0aa4d6e038d2d"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/arrow-u-black.png",
+    "revision": "5e086bd389bca6a7793a8741a6c6fad3"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/arrow-u-l-black.png",
+    "revision": "9891529976aef3fa1c23308dbbbe0485"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/arrow-u-l-white.png",
+    "revision": "eb17742486f621a31bfb1aaabdc30d5c"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/arrow-u-r-black.png",
+    "revision": "25267137bba768f6f2b595398c6a2b92"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/arrow-u-r-white.png",
+    "revision": "ce2d1de04f61355443949d6061f4ea37"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/arrow-u-white.png",
+    "revision": "9f6cd65e48648b4823e236b0da1e54b0"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/audio-black.png",
+    "revision": "d3cfac47faf40513c646c1f16b087e88"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/audio-white.png",
+    "revision": "7c90c384a65cbfef572bbdd02b9d8edb"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/back-black.png",
+    "revision": "0759505d2298fdee60b52b5126dfcfc6"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/back-white.png",
+    "revision": "e78ad3c61a492b120a7ba0a789d4b2e0"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/bars-black.png",
+    "revision": "d638db196907b36c3e0bfefb8a698cc8"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/bars-white.png",
+    "revision": "f4d15b9a0fdcf961fe8d749703b20f20"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/bullets-black.png",
+    "revision": "63e8e96e2deb4d60b69a68d6d9765df8"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/bullets-white.png",
+    "revision": "b74986306e8ee76bd1f2a4293d56c3c4"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/calendar-black.png",
+    "revision": "9116cef9549b26ddc4d9e96bec5dfd41"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/calendar-white.png",
+    "revision": "215a42df136361f8b54b056a0ca6ae15"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/camera-black.png",
+    "revision": "434dcb1c736b2da8247a1e59372bc64b"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/camera-white.png",
+    "revision": "054a64f6a2886570ed734a26a804a66a"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/carat-d-black.png",
+    "revision": "9708c21592cabb6f7fe4272e6daa7853"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/carat-d-white.png",
+    "revision": "52f8e9ceafe00b0360bce803f5236a0c"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/carat-l-black.png",
+    "revision": "01df9e30c853da8996684cd08c3a7917"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/carat-l-white.png",
+    "revision": "32a1036e056d5a5831f6e8d40d4d1faf"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/carat-r-black.png",
+    "revision": "01945aeb9182966e0e02cd0cd2f74abd"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/carat-r-white.png",
+    "revision": "41c4ab4735f66dd007c2689a87695863"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/carat-u-black.png",
+    "revision": "76904bfc235fd12caacfc2858f8e1eef"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/carat-u-white.png",
+    "revision": "3bde6d2e6ab2936a25b69767de4ac7c3"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/check-black.png",
+    "revision": "358363d39df6c2d2e0afbad366b14231"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/check-white.png",
+    "revision": "0bc57ed512131d2e4b507055552f7277"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/clock-black.png",
+    "revision": "c92ab62b3c0ca2ca1ae11bcc940c20a6"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/clock-white.png",
+    "revision": "44cffb967f09ddf5fb8d13380745f273"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/cloud-black.png",
+    "revision": "c0c7bf5a98f76f252d14f1af232a0ee1"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/cloud-white.png",
+    "revision": "c71b429d726c0b8c94fc6dd33f885574"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/comment-black.png",
+    "revision": "81a45d4b2b64e4321667542b75eb6754"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/comment-white.png",
+    "revision": "0917e96ac998c0d191d7b81d880927a9"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/delete-black.png",
+    "revision": "fb456b3f7f0b805ac7be21d97b443f9a"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/delete-white.png",
+    "revision": "478fa064c1e2234032e7a3de1884f4ed"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/edit-black.png",
+    "revision": "3bed8f0eeea77c23adcce4870c391286"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/edit-white.png",
+    "revision": "a41a9a4e6b71ae9829dd8fa24e695be9"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/eye-black.png",
+    "revision": "03ce5e4016e1f8ab8d7b02a72d45e600"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/eye-white.png",
+    "revision": "0bf7b7e9cb0aee2da885a86629744cf2"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/forbidden-black.png",
+    "revision": "fcf54d3cda520f292d34592d4ae6d9ae"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/forbidden-white.png",
+    "revision": "d124846cb27f0a6e07764e114895e335"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/forward-black.png",
+    "revision": "54bf8c0856e1a1b2b18fbf8161d8dadf"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/forward-white.png",
+    "revision": "486c47d6f12f7872c04a16a28f7ae6c3"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/gear-black.png",
+    "revision": "957fed4d5d46498e93cb74af8384f4b2"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/gear-white.png",
+    "revision": "592af245bec551ffa61392b9e363c8ee"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/grid-black.png",
+    "revision": "536fe23332253922017d3145f06258a6"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/grid-white.png",
+    "revision": "ab90c7666595f04b9374518ece4fd0e2"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/heart-black.png",
+    "revision": "7e2aaea1b42b5d462a7d098d5814433a"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/heart-white.png",
+    "revision": "86b007f62248a968255c50b3d5c0e696"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/home-black.png",
+    "revision": "3ef58401159dce7cdb4ca66bd1e1c475"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/home-white.png",
+    "revision": "1c80eb5b00855d8494116db68af3242c"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/info-black.png",
+    "revision": "ecc9460bc8b0a3de72a6638c8fc39d36"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/info-white.png",
+    "revision": "a776b029342f4ef75889d2b9853a0e59"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/location-black.png",
+    "revision": "173cf9e0989ea6f0bb6254a1fc0334ab"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/location-white.png",
+    "revision": "359f3b2435bb7ea11c9b62f46d712b2f"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/lock-black.png",
+    "revision": "28a57a211fa4c6a69055a91cd3e2b688"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/lock-white.png",
+    "revision": "827adbd30b32a8089a39bd5a40d956ca"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/mail-black.png",
+    "revision": "13106c83b8c7a9e78e5d0fbcf275f027"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/mail-white.png",
+    "revision": "006089860dcf971fe6f65ec3ad289e3a"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/minus-black.png",
+    "revision": "92cc19063926bda68541c1c6213e0637"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/minus-white.png",
+    "revision": "9e2ff829356531c31e954eb48d69b1c5"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/navigation-black.png",
+    "revision": "f36cc2c09123d935278e9fdbe1722769"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/navigation-white.png",
+    "revision": "59bdad3cbad70b98a5580f59f4b0f89d"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/phone-black.png",
+    "revision": "c78bd6ae6d2074f201518d5e504120d9"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/phone-white.png",
+    "revision": "3f351a2cf1b17acf767294695eb9a825"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/plus-black.png",
+    "revision": "96410e386e61459b3bf045ae72449b72"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/plus-white.png",
+    "revision": "d8256afa69d9ed42bdbeb1232acddc0e"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/power-black.png",
+    "revision": "d9a9cd79c18b61953483b15e78b7b6b6"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/power-white.png",
+    "revision": "4e785618f27780944e6d8a13fee251b0"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/recycle-black.png",
+    "revision": "04ae75ab4410ec64093da3b298fef31e"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/recycle-white.png",
+    "revision": "8a46b6ed030cee2db774928b81d1e6e3"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/refresh-black.png",
+    "revision": "1da2deb97177b5676c80be327ddc82e3"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/refresh-white.png",
+    "revision": "705e7dd6e46b24381e9d123be4721787"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/search-black.png",
+    "revision": "8fdc32864a50e0359972f7caaa6a4fac"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/search-white.png",
+    "revision": "615d54abf8ffe2159c6418996e73b86f"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/shop-black.png",
+    "revision": "34776eb5710390641a48b2ef933b42d8"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/shop-white.png",
+    "revision": "bed77b8b0aa66b98bb2c53d5ace2d736"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/star-black.png",
+    "revision": "741986dbcdfb3f8e4b86a58a5de62b4e"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/star-white.png",
+    "revision": "f62c7807aed9d236a22b8672290f845d"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/tag-black.png",
+    "revision": "d5fc58dc0ecabd4e37cb41e2a8c6f871"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/tag-white.png",
+    "revision": "63d500360386f0352234ea160a235650"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/user-black.png",
+    "revision": "72109232660715674c269a748b6d3b94"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/user-white.png",
+    "revision": "291b0ebdb48850f539026ccd24ade8ff"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/video-black.png",
+    "revision": "3e9650ab48d52565ff42b9f67e1ea617"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-png/video-white.png",
+    "revision": "d180c9f44b809cd008ea4c32a4450bd2"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/action-black.svg",
+    "revision": "67275db7ead5c13b17248764737e1941"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/action-white.svg",
+    "revision": "797865c23a9a7fd58f879c06ea5f3373"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/alert-black.svg",
+    "revision": "36f5ec26786ba00eb754c08e54482a45"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/alert-white.svg",
+    "revision": "62b7c0f9ef04d0e883874cd17beb67f9"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/arrow-d-black.svg",
+    "revision": "8f16783cae829210adb04701c7c56e8a"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/arrow-d-l-black.svg",
+    "revision": "ee21b9e7833a9e2b379860f3a618b1e3"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/arrow-d-l-white.svg",
+    "revision": "01a113d82aba147674d5c3f02a964d62"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/arrow-d-r-black.svg",
+    "revision": "97a158a3980bc8a4ec4fb17d2f73a350"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/arrow-d-r-white.svg",
+    "revision": "0a090129d1927e101076a432d621a6d7"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/arrow-d-white.svg",
+    "revision": "6edf191c7866180081b7eefedb0dba70"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/arrow-l-black.svg",
+    "revision": "c8dbdfc79c8e80d1ea94b87aa3912b8e"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/arrow-l-white.svg",
+    "revision": "359f958a031112b9520608597719d379"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/arrow-r-black.svg",
+    "revision": "00df078716e101e98d97f3716cc08ada"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/arrow-r-white.svg",
+    "revision": "8185b003c91161784c2f459cd1841653"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/arrow-u-black.svg",
+    "revision": "892fff5096355d1d137d604b2cd59a60"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/arrow-u-l-black.svg",
+    "revision": "1db1daead125330f1a7bf3e7fe72f275"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/arrow-u-l-white.svg",
+    "revision": "fad90887ad3b93dd743c3fe55ab10d17"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/arrow-u-r-black.svg",
+    "revision": "0eac866257c85e1d8b09b315337a2b07"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/arrow-u-r-white.svg",
+    "revision": "1a8f30eea2937a267e65d0074db54f15"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/arrow-u-white.svg",
+    "revision": "ec482d18e3e5eca475988f736385f83b"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/audio-black.svg",
+    "revision": "bf7400a0a0aeb0bef6a40d17cf542c1e"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/audio-white.svg",
+    "revision": "79fe8db54c1bf84120a2d83a3321809f"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/back-black.svg",
+    "revision": "299d8fddcf7aefe01fcda1e3d36c539e"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/back-white.svg",
+    "revision": "28b170be258eb94dd59a5aebede55ca0"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/bars-black.svg",
+    "revision": "30b70e23bcdb1582a62d0ea37518c218"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/bars-white.svg",
+    "revision": "b28b198349a23f1bb70adfd3c3928bec"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/bullets-black.svg",
+    "revision": "8592b97a7ff92d49c4a4500825c38a24"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/bullets-white.svg",
+    "revision": "28e926450152e985c4373e1573a62011"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/calendar-black.svg",
+    "revision": "afb432ae012246d38cf48b40b75b4661"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/calendar-white.svg",
+    "revision": "683b7091302672384f03633fae4cf8e0"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/camera-black.svg",
+    "revision": "bc31967f8a33cfbcbb1283910848f3d2"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/camera-white.svg",
+    "revision": "07c295ce297a2c08d81b85982bb7f5ce"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/carat-d-black.svg",
+    "revision": "ca571e71da5ea3b3aa366f4565c101b4"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/carat-d-white.svg",
+    "revision": "44fe6b4ec96e6f324e23fc6d6906fc92"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/carat-l-black.svg",
+    "revision": "0fd1f5d1dd111f9a39d2b12d626a9538"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/carat-l-white.svg",
+    "revision": "c7f967d6d7d2cd246d3313737fb609a5"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/carat-r-black.svg",
+    "revision": "bad5e7f56576d11e67fb476dfc16a413"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/carat-r-white.svg",
+    "revision": "3afee5c3be598fd31a861956308085df"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/carat-u-black.svg",
+    "revision": "5c696a49dfe8cdc1d944ff23c4ce45fa"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/carat-u-white.svg",
+    "revision": "2be4a9d2a9193bcdbcd53fa75130589b"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/check-black.svg",
+    "revision": "821dc8547ced9cc0698d0dd4ed9d06e3"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/check-white.svg",
+    "revision": "88eb12a3c79959eeb743b48b16d511ab"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/clock-black.svg",
+    "revision": "009a91daa40bc2d5f8814d653f8434ad"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/clock-white.svg",
+    "revision": "56cf9aa2dc1c162096903ac41dff13fa"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/cloud-black.svg",
+    "revision": "b5fa9f83217d9c7d8a9b260f8702aece"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/cloud-white.svg",
+    "revision": "97cb950227497b3ce36f0d342e6dab86"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/comment-black.svg",
+    "revision": "1bebdcbea0e1aa92b8a003f25dae320c"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/comment-white.svg",
+    "revision": "1c88d821a8088bf13e11c42f51a2cb79"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/delete-black.svg",
+    "revision": "a47df270172eb9e4aa2f53a8d49a747c"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/delete-white.svg",
+    "revision": "1545461b20b7e130257e9d8a3fbbe9fe"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/edit-black.svg",
+    "revision": "aa68f894234d3877204b56a1f29f56df"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/edit-white.svg",
+    "revision": "6ef800ecc6836e5572f29941e2c94883"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/eye-black.svg",
+    "revision": "4b5188538a87aff30ca0a8ae073448bf"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/eye-white.svg",
+    "revision": "815468019d233b42706fe5accb6d4634"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/forbidden-black.svg",
+    "revision": "0f1f6127b30576bef03089ed4a54963c"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/forbidden-white.svg",
+    "revision": "bf4eb7e1a4f5a7f2eb92afa3c0caa5cf"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/forward-black.svg",
+    "revision": "93d89c376ee9fc61eaddc8acc88f79bf"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/forward-white.svg",
+    "revision": "7dce88ed7e26c973e49d6b5d63c69438"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/gear-black.svg",
+    "revision": "83717679bfeec2bac44f61bf2c2fdb07"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/gear-white.svg",
+    "revision": "d973b195dd62c5f30900ec2ddbeeaf15"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/grid-black.svg",
+    "revision": "729b4b585cd8008e420b9c7288d473f4"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/grid-white.svg",
+    "revision": "631da228c4a3f8e9cee2b8bdb16f99c7"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/heart-black.svg",
+    "revision": "8946674e6081a099c5003e12d014b727"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/heart-white.svg",
+    "revision": "7d8835566b2c5181f98cc3619317d2d2"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/home-black.svg",
+    "revision": "c0f3930a0ba1e46c3aedb4d422dc674d"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/home-white.svg",
+    "revision": "315a466d71a7357747511dec557827b4"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/info-black.svg",
+    "revision": "293e7f6124a6f6c8e57d94523d9b3aaa"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/info-white.svg",
+    "revision": "31af5be157e2fa395cd31cdf2cfb2d19"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/location-black.svg",
+    "revision": "f9f9c4a0b82be059f8ea20f3e5324a84"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/location-white.svg",
+    "revision": "5e8eefb85b6d22fe477b32bd82a8376a"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/lock-black.svg",
+    "revision": "dcc507ffc396bc2a851fe4d10cffe207"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/lock-white.svg",
+    "revision": "7b91f4c76a72fa47314a629de5afd2d9"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/mail-black.svg",
+    "revision": "72a01ba4327cf1f0b14738d9d6950da6"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/mail-white.svg",
+    "revision": "4e89f20bc80df577d2b306afbe3da21f"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/minus-black.svg",
+    "revision": "c8a533902d2d8346b16ec3056a24215d"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/minus-white.svg",
+    "revision": "51ad8ba2fffae02ba35ea6d732fdf49c"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/navigation-black.svg",
+    "revision": "65a0b299b9ea5401717848c88520ea26"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/navigation-white.svg",
+    "revision": "37eb89d6300e305be01a560fcecc551f"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/phone-black.svg",
+    "revision": "f62c567527b2b5e0a346b831a8731de6"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/phone-white.svg",
+    "revision": "bee327d659d00c409047ca9004978844"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/plus-black.svg",
+    "revision": "242deb48861062f78e2cc4c19f9cfe75"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/plus-white.svg",
+    "revision": "472f41b23eed8edfcd9524a02f6fd3b1"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/power-black.svg",
+    "revision": "01f5e002762fbd375ca25f096b0a459f"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/power-white.svg",
+    "revision": "2efec04180b4d9b8933bbe692b1abdf8"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/recycle-black.svg",
+    "revision": "42d586529aff8f677f93c2bf75f9f10c"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/recycle-white.svg",
+    "revision": "bcf1c2ef6444eff7e84138ba066c6419"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/refresh-black.svg",
+    "revision": "111f67f8800111970f0684f37de60d28"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/refresh-white.svg",
+    "revision": "d17451ae1ab9ce9b60b10cae760c5de1"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/search-black.svg",
+    "revision": "a33a2d282639e95496f7b0ba743b8dd3"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/search-white.svg",
+    "revision": "67ec6b224fd71699bad087b88fa3884b"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/shop-black.svg",
+    "revision": "dd3498094e4587df4d2f93f46fbfb56d"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/shop-white.svg",
+    "revision": "35c5498ca57890e0763d000147e39dca"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/star-black.svg",
+    "revision": "028a29b556652a25dc9f6713c8ead3a7"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/star-white.svg",
+    "revision": "cc0a9ecae004d7ae84945a1417cdc356"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/tag-black.svg",
+    "revision": "2f00ae8c1629d9b78e8b0a3a6e524aa5"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/tag-white.svg",
+    "revision": "c1bd8cf3fa1f28b8b12aafa9ebcc41ec"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/user-black.svg",
+    "revision": "b1450949596cf32dbd0677dea1501b85"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/user-white.svg",
+    "revision": "7dab217ef0edb74466854f49a5e7aebd"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/video-black.svg",
+    "revision": "406a4bc63094ceb5e3655c8f28318c88"
+  },
+  {
+    "url": "modules/Mobile/resources/images/icons-svg/video-white.svg",
+    "revision": "322d59e56994f993a42bcede51344a16"
+  },
+  {
+    "url": "modules/Mobile/resources/images/images.png",
+    "revision": "d4b4025f9b8d1d31c3ad36b363e475af"
+  },
+  {
+    "url": "modules/Mobile/resources/jquery-1.11.2.min.js",
+    "revision": "5790ead7ad3ba27397aedfa3d263b867"
+  },
+  {
+    "url": "modules/Mobile/resources/jquery-ui.js",
+    "revision": "b5f3656496ccb995aacdccc0e91437c2"
+  },
+  {
+    "url": "modules/Mobile/resources/jquery-ui.min.js",
+    "revision": "870b75c273a97501e7d1fb27776bafd0"
+  },
+  {
+    "url": "modules/Mobile/resources/jquery.blockUI.js",
+    "revision": "5c98c0cbfacee6dab0783112cb0e233d"
+  },
+  {
+    "url": "modules/Mobile/resources/jquery.easing-1.3.min.js",
+    "revision": "07e36bf95f7c90e4b47c66b2d4311be3"
+  },
+  {
+    "url": "modules/Mobile/resources/jquery.mobile-1.4.5.min.js",
+    "revision": "fccb67b52239d374598b00ad388015c9"
+  },
+  {
+    "url": "modules/Mobile/resources/jw-jqm-cal.js",
+    "revision": "d44637254943525f26e61bf555301c81"
+  },
+  {
+    "url": "modules/Mobile/resources/lang/de_de.lang.js",
+    "revision": "ae79d7d7a78e70cbb6045300b9b69047"
+  },
+  {
+    "url": "modules/Mobile/resources/lang/en_gb.lang.js",
+    "revision": "ae989aa845cd40bce24cadefa3363b52"
+  },
+  {
+    "url": "modules/Mobile/resources/lang/en_us.lang.js",
+    "revision": "ae989aa845cd40bce24cadefa3363b52"
+  },
+  {
+    "url": "modules/Mobile/resources/lang/es_es.lang.js",
+    "revision": "f657034c4a672e24b6f1d61ae7c04bbc"
+  },
+  {
+    "url": "modules/Mobile/resources/lang/es_mx.lang.js",
+    "revision": "f657034c4a672e24b6f1d61ae7c04bbc"
+  },
+  {
+    "url": "modules/Mobile/resources/lang/fr_fr.lang.js",
+    "revision": "6b620d239f6e3a12a9484b33213ee4f1"
+  },
+  {
+    "url": "modules/Mobile/resources/lang/nl_nl.lang.js",
+    "revision": "113dffdaddb2cf254d0879d0402349aa"
+  },
+  {
+    "url": "modules/Mobile/resources/lang/pt_br.lang.js",
+    "revision": "84613dd324df8bf134a0f41941757cd7"
+  },
+  {
+    "url": "modules/Mobile/resources/settings.js",
+    "revision": "7fab3007e1698eeb90371ff591b7f77c"
+  },
+  {
+    "url": "modules/Mobile/resources/signature_pad.js",
+    "revision": "7314c126d7a2316ca8e00a1d405d0771"
+  },
+  {
+    "url": "modules/Mobile/resources/xdate.js",
+    "revision": "12342c1101cdbfa8a77a9d022b50da24"
+  },
+  {
+    "url": "kcfinder/adapters/jquery-min.js",
+    "revision": "7d737fc770c43a38d2b9026fe03c8608"
+  },
+  {
+    "url": "kcfinder/adapters/jquery.js",
+    "revision": "f246c9d6f4b280dc6bef646b6662c379"
+  },
+  {
+    "url": "kcfinder/css/000.base.css",
+    "revision": "7a3956ddf686d2f7051de54b2c887374"
+  },
+  {
+    "url": "kcfinder/css/001.transForm.css",
+    "revision": "d8768f59df1cc93059944053645ea348"
+  },
+  {
+    "url": "kcfinder/css/999.agent.css",
+    "revision": "443a85f2f65df5dea35f3e01d727d99e"
+  },
+  {
+    "url": "kcfinder/js/000._jquery.js",
+    "revision": "52d16e147b5346147d0f3269cd4d0f80"
+  },
+  {
+    "url": "kcfinder/js/002._jqueryui.js",
+    "revision": "4549e5882cbcd79619a49e9b1bf3ae8d"
+  },
+  {
+    "url": "kcfinder/js/006.jquery.transForm.js",
+    "revision": "50ba6cfcd46c88ad381778dac4d331a2"
+  },
+  {
+    "url": "kcfinder/js/010.jquery.fixes.js",
+    "revision": "f7459e62cdff631529c5dca3d663cdf0"
+  },
+  {
+    "url": "kcfinder/js/020.jquery.rightClick.js",
+    "revision": "31d0d6b98ae067f2a363568f6b043982"
+  },
+  {
+    "url": "kcfinder/js/021.jquery.taphold.js",
+    "revision": "b3274f0bcf212a23db9f36bd0b64bd3d"
+  },
+  {
+    "url": "kcfinder/js/022.jquery.shDropUpload.js",
+    "revision": "3e420181dcb76e2a862a39652cb2a049"
+  },
+  {
+    "url": "kcfinder/js/029.jquery.agent.js",
+    "revision": "d7998efe21a6669340eefdbef2883db6"
+  },
+  {
+    "url": "kcfinder/js/030.jquery.helper.js",
+    "revision": "e4bb3b90303fd6e48bf4ae178b6f1166"
+  },
+  {
+    "url": "kcfinder/js/031.jquery.md5.js",
+    "revision": "b4c1ed5bfbb1f378ed384e5a3d687e26"
+  },
+  {
+    "url": "kcfinder/js/040.object.js",
+    "revision": "61728f2ca17836a38769a43d3510306a"
+  },
+  {
+    "url": "kcfinder/js/041.dialogs.js",
+    "revision": "2fbfe8a703357d196bf4fdbcc94f087b"
+  },
+  {
+    "url": "kcfinder/js/050.init.js",
+    "revision": "44c944bcfaf558a81a0eeeb0320a21f8"
+  },
+  {
+    "url": "kcfinder/js/060.toolbar.js",
+    "revision": "ea2835310ebd4d9a2f99feb7faae96a2"
+  },
+  {
+    "url": "kcfinder/js/070.settings.js",
+    "revision": "6cd7eb37f5e99b73e7fb218c47e7fbbe"
+  },
+  {
+    "url": "kcfinder/js/080.files.js",
+    "revision": "7bbaebf73318804843e1bc3f6e8183a5"
+  },
+  {
+    "url": "kcfinder/js/090.folders.js",
+    "revision": "b099f2ce3c59837d5ede55aefcc5234b"
+  },
+  {
+    "url": "kcfinder/js/091.menus.js",
+    "revision": "076c69969f3ac063403dd46ea351d355"
+  },
+  {
+    "url": "kcfinder/js/091.viewImage.js",
+    "revision": "dada4c8cf4b96f73e93a52e30c78cc6e"
+  },
+  {
+    "url": "kcfinder/js/100.clipboard.js",
+    "revision": "928e545e384b71fcd7f9437a23cdbd3e"
+  },
+  {
+    "url": "kcfinder/js/110.dropUpload.js",
+    "revision": "53c4b90e35b921772c0f8897bf2b01f2"
+  },
+  {
+    "url": "kcfinder/js/120.misc.js",
+    "revision": "6c691ef6219b5162535378fbfa3f0adb"
+  },
+  {
+    "url": "kcfinder/themes/dark/01.ui.css",
+    "revision": "5525d1c384994f07d3cc92b3d12c5c4a"
+  },
+  {
+    "url": "kcfinder/themes/dark/02.transForm.css",
+    "revision": "731b4889bbba5d4bc6d728e42a6ca7a8"
+  },
+  {
+    "url": "kcfinder/themes/dark/03.misc.css",
+    "revision": "2ebf2f61c4e968870f5cadced53ba487"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/bg_transparent.png",
+    "revision": "7c85f000c77022603d72e8ef976756ac"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/avi.png",
+    "revision": "b796cb8587ce723d48ea5d24d9dd0d51"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/bat.png",
+    "revision": "3db21e1a732089979b26986402d49cd0"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/bmp.png",
+    "revision": "bfa41aea0226a49465cf488651de4366"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/bz2.png",
+    "revision": "a0554ca9d3746f639122d7d4999b2046"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/ccd.png",
+    "revision": "61611e0e4071e8a80e44114d19a59cfa"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/cgi.png",
+    "revision": "3db21e1a732089979b26986402d49cd0"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/com.png",
+    "revision": "ef7cb6752a845c2038ae752f54713883"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/csh.png",
+    "revision": "3db21e1a732089979b26986402d49cd0"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/cue.png",
+    "revision": "61611e0e4071e8a80e44114d19a59cfa"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/deb.png",
+    "revision": "0027b959f2b82f90e75d25cf5b2bf6a5"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/dll.png",
+    "revision": "7a71e998c9348fa02e636a8adf58cde7"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/doc.png",
+    "revision": "26a06a2ff6098b8437685bc283c2041c"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/docx.png",
+    "revision": "26a06a2ff6098b8437685bc283c2041c"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/exe.png",
+    "revision": "ef7cb6752a845c2038ae752f54713883"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/fla.png",
+    "revision": "f353e9fa95f7d30af29f136dadc5d94e"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/flv.png",
+    "revision": "b796cb8587ce723d48ea5d24d9dd0d51"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/fon.png",
+    "revision": "2d4004d2af5eb5fd3a4801c41a1a2a8d"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/gif.png",
+    "revision": "bfa41aea0226a49465cf488651de4366"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/gz.png",
+    "revision": "a0554ca9d3746f639122d7d4999b2046"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/htm.png",
+    "revision": "54d3b4a0d20897276af9b467d2c014fe"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/html.png",
+    "revision": "54d3b4a0d20897276af9b467d2c014fe"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/ini.png",
+    "revision": "34f6ef1f537af2513b90c5b98d0ace79"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/iso.png",
+    "revision": "61611e0e4071e8a80e44114d19a59cfa"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/jar.png",
+    "revision": "d1e7813a2e5b85e7d5a86df2998e7771"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/java.png",
+    "revision": "e4de49aa3f9d254d1e8a149611444016"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/jpeg.png",
+    "revision": "bfa41aea0226a49465cf488651de4366"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/jpg.png",
+    "revision": "bfa41aea0226a49465cf488651de4366"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/js.png",
+    "revision": "e2d486ea7e98654aad5cc4a69e9be65d"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/mds.png",
+    "revision": "61611e0e4071e8a80e44114d19a59cfa"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/mdx.png",
+    "revision": "61611e0e4071e8a80e44114d19a59cfa"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/mid.png",
+    "revision": "8b63cd34121a5aa0810ab290274b19a8"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/midi.png",
+    "revision": "8b63cd34121a5aa0810ab290274b19a8"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/mkv.png",
+    "revision": "b796cb8587ce723d48ea5d24d9dd0d51"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/mov.png",
+    "revision": "b796cb8587ce723d48ea5d24d9dd0d51"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/mp3.png",
+    "revision": "0b301a786c0f3978fe05927f24928395"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/mp4.png",
+    "revision": "b796cb8587ce723d48ea5d24d9dd0d51"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/mpeg.png",
+    "revision": "b796cb8587ce723d48ea5d24d9dd0d51"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/mpg.png",
+    "revision": "b796cb8587ce723d48ea5d24d9dd0d51"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/nfo.png",
+    "revision": "34f6ef1f537af2513b90c5b98d0ace79"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/nrg.png",
+    "revision": "61611e0e4071e8a80e44114d19a59cfa"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/ogg.png",
+    "revision": "0b301a786c0f3978fe05927f24928395"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/pdf.png",
+    "revision": "dbd20bfa045d965ad9ac071fb20def86"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/php.png",
+    "revision": "4512f251e567191e1c6677901b2703ad"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/phps.png",
+    "revision": "4512f251e567191e1c6677901b2703ad"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/pl.png",
+    "revision": "9ad71d8ee41be29ab64b31c5e7096ea9"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/pm.png",
+    "revision": "9ad71d8ee41be29ab64b31c5e7096ea9"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/png.png",
+    "revision": "bfa41aea0226a49465cf488651de4366"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/ppt.png",
+    "revision": "e638989e04132df68a63003fc835da6e"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/pptx.png",
+    "revision": "e638989e04132df68a63003fc835da6e"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/psd.png",
+    "revision": "bfa41aea0226a49465cf488651de4366"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/qt.png",
+    "revision": "b796cb8587ce723d48ea5d24d9dd0d51"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/rar.png",
+    "revision": "a0554ca9d3746f639122d7d4999b2046"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/rpm.png",
+    "revision": "ff4d91ee2466c503fb51213d6dacee54"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/rtf.png",
+    "revision": "34f6ef1f537af2513b90c5b98d0ace79"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/sh.png",
+    "revision": "3db21e1a732089979b26986402d49cd0"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/sql.png",
+    "revision": "9b458ee9f254709811c24e77291e2664"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/srt.png",
+    "revision": "34f6ef1f537af2513b90c5b98d0ace79"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/sub.png",
+    "revision": "34f6ef1f537af2513b90c5b98d0ace79"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/swf.png",
+    "revision": "872bf413980a37c17eda80a1875fc860"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/tgz.png",
+    "revision": "e7c32280bfe4992b469313584ec62610"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/tif.png",
+    "revision": "bfa41aea0226a49465cf488651de4366"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/tiff.png",
+    "revision": "bfa41aea0226a49465cf488651de4366"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/torrent.png",
+    "revision": "de99ae3506fb97ac67e7e0893270a049"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/ttf.png",
+    "revision": "640982ca75b713b4583aa58502f8ca8c"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/txt.png",
+    "revision": "34f6ef1f537af2513b90c5b98d0ace79"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/wav.png",
+    "revision": "0b301a786c0f3978fe05927f24928395"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/wma.png",
+    "revision": "0b301a786c0f3978fe05927f24928395"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/xls.png",
+    "revision": "513a56c3b24b93c29cb02c8f9a075cbd"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/xlsx.png",
+    "revision": "513a56c3b24b93c29cb02c8f9a075cbd"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/big/zip.png",
+    "revision": "a0554ca9d3746f639122d7d4999b2046"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/avi.png",
+    "revision": "669214cffe7b913296246e90c372818e"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/bat.png",
+    "revision": "f438e488078834934cd62c8c616c8bc7"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/bmp.png",
+    "revision": "02709989af27569d20280bd017651195"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/bz2.png",
+    "revision": "621703fa3710ba61b6eb05cf0f3c59b2"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/ccd.png",
+    "revision": "11e31a8ab5d57e70cd1789cf1a13fd2c"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/cgi.png",
+    "revision": "f438e488078834934cd62c8c616c8bc7"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/com.png",
+    "revision": "86729340ae0d76d4fe823009991839a7"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/csh.png",
+    "revision": "f438e488078834934cd62c8c616c8bc7"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/cue.png",
+    "revision": "11e31a8ab5d57e70cd1789cf1a13fd2c"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/deb.png",
+    "revision": "621703fa3710ba61b6eb05cf0f3c59b2"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/dll.png",
+    "revision": "db49f2c0f68155c38201228411f2b87f"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/doc.png",
+    "revision": "a441226ae0288bdfa96a1828cdabe8ab"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/docx.png",
+    "revision": "a441226ae0288bdfa96a1828cdabe8ab"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/exe.png",
+    "revision": "86729340ae0d76d4fe823009991839a7"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/fla.png",
+    "revision": "600bd9e16bfa3083c2ff3db3f50615d5"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/flv.png",
+    "revision": "669214cffe7b913296246e90c372818e"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/fon.png",
+    "revision": "7078c74fee4a70390417c0e95962f3db"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/gif.png",
+    "revision": "02709989af27569d20280bd017651195"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/gz.png",
+    "revision": "621703fa3710ba61b6eb05cf0f3c59b2"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/htm.png",
+    "revision": "8df519faea5f1a9b414325ac20a6ab39"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/html.png",
+    "revision": "8df519faea5f1a9b414325ac20a6ab39"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/ini.png",
+    "revision": "24e6b797e0a778e78b7ce2c6a0229baa"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/iso.png",
+    "revision": "11e31a8ab5d57e70cd1789cf1a13fd2c"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/jar.png",
+    "revision": "621703fa3710ba61b6eb05cf0f3c59b2"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/java.png",
+    "revision": "cf43f436c57342e281b9edb8e1387424"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/jpeg.png",
+    "revision": "02709989af27569d20280bd017651195"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/jpg.png",
+    "revision": "02709989af27569d20280bd017651195"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/js.png",
+    "revision": "7109810830148823eacaa7951904474e"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/mds.png",
+    "revision": "11e31a8ab5d57e70cd1789cf1a13fd2c"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/mdx.png",
+    "revision": "11e31a8ab5d57e70cd1789cf1a13fd2c"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/mid.png",
+    "revision": "433e55560fceaf20721671bc16bac4d6"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/midi.png",
+    "revision": "433e55560fceaf20721671bc16bac4d6"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/mkv.png",
+    "revision": "669214cffe7b913296246e90c372818e"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/mov.png",
+    "revision": "669214cffe7b913296246e90c372818e"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/mp3.png",
+    "revision": "e2eb2abc9786a1f32cd9f3b93021d994"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/mp4.png",
+    "revision": "669214cffe7b913296246e90c372818e"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/mpeg.png",
+    "revision": "669214cffe7b913296246e90c372818e"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/mpg.png",
+    "revision": "669214cffe7b913296246e90c372818e"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/nfo.png",
+    "revision": "24e6b797e0a778e78b7ce2c6a0229baa"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/nrg.png",
+    "revision": "11e31a8ab5d57e70cd1789cf1a13fd2c"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/ogg.png",
+    "revision": "e2eb2abc9786a1f32cd9f3b93021d994"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/pdf.png",
+    "revision": "e686949b4c31d52da8bbc964a9b5ee30"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/php.png",
+    "revision": "fbd20eba7ecdab05a2395873cdc7c4f3"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/phps.png",
+    "revision": "fbd20eba7ecdab05a2395873cdc7c4f3"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/pl.png",
+    "revision": "24e6b797e0a778e78b7ce2c6a0229baa"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/pm.png",
+    "revision": "24e6b797e0a778e78b7ce2c6a0229baa"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/png.png",
+    "revision": "02709989af27569d20280bd017651195"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/ppt.png",
+    "revision": "01bcdf5f17f28121d8a068b7d7569908"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/pptx.png",
+    "revision": "01bcdf5f17f28121d8a068b7d7569908"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/psd.png",
+    "revision": "02709989af27569d20280bd017651195"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/qt.png",
+    "revision": "669214cffe7b913296246e90c372818e"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/rar.png",
+    "revision": "621703fa3710ba61b6eb05cf0f3c59b2"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/rpm.png",
+    "revision": "621703fa3710ba61b6eb05cf0f3c59b2"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/rtf.png",
+    "revision": "24e6b797e0a778e78b7ce2c6a0229baa"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/sh.png",
+    "revision": "f438e488078834934cd62c8c616c8bc7"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/sql.png",
+    "revision": "b539cb41069d13b28c548843b756555e"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/srt.png",
+    "revision": "24e6b797e0a778e78b7ce2c6a0229baa"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/sub.png",
+    "revision": "24e6b797e0a778e78b7ce2c6a0229baa"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/swf.png",
+    "revision": "910c7aa2cbc755d8822e65eeb62e1d8c"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/tgz.png",
+    "revision": "621703fa3710ba61b6eb05cf0f3c59b2"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/tif.png",
+    "revision": "02709989af27569d20280bd017651195"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/tiff.png",
+    "revision": "02709989af27569d20280bd017651195"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/torrent.png",
+    "revision": "11708f7a86cdb8c4f98d7d935314752c"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/ttf.png",
+    "revision": "14b20b653866d0d5fb98d7497e8595e0"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/txt.png",
+    "revision": "24e6b797e0a778e78b7ce2c6a0229baa"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/wav.png",
+    "revision": "e2eb2abc9786a1f32cd9f3b93021d994"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/wma.png",
+    "revision": "e2eb2abc9786a1f32cd9f3b93021d994"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/xls.png",
+    "revision": "ac70ce6ad43c38b2d641747e86f9ffde"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/xlsx.png",
+    "revision": "ac70ce6ad43c38b2d641747e86f9ffde"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/files/small/zip.png",
+    "revision": "621703fa3710ba61b6eb05cf0f3c59b2"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/icons/about.png",
+    "revision": "3750c701d2ec35a45d289b9b9c1a0667"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/icons/clipboard-add.png",
+    "revision": "479446e25607f16529f7744d7b636b05"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/icons/clipboard-clear.png",
+    "revision": "8a3e6c20ba362842e66ad828495b9ce0"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/icons/clipboard.png",
+    "revision": "0deaad6ffb62dc35f74b2fd5daa74130"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/icons/copy.png",
+    "revision": "38de59d96ecaa147d8b5f440b4c4b0e6"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/icons/delete.png",
+    "revision": "42492684e24356a4081134894eabeb9e"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/icons/download.png",
+    "revision": "86d3d6909693e4e5e0d850be316911bc"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/icons/folder-new.png",
+    "revision": "4fd0ba998b55abd333f81f9318f89748"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/icons/maximize.png",
+    "revision": "3f4f61a6af60e51cff3e67f466033e40"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/icons/move.png",
+    "revision": "08cbb971307a4420839b409ea2eccf3d"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/icons/refresh.png",
+    "revision": "5d4d84cf2a3b2e9be202bf9eb6173107"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/icons/rename.png",
+    "revision": "4a0b6e47d66ed0f302f76a7b55fd77a1"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/icons/select.png",
+    "revision": "c9b528b9541e127967eda62f79118ef0"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/icons/settings.png",
+    "revision": "a137eb4441860564ce1655357af26de8"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/icons/upload.png",
+    "revision": "41e3781d96abfaf1541d6af5454fb426"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/icons/view.png",
+    "revision": "530887306aa20d3aaf2b5c6191bdaf72"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/kcf_logo.png",
+    "revision": "644ade7d0b564d0c77c0e161d3398751"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/loading.gif",
+    "revision": "856c387a1073192db1e249ebdd3d51f4"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/tree/denied.png",
+    "revision": "551bbaae9998f1b2f33e3de33ea8b915"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/tree/folder.png",
+    "revision": "fbd3929a893b147ae0940d48d533e023"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/tree/minus.png",
+    "revision": "0e3d94086367ea0bc61513c2ccf0119c"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/tree/plus.png",
+    "revision": "4c1dbdc7e1933b101743fd2b8199b9a5"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/ui-icons_black.png",
+    "revision": "c6736cdb254390c71a9ea2584d7f92d7"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/ui-icons_grey.png",
+    "revision": "0cc0e6dd865a3da7ccb04f4fcd7072db"
+  },
+  {
+    "url": "kcfinder/themes/dark/img/ui-icons_white.png",
+    "revision": "07d238be34eb3c035f8fa31e1792a178"
+  },
+  {
+    "url": "kcfinder/themes/dark/init.js",
+    "revision": "60f55be6372ad389e83812e9a5835624"
+  },
+  {
+    "url": "kcfinder/themes/default/01.ui.css",
+    "revision": "4188233c7094cc86bccafb985b05dec3"
+  },
+  {
+    "url": "kcfinder/themes/default/02.transForm.css",
+    "revision": "64edb73fa8284c315e904d96a9e8327a"
+  },
+  {
+    "url": "kcfinder/themes/default/03.misc.css",
+    "revision": "85e05b6bc52f83fe4b11f2a9d3465762"
+  },
+  {
+    "url": "kcfinder/themes/default/img/bg_transparent.png",
+    "revision": "2eee3b487cf0a09681eee137c125d7ff"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/avi.png",
+    "revision": "b796cb8587ce723d48ea5d24d9dd0d51"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/bat.png",
+    "revision": "3db21e1a732089979b26986402d49cd0"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/bmp.png",
+    "revision": "bfa41aea0226a49465cf488651de4366"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/bz2.png",
+    "revision": "a0554ca9d3746f639122d7d4999b2046"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/ccd.png",
+    "revision": "61611e0e4071e8a80e44114d19a59cfa"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/cgi.png",
+    "revision": "3db21e1a732089979b26986402d49cd0"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/com.png",
+    "revision": "ef7cb6752a845c2038ae752f54713883"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/csh.png",
+    "revision": "3db21e1a732089979b26986402d49cd0"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/cue.png",
+    "revision": "61611e0e4071e8a80e44114d19a59cfa"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/deb.png",
+    "revision": "0027b959f2b82f90e75d25cf5b2bf6a5"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/dll.png",
+    "revision": "7a71e998c9348fa02e636a8adf58cde7"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/doc.png",
+    "revision": "26a06a2ff6098b8437685bc283c2041c"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/docx.png",
+    "revision": "26a06a2ff6098b8437685bc283c2041c"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/exe.png",
+    "revision": "ef7cb6752a845c2038ae752f54713883"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/fla.png",
+    "revision": "f353e9fa95f7d30af29f136dadc5d94e"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/flv.png",
+    "revision": "b796cb8587ce723d48ea5d24d9dd0d51"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/fon.png",
+    "revision": "2d4004d2af5eb5fd3a4801c41a1a2a8d"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/gif.png",
+    "revision": "bfa41aea0226a49465cf488651de4366"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/gz.png",
+    "revision": "a0554ca9d3746f639122d7d4999b2046"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/htm.png",
+    "revision": "54d3b4a0d20897276af9b467d2c014fe"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/html.png",
+    "revision": "54d3b4a0d20897276af9b467d2c014fe"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/ini.png",
+    "revision": "34f6ef1f537af2513b90c5b98d0ace79"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/iso.png",
+    "revision": "61611e0e4071e8a80e44114d19a59cfa"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/jar.png",
+    "revision": "d1e7813a2e5b85e7d5a86df2998e7771"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/java.png",
+    "revision": "e4de49aa3f9d254d1e8a149611444016"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/jpeg.png",
+    "revision": "bfa41aea0226a49465cf488651de4366"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/jpg.png",
+    "revision": "bfa41aea0226a49465cf488651de4366"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/js.png",
+    "revision": "e2d486ea7e98654aad5cc4a69e9be65d"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/mds.png",
+    "revision": "61611e0e4071e8a80e44114d19a59cfa"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/mdx.png",
+    "revision": "61611e0e4071e8a80e44114d19a59cfa"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/mid.png",
+    "revision": "8b63cd34121a5aa0810ab290274b19a8"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/midi.png",
+    "revision": "8b63cd34121a5aa0810ab290274b19a8"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/mkv.png",
+    "revision": "b796cb8587ce723d48ea5d24d9dd0d51"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/mov.png",
+    "revision": "b796cb8587ce723d48ea5d24d9dd0d51"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/mp3.png",
+    "revision": "0b301a786c0f3978fe05927f24928395"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/mp4.png",
+    "revision": "b796cb8587ce723d48ea5d24d9dd0d51"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/mpeg.png",
+    "revision": "b796cb8587ce723d48ea5d24d9dd0d51"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/mpg.png",
+    "revision": "b796cb8587ce723d48ea5d24d9dd0d51"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/nfo.png",
+    "revision": "34f6ef1f537af2513b90c5b98d0ace79"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/nrg.png",
+    "revision": "61611e0e4071e8a80e44114d19a59cfa"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/ogg.png",
+    "revision": "0b301a786c0f3978fe05927f24928395"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/pdf.png",
+    "revision": "dbd20bfa045d965ad9ac071fb20def86"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/php.png",
+    "revision": "4512f251e567191e1c6677901b2703ad"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/phps.png",
+    "revision": "4512f251e567191e1c6677901b2703ad"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/pl.png",
+    "revision": "9ad71d8ee41be29ab64b31c5e7096ea9"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/pm.png",
+    "revision": "9ad71d8ee41be29ab64b31c5e7096ea9"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/png.png",
+    "revision": "bfa41aea0226a49465cf488651de4366"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/ppt.png",
+    "revision": "e638989e04132df68a63003fc835da6e"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/pptx.png",
+    "revision": "e638989e04132df68a63003fc835da6e"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/psd.png",
+    "revision": "bfa41aea0226a49465cf488651de4366"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/qt.png",
+    "revision": "b796cb8587ce723d48ea5d24d9dd0d51"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/rar.png",
+    "revision": "a0554ca9d3746f639122d7d4999b2046"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/rpm.png",
+    "revision": "ff4d91ee2466c503fb51213d6dacee54"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/rtf.png",
+    "revision": "34f6ef1f537af2513b90c5b98d0ace79"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/sh.png",
+    "revision": "3db21e1a732089979b26986402d49cd0"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/sql.png",
+    "revision": "9b458ee9f254709811c24e77291e2664"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/srt.png",
+    "revision": "34f6ef1f537af2513b90c5b98d0ace79"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/sub.png",
+    "revision": "34f6ef1f537af2513b90c5b98d0ace79"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/swf.png",
+    "revision": "872bf413980a37c17eda80a1875fc860"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/tgz.png",
+    "revision": "e7c32280bfe4992b469313584ec62610"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/tif.png",
+    "revision": "bfa41aea0226a49465cf488651de4366"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/tiff.png",
+    "revision": "bfa41aea0226a49465cf488651de4366"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/torrent.png",
+    "revision": "de99ae3506fb97ac67e7e0893270a049"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/ttf.png",
+    "revision": "640982ca75b713b4583aa58502f8ca8c"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/txt.png",
+    "revision": "34f6ef1f537af2513b90c5b98d0ace79"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/wav.png",
+    "revision": "0b301a786c0f3978fe05927f24928395"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/wma.png",
+    "revision": "0b301a786c0f3978fe05927f24928395"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/xls.png",
+    "revision": "513a56c3b24b93c29cb02c8f9a075cbd"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/xlsx.png",
+    "revision": "513a56c3b24b93c29cb02c8f9a075cbd"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/big/zip.png",
+    "revision": "a0554ca9d3746f639122d7d4999b2046"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/avi.png",
+    "revision": "669214cffe7b913296246e90c372818e"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/bat.png",
+    "revision": "f438e488078834934cd62c8c616c8bc7"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/bmp.png",
+    "revision": "02709989af27569d20280bd017651195"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/bz2.png",
+    "revision": "621703fa3710ba61b6eb05cf0f3c59b2"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/ccd.png",
+    "revision": "11e31a8ab5d57e70cd1789cf1a13fd2c"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/cgi.png",
+    "revision": "f438e488078834934cd62c8c616c8bc7"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/com.png",
+    "revision": "86729340ae0d76d4fe823009991839a7"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/csh.png",
+    "revision": "f438e488078834934cd62c8c616c8bc7"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/cue.png",
+    "revision": "11e31a8ab5d57e70cd1789cf1a13fd2c"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/deb.png",
+    "revision": "621703fa3710ba61b6eb05cf0f3c59b2"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/dll.png",
+    "revision": "db49f2c0f68155c38201228411f2b87f"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/doc.png",
+    "revision": "a441226ae0288bdfa96a1828cdabe8ab"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/docx.png",
+    "revision": "a441226ae0288bdfa96a1828cdabe8ab"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/exe.png",
+    "revision": "86729340ae0d76d4fe823009991839a7"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/fla.png",
+    "revision": "600bd9e16bfa3083c2ff3db3f50615d5"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/flv.png",
+    "revision": "669214cffe7b913296246e90c372818e"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/fon.png",
+    "revision": "7078c74fee4a70390417c0e95962f3db"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/gif.png",
+    "revision": "02709989af27569d20280bd017651195"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/gz.png",
+    "revision": "621703fa3710ba61b6eb05cf0f3c59b2"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/htm.png",
+    "revision": "8df519faea5f1a9b414325ac20a6ab39"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/html.png",
+    "revision": "8df519faea5f1a9b414325ac20a6ab39"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/ini.png",
+    "revision": "24e6b797e0a778e78b7ce2c6a0229baa"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/iso.png",
+    "revision": "11e31a8ab5d57e70cd1789cf1a13fd2c"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/jar.png",
+    "revision": "621703fa3710ba61b6eb05cf0f3c59b2"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/java.png",
+    "revision": "cf43f436c57342e281b9edb8e1387424"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/jpeg.png",
+    "revision": "02709989af27569d20280bd017651195"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/jpg.png",
+    "revision": "02709989af27569d20280bd017651195"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/js.png",
+    "revision": "7109810830148823eacaa7951904474e"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/mds.png",
+    "revision": "11e31a8ab5d57e70cd1789cf1a13fd2c"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/mdx.png",
+    "revision": "11e31a8ab5d57e70cd1789cf1a13fd2c"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/mid.png",
+    "revision": "433e55560fceaf20721671bc16bac4d6"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/midi.png",
+    "revision": "433e55560fceaf20721671bc16bac4d6"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/mkv.png",
+    "revision": "669214cffe7b913296246e90c372818e"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/mov.png",
+    "revision": "669214cffe7b913296246e90c372818e"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/mp3.png",
+    "revision": "e2eb2abc9786a1f32cd9f3b93021d994"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/mp4.png",
+    "revision": "669214cffe7b913296246e90c372818e"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/mpeg.png",
+    "revision": "669214cffe7b913296246e90c372818e"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/mpg.png",
+    "revision": "669214cffe7b913296246e90c372818e"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/nfo.png",
+    "revision": "24e6b797e0a778e78b7ce2c6a0229baa"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/nrg.png",
+    "revision": "11e31a8ab5d57e70cd1789cf1a13fd2c"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/ogg.png",
+    "revision": "e2eb2abc9786a1f32cd9f3b93021d994"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/pdf.png",
+    "revision": "e686949b4c31d52da8bbc964a9b5ee30"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/php.png",
+    "revision": "fbd20eba7ecdab05a2395873cdc7c4f3"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/phps.png",
+    "revision": "fbd20eba7ecdab05a2395873cdc7c4f3"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/pl.png",
+    "revision": "24e6b797e0a778e78b7ce2c6a0229baa"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/pm.png",
+    "revision": "24e6b797e0a778e78b7ce2c6a0229baa"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/png.png",
+    "revision": "02709989af27569d20280bd017651195"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/ppt.png",
+    "revision": "01bcdf5f17f28121d8a068b7d7569908"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/pptx.png",
+    "revision": "01bcdf5f17f28121d8a068b7d7569908"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/psd.png",
+    "revision": "02709989af27569d20280bd017651195"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/qt.png",
+    "revision": "669214cffe7b913296246e90c372818e"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/rar.png",
+    "revision": "621703fa3710ba61b6eb05cf0f3c59b2"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/rpm.png",
+    "revision": "621703fa3710ba61b6eb05cf0f3c59b2"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/rtf.png",
+    "revision": "24e6b797e0a778e78b7ce2c6a0229baa"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/sh.png",
+    "revision": "f438e488078834934cd62c8c616c8bc7"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/sql.png",
+    "revision": "b539cb41069d13b28c548843b756555e"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/srt.png",
+    "revision": "24e6b797e0a778e78b7ce2c6a0229baa"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/sub.png",
+    "revision": "24e6b797e0a778e78b7ce2c6a0229baa"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/swf.png",
+    "revision": "910c7aa2cbc755d8822e65eeb62e1d8c"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/tgz.png",
+    "revision": "621703fa3710ba61b6eb05cf0f3c59b2"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/tif.png",
+    "revision": "02709989af27569d20280bd017651195"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/tiff.png",
+    "revision": "02709989af27569d20280bd017651195"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/torrent.png",
+    "revision": "11708f7a86cdb8c4f98d7d935314752c"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/ttf.png",
+    "revision": "14b20b653866d0d5fb98d7497e8595e0"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/txt.png",
+    "revision": "24e6b797e0a778e78b7ce2c6a0229baa"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/wav.png",
+    "revision": "e2eb2abc9786a1f32cd9f3b93021d994"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/wma.png",
+    "revision": "e2eb2abc9786a1f32cd9f3b93021d994"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/xls.png",
+    "revision": "ac70ce6ad43c38b2d641747e86f9ffde"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/xlsx.png",
+    "revision": "ac70ce6ad43c38b2d641747e86f9ffde"
+  },
+  {
+    "url": "kcfinder/themes/default/img/files/small/zip.png",
+    "revision": "621703fa3710ba61b6eb05cf0f3c59b2"
+  },
+  {
+    "url": "kcfinder/themes/default/img/icons/about.png",
+    "revision": "3750c701d2ec35a45d289b9b9c1a0667"
+  },
+  {
+    "url": "kcfinder/themes/default/img/icons/clipboard-add.png",
+    "revision": "479446e25607f16529f7744d7b636b05"
+  },
+  {
+    "url": "kcfinder/themes/default/img/icons/clipboard-clear.png",
+    "revision": "8a3e6c20ba362842e66ad828495b9ce0"
+  },
+  {
+    "url": "kcfinder/themes/default/img/icons/clipboard.png",
+    "revision": "0deaad6ffb62dc35f74b2fd5daa74130"
+  },
+  {
+    "url": "kcfinder/themes/default/img/icons/copy.png",
+    "revision": "38de59d96ecaa147d8b5f440b4c4b0e6"
+  },
+  {
+    "url": "kcfinder/themes/default/img/icons/delete.png",
+    "revision": "42492684e24356a4081134894eabeb9e"
+  },
+  {
+    "url": "kcfinder/themes/default/img/icons/download.png",
+    "revision": "86d3d6909693e4e5e0d850be316911bc"
+  },
+  {
+    "url": "kcfinder/themes/default/img/icons/folder-new.png",
+    "revision": "4fd0ba998b55abd333f81f9318f89748"
+  },
+  {
+    "url": "kcfinder/themes/default/img/icons/maximize.png",
+    "revision": "3f4f61a6af60e51cff3e67f466033e40"
+  },
+  {
+    "url": "kcfinder/themes/default/img/icons/move.png",
+    "revision": "08cbb971307a4420839b409ea2eccf3d"
+  },
+  {
+    "url": "kcfinder/themes/default/img/icons/refresh.png",
+    "revision": "5d4d84cf2a3b2e9be202bf9eb6173107"
+  },
+  {
+    "url": "kcfinder/themes/default/img/icons/rename.png",
+    "revision": "4a0b6e47d66ed0f302f76a7b55fd77a1"
+  },
+  {
+    "url": "kcfinder/themes/default/img/icons/select.png",
+    "revision": "c9b528b9541e127967eda62f79118ef0"
+  },
+  {
+    "url": "kcfinder/themes/default/img/icons/settings.png",
+    "revision": "a137eb4441860564ce1655357af26de8"
+  },
+  {
+    "url": "kcfinder/themes/default/img/icons/upload.png",
+    "revision": "41e3781d96abfaf1541d6af5454fb426"
+  },
+  {
+    "url": "kcfinder/themes/default/img/icons/view.png",
+    "revision": "530887306aa20d3aaf2b5c6191bdaf72"
+  },
+  {
+    "url": "kcfinder/themes/default/img/kcf_logo.png",
+    "revision": "644ade7d0b564d0c77c0e161d3398751"
+  },
+  {
+    "url": "kcfinder/themes/default/img/loading.gif",
+    "revision": "4817dab8b118ae548890b9fb15a5b647"
+  },
+  {
+    "url": "kcfinder/themes/default/img/tree/denied.png",
+    "revision": "551bbaae9998f1b2f33e3de33ea8b915"
+  },
+  {
+    "url": "kcfinder/themes/default/img/tree/folder.png",
+    "revision": "fbd3929a893b147ae0940d48d533e023"
+  },
+  {
+    "url": "kcfinder/themes/default/img/tree/minus.png",
+    "revision": "0e3d94086367ea0bc61513c2ccf0119c"
+  },
+  {
+    "url": "kcfinder/themes/default/img/tree/plus.png",
+    "revision": "4c1dbdc7e1933b101743fd2b8199b9a5"
+  },
+  {
+    "url": "kcfinder/themes/default/img/ui-icons_black.png",
+    "revision": "a3f7b7d66f301cff7d43b2f13c0b8368"
+  },
+  {
+    "url": "kcfinder/themes/default/img/ui-icons_blue.png",
+    "revision": "864f6bb3e7aeecb673415250cdbc696d"
+  },
+  {
+    "url": "kcfinder/themes/default/img/ui-icons_white.png",
+    "revision": "e340015df9b7d83d3db0e4fc6e2ce5c6"
+  },
+  {
+    "url": "kcfinder/themes/default/init.js",
+    "revision": "dd6ecb973c7d558767cbbfa2a354682e"
+  },
+  {
+    "url": "include/LD/assets/fonts/SalesforceSans-Bold.ttf",
+    "revision": "bab6f1ee9617b3f4375b4b4ccb818b01"
+  },
+  {
+    "url": "include/LD/assets/fonts/SalesforceSans-BoldItalic.ttf",
+    "revision": "ff2f4aa51976e26f3f356a3e16a4a1f8"
+  },
+  {
+    "url": "include/LD/assets/fonts/SalesforceSans-Book.ttf",
+    "revision": "23b8e087ecb40a02e3a2bf50b2da72a3"
+  },
+  {
+    "url": "include/LD/assets/fonts/SalesforceSans-Italic.ttf",
+    "revision": "d0c0958fee01a679b1dad7db640e1835"
+  },
+  {
+    "url": "include/LD/assets/fonts/SalesforceSans-Light.ttf",
+    "revision": "76d3c8425c3ee7c56dd3dad04b9016ca"
+  },
+  {
+    "url": "include/LD/assets/fonts/SalesforceSans-LightItalic.ttf",
+    "revision": "30b63ac5063e7500299c0a9895332691"
+  },
+  {
+    "url": "include/LD/assets/fonts/SalesforceSans-Regular.ttf",
+    "revision": "6c9ddaa8a8cfa8df9d612612753d00b2"
+  },
+  {
+    "url": "include/LD/assets/fonts/SalesforceSans-Semibold.ttf",
+    "revision": "c3506dbc4b756695f9faf15eb9caebd1"
+  },
+  {
+    "url": "include/LD/assets/fonts/SalesforceSans-Thin.ttf",
+    "revision": "b4b52fea9d4b0e87eb7a302197295cad"
+  },
+  {
+    "url": "include/LD/assets/fonts/SalesforceSans-ThinItalic.ttf",
+    "revision": "388a242283418317e04f2a7105bb0835"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Bold.eot",
+    "revision": "7126a8f76526e1d11b7e96e590524af6"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Bold.svg",
+    "revision": "8aecdcc4aa68e15aefcb0d1d0e590d81"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Bold.woff",
+    "revision": "1a99b4b58efca0b3c1b1ea9c29d981e4"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-BoldItalic.eot",
+    "revision": "430e3065b81b4b2abec9687be9dcecfe"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-BoldItalic.svg",
+    "revision": "8152c6eb3b7a34653208166c7cb60c2b"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-BoldItalic.woff",
+    "revision": "41ae6b36a1f81e8c5d2aafe12c409f30"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Italic.eot",
+    "revision": "60d1fa1975c08d8c67abd5ea6ee5417d"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Italic.svg",
+    "revision": "c944a148692ed1743f976c168fcf1629"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Italic.woff",
+    "revision": "882515c44aafee22611dbcbc904a792b"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Light.eot",
+    "revision": "db0b0031bf4eeb01aabdb6830a918912"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Light.svg",
+    "revision": "d5a0b582f31fe3e2cb49f85480e9d823"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Light.woff",
+    "revision": "2edec8788fdf09212e4fecdfeed96a7e"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-LightItalic.eot",
+    "revision": "545e3e4d690f6d7d4a89e0783929a0c0"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-LightItalic.svg",
+    "revision": "8575578fa11d310d1dd4295ec7e495fa"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-LightItalic.woff",
+    "revision": "8080e8bc6c523ed5c657931fdd80e032"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Regular.eot",
+    "revision": "e49dcb01a490f0e54b047e69cc5ba537"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Regular.svg",
+    "revision": "ada994ed9b2acac21ceedf8e5d97484a"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Regular.woff",
+    "revision": "401b32ddc80c4c66d0558df1bc202d9b"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Thin.eot",
+    "revision": "0f5f0d78694ea287e7f43ff54a0056ad"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Thin.svg",
+    "revision": "a564e763588be50117b9624867e4cf8c"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-Thin.woff",
+    "revision": "179b04066d1d2f2122b410e7194c7044"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-ThinItalic.eot",
+    "revision": "78b1ce67f1f64198543dc1b92bd28d47"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-ThinItalic.svg",
+    "revision": "ee6131f0b7cd6021b2de99f5c7a0dc83"
+  },
+  {
+    "url": "include/LD/assets/fonts/webfonts/SalesforceSans-ThinItalic.woff",
+    "revision": "7affc86cb811009ddeda6363ef2605ab"
+  },
+  {
+    "url": "include/LD/assets/icons/action-sprite/svg/symbols.svg",
+    "revision": "6bd23e6679a8752ec93e0545200fcd84"
+  },
+  {
+    "url": "include/LD/assets/icons/action/add_contact.svg",
+    "revision": "8213f8c1af6fc1a5f45b9e68d3370883"
+  },
+  {
+    "url": "include/LD/assets/icons/action/add_file.svg",
+    "revision": "1d087065bc495e0b2b2cd3a7ea51c1da"
+  },
+  {
+    "url": "include/LD/assets/icons/action/add_photo_video.svg",
+    "revision": "005cf618ccbd7626e4f0dd5cfcafb8bd"
+  },
+  {
+    "url": "include/LD/assets/icons/action/add_relationship.svg",
+    "revision": "0a095c9731c059b328d3d1b238c9130f"
+  },
+  {
+    "url": "include/LD/assets/icons/action/announcement.svg",
+    "revision": "3363818115295fbc44b75ac74bc87c04"
+  },
+  {
+    "url": "include/LD/assets/icons/action/apex.svg",
+    "revision": "10f87560dd726ad9da9b8bb606c72db1"
+  },
+  {
+    "url": "include/LD/assets/icons/action/approval.svg",
+    "revision": "42f167b8fedebe4bcf08fcc92c791c97"
+  },
+  {
+    "url": "include/LD/assets/icons/action/back.svg",
+    "revision": "4480dec54ab9729244271d09f9c45d41"
+  },
+  {
+    "url": "include/LD/assets/icons/action/call.svg",
+    "revision": "eb966d0df9365dc826b5aa706820bcc9"
+  },
+  {
+    "url": "include/LD/assets/icons/action/canvas.svg",
+    "revision": "92294a386cfeb597239bebde2ff9ff3e"
+  },
+  {
+    "url": "include/LD/assets/icons/action/change_owner.svg",
+    "revision": "92d871f9cf8e07a4923874bb3c8f63f2"
+  },
+  {
+    "url": "include/LD/assets/icons/action/change_record_type.svg",
+    "revision": "6bb2a79175bba89d782d70de18b112c2"
+  },
+  {
+    "url": "include/LD/assets/icons/action/check.svg",
+    "revision": "a7fb6b1d178bab3a40731120babe0dd5"
+  },
+  {
+    "url": "include/LD/assets/icons/action/clone.svg",
+    "revision": "5eb96dff92abe1d34aa01fdb8ad1e2f7"
+  },
+  {
+    "url": "include/LD/assets/icons/action/close.svg",
+    "revision": "8df3fa2eefea162616b7720dbc211489"
+  },
+  {
+    "url": "include/LD/assets/icons/action/defer.svg",
+    "revision": "f990fd06d32b73e8f0a3a3e62e5599d6"
+  },
+  {
+    "url": "include/LD/assets/icons/action/delete.svg",
+    "revision": "5a727b715b796a063ea365f41a060666"
+  },
+  {
+    "url": "include/LD/assets/icons/action/description.svg",
+    "revision": "1784efb133e92dcf6dd4d4f3ff0dbad8"
+  },
+  {
+    "url": "include/LD/assets/icons/action/dial_in.svg",
+    "revision": "9c5c820a4e1b61269875de44db7b072d"
+  },
+  {
+    "url": "include/LD/assets/icons/action/download.svg",
+    "revision": "bebdb605afbb5eceb453afd7126bac69"
+  },
+  {
+    "url": "include/LD/assets/icons/action/edit_groups.svg",
+    "revision": "868c58df1a39725661d4410de1029f28"
+  },
+  {
+    "url": "include/LD/assets/icons/action/edit_relationship.svg",
+    "revision": "3784a087b713bd14c6e06bb4a3df900a"
+  },
+  {
+    "url": "include/LD/assets/icons/action/edit.svg",
+    "revision": "a6528100cb184b81f8ec282a2878dcd4"
+  },
+  {
+    "url": "include/LD/assets/icons/action/email.svg",
+    "revision": "7458bf7f5ef5feaf561526e8291d1c27"
+  },
+  {
+    "url": "include/LD/assets/icons/action/fallback.svg",
+    "revision": "b746999da8e9f9f77ee4936760673edf"
+  },
+  {
+    "url": "include/LD/assets/icons/action/filter.svg",
+    "revision": "d53d43eb22125dc69823a1f1e46d3cde"
+  },
+  {
+    "url": "include/LD/assets/icons/action/flow.svg",
+    "revision": "5a8e73c3b53a5ec132bc178bf8c3ab55"
+  },
+  {
+    "url": "include/LD/assets/icons/action/follow.svg",
+    "revision": "c23e77a1f1cb06b9fdce3756ad11a69a"
+  },
+  {
+    "url": "include/LD/assets/icons/action/following.svg",
+    "revision": "70299b31268b128788ce678b35a86d06"
+  },
+  {
+    "url": "include/LD/assets/icons/action/freeze_user.svg",
+    "revision": "af1167e1ee824a67baac4ce633e64f5b"
+  },
+  {
+    "url": "include/LD/assets/icons/action/goal.svg",
+    "revision": "0b44a8ec035f7a6d1db4d3dcbd774ce8"
+  },
+  {
+    "url": "include/LD/assets/icons/action/google_news.svg",
+    "revision": "e28746a9097b0f97b0051f7a056728cd"
+  },
+  {
+    "url": "include/LD/assets/icons/action/info.svg",
+    "revision": "eba3730c5c02615a98f8a5935d7172df"
+  },
+  {
+    "url": "include/LD/assets/icons/action/join_group.svg",
+    "revision": "9a515a486e9990fb5e88351103a83c23"
+  },
+  {
+    "url": "include/LD/assets/icons/action/lead_convert.svg",
+    "revision": "128e3311634f40be931b3508c7c16027"
+  },
+  {
+    "url": "include/LD/assets/icons/action/leave_group.svg",
+    "revision": "a39eb4d9bf4af4a43024cf96b76ac1dd"
+  },
+  {
+    "url": "include/LD/assets/icons/action/log_a_call.svg",
+    "revision": "1c67cbb49ddd9a67fed194337c91fe1f"
+  },
+  {
+    "url": "include/LD/assets/icons/action/log_event.svg",
+    "revision": "b77da229b8a26dc3aa5d1f7cf0c58ac9"
+  },
+  {
+    "url": "include/LD/assets/icons/action/manage_perm_sets.svg",
+    "revision": "f4403b5973e94731a8f98ed87fcb0e5f"
+  },
+  {
+    "url": "include/LD/assets/icons/action/map.svg",
+    "revision": "321dce93fa2e442bb440f4de9cbe6355"
+  },
+  {
+    "url": "include/LD/assets/icons/action/more.svg",
+    "revision": "6446b98ddcaaf5ad04298f9bb6a92cc5"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_account.svg",
+    "revision": "0bac65edac20af13332525ce4697f2d8"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_campaign.svg",
+    "revision": "cbe5f8daac8ea26277f043295eaec0ce"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_case.svg",
+    "revision": "44ac8e486e3689366efd3cbe602e3ab5"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_child_case.svg",
+    "revision": "6e4a7883a4127d37f4c23d57eb8ee39b"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_contact.svg",
+    "revision": "8213f8c1af6fc1a5f45b9e68d3370883"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom1.svg",
+    "revision": "94034e1718801b7f8575b922ffddf20a"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom10.svg",
+    "revision": "debd6911cb454838ff05ee616b97c473"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom100.svg",
+    "revision": "a48c07ae28c22b533351947f2f0ca69f"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom11.svg",
+    "revision": "d8ec488ee9730cb9927cd42fb542b0d5"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom12.svg",
+    "revision": "ae0710fe3fb29c9d51d27e095d8219d6"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom13.svg",
+    "revision": "70df76cbd28208fb826553c86ea591cd"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom14.svg",
+    "revision": "0e65a0bd3601d889a3845f907f6482e2"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom15.svg",
+    "revision": "42fff31ae41f0903e32da38aef3c0f03"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom16.svg",
+    "revision": "335c2efd4903fed6d72a56e067be704f"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom17.svg",
+    "revision": "25d89035764bf7cc074a435b280101ec"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom18.svg",
+    "revision": "6ecc943f3260d31f99156e5a688acba8"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom19.svg",
+    "revision": "4c28d8c88c0e1dbb597c03d227a6de16"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom2.svg",
+    "revision": "bc525a017169359d34705dd4bc8aa117"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom20.svg",
+    "revision": "233eb341b4c7d3057cdfd90570cbeb3d"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom21.svg",
+    "revision": "d7d817f06ef1bb7c60cbe9bd45c18fa7"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom22.svg",
+    "revision": "02830bc9ecb11449a88725df5d393dd6"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom23.svg",
+    "revision": "ca7b264b9005923adf67338b1d5e1d71"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom24.svg",
+    "revision": "3f953a6750378757d691489697a170dc"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom25.svg",
+    "revision": "54d648cf67b4cb919f745507c379e6c1"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom26.svg",
+    "revision": "af06832d04d12c140e7e4db738efb97f"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom27.svg",
+    "revision": "a85a54ddde660f2e86d7a5b5adb89cc7"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom28.svg",
+    "revision": "f5d6c6e7cdecbac0cf3ebf114fb46265"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom29.svg",
+    "revision": "dae8ff75b9b72319d33ad24e1123c81e"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom3.svg",
+    "revision": "06cebf29445bb133d3feb52aee044ce2"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom30.svg",
+    "revision": "0528aafbc2a47d177841af50bc38c17e"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom31.svg",
+    "revision": "c15f827e3a38474b4b62fc55bf0b1d29"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom32.svg",
+    "revision": "b6e0301b4229cecd657c962473137fa1"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom33.svg",
+    "revision": "9ee8ec948d097e9db179311a4b8884d2"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom34.svg",
+    "revision": "bd84f8d9dedd972e96a6dac465009c88"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom35.svg",
+    "revision": "d0814c569026e27a40d544d4beacd406"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom36.svg",
+    "revision": "203d3db78a413e71a372485739ff501c"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom37.svg",
+    "revision": "f73c0011aa5bbdf23dc82804c769dd51"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom38.svg",
+    "revision": "449df704dd6a110f239c4ea144745bb0"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom39.svg",
+    "revision": "66ac702d271a722ccf4255a86c198711"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom4.svg",
+    "revision": "7d36627c26583586ff3227028f883e2c"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom40.svg",
+    "revision": "8566f4d2e31464d0c6cac3329365c9a9"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom41.svg",
+    "revision": "fa9828cd6c11fd4652976da434ae1391"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom42.svg",
+    "revision": "70df76cbd28208fb826553c86ea591cd"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom43.svg",
+    "revision": "175c884afda6de8f41df75c1a7035d7a"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom44.svg",
+    "revision": "c121efe045dd6605e9c616ee723e54db"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom45.svg",
+    "revision": "7ca903d2dc4f5f633f0a073ce2ff22dd"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom46.svg",
+    "revision": "4c42c3dae1c826c7a6844e2f214d5d0c"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom47.svg",
+    "revision": "d039579af28f0293c36353c4341889d8"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom48.svg",
+    "revision": "f328de125540ea0b60abb05d300d8882"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom49.svg",
+    "revision": "380779215c86ac2f5f606d95699671d6"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom5.svg",
+    "revision": "a23b5d43462ccd831f6be4b8bdc42c40"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom50.svg",
+    "revision": "80acb568a42a7b3e334482e50936b8e8"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom51.svg",
+    "revision": "fddc26f50a5353bdb0c0da8a87487448"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom52.svg",
+    "revision": "0ce684e1dd04b5b67e6c012c911db01b"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom53.svg",
+    "revision": "03f771df9678d079100c0ebe6cdcc723"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom54.svg",
+    "revision": "4716099024e2e4d7032a9ccb7ad9441a"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom55.svg",
+    "revision": "754762d16de6b98f7e7d0d5faff73889"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom56.svg",
+    "revision": "6149f3111ab6f2413cae8146f8c78f88"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom57.svg",
+    "revision": "43bc8edc2ef6193f96291b58d3058274"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom58.svg",
+    "revision": "94d63ab4b7ec5bc59425b9b8d929e738"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom59.svg",
+    "revision": "9ea0543c9400930ff17ae80b06e086dd"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom6.svg",
+    "revision": "4818335bf07a480aedc7c641c647243d"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom60.svg",
+    "revision": "a2b1c608e6e638ab0f05359705f4ed45"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom61.svg",
+    "revision": "cf550a625493e32bf456f7bbde5fba83"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom62.svg",
+    "revision": "7de743e53f8fe4aab054d91b4ca2a333"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom63.svg",
+    "revision": "1ca3171b90418044dbbb055926870d88"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom64.svg",
+    "revision": "53c6652a9583a10f7297c351cc4246cc"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom65.svg",
+    "revision": "0c8549fe2969aa48c83c5cd9842c2c28"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom66.svg",
+    "revision": "19b0278b151f20bef559eccd05708320"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom67.svg",
+    "revision": "fb3224656890cba8c3c5eb63dc193774"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom68.svg",
+    "revision": "cbfd33a3db75189e5e7d456d3ba25690"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom69.svg",
+    "revision": "68d1c5bea12c98117a89cdabc63403eb"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom7.svg",
+    "revision": "66c06e52d7121203f0eb076d0cb6ebb0"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom70.svg",
+    "revision": "07e1f6363e85608b653bb4b77dcd4459"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom71.svg",
+    "revision": "b1a2c50f43e282d9dec52d310a3ce57e"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom72.svg",
+    "revision": "507213244199bba0a3adc8208e4ca42e"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom73.svg",
+    "revision": "cc00d18fa10d9953577ceb5a9708f081"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom74.svg",
+    "revision": "9ed8be8f4901b198bae01d1a1fe270eb"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom75.svg",
+    "revision": "0e383b3be78d4f9d94dd6c37c7061b84"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom76.svg",
+    "revision": "335717d2559fb34c6150b4e761ef9e64"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom77.svg",
+    "revision": "5bbb0a7c9189b53ccb1d0e23fe2aef70"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom78.svg",
+    "revision": "a80e3d9985c6748a5f3a3c71f627443f"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom79.svg",
+    "revision": "62ac20813583ec4d758a9ed2b261f40c"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom8.svg",
+    "revision": "73eb2ce4939a5b403d7aa7ef7d653019"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom80.svg",
+    "revision": "c660ade0d317bb8e56ce4e9357ccd8b1"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom81.svg",
+    "revision": "1953121bce9f323689d0039cc0633084"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom82.svg",
+    "revision": "3604b82d3b82cf1de7d168dc66d5d923"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom83.svg",
+    "revision": "5de8649aa5a9b27041d84e93c26c3823"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom84.svg",
+    "revision": "83dce573b4fd91fdb75594b1ebe49890"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom85.svg",
+    "revision": "01aa16b05176d25fe25e2ed6c22b9f32"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom86.svg",
+    "revision": "a2d5b498669ca89907407ead0b0739dd"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom87.svg",
+    "revision": "bc2d0aaf946d8f5366b1e61e307eac4f"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom88.svg",
+    "revision": "bdb668efa8d14958c2e455d5a566c1db"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom89.svg",
+    "revision": "ce6dcd2dda5a77b2df4f79d4a50fa1bf"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom9.svg",
+    "revision": "01ec6e7a2a321b3439b143d11782f7ae"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom90.svg",
+    "revision": "84d37c3a4faba123c6a13554707b2002"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom91.svg",
+    "revision": "07bc0253e0ddebae3e507dcfe89eb241"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom92.svg",
+    "revision": "2d758a0e547efbf264c5851d7c777932"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom93.svg",
+    "revision": "e340238e8cf5cd94cb6b8f07ca09d2ca"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom94.svg",
+    "revision": "e42d087c0a17617482516e2b5e65953e"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom95.svg",
+    "revision": "3d701979b64fd7ee4ea8714bf527c1cf"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom96.svg",
+    "revision": "b3020cc1af210f4052d15d5deb6e0940"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom97.svg",
+    "revision": "f389e55ebae20cb52b6c2bf198a0bfb2"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom98.svg",
+    "revision": "e465521420765865fdbf9b43e281bd24"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_custom99.svg",
+    "revision": "a45a0b9363139d4a001eedc82554dbec"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_event.svg",
+    "revision": "feeedb395459c47a6f4fd6b51bc0691b"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_group.svg",
+    "revision": "df3fc1d8963a3eaadf898eb42fb0cda3"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_lead.svg",
+    "revision": "d7330315e0a2c124145bb9606de29a70"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_note.svg",
+    "revision": "71352fc56fc16ea7a4662766ed8b0b6f"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_notebook.svg",
+    "revision": "8afe66ff0cb9a81776e7c4ba4c05bb1d"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_opportunity.svg",
+    "revision": "babc67970bcf099f01513d1826add76b"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_person_account.svg",
+    "revision": "520fa00271cc9abef0f7b706be9bef4b"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new_task.svg",
+    "revision": "3cd52d70366ec9f7a97a9867100e3a52"
+  },
+  {
+    "url": "include/LD/assets/icons/action/new.svg",
+    "revision": "1867ec504cd6bcdf955b7fffa8d51b4a"
+  },
+  {
+    "url": "include/LD/assets/icons/action/password_unlock.svg",
+    "revision": "959116234fc751cbe27b3db489e3d708"
+  },
+  {
+    "url": "include/LD/assets/icons/action/preview.svg",
+    "revision": "12ad8cbeb2b4486adb7fec8abf8397b3"
+  },
+  {
+    "url": "include/LD/assets/icons/action/priority.svg",
+    "revision": "037437751a74cb8103477d45a7274cfc"
+  },
+  {
+    "url": "include/LD/assets/icons/action/question_post_action.svg",
+    "revision": "0f762422b4e72ffb4e5c236df19d36e1"
+  },
+  {
+    "url": "include/LD/assets/icons/action/quote.svg",
+    "revision": "f642b96cf42e48663073e5b34f5bef3b"
+  },
+  {
+    "url": "include/LD/assets/icons/action/recall.svg",
+    "revision": "0fc40f0167d1f532c5e874f02f2a1a76"
+  },
+  {
+    "url": "include/LD/assets/icons/action/record.svg",
+    "revision": "adfcac8e9f67a8205565a91cc70e5b37"
+  },
+  {
+    "url": "include/LD/assets/icons/action/refresh.svg",
+    "revision": "3cf7d2a5ea45a0abe3066b257146cbda"
+  },
+  {
+    "url": "include/LD/assets/icons/action/reject.svg",
+    "revision": "8df3fa2eefea162616b7720dbc211489"
+  },
+  {
+    "url": "include/LD/assets/icons/action/remove_relationship.svg",
+    "revision": "c1c8fc526196ef796c20696ad5b39d72"
+  },
+  {
+    "url": "include/LD/assets/icons/action/remove.svg",
+    "revision": "8df3fa2eefea162616b7720dbc211489"
+  },
+  {
+    "url": "include/LD/assets/icons/action/reset_password.svg",
+    "revision": "3cf7d2a5ea45a0abe3066b257146cbda"
+  },
+  {
+    "url": "include/LD/assets/icons/action/script.svg",
+    "revision": "94161c56d723f2c2160cac4b612ec877"
+  },
+  {
+    "url": "include/LD/assets/icons/action/share_file.svg",
+    "revision": "ee87e138f87e45132f2fb616e702de6e"
+  },
+  {
+    "url": "include/LD/assets/icons/action/share_link.svg",
+    "revision": "d876ec47e93af49da332d469408be53f"
+  },
+  {
+    "url": "include/LD/assets/icons/action/share_poll.svg",
+    "revision": "858d9d0b09b5fb75b96579468623c340"
+  },
+  {
+    "url": "include/LD/assets/icons/action/share_post.svg",
+    "revision": "ee77077bbd46815bbb752eb3f9d07b9e"
+  },
+  {
+    "url": "include/LD/assets/icons/action/share_thanks.svg",
+    "revision": "723cc95e1da63ac807408dbc7da2153a"
+  },
+  {
+    "url": "include/LD/assets/icons/action/share.svg",
+    "revision": "d9c46349e91dc62065659d66438156f9"
+  },
+  {
+    "url": "include/LD/assets/icons/action/sort.svg",
+    "revision": "beca2649fcb6cd20d9efa6394248b00c"
+  },
+  {
+    "url": "include/LD/assets/icons/action/submit_for_approval.svg",
+    "revision": "973ada77057d4ea4346ce34d0b53340e"
+  },
+  {
+    "url": "include/LD/assets/icons/action/update_status.svg",
+    "revision": "09e57bc164441064f5fa366be5b667a7"
+  },
+  {
+    "url": "include/LD/assets/icons/action/update.svg",
+    "revision": "ce68e09bdef560e600515dacf7372081"
+  },
+  {
+    "url": "include/LD/assets/icons/action/upload.svg",
+    "revision": "c7a865ee55d392c0146e79737d4f9acf"
+  },
+  {
+    "url": "include/LD/assets/icons/action/user_activation.svg",
+    "revision": "e0c8b7224a6bd287f05f99d4c5c489a7"
+  },
+  {
+    "url": "include/LD/assets/icons/action/user.svg",
+    "revision": "eaf556fe598cd7822ef415c390df15dd"
+  },
+  {
+    "url": "include/LD/assets/icons/action/view_relationship.svg",
+    "revision": "a2f76d085e93967443b2594a8ef7bb96"
+  },
+  {
+    "url": "include/LD/assets/icons/action/web_link.svg",
+    "revision": "eb9a74852adcbb338206cd3d9174a5b4"
+  },
+  {
+    "url": "include/LD/assets/icons/custom-sprite/svg/symbols.svg",
+    "revision": "3eeb1bd682daedabcdc71243ae64099f"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom1.svg",
+    "revision": "e11274a2928044a549a6d85d09a31cc0"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom10.svg",
+    "revision": "c95a1f566398a48a50628120a404e657"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom100.svg",
+    "revision": "81b56bdd2353de6877cbf027f4a9709e"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom101.svg",
+    "revision": "7449bf8cd0adfb5c9e890ef67f029a24"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom102.svg",
+    "revision": "24a009db677f96fedee954679dc010d7"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom103.svg",
+    "revision": "a055997724607e657f2870e4c562b747"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom104.svg",
+    "revision": "2b1f235f7dbdae67637035b554936984"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom105.svg",
+    "revision": "b5405030c8c5a07e31a19001f23898e4"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom106.svg",
+    "revision": "63722f24533d0ac5324a7e4bb16b998a"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom107.svg",
+    "revision": "7d206516860458fad3c942d81eab5960"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom108.svg",
+    "revision": "58188d896775a194673d620dc2c5e53f"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom109.svg",
+    "revision": "bce2e755f0700241715cc7253dca5e34"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom11.svg",
+    "revision": "6fa0e806eceb83ac7f20152c1a77f7b2"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom110.svg",
+    "revision": "d97d5851cad11b2ccb6e313fce374ef0"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom111.svg",
+    "revision": "356f59548ddff1cbf5deb3e8ef06ebab"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom112.svg",
+    "revision": "38ebfe25b3d5dddc507f36cdfe90a76e"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom113.svg",
+    "revision": "448aa7a81990975ae4b5e6e65e818dd6"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom12.svg",
+    "revision": "18ec8646ee4704c0244750012d3058a8"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom13.svg",
+    "revision": "c41dfa6aa178f08a1db08484ca5be041"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom14.svg",
+    "revision": "1ed0852d71605209fe2dbea9dfd9c19b"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom15.svg",
+    "revision": "947db169f6fd625040bc0f50c50c9821"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom16.svg",
+    "revision": "62254f356889c2c0097d92c22f1431bf"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom17.svg",
+    "revision": "0e8f591addc0d5810a8e11d1918c7630"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom18.svg",
+    "revision": "d47df4201afd9cb4bada172f8ec41fe1"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom19.svg",
+    "revision": "0ed1283494abbe20657992596738a0e0"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom2.svg",
+    "revision": "e7fe09ff64f5116129ff1414e7ae335f"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom20.svg",
+    "revision": "6e0ab5eb2a927ea142872d16a0291f01"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom21.svg",
+    "revision": "1da066b454326f9bef91654144f0d0db"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom22.svg",
+    "revision": "80cbae2b313517d2955bd8a0cee82b64"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom23.svg",
+    "revision": "3001d76a01c82b0b162a442c1dcd3fde"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom24.svg",
+    "revision": "03d4fde3a3b8cff13f3370796dc112f6"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom25.svg",
+    "revision": "7959a16dcac05a2d4db416c6aae32427"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom26.svg",
+    "revision": "7b4f24ff4958187ec0fd05aede08a74a"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom27.svg",
+    "revision": "e8d949e39ab1a7fff29427b492bb57c7"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom28.svg",
+    "revision": "c4c4d15c8fe95804c94ca45bdb86827c"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom29.svg",
+    "revision": "6b3c9eff081fe5e3674bfbbd4e218115"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom3.svg",
+    "revision": "d7d6fe86f3d0b488bb9443d241faa21e"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom30.svg",
+    "revision": "9a3ce0d7bcd0a3546ebf7c3a9bd7ca2b"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom31.svg",
+    "revision": "d0fd986ace4166106690f99c825ccfdd"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom32.svg",
+    "revision": "cac789c58726b586c59de4c3b90d2351"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom33.svg",
+    "revision": "52d193840d70a3c39e15e63c8f0e0699"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom34.svg",
+    "revision": "ab565efa322435a68f207cd0e9009123"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom35.svg",
+    "revision": "0c72c28466d9facc87d3f09504ae60f1"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom36.svg",
+    "revision": "7a555c167a8d2f2ba2f2bd30b9e58149"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom37.svg",
+    "revision": "08c2228d108f678b944e262bf2efd93d"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom38.svg",
+    "revision": "e3a49fb6664ba414130b68e7df44d2c3"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom39.svg",
+    "revision": "8cab6f4768cbe78ca5a2665eab8fa228"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom4.svg",
+    "revision": "6c5b6ad594e4a1472f5ed559e539ce1b"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom40.svg",
+    "revision": "5176082c68d5f5809c861eaaa0174e56"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom41.svg",
+    "revision": "72f3d2b8086cb78774fcc9bb8c8c7fab"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom42.svg",
+    "revision": "c41dfa6aa178f08a1db08484ca5be041"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom43.svg",
+    "revision": "7aa3899b8049eeaf38e7654c70fa176b"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom44.svg",
+    "revision": "c43361dd8718bb47a02fe1c693bbb99b"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom45.svg",
+    "revision": "c3631ed88c131abaac26dd9bc269fffa"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom46.svg",
+    "revision": "c399dc7a985b9b265dd65f2aafdd45b3"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom47.svg",
+    "revision": "6e0f46b6b15c782876d8c9014a92e0af"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom48.svg",
+    "revision": "f48c9a7c24d290a97c9e1ab2841ce4f9"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom49.svg",
+    "revision": "f9b9fb019aeae0fccd8ad54c0a6654c2"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom5.svg",
+    "revision": "39db62b6a1f6925ccc2563537976ea68"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom50.svg",
+    "revision": "84ce04eb35de5ee9fb911a00ed44d1b5"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom51.svg",
+    "revision": "ab53bac46166923a6b20e5a721c04adc"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom52.svg",
+    "revision": "cf858c5056b52c1a4ac34f4000b439c8"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom53.svg",
+    "revision": "6349525282d6b10c4ea049d560abeffe"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom54.svg",
+    "revision": "c764d2679564d539c2e1caebeec0fde7"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom55.svg",
+    "revision": "88b3a6d4ac2b69ac138a450f79d40772"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom56.svg",
+    "revision": "daceb8f126edd695b3a90e8fe6375206"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom57.svg",
+    "revision": "44fc31759b44b61fede0fab6d6751bac"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom58.svg",
+    "revision": "a37384ac6e525cee771ab189725aa1dc"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom59.svg",
+    "revision": "96482fddfaf95e6ecb88d8f3c573370a"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom6.svg",
+    "revision": "eb9aade4edb9df7299b6870a842edcf0"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom60.svg",
+    "revision": "fd409af584d5f897c25811c58b3c7a46"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom61.svg",
+    "revision": "0093854f2f818a8ded61f3d60f730d7a"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom62.svg",
+    "revision": "25a2801293b8c4796c317531463b8e56"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom63.svg",
+    "revision": "bcef9a5b18fdc34ca4be1ef38851e3d9"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom64.svg",
+    "revision": "2dca3819aa6fbae9d98107e7f18ae398"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom65.svg",
+    "revision": "75627fad4de18881bfa97b9b02a2d680"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom66.svg",
+    "revision": "50a238d52f972af7851403c558d58c1f"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom67.svg",
+    "revision": "c5402e37292cec38b38df04456ff1cb1"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom68.svg",
+    "revision": "d41769ced7274fafb8eb4b593929b564"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom69.svg",
+    "revision": "2780edafbd505e23366484ffa2e1f847"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom7.svg",
+    "revision": "981bb9d27c82d2aac23f6fc135a648ac"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom70.svg",
+    "revision": "53704ff16df494965a544789c5c70400"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom71.svg",
+    "revision": "e918b562bb78d79feaef6f4181c0e120"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom72.svg",
+    "revision": "750daecd2741000a4f0a981eb7e86755"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom73.svg",
+    "revision": "c68681e5cc0e981c05d86fda604b8385"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom74.svg",
+    "revision": "c3659d9e177968cf42457c80b3582dfd"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom75.svg",
+    "revision": "a7181505c76fcf8f58ff0db6ee313637"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom76.svg",
+    "revision": "5519d4ce220ceeaf72e4d567fe7e19d7"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom77.svg",
+    "revision": "c2782b7c2339c2bc889d90e33eb21edf"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom78.svg",
+    "revision": "bbabab20c17265cfb5220cfff6484441"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom79.svg",
+    "revision": "775b59d75d122e077b0dca71d170212a"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom8.svg",
+    "revision": "ad82e04c5f61e7c4743703e23c95ae60"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom80.svg",
+    "revision": "aeff6280e6379eea2feef98199b46ae0"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom81.svg",
+    "revision": "fe021220f6cb6c65ecf8464f4a1e53b1"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom82.svg",
+    "revision": "49ac97858cf072278d42b1490f2fb950"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom83.svg",
+    "revision": "138188e0dbaf1addb9563347663da228"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom84.svg",
+    "revision": "2c3c2beca11788b7ca4053ab92160176"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom85.svg",
+    "revision": "ea30eb530d9e052dee7fb191a938611a"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom86.svg",
+    "revision": "0edaf3e2e56738e085e8c2be93cc4903"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom87.svg",
+    "revision": "21ee279f8fbbbcfdc878ac1633283ea6"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom88.svg",
+    "revision": "b01d575af1b19fa1b8f5d4ab6f9dff65"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom89.svg",
+    "revision": "ecf7c7896c0411c278bf48f0adc773fe"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom9.svg",
+    "revision": "e159aa4bc079cb55c62d1b3d7d3f57af"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom90.svg",
+    "revision": "10664f230c672aa301ff36be24cbc800"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom91.svg",
+    "revision": "8360e1e365daba0b269cd4be968e19f5"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom92.svg",
+    "revision": "3c08ddf594bce9465d7d23814e4b29c5"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom93.svg",
+    "revision": "c9c363e1601496a68590ab1eb475863d"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom94.svg",
+    "revision": "e6f880c34b999db1a673406da61e0d81"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom95.svg",
+    "revision": "d300412c4a8b078511e0a146f13b3351"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom96.svg",
+    "revision": "9c45624634cf2537d91fd254c03e8ec1"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom97.svg",
+    "revision": "18c22ae46d6010e0492c2ea3ae80a960"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom98.svg",
+    "revision": "edcf327dbe2de7f133bf713d92aee9d9"
+  },
+  {
+    "url": "include/LD/assets/icons/custom/custom99.svg",
+    "revision": "b0363502d3a25ad3f9f0a07a716a65a0"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype-sprite/svg/symbols.svg",
+    "revision": "56d22387c555429bb26579f512ec0689"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/ai.svg",
+    "revision": "0ecd8226c7fef2b3ff45be98628a4881"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/attachment.svg",
+    "revision": "54574525b11121669ac899db0ba65dc5"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/audio.svg",
+    "revision": "831bf5ccf2032da86ccaa606a8397cdb"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/box_notes.svg",
+    "revision": "12f3f1ee189a2afb6ad6548d465301be"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/csv.svg",
+    "revision": "bf6fb5ca1ef8e9909ea56d55501bac2f"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/eps.svg",
+    "revision": "d2b0ce82758e0e19a7a19f326f8de7fa"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/excel.svg",
+    "revision": "b40d03d841485a5312e921e7c71a1765"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/exe.svg",
+    "revision": "d5b641ce11a1462359f2627a9b05e64a"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/flash.svg",
+    "revision": "a62d5a699c2afdc90932e4bfb81bf727"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/folder.svg",
+    "revision": "5e0543f198ea5454272edc6d06b21ba1"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/gdoc.svg",
+    "revision": "d9a596444da8709070ab8352a69ca4c3"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/gdocs.svg",
+    "revision": "7d7ced055e19230c64e56a096cef3f7d"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/gform.svg",
+    "revision": "7c0fdad722e0e80824d5c6c611576cd7"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/gpres.svg",
+    "revision": "575faaeb144f107fc4893862d8c94edc"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/gsheet.svg",
+    "revision": "b1ea4a583e41207664510b34e9b0499d"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/html.svg",
+    "revision": "302a22ecebbd0b27f0a957ef725208a9"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/image.svg",
+    "revision": "5295b645acd4143f11788ebf0d571cb8"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/keynote.svg",
+    "revision": "4f8a1176e0d3d3b2d405dbfb88278f98"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/library_folder.svg",
+    "revision": "c28ce78251c04f3acf648948a28950fd"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/link.svg",
+    "revision": "29c725f37f51c09dcba36902d9df2a35"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/mp4.svg",
+    "revision": "107541bd124636d925d63a777e9c2388"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/overlay.svg",
+    "revision": "3158671ed83aac4807bf85e87547aaad"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/pack.svg",
+    "revision": "e7bdd3c1ee2c9202df7e785682277b3d"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/pages.svg",
+    "revision": "659986515cf433c3942cb2f9aa74eb09"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/pdf.svg",
+    "revision": "8c426522b596af0a71d2afef67a17e0a"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/ppt.svg",
+    "revision": "6326298a23be79a57ad974ef17dd84b3"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/psd.svg",
+    "revision": "49594ef4509c9e90a85163f134b0ea60"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/quip_doc.svg",
+    "revision": "07b5b63bfc0b568b36b8ea0fc8050429"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/quip_sheet.svg",
+    "revision": "0c3f6dae3e994d8aa52662266066a5a8"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/rtf.svg",
+    "revision": "77a07e3925b631176ab5e97c916faba9"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/slide.svg",
+    "revision": "375973828e5893d3711a2058967e1eea"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/stypi.svg",
+    "revision": "802f99c81ccfb00627849f91a9c38126"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/txt.svg",
+    "revision": "b34e4ed5790537fe35c19e2934c171da"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/unknown.svg",
+    "revision": "99b509624d232eb06c423d07c6e51e84"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/video.svg",
+    "revision": "b6ef22ec70bf35c1eb77f1346fdf3a18"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/visio.svg",
+    "revision": "82debd6620682c33cd78d060f4e0888a"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/webex.svg",
+    "revision": "1fbd69f4c64a27e02155e6b30cc81414"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/word.svg",
+    "revision": "52c76dfa5fa71448c5d954455f71fd06"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/xml.svg",
+    "revision": "7524dace22c7de84fe82675b40b2ed5d"
+  },
+  {
+    "url": "include/LD/assets/icons/doctype/zip.svg",
+    "revision": "5c8edbb90bf5f9300e6a04192ca00332"
+  },
+  {
+    "url": "include/LD/assets/icons/standard-sprite/svg/symbols.svg",
+    "revision": "3c91235df42aae12f89898333bd48a0f"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/account.svg",
+    "revision": "abe646477566bf7244dc34d041686f6d"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/action_list_component.svg",
+    "revision": "4f29def4c8044062fc1249322252e9c2"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/address.svg",
+    "revision": "d500b97e3eb64aac8ea82f78b1be2574"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/agent_session.svg",
+    "revision": "2e47aa4a3c94aa0a721590b581e5876c"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/all.svg",
+    "revision": "9297f763202c64b3bd79e2971fcb1cfc"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/announcement.svg",
+    "revision": "1f3ee691e8ff9194d97e1e006b367dd4"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/answer_best.svg",
+    "revision": "d402b8c490498588141cd5842928a505"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/answer_private.svg",
+    "revision": "55dd82f0bc774fe864b4cb50229e232a"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/answer_public.svg",
+    "revision": "7c5e61a8560f40253debf53afb1e0ddb"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/apex_plugin.svg",
+    "revision": "f2d5fd1d60b2356796a8b947e6ba331f"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/apex.svg",
+    "revision": "0c2fabda3aacb7482854c84c0d6e9366"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/approval.svg",
+    "revision": "a06057773e58d10308af47d059fa9d24"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/apps_admin.svg",
+    "revision": "d744ef3ecaeda679ee3dc0918941b85d"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/apps.svg",
+    "revision": "fec5e4e7e92bf0fdaa8f0a389ad286e6"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/article.svg",
+    "revision": "cbc881a1c9224c09d6edda3b704ed46a"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/asset_relationship.svg",
+    "revision": "c157cb67952c8ef9cb090f9c5b1c0ce1"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/assigned_resource.svg",
+    "revision": "c93f6407cd8f2933d7f692856bf777e5"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/assignment.svg",
+    "revision": "e271261db7c260e120b2a75f7cfa2b74"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/avatar_loading.svg",
+    "revision": "da372795dd0e9f3f7d0b44096ac83e11"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/avatar.svg",
+    "revision": "55c51356065facdfcda2a6064b08a9cb"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/bot_training.svg",
+    "revision": "9a3056dfe6d4e3da284bd3f7aff105b8"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/bot.svg",
+    "revision": "85d6216a5f9fd15603088848f02482cb"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/branch_merge.svg",
+    "revision": "93f8f9796544daff3e9de5943bddb674"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/brand.svg",
+    "revision": "9e2659363bec74ed23e871dbb3e2dc91"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/business_hours.svg",
+    "revision": "e49e93413d3017df3e84710218bca1cc"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/calibration.svg",
+    "revision": "20f6a8d90b7e279a086872e0d43ce1e0"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/call_history.svg",
+    "revision": "1c74918374fb15af0dc2ee09860c2c4f"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/call.svg",
+    "revision": "80cbae2b313517d2955bd8a0cee82b64"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/campaign_members.svg",
+    "revision": "c36dd61941ac983052e481a0a70d2363"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/campaign.svg",
+    "revision": "3563d73e8f3d97f2619550b1de01cc9a"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/canvas.svg",
+    "revision": "9710f5c14c8953089b0c03b2cb188d4c"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/carousel.svg",
+    "revision": "9521133fc942d732f04ff98a24722e89"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/case_change_status.svg",
+    "revision": "24d420dabb338c7296636e482189ffef"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/case_comment.svg",
+    "revision": "14235379d3f9dee48e77287b182fa60b"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/case_email.svg",
+    "revision": "f3cfaa7db60cc108db66e66d865f2796"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/case_log_a_call.svg",
+    "revision": "945f69182f84d15e3d4f7ec960c46be4"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/case_milestone.svg",
+    "revision": "3befdef263cfaa06bfb648708448bebe"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/case_transcript.svg",
+    "revision": "9f9ce13316540ba785a044d8e8a643d5"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/case.svg",
+    "revision": "ee400a23a97646a54caab05336c08b30"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/channel_program_history.svg",
+    "revision": "c2e4013086e659784940c288111e45cb"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/channel_program_levels.svg",
+    "revision": "4d0e1e8e1dd570c1b124845fd511f488"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/channel_program_members.svg",
+    "revision": "8a019d3c0b80a85b6dcdbe7b56eef644"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/channel_programs.svg",
+    "revision": "b778b3199c5a54a38e924961cb7584bf"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/choice.svg",
+    "revision": "84eb74de4e8b2e6b452b6609fe0ccbbd"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/client.svg",
+    "revision": "2fd7e3cd53af1da3ccacec4fff577e50"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/cms.svg",
+    "revision": "8c0ff3364502cd61fb0c296a472fdd49"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/coaching.svg",
+    "revision": "af220e45b95dfa536a452a4b90a16cd4"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/code_playground.svg",
+    "revision": "20306bfdcd1a4cce98fbfbc280da86d9"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/collection_variable.svg",
+    "revision": "e18a1b477084c092e9fe8abfbb66aa5e"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/connected_apps.svg",
+    "revision": "ea6114f2ba4c6b46dd5eced0730199ec"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/constant.svg",
+    "revision": "36eb2113204cdaea5433d3f75b74fb41"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/contact_list.svg",
+    "revision": "3fe73cdc28ac16beb051f05468368cb6"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/contact_request.svg",
+    "revision": "0358863754d6bb6ba7ecc9033a866c2c"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/contact.svg",
+    "revision": "93760c429c87b0c2893723a807014a6c"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/contract_line_item.svg",
+    "revision": "0afdaf70816ea4b8fa31d50e33ba5fb3"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/contract.svg",
+    "revision": "a1b6cc1b68335bb3a22577339f265883"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/currency_input.svg",
+    "revision": "6f3998ed2479c79169e794215a28632c"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/currency.svg",
+    "revision": "51928d573a5c93fa61ebf0e4ff06fc58"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/custom_notification.svg",
+    "revision": "885225a68fd72e2897771921a460e166"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/custom.svg",
+    "revision": "0ed1283494abbe20657992596738a0e0"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/customer_portal_users.svg",
+    "revision": "3f2c6df261b8a1d70c3ab91f73f6d4df"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/customers.svg",
+    "revision": "195c842f04310fde226cd83b270f7c73"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/dashboard.svg",
+    "revision": "17ca577a6ac8c41d14d3514b6637f1ac"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/data_integration_hub.svg",
+    "revision": "bc420fa730d8570a7a55b4ae36fef15b"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/datadotcom.svg",
+    "revision": "818268da2835b1ad46dca1771e04b0f2"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/date_input.svg",
+    "revision": "4b35fcbea1b8f0d2622de81b69b38a6d"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/date_time.svg",
+    "revision": "1a5cae468291cbd96c2f27979b124ed8"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/decision.svg",
+    "revision": "71e2c9cbbf5c58ee9e06360d26eee1ef"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/default.svg",
+    "revision": "776fa46dafcc71bb1c59702212525dc3"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/display_rich_text.svg",
+    "revision": "e42df585f83028f9d4f756a9757a1f8f"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/display_text.svg",
+    "revision": "a20b029a4dcc526b4d4eeaf40218011d"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/document.svg",
+    "revision": "4818ca8248c4c24666fcae7e24b77305"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/drafts.svg",
+    "revision": "38b015c87555fa6adba2b6f724a1b943"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/dynamic_record_choice.svg",
+    "revision": "546d57e1cfba081035b078ae422acf8c"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/email_chatter.svg",
+    "revision": "1823ba0303260e4c3752a3281774087a"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/email.svg",
+    "revision": "1823ba0303260e4c3752a3281774087a"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/empty.svg",
+    "revision": "620dbcd993a5c760ced27e2ec365d57d"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/endorsement.svg",
+    "revision": "75119b280368598425a8dd3c17248ee5"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/entitlement_process.svg",
+    "revision": "4c92a9f48361810752fb27af62a477b1"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/entitlement_template.svg",
+    "revision": "eb36eded65bed19a5ac873dfb2370dc5"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/entitlement.svg",
+    "revision": "2ad92d86cd270e66c38e051116987818"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/entity_milestone.svg",
+    "revision": "f2e9d1f3ea791fca80ecdeaa33d0ca88"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/entity.svg",
+    "revision": "c87517e6b757f9f4c357e12b5aed9ddc"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/environment_hub.svg",
+    "revision": "5f782c1886f018a0fecb2c9a512bced3"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/event.svg",
+    "revision": "3f0137c043a0d045fd4fb18c3612bec3"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/feed.svg",
+    "revision": "d76a498ab2b9db3b713dbf7574b6a3ea"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/feedback.svg",
+    "revision": "9f54bde8eda984e876eea62c33386fa3"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/file.svg",
+    "revision": "0d3eb96abce8ca98c0801793fbbb7f86"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/filter.svg",
+    "revision": "f58a8b97deafbbea7e0ba3a79130a3c4"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/first_non_empty.svg",
+    "revision": "00e6fe62d74fb5b75191f7d2160c6cd7"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/flow.svg",
+    "revision": "8f83b8cca415401aff62ed2a598591c2"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/folder.svg",
+    "revision": "1d5f7ab0932757e236592c18353f50d2"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/forecasts.svg",
+    "revision": "21301029a700b074a1769b2bf0f1dd4d"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/formula.svg",
+    "revision": "7acf5904b54900f7a141025f2de9b023"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/generic_loading.svg",
+    "revision": "782f85a63451e493542e14beb27ced53"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/global_constant.svg",
+    "revision": "d0416bceeeab7545a7b02cadf427d295"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/goals.svg",
+    "revision": "c7f0837c315f35609550b0bb0ccf814f"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/group_loading.svg",
+    "revision": "09be219e7db27edc6259c529fafc83ad"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/groups.svg",
+    "revision": "d730cef517f7d369169ae8b049cd451e"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/hierarchy.svg",
+    "revision": "13b9f54d9231c966a2ba8538766b6766"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/home.svg",
+    "revision": "e836614fc06d1536ec4364cf5047d430"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/household.svg",
+    "revision": "fa51e4a34607d46fc268fef4dd6981b9"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/individual.svg",
+    "revision": "f1d8907ba9a54b9591045aa9f9f2014b"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/insights.svg",
+    "revision": "0ef2d6f5dfb43e87025e05872fa61b17"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/investment_account.svg",
+    "revision": "e44ac0d159c5a8c79fd01000492aa539"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/iot_context.svg",
+    "revision": "af0d61b2d58c65efb778d56fbd95e5c3"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/iot_orchestrations.svg",
+    "revision": "4792c97d2ac6d9c47c2e622f1a23c0aa"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/kanban.svg",
+    "revision": "6bc9d2babb79b548d0c4153fd1eb81db"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/knowledge.svg",
+    "revision": "cbc881a1c9224c09d6edda3b704ed46a"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/lead_insights.svg",
+    "revision": "e65766e481f2bb9eba9b73b53401f726"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/lead_list.svg",
+    "revision": "2c98fdc7eb4e681f4363cab410384bf4"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/lead.svg",
+    "revision": "1554b323d7e66ac451cebe0a9cc5a145"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/lightning_component.svg",
+    "revision": "5fa513243348388b55173ca2794feb33"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/lightning_usage.svg",
+    "revision": "6655cfef2ac164e6bdc7bf325ef7f494"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/link.svg",
+    "revision": "d424918a9d5b2219b4bfc41f795db0c3"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/list_email.svg",
+    "revision": "b628fa622e77b0207027bf75adac251e"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/live_chat_visitor.svg",
+    "revision": "5fedc89b1c177901f3adbf78d81c1e58"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/live_chat.svg",
+    "revision": "a044bb1e9eb88c8e6a1bcf8d561db3ea"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/location.svg",
+    "revision": "8aad13e25599d2d8e7471c3229391027"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/log_a_call.svg",
+    "revision": "2d93bab55eb211eb8c2f70c7417bc4cd"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/logging.svg",
+    "revision": "8e32b58a46c10fb2a609c6b0b617f301"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/loop.svg",
+    "revision": "6ac8e8f66a47097ef82542cea55735b5"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/macros.svg",
+    "revision": "0d3abd2220760aef917b205f13033fd3"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/maintenance_asset.svg",
+    "revision": "c7b5a260d77dfeb337dd2aa8b0c5afb5"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/maintenance_plan.svg",
+    "revision": "2a4ebcb703fde1c01ed21583e58c56ca"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/marketing_actions.svg",
+    "revision": "6a6a184d8568f4ddf30705ff8f0d0fdc"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/merge.svg",
+    "revision": "4e4ddbe0c57f14ab38ff778fe8acaa0e"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/messaging_conversation.svg",
+    "revision": "26dc1448dd43a215db82e8060744987e"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/messaging_session.svg",
+    "revision": "fe95834aa83b707dfa32ffb7b34df201"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/messaging_user.svg",
+    "revision": "f5d2d1f0a7870d5cfbd065f552030b3f"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/metrics.svg",
+    "revision": "c2a208ec4939355b8dc0a12e04483e80"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/multi_picklist.svg",
+    "revision": "8be5beef4dbfca683a5eaddfc41de2d1"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/multi_select_checkbox.svg",
+    "revision": "ecfda61165a6cf7e4a81307ea7ad6ac0"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/news.svg",
+    "revision": "0ef2d6f5dfb43e87025e05872fa61b17"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/note.svg",
+    "revision": "e1d18c7c6a5a28d0ea94f8dc94ab8be9"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/number_input.svg",
+    "revision": "4dbbaf4743ee75de6f96474221728610"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/omni_supervisor.svg",
+    "revision": "bb8f4ed031fae3dd10e247a1b45f32bd"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/operating_hours.svg",
+    "revision": "1c08521b2c10c38cd25071e206654090"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/opportunity_splits.svg",
+    "revision": "08bb2fa7ea28e9cb16dc4727b5cb8305"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/opportunity.svg",
+    "revision": "007b200cc4e392e078d353ec8f3d1255"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/orders.svg",
+    "revision": "a0405ccb18e7ddf146c06f6deba46b58"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/outcome.svg",
+    "revision": "d8c5009d454ce74fece6b6ded64c8176"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/output.svg",
+    "revision": "1560c4d125741c9d48031501ab9dd694"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/partner_fund_allocation.svg",
+    "revision": "b6cdb653a420b1e51e9f44a99787bc56"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/partner_fund_claim.svg",
+    "revision": "edaf576bfde73ab9ed0a7356a2fe878e"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/partner_fund_request.svg",
+    "revision": "396b53b578887cf95b00cd4bdb57bd5a"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/partner_marketing_budget.svg",
+    "revision": "887c2563e935fb20e693bc658f4199cf"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/partners.svg",
+    "revision": "4904c502502b6e19bf47896094c6b6c0"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/password.svg",
+    "revision": "9279b3df70bddabb5659b06e1e7acd7e"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/past_chat.svg",
+    "revision": "cf46d415e85f620f234a35f39d6f3aef"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/people.svg",
+    "revision": "55c51356065facdfcda2a6064b08a9cb"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/performance.svg",
+    "revision": "e639587b4603fd84281d9b469aba5422"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/person_account.svg",
+    "revision": "13afbca801422354508f52565cf46464"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/photo.svg",
+    "revision": "8463e24b7821af816268cedc25e7414c"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/picklist_choice.svg",
+    "revision": "39067418d247c96c10a71730aad88e95"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/picklist_type.svg",
+    "revision": "6339c2f8ca1c93f4839838e3a00c60da"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/planogram.svg",
+    "revision": "cf0f1019c3003a648ad4eeb414beff5e"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/poll.svg",
+    "revision": "f4eb52f1a547120f18dbc90bcded78d0"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/portal_roles_and_subordinates.svg",
+    "revision": "9087d7ec0c58bcacb2be00b019399b6e"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/portal_roles.svg",
+    "revision": "6f9ff00beb309f3ccade3e81fb085b56"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/portal.svg",
+    "revision": "58ff8267d2a0bf1a393f68071f2dfdfe"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/post.svg",
+    "revision": "0eecbff8b397edb660eeef48a4f71642"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/pricebook.svg",
+    "revision": "875ab6b8b0a0970d5b52a507a1e325d5"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/process.svg",
+    "revision": "67ad0e120a870a102603dc38cc12dc1b"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/product_consumed.svg",
+    "revision": "9ea8ad7928c39830003555efed625bfa"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/product_item_transaction.svg",
+    "revision": "67250813a655764a5842ab7d73e658ab"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/product_item.svg",
+    "revision": "601088c8f325c3a0b3270b972768502c"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/product_request_line_item.svg",
+    "revision": "53ffa96fc83159868cba45d96003c717"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/product_request.svg",
+    "revision": "20ad116444f898d3ec9401c24aa6149a"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/product_required.svg",
+    "revision": "00f97d14bb79e153d3522c6673a90aac"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/product_transfer.svg",
+    "revision": "28a926a4967964e1d6a23beab5b7c3cb"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/product.svg",
+    "revision": "85e82972f4c66e8bb8d2e241b08d550a"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/proposition.svg",
+    "revision": "37f93da8cc784fccb2e5316a94f8ebd5"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/question_best.svg",
+    "revision": "bd3eca9d0e6c51b33930148bdd6206dc"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/question_feed.svg",
+    "revision": "e8e48462cb888596251c2c923c8ad5d5"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/queue.svg",
+    "revision": "739e19a7769b10b7a906efb3d831db65"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/quick_text.svg",
+    "revision": "e059cf347f1be3f33e1028eea3e4c332"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/quip_sheet.svg",
+    "revision": "b82289b376b08ed1f38eebda5a724ff5"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/quip.svg",
+    "revision": "c57733467ac3ad8d61fa4ced11579abd"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/quotes.svg",
+    "revision": "a80215462a6ef4a45927c5f48d7515d0"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/radio_button.svg",
+    "revision": "aeebfdc41979e3043940478810cff76e"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/read_receipts.svg",
+    "revision": "9b890623be9a2c757a02b6f3e4a444c6"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/recent.svg",
+    "revision": "d773f5099c406eb95befc7b943729e92"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/record_create.svg",
+    "revision": "01653055d1d35ee5905d2f7237272f1e"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/record_delete.svg",
+    "revision": "8aa5e74e49cd3daf7f6f330a6f4e97c4"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/record_lookup.svg",
+    "revision": "ad679969ade7c167a2be289a8a9089c0"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/record_update.svg",
+    "revision": "895de1643a4a49710983d887e91284c1"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/record.svg",
+    "revision": "aa174a30df068300093e61b9bc3125c6"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/related_list.svg",
+    "revision": "f5d2b7bf4f1e46a40991d9c1eb6b4806"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/relationship.svg",
+    "revision": "48fd3a347169f3045a7c73f9dd8c6b5a"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/report.svg",
+    "revision": "0ea8b3f9b58c7238317e438c0dec4006"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/resource_absence.svg",
+    "revision": "9f8fab7fe52a9ff5f0600c1465ac52f6"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/resource_capacity.svg",
+    "revision": "04a7755d89d4e3d79e545fecf201e1f9"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/resource_preference.svg",
+    "revision": "5243dcda316ca41b3d6af87eab234a8c"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/resource_skill.svg",
+    "revision": "a29ab0203aa1511d4cab2e0dcfbd254c"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/return_order_line_item.svg",
+    "revision": "58ac71423c8dfde0159b78df5fa00bf1"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/return_order.svg",
+    "revision": "303cc7d86784631d146b93dae4fc5321"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/reward.svg",
+    "revision": "7be4cbfcf4c77292e2b55cb18579ad3e"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/rtc_presence.svg",
+    "revision": "ff75633d29de74aae2c79e34e5c09f1a"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/sales_cadence.svg",
+    "revision": "5500f6d3298f064c95da8fae7d5f8a14"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/sales_path.svg",
+    "revision": "dac9b6fcd28dd55a508bf087b2794336"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/scan_card.svg",
+    "revision": "0cb7d39eca496d0eb4149bbc2c728ddd"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/screen.svg",
+    "revision": "dbbb1b1ca843bbcf716a6fc60fe42f6d"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/search.svg",
+    "revision": "81f931012789333721efd119ba2d1530"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/service_appointment_capacity_usage.svg",
+    "revision": "c1511d9d293653427e278c4072b0ec61"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/service_appointment.svg",
+    "revision": "c4e9a09c24415a10dd8449efe1617076"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/service_contract.svg",
+    "revision": "e26c6e888a04e211b2514bb754a8d5c7"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/service_crew_member.svg",
+    "revision": "5b1ace05c72136c82629ecb41889d216"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/service_crew.svg",
+    "revision": "5505947f54ad8d282e5d6b6dd961d646"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/service_report.svg",
+    "revision": "f4580ee1ecb091066297926db9ac6941"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/service_resource.svg",
+    "revision": "a6a0a947b1dd60078270ab78a879a30b"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/service_territory_location.svg",
+    "revision": "5d48a663182d6a8c87ea9e56d4ea704e"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/service_territory_member.svg",
+    "revision": "8459f709d0996c87f5b190deb4f76192"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/service_territory.svg",
+    "revision": "cd22366c913a7295e151740a78f1cbd3"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/shipment.svg",
+    "revision": "6cb66698ac9761fac1365723006f5009"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/skill_entity.svg",
+    "revision": "b9f728a81c533423218641435bd6d306"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/skill_requirement.svg",
+    "revision": "baf735c5b7f6e887acc69ee09990dfb1"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/skill.svg",
+    "revision": "8b0e0813cd3d928f0b9bbd3e6da26040"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/sms.svg",
+    "revision": "a27860fc3ea8eff2be2bec55e8873976"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/snippet.svg",
+    "revision": "90183242c0a4ae0ad8654ef7e2601ad0"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/sobject_collection.svg",
+    "revision": "50e49284bb0c7cc821c3727dbb19b840"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/sobject.svg",
+    "revision": "4b60d2415469d01121ae4503e1ca391a"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/social.svg",
+    "revision": "9aabfd3a3987ede4b416ab1f8ad4660c"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/solution.svg",
+    "revision": "a9c880bd73d4942413a3ab530c08a45f"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/sort.svg",
+    "revision": "288e48f3824d2da5dec353341d780501"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/sossession.svg",
+    "revision": "3298790e7df67dfba9cd3ba4069df077"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/stage_collection.svg",
+    "revision": "fef2309ed75b8ef38563dfdc030a29da"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/stage.svg",
+    "revision": "0313526316d12dd8a72b1e7ff9ede826"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/steps.svg",
+    "revision": "e73edf063d74d105c46fa9b9dc3383a1"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/strategy.svg",
+    "revision": "7663b2ac537131297ab94e9cc16bab4a"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/survey.svg",
+    "revision": "a8989df57e8f755b43d7f829df9cef8a"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/system_and_global_variable.svg",
+    "revision": "36274f668e63af2fb6e75d091de2b6c2"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/task.svg",
+    "revision": "b4b875dd310f0eb1216e23d7c8ceadc4"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/task2.svg",
+    "revision": "d329739d9d5fb14d76b0e5f8abe3ddbc"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/team_member.svg",
+    "revision": "e9fa0cb17aba1bede23e682c5ff2534b"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/template.svg",
+    "revision": "509e92374637532306ecef36753c71dc"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/text_template.svg",
+    "revision": "857ed4ed01e27a4945e63b19f1ee5e28"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/text.svg",
+    "revision": "cf31675be0cf7e8839ec9e6c198fcc11"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/textarea.svg",
+    "revision": "c0787ab448aa3276e828128b6a60e242"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/textbox.svg",
+    "revision": "69bbcddb1c5904102bb9f14d6c8ef084"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/thanks_loading.svg",
+    "revision": "ccdd121f49564ae1c03d6eaf8a84d73f"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/thanks.svg",
+    "revision": "86ab26cc07bffa6b021bf79343da2768"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/timesheet_entry.svg",
+    "revision": "2606f6efce2c0d5ddebfa05a795cb0d3"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/timesheet.svg",
+    "revision": "72011cfdaa47be5e3402c4ee9fd65574"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/timeslot.svg",
+    "revision": "20998c4e0b35b0bffd6a51af960ea4fa"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/today.svg",
+    "revision": "fbb1486a046387586e45cccda54c321d"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/topic.svg",
+    "revision": "9cef056f68f43f3a28e48395b8246e7a"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/topic2.svg",
+    "revision": "090ec35abdadc24b61a4d5585fea0f95"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/trailhead.svg",
+    "revision": "233bed9baab23fa136898fb2caf31afd"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/unmatched.svg",
+    "revision": "f79cfe0f35c444b79f75eea399c4afbb"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/user_role.svg",
+    "revision": "cf9c5fc5049033e013b9424efe6f8cb9"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/user.svg",
+    "revision": "55c51356065facdfcda2a6064b08a9cb"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/variable.svg",
+    "revision": "8290953a64f7908202b2e066865fc220"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/visits.svg",
+    "revision": "b66e49339779adc5c3b3372d1cbc04a6"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/waits.svg",
+    "revision": "17004885025b4b2135543f2a2890438b"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/work_capacity_limit.svg",
+    "revision": "a54a4d66394f2db9a5f16506e6d7a609"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/work_capacity_usage.svg",
+    "revision": "70d46b8cc4945e4218948a256b53157a"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/work_order_item.svg",
+    "revision": "9e2b7016ca0addb3ae600a31eea1915d"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/work_order.svg",
+    "revision": "29e7e541f5ddd34815b9deb4d133ce51"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/work_queue.svg",
+    "revision": "f3197591bff30c12fd53a3834cb83155"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/work_type_group.svg",
+    "revision": "433667b735b90d011f9a669e803bf4eb"
+  },
+  {
+    "url": "include/LD/assets/icons/standard/work_type.svg",
+    "revision": "ad2bb8b463a2fa19eb0e594d1534b8b7"
+  },
+  {
+    "url": "include/LD/assets/icons/utility-sprite/svg/symbols.svg",
+    "revision": "40951c85ed00738ba67c883ab7b12e6f"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/activity.svg",
+    "revision": "01fd42ad941ba0f0908b7238a051de1e"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/ad_set.svg",
+    "revision": "ec676228d19edf214c331bbe09ba2801"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/add.svg",
+    "revision": "1867ec504cd6bcdf955b7fffa8d51b4a"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/adduser.svg",
+    "revision": "15b6019b83206d007de92b5ad748f008"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/advanced_function.svg",
+    "revision": "6ea969ec64d859f3186753e8196a4156"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/advertising.svg",
+    "revision": "aa494eb91eee7cf0a5081189c175faae"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/agent_session.svg",
+    "revision": "41a014f3cf8619618d6bdf6671f2133d"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/alert.svg",
+    "revision": "975f5ab5abbbf7e9937fb4328616fe40"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/all.svg",
+    "revision": "cd1e7540a6a5c8676923b3da42d13df1"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/anchor.svg",
+    "revision": "9a77fcacbb7cfb912ed986c6322f8efd"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/animal_and_nature.svg",
+    "revision": "f0846c52de67bc241d9e3250e83524ce"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/announcement.svg",
+    "revision": "3363818115295fbc44b75ac74bc87c04"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/answer.svg",
+    "revision": "2018b72f67117a71cd7fb16444a6c410"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/answered_twice.svg",
+    "revision": "2c73f543b1e566f713dee50db9de8110"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/apex_plugin.svg",
+    "revision": "21317ebfbe3448d00a54f8f059a71056"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/apex.svg",
+    "revision": "db7e7484a38f69afdef41247a763a896"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/approval.svg",
+    "revision": "973ada77057d4ea4346ce34d0b53340e"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/apps.svg",
+    "revision": "511641fba7b29dbcf70c8d9f9d138567"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/archive.svg",
+    "revision": "3e5e8e544637be0f0603de207a45cc69"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/arrowdown.svg",
+    "revision": "31157bf2414f0786efce72788193a523"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/arrowup.svg",
+    "revision": "ee4dd4640c06ecfa863edd12b48be8ad"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/assignment.svg",
+    "revision": "ff4ab5e6ccd3e3877e8265c19d0940d5"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/attach.svg",
+    "revision": "9f4804cec1e296e8de3388bcf965202d"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/automate.svg",
+    "revision": "923428033a97d962ed717608097c1321"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/away.svg",
+    "revision": "75971b4521bbba088be99d67238663a8"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/back.svg",
+    "revision": "7780a19449fba300b218bbbbbbf06dc7"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/ban.svg",
+    "revision": "522a3a7630f017f493b73ebb3cd7c20a"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/block_visitor.svg",
+    "revision": "42da3bef4cf58f53a357219dc1a24360"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/bold.svg",
+    "revision": "2e2b1ba7aee097af9d6a213c7da62d0b"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/bookmark.svg",
+    "revision": "463122d81c1c1d35ea17d54aea9505bc"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/breadcrumbs.svg",
+    "revision": "6c899fb4b06911ca641dcebdcd3e73d7"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/broadcast.svg",
+    "revision": "af2ad4e31d9d4a55a221becd2d80f768"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/brush.svg",
+    "revision": "09c83b732d734b70049fa3abf9e243b2"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/bucket.svg",
+    "revision": "1cb97c956f5acd50d5730e817f29c0c0"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/builder.svg",
+    "revision": "dfbdeec7e11b5ee0eaf1943b431ad9f7"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/call.svg",
+    "revision": "ef45b16896ae6a28d9c0af6204d81d53"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/campaign.svg",
+    "revision": "e68f8a25069dcb0610ca2a590bcf0487"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/cancel_file_request.svg",
+    "revision": "c318cc1a6618e2152c7c421d708a815a"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/cancel_transfer.svg",
+    "revision": "228bc8ddaed9b36998458bc311fd096c"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/capslock.svg",
+    "revision": "06b6755a787678c587c54de50174cd0f"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/cart.svg",
+    "revision": "f3a172b5ae1451c626f30ddb3886cf78"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/case.svg",
+    "revision": "76de36157caa27b477d49970af773bdf"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/cases.svg",
+    "revision": "0db3c4a2a9fb4461e1b18fe08ad58480"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/center_align_text.svg",
+    "revision": "24d68f4410d78196dfa18488a1182e1a"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/change_owner.svg",
+    "revision": "92d871f9cf8e07a4923874bb3c8f63f2"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/change_record_type.svg",
+    "revision": "6bb2a79175bba89d782d70de18b112c2"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/chart.svg",
+    "revision": "4c95a45cbccbd63834b3d924e6bd6fd0"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/chat.svg",
+    "revision": "76d09b1642cdb1f3c011ee452f4dcf38"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/check.svg",
+    "revision": "a7fb6b1d178bab3a40731120babe0dd5"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/checkin.svg",
+    "revision": "7da6cb33a87e2935457f327d62fbf630"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/chevrondown.svg",
+    "revision": "c9fc7a9b850fce2485ba39d3b3952389"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/chevronleft.svg",
+    "revision": "57eaecac1f61eb67761cdf4d52356d62"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/chevronright.svg",
+    "revision": "ebd70232aa52ec181d7e490d0bb71751"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/chevronup.svg",
+    "revision": "8e80a34e72409de1f7936d1b1373b5b0"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/choice.svg",
+    "revision": "86faf6f151e9e0b3a4f792d2c248d7cb"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/classic_interface.svg",
+    "revision": "b21dc5e164cae971f53f76c402195135"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/clear.svg",
+    "revision": "1b14982ce83bcec67fd68e62951818cc"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/clock.svg",
+    "revision": "f990fd06d32b73e8f0a3a3e62e5599d6"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/close.svg",
+    "revision": "f8e43528a0b5031f7d87d4de0432e0c3"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/collapse_all.svg",
+    "revision": "0a8314470c968fbb2983c8c34115e9f2"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/collection_variable.svg",
+    "revision": "4d21664ef4c46a530f4b91c37026cead"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/color_swatch.svg",
+    "revision": "1650f1b10d82da1b9819d12829178f5a"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/comments.svg",
+    "revision": "04539a8c4fd8ac980d4cb6523249e188"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/company.svg",
+    "revision": "d868a230712970b06b1335e88997ad41"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/connected_apps.svg",
+    "revision": "e7412492cf6f80b951c30696cd31e80b"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/constant.svg",
+    "revision": "e77be8d987f8e8806550f380ec0a8e7f"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/contact_request.svg",
+    "revision": "e110f714f0da07fce11a9b860bab8984"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/contract_alt.svg",
+    "revision": "284693746f6617447fef1aae2eadb8b1"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/contract.svg",
+    "revision": "975c92ff2dc2121dc154910bd0a43808"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/copy_to_clipboard.svg",
+    "revision": "d6555c7b01d78ac8084f744e008e1b73"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/copy.svg",
+    "revision": "ea35d6550044c39be121976f97ebaa68"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/crossfilter.svg",
+    "revision": "732c0988815923d3b82e3bf66899749d"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/currency_input.svg",
+    "revision": "ee9696138b1868d51365ecb3710100cc"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/currency.svg",
+    "revision": "d4721d96555f899d59483dbb73125e44"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/custom_apps.svg",
+    "revision": "4c28d8c88c0e1dbb597c03d227a6de16"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/cut.svg",
+    "revision": "ede706ffe10adb86a0e0390a86994557"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/dash.svg",
+    "revision": "dd5915a60ab7354fa2e71e49d39b5309"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/database.svg",
+    "revision": "b71bfabeaddfd3f4ef87d43b4a89e92b"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/datadotcom.svg",
+    "revision": "828eac6646bf3ec2ac10517a1718042d"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/date_input.svg",
+    "revision": "157c870874412cb5ee8438d18c336888"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/date_time.svg",
+    "revision": "57cace2f09334e29594ca6dc16345afd"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/dayview.svg",
+    "revision": "1881e18fb5e31ef0afb947575df8a3f2"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/delete.svg",
+    "revision": "5a727b715b796a063ea365f41a060666"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/deprecate.svg",
+    "revision": "641fd73cada62946325efadc10427610"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/description.svg",
+    "revision": "1784efb133e92dcf6dd4d4f3ff0dbad8"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/desktop_console.svg",
+    "revision": "7d68afed369dcfd326d6e0ed1d5f8d53"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/desktop.svg",
+    "revision": "125ec92f588a9e30ddea24750163d35d"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/dialing.svg",
+    "revision": "6b4f74f2baab5c62cb9593a39360edd3"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/dislike.svg",
+    "revision": "28917b33b0cb403ae048ac554bb0e8da"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/display_rich_text.svg",
+    "revision": "fddd45f017e501bce7e55fc41a6517dc"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/display_text.svg",
+    "revision": "e8d8b9afb86bfcf693f8bfc4eefe0702"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/dock_panel.svg",
+    "revision": "b0907f6edd9b53fdab7fdad80e49c401"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/down.svg",
+    "revision": "2cfacf405a91ef0d08316476d2e52d4b"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/download.svg",
+    "revision": "bebdb605afbb5eceb453afd7126bac69"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/drag_and_drop.svg",
+    "revision": "b1e8dbfb06747e4761224d7ad07730b3"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/drag.svg",
+    "revision": "2d1f30edeee2c8ea06b275f95bec0ccb"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/dynamic_record_choice.svg",
+    "revision": "893af8ad81aa78b1b6ab3c3d17bc710b"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/edit_form.svg",
+    "revision": "6ecc943f3260d31f99156e5a688acba8"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/edit.svg",
+    "revision": "faca53a2140b7efff05a3ff3df2b34b3"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/einstein.svg",
+    "revision": "815883ea6bfe11f48662022b7ac6725d"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/email_open.svg",
+    "revision": "e4e7b03f54ebc08c9815334df144efa8"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/email.svg",
+    "revision": "7f3c6df6cdea1d957e4f9be9dac240b4"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/emoji.svg",
+    "revision": "59104c8954316001e2fca3a0b7d9db65"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/end_call.svg",
+    "revision": "fd54df9cc8f45040b2fe5dee9d9b571e"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/end_chat.svg",
+    "revision": "0e25c7c1ec78ca2840a01e856338503a"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/end_messaging_session.svg",
+    "revision": "a2b60d62bff4f193ab50f76a20752ed4"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/erect_window.svg",
+    "revision": "9ea3d5cbe59219bbdcf5e316dadd5c92"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/error.svg",
+    "revision": "12888620ebe85f153cd223db0e28301a"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/event.svg",
+    "revision": "feeedb395459c47a6f4fd6b51bc0691b"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/events.svg",
+    "revision": "7ac1593b3cd30845cce82c7a5ac1ed7b"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/expand_all.svg",
+    "revision": "02423b010dcc6862835d783635336aa7"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/expand_alt.svg",
+    "revision": "7a09a8d3bd2489d82f249612340fc885"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/expand.svg",
+    "revision": "a9d389f9921d7a60b73f948863b4af90"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/fallback.svg",
+    "revision": "b746999da8e9f9f77ee4936760673edf"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/favorite.svg",
+    "revision": "dd52aafae68298b7a07261cacef18ce8"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/feed.svg",
+    "revision": "ccb177ef2674bdd7b619a3021a645cbb"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/file.svg",
+    "revision": "cbcc4e5bdc02346aa7216d76f773539f"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/filter.svg",
+    "revision": "9592b412549b77619e371464909d02a7"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/filterList.svg",
+    "revision": "2a2ec090edffb4ffd165f95531a96859"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/flow.svg",
+    "revision": "2d8a199b6221328f148488137904d77b"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/food_and_drink.svg",
+    "revision": "1d3bfa0323ffcf7b1482b8b087ba041d"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/formula.svg",
+    "revision": "d9bceb0aa6fa69354d7a75752a504b3a"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/forward_up.svg",
+    "revision": "25b0998252d22f56d98657ea7ceada3b"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/forward.svg",
+    "revision": "c3eae6cf81759c1565ba37323fede4dd"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/frozen.svg",
+    "revision": "af1167e1ee824a67baac4ce633e64f5b"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/fulfillment_order.svg",
+    "revision": "7e5dc8c126f7b63f7f059acca63a5259"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/full_width_view.svg",
+    "revision": "04374d2c5231703a6eb6e8ede4b27319"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/global_constant.svg",
+    "revision": "69780e15342f0617733a99a7280ec327"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/graph.svg",
+    "revision": "573b093c8dce6d321579e888e13aa9f0"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/groups.svg",
+    "revision": "9a4c9c7da0b015cf840c46caeba542d8"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/help_center.svg",
+    "revision": "9235302189ad13e68b29b7f17c1c4609"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/help.svg",
+    "revision": "0f762422b4e72ffb4e5c236df19d36e1"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/hide_mobile.svg",
+    "revision": "6fdda512e5b6be16a3d78786018f7dbc"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/hide.svg",
+    "revision": "f0aa93f60c3f0584b810d8652ad7e474"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/hierarchy.svg",
+    "revision": "ee646a613606263120aa47d91a96332e"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/home.svg",
+    "revision": "6c0e38efba2cae90d2aad50529d8cb9f"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/identity.svg",
+    "revision": "4392af61ae4f97c72cd32726a26d1941"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/image.svg",
+    "revision": "4f355209b7f1a2eb62eb2d869d4c90e4"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/in_app_assistant.svg",
+    "revision": "916524cb1473b366165d7a083495cf17"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/inbox.svg",
+    "revision": "8fbcb2b2bbc1a4468751aba7729cc39b"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/incoming_call.svg",
+    "revision": "3dae067fabc1c91615d472c562bf82aa"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/info_alt.svg",
+    "revision": "b33d9a6b3455e2adf66887dbe671b970"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/info.svg",
+    "revision": "eba3730c5c02615a98f8a5935d7172df"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/insert_tag_field.svg",
+    "revision": "a656627d6cf81a436d3c2c3329a5a337"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/insert_template.svg",
+    "revision": "362cf14ac17a8a995cbc5a0d59ac873e"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/inspector_panel.svg",
+    "revision": "907b370a22accd8e1ffab7eac7a12492"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/internal_share.svg",
+    "revision": "95dacb40b892185c5229932ae78f09f3"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/italic.svg",
+    "revision": "409d07b4c57dd6d65542cc008ae3b818"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/jump_to_bottom.svg",
+    "revision": "96684eaa68e0e3109e75b1f1c36f7139"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/jump_to_top.svg",
+    "revision": "8b9f251a1abfa93324a4fca5f4fcb3d1"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/justify_text.svg",
+    "revision": "3c4bc79bba3109659d1cad505bb0d039"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/kanban.svg",
+    "revision": "81ddfe5a5ec5683ed4fe119c27cf06e1"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/keyboard_dismiss.svg",
+    "revision": "936c07fc4ca6130a8f68539005b73dcc"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/knowledge_base.svg",
+    "revision": "776457d52341d7ba12e71ed106bd1f90"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/layers.svg",
+    "revision": "a70f16e2e49d75e82a639fe6a4c28f1e"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/layout.svg",
+    "revision": "9eec2b5c99f9aaa9da3dccaebd21305e"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/leave_conference.svg",
+    "revision": "3bd595d0e2e0f4545af97eb65bfe2ab6"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/left_align_text.svg",
+    "revision": "539077e1b3db194ee3e267c0c255ae06"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/left.svg",
+    "revision": "be1ce07dc156a826bc535b6fae55f39f"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/level_down.svg",
+    "revision": "161c4137c05200c31c70c2dfe6d8950d"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/level_up.svg",
+    "revision": "ce0e3d562966903d107e1396f3d71854"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/light_bulb.svg",
+    "revision": "607f3c00bdd09e4035c31dcab8432697"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/lightning_inspector.svg",
+    "revision": "e1e6d4fbbf787e805545fe5a966473b4"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/like.svg",
+    "revision": "365b1a3d05d3eeffec68363b82c72081"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/link.svg",
+    "revision": "d876ec47e93af49da332d469408be53f"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/linked.svg",
+    "revision": "baee8ee8011531f35a8373c2217729ba"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/list.svg",
+    "revision": "ce9301e6b3cbc2b641cc7e23c99f38d2"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/listen.svg",
+    "revision": "689b33d4ece04e437afcbe3fa28b4e40"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/live_message.svg",
+    "revision": "4c00486cfd940c0889c87e7e0618cf71"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/location.svg",
+    "revision": "321dce93fa2e442bb440f4de9cbe6355"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/lock.svg",
+    "revision": "06bface8b83b5d3bca8e02ad5a03b10c"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/locker_service_api_viewer.svg",
+    "revision": "cde150397bce4aff03ee668e97da5375"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/locker_service_console.svg",
+    "revision": "89882b967f6da34e4483ede750be6e5c"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/log_a_call.svg",
+    "revision": "9bf20a70227e457dee4c44938e8c8fa4"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/logout.svg",
+    "revision": "3a8a38678c69b15abeb149f94ac5d982"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/loop.svg",
+    "revision": "287af05e24bf1114972b174fdad62a00"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/lower_flag.svg",
+    "revision": "9c4e00d347dcb367df80812c55072f76"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/macros.svg",
+    "revision": "9ed83702adf52bfca3f7a0d9fc8cb6c9"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/magicwand.svg",
+    "revision": "259f63521d37b820ccbb1a771a96f370"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/mark_all_as_read.svg",
+    "revision": "d47efec96f2bb1015a5c1d2307f5b996"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/matrix.svg",
+    "revision": "67be604669e8595c721157411e9cbe81"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/merge_field.svg",
+    "revision": "6600ca05dc02f6798ce5a7856bc222da"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/merge.svg",
+    "revision": "5f28f8b744683708befd1c745f419de8"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/metrics.svg",
+    "revision": "e555fc5e34f95b65b8bf6d6baeb5aa5f"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/minimize_window.svg",
+    "revision": "67ee23b84ebebd4281e31453e60b404d"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/missed_call.svg",
+    "revision": "304a3b84fdff98f47f63ec25ba2a4b17"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/money.svg",
+    "revision": "4f6922c23144310bba9269c08039ff6e"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/moneybag.svg",
+    "revision": "e085925f337e0ba6ce302ea3920df41f"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/monthlyview.svg",
+    "revision": "433587d92001a27af06c22591ed9bc1a"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/move.svg",
+    "revision": "6d7fac2a7b6feb2c39a112aaf3365972"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/multi_picklist.svg",
+    "revision": "b4d4190af263e022e31d56343c678274"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/multi_select_checkbox.svg",
+    "revision": "bd6779453c72bc4ffbab6b72f399b507"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/muted.svg",
+    "revision": "e70cf32f860f3966e8c79eaf687482d2"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/new_direct_message.svg",
+    "revision": "8052a7ad69dca36244f9c099e40cc980"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/new_window.svg",
+    "revision": "3885deabb9d0b664e080af1e0c3255b4"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/new.svg",
+    "revision": "280df80a84aa76fffa3f1c7d866c3f30"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/news.svg",
+    "revision": "d13ccf808f2b39e373b7690090d0952c"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/note.svg",
+    "revision": "ae23cacb66e001392b1abf137a387f94"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/notebook.svg",
+    "revision": "8afe66ff0cb9a81776e7c4ba4c05bb1d"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/notification.svg",
+    "revision": "177f5a9f622f3b2367d39ddbde684a66"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/number_input.svg",
+    "revision": "7f341f7d56a6b2bb5e4c31e51bb4e7bf"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/office365.svg",
+    "revision": "9b1b747b5008b56e37a98ba546ec78e1"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/offline_cached.svg",
+    "revision": "4819e8272fa1e5f2a793e6d472bb0a14"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/offline.svg",
+    "revision": "87e394d5fcc64064a5572e9e6fd3709d"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/omni_channel.svg",
+    "revision": "c6acc5098d67214bb1647cb24f4a0158"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/open_folder.svg",
+    "revision": "fb99f5a02f6559ed536c014479aeb8a9"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/open.svg",
+    "revision": "cd59f762662792b803879acb1559c6f2"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/opened_folder.svg",
+    "revision": "2a1b377777165fd1c019ec0b4c1c1209"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/outbound_call.svg",
+    "revision": "faae3ed1cd70814605e39581b94bd756"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/outcome.svg",
+    "revision": "848c596406db331cc92b6a3c0442eb85"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/overflow.svg",
+    "revision": "e1bf30a0d8aaabda3004a1a81150e999"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/package_org_beta.svg",
+    "revision": "0975c8985e5e3dd8d65ff99901452899"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/package_org.svg",
+    "revision": "c652b73c05df04b6370286f382228a71"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/package.svg",
+    "revision": "ba02ab69637b730ad0591799ca40ea44"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/page.svg",
+    "revision": "389598e2a3f7e2798c68e6882cb74cb9"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/palette.svg",
+    "revision": "01ec6e7a2a321b3439b143d11782f7ae"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/password.svg",
+    "revision": "ec7a916120bc62f1bd404f46ef949dd4"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/paste.svg",
+    "revision": "9c259fea5455b4662105b902c469a137"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/pause.svg",
+    "revision": "be681a26f791ea52127299749bb186f8"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/people.svg",
+    "revision": "1f23b638cff6e4325e0c2b2effe84357"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/phone_landscape.svg",
+    "revision": "07f5b92f7e6f57d8c16a33903b340ebb"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/phone_portrait.svg",
+    "revision": "fde5c6333ceea7a2065dc8e77c8bb51d"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/photo.svg",
+    "revision": "56adfbf2822047f46dfe5dac89068767"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/picklist_choice.svg",
+    "revision": "61717e6729bce815119cbae49c9051fc"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/picklist_type.svg",
+    "revision": "8abe07adc16cc58de410fd952d31a6c1"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/picklist.svg",
+    "revision": "e1b5a697f84d52eda1c76a718ec12982"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/pin.svg",
+    "revision": "ef2bbb670fe07dca456e6edf0d0782d7"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/pinned.svg",
+    "revision": "fe168503b1b87a06b42c281341c39e6d"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/play.svg",
+    "revision": "d5c4b5220f9a726aa6a9aa36eb45370e"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/podcast_webinar.svg",
+    "revision": "4f3cc01183374194fbdbc49a78423b3e"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/pop_in.svg",
+    "revision": "bb44e4014ae66fb3ddb6de9a3b4c57af"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/power.svg",
+    "revision": "0dc2d87280538ea0f71ec6269e8aba63"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/preview.svg",
+    "revision": "12ad8cbeb2b4486adb7fec8abf8397b3"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/print.svg",
+    "revision": "a9b4b150d791e6fd50a0a57869b4340c"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/priority.svg",
+    "revision": "037437751a74cb8103477d45a7274cfc"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/privately_shared.svg",
+    "revision": "a84c58a955502f11ca9c55b2ac57b30a"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/process.svg",
+    "revision": "aa57ee21bc14a08eca42d04fe33b4134"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/push.svg",
+    "revision": "4e5f10808c0392d7d22939a2f89d33f1"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/puzzle.svg",
+    "revision": "92294a386cfeb597239bebde2ff9ff3e"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/question_mark.svg",
+    "revision": "d29892042a9d3e81dbd440f8bae7ae1e"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/question.svg",
+    "revision": "0f762422b4e72ffb4e5c236df19d36e1"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/questions_and_answers.svg",
+    "revision": "c1bb1861af2046991dae5b1ad42a3e0b"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/quick_text.svg",
+    "revision": "86e8c060630aec106d4c47aed4c376ce"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/quotation_marks.svg",
+    "revision": "b4da577be3e205a1bd36a5c13603c60d"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/quote.svg",
+    "revision": "8c4b27d52cc6a6baf9db23a5aea64eb4"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/radio_button.svg",
+    "revision": "f922d58638f31da4e6bc60ead5172af0"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/rating.svg",
+    "revision": "1cd4d6fa5abfb41455c12848f0e8e91c"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/reassign.svg",
+    "revision": "e6b1a64158da940d6eb8ffa5c6fe9535"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/record_create.svg",
+    "revision": "7512caabfe0b79f9bf107d75b54c99a7"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/record_delete.svg",
+    "revision": "684c3bca36424d62e311c3e6414fa4a8"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/record_lookup.svg",
+    "revision": "a915fd9950fd0fcbbe238f0b7d0050d5"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/record_update.svg",
+    "revision": "85b37d9a26bf4d10eefd3dd089bb2504"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/record.svg",
+    "revision": "c5a457a7f16fc3b7dd5c61acb99d7aa4"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/recurring_exception.svg",
+    "revision": "bf751a1ec8dea3c4fa56f2965c385d72"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/redo.svg",
+    "revision": "a960ad77e1d3aa48f52689860d02d3f8"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/refresh.svg",
+    "revision": "3cf7d2a5ea45a0abe3066b257146cbda"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/relate.svg",
+    "revision": "0a095c9731c059b328d3d1b238c9130f"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/reminder.svg",
+    "revision": "6e9e55ba014d5155debbc7002d7085f7"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/remove_formatting.svg",
+    "revision": "0ec127d1c1abd730284acbf75b0d1324"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/remove_link.svg",
+    "revision": "4046f30d6252fde5565bf37a9a021762"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/replace.svg",
+    "revision": "6bb2a79175bba89d782d70de18b112c2"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/reply_all.svg",
+    "revision": "8ac848cef86697fd10e8f271a6860f04"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/reply.svg",
+    "revision": "437330bd80e03c4213adf43f694f09b1"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/reset_password.svg",
+    "revision": "04628c1ccd425c18f672b25831614415"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/resource_absence.svg",
+    "revision": "51876ccc92312f22511799ca949f1af4"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/resource_capacity.svg",
+    "revision": "551f856f31091db7c858a59da4b77a14"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/resource_territory.svg",
+    "revision": "8f112d7e3e6b97a468689f5cf7d97858"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/retweet.svg",
+    "revision": "4bb64acfbc61ee1571809eb229c3e2e0"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/ribbon.svg",
+    "revision": "56f7f9e69e0ecf203b57acd0173c5979"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/richtextbulletedlist.svg",
+    "revision": "f11bce992dcc14740d9fdc6dadfebd62"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/richtextindent.svg",
+    "revision": "6a940574dbdf499efec15c03f78ad14e"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/richtextnumberedlist.svg",
+    "revision": "293fc38b06d9d43c63a2050ea5410ede"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/richtextoutdent.svg",
+    "revision": "81e36c7bc21563a6c8f2caef81778c5a"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/right_align_text.svg",
+    "revision": "e68bbcc58f09d59b8e15b89d0b27ed6b"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/right.svg",
+    "revision": "5a0583eaab4a2e8b4637fa679a8326fc"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/rotate.svg",
+    "revision": "ddda42b90a0a8bf5469843aa4d3bb261"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/routing_offline.svg",
+    "revision": "ec91544f65e99415fddcf0b3ce90d923"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/rows.svg",
+    "revision": "164e48bb4892fc94270f972efe902608"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/rules.svg",
+    "revision": "b901a76b66d07b6f797628968379c97b"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/salesforce1.svg",
+    "revision": "d1075d43c6a8e137ab5be2a30d536869"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/save.svg",
+    "revision": "76c0b04130246f7af3daf966a7f2b133"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/screen.svg",
+    "revision": "9e6732f53fc29867d9e1f7a0ca432846"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/search.svg",
+    "revision": "fd30d81f3e1b51331c2904da55fa3008"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/send.svg",
+    "revision": "2a187df564cc5efcbf68ed23c1dd0f2d"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/sentiment_negative.svg",
+    "revision": "859459cd586d28839a14dae864ddc7cf"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/sentiment_neutral.svg",
+    "revision": "ca1081f6faa63e495e8024b617bc2bc6"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/settings.svg",
+    "revision": "987fca88383aabb572ee5c0af6a34232"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/setup_assistant_guide.svg",
+    "revision": "967e6084d76906152182f604c407b912"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/setup.svg",
+    "revision": "f787cc087b66178371634d4b0e7001f1"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/share_file.svg",
+    "revision": "fcf67888d066a51928036d4bf9b5d73d"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/share_mobile.svg",
+    "revision": "479b33c44059368aaa9fc999350a7b99"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/share_post.svg",
+    "revision": "ee77077bbd46815bbb752eb3f9d07b9e"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/share.svg",
+    "revision": "085e91beb9fa163cc41381193a4156be"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/shield.svg",
+    "revision": "3c976923e3333941445fb7bf58feb0b1"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/shopping_bag.svg",
+    "revision": "67d9bdd5016d87bb8bc69f8ae3610cd5"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/shortcuts.svg",
+    "revision": "07cac871fc9d0aa7c84eea1cbf063c4e"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/side_list.svg",
+    "revision": "a4561019174de0a8cd606c694c6f76ce"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/signpost.svg",
+    "revision": "b3020cc1af210f4052d15d5deb6e0940"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/skip.svg",
+    "revision": "74a8a0ae167e19627169992875139e07"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/smiley_and_people.svg",
+    "revision": "7152d43ec2e3cf98d60258079b4e2514"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/sms.svg",
+    "revision": "7cd496ff6c9560a7e9923b9def1994af"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/snippet.svg",
+    "revision": "001fc9d7c9852b58c149a31ebff03c84"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/sobject_collection.svg",
+    "revision": "ff7fd01d1883238db0b0594705a5e161"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/sobject.svg",
+    "revision": "d1212ab04e14b66333453cb447001d79"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/socialshare.svg",
+    "revision": "062a68fecd1ff033bbac1cbf71989069"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/sort.svg",
+    "revision": "beca2649fcb6cd20d9efa6394248b00c"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/spinner.svg",
+    "revision": "40c8d310003dc0955e322150119a2bd1"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/stage_collection.svg",
+    "revision": "ddbdb4aaa9bac6a99f22438f7d1630bc"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/stage.svg",
+    "revision": "6930f9d4c39b9fb6843dd38de25a9518"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/standard_objects.svg",
+    "revision": "ca0e997de9ad547a1bf06d298f556f57"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/steps.svg",
+    "revision": "27b663cdd56bcbaffd84dab4a63087be"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/stop.svg",
+    "revision": "5c675b9b6bf5c87d5efdf6929832f14a"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/strategy.svg",
+    "revision": "1044d0ab00d4933d5182d81e18f0b69c"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/strikethrough.svg",
+    "revision": "ff74a368212cafdb8646e0b8b53a06f9"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/success.svg",
+    "revision": "ec48c944a774b12fb9697e2f823cc755"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/summary.svg",
+    "revision": "fec811cffc5b51c516a0d529dd7cf5aa"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/summarydetail.svg",
+    "revision": "f91b95f9f1ab2bbe54f21c6862a20d4f"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/survey.svg",
+    "revision": "b0d3f1d71f983f580ef3767f2e022ebf"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/switch.svg",
+    "revision": "5ef4c0939670f727c9b8892358cd7def"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/symbols.svg",
+    "revision": "755f5bd901d89c8620319ac3da4198b2"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/sync.svg",
+    "revision": "8180cb0b08868fd48f6f2206138bc827"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/system_and_global_variable.svg",
+    "revision": "2169490b11a65d439bf4d5c291cb9cc4"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/table.svg",
+    "revision": "fbce293e43ffb76eaa57332513fa8436"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/tablet_landscape.svg",
+    "revision": "d1c40e5233d46f5f13c79616ab851bed"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/tablet_portrait.svg",
+    "revision": "1396ff68e337b400860a746306af791f"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/tabset.svg",
+    "revision": "a8ed0eb89681af11fa5a66ddee60dd2f"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/task.svg",
+    "revision": "3cd52d70366ec9f7a97a9867100e3a52"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/text_background_color.svg",
+    "revision": "e7d444e1fe0bebf7ad3f22ee02639242"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/text_color.svg",
+    "revision": "9baf6f2327e8e6a9b1e9572935ac3e88"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/text_template.svg",
+    "revision": "18fecee370abe420f4daf8ba86e782f4"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/text.svg",
+    "revision": "11e7fb6c1dfb6457fcfba6cbf1176ee5"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/textarea.svg",
+    "revision": "18392fcbf0cc9dcf5c5fd645101355af"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/textbox.svg",
+    "revision": "c5c66cd214d60730bae676011351fede"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/threedots_vertical.svg",
+    "revision": "3dd1b3ca5ad80f43cd404d9985697455"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/threedots.svg",
+    "revision": "6446b98ddcaaf5ad04298f9bb6a92cc5"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/thunder.svg",
+    "revision": "a161d9b4d889d1ae45cdda0c9938c19b"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/tile_card_list.svg",
+    "revision": "903c7c0da60fe33cc4e1586db91f181b"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/toggle_panel_bottom.svg",
+    "revision": "f8e35941865c8ceb6bd2ca5794abedea"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/toggle_panel_left.svg",
+    "revision": "2d8a589fe7a774417ca83e917ea22ca9"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/toggle_panel_right.svg",
+    "revision": "dcac6ca55acb96bfe14948b54e213213"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/toggle_panel_top.svg",
+    "revision": "8588cfcce698c117ae269bada52f3a1b"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/topic.svg",
+    "revision": "ab918c1914708f061eeb5bbfc0eb688e"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/topic2.svg",
+    "revision": "dba5467434c7d2e34831a94a1251c97f"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/touch_action.svg",
+    "revision": "f5c1c660f8eca0b7fc060ba19cfe70a6"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/tracker.svg",
+    "revision": "7823df10d734a7fe985406ae46f42211"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/trail.svg",
+    "revision": "6dd3dece365fdd3abb8302dc2d68599a"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/trailhead.svg",
+    "revision": "58a3c8e186194761298e01606ce26b81"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/travel_and_places.svg",
+    "revision": "ba0c42bce439342c80a84d5e3a4dd686"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/trending.svg",
+    "revision": "c0f1b19359d9d4c3353d645adfbe6e38"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/turn_off_notifications.svg",
+    "revision": "7b414a34a99fbb176ae4364be4cd3324"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/type_tool.svg",
+    "revision": "00226b5b1a57250e68478b1e76f5256a"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/type.svg",
+    "revision": "463ab3c2e828b0b51f6999cb2fec474d"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/undelete.svg",
+    "revision": "e8af8b634f35dd640b028fcfde6b497f"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/undeprecate.svg",
+    "revision": "e0f9b6e5633b6ca439f07449a662a522"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/underline.svg",
+    "revision": "a32ae67bd1fcc0ec76fa208a1c2d2311"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/undo.svg",
+    "revision": "003bcb6137420c27dbf3041f519baf3e"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/unlinked.svg",
+    "revision": "71605fcdd50bac2812c185f5c3308c97"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/unlock.svg",
+    "revision": "959116234fc751cbe27b3db489e3d708"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/unmuted.svg",
+    "revision": "dd1a09769a1012ec8cef818620cb5d3b"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/up.svg",
+    "revision": "6c51cfd6332b131434a2701756f1b4e6"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/upload.svg",
+    "revision": "c7a865ee55d392c0146e79737d4f9acf"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/user_role.svg",
+    "revision": "d896c5a615d6892603b9318808318f48"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/user.svg",
+    "revision": "eaf556fe598cd7822ef415c390df15dd"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/variable.svg",
+    "revision": "57bc2d7f7d813d807ef5e7c3a200919b"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/video.svg",
+    "revision": "83c12d9af3b4a3e39505a12505a9038c"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/voicemail_drop.svg",
+    "revision": "fd42a57c15e3b3d06b5aa2ec1f5d457b"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/volume_high.svg",
+    "revision": "2ff9e49eed31145d7c51d673b4fc2ba9"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/volume_low.svg",
+    "revision": "ee65496756f0bd2ef2d01188465673f9"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/volume_off.svg",
+    "revision": "402179568f57ceef12aec48fb0b94685"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/waits.svg",
+    "revision": "38ff3da8a7b18d3c6bb4bb5537b244c0"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/warning.svg",
+    "revision": "61e1dc42e363aecd75d1dd5e1f69a545"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/weeklyview.svg",
+    "revision": "3db68a6d5c6671f9d2a5aee9373609eb"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/wifi.svg",
+    "revision": "c4e561e3fbf45d9d08a2bd03def042bf"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/work_order_type.svg",
+    "revision": "e1cb42a9644a23267cb82784c0cd9070"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/world.svg",
+    "revision": "75fcd62e1d38cb6c1bfbbad392341114"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/yubi_key.svg",
+    "revision": "be3db1fa4ccc946b17202ad4bbe8dd82"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/zoomin.svg",
+    "revision": "0ce7e611bf2174e09a18e31b4ad9b80b"
+  },
+  {
+    "url": "include/LD/assets/icons/utility/zoomout.svg",
+    "revision": "961827106ab42735edb481000074aa1b"
+  },
+  {
+    "url": "include/LD/assets/images/einstein-headers/einstein-figure.svg",
+    "revision": "67eb8aa0687137e2ae66c70243c22c5d"
+  },
+  {
+    "url": "include/LD/assets/images/einstein-headers/einstein-header-background.svg",
+    "revision": "a2beabec80f992be10c0a89936b43a45"
+  },
+  {
+    "url": "include/LD/assets/images/illustrations/empty-state-assistant.svg",
+    "revision": "4cc06cc52170075d75eabe04efa2d63d"
+  },
+  {
+    "url": "include/LD/assets/images/illustrations/empty-state-events.svg",
+    "revision": "d5d9da61dc25ac2d08d1a7ccaa278cdb"
+  },
+  {
+    "url": "include/LD/assets/images/illustrations/empty-state-tasks.svg",
+    "revision": "484bce73174ef30246c9553509be2663"
+  },
+  {
+    "url": "include/LD/assets/images/logo-noname.svg",
+    "revision": "5a82e699441ab63b3afb2a7449485375"
+  },
+  {
+    "url": "include/LD/assets/images/logo.svg",
+    "revision": "5a82e699441ab63b3afb2a7449485375"
+  },
+  {
+    "url": "include/LD/assets/styles/mainmenu.css",
+    "revision": "60718c9174ed712f0c6a240e34adec1d"
+  },
+  {
+    "url": "include/LD/assets/styles/override_lds.css",
+    "revision": "acd3370a2580b31984e0c0fae9dc7bbd"
+  },
+  {
+    "url": "include/LD/assets/styles/salesforce-lightning-design-system.css",
+    "revision": "83801568bc51c09cc4e3a51eab5dceee"
+  },
+  {
+    "url": "include/LD/assets/styles/salesforce-lightning-design-system.min.css",
+    "revision": "dba16f862f9581e2df7788845d9e9514"
+  },
+  {
+    "url": "include/ckeditor/adapters/jquery.js",
+    "revision": "ccef5f71850287b35f32909cae86f96e"
+  },
+  {
+    "url": "include/ckeditor/images/spacer.gif",
+    "revision": "df3e567d6f16d040326c7a0ea29a4f41"
+  },
+  {
+    "url": "include/ckeditor/lang/af.js",
+    "revision": "f6d371af49c2e1b1279b7c5eb5b50853"
+  },
+  {
+    "url": "include/ckeditor/lang/ar.js",
+    "revision": "064c31eebc9541def15e61b276dd92cd"
+  },
+  {
+    "url": "include/ckeditor/lang/bg.js",
+    "revision": "f29058b47dfaea7865204627d40cf7e2"
+  },
+  {
+    "url": "include/ckeditor/lang/bn.js",
+    "revision": "2b15cd493bb3bc40074a9307ecca608e"
+  },
+  {
+    "url": "include/ckeditor/lang/bs.js",
+    "revision": "cace049dad1dace2d8e242964721d8c5"
+  },
+  {
+    "url": "include/ckeditor/lang/ca.js",
+    "revision": "d5bfffa4351f20f6d724933ea44dd84f"
+  },
+  {
+    "url": "include/ckeditor/lang/cs.js",
+    "revision": "af573449cf73cc29fbbe88d4aba5d1c4"
+  },
+  {
+    "url": "include/ckeditor/lang/cy.js",
+    "revision": "d1a5d44df6e09139dfdd2e9abbafc70c"
+  },
+  {
+    "url": "include/ckeditor/lang/da.js",
+    "revision": "1620ac787996e4b56126bcf43aa97e90"
+  },
+  {
+    "url": "include/ckeditor/lang/de-ch.js",
+    "revision": "002da4efce3a25611d7ae61795c21fd1"
+  },
+  {
+    "url": "include/ckeditor/lang/de.js",
+    "revision": "90fc6b41c0f4d1037655ae248b0030aa"
+  },
+  {
+    "url": "include/ckeditor/lang/el.js",
+    "revision": "fc4933158aaa499b180c5093459ee90f"
+  },
+  {
+    "url": "include/ckeditor/lang/en-au.js",
+    "revision": "12403a66a23b1924cafa8ac18df86608"
+  },
+  {
+    "url": "include/ckeditor/lang/en-ca.js",
+    "revision": "dcdd9c1bbee1abb13169cd343cd86bcf"
+  },
+  {
+    "url": "include/ckeditor/lang/en-gb.js",
+    "revision": "7eebff3bc2f7c72cd610f4e256e45c8b"
+  },
+  {
+    "url": "include/ckeditor/lang/en.js",
+    "revision": "3f98edc405308347d7e54e0649013cbc"
+  },
+  {
+    "url": "include/ckeditor/lang/eo.js",
+    "revision": "6f4e5de867d65d46e1f13f3c7d8eb951"
+  },
+  {
+    "url": "include/ckeditor/lang/es.js",
+    "revision": "0e113155a98cfb4cdedc0c07f235ec1c"
+  },
+  {
+    "url": "include/ckeditor/lang/et.js",
+    "revision": "eee60e223e7b5d8190d41de130d33d03"
+  },
+  {
+    "url": "include/ckeditor/lang/eu.js",
+    "revision": "e98616df677f18f9dd60ea041f9fa9aa"
+  },
+  {
+    "url": "include/ckeditor/lang/fa.js",
+    "revision": "8cd7bc976b49f4d77b73362f1b6cae4d"
+  },
+  {
+    "url": "include/ckeditor/lang/fi.js",
+    "revision": "d54fac4d907fe05bab61fb883935ff48"
+  },
+  {
+    "url": "include/ckeditor/lang/fo.js",
+    "revision": "168119e2b5fcf3558f4284e9e711f25c"
+  },
+  {
+    "url": "include/ckeditor/lang/fr-ca.js",
+    "revision": "de2f6818db81023df747fd11d461357b"
+  },
+  {
+    "url": "include/ckeditor/lang/fr.js",
+    "revision": "7d2885960d8d2cbe717ce2f9e60c02f7"
+  },
+  {
+    "url": "include/ckeditor/lang/gl.js",
+    "revision": "dc039af05d6693f9f1f269efee04e3bd"
+  },
+  {
+    "url": "include/ckeditor/lang/gu.js",
+    "revision": "900622ce3611edee75c0b77b92af2214"
+  },
+  {
+    "url": "include/ckeditor/lang/he.js",
+    "revision": "c3de2035f2a7a5560f6191bb720edc71"
+  },
+  {
+    "url": "include/ckeditor/lang/hi.js",
+    "revision": "51d529deac4c920738082875258f7ff0"
+  },
+  {
+    "url": "include/ckeditor/lang/hr.js",
+    "revision": "65ab1a4378775a1ffaf0a9e14c7e5db8"
+  },
+  {
+    "url": "include/ckeditor/lang/hu.js",
+    "revision": "3c8ba198d400aca7703020ad9196a053"
+  },
+  {
+    "url": "include/ckeditor/lang/id.js",
+    "revision": "adeb65253375e0c7d83b2244f9ed4a01"
+  },
+  {
+    "url": "include/ckeditor/lang/is.js",
+    "revision": "b50c87b69fb853e491a1be015b0a55b6"
+  },
+  {
+    "url": "include/ckeditor/lang/it.js",
+    "revision": "2b6c88cc7d2ff683f78fbd50e2118ce2"
+  },
+  {
+    "url": "include/ckeditor/lang/ja.js",
+    "revision": "4a8b6a7a661fd205a1012297d8cbacc7"
+  },
+  {
+    "url": "include/ckeditor/lang/ka.js",
+    "revision": "ca3b1261c167f06c83163cb0cd262567"
+  },
+  {
+    "url": "include/ckeditor/lang/km.js",
+    "revision": "7b0a903154ba7b61b79acad560dbb661"
+  },
+  {
+    "url": "include/ckeditor/lang/ko.js",
+    "revision": "9991aa0c7fefcbacc65a437199a510be"
+  },
+  {
+    "url": "include/ckeditor/lang/ku.js",
+    "revision": "17defa6f7961b85d33a9ff230fba428b"
+  },
+  {
+    "url": "include/ckeditor/lang/lt.js",
+    "revision": "2fe654d257b4d88f81c18b14136b9d37"
+  },
+  {
+    "url": "include/ckeditor/lang/lv.js",
+    "revision": "ef8f495f1c671f33b5ce119f7f27809e"
+  },
+  {
+    "url": "include/ckeditor/lang/mk.js",
+    "revision": "dae421b5e0d579b31cdf10b20c82ecb2"
+  },
+  {
+    "url": "include/ckeditor/lang/mn.js",
+    "revision": "5707c68ace6fce5262bb994a9a5c2cab"
+  },
+  {
+    "url": "include/ckeditor/lang/ms.js",
+    "revision": "5049dd5eddcc4e02223040b6f88a7f2d"
+  },
+  {
+    "url": "include/ckeditor/lang/nb.js",
+    "revision": "2dab24c29e6eee6288decf44935383f9"
+  },
+  {
+    "url": "include/ckeditor/lang/nl.js",
+    "revision": "9e62f2be2671bbc389ac8dee10586aa9"
+  },
+  {
+    "url": "include/ckeditor/lang/no.js",
+    "revision": "8023dd2a9b8149288fe983074389d061"
+  },
+  {
+    "url": "include/ckeditor/lang/pl.js",
+    "revision": "37bc032fddae2ca549748c7c4f1718a4"
+  },
+  {
+    "url": "include/ckeditor/lang/pt-br.js",
+    "revision": "2f24393ae106d670e69e7a639374afcb"
+  },
+  {
+    "url": "include/ckeditor/lang/pt.js",
+    "revision": "c2a419c948a6088c54552981d4d0bb41"
+  },
+  {
+    "url": "include/ckeditor/lang/ro.js",
+    "revision": "02b6fbcecf9f7b08ece0e19e8f58e568"
+  },
+  {
+    "url": "include/ckeditor/lang/ru.js",
+    "revision": "a7b9e19f688a34b8707d78fa1fcb6bb2"
+  },
+  {
+    "url": "include/ckeditor/lang/si.js",
+    "revision": "40301b3af237d3e473c36bfea7bd436a"
+  },
+  {
+    "url": "include/ckeditor/lang/sk.js",
+    "revision": "2a6c16571288d69c5b2649f99cafdabc"
+  },
+  {
+    "url": "include/ckeditor/lang/sl.js",
+    "revision": "a3822a5d7cdb531311c183ed48c72e01"
+  },
+  {
+    "url": "include/ckeditor/lang/sq.js",
+    "revision": "99a33673f7a9e49b8e91961decd64875"
+  },
+  {
+    "url": "include/ckeditor/lang/sr-latn.js",
+    "revision": "0bb41197f51a815689e426c02fa68cfe"
+  },
+  {
+    "url": "include/ckeditor/lang/sr.js",
+    "revision": "5a816b8ca0ee9df43040205994a0a5a5"
+  },
+  {
+    "url": "include/ckeditor/lang/sv.js",
+    "revision": "9af8fc5999f93e6b7b8d8a4362568459"
+  },
+  {
+    "url": "include/ckeditor/lang/th.js",
+    "revision": "94ca015609f6773d55652410ed6d1e4e"
+  },
+  {
+    "url": "include/ckeditor/lang/tr.js",
+    "revision": "804482e3b76041293eba5fd6178db04f"
+  },
+  {
+    "url": "include/ckeditor/lang/tt.js",
+    "revision": "5fdff97c0777a6db0f3e3e066b30e50d"
+  },
+  {
+    "url": "include/ckeditor/lang/ug.js",
+    "revision": "d9746fb84c4b809aeaaedfa31fc87a81"
+  },
+  {
+    "url": "include/ckeditor/lang/uk.js",
+    "revision": "ad97b6dd01c71ed0dde922a644c1b7cf"
+  },
+  {
+    "url": "include/ckeditor/lang/vi.js",
+    "revision": "a734d135fe107139d3da66b39d0aac63"
+  },
+  {
+    "url": "include/ckeditor/lang/zh-cn.js",
+    "revision": "451f3a29d132b4030223f0fc0c8f9b5e"
+  },
+  {
+    "url": "include/ckeditor/lang/zh.js",
+    "revision": "3ade1f9afeb618db4425b82ce44d27bc"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/a11yhelp.js",
+    "revision": "c906ae04cdebc6cbc3921d50003b4bde"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/af.js",
+    "revision": "553e745a570b423461a9093199acb4c6"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/ar.js",
+    "revision": "dd2b314a2669755bb543b54ddaffda26"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/bg.js",
+    "revision": "bccb22cdb8371f0f70710856a3aefc49"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/ca.js",
+    "revision": "abc036c3a90c5f5197ac1f8dbd56c244"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/cs.js",
+    "revision": "77098065f5d86f215bbfa3e0a8b6d195"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/cy.js",
+    "revision": "d193057322cc82bd2d15912f7639611d"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/da.js",
+    "revision": "d3fea6f1a9c66de78f5de496a7bb6e83"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/de-ch.js",
+    "revision": "f97042007621a5b973407c11969d7c59"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/de.js",
+    "revision": "1d0599e93873e55ec6e11bcaf32115ae"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/el.js",
+    "revision": "0b74dc52aa225184a06a5751961a7f12"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/en-gb.js",
+    "revision": "d894d758bf5af1a12832483a8354ec0a"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/en.js",
+    "revision": "68a16ffd3231909cc0a39d894aba89aa"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/eo.js",
+    "revision": "45a1cd2a6f6a77c7e179e9bfe896f6e4"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/es.js",
+    "revision": "38dd0a3caef280c5e0c504853ff2180d"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/et.js",
+    "revision": "86364a93769cab8ef19d883db5b0e09c"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/eu.js",
+    "revision": "f43bf6be385f21c393deffc22d0c3482"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/fa.js",
+    "revision": "5bc46bb815cf50c16bb4673aa04d4787"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/fi.js",
+    "revision": "e426b048f06165595ab2413ca50e4da4"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/fo.js",
+    "revision": "d961766bd87d0a18de30827cd73ce61f"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/fr-ca.js",
+    "revision": "2dc13aa30a4ba040b5880840a7e2175e"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/fr.js",
+    "revision": "f32361e216e30d3784ad5920f034a07b"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/gl.js",
+    "revision": "3bba8421a304291a7e0348f519b381aa"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/gu.js",
+    "revision": "5e0a3caab18ca1c2910d373b5d4e0723"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/he.js",
+    "revision": "e898c0cd185ba8e61c49c250f0cf592d"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/hi.js",
+    "revision": "e6dae7713f0b6948e92c74c3d5a98698"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/hr.js",
+    "revision": "79c930a378a786e66d9b7bc967ca44ca"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/hu.js",
+    "revision": "5a950600a4244106921edc76f108d171"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/id.js",
+    "revision": "9fb9560ae70043c5e8045622822b36fa"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/it.js",
+    "revision": "d9bd2a6940a345a76c783d80bc52bf21"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/ja.js",
+    "revision": "cf30da3d4b4f9a8026529a0c3b09ae2f"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/km.js",
+    "revision": "2f27233cf2186024f1df752075b46eef"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/ko.js",
+    "revision": "03a292571d70db2c4a3b3c5d5518b0e9"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/ku.js",
+    "revision": "3e34cf99f581d84268c22caabc7c4c8f"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/lt.js",
+    "revision": "962c8badbdc62a2f83cd9329837f06aa"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/lv.js",
+    "revision": "28417f0950f211fc8f6cfaf7f63df97b"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/mk.js",
+    "revision": "bcf317fcf6f52e7c5ccbaf9f4b17b3ce"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/mn.js",
+    "revision": "b2b5a688a76eb4ece381c15a8e9f6d96"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/nb.js",
+    "revision": "2be1b55b0c2327fbb2521fccdb7e2540"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/nl.js",
+    "revision": "134b2dc245f472b4f43e57c23de520d8"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/no.js",
+    "revision": "71437c83ac15064606315a66f047e59b"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/pl.js",
+    "revision": "e7151ebd23aa5e2893dead061b40f61c"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/pt-br.js",
+    "revision": "f047f098673e46bae83a01c015c525e9"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/pt.js",
+    "revision": "879e2bdf34819cf10c25c31cbdb2f66e"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/ro.js",
+    "revision": "2729fa55289b2ddcd3ba286f3b43a66d"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/ru.js",
+    "revision": "754fe9ca70dedf67210b9b7f6a2712fa"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/si.js",
+    "revision": "d6ee00f42cf411de41f0e4157820d283"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/sk.js",
+    "revision": "7f18259c7a6e3a42789b16805b574435"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/sl.js",
+    "revision": "acdcb8ab80249ed32f16557f352d4ec7"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/sq.js",
+    "revision": "af903a3367c70761f672c00af89d80a4"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/sr-latn.js",
+    "revision": "7b15bd3e9800336a8f4c34b6defd350e"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/sr.js",
+    "revision": "062aa900420c3bd5ab46b74f10a67163"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/sv.js",
+    "revision": "f3fa00db64880849abbd926627bed1e4"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/th.js",
+    "revision": "429bfd0a36687a17e733994975f5e9d6"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/tr.js",
+    "revision": "c7c58fa20bbb9d9de80b64f7aea257b5"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/tt.js",
+    "revision": "9bb4109d579bd746d39bd093c850b203"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/ug.js",
+    "revision": "9f92226887f9ad02428732844e92fcd2"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/uk.js",
+    "revision": "e90d16420b20027a8c882499630b046f"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/vi.js",
+    "revision": "4f6cc5bf09c491223482b7d71d945f12"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/zh-cn.js",
+    "revision": "6ec54c26306a2c1815e91ac7e3e1dca8"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/dialogs/lang/zh.js",
+    "revision": "28944d626fa02b95a2f99307ade00e09"
+  },
+  {
+    "url": "include/ckeditor/plugins/a11yhelp/lang/en.js",
+    "revision": "e7e238d9e4ad38e663fe99ead9c19f80"
+  },
+  {
+    "url": "include/ckeditor/plugins/about/dialogs/about.js",
+    "revision": "1a3a3b27cd4c3c376600a330df359122"
+  },
+  {
+    "url": "include/ckeditor/plugins/about/dialogs/hidpi/logo_ckeditor.png",
+    "revision": "6318d2b6f7fc79b4ed0404ffbc2dac1e"
+  },
+  {
+    "url": "include/ckeditor/plugins/about/dialogs/logo_ckeditor.png",
+    "revision": "70dd831c761a20467a6ba9e5ae736f91"
+  },
+  {
+    "url": "include/ckeditor/plugins/clipboard/dialogs/paste.js",
+    "revision": "d6cab4f06e855d651de6b232a00bf8bd"
+  },
+  {
+    "url": "include/ckeditor/plugins/colordialog/dialogs/colordialog.js",
+    "revision": "01fe01366fe59d5247fd6e4095d65fbd"
+  },
+  {
+    "url": "include/ckeditor/plugins/dialog/dialogDefinition.js",
+    "revision": "9083322f743544942de24acaa732cb05"
+  },
+  {
+    "url": "include/ckeditor/plugins/div/dialogs/div.js",
+    "revision": "574ec1e97ae1e74720ae4f746a6af29a"
+  },
+  {
+    "url": "include/ckeditor/plugins/fakeobjects/images/spacer.gif",
+    "revision": "df3e567d6f16d040326c7a0ea29a4f41"
+  },
+  {
+    "url": "include/ckeditor/plugins/find/dialogs/find.js",
+    "revision": "7b6c648619e4239fe8e23909a89aa657"
+  },
+  {
+    "url": "include/ckeditor/plugins/flash/dialogs/flash.js",
+    "revision": "417ba136b89581f0474fc79f91f72ce8"
+  },
+  {
+    "url": "include/ckeditor/plugins/flash/images/placeholder.png",
+    "revision": "e9ac9384237d8d1cdaab68d31a22005d"
+  },
+  {
+    "url": "include/ckeditor/plugins/forms/dialogs/button.js",
+    "revision": "805085df88d3a01ea89816a203119337"
+  },
+  {
+    "url": "include/ckeditor/plugins/forms/dialogs/checkbox.js",
+    "revision": "5968b1bdff8181080fafb04e16d312fa"
+  },
+  {
+    "url": "include/ckeditor/plugins/forms/dialogs/form.js",
+    "revision": "a01c8011353066fae9d7583ec9d3c363"
+  },
+  {
+    "url": "include/ckeditor/plugins/forms/dialogs/hiddenfield.js",
+    "revision": "0eaa5504a3a7c2fbf0e82b8e05aad8b2"
+  },
+  {
+    "url": "include/ckeditor/plugins/forms/dialogs/radio.js",
+    "revision": "3c8b933e734d1febdd5753521718e96e"
+  },
+  {
+    "url": "include/ckeditor/plugins/forms/dialogs/select.js",
+    "revision": "c707a4d77fe37d18e2b91433b996f93d"
+  },
+  {
+    "url": "include/ckeditor/plugins/forms/dialogs/textarea.js",
+    "revision": "ac76075932fc24d952d7e46e5ca038d2"
+  },
+  {
+    "url": "include/ckeditor/plugins/forms/dialogs/textfield.js",
+    "revision": "20d91bc5a44c8910f7c2e8ac1923ab87"
+  },
+  {
+    "url": "include/ckeditor/plugins/forms/images/hiddenfield.gif",
+    "revision": "6e7765b0483daffb25f2b7bf5098e0d9"
+  },
+  {
+    "url": "include/ckeditor/plugins/icons_hidpi.png",
+    "revision": "16af6f6d04e4cd2180690cfcab4a7f9d"
+  },
+  {
+    "url": "include/ckeditor/plugins/icons.png",
+    "revision": "e1e5259ef4d132ac5cb3655a4f41cf95"
+  },
+  {
+    "url": "include/ckeditor/plugins/iframe/dialogs/iframe.js",
+    "revision": "1a210f09025841007c1c5cdf61db2731"
+  },
+  {
+    "url": "include/ckeditor/plugins/iframe/images/placeholder.png",
+    "revision": "a5ab5364efc6f7cea525e76a7bb619ae"
+  },
+  {
+    "url": "include/ckeditor/plugins/iframedialog/plugin.js",
+    "revision": "a0be666d0b8efdc9be16dd29ca23dc3e"
+  },
+  {
+    "url": "include/ckeditor/plugins/image/dialogs/image.js",
+    "revision": "66da3f2e5bfa417837f2d4030935be3f"
+  },
+  {
+    "url": "include/ckeditor/plugins/image/images/noimage.png",
+    "revision": "3eed23f5021065a8351126936bbe1e95"
+  },
+  {
+    "url": "include/ckeditor/plugins/link/dialogs/anchor.js",
+    "revision": "b217b01fd0802ef49daf0db0f9facf34"
+  },
+  {
+    "url": "include/ckeditor/plugins/link/dialogs/link.js",
+    "revision": "d0ef3ba60976b556710f37b7fccb9844"
+  },
+  {
+    "url": "include/ckeditor/plugins/link/images/anchor.gif",
+    "revision": "60a2121d55f9238f529458ee5f2e6e4e"
+  },
+  {
+    "url": "include/ckeditor/plugins/link/images/anchor.png",
+    "revision": "c23e1c6b52f6ca6678b77f38fef61789"
+  },
+  {
+    "url": "include/ckeditor/plugins/link/images/hidpi/anchor.png",
+    "revision": "9df1a4e40cabf35907a16ea59f3f9df1"
+  },
+  {
+    "url": "include/ckeditor/plugins/liststyle/dialogs/liststyle.js",
+    "revision": "740bcbdf7333ce748cd92dc6fcacd5a8"
+  },
+  {
+    "url": "include/ckeditor/plugins/magicline/images/hidpi/icon-rtl.png",
+    "revision": "b37d0404583c0ac273a27873451c3234"
+  },
+  {
+    "url": "include/ckeditor/plugins/magicline/images/hidpi/icon.png",
+    "revision": "5ba2e7b6aa50c7843ae9ca01ce08b606"
+  },
+  {
+    "url": "include/ckeditor/plugins/magicline/images/icon-rtl.png",
+    "revision": "a29eda8cd2b1ebcbd3379654acebfb85"
+  },
+  {
+    "url": "include/ckeditor/plugins/magicline/images/icon.png",
+    "revision": "baf6974c98b636142c7b0b5ba19bd96c"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/css/codemirror.min.css",
+    "revision": "e7b6c35da3a02c05fbd75748b4674c93"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/icons/hidpi/markdown.png",
+    "revision": "07a325c84b4a1698fbd6725862d97ed6"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/icons/markdown.png",
+    "revision": "4e353c073dcf2e931b6eedee9d43ca09"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/js/codemirror-gfm-min.js",
+    "revision": "fc5507436d1979168e19568e52f4a065"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/js/marked.js",
+    "revision": "4e8365c19f29ed6b00310ba62a7816df"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/js/to-markdown.js",
+    "revision": "8134cb0fdc13bc9df4a934a3bd3958e6"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/plugin.js",
+    "revision": "2358b315ea5a22e19af7f9a632e7b23b"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/3024-day.css",
+    "revision": "68406c1477a4cb1b7ae9dc51be92a486"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/3024-night.css",
+    "revision": "90a9b887c1aaea63c629bdce48f95230"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/ambiance-mobile.css",
+    "revision": "256f2dd130b80c6afaa40fddf700d12a"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/ambiance.css",
+    "revision": "c65e357d96162daabe78bca2dbdce79c"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/base16-dark.css",
+    "revision": "bce9dddb84941d09a75dd3797a5dc11a"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/base16-light.css",
+    "revision": "38ded826fdb13e8fad57bc58553b96e3"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/blackboard.css",
+    "revision": "cf7fadda1ebdb98bbdc9c3144ec5894e"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/cobalt.css",
+    "revision": "7ac99f19422299b4d0ff8535556b94f8"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/eclipse.css",
+    "revision": "7c2f7b4b44b33fc9a5f857f542d007ac"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/elegant.css",
+    "revision": "c98914a034be0b11803bd3c24fba25dd"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/erlang-dark.css",
+    "revision": "75398b59ceeed0bba76357d6395a0018"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/lesser-dark.css",
+    "revision": "8cded6b0441648f1964788f80d944753"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/mbo.css",
+    "revision": "6ca14e2533afc4d47b697f199ce4cee4"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/mdn-like.css",
+    "revision": "770bc206c1fc62fe40e729b799380f66"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/midnight.css",
+    "revision": "96e728f928af79eb4c594c836c461db2"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/monokai.css",
+    "revision": "24b4f26461aa59004318db8561c2bdb6"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/neat.css",
+    "revision": "673552ecebac76569063801293e9c76c"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/neo.css",
+    "revision": "f65035d751bacec07f189e3477f50bda"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/night.css",
+    "revision": "25ac42da92cb242ce365efe6b34da645"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/paraiso-dark.css",
+    "revision": "3e29c028e094d75b203945bcdccdf02e"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/paraiso-light.css",
+    "revision": "6c4ff0ddd6f3c25f2c1494fe7ec0ce55"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/pastel-on-dark.css",
+    "revision": "b9c0773d5747bb5deb0dc1194d3221d7"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/rubyblue.css",
+    "revision": "9912ce413e966aabe603573ab5bb0d83"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/solarized.css",
+    "revision": "1ac07f4d1544921fe5beec04c19ffe8b"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/the-matrix.css",
+    "revision": "cc9d5612106e040187f780d897786cef"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/tomorrow-night-eighties.css",
+    "revision": "e73b9d5d85f48ebe7f55a8245046f546"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/twilight.css",
+    "revision": "ae5dfb3ea25d320f6c15284c1a4145bd"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/vibrant-ink.css",
+    "revision": "596536b3f6ca3d80729fa943a40e1ccb"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/xq-dark.css",
+    "revision": "1b5bb146d6fcc235103072589a347cc8"
+  },
+  {
+    "url": "include/ckeditor/plugins/markdown/theme/xq-light.css",
+    "revision": "481023ea9d2e1d4c1707a1867c500326"
+  },
+  {
+    "url": "include/ckeditor/plugins/pagebreak/images/pagebreak.gif",
+    "revision": "05dcfa6e3332b3ab7ac9218bf420cb58"
+  },
+  {
+    "url": "include/ckeditor/plugins/pastefromword/filter/default.js",
+    "revision": "0d9bb38c0b4fef01beb354de7964e9db"
+  },
+  {
+    "url": "include/ckeditor/plugins/pastetext/dialogs/pastetext.js",
+    "revision": "c889dda445f8c70cdfb5e6be15fb3d19"
+  },
+  {
+    "url": "include/ckeditor/plugins/scayt/dialogs/options.js",
+    "revision": "a56ca25171107cbb0b71f73c93636769"
+  },
+  {
+    "url": "include/ckeditor/plugins/scayt/dialogs/toolbar.css",
+    "revision": "abb7173bc76c982641101d81cc544ab0"
+  },
+  {
+    "url": "include/ckeditor/plugins/showblocks/images/block_address.png",
+    "revision": "9bec74c765f8a0938f50875912c07282"
+  },
+  {
+    "url": "include/ckeditor/plugins/showblocks/images/block_blockquote.png",
+    "revision": "6a75769ebc3efc29bea72ca39f2706d5"
+  },
+  {
+    "url": "include/ckeditor/plugins/showblocks/images/block_div.png",
+    "revision": "245b9fa9b31d1a230be294a4824ebc2a"
+  },
+  {
+    "url": "include/ckeditor/plugins/showblocks/images/block_h1.png",
+    "revision": "9c7fce3d77cc205e7bd2a52043ea93e3"
+  },
+  {
+    "url": "include/ckeditor/plugins/showblocks/images/block_h2.png",
+    "revision": "23e0bd942da90db8f0d1f02de9c102df"
+  },
+  {
+    "url": "include/ckeditor/plugins/showblocks/images/block_h3.png",
+    "revision": "e46278c31f23cea32eec3cdeaf4fd344"
+  },
+  {
+    "url": "include/ckeditor/plugins/showblocks/images/block_h4.png",
+    "revision": "e7f71965bd30638bdb845e46bb996487"
+  },
+  {
+    "url": "include/ckeditor/plugins/showblocks/images/block_h5.png",
+    "revision": "4eb09981f4bd28f37cb01ffde72937bd"
+  },
+  {
+    "url": "include/ckeditor/plugins/showblocks/images/block_h6.png",
+    "revision": "c59baac0a87734e16b44cdbac4fa5429"
+  },
+  {
+    "url": "include/ckeditor/plugins/showblocks/images/block_p.png",
+    "revision": "c3a4ca41007690fb063166eb94c6c40a"
+  },
+  {
+    "url": "include/ckeditor/plugins/showblocks/images/block_pre.png",
+    "revision": "2dd09308dc4573029ded1030ecea1a66"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/dialogs/smiley.js",
+    "revision": "156cbc1b9467a2810a80caff0288315c"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/angel_smile.gif",
+    "revision": "eb0d289bc2b6cf81cdcb3d172de01be3"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/angel_smile.png",
+    "revision": "35de693f510be6092087e76fbd8d4858"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/angry_smile.gif",
+    "revision": "01f7bf4165ed0ea9c575047512e6b254"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/angry_smile.png",
+    "revision": "b1b142807ce4bb8784c5291e66c77e59"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/broken_heart.gif",
+    "revision": "80bd5b8b6d380de82de62caacfdc5c31"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/broken_heart.png",
+    "revision": "54051abe9b11365442eb133431055e4e"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/confused_smile.gif",
+    "revision": "2c0fac96ca9ffc7946345f6bbb3f756f"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/confused_smile.png",
+    "revision": "71ddba0809eaf8772a4f959c476dfd45"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/cry_smile.gif",
+    "revision": "14eaed2d73022fca3bebfae0052b0c6b"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/cry_smile.png",
+    "revision": "9f8eedc515716b59ffb31e0975ed70c6"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/devil_smile.gif",
+    "revision": "e9421d09d8e14616be9571c92125933c"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/devil_smile.png",
+    "revision": "9ebcc5258594dea600706f079ca84b48"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/embaressed_smile.gif",
+    "revision": "666d0000b06a5dd44693b2d3ced7f547"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/embarrassed_smile.gif",
+    "revision": "666d0000b06a5dd44693b2d3ced7f547"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/embarrassed_smile.png",
+    "revision": "b99d286c8d3da9f3e91207bc6c829233"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/envelope.gif",
+    "revision": "1448c4f72550074a49132c2895dafc4f"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/envelope.png",
+    "revision": "579ad38a28eb7aa15daf8751a81ab246"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/heart.gif",
+    "revision": "140f63f60c8cbdd8b54c10a43272c623"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/heart.png",
+    "revision": "818362c20066b60184a5a0e8187baa79"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/kiss.gif",
+    "revision": "5647a7d8a3f0e1e1536ce4156f5c2e25"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/kiss.png",
+    "revision": "9615f97979a3674603cfd03bfeca451f"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/lightbulb.gif",
+    "revision": "30d7063a64990b3b4c02566b4caa82e9"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/lightbulb.png",
+    "revision": "952ab995f4cf77d7686d0ec853d2f232"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/omg_smile.gif",
+    "revision": "23f1297b1e0bf882f47c2e7f99c5be7c"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/omg_smile.png",
+    "revision": "10b2eb3edfab4bf94357bf8578f24377"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/regular_smile.gif",
+    "revision": "d2eec284220e320bf730c56a1ac599e5"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/regular_smile.png",
+    "revision": "bc23f5aef97ef9f12ac3b0d49bcd8afb"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/sad_smile.gif",
+    "revision": "00185a83031165eee6389f74aefde902"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/sad_smile.png",
+    "revision": "937e65674e30bd0f026d7260df698dc6"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/shades_smile.gif",
+    "revision": "5adc692cc4db4637563136033890692b"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/shades_smile.png",
+    "revision": "d25c5ca52217e776f33a709833f0cbfd"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/teeth_smile.gif",
+    "revision": "98f94c05a790e302b74cfc8a02436571"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/teeth_smile.png",
+    "revision": "82d6f950227d76aded2600aceac80f67"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/thumbs_down.gif",
+    "revision": "b372f9ed85d5312d45a16b90e94f38f7"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/thumbs_down.png",
+    "revision": "b2d9c5d63108c03b6ac62c1ae49c52d2"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/thumbs_up.gif",
+    "revision": "aa9b9c654637e4416f6fa04a58a8f614"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/thumbs_up.png",
+    "revision": "bb6ce02a0a423ef270217de51374f107"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/tongue_smile.gif",
+    "revision": "1bea0b1184b1e5c3940ec8c5d6e81f86"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/tongue_smile.png",
+    "revision": "d80a35ee23e3ee9cb6d32372a3182e39"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/tounge_smile.gif",
+    "revision": "1bea0b1184b1e5c3940ec8c5d6e81f86"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/whatchutalkingabout_smile.gif",
+    "revision": "381881cfa2765138a4c2e7f3da56bced"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/whatchutalkingabout_smile.png",
+    "revision": "6e562cb0be0aa525d9a5b8b23759d4e4"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/wink_smile.gif",
+    "revision": "1aab746a15472e6e4675369158ffb420"
+  },
+  {
+    "url": "include/ckeditor/plugins/smiley/images/wink_smile.png",
+    "revision": "9a5c2bebf35175e98a54c7edb62ae3cd"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/af.js",
+    "revision": "71479f26d18da271a5251c1339dbc102"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/ar.js",
+    "revision": "242e3d1c669cde291c2c0ec1a2ca81b5"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/bg.js",
+    "revision": "267cc43f587c3b514e3bfa76f852613b"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/ca.js",
+    "revision": "c1405614da9b8c106ca93dfcb1c4ee4c"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/cs.js",
+    "revision": "1e3ca4eb94ef05bac32e4fce7f3dffcb"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/cy.js",
+    "revision": "a19226091d8c0722657dc82152849ad5"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/da.js",
+    "revision": "f04bab6366652883e229078aa3f97d72"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/de-ch.js",
+    "revision": "ad2f02e0e8c2790560de0bb848604bc2"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/de.js",
+    "revision": "7de71236111561aad3cb4c05e6040d6d"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/el.js",
+    "revision": "105f389f4a77e279deeb38281f499a7c"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/en-gb.js",
+    "revision": "fa9ed9233d66865b8730ca23a564fada"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/en.js",
+    "revision": "64d91a1320d6dd6309d911524f4274c5"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/eo.js",
+    "revision": "e3df19977f054dba444ff5d7d679f38e"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/es.js",
+    "revision": "f9a1866732229f7a716dfbe973f9475f"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/et.js",
+    "revision": "b809e64d03f58ce863de23092211ee93"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/eu.js",
+    "revision": "5ab2dd603f22810a649922660b239275"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/fa.js",
+    "revision": "c5501ff684654c809c1dcf081ec4b047"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/fi.js",
+    "revision": "9962779efbd245da05bf64f48f9c4964"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/fr-ca.js",
+    "revision": "e341518a81cdbbcb43921514f50060e9"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/fr.js",
+    "revision": "8656042b9e548541b0a50c4b4c3413f0"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/gl.js",
+    "revision": "a040710cdf41b2e65f70d1f050dbfcb3"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/he.js",
+    "revision": "d963066572ca7c196469b8e293f9a9c9"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/hr.js",
+    "revision": "2569616cba41d645817fdf217056d808"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/hu.js",
+    "revision": "19f2c26e6b945c667f1697a0083ec82f"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/id.js",
+    "revision": "c4e8a9e851fd7452672eee08b6247008"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/it.js",
+    "revision": "0bb5416f936da3ca7f7d7c7073fe8797"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/ja.js",
+    "revision": "e6ad5309e1cbc000d32b088587cfaeb0"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/km.js",
+    "revision": "f155ab50c0dd87b2fe10620608e7792f"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/ko.js",
+    "revision": "98ceacf77d2f8596e1d093323c2beb46"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/ku.js",
+    "revision": "bdb43db60fa0d95dd2ceb87cac6480c1"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/lt.js",
+    "revision": "6332821a9fd06d54db32a20528f987ad"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/lv.js",
+    "revision": "30f4b6f543dd7535b0b351585ff6e835"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/nb.js",
+    "revision": "14ac8c2a4964ecd5a3d01f3e4c078ed1"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/nl.js",
+    "revision": "45aa3587f4d7f06be783c3a60e2655be"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/no.js",
+    "revision": "2968ac3f78688849ceae5dce2aa9170b"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/pl.js",
+    "revision": "07d2f8ffcc3b335bcb4b0f87281466e7"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/pt-br.js",
+    "revision": "80cebdc4c6de643f25f747cef54259c6"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/pt.js",
+    "revision": "106ab2d7670770e848c8fb7a3593cb59"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/ru.js",
+    "revision": "0381daa5e893e2d23f2aa18b8d54791e"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/si.js",
+    "revision": "c7f4759e7746b42f52576d120ce9c110"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/sk.js",
+    "revision": "7ba061095626489d7ff71b184e8d9392"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/sl.js",
+    "revision": "cced0c682e7357fdd019e8a2b8955b7e"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/sq.js",
+    "revision": "69b7ae0cbaac040db832a45d5a8bbfdc"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/sv.js",
+    "revision": "462e8b53b50756055be48182598b7152"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/th.js",
+    "revision": "87a660a76a82b8a02378814598917316"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/tr.js",
+    "revision": "6c52016576fee6b4f1df73fa9358a3fb"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/tt.js",
+    "revision": "4c11ae70558865c4fb8e212832a0b531"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/ug.js",
+    "revision": "ff9ff87722657daa79c568a92cbccb60"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/uk.js",
+    "revision": "0e70ad688b02c8dcf03282f984ad0ca8"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/vi.js",
+    "revision": "24525eba46f6c3e90b6353f58d7c56b5"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/zh-cn.js",
+    "revision": "88cb0cad1971353eaf714fc5fb2971ab"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/lang/zh.js",
+    "revision": "3ab3180d28689735b6d15ecdd8be2ff1"
+  },
+  {
+    "url": "include/ckeditor/plugins/specialchar/dialogs/specialchar.js",
+    "revision": "9c37cab95ec0ed9d4c99170e3ea62e77"
+  },
+  {
+    "url": "include/ckeditor/plugins/styles/styles/default.js",
+    "revision": "c050e18279257bd47e06293119f96f94"
+  },
+  {
+    "url": "include/ckeditor/plugins/table/dialogs/table.js",
+    "revision": "323208d23b11e838078ac418d7af15f6"
+  },
+  {
+    "url": "include/ckeditor/plugins/tabletools/dialogs/tableCell.js",
+    "revision": "5ed56499c4458e34fe44e0f8815ec011"
+  },
+  {
+    "url": "include/ckeditor/plugins/templates/dialogs/templates.css",
+    "revision": "c0895a50e0b3648de77fce7af4664c1b"
+  },
+  {
+    "url": "include/ckeditor/plugins/templates/dialogs/templates.js",
+    "revision": "91f3edf0ad84c5ff359083a6ce381544"
+  },
+  {
+    "url": "include/ckeditor/plugins/templates/templates/default.js",
+    "revision": "6e83568f3898f1a8f35cfdf927becd7e"
+  },
+  {
+    "url": "include/ckeditor/plugins/templates/templates/images/template1.gif",
+    "revision": "fc667c4366fe133c30ab122fe2ee7f20"
+  },
+  {
+    "url": "include/ckeditor/plugins/templates/templates/images/template2.gif",
+    "revision": "8a4d45166ebeef73e222270a8113d66f"
+  },
+  {
+    "url": "include/ckeditor/plugins/templates/templates/images/template3.gif",
+    "revision": "b8650f06582ac88ece68948bac1bf734"
+  },
+  {
+    "url": "include/ckeditor/plugins/uicolor/dialogs/uicolor.js",
+    "revision": "59a3c518ef6b28036ab887196c462525"
+  },
+  {
+    "url": "include/ckeditor/plugins/uicolor/lang/en.js",
+    "revision": "1c6d5616881f101039fcc13fb4c8cfc8"
+  },
+  {
+    "url": "include/ckeditor/plugins/uicolor/plugin.js",
+    "revision": "973fab87a5ab79cc5c16460c3cad6c52"
+  },
+  {
+    "url": "include/ckeditor/plugins/uicolor/uicolor.gif",
+    "revision": "83be344f9d97ac22ccfb90a07d128b04"
+  },
+  {
+    "url": "include/ckeditor/plugins/uicolor/yui/assets/hue_bg.png",
+    "revision": "85c2fc9570abba39f203039c948c5779"
+  },
+  {
+    "url": "include/ckeditor/plugins/uicolor/yui/assets/hue_thumb.png",
+    "revision": "8dfa46d350f447a5b09e1e3f6e6dc7b4"
+  },
+  {
+    "url": "include/ckeditor/plugins/uicolor/yui/assets/picker_mask.png",
+    "revision": "3193f0b5f7bd03ec403b9466148622c2"
+  },
+  {
+    "url": "include/ckeditor/plugins/uicolor/yui/assets/picker_thumb.png",
+    "revision": "d806b36442a90e313b76138ce0d1eabf"
+  },
+  {
+    "url": "include/ckeditor/plugins/uicolor/yui/assets/yui.css",
+    "revision": "cff6d0aae50e3b59ba3d29c3dbeb5849"
+  },
+  {
+    "url": "include/ckeditor/plugins/uicolor/yui/yui.js",
+    "revision": "71783bfee52c7f4433db88c20ca50441"
+  },
+  {
+    "url": "include/ckeditor/plugins/wsc/dialogs/wsc_ie.js",
+    "revision": "47e6654b545a57f00589137476a68fdc"
+  },
+  {
+    "url": "include/ckeditor/plugins/wsc/dialogs/wsc.css",
+    "revision": "9f63e9dd90b207fdf884bb6e8b5dfbaf"
+  },
+  {
+    "url": "include/ckeditor/plugins/wsc/dialogs/wsc.js",
+    "revision": "a326fbeed01112e6a2a905f5f5c33792"
+  },
+  {
+    "url": "include/ckeditor/skins/kama/dialog.css",
+    "revision": "ab9c6317743da7bc97e314770529157a"
+  },
+  {
+    "url": "include/ckeditor/skins/kama/editor.css",
+    "revision": "0a1f1ef636d0eea6bfae512c39077618"
+  },
+  {
+    "url": "include/ckeditor/skins/kama/icons.png",
+    "revision": "6f5de214381b2850c8fc61ac8cce4e05"
+  },
+  {
+    "url": "include/ckeditor/skins/kama/images/dialog_sides_rtl.png",
+    "revision": "e91e6dbf0680e420d5b118dbe8ac328e"
+  },
+  {
+    "url": "include/ckeditor/skins/kama/images/dialog_sides.gif",
+    "revision": "120d7ec1d25b985eeaa6b8e33cfe532b"
+  },
+  {
+    "url": "include/ckeditor/skins/kama/images/dialog_sides.png",
+    "revision": "7b4484847ba0490140a20e8021d50031"
+  },
+  {
+    "url": "include/ckeditor/skins/kama/images/mini.gif",
+    "revision": "44047e297a6b8de4c228e763b2fcd89a"
+  },
+  {
+    "url": "include/ckeditor/skins/kama/images/noimage.png",
+    "revision": "1c5c947a5325e0946a32bc33261fe22f"
+  },
+  {
+    "url": "include/ckeditor/skins/kama/images/sprites_ie6.png",
+    "revision": "25955ee66bc4753bef361c33519a588e"
+  },
+  {
+    "url": "include/ckeditor/skins/kama/images/sprites.png",
+    "revision": "f559dc4a2764a4fb4da397f87883adcf"
+  },
+  {
+    "url": "include/ckeditor/skins/kama/images/toolbar_start.gif",
+    "revision": "7ed13749e9da48abea49e9b22543120b"
+  },
+  {
+    "url": "include/ckeditor/skins/kama/skin.js",
+    "revision": "9920fd41362befb7163f36c068c7447a"
+  },
+  {
+    "url": "include/ckeditor/skins/kama/templates.css",
+    "revision": "57583f1dcc78ae6972a5e51fac088482"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/dialog_ie.css",
+    "revision": "2ce5cadec903da77f56fd93489758db1"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/dialog_ie7.css",
+    "revision": "ea4e7c0149a1ca6c101105072519e262"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/dialog_ie8.css",
+    "revision": "c2c250f64f7a4414947c9699c3df60ee"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/dialog_iequirks.css",
+    "revision": "2102ff4c45282f2a6981713a11335566"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/dialog_opera.css",
+    "revision": "250fef2d6f64ed9113a3f1c82b969057"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/dialog.css",
+    "revision": "aa427e03c64e38df1b9b568fdab8e6eb"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/editor_gecko.css",
+    "revision": "1d01944cb45572938c8bab3d8fd9ff23"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/editor_ie.css",
+    "revision": "55560a85a47811d6929fd2e48bb1ae85"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/editor_ie7.css",
+    "revision": "355bc353d132eac2cfe304e640bc662b"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/editor_ie8.css",
+    "revision": "2dfd70714fd314f1f0c5f56880c020ea"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/editor_iequirks.css",
+    "revision": "f22e4b002363ed22e1b67062d1b66779"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/editor.css",
+    "revision": "ba10052c65982f87092fdeba85f59b50"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/icons_hidpi.png",
+    "revision": "16af6f6d04e4cd2180690cfcab4a7f9d"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/icons.png",
+    "revision": "e1e5259ef4d132ac5cb3655a4f41cf95"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/images/arrow.png",
+    "revision": "5b9854a7f865788fff62fe32b0324ca0"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/images/close.png",
+    "revision": "9b497b65c0909aa80b21aa989363a0bb"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/images/hidpi/close.png",
+    "revision": "cd269135b1c31c9044974c3d17059b04"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/images/hidpi/lock-open.png",
+    "revision": "4f6b9606513757e04d4de3268a123eb7"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/images/hidpi/lock.png",
+    "revision": "f6cf4b23d39107db8aaf907f686a0052"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/images/hidpi/refresh.png",
+    "revision": "33ebeddcb7b69137ffbfca121b0f6213"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/images/lock-open.png",
+    "revision": "e9dff089035fee4ac979a340ef8d4fcf"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/images/lock.png",
+    "revision": "68f4c2f5309e4dbc0f98c4be79dc66c7"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/images/mini.png",
+    "revision": "94486bdf738306e36bf7d144f4268f84"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/images/refresh.png",
+    "revision": "0f54df868f75482f99157807f6f68ee0"
+  },
+  {
+    "url": "include/ckeditor/skins/moono/images/spinner.gif",
+    "revision": "7f32b6e67f42a0ef3e1ddb0b9401f6c5"
+  },
+  {
+    "url": "include/ckeditor/skins/office2003/dialog.css",
+    "revision": "8b946c91fb5e37e3a08632925aa520c7"
+  },
+  {
+    "url": "include/ckeditor/skins/office2003/editor.css",
+    "revision": "4d5e94c57913c94832e756bcc8faa14e"
+  },
+  {
+    "url": "include/ckeditor/skins/office2003/icons.png",
+    "revision": "6f5de214381b2850c8fc61ac8cce4e05"
+  },
+  {
+    "url": "include/ckeditor/skins/office2003/images/dialog_sides_rtl.png",
+    "revision": "de1a31b0b8955a8b8895dd6011b752c8"
+  },
+  {
+    "url": "include/ckeditor/skins/office2003/images/dialog_sides.gif",
+    "revision": "0347236eef1ae590f8f4da8d88d050d3"
+  },
+  {
+    "url": "include/ckeditor/skins/office2003/images/dialog_sides.png",
+    "revision": "99cec08e2ff5d144662f2390eeeb344b"
+  },
+  {
+    "url": "include/ckeditor/skins/office2003/images/mini.gif",
+    "revision": "44047e297a6b8de4c228e763b2fcd89a"
+  },
+  {
+    "url": "include/ckeditor/skins/office2003/images/noimage.png",
+    "revision": "1c5c947a5325e0946a32bc33261fe22f"
+  },
+  {
+    "url": "include/ckeditor/skins/office2003/images/sprites_ie6.png",
+    "revision": "547a271da89b430cc11806ba9e00492a"
+  },
+  {
+    "url": "include/ckeditor/skins/office2003/images/sprites.png",
+    "revision": "24714a341e673b22797953b1f6c40037"
+  },
+  {
+    "url": "include/ckeditor/skins/office2003/skin.js",
+    "revision": "5131f5f8fca63766062d8066b3c42b33"
+  },
+  {
+    "url": "include/ckeditor/skins/office2003/templates.css",
+    "revision": "1895f261fecaba4c9b2e3939aa89a8a2"
+  },
+  {
+    "url": "include/ckeditor/skins/v2/dialog.css",
+    "revision": "3e8978652d921f40f5035300242d5e29"
+  },
+  {
+    "url": "include/ckeditor/skins/v2/editor.css",
+    "revision": "73763bfc77e646de13db8cb1b5d08ead"
+  },
+  {
+    "url": "include/ckeditor/skins/v2/icons.png",
+    "revision": "6f5de214381b2850c8fc61ac8cce4e05"
+  },
+  {
+    "url": "include/ckeditor/skins/v2/images/dialog_sides_rtl.png",
+    "revision": "e91e6dbf0680e420d5b118dbe8ac328e"
+  },
+  {
+    "url": "include/ckeditor/skins/v2/images/dialog_sides.gif",
+    "revision": "120d7ec1d25b985eeaa6b8e33cfe532b"
+  },
+  {
+    "url": "include/ckeditor/skins/v2/images/dialog_sides.png",
+    "revision": "7b4484847ba0490140a20e8021d50031"
+  },
+  {
+    "url": "include/ckeditor/skins/v2/images/mini.gif",
+    "revision": "44047e297a6b8de4c228e763b2fcd89a"
+  },
+  {
+    "url": "include/ckeditor/skins/v2/images/noimage.png",
+    "revision": "1c5c947a5325e0946a32bc33261fe22f"
+  },
+  {
+    "url": "include/ckeditor/skins/v2/images/sprites_ie6.png",
+    "revision": "f8734fb1c22b17417e48ab7d8e5e05c0"
+  },
+  {
+    "url": "include/ckeditor/skins/v2/images/sprites.png",
+    "revision": "30e053624aee547b168af65a5aaed5bf"
+  },
+  {
+    "url": "include/ckeditor/skins/v2/images/toolbar_start.gif",
+    "revision": "7ed13749e9da48abea49e9b22543120b"
+  },
+  {
+    "url": "include/ckeditor/skins/v2/skin.js",
+    "revision": "aef2dec3b2c15d74388eabfb73abd95f"
+  },
+  {
+    "url": "include/ckeditor/skins/v2/templates.css",
+    "revision": "0898636a85ffdb0425f28dfc5459e0e1"
+  },
+  {
+    "url": "include/ckeditor/themes/default/theme.js",
+    "revision": "e72c3603b61fdfc673dc40b943724494"
+  },
+  {
+    "url": "include/ckeditor/build-config.js",
+    "revision": "e52e28c8c917d705929bd9e9e250ff54"
+  },
+  {
+    "url": "include/ckeditor/ckeditor_basic_source.js",
+    "revision": "096da3b66c5ae820810315e6843e4883"
+  },
+  {
+    "url": "include/ckeditor/ckeditor_basic.js",
+    "revision": "1a4c2d2cd8aa2778ac85e314a05d5640"
+  },
+  {
+    "url": "include/ckeditor/ckeditor_source.js",
+    "revision": "44165cdde8b0bf4101dbc1a5dae63c7c"
+  },
+  {
+    "url": "include/ckeditor/ckeditor.js",
+    "revision": "3c5d15bc77fb94797ad22446130e54a2"
+  },
+  {
+    "url": "include/ckeditor/config.js",
+    "revision": "5d2cc082f697602fa8913660b4cfcdc6"
+  },
+  {
+    "url": "include/ckeditor/contents.css",
+    "revision": "8a98d75ebe8e89a86e3eb722bc4958ca"
+  },
+  {
+    "url": "include/ckeditor/styles.js",
+    "revision": "36461354bd2b4245f83f86250d5b9dad"
+  },
+  {
+    "url": "include/bunnyjs/ajax.min.js",
+    "revision": "2029b517ce294867c673ccbeb4b51fb6"
+  },
+  {
+    "url": "include/bunnyjs/api.min.js",
+    "revision": "8ad974884a5943e36cb819496dbea0bb"
+  },
+  {
+    "url": "include/bunnyjs/autocomplete.icons.min.js",
+    "revision": "142390f3b7436ac6cc1316849138912b"
+  },
+  {
+    "url": "include/bunnyjs/autocomplete.min.js",
+    "revision": "9a4befac9319e5f52b96604d509a9890"
+  },
+  {
+    "url": "include/bunnyjs/component.min.js",
+    "revision": "c673e18a38ec56337d23ac1ba0fbe1f8"
+  },
+  {
+    "url": "include/bunnyjs/core-helpers.min.js",
+    "revision": "94aafe1e985e31d66565ef96a2cd23e2"
+  },
+  {
+    "url": "include/bunnyjs/css/fade.css",
+    "revision": "710d7b27d35263441cb8160e94033db5"
+  },
+  {
+    "url": "include/bunnyjs/css/svg-icons.css",
+    "revision": "34bae8c10bd58dc3e34f00bc039dd87d"
+  },
+  {
+    "url": "include/bunnyjs/customselect.min.js",
+    "revision": "8c1eafda5642fe0d2f38df66b8263c33"
+  },
+  {
+    "url": "include/bunnyjs/datatable.icons.min.js",
+    "revision": "d686a435a7c27e4ef3fb946f7e1b7c1a"
+  },
+  {
+    "url": "include/bunnyjs/datatable.min.js",
+    "revision": "bbd4566b6dc1b15244870876cfb8f066"
+  },
+  {
+    "url": "include/bunnyjs/datatable.scrolltop.min.js",
+    "revision": "8f9c366732c0cd6ea7ed8b4e4d494385"
+  },
+  {
+    "url": "include/bunnyjs/date.min.js",
+    "revision": "abd3441c461c3ad2693bf8ee365c29a1"
+  },
+  {
+    "url": "include/bunnyjs/datepicker.min.js",
+    "revision": "6a7d6737ace00ac060dfa82c439ea4a9"
+  },
+  {
+    "url": "include/bunnyjs/dropdown.min.js",
+    "revision": "7b04ae08d9e638918d1f401566ae8a75"
+  },
+  {
+    "url": "include/bunnyjs/element.min.js",
+    "revision": "a525d0b41dbc2c31ff7b4de6a3921f3b"
+  },
+  {
+    "url": "include/bunnyjs/file.min.js",
+    "revision": "b8eba89bdbacf51ab930af93897b9bce"
+  },
+  {
+    "url": "include/bunnyjs/image-processor.min.js",
+    "revision": "7bf8433ba456f650f59db6419eddcc97"
+  },
+  {
+    "url": "include/bunnyjs/image-upload.min.js",
+    "revision": "51a751a8de78e631e3530a315d378661"
+  },
+  {
+    "url": "include/bunnyjs/image.min.js",
+    "revision": "46137431845fbb082873ca715a8f26ed"
+  },
+  {
+    "url": "include/bunnyjs/modal.min.js",
+    "revision": "f0c6398cebf1f5a98680dca2e38e19a9"
+  },
+  {
+    "url": "include/bunnyjs/normalize.min.js",
+    "revision": "e897275ba28810cac0db7d44cee75ded"
+  },
+  {
+    "url": "include/bunnyjs/notify.min.js",
+    "revision": "1b8378505682c4b12fc6ee6081791460"
+  },
+  {
+    "url": "include/bunnyjs/pagination.min.js",
+    "revision": "de34123ebd5a33a5f60aa3480f9bccd1"
+  },
+  {
+    "url": "include/bunnyjs/polyfill-array-from.min.js",
+    "revision": "2923b3afb41872e425b9f8f87df1be69"
+  },
+  {
+    "url": "include/bunnyjs/polyfill-fetch.min.js",
+    "revision": "52aae16e223e161def5451f805fd8aa5"
+  },
+  {
+    "url": "include/bunnyjs/polyfill-object-assign.min.js",
+    "revision": "6018ae6b100151001ee113b5efa6c486"
+  },
+  {
+    "url": "include/bunnyjs/polyfill-promise.min.js",
+    "revision": "2db587acd482aa7bebcda1a96daf3b45"
+  },
+  {
+    "url": "include/bunnyjs/polyfill-template.min.js",
+    "revision": "79bca0401ba4d91a7df92164659e649c"
+  },
+  {
+    "url": "include/bunnyjs/polyfills.min.js",
+    "revision": "1b851aa95bb123015474db0e9e55f803"
+  },
+  {
+    "url": "include/bunnyjs/route.min.js",
+    "revision": "805bf87fb5c12f05e8e59531dbada208"
+  },
+  {
+    "url": "include/bunnyjs/spinner.min.js",
+    "revision": "9f54a6c1e97f5ae61652fed67b83ad38"
+  },
+  {
+    "url": "include/bunnyjs/sprites.svg",
+    "revision": "0b48192dd2f786878ce9c5b5e557c975"
+  },
+  {
+    "url": "include/bunnyjs/svg/check.svg",
+    "revision": "17ac532875e2931d1940cd9f1a1bbfdb"
+  },
+  {
+    "url": "include/bunnyjs/svg/search.svg",
+    "revision": "9df51d4e640dadfd9884b1a61c7b5642"
+  },
+  {
+    "url": "include/bunnyjs/svg/spinner.svg",
+    "revision": "f9eb5fc3c2e44f37ad8a79de44ff182d"
+  },
+  {
+    "url": "include/bunnyjs/tabsection.min.js",
+    "revision": "9717408591ba07ce9efe7e4142990e78"
+  },
+  {
+    "url": "include/bunnyjs/template.min.js",
+    "revision": "9f421b33d36d7c679368836db0350a37"
+  },
+  {
+    "url": "include/bunnyjs/url.min.js",
+    "revision": "0785fb5e7f89b051afaa7ff598886fbb"
+  },
+  {
+    "url": "include/bunnyjs/utils-dom.min.js",
+    "revision": "9c52a30a0ff3f06d926ecd58e922f0f0"
+  },
+  {
+    "url": "include/bunnyjs/utils-string.min.js",
+    "revision": "caacdd4f9e5e3466edd47b50c09c0d25"
+  },
+  {
+    "url": "include/bunnyjs/utils-svg.min.js",
+    "revision": "484edd16fb4c1afd9f284b6a5a6547d6"
+  },
+  {
+    "url": "include/bunnyjs/validation.min.js",
+    "revision": "6c3b63a761701b52fbd0b85c20a0aa98"
+  },
+  {
+    "url": "include/dropzone/custom.css",
+    "revision": "d6b63d223d69da7c7f169edbd6b9091d"
+  },
+  {
+    "url": "include/dropzone/dropzone.css",
+    "revision": "5e018ddcbacdc772d8ad3f48b8615657"
+  },
+  {
+    "url": "include/dropzone/dropzone.js",
+    "revision": "0885a777c714486ecdb35160f9045174"
+  },
+  {
+    "url": "include/dropzone/upload_120.png",
+    "revision": "2d2419776b214009a53a46d40915c4d3"
+  },
+  {
+    "url": "include/dropzone/upload_32.png",
+    "revision": "20ecfe994bcc1d1c4524eb9409976c68"
+  },
+  {
+    "url": "include/images/announ.gif",
+    "revision": "6ac2364bce104334b23b9652adb9315b"
+  },
+  {
+    "url": "include/images/bgcolor.gif",
+    "revision": "903015da7796376b5a9df5e16baa4370"
+  },
+  {
+    "url": "include/images/blank.gif",
+    "revision": "fc94fb0c3ed8a8f909dbc7630a0987ff"
+  },
+  {
+    "url": "include/images/Blogs.png",
+    "revision": "4cdf34a644f1ea4358432f43f5323b04"
+  },
+  {
+    "url": "include/images/Facebook.png",
+    "revision": "e4ac82cfe4f4593c1add6045f535747d"
+  },
+  {
+    "url": "include/images/Forums.png",
+    "revision": "518056c760dd96335d91af3daf6c71d4"
+  },
+  {
+    "url": "include/images/installing.gif",
+    "revision": "62572865757be59dc388808f7fe03dea"
+  },
+  {
+    "url": "include/images/Linkedin.png",
+    "revision": "148588e982b051aa5aa878077aed9211"
+  },
+  {
+    "url": "include/images/Manuals.png",
+    "revision": "c719d39c861d4a8eddd9fe460ba5d86b"
+  },
+  {
+    "url": "include/images/noimage.gif",
+    "revision": "07378cab4ad25735cc94ab6f74253583"
+  },
+  {
+    "url": "include/images/right_arc.gif",
+    "revision": "07ec4a686a96f0b84ee73fc13e225292"
+  },
+  {
+    "url": "include/images/spacer.gif",
+    "revision": "41c9bc7f3f78ed71115cc062c1c67b09"
+  },
+  {
+    "url": "include/images/topBg.gif",
+    "revision": "a93a2692f708bce1ae5e39d9f680d0aa"
+  },
+  {
+    "url": "include/images/Twitter.png",
+    "revision": "319205c5f60c0d12f4be4dfe624d20b7"
+  },
+  {
+    "url": "include/images/Youtube.png",
+    "revision": "321798c3a4f90cafc07df60d8a8f0f2f"
+  },
+  {
+    "url": "include/js/advancefilter.js",
+    "revision": "fd8009cb447a3e22d14c7855ebae42ba"
+  },
+  {
+    "url": "include/js/asterisk.js",
+    "revision": "a1ecfb23bb0eabf3ae8ad819497766d7"
+  },
+  {
+    "url": "include/js/clipboard.min.js",
+    "revision": "3f3688138a1b9fc4ef669ce9056b6674"
+  },
+  {
+    "url": "include/js/clock.js",
+    "revision": "d63a09ae85fd37aee6be32fd9c9ca9ab"
+  },
+  {
+    "url": "include/js/ColorPicker2.js",
+    "revision": "60d39426c70ba2d12e821f934728ac2a"
+  },
+  {
+    "url": "include/js/corebosjshooks.js",
+    "revision": "b21bd8c9efd56f95368fd6f393a8bf6c"
+  },
+  {
+    "url": "include/js/customview.js",
+    "revision": "fac2826174b3ef2d807edd9524c029f3"
+  },
+  {
+    "url": "include/js/de_de.lang.js",
+    "revision": "1d3b31aebd935c0ecdb13160e7fe17ce"
+  },
+  {
+    "url": "include/js/dedup.js",
+    "revision": "3aab10a82c3f05de285ce73b6dc3be35"
+  },
+  {
+    "url": "include/js/dtlviewajax.js",
+    "revision": "e3a03a6cc2ecbc336789c5418ca69342"
+  },
+  {
+    "url": "include/js/en_gb.lang.js",
+    "revision": "fc011fd0d339ded88f5399fbc74bee6b"
+  },
+  {
+    "url": "include/js/en_us.lang.js",
+    "revision": "098ac46c2433343c60be22a053385c90"
+  },
+  {
+    "url": "include/js/es_es.lang.js",
+    "revision": "938e834895ecb0134e8af216f9eb0837"
+  },
+  {
+    "url": "include/js/es_mx.lang.js",
+    "revision": "13d25ff34cbdbe213e4142a1758e3585"
+  },
+  {
+    "url": "include/js/FieldDependencies.js",
+    "revision": "e402631525953bc457e64601a1a4f2a2"
+  },
+  {
+    "url": "include/js/FieldDepFunc.js",
+    "revision": "c87b487b3785ae87d8edfc5e3c8119fe"
+  },
+  {
+    "url": "include/js/fr_fr.lang.js",
+    "revision": "453401910bc9e70bb6705532f0727604"
+  },
+  {
+    "url": "include/js/general.js",
+    "revision": "43c6e63975d08740ca1acb03d6b6a735"
+  },
+  {
+    "url": "include/js/hu_hu.lang.js",
+    "revision": "56ab475116f8ad32eb5ab70474f4f45b"
+  },
+  {
+    "url": "include/js/Inventory.js",
+    "revision": "2bd9e148222a0497eb6968e83f551c68"
+  },
+  {
+    "url": "include/js/it_it.lang.js",
+    "revision": "c1b3e7cba24a06bfdafae4c033008c14"
+  },
+  {
+    "url": "include/js/jslog.js",
+    "revision": "31c7a760819a0277d2cdb75b82c2c66f"
+  },
+  {
+    "url": "include/js/ListView.js",
+    "revision": "592e52d859dceee1b288805939c06ed7"
+  },
+  {
+    "url": "include/js/loadjslog.js",
+    "revision": "d5317a375aa85d10e53f5989b1be0524"
+  },
+  {
+    "url": "include/js/Mail.js",
+    "revision": "22e1a51b143bc27361107aa9d40490b5"
+  },
+  {
+    "url": "include/js/massive.js",
+    "revision": "88c141893042950229a9ac13a5a8afc7"
+  },
+  {
+    "url": "include/js/meld.js",
+    "revision": "7c3894eb22d16cb4743a7ea226557ed1"
+  },
+  {
+    "url": "include/js/Merge.js",
+    "revision": "92db09ac10a555be4bfc0398f2a93379"
+  },
+  {
+    "url": "include/js/nl_nl.lang.js",
+    "revision": "bfba2e1d28a126b255f3008106a222b6"
+  },
+  {
+    "url": "include/js/notebook.js",
+    "revision": "d944ea5145ae45ecbafab41bcbd112f3"
+  },
+  {
+    "url": "include/js/notificationPopup.js",
+    "revision": "3cfd7e34e7fee928b8c27cd0e9f1f46c"
+  },
+  {
+    "url": "include/js/PasswordManagement.js",
+    "revision": "d871391e97faa107c84bfdf8e770f113"
+  },
+  {
+    "url": "include/js/picklist.js",
+    "revision": "2b72e46b2012116ecbb8c7cfb872d98a"
+  },
+  {
+    "url": "include/js/popup.js",
+    "revision": "59c8473aba27363b30e73c68471e15ba"
+  },
+  {
+    "url": "include/js/pt_br.lang.js",
+    "revision": "ef846f5d6cba64d3c5945310039ef90d"
+  },
+  {
+    "url": "include/js/QuickCreate.js",
+    "revision": "e5029e6a617bfb7f9114191938738069"
+  },
+  {
+    "url": "include/js/RelatedLists.js",
+    "revision": "a52c834078fdf0b0cbd156ef4aa05fdb"
+  },
+  {
+    "url": "include/js/search.js",
+    "revision": "63fa7f4c39690b7520726ebcd341f1aa"
+  },
+  {
+    "url": "include/js/smoothscroll.js",
+    "revision": "008f3e9768bd2d226e65ea69999c9f14"
+  },
+  {
+    "url": "include/js/vtlib.js",
+    "revision": "251b48eeaa3fa02ca58a467aea6dbd03"
+  },
+  {
+    "url": "include/chart.js/Chart.bundle.js",
+    "revision": "22b07a45d5f33013972b848726c9d051"
+  },
+  {
+    "url": "include/chart.js/Chart.bundle.min.js",
+    "revision": "658dca7101c0e348da6a8898f04a383f"
+  },
+  {
+    "url": "include/chart.js/Chart.js",
+    "revision": "f6453d2882447c18d2f61772182c44b5"
+  },
+  {
+    "url": "include/chart.js/Chart.min.js",
+    "revision": "c8fbc7d4d33bcac909ba682cf6739691"
+  },
+  {
+    "url": "include/chart.js/randomColor.js",
+    "revision": "45019dacca57c65149a9e1a52ae798e6"
+  },
+  {
+    "url": "include/jquery/jquery-ui.js",
+    "revision": "9f508c8b3b387f6c46f76df16c7b3c69"
+  },
+  {
+    "url": "include/jquery/jquery.js",
+    "revision": "4f252523d4af0b478c810c2547a63e19"
+  },
+  {
+    "url": "include/jquery/jquery.steps.min.js",
+    "revision": "e1d5a5b0229a7ad0f0f92969064558c0"
+  },
+  {
+    "url": "include/csrfmagic/csrf-magic.js",
+    "revision": "143302dc3175324824d718937e339fff"
+  },
+  {
+    "url": "include/style.css",
+    "revision": "803a672304ab2471038b853b719ce480"
+  },
+  {
+    "url": "include/print.css",
+    "revision": "6b1e0c714dd4c389fb51b840e4cf01d2"
+  },
+  {
+    "url": "include/jquery.steps.css",
+    "revision": "17c65e7385c544455d2235531d60c29d"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/com_vtiger_workflow.png",
+    "revision": "240870f4b7d77ee89301eb4aff5cde47"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/add.png",
+    "revision": "15a73d14b6e91db79ae7847c2c0de1a1"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/createentitytaskscript.js",
+    "revision": "570fca99d6a15a9a601d21663a0f5f3a"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/createeventtaskscript.js",
+    "revision": "0a5bfde4da94aac9acaa17c70276988d"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/createtodotaskscript.js",
+    "revision": "d303f6bc780e5b5367842b29220bbf67"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/edittaskscript.js",
+    "revision": "79775e4b09927588274d515f5b4f90ec"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/editworkflowscript.js",
+    "revision": "9ffbee5848d336b4c69f43fe681782be"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/emailtaskscript.js",
+    "revision": "7b030711073308450f8902923523de06"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/fieldexpressionpopup.js",
+    "revision": "904edad383dcb6916900292f3a75145b"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/fieldvalidator.js",
+    "revision": "cde6fec9119f368a5eb21d4e506209db"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/functional.js",
+    "revision": "507e0618da87701f11b973970362e3cf"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/ico-workflow.png",
+    "revision": "851ca4caa867fa005174afec1fea762f"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/jquery.timepicker.js",
+    "revision": "cf04488523916947850d381c20427f50"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/many2manyrelation.js",
+    "revision": "8778e149e296ca91f9c4c941007fc17c"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/parallelexecuter.js",
+    "revision": "c75586a43f6d52d0528ae16a16ea689b"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/remove.png",
+    "revision": "c00f6462ceeb5ab01f6cdf297e0e8735"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/style.css",
+    "revision": "8dbebc4f9a6404f68569281b684f3707"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/updatefieldstaskscript.js",
+    "revision": "75a9576a9821cbeff3fa8085288ff41d"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/updatemassivefieldstaskscript.js",
+    "revision": "930d4f19d56c1ee69988d6604bd68e80"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/vtigerwebservices.js",
+    "revision": "2d675d620dd72cf882fccfc6205fd2c3"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/Whatsappckeditor.js",
+    "revision": "fab39532561524488d757c60df5fedd7"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/whatsappworkflowtaskscript.js",
+    "revision": "83300b809c54b712e7ce3c8e3bf7be64"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/workflowlistscript.js",
+    "revision": "00e3a63fff9e973d6d8ad24f452089f4"
+  },
+  {
+    "url": "modules/GlobalVariable/GlobalVariable.js",
+    "revision": "c240060c1b952bba5d36d4a506fa0e6e"
+  },
+  {
+    "url": "modules/GlobalVariable/GlobalVariable.png",
+    "revision": "e883ee9182ef7d21303bf992915b141b"
+  },
+  {
+    "url": "modules/GlobalVariable/GlobalVariable64.png",
+    "revision": "383f72ca2b714b85ec925ee42240cfd3"
+  },
+  {
+    "url": "modules/GlobalVariable/tablesorter/jquery.tablesorter.min.js",
+    "revision": "28f91818bc0e61a9b5445eed72e45ee5"
+  },
+  {
+    "url": "modules/GlobalVariable/tablesorter/themes/blue/asc.gif",
+    "revision": "f8a1940c9cf44ab8870319169f3a14ff"
+  },
+  {
+    "url": "modules/GlobalVariable/tablesorter/themes/blue/bg.gif",
+    "revision": "c01ad2e7c59d1a20a433cb873c21bd88"
+  },
+  {
+    "url": "modules/GlobalVariable/tablesorter/themes/blue/desc.gif",
+    "revision": "a54846803de3cc786eec3d69f9ac2d38"
+  },
+  {
+    "url": "modules/GlobalVariable/tablesorter/themes/blue/style.css",
+    "revision": "5b98d0810fb7dbb9fcbc2362655f0dd7"
+  },
+  {
+    "url": "modules/GlobalVariable/tablesorter/themes/green/asc.png",
+    "revision": "47d431b1524d523eae100b66b09babdc"
+  },
+  {
+    "url": "modules/GlobalVariable/tablesorter/themes/green/bg.png",
+    "revision": "7b0a5fe32e94b1595e48810a3df45648"
+  },
+  {
+    "url": "modules/GlobalVariable/tablesorter/themes/green/desc.png",
+    "revision": "0f7f4fd46fe145ed6ed4c81c3b26a93f"
+  },
+  {
+    "url": "modules/GlobalVariable/tablesorter/themes/green/style.css",
+    "revision": "8c047013d96b74708da195dac43980b7"
+  },
+  {
+    "url": "modules/evvtMenu/32px.png",
+    "revision": "db49c8de4f267eede40a9a8843efcdec"
+  },
+  {
+    "url": "modules/evvtMenu/40px.png",
+    "revision": "1f075735090412ed7eb8077d819b19c6"
+  },
+  {
+    "url": "modules/evvtMenu/collapse.png",
+    "revision": "875d8fec724352381ca879bad8d7b7d6"
+  },
+  {
+    "url": "modules/evvtMenu/coloricons-sprite.png",
+    "revision": "e0d204f0961bb6aa4aa4fb79fa262025"
+  },
+  {
+    "url": "modules/evvtMenu/evvtMenu.css",
+    "revision": "3897d24cb8412c6c611bc55029d1f341"
+  },
+  {
+    "url": "modules/evvtMenu/evvtMenu.js",
+    "revision": "efec034bd12e4fb466f225408965f4eb"
+  },
+  {
+    "url": "modules/evvtMenu/evvtMenu.png",
+    "revision": "27f4168de5f147e0300e7391174c75b0"
+  },
+  {
+    "url": "modules/evvtMenu/expand.png",
+    "revision": "a3f51f6bbdf0ac0ae90a52ef8975ce22"
+  },
+  {
+    "url": "modules/evvtMenu/jquery.fancytree-all.min.js",
+    "revision": "118faab2469b8a3e4a567545f42ec0f5"
+  },
+  {
+    "url": "modules/evvtMenu/jstree.min.js",
+    "revision": "8505b45e8cf71b1f556e97f3a34734a5"
+  },
+  {
+    "url": "modules/evvtMenu/style.min.css",
+    "revision": "5064bed2e1319fa871d2c6f2d18789e2"
+  },
+  {
+    "url": "modules/evvtMenu/throbber.gif",
+    "revision": "9ed4669f524bec38319be63a2ee4ba26"
+  },
+  {
+    "url": "modules/MailManager/MailManager.js",
+    "revision": "ebb8b80b7ee9494a39ca3dfb57848470"
+  },
+  {
+    "url": "modules/MailManager/MailManager.png",
+    "revision": "1c045d808355b6ed581cd4971f3436f9"
+  },
+  {
+    "url": "modules/MailManager/resources/jquery.tokeninput.js",
+    "revision": "2225af5abe843f40dc29d79e0b1ea565"
+  },
+  {
+    "url": "modules/MailManager/resources/token-input-facebook.css",
+    "revision": "35d8aea3992991060bddd7dd035717c5"
+  },
+  {
+    "url": "modules/Tooltip/Tooltip.js",
+    "revision": "651680d2a9ffb37861fcac6d52d83f24"
+  },
+  {
+    "url": "modules/Tooltip/Tooltip.png",
+    "revision": "fc384192e4fa1a8cf362dd13fc9795b4"
+  },
+  {
+    "url": "modules/Tooltip/TooltipHeaderScript.js",
+    "revision": "dfe4e586e0044d9973576b5c5b79065b"
+  },
+  {
+    "url": "modules/Tooltip/TooltipSettings.js",
+    "revision": "62977aea32e2ee795041c7de5641e6dd"
+  },
+  {
+    "url": "modules/Accounts/Accounts.png",
+    "revision": "f67a467753048c2b24896fea369f94c7"
+  },
+  {
+    "url": "modules/Assets/Assets.png",
+    "revision": "1731082fd75d2dd046cd8d2b205f205c"
+  },
+  {
+    "url": "modules/Calendar/Events.png",
+    "revision": "d272fe117e3a9104236b81d78dbf7a7c"
+  },
+  {
+    "url": "modules/Campaigns/Campaigns.png",
+    "revision": "9025d280f0e8b147e104dacec651c980"
+  },
+  {
+    "url": "modules/CobroPago/CobroPago.png",
+    "revision": "b3bd0c5f6a7d8c353aa5372337ededf9"
+  },
+  {
+    "url": "modules/CobroPago/settings.png",
+    "revision": "c85d74bdf7c2100636d21a3e167d1f2d"
+  },
+  {
+    "url": "modules/Contacts/Contacts.png",
+    "revision": "bff9fd764212760ee140c48e30985900"
+  },
+  {
+    "url": "modules/Documents/Documents.png",
+    "revision": "3494f23ed389037fba208eb171ed54b1"
+  },
+  {
+    "url": "modules/Emails/Emails.png",
+    "revision": "205bb82676beb92ec2dfa978a93277a2"
+  },
+  {
+    "url": "modules/Faq/Faq.png",
+    "revision": "dea034cc2268d01a96bde50176e3648a"
+  },
+  {
+    "url": "modules/HelpDesk/HelpDesk.png",
+    "revision": "597044722eefba6d7a8d0a1857a7c636"
+  },
+  {
+    "url": "modules/Invoice/Invoice.png",
+    "revision": "e12a8943e4b3f34872b3e59d000b1fa9"
+  },
+  {
+    "url": "modules/Leads/Leads.png",
+    "revision": "e9de77faccaef8c53e8faae287eb0ca1"
+  },
+  {
+    "url": "modules/ModComments/ModComments.png",
+    "revision": "6f257d77b24a2d0f79a3796ab9e3ff7f"
+  },
+  {
+    "url": "modules/PBXManager/PBXManager.png",
+    "revision": "755e4bbf9003cbad9cea23fe6cdae5d2"
+  },
+  {
+    "url": "modules/Portal/Portal.png",
+    "revision": "1befaba9851212e8ed11d32ad2891a84"
+  },
+  {
+    "url": "modules/Potentials/Potentials.png",
+    "revision": "1bcca2dd8d1c68f38da968e86f4f1bc4"
+  },
+  {
+    "url": "modules/PriceBooks/PriceBooks.png",
+    "revision": "f428aeafd5255f815189e02bd8a09a4b"
+  },
+  {
+    "url": "modules/Products/placeholder.gif",
+    "revision": "df6770aa59bb302b5cbc84554e391e26"
+  },
+  {
+    "url": "modules/Products/Products.png",
+    "revision": "88ad151939905891d2d3aee1795932f4"
+  },
+  {
+    "url": "modules/ProjectMilestone/ProjectMilestone.png",
+    "revision": "d0d3d5804ea8bd519024102a85a4c5da"
+  },
+  {
+    "url": "modules/Project/Project.png",
+    "revision": "d9c5ebde5ef3312548a7fd407fc52635"
+  },
+  {
+    "url": "modules/ProjectTask/ProjectTask.png",
+    "revision": "31c3a0e0d0e7b541611c878118994769"
+  },
+  {
+    "url": "modules/PurchaseOrder/PurchaseOrder.png",
+    "revision": "4979e62d7ef03142607b7afe14b6544d"
+  },
+  {
+    "url": "modules/Quotes/Quotes.png",
+    "revision": "e31f403bcc7013a1cc89b7cdfa0957a1"
+  },
+  {
+    "url": "modules/RecycleBin/RecycleBin.png",
+    "revision": "02e5a4e4236aa0c59788e8ee84a6272a"
+  },
+  {
+    "url": "modules/Reports/Reports.png",
+    "revision": "9b6aa0d9feeb3715ce0b178e65e3a185"
+  },
+  {
+    "url": "modules/Rss/Rss.png",
+    "revision": "c631db4abb5bc1e64e28fae877ed98c7"
+  },
+  {
+    "url": "modules/SalesOrder/SalesOrder.png",
+    "revision": "c218a0f935a156ab3306b0503a36d2fd"
+  },
+  {
+    "url": "modules/ServiceContracts/ServiceContracts.png",
+    "revision": "87c55137d73585a39a76ee6c6859f0c8"
+  },
+  {
+    "url": "modules/Services/placeholder.gif",
+    "revision": "df6770aa59bb302b5cbc84554e391e26"
+  },
+  {
+    "url": "modules/Services/Services.png",
+    "revision": "329befd4ae1808bf677acdd8dcff2f57"
+  },
+  {
+    "url": "modules/Settings/Settings.png",
+    "revision": "e6ae8afae0c601b790617737ef78f02a"
+  },
+  {
+    "url": "modules/SMSNotifier/SMSNotifier.png",
+    "revision": "7cfdd1c8aa1d269dfe6643b3d4bdc35d"
+  },
+  {
+    "url": "modules/Users/Users.png",
+    "revision": "0ee1f4360eea0b2ff9f13550bb9d536f"
+  },
+  {
+    "url": "modules/Vendors/Vendors.png",
+    "revision": "bad0f7ffab917e6e2a06966f0c91d277"
+  },
+  {
+    "url": "modules/Documents/Documents.js",
+    "revision": "45233005c8905586dace1d05e3ed6576"
+  },
+  {
+    "url": "modules/SalesOrder/SalesOrder.js",
+    "revision": "af220612482a9b15fe2507532944700c"
+  },
+  {
+    "url": "modules/Settings/Settings.js",
+    "revision": "1001255e02a066e3fab9687eb4f7ec79"
+  },
+  {
+    "url": "modules/Settings/profilePrivileges.js",
+    "revision": "873d28313b837a168de03db9649567cf"
+  },
+  {
+    "url": "modules/Products/Productsslide.js",
+    "revision": "09bb586ac917dcb7ac9e67c36d20c0da"
+  },
+  {
+    "url": "modules/Products/multifile.js",
+    "revision": "2469a9d75b05798558ca746bff88ef36"
+  },
+  {
+    "url": "modules/Products/Products.js",
+    "revision": "82d4c0a3737ff481b5b9facca909dd38"
+  },
+  {
+    "url": "modules/ModComments/ModComments.js",
+    "revision": "253c82414388480dd8d07ec5f899968d"
+  },
+  {
+    "url": "modules/ModComments/ModCommentsCommon.js",
+    "revision": "90cb31321c92bc6d3f1e73e5ecd0255a"
+  },
+  {
+    "url": "modules/ProjectTask/ProjectTask.js",
+    "revision": "c240060c1b952bba5d36d4a506fa0e6e"
+  },
+  {
+    "url": "modules/Project/Project.js",
+    "revision": "c240060c1b952bba5d36d4a506fa0e6e"
+  },
+  {
+    "url": "modules/Assets/Assets.js",
+    "revision": "141a6ee0aca308dafbcd94c375d4db6c"
+  },
+  {
+    "url": "modules/Emails/Emails.js",
+    "revision": "d37ea32077a5434152b2ca683c19042f"
+  },
+  {
+    "url": "modules/Rss/Rss.js",
+    "revision": "9e93cf2f8dddbea42be801f31e1f73f3"
+  },
+  {
+    "url": "modules/PickList/DependencyPicklist.js",
+    "revision": "8b38e7858ab48183ba87dc24e60178bc"
+  },
+  {
+    "url": "modules/HelpDesk/HelpDesk.js",
+    "revision": "a1d67a7ccdf46c451b108ae99930bba8"
+  },
+  {
+    "url": "modules/Potentials/Potentials.js",
+    "revision": "de1459b79e171a9b5cfa2f584da66549"
+  },
+  {
+    "url": "modules/CronTasks/CronTasks.js",
+    "revision": "c28cdd8d0cd619f7830c25cdb0170d96"
+  },
+  {
+    "url": "modules/PBXManager/PBXManager.js",
+    "revision": "c663d6d8dfeba2b51a542382c8623087"
+  },
+  {
+    "url": "modules/Calendar/script.js",
+    "revision": "9f872b7749fd4ed1dfbded728fe8cfd1"
+  },
+  {
+    "url": "modules/Calendar/Calendar.js",
+    "revision": "c36c43d8af1b7bdc134c6b5ab8ca3aa3"
+  },
+  {
+    "url": "modules/cbCalendar/cbCalendar.js",
+    "revision": "bcd3380f272036dbfa858a337d17ce70"
+  },
+  {
+    "url": "modules/Portal/Portal.js",
+    "revision": "01b10c9bbf410ef98cc023a2821412e1"
+  },
+  {
+    "url": "modules/ProjectMilestone/ProjectMilestone.js",
+    "revision": "c240060c1b952bba5d36d4a506fa0e6e"
+  },
+  {
+    "url": "modules/Leads/Leads.js",
+    "revision": "d8a574e37e07159969aa561099764d56"
+  },
+  {
+    "url": "modules/WSAPP/WSAPP.js",
+    "revision": "36b3093ded85fbdb78336ed100dae8ac"
+  },
+  {
+    "url": "modules/Accounts/Accounts.js",
+    "revision": "04cb9261dc739144dabd4e3df9eb8466"
+  },
+  {
+    "url": "modules/cbMap/cbMap.js",
+    "revision": "d5c244bdeb7a46b2fcc0756827d3c2ca"
+  },
+  {
+    "url": "modules/cbTermConditions/cbTermConditions.js",
+    "revision": "c240060c1b952bba5d36d4a506fa0e6e"
+  },
+  {
+    "url": "modules/Campaigns/Campaigns.js",
+    "revision": "12de06af8b7cc1f09fb8e27c69736dbf"
+  },
+  {
+    "url": "modules/Invoice/Invoice.js",
+    "revision": "9313f7a8d83ca5f1cd8a666086c3605d"
+  },
+  {
+    "url": "modules/CobroPago/CobroPago.js",
+    "revision": "c240060c1b952bba5d36d4a506fa0e6e"
+  },
+  {
+    "url": "modules/CustomerPortal/CustomerPortal.js",
+    "revision": "a0025e2eae5e58bf58564524adadca0c"
+  },
+  {
+    "url": "modules/cbupdater/cbupdater.js",
+    "revision": "cde88c33da015b3b7e277c8906c50457"
+  },
+  {
+    "url": "modules/Home/Homestuff.js",
+    "revision": "79d7c9a5e0281b04b2eaee143a94abf9"
+  },
+  {
+    "url": "modules/Home/js/HelpMeNow.js",
+    "revision": "3facd26fc8ea33e48ec5c19fcef2472d"
+  },
+  {
+    "url": "modules/Faq/Faq.js",
+    "revision": "875ace6df1888378e0ca00db366abd62"
+  },
+  {
+    "url": "modules/ModTracker/ModTracker.js",
+    "revision": "c822e17c71c3f3e039528c4311f4cbae"
+  },
+  {
+    "url": "modules/ModTracker/ModTrackerCommon.js",
+    "revision": "48ce6d6bb5df591b73ef0c17dd9e0f37"
+  },
+  {
+    "url": "modules/SMSNotifier/workflow/VTSMSTask.js",
+    "revision": "8120de0e05492fe510dd0d89ae500002"
+  },
+  {
+    "url": "modules/SMSNotifier/SMSNotifier.js",
+    "revision": "59ec7ddb3604584d1377ecd5c281aa91"
+  },
+  {
+    "url": "modules/SMSNotifier/SMSConfigServer.js",
+    "revision": "9e48754306aea76b1653bc67e96b1f03"
+  },
+  {
+    "url": "modules/SMSNotifier/SMSNotifierCommon.js",
+    "revision": "2bc5785bbc8662d43972828563d8e11a"
+  },
+  {
+    "url": "modules/Contacts/Contacts.js",
+    "revision": "25530e91e96304253196890027011051"
+  },
+  {
+    "url": "modules/Dashboard/Dashboard.js",
+    "revision": "8ab2b632de69afd4fefcd5daccab5af6"
+  },
+  {
+    "url": "modules/Services/Services.js",
+    "revision": "25e0046eba629feba6d87b9d1a28c20e"
+  },
+  {
+    "url": "modules/Vendors/Vendors.js",
+    "revision": "29077a91b5317da8237274d0436bbc73"
+  },
+  {
+    "url": "modules/InventoryDetails/InventoryDetails.js",
+    "revision": "c240060c1b952bba5d36d4a506fa0e6e"
+  },
+  {
+    "url": "modules/ServiceContracts/ServiceContracts.js",
+    "revision": "c240060c1b952bba5d36d4a506fa0e6e"
+  },
+  {
+    "url": "modules/Users/Users.js",
+    "revision": "e9be4cf50f50eedc61a491219ac3fc86"
+  },
+  {
+    "url": "modules/Import/resources/ImportStep2.js",
+    "revision": "45c632cf97d1f03c7f6805c1f78ae0a7"
+  },
+  {
+    "url": "modules/Import/resources/Import.js",
+    "revision": "1d9d802faaadb8f35f2f79f8c43b7698"
+  },
+  {
+    "url": "modules/CustomView/CustomView.js",
+    "revision": "65682db92a471ba46f12737f6f6b3e4d"
+  },
+  {
+    "url": "modules/Reports/Reports.js",
+    "revision": "9c44d0d7c463d90ac507e927487731dd"
+  },
+  {
+    "url": "modules/Reports/ReportsSteps.js",
+    "revision": "8c9fdc9a60f962d277a3a86473d22d2d"
+  },
+  {
+    "url": "modules/PriceBooks/PriceBooks.js",
+    "revision": "1975335374a344be4e3f98dbfe6756b4"
+  },
+  {
+    "url": "modules/Quotes/Quotes.js",
+    "revision": "ea218806a1ac1a128df0453c43ecee63"
+  },
+  {
+    "url": "modules/PurchaseOrder/PurchaseOrder.js",
+    "revision": "3dff644c53c450fc2e197316662b3a8f"
+  },
+  {
+    "url": "include/Webservices/WSClient.js",
+    "revision": "ce5b9c7843df949930c6521cb685b0bd"
+  },
+  {
+    "url": "include/freetag/jquery.tagcanvas.js",
+    "revision": "0be5cdb88030adc8bdeeaef233fdb1a4"
+  },
+  {
+    "url": "include/freetag/jquery.tagcanvas.min.js",
+    "revision": "3e99f6e7297378ccbcdcfd0b907a511a"
+  },
+  {
+    "url": "include/freetag/tagcanvas.min.js",
+    "revision": "82199e635f5096bfb6a5cf79ce023933"
+  },
+  {
+    "url": "include/freetag/tagcanvas.js",
+    "revision": "88dd1cf2eb131225f8aab090d5fce221"
   }
-});
-
-
-
-
-
-
-
+]);
+} else {
+	console.log(`Workbox didn't load`);
+}
