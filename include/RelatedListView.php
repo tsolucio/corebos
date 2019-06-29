@@ -87,8 +87,8 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 
 	if (empty($_SESSION['rlvs'][$module][$relatedmodule])) {
 		$modObj = new ListViewSession();
-		$modObj->sortby = $focus->default_order_by;
-		$modObj->sorder = $focus->default_sort_order;
+		$modObj->sortby = $focus->getOrderBy();
+		$modObj->sorder = $focus->getSortOrder();
 		coreBOS_Session::set('rlvs^'.$module.'^'.$relatedmodule, get_object_vars($modObj));
 	}
 
@@ -108,8 +108,8 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 		$sorder = $_SESSION['rlvs'][$module][$relatedmodule]['sorder'];
 		$order_by = $_SESSION['rlvs'][$module][$relatedmodule]['sortby'];
 	} else {
-		$order_by = $focus->default_order_by;
-		$sorder = $focus->default_sort_order;
+		$order_by = $focus->getOrderBy();
+		$sorder = $focus->getSortOrder();
 	}
 
 	// AssignedTo ordering issue in Related Lists
@@ -326,8 +326,8 @@ function getPriceBookRelatedProducts($query, $focus, $returnset = '') {
 	$relatedmodule = 'Products';
 	if (empty($_SESSION['rlvs'][$module][$relatedmodule])) {
 		$modObj = new ListViewSession();
-		$modObj->sortby = $focus->default_order_by;
-		$modObj->sorder = $focus->default_sort_order;
+		$modObj->sortby = $focus->getOrderBy();
+		$modObj->sorder = $focus->getSortOrder();
 		coreBOS_Session::set('rlvs^'.$module.'^'.$relatedmodule, get_object_vars($modObj));
 	}
 
