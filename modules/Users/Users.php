@@ -1660,7 +1660,7 @@ class Users extends CRMEntity {
 		if ($sorder != '' && $order_by != '') {
 			$list_query = "Select * from vtiger_users $where order by $order_by $sorder";
 		} else {
-			$list_query = "Select * from vtiger_users $where order by ".$this->default_order_by." ".$this->default_sort_order;
+			$list_query = "Select * from vtiger_users $where order by ".$this->default_order_by.' '.$this->default_sort_order;
 		}
 		$rowsperpage = GlobalVariable::getVariable('Workflow_ListView_PageSize', 30);
 		$from = ($page-1)*$rowsperpage;

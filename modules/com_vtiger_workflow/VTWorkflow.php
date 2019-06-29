@@ -469,17 +469,17 @@ class Workflow {
 			array_push($params, $executioncondtionid);
 		}
 		if (!empty($desc_search)) {
-			$where .= " and summary like ? ";
-			array_push($params, "%" . $desc_search . "%");
+			$where .= ' and summary like ? ';
+			array_push($params, '%' . $desc_search . '%');
 		}
 		if (!empty($purpose_search)) {
-			$where .= " and purpose like ? ";
-			array_push($params, "%" . $purpose_search . "%");
+			$where .= ' and purpose like ? ';
+			array_push($params, '%' . $purpose_search . '%');
 		}
 		if ($sorder != '' && $order_by != '') {
 			$list_query = "Select * from com_vtiger_workflows $where order by $order_by $sorder";
 		} else {
-			$list_query = "Select * from com_vtiger_workflows $where order by ".$this->default_order_by." ".$this->default_sort_order;
+			$list_query = "Select * from com_vtiger_workflows $where order by ".$this->default_order_by.' '.$this->default_sort_order;
 		}
 		$rowsperpage = GlobalVariable::getVariable('Workflow_ListView_PageSize', 20);
 		$from = ($page-1)*$rowsperpage;
