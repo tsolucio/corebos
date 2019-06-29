@@ -3317,13 +3317,14 @@ class CRMEntity {
 	 * return string $sorder    - sortorder string either 'ASC' or 'DESC'
 	 */
 	public function getSortOrder() {
-		global $log,$currentModule;
+		global $log;
+		$cmodule = get_class($this);
 		$log->debug('> getSortOrder');
-		$sorder = strtoupper(GlobalVariable::getVariable('Application_ListView_Default_OrderDirection', $this->default_sort_order, $currentModule));
+		$sorder = strtoupper(GlobalVariable::getVariable('Application_ListView_Default_OrderDirection', $this->default_sort_order, $cmodule));
 		if (isset($_REQUEST['sorder'])) {
 			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
-		} elseif (!empty($_SESSION[$currentModule.'_Sort_Order'])) {
-			$sorder = $this->db->sql_escape_string($_SESSION[$currentModule.'_Sort_Order']);
+		} elseif (!empty($_SESSION[$cmodule.'_Sort_Order'])) {
+			$sorder = $this->db->sql_escape_string($_SESSION[$cmodule.'_Sort_Order']);
 		}
 		$log->debug('< getSortOrder');
 		return $sorder;
@@ -3334,18 +3335,18 @@ class CRMEntity {
 	 * return string $order_by    - fieldname(eg: 'accountname')
 	 */
 	public function getOrderBy() {
-		global $log, $currentModule;
+		global $log;
 		$log->debug('> getOrderBy');
-
+		$cmodule = get_class($this);
 		$order_by = '';
-		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $currentModule)) {
-			$order_by = GlobalVariable::getVariable('Application_ListView_Default_OrderField', $this->default_order_by, $currentModule);
+		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $cmodule)) {
+			$order_by = GlobalVariable::getVariable('Application_ListView_Default_OrderField', $this->default_order_by, $cmodule);
 		}
 
 		if (isset($_REQUEST['order_by'])) {
 			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
-		} elseif (!empty($_SESSION[$currentModule.'_Order_By'])) {
-			$order_by = $this->db->sql_escape_string($_SESSION[$currentModule.'_Order_By']);
+		} elseif (!empty($_SESSION[$cmodule.'_Order_By'])) {
+			$order_by = $this->db->sql_escape_string($_SESSION[$cmodule.'_Order_By']);
 		}
 		$log->debug('< getOrderBy');
 		return $order_by;
