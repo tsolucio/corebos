@@ -67,6 +67,7 @@ if (isset($_REQUEST['order_by']) && is_numeric($_REQUEST['order_by'])) {
 			break;
 		case 3:
 			$order_by = $focus->list_fields_name['Admin'];
+			break;
 		case 4:
 			$order_by = $focus->list_fields_name['Email2'];
 			break;
