@@ -1080,7 +1080,7 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 	if (empty($searchinmodule) || empty($fields)) {
 		return $respuesta;
 	}
-	if (!(vtlib_isModuleActive($searchinmodule) && isPermitted($searchinmodule, 'DetailView'))) {
+	if (!(vtlib_isModuleActive($searchinmodule) && isPermitted($searchinmodule, 'DetailView')=='yes')) {
 		return $respuesta;
 	}
 	if (empty($returnfields)) {
