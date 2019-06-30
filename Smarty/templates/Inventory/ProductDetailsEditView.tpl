@@ -413,7 +413,7 @@ so we will get that array, parse that array and fill the details
 	<td class="crmTableRow small lineOnTop cblds-t-align_right" align="right">
 		(+)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,'group_tax_div','group_tax_div_title','');  calcTotal(); calcGroupTax();" >{$APP.LBL_TAX}</a></b>
 			<!-- Pop Div For Group TAX -->
-			{assign var="GROUP_TAXES" value=$FINAL.taxes}
+			{* {assign var="GROUP_TAXES" value=$FINAL.taxes} *}
 			<div class="discountUI" id="group_tax_div">{include file="Inventory/GroupTax.tpl"}</div>
 			<!-- End Popup Div Group Tax -->
 	</td>
