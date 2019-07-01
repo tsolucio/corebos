@@ -393,7 +393,7 @@ function loadAllWidgets(widgetInfoList, batchSize) {
 				var responseVal=JSON.parse(response);
 				var tagcloudfound = false;
 				for (var widgetId in responseVal) {
-					if (responseVal.hasOwnProperty(widgetId)) {
+					if (Object.prototype.hasOwnProperty.call(responseVal, widgetId)) {
 						document.getElementById('stuffcont_'+widgetId).innerHTML = responseVal[widgetId];
 						document.getElementById('refresh_'+widgetId).innerHTML='';
 						var widgetType = widgetInfo[widgetId];

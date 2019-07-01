@@ -654,7 +654,7 @@ function fillReportColumnsTotal(block) {
 				td.append(b);
 				tr.append(td);
 				for (k=0; k<checkboxes.length; k++) {
-					var checkbox = $('<input>', {'type': 'checkbox', 'name': checkboxes[k].name, checked: checkboxes[k].hasOwnProperty('checked')});
+					var checkbox = $('<input>', {'type': 'checkbox', 'name': checkboxes[k].name, checked: Object.prototype.hasOwnProperty.call(checkboxes[k], 'checked')});
 					var td = $('<td>');
 					td.append(checkbox);
 					tr.append(td);
@@ -689,13 +689,13 @@ function returnList(block) {
 		var $html = $('<select>');
 		for (var i=0; i<list_length; i++) {
 			var option = $('<option>', {'value':list[i].value});
-			if (list[i].hasOwnProperty('selected') && list[i].selected == true) {
+			if (Object.prototype.hasOwnProperty.call(list[i], 'selected') && list[i].selected == true) {
 				option.prop('selected', true);
 			}
-			if (list[i].hasOwnProperty('permission')) {
+			if (Object.prototype.hasOwnProperty.call(list[i], 'permission')) {
 				option.prop('permission', 'yes');
 			}
-			if (list[i].hasOwnProperty('disabled')) {
+			if (Object.prototype.hasOwnProperty.call(list[i], 'disabled')) {
 				option.prop('disabled', true);
 			}
 			option.append(list[i].label);
@@ -719,13 +719,13 @@ function setPropertiesOnList(block, selectid) {
 	for (var i=0; i<list_length; i++) {
 		var option = $(selectid + ' option[value="' + block[i].value + '"]');
 		if (option) {
-			if (block[i].hasOwnProperty('selected') && block[i].selected == true) {
+			if (Object.prototype.hasOwnProperty.call(block[i], 'selected') && block[i].selected == true) {
 				option.prop('selected', true);
 			}
-			if (block[i].hasOwnProperty('permission')) {
+			if (Object.prototype.hasOwnProperty.call(block[i], 'permission')) {
 				option.prop('permission', 'yes');
 			}
-			if (block[i].hasOwnProperty('disabled')) {
+			if (Object.prototype.hasOwnProperty.call(block[i], 'disabled')) {
 				option.prop('disabled', true);
 			}
 		}
@@ -758,17 +758,17 @@ function returnFullList(block) {
 			var node = block[i];
 			var optgroup =  $('<optgroup>', {'class':node.class, 'label':node.label, 'style':block.style});
 			var options_length = 0;
-			if (node.hasOwnProperty('options')) {
+			if (Object.prototype.hasOwnProperty.call(node, 'options')) {
 				options_length = node.options.length;
 			}
 			for (var j = 0; j<options_length; j++) {
 				var option = node.options[j];
 				var option_el = $('<option>', {'value':option.value});
 				option_el.append(option.label);
-				if (option.hasOwnProperty('disabled')) {
+				if (Object.prototype.hasOwnProperty.call(option, 'disabled')) {
 					option_el.prop('disabled', true);
 				}
-				if (option.hasOwnProperty('selected')) {
+				if (Object.prototype.hasOwnProperty.call(option, 'selected')) {
 					option_el.prop('selected', true);
 				}
 				optgroup.append(option_el);
@@ -790,17 +790,17 @@ function setPropertiesOnListWithOptGroup(block, selectid) {
 		for (var i=0; i<block.length; i++) {
 			var node = block[i];
 			var options_length = 0;
-			if (node.hasOwnProperty('options')) {
+			if (Object.prototype.hasOwnProperty.call(node, 'options')) {
 				options_length = node.options.length;
 			}
 			for (var j = 0; j<options_length; j++) {
 				var option = node.options[j];
 				var seloption = $(selectid + ' option[value="' + option.value + '"]');
 				if (seloption) {
-					if (option.hasOwnProperty('disabled')) {
+					if (Object.prototype.hasOwnProperty.call(option, 'disabled')) {
 						seloption.prop('disabled', true);
 					}
-					if (option.hasOwnProperty('selected')) {
+					if (Object.prototype.hasOwnProperty.call(option, 'selected')) {
 						seloption.prop('selected', true);
 					}
 				}
@@ -953,10 +953,10 @@ function setReportType(response) {
 function fillSelectedColumns(response) {
 	if (response.permission === 1) {
 		fillFullList(response.BLOCK1, 'availList');
-		if (response.hasOwnProperty('BLOCK2') && response.BLOCK2.length > 0) {
+		if (Object.prototype.hasOwnProperty.call(response, 'BLOCK2') && response.BLOCK2.length > 0) {
 			fillList(response.BLOCK2, 'selectedColumns');
 		}
-		if (response.hasOwnProperty('AGGFIELDS') && response.AGGFIELDS.length > 0) {
+		if (Object.prototype.hasOwnProperty.call(response, 'AGGFIELDS') && response.AGGFIELDS.length > 0) {
 			fillFullList(response.BLOCK1, 'aggfield');
 			fillFullList(response.AGGFIELDS, 'pivotfield');
 			document.getElementById('aggfieldtablerow').style.display = 'table-row';
@@ -979,11 +979,11 @@ function fillFilterInfo(response) {
 	rel_fields = jQuery.parseJSON(response.REL_FIELDS);
 	fillList(response.BLOCKJS, 'stdDateFilterField');
 	fillList(response.BLOCKCRITERIA, 'stdDateFilter');
-	if (response.hasOwnProperty('CRITERIA_GROUPS') && !updated_grouping_criteria ) {
+	if (Object.prototype.hasOwnProperty.call(response, 'CRITERIA_GROUPS') && !updated_grouping_criteria ) {
 		add_grouping_criteria(response.CRITERIA_GROUPS);
 		updated_grouping_criteria = true;
 	}
-	if (response.hasOwnProperty('STARTDATE') && response.hasOwnProperty('ENDDATE')) {
+	if (Object.prototype.hasOwnProperty.call(response, 'STARTDATE') && Object.prototype.hasOwnProperty.call(response, 'ENDDATE')) {
 		$('#jscal_field_date_start').val(response.STARTDATE);
 		$('#jscal_field_date_end').val(response.ENDDATE);
 		$('#jscal_trigger_date_start').css('visibility', 'visible');
@@ -1005,7 +1005,7 @@ function fillGroupingInfo(response) {
 	set_Objects();
 	show_Options();
 	fillList(response.VISIBLECRITERIA, 'stdtypeFilter');
-	if (response.hasOwnProperty('MEMBER')) {
+	if (Object.prototype.hasOwnProperty.call(response, 'MEMBER')) {
 		fillList(response.MEMBER, 'columnsSelected');
 		toggleAssignType('Shared');
 	}
