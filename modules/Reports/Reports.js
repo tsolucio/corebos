@@ -654,7 +654,7 @@ function fillReportColumnsTotal(block) {
 				td.append(b);
 				tr.append(td);
 				for (k=0; k<checkboxes.length; k++) {
-					var checkbox = $('<input>', {'type': 'checkbox', 'name': checkboxes[k].name, checked: Object.prototype.hasOwnProperty.call(checkboxes[k],'checked')});
+					var checkbox = $('<input>', {'type': 'checkbox', 'name': checkboxes[k].name, checked: Object.prototype.hasOwnProperty.call(checkboxes[k], 'checked')});
 					var td = $('<td>');
 					td.append(checkbox);
 					tr.append(td);
