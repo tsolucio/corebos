@@ -167,4 +167,11 @@
        <classname>migrateUIType76to10</classname>
        <systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+       <author>mohamed-shibeJR</author>
+       <description>update datetime for both cbtranslation and cbTermConditions modules</description>
+       <filename>build/changeSets/2019/updateDateTime.php</filename>
+       <classname>updateDateTime</classname>
+       <systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
