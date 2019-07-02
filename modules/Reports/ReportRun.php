@@ -3304,7 +3304,8 @@ class ReportRun extends CRMEntity {
 							break;
 						case 'date':
 						case 'time':
-							if ($value!='-') {
+                        try{
+							  	if ($value!='-') {
 								if (strpos($value, ':')>0 && (strpos($value, '-')===false)) {
 									// only time, no date
 									$dt = new DateTime("1970-01-01 $value");
@@ -3320,6 +3321,9 @@ class ReportRun extends CRMEntity {
 								$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_NUMERIC;
 							} else {
 								$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING;
+							}
+						}catch (Exception $e) {
+								echo $e->getMessage();
 							}
 							break;
 						default:
