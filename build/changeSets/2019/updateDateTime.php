@@ -23,15 +23,10 @@ class updateDateTime extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$installmodule = array('cbTermConditions', 'cbtranslation');
-			foreach ($installmodule as $module) {
-				if ($this->isModuleInstalled($module)) {
-					vtlib_toggleModuleAccess($module, true);
-					$this->sendMsg("$module activated!");
-				} else {
-					$this->installManifestModule($module);
-				}
-			}
+			$cbtranslation_tabid = getTabid('cbtranslation');
+			$cbtermcondition_tabid = getTabid('cbTermConditions');
+			$this->ExecuteQuery("UPDATE vtiger_field SET typeofdata = 'DT~O' WHERE tablename = 'vtiger_crmentity' and tabid =? and (columnname = ? or columnname = ?)", array($cbtranslation_tabid, 'modifiedtime', 'createdtime'));
+			$this->ExecuteQuery("UPDATE vtiger_field SET typeofdata = 'DT~O' WHERE tablename = 'vtiger_crmentity' and tabid =? and (columnname = ? or columnname = ?)", array($cbtermcondition_tabid, 'modifiedtime', 'createdtime'));
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
