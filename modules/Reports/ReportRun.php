@@ -3405,8 +3405,7 @@ class ReportRun extends CRMEntity {
 									$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING;
 								}
 							} catch (Exception $e) {
-								$date = new DateTime();
-								$dt = $date->format('Y-m-d');
+								$celltype = \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING;
 							}
 							break;
 						default:
