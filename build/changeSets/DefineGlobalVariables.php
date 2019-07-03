@@ -56,6 +56,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Display_World_Clock',
 				'Application_Display_Mini_Calendar',
 				'Application_Use_RTE',
+				'Application_RTESpellcheck',
 				'Application_Default_Action',
 				'Application_Default_Module',
 				'Application_Allow_Exports',

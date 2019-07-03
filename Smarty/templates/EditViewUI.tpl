@@ -278,6 +278,9 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					{rdelim});
 					var oCKeditor{$fldname} = CKEDITOR.instances[{$fldname}];
 				</script>
+				{if vt_hasRTESpellcheck()}
+					<script type="text/javascript" src="include/ckeditor/config_spellcheck.js"></script>
+				{/if}
 				{/if}
 			</td>
 		{elseif $uitype eq 21 || $uitype eq 24}

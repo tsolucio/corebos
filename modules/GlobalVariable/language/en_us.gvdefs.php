@@ -202,6 +202,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Use Rich Text Editor in those modules that support it',
 ),
+'Application_RTESpellcheck' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Activate browser\'s spellchecker in the Rich Text Editor.',
+),
 'Webservice_Enabled' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',

@@ -202,6 +202,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Utilise un éditeur de texte avancé dans les modules qui le supporte. Désactivé par défaut est (0). ',
 ),
+'Application_RTESpellcheck' => array(
+	'status' => 'Implémenté',
+	'valuetype' => 'Booléen',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Activate browser\'s spellchecker in the Rich Text Editor.',
+),
 'Webservice_Enabled' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Booléen',

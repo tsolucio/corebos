@@ -202,6 +202,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Utiliza el editor de textos enriquecido en aquellos módulos que lo soportan',
 ),
+'Application_RTESpellcheck' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0 | 1',
+	'definition' => 'Activa el corrector ortográfico del navegador en el editor de textos enriquecido.',
+),
 'Webservice_Enabled' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
