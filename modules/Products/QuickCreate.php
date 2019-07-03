@@ -43,5 +43,7 @@ $base_currency = 'curname' . $product_base_currency;
 $smarty->assign('BASE_CURRENCY', $base_currency);
 //End - add multi currency
 
+$tax_details = getAllTaxes('available');
+$smarty->assign('TAX_DETAILS', $tax_details);
 $smarty->display('QuickCreate.tpl');
 ?>
