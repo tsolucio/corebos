@@ -33,10 +33,7 @@
 				</tr>
 			{/foreach}
 			{if $MODULE eq 'Products' || $MODULE eq 'Services'}
-				{if $rowiteration==2}
-					<tr><td colspan="2" class="dvtCellInfo">&nbsp;</td></tr>
-				{/if}
-				{assign var=rloopit value=$rowiteration}
+				{assign var=rloopit value=2}
 				{foreach item=tax key=count from=$TAX_DETAILS}
 					{if $rloopit==2}
 						<tr>
