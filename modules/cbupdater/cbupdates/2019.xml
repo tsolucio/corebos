@@ -161,17 +161,24 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
-       <author>mohamed-shibeJR</author>
-       <description>migrate uitype 76 (potential capture) to uitype 10 (standard capture)</description>
-       <filename>build/changeSets/2019/migrateUIType76to10.php</filename>
-       <classname>migrateUIType76to10</classname>
-       <systemupdate>true</systemupdate>
+	<author>mohamed-shibeJR</author>
+	<description>migrate uitype 76 (potential capture) to uitype 10 (standard capture)</description>
+	<filename>build/changeSets/2019/migrateUIType76to10.php</filename>
+	<classname>migrateUIType76to10</classname>
+	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
-       <author>mohamed-shibeJR</author>
-       <description>update datetime for both cbtranslation and cbTermConditions modules</description>
-       <filename>build/changeSets/2019/updateDateTime.php</filename>
-       <classname>updateDateTime</classname>
-       <systemupdate>true</systemupdate>
+	<author>mohamed-shibeJR</author>
+	<description>update datetime for both cbtranslation and cbTermConditions modules</description>
+	<filename>build/changeSets/2019/updateDateTime.php</filename>
+	<classname>updateDateTime</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Generate Document Workflow Task</description>
+	<filename>build/changeSets/2019/addGenerateDocumentTaskType.php</filename>
+	<classname>addGenerateDocumentTaskType</classname>
+	<systemupdate>true</systemupdate>
 </changeSet>
 </updatesChangeLog>
