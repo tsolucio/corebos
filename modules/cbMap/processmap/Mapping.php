@@ -153,6 +153,9 @@ class Mapping extends processcbMap {
 					$ct = new VTSimpleTemplateOnData($testexpression);
 					$value.= $ct->render($entityCache, $mapping['origin'], $ofields).$delim;
 					$util->revertUser();
+				} else if(strtoupper($idx[0])=='RULE') {
+					$mapid = array_pop($fieldinfo);
+					$value .= coreBOS_Rule::evaluate($mapid, $targetfield).$delim;
 				} else {
 					$fieldname = array_pop($fieldinfo);
 					$value.= (isset($ofields[$fieldname]) ? $ofields[$fieldname] : '').$delim;
@@ -176,7 +179,14 @@ class Mapping extends processcbMap {
 			}
 			$allmergeFields=array();
 			foreach ($v->Orgfields->Orgfield as $value) {
-				$allmergeFields[]=array((String)$value->OrgfieldID=>(String)$value->OrgfieldName);
+				if (isset($value->Rule)) {
+					$arr = array(
+						(String)$value->OrgfieldID=>(String)$value->OrgfieldName,
+						"Rule"=>(String)$value->Rule);
+				} else {
+					$arr = array((String)$value->OrgfieldID=>(String)$value->OrgfieldName);
+				}
+				$allmergeFields[] = $arr;
 			}
 			if (isset($v->Orgfields->delimiter)) {
 				$target_fields[$fieldname]['delimiter']=(String)$v->Orgfields->delimiter;
