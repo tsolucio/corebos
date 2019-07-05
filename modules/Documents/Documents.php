@@ -336,6 +336,9 @@ class Documents extends CRMEntity {
 		}
 		if (isset($_REQUEST['order_by']) && $_REQUEST['folderid'] == $folderId) {
 			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
+			if ($order_by == 'notes_title') {
+				$order_by = 'title';
+			}
 		} elseif (!empty($_SESSION['NOTES_FOLDER_ORDER_BY']) && is_array($_SESSION['NOTES_FOLDER_ORDER_BY']) && !empty($_SESSION['NOTES_FOLDER_ORDER_BY'][$folderId])) {
 			$order_by = $_SESSION['NOTES_FOLDER_ORDER_BY'][$folderId];
 		} else {
