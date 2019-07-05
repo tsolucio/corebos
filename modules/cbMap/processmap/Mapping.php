@@ -182,7 +182,7 @@ class Mapping extends processcbMap {
 				if (isset($value->Rule)) {
 					$arr = array(
 						(String)$value->OrgfieldID=>(String)$value->OrgfieldName,
-						"Rule"=>(String)$value->Rule);
+						"mapid"=>(String)$value->Rule);
 				} else {
 					$arr = array((String)$value->OrgfieldID=>(String)$value->OrgfieldName);
 				}
