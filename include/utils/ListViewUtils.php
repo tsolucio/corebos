@@ -896,6 +896,9 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '', $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
 							$uicolarr = isset($ui_col_array[$fieldname]) ? $ui_col_array[$fieldname] : array('1'=>$fieldname);
 							foreach ($uicolarr as $key => $val) {
+								if ($key=='typeofdata') {
+									continue;
+								}
 								$uitype = $key;
 								$colname = $val;
 							}
