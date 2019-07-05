@@ -204,5 +204,10 @@ $mod_strings = array(
 'Net 60 days' => '60 días',
 
 'SalesOrder ID' => 'Id Orden de Venta',
+
+'LBL_PARTIAL_PAYMENTS_INFO' => 'Información Pagos Parciales',
+'Amount Due'=>'Pendiente a Pagar',
+'Amount Paid'=>'Total Pagado',
+'Total Amount'=>'Total a Pagar',
 );
 ?>

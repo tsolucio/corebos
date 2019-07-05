@@ -136,6 +136,9 @@ class Invoice extends CRMEntity {
 				$updateInventoryProductRel_deduct_stock = false;
 			}
 		}
+
+		// Update due amount
+		self::updateAmountDue($this->id, $this->column_fields, $module);
 	}
 
 	public function registerInventoryHistory() {
@@ -455,6 +458,197 @@ class Invoice extends CRMEntity {
 
 			$adb->pquery($updatequery, $updateparams);
 		}
+	}
+
+	public static function updateAmountDue($invoiceId, &$column_fields, $context) {
+		global $adb;
+		if (!vtlib_isModuleActive('CobroPago')) {
+			return true;
+		}
+		include_once 'vtlib/Vtiger/Module.php';
+		if ($context=='CobroPago') {
+			$em = new VTEventsManager($adb);
+			// Initialize Event trigger cache
+			$em->initTriggerCache();
+			$entityData = VTEntityData::fromEntityId($adb, $invoiceId);
+			//Event triggering code
+			$em->triggerEvent("vtiger.entity.beforesave", $entityData);
+		}
+		$type = getSalesEntityType($invoiceId);
+		if ($type=='Invoice' && self::invoice_control_installed()) {
+			//Sum Credit = 1
+			$query = "select sum(amount)
+			from vtiger_cobropago cp
+			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			where cp.related_id={$invoiceId} and paid=1 and credit=1";
+			$res = $adb->query($query);
+			$totalCredit = $adb->query_result($res, 0, 0);
+			if ($totalCredit=='') {
+				$totalCredit = 0;
+			}
+			//Sum Credit = 0
+			$query = "select sum(amount)
+			from vtiger_cobropago cp
+			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			where cp.related_id={$invoiceId} and paid=1 and credit=0";
+			$res = $adb->query($query);
+			$totalNoCredit = $adb->query_result($res, 0, 0);
+			if ($totalNoCredit=='') {
+				$totalNoCredit = 0;
+			}
+			$totalPaid = $totalCredit - $totalNoCredit;
+
+			$query = "select i.total, i.salesorderid, so.quoteid
+			from vtiger_invoice i
+			left join vtiger_salesorder so on so.salesorderid=i.salesorderid
+			where i.invoiceid={$invoiceId}";
+			$res = $adb->query($query);
+			$totalDue = $adb->query_result($res, 0, 'total');
+			$salesorderId = $adb->query_result($res, 0, 'salesorderid');
+			$quoteId = $adb->query_result($res, 0, 'quoteid');
+			$amountDue = $totalDue-$totalPaid;
+			if ($amountDue<=0) {
+				$newStatus = GlobalVariable::getVariable('CobroPago_Invoice_Status_OnPaid', 'DoNotChange');
+				if ($newStatus!='DoNotChange') {
+					$query = "update vtiger_invoice set invoicestatus='{$newStatus}' where invoiceid={$invoiceId}";
+					$adb->query($query);
+					if ($context=='Invoice') {
+						$column_fields['invoicestatus'] = $newStatus;
+					}
+				}
+			}
+			$query = "update vtiger_invoice set amount_due={$amountDue}, amount_paid={$totalPaid}, total_amount=total where invoiceid={$invoiceId}";
+			$adb->query($query);
+			if ($context=='Invoice') {
+				$column_fields['amount_due'] = $amountDue;
+				$column_fields['amount_paid'] = $totalPaid;
+				$column_fields['total_amount'] = $totalDue;
+			}
+		}
+		if ($type =='PurchaseOrder' && self::po_control_installed()) {
+			//Sum Credit = 0
+			$query = "select sum(amount) as am
+			from vtiger_cobropago cp
+			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			where cp.related_id={$invoiceId} and paid=1 and credit=0";
+			$res = $adb->query($query);
+			$totalNoCredit = $adb->query_result($res, 0, 0);
+			if ($totalNoCredit=='') {
+				$totalNoCredit = 0;
+			}
+			//Sum Credit = 1
+			$query = "select sum(amount)
+			from vtiger_cobropago cp
+			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			where cp.related_id={$invoiceId} and paid=1 and credit=1";
+			$res = $adb->query($query);
+			$totalCredit = $adb->query_result($res, 0, 0);
+			if ($totalCredit=='') {
+				$totalCredit = 0;
+			}
+
+			$totalPaid = $totalNoCredit - $totalCredit;
+
+			$query = "select po.total
+			from vtiger_purchaseorder po
+			where po.purchaseorderid={$invoiceId}";
+			$res = $adb->query($query);
+			$totalDue = $adb->query_result($res, 0, 'total');
+			$amountDue = $totalDue-$totalPaid;
+			if ($amountDue<=0) {
+				$newStatus = GlobalVariable::getVariable('CobroPago_PurchaseOrder_Status_OnPaid', 'DoNotChange');
+				if ($newStatus!='DoNotChange') {
+					$query = "update vtiger_purchaseorder set postatus='{$newStatus}' where purchaseorderid={$invoiceId}";
+					$adb->query($query);
+					if ($context=='PurchaseOrder') {
+						$column_fields['postatus'] = $newStatus;
+					}
+				}
+			}
+			$query = "update vtiger_purchaseorder set amount_due={$amountDue}, amount_paid={$totalPaid}, total_amount=total where  purchaseorderid={$invoiceId}";
+			$adb->query($query);
+			if ($context=='PurchaseOrder') {
+				$column_fields['amount_due'] = $amountDue;
+				$column_fields['amount_paid'] = $totalPaid;
+				$column_fields['total_amount'] = $totalDue;
+			}
+		}
+		if ($type=='SalesOrder' && self::so_control_installed()) {
+			//Sum Credit = 1
+			$query = "select sum(amount)
+			from vtiger_cobropago cp
+			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			where cp.related_id={$invoiceId} and paid=1 and credit=1";
+			$res = $adb->query($query);
+			$totalCredit = $adb->query_result($res, 0, 0);
+			if ($totalCredit=='') {
+				$totalCredit = 0;
+			}
+			//Sum Credit = 0
+			$query = "select sum(amount)
+			from vtiger_cobropago cp
+			join vtiger_crmentity crm_cp on crm_cp.crmid=cp.cobropagoid and crm_cp.deleted=0
+			where cp.related_id={$invoiceId} and paid=1 and credit=0";
+			$res = $adb->query($query);
+			$totalNoCredit = $adb->query_result($res, 0, 0);
+			if ($totalNoCredit=='') {
+				$totalNoCredit = 0;
+			}
+			$totalPaid = $totalCredit - $totalNoCredit;
+			$query = "select i.total, i.quoteid
+			from vtiger_salesorder i
+			where i.salesorderid={$invoiceId}";
+			$res = $adb->query($query);
+			$totalDue = $adb->query_result($res, 0, 'total');
+			$quoteId = $adb->query_result($res, 0, 'quoteid');
+			$amountDue = $totalDue-$totalPaid;
+			if ($amountDue<=0) {
+				$newStatus = GlobalVariable::getVariable('CobroPago_SalesOrder_Status_OnPaid', 'DoNotChange');
+				if ($newStatus!='DoNotChange') {
+					$query = "update vtiger_salesorder set sostatus='{$newStatus}' where salesorderid={$invoiceId}";
+					$adb->query($query);
+					if ($context=='SalesOrder') {
+						$column_fields['sostatus'] = $newStatus;
+					}
+				}
+			}
+			$query = "update vtiger_salesorder set amount_due={$amountDue}, amount_paid={$totalPaid}, total_amount=total where salesorderid={$invoiceId}";
+			$adb->query($query);
+			if ($context=='SalesOrder') {
+				$column_fields['amount_due'] = $amountDue;
+				$column_fields['amount_paid'] = $totalPaid;
+				$column_fields['total_amount'] = $totalDue;
+			}
+		}
+		if ($context=='CobroPago') {
+			//Event triggering code
+			$em->triggerEvent("vtiger.entity.aftersave", $entityData);
+			//Event triggering code ends
+		}
+	}
+	public static function invoice_control_installed() {
+		global $adb;
+		$cninv=$adb->getColumnNames('vtiger_invoice');
+		if (in_array('amount_due', $cninv) && in_array('amount_paid', $cninv) && in_array('total_amount', $cninv)) {
+			return true;
+		}
+		return false;
+	}
+	public static function po_control_installed() {
+		global $adb;
+		$cninv=$adb->getColumnNames('vtiger_purchaseorder');
+		if (in_array('amount_due', $cninv) && in_array('amount_paid', $cninv) && in_array('total_amount', $cninv)) {
+			return true;
+		}
+		return false;
+	}
+	public static function so_control_installed() {
+		global $adb;
+		$cninv=$adb->getColumnNames('vtiger_salesorder');
+		if (in_array('amount_due', $cninv) && in_array('amount_paid', $cninv) && in_array('total_amount', $cninv)) {
+			return true;
+		}
+		return false;
 	}
 
 	/*Function to create records in current module.

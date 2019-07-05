@@ -157,6 +157,10 @@ $mod_strings = array(
 	'Documents' => 'Dokumentumok',
 	'SINGLE_Invoice' => 'Díjbekérő',
 	'Notes' => 'Jegyzetek',
-	'invoice_no' => 'Díjbekérő No.'
+	'invoice_no' => 'Díjbekérő No.',
+	'LBL_PARTIAL_PAYMENTS_INFO' => 'Partial Payments Information',
+	'Amount Due'=>'Amount Due',
+	'Amount Paid'=>'Amount Paid',
+	'Total Amount'=>'Total Amount',
 );
 ?>

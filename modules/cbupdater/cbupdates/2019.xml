@@ -205,4 +205,28 @@
 	<systemupdate>false</systemupdate>
 	<blocked>true</blocked>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add payment control fields to Invoice</description>
+	<filename>build/changeSets/2019/addPaymentFieldsToInvoice.php</filename>
+	<classname>addPaymentFieldsToInvoice</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add payment control fields to Purchase Order</description>
+	<filename>build/changeSets/2019/addPaymentFieldsToPO.php</filename>
+	<classname>addPaymentFieldsToPO</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add payment control fields to Sales Order</description>
+	<filename>build/changeSets/2019/addPaymentFieldsToSO.php</filename>
+	<classname>addPaymentFieldsToSO</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
 </updatesChangeLog>
