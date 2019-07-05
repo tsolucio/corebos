@@ -181,4 +181,28 @@
 	<classname>addGenerateDocumentTaskType</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add payment control fields to Accounts</description>
+	<filename>build/changeSets/2019/addPaymentFieldsToAccounts.php</filename>
+	<classname>addPaymentFieldsToAccounts</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add payment control fields to Contacts</description>
+	<filename>build/changeSets/2019/addPaymentFieldsToContacts.php</filename>
+	<classname>addPaymentFieldsToContacts</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add payment control fields to Vendors</description>
+	<filename>build/changeSets/2019/addPaymentFieldsToVendors.php</filename>
+	<classname>addPaymentFieldsToVendors</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
 </updatesChangeLog>
