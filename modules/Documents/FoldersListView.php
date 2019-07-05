@@ -162,10 +162,8 @@ $folders = array();
 $emptyfolders = array();
 if ($foldercount > 0) {
 	for ($i=0; $i<$foldercount; $i++) {
-		$query = '';
 		$displayFolder='';
 		$query = $focus->query;
-		$list_query = '';
 		$list_query = $focus->query;
 		$folder_id = $adb->query_result($result, $i, 'folderid');
 		$query .= " and vtiger_notes.folderid = $folder_id";
