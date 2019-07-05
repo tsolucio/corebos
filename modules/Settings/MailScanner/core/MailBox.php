@@ -89,8 +89,8 @@ class Vtiger_MailBox {
 		}
 
 		if (!$imap) {
-			$connectString = '{'. "$mailboxsettings[server]:$mailboxsettings[port]/$mailboxsettings[protocol]/$mailboxsettings[ssltype]/$mailboxsettings[sslmethod]" ."}";
-			$connectStringShort = '{'. "$mailboxsettings[server]/$mailboxsettings[protocol]:$mailboxsettings[port]" ."}";
+			$connectString = '{'. "$mailboxsettings[server]:$mailboxsettings[port]/$mailboxsettings[protocol]/$mailboxsettings[ssltype]/$mailboxsettings[sslmethod]".'}';
+			$connectStringShort = '{'. "$mailboxsettings[server]/$mailboxsettings[protocol]:$mailboxsettings[port]".'}';
 
 			$this->log("Trying to connect using $connectString$folder", true);
 			if (!$imap = @imap_open("$connectString$folder", $mailboxsettings[username], $mailboxsettings[password])) {
@@ -163,12 +163,12 @@ class Vtiger_MailBox {
 				if ($searchfor == 'ALL') {
 					$searchQuery = "SINCE $lastscanOn";
 				} elseif ($searchfor == 'ALLUNSEEN') {
-					$searchQuery = "UNSEEN";
+					$searchQuery = 'UNSEEN';
 				} else {
 					$searchQuery = "$searchfor SINCE $lastscanOn";
 				}
 			} else {
-				$searchQuery = $lastscanOn? "SINCE $lastscanOn" : "BEFORE ". date('d-M-Y');
+				$searchQuery = $lastscanOn? "SINCE $lastscanOn" : 'BEFORE '. date('d-M-Y');
 			}
 		}
 		if ($this->open($folder)) {

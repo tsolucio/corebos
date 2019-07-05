@@ -274,7 +274,7 @@ class Vtiger_MailRecord {
 		}
 
 		if ($this->_attachments) {
-			$this->log("Attachments: ");
+			$this->log('Attachments: ');
 			$this->log(array_keys($this->_attachments));
 		}
 
@@ -330,14 +330,14 @@ class Vtiger_MailRecord {
 			if (strtolower($p->subtype)=='plain') {
 				$this->_plainmessage .= trim($data) ."\n\n";
 			} else {
-				$this->_htmlmessage .= $data ."<br><br>";
+				$this->_htmlmessage .= $data .'<br><br>';
 			}
-		} // EMBEDDED MESSAGE
-		// Many bounce notifications embed the original message as type 2,
-		// but AOL uses type 1 (multipart), which is not handled here.
-		// There are no PHP functions to parse embedded messages,
-		// so this just appends the raw source to the main message.
-		elseif ($p->type==2 && $data) {
+		} elseif ($p->type==2 && $data) {
+			// EMBEDDED MESSAGE
+			// Many bounce notifications embed the original message as type 2,
+			// but AOL uses type 1 (multipart), which is not handled here.
+			// There are no PHP functions to parse embedded messages,
+			// so this just appends the raw source to the main message.
 			$this->_plainmessage .= trim($data) ."\n\n";
 		}
 
