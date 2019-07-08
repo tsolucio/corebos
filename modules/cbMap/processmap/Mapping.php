@@ -155,7 +155,19 @@ class Mapping extends processcbMap {
 					$util->revertUser();
 				} else if(strtoupper($idx[0])=='RULE') {
 					$mapid = array_pop($fieldinfo);
-					$value .= coreBOS_Rule::evaluate($mapid, $targetfield).$delim;
+					$fieldname = array_pop($fieldinfo);
+					if (empty($ofields['record_id'])) {
+						if (strpos($ofields['record_id'], 'x')===false) {
+							$ofields['record_id'] = vtws_getEntityId(getSalesEntityType($ofields['record_id'])).'x'.$ofields['record_id'];
+						}
+						$entity = new VTWorkflowEntity($current_user, $ofields['record_id'], true);
+						if (is_array($entity->data)) { // valid context
+							$context = array_merge($entity->data, $ofields);
+						}
+					} else {
+						$context = $ofields[$fieldname];
+					}
+					$value .= coreBOS_Rule::evaluate($mapid, $context).$delim;
 				} else {
 					$fieldname = array_pop($fieldinfo);
 					$value.= (isset($ofields[$fieldname]) ? $ofields[$fieldname] : '').$delim;
