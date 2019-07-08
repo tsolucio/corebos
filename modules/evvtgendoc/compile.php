@@ -1628,7 +1628,7 @@ if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language 
 		global $adb;
 		$res = $adb->pquery($relsql, array());
 		$nr = $adb->num_rows($res);
-		$ret = array('entries' => array(''));
+		$ret = array('entries' => array());
 		for ($i=0; $i<$nr; $i++) {
 			$rcpid = $adb->query_result($res, $i, 'crmid');
 			$ret['entries'][$rcpid] = $rcpid;
