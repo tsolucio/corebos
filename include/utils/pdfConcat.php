@@ -20,7 +20,7 @@ use setasign\Fpdi\Fpdi;
 require_once 'include/fpdf/fpdf.php';
 require_once 'include/fpdi/src/autoload.php';
 
-class concat_pdf extends FPDI {
+class concat_pdf extends setasign\Fpdi\TcpdfFpdi {
 
 	public $files = array();
 
@@ -36,7 +36,7 @@ class concat_pdf extends FPDI {
 			for ($i = 1; $i <= $pagecount; $i++) {
 				$tplidx = $this->ImportPage($i);
 				$s = $this->getTemplatesize($tplidx);
-				$this->AddPage('P', array($s['w'], $s['h']));
+				$this->AddPage('P', array($s['width'], $s['height']));
 				$this->useTemplate($tplidx);
 			}
 		}

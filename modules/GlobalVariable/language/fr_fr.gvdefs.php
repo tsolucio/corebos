@@ -202,6 +202,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Utilise un éditeur de texte avancé dans les modules qui le supporte. Désactivé par défaut est (0). ',
 ),
+'Application_RTESpellcheck' => array(
+	'status' => 'Implémenté',
+	'valuetype' => 'Booléen',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Activate browser\'s spellchecker in the Rich Text Editor.',
+),
 'Webservice_Enabled' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Booléen',
@@ -775,6 +782,27 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => 'Valeur du champ "Phase"<br>Module Devis',
 	'definition' => 'Lors de la sauvegarde d\'un Bon de Commande lié à un Devis, la Phase du Devis sera fixé avec la valeur de cette variable. La valeur spéciale "DoNotChange" désactive cette variable et aucun chagement n\'est effectué.',
+),
+'CobroPago_Invoice_Status_OnPaid' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'string',
+	'category' => 'Application',
+	'values' => 'Valid Invoice status picklist values',
+	'definition' => 'When saving a Payment related to an Invoice, the status of the Invoice will be set to the value contained in this variable. The special value "DoNotChange" will deactivate this functionality and no change will be done.',
+),
+'CobroPago_PurchaseOrder_Status_OnPaid' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'string',
+	'category' => 'Application',
+	'values' => 'Valid Purchase Order status picklist values',
+	'definition' => 'When saving a Payment related to a Purchase Order, the status of the Purchase Order will be set to the value contained in this variable. The special value "DoNotChange" will deactivate this functionality and no change will be done.',
+),
+'CobroPago_SalesOrder_Status_OnPaid' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'string',
+	'category' => 'Application',
+	'values' => 'Valid Sales Order status picklist values',
+	'definition' => 'When saving a Payment related to a Sales Order, the status of the quote will be set to the value contained in this variable. The special value "DoNotChange" will deactivate this functionality and no change will be done.',
 ),
 'Application_ListView_MaxColumns' => array(
 	'status' => 'Implémenté',

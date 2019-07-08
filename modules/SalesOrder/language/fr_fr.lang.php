@@ -180,5 +180,9 @@ $mod_strings = array (
 	'4years' => '4 ans',
 	'5years' => '5 ans',
 	'SalesOrder ID' => 'Bon de commande ID',
+	'LBL_PARTIAL_PAYMENTS_INFO' => 'Partial Payments Information',
+	'Amount Due'=>'Amount Due',
+	'Amount Paid'=>'Amount Paid',
+	'Total Amount'=>'Total Amount',
 );
 ?>

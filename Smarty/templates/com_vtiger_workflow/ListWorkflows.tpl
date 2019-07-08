@@ -36,7 +36,7 @@
 			<div class="slds-grid slds-gutters" style="width: 650px;">
 				<div class="slds-col">
 					<div class="slds-form-element slds-lookup" data-select="single" style="width: 162px; margin-bottom: 6px;">
-						<label class="slds-form-element__label" for="lookup-339">{'LBL_MODULE'|getTranslatedString:'Reports'} {'LBL_Search'|getTranslatedString:'MailManager'}</label>
+						<label class="slds-form-element__label" for="lookup-339">{'LBL_MODULE'|getTranslatedString:'Reports'} </label>
 						<div class="slds-form-element__control slds-grid slds-box_border">
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
 								<svg aria-hidden="true" class="slds-input__icon">
@@ -54,7 +54,7 @@
 				<div class="slds-col">
 					<div class="slds-form-element" style="width: 162px; margin-bottom: 6px;">
 						<label class="slds-form-element__label" for="text-input-id-1">
-						{'LBL_DESCRIPTION'|getTranslatedString:'Reports'} {'LBL_Search'|getTranslatedString:'MailManager'}
+						{'LBL_DESCRIPTION'|getTranslatedString:'Reports'} 
 						</label>
 						<div class="slds-form-element__control">
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
@@ -69,7 +69,7 @@
 				<div class="slds-col">
 					<div class="slds-form-element" style="width: 162px;">
 						<label class="slds-form-element__label" for="text-input-id-1">
-						{'LBL_PURPOSE'|getTranslatedString:'Reports'} {'LBL_Search'|getTranslatedString:'MailManager'}
+						{'LBL_PURPOSE'|getTranslatedString:'Reports'} 
 						</label>
 						<div class="slds-form-element__control">
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
@@ -83,7 +83,7 @@
 				</div>
 				<div class="slds-col">
 					<div class="slds-form-element slds-lookup" data-select="single" style="width: 162px; margin-bottom: 6px;">
-						<label class="slds-form-element__label" for="lookup-339">{'LBL_TRIGGER'|getTranslatedString:'Reports'} {'LBL_Search'|getTranslatedString:'MailManager'}</label>
+						<label class="slds-form-element__label" for="lookup-339">{'LBL_TRIGGER'|getTranslatedString:'Reports'} </label>
 						<div class="slds-form-element__control slds-grid slds-box_border">
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
 								<svg aria-hidden="true" class="slds-input__icon">

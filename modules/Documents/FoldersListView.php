@@ -162,10 +162,8 @@ $folders = array();
 $emptyfolders = array();
 if ($foldercount > 0) {
 	for ($i=0; $i<$foldercount; $i++) {
-		$query = '';
 		$displayFolder='';
 		$query = $focus->query;
-		$list_query = '';
 		$list_query = $focus->query;
 		$folder_id = $adb->query_result($result, $i, 'folderid');
 		$query .= " and vtiger_notes.folderid = $folder_id";
@@ -221,6 +219,9 @@ if ($foldercount > 0) {
 			coreBOS_Session::set('lvs^'.$currentModule.'^start^'.$folder_id, $start[$folder_id]);
 		}
 		$limit_start_rec = ($start[$folder_id]-1) * $max_entries_per_page;
+		if (GlobalVariable::getVariable('Debug_ListView_Query', '0')=='1') {
+			echo "<br>$query LIMIT $limit_start_rec, $max_entries_per_page<br>";
+		}
 
 		$list_result = $adb->pquery($query. " LIMIT $limit_start_rec, $max_entries_per_page", array());
 		//navigation end

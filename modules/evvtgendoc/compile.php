@@ -33,6 +33,9 @@ if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language 
 		'Accounts' => array(
 			'MemberOf' => 'account_id',
 		),
+		'Contacts' => array(
+			'Accounts' => 'account_id',
+		),
 		'SalesOrder' => array(
 			'Accounts' => 'account_id',
 			'Contacts' => 'contact_id',
@@ -723,7 +726,6 @@ if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language 
 				if (!$check) {
 					$iter_modules[$token_pair[0]] = array();
 				}
-				unset($related['entries'][0]);//Elimino indice 0 que añade el módulo ListViewColors
 				if (count($related['entries']) > 0) {
 					foreach ($related['entries'] as $key => $value) {
 						//Ara tenim totes les entitats relacionades, si ens pasen un parametre

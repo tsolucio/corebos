@@ -186,5 +186,9 @@ $mod_strings = array(
 'Net Total' => 'Netto totaal voor korting',
 'VAT' => 'BTW',
 'Grand Total' => 'Eindtotaal',
+'LBL_PARTIAL_PAYMENTS_INFO' => 'Partial Payments Information',
+'Amount Due'=>'Amount Due',
+'Amount Paid'=>'Amount Paid',
+'Total Amount'=>'Total Amount',
 );
 ?>
