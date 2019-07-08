@@ -156,7 +156,7 @@ class Mapping extends processcbMap {
 				} elseif (strtoupper($idx[0])=='RULE') {
 					$mapid = array_pop($fieldinfo);
 					$fieldname = array_pop($fieldinfo);
-					if (empty($ofields['record_id'])) {
+					if (!empty($ofields['record_id'])) {
 						if (strpos($ofields['record_id'], 'x')===false) {
 							$ofields['record_id'] = vtws_getEntityId(getSalesEntityType($ofields['record_id'])).'x'.$ofields['record_id'];
 						}
