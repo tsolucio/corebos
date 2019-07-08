@@ -153,7 +153,7 @@ class Mapping extends processcbMap {
 					$ct = new VTSimpleTemplateOnData($testexpression);
 					$value.= $ct->render($entityCache, $mapping['origin'], $ofields).$delim;
 					$util->revertUser();
-				} else if(strtoupper($idx[0])=='RULE') {
+				} elseif (strtoupper($idx[0])=='RULE') {
 					$mapid = array_pop($fieldinfo);
 					$fieldname = array_pop($fieldinfo);
 					if (empty($ofields['record_id'])) {
