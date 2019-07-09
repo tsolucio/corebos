@@ -157,6 +157,37 @@ class number2string {
 				'million' => 'MILLION',
 				'millions' => 'MILLIONS',
 			),
+			'ro' => array(
+				'coma' => 'virgula',
+				'and' => 'si',
+				'one' => 'UNU',
+				'uni' => array(
+					'',
+					'UNA', 'DOUA', 'TREI', 'PATRU',
+					'CINCI', 'SASE', 'SAPTE', 'OPT',
+					'NOUA', 'ZECE', 'UNSPREZECE', 'DOISPREZECE',
+					'TREISPREZECE', 'PAISPREZECE', 'CINCISPREZECE', 'SAISPREZECE',
+					'SAPTESPREZECE', 'OPTSPREZECE', 'NOUASPREZECE', 'DOUAZECI',
+					'DOUAZECI SI UNA', 'DOUAZECISI DOUA', 'DOUAZECI SI TREI', 'DOUAZECI SI PATRU',
+					'DOUAZECI SI CINCI', 'DOUAZECI SI SASE', 'DOUAZECI SI SAPTE', 'DOUAZECI SI OPT', 'DOUAZECI SI NOUA'
+				),
+				'dec' => array(
+					'', '', '',
+					'TREIZECI', 'PATRUZECI', 'CINCIZECI',
+					'SAIZECI', 'SAPTEZECI', 'OPTZECI', 'NOUAZECI'
+				),
+				'cent' => array(
+					'',
+					'O SUTA', 'DOUA SUTE', 'TREI SUTE',
+					'PATRU SUTE', 'CINCI SUTE', 'SASE SUTE', 'SAPTE SUTE',
+					'OPT SUTE', 'NOUA SUTE'
+				),
+				'zero' => 'ZERO',
+				'hundred' => 'SUTA',
+				'thousand' => 'MIE',
+				'million' => 'MILION',
+				'millions' => 'MILIOANE',
+			),
 		);
 		return (isset($languages[$lang]) ? $languages[$lang] : $languages['en']);
 	}
