@@ -249,8 +249,12 @@ class cbupdaterWorker {
 		$upd = 'UPDATE vtiger_field SET quickcreate=2, quickcreatesequence=? WHERE fieldid=?';
 		foreach ($qcfields as $fldname) {
 			$field = VTiger_Field::getInstance($fldname, $module);
-			$adb->pquery($upd, array($order, $field->id));
-			$order++;
+			if ($field) {
+				$adb->pquery($upd, array($order, $field->id));
+				$order++;
+			} else {
+				$this->sendMsgError('QuickCreate field not found: '.$fldname);
+			}
 		}
 	}
 
