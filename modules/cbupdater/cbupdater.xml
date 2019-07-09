@@ -1354,4 +1354,11 @@
 	<classname>Runwebservice</classname>
 	<systemupdate>1</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mocodertz</author>
+	<description>Install DiscountLine Module</description>
+	<filename>build/changeSets/2019/installdiscountline.php</filename>
+	<classname>installdiscountline</classname>
+	<systemupdate>1</systemupdate>
+</changeSet>
 </updatesChangeLog>

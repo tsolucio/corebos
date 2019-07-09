@@ -1,0 +1,23 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_discountline</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_discountline` (
+  `discountlineid` int(11) NOT NULL DEFAULT '0',
+  `discountline_no` varchar(100) DEFAULT NULL,
+  `accountid` int(11) DEFAULT NULL,
+  `dlcategory` varchar(255) DEFAULT NULL,
+  `discount` int(11) DEFAULT NULL,
+  PRIMARY KEY (`discountlineid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_discountlinecf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_discountlinecf` (
+  `discountlineid` int(11) NOT NULL,
+  PRIMARY KEY (`discountlineid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>
