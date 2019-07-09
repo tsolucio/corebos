@@ -157,7 +157,6 @@ class number2string {
 				'million' => 'MILLION',
 				'millions' => 'MILLIONS',
 			),
-		
 			'it' => array(
 				'coma' => 'punto',
 				'and' => '',
@@ -169,7 +168,7 @@ class number2string {
 						'NOVE', 'DIECI', 'UNDICI', 'DODICI',
 						'TREDICI', 'QUATTORDICI', 'QUINDICI', 'SEDICI',
 						'DICIASSETTE', 'DICIOTTO', 'DICIANOVE', 'VENTI', 'VENTUNO',  'VENTIDUE',
-						'VENTITRE', 'VENTIQUATTRO', 'VENTICINQUE', 'VENTISEI', 
+						'VENTITRE', 'VENTIQUATTRO', 'VENTICINQUE', 'VENTISEI',
 						'VENTISETTE', 'VENTOTTO','VENTINOVE'
 				),
 				'dic' => array(
@@ -189,8 +188,7 @@ class number2string {
 				'thousand' => 'MILLE',
 				'million' => 'MILIONE',
 				'millions' => 'MILIONI',
-			),			
-			
+			),
 			'ro' => array(
 				'coma' => 'virgula',
 				'and' => 'si',
