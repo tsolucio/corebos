@@ -157,6 +157,37 @@ class number2string {
 				'million' => 'MILLION',
 				'millions' => 'MILLIONS',
 			),
+			'nl' => array(
+				'coma' => 'punt',
+				'and' => 'en',
+				'one' => 'EEN',
+				'uni' => array(
+					'',
+					'EEN', 'TWEE', 'DRIE', 'VIER',
+					'VIJF', 'ZES', 'ZEVEN', 'ACHT',
+					'NEGEN', 'TIEN', 'ELF', 'TWAALF',
+					'DERTIEN', 'VEERTIEN', 'VIJFTIEN', 'ZESTIEN',
+					'ZEVENTIEN', 'ACHTTIEN', 'NEGENTIEN', 'TWINTIG',
+					'EENENTWINTIG', 'TWEEËNTWINTIG', 'DRIEËNTWINTIG', 'VIERENTWINTIG',
+					'VIJFENTWINTIG', 'ZESENTWINTIG', 'ZEVENENTWINTIG', 'ACHTENTWINTIG', 'NEGENENTWINTIG'
+				),
+				'dec' => array(
+					'', '', '',
+					'DERTIG', 'VEERTIG', 'VIJFTIG',
+					'ZESTIG', 'ZEVENTIG', 'TACHTIG', 'NEGENTIG'
+				),
+				'cent' => array(
+					'',
+					'HONDERD', 'TWEEHONDERD', 'DRIEHONDERD',
+					'VIERHONDERD', 'VIJFHONDERD', 'ZESHONDERD', 'ZEVENHONDERD',
+					'ACHTHONDERD', 'NEGENHONDERD'
+				),
+				'zero' => 'NUL',
+				'hundred' => 'HONDERD',
+				'thousand' => 'DUIZEND',
+				'million' => 'MILJOEN',
+				'millions' => 'MILJOEN',
+			),
 			'it' => array(
 				'coma' => 'punto',
 				'and' => '',
