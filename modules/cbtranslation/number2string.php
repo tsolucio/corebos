@@ -162,21 +162,20 @@ class number2string {
 				'and' => '',
 				'one' => 'UNO',
 				'uni' => array(
-						'',
-						'UNO', 'DUE', 'TRE', 'QUATTRO',
-						'CINQUE', 'SEI', 'SETTE', 'OTTO',
-						'NOVE', 'DIECI', 'UNDICI', 'DODICI',
-						'TREDICI', 'QUATTORDICI', 'QUINDICI', 'SEDICI',
-						'DICIASSETTE', 'DICIOTTO', 'DICIANOVE', 'VENTI', 'VENTUNO',  'VENTIDUE',
-						'VENTITRE', 'VENTIQUATTRO', 'VENTICINQUE', 'VENTISEI',
-						'VENTISETTE', 'VENTOTTO','VENTINOVE'
+					'',
+					'UNO', 'DUE', 'TRE', 'QUATTRO',
+					'CINQUE', 'SEI', 'SETTE', 'OTTO',
+					'NOVE', 'DIECI', 'UNDICI', 'DODICI',
+					'TREDICI', 'QUATTORDICI', 'QUINDICI', 'SEDICI',
+					'DICIASSETTE', 'DICIOTTO', 'DICIANOVE', 'VENTI', 'VENTUNO',  'VENTIDUE',
+					'VENTITRE', 'VENTIQUATTRO', 'VENTICINQUE', 'VENTISEI',
+					'VENTISETTE', 'VENTOTTO','VENTINOVE'
 				),
 				'dic' => array(
 					'', '', '',
 					'TRENTA', 'QUARANTA', 'CINQUANTA',
 					'SESSANTA', 'SETTANTA', 'OTTANTA', 'NOVANTA'
-					),
-
+				),
 				'centi' => array(
 					'',
 					'CENTO', 'DUECENTO', 'TRECENTO',
@@ -188,6 +187,37 @@ class number2string {
 				'thousand' => 'MILLE',
 				'million' => 'MILIONE',
 				'millions' => 'MILIONI',
+			),
+			'fr' => array(
+				'coma' => 'point',
+				'and' => '',
+				'one' => 'UN',
+				'uni' => array(
+					'',
+					'UN', 'DEUX', 'TROIS', 'QUATRE',
+					'CINQ', 'SIX', 'SEPT', 'HUIT',
+					'NEUF', 'DIX', 'ONZE', 'DOUZE',
+					'TREIZE', 'QUATORZE', 'QUINZE', 'SEIZE',
+					'DIX-SEPT', 'DIX-HUIT', 'DIX-NEUF', 'VINGT',
+					'VINGT-ET-UN', 'VINGT-DEUX', 'VINGT-TROIS', 'VINGT-QUATRE',
+					'VINGT-CINQ', 'VINGT-SIX', 'VINGT-SEPT', 'VINGT-HUIT', 'VINGT-NEUF'
+				),
+				'dec' => array(
+					'', '', '',
+					'TRENTE', 'QUARANTE', 'CINQUANTE',
+					'SOIXANTE', 'SOIXANTE-DIX', 'QUATRE-VINGTS', 'QUATRE-VINGT-DIX'
+				),
+				'cent' => array(
+					'',
+					'CENT', 'DEUX-CENTS', 'TROIS-CENTS',
+					'QUATRE-CENTS', 'CINQ-CENTS', 'SIX-CENTS', 'SEPT-CENTS',
+					'HUIT-CENTS', 'NEUF-CENTS'
+				),
+				'zero' => 'ZERO',
+				'hundred' => 'CENT',
+				'thousand' => 'MILLE',
+				'million' => 'MILLION',
+				'millions' => 'MILLIONS',
 			),
 			'ro' => array(
 				'coma' => 'virgula',
