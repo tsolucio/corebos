@@ -994,6 +994,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Mostrar campos de usuario contenidos en el bloque de usuario avanzado',
 ),
+'Webservice_PermitQueryOnInactiveUsers' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => 'Incluir usuarios inactivos en los resultados de las consultas del servicio web.',
+),
 'GoogleCalendarSync_BaseUpdateMonths' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Entero',

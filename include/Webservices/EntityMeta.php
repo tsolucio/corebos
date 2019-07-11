@@ -250,7 +250,7 @@ abstract class EntityMeta {
 			return 'vtiger_crmentity.deleted=0';
 		}
 		// not sure whether inactive users should be considered deleted or not.
-		return "vtiger_users.status='Active'";
+		return (GlobalVariable::getVariable('Webservice_PermitQueryOnInactiveUsers', 0) ? '' : "vtiger_users.status='Active'");
 	}
 
 	abstract public function hasPermission($operation, $webserviceId);

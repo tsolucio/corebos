@@ -993,6 +993,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Autorise (1) ou non (0) à webservice l\'accés aux champs contenus dans le bloque "Options avancées de l\'utilisateur". La valeur par défaut est (0)',
 ),
+'Webservice_PermitQueryOnInactiveUsers' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => 'Include inactive users in results of web service query.',
+),
 'GoogleCalendarSync_BaseUpdateMonths' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Entier',
