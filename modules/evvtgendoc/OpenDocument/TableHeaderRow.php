@@ -44,7 +44,7 @@ class OpenDocument_TableHeaderRow extends OpenDocument_StyledElement {
 	 */
 	public $children;
 
-		/**
+	/**
 	 * Node namespace
 	 */
 	const nodeNS = OpenDocument::NS_TABLE;
@@ -54,12 +54,12 @@ class OpenDocument_TableHeaderRow extends OpenDocument_StyledElement {
 	 */
 	const nodePrefix = 'table';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'table-header-rows';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'T';
@@ -83,7 +83,7 @@ class OpenDocument_TableHeaderRow extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-				$element = new OpenDocument_TableHeaderRow($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
+		$element = new OpenDocument_TableHeaderRow($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
 		$node->appendChild($element->node);
 
 		return $element;
@@ -99,7 +99,7 @@ class OpenDocument_TableHeaderRow extends OpenDocument_StyledElement {
 		return $this->document->getStyle($this->getStyleName(), $properties);
 	}
 
-		/**
+	/**
 	 * Get style name
 	 *
 	 * @return string
@@ -108,7 +108,7 @@ class OpenDocument_TableHeaderRow extends OpenDocument_StyledElement {
 		return $this->node->getAttributeNS(OpenDocument::NS_TABLE, 'style-name');
 	}
 
-		/**
+	/**
 	 * Get style name prefix
 	 *
 	 * @return string
@@ -117,7 +117,7 @@ class OpenDocument_TableHeaderRow extends OpenDocument_StyledElement {
 		return $this->styleNamePrefix;
 	}
 
-		/**
+	/**
 	 * Generate new style name
 	 *
 	 * @return string $stylename
@@ -151,7 +151,7 @@ class OpenDocument_TableHeaderRow extends OpenDocument_StyledElement {
 		return OpenDocument_TableRow::instance($this);
 	}
 
-		/**
+	/**
 	 * Create OpenDocument_TableCell
 	 *
 	 * @param string $text optional
@@ -162,7 +162,7 @@ class OpenDocument_TableHeaderRow extends OpenDocument_StyledElement {
 		return OpenDocument_TableCell::instance($this, $text, $colspan, $rowspan);
 	}
 
-		/**
+	/**
 	 * Create OpenDocument_TableCoveredCell
 	 *
 	 * @param string $text optional
@@ -173,7 +173,7 @@ class OpenDocument_TableHeaderRow extends OpenDocument_StyledElement {
 		return OpenDocument_TableCoveredCell::instance($this);
 	}
 
-		/**
+	/**
 	 * Get children list
 	 *
 	 * @return ArrayIterator

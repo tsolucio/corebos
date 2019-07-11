@@ -189,6 +189,7 @@ $mod_strings = array (
 	'AVG' => 'Moyenne',
 	'MAX' => 'Valeur max',
 	'MIN' => 'Valeur min',
+	'COUNT'=>'COUNT',
 	'LBL_CUSTOM_REPORTS' => 'Rapports personnalisés',
 	'ticketid' => 'Ref',
 	'NO_COLUMN' => 'Aucune colonne disponible pour le total',

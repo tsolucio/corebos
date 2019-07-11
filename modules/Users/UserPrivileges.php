@@ -90,7 +90,7 @@ class UserPrivileges {
 		require "user_privileges/sharing_privileges_$userid.php";
 		$this->defaultOrgSharingPermission = $defaultOrgSharingPermission;
 		$this->related_module_share = $related_module_share;
-		$ignore = array("GLOBALS", "argv", "argc", "_POST", "_GET", "_COOKIE", "_FILES", "_SERVER", "userid", "defaultOrgSharingPermission", "related_module_share");
+		$ignore = array('GLOBALS', 'argv', 'argc', '_POST', '_GET', '_COOKIE', '_FILES', '_SERVER', 'userid', 'defaultOrgSharingPermission', 'related_module_share');
 		foreach (get_defined_vars() as $var => $val) {
 			if (!in_array($var, $ignore) && preg_match('/.+_share_\w+_permission/', $var)) {
 				$this->$var = $val;
@@ -290,7 +290,7 @@ class UserPrivileges {
 	}
 
 	public function hasModuleWriteSharing($tabid) {
-		$sharing = $this->defaultOrgSharingPermission[$tabid];
+		$sharing = (empty($this->defaultOrgSharingPermission[$tabid]) ? self::SHARING_PRIVATE : $this->defaultOrgSharingPermission[$tabid]);
 		return (self::SHARING_PRIVATE != $sharing) && (self::SHARING_READONLY != $sharing);
 	}
 
@@ -322,7 +322,7 @@ class UserPrivileges {
 
 			return ($result == 1);
 		} else {
-			return file_exists("user_privileges/user_privileges_{$userId}.php");
+			return file_exists("user_privileges/sharing_privileges_{$userId}.php");
 		}
 	}
 

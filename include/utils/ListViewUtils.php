@@ -542,7 +542,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	$ui_col_array = array();
 
 	$params = array();
-	$query = 'SELECT uitype, columnname, fieldname FROM vtiger_field ';
+	$query = 'SELECT uitype, columnname, fieldname, typeofdata FROM vtiger_field ';
 
 	if ($module == 'Calendar') {
 		$query .=' WHERE vtiger_field.tabid in (9,16) and vtiger_field.presence in (0,2)';
@@ -571,7 +571,9 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 		$uitype = $adb->query_result($result, $i, 'uitype');
 		$columnname = $adb->query_result($result, $i, 'columnname');
 		$field_name = $adb->query_result($result, $i, 'fieldname');
+		$typeofdata = $adb->query_result($result, $i, 'typeofdata');
 		$tempArr[$uitype] = $columnname;
+		$tempArr['typeofdata'] = $typeofdata;
 		$ui_col_array[$field_name] = $tempArr;
 	}
 	//end
@@ -833,7 +835,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							if (empty($account_name)) {
 								$account_name = getAccountName($account_id);
 							}
-							$acc_name = textlength_check(decode_html($account_name));
+							$acc_name = textlength_check($account_name);
 							$value = '<a href="index.php?module=Accounts&action=DetailView&record=' . $account_id . '&parenttab=' . $tabname . '">' . htmlspecialchars($acc_name, ENT_QUOTES, $default_charset) . '</a>';
 						} elseif (( $module == 'HelpDesk' || $module == 'PriceBook' || $module == 'Quotes' || $module == 'PurchaseOrder' || $module == 'Faq') && $name == 'Product Name') {
 							if ($module == 'HelpDesk' || $module == 'Faq') {
@@ -894,6 +896,9 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '', $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
 							$uicolarr = isset($ui_col_array[$fieldname]) ? $ui_col_array[$fieldname] : array('1'=>$fieldname);
 							foreach ($uicolarr as $key => $val) {
+								if ($key=='typeofdata') {
+									continue;
+								}
 								$uitype = $key;
 								$colname = $val;
 							}
@@ -1285,6 +1290,9 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 	return_module_language($current_language, $module);
 	$uicolarr = isset($field_result[$fieldname]) ? $field_result[$fieldname] : array('1'=>$fieldname);
 	foreach ($uicolarr as $key => $value) {
+		if ($key=='typeofdata') {
+			continue;
+		}
 		$uitype = $key;
 		$colname = $value;
 	}
@@ -1677,7 +1685,11 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			$value = vt_suppressHTMLTags(implode(',', json_decode($temp_val, true)));
 		}
 	} elseif ($uitype == 7) {
-		$value = CurrencyField::convertToUserFormat($temp_val);
+		if (substr($field_result[$fieldname]['typeofdata'], 0, 2)=='I~') {
+			$value = empty($temp_val) ? 0 : $temp_val;
+		} else {
+			$value = CurrencyField::convertToUserFormat($temp_val);
+		}
 	} else {
 		if ($fieldname == $focus->list_link_field) {
 			if ($mode == 'search') {
@@ -3676,9 +3688,14 @@ function getParentId($parent_name) {
 }
 
 //function added to check the text length in the listview.
-function textlength_check($field_val) {
+function textlength_check($field_val, $overrideLength = 0) {
 	global $default_charset,$currentModule;
-	$listview_max_textlength = GlobalVariable::getVariable('Application_ListView_Max_Text_Length', 40, $currentModule);
+	if ($overrideLength>0) {
+		$listview_max_textlength = $overrideLength;
+	} else {
+		$listview_max_textlength = GlobalVariable::getVariable('Application_ListView_Max_Text_Length', 40, $currentModule);
+	}
+	$field_val = decode_html($field_val);
 	if ($listview_max_textlength && $listview_max_textlength > 0) {
 		$temp_val = preg_replace("/(<\/?)(\w+)([^>]*>)/i", '', $field_val);
 		if (function_exists('mb_strlen')) {
@@ -3739,18 +3756,14 @@ function getMergeFields($module, $str) {
  */
 function getFirstModule($module, $fieldname) {
 	global $adb;
-	$sql = 'select fieldid, uitype from vtiger_field where tabid=? and fieldname=?';
-	$result = $adb->pquery($sql, array(getTabid($module), $fieldname));
-
+	$result = $adb->pquery('select fieldid, uitype from vtiger_field where tabid=? and fieldname=?', array(getTabid($module), $fieldname));
+	$data = '';
 	if ($adb->num_rows($result) > 0) {
 		$uitype = $adb->query_result($result, 0, 'uitype');
-
 		if ($uitype == 10) {
 			$fieldid = $adb->query_result($result, 0, 'fieldid');
-			$sql = 'select relmodule from vtiger_fieldmodulerel where fieldid=? order by sequence';
-			$result = $adb->pquery($sql, array($fieldid));
+			$result = $adb->pquery('select relmodule from vtiger_fieldmodulerel where fieldid=? order by sequence', array($fieldid));
 			$count = $adb->num_rows($result);
-
 			if ($count > 0) {
 				$data = $adb->query_result($result, 0, 'relmodule');
 			}
@@ -4041,8 +4054,7 @@ function getListColumnSearch($list, $mod) {
 	}
 
 	$l_array = array();
-	$user_data = array();
-	$ftype = 'text';
+	$focus = CRMEntity::getInstance($mod);
 	$ui = 1;
 	$keys = array_keys($list);
 	sort($keys);
@@ -4055,9 +4067,13 @@ function getListColumnSearch($list, $mod) {
 	for ($i = 0; $i < $num_rows; $i++) {
 		$ui = $adb->query_result($tks_res, $i, 'uitype');
 		$f_name = $adb->query_result($tks_res, $i, 'fieldname');
+		$user_data = array(
+			'module' => $mod,
+			'fieldname' => $f_name,
+			'entityfield' => $focus->list_link_field,
+		);
 		switch ($ui) {
 			case 56:
-			case 156:
 				$ftype = 'checkbox';
 				break;
 
@@ -4076,8 +4092,6 @@ function getListColumnSearch($list, $mod) {
 				break;
 
 			case 5:
-			case 6:
-			case 23:
 				$ftype = 'date';
 				break;
 
@@ -4088,6 +4102,17 @@ function getListColumnSearch($list, $mod) {
 			case 7:
 			case 9:
 				$ftype = 'number';
+				break;
+
+			case 10:
+				$ftype = 'reference';
+				$firstmod = getFirstModule($mod, $f_name);
+				$ffmod = CRMEntity::getInstance($firstmod);
+				$user_data = array(
+					'module' => $firstmod,
+					'fieldname' => $ffmod->list_link_field,
+					'entityfield' => $ffmod->list_link_field,
+				);
 				break;
 
 			case 71:

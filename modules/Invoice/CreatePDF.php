@@ -9,19 +9,38 @@
  ********************************************************************************/
 include_once 'modules/Invoice/InvoicePDFController.php';
 global $currentModule,$root_directory;
-
-$controller = new Vtiger_InvoicePDFController($currentModule);
-$controller->loadRecord(vtlib_purify($_REQUEST['record']));
-$invoice_no = getModuleSequenceNumber($currentModule, vtlib_purify($_REQUEST['record']));
 $moduleName = str_replace(' ', '', getTranslatedString('SINGLE_Invoice', $currentModule));
-if (isset($_REQUEST['savemode']) && $_REQUEST['savemode'] == 'file') {
-	$id = vtlib_purify($_REQUEST['record']);
-	$filepath=$root_directory.'cache/'.$id.'_'.$moduleName.'_'.$invoice_no.'.pdf';
-	$controller->Output($filepath, 'F'); //added file name to make it work in IE, also forces the download giving the user the option to save
-} elseif (isset($purpose) && $purpose == 'webservice') {
-	$PDFBuffer = $controller->Output('', 'S'); // S means send the pdf output in buffer instead of file
-} else {
-	$controller->Output($moduleName.'_'.$invoice_no.'.pdf', 'D');//added file name to make it work in IE, also forces the download giving the user the option to save
+if (!empty($_REQUEST['idlist'])) {
+	include_once 'include/utils/pdfConcat.php';
+	$ids = explode(';', trim($_REQUEST['idlist'], ';'));
+	$file2merge=array();
+	$path = $root_directory.'cache/'.$current_user->id.'batchpdf';
+	@mkdir($path);
+	foreach ($ids as $id) {
+		$controller = new Vtiger_InvoicePDFController($currentModule);
+		$controller->loadRecord(vtlib_purify($id));
+		$controller->Output($path.'/'.$moduleName.$id.'.pdf', 'F');
+		$file2merge[]=$path.'/'.$moduleName.$id.'.pdf';
+	}
+	$pdf = new concat_pdf();
+	$pdf->setFiles($file2merge);
+	$pdf->concat();
+	$pdf->Output($moduleName.'.pdf', 'D');
+	@unlink($path.'/'.$moduleName.'.pdf');
 	exit();
+} else {
+	$controller = new Vtiger_InvoicePDFController($currentModule);
+	$controller->loadRecord(vtlib_purify($_REQUEST['record']));
+	$invoice_no = getModuleSequenceNumber($currentModule, vtlib_purify($_REQUEST['record']));
+	if (isset($_REQUEST['savemode']) && $_REQUEST['savemode'] == 'file') {
+		$id = vtlib_purify($_REQUEST['record']);
+		$filepath=$root_directory.'cache/'.$id.'_'.$moduleName.'_'.$invoice_no.'.pdf';
+		$controller->Output($filepath, 'F'); //added file name to make it work in IE, also forces the download giving the user the option to save
+	} elseif (isset($purpose) && $purpose == 'webservice') {
+		$PDFBuffer = $controller->Output('', 'S'); // S means send the pdf output in buffer instead of file
+	} else {
+		$controller->Output($moduleName.'_'.$invoice_no.'.pdf', 'D');//added file name to make it work in IE, also forces the download giving the user the option to save
+		exit();
+	}
 }
 ?>

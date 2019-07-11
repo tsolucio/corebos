@@ -109,7 +109,7 @@ function vtws_revise($element, $user) {
 	//  Product line support
 	if (in_array($entityName, getInventoryModules()) && isset($element['pdoInformation']) && is_array($element['pdoInformation'])) {
 		$elementType = $entityName;
-		include_once 'include/Webservices/ProductLines.php';
+		include 'include/Webservices/ProductLines.php';
 	} else {
 		$_REQUEST['action'] = $entityName.'Ajax';
 	}

@@ -254,6 +254,7 @@ var alert_arr = {
 	'Default' : 'Default',
 	'Notebook' : 'Notebook',
 	'ReportCharts': 'Report Charts',
+	'CustomWidget': 'Aggregate Filter',
 	'SPECIAL_CHARS' : ' / < > + \' " ',
 	'BETWEEN' : 'between',
 	'BEFORE' : 'before',

@@ -20,14 +20,14 @@ class VTScheduledReport extends Reports {
 	public $scheduledFormat = null;
 	public $scheduledRecipients = null;
 
-	static public $SCHEDULED_HOURLY = 1;
-	static public $SCHEDULED_DAILY = 2;
-	static public $SCHEDULED_WEEKLY = 3;
-	static public $SCHEDULED_BIWEEKLY = 4;
-	static public $SCHEDULED_MONTHLY = 5;
-	static public $SCHEDULED_ANNUALLY = 6;
+	public static $SCHEDULED_HOURLY = 1;
+	public static $SCHEDULED_DAILY = 2;
+	public static $SCHEDULED_WEEKLY = 3;
+	public static $SCHEDULED_BIWEEKLY = 4;
+	public static $SCHEDULED_MONTHLY = 5;
+	public static $SCHEDULED_ANNUALLY = 6;
 
-	public function __construct($adb, $user, $reportid = "") {
+	public function __construct($adb, $user, $reportid = '') {
 		$this->db	= $adb;
 		$this->user = $user;
 		$this->id	= $reportid;
@@ -154,15 +154,15 @@ class VTScheduledReport extends Reports {
 			$contents .= getTranslatedString('LBL_CLICK_HERE', $currentModule) .'</a>';
 		}
 		if ($reportFormat == 'pdf' || $reportFormat == 'both') {
-			$fileName = $baseFileName.'.pdf';
-			$filePath = $root_directory.'cache/'.$fileName;
+			$fileName = 'cache/'.$baseFileName.'.pdf';
+			$filePath = $root_directory.$fileName;
 			$attachments[] = array('fname'=>$fileName, 'fpath'=>$filePath);
 			$pdf = $oReportRun->getReportPDF(null);
 			$pdf->Output($filePath, 'F');
 		}
 		if ($reportFormat == 'excel' || $reportFormat == 'both') {
-			$fileName = $baseFileName.'.xls';
-			$filePath = $root_directory.'cache/'.$fileName;
+			$fileName = 'cache/'.$baseFileName.'.xls';
+			$filePath = $root_directory.$fileName;
 			$attachments[] = array('fname'=>$fileName, 'fpath'=>$filePath);
 			$oReportRun->writeReportToExcelFile($filePath, null);
 		}
@@ -170,7 +170,7 @@ class VTScheduledReport extends Reports {
 		if ($sendifempty || $oReportRun->number_of_rows>0) {
 			$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
 			$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name', 'your-support name', 'HelpDesk');
-			$mail_status = send_mail('Emails', $emails_to, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_ID, $subject, $contents, '', '', $attachments);
+			send_mail('Emails', $emails_to, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_ID, $subject, $contents, '', '', $attachments);
 			foreach ($attachments as $path) {
 				unlink($path['fpath']);
 			}
@@ -192,26 +192,26 @@ class VTScheduledReport extends Reports {
 		}
 
 		if ($scheduleType == VTScheduledReport::$SCHEDULED_HOURLY) {
-			return date("Y-m-d H:i:s", strtotime("+1 hour"));
+			return date('Y-m-d H:i:s', strtotime('+1 hour'));
 		}
 		if ($scheduleType == VTScheduledReport::$SCHEDULED_DAILY) {
-			return date("Y-m-d H:i:s", strtotime("+ 1 day ".$scheduledTime));
+			return date('Y-m-d H:i:s', strtotime('+ 1 day '.$scheduledTime));
 		}
 		if ($scheduleType == VTScheduledReport::$SCHEDULED_WEEKLY) {
 			$weekDays = array('0'=>'Sunday','1'=>'Monday','2'=>'Tuesday','3'=>'Wednesday','4'=>'Thursday','5'=>'Friday','6'=>'Saturday');
 
 			if (date('w', time()) == $scheduledDayOfWeek) {
-				return date("Y-m-d H:i:s", strtotime('+1 week '.$scheduledTime));
+				return date('Y-m-d H:i:s', strtotime('+1 week '.$scheduledTime));
 			} else {
-				return date("Y-m-d H:i:s", strtotime($weekDays[$scheduledDayOfWeek].' '.$scheduledTime));
+				return date('Y-m-d H:i:s', strtotime($weekDays[$scheduledDayOfWeek].' '.$scheduledTime));
 			}
 		}
 		if ($scheduleType == VTScheduledReport::$SCHEDULED_BIWEEKLY) {
 			$weekDays = array('0'=>'Sunday','1'=>'Monday','2'=>'Tuesday','3'=>'Wednesday','4'=>'Thursday','5'=>'Friday','6'=>'Saturday');
 			if (date('w', time()) == $scheduledDayOfWeek) {
-				return date("Y-m-d H:i:s", strtotime('+2 weeks '.$scheduledTime));
+				return date('Y-m-d H:i:s', strtotime('+2 weeks '.$scheduledTime));
 			} else {
-				return date("Y-m-d H:i:s", strtotime($weekDays[$scheduledDayOfWeek].' '.$scheduledTime));
+				return date('Y-m-d H:i:s', strtotime($weekDays[$scheduledDayOfWeek].' '.$scheduledTime));
 			}
 		}
 		if ($scheduleType == VTScheduledReport::$SCHEDULED_MONTHLY) {
@@ -219,15 +219,15 @@ class VTScheduledReport extends Reports {
 			$currentDayOfMonth = date('j', $currentTime);
 
 			if ($scheduledDayOfMonth == $currentDayOfMonth) {
-				return date("Y-m-d H:i:s", strtotime('+1 month '.$scheduledTime));
+				return date('Y-m-d H:i:s', strtotime('+1 month '.$scheduledTime));
 			} else {
 				$monthInFullText = date('F', $currentTime);
 				$yearFullNumberic = date('Y', $currentTime);
 				if ($scheduledDayOfMonth < $currentDayOfMonth) {
-					$nextMonth = date("Y-m-d H:i:s", strtotime('next month'));
+					$nextMonth = date('Y-m-d H:i:s', strtotime('next month'));
 					$monthInFullText = date('F', strtotime($nextMonth));
 				}
-				return date("Y-m-d H:i:s", strtotime($scheduledDayOfMonth.' '.$monthInFullText.' '.$yearFullNumberic.' '.$scheduledTime));
+				return date('Y-m-d H:i:s', strtotime($scheduledDayOfMonth.' '.$monthInFullText.' '.$yearFullNumberic.' '.$scheduledTime));
 			}
 		}
 		if ($scheduleType == VTScheduledReport::$SCHEDULED_ANNUALLY) {
@@ -236,15 +236,15 @@ class VTScheduledReport extends Reports {
 			$currentTime = time();
 			$currentMonth = date('n', $currentTime);
 			if (($scheduledMonth+1) == $currentMonth) {
-				return date("Y-m-d H:i:s", strtotime('+1 year '.$scheduledTime));
+				return date('Y-m-d H:i:s', strtotime('+1 year '.$scheduledTime));
 			} else {
 				$monthInFullText = $months[$scheduledMonth];
 				$yearFullNumberic = date('Y', $currentTime);
 				if (($scheduledMonth+1) < $currentMonth) {
-					$nextMonth = date("Y-m-d H:i:s", strtotime('next year'));
+					$nextMonth = date('Y-m-d H:i:s', strtotime('next year'));
 					$yearFullNumberic = date('Y', strtotime($nextMonth));
 				}
-				return date("Y-m-d H:i:s", strtotime($scheduledDayOfMonth.' '.$monthInFullText.' '.$yearFullNumberic.' '.$scheduledTime));
+				return date('Y-m-d H:i:s', strtotime($scheduledDayOfMonth.' '.$monthInFullText.' '.$yearFullNumberic.' '.$scheduledTime));
 			}
 		}
 	}
@@ -343,15 +343,15 @@ class VTScheduledReport extends Reports {
 	public static function getScheduledReports($adb, $user) {
 
 		$currentTime = date('Y-m-d H:i:s');
-		$result = $adb->pquery("SELECT * FROM vtiger_scheduled_reports WHERE next_trigger_time = '' || next_trigger_time <= ?", array($currentTime));
+		$result = $adb->pquery("SELECT * FROM vtiger_scheduled_reports WHERE next_trigger_time = '' or next_trigger_time <= ?", array($currentTime));
 
 		$scheduledReports = array();
 		$noOfScheduledReports = $adb->num_rows($result);
 		for ($i=0; $i<$noOfScheduledReports; ++$i) {
 			$reportScheduleInfo = $adb->raw_query_result_rowdata($result, $i);
 
-			$scheduledInterval = (!empty($reportScheduleInfo['schedule']))?json_decode($reportScheduleInfo['schedule'], true):array();
-			$scheduledRecipients = (!empty($reportScheduleInfo['recipients']))?json_decode($reportScheduleInfo['recipients'], true):array();
+			$scheduledInterval = (!empty($reportScheduleInfo['schedule'])) ? json_decode($reportScheduleInfo['schedule'], true) : array();
+			$scheduledRecipients = (!empty($reportScheduleInfo['recipients'])) ? json_decode($reportScheduleInfo['recipients'], true) : array();
 
 			$vtScheduledReport = new VTScheduledReport($adb, $user, $reportScheduleInfo['reportid']);
 			$vtScheduledReport->isScheduled			= true;

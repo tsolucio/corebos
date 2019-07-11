@@ -289,6 +289,7 @@ var alert_arr = {
 	'Default': 'Standard',
 	'Notebook': 'Notizblock',
 	'ReportCharts': 'Berichtsgrafiken',
+	'CustomWidget': 'Aggregate Filter',
 	'SPECIAL_CHARS':'\\ / < > + \' " ',
 
 	'BETWEEN': 'zwischen',

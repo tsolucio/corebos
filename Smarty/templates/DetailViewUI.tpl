@@ -327,7 +327,7 @@
 			{/if}
                         </td>
 
-						{elseif $keyid eq 83}<!-- Handle the Tax in Inventory -->
+						{elseif $keyid eq 83 && count($TAX_DETAILS)>0}<!-- Handle the Tax in Inventory -->
 							<td class="dvtCellInfo" colspan=3>&nbsp;</td></tr>
 							{foreach item=tax key=count from=$TAX_DETAILS}
 							<tr style="height:25px">

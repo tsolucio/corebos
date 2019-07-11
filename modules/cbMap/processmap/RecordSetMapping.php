@@ -131,7 +131,11 @@ class RecordSetMapping extends processcbMap {
 	* param $id
 	*/
 	public function isInRecordSetModule($action, $module, $id) {
-		return in_array($id, $this->mapping[strtolower($action)][$module]);
+		if (isset($this->mapping[strtolower($action)]) && isset($this->mapping[strtolower($action)][$module])) {
+			return in_array($id, $this->mapping[strtolower($action)][$module]);
+		} else {
+			return false;
+		}
 	}
 }
 ?>

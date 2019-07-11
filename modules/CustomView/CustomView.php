@@ -833,7 +833,7 @@ class CustomView extends CRMEntity {
 	 * This function will return the standard filter criteria for the given customfield
 	 *
 	 */
-	public function getCVStdFilterSQL($cvid) {
+	public function getCVStdFilterSQL($cvid, $webserviceQL = false) {
 		global $adb;
 
 		$stdfiltersql = '';
@@ -896,7 +896,11 @@ class CustomView extends CRMEntity {
 					} else {
 						$tableColumnSql = $columns[0] . '.' . $columns[1];
 					}
-					$stdfiltersql = $tableColumnSql . " BETWEEN '" . $startDateTime . "' and '" . $endDateTime . "'";
+					if ($webserviceQL) {
+						$stdfiltersql = $columns[2] . " >= '" . $startDateTime . "' and ".$columns[2]." <= '" . $endDateTime . "'";
+					} else {
+						$stdfiltersql = $tableColumnSql . " BETWEEN '" . $startDateTime . "' and '" . $endDateTime . "'";
+					}
 				}
 			}
 		}
@@ -911,7 +915,7 @@ class CustomView extends CRMEntity {
 	 */
 	// Needs to be modified according to the new advanced filter (support for grouping).
 	// Not modified as of now, as this function is not used for now (Instead Query Generator is used for better performance).
-	public function getCVAdvFilterSQL($cvid) {
+	public function getCVAdvFilterSQL($cvid, $webserviceQL = false) {
 		global $current_user;
 
 		$advfilter = $this->getAdvFilterByCvid($cvid);
@@ -938,17 +942,17 @@ class CustomView extends CRMEntity {
 					if (isset($valuearray) && count($valuearray) > 1 && $comparator != 'bw') {
 						$advorsql = array();
 						for ($n = 0; $n < count($valuearray); $n++) {
-							$advorsql[] = $this->getRealValues($columns[0], $columns[1], $comparator, trim($valuearray[$n]), $datatype);
+							$advorsql[] = $this->getRealValues($columns[0], $columns[1], $comparator, trim($valuearray[$n]), $datatype, $webserviceQL);
 						}
 						//If negative logic filter ('not equal to', 'does not contain') is used, 'and' condition should be applied instead of 'or'
 						if ($comparator == 'n' || $comparator == 'k') {
-							$advorsqls = implode(" and ", $advorsql);
+							$advorsqls = implode(' and ', $advorsql);
 						} else {
-							$advorsqls = implode(" or ", $advorsql);
+							$advorsqls = implode(' or ', $advorsql);
 						}
-						$advfiltersql = " (" . $advorsqls . ") ";
+						$advfiltersql = ' (' . $advorsqls . ') ';
 					} elseif ($comparator == 'bw' && count($valuearray) == 2) {
-						$advfiltersql = "(" . $columns[0] . "." . $columns[1] . " between '" .
+						$advfiltersql = '(' . $columns[0] . '.' . $columns[1] . " between '" .
 							getValidDBInsertDateTimeValue(trim($valuearray[0]), $datatype) .
 							"' and '" . getValidDBInsertDateTimeValue(trim($valuearray[1]), $datatype) . "')";
 					} else {
@@ -961,20 +965,20 @@ class CustomView extends CRMEntity {
 							} else {
 								$advfiltersql = "vtiger_activity.eventstatus" . $this->getAdvComparator($comparator, trim($value), $datatype);
 							}
-						} elseif ($this->customviewmodule == "Documents" && $columns[1] == 'folderid') {
-							$advfiltersql = "vtiger_attachmentsfolder.foldername" . $this->getAdvComparator($comparator, trim($value), $datatype);
-						} elseif ($this->customviewmodule == "Assets") {
+						} elseif ($this->customviewmodule == 'Documents' && $columns[1] == 'folderid') {
+							$advfiltersql = 'vtiger_attachmentsfolder.foldername' . $this->getAdvComparator($comparator, trim($value), $datatype);
+						} elseif ($this->customviewmodule == 'Assets') {
 							if ($columns[1] == 'account') {
-								$advfiltersql = "vtiger_account.accountname" . $this->getAdvComparator($comparator, trim($value), $datatype);
+								$advfiltersql = 'vtiger_account.accountname' . $this->getAdvComparator($comparator, trim($value), $datatype);
 							}
 							if ($columns[1] == 'product') {
-								$advfiltersql = "vtiger_products.productname" . $this->getAdvComparator($comparator, trim($value), $datatype);
+								$advfiltersql = 'vtiger_products.productname' . $this->getAdvComparator($comparator, trim($value), $datatype);
 							}
 							if ($columns[1] == 'invoiceid') {
-								$advfiltersql = "vtiger_invoice.subject" . $this->getAdvComparator($comparator, trim($value), $datatype);
+								$advfiltersql = 'vtiger_invoice.subject' . $this->getAdvComparator($comparator, trim($value), $datatype);
 							}
 						} else {
-							$advfiltersql = $this->getRealValues($columns[0], $columns[1], $comparator, trim($value), $datatype);
+							$advfiltersql = $this->getRealValues($columns[0], $columns[1], $comparator, trim($value), $datatype, $webserviceQL);
 						}
 					}
 
@@ -1008,8 +1012,8 @@ class CustomView extends CRMEntity {
 	 * @returns  $value as a string in the following format
 	 * 	  $tablename.$fieldname comparator
 	 */
-	public function getRealValues($tablename, $fieldname, $comparator, $value, $datatype) {
-		return getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $datatype);
+	public function getRealValues($tablename, $fieldname, $comparator, $value, $datatype, $webserviceQL = false) {
+		return getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $datatype, $webserviceQL);
 	}
 
 	/** to get the related name for the given module

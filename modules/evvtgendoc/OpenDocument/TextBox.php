@@ -44,10 +44,10 @@ class OpenDocument_FrameTextBox extends OpenDocument_StyledElement {
 	 */
 	public $children;
 
-		// Atributos
+	// Atributos
 	public $minheight;
 
-		/**
+	/**
 	 * Node namespace
 	 */
 	const nodeNS = OpenDocument::NS_DRAW;
@@ -57,12 +57,12 @@ class OpenDocument_FrameTextBox extends OpenDocument_StyledElement {
 	 */
 	const nodePrefix = 'draw';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'text-box';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'frt';
@@ -76,9 +76,9 @@ class OpenDocument_FrameTextBox extends OpenDocument_StyledElement {
 	public function __construct(DOMNode $node, OpenDocument $document, $text = '', $aminheight = '') {
 		parent::__construct($node, $document);
 		$this->allowedElements = array(
-		   'OpenDocument_Paragraph',
-		   'OpenDocument_Span',
-		   'OpenDocument_Hyperlink',
+			'OpenDocument_Paragraph',
+			'OpenDocument_Span',
+			'OpenDocument_Hyperlink',
 		);
 		return true;
 		$height = $node->getAttributeNS(OpenDocument::NS_FO, 'min-height');
@@ -91,7 +91,7 @@ class OpenDocument_FrameTextBox extends OpenDocument_StyledElement {
 		}
 	}
 
-		/**
+	/**
 	 * Create element instance
 	 *
 	 * @param mixed $object
@@ -110,13 +110,13 @@ class OpenDocument_FrameTextBox extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-				$element = new OpenDocument_FrameTextBox($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $text, $minheight);
+		$element = new OpenDocument_FrameTextBox($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $text, $minheight);
 		$node->appendChild($element->node);
 
 		return $element;
 	}
 
-		/**
+	/**
 	 * Generate new style name
 	 *
 	 * @return string $stylename
@@ -138,9 +138,9 @@ class OpenDocument_FrameTextBox extends OpenDocument_StyledElement {
 		$this->node->setAttributeNS(OpenDocument::NS_DRAW, 'style-name', $style_name);
 	}
 
-		/************** Elements ****************/
+	/************** Elements ****************/
 
-		/**
+	/**
 	 * Create OpenDocument_TextElement
 	 *
 	 * @param string $text

@@ -40,6 +40,8 @@ class cbMapAddMapTypes extends cbupdaterWorker {
 				'GlobalSearchAutocomplete',
 				'Field Set Mapping',
 				'Detail View Layout Mapping',
+				'DecisionTable',
+				'Webservice Mapping',
 			);
 			$moduleInstance = Vtiger_Module::getInstance('cbMap');
 			$field = Vtiger_Field::getInstance('maptype', $moduleInstance);

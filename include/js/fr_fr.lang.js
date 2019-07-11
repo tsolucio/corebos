@@ -278,6 +278,7 @@ var alert_arr = {
 	'Default': 'Défaut',
 	'Notebook': 'Bloc note',
 	'ReportCharts': 'Rapport graphique',
+	'CustomWidget': 'Aggregate Filter',
 	'SPECIAL_CHARS':'\\ / < > + \' " ',
 
 	'BETWEEN': 'entre',

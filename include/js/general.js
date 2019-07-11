@@ -402,7 +402,8 @@ function dateTimeValidateObject(dateFldObj, timeFldObj, fldLabel, type) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
 			dateFldObj.focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	}
 
@@ -410,7 +411,8 @@ function dateTimeValidateObject(dateFldObj, timeFldObj, fldLabel, type) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
 			dateFldObj.focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	}
 
@@ -418,7 +420,8 @@ function dateTimeValidateObject(dateFldObj, timeFldObj, fldLabel, type) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
 			dateFldObj.focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	}
 
@@ -432,7 +435,8 @@ function dateTimeValidateObject(dateFldObj, timeFldObj, fldLabel, type) {
 			alert(alert_arr.ENTER_VALID+fldLabel);
 			try {
 				dateFldObj.focus();
-			} catch (error) { }
+			} catch (error) {
+			}
 			return false;
 		}
 	}
@@ -454,7 +458,8 @@ function dateTimeValidateObject(dateFldObj, timeFldObj, fldLabel, type) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
 			currObj.focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	}
 
@@ -471,7 +476,8 @@ function dateTimeValidateObject(dateFldObj, timeFldObj, fldLabel, type) {
 		if (!compareDates(chkdate, fldLabel, currdate, 'current date & time', type)) {
 			try {
 				dateFldObj.focus();
-			} catch (error) { }
+			} catch (error) {
+			}
 			return false;
 		} else {
 			return true;
@@ -524,7 +530,8 @@ function dateTimeComparison(dateFldName1, timeFldName1, fldLabel1, dateFldName2,
 		if (!compareDates(date1, fldLabel1, date2, fldLabel2, type)) {
 			try {
 				getObj(dateFldName1).focus();
-			} catch (error) { }
+			} catch (error) {
+			}
 			return false;
 		} else {
 			return true;
@@ -595,7 +602,8 @@ function dateTimeFieldComparison(dateFld1, fldLabel1, dateFld2, fldLabel2, type,
 		if (!compareDates(date1, fldLabel1, date2, fldLabel2, type, message)) {
 			try {
 				getObj(dateFld1).focus();
-			} catch (error) { }
+			} catch (error) {
+			}
 			return false;
 		} else {
 			return true;
@@ -625,7 +633,8 @@ function dateValidateObject(fldObj, fldLabel, type) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
 			fldObj.focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	}
 
@@ -633,7 +642,8 @@ function dateValidateObject(fldObj, fldLabel, type) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
 			fldObj.focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	}
 
@@ -641,7 +651,8 @@ function dateValidateObject(fldObj, fldLabel, type) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
 			fldObj.focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	}
 
@@ -655,7 +666,8 @@ function dateValidateObject(fldObj, fldLabel, type) {
 			alert(alert_arr.ENTER_VALID+fldLabel);
 			try {
 				fldObj.focus();
-			} catch (error) { }
+			} catch (error) {
+			}
 			return false;
 		}
 	}
@@ -671,7 +683,8 @@ function dateValidateObject(fldObj, fldLabel, type) {
 		if (!compareDates(chkdate, fldLabel, currdate, 'current date', type)) {
 			try {
 				fldObj.focus();
-			} catch (error) { }
+			} catch (error) {
+			}
 			return false;
 		} else {
 			return true;
@@ -686,6 +699,9 @@ function dateComparison(fldName1, fldLabel1, fldName2, fldLabel2, type) {
 }
 
 function dateComparisonObject(fldObj1, fldLabel1, fldObj2, fldLabel2, type) {
+	if (typeof fldObj1=='undefined' || typeof fldObj2=='undefined') {
+		return true;
+	}
 	var dateval1=fldObj1.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 	var dateval2=fldObj2.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 
@@ -715,7 +731,8 @@ function dateComparisonObject(fldObj1, fldLabel1, fldObj2, fldLabel2, type) {
 		if (!compareDates(date1, fldLabel1, date2, fldLabel2, type)) {
 			try {
 				fldObj1.focus();
-			} catch (error) { }
+			} catch (error) {
+			}
 			return false;
 		} else {
 			return true;
@@ -740,7 +757,8 @@ function timeValidate(fldName, fldLabel, type) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
 			currObj.focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	}
 
@@ -755,7 +773,8 @@ function timeValidate(fldName, fldLabel, type) {
 		if (!compareDates(chktime, fldLabel, currtime, 'current time', type)) {
 			try {
 				getObj(fldName).focus();
-			} catch (error) { }
+			} catch (error) {
+			}
 			return false;
 		} else {
 			return true;
@@ -779,7 +798,8 @@ function timeValidateObject(fldObject, fldLabel, type) {
 		alert(alert_arr.ENTER_VALID+fldLabel);
 		try {
 			fldObject.focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	}
 
@@ -794,7 +814,8 @@ function timeValidateObject(fldObject, fldLabel, type) {
 		if (!compareDates(chktime, fldLabel, currtime, 'current time', type)) {
 			try {
 				fldObject.focus();
-			} catch (error) { }
+			} catch (error) {
+			}
 			return false;
 		} else {
 			return true;
@@ -850,7 +871,8 @@ function timeComparison(fldName1, fldLabel1, fldName2, fldLabel2, type) {
 		if (!compareDates(time1, fldLabel1, time2, fldLabel2, type)) {
 			try {
 				getObj(fldName1).focus();
-			} catch (error) { }
+			} catch (error) {
+			}
 			return false;
 		} else {
 			return true;
@@ -907,7 +929,8 @@ function numValidate(fldName, fldLabel, format, neg) {
 			alert(alert_arr.INVALID+fldLabel);
 			try {
 				getObj(fldName).focus();
-			} catch (error) { }
+			} catch (error) {
+			}
 			return false;
 		} else {
 			return true;
@@ -926,7 +949,8 @@ function numValidate(fldName, fldLabel, format, neg) {
 				alert(alert_arr.INVALID+fldLabel);
 				try {
 					getObj(fldName).focus();
-				} catch (error) { }
+				} catch (error) {
+				}
 				return false;
 			} else if (splitval[0] > 100 || len > 3 || (splitval[0] >= 100 && splitval[1] > 0)) {
 				alert(fldLabel + alert_arr.EXCEEDS_MAX);
@@ -947,7 +971,7 @@ function numValidate(fldName, fldLabel, format, neg) {
 		}
 	}
 
-	//for precision check. ie.number must contains only one "."
+	//for precision check. ie.number must contains only one '.'
 	var dotcount=0;
 	for (var i = 0; i < val.length; i++) {
 		if (val.charAt(i) == '.') {
@@ -959,7 +983,8 @@ function numValidate(fldName, fldLabel, format, neg) {
 		alert(alert_arr.INVALID+fldLabel);
 		try {
 			getObj(fldName).focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	}
 
@@ -967,7 +992,8 @@ function numValidate(fldName, fldLabel, format, neg) {
 		alert(alert_arr.INVALID+fldLabel);
 		try {
 			getObj(fldName).focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	} else {
 		return true;
@@ -985,7 +1011,8 @@ function intValidate(fldName, fldLabel) {
 		alert(alert_arr.INVALID+fldLabel);
 		try {
 			getObj(fldName).focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	} else if ((fldName != 'employees' || fldName != 'noofemployees') && (val < -2147483648 || val > 2147483647)) {
 		alert(fldLabel +alert_arr.OUT_OF_RANGE);
@@ -1049,7 +1076,8 @@ function numConstCompObject(fldObj, fldLabel, type, constval) {
 	if (ret==false) {
 		try {
 			fldObj.focus();
-		} catch (error) { }
+		} catch (error) {
+		}
 		return false;
 	} else {
 		return true;
@@ -1303,6 +1331,25 @@ function doServerValidation(edit_type, formName, callback) {
 					} else {
 						submitFormForAction(formName, action);
 					}
+				} else if (msg.search('%%%FUNCTION%%%') > -1) { //call user function
+					var callfunc = msg.split('%%%FUNCTION%%%');
+					var params = '';
+					if (callfunc[1].search('%%%PARAMS%%%') > -1) { //function has params string
+						var cfp = callfunc[1].split('%%%PARAMS%%%');
+						callfunc = cfp[0];
+						params = cfp[1];
+					} else {
+						callfunc = callfunc[1];
+					}
+					if (typeof window[callfunc] == 'function') {
+						window[callfunc](edit_type, formName, callback, params);
+					} else {
+						if (typeof callback == 'function') {
+							callback('submit');
+						} else {
+							submitFormForAction(formName, action);
+						}
+					}
 				} else { //Error
 					alert(msg);
 					VtigerJS_DialogBox.unblock();
@@ -1525,7 +1572,8 @@ function doformValidation(edit_type) {
 				if (!dateValidate(fieldname[i], fieldlabel[i], currdatechk)) {
 					try {
 						getObj(datefield).focus();
-					} catch (error) { }
+					} catch (error) {
+					}
 					return false;
 				} else {
 					var datearr=splitDateVal(datevalue);
@@ -1539,7 +1587,8 @@ function doformValidation(edit_type) {
 					if (!compareDates(datecheck, datelabel, now, 'Current Date', 'L')) {
 						try {
 							getObj(datefield).focus();
-						} catch (error) { }
+						} catch (error) {
+						}
 						return false;
 					}
 				}
@@ -2542,7 +2591,7 @@ function CharValidation(s, type) {
 /** Check Upload file is in specified format(extension).
   * @param fldName -- name of the file field
   * @param filter -- List of file extensions to allow. each extension must be seperated with a | sybmol.
-  * Example: upload_filter("imagename","Image", "jpg|gif|bmp|png")
+  * Example: upload_filter('imagename','Image', 'jpg|gif|bmp|png')
   * @returns true -- if the extension is IN  specified extension.
   * @returns false -- if the extension is NOT IN specified extension.
   *
@@ -3457,7 +3506,7 @@ function lastImport(module, req_module) {
 	if (module == '') {
 		return false;
 	} else {
-		//alert("index.php?module="+module_name+"&action=lastImport&req_mod="+req_module+"&parenttab="+parent_tab);
+		//alert('index.php?module='+module_name+'&action=lastImport&req_mod='+req_module+'&parenttab='+parent_tab);
 		window.open('index.php?module='+module_name+'&action=lastImport&req_mod='+req_module+'&parenttab='+parent_tab, 'lastImport', 'width=750,height=602,menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
 	}
 }
@@ -4197,7 +4246,7 @@ function validateInputData(value, fieldLabel, typeofdata) {
 			}
 		}
 
-		//for precision check. ie.number must contains only one "."
+		//for precision check. ie.number must contains only one '.'
 		var dotcount=0;
 		for (var i = 0; i < value.length; i++) {
 			if (value.charAt(i) == '.') {
@@ -4826,57 +4875,34 @@ function fetch_clock() {
 	});
 }
 
-function fetch_calc() {
-	jQuery.ajax({
-		method:'POST',
-		url:'index.php?module=Utilities&action=UtilitiesAjax&file=Calculator'
-	}).done(function (response) {
-		jQuery('#calculator_cont').html(response);
-		execJS(document.getElementById('calculator_cont'));
-	});
-}
-
-function UnifiedSearch_SelectModuleForm(obj) {
-	if (jQuery('#UnifiedSearch_moduleform').length) {
-		// If we have loaded the form already.
-		UnifiedSearch_SelectModuleFormCallback(obj);
-	} else {
+function UnifiedSearch_GetModules() {
+	if (document.getElementById('UnifiedSearch_modulelistwrapper').children.length === 0) {
 		jQuery('#status').show();
 		jQuery.ajax({
 			method:'POST',
-			url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModules&ajax=true'
+			url:'index.php?module=Utilities&action=UtilitiesAjax&file=UnifiedSearchModules&ajax=true'
 		}).done(function (response) {
 			jQuery('#status').hide();
-			jQuery('#UnifiedSearch_moduleformwrapper').html(response);
-			UnifiedSearch_SelectModuleFormCallback(obj);
+			jQuery('#UnifiedSearch_modulelistwrapper').html(response);
+			UnifiedSearch_StartCombo();
 		});
 	}
 }
 
-function UnifiedSearch_SelectModuleFormCallback(obj) {
-	fnvshobjsearch(obj, 'UnifiedSearch_moduleformwrapper');
+function UnifiedSearch_StartCombo() {
+	var params = {'isMulti' : true, 'onSelect' : UnifiedSearch_OnComboSelect};
+	window.ldsComboBoxes.push(new ldsCombobox(document.getElementById('globalsearch-moduleselect'), params));
 }
 
-function UnifiedSearch_SelectModuleToggle(flag) {
-	jQuery('#UnifiedSearch_moduleform input[type=checkbox]').each(function () {
-		this.checked = flag;
-	});
-}
-
-function UnifiedSearch_SelectModuleCancel() {
-	jQuery('#UnifiedSearch_moduleformwrapper').hide();
-}
-
-function UnifiedSearch_SelectModuleSave() {
-	var UnifiedSearch_form = document.forms.UnifiedSearch;
-	UnifiedSearch_form.search_onlyin.value = jQuery('#UnifiedSearch_moduleform').serialize().replace(/search_onlyin=/g, '').replace(/&/g, ',');
+function UnifiedSearch_OnComboSelect(value) {
+	var prepVal = value.join(',').replace(/ /g, '');
+	document.forms.UnifiedSearch.search_onlyin.value = prepVal;
 	jQuery.ajax({
 		method:'POST',
-		url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(UnifiedSearch_form.search_onlyin.value)
+		url:'index.php?module=Utilities&action=UtilitiesAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(prepVal)
 	}).done(function (response) {
 		// continue
 	});
-	UnifiedSearch_SelectModuleCancel();
 }
 
 /**
@@ -4963,7 +4989,11 @@ var throttle = function (func, limit) {
 
 document.addEventListener('DOMContentLoaded', function (event) {
 	/* ======= Auto complete part relations ====== */
-	var acInputs = document.querySelectorAll('.autocomplete-input,.searchBox');
+	AutocompleteSetup();
+});
+
+function AutocompleteSetup() {
+	var acInputs = document.querySelectorAll('.autocomplete-input');
 	for (var i = 0; i < acInputs.length; i++) {
 		(function (_i) {
 			var ac = new AutocompleteRelation(acInputs[_i], _i);
@@ -4976,7 +5006,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
 			});
 		})(i);
 	}
-});
+}
 
 function AutocompleteRelation(target, i) {
 	this.inputField 	= target;
@@ -4998,7 +5028,9 @@ function AutocompleteRelation(target, i) {
 			(function () {
 				var allAcLists = document.getElementsByClassName('relation-autocomplete__target');
 				for (var i = 0; i < allAcLists.length; i++) {
-					allAcLists[i].hide();
+					if (typeof allAcLists[i].hide == 'function') {
+						allAcLists[i].hide();
+					}
 				}
 			})();
 			this.style.opacity = 1;
@@ -5274,7 +5306,7 @@ AutocompleteRelation.prototype.isReferenceField = function (e) {
 		var reference_type_field = document.getElementsByName(field_root_name + '_type');
 		if (reference_type_field.length > 0) {
 			var ref_module = reference_type_field[0].value;
-			var ref_field_id = document.getElementsByName(field_root_name);
+			//var ref_field_id = document.getElementsByName(field_root_name);
 			//var ref_record_id = ref_field_id[0].value;
 			this.data.referencefield = {module:ref_module, fieldname:field_root_name};
 			this.extendFillFields([field_root_name +'='+field_root_name, field_root_name+'_display='+field_root_name+'_display']);
@@ -5352,3 +5384,596 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 	}
 	return 3;
 };
+
+/****
+	* ldsCombobox
+	* @author: MajorLabel <info@majorlabel.nl>
+	* @license VPL
+	*/
+(function ldscomboboxModule(factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(factory);
+	} else if (typeof module != 'undefined' && typeof module.exports != 'undefined') {
+		module.exports = factory();
+	} else {
+		window['ldsCombobox'] = factory();
+	}
+})(function ldscomboboxFactory() {
+
+	/**
+	 * @class ldsCombobox
+	 * @param {element}: Typically a wrapping element of an LDS combobox, like 'slds-combobox-picklist'
+	 */
+	function ldsCombobox(el, params) {
+		/* Set some default values */
+		params = params || {};
+		var me = this;
+		params.onSelect = params.onSelect || false,
+		params.isMulti = params.isMulti || false;
+
+		/* Public attributes */
+		this.el 	= el,
+		this.input 	= el.getElementsByClassName('slds-combobox__input')[0],
+		this.specialKeys = ['up', 'down', 'enter', 'esc'],
+		this.optionNodes = this.getOptionNodes(),
+		this.active = false,
+		this.curSel = this.input.value,
+		this.fallBackSel = null,
+		this.curSelIndex = this.getCurSelIndex(),
+		this.fallBackIndex = this.getCurSelIndex(),
+		this.onSelect = typeof params.onSelect == 'function' ? params.onSelect : false,
+		this._val = params.isMulti ? this.getSelNodesArray() : this.optionNodes[this.curSelIndex].getAttribute('data-value'),
+		this.parentForm = _findUp(this.input, '$FORM'),
+		this.valueHolder = this.getValueHolder(),
+		this.isMulti = params.isMulti,
+		this.labels = {};
+
+		/* Instance listeners */
+		_on(el, 'mousedown', this.handleClick, this);
+		_on(el, 'click', this.trigger, this);
+		_on(this.input, 'focus', this.trigger, this);
+		_on(this.input, 'keyup', this.trigger, this);
+		_on(this.input, 'blur', this.close, this);
+
+		if (this.parentForm !== undefined) {
+			_on(this.parentForm, 'keydown', this.preventFormSubmit, this);
+		}
+
+		ExecuteFunctions('getTranslatedStrings', 'i18nmodule=Utilities&tkeys=LBL_MULTIPLE;LBL_NONE').then(function (data) {
+			me.labels = JSON.parse(data);
+		});
+
+		// TO-DO: Error throwing. We need to check the markup for all the neccesary markup and data attributes
+		// and throw sensible errors otherwise
+	}
+
+	ldsCombobox.prototype = {
+		constructor: ldsCombobox,
+
+		/*
+		 * Method: 'trigger'
+		 * Is in response to any keyboard or mouse action that should trigger the combobox
+		 *
+		 * @param: Event object
+		 */
+		trigger: function (e) {
+			if (!this.active) {
+				this.open();
+			} else {
+				this.handleKeys(e);
+			}
+		},
+
+		/*
+		 * Method: 'preventFormSubmit'
+		 * Prevents a parent form from submitting when enter key is pressed to select an option.
+		 * This method is only invoked when this input is a child of a form and the options
+		 * box is open.
+		 *
+		 * @param: Event object
+		 */
+		preventFormSubmit: function (e) {
+			if (_getKey(e.keyCode) === 'enter' && this.active) {
+				e.preventDefault();
+			}
+		},
+
+		/*
+		 * Method: 'getOptionNodes'
+		 * Gets all the option nodes that have a child with a class
+		 * of 'slds-truncate'
+		 *
+		 */
+		getOptionNodes: function () {
+			var optionNodes = this.el.getElementsByClassName('slds-listbox__item');
+			var filteredOptionNodes = [];
+			for (var i = 0; i < optionNodes.length; i++) {
+				if (optionNodes[i].getElementsByClassName('slds-truncate').length !== 0) {
+					filteredOptionNodes.push(optionNodes[i]);
+				}
+			}
+			return filteredOptionNodes;
+		},
+
+		/*
+		 * Method: 'getValueHolder'
+		 * Retrieves the hidden input that holds the actual value for the dropdown
+		 * from the 'data-valueholder' attribute of the main combo input
+		 *
+		 * Options:
+		 * - 'nextsibling':      The node immediately following the main input element
+		 * - 'id---SOMEID':      Provide the prefix 'id---' followed by the ID of the node
+		 *
+		 */
+		getValueHolder: function () {
+			var valueHolderLoc = this.input.getAttribute('data-valueholder'),
+				vhLocArray = valueHolderLoc != null ? valueHolderLoc.split('---') : [];
+
+			switch (vhLocArray[0]) {
+			case 'nextsibling':
+				return this.input.nextElementSibling;
+			case 'id':
+				var vh = document.getElementById(vhLocArray[1]);
+				if (!vh) {
+					throw ('ldsComboBox.getValueHolder: No node with id ' + vhLocArray[1] + ' found');
+				}
+				return vh;
+			default:
+				return false;
+			}
+		},
+
+		/*
+		 * Method: 'updateValueHolder'
+		 * Sets the value for the (hidden) valueHolder input, if there was one
+		 *
+		 */
+		updateValueHolder: function (val) {
+			if (this.valueHolder) {
+				this.valueHolder.value = val;
+			}
+		},
+
+		/*
+		 * Method: 'getOpener'
+		 * Get the correct div to add the 'slds-is-open' class to
+		 * or remove it from when opening and closing
+		 *
+		 */
+		getOpener: function () {
+			if ( this.el.classList.contains('slds-combobox') ) {
+				return this.el;
+			} else {
+				return this.el.getElementsByClassName('slds-combobox')[0];
+			}
+		},
+
+		/*
+		 * Method: 'open'
+		 * Opens and activates the dropdown and selects the last selected (or first)
+		 * item in the list
+		 *
+		 */
+		open: function () {
+			this.fallBackIndex = this.getCurSelIndex(),
+			this.fallBackSel = this.curSel;
+
+			this.getOpener().classList.add('slds-is-open');
+			// Set first option active on open? Need to update hidden val as well then
+			// this.setOptionState(this.curSelIndex, 'selected');
+			this.active = true;
+		},
+
+		/*
+		 * Method: 'close'
+		 * Closes the dropdown
+		 *
+		 */
+		close: function (e) {
+			this.getOpener().classList.remove('slds-is-open');
+			this.active = false;
+		},
+
+		/*
+		 * Method: 'handleClick'
+		 * Searches upwards for a listbox item to see if this was an option
+		 * Then de-selects all other options and selects the clicked one
+		 *
+		 * @param: Event object
+		 */
+		handleClick: function (e) {
+			var isOption = _findUp(e.target, '.slds-listbox__item');
+			if (isOption != undefined) {
+				e.preventDefault(); // Stop bubbling up
+				var index = this.getIndexByNode(isOption);
+				this.unselectAll();
+				this.setOptionState(index, 'selected');
+				this.curSelIndex = index;
+				this.select();
+			}
+		},
+
+		/*
+		 * Method: 'handleKeys'
+		 * Tests if a special key was pressed and if so, passes it on
+		 * to 'handleKey'
+		 *
+		 * @param: Event object
+		 */
+		handleKeys: function (e) {
+			if (this.isSpecialKey(e.keyCode)) {
+				this.handleKey(_getKey(e.keyCode));
+			}
+		},
+
+		/*
+		 * Method: 'handleKey'
+		 * Tests the keyname being pressed and selects the according
+		 * method
+		 *
+		 * @param: Keyname string
+		 */
+		handleKey: function (keyName) {
+			switch (keyName) {
+			case 'up':
+				this.selectPrevious();
+				break;
+			case 'down':
+				this.selectNext();
+				break;
+			case 'enter':
+				this.select();
+				break;
+			case 'esc':
+				this.close();
+				this.fallBack();
+				break;
+			}
+		},
+
+		/*
+		 * Method: 'fallBack'
+		 * Used when a dropdown was opened, but cancelled
+		 * Typically by browsing through the list but pressing
+		 * 'esc' without selecting anything
+		 *
+		 */
+		fallBack: function () {
+			this.unselectAll();
+			this.curSelIndex = this.fallBackIndex,
+			this.curSel = this.fallBackSel;
+			this.select();
+		},
+
+		/*
+		 * Method: 'isSpecialKey'
+		 * Tests if a keycode is in the list of special keys for the class
+		 *
+		 * @param: Keycode INT
+		 */
+		isSpecialKey: function (code) {
+			if (window.dropdownKeycodeMap[code] !== undefined) {
+				return this.specialKeys.indexOf(window.dropdownKeycodeMap[code]) == -1 ? false : true;
+			} else {
+				return false;
+			}
+		},
+
+		/*
+		 * Method: 'unselectAll'
+		 * Convenience method to unselect all options
+		 *
+		 */
+		unselectAll: function () {
+			for (var i = 0; i < this.optionNodes.length; i++) {
+				this.setOptionState(i, 'unselected');
+			}
+		},
+
+		/*
+		 * Method: 'setOptionState'
+		 * Sets the state of an option in the dropdown list. Updates both the
+		 * visual frontend side as the instance properties
+		 *
+		 * @param: index: index of the nodelist of options
+		 * @param: state: either 'selected', or anything else
+		 */
+		setOptionState(index, state) {
+			if (state == 'selected') {
+				this.optionNodes[index].children[0].classList.add('slds-has-focus');
+				this.curSel = this.optionNodes[index].getElementsByClassName('slds-truncate')[0].innerText;
+				this.input.value = this.curSel;
+			} else {
+				this.optionNodes[index].children[0].classList.remove('slds-has-focus');
+				this.curSel = '';
+			}
+		},
+
+		/*
+		 * Method: 'selectPrevious'
+		 * Only used by keyboard. Selects the previous option if
+		 * the current is not the first one.
+		 *
+		 */
+		selectPrevious: function () {
+			if (this.curSelIndex != 0) {
+				this.setOptionState(this.curSelIndex, 'unselected');
+				this.curSelIndex--;
+				this.setOptionState(this.curSelIndex, 'selected');
+			}
+		},
+
+		/*
+		 * Method: 'selectNext'
+		 * Only used by keyboard. Selects the next option if
+		 * the current is not the last one.
+		 *
+		 */
+		selectNext: function () {
+			if (this.curSelIndex != this.optionNodes.length - 1) {
+				this.setOptionState(this.curSelIndex, 'unselected');
+				this.curSelIndex++;
+				this.setOptionState(this.curSelIndex, 'selected');
+			}
+		},
+
+		/*
+		 * Method: 'select'
+		 * Performs the actual select based on the instance property
+		 * 'curSel'. Also closes the dropdown.
+		 *
+		 */
+		select: function () {
+			var val = this.getCurSelIndexVal();
+			this._val = val;
+			this.updateValueHolder(val);
+
+			if (!this.isMulti) {
+				this.input.value = this.curSel;
+				this.close();
+			} else {
+				this.toggleSelected(this.curSelIndex);
+				if (this._val.length == 1) {
+					this.input.value = this.curSel;
+				} else if (this._val.length > 1) {
+					this.input.value = this.labels['LBL_MULTIPLE'];
+				} else if (this._val.length == 0) {
+					this.input.value = this.labels['LBL_NONE'];
+				}
+			}
+
+			if (this.onSelect) {
+				this.onSelect(this._val);
+			}
+		},
+
+		/*
+		 * Method: 'getCurSelIndexVal'
+		 * Gets the new value, based on the currently selected option node.
+		 * Respects the 'isMulti' flag in that it will update the comma separated
+		 * list in the '_val' property according to the option selected and its
+		 * previous state. In non-multi mode it will just return the new 'val'
+		 *
+		 * @return: string
+		 */
+		getCurSelIndexVal: function () {
+			if (this.isMulti) {
+				var val  = this.optionNodes[this.curSelIndex].getAttribute('data-value');
+				if (this.isOptionSelected(this.curSelIndex)) {
+					var ci = this._val.indexOf(val);
+					if (ci > -1) {
+						this._val.splice(ci, 1);
+					}
+				} else {
+					if (this._val.indexOf(val) === -1) {
+						this._val.push(val);
+					}
+				}
+				return this._val;
+			} else {
+				return this.optionNodes[this.curSelIndex].getAttribute('data-value');
+			}
+		},
+
+		/*
+		 * Method: 'getIndexByNode'
+		 * Searches through the list of DOM nodes in the dropdown
+		 * and returns the index if there is a match
+		 *
+		 * @param: node (DOM)
+		 */
+		getIndexByNode: function (node) {
+			for (var i = 0; i < this.optionNodes.length; i++) {
+				if (node.isSameNode(this.optionNodes[i])) {
+					return i;
+				}
+			}
+		},
+		/*
+		 * Method: 'getCurSelIndex'
+		 * Returns the index of the option that matches
+		 * the value of the input field
+		 *
+		 */
+		getCurSelIndex: function () {
+			var curSelIndex = 0;
+			for (var i = 0; i < this.optionNodes.length; i++) {
+				if (this.optionNodes[i].getElementsByClassName('slds-truncate')[0].innerHTML == this.input.value) {
+					curSelIndex = i;
+				}
+			}
+			return curSelIndex;
+		},
+		/*
+		 * Method: 'getSelNodesArray'
+		 * Only applicable when this combobox allows selection of multiple
+		 * values. Gets an array of the currently selected values based on the
+		 * DOM options. Typically only used when initializing the Combobox instance
+		 *
+		 */
+		getSelNodesArray: function (index) {
+			var opts = [];
+			for (var i = 0; i < this.optionNodes.length; i++) {
+				if (this.isOptionSelected(i)) {
+					opts.push(this.optionNodes[i].getAttribute('data-value'));
+				}
+			}
+			return opts;
+		},
+		/*
+		 * Method: 'toggleSelected'
+		 * Only applicable when this combobox allows selection of multiple
+		 * values. This looks at the selected value and toggles the selection
+		 * state
+		 *
+		 * @param: index of the selected option
+		 */
+		toggleSelected: function (index) {
+			this.setOptionSelState(index, !this.isOptionSelected(index));
+		},
+		/*
+		 * Method: 'isOptionSelected'
+		 * Only applicable when this combobox allows selection of multiple
+		 * values.
+		 *
+		 * @param: index of the selected option
+		 * @return: bool
+		 */
+		isOptionSelected: function (index) {
+			return (this.optionNodes[index].getAttribute('data-selected') === 'true');
+		},
+		/*
+		 * Method: 'setOptionSelState'
+		 * Only applicable when this combobox allows selection of multiple
+		 * values. Sets the state of the option
+		 *
+		 * @param: index of the selected option
+		 * @param: bool (true: option selected, false: option not selected)
+		 */
+		setOptionSelState: function (index, state) {
+			var n = this.optionNodes[index];
+			n.setAttribute('data-selected', state.toString());
+			if (state) {
+				n.getElementsByClassName('slds-listbox__option')[0].classList.add('slds-is-selected');
+				n.getElementsByClassName('slds-icon_container')[0].classList.remove('slds-hide');
+			} else {
+				n.getElementsByClassName('slds-listbox__option')[0].classList.remove('slds-is-selected');
+				n.getElementsByClassName('slds-icon_container')[0].classList.add('slds-hide');
+			}
+		}
+	};
+
+	/**
+	  * Section with factory tools
+	  */
+	function _on(el, type, func, context) {
+		el.addEventListener(type, func.bind(context));
+	}
+
+	function _getKey(code) {
+		return window.dropdownKeycodeMap[code];
+	}
+
+	function _findUp(element, searchterm) {
+		element = element.children[0] != undefined ? element.children[0] : element; // Include the current element
+		while (element = element.parentElement) {
+			if ( (searchterm.charAt(0) === '#' && element.id === searchterm.slice(1))
+				|| ( searchterm.charAt(0) === '.' && element.classList.contains(searchterm.slice(1))
+				|| ( searchterm.charAt(0) === '$' && element.tagName === searchterm.slice(1))
+				|| ( element.hasAttribute(searchterm) ))) {
+				return element;
+			} else if (element == document.body) {
+				break;
+			}
+		}
+	}
+
+	/*
+	 * Globals
+	 */
+	if (!Object.prototype.hasOwnProperty.call(window, 'dropdownKeycodeMap')) {
+		window.dropdownKeycodeMap = {
+			38: 'up',
+			40: 'down',
+			37: 'left',
+			39: 'right',
+			9:  'tab',
+			13: 'enter',
+			27: 'esc'
+		};
+	}
+
+	window.ldsComboBoxes = [];
+	return ldsCombobox;
+});
+
+/*
+ * General scroll handler
+ *
+ * @var sy    : window.scrollY alias
+ * @var di    : direction, are we going up or down?
+ * @var psy   : window.scrollY - 1
+ */
+(function cbOnScrollHandler(e) {
+	var di = null,
+		sy = window.scrollY,
+		psy = window.scrollY - 1;
+
+	window.cbOnDownScrollers = [];
+	window.cbOnUpScrollers = [];
+
+	window.addEventListener('scroll', cbOnScroll);
+
+	function cbOnScroll(e) {
+		window.requestAnimationFrame(function () {
+			sy = window.scrollY,
+			di = sy > psy ? 'down' : 'up',
+			psy = sy - 1;
+			var i = 0;
+			if (di === 'down') {
+				for (i = 0; i < window.cbOnDownScrollers.length; i++) {
+					if (typeof window.cbOnDownScrollers[i] === 'function') {
+						window.cbOnDownScrollers[i].apply();
+					}
+				}
+			}
+			if (di === 'up') {
+				for (i = 0; i < window.cbOnUpScrollers.length; i++) {
+					if (typeof window.cbOnUpScrollers[i] === 'function') {
+						window.cbOnUpScrollers[i].apply();
+					}
+				}
+			}
+		});
+	}
+})();
+
+function headerOnDownScroll() {
+	var h = document.getElementById('global-header');
+	h.classList.add('header-scrolling');
+	if ($(document).scrollLeft() >= 0 && $(document).scrollTop() == 0) {
+		h.classList.remove('header-scrolling');
+	}
+}
+window.cbOnDownScrollers.push(headerOnDownScroll);
+
+function headerOnUpScroll() {
+	var h = document.getElementById('global-header'),
+		csy = window.scrollY;
+
+	window.setTimeout(checkHeaderScroll, 80);
+	function checkHeaderScroll() {
+		if (csy <= window.scrollY) {
+			h.classList.remove('header-scrolling');
+		}
+	}
+}
+window.cbOnUpScrollers.push(headerOnUpScroll);
+
+$(document).ready(function () {
+	$('#blankDiv').height($('#global-header').outerHeight(true)-90);
+});
+
+$(window).on('resize', function () {
+	$('#blankDiv').height($('#global-header').outerHeight(true)-90);
+});

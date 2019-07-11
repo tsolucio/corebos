@@ -163,5 +163,9 @@ $mod_strings = array (
 'Documents' => 'Documenti',
 'SINGLE_Invoice'=>'Fattura',
 'Invoice ID'=>'ID Fattura',
+	'LBL_PARTIAL_PAYMENTS_INFO' => 'Partial Payments Information',
+	'Amount Due'=>'Amount Due',
+	'Amount Paid'=>'Amount Paid',
+	'Total Amount'=>'Total Amount',
 );
 ?>

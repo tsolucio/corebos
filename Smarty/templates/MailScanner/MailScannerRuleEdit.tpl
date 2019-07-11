@@ -67,6 +67,12 @@
 							<td width="80%" colspan=2><input type="text" name="rule_to" class="small" value="{$SCANNERRULE->toaddress}" size=50></td>
 						</tr>
 						<tr>
+							<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_CC}</strong></td>
+							<td width="80%" colspan=2>
+								<input type="text" name="rule_cc" class="small" value="{$SCANNERRULE->cc}" size=50>
+							</td>
+ 						</tr>
+						<tr>
 							<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_SUBJECT}</strong></td>
 							<td width="10%">
 								<select name="rule_subjectop" class="small">
@@ -209,10 +215,14 @@
 									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_CONTACT} [{$MOD.LBL_FROM_CAPS}]</option>
 									<option value="LINK,Contacts,TO" {if $RULEACTIONTEXT eq 'LINK,Contacts,TO'}selected=true{/if}
 									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_CONTACT} [{$MOD.LBL_TO_CAPS}]</option>
+									<option value="LINK,Contacts,CC" {if $RULEACTIONTEXT eq 'LINK,Contacts,CC'}selected=true{/if}
+									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_CONTACT} [{$MOD.LBL_CC}]</option>
 									<option value="LINK,Accounts,FROM" {if $RULEACTIONTEXT eq 'LINK,Accounts,FROM'}selected=true{/if}
 									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_ACCOUNT} [{$MOD.LBL_FROM_CAPS}]</option>
 									<option value="LINK,Accounts,TO" {if $RULEACTIONTEXT eq 'LINK,Accounts,TO'}selected=true{/if}
 									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_ACCOUNT} [{$MOD.LBL_TO_CAPS}]</option>
+									<option value="LINK,Accounts,CC" {if $RULEACTIONTEXT eq 'LINK,Accounts,CC'}selected=true{/if}
+									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_ACCOUNT} [{$MOD.LBL_CC}]</option>
 								</select>
 								<script>{literal}
 									function checkAction() {

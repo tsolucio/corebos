@@ -63,9 +63,7 @@ class OpenDocument_DrawHandle extends OpenDocument_StyledElement {
 	 */
 	public function __construct(DOMNode $node, OpenDocument $document) {
 		parent::__construct($node, $document);
-
-		$this->allowedElements = array(
-		);
+		$this->allowedElements = array();
 	}
 
 	/**

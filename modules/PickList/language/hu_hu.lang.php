@@ -50,6 +50,7 @@ $mod_strings = array(
 	'LBL_MOVE_LEFT' => 'Move Left',
 	'LBL_MOVE_RIGHT' => 'Move Right',
 	'LBL_REMOVE' => 'Remove',
-	'NTC_DELETE_CONFIRMATION' => 'Biztos vagy abban, hogy törölni akarod ezt a kiválasztó lista függőséget?'
+	'NTC_DELETE_CONFIRMATION' => 'Biztos vagy abban, hogy törölni akarod ezt a kiválasztó lista függőséget?',
+	'picklisthasdependency' => 'Warning: this list has dependencies configured',
 );
 ?>

@@ -21,6 +21,8 @@ class Services extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = true;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-proposition', 'class' => 'slds-icon', 'icon'=>'proposition');
+
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
@@ -597,8 +599,8 @@ class Services extends CRMEntity {
 		$relatedmodule = 'Services';
 		if (empty($_SESSION['rlvs'][$module][$relatedmodule])) {
 			$modObj = new ListViewSession();
-			$modObj->sortby = $focus->default_order_by;
-			$modObj->sorder = $focus->default_sort_order;
+			$modObj->sortby = $focus->getOrderBy();
+			$modObj->sorder = $focus->getSortOrder();
 			coreBOS_Session::set('rlvs^'.$module.'^'.$relatedmodule, get_object_vars($modObj));
 		}
 		if (isset($_REQUEST['relmodule']) && $_REQUEST['relmodule']!='' && $_REQUEST['relmodule'] == $relatedmodule) {

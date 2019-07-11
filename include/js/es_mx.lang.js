@@ -286,6 +286,7 @@ var alert_arr = {
 	'Default': 'Defecto',
 	'Notebook': 'Bloc de Notas',
 	'ReportCharts': 'Informe Gráfico',
+	'CustomWidget': 'Agregación Filtro',
 	'SPECIAL_CHARS':'\\ / < > + \' " ',
 
 	'BETWEEN': 'entre',

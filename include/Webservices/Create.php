@@ -118,7 +118,7 @@ function vtws_create($elementType, $element, $user) {
 		VTWS_PreserveGlobal::flush();
 		if (!empty($_FILES)) {
 			foreach ($_FILES as $field => $file) {
-				unlink($file['tmp_name']);
+				@unlink($file['tmp_name']);
 			}
 		}
 		return $entity;

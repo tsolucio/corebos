@@ -88,10 +88,9 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				$disp_value = getNewDisplayDate();
 			}
 
-			//Added to display the Contact - Support End Date as one year future instead of
-			//today's date -- 30-11-2005
+			//Added to display the Contact - Support End Date as one year future instead of today's date
 			if ($fieldname == 'support_end_date' && $_REQUEST['module'] == 'Contacts') {
-				$addyear = strtotime("+1 year");
+				$addyear = strtotime('+1 year');
 				$disp_value = DateTimeField::convertToUserFormat(date('Y-m-d', $addyear));
 			} elseif ($fieldname == 'validtill' && $_REQUEST['module'] == 'Quotes') {
 				$disp_value = '';
@@ -918,18 +917,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$currencySymbol = $currencyField->getCurrencySymbol();
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name).': ('.$currencySymbol.')';
-	} elseif ($uitype == 76) {
-		if ($value != '') {
-			$potential_name = getPotentialName($value);
-		} elseif (isset($_REQUEST['potential_id']) && $_REQUEST['potential_id'] != '') {
-			$value = $_REQUEST['potental_id'];
-			$potential_name = getPotentialName($value);
-		} else {
-			$potential_name = '';
-		}
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[] = $potential_name;
-		$fieldvalue[] = $value;
 	} elseif ($uitype == 78) {
 		if ($value != '') {
 			$quote_name = getQuoteName($value);

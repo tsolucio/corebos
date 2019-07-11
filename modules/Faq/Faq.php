@@ -21,6 +21,8 @@ class Faq extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'utility', 'containerClass' => 'slds-icon_container slds-icon-standard-question-feed', 'class' => 'slds-icon slds-box--xx-small', 'icon'=>'questions_and_answers');
+
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */

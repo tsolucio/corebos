@@ -37,16 +37,6 @@
 		<a href="javascript:;"><img src="{$IMAGE_PATH}btnL3Clock.gif" alt="{$APP.LBL_CLOCK_ALT}" title="{$APP.LBL_CLOCK_TITLE}" style="border:0;max-width:initial;" onClick="fnvshobj(this,'wclock');"></a>
 	</td>
 {/if}
-{if $CALCULATOR_DISPLAY eq 'true' }
-	<td>
-	<td id="LB_CalcButton" class="LB_Button" style="padding-right:0px">
-		<a href="#"><img src="{$IMAGE_PATH}btnL3Calc.gif" alt="{$APP.LBL_CALCULATOR_ALT}" title="{$APP.LBL_CALCULATOR_TITLE}" style="border:0;max-width:initial;" onClick="fnvshobj(this,'calculator_cont');fetch_calc();"></a>
-	</td>
-{/if}
-	<td>
-		<img width="27" height="27" src="{'btnL3Tracker.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_LAST_VIEWED}" title="{$APP.LBL_LAST_VIEWED}" style="border:0;max-width:initial;" onClick="fnvshobj(this,'tracker');">
-	</td>
-
 	<td align='left'>
 		<img width="27" height="27" onClick='showOptions("changeLayoutDiv");' src="{'orgshar.gif'|@vtiger_imageurl:$THEME}" style="border:0;max-width:initial;" title="{$MOD.LBL_HOME_LAYOUT}" alt"{$MOD.LBL_HOME_LAYOUT}" style="cursor:pointer;">
 	</td>
@@ -58,6 +48,15 @@
 			<div class="slds-spinner__dot-b"></div>
 		</div>
 		</span>
+		{assign var=ANNOUNCEMENT value=get_announcements()}
+		{if $ANNOUNCEMENT}
+			<div width="100%">
+				<div align=center>
+					<marquee id="rss" style="margin-left:12px;width:90%;" direction="left" scrolldelay="10" scrollamount="3" behavior="scroll" class="marStyle slds-float_left" onMouseOver="javascript:stop();" onMouseOut="javascript:start();">&nbsp;{$ANNOUNCEMENT}</marquee>
+					<div align="right" style="padding-right:38px;width:8%;" class="slds-float_right"><img src="{'Announce.PNG'|@vtiger_imageurl:$THEME}"></div>
+				</div>
+			</div>
+		{/if}
 	</td>
 </tr>
 </table>
@@ -183,13 +182,17 @@
 					&nbsp;{$MOD.LBL_HOME_FILTERBY}
 				</td>
 				<td id="selModFilter_id"  width="300" colspan="2"  class="dvtCellInfo"> </td>
-			 </tr>
-			 <tr id="moduleLabelsRow" style="display:block">
-			 	<td class="dvtCellLabel" align="right" id="aggr" width="110">{$MOD.LBL_HOME_AGGREGATE}</td>
+			</tr>
+			<tr id="moduleLabelsRow" style="display:block">
+				<td class="dvtCellLabel" align="right" id="aggr" width="110">{$MOD.LBL_HOME_AGGREGATE}</td>
 				<td id="selModAggregate_id"  width="300" colspan="2"  class="dvtCellInfo">
 					<select class="detailedViewTextBox" id="selAggregateid" name="selAggregatename" style="width:60%">
-					<option value="sum">Sum</option><option value="avg">Average</option><option value="max">Maximum</option>
-					<option value="min">Minimum</option><option value="count">Count</option></select>
+					<option value="sum">{'SUM'|getTranslatedString:'Reports'}</option>
+					<option value="avg">{'AVG'|getTranslatedString:'Reports'}</option>
+					<option value="max">{'MAX'|getTranslatedString:'Reports'}</option>
+					<option value="min">{'MIN'|getTranslatedString:'Reports'}</option>
+					<option value="count">{'COUNT'|getTranslatedString:'Reports'}</option>
+					</select>
 				</td>
 			</tr>
 			<tr id="moduleCombosRow" style="display:block">

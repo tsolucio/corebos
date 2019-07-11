@@ -44,7 +44,7 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 	 */
 	private $cells;
 
-		/**
+	/**
 	 * Collection of children objects
 	 *
 	 * @var ArrayIterator
@@ -57,24 +57,24 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 	 */
 	const nodeNS = OpenDocument::NS_TABLE;
 
-		/**
+	/**
 	 * Node namespace
 	 */
 	const nodePrefix = 'table';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'table';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'table';
 
 	public $issubtable;
 
-		/**
+	/**
 	 * Constructor
 	 *
 	 * @param DOMNode $node
@@ -94,11 +94,10 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 		}
 		$this->cells = array ();
 
-		$this->allowedElements = array(
-		);
+		$this->allowedElements = array();
 	}
 
-		/**
+	/**
 	 * Create OpenDocument_Table element
 	 *
 	 * @param mixed $object
@@ -117,13 +116,13 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-				$element = new OpenDocument_Table($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $subtable);
+		$element = new OpenDocument_Table($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $subtable);
 		$node->appendChild($element->node);
 
 		return $element;
 	}
 
-		/**
+	/**
 	 * Set element properties
 	 *
 	 * @param string $name
@@ -142,7 +141,7 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 		}
 	}
 
-		/**
+	/**
 	 * Get element properties
 	 *
 	 * @param string  $name
@@ -157,7 +156,7 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 		}
 	}
 
-		/**
+	/**
 	 * Generate element new style name
 	 *
 	 * @return string
@@ -176,7 +175,7 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 		return $this->node->getAttributeNS(OpenDocument::NS_TABLE, 'style-name');
 	}
 
-		/**
+	/**
 	 * Apply style information
 	 *
 	 * @param string $name
@@ -188,9 +187,9 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 		$this->node->setAttributeNS(OpenDocument::NS_TABLE, 'style-name', $style_name);
 	}
 
-		/************** Elements ***********************/
+	/************** Elements ***********************/
 
-		/**
+	/**
 	 * Create OpenDocument_TextElement
 	 *
 	 * @param string $text
@@ -225,7 +224,7 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 		return $ret;
 	}
 
-		/**
+	/**
 	 * Create OpenDocument_TableColumn
 	 *
 	 * @param string $text optional
@@ -236,7 +235,7 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 		return OpenDocument_TableColumn::instance($this, $numcols);
 	}
 
-		/**
+	/**
 	 * Create OpenDocument_TableRow
 	 *
 	 * @param string $text optional
@@ -247,7 +246,7 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 		return OpenDocument_TableRow::instance($this);
 	}
 
-		/**
+	/**
 	 * Create OpenDocument_TableRow
 	 *
 	 * @param string $text optional
@@ -258,7 +257,7 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 		return OpenDocument_TableHeaderRow::instance($this);
 	}
 
-		/**
+	/**
 	 *
 	 * @access      public
 	 * @since       0.5.0 - 08. Feb. 2007
@@ -270,7 +269,7 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 		return $tmp;
 	}
 
-		/**
+	/**
 	 *
 	 * @access      public
 	 * @since       0.5.0 - 08. Feb. 2007
@@ -305,7 +304,7 @@ class OpenDocument_Table extends OpenDocument_StyledElement {
 		}
 	}
 
-		/**
+	/**
 	 *
 	 * @access      public
 	 * @since       0.5.0 - 08. Feb. 2007

@@ -192,6 +192,7 @@ $mod_strings = array(
 	'AVG' => 'ÁTL',
 	'MAX' => 'MAX',
 	'MIN' => 'MIN',
+	'COUNT'=>'COUNT',
 	'LBL_CUSTOM_REPORTS' => 'Egyedi Jelentések',
 	'ticketid' => 'Kérés AZ',
 	'NO_COLUMN' => 'Nincs elérhető oszlop az összesítéshez',

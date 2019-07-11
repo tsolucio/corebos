@@ -26,6 +26,7 @@ class Emails extends CRMEntity {
 
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-email', 'class' => 'slds-icon', 'icon'=>'email');
 
 	// added to check email save from plugin or not
 	public $plugin_save = false;
@@ -61,12 +62,31 @@ class Emails extends CRMEntity {
 		'Unsubscribe' => 'unsubscribe',
 		'Access Count' => 'access_count'
 	);
+	public $search_fields = array(
+		'Subject' => array('activity' => 'subject'),
+		'Related to' => array('seactivityrel' => 'parent_id'),
+		'Date Sent' => array('activity' => 'date_start'),
+		'Time Sent' => array('activity' => 'time_start'),
+		'Assigned To' => array('crmentity' => 'smownerid'),
+		'Delivered' => array('emaildetails' => 'delivered'),
+		'Open' => array('emaildetails' => 'open'),
+		'Clicked' => array('emaildetails' => 'clicked'),
+		'Bounce' => array('emaildetails' => 'bounce'),
+		'Unsubscribe' => array('emaildetails' => 'unsubscribe'),
+		'Access Count' => array('email_track' => 'access_count')
+	);
 	public $search_fields_name = array(
+		'Subject' => 'subject',
+		'Related to' => 'parent_id',
+		'Date Sent' => 'date_start',
+		'Time Sent' => 'time_start',
+		'Assigned To' => 'assigned_user_id',
 		'Delivered' => 'delivered',
 		'Open' => 'open',
 		'Clicked' => 'clicked',
 		'Bounce' => 'bounce',
 		'Unsubscribe' => 'unsubscribe',
+		'Access Count' => 'access_count'
 	);
 	public $list_link_field = 'subject';
 	public $sortby_fields = array('subject', 'date_start', 'saved_toid');
@@ -241,7 +261,6 @@ class Emails extends CRMEntity {
 	}
 
 	public static function sendEMail($to_email, $from_name, $from_email, $subject, $contents, $cc, $bcc, $attachment, $emailid, $logo, $qrScan, $replyto, $replyToEmail) {
-		global $adb;
 		$mail = new PHPMailer();
 		setMailerProperties($mail, $subject, $contents, $from_email, $from_name, trim($to_email, ','), $attachment, $emailid, $logo, $qrScan);
 		// Return immediately if Outgoing server not configured
@@ -411,7 +430,7 @@ class Emails extends CRMEntity {
 
 	/** Returns a list of the associated users */
 	public function get_users($id) {
-		global $log, $adb, $app_strings, $current_user;
+		global $log, $adb, $app_strings;
 		$log->debug('> get_users '.$id);
 
 		$id = $_REQUEST['record'];
@@ -563,13 +582,14 @@ class Emails extends CRMEntity {
 		return $list_buttons;
 	}
 
-	public static function sendEmailTemplate($templateName, $context, $module, $to_email, $par_id, $from_name = '', $from_email = '') {
+	public static function sendEmailTemplate($templateName, $context, $module, $to_email, $par_id, $from_name = '', $from_email = '', $desired_lang = null, $default_lang = null) {
 		require_once 'modules/Emails/mail.php';
 		global $adb, $default_charset;
-		$sql = fetchEmailTemplateInfo($templateName);
+		$sql = fetchEmailTemplateInfo($templateName, $desired_lang, $default_lang);
 		if ($sql && $adb->num_rows($sql)>0) {
 			$sub = $adb->query_result($sql, 0, 'subject');
 			$body = $adb->query_result($sql, 0, 'template');
+			$sub = html_entity_decode($sub, ENT_QUOTES, $default_charset);
 			$mail_body = html_entity_decode($body, ENT_QUOTES, $default_charset);
 			foreach ($context as $value => $val) {
 				$mail_body = str_replace($value, $val, $mail_body);

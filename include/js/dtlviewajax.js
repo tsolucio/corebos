@@ -431,8 +431,6 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 			getObj(dtlView).innerHTML = '<a href="index.php?module=Accounts&action=DetailView&record='+tagValue+'">'+popObj.value+'&nbsp;</a>';
 		} else if (uitype == '57') {
 			getObj(dtlView).innerHTML = '<a href="index.php?module=Contacts&action=DetailView&record='+tagValue+'">'+popObj.value+'&nbsp;</a>';
-		} else if (uitype == '76') {
-			getObj(dtlView).innerHTML = '<a href="index.php?module=Potentials&action=DetailView&record='+tagValue+'">'+popObj.value+'&nbsp;</a>';
 		} else if (uitype == '78') {
 			getObj(dtlView).innerHTML = '<a href="index.php?module=Quotes&action=DetailView&record='+tagValue+'">'+popObj.value+'&nbsp;</a>';
 		} else if (uitype == '80') {
@@ -630,6 +628,19 @@ function SaveTag(tagfield, crmId, module) {
 		VtigerJS_DialogBox.hidebusy();
 	});
 }
+
+function DeleteTag(id, recordid) {
+	VtigerJS_DialogBox.showbusy();
+	jQuery('#tag_'+id).fadeOut();
+	jQuery.ajax({
+		method:'POST',
+		url:'index.php?file=TagCloud&module=' + module + '&action=' + module + 'Ajax&ajxaction=DELETETAG&recordid='+recordid+'&tagid='+id
+	}).done(function (response) {
+		getTagCloud();
+		VtigerJS_DialogBox.hidebusy();
+	});
+}
+
 function setSelectValue(fieldLabel) {
 	var selCombo= '';
 	if (globaluitype == 53) {

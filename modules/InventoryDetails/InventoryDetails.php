@@ -21,6 +21,8 @@ class InventoryDetails extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = true;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-product-item-transaction', 'class' => 'slds-icon', 'icon'=>'product_item_transaction');
+
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
@@ -343,7 +345,7 @@ class InventoryDetails extends CRMEntity {
 		}
 
 		$requestindex = 1;
-		$inputFiles = $_FILES;
+		$inputFiles = isset($_FILES) ? $_FILES : array();
 		unset($_FILES);
 		while (isset($_REQUEST['deleted'.$requestindex]) && $_REQUEST['deleted'.$requestindex] == 1) {
 			$requestindex++;

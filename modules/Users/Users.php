@@ -37,6 +37,8 @@ class Users extends CRMEntity {
 	public $tab_name = array('vtiger_users', 'vtiger_attachments', 'vtiger_user2role', 'vtiger_asteriskextensions');
 	public $tab_name_index = array('vtiger_users'=>'id', 'vtiger_attachments'=>'attachmentsid', 'vtiger_user2role'=>'userid', 'vtiger_asteriskextensions'=>'userid');
 
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-user', 'class' => 'slds-icon', 'icon'=>'user');
+
 	public $table_name = 'vtiger_users';
 	public $table_index = 'id';
 
@@ -752,7 +754,7 @@ class Users extends CRMEntity {
 				);
 			}
 		}
-		$this->column_fields['imagenameimagenfo'] = $imageurl;
+		$this->column_fields['imagenameimageinfo'] = $imageurl;
 		return $this;
 	}
 
@@ -1231,7 +1233,7 @@ class Users extends CRMEntity {
 		if ($id == '' && isset($this->column_fields['tagcloudview'])) {
 			$return_array['Tag Cloud'] = $this->column_fields['tagcloudview'];
 		} else {
-			$return_array['Tag Cloud'] = getTagCloudView($id);
+			$return_array['Tag Cloud'] = (getTagCloudView($id) ? 'true' : 'false');
 		}
 		if ($id == '' && isset($this->column_fields['showtagas'])) {
 			$return_array['showtagas'] = $this->column_fields['showtagas'];
@@ -1246,6 +1248,8 @@ class Users extends CRMEntity {
 		if ($inVal == 'postinstall') {
 			if ($_REQUEST[$home_string] != '') {
 				$homeModComptVisibility = 0;
+			} else {
+				$homeModComptVisibility = 1;
 			}
 		}
 		return $homeModComptVisibility;
@@ -1656,7 +1660,7 @@ class Users extends CRMEntity {
 		if ($sorder != '' && $order_by != '') {
 			$list_query = "Select * from vtiger_users $where order by $order_by $sorder";
 		} else {
-			$list_query = "Select * from vtiger_users $where order by ".$this->default_order_by." ".$this->default_sort_order;
+			$list_query = "Select * from vtiger_users $where order by ".$this->default_order_by.' '.$this->default_sort_order;
 		}
 		$rowsperpage = GlobalVariable::getVariable('Workflow_ListView_PageSize', 30);
 		$from = ($page-1)*$rowsperpage;

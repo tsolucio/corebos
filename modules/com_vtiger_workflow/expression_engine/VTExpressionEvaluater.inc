@@ -90,7 +90,8 @@ class VTFieldExpressionEvaluater {
 			'isNumeric' => '__cb_is_numeric',
 			'isString' => '__cb_is_string',
 			'OR' => '__cb_or',
-			'AND' => '__cb_and'
+			'AND' => '__cb_and',
+			'add_workdays' => '__cb_add_workdays',
 		);
 		$this->operationsSQL = array(
 			'+'  => 'cbexpsql_add',

@@ -249,8 +249,12 @@ class cbupdaterWorker {
 		$upd = 'UPDATE vtiger_field SET quickcreate=2, quickcreatesequence=? WHERE fieldid=?';
 		foreach ($qcfields as $fldname) {
 			$field = VTiger_Field::getInstance($fldname, $module);
-			$adb->pquery($upd, array($order, $field->id));
-			$order++;
+			if ($field) {
+				$adb->pquery($upd, array($order, $field->id));
+				$order++;
+			} else {
+				$this->sendMsgError('QuickCreate field not found: '.$fldname);
+			}
 		}
 	}
 
@@ -573,7 +577,7 @@ class cbupdaterWorker {
 
 	public function sendError() {
 		$this->updError = true;
-		echo '<tr width="100%"><td colspan=3<span style="color:red">ERROR: Class '.get_class($this).'called without update record in application!!</span></td></tr></table>';
+		echo '<tr width="100%"><td colspan=3<span style="color:red">ERROR: Class '.get_class($this).' called without update record in application!!</span></td></tr></table>';
 		die();
 	}
 

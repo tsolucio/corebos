@@ -267,6 +267,7 @@ var alert_arr = {
 	'Default' : 'Alapértelmezett',
 	'Notebook' : 'Jegyzetfüzet',
 	'ReportCharts': 'Jelentés Grafikonok',
+	'CustomWidget': 'Aggregate Filter',
 	'SPECIAL_CHARS' : '\\ / < > + \' " ',
 	'BETWEEN' : 'közte',
 	'BEFORE' : 'előtt',

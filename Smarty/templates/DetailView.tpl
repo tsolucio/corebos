@@ -87,7 +87,7 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 	<tr>
 		<td class="detailview_wrapper_cell">
 
-			{include file='Buttons_List.tpl'}
+			{include file='Buttons_List.tpl' isDetailView=true}
 
 			<!-- Contents -->
 			<table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
@@ -96,23 +96,6 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 					<td class="showPanelBg" valign=top width=100%>
 						<!-- PUBLIC CONTENTS STARTS-->
 						<div class="small" style="padding:14px" onclick="hndCancelOutsideClick();";>
-
-						<table align="center" border="0" cellpadding="0" cellspacing="0" width="95%">
-							<tr><td>
-								{* Module Record numbering, used MOD_SEQ_ID instead of ID *}
-								{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
-								{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
-								<span class="dvHeaderText">[ {$USE_ID_VALUE} ] {$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>&nbsp;&nbsp;&nbsp;<span class="small">{$UPDATEINFO}</span>
-								&nbsp;
-								<span id="vtbusy_info" style="display:none;" valign="bottom">
-								<div role="status" class="slds-spinner slds-spinner_brand slds-spinner_x-small" style="position:relative; top:6px;">
-									<div class="slds-spinner__dot-a"></div>
-									<div class="slds-spinner__dot-b"></div>
-								</div>
-								</span>
-							</td></tr>
-						</table>
-						<br>
 						{include file='applicationmessage.tpl'}
 						<!-- Entity and More information tabs -->
 						<table border=0 cellspacing=0 cellpadding=0 width=95% align=center>
@@ -126,12 +109,12 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 													{include file='RelatedPanes.tpl' tabposition='top' RETURN_RELATEDPANE=''}
 												{else}
 												<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_top" onmouseout="fnHideDrop('More_Information_Modules_List');" onmouseover="fnDropDown(this,'More_Information_Modules_List');">
-													<a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a>
+													<a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a>
 													<div onmouseover="fnShowDrop('More_Information_Modules_List')" onmouseout="fnHideDrop('More_Information_Modules_List')"
 														 id="More_Information_Modules_List" class="drop_mnu" style="left: 502px; top: 76px; display: none;">
 														<table border="0" cellpadding="0" cellspacing="0" width="100%">
 															{foreach key=_RELATION_ID item=_RELATED_MODULE from=$IS_REL_LIST}
-																<tr><td><a class="drop_down" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}&selected_header={$_RELATED_MODULE}&relation_id={$_RELATION_ID}#tbl_{$MODULE}_{$_RELATED_MODULE}">{$_RELATED_MODULE|@getTranslatedString:$_RELATED_MODULE}</a></td></tr>
+																<tr><td><a class="drop_down" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&selected_header={$_RELATED_MODULE}&relation_id={$_RELATION_ID}#tbl_{$MODULE}_{$_RELATED_MODULE}">{$_RELATED_MODULE|@getTranslatedString:$_RELATED_MODULE}</a></td></tr>
 															{/foreach}
 														</table>
 													</div>
@@ -151,7 +134,7 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 													<input title="{$APP.LBL_DELETE_BUTTON_TITLE}" accessKey="{$APP.LBL_DELETE_BUTTON_KEY}" class="crmbutton small delete" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='index'; {if $MODULE eq 'Accounts'} var confirmMsg = '{$APP.NTC_ACCOUNT_DELETE_CONFIRMATION}' {else} var confirmMsg = '{$APP.NTC_DELETE_CONFIRMATION}' {/if}; submitFormForActionWithConfirmation('DetailView', 'Delete', confirmMsg);" type="button" name="Delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}">&nbsp;
 												{/if}
 												{if $privrecord neq ''}
-													<span class="detailview_utils_prev" onclick="location.href='index.php?module={$MODULE}&viewtype={if isset($VIEWTYPE)}{$VIEWTYPE}{/if}&action=DetailView&record={$privrecord}&parenttab={$CATEGORY}&start={$privrecordstart}'" title="{$APP.LNK_LIST_PREVIOUS}"><img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" accessKey="{$APP.LNK_LIST_PREVIOUS}"  name="privrecord" value="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
+													<span class="detailview_utils_prev" onclick="location.href='index.php?module={$MODULE}&action=DetailView&record={$privrecord}&start={$privrecordstart}'" title="{$APP.LNK_LIST_PREVIOUS}"><img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" accessKey="{$APP.LNK_LIST_PREVIOUS}"  name="privrecord" value="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
 												{else}
 													<img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev_disabled.gif'|@vtiger_imageurl:$THEME}">
 												{/if}
@@ -159,7 +142,7 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 													<span class="detailview_utils_jumpto" id="jumpBtnIdTop" onclick="var obj = this;var lhref = getListOfRecords(obj, '{$MODULE}',{$ID},'{$CATEGORY}');" title="{$APP.LBL_JUMP_BTN}"><img align="absmiddle" title="{$APP.LBL_JUMP_BTN}" accessKey="{$APP.LBL_JUMP_BTN}" name="jumpBtnIdTop" id="jumpBtnIdTop" src="{'rec_jump.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
 												{/if}
 												{if $nextrecord neq ''}
-													<span class="detailview_utils_next" onclick="location.href='index.php?module={$MODULE}&viewtype={if isset($VIEWTYPE)}{$VIEWTYPE}{/if}&action=DetailView&record={$nextrecord}&parenttab={$CATEGORY}&start={$nextrecordstart}'" title="{$APP.LNK_LIST_NEXT}"><img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" accessKey="{$APP.LNK_LIST_NEXT}"  name="nextrecord" src="{'rec_next.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
+													<span class="detailview_utils_next" onclick="location.href='index.php?module={$MODULE}&action=DetailView&record={$nextrecord}&start={$nextrecordstart}'" title="{$APP.LNK_LIST_NEXT}"><img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" accessKey="{$APP.LNK_LIST_NEXT}"  name="nextrecord" src="{'rec_next.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
 												{else}
 													<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" src="{'rec_next_disabled.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 												{/if}
@@ -273,7 +256,7 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 																											{assign var=_readonly value=$data.readonly}
 																											{assign var=extendedfieldinfo value=$data.extendedfieldinfo}
 
-																											{if $label ne ''}
+																											{if $label ne '' && ($keyid ne 83 || count($TAX_DETAILS)>0)}
 																												<td class="dvtCellLabel" align=right width=25% style="white-space: normal;">{strip}
 																												{if $keycntimage ne ''}
 																													{$keycntimage}
@@ -465,7 +448,7 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 												{if $HASRELATEDPANES eq 'true'}
 													{include file='RelatedPanes.tpl' tabposition='bottom' RETURN_RELATEDPANE=''}
 												{else}
-												<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_bottom"><a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a></div>
+												<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_bottom"><a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a></div>
 												{/if}
 											{/if}
 										</div>
@@ -482,7 +465,7 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 												{/if}
 
 												{if $privrecord neq ''}
-													<img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" accessKey="{$APP.LNK_LIST_PREVIOUS}" onclick="location.href='index.php?module={$MODULE}&viewtype={if isset($VIEWTYPE)}{$VIEWTYPE}{/if}&action=DetailView&record={$privrecord}&parenttab={$CATEGORY}'" name="privrecord" value="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}">&nbsp;
+													<img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" accessKey="{$APP.LNK_LIST_PREVIOUS}" onclick="location.href='index.php?module={$MODULE}&action=DetailView&record={$privrecord}'" name="privrecord" value="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 												{else}
 													<img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev_disabled.gif'|@vtiger_imageurl:$THEME}">
 												{/if}
@@ -490,7 +473,7 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 													<img align="absmiddle" title="{$APP.LBL_JUMP_BTN}" accessKey="{$APP.LBL_JUMP_BTN}" onclick="var obj = this;var lhref = getListOfRecords(obj, '{$MODULE}',{$ID},'{$CATEGORY}');" name="jumpBtnIdBottom" id="jumpBtnIdBottom" src="{'rec_jump.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 												{/if}
 												{if $nextrecord neq ''}
-													<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" accessKey="{$APP.LNK_LIST_NEXT}" onclick="location.href='index.php?module={$MODULE}&viewtype={if isset($VIEWTYPE)}{$VIEWTYPE}{/if}&action=DetailView&record={$nextrecord}&parenttab={$CATEGORY}'" name="nextrecord" src="{'rec_next.gif'|@vtiger_imageurl:$THEME}">&nbsp;
+													<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" accessKey="{$APP.LNK_LIST_NEXT}" onclick="location.href='index.php?module={$MODULE}&action=DetailView&record={$nextrecord}'" name="nextrecord" src="{'rec_next.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 												{else}
 													<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" src="{'rec_next_disabled.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 												{/if}

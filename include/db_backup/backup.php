@@ -18,7 +18,7 @@ function save_structure($filename, $root_directory) {
 	global $log;
 	$log->debug('> save_structure '.$filename.','.$root_directory);
 	$dbdump = new DatabaseDump(DBSERVER, DBUSER, DBPASS);
-	$dumpfile = $root_directory.'/'.$filename;
+	$dumpfile = $root_directory.$filename;
 	$dbdump->save(DBNAME, $dumpfile) ;
 	$log->debug('< save_structure');
 }
@@ -59,14 +59,14 @@ class DatabaseDump {
 		// Write some information regarding database dump and the time first.
 		$this->writeln("SET NAMES 'utf8';");
 		$this->writeln("-- $database database dump");
-		$this->writeln("-- Date: " . date("D, M j, G:i:s T Y"));
-		$this->writeln("-- ----------------------------------");
-		$this->writeln("");
+		$this->writeln('-- Date: ' . date('D, M j, G:i:s T Y'));
+		$this->writeln('-- ----------------------------------');
+		$this->writeln('');
 
 		// Meta information which helps to import into mysql database.
-		$this->writeln("SET FOREIGN_KEY_CHECKS=0;");
+		$this->writeln('SET FOREIGN_KEY_CHECKS=0;');
 		$this->writeln("SET SQL_MODE='NO_AUTO_VALUE_ON_ZERO';");
-		$this->writeln("");
+		$this->writeln('');
 
 		// Get all table names from database
 		$tcount = 0;
@@ -97,20 +97,20 @@ class DatabaseDump {
 			$table_create_sql = str_replace("\n", "", $table_create_sql);
 
 			// Write table create statement
-			$this->writeln("");
-			$this->writeln("--");
+			$this->writeln('');
+			$this->writeln('--');
 			$this->writeln("-- Table structure for table `$table` ");
-			$this->writeln("--");
-			$this->writeln("");
+			$this->writeln('--');
+			$this->writeln('');
 			$this->writeln("DROP TABLE IF EXISTS `$table`;");
 			$this->writeln($table_create_sql . ';');
-			$this->writeln("");
+			$this->writeln('');
 
 			// Write data
-			$this->writeln("--");
+			$this->writeln('--');
 			$this->writeln("-- Dumping data for table `$table` ");
-			$this->writeln("--");
-			$this->writeln("");
+			$this->writeln('--');
+			$this->writeln('');
 
 			$table_query = mysqli_query("SELECT * FROM `$table`");
 			$num_fields = mysqli_num_fields($table_query);
@@ -131,13 +131,13 @@ class DatabaseDump {
 			}
 		}
 		// Meta information reset to original state.
-		$this->writeln("SET FOREIGN_KEY_CHECKS=0;");
+		$this->writeln('SET FOREIGN_KEY_CHECKS=0;');
 
 		$this->file_close();
 	}
 
 	public function file_open($filename) {
-		$this->fhandle = fopen($filename, "w+");
+		$this->fhandle = fopen($filename, 'w+');
 	}
 
 	public function file_close() {
@@ -145,7 +145,7 @@ class DatabaseDump {
 	}
 
 	public function write($string) {
-		fprintf($this->fhandle, "%s", $string);
+		fprintf($this->fhandle, '%s', $string);
 	}
 
 	public function writeln($string) {

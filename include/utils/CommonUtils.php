@@ -355,20 +355,12 @@ function getTabid($module) {
 	// Lookup information in cache first
 	$tabid = VTCacheUtils::lookupTabid($module);
 	if ($tabid === false) {
-		if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
-			include 'tabdata.php';
-			if (!empty($tab_info_array[$module])) {
-				$tabid = $tab_info_array[$module];
-			}
+		global $adb;
+		$result = $adb->pquery('select tabid from vtiger_tab where name=?', array($module));
+		if (!$result || $adb->num_rows($result)==0) {
+			return null;
 		}
-		if ($tabid === false) {
-			global $adb;
-			$result = $adb->pquery('select tabid from vtiger_tab where name=?', array($module));
-			if (!$result || $adb->num_rows($result)==0) {
-				return null;
-			}
-			$tabid = $adb->query_result($result, 0, 'tabid');
-		}
+		$tabid = $adb->query_result($result, 0, 'tabid');
 		// Update information to cache for re-use
 		VTCacheUtils::updateTabidInfo($tabid, $module);
 	}
@@ -485,19 +477,11 @@ function getCVname($cvid) {
  * returns the tabid, integer type
  */
 function getTabOwnedBy($module) {
-	global $log;
+	global $log, $adb;
 	$log->debug('> getTabOwnedBy ' . $module);
-
 	$tabid = getTabid($module);
-
-	if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
-		include 'tabdata.php';
-		$tab_ownedby = $tab_ownedby_array[$tabid];
-	} else {
-		global $adb;
-		$result = $adb->pquery('select ownedby from vtiger_tab where name=?', array($module));
-		$tab_ownedby = $adb->query_result($result, 0, "ownedby");
-	}
+	$result = $adb->pquery('select ownedby from vtiger_tab where name=?', array($module));
+	$tab_ownedby = $adb->query_result($result, 0, 'ownedby');
 	$log->debug('< getTabOwnedBy');
 	return $tab_ownedby;
 }
@@ -1809,6 +1793,7 @@ function create_tab_data_file() {
 
 	$filename = 'tabdata.php';
 	VTCacheUtils::emptyTabidInfo();
+	VTCacheUtils::emptyTabSequence();
 	if (function_exists('opcache_invalidate')) {
 		opcache_invalidate('tabdata.php', true);
 	}
@@ -2350,7 +2335,6 @@ function getTemplateDetails($templateid, $crmid = null) {
 function getMergedDescription($description, $id, $parent_type) {
 	global $adb, $log, $current_user;
 	$log->debug("> getMergedDescription $id, $parent_type");
-	$token_data_pair = explode('$', $description);
 	if (empty($parent_type)) {
 		$parent_type = getSalesEntityType($id);
 	}
@@ -2365,14 +2349,17 @@ function getMergedDescription($description, $id, $parent_type) {
 		$emailTemplate = new EmailTemplate($parent_type, $description, $id, $current_user);
 		$description = $emailTemplate->getProcessedDescription();
 	}
+	$pmods = array('users', 'custom');
 	$token_data_pair = explode('$', $description);
 	$fields = array();
-	for ($i = 1, $iMax = count($token_data_pair); $i < $iMax; $i+=2) {
+	for ($i = 1, $iMax = count($token_data_pair); $i < $iMax; $i++) {
 		if (strpos($token_data_pair[$i], '-') === false) {
 			continue;
 		}
 		$module = explode('-', $token_data_pair[$i]);
-		$fields[$module[0]][] = $module[1];
+		if (in_array($module[0], $pmods)) {
+			$fields[$module[0]][] = $module[1];
+		}
 	}
 	if (isset($fields['custom']) && is_array($fields['custom']) && count($fields['custom']) > 0) {
 		// Custom date & time fields
@@ -2387,10 +2374,21 @@ function getMergedDescription($description, $id, $parent_type) {
 			$description = str_replace($token_data, $adb->query_result($result, 0, $columnname), $description);
 		}
 	}
-	if ($parent_type != 'Users' && preg_match('/\$\w+-\w+\$/', $description)==0) { // no old format anymore
-		$entityCache = new VTEntityCache($current_user);
+	$entityCache = new VTEntityCache($current_user);
+	if ($parent_type != 'Users' && isPermitted($parent_type, 'DetailView', $id)=='yes') { // && preg_match('/\$\w+-\w+\$/', $description)==0) { // no old format anymore
 		$ct = new VTSimpleTemplate($description, true);
 		$description = $ct->render($entityCache, vtws_getEntityId($parent_type).'x'.$id);
+	}
+	$cmprs = $adb->pquery(
+		'SELECT c.cbcompanyid
+			FROM vtiger_cbcompany c
+			JOIN vtiger_crmentity on vtiger_crmentity.crmid = c.cbcompanyid
+			WHERE c.defaultcompany=1 and vtiger_crmentity.deleted=0',
+		array()
+	);
+	if ($cmprs && $adb->num_rows($cmprs)>0 && isPermitted('cbCompany', 'DetailView', $adb->query_result($cmprs, 0, 0))=='yes') {
+		$ct = new VTSimpleTemplate($description, true);
+		$description = $ct->render($entityCache, vtws_getEntityId('cbCompany').'x'.$adb->query_result($cmprs, 0, 0));
 	}
 	$log->debug('< from getMergedDescription');
 	return $description;
@@ -2451,6 +2449,16 @@ function get_announcements() {
 		$announcement = vtlib_purify($announcement);
 	}
 	return $announcement;
+}
+
+function getModuleIcon($module) {
+	$curMod = CRMEntity::getInstance($module);
+	$iconinfo = array();
+	$iconinfo['__ICONLibrary'] = $curMod->moduleIcon['library'];
+	$iconinfo['__ICONContainerClass'] = $curMod->moduleIcon['containerClass'];
+	$iconinfo['__ICONClass'] = $curMod->moduleIcon['class'];
+	$iconinfo['__ICONName'] = $curMod->moduleIcon['icon'];
+	return $iconinfo;
 }
 
 /**
@@ -2741,7 +2749,7 @@ function is_emailId($entity_id) {
 
 /**
  * This function is used to get cvid of default "all" view for any module.
- * @return a cvid of a module
+ * @return integer cvid of a module
  */
 function getCvIdOfAll($module) {
 	global $adb, $log;
@@ -2752,30 +2760,21 @@ function getCvIdOfAll($module) {
 	return $cvid;
 }
 
-/** gives the option  to display  the tagclouds or not for the current user
- * * @param $id -- user id:: Type integer
- * * @returns true or false in $tag_cloud_view
- * * Added to provide User based Tagcloud
- * */
+/** gives the option  to display  the tagclouds or not for the given user
+ * @param $id -- user id:: Type integer
+ * @returns boolean
+ */
 function getTagCloudView($id = '') {
 	global $log, $adb;
 	$log->debug("> getTagCloudView $id");
 	if ($id == '') {
 		$tag_cloud_status = 1;
 	} else {
-		$query = "select visible from vtiger_homestuff where userid=? and stufftype='Tag Cloud'";
-		$tagcloudstatusrs = $adb->pquery($query, array($id));
+		$tagcloudstatusrs = $adb->pquery("select visible from vtiger_homestuff where userid=? and stufftype='Tag Cloud'", array($id));
 		$tag_cloud_status = $adb->query_result($tagcloudstatusrs, 0, 'visible');
 	}
-
-	if ($tag_cloud_status == 0) {
-		$tag_cloud_view = 'true';
-	} else {
-		$tag_cloud_view = 'false';
-	}
-
 	$log->debug('< getTagCloudView');
-	return $tag_cloud_view;
+	return ($tag_cloud_status == 0);
 }
 
 /** Stores the option in database to display  the tagclouds or not for the current user
@@ -3012,11 +3011,11 @@ function getEmailTemplateVariables($modules_list = null) {
 	return $allOptions;
 }
 
-/** Function to get picklist values for the given field that are accessible for the given role.
- *  @ param $tablename picklist fieldname.
- *  It gets the picklist values for the given fieldname
- *  	$fldVal = Array(0=>value,1=>value1,-------------,n=>valuen)
- *  @return Array of picklist values accessible by the user.
+/** Function to get picklist values for the given field that are accessible for the given role NOT including subordinate roles
+ * use getAssignedPicklistValues if you need also subordinate roles
+ *  @param string $tablename picklist fieldname
+ *  @param string $roleid user role
+ *  @return array picklist values accessible by the user. array(0=>value,1=>value1,-------------,n=>valuen)
  */
 function getPickListValues($tablename, $roleid) {
 	global $adb;
@@ -3334,6 +3333,10 @@ function vt_hasRTE() {
 	return GlobalVariable::getVariable('Application_Use_RTE', 1);
 }
 
+function vt_hasRTESpellcheck() {
+	return GlobalVariable::getVariable('Application_RTESpellcheck', 0);
+}
+
 function getNameInDisplayFormat($input, $dispFormat = "lf") {
 	if (empty($dispFormat)) {
 		$dispFormat = "lf";
@@ -3407,10 +3410,9 @@ function getReturnPath($host, $from_email) {
 
 function picklistHasDependency($keyfldname, $modulename) {
 	global $adb;
-	$tabid = getTabid($modulename);
 	$result = $adb->pquery(
-		'SELECT tabid FROM vtiger_picklist_dependency WHERE tabid = ? AND (sourcefield = ? OR targetfield = ?) limit 1',
-		array($tabid, $keyfldname, $keyfldname)
+		'SELECT tabid FROM vtiger_picklist_dependency WHERE tabid=? AND (sourcefield=? OR targetfield=?) limit 1',
+		array(getTabid($modulename), $keyfldname, $keyfldname)
 	);
 	return ($adb->num_rows($result) > 0);
 }
@@ -3442,8 +3444,7 @@ function getmail_contents_portalUser($request_array, $password, $type = '') {
 
 	$query='SELECT subject,template FROM vtiger_msgtemplate WHERE reference=?';
 	$result = $adb->pquery($query, array('Customer Login Details'));
-	$body=$adb->query_result($result, 0, 'body');
-	$contents=$body;
+	$contents = $adb->query_result($result, 0, 'template');
 	$contents = str_replace('$contact_name$', $request_array['first_name']." ".$request_array['last_name'], $contents);
 	$contents = str_replace('$login_name$', $request_array['username'], $contents);
 	$contents = str_replace('$password$', $password, $contents);
@@ -3452,9 +3453,8 @@ function getmail_contents_portalUser($request_array, $password, $type = '') {
 	$contents = str_replace('$logo$', '<img src="cid:logo" />', $contents);
 
 	if ($type == 'LoginDetails') {
-		$temp=$contents;
 		$value['subject']=$adb->query_result($result, 0, 'subject');
-		$value['body']=$temp;
+		$value['body']=$contents;
 		return $value;
 	}
 

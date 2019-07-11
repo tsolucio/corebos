@@ -8,7 +8,7 @@
 ***********************************************************/
 
 $mod_strings = array (
-		'SUCCESSFUL_REGISTRATION_TITLE' => 'Authentification Correct',
+	'SUCCESSFUL_REGISTRATION_TITLE' => 'Authentification Correct',
 	'SUCCESSFUL_REGISTRATION_MESSAGE' => 'You have correctly established authentification credentials with %s. You can now start using the functionality.',
 	'UNSUCCESSFUL_REGISTRATION_TITLE' => 'Authentification Incorrect',
 	'UNSUCCESSFUL_REGISTRATION_MESSAGE' => 'You have NOT established authentification credentials with %s. You will have to repeat the process if you want to start using the functionality.',
@@ -36,9 +36,14 @@ $mod_strings = array (
 	'zendesk_apiurl' => 'API Domain',
 	'zendesk_accessCode' => 'Zendesk Access Token',
 	'zendesk_username' => 'Zendesk User Name',
-		'Whatsapp Activation' => 'Whatsapp Activation',
-		'whatsapp_sid' => 'Whatsapp SID',
-		'whatsapp_token' => 'Whatsapp Token',
-		'whatsapp_senderphone'=> 'Whatsapp Sender Phone'
+	'Whatsapp Activation' => 'Whatsapp Activation',
+	'whatsapp_sid' => 'Whatsapp SID',
+	'whatsapp_token' => 'Whatsapp Token',
+	'whatsapp_senderphone'=> 'Whatsapp Sender Phone',
+	'SendGrid Activation' => 'SendGrid Activation',
+	'TransEmail_title' => 'Configuration for Transactional Email',
+	'TransEmail_subtitle' => 'Substitutes outgoing email server',
+	'MktEmail_title' => 'Configuration for Marketing Email',
+	'MktEmail_subtitle' => 'Only for messages, programmed emails and specificaly programmed processes',
 );
 ?>

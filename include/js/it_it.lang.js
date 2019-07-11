@@ -277,6 +277,7 @@ var alert_arr = {
 	'Default':'Default',
 	'Notebook':'Appunti',
 	'ReportCharts': 'Report Charts',
+	'CustomWidget': 'Aggregate Filter',
 	'SPECIAL_CHARS' :'\\ / < > + \' "',
 
 	'BETWEEN':'durante',

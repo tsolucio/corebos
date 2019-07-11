@@ -346,13 +346,13 @@ function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
 				}
 			} else {
 				// Otherwise reject with the status text which will hopefully be a meaningful error
-				reject(Error(req.statusText));
+				reject(new Error(req.statusText));
 			}
 		};
 
 		// Handle errors
 		req.onerror = function () {
-			reject(Error('Network/Script Error'));
+			reject(new Error('Network/Script Error'));
 		};
 
 		// Make the request
@@ -361,6 +361,18 @@ function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
 }
 
 function ExecuteFunctions(functiontocall, params) {
+	// params += `&${csrfMagicName}=${csrfMagicToken}`;
+	// return fetch(
+	// 	'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall='+functiontocall,
+	// 	{
+	// 		method: 'post',
+	// 		headers: {
+	// 			'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+	// 		},
+	// 		credentials: "same-origin",
+	// 		body: params
+	// 	}
+	// ).then(response => response.text());
 	var baseurl = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions';
 
 	// Return a new promise avoiding jquery and prototype
@@ -376,13 +388,13 @@ function ExecuteFunctions(functiontocall, params) {
 				resolve(req.response);
 			} else {
 				// Otherwise reject with the status text which will hopefully be a meaningful error
-				reject(Error(req.statusText));
+				reject(new Error(req.statusText));
 			}
 		};
 
 		// Handle errors
 		req.onerror = function () {
-			reject(Error('Network/Script Error'));
+			reject(new Error('Network/Script Error'));
 		};
 
 		// Make the request

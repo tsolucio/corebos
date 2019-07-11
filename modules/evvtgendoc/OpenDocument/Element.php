@@ -36,21 +36,21 @@ abstract class OpenDocument_Element {
 	 */
 	protected $node;
 
-		/**
+	/**
 	 * Element OpenDocument
 	 *
 	 * @var OpenDocument
 	 */
 	protected $document;
 
-		/**
+	/**
 	 * Array of allowed documents
 	 *
 	 * @var array
 	 */
 	protected $allowedElements;
 
-		/**
+	/**
 	 * ArrayObject of children elements
 	 *
 	 * @var ArrayObject
@@ -78,7 +78,7 @@ abstract class OpenDocument_Element {
 		return $this->node;
 	}
 
-		/**
+	/**
 	 * Get element document
 	 *
 	 * @return OpenDocument
@@ -95,7 +95,7 @@ abstract class OpenDocument_Element {
 		$this->document->deleteElement($this);
 	}
 
-		/**
+	/**
 	 * Get element children
 	 *
 	 * @return ArrayIterator
@@ -105,7 +105,7 @@ abstract class OpenDocument_Element {
 		return $this->children->getIterator();
 	}
 
-		/**
+	/**
 	 * Prepare element children
 	 *
 	 */

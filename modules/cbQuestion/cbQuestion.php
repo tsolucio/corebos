@@ -21,6 +21,8 @@ class cbQuestion extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = true;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'custom', 'containerClass' => 'slds-icon_container slds-icon-custom-custom102', 'class' => 'slds-icon', 'icon'=>'custom102');
+
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
@@ -181,9 +183,9 @@ class cbQuestion extends CRMEntity {
 		include_once 'include/Webservices/Query.php';
 		$q = new cbQuestion();
 		$q->retrieve_entity_info($qid, 'cbQuestion');
-		$query = 'SELECT '.$q->column_fields['qcolumns'].' FROM '.$q->column_fields['qmodule'];
+		$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.decode_html($q->column_fields['qmodule']);
 		if (!empty($q->column_fields['qcondition'])) {
-			$conds = $q->column_fields['qcondition'];
+			$conds = decode_html($q->column_fields['qcondition']);
 			foreach ($params as $param => $value) {
 				$conds = str_replace($param, $value, $conds);
 			}

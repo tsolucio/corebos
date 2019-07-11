@@ -50,22 +50,22 @@ class OpenDocument_Heading extends OpenDocument_StyledElement {
 	 */
 	private $level;
 
-		/**
+	/**
 	 * Node namespace
 	 */
 	const nodeNS = OpenDocument::NS_TEXT;
 
-		/**
+	/**
 	 * Node namespace
 	 */
 	const nodePrefix = 'text';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'h';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'H';
@@ -79,8 +79,7 @@ class OpenDocument_Heading extends OpenDocument_StyledElement {
 	public function __construct(DOMNode $node, OpenDocument $document) {
 		parent::__construct($node, $document);
 		$this->level = $node->getAttributeNS(OpenDocument::NS_TEXT, 'outline-level');
-
-				$this->allowedElements = array(
+		$this->allowedElements = array(
 			'OpenDocument_Span',
 			'OpenDocument_Hyperlink',
 			'OpenDocument_BookmarkStart',
@@ -88,7 +87,7 @@ class OpenDocument_Heading extends OpenDocument_StyledElement {
 		);
 	}
 
-		/**
+	/**
 	 * Create OpenDocument_Heading element
 	 *
 	 * @param mixed $object
@@ -107,19 +106,18 @@ class OpenDocument_Heading extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-				$element = new OpenDocument_Heading($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
+		$element = new OpenDocument_Heading($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
 		$node->appendChild($element->node);
 
 		if (is_scalar($content)) {
 			$element->createTextElement($content);
 		}
 
-				//$element->__set('level', $level);
-
+		//$element->__set('level', $level);
 		return $element;
 	}
 
-		/**
+	/**
 	 * Set element properties
 	 *
 	 * @param string $name
@@ -138,7 +136,7 @@ class OpenDocument_Heading extends OpenDocument_StyledElement {
 		}
 	}
 
-		/**
+	/**
 	 * Get element properties
 	 *
 	 * @param string  $name
@@ -153,7 +151,7 @@ class OpenDocument_Heading extends OpenDocument_StyledElement {
 		}
 	}
 
-		/**
+	/**
 	 * Generate element new style name
 	 *
 	 * @return string
@@ -165,7 +163,7 @@ class OpenDocument_Heading extends OpenDocument_StyledElement {
 
 	/************** Elements ***********************/
 
-		/**
+	/**
 	 * Create OpenDocument_TextElement
 	 *
 	 * @param string $text
@@ -189,7 +187,7 @@ class OpenDocument_Heading extends OpenDocument_StyledElement {
 		return OpenDocument_Hyperlink::instance($this, $text, $location, $type, $target, $name);
 	}
 
-		/**
+	/**
 	 * Create OpenDocument_Span element
 	 *
 	 * @param string $text

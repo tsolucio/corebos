@@ -48,7 +48,7 @@ if ($res && $adb->num_rows($res) > 0) {
 			$modules_permitted = false;
 			$restrictedmodules[] = $mod;
 		}
-		if (isPermitted("$mod", 'Export', '')!='yes') {
+		if (isPermitted($mod, 'Export', '')!='yes') {
 			$modules_export_permitted = false;
 		}
 	}

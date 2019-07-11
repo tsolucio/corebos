@@ -149,7 +149,7 @@ class OpenDocument {
 	 * DOMNode of current node
 	 *
 	 * @var DOMNode
-	 * @access provate
+	 * @access private
 	 */
 	private $cursor;
 
@@ -817,7 +817,6 @@ class OpenDocument {
 				$prefix = $adb->query_result($res, 0, 'attachmentsid').'_';
 				$incFilename = $path.$prefix.$name;
 				$properties['match.'.$match] = escapeshellarg('file://'.$root_directory.$incFilename);
-				;
 			}
 		}
 		$pFilename = tempnam('/tmp', 'gendoc-');
@@ -945,7 +944,7 @@ class OpenDocument {
 		global $siincluir,$changedImage,$newImageAdded;
 		global $ramaparacada,$pcincluir,$tempincluir,$iter_modules,$rootmod;
 		global $repe,$log, $parentArray,$currentModule;
-		   //commands
+		//commands
 		if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php')) {
 			include 'modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php';
 		} else {
@@ -978,7 +977,7 @@ class OpenDocument {
 					$module_pcada = getModuleFromCondition($this->contextoParacada[$this->contextoActual-1]['condicion']);
 					$this->contextoParacada[$this->contextoActual]=array(  // guardo contexto modulos encontrados
 					  'condicion'=>$condicionparacada,
-					  'module'=>($module_pcada=='Organization' ? 'Accounts' : $module_pcada),
+					  'module'=>($module_pcada=='Organization' ? 'cbCompany' : $module_pcada),
 					);
 				} elseif (strtolower(substr($texto_p, 0, strlen($foreachEndGD)))==$foreachEndGD) {
 					$this->contextoParacada[$this->contextoActual]['ramaparacada']=$ramaparacada; // guardo contexto modulos encontrados
@@ -1031,7 +1030,7 @@ class OpenDocument {
 						} else {
 							array_push($siincluir, false);
 						}
-						continue;
+						continue 2;
 					}
 					if (strtolower(substr($texto_p, 0, strlen($ifnotexistsGD)))==$ifnotexistsGD) {
 						// obtener condición
@@ -1043,15 +1042,15 @@ class OpenDocument {
 						} else {
 							array_push($siincluir, false);
 						}
-						continue;
+						continue 2;
 					}
 					if (strtolower(substr($texto_p, 0, strlen($ifexistsEndGD)))==$ifexistsEndGD) {
 						array_pop($siincluir);
-						continue;
+						continue 2;
 					}
 					if (strtolower(substr($texto_p, 0, strlen($ifnotexistsEndGD)))==$ifnotexistsEndGD) {
 						array_pop($siincluir);
-						continue;
+						continue 2;
 					}
 					if (strtolower(substr($texto_p, 0, strlen($foreachGD)))==$foreachGD) {
 						$pcincluir=true;
@@ -1061,12 +1060,12 @@ class OpenDocument {
 						eval_paracada($condicionparacada, $id, $module);
 						$this->contextoActual=0;
 						$this->contextoParacada[0]=array(  // guardo contexto modulos encontrados
-						  'iter_modules'=>$iter_modules,
-						  'condicion'=>$condicionparacada,
-						  'module'=>($module == 'Organization' ? 'Accounts' : $module),
-						  'moduleid'=>$id
+							'iter_modules'=>$iter_modules,
+							'condicion'=>$condicionparacada,
+							'module'=>($module == 'Organization' ? 'cbCompany' : $module),
+							'moduleid'=>$id
 						);
-						continue;
+						continue 2;
 					}
 					if (strtolower(substr($texto_p, 0, 14))=='putforeachhere') {
 						$this->saveContextoActual['ramaparacada']=$ramaparacada;
@@ -1081,13 +1080,13 @@ class OpenDocument {
 						$repe[] = 0;
 						$last_repe = count($repe)-1;
 						for ($repe[$last_repe]=1; $repe[$last_repe]<=$num_iter; $repe[$last_repe]++) {
-							   $this->toGenDoc($ramaparacada, $modid, $ctxmodule);
-							   pop_iter_modules();
+							$this->toGenDoc($ramaparacada, $modid, $ctxmodule);
+							pop_iter_modules();
 						}
 						array_pop($repe);
 						$ramaparacada=$this->saveContextoActual['ramaparacada'];
 						$this->contextoActual--;
-						continue;
+						continue 2;
 					}
 					if (strtolower(substr($texto_p, 0, strlen($imageGD)))==$imageGD) {
 						$entidadimagen=rtrim(trim(substr($texto_p, strlen($imageGD))), '}');
@@ -1098,7 +1097,7 @@ class OpenDocument {
 						// } else {   // sustituimos imagen existente
 						//     $changedImage=eval_imagen($entidadimagen,$id,$module);
 						// }
-						continue;
+						continue 2;
 					}
 					if (strtolower(substr($texto_p, 0, strlen($includeGD)))==$includeGD) {
 						$entidadincluir = rtrim(trim(substr($texto_p, strlen($includeGD))), '}');
@@ -1163,7 +1162,7 @@ class OpenDocument {
 					}
 					break;
 				case 'OpenDocument_TextSoftPageBreak':
-					continue; // Me lo cargo y punto
+					continue 2; // Me lo cargo y punto
 				break;
 				default:
 					$domNode = $this->contentDOM->importNode($child, true);
@@ -1192,10 +1191,7 @@ class OpenDocument {
 	}
 
 	public function toGenHTML($obj, $id, $module) {
-		global $iter_modules;
-		global $siincluir;
-		global $ramaparacada,$pcincluir;
-		global $repe;
+		global $iter_modules, $siincluir, $ramaparacada, $pcincluir, $repe;
 		$html = '';
 		//commands
 		if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php')) {
@@ -1270,7 +1266,7 @@ class OpenDocument {
 						} else {
 							array_push($siincluir, false);
 						}
-						continue;
+						continue 2;
 					}
 					if (strtolower(substr($texto_p, 0, strlen($ifnotexistsGD)))==$ifnotexistsGD) {
 						// obtener condición
@@ -1282,15 +1278,15 @@ class OpenDocument {
 						} else {
 							array_push($siincluir, false);
 						}
-						continue;
+						continue 2;
 					}
 					if (strtolower(substr($texto_p, 0, strlen($ifexistsEndGD)))==$ifexistsEndGD) {
 						array_pop($siincluir);
-						continue;
+						continue 2;
 					}
 					if (strtolower(substr($texto_p, 0, strlen($ifnotexistsEndGD)))==$ifnotexistsEndGD) {
 						array_pop($siincluir);
-						continue;
+						continue 2;
 					}
 					if (strtolower(substr($texto_p, 0, strlen($foreachGD)))==$foreachGD) {
 						$pcincluir=true;
@@ -1298,7 +1294,7 @@ class OpenDocument {
 						// obtener condición
 						$condicionparacada=rtrim(substr($texto_p, strlen($foreachGD)), '}');
 						eval_paracada($condicionparacada, $id, $module);
-						continue;
+						continue 2;
 					}
 					$html .= '<p>';
 					$html .= $this->toGenHTML($child, $id, $module);
@@ -2214,7 +2210,7 @@ class OpenDocument {
 		$doc->column_fields['docyear'] = date('Y');
 		$doc->column_fields['template'] = 0;
 		$doc->column_fields['filelocationtype'] = 'I';
-		$gdfolder = GlobalVariable::getVariable('GenDoc_Save_Document_Folder', '');
+		$gdfolder = GlobalVariable::getVariable('GenDoc_Save_Document_Folder', '', $module);
 		if ($gdfolder!='') {
 			$res = $adb->pquery('select folderid from vtiger_attachmentsfolder where foldername=?', array($gdfolder));
 			if ($adb->num_rows($res)==0) {
@@ -2573,9 +2569,8 @@ class OpenDocument {
 			case 'OpenDocument_TextLineBreak':
 				$elem=$topofarray->createTextLineBreak();
 				break;
-			case 'OpenDocument_TextSoftPageBreak':
-				continue; // Me lo cargo y punto
-			break;
+			case 'OpenDocument_TextSoftPageBreak': // Me lo cargo y punto
+				break;
 			case 'OpenDocument_Frame':
 				$frm=$topofarray->createFrame($child->text, $child->anchortype, $child->width, $child->height, $child->zindex, $child->framename, $child->x, $child->y, $child->anchorpagenumber);
 				OpenDocument::copyAttributes($child, $frm);

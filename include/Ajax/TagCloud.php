@@ -10,6 +10,24 @@
 $ajaxaction = vtlib_purify($_REQUEST['ajxaction']);
 global $current_user, $default_charset;
 
+if ($ajaxaction == 'MASSTAG') {
+	require_once 'include/freetag/freetag.class.php';
+	$ids = explode(';', trim($_REQUEST['ids'], ';'));
+	$addTag    = vtlib_purify($_REQUEST['add_tag']);
+	$removeTag = vtlib_purify($_REQUEST['remove_tag']);
+	$freetag = new freetag();
+	if (!empty($addTag)) {
+		$freetag->tag_object($current_user->id, implode(',', $ids), $addTag, $currentModule);
+	}
+	if (!empty($removeTag)) {
+		foreach ($ids as $id) {
+			$freetag->delete_object_tag($current_user->id, $id, $removeTag);
+		}
+	}
+	header("Location: index.php?module={$currentModule}&action=ListView");
+	return;
+}
+
 $crmid = vtlib_purify($_REQUEST["recordid"]);
 $module = vtlib_purify($_REQUEST["module"]);
 $userid = $current_user->id;

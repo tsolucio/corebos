@@ -7,7 +7,7 @@ global $current_user,$adb;
 set_time_limit(0);
 ini_set('memory_limit', '1024M');
 
-$mods2update = array('ProductVendors');
+$mods2update = array('cbCompany');
 foreach ($mods2update as $module) {
 	$mod = Vtiger_Module::getInstance($module);
 	$fields = Vtiger_Field::getAllForModule($mod);

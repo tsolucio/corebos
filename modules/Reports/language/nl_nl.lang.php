@@ -203,6 +203,7 @@ $mod_strings = array(
 'AVG'=>'Gemiddeld',
 'MAX'=>'MAX',
 'MIN'=>'MIN',
+'COUNT'=>'COUNT',
 'LBL_CUSTOM_REPORTS'=>'Eigen rapport',
 
 'ticketid'=>'Ticket Id',

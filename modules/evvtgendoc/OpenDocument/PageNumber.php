@@ -46,19 +46,19 @@ class OpenDocument_PageNumber extends OpenDocument_StyledElement {
 	 */
 	const nodePrefix = 'text';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'page-number';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'N';
 
 	public $select;
 
-		/**
+	/**
 	 * Constructor
 	 *
 	 * @param DOMNode $node
@@ -76,8 +76,7 @@ class OpenDocument_PageNumber extends OpenDocument_StyledElement {
 			$this->select = $select;
 		}
 
-		$this->allowedElements = array(
-		);
+		$this->allowedElements = array();
 	}
 
 	/**
@@ -99,7 +98,7 @@ class OpenDocument_PageNumber extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-				$element = new OpenDocument_PageNumber($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $content, $sel);
+		$element = new OpenDocument_PageNumber($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $content, $sel);
 		$node->appendChild($element->node);
 
 		if (is_scalar($content)) {
@@ -126,7 +125,7 @@ class OpenDocument_PageNumber extends OpenDocument_StyledElement {
 		}
 	}
 
-		/**
+	/**
 	 * Generate new style name
 	 *
 	 * @return string $stylename
@@ -136,7 +135,7 @@ class OpenDocument_PageNumber extends OpenDocument_StyledElement {
 		return self::styleNamePrefix . self::$styleNameMaxNumber;
 	}
 
-		/**
+	/**
 	 * Create OpenDocument_TextElement
 	 *
 	 * @param string $text

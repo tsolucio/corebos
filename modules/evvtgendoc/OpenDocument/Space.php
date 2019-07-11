@@ -46,19 +46,19 @@ class OpenDocument_TextSpace extends OpenDocument_StyledElement {
 	 */
 	const nodePrefix = 'text';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 's';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'TS';
 
 	public $numspaces;
 
-		/**
+	/**
 	 * Constructor
 	 *
 	 * @param DOMNode $node
@@ -75,8 +75,7 @@ class OpenDocument_TextSpace extends OpenDocument_StyledElement {
 			$this->numspaces = $numspaces;
 		}
 
-		$this->allowedElements = array(
-		);
+		$this->allowedElements = array();
 	}
 
 	/**
@@ -98,7 +97,7 @@ class OpenDocument_TextSpace extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-				$element = new OpenDocument_TextSpace($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $numspc);
+		$element = new OpenDocument_TextSpace($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $numspc);
 		$node->appendChild($element->node);
 
 		return $element;
@@ -122,7 +121,7 @@ class OpenDocument_TextSpace extends OpenDocument_StyledElement {
 		}
 	}
 
-		/**
+	/**
 	 * Generate new style name
 	 *
 	 * @return string $stylename

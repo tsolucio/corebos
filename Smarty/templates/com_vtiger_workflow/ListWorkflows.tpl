@@ -36,7 +36,7 @@
 			<div class="slds-grid slds-gutters" style="width: 650px;">
 				<div class="slds-col">
 					<div class="slds-form-element slds-lookup" data-select="single" style="width: 162px; margin-bottom: 6px;">
-						<label class="slds-form-element__label" for="lookup-339">{'LBL_MODULE'|getTranslatedString:'Reports'} {'LBL_Search'|getTranslatedString:'MailManager'}</label>
+						<label class="slds-form-element__label" for="lookup-339">{'LBL_MODULE'|getTranslatedString:'Reports'} </label>
 						<div class="slds-form-element__control slds-grid slds-box_border">
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
 								<svg aria-hidden="true" class="slds-input__icon">
@@ -54,7 +54,7 @@
 				<div class="slds-col">
 					<div class="slds-form-element" style="width: 162px; margin-bottom: 6px;">
 						<label class="slds-form-element__label" for="text-input-id-1">
-						{'LBL_DESCRIPTION'|getTranslatedString:'Reports'} {'LBL_Search'|getTranslatedString:'MailManager'}
+						{'LBL_DESCRIPTION'|getTranslatedString:'Reports'} 
 						</label>
 						<div class="slds-form-element__control">
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
@@ -69,7 +69,7 @@
 				<div class="slds-col">
 					<div class="slds-form-element" style="width: 162px;">
 						<label class="slds-form-element__label" for="text-input-id-1">
-						{'LBL_PURPOSE'|getTranslatedString:'Reports'} {'LBL_Search'|getTranslatedString:'MailManager'}
+						{'LBL_PURPOSE'|getTranslatedString:'Reports'} 
 						</label>
 						<div class="slds-form-element__control">
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
@@ -83,7 +83,7 @@
 				</div>
 				<div class="slds-col">
 					<div class="slds-form-element slds-lookup" data-select="single" style="width: 162px; margin-bottom: 6px;">
-						<label class="slds-form-element__label" for="lookup-339">{'LBL_TRIGGER'|getTranslatedString:'Reports'} {'LBL_Search'|getTranslatedString:'MailManager'}</label>
+						<label class="slds-form-element__label" for="lookup-339">{'LBL_TRIGGER'|getTranslatedString:'Reports'} </label>
 						<div class="slds-form-element__control slds-grid slds-box_border">
 							<div class="slds-input-has-icon slds-input-has-icon_right slds-grow">
 								<svg aria-hidden="true" class="slds-input__icon">
@@ -116,12 +116,22 @@
 	<tr>
 		{foreach key=dtkey item=dtheader from=$LIST_FIELDS}
 			{if $dtheader eq 'workflow_id'}
-			<td class="rptData">
-				<a av="href:Record"><span>
-				<img border="0" title="{'LBL_EDIT'|@getTranslatedString}" alt="{'LBL_EDIT'|@getTranslatedString}"
-					style="cursor: pointer;" src="{'editfield.gif'|@vtiger_imageurl:$THEME}"/></span></a>
-				<a av="href:RecordDel" data-handler="remove" class="deleteanchor"><span av="id:workflow_id"><img border="0" title="{'LBL_DELETE'|@getTranslatedString}" alt="{'LBL_DELETE'|@getTranslatedString}"
-					src="{'delete.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;"</span>
+			<td class="rptData" style="min-width:90px;">
+				<a av="href:Record">
+				<span class="slds-icon_container slds-icon_container_circle slds-icon-action-edit" title="{'LBL_EDIT_BUTTON'|@getTranslatedString:$MODULE_NAME}">
+					<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#edit"></use>
+					</svg>
+					<span class="slds-assistive-text">{'LBL_EDIT_BUTTON'|@getTranslatedString:$MODULE_NAME}</span>
+				</span>
+				</a>
+				<a av="href:RecordDel" data-handler="remove" class="deleteanchor">
+				<span av="id:workflow_id" class="slds-icon_container slds-icon_container_circle slds-icon-action-delete" title="{'LBL_DELETE_BUTTON'|@getTranslatedString:$MODULE_NAME}">
+					<svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#delete"></use>
+					</svg>
+					<span class="slds-assistive-text">{'LBL_DELETE_BUTTON'|@getTranslatedString:$MODULE_NAME}</span>
+				</span>
 				</a>
 			</td>
 			{else}

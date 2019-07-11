@@ -198,10 +198,11 @@ $mod_strings = array(
 
 'LBL_GENERATE_NOW'=>'Generar',
 'Totals'=>'Totales',
-'SUM'=>'SUM',
-'AVG'=>'AVG',
+'SUM'=>'SUMA',
+'AVG'=>'MEDIA',
 'MAX'=>'MAX',
 'MIN'=>'MIN',
+'COUNT'=>'CUENTA',
 'LBL_CUSTOM_REPORTS'=>'Informes Personalizados',
 
 'ticketid'=>'Id de Ticket',

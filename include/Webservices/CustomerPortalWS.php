@@ -903,6 +903,9 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 	$prodcondquery = '';
 	$servcondquery = '';
 	$opmap = array('equals' => '=','smaller'=>'<','greater'=>'>');
+	$prodffs = array('description=description');
+	$servffs = array('description=description');
+	$entitytablemap = array('description');
 
 	require_once 'include/fields/CurrencyField.php';
 	require_once 'include/utils/CommonUtils.php';
@@ -920,6 +923,11 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 			$sc = json_decode($cbMapFI['cbProductServiceField']['searchcondition'], true);
 			$prodconds = array_key_exists('Products', $sc) ? $sc['Products'] : $prodconds;
 			$servconds = array_key_exists('Service', $sc) ? $sc['Service'] : $servconds;
+		}
+		if (array_key_exists('cbProductServiceField', $cbMapFI) && array_key_exists('fillfields', $cbMapFI['cbProductServiceField'])) {
+			$ff = $cbMapFI['cbProductServiceField']['fillfields'];
+			$prodffs = array_key_exists('Products', $ff) ? explode(',', $ff['Products']) : $prodffs;
+			$servffs = array_key_exists('Service', $ff) ? explode(',', $ff['Service']) : $servffs;
 		}
 	}
 
@@ -957,6 +965,22 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		}
 	}
 	$servcondquery .= count($servconds) > 0 ? ')' : '';
+	$prod_aliasquery = '';
+	foreach ($prodffs as $prodff) {
+		list($palias, $pcolumn) = explode('=', $prodff);
+		$table = in_array($pcolumn, $entitytablemap) ? 'vtiger_crmentity' : 'vtiger_products';
+		$table = substr($pcolumn, 0, 3) == 'cf_' ? 'vtiger_productcf' : $table;
+		$selector = $pcolumn == '\'\'' ? $pcolumn : $table . '.' . $pcolumn;
+		$prod_aliasquery .= $selector . ' AS ' . $palias . ',';
+	}
+	$serv_aliasquery = '';
+	foreach ($servffs as $servff) {
+		list($salias, $scolumn) = explode('=', $servff);
+		$table = in_array($scolumn, $entitytablemap) ? 'vtiger_crmentity' : 'vtiger_service';
+		$table = substr($scolumn, 0, 3) == 'cf_' ? 'vtiger_servicecf' : $table;
+		$selector = $scolumn == '\'\'' ? $scolumn : $table . '.' . $scolumn;
+		$serv_aliasquery .= $selector . ' AS ' . $salias . ',';
+	}
 
 	$r = $adb->query("
 		SELECT 
@@ -967,7 +991,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		    vtiger_products.cost_price AS cost_price, 
 		    vtiger_products.mfr_part_no AS mfr_no, 
 		    vtiger_products.qtyinstock AS qtyinstock, 
-		    vtiger_crmentity.description AS description, 
+		    {$prod_aliasquery}
 		    vtiger_crmentity.deleted AS deleted, 
 		    vtiger_crmentity.crmid AS id, 
 		    vtiger_products.unit_price AS unit_price 
@@ -987,7 +1011,7 @@ function getProductServiceAutocomplete($term, $returnfields = array(), $limit = 
 		    '' AS mfr_no,
 		    0 AS qtyinstock,
 		    '' AS cost_price,
-		    vtiger_crmentity.description AS description, 
+		    {$serv_aliasquery}
 		    vtiger_crmentity.deleted AS deleted, 
 		    vtiger_crmentity.crmid AS id, 
 		    vtiger_service.unit_price AS unit_price 
@@ -1056,7 +1080,7 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 	if (empty($searchinmodule) || empty($fields)) {
 		return $respuesta;
 	}
-	if (!(vtlib_isModuleActive($searchinmodule) && isPermitted($searchinmodule, 'DetailView'))) {
+	if (!(vtlib_isModuleActive($searchinmodule) && isPermitted($searchinmodule, 'DetailView')=='yes')) {
 		return $respuesta;
 	}
 	if (empty($returnfields)) {

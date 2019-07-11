@@ -44,7 +44,7 @@ class OpenDocument_TableCoveredCell extends OpenDocument_StyledElement {
 	 */
 	public $children;
 
-		/**
+	/**
 	 * Node namespace
 	 */
 	const nodeNS = OpenDocument::NS_TABLE;
@@ -54,12 +54,12 @@ class OpenDocument_TableCoveredCell extends OpenDocument_StyledElement {
 	 */
 	const nodePrefix = 'table';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'covered-table-cell';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'T';
@@ -83,13 +83,13 @@ class OpenDocument_TableCoveredCell extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-				$element = new OpenDocument_TableCoveredCell($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $colspan);
+		$element = new OpenDocument_TableCoveredCell($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $colspan);
 		$node->appendChild($element->node);
 
 		return $element;
 	}
 
-		/**
+	/**
 	 * Generate new style name
 	 *
 	 * @return string $stylename

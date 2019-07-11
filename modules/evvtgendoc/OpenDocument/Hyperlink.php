@@ -50,28 +50,28 @@ class OpenDocument_Hyperlink extends OpenDocument_StyledElement {
 	 */
 	private $location;
 
-		/**
+	/**
 	 * Link type
 	 *
 	 * @var string
 	 */
 	private $type;
 
-		/**
+	/**
 	 * Link target
 	 *
 	 * @var string
 	 */
 	private $target;
 
-		/**
+	/**
 	 * Link name
 	 *
 	 * @var string
 	 */
 	private $name;
 
-		/**
+	/**
 	 * Node namespace
 	 */
 	const nodeNS = OpenDocument::NS_TEXT;
@@ -81,12 +81,12 @@ class OpenDocument_Hyperlink extends OpenDocument_StyledElement {
 	 */
 	const nodePrefix = 'text';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'a';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'A';
@@ -104,7 +104,7 @@ class OpenDocument_Hyperlink extends OpenDocument_StyledElement {
 		$this->target   = $node->getAttributeNS(OpenDocument::NS_OFFICE, 'target');
 		$this->name     = $node->getAttributeNS(OpenDocument::NS_OFFICE, 'name');
 
-				$this->allowedElements = array(
+		$this->allowedElements = array(
 			'OpenDocument_Span',
 		);
 	}
@@ -131,7 +131,7 @@ class OpenDocument_Hyperlink extends OpenDocument_StyledElement {
 			throw new Exception('Object must be OpenDocument or OpenDocument_Element');
 		}
 
-				$element = new OpenDocument_Hyperlink($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
+		$element = new OpenDocument_Hyperlink($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document);
 		$node->appendChild($element->node);
 
 		$element->__set('location', $location);
@@ -177,7 +177,7 @@ class OpenDocument_Hyperlink extends OpenDocument_StyledElement {
 		}
 	}
 
-		/**
+	/**
 	 * Get element property
 	 *
 	 * @param string $name
@@ -185,14 +185,14 @@ class OpenDocument_Hyperlink extends OpenDocument_StyledElement {
 	 */
 	public function __get($name) {
 		/*if ($value = parent::__get($name)) {
-            return $value;
-        }*/
+			return $value;
+		}*/
 		if (isset($this->$name)) {
 			return $this->$name;
 		}
 	}
 
-		/**
+	/**
 	 * Generate element new style name
 	 *
 	 * @return string
@@ -214,7 +214,7 @@ class OpenDocument_Hyperlink extends OpenDocument_StyledElement {
 		return OpenDocument_TextElement::instance($this, $text);
 	}
 
-		/**
+	/**
 	 * Create OpenDocument_Span element
 	 *
 	 * @param string $text

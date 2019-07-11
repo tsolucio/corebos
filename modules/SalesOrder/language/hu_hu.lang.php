@@ -184,5 +184,9 @@ $mod_strings = array(
 	'3years' => '3 Years',
 	'4years' => '4 Years',
 	'5years' => '5 Years',
+	'LBL_PARTIAL_PAYMENTS_INFO' => 'Partial Payments Information',
+	'Amount Due'=>'Amount Due',
+	'Amount Paid'=>'Amount Paid',
+	'Total Amount'=>'Total Amount',
 );
 ?>

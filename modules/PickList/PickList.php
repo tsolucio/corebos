@@ -33,7 +33,7 @@ if (!empty($_REQUEST['moduleName'])) {
 if (!empty($_REQUEST['roleid'])) {
 	$roleid = vtlib_purify($_REQUEST['roleid']);
 } else {
-	$roleid = 'H2';		//set default to CEO
+	$roleid = 'H2'; //set default to CEO
 }
 
 $temp_module_strings = return_module_language($current_language, $fld_module);

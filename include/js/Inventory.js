@@ -585,14 +585,23 @@ function fnAddTaxConfigRow(sh) {
 	var row = tableName.insertRow(0);
 	var colone = row.insertCell(0);
 	var coltwo = row.insertCell(1);
+	var col3 = row.insertCell(2);
+	var col4 = row.insertCell(3);
+	var col5 = row.insertCell(4);
 
 	colone.className = 'cellLabel small';
 	coltwo.className = 'cellText small';
+	col3.className = 'cellText small';
+	col4.className = 'cellText small';
+	col5.className = 'cellText small';
 
 	colone.innerHTML='<input type=\'text\' id=\''+label_name+'\' name=\''+label_name+'\' value=\''+tax_labelarr.TAX_NAME+'\' class=\'txtBox\' onclick="this.form.'+label_name+'.value=\'\'";/>';
 	coltwo.innerHTML='<input type=\'text\' id=\''+label_val+'\' name=\''+label_val+'\' value=\''+tax_labelarr.TAX_VALUE+'\' class=\'txtBox\' onclick="this.form.'+label_val+'.value=\'\'";/>';
+	col3.innerHTML='<input type=\'checkbox\' id=\''+label_name+'retention\' name=\''+label_name+'retention\' class=\'txtBox\' />';
+	col4.innerHTML='<input type=\'checkbox\' id=\''+label_name+'default\' name=\''+label_name+'default\' class=\'txtBox\' />';
+	col5.innerHTML='<input type=\'checkbox\' id=\''+label_name+'qcreate\' name=\''+label_name+'qcreate\' class=\'txtBox\' />';
 
-	document.getElementById(td_id).innerHTML='<input type=\'submit\' name=\'Save\' value=\' '+tax_labelarr.SAVE_BUTTON+' \' class=\'crmButton small save\' onclick="this.form.action.value=\'TaxConfig\'; this.form.'+add_tax_flag+'.value=\'true\'; this.form.parenttab.value=\'Settings\'; return validateNewTaxType(\''+label_name+'\',\''+label_val+'\');">&nbsp;<input type=\'submit\' name=\'Cancel\' value=\' '+tax_labelarr.CANCEL_BUTTON+' \' class=\'crmButton small cancel\' onclick="this.form.action.value=\'TaxConfig\'; this.form.module.value=\'Settings\'; this.form.'+add_tax_flag+'.value=\'false\'; this.form.parenttab.value=\'Settings\';">';
+	document.getElementById(td_id).innerHTML='<input type=\'submit\' name=\'Save\' value=\' '+tax_labelarr.SAVE_BUTTON+' \' class=\'crmButton small save\' onclick="this.form.action.value=\'TaxConfig\'; this.form.'+add_tax_flag+'.value=\'true\'; return validateNewTaxType(\''+label_name+'\',\''+label_val+'\');">&nbsp;<input type=\'submit\' name=\'Cancel\' value=\' '+tax_labelarr.CANCEL_BUTTON+' \' class=\'crmButton small cancel\' onclick="this.form.action.value=\'TaxConfig\'; this.form.module.value=\'Settings\'; this.form.'+add_tax_flag+'.value=\'false\'; this.form.parenttab.value=\'Settings\';">';
 }
 
 function validateNewTaxType(fieldname, fieldvalue) {
@@ -1866,7 +1875,7 @@ function handleProductAutocompleteSelect(obj) {
 	document.getElementById('productName'+no).value = obj.result.meta.name;
 	document.getElementById('comment'+no).innerHTML = obj.result.meta.comments;
 	var currency = document.getElementById('inventory_currency').value;
-	if (obj.result.pricing.multicurrency[currency] != undefined) {
+	if (obj.result.pricing.multicurrency[currency] != undefined && gVTModule != "PurchaseOrder") {
 		document.getElementById('listPrice'+no).value = obj.result.pricing.multicurrency[currency].actual_price;
 	} else {
 		var list_price = obj.result.pricing.unit_price;

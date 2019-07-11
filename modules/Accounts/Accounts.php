@@ -27,6 +27,8 @@ class Accounts extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-account', 'class' => 'slds-icon', 'icon'=>'account');
+
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
@@ -96,6 +98,15 @@ class Accounts extends CRMEntity {
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
 	public $mandatory_fields = array('createdtime', 'modifiedtime', 'accountname');
+
+	public function save($module, $fileid = '') {
+		global $adb;
+		if ($this->mode=='edit') {
+			$rs = $adb->pquery('select convertedfromlead from vtiger_account where accountid = ?', array($this->id));
+			$this->column_fields['convertedfromlead'] = $adb->query_result($rs, 0, 'convertedfromlead');
+		}
+		parent::save($module, $fileid);
+	}
 
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {

@@ -21,6 +21,8 @@ class cbSurvey extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = true;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-survey', 'class' => 'slds-icon', 'icon'=>'survey');
+
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */

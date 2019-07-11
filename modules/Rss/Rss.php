@@ -14,6 +14,10 @@ require_once 'include/database/PearDatabase.php';
 
 require_once 'vtlib/Vtiger/Feed/Parser.php';
 
+class Rss extends CRMEntity {
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-account', 'class' => 'slds-icon', 'icon'=>'news');
+}
+
 class vtigerRSS extends CRMEntity {
 	public $rsscache_time = 1200;
 

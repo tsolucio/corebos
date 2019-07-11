@@ -121,6 +121,8 @@ $mod_strings = array(
 'whatsappworkflowtask' => 'Enviar Mensaje WhatsApp',
 'Whatsapp Workflow Task' => 'Enviar Mensaje WhatsApp',
 'WhatsappWorkflowTask' => 'Enviar Mensaje WhatsApp',
+'Many to Many Relation Task' => 'Relación Muchos a Muchos',
+'Set Many to Many Relation' => 'Establecer Relación Muchos a Muchos',
 
 'LBL_EVENTNAME' => 'Nombre de Evento',
 'LBL_DESCRIPTION' => 'Descripción',
@@ -168,7 +170,14 @@ $mod_strings = array(
 'Calculate or Update forecast amount' => 'Calcular cantidad objetiva en oportunidad',
 'LBL_METHOD_NAME' => 'Nombre del Método',
 'NO_METHOD_AVAILABLE' => 'No hay ningún método disponible para este Módulo.',
+'GenerateDocument'=>'Generar Documentos',
+'Templates'=>'Plantillas',
 'launchrelwf' => 'Ejecutar flujos en actualizaciones de módulos relacionados',
 'LBL_WFPURPOSE' => 'Propósito',
+'Run Webservice Workflow Task' => 'Llamada Web Service',
+'RunWebserviceWorkflowTask' => 'Llamada Web Service',
+'runwebserviceworkflowtask' => 'Llamada Web Service',
+'Select IO Map' => 'Selecciona Mapa Parámetros',
+'Select Config Map' => 'Selecciona Mapa Configuración',
 );
 ?>

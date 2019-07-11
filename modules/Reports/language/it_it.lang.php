@@ -190,6 +190,7 @@ $mod_strings = array (
   'AVG' => 'Media',
   'MAX' => 'Massimo',
   'MIN' => 'Minimo',
+  'COUNT' => 'COUNT',
   'LBL_CUSTOM_REPORTS' => 'Report Personalizzati',
   'ticketid' => 'Ticket Id',
   'NO_COLUMN' => 'Nessuna colonna disponibile per il Totale',

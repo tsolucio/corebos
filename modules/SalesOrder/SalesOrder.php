@@ -10,6 +10,7 @@
 require_once 'data/CRMEntity.php';
 require_once 'data/Tracker.php';
 require 'modules/Vtiger/default_module_view.php';
+require_once 'modules/Invoice/Invoice.php';
 require_once 'modules/InventoryDetails/InventoryDetails.php';
 
 class SalesOrder extends CRMEntity {
@@ -23,6 +24,8 @@ class SalesOrder extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-logging', 'class' => 'slds-icon', 'icon'=>'logging');
+
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */

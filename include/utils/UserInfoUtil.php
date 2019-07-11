@@ -425,10 +425,28 @@ function fetchWordTemplateList($module) {
  * @param $templateName -- Template Name:: Type varchar
  * @returns Type:: resultset
  */
-function fetchEmailTemplateInfo($templateName) {
-	global $log, $adb;
+function fetchEmailTemplateInfo($templateName, $desired_lang = null, $default_lang = null) {
+	require_once 'modules/cbtranslation/cbtranslation.php';
+	global $log, $adb, $current_user, $default_language;
 	$log->debug('> fetchEmailTemplateInfo '.$templateName);
-	$result = $adb->pquery('select * from vtiger_msgtemplate where reference=?', array($templateName));
+	if (empty($desired_lang)) {
+		$desired_lang = cbtranslation::getShortLanguageName($current_user->language);
+	}
+	if (empty($default_lang)) {
+		$default_lang = cbtranslation::getShortLanguageName($default_language);
+	}
+	$sql = 'select *
+		from vtiger_msgtemplate
+		inner join vtiger_crmentity on crmid=msgtemplateid
+		where deleted=0 and reference=?';
+	$result = $adb->pquery($sql.' and msgt_language=?', array($templateName, $desired_lang));
+	if (!$result) {
+		$result = $adb->pquery($sql.' and msgt_language=?', array($templateName, $default_lang));
+	}
+	if (!$result) {
+		$result = $adb->pquery($sql, array($templateName));
+	}
+
 	$log->debug('< fetchEmailTemplateInfo');
 	return $result;
 }
@@ -3362,6 +3380,25 @@ function getModuleAccessArray() {
 	return $fldModArr;
 }
 
+/**
+ * this function returns presence information of all active modules
+ */
+function getTabSequence() {
+	global $adb;
+	$tab_seq_array = VTCacheUtils::getTabSequence();
+	if (is_array($tab_seq_array)) {
+		return $tab_seq_array;
+	}
+
+	$result = $adb->pquery('select tabid,presence from vtiger_tab where presence in (0,2) order by tabid', array());
+	$seq_array = array();
+	while ($tp = $adb->fetch_array($result)) {
+		$seq_array[(string)$tp['tabid']] = (int)$tp['presence'];
+	}
+	VTCacheUtils::setTabSequence($seq_array);
+	return $seq_array;
+}
+
 /** Function to get the permitted module name Array with presence as 0
   * @returns permitted module name Array :: Type Array
  */
@@ -3371,7 +3408,7 @@ function getPermittedModuleNames() {
 	$permittedModules = array();
 	$userprivs = $current_user->getPrivileges();
 	$profileTabsPermission = $userprivs->getprofileTabsPermission();
-	include 'tabdata.php';
+	$tab_seq_array = getTabSequence();
 
 	if (defined('COREBOS_INSIDE_MOBILE')) {
 		foreach ($userprivs->getProfiles() as $profid) {
@@ -3410,7 +3447,7 @@ function getPermittedModuleIdList() {
 	$permittedModules=array();
 	$userprivs = $current_user->getPrivileges();
 	$profileTabsPermission = $userprivs->getprofileTabsPermission();
-	include 'tabdata.php';
+	$tab_seq_array = getTabSequence();
 
 	if (defined('COREBOS_INSIDE_MOBILE')) {
 		foreach ($userprivs->getProfiles() as $profid) {
@@ -3448,7 +3485,7 @@ function RecalculateSharingRules($roleId = 0) {
 	global $log;
 	$log->debug('> RecalculateSharingRules');
 	require_once 'modules/Users/UserPrivilegesWriter.php';
-	UserPrivilegesWriter::flushAllPrivileges();
+	UserPrivilegesWriter::flushAllPrivileges($roleId);
 	$log->debug('< RecalculateSharingRules');
 }
 

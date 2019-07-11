@@ -17,7 +17,7 @@ class vtigerCRM_Smarty extends Smarty {
 
 	public static function lookupTagCloudView($userid) {
 		if (!isset(self::$_tagcloud_display_cache[$userid])) {
-			self::$_tagcloud_display_cache[$userid] = getTagCloudView($userid);
+			self::$_tagcloud_display_cache[$userid] = (getTagCloudView($userid) ? 'true' : 'false');
 		}
 		return self::$_tagcloud_display_cache[$userid];
 	}
@@ -38,11 +38,8 @@ class vtigerCRM_Smarty extends Smarty {
 		$CALENDAR_DISPLAY = empty($CALENDAR_DISPLAY) ? 'false' : 'true';
 		$WORLD_CLOCK_DISPLAY = GlobalVariable::getVariable('Application_Display_World_Clock', 1, $currentModule);
 		$WORLD_CLOCK_DISPLAY = empty($WORLD_CLOCK_DISPLAY) ? 'false' : 'true';
-		$CALCULATOR_DISPLAY = GlobalVariable::getVariable('Application_Display_Calculator', 1, $currentModule);
-		$CALCULATOR_DISPLAY = empty($CALCULATOR_DISPLAY) ? 'false' : 'true';
 		$this->assign('CALENDAR_DISPLAY', $CALENDAR_DISPLAY);
 		$this->assign('WORLD_CLOCK_DISPLAY', $WORLD_CLOCK_DISPLAY);
-		$this->assign('CALCULATOR_DISPLAY', $CALCULATOR_DISPLAY);
 		$this->assign('CURRENT_USER_ID', (isset($current_user) ? $current_user->id : 0));
 		$this->assign('Application_JSCalendar_Load', GlobalVariable::getVariable('Application_JSCalendar_Load', 1, $currentModule));
 

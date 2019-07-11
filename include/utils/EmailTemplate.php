@@ -32,17 +32,20 @@ class EmailTemplate {
 		$this->rawDescription = $description;
 		$this->processedDescription = $description;
 		$templateVariablePair = explode('$', $this->rawDescription);
+		$pmods = array_map('strtolower', getPermittedModuleNames());
 		$this->templateFields = array();
-		for ($i=1, $iMax = count($templateVariablePair); $i < $iMax; $i+=2) {
+		for ($i=1, $iMax = count($templateVariablePair); $i < $iMax; $i++) {
 			if (strpos($templateVariablePair[$i], '-') === false) {
 				continue;
 			}
 			list($module,$fieldName) = explode('-', $templateVariablePair[$i]);
-			if (strpos($fieldName, '_fullpath')) {
-				list($field,$fpath) = explode('_', $fieldName);
-				$this->templateFields[$module][] = $field;
+			if (in_array($module, $pmods)) {
+				if (strpos($fieldName, '_fullpath')) {
+					list($field,$fpath) = explode('_', $fieldName);
+					$this->templateFields[$module][] = $field;
+				}
+				$this->templateFields[$module][] = $fieldName;
 			}
-			$this->templateFields[$module][] = $fieldName;
 		}
 		$this->processed = false;
 	}

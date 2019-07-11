@@ -19,16 +19,16 @@
  *************************************************************************************************/
 function whatsappsync($input) {
 	global $adb;
-	$logFile='whatsapp.log';
+	$logFile='logs/whatsapp.log';
 	$date=date('l jS \of F Y h:i:s A');
 	$LogContent = "WHATSAPP Notification $date \n";
 	error_log($LogContent.' \n', 3, $logFile);
 	error_log($input.' \n', 3, $logFile);
-	$findparams = explode("&", $input);
+	$findparams = explode('&', $input);
 	$eventype = '';
 	$msid = '';
 	foreach ($findparams as $rec) {
-		$head = explode("=", $rec);
+		$head = explode('=', $rec);
 		if ($head[0] == 'EventType') {
 			$eventype = $head[1];
 		} elseif ($head[0] == 'MessageSid') {
@@ -36,10 +36,12 @@ function whatsappsync($input) {
 		}
 	}
 	if ($eventype == 'READ') {
-		$unique = $adb->pquery("select messagesid,open from vtiger_messages join vtiger_crmentity on crmid=messagesid where deleted=0 and messagesuniqueid=?", array($msid));
+		$unique = $adb->pquery(
+			'select messagesid,open from vtiger_messages join vtiger_crmentity on crmid=messagesid where deleted=0 and messagesuniqueid=?',
+			array($msid)
+		);
 		$mesid = $adb->query_result($unique, 0, 0);
 		$open = $adb->query_result($unique, 0, 1);
-		$openmes = $open+1;
-		$adb->pquery("update vtiger_messages set open=$openmes where messagesid=?", array($mesid));
+		$adb->pquery('update vtiger_messages set open=? where messagesid=?', array($open+1, $mesid));
 	}
 }

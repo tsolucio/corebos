@@ -46,19 +46,19 @@ class OpenDocument_TableColumn extends OpenDocument_StyledElement {
 	 */
 	const nodePrefix = 'table';
 
-		/**
+	/**
 	 * Node name
 	 */
 	const nodeName = 'table-column';
 
-		/**
+	/**
 	 * Element style name prefix
 	 */
 	const styleNamePrefix = 'T';
 
 	public $numcolsrepeated;
 
-		/**
+	/**
 	 * Constructor
 	 *
 	 * @param DOMNode $node
@@ -76,8 +76,7 @@ class OpenDocument_TableColumn extends OpenDocument_StyledElement {
 			$this->numcolsrepeated = $numcolsrepeated;
 		}
 
-		$this->allowedElements = array(
-		);
+		$this->allowedElements = array();
 	}
 
 	/**
@@ -99,7 +98,7 @@ class OpenDocument_TableColumn extends OpenDocument_StyledElement {
 			throw new OpenDocument_Exception(OpenDocument_Exception::ELEM_OR_DOC_EXPECTED);
 		}
 
-				$element = new OpenDocument_TableColumn($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $numcols);
+		$element = new OpenDocument_TableColumn($node->ownerDocument->createElementNS(self::nodeNS, self::nodeName), $document, $numcols);
 		$node->appendChild($element->node);
 
 		return $element;
@@ -123,7 +122,7 @@ class OpenDocument_TableColumn extends OpenDocument_StyledElement {
 		}
 	}
 
-		/**
+	/**
 	 * Generate new style name
 	 *
 	 * @return string $stylename
@@ -142,7 +141,7 @@ class OpenDocument_TableColumn extends OpenDocument_StyledElement {
 		return $this->node->getAttributeNS(OpenDocument::NS_TABLE, 'style-name');
 	}
 
-		/**
+	/**
 	 * Apply style information
 	 *
 	 * @param string $name

@@ -97,6 +97,12 @@
 							</td>
 						</tr>
 						<tr>
+							<td nowrap class="small cellLabel" width="20%"><strong>{$MOD.LBL_CC}</strong></td>
+							<td nowrap class="small cellText" width="80%" colspan=2>
+								{$SCANNERRULE->cc}
+							</td>
+ 						</tr>
+						<tr>
 							<td nowrap class="small cellLabel" width="20%"><strong>{$MOD.LBL_SUBJECT}</strong></td>
 							<td nowrap class="small cellText" width="10%">{$SCANNERRULE->subjectop}</td>
 							<td nowrap class="small cellText" width="70%">
@@ -140,6 +146,8 @@
 								{elseif $SCANNERRULE->useaction->actiontext eq 'LINK,Contacts,TO'}{$MOD.LBL_ADD} {$MOD.LBL_TO} {$MOD.LBL_CONTACT} [{$MOD.LBL_TO_CAPS}]
 								{elseif $SCANNERRULE->useaction->actiontext eq 'LINK,Accounts,FROM'}{$MOD.LBL_ADD} {$MOD.LBL_TO} {$MOD.LBL_ACCOUNT} [{$MOD.LBL_FROM_CAPS}]
 								{elseif $SCANNERRULE->useaction->actiontext eq 'LINK,Accounts,TO'}{$MOD.LBL_ADD} {$MOD.LBL_TO} {$MOD.LBL_ACCOUNT} [{$MOD.LBL_TO_CAPS}]
+								{elseif $SCANNERRULE->useaction->actiontext eq 'LINK,Contacts,CC'}{$MOD.LBL_ADD} {$MOD.LBL_TO} {$MOD.LBL_CONTACT} [{$MOD.LBL_CC}]
+								{elseif $SCANNERRULE->useaction->actiontext eq 'LINK,Accounts,CC'}{$MOD.LBL_ADD} {$MOD.LBL_TO} {$MOD.LBL_ACCOUNT} [{$MOD.LBL_CC}]
 								{/if}
 							</td>
 						</tr>

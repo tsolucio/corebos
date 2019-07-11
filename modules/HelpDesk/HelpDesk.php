@@ -22,6 +22,8 @@ class HelpDesk extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	public $IsCustomModule = false;
 	public $HasDirectImageField = false;
+	public $moduleIcon = array('library' => 'standard', 'containerClass' => 'slds-icon_container slds-icon-standard-sossession', 'class' => 'slds-icon', 'icon'=>'sossession');
+
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
@@ -106,6 +108,9 @@ class HelpDesk extends CRMEntity {
 		global $adb;
 		if (!empty($this->id)) {
 			$adb->pquery("update vtiger_troubletickets set commentadded='0' where ticketid=?", array($this->id));
+			$fromfields = $adb->pquery('select from_portal,from_mailscanner from vtiger_troubletickets where ticketid=?', array($this->id));
+			$this->column_fields['from_portal'] = $adb->query_result($fromfields, 0, 'from_portal');
+			$this->column_fields['from_mailscanner'] = $adb->query_result($fromfields, 0, 'from_mailscanner');
 		}
 		$this->column_fields['commentadded'] = '0';
 		$grp_name = isset($_REQUEST['assigned_group_id']) ? getGroupName($_REQUEST['assigned_group_id']) : '';

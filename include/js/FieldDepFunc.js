@@ -55,9 +55,14 @@ function fieldDep_GetField(change_field, action_field, new_value, old_value, par
 		let srcfieldids = parameters[0].split(',');
 		let dstfieldids = parameters[1].split(',');
 		for (var f=0; f<srcfieldids.length; f++) {
-			let fld = document.getElementById(dstfieldids[f]);
-			if (fld) {
-				fld.value = rdo[srcfieldids[f]];
+			if (CKEDITOR.instances[dstfieldids[f]]!=undefined) {
+				let fld = CKEDITOR.instances[dstfieldids[f]];
+				fld.insertHtml(rdo[srcfieldids[f]]);
+			} else {
+				let fld = document.getElementById(dstfieldids[f]);
+				if (fld) {
+					fld.value = rdo[srcfieldids[f]];
+				}
 			}
 		}
 	});

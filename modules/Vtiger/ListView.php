@@ -99,7 +99,7 @@ global $current_user;
 $sql_error = false;
 $queryGenerator = new QueryGenerator($currentModule, $current_user);
 try {
-	if ($viewid != "0") {
+	if ($viewid != '0') {
 		$queryGenerator->initForCustomViewById($viewid);
 	} else {
 		$queryGenerator->initForDefaultCustomView();
