@@ -994,6 +994,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Mostrar campos de usuario contenidos en el bloque de usuario avanzado. Crea un bloque llamado LBL_USER_ADV_OPTIONS y mueve los campos que quieres exportar a ese bloque.',
 ),
+'Webservice_PermitQueryOnInactiveUsers' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => 'Incluir usuarios inactivos en los resultados de las consultas del servicio web.',
+),
 'GoogleCalendarSync_BaseUpdateMonths' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Entero',
