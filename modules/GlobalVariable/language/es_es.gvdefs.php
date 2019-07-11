@@ -992,7 +992,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Booleano',
 	'category' => 'Webservice',
 	'values' => '0 | 1',
-	'definition' => 'Mostrar campos de usuario contenidos en el bloque de usuario avanzado',
+	'definition' => 'Mostrar campos de usuario contenidos en el bloque de usuario avanzado. Crea un bloque llamado LBL_USER_ADV_OPTIONS y mueve los campos que quieres exportar a ese bloque.',
 ),
 'GoogleCalendarSync_BaseUpdateMonths' => array(
 	'status' => 'Implementada',
