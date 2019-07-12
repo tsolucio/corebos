@@ -1,5 +1,5 @@
 <?php
-/*+**********************************************************************************
+/************************************************************************************
  * The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
  * The Original Code is:  vtiger CRM Open Source
@@ -28,7 +28,7 @@ if ($ajaxaction == 'DETAILVIEW') {
 		} else {
 			$modObj->save($currentModule);
 			if ($modObj->id != '') {
-				require_once 'DetailView.php';
+				include_once 'DetailView.php';
 				echo ':#:SUCCESS'.$smarty->display('DetailView.tpl');
 			} else {
 				echo ':#:FAILURE';
@@ -38,6 +38,6 @@ if ($ajaxaction == 'DETAILVIEW') {
 		echo ':#:FAILURE';
 	}
 } elseif ($ajaxaction == 'LOADRELATEDLIST' || $ajaxaction == 'DISABLEMODULE') {
-	require_once 'include/ListView/RelatedListViewContents.php';
+	include_once 'include/ListView/RelatedListViewContents.php';
 }
 ?>
