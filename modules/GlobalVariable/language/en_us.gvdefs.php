@@ -991,7 +991,14 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Boolean',
 	'category' => 'Webservice',
 	'values' => '0 | 1',
-	'definition' => 'Show user fields contained in the advanced user block',
+	'definition' => 'Show user fields contained in the advanced user block. Create a block named LBL_USER_ADV_OPTIONS and move the fields you want to export to that block.',
+),
+'Webservice_PermitQueryOnInactiveUsers' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => 'Include inactive users in results of web service query.',
 ),
 'GoogleCalendarSync_BaseUpdateMonths' => array(
 	'status' => 'Implemented',

@@ -126,6 +126,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Mobile_UI_Enabled',
 
 				'Webservice_showUserAdvancedBlock',
+				'Webservice_PermitQueryOnInactiveUsers',
 				'Webservice_CORS_Enabled_Domains',
 				'Webservice_Enabled',
 				'WebService_Session_Life_Span',
