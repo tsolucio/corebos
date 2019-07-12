@@ -331,6 +331,10 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 			alert(alert_str);
 			VtigerJS_DialogBox.hidebusy();
 		} else if (response.indexOf(':#:SUCCESS')>-1) {
+			var result = response.split(':#:SUCCESS');
+			if (result[0] != '') {
+				document.getElementsByClassName('detailview_wrapper_table')[0].innerHTML = result[0];
+			}
 			//For HD & FAQ - comments, we should empty the field value
 			if ((module == 'HelpDesk' || module == 'Faq') && fieldName == 'comments') {
 				var comments = response.replace(':#:SUCCESS', '');

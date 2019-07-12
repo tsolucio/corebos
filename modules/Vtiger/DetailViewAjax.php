@@ -7,7 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-global $currentModule;
+require_once 'Smarty_setup.php';
+global $currentModule, $mod_strings, $app_strings, $current_user, $theme;
+
+$smarty = new vtigerCRM_Smarty();
 $modObj = CRMEntity::getInstance($currentModule);
 $ajaxaction = $_REQUEST['ajxaction'];
 if ($ajaxaction == 'DETAILVIEW') {
@@ -25,7 +28,8 @@ if ($ajaxaction == 'DETAILVIEW') {
 		} else {
 			$modObj->save($currentModule);
 			if ($modObj->id != '') {
-				echo ':#:SUCCESS';
+				require_once 'DetailView.php';
+				echo ':#:SUCCESS'.$smarty->display('DetailView.tpl');
 			} else {
 				echo ':#:FAILURE';
 			}
