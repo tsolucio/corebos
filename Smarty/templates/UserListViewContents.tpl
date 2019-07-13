@@ -32,6 +32,10 @@
 
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="listTableTopButtons">
 <tr>
+	<th class="big" nowrap>{'LBL_TOTAL'|getTranslatedString:'Users'} {$TOTALUSERS}</th>&nbsp;
+	<th class="big" nowrap>{'LBL_ADMIN'|getTranslatedString:'Users'}: {$TOTALADMIN}</th>&nbsp;
+	<th class="big" nowrap>{'LBL_ACTIVE'|getTranslatedString:'Users'}: {$TOTALACTIVE}</th>&nbsp;
+	<th class="big" nowrap>{'LBL_INACTIVE'|getTranslatedString:'Users'}: {$TOTALINACTIVE}</th>
 	<td class="big" nowrap align="right">
 		<div align="right">
 		<input title="{$CMOD.LBL_NEW_USER_BUTTON_TITLE}" accessyKey="{$CMOD.LBL_NEW_USER_BUTTON_KEY}" type="submit" name="button" value="{$CMOD.LBL_NEW_USER_BUTTON_LABEL}" class="crmButton create small">
@@ -110,6 +114,7 @@
 								</select>
 							</div>
 						</div>
+						<b><label class="slds-form-element__label"style='margin:0px 0px 0px 480px;'>{'LBL_TOTAL_FILTERED'|getTranslatedString:'Users'}:<span id="current_rows"></span></b></label>
 					</div>
 				</div>
 			</div>
@@ -209,6 +214,7 @@ DataTable.onRedraw(document.getElementsByTagName('datatable')[0], function (data
 	for (index in data.data) {
 		if (((data.data[index].Status == 'Active') && data.data[index].iscurrentuser && data.data[index].isblockeduser) || (data.data[index].Status == 'Inactive')) {
 			document.getElementById(data.data[index].id).style.display = "none";
+			document.getElementById("current_rows").innerHTML = data.total;
 		}
 	}
 });
