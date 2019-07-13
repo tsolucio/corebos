@@ -1,7 +1,13 @@
 coreBOS
 =======
 
-**core Business Operating System** [![Build Status](https://travis-ci.org/tsolucio/corebos.svg?branch=master)](https://travis-ci.org/tsolucio/corebos)
+**core Business Operating System**
+
+![Stable Build](https://corebos.org/stable.svg)
+![License](https://corebos.org/license.svg)
+[![Build Status](https://travis-ci.org/tsolucio/corebos.svg?branch=master)](https://travis-ci.org/tsolucio/corebos)
+[![Chat with us on Gitter](https://badges.gitter.im/phpmd/community.svg)](https://gitter.im/corebos/discuss?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 
 **coreBOS** is a very flexible and powerful software application designed to easily adapt to the requirements of your business. In other words, a business software capable of managing the everyday needs of your business.
 
