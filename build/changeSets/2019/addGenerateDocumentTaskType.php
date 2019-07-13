@@ -36,7 +36,7 @@ class addGenerateDocumentTaskType extends cbupdaterWorker {
 			);
 			VTTaskType::registerTaskType($taskType);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}

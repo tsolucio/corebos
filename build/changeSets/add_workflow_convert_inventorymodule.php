@@ -32,7 +32,7 @@ class add_workflow_convert_inventorymodule extends cbupdaterWorker {
 					 "sourcemodule"=>'');
 			VTTaskType::registerTaskType($taskType);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}

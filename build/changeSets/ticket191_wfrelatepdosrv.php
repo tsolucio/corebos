@@ -37,7 +37,7 @@ class ticket191 extends cbupdaterWorker {
 			$vnd->setRelatedList($srv, 'Services', array('Select'));
 			$srv->setRelatedList($vnd, 'Vendors', array('Select'));
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
