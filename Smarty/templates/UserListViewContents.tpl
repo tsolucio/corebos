@@ -32,10 +32,10 @@
 
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="listTableTopButtons">
 <tr>
-	<th class="big" nowrap>{'LBL_TOTAL'|getTranslatedString:'Users'} {$TOTALUSERS}</th>&nbsp;
-	<th class="big" nowrap>{'LBL_ADMIN'|getTranslatedString:'Users'}: {$TOTALADMIN}</th>&nbsp;
-	<th class="big" nowrap>{'LBL_ACTIVE'|getTranslatedString:'Users'}: {$TOTALACTIVE}</th>&nbsp;
-	<th class="big" nowrap>{'LBL_INACTIVE'|getTranslatedString:'Users'}: {$TOTALINACTIVE}</th>
+	<th class="big" nowrap>{'LBL_TOTAL'|getTranslatedString:'Users'} {$TOTALUSERS}</th>
+	<th class="big" nowrap>{'LBL_ADMIN'|getTranslatedString:'Users'} : {$TOTALADMIN}</th>
+	<th class="big" nowrap>{'Active'|getTranslatedString:'Users'} : {$TOTALACTIVE}</th>
+	<th class="big" nowrap>{'Inactive'|getTranslatedString:'Users'} : {$TOTALINACTIVE}</th>
 	<td class="big" nowrap align="right">
 		<div align="right">
 		<input title="{$CMOD.LBL_NEW_USER_BUTTON_TITLE}" accessyKey="{$CMOD.LBL_NEW_USER_BUTTON_KEY}" type="submit" name="button" value="{$CMOD.LBL_NEW_USER_BUTTON_LABEL}" class="crmButton create small">
@@ -114,7 +114,11 @@
 								</select>
 							</div>
 						</div>
-						<b><label class="slds-form-element__label"style='margin:0px 0px 0px 480px;'>{'LBL_TOTAL_FILTERED'|getTranslatedString:'Users'}:<span id="current_rows"></span></b></label>
+					</div>
+				</div>
+				<div class="slds-col">
+					<div class="slds-form-element slds-lookup slds-text-align_right" style="width: 162px; margin-bottom: 6px;">
+						<br><br><span class="slds-text-title_bold">{'LBL_TOTAL_FILTERED'|getTranslatedString:'Users'}&nbsp;:&nbsp;<span id="current_rows"></span></span>
 					</div>
 				</div>
 			</div>
