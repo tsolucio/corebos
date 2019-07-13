@@ -579,6 +579,7 @@ $app_strings = array (
 'LBL_SO_STATUS' => 'Estágio pedido vendas',
 'LBL_INVOICE_STATUS' => 'Estágio fatura',
 'LBL_MODULE' => 'Módulo',
+'LBL_TOTAL_FILTERED' => 'Total',
 'Active' => 'Ativo',
 'Inactive' => 'Inativo',
 'Today' => 'Hoje',

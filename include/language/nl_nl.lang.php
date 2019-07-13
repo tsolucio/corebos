@@ -602,6 +602,7 @@ $app_strings = array(
 	'LBL_SO_STATUS' => 'Verkooporder status',
 	'LBL_INVOICE_STATUS' => 'Factuur status',
 	'LBL_MODULE' => 'Module',
+	'LBL_TOTAL_FILTERED' => 'Total',
 	'Active' => 'Aktief',
 	'Inactive' => 'Inaktief',
 	'Today' => 'Vandaag',

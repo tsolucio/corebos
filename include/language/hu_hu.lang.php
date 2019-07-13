@@ -586,6 +586,7 @@ $app_strings = array(
 	'LBL_SO_STATUS' => 'Rendelés Állapot',
 	'LBL_INVOICE_STATUS' => 'Díjbekérő Állapot',
 	'LBL_MODULE' => 'Modul',
+	'LBL_TOTAL_FILTERED' => 'Total',
 	'Active' => 'Aktív',
 	'Inactive' => 'InAktív',
 	'Last 2 Days' => 'Előző 2 Nap',

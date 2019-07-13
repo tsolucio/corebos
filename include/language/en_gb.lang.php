@@ -587,6 +587,7 @@ $app_strings = array(
 	'LBL_SO_STATUS' => 'Sales Order Status',
 	'LBL_INVOICE_STATUS' => 'Invoice Status',
 	'LBL_MODULE' => 'Module',
+	'LBL_TOTAL_FILTERED' => 'Total',
 	'Active' => 'Active',
 	'Inactive' => 'Inactive',
 	'Last 2 Days' => 'Last 2 Days',

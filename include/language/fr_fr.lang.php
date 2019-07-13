@@ -577,6 +577,7 @@ $app_strings = array(
 	'LBL_SO_STATUS' => 'Statut',
 	'LBL_INVOICE_STATUS' => 'Statut',
 	'LBL_MODULE' => 'Module',
+	'LBL_TOTAL_FILTERED' => 'Total',
 	'Active' => 'Actif',
 	'Inactive' => 'Inactif',
 	'Today' => 'Aujourd\'hui',

@@ -591,6 +591,7 @@ $app_strings = array (
 	'LBL_SO_STATUS' => 'Estado de Orden de Venta',
 	'LBL_INVOICE_STATUS' => 'Estado de Presupuesto',
 	'LBL_MODULE' => 'Módulo',
+	'LBL_TOTAL_FILTERED' => 'Total',
 	'Active' => 'Activo',
 	'Inactive' => 'Inactivo',
 	'Today' => 'Hoy',
