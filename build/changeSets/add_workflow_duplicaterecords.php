@@ -22,6 +22,7 @@ class add_workflow_duplicaterecords extends cbupdaterWorker {
 		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
+			$this->markApplied(false);
 		} else {
 			require_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
 			$taskTypes = array();
