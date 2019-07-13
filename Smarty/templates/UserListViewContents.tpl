@@ -218,9 +218,9 @@ DataTable.onRedraw(document.getElementsByTagName('datatable')[0], function (data
 	for (index in data.data) {
 		if (((data.data[index].Status == 'Active') && data.data[index].iscurrentuser && data.data[index].isblockeduser) || (data.data[index].Status == 'Inactive')) {
 			document.getElementById(data.data[index].id).style.display = "none";
-			document.getElementById("current_rows").innerHTML = data.total;
 		}
 	}
+	document.getElementById('current_rows').innerHTML = data.total;
 });
 {/literal}
 Pagination._config.langFirst = "{$APP.LNK_LIST_START}";
