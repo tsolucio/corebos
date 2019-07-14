@@ -331,15 +331,20 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 			alert(alert_str);
 			VtigerJS_DialogBox.hidebusy();
 		} else if (response.indexOf(':#:SUCCESS')>-1) {
-			var result = response.split(':#:SUCCESS');
-			if (result[1] != '') {
-				var DVWT = document.getElementsByClassName('detailview_wrapper_table')[0];
-				DVWT.innerHTML = result[1];
-				vtlib_executeJavascriptInElement(DVWT);
+			var result = response.split(':#:');
+			if (result[2] != null) {
+				var target = null;
+				if (module == 'Users') {
+					target = document.getElementsByClassName('user-detailview')[0];
+				} else {
+					target = document.getElementsByClassName('detailview_wrapper_table')[0];
+				}
+				target.innerHTML = result[2];
+				vtlib_executeJavascriptInElement(target);
 			}
 			//For HD & FAQ - comments, we should empty the field value
 			if ((module == 'HelpDesk' || module == 'Faq') && fieldName == 'comments') {
-				var comments = response.replace(':#:SUCCESS', '');
+				var comments = result[3] != null ? result[3] : '';
 				if (getObj('comments_div') != null) {
 					getObj('comments_div').innerHTML = comments;
 				}
