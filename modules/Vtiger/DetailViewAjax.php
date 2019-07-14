@@ -28,8 +28,8 @@ if ($ajaxaction == 'DETAILVIEW') {
 		} else {
 			$modObj->save($currentModule);
 			if ($modObj->id != '') {
-				include_once 'DetailView.php';
-				echo ':#:SUCCESS'.$smarty->display('DetailView.tpl');
+				require_once 'modules/Vtiger/DetailView.php';
+				echo ':#:SUCCESS'.$smarty->fetch('DetailView.tpl');
 			} else {
 				echo ':#:FAILURE';
 			}
@@ -38,6 +38,6 @@ if ($ajaxaction == 'DETAILVIEW') {
 		echo ':#:FAILURE';
 	}
 } elseif ($ajaxaction == 'LOADRELATEDLIST' || $ajaxaction == 'DISABLEMODULE') {
-	include_once 'include/ListView/RelatedListViewContents.php';
+	require_once 'include/ListView/RelatedListViewContents.php';
 }
 ?>
