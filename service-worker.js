@@ -8855,6 +8855,10 @@ if (workbox) {
     "revision": "3c5d15bc77fb94797ad22446130e54a2"
   },
   {
+    "url": "include/ckeditor/config_spellcheck.js",
+    "revision": "1208d3cfef4fdcef120b5f0da8b9bf48"
+  },
+  {
     "url": "include/ckeditor/config.js",
     "revision": "5d2cc082f697602fa8913660b4cfcdc6"
   },
@@ -9087,6 +9091,10 @@ if (workbox) {
     "revision": "62572865757be59dc388808f7fe03dea"
   },
   {
+    "url": "include/images/license.svg",
+    "revision": "8cbd7c01ad2eff918b56f1fe69489e75"
+  },
+  {
     "url": "include/images/Linkedin.png",
     "revision": "148588e982b051aa5aa878077aed9211"
   },
@@ -9105,6 +9113,10 @@ if (workbox) {
   {
     "url": "include/images/spacer.gif",
     "revision": "41c9bc7f3f78ed71115cc062c1c67b09"
+  },
+  {
+    "url": "include/images/stable.svg",
+    "revision": "13c1f074f75292020672f87d4674b434"
   },
   {
     "url": "include/images/topBg.gif",
@@ -9156,7 +9168,7 @@ if (workbox) {
   },
   {
     "url": "include/js/dtlviewajax.js",
-    "revision": "e3a03a6cc2ecbc336789c5418ca69342"
+    "revision": "9b39a76085ec2283dee608bf691fd385"
   },
   {
     "url": "include/js/en_gb.lang.js",
@@ -9188,7 +9200,7 @@ if (workbox) {
   },
   {
     "url": "include/js/general.js",
-    "revision": "43c6e63975d08740ca1acb03d6b6a735"
+    "revision": "22da0a509223ece7d2d19492d7ef1043"
   },
   {
     "url": "include/js/hu_hu.lang.js",
@@ -9828,7 +9840,7 @@ if (workbox) {
   },
   {
     "url": "modules/Home/Homestuff.js",
-    "revision": "79d7c9a5e0281b04b2eaee143a94abf9"
+    "revision": "514f24197e3cad8f95eb211798a78c16"
   },
   {
     "url": "modules/Home/js/HelpMeNow.js",
@@ -9904,7 +9916,7 @@ if (workbox) {
   },
   {
     "url": "modules/Reports/Reports.js",
-    "revision": "9c44d0d7c463d90ac507e927487731dd"
+    "revision": "12e350597bd40b7aa4aa0b238ef1a708"
   },
   {
     "url": "modules/Reports/ReportsSteps.js",
