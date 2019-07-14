@@ -333,7 +333,9 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		} else if (response.indexOf(':#:SUCCESS')>-1) {
 			var result = response.split(':#:SUCCESS');
 			if (result[1] != '') {
-				document.getElementsByClassName('detailview_wrapper_table')[0].innerHTML = result[1];
+				var DVWT = document.getElementsByClassName('detailview_wrapper_table')[0];
+				DVWT.innerHTML = result[1];
+				vtlib_executeJavascriptInElement(DVWT);
 			}
 			//For HD & FAQ - comments, we should empty the field value
 			if ((module == 'HelpDesk' || module == 'Faq') && fieldName == 'comments') {
@@ -354,6 +356,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 			VtigerJS_DialogBox.hidebusy();
 		}
 	});
+	itsonview=false;
 }
 
 function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldName, crmId) {

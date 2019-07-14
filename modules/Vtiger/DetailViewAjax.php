@@ -28,7 +28,7 @@ if ($ajaxaction == 'DETAILVIEW') {
 		} else {
 			$modObj->save($currentModule);
 			if ($modObj->id != '') {
-				require_once 'modules/Vtiger/DetailView.php';
+				require_once 'modules/'.$currentModule.'/DetailView.php';
 				echo ':#:SUCCESS'.$smarty->fetch('DetailView.tpl');
 			} else {
 				echo ':#:FAILURE';
