@@ -23,7 +23,7 @@ $sd = new corebos_sendgrid();
 
 $isadmin = is_admin($current_user);
 
-if ($isadmin) {
+if ($isadmin && $_REQUEST['_op']=='setconfigsendgrid') {
 	$isActive = ((empty($_REQUEST['sendgrid_active']) || $_REQUEST['sendgrid_active']!='on') ? '0' : '1');
 	$usesg_transactional = (empty($_REQUEST['usesg_transactional']) ? '' : vtlib_purify($_REQUEST['usesg_transactional']));
 	$srv_transactional = (empty($_REQUEST['srv_transactional']) ? '' : vtlib_purify($_REQUEST['srv_transactional']));
