@@ -270,23 +270,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	} elseif ($uitype == 14) { //added for Time Field
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue [] = $value;
-	} elseif ($uitype == 19 || $uitype == 20) {
-		if (isset($_REQUEST['body'])) {
-			$value = ($_REQUEST['body']);
-		}
-
-		if ($fieldname == 'terms_conditions') {//for default Terms & Conditions
-		//Assign the value from focus->column_fields (if we create Invoice from SO the SO's terms and conditions will be loaded to Invoice's terms and conditions, etc.,)
-			$value = $col_fields['terms_conditions'];
-
-			//if the value is empty then we should get the default Terms and Conditions
-			if ($value == '' && $mode != 'edit') {
-				$value=getTermsandConditions($module_name);
-			}
-		}
-
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue [] = $value;
 	} elseif ($uitype == 21 || $uitype == 24) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue [] = $value;

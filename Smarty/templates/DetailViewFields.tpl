@@ -97,7 +97,7 @@
 				&nbsp;<img src="{'skype.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SKYPE}" title="{$APP.LBL_SKYPE}" align="absmiddle"></img>
 				<span id="dtlview_{$label}"><a href="skype:{$keyval}?call">{$keyval}</a></span>
 			</td>
-		{elseif $keyid eq '19' || $keyid eq '20'} <!--TextArea/Description-->
+		{elseif $keyid eq '19'} <!--TextArea/Description-->
 			{if isset($MOD.LBL_ADD_COMMENT) && $label eq $MOD.LBL_ADD_COMMENT}
 				{assign var=keyval value=''}
 			{/if}
