@@ -102,9 +102,10 @@ $rellistinfo = getRelatedListInfo($fld_module);
 $smarty->assign('RELATEDLIST', $rellistinfo);
 $pickListResult=getAllowedPicklistModules();
 $nonRelatableModules = array('PBXManager','SMSNotifier','cbupdater','GlobalVariable','Calendar','Emails','ModComments');
+$smsRelatableModules = array('Accounts','Contacts','Leads');
 $entityrelmods=array();
 foreach ($pickListResult as $pValue) {
-	if (!in_array($pValue, $nonRelatableModules)) {
+	if (!in_array($pValue, $nonRelatableModules) || (in_array($fld_module, $smsRelatableModules) && $pValue=='SMSNotifier')) {
 		$entityrelmods[$pValue] = getTranslatedString($pValue, $pValue);
 	}
 }
