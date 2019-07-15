@@ -110,7 +110,7 @@
 				{/if}
 
 			</td>
-		{elseif $keyid eq '21' || $keyid eq '24' || $keyid eq '22'} <!--TextArea/Street-->
+		{elseif $keyid eq '21'} <!--TextArea/Street-->
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<span id="dtlview_{$label}" style="word-break:break-word;">{$keyval}</span></td>
 		{elseif $keyid eq '73' || $keyid eq '51' || $keyid eq '57' || $keyid eq '78' || $keyid eq '80'}
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="vtlib_listview.trigger('cell.onmouseover', this);" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">&nbsp;<a href="{$keyseclink}">{$keyval}</a></td>

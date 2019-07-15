@@ -293,7 +293,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		}
 	} else if (uitype == '33' || uitype == '3313' || uitype == '3314') {
 		tagValue = r.join(' |##| ');
-	} else if (uitype == '24' || uitype == '21') {
+	} else if (uitype == '21') {
 		tagValue = document.getElementById(txtBox).value.replace(/<br\s*\/>/g, ' ');
 	} else if (uitype == '50') {
 		tagValue = document.getElementById(txtBox).value + getObj('inputtimefmt_' + fieldLabel).value;
