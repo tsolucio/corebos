@@ -418,5 +418,6 @@ var alert_arr = {
 	'OF' : 'de',
 	'ERR_Massedit' : 'Error en Edición Masiva',
 	'ProcessFINISHED' : 'Proceso Terminado',
-	'duplicatednotallowed' : 'No se permiten módulos duplicados'
+	'duplicatednotallowed' : 'No se permiten módulos duplicados',
+	'HAS_THIS_AS_ONLY_CHILD' : 'tiene este registro como hijo único'
 };

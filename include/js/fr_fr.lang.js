@@ -406,5 +406,6 @@ var alert_arr = {
 	'OF' : 'of',
 	'ERR_Massedit' : 'Error on Mass Edit',
 	'ProcessFINISHED' : 'Process Finished',
-	'duplicatednotallowed' : 'Duplicated Modules Not Allowed'
+	'duplicatednotallowed' : 'Duplicated Modules Not Allowed',
+	'HAS_THIS_AS_ONLY_CHILD' : 'a cet enregistrement comme seul enfant'
 };

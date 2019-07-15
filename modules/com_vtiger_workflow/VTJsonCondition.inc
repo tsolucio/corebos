@@ -470,6 +470,28 @@ class VTJsonCondition {
 					return true;
 				}
 				return false;
+			case 'has this as only child':
+				global $adb;
+
+				list($child_wsid, $child_id) = explode('x', $data['id']);
+				list($parent_wsid, $parent_id) = explode('x', $data[$cond['fieldname']]);
+				$child_setype = getSalesEntityType($child_id);
+
+				require_once 'modules/' . $child_setype . '/' . $child_setype . '.php';
+				$child_focus = new $child_setype();
+
+				$r = $adb->query("SELECT {$child_focus->table_index} FROM {$child_focus->table_name}
+					              INNER JOIN vtiger_crmentity ON
+					              {$child_focus->table_name}.{$child_focus->table_index} = vtiger_crmentity.crmid 
+					              WHERE {$cond['fieldname']} = {$parent_id}
+					              AND vtiger_crmentity.deleted = 0");
+
+				if ((int)$adb->num_rows($r) === 1 && $adb->fetch_array($r)[$child_focus->table_index] === $child_id) {
+					return true;
+				} else {
+					return false;
+				}
+				break;
 			default:
 				//Unexpected condition
 				throw new Exception('Found an unexpected condition: ' . $condition);
