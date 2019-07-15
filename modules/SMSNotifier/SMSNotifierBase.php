@@ -46,11 +46,13 @@ class SMSNotifierBase extends CRMEntity {
 		/* Format: Field Label => array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
 		'Message' => array('smsnotifier' => 'message'),
+		'Created Time' => array('crmentity' => 'createdtime'),
 		'Assigned To' => array('crmentity' => 'smownerid')
 	);
 	public $list_fields_name = array(
 		/* Format: Field Label => fieldname */
 		'Message' => 'message',
+		'Created Time' => 'createdtime',
 		'Assigned To' => 'assigned_user_id'
 	);
 
@@ -61,11 +63,13 @@ class SMSNotifierBase extends CRMEntity {
 	public $search_fields = array(
 		/* Format: Field Label => array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
-		'Message' => array('smsnotifier' => 'message')
+		'Message' => array('smsnotifier' => 'message'),
+		'Created Time' => array('crmentity' => 'createdtime'),
 	);
 	public $search_fields_name = array(
 		/* Format: Field Label => fieldname */
-		'Message' => 'message'
+		'Message' => 'message',
+		'Created Time' => 'createdtime',
 	);
 
 	// For Popup window record selection
