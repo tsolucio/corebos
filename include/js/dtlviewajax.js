@@ -214,6 +214,7 @@ function dtlViewAjaxSave(fieldLabel, module, uitype, tableName, fieldName, crmId
 }
 
 function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName, crmId) {
+	VtigerJS_DialogBox.block();
 	var dtlView = 'dtlview_'+ fieldLabel;
 	var editArea = 'editarea_'+ fieldLabel;
 	var groupurl = '';
@@ -360,6 +361,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 			}
 			VtigerJS_DialogBox.hidebusy();
 		}
+		VtigerJS_DialogBox.unblock();
 	});
 	itsonview=false;
 }
