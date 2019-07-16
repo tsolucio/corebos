@@ -9168,7 +9168,7 @@ if (workbox) {
   },
   {
     "url": "include/js/dtlviewajax.js",
-    "revision": "9b39a76085ec2283dee608bf691fd385"
+    "revision": "15c985ae2ed9abacdb53664184e8eb06"
   },
   {
     "url": "include/js/en_gb.lang.js",
@@ -9200,7 +9200,7 @@ if (workbox) {
   },
   {
     "url": "include/js/general.js",
-    "revision": "22da0a509223ece7d2d19492d7ef1043"
+    "revision": "9ca3b8f84617031da142f7f4379f512e"
   },
   {
     "url": "include/js/hu_hu.lang.js",
@@ -9864,7 +9864,7 @@ if (workbox) {
   },
   {
     "url": "modules/SMSNotifier/SMSNotifier.js",
-    "revision": "59ec7ddb3604584d1377ecd5c281aa91"
+    "revision": "3264e49d554e0ae77bd1eb7f58d3b2c1"
   },
   {
     "url": "modules/SMSNotifier/SMSConfigServer.js",
