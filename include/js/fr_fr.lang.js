@@ -407,5 +407,5 @@ var alert_arr = {
 	'ERR_Massedit' : 'Error on Mass Edit',
 	'ProcessFINISHED' : 'Process Finished',
 	'duplicatednotallowed' : 'Duplicated Modules Not Allowed',
-	'HAS_THIS_AS_NTH_CHILD' : ' A cet enfant comme un autre'
+	'HAS_THIS_AS_NTH_CHILD' : 'A cet enfant comme un autre'
 };
