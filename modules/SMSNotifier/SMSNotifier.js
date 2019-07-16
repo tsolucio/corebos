@@ -38,6 +38,6 @@ if (typeof(SMSNotifier) == 'undefined') {
 	};
 }
 
-jQuery(window).on('load', function() {
+jQuery(window).on('load', function () {
 	SMSNotifier.loadstatus(document.getElementsByName('record')[0].value);
 });
