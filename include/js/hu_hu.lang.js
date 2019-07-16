@@ -399,5 +399,5 @@ var alert_arr = {
 	'ERR_Massedit' : 'Error on Mass Edit',
 	'ProcessFINISHED' : 'Process Finished',
 	'duplicatednotallowed' : 'Duplicated Modules Not Allowed',
-	'HAS_THIS_AS_ONLY_CHILD' : 'már ezt a rekordot, mint csak a gyermek'
+	'HAS_THIS_AS_NTH_CHILD' : ' Ez még egy másik gyermek'
 };

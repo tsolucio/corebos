@@ -419,5 +419,5 @@ var alert_arr = {
 	'ERR_Massedit' : 'Error en Edición Masiva',
 	'ProcessFINISHED' : 'Proceso Terminado',
 	'duplicatednotallowed' : 'No se permiten módulos duplicados',
-	'HAS_THIS_AS_ONLY_CHILD' : 'tiene este registro como hijo único'
+	'HAS_THIS_AS_NTH_CHILD' : ' Tiene este niño como una'
 };

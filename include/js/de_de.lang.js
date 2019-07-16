@@ -419,5 +419,5 @@ var alert_arr = {
 	'ERR_Massedit' : 'Fehler bei der Massenbearbeitung',
 	'ProcessFINISHED' : 'Prozess beendet',
 	'duplicatednotallowed' : 'Duplizierte Module sind nicht erlaubt',
-	'HAS_THIS_AS_ONLY_CHILD' : 'hat diese Platte als Einzelkind'
+	'HAS_THIS_AS_NTH_CHILD' : ' Hat dieses als ein weiteres Kind'
 };
