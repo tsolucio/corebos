@@ -24,8 +24,7 @@ class convertUitype20to19 extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-            $tabid = getTabid('Faq');
-            $this->ExecuteQuery("UPDATE vtiger_field SET uitype = 19 WHERE tablename = 'vtiger_faq' and tabid =? and (columnname = ? or columnname = ?)", array($tabid, 'question', 'answer'));
+			$this->ExecuteQuery("UPDATE vtiger_field SET uitype =19 WHERE uitype =?", array(20));
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}

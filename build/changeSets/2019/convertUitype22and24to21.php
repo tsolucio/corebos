@@ -24,16 +24,7 @@ class convertUitype22and24to21 extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-            $tabid_helpdesk = getTabid('HelpDesk');
-            $tabid_qoutes = getTabid('Quotes');
-            $tabid_purchaseorder = getTabid('PurchaseOrder');
-            $tabid_salesorder = getTabid('SalesOrder');
-            $tabid_invoice = getTabid('Invoice');
-            $this->ExecuteQuery("UPDATE vtiger_field SET uitype = 21 WHERE tabid =? and (columnname = ?)", array($tabid_helpdesk, 'title'));
-            $this->ExecuteQuery("UPDATE vtiger_field SET uitype = 21 WHERE tabid =? and (columnname = ? OR columnname = ?)", array($tabid_qoutes, 'bill_street', 'ship_street'));
-            $this->ExecuteQuery("UPDATE vtiger_field SET uitype = 21 WHERE tabid =? and (columnname = ? OR columnname = ?)", array($tabid_purchaseorder, 'bill_street', 'ship_street'));
-            $this->ExecuteQuery("UPDATE vtiger_field SET uitype = 21 WHERE tabid =? and (columnname = ? OR columnname = ?)", array($tabid_salesorder, 'bill_street', 'ship_street'));
-            $this->ExecuteQuery("UPDATE vtiger_field SET uitype = 21 WHERE tabid =? and (columnname = ? OR columnname = ?)", array($tabid_invoice, 'bill_street', 'ship_street'));
+			$this->ExecuteQuery("UPDATE vtiger_field SET uitype =21 WHERE (uitype=? OR uitype=?)", array(22,24));
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);
 		}
