@@ -108,6 +108,11 @@ $mod_strings = array(
 'ERR_ALREADY_PAID' => "Ce paiement a déja été effectué.",
 'ERR_NO_ACCOUNT' => "Pas de compte associé.",
 'ERR_NO_TOKEN' => "Aucun jeton pour ce compte.",
-);
 
+'Pay' => 'Pay',
+'Invalid payment.' => 'Invalid payment.',
+'Payment done.' => 'Payment done.',
+'Redirecting to payment gateway...' => 'Redirecting to payment gateway...',
+'Payment error.' => 'Payment error.',
+);
 ?>
