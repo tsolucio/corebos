@@ -229,4 +229,11 @@
 	<systemupdate>false</systemupdate>
 	<blocked>true</blocked>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Increment the size of menu columns</description>
+	<filename>build/changeSets/2019/incrementMenuFieldsSize.php</filename>
+	<classname>incrementMenuFieldsSize</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
