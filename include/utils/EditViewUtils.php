@@ -287,12 +287,9 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue [] = $value;
-	} elseif ($uitype == 21 || $uitype == 24) {
+	} elseif ($uitype == 21) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue [] = $value;
-	} elseif ($uitype == 22) {
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[] = $value;
 	} elseif ($uitype == 52 || $uitype == 77) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		global $current_user;

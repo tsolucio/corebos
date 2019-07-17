@@ -243,4 +243,11 @@
 	<classname>convertUitype20to19</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>migrate uitype 22 and 24 to uitype 21</description>
+	<filename>build/changeSets/2019/convertUitype22and24to21.php</filename>
+	<classname>convertUitype22and24to21</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
