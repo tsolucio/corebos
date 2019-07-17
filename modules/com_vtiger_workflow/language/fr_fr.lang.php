@@ -160,7 +160,14 @@ $mod_strings = array(
 	'Calculate or Update forecast amount' => 'Calculer ou mettre à jour projections',
 	'LBL_METHOD_NAME' => 'Nom de Méthode',
 	'NO_METHOD_AVAILABLE' => 'Aucune méthode disponible pour ce module.',
+	'GenerateDocument'=>'Generate Document',
+	'Templates'=>'Templates',
 	'launchrelwf' => 'Launch workflows on related updates',
 	'LBL_WFPURPOSE' => 'Purpose',
+	'Run Webservice Workflow Task' => 'Run Web Service',
+	'RunWebserviceWorkflowTask' => 'Run Web Service',
+	'runwebserviceworkflowtask' => 'Run Web Service',
+	'Select IO Map' => 'Select IO Map',
+	'Select Config Map' => 'Select Configuration Map',
 );
 ?>

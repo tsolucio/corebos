@@ -1,0 +1,16 @@
+<?php
+$PURCHASE_CONFIG = array(
+	'corebos' => array(
+		'server' => 'http://localhost/corebos',
+		'username' => 'admin',
+		'accessKey' => '',
+	),
+	'omnipay' => array(
+		'driver' => 'Redsys',
+		'merchantCode' => '',
+		'secretKey' => '',
+		'testmode' => false,
+		//'payMethods' => 'O',
+	),
+);
+

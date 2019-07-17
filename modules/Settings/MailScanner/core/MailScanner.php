@@ -68,7 +68,7 @@ class Vtiger_MailScanner {
 		$rules = $this->_scannerinfo->rules;
 
 		if (empty($rules)) {
-			$this->log("No rules setup for scanner [". $this->_scannerinfo->scannername . "] SKIPING\n");
+			$this->log('No rules setup for scanner ['. $this->_scannerinfo->scannername . "] SKIPPING\n");
 			return;
 		}
 
@@ -89,7 +89,7 @@ class Vtiger_MailScanner {
 		$folders = $mailbox->getFolders();
 
 		if ($folders) {
-			$this->log("Folders found: " . implode(',', $folders) . "\n");
+			$this->log('Folders found: ' . implode(',', $folders) . "\n");
 		}
 
 		foreach ($folders as $lookAtFolder) {
@@ -286,13 +286,15 @@ class Vtiger_MailScanner {
 			$current_user = Users::getActiveAdminUser();
 		}
 		$retemp = array();
-		if (vtlib_isModuleActive("cbEmployee")) {
+		if (vtlib_isModuleActive('cbEmployee')) {
 			$currentModule = 'cbEmployee';
 			$module = get_class($crmobj);
 			$modtab = getTabid($module);
 			$emptab = getTabid('cbEmployee');
-			$empfldssel = 'SELECT * FROM vtiger_field fld LEFT JOIN vtiger_fieldmodulerel fr ON fld.fieldid=fr.fieldid WHERE fld.tabid=? AND fld.uitype=10 AND fr.relmodule=?';
-			$fldres = $adb->pquery($empfldssel, array($modtab,'cbEmployee'));
+			$fldres = $adb->pquery(
+				'SELECT * FROM vtiger_field fld LEFT JOIN vtiger_fieldmodulerel fr ON fld.fieldid=fr.fieldid WHERE fld.tabid=? AND fld.uitype=10 AND fr.relmodule=?',
+				array($modtab, 'cbEmployee')
+			);
 			while ($row = $adb->fetch_array($fldres)) {
 				if (!empty($crmobj->column_fields[$row['fieldname']]) && getSalesEntityType($crmobj->column_fields[$row['fieldname']]) == 'cbEmployee') {
 					$retemp[] = $crmobj->column_fields[$row['fieldname']];
@@ -348,7 +350,7 @@ class Vtiger_MailScanner {
 	public function LookupEmployee($email, $checkWithId = false) {
 		global $adb;
 		$empid = false;
-		if (vtlib_isModuleActive("cbEmployee")) {
+		if (vtlib_isModuleActive('cbEmployee')) {
 			if (isset($this->_cachedEmployeeIds[$email])) {
 				$this->log("Reusing Cached Employee Id for email: $email");
 				return $this->_cachedEmployeeIds[$email];
@@ -466,7 +468,7 @@ class Vtiger_MailScanner {
 		}
 		// Try with ticket_no before CRMID (case where ticket_no is also just number)
 		if (!$checkTicketId) {
-			$ticketres = $adb->pquery("SELECT ticketid FROM vtiger_troubletickets WHERE ticket_no = ?", array($subjectOrId));
+			$ticketres = $adb->pquery('SELECT ticketid FROM vtiger_troubletickets WHERE ticket_no=?', array($subjectOrId));
 			if ($adb->num_rows($ticketres)) {
 				$checkTicketId = $adb->query_result($ticketres, 0, 'ticketid');
 			}
@@ -484,7 +486,7 @@ class Vtiger_MailScanner {
 		// Verify ticket is not deleted
 		$ticketid = false;
 		if ($checkTicketId) {
-			$crmres = $adb->pquery("SELECT setype, deleted FROM vtiger_crmentity WHERE crmid=?", array($checkTicketId));
+			$crmres = $adb->pquery('SELECT setype, deleted FROM vtiger_crmentity WHERE crmid=?', array($checkTicketId));
 			if ($adb->num_rows($crmres)) {
 				if ($adb->query_result($crmres, 0, 'setype') == 'HelpDesk' &&
 					$adb->query_result($crmres, 0, 'deleted') == '0') {
@@ -508,14 +510,14 @@ class Vtiger_MailScanner {
 		global $adb;
 		$checkProjectId = $this->__toInteger($subjectOrId);
 		if (!$checkProjectId) {
-			$projectres = $adb->pquery("SELECT projectid FROM vtiger_project WHERE projectname = ? OR project_no = ?", array($subjectOrId, $subjectOrId));
+			$projectres = $adb->pquery('SELECT projectid FROM vtiger_project WHERE projectname=? OR project_no=?', array($subjectOrId, $subjectOrId));
 			if ($adb->num_rows($projectres)) {
 				$checkProjectId = $adb->query_result($projectres, 0, 'projectid');
 			}
 		}
 		// Try with ticket_no before CRMID (case where ticket_no is also just number)
 		if (!$checkProjectId) {
-			$projectres = $adb->pquery("SELECT projectid FROM vtiger_project WHERE project_no = ?", array($subjectOrId));
+			$projectres = $adb->pquery('SELECT projectid FROM vtiger_project WHERE project_no=?', array($subjectOrId));
 			if ($adb->num_rows($projectres)) {
 				$checkProjectId = $adb->query_result($projectres, 0, 'projectid');
 			}
@@ -533,7 +535,7 @@ class Vtiger_MailScanner {
 		// Verify ticket is not deleted
 		$projectid = false;
 		if ($checkProjectId) {
-			$crmres = $adb->pquery("SELECT setype, deleted FROM vtiger_crmentity WHERE crmid=?", array($checkProjectId));
+			$crmres = $adb->pquery('SELECT setype, deleted FROM vtiger_crmentity WHERE crmid=?', array($checkProjectId));
 			if ($adb->num_rows($crmres)) {
 				if ($adb->query_result($crmres, 0, 'setype') == 'Project' &&
 					$adb->query_result($crmres, 0, 'deleted') == '0') {
@@ -560,13 +562,13 @@ class Vtiger_MailScanner {
 		if ($accountid) {
 			if (isset($this->_cachedAccounts[$accountid])) {
 				$account_focus = $this->_cachedAccounts[$accountid];
-				$this->log("Reusing Cached Account [" . $account_focus->column_fields['accountname'] . "]");
+				$this->log('Reusing Cached Account [' . $account_focus->column_fields['accountname'] . ']');
 			} else {
 				$account_focus = new Accounts();
 				$account_focus->retrieve_entity_info($accountid, 'Accounts');
 				$account_focus->id = $accountid;
 
-				$this->log("Caching Account [" . $account_focus->column_fields['accountname'] . "]");
+				$this->log('Caching Account [' . $account_focus->column_fields['accountname'] . ']');
 				$this->_cachedAccounts[$accountid] = $account_focus;
 			}
 		}
@@ -627,7 +629,7 @@ class Vtiger_MailScanner {
 					$ticket_focus = false;
 				}
 				if ($ticket_focus) {
-					$this->log("Reusing Cached Ticket [" . $ticket_focus->column_fields['ticket_title'] ."]");
+					$this->log('Reusing Cached Ticket [' . $ticket_focus->column_fields['ticket_title'] .']');
 				}
 			} else {
 				$ticket_focus = new HelpDesk();
@@ -642,7 +644,7 @@ class Vtiger_MailScanner {
 					$ticket_focus = false;
 				}
 				if ($ticket_focus) {
-					$this->log("Caching Ticket [" . $ticket_focus->column_fields['ticket_title'] . "]");
+					$this->log('Caching Ticket [' . $ticket_focus->column_fields['ticket_title'] . ']');
 					$this->_cachedTickets[$ticketid] = $ticket_focus;
 				}
 			}
@@ -668,7 +670,7 @@ class Vtiger_MailScanner {
 					$project_focus = false;
 				}
 				if ($project_focus) {
-					$this->log("Reusing Cached Project [" . $project_focus->column_fields['project_name'] ."]");
+					$this->log('Reusing Cached Project [' . $project_focus->column_fields['project_name'] .']');
 				}
 			} else {
 				$project_focus = CRMEntity::getInstance('Project');
@@ -683,7 +685,7 @@ class Vtiger_MailScanner {
 					$project_focus = false;
 				}
 				if ($project_focus) {
-					$this->log("Caching Project [" . $project_focus->column_fields['project_name'] . "]");
+					$this->log('Caching Project [' . $project_focus->column_fields['project_name'] . ']');
 					$this->_cachedProject[$projectid] = $project_focus;
 				}
 			}

@@ -22,6 +22,7 @@ class add_workflow_delrelated extends cbupdaterWorker {
 		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
+			$this->markApplied(false);
 		} else {
 			require_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
 			$taskTypes = array();
@@ -37,7 +38,7 @@ class add_workflow_delrelated extends cbupdaterWorker {
 			);
 			VTTaskType::registerTaskType($taskType);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}

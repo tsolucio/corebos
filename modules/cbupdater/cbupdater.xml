@@ -1348,8 +1348,15 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
+	<author>loridacito</author>
+	<description>runwebservice</description>
+	<filename>build/changeSets/2019/runwebservice.php</filename>
+	<classname>Runwebservice</classname>
+	<systemupdate>1</systemupdate>
+</changeSet>
+<changeSet>
 	<author>mocodertz</author>
-	<description>Add columns for Storing Outgoins Server Configuration Values</description>
+	<description>Add columns for Storing Outgoing Server Configuration Values</description>
 	<filename>build/changeSets/2019/addColumnsForOutGoingServerConfigurationValues.php</filename>
 	<classname>AddColumnsForOutgoingServerConfigurationValues</classname>
 	<systemupdate>true</systemupdate>

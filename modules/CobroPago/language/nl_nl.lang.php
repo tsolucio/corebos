@@ -96,5 +96,10 @@ $mod_strings = array(
 	'Documents' => 'Documenten',
 	'CyP No' => 'Betalingsnummer',
 	'PaymentDate' => 'Betalingsdatum',
+	'Pay' => 'Pay',
+	'Invalid payment.' => 'Invalid payment.',
+	'Payment done.' => 'Payment done.',
+	'Redirecting to payment gateway...' => 'Redirecting to payment gateway...',
+	'Payment error.' => 'Payment error.',
 );
 ?>

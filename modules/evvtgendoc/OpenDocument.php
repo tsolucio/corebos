@@ -149,7 +149,7 @@ class OpenDocument {
 	 * DOMNode of current node
 	 *
 	 * @var DOMNode
-	 * @access provate
+	 * @access private
 	 */
 	private $cursor;
 
@@ -977,7 +977,7 @@ class OpenDocument {
 					$module_pcada = getModuleFromCondition($this->contextoParacada[$this->contextoActual-1]['condicion']);
 					$this->contextoParacada[$this->contextoActual]=array(  // guardo contexto modulos encontrados
 					  'condicion'=>$condicionparacada,
-					  'module'=>($module_pcada=='Organization' ? 'Accounts' : $module_pcada),
+					  'module'=>($module_pcada=='Organization' ? 'cbCompany' : $module_pcada),
 					);
 				} elseif (strtolower(substr($texto_p, 0, strlen($foreachEndGD)))==$foreachEndGD) {
 					$this->contextoParacada[$this->contextoActual]['ramaparacada']=$ramaparacada; // guardo contexto modulos encontrados
@@ -1062,7 +1062,7 @@ class OpenDocument {
 						$this->contextoParacada[0]=array(  // guardo contexto modulos encontrados
 							'iter_modules'=>$iter_modules,
 							'condicion'=>$condicionparacada,
-							'module'=>($module == 'Organization' ? 'Accounts' : $module),
+							'module'=>($module == 'Organization' ? 'cbCompany' : $module),
 							'moduleid'=>$id
 						);
 						continue 2;
@@ -2210,7 +2210,7 @@ class OpenDocument {
 		$doc->column_fields['docyear'] = date('Y');
 		$doc->column_fields['template'] = 0;
 		$doc->column_fields['filelocationtype'] = 'I';
-		$gdfolder = GlobalVariable::getVariable('GenDoc_Save_Document_Folder', '');
+		$gdfolder = GlobalVariable::getVariable('GenDoc_Save_Document_Folder', '', $module);
 		if ($gdfolder!='') {
 			$res = $adb->pquery('select folderid from vtiger_attachmentsfolder where foldername=?', array($gdfolder));
 			if ($adb->num_rows($res)==0) {

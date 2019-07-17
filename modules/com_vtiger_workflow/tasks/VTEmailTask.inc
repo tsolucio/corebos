@@ -78,7 +78,7 @@ class VTEmailTask extends VTTask {
 		}
 	}
 	public function doTask(&$entity) {
-		global $logbg;
+		global $logbg,$adb;
 		$util = new VTWorkflowUtils();
 
 		$admin = $util->adminUser();
@@ -140,7 +140,6 @@ class VTEmailTask extends VTTask {
 		}
 		if (!empty($this->attfieldnames)) {
 			if (substr($this->attfieldnames, -24) == ' : (Documents) filename)') {
-				global $adb;
 				$this->attfieldnames = substr($this->attfieldnames, 1, strlen($this->attfieldnames)-25);
 				$rsfld = $adb->pquery(
 					'select 1 from vtiger_field

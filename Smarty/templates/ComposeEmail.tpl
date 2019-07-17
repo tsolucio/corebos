@@ -220,4 +220,7 @@ document.getElementById('attach_cont').innerHTML = document.getElementById('atta
 	{rdelim} ) ;
 	var oCKeditor = CKEDITOR.instances[textAreaName];
 </script>
+{if vt_hasRTESpellcheck()}
+<script type="text/javascript" src="include/ckeditor/config_spellcheck.js"></script>
+{/if}
 </html>

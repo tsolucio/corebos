@@ -2622,9 +2622,9 @@ function validateUrl(name) {
 	var wProtocol;
 	var oRegex = new Object();
 	oRegex.UriProtocol = new RegExp('');
-	oRegex.UriProtocol.compile('^(((http):\/\/)|mailto:)', 'gi');
+	oRegex.UriProtocol.compile('^(((https):\/\/)|mailto:)', 'gi');
 	oRegex.UrlOnChangeProtocol = new RegExp('');
-	oRegex.UrlOnChangeProtocol.compile('^(http)://(?=.)', 'gi');
+	oRegex.UrlOnChangeProtocol.compile('^(https)://(?=.)', 'gi');
 	wUrl = Url.value;
 	wProtocol=oRegex.UrlOnChangeProtocol.exec(wUrl);
 	if (wProtocol) {
@@ -4880,7 +4880,7 @@ function UnifiedSearch_GetModules() {
 		jQuery('#status').show();
 		jQuery.ajax({
 			method:'POST',
-			url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModules&ajax=true'
+			url:'index.php?module=Utilities&action=UtilitiesAjax&file=UnifiedSearchModules&ajax=true'
 		}).done(function (response) {
 			jQuery('#status').hide();
 			jQuery('#UnifiedSearch_modulelistwrapper').html(response);
@@ -4899,7 +4899,7 @@ function UnifiedSearch_OnComboSelect(value) {
 	document.forms.UnifiedSearch.search_onlyin.value = prepVal;
 	jQuery.ajax({
 		method:'POST',
-		url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(prepVal)
+		url:'index.php?module=Utilities&action=UtilitiesAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(prepVal)
 	}).done(function (response) {
 		// continue
 	});
@@ -5891,7 +5891,7 @@ AutocompleteRelation.prototype.MinCharsToSearch = function () {
 	/*
 	 * Globals
 	 */
-	if (!window.hasOwnProperty('dropdownKeycodeMap')) {
+	if (!Object.prototype.hasOwnProperty.call(window, 'dropdownKeycodeMap')) {
 		window.dropdownKeycodeMap = {
 			38: 'up',
 			40: 'down',

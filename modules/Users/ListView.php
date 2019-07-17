@@ -40,6 +40,19 @@ $userid = array();
 $blockedusers = $cbodBlockedUsers;
 $blockedusers[] = 'admin';
 $userid_Query = 'SELECT id,user_name FROM vtiger_users WHERE user_name IN ('.generateQuestionMarks($blockedusers).')';
+$total = "SELECT COUNT(id) as users FROM vtiger_users";
+$result = $adb->pquery($total, array());
+$total_users = $adb->query_result($result, 0, 'users');
+$admin ="SELECT COUNT(id) as users FROM vtiger_users WHERE is_admin = ?";
+$admin_result = $adb->pquery($admin, array('on'));
+$total_admin = $adb->query_result($admin_result, 0, 'users');
+$active_user ="SELECT COUNT(id) as users FROM vtiger_users WHERE status = ?";
+$active_result = $adb->pquery($active_user, array('Active'));
+$total_active = $adb->query_result($active_result, 0, 'users');
+$inactive_user ="SELECT COUNT(id) as users FROM vtiger_users WHERE status = ?";
+$inactive_result = $adb->pquery($inactive_user, array('Inactive'));
+$inactive = $adb->query_result($inactive_result, 0, 'users');
+
 $users = $adb->pquery($userid_Query, array($blockedusers));
 $norows = $adb->num_rows($users);
 if ($norows  > 0) {
@@ -49,6 +62,10 @@ if ($norows  > 0) {
 	}
 }
 $smarty->assign('USERNODELETE', $userid);
+$smarty->assign('TOTALUSERS', $total_users);
+$smarty->assign('TOTALADMIN', $total_admin);
+$smarty->assign('TOTALACTIVE', $total_active);
+$smarty->assign('TOTALINACTIVE', $inactive);
 
 $userid_noedit = array();
 if (count($cbodBlockedUsers)>0) {

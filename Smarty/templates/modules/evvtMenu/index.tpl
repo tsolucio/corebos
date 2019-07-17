@@ -52,18 +52,23 @@
 </script>
 {/literal}
 
-<div style="padding:20px"><div style="color: #14a1e9; font-weight: bold; font-size: medium; padding: 10px; border: 1px solid #1399dd; background: #FFFFFF; border-radius: 5px; margin-bottom: 4px;">{'evvtMenuTitle'|getTranslatedString:$MODULE}</div></div>
+<div style="padding:20px">
+	<div style="color: #14a1e9; font-weight: bold; font-size: medium; padding: 10px; border: 1px solid #1399dd; background: #FFFFFF; border-radius: 5px; margin-bottom: 4px;">
+		{'evvtMenuTitle'|getTranslatedString:$MODULE}
+	</div>
+</div>
 
 <div id="evvtmenu" class="k-content">
   <div class="evvtmenu-section">
-	<div class="evvtmenu_header">{'evvtMenuLayout'|getTranslatedString:$MODULE}</div>
+	<div class="evvtmenu_header">
+		{'evvtMenuLayout'|getTranslatedString:$MODULE}
+		<button class="slds-button slds-button_brand" style="float:right;line-height:unset;" onclick="saveTree();">{'LBL_SAVE_LABEL'|getTranslatedString:$MODULE}</button>
+	</div>
 	<div class="evvtmenu_content">
 	  <form action="index.php?module={$MODULE}&action=Save&parenttab={$CATEGORY}" method="POST" id="menuconfigform">
 		<input type="hidden" name="evvtmenutree" id="evvtmenutree" value="">
 		<input type="hidden" name="evvtmenudo" value="doSave">
 	  </form>
-
-		<button class="slds-button slds-button_brand" style="float:right;margin-right: 45px;margin-bottom: 15px;" onclick="saveTree();">{'LBL_SAVE_LABEL'|getTranslatedString:$MODULE}</button>
 
 		<div id="jstree"></div>
 
@@ -137,7 +142,7 @@
 		  {html_options name="mpermission[]" id="mpermission" multiple="multiple" options=$PROFILES}
 			</div>
 		  </br>
-			<div style="width:90%;margin:auto;">
+			<div class="slds-align_absolute-center slds-m-bottom_small" style="width:90%;">
 			  <button class="slds-button slds-button_brand" onclick="VtigerJS_DialogBox.block();processTree('doAdd');">{'LBL_ADD_BUTTON'|getTranslatedString:$MODULE}</button>
 			  <button class="slds-button slds-button_brand" onclick="VtigerJS_DialogBox.block();processTree('doUpd');">{'LBL_UPDATE'|getTranslatedString:$MODULE}</button>
 			  <button class="slds-button slds-button_destructive" onclick="VtigerJS_DialogBox.block();processTree('doDel');">{'LBL_DELETE_BUTTON'|getTranslatedString:$MODULE}</button>

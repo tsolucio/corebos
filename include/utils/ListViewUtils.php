@@ -542,7 +542,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	$ui_col_array = array();
 
 	$params = array();
-	$query = 'SELECT uitype, columnname, fieldname FROM vtiger_field ';
+	$query = 'SELECT uitype, columnname, fieldname, typeofdata FROM vtiger_field ';
 
 	if ($module == 'Calendar') {
 		$query .=' WHERE vtiger_field.tabid in (9,16) and vtiger_field.presence in (0,2)';
@@ -571,7 +571,9 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 		$uitype = $adb->query_result($result, $i, 'uitype');
 		$columnname = $adb->query_result($result, $i, 'columnname');
 		$field_name = $adb->query_result($result, $i, 'fieldname');
+		$typeofdata = $adb->query_result($result, $i, 'typeofdata');
 		$tempArr[$uitype] = $columnname;
+		$tempArr['typeofdata'] = $typeofdata;
 		$ui_col_array[$field_name] = $tempArr;
 	}
 	//end
@@ -894,6 +896,9 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, 'list', '', $returnset, (is_object($oCv) ? $oCv->setdefaultviewid : ''));
 							$uicolarr = isset($ui_col_array[$fieldname]) ? $ui_col_array[$fieldname] : array('1'=>$fieldname);
 							foreach ($uicolarr as $key => $val) {
+								if ($key=='typeofdata') {
+									continue;
+								}
 								$uitype = $key;
 								$colname = $val;
 							}
@@ -1285,6 +1290,9 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 	return_module_language($current_language, $module);
 	$uicolarr = isset($field_result[$fieldname]) ? $field_result[$fieldname] : array('1'=>$fieldname);
 	foreach ($uicolarr as $key => $value) {
+		if ($key=='typeofdata') {
+			continue;
+		}
 		$uitype = $key;
 		$colname = $value;
 	}
@@ -1677,7 +1685,11 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			$value = vt_suppressHTMLTags(implode(',', json_decode($temp_val, true)));
 		}
 	} elseif ($uitype == 7) {
-		$value = CurrencyField::convertToUserFormat($temp_val);
+		if (substr($field_result[$fieldname]['typeofdata'], 0, 2)=='I~') {
+			$value = empty($temp_val) ? 0 : $temp_val;
+		} else {
+			$value = CurrencyField::convertToUserFormat($temp_val);
+		}
 	} else {
 		if ($fieldname == $focus->list_link_field) {
 			if ($mode == 'search') {
@@ -3744,18 +3756,14 @@ function getMergeFields($module, $str) {
  */
 function getFirstModule($module, $fieldname) {
 	global $adb;
-	$sql = 'select fieldid, uitype from vtiger_field where tabid=? and fieldname=?';
-	$result = $adb->pquery($sql, array(getTabid($module), $fieldname));
-
+	$result = $adb->pquery('select fieldid, uitype from vtiger_field where tabid=? and fieldname=?', array(getTabid($module), $fieldname));
+	$data = '';
 	if ($adb->num_rows($result) > 0) {
 		$uitype = $adb->query_result($result, 0, 'uitype');
-
 		if ($uitype == 10) {
 			$fieldid = $adb->query_result($result, 0, 'fieldid');
-			$sql = 'select relmodule from vtiger_fieldmodulerel where fieldid=? order by sequence';
-			$result = $adb->pquery($sql, array($fieldid));
+			$result = $adb->pquery('select relmodule from vtiger_fieldmodulerel where fieldid=? order by sequence', array($fieldid));
 			$count = $adb->num_rows($result);
-
 			if ($count > 0) {
 				$data = $adb->query_result($result, 0, 'relmodule');
 			}

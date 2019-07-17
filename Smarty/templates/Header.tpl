@@ -139,7 +139,7 @@
 							{/if}
 								<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false" aria-haspopup="listbox" id="primary-search-combobox-id-1" role="combobox">
 									<input type="hidden" name="action" value="UnifiedSearch">
-									<input type="hidden" name="module" value="Home">
+									<input type="hidden" name="module" value="Utilities">
 									<input type="hidden" name="parenttab" value="{$CATEGORY}">
 									<input type="hidden" name="search_onlyin" value="--USESELECTED--">
 									<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left slds-global-search__form-element" role="none">

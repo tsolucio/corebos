@@ -3333,6 +3333,10 @@ function vt_hasRTE() {
 	return GlobalVariable::getVariable('Application_Use_RTE', 1);
 }
 
+function vt_hasRTESpellcheck() {
+	return GlobalVariable::getVariable('Application_RTESpellcheck', 0);
+}
+
 function getNameInDisplayFormat($input, $dispFormat = "lf") {
 	if (empty($dispFormat)) {
 		$dispFormat = "lf";

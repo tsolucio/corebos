@@ -33,6 +33,9 @@ if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language 
 		'Accounts' => array(
 			'MemberOf' => 'account_id',
 		),
+		'Contacts' => array(
+			'Accounts' => 'account_id',
+		),
 		'SalesOrder' => array(
 			'Accounts' => 'account_id',
 			'Contacts' => 'contact_id',
@@ -98,6 +101,9 @@ if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language 
 			'Quotes' => 'related_to',
 			'SalesOrder' => 'related_to',
 			'PurchaseOrder' => 'related_to',
+		),
+		'Organization' => array(
+			'Accounts' => 'accid'
 		),
 	);
 
@@ -421,7 +427,7 @@ if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language 
 				}
 			} elseif (areModulesRelated($token_pair[0], $module)) {
 				$reemplazo = retrieve_from_db($marcador, $focus->column_fields[$related_module[$module][$token_pair[0]]], $token_pair[0]);
-			} elseif ($token_pair[0] == 'Organization') {
+			} elseif ($token_pair[0] == 'Organization' || $token_pair[0] == 'cbCompany') {
 				$res = $adb->query('SELECT * FROM vtiger_cbcompany WHERE defaultcompany=1');
 				$org_fields = $adb->getFieldsArray($res);
 				if (in_array($token_pair[1], $org_fields)) {
@@ -640,7 +646,7 @@ if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language 
 			return false;
 		}
 		if ($module == 'Organization') {
-			$module = 'Accounts';
+			$module = 'cbCompany';
 		}
 		preg_match('/(.+)\s*(>|<|=|!=|<=|>=| '.$enGD.' | !'.$enGD.' )\s*(.+)/', $condition, $splitcondition);
 		if (count($splitcondition)>0) {
@@ -720,7 +726,6 @@ if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language 
 				if (!$check) {
 					$iter_modules[$token_pair[0]] = array();
 				}
-				unset($related['entries'][0]);//Elimino indice 0 que añade el módulo ListViewColors
 				if (count($related['entries']) > 0) {
 					foreach ($related['entries'] as $key => $value) {
 						//Ara tenim totes les entitats relacionades, si ens pasen un parametre
@@ -1623,7 +1628,7 @@ if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language 
 		global $adb;
 		$res = $adb->pquery($relsql, array());
 		$nr = $adb->num_rows($res);
-		$ret = array('entries' => array(''));
+		$ret = array('entries' => array());
 		for ($i=0; $i<$nr; $i++) {
 			$rcpid = $adb->query_result($res, $i, 'crmid');
 			$ret['entries'][$rcpid] = $rcpid;

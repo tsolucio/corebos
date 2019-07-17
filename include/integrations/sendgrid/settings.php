@@ -23,10 +23,8 @@ $sd = new corebos_sendgrid();
 
 $isadmin = is_admin($current_user);
 
-if ($isadmin && isset($_REQUEST['sg_user']) && isset($_REQUEST['sg_pass'])) {
+if ($isadmin && $_REQUEST['_op']=='setconfigsendgrid') {
 	$isActive = ((empty($_REQUEST['sendgrid_active']) || $_REQUEST['sendgrid_active']!='on') ? '0' : '1');
-	$sg_user = (empty($_REQUEST['sg_user']) ? '' : vtlib_purify($_REQUEST['sg_user']));
-	$sg_pass = (empty($_REQUEST['sg_pass']) ? '' : vtlib_purify($_REQUEST['sg_pass']));
 	$usesg_transactional = (empty($_REQUEST['usesg_transactional']) ? '' : vtlib_purify($_REQUEST['usesg_transactional']));
 	$srv_transactional = (empty($_REQUEST['srv_transactional']) ? '' : vtlib_purify($_REQUEST['srv_transactional']));
 	$user_transactional = (empty($_REQUEST['user_transactional']) ? '' : vtlib_purify($_REQUEST['user_transactional']));
@@ -37,8 +35,6 @@ if ($isadmin && isset($_REQUEST['sg_user']) && isset($_REQUEST['sg_pass'])) {
 	$pass_marketing = (empty($_REQUEST['pass_marketing']) ? '' : vtlib_purify($_REQUEST['pass_marketing']));
 	$sd->saveSettings(
 		$isActive,
-		$sg_user,
-		$sg_pass,
 		$usesg_transactional,
 		$srv_transactional,
 		$user_transactional,
@@ -53,8 +49,6 @@ if ($isadmin && isset($_REQUEST['sg_user']) && isset($_REQUEST['sg_pass'])) {
 $smarty->assign('TITLE_MESSAGE', getTranslatedString('SendGrid Activation', $currentModule));
 $sdsettings = $sd->getSettings();
 $smarty->assign('isActive', $sd->isActive());
-$smarty->assign('sg_user', $sdsettings['sg_user']);
-$smarty->assign('sg_pass', $sdsettings['sg_pass']);
 $smarty->assign('usesg_transactional', $sdsettings['usesg_transactional']);
 $smarty->assign('srv_transactional', $sdsettings['srv_transactional']);
 $smarty->assign('user_transactional', $sdsettings['user_transactional']);

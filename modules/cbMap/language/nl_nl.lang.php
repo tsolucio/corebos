@@ -48,5 +48,6 @@ $mod_strings = array(
 	'MAP_VALID'=> 'Map is valid',
 	'MAP_NOT_IMPLEMENTED_YET'=> 'Validation for this map has not been implemented yet',
 	'DecisionTable' => 'Decision Table',
+	'Webservice Mapping' => 'Webservice Mapping',
 );
 ?>

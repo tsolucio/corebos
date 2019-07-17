@@ -766,7 +766,7 @@ class ListViewController {
 			}
 			$fieldLabel = $field->getFieldLabelKey();
 			if (in_array($field->getColumnName(), $focus->sortby_fields)) {
-				if ($orderBy == $field->getFieldName()) {
+				if ($orderBy == $field->getFieldName() || ($orderBy == 'title' && $field->getFieldName() == 'notes_title')) {
 					$temp_sorder = $change_sorder[$sorder];
 					$arrow = "&nbsp;<img src ='".vtiger_imageurl($arrow_gif[$sorder], $theme)."' border='0'>";
 				} else {
@@ -787,10 +787,18 @@ class ListViewController {
 						getTranslatedString('LBL_LIST_USER_NAME_ROLE', $module).$arrow.'</a>';
 				} else {
 					if ($this->isHeaderSortingEnabled()) {
+						if (isset($_SESSION['lvs'][$module]['start'])) {
+							if (is_array($_SESSION['lvs'][$module]['start'])) {
+								$sesStart = reset($_SESSION['lvs'][$module]['start']);
+							} else {
+								$sesStart = $_SESSION['lvs'][$module]['start'];
+							}
+						} else {
+							$sesStart = '';
+						}
 						$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"".$module.
 							"\",\"parenttab=".$tabname.'&foldername=Default&order_by='.$field->getFieldName().'&start='.
-							(isset($_SESSION['lvs'][$module]['start']) ? $_SESSION['lvs'][$module]['start'] : '').
-							'&sorder='.$temp_sorder.$sort_qry."\");' class='listFormHeaderLinks'>".$label.$arrow.'</a>';
+							$sesStart.'&sorder='.$temp_sorder.$sort_qry."\");' class='listFormHeaderLinks'>".$label.$arrow.'</a>';
 					} else {
 						$name = $label;
 					}

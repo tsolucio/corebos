@@ -599,8 +599,8 @@ class Services extends CRMEntity {
 		$relatedmodule = 'Services';
 		if (empty($_SESSION['rlvs'][$module][$relatedmodule])) {
 			$modObj = new ListViewSession();
-			$modObj->sortby = $focus->default_order_by;
-			$modObj->sorder = $focus->default_sort_order;
+			$modObj->sortby = $focus->getOrderBy();
+			$modObj->sorder = $focus->getSortOrder();
 			coreBOS_Session::set('rlvs^'.$module.'^'.$relatedmodule, get_object_vars($modObj));
 		}
 		if (isset($_REQUEST['relmodule']) && $_REQUEST['relmodule']!='' && $_REQUEST['relmodule'] == $relatedmodule) {

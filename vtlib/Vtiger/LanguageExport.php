@@ -26,18 +26,18 @@ class Vtiger_LanguageExport extends Vtiger_Package {
 
 	/**
 	 * Generate unique id for insertion
-	 * @access private
+	 * @access public
 	 */
-	private function __getUniqueId() {
+	public function __getUniqueId() {
 		global $adb;
 		return $adb->getUniqueID(self::TABLENAME);
 	}
 
 	/**
 	 * Initialize Language Schema
-	 * @access private
+	 * @access public
 	 */
-	private static function __initSchema() {
+	public static function __initSchema() {
 		$hastable = Vtiger_Utils::CheckTable(self::TABLENAME);
 		if (!$hastable) {
 			Vtiger_Utils::CreateTable(
