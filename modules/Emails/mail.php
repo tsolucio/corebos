@@ -307,29 +307,48 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
   * $mail -- reference of the mailobject
   */
 function setMailServerProperties($mail) {
-	global $adb,$default_charset;
+	global $adb,$default_charset, $current_user;
 	$adb->println('> setMailServerProperties');
-
+	$user_mail_config = $adb->pquery('select * from vtiger_mail_accounts where user_id=?', array($current_user->id));
 	$res = $adb->pquery('select * from vtiger_systems where server_type=?', array('email'));
 	if (isset($_REQUEST['server'])) {
 		$server = $_REQUEST['server'];
 	} else {
-		$server = $adb->query_result($res, 0, 'server');
+		if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
+			$server = $adb->query_result($user_mail_config, 0, 'og_server_name');
+		} else {
+			$server = $adb->query_result($res, 0, 'server');
+		}
 	}
 	if (isset($_REQUEST['server_username'])) {
 		$username = $_REQUEST['server_username'];
 	} else {
-		$username = $adb->query_result($res, 0, 'server_username');
+		if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
+			$username = $adb->query_result($user_mail_config, 0, 'og_server_username');
+		} else {
+			$username = $adb->query_result($res, 0, 'server_username');
+		}
 	}
 	if (isset($_REQUEST['server_password'])) {
 		$password = $_REQUEST['server_password'];
 	} else {
-		$password = html_entity_decode($adb->query_result($res, 0, 'server_password'), ENT_QUOTES, $default_charset);
+		if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
+			require_once 'include/database/PearDatabase.php';
+			require_once 'modules/Users/Users.php';
+			$focus = new Users();
+			$password = $focus->de_cryption($adb->query_result($user_mail_config, 0, 'og_server_password'));
+		} else {
+			$password = html_entity_decode($adb->query_result($res, 0, 'server_password'), ENT_QUOTES, $default_charset);
+		}
 	}
 	if (isset($_REQUEST['smtp_auth'])) {
 		$smtp_auth = $_REQUEST['smtp_auth'];
 	} else {
-		$smtp_auth = $adb->query_result($res, 0, 'smtp_auth');
+		if ($user_mail_config && $adb->num_rows($user_mail_config)>0) {
+			$smtp_auth = $adb->query_result($user_mail_config, 0, 'og_smtp_auth	');
+		} else {
+			$smtp_auth = $adb->query_result($res, 0, 'smtp_auth');
+		}
 	}
 
 	$adb->println("Mail server name,username & password => '".$server."','".$username."','".$password."'");

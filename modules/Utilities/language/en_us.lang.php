@@ -9,6 +9,17 @@
  ********************************************************************************/
 
 $mod_strings = array(
+	// Translations for JS (please use the prefix JSLBL in key)
+	'JSLBL_Loading_Please_Wait'  => 'Loading Please Wait',
+	'JSLBL_Saving_And_Verifying' => 'Saving & Verifying',
+	'JSLBL_Choose_Server_Type'        => 'Choose server type',
+	'JSLBL_PASSWORD_CANNOT_BE_EMPTY'=>'Password cannot be empty',
+	'JSLBL_SERVERNAME_CANNOT_BE_EMPTY'=>'Server Name cannot be empty',
+	'JSLBL_USERNAME_CANNOT_BE_EMPTY'=>'User Name cannot be empty',
+	'JSLBL_ACCOUNTNAME_CANNOT_EMPTY'=>'Organization Name cannot be empty',
+	'JSLBL_FROM_EMIL_CANNOT_BE_EMPTY' => 'From Email cannot be empty',
+
+	// General translations
 	'SUCCESSFUL_REGISTRATION_TITLE' => 'Authentification Correct',
 	'SUCCESSFUL_REGISTRATION_MESSAGE' => 'You have correctly established authentification credentials with %s. You can now start using the functionality.',
 	'UNSUCCESSFUL_REGISTRATION_TITLE' => 'Authentification Incorrect',
@@ -54,6 +65,19 @@ $mod_strings = array(
 	'LBL_SUBSTITUTE_OUTGOING_MAIL_SERVER' => 'Substitute Outgoing Mail Server',
 	'LBL_FROM_EMAIL' => 'From Mail',
 	'LBL_REQUIRES_AUTHENTICATION' => 'Requires Authentication',
-	'LBL_USER_SMTP_CONFIG' => 'User SMTP Configuration'
+	'LBL_USER_SMTP_CONFIG' => 'User SMTP Configuration',
+	'LBL_CONFIG_STATUS' => 'Configuration Status',
+	'LBL_IC_SUCCESS_CONFIG_VALIDATION' => 'Incoming Mail Server Configuration Saved and Validated',
+	'LBL_IC_WARNING_CONFIG_VALIDATION' => 'Incoming Mail Server Configuration Not Validated',
+	'LBL_IC_CONFIG_VALIDATION_FAIL' => 'Incoming Mail Server Configuration Validation Fail',
+	'LBL_OG_SUCCESS_CONFIG_VALIDATION' => 'Outgoing Mail Server Configuration Saved and Validated',
+	'LBL_OG_WARNING_CONFIG_VALIDATION' => 'Outgoing Mail Server Configuration Not Validated',
+	'LBL_OG_CONFIG_VALIDATION_FAIL' => 'Outgoing Mail Server Configuration Validation Fail',
+	'LBL_ERROR' => 'Error',
+	'LBL_CLOSE' =>'Close',
+	'LBL_SSL_Options' => 'SSL Options',
+	'LBL_No_TLS' => 'No TLS',
+	'LBL_TLS' => 'TLS',
+	'LBL_SSL' => 'SSL',
 );
 ?>

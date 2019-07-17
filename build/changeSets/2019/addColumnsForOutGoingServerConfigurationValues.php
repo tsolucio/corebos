@@ -24,14 +24,17 @@ class AddColumnsForOutgoingServerConfigurationValues extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-            $this->ExecuteQuery("ALTER TABLE  vtiger_mail_account  ADD  server VARCHAR(100) NOT NULL");
-            $this->ExecuteQuery("ALTER TABLE  vtiger_mail_account  ADD  server_port INT(19) NOT NULL");
-            $this->ExecuteQuery("ALTER TABLE  vtiger_mail_account  ADD  server_username VARCHAR(100) NOT NULL");
-            $this->ExecuteQuery("ALTER TABLE  vtiger_mail_account  ADD  server_password VARCHAR(100) NOT NULL");
-            $this->ExecuteQuery("ALTER TABLE  vtiger_mail_account  ADD  server_type VARCHAR(20) NOT NULL");
-            $this->ExecuteQuery("ALTER TABLE  vtiger_mail_account  ADD  smtp_auth VARCHAR(5) NOT NULL");
-            $this->ExecuteQuery("ALTER TABLE  vtiger_mail_account  ADD  server_path VARCHAR(256) NOT NULL");
-            $this->ExecuteQuery("ALTER TABLE  vtiger_mail_account  ADD  from_email_field VARCHAR(50) NOT NULL");
+			$this->ExecuteQuery("ALTER TABLE  vtiger_mail_accounts  ADD  og_server_name VARCHAR(50) NULL");
+			$this->ExecuteQuery("ALTER TABLE  vtiger_mail_accounts  ADD  og_server_port INT(19) NULL");
+			$this->ExecuteQuery("ALTER TABLE  vtiger_mail_accounts  ADD  og_server_username VARCHAR(50) NULL");
+			$this->ExecuteQuery("ALTER TABLE  vtiger_mail_accounts  ADD  og_server_password VARCHAR(250) NULL");
+			$this->ExecuteQuery("ALTER TABLE  vtiger_mail_accounts  ADD  og_server_type VARCHAR(50) NULL");
+			$this->ExecuteQuery("ALTER TABLE  vtiger_mail_accounts  ADD  og_smtp_auth VARCHAR(50) NULL");
+			$this->ExecuteQuery("ALTER TABLE  vtiger_mail_accounts  ADD  og_server_path VARCHAR(256) NULL");
+			$this->ExecuteQuery("ALTER TABLE  vtiger_mail_accounts  ADD  og_from_email_field VARCHAR(50) NULL");
+			$this->ExecuteQuery("ALTER TABLE  vtiger_mail_accounts  ADD  og_server_status VARCHAR(10) NULL");
+			$this->ExecuteQuery("ALTER TABLE  vtiger_mail_accounts  ADD  og_server_validation_status BOOLEAN NOT NULL DEFAULT FALSE");
+			$this->ExecuteQuery("ALTER TABLE  vtiger_mail_accounts  ADD  ic_server_validation_status BOOLEAN NOT NULL DEFAULT FALSE");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
