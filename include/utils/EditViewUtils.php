@@ -270,7 +270,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	} elseif ($uitype == 14) { //added for Time Field
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue [] = $value;
-	} elseif ($uitype == 19 || $uitype == 20) {
+	} elseif ($uitype == 19) {
 		if (isset($_REQUEST['body'])) {
 			$value = ($_REQUEST['body']);
 		}

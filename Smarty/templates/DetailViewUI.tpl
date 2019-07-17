@@ -177,7 +177,7 @@
                                                           <a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="detailview_ajaxbutton ajax_cancelsave_detailview">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>
                                                        </div>
                                                   </td>
-                                             {elseif $keyid eq '19' || $keyid eq '20'} <!--TextArea/Description-->
+                                             {elseif $keyid eq '19'} <!--TextArea/Description-->
 						<!-- we will empty the value of ticket and faq comment -->
 						{if isset($MOD.LBL_ADD_COMMENT) && $label eq $MOD.LBL_ADD_COMMENT}
 							{assign var=keyval value=''}

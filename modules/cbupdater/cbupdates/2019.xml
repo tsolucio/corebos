@@ -236,4 +236,11 @@
 	<classname>incrementMenuFieldsSize</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>migrate uitype 20 (textbox) to uitype 19 (textbox)</description>
+	<filename>build/changeSets/2019/convertUitype20to19.php</filename>
+	<classname>convertUitype20to19</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
