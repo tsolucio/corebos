@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2017 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS customizations.
+ * Copyright 2019 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS customizations.
  * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
  * Vizsage Public License (the "License"). You may not use this file except in compliance with the
  * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
@@ -18,7 +18,7 @@
  *************************************************************************************************/
 
 class corebos_smtp {
-	# Incoming Mail Server Config Properties
+	// Incoming Mail Server Config Properties
 	public $ic_mail_server_active;
 	public $ic_mail_server_displayname;
 	public $ic_mail_server_email;
@@ -33,7 +33,7 @@ class corebos_smtp {
 	public $ic_mail_server_sslmeth;
 	public $ic_mail_server_validation_status;
 
-	# Outgoing Mail Server Config Properties
+	// Outgoing Mail Server Config Properties
 	public $og_mail_server_active;
 	public $og_mail_server_username;
 	public $og_mail_server_password;
@@ -45,7 +45,7 @@ class corebos_smtp {
 	public $og_mail_server_path;
 	public $og_mail_server_validation_status;
 
-	# Errors
+	// Errors
 	public static $ERROR_NONE = 0;
 	public static $ERROR_NOTCONFIGURED = 1;
 	public static $ERROR_NOACCESSTOKEN = 2;
@@ -59,7 +59,7 @@ class corebos_smtp {
 
 		$result = $adb->pquery("SELECT * FROM vtiger_mail_accounts WHERE user_id=?", array($current_user->id));
 		if ($adb->num_rows($result)) {
-			# for Incoming Mail Server
+			// for Incoming Mail Server
 			$this->ic_mail_server_name = trim($adb->query_result($result, 0, 'mail_servername'));
 			$this->ic_mail_server_displayname = trim($adb->query_result($result, 0, 'display_name'));
 			$this->ic_mail_server_username = trim($adb->query_result($result, 0, 'mail_username'));
@@ -71,7 +71,7 @@ class corebos_smtp {
 			$this->ic_mail_server_box_refresh = trim($adb->query_result($result, 0, 'box_refresh'));
 			$this->ic_mail_server_validation_status = trim($adb->query_result($result, 0, 'ic_server_validation_status'));
 
-			# for Outgoing Mail Server
+			// for Outgoing Mail Server
 			$this->og_mail_server_active = trim($adb->query_result($result, 0, 'og_server_status'));
 			$this->og_mail_server_username = trim($adb->query_result($result, 0, 'og_server_username'));
 			$this->og_mail_server_password = trim($adb->query_result($result, 0, 'og_server_password'));

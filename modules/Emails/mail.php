@@ -309,7 +309,7 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
 function setMailServerProperties($mail) {
 	global $adb,$default_charset, $current_user;
 	$adb->println('> setMailServerProperties');
-	$user_mail_config = $adb->pquery('select * from vtiger_mail_accounts where user_id=?', array($current_user->id));
+	$user_mail_config = $adb->pquery('select * from vtiger_mail_accounts where user_id = ? AND og_server_validation_status=0 AND og_server_status=1', array($current_user->id));
 	$res = $adb->pquery('select * from vtiger_systems where server_type=?', array('email'));
 	if (isset($_REQUEST['server'])) {
 		$server = $_REQUEST['server'];

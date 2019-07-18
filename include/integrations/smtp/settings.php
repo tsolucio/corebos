@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  *************************************************************************************************
- *  Module    : SendGrid Integration Settings
+ *  Module    : SMTP Integration Settings
  *  Version   : 1.0
  *  Author    : JPL TSolucio, S. L.
  *************************************************************************************************/
@@ -82,7 +82,7 @@ if ($_REQUEST['savemode'] == 'true') {
 	$ic_mail_server_validation_error_message = '';
 }
 
-# Code for Displaying Info
+// Code for Displaying Info
 require_once 'include/database/PearDatabase.php';
 require_once 'modules/Users/Users.php';
 $focus = new Users();
@@ -93,14 +93,14 @@ $smarty->assign('ic_mail_server_validation_warning', $smtpconfig->getIncomingMai
 $smarty->assign('og_mail_server_validation_warning', $smtpconfig->getOutgoingMailServerValidationStatus());
 $smarty->assign('ic_mail_server_validation_success', $ic_mail_server_validation_success);
 $smarty->assign('og_mail_server_validation_error', $og_mail_server_validation_error);
-# Controlled by the Database Validation Status field
+// Controlled by the Database Validation Status field
 $smarty->assign('og_mail_server_validation_error_message', $og_mail_server_validation_error_message);
 $smarty->assign('ic_mail_server_validation_error_message', $ic_mail_server_validation_error_message);
 $smarty->assign('og_mail_server_validation_success', $og_mail_server_validation_success);
 $smarty->assign('success_config_validation_message', 'LBL_SUCCESS_CONFIG_VALIDATION');
 $smarty->assign('warning_config_validation_message', 'LBL_WARNING_CONFIG_VALIDATION');
 
-# incoming mail server config values
+// incoming mail server config values
 $smarty->assign('ic_mail_server_active', $smtpconfig->getIncomingMailServerActiveStatus());
 $smarty->assign('ic_mail_server_displayname', $smtpconfig->getIncomingMailServerDisplayName());
 $smarty->assign('ic_mail_server_email', $smtpconfig->getIncomingMailServerEmail());
@@ -113,7 +113,7 @@ $smarty->assign('ic_mail_server_refresh_time', $smtpconfig->getIncomingMailServe
 $smarty->assign('ic_mail_server_mails_per_page', $smtpconfig->getIncomingMailServerMailsPerPage());
 $smarty->assign('ic_mail_server_ssltype', $smtpconfig->getIncomingMailServerSSLTYPE());
 $smarty->assign('ic_mail_server_sslmeth', $smtpconfig->getIncomingMailServerSSLMETH());
-# outgoing mail server config values
+// outgoing mail server config values
 $smarty->assign('og_mail_server_active', $smtpconfig->getOutgoingMailServerActiveStatus());
 $smarty->assign('og_mail_server_username', $smtpconfig->getOutgoingMailServerUsername());
 $smarty->assign('og_mail_server_password', $focus->de_cryption($smtpconfig->getOutgoingMailServerPassword()));
