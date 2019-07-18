@@ -198,22 +198,18 @@ if (typeof(Utilities) == 'undefined') {
 		close_ic_warning_toast: function () {
 			jQuery('#ic-validation-warning').hide();
 		},
-
 		close_ic_success_toast: function () {
 			jQuery('#ic-validation-success').hide();
 		},
-
 		close_ic_error_toast: function () {
 			jQuery('#ic-validation-error').hide();
 		},
-
 		close_og_warning_toast: function () {
 			jQuery('#og-validation-warning').hide();
 		},
 		close_og_success_toast: function () {
 			jQuery('#og-validation-success').hide();
 		},
-		
 		close_og_error_toast: function () {
 			jQuery('#og-validation-error').hide();
 		}
