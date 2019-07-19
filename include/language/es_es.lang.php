@@ -1284,6 +1284,10 @@ $app_strings = array (
 	'Net Total' => 'Total Neto (aDG)',
 	'Send SMS' => 'Enviar SMS',
 	'Add Payment' => 'Añadir Cobro Pago',
+	'Add event' => 'Add event',
+	'Create Invoice' => 'Create Invoice',
+	'Send Email With PDF' => 'Send Email With PDF',
+	'Export To PDF' => 'Export To PDF',
 
 	'LBL_MORE'=>'Más',
 	'LBL_CRM_SETTINGS' => 'Configuración CRM',

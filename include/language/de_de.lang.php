@@ -1307,6 +1307,10 @@ $app_strings = array(
 'Send Email' => 'Sende E-Mail',
 'Mailer Export' => 'E-Mail Export',
 'Add Payment' => 'Zahlung hinzufügen',
+'Add event' => 'Add event',
+'Create Invoice' => 'Create Invoice',
+'Send Email With PDF' => 'Send Email With PDF',
+'Export To PDF' => 'Export To PDF',
 
 'LBL_MORE'=>'mehr',
 'LBL_CRM_SETTINGS' => 'CRM Einstellungen',

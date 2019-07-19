@@ -1318,6 +1318,11 @@ $app_strings = array (
 	'Select Related Module' => 'Selecciona Módulo Relacionado',
 	'No Module' => 'No tiene módulos relacionados',
 	'Entity Name' => 'Nombre Entidad',
+	'Add event' => 'Add event',
+	'Create Invoice' => 'Create Invoice',
+	'Send Email With PDF' => 'Send Email With PDF',
+	'Export To PDF' => 'Export To PDF',
+
 );
 
 // Translation for currency names
