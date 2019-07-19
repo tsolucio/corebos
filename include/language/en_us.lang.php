@@ -1341,6 +1341,10 @@ $app_strings = array(
 'Select Related Module' => 'Select Related Module',
 'No Module' => 'No related Module',
 'Entity Name' => 'Entity Name',
+'Add event' => 'Add event',
+'Create Invoice' => 'Create Invoice',
+'Send Email With PDF' => 'Send Email With PDF',
+'Export To PDF' => 'Export To PDF',
 );
 
 // Translation for currency names

@@ -1299,6 +1299,11 @@ $app_strings = array (
 'LBL_DESELECT_ALL' => 'Desmarcar todos',
 'LBL_RECORDS_IN' => 'registros em',
 'LBL_FOLDER' => 'pasta',
+'Add event' => 'Add event',
+'Create Invoice' => 'Create Invoice',
+'Send Email With PDF' => 'Send Email With PDF',
+'Export To PDF' => 'Export To PDF',
+
 
 //added for creating a custom lead map row in UI
 'LBL_ADD_MAPPING'=> 'Adicionar mapeamento',
