@@ -403,5 +403,6 @@ var alert_arr = {
 	'OF' : 'di',
 	'ERR_Massedit' : 'Errore di Mass Edit',
 	'ProcessFINISHED' : 'Processo Terminato',
-	'duplicatednotallowed' : 'Non sono permessi Moduli Duplicati'
+	'duplicatednotallowed' : 'Non sono permessi Moduli Duplicati',
+	'HAS_THIS_AS_NTH_CHILD' : 'ha questo record come figlio unico'
 };

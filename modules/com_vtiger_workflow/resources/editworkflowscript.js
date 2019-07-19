@@ -209,7 +209,7 @@ function editworkflowscript($, conditions) {
 		var op = {
 			string:['is', 'contains', 'does not contain', 'starts with', 'ends with', 'has changed', 'is empty', 'is not empty', 'exists', 'does not start with', 'does not end with', 'was'],
 			number:['equal to', 'less than', 'greater than', 'does not equal', 'less than or equal to', 'greater than or equal to', 'has changed', 'exists', 'was'],
-			value:['is', 'is not', 'has changed', 'has changed to', 'is empty', 'is not empty', 'exists', 'was'],
+			value:['is', 'is not', 'has changed', 'has changed to', 'is empty', 'is not empty', 'exists', 'was', 'has this as nth child'],
 			multipicklist:['is', 'is not', 'was'],
 			date:['is', 'is not', 'has changed', 'has changed to', 'between', 'before', 'after', 'is today', 'less than days ago', 'more than days ago', 'in less than', 'in more than', 'days ago', 'days later', 'exists', 'was'],
 			datetime:['is', 'is not', 'has changed', 'has changed to', 'less than hours before', 'less than hours later', 'more than hours before', 'more than hours later', 'equal to', 'less than', 'greater than', 'does not equal', 'less than or equal to', 'greater than or equal to', 'exists', 'was']
@@ -244,7 +244,7 @@ function editworkflowscript($, conditions) {
 			value:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO, alert_arr.LBL_IS_EMPTY, alert_arr.LBL_IS_NOT_EMPTY,
 				alert_arr.LBL_EXISTS, alert_arr.LBL_WAS],
 			reference:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO, alert_arr.LBL_IS_EMPTY, alert_arr.LBL_IS_NOT_EMPTY,
-				alert_arr.LBL_EXISTS, alert_arr.LBL_WAS],
+				alert_arr.LBL_EXISTS, alert_arr.LBL_WAS, alert_arr.HAS_THIS_AS_NTH_CHILD],
 			date:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO,
 				alert_arr.LBL_BETWEEN, alert_arr.LBL_BEFORE, alert_arr.LBL_AFTER, alert_arr.LBL_IS_TODAY, alert_arr.LBL_LESS_THAN_DAYS_AGO,
 				alert_arr.LBL_MORE_THAN_DAYS_AGO, alert_arr.LBL_IN_LESS_THAN, alert_arr.LBL_IN_MORE_THAN, alert_arr.LBL_DAYS_AGO, alert_arr.LBL_DAYS_LATER,
