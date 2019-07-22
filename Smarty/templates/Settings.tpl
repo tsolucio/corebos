@@ -18,9 +18,9 @@
 		<td style="padding-left:10px;padding-right:50px" class="moduleName" nowrap><a class="hdrLink" href="#">{$MODULELABEL}</a></td>
 	</tr>
 </table>
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
+<table style="border:0;padding: 2px 10px;">
 <tbody><tr>
-        <td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
+	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 	<br>
 	<div align=center>
