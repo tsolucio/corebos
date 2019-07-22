@@ -26,6 +26,7 @@ class installrorolanguage extends cbupdaterWorker {
 			require_once 'vtlib/Vtiger/Package.php';
 			$package = new Vtiger_Package();
 			$package->importManifest('include/language/ro_ro.manifest.xml');
+			vtlib_toggleLanguageAccess('ro_ro', false);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
