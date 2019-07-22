@@ -387,9 +387,9 @@ if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language 
 							}
 						}
 					}
-					if(is_picklist($token_pair[1],$module)){
+					if (is_picklist($token_pair[1], $module)) {
 						$reemplazo = getTranslatedString(elimina_llave(html_entity_decode($cadena, ENT_QUOTES, $default_charset)), $module);
-					}else{
+					} else {
 						$reemplazo = elimina_llave(html_entity_decode($cadena, ENT_QUOTES, $default_charset));
 					}
 				} elseif (in_array($token_pair[0], getInventoryModules()) && ($token_pair[1] == 'TaxPercent' || $token_pair[1] == 'TaxTotal' )) {
@@ -1453,18 +1453,9 @@ if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language 
 
 	function is_picklist($field, $module) {
 		global $adb;
-
-		$tabid = getTabid($module);
-		$ui_date = array(15,16,1613,1614,1615,1024);
-		$SQL = "SELECT uitype FROM vtiger_field WHERE fieldname=? AND tabid=?";
-		$res = $adb->pquery($SQL, array($field,$tabid));
-		$uitype = $adb->query_result($res, 0, 'uitype');
-
-		if (in_array($uitype, $ui_date)) {
-			return true;
-		} else {
-			return false;
-		}
+		$res = $adb->pquery('SELECT * FROM vtiger_field WHERE fieldname=? AND tabid=?', array($field, getTabid($module)));
+		$fld = WebserviceField::fromQueryResult($adb, $res, 0);
+		return ($fld->getFieldDataType()=='picklist');
 	}
 
 // Funcio que usem principalment al generar la documentacio, pero com es necessaria
