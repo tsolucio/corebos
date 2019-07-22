@@ -387,7 +387,11 @@ if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language 
 							}
 						}
 					}
-					$reemplazo = getTranslatedString(elimina_llave(html_entity_decode($cadena, ENT_QUOTES, $default_charset)), $module);
+					if(is_picklist($token_pair[1],$module)){
+						$reemplazo = getTranslatedString(elimina_llave(html_entity_decode($cadena, ENT_QUOTES, $default_charset)), $module);
+					}else{
+						$reemplazo = elimina_llave(html_entity_decode($cadena, ENT_QUOTES, $default_charset));
+					}
 				} elseif (in_array($token_pair[0], getInventoryModules()) && ($token_pair[1] == 'TaxPercent' || $token_pair[1] == 'TaxTotal' )) {
 					$totalFra = $focus->column_fields['hdnGrandTotal'];
 					$sbtotalFra = $focus->column_fields['hdnSubTotal'];
@@ -1436,6 +1440,22 @@ if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language 
 
 		$tabid = getTabid($module);
 		$ui_date = array(5,6,23,64,70);
+		$SQL = "SELECT uitype FROM vtiger_field WHERE fieldname=? AND tabid=?";
+		$res = $adb->pquery($SQL, array($field,$tabid));
+		$uitype = $adb->query_result($res, 0, 'uitype');
+
+		if (in_array($uitype, $ui_date)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	function is_picklist($field, $module) {
+		global $adb;
+
+		$tabid = getTabid($module);
+		$ui_date = array(15,16,1613,1614,1615,1024);
 		$SQL = "SELECT uitype FROM vtiger_field WHERE fieldname=? AND tabid=?";
 		$res = $adb->pquery($SQL, array($field,$tabid));
 		$uitype = $adb->query_result($res, 0, 'uitype');
