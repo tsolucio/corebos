@@ -250,4 +250,11 @@
 	<classname>convertUitype22and24to21</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Install ro_ro language</description>
+	<filename>build/changeSets/2019/installrorolanguage.php</filename>
+	<classname>installrorolanguage</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
