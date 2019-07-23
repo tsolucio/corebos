@@ -168,7 +168,10 @@ if ($current_user->id == $_REQUEST['record'] || is_admin($current_user) == true)
 	if (isset($_REQUEST['error_string'])) {
 		$smarty->assign('ERROR_MESSAGE', vtlib_purify($_REQUEST['error_string']));
 	}
-
+	// Gather the custom link information to display
+	include_once 'vtlib/Vtiger/Link.php';
+	$customlink_params = array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));
+	$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType($tabid, array('DETAILVIEWBASIC'), $customlink_params, null, $focus->id));
 	$smarty->assign('view', null);
 	$smarty->display('UserDetailView.tpl');
 } else {

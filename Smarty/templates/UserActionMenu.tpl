@@ -61,6 +61,28 @@
 	</a>
 	</li>
 {/if}
+{if $CUSTOM_LINKS && $CUSTOM_LINKS.DETAILVIEWBASIC}
+	<li class="slds-has-divider_top-space" role="separator"></li>
+	{foreach item=CUSTOMLINK from=$CUSTOM_LINKS.DETAILVIEWBASIC}
+		{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
+		{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
+		{if $customlink_label eq ''}
+			{assign var="customlink_label" value=$customlink_href}
+		{else}
+			{* Pickup the translated label provided by the module *}
+			{assign var="customlink_label" value=$customlink_label|@getTranslatedString:$CUSTOMLINK->module()}
+		{/if}
+		<li class="slds-dropdown__item" role="presentation">
+		<a href="{$customlink_href}" role="menuitem">
+			<span class="slds-truncate" title="{$customlink_label}">
+				<span class="slds-assistive-text">{$customlink_label}</span>
+				<span>{$customlink_label}</span>
+			</span>
+		</a>
+		</li>
+		</tr>
+	{/foreach}
+{/if}
 </ul>
 </div>
 </div>
