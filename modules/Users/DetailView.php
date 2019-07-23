@@ -166,6 +166,8 @@ if ($current_user->id == $_REQUEST['record'] || is_admin($current_user) == true)
 		$smarty->assign('mustChangePassword', 0);
 	}
 	if (isset($_REQUEST['error_string'])) {
+		$errormessageclass = isset($_REQUEST['error_msgclass']) ? vtlib_purify($_REQUEST['error_msgclass']) : '';
+		$smarty->assign('ERROR_MESSAGE_CLASS', $errormessageclass);
 		$smarty->assign('ERROR_MESSAGE', vtlib_purify($_REQUEST['error_string']));
 	}
 	// Gather the custom link information to display
