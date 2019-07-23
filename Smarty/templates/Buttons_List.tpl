@@ -60,11 +60,9 @@
 					<div class="slds-page-header__name-title">
 						<span class="slds-page-header__title slds-truncate" title="{$MODULELABEL|@addslashes}">
 						{if !empty($isDetailView) || !empty($isEditView)}
-							<h1>
-								<span class="slds-page-header__title slds-truncate" title="{$MODULELABEL|@addslashes}">
-									<span class="slds-page-header__name-meta">[ {$TITLEPREFIX} ]</span> {$MODULELABEL|textlength_check:30}
-								</span>
-							</h1>
+							<span class="slds-page-header__title slds-truncate" title="{$MODULELABEL|@addslashes}">
+								<span class="slds-page-header__name-meta">[ {$TITLEPREFIX} ]</span> {$MODULELABEL|textlength_check:30}
+							</span>
 						{else}
 							<a class="hdrLink" href="index.php?action={$action}&module={$MODULE}">{$MODULELABEL}</a>
 						{/if}
@@ -79,16 +77,16 @@
 	</div>
 	<div class="slds-p-right_medium">
 		{if $CHECK.CreateView eq 'yes' && ($MODULE eq 'Calendar' || $MODULE eq 'Calendar4You')}
-			<span id="LB_AddButton" class="LB_Button slds-p-left_small slds-p-right_none"><img src="{$IMAGE_PATH}btnL3Add.gif" alt="{$MOD.LBL_ADD_EVENT}" title="{$MOD.LBL_ADD_EVENT}" border=0 {$ADD_ONMOUSEOVER}></span>
+			<span id="LB_AddButton" class="LB_Button slds-p-left_small slds-p-right_none"><img src="{$IMAGE_PATH}btnL3Add.gif" alt="{$MOD.LBL_ADD_EVENT}" title="{$MOD.LBL_ADD_EVENT}" style="border:0;" {$ADD_ONMOUSEOVER}></span>
 		{elseif $CHECK.CreateView eq 'yes' && $MODULE neq 'Emails'}
 			<span id="LB_AddButton" class="LB_Button slds-p-left_small slds-p-right_none"><a href="index.php?module={$MODULE}&action=EditView&return_action=DetailView&parenttab={$CATEGORY}"><img src="{$IMAGE_PATH}btnL3Add.gif" alt="{$APP.LBL_CREATE_BUTTON_LABEL} {$SINGLE_MOD|getTranslatedString:$MODULE}..." title="{$APP.LBL_CREATE_BUTTON_LABEL} {$SINGLE_MOD|getTranslatedString:$MODULE}..." border=0></a></span>
 		{else}
-			<span id="LB_AddButtonFaded" class="LB_Button slds-p-left_small slds-p-right_none"><img src="{'btnL3Add-Faded.gif'|@vtiger_imageurl:$THEME}" border=0></span>
+			<span id="LB_AddButtonFaded" class="LB_Button slds-p-left_small slds-p-right_none"><img src="{'btnL3Add-Faded.gif'|@vtiger_imageurl:$THEME}" style="border:0;"></span>
 		{/if}
 		{if $CHECK.index eq 'yes' && ($smarty.request.action eq 'ListView' || $smarty.request.action eq 'index') && $MODULE neq 'Emails' && $MODULE neq 'Calendar4You'}
 			<span id="LB_SearchButton" class="LB_Button slds-p-left_none slds-p-right_x-small"><a href="javascript:;" onClick="searchshowhide('searchAcc','advSearch');mergehide('mergeDup')" ><img src="{$IMAGE_PATH}btnL3Search.gif" alt="{$APP.LBL_SEARCH_ALT}{$MODULE|getTranslatedString:$MODULE}..." title="{$APP.LBL_SEARCH_TITLE}{$MODULE|getTranslatedString:$MODULE}..." border=0></a></span>
 		{else}
-			<span id="LB_SearchButtonFaded" class="LB_Button slds-p-left_none slds-p-right_x-small"><img src="{'btnL3Search-Faded.gif'|@vtiger_imageurl:$THEME}" border=0></span>
+			<span id="LB_SearchButtonFaded" class="LB_Button slds-p-left_none slds-p-right_x-small"><img src="{'btnL3Search-Faded.gif'|@vtiger_imageurl:$THEME}" style="border:0;" alt="{$APP.LBL_SEARCH_ALT}{$MODULE|getTranslatedString:$MODULE}..."></span>
 		{/if}
 		{if $CALENDAR_DISPLAY eq 'true'}
 			{if $CATEGORY eq 'Settings' || $CATEGORY eq 'Tools' || $CATEGORY eq 'Analytics'}
