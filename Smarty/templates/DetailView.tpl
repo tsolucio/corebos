@@ -154,10 +154,10 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 													<tr valign=top>
 														<td style="padding:5px">
 															<!-- Command Buttons -->
+															<form action="index.php" method="post" name="DetailView" id="formDetailView">
+																<input type="hidden" id="hdtxt_IsAdmin" value="{if isset($hdtxt_IsAdmin)}{$hdtxt_IsAdmin}{else}0{/if}">
+																{include file='DetailViewHidden.tpl'}
 															<table border=0 cellspacing=0 cellpadding=0 width=100%>
-																<form action="index.php" method="post" name="DetailView" id="formDetailView">
-																	<input type="hidden" id="hdtxt_IsAdmin" value="{if isset($hdtxt_IsAdmin)}{$hdtxt_IsAdmin}{else}0{/if}">
-																	{include file='DetailViewHidden.tpl'}
 																	{foreach key=header item=detail from=$BLOCKS name=BLOCKS}
 																		<tr><td style="padding:5px">
 																				<!-- Detailed View Code starts here-->
