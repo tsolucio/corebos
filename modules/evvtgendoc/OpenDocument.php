@@ -800,10 +800,10 @@ class OpenDocument {
 		'insertindexGD' => $insertindexGD,
 		);
 
-	  // Prepare include docs information
+		// Prepare include docs information
 		$xmlText = $this->contentDOM->saveXML();
 		$result = preg_match_all('/\\'.$includeGD.'([\w\d]+)\}/', $xmlText, $matches);
-		$this->debugmsg('Post processing: '.print_r(array($includeGD,$result,$matches),true));
+		$this->debugmsg('Post processing: '.print_r(array($includeGD,$result, $matches), true));
 		if ($result) {
 			foreach ($matches[1] as $match) {
 				$sql = "select notesid from vtiger_notes where note_no='{$match}'";
@@ -827,16 +827,16 @@ class OpenDocument {
 			fwrite($handle, "{$key} = {$value}\n");
 		}
 		fclose($handle);
-	  // Process and save
+		// Process and save
 		$filename = escapeshellarg($filename);
 		$command = "{$root_directory}modules/evvtgendoc/unoservice.sh {$pFilename} file://{$filename} file://{$filename}";
-	  //$command = "{$root_directory}modules/evvtgendoc/unoservice.sh {$pFilename} file://{$filename} file://{$filename} >>{$root_directory}/modules/evvtgendoc/unoservice.log 2>&1";
-	  //echo $command;
+		//$command = "{$root_directory}modules/evvtgendoc/unoservice.sh {$pFilename} file://{$filename} file://{$filename} >>{$root_directory}/modules/evvtgendoc/unoservice.log 2>&1";
+		//echo $command;
 		$status = exec($command);
-		$this->debugmsg('Post processing: '.print_r(array($command,$status),true));
+		$this->debugmsg('Post processing: '.print_r(array($command, $status), true));
 		$log->debug("unoservice.sh: {$status}");
 
-	  // Remove temp files
+		// Remove temp files
 		unlink($pFilename);
 	}
 
