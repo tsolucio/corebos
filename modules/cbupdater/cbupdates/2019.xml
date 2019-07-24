@@ -257,4 +257,12 @@
 	<classname>installrorolanguage</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>elifuraha</author>
+	<description>Add coreBOS Rule web service call missing context </description>
+	<filename>build/changeSets/2019/addCbRuleMissingContext.php</filename>
+	<classname>addCbRuleMissingContext</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
 </updatesChangeLog>

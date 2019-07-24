@@ -22,7 +22,7 @@ include_once 'modules/cbMap/cbRule.php';
  * cbRule
  * conditionid: ID of the map
  */
-function cbws_cbRule($conditionid, $user) {
+function cbws_cbRule($conditionid, $context, $user) {
 	global $adb, $log;
 
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $conditionid);
@@ -51,5 +51,5 @@ function cbws_cbRule($conditionid, $user) {
 	if (!$meta->exists($idComponents[1])) {
 		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
 	}
-	return coreBOS_Rule::evaluate($idComponents[1]);
+	return coreBOS_Rule::evaluate($idComponents[1], $context);
 }
