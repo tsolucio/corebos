@@ -63,28 +63,28 @@ if (typeof(Utilities) == 'undefined') {
 		},
 		validate_smtp_config_settings: function (form) {
 			// for Incoming Mail Server
-			if (form.ic_mail_server_type.value == '' && form.ic_mail_server_active.value == 'on') {
+			if (form.ic_mail_server_type.value == '' && form.ic_mail_server_active.checked) {
 				jQuery('#ic-div-server-type').addClass('slds-has-error');
 				jQuery('#form-error-ic-server-type').append('<span>'+Utilities.i18n('JSLBL_Choose_Server_Type')+'</span>');
 				jQuery('#form-error-ic-server-type').show();
 				return false;
 			}
 
-			if (form.ic_mail_server_name.value == '' && form.ic_mail_server_active.value == 'on') {
+			if (form.ic_mail_server_name.value == '' && form.ic_mail_server_active.checked) {
 				jQuery('#ic-div-servername').addClass('slds-has-error');
 				jQuery('#form-error-ic-server-name').append('<span>'+Utilities.i18n('JSLBL_SERVERNAME_CANNOT_BE_EMPTY')+'</span>');
 				jQuery('#form-error-ic-server-name').show();
 				return false;
 			}
 
-			if (form.ic_mail_server_username.value == '' && form.ic_mail_server_active.value == 'on') {
+			if (form.ic_mail_server_username.value == '' && form.ic_mail_server_active.checked) {
 				jQuery('#ic-div-username').addClass('slds-has-error');
 				jQuery('#form-error-ic-server-username').append('<span>'+Utilities.i18n('JSLBL_USERNAME_CANNOT_BE_EMPTY')+'</span>');
 				jQuery('#form-error-ic-server-username').show();
 				return false;
 			}
 
-			if (form.ic_mail_server_password.value == '' && form.ic_mail_server_active.value == 'on') {
+			if (form.ic_mail_server_password.value == '' && form.ic_mail_server_active.checked) {
 				jQuery('#ic-div-password').addClass('slds-has-error');
 				jQuery('#form-error-ic-server-password').append('<span>'+Utilities.i18n('JSLBL_PASSWORD_CANNOT_BE_EMPTY')+'</span>');
 				jQuery('#form-error-ic-server-password').show();
@@ -92,34 +92,27 @@ if (typeof(Utilities) == 'undefined') {
 			}
 
 			// for Outgoing Mail Server
-			if (form.og_mail_server_name.value == '' && form.og_mail_server_active.value == 'on') {
+			if (form.og_mail_server_name.value == '' && form.og_mail_server_active.checked) {
 				jQuery('#og-div-server-name').addClass('slds-has-error');
 				jQuery('#form-error-og-server-name').append('<span>'+Utilities.i18n('JSLBL_SERVERNAME_CANNOT_BE_EMPTY')+'</span>');
 				jQuery('#form-error-og-server-name').show();
 				return false;
 			}
 
-			if (form.og_mail_server_username.value == '' && form.og_mail_server_active.value == 'on') {
+			if (form.og_mail_server_username.value == '' && form.og_mail_server_active.checked) {
 				jQuery('#og-div-server-username').addClass('slds-has-error');
 				jQuery('#form-error-og-server-username').append('<span>'+Utilities.i18n('JSLBL_USERNAME_CANNOT_BE_EMPTY')+'</span>');
 				jQuery('#form-error-og-server-username').show();
 				return false;
 			}
 
-			if (form.og_mail_server_password.value == '' && form.og_mail_server_active.value == 'on') {
+			if (form.og_mail_server_password.value == '' && form.og_mail_server_active.checked) {
 				jQuery('#ic-div-server-password').addClass('slds-has-error');
 				jQuery('#form-error-og-server-password').append('<span>'+Utilities.i18n('JSLBL_PASSWORD_CANNOT_BE_EMPTY')+'</span>');
 				jQuery('#form-error-og-server-password').show();
 				return false;
 			}
 
-			if (form.og_mail_server_from_email.value == '' && form.og_mail_server_active.value == 'on') {
-				jQuery('#ic-div-server-from-email').addClass('slds-has-error');
-				jQuery('#form-error-og-from-email').append('<span>'+Utilities.i18n('JSLBL_FROM_EMIL_CANNOT_BE_EMPTY')+'</span>');
-				jQuery('#form-error-og-server-from-email').show();
-				return false;
-			}
-			console.log('index.php?'+Utilities._baseurl() + '&' + jQuery(form).serialize());
 			Utilities.progress_show(Utilities.i18n('JSLBL_Saving_And_Verifying'), '...');
 			jQuery.ajax({
 				method: 'POST',
