@@ -1500,18 +1500,18 @@ class OpenDocument {
 		}
 
 /*        $ReflectionClass = new ReflectionClass($object);
-        if ($ReflectionClass->getConstant('nodePrefix')=='table')
-          $nodes = $style->getElementsByTagNameNS(self::NS_STYLE, $ReflectionClass->getConstant('nodeName').'-properties');
-        elseif ($ReflectionClass->getConstant('nodePrefix')=='paragraph')
-          $nodes = $style->getElementsByTagNameNS(self::NS_STYLE, 'paragraph-properties');
-        else
-          $nodes = $style->getElementsByTagNameNS(self::NS_STYLE, 'text-properties');
-        /*
-        if (in_array($value,$this->NS_ENTITIES)) {
-            $nodes = $style->getElementsByTagNameNS(self::NS_STYLE, $value.'-properties');
-        } else {
-            $nodes = $style->getElementsByTagNameNS(self::NS_STYLE, 'text-properties');
-        }*/
+		if ($ReflectionClass->getConstant('nodePrefix')=='table')
+		  $nodes = $style->getElementsByTagNameNS(self::NS_STYLE, $ReflectionClass->getConstant('nodeName').'-properties');
+		elseif ($ReflectionClass->getConstant('nodePrefix')=='paragraph')
+		  $nodes = $style->getElementsByTagNameNS(self::NS_STYLE, 'paragraph-properties');
+		else
+		  $nodes = $style->getElementsByTagNameNS(self::NS_STYLE, 'text-properties');
+		/*
+		if (in_array($value,$this->NS_ENTITIES)) {
+			$nodes = $style->getElementsByTagNameNS(self::NS_STYLE, $value.'-properties');
+		} else {
+			$nodes = $style->getElementsByTagNameNS(self::NS_STYLE, 'text-properties');
+		}*/
 		if (empty($elemtype)) {
 			$elemtype='text';
 		}
@@ -1520,17 +1520,17 @@ class OpenDocument {
 			$text_properties = $nodes->item(0);
 		} else {
 			/*
-            if ($ReflectionClass->getConstant('nodePrefix')=='table')
-              $text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, $ReflectionClass->getConstant('nodeName').'-properties');
-            elseif ($ReflectionClass->getConstant('nodePrefix')=='paragraph')
-              $text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, 'paragraph-properties');
-            else
-              $text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, 'text-properties');
-            if (in_array($value,$this->NS_ENTITIES)) {
-                $text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, $value.'-properties');
-            } else {
-                $text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, 'text-properties');
-            }*/
+			if ($ReflectionClass->getConstant('nodePrefix')=='table')
+			  $text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, $ReflectionClass->getConstant('nodeName').'-properties');
+			elseif ($ReflectionClass->getConstant('nodePrefix')=='paragraph')
+			  $text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, 'paragraph-properties');
+			else
+			  $text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, 'text-properties');
+			if (in_array($value,$this->NS_ENTITIES)) {
+				$text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, $value.'-properties');
+			} else {
+				$text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, 'text-properties');
+			}*/
 			$text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, (strpos($elemtype, 'properties') ? $elemtype : $elemtype.'-properties'));
 			$style->appendChild($text_properties);
 		}

@@ -394,39 +394,6 @@ class Emails extends CRMEntity {
 		return $return_value;
 	}
 
-	/** Returns the column name that needs to be sorted */
-	public function getSortOrder() {
-		global $log;
-		$log->debug('> getSortOrder');
-		if (isset($_REQUEST['sorder'])) {
-			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
-		} else {
-			$sorder = (!empty($_SESSION['EMAILS_SORT_ORDER']) ? ($_SESSION['EMAILS_SORT_ORDER']) : ($this->default_sort_order));
-		}
-
-		$log->debug('< getSortOrder');
-		return $sorder;
-	}
-
-	/** Returns the order in which the records need to be sorted */
-	public function getOrderBy() {
-		global $log;
-		$log->debug('> getOrderBy');
-
-		$use_default_order_by = '';
-		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0)) {
-			$use_default_order_by = $this->default_order_by;
-		}
-
-		if (isset($_REQUEST['order_by'])) {
-			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
-		} else {
-			$order_by = (!empty($_SESSION['EMAILS_ORDER_BY']) ? ($_SESSION['EMAILS_ORDER_BY']) : ($use_default_order_by));
-		}
-
-		$log->debug('< getOrderBy');
-		return $order_by;
-	}
 
 	/** Returns a list of the associated users */
 	public function get_users($id) {
