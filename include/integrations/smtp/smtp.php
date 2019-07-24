@@ -100,27 +100,27 @@ class corebos_smtp {
 		$server_type,
 		$og_mail_server_path
 	) {
-			global $adb, $log, $current_user;
-			require_once 'modules/Emails/mail.php';
+		global $adb, $log, $current_user;
+		require_once 'modules/Emails/mail.php';
 		if (!empty($from_email_field)) {
 			$from_email = $from_email_field;
 		} else {
 			$from_email = getUserEmailId('id', $current_user->id);
 		}
 
-			$userid = $current_user->id;
-			$idrs = $adb->pquery('select * from vtiger_mail_accounts where user_id = ?', array($userid));
+		$userid = $current_user->id;
+		$idrs = $adb->pquery('select * from vtiger_mail_accounts where user_id = ?', array($userid));
 		if ($idrs && $adb->num_rows($idrs)>0) {
 			$id = $adb->query_result($idrs, 0, 'id');
 			$sql ='update vtiger_mail_accounts set og_server_name=?, og_server_username=?, og_server_password=?, og_smtp_auth=?, og_server_type=?, 
-						og_server_port=?, og_from_email_field=?, og_server_status=? where id=?';
+					og_server_port=?, og_from_email_field=?, og_server_status=? where id=?';
 			$params = array($server, $server_username, $server_password, $smtp_auth, $server_type, $port, $from_email, $isOutgoingMailServerActive, $id);
 		} else {
 			$sql = 'insert into vtiger_mail_accounts (og_server_name, og_server_username, og_server_password, og_smtp_auth, og_server_type, og_server_port, 
 			og_from_email_field, og_server_status) values(?,?,?,?,?,?,?,?)';
 			$params = array($server, $port, $server_username, $server_password, $server_type, $smtp_auth, '',$from_email, $isOutgoingMailServerActive);
 		}
-			$adb->pquery($sql, $params);
+		$adb->pquery($sql, $params);
 	}
 
 	/**
@@ -149,17 +149,17 @@ class corebos_smtp {
 		$og_validation_status,
 		$ic_validation_status
 	) {
-			global $adb, $log, $current_user, $site_URL;
+		global $adb, $log, $current_user, $site_URL;
 		if ($mails_per_page == '') {
 			$mails_per_page = '0';
 		}
-			require_once 'include/database/PearDatabase.php';
-			require_once 'modules/Users/Users.php';
-			$focus = new Users();
-			$ic_server_encrypted_password=$focus->changepassword($server_password);
-			$og_server_encrypted_password=$focus->changepassword($og_server_password);
+		require_once 'include/database/PearDatabase.php';
+		require_once 'modules/Users/Users.php';
+		$focus = new Users();
+		$ic_server_encrypted_password=$focus->changepassword($server_password);
+		$og_server_encrypted_password=$focus->changepassword($og_server_password);
 
-			$result = $adb->pquery('select * from vtiger_mail_accounts where user_id = ?', array($current_user->id));
+		$result = $adb->pquery('select * from vtiger_mail_accounts where user_id = ?', array($current_user->id));
 		if ($adb->num_rows($result) > 0) {
 			$sql='update vtiger_mail_accounts set display_name =?, mail_id =?, mail_protocol =?, mail_username =?, mail_password =?, 
 				mail_servername = ?, box_refresh=?, mails_per_page=?, ssltype=? , sslmeth=?, status =?, og_server_name=?, og_server_username=?,
@@ -207,7 +207,7 @@ class corebos_smtp {
 				$mails_per_page,
 				$ssltype,
 				$sslmeth,
-				$_REQUEST['int_mailer'],
+				(isset($_REQUEST['int_mailer']) ? $_REQUEST['int_mailer'] : 1),
 				$isIncomingMailServerActive,
 				'0',
 				$og_server_name,

@@ -1,21 +1,22 @@
 <?php
-/*************************************************************************************************
- * Copyright 2019 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
- * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
- * file except in compliance with the License. You can redistribute it and/or modify it
- * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
- * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
- * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
- * applicable law or agreed to in writing, software distributed under the License is
- * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language governing
- * permissions and limitations under the License. You may obtain a copy of the License
- * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
- *************************************************************************************************/
+/*********************************************************************************
+  ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
+   * ("License"); You may not use this file except in compliance with the License
+   * The Original Code is:  vtiger CRM Open Source
+   * The Initial Developer of the Original Code is vtiger.
+   * Portions created by vtiger are Copyright (C) vtiger.
+   * All Rights Reserved.
+ ********************************************************************************/
 
 $mod_strings = array(
-	'SUCCESSFUL_REGISTRATION_TITLE' => 'Authentification Correcta',
+	// Translations for JS (please use the prefix JSLBL in key)
+	'JSLBL_Saving_And_Verifying' => 'Saving & Verifying',
+	'JSLBL_PASSWORD_CANNOT_BE_EMPTY'=>'Password cannot be empty',
+	'JSLBL_SERVERNAME_CANNOT_BE_EMPTY'=>'Server Name cannot be empty',
+	'JSLBL_USERNAME_CANNOT_BE_EMPTY'=>'User Name cannot be empty',
+
+	// General translations
+	'SUCCESSFUL_REGISTRATION_TITLE' => 'Authentification Correct',
 	'SUCCESSFUL_REGISTRATION_MESSAGE' => 'You have correctly established authentification credentials with %s. You can now start using the functionality.',
 	'UNSUCCESSFUL_REGISTRATION_TITLE' => 'Authentification Incorrect',
 	'UNSUCCESSFUL_REGISTRATION_MESSAGE' => 'You have NOT established authentification credentials with %s. You will have to repeat the process if you want to start using the functionality.',
@@ -46,6 +47,22 @@ $mod_strings = array(
 	'Whatsapp Activation' => 'Whatsapp Activation',
 	'whatsapp_sid' => 'Whatsapp SID',
 	'whatsapp_token' => 'Whatsapp Token',
-	'whatsapp_senderphone' => 'Whatsapp Sender Phone',
+	'whatsapp_senderphone'=> 'Whatsapp Sender Phone',
+	'SendGrid Activation' => 'SendGrid Activation',
+	'TransEmail_title' => 'Configuration for Transactional Email',
+	'TransEmail_subtitle' => 'Substitutes outgoing email server',
+	'MktEmail_title' => 'Configuration for Marketing Email',
+	'MktEmail_subtitle' => 'Only for messages, programmed emails and specificaly programmed processes',
+	'LBL_CONFIG_INCOMING_MAIL_SERVER' => 'Configure Incoming Mail Server',
+	'LBL_SELECT_SERVER_TYPE' => 'Select Server Type',
+	'LBL_CONFIG_OUTGOING_MAIL_SERVER' => 'Configure Outgoing Mail Server',
+	'LBL_USER_SMTP_CONFIG' => 'User IMAP/SMTP Configuration',
+	'LBL_IC_SUCCESS_CONFIG_VALIDATION' => 'Incoming Mail Server Configuration Saved and Validated',
+	'LBL_IC_WARNING_CONFIG_VALIDATION' => 'Incoming Mail Server Configuration Not Validated',
+	'LBL_IC_CONFIG_VALIDATION_FAIL' => 'Incoming Mail Server Configuration Validation Failed',
+	'LBL_OG_SUCCESS_CONFIG_VALIDATION' => 'Outgoing Mail Server Configuration Saved and Validated',
+	'LBL_OG_WARNING_CONFIG_VALIDATION' => 'Outgoing Mail Server Configuration Not Validated',
+	'LBL_OG_CONFIG_VALIDATION_FAIL' => 'Outgoing Mail Server Configuration Validation Failed',
+	'LBL_ERROR' => 'Error',
 );
 ?>

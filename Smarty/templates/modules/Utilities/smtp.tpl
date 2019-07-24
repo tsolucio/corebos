@@ -41,7 +41,6 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 <div class="slds-grid slds-gutters">
     <div class="slds-col slds-size_1-of-2">
         <h1 class="slds-page-header__title">{'LBL_CONFIG_INCOMING_MAIL_SERVER'|@getTranslatedString:'vtsendgrid'}</h1>
-        <h2 class="small">{'LBL_SUBSTITUTE_INCOMING_MAIL_SERVER'|@getTranslatedString:'vtsendgrid'}</h2>
         <hr />
         {if $ic_mail_server_validation_success}
         <div id="ic-validation-success" style="height:4rem">
@@ -245,7 +244,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
                 </div>
             </div>
             <div class="slds-form-element slds-m-top--small">
-                <label class="slds-form-element__label" for="ic_mail_server_refresh_time">{'LBL_REFRESH_TIME'|@getTranslatedString:$MODULE}</label>
+                <label class="slds-form-element__label" for="ic_mail_server_refresh_time">{'LBL_REFRESH_TIME'|@getTranslatedString:'MailManager'}</label>
                 <div class="slds-form-element__control">
                     <select id="ic_mail_server_refresh_time" name="ic_mail_server_refresh_time" class="slds-input">
                         <option value="0" {if $ic_mail_server_refresh_time eq ''}selected{/if}>{'LBL_NONE'|@getTranslatedString:'MailManager'}</option>
@@ -258,7 +257,6 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
     </div>
     <div class="slds-col slds-size_1-of-2">
         <h1 class="slds-page-header__title">{'LBL_CONFIG_OUTGOING_MAIL_SERVER'|@getTranslatedString:'vtsendgrid'}</h1>
-        <h2 class="small">{'LBL_SUBSTITUTE_OUTGOING_MAIL_SERVER'|@getTranslatedString:'vtsendgrid'}</h2>
         <hr />
         {if $og_mail_server_validation_success}
         <div id="og-validation-success" style="height:4rem">
@@ -371,18 +369,12 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
             <label class="slds-form-element__label" for="og_mail_server_password">{'LBL_PASWRD'|@getTranslatedString:'Settings'}</label>
             <div class="slds-form-element__control">
                 <input type="password" id="og_mail_server_password" name="og_mail_server_password" class="slds-input" value="{$og_mail_server_password}" />
+                <input type="hidden" id="og_mail_server_from_email" name="og_mail_server_from_email" class="slds-input" value="{$og_mail_server_from_email}" />
             </div>
             <div class="slds-form-element__help" id="form-error-og-server-password"></div>
         </div>
-        <div class="slds-form-element slds-m-top--small" id="og-div-server-from-email">
-            <label class="slds-form-element__label" for="og_mail_server_from_email">{'LBL_FROM_EMAIL'|@getTranslatedString:$MODULE}</label>
-            <div class="slds-form-element__control">
-                <input type="text" id="og_mail_server_from_email" name="og_mail_server_from_email" class="slds-input" value="{$og_mail_server_from_email}" />
-            </div>
-            <div class="slds-form-element__help" id="form-error-og-server-from-email"></div>
-        </div>
         <div class="slds-form-element slds-m-top--small">
-            <label class="slds-form-element__label" for="og_mail_server_smtp_auth">{'LBL_REQUIRES_AUTHENTICATION'|@getTranslatedString:$MODULE}</label>
+            <label class="slds-form-element__label" for="og_mail_server_smtp_auth">{'LBL_REQUIRES_AUTHENT'|@getTranslatedString:'Settings'}</label>
             <div class="slds-form-element__control">
                 <select id="og_mail_server_smtp_auth" name="og_mail_server_smtp_auth" class="slds-input">
                     <option value="false" {if $og_mail_server_smtp_auth eq 'false'}selected{/if}>{'LBL_NO'|@getTranslatedString:'Settings'}</option>
@@ -398,9 +390,9 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
 </div>
 <br />
 <div class="slds-m-top--large">
-    <div class="slds-float_right">
-	    <button type="submit" class="slds-button slds-button--brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
-    </div>
+	<div class="slds-float_right">
+		<button type="submit" class="slds-button slds-button--brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
+	</div>
 </div>
 </form>
 <script type='text/javascript' src='modules/Utilities/Utilities.js'></script>

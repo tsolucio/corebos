@@ -46,9 +46,8 @@ if ($_REQUEST['savemode'] == 'true') {
 	$og_mail_server_from_email = (empty($_REQUEST['og_mail_server_from_email']) ? '' : vtlib_purify($_REQUEST['og_mail_server_from_email']));
 	$og_mail_server_name = vtlib_purify($_REQUEST['og_mail_server_name']);
 	$og_mail_server_port= (empty($_REQUEST['port']) ? 0 : vtlib_purify($_REQUEST['port']));
-	// $og_mail_server_type = vtlib_purify($_REQUEST['server_type']);
-	$og_mail_server_type = vtlib_purify($_REQUEST['server_type']);
-	$og_mail_server_path = isset($_REQUEST['server_path']) ? vtlib_purify($_REQUEST['server_path']) : '';
+	$og_mail_server_type = '';
+	$og_mail_server_path = '';
 
 	$smtpconfig->saveSMTPServerConfiguration(
 		$ic_mail_server_active,
