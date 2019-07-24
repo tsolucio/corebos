@@ -802,7 +802,9 @@ class OpenDocument {
 
 	  // Prepare include docs information
 		$xmlText = $this->contentDOM->saveXML();
-		if (preg_match_all('/\\'.$includeGD.'([\w\d]+)\}/', $xmlText, $matches)) {
+		$result = preg_match_all('/\\'.$includeGD.'([\w\d]+)\}/', $xmlText, $matches);
+		$this->debugmsg('Post processing: '.print_r(array($includeGD,$result,$matches),true));
+		if ($result) {
 			foreach ($matches[1] as $match) {
 				$sql = "select notesid from vtiger_notes where note_no='{$match}'";
 				$res = $adb->query($sql);
@@ -816,7 +818,7 @@ class OpenDocument {
 				$path = $adb->query_result($res, 0, 'path');
 				$prefix = $adb->query_result($res, 0, 'attachmentsid').'_';
 				$incFilename = $path.$prefix.$name;
-				$properties['match.'.$match] = escapeshellarg('file://'.$root_directory.$incFilename);
+				$properties['match.'.$match] = 'file://'.$root_directory.$incFilename;
 			}
 		}
 		$pFilename = tempnam('/tmp', 'gendoc-');
@@ -831,6 +833,7 @@ class OpenDocument {
 	  //$command = "{$root_directory}modules/evvtgendoc/unoservice.sh {$pFilename} file://{$filename} file://{$filename} >>{$root_directory}/modules/evvtgendoc/unoservice.log 2>&1";
 	  //echo $command;
 		$status = exec($command);
+		$this->debugmsg('Post processing: '.print_r(array($command,$status),true));
 		$log->debug("unoservice.sh: {$status}");
 
 	  // Remove temp files
