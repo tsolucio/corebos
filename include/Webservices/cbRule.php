@@ -51,5 +51,11 @@ function cbws_cbRule($conditionid, $context, $user) {
 	if (!$meta->exists($idComponents[1])) {
 		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
 	}
+	if (substr($context, 0, 1)=='{') {
+		$context = json_decode($context, true);
+		if (json_last_error() !== JSON_ERROR_NONE) {
+			throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Invalid coreBOS Rule context');
+		}
+	}
 	return coreBOS_Rule::evaluate($idComponents[1], $context);
 }
