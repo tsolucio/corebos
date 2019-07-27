@@ -63,6 +63,8 @@
 <input type="hidden" name="field_value_mapping" value="" id="save_fieldvaluemapping_json"/>
 <div id="dump" style="display:None;"></div>
 <div id="save_fieldvaluemapping"></div>
+<div class="slds-grid slds-gutters">
+<div class="slds-col slds-size_6-of-12">
 <div class="slds-form-element">
 	<label class="slds-form-element__label" for="form-element-01">{'Select Condition'|@getTranslatedString}</label>
 	<div class="slds-form-element__control">
@@ -73,4 +75,19 @@
 	<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}"
 	alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedString}" onClick="this.form.bmapid.value=''; this.form.bmapid_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 	</div>
+</div>
+</div>
+<div class="slds-col slds-size_6-of-12">
+<div class="slds-form-element">
+	<div class="slds-form-element__control slds-m-top_medium">
+	<div class="slds-checkbox">
+	<input type="checkbox" name="launchrelwf" id="launchrelwf" {if $task->launchrelwf}checked{/if}/>
+	<label class="slds-checkbox__label" for="launchrelwf">
+	<span class="slds-checkbox_faux"></span>
+	<span class="slds-form-element__label">{$MOD.launchrelwf}</span>
+	</label>
+	</div>
+	</div>
+</div>
+</div>
 </div>

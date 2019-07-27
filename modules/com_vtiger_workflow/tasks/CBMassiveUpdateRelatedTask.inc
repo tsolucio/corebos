@@ -18,7 +18,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
-		return array('field_value_mapping','bmapid', 'bmapid_display');
+		return array('field_value_mapping','bmapid', 'bmapid_display', 'launchrelwf');
 	}
 
 	public function doTask(&$entity) {
@@ -140,16 +140,19 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 								$focusrel[$fldmod]->column_fields[$key]=$value;
 							}
 							$focusrel[$fldmod]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel[$fldmod]->column_fields, $handlerMetarel[$fldmod]);
-							global $adb;
-							$em = new VTEventsManager($adb);
-							// Initialize Event trigger cache
-							$em->initTriggerCache();
-							$entityData = VTEntityData::fromCRMEntity($focusrel[$fldmod]);
-							$em->triggerEvent('corebos.beforesave.workflow', $entityData);
 							$logbg->debug("Saving: $relmodule, info: ".print_r($focusrel[$fldmod]->column_fields, true));
-							$focusrel[$fldmod]->saveentity($relmodule);
-							$em->triggerEvent('corebos.aftersave.workflow', $entityData);
-							$em->triggerEvent('corebos.aftersave.workflow.final', $entityData);
+							if ($this->launchrelwf) {
+								$focusrel[$fldmod]->save($mod);
+							} else {
+								// Initialize Event trigger cache
+								$em = new VTEventsManager($adb);
+								$em->initTriggerCache();
+								$entityData = VTEntityData::fromCRMEntity($focusrel[$fldmod]);
+								$em->triggerEvent('corebos.beforesave.workflow', $entityData);
+								$focusrel[$fldmod]->saveentity($relmodule);
+								$em->triggerEvent('corebos.aftersave.workflow', $entityData);
+								$em->triggerEvent('corebos.aftersave.workflow.final', $entityData);
+							}
 						}
 					}
 				}
