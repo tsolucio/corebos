@@ -23,8 +23,8 @@
 	{else}
 		var fieldvaluemapping = null;
 	{/if}
-        {literal}
-        var searchConditions = [
+{literal}
+	var searchConditions = [
 		{"groupid":"1",
 		 "columnname":"vtiger_cbmap:maptype:maptype:cbMap_Map_Type:V",
 		 "comparator":"e",
@@ -38,7 +38,7 @@
 	];
 	var advSearch = '&query=true&searchtype=advance&advft_criteria='+convertArrayOfJsonObjectsToString(searchConditions);
 	var SpecialSearch = encodeURI(advSearch);
-        {/literal}
+{/literal}
 </script>
 <script src="modules/{$module->name}/resources/fieldexpressionpopup.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/updatemassivefieldstaskscript.js" type="text/javascript" charset="utf-8"></script>
