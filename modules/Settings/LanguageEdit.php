@@ -110,11 +110,11 @@ if ($pmodule=='' || $pmodule=='General') {
 } elseif ($pmodule=='JavaScript') { //JavaScript strings
 	//js to php
 	$patterns[0] = '/var\s*alert_arr\s*=\s*{/';
-	$patterns[1] = '/(\S*)(\s*)(:)(\s*.*,?)/';
+	$patterns[1] = '/(\S*[\'"])\s*:\s*([\'"].*,?)/';
 	$patterns[2] = '/(".*"|\'.*\')\s*\+/';
 	$patterns[3] = '/};/';
 	$replacements[0] = '$app_strings = array(';
-	$replacements[1] = "$1 => $4";
+	$replacements[1] = "$1 => $2";
 	$replacements[2] = "$1.";
 	$replacements[3] = ');';
 
