@@ -52,6 +52,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 		if (!empty($this->field_value_mapping)) {
 			$fieldValueMapping = json_decode($this->field_value_mapping, true);
 		}
+		$logbg->debug("field mapping: ".print_r($fieldValueMapping, true));
 		if (!empty($fieldValueMapping) && count($fieldValueMapping) > 0) {
 			include_once 'data/CRMEntity.php';
 			$focus = CRMEntity::getInstance($moduleName);
@@ -118,6 +119,7 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 				);
 				$relationInfo = $adb->fetch_array($relationResult);
 				$params = array($recordId, $rectabid, $relatedModuleId);
+				$logbg->debug('rel func: '.$relationInfo['name'].', params: '.print_r($params, true));
 				$relationData = call_user_func_array(array($focus, $relationInfo['name']), $params);
 				$GetRelatedList_ReturnOnlyQuery = $holdValue;
 				if (isset($relationData['query'])) {
@@ -144,9 +146,8 @@ class CBMassiveUpdateRelatedTask extends VTTask {
 							$em->initTriggerCache();
 							$entityData = VTEntityData::fromCRMEntity($focusrel[$fldmod]);
 							$em->triggerEvent('corebos.beforesave.workflow', $entityData);
-
+							$logbg->debug("Saving: $relmodule, info: ".print_r($focusrel[$fldmod]->column_fields, true));
 							$focusrel[$fldmod]->saveentity($relmodule);
-
 							$em->triggerEvent('corebos.aftersave.workflow', $entityData);
 							$em->triggerEvent('corebos.aftersave.workflow.final', $entityData);
 						}
