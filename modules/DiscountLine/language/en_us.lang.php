@@ -28,6 +28,11 @@ $mod_strings = array(
 	'LBL_CHANGE_MODULE_STATUS' => 'Change Module Status',
 	'LBL_ACTIVATE_MODULE' => 'Module Activated',
 	'LBL_DEACTIVATE_MODULE' => 'Module Deactivated',
-	'LBL_SAVE_BUTTON_LABEL' => 'Save'
+	'LBL_SAVE_BUTTON_LABEL' => 'Save',
+	'STATUS_CONFIGURATION_DESCRIPTION' => 'Activate/Deactive Module',
+	'STATUS_CONFIGURATION' => 'Module Status',
+	'LBL_CHANGE_MODULE_STATUS' => 'Change Module Status',
+	'LBL_ACTIVATE_MODULE' => 'Active',
+	'LBL_DEACTIVATE_MODULE' => 'Deactive'
 );
 ?>

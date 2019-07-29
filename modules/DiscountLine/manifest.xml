@@ -38,9 +38,9 @@
   `dlcategory` varchar(255) DEFAULT NULL,
   `discount` int(11) DEFAULT NULL,
   `activevalue` int(19) DEFAULT NULL,
-  'defaultvalue int(19)` DEFAULT NULL,
-  'returnvalue' 
-  'cbmapid int(11)'
+  `defaultvalue` int(19) DEFAULT NULL,
+  `returnvalue` varchar(50), 
+  `cbmapid` int(11),
   PRIMARY KEY (`discountlineid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
 </table>
@@ -86,7 +86,7 @@
 <columnname>cbmapid</columnname>
 <tablename>vtiger_discountline</tablename>
 <generatedtype>1</generatedtype>
-<fieldlabel>cbmapid</fieldlabel>
+<fieldlabel>Map</fieldlabel>
 <readonly>1</readonly>
 <presence>0</presence>
 <selected>0</selected>
@@ -274,10 +274,10 @@
 <fieldname>discountline_no</fieldname>
 <columnindex>0</columnindex>
 </field>
-<field>
+<!-- <field>
 <fieldname>accountid</fieldname>
 <columnindex>1</columnindex>
-</field>
+</field>-->
 <field>
 <fieldname>productcategory</fieldname>
 <columnindex>2</columnindex>
@@ -355,6 +355,16 @@
 <events>
 </events>
 <customlinks>
+<customlink>
+<linktype>HEADERSCRIPT</linktype>
+<linklabel>MapCapture</linklabel>
+<linkurl><![CDATA[modules/DiscountLine/mapcapture.js]]></linkurl>
+<linkicon><![CDATA[]]></linkicon>
+<sequence>0</sequence>
+<handler_path><![CDATA[]]></handler_path>
+<handler_class><![CDATA[]]></handler_class>
+<handler><![CDATA[]]></handler>
+</customlink>
 </customlinks>
 <crons>
 </crons>

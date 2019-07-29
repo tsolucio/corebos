@@ -137,10 +137,10 @@ class DiscountLine extends CRMEntity {
 		if ($event_type == 'module.postinstall') {
 			// TODO Handle post installation actions
 			$this->setModuleSeqNumber('configure', $modulename, 'DTOLINE-', '000001');
-			$adb->query("UPDATE vtiger_field SET fieldname = 'productcategory' WHERE tablename='vtiger_service' and columnname='servicecategory'");
-			$modAcc=Vtiger_Module::getInstance('Accounts');
-			$modDto=Vtiger_Module::getInstance('DiscountLine');
-			$modAcc->setRelatedList($modDto, 'DiscountLine', array('ADD'), 'get_dependents_list');
+			// $adb->query("UPDATE vtiger_field SET fieldname = 'productcategory' WHERE tablename='vtiger_service' and columnname='servicecategory'");
+			// $modAcc=Vtiger_Module::getInstance('Accounts');
+			// $modDto=Vtiger_Module::getInstance('DiscountLine');
+			// $modAcc->setRelatedList($modDto, 'DiscountLine', array('ADD'), 'get_dependents_list');
 		} elseif ($event_type == 'module.disabled') {
 			// TODO Handle actions when this module is disabled.
 		} elseif ($event_type == 'module.enabled') {
@@ -159,7 +159,18 @@ class DiscountLine extends CRMEntity {
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
-	// public function save_related_module($module, $crmid, $with_module, $with_crmid) { }
+	public function save_related_module($module, $crmid, $with_module, $with_crmid) {
+		global $adb;
+		if ($with_module == 'Product' || $with_module == 'Service') {
+			$checkResult = $adb->pquery('SELECT * FROM vtiger_crmentityrel WHERE crmidid = ? AND module = ? AND relcrmid = ? AND relmodule = ?', array($crmid, $module, $with_crmid, $with_module));
+			if ($adb->num_rows($checkResult) == 0) {
+				$sql = 'INSERT INTO vtiger_crmentityrel VALUES(?,?,?,?)';
+				$adb->pquery($sql, array($crmid, $module, $with_crmid, $with_module));
+			}
+		} else {
+			parent::save_related_module($module, $crmid, $with_module, $with_crmid);
+		}
+	}
 
 	/**
 	 * Handle deleting related module information.
@@ -182,37 +193,109 @@ class DiscountLine extends CRMEntity {
 	 */
 	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 
-	public static function getDiscount($pdoid, $accid) {
+	// public static function getDiscount($pdoid, $accid) {
+	// 	global $adb;
+	// 	// search productline alone and productline+client
+	// 	$dtopdors = $adb->pquery(
+	// 		'select discount
+	// 			from vtiger_discountline
+	// 			inner join vtiger_crmentity on crmid=discountlineid
+	// 				left join vtiger_products on productcategory=dlcategory and productid=?
+	// 				left join vtiger_service on productcategory=dlcategory and serviceid=?
+	// 				where deleted=0 and (accountid=? or accountid=0)
+	// 				order by accountid desc',
+	// 		array($pdoid, $pdoid, $accid)
+	// 	);
+	// 	if ($dtopdors && $adb->num_rows($dtopdors)>0) {
+	// 		return $adb->query_result($dtopdors, 0, 'discount');
+	// 	}
+	// 	if (!empty($accid)) {
+	// 		// search direct client discount for all products
+	// 		$dtopdors = $adb->pquery(
+	// 			'select discount
+	// 				from vtiger_discountline
+	// 				inner join vtiger_crmentity on crmid=discountlineid
+	// 				where deleted=0 and accountid=? and dlcategory=?
+	// 				limit 1',
+	// 			array($accid, '--None--')
+	// 		);
+	// 		if ($dtopdors && $adb->num_rows($dtopdors)>0) {
+	// 			return $adb->query_result($dtopdors, 0, 'discount');
+	// 		}
+	// 	}
+	// 	return 0;
+	// }
+	
+	public static function getDiscount($lineitemParameter from Database) {
 		global $adb;
-		// search productline alone and productline+client
-		$dtopdors = $adb->pquery(
-			'select discount
-				from vtiger_discountline
-				inner join vtiger_crmentity on crmid=discountlineid
-					left join vtiger_products on productcategory=dlcategory and productid=?
-					left join vtiger_service on productcategory=dlcategory and serviceid=?
-					where deleted=0 and (accountid=? or accountid=0)
-					order by accountid desc',
-			array($pdoid, $pdoid, $accid)
-		);
-		if ($dtopdors && $adb->num_rows($dtopdors)>0) {
-			return $adb->query_result($dtopdors, 0, 'discount');
-		}
-		if (!empty($accid)) {
-			// search direct client discount for all products
-			$dtopdors = $adb->pquery(
-				'select discount
-					from vtiger_discountline
-					inner join vtiger_crmentity on crmid=discountlineid
-					where deleted=0 and accountid=? and dlcategory=?
-					limit 1',
-				array($accid, '--None--')
-			);
-			if ($dtopdors && $adb->num_rows($dtopdors)>0) {
-				return $adb->query_result($dtopdors, 0, 'discount');
+		#if Application_B2C is active we search for contacts else we search for accounts
+		if(GlobalVariable::getVariable('Application_B2C', '0')) {
+			# Search in Contacts
+			# search for record where contact is in the related list
+			$contact_related_record_result = ""; // query of the Record will be done here
+			if (count($contact_related_record_result) > 0) {
+				$contact_rel_records ;
+			} else {
+				#if not found we search for a record marked as default where the contact is present
+				$contact_rel_records ;
+			}
+			#we must have category
+			if ($category == 'None') {
+				# Search Product/Service in related list  
+				# I think Product / Service related with Discount Line
+				# Also we Search for Only Active Records
+				$category_result = "";
+				if (count($category_result) > 0) {
+
+				} else {
+					# if not we search for a record marked as default where the product/service is present
+
+				}
+			} else {
+				# we search for products/services in that category 
+				# Based on which passed either is Product / service
+				# Also we search for only Active Records Only
+				# Query for Searching Product or Service based on the Category
+				$category_result = "";
+				if (count($category_result) > 0) {
+
+				} else {
+					# if not we search for a record marked as default where the product/service is present
+
+				}
+			}
+		} else {
+			#Search in Accounts
+			#search for record where account is in the related list
+			#we must have category
+			$account_related_record_result ="";
+			if (count($account_related_record_result)) {
+
+			} else {
+				#if not found we search for a record marked as default where the Accounts is present
+			}
+			if ($category == 'None') {
+				# Search Product/Service in related list  
+				# I think Product / Service related with Discount Line
+				# Also we Search for Only Active Records
+				$category_result = "";
+				if (count($category_result) > 0) {
+
+				} else {
+					# if not we search for a record marked as default where the product/service is present
+				}
+			} else {
+				# we search for products/services in that category 
+				# Based on which passed either is Product / service
+				# Also we search for only Active Records Only
+				# Query for Searching Product or Service based on the Category
+				$category_result = "";
+				if (count($category_result) > 0) {
+
+				} else {
+					# if not we search for a record marked as default where the product/service is present
+				}
 			}
 		}
-		return 0;
 	}
-}
 ?>

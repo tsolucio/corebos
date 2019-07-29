@@ -51,7 +51,7 @@ if (!is_admin($current_user)) {
 		}
 	}
 
-	$menu_array['DCL_CHANGE_MODULE_STATUS']['location'] = 'index.php?module=CobroPago&action=DiscountLineConfig&parenttab=Settings&formodule=CobroPago';
+	$menu_array['DCL_CHANGE_MODULE_STATUS']['location'] = 'index.php?module=DiscountLine&action=DiscountLineConfig&parenttab=Settings&formodule=DiscountLine';
 	$menu_array['DCL_CHANGE_MODULE_STATUS']['image_src'] = 'modules/DiscountLine/settings.png';
 	$menu_array['DCL_CHANGE_MODULE_STATUS']['desc'] = getTranslatedString('STATUS_CONFIGURATION_DESCRIPTION', $module);
 	$menu_array['DCL_CHANGE_MODULE_STATUS']['label'] = getTranslatedString('STATUS_CONFIGURATION', $module);

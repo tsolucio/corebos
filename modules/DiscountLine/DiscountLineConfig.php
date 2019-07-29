@@ -1,6 +1,6 @@
 <?php
 /************************************************************************************
- * Copyright 2012 JPL TSolucio, S.L.  --  This file is a part of CobroPago vtiger CRM Extension.
+ * Copyright 2019 JPL TSolucio, S.L.  --  This file is a part of CobroPago vtiger CRM Extension.
  * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
  * Vizsage Public License (the "License"). You may not use this file except in compliance with the
  * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
@@ -28,15 +28,20 @@ $smarty->assign('MODULE_LBL', $currentModule);
 if (!is_admin($current_user)) {
 	$smarty->display(vtlib_getModuleTemplate('Vtiger', 'OperationNotPermitted.tpl'));
 } else {
-	$mode = $_REQUEST['mode'];
-
+	$mode = $_POST['mode'];
 	# Save Action
 	if (!empty($mode) && $mode == 'Save') {
+		if ($_POST['module_status'] == NULL) {
+			$module_status ='off';
+		} else {
+			$module_status = $_POST['module_status'];
+		}
 		coreBOS_Settings::delSetting('KEY_MODULE_STATUS');
-		coreBOS_Settings::setSetting('KEY_MODULE_STATUS', $_POST['module_status']);
+		coreBOS_Settings::setSetting('KEY_MODULE_STATUS', $module_status);
 	}
 	#Query Information to Show
-	$module_status = coreBOS_Settings::getSetting('KEY_MODULE_STATUS','');
+	$module_status = coreBOS_Settings::getSetting('KEY_MODULE_STATUS','off');
+	var_dump($module_status);
 ?>
 	<div style="margin:2em;">
 <?php $smarty->display('SetMenu.tpl'); ?>
@@ -49,17 +54,17 @@ if (!is_admin($current_user)) {
 		<input type="hidden" name="mode" value="Save">
 		<div class="slds-form-element slds-m-top--small">
 			<label class="slds-checkbox--toggle slds-grid">
-			<span class="slds-form-element__label slds-m-bottom--none">{'LBL_CHANGE_MODULE_STATUS'|@getTranslatedString:$MODULE}</span>
-			<input type="checkbox" name="module_status" aria-describedby="toggle-module-status" {if $module_status}checked{/if} />
+			<span class="slds-form-element__label slds-m-bottom--none"><?php echo getTranslatedString('LBL_CHANGE_MODULE_STATUS', $MODULE);?></span>
+			<input type="checkbox" name="module_status" aria-describedby="toggle-module-status" <?php echo ($module_status=='on' ? 'checked' : '');?>/>
 			<span id="toggle-module-status" class="slds-checkbox--faux_container" aria-live="assertive">
 				<span class="slds-checkbox--faux"></span>
-				<span class="slds-checkbox--on">{'LBL_ACTIVATE_MODULE'|@getTranslatedString:$MODULE}</span>
-				<span class="slds-checkbox--off">{'LBL_DEACTIVATE_MODULE'|@getTranslatedString:$MODULE}</span>
+				<span class="slds-checkbox--on"><?php echo getTranslatedString('LBL_ACTIVE', $MODULE);?></span>
+				<span class="slds-checkbox--off"><?php echo getTranslatedString('LBL_INACTIVE', $MODULE);?></span>
 			</span>
 			</label>
 		</div>
 		<div class="slds-m-top--large">
-			<button type="submit" value="Save" class="slds-button slds-button--brand">{'LBL_SAVE_BUTTON_LABEL'|@getTranslatedString:$MODULE}</button>
+			<button type="submit" value="Save" class="slds-button slds-button--brand"><?php echo getTranslatedString('LBL_SAVE_BUTTON_LABEL', $MODULE);?></button>
 		</div>
 	</form>
 <?php
