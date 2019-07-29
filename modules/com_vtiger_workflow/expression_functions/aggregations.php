@@ -79,7 +79,7 @@ function __cb_aggregation_operation($arr) {
 }
 
 function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
-	global $adb, $GetRelatedList_ReturnOnlyQuery;
+	global $adb, $GetRelatedList_ReturnOnlyQuery, $logbg;
 	$validoperations = array('sum', 'min', 'max', 'avg', 'count', 'std', 'variance', 'time_to_sec');
 	$operation = strtolower($arr[0]);
 	if (!in_array($operation, $validoperations)) {
@@ -136,6 +136,7 @@ function __cb_aggregation_getQuery($arr, $userdefinedoperation = true) {
 	} else {
 		$query = 'select '.$operation.'('.$rfield->table.'.'.$rfield->column.') as aggop '.$qfrom;
 	}
+	$logbg->debug("Agg query: $query");
 	return $query;
 }
 

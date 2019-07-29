@@ -11,7 +11,7 @@ $mod_strings = array (
 	'MailManager' => 'Mail Manager',
 
 	// Translations for JS (please use the prefix JSLBL in key)
-	'JSLBL_Loading_Please_Wait'  => 'Loading Please Wait',
+	'JSLBL_Loading_Please_Wait'  => 'Loading, please wait',
 	'JSLBL_Loading'              => 'Loading',
 	'JSLBL_Settings'             => 'Settings',
 	'JSLBL_Opening'              => 'Opening',

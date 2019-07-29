@@ -800,9 +800,11 @@ class OpenDocument {
 		'insertindexGD' => $insertindexGD,
 		);
 
-	  // Prepare include docs information
+		// Prepare include docs information
 		$xmlText = $this->contentDOM->saveXML();
-		if (preg_match_all('/\\'.$includeGD.'([\w\d]+)\}/', $xmlText, $matches)) {
+		$result = preg_match_all('/\\'.$includeGD.'([\w\d]+)\}/', $xmlText, $matches);
+		$this->debugmsg('Post processing: '.print_r(array($includeGD,$result, $matches), true));
+		if ($result) {
 			foreach ($matches[1] as $match) {
 				$sql = "select notesid from vtiger_notes where note_no='{$match}'";
 				$res = $adb->query($sql);
@@ -816,7 +818,7 @@ class OpenDocument {
 				$path = $adb->query_result($res, 0, 'path');
 				$prefix = $adb->query_result($res, 0, 'attachmentsid').'_';
 				$incFilename = $path.$prefix.$name;
-				$properties['match.'.$match] = escapeshellarg('file://'.$root_directory.$incFilename);
+				$properties['match.'.$match] = 'file://'.$root_directory.$incFilename;
 			}
 		}
 		$pFilename = tempnam('/tmp', 'gendoc-');
@@ -825,15 +827,16 @@ class OpenDocument {
 			fwrite($handle, "{$key} = {$value}\n");
 		}
 		fclose($handle);
-	  // Process and save
+		// Process and save
 		$filename = escapeshellarg($filename);
 		$command = "{$root_directory}modules/evvtgendoc/unoservice.sh {$pFilename} file://{$filename} file://{$filename}";
-	  //$command = "{$root_directory}modules/evvtgendoc/unoservice.sh {$pFilename} file://{$filename} file://{$filename} >>{$root_directory}/modules/evvtgendoc/unoservice.log 2>&1";
-	  //echo $command;
+		//$command = "{$root_directory}modules/evvtgendoc/unoservice.sh {$pFilename} file://{$filename} file://{$filename} >>{$root_directory}/modules/evvtgendoc/unoservice.log 2>&1";
+		//echo $command;
 		$status = exec($command);
+		$this->debugmsg('Post processing: '.print_r(array($command, $status), true));
 		$log->debug("unoservice.sh: {$status}");
 
-	  // Remove temp files
+		// Remove temp files
 		unlink($pFilename);
 	}
 
@@ -1497,18 +1500,18 @@ class OpenDocument {
 		}
 
 /*        $ReflectionClass = new ReflectionClass($object);
-        if ($ReflectionClass->getConstant('nodePrefix')=='table')
-          $nodes = $style->getElementsByTagNameNS(self::NS_STYLE, $ReflectionClass->getConstant('nodeName').'-properties');
-        elseif ($ReflectionClass->getConstant('nodePrefix')=='paragraph')
-          $nodes = $style->getElementsByTagNameNS(self::NS_STYLE, 'paragraph-properties');
-        else
-          $nodes = $style->getElementsByTagNameNS(self::NS_STYLE, 'text-properties');
-        /*
-        if (in_array($value,$this->NS_ENTITIES)) {
-            $nodes = $style->getElementsByTagNameNS(self::NS_STYLE, $value.'-properties');
-        } else {
-            $nodes = $style->getElementsByTagNameNS(self::NS_STYLE, 'text-properties');
-        }*/
+		if ($ReflectionClass->getConstant('nodePrefix')=='table')
+		  $nodes = $style->getElementsByTagNameNS(self::NS_STYLE, $ReflectionClass->getConstant('nodeName').'-properties');
+		elseif ($ReflectionClass->getConstant('nodePrefix')=='paragraph')
+		  $nodes = $style->getElementsByTagNameNS(self::NS_STYLE, 'paragraph-properties');
+		else
+		  $nodes = $style->getElementsByTagNameNS(self::NS_STYLE, 'text-properties');
+		/*
+		if (in_array($value,$this->NS_ENTITIES)) {
+			$nodes = $style->getElementsByTagNameNS(self::NS_STYLE, $value.'-properties');
+		} else {
+			$nodes = $style->getElementsByTagNameNS(self::NS_STYLE, 'text-properties');
+		}*/
 		if (empty($elemtype)) {
 			$elemtype='text';
 		}
@@ -1517,17 +1520,17 @@ class OpenDocument {
 			$text_properties = $nodes->item(0);
 		} else {
 			/*
-            if ($ReflectionClass->getConstant('nodePrefix')=='table')
-              $text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, $ReflectionClass->getConstant('nodeName').'-properties');
-            elseif ($ReflectionClass->getConstant('nodePrefix')=='paragraph')
-              $text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, 'paragraph-properties');
-            else
-              $text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, 'text-properties');
-            if (in_array($value,$this->NS_ENTITIES)) {
-                $text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, $value.'-properties');
-            } else {
-                $text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, 'text-properties');
-            }*/
+			if ($ReflectionClass->getConstant('nodePrefix')=='table')
+			  $text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, $ReflectionClass->getConstant('nodeName').'-properties');
+			elseif ($ReflectionClass->getConstant('nodePrefix')=='paragraph')
+			  $text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, 'paragraph-properties');
+			else
+			  $text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, 'text-properties');
+			if (in_array($value,$this->NS_ENTITIES)) {
+				$text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, $value.'-properties');
+			} else {
+				$text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, 'text-properties');
+			}*/
 			$text_properties = $this->contentDOM->createElementNS(self::NS_STYLE, (strpos($elemtype, 'properties') ? $elemtype : $elemtype.'-properties'));
 			$style->appendChild($text_properties);
 		}

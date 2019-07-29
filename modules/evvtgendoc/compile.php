@@ -1454,8 +1454,12 @@ function is_date($field, $module) {
 function is_picklist($field, $module) {
 	global $adb;
 	$res = $adb->pquery('SELECT * FROM vtiger_field WHERE fieldname=? AND tabid=?', array($field, getTabid($module)));
-	$fld = WebserviceField::fromQueryResult($adb, $res, 0);
-	return ($fld->getFieldDataType()=='picklist');
+	if ($res && $adb->num_rows($res)==1) {
+		$fld = WebserviceField::fromQueryResult($adb, $res, 0);
+		return ($fld->getFieldDataType()=='picklist');
+	} else {
+		return false;
+	}
 }
 
 // Funcio que usem principalment al generar la documentacio, pero com es necessaria

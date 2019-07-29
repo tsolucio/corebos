@@ -21,5 +21,6 @@ $operationInfo = array(
 	'type'    => 'GET',
 	'parameters' => array(
 		array('name' => 'conditionid','type' => 'string'),
+		array('name' => 'context','type' => 'string'),
 	)
 );
