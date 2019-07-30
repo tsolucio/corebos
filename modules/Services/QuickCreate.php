@@ -45,18 +45,12 @@ $smarty->assign('BASE_CURRENCY', $base_currency);
 //End - add multi currency
 
 //Tax handling (get the available taxes only) - starts
-$smarty->assign('MODE', $focus->mode);
-if ($focus->mode != 'edit') {
-	$retrieve_taxes = false;
-	$serviceid = 0;
-	$tax_details = getAllTaxes('available');
-}
-
+$smarty->assign('MODE', '');
+$tax_details = getAllTaxes('available');
 for ($i=0; $i<count($tax_details); $i++) {
 	$tax_details[$i]['check_name'] = $tax_details[$i]['taxname'].'_check';
 	$tax_details[$i]['check_value'] = 0;
 }
-
 $smarty->assign('TAX_DETAILS', $tax_details);
 //Tax handling - ends
 

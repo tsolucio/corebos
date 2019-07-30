@@ -27,38 +27,11 @@
 			{assign var="fromlink" value="qcreate"}
 			{foreach item=subdata from=$QUICKCREATE}
 				<tr>
-					{foreach key=mainlabel item=maindata from=$subdata}
-						{if count($maindata)>0}{include file='EditViewUI.tpl'}{/if}
+					{foreach key=mainlabel item=maindata from=$subdata name=rowlayoutloop}
+						{if count($maindata)>0}{include file='EditViewUI.tpl' rowiteration=$smarty.foreach.rowlayoutloop.iteration}{/if}
 					{/foreach}
 				</tr>
 			{/foreach}
-			{if $MODULE eq 'Products' || $MODULE eq 'Services'}
-				{assign var=rloopit value=2}
-				{foreach item=tax key=count from=$TAX_DETAILS}
-					{if $rloopit==2}
-						<tr>
-					{else}
-						{assign var=rloopit value=2}
-					{/if}
-					{if $tax.check_value eq 1 || ($MODE=='' && $tax.default==1)}
-						{assign var=check_value value="checked"}
-						{assign var=show_value value="visible"}
-					{else}
-						{assign var=check_value value=""}
-						{assign var=show_value value="hidden"}
-					{/if}
-					<td id="td_{$tax.check_name}" align="right" class="dvtCellLabel" style="border:0px solid red;">
-						{$tax.taxlabel} {$APP.COVERED_PERCENTAGE}
-						<input type="checkbox" name="{$tax.check_name}" id="{$tax.check_name}" class="small" onclick="fnshowHide(this,'{$tax.taxname}')" {$check_value}>
-					</td>
-					<td id="td_val_{$tax.check_name}" class="dvtCellInfo" align="left" style="border:0px solid red;">
-						<span style='display:none;' id='{$fldname}_hidden'></span>
-						<input type="text" class="detailedViewTextBox" name="{$tax.taxname}" id="{$tax.taxname}" value="{$tax.percentage}" style="visibility:{$show_value};" onBlur="fntaxValidation('{$tax.taxname}')">
-					</td>
-					<td colspan="2" class="dvtCellInfo">&nbsp;</td>
-					</tr>
-				{/foreach}
-			{/if}
 			</table>
 
 		<!-- save cancel buttons -->
