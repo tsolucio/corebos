@@ -565,7 +565,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 					from vtiger_attachments
 					inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
 					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid
-					where vtiger_crmentity.setype='$module_name $imageattachment'
+					where (vtiger_crmentity.setype='$module_name $imageattachment' OR vtiger_crmentity.setype LIKE '% $imageattachment')
 						and vtiger_attachments.name = ?
 						and vtiger_seattachmentsrel.crmid=?";
 				global $upload_badext;
