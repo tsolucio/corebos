@@ -46,15 +46,7 @@ $smarty->assign('BASE_CURRENCY', $base_currency);
 
 //Tax handling (get the available taxes only) - starts
 $smarty->assign('MODE', $focus->mode);
-if ($focus->mode == 'edit') {
-	$retrieve_taxes = true;
-	$serviceid = $focus->id;
-	$tax_details = getTaxDetailsForProduct($serviceid, 'available_associated');
-} elseif (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
-	$retrieve_taxes = true;
-	$serviceid = vtlib_purify($_REQUEST['record']);
-	$tax_details = getTaxDetailsForProduct($serviceid, 'available_associated');
-} else {
+if ($focus->mode != 'edit') {
 	$retrieve_taxes = false;
 	$serviceid = 0;
 	$tax_details = getAllTaxes('available');
@@ -65,19 +57,6 @@ for ($i=0; $i<count($tax_details); $i++) {
 	$tax_details[$i]['check_value'] = 0;
 }
 
-//For Edit and Duplicate we have to retrieve the services associated taxes and show them
-if ($retrieve_taxes) {
-	for ($i=0; $i<count($tax_details); $i++) {
-		$tax_value = getProductTaxPercentage($tax_details[$i]['taxname'], $serviceid);
-		$tax_details[$i]['percentage'] = $tax_value;
-		$tax_details[$i]['check_value'] = 1;
-		//if the tax is not associated with the services then we should get the default value and unchecked
-		if ($tax_value == '') {
-			$tax_details[$i]['check_value'] = 0;
-			$tax_details[$i]['percentage'] = getTaxPercentage($tax_details[$i]['taxname']);
-		}
-	}
-}
 $smarty->assign('TAX_DETAILS', $tax_details);
 //Tax handling - ends
 

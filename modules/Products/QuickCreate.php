@@ -46,15 +46,7 @@ $smarty->assign('BASE_CURRENCY', $base_currency);
 
 //Tax handling (get the available taxes only) - starts
 $smarty->assign('MODE', $focus->mode);
-if ($focus->mode == 'edit') {
-	$retrieve_taxes = true;
-	$productid = $focus->id;
-	$tax_details = getTaxDetailsForProduct($productid, 'available_associated');
-} elseif (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
-	$retrieve_taxes = true;
-	$productid = vtlib_purify($_REQUEST['record']);
-	$tax_details = getTaxDetailsForProduct($productid, 'available_associated');
-} else {
+if ($focus->mode != 'edit') {
 	$retrieve_taxes = false;
 	$productid = 0;
 	$tax_details = getAllTaxes('available');
@@ -63,20 +55,6 @@ if ($focus->mode == 'edit') {
 for ($i=0; $i<count($tax_details); $i++) {
 	$tax_details[$i]['check_name'] = $tax_details[$i]['taxname'].'_check';
 	$tax_details[$i]['check_value'] = 0;
-}
-
-//For Edit and Duplicate we have to retrieve the product associated taxes and show them
-if ($retrieve_taxes) {
-	for ($i=0; $i<count($tax_details); $i++) {
-		$tax_value = getProductTaxPercentage($tax_details[$i]['taxname'], $productid);
-		$tax_details[$i]['percentage'] = $tax_value;
-		$tax_details[$i]['check_value'] = 1;
-		//if the tax is not associated with the product then we should get the default value and unchecked
-		if ($tax_value == '') {
-			$tax_details[$i]['check_value'] = 0;
-			$tax_details[$i]['percentage'] = getTaxPercentage($tax_details[$i]['taxname']);
-		}
-	}
 }
 
 $smarty->assign('TAX_DETAILS', $tax_details);
