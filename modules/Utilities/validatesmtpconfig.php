@@ -79,48 +79,59 @@ function verifyIncomingMailServer() {
 	}
 }
 
-// call function to Verify
-$verification_status_object[] = verifyOutGoingMailServer();
-$verification_status_object[] = verifyIncomingMailServer();
-if ($verification_status_object[0]['og_server_status'] == 1) {
-	$og_config_validation_error_message = 'success';
-	$og_config_has_error = false;
-} else {
-	$og_config_validation_error_message = $verification_status_object[0]['og_server_message'];
-	$og_config_has_error = true;
-}
+// Check Which Server Configuration to Validate
+if (isset($_REQUEST['og_mail_server_active']) && $_REQUEST['og_mail_server_active'] == 'on') {
+	$og_verification_status_object[] = verifyOutGoingMailServer();
+	if ($og_verification_status_object[0]['og_server_status'] == 1) {
+		$og_config_validation_error_message = 'success';
+		$og_config_has_error = false;
+	} else {
+		$og_config_validation_error_message = $og_verification_status_object[0]['og_server_message'];
+		$og_config_has_error = true;
+	}
 
-if (($verification_status_object[1]['ic_server_message'] == 'Success')) {
-	$ic_config_validation_error_message = 'success';
-	$ic_config_has_error = false;
+	if ($og_config_validation_error_message == 'success') {
+		$og_mail_server_validation_error = false;
+		$og_mail_server_validation_success = true;
+		$og_mail_server_validation_warning = false;
+		$og_mail_server_validation_error_message = '';
+	} elseif ($og_config_has_error) {
+		$og_mail_server_validation_error = true;
+		$og_mail_server_validation_success = false;
+		$og_mail_server_validation_warning = false;
+		$og_mail_server_validation_error_message = $og_config_validation_error_message;
+	}
 } else {
-	$ic_config_validation_error_message = $verification_status_object[1]['ic_server_message'];
-	$ic_config_has_error = true;
-}
-
-// for outgoing Mail Server
-if ($og_config_validation_error_message == 'success') {
 	$og_mail_server_validation_error = false;
-	$og_mail_server_validation_success = true;
-	$og_mail_server_validation_warning = false;
-} elseif ($og_config_has_error) {
-	$og_mail_server_validation_error = true;
 	$og_mail_server_validation_success = false;
-	$og_mail_server_validation_warning = false;
-	$og_mail_server_validation_error_message = $og_config_validation_error_message;
+	$og_mail_server_validation_error_message = '';
 }
 
-// for incoming Mail Server
-if ($ic_config_validation_error_message == 'success') {
+if (isset($_REQUEST['ic_mail_server_active']) && $_REQUEST['ic_mail_server_active'] == 'on') {
+	$ic_verification_status_object[] = verifyIncomingMailServer();
+	if (($ic_verification_status_object[0]['ic_server_message'] == 'Success')) {
+		$ic_config_validation_error_message = 'success';
+		$ic_config_has_error = false;
+	} else {
+		$ic_config_validation_error_message = $ic_verification_status_object[0]['ic_server_message'];
+		$ic_config_has_error = true;
+	}
+
+	if ($ic_config_validation_error_message == 'success') {
+		$ic_mail_server_validation_error = false;
+		$ic_mail_server_validation_success = true;
+		$ic_mail_server_validation_warning = false;
+		$ic_mail_server_validation_error_message = '';
+	} elseif ($ic_config_has_error) {
+		$ic_mail_server_validation_error = true;
+		$ic_mail_server_validation_success = false;
+		$ic_mail_server_validation_warning = false;
+		$ic_mail_server_validation_error_message = $ic_config_validation_error_message;
+	}
+} else {
 	$ic_mail_server_validation_error = false;
-	$ic_mail_server_validation_success = true;
-	$ic_mail_server_validation_warning = false;
-} elseif ($ic_config_has_error) {
-	$ic_mail_server_validation_error = true;
 	$ic_mail_server_validation_success = false;
-	$ic_mail_server_validation_warning = false;
-	$ic_mail_server_validation_error_message = $ic_config_validation_error_message;
+	$ic_mail_server_validation_error_message = '';
 }
-
 include_once 'include/integrations/smtp/settings.php';
 ?>

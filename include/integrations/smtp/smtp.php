@@ -31,7 +31,6 @@ class corebos_smtp {
 	public $ic_mail_server_mails_per_page;
 	public $ic_mail_server_ssltype;
 	public $ic_mail_server_sslmeth;
-	public $ic_mail_server_validation_status;
 
 	// Outgoing Mail Server Config Properties
 	public $og_mail_server_active;
@@ -43,7 +42,6 @@ class corebos_smtp {
 	public $og_mail_server_port;
 	public $og_mail_server_type;
 	public $og_mail_server_path;
-	public $og_mail_server_validation_status;
 
 	// Errors
 	public static $ERROR_NONE = 0;
@@ -69,7 +67,6 @@ class corebos_smtp {
 			$this->ic_mail_server_sslmeth = trim($adb->query_result($result, 0, 'sslmeth'));
 			$this->ic_mail_server_active = trim($adb->query_result($result, 0, 'status'));
 			$this->ic_mail_server_box_refresh = trim($adb->query_result($result, 0, 'box_refresh'));
-			$this->ic_mail_server_validation_status = trim($adb->query_result($result, 0, 'ic_server_validation_status'));
 
 			// for Outgoing Mail Server
 			$this->og_mail_server_active = trim($adb->query_result($result, 0, 'og_server_status'));
@@ -81,52 +78,13 @@ class corebos_smtp {
 			$this->og_mail_server_port = trim($adb->query_result($result, 0, 'og_server_port'));
 			$this->og_mail_server_type = trim($adb->query_result($result, 0, 'og_server_type'));
 			$this->og_mail_server_path = trim($adb->query_result($result, 0, 'og_server_path'));
-			$this->og_mail_server_validation_status = trim($adb->query_result($result, 0, 'og_server_validation_status'));
 		}
-	}
-
-	/**
-	 *
-	 * Function to Save OutGoing Mail Server Configuration
-	 */
-	public function saveOutGoingMailServerConfiguration(
-		$isOutgoingMailServerActive,
-		$server_username,
-		$server_password,
-		$smtp_auth,
-		$from_email_field,
-		$server,
-		$port,
-		$server_type,
-		$og_mail_server_path
-	) {
-		global $adb, $log, $current_user;
-		require_once 'modules/Emails/mail.php';
-		if (!empty($from_email_field)) {
-			$from_email = $from_email_field;
-		} else {
-			$from_email = getUserEmailId('id', $current_user->id);
-		}
-
-		$userid = $current_user->id;
-		$idrs = $adb->pquery('select * from vtiger_mail_accounts where user_id = ?', array($userid));
-		if ($idrs && $adb->num_rows($idrs)>0) {
-			$id = $adb->query_result($idrs, 0, 'id');
-			$sql ='update vtiger_mail_accounts set og_server_name=?, og_server_username=?, og_server_password=?, og_smtp_auth=?, og_server_type=?, 
-					og_server_port=?, og_from_email_field=?, og_server_status=? where id=?';
-			$params = array($server, $server_username, $server_password, $smtp_auth, $server_type, $port, $from_email, $isOutgoingMailServerActive, $id);
-		} else {
-			$sql = 'insert into vtiger_mail_accounts (og_server_name, og_server_username, og_server_password, og_smtp_auth, og_server_type, og_server_port, 
-			og_from_email_field, og_server_status) values(?,?,?,?,?,?,?,?)';
-			$params = array($server, $port, $server_username, $server_password, $server_type, $smtp_auth, '',$from_email, $isOutgoingMailServerActive);
-		}
-		$adb->pquery($sql, $params);
 	}
 
 	/**
 	 * Function to Save Incoming Mail Server Configuration
 	 */
-	public function saveSMTPServerConfiguration(
+	public function saveIncomingMailServerConfiguration(
 		$isIncomingMailServerActive,
 		$displayname,
 		$mailprotocol,
@@ -137,34 +95,22 @@ class corebos_smtp {
 		$mails_per_page,
 		$ssltype,
 		$sslmeth,
-		$isOutgoingMailServerActive,
-		$og_server_username,
-		$og_server_password,
-		$og_smtp_auth,
-		$og_from_email_field,
-		$og_server_name,
-		$og_server_port,
-		$og_server_type,
-		$og_mail_server_path,
-		$og_validation_status,
-		$ic_validation_status
+		$og_server_status
 	) {
-		global $adb, $log, $current_user, $site_URL;
+		   global $adb, $log, $current_user, $site_URL;
 		if ($mails_per_page == '') {
 			$mails_per_page = '0';
 		}
-		require_once 'include/database/PearDatabase.php';
-		require_once 'modules/Users/Users.php';
-		$focus = new Users();
-		$ic_server_encrypted_password=$focus->changepassword($server_password);
-		$og_server_encrypted_password=$focus->changepassword($og_server_password);
+			require_once 'include/database/PearDatabase.php';
+			require_once 'modules/Users/Users.php';
+			$focus = new Users();
+			$ic_server_encrypted_password=$focus->changepassword($server_password);
 
-		$result = $adb->pquery('select * from vtiger_mail_accounts where user_id = ?', array($current_user->id));
+			$result = $adb->pquery('select * from vtiger_mail_accounts where user_id = ?', array($current_user->id));
 		if ($adb->num_rows($result) > 0) {
-			$sql='update vtiger_mail_accounts set display_name =?, mail_id =?, mail_protocol =?, mail_username =?, mail_password =?, 
-				mail_servername = ?, box_refresh=?, mails_per_page=?, ssltype=? , sslmeth=?, status =?, og_server_name=?, og_server_username=?,
-				og_server_password=?, og_smtp_auth=?, og_server_type=?, og_server_port=?, og_from_email_field=?, og_server_status=?, 
-				og_server_validation_status=?, ic_server_validation_status=? where user_id ='.$current_user->id;
+			$sql='update vtiger_mail_accounts set display_name =?, mail_id =?, mail_protocol =?, mail_username =?, 
+					mail_password =?, mail_servername = ?, box_refresh=?, mails_per_page=?, ssltype=? , sslmeth=?, status =?, 
+					og_server_status=? where user_id ='.$current_user->id;
 			$params = array(
 				$displayname,
 				$server_username,
@@ -177,23 +123,12 @@ class corebos_smtp {
 				$ssltype,
 				$sslmeth,
 				$isIncomingMailServerActive,
-				$og_server_name,
-				$og_server_username,
-				$og_server_encrypted_password,
-				$og_smtp_auth,
-				$og_server_type,
-				$og_server_port,
-				$og_from_email_field,
-				$isOutgoingMailServerActive,
-				$og_validation_status,
-				$ic_validation_status
+				$og_server_status
 			);
 		} else {
 			$account_id = $adb->getUniqueID('vtiger_mail_accounts');
 			$sql='insert into vtiger_mail_accounts(account_id, user_id, display_name, mail_id, mail_protocol, mail_username, mail_password, mail_servername,
-					box_refresh, mails_per_page, ssltype, sslmeth, int_mailer, status, set_default, og_server_name, og_server_username, og_server_password, og_smtp_auth,
-					og_server_type, og_server_port, og_from_email_field, og_server_status,og_server_validation_status, 
-					ic_server_validation_status)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+					box_refresh, mails_per_page, ssltype, sslmeth, int_mailer, status, set_default, og_server_status)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
 			$params = array(
 				$account_id,
 				$current_user->id,
@@ -210,6 +145,39 @@ class corebos_smtp {
 				(isset($_REQUEST['int_mailer']) ? $_REQUEST['int_mailer'] : 1),
 				$isIncomingMailServerActive,
 				'0',
+				$og_server_status
+			);
+		}
+			$adb->pquery($sql, $params);
+	}
+
+	 /**
+	  * Function to Save Outgoing Mail Server Configuration
+	  */
+	public function saveOutgoingMailServerConfiguration(
+		$isOutgoingMailServerActive,
+		$og_server_username,
+		$og_server_password,
+		$og_smtp_auth,
+		$og_from_email_field,
+		$og_server_name,
+		$og_server_port,
+		$og_server_type,
+		$og_mail_server_path,
+		$ic_server_status
+	) {
+		global $adb, $log, $current_user, $site_URL;
+
+		require_once 'include/database/PearDatabase.php';
+		require_once 'modules/Users/Users.php';
+		$focus = new Users();
+		$og_server_encrypted_password=$focus->changepassword($og_server_password);
+
+		$result = $adb->pquery('select * from vtiger_mail_accounts where user_id = ?', array($current_user->id));
+		if ($adb->num_rows($result) > 0) {
+			$sql='update vtiger_mail_accounts set og_server_name=?, og_server_username=?, og_server_password=?, og_smtp_auth=?, og_server_type=?, og_server_port=?, 
+					og_from_email_field=?, og_server_status=?, status=? where user_id ='.$current_user->id;
+			$params = array(
 				$og_server_name,
 				$og_server_username,
 				$og_server_encrypted_password,
@@ -218,8 +186,24 @@ class corebos_smtp {
 				$og_server_port,
 				$og_from_email_field,
 				$isOutgoingMailServerActive,
-				$og_validation_status,
-				$ic_validation_status
+				$ic_server_status
+			);
+		} else {
+			$account_id = $adb->getUniqueID('vtiger_mail_accounts');
+			$sql='insert into vtiger_mail_accounts(account_id, user_id, og_server_name, og_server_username, og_server_password, og_smtp_auth, 
+					og_server_type, og_server_port, og_from_email_field, og_server_status,status)values(?,?,?,?,?,?,?,?,?,?,?)';
+			$params = array(
+				$account_id,
+				$current_user->id,
+				$og_server_name,
+				$og_server_username,
+				$og_server_encrypted_password,
+				$og_smtp_auth,
+				$og_server_type,
+				$og_server_port,
+				$og_from_email_field,
+				$isOutgoingMailServerActive,
+				$ic_server_status
 			);
 		}
 		$adb->pquery($sql, $params);
@@ -383,20 +367,6 @@ class corebos_smtp {
 	 */
 	public function getOutgoingMailServerPath() {
 		return $this->og_mail_server_path;
-	}
-
-	/**
-	 * Get the value of og_mail_server_validation_status
-	 */
-	public function getOutgoingMailServerValidationStatus() {
-		return $this->og_mail_server_validation_status;
-	}
-
-	/**
-	 * Get the value of ic_mail_server_validation_status
-	 */
-	public function getIncomingMailServerValidationStatus() {
-		return $this->ic_mail_server_validation_status;
 	}
 }
 ?>
