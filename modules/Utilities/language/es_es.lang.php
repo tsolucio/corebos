@@ -19,6 +19,7 @@ $mod_strings = array(
 	'JSLBL_PASSWORD_CANNOT_BE_EMPTY'=>'La contraseña no puede estar vacía',
 	'JSLBL_SERVERNAME_CANNOT_BE_EMPTY'=>'El nombre del servidor no puede estar vacío',
 	'JSLBL_USERNAME_CANNOT_BE_EMPTY'=>'El nombre de usuario no puede estar vacío',
+	'JSLBL_ERROR' => 'Error',
 
 	// General translations
 	'SUCCESSFUL_REGISTRATION_TITLE' => 'Authentification correct',
