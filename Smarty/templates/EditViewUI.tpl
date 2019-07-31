@@ -1206,7 +1206,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			{assign var=rloopit value=$rowiteration}
 			{foreach item=tax key=count from=$TAX_DETAILS}
 				{if $rloopit==2}
-					<tr>
+					<tr name="tbl{$header|replace:' ':''}Content" style="height:25px" class="createview_field_row">
 				{else}
 					{assign var=rloopit value=2}
 				{/if}
@@ -1217,18 +1217,20 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					{assign var=check_value value=""}
 					{assign var=show_value value="hidden"}
 				{/if}
-				<td id="td_{$tax.check_name}" align="right" class="dvtCellLabel" style="border:0px solid red;">
+				<td id="td_{$tax.check_name}" align="right" class="dvtCellLabel">
 					{$tax.taxlabel} {$APP.COVERED_PERCENTAGE}
-					<input type="checkbox" name="{$tax.check_name}" id="{$tax.check_name}" class="small" onclick="fnshowHide(this,'{$tax.taxname}')" {$check_value}>
+					<input type="checkbox" name="{$tax.check_name}" id="{$tax.check_name}" class="small" onclick="fnshowHide(this,'td_val_{$tax.check_name}')" {$check_value}>
 				</td>
-				<td id="td_val_{$tax.check_name}" class="dvtCellInfo" align="left" style="border:0px solid red;">
+				<td id="td_val_{$tax.check_name}" class="dvtCellInfo" align="left" style="visibility:{$show_value};">
 					<span style='display:none;' id='{$fldname}_hidden'></span>
-					<input type="text" class="detailedViewTextBox" name="{$tax.taxname}" id="{$tax.taxname}" value="{$tax.percentage}" style="visibility:{$show_value};" onBlur="fntaxValidation('{$tax.taxname}')">
+					<input type="text" class="detailedViewTextBox" name="{$tax.taxname}" id="{$tax.taxname}" value="{$tax.percentage}" onBlur="fntaxValidation('{$tax.taxname}')">
 				</td>
 				<td colspan="2" class="dvtCellInfo">&nbsp;</td>
 				</tr>
 			{/foreach}
-
+			{if $rowiteration==1}
+				<tr name="tbl{$header|replace:' ':''}Content" style="height:25px" class="createview_field_row">
+			{/if}
 		{else}
 			{* just show field on screen *}
 			<td id="td_{$fldname}" width=20% class="dvtCellLabel" align=right>{$fldlabel}</td>
