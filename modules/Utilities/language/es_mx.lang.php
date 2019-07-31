@@ -15,6 +15,14 @@
  ********************************************************************************/
 
 $mod_strings = array(
+	// Translations for JS (please use the prefix JSLBL in key)
+	'JSLBL_Saving_And_Verifying' => 'Guardando y Verificando',
+	'JSLBL_PASSWORD_CANNOT_BE_EMPTY'=>'La contraseña no puede estar vacía',
+	'JSLBL_SERVERNAME_CANNOT_BE_EMPTY'=>'El nombre del servidor no puede estar vacío',
+	'JSLBL_USERNAME_CANNOT_BE_EMPTY'=>'El nombre de usuario no puede estar vacío',
+	'JSLBL_ERROR' => 'Error',
+
+	// General translations
 	'SUCCESSFUL_REGISTRATION_TITLE' => 'Authentification correct',
 	'SUCCESSFUL_REGISTRATION_MESSAGE' => 'You have correctly established authentification credentials with %s. You can now start using the functionality.',
 	'UNSUCCESSFUL_REGISTRATION_TITLE' => 'Authentification Incorrect',
@@ -52,5 +60,16 @@ $mod_strings = array(
 	'TransEmail_subtitle' => 'Sustituye el servidor de correo saliente',
 	'MktEmail_title' => 'Configuración para Email Marketing',
 	'MktEmail_subtitle' => 'Solo para mensajes, emails programados y procesos creados especificamente',
+	'LBL_CONFIG_INCOMING_MAIL_SERVER' => 'Configurar Correo Entrante',
+	'LBL_SELECT_SERVER_TYPE' => 'Selecciona Tipo Servidor',
+	'LBL_CONFIG_OUTGOING_MAIL_SERVER' => 'Configurar Correo Saliente',
+	'LBL_USER_SMTP_CONFIG' => 'Configuración IMAP/SMTP por Usuario',
+	'LBL_IC_SUCCESS_CONFIG_VALIDATION' => 'Configuración del servidor de correo entrante guardada y validada',
+	'LBL_IC_WARNING_CONFIG_VALIDATION' => 'Configuración del servidor de correo entrante no validada',
+	'LBL_IC_CONFIG_VALIDATION_FAIL' => 'Falló la validación de la configuración del servidor de correo entrante',
+	'LBL_OG_SUCCESS_CONFIG_VALIDATION' => 'Configuración del servidor de correo saliente guardada y validada',
+	'LBL_OG_WARNING_CONFIG_VALIDATION' => 'Configuración del servidor de correo saliente no validada',
+	'LBL_OG_CONFIG_VALIDATION_FAIL' => 'Falló la validación de la configuración del servidor de correo saliente',
+	'LBL_ERROR' => 'Error',
 );
 ?>
