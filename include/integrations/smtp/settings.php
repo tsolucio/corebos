@@ -60,7 +60,6 @@ if ($_REQUEST['savemode'] == 'true') {
 		$og_mail_server_username = (empty($_REQUEST['og_mail_server_username']) ? '' : vtlib_purify($_REQUEST['og_mail_server_username']));
 		$og_mail_server_password = (empty($_REQUEST['og_mail_server_password']) ? '' : vtlib_purify($_REQUEST['og_mail_server_password']));
 		$og_mail_server_smtp_auth = (empty($_REQUEST['og_mail_server_smtp_auth']) ? '' : vtlib_purify($_REQUEST['og_mail_server_smtp_auth']));
-		$og_mail_server_from_email = (empty($_REQUEST['og_mail_server_from_email']) ? '' : vtlib_purify($_REQUEST['og_mail_server_from_email']));
 		$og_mail_server_name = vtlib_purify($_REQUEST['og_mail_server_name']);
 		$og_mail_server_port= (empty($_REQUEST['port']) ? 0 : vtlib_purify($_REQUEST['port']));
 		$og_mail_server_type = '';
@@ -71,7 +70,6 @@ if ($_REQUEST['savemode'] == 'true') {
 			$og_mail_server_username,
 			$og_mail_server_password,
 			$og_mail_server_smtp_auth,
-			$og_mail_server_from_email,
 			$og_mail_server_name,
 			$og_mail_server_port,
 			$og_mail_server_type,
@@ -131,11 +129,8 @@ if ($_REQUEST['savemode'] == 'true') {
 	$smarty->assign('og_mail_server_username', $smtpconfig->getOutgoingMailServerUsername());
 	$smarty->assign('og_mail_server_password', $focus->de_cryption($smtpconfig->getOutgoingMailServerPassword()));
 	$smarty->assign('og_mail_server_smtp_auth', $smtpconfig->getOutgoingMailServerSMTPAuthetication());
-	$smarty->assign('og_mail_server_from_email', $smtpconfig->getOutgoingMailsServerFromEmail());
 	$smarty->assign('og_mail_server_name', $smtpconfig->getOutgoingMailServerName());
 	$smarty->assign('port', $smtpconfig->getOutgoingMailServerPort());
-	$smarty->assign('server_type', $smtpconfig->getOutgoingMailServerType());
-	$smarty->assign('server_path', $smtpconfig->getOutgoingMailServerPath());
 	$smarty->assign('APP', $app_strings);
 	$smarty->assign('MOD', $mod_strings);
 	$smarty->assign('MODULE', $currentModule);

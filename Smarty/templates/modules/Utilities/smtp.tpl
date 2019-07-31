@@ -298,7 +298,6 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
             <label class="slds-form-element__label" for="og_mail_server_password">{'LBL_PASWRD'|@getTranslatedString:'Settings'}</label>
             <div class="slds-form-element__control">
                 <input type="password" id="og_mail_server_password" name="og_mail_server_password" class="slds-input" value="{$og_mail_server_password}" />
-                <input type="hidden" id="og_mail_server_from_email" name="og_mail_server_from_email" class="slds-input" value="{$og_mail_server_from_email}" />
             </div>
             <div class="slds-form-element__help" id="form-error-og-server-password"></div>
         </div>

@@ -37,11 +37,8 @@ class corebos_smtp {
 	public $og_mail_server_username;
 	public $og_mail_server_password;
 	public $og_mail_server_smtp_auth;
-	public $og_mail_server_from_email;
 	public $og_mail_server_name;
 	public $og_mail_server_port;
-	public $og_mail_server_type;
-	public $og_mail_server_path;
 
 	// Errors
 	public static $ERROR_NONE = 0;
@@ -73,11 +70,8 @@ class corebos_smtp {
 			$this->og_mail_server_username = trim($adb->query_result($result, 0, 'og_server_username'));
 			$this->og_mail_server_password = trim($adb->query_result($result, 0, 'og_server_password'));
 			$this->og_mail_server_smtp_auth = trim($adb->query_result($result, 0, 'og_smtp_auth'));
-			$this->og_mail_server_from_email = trim($adb->query_result($result, 0, 'og_from_email_field'));
 			$this->og_mail_server_name = trim($adb->query_result($result, 0, 'og_server_name'));
 			$this->og_mail_server_port = trim($adb->query_result($result, 0, 'og_server_port'));
-			$this->og_mail_server_type = trim($adb->query_result($result, 0, 'og_server_type'));
-			$this->og_mail_server_path = trim($adb->query_result($result, 0, 'og_server_path'));
 		}
 	}
 
@@ -97,7 +91,7 @@ class corebos_smtp {
 		$sslmeth,
 		$og_server_status
 	) {
-		   global $adb, $log, $current_user, $site_URL;
+		global $adb, $log, $current_user, $site_URL;
 		if ($mails_per_page == '') {
 			$mails_per_page = '0';
 		}
@@ -108,9 +102,8 @@ class corebos_smtp {
 
 			$result = $adb->pquery('select * from vtiger_mail_accounts where user_id = ?', array($current_user->id));
 		if ($adb->num_rows($result) > 0) {
-			$sql='update vtiger_mail_accounts set display_name =?, mail_id =?, mail_protocol =?, mail_username =?, 
-					mail_password =?, mail_servername = ?, box_refresh=?, mails_per_page=?, ssltype=? , sslmeth=?, status =?, 
-					og_server_status=? where user_id ='.$current_user->id;
+			$sql='update vtiger_mail_accounts set display_name=?, mail_id=?, mail_protocol=?, mail_username=?, mail_password=?, mail_servername=?,
+				box_refresh=?, mails_per_page=?, ssltype=? , sslmeth=?, status =?, og_server_status=? where user_id='.$current_user->id;
 			$params = array(
 				$displayname,
 				$server_username,
@@ -128,7 +121,7 @@ class corebos_smtp {
 		} else {
 			$account_id = $adb->getUniqueID('vtiger_mail_accounts');
 			$sql='insert into vtiger_mail_accounts(account_id, user_id, display_name, mail_id, mail_protocol, mail_username, mail_password, mail_servername,
-					box_refresh, mails_per_page, ssltype, sslmeth, int_mailer, status, set_default, og_server_status)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+				box_refresh, mails_per_page, ssltype, sslmeth, int_mailer, status, set_default, og_server_status)values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
 			$params = array(
 				$account_id,
 				$current_user->id,
@@ -159,10 +152,8 @@ class corebos_smtp {
 		$og_server_username,
 		$og_server_password,
 		$og_smtp_auth,
-		$og_from_email_field,
 		$og_server_name,
 		$og_server_port,
-		$og_server_type,
 		$og_mail_server_path,
 		$ic_server_status
 	) {
@@ -175,23 +166,21 @@ class corebos_smtp {
 
 		$result = $adb->pquery('select * from vtiger_mail_accounts where user_id = ?', array($current_user->id));
 		if ($adb->num_rows($result) > 0) {
-			$sql='update vtiger_mail_accounts set og_server_name=?, og_server_username=?, og_server_password=?, og_smtp_auth=?, og_server_type=?, og_server_port=?, 
-					og_from_email_field=?, og_server_status=?, status=? where user_id ='.$current_user->id;
+			$sql='update vtiger_mail_accounts set og_server_name=?, og_server_username=?, og_server_password=?, og_smtp_auth=?, og_server_port=?,
+				og_server_status=?, status=? where user_id ='.$current_user->id;
 			$params = array(
 				$og_server_name,
 				$og_server_username,
 				$og_server_encrypted_password,
 				$og_smtp_auth,
-				$og_server_type,
 				$og_server_port,
-				$og_from_email_field,
 				$isOutgoingMailServerActive,
 				$ic_server_status
 			);
 		} else {
 			$account_id = $adb->getUniqueID('vtiger_mail_accounts');
-			$sql='insert into vtiger_mail_accounts(account_id, user_id, og_server_name, og_server_username, og_server_password, og_smtp_auth, 
-					og_server_type, og_server_port, og_from_email_field, og_server_status,status)values(?,?,?,?,?,?,?,?,?,?,?)';
+			$sql='insert into vtiger_mail_accounts(account_id, user_id, og_server_name, og_server_username, og_server_password, og_smtp_auth,
+				og_server_port, og_server_status,status)values(?,?,?,?,?,?,?,?,?,?,?)';
 			$params = array(
 				$account_id,
 				$current_user->id,
@@ -199,9 +188,7 @@ class corebos_smtp {
 				$og_server_username,
 				$og_server_encrypted_password,
 				$og_smtp_auth,
-				$og_server_type,
 				$og_server_port,
-				$og_from_email_field,
 				$isOutgoingMailServerActive,
 				$ic_server_status
 			);
@@ -335,13 +322,6 @@ class corebos_smtp {
 	}
 
 	/**
-	 * Get the value of og_mail_server_from_email
-	 */
-	public function getOutgoingMailsServerFromEmail() {
-		return $this->og_mail_server_from_email;
-	}
-
-	/**
 	 * Get the value of og_mail_server
 	 */
 	public function getOutgoingMailServerName() {
@@ -353,20 +333,6 @@ class corebos_smtp {
 	 */
 	public function getOutgoingMailServerPort() {
 		return $this->og_mail_server_port;
-	}
-
-	/**
-	 * Get the value of og_mail_server_type
-	 */
-	public function getOutgoingMailServerType() {
-		return $this->og_mail_server_type;
-	}
-
-	/**
-	 * Get the value of og_mail_server_path
-	 */
-	public function getOutgoingMailServerPath() {
-		return $this->og_mail_server_path;
 	}
 }
 ?>
