@@ -639,8 +639,8 @@ function parseEmailErrorString($mail_error_str) {
 	$errorstr = '';
 	foreach ($mail_status as $val) {
 		$status_str = explode('=', $val);
-		$adb->println('Mail id => "'.$status_str[0].'".........status => "'.$status_str[1].'"');
-		if ($status_str[1] != 1 && $status_str[1] != '') {
+		$adb->println('Mail id => "'.$status_str[0].'"....status => "'.(isset($status_str[1]) ? $status_str[1] : '').'"');
+		if (isset($status_str[1]) && $status_str[1] != 1) {
 			$adb->println('Error in mail sending');
 			if ($status_str[1] == 'connect_host') {
 				$adb->println('if part - Mail sever is not configured');
