@@ -159,7 +159,8 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
                     </fieldset>
                 </div>
                 <div class="slds-form-element slds-m-top--small">
-                    <fieldset class="slds-form-element">
+                <div class="slds-grid slds-gutters slds-gutters_medium">
+                    <fieldset class="slds-col slds-form-element">
                         <legend class="slds-form-element__legend slds-form-element__label">{'LBL_SSL_Options'|@getTranslatedString:'MailManager'}</legend>
                         <div class="slds-form-element__control">
                             <div class="slds-radio_button-group">
@@ -184,9 +185,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
                             </div>
                         </div>
                     </fieldset>
-                </div>
-                <div class="slds-form-element slds-m-top--small">
-                    <fieldset class="slds-form-element">
+                    <fieldset class="slds-col slds-form-element">
                         <legend class="slds-form-element__legend slds-form-element__label">{'LBL_Certificate_Validations'|@getTranslatedString:'MailManager'}</legend>
                         <div class="slds-form-element__control">
                             <div class="slds-radio_button-group">
@@ -205,6 +204,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
                             </div>
                         </div>
                     </fieldset>
+                </div>
                 </div>
             </div>
             <div class="slds-form-element slds-m-top--small">
