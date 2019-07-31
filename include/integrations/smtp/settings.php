@@ -20,8 +20,8 @@ include_once 'include/integrations/smtp/smtp.php';
 
 $smarty = new vtigerCRM_Smarty();
 $smtpconfig = new corebos_smtp();
-
-if ($_REQUEST['savemode'] == 'true') {
+$savemode = (empty($_REQUEST['savemode']) ? 'false' : vtlib_purify($_REQUEST['savemode']));
+if ($savemode == 'true') {
 	/**
 	 * for Incoming Mail Server Configuration
 	 */

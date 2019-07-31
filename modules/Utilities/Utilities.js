@@ -123,26 +123,25 @@ if (typeof(Utilities) == 'undefined') {
 					jQuery('#ic-validation-success').css('display', 'none');
 					jQuery('#ic-validation-error').css('display', 'block');
 					jQuery('#ic-message-error').text(Utilities.i18n('JSLBL_ERROR') + '::' + response_obj.ic_validation_error_message);
-				} else if (response_obj.ic_mail_server_validation_success){
+				} else if (response_obj.ic_mail_server_validation_success) {
 					jQuery('#ic-validation-error').css('display', 'none');
-					jQuery('#ic-validation-success').css('display','block');
+					jQuery('#ic-validation-success').css('display', 'block');
 				} else {
 					jQuery('#ic-validation-success').css('display', 'none');
 					jQuery('#ic-validation-error').css('display', 'none');
 				}
 
 				if (response_obj.og_validation_error_status) {
-					jQuery('#og-validation-success').css('display','none');
+					jQuery('#og-validation-success').css('display', 'none');
 					jQuery('#og-validation-error').css('display', 'block');
 					jQuery('#og-message-error').text(Utilities.i18n('JSLBL_ERROR') + '::' + response_obj.og_validation_error_message);
 				} else if (response_obj.og_mail_server_validation_success) {
 					jQuery('#og-validation-error').css('display', 'none');
 					jQuery('#og-validation-success').css('display', 'block');
 				} else {
-					jQuery('#og-validation-success').css('display','none');
+					jQuery('#og-validation-success').css('display', 'none');
 					jQuery('#og-validation-error').css('display', 'none');
 				}
-				
 				VtigerJS_DialogBox.unblock();
 				Utilities.progress_hide();
 			});
