@@ -586,6 +586,7 @@ $app_strings = array(
 	'LBL_SO_STATUS' => 'Rendelés Állapot',
 	'LBL_INVOICE_STATUS' => 'Díjbekérő Állapot',
 	'LBL_MODULE' => 'Modul',
+	'LBL_TOTAL_FILTERED' => 'Total',
 	'Active' => 'Aktív',
 	'Inactive' => 'InAktív',
 	'Last 2 Days' => 'Előző 2 Nap',
@@ -1260,6 +1261,10 @@ $app_strings = array(
 	'Select Related Module' => 'Select Related Module',
 	'No Module' => 'No related Module',
 	'Entity Name' => 'Entity Name',
+	'Add event' => 'Add event',
+	'Create Invoice' => 'Create Invoice',
+	'Send Email With PDF' => 'Send Email With PDF',
+	'Export To PDF' => 'Export To PDF',
 );
 
 // Translation for currency names

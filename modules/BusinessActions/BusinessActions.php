@@ -266,12 +266,13 @@ class BusinessActions extends CRMEntity {
 		}
 
 		$result = array();
+		$alreadyLoaded = array();
 		if ($multitype) {
 			foreach ($type as $t) {
 				$result[$t] = array();
+				$alreadyLoaded[$t] = array();
 			}
 		}
-
 		foreach ($accumulator as $row) {
 			/** Should the widget be shown */
 			$return = cbEventHandler::do_filter('corebos.filter.link.show', array($row, $type, $parameters));
@@ -301,10 +302,17 @@ class BusinessActions extends CRMEntity {
 				$link->linkurl = $strtemplate->merge($link->linkurl);
 				$link->linkicon= $strtemplate->merge($link->linkicon);
 			}
-
 			if ($multitype) {
+				if (in_array($link->linkurl, $alreadyLoaded[$link->linktype])) {
+					continue;
+				}
+				$alreadyLoaded[$link->linktype][] = $link->linkurl;
 				$result[$link->linktype][] = $link;
 			} else {
+				if (in_array($link->linkurl, $alreadyLoaded)) {
+					continue;
+				}
+				$alreadyLoaded[] = $link->linkurl;
 				$result[] = $link;
 			}
 		}

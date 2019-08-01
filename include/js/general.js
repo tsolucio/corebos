@@ -2622,9 +2622,9 @@ function validateUrl(name) {
 	var wProtocol;
 	var oRegex = new Object();
 	oRegex.UriProtocol = new RegExp('');
-	oRegex.UriProtocol.compile('^(((http):\/\/)|mailto:)', 'gi');
+	oRegex.UriProtocol.compile('^(((https):\/\/)|mailto:)', 'gi');
 	oRegex.UrlOnChangeProtocol = new RegExp('');
-	oRegex.UrlOnChangeProtocol.compile('^(http)://(?=.)', 'gi');
+	oRegex.UrlOnChangeProtocol.compile('^(https)://(?=.)', 'gi');
 	wUrl = Url.value;
 	wProtocol=oRegex.UrlOnChangeProtocol.exec(wUrl);
 	if (wProtocol) {

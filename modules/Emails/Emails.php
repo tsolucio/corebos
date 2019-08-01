@@ -251,9 +251,10 @@ class Emails extends CRMEntity {
 	}
 
 	public static function emailServerCheck() {
-		global $adb;
-		$emailcfg = $adb->pquery('select 1 from vtiger_systems where server_type = ?', array('email'));
-		return ($adb->num_rows($emailcfg)>0);
+		global $adb, $current_user;
+		$user_og_server_config = $adb->pquery('select 1 from vtiger_mail_accounts where user_id = ? AND og_server_status=1', array($current_user->id));
+		$global_og_server_config = $adb->pquery('select 1 from vtiger_systems where server_type = ?', array('email'));
+		return ($adb->num_rows($global_og_server_config) > 0 || $adb->num_rows($user_og_server_config) > 0);
 	}
 
 	public static function useEmailHook() {
@@ -394,39 +395,6 @@ class Emails extends CRMEntity {
 		return $return_value;
 	}
 
-	/** Returns the column name that needs to be sorted */
-	public function getSortOrder() {
-		global $log;
-		$log->debug('> getSortOrder');
-		if (isset($_REQUEST['sorder'])) {
-			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
-		} else {
-			$sorder = (!empty($_SESSION['EMAILS_SORT_ORDER']) ? ($_SESSION['EMAILS_SORT_ORDER']) : ($this->default_sort_order));
-		}
-
-		$log->debug('< getSortOrder');
-		return $sorder;
-	}
-
-	/** Returns the order in which the records need to be sorted */
-	public function getOrderBy() {
-		global $log;
-		$log->debug('> getOrderBy');
-
-		$use_default_order_by = '';
-		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0)) {
-			$use_default_order_by = $this->default_order_by;
-		}
-
-		if (isset($_REQUEST['order_by'])) {
-			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
-		} else {
-			$order_by = (!empty($_SESSION['EMAILS_ORDER_BY']) ? ($_SESSION['EMAILS_ORDER_BY']) : ($use_default_order_by));
-		}
-
-		$log->debug('< getOrderBy');
-		return $order_by;
-	}
 
 	/** Returns a list of the associated users */
 	public function get_users($id) {

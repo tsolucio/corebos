@@ -55,31 +55,22 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 
 <div id="lstRecordLayout" class="layerPopup" style="display:none;width:325px;height:300px;"></div>
 
-{if $MODULE eq 'Accounts' || $MODULE eq 'Contacts' || $MODULE eq 'Leads'}
+{if $MODULE eq 'Accounts' || $MODULE eq 'Contacts'}
 	{if $MODULE eq 'Accounts'}
-		{assign var=address1 value='$MOD.LBL_BILLING_ADDRESS'}
-		{assign var=address2 value='$MOD.LBL_SHIPPING_ADDRESS'}
+		{assign var=address1 value=$MOD.LBL_BILLING_ADDRESS}
+		{assign var=address2 value=$MOD.LBL_SHIPPING_ADDRESS}
 	{/if}
 	{if $MODULE eq 'Contacts'}
-		{assign var=address1 value='$MOD.LBL_PRIMARY_ADDRESS'}
-		{assign var=address2 value='$MOD.LBL_ALTERNATE_ADDRESS'}
+		{assign var=address1 value=$MOD.LBL_PRIMARY_ADDRESS}
+		{assign var=address2 value=$MOD.LBL_ALTERNATE_ADDRESS}
 	{/if}
-	<div id="locateMap" onMouseOut="fninvsh('locateMap')" onMouseOver="fnvshNrm('locateMap')">
-		<table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="100%">
-			<tr>
-				<td>
-					{if $MODULE eq 'Accounts'}
-						<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation( 'Main' );" class="calMnu">{$MOD.LBL_BILLING_ADDRESS}</a>
-						<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation( 'Other' );" class="calMnu">{$MOD.LBL_SHIPPING_ADDRESS}</a>
-					{/if}
-					{if $MODULE eq 'Contacts'}
-						<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation( 'Main' );" class="calMnu">{$MOD.LBL_PRIMARY_ADDRESS}</a>
-						<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation( 'Other' );" class="calMnu">{$MOD.LBL_ALTERNATE_ADDRESS}</a>
-					{/if}
-
-				</td>
-			</tr>
-		</table>
+	<div class="slds-card" id="locateMap" onMouseOut="fninvsh('locateMap')" onMouseOver="fnvshNrm('locateMap')">
+		<div class="slds-card__body slds-card__body_inner">
+			<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation( 'Main' );" class="calMnu">{$address1}</a>
+		</div>
+		<div class="slds-card__body slds-card__body_inner">
+			<a href="javascript:;" onClick="fninvsh('locateMap'); searchMapLocation( 'Main' );" class="calMnu">{$address2}</a>
+		</div>
 	</div>
 {/if}
 
@@ -163,10 +154,10 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 													<tr valign=top>
 														<td style="padding:5px">
 															<!-- Command Buttons -->
+															<form action="index.php" method="post" name="DetailView" id="formDetailView">
+																<input type="hidden" id="hdtxt_IsAdmin" value="{if isset($hdtxt_IsAdmin)}{$hdtxt_IsAdmin}{else}0{/if}">
+																{include file='DetailViewHidden.tpl'}
 															<table border=0 cellspacing=0 cellpadding=0 width=100%>
-																<form action="index.php" method="post" name="DetailView" id="formDetailView">
-																	<input type="hidden" id="hdtxt_IsAdmin" value="{if isset($hdtxt_IsAdmin)}{$hdtxt_IsAdmin}{else}0{/if}">
-																	{include file='DetailViewHidden.tpl'}
 																	{foreach key=header item=detail from=$BLOCKS name=BLOCKS}
 																		<tr><td style="padding:5px">
 																				<!-- Detailed View Code starts here-->

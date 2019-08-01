@@ -24,7 +24,7 @@
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  ********************************************************************************
  *  Module       : Payments. Cobro y Pago
- *  Version      : 5.4.0 BluePay
+ *  Version      : 5.4.0
  *  Author       : JPL TSolucio, S. L.   Joe Bordes
  *  Licensed to  : OpenCubed
  ********************************************************************************
@@ -62,15 +62,6 @@
   `cobropagoid` int(11) NOT NULL,
   PRIMARY KEY (`cobropagoid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
-</table>
-<table>
-<name>vtiger_cobropagoconfig</name>
-<sql><![CDATA[CREATE TABLE `vtiger_cobropagoconfig` (
-  `bluepay_accountid` varchar(200) default NULL,
-  `bluepay_secretkey` varchar(150) default NULL,
-  `bluepay_mode` varchar(150) default NULL,
-  `block_paid` varchar(3) default NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8]]></sql>
 </table>
 </tables>
 <blocks>
@@ -640,5 +631,15 @@
 </relatedlist>
 </relatedlists>
 <customlinks>
+<customlink>
+<linktype>DETAILVIEWBASIC</linktype>
+<linklabel>Pay</linklabel>
+<linkurl><![CDATA[notifications.php?type=Pay&cpid=$RECORD$]]></linkurl>
+<linkicon><![CDATA[]]></linkicon>
+<sequence>0</sequence>
+<handler_path><![CDATA[]]></handler_path>
+<handler_class><![CDATA[]]></handler_class>
+<handler><![CDATA[]]></handler>
+</customlink>
 </customlinks>
 </module>

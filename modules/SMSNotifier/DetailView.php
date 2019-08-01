@@ -25,5 +25,5 @@ if (empty($blocks[getTranslatedString('StatusInformation', $currentModule)])) {
 $smarty->assign('DETAILVIEW_AJAX_EDIT', false);
 $smarty->assign('CREATE_PERMISSION', 'notpermitted');
 
-$smarty->display(vtlib_getModuleTemplate($currentModule, 'DetailView.tpl'));
+$smarty->display('DetailView.tpl');
 ?>

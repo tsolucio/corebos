@@ -579,6 +579,7 @@ $app_strings = array (
 'LBL_SO_STATUS' => 'Estágio pedido vendas',
 'LBL_INVOICE_STATUS' => 'Estágio fatura',
 'LBL_MODULE' => 'Módulo',
+'LBL_TOTAL_FILTERED' => 'Total',
 'Active' => 'Ativo',
 'Inactive' => 'Inativo',
 'Today' => 'Hoje',
@@ -1298,6 +1299,11 @@ $app_strings = array (
 'LBL_DESELECT_ALL' => 'Desmarcar todos',
 'LBL_RECORDS_IN' => 'registros em',
 'LBL_FOLDER' => 'pasta',
+'Add event' => 'Add event',
+'Create Invoice' => 'Create Invoice',
+'Send Email With PDF' => 'Send Email With PDF',
+'Export To PDF' => 'Export To PDF',
+
 
 //added for creating a custom lead map row in UI
 'LBL_ADD_MAPPING'=> 'Adicionar mapeamento',

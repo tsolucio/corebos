@@ -47,8 +47,7 @@ $smarty->assign('HEADERSCRIPTS', $COMMONHDRLINKS['HEADERSCRIPT_POPUP']);
 $smarty->assign('HEADERCSS', $COMMONHDRLINKS['HEADERCSS_POPUP']);
 
 $qc_modules = getQuickCreateModules();
-for ($i=0; $i<count($qc_modules);
-$i++) {
+for ($i=0; $i<count($qc_modules); $i++) {
 	$qcmod[$i]=$qc_modules[$i][1];
 }
 $smarty->assign('QCMODULEARRAY', $qcmod);
@@ -144,11 +143,23 @@ switch ($currentModule) {
 		}
 		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'lastname', 'true', 'basic', $popuptype, '', '', $url);
 		break;
+	case 'Project':
+		$log = LoggerManager::getLogger('project_list');
+		$smarty->assign('SINGLE_MOD', 'Project');
+		if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='') {
+			$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
+		} else {
+			$smarty->assign('RETURN_MODULE', 'Emails');
+		}
+		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'projectname', 'true', 'basic', $popuptype, '', '', $url);
+		break;
 	case 'Potentials':
 		$log = LoggerManager::getLogger('potential_list');
 		$smarty->assign('SINGLE_MOD', 'Opportunity');
 		if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='') {
 			$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
+		} else {
+			$smarty->assign('RETURN_MODULE', 'Emails');
 		}
 		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'potentialname', 'true', 'basic', $popuptype, '', '', $url);
 		break;

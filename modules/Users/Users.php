@@ -593,6 +593,7 @@ class Users extends CRMEntity {
 
 	public function de_cryption($data) {
 		require_once 'include/utils/encryption.php';
+		$decrypted_password = '';
 		$de_crypt = new Encryption();
 		if (isset($data)) {
 			$decrypted_password = $de_crypt->decrypt($data);

@@ -22,6 +22,7 @@ class ticket191 extends cbupdaterWorker {
 		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
+			$this->markApplied(false);
 		} else {
 			require_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
 			$taskTypes = array();
@@ -37,7 +38,7 @@ class ticket191 extends cbupdaterWorker {
 			$vnd->setRelatedList($srv, 'Services', array('Select'));
 			$srv->setRelatedList($vnd, 'Vendors', array('Select'));
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}

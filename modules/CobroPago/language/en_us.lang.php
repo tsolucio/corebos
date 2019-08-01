@@ -108,6 +108,11 @@ $mod_strings = array(
 'ERR_ALREADY_PAID' => "This payment has been already paid.",
 'ERR_NO_ACCOUNT' => "There's no related account.",
 'ERR_NO_TOKEN' => "No token for this account.",
-);
 
+'Pay' => 'Pay',
+'Invalid payment.' => 'Invalid payment.',
+'Payment done.' => 'Payment done.',
+'Redirecting to payment gateway...' => 'Redirecting to payment gateway...',
+'Payment error.' => 'Payment error.',
+);
 ?>

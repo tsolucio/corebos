@@ -229,4 +229,47 @@
 	<systemupdate>false</systemupdate>
 	<blocked>true</blocked>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Increment the size of menu columns</description>
+	<filename>build/changeSets/2019/incrementMenuFieldsSize.php</filename>
+	<classname>incrementMenuFieldsSize</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>migrate uitype 20 (textbox) to uitype 19 (textbox)</description>
+	<filename>build/changeSets/2019/convertUitype20to19.php</filename>
+	<classname>convertUitype20to19</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>migrate uitype 22 and 24 to uitype 21</description>
+	<filename>build/changeSets/2019/convertUitype22and24to21.php</filename>
+	<classname>convertUitype22and24to21</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Install ro_ro language</description>
+	<filename>build/changeSets/2019/installrorolanguage.php</filename>
+	<classname>installrorolanguage</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>elifuraha</author>
+	<description>Add coreBOS Rule web service call missing context </description>
+	<filename>build/changeSets/2019/addCbRuleMissingContext.php</filename>
+	<classname>addCbRuleMissingContext</classname>
+	<systemupdate>false</systemupdate>
+	<blocked>true</blocked>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Activate Quick Create support for taxes in Product/Service</description>
+	<filename>build/changeSets/2019/activateQCProdServ.php</filename>
+	<classname>activateQCProdServ</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

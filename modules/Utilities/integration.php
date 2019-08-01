@@ -78,6 +78,10 @@ switch ($_REQUEST['_op']) {
 	case 'setconfigsendgrid':
 		include_once 'include/integrations/sendgrid/settings.php';
 		break;
+	case 'getconfigsmtp':
+	case 'setconfigsmtp':
+		include_once 'include/integrations/smtp/settings.php';
+		break;
 	default:
 		$smarty = new vtigerCRM_Smarty();
 		$titlemessage = getTranslatedString('Available Integrations', $currentModule);

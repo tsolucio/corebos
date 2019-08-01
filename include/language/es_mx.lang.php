@@ -591,6 +591,7 @@ $app_strings = array (
 	'LBL_SO_STATUS' => 'Estado de Pedido',
 	'LBL_INVOICE_STATUS' => 'Estado de Cotización',
 	'LBL_MODULE' => 'Módulo',
+	'LBL_TOTAL_FILTERED' => 'Total',
 	'Active' => 'Activo',
 	'Inactive' => 'Inactivo',
 	'Today' => 'Hoy',
@@ -1317,6 +1318,10 @@ $app_strings = array (
 	'Select Related Module' => 'Selecciona Módulo Relacionado',
 	'No Module' => 'No tiene módulos relacionados',
 	'Entity Name' => 'Nombre Entidad',
+	'Add event' => 'Añadir Evento',
+	'Create Invoice' => 'Crear Factura',
+	'Send Email With PDF' => 'Enviar Email con PDF',
+	'Export To PDF' => 'Exportar a PDF',
 );
 
 // Translation for currency names

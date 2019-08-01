@@ -108,6 +108,10 @@ $mod_strings = array(
 'ERR_ALREADY_PAID' => "Diese Zahlung wurde bereits beglichen.",
 'ERR_NO_ACCOUNT' => "Es gibt keine verknüpfte Organisation.",
 'ERR_NO_TOKEN' => "Kein token für diese Organisation.",
+'Pay' => 'Pay',
+'Invalid payment.' => 'Invalid payment.',
+'Payment done.' => 'Payment done.',
+'Redirecting to payment gateway...' => 'Redirecting to payment gateway...',
+'Payment error.' => 'Payment error.',
 );
-
 ?>

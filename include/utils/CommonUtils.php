@@ -3019,14 +3019,14 @@ function getEmailTemplateVariables($modules_list = null) {
  */
 function getPickListValues($tablename, $roleid) {
 	global $adb;
-	$query = "select $tablename
+	$query = 'select '.$tablename."id, $tablename
 		from vtiger_$tablename
 		inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$tablename.picklist_valueid
 		where roleid=? and picklistid in (select picklistid from vtiger_picklist) order by sortid";
 	$result = $adb->pquery($query, array($roleid));
 	$fldVal = array();
 	while ($row = $adb->fetch_array($result)) {
-		$fldVal[] = $row[$tablename];
+		$fldVal[$row[$tablename.'id']] = $row[$tablename];
 	}
 	return $fldVal;
 }

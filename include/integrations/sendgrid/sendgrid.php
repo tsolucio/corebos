@@ -22,8 +22,6 @@ require_once 'include/events/include.inc';
 
 class corebos_sendgrid {
 	// Configuration Properties
-	private $sg_user = '123';
-	private $sg_pass = 'abcde';
 	private $usesg_transactional = 'a';
 	private $srv_transactional = 'wxyz';
 	private $user_transactional = '123';
@@ -35,8 +33,6 @@ class corebos_sendgrid {
 
 	// Configuration Keys
 	const KEY_ISACTIVE = 'sendgrid_isactive';
-	const KEY_SG_USER = 'sguser';
-	const KEY_SG_PASS = 'sgpass';
 	const KEY_USESG_TRANSACTIONAL = 'usesgtransactional';
 	const KEY_SRV_TRANSACTIONAL = 'srvtransactional';
 	const KEY_USER_TRANSACTIONAL = 'usertransactional';
@@ -59,8 +55,6 @@ class corebos_sendgrid {
 	}
 
 	public function initGlobalScope() {
-		$this->sg_user = coreBOS_Settings::getSetting(self::KEY_SG_USER, '');
-		$this->sg_pass = coreBOS_Settings::getSetting(self::KEY_SG_PASS, '');
 		$this->usesg_transactional = coreBOS_Settings::getSetting(self::KEY_USESG_TRANSACTIONAL, '');
 		$this->srv_transactional = coreBOS_Settings::getSetting(self::KEY_SRV_TRANSACTIONAL, '');
 		$this->user_transactional = coreBOS_Settings::getSetting(self::KEY_USER_TRANSACTIONAL, '');
@@ -73,8 +67,6 @@ class corebos_sendgrid {
 
 	public function saveSettings(
 		$isactive,
-		$sg_user,
-		$sg_pass,
 		$usesg_transactional,
 		$srv_transactional,
 		$user_transactional,
@@ -85,8 +77,6 @@ class corebos_sendgrid {
 		$pass_marketing
 	) {
 		coreBOS_Settings::setSetting(self::KEY_ISACTIVE, $isactive);
-		coreBOS_Settings::setSetting(self::KEY_SG_USER, $sg_user);
-		coreBOS_Settings::setSetting(self::KEY_SG_PASS, $sg_pass);
 		coreBOS_Settings::setSetting(self::KEY_USESG_TRANSACTIONAL, $usesg_transactional);
 		coreBOS_Settings::setSetting(self::KEY_SRV_TRANSACTIONAL, $srv_transactional);
 		coreBOS_Settings::setSetting(self::KEY_USER_TRANSACTIONAL, $user_transactional);
@@ -107,8 +97,6 @@ class corebos_sendgrid {
 	public function getSettings() {
 		return array(
 			'isActive' => coreBOS_Settings::getSetting(self::KEY_ISACTIVE, ''),
-			'sg_user' => coreBOS_Settings::getSetting(self::KEY_SG_USER, ''),
-			'sg_pass' => coreBOS_Settings::getSetting(self::KEY_SG_PASS, ''),
 			'usesg_transactional' => coreBOS_Settings::getSetting(self::KEY_USESG_TRANSACTIONAL, ''),
 			'srv_transactional' => coreBOS_Settings::getSetting(self::KEY_SRV_TRANSACTIONAL, ''),
 			'user_transactional' => coreBOS_Settings::getSetting(self::KEY_USER_TRANSACTIONAL, ''),

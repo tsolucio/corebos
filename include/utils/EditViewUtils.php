@@ -270,7 +270,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	} elseif ($uitype == 14) { //added for Time Field
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue [] = $value;
-	} elseif ($uitype == 19 || $uitype == 20) {
+	} elseif ($uitype == 19) {
 		if (isset($_REQUEST['body'])) {
 			$value = ($_REQUEST['body']);
 		}
@@ -287,12 +287,9 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue [] = $value;
-	} elseif ($uitype == 21 || $uitype == 24) {
+	} elseif ($uitype == 21) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue [] = $value;
-	} elseif ($uitype == 22) {
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[] = $value;
 	} elseif ($uitype == 52 || $uitype == 77) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		global $current_user;
@@ -568,7 +565,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 					from vtiger_attachments
 					inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
 					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid
-					where vtiger_crmentity.setype='$module_name $imageattachment'
+					where (vtiger_crmentity.setype='$module_name $imageattachment' OR vtiger_crmentity.setype LIKE '% $imageattachment')
 						and vtiger_attachments.name = ?
 						and vtiger_seattachmentsrel.crmid=?";
 				global $upload_badext;
