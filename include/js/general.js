@@ -5969,11 +5969,3 @@ function headerOnUpScroll() {
 	}
 }
 window.cbOnUpScrollers.push(headerOnUpScroll);
-
-$(document).ready(function () {
-	$('#blankDiv').height($('#global-header').outerHeight(true)-90);
-});
-
-$(window).on('resize', function () {
-	$('#blankDiv').height($('#global-header').outerHeight(true)-90);
-});

@@ -318,7 +318,6 @@
 		</div>
 	</div>
 </header>
-<div id = "blankDiv" style="width: 1px; height: 0px;" ></div>
 <!-- END LDS Global header -->
 <a name="top"></a>
 
