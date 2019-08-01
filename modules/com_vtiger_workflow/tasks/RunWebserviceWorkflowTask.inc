@@ -184,33 +184,33 @@ class RunWebserviceWorkflowTask extends VTTask {
 			error_log("\nMethod Called: $method $url", 3, $logname.".log");
 			error_log("\URL: ".$url, 3, $logname.".log");
 
-            try{
-            	if ($wsuser != "" && $wspass != "") {
-            		$options = array(
-				    	'login' => $wsuser,
-				    	'password' => $wspass,
+			try {
+				if ($wsuser != "" && $wspass != "") {
+					$options = array(
+						'login' => $wsuser,
+						'password' => $wspass,
 					);
 					$soapclient = new SoapClient($url, $options);
-            	} else {
-            		$soapclient = new SoapClient($url);
-            	}
-            	
-            	$response = $soapclient->__soapCall($methodname, array('parameters' => $arrconv));
+				} else {
+					$soapclient = new SoapClient($url);
+				}
+
+				$response = $soapclient->__soapCall($methodname, array('parameters' => $arrconv));
 				$methodResult = $methodname.'Result';
-                $fields = $response->$methodResult;
-                foreach ($fields as $key => $value) {
-                	if ($value != "") {
-                		$xml = $value;
-                	}
-                }
+				$fields = $response->$methodResult;
+				foreach ($fields as $key => $value) {
+					if ($value != "") {
+						$xml = $value;
+					}
+				}
 
-                $parseXML = json_decode(json_encode(new SimpleXMLElement($xml)), 1);
+				$parseXML = json_decode(json_encode(new SimpleXMLElement($xml)), 1);
 
-	            if ($outputtype == "JSON") {
-	            	$response = json_encode($parseXML);
-	            } elseif ($outputtype == "ARRAY") {
-	            	$response = $parseXML;
-	            }
+				if ($outputtype == "JSON") {
+					$response = json_encode($parseXML);
+				} elseif ($outputtype == "ARRAY") {
+					$response = $parseXML;
+				}
 
 				//write response to record fields
 				if (count($target_fields['Response']) > 0) {
@@ -222,14 +222,14 @@ class RunWebserviceWorkflowTask extends VTTask {
 								if (is_array($response)) {
 									$res = $response;
 									$r1 = json_encode($res);
-									$r1 = json_decode($r1);				
+									$r1 = json_decode($r1);
 								} else {
 									$r = $response;
 									$r1 = json_encode($r);
 								}
-			
+
 								for ($j = 0; $j < count($ar); $j++) {
-									$r1 = $res == NULL ? json_decode($r1) : $r1;						
+									$r1 = $res == null ? json_decode($r1) : $r1;
 									$r = $r1->$ar[$j];
 								}
 								$r2 = str_replace('"', '', $r);
@@ -238,7 +238,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 									foreach ($response as $key => $value) {
 										if (is_array($response[$key])) {
 											$r = $value[$ar[0]];
-											if ($r != NULL) {
+											if ($r != null) {
 												$r2 = $r;
 											}
 										} else {
@@ -247,13 +247,13 @@ class RunWebserviceWorkflowTask extends VTTask {
 									}
 								} else {
 									$r = json_decode($response);
-									if ($r->$k != NULL) {
+									if ($r->$k != null) {
 										$r2 = $r->$k;
 									} else {
 										foreach ($r as $k1 => $v1) {
 											$r2 = $v1->$ar[0];
 										}
-									}							
+									}
 								}
 							}
 							if ($r2 == 'null') {
@@ -274,7 +274,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 				error_log("\n\nResponse header: ".json_encode($options), 3, $logname.".log");
 				error_log("\n\nResponse: ".json_encode($response), 3, $logname.".log");
 				error_log("\n\n".$dateofresponse, 3, $logname.".log");
-			} catch(Exception $e){
+			} catch (Exception $e) {
 				echo $e->getMessage();
 				$dateofresponse = date('l jS \of F Y h:i:s A');
 				error_log("\n\Error: ".json_encode($e->getMessage()), 3, $logname.".log");
