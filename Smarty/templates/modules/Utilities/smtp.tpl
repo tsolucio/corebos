@@ -42,86 +42,50 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
     <div class="slds-col slds-size_1-of-2">
         <h1 class="slds-page-header__title">{'LBL_CONFIG_INCOMING_MAIL_SERVER'|@getTranslatedString:'vtsendgrid'}</h1>
         <hr />
-        {if $ic_mail_server_validation_success}
-        <div id="ic-validation-success" style="height:4rem">
-            <div class="slds-notify_container slds-is-relative">
-                <div class="slds-notify slds-notify_toast slds-theme_success" role="status">
-                <span class="slds-assistive-text">success</span>
-                <span class="slds-icon_container slds-icon-utility-success slds-m-right_small slds-no-flex slds-align-top" title="Description of icon when needed">
-                    <svg class="slds-icon slds-icon_small" aria-hidden="true">
-                    <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#success"></use>
-                    </svg>
-                </span>
-                <div class="slds-notify__content">
-                    <h2 class="slds-text-heading_small ">{'LBL_IC_SUCCESS_CONFIG_VALIDATION'|@getTranslatedString:'Utilities'}</h2>
+        <div id="ic-validation-success" style="height:4rem; display:none;">
+            <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_success" role="alert">
+                <span class="slds-assistive-text"></span>
+                <span class="slds-icon_container slds-icon-utility-error slds-m-right_x-small" title="">
+            <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#success"></use>
+            </svg>
+            </span>
+                 <div class="slds-notify__content">
+                    <h2 class="slds-text-heading_small">{'LBL_IC_SUCCESS_CONFIG_VALIDATION'|@getTranslatedString:'Utilities'}</h2>
                 </div>
                 <div class="slds-notify__close">
-                    <button type="button" class="slds-button slds-button_icon slds-button_icon-inverse" title="Close" onClick="Utilities.close_ic_success_toast()">
-                    <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
-                        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-                    </svg>
-                    <span class="slds-assistive-text">{'LBL_CLOSE'|@getTranslatedString:'Utilities'}</span>
+                    <button type="button" class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse" title="Close" onClick="Utilities.close_ic_success_toast()">
+                        <svg class="slds-button__icon" aria-hidden="true">
+                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        </svg>
+                        <span class="slds-assistive-text">{'LBL_CLOSE'|@getTranslatedString:'Utilities'}</span>
                     </button>
-                </div>
                 </div>
             </div>
             <br />
         </div>
-        {/if}
-        {if $ic_mail_server_validation_warning}
-        <div id="ic-validation-warning" style="height:4rem">
-            <div class="slds-notify_container slds-is-relative">
-                <div class="slds-notify slds-notify_toast slds-theme_warning" role="status">
-                <span class="slds-assistive-text">warning</span>
-                <span class="slds-icon_container slds-icon-utility-warning slds-m-right_small slds-no-flex slds-align-top" title="Description of icon when needed">
-                    <svg class="slds-icon slds-icon_small" aria-hidden="true">
-                    <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#warning"></use>
-                    </svg>
-                </span>
-                <div class="slds-notify__content">
-                    <h2 class="slds-text-heading_small ">{'LBL_IC_WARNING_CONFIG_VALIDATION'|@getTranslatedString:'Utilities'}</h2>
-                </div>
-                <div class="slds-notify__close">
-                    <button type="button" class="slds-button slds-button_icon slds-button_icon-inverse" title="Close" onClick="Utilities.close_ic_warning_toast()">
-                    <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
-                        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-                    </svg>
-                    <span class="slds-assistive-text">{'LBL_CLOSE'|@getTranslatedString:'Utilities'}</span>
-                    </button>
-                </div>
-                </div>
-            </div>
-            <br />
-        </div>
-        {/if}
-        {if $ic_mail_server_validation_error}
-        <div id="ic-validation-error" style="height:4rem">
-            <div class="slds-notify_container slds-is-relative">
-                <div class="slds-notify slds-notify_toast slds-theme_error" role="status">
-                <span class="slds-assistive-text">error</span>
-                <span class="slds-icon_container slds-icon-utility-error slds-m-right_small slds-no-flex slds-align-top" title="Description of icon when needed">
-                    <svg class="slds-icon slds-icon_small" aria-hidden="true">
-                    <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#error"></use>
-                    </svg>
-                </span>
-                <div class="slds-notify__content">
+        <div id="ic-validation-error" style="height:4rem; display:none;">
+            <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+                <span class="slds-assistive-text"></span>
+                <span class="slds-icon_container slds-icon-utility-error slds-m-right_x-small" title="">
+            <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#error"></use>
+            </svg>
+            </span>
+                 <div class="slds-notify__content">
                     <h2 class="slds-text-heading_small">{'LBL_IC_CONFIG_VALIDATION_FAIL'|@getTranslatedString:'Utilities'}</h2>
-                    <p>{'LBL_ERROR'|@getTranslatedString:'Utilities'}::
-                    {$ic_mail_server_validation_error_message}</p>
+                    <p id="ic-message-error"></p>
                 </div>
                 <div class="slds-notify__close">
-                    <button type="button" class="slds-button slds-button_icon slds-button_icon-inverse" title="Close" onClick="Utilities.close_ic_error_toast()">
-                    <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
-                        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-                    </svg>
-                    <span class="slds-assistive-text">{'LBL_CLOSE'|@getTranslatedString:'Utilities'}</span>
+                    <button type="button" class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse" title="Close" onClick="Utilities.close_ic_error_toast()">
+                        <svg class="slds-button__icon" aria-hidden="true">
+                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        </svg>
+                        <span class="slds-assistive-text">{'LBL_CLOSE'|@getTranslatedString:'Utilities'}</span>
                     </button>
                 </div>
-                </div>
             </div>
-            <br />
         </div>
-        {/if}
         <br />
         <div class="slds-form-element">
             <div class="slds-form-element__control">
@@ -195,7 +159,8 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
                     </fieldset>
                 </div>
                 <div class="slds-form-element slds-m-top--small">
-                    <fieldset class="slds-form-element">
+                <div class="slds-grid slds-gutters slds-gutters_medium">
+                    <fieldset class="slds-col slds-form-element">
                         <legend class="slds-form-element__legend slds-form-element__label">{'LBL_SSL_Options'|@getTranslatedString:'MailManager'}</legend>
                         <div class="slds-form-element__control">
                             <div class="slds-radio_button-group">
@@ -220,9 +185,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
                             </div>
                         </div>
                     </fieldset>
-                </div>
-                <div class="slds-form-element slds-m-top--small">
-                    <fieldset class="slds-form-element">
+                    <fieldset class="slds-col slds-form-element">
                         <legend class="slds-form-element__legend slds-form-element__label">{'LBL_Certificate_Validations'|@getTranslatedString:'MailManager'}</legend>
                         <div class="slds-form-element__control">
                             <div class="slds-radio_button-group">
@@ -242,6 +205,7 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
                         </div>
                     </fieldset>
                 </div>
+                </div>
             </div>
             <div class="slds-form-element slds-m-top--small">
                 <label class="slds-form-element__label" for="ic_mail_server_refresh_time">{'LBL_REFRESH_TIME'|@getTranslatedString:'MailManager'}</label>
@@ -258,84 +222,49 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
     <div class="slds-col slds-size_1-of-2">
         <h1 class="slds-page-header__title">{'LBL_CONFIG_OUTGOING_MAIL_SERVER'|@getTranslatedString:'vtsendgrid'}</h1>
         <hr />
-        {if $og_mail_server_validation_success}
-        <div id="og-validation-success" style="height:4rem">
-            <div class="slds-notify_container slds-is-relative">
-                <div class="slds-notify slds-notify_toast slds-theme_success" role="status">
-                <span class="slds-assistive-text">success</span>
-                <span class="slds-icon_container slds-icon-utility-success slds-m-right_small slds-no-flex slds-align-top" title="Description of icon when needed">
-                    <svg class="slds-icon slds-icon_small" aria-hidden="true">
-                    <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#success"></use>
-                    </svg>
-                </span>
+        <div id="og-validation-success" style="height:4rem; display:none;">
+            <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_success" role="alert">
+                <span class="slds-assistive-text"></span>
+                <span class="slds-icon_container slds-icon-utility-error slds-m-right_x-small" title="">
+            <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#success"></use>
+            </svg>
+            </span>
                 <div class="slds-notify__content">
-                    <h2 class="slds-text-heading_small ">{'LBL_OG_SUCCESS_CONFIG_VALIDATION'|@getTranslatedString:'Utilities'}</h2>
+                    <h2 class="slds-text-heading_small">{'LBL_OG_SUCCESS_CONFIG_VALIDATION'|@getTranslatedString:'Utilities'}</h2> 
                 </div>
                 <div class="slds-notify__close">
-                    <button type="button" class="slds-button slds-button_icon slds-button_icon-inverse" title="Close" onClick="Utilities.close_og_success_toast()">
-                    <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
-                        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-                    </svg>
-                    <span class="slds-assistive-text">{'LBL_CLOSE'|@getTranslatedString:'Utilities'}</span>
+                    <button type="button" class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse" title="Close" onClick="Utilities.close_og_success_toast()">
+                        <svg class="slds-button__icon" aria-hidden="true">
+                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        </svg>
+                        <span class="slds-assistive-text">{'LBL_CLOSE'|@getTranslatedString:'Utilities'}</span>
                     </button>
-                </div>
                 </div>
             </div>
         </div>
-        {/if}
-        {if $og_mail_server_validation_warning}
-        <div id="og-validation-warning" style="height:4rem">
-            <div class="slds-notify_container slds-is-relative">
-                <div class="slds-notify slds-notify_toast slds-theme_warning" role="status">
-                <span class="slds-assistive-text">warning</span>
-                <span class="slds-icon_container slds-icon-utility-warning slds-m-right_small slds-no-flex slds-align-top" title="Description of icon when needed">
-                    <svg class="slds-icon slds-icon_small" aria-hidden="true">
-                    <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#warning"></use>
-                    </svg>
-                </span>
+        <div id="og-validation-error" style="height:4rem; display:none;">
+            <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+                <span class="slds-assistive-text"></span>
+                <span class="slds-icon_container slds-icon-utility-error slds-m-right_x-small" title="">
+            <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#error"></use>
+            </svg>
+            </span>
                 <div class="slds-notify__content">
-                    <h2 class="slds-text-heading_small ">{'LBL_OG_WARNING_CONFIG_VALIDATION'|@getTranslatedString:'Utilities'}</h2>
+                    <h2 class="slds-text-heading_small">{'LBL_OG_CONFIG_VALIDATION_FAIL'|@getTranslatedString:'Utilities'}</h2> 
+                    <p id="og-message-error"></p>
                 </div>
                 <div class="slds-notify__close">
-                    <button type="button" class="slds-button slds-button_icon slds-button_icon-inverse" title="Close" onClick="Utilities.close_og_warning_toast();">
-                    <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
-                        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-                    </svg>
-                    <span class="slds-assistive-text">{'LBL_CLOSE'|@getTranslatedString:'Utilities'}</span>
+                    <button type="button" class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse" title="Close" onClick="Utilities.close_og_error_toast()">
+                        <svg class="slds-button__icon" aria-hidden="true">
+                            <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        </svg>
+                        <span class="slds-assistive-text">{'LBL_CLOSE'|@getTranslatedString:'Utilities'}</span>
                     </button>
-                </div>
                 </div>
             </div>
         </div>
-        {/if}
-        {if $og_mail_server_validation_error}
-        <div id="og-validation-error" style="height:4rem">
-            <div class="slds-notify_container slds-is-relative">
-                <div class="slds-notify slds-notify_toast slds-theme_error" role="status">
-                <span class="slds-assistive-text">error</span>
-                <span class="slds-icon_container slds-icon-utility-error slds-m-right_small slds-no-flex slds-align-top" title="Description of icon when needed">
-                    <svg class="slds-icon slds-icon_small" aria-hidden="true">
-                    <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#error"></use>
-                    </svg>
-                </span>
-                <div class="slds-notify__content">
-                    <h2 class="slds-text-heading_small">{'LBL_OG_CONFIG_VALIDATION_FAIL'|@getTranslatedString:'Utilities'}</h2>
-                    <p>{'LBL_ERROR'|@getTranslatedString:'Utilities'}::
-                    {$og_mail_server_validation_error_message}</p>
-                </div>
-                <div class="slds-notify__close">
-                    <button  type="button" class="slds-button slds-button_icon slds-button_icon-inverse" title="Close" onClick="Utilities.close_og_error_toast()">
-                    <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
-                        <use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-                    </svg>
-                    <span class="slds-assistive-text">{'LBL_CLOSE'|@getTranslatedString:'Utilities'}</span>
-                    </button>
-                </div>
-                </div>
-            </div>
-            <br />
-        </div>
-        {/if}
        <br>
         <div class="slds-form-element">
             <div class="slds-form-element__control">
@@ -369,7 +298,6 @@ var Utilitiesi18nInfo = {ldelim}{rdelim};
             <label class="slds-form-element__label" for="og_mail_server_password">{'LBL_PASWRD'|@getTranslatedString:'Settings'}</label>
             <div class="slds-form-element__control">
                 <input type="password" id="og_mail_server_password" name="og_mail_server_password" class="slds-input" value="{$og_mail_server_password}" />
-                <input type="hidden" id="og_mail_server_from_email" name="og_mail_server_from_email" class="slds-input" value="{$og_mail_server_from_email}" />
             </div>
             <div class="slds-form-element__help" id="form-error-og-server-password"></div>
         </div>

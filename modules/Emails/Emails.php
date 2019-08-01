@@ -252,7 +252,7 @@ class Emails extends CRMEntity {
 
 	public static function emailServerCheck() {
 		global $adb, $current_user;
-		$user_og_server_config = $adb->pquery('select 1 from vtiger_mail_accounts where user_id = ? AND og_server_validation_status=0 AND og_server_status=1', array($current_user->id));
+		$user_og_server_config = $adb->pquery('select 1 from vtiger_mail_accounts where user_id = ? AND og_server_status=1', array($current_user->id));
 		$global_og_server_config = $adb->pquery('select 1 from vtiger_systems where server_type = ?', array('email'));
 		return ($adb->num_rows($global_og_server_config) > 0 || $adb->num_rows($user_og_server_config) > 0);
 	}

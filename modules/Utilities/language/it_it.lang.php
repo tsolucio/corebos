@@ -14,6 +14,7 @@ $mod_strings = array (
 	'JSLBL_PASSWORD_CANNOT_BE_EMPTY'=>'Password cannot be empty',
 	'JSLBL_SERVERNAME_CANNOT_BE_EMPTY'=>'Server Name cannot be empty',
 	'JSLBL_USERNAME_CANNOT_BE_EMPTY'=>'User Name cannot be empty',
+	'JSLBL_ERROR' => 'Error',
 
 	// General translations
 	'SUCCESSFUL_REGISTRATION_TITLE' => 'Authentification Correct',

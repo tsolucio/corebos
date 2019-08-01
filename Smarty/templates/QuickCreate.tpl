@@ -27,8 +27,8 @@
 			{assign var="fromlink" value="qcreate"}
 			{foreach item=subdata from=$QUICKCREATE}
 				<tr>
-					{foreach key=mainlabel item=maindata from=$subdata}
-						{if count($maindata)>0}{include file='EditViewUI.tpl'}{/if}
+					{foreach key=mainlabel item=maindata from=$subdata name=rowlayoutloop}
+						{if count($maindata)>0}{include file='EditViewUI.tpl' rowiteration=$smarty.foreach.rowlayoutloop.iteration}{/if}
 					{/foreach}
 				</tr>
 			{/foreach}

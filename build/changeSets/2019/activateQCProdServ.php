@@ -14,25 +14,21 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-class AddColumnsForOutgoingServerConfigurationValues extends cbupdaterWorker {
+class activateQCProdServ extends cbupdaterWorker {
 
 	public function applyChange() {
-		global $adb;
 		if ($this->hasError()) {
 			$this->sendError();
 		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery("ALTER TABLE `vtiger_mail_accounts` CHANGE `mail_username` `mail_username` VARCHAR(150) NULL");
-			$this->ExecuteQuery("ALTER TABLE  vtiger_mail_accounts  ADD  og_server_name VARCHAR(50) NULL");
-			$this->ExecuteQuery("ALTER TABLE  vtiger_mail_accounts  ADD  og_server_port INT(19) NULL");
-			$this->ExecuteQuery("ALTER TABLE  vtiger_mail_accounts  ADD  og_server_username VARCHAR(50) NULL");
-			$this->ExecuteQuery("ALTER TABLE  vtiger_mail_accounts  ADD  og_server_password VARCHAR(250) NULL");
-			$this->ExecuteQuery("ALTER TABLE  vtiger_mail_accounts  ADD  og_smtp_auth VARCHAR(50) NULL");
-			$this->ExecuteQuery("ALTER TABLE  vtiger_mail_accounts  ADD  og_server_status VARCHAR(10) NULL");
+			$this->ExecuteQuery(
+				"update vtiger_field set quickcreate=1 WHERE uitype='83' AND tablename in (?,?)",
+				array('vtiger_products', 'vtiger_service')
+			);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}

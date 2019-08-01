@@ -1631,6 +1631,10 @@ if (workbox) {
     "revision": "84613dd324df8bf134a0f41941757cd7"
   },
   {
+    "url": "modules/Mobile/resources/lang/ro_ro.lang.js",
+    "revision": "ae989aa845cd40bce24cadefa3363b52"
+  },
+  {
     "url": "modules/Mobile/resources/settings.js",
     "revision": "7fab3007e1698eeb90371ff591b7f77c"
   },
@@ -9160,7 +9164,7 @@ if (workbox) {
   },
   {
     "url": "include/js/de_de.lang.js",
-    "revision": "1d3b31aebd935c0ecdb13160e7fe17ce"
+    "revision": "6d6d5347ec14d8c48494300b6e770a3b"
   },
   {
     "url": "include/js/dedup.js",
@@ -9172,19 +9176,19 @@ if (workbox) {
   },
   {
     "url": "include/js/en_gb.lang.js",
-    "revision": "fc011fd0d339ded88f5399fbc74bee6b"
+    "revision": "dd20cdbcea677f088c72e3d4a8af6436"
   },
   {
     "url": "include/js/en_us.lang.js",
-    "revision": "098ac46c2433343c60be22a053385c90"
+    "revision": "c61f2eb3c92ea9361da3b18b02b39b83"
   },
   {
     "url": "include/js/es_es.lang.js",
-    "revision": "938e834895ecb0134e8af216f9eb0837"
+    "revision": "a9da9c85132e318ea2816683e3972d9c"
   },
   {
     "url": "include/js/es_mx.lang.js",
-    "revision": "13d25ff34cbdbe213e4142a1758e3585"
+    "revision": "d4a3c963d77400bf3333b5ed5f720bcb"
   },
   {
     "url": "include/js/FieldDependencies.js",
@@ -9196,7 +9200,7 @@ if (workbox) {
   },
   {
     "url": "include/js/fr_fr.lang.js",
-    "revision": "453401910bc9e70bb6705532f0727604"
+    "revision": "09afebf758e9a4a6f22894f9a3331ff3"
   },
   {
     "url": "include/js/general.js",
@@ -9204,7 +9208,7 @@ if (workbox) {
   },
   {
     "url": "include/js/hu_hu.lang.js",
-    "revision": "56ab475116f8ad32eb5ab70474f4f45b"
+    "revision": "2fe761bcb9332d5dd345cc1bd18322d8"
   },
   {
     "url": "include/js/Inventory.js",
@@ -9212,7 +9216,7 @@ if (workbox) {
   },
   {
     "url": "include/js/it_it.lang.js",
-    "revision": "c1b3e7cba24a06bfdafae4c033008c14"
+    "revision": "bc3f34267daf4b762e349a2dcdcb590c"
   },
   {
     "url": "include/js/jslog.js",
@@ -9244,7 +9248,7 @@ if (workbox) {
   },
   {
     "url": "include/js/nl_nl.lang.js",
-    "revision": "bfba2e1d28a126b255f3008106a222b6"
+    "revision": "4f356417424edcc650981247c12710ee"
   },
   {
     "url": "include/js/notebook.js",
@@ -9277,6 +9281,10 @@ if (workbox) {
   {
     "url": "include/js/RelatedLists.js",
     "revision": "a52c834078fdf0b0cbd156ef4aa05fdb"
+  },
+  {
+    "url": "include/js/ro_ro.lang.js",
+    "revision": "2a4400dcbc514c2b9b0a165ff7b057d9"
   },
   {
     "url": "include/js/search.js",
@@ -9364,7 +9372,7 @@ if (workbox) {
   },
   {
     "url": "modules/com_vtiger_workflow/resources/editworkflowscript.js",
-    "revision": "9ffbee5848d336b4c69f43fe681782be"
+    "revision": "3e5fc34e99dac86b7cb9dbb615514075"
   },
   {
     "url": "modules/com_vtiger_workflow/resources/emailtaskscript.js",
@@ -9412,7 +9420,7 @@ if (workbox) {
   },
   {
     "url": "modules/com_vtiger_workflow/resources/updatemassivefieldstaskscript.js",
-    "revision": "930d4f19d56c1ee69988d6604bd68e80"
+    "revision": "efe2ac9da371216aec6fea90f3c2fda5"
   },
   {
     "url": "modules/com_vtiger_workflow/resources/vtigerwebservices.js",
@@ -9901,6 +9909,10 @@ if (workbox) {
   {
     "url": "modules/Users/Users.js",
     "revision": "e9be4cf50f50eedc61a491219ac3fc86"
+  },
+  {
+    "url": "modules/Utilities/Utilities.js",
+    "revision": "797f33dc5aac0dd086468f1ade3c1a76"
   },
   {
     "url": "modules/Import/resources/ImportStep2.js",
