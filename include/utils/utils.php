@@ -3387,7 +3387,7 @@ function getRelationTables($module, $secmodule) {
 					$reltables = array($ui10_tablename=>array($ui10_columnname, $rel_field), $primary_obj->table_name => $primary_obj->table_index);
 				} else {
 					$rel_field = $primary_obj->tab_name_index[$ui10_tablename];
-					//$reltables = array($ui10_tablename=>array("$rel_field","$ui10_columnname"),"".$primary_obj->table_name."" => "".$primary_obj->table_index."");
+					//$reltables = array($ui10_tablename=>array("$rel_field","$ui10_columnname"),$primary_obj->table_name => $primary_obj->table_index);
 					$reltables = array($ui10_tablename => array($rel_field, $ui10_columnname));
 				}
 			}
@@ -3398,7 +3398,10 @@ function getRelationTables($module, $secmodule) {
 	if (is_array($reltables) && !empty($reltables)) {
 		$rel_array = $reltables;
 	} else {
-		$rel_array = array("vtiger_crmentityrel"=>array("crmid","relcrmid"),"".$primary_obj->table_name."" => "".$primary_obj->table_index."");
+		$rel_array = array(
+			'vtiger_crmentityrel' => array('crmid','relcrmid'),
+			$primary_obj->table_name => $primary_obj->table_index
+		);
 	}
 	return $rel_array;
 }

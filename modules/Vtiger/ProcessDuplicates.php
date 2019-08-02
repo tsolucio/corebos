@@ -14,11 +14,10 @@ require_once 'include/utils/utils.php';
 $module = vtlib_purify($_REQUEST['module']);
 $focus = CRMEntity::getInstance($module);
 
-global $mod_strings, $app_strings;
-global $current_language, $currentModule, $theme, $adb;
+global $mod_strings, $app_strings, $current_language, $currentModule, $theme, $adb;
 
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 
 $mode = vtlib_purify($_REQUEST['mergemode']);
 
@@ -49,7 +48,7 @@ if ($mode == 'mergesave') {
 		$rec_values=$focus->column_fields;
 
 		// Remove the id of primary record from the list of records to be deleted.
-		$del_value=explode(",", $recordids, -1);
+		$del_value=explode(',', $recordids, -1);
 		$offset = array_search($merge_id, $del_value);
 		unset($del_value[$offset]);
 
@@ -65,16 +64,12 @@ if ($mode == 'mergesave') {
 			}
 		}
 	}
-?>
-<script type='text/javascript'>
-	window.self.close();window.opener.location.href=window.opener.location.href;
-</script>
-<?php
+	echo '<script>window.opener.location.href=window.opener.location.href;window.self.close();</script>';
 } elseif ($mode == 'mergefields') {
 	$idstring   = vtlib_purify($_REQUEST['passurl']);
 	$parent_tab = getParentTab();
 
-	$exploded_id=explode(",", $idstring, -1);
+	$exploded_id=explode(',', $idstring, -1);
 	$record_count = count($exploded_id);
 
 	$smarty = new vtigerCRM_Smarty;
@@ -96,7 +91,7 @@ if ($mode == 'mergesave') {
 	$all_values      = $all_values_array[0];
 	$js_arr_val      = $all_values_array[1];
 	$fld_array       = $all_values_array[2];
-	$js_arr          = implode(",", $js_arr_val);
+	$js_arr          = implode(',', $js_arr_val);
 
 	$imported_records = array();
 	$sql = 'select bean_id from vtiger_users_last_import where bean_type=? and deleted=0';
@@ -115,7 +110,7 @@ if ($mode == 'mergesave') {
 	$no_existing = ($record_count == $count ? 1 : 0);
 
 	$companyDetails = retrieveCompanyDetails();
-	$favicon = $companyDetails["favicon"];
+	$favicon = $companyDetails['favicon'];
 	$smarty->assign('FAVICON', $favicon);
 	$userName = getFullNameFromArray('Users', $current_user->column_fields);
 	$smarty->assign('USER', $userName);

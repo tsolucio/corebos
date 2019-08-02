@@ -2598,9 +2598,12 @@ class CRMEntity {
 				}
 			}
 
-			// Pick the records related to the entity to be transfered, but do not pick the once which are already related to the current entity.
-			$relatedRecords = $adb->pquery("SELECT relcrmid, relmodule FROM vtiger_crmentityrel WHERE crmid=? AND module=?" .
-					" AND relcrmid NOT IN (SELECT relcrmid FROM vtiger_crmentityrel WHERE crmid=? AND module=?)", array($transferId, $module, $entityId, $module));
+			// Pick the records related to the entity to be transfered, but do not pick the ones which are already related to the current entity.
+			$relatedRecords = $adb->pquery(
+				'SELECT relcrmid, relmodule FROM vtiger_crmentityrel WHERE crmid=? AND module=?'
+					.' AND relcrmid NOT IN (SELECT relcrmid FROM vtiger_crmentityrel WHERE crmid=? AND module=?)',
+				array($transferId, $module, $entityId, $module)
+			);
 			$numOfRecords = $adb->num_rows($relatedRecords);
 			for ($i = 0; $i < $numOfRecords; $i++) {
 				$relcrmid = $adb->query_result($relatedRecords, $i, 'relcrmid');
@@ -2611,7 +2614,7 @@ class CRMEntity {
 				);
 			}
 
-			// Pick the records to which the entity to be transfered is related, but do not pick the once to which current entity is already related.
+			// Pick the records to which the entity to be transfered is related, but do not pick the ones to which current entity is already related.
 			$parentRecords = $adb->pquery(
 				'SELECT crmid, module FROM vtiger_crmentityrel WHERE relcrmid=? AND relmodule=? AND crmid NOT IN
 					(SELECT crmid FROM vtiger_crmentityrel WHERE relcrmid=? AND relmodule=?)',
