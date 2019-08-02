@@ -984,7 +984,7 @@ class Contacts extends CRMEntity {
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb, $log;
-		$log->debug("> transferRelatedRecords $module, $transferEntityIds, $entityId");
+		$log->debug('> transferRelatedRecords '.$module.','.print_r($transferEntityIds, true).','.$entityId);
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$rel_table_arr = array(
 			'Potentials'=>'vtiger_contpotentialrel',
