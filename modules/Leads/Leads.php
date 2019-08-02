@@ -326,19 +326,16 @@ class Leads extends CRMEntity {
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$rel_table_arr = array(
 			'Attachments'=>'vtiger_seattachmentsrel',
-			'cbCalendar'=>'vtiger_activity',
 			'Products'=>'vtiger_seproductsrel',
 			'Campaigns'=>'vtiger_campaignleadrel',
 		);
 		$tbl_field_arr = array(
 			'vtiger_seattachmentsrel'=>'attachmentsid',
-			'vtiger_activity'=>'activityid',
 			'vtiger_seproductsrel'=>'productid',
 			'vtiger_campaignleadrel'=>'campaignid',
 		);
 		$entity_tbl_field_arr = array(
 			'vtiger_seattachmentsrel'=>'crmid',
-			'vtiger_activity'=>'rel_id',
 			'vtiger_seproductsrel'=>'crmid',
 			'vtiger_campaignleadrel'=>'leadid',
 		);

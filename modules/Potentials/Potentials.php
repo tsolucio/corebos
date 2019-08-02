@@ -519,22 +519,16 @@ class Potentials extends CRMEntity {
 			'Contacts'=>'vtiger_contpotentialrel',
 			'Products'=>'vtiger_seproductsrel',
 			'Attachments'=>'vtiger_seattachmentsrel',
-			'Quotes'=>'vtiger_quotes',
-			'SalesOrder'=>'vtiger_salesorder',
 		);
 		$tbl_field_arr = array(
 			'vtiger_contpotentialrel'=>'contactid',
 			'vtiger_seproductsrel'=>'productid',
 			'vtiger_seattachmentsrel'=>'attachmentsid',
-			'vtiger_quotes'=>'quoteid',
-			'vtiger_salesorder'=>'salesorderid',
 		);
 		$entity_tbl_field_arr = array(
 			'vtiger_contpotentialrel'=>'potentialid',
 			'vtiger_seproductsrel'=>'crmid',
 			'vtiger_seattachmentsrel'=>'crmid',
-			'vtiger_quotes'=>'potentialid',
-			'vtiger_salesorder'=>'potentialid',
 		);
 		foreach ($transferEntityIds as $transferId) {
 			foreach ($rel_table_arr as $rel_table) {

@@ -251,19 +251,13 @@ class Vendors extends CRMEntity {
 		$log->debug("> transferRelatedRecords $module, $transferEntityIds, $entityId");
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$rel_table_arr = array(
-			'Products'=>'vtiger_products',
-			'PurchaseOrder'=>'vtiger_purchaseorder',
 			'Contacts'=>'vtiger_vendorcontactrel',
 		);
 		$tbl_field_arr = array(
-			'vtiger_products'=>'productid',
 			'vtiger_vendorcontactrel'=>'contactid',
-			'vtiger_purchaseorder'=>'purchaseorderid',
 		);
 		$entity_tbl_field_arr = array(
-			'vtiger_products'=>'vendor_id',
 			'vtiger_vendorcontactrel'=>'vendorid',
-			'vtiger_purchaseorder'=>'vendorid',
 		);
 		foreach ($transferEntityIds as $transferId) {
 			foreach ($rel_table_arr as $rel_table) {

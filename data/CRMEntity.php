@@ -2569,12 +2569,18 @@ class CRMEntity {
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb, $log;
 		$log->debug('> transferRelatedRecords '.$module.','.print_r($transferEntityIds, true).','.$entityId);
-
+		include_once 'include/utils/duplicate.php';
 		$rel_table_arr = array('Activities'=>'vtiger_seactivityrel');
-
 		$tbl_field_arr = array('vtiger_seactivityrel'=>'activityid');
-
 		$entity_tbl_field_arr = array('vtiger_seactivityrel'=>'crmid');
+		$depmods = getUIType10DependentModules($module);
+		unset($depmods['ModComments']);
+		foreach ($depmods as $mod => $details) {
+			$rel_table_arr[$mod] = $details['tablename'];
+			$modobj = CRMEntity::getInstance($mod);
+			$tbl_field_arr[$details['tablename']] = $modobj->tab_name_index[$details['tablename']];
+			$entity_tbl_field_arr[$details['tablename']] = $details['columname'];
+		}
 
 		foreach ($transferEntityIds as $transferId) {
 			foreach ($rel_table_arr as $rel_table) {
