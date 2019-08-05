@@ -9204,7 +9204,7 @@ if (workbox) {
   },
   {
     "url": "include/js/general.js",
-    "revision": "9ca3b8f84617031da142f7f4379f512e"
+    "revision": "838e797858233d74160f505889fa3d88"
   },
   {
     "url": "include/js/hu_hu.lang.js",
@@ -9336,7 +9336,7 @@ if (workbox) {
   },
   {
     "url": "include/style.css",
-    "revision": "803a672304ab2471038b853b719ce480"
+    "revision": "8963daa214226987ac19f1f2d2e7c939"
   },
   {
     "url": "include/print.css",
@@ -9712,7 +9712,7 @@ if (workbox) {
   },
   {
     "url": "modules/Documents/Documents.js",
-    "revision": "45233005c8905586dace1d05e3ed6576"
+    "revision": "5379a537fce7b3cba68f684538cbcec9"
   },
   {
     "url": "modules/SalesOrder/SalesOrder.js",
