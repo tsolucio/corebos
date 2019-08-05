@@ -1322,6 +1322,12 @@ $app_strings = array (
 	'Create Invoice' => 'Crear Factura',
 	'Send Email With PDF' => 'Enviar Email con PDF',
 	'Export To PDF' => 'Exportar a PDF',
+	'Generate Invoice' => 'Generate Invoice',
+	'Generate Sales Order' => 'Generate Sales Order',
+	'Generate Invoice' => 'Generate Invoice',
+	'Create Quote' => 'Create Quote',
+	'Create Purchase Order' => 'Create Purchase Order',
+	'Create Sales Order' => 'Create Sales Order',
 );
 
 // Translation for currency names
