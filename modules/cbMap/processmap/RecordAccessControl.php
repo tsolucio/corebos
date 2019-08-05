@@ -288,6 +288,7 @@ class RecordAccessControl extends processcbMap {
 		}
 		switch (strtolower($operation)) {
 			case 'create':
+			case 'createview':
 				return (isset($map2use['c']) ? $map2use['c'] : $default);
 				break;
 			case 'retrieve':
