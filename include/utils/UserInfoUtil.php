@@ -679,7 +679,13 @@ function _vtisPermitted($module, $actionname, $record_id = '') {
 		//Checking if the Record Owner is the Subordinate User
 		foreach ($userprivs->getSubordinateRoles2Users() as $userids) {
 			if (in_array($recOwnId, $userids)) {
-				$permission = 'yes';
+				if (($actionname!='EditView' && $actionname!='Delete' && $actionname!='DetailView' && $actionname!='CreateView')
+					|| (!$racbr || $racbr->hasDetailViewPermissionTo($actionname, true))
+				) {
+					$permission = 'yes';
+				} else {
+					$permission = 'no';
+				}
 				$log->debug('< isPermitted');
 				return $permission;
 			}
