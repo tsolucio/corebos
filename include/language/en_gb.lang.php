@@ -1230,6 +1230,12 @@ $app_strings = array(
 	'Create Invoice' => 'Create Invoice',
 	'Send Email With PDF' => 'Send Email With PDF',
 	'Export To PDF' => 'Export To PDF',
+	'Generate Invoice' => 'Generate Invoice',
+	'Generate Sales Order' => 'Generate Sales Order',
+	'Generate Invoice' => 'Generate Invoice',
+	'Create Quote' => 'Create Quote',
+	'Create Purchase Order' => 'Create Purchase Order',
+	'Create Sales Order' => 'Create Sales Order',
 );
 
 $app_currency_strings = array(
