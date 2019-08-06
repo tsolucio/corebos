@@ -1019,13 +1019,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$label_fld[] = $currencyField->getDisplayValue(null, false, true);
 			$label_fld['cursymb'] = $currencyField->getCurrencySymbol();
 		}
-	} elseif ($uitype == 78) {
-		$label_fld[] = getTranslatedString($fieldlabel, $module);
-		$quote_id = $col_fields[$fieldname];
-		$quote_name = (empty($quote_id) ? '' : getQuoteName($quote_id));
-		$label_fld[] = $quote_name;
-		$label_fld['secid'] = $quote_id;
-		$label_fld['link'] = 'index.php?module=Quotes&action=DetailView&record=' . $quote_id;
 	} elseif ($uitype == 79) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$purchaseorder_id = $col_fields[$fieldname];
