@@ -49,14 +49,17 @@ if ($cvmodule != '') {
 	//setStatus=0(Default);1(Private);2(Pending);3(Public).
 	//If status is Private ie. 1, only the user created the customview can see it
 	//If status is Pending ie. 2, on approval by the admin, the status will become Public ie. 3 and a user can see the customviews created by him and his sub-ordinates.
-	if (isset($_REQUEST['setStatus']) && $_REQUEST['setStatus'] != '' && $_REQUEST['setStatus'] != '1') {
-		$status = $_REQUEST['setStatus'];
-	} elseif (isset($_REQUEST['setStatus']) && $_REQUEST['setStatus'] != '' && $_REQUEST['setStatus'] == '1') {
-		$status = CV_STATUS_PENDING;
+	if ($_REQUEST['newsave']){
+		if (isset($_REQUEST['setStatus']) && $_REQUEST['setStatus'] != '' && $_REQUEST['setStatus'] != '1') {
+			$status = $_REQUEST['setStatus'];
+		} elseif (isset($_REQUEST['setStatus']) && $_REQUEST['setStatus'] != '' && $_REQUEST['setStatus'] == '1') {
+			 $status = CV_STATUS_PENDING;
+		} else {
+			 $status = CV_STATUS_PRIVATE;
+		}
 	} else {
-		$status = CV_STATUS_PRIVATE;
+		$status = CV_STATUS_PENDING;
 	}
-
 	$userid = $current_user->id;
 
 	if (isset($_REQUEST['setDefault'])) {
