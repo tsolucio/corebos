@@ -56,7 +56,9 @@ if ($cvmodule != '') {
 	} else {
 		$status = CV_STATUS_PRIVATE;
 	}
-
+	if (empty($_REQUEST['newsave']) && $status != CV_STATUS_PRIVATE) {
+		$status = CV_STATUS_PENDING;
+	}
 	$userid = $current_user->id;
 
 	if (isset($_REQUEST['setDefault'])) {
