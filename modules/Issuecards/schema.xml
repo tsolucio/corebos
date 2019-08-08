@@ -1,0 +1,44 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_issuecards</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_issuecards` (
+  `issuecardid` int(19) NOT NULL,
+  `issuecards_no` varchar(100) DEFAULT NULL,
+  `subject` varchar(150) DEFAULT NULL,
+  `pslip_no` varchar(100) DEFAULT NULL,
+  `issue_date` date DEFAULT NULL,
+  `deliver_date` date DEFAULT NULL,
+  `accid` int(11) DEFAULT NULL,
+  `ctoid` int(11) DEFAULT NULL,
+  `invoicestatus` varchar(100) DEFAULT NULL,
+  `calle` varchar(150) DEFAULT NULL,
+  `poblacion` varchar(150) DEFAULT NULL,
+  `provincia` varchar(150) DEFAULT NULL,
+  `cpostal` varchar(15) DEFAULT NULL,
+  `pais` varchar(150) DEFAULT NULL,
+  `type` varchar(100) DEFAULT NULL,
+  `adjustment` decimal(25,3) DEFAULT NULL,
+  `salescommission` decimal(29,3) DEFAULT NULL,
+  `exciseduty` decimal(29,3) DEFAULT NULL,
+  `subtotal` decimal(29,3) DEFAULT NULL,
+  `total` decimal(29,3) DEFAULT NULL,
+  `taxtype` varchar(25) DEFAULT '',
+  `discount_percent` decimal(29,3) DEFAULT NULL,
+  `discount_amount` decimal(29,3) DEFAULT NULL,
+  `s_h_amount` decimal(29,3) DEFAULT NULL,
+  `currency_id` varchar(19) DEFAULT '',
+  `conversion_rate` decimal(14,3) DEFAULT NULL,
+  PRIMARY KEY (`issuecardid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_issuecardscf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_issuecardscf` (
+  `issuecardid` int(19) NOT NULL,
+  PRIMARY KEY (`issuecardid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>
