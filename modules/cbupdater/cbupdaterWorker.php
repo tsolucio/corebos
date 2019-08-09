@@ -602,7 +602,7 @@ EOT;
 	<td width="25%" align="left"><b>{$this->query_count}</b></td>
 	</tr>
 	<tr>
-	<td align="right">Queries Successed : </td>
+	<td align="right">Queries Succeeded : </td>
 	<td align="left"><b style="color:#006600;">{$this->success_query_count}</b></td>
 	</tr>
 	<tr>
