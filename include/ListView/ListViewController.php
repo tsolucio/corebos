@@ -390,7 +390,7 @@ class ListViewController {
 						} else {
 							$value = CurrencyField::convertToUserFormat($value);
 						}
-						$value = '<span style="float:right;padding-right:6px;">'.$value.'</span>';
+						$value = '<span style="float:right;padding-right:10px;">'.$value.'</span>';
 					}
 				} elseif ($field->getFieldDataType() == 'double') {
 					if ($value != '') {
@@ -666,7 +666,7 @@ class ListViewController {
 				if (isset($totals[$fieldName])) {
 					$currencyField = new CurrencyField($totals[$fieldName]);
 					$currencyValue = $currencyField->getDisplayValueWithSymbol();
-					$trow[] = '<span class="listview_row_total">'.$currencyValue.'</span>';
+					$trow[] = '<span class="listview_row_total" style="padding-right:10px;>'.$currencyValue.'</span>';
 				} else {
 					$trow[] = '';
 				}
