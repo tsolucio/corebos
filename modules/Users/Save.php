@@ -62,7 +62,7 @@ if (!empty($_REQUEST['user_role']) && !is_admin($current_user) && $_REQUEST['use
 if ((empty($_SESSION['Users_FORM_TOKEN']) || $_SESSION['Users_FORM_TOKEN']!==(int)$_REQUEST['form_token'])
 		&& $_REQUEST['deleteImage'] != 'true' && $_REQUEST['changepassword'] != 'true'
 	) {
-	header('Location: index.php?action=index&module=Users&error_string='.urlencode($app_strings['LBL_PERMISSION']));
+	header('Location: index.php?action=index&module=Users&error_string='.urlencode(getTranslatedString('FORM_TOKEN_EXPIRED', 'Users')));
 	die;
 }
 
@@ -79,7 +79,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 	$userrs = $adb->pquery('SELECT user_name FROM vtiger_users WHERE id=?', array($focus->id));
 	$user_name = $adb->query_result($userrs, 0, 0);
 	if ($current_user->id != $focus->id && in_array($user_name, $cbodBlockedUsers)) {
-		header("Location: index.php?action=index&module=Users&error_string=Not Permitted. You can't edit this User.");
+		header('Location: index.php?action=index&module=Users&error_string='.urlencode(getTranslatedString('ERR_CANNOTEDITUSER', 'Users')));
 		die();
 	}
 } else {
