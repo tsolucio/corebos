@@ -390,7 +390,7 @@ class ListViewController {
 						} else {
 							$value = CurrencyField::convertToUserFormat($value);
 						}
-						$value = '<span style="float:right;padding-right:6px;">'.$value.'</span>';
+						$value = '<span style="float:right;padding-right:10px;">'.$value.'</span>';
 					}
 				} elseif ($field->getFieldDataType() == 'double') {
 					if ($value != '') {

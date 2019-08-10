@@ -2294,7 +2294,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 
 	// right justify currency value
 	if (in_array($uitype, array(71, 72, 7, 9, 90))) {
-		$value = '<span style="float:right;padding-right:6px;display:block;">' . $value . '</span>';
+		$value = '<span style="float:right;padding-right:10px;display:block;">' . $value . '</span>';
 	}
 	$log->debug('< getValue');
 	return $value;
