@@ -3121,7 +3121,7 @@ function get_use_asterisk($id) {
  * @param string $status - the status of the call (outgoing/incoming/missed)
  * @param object $adb - the peardatabase object
  */
-function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $useCallerInfo) {
+function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $useCallerInfo, $pbxuuid) {
 	$result = $adb->pquery('select userid from vtiger_asteriskextensions where asterisk_extension=?', array($userExtension));
 	$userID = $adb->query_result($result, 0, 'userid');
 	if (empty($userID)) {
@@ -3142,7 +3142,7 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
 		$callto = $unknownCaller;
 	}
 
-	$sql = 'select * from vtiger_asteriskextensions where asterisk_extension=?';
+	$sql = 'select userid from vtiger_asteriskextensions where asterisk_extension=?';
 	if ($status == 'outgoing') {
 		//call is from user to record
 		$result = $adb->pquery($sql, array($callfrom));
