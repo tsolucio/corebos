@@ -21,6 +21,17 @@ if (version_compare(phpversion(), '5.4.0') < 0 || version_compare(phpversion(), 
 	die();
 }
 
+if (!is_file('config.inc.php')) {
+	header('Location: install.php');
+	exit();
+}
+
+require_once 'config.inc.php';
+if (!isset($dbconfig['db_hostname']) || $dbconfig['db_status'] == '_DB_STAT_') {
+	header('Location: install.php');
+	exit();
+}
+
 require_once 'include/utils/utils.php';
 
 global $currentModule;
@@ -35,16 +46,6 @@ if (isset($_REQUEST['view'])) {
 	coreBOS_Session::set('view', $view);
 }
 
-if (!is_file('config.inc.php')) {
-	header('Location: install.php');
-	exit();
-}
-
-require_once 'config.inc.php';
-if (!isset($dbconfig['db_hostname']) || $dbconfig['db_status']=='_DB_STAT_') {
-	header('Location: install.php');
-	exit();
-}
 
 require_once 'include/logging.php';
 require_once 'modules/Users/Users.php';
