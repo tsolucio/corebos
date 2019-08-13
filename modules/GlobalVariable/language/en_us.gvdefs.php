@@ -375,7 +375,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Email',
 	'category' => 'Application',
 	'values' => '',
-	'definition' => '"Reply To" email address for emails going out from the HelpDesk support module (and some other system emails). It will only be used if it is different from HelpDesk_Support_EMail',
+	'definition' => '"Reply To" email address for emails going out from the Application.',
 ),
 'HelpDesk_Notify_Owner_EMail' => array(
 	'status' => 'Implemented',
