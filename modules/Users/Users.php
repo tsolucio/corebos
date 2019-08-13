@@ -1698,13 +1698,13 @@ class Users extends CRMEntity {
 		while ($lgn = $adb->fetch_array($result)) {
 			$entry = array();
 
+			$value = $lgn['email1'];
 			if ($_SESSION['internal_mailer'] == 1) {
 				$recordId = $lgn['id'];
-				$module = "Users";
+				$module = 'Users';
 				$tabid = getTabid($module);
 				$fieldId = $adb->getone("select fieldid from vtiger_field where tabid=".$tabid." and tablename='vtiger_users' and fieldname='email1'");
-				$fieldName = "email1";
-				$value = $lgn['email1'];
+				$fieldName = 'email1';
 				$entry['sendmail'] = "<a href=\"javascript:InternalMailer($recordId, $fieldId, '$fieldName', '$module', 'record_id');\">".textlength_check($value).'</a>';
 			} else {
 				$entry['sendmail'] = '<a href="mailto:'.$value.'">'.textlength_check($value).'</a>';
