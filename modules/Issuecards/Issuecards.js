@@ -32,7 +32,7 @@ function set_return_specific(issuecards_id, issuecards_name) {
   fldId.value = issuecards_id;
 }
 
-function set_return_shipbilladdress(fromlink,fldname,MODULE,ID) {
+function set_return_account_details(fromlink,fldname,MODULE,ID) {
 	var WindowSettings = "width=680,height=602,resizable=0,scrollbars=0,top=150,left=200";
 	if(fldname == 'accid'){
 		var baseURL = "index.php?module=Accounts&action=Popup&popuptype=specific_account_address&form=TasksEditView&form_submit=false&fromlink=";

@@ -343,7 +343,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		$fieldvalue[]=$users_combo;
 		$fieldvalue[] = $groups_combo;
-	} elseif ($uitype == 51 || $uitype == 73) {
+	} elseif ($uitype == 51) {
 		if (!isset($_REQUEST['convertmode']) || ($_REQUEST['convertmode'] != 'update_quote_val' && $_REQUEST['convertmode'] != 'update_so_val')) {
 			if (isset($_REQUEST['account_id']) && $_REQUEST['account_id'] != '') {
 				$value = vtlib_purify($_REQUEST['account_id']);

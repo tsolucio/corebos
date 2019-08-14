@@ -279,4 +279,11 @@
 	<classname>migrateUIType78to10</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>migrate uitype 73 (account capture) to uitype 10 (standard capture)</description>
+	<filename>build/changeSets/2019/migrateUIType73to10.php</filename>
+	<classname>migrateUIType73to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

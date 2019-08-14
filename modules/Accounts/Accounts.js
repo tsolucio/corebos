@@ -183,19 +183,26 @@ function set_return_shipbilladdress(account_id, account_name, bill_street, ship_
 function saa_fillinvalues() {
 	var account_id = jQuery('#account_id').val();
 	var account_name = jQuery('#account_name').val();
-	if (window.opener.gVTModule != 'Issuecards') {
-		if (typeof (window.opener.document.EditView.account_name) != 'undefined') {
-			window.opener.document.EditView.account_name.value = account_name;
-		}
-		if (typeof (window.opener.document.EditView.account_id) != 'undefined') {
-			window.opener.document.EditView.account_id.value = account_id;
-		}
-	} else {
+	if (window.opener.gVTModule == 'Issuecards') {
 		if (typeof (window.opener.document.EditView.accid_display) != 'undefined') {
 			window.opener.document.EditView.accid_display.value = account_name;
 		}
 		if (typeof (window.opener.document.EditView.accid) != 'undefined') {
 			window.opener.document.EditView.accid.value = account_id;
+		}
+	} else if (window.opener.gVTModule == 'Quotes' || window.opener.gVTModule == 'Invoice' || window.opener.gVTModule == 'SalesOrder') {
+		if (typeof (window.opener.document.EditView.account_id_display) != 'undefined') {
+			window.opener.document.EditView.account_id_display.value = account_name;
+		}
+		if (typeof (window.opener.document.EditView.account_id) != 'undefined') {
+			window.opener.document.EditView.account_id.value = account_id;
+		}
+	} else {
+		if (typeof (window.opener.document.EditView.account_name) != 'undefined') {
+			window.opener.document.EditView.account_name.value = account_name;
+		}
+		if (typeof (window.opener.document.EditView.account_id) != 'undefined') {
+			window.opener.document.EditView.account_id.value = account_id;
 		}
 	}
 	if (jQuery('#saa_bill').is(':checked')) {

@@ -1445,8 +1445,8 @@ class Contacts extends CRMEntity {
 //////////////////////////////////////////////////////////////////////////////
 
 	public function getvtlib_open_popup_window_function($fieldname, $basemodule) {
-		if ($basemodule=='Issuecards') {
-			return 'set_return_shipbilladdress';
+		if ($basemodule=='Issuecards' || $basemodule=='Quotes' || $basemodule=='Invoice' || $basemodule=='SalesOrder') {
+			return 'set_return_account_details';
 		} elseif ($fieldname == 'cto_id' && $basemodule == 'cbCalendar') {
 			return 'open_filtered_contactsIfAccounts';
 		} else {
