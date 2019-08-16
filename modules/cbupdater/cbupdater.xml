@@ -1361,4 +1361,18 @@
 	<classname>installdiscountline</classname>
 	<systemupdate>1</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mocodertz</author>
+	<description>Add Event Inventory Get Price</description>
+	<filename>build/changeSets/2019/addInventoryGetPriceEvent.php</filename>
+	<classname>addInventoryGetPriceEvent</classname>
+	<systemupdate>1</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mocodertz</author>
+	<description>Check Related Record Duplicates</description>
+	<filename>build/changeSets/2019/AddCheckRelatedRecordsDuplicate.php</filename>
+	<classname>AddCheckRelatedRecordsDuplicate</classname>
+	<systemupdate>1</systemupdate>
+</changeSet>
 </updatesChangeLog>

@@ -95,7 +95,7 @@ class DiscountLine extends CRMEntity {
 	public $default_sort_order='ASC';
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
-	public $mandatory_fields = array('accountid','dlcategory','discount');
+	public $mandatory_fields = array('dlcategory','discount');
 
 	public function save_module($module) {
 		if ($this->HasDirectImageField) {
@@ -112,18 +112,26 @@ class DiscountLine extends CRMEntity {
 	 *                 all values introduced by the user will be preloaded
 	 */
 	public function preSaveCheck($request) {
-		global $adb;
-		$saveerror = false;
-		$errmsg = '';
-		$sql='SELECT 1 FROM vtiger_discountline
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_discountline.discountlineid
-			WHERE vtiger_crmentity.deleted=0 AND accountid=? AND dlcategory=? limit 1';
-		$result = $adb->pquery($sql, array($request['accountid'], $request['productcategory']));
-		if ($adb->num_rows($result)==1) {
-			$saveerror = true;
-			$errmsg = getTranslatedString('LBL_PERMISSION', 'DiscountLine');
+		// global $adb;
+		// $saveerror = false;
+		// $errmsg = '';
+		// $sql='SELECT 1 FROM vtiger_discountline
+		// 	INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_discountline.discountlineid
+		// 	WHERE vtiger_crmentity.deleted=0 AND accountid=? AND dlcategory=? limit 1';
+		// $result = $adb->pquery($sql, array($request['accountid'], $request['productcategory']));
+		// if ($adb->num_rows($result)==1) {
+		// 	$saveerror = true;
+		// 	$errmsg = getTranslatedString('LBL_PERMISSION', 'DiscountLine');
+		// }
+		// return array($saveerror,$errmsg, 'EditView', '');
+		global $log, $app_strings;
+		if ($this->mode == 'edit' && !$this->permissiontoedit()) {
+			$log->debug("You don't have permission to save Price Modification");
+			return array(true, $app_strings['LBL_PERMISSION'], 'index', array());
 		}
-		return array($saveerror,$errmsg, 'EditView', '');
+		list($request,$void,$saveerror,$errormessage,$error_action,$returnvalues) =
+			cbEventHandler::do_filter('corebos.filter.preSaveCheck', array($request, $this, false, '', '', ''));
+		return array($saveerror, $errormessage, $error_action, $returnvalues);
 	}
 
 	/**
@@ -137,10 +145,14 @@ class DiscountLine extends CRMEntity {
 		if ($event_type == 'module.postinstall') {
 			// TODO Handle post installation actions
 			$this->setModuleSeqNumber('configure', $modulename, 'DTOLINE-', '000001');
-			// $adb->query("UPDATE vtiger_field SET fieldname = 'productcategory' WHERE tablename='vtiger_service' and columnname='servicecategory'");
-			// $modAcc=Vtiger_Module::getInstance('Accounts');
-			// $modDto=Vtiger_Module::getInstance('DiscountLine');
-			// $modAcc->setRelatedList($modDto, 'DiscountLine', array('ADD'), 'get_dependents_list');
+			$modAccounts = Vtiger_Module::getInstance('Accounts');
+			$modAccounts->setRelatedList(Vtiger_Module::getInstance('Discountline'), 'Price Modification', array('ADD','SELECT'));
+			$modServices = Vtiger_Module::getInstance('Services');
+			$modServices->setRelatedList(Vtiger_Module::getInstance('Discountline'), 'Price Modification', array('ADD','SELECT'));
+			$modProducts = Vtiger_Module::getInstance('Products');
+			$modProducts->setRelatedList(Vtiger_Module::getInstance('Discountline'), 'Price Modification', array('ADD','SELECT'));
+			$modContacts = Vtiger_Module::getInstance('Contacts');
+			$modContacts->setRelatedList(Vtiger_Module::getInstance('Discountline'), 'Price Modification', array('ADD','SELECT'));
 		} elseif ($event_type == 'module.disabled') {
 			// TODO Handle actions when this module is disabled.
 		} elseif ($event_type == 'module.enabled') {
@@ -159,19 +171,52 @@ class DiscountLine extends CRMEntity {
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
-	public function save_related_module($module, $crmid, $with_module, $with_crmid) {
+	public function save_related_module($module, $crmid, $with_module, $with_crmids) {
 		global $adb;
-		if ($with_module == 'Product' || $with_module == 'Service') {
-			$checkResult = $adb->pquery('SELECT * FROM vtiger_crmentityrel WHERE crmidid = ? AND module = ? AND relcrmid = ? AND relmodule = ?', array($crmid, $module, $with_crmid, $with_module));
-			if ($adb->num_rows($checkResult) == 0) {
-				$sql = 'INSERT INTO vtiger_crmentityrel VALUES(?,?,?,?)';
-				$adb->pquery($sql, array($crmid, $module, $with_crmid, $with_module));
+		if ($with_module == 'Products' || $with_module == 'Services' || $with_module == 'Accounts' || $with_module == 'Contacts') {
+			$with_crmids = (array)$with_crmids;
+			foreach ($with_crmids as $with_crmid) {
+				$checkResult = $adb->pquery(
+					'SELECT * FROM vtiger_crmentityrel INNER JOIN ( SELECT vtiger_crmentityrel.relcrmid FROM vtiger_crmentityrel WHERE crmid = ? OR crmid = ? ) temp ON vtiger_crmentityrel.relcrmid = temp.relcrmid AND( relmodule = ? OR relmodule = ? ) WHERE ( vtiger_crmentityrel.relmodule = ? OR vtiger_crmentityrel.relmodule = ? ) AND crmid IN( SELECT crmid FROM vtiger_crmentityrel WHERE (crmid = ? OR crmid = ?) AND( module = ? OR module = ? ) AND( relcrmid = ? OR relcrmid = ? ) AND( relmodule = ? OR relmodule = ? ) )',
+					array(
+						$crmid, $with_crmid, $with_module, $module, $with_module, $module, $crmid, $with_crmid,
+						$module, $with_module, $with_crmid, $crmid,
+						$with_module, $module
+					)
+				);
+				if ($adb->num_rows($checkResult) > 1) {
+					$sql = "DELETE FROM vtiger_crmentityrel WHERE crmid = ? AND module = ? AND relcrmid = ? AND relmodule = ? LIMIT 1";
+					$adb->pquery($sql, array($crmid, $module, $with_crmid, $with_module));
+				} elseif ($adb->num_rows($checkResult) == 0) {
+					$sql = 'INSERT INTO vtiger_crmentityrel VALUES(?,?,?,?)';
+					$adb->pquery($sql, array($crmid, $module, $with_crmid, $with_module));
+				}
 			}
 		} else {
 			parent::save_related_module($module, $crmid, $with_module, $with_crmid);
 		}
 	}
 
+	public function delete_related_module($module, $crmid, $with_module, $with_crmid) {
+		global $adb;
+		if ($with_module == 'ProductDetail') {
+			$with_crmid = (array)$with_crmid;
+			$data = array();
+			$data['sourceModule'] = $module;
+			$data['sourceRecordId'] = $crmid;
+			$data['destinationModule'] = $with_module;
+			foreach ($with_crmid as $relcrmid) {
+				$data['destinationRecordId'] = $relcrmid;
+				cbEventHandler::do_action('corebos.entity.link.delete', $data);
+				$adb->pquery(
+					'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND module=? AND relcrmid=? AND relmodule=?) OR (relcrmid=? AND relmodule=? AND crmid=? AND module=?)',
+					array($crmid, $module, $relcrmid, $with_module,$crmid, $module, $relcrmid, $with_module)
+				);
+			}
+		} else {
+			parent::delete_related_module($module, $crmid, $with_module, $with_crmid);
+		}
+	}
 	/**
 	 * Handle deleting related module information.
 	 * NOTE: This function has been added to CRMEntity (base class).
@@ -193,109 +238,54 @@ class DiscountLine extends CRMEntity {
 	 */
 	//public function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 
-	// public static function getDiscount($pdoid, $accid) {
-	// 	global $adb;
-	// 	// search productline alone and productline+client
-	// 	$dtopdors = $adb->pquery(
-	// 		'select discount
-	// 			from vtiger_discountline
-	// 			inner join vtiger_crmentity on crmid=discountlineid
-	// 				left join vtiger_products on productcategory=dlcategory and productid=?
-	// 				left join vtiger_service on productcategory=dlcategory and serviceid=?
-	// 				where deleted=0 and (accountid=? or accountid=0)
-	// 				order by accountid desc',
-	// 		array($pdoid, $pdoid, $accid)
-	// 	);
-	// 	if ($dtopdors && $adb->num_rows($dtopdors)>0) {
-	// 		return $adb->query_result($dtopdors, 0, 'discount');
-	// 	}
-	// 	if (!empty($accid)) {
-	// 		// search direct client discount for all products
-	// 		$dtopdors = $adb->pquery(
-	// 			'select discount
-	// 				from vtiger_discountline
-	// 				inner join vtiger_crmentity on crmid=discountlineid
-	// 				where deleted=0 and accountid=? and dlcategory=?
-	// 				limit 1',
-	// 			array($accid, '--None--')
-	// 		);
-	// 		if ($dtopdors && $adb->num_rows($dtopdors)>0) {
-	// 			return $adb->query_result($dtopdors, 0, 'discount');
-	// 		}
-	// 	}
-	// 	return 0;
-	// }
-	
-	public static function getDiscount($lineitemParameter from Database) {
+	public static function getDiscount($accountid, $contactid, $productid, $category) {
 		global $adb;
-		#if Application_B2C is active we search for contacts else we search for accounts
-		if(GlobalVariable::getVariable('Application_B2C', '0')) {
-			# Search in Contacts
-			# search for record where contact is in the related list
-			$contact_related_record_result = ""; // query of the Record will be done here
-			if (count($contact_related_record_result) > 0) {
-				$contact_rel_records ;
-			} else {
-				#if not found we search for a record marked as default where the contact is present
-				$contact_rel_records ;
-			}
-			#we must have category
-			if ($category == 'None') {
-				# Search Product/Service in related list  
-				# I think Product / Service related with Discount Line
-				# Also we Search for Only Active Records
-				$category_result = "";
-				if (count($category_result) > 0) {
+		$search_in = (1 == GlobalVariable::getVariable('Application_B2C', '0')) ? $contactid : $accountid;
 
-				} else {
-					# if not we search for a record marked as default where the product/service is present
+		if ($inventory_line['category'] == "None") {
+			$query_string = 'SELECT *FROM vtiger_discountline INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = discountlineid INNER JOIN vtiger_crmentityrel ON (
+				vtiger_crmentityrel.crmid=discountlineid OR vtiger_crmentityrel.relcrmid=discountlineid) WHERE deleted=0 AND (vtiger_crmentityrel.crmid=? OR 
+				vtiger_crmentityrel.relcrmid=? OR vtiger_crmentityrel.crmid=? OR vtiger_crmentityrel.relcrmid=?)';
+			$params = array($search_in, $search_in, $productid, $productid);
+		} else {
+			$query_string = 'SELECT *FROM vtiger_discountline INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = discountlineid INNER JOIN vtiger_crmentityrel ON (
+				vtiger_crmentityrel.crmid=discountlineid OR vtiger_crmentityrel.relcrmid=discountlineid) WHERE deleted=0 AND vtiger_discountline.dlcategory =? AND (
+					vtiger_crmentityrel.crmid=? OR vtiger_crmentityrel.relcrmid=? OR vtiger_crmentityrel.crmid=? OR vtiger_crmentityrel.relcrmid=?)';
+			$params = array($category, $search_in, $search_in, $productid, $productid);
+		}
 
+		$query_result = $adb->pquery($query_string, $params);
+		if ($adb->num_rows($query_result) > 0) {
+			if (!empty($adb->query_result($query_result, 0, "cbmapid"))) {
+				$mapid = $adb->query_result($query_result, 0, "cbmapid");
+				$context = array('recordid' => $productid);
+				$value = coreBOS_Rule::evaluate($mapid, $context);
+
+				if ($adb->query_result($query_result, 0, "returnvalue") == 'Cost+Margin') {
+					$result_cost_price = $adb->pquery("SELECT unit_price FROM `vtiger_products` WHERE productid=?", array($productid));
+					$unitprice = $adb->query_result($result_cost_price, 0, "unit_price");
+					$unitprice = $unitprice + (1 + $value);
+				} elseif ($adb->query_result($query_result, 0, "returnvalue") == 'Unit+Discount') {
+					$result_unit_price = $adb->pquery("SELECT unit_price FROM `vtiger_products` WHERE productid=?", array($productid));
+					$unitprice = $adb->query_result($result_unit_price, 0, "unit_price");
+					return array('unit price' => $unitprice , 'discount' => $value);
 				}
 			} else {
-				# we search for products/services in that category 
-				# Based on which passed either is Product / service
-				# Also we search for only Active Records Only
-				# Query for Searching Product or Service based on the Category
-				$category_result = "";
-				if (count($category_result) > 0) {
-
-				} else {
-					# if not we search for a record marked as default where the product/service is present
-
+				$value = $adb->query_result($query_result, 0, "discount");
+				if ($adb->query_result($query_result, 0, "returnvalue") == 'Cost+Margin') {
+					$result_cost_price = $adb->pquery("SELECT unit_price FROM `vtiger_products` WHERE productid=?", array($productid));
+					$unitprice = $adb->query_result($result_cost_price, 0, "unit_price");
+					$unitprice = $unitprice + (1 + $value);
+					return array('unit price' => $unitprice, 'discount' => 0);
+				} elseif ($adb->query_result($query_result, 0, "returnvalue") == 'Unit+Discount') {
+					$result_unit_price = $adb->pquery("SELECT unit_price FROM `vtiger_products` WHERE productid=?", array($productid));
+					$unitprice = $adb->query_result($result_unit_price, 0, "unit_price");
+					return array('unit price' => $unitprice , 'discount' => $value);
 				}
 			}
 		} else {
-			#Search in Accounts
-			#search for record where account is in the related list
-			#we must have category
-			$account_related_record_result ="";
-			if (count($account_related_record_result)) {
-
-			} else {
-				#if not found we search for a record marked as default where the Accounts is present
-			}
-			if ($category == 'None') {
-				# Search Product/Service in related list  
-				# I think Product / Service related with Discount Line
-				# Also we Search for Only Active Records
-				$category_result = "";
-				if (count($category_result) > 0) {
-
-				} else {
-					# if not we search for a record marked as default where the product/service is present
-				}
-			} else {
-				# we search for products/services in that category 
-				# Based on which passed either is Product / service
-				# Also we search for only Active Records Only
-				# Query for Searching Product or Service based on the Category
-				$category_result = "";
-				if (count($category_result) > 0) {
-
-				} else {
-					# if not we search for a record marked as default where the product/service is present
-				}
-			}
+			return false;
 		}
 	}
+}
 ?>

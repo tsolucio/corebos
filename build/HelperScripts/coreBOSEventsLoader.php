@@ -41,6 +41,7 @@ registerEvent('corebos.audit.authenticate');
 registerEvent('corebos.audit.login');
 registerEvent('corebos.audit.logout');
 registerEvent('corebos.audit.login.attempt');
+registerEvent('corebos.filter.inventory.getprice');
 
 // Permission examples live in their own file
 $em = new VTEventsManager($adb);

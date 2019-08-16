@@ -14,7 +14,7 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-class addInventoryGetPriceEvent extends cbupdaterWorker {
+class AddCheckRelatedRecordsDuplicate extends cbupdaterWorker {
 
 	public function applyChange() {
 		if ($this->hasError()) {
@@ -24,11 +24,11 @@ class addInventoryGetPriceEvent extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			global $adb;
-			$modname = 'InventoryDetails';
+			$modname = 'DiscountLine';
 			if ($this->isModuleInstalled($modname)) {
 				$module = Vtiger_Module::getInstance($modname);
 				$ev = new VTEventsManager($adb);
-				$ev->registerHandler('corebos.filter.inventory.getprice', 'modules/InventoryDetails/InventoryEventHandler.php', 'InventoryEventHandler');
+				$ev->registerHandler('corebos.entity.link.after', 'modules/DiscountLine/CheckDuplicateRelatedRecords.php', 'CheckDuplicateRelatedRecords');
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
@@ -45,11 +45,11 @@ class addInventoryGetPriceEvent extends cbupdaterWorker {
 		}
 		if ($this->isApplied()) {
 			global $adb;
-			$modname = 'InventoryDetails';
+			$modname = 'Contacts';
 			if ($this->isModuleInstalled($modname)) {
 				$module = Vtiger_Module::getInstance($modname);
 				$ev = new VTEventsManager($adb);
-				$ev->unregisterHandler('InventoryEventHandler');
+				$ev->unregisterHandler('CheckContactRelatedRecordDuplicate');
 			}
 			$this->sendMsg('Changeset '.get_class($this).' undone!');
 			$this->markUndone();

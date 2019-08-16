@@ -1775,6 +1775,13 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					} else {
 						$unitprice = '';
 					}
+
+					$entityid_record = vtws_retrieve(vtws_getEntityId($module).'x'.$entity_id, $current_user);
+					$productid = explode('x', $entityid_record['id'])[1];
+					$accountid = $_REQUEST['accid'];
+					$contactid = $_REQUEST['ctoid'];
+					$category = $entityid_record['productcategory'];
+					list($unitprice, $dtopdo) = cbEventHandler::do_filter('corebos.filter.inventory.getprice', array($unitprice, 0, $accountid, $contactid, $productid, $category));
 					$sub_products = '';
 					$sub_prod = '';
 					$sub_prod_query = $adb->pquery(
@@ -1809,9 +1816,11 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$slashes_temp_desc = decode_html(htmlspecialchars($description, ENT_QUOTES, $default_charset));
 
 					$slashes_desc = str_replace(array("\r", "\n"), array('\r', '\n'), $slashes_temp_desc);
-					$tmp_arr = array("entityid" => $entity_id, "prodname" => stripslashes(decode_html(nl2br($slashes_temp_val))), "unitprice" => "$unitprice", "qtyinstk" => "$qty_stock", "taxstring" => "$tax_str", "rowid" => "$row_id", "desc" => "$slashes_desc", "subprod_ids" => "$sub_det");
+					// $tmp_arr = array("entityid" => $entity_id, "prodname" => stripslashes(decode_html(nl2br($slashes_temp_val))), "unitprice" => "$unitprice", "qtyinstk" => "$qty_stock", "taxstring" => "$tax_str", "rowid" => "$row_id", "desc" => "$slashes_desc", "subprod_ids" => "$sub_det");
+					$tmp_arr = array("entityid" => $entity_id, "prodname" => "" . stripslashes(decode_html(nl2br($slashes_temp_val))) . "", "unitprice" => "$unitprice", "qtyinstk" => "$qty_stock", "taxstring" => "$tax_str", "rowid" => "$row_id", "desc" => "$slashes_desc", "subprod_ids" => "$sub_det","dto"=>$dtopdo);
 					$prod_arr = json_encode($tmp_arr);
-					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $qty_stock . '","' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '","' . $sub_det . '");\' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($temp_val) . '</a>';
+					// $value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $qty_stock . '","' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '","' . $sub_det . '");\' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($temp_val) . '</a>';
+					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $qty_stock . '","' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '","' . $sub_det . '",'.$dtopdo.');\' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($temp_val) . '</a>';
 				} elseif ($popuptype == 'inventory_prod_po') {
 					$row_id = $_REQUEST['curr_row'];
 
@@ -1828,6 +1837,13 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					} else {
 						$unitprice = '';
 					}
+
+					$entityid_record = vtws_retrieve(vtws_getEntityId($module).'x'.$entity_id, $current_user);
+					$productid = explode('x', $entityid_record['id'])[1];
+					$accountid = $_REQUEST['accid'];
+					$contactid = $_REQUEST['ctoid'];
+					$category = $entityid_record['productcategory'];
+					list($unitprice, $dtopdo) = cbEventHandler::do_filter('corebos.filter.inventory.getprice', array($unitprice, 0, $accountid, $contactid, $productid, $category));
 					$sub_products = '';
 					$sub_prod = '';
 					$sub_prod_query = $adb->pquery(
@@ -1884,23 +1900,31 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						$unitprice = '';
 					}
 
+					$entityid_record = vtws_retrieve(vtws_getEntityId($module).'x'.$entity_id, $current_user);
+					$serviceid = explode('x', $entityid_record['id'])[1];
+					$accountid = $_REQUEST['accid'];
+					$contactid = $_REQUEST['ctoid'];
+					$category = $entityid_record['servicecategory'];
+					list($unitprice, $dtopdo) = cbEventHandler::do_filter('corebos.filter.inventory.getprice', array($unitprice, 0, $accountid, $contactid, $serviceid, $category));
 					$slashes_temp_val = popup_from_html($field_val);
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
 					$description = popup_from_html($adb->query_result($list_result, $list_result_count, 'description'));
 					$slashes_temp_desc = decode_html(htmlspecialchars($description, ENT_QUOTES, $default_charset));
 
 					$slashes_desc = str_replace(array("\r", "\n"), array('\r', '\n'), $slashes_temp_desc);
-					$tmp_arr = array(
-						'entityid' => $entity_id,
-						'prodname' => stripslashes(decode_html(nl2br($slashes_temp_val))),
-						'unitprice' => "$unitprice",
-						'taxstring' => "$tax_str",
-						'rowid' => "$row_id",
-						'desc' => "$slashes_desc"
-					);
+					// $tmp_arr = array(
+					// 	'entityid' => $entity_id,
+					// 	'prodname' => stripslashes(decode_html(nl2br($slashes_temp_val))),
+					// 	'unitprice' => "$unitprice",
+					// 	'taxstring' => "$tax_str",
+					// 	'rowid' => "$row_id",
+					// 	'desc' => "$slashes_desc"
+					// );
+					$tmp_arr = array("entityid" => $entity_id, "prodname" => "" . stripslashes(decode_html(nl2br($slashes_temp_val))) . "", "unitprice" => "$unitprice", "taxstring" => "$tax_str", "rowid" => "$row_id", "desc" => "$slashes_desc","dto"=>$dtopdo);
 					$prod_arr = json_encode($tmp_arr);
 
-					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '");\' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($temp_val) . '</a>';
+					// $value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '");\' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($temp_val) . '</a>';
+					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '",'.$dtopdo.');\'  vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($temp_val) . '</a>';
 				} elseif ($popuptype == 'inventory_pb') {
 					$prod_id = $_REQUEST['productid'];
 					$flname = $_REQUEST['fldname'];

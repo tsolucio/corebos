@@ -10,14 +10,14 @@
 
 $mod_strings = array(
 	'DiscountLine' => 'Price Modification',
-	'DiscountLine ID' => 'Discount Line ID',
+	'DiscountLine ID' => 'Price Modification ID',
 
 	'LBL_CUSTOM_INFORMATION' => 'Custom Information',
-	'LBL_DISCOUNTLINE_INFORMATION' => 'Discount Line Information',
-	'SINGLE_DiscountLine' => 'Discount Line',
+	'LBL_DISCOUNTLINE_INFORMATION' => 'Price Modification Information',
+	'SINGLE_DiscountLine' => 'Price Modification',
 	'LBL_DESCRIPTION_INFORMATION' => 'Description',
 
-	'discountline_no' => 'Discount Line No',
+	'discountline_no' => 'Price Modification No',
 	'Line' => 'Line',
 	'Discount' => 'Discount',
 	'Description' => 'Descripción',
@@ -31,8 +31,9 @@ $mod_strings = array(
 	'LBL_SAVE_BUTTON_LABEL' => 'Save',
 	'STATUS_CONFIGURATION_DESCRIPTION' => 'Activate/Deactive Module',
 	'STATUS_CONFIGURATION' => 'Module Status',
-	'LBL_CHANGE_MODULE_STATUS' => 'Change Module Status',
+	'LBL_CHANGE_MODULE_STATUS' => 'Module Status',
 	'LBL_ACTIVATE_MODULE' => 'Active',
-	'LBL_DEACTIVATE_MODULE' => 'Deactive'
+	'LBL_DEACTIVATE_MODULE' => 'Deactive',
+	'MODULE_CONFIGURATION' => 'Module Configuration'
 );
 ?>

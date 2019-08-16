@@ -132,6 +132,9 @@ class coreBOSEventsExample extends VTEventHandler {
 					$parameter[1]=' AND vtiger_crmentity.smownerid!=1';  // crmid==2 cannot see comments from admin 1
 				}
 				break;
+			case 'corebos.filter.inventory.getprice':
+				echo $parameter;
+				break;
 		}
 		return $parameter;
 	}

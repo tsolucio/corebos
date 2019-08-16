@@ -46,16 +46,16 @@ function set_return_formname_specific(formname, product_id, product_name) {
 	window.opener.document.EditView1.product_id.value = product_id;
 }
 
-function set_return_inventory(product_id, product_name, unitprice, qtyinstock, taxstr, curr_row, desc, subprod_id) {
+function set_return_inventory(product_id, product_name, unitprice, qtyinstock, taxstr, curr_row, desc, subprod_id, dto) {
 	getOpenerObj('qtyInStock'+curr_row).innerHTML = qtyinstock;
-	set_return_inventory_po(product_id, product_name, unitprice, taxstr, curr_row, desc, subprod_id);
+	set_return_inventory_po(product_id, product_name, unitprice, taxstr, curr_row, desc, subprod_id, dto);
 	var func = window.opener.gVTModule + 'setValueFromCapture';
 	if (typeof window.opener[func] == 'function') {
 		window.opener[func](product_id, product_name, 'productName'+curr_row);
 	}
 }
 
-function set_return_inventory_po(product_id, product_name, unitprice, taxstr, curr_row, desc, subprod_id) {
+function set_return_inventory_po(product_id, product_name, unitprice, taxstr, curr_row, desc, subprod_id, dto) {
 	var subprod = subprod_id.split('::');
 	window.opener.document.EditView.elements['subproduct_ids'+curr_row].value = subprod[0];
 	window.opener.document.getElementById('subprod_names'+curr_row).innerHTML = subprod[1];
@@ -78,6 +78,10 @@ function set_return_inventory_po(product_id, product_name, unitprice, taxstr, cu
 	for (var i=0; i<tax_array.length; i++) {
 		tax_details = tax_array[i].split('=');
 	}
+	
+	window.opener.document.EditView.elements["discount"+curr_row][1].checked = true;
+	window.opener.document.EditView.elements["discount_percentage"+curr_row].value = dto;
+	
 	window.opener.document.EditView.elements['qty'+curr_row].value = product_default_units;
 	window.opener.document.EditView.elements['qty'+curr_row].focus();
 }

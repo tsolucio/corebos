@@ -33,7 +33,6 @@ class installdiscountline extends cbupdaterWorker {
 						$crmid_accounts = $_rows['accountid'];
 						$this->ExecuteQuery("INSERT INTO `vtiger_crmentityrel` (`crmid`, `module`, `relcrmid`, `relmodule`) VALUES ('.$crmid_discountline.', 
 						'DiscountLine', '.$crmid_accounts.', 'Accounts')");
-						# Unset Relation 
 					}
 				}
 				$this->sendMsg("$module activated!");

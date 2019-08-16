@@ -37,8 +37,8 @@
   `discountline_no` varchar(100) DEFAULT NULL,
   `dlcategory` varchar(255) DEFAULT NULL,
   `discount` int(11) DEFAULT NULL,
-  `activevalue` int(19) DEFAULT NULL,
-  `defaultvalue` int(19) DEFAULT NULL,
+  `activestatus` varchar(3) DEFAULT 0,
+  `defaultstatus` varchar(3) DEFAULT 0,
   `returnvalue` varchar(50), 
   `cbmapid` int(11),
   PRIMARY KEY (`discountlineid`)
@@ -170,8 +170,48 @@
 <masseditable>1</masseditable>
 <picklistvalues>
 <picklistvalue>Unit+Discount</picklistvalue>
-<picklistvalue>Cost+Margen</picklistvalue>
+<picklistvalue>Cost+Margin</picklistvalue>
 </picklistvalues>
+</field>
+<field>
+<fieldname>activestatus</fieldname>
+<uitype>56</uitype>
+<columnname>activestatus</columnname>
+<tablename>vtiger_discountline</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Active</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>6</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>C~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>defaultstatus</fieldname>
+<uitype>56</uitype>
+<columnname>defaultstatus</columnname>
+<tablename>vtiger_discountline</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Default</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>7</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>C~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
 </field>
 <field>
 <fieldname>createdtime</fieldname>

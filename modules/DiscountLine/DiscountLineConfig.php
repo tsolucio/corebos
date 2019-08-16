@@ -31,21 +31,19 @@ if (!is_admin($current_user)) {
 	$mode = $_POST['mode'];
 	# Save Action
 	if (!empty($mode) && $mode == 'Save') {
-		if ($_POST['module_status'] == NULL) {
+		if ($_POST['module_status'] == null) {
 			$module_status ='off';
 		} else {
 			$module_status = $_POST['module_status'];
 		}
-		coreBOS_Settings::delSetting('KEY_MODULE_STATUS');
-		coreBOS_Settings::setSetting('KEY_MODULE_STATUS', $module_status);
+		coreBOS_Settings::delSetting('KEY_DISCOUNT_MODULE_STATUS');
+		coreBOS_Settings::setSetting('KEY_DISCOUNT_MODULE_STATUS', $module_status);
 	}
-	#Query Information to Show
-	$module_status = coreBOS_Settings::getSetting('KEY_MODULE_STATUS','off');
-	var_dump($module_status);
-?>
+	$module_status = coreBOS_Settings::getSetting('KEY_DISCOUNT_MODULE_STATUS', 'off');
+	?>
 	<div style="margin:2em;">
-<?php $smarty->display('SetMenu.tpl'); ?>
-	<h2><?php echo getTranslatedString('SERVER_CONFIGURATION');?></h2>
+	<?php $smarty->display('SetMenu.tpl'); ?>
+	<legend class="slds-form-element__legend slds-form-element__label"><?php echo getTranslatedString('MODULE_CONFIGURATION', $MODULE);?></legend>
 	<form name="myform" role='form' action="index.php" method="POST">
 		<input type="hidden" name="module" value="DiscountLine">
 		<input type="hidden" name="action" value="DiscountLineConfig">
@@ -58,8 +56,8 @@ if (!is_admin($current_user)) {
 			<input type="checkbox" name="module_status" aria-describedby="toggle-module-status" <?php echo ($module_status=='on' ? 'checked' : '');?>/>
 			<span id="toggle-module-status" class="slds-checkbox--faux_container" aria-live="assertive">
 				<span class="slds-checkbox--faux"></span>
-				<span class="slds-checkbox--on"><?php echo getTranslatedString('LBL_ACTIVE', $MODULE);?></span>
-				<span class="slds-checkbox--off"><?php echo getTranslatedString('LBL_INACTIVE', $MODULE);?></span>
+				<span class="slds-checkbox--on"><?php echo getTranslatedString('LBL_ACTIVE', 'Settings');?></span>
+				<span class="slds-checkbox--off"><?php echo getTranslatedString('LBL_INACTIVE', 'Settings');?></span>
 			</span>
 			</label>
 		</div>
@@ -67,6 +65,6 @@ if (!is_admin($current_user)) {
 			<button type="submit" value="Save" class="slds-button slds-button--brand"><?php echo getTranslatedString('LBL_SAVE_BUTTON_LABEL', $MODULE);?></button>
 		</div>
 	</form>
-<?php
+	<?php
 }
 ?>
