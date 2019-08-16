@@ -1235,8 +1235,10 @@ class Accounts extends CRMEntity {
 	}
 
 	public function getvtlib_open_popup_window_function($fieldname, $basemodule) {
-		if ($basemodule=='Issuecards' || $basemodule=='Quotes' || $basemodule=='Invoice' || $basemodule=='SalesOrder') {
+		if ($basemodule=='Issuecards' || $basemodule=='Quotes' || $basemodule=='Invoice' || $basemodule=='SalesOrder' || $basemodule=='Accounts') {
 			return 'set_return_account_details';
+		} elseif ($basemodule=='Contacts') {
+			return 'set_return_contact_details';
 		} else {
 			return 'vtlib_open_popup_window';
 		}

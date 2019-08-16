@@ -190,7 +190,7 @@ function saa_fillinvalues() {
 		if (typeof (window.opener.document.EditView.accid) != 'undefined') {
 			window.opener.document.EditView.accid.value = account_id;
 		}
-	} else if (window.opener.gVTModule == 'Quotes' || window.opener.gVTModule == 'Invoice' || window.opener.gVTModule == 'SalesOrder') {
+	} else if (window.opener.gVTModule == 'Quotes' || window.opener.gVTModule == 'Invoice' || window.opener.gVTModule == 'SalesOrder' || window.opener.gVTModule == 'Accounts') {
 		if (typeof (window.opener.document.EditView.account_id_display) != 'undefined') {
 			window.opener.document.EditView.account_id_display.value = account_name;
 		}
@@ -314,6 +314,14 @@ function set_return_contact_address(account_id, account_name, bill_street, ship_
 			window.opener.document.QcEditView.account_id.value = account_id;
 		}
 	} else {
+		if (window.opener.gVTModule == 'Contacts') {
+			if (typeof (window.opener.document.EditView.account_id) != 'undefined') {
+				window.opener.document.EditView.account_id.value = account_id;
+			}
+			if (typeof (window.opener.document.EditView.account_id_display) != 'undefined') {
+				window.opener.document.EditView.account_id_display.value = account_name;
+			}
+		}
 		if (typeof (window.opener.document.EditView.account_name) != 'undefined') {
 			window.opener.document.EditView.account_name.value = account_name;
 		}
@@ -423,4 +431,23 @@ function searchMapLocation(addressType) {
 function set_return_todo(product_id, product_name) {
 	window.opener.document.createTodo.task_parent_name.value = product_name;
 	window.opener.document.createTodo.task_parent_id.value = product_id;
+}
+
+function set_return_account_details(fromlink,fldname,MODULE,ID) {
+	var WindowSettings = "width=680,height=602,resizable=0,scrollbars=0,top=150,left=200";
+	if(fldname == 'account_id'){
+		var baseURL = "index.php?module=Accounts&action=Popup&popuptype=specific_account_address&form=TasksEditView&form_submit=false&fromlink=";
+	}else{
+		if(fromlink != 'DetailView'){
+			var account_id = document.EditView.account_id.value;
+		}else{
+			var account_id = vtlib_listview.getFieldInfo('mouseArea_account_id').recordid;
+		}
+		if(account_id != ''){
+			var baseURL = "index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&parent_module=Accounts&relmod_id="+account_id;
+		}else{
+			var baseURL = "index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView";
+		}
+	}
+	window.open(baseURL,"vtlibui10",WindowSettings);
 }

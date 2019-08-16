@@ -1357,14 +1357,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 	} elseif ($uitype == 52 || $uitype == 101) {
 		$value = getOwnerName($adb->query_result($list_result, $list_result_count, $colname));
 		$value = textlength_check($value);
-	} elseif ($uitype == 51) {//Accounts - Member Of
-		$parentid = $adb->query_result($list_result, $list_result_count, 'parentid');
-		if ($module == 'Accounts') {
-			$entity_name = textlength_check(getAccountName($parentid));
-		} elseif ($module == 'Products') {
-			$entity_name = textlength_check(getProductName($parentid));
-		}
-		$value = '<a href="index.php?module=' . $module . '&action=DetailView&record=' . $parentid . '&parenttab=' . $tabname . '">' . $entity_name . '</a>';
 	} elseif ($uitype == '69m' && $module == 'Products') {
 		$queryPrdt = 'SELECT vtiger_attachments.path,vtiger_attachments.attachmentsid,vtiger_attachments.`name`
 			FROM vtiger_attachments

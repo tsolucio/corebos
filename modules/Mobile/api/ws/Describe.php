@@ -63,7 +63,7 @@ class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 							$field['quickcreate'] = $describeField['quickcreate'];
 							$field['displaytype'] = $describeField['displaytype'];
 						}
-						if ($field['uitype'] == '51' || $field['uitype'] == '10') {
+						if ($field['uitype'] == '10') {
 							$field['relatedmodule'] = crmtogo_WS_Utils::getEntityName($field['name'], $module);
 						}
 					}

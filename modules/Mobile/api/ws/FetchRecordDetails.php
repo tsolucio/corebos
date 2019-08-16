@@ -247,7 +247,7 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 						$fieldvalue[] = $options;
 						$field['type']['value'] =array('value' =>$options,'name' =>$fieldname);
 						//end picklists
-					} elseif ($field['uitype'] == '51' || $field['uitype'] == '10') {
+					} elseif ($field['uitype'] == '10') {
 						$field['relatedmodule'] = crmtogo_WS_Utils::getEntityName($field['name'], $module);
 					} elseif ($field['uitype'] == '70') {
 						$date = new DateTimeField($field['value']);

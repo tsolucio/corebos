@@ -343,20 +343,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		$fieldvalue[]=$users_combo;
 		$fieldvalue[] = $groups_combo;
-	} elseif ($uitype == 51) {
-		if (!isset($_REQUEST['convertmode']) || ($_REQUEST['convertmode'] != 'update_quote_val' && $_REQUEST['convertmode'] != 'update_so_val')) {
-			if (isset($_REQUEST['account_id']) && $_REQUEST['account_id'] != '') {
-				$value = vtlib_purify($_REQUEST['account_id']);
-			}
-		}
-		if ($value != '') {
-			$account_name = getAccountName($value);
-		} else {
-			$account_name = '';
-		}
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[] = $account_name;
-		$fieldvalue[] = $value;
 	} elseif ($uitype == 54) {
 		$options = array();
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
