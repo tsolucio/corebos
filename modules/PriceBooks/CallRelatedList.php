@@ -42,6 +42,10 @@ if ($singlepane_view == 'true' && $action == 'CallRelatedList') {
 
 	// Identify this module as custom module.
 	$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
+	$errormessageclass = isset($_REQUEST['error_msgclass']) ? vtlib_purify($_REQUEST['error_msgclass']) : '';
+	$errormessage = isset($_REQUEST['error_msg']) ? vtlib_purify($_REQUEST['error_msg']) : '';
+	$smarty->assign('ERROR_MESSAGE_CLASS', $errormessageclass);
+	$smarty->assign('ERROR_MESSAGE', $errormessage);
 
 	$smarty->assign('APP', $app_strings);
 	$smarty->assign('MOD', $mod_strings);
