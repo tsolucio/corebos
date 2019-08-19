@@ -1064,7 +1064,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 	//constructing the uitype and columnname array
 	$ui_col_array = array();
 
-	$query = 'SELECT uitype, columnname, fieldname
+	$query = 'SELECT uitype, columnname, fieldname, typeofdata
 		FROM vtiger_field
 		WHERE tabid=?
 		AND fieldname IN (' . generateQuestionMarks($field_list) . ') and vtiger_field.presence in (0,2)';
@@ -1075,7 +1075,9 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 		$uitype = $adb->query_result($result, $i, 'uitype');
 		$columnname = $adb->query_result($result, $i, 'columnname');
 		$field_name = $adb->query_result($result, $i, 'fieldname');
+		$typeofdata = $adb->query_result($result, $i, 'typeofdata');
 		$tempArr[$uitype] = $columnname;
+		$tempArr['typeofdata'] = $typeofdata;
 		$ui_col_array[$field_name] = $tempArr;
 	}
 
