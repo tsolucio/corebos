@@ -46,12 +46,15 @@ function set_return_formname_specific(formname, product_id, product_name) {
 	window.opener.document.EditView1.product_id.value = product_id;
 }
 
-function set_return_inventory(product_id, product_name, unitprice, taxstr, curr_row, desc) {
+function set_return_inventory(product_id, product_name, unitprice, taxstr, curr_row, desc, dto) {
 	window.opener.document.EditView.elements['productName'+curr_row].value = product_name;
 	window.opener.document.EditView.elements['hdnProductId'+curr_row].value = product_id;
 	window.opener.document.EditView.elements['listPrice'+curr_row].value = unitprice;
 	window.opener.document.EditView.elements['comment'+curr_row].value = desc;
-
+	if (dto!=0) {
+		window.opener.document.EditView.elements['discount'+curr_row][1].checked = true;
+		window.opener.document.EditView.elements['discount_percentage'+curr_row].value = dto;
+	}
 	// Apply decimal round-off to value
 	if (!isNaN(parseFloat(unitprice))) {
 		unitprice = roundPriceValue(unitprice);
@@ -92,7 +95,8 @@ function InventorySelectAllServices(mod, z, image_pth) {
 				var taxstring = prod_array['taxstring'];
 				var desc = prod_array['desc'];
 				var row_id = prod_array['rowid'];
-				set_return_inventory(prod_id, prod_name, unit_price, taxstring, parseInt(row_id), desc);
+				var dto = prod_array['dto'];
+				set_return_inventory(prod_id, prod_name, unit_price, taxstring, parseInt(row_id), desc, dto);
 				y=1;
 			} else {
 				alert(alert_arr.SELECT);
@@ -110,12 +114,13 @@ function InventorySelectAllServices(mod, z, image_pth) {
 					var unit_price = prod_array['unitprice'];
 					var taxstring = prod_array['taxstring'];
 					var desc = prod_array['desc'];
+					var dto = prod_array['dto'];
 					if (y>0) {
 						var row_id = window.opener.fnAddServiceRow(mod, image_pth);
 					} else {
 						var row_id = prod_array['rowid'];
 					}
-					set_return_inventory(prod_id, prod_name, unit_price, taxstring, parseInt(row_id), desc);
+					set_return_inventory(prod_id, prod_name, unit_price, taxstring, parseInt(row_id), desc, dto);
 					y=y+1;
 				}
 			}
