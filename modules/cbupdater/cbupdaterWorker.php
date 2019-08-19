@@ -241,6 +241,15 @@ class cbupdaterWorker {
 		}
 	}
 
+	/* Given an array of field names this method will activate them in Quick Create in the given order
+	 * all other fields will be deactivated
+	 * The layout is an array of Field Names
+		array(
+			'{fieldname1}',
+			'{fieldname2}',
+			'{fieldname3}',
+		),
+	*/
 	public function setQuickCreateFields($moduleName, $qcfields) {
 		global $adb;
 		$module = VTiger_Module::getInstance($moduleName);
@@ -326,7 +335,7 @@ class cbupdaterWorker {
 	}
 
 	/* Given an array of field definitions this method will hide the fields.
-	 * The layout is an array of Module Name and Field Definition
+	 * The layout is an array of Module Name and Field Name
 		array(
 			'{modulename}' => array(
 					'{fieldname1}',
@@ -352,7 +361,7 @@ class cbupdaterWorker {
 	}
 
 	/* Given an array of field definitions this method will delete the fields.
-	 * The layout is an array of Module Name and Field Definition
+	 * The layout is an array of Module Name and Field Name
 		array(
 			'{modulename}' => array(
 					'{fieldname1}',
