@@ -191,7 +191,9 @@ var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 				</tr>
 				{if $recid_var_value neq ''}
 					<tr>
-						<td align="right"><input id="all_contacts" alt="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.$MODULE}" title="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.$MODULE}" accessKey="" class="crmbutton small edit" value="{$APP.SHOW_ALL}&nbsp;{$APP.$MODULE}" onclick="window.location.href=showAllRecords();" type="button" name="button"></td>
+						<td align="right">
+						<input id="all_contacts" alt="{$APP.LBL_SELECT_BUTTON_LABEL} {$MODULE|@getTranslatedString:$MODULE}" title="{$APP.LBL_SELECT_BUTTON_LABEL} {$MODULE|@getTranslatedString:$MODULE}" accessKey="" class="crmbutton small edit" value="{$APP.SHOW_ALL}&nbsp;{$MODULE|@getTranslatedString:$MODULE}" onclick="window.location.href=showAllRecords();" type="button" name="button">
+						</td>
 					</tr>
 				{/if}
 			</table>
