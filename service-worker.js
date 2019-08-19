@@ -9212,7 +9212,7 @@ if (workbox) {
   },
   {
     "url": "include/js/Inventory.js",
-    "revision": "2bd9e148222a0497eb6968e83f551c68"
+    "revision": "27f30f1ef5abc3f7f06114d28564f9d8"
   },
   {
     "url": "include/js/it_it.lang.js",
@@ -9736,7 +9736,7 @@ if (workbox) {
   },
   {
     "url": "modules/Products/Products.js",
-    "revision": "82d4c0a3737ff481b5b9facca909dd38"
+    "revision": "3d7a85576cf2a244be2ebb71926fe890"
   },
   {
     "url": "modules/ModComments/ModComments.js",
@@ -9892,7 +9892,7 @@ if (workbox) {
   },
   {
     "url": "modules/Services/Services.js",
-    "revision": "25e0046eba629feba6d87b9d1a28c20e"
+    "revision": "672ddc901d26fba8ea0a11da5af22bdd"
   },
   {
     "url": "modules/Vendors/Vendors.js",
