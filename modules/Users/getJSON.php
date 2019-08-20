@@ -51,7 +51,7 @@ if (isset($_REQUEST['userstatus'])) {
 	}
 } else {
 	$userstatus = 'all';
-	$loggedonstatus = false;
+	$loggedinstatus = false;
 }
 if (isset($_REQUEST['email_search'])) {
 	$email_search = vtlib_purify($_REQUEST['email_search']);

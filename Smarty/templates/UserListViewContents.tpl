@@ -150,11 +150,11 @@
 						<img border="0" title="{'LBL_DELETE'|@getTranslatedString}" alt="{'LBL_DELETE'|@getTranslatedString}" src="{'delete.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;"/>
 					</span>
 				</a>
-				<span class="slds-icon_container slds-icon-utility-wifi" av="id:userid">
+				<span class="slds-icon_container slds-icon-utility-wifi" av="id:userid" title="{'LOGGED IN'|@getTranslatedString}">
 					<svg class="slds-icon slds-icon-text-default slds-icon_xx-small" aria-hidden="true">
 						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#wifi"></use>
 					</svg>
-					<span class="slds-assistive-text">{'LOGGED IN'|@getTranslatedString}</span>
+					<span class="slds-assistive-text"></span>
 				</span>
 				<a av="href:Record">
 					<span>
