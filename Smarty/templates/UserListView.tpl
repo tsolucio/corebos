@@ -38,6 +38,7 @@
 			</tr>
 			</table>
 			<br>
+			{include file='applicationmessage.tpl'}
 			<table border=0 cellspacing=0 cellpadding=10 width=100% >
 			<tr>
 				<td>

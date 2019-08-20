@@ -146,6 +146,9 @@ class VTEventTrigger {
 						$handler->handleEvent($this->name, $data);
 						$completedEvents[] = $handler_class;
 						$handlerCounter++;
+					} else {
+						// Mark the event-handler as finished - without actually invoking.
+						$completedEvents[] = $eventInfo['handler_class'];
 					}
 				}
 				if ($handlerCounter == 0 && count($eventInfos) > count($completedEvents)) {

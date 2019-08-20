@@ -37,7 +37,7 @@ if (isset($_REQUEST['dup_check']) && $_REQUEST['dup_check'] != '') {
 	}
 }
 if (!empty($_REQUEST['user_role']) && !is_admin($current_user) && $_REQUEST['user_role'] != $current_user->roleid) {
-	$log->fatal("SECURITY:Non-Admin user:". $current_user->id . " attempted to change user role");
+	$log->fatal('SECURITY:Non-Admin user:'. $current_user->id . ' attempted to change user role');
 	$theme = basename(vtlib_purify($theme));
 	echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";
 	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
@@ -51,25 +51,25 @@ if (!empty($_REQUEST['user_role']) && !is_admin($current_user) && $_REQUEST['use
 		</tr>
 		<tr>
 		<td class='small' align='right' nowrap='nowrap'>
-		<a href='index.php?module=Users&action=Logout'> ".$app_strings['LBL_GO_BACK']."</a><br></td>
+		<a href='index.php?module=Users&action=Logout'> ".$app_strings['LBL_GO_BACK'].'</a><br></td>
 		</tr>
 		</tbody></table>
 		</div>
-		</td></tr></table>";
+		</td></tr></table>';
 	exit;
 }
 
-if ((empty($_SESSION['Users_FORM_TOKEN']) || $_SESSION['Users_FORM_TOKEN']
-		!== (int)$_REQUEST['form_token']) && $_REQUEST['deleteImage'] != 'true' &&
-		$_REQUEST['changepassword'] != 'true') {
-	header("Location: index.php?action=Error&module=Users&error_string=".urlencode($app_strings['LBL_PERMISSION']));
+if ((empty($_SESSION['Users_FORM_TOKEN']) || $_SESSION['Users_FORM_TOKEN']!==(int)$_REQUEST['form_token'])
+		&& $_REQUEST['deleteImage'] != 'true' && $_REQUEST['changepassword'] != 'true'
+	) {
+	header('Location: index.php?action=index&module=Users&error_string='.urlencode(getTranslatedString('FORM_TOKEN_EXPIRED', 'Users')));
 	die;
 }
 
 if (isset($_POST['record']) && !is_admin($current_user) && $_POST['record'] != $current_user->id) {
-	echo ("Unauthorized access to user administration.");
+	echo ('Unauthorized access to user administration.');
 } elseif (!isset($_POST['record']) && !is_admin($current_user)) {
-	echo ("Unauthorized access to user administration.");
+	echo ('Unauthorized access to user administration.');
 }
 
 $focus = new Users();
@@ -79,7 +79,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 	$userrs = $adb->pquery('SELECT user_name FROM vtiger_users WHERE id=?', array($focus->id));
 	$user_name = $adb->query_result($userrs, 0, 0);
 	if ($current_user->id != $focus->id && in_array($user_name, $cbodBlockedUsers)) {
-		header("Location: index.php?action=Error&module=Users&error_string=Not Permitted. You can't edit this User.");
+		header('Location: index.php?action=index&module=Users&error_string='.urlencode(getTranslatedString('ERR_CANNOTEDITUSER', 'Users')));
 		die();
 	}
 } else {
@@ -98,7 +98,7 @@ if (isset($_REQUEST['changepassword']) && $_REQUEST['changepassword'] == 'true')
 	$focus->id = vtlib_purify($_REQUEST['record']);
 	if (isset($_REQUEST['new_password'])) {
 		if (!$focus->change_password(vtlib_purify($_REQUEST['old_password']), vtlib_purify($_REQUEST['new_password']))) {
-			header("Location: index.php?action=DetailView&module=Users&record=".$focus->id."&error_string=".urlencode($focus->error_string));
+			header('Location: index.php?action=DetailView&module=Users&record='.$focus->id.'&error_string='.urlencode($focus->error_string));
 			exit;
 		}
 	}
@@ -106,25 +106,25 @@ if (isset($_REQUEST['changepassword']) && $_REQUEST['changepassword'] == 'true')
 
 if (empty($_REQUEST['changepassword']) || $_REQUEST['changepassword'] != 'true') {
 	if (strtolower($current_user->is_admin) == 'off' && $current_user->id != $focus->id) {
-		$log->fatal("SECURITY:Non-Admin ". $current_user->id . " attempted to change settings for user:". $focus->id);
-		header("Location: index.php?module=Users&action=Logout");
+		$log->fatal('SECURITY:Non-Admin '. $current_user->id . ' attempted to change settings for user:'. $focus->id);
+		header('Location: index.php?module=Users&action=Logout');
 		exit;
 	}
 	if (strtolower($current_user->is_admin) == 'off' && isset($_POST['is_admin']) && strtolower($_POST['is_admin']) == 'on') {
-		$log->fatal("SECURITY:Non-Admin ". $current_user->id . " attempted to change is_admin settings for user:". $focus->id);
-		header("Location: index.php?module=Users&action=Logout");
+		$log->fatal('SECURITY:Non-Admin '. $current_user->id . ' attempted to change is_admin settings for user:'. $focus->id);
+		header('Location: index.php?module=Users&action=Logout');
 		exit;
 	}
 
 	if (!isset($_POST['is_admin'])) {
-		$_REQUEST["is_admin"] = 'off';
+		$_REQUEST['is_admin'] = 'off';
 	}
 	// rearrange the home page and tab
 	if (!isset($_POST['deleted'])) {
-		$_REQUEST["deleted"] = '0';
+		$_REQUEST['deleted'] = '0';
 	}
-	if (!isset($_POST['homeorder']) || $_POST['homeorder'] == "") {
-		$_REQUEST["homeorder"] = 'ILTI,QLTQ,ALVT,PLVT,CVLVT,HLT,OLV,GRT,OLTSO';
+	if (!isset($_POST['homeorder']) || $_POST['homeorder'] == '') {
+		$_REQUEST['homeorder'] = 'ILTI,QLTQ,ALVT,PLVT,CVLVT,HLT,OLV,GRT,OLTSO';
 	}
 	if (isset($_REQUEST['internal_mailer']) && $_REQUEST['internal_mailer'] == 'on') {
 		$focus->column_fields['internal_mailer'] = 1;
@@ -171,20 +171,20 @@ if (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'create') {
 	$user_emailid = $focus->column_fields['email1'];
 
 	$subject = $mod_strings['User Login Details'];
-	$email_body = $app_strings['MSG_DEAR']." ". $focus->column_fields['last_name'] .",<br><br>";
+	$email_body = $app_strings['MSG_DEAR'].' '. $focus->column_fields['last_name'] .',<br><br>';
 	$email_body .= $app_strings['LBL_PLEASE_CLICK'] . " <a href='" . $site_URL . "' target='_blank'>"
-				. $app_strings['LBL_HERE'] . "</a> " . $mod_strings['LBL_TO_LOGIN'] . "<br><br>";
-	$email_body .= $mod_strings['LBL_USER_NAME'] . " : " . $focus->column_fields['user_name'] . "<br>";
-	$email_body .= $mod_strings['LBL_PASSWORD'] . " : " . $focus->column_fields['user_password'] . "<br>";
-	$email_body .= $mod_strings['LBL_ROLE_NAME'] . " : " . getRoleName($_POST['user_role']) . "<br>";
-	$email_body .= "<br>" . $app_strings['MSG_THANKS'] . "<br>" . $current_user->user_name;
+				. $app_strings['LBL_HERE'] . '</a> ' . $mod_strings['LBL_TO_LOGIN'] . '<br><br>';
+	$email_body .= $mod_strings['LBL_USER_NAME'] . ' : ' . $focus->column_fields['user_name'] . '<br>';
+	$email_body .= $mod_strings['LBL_PASSWORD'] . ' : ' . $focus->column_fields['user_password'] . '<br>';
+	$email_body .= $mod_strings['LBL_ROLE_NAME'] . ' : ' . getRoleName($_POST['user_role']) . '<br>';
+	$email_body .= '<br>' . $app_strings['MSG_THANKS'] . '<br>' . $current_user->user_name;
 	//$email_body = htmlentities($email_body, ENT_QUOTES, $default_charset);  // not needed anymore, PHPMailer takes care of it
 
 	$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
 	$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name', 'your-support name', 'HelpDesk');
 	$mail_status = send_mail('Users', $user_emailid, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_ID, $subject, $email_body);
 	if ($mail_status != 1) {
-		$mail_status_str = $user_emailid."=".$mail_status."&&&";
+		$mail_status_str = $user_emailid.'='.$mail_status.'&&&';
 		$error_str = getMailErrorString($mail_status_str);
 	}
 }

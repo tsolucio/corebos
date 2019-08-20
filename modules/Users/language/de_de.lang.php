@@ -49,6 +49,8 @@ $mod_strings = array(
 	'LBL_DATE_FORMAT'=>'Datumsformat',
 
 	'LBL_ERROR'=>'Fehler:',
+	'FORM_TOKEN_EXPIRED'=>'Edit token has expired. Try again.',
+	'ERR_CANNOTEDITUSER' => 'Not Permitted. You cannot edit this User',
 	'LBL_PASSWORD'=>'Passwort / Password',
 	'LBL_USER_NAME'=>'Name / User Name',
 	'LBL_2FACODE' => 'Code',

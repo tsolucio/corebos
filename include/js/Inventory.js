@@ -863,7 +863,7 @@ function setDiscount(currObj, curr_row) {
 			if (discount_percentage_value == '') {
 				discount_percentage_value = 0;
 			}
-			discount_amount = eval(document.getElementById('productTotal'+curr_row).innerHTML)*eval(discount_percentage_value)/eval(100);
+			discount_amount = eval(document.getElementById('qty'+curr_row).value)*eval(document.getElementById('listPrice'+curr_row).value)*eval(discount_percentage_value)/100;
 		}
 		//Rounded the decimal part of discount amount to two digits
 		document.getElementById('discountTotal'+curr_row).innerHTML = roundValue(discount_amount.toString());
@@ -1311,10 +1311,11 @@ function InventorySelectAll(mod, image_pth) {
 				var taxstring = prod_array['taxstring'];
 				var desc = prod_array['desc'];
 				var row_id = prod_array['rowid'];
+				var dto = prod_array['dto'];
 				var subprod_ids = prod_array['subprod_ids'];
 				if (mod!='PurchaseOrder') {
 					var qtyinstk = prod_array['qtyinstk'];
-					set_return_inventory(prod_id, prod_name, unit_price, qtyinstk, taxstring, parseInt(row_id), desc, subprod_ids);
+					set_return_inventory(prod_id, prod_name, unit_price, qtyinstk, taxstring, parseInt(row_id), desc, subprod_ids, dto);
 				} else {
 					set_return_inventory_po(prod_id, prod_name, unit_price, taxstring, parseInt(row_id), desc, subprod_ids);
 				}
@@ -1335,6 +1336,7 @@ function InventorySelectAll(mod, image_pth) {
 					var unit_price = prod_array['unitprice'];
 					var taxstring = prod_array['taxstring'];
 					var desc = prod_array['desc'];
+					var dto = prod_array['dto'];
 					var subprod_ids = prod_array['subprod_ids'];
 					if (y>0) {
 						var row_id = window.opener.fnAddProductRow(mod, image_pth);
@@ -1343,7 +1345,7 @@ function InventorySelectAll(mod, image_pth) {
 					}
 					if (mod!='PurchaseOrder') {
 						var qtyinstk = prod_array['qtyinstk'];
-						set_return_inventory(prod_id, prod_name, unit_price, qtyinstk, taxstring, parseInt(row_id), desc, subprod_ids);
+						set_return_inventory(prod_id, prod_name, unit_price, qtyinstk, taxstring, parseInt(row_id), desc, subprod_ids, dto);
 					} else {
 						set_return_inventory_po(prod_id, prod_name, unit_price, taxstring, parseInt(row_id), desc, subprod_ids);
 					}
@@ -1441,7 +1443,7 @@ function InventorySelectAll(mod, image_pth) {
 					_this.processResult(res);
 				}
 			};
-			r.open('GET', this.source + this.input.value, true);
+			r.open('GET', this.source + this.input.value + '&accid='+document.EditView.account_id.value + '&ctoid='+document.EditView.contact_id.value + '&modid='+document.EditView.record.value, true);
 			r.send();
 		},
 
@@ -1889,6 +1891,10 @@ function handleProductAutocompleteSelect(obj) {
 	document.getElementById('qty'+no).value = qty;
 	if (gVTModule!='PurchaseOrder') {
 		document.getElementById('qtyInStock'+no).innerHTML = obj.result.logistics.qtyinstock;
+	}
+	if (obj.result.pricing.discount != undefined && obj.result.pricing.discount != 0) {
+		document.EditView.elements['discount'+no][1].checked = true;
+		document.EditView.elements['discount_percentage'+no].value = obj.result.pricing.discount;
 	}
 
 	// Update the icon
