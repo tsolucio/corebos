@@ -157,6 +157,7 @@ if ($nouserstatusrows > 0) {
 		}
 		$default_user_status_value_filters = $default_user_status_value_filters.'<option value='.$status.'>'.getTranslatedString($lbl_trans_key, 'Users').'</option>';
 	}
+	$default_user_status_value_filters = $default_user_status_value_filters.'<option value="loggedon">'.getTranslatedString('LOGGED IN', 'Users').'</option>';
 }
 
 if (isset($_REQUEST['error_string'])) {

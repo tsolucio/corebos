@@ -793,6 +793,7 @@ $mod_strings = array(
 'LBL_USERLOGGEDOUTOK' => 'The user has been logged out correctly.',
 'LBL_USERLOGGEDOUTNOK' => 'The user could not be logged out.',
 'LBL_UNBLOCK_USR' => 'Unblock the session to login?',
+'LOGGED IN' => 'Logged In',
 
 // LDAP
 'LBL_QUERY' => 'Query',

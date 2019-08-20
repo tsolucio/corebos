@@ -1636,7 +1636,7 @@ class Users extends CRMEntity {
 	 * $adminstatus, $userstatus, $page, $order_by, $sorder, $email_search, $namerole_search
 	 * public function getUsersJSON($userid, $page, $order_by = 'module_name', $sorder = 'DESC', $action_search = '')
 	 */
-	public function getUsersJSON($adminstatus, $userstatus, $page, $order_by = 'user_name', $sorder = 'DESC', $email_search = '', $namerole_search = '') {
+	public function getUsersJSON($adminstatus, $userstatus, $page, $order_by = 'user_name', $sorder = 'DESC', $email_search = '', $namerole_search = '', $loggedInFilter) {
 		global $log, $adb, $current_user;
 		$log->debug('> getUserJSON');
 
@@ -1697,7 +1697,15 @@ class Users extends CRMEntity {
 		$entries_list['prev_page_url'] = 'index.php?module=Users&action=UsersAjax&file=getJSON&page='.($page == 1 ? 1 : $page-1);
 		while ($lgn = $adb->fetch_array($result)) {
 			$entry = array();
-
+			$isuserloggedin = 'cbodUserConnection'.$lgn['id'];
+			if (coreBOS_Settings::SettingExists($isuserloggedin)) {
+				$entry['loggedin'] = true;
+			} else {
+				if ($loggedInFilter) {
+					continue;
+				}
+				$entry['loggedin'] = false;
+			}
 			$value = $lgn['email1'];
 			if ($_SESSION['internal_mailer'] == 1) {
 				$recordId = $lgn['id'];
@@ -1736,6 +1744,7 @@ class Users extends CRMEntity {
 			$entry['Email2'] = $lgn['email2'];
 			$entry['username'] = $lgn['user_name'];
 			$entry['id'] = $lgn['id'];
+			$entry['userid'] = $lgn['id'].'user';
 			$entry['firstname'] = $lgn['first_name'];
 			$entry['lastname'] = $lgn['last_name'];
 			$entry['Status'] = $lgn['status'];
@@ -1751,6 +1760,7 @@ class Users extends CRMEntity {
 			$entries_list['data'][] = $entry;
 		}
 		$log->debug('< getUsersJSON');
+		$entries_list['total'] = count($entries_list['data']);
 		return json_encode($entries_list);
 	}
 
