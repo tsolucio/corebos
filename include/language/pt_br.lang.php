@@ -640,10 +640,6 @@ $app_strings = array (
 'Global Discount'=> 'Desconto Global',
 'Net Total (aGD)'=> 'Total Líquido (c/desc)',
 'Net Total (bGD)'=> 'Total Líquido (s/desc)',
-'Total Tax'=> 'Total impostos',
-'Total Tax Retention'=> 'Total impostos retidos',
-'Grand Total'=> 'Total geral',
-'Final Adjustment'=> 'Ajuste Final',
 'SH Tax'=> 'Impostos (envio)',
 'SH Total'=> 'Custos (envio)',
 'Final Adjustment' => 'Ajuste final',
@@ -1303,6 +1299,11 @@ $app_strings = array (
 'Create Invoice' => 'Create Invoice',
 'Send Email With PDF' => 'Send Email With PDF',
 'Export To PDF' => 'Export To PDF',
+'Generate Sales Order' => 'Generate Sales Order',
+'Generate Invoice' => 'Generate Invoice',
+'Create Quote' => 'Create Quote',
+'Create Purchase Order' => 'Create Purchase Order',
+'Create Sales Order' => 'Create Sales Order',
 
 
 //added for creating a custom lead map row in UI

@@ -272,44 +272,6 @@ class Documents extends CRMEntity {
 		}
 	}
 
-	/** Function used to get the sort order for Documents listview
-	* @return string  $sorder - first check the $_REQUEST['sorder'] if request value is empty then check in the $_SESSION['NOTES_SORT_ORDER']
-	* 	 if this session value is empty then default sort order will be returned.
-	*/
-	public function getSortOrder() {
-		global $log;
-		$log->debug('> getSortOrder');
-		if (isset($_REQUEST['sorder'])) {
-			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
-		} else {
-			$sorder = (!empty($_SESSION['NOTES_SORT_ORDER']) ? $this->db->sql_escape_string($_SESSION['NOTES_SORT_ORDER']) : $this->default_sort_order);
-		}
-		$log->debug('< getSortOrder');
-		return $sorder;
-	}
-
-	/** Function used to get the order by value for Documents listview
-	* @return string  $order_by  - first check the $_REQUEST['order_by'] if request value is empty then check in the $_SESSION['NOTES_ORDER_BY']
-	* 	 if this session value is empty then default order by will be returned.
-	*/
-	public function getOrderBy() {
-		global $currentModule,$log;
-		$log->debug('> getOrderBy');
-		$use_default_order_by = '';
-		if (GlobalVariable::getVariable('Application_ListView_Default_Sorting', 0, $currentModule)) {
-			$use_default_order_by = $this->default_order_by;
-		}
-		if (isset($_REQUEST['order_by'])) {
-			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
-		} elseif (isset($_SESSION[$currentModule.'_Order_By'])) {
-			$order_by = $this->db->sql_escape_string($_SESSION[$currentModule.'_Order_By']);
-		} else {
-			$order_by = (!empty($_SESSION['NOTES_ORDER_BY']) ? $this->db->sql_escape_string($_SESSION['NOTES_ORDER_BY']) : $use_default_order_by);
-		}
-		$log->debug('< getOrderBy');
-		return $order_by;
-	}
-
 	/**
 	 * Function used to get the sort order for Documents listview
 	 * @return String $sorder - sort order for a given folder.

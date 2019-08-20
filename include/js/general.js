@@ -1342,7 +1342,7 @@ function doServerValidation(edit_type, formName, callback) {
 						callfunc = callfunc[1];
 					}
 					if (typeof window[callfunc] == 'function') {
-						window[callfunc](edit_type, formName, callback, params);
+						window[callfunc](edit_type, formName, action, callback, params);
 					} else {
 						if (typeof callback == 'function') {
 							callback('submit');
@@ -5969,11 +5969,3 @@ function headerOnUpScroll() {
 	}
 }
 window.cbOnUpScrollers.push(headerOnUpScroll);
-
-$(document).ready(function () {
-	$('#blankDiv').height($('#global-header').outerHeight(true)-90);
-});
-
-$(window).on('resize', function () {
-	$('#blankDiv').height($('#global-header').outerHeight(true)-90);
-});

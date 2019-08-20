@@ -16,7 +16,7 @@ $userGroups = new GetUserGroups();
 $userGroups->getAllUserGroups($current_user->id);
 $user_groups = $userGroups->user_groups;
 $user_group_query = '';
-if (!empty($user_groups) && $is_admin==false) {
+if (!empty($user_groups) && is_admin($current_user)==false) {
 	$user_group_query = " (shareid IN (".generateQuestionMarks($user_groups).") AND setype='groups') OR";
 	$params[] = $user_groups;
 }

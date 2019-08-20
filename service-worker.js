@@ -9204,7 +9204,7 @@ if (workbox) {
   },
   {
     "url": "include/js/general.js",
-    "revision": "9ca3b8f84617031da142f7f4379f512e"
+    "revision": "838e797858233d74160f505889fa3d88"
   },
   {
     "url": "include/js/hu_hu.lang.js",
@@ -9212,7 +9212,7 @@ if (workbox) {
   },
   {
     "url": "include/js/Inventory.js",
-    "revision": "2bd9e148222a0497eb6968e83f551c68"
+    "revision": "27f30f1ef5abc3f7f06114d28564f9d8"
   },
   {
     "url": "include/js/it_it.lang.js",
@@ -9336,7 +9336,7 @@ if (workbox) {
   },
   {
     "url": "include/style.css",
-    "revision": "803a672304ab2471038b853b719ce480"
+    "revision": "8963daa214226987ac19f1f2d2e7c939"
   },
   {
     "url": "include/print.css",
@@ -9712,7 +9712,7 @@ if (workbox) {
   },
   {
     "url": "modules/Documents/Documents.js",
-    "revision": "45233005c8905586dace1d05e3ed6576"
+    "revision": "5379a537fce7b3cba68f684538cbcec9"
   },
   {
     "url": "modules/SalesOrder/SalesOrder.js",
@@ -9736,7 +9736,7 @@ if (workbox) {
   },
   {
     "url": "modules/Products/Products.js",
-    "revision": "82d4c0a3737ff481b5b9facca909dd38"
+    "revision": "3d7a85576cf2a244be2ebb71926fe890"
   },
   {
     "url": "modules/ModComments/ModComments.js",
@@ -9892,7 +9892,7 @@ if (workbox) {
   },
   {
     "url": "modules/Services/Services.js",
-    "revision": "25e0046eba629feba6d87b9d1a28c20e"
+    "revision": "672ddc901d26fba8ea0a11da5af22bdd"
   },
   {
     "url": "modules/Vendors/Vendors.js",

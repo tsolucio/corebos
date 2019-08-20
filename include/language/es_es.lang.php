@@ -1288,6 +1288,11 @@ $app_strings = array (
 	'Create Invoice' => 'Crear Factura',
 	'Send Email With PDF' => 'Enviar Email con PDF',
 	'Export To PDF' => 'Exportar a PDF',
+	'Generate Sales Order' => 'Crear Orden de Venta',
+	'Generate Invoice' => 'Crear Factura',
+	'Create Quote' => 'Crear Presupuesto',
+	'Create Purchase Order' => 'Crear Orden de Compra',
+	'Create Sales Order' => 'Crear Orden de Venta',
 
 	'LBL_MORE'=>'Más',
 	'LBL_CRM_SETTINGS' => 'Configuración CRM',

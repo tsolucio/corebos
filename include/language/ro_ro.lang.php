@@ -1215,7 +1215,17 @@ $app_strings = array(
 	'processcomplete' => 'Process Complete',
 	'typetosearch_prodser' => 'Type to search products or services',
 	'RecordIsAssignedToInactiveUser' => 'The record is assigned to an inactive user. Please select another user.',
+	'Add event' => 'Add event',
+	'Create Invoice' => 'Create Invoice',
+	'Send Email With PDF' => 'Send Email With PDF',
+	'Export To PDF' => 'Export To PDF',
+	'Generate Sales Order' => 'Generate Sales Order',
+	'Generate Invoice' => 'Generate Invoice',
+	'Create Quote' => 'Create Quote',
+	'Create Purchase Order' => 'Create Purchase Order',
+	'Create Sales Order' => 'Create Sales Order',
 );
+
 // Translation for currency names
 $app_currency_strings = array(
 	'Albania, Leke' => 'Albania, Leke',

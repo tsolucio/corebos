@@ -375,7 +375,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Email',
 	'category' => 'Application',
 	'values' => '',
-	'definition' => 'Adresse de réponse pour les emails sortant à partir du module Ticket (HelpDesk) ainsi que pour d\'autre emails systèmes. Utilisée uniqument si la valeur est differente de celle de la variable "HelpDesk_Support_EMail"',
+	'definition' => 'Adresse de réponse pour les emails sortant à partir du Application.',
 ),
 'HelpDesk_Notify_Owner_EMail' => array(
 	'status' => 'Implemented',

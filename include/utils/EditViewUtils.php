@@ -1019,19 +1019,20 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$fieldvalue[]=is_admin($current_user);
 	} elseif ($uitype == 105) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
+		$image_array = array();
 		if (isset($col_fields['record_id']) && $col_fields['record_id'] != '') {
 			$query = 'select vtiger_attachments.path, vtiger_attachments.name
-				from vtiger_contactdetails
-				left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_contactdetails.contactid
-				inner join vtiger_attachments on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
-				where vtiger_contactdetails.imagename=vtiger_attachments.name and contactid=?';
+				from vtiger_users
+				left join vtiger_salesmanattachmentsrel on vtiger_salesmanattachmentsrel.smid=vtiger_users.id
+				inner join vtiger_attachments on vtiger_attachments.attachmentsid=vtiger_salesmanattachmentsrel.attachmentsid
+				where vtiger_users.imagename=vtiger_attachments.name and id=?';
 			$result_image = $adb->pquery($query, array($col_fields['record_id']));
 			for ($image_iter=0; $image_iter < $adb->num_rows($result_image); $image_iter++) {
 				$image_array[] = $adb->query_result($result_image, $image_iter, 'name');
 				$image_path_array[] = $adb->query_result($result_image, $image_iter, 'path');
 			}
 		}
-		if (isset($image_array) && is_array($image_array)) {
+		if (count($image_array)>0) {
 			for ($img_itr=0, $img_itrMax = count($image_array); $img_itr< $img_itrMax; $img_itr++) {
 				$fieldvalue[] = array('name'=>$image_array[$img_itr],'path'=>$image_path_array[$img_itr]);
 			}

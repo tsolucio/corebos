@@ -159,6 +159,11 @@ if ($nouserstatusrows > 0) {
 	}
 }
 
+if (isset($_REQUEST['error_string'])) {
+	$errormessageclass = isset($_REQUEST['error_msgclass']) ? vtlib_purify($_REQUEST['error_msgclass']) : '';
+	$smarty->assign('ERROR_MESSAGE_CLASS', $errormessageclass);
+	$smarty->assign('ERROR_MESSAGE', vtlib_purify($_REQUEST['error_string']));
+}
 $smarty->assign('recordListRange', $recordListRangeMsg);
 $url_string = '';
 $navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string, 'Users', 'index', '');

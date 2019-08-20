@@ -376,7 +376,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Email',
 	'category' => 'Aplicación',
 	'values' => '',
-	'definition' => 'Dirección de correo electrónico "Responder a" para los correos electrónicos que salen del módulo de soporte de HelpDesk (y otros correos electrónicos del sistema). Solo se utiliza si es diferente de HelpDesk_Support_EMail',
+	'definition' => 'Dirección de correo electrónico "Responder a" para los correos electrónicos que salen de la aplicación.',
 ),
 'HelpDesk_Notify_Owner_EMail' => array(
 	'status' => 'Implementada',

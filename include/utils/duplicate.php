@@ -270,6 +270,20 @@ function get_dependent_tables($dependents_list, $currentModule) {
 	return $dependent_tables;
 }
 
+function getUIType10DependentModules($module) {
+	global $adb;
+	$dep = array();
+	$sql = 'SELECT module,tablename,columnname FROM vtiger_fieldmodulerel JOIN vtiger_field ON vtiger_fieldmodulerel.fieldid=vtiger_field.fieldid WHERE relmodule=?';
+	$result = $adb->pquery($sql, array($module));
+	while ($r = $adb->fetch_array($result)) {
+		$dep[$r['module']] = array(
+			'tablename' => $r['tablename'],
+			'columname' => $r['columnname'],
+		);
+	}
+	return $dep;
+}
+
 function dup_dependent_rec($record_id, $relatedModule, $new_record_id, $dependent_tables, $maped_relations) {
 	global $adb, $current_user;
 	$invmods = getInventoryModules();

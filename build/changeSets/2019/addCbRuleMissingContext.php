@@ -28,13 +28,11 @@ class addCbRuleMissingContext extends cbupdaterWorker {
 			if ($result) {
 				$operationid = $adb->query_result($result, 0, 'operationid');
 				if (isset($operationid)) {
-					$this->ExecuteQuery("INSERT INTO `vtiger_ws_operation_parameters`
-                        (`operationid`, `name`, `type`, `sequence`) VALUES
-                        ($operationid, 'context', 'String', 2);");
+					$this->ExecuteQuery("INSERT INTO vtiger_ws_operation_parameters (operationid, name, type, sequence) VALUES ($operationid, 'context', 'String', 2);");
 				}
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}

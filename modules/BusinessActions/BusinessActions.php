@@ -476,6 +476,36 @@ class BusinessActions extends CRMEntity {
 		}
 	}
 
+	public static function getModuleLinkStatusInfo($actiontype, $actionlabel) {
+		global $adb;
+		$allEntities = array();
+		$allModules = array();
+		$entityQuery = "SELECT tabid,name FROM vtiger_tab WHERE isentitytype=1 and name NOT IN ('Rss','Recyclebin','Events','Calendar')";
+		$result = $adb->pquery($entityQuery, array());
+		while ($result && $row = $adb->fetch_array($result)) {
+			$allEntities[$row['tabid']] = getTranslatedString($row['name'], $row['name']);
+			$allModules[$row['tabid']] = $row['name'];
+		}
+		asort($allEntities);
+		$mlist = array();
+		foreach ($allEntities as $tabid => $mname) {
+			$checkres = $adb->pquery(
+				'SELECT 1
+					FROM vtiger_businessactions
+					INNER JOIN vtiger_crmentity ON crmid = businessactionsid
+					WHERE vtiger_crmentity.deleted = 0
+						AND (module_list = ? OR module_list LIKE ? OR module_list LIKE ? OR module_list LIKE ?)
+						AND elementtype_action=? AND linklabel=?',
+				array($allModules[$tabid], $allModules[$tabid].' %', '% '.$allModules[$tabid].' %', '% '.$allModules[$tabid], $actiontype, $actionlabel)
+			);
+			$mlist[$tabid] = array(
+				'name' => $mname,
+				'active' => $adb->num_rows($checkres),
+			);
+		}
+		return $mlist;
+	}
+
 	/**
 	 * Handle saving related module information.
 	 * NOTE: This function has been added to CRMEntity (base class).
