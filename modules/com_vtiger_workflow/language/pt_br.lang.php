@@ -183,5 +183,7 @@ $mod_strings = array(
 'runwebserviceworkflowtask' => 'Run Web Service',
 'Select IO Map' => 'Select IO Map',
 'Select Config Map' => 'Select Configuration Map',
+'CBPushNotificationTask' => 'Push Notification',
+'pushnoturl' => 'Push Notification URL',
 );
 ?>

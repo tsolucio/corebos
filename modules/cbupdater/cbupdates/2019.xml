@@ -272,4 +272,11 @@
 	<classname>activateQCProdServ</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>install Push Notifications Workflow Task</description>
+	<filename>build/changeSets/2019/installPushNotWorkflowTask.php</filename>
+	<classname>installPushNotWorkflowTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

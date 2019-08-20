@@ -155,5 +155,7 @@ $mod_strings = array(
 	'Calculate or Update forecast amount' => 'Calculate or Update forecast amount',
 	'LBL_METHOD_NAME' => 'Method Name',
 	'NO_METHOD_AVAILABLE' => 'No method is available for this module.',
+	'CBPushNotificationTask' => 'Push Notification',
+	'pushnoturl' => 'Push Notification URL',
 );
 ?>
