@@ -481,21 +481,21 @@ function googleContactsLogOut(module) {
 	});
 }
 
-function set_return_contact_details(fromlink,fldname,MODULE,ID) {
+function set_return_account_details(fromlink, fldname, MODULE, ID) {
 	var WindowSettings = "width=680,height=602,resizable=0,scrollbars=0,top=150,left=200";
-	if(fldname == 'account_id'){
+	if (fldname == 'account_id') {
 		var baseURL = "index.php?module=Accounts&action=Popup&popuptype=specific_contact_account_address&form=TasksEditView&form_submit=false&fromlink=";
-	}else{
-		if(fromlink != 'DetailView'){
+	} else {
+		if (fromlink != 'DetailView') {
 			var account_id = document.EditView.account_id.value;
-		}else{
+		} else {
 			var account_id = vtlib_listview.getFieldInfo('mouseArea_account_id').recordid;
 		}
-		if(account_id != ''){
+		if (account_id != '') {
 			var baseURL = "index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&parent_module=Accounts&relmod_id="+account_id;
-		}else{
+		} else {
 			var baseURL = "index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView";
 		}
 	}
-	window.open(baseURL,"vtlibui10",WindowSettings);
+	window.open(baseURL, "vtlibui10", WindowSettings);
 }
