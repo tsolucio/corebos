@@ -938,7 +938,7 @@ class CustomView extends CRMEntity {
 
 				if ($columnname != '' && $comparator != '') {
 					$valuearray = explode(',', trim($value));
-
+					$advfiltersql = '';
 					if (isset($valuearray) && count($valuearray) > 1 && $comparator != 'bw') {
 						$advorsql = array();
 						for ($n = 0; $n < count($valuearray); $n++) {
