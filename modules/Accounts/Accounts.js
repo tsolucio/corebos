@@ -185,17 +185,11 @@ function saa_fillinvalues() {
 	var account_name = jQuery('#account_name').val();
 	if (window.opener.gVTModule == 'Issuecards') {
 		if (typeof (window.opener.document.EditView.accid_display) != 'undefined') {
-			window.opener.document.EditView.accid_display.value = account_name;
-		}
-		if (typeof (window.opener.document.EditView.accid) != 'undefined') {
-			window.opener.document.EditView.accid.value = account_id;
+			vtlib_setvalue_from_popup(account_id, account_name, 'accid', 'EditView');
 		}
 	} else if (window.opener.gVTModule == 'Quotes' || window.opener.gVTModule == 'Invoice' || window.opener.gVTModule == 'SalesOrder' || window.opener.gVTModule == 'Accounts') {
 		if (typeof (window.opener.document.EditView.account_id_display) != 'undefined') {
-			window.opener.document.EditView.account_id_display.value = account_name;
-		}
-		if (typeof (window.opener.document.EditView.account_id) != 'undefined') {
-			window.opener.document.EditView.account_id.value = account_id;
+			vtlib_setvalue_from_popup(account_id, account_name, 'account_id', 'EditView');
 		}
 	} else {
 		if (typeof (window.opener.document.EditView.account_name) != 'undefined') {
@@ -315,11 +309,8 @@ function set_return_contact_address(account_id, account_name, bill_street, ship_
 		}
 	} else {
 		if (window.opener.gVTModule == 'Contacts') {
-			if (typeof (window.opener.document.EditView.account_id) != 'undefined') {
-				window.opener.document.EditView.account_id.value = account_id;
-			}
 			if (typeof (window.opener.document.EditView.account_id_display) != 'undefined') {
-				window.opener.document.EditView.account_id_display.value = account_name;
+				vtlib_setvalue_from_popup(account_id, account_name, 'account_id', 'EditView');
 			}
 		}
 		if (typeof (window.opener.document.EditView.account_name) != 'undefined') {
