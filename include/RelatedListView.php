@@ -170,6 +170,9 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 
 	$limit_start_rec = ($start-1) * $list_max_entries_per_page;
 
+	if (GlobalVariable::getVariable('Debug_RelatedList_Query', '0') == '1') {
+		echo '<br>'."$query LIMIT $limit_start_rec, $list_max_entries_per_page".'<br>';
+	}
 	$list_result = $adb->pquery($query." LIMIT $limit_start_rec, $list_max_entries_per_page", array());
 
 	/* Save the related list in session for when we click in a register
