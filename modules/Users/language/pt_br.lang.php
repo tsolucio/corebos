@@ -796,6 +796,7 @@ $mod_strings = array(
 'LBL_USERLOGGEDOUTOK' => 'O usuário foi desconectado corretamente.',
 'LBL_USERLOGGEDOUTNOK' => 'O usuário não pode ser desconectado.',
 'LBL_UNBLOCK_USR' => 'Desbloquear a sessão para iniciar uma nova sessão?',
+'LOGGED IN' => 'Logged In',
 // LDAP
 'LBL_QUERY' => 'Pergunta',
 'LBL_FORE_LASTNAME' => 'Nome ou sobrenome',
