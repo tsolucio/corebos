@@ -1601,13 +1601,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		} else {
 			$value = '';
 		}
-	} elseif ($uitype == 80) {
-		if ($temp_val != '') {
-			$salesorder_name = getSoName($temp_val);
-			$value = "<a href=index.php?module=SalesOrder&action=DetailView&record=$temp_val&parenttab=".urlencode($tabname).">".textlength_check($salesorder_name).'</a>';
-		} else {
-			$value = '';
-		}
 	} elseif ($uitype == 98) {
 		$value = '<a href="index.php?action=RoleDetailView&module=Settings&parenttab=Settings&roleid='.$temp_val.'">'.textlength_check(getRoleName($temp_val)).'</a>';
 	} elseif ($uitype == 33) {

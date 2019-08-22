@@ -272,4 +272,11 @@
 	<classname>activateQCProdServ</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>Elifuraha</author>
+	<description>migrate uitype 80 (salesorder capture) to uitype 10 (standard capture)</description>
+	<filename>build/changeSets/2019/migrateUIType80to10.php</filename>
+	<classname>migrateUIType80to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
