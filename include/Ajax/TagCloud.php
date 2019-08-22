@@ -28,8 +28,8 @@ if ($ajaxaction == 'MASSTAG') {
 	return;
 }
 
-$crmid = vtlib_purify($_REQUEST["recordid"]);
-$module = vtlib_purify($_REQUEST["module"]);
+$crmid = vtlib_purify($_REQUEST['recordid']);
+$module = vtlib_purify($_REQUEST['module']);
 $userid = $current_user->id;
 if ($ajaxaction == 'SAVETAG') {
 	if (isset($_REQUEST['tagfields']) && trim($_REQUEST['tagfields']) != '') {
