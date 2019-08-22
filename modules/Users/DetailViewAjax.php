@@ -62,8 +62,8 @@ if ($ajaxaction == 'DETAILVIEW') {
 		$_REQUEST['tagcloudview'] = $homeStuffOrder['Tag Cloud'];
 		$userObj->save('Users');
 		if ($userObj->id != '') {
+			echo ':#:SUCCESS:#:';
 			require_once 'modules/'.$currentModule.'/DetailView.php';
-			echo ':#:SUCCESS:#:'.$smarty->fetch('UserDetailView.tpl');
 		} else {
 			echo ':#:FAILURE';
 		}

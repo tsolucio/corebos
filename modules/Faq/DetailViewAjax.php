@@ -33,12 +33,13 @@ if ($ajaxaction == 'DETAILVIEW') {
 		} else {
 			$modObj->save($currentModule);
 			if ($modObj->id != '') {
-				require_once 'modules/'.$currentModule.'/DetailView.php';
 				if ($fieldname == 'comments') {
-					$comments = $modObj->getFAQComments($modObj->id);
-					echo ':#:SUCCESS:#:'.$smarty->fetch('DetailView.tpl').':#:'.$comments;
+					echo ':#:SUCCESS:#:';
+					require_once 'modules/'.$currentModule.'/DetailView.php';
+					echo ':#:'.$modObj->getFAQComments($modObj->id);
 				} else {
-					echo ':#:SUCCESS:#:'.$smarty->fetch('DetailView.tpl');
+					echo ':#:SUCCESS:#:';
+					require_once 'modules/'.$currentModule.'/DetailView.php';
 				}
 			} else {
 				echo ':#:FAILURE';
