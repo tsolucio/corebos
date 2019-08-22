@@ -266,7 +266,6 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 	var hdTxt = 'hdtxt_'+ fieldLabel;
 
 	VtigerJS_DialogBox.showbusy();
-	var isAdmin = document.getElementById('hdtxt_IsAdmin').value;
 
 	//overriden the tagValue based on UI Type for checkbox
 	if (uitype == '56') {
@@ -388,61 +387,61 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 				}
 				// field being edited
 				switch (uitype) {
-				case '33':
-				case 33:
-				case '3313':
-				case 3313:
-				case '3314':
-				case 3314:
-					var txtBox= 'txtbox_'+ fieldLabel;
-					var oMulSelect = document.getElementById(txtBox);
-					var r = new Array();
-					var notaccess_label = new Array();
-					for (var iter=0; iter < oMulSelect.options.length; iter++) {
-						if (oMulSelect.options[iter].selected) {
-							r[r.length] = oMulSelect.options[iter].value;
-							notaccess_label[notaccess_label.length] = oMulSelect.options[iter].text;
+					case '33':
+					case 33:
+					case '3313':
+					case 3313:
+					case '3314':
+					case 3314:
+						var txtBox= 'txtbox_'+ fieldLabel;
+						var oMulSelect = document.getElementById(txtBox);
+						var r = new Array();
+						var notaccess_label = new Array();
+						for (var iter=0; iter < oMulSelect.options.length; iter++) {
+							if (oMulSelect.options[iter].selected) {
+								r[r.length] = oMulSelect.options[iter].value;
+								notaccess_label[notaccess_label.length] = oMulSelect.options[iter].text;
+							}
 						}
-					}
-					sentForm[fieldName] = r;
-					break;
-				case '56':
-				case 56:
-					if (document.getElementById('txtbox_'+fieldName).checked == true) {
-						sentForm[fieldName] = 1;
-					} else {
-						sentForm[fieldName] = 0;
-					}
-					break;
-				case '50':
-				case 50:
-					sentForm[fieldName] = document.getElementById('txtbox_' + fieldName).value;
-					sentForm['timefmt_' + fieldName] = document.getElementById('inputtimefmt_' + fieldName).value;
-					break;
-				case '53':
-				case 53:
-					var assigntype = document.getElementsByName('assigntype');
-					if (assigntype.length > 0) {
-						var assign_type_U = assigntype[0].checked;
-						var assign_type_G = false;
-						if (assigntype[1]!=undefined) {
-							assign_type_G = assigntype[1].checked;
+						sentForm[fieldName] = r;
+						break;
+					case '56':
+					case 56:
+						if (document.getElementById('txtbox_'+fieldName).checked == true) {
+							sentForm[fieldName] = 1;
+						} else {
+							sentForm[fieldName] = 0;
 						}
-					} else {
-						var assign_type_U = assigntype[0].checked;
-					}
-					if (assign_type_U == true) {
-						var txtBox= 'txtbox_U'+fieldLabel;
-						sentForm['assign_type'] = 'U';
-					} else if (assign_type_G == true) {
-						var txtBox= 'txtbox_G'+fieldLabel;
-						sentForm['assign_type'] = 'T';
-					}
-					sentForm[fieldName] = document.getElementById(txtBox).value;
-					break;
-				default:
-					sentForm[fieldName] = document.getElementById('txtbox_'+fieldName).value;
-					break;
+						break;
+					case '50':
+					case 50:
+						sentForm[fieldName] = document.getElementById('txtbox_' + fieldName).value;
+						sentForm['timefmt_' + fieldName] = document.getElementById('inputtimefmt_' + fieldName).value;
+						break;
+					case '53':
+					case 53:
+						var assigntype = document.getElementsByName('assigntype');
+						if (assigntype.length > 0) {
+							var assign_type_U = assigntype[0].checked;
+							var assign_type_G = false;
+							if (assigntype[1]!=undefined) {
+								assign_type_G = assigntype[1].checked;
+							}
+						} else {
+							var assign_type_U = assigntype[0].checked;
+						}
+						if (assign_type_U == true) {
+							var txtBox= 'txtbox_U'+fieldLabel;
+							sentForm['assign_type'] = 'U';
+						} else if (assign_type_G == true) {
+							var txtBox= 'txtbox_G'+fieldLabel;
+							sentForm['assign_type'] = 'T';
+						}
+						sentForm[fieldName] = document.getElementById(txtBox).value;
+						break;
+					default:
+						sentForm[fieldName] = document.getElementById('txtbox_'+fieldName).value;
+						break;
 				}
 				sentForm['action'] = 'DetailViewEdit';
 				sentForm['dtlview_edit_fieldcheck'] = fieldName;
