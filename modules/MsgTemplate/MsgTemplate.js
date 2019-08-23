@@ -289,4 +289,6 @@ $(document).ready(function () {
 			textarea.insertHtml(value);
 		});
 	}
+	// calling of message template module fields at time document is loading
+	msgtFillInModuleFields();
 });
