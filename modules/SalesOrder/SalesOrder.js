@@ -33,7 +33,6 @@ function set_return(product_id, product_name) {
 }
 
 function set_return_specific(product_id, product_name, mode) {
-	console.log(mode);
 	//getOpenerObj used for DetailView
 	var fldName = getOpenerObj('salesorder_id_display');
 	var fldId = getOpenerObj('salesorder_id');
@@ -47,11 +46,11 @@ function set_return_specific(product_id, product_name, mode) {
 }
 
 function salesordersetvalue_from_popup(recordid, fieldN, target_fld, form) {
-	console.log(fieldN);
 	if (window.opener.gVTModule == 'Invoice') {
-		set_return_specific(recordid, fieldN, form);
+		if (target_fld == 'salesorder_id') {
+			set_return_specific(recordid, fieldN, form);
+		}
 	} else {
-		console.log('elifuraha2');
 		vtlib_setvalue_from_popup(recordid, fieldN, target_fld, form);
 	}
 	window.close();
