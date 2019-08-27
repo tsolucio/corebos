@@ -87,6 +87,7 @@ $mod_strings = array(
 	'Portal Url' => 'Portaladresse',
 	'groupEmailList' => 'Group Email List',
 
+	'Recommended frequency for Workflow is 15 mins' => 'Recommended frequency for Workflow is 15 mins',
 	'Workflow'=>'Workflow',
 	'WORKFLOW_DELETE_CONFIRMATION' => 'Sind Sie sicher, dass Sie diesen Workflow löschen möchten?',
 	'LBL_DELETE_WORKFLOW' => 'Workflow löschen',

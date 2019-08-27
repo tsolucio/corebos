@@ -250,6 +250,7 @@ $mod_strings = array(
 	'Monthly' => 'Lunare',
 	'Annually' => 'Anual',
 	'LBL_SCHEDULE_REPORT' => 'Programare Raport',
+	'Recommended frequency for ScheduleReports is 15 mins' => 'Recommended frequency for ScheduleReports is 15 mins',
 	'ScheduleReports' => 'Programare Raport',
 	'LBL_SCHEDULE_FREQUENCY' => 'Frecventa',
 	'OPTION_SCHEDULE_EMAIL_CHOOSE' => 'Alegeti .....',

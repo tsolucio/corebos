@@ -78,6 +78,7 @@ $mod_strings = array(
 	'Site Url' => 'URL du CRM',
 	'Portal Url' => 'URL du portail CRM',
 	'groupEmailList' => 'Group Email List',
+	'Recommended frequency for Workflow is 15 mins' => 'Recommended frequency for Workflow is 15 mins',
 	'Workflow'=>'Flux de travail',
 	'WORKFLOW_DELETE_CONFIRMATION' => 'Are you sure you want to delete this Workflow?',
 	'LBL_DELETE_WORKFLOW' => 'Delete Workflow',

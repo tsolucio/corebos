@@ -247,6 +247,7 @@ $mod_strings = array (
 	'Monthly'=>'Tous les mois',
 	'Annually'=>'Tous les ans',
 	'LBL_SCHEDULE_REPORT'=>'Rapports planifiés',
+	'Recommended frequency for ScheduleReports is 15 mins' => 'Recommended frequency for ScheduleReports is 15 mins',
 	'ScheduleReports'=>'Rapports planifiés',
 	'LBL_SCHEDULE_FREQUENCY'=>'Fréquence',
 	'OPTION_SCHEDULE_EMAIL_CHOOSE'=>'Choisissez ..... ',
