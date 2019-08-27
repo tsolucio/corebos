@@ -26,7 +26,7 @@ function entityMethodScript($){
 				$('#method_name_select').show();
 				$('#message_text').hide();
 				$.each(result, function(i, v){
-					var optionText = '<option value="'+v+'" '+(v==methodName?'selected':'')+'>'+v+'</option>';
+					var optionText = '<option value="'+v[0]+'" '+(v[0]==methodName?'selected':'')+'>'+v[1]+'</option>';
 					$('#method_name_select').append(optionText);
 				});
 			}

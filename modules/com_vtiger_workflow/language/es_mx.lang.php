@@ -124,6 +124,10 @@ $mod_strings = array(
 'WhatsappWorkflowTask' => 'Enviar Mensaje WhatsApp',
 'Many to Many Relation Task' => 'Relación Muchos a Muchos',
 'Set Many to Many Relation' => 'Establecer Relación Muchos a Muchos',
+'NotifyOnPortalTicketCreation' => 'Notificar al crear tickets en el portal',
+'NotifyOnPortalTicketComment' => 'Notificar al comentar el ticket del portal',
+'NotifyOwnerOnTicketChange' => 'Notificar el usuario asignado sobre un cambio en un ticket',
+'NotifyParentOnTicketChange' => 'Notificar a la cuenta/contacto relacionado sobre un cambio en un ticket',
 
 'LBL_EVENTNAME' => 'Nombre de Evento',
 'LBL_DESCRIPTION' => 'Descripción',
