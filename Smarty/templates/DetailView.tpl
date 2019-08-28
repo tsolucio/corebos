@@ -331,10 +331,9 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 
 												{* vtlib customization: Custom links on the Detail view basic links *}
 												{if $CUSTOM_LINKS && $CUSTOM_LINKS.DETAILVIEWBASIC}
-													<table width="100%" border="0" cellpadding="5" cellspacing="0">
+													<ul>
 														{foreach item=CUSTOMLINK from=$CUSTOM_LINKS.DETAILVIEWBASIC}
-															<tr class="actionlink actionlink_customlink actionlink_{$CUSTOMLINK->linklabel|lower|replace:' ':'_'}">
-																<td align="left" style="padding-left:10px;">
+																<li class="actionlink actionlink_customlink actionlink_{$CUSTOMLINK->linklabel|lower|replace:' ':'_'}">
 																	{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
 																	{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
 																	{if $customlink_label eq ''}
@@ -359,10 +358,9 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 																		<a class="webMnu" href="{$customlink_href}"><img hspace=5 align="absmiddle" border=0 src="themes/images/no_icon.png"></a>
 																	{/if}
 																	&nbsp;<a class="slds-text-link_reset" href="{$customlink_href}">{$customlink_label}</a>
-																</td>
-															</tr>
+																</li>
 														{/foreach}
-													</table>
+													</ul>
 												{/if}
 
 												{* vtlib customization: Custom links on the Detail view *}
