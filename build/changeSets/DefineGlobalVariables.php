@@ -215,6 +215,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'CustomerPortal_PDFTemplate_SalesOrder',
 				'CustomerPortal_PDFTemplate_Invoice',
 				'CustomerPortal_PDFTemplate_PurchaseOrder',
+				'Project_Gantt_Type',
 			);
 			$delete_these = array(
 				'preload_prototype',
@@ -249,6 +250,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'corebos_app_url',
 				'SOAP_Thunderbird_Enabled',
 				'Home_Display_Empty_Blocks',
+				'Gantt_Type',
 			);
 			$rename_these = array(
 				'Show_Copy_Adress_Header' => array(
@@ -344,7 +346,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				),
 				'PBXManager_SearchOnlyOnTheseFields' => array(
 					'to' => 'PBX_SearchOnTheseFields',
-				),
+				),				
 			);
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
 			$field = Vtiger_Field::getInstance('gvname', $moduleInstance);
