@@ -295,7 +295,7 @@ class Project extends CRMEntity {
 			$g->addMilestone($rec_related_projectmilestones['projectmilestoneid'], $rec_related_projectmilestones['projectmilestonedate'], $rec_related_projectmilestones['projectmilestonename']);
 		}
 
-		$project_gantt_type = GlobalVariable::getVariable('Project_Gantt_Type', '');
+		$project_gantt_type = GlobalVariable::getVariable('Project_Gantt_Type', '2');
 		$g->outputGantt($tmp_dir."diagram_".$record.".jpg", "100", $project_gantt_type);
 
 		$origin = $tmp_dir."diagram_".$record.".jpg";
