@@ -346,10 +346,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				),
 				'PBXManager_SearchOnlyOnTheseFields' => array(
 					'to' => 'PBX_SearchOnTheseFields',
-				),
-				'Gantt_Type' => array(
-					'to' => 'Project_Gantt_Type',
-				),
+				),				
 			);
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
 			$field = Vtiger_Field::getInstance('gvname', $moduleInstance);
