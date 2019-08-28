@@ -180,5 +180,6 @@ $mod_strings = array(
 	'Select Config Map' => 'Select Configuration Map',
 	'CBPushNotificationTask' => 'Push Notification',
 	'pushnoturl' => 'Push Notification URL',
+	'CBQuestionMViewFunction' => 'Update Materialized View',
 );
 ?>
