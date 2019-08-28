@@ -333,32 +333,32 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 												{if $CUSTOM_LINKS && $CUSTOM_LINKS.DETAILVIEWBASIC}
 													<ul>
 														{foreach item=CUSTOMLINK from=$CUSTOM_LINKS.DETAILVIEWBASIC}
-																<li class="actionlink actionlink_customlink actionlink_{$CUSTOMLINK->linklabel|lower|replace:' ':'_'}">
-																	{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
-																	{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
-																	{if $customlink_label eq ''}
-																		{assign var="customlink_label" value=$customlink_href}
+															<li class="actionlink actionlink_customlink actionlink_{$CUSTOMLINK->linklabel|lower|replace:' ':'_'}">
+																{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
+																{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
+																{if $customlink_label eq ''}
+																	{assign var="customlink_label" value=$customlink_href}
+																{else}
+																	{* Pickup the translated label provided by the module *}
+																	{assign var="customlink_label" value=$customlink_label|@getTranslatedString:$CUSTOMLINK->module()}
+																{/if}
+																{if $CUSTOMLINK->linkicon}
+																	{if strpos($CUSTOMLINK->linkicon, '}')>0}
+																		{assign var="customlink_iconinfo" value=$CUSTOMLINK->linkicon|json_decode:true}
+																		<span class="slds-icon_container slds-icon-{$customlink_iconinfo.library}-{$customlink_iconinfo.icon}" title="{$customlink_label}">
+																		<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
+																			<use xlink:href="include/LD/assets/icons/{$customlink_iconinfo.library}-sprite/svg/symbols.svg#{$customlink_iconinfo.icon}"></use>
+																		</svg>
+																		<span class="slds-assistive-text">{$customlink_label}</span>
+																		</span>
 																	{else}
-																		{* Pickup the translated label provided by the module *}
-																		{assign var="customlink_label" value=$customlink_label|@getTranslatedString:$CUSTOMLINK->module()}
+																		<a class="webMnu" href="{$customlink_href}"><img hspace=5 align="absmiddle" border=0 src="{$CUSTOMLINK->linkicon}"></a>
 																	{/if}
-																	{if $CUSTOMLINK->linkicon}
-																		{if strpos($CUSTOMLINK->linkicon, '}')>0}
-																			{assign var="customlink_iconinfo" value=$CUSTOMLINK->linkicon|json_decode:true}
-																			<span class="slds-icon_container slds-icon-{$customlink_iconinfo.library}-{$customlink_iconinfo.icon}" title="{$customlink_label}">
-																			<svg class="slds-icon slds-icon-text-default slds-icon_x-small" aria-hidden="true">
-																				<use xlink:href="include/LD/assets/icons/{$customlink_iconinfo.library}-sprite/svg/symbols.svg#{$customlink_iconinfo.icon}"></use>
-																			</svg>
-																			<span class="slds-assistive-text">{$customlink_label}</span>
-																			</span>
-																		{else}
-																			<a class="webMnu" href="{$customlink_href}"><img hspace=5 align="absmiddle" border=0 src="{$CUSTOMLINK->linkicon}"></a>
-																		{/if}
-																	{else}
-																		<a class="webMnu" href="{$customlink_href}"><img hspace=5 align="absmiddle" border=0 src="themes/images/no_icon.png"></a>
-																	{/if}
-																	&nbsp;<a class="slds-text-link_reset" href="{$customlink_href}">{$customlink_label}</a>
-																</li>
+																{else}
+																	<a class="webMnu" href="{$customlink_href}"><img hspace=5 align="absmiddle" border=0 src="themes/images/no_icon.png"></a>
+																{/if}
+																&nbsp;<a class="slds-text-link_reset" href="{$customlink_href}">{$customlink_label}</a>
+															</li>
 														{/foreach}
 													</ul>
 												{/if}
