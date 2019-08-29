@@ -46,10 +46,8 @@ function set_return_specific(product_id, product_name, mode) {
 }
 
 function salesordersetvalue_from_popup(recordid, fieldN, target_fld, form) {
-	if (window.opener.gVTModule == 'Invoice') {
-		if (target_fld == 'salesorder_id') {
-			set_return_specific(recordid, fieldN, form);
-		}
+	if (window.opener.gVTModule == 'Invoice' && target_fld == 'salesorder_id') {
+		set_return_specific(recordid, fieldN, form);
 	} else {
 		vtlib_setvalue_from_popup(recordid, fieldN, target_fld, form);
 	}
@@ -82,4 +80,23 @@ function SalesOrdersetValueFromCapture(recordid, value, target_fieldname) {
 			document.EditView.terms_conditions.value = str['tandc'];
 		});
 	}
+}
+
+function set_return_contact_details(fromlink, fldname, MODULE, ID) {
+    var WindowSettings = "width=680,height=602,resizable=0,scrollbars=0,top=150,left=200";
+    if (fldname == 'contact_id') {
+        var baseURL = "index.php?module=Contacts&action=Popup&popuptype=specific&form=TasksEditView&form_submit=false&fromlink=";
+    } else {
+        if (fromlink != 'DetailView') {
+            var contact_id = document.EditView.contact_id.value;
+        } else {
+            var contact_id = vtlib_listview.getFieldInfo('mouseArea_contact_id').recordid;
+        }
+        if (contact_id != '') {
+            var baseURL = "index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&parent_module=Accounts&relmod_id="+contact_id;
+        } else {
+            var baseURL = "index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView";
+        }
+    }
+    window.open(baseURL, "vtlibui10", WindowSettings);
 }
