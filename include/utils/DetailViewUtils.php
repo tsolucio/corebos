@@ -1033,13 +1033,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$label_fld[] = $purchaseorder_name;
 		$label_fld['secid'] = $purchaseorder_id;
 		$label_fld['link'] = 'index.php?module=PurchaseOrder&action=DetailView&record=' . $purchaseorder_id;
-	} elseif ($uitype == 80) {
-		$label_fld[] = getTranslatedString($fieldlabel, $module);
-		$salesorder_id = $col_fields[$fieldname];
-		$salesorder_name = (empty($salesorder_id) ? '' : getSoName($salesorder_id));
-		$label_fld[] = $salesorder_name;
-		$label_fld['secid'] = $salesorder_id;
-		$label_fld['link'] = 'index.php?module=SalesOrder&action=DetailView&record=' . $salesorder_id;
 	} elseif ($uitype == 30) {
 		if ($col_fields[$fieldname]) {
 			$rem_days = floor($col_fields[$fieldname] / (24 * 60));

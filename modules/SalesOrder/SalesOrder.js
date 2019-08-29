@@ -34,7 +34,7 @@ function set_return(product_id, product_name) {
 
 function set_return_specific(product_id, product_name, mode) {
 	//getOpenerObj used for DetailView
-	var fldName = getOpenerObj('salesorder_name');
+	var fldName = getOpenerObj('salesorder_id_display');
 	var fldId = getOpenerObj('salesorder_id');
 	fldName.value = product_name;
 	fldId.value = product_id;
@@ -43,6 +43,15 @@ function set_return_specific(product_id, product_name, mode) {
 		window.opener.document.EditView.convertmode.value = 'update_so_val';
 		window.opener.document.EditView.submit();
 	}
+}
+
+function salesordersetvalue_from_popup(recordid, fieldN, target_fld, form) {
+	if (window.opener.gVTModule == 'Invoice' && target_fld == 'salesorder_id') {
+		set_return_specific(recordid, fieldN, form);
+	} else {
+		vtlib_setvalue_from_popup(recordid, fieldN, target_fld, form);
+	}
+	window.close();
 }
 
 function set_return_formname_specific(formname, product_id, product_name) {
