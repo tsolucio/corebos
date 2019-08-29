@@ -47,14 +47,12 @@ function set_return_specific(product_id, product_name, mode) {
 }
 
 function salesordersetvalue_from_popup(recordid, fieldN, target_fld, form) {
-	if (window.opener.gVTModule == 'Invoice') {
-		if (target_fld == 'salesorder_id') {
-			set_return_specific(recordid, fieldN, form);
-		}
-	} else {
-		vtlib_setvalue_from_popup(recordid, fieldN, target_fld, form);
-	}
-	window.close();
+    if (window.opener.gVTModule == 'Invoice' && target_fld == 'salesorder_id') {
+        set_return_specific(recordid, fieldN, form);
+    } else {
+        vtlib_setvalue_from_popup(recordid, fieldN, target_fld, form);
+    }
+    window.close();
 }
 
 function set_return_formname_specific(formname, product_id, product_name) {
