@@ -40,7 +40,7 @@ function CBQuestionMViewFunction($entityData) {
 			while ($cbq = $adb->fetch_array($qs)) {
 				$vname = $vname = str_replace(' ', '_', $cbq['qname']);
 				$sql = cbQuestion::getSQL($cbq['cbquestionid']);
-				$sql = preg_replace('/where (vtiger_crmentity\.)?deleted\s*=\s*0/gi', 'where '.$cbq['uniqueid'].'='.$eid.' AND vtiger_crmentity.deleted=0', $sql);
+				$sql = preg_replace('/where (vtiger_crmentity\.)?deleted\s*=\s*0/i', 'where '.$cbq['uniqueid'].'='.$eid.' AND vtiger_crmentity.deleted=0', $sql);
 				$adb->query('INSERT INTO '.$vname.' '.$sql);
 			}
 		}
