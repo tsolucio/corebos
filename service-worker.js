@@ -9720,7 +9720,7 @@ if (workbox) {
   },
   {
     "url": "modules/SalesOrder/SalesOrder.js",
-    "revision": "af220612482a9b15fe2507532944700c"
+    "revision": "f39757087df369c9e6a0451c71dc038b"
   },
   {
     "url": "modules/Settings/Settings.js",
