@@ -29,7 +29,7 @@ function DeleteTag(id, recordid) {
 		method:'POST',
 		url:'index.php?file=TagCloud&module='+gVTModule+'&action='+gVTModule+'Ajax&ajxaction=DELETETAG&recordid='+recordid+'&tagid=' +id,
 	}).done(function (response) {
-		getTagCloud();
+		getTagCloud(recordid);
 		VtigerJS_DialogBox.hidebusy();
 	});
 }

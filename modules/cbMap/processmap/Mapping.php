@@ -157,12 +157,13 @@ class Mapping extends processcbMap {
 					$mapid = array_pop($fieldinfo);
 					$fieldname = array_pop($fieldinfo);
 					if (!empty($ofields['record_id'])) {
-						if (strpos($ofields['record_id'], 'x')===false) {
-							$ofields['record_id'] = vtws_getEntityId(getSalesEntityType($ofields['record_id'])).'x'.$ofields['record_id'];
+						$context = $ofields;
+						if (strpos($context['record_id'], 'x')===false) {
+							$context['record_id'] = vtws_getEntityId(getSalesEntityType($context['record_id'])).'x'.$context['record_id'];
 						}
-						$entity = new VTWorkflowEntity($current_user, $ofields['record_id'], true);
+						$entity = new VTWorkflowEntity($current_user, $context['record_id'], true);
 						if (is_array($entity->data)) { // valid context
-							$context = array_merge($entity->data, $ofields);
+							$context = array_merge($entity->data, $context);
 						}
 					} else {
 						$context = $ofields[$fieldname];

@@ -158,6 +158,7 @@ $mod_strings = array (
   'S&H Amount' => 'Ammontare S&H ',
 'SalesOrder No' => 'Nr. Ordine di Vendita',
 'Recurring Invoice Information' => 'Informazioni Fattura Periodica',
+'Recommended frequency for RecurringInvoice is 12 hours' => 'Recommended frequency for Recurring Invoice is 12 hours',
 'RecurringInvoice' => 'Fattura Periodica',
 'Enable Recurring' => 'Abilita Periodicit&agrave;',
 'Frequency' => 'Frequenza',

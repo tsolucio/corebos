@@ -375,7 +375,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Email',
 	'category' => 'Application',
 	'values' => '',
-	'definition' => 'Adresse de réponse pour les emails sortant à partir du module Ticket (HelpDesk) ainsi que pour d\'autre emails systèmes. Utilisée uniqument si la valeur est differente de celle de la variable "HelpDesk_Support_EMail"',
+	'definition' => 'Adresse de réponse pour les emails sortant à partir du Application.',
 ),
 'HelpDesk_Notify_Owner_EMail' => array(
 	'status' => 'Implemented',
@@ -1384,6 +1384,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'Number of rows to show per page in the workflow list view grid. The default is 20.',
+),
+'Project_Gantt_Type' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Module Functionality',
+	'values' => '1 | 2 | 3',
+	'definition' => 'Used to define Gantt Chart type. 1 for daily, 2 for weekly and 3 for monthly. Default value is set to 2.',
 ),
 );
 

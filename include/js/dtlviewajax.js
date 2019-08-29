@@ -262,11 +262,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		var txtBox= 'txtbox_'+ fieldLabel;
 	}
 
-	var popupTxt= 'popuptxt_'+ fieldLabel;
-	var hdTxt = 'hdtxt_'+ fieldLabel;
-
 	VtigerJS_DialogBox.showbusy();
-	var isAdmin = document.getElementById('hdtxt_IsAdmin').value;
 
 	//overriden the tagValue based on UI Type for checkbox
 	if (uitype == '56') {
@@ -497,18 +493,6 @@ function SaveTag(tagfield, crmId, module) {
 	});
 }
 
-function DeleteTag(id, recordid) {
-	VtigerJS_DialogBox.showbusy();
-	jQuery('#tag_'+id).fadeOut();
-	jQuery.ajax({
-		method:'POST',
-		url:'index.php?file=TagCloud&module=' + module + '&action=' + module + 'Ajax&ajxaction=DELETETAG&recordid='+recordid+'&tagid='+id
-	}).done(function (response) {
-		getTagCloud();
-		VtigerJS_DialogBox.hidebusy();
-	});
-}
-
 function setSelectValue(fieldLabel) {
 	var selCombo= '';
 	if (globaluitype == 53) {
@@ -555,8 +539,8 @@ function hndMouseClick(fieldLabel) {
 function setCoOrdinate(elemId) {
 	var oBtnObj = document.getElementById(elemId);
 	var tagName = document.getElementById('lstRecordLayout');
-	leftpos  = 0;
-	toppos = 0;
+	var leftpos = 0;
+	var toppos = 0;
 	var aTag = oBtnObj;
 	do {
 		leftpos += aTag.offsetLeft;

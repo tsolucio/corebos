@@ -376,7 +376,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Email',
 	'category' => 'Aplicación',
 	'values' => '',
-	'definition' => 'Dirección de correo electrónico "Responder a" para los correos electrónicos que salen del módulo de soporte de HelpDesk (y otros correos electrónicos del sistema). Solo se utiliza si es diferente de HelpDesk_Support_EMail',
+	'definition' => 'Dirección de correo electrónico "Responder a" para los correos electrónicos que salen de la aplicación.',
 ),
 'HelpDesk_Notify_Owner_EMail' => array(
 	'status' => 'Implementada',
@@ -1385,6 +1385,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '',
 	'definition' => 'Número de filas a mostrar por página en la vista de lista de flujos de trabajo. El valor predeterminado es 20.',
+),
+'Project_Gantt_Type' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'Funcionalidad Módulo',
+	'values' => '1 | 2 | 3',
+	'definition' => 'Se utiliza para definir el tipo de diagrama de Gantt. 1 para diario, 2 para semanal y 3 para mensual. El valor predeterminado es semanal (2).',
 ),
 );
 

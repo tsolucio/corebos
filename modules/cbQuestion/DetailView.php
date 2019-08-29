@@ -15,5 +15,7 @@ $smarty = new vtigerCRM_Smarty();
 
 require_once 'modules/Vtiger/DetailView.php';
 
+$smarty->assign('QSQL', cbQuestion::getSQL($record));
+
 $smarty->display('DetailView.tpl');
 ?>

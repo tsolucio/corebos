@@ -32,9 +32,9 @@ function createUserPrivilegesfile($userid) {
 		$newbuf .="\n";
 		$newbuf .= "//This is the access privilege file\n";
 		$user_focus= new Users();
-		$user_focus->retrieve_entity_info($userid, "Users");
+		$user_focus->retrieve_entity_info($userid, 'Users');
 		$userInfo=array();
-		$user_focus->column_fields["id"] = '';
+		$user_focus->column_fields['id'] = '';
 		$user_focus->id = $userid;
 		foreach ($user_focus->column_fields as $field => $value_iter) {
 			if (isset($user_focus->$field)) {

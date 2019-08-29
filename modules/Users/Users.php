@@ -1003,23 +1003,23 @@ class Users extends CRMEntity {
 
 		$result = array();
 		foreach ($this->tab_name_index as $table_name => $index) {
-			$result[$table_name] = $adb->pquery("select * from " . $table_name . " where " . $index . "=?", array($record));
+			$result[$table_name] = $adb->pquery('select * from ' . $table_name . ' where ' . $index . '=?', array($record));
 		}
 		$tabid = getTabid($module);
-		$sql1 = "select columnname, tablename, fieldname from vtiger_field where tabid=? and vtiger_field.presence in (0,2)";
+		$sql1 = 'select columnname, tablename, fieldname from vtiger_field where tabid=? and vtiger_field.presence in (0,2)';
 		$result1 = $adb->pquery($sql1, array($tabid));
 		$noofrows = $adb->num_rows($result1);
 		for ($i = 0; $i < $noofrows; $i++) {
-			$fieldcolname = $adb->query_result($result1, $i, "columnname");
-			$tablename = $adb->query_result($result1, $i, "tablename");
-			$fieldname = $adb->query_result($result1, $i, "fieldname");
+			$fieldcolname = $adb->query_result($result1, $i, 'columnname');
+			$tablename = $adb->query_result($result1, $i, 'tablename');
+			$fieldname = $adb->query_result($result1, $i, 'fieldname');
 
 			$fld_value = $adb->query_result($result[$tablename], 0, $fieldcolname);
 			$this->column_fields[$fieldname] = $fld_value;
 			$this->$fieldname = $fld_value;
 		}
-		$this->column_fields["record_id"] = $record;
-		$this->column_fields["record_module"] = $module;
+		$this->column_fields['record_id'] = $record;
+		$this->column_fields['record_module'] = $module;
 
 		$currency_query = "select * from vtiger_currency_info where id=? and currency_status='Active' and deleted=0";
 		$currency_result = $adb->pquery($currency_query, array($this->column_fields["currency_id"]));
@@ -1031,12 +1031,12 @@ class Users extends CRMEntity {
 		if (isset($currency_array[$adb->query_result($currency_result, 0, "currency_symbol")])) {
 			$ui_curr = $currency_array[$adb->query_result($currency_result, 0, "currency_symbol")];
 		} else {
-			$ui_curr = $adb->query_result($currency_result, 0, "currency_symbol");
+			$ui_curr = $adb->query_result($currency_result, 0, 'currency_symbol');
 		}
-		$this->column_fields["currency_name"] = $this->currency_name = $adb->query_result($currency_result, 0, "currency_name");
-		$this->column_fields["currency_code"] = $this->currency_code = $adb->query_result($currency_result, 0, "currency_code");
-		$this->column_fields["currency_symbol"] = $this->currency_symbol = $ui_curr;
-		$this->column_fields["conv_rate"] = $this->conv_rate = $adb->query_result($currency_result, 0, "conversion_rate");
+		$this->column_fields['currency_name'] = $this->currency_name = $adb->query_result($currency_result, 0, 'currency_name');
+		$this->column_fields['currency_code'] = $this->currency_code = $adb->query_result($currency_result, 0, 'currency_code');
+		$this->column_fields['currency_symbol'] = $this->currency_symbol = $ui_curr;
+		$this->column_fields['conv_rate'] = $this->conv_rate = $adb->query_result($currency_result, 0, 'conversion_rate');
 
 		// TODO - This needs to be cleaned up once default values for fields are picked up in a cleaner way.
 		// This is just a quick fix to ensure things doesn't start breaking when the user currency configuration is missing
@@ -1636,7 +1636,7 @@ class Users extends CRMEntity {
 	 * $adminstatus, $userstatus, $page, $order_by, $sorder, $email_search, $namerole_search
 	 * public function getUsersJSON($userid, $page, $order_by = 'module_name', $sorder = 'DESC', $action_search = '')
 	 */
-	public function getUsersJSON($adminstatus, $userstatus, $page, $order_by = 'user_name', $sorder = 'DESC', $email_search = '', $namerole_search = '') {
+	public function getUsersJSON($adminstatus, $userstatus, $page, $order_by = 'user_name', $sorder = 'DESC', $email_search = '', $namerole_search = '', $loggedInFilter = '') {
 		global $log, $adb, $current_user;
 		$log->debug('> getUserJSON');
 
@@ -1697,14 +1697,22 @@ class Users extends CRMEntity {
 		$entries_list['prev_page_url'] = 'index.php?module=Users&action=UsersAjax&file=getJSON&page='.($page == 1 ? 1 : $page-1);
 		while ($lgn = $adb->fetch_array($result)) {
 			$entry = array();
-
+			$isuserloggedin = 'cbodUserConnection'.$lgn['id'];
+			if (coreBOS_Settings::SettingExists($isuserloggedin)) {
+				$entry['loggedin'] = true;
+			} else {
+				if ($loggedInFilter) {
+					continue;
+				}
+				$entry['loggedin'] = false;
+			}
+			$value = $lgn['email1'];
 			if ($_SESSION['internal_mailer'] == 1) {
 				$recordId = $lgn['id'];
-				$module = "Users";
+				$module = 'Users';
 				$tabid = getTabid($module);
 				$fieldId = $adb->getone("select fieldid from vtiger_field where tabid=".$tabid." and tablename='vtiger_users' and fieldname='email1'");
-				$fieldName = "email1";
-				$value = $lgn['email1'];
+				$fieldName = 'email1';
 				$entry['sendmail'] = "<a href=\"javascript:InternalMailer($recordId, $fieldId, '$fieldName', '$module', 'record_id');\">".textlength_check($value).'</a>';
 			} else {
 				$entry['sendmail'] = '<a href="mailto:'.$value.'">'.textlength_check($value).'</a>';
@@ -1736,6 +1744,7 @@ class Users extends CRMEntity {
 			$entry['Email2'] = $lgn['email2'];
 			$entry['username'] = $lgn['user_name'];
 			$entry['id'] = $lgn['id'];
+			$entry['userid'] = $lgn['id'].'user';
 			$entry['firstname'] = $lgn['first_name'];
 			$entry['lastname'] = $lgn['last_name'];
 			$entry['Status'] = $lgn['status'];
@@ -1751,6 +1760,7 @@ class Users extends CRMEntity {
 			$entries_list['data'][] = $entry;
 		}
 		$log->debug('< getUsersJSON');
+		$entries_list['total'] = count($entries_list['data']);
 		return json_encode($entries_list);
 	}
 

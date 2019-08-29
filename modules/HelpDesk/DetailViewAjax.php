@@ -1,5 +1,5 @@
 <?php
-/*+**********************************************************************************
+/************************************************************************************
  * The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
  * The Original Code is:  vtiger CRM Open Source
@@ -19,8 +19,7 @@ if ($ajaxaction == 'DETAILVIEW') {
 	$fieldvalue = utf8RawUrlDecode($_REQUEST['fieldValue']);
 	if ($crmid != '') {
 		$modObj->retrieve_entity_info($crmid, $currentModule);
-
-		//Added to avoid the comment save, when we edit other fields through ajax edit
+		// Added to avoid the comment save, when we edit other fields through ajax edit
 		if ($fieldname != 'comments') {
 			$modObj->column_fields['comments'] = '';
 		}
@@ -33,13 +32,8 @@ if ($ajaxaction == 'DETAILVIEW') {
 		} else {
 			$modObj->save($currentModule);
 			if ($modObj->id != '') {
+				echo ':#:SUCCESS:#:';
 				require_once 'modules/'.$currentModule.'/DetailView.php';
-				if ($fieldname == 'comments') {
-					$comments = $modObj->getCommentInformation($modObj->id);
-					echo ':#:SUCCESS:#:'.$smarty->fetch('DetailView.tpl').':#:'.$comments;
-				} else {
-					echo ':#:SUCCESS:#:'.$smarty->fetch('DetailView.tpl');
-				}
 			} else {
 				echo ':#:FAILURE';
 			}

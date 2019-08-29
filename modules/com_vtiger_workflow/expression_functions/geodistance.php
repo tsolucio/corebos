@@ -19,7 +19,11 @@ function __cb_getLatitude($address) {
 	$email = urlencode(GlobalVariable::getVariable('Workflow_GeoDistance_Email', ''));
 	$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default', '');
 	$nmserverip = GlobalVariable::getVariable('Workflow_GeoDistance_Nominatim_Server', 'nominatim.openstreetmap.org');
-	$data = file_get_contents("http://$nmserverip/?format=json&addressdetails=1&q=$addr&format=json&limit=1&email=$email&countrycodes=$country");
+	$urlp = parse_url($nmserverip);
+	if (empty($urlp['scheme'])) {
+		$nmserverip = 'https://'.$nmserverip;
+	}
+	$data = file_get_contents("$nmserverip/?format=json&addressdetails=1&q=$addr&format=json&limit=1&email=$email&countrycodes=$country");
 	$data = json_decode($data);
 	return $data[0]->lat;
 }
@@ -29,7 +33,11 @@ function __cb_getLongitude($address) {
 	$email = urlencode(GlobalVariable::getVariable('Workflow_GeoDistance_Email', ''));
 	$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default', '');
 	$nmserverip = GlobalVariable::getVariable('Workflow_GeoDistance_Nominatim_Server', 'nominatim.openstreetmap.org');
-	$data = file_get_contents("http://$nmserverip/?format=json&addressdetails=1&q=$addr&format=json&limit=1&email=$email&countrycodes=$country");
+	$urlp = parse_url($nmserverip);
+	if (empty($urlp['scheme'])) {
+		$nmserverip = 'https://'.$nmserverip;
+	}
+	$data = file_get_contents("$nmserverip/?format=json&addressdetails=1&q=$addr&format=json&limit=1&email=$email&countrycodes=$country");
 	$data = json_decode($data);
 	return $data[0]->lon;
 }
@@ -39,7 +47,11 @@ function __cb_getLongitudeLatitude($address) {
 	$email = urlencode(GlobalVariable::getVariable('Workflow_GeoDistance_Email', ''));
 	$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default', '');
 	$nmserverip = GlobalVariable::getVariable('Workflow_GeoDistance_Nominatim_Server', 'nominatim.openstreetmap.org');
-	$data = file_get_contents("http://$nmserverip/?format=json&addressdetails=1&q=$addr&format=json&limit=1&email=$email&countrycodes=$country");
+	$urlp = parse_url($nmserverip);
+	if (empty($urlp['scheme'])) {
+		$nmserverip = 'https://'.$nmserverip;
+	}
+	$data = file_get_contents("$nmserverip/?format=json&addressdetails=1&q=$addr&format=json&limit=1&email=$email&countrycodes=$country");
 	$data = json_decode($data);
 	return $data[0]->lon.','.$data[0]->lat;
 }
@@ -50,10 +62,14 @@ function __cb_getGEODistance($arr) {
 	$coo1 = __cb_getLongitudeLatitude($from);
 	$coo2 = __cb_getLongitudeLatitude($to);
 	$gdserverip = GlobalVariable::getVariable('Workflow_GeoDistance_ServerIP', 'router.project-osrm.org');
-	$distance = file_get_contents("http://$gdserverip/route/v1/driving/$coo1;$coo2?overview=false");
+	$urlp = parse_url($gdserverip);
+	if (empty($urlp['scheme'])) {
+		$gdserverip = 'https://'.$gdserverip;
+	}
+	$distance = file_get_contents("$gdserverip/route/v1/driving/$coo1;$coo2?overview=false");
 	$dis = json_decode($distance);
 	$total_distance = $dis->routes[0]->distance/1000;
-	return $total_distance." km";
+	return $total_distance.' km';
 }
 
 function __cb_getGEODistanceFromCompanyAddress($arr) {

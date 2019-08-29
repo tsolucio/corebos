@@ -43,8 +43,13 @@ if (isset($_REQUEST['adminstatus'])) {
 } else {
 	$adminstatus = 'all';
 }
+$loggedinstatus = false;
 if (isset($_REQUEST['userstatus'])) {
 	$userstatus = vtlib_purify($_REQUEST['userstatus']);
+	if ($_REQUEST['userstatus'] == 'loggedin') {
+		$userstatus = 'all';
+		$loggedinstatus = true;
+	}
 } else {
 	$userstatus = 'all';
 }
@@ -91,5 +96,5 @@ if (isset($_REQUEST['order_rule'])) {
 } else {
 	$sorder = 'ASC';
 }
-$response = $focus->getUsersJSON($adminstatus, $userstatus, $page, $order_by, $sorder, $email_search, $namerole_search);
+$response = $focus->getUsersJSON($adminstatus, $userstatus, $page, $order_by, $sorder, $email_search, $namerole_search, $loggedinstatus);
 echo $response;

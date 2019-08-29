@@ -277,6 +277,17 @@
 	<description>migrate uitype 80 (salesorder capture) to uitype 10 (standard capture)</description>
 	<filename>build/changeSets/2019/migrateUIType80to10.php</filename>
 	<classname>migrateUIType80to10</classname>
+	<author>joebordes</author>
+	<description>install Push Notifications Workflow Task</description>
+	<filename>build/changeSets/2019/installPushNotWorkflowTask.php</filename>
+	<classname>installPushNotWorkflowTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add business question materialized view fields and actions</description>
+	<filename>build/changeSets/2019/addcbquestionfieldsandactions.php</filename>
+	<classname>addcbquestionfieldsandactions</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
 </updatesChangeLog>

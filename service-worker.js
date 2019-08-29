@@ -9172,7 +9172,7 @@ if (workbox) {
   },
   {
     "url": "include/js/dtlviewajax.js",
-    "revision": "15c985ae2ed9abacdb53664184e8eb06"
+    "revision": "5fd4a14fc9306d5ca7fd9fbfc8b95458"
   },
   {
     "url": "include/js/en_gb.lang.js",
@@ -9204,7 +9204,7 @@ if (workbox) {
   },
   {
     "url": "include/js/general.js",
-    "revision": "838e797858233d74160f505889fa3d88"
+    "revision": "a4f1521c79b7f27c9ab695143e550715"
   },
   {
     "url": "include/js/hu_hu.lang.js",
@@ -9212,7 +9212,7 @@ if (workbox) {
   },
   {
     "url": "include/js/Inventory.js",
-    "revision": "2bd9e148222a0497eb6968e83f551c68"
+    "revision": "27f30f1ef5abc3f7f06114d28564f9d8"
   },
   {
     "url": "include/js/it_it.lang.js",
@@ -9377,6 +9377,10 @@ if (workbox) {
   {
     "url": "modules/com_vtiger_workflow/resources/emailtaskscript.js",
     "revision": "7b030711073308450f8902923523de06"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/entitymethodtask.js",
+    "revision": "546d5e20b1d56c5dcc248bc60eab2d31"
   },
   {
     "url": "modules/com_vtiger_workflow/resources/fieldexpressionpopup.js",
@@ -9736,7 +9740,7 @@ if (workbox) {
   },
   {
     "url": "modules/Products/Products.js",
-    "revision": "82d4c0a3737ff481b5b9facca909dd38"
+    "revision": "3d7a85576cf2a244be2ebb71926fe890"
   },
   {
     "url": "modules/ModComments/ModComments.js",
@@ -9797,6 +9801,10 @@ if (workbox) {
   {
     "url": "modules/cbCalendar/cbCalendar.js",
     "revision": "bcd3380f272036dbfa858a337d17ce70"
+  },
+  {
+    "url": "modules/cbQuestion/cbQuestion.js",
+    "revision": "8133d889330211b643e23114945b2809"
   },
   {
     "url": "modules/Portal/Portal.js",
@@ -9892,7 +9900,7 @@ if (workbox) {
   },
   {
     "url": "modules/Services/Services.js",
-    "revision": "25e0046eba629feba6d87b9d1a28c20e"
+    "revision": "672ddc901d26fba8ea0a11da5af22bdd"
   },
   {
     "url": "modules/Vendors/Vendors.js",

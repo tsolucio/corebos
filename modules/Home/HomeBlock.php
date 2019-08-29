@@ -47,7 +47,7 @@ if ($stufftype=='Tag Cloud') {
 } elseif ($stufftype == 'URL') {
 	$url = $homeObj->getWidgetURL($stuffid);
 	if (strpos($url, '://') === false) {
-		$url = 'http://'.trim($url);
+		$url = 'https://'.trim($url);
 	}
 	$smarty->assign('URL', $url);
 	$smarty->assign('WIDGETID', $stuffid);

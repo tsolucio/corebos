@@ -587,8 +587,7 @@ class Accounts extends CRMEntity {
 	* returns related Ticket record in array format
 	*/
 	public function get_tickets($id, $cur_tab_id, $rel_tab_id, $actions = false) {
-		$return_value = parent::get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions);
-		return $return_value;
+		return parent::get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions);
 	}
 
 	/**
