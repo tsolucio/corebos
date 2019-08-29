@@ -1037,7 +1037,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				$fieldvalue[] = array('name'=>$image_array[$img_itr],'path'=>$image_path_array[$img_itr]);
 			}
 		} else {
-			$fieldvalue[] = '';
+			$fieldvalue[] = array('name'=>'','path'=>'');
 		}
 	} elseif ($uitype == 101) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);

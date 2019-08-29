@@ -82,6 +82,7 @@ $mod_strings = array(
 'Portal Url' => 'Url Portal',
 'groupEmailList' => 'Emails de Grupo',
 
+'Recommended frequency for Workflow is 15 mins' => 'La frecuencia recomendada para los Flujos de Trabajo es de 15 minutos',
 'Workflow'=>'Flujo de Trabajo',
 'WORKFLOW_DELETE_CONFIRMATION' => '¿Seguro que quieres eliminar este flujo de trabajo?',
 'LBL_DELETE_WORKFLOW' => 'Eliminar Flujo de Trabajo',
@@ -119,6 +120,10 @@ $mod_strings = array(
 'WhatsappWorkflowTask' => 'Enviar Mensaje WhatsApp',
 'Many to Many Relation Task' => 'Relación Muchos a Muchos',
 'Set Many to Many Relation' => 'Establecer Relación Muchos a Muchos',
+'NotifyOnPortalTicketCreation' => 'Notificar al crear tickets en el portal',
+'NotifyOnPortalTicketComment' => 'Notificar al comentar el ticket del portal',
+'NotifyOwnerOnTicketChange' => 'Notificar el usuario asignado sobre un cambio en un ticket',
+'NotifyParentOnTicketChange' => 'Notificar a la cuenta/contacto relacionado sobre un cambio en un ticket',
 
 'LBL_EVENTNAME' => 'Nombre de Evento',
 'LBL_DESCRIPTION' => 'Descripción',
@@ -166,6 +171,10 @@ $mod_strings = array(
 'Calculate or Update forecast amount' => 'Calcular cantidad objetiva en oportunidad',
 'LBL_METHOD_NAME' => 'Nombre del Método',
 'NO_METHOD_AVAILABLE' => 'No hay ningún método disponible para este Módulo.',
+'LBL_URLQUERY' => 'Query GMP',
+'gmp_url_explanation' => 'El módulo aplicará la configuración por defecto (GA ID, version y ClientId), en la query sólo hay que introducir los elementos específicos, como el tipo de hit (t). Los parámetros de Google Measurement protocol, se puende consultar en: <a href="https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters">Measurement Protocol Parameter Reference</a>',
+'url_query' => 'Query GMP',
+'CBGMPTask' => 'Google Measurement Protocol',
 'GenerateDocument'=>'Generar Documentos',
 'Templates'=>'Plantillas',
 'launchrelwf' => 'Ejecutar flujos en actualizaciones de módulos relacionados',
@@ -175,5 +184,8 @@ $mod_strings = array(
 'runwebserviceworkflowtask' => 'Llamada Web Service',
 'Select IO Map' => 'Selecciona Mapa Parámetros',
 'Select Config Map' => 'Selecciona Mapa Configuración',
+'CBPushNotificationTask' => 'Notificación Push',
+'pushnoturl' => 'URL de notificación push',
+'CBQuestionMViewFunction' => 'Actualizar Vista Materializada',
 );
 ?>

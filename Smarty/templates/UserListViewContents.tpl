@@ -150,6 +150,12 @@
 						<img border="0" title="{'LBL_DELETE'|@getTranslatedString}" alt="{'LBL_DELETE'|@getTranslatedString}" src="{'delete.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;"/>
 					</span>
 				</a>
+				<span class="slds-icon_container slds-icon-utility-wifi" av="id:userid" title="{'LOGGED IN'|@getTranslatedString}">
+					<svg class="slds-icon slds-icon-text-default slds-icon_xx-small" aria-hidden="true">
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#wifi"></use>
+					</svg>
+					<span class="slds-assistive-text">{'LOGGED IN'|@getTranslatedString}</span>
+				</span>
 				<a av="href:Record">
 					<span>
 						<img src="{'logout.png'|@vtiger_imageurl:$THEME}" data-handler="logoutUser" border="0" alt="{$APP.LBL_LOGOUT}" title="{$APP.LBL_LOGOUT}" style="cursor:pointer;width:16px;"/>
@@ -217,6 +223,10 @@ DataTable.onRedraw(document.getElementsByTagName('datatable')[0], function (data
 	for (index in data.data) {
 		if (((data.data[index].Status == 'Active') && data.data[index].iscurrentuser && data.data[index].isblockeduser) || (data.data[index].Status == 'Inactive')) {
 			document.getElementById(data.data[index].id).style.display = 'none';
+		}
+
+		if (!data.data[index].loggedin) {
+			document.getElementById(data.data[index].userid).style.display = 'none';
 		}
 	}
 	document.getElementById('current_rows').innerHTML = data.total;

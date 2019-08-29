@@ -28,8 +28,8 @@ if ($ajaxaction == 'DETAILVIEW') {
 		} else {
 			$modObj->save($currentModule);
 			if ($modObj->id != '') {
+				echo ':#:SUCCESS:#:';
 				require_once 'modules/'.$currentModule.'/DetailView.php';
-				echo ':#:SUCCESS:#:'.$smarty->fetch('DetailView.tpl');
 			} else {
 				echo ':#:FAILURE';
 			}

@@ -31,5 +31,6 @@ $mod_strings = array (
 	'LBL_DAYS'=>'dag(en) geleden',
 	'LBL_MONTHS'=>'maand(en) geleden',
 	'LBL_YEARS'=>'ja(a)r(en) geleden',
+	'Send out warning email for long running cron tasks' => 'Send out warning email for long running cron tasks.',
 );
 ?>

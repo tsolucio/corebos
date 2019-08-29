@@ -32,10 +32,6 @@ if (empty($_REQUEST['record']) || $focus->user_name == '') {
 	exit;
 }
 
-if (isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
-	$focus->id = '';
-}
-
 global $theme;
 $theme_path='themes/'.$theme.'/';
 $image_path=$theme_path.'images/';

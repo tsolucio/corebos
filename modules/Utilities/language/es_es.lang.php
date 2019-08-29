@@ -70,5 +70,9 @@ $mod_strings = array(
 	'LBL_OG_WARNING_CONFIG_VALIDATION' => 'Configuración del servidor de correo saliente no validada',
 	'LBL_OG_CONFIG_VALIDATION_FAIL' => 'Falló la validación de la configuración del servidor de correo saliente',
 	'LBL_ERROR' => 'Error',
+	'GMP Activation' => 'Activación Protocolo Mesura de Google',
+	'gmp_gid' => 'ID Analíticas Universales de Google',
+	'gmp_gversion' => 'Versión de Measurement Protocol',
+	'gmp_deacterror' => '¡Existen flujos de trabajo que usan esta tarea! Elimínelos antes de desactivar la funcionalidad.',
 );
 ?>

@@ -83,6 +83,7 @@ module.exports = {
 		'modules/Calendar/script.js',
 		'modules/Calendar/Calendar.js',
 		'modules/cbCalendar/cbCalendar.js',
+		'modules/cbQuestion/cbQuestion.js',
 		'modules/Portal/Portal.js',
 		'modules/ProjectMilestone/ProjectMilestone.js',
 		'modules/Leads/Leads.js',
