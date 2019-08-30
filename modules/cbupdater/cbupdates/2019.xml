@@ -293,4 +293,11 @@
 	<classname>migrateUIType80to10</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>glorymoshi</author>
+	<description>add new parameter to upsert function</description>
+	<filename>build/changeSets/2019/addParameterinupsertfunction.php</filename>
+	<classname>addParameterinupsertfunction</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
