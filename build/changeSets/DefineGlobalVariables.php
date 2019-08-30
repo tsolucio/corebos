@@ -140,7 +140,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'User_AuthenticationType',
 				'User_2FAAuthentication',
 				'User_2FAAuthentication_SendMethod',
-
+				'User_MandatoryAuthenticationSQL',	
+				
 				'Accounts_BlockDuplicateName',
 				'Campaign_CreatePotentialOnAccountRelation',
 				'Campaign_CreatePotentialOnContactRelation',
