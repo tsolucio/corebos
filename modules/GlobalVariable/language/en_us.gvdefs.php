@@ -1392,6 +1392,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '1 | 2 | 3',
 	'definition' => 'Used to define Gantt Chart type. 1 for daily, 2 for weekly and 3 for monthly. Default value is set to 2.',
 ),
+'Attachment_ShowDownloadName' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0|1',
+	'definition' => 'In Detail View, will show the image/attachment name as a download link above the image itself.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php', GLOB_BRACE) as $tcode) {

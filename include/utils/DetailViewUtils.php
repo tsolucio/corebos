@@ -664,16 +664,22 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			//decode_html  - added to handle UTF-8   characters in file names
 			//urlencode    - added to handle special characters like #, %, etc.,
 			$image_name = decode_html($adb->query_result($image_res, 0, 'name'));
-			$imgpath = $image_path . $image_id . "_" . urlencode($image_name);
+			$imgpath = $image_path . $image_id . '_' . urlencode($image_name);
 			if ($image_name != '') {
 				$ftype = $adb->query_result($image_res, 0, 'type');
 				$isimage = stripos($ftype, 'image') !== false;
 				$isvideo = stripos($ftype, 'video') !== false;
+				if (GlobalVariable::getVariable('Attachment_ShowDownloadName', '0')=='1') {
+					$dllink = '<a href="index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile&return_module='
+						. $col_fields['record_module'] . '&fileid=' . $image_id . '&entityid=' . $col_fields['record_id'] . '">' . $col_fields[$fieldname] . '</a><br>';
+				} else {
+					$dllink = '';
+				}
 				if ($isimage) {
 					$imgtxt = getTranslatedString('SINGLE_'.$module, $module).' '.getTranslatedString('Image');
-					$label_fld[] = '<img src="' . $imgpath . '" alt="' . $imgtxt . '" title= "' . $imgtxt . '" style="max-width:300px; max-height:300px">';
+					$label_fld[] = $dllink.'<img src="' . $imgpath . '" alt="' . $imgtxt . '" title= "' . $imgtxt . '" style="max-width:300px; max-height:300px">';
 				} elseif ($isvideo) {
-					$label_fld[] = '<video width="300px" height="300px" controls><source src="' . $imgpath . '" type="' . $ftype . '"></video>';
+					$label_fld[] = $dllink.'<video width="300px" height="300px" controls><source src="' . $imgpath . '" type="' . $ftype . '"></video>';
 				} else {
 					$imgtxt = getTranslatedString('SINGLE_'.$module, $module).' '.getTranslatedString('SINGLE_Documents');
 					$label_fld[] = '<a href="' . $imgpath . '" alt="' . $imgtxt . '" title= "' . $imgtxt . '" target="_blank">'.$image_name.'</a>';
