@@ -573,7 +573,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 				if ($col_fields['filestatus'] == 1) {
 					$custfldval = '<a href = "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile&return_module='
 						. $col_fields['record_module'] . '&fileid=' . $attachmentid . '&entityid=' . $col_fields['record_id']
-						. '" onclick=\'javascript:dldCntIncrease(' . $col_fields['record_id'] . ');\'>' . $col_fields[$fieldname] . '</a>';
+						. '" onclick=\'javascript:dldCntIncrease(' . $col_fields['record_id'] . ');\'>' . decode_html($col_fields[$fieldname]) . '</a>';
 					$image_res = $adb->pquery('SELECT path,name FROM vtiger_attachments WHERE attachmentsid = ?', array($attachmentid));
 					$image_path = $adb->query_result($image_res, 0, 'path');
 					$image_name = decode_html($adb->query_result($image_res, 0, 'name'));
@@ -585,7 +585,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 						$custfldval .= '<br/><video width="300px" height="300px" controls><source src="' . $imgpath . '" type="' . $col_fields['filetype'] . '"></video>';
 					}
 				} else {
-					$custfldval = $col_fields[$fieldname];
+					$custfldval = decode_html($col_fields[$fieldname]);
 				}
 			}
 		}

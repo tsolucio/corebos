@@ -147,7 +147,7 @@ class Documents extends CRMEntity {
 			$filedownloadcount = null;
 		}
 		$query = 'UPDATE vtiger_notes SET filename = ? ,filesize = ?, filetype = ? , filelocationtype = ? , filedownloadcount = ? WHERE notesid = ?';
-		$adb->pquery($query, array($filename, $filesize, $filetype, $filelocationtype, $filedownloadcount, $this->id));
+		$adb->pquery($query, array(decode_html($filename), $filesize, $filetype, $filelocationtype, $filedownloadcount, $this->id));
 		//Inserting into attachments table
 		if ($filelocationtype == 'I') {
 			$this->insertIntoAttachment($this->id, 'Documents');

@@ -774,6 +774,8 @@ class CRMEntity {
 					if ($insertion_mode == 'edit') {
 						$fldvalue = $this->adjustCurrencyField($fieldname, $fldvalue, $tabid);
 					}
+				} elseif ($uitype == '69m' || $uitype == '69') {
+					$fldvalue = urldecode($this->column_fields[$fieldname]);
 				} else {
 					$fldvalue = $this->column_fields[$fieldname];
 				}
