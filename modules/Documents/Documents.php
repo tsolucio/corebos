@@ -137,10 +137,10 @@ class Documents extends CRMEntity {
 		} elseif ($this->column_fields[$filetype_fieldname] == 'E') {
 			$filelocationtype = 'E';
 			$filename = $this->column_fields[$filename_fieldname];
-			// If filename does not has the protocol prefix, default it to http://
+			// If filename does not has the protocol prefix, default it to https://
 			// Protocol prefix could be like (https://, smb://, file://, \\, smb:\\,...)
 			if (!empty($filename) && !preg_match('/^\w{1,5}:\/\/|^\w{0,3}:?\\\\\\\\/', trim($filename))) {
-				$filename = "http://$filename";
+				$filename = "https://$filename";
 			}
 			$filetype = '';
 			$filesize = 0;
