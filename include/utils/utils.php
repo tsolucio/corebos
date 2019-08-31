@@ -45,6 +45,8 @@ define('RB_RECORD_DELETED', 'delete');
 define('RB_RECORD_INSERTED', 'insert');
 define('RB_RECORD_UPDATED', 'update');
 
+libxml_disable_entity_loader(true);
+
 /** Function to load global browser variables for javascript
  * @param smarty object to load the variables, if empty it will only return the variables in an array
  * @returns array with the variables
