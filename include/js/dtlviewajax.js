@@ -459,6 +459,23 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 						}
 					} else if (msg.search('%%%OK%%%') > -1) { //No error
 						dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName, crmId);
+					} else if (msg.search('%%%FUNCTION%%%') > -1) { //call user function
+						var callfunc = msg.split('%%%FUNCTION%%%');
+						var params = '';
+						if (callfunc[1].search('%%%PARAMS%%%') > -1) { //function has params string
+							var cfp = callfunc[1].split('%%%PARAMS%%%');
+							callfunc = cfp[0];
+							params = cfp[1];
+						} else {
+							callfunc = callfunc[1];
+						}
+						if (typeof window[callfunc] == 'function') {
+							if (window[callfunc]('', '', 'Save', dtlViewAjaxFinishSave, params)) {
+								dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName, crmId);
+							}
+						} else {
+							dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName, crmId);
+						}
 					} else { //Error
 						alert(msg);
 					}

@@ -1342,7 +1342,13 @@ function doServerValidation(edit_type, formName, callback) {
 						callfunc = callfunc[1];
 					}
 					if (typeof window[callfunc] == 'function') {
-						window[callfunc](edit_type, formName, action, callback, params);
+						if (window[callfunc](edit_type, formName, action, callback, params)) {
+							if (typeof callback == 'function') {
+								callback('submit');
+							} else {
+								submitFormForAction(formName, action);
+							}
+						}
 					} else {
 						if (typeof callback == 'function') {
 							callback('submit');
