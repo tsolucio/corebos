@@ -13,9 +13,6 @@
 	<tr>
 		<td align="left">
 			{$RELATEDLISTDATA.navigation.0}
-			{if $MODULE eq 'Campaigns' && ($RELATED_MODULE eq 'Contacts' || $RELATED_MODULE eq 'Leads'
-				|| $RELATED_MODULE eq 'Accounts') && $RELATEDLISTDATA.entries|@count > 0}
-			{/if}
 		</td>
 		<td align="center">{$RELATEDLISTDATA.navigation.1} </td>
 		<td align="right">
