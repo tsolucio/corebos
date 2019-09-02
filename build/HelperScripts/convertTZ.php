@@ -80,6 +80,36 @@ while ($rec = $adb->fetch_array($flds)) {
 	};
 	$updfields[] = $rec['columnname'];
 }
+// timecontrol
+$flds = $adb->query('select timecontrolid,date_start,time_start,date_end,time_end from vtiger_timecontrol');
+while ($rec = $adb->fetch_array($flds)) {
+	if ($rec['date_start']!='' && $rec['time_start']!='') {
+		$sTime = new DateTime($rec['date_start'].' '.$rec['time_start'], $sourceTimeZone);
+		$sTime->setTimeZone($targetTimeZone);
+		$dstart = $sTime->format('Y-m-d');
+		$tstart = $sTime->format('H:i:s');
+	} else {
+		$dstart = $rec['date_start'];
+		$tstart = $rec['time_start'];
+	}
+	if ($rec['date_end']!='' && $rec['time_end']!='') {
+		$sTime = new DateTime($rec['date_end'].' '.$rec['time_end'], $sourceTimeZone);
+		$sTime->setTimeZone($targetTimeZone);
+		$dend = $sTime->format('Y-m-d');
+		$tend = $sTime->format('H:i:s');
+	} else {
+		$dend = $rec['date_end'];
+		$tend = $rec['time_end'];
+	}
+	$adb->query(
+		'update vtiger_timecontrol set date_start=?, time_start=?, date_end=?, time_end=? where timecontrolid=?',
+		array($dstart, $tstart, $dend, $tend, $rec['timecontrolid'])
+	);
+	echo $adb->convert2Sql(
+		'update vtiger_timecontrol set date_start=?, time_start=?, date_end=?, time_end=? where timecontrolid=?',
+		array($dstart, $tstart, $dend, $tend, $rec['timecontrolid'])
+	)."\n";
+}
 echo "\n";
 echo "********************************\n";
 echo 'Now change the $default_timezone in your config.inc.php to '.$targetTimeZoneName."\n";
