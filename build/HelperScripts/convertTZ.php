@@ -29,7 +29,7 @@ $sourceTimeZone = new DateTimeZone($sourceTimeZoneName);
 $targetTimeZoneName = $argv[2];
 $targetTimeZone = new DateTimeZone($targetTimeZoneName);
 // crmentity
-$crme = $adb->query('select crmid,createdtime,modifiedtime,viewedtime from vtiger_crmentity');
+$crme = $adb->pquery('select crmid,createdtime,modifiedtime,viewedtime from vtiger_crmentity', array());
 while ($rec = $adb->fetch_array($crme)) {
 	$cTime = new DateTime($rec['createdtime'], $sourceTimeZone);
 	$cTime->setTimeZone($targetTimeZone);
@@ -37,7 +37,7 @@ while ($rec = $adb->fetch_array($crme)) {
 	$mTime->setTimeZone($targetTimeZone);
 	$vTime = new DateTime($rec['viewedtime'], $sourceTimeZone);
 	$vTime->setTimeZone($targetTimeZone);
-	$adb->query(
+	$adb->pquery(
 		'update vtiger_crmentity set createdtime=?, modifiedtime=?, viewedtime=? where crmid=?',
 		array($cTime->format('Y-m-d H:i:s'), $mTime->format('Y-m-d H:i:s'), $vTime->format('Y-m-d H:i:s'), $rec['crmid'])
 	);
@@ -47,7 +47,7 @@ while ($rec = $adb->fetch_array($crme)) {
 	)."\n";
 }
 // uitype 50
-$flds = $adb->query('select tabid,columnname,tablename from vtiger_field where uitype=50 order by tabid,tablename');
+$flds = $adb->pquery('select tabid,columnname,tablename from vtiger_field where uitype=50 order by tabid,tablename', array());
 $tabid = 0;
 $tname = '';
 $updfields = array();
@@ -55,7 +55,7 @@ while ($rec = $adb->fetch_array($flds)) {
 	if ($tabid!=$rec['tabid'] || $tname!=$rec['tablename']) {
 		if (count($updfields)>0) {
 			// update
-			$rs = $adb->query('select '.implode(',', $updfields).','.$mod->tab_name_index[$tname].' from '.$tname);
+			$rs = $adb->pquery('select '.implode(',', $updfields).','.$mod->tab_name_index[$tname].' from '.$tname, array());
 			$updsql = 'update '.$tname.' set '.implode('=?,', $updfields).'=? where '.$mod->tab_name_index[$tname].'=?';
 			while ($updrec = $adb->fetch_array($rs)) {
 				$params = array();
@@ -81,7 +81,7 @@ while ($rec = $adb->fetch_array($flds)) {
 	$updfields[] = $rec['columnname'];
 }
 // timecontrol
-$flds = $adb->query('select timecontrolid,date_start,time_start,date_end,time_end from vtiger_timecontrol');
+$flds = $adb->pquery('select timecontrolid,date_start,time_start,date_end,time_end from vtiger_timecontrol', array());
 while ($rec = $adb->fetch_array($flds)) {
 	if ($rec['date_start']!='' && $rec['time_start']!='') {
 		$sTime = new DateTime($rec['date_start'].' '.$rec['time_start'], $sourceTimeZone);
@@ -101,7 +101,7 @@ while ($rec = $adb->fetch_array($flds)) {
 		$dend = $rec['date_end'];
 		$tend = $rec['time_end'];
 	}
-	$adb->query(
+	$adb->pquery(
 		'update vtiger_timecontrol set date_start=?, time_start=?, date_end=?, time_end=? where timecontrolid=?',
 		array($dstart, $tstart, $dend, $tend, $rec['timecontrolid'])
 	);
