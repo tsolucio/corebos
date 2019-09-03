@@ -69,7 +69,7 @@ while ($rec = $adb->fetch_array($flds)) {
 					}
 				}
 				$params[] = $updrec[$mod->tab_name_index[$tname]];
-				$adb->query($updsql, $params);
+				$adb->pquery($updsql, $params);
 				echo $adb->convert2Sql($updsql, $params)."\n";
 			}
 		}
