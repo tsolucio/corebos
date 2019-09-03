@@ -189,11 +189,12 @@ window.doChart{$HOME_STUFFID} = function(charttype) {ldelim}
 		}]
 	};
 	var maxnum = Math.max.apply(Math, chartDataObject.datasets[0].data);
-	var maxgrph = Math.ceil(maxnum + (5 * maxnum / 100));
+	var maxgrph = Math.ceil(maxnum + (6 * maxnum / 100));
 	Chart.scaleService.updateScaleDefaults('linear', {
 		ticks: {
 			min: 0,
-			max: maxgrph
+			max: maxgrph,
+			precision: 0
 		}
 	});
 	window.schart{/literal}{$HOME_STUFFID}{literal} = new Chart(stuffchart,{
