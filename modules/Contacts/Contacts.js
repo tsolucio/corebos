@@ -268,19 +268,24 @@ function set_return_address(contact_id, contact_name, mailingstreet, otherstreet
 function sca_fillinvalues() {
 	var contact_id = jQuery('#contact_id').val();
 	var contact_name = jQuery('#contact_name').val();
-	if (window.opener.gVTModule != 'Issuecards') {
-		if (typeof(window.opener.document.EditView.contact_name) != 'undefined') {
-			window.opener.document.EditView.contact_name.value = contact_name;
-		}
-		if (typeof(window.opener.document.EditView.contact_id) != 'undefined') {
-			window.opener.document.EditView.contact_id.value = contact_id;
-		}
-	} else {
+	if (window.opener.gVTModule == 'Issuecards') {
 		if (typeof(window.opener.document.EditView.ctoid_display) != 'undefined') {
 			window.opener.document.EditView.ctoid_display.value = contact_name;
 		}
 		if (typeof(window.opener.document.EditView.ctoid) != 'undefined') {
 			window.opener.document.EditView.ctoid.value = contact_id;
+		}
+	} else if (window.opener.gVTModule == 'Invoice' || window.opener.gVTModule == 'PurchaseOrder' ||
+	 window.opener.gVTModule == 'Quotes' || window.opener.gVTModule == 'SalesOrder') {
+		if (typeof(window.opener.document.EditView.contact_id_display) != 'undefined') {
+			vtlib_setvalue_from_popup(contact_id,contact_name,'contact_id','EditView');
+		}
+	} else {
+		if (typeof(window.opener.document.EditView.contact_name) != 'undefined') {
+			window.opener.document.EditView.contact_name.value = contact_name;
+		}
+		if (typeof(window.opener.document.EditView.contact_id) != 'undefined') {
+			window.opener.document.EditView.contact_id.value = contact_id;
 		}
 	}
 	if (jQuery('#sca_bill').is(':checked')) {
@@ -481,7 +486,7 @@ function googleContactsLogOut(module) {
 	});
 }
 
-function set_return_account_details(fromlink, fldname, MODULE, ID) {
+function open_contact_account_details(fromlink, fldname, MODULE, ID) {
 	var WindowSettings = "width=680,height=602,resizable=0,scrollbars=0,top=150,left=200";
 	if (fldname == 'account_id') {
 		var baseURL = "index.php?module=Accounts&action=Popup&popuptype=specific_contact_account_address&form=TasksEditView&form_submit=false&fromlink=";

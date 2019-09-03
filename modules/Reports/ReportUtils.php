@@ -39,7 +39,7 @@ function getFieldByReportLabel($module, $label) {
 }
 
 function isReferenceUIType($uitype) {
-	static $options = array('101', '117', '26', '357', '52', '53', '57', '66', '77', '80');
+	static $options = array('101', '117', '26', '357', '52', '53', '66', '77', '80');
 	return in_array($uitype, $options);
 }
 

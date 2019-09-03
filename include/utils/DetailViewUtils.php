@@ -459,21 +459,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$displayValue = $app_strings['no'];
 		}
 		$label_fld[] = $displayValue;
-	} elseif ($uitype == 57) {
-		$label_fld[] = getTranslatedString($fieldlabel, $module);
-		$contact_id = $col_fields[$fieldname];
-		$contact_name = '';
-		if ($contact_id != '') {
-			$displayValueArray = getEntityName('Contacts', $contact_id);
-			if (!empty($displayValueArray)) {
-				foreach ($displayValueArray as $key => $field_value) {
-					$contact_name = $field_value;
-				}
-			}
-		}
-		$label_fld[] = $contact_name;
-		$label_fld['secid'] = $contact_id;
-		$label_fld['link'] = 'index.php?module=Contacts&action=DetailView&record=' . $contact_id;
 	} elseif ($uitype == 61) {
 		global $adb;
 		$label_fld[] = getTranslatedString($fieldlabel, $module);

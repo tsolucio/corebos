@@ -300,4 +300,11 @@
 	<classname>migrateUIType51to10</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>migrate uitype 57 (contacts capture) to uitype 10 (standard capture)</description>
+	<filename>build/changeSets/2019/migrateUIType57to10.php</filename>
+	<classname>migrateUIType57to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

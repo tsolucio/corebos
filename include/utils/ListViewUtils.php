@@ -1478,18 +1478,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		} else {
 			$value = '';
 		}
-	} elseif ($uitype == 57) {
-		if ($temp_val != '') {
-			$sql = 'SELECT * FROM vtiger_contactdetails WHERE contactid=?';
-			$result = $adb->pquery($sql, array($temp_val));
-			$value = '';
-			if ($adb->num_rows($result)) {
-				$name = getFullNameFromQResult($result, 0, 'Contacts');
-				$value = '<a href=index.php?module=Contacts&action=DetailView&record=' . $temp_val . '>' . textlength_check($name) . '</a>';
-			}
-		} else {
-			$value = '';
-		}
 	} elseif ($uitype == 61) {
 		$attachmentid = $adb->query_result($adb->pquery('SELECT * FROM vtiger_seattachmentsrel WHERE crmid=?', array($entity_id)), 0, 'attachmentsid');
 		$value = '<a href = "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=downloadfile&return_module=' . $module

@@ -1238,7 +1238,7 @@ class Accounts extends CRMEntity {
 		if ($basemodule=='Issuecards' || $basemodule=='Quotes' || $basemodule=='Invoice' || $basemodule=='SalesOrder' || $basemodule=='Accounts') {
 			return 'set_return_account_details';
 		} elseif ($basemodule=='Contacts') {
-			return 'set_return_contact_details';
+			return 'open_contact_account_details';
 		} else {
 			return 'vtlib_open_popup_window';
 		}

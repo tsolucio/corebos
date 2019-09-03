@@ -428,33 +428,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	} elseif ($uitype == 56) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $value;
-	} elseif ($uitype == 57) {
-		$contact_name = '';
-		if ($value != '') {
-			$displayValueArray = getEntityName('Contacts', $value);
-			if (!empty($displayValueArray)) {
-				foreach ($displayValueArray as $key => $field_value) {
-					$contact_name = $field_value;
-				}
-			}
-		} elseif (isset($_REQUEST['contact_id']) && $_REQUEST['contact_id'] != '') {
-			if ($_REQUEST['module'] == 'Contacts' && $fieldname = 'contact_id') {
-				$contact_name = '';
-			} else {
-				$value = $_REQUEST['contact_id'];
-				$displayValueArray = getEntityName('Contacts', $value);
-				if (!empty($displayValueArray)) {
-					foreach ($displayValueArray as $key => $field_value) {
-						$contact_name = $field_value;
-					}
-				} else {
-					$contact_name='';
-				}
-			}
-		}
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[] = $contact_name;
-		$fieldvalue[] = $value;
 	} elseif ($uitype == 61) {
 		if ($value != '') {
 			$assigned_user_id = $value;

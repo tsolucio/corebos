@@ -38,3 +38,11 @@ function PurchaseOrdersetValueFromCapture(recordid, value, target_fieldname) {
 		});
 	}
 }
+
+function set_return_purchase_contact_details(fromlink, fldname, MODULE, ID) {
+	var WindowSettings = "width=680,height=602,resizable=0,scrollbars=0,top=150,left=200";
+	if (fldname == 'contact_id') {
+		var baseURL = "index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView";
+	}
+	window.open(baseURL, "vtlibui10", WindowSettings);
+}
