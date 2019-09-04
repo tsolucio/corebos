@@ -1663,7 +1663,7 @@ class Users extends CRMEntity {
 		} else {
 			$list_query = "Select * from vtiger_users $where order by ".$this->default_order_by.' '.$this->default_sort_order;
 		}
-		$rowsperpage = GlobalVariable::getVariable('Workflow_ListView_PageSize', 30);
+		$rowsperpage = GlobalVariable::getVariable('Workflow_ListView_PageSize', 20);
 		$from = ($page-1)*$rowsperpage;
 		$limit = " limit $from,$rowsperpage";
 
@@ -1760,7 +1760,7 @@ class Users extends CRMEntity {
 			$entries_list['data'][] = $entry;
 		}
 		$log->debug('< getUsersJSON');
-		$entries_list['total'] = count($entries_list['data']);
+		$entries_list['listtotalrecord'] = count($entries_list['data']);
 		return json_encode($entries_list);
 	}
 
