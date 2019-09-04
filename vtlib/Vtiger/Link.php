@@ -113,7 +113,6 @@ class Vtiger_Link {
 	 * @param Integer Order or sequence of displaying the link
 	 */
 	public static function addLink($tabid, $type, $label, $url, $iconpath = '', $sequence = 0, $handlerInfo = null, $onlyonmymodule = false) {
-
 		if (self::isBusinessActionCompatible()) {
 			BusinessActions::addLink($tabid, $type, $label, $url, $iconpath, $sequence, $handlerInfo, $onlyonmymodule);
 		} else {
@@ -149,7 +148,6 @@ class Vtiger_Link {
 	 * @param String URL of link to lookup while deleting
 	 */
 	public static function deleteLink($tabid, $type, $label, $url = false) {
-
 		if (self::isBusinessActionCompatible()) {
 			BusinessActions::deleteLink($tabid, $type, $label, $url);
 		} else {
@@ -176,7 +174,6 @@ class Vtiger_Link {
 	 * @param Integer Module ID.
 	 */
 	public static function deleteAll($tabid) {
-
 		if (self::isBusinessActionCompatible()) {
 			BusinessActions::deleteAll($tabid);
 		} else {
@@ -202,7 +199,6 @@ class Vtiger_Link {
 	 * @param Map Key-Value pair to use for formating the link url
 	 */
 	public static function getAllByType($tabid, $type = false, $parameters = false, $userid = null, $recordid = null) {
-
 		if (self::isBusinessActionCompatible()) {
 			return BusinessActions::getAllByType($tabid, $type, $parameters, $userid, $recordid);
 		} else {
@@ -316,7 +312,6 @@ class Vtiger_Link {
 	}
 
 	public static function updateLink($tabId, $linkId, $linkInfo = array()) {
-
 		if (self::isBusinessActionCompatible()) {
 			BusinessActions::updateLink($tabId, $linkId, $linkInfo);
 		} else {
@@ -346,14 +341,11 @@ class Vtiger_Link {
 	}
 
 	public static function isBusinessActionCompatible() {
-
 		$db = PearDatabase::getInstance();
-		$compatibility_check = $db->pquery("SELECT cbupdaterid 
-												  FROM vtiger_cbupdater
-											     WHERE classname = ?
-											       AND pathfilename = ?
-							   					   AND execstate = ?", array('migrateLinksIntoBusinessActionEntities', 'build/changeSets/2018/migrateLinksIntoBusinessActionEntities.php', 'Executed'));
-
+		$compatibility_check = $db->pquery(
+			'SELECT cbupdaterid FROM vtiger_cbupdater WHERE classname=? AND pathfilename=? AND execstate=?',
+			array('migrateLinksIntoBusinessActionEntities', 'build/changeSets/2018/migrateLinksIntoBusinessActionEntities.php', 'Executed')
+		);
 		return ($db->num_rows($compatibility_check) > 0) ? true : false;
 	}
 }

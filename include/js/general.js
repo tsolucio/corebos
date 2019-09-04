@@ -29,7 +29,7 @@ function DeleteTag(id, recordid) {
 		method:'POST',
 		url:'index.php?file=TagCloud&module='+gVTModule+'&action='+gVTModule+'Ajax&ajxaction=DELETETAG&recordid='+recordid+'&tagid=' +id,
 	}).done(function (response) {
-		getTagCloud();
+		getTagCloud(recordid);
 		VtigerJS_DialogBox.hidebusy();
 	});
 }
@@ -1342,7 +1342,13 @@ function doServerValidation(edit_type, formName, callback) {
 						callfunc = callfunc[1];
 					}
 					if (typeof window[callfunc] == 'function') {
-						window[callfunc](edit_type, formName, action, callback, params);
+						if (window[callfunc](edit_type, formName, action, callback, params)) {
+							if (typeof callback == 'function') {
+								callback('submit');
+							} else {
+								submitFormForAction(formName, action);
+							}
+						}
 					} else {
 						if (typeof callback == 'function') {
 							callback('submit');

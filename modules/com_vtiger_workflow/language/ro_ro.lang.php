@@ -39,7 +39,7 @@ $mod_strings = array(
 	'LBL_WORKFLOW_LIST' => 'Workflow List',
 	'LBL_AVAILABLE_WORKLIST_LIST' => 'Available Workflows',
 	'LBL_LOADING' => 'Loading...',
-	'LBL_REEVALCONDITIONS' => 'Evaluate conditions on execution',
+	'LBL_REEVALCONDITIONS' => 'Evaluate conditions on delayed execution',
 	'LBL_VALIDATION_ERROR' => 'Validation Error',
 	'LBL_SELECT_OPTION_DOTDOTDOT' => 'Select Option...',
 	'LBL_WORKFLOW_NOTE_CRON_CONFIG' => 'NOTE: You should have Workflow cron script configured.',
@@ -155,5 +155,8 @@ $mod_strings = array(
 	'Calculate or Update forecast amount' => 'Calculate or Update forecast amount',
 	'LBL_METHOD_NAME' => 'Method Name',
 	'NO_METHOD_AVAILABLE' => 'No method is available for this module.',
+	'CBPushNotificationTask' => 'Push Notification',
+	'pushnoturl' => 'Push Notification URL',
+	'CBQuestionMViewFunction' => 'Update Materialized View',
 );
 ?>

@@ -372,6 +372,7 @@ class SalesOrder extends CRMEntity {
 		);
 		return isset($rel_tables[$secmodule]) ? $rel_tables[$secmodule] : '';
 	}
+	public $popup_function = 'salesordersetvalue_from_popup';
 
 	// Function to unlink an entity with given Id from another entity
 	public function unlinkRelationship($id, $return_module, $return_id) {

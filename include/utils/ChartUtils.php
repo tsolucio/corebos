@@ -76,7 +76,7 @@ class ChartUtils {
 		if ($rows > 0) {
 			$resultRow = $adb->query_result_rowdata($queryResult, 0);
 			if (!array_key_exists($groupbyField, $resultRow)) {
-				$ChartDataArray['error'] = "<h4>".getTranslatedString('LBL_NO_PERMISSION_FIELD', 'Dashboard')."</h4>";
+				$ChartDataArray['error'] = '<h4>'.getTranslatedString('LBL_NO_PERMISSION_FIELD', 'Dashboard').'</h4>';
 				return $ChartDataArray;
 			}
 		}
@@ -113,7 +113,7 @@ class ChartUtils {
 						$focus = new $refenceModule();
 						$tablename = $focus->table_name;
 						$colname = $focus->list_link_field;
-						$condition = "c";
+						$condition = 'c';
 					}
 				} else {
 					$groupByFields[] = getTranslatedString($groupFieldValue, $module);
@@ -123,9 +123,9 @@ class ChartUtils {
 					if ($dateField) {
 						$advanceSearchCondition = CustomReportUtils::getAdvanceSearchCondition($fieldDetails, $criteria, $groupFieldValue);
 						if ($module == 'Calendar') {
-							$link_val = "index.php?module=" . $module . "&query=true&action=ListView&" . $advanceSearchCondition;
+							$link_val = 'index.php?module=' . $module . '&query=true&action=ListView&' . $advanceSearchCondition;
 						} else {
-							$link_val = "index.php?module=" . $module . "&query=true&action=index&" . $advanceSearchCondition;
+							$link_val = 'index.php?module=' . $module . '&query=true&action=index&' . $advanceSearchCondition;
 						}
 					} else {
 						$cvid = getCvIdOfAll($module);

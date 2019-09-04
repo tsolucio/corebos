@@ -45,6 +45,8 @@ define('RB_RECORD_DELETED', 'delete');
 define('RB_RECORD_INSERTED', 'insert');
 define('RB_RECORD_UPDATED', 'update');
 
+//libxml_disable_entity_loader(true);
+
 /** Function to load global browser variables for javascript
  * @param smarty object to load the variables, if empty it will only return the variables in an array
  * @returns array with the variables
@@ -2005,7 +2007,7 @@ function generateQuestionMarks($items_list) {
 function is_uitype($uitype, $reqtype) {
 	$ui_type_arr = array(
 		'_date_' => array(5, 6, 23, 70),
-		'_picklist_' => array(15, 16, 52, 53, 54, 55, 62, 63, 66, 77, 78, 80, 98, 101, 115, 357),
+		'_picklist_' => array(15, 16, 52, 53, 54, 55, 62, 63, 66, 77, 78, 98, 101, 115, 357),
 		'_users_list_' => array(52),
 	);
 

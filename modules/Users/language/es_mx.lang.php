@@ -779,10 +779,10 @@ $mod_strings = array(
 'LBL_USERLOGGEDOUTOK' => 'Se ha cerrado la sesión del usuario.',
 'LBL_USERLOGGEDOUTNOK' => 'No se ha podido cerrar la sesión del usuario.',
 'LBL_UNBLOCK_USR' => 'Desbloquear usuario y permitir la entrada.',
+'LOGGED IN' => 'Dentro',
 // LDAP
 'LBL_QUERY' => 'Consulta',
 'LBL_FORE_LASTNAME' => 'Nombre o Apellido',
 'LBL_NO_LDAP_MATCHES' => 'No se han encontrado usuarios en el servidor LDAP!',
 );
-
 ?>

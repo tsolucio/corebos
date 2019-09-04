@@ -262,11 +262,7 @@ function dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName,
 		var txtBox= 'txtbox_'+ fieldLabel;
 	}
 
-	var popupTxt= 'popuptxt_'+ fieldLabel;
-	var hdTxt = 'hdtxt_'+ fieldLabel;
-
 	VtigerJS_DialogBox.showbusy();
-	var isAdmin = document.getElementById('hdtxt_IsAdmin').value;
 
 	//overriden the tagValue based on UI Type for checkbox
 	if (uitype == '56') {
@@ -463,6 +459,23 @@ function dtlviewModuleValidation(fieldLabel, module, uitype, tableName, fieldNam
 						}
 					} else if (msg.search('%%%OK%%%') > -1) { //No error
 						dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName, crmId);
+					} else if (msg.search('%%%FUNCTION%%%') > -1) { //call user function
+						var callfunc = msg.split('%%%FUNCTION%%%');
+						var params = '';
+						if (callfunc[1].search('%%%PARAMS%%%') > -1) { //function has params string
+							var cfp = callfunc[1].split('%%%PARAMS%%%');
+							callfunc = cfp[0];
+							params = cfp[1];
+						} else {
+							callfunc = callfunc[1];
+						}
+						if (typeof window[callfunc] == 'function') {
+							if (window[callfunc]('', '', 'Save', dtlViewAjaxFinishSave, params)) {
+								dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName, crmId);
+							}
+						} else {
+							dtlViewAjaxFinishSave(fieldLabel, module, uitype, tableName, fieldName, crmId);
+						}
 					} else { //Error
 						alert(msg);
 					}
@@ -493,18 +506,6 @@ function SaveTag(tagfield, crmId, module) {
 			getObj('tagfields').innerHTML = response;
 			document.getElementById(tagfield).value = '';
 		}
-		VtigerJS_DialogBox.hidebusy();
-	});
-}
-
-function DeleteTag(id, recordid) {
-	VtigerJS_DialogBox.showbusy();
-	jQuery('#tag_'+id).fadeOut();
-	jQuery.ajax({
-		method:'POST',
-		url:'index.php?file=TagCloud&module=' + module + '&action=' + module + 'Ajax&ajxaction=DELETETAG&recordid='+recordid+'&tagid='+id
-	}).done(function (response) {
-		getTagCloud();
 		VtigerJS_DialogBox.hidebusy();
 	});
 }
@@ -555,8 +556,8 @@ function hndMouseClick(fieldLabel) {
 function setCoOrdinate(elemId) {
 	var oBtnObj = document.getElementById(elemId);
 	var tagName = document.getElementById('lstRecordLayout');
-	leftpos  = 0;
-	toppos = 0;
+	var leftpos = 0;
+	var toppos = 0;
 	var aTag = oBtnObj;
 	do {
 		leftpos += aTag.offsetLeft;

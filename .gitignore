@@ -9,4 +9,5 @@
 /modules/Calendar4You/googlekeys
 /include/csrfmagic/csrf-secret.php
 /.vscode
+/.scannerwork
 /node_modules

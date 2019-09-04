@@ -774,6 +774,8 @@ class CRMEntity {
 					if ($insertion_mode == 'edit') {
 						$fldvalue = $this->adjustCurrencyField($fieldname, $fldvalue, $tabid);
 					}
+				} elseif ($uitype == '69m' || $uitype == '69') {
+					$fldvalue = urldecode($this->column_fields[$fieldname]);
 				} else {
 					$fldvalue = $this->column_fields[$fieldname];
 				}
@@ -2286,10 +2288,6 @@ class CRMEntity {
 		$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
 		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 		$query .= " WHERE vtiger_crmentity.deleted = 0 AND (vtiger_crmentityrel.crmid = $id OR vtiger_crmentityrel.relcrmid = $id)";
-
-		if (GlobalVariable::getVariable('Debug_RelatedList_Query', '0') == '1') {
-			echo '<br>'.$query.'<br>';
-		}
 
 		$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
 

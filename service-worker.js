@@ -9172,7 +9172,7 @@ if (workbox) {
   },
   {
     "url": "include/js/dtlviewajax.js",
-    "revision": "15c985ae2ed9abacdb53664184e8eb06"
+    "revision": "5fd4a14fc9306d5ca7fd9fbfc8b95458"
   },
   {
     "url": "include/js/en_gb.lang.js",
@@ -9204,7 +9204,7 @@ if (workbox) {
   },
   {
     "url": "include/js/general.js",
-    "revision": "838e797858233d74160f505889fa3d88"
+    "revision": "a4f1521c79b7f27c9ab695143e550715"
   },
   {
     "url": "include/js/hu_hu.lang.js",
@@ -9377,6 +9377,10 @@ if (workbox) {
   {
     "url": "modules/com_vtiger_workflow/resources/emailtaskscript.js",
     "revision": "7b030711073308450f8902923523de06"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/entitymethodtask.js",
+    "revision": "546d5e20b1d56c5dcc248bc60eab2d31"
   },
   {
     "url": "modules/com_vtiger_workflow/resources/fieldexpressionpopup.js",
@@ -9716,7 +9720,7 @@ if (workbox) {
   },
   {
     "url": "modules/SalesOrder/SalesOrder.js",
-    "revision": "af220612482a9b15fe2507532944700c"
+    "revision": "f39757087df369c9e6a0451c71dc038b"
   },
   {
     "url": "modules/Settings/Settings.js",
@@ -9797,6 +9801,10 @@ if (workbox) {
   {
     "url": "modules/cbCalendar/cbCalendar.js",
     "revision": "bcd3380f272036dbfa858a337d17ce70"
+  },
+  {
+    "url": "modules/cbQuestion/cbQuestion.js",
+    "revision": "8133d889330211b643e23114945b2809"
   },
   {
     "url": "modules/Portal/Portal.js",

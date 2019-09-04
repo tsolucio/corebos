@@ -191,6 +191,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Document_CreateSelectContactFolder',
 				'Document_CreateSelectAccountFolder',
 				'Document_CreateSelectAccountFolderForContact',
+				'Attachment_ShowDownloadName',
 				'HomePage_Widget_Group_Size',
 				'Zero_Bounce_API_KEY',
 				'GenDoc_CopyLabelToClipboard',
@@ -215,6 +216,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'CustomerPortal_PDFTemplate_SalesOrder',
 				'CustomerPortal_PDFTemplate_Invoice',
 				'CustomerPortal_PDFTemplate_PurchaseOrder',
+				'Project_Gantt_Type',
 			);
 			$delete_these = array(
 				'preload_prototype',
@@ -249,6 +251,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'corebos_app_url',
 				'SOAP_Thunderbird_Enabled',
 				'Home_Display_Empty_Blocks',
+				'Gantt_Type',
 			);
 			$rename_these = array(
 				'Show_Copy_Adress_Header' => array(

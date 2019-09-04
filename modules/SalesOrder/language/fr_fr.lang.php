@@ -158,6 +158,7 @@ $mod_strings = array (
 	'SalesOrder No' => 'Bon de commande n°',
 	'Recurring Invoice Information' => 'Facturation récurrente',
 	'RecurringInvoice' => 'Facturation Récurrente',
+	'Recommended frequency for RecurringInvoice is 12 hours' => 'Recommended frequency for Recurring Invoice is 12 hours',
 	'Enable Recurring' => 'Activer la récurrence',
 	'Frequency' => 'Fréquence',
 	'Start Period' => 'Début',

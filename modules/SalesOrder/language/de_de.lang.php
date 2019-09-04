@@ -174,6 +174,7 @@ $mod_strings = array(
 
 	'Recurring Invoice Information' => 'Informationen für wiederkehrende Rechnungen',
 	'RecurringInvoice' => 'Recurring Invoice',
+	'Recommended frequency for RecurringInvoice is 12 hours' => 'Recommended frequency for Recurring Invoice is 12 hours',
 	'Enable Recurring' => 'Wiederholung zulassen',
 	'Frequency' => 'Frequenz',
 	'Start Period' => 'Start',

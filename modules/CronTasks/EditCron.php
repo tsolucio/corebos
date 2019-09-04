@@ -47,6 +47,7 @@ if (isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 	$cron['id']=$id;
 	$cron['hourmin']=$hourmin;
 	$smarty->assign('CRON_DETAILS', $cron);
+	$smarty->assign('CRON_MODULE', $cronTask->getModule());
 	$smarty->assign('MOD', return_module_language($current_language, 'CronTasks'));
 	$smarty->assign('THEME', $theme);
 	$smarty->assign('IMAGE_PATH', $image_path);

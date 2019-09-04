@@ -1386,6 +1386,20 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Número de filas a mostrar por página en la vista de lista de flujos de trabajo. El valor predeterminado es 20.',
 ),
+'Project_Gantt_Type' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'Funcionalidad Módulo',
+	'values' => '1 | 2 | 3',
+	'definition' => 'Se utiliza para definir el tipo de diagrama de Gantt. 1 para diario, 2 para semanal y 3 para mensual. El valor predeterminado es semanal (2).',
+),
+'Attachment_ShowDownloadName' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0|1',
+	'definition' => 'En la vista de detalle, mostrará el nombre de la imagen/adjunto como un enlace para descargar el fichero.',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {

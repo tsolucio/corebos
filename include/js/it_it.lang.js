@@ -289,7 +289,7 @@ var alert_arr = {
 	'LBL_ENTER_RSS_URL':'Per favore inserire l\'URL dell\'RSS',
 	'LBL_ADD_HOME_WIDGET':'Impossibile aggiungere il widget! Per favore riprova',
 	'LBL_DEFAULT_VALUE_FOR_THIS_FIELD':'Valore predefinito per questo campo',
-	'RECIPIENTS_CANNOT_BE_EMPTY' :'Il campo selezionato nn pu� essere vuoto',
+	'RECIPIENTS_CANNOT_BE_EMPTY' :'Il campo selezionato nn pui essere vuoto',
 	'VALID_SCANNER_NAME' :'Prego selezionare un nome valido per lo scanner (solo numeri e lettere)',
 	'ERR_SAME_SOURCE_AND_TARGET' :'Campo di origine e destinazione non possono essere uguali',
 	'ERR_ATLEAST_ONE_VALUE_FOR' :'Devi selezionare almeno un valore',

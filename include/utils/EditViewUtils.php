@@ -938,19 +938,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $purchaseorder_name;
 		$fieldvalue[] = $value;
-	} elseif ($uitype == 80) {
-		$salesorder_name = '';
-		if ($value != '') {
-			$salesorder_name = getSoName($value);
-		} elseif (isset($_REQUEST['salesorder_id']) && $_REQUEST['salesorder_id'] != '') {
-			$value = $_REQUEST['salesorder_id'];
-			$salesorder_name = getSoName($value);
-		} else {
-			$salesorder_name = '';
-		}
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[] = $salesorder_name;
-		$fieldvalue[] = $value;
 	} elseif ($uitype == 30) {
 		if ($value!='') {
 			$SET_REM = 'CHECKED';
@@ -1037,7 +1024,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				$fieldvalue[] = array('name'=>$image_array[$img_itr],'path'=>$image_path_array[$img_itr]);
 			}
 		} else {
-			$fieldvalue[] = '';
+			$fieldvalue[] = array('name'=>'','path'=>'');
 		}
 	} elseif ($uitype == 101) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
