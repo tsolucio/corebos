@@ -280,27 +280,27 @@ class Users extends CRMEntity {
 	 * @return true if the user is authenticated, false otherwise
 	 */
 	public function doLogin($user_password) {
-		$usr_name = $this->column_fields["user_name"];
+		$usr_name = $this->column_fields['user_name'];
 		$result = $this->db->pquery('select id from vtiger_users where user_name=?', array($usr_name));
 		if ($result && $this->db->num_rows($result)==1) {
-				$row = $this->db->fetchByAssoc($result);
-				$userid = $row['id'];
+			$row = $this->db->fetchByAssoc($result);
+			$userid = $row['id'];
 		} else {
-				return false;
+			return false;
 		}
-		$authType = GlobalVariable::getVariable('User_AuthenticationType', 'SQL', 'Users', $userid);		
-		
+		$authType = GlobalVariable::getVariable('User_AuthenticationType', 'SQL', 'Users', $userid);
+
 		$sql_auth_users = GlobalVariable::getVariable('User_MandatoryAuthenticationSQL', 'admin', 'Users', $userid);
 		$sql_auth_users = explode(',', $sql_auth_users);
 
 		if (in_array($usr_name, $sql_auth_users)) {
-		   $this->log->debug("$usr_name exists in sql_auth_users, so using SQL Authentication");
-		  $authType = 'SQL';
+			$this->log->debug("$usr_name exists in sql_auth_users, so using SQL Authentication");
+			$authType = 'SQL';
 		}
 
 		switch (strtoupper($authType)) {
 			case 'LDAP':
-				$this->log->debug("Using LDAP authentication");
+				$this->log->debug('Using LDAP authentication');
 				require_once 'modules/Users/authTypes/LDAP.php';
 				$result = ldapAuthenticate($usr_name, $user_password);
 				if ($result == null) {
