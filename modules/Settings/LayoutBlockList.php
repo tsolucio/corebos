@@ -1239,15 +1239,20 @@ function createRelatedList() {
 	$tabmod = Vtiger_Module::getInstance($module);
 	$rmodule = vtlib_purify($_REQUEST['relwithmod']);
 	$relmod = Vtiger_Module::getInstance($rmodule);
+	$actions = array('ADD','SELECT');
 	switch ($rmodule) {
 		case 'Documents':
 			$funcname = 'get_attachments';
+			break;
+		case 'cbCalendar':
+			$funcname = 'get_activities';
+			$actions = array('ADD');
 			break;
 		default:
 			$funcname = 'get_related_list';
 			break;
 	}
-	$tabmod->setRelatedList($relmod, $rmodule, array('ADD','SELECT'), $funcname);
+	$tabmod->setRelatedList($relmod, $rmodule, $actions, $funcname);
 }
 
 function changeRelatedListOrder() {
