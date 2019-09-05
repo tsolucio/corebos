@@ -224,12 +224,11 @@ DataTable.onRedraw(document.getElementsByTagName('datatable')[0], function (data
 		if (((data.data[index].Status == 'Active') && data.data[index].iscurrentuser && data.data[index].isblockeduser) || (data.data[index].Status == 'Inactive')) {
 			document.getElementById(data.data[index].id).style.display = 'none';
 		}
-
 		if (!data.data[index].loggedin) {
 			document.getElementById(data.data[index].userid).style.display = 'none';
 		}
 	}
-	document.getElementById('current_rows').innerHTML = data.total;
+	document.getElementById('current_rows').innerHTML = data.listtotalrecord;
 });
 {/literal}
 Pagination._config.langFirst = "{$APP.LNK_LIST_START}";

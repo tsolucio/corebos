@@ -1760,7 +1760,7 @@ class Users extends CRMEntity {
 			$entries_list['data'][] = $entry;
 		}
 		$log->debug('< getUsersJSON');
-		$entries_list['total'] = count($entries_list['data']);
+		$entries_list['listtotalrecord'] = count($entries_list['data']);
 		return json_encode($entries_list);
 	}
 
