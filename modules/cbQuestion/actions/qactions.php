@@ -55,7 +55,7 @@ class qactions_Action extends CoreBOS_ActionController {
 			$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-success');
 		} else {
 			$rdo['status'] = 'NOK';
-			$rdo['msg'] = getTranslatedString('SQLTESTNOK', 'cbQuestion');
+			$rdo['msg'] = getTranslatedString('SQLTESTNOK', 'cbQuestion').' '.$adb->getErrorMsg();
 			$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
 		}
 		$smarty->assign('ERROR_MESSAGE', $rdo['msg']);
