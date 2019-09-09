@@ -60,13 +60,17 @@ function cbwsExecuteWorkflow($workflow, $entities, $user) {
 	$workflow = reset($workflows);
 	foreach ($crmids as $crmid) {
 		$entityData = $entityCache->forId($crmid);
-		if ($workflow->evaluate($entityCache, $entityData->getId())) {
-			if (VTWorkflowManager::$ONCE == $workflow->executionCondition) {
-				$entity_id = vtws_getIdComponents($entityData->getId());
-				$entity_id = $entity_id[1];
-				$workflow->markAsCompletedForRecord($entity_id);
+		$modPrefix = $entityData->getModuleName(); // it return module from CRMIDs of selected records
+		$workflow_mod = $workflow->moduleName; // it return module of workflow
+		if ($workflow_mod == $modPrefix) { // compare CRMIDs of given record IDs by checking on their modules
+			if ($workflow->evaluate($entityCache, $entityData->getId())) {
+				if (VTWorkflowManager::$ONCE == $workflow->executionCondition) {
+					$entity_id = vtws_getIdComponents($entityData->getId());
+					$entity_id = $entity_id[1];
+					$workflow->markAsCompletedForRecord($entity_id);
+				}
+				$workflow->performTasks($entityData);
 			}
-			$workflow->performTasks($entityData);
 		}
 	}
 	return true;
