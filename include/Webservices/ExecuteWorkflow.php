@@ -61,7 +61,7 @@ function cbwsExecuteWorkflow($workflow, $entities, $user) {
 	$workflow_mod = $workflow->moduleName; // it return module from workflow
 	foreach ($crmids as $crmid) {
 		$entityData = $entityCache->forId($crmid);
-		$modPrefix = $entityData->getModuleName(); // it return module from webservice 
+		$modPrefix = $entityData->getModuleName(); // it return module from webservice
 		if ($workflow_mod == $modPrefix) { // compare workflow module with webservice module to execute
 			if ($workflow->evaluate($entityCache, $entityData->getId())) {
 				if (VTWorkflowManager::$ONCE == $workflow->executionCondition) {
