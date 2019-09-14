@@ -1304,7 +1304,9 @@ $app_strings = array (
 'Create Quote' => 'Create Quote',
 'Create Purchase Order' => 'Create Purchase Order',
 'Create Sales Order' => 'Create Sales Order',
-
+'csrf_warning' => 'CSRF Error. The reason this happens is that the page has been open without any interaction for too
+	long. For security reason, it has expired. Please reload the page by hitting CTRL + R or press reload below.',
+'csrf_reload' => 'Reload the page',
 
 //added for creating a custom lead map row in UI
 'LBL_ADD_MAPPING'=> 'Adicionar mapeamento',
