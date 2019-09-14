@@ -5380,7 +5380,7 @@ AutocompleteRelation.prototype.MaxResults = function () {
 };
 
 AutocompleteRelation.prototype.MinCharsToSearch = function () {
-	if (typeof this.data.mincharstosearch === 'number') {
+	if (typeof Number(this.data.mincharstosearch) === 'number') {
 		return this.data.mincharstosearch;
 	} else if (typeof this.data.mincharstosearch === undefined) {
 		var ref_module = this.getReferenceModule();
