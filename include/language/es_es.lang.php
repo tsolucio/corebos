@@ -1293,8 +1293,6 @@ $app_strings = array (
 	'Create Quote' => 'Crear Presupuesto',
 	'Create Purchase Order' => 'Crear Orden de Compra',
 	'Create Sales Order' => 'Crear Orden de Venta',
-	'csrf_warning' => 'Error CSRF. La razón por la que esto sucede es que la página ha estado abierta sin interacción durante demasiado tiempo. Por razones de seguridad, ha expirado. Vuelva a cargar la página presionando CTRL+R o presiona recargar a continuación.',
-	'csrf_reload' => 'Cargar de nuevo la página',
 
 	'LBL_MORE'=>'Más',
 	'LBL_CRM_SETTINGS' => 'Configuración CRM',
@@ -1337,8 +1335,8 @@ $app_strings = array (
 	'Select Related Module' => 'Selecciona Módulo Relacionado',
 	'No Module' => 'No tiene módulos relacionados',
 	'Entity Name' => 'Nombre Entidad',
-	'csrf_warning' => 'La razón por la que esto sucede es que la página ha estado abierta sin interacción durante demasiado tiempo. Por razones de seguridad, ha expirado. Vuelva a cargar la página presionando CTRL + R o presione recargar a continuación.',
-	'csrf_reload' => 'Recargar la página',
+	'csrf_warning' => 'Error CSRF. La razón por la que esto sucede es que la página ha estado abierta sin interacción durante demasiado tiempo. Por razones de seguridad, ha expirado. Vuelva a cargar la página presionando CTRL+R o presiona recargar a continuación.',
+	'csrf_reload' => 'Cargar de nuevo la página',
 );
 
 // Translation for currency names
