@@ -141,6 +141,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 	{assign var="entityIdentifier" value="entityType"|cat:$row_no}
 	{assign var="entityType" value=$data.$entityIdentifier}
 	{assign var="lineitem_id" value="lineitem_id"|cat:$row_no}
+	{assign var="rel_lineitem_id" value="rel_lineitem_id"|cat:$row_no}
 	{assign var="moreinfo" value="moreinfo"|cat:$row_no}
 
 	{assign var="discount_type" value="discount_type"|cat:$row_no}
@@ -172,6 +173,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 		{/if}
 		<input type="hidden" id="{$deleted}" name="{$deleted}" value="0">
 		<input type="hidden" id="{$lineitem_id}" name="{$lineitem_id}" value="{$data[$lineitem_id]}">
+		<input type="hidden" id="{$rel_lineitem_id}" name="{$rel_lineitem_id}" value="{$data[$rel_lineitem_id]}">
 	</td>
 
 	<!-- column 2 - Product Name - starts -->

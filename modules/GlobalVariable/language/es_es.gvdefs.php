@@ -1400,6 +1400,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0|1',
 	'definition' => 'En la vista de detalle, mostrará el nombre de la imagen/adjunto como un enlace para descargar el fichero.',
 ),
+'Application_Check_Invoiced_Lines' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0|1',
+	'definition' => 'Cuando se activa (1), el sistema chequea la cantidad de producto o servicio facturado desde una Orden de Venta y transfiere a la Factura la máxina cantidad permitida desde la Orden de Venta. Predeterminado es 0 (desactivado)',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/es_es.gvdefs.*.php', GLOB_BRACE) as $tcode) {

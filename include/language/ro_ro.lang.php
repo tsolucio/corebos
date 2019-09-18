@@ -1227,6 +1227,7 @@ $app_strings = array(
 	'csrf_warning' => 'CSRF Error. The reason this happens is that the page has been open without any interaction for too
 	long. For security reason, it has expired. Please reload the page by hitting CTRL + R or press reload below.',
 	'csrf_reload' => 'Reload the page',
+	'LBL_NOPRODUCTS' => 'Can\'t convert SalesOrder to Invoice because there aren\'t any remaining products to invoice.',
 );
 
 // Translation for currency names

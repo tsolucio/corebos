@@ -1243,6 +1243,7 @@ $app_strings = array(
 	'csrf_warning' => 'CSRF Fout. Dit gebeurt wanneer een pagina een tijd open heeft gestaan zonder dat er interactie is geweest. 
 		Ter beveiliging is deze pagina niet langer geldig. Druk op CTRL + R om te herladen of klik hieronder op herladen.',
 	'csrf_reload' => 'Herlaad de pagina',
+	'LBL_NOPRODUCTS' => 'Can\'t convert SalesOrder to Invoice because there aren\'t any remaining products to invoice.',
 );
 
 // Translation for currency names

@@ -95,6 +95,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_SendUserPasswordByEmail',
 				'Application_Pagination_Limit',
 				'Application_Popup_Address_Selection',
+				'Application_Check_Invoiced_Lines',
 
 				'RelatedList_Activity_DefaultStatusFilter',
 

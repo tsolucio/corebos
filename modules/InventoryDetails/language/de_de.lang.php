@@ -35,5 +35,7 @@ $mod_strings = array(
 	'Total Stock' => 'Gesamtvorrat',
 	'Description' => 'Beschreibung',
 	'InventoryDetailsTaxBlock' => 'Steuer'
+	'Remaining Units' => 'Remaining Units',
+	'Related Line Item ID' => 'Related Line Item ID',
 );
 ?>

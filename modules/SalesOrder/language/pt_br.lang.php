@@ -206,5 +206,6 @@ $mod_strings = array(
 'Amount Due'=>'Total em falta',
 'Amount Paid'=>'Total pago',
 'Total Amount'=>'Total',
+'Invoiced' => 'Invoiced',
 );
 ?>

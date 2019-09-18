@@ -1342,6 +1342,7 @@ $app_strings = array (
 'Select Related Module' => 'Selecione módulo relacionado',
 'No Module' => 'Sem módulos relacionados',
 'Entity Name' => 'Nome entidade',
+'LBL_NOPRODUCTS' => 'Can\'t convert SalesOrder to Invoice because there aren\'t any remaining products to invoice.',
 );
 
 // Translation for currency names

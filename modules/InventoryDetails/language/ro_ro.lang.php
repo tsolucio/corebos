@@ -53,5 +53,7 @@ $mod_strings = array(
 	'Sales' => 'Vanzari',
 	'Service' => 'Serivice',
 	'Assets' => 'Bunuri',
+	'Remaining Units' => 'Remaining Units',
+	'Related Line Item ID' => 'Related Line Item ID',
 );
 ?>
