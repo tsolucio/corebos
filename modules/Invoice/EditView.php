@@ -506,7 +506,8 @@ $smarty->assign('SHOW_SHIPHAND_CHARGES', GlobalVariable::getVariable('Inventory_
 
 if (empty($associated_prod) && GlobalVariable::getVariable('Inventory_Check_Invoiced_Lines', 0, $currentModule) == 1
 	 && isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'sotoinvoice') {
-	$smarty->display('Inventory/NoProducts.tpl');
+	$smarty->assign('OPERATION_MESSAGE', $app_strings['LBL_NOPRODUCTS']);
+	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 } else {
 	$smarty->display('Inventory/InventoryEditView.tpl');
 }
