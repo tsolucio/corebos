@@ -218,5 +218,6 @@ $mod_strings = array(
 	'Timecontrol' => 'ControlTimp',
 	'cbCommission' => 'cbCommission',
 	'cbControlIngresoGasto' => 'cbControlIngresoGasto',
+	'Invoiced' => 'Invoiced',
 );
 ?>

@@ -212,5 +212,6 @@ $mod_strings = array(
 'Amount Due'=>'Pendiente a Pagar',
 'Amount Paid'=>'Total Pagado',
 'Total Amount'=>'Total a Pagar',
+'Invoiced' => 'Facturado',
 );
 ?>

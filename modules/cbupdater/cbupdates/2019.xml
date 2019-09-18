@@ -300,4 +300,11 @@
 	<classname>addParameterinupsertfunction</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>Kiko Jover</author>
+	<description>Add new fields to InventoryDetails to control remaining units in SO</description>
+	<filename>build/changeSets/2019/add_RU_Relline_InventoryDetails.php</filename>
+	<classname>add_RU_Relline_InventoryDetails</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

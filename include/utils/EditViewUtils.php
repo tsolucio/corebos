@@ -1392,17 +1392,43 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 			$cbMapFields = $cbMap->MasterDetailLayout();
 		}
 	}
-
 	$result = $adb->pquery($query, $params);
 	$num_rows=$adb->num_rows($result);
 	for ($i=1; $i<=$num_rows; $i++) {
+		$so_line = 0;
+		$min_qty = null;
+		if (GlobalVariable::getVariable('Application_Check_Invoiced_Lines', 0, $currentModule) == 1) {
+			if ($module == 'SalesOrder' && vtlib_isModuleActive('InventoryDetails')) {
+				if (isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'sotoinvoice') {
+					$so_line = $adb->query_result($result, $i-1, 'lineitem_id');
+
+					$sel_min_qty = "SELECT remaining_units FROM vtiger_inventorydetails inde 
+					LEFT JOIN vtiger_crmentity crm ON inde.inventorydetailsid=crm.crmid WHERE crm.deleted = 0 AND lineitem_id=?";
+					$res_min_qty = $adb->pquery($sel_min_qty, array($so_line));
+					if ($adb->num_rows($res_min_qty) == 1) {
+						$min_qty = $adb->query_result($res_min_qty, 0, 'remaining_units');
+					}
+				}
+			} elseif ($module == 'Invoice' && vtlib_isModuleActive('InventoryDetails')) {
+				$sel_soline = "SELECT rel_lineitem_id FROM vtiger_inventorydetails inde 
+				LEFT JOIN vtiger_crmentity crm ON inde.inventorydetailsid=crm.crmid WHERE crm.deleted = 0 AND lineitem_id=?";
+				$res_soline = $adb->pquery($sel_soline, array($adb->query_result($result, $i-1, 'lineitem_id')));
+				if ($adb->num_rows($res_soline) == 1) {
+					$so_line = $adb->query_result($res_soline, 0, 'rel_lineitem_id');
+				}
+			}
+			if (!is_null($min_qty) && $min_qty == 0) {
+				continue;
+			}
+		}
 		$hdnProductId = $adb->query_result($result, $i-1, 'productid');
 		$hdnProductcode = $adb->query_result($result, $i-1, 'productcode');
 		$productname=$adb->query_result($result, $i-1, 'productname');
 		$productdescription=$adb->query_result($result, $i-1, 'product_description');
 		$comment=$adb->query_result($result, $i-1, 'comment');
 		$qtyinstock=$adb->query_result($result, $i-1, 'qtyinstock');
-		$qty=$adb->query_result($result, $i-1, 'quantity');
+
+		$qty=(is_null($min_qty) ? $adb->query_result($result, $i-1, 'quantity') : $min_qty);
 		$unitprice=$adb->query_result($result, $i-1, 'unit_price');
 		$listprice=$listcostprice ? $adb->query_result($result, $i-1, 'cost_price') : $adb->query_result($result, $i-1, 'listprice');
 		$entitytype=$adb->query_result($result, $i-1, 'entitytype');
@@ -1460,6 +1486,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 
 		$product_Detail[$i]['subProductArray'.$i] = $subProductArray;
 		$product_Detail[$i]['hdnProductId'.$i] = $hdnProductId;
+		$product_Detail[$i]['rel_lineitem_id'.$i] = $so_line;
 		$product_Detail[$i]['productName'.$i]= $productname;
 		/* Added to fix the issue Product Pop-up name display*/
 		if (isset($_REQUEST['action']) && ($_REQUEST['action'] == 'CreateSOPDF' || $_REQUEST['action'] == 'CreatePDF' || $_REQUEST['action'] == 'SendPDFMail')) {
@@ -1581,54 +1608,58 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 			$product_Detail[$i]['taxes'][$tax_count]['percentage'] = $tax_value;
 		}
 	}
+	if (empty($product_Detail)) {
+		return $product_Detail;
+	}
 	if ($num_rows==0) {
 		$product_Detail[1] = array();
 	}
-	$product_Detail[1]['final_details'] = array();
+	$j = min(array_keys($product_Detail));
+	$product_Detail[$j]['final_details'] = array();
 
 	//set the taxtype
 	if (!isset($taxtype)) {
 		$taxtype = GlobalVariable::getVariable('Inventory_Tax_Type_Default', 'individual', $currentModule);
 	}
-	$product_Detail[1]['final_details']['taxtype'] = $taxtype;
+	$product_Detail[$j]['final_details']['taxtype'] = $taxtype;
 
 	//Get the Final Discount, S&H charge, Tax for S&H and Adjustment values
 	//To set the Final Discount details
 	$finalDiscount = '0.00';
-	$product_Detail[1]['final_details']['discount_type_final'] = 'zero';
+	$product_Detail[$j]['final_details']['discount_type_final'] = 'zero';
 
 	$subTotal = (!empty($focus->column_fields['hdnSubTotal']))?$focus->column_fields['hdnSubTotal']:'0.00';
 
-	$product_Detail[1]['final_details']['hdnSubTotal'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($subTotal, null, true), null, true);
+	$product_Detail[$j]['final_details']['hdnSubTotal'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($subTotal, null, true), null, true);
 	$discountPercent = (!empty($focus->column_fields['hdnDiscountPercent']))?$focus->column_fields['hdnDiscountPercent']:'0.00';
 	$discountAmount = (!empty($focus->column_fields['hdnDiscountAmount']))?$focus->column_fields['hdnDiscountAmount']:'0.00';
 
 	//To avoid NaN javascript error, here we assign 0 initially to' %of price' and 'Direct Price reduction'(For Final Discount)
-	$product_Detail[1]['final_details']['discount_percentage_final'] = 0;
-	$product_Detail[1]['final_details']['discount_amount_final'] = 0;
+	$product_Detail[$j]['final_details']['discount_percentage_final'] = 0;
+	$product_Detail[$j]['final_details']['discount_amount_final'] = 0;
 
 	if (!empty($focus->column_fields['hdnDiscountPercent']) && $focus->column_fields['hdnDiscountPercent'] != '0') {
 		$finalDiscount = ($subTotal*$discountPercent/100);
-		$product_Detail[1]['final_details']['discount_type_final'] = 'percentage';
-		$product_Detail[1]['final_details']['discount_percentage_final'] = $discountPercent;
-		$product_Detail[1]['final_details']['checked_discount_percentage_final'] = ' checked';
-		$product_Detail[1]['final_details']['style_discount_percentage_final'] = ' style="visibility:visible"';
-		$product_Detail[1]['final_details']['style_discount_amount_final'] = ' style="visibility:hidden"';
+		$product_Detail[$j]['final_details']['discount_type_final'] = 'percentage';
+		$product_Detail[$j]['final_details']['discount_percentage_final'] = $discountPercent;
+		$product_Detail[$j]['final_details']['checked_discount_percentage_final'] = ' checked';
+		$product_Detail[$j]['final_details']['style_discount_percentage_final'] = ' style="visibility:visible"';
+		$product_Detail[$j]['final_details']['style_discount_amount_final'] = ' style="visibility:hidden"';
 	} elseif (!empty($focus->column_fields['hdnDiscountAmount']) && $focus->column_fields['hdnDiscountAmount'] != '0') {
 		$finalDiscount = $focus->column_fields['hdnDiscountAmount'];
-		$product_Detail[1]['final_details']['discount_type_final'] = 'amount';
-		$product_Detail[1]['final_details']['discount_amount_final'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($discountAmount, null, true), null, true);
-		$product_Detail[1]['final_details']['checked_discount_amount_final'] = ' checked';
-		$product_Detail[1]['final_details']['style_discount_amount_final'] = ' style="visibility:visible"';
-		$product_Detail[1]['final_details']['style_discount_percentage_final'] = ' style="visibility:hidden"';
+		$product_Detail[$j]['final_details']['discount_type_final'] = 'amount';
+		$product_Detail[$j]['final_details']['discount_amount_final'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($discountAmount, null, true), null, true);
+		$product_Detail[$j]['final_details']['checked_discount_amount_final'] = ' checked';
+		$product_Detail[$j]['final_details']['style_discount_amount_final'] = ' style="visibility:visible"';
+		$product_Detail[$j]['final_details']['style_discount_percentage_final'] = ' style="visibility:hidden"';
 	}
-	$product_Detail[1]['final_details']['discountTotal_final'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($finalDiscount, null, true), null, true);
+	$product_Detail[$j]['final_details']['discountTotal_final'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($finalDiscount, null, true), null, true);
 
 	if ($zerodiscount) {
-		$product_Detail[1]['final_details']['discount_type_final'] = 'zero';
-		$product_Detail[1]['final_details']['discount_percentage_final'] = 0;
-		$product_Detail[1]['final_details']['discount_amount_final'] = 0;
-		$product_Detail[1]['final_details']['discountTotal_final'] = 0;
+		$product_Detail[$j]['final_details']['discount_type_final'] = 'zero';
+		$product_Detail[$j]['final_details']['discount_percentage_final'] = 0;
+		$product_Detail[$j]['final_details']['discount_amount_final'] = 0;
+		$product_Detail[$j]['final_details']['discountTotal_final'] = 0;
 	}
 
 	//To set the Final Tax values
@@ -1662,16 +1693,16 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 		}
 		$taxamount = ($subTotal-$finalDiscount)*$tax_percent/100;
 		$taxtotal = $taxtotal + $taxamount;
-		$product_Detail[1]['final_details']['taxes'][$tax_count]['taxname'] = $tax_name;
-		$product_Detail[1]['final_details']['taxes'][$tax_count]['taxlabel'] = $tax_label;
-		$product_Detail[1]['final_details']['taxes'][$tax_count]['percentage'] = $tax_percent;
-		$product_Detail[1]['final_details']['taxes'][$tax_count]['amount'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($taxamount, null, true), null, true);
+		$product_Detail[$j]['final_details']['taxes'][$tax_count]['taxname'] = $tax_name;
+		$product_Detail[$j]['final_details']['taxes'][$tax_count]['taxlabel'] = $tax_label;
+		$product_Detail[$j]['final_details']['taxes'][$tax_count]['percentage'] = $tax_percent;
+		$product_Detail[$j]['final_details']['taxes'][$tax_count]['amount'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($taxamount, null, true), null, true);
 	}
-	$product_Detail[1]['final_details']['tax_totalamount'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($taxtotal, null, true), null, true);
+	$product_Detail[$j]['final_details']['tax_totalamount'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($taxtotal, null, true), null, true);
 
 	//To set the Shipping & Handling charge
 	$shCharge = (!empty($focus->column_fields['hdnS_H_Amount']))?$focus->column_fields['hdnS_H_Amount']:'0.00';
-	$product_Detail[1]['final_details']['shipping_handling_charge'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($shCharge, null, true), null, true);
+	$product_Detail[$j]['final_details']['shipping_handling_charge'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($shCharge, null, true), null, true);
 
 	//To set the Shipping & Handling tax values
 	//calculate S&H tax
@@ -1690,22 +1721,40 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 		}
 		$shtaxamount = $shCharge*$shtax_percent/100;
 		$shtaxtotal = $shtaxtotal + $shtaxamount;
-		$product_Detail[1]['final_details']['sh_taxes'][$shtax_count]['taxname'] = $shtax_name;
-		$product_Detail[1]['final_details']['sh_taxes'][$shtax_count]['taxlabel'] = $shtax_label;
-		$product_Detail[1]['final_details']['sh_taxes'][$shtax_count]['percentage'] = $shtax_percent;
-		$product_Detail[1]['final_details']['sh_taxes'][$shtax_count]['amount'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($shtaxamount, null, true), null, true);
+		$product_Detail[$j]['final_details']['sh_taxes'][$shtax_count]['taxname'] = $shtax_name;
+		$product_Detail[$j]['final_details']['sh_taxes'][$shtax_count]['taxlabel'] = $shtax_label;
+		$product_Detail[$j]['final_details']['sh_taxes'][$shtax_count]['percentage'] = $shtax_percent;
+		$product_Detail[$j]['final_details']['sh_taxes'][$shtax_count]['amount'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($shtaxamount, null, true), null, true);
 	}
-	$product_Detail[1]['final_details']['shtax_totalamount'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($shtaxtotal, null, true), null, true);
+	$product_Detail[$j]['final_details']['shtax_totalamount'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($shtaxtotal, null, true), null, true);
 
 	//To set the Adjustment value
 	$adjustment = (!empty($focus->column_fields['txtAdjustment']))?$focus->column_fields['txtAdjustment']:'0.00';
-	$product_Detail[1]['final_details']['adjustment'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($adjustment, null, true), null, true);
+	$product_Detail[$j]['final_details']['adjustment'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($adjustment, null, true), null, true);
 
 	//To set the grand total
 	$grandTotal = (!empty($focus->column_fields['hdnGrandTotal']))?$focus->column_fields['hdnGrandTotal']:'0.00';
-	$product_Detail[1]['final_details']['grandTotal'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($grandTotal, null, true), null, true);
+	$product_Detail[$j]['final_details']['grandTotal'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($grandTotal, null, true), null, true);
 
 	$log->debug('< getAssociatedProducts');
+	// return array();
+	if (GlobalVariable::getVariable('Application_Check_Invoiced_Lines', 0, $currentModule) == 1) {
+		$res_prddtl = array();
+		$prdkey = 1;
+		foreach ($product_Detail as $old_key => $prddtl) {
+			$current_prddtl = array();
+			foreach ($prddtl as $key => $value) {
+				$new_key = $key;
+				if ($key != 'final_details') {
+					$new_key = substr($key, 0, strlen($old_key)*(-1)).$prdkey;
+				}
+				$current_prddtl[$new_key] = $value;
+			}
+			$res_prddtl[$prdkey] = $current_prddtl;
+			$prdkey++;
+		}
+		$product_Detail = $res_prddtl;
+	}
 	return $product_Detail;
 }
 
