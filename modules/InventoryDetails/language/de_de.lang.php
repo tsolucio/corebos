@@ -34,7 +34,7 @@ $mod_strings = array(
 	'Line Completed' => 'Zeile vollständig',
 	'Total Stock' => 'Gesamtvorrat',
 	'Description' => 'Beschreibung',
-	'InventoryDetailsTaxBlock' => 'Steuer'
+	'InventoryDetailsTaxBlock' => 'Steuer',
 	'Remaining Units' => 'Remaining Units',
 	'Related Line Item ID' => 'Related Line Item ID',
 );
