@@ -405,8 +405,14 @@ class InventoryDetails extends CRMEntity {
 								$rel_id_focus->save('InventoryDetails');
 							}
 						}
+						$invdet_focus->column_fields['remaining_units'] = $row['quantity'];
+						break;
+					default:
+						$invdet_focus->column_fields['remaining_units'] = $row['quantity'];
 						break;
 				}
+			} else {
+				$invdet_focus->column_fields['remaining_units'] = $row['quantity'];
 			}
 
 			foreach ($invdet_focus->column_fields as $fieldname => $val) {

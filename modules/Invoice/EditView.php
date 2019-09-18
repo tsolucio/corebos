@@ -504,7 +504,7 @@ $smarty->assign('TAX_TYPE', GlobalVariable::getVariable('Inventory_Tax_Type_Defa
 $smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Application_Show_Copy_Address', 1, $currentModule, $current_user->id));
 $smarty->assign('SHOW_SHIPHAND_CHARGES', GlobalVariable::getVariable('Inventory_Show_ShippingHandlingCharges', 1, $currentModule, $current_user->id));
 
-if (empty($associated_prod) && GlobalVariable::getVariable('Application_Check_Invoiced_Lines', 0, $currentModule) == 1
+if (empty($associated_prod) && GlobalVariable::getVariable('Inventory_Check_Invoiced_Lines', 0, $currentModule) == 1
 	 && isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'sotoinvoice') {
 	$smarty->display('Inventory/NoProducts.tpl');
 } else {
