@@ -338,6 +338,7 @@ function getFieldListEntries($module) {
 						$cf_element[$count]['columnname']=$row_field['columnname'];
 						$cf_element[$count]['fieldsize']=$fieldsize;
 						$cf_element[$count]['defaultvalue']= array('permitted' => $defaultPermitted, 'value' => $defaultValue, '_allvalues' => $allValues);
+						$cf_element[$count]['colspec']= CustomView::getFilterFieldDefinition($fieldid, $module);
 						$cf_element[$count] = array_merge($cf_element[$count], $visibility);
 
 						$count++;
@@ -354,6 +355,7 @@ function getFieldListEntries($module) {
 						$cf_hidden_element[$hiddencount]['columnname']=$row_field['columnname'];
 						$cf_hidden_element[$hiddencount]['fieldsize']=$fieldsize;
 						$cf_hidden_element[$hiddencount]['defaultvalue']= array('permitted' => $defaultPermitted, 'value' => $defaultValue, '_allvalues' => $allValues);
+						$cf_hidden_element[$hiddencount]['colspec']=CustomView::getFilterFieldDefinition($fieldid, $module);
 						$cf_hidden_element[$hiddencount] = array_merge($cf_hidden_element[$hiddencount], $visibility);
 
 						$hiddencount++;
