@@ -95,7 +95,6 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_SendUserPasswordByEmail',
 				'Application_Pagination_Limit',
 				'Application_Popup_Address_Selection',
-				'Application_Check_Invoiced_Lines',
 
 				'RelatedList_Activity_DefaultStatusFilter',
 
@@ -210,6 +209,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 
 				'Inventory_ListPrice_ReadOnly',
 				'Inventory_Show_ShippingHandlingCharges',
+				'Inventory_Check_Invoiced_Lines',
 				'GContacts_Max_Results',
 
 				'CustomerPortal_PDF_Modules',

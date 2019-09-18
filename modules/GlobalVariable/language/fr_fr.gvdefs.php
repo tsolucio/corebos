@@ -1399,7 +1399,7 @@ $GlobalVariableDefinitons = array(
 	'values' => '0|1',
 	'definition' => 'In Detail View, will show the image/attachment name as a download link above the image itself.',
 ),
-'Application_Check_Invoiced_Lines' => array(
+'Inventory_Check_Invoiced_Lines' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
 	'category' => 'Application',

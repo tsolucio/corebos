@@ -1397,7 +1397,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 	for ($i=1; $i<=$num_rows; $i++) {
 		$so_line = 0;
 		$min_qty = null;
-		if (GlobalVariable::getVariable('Application_Check_Invoiced_Lines', 0, $currentModule) == 1) {
+		if (GlobalVariable::getVariable('Inventory_Check_Invoiced_Lines', 0, $currentModule) == 1) {
 			if ($module == 'SalesOrder' && vtlib_isModuleActive('InventoryDetails')) {
 				if (isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'sotoinvoice') {
 					$so_line = $adb->query_result($result, $i-1, 'lineitem_id');
@@ -1738,7 +1738,7 @@ function getAssociatedProducts($module, $focus, $seid = '') {
 
 	$log->debug('< getAssociatedProducts');
 	// return array();
-	if (GlobalVariable::getVariable('Application_Check_Invoiced_Lines', 0, $currentModule) == 1) {
+	if (GlobalVariable::getVariable('Inventory_Check_Invoiced_Lines', 0, $currentModule) == 1) {
 		$res_prddtl = array();
 		$prdkey = 1;
 		foreach ($product_Detail as $old_key => $prddtl) {

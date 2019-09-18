@@ -1400,7 +1400,7 @@ $GlobalVariableDefinitons = array(
 	'values' => '0|1',
 	'definition' => 'En la vista de detalle, mostrará el nombre de la imagen/adjunto como un enlace para descargar el fichero.',
 ),
-'Application_Check_Invoiced_Lines' => array(
+'Inventory_Check_Invoiced_Lines' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',
 	'category' => 'Application',
