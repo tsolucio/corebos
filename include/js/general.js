@@ -5029,7 +5029,7 @@ function handleAcKeys(e) {
 			case 27:
 				// Escape key
 				window.currentAc.clearTargetUL();
-				window.currentAc.targetUL.hide();				
+				window.currentAc.targetUL.hide();
 				window.currentAc.deactivate();
 				break;
 			case 38:
@@ -5068,7 +5068,7 @@ function highlightAcItem(node, state) {
 }
 
 function highlightAcItemUp() {
-	if (typeof window.currentAcItem === 'object' 
+	if (typeof window.currentAcItem === 'object'
 	&& window.currentAcItem.parentElement.classList.contains('relation-autocomplete__target')
 	&& window.currentAcItem.previousElementSibling !== null) {
 		highlightAcItem(window.currentAcItem, false);
@@ -5078,7 +5078,7 @@ function highlightAcItemUp() {
 }
 
 function highlightAcItemDown() {
-	if (typeof window.currentAcItem === 'object' 
+	if (typeof window.currentAcItem === 'object'
 	&& window.currentAcItem.parentElement.classList.contains('relation-autocomplete__target')
 	&& window.currentAcItem.nextElementSibling !== null) {
 		highlightAcItem(window.currentAcItem, false);
