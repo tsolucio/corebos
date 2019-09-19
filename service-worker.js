@@ -9200,7 +9200,7 @@ if (workbox) {
   },
   {
     "url": "include/js/general.js",
-    "revision": "3950f545af2fda163567cfe17a8d385e"
+    "revision": "28eb1715f400c7ccbd37004ac74913b0"
   },
   {
     "url": "include/js/hu_hu.lang.js",
