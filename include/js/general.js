@@ -5022,24 +5022,24 @@ function AutocompleteSetup() {
 function handleAcKeys(e) {
 	if (window.currentAc !== false) {
 		switch (e.keyCode) {
-			case 13:
-				// Enter key
-				window.currentAcItem.click();
-				break;
-			case 27:
-				// Escape key
-				window.currentAc.clearTargetUL();
-				window.currentAc.targetUL.hide();
-				window.currentAc.deactivate();
-				break;
-			case 38:
-				// Up
-				highlightAcItemUp();
-				break;
-			case 40:
-				// Down
-				highlightAcItemDown();
-				break;
+		case 13:
+			// Enter key
+			window.currentAcItem.click();
+			break;
+		case 27:
+			// Escape key
+			window.currentAc.clearTargetUL();
+			window.currentAc.targetUL.hide();
+			window.currentAc.deactivate();
+			break;
+		case 38:
+			// Up
+			highlightAcItemUp();
+			break;
+		case 40:
+			// Down
+			highlightAcItemDown();
+			break;
 		}
 	}
 }
@@ -5061,9 +5061,9 @@ function preventWindowEnter(e) {
 
 function highlightAcItem(node, state) {
 	if (state === true) {
-		node.classList.add("slds-color__background_gray-4");
+		node.classList.add('slds-color__background_gray-4');
 	} else {
-		node.classList.remove("slds-color__background_gray-4");
+		node.classList.remove('slds-color__background_gray-4');
 	}
 }
 
@@ -5126,15 +5126,15 @@ function AutocompleteRelation(target, i) {
 	this.targetUL.style.transition = 'opacity 100ms ease';
 }
 
-AutocompleteRelation.prototype.activate = function() {
+AutocompleteRelation.prototype.activate = function () {
 	window.currentAc = this;
 	toggleFormEnter(false);
-}
+};
 
-AutocompleteRelation.prototype.deactivate = function() {
+AutocompleteRelation.prototype.deactivate = function () {
 	window.currentAc = false;
 	toggleFormEnter(true);
-}
+};
 
 AutocompleteRelation.prototype.get = function (e) {
 	var term = e.target.value;
