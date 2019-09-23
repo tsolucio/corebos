@@ -19,16 +19,22 @@
 
 function delMenuBranch($topofbranch) {
 	global $adb;
-	$mnurs = $adb->pquery('select evvtmenuid,mtype from vtiger_evvtmenu where mparent=?', array($topofbranch));
+	$mnurs = $adb->pquery('select evvtmenuid,mtype,mseq from vtiger_evvtmenu where mparent=?', array($topofbranch));
 	if ($mnurs && $adb->num_rows($mnurs)>0) {
 		while ($mnu = $adb->fetch_array($mnurs)) {
 			if ($mnu['mtype']=='menu') {
 				delMenuBranch($mnu['evvtmenuid']);
 			}
 			$adb->pquery('delete from vtiger_evvtmenu where evvtmenuid=?', array($mnu['evvtmenuid']));
+			$adb->pquery('update vtiger_evvtmenu set mseq=mseq-1 where mseq>? and mparent=?', array($mnu['mseq'], $topofbranch));
 		}
 	}
-	$adb->pquery('delete from vtiger_evvtmenu where evvtmenuid=?', array($topofbranch));
+	$mnurs = $adb->pquery('select mparent,mseq from vtiger_evvtmenu where evvtmenuid=?', array($topofbranch));
+	if ($mnurs && $adb->num_rows($mnurs)>0) {
+		$mnu = $adb->fetch_array($mnurs);
+		$adb->pquery('update vtiger_evvtmenu set mseq=mseq-1 where mseq>? and mparent=?', array($mnu['mseq'], $mnu['mparent']));
+		$adb->pquery('delete from vtiger_evvtmenu where evvtmenuid=?', array($topofbranch));
+	}
 }
 
 $do = vtlib_purify($_REQUEST['evvtmenudo']);
