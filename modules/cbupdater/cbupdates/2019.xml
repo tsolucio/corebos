@@ -293,4 +293,25 @@
 	<classname>migrateUIType80to10</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>glorymoshi</author>
+	<description>add new parameter to upsert function</description>
+	<filename>build/changeSets/2019/addParameterinupsertfunction.php</filename>
+	<classname>addParameterinupsertfunction</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>Kiko Jover</author>
+	<description>Add new fields to InventoryDetails to control remaining units in SO</description>
+	<filename>build/changeSets/2019/add_RU_Relline_InventoryDetails.php</filename>
+	<classname>add_RU_Relline_InventoryDetails</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>Kiko Jover</author>
+	<description>Initialise remaining units in InventoryDetails</description>
+	<filename>build/changeSets/2019/upd_RemainingUnits_InventoryDetails.php</filename>
+	<classname>upd_RemainingUnits_InventoryDetails</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

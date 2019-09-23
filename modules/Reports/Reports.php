@@ -1254,7 +1254,7 @@ class Reports extends CRMEntity {
 				$filters['label'][] = getTranslatedString($columntototalrow['tablabel'], $columntototalrow['tablabel']).' -'.getTranslatedString($columntototalrow['fieldlabel'], $columntototalrow['tablabel']);
 				if (isset($this->columnssummary)) {
 					$selectedcolumn = '';
-					$selectedcolumn1 = '';
+					$selectedcolumn1 = array();
 					for ($i=0; $i < count($this->columnssummary); $i++) {
 						$selectedcolumnarray = explode(':', $this->columnssummary[$i]);
 						$selectedcolumn = $selectedcolumnarray[1].':'.$selectedcolumnarray[2].':'.str_replace($escapedchars, '', $selectedcolumnarray[3]);

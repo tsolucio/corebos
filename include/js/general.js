@@ -5000,6 +5000,11 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
 function AutocompleteSetup() {
 	var acInputs = document.querySelectorAll('.autocomplete-input');
+
+	window.currentAc = false,
+	window.currentAcItem = false;
+	window.addEventListener('keyup', handleAcKeys);
+
 	for (var i = 0; i < acInputs.length; i++) {
 		(function (_i) {
 			var ac = new AutocompleteRelation(acInputs[_i], _i);
@@ -5011,6 +5016,74 @@ function AutocompleteSetup() {
 				ac.targetUL.hide();
 			});
 		})(i);
+	}
+}
+
+function handleAcKeys(e) {
+	if (window.currentAc !== false) {
+		switch (e.keyCode) {
+		case 13:
+			// Enter key
+			window.currentAcItem.click();
+			break;
+		case 27:
+			// Escape key
+			window.currentAc.clearTargetUL();
+			window.currentAc.targetUL.hide();
+			window.currentAc.deactivate();
+			break;
+		case 38:
+			// Up
+			highlightAcItemUp();
+			break;
+		case 40:
+			// Down
+			highlightAcItemDown();
+			break;
+		}
+	}
+}
+
+function toggleFormEnter(state) {
+	if (state === false) {
+		window.addEventListener('keydown', preventWindowEnter);
+	} else {
+		window.removeEventListener('keydown', preventWindowEnter);
+	}
+}
+
+function preventWindowEnter(e) {
+	if (e.keyCode === 13) {
+		e.preventDefault();
+		return false;
+	}
+}
+
+function highlightAcItem(node, state) {
+	if (state === true) {
+		node.classList.add('slds-color__background_gray-4');
+	} else {
+		node.classList.remove('slds-color__background_gray-4');
+	}
+}
+
+function highlightAcItemUp() {
+	if (typeof window.currentAcItem === 'object'
+	&& window.currentAcItem.parentElement.classList.contains('relation-autocomplete__target')
+	&& window.currentAcItem.previousElementSibling !== null) {
+		highlightAcItem(window.currentAcItem, false);
+		window.currentAcItem = window.currentAcItem.previousElementSibling;
+		highlightAcItem(window.currentAcItem, true);
+	}
+}
+
+function highlightAcItemDown() {
+	if (typeof window.currentAcItem === 'object'
+	&& window.currentAcItem.parentElement.classList.contains('relation-autocomplete__target')
+	&& window.currentAcItem.nextElementSibling !== null) {
+		highlightAcItem(window.currentAcItem, false);
+		window.currentAcItem = window.currentAcItem.nextElementSibling;
+		highlightAcItem(window.currentAcItem, true);
 	}
 }
 
@@ -5053,6 +5126,16 @@ function AutocompleteRelation(target, i) {
 	this.targetUL.style.transition = 'opacity 100ms ease';
 }
 
+AutocompleteRelation.prototype.activate = function () {
+	window.currentAc = this;
+	toggleFormEnter(false);
+};
+
+AutocompleteRelation.prototype.deactivate = function () {
+	window.currentAc = false;
+	toggleFormEnter(true);
+};
+
 AutocompleteRelation.prototype.get = function (e) {
 	var term = e.target.value;
 	if (this.multiselect==='true') {
@@ -5063,6 +5146,7 @@ AutocompleteRelation.prototype.get = function (e) {
 	if (term.length >= this.mincharstoSearch && (typeof(this.data.searchin) != 'undefined' || typeof(this.data.searchfields) != 'undefined') ) {
 		this.data.term = term;
 		var acInstance = this;
+		this.activate();
 
 		this.displayFields 	= this.showFields();
 		this.entityName		= this.entityField();
@@ -5118,6 +5202,10 @@ AutocompleteRelation.prototype.set = function (items) {
 					});
 				}
 			});
+			if (i === 0) {
+				window.currentAcItem = li;
+				highlightAcItem(li, true);
+			}
 		}
 		if (acInstance.inputField.name==='query_string') {
 			var span = document.createElement('li');
@@ -5138,6 +5226,7 @@ AutocompleteRelation.prototype.select = function (params) {
 	// Housekeeping after selection
 	this.clearTargetUL();
 	this.targetUL.hide();
+	this.deactivate();
 	// Schedular.AutoComplete.Current.clear();
 };
 
@@ -5380,7 +5469,7 @@ AutocompleteRelation.prototype.MaxResults = function () {
 };
 
 AutocompleteRelation.prototype.MinCharsToSearch = function () {
-	if (typeof this.data.mincharstosearch === 'number') {
+	if (typeof Number(this.data.mincharstosearch) === 'number') {
 		return this.data.mincharstosearch;
 	} else if (typeof this.data.mincharstosearch === undefined) {
 		var ref_module = this.getReferenceModule();

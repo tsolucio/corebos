@@ -187,10 +187,6 @@ if (workbox) {
     "revision": "af2cca5b0d51fbfc4248fee073bb75eb"
   },
   {
-    "url": "modules/Calendar4You/fullcalendar/demos/js/theme-chooser.js",
-    "revision": "27f96a7feaff03a223268b12165b35cf"
-  },
-  {
     "url": "modules/Calendar4You/fullcalendar/fullcalendar.css",
     "revision": "47f6229cce431d267654ed013368eeb5"
   },
@@ -9172,7 +9168,7 @@ if (workbox) {
   },
   {
     "url": "include/js/dtlviewajax.js",
-    "revision": "5fd4a14fc9306d5ca7fd9fbfc8b95458"
+    "revision": "37d8b802631db59f1d1f817c9ae1f69c"
   },
   {
     "url": "include/js/en_gb.lang.js",
@@ -9204,7 +9200,7 @@ if (workbox) {
   },
   {
     "url": "include/js/general.js",
-    "revision": "a4f1521c79b7f27c9ab695143e550715"
+    "revision": "28eb1715f400c7ccbd37004ac74913b0"
   },
   {
     "url": "include/js/hu_hu.lang.js",
@@ -9212,11 +9208,11 @@ if (workbox) {
   },
   {
     "url": "include/js/Inventory.js",
-    "revision": "27f30f1ef5abc3f7f06114d28564f9d8"
+    "revision": "562e1ad5de7ffa1bd1085a14a2821ccb"
   },
   {
     "url": "include/js/it_it.lang.js",
-    "revision": "bc3f34267daf4b762e349a2dcdcb590c"
+    "revision": "97fac4f1dad4fcc9b0948fe4a68384b4"
   },
   {
     "url": "include/js/jslog.js",
