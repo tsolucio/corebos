@@ -37,6 +37,21 @@ function delMenuBranch($topofbranch) {
 	}
 }
 
+function fixMenuOrder($topofbranch) {
+	global $adb;
+	$menuorder=1;
+	$mnurs = $adb->pquery('select evvtmenuid,mtype from vtiger_evvtmenu where mparent=? order by mseq', array($topofbranch));
+	if ($mnurs && $adb->num_rows($mnurs)>0) {
+		while ($mnu = $adb->fetch_array($mnurs)) {
+			if ($mnu['mtype']=='menu') {
+				fixMenuOrder($mnu['evvtmenuid']);
+			}
+			$adb->pquery('update vtiger_evvtmenu set mseq=? where evvtmenuid=?', array($menuorder, $mnu['evvtmenuid']));
+			$menuorder++;
+		}
+	}
+}
+
 $do = vtlib_purify($_REQUEST['evvtmenudo']);
 
 switch ($do) {
@@ -95,6 +110,9 @@ switch ($do) {
 			$menus[] = $m['evvtmenuid'];
 		}
 		$adb->query('update vtiger_evvtmenu set mparent=0 where mparent not in ('.implode(',', $menus).')');
+		break;
+	case 'fixOrder':
+		fixMenuOrder(0);
 		break;
 	case 'updateTree':
 		$treeIds = vtlib_purify($_REQUEST['treeIds']);
