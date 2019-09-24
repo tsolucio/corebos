@@ -377,7 +377,7 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 															</td></tr>
 														</table>
 														<br>
-														<div style="display: block; left: 193px; top: 106px;width:155px; position:absolute;" class="slds-box_border slds-card" id="vtlib_customLinksLay"
+														<div style="display: none; left: 193px; top: 106px;width:215px; position:absolute;" class="slds-box_border slds-card" id="vtlib_customLinksLay"
 															 onmouseout="fninvsh('vtlib_customLinksLay')" onmouseover="fnvshNrm('vtlib_customLinksLay')">
 															<table class="slds-p-around_xx-small">
 																<tr><td style="border-bottom: 1px solid rgb(204, 204, 204); padding: 5px;"><b>{$APP.LBL_MORE} {$APP.LBL_ACTIONS} &#187;</b></td></tr>
