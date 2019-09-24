@@ -36,6 +36,10 @@ function chooseType(typeName) {
 			document.getElementById('dashTypeRow').style.display='none';
 			document.getElementById('dashNameRow').style.display='none';
 			document.getElementById('StuffTitleId').style.display='none';
+			document.getElementById('selModFilter_id').style.display='none';
+			document.getElementById('moduleLabelsRow').style.display='none';
+			document.getElementById('moduleFilters').style.display='none';
+			document.getElementById('moduleCombosRow').style.display='none';
 			VtigerJS_DialogBox.hidebusy();
 			document.getElementById('reportNameRow').style.display='none';
 			document.getElementById('reportTypeRow').style.display='none';
