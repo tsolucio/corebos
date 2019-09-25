@@ -60,18 +60,13 @@ if (!empty($_REQUEST['popqc']) && $_REQUEST['popqc'] = 'true' && empty($_REQUEST
 		"SELECT vtiger_field.fieldlabel,vtiger_field.tablename,vtiger_field.columnname,vtiger_field.fieldname,vtiger_entityname.entityidfield
 			FROM vtiger_field
 			INNER JOIN vtiger_entityname on vtiger_field.tabid=vtiger_entityname.tabid and modulename=?
-			WHERE vtiger_entityname.fieldname like concat('%',vtiger_field.fieldname,'%')",
+			WHERE vtiger_entityname.fieldname like concat('%',vtiger_field.columnname,'%')",
 		array($currentModule)
 	);
 	$row = $adb->fetch_array($fldrs);
 	$fieldLabelEscaped = str_replace(' ', '_', $row['fieldlabel']);
-	$optionvalue = $row['tablename'].':'.$row['columnname'].':'.$row['fieldname'].':'.$currentModule.'_'.$fieldLabelEscaped.':V';
-	$fldvalrs = $adb->pquery(
-		'select '.$row['columnname'].' from '.$row['tablename'].' inner join vtiger_crmentity on crmid = '.$row['entityidfield']
-		.' where '.$row['entityidfield'].'=? ORDER BY createdtime DESC LIMIT 1',
-		array($_REQUEST['record'])
-	);
-	$fldval = $adb->query_result($fldvalrs, 0, 0);
+	$optionvalue = $row['tablename'].':'.$row['entityidfield'].':'.$row['entityidfield'].':'.$currentModule.'_'.$fieldLabelEscaped.':V';
+	$fldval = $_REQUEST['record'];
 	$_REQUEST['searchtype']='advance';
 	$_REQUEST['query'] = 'true';
 	$_REQUEST['advft_criteria'] = '[{"groupid":"1","columnname":"'.$optionvalue.'","comparator":"e","value":"'.$fldval.'","columncondition":""}]';
