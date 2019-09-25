@@ -314,4 +314,11 @@
 	<classname>upd_RemainingUnits_InventoryDetails</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mocodertz</author>
+	<description>Generate Image Code Task</description>
+	<filename>build/changeSets/2019/installGenerateImageCodeWorkflowTask.php</filename>
+	<classname>installGenerateImageCodeWorkflowTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

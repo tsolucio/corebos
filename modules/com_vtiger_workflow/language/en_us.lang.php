@@ -191,5 +191,8 @@ $mod_strings = array(
 'CBPushNotificationTask' => 'Push Notification',
 'pushnoturl' => 'Push Notification URL',
 'CBQuestionMViewFunction' => 'Update Materialized View',
+'LBL_WHERE_TO_SAVE' => 'Where to Save:',
+'LBL_WHAT_TO_ENCODE' => 'What to Encode',
+'LBL_ENCODE_FORMAT' => 'Encode Format',
 );
 ?>
