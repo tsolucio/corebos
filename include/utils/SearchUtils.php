@@ -1060,16 +1060,16 @@ function getAdvancedSearchCriteriaList($advft_criteria, $advft_criteria_groups, 
 				continue;
 			}
 
-			$adv_filter_column = $column_condition["columnname"];
-			$adv_filter_comparator = $column_condition["comparator"];
-			$adv_filter_value = $column_condition["value"];
-			$adv_filter_column_condition = $column_condition["columncondition"];
-			$adv_filter_groupid = $column_condition["groupid"];
+			$adv_filter_column = $column_condition['columnname'];
+			$adv_filter_comparator = $column_condition['comparator'];
+			$adv_filter_value = $column_condition['value'];
+			$adv_filter_column_condition = $column_condition['columncondition'];
+			$adv_filter_groupid = $column_condition['groupid'];
 
-			$column_info = explode(":", $adv_filter_column);
+			$column_info = explode(':', $adv_filter_column);
 
 			$fieldName = $column_info[2];
-			$fieldObj = $moduleFields[$fieldName];
+			$fieldObj = isset($moduleFields[$fieldName]) ? $moduleFields[$fieldName] : false;
 			if (is_object($fieldObj)) {
 				$fieldType = $fieldObj->getFieldDataType();
 
