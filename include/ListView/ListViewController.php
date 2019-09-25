@@ -537,8 +537,7 @@ class ListViewController {
 					$value = ($value != '') ? "<a href='skype:$value?call'>".textlength_check($value).'</a>' : '';
 				} elseif ($field->getFieldDataType() == 'phone') {
 					if ($useAsterisk == 'true') {
-						$value = "<a href='javascript:;' onclick='startCall(&quot;$value&quot;, ".
-							"&quot;$recordId&quot;)'>".textlength_check($value).'</a>';
+						$value = "<a href='javascript:;' onclick='startCall(&quot;$value&quot;, &quot;$recordId&quot;)'>".textlength_check($value).'</a>';
 					} else {
 						$value = textlength_check($value);
 					}

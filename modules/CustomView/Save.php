@@ -457,8 +457,8 @@ if ($cvmodule != '') {
 		'assigned_user_id' => vtws_getEntityId('Users').'x'.$current_user->id,
 		'cvrole' => $subrole
 	);
-	$searchOn = "cvid";
-	$updatedfields = "cvdefault,setpublic";
+	$searchOn = 'cvid';
+	$updatedfields = 'cvdefault,setpublic';
 	vtws_upsert('cbCVManagement', $default_values, $searchOn, $updatedfields, $current_user);
 }
 
