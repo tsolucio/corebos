@@ -1349,7 +1349,11 @@ function getAdvancedSearchValue($tablename, $fieldname, $comparator, $value, $da
 	} elseif ($fieldname == 'inventorymanager') {
 		$value = $tablename.'.'.$fieldname.getAdvancedSearchComparator($comparator, getUserId_Ol($value), $datatype);
 	} elseif (!empty($change_table_field[$fieldname])) { //Added to handle special cases
-		$value = $change_table_field[$fieldname].getAdvancedSearchComparator($comparator, $value, $datatype);
+		$val = $change_table_field[$fieldname].getAdvancedSearchComparator($comparator, $value, $datatype);
+		if (is_numeric($value) && in_array($fieldname, array('contactid', 'contact_id', 'potentialid', 'vendorid', 'vendor_id', 'campaignid'))) {
+			$val = "$val OR $tablename.$fieldname=$value";
+		}
+		$value = $val;
 	} elseif (!empty($change_table_field[$tablename.'.'.$fieldname])) { //Added to handle special cases
 		$tmp_value = '';
 		if ((($comparator=='e' || $comparator=='s' || $comparator=='c') && trim($value) == '') || (($comparator == 'n' || $comparator == 'k') && trim($value) != '')) {
