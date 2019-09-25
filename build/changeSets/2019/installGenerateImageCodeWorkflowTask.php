@@ -41,16 +41,23 @@ class installGenerateImageCodeWorkflowTask extends cbupdaterWorker {
 		$this->finishExecution();
 	}
 
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			global $adb;
-			$result = $adb->pquery("SELECT * FROM `com_vtiger_workflowtasks` WHERE `task` like '%GenerateImageCode%'",array());
-			if ($result and $adb->num_rows($result)>1) {
-				$this->sendMsg('<span style="font-size:large;weight:bold;">Workflows that use this task exist!! Please eliminate them before undoing this change.</span>');
+			$result = $adb->pquery("SELECT * FROM `com_vtiger_workflowtasks` WHERE `task` like '%GenerateImageCode%'", array());
+			if ($result && $adb->num_rows($result)>1) {
+				$this->sendMsg(
+					'<span style="font-size:large;weight:bold;">Workflows that use this task exist!! Please eliminate them before undoing this change.</span>'
+				);
 			} else {
-				$adb->pquery("DELETE FROM com_vtiger_workflow_tasktypes WHERE
-						tasktypename = 'GenerateImageCodeWorkflowTask' and label = 'Generate Image Code Workflow Task' and classname = 'GenerateImageCodeWorkflowTask'",array());
+				$adb->pquery(
+					"DELETE FROM com_vtiger_workflow_tasktypes WHERE
+						tasktypename = 'GenerateImageCodeWorkflowTask' and label = 'Generate Image Code Workflow Task' and classname = 'GenerateImageCodeWorkflowTask'",
+					array()
+				);
 				$this->markUndone(false);
 				$this->sendMsg('Changeset '.get_class($this).' undone!');
 			}
@@ -60,12 +67,12 @@ class installGenerateImageCodeWorkflowTask extends cbupdaterWorker {
 		$this->finishExecution();
 	}
 
-	function isApplied() {
+	public function isApplied() {
 		$done = parent::isApplied();
 		if (!$done) {
 			global $adb;
-			$result = $adb->pquery("SELECT * FROM com_vtiger_workflow_tasktypes where tasktypename='GenerateImageCode'",array());
-			$done = ($result and $adb->num_rows($result)==1);
+			$result = $adb->pquery("SELECT * FROM com_vtiger_workflow_tasktypes where tasktypename='GenerateImageCode'", array());
+			$done = ($result && $adb->num_rows($result)==1);
 		}
 		return $done;
 	}
