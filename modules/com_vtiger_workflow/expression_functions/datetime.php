@@ -109,13 +109,17 @@ function __cb_getWeekdayDifference($arr) {
 function __vt_add_days($arr) {
 	if (count($arr) > 1) {
 		$baseDate = $arr[0];
+		if (empty($baseDate)) {
+			$baseDate = date('Y-m-d'); // Current date
+		} else {
+			$baseDate = DateTimeField::convertToDBFormat($baseDate);
+		}
 		$noOfDays = $arr[1];
 	} else {
 		$noOfDays = $arr[0];
 		$baseDate = date('Y-m-d'); // Current date
 	}
-	preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
-	$baseDate = strtotime($match[0]);
+	$baseDate = strtotime($baseDate);
 	$date = strftime('%Y-%m-%d', $baseDate + ($noOfDays * 24 * 60 * 60));
 	return $date;
 }
@@ -123,13 +127,17 @@ function __vt_add_days($arr) {
 function __vt_sub_days($arr) {
 	if (count($arr) > 1) {
 		$baseDate = $arr[0];
+		if (empty($baseDate)) {
+			$baseDate = date('Y-m-d'); // Current date
+		} else {
+			$baseDate = DateTimeField::convertToDBFormat($baseDate);
+		}
 		$noOfDays = $arr[1];
 	} else {
 		$noOfDays = $arr[0];
 		$baseDate = date('Y-m-d'); // Current date
 	}
-	preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
-	$baseDate = strtotime($match[0]);
+	$baseDate = strtotime($baseDate);
 	$date = strftime('%Y-%m-%d', $baseDate - ($noOfDays * 24 * 60 * 60));
 	return $date;
 }
@@ -137,13 +145,17 @@ function __vt_sub_days($arr) {
 function __vt_add_months($arr) {
 	if (count($arr) > 1) {
 		$baseDate = $arr[0];
+		if (empty($baseDate)) {
+			$baseDate = date('Y-m-d'); // Current date
+		} else {
+			$baseDate = DateTimeField::convertToDBFormat($baseDate);
+		}
 		$noOfMonths = $arr[1];
 	} else {
 		$noOfMonths = $arr[0];
 		$baseDate = date('Y-m-d'); // Current date
 	}
-	preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
-	$baseDate = strtotime("+$noOfMonths months", strtotime($match[0]));
+	$baseDate = strtotime("+$noOfMonths months", strtotime($baseDate));
 	$date = strftime('%Y-%m-%d', $baseDate);
 	return $date;
 }
@@ -151,13 +163,17 @@ function __vt_add_months($arr) {
 function __vt_sub_months($arr) {
 	if (count($arr) > 1) {
 		$baseDate = $arr[0];
+		if (empty($baseDate)) {
+			$baseDate = date('Y-m-d'); // Current date
+		} else {
+			$baseDate = DateTimeField::convertToDBFormat($baseDate);
+		}
 		$noOfMonths = $arr[1];
 	} else {
 		$noOfMonths = $arr[0];
 		$baseDate = date('Y-m-d'); // Current date
 	}
-	preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
-	$baseDate = strtotime("-$noOfMonths months", strtotime($match[0]));
+	$baseDate = strtotime("-$noOfMonths months", strtotime($baseDate));
 	$date = strftime('%Y-%m-%d', $baseDate);
 	return $date;
 }
