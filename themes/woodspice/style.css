@@ -2245,36 +2245,6 @@ a.drop_down:Hover{
 
 .show_tab{display:inline-table;}
 
-.winmarkModulesdef{
-    background-image:url(../images/windowmarkModules.jpg);
-    background-position:top right;
-    background-repeat:no-repeat;
-}
-
-.winmarkModulesusr{
-    background-image:url(../images/windowmarkModulesusr.jpg);
-    background-position:top right;
-    background-repeat:no-repeat;
-}
-
-.winmarkRSS{
-    background-image:url(../images/windowmarkRSS.jpg);
-    background-position:top right;
-    background-repeat:no-repeat;
-}
-
-.winmarkDashboardusr{
-    background-image:url(../images/windowmarkDashboardusr.jpg);
-    background-position:top right;
-    background-repeat:no-repeat;
-}
-
-.winmarkDashboarddef{
-    background-image:url(../images/windowmarkDashboard.jpg);
-    background-position:top right;
-    background-repeat:no-repeat;
-}
-
 /*added for the hanlder of the div in the home page */
 .headerrow{
     cursor:move;

@@ -1193,6 +1193,9 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<td colspan="2" class="dvtCellInfo">&nbsp;</td></tr>
 			{/if}
 			{assign var=rloopit value=$rowiteration}
+			{if empty($header)}
+				{assign var=header value='LBL_PRICING_INFORMATION'|@getTranslatedString:'Products'}
+			{/if}
 			{foreach item=tax key=count from=$TAX_DETAILS}
 				{if $rloopit==2}
 					<tr name="tbl{$header|replace:' ':''}Content" style="height:25px" class="createview_field_row">

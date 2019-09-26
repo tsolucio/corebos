@@ -9200,7 +9200,7 @@ if (workbox) {
   },
   {
     "url": "include/js/general.js",
-    "revision": "3950f545af2fda163567cfe17a8d385e"
+    "revision": "28eb1715f400c7ccbd37004ac74913b0"
   },
   {
     "url": "include/js/hu_hu.lang.js",
@@ -9852,7 +9852,7 @@ if (workbox) {
   },
   {
     "url": "modules/Home/Homestuff.js",
-    "revision": "514f24197e3cad8f95eb211798a78c16"
+    "revision": "7cb21b1fc9fc815884ec43a8226047a3"
   },
   {
     "url": "modules/Home/js/HelpMeNow.js",

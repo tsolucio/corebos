@@ -453,11 +453,12 @@ if ($cvmodule != '') {
 		'cvapprove' =>'0',
 		'setpublic' => $setpublic,
 		'mandatory' => '0',
-		'assigned_user_id' => $current_user->id,
+		'module_list' => $cvmodule,
+		'assigned_user_id' => vtws_getEntityId('Users').'x'.$current_user->id,
 		'cvrole' => $subrole
 	);
-	$searchOn = "cvid";
-	$updatedfields = "cvdefault,setpublic";
+	$searchOn = 'cvid';
+	$updatedfields = 'cvdefault,setpublic';
 	vtws_upsert('cbCVManagement', $default_values, $searchOn, $updatedfields, $current_user);
 }
 
