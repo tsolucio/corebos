@@ -1,9 +1,22 @@
 <?php
+/*************************************************************************************************
+ * Copyright 2019 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+ * file except in compliance with the License. You can redistribute it and/or modify it
+ * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+ * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License. You may obtain a copy of the License
+ * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *************************************************************************************************/
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/com_vtiger_workflow/VTSimpleTemplate.inc';
 require_once 'modules/SMSNotifier/SMSNotifier.php';
-include 'vtlib/Vtiger/module.php';
 
 class GenerateImageCodeWorkflowTask extends VTTask {
 	public $taskSavedData = array();
@@ -17,7 +30,7 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user, $from_wf, $logbg, $root_directory;
+		global $from_wf, $logbg, $root_directory;
 		$from_wf = true;
 		$util = new VTWorkflowUtils();
 		$fieldValueToEncode = $entity->data[$this->field_to_encode];
@@ -28,7 +41,6 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 		$recordId = $recordId[1];
 		$barcodeobj = null;
 
-		require_once 'include/Webservices/Revise.php';
 		require_once 'include/tcpdf/tcpdf_barcodes_2d.php';
 		require_once 'include/tcpdf/tcpdf_barcodes_1d.php';
 
@@ -37,14 +49,18 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 				$fieldValueToEncode,
 				$this->encoding_type
 			);
+			$width = 1;
+			$height = 20;
 		} elseif (array_key_exists($this->encoding_type, $this->tcpdf2dEncodingTypes)) {
 			$barcodeobj = new TCPDF2DBarcode(
 				$fieldValueToEncode,
 				$this->encoding_type
 			);
+			$width = 3;
+			$height = 3;
 		}
 
-		$data = $barcodeobj->getBarcodePngData(3, 3, array(0,128,0));
+		$data = $barcodeobj->getBarcodePngData($width, $height, array(0,0,0));
 
 		$attachment_name = 'BARCODEname.png';
 		$filepath = $root_directory.'cache/'.$attachment_name;
@@ -67,7 +83,6 @@ class GenerateImageCodeWorkflowTask extends VTTask {
 	}
 
 	public function after_retrieve() {
-		global $adb, $current_user;
 		$this->taskSavedData = array(
 			'save_encoded_value' => $this->save_encoded_value,
 			'field_to_encode' => $this->field_to_encode,

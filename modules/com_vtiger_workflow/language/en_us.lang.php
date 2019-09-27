@@ -193,6 +193,12 @@ $mod_strings = array(
 'CBQuestionMViewFunction' => 'Update Materialized View',
 'LBL_WHERE_TO_SAVE' => 'Where to Save:',
 'LBL_WHAT_TO_ENCODE' => 'What to Encode',
-'LBL_ENCODE_FORMAT' => 'Encode Format',
+'Select Field to Save Encoded Value' => 'Select Field to Save Encoded Value',
+'Select Field to Encode' => 'Select Field to Encode',
+'Encoding Type' => 'Encoding Type',
+'Select Encoding Type' => 'Select Encoding Type',
+'Generate Image Code' => 'Generate Image Code',
+'Generate Image Code Workflow Task' => 'Generate Image Code Workflow Task',
+'GenerateImageCodeWorkflowTask' => 'Generate Image Code Workflow Task',
 );
 ?>

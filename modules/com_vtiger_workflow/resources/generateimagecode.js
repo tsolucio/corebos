@@ -150,13 +150,11 @@ function generateImageCode($) {
 		var optionClass = id+'_option';
 		$.each(fieldLabels, function (k, v) {
 			var valueSelected = '';
-			console.log(fieldLabels);
 			if (k == taskSavedData.save_encoded_value || k == taskSavedData.field_to_encode) {
 				valueSelected = 'selected';
 			}
 			select.append('<option class="'+optionClass+'" value="'+k+'" '+valueSelected+'>' + v + '</option>');
 		});
-
 	}
 
 	//Get an array containing the the description of a module and all modules
