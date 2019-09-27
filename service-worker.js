@@ -9160,7 +9160,7 @@ if (workbox) {
   },
   {
     "url": "include/js/de_de.lang.js",
-    "revision": "6d6d5347ec14d8c48494300b6e770a3b"
+    "revision": "70857aa600a8a1cbe3fa1bd28a522a87"
   },
   {
     "url": "include/js/dedup.js",
@@ -9172,19 +9172,19 @@ if (workbox) {
   },
   {
     "url": "include/js/en_gb.lang.js",
-    "revision": "dd20cdbcea677f088c72e3d4a8af6436"
+    "revision": "cd885c780911da90b50fa9d889729a66"
   },
   {
     "url": "include/js/en_us.lang.js",
-    "revision": "c61f2eb3c92ea9361da3b18b02b39b83"
+    "revision": "2369f940b5574ab89799c062159adebc"
   },
   {
     "url": "include/js/es_es.lang.js",
-    "revision": "a9da9c85132e318ea2816683e3972d9c"
+    "revision": "55a4fa43f64b4abc859f84a4fc483f71"
   },
   {
     "url": "include/js/es_mx.lang.js",
-    "revision": "d4a3c963d77400bf3333b5ed5f720bcb"
+    "revision": "92a7ae938f14cefdeb6578befdedfd52"
   },
   {
     "url": "include/js/FieldDependencies.js",
@@ -9196,7 +9196,7 @@ if (workbox) {
   },
   {
     "url": "include/js/fr_fr.lang.js",
-    "revision": "09afebf758e9a4a6f22894f9a3331ff3"
+    "revision": "01c714bf88b7c2535199273cf80e89be"
   },
   {
     "url": "include/js/general.js",
@@ -9204,7 +9204,7 @@ if (workbox) {
   },
   {
     "url": "include/js/hu_hu.lang.js",
-    "revision": "2fe761bcb9332d5dd345cc1bd18322d8"
+    "revision": "d5a7067172555edc0df55b3452f1532b"
   },
   {
     "url": "include/js/Inventory.js",
@@ -9212,7 +9212,7 @@ if (workbox) {
   },
   {
     "url": "include/js/it_it.lang.js",
-    "revision": "97fac4f1dad4fcc9b0948fe4a68384b4"
+    "revision": "aa4f748eba04c76881db396a039355da"
   },
   {
     "url": "include/js/jslog.js",
@@ -9244,7 +9244,7 @@ if (workbox) {
   },
   {
     "url": "include/js/nl_nl.lang.js",
-    "revision": "4f356417424edcc650981247c12710ee"
+    "revision": "4581a64990fa14c8805893894485eafa"
   },
   {
     "url": "include/js/notebook.js",
@@ -9268,7 +9268,7 @@ if (workbox) {
   },
   {
     "url": "include/js/pt_br.lang.js",
-    "revision": "ef846f5d6cba64d3c5945310039ef90d"
+    "revision": "abb44acd785d45e371685919619a742a"
   },
   {
     "url": "include/js/QuickCreate.js",
@@ -9280,7 +9280,7 @@ if (workbox) {
   },
   {
     "url": "include/js/ro_ro.lang.js",
-    "revision": "2a4400dcbc514c2b9b0a165ff7b057d9"
+    "revision": "f5d0725d90a6668eaf11924893e4d126"
   },
   {
     "url": "include/js/search.js",
@@ -9389,6 +9389,10 @@ if (workbox) {
   {
     "url": "modules/com_vtiger_workflow/resources/functional.js",
     "revision": "507e0618da87701f11b973970362e3cf"
+  },
+  {
+    "url": "modules/com_vtiger_workflow/resources/generateimagecode.js",
+    "revision": "bc1627f9b46bae11f03fde6958ff5809"
   },
   {
     "url": "modules/com_vtiger_workflow/resources/ico-workflow.png",
@@ -9852,7 +9856,7 @@ if (workbox) {
   },
   {
     "url": "modules/Home/Homestuff.js",
-    "revision": "7cb21b1fc9fc815884ec43a8226047a3"
+    "revision": "523be48f77c7f5c871f8334dd8756a67"
   },
   {
     "url": "modules/Home/js/HelpMeNow.js",
