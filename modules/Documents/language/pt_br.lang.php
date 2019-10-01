@@ -130,5 +130,7 @@ $mod_strings = array(
 'Free' => 'Espaço em disco disponível',
 'NewSize' => 'Tamanho novo',
 'accept_charge' => 'Eu aceito a alteração da licença e a taxa associada que ela pode ter',
+'LBL_DOCUMENTS_MASSUPLOAD' => 'Mass Upload Documents',
+'LBL_MASSUPLOAD_DESCRIPTION' => 'Activate and deactivate the document mass upload widget on each module.',
 );
 ?>

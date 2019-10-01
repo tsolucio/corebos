@@ -102,7 +102,7 @@ if ($rdo) {
    </tr>
    <tr>
 	<td align="right">
-		Queries Successed : 
+		Queries Succeeded : 
 	</td>
 	<td align="left">
 		<b style="color:#006600;">

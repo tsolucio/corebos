@@ -50,6 +50,8 @@ $mod_strings = array(
 	'LBL_EXPORT_USER_BUTTON_KEY' => 'E',
 	'LBL_DATE_FORMAT' => 'Format Data',
 	'LBL_ERROR' => 'Eroare: ',
+	'FORM_TOKEN_EXPIRED'=>'Edit token has expired. Try again.',
+	'ERR_CANNOTEDITUSER' => 'Not Permitted. You cannot edit this User',
 	'LBL_PASSWORD' => 'Parola',
 	'LBL_USER_NAME' => 'Nume Utilizator',
 	'LBL_2FACODE' => 'Cod',
@@ -719,5 +721,6 @@ $mod_strings = array(
 	'LBL_QUERY' => 'Query',
 	'LBL_FORE_LASTNAME' => 'First or Last name',
 	'LBL_NO_LDAP_MATCHES' => 'No matches found on the LDAP server!',
+	'LOGGED IN' => 'Logged In',
 );
 ?>

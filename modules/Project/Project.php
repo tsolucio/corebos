@@ -260,8 +260,8 @@ class Project extends CRMEntity {
 		// set grid type
 		$g->setGrid(1);
 		// set Gantt colors
-		$g->setColor("group", "000000");
-		$g->setColor("progress", "660000");
+		$g->setColor('group', '000000');
+		$g->setColor('progress', '660000');
 
 		$related_projecttasks = $adb->pquery(
 			'SELECT pt.*
@@ -272,13 +272,13 @@ class Project extends CRMEntity {
 		);
 
 		while ($rec_related_projecttasks = $adb->fetchByAssoc($related_projecttasks)) {
-			if ($rec_related_projecttasks['projecttaskprogress']=="--none--") {
+			if ($rec_related_projecttasks['projecttaskprogress']=='--none--') {
 				$percentage = 0;
 			} else {
-				$percentage = str_replace("%", "", $rec_related_projecttasks['projecttaskprogress']);
+				$percentage = str_replace('%', '', $rec_related_projecttasks['projecttaskprogress']);
 			}
 
-			$rec_related_projecttasks['projecttaskname'] = iconv($default_charset, "ISO-8859-2//TRANSLIT", $rec_related_projecttasks['projecttaskname']);
+			$rec_related_projecttasks['projecttaskname'] = iconv($default_charset, 'ISO-8859-2//TRANSLIT', $rec_related_projecttasks['projecttaskname']);
 			$g->addTask($rec_related_projecttasks['projecttaskid'], $rec_related_projecttasks['startdate'], $rec_related_projecttasks['enddate'], $percentage, $rec_related_projecttasks['projecttaskname']);
 		}
 
@@ -291,14 +291,15 @@ class Project extends CRMEntity {
 		);
 
 		while ($rec_related_projectmilestones = $adb->fetchByAssoc($related_projectmilestones)) {
-			$rec_related_projectmilestones['projectmilestonename'] = iconv($default_charset, "ISO-8859-2//TRANSLIT", $rec_related_projectmilestones['projectmilestonename']);
+			$rec_related_projectmilestones['projectmilestonename'] = iconv($default_charset, 'ISO-8859-2//TRANSLIT', $rec_related_projectmilestones['projectmilestonename']);
 			$g->addMilestone($rec_related_projectmilestones['projectmilestoneid'], $rec_related_projectmilestones['projectmilestonedate'], $rec_related_projectmilestones['projectmilestonename']);
 		}
 
-		$g->outputGantt($tmp_dir."diagram_".$record.".jpg", "100");
+		$project_gantt_type = GlobalVariable::getVariable('Project_Gantt_Type', '2');
+		$g->outputGantt($tmp_dir.'diagram_'.$record.'.jpg', '100', $project_gantt_type);
 
-		$origin = $tmp_dir."diagram_".$record.".jpg";
-		$destination = $tmp_dir."pic_diagram_".$record.".jpg";
+		$origin = $tmp_dir.'diagram_'.$record.'.jpg';
+		$destination = $tmp_dir.'pic_diagram_'.$record.'.jpg';
 
 		$imagesize = getimagesize($origin);
 		$actualWidth = $imagesize[0];
@@ -320,7 +321,7 @@ class Project extends CRMEntity {
 			$image = $origin;
 		}
 
-		$fullGanttChartImageUrl = $tmp_dir."diagram_".$record.".jpg";
+		$fullGanttChartImageUrl = $tmp_dir.'diagram_'.$record.'.jpg';
 		$thumbGanttChartImageUrl = $image;
 		$entries[0] = array("<a href='$fullGanttChartImageUrl' border='0' target='_blank'><img src='$thumbGanttChartImageUrl' border='0'></a>");
 

@@ -161,6 +161,7 @@ $mod_strings = array(
 	'SalesOrder No' => 'Megrendelés No.',
 	'Recurring Invoice Information' => 'Előfizetés - Ismétlődő Díjbekérő beállításai',
 	'RecurringInvoice' => 'Recurring Invoice',
+	'Recommended frequency for RecurringInvoice is 12 hours' => 'Recommended frequency for Recurring Invoice is 12 hours',
 	'Enable Recurring' => 'Díjbekérő-ismétlődés engedélyezve',
 	'Frequency' => 'Gyakoriság',
 	'Start Period' => 'Első Díjbekérő',
@@ -188,5 +189,6 @@ $mod_strings = array(
 	'Amount Due'=>'Amount Due',
 	'Amount Paid'=>'Amount Paid',
 	'Total Amount'=>'Total Amount',
+	'Invoiced' => 'Invoiced',
 );
 ?>

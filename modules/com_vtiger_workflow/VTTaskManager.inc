@@ -13,6 +13,8 @@
  */
 class VTTaskManager {
 
+	public static $reevaluateTasks = array('VTEmailTask');
+
 	public function __construct($adb) {
 		$this->adb = $adb;
 	}

@@ -1322,6 +1322,14 @@ $app_strings = array (
 	'Create Invoice' => 'Crear Factura',
 	'Send Email With PDF' => 'Enviar Email con PDF',
 	'Export To PDF' => 'Exportar a PDF',
+	'Generate Sales Order' => 'Crear Orden de Venta',
+	'Generate Invoice' => 'Crear Factura',
+	'Create Quote' => 'Crear Presupuesto',
+	'Create Purchase Order' => 'Crear Orden de Compra',
+	'Create Sales Order' => 'Crear Orden de Venta',
+	'csrf_warning' => 'Error CSRF. La razón por la que esto sucede es que la página ha estado abierta sin interacción durante demasiado tiempo. Por razones de seguridad, ha expirado. Vuelva a cargar la página presionando CTRL+R o presiona recargar a continuación.',
+	'csrf_reload' => 'Cargar de nuevo la página',
+	'LBL_NOPRODUCTS' => 'No se puede convertir la Orden de Venta ya que no hay lineas facturables.',
 );
 
 // Translation for currency names

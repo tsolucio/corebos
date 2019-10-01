@@ -37,6 +37,7 @@
 		<li><div class="slds-box"><a href="index.php?action=integration&module=Utilities&_op=getconfigzendesk">{'Zendesk Activation'|@getTranslatedString:'Utilities'}</a></div></li>
 		<li><div class="slds-box"><a href="index.php?action=integration&module=Utilities&_op=getconfigwhatsapp">{'Whatsapp Activation'|@getTranslatedString:'Utilities'}</a></div></li>
 		<li><div class="slds-box"><a href="index.php?action=integration&module=Utilities&_op=getconfigsendgrid">{'SendGrid Activation'|@getTranslatedString:'Utilities'}</a></div></li>
+		<li><div class="slds-box"><a href="index.php?action=integration&module=Utilities&_op=getconfiggmp">{'GMP Activation'|@getTranslatedString:'Utilities'}</a></div></li>
 		</ul>
 	</div>
 </div>

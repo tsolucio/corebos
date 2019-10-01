@@ -89,7 +89,6 @@
 	window.fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
 	window.fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 	count=0;
-	massedit_initOnChangeHandlers();
 <!-- vtlib customization: Help information assocaited with the fields -->
 {if $FIELDHELPINFO}
 	window.fieldhelpinfo = {literal}{}{/literal};
@@ -104,5 +103,6 @@
 <script type="text/javascript" src="include/js/FieldDepFunc.js"></script>
 <script type="text/javascript">
 	jQuery(document).ready(function() {ldelim} (new FieldDependencies({$FIELD_DEPENDENCY_DATASOURCE})).init() {rdelim});
+	massedit_initOnChangeHandlers();
 </script>
 {/if}

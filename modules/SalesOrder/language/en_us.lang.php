@@ -174,6 +174,7 @@ $mod_strings = array(
 
 'Recurring Invoice Information' => 'Recurring Invoice Information',
 'RecurringInvoice' => 'Recurring Invoice',
+'Recommended frequency for RecurringInvoice is 12 hours' => 'Recommended frequency for Recurring Invoice is 12 hours',
 'Enable Recurring' => 'Enable Recurring Billing',
 'Frequency' => 'Billing Frequency',
 'Start Period' => 'Billing Period Starts On',
@@ -201,5 +202,6 @@ $mod_strings = array(
 'Amount Due'=>'Amount Due',
 'Amount Paid'=>'Amount Paid',
 'Total Amount'=>'Total Amount',
+'Invoiced' => 'Invoiced',
 );
 ?>

@@ -65,5 +65,9 @@ $mod_strings = array (
 	'LBL_OG_WARNING_CONFIG_VALIDATION' => 'Outgoing Mail Server Configuration Not Validated',
 	'LBL_OG_CONFIG_VALIDATION_FAIL' => 'Outgoing Mail Server Configuration Validation Failed',
 	'LBL_ERROR' => 'Error',
+	'GMP Activation' => 'Google Measurement Protocol Activation',
+	'gmp_gid' => 'Google Universal analytics ID',
+	'gmp_gversion' => 'Measurement Protocol Version',
+	'gmp_deacterror' => 'Workflows that use this task exist!! Please eliminate them before deactivating.',
 );
 ?>

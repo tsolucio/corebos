@@ -19,16 +19,37 @@
 
 function delMenuBranch($topofbranch) {
 	global $adb;
-	$mnurs = $adb->pquery('select evvtmenuid,mtype from vtiger_evvtmenu where mparent=?', array($topofbranch));
+	$mnurs = $adb->pquery('select evvtmenuid,mtype,mseq from vtiger_evvtmenu where mparent=?', array($topofbranch));
 	if ($mnurs && $adb->num_rows($mnurs)>0) {
 		while ($mnu = $adb->fetch_array($mnurs)) {
 			if ($mnu['mtype']=='menu') {
 				delMenuBranch($mnu['evvtmenuid']);
 			}
 			$adb->pquery('delete from vtiger_evvtmenu where evvtmenuid=?', array($mnu['evvtmenuid']));
+			$adb->pquery('update vtiger_evvtmenu set mseq=mseq-1 where mseq>? and mparent=?', array($mnu['mseq'], $topofbranch));
 		}
 	}
-	$adb->pquery('delete from vtiger_evvtmenu where evvtmenuid=?', array($topofbranch));
+	$mnurs = $adb->pquery('select mparent,mseq from vtiger_evvtmenu where evvtmenuid=?', array($topofbranch));
+	if ($mnurs && $adb->num_rows($mnurs)>0) {
+		$mnu = $adb->fetch_array($mnurs);
+		$adb->pquery('update vtiger_evvtmenu set mseq=mseq-1 where mseq>? and mparent=?', array($mnu['mseq'], $mnu['mparent']));
+		$adb->pquery('delete from vtiger_evvtmenu where evvtmenuid=?', array($topofbranch));
+	}
+}
+
+function fixMenuOrder($topofbranch) {
+	global $adb;
+	$menuorder=1;
+	$mnurs = $adb->pquery('select evvtmenuid,mtype from vtiger_evvtmenu where mparent=? order by mseq', array($topofbranch));
+	if ($mnurs && $adb->num_rows($mnurs)>0) {
+		while ($mnu = $adb->fetch_array($mnurs)) {
+			if ($mnu['mtype']=='menu') {
+				fixMenuOrder($mnu['evvtmenuid']);
+			}
+			$adb->pquery('update vtiger_evvtmenu set mseq=? where evvtmenuid=?', array($menuorder, $mnu['evvtmenuid']));
+			$menuorder++;
+		}
+	}
 }
 
 $do = vtlib_purify($_REQUEST['evvtmenudo']);
@@ -89,6 +110,9 @@ switch ($do) {
 			$menus[] = $m['evvtmenuid'];
 		}
 		$adb->query('update vtiger_evvtmenu set mparent=0 where mparent not in ('.implode(',', $menus).')');
+		break;
+	case 'fixOrder':
+		fixMenuOrder(0);
 		break;
 	case 'updateTree':
 		$treeIds = vtlib_purify($_REQUEST['treeIds']);

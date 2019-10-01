@@ -9,6 +9,7 @@
  ********************************************************************************/
 require_once 'include/logging.php';
 require_once 'include/utils/utils.php';
+require_once 'include/Webservices/upsert.php';
 global $adb, $log, $current_user;
 
 function cvGetNewViewName() {
@@ -57,6 +58,9 @@ if ($cvmodule != '') {
 		$status = CV_STATUS_PRIVATE;
 	}
 
+	if (empty($_REQUEST['newsave']) && $status != CV_STATUS_PRIVATE) {
+		$status = CV_STATUS_PENDING;
+	}
 	$userid = $current_user->id;
 
 	if (isset($_REQUEST['setDefault'])) {
@@ -85,6 +89,7 @@ if ($cvmodule != '') {
 		}
 	}
 	//<<<<<<<columns>>>>>>>>>
+
 
 	//<<<<<<<standardfilters>>>>>>>>>
 	$std_filter_list = array();
@@ -431,6 +436,30 @@ if ($cvmodule != '') {
 			}
 		}
 	}
+	if ($status == CV_STATUS_PENDING) {
+		$setpublic = 1;
+	} else {
+		$setpublic = 0;
+	}
+	$roleid = $current_user->roleid;
+	$subrole = implode('|##|', getRoleSubordinates($roleid));
+	$default_values =  array(
+		'cvid' => $cvid,
+		'cvcreate' => '0',
+		'cvretrieve' => '1',
+		'cvupdate' => '1',
+		'cvdelete' => '1',
+		'cvdefault' => $setdefault,
+		'cvapprove' =>'0',
+		'setpublic' => $setpublic,
+		'mandatory' => '0',
+		'module_list' => $cvmodule,
+		'assigned_user_id' => vtws_getEntityId('Users').'x'.$current_user->id,
+		'cvrole' => $subrole
+	);
+	$searchOn = 'cvid';
+	$updatedfields = 'cvdefault,setpublic';
+	vtws_upsert('cbCVManagement', $default_values, $searchOn, $updatedfields, $current_user);
 }
 
 header('Location: index.php?action='.urlencode($return_action).'&module='.urlencode($cvmodule).'&viewname='.urlencode($cvid));

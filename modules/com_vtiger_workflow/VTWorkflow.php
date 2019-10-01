@@ -124,6 +124,12 @@ class Workflow {
 	public function performTasks($entityData) {
 		global $adb,$logbg;
 		$logbg->debug('> PerformTasks for Workflow: '.$this->id);
+		$wflaunch = 0;
+		$wf = $adb->pquery('select execution_condition from com_vtiger_workflows where workflow_id=?', array($this->id));
+		if ($wf && $adb->num_rows($wf)>0) {
+			$wflaunch = $wf->fields['execution_condition'];
+		}
+		$entityData->WorkflowEvent = $wflaunch;
 		$data = $entityData->getData();
 		$util = new VTWorkflowUtils();
 		$user = $util->adminUser();

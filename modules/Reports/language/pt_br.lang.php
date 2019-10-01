@@ -7,8 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- * Contributor(s): Ranieri/Translate terms | 19/01/2018 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
- * Contributor(s): Ranieri/Translate terms | 07-apr-2018 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
+ * Contributor(s): Ranieri/Translate terms | 10-set-2019 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
  ********************************************************************************/
 
 $mod_strings = array(
@@ -45,7 +44,7 @@ $mod_strings = array(
 'LBL_COLUMNS_AVERAGE'=>'Média',
 'LBL_COLUMNS_LOW_VALUE'=>'Valor mínimo',
 'LBL_COLUMNS_LARGE_VALUE'=>'Valor máximo',
-'LBL_GROUPING_SORT'=>'Ordem de Classificação:',
+'LBL_GROUPING_SORT'=>'Ordem de classificação:',
 'LBL_GROUPING_SUMMARIZE'=>'Informação resumida por:',
 'LBL_GROUPING_THEN_BY'=>'e então por:',
 'LBL_GROUPING_FINALLY_BY'=>'e finalmente por:',
@@ -93,11 +92,11 @@ $mod_strings = array(
 'LBL_AND'=>'e',
 'LBL_ADD_NEW_GROUP'=>'Adicionar novo grupo',
 'LBL_REPORT_MODULE'=>'Relatório módulo',
-'LBL_SELECT_RELATIVE_MODULE_FOR_REPORT'=>'Selecione módulo relacionado para relatório',
+'LBL_SELECT_RELATIVE_MODULE_FOR_REPORT'=>'Selecionando um módulo relacionado, você também poderá adicionar seus campos no relatório',
 'LBL_SELECT_REPORT_TYPE_BELOW'=>'Selecione o tipo de relatório abaixo',
 'LBL_TABULAR_FORMAT'=>'Formato tabular',
 'LBL_TABULAR_REPORTS_ARE_SIMPLEST'=>'Os Relatórios Tabulares são a forma mais rápida e simples para obter uma lista dos seus dados.',
-'LBL_SUMMARY_REPORT_VIEW_DATA_WITH_SUBTOTALS'=>'Os Relatórios Resumidos permitem que visualize os seus dados conjuntamente com os subtotais e outras informações resumidas.',
+'LBL_SUMMARY_REPORT_VIEW_DATA_WITH_SUBTOTALS'=>'Os Relatórios Resumidos permitem que visualize os seus dados agrupados e com somatórias.',
 'LBL_FILTERS'=>'Filtros',
 'LBL_MOVE_TO'=>'Mover para',
 'LBL_RENAME_FOLDER'=>'Renomear pasta',
@@ -128,7 +127,7 @@ $mod_strings = array(
 'Tickets by Products'=>'Tickets por produtos',
 'Tickets by Priority'=>'Tickets por prioridade',
 'Open Tickets'=>'Tickets abertos',
-'Tickets related to Products'=>'Tickets relacionados com os produtos',
+'Tickets related to Products'=>'Tickets relacionados com produtos',
 'Tickets that are Open'=>'Tickets abertos',
 'Product Details'=>'Detalhes do produto',
 'Products by Contacts'=>'Produtos por contatos',
@@ -197,11 +196,11 @@ $mod_strings = array(
 'AVG'=>'MÉDIA',
 'MAX'=>'MÁX.',
 'MIN'=>'MIN.',
-'COUNT'=>'COUNT',
+'COUNT'=>'CONTADOR',
 'LBL_CUSTOM_REPORTS'=>'Relatórios personalizados',
 
 'ticketid'=>'No. ticket',
-'NO_COLUMN'=>'Nenhuma Coluna disponível para total',
+'NO_COLUMN'=>'Nenhuma coluna disponível para total',
 
 'LBL_REPORT_DELETED' => 'O Relatório que tenta visualizar foi apagado.',
 
@@ -226,7 +225,7 @@ $mod_strings = array(
 'LBL_DELETE_GROUP'=>'Apagar grupo',
 'LBL_NEW_CONDITION'=>'Nova condição',
 'LBL_SHARING_TYPE'=>'Compartilhar tipo',
-'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Selecionar compartilhar tipo para controlar acesso ao relatório',
+'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Selecionar tipo de compartilhamento para controlar acesso ao relatório',
 'LBL_ACTION' => 'Ação',
 'LBL ACTION' => 'Ação',
 'ACTION' => 'Ação',
@@ -257,6 +256,7 @@ $mod_strings = array(
 'Monthly'=>'Mensalmente',
 'Annually'=>'Anualmente',
 'LBL_SCHEDULE_REPORT'=>'Agendar Relatório',
+'Recommended frequency for ScheduleReports is 15 mins' => 'Recommended frequency for ScheduleReports is 15 mins',
 'ScheduleReports'=>'Agendar Relatório',
 'LBL_SCHEDULE_FREQUENCY'=>'Frequência',
 'OPTION_SCHEDULE_EMAIL_CHOOSE'=>'Escolher..... ',
@@ -267,7 +267,7 @@ $mod_strings = array(
 'WEEKDAY_STRINGS' => array('Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'),
 'MONTH_STRINGS' => array('Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'),
 
-'LBL_TIME_FORMAT_MSG' => 'hh:mm (Formato 24 horas)',
+'LBL_TIME_FORMAT_MSG' => 'hh:mm (Formato 24 horas - considerar fuso horário UTC)',
 'LBL_RELOAD_REPORT' => 'Recarregar relatório',
 'LBL_SAVE_REPORT' => 'Salvar',
 'LBL_SAVE_REPORT_AS' => 'Salvar relatório como...',
@@ -286,12 +286,12 @@ $mod_strings = array(
 'LBL_UNDEFINED' => 'Indefinido',
 'Add ReportCharts' => 'Adicionar relatórios com gráficos ',
 'Choose Report Type' => 'Selecionar tipo de relatório',
-'Application Report' => 'Relatório de aplicação',
-'External Application' => 'Aplicação externa',
-'Direct SQL Statement' => 'Através de comando SQL',
-'Cross Tab' => 'Tabelas cruzadas',
-'Pivot Table' => 'Tabela Dinâmica',
-'External Report URL' => 'URL do relatório externo',
+'Application Report' => 'Relatório de aplicação (padrão)',
+'External Application' => 'Aplicação externa (uso suporte)',
+'Direct SQL Statement' => 'Através de comando SQL (uso suporte)',
+'Cross Tab' => 'Tabelas cruzadas (uso suporte)',
+'Pivot Table' => 'Tabela dinâmica (uso suporte)',
+'External Report URL' => 'URL do relatório externo (uso suporte)',
 'Add User Information' => 'Adicionar Informações do usuário',
 'Select One Field of each' => 'Neste tipo de relatório, só é possível selecionar um campo de cada módulo ',
 'Select Only One Module' => 'Só pode selecionar um módulo para este tipo de relatório',

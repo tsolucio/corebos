@@ -640,10 +640,6 @@ $app_strings = array (
 'Global Discount'=> 'Desconto Global',
 'Net Total (aGD)'=> 'Total Líquido (c/desc)',
 'Net Total (bGD)'=> 'Total Líquido (s/desc)',
-'Total Tax'=> 'Total impostos',
-'Total Tax Retention'=> 'Total impostos retidos',
-'Grand Total'=> 'Total geral',
-'Final Adjustment'=> 'Ajuste Final',
 'SH Tax'=> 'Impostos (envio)',
 'SH Total'=> 'Custos (envio)',
 'Final Adjustment' => 'Ajuste final',
@@ -1303,7 +1299,14 @@ $app_strings = array (
 'Create Invoice' => 'Create Invoice',
 'Send Email With PDF' => 'Send Email With PDF',
 'Export To PDF' => 'Export To PDF',
-
+'Generate Sales Order' => 'Generate Sales Order',
+'Generate Invoice' => 'Generate Invoice',
+'Create Quote' => 'Create Quote',
+'Create Purchase Order' => 'Create Purchase Order',
+'Create Sales Order' => 'Create Sales Order',
+'csrf_warning' => 'CSRF Error. The reason this happens is that the page has been open without any interaction for too
+	long. For security reason, it has expired. Please reload the page by hitting CTRL + R or press reload below.',
+'csrf_reload' => 'Reload the page',
 
 //added for creating a custom lead map row in UI
 'LBL_ADD_MAPPING'=> 'Adicionar mapeamento',
@@ -1339,6 +1342,7 @@ $app_strings = array (
 'Select Related Module' => 'Selecione módulo relacionado',
 'No Module' => 'Sem módulos relacionados',
 'Entity Name' => 'Nome entidade',
+'LBL_NOPRODUCTS' => 'Can\'t convert SalesOrder to Invoice because there aren\'t any remaining products to invoice.',
 );
 
 // Translation for currency names

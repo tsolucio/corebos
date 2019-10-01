@@ -21,7 +21,7 @@
                     <xs:element name="columns">
                       <xs:complexType mixed="true">
                         <xs:sequence>
-                          <xs:element name="field">
+                          <xs:element name="field" maxOccurs="unbounded" minOccurs="1">
                             <xs:complexType mixed="true">
                               <xs:sequence>
                                 <xs:element type="xs:string" name="label"/>
@@ -47,7 +47,7 @@
               <xs:element name="columns">
                 <xs:complexType mixed="true">
                   <xs:sequence>
-                    <xs:element name="field">
+                    <xs:element name="field" maxOccurs="unbounded" minOccurs="1">
                       <xs:complexType mixed="true">
                         <xs:sequence>
                           <xs:element type="xs:string" name="label"/>

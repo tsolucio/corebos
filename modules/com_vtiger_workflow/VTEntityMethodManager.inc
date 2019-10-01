@@ -56,7 +56,7 @@ class VTEntityMethodManager {
 		$it = new SqlResultIterator($this->adb, $result);
 		$methodNames = array();
 		foreach ($it as $row) {
-			$methodNames[] = $row->method_name;
+			$methodNames[] = array($row->method_name, getTranslatedString($row->method_name, 'com_vtiger_workflow'));
 		}
 		return $methodNames;
 	}

@@ -1170,10 +1170,9 @@ class Products extends CRMEntity {
 	 */
 	public function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
-		$log->debug("> transferRelatedRecords $module, $transferEntityIds, $entityId");
+		$log->debug('> transferRelatedRecords '.$module.','.print_r($transferEntityIds, true).','.$entityId);
 		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$rel_table_arr = array(
-			'HelpDesk'=>'vtiger_troubletickets',
 			'Products'=>'vtiger_productcomponent',
 			'Attachments'=>'vtiger_seattachmentsrel',
 			'Quotes'=>'vtiger_inventoryproductrel',
@@ -1185,27 +1184,22 @@ class Products extends CRMEntity {
 			'Accounts'=>'vtiger_seproductsrel',
 			'Potentials'=>'vtiger_seproductsrel',
 			'Contacts'=>'vtiger_seproductsrel',
-			'Assets'=>'vtiger_assets',
 		);
 		$tbl_field_arr = array(
-			'vtiger_troubletickets'=>'ticketid',
 			'vtiger_productcomponent'=>'productcomponentid',
 			'vtiger_seproductsrel'=>'crmid',
 			'vtiger_seattachmentsrel'=>'attachmentsid',
 			'vtiger_inventoryproductrel'=>'id',
 			'vtiger_pricebookproductrel'=>'pricebookid',
 			'vtiger_seproductsrel'=>'crmid',
-			'vtiger_assets'=>'assetsid',
 		);
 		$entity_tbl_field_arr = array(
-			'vtiger_troubletickets'=>'product_id',
 			'vtiger_productcomponent'=>'topdo',
 			'vtiger_seproductsrel'=>'crmid',
 			'vtiger_seattachmentsrel'=>'crmid',
 			'vtiger_inventoryproductrel'=>'productid',
 			'vtiger_pricebookproductrel'=>'productid',
 			'vtiger_seproductsrel'=>'productid',
-			'vtiger_assets'=>'product',
 		);
 		foreach ($transferEntityIds as $transferId) {
 			foreach ($rel_table_arr as $rel_table) {

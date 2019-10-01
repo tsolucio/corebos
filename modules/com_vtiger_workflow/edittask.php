@@ -43,6 +43,9 @@ function vtTaskEdit($adb, $request, $current_language, $app_strings) {
 		$workflowId = $request['workflow_id'];
 		$taskClass = $request['task_type'];
 		$task = $tm->createTask($taskClass, $workflowId);
+		if (in_array($taskClass, VTTaskManager::$reevaluateTasks)) {
+			$task->reevaluate = 1;
+		}
 	}
 
 	if ($task==null) {

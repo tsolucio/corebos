@@ -376,7 +376,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Email',
 	'category' => 'Aplicación',
 	'values' => '',
-	'definition' => 'Dirección de correo electrónico "Responder a" para los correos electrónicos que salen del módulo de soporte de HelpDesk (y otros correos electrónicos del sistema). Solo se utiliza si es diferente de HelpDesk_Support_EMail',
+	'definition' => 'Dirección de correo electrónico "Responder a" para los correos electrónicos que salen de la aplicación.',
 ),
 'HelpDesk_Notify_Owner_EMail' => array(
 	'status' => 'Implementada',
@@ -1385,6 +1385,27 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Aplicación',
 	'values' => '',
 	'definition' => 'Número de filas a mostrar por página en la vista de lista de flujos de trabajo. El valor predeterminado es 20.',
+),
+'Project_Gantt_Type' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'Funcionalidad Módulo',
+	'values' => '1 | 2 | 3',
+	'definition' => 'Se utiliza para definir el tipo de diagrama de Gantt. 1 para diario, 2 para semanal y 3 para mensual. El valor predeterminado es semanal (2).',
+),
+'Attachment_ShowDownloadName' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
+	'values' => '0|1',
+	'definition' => 'En la vista de detalle, mostrará el nombre de la imagen/adjunto como un enlace para descargar el fichero.',
+),
+'Inventory_Check_Invoiced_Lines' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0|1',
+	'definition' => 'Cuando se activa (1), el sistema chequea la cantidad de producto o servicio facturado desde una Orden de Venta y transfiere a la Factura la máxina cantidad permitida desde la Orden de Venta. Predeterminado es 0 (desactivado)',
 ),
 );
 
