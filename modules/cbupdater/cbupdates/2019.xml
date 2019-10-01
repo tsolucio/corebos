@@ -328,4 +328,11 @@
 	<classname>fixcbQuestionMassEdit</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>denaldhushi</author>
+	<description>Set Picklist Value For GlobalVariable Module</description>
+	<filename>build/changeSets/2019/SetPickListGV.php</filename>
+	<classname>SetPickListGV</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
