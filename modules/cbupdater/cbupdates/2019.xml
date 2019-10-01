@@ -316,6 +316,20 @@
 </changeSet>
 <changeSet>
 	<author>mocodertz</author>
+	<description>Generate Image Code Task</description>
+	<filename>build/changeSets/2019/installGenerateImageCodeWorkflowTask.php</filename>
+	<classname>installGenerateImageCodeWorkflowTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Fix incorrect Mass Edit value for Business Questions</description>
+	<filename>build/changeSets/2019/fixcbQuestionMassEdit.php</filename>
+	<classname>fixcbQuestionMassEdit</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mocodertz</author>
 	<description>Add new fields to Workflow</description>
 	<filename>build/changeSets/2019/AddModuleToRelateAndUnrelateFieldsToWorkflow.php</filename>
 	<classname>AddModuleToRelateAndUnrelateFields</classname>

@@ -181,5 +181,14 @@ $mod_strings = array(
 	'CBPushNotificationTask' => 'Push Notification',
 	'pushnoturl' => 'Push Notification URL',
 	'CBQuestionMViewFunction' => 'Update Materialized View',
+	'LBL_WHERE_TO_SAVE' => 'Where to Save:',
+	'LBL_WHAT_TO_ENCODE' => 'What to Encode',
+	'Select Field to Save Encoded Value' => 'Select Field to Save Encoded Value',
+	'Select Field to Encode' => 'Select Field to Encode',
+	'Encoding Type' => 'Encoding Type',
+	'Select Encoding Type' => 'Select Encoding Type',
+	'Generate Image Code' => 'Generate Image Code',
+	'Generate Image Code Workflow Task' => 'Generate Image Code Workflow Task',
+	'GenerateImageCodeWorkflowTask' => 'Generate Image Code Workflow Task',
 );
 ?>

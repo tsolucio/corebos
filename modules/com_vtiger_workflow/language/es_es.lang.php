@@ -187,5 +187,14 @@ $mod_strings = array(
 'CBPushNotificationTask' => 'Notificación Push',
 'pushnoturl' => 'URL de notificación push',
 'CBQuestionMViewFunction' => 'Actualizar Vista Materializada',
+'LBL_WHERE_TO_SAVE' => 'Donde guardar:',
+'LBL_WHAT_TO_ENCODE' => 'Qué codificar',
+'Select Field to Save Encoded Value' => 'Selecciona el campo donde guardar la imagen',
+'Select Field to Encode' => 'Selecciona el campo a codificar',
+'Encoding Type' => 'Tipo Codificación',
+'Select Encoding Type' => 'Selecciona el tipo de codificación',
+'Generate Image Code' => 'Generar Imagen Codificada',
+'Generate Image Code Workflow Task' => 'Generar Imagen Codificada',
+'GenerateImageCodeWorkflowTask' => 'Generar Imagen Codificada',
 );
 ?>
