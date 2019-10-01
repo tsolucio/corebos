@@ -56,7 +56,7 @@ class WorkflowRelationEventHandler extends VTEventHandler {
 			(module_to_relate=? OR module_to_relate="Any")', array($unrelate_excution_condition, $sourceModule, $destinationModule));
 			if ($result || $adb->num_rows($result)!= 0) {
 				while ($row = $adb->fetch_array($result)) {
-					cbwsExecuteWorkflow($row['workflow_id'],  json_encode(array($crmids)), $current_user, $destinationRecordId, $destinationModule);
+					cbwsExecuteWorkflow($row['workflow_id'], json_encode(array($crmids)), $current_user, $destinationRecordId, $destinationModule);
 				}
 			}
 
@@ -67,7 +67,7 @@ class WorkflowRelationEventHandler extends VTEventHandler {
 			(module_to_relate=? OR module_to_relate="Any")', array($unrelate_excution_condition, $destinationModule, $sourceModule));
 			if ($result || $adb->num_rows($result)!= 0) {
 				while ($row = $adb->fetch_array($result)) {
-					cbwsExecuteWorkflow($row['workflow_id'],  json_encode(array($crmids)), $current_user, $destinationRecordId, $destinationModule);
+					cbwsExecuteWorkflow($row['workflow_id'], json_encode(array($crmids)), $current_user, $destinationRecordId, $destinationModule);
 				}
 			}
 		}
