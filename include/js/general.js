@@ -3157,7 +3157,13 @@ function ActivityReminderRemovePopupDOM(id) {
 
 /* ActivityReminder Customization: Pool Callback */
 var ActivityReminder_regcallback_timer;
-var ActivityReminder_Deactivated = false;
+var ActivityReminder_Deactivated;
+GlobalVariable_getVariable('Debug_ActivityReminder_Deactivated', 0, 'Calendar', gVTUserID).then(function (response) {
+	var obj = JSON.parse(response);
+	ActivityReminder_Deactivated = obj.Debug_ActivityReminder_Deactivated;
+}, function (error) {
+	ActivityReminder_Deactivated = 0;
+});
 
 var ActivityReminder_callback_delay = 40 * 1000; // Milli Seconds
 var ActivityReminder_autohide = false; // If the popup should auto hide after callback_delay?
