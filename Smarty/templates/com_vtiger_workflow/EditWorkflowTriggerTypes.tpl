@@ -58,6 +58,20 @@
 	<tr><td><input type="radio" name="execution_condition" value="ON_DELETE" onclick="onschedule_preparescreen(this);"
 		{if $workflow->executionConditionAsLabel() eq 'ON_DELETE'}checked{/if} /></td>
 		<td>{$MOD.LBL_ON_DELETE}.</td></tr>
+	<tr><td><input type="radio" name="execution_condition" value="ON_RELATE" onclick="onschedule_preparescreen(this);"
+		{if $workflow->executionConditionAsLabel() eq 'ON_RELATE'}checked{/if} /></td>
+		<td>{$MOD.LBL_ON_RELATE}
+			<select id='onrelatemodule' name='onrelatemodule' class="small" onchange="onschedule_selectschedule(this);">
+			{$onrelatedmodules}
+			</select>
+		</td></tr>
+	<tr><td><input type="radio" name="execution_condition" value="ON_UNRELATE" onclick="onschedule_preparescreen(this);"
+		{if $workflow->executionConditionAsLabel() eq 'ON_UNRELATE'}checked{/if} /></td>
+		<td>{$MOD.LBL_ON_UNRELATE}
+		<select id='onunrelatemodule' name='onunrelatemodule' class="small" onchange="onschedule_selectschedule(this);">
+			{$onunrelatedmodules}
+		</select>
+		</td></tr>
 	<tr><td valign="top"><input type="radio" name="execution_condition" value="ON_SCHEDULE" onclick="onschedule_preparescreen(this);"
 		{if $workflow->executionConditionAsLabel() eq 'ON_SCHEDULE'}checked{/if} {if $ScheduledWorkflowsCount>$MaxAllowedScheduledWorkflows}disabled{/if} /></td>
 		<td>{$MOD.LBL_ON_SCHEDULE}.

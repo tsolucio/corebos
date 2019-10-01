@@ -16,6 +16,7 @@ require_once 'VTTaskManager.inc';
 require_once 'VTWorkflowApplication.inc';
 require_once 'VTWorkflowTemplateManager.inc';
 require_once 'VTWorkflowUtils.php';
+require_once 'include/Webservices/getRelatedModules.php';
 
 function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_strings) {
 	global $theme, $current_user;
@@ -117,6 +118,44 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 		return_module_language($current_language, 'Settings'),
 		return_module_language($current_language, $module->name)
 	));
+
+	// Related Module List for Relate Event Triggers
+	$relatedMods = getRelatedModulesInfomation($workflow->moduleName, $current_user);
+	$value = 'Any';
+	$module_on_relate_selected_status ='';
+	$opt_list_modules_to_relate = '<option value='.$value.'>'.$value.'</option>';
+	foreach ($relatedMods as $modval) {
+		$rs = $adb->pquery('select relationtype from vtiger_relatedlists where relation_id=?', array($modval['relationId']));
+		$reltype = $adb->query_result($rs, 0, 'relationtype');
+		if ($workflow->module_to_relate == $modval['related_module']) {
+			$module_on_relate_selected_status = 'selected';
+		}
+		if ($reltype == 'N:N') {
+			$opt_list_modules_to_relate = $opt_list_modules_to_relate .'<option value='.$modval['related_module'].' '
+			.$module_on_relate_selected_status.'>'.$modval['labeli18n'].'</option>';
+		}
+		$module_on_relate_selected_status ='';
+	}
+
+	// Related Module List for Unrelate Event Triggers
+	$module_on_unrelate_selected_status ='';
+	$opt_list_modules_to_unrelate = '<option value='.$value.'>'.$value.'</option>';
+	foreach ($relatedMods as $modval) {
+		$rs = $adb->pquery('select relationtype from vtiger_relatedlists where relation_id=?', array($modval['relationId']));
+		$reltype = $adb->query_result($rs, 0, 'relationtype');
+		if ($workflow->module_to_unrelate == $modval['related_module']) {
+			$module_on_unrelate_selected_status = 'selected';
+		}
+		if ($reltype == 'N:N') {
+			$opt_list_modules_to_unrelate = $opt_list_modules_to_unrelate .'<option value='.$modval['related_module'].' '
+			.$module_on_unrelate_selected_status.'>'.$modval['labeli18n'].'</option>';
+		}
+		$module_on_unrelate_selected_status ='';
+	}
+
+	$smarty->assign('onrelatedmodules', $opt_list_modules_to_relate);
+	$smarty->assign('onunrelatedmodules', $opt_list_modules_to_unrelate);
+
 	$smarty->assign('THEME', $theme);
 	$smarty->assign('IMAGE_PATH', $image_path);
 	$smarty->assign('MODULE_NAME', $module->label);

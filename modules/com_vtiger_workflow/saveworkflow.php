@@ -63,6 +63,15 @@ function vtWorkflowSave($adb, $request) {
 	$schannualdates = json_encode(array($schannualdates));
 	$schminuteinterval = $request['schminuteinterval'];
 
+	// for relate and un-relate execution conditions
+	$on_relate_module = 'Any';
+	$on_unrelate_module = 'Any';
+	if ($executionCondition == 'ON_RELATE' && isset($request['onrelatemodule'])) {
+		$on_relate_module = $request['onrelatemodule'];
+	} elseif ($executionCondition == 'ON_UNRELATE' && isset($request['onunrelatemodule'])) {
+		$on_unrelate_module = $request['onunrelatemodule'];
+	}
+
 	$wm = new VTWorkflowManager($adb);
 	if ($saveType == 'new') {
 		$wf = $wm->newWorkflow($moduleName);
@@ -76,6 +85,8 @@ function vtWorkflowSave($adb, $request) {
 		$wf->schdayofweek = isset($schdayofweek) ? json_encode($schdayofweek) : '';
 		$wf->schannualdates = $schannualdates;
 		$wf->schminuteinterval = $schminuteinterval;
+		$wf->module_to_relate = $on_relate_module;
+		$wf->module_to_unrelate = $on_unrelate_module;
 		$wm->save($wf);
 	} elseif ($saveType == 'edit') {
 		$wf = $wm->retrieve($request["workflow_id"]);
@@ -89,6 +100,8 @@ function vtWorkflowSave($adb, $request) {
 		$wf->schdayofweek = isset($schdayofweek) ? json_encode($schdayofweek) : '';
 		$wf->schannualdates = $schannualdates;
 		$wf->schminuteinterval = $schminuteinterval;
+		$wf->module_to_relate = $on_relate_module;
+		$wf->module_to_unrelate = $on_unrelate_module;
 		$wm->save($wf);
 	} else {
 		throw new Exception();

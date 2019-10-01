@@ -43,8 +43,9 @@ require_once 'modules/com_vtiger_workflow/include.inc';
  * workflow: name or ID of the workflow to execute
  * entities: json encoded array of webservice CRMIDs
  */
-function cbwsExecuteWorkflow($workflow, $entities, $user) {
-	global $adb;
+function cbwsExecuteWorkflow($workflow, $entities, $user, $relrecordid = '', $relmodule = '') {
+	global $adb, $log;
+
 	$result = $adb->pquery('select * from com_vtiger_workflows where workflow_id=? or summary=?', array($workflow, $workflow));
 	if (!$result || $adb->num_rows($result)==0) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter: workflow');
@@ -61,6 +62,10 @@ function cbwsExecuteWorkflow($workflow, $entities, $user) {
 	$workflow_mod = $workflow->moduleName; // it return module from workflow
 	foreach ($crmids as $crmid) {
 		$entityData = $entityCache->forId($crmid);
+		if ($workflow->executionCondition == '9' || $workflow->executionCondition == '10') {
+			$entityData->data['relrecordid'] = $relrecordid;
+			$entityData->data['relmodule'] = $relmodule;
+		}
 		$modPrefix = $entityData->getModuleName(); // it return module from webservice
 		if ($workflow_mod == $modPrefix) { // compare workflow module with webservice module to execute
 			if ($workflow->evaluate($entityCache, $entityData->getId())) {

@@ -25,6 +25,8 @@ class VTWorkflowManager {
 	public static $ON_SCHEDULE=6;
 	public static $MANUAL = 7;
 	public static $RECORD_ACCESS_CONTROL = 8;
+	public static $ON_RELATE = 9;
+	public static $ON_UNRELATE = 10;
 
 	public function __construct($adb) {
 		$this->adb = $adb;
@@ -53,12 +55,19 @@ class VTWorkflowManager {
 		if (!isset($workflow->purpose)) {
 			$workflow->purpose = '';
 		}
+		if (!isset($workflow->module_to_relate)) {
+			$workflow->module_to_relate = '';
+		}
+		if (!isset($workflow->module_to_unrelate)) {
+			$workflow->module_to_unrelate = '';
+		}
 		$wf=$workflow;
 		if (!empty($workflow->id)) {
 			$adb->pquery(
 				'update com_vtiger_workflows set
 					module_name=?, summary=?, test=?, execution_condition=?, defaultworkflow=?,
-					schtypeid=?, schtime=?, schdayofmonth=?, schdayofweek=?, schannualdates=?,schminuteinterval=?, purpose=? where workflow_id=?',
+					schtypeid=?, schtime=?, schdayofmonth=?, schdayofweek=?, schannualdates=?,schminuteinterval=?, purpose=?, module_to_relate=?,
+					module_to_unrelate=? where workflow_id=?',
 				array($wf->moduleName, $wf->description, $wf->test, $wf->executionCondition, (isset($wf->defaultworkflow) ? $wf->defaultworkflow : 0),
 					$wf->schtypeid,
 					$wf->schtime,
@@ -67,6 +76,8 @@ class VTWorkflowManager {
 					$wf->schannualdates,
 					$wf->schminuteinterval,
 					$wf->purpose,
+					$wf->module_to_relate,
+					$wf->module_to_unrelate,
 					$wf->id)
 			);
 		} else {
@@ -78,7 +89,8 @@ class VTWorkflowManager {
 				$adb->pquery(
 					'insert into com_vtiger_workflows
 						(workflow_id, module_name, summary, test, execution_condition, type, defaultworkflow,
-						schtypeid, schtime, schdayofmonth, schdayofweek, schannualdates, schminuteinterval, purpose) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+						schtypeid, schtime, schdayofmonth, schdayofweek, schannualdates, schminuteinterval, purpose, module_to_relate, module_to_unrelate) 
+						values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 					array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, $wf->type,
 						(isset($wf->defaultworkflow) ? $wf->defaultworkflow : 0),
 						$wf->schtypeid,
@@ -87,13 +99,15 @@ class VTWorkflowManager {
 						$wf->schdayofweek,
 						$wf->schannualdates,
 						$wf->schminuteinterval,
-						$wf->purpose)
+						$wf->purpose,
+						$wf->module_to_relate,
+						$wf->module_to_unrelate)
 				);
 			} else {
 				$adb->pquery(
 					'insert into com_vtiger_workflows
 						(workflow_id, module_name, summary, test, execution_condition, defaultworkflow,
-						schtypeid, schtime, schdayofmonth, schdayofweek, schannualdates,schminuteinterval, purpose) values (?,?,?,?,?,?,?,?,?,?,?,?)',
+						schtypeid, schtime, schdayofmonth, schdayofweek, schannualdates,schminuteinterval, purpose) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
 					array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, (isset($wf->defaultworkflow) ? $wf->defaultworkflow : 0),
 						$wf->schtypeid,
 						$wf->schtime,
@@ -101,7 +115,9 @@ class VTWorkflowManager {
 						$wf->schdayofweek,
 						$wf->schannualdates,
 						$wf->schminuteinterval,
-						$wf->purpose)
+						$wf->purpose,
+						$wf->module_to_relate,
+						$wf->module_to_unrelate)
 				);
 			}
 		}
@@ -111,9 +127,11 @@ class VTWorkflowManager {
 	public function getWorkflows() {
 		$result=$this->adb->getColumnNames('com_vtiger_workflows');
 		if (in_array('defaultworkflow', $result)) {
-			$result = $this->adb->query('select workflow_id, module_name, summary, test, execution_condition,defaultworkflow, type, purpose from com_vtiger_workflows');
+			$result = $this->adb->query('select workflow_id, module_name, summary, test, execution_condition,defaultworkflow, type, purpose, module_to_relate,
+			 module_to_unrelate from com_vtiger_workflows');
 		} else {
-			$result = $this->adb->query('select workflow_id, module_name, summary, test, execution_condition, type, purpose from com_vtiger_workflows');
+			$result = $this->adb->query('select workflow_id, module_name, summary, test, execution_condition, type, purpose, module_to_relate, 
+			module_to_unrelate from com_vtiger_workflows');
 		}
 		return $this->getWorkflowsForResult($result);
 	}
@@ -340,6 +358,8 @@ class VTWorkflowManager {
 		$exp['schdayofweek'] = $workflow->schdayofweek;
 		$exp['schannualdates'] = $workflow->schannualdates;
 		$exp['schminuteinterval']=$workflow->schminuteinterval;
+		$exp['module_to_relate']=$workflow->module_to_relate;
+		$exp['module_to_unrelate']=$workflow->module_to_unrelate;
 		$exp['tasks'] = array();
 		$tm = new VTTaskManager($this->adb);
 		$tasks = $tm->getTasksForWorkflow($workflow->id);
@@ -368,6 +388,8 @@ class VTWorkflowManager {
 		$workflow->schdayofweek = $data['schdayofweek'];
 		$workflow->schannualdates = $data['schannualdates'];
 		$workflow->schminuteinterval=$data['schminuteinterval'];
+		$workflow->module_to_relate = $data['module_to_relate'];
+		$workflow->module_to_unrelate=$data['module_to_unrelate'];
 		$this->save($workflow);
 		$tm = new VTTaskManager($this->adb);
 		$tasks = $data['tasks'];

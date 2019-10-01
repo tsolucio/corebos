@@ -191,5 +191,7 @@ $mod_strings = array(
 'CBPushNotificationTask' => 'Push Notification',
 'pushnoturl' => 'Push Notification URL',
 'CBQuestionMViewFunction' => 'Update Materialized View',
+'LBL_ON_RELATE' => 'On Relate with',
+'LBL_ON_UNRELATE' => 'On Unrelate with',
 );
 ?>

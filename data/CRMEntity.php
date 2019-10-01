@@ -1661,6 +1661,11 @@ class CRMEntity {
 	public function unlinkRelationship($id, $return_module, $return_id) {
 		global $currentModule;
 
+		$data = array();
+		$data['sourceModule'] = $currentModule;
+		$data['sourceRecordId'] = $id;
+		$data['destinationModule'] = $return_module;
+		$data['destinationRecordId'] = $return_id;
 		$query = 'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relmodule=? AND relcrmid=?) OR (relcrmid=? AND module=? AND crmid=?)';
 		$params = array($id, $return_module, $return_id, $id, $return_module, $return_id);
 		$this->db->pquery($query, $params);
@@ -1680,6 +1685,7 @@ class CRMEntity {
 			$updateParams = array(null, $return_id, $id);
 			$this->db->pquery($updateQuery, $updateParams);
 		}
+		cbEventHandler::do_action('corebos.entity.unlink.after', $data);
 	}
 
 	/** Function to restore a deleted record of specified module with given crmid
@@ -2169,6 +2175,12 @@ class CRMEntity {
 					continue;
 				}
 				$adb->pquery('INSERT INTO vtiger_crmentityrel(crmid, module, relcrmid, relmodule) VALUES(?,?,?,?)', array($crmid, $module, $relcrmid, $with_module));
+				$data = array();
+				$data['sourceModule'] = $module;
+				$data['sourceRecordId'] = $crmid;
+				$data['destinationModule'] = $with_module;
+				$data['destinationRecordId'] = $relcrmid;
+				cbEventHandler::do_action('corebos.entity.link.after', $data);
 			}
 		}
 	}
