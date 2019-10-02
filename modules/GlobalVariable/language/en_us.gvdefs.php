@@ -102,7 +102,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Boolean',
 	'category' => 'Debug',
 	'values' => '0 | 1',
-	'definition' => 'If set to 1 the Activity Reminder will be activated, if set to 0 the Activity Reminder will not be activated.',
+	'definition' => 'If set to 1 the Activity Reminder will be deactivated, if set to 0 the Activity Reminder will be activated. The default is 0. This avoids a lot of noise in the application debug log.',
 ),
 'Accounts_BlockDuplicateName' => array(
 	'status' => 'Implemented',
