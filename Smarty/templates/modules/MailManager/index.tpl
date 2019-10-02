@@ -38,7 +38,7 @@ var MailManageri18nInfo = {ldelim}{rdelim};
 					<div id='_folderprogress_' style='float: right; display: none; position: absolute;left: 30px; font-weight: bold;'>
 						<span>{$MOD.JSLBL_LOADING_FOLDERS}</span><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border='0' align='absmiddle'>
 					</div>
-					<div id="_mainfolderdiv_" >
+					<div id="_mainfolderdiv_">
 					</div>
 				</td>
 				<td width="85%">

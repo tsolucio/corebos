@@ -97,6 +97,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Si se establece en 1, la conversación de correo electrónico completa se enviará al archivo de registro para poder depurar los problemas de configuración de correo electrónico. La depuración del archivo de registro debe estar activada.',
 ),
+'Debug_ActivityReminder_Deactivated' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Depuración',
+	'values' => '0 | 1',
+	'definition' => 'Si se establece en 1, el Recordatorio de actividad se desactivará, si se establece en 0, se activará el Recordatorio de actividad. El valor predeterminado es 0. Esto evita mucho ruido en el registro de depuración de la aplicación.',
+),
 'Accounts_BlockDuplicateName' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Booleano',
