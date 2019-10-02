@@ -3158,7 +3158,7 @@ function ActivityReminderRemovePopupDOM(id) {
 /* ActivityReminder Customization: Pool Callback */
 var ActivityReminder_regcallback_timer;
 var ActivityReminder_Deactivated = 0;
-GlobalVariable_getVariable('Debug_ActivityReminder_Deactivated', 0, 'Calendar', gVTUserID).then(function (response) {
+GlobalVariable_getVariable('Debug_ActivityReminder_Deactivated', 0, 'cbCalendar', gVTUserID).then(function (response) {
 	var obj = JSON.parse(response);
 	ActivityReminder_Deactivated = obj.Debug_ActivityReminder_Deactivated;
 }, function (error) {
