@@ -9,9 +9,9 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'cbQuestion' => 'Perguntas Empresariais',
-	'SINGLE_cbQuestion' => 'Pergunta Empresarial',
-	'cbQuestion ID' => 'ID Pergunta Empresarial',
+	'cbQuestion' => 'Perguntas Comerciais',
+	'SINGLE_cbQuestion' => 'Pergunta Comerciais',
+	'cbQuestion ID' => 'ID Pergunta Comerciais',
 
 	'LBL_CUSTOM_INFORMATION' => 'Informação Personalizada',
 	'LBL_cbQuestion_INFORMATION' => 'Informação Pergunta',
@@ -22,8 +22,8 @@ $mod_strings = array(
 	'Order Information' => 'Informação da Ordem',
 	'Grouping Information' => 'Informação do Agrupamento',
 
-	'qname' => 'Nome da Pregunta',
-	'Question_No' => 'Nº Pregunta',
+	'qname' => 'Nome da Pergunta',
+	'Question_No' => 'Nº Pergunta',
 	'qtype' => 'Tipo',
 	'qstatus' => 'Estado',
 	'qcollection' => 'Coleção',
