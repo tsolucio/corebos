@@ -12,6 +12,7 @@ require_once 'modules/com_vtiger_workflow/VTSimpleTemplate.inc';
 
 class VTWorkflowEntity {
 	private $isDeleted = false;
+	public $WorkflowEvent = 0;
 
 	public function __construct($user, $id, $deleted = false, $queue = false) {
 		$this->moduleName = null;

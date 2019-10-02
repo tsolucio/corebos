@@ -303,13 +303,13 @@ class BusinessActions extends CRMEntity {
 				$link->linkicon= $strtemplate->merge($link->linkicon);
 			}
 			if ($multitype) {
-				if (in_array($link->linkurl, $alreadyLoaded[$link->linktype])) {
+				if (in_array($link->linktype, array('HEADERSCRIPT', 'HEADERCSS', 'HEADERSCRIPT_POPUP', 'HEADERCSS_POPUP', 'FOOTERSCRIPT')) && in_array($link->linkurl, $alreadyLoaded[$link->linktype])) {
 					continue;
 				}
 				$alreadyLoaded[$link->linktype][] = $link->linkurl;
 				$result[$link->linktype][] = $link;
 			} else {
-				if (in_array($link->linkurl, $alreadyLoaded)) {
+				if (in_array($link->linktype, array('HEADERSCRIPT', 'HEADERCSS', 'HEADERSCRIPT_POPUP', 'HEADERCSS_POPUP', 'FOOTERSCRIPT')) && in_array($link->linkurl, $alreadyLoaded)) {
 					continue;
 				}
 				$alreadyLoaded[] = $link->linkurl;

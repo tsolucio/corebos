@@ -310,6 +310,8 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 			require_once 'modules/cbtranslation/number2string.php';
 			$nuevomarcador = $token_pair[0].'.'.$token_pair[1];
 			$reemplazo = retrieve_from_db($nuevomarcador, $id, $module);
+			$reemplazo = str_replace('.', '', $reemplazo);
+			$reemplazo = str_replace(',', '.', $reemplazo);
 			$reemplazo = strtolower(number2string::convert($reemplazo, OpenDocument::$compile_language));
 			return $reemplazo;
 		}
@@ -952,6 +954,15 @@ function eval_imagen($entity, $id, $module) {
 				$att_name = $focus->column_fields[$image_modules[$mname]];
 			}
 		} else {
+			if ($mod=='Project' && $field=='GanttChart') {
+				$prjobj = CRMEntity::getInstance('Project');
+				$gcinfo = $prjobj->get_gantt_chart($entid, 0, 0, false);
+				$gclink = $gcinfo['entries'][0][0];
+				$gclink = substr($gclink, 9);
+				$gclink = substr($gclink, 0, strpos($gclink, "'"));
+				OpenDocument::debugmsg("GanttChart image: $gclink");
+				return $gclink;
+			}
 			$att_name = $focus->column_fields[$field];
 		}
 	}

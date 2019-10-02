@@ -430,7 +430,7 @@ if ($mode=='view') {
 			$uitype = $fieldListResult[$module_name][$j][2];
 			$displaytype = $fieldListResult[$module_name][$j][5];
 			$typeofdata = $fieldListResult[$module_name][$j][6];
-			$fieldtype = explode("~", $typeofdata);
+			$fieldtype = explode('~', $typeofdata);
 			$mandatory = '';
 			$readonly = '';
 			$field=array();
@@ -462,11 +462,11 @@ if ($mode=='view') {
 			// Check for Read-Only or Read-Write Access for the field.
 			$fieldReadOnlyAccess = $fieldListResult[$module_name][$j][3];
 			if ($fieldReadOnlyAccess == 1) {
-				$display_locked = "inline";
-				$display_unlocked = "none";
+				$display_locked = 'inline';
+				$display_unlocked = 'none';
 			} else {
-				$display_locked = "none";
-				$display_unlocked = "inline";
+				$display_locked = 'none';
+				$display_unlocked = 'inline';
 			}
 			if (!$fieldAccessMandatory && !$fieldAccessRestricted) {
 				$field[] = '<input type="hidden" id="'.$module_id.'_readonly_'.$fieldListResult[$module_name][$j][4].'" name="'.$fieldListResult[$module_name][$j][4]
@@ -545,7 +545,7 @@ if ($mode=='view') {
 				$uitype = $fieldListResult[$module_name][$j][2];
 				$displaytype = $fieldListResult[$module_name][$j][5];
 				$typeofdata = $fieldListResult[$module_name][$j][6];
-				$fieldtype = explode("~", $typeofdata);
+				$fieldtype = explode('~', $typeofdata);
 				$mandatory = '';
 				$readonly = '';
 				$field=array();
@@ -560,12 +560,12 @@ if ($mode=='view') {
 				if ($fieldListResult[$module_name][$j][1] == 0) {
 					$visible = 'checked';
 				} else {
-					$visible = "";
+					$visible = '';
 				}
 				if ($disable_field_array[$fieldListResult[$module_name][$j][4]] == 1) {
 					$mandatory = '<font color="blue">*</font>';
 					$readonly = 'disabled';
-					$visible = "";
+					$visible = '';
 					$fieldAccessRestricted = true;
 				}
 				$field[] = $mandatory.' '.getTranslatedString($fldLabel, $module_name);
@@ -576,11 +576,11 @@ if ($mode=='view') {
 				// Check for Read-Only or Read-Write Access for the field.
 				$fieldReadOnlyAccess = $fieldListResult[$module_name][$j][3];
 				if ($fieldReadOnlyAccess == 1) {
-					$display_locked = "inline";
-					$display_unlocked = "none";
+					$display_locked = 'inline';
+					$display_unlocked = 'none';
 				} else {
-					$display_locked = "none";
-					$display_unlocked = "inline";
+					$display_locked = 'none';
+					$display_unlocked = 'inline';
 				}
 				if (!$fieldAccessMandatory && !$fieldAccessRestricted) {
 					$field[] = '<input type="hidden" id="'.$module_id.'_readonly_'.$fieldListResult[$module_name][$j][4].'" name="'.$fieldListResult[$module_name][$j][4]
@@ -660,14 +660,14 @@ if ($mode=='view') {
 				$uitype = $fieldListResult[$module_name][$j][2];
 				$displaytype = $fieldListResult[$module_name][$j][5];
 				$typeofdata = $fieldListResult[$module_name][$j][6];
-				$fieldtype = explode("~", $typeofdata);
+				$fieldtype = explode('~', $typeofdata);
 				$mandatory = '';
 				$readonly = '';
 				$field=array();
 
 				$fieldAccessMandatory = false;
 				$fieldAccessRestricted = false;
-				if ($fieldtype[1] == "M") {
+				if (isset($fieldtype[1]) && $fieldtype[1] == 'M') {
 					$mandatory = '<font color="red">*</font>';
 					$readonly = 'disabled';
 					$fieldAccessMandatory = true;
@@ -676,10 +676,10 @@ if ($mode=='view') {
 				if ($disable_field_array[$fieldListResult[$module_name][$j][4]] == 1) {
 					$mandatory = '<font color="blue">*</font>';
 					$readonly = 'disabled';
-					$visible = "";
+					$visible = '';
 					$fieldAccessRestricted = true;
 				} else {
-					$visible = "checked";
+					$visible = 'checked';
 				}
 				$field[] = $mandatory.' '.getTranslatedString($fldLabel, $module_name);
 				$field[]='<input type="checkbox" id="'.$module_id.'_field_'.$fieldListResult[$module_name][$j][4].'" onClick="selectUnselect(this);" name="'

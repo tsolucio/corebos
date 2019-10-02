@@ -140,6 +140,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'User_AuthenticationType',
 				'User_2FAAuthentication',
 				'User_2FAAuthentication_SendMethod',
+				'User_MandatoryAuthenticationSQL',
 
 				'Accounts_BlockDuplicateName',
 				'Campaign_CreatePotentialOnAccountRelation',
@@ -191,6 +192,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Document_CreateSelectContactFolder',
 				'Document_CreateSelectAccountFolder',
 				'Document_CreateSelectAccountFolderForContact',
+				'Attachment_ShowDownloadName',
 				'HomePage_Widget_Group_Size',
 				'Zero_Bounce_API_KEY',
 				'GenDoc_CopyLabelToClipboard',
@@ -207,6 +209,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 
 				'Inventory_ListPrice_ReadOnly',
 				'Inventory_Show_ShippingHandlingCharges',
+				'Inventory_Check_Invoiced_Lines',
 				'GContacts_Max_Results',
 
 				'CustomerPortal_PDF_Modules',

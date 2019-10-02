@@ -528,11 +528,10 @@ class Homestuff {
 
 	public function getReportChartDetails($stuffId, $skipChart = '') {
 		global $adb;
-		$qry="select * from vtiger_homereportchart where stuffid=?";
-		$result=$adb->pquery($qry, array($stuffId));
-		$reportId=$adb->query_result($result, 0, "reportid");
-		$chartType=$adb->query_result($result, 0, "reportcharttype");
-		$reportDetails=array('ReportId'=>$reportId,'Chart'=>$chartType);
+		$result=$adb->pquery('select * from vtiger_homereportchart where stuffid=?', array($stuffId));
+		$reportId=$adb->query_result($result, 0, 'reportid');
+		$chartType=$adb->query_result($result, 0, 'reportcharttype');
+		$reportDetails=array('ReportId'=>$reportId, 'Chart'=>$chartType);
 		$this->reportdetails[$stuffId] = $reportDetails;
 		if ($skipChart == '') {
 			return $this->getDisplayReportChart($reportId, $chartType);
@@ -552,8 +551,7 @@ class Homestuff {
 	private function getDefaultDetails($dfid, $calCnt) {
 		global $adb;
 		$details = array('ModuleName'=>'','Title'=>'','Header'=>'','Entries'=>array(),'search_qry'=>'');
-		$qry="select * from vtiger_homedefault where stuffid=?";
-		$result=$adb->pquery($qry, array($dfid));
+		$result=$adb->pquery('select * from vtiger_homedefault where stuffid=?', array($dfid));
 		$maxval=$adb->query_result($result, 0, "maxentries");
 		$hometype=$adb->query_result($result, 0, "hometype");
 

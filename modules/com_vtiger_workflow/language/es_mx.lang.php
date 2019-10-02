@@ -29,7 +29,7 @@ $mod_strings = array(
 'LBL_WORKFLOW_LIST'=>'Flujos de Trabajo',
 'LBL_AVAILABLE_WORKLIST_LIST'=>'Flujos de Trabajo Disponibles',
 'LBL_LOADING'=>'Cargando...',
-'LBL_REEVALCONDITIONS' => 'Evaluar condiciones en el momento de la ejecución',
+'LBL_REEVALCONDITIONS' => 'Evaluar condiciones en el momento de la ejecución diferida',
 'LBL_VALIDATION_ERROR'=>'Error de Validación',
 'LBL_SELECT_OPTION_DOTDOTDOT'=>'Selecciona Opción...',
 'LBL_WORKFLOW_NOTE_CRON_CONFIG'=>'NOTA: Debes configurar la tarea programada (Cron Job) de Flujo de Trabajo.',
@@ -86,6 +86,7 @@ $mod_strings = array(
 'Portal Url' => 'Url Portal',
 'groupEmailList' => 'Emails de Grupo',
 
+'Recommended frequency for Workflow is 15 mins' => 'La frecuencia recomendada para los Flujos de Trabajo es de 15 minutos',
 'Workflow'=>'Flujo de Trabajo',
 'WORKFLOW_DELETE_CONFIRMATION' => '¿Seguro que quieres eliminar este flujo de trabajo?',
 'LBL_DELETE_WORKFLOW' => 'Eliminar Flujo de Trabajo',
@@ -123,6 +124,10 @@ $mod_strings = array(
 'WhatsappWorkflowTask' => 'Enviar Mensaje WhatsApp',
 'Many to Many Relation Task' => 'Relación Muchos a Muchos',
 'Set Many to Many Relation' => 'Establecer Relación Muchos a Muchos',
+'NotifyOnPortalTicketCreation' => 'Notificar al crear tickets en el portal',
+'NotifyOnPortalTicketComment' => 'Notificar al comentar el ticket del portal',
+'NotifyOwnerOnTicketChange' => 'Notificar el usuario asignado sobre un cambio en un ticket',
+'NotifyParentOnTicketChange' => 'Notificar a la cuenta/contacto relacionado sobre un cambio en un ticket',
 
 'LBL_EVENTNAME' => 'Nombre de Evento',
 'LBL_DESCRIPTION' => 'Descripción',
@@ -185,5 +190,15 @@ $mod_strings = array(
 'Select Config Map' => 'Selecciona Mapa Configuración',
 'CBPushNotificationTask' => 'Notificación Push',
 'pushnoturl' => 'URL de notificación push',
+'CBQuestionMViewFunction' => 'Actualizar Vista Materializada',
+'LBL_WHERE_TO_SAVE' => 'Donde guardar:',
+'LBL_WHAT_TO_ENCODE' => 'Qué codificar',
+'Select Field to Save Encoded Value' => 'Selecciona el campo donde guardar la imagen',
+'Select Field to Encode' => 'Selecciona el campo a codificar',
+'Encoding Type' => 'Tipo Codificación',
+'Select Encoding Type' => 'Selecciona el tipo de codificación',
+'Generate Image Code' => 'Generar Imagen Codificada',
+'Generate Image Code Workflow Task' => 'Generar Imagen Codificada',
+'GenerateImageCodeWorkflowTask' => 'Generar Imagen Codificada',
 );
 ?>

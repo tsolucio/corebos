@@ -279,4 +279,53 @@
 	<classname>installPushNotWorkflowTask</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add business question materialized view fields and actions</description>
+	<filename>build/changeSets/2019/addcbquestionfieldsandactions.php</filename>
+	<classname>addcbquestionfieldsandactions</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>Elifuraha</author>
+	<description>migrate uitype 80 (Sale Order capture) to uitype 10 (standard capture)</description>
+	<filename>build/changeSets/2019/migrateUIType80to10.php</filename>
+	<classname>migrateUIType80to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>glorymoshi</author>
+	<description>add new parameter to upsert function</description>
+	<filename>build/changeSets/2019/addParameterinupsertfunction.php</filename>
+	<classname>addParameterinupsertfunction</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>Kiko Jover</author>
+	<description>Add new fields to InventoryDetails to control remaining units in SO</description>
+	<filename>build/changeSets/2019/add_RU_Relline_InventoryDetails.php</filename>
+	<classname>add_RU_Relline_InventoryDetails</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>Kiko Jover</author>
+	<description>Initialise remaining units in InventoryDetails</description>
+	<filename>build/changeSets/2019/upd_RemainingUnits_InventoryDetails.php</filename>
+	<classname>upd_RemainingUnits_InventoryDetails</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mocodertz</author>
+	<description>Generate Image Code Task</description>
+	<filename>build/changeSets/2019/installGenerateImageCodeWorkflowTask.php</filename>
+	<classname>installGenerateImageCodeWorkflowTask</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Fix incorrect Mass Edit value for Business Questions</description>
+	<filename>build/changeSets/2019/fixcbQuestionMassEdit.php</filename>
+	<classname>fixcbQuestionMassEdit</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

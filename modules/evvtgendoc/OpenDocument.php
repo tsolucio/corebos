@@ -163,7 +163,7 @@ class OpenDocument {
 	private $styles_array;
 	private $originGenDocStyles;
 
-		/**
+	/**
 	 * DOMNode contains fonts declarations
 	 *
 	 * @var DOMNode
@@ -306,7 +306,7 @@ class OpenDocument {
 	const FILE_MANIFEST = 'META-INF/manifest.xml';
 	const MANIFEST = 'urn:oasis:names:tc:opendocument:xmlns:manifest:1.0';
 
-		/**
+	/**
 	 * text namespace URL
 	 */
 	const NS_TEXT = 'urn:oasis:names:tc:opendocument:xmlns:text:1.0';
@@ -328,12 +328,12 @@ class OpenDocument {
 
 	private $NS_TABLE_attrib=array('align');
 
-		/**
+	/**
 	 * style namespace URL
 	 */
 	const NS_STYLE = 'urn:oasis:names:tc:opendocument:xmlns:style:1.0';
 
-		/**
+	/**
 	 * fo namespace URL
 	 */
 	const NS_FO = 'urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0';
@@ -343,9 +343,7 @@ class OpenDocument {
 								'padding-left','padding-right','padding-top','padding-bottom','break-before','line-height',
 								'font-variant','text-transform','text-shadow','letter-spacing','break-after','text-align-last'
 	);
-	private $NS_DRAW_attrib=array('luminance','contrast','red','green','blue','gamma','color-inversion','image-opacity',
-								  'color-mode','transparency','opacity'
-	);
+	private $NS_DRAW_attrib=array('luminance','contrast','red','green','blue','gamma','color-inversion','image-opacity','color-mode','transparency','opacity');
 	private $NS_XLINK_attrib=array('type','href','show','actuate'
 	);
 	private $NS_LISTSTYLE=array('num-format','num-suffix','font-name','num-prefix');
@@ -359,7 +357,7 @@ class OpenDocument {
 	private $saveContextoActual;
 	public $xmlout;
 
-		/**
+	/**
 	 * office namespace URL
 	 */
 	const NS_OFFICE = 'urn:oasis:names:tc:opendocument:xmlns:office:1.0';
@@ -378,7 +376,7 @@ class OpenDocument {
 	 */
 	const NS_DRAW = 'urn:oasis:names:tc:opendocument:xmlns:drawing:1.0';
 
-		/**
+	/**
 	 * Constructor
 	 *
 	 * @param string $filename optional
@@ -937,7 +935,7 @@ class OpenDocument {
 		$this->debugmsg("END GenDOC $endcompile s");
 	}
 
-		/**
+	/**
 	 * Generate OpenDocument combined document
 	 *
 	 * @param OpenDocument/ArrayObject $obj
@@ -979,8 +977,8 @@ class OpenDocument {
 					$condicionparacada=rtrim(trim(substr($texto_p, strlen($foreachGD))), '}');
 					$module_pcada = getModuleFromCondition($this->contextoParacada[$this->contextoActual-1]['condicion']);
 					$this->contextoParacada[$this->contextoActual]=array(  // guardo contexto modulos encontrados
-					  'condicion'=>$condicionparacada,
-					  'module'=>($module_pcada=='Organization' ? 'cbCompany' : $module_pcada),
+						'condicion'=>$condicionparacada,
+						'module'=>($module_pcada=='Organization' ? 'cbCompany' : $module_pcada),
 					);
 				} elseif (strtolower(substr($texto_p, 0, strlen($foreachEndGD)))==$foreachEndGD) {
 					$this->contextoParacada[$this->contextoActual]['ramaparacada']=$ramaparacada; // guardo contexto modulos encontrados
@@ -995,9 +993,9 @@ class OpenDocument {
 							$repe[] = 0;
 							$last_repe = count($repe)-1;
 						for ($repe[$last_repe]=1; $repe[$last_repe]<=$num_iter; $repe[$last_repe]++) {
-							   $ramaparacada=$this->contextoParacada[0]['ramaparacada'];
-							   $this->contextoParacada[0]['repe'] = $repe[$last_repe];
-							   $this->toGenDoc($ramaparacada, $id, $module);
+							$ramaparacada=$this->contextoParacada[0]['ramaparacada'];
+							$this->contextoParacada[0]['repe'] = $repe[$last_repe];
+							$this->toGenDoc($ramaparacada, $id, $module);
 							pop_iter_modules();
 						}
 							array_pop($repe);
@@ -1443,7 +1441,7 @@ class OpenDocument {
 		return OpenDocument_ListItem::instance($this);
 	}
 
-		/********************* Styles ****************************/
+	/********************* Styles ****************************/
 
 	/**
 	 * Apply style information to object
@@ -1464,10 +1462,9 @@ class OpenDocument {
 		$nodes = $this->cursor->getElementsByTagName('*');
 		$style=null;
 		foreach ($nodes as $node) {
-			if ($node->hasAttributeNS(self::NS_TEXT, 'style-name')
-			 && $node->getAttributeNS(self::NS_TEXT, 'style-name') == $style_name) {
-				 $style=$node;
-				 break;
+			if ($node->hasAttributeNS(self::NS_TEXT, 'style-name') && $node->getAttributeNS(self::NS_TEXT, 'style-name') == $style_name) {
+				$style=$node;
+				break;
 			}
 		}
 
@@ -1562,7 +1559,7 @@ class OpenDocument {
 		return $style->getAttributeNS(self::NS_STYLE, 'name');
 	}
 
-		/**
+	/**
 	 * Add array of style values
 	 *
 	 * @param string $style_name
@@ -1622,7 +1619,7 @@ class OpenDocument {
 		}
 	}
 
-		/**
+	/**
 	 * Add array of List style values
 	 *
 	 * @param string $style_name
@@ -1682,7 +1679,7 @@ class OpenDocument {
 		$this->styles->appendChild($style);
 	}
 
-		/**
+	/**
 	 * Add array of Date style values
 	 *
 	 */
@@ -1726,7 +1723,7 @@ class OpenDocument {
 		$this->styles->appendChild($style);
 	}
 
-		/**
+	/**
 	 * Get array of style values
 	 *
 	 * @param string $style_name
@@ -2153,12 +2150,12 @@ class OpenDocument {
 			$this->path = $filename;
 		}
 
-				// Remove file and create a new document to avoid problems
+		// Remove file and create a new document to avoid problems
 		if (file_exists($this->path)) {
 			unlink($this->path);
 		}
 
-				//write mimetype
+		//write mimetype
 		if (!ZipWrapper::write($this->path, self::FILE_MIMETYPE, $this->mimetype)) {
 			throw new OpenDocument_Exception(OpenDocument_Exception::WRITE_MIMETYPE_ERR);
 		}
@@ -2360,32 +2357,32 @@ class OpenDocument {
 						case 'b':
 						case 'strong':
 							$elem=$topofarray->createSpan(html_entity_decode($childhtml->nodeValue, ENT_NOQUOTES, 'UTF-8'));
-							$elem->getNode()->setAttribute('text:style-name', "SIGPAC_BOLD");
+							$elem->getNode()->setAttribute('text:style-name', 'SIGPAC_BOLD');
 							break;
 						case 'i':
 						case 'em':
-							 $elem=$topofarray->createSpan(html_entity_decode($childhtml->nodeValue, ENT_NOQUOTES, 'UTF-8'));
-							 $elem->getNode()->setAttribute('text:style-name', "SIGPAC_ITALIC");
+							$elem=$topofarray->createSpan(html_entity_decode($childhtml->nodeValue, ENT_NOQUOTES, 'UTF-8'));
+							$elem->getNode()->setAttribute('text:style-name', 'SIGPAC_ITALIC');
 							break;
 						case 'u':
-							 $elem=$topofarray->createSpan(html_entity_decode($childhtml->nodeValue, ENT_NOQUOTES, 'UTF-8'));
-							 $elem->getNode()->setAttribute('text:style-name', "SIGPAC_UNDERLINE");
+							$elem=$topofarray->createSpan(html_entity_decode($childhtml->nodeValue, ENT_NOQUOTES, 'UTF-8'));
+							$elem->getNode()->setAttribute('text:style-name', 'SIGPAC_UNDERLINE');
 							break;
 						case 'span':
-							 array_pop($parentArray);
-							 $topofarray=$parentArray[count($parentArray)-1];
+							array_pop($parentArray);
+							$topofarray=$parentArray[count($parentArray)-1];
 							if ($childhtml->haschildNodes()) {
 								$elem=$topofarray->createParagraph();
 								$spanstyle = $childhtml->getAttribute('style');
 								if ($spanstyle) {
-									 $spanstyle = str_replace(' ', '', $spanstyle);
-									 $sselem = explode(':', $spanstyle);
+									$spanstyle = str_replace(' ', '', $spanstyle);
+									$sselem = explode(':', $spanstyle);
 									if ($sselem[0]=='text-align') {
-										 $justify = strtoupper(trim($sselem[1], ';'));
-										 $elem->getNode()->setAttribute('text:style-name', "SIGPAC_JUSTIFY_$justify");
+										$justify = strtoupper(trim($sselem[1], ';'));
+										$elem->getNode()->setAttribute('text:style-name', "SIGPAC_JUSTIFY_$justify");
 									}
 								}
-								   $spanstyle = $childhtml->getAttribute('estilo');
+								$spanstyle = $childhtml->getAttribute('estilo');
 								if ($spanstyle) {
 									$elem->getNode()->setAttribute('text:style-name', $spanstyle);
 								}
@@ -2429,12 +2426,12 @@ class OpenDocument {
 							}
 							break;
 						case 'br':
-							 $elem=$topofarray->createTextTab();  // para que la justificación completa funcione correctamente
-							 $elem=$topofarray->createTextLineBreak();
+							$elem=$topofarray->createTextTab();  // para que la justificación completa funcione correctamente
+							$elem=$topofarray->createTextLineBreak();
 							break;
 						default: //case '#text':
-							 $elem=$topofarray->createTextElement(html_entity_decode($childhtml->nodeValue, ENT_NOQUOTES, 'UTF-8'));
-							 OpenDocument::copyAttributes($child, $elem);
+							$elem=$topofarray->createTextElement(html_entity_decode($childhtml->nodeValue, ENT_NOQUOTES, 'UTF-8'));
+							OpenDocument::copyAttributes($child, $elem);
 							break;
 					}
 				}

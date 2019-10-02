@@ -288,6 +288,10 @@ class PearDatabase {
 		return $this->database->HasFailedTrans();
 	}
 
+	public function getErrorMsg() {
+		return $this->database->ErrorMsg();
+	}
+
 	public function checkError($msg = '', $dieOnError = false) {
 		if ($this->dieOnError || $dieOnError) {
 			$bt = debug_backtrace();

@@ -32,7 +32,7 @@ $mod_strings = array(
 'LBL_WORKFLOW_LIST'=>'Workflow List',
 'LBL_AVAILABLE_WORKLIST_LIST'=>'Available Workflows',
 'LBL_LOADING'=>'Loading...',
-'LBL_REEVALCONDITIONS' => 'Evaluate conditions on execution',
+'LBL_REEVALCONDITIONS' => 'Evaluate conditions on delayed execution',
 'LBL_VALIDATION_ERROR'=>'Validation Error',
 'LBL_SELECT_OPTION_DOTDOTDOT'=>'Select Option...',
 'LBL_WORKFLOW_NOTE_CRON_CONFIG'=>'NOTE: You should have Workflow cron script configured.',
@@ -85,6 +85,7 @@ $mod_strings = array(
 'Portal Url' => 'Portal Url',
 'groupEmailList' => 'Group Email List',
 
+'Recommended frequency for Workflow is 15 mins' => 'Recommended frequency for Workflow is 15 mins',
 'Workflow'=>'Workflow',
 'WORKFLOW_DELETE_CONFIRMATION' => 'Are you sure you want to delete this Workflow?',
 'LBL_DELETE_WORKFLOW' => 'Delete Workflow',
@@ -122,6 +123,10 @@ $mod_strings = array(
 'WhatsappWorkflowTask' => 'Send WhatsApp Message',
 'Many to Many Relation Task' => 'Many to Many Relation Task',
 'Set Many to Many Relation' => 'Set Many to Many Relation',
+'NotifyOnPortalTicketCreation' => 'Notify On Portal Ticket Creation',
+'NotifyOnPortalTicketComment' => 'Notify On Portal Ticket Comment',
+'NotifyOwnerOnTicketChange' => 'Notify Owner On Ticket Change',
+'NotifyParentOnTicketChange' => 'Notify Parent On Ticket Change',
 
 'LBL_EVENTNAME' => 'Event Name',
 'LBL_DESCRIPTION' => 'Description',
@@ -185,5 +190,15 @@ $mod_strings = array(
 'Select Config Map' => 'Select Configuration Map',
 'CBPushNotificationTask' => 'Push Notification',
 'pushnoturl' => 'Push Notification URL',
+'CBQuestionMViewFunction' => 'Update Materialized View',
+'LBL_WHERE_TO_SAVE' => 'Where to Save:',
+'LBL_WHAT_TO_ENCODE' => 'What to Encode',
+'Select Field to Save Encoded Value' => 'Select Field to Save Encoded Value',
+'Select Field to Encode' => 'Select Field to Encode',
+'Encoding Type' => 'Encoding Type',
+'Select Encoding Type' => 'Select Encoding Type',
+'Generate Image Code' => 'Generate Image Code',
+'Generate Image Code Workflow Task' => 'Generate Image Code Workflow Task',
+'GenerateImageCodeWorkflowTask' => 'Generate Image Code Workflow Task',
 );
 ?>

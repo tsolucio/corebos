@@ -441,7 +441,6 @@ class BURAK_Gantt {
 		// if grid type is not set
 
 		$this->grid = $project_gantt_type;
-		echo $this->grid;
 		/*
 		if(strtoupper($this->grid) == "AUTO"){
 			// determine grid type

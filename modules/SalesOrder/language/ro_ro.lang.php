@@ -164,6 +164,7 @@ $mod_strings = array(
 	'SalesOrder No' => 'Nr Ordin Vanzare',
 	'Recurring Invoice Information' => 'Informatii Facturi Recurente',
 	'RecurringInvoice' => 'Facturi Recurente',
+	'Recommended frequency for RecurringInvoice is 12 hours' => 'Recommended frequency for Recurring Invoice is 12 hours',
 	'Enable Recurring' => 'Activeaza Recurenta',
 	'Frequency' => 'Frecventa Facturarilor',
 	'Start Period' => 'Perioada Facturare incepe la',
@@ -217,5 +218,6 @@ $mod_strings = array(
 	'Timecontrol' => 'ControlTimp',
 	'cbCommission' => 'cbCommission',
 	'cbControlIngresoGasto' => 'cbControlIngresoGasto',
+	'Invoiced' => 'Invoiced',
 );
 ?>

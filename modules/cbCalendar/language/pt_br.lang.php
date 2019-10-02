@@ -39,6 +39,7 @@ $mod_strings = array(
 	'Location' => 'Local',
 	'Send Reminder' => 'Enviar lembrete',
 	'LBL_SENDREMINDER' => 'Enviar lembrente',
+	'Recommended frequency for SendReminder is 15 mins' => 'Recommended frequency for Send Reminder is 15 mins',
 	'Recurrence' => 'Recorrente',
 	'No Time' => 'Dia todo',
 	'LBL_RELATEDTO' => 'Relacionado à',

@@ -1385,6 +1385,27 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Number of rows to show per page in the workflow list view grid. The default is 20.',
 ),
+'Project_Gantt_Type' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Module Functionality',
+	'values' => '1 | 2 | 3',
+	'definition' => 'Used to define Gantt Chart type. 1 for daily, 2 for weekly and 3 for monthly. Default value is set to 2.',
+),
+'Attachment_ShowDownloadName' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0|1',
+	'definition' => 'In Detail View, will show the image/attachment name as a download link above the image itself.',
+),
+'Inventory_Check_Invoiced_Lines' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0|1',
+	'definition' => 'When activated (1), system checks quantity of product or service invoiced from a Sales Order and transfer to Invoice the maximum number permitted to invoice from a Sales Order. Defalut is 0 (deactivated)',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/fr_fr.gvdefs.*.php', GLOB_BRACE) as $tcode) {

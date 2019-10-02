@@ -280,17 +280,29 @@ class Users extends CRMEntity {
 	 * @return true if the user is authenticated, false otherwise
 	 */
 	public function doLogin($user_password) {
-		$authType = GlobalVariable::getVariable('User_AuthenticationType', 'SQL');
-		if ($this->is_admin) {
-			$authType = 'SQL'; // admin users always login locally
+		$usr_name = $this->column_fields['user_name'];
+		$result = $this->db->pquery('select id from vtiger_users where user_name=?', array($usr_name));
+		if ($result && $this->db->num_rows($result)==1) {
+			$row = $this->db->fetchByAssoc($result);
+			$userid = $row['id'];
+		} else {
+			return false;
 		}
-		$usr_name = $this->column_fields["user_name"];
+		$authType = GlobalVariable::getVariable('User_AuthenticationType', 'SQL', 'Users', $userid);
+
+		$sql_auth_users = GlobalVariable::getVariable('User_MandatoryAuthenticationSQL', 'admin', 'Users', $userid);
+		$sql_auth_users = explode(',', $sql_auth_users);
+
+		if (in_array($usr_name, $sql_auth_users)) {
+			$this->log->debug("$usr_name exists in sql_auth_users, so using SQL Authentication");
+			$authType = 'SQL';
+		}
 
 		switch (strtoupper($authType)) {
 			case 'LDAP':
-				$this->log->debug("Using LDAP authentication");
+				$this->log->debug('Using LDAP authentication');
 				require_once 'modules/Users/authTypes/LDAP.php';
-				$result = ldapAuthenticate($this->column_fields["user_name"], $user_password);
+				$result = ldapAuthenticate($usr_name, $user_password);
 				if ($result == null) {
 					return false;
 				} else {
@@ -302,7 +314,7 @@ class Users extends CRMEntity {
 				$this->log->debug("Using Active Directory authentication");
 				require_once 'modules/Users/authTypes/adLDAP.php';
 				$adldap = new adLDAP();
-				if ($adldap->authenticate($this->column_fields["user_name"], $user_password)) {
+				if ($adldap->authenticate($usr_name, $user_password)) {
 					return true;
 				} else {
 					return false;
@@ -1003,23 +1015,23 @@ class Users extends CRMEntity {
 
 		$result = array();
 		foreach ($this->tab_name_index as $table_name => $index) {
-			$result[$table_name] = $adb->pquery("select * from " . $table_name . " where " . $index . "=?", array($record));
+			$result[$table_name] = $adb->pquery('select * from ' . $table_name . ' where ' . $index . '=?', array($record));
 		}
 		$tabid = getTabid($module);
-		$sql1 = "select columnname, tablename, fieldname from vtiger_field where tabid=? and vtiger_field.presence in (0,2)";
+		$sql1 = 'select columnname, tablename, fieldname from vtiger_field where tabid=? and vtiger_field.presence in (0,2)';
 		$result1 = $adb->pquery($sql1, array($tabid));
 		$noofrows = $adb->num_rows($result1);
 		for ($i = 0; $i < $noofrows; $i++) {
-			$fieldcolname = $adb->query_result($result1, $i, "columnname");
-			$tablename = $adb->query_result($result1, $i, "tablename");
-			$fieldname = $adb->query_result($result1, $i, "fieldname");
+			$fieldcolname = $adb->query_result($result1, $i, 'columnname');
+			$tablename = $adb->query_result($result1, $i, 'tablename');
+			$fieldname = $adb->query_result($result1, $i, 'fieldname');
 
 			$fld_value = $adb->query_result($result[$tablename], 0, $fieldcolname);
 			$this->column_fields[$fieldname] = $fld_value;
 			$this->$fieldname = $fld_value;
 		}
-		$this->column_fields["record_id"] = $record;
-		$this->column_fields["record_module"] = $module;
+		$this->column_fields['record_id'] = $record;
+		$this->column_fields['record_module'] = $module;
 
 		$currency_query = "select * from vtiger_currency_info where id=? and currency_status='Active' and deleted=0";
 		$currency_result = $adb->pquery($currency_query, array($this->column_fields["currency_id"]));
@@ -1031,12 +1043,12 @@ class Users extends CRMEntity {
 		if (isset($currency_array[$adb->query_result($currency_result, 0, "currency_symbol")])) {
 			$ui_curr = $currency_array[$adb->query_result($currency_result, 0, "currency_symbol")];
 		} else {
-			$ui_curr = $adb->query_result($currency_result, 0, "currency_symbol");
+			$ui_curr = $adb->query_result($currency_result, 0, 'currency_symbol');
 		}
-		$this->column_fields["currency_name"] = $this->currency_name = $adb->query_result($currency_result, 0, "currency_name");
-		$this->column_fields["currency_code"] = $this->currency_code = $adb->query_result($currency_result, 0, "currency_code");
-		$this->column_fields["currency_symbol"] = $this->currency_symbol = $ui_curr;
-		$this->column_fields["conv_rate"] = $this->conv_rate = $adb->query_result($currency_result, 0, "conversion_rate");
+		$this->column_fields['currency_name'] = $this->currency_name = $adb->query_result($currency_result, 0, 'currency_name');
+		$this->column_fields['currency_code'] = $this->currency_code = $adb->query_result($currency_result, 0, 'currency_code');
+		$this->column_fields['currency_symbol'] = $this->currency_symbol = $ui_curr;
+		$this->column_fields['conv_rate'] = $this->conv_rate = $adb->query_result($currency_result, 0, 'conversion_rate');
 
 		// TODO - This needs to be cleaned up once default values for fields are picked up in a cleaner way.
 		// This is just a quick fix to ensure things doesn't start breaking when the user currency configuration is missing
@@ -1760,7 +1772,7 @@ class Users extends CRMEntity {
 			$entries_list['data'][] = $entry;
 		}
 		$log->debug('< getUsersJSON');
-		$entries_list['total'] = count($entries_list['data']);
+		$entries_list['listtotalrecord'] = count($entries_list['data']);
 		return json_encode($entries_list);
 	}
 

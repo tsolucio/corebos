@@ -2353,24 +2353,6 @@ a.drop_downnew_parent{
 	padding-bottom:2px;
 }
 
-.winmarkModulesusr{
-	background-image:url(../images/windowmarkModulesusr.jpg);
-	background-position:top right;
-	background-repeat:no-repeat;
-}
-
-.winmarkRSS{
-	background-image:url(../images/windowmarkRSS.jpg);
-	background-position:top right;
-	background-repeat:no-repeat;
-}
-
-.winmarkDashboardusr{
-	background-image:url(../images/windowmarkDashboardusr.jpg);
-	background-position:top right;
-	background-repeat:no-repeat;
-}
-
 .groupname{
 	width:125px;
 }

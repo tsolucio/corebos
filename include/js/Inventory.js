@@ -1435,15 +1435,23 @@ function InventorySelectAll(mod, image_pth) {
 		},
 
 		getResults: function (term) {
-			var _this = this,
-				r = new XMLHttpRequest();
+			var accid = 0;
+			if (document.EditView.account_id != undefined) {
+				accid = document.EditView.account_id.value;
+			}
+			var ctoid = 0;
+			if (document.EditView.contact_id != undefined) {
+				ctoid = document.EditView.contact_id.value;
+			}
+			var _this = this;
+			var r = new XMLHttpRequest();
 			r.onreadystatechange = function () {
 				if (this.readyState == 4 && this.status == 200) {
 					var res = JSON.parse(this.responseText);
 					_this.processResult(res);
 				}
 			};
-			r.open('GET', this.source + this.input.value + '&accid='+document.EditView.account_id.value + '&ctoid='+document.EditView.contact_id.value + '&modid='+document.EditView.record.value, true);
+			r.open('GET', this.source + this.input.value + '&accid='+accid+ '&ctoid='+ctoid+'&modid='+document.EditView.record.value, true);
 			r.send();
 		},
 
