@@ -27,17 +27,19 @@ if ($res && $adb->num_rows($res)==1) {
 	$allcry = getAllCurrencies();
 	foreach ($allcry as $currency) {
 		if ($currency['currencycode']!=$basecry['currency_code']) {
-			// Retrieve exchange rate from Yahoo Finance
+			// Retrieve exchange rate from Rates API
 			// Code from: http://allurcode.com/2010/11/08/get-live-exchange-rates-in-php/
 			// Code from: http://stackoverflow.com/questions/5777985/need-api-for-currency-converting
 			$from = $basecry['currency_code'];
 			$to = $currency['currencycode'];
-			$url = 'http://finance.yahoo.com/d/quotes.csv?f=l1d1t1&s='.$from.$to.'=X';
+			$url = 'https://api.ratesapi.io/api/latest?base='.$from.'&symbols='.$to.'';
 			$handle = fopen($url, 'r');
 			if ($handle) {
 				$result = fgetcsv($handle);
+				$result = str_replace('rates:', '', $result[1]);
+				$data = json_decode($result, true);
 				fclose($handle);
-				$adb->pquery('UPDATE vtiger_currency_info SET conversion_rate=? WHERE id=?', array($result[0], $currency['currency_id']));
+				$adb->pquery('UPDATE vtiger_currency_info SET conversion_rate=? WHERE id=?', array($data[$to], $currency['currency_id']));
 			}
 		}
 	}
