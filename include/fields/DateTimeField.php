@@ -11,7 +11,7 @@ require_once 'include/utils/utils.php';
 
 class DateTimeField {
 
-	static protected $databaseTimeZone = null;
+	protected static $databaseTimeZone = null;
 	protected $datetime;
 
 	/**
@@ -500,13 +500,13 @@ class DateTimeField {
 	* @return array Return an array with all weekend dates between $startFrom and $endFrom
 	*/
 	public static function getWeekendDates($startFrom, $endFrom, $format) {
-			$weekendDates = array();
-			$interval_d1 = new DateInterval('P1D');
-			$interval_d6 = new DateInterval('P6D');
-			$startDate = new DateTime($startFrom);
-			$endDate = new DateTime($endFrom);
-			$start_time = strtotime($startFrom);
-			$end_time = strtotime($endFrom);
+		$weekendDates = array();
+		$interval_d1 = new DateInterval('P1D');
+		$interval_d6 = new DateInterval('P6D');
+		$startDate = new DateTime($startFrom);
+		$endDate = new DateTime($endFrom);
+		$start_time = strtotime($startFrom);
+		$end_time = strtotime($endFrom);
 		if (strtotime($startFrom) > strtotime($endFrom)) {
 			// echo $startDate->format($format). " is bigger than " . $endDate->format($format);
 			$weekendDates = [];
