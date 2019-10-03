@@ -10,7 +10,11 @@
 function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
 	var baseurl = 'index.php?action=GlobalVariableAjax&file=SearchGlobalVar&module=GlobalVariable';
 	if (gvuserid==undefined || gvuserid=='') {
-		gvuserid = gVTUserID;
+		if (typeof gVTUserID=='undefined') {
+			gvuserid = '';
+		} else {
+			gvuserid = gVTUserID;
+		}
 	} // current connected user
 	if (gvmodule==undefined || gvmodule=='') {
 		gvmodule = gVTModule;
@@ -3198,7 +3202,7 @@ function ActivityReminderRemovePopupDOM(id) {
 /* ActivityReminder Customization: Pool Callback */
 var ActivityReminder_regcallback_timer;
 var ActivityReminder_Deactivated = 0;
-GlobalVariable_getVariable('Debug_ActivityReminder_Deactivated', 0, 'cbCalendar', gVTUserID).then(function (response) {
+GlobalVariable_getVariable('Debug_ActivityReminder_Deactivated', 0, 'cbCalendar', '').then(function (response) {
 	var obj = JSON.parse(response);
 	ActivityReminder_Deactivated = obj.Debug_ActivityReminder_Deactivated;
 }, function (error) {
