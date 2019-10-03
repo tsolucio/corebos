@@ -9200,7 +9200,7 @@ if (workbox) {
   },
   {
     "url": "include/js/general.js",
-    "revision": "28eb1715f400c7ccbd37004ac74913b0"
+    "revision": "94ccb0f7b21562bd0ee5dc687bb61c22"
   },
   {
     "url": "include/js/hu_hu.lang.js",
@@ -9292,7 +9292,7 @@ if (workbox) {
   },
   {
     "url": "include/js/vtlib.js",
-    "revision": "251b48eeaa3fa02ca58a467aea6dbd03"
+    "revision": "544f0dbc5a7c8286c4b12c4a72c5352e"
   },
   {
     "url": "include/chart.js/Chart.bundle.js",
@@ -9376,7 +9376,7 @@ if (workbox) {
   },
   {
     "url": "modules/com_vtiger_workflow/resources/entitymethodtask.js",
-    "revision": "546d5e20b1d56c5dcc248bc60eab2d31"
+    "revision": "43155535cd6da302c6ad1c34c077c642"
   },
   {
     "url": "modules/com_vtiger_workflow/resources/fieldexpressionpopup.js",

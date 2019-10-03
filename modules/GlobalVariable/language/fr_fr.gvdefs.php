@@ -97,6 +97,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'If set to 1 the full email conversation will be output to the log file so you can debug email settings issues. The log file debugging must be activated.',
 ),
+'Debug_ActivityReminder_Deactivated' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Debug',
+	'values' => '0 | 1',
+	'definition' => 'If set to 1 the Activity Reminder will be deactivated, if set to 0 the Activity Reminder will be activated. The default is 0. This avoids a lot of noise in the application debug log.',
+),
 'Accounts_BlockDuplicateName' => array(
 	'status' => 'Implémenté',
 	'valuetype' => 'Booléen',

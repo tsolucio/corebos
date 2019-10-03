@@ -7,6 +7,46 @@
  * All Rights Reserved.
  ********************************************************************************/
 
+function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
+	var baseurl = 'index.php?action=GlobalVariableAjax&file=SearchGlobalVar&module=GlobalVariable';
+	if (gvuserid==undefined || gvuserid=='') {
+		gvuserid = gVTUserID;
+	} // current connected user
+	if (gvmodule==undefined || gvmodule=='') {
+		gvmodule = gVTModule;
+	} // current module
+	// Return a new promise avoiding jquery and prototype
+	return new Promise(function (resolve, reject) {
+		var url = baseurl + '&gvname='+gvname+'&gvuserid='+gvuserid+'&gvmodule='+gvmodule+'&gvdefault='+gvdefault+'&returnvalidation=0';
+		var req = new XMLHttpRequest();
+		req.open('GET', url, true);  // make call asynchronous
+
+		req.onload = function () {
+			// check the status
+			if (req.status == 200) {
+				// Resolve the promise with the response text
+				try {
+					JSON.parse(req.response);
+					resolve(req.response);
+				} catch (e) {
+					resolve('{"'+gvname+'":"'+gvdefault+'"}');
+				}
+			} else {
+				// Otherwise reject with the status text which will hopefully be a meaningful error
+				reject(new Error(req.statusText));
+			}
+		};
+
+		// Handle errors
+		req.onerror = function () {
+			reject(new Error('Network/Script Error'));
+		};
+
+		// Make the request
+		req.send();
+	});
+}
+
 //Utility Functions
 
 function getTagCloud(crmid) {
@@ -3157,7 +3197,13 @@ function ActivityReminderRemovePopupDOM(id) {
 
 /* ActivityReminder Customization: Pool Callback */
 var ActivityReminder_regcallback_timer;
-var ActivityReminder_Deactivated = false;
+var ActivityReminder_Deactivated = 0;
+GlobalVariable_getVariable('Debug_ActivityReminder_Deactivated', 0, 'cbCalendar', gVTUserID).then(function (response) {
+	var obj = JSON.parse(response);
+	ActivityReminder_Deactivated = obj.Debug_ActivityReminder_Deactivated;
+}, function (error) {
+	ActivityReminder_Deactivated = 0;
+});
 
 var ActivityReminder_callback_delay = 40 * 1000; // Milli Seconds
 var ActivityReminder_autohide = false; // If the popup should auto hide after callback_delay?
