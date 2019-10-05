@@ -7,112 +7,155 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-class VTSimpleTemplate{
+require_once 'modules/Users/UserPrivileges.php';
+include_once 'modules/Users/authTypes/TwoFactorAuth/autoload.php';
+use \RobThree\Auth\TwoFactorAuth;
 
-	function __construct($templateString){
+class VTSimpleTemplate {
+
+	public function __construct($templateString, $keepvariable = false) {
 		$this->template = $templateString;
+		$this->keepvariable = $keepvariable;
 	}
 
-	function render($entityCache, $entityId){
+	public function render($entityCache, $entityId, $void = array()) {
 		$this->cache = $entityCache;
 		$this->parent = $this->cache->forId($entityId);
 		return $this->parseTemplate();
 	}
 
-	private function matchHandler($match){
+	private function matchHandler($match) {
 		global $current_user;
-		preg_match('/\((\w+) : \(([_\w]+)\) (\w+)\)/', $match[1], $matches);
-		if(count($matches)==0){
+		preg_match('/\((\w+) : \(([_\w]+)\) (.+)\)/', $match[1], $matches);
+		if (count($matches)==0) {
 			$fieldname = $match[1];
 			$data = $this->parent->getData();
-			if($this->useValue($data, $fieldname)){
+			if ($this->useValue($data, $fieldname)) {
 				$moduleName = $this->parent->getModuleName();
 				$module_focus = Vtiger_Module::getInstance($moduleName);
-				$field_focus = Vtiger_Field::getInstance($fieldname,$module_focus);
+				$field_focus = Vtiger_Field::getInstance($fieldname, $module_focus);
 				$uitype = $field_focus->uitype;
-				if($uitype == '15' || $uitype == '33' || ($uitype == '55' && $fieldname == 'salutationtype'))
-					$result = getTranslatedString($data[$fieldname],($moduleName == 'Events') ? 'Calendar' : $moduleName);
-				elseif ($uitype == '5' || $uitype == '6' || $uitype == '23') {  // date
+				if ($uitype == '15' || $uitype == '33' || ($uitype == '55' && $fieldname == 'salutationtype')) {
+					$result = getTranslatedString($data[$fieldname], ($moduleName == 'Events') ? 'Calendar' : $moduleName);
+				} elseif ($uitype == '5' || $uitype == '6' || $uitype == '23') {  // date
 					$date = new DateTimeField($data[$fieldname]);
 					$result = $date->getDisplayDate($current_user);
-				} elseif ($uitype == '70') {  // datetime
+				} elseif ($uitype == '50') {  // datetime
 					$date = new DateTimeField($data[$fieldname]);
 					$result = $date->getDisplayDateTimeValue($current_user);
-				} elseif ($uitype == '71' || $uitype == '72' || $uitype == '7' || $uitype == '9'){
+				} elseif ($uitype == '71' || $uitype == '72' || $uitype == '7' || $uitype == '9') {
 					$currencyField = new CurrencyField($data[$fieldname]);
 					$result = $currencyField->getDisplayValue(null, true);
-				} elseif ($uitype == '14' || ($uitype == '2' && ($fieldname == "time_start" || $fieldname == "time_end"))) {  // time
+				} elseif ($uitype == '2' && ($fieldname == 'time_start' || $fieldname == 'time_end')) { // time
 					$date = new DateTimeField($data[$fieldname]);
 					$result = $date->getDisplayTime($current_user);
-				} else
+				} else {
 					$result = $data[$fieldname];
-			}else{
-				$result ='';
+				}
+			} else {
+				if ($this->keepvariable) {
+					$result = '$'.$fieldname;
+				} else {
+					$result = '';
+				}
 			}
-		}else{
+		} else {
 			list($full, $referenceField, $referenceModule, $fieldname) = $matches;
-			if($referenceModule === '__VtigerMeta__'){
+			if ($referenceModule === '__VtigerMeta__') {
 				$result = $this->getMetaValue($fieldname);
-			}else{
+			} elseif ($referenceModule === '__WorkflowFunction__') {
+				$result = $this->getWorkflowFunctionValue($fieldname);
+			} else {
 				$referenceId = $this->parent->get($referenceField);
-				if($referenceId==null){
+				if ($referenceId==null) {
 					$result="";
-				}else{
-					try{
+				} else {
+					try {
 						$entity = $this->cache->forId($referenceId);
-						if($referenceModule==="Users" && $entity->getModuleName()=="Groups"){
-							$result = $this->getGroupFieldList($referenceId,$fieldname);
-						} elseif($entity->getModuleName()===$referenceModule){
+						if ($referenceModule==='Users' && $entity->getModuleName()=='Groups') {
+							$result = $this->getGroupFieldList($referenceId, $fieldname);
+						} elseif ($entity->getModuleName()===$referenceModule) {
 							$data = $entity->getData();
-							if($this->useValue($data, $fieldname)){
-								$module_focus = Vtiger_Module::getInstance($referenceModule);
-								$field_focus = Vtiger_Field::getInstance($fieldname,$module_focus);
-								$uitype = $field_focus->uitype;
-								if($uitype == '15' || $uitype == '33' || ($uitype == '55' && $fieldname == 'salutationtype'))
-									$result = getTranslatedString($data[$fieldname],$referenceModule);
-								elseif ($uitype == '5' || $uitype == '6' || $uitype == '23') {  // date
+							if (isset($data['id']) && !isset($data['record_id']) && strpos($data['id'], 'x')) {
+								list($wsid, $data['record_id']) = explode('x', $data['id']);
+								$data['record_module'] = $referenceModule;
+							}
+							if ($this->useValue($data, $fieldname)) {
+								if ($fieldname == 'record_id' || $fieldname == 'record_module') {
+									$uitype = 0;
+								} else {
+									$module_focus = Vtiger_Module::getInstance($referenceModule);
+									$field_focus = Vtiger_Field::getInstance($fieldname, $module_focus);
+									$uitype = $field_focus->uitype;
+								}
+								if ($uitype == '15' || $uitype == '33' || ($uitype == '55' && $fieldname == 'salutationtype')) {
+									$result = getTranslatedString($data[$fieldname], $referenceModule);
+								} elseif ($uitype == '5' || $uitype == '6' || $uitype == '23') {  // date
 									$date = new DateTimeField($data[$fieldname]);
 									$result = $date->getDisplayDate($current_user);
-								} elseif ($uitype == '70') {  // datetime
+								} elseif ($uitype == '50') {  // datetime
 									$date = new DateTimeField($data[$fieldname]);
 									$result = $date->getDisplayDateTimeValue($current_user);
-								} elseif ($uitype == '71' || $uitype == '72' || $uitype == '7' || $uitype == '9'){
+								} elseif ($uitype == '71' || $uitype == '72' || $uitype == '7' || $uitype == '9') {
 									$currencyField = new CurrencyField($data[$fieldname]);
 									$result = $currencyField->getDisplayValue(null, true);
-								} elseif ($uitype == '14' || ($uitype == '2' && ($fieldname == "time_start" || $fieldname == "time_end"))) {  // time
+								} elseif ($uitype == '14' || ($uitype == '2' && ($fieldname == 'time_start' || $fieldname == 'time_end'))) { // time
 									$date = new DateTimeField($data[$fieldname]);
 									$result = $date->getDisplayTime($current_user);
 								} elseif ($uitype == '10') { // related field
-									list($void,$result) = explode('x',$data[$fieldname]);
-								} else
+									list($void,$result) = explode('x', $data[$fieldname]);
+								} else {
 									$result = $data[$fieldname];
-							}else{
+								}
+							} else {
+								if ($this->keepvariable) {
+									$result = '$'.$fieldname;
+								} else {
+									$result = '';
+								}
+							}
+						} else {
+							if ($this->keepvariable) {
+								$result = '$'.$fieldname;
+							} else {
 								$result = '';
 							}
-						}else{
-							$result = '';
 						}
-					}catch(Exception $e){
+					} catch (Exception $e) {
 						$result = '';
 					}
 				}
 			}
 		}
 		return $result;
-
 	}
 
-	function getComments($num,$sort,$format,$field) {
-		global $adb, $log, $current_user;
+	private function getComments($num, $sort, $format, $field, $dtformat) {
+		global $adb, $current_user;
 		$wsId = $this->parent->getId();
-		if (empty($wsId)) return '';
+		if (empty($wsId)) {
+			return '';
+		}
 		$sort = strtolower($sort);
-		if ($sort!='a' and $sort!='d') $sort = 'a';
+		if ($sort!='a' && $sort!='d') {
+			$sort = 'a';
+		}
 		$format = strtolower($format);
-		if ($format!='html' and $format!='text') $format = 'html';
+		if ($format!='html' && $format!='text' && $format!='table') {
+			$format = 'html';
+		}
 		$html = ($format == 'html');
+		$table = ($format == 'table');
+		if (substr($field, 0, 4)=='date' && strlen($field)>4) {
+			$dateformat = substr($field, 4);
+			$field = 'date';
+		} else {
+			$dateformat = $dtformat;
+		}
 		$field = strtolower($field);
-		if ($field!='creator' and $field!='comment' and $field!='date' and $field!='all') $field = 'all';
+		if ($field!='creator' && $field!='comment' && $field!='date' && $field!='all') {
+			$field = 'all';
+		}
 		if ($field=='all') {
 			$fields = array('creator','date','comment');
 		} else {
@@ -121,8 +164,8 @@ class VTSimpleTemplate{
 		$singlefield = (count($fields)==1);
 		$datefmtuserid = $this->parent->get('assigned_user_id');
 		if (!empty($datefmtuserid)) {
-			list($void,$dfuid) = explode('x',$datefmtuserid);
-			if (file_exists('user_privileges/user_privileges_' . $userid . '.php')) {
+			list($void,$dfuid) = explode('x', $datefmtuserid);
+			if (UserPrivileges::hasPrivileges($dfuid)) {
 				$datefmtuser = new Users();
 				$datefmtuser->retrieveCurrentUserInfoFromFile($dfuid);
 			} else {
@@ -143,7 +186,7 @@ class VTSimpleTemplate{
 		}
 		$cmsqlws = __getRLQuery($wsId, $moduleName, 'ModComments', $queryParameters, $current_user);
 		$retcm = '';
-		if ($html) {
+		if ($html || $table) {
 			$retcm = '<div class="comments">';
 		}
 		$cmrs = $adb->pquery($cmsqlws, array());
@@ -151,16 +194,22 @@ class VTSimpleTemplate{
 			if ($html) {
 				$retcm .= '<div class="commentdetails"><ul class="commentfields">';
 			}
+			if ($table) {
+				$retcm .= '<table class="commentdetails"><tr class="commentfields">';
+			}
 			foreach ($fields as $field) {
 				switch ($field) {
 					case 'creator':
 						if ($html) {
 							$retcm .= '<li class="commentcreator">';
 						}
-						if ($moduleName!='HelpDesk' and $moduleName!='Faq') {
+						if ($table) {
+							$retcm .= '<td class="commentcreator">';
+						}
+						if ($moduleName!='HelpDesk' && $moduleName!='Faq') {
 							$wsid = $wsUsersId;
 						} else {
-							list($wsid,$crmid) = explode('x',$cm['creator']);
+							list($wsid,$crmid) = explode('x', $cm['creator']);
 						}
 						if ($wsUsersId==$wsid) {
 							$un = getUserFullName($cm['creator']);
@@ -168,36 +217,56 @@ class VTSimpleTemplate{
 							$un = getParentName($cm['creator']);
 						}
 						$retcm .= $un;
-						if (!$html and !$singlefield) {
+						if (!$html && !$table && !$singlefield) {
 							$retcm .= "\n";
 						}
 						if ($html) {
 							$retcm .= '</li>';
+						}
+						if ($table) {
+							$retcm .= '</td>';
 						}
 						break;
 					case 'date':
 						if ($html) {
 							$retcm .= '<li class="commentdate">';
 						}
-						$dt = new DateTimeField($cm['createdtime']);
-						$retcm .= $dt->getDisplayDateTimeValue($datefmtuser);
-						if (!$html and !$singlefield) {
+						if ($table) {
+							$retcm .= '<td class="commentdate">';
+						}
+						if ($dateformat == 'user') {
+							$dt = new DateTimeField($cm['createdtime']);
+							$retcm .= $dt->getDisplayDateTimeValue($datefmtuser);
+						} else {
+							$dt = strtotime($cm['createdtime']);
+							$retcm .= date($dateformat, $dt);
+						}
+						if (!$html && !$table && !$singlefield) {
 							$retcm .= "\n";
 						}
 						if ($html) {
 							$retcm .= '</li>';
+						}
+						if ($table) {
+							$retcm .= '</td>';
 						}
 						break;
 					case 'comment':
 						if ($html) {
 							$retcm .= '<li class="commentcomment">';
 						}
+						if ($table) {
+							$retcm .= '<td class="commentcomment">';
+						}
 						$retcm .= vtlib_purify($cm['commentcontent']);
-						if (!$html and !$singlefield) {
+						if (!$html && !$table && !$singlefield) {
 							$retcm .= "\n";
 						}
 						if ($html) {
 							$retcm .= '</li>';
+						}
+						if ($table) {
+							$retcm .= '</td>';
 						}
 						break;
 				}
@@ -205,23 +274,115 @@ class VTSimpleTemplate{
 			if ($html) {
 				$retcm .= '</ul></div>';
 			}
+			if ($table) {
+				$retcm .= '</tr></table>';
+			}
 		}
-		if ($html) {
+		if ($html ||$table) {
 			$retcm .= '</div>';
 		}
 		return $retcm;
 	}
 
-	function getinvitedUsersList($recid) {
+	private function getInventoryDetails($format, $field) {
+		global $adb, $current_user;
+		$format = strtolower($format);
+		if ($format!='html' && $format!='text'&& $format!='table') {
+			$format = 'html';
+		}
+		$html = ($format == 'html');
+		$table = ($format == 'table');
+		$fieldsql = "case when vtiger_products.productid != '' then vtiger_products.productname else vtiger_service.servicename end as pdoname,";
+		if ($field=='*') {
+			$fieldsql .= 'vtiger_inventorydetails.quantity, vtiger_inventorydetails.listprice, vtiger_inventorydetails.extgross, vtiger_inventorydetails.linetotal';
+		} else {
+			$fieldsql .= strtolower($field);
+		}
+		$field = $fieldsql;
+		$fields = explode(',', $field);
+		for ($fidx = 0; $fidx<count($fields); $fidx++) {
+			$fields[$fidx] = trim(str_replace('vtiger_inventorydetails.', '', $fields[$fidx]));
+			if ($fields[$fidx]=='productname' || $fields[$fidx]=='servicename') {
+				$fields[$fidx]='pdoname';
+			}
+			if ($fields[$fidx]=="case when vtiger_products.productid != '' then vtiger_products.productname else vtiger_service.servicename end as pdoname") {
+				$fields[$fidx]='pdoname';
+			}
+		}
+		$fields = array_unique($fields);
+		$singlefield = (count($fields)==1);
+		// Checking if field present in the table.
+		// To Do.
+
+		$moduleName = $this->parent->getModuleName();
+		$wsUsersId = vtws_getEntityId('Users');
+		$wsid = $this->parent->getId();
+		list($wsid,$crmid) = explode('x', $wsid);
+		$cmsqlws = 'SELECT '.$field.'
+			FROM vtiger_inventorydetails
+			INNER JOIN vtiger_crmentity ON vtiger_inventorydetails.inventorydetailsid=vtiger_crmentity.crmid
+			LEFT JOIN vtiger_products ON vtiger_inventorydetails.productid=vtiger_products.productid
+			LEFT JOIN vtiger_service ON vtiger_inventorydetails.productid=vtiger_service.serviceid
+			WHERE related_to=?';
+		$retcm = '';
+		$wsid = $this->parent->getId();
+		$cmrs = $adb->pquery($cmsqlws, array($crmid));
+		if ($html) {
+			$retcm .= '<div class="inventorydetails"><ul class="inventorydetailsfields">';
+		}
+		if ($table) {
+			$retcm .= '<table class="inventorydetails"><tr class="inventorydetailsfields">';
+		}
+		while ($inv = $adb->fetch_array($cmrs)) {
+			foreach ($fields as $fname) {
+				if ($html) {
+					$retcm .= '<li class="inventorydetailsfield">';
+				}
+				if ($table) {
+					$retcm .= '<td class="inventorydetailsfield">';
+				}
+				$fval = vtlib_purify($inv[$fname]);
+				if (is_numeric($fval)) {
+					$fval = CurrencyField::convertToUserFormat($fval, null, true);
+				}
+				$retcm .= $fval;
+				if (!$html && !$table && $singlefield) {
+					$retcm .= "\n";
+				}
+				if ($html) {
+					$retcm .= '</li>';
+				}
+				if ($table) {
+					$retcm .= '</td>';
+				}
+			}
+		}
+		if ($html) {
+			$retcm .= '</ul></div>';
+		}
+		if ($table) {
+			$retcm .= '</tr></table>';
+		}
+		return $retcm;
+	}
+
+	private function getinvitedUsersList($recid) {
 		global $adb;
 		$modulename = $this->parent->getModuleName();
-		if ($modulename!='Events') return '';
+		if ($modulename!='Events') {
+			return '';
+		}
 		list($wsid,$activity_id) = explode('x', $recid);
-		$query_user='SELECT vtiger_users.email1 FROM vtiger_salesmanactivityrel inner join vtiger_users on vtiger_users.id=vtiger_salesmanactivityrel.smid where vtiger_salesmanactivityrel.activityid=? and vtiger_users.deleted=0';
-		$user_result = $adb->pquery($query_user, array($activity_id));
+		$user_result = $adb->pquery(
+			'SELECT vtiger_users.email1
+			FROM vtiger_salesmanactivityrel
+			inner join vtiger_users on vtiger_users.id=vtiger_salesmanactivityrel.smid
+			where vtiger_salesmanactivityrel.activityid=? and vtiger_users.deleted=0',
+			array($activity_id)
+		);
 		$ulist = array();
-		while($user_result_row = $adb->fetch_array($user_result)) {
-			if (!in_array($user_result_row['email1'],$ulist)) {
+		while ($user_result_row = $adb->fetch_array($user_result)) {
+			if (!in_array($user_result_row['email1'], $ulist)) {
 				$ulist[] = $user_result_row['email1'];
 			}
 		}
@@ -231,8 +392,8 @@ class VTSimpleTemplate{
 		return '';
 	}
 
-	function getGroupFieldList($groupref,$fieldname) {
-		require_once('include/utils/GetGroupUsers.php');
+	public function getGroupFieldList($groupref, $fieldname) {
+		require_once 'include/utils/GetGroupUsers.php';
 		$groupId = getGrpId($groupref);
 		if ($groupId==0) {
 			list($groupEntityId, $groupId) = vtws_getIdComponents($groupref);
@@ -241,16 +402,16 @@ class VTSimpleTemplate{
 		$ggu->getAllUsersInGroup($groupId);
 
 		$users = $ggu->group_users;
-		$parts = Array();
-		foreach($users as $userId){
-			$refId = vtws_getWebserviceEntityId("Users", $userId);
+		$parts = array();
+		foreach ($users as $userId) {
+			$refId = vtws_getWebserviceEntityId('Users', $userId);
 			try {
 				$entity = $this->cache->forId($refId);
-			} catch(WebServiceException $ex) {
+			} catch (WebServiceException $ex) {
 				continue; // inactive or deleted user
 			}
 			$data = $entity->getData();
-			if($this->useValue($data, $fieldname)){
+			if ($this->useValue($data, $fieldname)) {
 				$parts[] = $data[$fieldname];
 			}
 		}
@@ -262,46 +423,65 @@ class VTSimpleTemplate{
 		return !empty($data[$fieldname]);
 	}
 
-	function parseTemplate(){
+	public function parseTemplate() {
 		global $current_user;
-		$data = $this->parent->getData();
 		$backCurrentUser = $current_user;
-		list($wsId,$assigned_user_id) = explode('x',$data['assigned_user_id']);
-		if(vtws_getOwnerType($assigned_user_id) == 'Groups'){
-			require_once('include/utils/GetGroupUsers.php');
-			$ggu = new GetGroupUsers();
-			$ggu->getAllUsersInGroup($assigned_user_id);
-			$users = $ggu->group_users;
-					if(!empty($users)){
-						$assigned_user_id = $users[0];
-					}else{
-						$assigned_user_id = $backCurrentUser->id;
-					}
+		$data = $this->parent->getData();
+		if (!empty($data['assigned_user_id'])) {
+			list($wsId,$assigned_user_id) = explode('x', $data['assigned_user_id']);
+			if (vtws_getOwnerType($assigned_user_id) == 'Groups') {
+				require_once 'include/utils/GetGroupUsers.php';
+				$ggu = new GetGroupUsers();
+				$ggu->getAllUsersInGroup($assigned_user_id);
+				$users = $ggu->group_users;
+				if (!empty($users)) {
+					$assigned_user_id = $users[0];
+				} else {
+					$assigned_user_id = $backCurrentUser->id;
+				}
+			}
+			$current_user = new Users();
+			$current_user->retrieveCurrentUserInfoFromFile($assigned_user_id);
 		}
-		$current_user = new Users();
-		$current_user->retrieveCurrentUserInfoFromFile($assigned_user_id);
-		$return = preg_replace_callback('/\\$(\w+|\((\w+) : \(([_\w]+)\) (\w+)\))/', array($this,"matchHandler"), $this->template);
+		$return = preg_replace_callback(
+			'/\\$(\w+?|\(general : \(__WorkflowFunction__\) (.+?) \)[ |&._\-\]}<>\/!"%ºª?,;]|\((\w+) : \(([_\w]+)\) (.+)\))/U',
+			array($this, 'matchHandler'),
+			$this->template
+		);
 		$current_user = $backCurrentUser;
 		return $return;
 	}
 
-	function getMetaValue($fieldname){
+	public function getMetaValue($fieldname) {
 		require_once 'config.inc.php';
 		global $site_URL, $current_user;
-		if (substr($fieldname,0,14)=='groupEmailList') {
+		$fieldname = trim($fieldname);
+		if (substr($fieldname, 0, 14)=='groupEmailList') {
 			$groupname = trim(str_replace('_', ' ', substr($fieldname, 14)));
 			$fieldname = 'groupEmailList';
 		}
-		if (substr($fieldname,0,8)=='comments') {
+		if (substr($fieldname, 0, 8)=='comments' || strpos($fieldname, '_comments')>0) {
 			if (strpos($fieldname, '_')>0) {
 				$commspec = explode('_', $fieldname);
-				$fieldname = 'comments';
-				$srtcomm = substr($commspec[1], -1);
-				if (is_numeric($srtcomm)) {
-					$srtcomm = 'a';
-					$numcomm = $commspec[1];
+				if ($commspec[0]!='comments') {
+					$cs = array_reverse($commspec);
+					$dtformat = array_pop($cs);
+					$commspec = array_reverse($cs);
 				} else {
-					$numcomm = substr($commspec[1], 0, strlen($commspec[1])-1);
+					$dtformat = 'user';
+				}
+				$fieldname = 'comments';
+				if (count($commspec)>1) {
+					$srtcomm = substr($commspec[1], -1);
+					if (is_numeric($srtcomm)) {
+						$srtcomm = 'a';
+						$numcomm = $commspec[1];
+					} else {
+						$numcomm = substr($commspec[1], 0, strlen($commspec[1])-1);
+					}
+				} else {
+					$numcomm = 0;
+					$srtcomm = 'a';
 				}
 				if (count($commspec)>2) {
 					$fmtcomm = $commspec[2];
@@ -318,49 +498,112 @@ class VTSimpleTemplate{
 				$srtcomm = 'a';
 				$fmtcomm = 'html';
 				$fldcomm = 'all';
+				$dtformat = 'user';
 			}
 		}
-		switch($fieldname){
-			case 'date'					:	return getNewDisplayDate();
-			case 'time'					:	return getNewDisplayTime();
-			case 'dbtimezone'			:	return $current_user->column_fields['time_zone'];
-			case 'crmdetailviewurl'		:	$wsId = $this->parent->getId();
-											$parts = explode('x', $wsId);
-											$recordId = $parts[1];
-											$moduleName = $this->parent->getModuleName();
-											if($moduleName == 'Events' || $moduleName == 'Calendar')
-											{
-												if($moduleName == 'Events')
-													return $site_URL.'/index.php?action=EventDetailView&module=Calendar4You&record='.$recordId.'&activity_mode=Events';
-												elseif($moduleName == 'Calendar')
-													return $site_URL.'/index.php?action=EventDetailView&module=Calendar4You&record='.$recordId.'&activity_mode=Task';
-											}
-											else
-												return $site_URL.'/index.php?action=DetailView&module='.$moduleName.'&record='.$recordId;
-			case 'portaldetailviewurl'	: 	$wsId = $this->parent->getId();
-											$parts = explode('x', $wsId);
-											$recordId = $parts[1];
-											$moduleName = $this->parent->getModuleName();
-											$recorIdName='id';
-											if($moduleName == 'HelpDesk') $recorIdName = 'ticketid';
-											if($moduleName == 'Faq') $recorIdName = 'faqid';
-											if($moduleName == 'Products') $recorIdName = 'productid';
-											$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL','http://your_support_domain.tld/customerportal');
-											return $PORTAL_URL.'/index.php?module='.$moduleName.'&action=index&'.$recorIdName.'='.$recordId.'&fun=detail';
-			case 'siteurl'				: return $site_URL;
-			case 'portalurl'			: return GlobalVariable::getVariable('Application_Customer_Portal_URL','http://your_support_domain.tld/customerportal');
-			case 'logo'					: return '<img src="cid:logo" />';
-
-			case 'recordId'				: list($moduleId, $recordId) = vtws_getIdComponents($this->parent->getId());
-										  return $recordId;
-
-			case 'supportName'			: return GlobalVariable::getVariable('HelpDesk_Support_Name','your-support name','HelpDesk');
-			case 'supportEmailId'		: return GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk');
-			case 'comments'				: return $this->getComments($numcomm,$srtcomm,$fmtcomm,$fldcomm);
-			case 'groupEmailList'		: return $this->getGroupFieldList($groupname,'email1');
-			case 'Events_Users_Invited'	: return $this->getinvitedUsersList($this->parent->getId());
-			default: '';
+		if (substr($fieldname, 0, 10) == 'scanQRCode') {
+			list($fieldname, $field) = explode('->', decode_html($fieldname));
 		}
+		if (substr($fieldname, 0, 16)=='inventorydetails') {
+			$inventoryspec = explode('_', $fieldname);
+			$format = isset($inventoryspec[1]) ? $inventoryspec[1] : 'html';
+			$field = isset($inventoryspec[2]) ? $inventoryspec[2] : '*';
+			$fieldname = 'inventorydetails';
+		}
+		switch ($fieldname) {
+			case 'date':
+				return getNewDisplayDate();
+			case 'time':
+				return getNewDisplayTime();
+			case 'dbtimezone':
+				return $current_user->column_fields['time_zone'];
+			case 'crmdetailviewurl':
+				$wsId = $this->parent->getId();
+				$parts = explode('x', $wsId);
+				$recordId = $parts[1];
+				$moduleName = $this->parent->getModuleName();
+				if ($moduleName == 'Events' || $moduleName == 'Calendar') {
+					return $site_URL.'/index.php?action=DetailView&module=cbCalendar&record='.$recordId;
+				} else {
+					return $site_URL.'/index.php?action=DetailView&module='.$moduleName.'&record='.$recordId;
+				}
+			case 'portaldetailviewurl':
+				$wsId = $this->parent->getId();
+				$parts = explode('x', $wsId);
+				$recordId = $parts[1];
+				$moduleName = $this->parent->getModuleName();
+				$recorIdName='id';
+				if ($moduleName == 'HelpDesk') {
+					$recorIdName = 'ticketid';
+				}
+				if ($moduleName == 'Faq') {
+					$recorIdName = 'faqid';
+				}
+				if ($moduleName == 'Products') {
+					$recorIdName = 'productid';
+				}
+				$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL', 'http://your_support_domain.tld/customerportal');
+				$PORTALUSED = GlobalVariable::getVariable('Application_Customer_Portal_BeingUsed', 'vtigercrmportal');
+				switch ($PORTALUSED) {
+					case 'coreboscp':
+						$purl = $PORTAL_URL.'/index.php#vtentity/'.$moduleName.'/list/'.$wsId.'/dvcpage/0';
+						break;
+					case 'vtigercrmportal':
+					default:
+						$purl = $PORTAL_URL.'/index.php?module='.$moduleName.'&action=index&'.$recorIdName.'='.$recordId.'&fun=detail';
+				}
+				return $purl;
+			case 'siteurl':
+				return $site_URL;
+			case 'portalurl':
+				return GlobalVariable::getVariable('Application_Customer_Portal_URL', 'http://your_support_domain.tld/customerportal');
+			case 'logo':
+				return '<img src="cid:logo" />';
+			case 'recordId':
+				list($moduleId, $recordId) = vtws_getIdComponents($this->parent->getId());
+				return $recordId;
+			case 'supportName':
+				return GlobalVariable::getVariable('HelpDesk_Support_Name', 'your-support name', 'HelpDesk');
+			case 'supportEmailId':
+				return GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
+			case 'comments':
+				return $this->getComments($numcomm, $srtcomm, $fmtcomm, $fldcomm, $dtformat);
+			case 'inventorydetails':
+				return $this->getInventoryDetails($format, $field);
+			case 'groupEmailList':
+				return $this->getGroupFieldList($groupname, 'email1');
+			case 'Events_Users_Invited':
+				return $this->getinvitedUsersList($this->parent->getId());
+			case 'scanQRCode':
+				$wsId = $this->parent->getId();
+				$parts = explode('x', $wsId);
+				$recordId = $parts[1];
+				$moduleName = $this->parent->getModuleName();
+				$focus = CRMEntity::getInstance($moduleName);
+				$focus->retrieve_entity_info($recordId, $moduleName);
+				if (!empty($focus->column_fields[$field])) {
+					$fieldValue = $focus->column_fields[$field];
+					$tfa = new TwoFactorAuth('emailwfqrcode');
+					$qrcodeprovider = $tfa->getQrCodeProvider();
+					$img = $qrcodeprovider->getQRCodeImage($fieldValue, 150);
+					$fname = uniqid('qrcode');
+					@unlink('cache/images/'.$fname.'.png');
+					file_put_contents('cache/images/'.$fname.'.png', $img);
+					return '<img src="cid:'.$fname.'" />';
+				} else {
+					return '';
+				}
+			default:
+				'';
+		}
+	}
+
+	public function getWorkflowFunctionValue($tplexpression) {
+		$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($tplexpression)));
+		$expression = $parser->expression();
+		$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+		$exprEvaluation = $exprEvaluater->evaluate($this->parent);
+		return $exprEvaluation;
 	}
 }
 ?>

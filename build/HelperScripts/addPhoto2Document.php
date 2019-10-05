@@ -9,7 +9,7 @@
 // Turn on debugging level
 $Vtiger_Utils_Log = true;
 
-include_once('vtlib/Vtiger/Module.php');
+include_once 'vtlib/Vtiger/Module.php';
 
 if (empty($_REQUEST['modulename'])) {
 	echo "<br/><H2>'modulename' parameter is mandatory</H2>";
@@ -18,8 +18,8 @@ if (empty($_REQUEST['modulename'])) {
 }
 $module = Vtiger_Module::getInstance($_REQUEST['modulename']);
 
-if($module) {
-	$module->addLink('DETAILVIEWBASIC', 'Photo2Document', 'javascript:window.open(\'index.php?module=Utilities&action=UtilitiesAjax&file=Photo2Document&formodule=$MODULE$&forrecord=$RECORD$\',\'photo2doc\',\'width=800,height=760\');','themes/images/webcam16.png');
+if ($module) {
+	$module->addLink('DETAILVIEWBASIC', 'Photo2Document', 'javascript:window.open(\'index.php?module=Utilities&action=UtilitiesAjax&file=Photo2Document&formodule=$MODULE$&forrecord=$RECORD$\',\'photo2doc\',\'width=800,height=760\');', 'themes/images/webcam16.png');
 } else {
 	echo '<br/><H2>Failed to find '.$_REQUEST['modulename'].' module.</h2><br>';
 	echo '<br/><H2>No se ha podido encontrar el módulo '.$_REQUEST['modulename'].'.</h2><br>';

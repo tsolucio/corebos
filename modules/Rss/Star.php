@@ -7,18 +7,14 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/database/PearDatabase.php');
+require_once 'include/database/PearDatabase.php';
 
 global $adb;
 
-if(isset($_REQUEST['record']))
-{
-	$recordid = $_REQUEST['record'];
-	if(!isset($_REQUEST['starred'])) $starred = 0;
-	$starred = $_REQUEST['starred'];
-	
-	$sSQL = "update vtiger_rss set starred=? where vtiger_rssid=?";
-	$result = $adb->pquery($sSQL, array($starred, $recordid));
+if (isset($_REQUEST['record'])) {
+	$recordid = vtlib_purify($_REQUEST['record']);
+	$starred = (!isset($_REQUEST['starred']) ? 0 : vtlib_purify($_REQUEST['starred']));
+	$result = $adb->pquery('update vtiger_rss set starred=? where vtiger_rssid=?', array($starred, $recordid));
 }
-header("Location: index.php?module=Rss&action=index");
+header('Location: index.php?module=Rss&action=index');
 ?>

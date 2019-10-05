@@ -10,35 +10,38 @@
 
 class Import_Lock_Controller {
 
-	public function  __construct() {
+	public function __construct() {
 	}
 
 	public static function lock($importId, $module, $user) {
 		$adb = PearDatabase::getInstance();
 
-		if(!Vtiger_Utils::CheckTable('vtiger_import_locks')) {
+		if (!Vtiger_Utils::CheckTable('vtiger_import_locks')) {
 			Vtiger_Utils::CreateTable(
 				'vtiger_import_locks',
-				"(vtiger_import_lock_id INT NOT NULL PRIMARY KEY,
+				'(vtiger_import_lock_id INT NOT NULL PRIMARY KEY,
 				userid INT NOT NULL,
 				tabid INT NOT NULL,
 				importid INT NOT NULL,
-				locked_since DATETIME)",
-				true);
+				locked_since DATETIME)',
+				true
+			);
 		}
 
-		$adb->pquery('INSERT INTO vtiger_import_locks VALUES(?,?,?,?,?)',
-						array($adb->getUniqueID('vtiger_import_locks'), $user->id, getTabid($module), $importId, date('Y-m-d H:i:s')));
+		$adb->pquery(
+			'INSERT INTO vtiger_import_locks VALUES(?,?,?,?,?)',
+			array($adb->getUniqueID('vtiger_import_locks'), $user->id, getTabid($module), $importId, date('Y-m-d H:i:s'))
+		);
 	}
 
-	public static function unLock($user, $module=false) {
+	public static function unLock($user, $module = false) {
 		$adb = PearDatabase::getInstance();
-		if(Vtiger_Utils::CheckTable('vtiger_import_locks')) {
+		if (Vtiger_Utils::CheckTable('vtiger_import_locks')) {
 			$query = 'DELETE FROM vtiger_import_locks WHERE userid=?';
 			$params = array($user->id);
-			if($module != false) {
+			if ($module != false) {
 				$query .= ' AND tabid=?';
-				array_push($params, getTabid($module));
+				$params[] = getTabid($module);
 			}
 			$adb->pquery($query, $params);
 		}
@@ -46,18 +49,13 @@ class Import_Lock_Controller {
 
 	public static function isLockedForModule($module) {
 		$adb = PearDatabase::getInstance();
-		
-		if(Vtiger_Utils::CheckTable('vtiger_import_locks')) {
-			$lockResult = $adb->pquery('SELECT * FROM vtiger_import_locks WHERE tabid=?',array(getTabid($module)));
-
-			if($lockResult && $adb->num_rows($lockResult) > 0) {
-				$lockInfo = $adb->query_result_rowdata($lockResult, 0);
-				return $lockInfo;
+		if (Vtiger_Utils::CheckTable('vtiger_import_locks')) {
+			$lockResult = $adb->pquery('SELECT * FROM vtiger_import_locks WHERE tabid=?', array(getTabid($module)));
+			if ($lockResult && $adb->num_rows($lockResult) > 0) {
+				return $adb->query_result_rowdata($lockResult, 0);
 			}
 		}
-
 		return null;
 	}
 }
-
 ?>

@@ -6,30 +6,25 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Notes/language/en_us.lang.php,v 1.10 2005/03/28 06:33:37 rank Exp $
- * Description:  Defines the English language pack for the Documents module.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Ranieri Slemer/Translate to Brazilian Portuguese| 07-apr-2018 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Documentos',
-'LBL_MODULE_TITLE'=>'Documentos: Principal',
-'LBL_SEARCH_FORM_TITLE'=>'Pesquisar Documento',
-'LBL_LIST_FORM_TITLE'=>'Listar Documento',
-'LBL_NEW_FORM_TITLE'=>'Novo Documento',
+'LBL_MODULE_TITLE'=>'Documentos: principal',
+'LBL_SEARCH_FORM_TITLE'=>'Pesquisar documento',
+'LBL_LIST_FORM_TITLE'=>'Listar documento',
+'LBL_NEW_FORM_TITLE'=>'Novo documento',
 
 'LBL_LIST_SUBJECT'=>'Assunto',
-'LBL_LIST_CONTACT_NAME'=>'Nome Contato',
+'LBL_LIST_CONTACT_NAME'=>'Nome contato',
 'LBL_LIST_RELATED_TO'=>'Relacionado à',
-'LBL_LIST_DATE_MODIFIED'=>'Última Modificação',
+'LBL_LIST_DATE_MODIFIED'=>'Última modificação',
 
 'LBL_NOTE'=>'Documento:',
-'LBL_NOTE_SUBJECT'=>'Assunto Documento:',
-'LBL_CONTACT_NAME'=>'Nome Contato:',
+'LBL_NOTE_SUBJECT'=>'Assunto do documento:',
+'LBL_CONTACT_NAME'=>'Nome do contato:',
 'LBL_PHONE'=>'Telefone:',
 'LBL_SUBJECT'=>'Assunto:',
 'LBL_CLOSE'=>'Fechar:',
@@ -37,104 +32,105 @@ $mod_strings = Array(
 'LBL_EMAIL_ADDRESS'=>'E-mail:',
 'LBL_COLON'=>':',
 
-'ERR_DELETE_RECORD'=>"Defina um número de registro para deletar a organizações.",
-'LBL_LIST_FILENAME'=>"Arquivo",
+'ERR_DELETE_RECORD'=>'Defina um número de registro para deletar as contas.',
+'LBL_LIST_FILENAME'=>'Arquivo',
 
-// Added for Note(3.2-patch 3)
-
+'Template'=>'Modelo',
+'Template For' => 'Modelo para',
+'Merge Template' => 'Merge Template',
 'LBL_FILENAME'=>'Anexo:',
-'LBL_NOTE_INFORMATION'=>'Informação do Documento',
-'File Information'=>'Informação do Arquivo',
+'LBL_NOTE_INFORMATION'=>'Informação do documento',
+'File Information'=>'Informação do arquivo',
 
-// Added for 4GA
-'LBL_TOOL_FORM_TITLE'=>'Ferramentas Documento',
-// Added for 4GA
-'Contact Name'=>'Nome Contato',
+'LBL_TOOL_FORM_TITLE'=>'Ferramentas documento',
+'Contact Name'=>'Nome de contato',
 'Related To'=>'Relacionado à',
 'Subject'=>'Assunto',
-'Created Time'=>'Data Criação',
+'Created Time'=>'Data criação',
 'Modified Time'=>'Data Modificação',
 'Document'=>'Documento',
 'Note'=>'Notas',
-//Added for 4.2 Release -- CustomView
 'Related to'=>'Relacionado à',
-'Last Modified'=>'Última Modificação',
+'Last Modified'=>'Última modificação',
 'File'=>'Arquivo',
 'LBL_ALL'=>'Todas',
 'Title'=>'Título',
 
-//Added after 504 for Downloads Module
-'LBL_FILE_INFORMATION'=>'Informação Arquivo',
-'LBL_FILE_NAME'=>'Nome Arquivo',
-'LBL_FILE_TYPE'=>'Tipo Arquivo',
+'LBL_FILE_INFORMATION'=>'Informação arquivo',
+'LBL_FILE_NAME'=>'Nome arquivo',
+'LBL_FILE_TYPE'=>'Tipo arquivo',
 'LBL_FILE_SIZE'=>'Tamanho',
-'filelocationtype'=>'Tipo Download',
+'filelocationtype'=>'Tipo de download',
 'fileversion'=>'Versão',
 'filestatus'=>'Ativo',
-'filedownloadcount'=>'Contar Download',
+'filedownloadcount'=>'Contar download',
 'os'=>'Plataforma',
-'LBL_FOLDER_NAME'=>'Nome Pasta',
-'LBL_DOWNLOAD_TYPE'=>'Tipo Download',
-'LBL_INTERNAL'=>'Interno',
-'LBL_EXTERNAL'=>'Externo',
-'LBL_EXTERNAL_FILE_NAME'=>'Nome Arquivo',
-'LBL_FILE_LOCATION'=>'Localização Arquivo',
-'LBL_PD'=>'Plataforma Dependente',
-'LBL_PIND'=>'Plataforma Independente',
-'ChoosePlatform'=>'Escolha Plataforma',
-'LBL_INACTIVE'=>'Inativo',
+'LBL_FOLDER_NAME'=>'Nome pasta',
+'LBL_DOWNLOAD_TYPE'=>'Tipo de download',
+'LBL_EXTERNAL_FILE_NAME'=>'Nome arquivo',
+'LBL_FILE_LOCATION'=>'Localização arquivo',
+'LBL_PD'=>'Plataforma dependente',
+'LBL_PIND'=>'Plataforma independente',
+'ChoosePlatform'=>'Escolha plataforma',
 'LBL_UPLOAD_BUTTON'=>'Transferir',
 'architecture'=>'Arquitetura',
-'LBL_DOWNLOAD_FILE'=>'Download Arquivo',
+'LBL_DOWNLOAD_FILE'=>'Download arquivo',
 'LBL_CHECK_INTEGRITY'=>'Checar integridade arquivo',
-'LBL_EMAIL_FILE'=>'Enviar Email com arquivo anexado',
+'LBL_EMAIL_FILE'=>'Enviar e-mail com arquivo anexado',
 'LBL_CLICK_HERE'=>'Clique aqui',
 'LBL_TO_ADD_FOLDER'=>'para adicionar uma nova pasta.',
-'LBL_DELETE_FOLDER'=>'Apagar Pasta',
+'LBL_DELETE_FOLDER'=>'Apagar pasta',
 'LBL_FOLDER_DESC'=>'Descrição',
-'LBL_ADD_NEW_FOLDER'=>'Adicionar Pasta',
-'LBL_DELETE_DOCUMENTS'=>'Apagar Documento(s)',
+'LBL_ADD_NEW_FOLDER'=>'Adicionar pasta',
+'LBL_DELETE_DOCUMENTS'=>'Apagar documento(s)',
 'LBL_MOVE_TO'=>'Mover para',
-'File Name'=>'Nome Arquivo',
-'File Type'=>'Tipo Arquivo',
+'File Name'=>'Nome do arquivo',
+'File Type'=>'Tipo do arquivo',
 'File Size'=>'Tamanho',
 'LBL_INTERNAL'=>'Interno',
 'LBL_URL'=>'URL',
 'LBL_EXTERNAL'=>'Externo',
-'LBL_EXTERNAL_LNK'=>'Link Externo',
+'LBL_EXTERNAL_LNK'=>'Link externo',
 'LBL_ACTIVE'=>'Ativo',
 'LBL_INACTIVE'=>'Inativo',
-'LBL_PLATFORM_INDEPENDENT'=>'Plataforma Independente',
-'LNK_DOWNLOAD'=>'download',
-'LBL_MOVE_DOCUMENTS'=>'Mover Documento(s)',
+'LBL_PLATFORM_INDEPENDENT'=>'Plataforma independente',
+'LNK_DOWNLOAD'=>'Download',
+'LBL_MOVE_DOCUMENTS'=>'Mover documento(s)',
 'LBL_MOVE'=>'Mover',
-'Download Type'=>'Tipo Download',
+'Download Type'=>'Tipo de download',
 'Version'=>'Versão',
 'Active'=>'Ativo',
-'Download Count'=>'Contar Download',
+'Download Count'=>'Contar download',
 'Platform'=>'Plataforma',
 'Assigned To'=>'Atribuído à',
-// Module Sequence Numbering
 'Note No' => 'No. Documento',
-// END
 
-// Documents module
-'LBL_EMPTY_FOLDERS' => 'Pastas Vazias',
-'LBL_VIEW_EMPTY_FOLDERS' => 'Visualizar Pastas Vazias',
-'LBL_NO_DOCUMENTS' => 'Nenhum Documento',
+'LBL_EMPTY_FOLDERS' => 'Pastas vazias',
+'LBL_VIEW_EMPTY_FOLDERS' => 'Visualizar pastas vazias',
+'LBL_NO_DOCUMENTS' => 'Nenhum documento',
 'LBL_DESCRIPTION' => 'Descrição',
 'FILE_HAS_NO_DATA'=>'O arquivo selecionado não possui dados ou o é inválido',
 
 'LBL_MAXIMUM_20'=>'Máximo 20',
 'LBL_MAXIMUM_50'=>'Máximo 50',
 
-// Added after 5.1.0 GA
-'Folder Name'=>'Nome Pasta',
-'Document No'=>'No. Documento',
+'Folder Name'=>'Nome da pasta',
+'Document No'=>'No. documento',
 
 'Documents' => 'Documentos',
-'Documents ID' => 'ID Documentos',
-'LBL_FILEUPLOAD_FAILED'=>'File failed to upload',
+'Documents ID' => 'ID documentos',
+'LBL_FILEUPLOAD_FAILED'=>'Falha no upload do arquivo',
+'STORAGESIZE_CONFIGURATION' => 'Informações sobre tamanho de armazenamento e configuração',
+'STORAGESIZE_CONFIGURATION_DESCRIPTION' => 'Veja e incremente o espaço ocupado pelo seu sistema de documentos.',
+'StorageMustIncrement' => 'A nova capacidade de armazenamento deve ser sempre maior que o limite atual. Para reduzir o tamanho, a eliminação física dos documentos deve ser feita por um administrador do servidor. Por favor entre em contato com o seu provedor de serviços.',
+'StorageLimit' => 'O limite de capacidade de armazenamento de sua aplicação foi atingido. Entre em contato com o administrador do aplicativo para estender esse limite.',
+'ExtendStorageLink' => 'Você pode estender esse limite aqui.',
+'Total' => 'Alocação total de disco',
+'Occupied' => 'Espaço em disco usado',
+'Free' => 'Espaço em disco disponível',
+'NewSize' => 'Tamanho novo',
+'accept_charge' => 'Eu aceito a alteração da licença e a taxa associada que ela pode ter',
+'LBL_DOCUMENTS_MASSUPLOAD' => 'Mass Upload Documents',
+'LBL_MASSUPLOAD_DESCRIPTION' => 'Activate and deactivate the document mass upload widget on each module.',
 );
-
 ?>

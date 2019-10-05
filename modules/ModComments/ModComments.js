@@ -12,8 +12,8 @@ function toggleModule_mod(tabid, action) {
 	jQuery.ajax({
 		method: 'post',
 		url: 'index.php?module=ModComments&action=ModCommentsAjax&file=BasicSettings&tabid='+tabid+'&status='+action+'&ajax=true',
-	}).done(function(response){
+	}).done(function (response) {
 		document.getElementById('status').style.display='none';
-		document.getElementById("modcommsContents").innerHTML=response;
+		document.getElementById('modcommsContents').innerHTML=response;
 	});
 }

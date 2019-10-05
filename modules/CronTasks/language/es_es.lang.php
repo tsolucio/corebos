@@ -16,7 +16,7 @@
 *  Author       : JPL TSolucio, S.L.
 *  License      : MPL 1.1
 *  *********************************************************/
-$mod_strings = Array (
+$mod_strings = array (
 	'LBL_ACTIVE' => 'Activo',
 	'LBL_INACTIVE' => 'Inactivo',
 	'LBL_STATUS' => 'Estado',
@@ -46,5 +46,6 @@ $mod_strings = Array (
 	'Scheduler' => 'Planificador Tareas',
 	'Cron Job' => 'Tarea Programada',
 	'cronWatcherService' => 'Vigilante Cron',
+	'Send out warning email for long running cron tasks' => 'Enviar correo de advertencia para tareas cron de larga ejecución.',
 );
 ?>

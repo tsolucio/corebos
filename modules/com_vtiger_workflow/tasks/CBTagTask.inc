@@ -15,41 +15,43 @@
  *************************************************************************************************
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
+require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
+require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 
-require_once('modules/com_vtiger_workflow/VTEntityCache.inc');
-require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
-
-class CBTagTask extends VTTask{
+class CBTagTask extends VTTask {
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
-		return array('listoftags','addrel','forallusers');
+		return array('listoftags', 'addrel', 'forallusers');
 	}
 
 	public function doTask(&$entity) {
-		global $adb,$default_charset,$log,$current_user;
-		list($cto,$cto_id) = explode('x',$entity->getId());
-		if (!empty($cto_id) and !empty($this->listoftags)) {
+		global $current_user;
+		list($cto, $cto_id) = explode('x', $entity->getId());
+		if (!empty($cto_id) && !empty($this->listoftags)) {
 			$setype = getSalesEntityType($cto_id);
-			require_once('include/freetag/freetag.class.php');
+			require_once 'include/freetag/freetag.class.php';
 			$freetag = new freetag();
 			if ($this->addrel) {
 				if ($this->forallusers) {
 					$usrs = get_user_array();
 					$users = '';
 					foreach ($usrs as $uid => $uname) {
-						if (!empty($uid)) $users.= $uid.',';
+						if (!empty($uid)) {
+							$users.= $uid.',';
+						}
 					}
-					$users = trim($users,',');
+					$users = trim($users, ',');
 				} else {
 					$users = $current_user->id;
 				}
 				$freetag->tag_object($users, $cto_id, $this->listoftags, $setype);
 			} else {
-				if ($this->forallusers)
+				if ($this->forallusers) {
 					$freetag->delete_object_tags($cto_id, $this->listoftags);
-				else
+				} else {
 					$freetag->delete_object_tag($current_user->id, $cto_id, $this->listoftags);
+				}
 			}
 		}
 	}

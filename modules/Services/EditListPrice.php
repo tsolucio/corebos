@@ -8,27 +8,26 @@
  * All Rights Reserved.
  ********************************************************************************/
 global $mod_strings, $app_strings, $theme;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 
-if(isset($_REQUEST['return_module']) && $_REQUEST['return_module']=="PriceBooks")
-{
+if (isset($_REQUEST['return_module']) && $_REQUEST['return_module']=='PriceBooks') {
 	$pricebook_id = vtlib_purify($_REQUEST['pricebook_id']);
 	$product_id = vtlib_purify($_REQUEST['record']);
 	$listprice = vtlib_purify($_REQUEST['listprice']);
-	$return_action = "CallRelatedList";
+	$return_action = 'CallRelatedList';
 	$return_id = vtlib_purify($_REQUEST['pricebook_id']);
-}
-else
-{
+} else {
 	$product_id = vtlib_purify($_REQUEST['record']);
 	$pricebook_id = vtlib_purify($_REQUEST['pricebook_id']);
-	$listprice = getListPrice($product_id,$pricebook_id);
-	$return_action = "CallRelatedList";
+	$listprice = getListPrice($product_id, $pricebook_id);
+	$return_action = 'CallRelatedList';
 	$return_id = vtlib_purify($_REQUEST['pricebook_id']);
 }
+$onSubmit = 'if(verify_data(index) == true) gotoUpdateListPrice('.$return_id.','.$pricebook_id.','.$product_id
+	.'); else document.getElementById(\'roleLay\').style.display=\'inline\'; return false;';
 $output ='<div id="roleLay" style="display:block;" class="layerPopup">
-	<form action="index.php" name="index" onSubmit="if(verify_data(index) == true) gotoUpdateListPrice('.$return_id.','.$pricebook_id.','.$product_id.'); else document.getElementById(\'roleLay\').style.display=\'inline\'; return false;" >
+	<form action="index.php" name="index" onSubmit="'.$onSubmit.'" >
 	<input type="hidden" name="module" value="Products">
 	<input type="hidden" name="action" value="UpdateListPrice">
 	<input type="hidden" name="record" value="'.$return_id.'">
@@ -37,7 +36,8 @@ $output ='<div id="roleLay" style="display:block;" class="layerPopup">
 	<table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
 	<tr>
 		<td class=layerPopupHeading " align="left">'.$mod_strings["LBL_EDITLISTPRICE"].'</td>
-		<td align="right" class="small"><img src="' . vtiger_imageurl('close.gif', $theme) . '" border=0 alt="'.$app_strings["LBL_CLOSE"].'" title="'.$app_strings["LBL_CLOSE"].'" style="cursor:pointer" onClick="document.getElementById(\'editlistprice\').style.display=\'none\';"></td>
+		<td align="right" class="small"><img src="' . vtiger_imageurl('close.gif', $theme) . '" border=0 alt="'.$app_strings['LBL_CLOSE'].
+			'" title="'.$app_strings["LBL_CLOSE"].'" style="cursor:pointer" onClick="document.getElementById(\'editlistprice\').style.display=\'none\';"></td>
 	</tr>
 	</table>
 	<table border=0 cellspacing=0 cellpadding=5 width=95% align=center> 
@@ -56,12 +56,13 @@ $output ='<div id="roleLay" style="display:block;" class="layerPopup">
 <tr>
 	<td colspan="3" align="center" class="small">
 	<input type="submit" name="button" value="'.$app_strings["LBL_SAVE_BUTTON_LABEL"].'" class="crmbutton small save">
-	<input title="'.$app_strings["LBL_CANCEL_BUTTON_LABEL"].'" accessKey="'.$app_strings["LBL_CANCEL_BUTTON_KEY"].'" class="crmbutton small cancel" onClick="document.getElementById(\'editlistprice\').style.display=\'none\';" type="button" name="button" value="'.$app_strings["LBL_CANCEL_BUTTON_LABEL"].'">
+	<input title="'.$app_strings["LBL_CANCEL_BUTTON_LABEL"].'" accessKey="'.$app_strings["LBL_CANCEL_BUTTON_KEY"].
+		'" class="crmbutton small cancel" onClick="document.getElementById(\'editlistprice\').style.display=\'none\';" type="button" name="button" value="'.
+		$app_strings['LBL_CANCEL_BUTTON_LABEL'].'">
 	</td>
 </tr>
 </table>
 </form>
 </div>';
-
 echo $output;
 ?>

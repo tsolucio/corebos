@@ -1,23 +1,12 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
- * All Rights Reserved.
- * Contributor(s): ______________________________________.
- *********************************************************************************
-*********************************************************************************
- * $Header: /modules/Settings/language/hu_hu.lang.php - 22:17 2011.02.24. $
- * Description:  Defines the Hungarian language pack for the Settings module vtiger 5.2.x
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
+ * All Rights Reserved.
  ********************************************************************************/
 
 $mod_strings = array(
@@ -42,33 +31,6 @@ $mod_strings = array(
 	'LBL_CURRENCY_TOOL' => 'Eszközök',
 	'LBL_CURRENCY_LIST' => 'Pénznemek Lista',
 	'NTC_DELETE_CONFIRMATION' => 'Biztos vagy abban, hogy törölni akarod ezt a rekordot?',
-	'LEADCUSTOMFIELDS' => 'Jelöltek Egyedi Mezők',
-	'ACCOUNTCUSTOMFIELDS' => 'Cégek Egyedi Mezők',
-	'CONTACTCUSTOMFIELDS' => 'Kapcsolatok Egyedi Mezők',
-	'OPPORTUNITYCUSTOMFIELDS' => 'Lehetőségek Egyedi Mezők',
-	'HELPDESKCUSTOMFIELDS' => 'Ügyfélszolgálat Egyedi Mezők',
-	'PRODUCTCUSTOMFIELDS' => 'Termékek Egyedi Mezők',
-	'VENDORCUSTOMFIELDS' => 'Beszállítók Egyedi Mezők',
-	'PRICEBOOKCUSTOMFIELDS' => 'Csomagárak Egyedi Mezők',
-	'POCUSTOMFIELDS' => 'Beszerzések Egyedi Mezők',
-	'SOCUSTOMFIELDS' => 'Megrendelések Egyedi Mezők',
-	'QUOTESCUSTOMFIELDS' => 'Ajánlatok Egyedi Mezők',
-	'INVOICECUSTOMFIELDS' => 'Díjbekérők Egyedi Mezők',
-	'EDITLEADPICKLISTVALUES' => 'Jelöltek - Kiválasztólista szerkesztés ',
-	'EDITACCOUNTPICKLISTVALUES' => 'Cégek - Kiválasztólista szerkesztés ',
-	'EDITCONTACTPICKLISTVALUES' => 'Kapcsolatok - Kiválasztólista szerkesztés ',
-	'EDITOPPORTUNITYPICKLISTVALUES' => 'Lehetőségek - Kiválasztólista szerkesztés ',
-	'EDITHELPDESKPICKLISTVALUES' => 'Ügyfélszolgálat - Kiválasztólista szerkesztés ',
-	'EDITPRODUCTPICKLISTVALUES' => 'Termékek - Kiválasztólista szerkesztés ',
-	'EDITEVENTPICKLISTVALUES' => 'Események - Kiválasztólista szerkesztés ',
-	'EDITTASKPICKLISTVALUES' => 'Feladatok - Kiválasztólista szerkesztés ',
-	'EDITRSSPICKLISTVALUES' => 'RSS - Kiválasztólista szerkesztés',
-	'EDITVENDORPICKLISTVALUES' => 'Beszállítók - Kiválasztólista szerkesztés',
-	'EDITPBPICKLISTVALUES' => 'Csomagárak - Kiválasztólista szerkesztés',
-	'EDITPOPICKLISTVALUES' => 'Beszerzések - Kiválasztólista szerkesztés',
-	'EDITSOPICKLISTVALUES' => 'Megrendelések - Kiválasztólista szerkesztés',
-	'EDITQUOTEPICKLISTVALUES' => 'Ajánlatok - Kiválasztólista szerkesztés',
-	'EDITINVOICEPICKLISTVALUES' => 'Díjbekérők - Kiválasztólista szerkesztés',
 	'LBL_PICKLIST_FIELD_SETTINGS' => 'Kiválasztólista Mező Beállítások:',
 	'Leads' => 'Jelölt',
 	'Accounts' => 'Cég',
@@ -146,7 +108,6 @@ $mod_strings = array(
 	'LBL_FTP' => 'FTP',
 	'LBL_SYSTEM_CONFIG' => 'Rendszer Konfiguráció',
 	'LBL_SYSTEM_INFO' => 'Rendszer Részletek',
-	'LBL_PROXY_SETTINGS' => 'Proxy Szerver',
 	'LBL_AUDIT_TRAIL' => 'Nyomkövetések',
 	'LBL_ENABLE_AUDIT_TRAIL' => 'Nyomkövetés engedélyezés',
 	'AuditTrailEnabled' => 'Audit Trail Enabled',
@@ -203,7 +164,7 @@ $mod_strings = array(
 	'LBL_PICKLIST_SETTINGS' => 'Kiválasztólista Beállítások',
 	'LBL_EDIT_PICKLIST_VALUES' => ' - Kiválasztólista mezők értékeinek Szerkesztése',
 	'LBL_EDIT' => 'Editing',
-	'LBL_COMMUNICATION_TEMPLATES' => 'Kommunikációs Sablonok',
+	'LBL_COMMUNICATION_TEMPLATES' => 'Business Process Management',
 	'LBL_CREATE_EMAIL_TEMPLATES' => 'Új Email sablon',
 	'LBL_UPLOAD_MSWORD_TEMPLATES' => ' - MS Word Sablon Feltöltés Levél Összefésülés részére',
 	'LBL_SCHEDULE_EMAIL_NOTIFICATION' => ' - Email Értesítések Beütemezése',
@@ -276,6 +237,8 @@ $mod_strings = array(
 	'LBL_QUOTE_STAGE' => 'Ajánlati Fázis',
 	'LBL_CARRIER' => 'Futár',
 	'LBL_TAXCLASS' => 'Adó osztály',
+	'LBL_RETENTION'=>'Retention',
+	'LBL_PERCENTAGE'=>'Percentage',
 	'LBL_MY_DETAILS' => 'Részletek',
 	'LBL_MY_MAIL_SERVER_DET' => 'Bejövő Email Szerver adatai',
 	'LBL_EMAIL_ID' => 'Email azonosító',
@@ -340,7 +303,6 @@ $mod_strings = array(
 	'LBL_FIELD_MAPPING' => 'Mező Összekapcsolás',
 	'LBL_LEAD_FIELD' => 'Jelölt Mező',
 	'LBL_TEXT_AREA' => 'Szöveg Terület',
-	'NOTESCUSTOMFIELDS' => 'Dokumentum Egyedi Mezők',
 	'LBL_ASSIGN_MODULE_OWNERS' => 'Modul Tulajdonosok Kijelölése',
 	'LBL_MODULE_OWNERS' => 'Modul Tulajdonosok',
 	'LBL_ASSIGN_MODULE_OWNERS_INFO' => ' - Tulajdonosok Kijelölése minden modulhoz',
@@ -451,6 +413,7 @@ $mod_strings = array(
 	'LBL_CONTACT_FIELDS' => 'Kapcsolat mezők',
 	'LBL_LEAD_FIELDS' => 'Jelölt mezők',
 	'LBL_USER_FIELDS' => 'Felhasználó mezők',
+	'LBL_HELPDESK_FIELDS'=>'Ticket Fields',
 	'LNK_SAMPLE_EMAIL' => 'Az email minta megtekintése',
 	'LBL_TEMPLATE_FILE' => 'Sablon fájl',
 	'LBL_MODULENAMES' => 'Modul',
@@ -608,6 +571,8 @@ $mod_strings = array(
 	'ERR_CUSTOM_FIELD_WITH_NAME' => 'Saját mező ezzel a nével  ',
 	'ERR_ALREADY_EXISTS' => ' már létezik.',
 	'ERR_SPECIFY_DIFFERENT_LABEL' => 'Kérlek adj meg más feliratot ',
+	'ROWSIZEERROR' => 'Row size too large. Reached maximum size limit of database table size.',
+	'ADDFIELDERROR' => 'Custom field could not be added due to a database error.',
 	'LBL_TOOLS_TO_BE_SHOWN' => 'Eszközök mutatva',
 	'LBL_PICKLIST_TRANSFER' => 'Átvéve az értékek innen ',
 	'LBL_REPLACE_VALUE_WITH' => 'Az érték helyettesítve ezzel ',
@@ -654,6 +619,7 @@ $mod_strings = array(
 	'VTLIB_LBL_MODULE_MANAGER_NOMODULES' => 'Nem található egyedi modul a rendszerben. Létrehozol vagy importálsz egyet ...?',
 	'LBL_MAIL_SCANNER' => 'Levél Vizsgáló',
 	'LBL_MAIL_SCANNER_DESCRIPTION' => 'Postafiók beállítása vizsgálatra',
+	'Recommended frequency for MailScanner is 15 mins' => 'Recommended frequency for Mail Converter is 15 mins',
 	'LBL_SCAN_NOW' => 'Vizsgálat most',
 	'LBL_RULE' => 'Szabály',
 	'LBL_SETUP' => 'Beállítás',
@@ -678,7 +644,7 @@ $mod_strings = array(
 	'LBL_ACTION' => 'Akció',
 	'LBL_CREATE' => 'Létrehozás',
 	'LBL_TICKET' => 'Kérés',
-        'LBL_PROJECT'=>'Project',
+		'LBL_PROJECT'=>'Project',
 	'LBL_ADD' => 'Hozzáadás',
 	'LBL_CONTACT' => 'Kapcsolat',
 	'LBL_ACCOUNT' => 'Cég',
@@ -706,10 +672,12 @@ $mod_strings = array(
 	'LBL_SCANNING' => 'Vizsgálat',
 	'LBL_LOOKFOR' => 'Keresés',
 	'LBL_UNREAD' => 'Olvasatlan',
+	'LBL_ALLUNREAD'=>'ALL Unread',
 	'LBL_READ' => 'Olvasott',
 	'LBL_AFTER_SCAN' => 'Vizsgálat után',
 	'LBL_MESSAGES_FROM_LASTSCAN' => 'Üzenetek utolsó vizsgálatból',
 	'LBL_MARK_MESSAGE_AS' => 'Megjelölés mint',
+	'LBL_ASSIGN' => 'Assign to',
 	'LBL_LIST_WORKFLOWS' => 'Automatikus Munkafolyamatok',
 	'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Automatikus Munkafolyamat létrehozás és szerkesztés vtiger-hez',
 	'LBL_TASK_TITLE' => 'Feladat Megnevezés',
@@ -728,11 +696,15 @@ $mod_strings = array(
 	'LBL_ON_MODIFY' => 'A rekord módosításakor mindig',
 	'LBL_ON_SCHEDULE' => 'Időzített pillanatban',
 	'LBL_ON_DELETE' => 'When record is deleted',
+	'LBL_MANUAL' => 'Manual',
+	'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
 	'LBL_CONDITIONS' => 'Feltételek',
 	'LBL_NEW_CONDITION_BUTTON_LABEL' => 'Új Feltétel',
 	'LBL_TASKS' => 'Feladatok',
 	'LBL_NEW_TASK_BUTTON_LABEL' => 'Új Feladatok',
 	'LBL_TASK' => 'Feladat',
+	'LBL_DELAY' => 'Delay',
+
 	'LBL_MANDATORY_FIELDS' => 'Kötelező Mezők',
 	'LBL_MANDATORY_FIELDS_DESCRIPTION' => 'Kötelező Mezők Beállítása minden modulhoz',
 	'LBL_CUSTOMIZE_MODENT_NUMBER' => 'Rekord számozás beállítás',
@@ -810,8 +782,6 @@ $mod_strings = array(
 	'LBL_MAPPED_FIELDS' => 'Fields Leképezett Mezők',
 	'LEADS_CUSTOM_FIELD_MAPPING_DESCRIPTION' => 'Jelölt Mezők leképzése Cégekre , Kapcsolatokra és Lehetőségekre',
 	'LEADS_CUSTOM_FIELD_MAPPING' => 'Jelölt Mező leképzés',
-	'LBL_CALENDER_CUSTOMFIELDS' => 'Naptár Saját Mezők',
-	'LBL_CALENDER_CUSTOMFIELDS_DESCRIPTION' => 'Létrehozhatsz saját mezőkat a Naptárhoz',
 	'LBL_GO_BACK' => 'Vissza',
 	'LBL_USE_PREFIX' => 'Prefix használata',
 	'LBL_START_SEQ' => 'Sorozat indítása',
@@ -844,24 +814,17 @@ $mod_strings = array(
 	'Configuration Editor' => 'Konfiguráció Szerkesztő',
 	'ModTracker' => 'Nyomkövető',
 	'LBL_MODTRACKER_DESCRIPTION' => 'Add meg a nyomon-követendő modulokat',
-	'LBL_MENUS_TO_SHOW' => 'Válaszd ki a főmenüben megjelenítendő modulokat',
-	'LBL_MENU_DESC' => 'Egyedi menüsorrend beállítása',
 	'LBL_MENU_EDITOR' => 'Menü szerkesztő',
-	'LBL_MENUS_TO_SHOW_DESCRIPTION' => 'Használhatod a nyilakat, hogy a menüelemek sorrendjét beállítsd. Az első 10 elem meg fog jelenni a főmenüben, a többi pedig a <b><i>További menüpontok</i></b> legördülőben lesz elérhető.',
 	'LBL_ALL_MODULES' => 'Minden modul',
 	'LBL_SELECTED_MODULES' => 'Kiválasztott modulok',
 	'LBL_CRM_SETTINGS' => 'CRM Beállítások',
-	'LBL_PICKLIST_GLOBAL_DELETE' => 'Kiválasztó lista törlése',
 	'Assets' => 'Vagyontárgyak',
-	'Update configuration file of the application' => 'A vtiger CRM konfigurációs beállításainak szerkesztése',
 	'LBL_UNSUBSCRIBE' => 'Leiratkozás',
 	'Save' => 'Módosítások mentése',
 	'Workflow' => 'Munkafolymatok',
 	'LBL_LANGUAGES' => 'Nyelvek',
 	'LBL_LANGUAGES_DESCRIPTION' => 'Nyelvek leírása',
 	'LUpgradeBL_BIG_DEAL' => 'Nagy üzlet',
-	'LBL_COMPANY_INFO' => 'Cégadatok',
-	// language translation strings
 	'LBL_LANGUAGES_PACKS' => 'Language Extension',
 	'LBL_EDIT_LANGUAGE_FILE' => 'Translate modules strings',
 	'LBL_SELECT_TRANSLATE_MODULE' => 'Select a module to translate :',
@@ -879,8 +842,39 @@ $mod_strings = array(
 	'RLNotTranslated' => 'List Title Not Translated',
 	'FieldsTranslated' => 'Fields Translated',
 	'FieldsNotTranslated' => 'Fields Not Translated',
-	// language translation strings
 	'SendEmailFrom' => 'Send Email From',
 	'LeaveEmptyForUserEmail' => 'Leave empty to use your user email',
+	'LBL_OPENSSL_SUPPORT' => 'OpenSSL Support',
+	'LBL_IMAP_SUPPORT' => 'IMAP Support',
+	'StorageSpaceUsage' => 'Storage Space Usage',
+	'Calculate storage disk space usage and save in database.' => 'Calculate storage disk space usage and save in database.',
+	'wf_conditions_found' => 'Field found in workflow condtions: ',
+	'wf conditions' => 'Field not found in workflow condtions.',
+	'wf_tasks' => 'Field not found in workflow tasks.',
+	'wf_tasks_found' => 'Field found in workflow ',
+	'cv_column' => 'Field found in custom view columns: ',
+	'cv_column_nf' => 'Field not found in custom view columns',
+	'cv_advfilter' => 'Field found in custom view conditions: ',
+	'cv_advfilter_nf' => 'Field not found in custom view conditions',
+	'cv_stdfilter' => 'Field found in custom view date conditions: ',
+	'cv_stdfilter_nf' => 'Field not found in custom view date conditions',
+	'email_templates' => 'Field found in Email Template: ',
+	'email_templates_nf' => 'Field not found in Email Templates',
+	'select_column' => 'Field found in Report (columns): ',
+	'select_column_nf' => 'Field not found in Report Columns',
+	'report_dtfilter' => 'Field found in Report (Date Filters): ',
+	'report_dtfilter_nf' => 'Field not found in Report Date Filters',
+	'report' => 'Field found in Report (Group By): ',
+	'report_nf' => 'Field not found in Report Group By',
+	'report_sort' => 'Field found in Report (Sort By): ',
+	'report_sort_nf' => 'Field not found in Report Sort By',
+	'report_summary' => 'Field found in Report (Summary): ',
+	'report_summary_nf' => 'Field not found in Report Summary',
+	'cl_mapping' => 'Field found in Lead Conversion Mapping',
+	'cl_mapping_nf' => 'Field not found in Lead Conversion Mapping',
+	'Site Maintenance' => 'Site Maintenance',
+	'SM_BeBackSoon' => 'We&rsquo;ll be back soon!',
+	'SM_SorryInconvenience' => 'Sorry for the inconvenience but we&rsquo;re performing some maintenance at the moment. We&rsquo;ll be back online shortly!',
+	'LBL_CC' => 'CC',
 );
 ?>

@@ -12,23 +12,19 @@
  * @param $adb - the peardatabase type object
  * @return array $data - contains the asterisk server and port information in the format array(server, port)
  */
-function getAsteriskInfo($adb){
+function getAsteriskInfo($adb) {
 	global $log;
-	$sql = "select * from vtiger_asterisk";
-	$server = "";
-	$port = ""; //hard-coded for now
-	$result = $adb->pquery($sql, array());
-	if($adb->num_rows($result)>0){
+	$result = $adb->pquery('select * from vtiger_asterisk', array());
+	if ($adb->num_rows($result)>0) {
 		$data = array();
-		$data['server'] = $adb->query_result($result,0,"server");
-		$data['port'] = $adb->query_result($result,0,"port");
-		$data['username'] = $adb->query_result($result,0,"username");
-		$data['password'] = $adb->query_result($result,0,"password");
-		$data['version'] = $adb->query_result($result,0,"version");
+		$data['server'] = $adb->query_result($result, 0, 'server');
+		$data['port'] = $adb->query_result($result, 0, 'port');
+		$data['username'] = $adb->query_result($result, 0, 'username');
+		$data['password'] = $adb->query_result($result, 0, 'password');
+		$data['version'] = $adb->query_result($result, 0, 'version');
 		return $data;
-	}else{
-		$log->debug("Asterisk server settings not specified.\n".
-					"Change the configuration from vtiger-> Settings-> Softphone Settings\n");
+	} else {
+		$log->debug('< getAsteriskInfo: error: Asterisk server settings not specified');
 		return false;
 	}
 }
@@ -41,22 +37,22 @@ function getAsteriskInfo($adb){
  * @param string $password - the asterisk password
  * @param object $asterisk - asterisk type object
  */
-function authorizeUser($username, $password, $asterisk){
+function authorizeUser($username, $password, $asterisk) {
 	echo "Trying to login to asterisk\n";
 
-	if(!empty($username) && !empty($password)){
+	if (!empty($username) && !empty($password)) {
 		$asterisk->setUserInfo($username, $password);
-		if( !$asterisk->authenticateUser() ) {
+		if (!$asterisk->authenticateUser()) {
 			echo "Cannot login to asterisk using\n
 					User: $username\n
 					Password: $password\n
 					Please check your configuration details.\n";
 			exit(0);
-		}else{
+		} else {
 			echo "Logged in successfully to asterisk server\n\n";
 			return true;
 		}
-	}else{
+	} else {
 		return false;
 	}
 }
@@ -67,20 +63,20 @@ function authorizeUser($username, $password, $asterisk){
  * @param string $password - the asterisk password
  * @param object $asterisk - asterisk type object
  */
-function loginUser($username, $password, $asterisk){
-	if(!empty($username) && !empty($password)){
+function loginUser($username, $password, $asterisk) {
+	if (!empty($username) && !empty($password)) {
 		$asterisk->setUserInfo($username, $password);
-		if( !$asterisk->authenticateUser() ) {
+		if (!$asterisk->authenticateUser()) {
 			echo "Cannot login to asterisk using\n
 					User: $username\n
 					Password: $password\n
 					Please check your configuration details.\n";
 			exit(0);
-		}else{
+		} else {
 			return true;
 		}
-	}else{
-		echo "Missing username and/or password";
+	} else {
+		echo 'Missing username and/or password';
 		return false;
 	}
 }
@@ -91,15 +87,15 @@ function loginUser($username, $password, $asterisk){
  * @return :: on success - string $value - the channel for the current call
  * 			on failure - false
  */
-function getChannel($asterisk){
+function getChannel($asterisk) {
 	$res = array();
-	while(true){
+	while (true) {
 		$res = $asterisk->getAsteriskResponse(false);
-		if(empty($res)){
+		if (empty($res)) {
 			continue;
 		}
-		foreach($res as $action => $value) {
-			if($action == 'Channel'){
+		foreach ($res as $action => $value) {
+			if ($action == 'Channel') {
 				return $value;
 			}
 		}
@@ -114,11 +110,10 @@ function getChannel($asterisk){
  * @param object $adb - the peardatabase object
  * @return integer $userid - the user id with the extension
  */
-function getUserFromExtension($extension, $adb){
+function getUserFromExtension($extension, $adb) {
 	$userid = false;
-	$sql = 'select userid from vtiger_asteriskextensions where asterisk_extension=?';
-	$result = $adb->pquery($sql, array($extension));
-	if($adb->num_rows($result) > 0){
+	$result = $adb->pquery('select userid from vtiger_asteriskextensions where asterisk_extension=?', array($extension));
+	if ($adb->num_rows($result) > 0) {
 		$userid = $adb->query_result($result, 0, 'userid');
 	}
 	return $userid;
@@ -134,42 +129,51 @@ function getUserFromExtension($extension, $adb){
  * @return string $status - on success - string success
  * 							on failure - string failure
  */
-function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, $adb, $userid, $relcrmid, $callerInfo=false){
-	global $log, $current_user;
-
+function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, $adb, $userid, $relcrmid, $callerInfo = false) {
 	// Reset date format for a while
 	$date = new DateTimeField(null);
 	$currentDate = $date->getDisplayDate();
 	$currentTime = $date->getDisplayTime();
-	require_once 'modules/Calendar/Activity.php';
-	$focus = new Activity();
-	$focus->column_fields['subject'] = getTranslatedString('Call From','PBXManager')." $callerName ($callerNumber)";
+	$focus = CRMEntity::getInstance('cbCalendar');
+	$focus->column_fields['subject'] = getTranslatedString('Call From', 'PBXManager')." $callerName ($callerNumber)";
 	$focus->column_fields['activitytype'] = 'Call';
-	$focus->column_fields['date_start'] = $currentDate;
-	$focus->column_fields['due_date'] = $currentDate;
-	$focus->column_fields['time_start'] = $currentTime;
-	$focus->column_fields['time_end'] = $currentTime;
+	$focus->column_fields['dtstart'] = $currentDate.' '.$currentTime;
+	$focus->column_fields['dtend'] = $currentDate.' '.$currentTime;
 	$focus->column_fields['eventstatus'] = 'Held';
-	$focus->column_fields['assigned_user_id'] = $userid;
-	$focus->save('Calendar');
-	$focus->setActivityReminder('off');
-
-	if(empty($relcrmid)) {
-		if(empty($callerInfo)) {
+	if (!empty($callerInfo['activityid'])) {
+		$focus->column_fields['relatedwith'] = $callerInfo['activityid'];
+	}
+	if (empty($relcrmid)) {
+		if (empty($callerInfo)) {
 			$callerInfo = getCallerInfo($callerNumber);
 		}
+		$focus->column_fields['cto_id'] = $callerInfo['id'];
+		$focus->column_fields['rel_id'] = 0;
 	} else {
 		$callerInfo = array();
 		$callerInfo['module'] = getSalesEntityType($relcrmid);
 		$callerInfo['id'] = $relcrmid;
+		$ctoInfo = getCallerInfo($callerNumber);
+		$focus->column_fields['cto_id'] = $ctoInfo['id'];
+		$focus->column_fields['rel_id'] = $relcrmid;
 	}
+	$focus->column_fields['assigned_user_id'] = $userid;
+	$focus->save('cbCalendar');
+	$focus->setActivityReminder('off');
 
-	if($callerInfo != false){
-		$tablename = array('Contacts'=>'vtiger_cntactivityrel', 'Accounts'=>'vtiger_seactivityrel', 'Leads'=>'vtiger_seactivityrel', 'HelpDesk'=>'vtiger_seactivityrel', 'Potentials'=>'vtiger_seactivityrel');
-		$sql = 'insert into '.$tablename[$callerInfo['module']].' values (?,?)';
-		$params = array($callerInfo['id'], $focus->id);
-		$adb->pquery($sql, $params);
+	if ($callerInfo != false) {
+		$tablename = array(
+			'Contacts'=>'vtiger_cntactivityrel',
+			'Accounts'=>'vtiger_seactivityrel',
+			'Leads'=>'vtiger_seactivityrel',
+			'HelpDesk'=>'vtiger_seactivityrel',
+			'Potentials'=>'vtiger_seactivityrel',
+		);
+		$adb->pquery('insert ignore into '.$tablename[$callerInfo['module']].' values (?,?)', array($callerInfo['id'], $focus->id));
 	}
+	$callerInfo['activityid'] = $focus->id;
+	$callerInfo['pbxdirection'] = 'IN';
+	cbEventHandler::do_action('corebos.pbxmanager.aftersaveactivity', $callerInfo);
 	return $focus->id;
 }
 
@@ -179,39 +183,43 @@ function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, 
  * 		int $record - the activity will be attached to this record
  * 		object $adb - the peardatabase object
  */
-function addOutgoingcallHistory($current_user,$extension, $record ,$adb){
-	global $log;
-	require_once 'modules/Calendar/Activity.php';
-
+function addOutgoingcallHistory($current_user, $extension, $record, $adb) {
 	$date = new DateTimeField(null);
 	$currentDate = $date->getDisplayDate();
 	$currentTime = $date->getDisplayTime();
 
-	$focus = new Activity();
-	$focus->column_fields['subject'] = "Outgoing call from $current_user->user_name ($extension)";
+	$setype = getSalesEntityType($record);
+	$focus = CRMEntity::getInstance('cbCalendar');
+	$focus->column_fields['subject'] = getTranslatedString('OutgoingCall', 'PBXManager').' '.$current_user->user_name." ($extension)";
 	$focus->column_fields['activitytype'] = "Call";
-	$focus->column_fields['date_start'] = $currentDate;
-	$focus->column_fields['due_date'] = $currentDate;
-	$focus->column_fields['time_start'] = $currentTime;
-	$focus->column_fields['time_end'] = $currentTime;
+	$focus->column_fields['dtstart'] = $currentDate.' '.$currentTime;
+	$focus->column_fields['dtend'] = $currentDate.' '.$currentTime;
 	$focus->column_fields['eventstatus'] = "Held";
 	$focus->column_fields['assigned_user_id'] = $current_user->id;
-	$focus->save('Calendar');
-	$focus->setActivityReminder('off');
-	$setype = $adb->pquery("SELECT setype FROM vtiger_crmentity WHERE crmid = ?",array($record));
-	$rows = $adb->num_rows($setype);
-
-	if($rows > 0){
-		$module = $adb->query_result($setype,0,'setype');
-		$tablename = array('Contacts'=>'vtiger_cntactivityrel', 'Accounts'=>'vtiger_seactivityrel', 'Leads'=>'vtiger_seactivityrel');
-		$sql = "insert into ".$tablename[$module]." values (?,?)";
-		$params = array($record, $focus->id);
-		$adb->pquery($sql, $params);
-		$status = "success";
-	}else{
-		$status = "failure";
+	if ($setype=='Contacts') {
+		$focus->column_fields['cto_id'] = $record;
+	} elseif (!empty($setype)) {
+		$focus->column_fields['rel_id'] = $record;
 	}
+	$focus->save('cbCalendar');
+	$focus->setActivityReminder('off');
+	$callerInfo = array();
+	$ename = getEntityName($setype, $record);
+	$callerInfo['module'] = $setype;
+	$callerInfo['name'] = $ename[$record];
+	$callerInfo['id'] = $record;
+	$callerInfo['activityid'] = $focus->id;
+	$callerInfo['pbxuuid'] = 0;
+	$callerInfo['pbxdirection'] = 'OUT';
+	cbEventHandler::do_action('corebos.pbxmanager.aftersaveactivity', $callerInfo);
 
+	if (!empty($setype)) {
+		$tablename = array('Contacts'=>'vtiger_cntactivityrel', 'Accounts'=>'vtiger_seactivityrel', 'Leads'=>'vtiger_seactivityrel');
+		$adb->pquery('insert ignore into '.$tablename[$setype].' values (?,?)', array($record, $focus->id));
+		$status = 'success';
+	} else {
+		$status = 'failure';
+	}
 	return $status;
 }
 ?>

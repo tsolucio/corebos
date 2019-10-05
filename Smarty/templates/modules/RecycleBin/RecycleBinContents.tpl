@@ -39,7 +39,7 @@
 					<tr>{$NAVIGATION}</tr>
 				</table>
 			</td>
-			<td width=100% align="right">
+			<td width=100% align="right" class="cblds-t-align_right">
 				<b>{$MOD.LBL_SELECT_MODULE} : </b>
 				<select id="select_module" onChange="changeModule(this);" class="small">
 				{foreach key=mod_name item=module from=$MODULE_NAME}
@@ -85,10 +85,10 @@
 			<table width=100% height="400px" align="center">
 			<tr>
 				<td align="center">
-					<div style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255);width:90%;">
-					<table cellspacing=0 cellpadding=5 width=98% border=0 align=center>
+					<div style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255);width:90%; margin: 0 auto;">
+					<table cellspacing=0 cellpadding=5 width=98% border=0 align=center class="cblds-t-align_center">
 						<tr>
-							<td rowspan="2" width="30%" align='right'><img src="{'empty.jpg'|@vtiger_imageurl:$THEME}" height="60"></td>
+							<td rowspan="2" width="30%" align='right' class="cblds-t-align_right"><img src="{'empty.jpg'|@vtiger_imageurl:$THEME}" height="60"></td>
 							<td style="border-bottom: 1 px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%"><span class="genHeaderSmall">{$MOD.LBL_EMPTY_MODULE} {$SELECTED_MODULE|@getTranslatedString:$SELECTED_MODULE}</td>
 						</tr>
 					</table>
@@ -156,7 +156,7 @@
 		<td class="small" nowrap>
 			<input name="submit" type="button" class="crmbutton small create" onClick="callRBSearch('Basic');" value=" {$APP.LBL_SEARCH_NOW_BUTTON} ">&nbsp;
 		</td>
-		<td class="small" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="moveMe('searchAcc');searchshowhide('searchAcc','')">[x]</td>
+		<td class="small" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="searchshowhide('searchAcc','')">[x]</td>
 	</tr>
 	<tr>
 		<td colspan="7" align="center" class="small">

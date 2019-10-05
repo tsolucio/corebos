@@ -15,10 +15,12 @@
 *************************************************************************************************/
 
 class user_showtagas extends cbupdaterWorker {
-	
-	function applyChange() {
+
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -28,5 +30,4 @@ class user_showtagas extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

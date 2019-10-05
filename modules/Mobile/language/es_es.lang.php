@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$mod_strings = Array (
+$mod_strings = array (
 	'crmtogo' => 'CRM To Go',
 	'Mobile' => 'Móvil',
 	'LBL_BACK' => 'Atrás',
@@ -40,7 +40,6 @@ $mod_strings = Array (
 	'LBL_TASK_BUTTON' => 'Tarea',
 	'LBL_EVENT_BUTTON' => 'Evento',
 	'LBL_LISTVIEW' => 'Vista Lista',
-	'LBL_SEARCH' => 'Buscar',
 	'LBL_SEARCH_RESULTS' => 'Resultados Búsqueda',
 	'LBL_DIALOG' => 'Diálogo',
 	'COMBO_LEADS' => 'PreContactos',
@@ -96,9 +95,8 @@ $mod_strings = Array (
 	'LBL_THEME_COLOR_B'=>'azul',
 	'LBL_THEME_COLOR_C'=>'blanco',
 	'LBL_NAVI_SELECTION'=>'Elementos por Página:',
-
 	'LBL_COMMENTS'=>'Comentarios',
 	'LBL_SIGNATURE'=>'Firma',
+	'LBL_DUPLICATE'=>'Duplicar',
 );
-
 ?>

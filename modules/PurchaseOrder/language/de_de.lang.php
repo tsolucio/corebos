@@ -1,19 +1,14 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Bestellungen',
 'LBL_RELATED_PRODUCTS'=>'Artikel',
 'LBL_MODULE_TITLE'=>'Bestellungen: Home',
@@ -29,14 +24,6 @@ $mod_strings = Array(
 'LBL_LIST_PHONE'=>'Telefon',
 'LBL_LIST_EMAIL_ADDRESS'=>'E-Mail',
 'LBL_LIST_CONTACT_NAME'=>'Person',
-
-//DON'T CONVERT THESE THEY ARE MAPPINGS
-'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-'db_website' => 'LBL_LIST_WEBSITE',
-'db_billing_address_city' => 'LBL_LIST_CITY',
-
-//END DON'T CONVERT
-
 'LBL_ACCOUNT'=>'Organisation:',
 'LBL_ACCOUNT_NAME'=>'Organisation:',
 'LBL_PHONE'=>'Telefon:',
@@ -68,6 +55,7 @@ $mod_strings = Array(
 'LBL_COUNTRY'=>'Land:',
 'LBL_DESCRIPTION_INFORMATION'=>'Zusatzinformationen',
 'LBL_TERMS_INFORMATION'=>'Liefer- und Zahlungsbedingungen',
+'LBL_PurchaseOrder_FINANCIALINFO' => 'Financial Information',
 'LBL_DESCRIPTION'=>'Beschreibung:',
 'NTC_COPY_BILLING_ADDRESS'=>'kopiere Rechnungsadressea auf Lieferadresse',
 'NTC_COPY_SHIPPING_ADDRESS'=>'kopiere Lieferadresse auf Rechnungsadresse',
@@ -81,7 +69,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Organisation wählen',
 'LBL_GENERAL_INFORMATION'=>'Allgemein',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Neues Verkaufspotential',
 'LBL_POTENTIAL_TITLE'=>'Verkaufspotentiale',
 
@@ -96,16 +83,13 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'neue Person',
 'LBL_CONTACT_TITLE'=>'Personen',
 
-//Added fields after RC1 - Release
 'LBL_ALL'=>'All',
 'LBL_PROSPECT'=>'potentieller Kunde',
 'LBL_INVESTOR'=>'Investor',
 'LBL_RESELLER'=>'Wiederverkäufer',
 'LBL_PARTNER'=>'Partner',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Account Tools',
-//Added for 4GA
 'Subject'=>'Titel',
 'Quote Name'=>'Angebot',
 'Vendor Name'=>'Lieferant',
@@ -120,7 +104,7 @@ $mod_strings = Array(
 'Excise Duty'=>'Abgaben',
 'Total'=>'Total',
 'Product Name'=>'Produkt',
-'Assigned To'=>'zuständig',
+'Assigned To'=>'Zuständig',
 'Billing Address'=>'Rechnungsadresse Strasse',
 'Shipping Address'=>'Lieferadresse Strasse',
 'Billing City'=>'Rechnungsadresse Ort',
@@ -137,8 +121,8 @@ $mod_strings = Array(
 'State'=>'Bundesland',
 'Code'=>'PLZ',
 'Country'=>'Land',
-'Created Time'=>'erstellt',
-'Modified Time'=>'geändert',
+'Created Time'=>'Erstellt',
+'Modified Time'=>'Geändert',
 'Description'=>'Beschreibung',
 'Potential Name'=>'Verkaufspotential',
 'Customer No'=>'Kundennummer',
@@ -146,12 +130,10 @@ $mod_strings = Array(
 'Vendor Terms'=>'Lieferbedingungen',
 'Pending'=>'hängig',
 'Account Name'=>'Organisation',
-'Terms & Conditions'=>'Zahlungs- und Lieferbedingungen',
 //Quote Info
 'LBL_PO_INFORMATION'=>'Einkauf',
 'LBL_PO'=>'Einkauf:',
 
- //Added for 4.2 GA
 'LBL_SO_FORM_TITLE'=>'Verkauf',
 'LBL_PO_FORM_TITLE'=>'Einkauf',
 'LBL_SUBJECT_TITLE'=>'Titel',
@@ -179,7 +161,6 @@ $mod_strings = Array(
 'Cancelled'=>'abgebrochen',
 'Received Shipment'=>'Lieferung empfangen',
 
-//Added for Reports (5.0.4)
 'Tax Type'=>'Steuertyp',
 'Discount Percent'=>'Rabatt (%)',
 'Discount Amount'=>'Rabatt',
@@ -187,13 +168,16 @@ $mod_strings = Array(
 'Sub Total'=>'Sub Total',
 'S&H Amount'=>'Versandkosten',
 
-//Added after 5.0.4 GA
 'PurchaseOrder No'=>'Einkaufsbestellungen Nr.',
 
 'SINGLE_PurchaseOrder'=>'Einkaufsbestellung',
 'PurchaseOrder ID'=>'Einkaufsbestellungs-ID',
 
 'Terms & Conditions'=>'Geschäftsbedingungen',
-);
 
+'LBL_PARTIAL_PAYMENTS_INFO' => 'Partial Payments Information',
+'Amount Due'=>'Amount Due',
+'Amount Paid'=>'Amount Paid',
+'Total Amount'=>'Total Amount',
+);
 ?>

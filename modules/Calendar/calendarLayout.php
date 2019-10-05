@@ -278,7 +278,7 @@ function get_cal_header_data(& $cal_arr,$viewBox,$subtab)
 		if(count($subrole)> 0)
 		{
 			$roleids = $subrole;
-			array_push($roleids, $roleid);
+			$roleids[] = $roleid;
 		}
 		else
 		{	
@@ -1004,8 +1004,8 @@ function getYearViewLayout(& $cal)
 					{
 						for($act_count = 0;$act_count<count($cal['slice']->activities);$act_count++)
 						{
-							array_push($date_stack,$cal['slice']->activities[$act_count]->
-									start_time->get_formatted_date());
+							$date_stack[] = $cal['slice']->activities[$act_count]->
+									start_time->get_formatted_date();
 						}
 					}
 					if(in_array($cal['calendar']->month_day_slices[$count][$cnt],$date_stack))
@@ -1358,8 +1358,7 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 	$Entries = Array();
 	$category = getParentTab();
 	global $adb,$current_user,$mod_strings,$app_strings,$cal_log,$listview_max_textlength,$list_max_entries_per_page;
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-        require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+	$userprivs = $current_user->getPrivileges();
 	$cal_log->debug("Entering getEventList() method...");
 
 	$and = "AND (
@@ -1382,20 +1381,19 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 
 	$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
 							'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-	$query = "SELECT vtiger_groups.groupname, $userNameSql as user_name,vtiger_crmentity.smownerid, vtiger_crmentity.crmid,
-       		vtiger_activity.* FROM vtiger_activity
+	$query = "SELECT vtiger_groups.groupname, $userNameSql as user_name,vtiger_crmentity.smownerid, vtiger_crmentity.crmid,vtiger_activity.* FROM vtiger_activity
 		INNER JOIN vtiger_crmentity
 			ON vtiger_crmentity.crmid = vtiger_activity.activityid
 		LEFT JOIN vtiger_groups
 			ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 		LEFT JOIN vtiger_users
-	       		ON vtiger_users.id = vtiger_crmentity.smownerid 
+			ON vtiger_users.id = vtiger_crmentity.smownerid
 		LEFT OUTER JOIN vtiger_recurringevents
 			ON vtiger_recurringevents.activityid = vtiger_activity.activityid
 		WHERE vtiger_crmentity.deleted = 0
 			AND (vtiger_activity.activitytype not in ('Emails','Task')) $and ";
 
-        $list_query = $query." AND vtiger_crmentity.smownerid = "  . $current_user->id;
+	$list_query = $query." AND vtiger_crmentity.smownerid = "  . $current_user->id;
 
 	// User Select Customization: Changes should made also in (Appointment::readAppointment)
 	$query_filter_prefix = calendarview_getSelectedUserFilterQuerySuffix();
@@ -1425,13 +1423,13 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 			$com_q = " AND vtiger_crmentity.smownerid = ?
 				GROUP BY vtiger_activity.activityid";
 		}
-			
+
 		$pending_query = $query." AND (vtiger_activity.eventstatus = 'Planned')".$com_q;
 		$total_q =  $query."".$com_q;
-		array_push($info_params, $current_user->id);
-		
+		$info_params[] = $current_user->id;
+
 		if (count($groupids) > 0) {
-			array_push($info_params, $groupids);
+			$info_params[] = $groupids;
 		}
 
 		$total_res = $adb->pquery($total_q, $info_params);
@@ -1442,7 +1440,7 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 		$cal_log->debug("Exiting getEventList() method...");
 		return Array('totalevent'=>$total,'pendingevent'=>$pending_rows);
 	}
-	if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[16] == 3)
+	if (!$userprivs->hasGlobalReadPermission() && !$userprivs->hasModuleReadSharing(getTabid('Events')))
 	{
 		$sec_parameter=getCalendarViewSecurityParameter();
 		$query .= $sec_parameter;
@@ -1455,7 +1453,7 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 	$group_cond .= " GROUP BY vtiger_activity.activityid ORDER BY vtiger_activity.date_start,vtiger_activity.time_start ASC";
 
 	//Ticket 6476
-	if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
+	if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
 		$count_result = $adb->pquery( mkCountQuery( $query),$params);
 		$noofrows = $adb->query_result($count_result,0,"count");
 	}else{
@@ -1465,8 +1463,7 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 	$queryMode = (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true');
 	//$viewid is used as a key for cache query and other info so pass the dates as viewid
 	$viewid = $start_date.$end_date;
-	$start = ListViewSession::getRequestCurrentPage($currentModule, $adb->convert2sql($query,
-			$params), $viewid, $queryMode);
+	$start = ListViewSession::getRequestCurrentPage($currentModule, $adb->convert2sql($query,$params), $viewid, $queryMode);
 
 	$navigation_array = VT_getSimpleNavigationValues($start,$list_max_entries_per_page,$noofrows);
 
@@ -1531,8 +1528,8 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 				
 
 		}
-                if($listview_max_textlength && (strlen($subject)>$listview_max_textlength))
-	                $subject = substr($subject,0,$listview_max_textlength)."...";
+		if ($listview_max_textlength && (strlen($subject) > $listview_max_textlength))
+			$subject = substr($subject,0,$listview_max_textlength)."...";
 		if($contact_id != '')
 		{
 			$displayValueArray = getEntityName('Contacts', $contact_id);
@@ -1551,7 +1548,7 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 			$image_tag = "<img src='" . vtiger_imageurl('Meetings.gif', $theme). "' align='middle'>&nbsp;".$app_strings['Meeting'];
 		else
 			$image_tag = "&nbsp;".getTranslatedString($type);
-        	$element['eventtype'] = $image_tag;
+		$element['eventtype'] = $image_tag;
 		$element['eventdetail'] = $contact_data." ".$subject."&nbsp;".$more_link;
 		/*if(getFieldVisibilityPermission('Events',$current_user->id,'parent_id') == '0')
 		{
@@ -1569,14 +1566,14 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 		}
 		if(getFieldVisibilityPermission('Events',$current_user->id,'eventstatus') == '0')
 		{
-			if(!$is_admin && $eventstatus != '')
+			if (!is_admin($current_user) && $eventstatus != '')
 			{
 				$roleid=$current_user->roleid;
 				$roleids = Array();
 				$subrole = getRoleSubordinates($roleid);
 				if(count($subrole)> 0)
 				$roleids = $subrole;
-				array_push($roleids, $roleid);
+				$roleids[] = $roleid;
 
 				//here we are checking wheather the table contains the sortorder column .If  sortorder is present in the main picklist table, then the role2picklist will be applicable for this table...
 
@@ -1622,12 +1619,10 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 function getTodoList(& $calendar,$start_date,$end_date,$info='')
 {
 	global $log,$app_strings,$theme;
-        $Entries = Array();
+	$Entries = Array();
 	$category = getParentTab();
 	global $adb,$current_user,$mod_strings,$cal_log,$list_max_entries_per_page;
 	$cal_log->debug("Entering getTodoList() method...");
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 
 	$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
 							'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
@@ -1662,11 +1657,11 @@ function getTodoList(& $calendar,$start_date,$end_date,$info='')
 			if (count($groupids) > 0 && !is_admin($current_user)) {
 				$com_q = " AND (vtiger_crmentity.smownerid = ?
 					OR vtiger_groups.groupid in (". generateQuestionMarks($groupids) ."))";
-				array_push($info_params, $current_user->id);
-				array_push($info_params, $groupids);
+				$info_params[] = $current_user->id;
+				$info_params[] = $groupids;
 			} elseif(!is_admin($current_user)) {
 				$com_q = " AND vtiger_crmentity.smownerid = ?";
-				array_push($info_params, $current_user->id);
+				$info_params[] = $current_user->id;
 			}
 			//end
 
@@ -1687,8 +1682,8 @@ function getTodoList(& $calendar,$start_date,$end_date,$info='')
 	else 
 		$start = 1;
 
-//T6477 changes
-	if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
+	//T6477 changes
+	if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0)) {
 		$count_res = $adb->pquery(mkCountQuery($query), $params);
 		$total_rec_count = $adb->query_result($count_res,0,'count');
 	}else{
@@ -1706,7 +1701,6 @@ function getTodoList(& $calendar,$start_date,$end_date,$info='')
 	if($start_rec < 0)
 		$start_rec = 0;
 
-	//ends
 	$query .= $group_cond." limit $start_rec,$list_max_entries_per_page";
 
 	$result = $adb->pquery($query, $params);
@@ -1714,43 +1708,41 @@ function getTodoList(& $calendar,$start_date,$end_date,$info='')
 	$c=0;
 	if($start > 1)
 		$c = ($start-1) * $list_max_entries_per_page;
-	for($i=0;$i<$rows;$i++)
-        {
-		
-                $element = Array();
+	for ($i=0;$i<$rows;$i++) {
+		$element = Array();
 		$contact_name = '';
-                $element['no'] = $c+1;
-                $more_link = "";
-                $start_time = $adb->query_result($result,$i,"time_start");
-				$date_start = $adb->query_result($result,$i,"date_start");
-				$due_date = $adb->query_result($result,$i,"due_date");
-				$date = new DateTimeField($date_start.' '.$start_time);
-				$endDate = new DateTimeField($due_date);
-				if(!empty($start_time)){
-					$start_time = $date->getDisplayTime();
-				}
-                $format = $calendar['calendar']->hour_format;
-				$value = getaddEventPopupTime($start_time,$start_time,$format);
-                $element['starttime'] = $value['starthour'].':'.$value['startmin'].''.$value['startfmt'];
-				$element['startdate'] = $date->getDisplayDate();
-				$element['duedate'] = $endDate->getDisplayDate();
+		$element['no'] = $c+1;
+		$more_link = "";
+		$start_time = $adb->query_result($result,$i,"time_start");
+		$date_start = $adb->query_result($result,$i,"date_start");
+		$due_date = $adb->query_result($result,$i,"due_date");
+		$date = new DateTimeField($date_start.' '.$start_time);
+		$endDate = new DateTimeField($due_date);
+		if(!empty($start_time)){
+			$start_time = $date->getDisplayTime();
+		}
+		$format = $calendar['calendar']->hour_format;
+		$value = getaddEventPopupTime($start_time,$start_time,$format);
+		$element['starttime'] = $value['starthour'].':'.$value['startmin'].''.$value['startfmt'];
+		$element['startdate'] = $date->getDisplayDate();
+		$element['duedate'] = $endDate->getDisplayDate();
 
-                $id = $adb->query_result($result,$i,"activityid");
-                $subject = $adb->query_result($result,$i,"subject");
+		$id = $adb->query_result($result,$i,"activityid");
+		$subject = $adb->query_result($result,$i,"subject");
 		$more_link = "<a href='index.php?action=DetailView&module=Calendar&record=".$id."&activity_mode=Task&viewtype=calendar&parenttab=".$category."' class='webMnu'>".$subject."</a>";
 		$element['tododetail'] = $more_link;
 		if(getFieldVisibilityPermission('Calendar',$current_user->id,'taskstatus') == '0')
 		{
 			$taskstatus = $adb->query_result($result,$i,"status");
 
-			if(!$is_admin && $taskstatus != '')
+			if (!is_admin($current_user) && $taskstatus != '')
 			{
 				$roleid=$current_user->roleid;
 				$roleids = Array();
 				$subrole = getRoleSubordinates($roleid);
 				if(count($subrole)> 0)
 				$roleids = $subrole;
-				array_push($roleids, $roleid);
+				$roleids[] = $roleid;
 
 				//here we are checking wheather the table contains the sortorder column .If  sortorder is present in the main picklist table, then the role2picklist will be applicable for this table...
 
@@ -1870,16 +1862,16 @@ function constructEventListView(& $cal,$entry_list,$navigation_array='')
 		             );
 	if(isPermitted("Calendar","EditView") == "yes" || isPermitted("Calendar","Delete") == "yes")
 	{
-		array_push($header,$mod_strings['LBL_ACTION']);
-		 array_push($header_width,'10%');
+		$header[] = $mod_strings['LBL_ACTION'];
+		 $header_width[] = '10%';
 	}
 	if(getFieldVisibilityPermission('Events',$current_user->id,'eventstatus') == '0')
 	{
-		array_push($header,$mod_strings['LBL_STATUS']);
-		array_push($header_width,'$10%');
+		$header[] = $mod_strings['LBL_STATUS'];
+		$header_width[] = '$10%';
 	}
-	array_push($header,$mod_strings['LBL_ASSINGEDTO']);
-	array_push($header_width,'15%');
+	$header[] = $mod_strings['LBL_ASSINGEDTO'];
+	$header_width[] = '15%';
 	
         $list_view .="<table style='background-color: rgb(204, 204, 204);' class='small' align='center' border='0' cellpadding='5' cellspacing='1' width='98%'>
                         <tr>";
@@ -2005,17 +1997,17 @@ function constructTodoListView($todo_list,$cal,$subtab,$navigation_array='')
 		$header_width = Array('0'=>'5%','1'=>'10%','2'=>'10%','3'=>'38%',);
 		if(getFieldVisibilityPermission('Calendar',$current_user->id,'taskstatus') == '0')
 		{
-			array_push($header,$mod_strings['LBL_STATUS']);
-			array_push($header_width,'10%');
+			$header[] = $mod_strings['LBL_STATUS'];
+			$header_width[] = '10%';
 		}
 
 		if(isPermitted("Calendar","EditView") == "yes" || isPermitted("Calendar","Delete") == "yes")
 		{
-			array_push($header,$mod_strings['LBL_ACTION']);
-			array_push($header_width,'10%');
+			$header[] = $mod_strings['LBL_ACTION'];
+			$header_width[] = '10%';
 		}
-		array_push($header,$mod_strings['LBL_ASSINGEDTO']);
-		array_push($header_width,'15%');
+		$header[] = $mod_strings['LBL_ASSINGEDTO'];
+		$header_width[] = '15%';
 	}
 	else
 	{
@@ -2034,15 +2026,15 @@ function constructTodoListView($todo_list,$cal,$subtab,$navigation_array='')
 			);
 		if(getFieldVisibilityPermission('Calendar',$current_user->id,'taskstatus') == '0')
 		{
-			array_push($header,$mod_strings['LBL_STATUS']);
-			array_push($header_width,'10%');
+			$header[] = $mod_strings['LBL_STATUS'];
+			$header_width[] = '10%';
 		}
 		if(isPermitted("Calendar","EditView") == "yes" || isPermitted("Calendar","Delete") == "yes")
 		{
-			array_push($header,$mod_strings['LBL_ACTION']);
+			$header[] = $mod_strings['LBL_ACTION'];
 		}
-		array_push($header,$mod_strings['LBL_ASSINGEDTO']);
-		array_push($header_width,'15%');
+		$header[] = $mod_strings['LBL_ASSINGEDTO'];
+		$header_width[] = '15%';
 		
 	}
 	if($current_user->column_fields['is_admin']=='on')
@@ -2054,7 +2046,7 @@ function constructTodoListView($todo_list,$cal,$subtab,$navigation_array='')
 		if(count($subrole)> 0)
 		{
 			$roleids = $subrole;
-			array_push($roleids, $roleid);
+			$roleids[] = $roleid;
 		}
 		else
 		{
@@ -2157,19 +2149,17 @@ function constructTodoListView($todo_list,$cal,$subtab,$navigation_array='')
 function getCalendarViewSecurityParameter()
 {
 		global $current_user;
-		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+		$userprivs = $current_user->getPrivileges();
 		require_once('modules/Calendar/CalendarCommon.php');
 		$shared_ids = getSharedCalendarId($current_user->id);
 		if(isset($shared_ids) && $shared_ids != '')
 			$condition = " or (vtiger_crmentity.smownerid in($shared_ids)) or (vtiger_crmentity.smownerid NOT LIKE ($current_user->id))";// and vtiger_activity.visibility = 'Public')";
 		else
 			$condition = "or (vtiger_crmentity.smownerid NOT LIKE ($current_user->id))";
-		$sec_query .= " and (vtiger_crmentity.smownerid in($current_user->id) $condition or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%')";
+		$sec_query .= " and (vtiger_crmentity.smownerid in($current_user->id) $condition or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$userprivs->getParentRoleSequence()."::%')";
 
-		if(sizeof($current_user_groups) > 0)
-		{
-			$sec_query .= " or (vtiger_groups.groupid in (". implode(",", $current_user_groups) ."))";
+		if ($userprivs->hasGroups()) {
+			$sec_query .= " or (vtiger_groups.groupid in (". implode(",", $userprivs->getGroups()) ."))";
 		}
 		$sec_query .= ")";
 		return $sec_query;

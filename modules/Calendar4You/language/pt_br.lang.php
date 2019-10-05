@@ -8,7 +8,7 @@
  * Contributor(s): Ranieri/Translate terms | 11/03/2017 |Sao Paulo/SP/Brasil.|www.ecrmweb.com.br
  ********************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 'MyExtension' => 'Minha Extensão',
 "Calendar4You"=>"Agenda",
 "LBL_MODULE_NAME"=>"Agenda",
@@ -20,7 +20,7 @@ $mod_strings = Array (
 "LBL_EVENT_SETTINGS"=>"Configurações do Evento",
 "LBL_COLOR_IN_CALENDAR"=>"Cores na Agenda",
 "LBL_COLOR_IN_CALENDAR_BACKGROUND"=>"Fundo",
-"LBL_COLOR_IN_CALENDAR_TEXT"=>"Texto", 
+"LBL_COLOR_IN_CALENDAR_TEXT"=>"Texto",
 "LBL_DAY_EVENT_INFO"=>"Informações exibidas no calendário do dia",
 "LBL_WEEK_EVENT_INFO"=>"Informações exibidas no calendário da semana",
 "LBL_MONTH_EVENT_INFO"=>"Informações exibidas no calendário do mês",
@@ -28,7 +28,7 @@ $mod_strings = Array (
 "LBL_SELECTED_INFO"=>"Informações selecionadas",
 "LBL_PROFILES_DESC"=>"Gerencie o acesso de calendário específico do usuário para diferentes funções.",
 "LBL_PROFILES"=>"Perfis",
-"LBL_SETPRIVILEGIES"=>"Definir privilégios de calendário para todos os perfis",
+"LBL_SETPRIVILEGIES"=>"Definir privilégios do calendário para todos os perfis",
 "LBL_CREATE_EDIT"=>"Criar/Editar",
 "LBL_VIEW"=>"Visão",
 "LBL_DELETE"=>"Apagar",
@@ -38,9 +38,9 @@ $mod_strings = Array (
 "RESIZE_EVENT_QUESTION" => "Tem certeza sobre essa mudança?",
 "LBL_DEFAULT_USER_VIEW" => "Exibição de usuário padrão",
 "LBL_ALL_USERS" => "Todos selecionados",
-"LBL_ME" => "Meu", 
+"LBL_ME" => "Meu",
 "LBL_EVENT_STATUS" => "Status do Evento",
-"LBL_TASK_STATUS" => "Status da tarefa", 
+"LBL_TASK_STATUS" => "Status da tarefa",
 "LBL_DETAIL"=>"Detalhe",
 "LBL_WEEK_STARTS_AT"=>"A semana começa em",
 "LBL_INVITE"=>"Convite",
@@ -68,14 +68,17 @@ $mod_strings = Array (
 "LBL_GOOGLECLIENTID"=>"ClientID",
 "LBL_GOOGLEKEYFILE"=>"FileKey",
 "LBL_UPLOADFILE"=>"Upload",
-"LBL_GOOGLEFILE"=>'Google File: ',
+"LBL_GOOGLEFILE"=>'Ficheiro Google: ',
 "LBL_GOOGLECLIENTSECRET"=>"Senha do Cliente",
 "LBL_GOOGLEURI"=>'Redirecionar URI',
 "LBL_CONNECT"=>"Autorizar e conectar",
-"LBL_GOOGLEINS"=>"Inserir do Google?",
+"LBL_GOOGLEINS"=>"Inserir a partir do Google?",
 'LIST_MODULES' => 'Lista de Módulos',
 'High' => 'Alta',
 'Medium' => 'Média',
 'Low'=> 'Baixa',
+'Gmail_ChangeAccount'=>'Se deseja alterar a Conta de Gmail por favor limpe os tokens',
+'TASKS_FINISHED' => 'Terminou as suas tarefas, bom trabalho!',
+'Click2PickColor' => 'Click here to pick color',
 );
 ?>

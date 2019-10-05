@@ -11,7 +11,8 @@
 <script type="text/javascript" src="modules/PriceBooks/PriceBooks.js"></script>
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <script type="text/javascript" src="include/js/RelatedLists.js"></script>
-{include file='Buttons_List.tpl'}
+{include file='Buttons_List.tpl' isDetailView=true}
+{include file='applicationmessage.tpl'}
 <!-- Contents -->
 <div id="editlistprice" style="position:absolute;width:300px;"></div>
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
@@ -20,16 +21,6 @@
 	<td class="showPanelBg" valign=top width=100%>
 		<!-- PUBLIC CONTENTS STARTS-->
 		<div class="small" style="padding:14px">
-			<table align="center" border="0" cellpadding="0" cellspacing="0" width="95%">
-				<tr><td>
-				{* Module Record numbering, used MOD_SEQ_ID instead of ID *}
-				{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
-				{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
-				<span class="dvHeaderText">[ {$USE_ID_VALUE} ] {$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>&nbsp;&nbsp;&nbsp;<span class="small">{$UPDATEINFO}</span>&nbsp;<span id="vtbusy_info" style="display:none;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-				</td></tr>
-			</table>
-			<br>
-
 			<!-- Account details tabs -->
 			<table border=0 cellspacing=0 cellpadding=0 width=95% align=center>
 			<tr>
@@ -102,6 +93,6 @@
 </tr>
 </table>
 
-{if $MODULE eq 'Leads' or $MODULE eq 'Contacts' or $MODULE eq 'Accounts' or $MODULE eq 'Campaigns' or $MODULE eq 'Vendors' or $MODULE eq 'Project' or $MODULE eq 'Potentials' or $MODULE eq 'ProjectTask' or $MODULE eq 'HelpDesk'}
-<form name="SendMail" onsubmit="VtigerJS_DialogBox.block();"><div id="sendmail_cont" style="z-index:100001;position:absolute;width:300px;"></div></form>
+{if $MODULE|hasEmailField}
+<form name="SendMail" onsubmit="VtigerJS_DialogBox.block();" method="post"><div id="sendmail_cont" style="z-index:100001;position:absolute;width:300px;"></div></form>
 {/if}

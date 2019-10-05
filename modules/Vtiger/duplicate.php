@@ -17,18 +17,21 @@
  *  Version      : 5.4.0
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-
-error_reporting("E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED & ~E_WARNING");
 require_once 'include/utils/utils.php';
 require_once 'include/utils/duplicate.php';
 require_once 'include/utils/CommonUtils.php';
 
-if(isset($_REQUEST['module_name']) && isset($_REQUEST['record_id'])) {
+if (isset($_REQUEST['module_name']) && isset($_REQUEST['record_id'])) {
 	$module = vtlib_purify($_REQUEST['module_name']);
 	$rec_id = vtlib_purify($_REQUEST['record_id']);
 	$map = $module.'_DuplicateRelations';
 	$new_record_id = duplicaterec($module, $rec_id, $map);
-	echo json_encode(array('module'=>$module, 'record_id'=>$new_record_id));
+	if (isset($_REQUEST['redirect'])) {
+		$msg = '&error_msgclass=cb-alert-info&error_msg='.getTranslatedString('RecordDuplicated');
+		header('Location: index.php?module='.$module.'&action=DetailView&record='.$new_record_id.$msg);
+	} else {
+		echo json_encode(array('module'=>$module, 'record_id'=>$new_record_id));
+	}
 	exit();
 }
 ?>

@@ -17,14 +17,12 @@ global $adb,$current_user;
 $formodule = vtlib_purify($_REQUEST['formodule']);
 $singlepane_view = GlobalVariable::getVariable('Application_Single_Pane_View', 0, $formodule);
 $singlepane_view = empty($singlepane_view) ? 'false' : 'true';
-if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
-	include('tabdata.php');
-}
-require('user_privileges/user_privileges_' . $current_user->id . '.php');
+$userprivs = $current_user->getPrivileges();
+$is_admin = $userprivs->isAdmin();
 $fortabid = getTabid($formodule);
 $forrecord = vtlib_purify($_REQUEST['forrecord']);
 $rls = array();
-$query = 'select relation_id,related_tabid,label,vtiger_tab.name,actions
+$query = 'select relation_id,related_tabid,label,vtiger_tab.name,actions,relationfieldid,vtiger_tab.presence
 	from vtiger_relatedlists
 	inner join vtiger_tab on vtiger_tab.tabid=vtiger_relatedlists.related_tabid
 	where vtiger_relatedlists.tabid=? order by sequence';
@@ -34,10 +32,16 @@ while ($rel = $adb->fetch_array($result)) {
 	$relationLabel = $rel['label'];
 	$relatedTabId = $rel['related_tabid'];
 	//check for disabled module.
-	$permitted = $tab_seq_array[$relatedTabId];
+	$permitted = $rel['presence'];
 	if ($permitted === 0 || empty($relatedTabId)) {
-		if ($is_admin || $profileTabsPermission[$relatedTabId] === 0 || empty($relatedTabId)) {
-			$rls[$relatedId] = array('label'=>$relationLabel,'tabid'=>$relatedTabId,'module'=>$rel['name'],'actions'=>$rel['actions']);
+		if ($is_admin || $userprivs->hasModuleAccess($relatedTabId) || empty($relatedTabId)) {
+			$rls[$relatedId] = array(
+				'label'=>$relationLabel,
+				'tabid'=>$relatedTabId,
+				'module'=>$rel['name'],
+				'actions'=>$rel['actions'],
+				'relationfieldid'=>$rel['relationfieldid'],
+			);
 		}
 	}
 }
@@ -50,20 +54,39 @@ foreach ($rls as $relid => $relinfo) {
 	$actions = $relinfo['actions'];
 	$labelnospace = str_replace(' ', '', $label);
 	echo '<tr>';
+	$formodule = urlencode($formodule);
+	$forrecord = urlencode($forrecord);
+	$labelnospace = urlencode($labelnospace);
+	$label = urlencode($label);
+	$actions = urlencode($actions);
 	if ($singlepane_view=='true') {
+		$url = "module=$formodule&action={$formodule}Ajax&file=DetailViewAjax&record={$forrecord}";
+		$url.= "&ajxaction=LOADRELATEDLIST&header={$label}&relation_id={$relid}&actions={$actions}";
 		$onclick = "onclick=\"javascript:loadRelatedListBlock(".
-				"'module=$formodule&action={$formodule}Ajax&file=DetailViewAjax&record={$forrecord}&ajxaction=LOADRELATEDLIST&header={$label}&relation_id={$relid}&actions={$actions}',".
+				"'$url',".
 				"'tbl_{$formodule}_{$labelnospace}','{$formodule}_{$labelnospace}');document.location='#tbl_".$formodule.'_'.$labelnospace.'\';"';
-		echo '<td><a title="'.$goto.'" href="javascript:;" '.$onclick.'>'.getTranslatedString($label,$module).'</a></td>';
+		echo '<td><a title="'.$goto.'" href="javascript:;" '.$onclick.'>'.getTranslatedString($relinfo['label'], $module).'</a></td>';
 	} else {
-		echo '<td><a title="'.$goto.'" href="index.php?action=CallRelatedList&module='.$formodule.'&record='.$forrecord.'&selected_header='.$label.'&relation_id='.$relid.'#tbl_'.$formodule.'_'.$labelnospace.'">'.getTranslatedString($label,$module).'</a></td>';
+		$url = "index.php?action=CallRelatedList&module=$formodule&record=$forrecord&selected_header=$label&relation_id=$relid#tbl_".$formodule.'_'.$labelnospace;
+		echo '<td><a title="'.$goto.'" href="'.$url.'">'.getTranslatedString($relinfo['label'], $module).'</a></td>';
 	}
 	if ($module=='Emails') {
-		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="fnvshobj(this,\'sendmail_cont\');sendmail(\''.$formodule."',$forrecord);".'"></td>';
-	} elseif ($module=='Calendar') {
-		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="document.location=\'index.php?module=Calendar4You&action=EventEditView&createmode=link&return_id='.$forrecord.'&return_action=DetailView&return_module='.$formodule.'&activity_mode=Task&cbfromid='.$forrecord.'\'"></td>';
+		$url = "fnvshobj(this,'sendmail_cont');sendmail('$formodule',$forrecord);";
+		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="'.$url.'"></td>';
 	} else {
-		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="document.location=\'index.php?module='.$module.'&action=EditView&createmode=link&return_id='.$forrecord.'&return_action=DetailView&return_module='.$formodule.'&cbfromid='.$forrecord.'\'"></td>';
+		if (empty($relinfo['relationfieldid'])) {
+			$linkmode = '&createmode=link';
+		} else {
+			$result = $adb->pquery('select fieldname from vtiger_field where fieldid=?', array($relinfo['relationfieldid']));
+			if ($result && $adb->num_rows($result)>0) {
+				$linkmode = '&'.$adb->query_result($result, 0, 0).'='.$forrecord;
+			} else {
+				$linkmode = '';
+			}
+		}
+		$url = "document.location='index.php?module=".urlencode($module).'&action=EditView'.$linkmode.'&return_id='.$forrecord;
+		$url.= '&return_action=DetailView&return_module='.$formodule.'&cbfromid='.$forrecord."'";
+		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="'.$url.'"></td>';
 	}
 	echo '</tr>';
 }

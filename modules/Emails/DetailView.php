@@ -7,44 +7,49 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('Smarty_setup.php');
-require_once('data/Tracker.php');
-require_once('include/upload_file.php');
-require_once('include/utils/utils.php');
+require_once 'Smarty_setup.php';
+require_once 'data/Tracker.php';
+require_once 'include/upload_file.php';
+require_once 'include/utils/utils.php';
 
-global $log, $app_strings, $mod_strings, $currentModule, $theme;
+global $log, $app_strings, $mod_strings, $currentModule, $theme, $default_charset;
 
 $focus = CRMEntity::getInstance($currentModule);
 
 $smarty = new vtigerCRM_Smarty;
-if(isset($_REQUEST['record'])) {
-	global $adb,$default_charset;
-	$focus->retrieve_entity_info($_REQUEST['record'],"Emails");
-	$log->info("Entity info successfully retrieved for DetailView.");
+if (isset($_REQUEST['record'])) {
+	global $adb;
+	$focus->retrieve_entity_info($_REQUEST['record'], 'Emails');
 	$focus->id = $_REQUEST['record'];
-	$query = 'select email_flag,from_email,to_email,cc_email,bcc_email,date_start,time_start from vtiger_emaildetails '.
-		'left join vtiger_activity on vtiger_emaildetails.emailid = vtiger_activity.activityid where emailid = ?';
+	$query = 'select *
+		from vtiger_emaildetails
+		left join vtiger_activity on vtiger_emaildetails.emailid = vtiger_activity.activityid
+		where emailid = ?';
 	$result = $adb->pquery($query, array($focus->id));
-	$smarty->assign('FROM_MAIL',$adb->query_result($result,0,'from_email'));
-	$to_email = json_decode($adb->query_result($result,0,'to_email'),true);
-	$cc_email = json_decode($adb->query_result($result,0,'cc_email'),true);
-	$smarty->assign('TO_MAIL',vt_suppressHTMLTags(@implode(',',$to_email)));
-	$smarty->assign('CC_MAIL',vt_suppressHTMLTags(@implode(',',$cc_email)));
-	$bcc_email = json_decode($adb->query_result($result,0,'bcc_email'),true);
-	$smarty->assign('BCC_MAIL',vt_suppressHTMLTags(@implode(',',$bcc_email)));
-	$smarty->assign('EMAIL_FLAG',$adb->query_result($result,0,'email_flag'));
+	$smarty->assign('FROM_MAIL', $adb->query_result($result, 0, 'from_email'));
+	$to_email = json_decode($adb->query_result($result, 0, 'to_email'), true);
+	$cc_email = json_decode($adb->query_result($result, 0, 'cc_email'), true);
+	$smarty->assign('TO_MAIL', vt_suppressHTMLTags(@implode(',', $to_email)));
+	$smarty->assign('CC_MAIL', vt_suppressHTMLTags(@implode(',', $cc_email)));
+	$bcc_email = json_decode($adb->query_result($result, 0, 'bcc_email'), true);
+	$smarty->assign('BCC_MAIL', vt_suppressHTMLTags(@implode(',', $bcc_email)));
+	$smarty->assign('EMAIL_FLAG', $adb->query_result($result, 0, 'email_flag'));
+	$smarty->assign('EMDelivered', $adb->query_result($result, 0, 'delivered'));
+	$smarty->assign('EMDropped', $adb->query_result($result, 0, 'dropped'));
+	$smarty->assign('EMBounce', $adb->query_result($result, 0, 'bounce'));
+	$smarty->assign('EMOpen', $adb->query_result($result, 0, 'open'));
+	$smarty->assign('EMClicked', $adb->query_result($result, 0, 'clicked'));
+	$smarty->assign('EMUnsubscribe', $adb->query_result($result, 0, 'unsubscribe'));
 
-	$dt = new DateTimeField($adb->query_result($result,0,'date_start'));
+	$dt = new DateTimeField($adb->query_result($result, 0, 'date_start'));
 	$fmtdate = $dt->getDisplayDate($current_user);
-	$smarty->assign('DATE_START',$fmtdate);
-	$smarty->assign('TIME_START',$adb->query_result($result,0,'time_start'));
-	if(!empty($focus->column_fields['name']))
+	$smarty->assign('DATE_START', $fmtdate);
+	$smarty->assign('TIME_START', $adb->query_result($result, 0, 'time_start'));
+	if (!empty($focus->column_fields['name'])) {
 		$focus->name = $focus->column_fields['name'];
-	else
+	} else {
 		$focus->name = $focus->column_fields['subject'];
-}
-if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
-	$focus->id = "";
+	}
 }
 
 //needed when creating a new email with default values passed in
@@ -85,44 +90,50 @@ if (isset($_REQUEST['filename']) && is_null($focus->filename)) {
 	$focus->filename = $_REQUEST['filename'];
 }
 
-$submenu = array('LBL_EMAILS_TITLE'=>'index.php?module=Emails&action=index','LBL_WEBMAILS_TITLE'=>'index.php?module=squirrelmail-1.4.4&action=redirect');
-$sec_arr = array('index.php?module=Emails&action=index'=>'Emails','index.php?module=squirrelmail-1.4.4&action=redirect'=>'Emails');
-
-$smarty->assign("MOD", $mod_strings);
-$smarty->assign("APP", $app_strings);
-
-$smarty->assign("UPDATEINFO",updateInfo($focus->id));
-if (isset($_REQUEST['return_module'])) $smarty->assign("RETURN_MODULE", vtlib_purify($_REQUEST['return_module']));
-if (isset($_REQUEST['return_action'])) $smarty->assign("RETURN_ACTION", vtlib_purify($_REQUEST['return_action']));
-if (isset($_REQUEST['return_id'])) $smarty->assign("RETURN_ID", vtlib_purify($_REQUEST['return_id']));
+$smarty->assign('MOD', $mod_strings);
+$smarty->assign('APP', $app_strings);
+$smarty->assign('LBL_CHARSET', $default_charset);
+$smarty->assign('UPDATEINFO', updateInfo($focus->id));
+if (isset($_REQUEST['return_module'])) {
+	$smarty->assign('RETURN_MODULE', vtlib_purify($_REQUEST['return_module']));
+}
+if (isset($_REQUEST['return_action'])) {
+	$smarty->assign('RETURN_ACTION', vtlib_purify($_REQUEST['return_action']));
+}
+if (isset($_REQUEST['return_id'])) {
+	$smarty->assign('RETURN_ID', vtlib_purify($_REQUEST['return_id']));
+}
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', 'themes/'.$theme.'/images/');
 $category = getParentTab();
-$smarty->assign("CATEGORY",$category);
+$smarty->assign('CATEGORY', $category);
 
-if (isset($focus->name)) $smarty->assign("NAME", $focus->name);
-	else $smarty->assign("NAME", "");
+if (isset($focus->name)) {
+	$smarty->assign('NAME', $focus->name);
+} else {
+	$smarty->assign('NAME', '');
+}
 
-$entries = getBlocks($currentModule,"detail_view",'',$focus->column_fields);
-//$entries[$mod_strings['LBL_EMAIL_INFORMATION']]['5'][$mod_strings['Description']]['value'] = from_html($entries[$mod_strings['LBL_EMAIL_INFORMATION']]['5'][$mod_strings['Description']]['value']);
+$entries = getBlocks($currentModule, 'detail_view', '', $focus->column_fields);
 //changed this to view description in all langauge - bharath
-$smarty->assign("BLOCKS",$entries[$mod_strings['LBL_EMAIL_INFORMATION']]);
-$smarty->assign("SINGLE_MOD", 'Email');
+$smarty->assign('BLOCKS', $entries[$mod_strings['LBL_EMAIL_INFORMATION']]);
+$smarty->assign('SINGLE_MOD', 'Email');
 
-if(isPermitted($currentModule, 'CreateView', $record) == 'yes')
+if (isPermitted($currentModule, 'CreateView', $record) == 'yes') {
 	$smarty->assign('CREATE_PERMISSION', 'permitted');
+}
 
-if(isPermitted("Emails","Delete",$_REQUEST['record']) == 'yes')
-	$smarty->assign("DELETE","permitted");
-$smarty->assign("ID",$focus->id);
+if (isPermitted('Emails', 'Delete', $_REQUEST['record']) == 'yes') {
+	$smarty->assign('DELETE', 'permitted');
+}
+$smarty->assign('ID', $focus->id);
 
 $check_button = Button_Check($module);
-$smarty->assign("CHECK", $check_button);
+$smarty->assign('CHECK', $check_button);
 
-$smarty->assign("MODULE",$currentModule);
-
-if(empty($_REQUEST['mode']) or $_REQUEST['mode'] != 'ajax')
-	$smarty->display("EmailDetailView.tpl");
-else
-	$smarty->display("EmailDetails.tpl")
+$smarty->assign('MODULE', $currentModule);
+if ($_REQUEST['module']=='cbCalendar') {
+	$smarty->assign('FROMCALENDAR', 'true');
+}
+$smarty->display('EmailDetailView.tpl');
 ?>

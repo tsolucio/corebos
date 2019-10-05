@@ -16,8 +16,10 @@
 
 class delSettingsSinglePaneViewConfigEditor extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -29,14 +31,14 @@ class delSettingsSinglePaneViewConfigEditor extends cbupdaterWorker {
 			$this->ExecuteQuery('UPDATE vtiger_settings_field SET active=? WHERE vtiger_settings_field.name = ?', array('1', 'Configuration Editor'));
 			/* Migrate these variables to Global Variables
 			 **********************************************************/
-			// $CALENDAR_DISPLAY, $WORLD_CLOCK_DISPLAY, $CALCULATOR_DISPLAY, $USE_RTE, $HELPDESK_SUPPORT_EMAIL_ID, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_REPLY_ID;
+			// $CALENDAR_DISPLAY, $WORLD_CLOCK_DISPLAY, $USE_RTE, $HELPDESK_SUPPORT_EMAIL_ID, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_REPLY_ID;
 			// $upload_maxsize, $allow_exports, $list_max_entries_per_page, $default_module, $default_action,  $listview_max_textlength, $cors_enabled_domains;
 			include 'config.inc.php';
 			include_once 'include/Webservices/Create.php';
 			global $current_user;
 			$module = 'GlobalVariable';
 			if ($this->isModuleInstalled($module)) {
-				vtlib_toggleModuleAccess($module,true);
+				vtlib_toggleModuleAccess($module, true);
 				$this->sendMsg("$module activated!");
 			} else {
 				$this->installManifestModule($module);
@@ -51,25 +53,19 @@ class delSettingsSinglePaneViewConfigEditor extends cbupdaterWorker {
 				'in_module_list' => '',
 				'assigned_user_id' => $usrwsid,
 			);
-			if (!empty($CALENDAR_DISPLAY) and $CALENDAR_DISPLAY != 'true') {
+			if (!empty($CALENDAR_DISPLAY) && $CALENDAR_DISPLAY != 'true') {
 				$rec = $default_values;
 				$rec['gvname'] = 'Application_Display_Mini_Calendar';
 				$rec['value'] = 0;
 				vtws_create('GlobalVariable', $rec, $current_user);
 			}
-			if (!empty($WORLD_CLOCK_DISPLAY) and $WORLD_CLOCK_DISPLAY != 'true') {
+			if (!empty($WORLD_CLOCK_DISPLAY) && $WORLD_CLOCK_DISPLAY != 'true') {
 				$rec = $default_values;
 				$rec['gvname'] = 'Application_Display_World_Clock';
 				$rec['value'] = 0;
 				vtws_create('GlobalVariable', $rec, $current_user);
 			}
-			if (!empty($CALCULATOR_DISPLAY) and $CALCULATOR_DISPLAY != 'true') {
-				$rec = $default_values;
-				$rec['gvname'] = 'Application_Display_Calculator';
-				$rec['value'] = 0;
-				vtws_create('GlobalVariable', $rec, $current_user);
-			}
-			if (!empty($USE_RTE) and $USE_RTE != 'true') {
+			if (!empty($USE_RTE) && $USE_RTE != 'true') {
 				$rec = $default_values;
 				$rec['gvname'] = 'Application_Use_RTE';
 				$rec['value'] = 0;
@@ -136,19 +132,19 @@ class delSettingsSinglePaneViewConfigEditor extends cbupdaterWorker {
 				$rec['category'] = 'Security';
 				vtws_create('GlobalVariable', $rec, $current_user);
 			}
-			if (!empty($MINIMUM_CRON_FREQUENCY) and $MINIMUM_CRON_FREQUENCY != 15) {
+			if (!empty($MINIMUM_CRON_FREQUENCY) && $MINIMUM_CRON_FREQUENCY != 15) {
 				$rec = $default_values;
 				$rec['gvname'] = 'Application_Minimum_Cron_Frequency';
 				$rec['value'] = $MINIMUM_CRON_FREQUENCY;
 				vtws_create('GlobalVariable', $rec, $current_user);
 			}
-			if (!empty($PORTAL_URL) and $PORTAL_URL != 'http://your_support_domain.tld/customerportal') {
+			if (!empty($PORTAL_URL) && $PORTAL_URL != 'http://your_support_domain.tld/customerportal') {
 				$rec = $default_values;
 				$rec['gvname'] = 'Application_Customer_Portal_URL';
 				$rec['value'] = $PORTAL_URL;
 				vtws_create('GlobalVariable', $rec, $current_user);
 			}
-			if (!empty($display_empty_home_blocks) and $display_empty_home_blocks != false) {
+			if (!empty($display_empty_home_blocks) && $display_empty_home_blocks != false) {
 				$rec = $default_values;
 				$rec['gvname'] = 'Home_Display_Empty_Blocks';
 				$rec['value'] = 1;
@@ -159,5 +155,4 @@ class delSettingsSinglePaneViewConfigEditor extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

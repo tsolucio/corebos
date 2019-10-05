@@ -11,12 +11,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset={$APP.LBL_CHARSET}">
+	<meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
 	<title>{$MODULE|@getTranslatedString:$MODULE} - {$coreBOS_uiapp_name}</title>
 	<link REL="SHORTCUT ICON" HREF="themes/images/blank.gif">
+	<link rel="stylesheet" type="text/css" href="include/LD/assets/styles/override_lds.css">
 <script type="text/javascript">
 var gVTModule = '{$smarty.request.module|@vtlib_purify}';
+var gVTUserID = "{$CURRENT_USER_ID}";
+var userFirstDayOfWeek = {$USER_FIRST_DOW};
 var image_pth = '{$IMAGE_PATH}';
+var userDateFormat = "{$USER_DATE_FORMAT}";
+var userHourFormat = "{$USER_HOUR_FORMAT}";
+var userCurrencySeparator = "{$USER_CURRENCY_SEPARATOR}";
+var userDecimalSeparator = "{$USER_DECIMAL_FORMAT}";
+var userNumberOfDecimals = "{$USER_NUMBER_DECIMALS}";
+var gVTuserLanguage = "{$USER_LANGUAGE}";
 var product_default_units = '{if isset($Product_Default_Units)}{$Product_Default_Units}{else}1{/if}';
 var service_default_units = '{if isset($Service_Default_Units)}{$Service_Default_Units}{else}1{/if}';
 var gPopupAlphaSearchUrl = '';
@@ -37,40 +46,10 @@ var product_labelarr = {ldelim}
 var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
 var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
 var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
-{literal}
-function QCreate(module,urlpop) {
-	if (module != 'none') {
-		document.getElementById("status").style.display="inline";
-		if (module == 'Events') {
-			module = 'Calendar';
-			var urlstr = '&activity_mode=Events&from=popup&pop='+urlpop;
-		} else if(module == 'Calendar') {
-			module = 'Calendar';
-			var urlstr = '&activity_mode=Task&from=popup&pop='+urlpop;
-		} else {
-			var urlstr = '&from=popup&pop='+urlpop;
-		}
-		jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?module='+module+'&action='+module+'Ajax&file=QuickCreate'+urlstr
-		}).done(function(response) {
-			document.getElementById("status").style.display="none";
-			document.getElementById("qcformpop").style.display="inline";
-			document.getElementById("qcformpop").innerHTML = response;
-			// Evaluate all the script tags in the response text.
-			var scriptTags = document.getElementById("qcformpop").getElementsByTagName("script");
-			for (var i = 0; i< scriptTags.length; i++) {
-				var scriptTag = scriptTags[i];
-				eval(scriptTag.innerHTML);
-			}
-		});
-	} else {
-		hide('qcformpop');
-	}
-}
-{/literal}
 </script>
 <link rel="stylesheet" type="text/css" href="{$THEME_PATH}style.css">
+<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
+<link rel="stylesheet" type="text/css" href="include/LD/assets/styles/salesforce-lightning-design-system.css" />
 {* corebos customization: Inclusion of custom javascript and css as registered in popup *}
 {if $HEADERCSS}
 	<!-- Custom Header CSS -->
@@ -85,11 +64,15 @@ function QCreate(module,urlpop) {
 <script type='text/javascript' src='include/jquery/jquery.js'></script>
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <script type="text/javascript" src="include/js/general.js"></script>
+<script type="text/javascript" src="include/js/vtlib.js"></script>
 <script type="text/javascript" src="include/js/QuickCreate.js"></script>
 <script type="text/javascript" src="include/js/Inventory.js"></script>
 <script type="text/javascript" src="include/js/search.js"></script>
-<script type="text/javascript" src="include/js/vtlib.js"></script>
+<script type="text/javascript" src="include/js/Mail.js"></script>
 <script type="text/javascript" src="modules/Tooltip/TooltipHeaderScript.js"></script>
+<script type="text/javascript" src="jscalendar/calendar.js"></script>
+<script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
+<script type="text/javascript" src="jscalendar/lang/calendar-{$APP.LBL_JSCALENDAR_LANG}.js"></script>
 {if !empty($RETURN_MODULE)}
 <script type="text/javascript" src="modules/{$RETURN_MODULE}/{$RETURN_MODULE}.js"></script>
 {else}
@@ -122,7 +105,15 @@ function QCreate(module,urlpop) {
 						{/if}
 					{/if}
 					<td width=24% nowrap class="componentName" align=right>{$coreBOS_uiapp_name}</td>
-					<td width=6% nowrap class="componentName" align=right><input type="hidden" id='closewindow' value="true"/><img src="themes/images/unlocked.png" id='closewindowimage' onclick="if (document.getElementById('closewindow').value=='true') {ldelim}document.getElementById('closewindowimage').src='themes/images/locked.png';document.getElementById('closewindow').value='false';{rdelim} else {ldelim}document.getElementById('closewindowimage').src='themes/images/unlocked.png';document.getElementById('closewindow').value='true';{rdelim};"/></td>
+					<td width=6% nowrap class="componentName" align=right>
+						<input type="hidden" id='closewindow' value="true"/>
+						<svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon_small" id="closewindowimageunlock" onclick="togglePopupLock();">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#unlock"></use>
+						</svg>
+						<svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon_small" id="closewindowimagelock" style="display:none" onclick="togglePopupLock();">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#lock"></use>
+						</svg>
+					</td>
 				</tr>
 			</table>
 			<div id="status" style="position:absolute;display:none;right:135px;top:15px;height:27px;white-space:nowrap;"><img src="{'status.gif'|@vtiger_imageurl:$THEME}"></div>
@@ -177,7 +168,11 @@ function QCreate(module,urlpop) {
 								<input type="button" name="search" value=" &nbsp;{$APP.LBL_SEARCH_NOW_BUTTON}&nbsp; " onClick="callSearch('Basic');" class="crmbutton small create">
 							</td>
 							<td width="2%" class="dvtCellLabel">
-								{if in_array($MODULE,$QCMODULEARRAY)}<a href="javascript:QCreate('{$MODULE}','{$POPUP}');"><img src="{'select.gif'|@vtiger_imageurl:$THEME}" align="left" border="0"></a>{/if}
+								{if in_array($MODULE,$QCMODULEARRAY)}
+									<svg aria-hidden="true" class="slds-icon slds-icon-standard-user slds-icon_x-small" id="popupqcreate" onclick="QCreatePop('{$MODULE}','{$POPUP}');">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#record_create"></use>
+									</svg>
+								{/if}
 							</td>
 						</tr>
 						 <tr>
@@ -196,7 +191,9 @@ function QCreate(module,urlpop) {
 				</tr>
 				{if $recid_var_value neq ''}
 					<tr>
-						<td align="right"><input id="all_contacts" alt="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.$MODULE}" title="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.$MODULE}" accessKey="" class="crmbutton small edit" value="{$APP.SHOW_ALL}&nbsp;{$APP.$MODULE}" onclick="window.location.href=showAllRecords();" type="button" name="button"></td>
+						<td align="right">
+						<input id="all_contacts" alt="{$APP.LBL_SELECT_BUTTON_LABEL} {$MODULE|@getTranslatedString:$MODULE}" title="{$APP.LBL_SELECT_BUTTON_LABEL} {$MODULE|@getTranslatedString:$MODULE}" accessKey="" class="crmbutton small edit" value="{$APP.SHOW_ALL}&nbsp;{$MODULE|@getTranslatedString:$MODULE}" onclick="window.location.href=showAllRecords();" type="button" name="button">
+						</td>
 					</tr>
 				{/if}
 			</table>

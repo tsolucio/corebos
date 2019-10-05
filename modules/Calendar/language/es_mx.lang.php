@@ -1,14 +1,10 @@
 <?php
-/***********************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific apmt_locationuage governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************
 *  Module       : Calendar
@@ -72,7 +68,6 @@ $mod_strings = array (
 'LBL_WEEK' => 'Semana',
 'LBL_WEEK_BUTTON_KEY' => 'W',
 'LBL_WEEK_BUTTON_TITLE' => 'Semana [Alt+W]',
-'LBL_WEEKS' => 'Semana',
 'LBL_NEXT_WEEK' => 'Semana Siguiente',
 'LBL_LAST_WEEK' => 'Semana Anterior',
 'LBL_4WEEKS_BACK' => '4 semanas atrás',
@@ -232,10 +227,6 @@ $mod_strings = array (
 'LBL_TODONAME'=>'Tarea',
 'LBL_TODODATETIME'=>'Fecha y Hora',
 
-
-
-
-
 //DON'T CONVERT THESE THEY ARE MAPPINGS - STARTS
 'db_last_name' => 'LBL_LIST_LAST_NAME',
 'db_first_name' => 'LBL_LIST_FIRST_NAME',
@@ -245,8 +236,8 @@ $mod_strings = array (
 //DON'T CONVERT THESE THEY ARE MAPPINGS -ENDS
 'LBL_COMPLETED'=>'Completada',
 'LBL_DEFERRED'=>'Retrasar',
-'LBL_HELD'=>'Realizada',
-'LBL_NOTHELD'=>'Anular',
+'LBL_HELD'=>'Mantenida',
+'LBL_NOTHELD'=>'Pendiente',
 'LBL_POSTPONE'=>'Posponer',
 'LBL_CHANGEOWNER'=>'Cambiar Propietario',
 'LBL_DEL'=>'Borrar',
@@ -308,13 +299,10 @@ $mod_strings = array (
 'LBL_ATTACHMENTS'=>'Adjuntos',
 'LBL_NEW_ATTACHMENT'=>'Nuevo Adjunto',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'Todo',
-'LBL_CALL'=>'Llamada',
 'LBL_MEETING'=>'Reunión',
 'LBL_TASK'=>'Tarea',
 
-//Added for 4GA Release
 'Subject'=>'Asunto',
 'Assigned To'=>'Asignado A',
 'Start Date & Time'=>'Fecha y Hora de Inicio',
@@ -334,7 +322,6 @@ $mod_strings = array (
 'Duration Minutes'=>'Duración (Minutos)',
 'Location'=>'Localización',
 'No Time'=>'Sin Hora',
-//Added for Send Reminder 4.2 release
 'Send Reminder'=>'Enviar Recordatorio',
 'SendReminder'=>'Enviar Recordatorio',
 'LBL_YES'=>'Si',
@@ -343,16 +330,13 @@ $mod_strings = array (
 'LBL_MINUTES'=>'minutos',
 'LBL_HOURS'=>'horas',
 'LBL_BEFORE_EVENT'=>'antes del evento',
-//Added for CustomView 4.2 Release
 'Close'=>'Cerrado',
 'Start Date'=>'Fecha Inicio',
 'Type'=>'Tipo',
 'End Date'=>'Fecha Fin',
-'Recurrence'=> 'Eventos Recurrentes',
 'Recurring Type'=> 'Tipo de Recurrencia',
 //Activities - Notification Error
 'LBL_NOTIFICATION_ERROR'=>'Error de Correo: Compruebe su servidor de correo saliente en Configuración->Servidor de Correo Saliente o revise si el contacto tiene un email definido',
-// Mike Crowe Mod --------------------------------------------------------added for generic search
 'LBL_GENERAL_INFORMATION'=>'Información General',
 
 'LBL_EVENTTYPE'=>'Tipo de Tarea',
@@ -398,7 +382,7 @@ $mod_strings = array (
 //Added for existing Picklist entries
 
 'Planned'=>'Planeado',
-'Held'=>'Realizada',
+'Held'=>'Mantenida',
 'Not Held'=>'Pendiente',
 'Completed'=>'Completado',
 'Deferred'=>'Retrasado',
@@ -423,7 +407,6 @@ $mod_strings = array (
 //added to send invitation mail Subject.
 'INVITATION'=>' Invitación ',
 
-// Added/Updated for vtiger CRM 5.0.4
 'LBL_YEAR_BUTTON_TITLE'=>'Año [Alt+Y]',
 'LBL_SELECT_CONTACT'=>'Seleccionar Contacto',
 'SHARED_EVENT_DEL_MSG'=>'El Usuario no está autorizado para borrar este registro.',
@@ -431,7 +414,6 @@ $mod_strings = array (
 'LBL_CREATED'=>'creado',
 'LBL_UPDATED'=>'actualizado',
 
-//Added after 5.0.4 GA
 'LBL_BUSY' => 'Ocupado',
 
 //Custom Fields support for Calendar
@@ -457,5 +439,4 @@ $mod_strings = array (
 'LBL_ARE_YOU_SURE'=>'¿Estás seguro?',
 'Calendar ID' => 'Id Calendario',
 );
-
 ?>

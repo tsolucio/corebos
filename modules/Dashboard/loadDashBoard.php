@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('modules/Dashboard/display_charts.php');
-$return_value=dashBoardDisplayChart();
-echo $return_value;
+require_once 'modules/Dashboard/display_charts.php';
+echo dashBoardDisplayChart();
 ?>

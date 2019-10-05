@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$mod_strings = Array (
+$mod_strings = array (
 	'LBL_ACTIVE' => 'Attivo',
 	'LBL_INACTIVE' => 'Inattivo',
 	'LBL_STATUS' => 'Stato',
@@ -36,6 +36,7 @@ $mod_strings = Array (
 	'Allows you to Configure Cron Task' => 'Configure Cron Tasks',
 	'Scheduler' => 'Programmazione',
 	'Cron Job' => 'Cron Job',
-	'cronWatcherService' => 'Cron Watcher Service',
+	'cronWatcherService' => 'Servizio di Controllo Cron',
+	'Send out warning email for long running cron tasks' => 'Send out warning email for long running cron tasks.',
 );
 ?>

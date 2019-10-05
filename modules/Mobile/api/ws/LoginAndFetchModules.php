@@ -7,18 +7,18 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once dirname(__FILE__) . '/Login.php';
+include_once __DIR__ . '/Login.php';
+
 class crmtogo_WS_LoginAndFetchModules extends crmtogo_WS_Login {
-	
-	function postProcess(crmtogo_API_Response $response) {
+
+	public function postProcess(crmtogo_API_Response $response) {
 		$current_user = $this->getActiveUser();
-		
+
 		if ($current_user) {
 			$result = $response->getResult();
 			$result['modules'] = crmtogo_WS_Controller::getUserModule();
 			$response->setResult($result);
-		}
-		else {
+		} else {
 			$default_config = $this->getConfigDefaults();
 			$default_lang_strings = return_module_language($default_config['language'], 'Mobile');
 			$response->setError(1310, $default_lang_strings['LBL_LOGIN_REQUIRED']);

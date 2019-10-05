@@ -1,0 +1,13 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_activity</name>
+			<sql><![CDATA[ALTER TABLE vtiger_activity ADD rel_id int(19) default 0]]></sql>
+		</table>
+		<table>
+			<name>vtiger_activitycf</name>
+			<sql><![CDATA[ALTER TABLE vtiger_activity ADD cto_id int(19) default 0]]></sql>
+		</table>
+	</tables>
+</schema>

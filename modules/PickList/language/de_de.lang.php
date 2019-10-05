@@ -6,11 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-/**
- * this file can be used to internationalise the strings present in the picklist
- */
 $mod_strings = array(
 	'LBL_ASSIGN_BUTTON'=>'zuweisen',
 	'ADD_PICKLIST_VALUES'=>'Auswahllisteninhalt hinzufügen',
@@ -28,9 +24,8 @@ $mod_strings = array(
 	'LBL_PICKLIST_VALUES_ASSIGNED_TO'=>'Listeneintrag zuweisen für ',
 	'LBL_ADD_TO_OTHER_ROLES'=>'zu anderen Rollen hinzufügen',
 	'LBL_OK_BUTTON_LABEL'=>'OK',
-	'LBL_SELECT_ROLES'=>'Rollen auswählen',
 	'LBL_DISPLAYED_VALUES'=>'Alle Listeneinträge für die Rolle sind unten angezeigt',
-	
+
 	// For Dependency picklist
 	'LBL_PICKLIST_DEPENDENCY_SETUP' => 'Einstellungen der Abhängigkeiten von Auswahllisten',
 	'LBL_PICKLIST_DEPENDENCY_DESCRIPTION' => 'Erstelle Abhängigkeiten zwischen den Werten der Auswahllisten in jedem Modul',
@@ -49,6 +44,11 @@ $mod_strings = array(
 	'LBL_ADD_BUTTON' => 'Wert hinzufügen',
 	'LBL_EDIT_BUTTON' => 'Wert umbenennen',
 	'LBL_DELETE_BUTTON' => 'Wert löschen',
-	'NTC_DELETE_CONFIRMATION'=>'Sind Sie sicher, dass Sie diese Auswahllistabhängigkeit löschen wollen?',     
+	'LBL_MOVE_UP' => 'Nach oben bewegen',
+	'LBL_MOVE_DOWN' => 'Nach unten bewegen',
+	'LBL_MOVE_LEFT' => 'Nach links',
+	'LBL_MOVE_RIGHT' => 'Nach rechts',
+	'LBL_REMOVE' => 'Entfernen',
+	'NTC_DELETE_CONFIRMATION'=>'Sind Sie sicher, dass Sie diese Auswahllistabhängigkeit löschen wollen?',
 );
 ?>

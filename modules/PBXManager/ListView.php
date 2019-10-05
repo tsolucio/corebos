@@ -19,5 +19,5 @@ $tool_buttons = array(
 	'moduleSettings' => isModuleSettingPermitted($currentModule),
 );
 
-require_once('modules/Vtiger/ListView.php');
+include_once 'modules/Vtiger/ListView.php';
 ?>

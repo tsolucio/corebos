@@ -14,17 +14,16 @@ abstract class Vtiger_BackupZip {
 	protected $fileName;
 	protected static $defaultPath;
 	private static $isUserPath;
-	private static $filePrefix = 'Vtiger-';
-	abstract public function addFile($filePath,$parentDirectory);
-	abstract public function addDirectory($directoryPath,$zipPath);
+	abstract public function addFile($filePath, $parentDirectory);
+	abstract public function addDirectory($directoryPath, $zipPath);
 	abstract public function close();
 
-	public static function getInstance($folder = null, $filename=null) {
-		if(empty($filename)) {
+	public static function getInstance($folder = null, $filename = null) {
+		if (empty($filename)) {
 			$filename = self::getDefaultFileName();
 		}
 		self::$defaultPath = 'backup'.DIRECTORY_SEPARATOR;
-		if(empty($folder)) {
+		if (empty($folder)) {
 			self::$isUserPath = false;
 			$folder = self::getDefaultFolderPath();
 		} else {
@@ -40,22 +39,22 @@ abstract class Vtiger_BackupZip {
 	}
 
 	public static function addTrailingSlash($path) {
-		return (strrpos($path, DIRECTORY_SEPARATOR) === strlen($path) - 1)?$path.DIRECTORY_SEPARATOR:$path;
+		return (strrpos($path, DIRECTORY_SEPARATOR) === strlen($path) - 1) ? $path.DIRECTORY_SEPARATOR : $path;
 	}
 
 	public static function getDefaultFileName($time = null) {
-		if(empty($time)) {
+		if (empty($time)) {
 			$time = time();
 		}
 		global $site_URL;
-		$archive_prefix=str_replace('http://','',$site_URL);
-		$archive_prefix=str_replace('/','',$archive_prefix);
-		$archive_prefix=str_replace(':','',$archive_prefix);
-		return $archive_prefix.gmdate('d_M_Y-H_i_s-T',$time).'.zip';
+		$archive_prefix=str_replace('http://', '', $site_URL);
+		$archive_prefix=str_replace('/', '', $archive_prefix);
+		$archive_prefix=str_replace(':', '', $archive_prefix);
+		return $archive_prefix.gmdate('d_M_Y-H_i_s-T', $time).'.zip';
 	}
 
 	public static function getDefaultFolderPath() {
-		if(self::$isUserPath === true) {
+		if (self::$isUserPath === true) {
 			return self::$defaultPath;
 		}
 		require 'config.inc.php';
@@ -66,6 +65,5 @@ abstract class Vtiger_BackupZip {
 	public function getBackupFileName() {
 		return $this->fileName;
 	}
-
 }
 ?>

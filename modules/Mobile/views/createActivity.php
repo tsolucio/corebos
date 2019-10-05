@@ -8,11 +8,11 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-include_once dirname(__FILE__) . '/../api/ws/Controller.php';
-include_once dirname(__FILE__) . '/../api/ws/Utils.php';
+include_once __DIR__ . '/../api/ws/Controller.php';
+include_once __DIR__ . '/../api/ws/Utils.php';
 
-class crmtogo_UI_DecideActivityType extends crmtogo_WS_Controller{
-	function process(crmtogo_API_Request $request) {
+class crmtogo_UI_DecideActivityType extends crmtogo_WS_Controller {
+	public function process(crmtogo_API_Request $request) {
 		$response = new crmtogo_API_Response();
 		$current_language = $this->sessionGet('language') ;
 		$viewer = new crmtogo_UI_Viewer();

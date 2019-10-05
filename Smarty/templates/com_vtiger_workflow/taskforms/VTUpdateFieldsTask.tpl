@@ -12,12 +12,17 @@
 <script src="modules/{$module->name}/resources/vtigerwebservices.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/parallelexecuter.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
-    var moduleName = '{$entityName}';
-    {if isset($task->field_value_mapping)}
-        var fieldvaluemapping = JSON.parse('{$task->field_value_mapping|escape:'quotes'}');
-    {else}
-        var fieldvaluemapping = null;
-    {/if}
+	var moduleName = '{$entityName}';
+	{if isset($task->field_value_mapping)}
+		{assign var="fvmdoubleslashes" value=$task->field_value_mapping|replace:'\"':'\\\\"'}
+		{if empty($fvmdoubleslashes)}
+			var fieldvaluemapping = null;
+		{else}
+			var fieldvaluemapping = JSON.parse('{$fvmdoubleslashes|escape:'quotes'}');
+		{/if}
+	{else}
+		var fieldvaluemapping = null;
+	{/if}
 </script>
 <script src="modules/{$module->name}/resources/fieldexpressionpopup.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/updatefieldstaskscript.js" type="text/javascript" charset="utf-8"></script>
@@ -32,14 +37,14 @@
                 <b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0">
             </span>
             <span id="save_fieldvaluemapping_add-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-            <input type="button" class="crmButton create small"
-                   value="{$MOD.LBL_ADD_FIELD}" id="save_fieldvaluemapping_add" style='display: none;'/>
+            <input type="button" class="crmButton create small" value="{$MOD.LBL_ADD_FIELD}" id="save_fieldvaluemapping_add" style='display: none;'/>
         </td>
     </tr>
 </table>
 <br>
 {include file="com_vtiger_workflow/FieldExpressions.tpl"}
-<br>
+<input type="checkbox" name="launchrelwf" id="launchrelwf" {if $task->launchrelwf}checked{/if}/>&nbsp;&nbsp;{$MOD.launchrelwf}
+<br><br>
 <input type="hidden" name="field_value_mapping" value="" id="save_fieldvaluemapping_json"/>
 <div id="dump" style="display:None;"></div>
 <div id="save_fieldvaluemapping"></div>

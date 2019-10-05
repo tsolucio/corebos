@@ -24,7 +24,7 @@ if ($error==0) {
 	if (count($argv)==1) {
 		$argv[2] = 'all';
 	} elseif (empty($argv[2])) {
-		$argv[2] = trim($cbupdate_ids,',');
+		$argv[2] = trim($cbupdate_ids, ',');
 	} else {
 		$argv[2] = 'all';
 	}

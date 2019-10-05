@@ -10,7 +10,6 @@
 
 $optionalModuleStrings = array(
 	'CustomerPortal_description'=>'Interfaccia di gestione per controllare il comportamento di Customer Portal Plugin',
-	'FieldFormulas_description'=>'Regole di installazione per i campi personalizzati per aggiornare il valore al salvataggio',
 	'RecycleBin_description'=>'Modulo per gestire i record cancellati, offre possibilità di ripristinare o rimuovere completamente',
 	'Tooltip_description'=>'Configurare tooltip per visualizzazione per un campo, che può essere combinazione di altri campi',
 	'Webforms_description'=>'Supporto lato server per consentire la costruzione di webforms client per acquisire le informazioni facilmente',
@@ -39,7 +38,6 @@ E disponibile in molte lingue.',
 	'LBL_INSTALL' => 'Installazione',
 	'LBL_MIGRATE' => 'Migrazione',
 	'ERR_RESTRICTED_FILE_ACCESS' => 'Sorry! Tentativo di accedere un file limitato',
-	'LBL_INSTALLATION_CHECK' => 'Controllo installazione',
 	'LBL_BACK' => 'Indietro',
 	'LBL_NEXT' => 'Prossimo',
 	'LBL_AGREE' => 'Concordo',
@@ -69,7 +67,6 @@ E disponibile in molte lingue.',
 	'LBL_GD_LIBRARY' => 'GD graphics library',
 	'LBL_RECOMMENDED_PHP_SETTINGS' => 'Impostazioni PHP consigliate',
 	'LBL_DIRECTIVE' => 'Direttiva',
-	'LBL_RECOMMENDED' => 'Raccomandato',
 	'LBL_PHP_INI_VALUE' => 'PHP.ini valore',
 	'LBL_READ_WRITE_ACCESS' => 'Accesso Lettura / Scrittura',
 	'LBL_NOT_RECOMMENDED' => 'Non consigliato',
@@ -131,15 +128,15 @@ E disponibile in molte lingue.',
 	'LBL_SET_OUTGOING_EMAIL_SERVER' => 'Non dimenticate l\'impostazione del server di uscita (impostazione e accessibile da Impostazioni- & gt; Server in uscita)',
 	'LBL_RENAME_HTACCESS_FILE' => 'Rinominare il file htaccess.txt in .htaccess per controllare l\'accesso pubblico dei schedari',
 	'MSG_HTACCESS_DETAILS' => 'Questo file .htaccess funzionerà se "<b> AllowOverride All </ b>" è impostato su Apache file di configurazione del server (httpd.conf) per il DocumentRoot o per il path attuale del coreBOS. <br>
-Se  AllowOverride è impostato come None es., "<B> AllowOverride None </ b>" il file .htaccess, allora non avrà effetto. <br>
+Se AllowOverride è impostato come None es., "<B> AllowOverride None </ b>" il file .htaccess, allora non avrà effetto. <br>
 Se AllowOverride è None devi aggiungere la seguente configurazione nel file di configurazione del server Apache (httpd.conf) <br>
 <b> & lt; Directory "C: / Program Files / corebos / apache / htdocs / coreBOS" & gt; <br> Options -Indexes Hotel & lt; / Elenco & gt; </ b> <br>
 Così che senza file .htaccess possiamo limitare la lista di directory',
 	'LBL_YOU_ARE_IMPORTANT' => 'Sei molto importante per noi!',
 	'LBL_PRIDE_BEING_ASSOCIATED' => 'Siamo orgogliosi di essere associati con voi',
-	'LBL_TALK_TO_US_AT_FORUMS' => 'Parla con noi nel nostro <a href="https://plus.google.com/communities/109845486286232591652" target="_blank"> </a> Google+ comunitaria o <a href = "http: //www.linkedin. com / gruppi / coreBOS-7479130? trk = my_groups-b-grp-v "target =" _ blank "> </a> LinkedIn Group',
+	'LBL_TALK_TO_US_AT_FORUMS' => 'Parla con noi nel nostro <a href="http://discussions.corebos.org/" target="_blank"> Foro comunitaria</a> o <a href="http://www.linkedin.com/groups/coreBOS-7479130?trk=my_groups-b-grp-v" target="_blank"> LinkedIn Group</a>',
 	'LBL_WE_AIM_TO_BE_BEST' => 'Il nostro obiettivo è di aiutarti a fare la tua attività',
-	'LBL_SPACE_FOR_YOU' => 'Vieni su, ce spazio anche per te!',	
+	'LBL_SPACE_FOR_YOU' => 'Vieni su, ce spazio anche per te!',
 	'LBL_NO_OPTIONAL_MODULES_FOUND' => 'Nessun Moduli opzionali trovato',
 	'LBL_PREVIOUS_INSTALLATION_INFORMATION' => 'Informazioni per la Precedente Installazione',
 	'LBL_PREVIOUS_INSTALLATION_PATH' => 'Il path della Precedente installazione',

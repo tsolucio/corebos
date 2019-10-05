@@ -6,11 +6,9 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-
-require_once('modules/Settings/MailScanner/core/MailScannerInfo.php');
-require_once('Smarty_setup.php');
+require_once 'modules/Settings/MailScanner/core/MailScannerInfo.php';
+require_once 'Smarty_setup.php';
 
 global $app_strings, $mod_strings, $currentModule, $theme, $current_language;
 
@@ -18,15 +16,14 @@ $scannername = vtlib_purify($_REQUEST['scannername']);
 $scannerinfo = new Vtiger_MailScannerInfo($scannername);
 
 $smarty = new vtigerCRM_Smarty;
-$smarty->assign("MOD", return_module_language($current_language,'Settings'));
-$smarty->assign("CMOD", $mod_strings);
-$smarty->assign("APP", $app_strings);
-$smarty->assign("THEME", $theme);
-$smarty->assign("IMAGE_PATH","themes/$theme/images/");
+$smarty->assign('MOD', return_module_language($current_language, 'Settings'));
+$smarty->assign('CMOD', $mod_strings);
+$smarty->assign('APP', $app_strings);
+$smarty->assign('THEME', $theme);
+$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 
-$smarty->assign("SCANNERINFO", $scannerinfo->getAsMap());
-$smarty->assign("SCANNERRULES", $scannerinfo->rules);
+$smarty->assign('SCANNERINFO', $scannerinfo->getAsMap());
+$smarty->assign('SCANNERRULES', $scannerinfo->rules);
 
 $smarty->display('MailScanner/MailScannerRule.tpl');
-
 ?>

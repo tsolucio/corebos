@@ -1,4 +1,15 @@
-<?php // $Id: iCalendar_components.php,v 1.8 2005/07/21 22:31:44 defacer Exp $
+<?php
+/**
+ *  BENNU - PHP iCalendar library
+ *  (c) 2005-2006 Ioannis Papaioannou (pj@moodle.org). All rights reserved.
+ *
+ *  Released under the LGPL.
+ *
+ *  See http://bennu.sourceforge.net/ for more information and downloads.
+ *
+ * @author Ioannis Papaioannou
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ */
 require_once('include/utils/utils.php');
 
 class iCalendar_component {
@@ -278,7 +289,7 @@ class iCalendar_component {
 			if(!empty($ical_activity['VALARM'])){
 				$temp = str_replace("PT",'',$ical_activity['VALARM']['TRIGGER']);
 				$duration_type = $temp[strlen($temp)-1];
-				$duration = intval($temp);
+				$duration = (int)$temp;
 				if($duration_type=='H'){
 					$reminder_time = $duration*60;
 				} else if($duration_type=='M'){

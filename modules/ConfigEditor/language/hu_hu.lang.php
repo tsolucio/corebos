@@ -5,14 +5,10 @@
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
+ * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  * All Rights Reserved.
  ************************************************************************************/
- /*********************************************************************************
- * $Header:  \modules\ConfigEditor\language\hu_hu.lang.php - 9:46 2011.11.11. $
- * Description:  Defines the Hungarian language pack for the ConfigEditor module vtiger 5.3.x
- * All Rights Reserved.
- * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
- ********************************************************************************/
+
 $mod_strings = array(
 	'ConfigEditor' => 'Konfiguráció Szerkesztő',
 	'LBL_CONFIG_EDITOR' => 'Konfiguráció Szerkesztő',
@@ -41,7 +37,7 @@ $mod_strings = array(
 	'LBL_CONFIG_FILE' => 'config.inc.php',
 	'LBL_CONFIG_EDIT_CAUTION_INFO' => 'Épp konfigurációs beállításait szerkeszted.',
 	'LBL_DOUBLE_CHECK_INFO' => 'Kérlek, hogy kétszeresen is ellenőrizd az adatokat mielőtt elmented a beállításokat.',
-	'LBL_HELP_INFO' => 'Ezt használjuk \'Küldő e-mail\' címnek például egy új felhasználó számára a belépési adatok küldésekor, vagy			ügyfélszolgálati kéréskor ezzel az e-mail címmel válaszolunk a kérést beküldőnek, ez küldi ki az emlékeztető e-maileket.',
+	'LBL_HELP_INFO' => 'Ezt használjuk \'Küldő e-mail\' címnek például egy új felhasználó számára a belépési adatok küldésekor, vagy ügyfélszolgálati kéréskor ezzel az e-mail címmel válaszolunk a kérést beküldőnek, ez küldi ki az emlékeztető e-maileket.',
 	'LBL_RESTRICTED_CHARACTERS' => 'A speciális karakterek, mint \' " és ; nem megengedettek.',
 	'LBL_CORS_ENABLED_DOMAINS' => 'Domains authorized for CORS',
 	'disable_stats_tracking' => 'Disable Email Statistics Tracking',

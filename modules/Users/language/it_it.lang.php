@@ -13,7 +13,7 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
- $mod_strings = array (
+$mod_strings = array(
   'LBL_MODULE_NAME' => 'Utenti',
   'LBL_MODULE_TITLE' => 'Utenti: Home',
   'LBL_SEARCH_FORM_TITLE' => 'Utenti Cerca',
@@ -42,19 +42,26 @@
   'Name' => 'Nome',
   'Tools' => 'Strumenti',
 
-
-
   'LBL_GROUP' => 'Gruppo',
   'LBL_CURRENCY_NAME' => 'Valuta',
 
   'LBL_NEW_USER_BUTTON_TITLE' => 'Nuovo Utente [Alt+N]',
   'LBL_NEW_USER_BUTTON_LABEL' => 'Nuovo Utente',
   'LBL_NEW_USER_BUTTON_KEY' => 'N',
+  'LBL_EXPORT_USER_BUTTON_TITLE' => 'Esporta utenti [Alt+E]',
+  'LBL_EXPORT_USER_BUTTON_LABEL' => 'Esporta utenti',
+  'LBL_EXPORT_USER_BUTTON_KEY' => 'E',
   'LBL_DATE_FORMAT' => 'Formato Data',
 
   'LBL_ERROR' => 'Errore:',
+  'FORM_TOKEN_EXPIRED'=>'Edit token has expired. Try again.',
+  'ERR_CANNOTEDITUSER' => 'Not Permitted. You cannot edit this User',
   'LBL_PASSWORD' => 'Password:',
   'LBL_USER_NAME' => 'Nome Utente',
+  'LBL_2FACODE' => 'Code',
+  'LBL_2FAGETCODE' => 'Get another code',
+  '2FA_NEWCODESENT' => 'New code has been sent.',
+  '2FA_ACCESSCODE' => 'Your access code is %s',
   'LBL_CRM_ID' => 'CRM ID',
   'LBL_FIRST_NAME' => 'Nome',
   'LBL_LAST_NAME' => 'Cognome',
@@ -109,6 +116,8 @@
   'ERR_ENTER_CONFIRMATION_PASSWORD' => 'Inserisci la Conferma della Password.',
   'ERR_REENTER_PASSWORDS' => 'Reinserisci la Password. I valori della  Nuova Password e  della Conferma della Password  non coincidono',
   'ERR_INVALID_PASSWORD' => 'Devi specificare un utente e una password validi.',
+  'ERR_INVALID_2FACODE' => 'You have introduced an invalid code, please try again.',
+  'ERR_INVALIDUSERID' => 'Invalid user ID given.',
   'ERR_INVALID_ADMINIPLOGIN' => 'Administrator users must login from authorized devices.',
   'ERR_INVALID_USERIPLOGIN' => 'Restricted access to authorized personnel only<br> You are connecting from an invalid IP',
   'ERR_PASSWORD_CHANGE_FAILED_1' => 'Impossibile modificare la password per',
@@ -206,6 +215,7 @@
 
   'LBL_ASTERISKEXTENSIONS_EXIST' => 'Estensione Asterisk gi&agrave esistente!',
   'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'Decimal Separator and Digit Grouping Separator cannot be the same.',
+  'LBL_FORUSER' => ' for User ',
 
   'LBL_CREATE_NEW_GROUP' => 'Crea Nuovo Gruppo',
   'LBL_NEW_GROUP' => 'Nuovo Gruppo',
@@ -218,8 +228,6 @@
   'LBL_GROUP_MESG1' => 'I Gruppi sono un modo flessibile di gestire i diritti di accesso. &Egrave; possibile combinare molteplici entit&agrave; come Ruoli, Utenti, profili ecc dentro un singolo gruppo.',
   'LBL_GROUP_MESG2' => 'Per aggiungere, seleziona i membri dell`Entit&agrave;  da sinistra e clicca il bottone \\\\\\\">>\\\\\\\"',
   'LBL_GROUP_MESG3' => 'Per rimuovere, seleziona il Gruppo di membri dalla destra e clicca il bottone \\\\\\\"<<\\\\\\\"',
-
-
 
   'LBL_DETAIL_VIEW_OF_EMAIL_TEMPLATE' => 'Vista Dettagliata del Template Email',
   'LBL_DETAIL_VIEW' => 'Vista Dettagliata di ',
@@ -234,7 +242,6 @@
   'LBL_EMAIL_TEMPLATE_DESC' => 'Gestisci i Template e-mail usati per le Campagne e il Mass Mailing',
   'LBL_NAME' => 'Nome:',
 
-
   'LBL_CUSTOMISE_TABS' => 'Personalizza i Tabs',
   'LBL_CHOOSE_TABS' => 'Scegli Tabs',
   'LBL_AVAILABLE_TABS' => 'Tabs disponibili',
@@ -243,13 +250,10 @@
   'LBL_TAB_MENU_UPDATED' => 'il menu dei Tab &egrave; stato caricato! Vai a',
   'LBL_TO_VIEW_CHANGES' => 'per vedere i cambiamenti',
 
-
   'LBL_CHANGE_HOMEPAGE_LABEL' => 'Ordine in HomePage',
   'LBL_CHANGE_HOMEPAGE_TITLE' => 'Homepage',
 
-
   'LBL_OERATION' => 'Operazione',
-
 
   'LBL_PROFILE_NAME' => 'Crea Nuovo Profilo:',
   'LBL_NEW_PROFILE' => 'Nuovo Profilo:',
@@ -307,7 +311,6 @@
   'LBL_RELATED_MODULE_RIGHTS' => 'Diritti sui Moduli Collegati',
   'LBL_IN_PERMISSION' => 'nel permesso',
 
-
   'LBL_HDR_ROLE_NAME' => 'Crea Nuovo Ruolo:',
   'LBL_TITLE_ROLE_NAME' => 'Nuovo Ruolo',
   'LBL_ROLE_NAME' => 'Nome Ruolo',
@@ -321,8 +324,6 @@
   'LBL_ASSOCIATED_PROFILES' => 'Profili Associati:',
   'LBL_ASSOCIATED_USERS' => 'Utenti Associati:',
 
-
-
   'LBL_ORG_SHARING_PRIVILEGES' => 'Privilegi condivisi dall`organizzazione',
   'LBL_EDIT_PERMISSIONS' => 'Modifica Permessi',
   'LBL_SAVE_PERMISSIONS' => 'Salva Permessi',
@@ -331,11 +332,12 @@
   'LBL_READ_CREATE_EDIT_DEL' => 'Pubblico: Lettura, Creazione, Modifica, Cancellazione',
   'LBL_PRIVATE' => 'Privato',
 
-
   'LBL_HDR_EMAIL_SCHDS' => 'Utenti: Email di notifica',
   'LBL_EMAIL_SCHDS_DESC' => 'La seguente &egrave; la lista delle notifiche che sono attivate automaticamente quando l`evento corrispondente &egrave; accaduto',
   'LBL_ACTIVE' => 'Attivo',
   'LBL_INACTIVE' => 'Inattivo',
+  'LBL_ON'=>'On',
+  'LBL_OFF'=>'Off',
   'LBL_NOTIFICATION' => 'Notifica',
   'LBL_DESCRIPTION' => 'Descrizione',
   'LBL_TASK_NOTIFICATION' => 'Notifica di Compiti Ritardati',
@@ -353,21 +355,14 @@
   'LBL_BUTTON_UPDATE' => 'Aggiorna',
   'LBL_MODULENAMES' => 'Modulo',
 
-
   'LBL_FIELD_PERMISSION_FIELD_NAME' => 'Nome Campo',
   'LBL_FIELD_PERMISSION_VISIBLE' => 'Visibile',
   'LBL_FIELD_PERMISSIOM_TABLE_HEADER' => 'Campi Standard',
   'LBL_FIELD_LEVEL_ACCESS' => 'Accesso a Livello Campo',
-
-
   'LBL_SIGNATURE' => 'Firma',
-
-
   'LBL_ACTIVITY_NOTIFICATION' => 'Notifica Avviso Eventi',
   'LBL_ACTIVITY_REMINDER_DESCRIPTION' => 'Notifica prima che accada un evento, basandosi sulle impostazioni di avviso',
   'LBL_MESSAGE' => 'Messaggio',
-
-
 
   'Public: Read Only' => 'Pubblico: Solo Lettura',
   'Public: Read, Create/Edit' => 'Pubblico: Lettura, Creazione/ Modifica',
@@ -393,9 +388,6 @@
   'LBL_PRIVILEGES' => 'Privilegi',
   'LBL_OF' => 'di',
 
-
-
-
   'LBL_ADD_MAILSERVER_BUTTON_TITLE' => 'Aggiungi Server di Posta',
   'LBL_ADD_MAILSERVER_BUTTON_KEY' => 'M',
   'LBL_ADD_MAILSERVER_BUTTON_LABEL' => 'Aggiungi Server di Posta',
@@ -407,7 +399,6 @@
   'INV_TANDC' => 'Termini e Condizioni',
   'INV_TERMSANDCONDITIONS' => 'Inventario Termini e Condizioni',
   'LBL_INV_TERMSANDCONDITIONS' => 'Gestione Inventario',
-
 
   'INVENTORYNOTIFICATION' => 'Notifica Inventario',
   'LBL_INVENTORY_NOTIFICATIONS' => 'Modifica Notifiche Inventario via Mail',
@@ -422,32 +413,19 @@
   'SalesOrderNotification' => 'Notifica Stock Prodotto durante la generazione degli ordini di vendita',
   'SalesOrderNotificationDescription' => 'Durante la generazione di ordini di vendita se il Prodotto in magazzino &egrave; meno del quantit&agrave; menzionata negli ordini di vendita allora manda una notifica al Responsabile del Prodotto',
 
-
   'LBL_USER_FIELDS' => 'Campi Utente',
   'LBL_NOTE_DO_NOT_REMOVE_INFO' => 'Nota: Non rimuovere o alterare i valori tra { }',
 
-
   'LBL_FILE_INFORMATION' => 'Informazioni di File',
-
-
   'LBL_LEAD_FIELD_ACCESS' => 'Accesso Campo Lead',
-
   'LBL_ACCOUNT_FIELD_ACCESS' => 'Accesso Campo Azienda',
-
   'LBL_CONTACT_FIELD_ACCESS' => 'Accesso Campo Contatto',
-
   'LBL_OPPORTUNITY_FIELD_ACCESS' => 'Accesso Campo Opportunit&agrave;',
-
   'LBL_HELPDESK_FIELD_ACCESS' => 'Accesso Campo Assistenza Clienti',
-
   'LBL_PRODUCT_FIELD_ACCESS' => 'Accesso Campo Prodotto',
-
   'LBL_NOTE_FIELD_ACCESS' => 'Accesso Campo Note',
-
   'LBL_EMAIL_FIELD_ACCESS' => 'Accesso Campo Email',
-
   'LBL_TASK_FIELD_ACCESS' => 'Accesso Campo Compiti',
-
   'LBL_EVENT_FIELD_ACCESS' => 'Accesso Campo Evento',
   'LBL_VENDOR_FIELD_ACCESS' => 'Accesso Campo Fornitore',
   'LBL_PB_FIELD_ACCESS' => 'Accesso Listino',
@@ -455,7 +433,6 @@
   'LBL_PO_FIELD_ACCESS' => 'Accesso Campo Ordine di Vendita',
   'LBL_SO_FIELD_ACCESS' => 'Accesso Ordine di Vendita',
   'LBL_INVOICE_FIELD_ACCESS' => 'Accesso Campo Fattura',
-
 
   'LBL_COLOR' => 'Colori in Calendario',
 
@@ -478,7 +455,6 @@
   'LTFAQ' => 'Mie FAQ Recenti',
   'UA'=>'Attivita in Scadenza',
   'PA'=>'Attivita aperte',
-
 
   'LBL_GROUP_NAME_ERROR' => 'Nome del gruppo gi&agrave; esistente!',
   'MNL' => 'Miei nuovi Lead',
@@ -521,8 +497,6 @@
   'LBL_MORE_INFORMATION' => 'Pi&ugrave; Informazioni',
   'LBL_USERLOGIN_ROLE' => 'Ruolo e Login Utente',
   'LBL_USER_IMAGE_INFORMATION' => 'Fotografia Utente',
-
-
   'Role' => 'Ruolo',
   'Email' => 'Email',
   'Admin' => 'Amministratore',
@@ -559,7 +533,6 @@
   'Symbol Placement' => 'Posizione Simbolo Valuta',
   'Digit Grouping Separator' => 'Separatore delle Migliaia',
   'Digit Grouping Pattern' => 'Modello Raggruppamento delle Migliaia',
-  'Number Of Currency Decimals'  =>  'Number Of Currency Decimals',
   'LBL_SHOWN' => 'Mostrato',
   'LBL_HIDDEN' => 'Nascosto',
   'LBL_SHOW' => 'Mostra',
@@ -636,20 +609,27 @@
   'LBL_3_MIN' => '3 minuti',
   'LBL_4_MIN' => '4 minuti',
   'LBL_5_MIN' => '5 minuti',
-  'LBL_EMAILS_PER_PAGE' => 'Email per pagina',
+	'None' => 'None',
+	'1 Minute' => '1 Minuto',
+	'5 Minutes' => '5 Minuti',
+	'15 Minutes' => '15 Minuti',
+	'30 Minutes' => '30 Minuti',
+	'45 Minutes' => '45 Minuti',
+	'1 Hour' => '1 Hour',
+	'1 Day' => '1 Day',
+	'LBL_EMAILS_PER_PAGE' => 'Email per pagina',
 
   'LBL_ENTER_PROFILE' => 'Inserisci il nome del profilo',
   'TITLE_USER_DOCUMENT' => 'Documento senza nome',
   'ROLE_DRAG_ERR_MSG' => 'Non puoi muovere un nodo padre sotto un nodo figlio',
 
   'LBL_NOTIFICATION_ACTIVITY' => 'Attivit&agrave; di notifica',
-  'LBL_NOTIFICATION_EMAIL_INFO' => 'Informazioni email di notifica',
   'LBL_GOTO_LISTVIEW_BUTTON' => 'Vai a Vista per Lista',
 
   'LBL_SSL' => 'SSL',
 
   'LBL_USERNAME_EXIST' => 'Nome utente gi&agrave; esistente!',
- 
+
  'LBL_UNAUTHORIZED_ACCESS' => 'Accesso non autorizzato all`amministrazione utenti',
 
   'LBL_TAGCLOUD_DISPLAY' => 'Tag Cloud Display',
@@ -669,10 +649,7 @@
 'Asterisk Extension' => 'Estensione Asterisk',
 'Receive Incoming Calls' => 'Ricevi chiamate in entrata',
 
-'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Crea campi personalizzati utente',
-'LBL_USER_CUSTOMFIELDS' => 'Campi Personalizzati Utente',
 'LBL_CURRENCY_CONFIGURATION'=> 'Configurazione Valuta',
-
 
 'Kwajalein' => '(UTC-12:00) International Date Line West',
 'Pacific/Midway' => '(UTC-11:00) Coordinated Universal Time-11',
@@ -771,13 +748,20 @@
 'Pacific/Auckland' => '(UTC+12:00) Auckland',
 'Asia/Magadan' => '(UTC+11:00) Magadan, New Caledonia',
 'Pacific/Tongatapu' => '(UTC+13:00) Nukualofa',
-'Calendar Hour Format' => 'Calendar Hour Format',
-'Day ends at' => 'Day ends at',
-'Day starts at' => 'Day starts at',
 'Theme'=>'Tema Grafico',
 'Language'=>'Lingua',
 'Secondary Email'=>'Mail Secondaria',
 'Time Zone'=>'Fuso Orario',
+'flat'=>'Piano',
+'hring'=>'Anello Orizzontale',
+'vring'=>'Anello Verticale',
+'hcylinder'=>'Cilindro Orizzontale',
+'vcylinder'=>'Cilindro Verticale',
+'LBL_SEND_EMAIL_TO_SENDER' => 'Invia copia di email',
+'Calendar Hour Format' => 'Calendario Formato Ore',
+'Day ends at' => 'Giorno finisce alle',
+'Day starts at' => 'Giorno inizia alle',
+'Number Of Currency Decimals'  =>  'Numero di decimali in Valuta',
 'PASSWORD REQUIREMENTS' => 'Requisiti Password',
 'REQUIRED' => 'Obbligatori',
 'Min. 8 characters' => 'Minimo 8 caratteri',
@@ -786,11 +770,16 @@
 'Min. 1 lowercase' => 'Minimo una lettera minuscola',
 'Min. 1 number' => 'Minimo un numero',
 'Min. 1 special character' => 'Minimo un carattere speciale ! ? , ; - @ #',
-'Generate password' => 'Generate password',
+'Generate password' => 'Genera password',
+'ERR_USER_LOGGED_IN' => 'The User Name is currently in use on another computer. Terminate the session in use or enter a different User Name.',
+'ERR_USER_CAN_UNBLOCK' => 'An inactive session by the same User Name is blocking your login attempt(s).',
+'LBL_USERLOGGEDOUTOK' => 'The user has been logged out correctly.',
+'LBL_USERLOGGEDOUTNOK' => 'The user could not be logged out.',
+'LBL_UNBLOCK_USR' => 'Unblock the session to login?',
+'LOGGED IN' => 'Logged In',
 // LDAP
 'LBL_QUERY' => 'Query',
-'LBL_FORE_LASTNAME' => 'First or Last name',
-'LBL_NO_LDAP_MATCHES' => 'No matches found on the LDAP server!',
- );
-
+'LBL_FORE_LASTNAME' => 'Nome o Cognome',
+'LBL_NO_LDAP_MATCHES' => 'Combinazione non trovata nel server LDAP!',
+);
 ?>

@@ -14,9 +14,11 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 class addCostPrice extends cbupdaterWorker {
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -24,7 +26,7 @@ class addCostPrice extends cbupdaterWorker {
 			$modname = 'Products';
 			$module = Vtiger_Module::getInstance($modname);
 			$block = Vtiger_Block::getInstance('LBL_PRICING_INFORMATION', $module);
-			$field = Vtiger_Field::getInstance('cost_price',$module);
+			$field = Vtiger_Field::getInstance('cost_price', $module);
 			if (!$field) {
 				$field1 = new Vtiger_Field();
 				$field1->name = 'cost_price';
@@ -40,7 +42,7 @@ class addCostPrice extends cbupdaterWorker {
 			$modname = 'Services';
 			$module = Vtiger_Module::getInstance($modname);
 			$block = Vtiger_Block::getInstance('LBL_PRICING_INFORMATION', $module);
-			$field = Vtiger_Field::getInstance('cost_price',$module);
+			$field = Vtiger_Field::getInstance('cost_price', $module);
 			if (!$field) {
 				$field1 = new Vtiger_Field();
 				$field1->name = 'cost_price';
@@ -59,15 +61,18 @@ class addCostPrice extends cbupdaterWorker {
 		$this->markApplied();
 		$this->finishExecution();
 	}
-	
-	function undoChange() {
-		if ($this->isBlocked()) return true;
-		if ($this->hasError()) $this->sendError();
+
+	public function undoChange() {
+		if ($this->isBlocked()) {
+			return true;
+		}
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isSystemUpdate()) {
 			$this->sendMsg('Changeset '.get_class($this).' is a system update, it cannot be undone!');
 		}
 		$this->finishExecution();
 	}
 }
-
 ?>

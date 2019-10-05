@@ -6,13 +6,8 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
- *********************************************************************************
- * $Header:  \modules\Webforms\language\hu_hu.lang.php - 12:16 2011.11.12. $
- * Description:  Defines the Hungarian language pack for the Webforms module vtiger 5.3.x
- *
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
- ********************************************************************************/ 
+ ********************************************************************************/
 $mod_strings = array(
 	'Webforms' => 'Webűrlapok',
 	'Allows you to manage Webforms' => 'Create and manage webforms which can be used to capture Leads',
@@ -48,6 +43,8 @@ $mod_strings = array(
 	'LBL_SELECT_VALUE' => '--Válassz értéket--',
 	'LBL_SELECT_USER' => 'Válassz egy felhasználót',
 	'LBL_DUPLICATE_NAME' => 'Ilyen nevű űrlap már létezik',
-	'ERR_CREATE_WEBFORM' => 'Űrlap létrehozási hiba'
+	'ERR_CREATE_WEBFORM' => 'Űrlap létrehozási hiba',
+	'LBL_WEB_DOMAIN' => 'Web Domain',
+	'LBL_CREATENEW' => 'You can Create a Webform Now. Click the link below',
 );
 ?>

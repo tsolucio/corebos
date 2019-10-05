@@ -8,27 +8,26 @@
  * All Rights Reserved.
  ************************************************************************************/
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme;
-$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
-
-require_once('Smarty_setup.php');
-require_once('include/ListView/ListView.php');
-require_once('modules/CustomView/CustomView.php');
-require_once('include/DatabaseUtil.php');
+$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize', 20, $currentModule);
+require_once 'Smarty_setup.php';
+require_once 'include/ListView/ListView.php';
+require_once 'modules/CustomView/CustomView.php';
+require_once 'include/DatabaseUtil.php';
 
 checkFileAccess("modules/$currentModule/$currentModule.php");
-require_once("modules/$currentModule/$currentModule.php");
+require_once "modules/$currentModule/$currentModule.php";
 
 $category = getParentTab();
 $url_string = '';
 
 $tool_buttons = Button_Check($currentModule);
-$list_buttons = Array();
+$list_buttons = array();
 
-if(isPermitted($currentModule,'Delete','') == 'yes') $list_buttons['del'] = $app_strings[LBL_MASS_DELETE];
-if(isPermitted($currentModule,'EditView','') == 'yes') {
+if (isPermitted($currentModule, 'Delete', '') == 'yes') {
+	$list_buttons['del'] = $app_strings[LBL_MASS_DELETE];
+}
+if (isPermitted($currentModule, 'EditView', '') == 'yes') {
 	$list_buttons['mass_edit'] = $app_strings[LBL_MASS_EDIT];
-	// Mass Edit could be used to change the owner as well!
-	//$list_buttons['c_owner'] = $app_strings[LBL_CHANGE_OWNER];
 }
 
 $focus = new $currentModule();
@@ -64,36 +63,22 @@ $customview_html = $customView->getCustomViewCombo($viewid);
 $viewinfo = $customView->getCustomViewByCvid($viewid);
 
 // Approving or Denying status-public by the admin in CustomView
-$statusdetails = $customView->isPermittedChangeStatus($viewinfo['status'],$viewid);
+$statusdetails = $customView->isPermittedChangeStatus($viewinfo['status'], $viewid);
 
 // To check if a user is able to edit/delete a CustomView
-$edit_permit = $customView->isPermittedCustomView($viewid,'EditView',$currentModule);
-$delete_permit = $customView->isPermittedCustomView($viewid,'Delete',$currentModule);
-$smarty->assign('CUSTOMVIEW_PERMISSION',$statusdetails);
-$smarty->assign('CV_EDIT_PERMIT',$edit_permit);
-$smarty->assign('CV_DELETE_PERMIT',$delete_permit);
+$edit_permit = $customView->isPermittedCustomView($viewid, 'EditView', $currentModule);
+$delete_permit = $customView->isPermittedCustomView($viewid, 'Delete', $currentModule);
+$smarty->assign('CUSTOMVIEW_PERMISSION', $statusdetails);
+$smarty->assign('CV_EDIT_PERMIT', $edit_permit);
+$smarty->assign('CV_DELETE_PERMIT', $delete_permit);
 $smarty->assign('VIEWID', $viewid);
 
-if($viewinfo['viewname'] == 'All') $smarty->assign('ALL', 'All');
+if ($viewinfo['viewname'] == 'All') {
+	$smarty->assign('ALL', 'All');
+}
 
-if($viewid ==0)
-{
-	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
-	echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
-		<tbody><tr>
-		<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) ."' ></td>
-		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span clas
-		s='genHeaderSmall'>".$app_strings['LBL_PERMISSION']."</span></td>
-		</tr>
-		<tr>
-		<td class='small' align='right' nowrap='nowrap'>
-		<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK']."</a><br>
-		</td>
-		</tr>
-		</tbody></table>
-		</div>
-		</td></tr></table>";
+if ($viewid == 0) {
+	$smarty->display('modules/Vtiger/OperationNotPermitted.tpl');
 	exit;
 }
 
@@ -107,7 +92,7 @@ if ($viewid != "0") {
 
 // Enabling Module Search
 $url_string = '';
-if($_REQUEST['query'] == 'true') {
+if ($_REQUEST['query'] == 'true') {
 	$queryGenerator->addUserSearchConditions($_REQUEST);
 	$ustring = getSearchURL($_REQUEST);
 	$url_string .= "&query=true$ustring";
@@ -116,82 +101,81 @@ if($_REQUEST['query'] == 'true') {
 
 $list_query = $queryGenerator->getQuery();
 $where = $queryGenerator->getConditionalWhere();
-if(isset($where) && $where != '') {
+if (isset($where) && $where != '') {
 	coreBOS_Session::set('export_where', $where);
 } else {
 	coreBOS_Session::delete('export_where');
 }
-$smarty->assign('export_where',to_html($where));
+$smarty->assign('export_where', to_html($where));
 
 // Sorting
-if(!empty($order_by)) {
-	if($order_by == 'smownerid') $list_query .= ' ORDER BY vtiger_users.user_name '.$sorder;
-	else {
+if (!empty($order_by)) {
+	if ($order_by == 'smownerid') {
+		$list_query .= ' ORDER BY vtiger_users.user_name '.$sorder;
+	} else {
 		$tablename = getTableNameForField($currentModule, $order_by);
 		$tablename = ($tablename != '')? ($tablename . '.') : '';
 		$list_query .= ' ORDER BY ' . $tablename . $order_by . ' ' . $sorder;
 	}
 }
 
-if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
-	$count_result = $adb->query( mkCountQuery( $list_query));
-	$noofrows = $adb->query_result($count_result,0,"count");
-}else{
+if (GlobalVariable::getVariable('Application_ListView_Compute_Page_Count', 0, $currentModule)) {
+	$count_result = $adb->query(mkCountQuery($list_query));
+	$noofrows = $adb->query_result($count_result, 0, "count");
+} else {
 	$noofrows = null;
 }
 
 $queryMode = (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true');
 $start = ListViewSession::getRequestCurrentPage($currentModule, $list_query, $viewid, $queryMode);
 
-$navigation_array = VT_getSimpleNavigationValues($start,$list_max_entries_per_page,$noofrows);
+$navigation_array = VT_getSimpleNavigationValues($start, $list_max_entries_per_page, $noofrows);
 
 $limit_start_rec = ($start-1) * $list_max_entries_per_page;
 
 $list_result = $adb->pquery($list_query. " LIMIT $limit_start_rec, $list_max_entries_per_page", array());
 
-$recordListRangeMsg = getRecordRangeMessage($list_result, $limit_start_rec,$noofrows);
-$smarty->assign('recordListRange',$recordListRangeMsg);
+$recordListRangeMsg = getRecordRangeMessage($list_result, $limit_start_rec, $noofrows);
+$smarty->assign('recordListRange', $recordListRangeMsg);
 
-$smarty->assign("CUSTOMVIEW_OPTION",$customview_html);
+$smarty->assign('CUSTOMVIEW_OPTION', $customview_html);
 
 // Navigation
 $navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string, $currentModule, 'index', $viewid);
-$smarty->assign("NAVIGATION", $navigationOutput);
+$smarty->assign('NAVIGATION', $navigationOutput);
 
 $controller = new ListViewController($adb, $current_user, $queryGenerator);
-$listview_header = $controller->getListViewHeader($focus,$currentModule,$url_string,$sorder,$order_by);
-$listview_entries = $controller->getListViewEntries($focus,$currentModule,$list_result,$navigation_array);
+$listview_header = $controller->getListViewHeader($focus, $currentModule, $url_string, $sorder, $order_by);
+$listview_entries = $controller->getListViewEntries($focus, $currentModule, $list_result, $navigation_array);
 $listview_header_search = $controller->getBasicSearchFieldInfoList();
 
 $smarty->assign('LISTHEADER', $listview_header);
 $smarty->assign('LISTENTITY', $listview_entries);
-$smarty->assign('SEARCHLISTHEADER',$listview_header_search);
+$smarty->assign('SEARCHLISTHEADER', $listview_header_search);
 
 // Module Search
-$alphabetical = AlphabeticalSearch($currentModule,'index',$focus->def_basicsearch_col,'true','basic','','','','',$viewid);
+$alphabetical = AlphabeticalSearch($currentModule, 'index', $focus->def_basicsearch_col, 'true', 'basic', '', '', '', '', $viewid);
 $fieldnames = $controller->getAdvancedSearchOptionString();
-$criteria = getcriteria_options();
-$smarty->assign("ALPHABETICAL", $alphabetical);
-$smarty->assign("FIELDNAMES", $fieldnames);
-$smarty->assign("CRITERIA", $criteria);
+$smarty->assign('ALPHABETICAL', $alphabetical);
+$smarty->assign('FIELDNAMES', $fieldnames);
 
-$smarty->assign("AVALABLE_FIELDS", getMergeFields($currentModule,"available_fields"));
-$smarty->assign("FIELDS_TO_MERGE", getMergeFields($currentModule,"fileds_to_merge"));
+$smarty->assign('AVALABLE_FIELDS', getMergeFields($currentModule, 'available_fields'));
+$smarty->assign('FIELDS_TO_MERGE', getMergeFields($currentModule, 'fields_to_merge'));
 
 //Added to select Multiple records in multiple pages
-$smarty->assign("SELECTEDIDS", vtlib_purify($_REQUEST['selobjs']));
-$smarty->assign("ALLSELECTEDIDS", vtlib_purify($_REQUEST['allselobjs']));
-$smarty->assign("CURRENT_PAGE_BOXES", implode(array_keys($listview_entries),";"));
+$smarty->assign('SELECTEDIDS', vtlib_purify($_REQUEST['selobjs']));
+$smarty->assign('ALLSELECTEDIDS', vtlib_purify($_REQUEST['allselobjs']));
+$smarty->assign('CURRENT_PAGE_BOXES', implode(array_keys($listview_entries), ';'));
 coreBOS_Session::set($currentModule.'_listquery', $list_query);
 
 // Gather the custom link information to display
-include_once('vtlib/Vtiger/Link.php');
-$customlink_params = Array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']), 'CATEGORY'=> $category);
-$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), Array('LISTVIEWBASIC','LISTVIEW'), $customlink_params));
+include_once 'vtlib/Vtiger/Link.php';
+$customlink_params = array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']), 'CATEGORY'=> $category);
+$smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), array('LISTVIEWBASIC','LISTVIEW'), $customlink_params));
 
-if(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '')
+if (isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '') {
 	$smarty->display("ListViewEntries.tpl");
-else
+} else {
 	$smarty->display('ListView.tpl');
-
+}
 ?>

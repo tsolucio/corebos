@@ -9,13 +9,12 @@
  ************************************************************************************/
 
 $mod_strings = array(
-	'ModuleName' => 'Globale Variabelen',
-	'SINGLE_ModuleName' => 'Globale variabele',
-	'ModuleName ID' => 'Globale variabele ID',
+	'GlobalVariable' => 'Globale Variabelen',
+	'GlobalVariable ID' => 'Globale variabele ID',
 	'LBL_CUSTOM_INFORMATION' => 'Eigen informatie',
-	'LBL_MODULEBLOCK_INFORMATION' => 'Blok informatie',
+	'LBL_GLOBAL_VARIABLE_INFORMATION' => 'GlobalVariabele waardes',
+	'SINGLE_GlobalVariable' => 'GlabalVariabelen',
 	'LBL_DESCRIPTION_INFORMATION' => 'Beschrijving',
-	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
 	'Name' => 'Naam',
 	'Default' => 'Standaard',
 	'Value' => 'Waarde',
@@ -30,5 +29,6 @@ $mod_strings = array(
 	'Modified Time' => 'Gewijzigd op',
 	'Description' => 'Beschrijving',
 	'cbMap' => 'Interne relatie',
+	'Role' => 'Rol',
 );
 ?>

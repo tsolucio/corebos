@@ -1,6 +1,13 @@
 <?php
-/** YOUR LICENSE TEXT HERE **/
-$mod_strings = Array (
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
+ ********************************************************************************/
+$mod_strings = array (
 'CustomerPortal' => 'Customer Portal',
 'LBL_BASIC_SETTINGS'=>'Impostazioni Base',
 'LBL_ADVANCED_SETTINGS'=>'Impostazioni Avanzate',
@@ -10,7 +17,7 @@ $mod_strings = Array (
 'NO'=>'No',
 'LBL_USER_DESCRIPTION'=>'L\'Utente sopra selezionato gestir&agrave; i campi che appariranno nel Customer Portal.
 				Si possono abilitare/disabilitare i campi da visualizzare nel Customer Portal.',
-'SELECT_USERS'=>'Seleziona l\'Utente',				
+'SELECT_USERS'=>'Seleziona l\'Utente',
 'LBL_DISABLE'=>'Disabilita',
 'LBL_ENABLE' =>'Abilita',
 'Module' => 'Modulo',
@@ -25,5 +32,4 @@ $mod_strings = Array (
 'LBL_DEFAULT_USERS'=>'Utenti Predefiniti',
 'LBL_GROUP_DESCRIPTION'=>'Gruppo di Utenti',
 );
-
 ?>

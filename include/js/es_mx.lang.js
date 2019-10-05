@@ -12,6 +12,10 @@ var alert_arr = {
 	'DELETE':'¿Borrar los ',
 	'RECORDS':' registros?',
 	'SELECT':'Introduzca, al menos, una entidad',
+	'SELECTCONDITION':'Introduzca, al menos, una condición',
+	'SELECTTEMPLATE':'Selecciona al menos una plantilla',
+	'SELECTMERGE':'Selecciona una entidad para la combinación!',
+	'GENDOCSAVED':'Documento guardado. Por favor verifica que ha sido creado correctamente.',
 	'DELETE_ACCOUNT':'Borrar esta cuenta eliminará las Oportunidades y Cotizaciones que tenga asociadas. ¿Continuar borrando los ',
 	'DELETE_VENDOR':'Borrar este proveedor eliminará las Órdenes de Compra que tenga Asociadas. ¿Continuar borrando los ',
 	'SELECT_MAILID':'Seleccione un e-mail',
@@ -41,7 +45,6 @@ var alert_arr = {
 	'CANT_SELECT_CONTACTS':'No puede seleccionar contactos relacionados desde un Prospecto',
 	'LBL_THIS':'Este ',
 	'DOESNOT_HAVE_MAILIDS':' no tiene email',
-	'ARE_YOU_SURE':'¿Seguro?',
 	'DOESNOT_HAVE_AN_MAILID':'" no tiene email',
 	'MISSING_REQUIRED_FIELDS':'Faltan Campos Obligatorios: ',
 	'READONLY':'Es de solo lectura',
@@ -49,10 +52,8 @@ var alert_arr = {
 	'DISABLE_SHARING_CONFIRMATION':'Desactivar compartidos para los usuarios seleccionados ',
 	'USERS':' ?',
 	'ENDTIME_GREATER_THAN_STARTTIME':'La hora de finalización debe ser posterior a la de inicio ',
-	'FOLLOWUPTIME_GREATER_THAN_STARTTIME':'La hora de repetición debe ser posterior a la de finalización ',
 	'MISSING_EVENT_NAME':'Falta nombre del Evento',
 	'EVENT_TYPE_NOT_SELECTED':'No ha seleccionado Tipo de Evento',
-	'CLOSEDATE_CANNOT_BE_EMPTY':'La Fecha de Cierre no puede estar vacía',
 	'SITEURL_CANNOT_BE_EMPTY':'La Dirección Web no puede estar vacía',
 	'SITENAME_CANNOT_BE_EMPTY':'La Página Web no puede estar vacía',
 	'LISTPRICE_CANNOT_BE_EMPTY':'La Lista de precios no puede estar vacía',
@@ -66,8 +67,6 @@ var alert_arr = {
 	'SPECIAL_CHARACTERS_NOT_ALLOWED':'No se admiten caracteres especiales en el campo Etiqueta',
 	'SPECIAL_CHARACTERS':'Caracteres especiales',
 	'NOT_ALLOWED':'no estan permitidos. Intenta con otros valores.',
-	'PICKLIST_CANNOT_BE_EMPTY':'El Valor del Desplegable no puede estar vacío',
-	'DUPLICATE_VALUES_FOUND':'Encontrados Valores Duplicados',
 	'DUPLICATE_MAPPING_ACCOUNTS':'¡Asignación Duplicada en Cuentas!',
 	'DUPLICATE_MAPPING_CONTACTS':'¡Asignación Duplicada en Contactos!',
 	'DUPLICATE_MAPPING_POTENTIAL':'¡Asignación Duplicada en Oportunidades!',
@@ -125,8 +124,6 @@ var alert_arr = {
 	'ENDDATE':'Fecha de Fin',
 	'START_DATE_TIME':'Fecha y Hora de Inicio',
 	'START_TIME':'Hora de Inicio',
-	'DATE_SHOULDNOT_PAST':'Fecha y Hora para Actividades con Estatus Planeada',
-	'TIME_SHOULDNOT_PAST':'Hora para Actividades con Estatus Planeada',
 	'LBL_AND':'y',
 	'LBL_OR': 'o',
 	'LBL_ENTER_VALID_PORT':'Introduzca un Nº de puerto válido',
@@ -135,7 +132,6 @@ var alert_arr = {
 	'LBL_PROVIDE_YES_NO':' Valor incorrecto.\n introduzca YES o NO',
 	'LBL_SELECT_CRITERIA':'Criterio Invalido.\n Elija otro criterio',
 	'OPPORTUNITYNAME_CANNOT_BE_EMPTY':'El nombre de la Oportunidad no puede estar vacío',
-	'OVERWRITE_EXISTING_ACCOUNT1':'¿Sobrescribir la dirección existente con la de la cuenta (',
 	'NAME_DESC':' para Nombre de Carpeta y Descripción',
 	'ENDS_WITH':'termina con',
 	'SHARED_EVENT_DEL_MSG':'El usuario no está autorizado a eliminar el registro.',
@@ -161,7 +157,7 @@ var alert_arr = {
 	'LBL_GIVE_PICKLIST_VALUE':'Añade algún valor a la lista de selección',
 	'LBL_SELECT_ROLE':'Selecciona al menos un rol que verá los nuevos valores',
 	'LBL_ADD_PICKLIST_VALUE':'Añade al menos un nuevo valor',
-	'LBL_NO_VALUES_TO_DELETE': "no hay valores para eliminar",
+	'LBL_NO_VALUES_TO_DELETE': 'no hay valores para eliminar',
 
 	/* For Duplicate merging feature */
 	'SAME_GROUPS': 'Tienes que seleccionar los registros en el mismo grupo para combinar',
@@ -189,29 +185,29 @@ var alert_arr = {
 	'FOLDERNAME_EMPTY':'Nombre de carpeta vacío.',
 	'DUPLICATE_FOLDER_NAME':'Nombre de carpeta ya existe. Inténtalo de nuevo!',
 	'FOLDER_DESCRIPTION_TOO_LONG':'Descripción de carpeta demasiado larga. Inténtalo de nuevo!',
-	'NOT_PERMITTED':"No tienes permiso para ejecutar esta operación.",
+	'NOT_PERMITTED':'No tienes permiso para ejecutar esta operación.',
 
 	'ALL_FILTER_CREATION_DENIED':'No se puede crear un filtro de nombre "All"/"Todo", utiliza un nombre diferente',
 	'OPERATION_DENIED':'No tiene permiso para realizar esta operación',
 	'EMAIL_CHECK_MSG': 'Deshabilita el acceso al portal para poder dejar vacío el campo de cuenta de correo',
 	'IS_PARENT' : 'Este producto tiene sub-productos, no está permitido asignarle un producto superior o paterno',
 
-	/*global actions on picklist*/
-	'PICKLIST_CANNOT_BE_EMPTY': 'Valor de la lista no puede quedar vacío',
+	'PICKLIST_CANNOT_BE_EMPTY': 'El valor de la lista no puede quedar vacío',
 	'DUPLICATE_VALUES_FOUND': 'Se han encontrado valores duplicados',
 	'LBL_NO_ROLES_SELECTED': 'No se ha seleccionado ningún rol. ¿Quieres continuar?',
 	'LBL_DUPLICATE_FOUND': 'Entrada duplicada encontrada para el valor ',
 	'LBL_CANNOT_HAVE_EMPTY_VALUE': 'No se puede tener valor nulo. Para eliminar, retrocede y pulsa el botón de eliminar',
 	'LBL_DUPLICATE_VALUE_EXISTS': 'Valores duplicados existen',
-	'LBL_WANT_TO_DELETE': "Esto eliminará los valores de selección marcados para todos los roles. ¿Estás seguro de continuar? ",
-	'LBL_DELETE_ALL_WARNING': "Has marcado para eliminar todos los valores de selección. ¿Estás seguro de continuar?",
-	'LBL_PLEASE_CHANGE_REPLACEMENT': "por favor cambia el valor de sustitución; también está seleccionado para eliminación",
+	'LBL_WANT_TO_DELETE': 'Esto eliminará los valores de selección marcados para todos los roles. ¿Estás seguro de continuar? ',
+	'LBL_DELETE_ALL_WARNING': 'Has marcado para eliminar todos los valores de selección. ¿Estás seguro de continuar?',
+	'LBL_PLEASE_CHANGE_REPLACEMENT': 'por favor cambia el valor de sustitución; también está seleccionado para eliminación',
 
 	/*layout Editor changes*/
 	'BLOCK_NAME_CANNOT_BE_BLANK' : 'El nombre del bloque no puede quedar vacío',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE' : '¿Estás seguro que quieres eliminar?',
 	'PLEASE_MOVE_THE_FIELDS_TO_ANOTHER_BLOCK' : 'Por favor mueve los campos a otro bloque',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_BLOCK' : '¿Estás seguro que quieres eliminar el bloque?',
+	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_EXACT_DUPLICATE': '¿Estás seguro que quieres eliminar Todos los Duplicados Exactos?',
 	'LABEL_CANNOT_NOT_EMPTY' : 'La etiqueta no puede quedar vacía',
 	'LBL_TYPEALERT_1' : 'No se puede vincular',
 	'LBL_WITH' : 'con el tipo de dato',
@@ -290,6 +286,7 @@ var alert_arr = {
 	'Default': 'Defecto',
 	'Notebook': 'Bloc de Notas',
 	'ReportCharts': 'Informe Gráfico',
+	'CustomWidget': 'Agregación Filtro',
 	'SPECIAL_CHARS':'\\ / < > + \' " ',
 
 	'BETWEEN': 'entre',
@@ -297,10 +294,9 @@ var alert_arr = {
 	'AFTER': 'después',
 	'ERROR_DELETING_TRY_AGAIN': 'Error eliminando. Por favor inténtalo otra vez.',
 	'LBL_ENTER_WINDOW_TITLE': 'Introduce el título de la ventana.',
-	'LBL_SELECT_ONLY_FIELDS': 'Selecciona solo dos campos.',
+	'LBL_SELECT_ONLY_FIELDS': 'Selecciona menos campos.',
 	'LBL_ENTER_RSS_URL':'Introduce la URL del RSS',
 	'LBL_ADD_HOME_WIDGET': 'No se ha podido agregar elementos a la portada! Por favor inténtalo otra vez.',
-	
 	'LBL_DEFAULT_VALUE_FOR_THIS_FIELD' : 'Valor por defecto para este campo',
 
 	'RECIPIENTS_CANNOT_BE_EMPTY' : 'Los Destinatarios no puede estar vacío',
@@ -308,7 +304,7 @@ var alert_arr = {
 	'ERR_SAME_SOURCE_AND_TARGET' : 'Campo origen y Destino no pueden ser el mismo',
 	'ERR_ATLEAST_ONE_VALUE_FOR' : 'Necesita seleccionar al menos un valor',
 	'ERR_SELECT_MODULE_FOR_DEPENDENCY' : 'Selecciona un módulo para agregar la dependencia',
-    'LBL_SIZE_SHOULDNOTBE_GREATER':'El tamaño del Archivo no debe ser superior a ', //added for upload error message
+	'LBL_SIZE_SHOULDNOTBE_GREATER':'El tamaño del Archivo no debe ser superior a ', //added for upload error message
 	'LBL_MAX_SIZE':'Tamaño máximo de archivo aceptado es', //added for display file size limit
 	'LBL_FILESIZEIN_MB':'MB', // added to show filesize limit in MB
 	'LBL_FILESIZEIN_KB':'KB', // added to show filesize limit in KB
@@ -320,7 +316,7 @@ var alert_arr = {
 	'LBL_VIDEO_TITLE' : 'Video',
 	'LBL_CLOSE_TITLE' : 'Cerrar',
 	'LBL_SELECT':'Selecciona los widgets por defecto a mostrar',
-	
+
 	'ERR_SELECT_ATLEAST_ONE_MERGE_CRITERIA_FIELD' : 'Selecciona al menos un campo para la combinación',
 	'ERR_PLEASE_MAP_MANDATORY_FIELDS' : 'Por favor, vincula los siguientes campos obligatorios',
 	'ERR_MAP_NAME_ALREADY_EXISTS' : 'Nombre de vinculación ya existe. Introduce un nombre distinto',
@@ -329,8 +325,8 @@ var alert_arr = {
 	'LBL_MERGE_SHOULDHAVE_INFO' : 'Selecciona al menos un campo como criterio de combinación',
 	'MAP_NAME_EXISTS' : 'Ya existe una Asignación con este nombre. ¿Sobrescribir?',
 	'MAP_DELETED_INFO' : 'Se ha eliminado este mapeo. No se puede volver a utilizar',
-	
-	//arror messages for lead conversion
+
+	//error messages for lead conversion
 	'ERR_SELECT_EITHER':'Selecciona Cuenta o Contacto para convertir el Prospecto',
 	'ERR_SELECT_ACCOUNT':'Selecciona Cuenta para seguir',
 	'ERR_SELECT_CONTACT':'Selecciona Contacto para seguir',
@@ -344,7 +340,6 @@ var alert_arr = {
 	'LBL_EMAIL':'Email',
 	'MORE_THAN_500' : 'Has seleccionado más de 500 registros. Esto puede tardar bastante tiempo. ¿Seguro que quieres continuar?',
 	'LBL_MAPPEDALERT':'Esta campo ya está vinculado',
-	'LBL_MAPPEDALERT':'The field has been already mapped',
 	'LBL_REPORT_NAME': 'Por favor introdúzca el nombre del nuevo informe.',
 	'LBL_REPORT_NAME_ERROR': 'Debes dar un nombre al informe.',
 	'LBL_IS' : 'es',
@@ -354,6 +349,7 @@ var alert_arr = {
 	'LBL_ENDS_WITH' : 'acaba por',
 	'LBL_HAS_CHANGED' : 'ha cambiado',
 	'LBL_HAS_CHANGED_TO' : 'ha cambiado a',
+	'LBL_WAS' : 'era',
 	'LBL_IS_EMPTY': 'está vacío',
 	'LBL_IS_NOT_EMPTY' : 'no está vacío',
 	'LBL_EQUAL_TO' : 'igual a',
@@ -365,6 +361,11 @@ var alert_arr = {
 	'LBL_IS_NOT' : 'no es',
 	'LBL_BETWEEN' : 'entre',
 	'LBL_BEFORE' : 'antes',
+	'LBL_DOES_NOT_START_WITH' : 'no empieza por',
+	'LBL_DOES_NOT_END_WITH' : 'no acaba por',
+	'DOES_NOT_START_WITH':'no empieza por',
+	'DOES_NOT_END_WITH':'no acaba por',
+	'Widget_Deleted_Sucessfully':'Widget eliminado correctamente',
 	'LBL_AFTER' : 'después',
 	'LBL_IS_TODAY' : 'es hoy',
 	'LBL_LESS_THAN_DAYS_AGO' : 'hace menos de x días',
@@ -378,7 +379,7 @@ var alert_arr = {
 	'LBL_MORE_THAN_HOURS_BEFORE' : 'más de x horas antes',
 	'LBL_MORE_THAN_HOURS_LATER' : 'más de x horas después',
 	'LBL_EXISTS' : 'existe',
-	'MAXIMUM_OF_TWO_MODULES_PERMITTED' : 'Solo se permite relacionar con un máximo de dos módulos.',
+	'MAXIMUM_OF_MODULES_PERMITTED' : 'Has llegado al máximo número de módulos relacionados permitido.',
 	'ONLY_ONE_MODULE_PERMITTED_FOR_REPORT' : 'Solo se permite relacionar con un módulo para este tipo de informe',
 	'MUST_SELECT_ONE_MODULE_FOR_REPORT' : 'Debes seleccionar un módulo relacionado para este tipo de informe',
 	'LBL_NEW_CONDITION' : 'New Condition',
@@ -399,5 +400,23 @@ var alert_arr = {
 	'ERR_INVALID_TIME'  :  'Por favor, introduzca un tiempo válido',
 	'ERR_EMAIL_WITH_NO_SUBJECT' : 'No has introducido un asunto para este email. Puedes añadir uno ahora.',
 	'EMAIL_WITH_NO_SUBJECT' : '(sin-asunto)',
-	'INTEGERVALS':'Solo están permitidos valores enteros'
+	'INTEGERVALS':'Solo están permitidos valores enteros',
+	'JSLBL_Delete': 'Eliminar',
+	'JSLBL_Loading': 'Cargando',
+	'JSLBL_ATTACHMENT_NOT_DELETED': 'No se ha podido eliminar el adjunto',
+	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'Límite de carga excedida!!',
+	'JSLBL_CANCEL': 'Cancelar',
+	'JSLBL_SAVEAS': 'Guardar como',
+	'JSLBL_SAVE': 'Guardar',
+	'JSLBL_PREVIOUS': 'Anterior',
+	'JSLBL_NEXT': 'Siguiente',
+	'JSLBL_CURRENT': 'paso actual:',
+	'JSLBL_PAGINATION': 'Paginado',
+	'JSLBL_FINISH': 'Terminar',
+	'SHOWING' : 'Mostrando',
+	'OF' : 'de',
+	'ERR_Massedit' : 'Error en Edición Masiva',
+	'ProcessFINISHED' : 'Proceso Terminado',
+	'duplicatednotallowed' : 'No se permiten módulos duplicados',
+	'HAS_THIS_AS_NTH_CHILD' : 'Tiene este niño como una'
 };

@@ -7,975 +7,373 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ******************************************************************************/
-interface VTExpressionEnv{
-	function get($var);
+
+interface VTExpressionEnv {
+	public function get($var);
 }
 
-function __vt_add($arr){
-	if(sizeof($arr)==1){
-		return $arr[0];
-	}else{
-		return $arr[0]+$arr[1];
-	}
-}
+class VTFieldExpressionEvaluater {
 
-function __vt_sub($arr){
-	if(sizeof($arr)==1){
-		return -$arr[0];
-	}else{
-		return $arr[0]-$arr[1];
-	}
-}
-
-function __vt_mul($arr){
-	return $arr[0]*$arr[1];
-}
-
-function __vt_div($arr){
-	try {
-	return $arr[0]/$arr[1];
-	}catch(Exception $e) {
-		return 0;
-	}
-}
-
-function __vt_equals($arr){
-	return $arr[0] == $arr[1];
-}
-
-function __cb_distinct($arr){
-	return $arr[0] != $arr[1];
-}
-
-function __vt_ltequals($arr) {
-	return $arr[0] <= $arr[1];
-}
-
-function __vt_gtequals($arr) {
-	return $arr[0] >= $arr[1];
-}
-
-function __vt_lt($arr) {
-	return $arr[0] < $arr[1];
-}
-
-function __vt_gt($arr) {
-	return $arr[0] > $arr[1];
-}
-
-function __vt_concat($arr){
-	return implode($arr);
-}
-
-/* Date difference between (input times) or (current time and input time)
- *
- * @param Array $a $a[0] - Input time1, $a[1] - Input time2
- * (if $a[1] is not available $a[0] = Current Time, $a[1] = Input time1)
- * @return int difference timestamp
- */
-function __vt_time_diff($arr) {
-	$time_operand1 = $time_operand2 = 0;
-	if(count($arr) > 1) {
-		$time_operand1 = $time1 = $arr[0];
-		$time_operand2 = $time2 = $arr[1];
-	} else {
-		// Added as we need to compare with the values based on the user date format and timezone
-		global $default_timezone;
-		$time_operand1 = date('Y-m-d H:i:s'); // Current time
-		$time_operand2 = $arr[0];
-	}
-
-	if(empty($time_operand1) || empty($time_operand2)) return 0;
-
-	$time_operand1 = getValidDBInsertDateTimeValue($time_operand1);
-	$time_operand2 = getValidDBInsertDateTimeValue($time_operand2);
-
-	//to give the difference if it is only time field
-	if(empty($time_operand1) && empty($time_operand2)) {
-		$pattern = "/([01]?[0-9]|2[0-3]):[0-5][0-9]/";
-		if(preg_match($pattern, $time1) && preg_match($pattern, $time2)){
-			$timeDiff = strtotime($time1) - strtotime($time2);
-			return date('H:i:s', $timeDiff);
-		}
-	}
-	return (strtotime($time_operand1) - strtotime($time_operand2));
-}
-
-/**
- * Calculate the time difference (input times) or (current time and input time) and
- * convert it into number of days.
- * @param Array $a $a[0] - Input time1, $a[1] - Input time2
- * (if $a[1] is not available $a[0] = Current Time, $a[1] = Input time1)
- * @return int number of days
- */
-function __vt_time_diffdays($arr) {
-	$timediff  = __vt_time_diff($arr);
-	$days_diff = floor($timediff / (60 * 60 * 24));
-	return $days_diff;
-}
-
-function __vt_add_days($arr) {
-	if (count($arr) > 1) {
-		$baseDate = $arr[0];
-		$noOfDays = $arr[1];
-	} else {
-		$noOfDays = $arr[0];
-	}
-	if(empty($baseDate)) {
-		$baseDate = date('Y-m-d'); // Current date
-	}
-	preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
-	$baseDate = strtotime($match[0]);
-	$date = strftime('%Y-%m-%d', $baseDate + ($noOfDays * 24 * 60 * 60));
-	return $date;
-}
-
-function __vt_sub_days($arr) {
-	if (count($arr) > 1) {
-		$baseDate = $arr[0];
-		$noOfDays = $arr[1];
-	} else {
-		$noOfDays = $arr[0];
-	}
-	if(empty($baseDate)) {
-		$baseDate = date('Y-m-d'); // Current date
-	}
-	preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
-	$baseDate = strtotime($match[0]);
-	$date = strftime('%Y-%m-%d', $baseDate - ($noOfDays * 24 * 60 * 60));
-	return $date;
-}
-
-function __vt_get_date($arr) {
-	$type = $arr[0];
-	switch ($type) {
-		case 'today': return date('Y-m-d');
-			break;
-		case 'tomorrow': return date('Y-m-d', strtotime('+1 day'));
-			break;
-		case 'yesterday': return date('Y-m-d', strtotime('-1 day'));
-			break;
-		case 'time': global $default_timezone;
-			return date('H:i:s');
-			break;
-		default : return date('Y-m-d');
-			break;
-	}
-}
-
-function __cb_format_date($arr) {
-	$fmt = empty($arr[1]) ? 'Y-m-d' : $arr[1];
-	list($y,$m,$d) = explode('-', $arr[0]);
-	$dt = mktime(0,0,0,$m,$d,$y);
-	return date($fmt,$dt);
-}
-
-function __vt_substring($arr) {
-	if (count($arr)<2 or count($arr)>3) return $arr[0];
-	if (count($arr)==2) {
-		return substr($arr[0],$arr[1]);
-	} else {
-		return substr($arr[0],$arr[1],$arr[2]);
-	}
-}
-
-function __vt_uppercase($arr) {
-	if (count($arr)==0) {
-		return '';
-	} else {
-		return strtoupper($arr[0]);
-	}
-}
-
-function __vt_lowercase($arr) {
-	if (count($arr)==0) {
-		return '';
-	} else {
-		return strtolower($arr[0]);
-	}
-}
-
-function __vt_uppercasefirst($arr) {
-	if (count($arr)==0) {
-		return '';
-	} else {
-		return ucfirst($arr[0]);
-	}
-}
-
-function __vt_uppercasewords($arr) {
-	if (count($arr)==0) {
-		return '';
-	} else {
-		return ucwords($arr[0]);
-	}
-}
-
-function __vt_round($arr) {
-	if (count($arr)<1 or count($arr)>2) return $arr[0];
-	$decs = (isset($arr[1]) ? $arr[1] : 0);
-	if (is_numeric($arr[0]) and is_numeric($decs)) {
-		return round($arr[0],$decs);
-	} else {
-		return $arr[0];
-	}
-}
-function __vt_ceil($num) {
-	if (is_numeric($num[0])) {
-		return ceil($num[0]);
-	} else {
-		return 0;
-	}
-}
-function __vt_floor($num) {
-	if (is_numeric($num[0])) {
-		return floor($num[0]);
-	} else {
-		return 0;
-	}
-}
-
-function __vt_add_time($arr) {
-	if(count($arr) > 1) {
-		$baseTime = $arr[0];
-		$minutes = $arr[1];
-	} else {
-		$baseTime = date('H:i:s');
-		$minutes = $arr[0];
-	}
-	$endTime = strtotime("+$minutes minutes", strtotime($baseTime));
-	return date('H:i:s',$endTime);
-}
-
-function __vt_sub_time($arr) {
-	if(count($arr) > 1) {
-		$baseTime = $arr[0];
-		$minutes = $arr[1];
-	} else {
-		$baseTime = date('H:i:s');
-		$minutes = $arr[0];
-	}
-	$endTime = strtotime("-$minutes minutes", strtotime($baseTime));
-	return date('H:i:s',$endTime);
-}
-
-function __cb_getLatitude($address) {
-	$addr = urlencode($address);
-	$data = file_get_contents("http://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=$addr&format=json&limit=1");
-	$data = json_decode($data);
-	return $data[0]->lat;
-}
-
-function __cb_getLongitude($address) {
-	$addr = urlencode($address);
-	$data = file_get_contents("http://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=$addr&format=json&limit=1");
-	$data = json_decode($data);
-	return $data[0]->lon;
-}
-
-function __cb_getGEODistance($arr){
-	$from = decode_html($arr[0]);
-	$to = decode_html($arr[1]);
-	$coo1 = __cb_getLongitude($from).",".__cb_getLatitude($from);
-	$coo2 = __cb_getLongitude($to).",".__cb_getLatitude($to);
-	$distance = file_get_contents("http://router.project-osrm.org/route/v1/driving/$coo1;$coo2?overview=false");
-	$dis = json_decode($distance);
-	$total_distance = $dis->routes[0]->distance/1000;
-	return $total_distance." km";
-}
-
-function __cb_getGEODistanceFromCompanyAddress($arr){
-	global $adb;
-	$compAdr = $adb->query('Select address,city,state,country,code from vtiger_organizationdetails');
-	$from = $adb->query_result($compAdr, 0, 'country');
-	$fld = $adb->query_result($compAdr, 0, 'state');
-	$from.= empty($fld) ? '':', '.$fld;
-	$fld = $adb->query_result($compAdr, 0, 'city');
-	$from.= empty($fld) ? '':', '.$fld;
-	$fld = $adb->query_result($compAdr, 0, 'code');
-	$from.= empty($fld) ? '':', '.$fld;
-	$fld = $adb->query_result($compAdr, 0, 'address');
-	$from.= empty($fld) ? '':', '.$fld;	
-	$array = array($from, $arr[0]);
-	return __cb_getGEODistance($array);
-}
-
-function __cb_getGEODistanceFromUserAddress($arr){
-	$from = __cb_getCurrentUserAddress();
-	$array = array($from, $arr[0]);
-	return __cb_getGEODistance($array);
-}
-
-function __cb_getCurrentUserAddress($userid = ''){
-	global $adb,$current_user;
-	if($userid == '')
-		$userid = $current_user->id;
-	else
-		list($wsid,$userid) = explode('x', $userid);
-	$compAdr = $adb->pquery('Select address_street,address_city,address_state,address_country,address_postalcode
-		from vtiger_users where id=?',array($userid));
-	$from = $adb->query_result($compAdr, 0, 'address_country');
-	$fld = $adb->query_result($compAdr, 0, 'address_state');
-	$from.= empty($fld) ? '':', '.$fld;
-	$fld = $adb->query_result($compAdr, 0, 'address_city');
-	$from.= empty($fld) ? '':', '.$fld;
-	$fld = $adb->query_result($compAdr, 0, 'address_postalcode');
-	$from.= empty($fld) ? '':', '.$fld;
-	$fld = $adb->query_result($compAdr, 0, 'address_street');
-	$from.= empty($fld) ? '':', '.$fld;
-	return $from;
-}
-/**
- * Calculate distance from current user and account billing address
- * @param Array $arr $arr[0] - accountid,
- * $arr[1] - Is for specify from wich address field you want to calculate the distance
- * The next values are accepted
- * country - this values is needed and we will add in the query always
- * state - to calculate the distance from the state
- * city - to calculate the distance from the city
- * code - to calculate the distnace from the postal code.
- * And if the $a[1] not exist we always search from all the address fields if they have values.
- * @return int km distance
- */
-function __cb_getGEODistanceFromUser2AccountBilling($arr){
-	global $adb,$current_user;
-	$accid = $arr[0];
-	if (empty($accid)) return '0';
-	list($wsid,$accid) = explode('x', $accid);
-	if(isset($arr[1])){
-		$field_address = $arr[1];
-	}else{
-		$field_address = '';
-	}
-	switch ($field_address) {
-		case 'country':
-			$columns = 'bill_country';
-			break;
-		case 'state':
-			$columns = 'bill_country, bill_state';
-			break;
-		case 'city':
-			$columns = 'bill_country, bill_city';
-			break;
-		case 'code':
-			$columns = 'bill_country, bill_code';
-			break;
-		default:
-			$columns = 'bill_street,bill_city,bill_state,bill_country,bill_code';
-			break;
-	}
-	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_accountbillads
-		where accountaddressid=?',array($accid));
-	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
-		if($country != ''){
-			$to = $country;
-		}else{
-			$to = $adb->query_result($compAdr, 0, 'bill_country');
-		}
-		$fld = $adb->query_result($compAdr, 0, 'bill_state');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'bill_city');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'bill_code');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'bill_street');
-		$to.= empty($fld) ? '':', '.$fld;
-	} else {
-		return '0';
-	}
-	$from = __cb_getCurrentUserAddress();
-	$array = array($from, $to);
-	return __cb_getGEODistance($array);
-}
-/**
- * Calculate distance from assign user and account billing address
- * @param Array $arr $arr[0] - accountid,
- * $arr[1] - Is for specify from wich address field you want to calculate the distance
- * The next values are accepted
- * country - this values is needed and we will add in the query always
- * state - to calculate the distance from the state
- * city - to calculate the distance from the city
- * code - to calculate the distnace from the postal code.
- * And if the $a[1] not exist we always search from all the address fields if they have values.
- * @return int km distance
- */
-function __cb_getGEODistanceFromAssignUser2AccountBilling($arr){
-	global $adb,$current_user;
-	$accid = $arr[0];
-	$userid = $arr[1];
-	if (empty($accid)) return '0';
-	list($wsid,$accid) = explode('x', $accid);
-	if(isset($arr[2])){
-		$field_address = $arr[2];
-	}else{
-		$field_address = '';
-	}
-	switch ($field_address) {
-		case 'country':
-			$columns = 'bill_country';
-			break;
-		case 'state':
-			$columns = 'bill_country, bill_state';
-			break;
-		case 'city':
-			$columns = 'bill_country, bill_city';
-			break;
-		case 'code':
-			$columns = 'bill_country, bill_code';
-			break;
-		default:
-			$columns = 'bill_street,bill_city,bill_state,bill_country,bill_code';
-			break;
-	}
-	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_accountbillads
-		where accountaddressid=?',array($accid));
-	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
-		if($country != ''){
-			$to = $country;
-		}else{
-			$to = $adb->query_result($compAdr, 0, 'bill_country');
-		}
-		$fld = $adb->query_result($compAdr, 0, 'bill_state');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'bill_city');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'bill_code');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'bill_street');
-		$to.= empty($fld) ? '':', '.$fld;
-	} else {
-		return '0';
-	}
-	$from = __cb_getCurrentUserAddress($userid);
-	$array = array($from, $to);
-	return __cb_getGEODistance($array);
-}
-/**
- * Calculate distance from current user and account shipping address
- * @param Array $arr $arr[0] - accountid,
- * $arr[1] - Is for specify from wich address field you want to calculate the distance
- * The next values are accepted
- * country - this values is needed and we will add in the query always
- * state - to calculate the distance from the state
- * city - to calculate the distance from the city
- * code - to calculate the distnace from the postal code.
- * And if the $a[1] not exist we always search from all the address fields if they have values.
- * @return int km distance
- */
-function __cb_getGEODistanceFromUser2AccountShipping($arr){
-	global $adb,$current_user;
-	$accid = $arr[0];
-	if (empty($accid)) return '0';
-	list($wsid,$accid) = explode('x', $accid);
-	if(isset($arr[1])){
-		$field_address = $arr[1];
-	}else{
-		$field_address = '';
-	}
-	switch ($field_address) {
-		case 'country':
-			$columns = 'ship_country';
-			break;
-		case 'state':
-			$columns = 'ship_country, ship_state';
-			break;
-		case 'city':
-			$columns = 'ship_country, ship_city';
-			break;
-		case 'code':
-			$columns = 'ship_country, ship_code';
-			break;
-		default:
-			$columns = 'ship_street,ship_city,ship_state,ship_country,ship_code';
-			break;
-	}
-	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_accountshipads
-		where accountaddressid=?',array($accid));
-	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
-		if($country != ''){
-			$to = $country;
-		}else{
-			$to = $adb->query_result($compAdr, 0, 'ship_country');
-		}
-		$fld = $adb->query_result($compAdr, 0, 'ship_state');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'ship_city');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'ship_code');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'ship_street');
-		$to.= empty($fld) ? '':', '.$fld;
-	} else {
-		return '0';
-	}
-	$from = __cb_getCurrentUserAddress();
-	$array = array($from, $to);
-	return __cb_getGEODistance($array);
-}
-/**
- * Calculate distance from assign user and account shipping address
- * @param Array $arr $arr[0] - accountid,
- * $arr[1] - Is for specify from wich address field you want to calculate the distance
- * The next values are accepted
- * country - this values is needed and we will add in the query always
- * state - to calculate the distance from the state
- * city - to calculate the distance from the city
- * code - to calculate the distnace from the postal code.
- * And if the $a[1] not exist we always search from all the address fields if they have values.
- * @return int km distance
- */
-function __cb_getGEODistanceFromAssignUser2AccountShipping($arr){
-	global $adb,$current_user;
-	$accid = $arr[0];
-	$userid = $arr[1];
-	if (empty($accid)) return '0';
-	list($wsid,$accid) = explode('x', $accid);
-	if(isset($arr[2])){
-		$field_address = $arr[2];
-	}else{
-		$field_address = '';
-	}
-	switch ($field_address) {
-		case 'country':
-			$columns = 'ship_country';
-			break;
-		case 'state':
-			$columns = 'ship_country, ship_state';
-			break;
-		case 'city':
-			$columns = 'ship_country, ship_city';
-			break;
-		case 'code':
-			$columns = 'ship_country, ship_code';
-			break;
-		default:
-			$columns = 'ship_street,ship_city,ship_state,ship_country,ship_code';
-			break;
-	}
-	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_accountshipads
-		where accountaddressid=?',array($accid));
-	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
-		if($country != ''){
-			$to = $country;
-		}else{
-			$to = $adb->query_result($compAdr, 0, 'ship_country');
-		}
-		$fld = $adb->query_result($compAdr, 0, 'ship_state');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'ship_city');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'ship_code');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'ship_street');
-		$to.= empty($fld) ? '':', '.$fld;
-	} else {
-		return '0';
-	}
-	$from = __cb_getCurrentUserAddress($userid);
-	$array = array($from, $to);
-	return __cb_getGEODistance($array);
-}
-/**
- * Calculate distance from current user and contact billing address
- * @param Array $arr $arr[0] - contactid,
- * $arr[1] - Is for specify from wich address field you want to calculate the distance
- * The next values are accepted
- * country - this values is needed and we will add in the query always
- * state - to calculate the distance from the state
- * city - to calculate the distance from the city
- * code - to calculate the distnace from the postal code.
- * And if the $a[1] not exist we always search from all the address fields if they have values.
- * @return int km distance
- */
-function __cb_getGEODistanceFromUser2ContactBilling($arr){
-	global $adb,$current_user;
-	$ctoid = $arr[0];
-	if (empty($ctoid)) return '0';
-	list($wsid,$ctoid) = explode('x', $ctoid);
-	if(isset($arr[1])){
-		$field_address = $arr[1];
-	}else{
-		$field_address = '';
-	}
-	switch ($field_address) {
-		case 'country':
-			$columns = 'mailingcountry';
-			break;
-		case 'state':
-			$columns = 'mailingcountry, mailingstate';
-			break;
-		case 'city':
-			$columns = 'mailingcountry, mailingcity';
-			break;
-		case 'code':
-			$columns = 'mailingcountry, mailingzip';
-			break;
-		default:
-			$columns = 'mailingstreet,mailingcity,mailingstate,mailingcountry,mailingzip';
-			break;
-	}
-	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_contactaddress
-		where contactaddressid=?',array($ctoid));
-	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
-		if($country != ''){
-			$to = $country;
-		}else{
-			$to = $adb->query_result($compAdr, 0, 'mailingcountry');
-		}
-		$fld = $adb->query_result($compAdr, 0, 'mailingstate');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'mailingcity');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'mailingzip');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'mailingstreet');
-		$to.= empty($fld) ? '':', '.$fld;
-	} else {
-		return '0';
-	}
-	$from = __cb_getCurrentUserAddress();
-	$array = array($from, $to);
-	return __cb_getGEODistance($array);
-}
-/**
- * Calculate distance from assign user and contact billing address
- * @param Array $arr $arr[0] - contactid,
- * $arr[1] - Is for specify from wich address field you want to calculate the distance
- * The next values are accepted
- * country - this values is needed and we will add in the query always
- * state - to calculate the distance from the state
- * city - to calculate the distance from the city
- * code - to calculate the distnace from the postal code.
- * And if the $a[1] not exist we always search from all the address fields if they have values.
- * @return int km distance
- */
-function __cb_getGEODistanceFromAssignUser2ContactBilling($arr){
-	global $adb,$current_user;
-	$ctoid = $arr[0];
-	$userid = $arr[1];
-	if (empty($ctoid)) return '0';
-	list($wsid,$ctoid) = explode('x', $ctoid);
-	if(isset($arr[2])){
-		$field_address = $arr[2];
-	}else{
-		$field_address = '';
-	}
-	switch ($field_address) {
-		case 'country':
-			$columns = 'mailingcountry';
-			break;
-		case 'state':
-			$columns = 'mailingcountry, mailingstate';
-			break;
-		case 'city':
-			$columns = 'mailingcountry, mailingcity';
-			break;
-		case 'code':
-			$columns = 'mailingcountry, mailingzip';
-			break;
-		default:
-			$columns = 'mailingstreet,mailingcity,mailingstate,mailingcountry,mailingzip';
-			break;
-	}
-	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_contactaddress
-		where contactaddressid=?',array($ctoid));
-	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
-		if($country != ''){
-			$to = $country;
-		}else{
-			$to = $adb->query_result($compAdr, 0, 'mailingcountry');
-		}
-		$fld = $adb->query_result($compAdr, 0, 'mailingstate');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'mailingcity');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'mailingzip');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'mailingstreet');
-		$to.= empty($fld) ? '':', '.$fld;
-	} else {
-		return '0';
-	}
-	$from = __cb_getCurrentUserAddress($userid);
-	$array = array($from, $to);
-	return __cb_getGEODistance($array);
-}
-/**
- * Calculate distance from current user and contact shipping address
- * @param Array $arr $arr[0] - contactid,
- * $arr[1] - Is for specify from wich address field you want to calculate the distance
- * The next values are accepted
- * country - this values is needed and we will add in the query always
- * state - to calculate the distance from the state
- * city - to calculate the distance from the city
- * code - to calculate the distnace from the postal code.
- * And if the $a[1] not exist we always search from all the address fields if they have values.
- * @return int km distance
- */
-function __cb_getGEODistanceFromUser2ContactShipping($arr){
-	global $adb,$current_user;
-	$ctoid = $arr[0];
-	if (empty($ctoid)) return '0';
-	list($wsid,$ctoid) = explode('x', $ctoid);
-	if(isset($arr[1])){
-		$field_address = $arr[1];
-	}else{
-		$field_address = '';
-	}
-	switch ($field_address) {
-		case 'country':
-			$columns = 'othercountry';
-			break;
-		case 'state':
-			$columns = 'othercountry, otherstate';
-			break;
-		case 'city':
-			$columns = 'othercountry, othercity';
-			break;
-		case 'code':
-			$columns = 'othercountry, otherzip';
-			break;
-		default:
-			$columns = 'otherstreet,othercity,otherstate,othercountry,otherzip';
-			break;
-	}
-	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_contactaddress
-		where contactaddressid=?',array($ctoid));
-	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
-		if($country != ''){
-			$to = $country;
-		}else{
-			$to = $adb->query_result($compAdr, 0, 'othercountry');
-		}
-		$fld = $adb->query_result($compAdr, 0, 'otherstate');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'othercity');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'otherzip');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'otherstreet');
-		$to.= empty($fld) ? '':', '.$fld;
-	} else {
-		return '0';
-	}
-
-	$from = __cb_getCurrentUserAddress();
-	$array = array($from, $to);
-	return __cb_getGEODistance($array);
-}
-/**
- * Calculate distance from assign user and contact shipping address
- * @param Array $arr $arr[0] - contactid,
- * $arr[1] - Is for specify from wich address field you want to calculate the distance
- * The next values are accepted
- * country - this values is needed and we will add in the query always
- * state - to calculate the distance from the state
- * city - to calculate the distance from the city
- * code - to calculate the distnace from the postal code.
- * And if the $a[1] not exist we always search from all the address fields if they have values.
- * @return int km distance
- */
-function __cb_getGEODistanceFromAssignUser2ContactShipping($arr){
-	global $adb,$current_user;
-	$ctoid = $arr[0];
-	$userid = $arr[1];
-	if (empty($ctoid)) return '0';
-	list($wsid,$ctoid) = explode('x', $ctoid);
-	if(isset($arr[2])){
-		$field_address = $arr[2];
-	}else{
-		$field_address = '';
-	}
-	switch ($field_address) {
-		case 'country':
-			$columns = 'othercountry';
-			break;
-		case 'state':
-			$columns = 'othercountry, otherstate';
-			break;
-		case 'city':
-			$columns = 'othercountry, othercity';
-			break;
-		case 'code':
-			$columns = 'othercountry, otherzip';
-			break;
-		default:
-			$columns = 'otherstreet,othercity,otherstate,othercountry,otherzip';
-			break;
-	}
-	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_contactaddress
-		where contactaddressid=?',array($ctoid));
-	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
-		if($country != ''){
-			$to = $country;
-		}else{
-			$to = $adb->query_result($compAdr, 0, 'othercountry');
-		}
-		$fld = $adb->query_result($compAdr, 0, 'otherstate');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'othercity');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'otherzip');
-		$to.= empty($fld) ? '':', '.$fld;
-		$fld = $adb->query_result($compAdr, 0, 'otherstreet');
-		$to.= empty($fld) ? '':', '.$fld;
-	} else {
-		return '0';
-	}
-	$from = __cb_getCurrentUserAddress($userid);
-	$array = array($from, $to);
-	return __cb_getGEODistance($array);
-}
-
-function __cb_getGEODistanceFromCoordinates($arr){
-	if (sizeof($arr)==2) {
-		$from = $arr[0];
-		$to = $arr[1];
-	}
-	else {
-		$from = $arr[0].", ".$arr[1];
-		$to = $arr[2].", ".$arr[3];
-	}
-	$array = array($from, $to);
-	return __cb_getGEODistance($array);
-}
-/** END * */
-class VTFieldExpressionEvaluater{
-	function __construct($expr){
-
+	public function __construct($expr) {
+		global $adb;
 		$this->debug = array();
 		$this->operators = array(
-				'+'  => '__vt_add',
-				'-'  => '__vt_sub',
-				'*'  => '__vt_mul',
-				'/'  => '__vt_div',
-				'==' => '__vt_equals',
-				'!=' => '__cb_distinct',
-				'<=' => '__vt_ltequals',
-				'>=' => '__vt_gtequals',
-				'<' => '__vt_lt',
-				'>' => '__vt_gt',
+			'+'  => '__vt_add',
+			'-'  => '__vt_sub',
+			'*'  => '__vt_mul',
+			'/'  => '__vt_div',
+			'==' => '__vt_equals',
+			'!=' => '__cb_distinct',
+			'<=' => '__vt_ltequals',
+			'>=' => '__vt_gtequals',
+			'<' => '__vt_lt',
+			'>' => '__vt_gt',
 		);
 		$this->functions = array(
-				'concat'=>'__vt_concat',
-				'time_diff' => '__vt_time_diff',
-				'time_diffdays' => '__vt_time_diffdays',
-				'add_days' => '__vt_add_days',
-				'sub_days' => '__vt_sub_days',
-				'get_date' => '__vt_get_date',
-				'format_date' => '__cb_format_date',
-				'add_time' => '__vt_add_time',
-				'sub_time' => '__vt_sub_time',
-				'substring' => '__vt_substring',
-				'uppercase' => '__vt_uppercase',
-				'lowercase' => '__vt_lowercase',
-				'uppercasefirst' => '__vt_uppercasefirst',
-				'uppercasewords' => '__vt_uppercasewords',
-				'round' => '__vt_round',
-				'ceil' => '__vt_ceil',
-				'floor' => '__vt_floor',
-				'getLatitude' => '__cb_getLatitude',
-				'getLongitude' => '__cb_getLongitude',
-				'getGEODistance' => '__cb_getGEODistance',
-				'getGEODistanceFromCompanyAddress' => '__cb_getGEODistanceFromCompanyAddress',
-				'getGEODistanceFromUserAddress' => '__cb_getGEODistanceFromUserAddress',
-				'getGEODistanceFromUser2AccountBilling' => '__cb_getGEODistanceFromUser2AccountBilling',
-				'getGEODistanceFromAssignUser2AccountBilling' => '__cb_getGEODistanceFromAssignUser2AccountBilling',
-				'getGEODistanceFromUser2AccountShipping' => '__cb_getGEODistanceFromUser2AccountShipping',
-				'getGEODistanceFromAssignUser2AccountShipping' => '__cb_getGEODistanceFromAssignUser2AccountShipping',
-				'getGEODistanceFromUser2ContactBilling' => '__cb_getGEODistanceFromUser2ContactBilling',
-				'getGEODistanceFromAssignUser2ContactBilling' => '__cb_getGEODistanceFromAssignUser2ContactBilling',
-				'getGEODistanceFromUser2ContactShipping' => '__cb_getGEODistanceFromUser2ContactShipping',
-				'getGEODistanceFromAssignUser2ContactShipping' => '__cb_getGEODistanceFromAssignUser2ContactShipping',
-				'getGEODistanceFromCoordinates' => '__cb_getGEODistanceFromCoordinates'
+			'concat'=>'__vt_concat',
+			'coalesce'=>'__cb_coalesce',
+			'time_diff' => '__vt_time_diff',
+			'time_diffdays' => '__vt_time_diffdays',
+			'time_diffyears' => '__cb_time_diffyears',
+			'time_diffweekdays' => '__cb_getWeekdayDifference',
+			'aggregate_time' => '__cb_aggregate_time',
+			'add_days' => '__vt_add_days',
+			'sub_days' => '__vt_sub_days',
+			'add_months' => '__vt_add_months',
+			'sub_months' => '__vt_sub_months',
+			'get_date' => '__vt_get_date',
+			'get_nextdate' => '__cb_next_date',
+			'get_nextdatelaborable' => '__cb_next_dateLaborable',
+			'format_date' => '__cb_format_date',
+			'add_time' => '__vt_add_time',
+			'sub_time' => '__vt_sub_time',
+			'power' => '__vt_power',
+			'substring' => '__vt_substring',
+			'stringposition' => '__cb_stringposition',
+			'stringlength' => '__cb_stringlength',
+			'stringreplace' => '__cb_stringreplace',
+			'uppercase' => '__vt_uppercase',
+			'lowercase' => '__vt_lowercase',
+			'uppercasefirst' => '__vt_uppercasefirst',
+			'uppercasewords' => '__vt_uppercasewords',
+			'num2str' => '__cb_num2str',
+			'translate' => '__cb_translate',
+			'round' => '__vt_round',
+			'ceil' => '__vt_ceil',
+			'floor' => '__vt_floor',
+			'modulo' => '__cb_modulo',
+			'hash' => '__cb_hash',
+			'globalvariable' => '__cb_globalvariable',
+			'aggregation' => '__cb_aggregation',
+			'aggregation_fields_operation' => '__cb_aggregation_operation',
+			'getimageurl' => '__cbwf_getimageurl',
+			'getCurrentUserID' => '__getCurrentUserID',
+			'getCurrentUserName' => '__getCurrentUserName',
+			'getCurrentUserField' => '__getCurrentUserField',
+			'getEntityType' => '__cbwf_setype',
+			'getLatitude' => '__cb_getLatitude',
+			'getLongitude' => '__cb_getLongitude',
+			'getLongitudeLatitude' => '__cb_getLongitudeLatitude',
+			'getGEODistance' => '__cb_getGEODistance',
+			'getGEODistanceFromCompanyAddress' => '__cb_getGEODistanceFromCompanyAddress',
+			'getGEODistanceFromUserAddress' => '__cb_getGEODistanceFromUserAddress',
+			'getGEODistanceFromUser2AccountBilling' => '__cb_getGEODistanceFromUser2AccountBilling',
+			'getGEODistanceFromAssignUser2AccountBilling' => '__cb_getGEODistanceFromAssignUser2AccountBilling',
+			'getGEODistanceFromUser2AccountShipping' => '__cb_getGEODistanceFromUser2AccountShipping',
+			'getGEODistanceFromAssignUser2AccountShipping' => '__cb_getGEODistanceFromAssignUser2AccountShipping',
+			'getGEODistanceFromUser2ContactBilling' => '__cb_getGEODistanceFromUser2ContactBilling',
+			'getGEODistanceFromAssignUser2ContactBilling' => '__cb_getGEODistanceFromAssignUser2ContactBilling',
+			'getGEODistanceFromUser2ContactShipping' => '__cb_getGEODistanceFromUser2ContactShipping',
+			'getGEODistanceFromAssignUser2ContactShipping' => '__cb_getGEODistanceFromAssignUser2ContactShipping',
+			'getGEODistanceFromCoordinates' => '__cb_getGEODistanceFromCoordinates',
+			'getCRUDMode' => '__cb_getcrudmode',
+			'isNumeric' => '__cb_is_numeric',
+			'isString' => '__cb_is_string',
+			'OR' => '__cb_or',
+			'AND' => '__cb_and',
+			'add_workdays' => '__cb_add_workdays',
 		);
-
+		$this->operationsSQL = array(
+			'+'  => 'cbexpsql_add',
+			'-'  => 'cbexpsql_sub',
+			'*'  => 'cbexpsql_mul',
+			'/'  => 'cbexpsql_div',
+			'==' => 'cbexpsql_equals',
+			'!=' => 'cbexpsql_distinct',
+			'<=' => 'cbexpsql_ltequals',
+			'>=' => 'cbexpsql_gtequals',
+			'<' => 'cbexpsql_lt',
+			'>' => 'cbexpsql_gt',
+			'ifelse' => 'cbexpsql_ifelse',
+			'concat'=>'cbexpsql_concat',
+			'coalesce'=>'cbexpsql_coalesce',
+			'time_diff' => 'cbexpsql_time_diff',
+			'time_diffdays' => 'cbexpsql_time_diffdays',
+			'time_diffyears' => 'cbexpsql_time_diffyears',
+			'time_diffweekdays' => 'cbexpsql_getWeekdayDifference',
+			'aggregate_time' => 'cbexpsql_aggregate_time',
+			'add_days' => 'cbexpsql_add_days',
+			'sub_days' => 'cbexpsql_sub_days',
+			'add_months' => 'cbexpsql_add_months',
+			'sub_months' => 'cbexpsql_sub_months',
+			'get_date' => 'cbexpsql_get_date',
+			'get_nextdate' => 'cbexpsql_next_date',
+			'get_nextdatelaborable' => 'cbexpsql_next_dateLaborable',
+			'format_date' => 'cbexpsql_format_date',
+			'add_time' => 'cbexpsql_add_time',
+			'sub_time' => 'cbexpsql_sub_time',
+			'power' => 'cbexpsql_power',
+			'substring' => 'cbexpsql_substring',
+			'stringposition' => 'cbexpsql_stringposition',
+			'stringlength' => 'cbexpsql_stringlength',
+			'stringreplace' => 'cbexpsql_stringreplace',
+			'uppercase' => 'cbexpsql_uppercase',
+			'lowercase' => 'cbexpsql_lowercase',
+			'uppercasefirst' => 'cbexpsql_uppercasefirst',
+			'uppercasewords' => 'cbexpsql_uppercasewords',
+			'num2str' => 'cbexpsql_num2str',
+			'translate' => 'cbexpsql_translate',
+			'round' => 'cbexpsql_round',
+			'ceil' => 'cbexpsql_ceil',
+			'floor' => 'cbexpsql_floor',
+			'modulo' => 'cbexpsql_modulo',
+			'hash' => 'cbexpsql_hash',
+			'globalvariable' => 'cbexpsql_globalvariable',
+			'aggregation' => 'cbexpsql_aggregation',
+			'aggregation_fields_operation' => 'cbexpsql_aggregation_operation',
+			'getimageurl' => 'cbexpsql_getimageurl',
+			'getCurrentUserID' => 'cbexpsql_getCurrentUserID',
+			'getCurrentUserName' => 'cbexpsql_getCurrentUserName',
+			'getCurrentUserField' => 'cbexpsql_getCurrentUserField',
+			'getEntityType' => 'cbexpsql_setype',
+			'getLatitude' => 'cbexpsql_getLatitude',
+			'getLongitude' => 'cbexpsql_getLongitude',
+			'getLongitudeLatitude' => 'cbexpsql_getLongitudeLatitude',
+			'getGEODistance' => 'cbexpsql_getGEODistance',
+			'getGEODistanceFromCompanyAddress' => 'cbexpsql_getGEODistanceFromCompanyAddress',
+			'getGEODistanceFromUserAddress' => 'cbexpsql_getGEODistanceFromUserAddress',
+			'getGEODistanceFromUser2AccountBilling' => 'cbexpsql_getGEODistanceFromUser2AccountBilling',
+			'getGEODistanceFromAssignUser2AccountBilling' => 'cbexpsql_getGEODistanceFromAssignUser2AccountBilling',
+			'getGEODistanceFromUser2AccountShipping' => 'cbexpsql_getGEODistanceFromUser2AccountShipping',
+			'getGEODistanceFromAssignUser2AccountShipping' => 'cbexpsql_getGEODistanceFromAssignUser2AccountShipping',
+			'getGEODistanceFromUser2ContactBilling' => 'cbexpsql_getGEODistanceFromUser2ContactBilling',
+			'getGEODistanceFromAssignUser2ContactBilling' => 'cbexpsql_getGEODistanceFromAssignUser2ContactBilling',
+			'getGEODistanceFromUser2ContactShipping' => 'cbexpsql_getGEODistanceFromUser2ContactShipping',
+			'getGEODistanceFromAssignUser2ContactShipping' => 'cbexpsql_getGEODistanceFromAssignUser2ContactShipping',
+			'getGEODistanceFromCoordinates' => 'cbexpsql_getGEODistanceFromCoordinates',
+			'sum' => 'cbexpsql_sum',
+			'min' => 'cbexpsql_min',
+			'max' => 'cbexpsql_max',
+			'avg' => 'cbexpsql_avg',
+			'count' => 'cbexpsql_count',
+			'isNumeric' => '__cb_is_numeric',
+			'isString' => '__cb_is_string',
+			'OR' => '__cb_or',
+			'AND' => '__cb_and'
+		);
+		$this->rawparams = array(
+			'__cb_getGEODistanceFromUser2AccountBilling',
+			'__cb_getGEODistanceFromAssignUser2AccountBilling',
+			'__cb_getGEODistanceFromUser2AccountShipping',
+			'__cb_getGEODistanceFromAssignUser2AccountShipping',
+			'__cb_getGEODistanceFromUser2ContactBilling',
+			'__cb_getGEODistanceFromAssignUser2ContactBilling',
+			'__cb_getGEODistanceFromUser2ContactShipping',
+			'__cb_getGEODistanceFromAssignUser2ContactShipping',
+			'__cbwf_setype',
+			'__cb_getcrudmode',
+		);
+		$this->needscontext = array(
+			'__cb_aggregation',
+			'__cb_aggregation_operation',
+			'__cbwf_getimageurl',
+			'__cb_aggregate_time',
+			'cbexpsql_aggregation',
+			'__cb_getcrudmode',
+		);
+		$wfexpfuncs = $adb->query('select expname,funcname,rawparams,needscontext from com_vtiger_workflows_expfunctions');
+		while ($func = $adb->fetch_array($wfexpfuncs)) {
+			$this->functions[$func['expname']] = $func['funcname'];
+			if ($func['rawparams'] == 1) {
+				$this->rawparams[] = $func['funcname'];
+			}
+			if ($func['needscontext'] == 1) {
+				$this->needscontext[] = $func['funcname'];
+			}
+		}
 		$this->operations = array_merge($this->functions, $this->operators);
 		$this->expr = $expr;
 	}
 
-	function evaluate($env){
+	public function evaluate($env, $getSQL = false) {
 		$this->env = $env;
-		return $this->exec($this->expr);
+		return ($getSQL ? $this->execSQL($this->expr) : $this->exec($this->expr));
 	}
 
-	function exec($expr){
+	public function exec($expr) {
 		global $logbg;
-		if($expr instanceof VTExpressionSymbol){
-			$loginfo = print_r($expr,true);
+		if ($expr instanceof VTExpressionSymbol) {
+			$loginfo = print_r($expr, true);
 			$logbg->debug("VTExpressionSymbol: $loginfo");
 			$this->debug[] = $loginfo;
 			return $this->env($expr);
-		}else if($expr instanceof VTExpressionTreeNode){
+		} elseif ($expr instanceof VTExpressionTreeNode) {
 			$op = $expr->getName();
-			if($op->value=='if'){
+			if ($op->value=='if') {
 				$params = $expr->getParams();
 				$cond = $this->exec($params[0]);
-				$loginfo = print_r($params,true);
+				$loginfo = print_r($params, true);
 				$logbg->debug("VTExpressionTreeNode: if $loginfo");
 				$logbg->debug('VTExpressionTreeNode: condition => '.($cond?'true':'false'));
 				$this->debug[] = $loginfo;
 				$this->debug[] = $cond;
-				if($cond){
+				if ($cond) {
 					return $this->exec($params[1]);
-				}else{
+				} else {
 					return $this->exec($params[2]);
 				}
-			}else{
+			} else {
 				$func = $this->operations[$op->value];
-				if (substr($func, 0, 28)=='__cb_getGEODistanceFromUser2' || substr($func, 0, 33)=='__cb_getGEODistanceFromAssignUser') {
+				if (in_array($func, $this->rawparams)) {
 					$relto = $expr->getParams();
 					$params = array();
-					foreach ($relto as $key => $value) {
-						if(is_object($value)){
-							array_push($params,$this->env($value,true));
-						}else{
-							array_push($params,$value);
+					foreach ($relto as $value) {
+						if (is_object($value)) {
+							$params[] = $this->env($value, true);
+						} else {
+							$params[] = $value;
 						}
+					}
+				} elseif ($func == '__cb_aggregation' || $func == '__cb_aggregation_operation') {
+					$params = array_map(array($this, 'exec'), $expr->getParams());
+					if (count($params)==3) {
+						$params[] = ''; // no conditions
 					}
 				} else {
 					$params = array_map(array($this, 'exec'), $expr->getParams());
 				}
-				$loginfo = print_r($params,true);
+				$debugparams = $params;
+				if (in_array($func, $this->needscontext)) {
+					$debugparams[] = 'context is added';
+					$params[] = $this->env;
+				}
+				$loginfo = print_r($debugparams, true);
 				$logbg->debug("VTExpressionTreeNode: function $func $loginfo");
 				$this->debug[] = $loginfo;
 				return $func($params);
 			}
-		}else{
-			$loginfo = print_r($expr,true);
+		} else {
+			$loginfo = print_r($expr, true);
 			$logbg->debug("VTExpression: $loginfo");
 			$this->debug[] = $loginfo;
 			return $expr;
 		}
 	}
 
-	function env($sym,$raw=false){
-		if($this->env) {
+	public function execSQL($expr) {
+		global $logbg;
+		if ($expr instanceof VTExpressionSymbol) {
+			$loginfo = print_r($expr, true);
+			$logbg->debug("VTExpressionSymbol: $loginfo");
+			$this->debug[] = $loginfo;
+			if ($expr->type == 'math') {
+				return '('.$expr->value.')';
+			} else {
+				return $this->env($expr);
+			}
+		} elseif ($expr instanceof VTExpressionTreeNode) {
+			$op = $expr->getName();
+			$func = $this->operationsSQL[$op->value];
+			if (in_array($func, $this->rawparams)) {
+				$relto = $expr->getParams();
+				$params = array();
+				foreach ($relto as $value) {
+					if (is_object($value)) {
+						$params[] = $this->env($value, true);
+					} else {
+						$params[] = $value;
+					}
+				}
+			} elseif ($func == 'cbexpsql_aggregation' || $func == 'cbexpsql_aggregation_operation' || $func == 'cbexpsql_aggregate_time') {
+				$params = array_map(array($this, 'exec'), $expr->getParams());
+				if (count($params)==3) {
+					$params[] = ''; // no conditions
+				}
+			} else {
+				$params = array_map(array($this, 'execSQL'), $expr->getParams());
+				$prms = array();
+				foreach ($params as $pval) {
+					if (!is_object($pval)) {
+						preg_match('/[\+\-\/\*<>=]/', $pval, $parammatches);
+						if (count($parammatches)>0 && in_array($op->value, array('+', '-', '*', '/'))) {
+							$prms[] = new VTExpressionSymbol('('.$pval.')', 'constant');
+						} elseif (trim($pval)=='' || is_numeric($pval)) {
+							$prms[] = $pval;
+						} else {
+							$parentparams = $expr->getParams();
+							if (false && $parentparams[0] instanceof VTExpressionTreeNode && isset($this->operationsSQL[$parentparams[0]->arr[0]->value])) {
+								$prms[] = new VTExpressionSymbol($pval, 'constant');
+							} else {
+								$prms[] = new VTExpressionSymbol($pval);
+							}
+						}
+					} else {
+						if ($pval instanceof VTExpressionSymbol && $pval->type == 'math') {
+							$pval->value = '('.$pval->value.')';
+						}
+						$prms[] = $pval;
+					}
+				}
+				$params = $prms;
+				//$params = $expr->getParams();
+			}
+			$debugparams = $params;
+			if (in_array($func, $this->needscontext)) {
+				$debugparams[] = 'context is added';
+				$params[] = $this->env;
+			}
+			$loginfo = print_r($debugparams, true);
+			$logbg->debug("VTExpressionTreeNode: function $func $loginfo");
+			$this->debug[] = $loginfo;
+			if (isset($this->env->moduleName)) {
+				$mainmodule = $this->env->moduleName;
+			} elseif ($this->env) {
+				$mainmodule = $this->env->getModuleName();
+			} else {
+				$mainmodule = '';
+			}
+			return $func($params, $mainmodule);
+		} else {
+			$loginfo = print_r($expr, true);
+			$logbg->debug("VTExpression: $loginfo");
+			$this->debug[] = $loginfo;
+			return $expr;
+		}
+	}
+
+	public function env($sym, $raw = false) {
+		if ($this->env) {
 			$val = $this->env->get($sym->value);
-			$module = Vtiger_Module::getInstance($this->env->moduleName);
-			$field = Vtiger_Field::getInstance($sym->value,$module);
-			if ($field and !$raw) {
-				global $adb,$log;
-				$rsfld = $adb->pquery('select * from vtiger_field where fieldid=?',array($field->id));
+			if (isset($this->env->moduleName)) {
+				$module = Vtiger_Module::getInstance($this->env->moduleName);
+			} else {
+				$module = Vtiger_Module::getInstance($this->env->getModuleName());
+			}
+			$field = Vtiger_Field::getInstance($sym->value, $module);
+			if ($field && !$raw) {
+				global $adb;
+				$rsfld = $adb->pquery('select * from vtiger_field where fieldid=?', array($field->id));
 				$field = WebserviceField::fromQueryResult($adb, $rsfld, 0);
 				$fieldType = $field->getFieldDataType();
-				if ($fieldType=='reference' or $fieldType=='owner') {
+				if ($fieldType=='reference' || $fieldType=='owner') {
 					preg_match("/([0-9]+)x([0-9]+)/", $val, $results);
 					if (count($results)>0) {  // if it has the form of a webserviceid
 						$query = 'select name from vtiger_ws_entity where id = ?';
 						$rs = $adb->pquery($query, array($results[1]));
-						if ($rs and $adb->num_rows($rs)==1) {  // if the first part is a valid webservice entity id
+						if ($rs && $adb->num_rows($rs)==1) {  // if the first part is a valid webservice entity id
 							$modname = $adb->query_result($rs, 0, 'name');
 							$modinfo = getEntityName($modname, array($results[2]));
-							if (is_array($modinfo) and count($modinfo)>0) {  // if the second part is recognized as a module record
+							if (is_array($modinfo) && count($modinfo)>0) {  // if the second part is recognized as a module record
 								$val = $modinfo[$results[2]];
 							}
 						}
@@ -987,5 +385,10 @@ class VTFieldExpressionEvaluater{
 			return $sym->value;
 		}
 	}
+}
+
+// Load expression functions
+foreach (glob('modules/com_vtiger_workflow/expression_functions/*.php') as $fcode) {
+	include_once $fcode;
 }
 ?>

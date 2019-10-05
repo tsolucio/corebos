@@ -1,19 +1,11 @@
 <?php
-/********************************************************************************* 
- * The contents of this file are subject to the SugarCRM Public License  
-Version 1.1.2 
- * ("License"); You may not use this file except in compliance with the 
- * License. You may obtain a copy of the License at  
-http://www.sugarcrm.com/SPL 
- * Software distributed under the License is distributed on an  "AS IS"   
-basis, 
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the  
-License for 
- * the specific language governing rights and limitations under the License. 
- * The Original Code is:  SugarCRM Open Source 
- * The Initial Developer of the Original Code is SugarCRM, Inc. 
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.; 
- * All Rights Reserved. 
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
 ********************************************************************************
 *  Module       : CustomView
 *  Language     : Español
@@ -23,7 +15,7 @@ License for
 *  Last change  : 2008-09-20
 *  Author       : Joe Bordes JPL TSolucio, S.L.
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
- ********************************************************************************/ 
+ ********************************************************************************/
 $mod_strings = array (
 'LBL_MODULE_NAME'=>'Vista personalizada',
 'LBL_STEP_1_TITLE'=>'Ver la Información',
@@ -42,12 +34,9 @@ $mod_strings = array (
 'LBL_AF_HDR3'=>'Puede incorporar hasta 10 artículos, separados por comas.',
 'LBL_AF_HDR4'=>'Si "Evento" está selecionado, dele un valor de los siguientes "Llamada", "Reunión" o "Tarea"',
 
-//strings added for vtiger 5, date format... 
 'LBL_NONE'=>'Ninguno',
-'View_Name'=>'Ver_Nombre',
 'LBL_AND'=>'y',
-'LBL_DATE_FORMAT_CUSTOMVIEW'=>'A-m-d',
-//Strings added for filter 
+//Strings added for filter
 'Custom'=>'Personalizado',
 'Previous FY'=>'Año Anterior',
 'Current FY'=>'Año Actual',
@@ -81,8 +70,8 @@ $mod_strings = array (
 'greater than'=>'mayor que',
 'less or equal'=>'menor o igual',
 'greater or equal'=>'mayor o igual',
- 
-//Strings added to translate field label vtiger_groups 
+
+//Strings added to translate field label groups
 'Address'=>'Dirección',
 'Information'=>'Información',
 'Description'=>'Descripción',
@@ -91,8 +80,8 @@ $mod_strings = array (
 '- Event Description'=>'- Descripción de Evento',
 '- Task Information'=>'- Información de Tarea',
 '- Task Description'=>'- Descripción de Tarea',
- 
-//Strings added for helpdesk module fields 
+
+//Strings added for helpdesk module fields
 'Title'=>'Asunto',
 'Assigned To'=>'Asignado A',
 'Related to'=>'Relacionado con',
@@ -104,8 +93,8 @@ $mod_strings = array (
 'Created Time'=>'Creado',
 'Modified Time'=>'Modificado',
 'Attachment'=>'Adjunto',
- 
-//Strings added for Leads module fields 
+
+//Strings added for Leads module fields
 'First Name'=>'Nombre',
 'Phone'=>'Teléfono',
 'Last Name'=>'Apellidos',
@@ -123,8 +112,8 @@ $mod_strings = array (
 'City'=>'Deleg./Mpio.',
 'Country'=>'País',
 'State'=>'Estado',
- 
-//Strings added for Accounts module fields 
+
+//Strings added for Accounts module fields
 'Account Name'=>'Cuenta',
 'Ticker Symbol'=>'Símbolo de bolsa',
 'Other Phone'=>'Tel. Directo',
@@ -147,10 +136,9 @@ $mod_strings = array (
 'Shipping Code'=>'Código Postal (Envío)',
 'Shipping Country'=>'País (Envío)',
 'Billing Country'=>'País (Factura)',
- 
- 
-//Strings added for Contacts module fields 
- 
+
+//Strings added for Contacts module fields
+
 'Office Phone'=>'Tel. Oficina',
 'Home Phone'=>'Tel. Particular',
 'Birthdate'=>'Cumpleaños',
@@ -169,19 +157,17 @@ $mod_strings = array (
 'Other Zip'=>'Código Postal (Otra)',
 'Mailing Country'=>'País (Envío)',
 'Other Country'=>'País (Otra)',
- 
- 
-//Strings added for Potential module fields 
- 
+
+//Strings added for Potential module fields
+
 'Potential Name'=>'Nombre de Oportunidad',
 'Amount'=>'Importe',
 'Expected Close Date'=>'Fecha Estimada de Cierre',
 'Next Step'=>'Siguiente Paso',
 'Sales Stage'=>'Etapa de Venta',
 'Probability'=>'Probabilidad',
- 
- 
-//Strings added for Quotes module fields 
+
+//Strings added for Quotes module fields
 'Subject'=>'Asunto',
 'Quote Stage'=>'Etapa de Cotización',
 'Valid Till'=>'Validez',
@@ -190,8 +176,8 @@ $mod_strings = array (
 'Carrier'=>'Transportista',
 'Shipping'=>'Tipo de Envío',
 'Inventory Manager'=>'Responsable de Inventario',
- 
-//Strings added for Sales Orders module fields 
+
+//Strings added for Sales Orders module fields
 'Customer No'=>'Nº de Cliente',
 'Quote Name'=>'Nombre de la Cotización',
 'Purchase Order'=>'Orden de Compra',
@@ -199,12 +185,12 @@ $mod_strings = array (
 'Pending'=>'Pendiente',
 'Sales Commission'=>'Comisión de Venta',
 'Excise Duty'=>'Impuestos',
- 
-//Strings added for Invoices module fields 
+
+//Strings added for Invoices module fields
 'Sales Order'=>'Pedido',
 'Invoice Date'=>'Fecha de Factura',
- 
-//Strings added for Product module fields 
+
+//Strings added for Product module fields
 'Product Active'=>'Producto Activo',
 'Product Category'=>'Categoría de Producto',
 'Sales Start Date'=>'Inicio de Comercialización',
@@ -214,21 +200,21 @@ $mod_strings = array (
 'Vendor Name'=>'Proveedor',
 'Mfr PartNo'=>'Nº de Parte del Fabricante',
 'Vendor PartNo'=>'Nº de Parte del Proveedor',
- 
+
 'Serial No'=>'Nº Serie',
 'Product Sheet'=>'Hoja de Producto',
 'GL Account'=>'Cuenta Contable',
- 
-//Strings added for Price book module fields 
+
+//Strings added for Price book module fields
 'Price Book Name'=>'Listas de precios',
 'Active'=>'Activo',
- 
-//Strings added for tasks & events module fields 
+
+//Strings added for tasks & events module fields
 'Start Date & Time'=>'Fecha de Inicio',
- 
-//error message 
+
+//error message
 'Missing required fields'=>'Faltan Campos Obligatorios',
-//Strings added for campaigns 
+//Strings added for campaigns
 'Campaign Name'=>'Nombre de Campaña',
 'Campaign Type'=>'Tipo de Campaña',
 'Product'=>'Producto',
@@ -247,16 +233,14 @@ $mod_strings = array (
 'Actual Sales Count'=>'Ventas Reales',
 'Actual Response Count'=>'Respuesta Real',
 'Actual ROI'=>'ROI Real',
- 
- 
- 
-//Added for customview.tpl 
- 
+
+//Added for customview.tpl
+
 'LBL_Select_a_Column'=>'Seleccione una Columna',
 'Missing_required_fields'=>'Faltan Campos Obligatorios',
 'Details'=>'Detalles',
 'New_Custom_View'=>'Nueva Vista Personalizada',
-'Edit_Custom_View'=>'Editar Vista Personalizada', 
+'Edit_Custom_View'=>'Editar Vista Personalizada',
 'LBL_AF_HDR5'=>'El Filtro de Tiempo permite seleccionar una fecha basándose en la fecha de <b>Creación</b> o',
 
 'Select_Duration'=>'Seleccionar Duración',
@@ -265,15 +249,12 @@ $mod_strings = array (
 'End_Date'=>'Vencimiento',
 'LBL_RULE'=>'REGLA',
 
-// Added/Updated for vtiger CRM 5.0.4
 'not equal to'=>'no igual a',
 'starts with'=>'Empieza con',
 'ends with'=>'Termina en',
 //'Product Code'=>'Código de Producto',
 
-// Added after 5.0.4 GA
-
-//Added for Role based Custom filters 
+//Added for Role based Custom filters
 'LBL_SET_AS_PUBLIC'=>'Hacer Público ',
 'LBL_NEW'=>'Nuevo',
 'LBL_EDIT'=>'Editar',
@@ -281,5 +262,5 @@ $mod_strings = array (
 'LBL_STATUS_PUBLIC_DENY'=>'Denegar',
 
 'LBL_ADVANCED_FILTER' => 'Regla',
-); 
+);
 ?>

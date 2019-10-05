@@ -8,12 +8,12 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-if(isset($_REQUEST['file']) && ($_REQUEST['file'] !='')) {
+if (isset($_REQUEST['file']) && ($_REQUEST['file'] !='')) {
 	checkFileAccessForInclusion('modules/Settings/'.vtlib_purify($_REQUEST['file']).'.php');
-	require_once('modules/Settings/'.vtlib_purify($_REQUEST['file']).'.php');
+	require_once 'modules/Settings/'.vtlib_purify($_REQUEST['file']).'.php';
 }
-if(isset($_REQUEST['orgajax']) && ($_REQUEST['orgajax'] !='')) {
+if (isset($_REQUEST['orgajax']) && ($_REQUEST['orgajax'] !='')) {
 	checkFileAccessForInclusion('modules/Settings/CreateSharingRule.php');
-	require_once('modules/Settings/CreateSharingRule.php');
+	require_once 'modules/Settings/CreateSharingRule.php';
 }
 ?>

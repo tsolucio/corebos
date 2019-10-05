@@ -8,19 +8,19 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-include_once dirname(__FILE__) . '/../api/ws/saveSignature.php';
+include_once __DIR__ . '/../api/ws/saveSignature.php';
 
 class UI_saveSignature extends WS_saveSignature {
-	function process(crmtogo_API_Request $request) {
+
+	public function process(crmtogo_API_Request $request) {
 		$wsResponse = parent::process($request);
 		$response = false;
-		if($wsResponse->hasError()) {
+		if ($wsResponse->hasError()) {
 			$response = $wsResponse;
-		} 
-		else {
+		} else {
 			$wsResponseResult = $wsResponse->getResult();
 			$viewer = new crmtogo_UI_Viewer();
-			$viewer->assign('SIGNPATH',$wsResponseResult['signpath']);
+			$viewer->assign('SIGNPATH', $wsResponseResult['signpath']);
 			$response = $viewer->process('Signature.tpl');
 			$response->setResult(json_encode(array('html' => $response->getResult())));
 		}

@@ -6,11 +6,10 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 -->*}
 
-{include file='Buttons_List1.tpl'}
+{include file='Buttons_List.tpl'}
 
 {*<!-- Contents -->*}
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
@@ -24,7 +23,7 @@
 				<br>
 				<h2>
 				{$APP.LBL_OPERATION_NOT_SUPPORTED}
-				</h2> 
+				</h2>
 			</div>
 		</td>
 		<br>

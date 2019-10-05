@@ -7,7 +7,7 @@
 * Portions created by vtiger are Copyright (C) vtiger.
 ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'PBX Manager' => 'PBX Manager',
 	'PBXManager' => 'PBX Manager',
 	'SINGLE_PBXManager' => 'PBX Manager',
@@ -28,6 +28,6 @@ $mod_strings = Array(
 	'incoming-received' => 'Incoming-Received',
 	'missed' => 'Missed',
 	'received' => 'Received',
+	'OutgoingCall' => 'Outgoing call from',
 );
-
 ?>

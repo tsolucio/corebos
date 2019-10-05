@@ -9,11 +9,9 @@
  ************************************************************************************/
 global $adb;
 
-if(!isset($_REQUEST['record']))
+if (!isset($_REQUEST['record'])) {
 	die($mod_strings['ERR_DELETE_RECORD']);
-
-$del_query = 'DELETE FROM vtiger_portal WHERE portalid=?';
-$adb->pquery($del_query, array($_REQUEST['record']));
-
-header("Location: index.php?action=PortalAjax&module=Portal&file=ListView&mode=ajax&datamode=manage");
+}
+$adb->pquery('DELETE FROM vtiger_portal WHERE portalid=?', array($_REQUEST['record']));
+header('Location: index.php?action=PortalAjax&module=Portal&file=ListView&mode=ajax&datamode=manage');
 ?>

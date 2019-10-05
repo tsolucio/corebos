@@ -2,7 +2,7 @@
 /***********************************************************
 *  Module       : FAQ
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
@@ -22,9 +22,6 @@ $mod_strings = array (
 	'LBL_LIST_EMAIL_ADDRESS' => 'Adresse email',
 	'LBL_LIST_CONTACT_NAME' => 'Nom contact',
 	'LBL_FAQ_INFORMATION' => 'Détail Faq',
-	'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-	'db_website' => 'LBL_LIST_WEBSITE',
-	'db_billing_address_city' => 'LBL_LIST_CITY',
 	'LBL_ACCOUNT' => 'FAQ :',
 	'LBL_ACCOUNT_NAME' => 'Nom FAQ :',
 	'LBL_PHONE' => 'Téléphone :',

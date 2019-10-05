@@ -11,12 +11,11 @@
 *  Language     : Español
 *  Version      : 5.4.0
 *  Created Date : 2007-03-30
-*  Author       : Rafael Soler
 *  Last change  : 2012-02-27
 *  Author       : Joe Bordes JPL TSolucio, S.L.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Ordenes de Venta',
 'SINGLE_SalesOrder'=>'Orden de Venta',
 'LBL_SO_MODULE_NAME'=>'Ordenes de Venta',
@@ -34,14 +33,6 @@ $mod_strings = Array(
 'LBL_LIST_PHONE'=>'Teléfono',
 'LBL_LIST_EMAIL_ADDRESS'=>'Email',
 'LBL_LIST_CONTACT_NAME'=>'Persona de Contacto',
-
-//DON'T CONVERT THESE THEY ARE MAPPINGS
-'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-'db_website' => 'LBL_LIST_WEBSITE',
-'db_billing_address_city' => 'LBL_LIST_CITY',
-
-//END DON'T CONVERT
-
 'LBL_ACCOUNT'=>'Cuenta:',
 'LBL_ACCOUNT_NAME'=>'Nombre de la Cuenta:',
 'LBL_PHONE'=>'Teléfono:',
@@ -64,6 +55,7 @@ $mod_strings = Array(
 'LBL_ADDRESS_INFORMATION'=>'Información de la Dirección',
 'LBL_Quote_INFORMATION'=>'Información de la Cuenta',
 'LBL_CUSTOM_INFORMATION'=>'Información personalizada',
+'LBL_SalesOrder_FINANCIALINFO' => 'Información Financiera',
 'LBL_BILLING_ADDRESS'=>'Dirección (Factura:',
 'LBL_SHIPPING_ADDRESS'=>'Dirección (Envío):',
 'LBL_ANY_ADDRESS'=>'Dirección (Alternativa):',
@@ -86,7 +78,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Seleccionar Cuenta',
 'LBL_GENERAL_INFORMATION'=>'Información General',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nueva Oportunidad',
 'LBL_POTENTIAL_TITLE'=>'Oportunidad',
 
@@ -101,16 +92,13 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'Nuevo Contacto',
 'LBL_CONTACT_TITLE'=>'Contactos',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'Toda',
 'LBL_PROSPECT'=>'Investigador',
 'LBL_INVESTOR'=>'Inversionista',
 'LBL_RESELLER'=>'Revendedor',
 'LBL_PARTNER'=>'Socio',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Herramientas de la Cuenta',
-//Added for 4GA
 'Subject'=>'Referencia',
 'Quote Name'=>'Referencia del Presupuesto',
 'Vendor Name'=>'Nombre del Proveedor',
@@ -151,11 +139,9 @@ $mod_strings = Array(
 'Vendor Terms'=>'Términos del Proveedor',
 'Pending'=>'Pendiente',
 'Account Name'=>'Nombre de Cuenta',
-//Quote Info
 'LBL_SO_INFORMATION'=>'Información de la Orden',
 'LBL_SO'=>'Orden de Venta:',
 
- //Added for 5.0 GA
 'LBL_SO_FORM_TITLE'=>'Ventas',
 'LBL_SUBJECT_TITLE'=>'Referencia',
 'LBL_VENDOR_NAME_TITLE'=>'Nombre del Proveedor',
@@ -186,18 +172,17 @@ $mod_strings = Array(
 'Credit Invoice'=>'Rectificativa',
 'Paid'=>'Pagada',
 
-//Added for Reports (5.0.4)
 'Tax Type'=>'Impuesto',
 'Discount Percent'=>'Descuento %',
 'Discount Amount'=>'Descuento Importe',
 'Terms & Conditions'=>'Condiciones Generales',
 'S&H Amount'=>'Importe Envío y Manipulado',
 
-//Added after 5.0.4 GA
 'SalesOrder No'=>'No Orden de Venta',
 
 'Recurring Invoice Information' => 'Información Facturación Recurrente',
 'RecurringInvoice' => 'Facturación Recurrente',
+'Recommended frequency for RecurringInvoice is 12 hours' => 'La frecuencia recomendada para la Facturación Recurrente es de 12 horas',
 'Enable Recurring' => 'Habilitar facturación recurrente',
 'Frequency' => 'Frecuencia',
 '--None--'=>'--Ninguna--',
@@ -220,6 +205,11 @@ $mod_strings = Array(
 'Net 60 days' => '60 días',
 
 'SalesOrder ID' => 'Id Orden de Venta',
-);
 
+'LBL_PARTIAL_PAYMENTS_INFO' => 'Información Pagos Parciales',
+'Amount Due'=>'Pendiente a Pagar',
+'Amount Paid'=>'Total Pagado',
+'Total Amount'=>'Total a Pagar',
+'Invoiced' => 'Facturado',
+);
 ?>

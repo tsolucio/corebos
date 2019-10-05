@@ -83,10 +83,39 @@
 		<div class="componentName">{$APP.LBL_NO_DATA}</div>
 	{/if}
 	</table>
-
+{elseif $HOME_STUFFTYPE eq "CustomWidget"}
+	<input type=hidden id=more_{$HOME_STUFFID} value="{$HOME_STUFF.ModuleName}"/>
+	<input type=hidden id=cvid_{$HOME_STUFFID} value="{$HOME_STUFF.cvid}">
+	<table border=0 cellspacing=0 cellpadding=2 width=100%>
+	{assign var='cvid' value=$HOME_STUFF.cvid}
+	{assign var='modulename' value=$HOME_STUFF.ModuleName}
+	<tr>
+		<td width=4%>
+			&nbsp;
+		</td>
+		{foreach item=header from=$HOME_STUFF.Header}
+		<td width=40% align="left">
+			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$header}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+		</td>
+		{/foreach}
+	</tr>
+		{foreach item=row key=crmid from=$HOME_STUFF.Entries}
+		<tr>
+			<td width=4%>
+				&nbsp;
+			</td>
+			{foreach item=element from=$row name=aggrow}
+			<td {if $smarty.foreach.aggrow.last}style="text-align: right;"{/if} nowrap width=40%>
+				{$element}
+			</td>
+			{/foreach}
+		</tr>
+		{/foreach}
+	</table>
+	
 {elseif $HOME_STUFFTYPE eq "Default"}
 	<input type=hidden id=more_{$HOME_STUFFID} value="{if isset($HOME_STUFF.Details.ModuleName)}{$HOME_STUFF.Details.ModuleName}{/if}"/>
-	{if $HOME_STUFF.Details.Entries|@count > 0}
+	{if is_array($HOME_STUFF.Details.Entries) && $HOME_STUFF.Details.Entries|@count > 0}
 		<table border=0 cellspacing=0 cellpadding=2 width=100%>
 		<tr>
 			<td width=5%>&nbsp;</td>
@@ -95,9 +124,9 @@
 			{/foreach}
 		</tr>
 		{foreach item=row key=crmid from=$HOME_STUFF.Details.Entries}
-			{if isset($HOME_STUFF.Details.Title)}
 			<tr>
 				<td>
+				{if isset($HOME_STUFF.Details.Title)}
 					{if $HOME_STUFF.Details.Title.1 eq "My Sites"}
 					<img src="{'bookMark.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" alt="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}" title="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}"/>
 					{elseif $HOME_STUFF.Details.Title.1 neq "Key Metrics" && $HOME_STUFF.Details.Title.1 neq "My Group Allocation"}
@@ -107,12 +136,12 @@
 					{elseif $HOME_STUFF.Details.Title.1 eq "My Group Allocation"}
 					<img src="{'bookMark.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border="0" alt="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}" title="{$APP.LBL_MORE} {$APP.LBL_INFORMATION}"/>
 					{/if}
+				{/if}
 				</td>
 				{foreach item=element from=$row}
 				<td align="left"/> {$element}</td>
 				{/foreach}
 			</tr>
-			{/if}
 		{/foreach}
 	{else}
 		<div class="componentName">{$APP.LBL_NO_DATA}</div>
@@ -159,6 +188,15 @@ window.doChart{$HOME_STUFFID} = function(charttype) {ldelim}
 			backgroundColor: [{/literal}{foreach item=CVALUE name=chartvalues from=$HOME_STUFF.yaxisData}getRandomColor(){if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}]
 		}]
 	};
+	var maxnum = Math.max.apply(Math, chartDataObject.datasets[0].data);
+	var maxgrph = Math.ceil(maxnum + (6 * maxnum / 100));
+	Chart.scaleService.updateScaleDefaults('linear', {
+		ticks: {
+			min: 0,
+			max: maxgrph,
+			precision: 0
+		}
+	});
 	window.schart{/literal}{$HOME_STUFFID}{literal} = new Chart(stuffchart,{
 		type: charttype,
 		data: chartDataObject,
@@ -193,6 +231,8 @@ let charttype = 'horizontalBar';
 let charttype = 'bar';
 {elseif $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}
 let charttype = 'pie';
+{else}
+let charttype = 'verticalbarchart';
 {/if}
 doChart{$HOME_STUFFID}(charttype);
 </script>

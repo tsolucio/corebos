@@ -9,10 +9,12 @@
  ************************************************************************************/
 require_once 'modules/Vtiger/EditView.php';
 require_once 'modules/GlobalVariable/LoadGlobalVariableDefinitions.php';
-$fieldlabel = getTranslatedString('Name',$currentModule);
-$kk = getFieldFromEditViewBlockArray($blocks,$fieldlabel);
+$fieldlabel = getTranslatedString('Name', $currentModule);
+$kk = getFieldFromEditViewBlockArray($blocks, $fieldlabel);
 $gvnamearray = $blocks[$kk['block_label']][$kk['row_key']][$kk['field_key']][3][0];
-uasort($gvnamearray, function($a,$b) {return strtolower($a[0]) < strtolower($b[0]) ? -1 : 1;});
+uasort($gvnamearray, function ($a, $b) {
+	return strtolower($a[0]) < strtolower($b[0]) ? -1 : 1;
+});
 $blocks[$kk['block_label']][$kk['row_key']][$kk['field_key']][3][0] = $gvnamearray;
 $basblocks[$kk['block_label']][$kk['row_key']][$kk['field_key']][3][0] = $gvnamearray;
 $smarty->assign('BLOCKS', $blocks);

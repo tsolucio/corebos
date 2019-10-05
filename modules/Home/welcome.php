@@ -16,7 +16,7 @@
 global $current_user;
 include_once 'modules/com_vtiger_workflow/VTSimpleTemplateOnData.inc';
 
-$FirstTimeLogin_Template = GlobalVariable::getVariable('Application_FirstTimeLogin_Template','');
+$FirstTimeLogin_Template = GlobalVariable::getVariable('Application_FirstTimeLogin_Template', '');
 if (!empty($FirstTimeLogin_Template)) {
 	$util = new VTWorkflowUtils();
 	$entityCache = new VTEntityCache($current_user);
@@ -24,9 +24,9 @@ if (!empty($FirstTimeLogin_Template)) {
 	$entityData = $entityCache->forId($wsid);
 	$data = $entityData->data;
 	$data['assigned_user_id'] = $wsid;
-	$data['Application_UI_Name'] = GlobalVariable::getVariable('Application_UI_Name',$coreBOS_app_name);
-	$data['Application_UI_Version'] = GlobalVariable::getVariable('Application_UI_Version',$coreBOS_app_version);
-	$data['Application_UI_URL'] = GlobalVariable::getVariable('Application_UI_URL',$coreBOS_app_url);
+	$data['Application_UI_Name'] = GlobalVariable::getVariable('Application_UI_Name', $coreBOS_app_name);
+	$data['Application_UI_Version'] = GlobalVariable::getVariable('Application_UI_Version', $coreBOS_app_version);
+	$data['Application_UI_URL'] = GlobalVariable::getVariable('Application_UI_URL', $coreBOS_app_url);
 	$ct = new VTSimpleTemplateOnData($FirstTimeLogin_Template);
 	$FirstTimeLogin_Template = $ct->render($entityCache, 'Users', $data);
 }

@@ -2,12 +2,12 @@
 /***********************************************************
 *  Module       : ServiceContracts
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'Service Contracts' => 'Contrats de Service',
 	'ServiceContracts' => 'Contrats de Service',
 	'SINGLE_ServiceContracts' => 'Contrat de Service',
@@ -52,12 +52,8 @@ $mod_strings = Array(
 	'Hours'=>'Heures',
 	'Days'=>'Jours',
 	'Incidents'=>'Incidents',
-	/*
-	 * 5.2.0 changes 
-	 */
 	'LBL_MODULE_NAME'=>'Contrats de Service',
 	'ServiceContracts ID'=>'Contrat de Service ID',
 	'Service Requests'=>'Tickets',
 );
-
 ?>

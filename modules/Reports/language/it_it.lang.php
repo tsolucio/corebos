@@ -1,23 +1,11 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header:
- * Description:  Defines the English language pack for the Reports module.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
  ********************************************************************************/
 
 $mod_strings = array (
@@ -54,7 +42,6 @@ $mod_strings = array (
   'LBL_COLUMNS_AVERAGE' => 'Media',
   'LBL_COLUMNS_LOW_VALUE' => 'Valore pi&ugrave; basso',
   'LBL_COLUMNS_LARGE_VALUE' => 'Valore pi&ugrave; alto',
-  'LBL_NONE' => 'Nessuno',
   'LBL_GROUPING_SORT' => 'Ordine dell`elenco:',
   'LBL_GROUPING_SUMMARIZE' => 'Riassumi le informazioni per:',
   'LBL_GROUPING_THEN_BY' => 'e quindi per:',
@@ -74,6 +61,7 @@ $mod_strings = array (
   'LBL_GENERATED_REPORT' => 'Genera Report',
   'LBL_GRAND_TOTAL' => 'Totale complessivo',
   'LBL_EXPORTXL_BUTTON' => 'Esporta in Excel',
+  'LBL_EXPORTCSV' => 'Esporta in CSV',
   'LBL_NO_PERMISSION' => 'Il tuo profilo non permette di vedere i tuoi report per uno dei moduli',
   'LBL_SELECT_COLUMNS_TO_GENERATE_REPORTS' => 'Seleziona colonne per generare i report',
   'LBL_AVAILABLE_FIELDS' => 'Campi disponibili',
@@ -153,7 +141,15 @@ $mod_strings = array (
   'This Month Activities' => 'Attivit&agrave;  di Questo Mese',
   'Campaign Expectations and Actuals' => 'Valori Attesi ed Effettivi delle Campagne',
   'SalesOrder Detailed Report' => 'Report Ordini di Vendita Dettagliato',
-  'LBL_DELETE' => 'Elimina',
+'Emails sent to Contacts' => 'Emails sent to Contacts',
+'Emails sent to Organizations' => 'Emails sent to Organizations',
+'Emails sent to Leads' => 'Emails sent to Leads',
+'Emails sent to Vendors' => 'Emails sent to Vendors',
+'Contacts Email Report' => 'Contacts Email Report',
+'Accounts Email Report' => 'Accounts Email Report',
+'Leads Email Report' => 'Leads Email Report',
+'Vendors Email Report' => 'Vendors Email Report',
+	'LBL_DELETE' => 'Elimina',
   'Create_Reports' => 'Crea Report',
   'Create_New_Folder' => 'Crea Nuova Cartella',
   'Move_Reports' => 'Sposta Report',
@@ -176,6 +172,7 @@ $mod_strings = array (
   'Next Month' => 'Prossimo Mese',
   'Last 7 Days' => 'Ultimi 7 giorni',
   'Last 30 Days' => 'Ultimi 30 giorni',
+	'Last 14 Days' => 'Ultimi 14 giorni',
   'Last 60 Days' => 'Ultimi  60 giorni',
   'Last 90 Days' => 'Ultimi 90 giorni',
   'Last 120 Days' => 'Ultimi 120 giorni',
@@ -193,6 +190,7 @@ $mod_strings = array (
   'AVG' => 'Media',
   'MAX' => 'Massimo',
   'MIN' => 'Minimo',
+  'COUNT' => 'COUNT',
   'LBL_CUSTOM_REPORTS' => 'Report Personalizzati',
   'ticketid' => 'Ticket Id',
   'NO_COLUMN' => 'Nessuna colonna disponibile per il Totale',
@@ -217,7 +215,7 @@ $mod_strings = array (
 'LBL_DELETE_GROUP'=>'Cancella Gruppo',
 'LBL_NEW_CONDITION'=>'Nuova Condizione',
 'LBL_SHARING_TYPE'=>'Tipo di Condivisione',
-'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Seleziona il tipo di Condivisione per l\'accesso al Report', 
+'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Seleziona il tipo di Condivisione per l\'accesso al Report',
 'LBL_ACTION' => 'Azione',
 'LBL ACTION' => 'Azione',
 'ACTION' => 'Azione',
@@ -235,6 +233,7 @@ $mod_strings = array (
 'LBL_SCHEDULE_EMAIL_DESCRIPTION'=>'Programma invio di un Report a intervalli regolari via mail ad un destinatario ',
 'LBL_USERS_AVAILABEL'=> 'Destinatari',
 'LBL_REPORT_FORMAT_PDF'=> 'PDF',
+'LBL_REPORT_FORMAT_URL'=> 'URL',
 'LBL_REPORT_FORMAT_EXCEL'=> 'EXCEL',
 'LBL_REPORT_FORMAT_BOTH'=> 'Entrambi',
 'LBL_REPORT_FORMAT'=> 'Formato Report',
@@ -247,6 +246,7 @@ $mod_strings = array (
 'Monthly'=>'Mensile',
 'Annually'=>'Annuale',
 'LBL_SCHEDULE_REPORT'=>'Programma Report',
+'Recommended frequency for ScheduleReports is 15 mins' => 'Recommended frequency for ScheduleReports is 15 mins',
 'ScheduleReports'=>'Programma Report',
 'LBL_SCHEDULE_FREQUENCY'=>'Frequenza',
 'OPTION_SCHEDULE_EMAIL_CHOOSE'=>'Scegli ..... ',
@@ -259,7 +259,7 @@ $mod_strings = array (
 
 'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Questa mail viene generata automaticamente per accompagnare un report.',
 'LBL_TIME_FORMAT_MSG' => 'hh:mm (Formato 24 ore)',
-'LBL_RELOAD_REPORT' => 'Reload Report',
+'LBL_RELOAD_REPORT' => 'Ricaricare Report',
 'LBL_SAVE_REPORT' => 'Salva',
 'LBL_SAVE_REPORT_AS' => 'Salva report come...',
 
@@ -275,24 +275,24 @@ $mod_strings = array (
 'LBL_GROUPING_TIME' => 'Raggruppa per Ora',
 'LBL_WIDGET_ADDED' => 'Widget Aggiunto con Succssso.',
 'LBL_UNDEFINED' => 'Indefinito',
-'Add ReportCharts' => 'Add Report Charts',
-'Choose Report Type' => 'Choose Report Type',
-'Application Report' => 'Application Report',
-'External Application' => 'External Application',
-'Direct SQL Statement' => 'Direct SQL Statement',
+'Add ReportCharts' => 'Aggiungere grafici',
+'Choose Report Type' => 'Scegliere tipo di Report',
+'Application Report' => 'Report di applicazione',
+'External Application' => 'Applicazione esterna',
+'Direct SQL Statement' => 'Query diretta SQL',
 'Cross Tab' => 'Cross Tab',
-'Pivot Table' => 'Pivot Table',
-'External Report URL' => 'External Report URL',
-'Add User Information' => 'Add User Information',
-'Select One Field of each' => 'You can only select one field from each module for this type of report',
-'Select Only One Module' => 'You can only select one module for this type of report',
-'LBL_AGG_FIELD' => 'Aggregation Field',
-'LBL_AGG_FUNCTION_CHOOSE' => 'Select Aggregation Column and Function',
-'LBL_AGG_COLUMN' => 'Aggregation Column',
-'LBL_AGG_FUNCTION' => 'Aggregation Function',
+'Pivot Table' => 'Tabella Pivot',
+'External Report URL' => 'Report con URL esterno',
+'Add User Information' => 'Aggiungere informazione utente',
+'Select One Field of each' => 'Puoi solo scegliere un campo per ogni modulo in questo tipo di report',
+'Select Only One Module' => 'Puoi scegliere solo un modulo per questo tipo di report',
+'LBL_AGG_FIELD' => 'Campo di aggregazione',
+'LBL_AGG_FUNCTION_CHOOSE' => 'Selezionare colonna e funzione di aggregazione',
+'LBL_AGG_COLUMN' => 'Colonna di aggregazione',
+'LBL_AGG_FUNCTION' => 'Funzione di aggregazione',
 'LBL_COLUMNS_COUNT'=>'Count',
 'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Errore mentre si eliminava la cartella.',
-'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error while deleting the reports of the folder',
+'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Errore mentre si eliminivano i report della cartella',
+'ERR_CREATE_REPORT' => 'Error creating the report.',
 );
-
 ?>

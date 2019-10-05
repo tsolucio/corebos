@@ -9,7 +9,7 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-$mod_strings = Array (
+$mod_strings = array (
 	'crmtogo' => 'CRM To Go',
 	'Mobile' => 'Mobile',
 	'LBL_BACK' => 'Back',
@@ -49,7 +49,7 @@ $mod_strings = Array (
 	'COMBO_CONTACTS' => 'Contacts',
 	'COMBO_POTENTIALS' => 'Potentials',
 	'COMBO_PRODUCTS' => 'Products',
-	'COMBO_HELPDESK' => 'Trouble Tickets',
+	'COMBO_HELPDESK' => 'Support Tickets',
 	'COMBO_USERS' => 'Users',
 	'COMBO_CAMPAIGNS' => 'Campaigns',
 	'LBL_RELATED_TO'=>'Related to:',
@@ -97,10 +97,8 @@ $mod_strings = Array (
 	'LBL_THEME_COLOR_B'=>'blue',
 	'LBL_THEME_COLOR_C'=>'white',
 	'LBL_NAVI_SELECTION'=>'Maximum Page Elements:',
-
 	'LBL_COMMENTS'=>'Comments',
 	'LBL_SIGNATURE'=>'Signature',
-	
+	'LBL_DUPLICATE'=>'Duplicate',
 );
-
 ?>

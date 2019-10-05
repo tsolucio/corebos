@@ -32,6 +32,20 @@
 	<option value="" style='color: #777777' disabled>{$APP.LBL_NONE}</option>
 	{/foreach}
 </select>
+{elseif $_FIELD_UI_TYPE eq 26}
+<select id="{$_FIELD_ELEMENT_ID}" name="{$_FIELD_ELEMENT_ID}" class="small">
+	{foreach item=_FOLDERNAME key=_FOLDERID from=$_ALL_AVAILABLE_VALUES}
+	<option value="{$_FOLDERID}"
+		{if $_FOLDERID eq $_FIELD_SELECTED_VALUE}
+		selected
+		{/if}
+	>{$_FOLDERNAME|@getTranslatedString:$MODULE}
+	</option>
+	{foreachelse}
+	<option value=""></option>
+	<option value="" style='color: #777777' disabled>{$APP.LBL_NONE}</option>
+	{/foreach}
+</select>
 {else}
 <input id="{$_FIELD_ELEMENT_ID}" name="{$_FIELD_ELEMENT_ID}" type="text" class="detailedViewTextBox" value="{$_FIELD_SELECTED_VALUE}" />
 {/if}

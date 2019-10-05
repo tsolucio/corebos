@@ -98,7 +98,8 @@
 										<select id="scheduledReportFormat" name="scheduledReportFormat" class="small">
 											<option value="pdf" {if $REPORT_FORMAT eq 'pdf'} selected {/if}>{'LBL_REPORT_FORMAT_PDF'|@getTranslatedString:'Reports'}</option>
 											<option value="excel" {if $REPORT_FORMAT eq 'excel'} selected {/if}>{'LBL_REPORT_FORMAT_EXCEL'|@getTranslatedString:'Reports'}</option>
-											<option value="both" {if $REPORT_FORMAT eq 'both'} selected {/if}>{'LBL_REPORT_FORMAT_BOTH'|@getTranslatedString:'Reports'}</option>
+											<option value="both" {if $REPORT_FORMAT eq 'both'} selected {/if}>{'LBL_REPORT_FORMAT_PDF'|@getTranslatedString:'Reports'}+{'LBL_REPORT_FORMAT_EXCEL'|@getTranslatedString:'Reports'}</option>
+											<option value="url" {if $REPORT_FORMAT eq 'url'} selected {/if}>{'LBL_REPORT_FORMAT_URL'|@getTranslatedString:'Reports'}</option>
 										</select>
 									</td>
 								</tr>

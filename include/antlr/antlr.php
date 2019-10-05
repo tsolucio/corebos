@@ -1,7 +1,7 @@
 <?php
 	require 'util.php';
 	require 'Set.php';
-	
+
 	require 'IntStream.php';
 	require 'CharStream.php';
 	require 'RecognizerSharedState.php';
@@ -19,10 +19,11 @@
 	require 'MismatchedRangeException.php';
 	require 'DFA.php';
 	require 'MismatchedSetException.php';
+	require 'MismatchedNotSetException.php';
 	require 'BaseRecognizer.php';
 	require 'AntlrLexer.php';
-	
-	
-	
+	require 'FailedPredicateException.php';
+	require 'UnwantedTokenException.php';
+	require 'MismatchedTreeNodeException.php';
 	require 'AntlrParser.php';
 ?>

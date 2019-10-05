@@ -21,12 +21,13 @@ ins { text-decoration: none; background-color: #FDFF00; }
 <tr>
 	<td class="layerPopupHeading" align="left" width="70%">
 		{$TRACKRECORD->getDisplayName()}
-
+		<br><span style="float:right;">
 		{if $smarty.request.highlight eq 'true'}
 		<img src="{'public.gif'|@vtiger_imageurl:$THEME}" border=0> <a href='javascript:void(0);' style='display: inline' onclick="ModTrackerCommon.showdiff({$TRACKRECORD->id}, {$ATPOINT}, false);">{'LBL_TURN_OFF_HIGHLIGHTING'|@getTranslatedString:$MODULE}</a>
 		{else}
 		<img src="{'onstar.gif'|@vtiger_imageurl:$THEME}" border=0> <a href='javascript:void(0);' style='display: inline' onclick="ModTrackerCommon.showdiff({$TRACKRECORD->id}, {$ATPOINT}, true);">{'LBL_TURN_ON_HIGHLIGHTING'|@getTranslatedString:$MODULE}</a>
 		{/if}
+		</span>
 	</td>
 	<td align="right" width="2%" valign="top">
 		<a href='javascript:void(0);'><img src="{'close.gif'|@vtiger_imageurl:$THEME}" onclick="ModTrackerCommon.hide();" align="right" border="0"></a>
@@ -40,13 +41,13 @@ ins { text-decoration: none; background-color: #FDFF00; }
 
 	<td align="right" width="10%">
 		{if $ATPOINT_PREV neq $ATPOINT}
-			<a href='javascript:void(0);'><img src="{'previous.gif'|@vtiger_imageurl:$THEME}" onclick="ModTrackerCommon.showhistory({$TRACKRECORD->crmid},{$ATPOINT_PREV});" border="0"></a>
+			<a href='javascript:void(0);'><img src="{'previous.gif'|@vtiger_imageurl:$THEME}" onclick="ModTrackerCommon.showhistory({$TRACKRECORD->crmid},{$ATPOINT_PREV},{if $smarty.request.highlight eq 'true'}true{else}false{/if});" border="0"></a>
 		{else}
 			<a href='javascript:void(0);'><img src="{'previous_disabled.gif'|@vtiger_imageurl:$THEME}" border="0"></a>
 		{/if}
 
 		{if $ATPOINT gt 0}
-			<a href='javascript:void(0);'><img src="{'next.gif'|@vtiger_imageurl:$THEME}" onclick="ModTrackerCommon.showhistory({$TRACKRECORD->crmid},{$ATPOINT_NEXT});" border="0"></a>
+			<a href='javascript:void(0);'><img src="{'next.gif'|@vtiger_imageurl:$THEME}" onclick="ModTrackerCommon.showhistory({$TRACKRECORD->crmid},{$ATPOINT_NEXT},{if $smarty.request.highlight eq 'true'}true{else}false{/if});" border="0"></a>
 		{else}
 			<a href='javascript:void(0);'><img src="{'next_disabled.gif'|@vtiger_imageurl:$THEME}" border="0"></a>
 		{/if}
@@ -66,8 +67,8 @@ ins { text-decoration: none; background-color: #FDFF00; }
 		{foreach item=DETAIL from=$TRACKRECORD->getDetails()}
 		<tr valign=top>
 			<td class='dvtCellLabel'>{$DETAIL->getDisplayName()}</td>
-			<td class='lvtColData'>{$DETAIL->getDisplayLabelForPreValue()}</td>
-			<td class='lvtColData'>{if $smarty.request.highlight eq 'true'}{$DETAIL->diffHighlight()}{else}{$DETAIL->getDisplayLabelForPostValue()}{/if}</td>
+			<td class='lvtColData' style="word-break:break-word;">{$DETAIL->getDisplayLabelForPreValue()}</td>
+			<td class='lvtColData' style="word-break:break-word;">{if $smarty.request.highlight eq 'true'}{$DETAIL->diffHighlight()}{else}{$DETAIL->getDisplayLabelForPostValue()}{/if}</td>
 		</tr>
 		{foreachelse}
 		<tr>

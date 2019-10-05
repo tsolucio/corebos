@@ -1,14 +1,14 @@
-function parallelExecuter(executer, operationCount){
+function parallelExecuter(executer, operationCount) {
 	var parameters = [];
 	var n = 0;
 	var ctr = 0;
-	function makeParallel(operation){
+	function makeParallel(operation) {
 		var id = n;
 		n++;
-		function cookie(){
+		function cookie() {
 			parameters[id] = arguments;
 			ctr++;
-			if(ctr == operationCount){
+			if (ctr == operationCount) {
 				executer(parameters);
 			}
 		}

@@ -7,24 +7,26 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('modules/com_vtiger_workflow/VTEntityCache.inc');
-require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
+require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
+require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
+require_once 'modules/com_vtiger_workflow/VTTaskQueue.inc';
 
 class VTUpdateFieldsTask extends VTTask {
 
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
-		return array('field_value_mapping');
+		return array('field_value_mapping', 'launchrelwf');
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user, $default_charset, $log, $logbg,$from_wf;
+		global $adb, $current_user, $logbg,$from_wf;
 		$from_wf = true;
-		$logbg->info('Entering workflow task VTUpdateFieldsTask');
+		$logbg->debug('> VTUpdateFieldsTask');
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
-
+		$isqueue=$entity->isqueue;
+		$taskQueue = new VTTaskQueue($adb);
 		$moduleName = $entity->getModuleName();
 		$entityId = $entity->getId();
 		$recordId = vtws_getIdComponents($entityId);
@@ -33,96 +35,102 @@ class VTUpdateFieldsTask extends VTTask {
 		$moduleHandler = vtws_getModuleHandlerFromName($moduleName, $current_user);
 		$handlerMeta = $moduleHandler->getMeta();
 		$moduleFields = $handlerMeta->getModuleFields();
-
 		$fieldValueMapping = array();
 		if (!empty($this->field_value_mapping)) {
-			$fieldValueMapping = json_decode($this->field_value_mapping,true);
+			$fieldValueMapping = json_decode($this->field_value_mapping, true);
 		}
-
 		if (!empty($fieldValueMapping) && count($fieldValueMapping) > 0) {
-			require_once('data/CRMEntity.php');
+			include_once 'data/CRMEntity.php';
 			$focus = CRMEntity::getInstance($moduleName);
 			$focus->id = $recordId;
 			$focus->mode = 'edit';
 			$focus->retrieve_entity_info($recordId, $moduleName);
 			$focus->clearSingletonSaveFields();
-			$logbg->debug('field values pre: '.print_r($focus->column_fields,true));
-			$logbg->debug('update info: '.print_r($fieldValueMapping,true));
+			$logbg->debug('field values pre: '.print_r($focus->column_fields, true));
+			$logbg->debug('update info: '.print_r($fieldValueMapping, true));
 
 			$hold_user = $current_user;
 			$util->loggedInUser();
-			if (is_null($current_user)) $current_user = $hold_user;  // make sure current_user is defined
+			if (is_null($current_user)) {
+				$current_user = $hold_user;  // make sure current_user is defined
+			}
+			$relmodule=array();
+			$handlerMetarel[]=array();
 			foreach ($fieldValueMapping as $fieldInfo) {
 				$fieldName = $fieldInfo['fieldname'];
-				$fieldType = '';
+				$fieldmodule='';
+				$fldrelname='';
 				$fieldValueType = $fieldInfo['valuetype'];
 				$fieldValue = trim($fieldInfo['value']);
-
-				$fieldInstance = $moduleFields[$fieldName];
-				$fieldtype = $fieldInstance->getFieldDataType();
-				if ($fieldValueType == 'fieldname') {
-					if ($fieldtype === 'currency' or $fieldtype === 'double') {
-						$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue,$focus->column_fields[$fieldValue],$handlerMeta->getTabId());
+				$focusrel[]=array();
+				if (array_key_exists('fldmodule', $fieldInfo)) {
+					$fieldmodule = trim($fieldInfo['fldmodule']);
+				}
+				if (array_key_exists('fldrelname', $fieldInfo)) {
+					$fldrelname = trim($fieldInfo['fldrelname']);
+					$relId=$focus->column_fields[$fieldName];
+					$setype=getSalesEntityType($relId);
+				}
+				if ($fldrelname!='' && $relId!='' && $relId!=0) {
+					if (!in_array($fieldmodule, $relmodule) && $setype==$fieldmodule) {
+						$relmodule[]=$fieldmodule;
+						$focusrel[$fieldmodule] = CRMEntity::getInstance($fieldmodule);
+						$focusrel[$fieldmodule]->id = $relId;
+						$focusrel[$fieldmodule]->mode = 'edit';
+						$focusrel[$fieldmodule]->retrieve_entity_info($relId, $fieldmodule, false, $from_wf);
+						$focusrel[$fieldmodule]->clearSingletonSaveFields();
 					}
-					$fieldValue = $focus->column_fields[$fieldValue];
-				} elseif ($fieldValueType == 'expression') {
-					require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
-					$fieldValue = preg_replace('/<br(\s+)?\/?>/i', ' ', $fieldValue);
-					$fieldValue = str_replace("''", "' '", $fieldValue);
-					if (trim($fieldValue)=='') {
-						$fieldValue = '';
-					} else {
-						$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($fieldValue)));
-						$expression = $parser->expression();
-						$exprEvaluater = new VTFieldExpressionEvaluater($expression);
-						$fieldValue = $exprEvaluater->evaluate($entity);
+					if (count($relmodule)>3 && $isqueue==false) {
+						$delay = strtotime(' +5 minutes');
+						$taskQueue->queueTask($this->id, $entityId, $delay);
+						return;
 					}
+					$moduleHandlerrel = vtws_getModuleHandlerFromName($fieldmodule, Users::getActiveAdminUser());
+					$handlerMetarel[$fieldmodule] = $moduleHandlerrel->getMeta();
+					$moduleFieldsrel = $handlerMetarel[$fieldmodule]->getModuleFields();
+					$fieldValue=$util->fieldvaluebytype($moduleFieldsrel, $fieldValueType, $fieldValue, $fldrelname, $focus, $entity, $handlerMeta);
 				} else {
-					if ($fieldtype === 'currency' or $fieldtype === 'double') {
-						$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue,$focus->column_fields[$fieldValue],$handlerMeta->getTabId());
-					}
-					if (preg_match('/([^:]+):boolean$/', $fieldValue, $match)) {
-						$fieldValue = $match[1];
-						if ($fieldValue == 'true') {
-							$fieldValue = '1';
-						} else {
-							$fieldValue = '0';
-						}
-					}
-					if ($fieldInstance->getFieldDataType() === 'date') {
-						$date = new DateTimeField($fieldValue);
-						$fieldValue = $date->getDisplayDate();
-					}
+					$fieldValue=$util->fieldvaluebytype($moduleFields, $fieldValueType, $fieldValue, $fieldName, $focus, $entity, $handlerMeta);
 				}
-
-				if ($fieldInstance->getFieldDataType() === 'owner') {
-					$userId = getUserId_Ol($fieldValue);
-					$groupId = getGrpId($fieldValue);
-
-					if ($userId == 0 && $groupId == 0) {
-						$fieldValue = $focus->column_fields[$fieldName];
-					} else {
-						$fieldValue = ($userId == 0) ? $groupId : $userId;
-					}
+				if ($fieldmodule=='') {
+					$focus->column_fields[$fieldName] = $fieldValue;
+					$entity->data[$fieldName] = $fieldValue;
+				} else {
+					$focusrel[$fieldmodule]->column_fields[$fldrelname]=$fieldValue;
 				}
-
-				$focus->column_fields[$fieldName] = $fieldValue;
-				$entity->data[$fieldName] = $fieldValue;
 			}
-			$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields,$handlerMeta);
-			$hold_ajxaction = $_REQUEST['ajxaction'];
+
+			$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $handlerMeta);
+			$hold_ajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 			$_REQUEST['ajxaction'] = 'Workflow';
-			$logbg->debug('field values presave: '.print_r($focus->column_fields,true));
+			$logbg->debug('field values presave: '.print_r($focus->column_fields, true));
 			$focus->saveentity($moduleName);
+			if (count($relmodule)>0 && $relId!='' && $relId!=0) {
+				foreach ($relmodule as $mod) {
+					$focusrel[$mod]->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focusrel[$mod]->column_fields, $handlerMetarel[$mod]);
+					if ($this->launchrelwf) {
+						$focusrel[$mod]->save($mod);
+					} else {
+						$em = new VTEventsManager($adb);
+						// Initialize Event trigger cache
+						$em->initTriggerCache();
+						$entityData = VTEntityData::fromCRMEntity($focusrel[$mod]);
+						$em->triggerEvent('corebos.beforesave.workflow', $entityData);
+
+						$focusrel[$mod]->saveentity($mod);
+
+						$em->triggerEvent('corebos.aftersave.workflow', $entityData);
+						$em->triggerEvent('corebos.aftersave.workflow.final', $entityData);
+					}
+				}
+			}
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
 			$util->revertUser();
-			$logbg->debug('field values postsave: '.print_r($focus->column_fields,true));
+			$logbg->debug('field values postsave: '.print_r($focus->column_fields, true));
 		}
 		$util->revertUser();
 		$from_wf = false;
-		$logbg->info('Exiting workflow task VTUpdateFieldsTask');
+		$logbg->debug('< VTUpdateFieldsTask');
 	}
-
 }
-
 ?>

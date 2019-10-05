@@ -19,12 +19,12 @@
  * NOTE THIS FILE IS DEPRECATED: IT SHOULD NOT BE USED. *
  *  USE THE IMPORT/EXPORT FUNCTIONALITY INCLUDED IN THE PackageExport and PackageImport SCRIPTS
 *************************************************************************************************/
-include_once('vtlib/Vtiger/Zip.php');
+include_once 'vtlib/Vtiger/Zip.php';
 
 // Low level package tools
 class PackageTools {
 
-	static function buildModulePackage($moduleName, $buildPath) {
+	public static function buildModulePackage($moduleName, $buildPath) {
 		$fileName = $moduleName . '.zip';
 		if (is_file($buildPath . '/' . $fileName)) {
 			unlink($buildPath . '/' . $fileName);
@@ -42,21 +42,21 @@ class PackageTools {
 		// Export as Zip
 		$zip = new Vtiger_Zip($buildPath . '/' . $fileName);
 		// Add manifest file
-		$zip->addFile("modules/$moduleName/manifest.xml",'manifest.xml');
+		$zip->addFile("modules/$moduleName/manifest.xml", 'manifest.xml');
 		// Copy module directory
 		$zip->copyDirectoryFromDisk("modules/$moduleName");
 		// Copy templates directory of the module (if any)
-		if(is_dir("Smarty/templates/modules/$moduleName")) {
-			$zip->copyDirectoryFromDisk("Smarty/templates/modules/$moduleName","templates");
+		if (is_dir("Smarty/templates/modules/$moduleName")) {
+			$zip->copyDirectoryFromDisk("Smarty/templates/modules/$moduleName", "templates");
 		}
 		// Copy cron files of the module (if any)
-		if(is_dir("cron/modules/$moduleName")) {
-			$zip->copyDirectoryFromDisk("cron/modules/$moduleName","cron");
+		if (is_dir("cron/modules/$moduleName")) {
+			$zip->copyDirectoryFromDisk("cron/modules/$moduleName", "cron");
 		}
 		$zip->save();
 	}
 
-	static function buildBundlePackage($bundleName, $moduleList, $manifestData, $buildPath) {
+	public static function buildBundlePackage($bundleName, $moduleList, $manifestData, $buildPath) {
 		$fileName = $bundleName . '.zip';
 		if (is_file($buildPath . '/' . $fileName)) {
 			unlink($buildPath . '/' . $fileName);
@@ -82,16 +82,16 @@ class PackageTools {
 			$xmlModule->addChild('filepath', $moduleName . '.zip');
 			$index++;
 		}
-		$manifestDoc->asXML($tmpPath . '/' . 'manifest.xml');
+		$manifestDoc->asXML($tmpPath . '/manifest.xml');
 		$zip = new Vtiger_Zip($buildPath . '/' . $fileName);
-		$zip->addFile($tmpPath . '/' . 'manifest.xml', 'manifest.xml');
+		$zip->addFile($tmpPath . '/manifest.xml', 'manifest.xml');
 		foreach ($moduleList as $module) {
 			$zip->addFile($tmpPath . '/' . $module . '.zip', $module . '.zip');
 		}
 		$zip->save();
 	}
 
-	static function buildLangPackage($languageCode, $languageName, $buildPath) {
+	public static function buildLangPackage($languageCode, $languageName, $buildPath) {
 		$fileName = $languageName . '.zip';
 		if (is_file($buildPath . '/' . $fileName)) {
 			unlink($buildPath . '/' . $fileName);
@@ -103,20 +103,19 @@ class PackageTools {
 		// Export as Zip
 		$zip = new Vtiger_Zip($buildPath . '/' . $fileName);
 		// Add manifest file
-		$zip->addFile("include/language/{$languageCode}.manifest.xml",'manifest.xml');
+		$zip->addFile("include/language/{$languageCode}.manifest.xml", 'manifest.xml');
 		// Add calendar files
-		$zip->copyFileFromDisk('jscalendar/','jscalendar/','calendar-setup.js');
-		$zip->copyFileFromDisk('jscalendar/lang/','jscalendar/lang/','calendar-'.substr($languageCode, 0, 2).'.js');
+		$zip->copyFileFromDisk('jscalendar/', 'jscalendar/', 'calendar-setup.js');
+		$zip->copyFileFromDisk('jscalendar/lang/', 'jscalendar/lang/', 'calendar-'.substr($languageCode, 0, 2).'.js');
 		//$zip->copyFileFromDisk('modules/Emails/language/','modules/Emails/language/','phpmailer.lang-'.$languageCode.'.php');
 		// Copy module/include language files
-		foreach (glob("{modules,include}/*/language/{$languageCode}.lang.{php,js}",GLOB_BRACE) as $langfile) {
+		foreach (glob("{modules,include}/*/language/{$languageCode}.lang.{php,js}", GLOB_BRACE) as $langfile) {
 			$fname = basename($langfile);
 			$dname = dirname($langfile);
-			$zip->copyFileFromDisk($dname,$dname,$fname);
+			$zip->copyFileFromDisk($dname, $dname, $fname);
 		}
-		$zip->copyFileFromDisk('include/language/','include/language/',$languageCode.'.lang.php');
-		$zip->copyFileFromDisk('include/js/','include/js/',$languageCode.'.lang.js');
+		$zip->copyFileFromDisk('include/language/', 'include/language/', $languageCode.'.lang.php');
+		$zip->copyFileFromDisk('include/js/', 'include/js/', $languageCode.'.lang.js');
 		$zip->save();
 	}
-
 }

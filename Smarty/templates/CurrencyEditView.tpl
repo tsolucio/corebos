@@ -25,7 +25,7 @@
 			<input type="hidden" name="action" value="index">
 			<input type="hidden" name="record" value="{$ID}">
 			<tr>
-				<td width=50 rowspan=2 valign=top><img src="{'currency.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" width="48" height="48" border=0 title="{$MOD.LBL_USERS}"></td>
+				<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'currency.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" width="48" height="48" border=0 title="{$MOD.LBL_USERS}"></td>
 				<td class="heading2" valign="bottom" ><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=CurrencyListView&parenttab=Settings">{$MOD.LBL_CURRENCY_SETTINGS}</a> > 
 				{if $ID neq ''}
 					{$MOD.LBL_EDIT} &quot;{$CURRENCY_NAME}&quot;
@@ -35,7 +35,7 @@
 				</b></td>
 			</tr>
 			<tr>
-				<td valign=top class="small">{$MOD.LBL_CURRENCY_DESCRIPTION}</td>
+				<td valign=top class="small cblds-p-v_none">{$MOD.LBL_CURRENCY_DESCRIPTION}</td>
 			</tr>
 			</table>
 				<br>
@@ -49,7 +49,7 @@
 						{else}
 							<td class="big"><strong>&quot;{$MOD.LBL_NEW_CURRENCY}&quot; </strong></td>
 						{/if}
-						<td class="small" align=right>
+						<td class="small cblds-t-align_right" align=right>
 							<input title="{$APP.LBL_SAVE_BUTTON_LABEL}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmButton small save" onclick="this.form.action.value='SaveCurrencyInfo'; return validate()" type="submit" name="button" value="{$APP.LBL_SAVE_BUTTON_LABEL}" >&nbsp;&nbsp;
 							<div id="CurrencyEditLay" class="layerPopup" style="display:none;width:25%;">
 								<table width="100%" border="0" cellpadding="3" cellspacing="0" class="layerHeadingULine">
@@ -145,7 +145,7 @@
 					</table>
 					<table border=0 cellspacing=0 cellpadding=5 width=100% >
 					<tr>
-					  <td class="small" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td>
+					  <td class="small cblds-t-align_right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td>
 					</tr>
 					</table>
 				</td>

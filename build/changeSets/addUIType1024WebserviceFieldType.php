@@ -16,16 +16,17 @@
 
 class addUIType1024WebserviceFieldType extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery('insert into vtiger_ws_fieldtype(uitype,fieldtype) values(?,?)',array('1024', 'picklist'));
+			$this->ExecuteQuery('insert into vtiger_ws_fieldtype(uitype,fieldtype) values(?,?)', array('1024', 'picklist'));
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-
 }

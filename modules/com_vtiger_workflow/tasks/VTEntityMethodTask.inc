@@ -7,13 +7,17 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('modules/com_vtiger_workflow/VTEntityMethodManager.inc');
-class VTEntityMethodTask extends VTTask{
-	
+require_once 'modules/com_vtiger_workflow/VTEntityMethodManager.inc';
+
+class VTEntityMethodTask extends VTTask {
+
 	public $executeImmediately = true;
-	
-	public function getFieldNames(){return array('methodName');}
-	public function doTask(&$entityData){
+
+	public function getFieldNames() {
+		return array('methodName');
+	}
+
+	public function doTask(&$entityData) {
 		global $adb;
 		$emm = new VTEntityMethodManager($adb);
 		$emm->executeMethod($entityData, $this->methodName);

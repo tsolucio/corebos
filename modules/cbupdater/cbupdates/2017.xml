@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updatesChangeLog>
+<changeSet>
+	<author>joebordes</author>
+	<description>coreBOS Message Queue and Task Manager: Deliver After</description>
+	<filename>build/changeSets/2017/cbmqtmdbdistributordeliverafter.php</filename>
+	<classname>cbmqtmdbdistributordeliverafter</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Install Translation module</description>
+	<filename>build/changeSets/2017/installcbtranslation.php</filename>
+	<classname>installcbtranslation</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Fix Calendar Field Presence Value</description>
+	<filename>build/changeSets/2017/fixCalendarPresenceValue.php</filename>
+	<classname>fixCalendarPresenceValue</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Fix Calendar displaytype Value for location field</description>
+	<filename>build/changeSets/2017/fixCalendarLocationDisplayTypeValue.php</filename>
+	<classname>fixCalendarLocationDisplayTypeValue</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Fix Calendar relations with missing modules</description>
+	<filename>build/changeSets/2017/fixCalendarRelations.php</filename>
+	<classname>fixCalendarRelations</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Update new events created with the new module cbCalendar with vtiger_seactivityrel</description>
+	<filename>build/changeSets/2017/syncSeactivityRelWithAllRelIdOnCbCalendar.php</filename>
+	<classname>syncSeactivityRelWithAllRelIdOnCbCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>AlbanaCelepija</author>
+	<description>Add uitype 1025 MultiValued Field Webservice Type</description>
+	<filename>build/changeSets/addUIType1025WebserviceFieldType.php</filename>
+	<classname>addUIType1025WebserviceFieldType</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete Email uitype 104 (mostly for users). Use uitype 13.</description>
+	<filename>build/changeSets/2017/delEmail104uitype.php</filename>
+	<classname>delEmail104uitype</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete FieldFormula module: Use workflows.</description>
+	<filename>build/changeSets/2017/delFieldFormula.php</filename>
+	<classname>delFieldFormula</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Database optimizations and support for mass edit on solution and customer portal fields</description>
+	<filename>build/changeSets/2017/cleanoptimizedatabase_200.php</filename>
+	<classname>cleanoptimizedatabase_200</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>User Hour Field and Calendar Quick Create</description>
+	<filename>build/changeSets/2017/UserHourFieldCalendarQuickCreate.php</filename>
+	<classname>UserHourFieldCalendarQuickCreate</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Move Calendar Reports to cbCalendar module</description>
+	<filename>build/changeSets/2017/moveCalendarReport2cbCalendar.php</filename>
+	<classname>moveCalendarReport2cbCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Activate Calendar All Day option</description>
+	<filename>build/changeSets/2017/activateCalendarAllDay.php</filename>
+	<classname>activateCalendarAllDay</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Check and Restore Email Relations</description>
+	<filename>build/changeSets/2017/checkAndRestoreEmailsRelations.php</filename>
+	<classname>checkAndRestoreEmailsRelations</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Field Relation Information To Related List</description>
+	<filename>build/changeSets/2017/addRelationInformationToRelatedList.php</filename>
+	<classname>addRelationInformationToRelatedList</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Make duration calendar field visible as readonly</description>
+	<filename>build/changeSets/2017/makeDurationCalendarFieldVisible.php</filename>
+	<classname>makeDurationCalendarFieldVisible</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Fix reports and filters that have taskstatus column to replace to eventstatus</description>
+	<filename>build/changeSets/2017/fixCalendarTaskStatusToEventStatus.php</filename>
+	<classname>fixCalendarTaskStatusToEventStatus</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Mobile: Replace Calendar/Events to cbCalendar</description>
+	<filename>build/changeSets/2017/MobileReplaceCalendarTocbCalendar.php</filename>
+	<classname>MobileReplaceCalendarTocbCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Replace Calendar/Events to cbCalendar on crmentity</description>
+	<filename>build/changeSets/2017/ReplaceCalendarTocbCalendar.php</filename>
+	<classname>ReplaceCalendarTocbCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add rawparams column to the expression workflowfunctions table</description>
+	<filename>build/changeSets/2017/AddWfFunctionrawparams.php</filename>
+	<classname>AddWfFunctionrawparams</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add close action on listview calendar events</description>
+	<filename>build/changeSets/2017/addCalendarCloseAction.php</filename>
+	<classname>addCalendarCloseAction</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Make calendar Completed Status NonEditable as it is used in code</description>
+	<filename>build/changeSets/2017/calendarCompletedStatusNonEditable.php</filename>
+	<classname>calendarCompletedStatusNonEditable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Set Accounts as default module in relatedto capture field of calendar</description>
+	<filename>build/changeSets/2017/calendarSetAccountsAsDefault.php</filename>
+	<classname>calendarSetAccountsAsDefault</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>move Calendar Home Widget to cbCalendar</description>
+	<filename>build/changeSets/2017/moveCalendarHomeWidget2cbCalendar.php</filename>
+	<classname>moveCalendarHomeWidget2cbCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add needscontext column to the expression workflowfunctions table</description>
+	<filename>build/changeSets/2017/AddWfFunctionneedscontext.php</filename>
+	<classname>AddWfFunctionneedscontext</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Increment size of fieldname and fieldlabel meta-data</description>
+	<filename>build/changeSets/2017/incFieldMetadatasize.php</filename>
+	<classname>incFieldMetadatasize</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+</updatesChangeLog>

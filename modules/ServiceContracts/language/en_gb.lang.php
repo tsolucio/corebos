@@ -50,6 +50,6 @@ $mod_strings = array(
 	'Incidents' => 'Incidents',
 	'LBL_MODULE_NAME' => 'Service Contracts',
 	'ServiceContracts ID'=>'ServiceContracts ID',
-	'Service Requests'=>'Trouble Tickets',
+	'Service Requests'=>'Support Tickets',
 );
 ?>

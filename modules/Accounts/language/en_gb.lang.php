@@ -25,9 +25,6 @@ $mod_strings = array(
 	'LBL_LIST_EMAIL_ADDRESS' => 'Email Address',
 	'LBL_LIST_CONTACT_NAME' => 'Contact Name',
 	'LBL_LIST_AMOUNT' => 'Total Amount',
-	'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-	'db_website' => 'LBL_LIST_WEBSITE',
-	'db_billing_address_city' => 'LBL_LIST_CITY',
 	'LBL_ACCOUNT' => 'Organisation:',
 	'LBL_ACCOUNT_NAME' => 'Organisation Name:',
 	'LBL_PHONE' => 'Phone:',
@@ -187,6 +184,16 @@ $mod_strings = array(
 	'Accounts ID' => 'Organisations ID',
 	'Send SMS' => 'Send SMS',
 	'Projects' => 'Projects',
-	'Service Places' => 'Service Places'
+	'Service Places' => 'Service Places',
+	'LBL_ONDEMAND_CONTROL_INFORMATION' => 'On Demand Control',
+	'Start Date OD' => 'On Demand Start',
+	'End Date OD' => 'On Demand End',
+	'OD Service Active' => 'On Demand Active',
+	'OD Sync Module Active' => 'On Demand Sync Active',
+	'OD Sync Modules' => 'On Demand Sync Modules',
+	'Invoice With Tax' => 'Invoice With Tax',
+	'Free Space' => 'Free Space',
+	'Space Consumed' => 'Space Consumed',
+	'Frequency' => 'Invoice Frequency',
 );
 ?>

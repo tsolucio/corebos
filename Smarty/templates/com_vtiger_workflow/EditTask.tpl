@@ -1,7 +1,6 @@
 {include file='com_vtiger_workflow/Header.tpl'}
 <script src="modules/{$module->name}/resources/jquery.timepicker.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/functional.js" type="text/javascript" charset="utf-8"></script>
-<script src="modules/{$module->name}/resources/json2.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/fieldvalidator.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/edittaskscript.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/parallelexecuter.js" type="text/javascript" charset="utf-8"></script>
@@ -35,7 +34,7 @@
 				<td class="big" nowrap="nowrap">
 					<strong>{$MOD.LBL_SUMMARY}</strong>
 				</td>
-				<td class="small" align="right">
+				<td class="small cblds-t-align_right" align="right">
 					<input type="submit" name="{$APP.LBL_SAVE_LABEL}" class="crmButton small save" value="{$APP.LBL_SAVE_BUTTON_LABEL}" id="save">
 					<input type="button" id="edittask_cancel_button" class="crmbutton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}">
 				</td>
@@ -70,20 +69,27 @@
 			<td width='15%' nowrap="nowrap"><input type="checkbox" name="check_select_date" value="" id="check_select_date" {if !empty($trigger)}checked{/if}>
 			<b>{$MOD.MSG_EXECUTE_TASK_DELAY}</b></td>
 			<td>
+			<div class="slds-grid slds-gutters">
+				<div  class="slds-col slds-size_2-of-3">
 				<div id="select_date" {if empty($trigger)}style="display:none;"{/if}>
-					<input type="text" name="select_date_days" value="{if isset($trigger.days)}{$trigger.days}{/if}" id="select_date_days" class="small"> days
+					<input type="text" name="select_date_days" value="{if isset($trigger.days)}{$trigger.days}{/if}" id="select_date_days" class="small"> {$MOD.LBL_DAYS}
 					<select name="select_date_direction" class="small">
 						<option {if isset($trigger.direction) && $trigger.direction eq 'after'}selected{/if} value='after'>{$MOD.LBL_AFTER}</option>
 						<option {if isset($trigger.direction) && $trigger.direction eq 'before'}selected{/if} value='before'>{$MOD.LBL_BEFORE}</option>
 					</select>
 					<select name="select_date_field" class="small">
-		{foreach key=name item=label from=$dateFields}
+					{foreach key=name item=label from=$dateFields}
 						<option value='{$name}' {if isset($trigger.field) && $trigger.field eq $name}selected{/if}>
 							{$label}
 						</option>
-		{/foreach}
+					{/foreach}
 					</select>
 				</div>
+				</div>
+				<div class="slds-col slds-size_1-of-3">
+				<input type="checkbox" name="reevaluate" id="reevaluate" {if isset($task->reevaluate) && $task->reevaluate eq 1}checked{/if}>&nbsp;{$MOD.LBL_REEVALCONDITIONS}
+				</div>
+			</div>
 			</td>
 		</tr>
 		</table>
@@ -91,7 +97,7 @@
 		<table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
 		<tr>
 			<td width='100%' nowrap="nowrap">
-			{include file='com_vtiger_workflow/ListConditions.tpl' showreeval='true'}
+			{include file='com_vtiger_workflow/ListConditions.tpl' }
 			</td>
 		</tr>
 		</table>

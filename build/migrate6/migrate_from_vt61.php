@@ -199,7 +199,7 @@ foreach ($taskIdsList as $taskId => $taskModuleName) {
 $result = $adb->pquery('SELECT task_id FROM com_vtiger_workflowtasks WHERE workflow_id IN
                         (SELECT workflow_id FROM com_vtiger_workflows WHERE module_name IN (?, ?))
                         AND task LIKE ?', array('Calendar', 'Events', '%VTSendNotificationTask%'));
-$numOfRowas = $adb->num_rows($result);
+$numOfRows = $adb->num_rows($result);
 for ($i = 0; $i < $numOfRows; $i++) {
         $tm = new VTTaskManager($adb);
         $task = $tm->retrieveTask($adb->query_result($result, $i, 'task_id'));

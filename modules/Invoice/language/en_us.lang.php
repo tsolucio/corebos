@@ -1,26 +1,14 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the English language pack for Invoice module.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
- 
-$mod_strings = Array(
+
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Invoice',
 'LBL_SO_MODULE_NAME'=>'Invoice',
 'LBL_RELATED_PRODUCTS'=>'Product Details',
@@ -39,14 +27,6 @@ $mod_strings = Array(
 'LBL_LIST_PHONE'=>'Phone',
 'LBL_LIST_EMAIL_ADDRESS'=>'Email Address',
 'LBL_LIST_CONTACT_NAME'=>'Contact Name',
-
-//DON'T CONVERT THESE THEY ARE MAPPINGS
-'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-'db_website' => 'LBL_LIST_WEBSITE',
-'db_billing_address_city' => 'LBL_LIST_CITY',
-
-//END DON'T CONVERT
-
 'LBL_ACCOUNT'=>'Organization:',
 'LBL_ACCOUNT_NAME'=>'Organization Name:',
 'LBL_PHONE'=>'Phone:',
@@ -76,6 +56,7 @@ $mod_strings = Array(
 'LBL_STATE'=>'State:',
 'LBL_POSTAL_CODE'=>'Postal Code:',
 'LBL_COUNTRY'=>'Country:',
+'LBL_Invoice_FINANCIALINFO' => 'Financial Information',
 'LBL_DESCRIPTION_INFORMATION'=>'Description Information',
 'LBL_DESCRIPTION'=>'Description:',
 'LBL_TERMS_INFORMATION'=>'Terms & Conditions',
@@ -91,7 +72,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Select Organization',
 'LBL_GENERAL_INFORMATION'=>'General Information',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'New Opportunity',
 'LBL_POTENTIAL_TITLE'=>'Opportunities',
 
@@ -106,21 +86,18 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'New Contact',
 'LBL_CONTACT_TITLE'=>'Contacts',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'All',
 'LBL_PROSPECT'=>'Prospect',
 'LBL_INVESTOR'=>'Investor',
 'LBL_RESELLER'=>'Reseller',
 'LBL_PARTNER'=>'Partner',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Organization Tools',
-//Added for 4GA
 'Subject'=>'Subject',
 'Quote Name'=>'Quote Name',
 'Vendor Name'=>'Vendor Name',
 'Invoice Terms'=>'Invoice Terms',
-'Contact Name'=>'Contact Name',//to include contact name field in Invoice
+'Contact Name'=>'Contact Name',
 'Invoice Date'=>'Invoice Date',
 'Sub Total'=>'Sub Total',
 'S&H Amount' => 'S&H Amount',
@@ -158,13 +135,11 @@ $mod_strings = Array(
 'Pending'=>'Pending',
 'Account Name'=>'Organization Name',
 'Terms & Conditions'=>'Terms & Conditions',
-//Quote Info
 'LBL_INVOICE_INFORMATION'=>'Invoice Information',
 'LBL_INVOICE'=>'Invoice:',
 'LBL_SO_INFORMATION'=>'Sales Order Information',
 'LBL_SO'=>'Sales Order:',
 
-//Added in release 4.2
 'LBL_SUBJECT'=>'Subject:',
 'LBL_SALES_ORDER'=>'Sales order:',
 'LBL_MY_TOP_INVOICE'=>'My Top Open Invoice',
@@ -174,31 +149,29 @@ $mod_strings = Array(
 'Id'=>'Invoice Id',
 'Invoice'=>'Invoice',
 
-//Added for existing Picklist Entries
-
 'Created'=>'Created',
 'Approved'=>'Approved',
 'Sent'=>'Sent',
 'Credit Invoice'=>'Credit Invoice',
 'Paid'=>'Paid',
 'AutoCreated'=>'AutoCreated',
-//Added to Custom Invoice Number
 'Invoice No'=>'Invoice No',
 'Adjustment'=>'Adjustment',
 
-//Added for Reports (5.0.4)
 'Tax Type'=>'Tax Type',
 'Discount Percent'=>'Discount Percent',
 'Discount Amount'=>'Discount Amount',
 'No'=>'No',
 'Date'=>'Date',
 
-// Added affter 5.0.4 GA
-//Added for Documents module
 'Documents'=>'Documents',
 
 'SINGLE_Invoice'=>'Invoice',
 'Invoice ID'=>'Invoice ID',
-);
 
+'LBL_PARTIAL_PAYMENTS_INFO' => 'Partial Payments Information',
+'Amount Due'=>'Amount Due',
+'Amount Paid'=>'Amount Paid',
+'Total Amount'=>'Total Amount',
+);
 ?>

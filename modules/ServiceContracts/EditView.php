@@ -9,27 +9,27 @@
  ************************************************************************************/
 require_once 'modules/Vtiger/EditView.php';
 
-if(!empty($_REQUEST['service_id'])) {
+if (!empty($_REQUEST['service_id'])) {
 	$serviceObj = CRMEntity::getInstance('Services');
-	if(isRecordExists($_REQUEST['service_id'])) {
+	if (isRecordExists($_REQUEST['service_id'])) {
 		$serviceObj->retrieve_entity_info($_REQUEST['service_id'], 'Services');
 		$focus->column_fields['tracking_unit'] = $serviceObj->column_fields['service_usageunit'];
 	}
 }
-if(!empty($_REQUEST['return_id']) && !empty($_REQUEST['return_module'])) {
+if (!empty($_REQUEST['return_id']) && !empty($_REQUEST['return_module'])) {
 	$invModule = $_REQUEST['return_module'];
 	$inventoryObj = CRMEntity::getInstance($invModule);
 	$inventoryObj->retrieve_entity_info($_REQUEST['return_id'], $invModule);
-	if(empty($_REQUEST['sc_related_to'])) {
-		if(!empty($inventoryObj->column_fields['account_id'])) {
+	if (empty($_REQUEST['sc_related_to'])) {
+		if (!empty($inventoryObj->column_fields['account_id'])) {
 			$focus->column_fields['sc_related_to_type'] = 'Accounts';
 			$focus->column_fields['sc_related_to'] = $inventoryObj->column_fields['account_id'];
-		} else if(!empty($inventoryObj->column_fields['contact_id'])) {
+		} elseif (!empty($inventoryObj->column_fields['contact_id'])) {
 			$focus->column_fields['sc_related_to_type'] = 'Contacts';
 			$focus->column_fields['sc_related_to'] = $inventoryObj->column_fields['contact_id'];
 		}
 	}
 }
 
-	$smarty->display('salesEditView.tpl');
+$smarty->display('salesEditView.tpl');
 ?>

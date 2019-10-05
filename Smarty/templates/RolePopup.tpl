@@ -11,7 +11,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset={$APP.LBL_CHARSET}">
+<meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
 <title>{$CMOD.LBL_ROLES} - {$coreBOS_uiapp_name}</title>
 <link REL="SHORTCUT ICON" HREF="themes/images/blank.gif">
 <style type="text/css">@import url("themes/{$THEME}/style.css");</style>

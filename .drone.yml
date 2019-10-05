@@ -1,0 +1,12 @@
+kind: pipeline
+type: docker
+name: cbdrone
+
+steps:
+  - name: cbci
+    image: joebordes/corebosci
+    commands:
+      - phpcs.phar --standard=build/cbSR/ci.xml --extensions=inc,js,php,service `cat build/cbSR/cifiles build/cbSR/cifiles.custom`
+      - eslint -c build/cbSR/eslintci.js `cat build/cbSR/cifilesjs build/cbSR/cifilesjs.custom`
+      - find . -not -path "./.git/*" -type f -perm /u=x,g=x,o=x -print | sort -f | diff build/cbSR/executables -
+      - build/cbSR/chksyntax

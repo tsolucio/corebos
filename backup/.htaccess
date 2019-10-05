@@ -1,1 +1,7 @@
-deny from all
+<ifModule mod_authz_core.c>
+Require all denied
+</ifModule>
+
+<IfModule !mod_authz_core.c>
+Deny from all
+</ifModule>

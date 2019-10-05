@@ -2,7 +2,7 @@
 /***********************************************************
 *  Module       : VtigerBackup
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
@@ -17,6 +17,8 @@ $mod_strings = array(
 	'LBL_FTP_LOGIN_FAILED' => 'Login FTP echoué',
 	'Native Backup' => 'Backup Natif',
 	'External Backup' => 'Backup Externe',
+	'Backup with no external tools. Can easily run into memory limitations and really slow down the server. Good for smaller sets of information.' => 'Backup with no external tools. Can easily run into memory limitations and really slow down the server. Good for smaller sets of information.',
+	'Backup with external tools. mysqldump and zip must be available on server. Fast and good for big sets of information.' => 'Backup with external tools. mysqldump and zip must be available on server. Fast and good for big sets of information.',
 	'Failed to backup' => 'Le backup a échoué',
 	'FTP support is not enabled' => 'Le support FTP n\'est pas activé',
 	'Unable to connect to' => 'Impossible de se connecter à',

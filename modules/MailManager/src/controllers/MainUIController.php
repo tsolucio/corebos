@@ -13,25 +13,25 @@
  */
 class MailManager_MainUIController extends MailManager_Controller {
 
-    /**
-     * Process the request for displaying UI
-     * @global String $currentModule
-     * @param MailManager_Request $request
-     * @return MailManager_Response
-     */
-	function process(MailManager_Request $request) {
+	/**
+	* Process the request for displaying UI
+	* @global String $currentModule
+	* @param MailManager_Request $request
+	* @return MailManager_Response
+	*/
+	public function process(MailManager_Request $request) {
 		global $currentModule;
 		$response = new MailManager_Response(true);
 		$viewer = $this->getViewer();
-		if($request->getOperationArg() == "_quicklinks") {
+		$viewer->assign('SHOW_SENTTO_LINKS', GlobalVariable::getVariable('MailManager_Show_SentTo_Links', 0));
+		if ($request->getOperationArg() == '_quicklinks') {
 			$content = $viewer->fetch($this->getModuleTpl('Mainui.QuickLinks.tpl'));
-			$response->setResult( array('ui' => $content));
+			$response->setResult(array('ui' => $content));
 			return $response;
 		} else {
 			$folders = array();
 			if ($this->hasMailboxModel()) {
 				$connector = $this->getConnector();
-
 				if ($connector->hasError()) {
 					$viewer->assign('ERROR', $connector->lastError());
 				} else {
@@ -43,7 +43,7 @@ class MailManager_MainUIController extends MailManager_Controller {
 			$viewer->assign('FOLDERS', $folders);
 			$viewer->assign('MODULE', $currentModule);
 			$content = $viewer->fetch($this->getModuleTpl('Mainui.tpl'));
-			$response->setResult( array('mailbox' => $this->hasMailboxModel(), 'ui' => $content));
+			$response->setResult(array('mailbox' => $this->hasMailboxModel(), 'ui' => $content));
 			return $response;
 		}
 	}

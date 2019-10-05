@@ -38,7 +38,7 @@
 	<input type="hidden" name="account_id" value="{$ID}">
 {elseif $MODULE eq 'Contacts'}
 	<input type="hidden" name="contact_id" value="{$ID}">
-	<input type="hidden" name="account_id" value="{$accountid}">
+	<input type="hidden" name="account_id" value="{if isset($accountid)}{$accountid}{/if}">
 	<input type="hidden" name="campaignid" value="{if isset($campaignid)}{$campaignid}{/if}">
 	{if isset($HIDDEN_PARENTS_LIST)}{$HIDDEN_PARENTS_LIST}{/if}
 {elseif $MODULE eq 'Campaigns'}

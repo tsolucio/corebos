@@ -7,7 +7,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 "MyExtension" => "Mon Extension",
 "Calendar4You"=>"Agenda",
 "LBL_MODULE_NAME"=>"Agenda",
@@ -73,5 +73,8 @@ $mod_strings = Array (
 "LBL_CONNECT"=>"Authoriser et connecter",
 "LBL_GOOGLEINS"=>"Inserer de Google?",
 "LIST_MODULES" =>"Liste des Modules",
+'Gmail_ChangeAccount'=>'If you want to change the Gmail Account please clear the tokens',
+'TASKS_FINISHED' => 'Vous avez terminé votre travail, bon travail!',
+'Click2PickColor' => 'Click here to pick color',
 );
 ?>

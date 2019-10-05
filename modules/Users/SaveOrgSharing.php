@@ -7,31 +7,31 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/database/PearDatabase.php');
+require_once 'include/database/PearDatabase.php';
 global $adb;
 
-$sql2 = "select * from vtiger_def_org_share where editstatus=0";
+$sql2 = 'select * from vtiger_def_org_share where editstatus=0';
 $result2 = $adb->pquery($sql2, array());
 $num_rows = $adb->num_rows($result2);
 
-for($i=0; $i<$num_rows; $i++) {
-	$ruleid=$adb->query_result($result2,$i,'ruleid');
-	$tabid=$adb->query_result($result2,$i,'tabid');
+for ($i=0; $i<$num_rows; $i++) {
+	$ruleid=$adb->query_result($result2, $i, 'ruleid');
+	$tabid=$adb->query_result($result2, $i, 'tabid');
 	$reqval = $tabid.'_per';
 	$permission=(isset($_REQUEST[$reqval]) ? $_REQUEST[$reqval] : 2);
-	$sql7="update vtiger_def_org_share set permission=? where tabid=? and ruleid=?";
+	$sql7='update vtiger_def_org_share set permission=? where tabid=? and ruleid=?';
 	$adb->pquery($sql7, array($permission, $tabid, $ruleid));
 
-	if($tabid == 6) {
-		$sql8="update vtiger_def_org_share set permission=? where tabid=4";
+	if ($tabid == 6) {
+		$sql8='update vtiger_def_org_share set permission=? where tabid=4';
 		$adb->pquery($sql8, array($permission));
 	}
 
-	if($tabid == 9) {
-		$sql8="update vtiger_def_org_share set permission=? where tabid=16";
+	if ($tabid == 9) {
+		$sql8='update vtiger_def_org_share set permission=? where tabid=16';
 		$adb->pquery($sql8, array($permission));
 	}
 }
-$loc = "Location: index.php?action=OrgSharingDetailView&module=Settings&parenttab=Settings";
+$loc = 'Location: index.php?action=OrgSharingDetailView&module=Settings&parenttab=Settings';
 header($loc);
 ?>

@@ -6,7 +6,7 @@
  * The Initial Developer of the Original Code is vtiger
  * Portions created by JPL TSolucio, S.L are Copyright (C) JPL TSolucio, S.L.
  * All Rights Reserved.
- * This translations is based on earlier work of: 
+ * This translations is based on earlier work of:
  * - IT-Online.nl <www.it-online.nl>
  * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
@@ -28,9 +28,6 @@ $mod_strings = array(
 	'LBL_LIST_EMAIL_ADDRESS' => 'E-mailadres',
 	'LBL_LIST_CONTACT_NAME' => 'Contactnaam',
 	'LBL_LIST_AMOUNT' => 'Totale verkoopkansen',
-	'db_name' => 'Bedrijfsnaam',
-	'db_website' => 'Website',
-	'db_billing_address_city' => 'Plaats',
 	'LBL_ACCOUNT' => 'Account:',
 	'LBL_ACCOUNT_NAME' => 'Accountnaam:',
 	'LBL_PHONE' => 'Telefoon:',
@@ -99,7 +96,7 @@ $mod_strings = array(
 	'Email' => 'E-mail',
 	'Employees' => 'Werknemers',
 	'Other Email' => 'Extra e-mailadres',
-	'Ownership' => 'Eigendom',
+	'Ownership' => 'Eigenaar',
 	'Rating' => 'Beoordeling',
 	'industry' => 'Industrie',
 	'SIC Code' => 'SBI code',
@@ -209,8 +206,16 @@ $mod_strings = array(
 	'Timecontrol' => 'Urenregistratie',
 	'InventoryDetails' => 'Voorraad Details',
 	'Exact VAT Code for Account' => 'BTW code voor klant',
-	'Is Converted From Lead' => 'Is gemaakt vanuit lead',
-	'Converted From Lead' => 'Gemaakt vanuit lead',
 	'Exact Payment Condition for Account' => 'Exact betalingsconditie voor klant',
+	'LBL_ONDEMAND_CONTROL_INFORMATION' => 'On Demand Control',
+	'Start Date OD' => 'On Demand Start',
+	'End Date OD' => 'On Demand End',
+	'OD Service Active' => 'On Demand Active',
+	'OD Sync Module Active' => 'On Demand Sync Active',
+	'OD Sync Modules' => 'On Demand Sync Modules',
+	'Invoice With Tax' => 'Invoice With Tax',
+	'Free Space' => 'Free Space',
+	'Space Consumed' => 'Space Consumed',
+	'Frequency' => 'Invoice Frequency',
 );
 ?>

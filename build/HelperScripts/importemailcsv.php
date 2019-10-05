@@ -30,23 +30,23 @@
 
 $Vtiger_Utils_Log = true;
 
-include_once('vtlib/Vtiger/Module.php');
+include_once 'vtlib/Vtiger/Module.php';
 
 $current_user = Users::getActiveAdminUser();
 
 $file = $argv[1];
 
-if(!file_exists($file) || !is_readable($file)) {
+if (!file_exists($file) || !is_readable($file)) {
 	echo "No suitable file specified" . PHP_EOL;
 	die;
 }
 
-function csv_to_array($file='', $length = 0, $delimiter=',') {
-	$header = NULL;
+function csv_to_array($file = '', $length = 0, $delimiter = ',') {
+	$header = null;
 	$data = array();
-	if (($handle = fopen($file, 'r')) !== FALSE) {
-		while (($row = fgetcsv($handle, $length, $delimiter)) !== FALSE) {
-			if(!$header) {
+	if (($handle = fopen($file, 'r')) !== false) {
+		while (($row = fgetcsv($handle, $length, $delimiter)) !== false) {
+			if (!$header) {
 				$header = $row;
 			} else {
 				$data[] = array_combine($header, $row);
@@ -66,7 +66,7 @@ foreach (csv_to_array($file) as $row) {
 		echo $row['id'] . PHP_EOL;
 	} catch (WebServiceException $ex) {
 		$msg = $ex->getMessage();
-		$msg .= print_r($row,true) . "\n";
+		$msg .= print_r($row, true) . "\n";
 		error_log($msg, 3, $file . "-error.log");
 		echo $msg;
 	}

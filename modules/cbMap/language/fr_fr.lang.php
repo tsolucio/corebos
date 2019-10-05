@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'cbMap' => 'Plans d\'Affaire',
 	'SINGLE_cbMap' => 'Plan d\'Affaire',
 	'cbMap ID' => 'Plan d\'Affaire ID',
@@ -35,9 +35,17 @@ $mod_strings = Array(
 	'Record Access Control' => 'Controle d\'Accès aux Enregistrements',
 	'Record Set Mapping' => 'Mappage Enregistrements',
 	'Module Set Mapping' => 'Mappage Module',
+	'Field Set Mapping' => 'Field Set Mapping',
 	'ListColumns' => 'Colonne de Listes',
 	'DuplicateRelations' => 'Dupliquer Relations',
 	'MasterDetailLayout' => 'Master Detail Layout',
 	'Validations' => 'Validations',
+	'Detail View Layout Mapping' => 'Detail View Layout Mapping',
+	'VALIDATE_MAP'=> 'Validate Map',
+	'MAP_NOT_VALID'=> 'Map is not valid!',
+	'MAP_VALID'=> 'Map is valid',
+	'MAP_NOT_IMPLEMENTED_YET'=> 'Validation for this map has not been implemented yet',
+	'DecisionTable' => 'Decision Table',
+	'Webservice Mapping' => 'Webservice Mapping',
 );
 ?>

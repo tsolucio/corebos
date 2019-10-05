@@ -2,12 +2,12 @@
 /***********************************************************
 *  Module       : Invoice
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
-$mod_strings = array (
+$mod_strings = array(
 	'LBL_MODULE_NAME' => 'Facture',
 	'LBL_SO_MODULE_NAME' => 'Facture',
 	'LBL_RELATED_PRODUCTS' => 'Produits en relation',
@@ -25,9 +25,6 @@ $mod_strings = array (
 	'LBL_LIST_PHONE' => 'Téléphone',
 	'LBL_LIST_EMAIL_ADDRESS' => 'Email',
 	'LBL_LIST_CONTACT_NAME' => 'Nom contact',
-	'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-	'db_website' => 'LBL_LIST_WEBSITE',
-	'db_billing_address_city' => 'LBL_LIST_CITY',
 	'LBL_ACCOUNT' => 'Compte :',
 	'LBL_ACCOUNT_NAME' => 'Nom compte :',
 	'LBL_PHONE' => 'Téléphone :',
@@ -59,6 +56,7 @@ $mod_strings = array (
 	'LBL_COUNTRY' => 'Pays :',
 	'LBL_DESCRIPTION_INFORMATION' => 'Information description',
 	'LBL_DESCRIPTION' => 'Description :',
+	'LBL_Invoice_FINANCIALINFO' => 'Financial Information',
 	'LBL_TERMS_INFORMATION' => 'Conditions particulières',
 	'NTC_COPY_BILLING_ADDRESS' => 'Utiliser adresse de facturation pour la livraison',
 	'NTC_COPY_SHIPPING_ADDRESS' => 'Utiliser adresse de livraison pour la facturation',
@@ -159,5 +157,9 @@ $mod_strings = array (
 	'Valid Date' => 'Date de validité',
 	'SINGLE_Invoice'=>'Facture',
 	'Invoice ID'=>'Facture ID',
+	'LBL_PARTIAL_PAYMENTS_INFO' => 'Partial Payments Information',
+	'Amount Due'=>'Amount Due',
+	'Amount Paid'=>'Amount Paid',
+	'Total Amount'=>'Total Amount',
 );
 ?>

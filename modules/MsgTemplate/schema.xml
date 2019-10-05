@@ -1,0 +1,28 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_actions</name>
+			<sql><![CDATA[CREATE TABLE IF NOT EXISTS `vtiger_actions` (
+  `actionsid` int(11) NOT NULL DEFAULT '0',
+  `reference` varchar(100) DEFAULT NULL,
+  `actions_type` varchar(100) DEFAULT NULL,
+  `actions_status` varchar(100) DEFAULT NULL,
+  `actions_language` varchar(100) DEFAULT NULL,
+  `subject` text,
+  `template` mediumtext,
+  `templateonlytext` text,
+  `tags` text,
+  `event_type` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`actionsid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;]]></sql>
+		</table>
+		<table>
+			<name>vtiger_actionscf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_actionscf` (
+  `actionsid` int(11) NOT NULL,
+  PRIMARY KEY (`actionsid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

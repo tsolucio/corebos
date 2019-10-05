@@ -74,7 +74,7 @@
 <displaytype>1</displaytype>
 <info_type>BAS</info_type>
 <helpinfo><![CDATA[]]></helpinfo>
-<masseditable>1</masseditable>
+<masseditable>0</masseditable>
 <entityidentifier>
 <entityidfield>cbtandcid</entityidfield>
 <entityidcolumn>cbtandcid</entityidcolumn>
@@ -132,7 +132,7 @@
 <selected>0</selected>
 <sequence>4</sequence>
 <maximumlength>100</maximumlength>
-<typeofdata>T~O</typeofdata>
+<typeofdata>DT~O</typeofdata>
 <quickcreate>3</quickcreate>
 <quickcreatesequence>8</quickcreatesequence>
 <displaytype>2</displaytype>
@@ -172,7 +172,7 @@
 <selected>0</selected>
 <sequence>6</sequence>
 <maximumlength>100</maximumlength>
-<typeofdata>T~O</typeofdata>
+<typeofdata>DT~O</typeofdata>
 <quickcreate>3</quickcreate>
 <quickcreatesequence>9</quickcreatesequence>
 <displaytype>2</displaytype>

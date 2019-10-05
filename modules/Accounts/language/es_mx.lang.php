@@ -27,14 +27,6 @@ $mod_strings = array(
 'LBL_LIST_EMAIL_ADDRESS'=>'Email',
 'LBL_LIST_CONTACT_NAME'=>'Contacto',
 'LBL_LIST_AMOUNT'=>'Cantidad Total',
-
-//DON'T CONVERT THESE THEY ARE MAPPINGS
-'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-'db_website' => 'LBL_LIST_WEBSITE',
-'db_billing_address_city' => 'LBL_LIST_CITY',
-
-//END DON'T CONVERT
-
 'LBL_ACCOUNT'=>'Cuenta:',
 'LBL_ACCOUNT_NAME'=>'Nombre de la Cuenta',
 'LBL_PHONE'=>'Teléfono:',
@@ -217,15 +209,22 @@ $mod_strings = array(
 'LBL_MAILER_EXPORT_CHECKED' =>'Marcado',
 'LBL_MAILER_EXPORT_NOTCHECKED' => 'No Marcado',
 
-// Added after 5.0.4 GA
-
 //Module Sequence Numbering
 'Account No'=>'Núm. Cuenta',
-// END
 
 // Account Hierarchy
 'LBL_SHOW_ACCOUNT_HIERARCHY' => 'Mostrar Jerarquía de Cuentas',
 'Accounts ID' => 'Id Cuenta',
-);
 
+'LBL_ONDEMAND_CONTROL_INFORMATION' => 'Control Servicio Online',
+'Start Date OD' => 'Inicio Servicio Online',
+'End Date OD' => 'Fin Servicio Online',
+'OD Service Active' => 'Servicio Online Activo',
+'OD Sync Module Active' => 'Sincronización Activa',
+'OD Sync Modules' => 'Módulos a Sincronizar',
+'Invoice With Tax' => 'Factura con IVA',
+'Free Space' => 'Espacio Libre',
+'Space Consumed' => 'Espacio Consumido',
+'Frequency' => 'Frecuencia de Facturación',
+);
 ?>

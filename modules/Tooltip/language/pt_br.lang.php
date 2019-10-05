@@ -6,18 +6,18 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-* Contributor: Valmir Carlos Trindade | 30/12/2010 - www.ttcasolucoes.com.br
+ * Contributor: Valmir Carlos Trindade | 30/12/2010 - www.ttcasolucoes.com.br
+ * Contributor: Ranieri Slemer | translate missing terms | 07-apr-2018 - www.slemernet.com.br
  ********************************************************************************/
 
-$mod_strings = Array (
-'Tooltip' => 'Dica Contexto',
-'LBL_TOOLTIP_MANAGEMENT'=>'Administrar Dica Contexto',
-'LBL_TOOLTIP_MANAGEMENT_DESCRIPTION'=>'Administrar Informações Dica Contexto aqui',
+$mod_strings = array (
+'Tooltip' => 'Dica contexto',
+'LBL_TOOLTIP_MANAGEMENT'=>'Administrar dica contexto',
+'LBL_TOOLTIP_MANAGEMENT_DESCRIPTION'=>'Administrar informações dica contexto aqui',
 'LBL_FIELDS_IN'=>'Campos em',
-'LBL_TOOLTIP_HELP_TEXT'=>'Selecione os campos que você gostaria que aparecessem na Dica Contexto',
+'LBL_TOOLTIP_HELP_TEXT'=>'Selecione os campos que você gostaria que aparecessem na dica contexto',
 'LBL_FIELD'=>'Campo',
-'TooltipInfo' => 'This extension adds information hover tips on different fields on each module and is accessed in the settings of each module not directly, so you can eliminate it from the menu.',
-'No Fields Selected' => 'No Fields Selected',
+'TooltipInfo' => 'Esta extensão adiciona dicas de informação sobre campos diferentes em cada módulo e é acessada nas configurações de cada módulo não diretamente, então você pode eliminá-lo do menu.',
+'No Fields Selected' => 'Nenhum campo selecionado',
 );
-
 ?>

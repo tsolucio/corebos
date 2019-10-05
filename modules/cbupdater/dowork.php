@@ -29,10 +29,9 @@ $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
 $smarty->assign('CUSTOM_MODULE', true);
 $smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
-$smarty->assign('CATEGORY', $category);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 $smarty->assign('THEME', $theme);
-include('modules/cbupdater/forcedButtons.php');
+include 'modules/cbupdater/forcedButtons.php';
 $smarty->assign('CHECK', $tool_buttons);
 echo $smarty->fetch('Buttons_List.tpl');
 
@@ -54,7 +53,7 @@ if (!empty($ids)) {
 		$sql .= "execstate in ('Pending','Continuous')";
 	} else {
 		$ids = str_replace(';', ',', $ids);
-		$ids = trim($ids,',');
+		$ids = trim($ids, ',');
 		$sql .= $adb->sql_escape_string(" cbupdaterid in ($ids)");
 	}
 	$cbacc=$adb->getColumnNames('vtiger_cbupdater');
@@ -69,10 +68,10 @@ if (!empty($ids)) {
 			include $upd['pathfilename'];
 			if (class_exists($upd['classname'])) {
 				$updobj = new $upd['classname'];
-				if (method_exists($updobj,($whattodo == 'undo' ? 'undoChange' : 'applyChange'))) {
+				if (method_exists($updobj, ($whattodo == 'undo' ? 'undoChange' : 'applyChange'))) {
 					try {
 						$msg = '<b><a href="index.php?module=cbupdater&action=DetailView&record='.$upd['cbupdaterid'].'">';
-						$msg.= getTranslatedString('ChangeSet',$currentModule).' '.$upd['cbupd_no'].'</a>:</b> ';
+						$msg.= getTranslatedString('ChangeSet', $currentModule).' '.$upd['cbupd_no'].'</a>:</b> ';
 						$msg.= $upd['filename'].'::'.$upd['classname'];
 						if (isset($upd['description'])) {
 							$msg.= '<br>'.$upd['description'];
@@ -83,7 +82,9 @@ if (!empty($ids)) {
 						} else {
 							$updobj->applyChange();
 						}
-						if (!$updobj->updError) $totalopsok++;
+						if (!$updobj->updError) {
+							$totalopsok++;
+						}
 					} catch (Exception $e) {
 						$error = true;
 						$errmsg = $e->getMessage();
@@ -91,24 +92,24 @@ if (!empty($ids)) {
 					}
 				} else {
 					$error = true;
-					$errmsg = getTranslatedString('err_nomethod',$currentModule);
+					$errmsg = getTranslatedString('err_nomethod', $currentModule);
 					cbupdater_show_error($errmsg);
 				}
 			} else {
 				$error = true;
-				$errmsg = getTranslatedString('err_invalidclass',$currentModule);
+				$errmsg = getTranslatedString('err_invalidclass', $currentModule);
 				cbupdater_show_error($errmsg);
 			}
 		} else {
 			$error = true;
-			$errmsg = getTranslatedString('err_noupdatefile',$currentModule);
-			cbupdater_show_error($errmsg);
+			$errmsg = getTranslatedString('err_noupdatefile', $currentModule);
+			cbupdater_show_error($errmsg. ' : ' . $upd['pathfilename']);
 		}
 	}
 } else {
 	$error = true;
-	$errmsg = getTranslatedString('err_noupdatesselected',$currentModule);
+	$errmsg = getTranslatedString('err_noupdatesselected', $currentModule);
 	cbupdater_show_error($errmsg);
 }
-cbupdater_dowork_finishExecution($totalops,$totalopsok,($totalops-$totalopsok));
+cbupdater_dowork_finishExecution($totalops, $totalopsok, ($totalops-$totalopsok));
 ?>

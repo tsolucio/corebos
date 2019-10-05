@@ -80,16 +80,14 @@ function getSharingUserName($id) {
 	global $adb,$current_user;
 	$user_details=Array();
 	$assigned_user_id = $current_user->id;
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	if($is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid('Calendar')] == 3 or $defaultOrgSharingPermission[getTabid('Calendar')] == 0))
-	{
-		$role_seq = implode($parent_roles, "::");
+	$userprivs = $current_user->getPrivileges();
+	if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid('Calendar'))) {
+		$role_seq = implode($userprivs->getParentRoles(), "::");
 		$query = "select id as id,user_name as user_name from vtiger_users where id=? and status='Active' union select vtiger_user2role.userid as id,vtiger_users.user_name as user_name from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like ? and status='Active' union select shareduserid as id,vtiger_users.user_name as user_name from vtiger_tmp_write_user_sharing_per inner join vtiger_users on vtiger_users.id=vtiger_tmp_write_user_sharing_per.shareduserid where status='Active' and vtiger_tmp_write_user_sharing_per.userid=? and vtiger_tmp_write_user_sharing_per.tabid=9";
 		$params = array($current_user->id, $role_seq."::%", $current_user->id);
 		if (!empty($assigned_user_id)) {
 			$query .= " OR id=?";
-			array_push($params, $assigned_user_id);
+			$params[] = $assigned_user_id;
 		}
 		$query .= " order by user_name ASC";
 		$result = $adb->pquery($query, $params, true, "Error filling in user array: ");
@@ -120,8 +118,7 @@ function getaddEventPopupTime($starttime,$endtime,$format)
 	$timearr = Array();
 	list($sthr,$stmin) = explode(":",$starttime);
 	list($edhr,$edmin) = (!empty($endtime) ? explode(':',$endtime) : array('23','0'));
-	if($format == 'am/pm')
-	{
+	if ($format == '12' || $format == 'am/pm') {
 		$hr = $sthr+0;
 		$timearr['startfmt'] = ($hr >= 12) ? "pm" : "am";
 		if($hr == 0) $hr = 12;
@@ -133,18 +130,15 @@ function getaddEventPopupTime($starttime,$endtime,$format)
 		if($edhr == 0) $edhr = 12;
 		$timearr['endhour'] = twoDigit(($edhr>12)?($edhr-12):$edhr);
 		$timearr['endmin']  = $edmin;
-		return $timearr;
-	}
-	if($format == '24')
-	{
+	} else { // if ($format == '24') {
 		$timearr['starthour'] = twoDigit($sthr);
 		$timearr['startmin']  = $stmin;
 		$timearr['startfmt']  = '';
 		$timearr['endhour']   = twoDigit($edhr);
 		$timearr['endmin']    = $edmin;
 		$timearr['endfmt']    = '';
-		return $timearr;
 	}
+	return $timearr;
 }
 
 /**
@@ -227,7 +221,6 @@ function getTimeCombo($format,$bimode,$hour='',$min='',$fmt='',$todocheck=false)
  */
 function getActFieldCombo($fieldname,$tablename,$follow_activitytype = false) {
 	global $adb, $mod_strings,$current_user;
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	$combo = '';
 	$js_fn = '';
 	if($fieldname == 'eventstatus')
@@ -236,7 +229,7 @@ function getActFieldCombo($fieldname,$tablename,$follow_activitytype = false) {
 		$combo .= '<select name="follow_'.$fieldname.'" id="follow_'.$fieldname.'" class=small '.$js_fn.'>';
 	else
 		$combo .= '<select name="'.$fieldname.'" id="'.$fieldname.'" class=small '.$js_fn.'>';
-	if($is_admin)
+	if (is_admin($current_user))
 		$q = "select * from ".$tablename;
 	else
 	{
@@ -245,7 +238,7 @@ function getActFieldCombo($fieldname,$tablename,$follow_activitytype = false) {
 		if(count($subrole)> 0)
 		{
 			$roleids = $subrole;
-			array_push($roleids, $roleid);
+			$roleids[] = $roleid;
 		}
 		else
 		{
@@ -278,36 +271,26 @@ function getAssignedTo($tabid)
 {
 	global $current_user,$noof_group_rows,$adb;
 	$assigned_user_id = $current_user->id;
-	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	if($is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabid] == 3 or $defaultOrgSharingPermission[$tabid] == 0))
+	$userprivs = $current_user->getPrivileges();
+	if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing($tabid))
 	{
 		$result=get_current_user_access_groups('Calendar');
-	}
-	else
-	{
-		$result = get_group_options();
-	}
-	if($result) $nameArray = $adb->fetch_array($result);
-
-	if($is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[$tabid] == 3 or $defaultOrgSharingPermission[$tabid] == 0))
-	{
 		$users_combo = get_select_options_array(get_user_array(FALSE, "Active", $assigned_user_id,'private'), $assigned_user_id);
 	}
 	else
 	{
+		$result = get_group_options();
 		$users_combo = get_select_options_array(get_user_array(FALSE, "Active", $assigned_user_id), $assigned_user_id);
 	}
-	if($noof_group_rows!=0)
-	{
-		do
-		{
+	if ($result) $nameArray = $adb->fetch_array($result);
+
+	if ($noof_group_rows!=0) {
+		do {
 			$groupname=$nameArray["groupname"];
 			$group_option[] = array($groupname=>$selected);
-
-		}while($nameArray = $adb->fetch_array($result));
+		} while($nameArray = $adb->fetch_array($result));
 	}
-	$fieldvalue[]=$users_combo;
+	$fieldvalue[] = $users_combo;
 	$fieldvalue[] = $group_option;
 	return $fieldvalue;
 }
@@ -322,7 +305,7 @@ function getActivityDetails($description,$user_id,$from='') {
 	global $log,$current_user,$current_language,$adb;
 	require_once 'include/utils/utils.php';
 	$mod_strings = return_module_language($current_language, 'Calendar');
-	$log->debug("Entering getActivityDetails(".$description.") method ...");
+	$log->debug("Entering getActivityDetails() method ...");
 	$updated = $mod_strings['LBL_UPDATED'];
 	$created = $mod_strings['LBL_CREATED'];
 	$reply = (($description['mode'] == 'edit')?"$updated":"$created");
@@ -355,7 +338,7 @@ function getActivityDetails($description,$user_id,$from='') {
 	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$end_date_lable.' : '.$etdatetime->getDisplayDateTimeValue($inviteuser).' '.$inviteuser->column_fields['time_zone'];
 	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["LBL_STATUS"].': '.$status;
 	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["Priority"].': '.getTranslatedString($description['taskpriority']);
-	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["Related To"].': '.getTranslatedString($description['relatedto']);
+	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings['Related To'].': '.$description['relatedto'];
 	if(!empty($description['contact_name'])) {
 		$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["LBL_CONTACT_LIST"].' '.$description['contact_name'];
 	} else {
@@ -376,9 +359,13 @@ function twoDigit( $no ){
 
 function timeString($datetime,$fmt){
 	if (is_object($datetime)) {
-		$dateStr = $datetime->year."-".twoDigit($datetime->month)."-".twoDigit($datetime->day);
+		$dateStr = (isset($datetime->year) ? $datetime->year : date('Y')) . '-';
+		$dateStr.= (isset($datetime->month) ? twoDigit($datetime->month) : twoDigit(date('m'))) . '-';
+		$dateStr.= (isset($datetime->day) ? twoDigit($datetime->day) : twoDigit(date('d')));
 	} else {
-		$dateStr = $datetime['year']."-".twoDigit($datetime['month'])."-".twoDigit($datetime['day']);
+		$dateStr = (isset($datetime['year']) ? $datetime['year'] : date('Y')) . '-';
+		$dateStr.= (isset($datetime['month']) ? twoDigit($datetime['month']) : twoDigit(date('m'))) . '-';
+		$dateStr.= (isset($datetime['day']) ? twoDigit($datetime['day']) : twoDigit(date('d')));
 	}
 	$timeStr = formatUserTimeString($datetime, $fmt);
 	$date = new DateTimeField($dateStr." ".$timeStr);

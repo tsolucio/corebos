@@ -8,12 +8,12 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-include_once dirname(__FILE__) . '/FetchModuleFilters.php';
+include_once __DIR__ . '/FetchModuleFilters.php';
 include_once 'modules/CustomView/CustomView.php';
 
 class crmtogo_WS_FilterDetailsWithCount extends crmtogo_WS_FetchModuleFilters {
-	
-	function process(crmtogo_API_Request $request) {
+
+	public function process(crmtogo_API_Request $request) {
 		$response = new crmtogo_API_Response();
 		$filterid = $request->get('filterid');
 		$current_user = $this->getActiveUser();
@@ -22,10 +22,10 @@ class crmtogo_WS_FilterDetailsWithCount extends crmtogo_WS_FetchModuleFilters {
 		$response->setResult($result);
 		return $response;
 	}
-	
+
 	protected function getModuleFilterDetails($filterid) {
 		$db = PearDatabase::getInstance();
-		$result = $db->pquery("SELECT * FROM vtiger_customview WHERE cvid=?", array($filterid));
+		$result = $db->pquery('SELECT * FROM vtiger_customview WHERE cvid=?', array($filterid));
 		if ($result && $db->num_rows($result)) {
 			$resultrow = $db->fetch_array($result);
 			$module = $resultrow['entitytype'];
@@ -35,7 +35,7 @@ class crmtogo_WS_FilterDetailsWithCount extends crmtogo_WS_FetchModuleFilters {
 			$viewQuery = $view->getModifiedCvListQuery($viewid, getListQuery($module), $module);
 			$countResult = $db->pquery(mkCountQuery($viewQuery), array());
 			$count = 0;
-			if($countResult && $db->num_rows($countResult)) {
+			if ($countResult && $db->num_rows($countResult)) {
 				$count = $db->query_result($countResult, 0, 'count');
 			}
 			$filter = $this->prepareFilterDetailUsingResultRow($resultrow);

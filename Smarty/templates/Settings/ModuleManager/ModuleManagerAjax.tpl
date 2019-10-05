@@ -12,9 +12,11 @@
 <table class="small" width="100%" cellpadding=2 cellspacing=0 border=0>
 <tr>
 	<td class="big tableHeading" colspan=5 width="10%" align="right">
+{if !$coreBOSOnDemandActive}
 		<form style="display: inline;" action="index.php?module=Settings&action=ModuleManager&module_import=Step1&parenttab=Settings" method="POST">
 			<input type="submit" class="crmbutton small create" value='{$APP.LBL_IMPORT} {$APP.LBL_NEW}' title='{$APP.LBL_IMPORT}'>
 		</form>
+{/if}
 	</td>
 </tr>
 <td colspan="2" valign="top">
@@ -62,7 +64,9 @@
 		<td class="cellText small"><img src="{'text.gif'|@vtiger_imageurl:$THEME}" border=0"></td>
 		<td class="cellLabel small" onclick="location.href='index.php?module=Settings&action=LanguageEdit&parenttab=Settings&languageid={$langinfo.id}';">{$langinfo.label}</td>
 		<td class="cellText small" width="15px" align=center>
+		{if !$coreBOSOnDemandActive}
 			<a href="index.php?module=Settings&action=ModuleManager&module_update=Step1&src_module={$langprefix}&parenttab=Settings"><img src="{'reload.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_UPGRADE} {$langinfo.label}" title="{$MOD.LBL_UPGRADE} {$langinfo.label}"></a>
+		{/if}
 		</td>
 		<td class="cellText small" width="15px" align=center>
 		{if $langprefix neq 'en_us'}
@@ -76,7 +80,9 @@
 		{/if}
 		</td>
 		<td class="cellText small" width="15px" align=center>
+		{if !$coreBOSOnDemandActive}
 			<a href="index.php?modules=Settings&action=ModuleManagerExport&module_export={$langprefix}"><img src="themes/images/webmail_uparrow.gif" border="0" align="absmiddle" alt="{$APP.LBL_EXPORT} {$langinfo.label}" title="{$APP.LBL_EXPORT} {$langinfo.label}"></a>
+		{/if}
 		</td>
 		<td class="cellText small" width="10px" align=left>
 			<a href="index.php?module=Settings&action=LanguageEdit&parenttab=Settings&languageid={$langinfo.id}"><img src="{'Settings.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$langinfo.label} {'LBL_SETTINGS'|@getTranslatedString}" title="{$langinfo.label} {'LBL_SETTINGS'|@getTranslatedString}"></a>
@@ -106,7 +112,9 @@
 		<td class="cellText small" width="20px"><img src="{'uparrow.gif'|@vtiger_imageurl:$THEME}" border="0"></td>
 		<td class="cellLabel small"{if $modinfo.presence eq 0 && $modinfo.hassettings} onclick="location.href='index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$modulename}&parenttab=Settings';"{/if}>{$modulelabel}</td>
 		<td class="cellText small" width="15px" align=center>
+		{if !$coreBOSOnDemandActive}
 			<a href="index.php?module=Settings&action=ModuleManager&module_update=Step1&src_module={$modulename}&parenttab=Settings"><img src="{'reload.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_UPGRADE} {$modulelabel}" title="{$MOD.LBL_UPGRADE} {$modulelabel}"></a>
+		{/if}
 		</td>
 		<td class="cellText small" width="15px" align=center>
 		{if $modinfo.presence eq 0}
@@ -116,9 +124,9 @@
 		{/if}
 		</td>
 		<td class="cellText small" width="15px" align=center>
-			{if $modulename eq 'Calendar' || $modulename eq 'Home'}
+			{if $modulename eq 'Home'}
 				<img src="{'menuDnArrow.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle">
-			{else}
+			{elseif !$coreBOSOnDemandActive}
 				<a href="index.php?modules=Settings&action=ModuleManagerExport&module_export={$modulename}"><img src="{'webmail_uparrow.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$APP.LBL_EXPORT} {$modulelabel}" title="{$APP.LBL_EXPORT} {$modulelabel}"></a>
 			{/if}
 		</td>

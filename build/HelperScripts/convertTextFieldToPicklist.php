@@ -14,38 +14,37 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 $Vtiger_Utils_Log = true;
-include_once('vtlib/Vtiger/Module.php');
+include_once 'vtlib/Vtiger/Module.php';
 
 $fieldname=vtlib_purify($_REQUEST['fieldname']);
 $module=vtlib_purify($_REQUEST['module']);
 global $adb,$log;
-if(!empty($fieldname) && !empty($module)){
+if (!empty($fieldname) && !empty($module)) {
 	$moduleInstance = Vtiger_Module::getInstance($module);
-	if($moduleInstance) {
-		$field = Vtiger_Field::getInstance($fieldname,$moduleInstance);
+	if ($moduleInstance) {
+		$field = Vtiger_Field::getInstance($fieldname, $moduleInstance);
 		if ($field) {
-			$data =$adb->pquery('SELECT uitype,tablename FROM vtiger_field WHERE fieldid = ? and tabid=?',array($field->id,$moduleInstance->id));
-			$uitype =$adb->query_result($data,0,'uitype');
+			$data =$adb->pquery('SELECT uitype,tablename FROM vtiger_field WHERE fieldid = ? and tabid=?', array($field->id,$moduleInstance->id));
+			$uitype =$adb->query_result($data, 0, 'uitype');
 			if ($uitype==1) {
-				$table =$adb->query_result($data,0,'tablename');
+				$table =$adb->query_result($data, 0, 'tablename');
 				$adb->query("update $table set $fieldname = '--None--' where $fieldname is null or trim($fieldname)=''");
 				$picklistvalues=$adb->query("Select distinct $fieldname from $table");
 				$list=array();
-				for($i=0;$i<$adb->num_rows($picklistvalues);$i++){
-					$list[]=$adb->query_result($picklistvalues,$i,$fieldname);
+				for ($i=0; $i<$adb->num_rows($picklistvalues); $i++) {
+					$list[]=$adb->query_result($picklistvalues, $i, $fieldname);
 				}
-				$adb->pquery('update vtiger_field set uitype=15 where fieldid=? and tabid=?',array($field->id,$moduleInstance->id));
+				$adb->pquery('update vtiger_field set uitype=15 where fieldid=? and tabid=?', array($field->id,$moduleInstance->id));
 				$field->setPicklistValues($list);
-			}else{
-				echo "<b>The field $field should be uitype 1.</b><br>";
+			} else {
+				echo "<b>The field $fieldname should be uitype 1.</b><br>";
 			}
+		} else {
+			echo "<b>Failed to find $fieldname field.</b><br>";
 		}
-		else{
-			echo "<b>Failed to find $field field.</b><br>";
-		}
-	}else{
+	} else {
 		echo "<b>Failed to find $module module.</b><br>";
 	}
-}else{
+} else {
 	echo "<b>The fieldname and module parameters couldn't be empty</b><br>";
 }

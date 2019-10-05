@@ -9,13 +9,13 @@
  ************************************************************************************/
 require_once 'modules/Vtiger/EditView.php';
 
-if(isset($_REQUEST['product_id'])) {
+if (isset($_REQUEST['product_id'])) {
 	$smarty->assign('PRODUCTID', vtlib_purify($_REQUEST['product_id']));
 }
 
-if(!empty($_REQUEST['record'])) {
+if (!empty($_REQUEST['record'])) {
 	//Added to display the ticket comments information
-	$smarty->assign('COMMENT_BLOCK',$focus->getCommentInformation(vtlib_purify($_REQUEST['record'])));
+	$smarty->assign('COMMENT_BLOCK', $focus->getCommentInformation(vtlib_purify($_REQUEST['record'])));
 }
 
 $smarty->display('salesEditView.tpl');

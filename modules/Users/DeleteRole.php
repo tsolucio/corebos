@@ -7,9 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once 'modules/Users/Role.php';
-require_once ('config.php');
+require_once 'config.inc.php';
 global $adb;
 $del_id = vtlib_purify($_REQUEST['delete_role_id']);
 $tran_id = vtlib_purify($_REQUEST['user_role']);
@@ -18,5 +17,5 @@ $role = Vtiger_Role::getInstanceById($del_id);
 $targetRole = Vtiger_Role::getInstanceById($tran_id);
 $role->delete($targetRole);
 
-header("Location: index.php?action=listroles&module=Settings");
+header('Location: index.php?action=listroles&module=Settings');
 ?>

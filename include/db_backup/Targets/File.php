@@ -13,12 +13,12 @@ class File extends Response {
 	private $defaultPath;
 	private $filePath = null;
 
-	public function __construct($dbConfig, $fileName=null, $supportUTF8 = true) {
+	public function __construct($dbConfig, $fileName = null, $supportUTF8 = true) {
 		parent::__construct($dbConfig, $supportUTF8);
 		$this->defaultPath = 'backup'.DIRECTORY_SEPARATOR;
-		if(empty($fileName)) {
+		if (empty($fileName)) {
 			$this->filePath = $this->getDefaultFilePath();
-		}else{
+		} else {
 			$folder = $this->getDefaultFolderPath();
 			$this->filePath = $folder.$fileName;
 		}
@@ -26,8 +26,7 @@ class File extends Response {
 
 	private function getDefaultFolderPath() {
 		require 'config.inc.php';
-		$rootPath = (strrpos($root_directory, DIRECTORY_SEPARATOR) !== false)? $root_directory.
-				DIRECTORY_SEPARATOR:$root_directory;
+		$rootPath = (strrpos($root_directory, DIRECTORY_SEPARATOR) !== strlen($root_directory) - 1) ? $root_directory.DIRECTORY_SEPARATOR : $root_directory;
 		$rootPath = $this->fixPathSeparator($rootPath);
 		return $rootPath.$this->defaultPath;
 	}
@@ -35,15 +34,14 @@ class File extends Response {
 	public function fixPathSeparator($path) {
 		$start = 0;
 		do {
-			$done = false;
-			$index = strpos($path, '/',$start);
+			$index = strpos($path, '/', $start);
 			$start = $index + 1;
-			if($index != false && $path[$index - 1] == '\\'.DIRECTORY_SEPARATOR) {
+			if ($index != false && $path[$index - 1] == '\\'.DIRECTORY_SEPARATOR) {
 				continue;
-			}else if($index != false){
+			} elseif ($index != false) {
 				$path[$index] = DIRECTORY_SEPARATOR;
 			}
-		}while($index != false);
+		} while ($index != false);
 		return $path;
 	}
 
@@ -58,7 +56,7 @@ class File extends Response {
 	}
 
 	protected function writeLine($string) {
-		fwrite($this->file,$string."\n");
+		fwrite($this->file, $string."\n");
 	}
 
 	public function finishBackup() {
@@ -69,6 +67,5 @@ class File extends Response {
 	public function getFilePath() {
 		return $this->filePath;
 	}
-
 }
 ?>

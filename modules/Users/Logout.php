@@ -1,37 +1,32 @@
 <?php
 /*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the 
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+** The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/logging.php');
-require_once('modules/Users/LoginHistory.php');
-require_once('modules/Users/Users.php');
-require_once('config.php');
-require_once('include/database/PearDatabase.php');
-require_once('include/utils/Session.php');
+require_once 'include/logging.php';
+require_once 'modules/Users/LoginHistory.php';
+require_once 'modules/Users/Users.php';
+require_once 'include/database/PearDatabase.php';
+require_once 'include/utils/Session.php';
 global $adb,$current_user;
 
 // Recording Logout Info
 $usip = Vtiger_Request::get_ip();
 $outtime=date("Y/m/d H:i:s");
 $loghistory=new LoginHistory();
-$loghistory->user_logout($current_user->user_name,$usip,$outtime);
+$loghistory->user_logout($current_user->user_name, $usip, $outtime);
+
+coreBOS_Settings::delSetting('cbodUserConnection'.$current_user->id);
 
 $local_log = LoggerManager::getLogger('Logout');
 
 // clear out the autthenticating flag
 coreBOS_Session::destroy();
 
-define("IN_LOGIN", true);
-
 // go to the login screen.
-header("Location: index.php?action=Login&module=Users");
+header('Location: index.php?action=Login&module=Users');
 ?>

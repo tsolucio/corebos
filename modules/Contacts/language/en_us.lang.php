@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Contacts',
 'LBL_INVITEE'=>'Direct Reports',
 'LBL_MODULE_TITLE'=>'Contacts: Home',
@@ -35,7 +35,7 @@ $mod_strings = Array(
 'db_email1' => 'LBL_LIST_EMAIL_ADDRESS',
 'db_email2' => 'LBL_LIST_EMAIL_ADDRESS',
 //END DON'T CONVERT
-	
+
 'LBL_EXISTING_CONTACT' => 'Used an existing contact',
 'LBL_CREATED_CONTACT' => 'Created a new contact',
 'LBL_EXISTING_ACCOUNT' => 'Used an existing organization',
@@ -100,9 +100,6 @@ $mod_strings = Array(
 //Added for search heading
 'LBL_GENERAL_INFORMATION'=>'General Information',
 
-
-
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'New Opportunity',
 'LBL_POTENTIAL_TITLE'=>'Opportunities',
 
@@ -117,7 +114,6 @@ $mod_strings = Array(
 'LBL_NEW_NOTE'=>'New Document',
 'LBL_NOTE_TITLE'=>'Documents',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Contact Tools',
 
 'Salutation'=>'Salutation',
@@ -229,6 +225,68 @@ $mod_strings = Array(
 'Contacts ID'=>'Contacts ID',
 'LBL_SHOW_CONTACT_HIERARCHY' => 'Show Contact Hierarchy',
 'LBL_CONTACT_HIERARCHY' => 'Contact Hierarchy',
+'GOOGLE_CONTACTS' => 'Google Contacts',
+'LBL_UPDATES_CRM'	=>	"Updates in CRM",
+'LBL_UPDATES_GOOGLE'	=>	"Updates in Google",
+'LBL_UPDATED'	=>	"Updated",
+'LBL_ADDED'	=>	"Added",
+'LBL_DELETED'	=>	"Deleted",
+'LBL_SYNCRONIZED'	=>	"Synchronized",
+'LBL_NOT_SYNCRONIZED'	=>	"You have not synchronized yet",
+'LBL_SYNC_BUTTON'	=>	"Synchronize Now",
+'LBL_REMOVE_SYNC'	=>	"Remove Sync",
+'LBL_MORE_VTIGER'	=>	"There are more records to be synchronized in the application",
+'LBL_MORE_GOOGLE'	=>	"There are more records to be synchronized in Google Contacts",
+'SYNC_SETTINGS' => 'Sync Settings',
+'LBL_SELECT_GOOGLE_GROUP_TO_SYNC' => 'Select Google Group',
+'LBL_ADD_CUSTOM_FIELD_MAPPING' => 'Add Custom Mapping',
+'LBL_EMAIL' => 'Email',
+'LBL_URL' => 'Url',
+'LBL_CUSTOM' => 'Custom',
+'LBL_SELECT_SYNC_DIRECTION' => 'Select Sync Direction',
+'LBL_BI_DIRECTIONAL_SYNC' => 'Sync both ways',
+'LBL_ONLY_SYNC_FROM_GOOGLE_TO_VTIGER' => 'From Google to Application only',
+'LBL_ONLY_SYNC_FROM_VTIGER_TO_GOOGLE' => 'From Application to Google only',
+'Company' => 'Company',
+'Birthday' => 'Birthday',
+'Phone' => 'Phone',
+'URL' => 'Url',
+'home' => 'Home',
+'work' => 'Work',
+'custom' => 'Custom',
+'mobile' => 'Mobile',
+'main' => 'Main',
+'work_fax' => 'Fax',
+'home_fax' => 'Home Fax',
+'pager' => 'Pager',
+'profile' => 'Profile',
+'blog' => 'Blog',
+'home-page' => 'Homepage',
+'LBL_SIGN_IN_WITH_GOOGLE' => 'Sign in with Google',
+'phone' => 'Phone',
+'email' => 'Email',
+'url' => 'Url',
+'EXTENTIONNAME'=>'Google',
+'Name_Prefix' => 'Name Prefix',
+'First_Name' => 'First Name',
+'Last_Name' => 'Last Name',
+'Job_Title' => 'Job Title',
+'Organization_Name' => 'Organization Name',
+'Date_of_Birth'=>'Date of Birth',
+'Secondary_Email'=>'Secondary email',
+'Mobile_Phone'=>'Mobile Phone',
+'Office_Phone'=>'Office Phone',
+'Home_Phone' => 'Home Phone',
+'Mailing_Address' => 'Mailing Address',
+'Other_Address' => 'Other Address',
+'Note' => 'Note',
+'LOGOUT_GOOGLE_TITLE'=>'Change the default google account authorization in order to sign in with a new account',
+'LOGOUT_GOOGLE'=>'Log Out from Google',
+'SYNC_NOW_TITLE'=>'Start the Sync with Google according to the User Settings',
+'SIGN_IN_TITLE'=>'Sign In to the google account to authorize the Sync Process',
+'SYNC_SETT_TITLE'=>'Set default user parameters for the Sync Process',
+'SYNC_RESULTS'=>'Sync Results',
+'ERR_GContactsSync'=>'There has been an error accessing Google. The settings have been deleted, please configure the access again.',
+'Template Language' => 'Template Language',
 );
-
 ?>

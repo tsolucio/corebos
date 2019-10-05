@@ -12,28 +12,9 @@
 <script type="text/javascript" src="include/js/ListView.js"></script>
 <script type='text/javascript' src='include/js/Merge.js'></script>
 <script type='text/javascript' src='modules/RecycleBin/language/{$LANGUAGE}.lang.js'></script>
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 {include file='Buttons_List.tpl'}
-					<div id="searchingUI" style="display:none;">
-						<table border=0 cellspacing=0 cellpadding=0 width=100%>
-							<tr>
-								<td align=center>
-									<img src="{'searching.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SEARCHING}"  title="{$APP.LBL_SEARCHING}">
-								</td>
-							</tr>
-						</table>
-					</div>
-				</td>
-			</tr>
-		</table>
-	</td>
-</tr>
-</table>
-
 {*<!-- Contents -->*}
-
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
-
 <tr><td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 	<td class="showPanelBg" valign="top" width=100% style="padding:10px;">
 
@@ -63,7 +44,7 @@
 					<td class="small" nowrap>
 						<input name="submit" type="button" class="crmbutton small create" onClick="callRBSearch('Basic');" value=" {$APP.LBL_SEARCH_NOW_BUTTON} ">&nbsp;
 					</td>
-					<td class="small" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="moveMe('searchAcc');searchshowhide('searchAcc','')">[x]</td>
+					<td class="small" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="searchshowhide('searchAcc','')">[x]</td>
 				</tr>
 				<tr>
 					<td colspan="7" align="center" class="small">
@@ -109,7 +90,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td align="center">
+			<td align="center" class="cblds-t-align_center">
 				<input type="button" onclick="return emptyRecyclebin('rb_empty_conf_id');" value="{$APP.LBL_YES}"/>
 				<input type="button" onclick="document.getElementById('rb_empty_conf_id').style.display='none';" value="{$APP.LBL_NO}"/>
 			</td>

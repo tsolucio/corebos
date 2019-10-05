@@ -16,7 +16,7 @@
 			<td width="60%" align="left" class="layerPopupHeading">
 				{$MOD.LBL_CREATE_TASK}
 				</td>
-			<td width="40%" align="right">
+			<td width="40%" class="cblds-t-align_right" align="right">
 				<a href="javascript:void(0);" id="new_task_popup_close">
 					<img border="0" align="middle" src="{'close.gif'|@vtiger_imageurl:$THEME}"/>
 				</a>
@@ -24,7 +24,7 @@
 		</tr>
 	</table>
 
-	<form action="index.php" method="get" accept-charset="utf-8" onsubmit="VtigerJS_DialogBox.block();">
+	<form action="index.php" method="post" accept-charset="utf-8" onsubmit="VtigerJS_DialogBox.block();">
 		<div class="popup_content" align="left">
 			{$MOD.LBL_CREATE_TASK_OF_TYPE}
 			<select name="task_type" class="small">
@@ -42,7 +42,7 @@
 			<input type="hidden" name="workflow_id" value="{$workflow->id}">
 		</div>
 		<table width="100%" cellspacing="0" cellpadding="5" border="0" class="layerPopupTransport">
-			<tr><td align="center">
+			<tr><td class="cblds-t-align_center" align="center">
 				<input type="submit" class="crmButton small save" value="{$APP.LBL_CREATE_BUTTON_LABEL}" name="save" id='new_task_popup_save'/>
 				<input type="button" class="crmButton small cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL} " name="cancel" id='new_task_popup_cancel'/>
 			</td></tr>

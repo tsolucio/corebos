@@ -8,7 +8,7 @@
 *  Author       : JPL TSolucio, S.L.
 *  License      : MPL 1.1
 *  *********************************************************/
-$mod_strings = Array(
+$mod_strings = array(
 'CobroPago'=>'Cobros Pagos',
 'CobroPago ID'=>'ID Cobro Pago',
 'SINGLE_CobroPago'=>'Cobro Pago',
@@ -24,7 +24,6 @@ $mod_strings = Array(
 'LBL_PRODUCT_NAME'=>'Producto',
 'LBL_LIST_AMOUNT'=>'Cantidad',
 
-'LBL_COBROPAGO_NAME'=>'Referencia:',
 'LBL_ACCOUNT_NAME'=>'Cuenta:',
 'LBL_AMOUNT'=>'Cantidad:',
 'LBL_TYPE'=>'Tipo:',
@@ -66,11 +65,7 @@ $mod_strings = Array(
 'Category'=>'Categoría pago',
 'CobroPago Type'=>'Tipo Pago',
 'Type'=>'Tipo',
-'Assigned To'=>'Asignado a',
 'Probability'=>'Probabilidad (%)',
-'Description'=>'Descripción',
-'Created Time'=>'Fecha Creación',
-'Modified Time'=>'Fecha Modificación',
 'cobropagoid'=>'Id Cobro Pago',
 'DueDate'=>'Fecha Vencimiento',
 'Comercial'=>'Usuario relacionado',
@@ -111,6 +106,10 @@ $mod_strings = Array(
 'ERR_ALREADY_PAID' => "Este cobro ya ha sido pagado.",
 'ERR_NO_ACCOUNT' => "Este cobro no tiene una cuenta asociada.",
 'ERR_NO_TOKEN' => "La cuenta asociada no tiene un token de pago.",
+'Pay' => 'Pagar',
+'Invalid payment.' => 'Pago Inválido.',
+'Payment done.' => 'Pago Correcto.',
+'Redirecting to payment gateway...' => 'Enviando a pasarela de pago...',
+'Payment error.' => 'Error en Pago.',
 );
-
 ?>

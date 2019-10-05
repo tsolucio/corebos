@@ -7,47 +7,47 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-include_once('config.php');
-require_once('include/logging.php');
-require_once('include/logging.php');
-require_once('include/ListView/ListView.php');
-require_once('include/database/PearDatabase.php');
+include_once 'config.inc.php';
+require_once 'include/logging.php';
+require_once 'include/logging.php';
+require_once 'include/ListView/ListView.php';
+require_once 'include/database/PearDatabase.php';
 
 /** This class is used to track all the operations done by the particular User while using vtiger crm.
  *  It is intended to be called when the check for audit trail is enabled.
  **/
-class AuditTrail{
+class AuditTrail {
 
-	var $log;
-	var $db;
+	public $log;
+	public $db;
 
-	var $auditid;
-	var $userid;
-	var $module;
-	var $action;
-	var $recordid;
-	var $actiondate;
+	public $auditid;
+	public $userid;
+	public $module;
+	public $action;
+	public $recordid;
+	public $actiondate;
 
-	var $module_name = "Settings";
-	var $table_name = "vtiger_audit_trial";
+	public $module_name = 'Settings';
+	public $table_name = 'vtiger_audit_trial';
 
-	function __construct() {
+	public function __construct() {
 		$this->log = LoggerManager::getLogger('audit_trial');
 		$this->db = PearDatabase::getInstance();
 	}
 
-	var $sortby_fields = Array('module', 'action', 'actiondate', 'recordid');
+	public $sortby_fields = array('module', 'action', 'actiondate', 'recordid');
 
 	// This is the list of vtiger_fields that are in the lists.
-	var $list_fields = Array(
-			'User Name'=>Array('vtiger_audit_trial'=>'userid'),
-			'Module'=>Array('vtiger_audit_trial'=>'module'),
-			'Action'=>Array('vtiger_audit_trial'=>'action'),
-			'Record'=>Array('vtiger_audit_trial'=>'recordid'),
-			'Action Date'=>Array('vtiger_audit_trial'=>'actiondate'),
+	public $list_fields = array(
+			'User Name' => array('vtiger_audit_trial'=>'userid'),
+			'Module' => array('vtiger_audit_trial'=>'module'),
+			'Action' => array('vtiger_audit_trial'=>'action'),
+			'Record' => array('vtiger_audit_trial'=>'recordid'),
+			'Action Date' => array('vtiger_audit_trial'=>'actiondate'),
 		);
 
-	var $list_fields_name = Array(
+	public $list_fields_name = array(
 			'User Name'=>'userid',
 			'Module'=>'module',
 			'Action'=>'action',
@@ -55,18 +55,24 @@ class AuditTrail{
 			'Action Date'=>'actiondate',
 		);
 
-	var $default_order_by = "actiondate";
-	var $default_sort_order = 'DESC';
+	public $default_order_by = 'actiondate';
+	public $default_sort_order = 'DESC';
 
 	/**
 	 * Function to get the Headers of Audit Trail Information like Module, Action, RecordID, ActionDate.
 	 * Returns Header Values like Module, Action etc in an array format.
 	**/
-	function getAuditTrailHeader() {
+	public function getAuditTrailHeader() {
 		global $log, $app_strings;
-		$log->debug("Entering getAuditTrailHeader() method ...");
-		$header_array = array($app_strings['LBL_LIST_USER_NAME'], $app_strings['LBL_MODULE'], $app_strings['LBL_ACTION'], $app_strings['LBL_RECORD_ID'], $app_strings['LBL_ACTION_DATE']);
-		$log->debug("Exiting getAuditTrailHeader() method ...");
+		$log->debug('> getAuditTrailHeader');
+		$header_array = array(
+			$app_strings['LBL_LIST_USER_NAME'],
+			$app_strings['LBL_MODULE'],
+			$app_strings['LBL_ACTION'],
+			$app_strings['LBL_RECORD_ID'],
+			$app_strings['LBL_ACTION_DATE'],
+		);
+		$log->debug('< getAuditTrailHeader');
 		return $header_array;
 	}
 
@@ -78,20 +84,20 @@ class AuditTrail{
 	  * @param $orderby - actiondate
 	  * Returns the audit trail entries in an array format.
 	**/
-	function getAuditTrailEntries($userid, $navigation_array, $sorder='', $orderby='') {
-		global $log, $adb, $current_user;
-		$log->debug("Entering getAuditTrailEntries(".$userid.") method ...");
+	public function getAuditTrailEntries($userid, $navigation_array, $sorder = '', $orderby = '') {
+		global $log, $adb;
+		$log->debug('> getAuditTrailEntries '.$userid);
 
-		if($sorder != '' && $order_by != '')
-			$list_query = "Select * from vtiger_audit_trial where userid =? order by ".$order_by." ".$sorder;
-		else
-			$list_query = "Select * from vtiger_audit_trial where userid =? order by ".$this->default_order_by." ".$this->default_sort_order;
-
+		if ($sorder != '' && $order_by != '') {
+			$list_query = 'Select * from vtiger_audit_trial where userid=? order by '.$adb->sql_escape_string($order_by).' '.$adb->sql_escape_string($sorder);
+		} else {
+			$list_query = 'Select * from vtiger_audit_trial where userid=? order by '.$this->default_order_by.' '.$this->default_sort_order;
+		}
 		$result = $adb->pquery($list_query, array($userid));
 		$entries_list = array();
 
-		if($navigation_array['end_val'] != 0) {
-			for($i = $navigation_array['start']; $i <= $navigation_array['end_val']; $i++) {
+		if ($navigation_array['end_val'] != 0) {
+			for ($i = $navigation_array['start']; $i <= $navigation_array['end_val']; $i++) {
 				$entries = array();
 				$userid = $adb->query_result($result, $i-1, 'userid');
 				$entries[] = getTranslatedString($adb->query_result($result, $i-1, 'module'));
@@ -101,34 +107,37 @@ class AuditTrail{
 				$entries[] = $date->getDBInsertDateValue();
 				$entries_list[] = $entries;
 			}
-			$log->debug("Exiting getAuditTrailEntries() method ...");
+			$log->debug('< getAuditTrailEntries');
 			return $entries_list;
 		}
 	}
 
-	function getAuditJSON($userid, $page, $order_by='actiondate', $sorder='DESC')
-	{
-		global $log, $adb, $current_user;
-		$log->debug("Entering getAuditJSON() method ...");
+	public function getAuditJSON($userid, $page, $order_by = 'actiondate', $sorder = 'DESC', $action_search = '') {
+		global $log, $adb;
+		$log->debug('> getAuditJSON');
 
-		if (empty($userid)) {
-			$where = '';
-			$params = array();
-		} else {
-			$where = 'where userid=?';
-			$params = array($userid);
+		$where = ' where 1 ';
+		$params = array();
+		if (!empty($userid)) {
+			$where .= ' and userid = ? ';
+			array_push($params, $userid);
 		}
-		if($sorder != '' && $order_by != '')
+		if (!empty($action_search)) {
+			$where .= ' and action like ? ';
+			array_push($params, '%' . $action_search . '%');
+		}
+		if ($sorder != '' && $order_by != '') {
 			$list_query = "Select * from vtiger_audit_trial $where order by $order_by $sorder";
-		else
-			$list_query = "Select * from vtiger_audit_trial $where order by ".$this->default_order_by." ".$this->default_sort_order;
-		$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize',40);
+		} else {
+			$list_query = "Select * from vtiger_audit_trial $where order by ".$this->default_order_by.' '.$this->default_sort_order;
+		}
+		$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize', 40);
 		$from = ($page-1)*$rowsperpage;
 		$limit = " limit $from,$rowsperpage";
 
 		$result = $adb->pquery($list_query.$limit, $params);
 		$rscnt = $adb->pquery("select count(*) from vtiger_audit_trial $where", array($params));
-		$noofrows = $adb->query_result($rscnt, 0,0);
+		$noofrows = $adb->query_result($rscnt, 0, 0);
 		$last_page = ceil($noofrows/$rowsperpage);
 		if ($page*$rowsperpage>$noofrows-($noofrows % $rowsperpage)) {
 			$islastpage = true;
@@ -148,14 +157,14 @@ class AuditTrail{
 			'to' => $to,
 			'data' => array(),
 		);
-		if ($islastpage and $page!=1) {
+		if ($islastpage && $page!=1) {
 			$entries_list['next_page_url'] = null;
 		} else {
 			$entries_list['next_page_url'] = 'index.php?module=cbAuditTrail&action=cbAuditTrailAjax&file=getJSON&page='.($islastpage ? $page : $page+1);
 		}
 		$entries_list['prev_page_url'] = 'index.php?module=cbAuditTrail&action=cbAuditTrailAjax&file=getJSON&page='.($page == 1 ? 1 : $page-1);
 		$unames = array();
-		while($lgn = $adb->fetch_array($result)) {
+		while ($lgn = $adb->fetch_array($result)) {
 			$entry = array();
 			if (!isset($unames[$lgn['userid']])) {
 				$unames[$lgn['userid']] = getUserFullName($lgn['userid']);
@@ -177,10 +186,8 @@ class AuditTrail{
 			$entry['Action Date'] = $lgn['actiondate'];
 			$entries_list['data'][] = $entry;
 		}
-		$log->debug("Exiting getAuditJSON() method ...");
+		$log->debug('< getAuditJSON');
 		return json_encode($entries_list);
 	}
-
 }
-
 ?>

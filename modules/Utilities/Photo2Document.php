@@ -13,7 +13,7 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-global $adb,$current_user,$singlepane_view, $app_strings, $theme;
+global $adb,$current_user,$singlepane_view, $app_strings, $theme, $default_charset;
 $formodule = vtlib_purify($_REQUEST['formodule']);
 $forrecord = vtlib_purify($_REQUEST['forrecord']);
 $wsuserid = vtws_getEntityId('Users').'x'.$current_user->id;
@@ -23,7 +23,7 @@ $wsrecid = vtws_getEntityId($formodule).'x'.$forrecord;
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $app_strings['LBL_CHARSET']; ?>">
+	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $default_charset; ?>">
 	<title><?php echo $app_strings['Photo2Document']; ?></title>
 	<style type="text/css">@import url("themes/<?php echo $theme; ?>/style.css");</style>
 	<script type="text/javascript" src="include/jquery/jquery.js"></script>
@@ -85,28 +85,28 @@ $wsrecid = vtws_getEntityId($formodule).'x'.$forrecord;
 	</div>
 </div>
 <div class="fieldrow">
-	<span class="fieldlabel"><?php echo getTranslatedString('Subject','Documents'); ?></span>
+	<span class="fieldlabel"><?php echo getTranslatedString('Subject', 'Documents'); ?></span>
 	<span class="fieldinput"><input type="text" id="docname" name="docname"></span>
 </div>
 <div class="fieldrow">
-	<span class="fieldlabel"><?php echo getTranslatedString('LBL_FILE_NAME','Documents'); ?></span>
+	<span class="fieldlabel"><?php echo getTranslatedString('LBL_FILE_NAME', 'Documents'); ?></span>
 	<span class="fieldinput"><input type="text" id="filename" name="filename" value="Photo2Document.png"></span>
 </div>
 <div class="fieldrow">
-	<span class="fieldlabel"><?php echo getTranslatedString('LBL_FOLDER_NAME','Documents'); ?></span>
+	<span class="fieldlabel"><?php echo getTranslatedString('LBL_FOLDER_NAME', 'Documents'); ?></span>
 	<span class="fieldinput"><select id="docfolder" name="docfolder">
 <?php
 $sql='select foldername,folderid from vtiger_attachmentsfolder order by foldername';
-$res=$adb->pquery($sql,array());
-for($i=0;$i<$adb->num_rows($res);$i++) {
-	echo '<option value="'.$adb->query_result($res,$i,'folderid').'">'.$adb->query_result($res,$i,'foldername').'</option>';
+$res=$adb->pquery($sql, array());
+for ($i=0; $i<$adb->num_rows($res); $i++) {
+	echo '<option value="'.$adb->query_result($res, $i, 'folderid').'">'.$adb->query_result($res, $i, 'foldername').'</option>';
 }
 ?>
 	</select>
 	</span>
 </div>
 <div class="fieldrow">
-	<span class="fieldlabel"><?php echo getTranslatedString('LBL_DESCRIPTION','Documents'); ?></span>
+	<span class="fieldlabel"><?php echo getTranslatedString('LBL_DESCRIPTION', 'Documents'); ?></span>
 	<span class="fieldinput"><textarea id="docdesc" name="docdesc" row=3></textarea></span>
 </div>
 <div align="center" style="padding:10px;">
@@ -153,13 +153,13 @@ function createdoc() {
 }
 function afterCreateRecord(result, args) {
 	if(result) {
-		alert('<?php echo $app_strings['LBL_TABLE_CREATED']; ?>!!');
+		alert('<?php echo $app_strings['DocumentCreatedRelated']; ?>!!');
 	} else {
 		alert('<?php echo $app_strings['ERROR'].' '.$app_strings['LBL_CREATING']; ?>!!');
 	}
 }
 
-if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 	// Not adding `{ audio: true }` since we only want video now
 	navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
 		video.src = window.URL.createObjectURL(stream);

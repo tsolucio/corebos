@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updatesChangeLog>
+<changeSet>
+	<author>joebordes</author>
+	<description>CRON to calculate storage disk space usage and save in database</description>
+	<filename>build/changeSets/2018/cronCalculateStorageSize.php</filename>
+	<classname>cronCalculateStorageSize</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>migrate uitype 59 (product capture) to uitype 10 (standard capture)</description>
+	<filename>build/changeSets/2018/migrateUIType59to10.php</filename>
+	<classname>migrateUIType59to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>make potential forecast field displaytype 4</description>
+	<filename>build/changeSets/2018/makePotentialForecastDisplaytype4.php</filename>
+	<classname>makePotentialForecastDisplaytype4</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add Role picklist to Global Variable module</description>
+	<filename>build/changeSets/2018/addRolePicklistToGlobalVariable.php</filename>
+	<classname>addRolePicklistToGlobalVariable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>fix Create Follow up Workflow Tasks</description>
+	<filename>build/changeSets/2018/fixCreateFollowupWorkflowTasks.php</filename>
+	<classname>fixCreateFollowupWorkflowTasks</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete webmails module</description>
+	<filename>build/changeSets/2018/delWebmails.php</filename>
+	<classname>delWebmails</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>albana</author>
+	<description>Fill service column for Google Calendar</description>
+	<filename>build/changeSets/2018/addServiceGCalendar.php</filename>
+	<classname>addServiceGCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Tax retention type and control fields</description>
+	<filename>build/changeSets/2018/addRetentionFieldToTaxes.php</filename>
+	<classname>addRetentionFieldToTaxes</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>add Financial Fields</description>
+	<filename>build/changeSets/2018/addFinancialFields.php</filename>
+	<classname>addFinancialFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Calendar action permissions: Merge, Import, Export, DuplicatesHandling</description>
+	<filename>build/changeSets/2018/cbcalendaractionpermissions.php</filename>
+	<classname>cbcalendaractionpermissions</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Webservice: support for creating document folders</description>
+	<filename>build/changeSets/2018/webservicecreatedocumentfolder.php</filename>
+	<classname>webservicecreatedocumentfolder</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Surveys: install 4 survey modules from coreBOSCRM</description>
+	<filename>build/changeSets/2018/installcbsurveymodules.php</filename>
+	<classname>installcbsurveymodules</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Business Actions adjustments</description>
+	<filename>build/changeSets/2018/fixBAAddIndex.php</filename>
+	<classname>fixBAAddIndex</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Increment size of Workflow Test field</description>
+	<filename>build/changeSets/2018/IncSizeWorkflowTestField.php</filename>
+	<classname>IncSizeWorkflowTestField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>klivshapllo</author>
+	<description>Update the createdby field value for attachment folders for deleted users</description>
+	<filename>build/changeSets/2018/updateCreatedByField.php</filename>
+	<classname>updateCreatedByField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Changeset to update city table fields.</description>
+	<filename>build/changeSets/2018/updateCityFieldType.php</filename>
+	<classname>updateCityFieldType</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Eliminate UIType 116</description>
+	<filename>build/changeSets/2018/eliminateUIType116.php</filename>
+	<classname>eliminateUIType116</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Changeset to update user_name field type on portalinfo.</description>
+	<filename>build/changeSets/2018/updatePortalinfoUsernameFieldType.php</filename>
+	<classname>updatePortalinfoUsernameFieldType</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Eliminate UIType 75 and 81</description>
+	<filename>build/changeSets/2018/migrateUIType7581to10.php</filename>
+	<classname>migrateUIType7581to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Support for Dispay Type 5 and set passwords to this type</description>
+	<filename>build/changeSets/2018/setPasswordsToDisplayType5.php</filename>
+	<classname>setPasswordsToDisplayType5</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>albana</author>
+	<description>add module cbCompany</description>
+	<filename>build/changeSets/2018/addModulecbCompany.php</filename>
+	<classname>addModulecbCompany</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Custom View Management Module</description>
+	<filename>build/changeSets/2018/installcbCVManagement.php</filename>
+	<classname>installcbCVManagement</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+    <author>klivshapllo</author>
+    <description>Import hard-coded action links into vtiger_link table</description>
+    <filename>build/changeSets/2018/importHardCodedLinks.php</filename>
+    <classname>importHardCodedLinks</classname>
+    <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+    <author>klivshapllo</author>
+    <description>Create Contacts2cbCalendar Mapping Business Map</description>
+    <filename>build/changeSets/2018/createContacts2cbCalendarBusinessMap.php</filename>
+    <classname>createContacts2cbCalendarBusinessMap</classname>
+    <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+    <author>klivshapllo</author>
+    <description>Migrate Vtiger Links into Business Action entities</description>
+    <filename>build/changeSets/2018/migrateLinksIntoBusinessActionEntities.php</filename>
+    <classname>migrateLinksIntoBusinessActionEntities</classname>
+    <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+    <author>george1806</author>
+    <description>Make Business Action linkicon non mandatory and set Mandatory fields 1 for All records</description>
+    <filename>build/changeSets/2018/makeLinkiconNonmandatoryInBusinessAction.php</filename>
+    <classname>makeLinkiconNonmandatoryInBusinessAction</classname>
+    <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+    <author>klivshapllo</author>
+    <description>Add summary column in vtiger_profile2field table</description>
+    <filename>build/changeSets/2018/addSummaryColumnToProfile2Field.php</filename>
+    <classname>addSummaryColumnToProfile2Field</classname>
+    <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+    <author>george1806</author>
+    <description>Increment The Size of Document Title to 200 characters </description>
+    <filename>build/changeSets/2018/incrementSizeofDocumentTitle.php</filename>
+    <classname>incrementSizeofDocumentTitle</classname>
+    <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+    <author>george1806</author>
+    <description>Change Uitype of CobroPago(payment) module fields amount, cost and benefit to 71 </description>
+    <filename>build/changeSets/2018/changePaymentFieldsUitypeTo71.php</filename>
+    <classname>changePaymentFieldsUitypeTo71</classname>
+    <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add virtual webservice table for workflow, audit and login history</description>
+	<filename>build/changeSets/2018/addWSVirtualActors.php</filename>
+	<classname>addWSVirtualActors</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add PURPOSE field to workflows</description>
+	<filename>build/changeSets/2018/addWFPurpose.php</filename>
+	<classname>addWFPurpose</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>glory</author>
+	<description>adding of new field in cbQuestion</description>
+	<filename>build/changeSets/2018/addFieldincbQuestion.php</filename>
+	<classname>addBlockFieldincbQuestion</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>adding of new field in cbQuestion</description>
+	<filename>build/changeSets/2018/addFieldParamscbQuestion.php</filename>
+	<classname>addFieldParamscbQuestion</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>Increment size of uitype 3314</description>
+	<filename>build/changeSets/2018/IncrementSizeOfuitype3314.php</filename>
+	<classname>IncrementSizeOfuitype3314</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>loridacito</author>
+	<description>add workflow task for massive update of related records (many)</description>
+	<filename>build/changeSets/2018/add_workflow_massiveupdaterelated.php</filename>
+	<classname>add_workflow_massiveupdaterelated</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+</updatesChangeLog>

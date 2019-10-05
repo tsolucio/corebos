@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once dirname(__FILE__) . '/../ISMSProvider.php';
+include_once __DIR__ . '/../ISMSProvider.php';
 include_once 'vtlib/Vtiger/Net/Client.php';
 
 class ClickATellREST implements ISMSProvider {
@@ -21,7 +21,7 @@ class ClickATellREST implements ISMSProvider {
 	const SERVICE_URI = 'https://platform.clickatell.com';
 	private static $REQUIRED_PARAMETERS = array('api_id', 'from');
 
-	function __construct() {
+	public function __construct() {
 	}
 
 	/**
@@ -42,7 +42,7 @@ class ClickATellREST implements ISMSProvider {
 	}
 
 	public function getParameter($key, $defvalue = false) {
-		if(isset($this->_parameters[$key])) {
+		if (isset($this->_parameters[$key])) {
 			return $this->_parameters[$key];
 		}
 		return $defvalue;
@@ -53,11 +53,14 @@ class ClickATellREST implements ISMSProvider {
 	}
 
 	public function getServiceURL($type = false) {
-		if($type) {
-			switch(strtoupper($type)) {
-				case self::SERVICE_AUTH: return  self::SERVICE_URI . '/';
-				case self::SERVICE_SEND: return  self::SERVICE_URI . '/messages';
-				case self::SERVICE_QUERY: return self::SERVICE_URI . '/message';
+		if ($type) {
+			switch (strtoupper($type)) {
+				case self::SERVICE_AUTH:
+					return  self::SERVICE_URI . '/';
+				case self::SERVICE_SEND:
+					return  self::SERVICE_URI . '/messages';
+				case self::SERVICE_QUERY:
+					return self::SERVICE_URI . '/message';
 			}
 		}
 		return false;
@@ -72,9 +75,7 @@ class ClickATellREST implements ISMSProvider {
 	}
 
 	public function send($message, $tonumbers) {
-		if(!is_array($tonumbers)) {
-			$tonumbers = array($tonumbers);
-		}
+		$tonumbers = (array)$tonumbers;
 
 		$params = array();
 		$params['content'] = $message;
@@ -90,17 +91,17 @@ class ClickATellREST implements ISMSProvider {
 		));
 		$httpClient->setBody(json_encode($params));
 		$response = $httpClient->doPost(false);
-		$rsp = json_decode($response,true);
-		global $log;$log->fatal($rsp);
+		$rsp = json_decode($response, true);
 		$results = array();
 		if (empty($rsp['error'])) {
 			$responseLines = $rsp['messages'];
-			$i=0;
-			foreach($responseLines as $responseLine) {
-				if(!is_array($responseLine) || count($responseLine)==0) continue;
+			foreach ($responseLines as $responseLine) {
+				if (!is_array($responseLine) || count($responseLine)==0) {
+					continue;
+				}
 
 				$result = array( 'error' => false, 'statusmessage' => '' );
-				if(empty($responseLine['error'])) {
+				if (empty($responseLine['error'])) {
 					$result['id'] = $responseLine['apiMessageId'];
 					$result['to'] = $responseLine['to'];
 					$result['status'] = ($responseLine['accepted']==1 ? self::MSG_STATUS_DISPATCHED : $responseLine['accepted']);

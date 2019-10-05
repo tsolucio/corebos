@@ -24,7 +24,7 @@ if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
 	$toggle_name = 'Prospectos';
 }
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_TGL_HISTORICOS' => $toggle_historicos,
 'LBL_MODULE_NAME'=>$toggle_name,
 'Leads' => $toggle_name,
@@ -128,14 +128,12 @@ $mod_strings = Array(
 
 'LBL_TOOL_FORM_TITLE'=>'Herramientas de Prospecto',
 
-'LBL_SELECT_TEMPLATE_TO_MAIL_MERGE'=>'Seleccione una plantilla para enviar el Mailing:',
-
 'Salutation'=>'Saludo',
 'First Name'=>'Nombre',
 'Phone'=>'Teléfono',
 'Last Name'=>'Apellidos',
 'Mobile'=>'Tel .Móvil',
-'Company'=>'Empresa',
+'Company'=>'Cuenta',
 'Fax'=>'Fax',
 'Email'=>'Email',
 'Secondary Email'=>'Email Secundario',
@@ -246,8 +244,5 @@ $mod_strings = Array(
 'LBL_FIELD_SETTINGS' => 'Configuración Campos',
 'Leads ID' => 'Id Prospecto',
 'LeadAlreadyConverted' => 'Este PreContacto no se puede convertir. O bien ya ha sido convertido, o te faltan permisos en uno de los módulos dependientes.',
-'Is Converted From Lead' => 'Convertido desde Prospecto',
-'Converted From Lead' => 'Convertido del Prospecto',
 );
-
 ?>

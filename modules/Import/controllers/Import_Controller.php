@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-
 require_once 'modules/Import/models/Import_Map.php';
 require_once 'modules/Import/resources/Utils.php';
 require_once 'modules/Import/controllers/Import_Data_Controller.php';
@@ -15,11 +14,11 @@ require_once 'modules/Import/ui/Viewer.php';
 
 class Import_Controller {
 
-	var $userInputObject;
-	var $user;
-	var $numberOfRecords;
+	public $userInputObject;
+	public $user;
+	public $numberOfRecords;
 
-	public function  __construct($userInputObject, $user) {
+	public function __construct($userInputObject, $user) {
 		$this->userInputObject = $userInputObject;
 		$this->user = $user;
 	}
@@ -29,27 +28,26 @@ class Import_Controller {
 
 		$importController->saveMap();
 		$fileReadStatus = $importController->copyFromFileToDB();
-		if($fileReadStatus) {
+		if ($fileReadStatus) {
 			$importController->queueDataImport();
 		}
 
 		$isImportScheduled = $importController->userInputObject->get('is_scheduled');
 
-		if($isImportScheduled) {
+		if ($isImportScheduled) {
 			$importInfo = Import_Queue_Controller::getUserCurrentImportInfo($importController->user);
 			self::showScheduledStatus($importInfo);
-
 		} else {
 			$importController->triggerImport();
 		}
 	}
 
-	public function triggerImport($batchImport=false) {
+	public function triggerImport($batchImport = false) {
 		$importInfo = Import_Queue_Controller::getImportInfo($this->userInputObject->get('module'), $this->user);
 		$importDataController = new Import_Data_Controller($importInfo, $this->user);
 
-		if(!$batchImport) {
-			if(!$importDataController->initializeImport()) {
+		if (!$batchImport) {
+			if (!$importDataController->initializeImport()) {
 				Import_Utils::showErrorPage(getTranslatedString('ERR_FAILED_TO_LOCK_MODULE', 'Import'));
 				exit;
 			}
@@ -63,12 +61,12 @@ class Import_Controller {
 	}
 
 	public static function showImportStatus($importInfo, $user) {
-		if($importInfo == null) {
+		if ($importInfo == null) {
 			Import_Utils::showErrorPage(getTranslatedString('ERR_IMPORT_INTERRUPTED', 'Import'));
 			exit;
 		}
 		$importDataController = new Import_Data_Controller($importInfo, $user);
-		if($importInfo['status'] == Import_Queue_Controller::$IMPORT_STATUS_HALTED ||
+		if ($importInfo['status'] == Import_Queue_Controller::$IMPORT_STATUS_HALTED ||
 				$importInfo['status'] == Import_Queue_Controller::$IMPORT_STATUS_NONE) {
 			$continueImport = true;
 		} else {
@@ -77,8 +75,8 @@ class Import_Controller {
 
 		$importStatusCount = $importDataController->getImportStatusCount();
 		$totalRecords = $importStatusCount['TOTAL'];
-		if($totalRecords > ($importStatusCount['IMPORTED'] + $importStatusCount['FAILED'])) {
-//			if($importInfo['status'] == Import_Queue_Controller::$IMPORT_STATUS_SCHEDULED) {
+		if ($totalRecords > ($importStatusCount['IMPORTED'] + $importStatusCount['FAILED'])) {
+//			if ($importInfo['status'] == Import_Queue_Controller::$IMPORT_STATUS_SCHEDULED) {
 //				self::showScheduledStatus($importInfo);
 //				exit;
 //			}
@@ -124,17 +122,17 @@ class Import_Controller {
 	public function saveMap() {
 		$saveMap = $this->userInputObject->get('save_map');
 		$mapName = $this->userInputObject->get('save_map_as');
-		if($saveMap && !empty($mapName)) {
+		if ($saveMap && !empty($mapName)) {
 			$fieldMapping = $this->userInputObject->get('field_mapping');
 			$fileReader = Import_Utils::getFileReader($this->userInputObject, $this->user);
-			if($fileReader == null) {
+			if ($fileReader == null) {
 				return false;
 			}
 			$hasHeader = $fileReader->hasHeader();
-			if($hasHeader) {
+			if ($hasHeader) {
 				$firstRowData = $fileReader->getFirstRowData($hasHeader);
 				$headers = array_keys($firstRowData);
-				foreach($fieldMapping as $fieldName => $index) {
+				foreach ($fieldMapping as $fieldName => $index) {
 					$saveMapping["$headers[$index]"] = $fieldName;
 				}
 			} else {
@@ -157,22 +155,20 @@ class Import_Controller {
 		$fileReader = Import_Utils::getFileReader($this->userInputObject, $this->user);
 		$fileReader->read();
 		$fileReader->deleteFile();
-		if($fileReader->getStatus() == 'success') {
+		if ($fileReader->getStatus() == 'success') {
 			$this->numberOfRecords = $fileReader->getNumberOfRecordsRead();
 			return true;
 		} else {
-			Import_Utils::showErrorPage(getTranslatedString('ERR_FILE_READ_FAILED', 'Import').' - '.
-											getTranslatedString($fileReader->getErrorMessage(), 'Import'));
+			Import_Utils::showErrorPage(getTranslatedString('ERR_FILE_READ_FAILED', 'Import').' - '.getTranslatedString($fileReader->getErrorMessage(), 'Import'));
 			return false;
 		}
 	}
 
 	public function queueDataImport() {
-
 		$configReader = new ConfigReader('modules/Import/config.inc', 'ImportConfig');
 		$immediateImportRecordLimit = $configReader->getConfig('immediateImportLimit');
 		$numberOfRecordsToImport = $this->numberOfRecords;
-		if($numberOfRecordsToImport > $immediateImportRecordLimit) {
+		if ($numberOfRecordsToImport > $immediateImportRecordLimit) {
 			$this->userInputObject->set('is_scheduled', true);
 		}
 		Import_Queue_Controller::add($this->userInputObject, $this->user);

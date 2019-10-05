@@ -14,24 +14,25 @@ function ftpBackupFile($source_file, $ftpserver, $ftpuser, $ftppassword) {
 	$NOCONNECTION = 1;
 	$NOLOGIN = 2;
 	$NOUPLOAD = 3;
-	$log->debug("Entering ftpBackupFile(".$source_file.", ".$ftpserver.", ".$ftpuser.", ".$ftppassword.") method ...");
+	$log->debug('> ftpBackupFile '.$source_file.','.$ftpserver.','.$ftpuser.','.$ftppassword);
 	// set up basic connection
 	list($host,$port) = explode(':', $ftpserver);
-	if(empty($port))
+	if (empty($port)) {
 		$conn_id = @ftp_connect($ftpserver);
-	else
-		$conn_id = @ftp_connect($host,$port);
-	if(!$conn_id) {
-		$log->debug("Exiting ftpBackupFile method ...");
+	} else {
+		$conn_id = @ftp_connect($host, $port);
+	}
+	if (!$conn_id) {
+		$log->debug('< ftpBackupFile');
 		return $NOCONNECTION;
 	}
 
 	// login with username and password
 	$login_result = @ftp_login($conn_id, $ftpuser, $ftppassword);
 
-	if(!$login_result) {
+	if (!$login_result) {
 		ftp_close($conn_id);
-		 $log->debug("Exiting ftpBackupFile method ...");
+		 $log->debug('< ftpBackupFile');
 		return $NOLOGIN;
 	}
 
@@ -42,13 +43,13 @@ function ftpBackupFile($source_file, $ftpserver, $ftpuser, $ftppassword) {
 	// check upload status
 	if (!$upload) {
 		ftp_close($conn_id);
-		 $log->debug("Exiting ftpBackupFile method ...");
+		 $log->debug('< ftpBackupFile');
 		return $NOUPLOAD;
 	}
 
 	// close the FTP stream
 	ftp_close($conn_id);
-	$log->debug("Exiting ftpBackupFile method ...");
+	$log->debug('< ftpBackupFile');
 	return $FTPOK;
 }
 ?>

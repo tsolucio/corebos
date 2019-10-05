@@ -16,31 +16,30 @@ require_once 'include/Webservices/ModuleTypes.php';
 /**
  * this function returns the fields for a given module
  */
-function getFieldList($module_name, $field_name = "") {
+function getFieldList($module_name, $field_name = '') {
 	global $adb;
 	$tabid = getTabid($module_name);
 
-	$query = "select * from vtiger_field where tabid = ?";
+	$query = 'select * from vtiger_field where tabid = ?';
 	$params = array($tabid);
 	$query.= " and columnname not like 'imagename' and uitype not in (61, 122) and vtiger_field.presence in (0,2)";
 	$result = $adb->pquery($query, $params);
 	while ($fieldinfo = $adb->fetch_array($result)) {
 		$fields[] = array (
-			"fieldlabel" => getTranslatedString($fieldinfo['fieldlabel'], $module_name),
-			"fieldname" => $fieldinfo['fieldname'],
-			"fieldid" => $fieldinfo['fieldid']
+			'fieldlabel' => getTranslatedString($fieldinfo['fieldlabel'], $module_name),
+			'fieldname' => $fieldinfo['fieldname'],
+			'fieldid' => $fieldinfo['fieldid']
 		);
 	}
 	return $fields;
 }
 
-/** 
+/**
  * this function returns the fields related to a field
  * @param array $result -- mysql query result that contains the field information
  * @param array $lang_strings -- language strings array
  */
 function getRelatedFieldsList($fieldid, $related_fields) {
-	global $adb;
 	$relatedFieldsArray = array();
 	foreach ($related_fields as $related_field) {
 		$temp_relatedfield = array();
@@ -49,9 +48,9 @@ function getRelatedFieldsList($fieldid, $related_fields) {
 		$related_fieldlabel = $related_field['fieldlabel'];
 
 		if (tooltip_exists($fieldid, $related_fieldid)) {
-			$visible = "checked";
+			$visible = 'checked';
 		} else {
-			$visible = "";
+			$visible = '';
 		}
 		$temp_relatedfield['fieldlabel'] = $related_fieldlabel;
 		$temp_relatedfield['input'] = "<input type='checkbox' value='$related_fieldid' name='$related_fieldid' $visible>";
@@ -59,7 +58,6 @@ function getRelatedFieldsList($fieldid, $related_fields) {
 		$temp_relatedfield['fieldname'] = $related_fieldname;
 		$relatedFieldsArray[] = $temp_relatedfield;
 	}
-
 	$relatedFieldsArray = array_chunk($relatedFieldsArray, 4);
 	return $relatedFieldsArray;
 }
@@ -70,10 +68,14 @@ function getRelatedFieldsList($fieldid, $related_fields) {
  */
 function moduleList() {
 	global $adb;
-	$sql = "select distinct vtiger_field.tabid,name from vtiger_field inner join vtiger_tab on vtiger_field.tabid=vtiger_tab.tabid where name not in ('Calendar','Events','Users')";
+	$sql = "select distinct vtiger_field.tabid,name
+		from vtiger_field
+		inner join vtiger_tab on vtiger_field.tabid=vtiger_tab.tabid
+		where name not in ('Calendar','Events','Users')";
 	$result = $adb->pquery($sql, array ());
+	$modulelist = array();
 	while ($moduleinfo = $adb->fetch_array($result)) {
-		$modulelist[$moduleinfo['name']] = getTranslatedString($moduleinfo['name']);
+		$modulelist[$moduleinfo['name']] = getTranslatedString($moduleinfo['name'], $moduleinfo['name']);
 	}
 	return $modulelist;
 }
@@ -83,9 +85,8 @@ function moduleList() {
  */
 function tooltip_exists($fieldid, $related_fieldid) {
 	global $adb;
-	$query = "select * from vtiger_quickview where fieldid=? and related_fieldid=?";
+	$query = 'select * from vtiger_quickview where fieldid=? and related_fieldid=?';
 	$result = $adb->pquery($query, array ($fieldid,$related_fieldid));
-
 	if ($adb->num_rows($result) > 0) {
 		return true;
 	} else {
@@ -97,34 +98,47 @@ function tooltip_exists($fieldid, $related_fieldid) {
  * function to return the tooltip information
  * @param int $view - there can be multiple tooltips for a single module; this variable decides which is for which field
  * @param int $tabid - tabid of the field for which the tooltip has to be fetched
- * @param int $id - this  is the crmid of the record
- * returns the tooltip string 
+ * @param int $id - this is the crmid of the record
+ * returns the tooltip string
  */
-function getToolTipText($view,$fieldname,$module,$value){
-	global $adb,$app_strings;
+function getToolTipText($view, $fieldname, $module, $value) {
+	global $adb;
 	$keys = array_keys($value[0]);
 	//getting the quickview list here
-	$fieldlabel = Array();
+	$fieldlabel = array();
+	require_once 'modules/Reports/ReportUtils.php';
 	$fieldid = getFieldid(getTabid($module), $fieldname);
-	$quickview = 'select fieldname,fieldlabel from vtiger_quickview inner join vtiger_field on vtiger_quickview.related_fieldid=vtiger_field.fieldid where vtiger_quickview.fieldid = ? and currentview= ? and vtiger_field.presence in (0,2) order by vtiger_quickview.sequence';
-	$result = $adb->pquery($quickview,array($fieldid,$view));
+	$quickview = 'select fieldname,fieldlabel,uitype
+		from vtiger_quickview
+		inner join vtiger_field on vtiger_quickview.related_fieldid=vtiger_field.fieldid
+		where vtiger_quickview.fieldid = ? and currentview= ? and vtiger_field.presence in (0,2)
+		order by vtiger_quickview.sequence';
+	$result = $adb->pquery($quickview, array($fieldid,$view));
 	$count = $adb->num_rows($result);
-	
 	$text=array();
-	$fieldname = Array();
-	for($i=0;$i<$count;$i++){
-		$fieldname = $adb->query_result($result,$i,"fieldname");
-		
-		if(in_array($fieldname, $keys)){
-			$fieldlabel = $adb->query_result($result,$i,"fieldlabel");
-			$label = getTranslatedString($fieldlabel,$module);
+	$fieldname = array();
+	for ($i=0; $i<$count; $i++) {
+		$fieldname = $adb->query_result($result, $i, 'fieldname');
+		if (in_array($fieldname, $keys)) {
+			$fieldlabel = $adb->query_result($result, $i, 'fieldlabel');
+			$label = getTranslatedString($fieldlabel, $module);
 			$fieldvalue = $value[0][$fieldname];
-			if(empty($fieldvalue)) {
+			if (empty($fieldvalue)) {
 				$fieldvalue = '&nbsp;';
 			}
-			$ttMaxFieldValueLength = GlobalVariable::getVariable('ToolTip_MaxFieldValueLength',35,$module);
-			if(strlen($fieldvalue)>$ttMaxFieldValueLength){
-				$fieldvalue = substr($fieldvalue,0,$ttMaxFieldValueLength).'...';
+			$ttMaxFieldValueLength = GlobalVariable::getVariable('ToolTip_MaxFieldValueLength', 35, $module);
+			if (strlen($fieldvalue)>$ttMaxFieldValueLength) {
+				$fieldvalue = substr($fieldvalue, 0, $ttMaxFieldValueLength).'...';
+			}
+			$uitype = $adb->query_result($result, $i, 'uitype');
+			if ($uitype==17) { // website
+				$fieldvalue = '<a href="//'.$value[0][$fieldname].'" target=_blank>'.$fieldvalue.'</a>';
+			}
+			if ($uitype==10 || isReferenceUIType($uitype)) {
+				list($fieldvalue,$wsid) = explode('::::', $value[0][$fieldname]);
+				list($wsmod,$crmid) = explode('x', $wsid);
+				$relmodule = getSalesEntityType($crmid);
+				$fieldvalue = '<a href="index.php?module='.$relmodule.'&action=DetailView&record='.$crmid.'" target=_blank>'.$fieldvalue.'</a>';
 			}
 			$text[$label] = $fieldvalue;
 		}
@@ -137,15 +151,14 @@ function getToolTipText($view,$fieldname,$module,$value){
  * @param $text - the tooltip text which is to be formatted
  * @param $format - the format in which tooltip has to be formatted; default value will be each entry in single line
  */
-function getToolTip($text,$format = "default"){
-	require_once('Smarty_setup.php');
+function getToolTip($text, $format = "default") {
+	require_once 'Smarty_setup.php';
 	$smarty = new vtigerCRM_Smarty;
-	$tip = "";
-	if(trim(implode('', $text)) == ''){
+	$tip = '';
+	if (trim(implode('', $text)) == '') {
 		return $tip;
 	}
-	
-	$smarty->assign("TEXT",$text);
+	$smarty->assign('TEXT', $text);
 	$tip = $smarty->fetch("modules/Tooltip/$format.tpl");
 	return $tip;
 }
@@ -153,26 +166,23 @@ function getToolTip($text,$format = "default"){
 /**
  * this function checks if tooltip exists for a given field or not
  */
-function ToolTipExists($fieldname,$tabid){
-	if(empty($fieldname) || empty($tabid)){
+function ToolTipExists($fieldname, $tabid) {
+	if (empty($fieldname) || empty($tabid)) {
 		return false;
-	}else{
+	} else {
 		global $adb;
-		$sql = "select fieldid from vtiger_field where tabid = ? and fieldname = ? and vtiger_field.presence in (0,2)";
-		$result = $adb->pquery($sql,array($tabid,$fieldname));
+		$sql = 'select fieldid from vtiger_field where tabid = ? and fieldname = ? and vtiger_field.presence in (0,2)';
+		$result = $adb->pquery($sql, array($tabid,$fieldname));
 		$count = $adb->num_rows($result);
-		if($count > 0){
-			$fieldid = $adb->query_result($result,0,'fieldid');
-		
-			$sql = "select * from vtiger_quickview where fieldid = ?";
-			$result = $adb->pquery($sql, array($fieldid));
-		
-			if($adb->num_rows($result) > 0){
+		if ($count > 0) {
+			$fieldid = $adb->query_result($result, 0, 'fieldid');
+			$result = $adb->pquery('select * from vtiger_quickview where fieldid = ?', array($fieldid));
+			if ($adb->num_rows($result) > 0) {
 				return $fieldid;
-			}else{
+			} else {
 				return false;
 			}
-		}else{
+		} else {
 			return false;
 		}
 	}
@@ -185,45 +195,44 @@ function ToolTipExists($fieldname,$tabid){
  * @param array $descObj - the webservices describe object
  * @return array $result - the processes webservices result object
  */
-function vttooltip_processResult($result, $descObj){
+function vttooltip_processResult($result, $descObj) {
 	global $current_user;
-	foreach($descObj['fields'] as $field){
+	foreach ($descObj['fields'] as $field) {
 		$name = $field['name'];
 		$value = $result[0][$name];
-		if($field['type']['name'] == 'reference'){
+		if ($field['type']['name'] == 'reference') {
 			$name = $field['name'];
-			
-			if(!empty($value)){
-				$result[0][$name] = vtws_getName($value,$current_user);
-			}else{
+			if (!empty($value)) {
+				$result[0][$name] = vtws_getName($value, $current_user).'::::'.$value;
+			} else {
 				$result[0][$name] = '';
 			}
-		}elseif($field['type']['name'] == 'owner'){
-			list($info, $id) = explode("x",$value);
+		} elseif ($field['type']['name'] == 'owner') {
+			list($info, $id) = explode('x', $value);
 			$result[0][$name] = getOwnerName($id);
-		}elseif($field['type']['name'] == 'boolean'){
-			if($result[0][$name] == 1){
+		} elseif ($field['type']['name'] == 'boolean') {
+			if ($result[0][$name] == 1) {
 				$result[0][$name] = "on";
-			}else{
+			} else {
 				$result[0][$name] = "off";
 			}
-		}elseif($field['type']['name'] == 'picklist'){
+		} elseif ($field['type']['name'] == 'picklist') {
 			$temp = '';
-			foreach($field['type']['picklistValues'] as $value){
-				if(strcmp($value['value'],$result[0][$name])== 0){
+			foreach ($field['type']['picklistValues'] as $value) {
+				if (strcmp($value['value'], $result[0][$name])== 0) {
 					$temp = $value['value'];
 				}
 			}
 			$result[0][$name] = $temp;
-		} elseif($field['type']['name'] == 'date') {
+		} elseif ($field['type']['name'] == 'date') {
 			$result[0][$name] = DateTimeField::convertToUserFormat($value);
-		} elseif($field['type']['name'] == 'datetime') {
+		} elseif ($field['type']['name'] == 'datetime') {
 			$date = new DateTimeField($value);
 			$result[0][$name] = $date->getDisplayDateTimeValue();
-		} elseif($field['type']['name'] == 'time') {
+		} elseif ($field['type']['name'] == 'time') {
 			$date = new DateTimeField($value);
 			$result[0][$name] = $date->getDisplayTime();
-		} elseif($field['type']['name'] == 'currency') {
+		} elseif ($field['type']['name'] == 'currency') {
 			$currencyField = new CurrencyField($value);
 			$result[0][$name] = $currencyField->getDisplayValueWithSymbol();
 		}
@@ -234,30 +243,26 @@ function vttooltip_processResult($result, $descObj){
 /**
  * this function returns the fields for a given module in a select dropdown format
  * @param string $module - the module name
- * @return the fields in a select dropdown if fields exist else a blank value
+ * @return string the fields in a select dropdown if fields exist else a blank value
  */
-function QuickViewFieldList($module){
+function QuickViewFieldList($module) {
 	global $adb, $app_strings,$mod_strings;
-	
+
 	$tabid = getTabid($module);
-	
 	$query = "select * from vtiger_field where tabid = ? and columnname not like 'imagename' and uitype not in (61, 122) and vtiger_field.presence in (0,2)";
-	$result = $adb->pquery($query,array($tabid));
-	if($adb->num_rows($result)>0){
+	$result = $adb->pquery($query, array($tabid));
+	if ($adb->num_rows($result)>0) {
 		$fieldlist = '<select onchange="getRelatedFieldInfo(this)" class="importBox" id="pick_field" name="pick_field">';
-		$fieldlist.= 	'<option value="" disabled="true" selected>'
-							.$app_strings['LBL_SELECT'].' '. $mod_strings['LBL_FIELD'].'
-						</option>';
-		while($fieldsinfo=$adb->fetch_array($result)){
+		$fieldlist.= '<option value="" disabled="true" selected>'.$app_strings['LBL_SELECT'].' '. $mod_strings['LBL_FIELD'].'</option>';
+		while ($fieldsinfo=$adb->fetch_array($result)) {
 			$fieldlabel = $fieldsinfo['fieldlabel'];
 			$fieldname = $fieldsinfo['fieldname'];
-			$fieldlist.= "<option value='$fieldname'>".getTranslatedString($fieldlabel, $module)."</option>";
+			$fieldlist.= "<option value='$fieldname'>".getTranslatedString($fieldlabel, $module).'</option>';
 		}
 		$fieldlist.= '</select>';
 		return $fieldlist;
-	}else{
+	} else {
 		return '';
 	}
 }
-
 ?>

@@ -1,26 +1,14 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the English language pack for FAQ Module
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
- 
-$mod_strings = Array(
+
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'FAQ',
 'LBL_MODULE_TITLE'=>'FAQ: Home',
 'LBL_SEARCH_FORM_TITLE'=>'FAQ Search',
@@ -36,14 +24,6 @@ $mod_strings = Array(
 'LBL_LIST_EMAIL_ADDRESS'=>'Email Address',
 'LBL_LIST_CONTACT_NAME'=>'Contact Name',
 'LBL_FAQ_INFORMATION'=>'Faq Information',
-
-//DON'T CONVERT THESE THEY ARE MAPPINGS
-'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-'db_website' => 'LBL_LIST_WEBSITE',
-'db_billing_address_city' => 'LBL_LIST_CITY',
-
-//END DON'T CONVERT
-
 'LBL_ACCOUNT'=>'Faq:',
 'LBL_ACCOUNT_NAME'=>'Faq Name:',
 'LBL_PHONE'=>'Phone:',
@@ -86,7 +66,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Select Faq',
 'LBL_GENERAL_INFORMATION'=>'General Information',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'New Opportunity',
 'LBL_POTENTIAL_TITLE'=>'Opportunities',
 
@@ -101,7 +80,6 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'New Contact',
 'LBL_CONTACT_TITLE'=>'Contacts',
 
-//Added for 4GA Release
 'Category'=>'Category',
 'Related To'=>'Related To',
 'Question'=>'Question',
@@ -111,7 +89,6 @@ $mod_strings = Array(
 'Created Time'=>'Created Time',
 'Modified Time'=>'Modified Time',
 
-//Added vtiger_fields after 4.2 alpha
 'LBL_TICKETS'=>'Tickets',
 'LBL_FAQ'=>'FAQ',
 'Product Name'=>'Product Name',
@@ -120,24 +97,18 @@ $mod_strings = Array(
 'LBL_COMMENT_INFORMATION'=>'Comment Information',
 'Status'=>'Status',
 
-//Added on 10-12-2005
 'LBL_QUESTION'=>'Question',
 'LBL_CATEGORY'=>'Category',
 'LBL_MY_FAQ'=>'My Recent FAQs',
 
 //Added for existing Picklist Entries
-
 'General'=>'General',
-
 'Draft'=>'Draft',
 'Reviewed'=>'Reviewed',
 'Published'=>'Published',
 'Obsolete'=>'Obsolete',
 
-// Module Sequence Numbering
 'Faq No' => 'Faq No',
-// END
 'Faq ID' => 'FAQ ID',
 );
-
 ?>

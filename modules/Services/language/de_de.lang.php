@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Dienstleistungen',
 'SINGLE_Services'=>'Dienstleistung',
 'LBL_LIST_SERVICE_NAME'=>'Name der Dienstleistung',
@@ -36,15 +36,15 @@ $mod_strings = Array(
 'Incidents'=>'Ereignisse',
 'No of Units'=>'Anzahl der Einheiten',
 'Commission Rate'=>'Provision (%)',
-'Unit Price'=>'EInheitenpreis',
-'Cost Price' => 'Cost Price',
+'Unit Price'=>'Einheitenpreis',
+'Cost Price' => 'Selbstkostenpreis',
 'Price'=>'Preis',
 'Support Start Date'=>'Support Startdatum',
 'Support Expiry Date'=>'Support Endedatum',
 'Sales Start Date'=>'Verkauf Startdatum',
 'Sales End Date'=>'Verkauf Endedatum',
-'Created Time'=>'erzeugt',
-'Modified Time'=>'geändert',
+'Created Time'=>'Erzeugt',
+'Modified Time'=>'Geändert',
 'Related To'=>'bezogen auf',
 'Usage Unit'=>'Einheit',
 'Currency'=>'Währung',
@@ -53,16 +53,15 @@ $mod_strings = Array(
 'Description'=>'Beschreibung',
 
 'Price Book Name'=>'Name der Preisliste',
+'LBL_PRODUCT_PRICES' => 'Dienstleistungs-Preise',
 
 'LBL_NO_TAXES_ASSOCIATED'=>'mit dieser Dienstleistung sind keine Steuern verbunden',
 '--None--'=>'--ohne--',
 'Installation'=>'Installation',
 'Migration'=>'Migration',
-'Training'=>'Schulung',
 'Customization'=>'Anpassung',
 'Training'=>'Schulung',
 'Services ID'=>'Dienstleistungs-ID',
-'Divisible'=>'Divisible',
+'Divisible'=>'Teilbar',
 );
-
 ?>

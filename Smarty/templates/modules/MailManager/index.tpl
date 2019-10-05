@@ -6,7 +6,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************}
-{include file='Buttons_List1.tpl'}
+{include file='Buttons_List.tpl'}
 <script type='text/javascript' src='include/ckeditor/ckeditor.js'></script>
 <script type='text/javascript' src='modules/MailManager/resources/jquery.tokeninput.js'></script>
 <link rel='stylesheet' type='text/css' href='modules/MailManager/resources/token-input-facebook.css'>
@@ -38,7 +38,7 @@ var MailManageri18nInfo = {ldelim}{rdelim};
 					<div id='_folderprogress_' style='float: right; display: none; position: absolute;left: 30px; font-weight: bold;'>
 						<span>{$MOD.JSLBL_LOADING_FOLDERS}</span><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border='0' align='absmiddle'>
 					</div>
-					<div id="_mainfolderdiv_" >
+					<div id="_mainfolderdiv_">
 					</div>
 				</td>
 				<td width="85%">

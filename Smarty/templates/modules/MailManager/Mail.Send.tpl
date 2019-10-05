@@ -6,6 +6,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************}
+<script type="text/javascript" src="include/js/general.js"></script>
+<script type="text/javascript" src="include/js/vtlib.js"></script>
 <form action="javascript:void(0)" method="POST" id="_mail_replyfrm_" ENCTYPE="multipart/form-data" name='submit'>
 <span class="moduleName" id="send_mail_fldrname" name="send_mail_fldrname">{'LBL_Compose'|@getTranslatedString}</span>
 <div class="mm_outerborder" id="send_email_con" name="send_email_con">
@@ -57,7 +59,7 @@
 			</tr>
 			<tr>
 				<td valign="top" align="right">
-					<a href="javascript:jQuery('#file-uploader').toggle();">{'LBL_ATTACHMENTS'|getTranslatedString}</a>
+					<a href="#" onclick="jQuery('#file-uploader').toggle();">{'LBL_ATTACHMENTS'|getTranslatedString}</a>
 				</td>
 				<td width="80%">
 					<div id="file-uploader" class="dropzone mm-dz-div" style="display: none;">
@@ -66,16 +68,18 @@
 					</div>
 				</td>
 				<td valign="top" align="left" style="white-space:nowrap;">
-					<button onclick="MailManager.getDocuments();" class="crmbutton small edit">{'LBL_SELECT_DOCUMENTS'|@getTranslatedString}</button><br>
+					<button onclick="jQuery('#file-uploader').show();MailManager.getDocuments();" class="crmbutton small edit">{'LBL_SELECT_DOCUMENTS'|@getTranslatedString}</button><br>
 					<button onclick="jQuery('#file-uploader').toggle();" class="crmbutton small edit">{'LBL_Attachments'|@getTranslatedString:'MailManager'}</button>
 				</td>
 			</tr>
 			<tr><td colspan="3"><br></td></tr>
+			<input type='hidden' class='small' name="calltype" id="calltype" value="mailManager">
 			<tr>
-				<td colspan="3" align="center">
+				<td colspan="3" align="center">	
+					<input type='hidden' class='small' name="msgtpopup_type" id="msgtpopup_type" value="MsgTemplate">
 					<button class="crmbutton small edit" onclick="MailManager.mail_reply_send(this.form);">{'LBL_Send'|@getTranslatedString}</button>&nbsp;
 					<button class="crmbutton small edit" onclick="MailManager.save_draft(this.form)">{'LBL_SAVE_NOW'|@getTranslatedString}</button>&nbsp;
-					<button class="crmbutton small edit" onclick="window.open('index.php?module=MailManager&action=PopupMailManagerTemplate&subject_id=_mail_replyfrm_subject_&body_id=_mail_replyfrm_body_','emailtemplate','top=100,left=200,height=400,width=500,resizable=yes,scrollbars=yes,menubar=no,addressbar=no,status=yes');">
+					<button class="crmbutton small edit" onclick="jQuery('#file-uploader').show();return vtlib_open_popup_window('','msgtpopup','MsgTemplate','');">
 					{'LBL_SELECT_EMAIL_TEMPLATE'|@getTranslatedString}
 					</button>
 				</td>
@@ -89,7 +93,7 @@
 				<td colspan="3" align="center">
 					<button class="crmbutton small edit" onclick="MailManager.mail_reply_send(this.form);">{'LBL_Send'|@getTranslatedString}</button>&nbsp;
 					<button class="crmbutton small edit" onclick="MailManager.save_draft(this.form)">{'LBL_SAVE_NOW'|@getTranslatedString}</button>&nbsp;
-					<button class="crmbutton small edit" onclick="window.open('index.php?module=MailManager&action=PopupMailManagerTemplate&subject_id=_mail_replyfrm_subject_&body_id=_mail_replyfrm_body_','emailtemplate','top=100,left=200,height=400,width=500,resizable=yes,scrollbars=yes,menubar=no,addressbar=no,status=yes');">
+					<button class="crmbutton small edit" onclick="jQuery('#file-uploader').show();return vtlib_open_popup_window('','msgtpopup','MsgTemplate','');">
 					{'LBL_SELECT_EMAIL_TEMPLATE'|@getTranslatedString}
 					</button>
 				</td>

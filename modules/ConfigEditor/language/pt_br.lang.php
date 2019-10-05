@@ -7,11 +7,11 @@
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|10/11/2011 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ************************************************************************************/
-$mod_strings = Array (
-	
+
+$mod_strings = array (
 	'ConfigEditor' => 'Editor Configuração',
 	'LBL_CONFIG_EDITOR' => 'Editor Configuração',
-	'LBL_CONFIG_EDIT'=>'Editar detalhes da Configuração do vtiger CRM',
+	'LBL_CONFIG_EDIT'=>'Editar detalhes da Configuração',
 	'SINGLE_ConfigEditor' => 'Editor Configuração',
 	'LBL_TRUE'=> 'Sim',
 	'LBL_FALSE'=> 'Não',
@@ -34,11 +34,13 @@ $mod_strings = Array (
 	'LBL_MAX_TEXT_LENGTH_IN_LISTVIEW'=>'Comprimento máximo do texto na Lista de Visualização',
 	'LBL_MAX_ENTRIES_PER_PAGE_IN_LISTVIEW'=>'Entrada máxima por página na Lista de Visualização',
 	'LBL_CONFIG_FILE'=>'config.inc.php',
-	'LBL_CONFIG_EDIT_CAUTION_INFO' =>'Você está editando os detalhes da configuração do vtiger CRM.',
+	'LBL_CONFIG_EDIT_CAUTION_INFO' =>'Você está editando os detalhes da configuração.',
 	'LBL_DOUBLE_CHECK_INFO'=>' Por favor, verifique com atenção antes de salvar os dados.',
 	'LBL_HELP_INFO'=>"Este e-mail é utilizado como 'Remetente' no envio de mensagens, com as credenciais de acesso de um novo usuário cadastrado,
- 					para enviar mensagem a usuário que tenha um Ticket a ele designado e para envio de mensagens de lembrete e notificação.",
-
+		para enviar mensagem a usuário que tenha um Ticket a ele designado e para envio de mensagens de lembrete e notificação.",
+	'LBL_RESTRICTED_CHARACTERS'=>"Caracteres como ' &#34 e ; não são permitidos",
+	'LBL_CORS_ENABLED_DOMAINS' => 'Domínios autorizados para CORS',
+	'disable_stats_tracking' => 'Tracker de Estatísticas de E-mail Desativado',
+	'LBL_TYPEFORM_API_KEY' => 'Introduzir Chave API',
 );
-
 ?>

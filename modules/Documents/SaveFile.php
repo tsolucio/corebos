@@ -7,75 +7,70 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *********************************************************************************/
-require_once('include/logging.php');
-require_once('include/database/PearDatabase.php');
-require_once('modules/Documents/Documents.php');
+require_once 'include/logging.php';
+require_once 'include/database/PearDatabase.php';
+require_once 'modules/Documents/Documents.php';
 
-global $adb, $current_user, $root_directory;
+global $adb, $current_user;
 
-if(isset($_REQUEST['act']) && $_REQUEST['act'] == 'updateDldCnt')
-{
-	$res=$adb->pquery('update vtiger_notes set filedownloadcount=filedownloadcount+1 where notesid=?',array($_REQUEST['file_id']));
+if (isset($_REQUEST['act']) && $_REQUEST['act'] == 'updateDldCnt') {
+	$res=$adb->pquery('update vtiger_notes set filedownloadcount=filedownloadcount+1 where notesid=?', array($_REQUEST['file_id']));
 }
 
-if(isset($_REQUEST['act']) && $_REQUEST['act'] == 'checkFileIntegrityDetailView')
-{
-		$dbQuery = 'SELECT * FROM vtiger_notes where notesid=?';
-		$fileidQuery = 'select attachmentsid from vtiger_seattachmentsrel where crmid=?';
-		$result = $adb->pquery($dbQuery,array($_REQUEST['noteid']));
-		$fileidResult = $adb->pquery($fileidQuery,array($_REQUEST['noteid']));
-		//$activeToinactive_count = 0;
+if (isset($_REQUEST['act']) && $_REQUEST['act'] == 'checkFileIntegrityDetailView') {
+	$result = $adb->pquery('SELECT * FROM vtiger_notes where notesid=?', array($_REQUEST['noteid']));
+	$fileidResult = $adb->pquery('select attachmentsid from vtiger_seattachmentsrel where crmid=?', array($_REQUEST['noteid']));
+	//$activeToinactive_count = 0;
 
-		$file_status = $adb->query_result($result,0,'filestatus');
-		$download_type = $adb->query_result($result,0,'filelocationtype');
-		$notesid = $adb->query_result($result,0,'notesid');
-		$fileid = $adb->query_result($fileidResult,0,'attachmentsid');
-		$folderid = $adb->query_result($result,0,'folderid');
-		$name = $adb->query_result($result,0,'filename');
-		$filepath = '';
-		if($download_type == 'I'){
-			$saved_filename = $fileid.'_'.$name;
-			$pathQuery = $adb->pquery('select path from vtiger_attachments where attachmentsid = ?',array($fileid));
-			$filepath = $adb->query_result($pathQuery,0,'path');
-		}
-		elseif($download_type == 'E'){
-			$saved_filename = $name;
-		}
-		else
-			$saved_filename = '';
+	$file_status = $adb->query_result($result, 0, 'filestatus');
+	$download_type = $adb->query_result($result, 0, 'filelocationtype');
+	$notesid = $adb->query_result($result, 0, 'notesid');
+	$fileid = $adb->query_result($fileidResult, 0, 'attachmentsid');
+	$folderid = $adb->query_result($result, 0, 'folderid');
+	$name = $adb->query_result($result, 0, 'filename');
+	$filepath = '';
+	if ($download_type == 'I') {
+		$saved_filename = $fileid.'_'.$name;
+		$pathQuery = $adb->pquery('select path from vtiger_attachments where attachmentsid = ?', array($fileid));
+		$filepath = $adb->query_result($pathQuery, 0, 'path');
+	} else {
+		echo 'file_not_available';
+		die();
+	}
 
-		if(!fopen($filepath.$saved_filename, 'r'))
-		{
-			if($file_status == 1)
-			{
-				$dbQuery1 = 'update vtiger_notes set filestatus = 0 where notesid= ?';
-				$result1 = $adb->pquery($dbQuery1,array($notesid));
-				echo 'lost_integrity';
-			}
-			else
-				echo 'file_not_available';
-		}else {
-			echo 'file_available';
+	if (!fopen($filepath.$saved_filename, 'r')) {
+		if ($file_status == 1) {
+			$result1 = $adb->pquery('update vtiger_notes set filestatus = 0 where notesid= ?', array($notesid));
+			echo 'lost_integrity';
+		} else {
+			echo 'file_not_available';
 		}
+	} else {
+		echo 'file_available';
+	}
 }
 
-if(isset($_REQUEST['act']) && $_REQUEST['act'] == 'massDldCnt')
-{
+if (isset($_REQUEST['act']) && $_REQUEST['act'] == 'massDldCnt') {
 	$all_files = vtlib_purify($_REQUEST['file_id']);
-	$zipfilename = "cache/Documents".$current_user->id.".zip";
+	$zipfilename = 'cache/Documents'.$current_user->id.'.zip';
+	if (file_exists($zipfilename)) {
+		@unlink($zipfilename);
+	}
 	$zip = new Vtiger_Zip($zipfilename);
-	if (file_exists($zipfilename)) @unlink($zipfilename);
-	$dec_files =json_decode($all_files,true);
+	$dec_files =json_decode($all_files, true);
 	foreach ($dec_files as $folder_id => $files_id) {
 		if ($files_id) {
-			$folderQuery = $adb->pquery("SELECT foldername FROM vtiger_attachmentsfolder WHERE folderid = ?", array($folder_id));
+			$folderQuery = $adb->pquery('SELECT foldername FROM vtiger_attachmentsfolder WHERE folderid = ?', array($folder_id));
 			$folderName = $adb->query_result($folderQuery, 0, 'foldername');
-			$files = explode(";", $files_id);
+			$files = explode(';', $files_id);
 			foreach ($files as $file) {
 				if ($file) {
-					$dbQuery = 'SELECT * FROM vtiger_attachments JOIN vtiger_seattachmentsrel ON vtiger_attachments.attachmentsid = vtiger_seattachmentsrel.attachmentsid WHERE crmid = ?' ;
+					$dbQuery = 'SELECT *
+						FROM vtiger_attachments
+						JOIN vtiger_seattachmentsrel ON vtiger_attachments.attachmentsid = vtiger_seattachmentsrel.attachmentsid
+						WHERE crmid = ?';
 					$result = $adb->pquery($dbQuery, array($file));
-					if($adb->num_rows($result) == 1) {
+					if ($adb->num_rows($result) == 1) {
 						$pname = @$adb->query_result($result, 0, 'attachmentsid');
 						$name = @$adb->query_result($result, 0, 'name');
 						$filepath = @$adb->query_result($result, 0, 'path');

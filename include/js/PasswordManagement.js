@@ -21,31 +21,36 @@
 
 var corebos_Password = {
 
-	getRandomNum: function(lbound, ubound) {
+	getRandomNum: function (lbound, ubound) {
 		return (Math.floor(Math.random() * (ubound - lbound)) + lbound);
 	},
 
-	getRandomChar:  function(number, lower, upper, other, extra) {
-		var numberChars = "0123456789";
-		var lowerChars = "abcdefghijklmnopqrstuvwxyz";
-		var upperChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	getRandomChar: function (number, lower, upper, other, extra) {
+		var numberChars = '0123456789';
+		var lowerChars = 'abcdefghijklmnopqrstuvwxyz';
+		var upperChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		var otherChars = "`~!@#$%^&*()-_=+[{]}\\|;:'\",<.>/? ";
 		var charSet = extra;
-		if (number == true)
+		if (number == true) {
 			charSet += numberChars;
-		if (lower == true)
+		}
+		if (lower == true) {
 			charSet += lowerChars;
-		if (upper == true)
+		}
+		if (upper == true) {
 			charSet += upperChars;
-		if (other == true)
+		}
+		if (other == true) {
 			charSet += otherChars;
+		}
 		return charSet.charAt(this.getRandomNum(0, charSet.length));
 	},
 
-	getPassword: function(length, extraChars, firstNumber, firstLower, firstUpper, firstOther, latterNumber, latterLower, latterUpper, latterOther) {
-		var rc = "";
-		if (length > 0)
+	getPassword: function (length, extraChars, firstNumber, firstLower, firstUpper, firstOther, latterNumber, latterLower, latterUpper, latterOther) {
+		var rc = '';
+		if (length > 0) {
 			rc = rc + this.getRandomChar(firstNumber, firstLower, firstUpper, firstOther, extraChars);
+		}
 		for (var idx = 1; idx < length; ++idx) {
 			rc = rc + this.getRandomChar(latterNumber, latterLower, latterUpper, latterOther, extraChars);
 		}
@@ -53,12 +58,12 @@ var corebos_Password = {
 	},
 
 	//Check for special character
-	checkSpecialChar: function(passwordValue) {
+	checkSpecialChar: function (passwordValue) {
 		var i=0;
-		var ch='';
+		var character='';
 		while (i <= passwordValue.length) {
 			character = passwordValue.charAt(i);
-			if ((character == ".")||(character =="!")||(character =="?")||(character ==",")||(character ==";")||(character =="-")||(character =="@")||(character =="#")){
+			if ((character == '.')||(character =='!')||(character =='?')||(character ==',')||(character ==';')||(character =='-')||(character =='@')||(character =='#')) {
 				return true;
 			}
 			i++;
@@ -67,11 +72,11 @@ var corebos_Password = {
 	},
 
 	//check for number
-	checkNumber: function(passwordValue) {
+	checkNumber: function (passwordValue) {
 		var i=0;
-		while (i < passwordValue.length){
+		while (i < passwordValue.length) {
 			var character = passwordValue.charAt(i);
-			if (!isNaN(character)){
+			if (!isNaN(character)) {
 				return true;
 			}
 			i++;
@@ -80,11 +85,11 @@ var corebos_Password = {
 	},
 
 	//Check for lowercase character
-	checkLower: function(passwordValue) {
+	checkLower: function (passwordValue) {
 		var i=0;
 		while (i < passwordValue.length) {
 			var character = passwordValue.charAt(i);
-			if (character == character.toLowerCase()){
+			if (character == character.toLowerCase()) {
 				return true;
 			}
 			i++;
@@ -93,7 +98,7 @@ var corebos_Password = {
 	},
 
 	//Check for capital
-	checkCapital: function(passwordValue) {
+	checkCapital: function (passwordValue) {
 		var i=0;
 		while (i < passwordValue.length) {
 			var character = passwordValue.charAt(i);
@@ -105,8 +110,8 @@ var corebos_Password = {
 		return false;
 	},
 
-	passwordChecker: function(passwordValue) {
-		var passwordValue = trim(passwordValue);
+	passwordChecker: function (passwordValue) {
+		passwordValue = trim(passwordValue);
 		//Length Password
 		var passwordLength = (passwordValue.length);
 
@@ -123,27 +128,27 @@ var corebos_Password = {
 		var containsSpecialChar = this.checkSpecialChar(passwordValue);
 
 		//COMPLEX PASSWORD: Minimum 8 characters, and three of the four conditions needs to be ok --> Capital, Lowercase, Special Character, Number
-		if(passwordLength < 8) {
+		if (passwordLength < 8) {
 			return false;
 		} else {
 			//Combination Match All
-			if((containsNumber == true)&&(containsCapital == true)&&(containsLower == true)&&(containsSpecialChar == true)) {
+			if ((containsNumber == true)&&(containsCapital == true)&&(containsLower == true)&&(containsSpecialChar == true)) {
 				return true;
 			} else {
 				//Combination 1
-				if((containsNumber == true)&&(containsCapital == true)&&(containsLower == true)) {
+				if ((containsNumber == true)&&(containsCapital == true)&&(containsLower == true)) {
 					return true;
 				} else {
 					//Combination 2
-					if((containsCapital == true)&&(containsLower == true)&&(containsSpecialChar == true)) {
+					if ((containsCapital == true)&&(containsLower == true)&&(containsSpecialChar == true)) {
 						return true;
 					} else {
 						//Combination 3
-						if((containsLower == true)&&(containsSpecialChar == true)&&(containsNumber == true)) {
+						if ((containsLower == true)&&(containsSpecialChar == true)&&(containsNumber == true)) {
 							return true;
 						} else {
 							//Combination 4
-							if((containsNumber == true)&&(containsCapital == true)&&(containsSpecialChar == true)) {
+							if ((containsNumber == true)&&(containsCapital == true)&&(containsSpecialChar == true)) {
 								return true;
 							} else {
 								return false;
@@ -154,5 +159,4 @@ var corebos_Password = {
 			}
 		}
 	}
-
 };

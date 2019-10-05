@@ -6,16 +6,9 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
-
 require_once 'include/db_backup/backup.php';
 
-/**
- * Description of Vtiger_PHPZip
- *
- * @author MAK
- */
 class Vtiger_PHPZip extends Vtiger_BackupZip {
 
 	private $createZip;
@@ -31,18 +24,17 @@ class Vtiger_PHPZip extends Vtiger_BackupZip {
 	}
 
 	public function addFile($filePath, $parentDirectory) {
-		if(empty($parentDirectory)) {
+		if (empty($parentDirectory)) {
 			$this->addTrailingSlash($parentDirectory);
 		}
-		$filedata = implode("", file($filePath));
-		$this->createZip->addFile($filedata,$parentDirectory.'database.sql');
+		$filedata = implode('', file($filePath));
+		$this->createZip->addFile($filedata, $parentDirectory.'database.sql');
 	}
 
 	public function close() {
-		$fd = fopen ($this->fileName, 'wb');
-		$out = fwrite ($fd, $this->createZip->getZippedfile());
-		fclose ($fd);
+		$fd = fopen($this->fileName, 'wb');
+		fwrite($fd, $this->createZip->getZippedfile());
+		fclose($fd);
 	}
-
 }
 ?>

@@ -8,17 +8,14 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
-/*some general information*/
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Installazioni',
 'SINGLE_Assets'=>'Installazione',
 
-/*blocks for the module*/
 'LBL_ASSET_INFORMATION'=>'Informazioni Installazione',
 'LBL_CUSTOM_INFORMATION'=>'Informazioni Personalizzate',
 'LBL_DESCRIPTION_INFORMATION'=>'Note',
 
-/*fields for the module*/
 'Assets'=>'Installazioni',
 'Asset Name' => 'Nome Installazione',
 'Customer Name'=>'Azienda',
@@ -34,10 +31,7 @@ $mod_strings = Array(
 'Notes'=>'Note',
 'Invoice Name'=>'Fattura',
 
-/*picklist values*/
 'In Service'=>'A Servizio',
 'Out-of-service'=>'Fuori Servizio',
-
-
 );
 ?>

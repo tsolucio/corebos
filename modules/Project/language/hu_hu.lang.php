@@ -10,9 +10,9 @@
  * $Header:  \modules\Project\language\hu_hu.lang.php - 14:52 2011.11.12. $
  * Description:  Defines the Hungarian language pack for the Project module vtiger 5.3.x
  *
- * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki 
+ * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  ************************************************************************************/
- 
+
 $mod_strings = array(
 	'LBL_MODULE_NAME' => 'Projektek',
 	'LBL_MODULE_TITLE' => 'Projektek',
@@ -24,7 +24,6 @@ $mod_strings = array(
 	'LBL_CUSTOM_INFORMATION' => 'Egyéb adatok',
 	'LBL_PROJECT_INFORMATION' => 'Projekt adatok',
 	'LBL_DESCRIPTION_INFORMATION' => 'Leírás',
-	'projectid' => 'Projekt AZ',
 	'Project ID' => 'Projekt AZ',
 	'Assigned To' => 'Felelős',
 	'Start Date' => 'Kezdő dátum',

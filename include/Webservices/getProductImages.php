@@ -27,26 +27,25 @@
 *     id: image id
  *************************************************************************************************/
 
-require_once('include/Webservices/getRecordImages.php');
+require_once 'include/Webservices/getRecordImages.php';
 
-function cbws_getproductimageinfo($id, $user){
-	global $log,$adb,$site_URL;
-	$log->debug("Entering function cbws_getproductimageinfo($id)");
+function cbws_getproductimageinfo($id, $user) {
+	global $log, $adb;
+	$log->debug('> cbws_getproductimageinfo '.$id);
 
-	$webserviceObject = VtigerWebserviceObject::fromId($adb,$id);
+	$webserviceObject = VtigerWebserviceObject::fromId($adb, $id);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
 
 	require_once $handlerPath;
 
-	$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
+	$handler = new $handlerClass($webserviceObject, $user, $adb, $log);
 	$meta = $handler->getMeta();
 	$entityName = $meta->getObjectEntityName($id);
-	if($entityName!='Products'){
-		throw new WebServiceException(WebServiceErrorCode::$INVALIDID,"Entity ID must be a product");
+	if ($entityName!='Products') {
+		throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Entity ID must be a product');
 	}
-	$log->debug("Leaving function cbws_getproductimageinfo");
-	return cbws_getmoduleimageinfo($id, $user);
+	$log->debug('< cbws_getproductimageinfo');
+	return cbws_getrecordimageinfo($id, $user);
 }
-
 ?>

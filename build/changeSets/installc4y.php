@@ -16,15 +16,17 @@
 
 class installc4y extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$toinstall = array('Calendar4You');
 			foreach ($toinstall as $module) {
 				if ($this->isModuleInstalled($module)) {
-					vtlib_toggleModuleAccess($module,true);
+					vtlib_toggleModuleAccess($module, true);
 					$this->sendMsg("$module activated!");
 				} else {
 					$this->installManifestModule($module);
@@ -36,16 +38,18 @@ class installc4y extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isSystemUpdate()) {
 			$this->sendMsg('Changeset '.get_class($this).' is a system update, it cannot be undone!');
 		} else {
 			if ($this->isApplied()) {
-				vtlib_toggleModuleAccess('Calendar4You',false);
+				vtlib_toggleModuleAccess('Calendar4You', false);
 				$this->sendMsg('Calendar4You deactivated!');
-				
+
 				$this->sendMsg('Changeset '.get_class($this).' undone!');
 				$this->markUndone();
 			} else {
@@ -54,5 +58,4 @@ class installc4y extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
 }

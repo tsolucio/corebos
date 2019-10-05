@@ -17,20 +17,23 @@
 // Product line support
 if ($elementType != 'PurchaseOrder') {
 	if (GlobalVariable::getVariable('Application_B2B', '1')=='1') {
-		$acvid = $element['account_id'];
+		$acvid = isset($element['account_id']) ? $element['account_id'] : 0;
 	} else {
-		$acvid = $element['contact_id'];
+		$acvid = isset($element['contact_id']) ? $element['contact_id'] : 0;
 	}
 } else {
 	$acvid = $element['vendor_id'];
 }
 $taxtype=$element['taxtype'];
-if (empty($taxtype)) $taxtype = 'group'; // Individual
+if (empty($taxtype)) {
+	$taxtype = 'group'; // Individual
+}
 $_REQUEST['taxtype']=$taxtype;
 $subtotal = 0;
 $totalwithtax = 0;
 $i = 0;
 $pdoInformation=$element['pdoInformation'];
+$skipCurDBConv = !empty($element['__cbws_skipcurdbconv_pdo']);
 foreach ($pdoInformation as $pdoline) {
 	$i++;
 	$_REQUEST['deleted'.$i]=(isset($pdoline['deleted']) ? $pdoline['deleted'] : 0);
@@ -42,13 +45,13 @@ foreach ($pdoInformation as $pdoline) {
 	$qty=$pdoline['qty'];
 	$_REQUEST['qty'.$i]=$qty;
 	$setype=getSalesEntityType($pdoline['productid']);
-	$_REQUEST['listPrice'.$i] = CurrencyField::convertToDBFormat($pdoline['listprice']);
+	$_REQUEST['listPrice'.$i] = $skipCurDBConv == true ? $pdoline['listprice'] : CurrencyField::convertToDBFormat($pdoline['listprice']);
 	$discount=0;
 	if (!empty($pdoline['discount'])) {
-		$_REQUEST["discount$i"]="on";
+		$_REQUEST["discount$i"]='on';
 		$_REQUEST["discount_type$i"]=$pdoline['discount_type'];
 		if ($pdoline['discount_type']=='amount') {
-			$_REQUEST["discount_amount$i"] = CurrencyField::convertToDBFormat($pdoline['discount_amount']);
+			$_REQUEST["discount_amount$i"] = $skipCurDBConv == true ? $pdoline['discount_amount'] : CurrencyField::convertToDBFormat($pdoline['discount_amount']);
 			$discount=$pdoline['discount_amount'];
 		} else {
 			$_REQUEST["discount_percentage$i"]=$pdoline['discount_percentage'];
@@ -56,29 +59,28 @@ foreach ($pdoInformation as $pdoline) {
 		}
 	}
 	$subtotal = $subtotal + ($qty * $_REQUEST['listPrice'.$i]) - $discount;
-	if($taxtype == "individual") {
-		$taxes_for_product = getTaxDetailsForProduct($pdoline['productid'],'all',$acvid);
-		for($tax_count=0;$tax_count<count($taxes_for_product);$tax_count++) {
-			$tax_name = $taxes_for_product[$tax_count]['taxname'];
-			$tax_val = $taxes_for_product[$tax_count]['percentage'];
-			$request_tax_name = $tax_name."_percentage".$i;
+	if ($taxtype == 'individual') {
+		foreach (getTaxDetailsForProduct($pdoline['productid'], 'all', $acvid) as $productTax) {
+			$tax_name = $productTax['taxname'];
+			$tax_val = $productTax['percentage'];
+			$request_tax_name = $tax_name.'_percentage'.$i;
 			$_REQUEST[$request_tax_name] = $tax_val;
 			$totalwithtax += ($qty * $_REQUEST['listPrice'.$i]) * ($tax_val/100);
 		}
 	}
-        $cbMap = cbMap::getMapByName($elementType.'InventoryDetails','MasterDetailLayout');
-        if ($cbMap!=null) {
-                $cbMapFields = $cbMap->MasterDetailLayout();
-                    foreach ($cbMapFields['detailview']['fieldnames'] as $mdfield) {
-                        if(!is_null($pdoline[$mdfield])){
-                            $_REQUEST[$mdfield.$i] = $pdoline[$mdfield];
-                        }
-                    }
-        }
+	$cbMap = cbMap::getMapByName($elementType.'InventoryDetails', 'MasterDetailLayout');
+	if ($cbMap!=null) {
+		$cbMapFields = $cbMap->MasterDetailLayout();
+		foreach ($cbMapFields['detailview']['fieldnames'] as $mdfield) {
+			if (!is_null($pdoline[$mdfield])) {
+				$_REQUEST[$mdfield.$i] = $pdoline[$mdfield];
+			}
+		}
+	}
 }
 $_REQUEST['totalProductCount']=$i;
-$_REQUEST['subtotal']=round($subtotal + $totalwithtax,2);
-if($taxtype == "individual") {
+$_REQUEST['subtotal']=round($subtotal + $totalwithtax, 2);
+if ($taxtype == 'individual') {
 	$totaldoc=$subtotal+$totalwithtax;
 	if ($element['discount_type_final']=='amount') {
 		$totaldoc=$totaldoc-$element['hdnDiscountAmount'];
@@ -92,14 +94,14 @@ if($taxtype == "individual") {
 	} elseif ($element['discount_type_final']=='percentage') {
 		$totaldoc=$totaldoc-($totaldoc*$element['hdnDiscountPercent']/100);
 	}
-	$all_available_taxes = getAllTaxes('available','');
-	for($tax_count=0;$tax_count<count($all_available_taxes);$tax_count++) {
-		$tax_val += $all_available_taxes[$tax_count]['percentage'];
+	$tax_val = 0;
+	foreach (getAllTaxes('available', '') as $availableTax) {
+		$tax_val += $availableTax['percentage'];
 	}
 	$totaldoc=$totaldoc+($totaldoc*$tax_val/100);
 }
 if (!empty($element['shipping_handling_charge'])) {
-$_REQUEST['shipping_handling_charge']=$element['shipping_handling_charge'];
+	$_REQUEST['shipping_handling_charge']=$element['shipping_handling_charge'];
 	$totaldoc=$totaldoc+$element['shipping_handling_charge'];
 	$shtaxes=$adb->query('select taxname from vtiger_shippingtaxinfo where deleted=0');
 	while ($sht=$adb->fetch_array($shtaxes)) {
@@ -117,6 +119,6 @@ if ($element['adjustmentType']=='add') {
 	$totaldoc=$totaldoc-$element['adjustment'];
 	$_REQUEST['adjustment']=$element['adjustment'];
 }
-$_REQUEST['total']=round($totaldoc,2);
+$_REQUEST['total']=round($totaldoc, 2);
 $_REQUEST['action']='Save';
 ?>

@@ -8,16 +8,15 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-include_once dirname(__FILE__) . '/../api/ws/addComment.php';
+include_once __DIR__ . '/../api/ws/addComment.php';
 
 class crmtogo_UI_AddComment extends crmtogo_WS_AddComment {
-	function process(crmtogo_API_Request $request) {
+	public function process(crmtogo_API_Request $request) {
 		$wsResponse = parent::process($request);
 		$response = false;
-		if($wsResponse->hasError()) {
+		if ($wsResponse->hasError()) {
 			$response = $wsResponse;
-		} 
-		else {
+		} else {
 			$wsResponseResult = $wsResponse->getResult();
 			$viewer = new crmtogo_UI_Viewer();
 			$viewer->assign('_COMMENTS', array($wsResponseResult['comment']));

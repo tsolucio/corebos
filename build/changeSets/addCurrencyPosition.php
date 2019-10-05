@@ -16,8 +16,10 @@
 
 class addCurrencyPosition extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -25,9 +27,8 @@ class addCurrencyPosition extends cbupdaterWorker {
 			$this->ExecuteQuery("UPDATE `vtiger_currency_info` SET `currency_position` = '$1.0';");
 			$this->ExecuteQuery("UPDATE `vtiger_currency_info` SET `currency_position` = '1.0$' where currency_name='Euro';");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
-
 }

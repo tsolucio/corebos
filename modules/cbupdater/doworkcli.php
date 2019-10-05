@@ -26,12 +26,12 @@ if (count($argv)!=3) {
 	$error = 0;
 	$errmsg = '';
 
+	require_once 'modules/cbupdater/cbupdater.php';
+	require_once 'modules/cbupdater/cbupdaterWorker.php';
 	$ids = strtolower(vtlib_purify($argv[2]));
 	$whattodo = strtolower($argv[1]);
 
-	if (!empty($ids) and ($whattodo=='undo' or $whattodo=='apply')) {
-		require_once 'modules/cbupdater/cbupdater.php';
-		require_once 'modules/cbupdater/cbupdaterWorker.php';
+	if (!empty($ids) && ($whattodo=='undo' || $whattodo=='apply')) {
 		global $adb, $log, $mod_strings, $app_strings, $currentModule, $current_user;
 		$currentModule = 'cbupdater';
 		$sql = 'select cbupdaterid,filename,pathfilename,classname, cbupd_no, description from vtiger_cbupdater
@@ -41,7 +41,7 @@ if (count($argv)!=3) {
 			$sql .= "execstate in ('Pending','Continuous')";
 		} else {
 			$ids = str_replace(';', ',', $ids);
-			$ids = trim($ids,',');
+			$ids = trim($ids, ',');
 			$sql .= $adb->sql_escape_string(" cbupdaterid in ($ids)");
 		}
 		// we do not process blocked changesets
@@ -57,9 +57,9 @@ if (count($argv)!=3) {
 				include $upd['pathfilename'];
 				if (class_exists($upd['classname'])) {
 					$updobj = new $upd['classname'];
-					if (method_exists($updobj,($whattodo == 'undo' ? 'undoChange' : 'applyChange'))) {
+					if (method_exists($updobj, ($whattodo == 'undo' ? 'undoChange' : 'applyChange'))) {
 						try {
-							$msg = getTranslatedString('ChangeSet',$currentModule).' '.$upd['cbupd_no']."\n";
+							$msg = getTranslatedString('ChangeSet', $currentModule).' '.$upd['cbupd_no']."\n";
 							$msg.= $upd['filename'].'::'.$upd['classname'];
 							if (isset($upd['description'])) {
 								$msg.= "\n".$upd['description'];
@@ -70,27 +70,29 @@ if (count($argv)!=3) {
 							} else {
 								$updobj->applyChange();
 							}
-							if (!$updobj->updError) $totalopsok++;
+							if (!$updobj->updError) {
+								$totalopsok++;
+							}
 						} catch (Exception $e) {
 							$error = 1;
 							$errmsg = $e->getMessage();
 						}
 					} else {
 						$error = 2;
-						$errmsg = getTranslatedString('err_nomethod',$currentModule);
+						$errmsg = getTranslatedString('err_nomethod', $currentModule);
 					}
 				} else {
 					$error = 3;
-					$errmsg = getTranslatedString('err_invalidclass',$currentModule);
+					$errmsg = getTranslatedString('err_invalidclass', $currentModule);
 				}
 			} else {
 				$error = 4;
-				$errmsg = getTranslatedString('err_noupdatefile',$currentModule);
+				$errmsg = getTranslatedString('err_noupdatefile', $currentModule);
 			}
 		}
 	} else {
 		$error = 5;
-		$errmsg = getTranslatedString('err_noupdatesselected',$currentModule);
+		$errmsg = getTranslatedString('err_noupdatesselected', $currentModule);
 	}
 }
 echo "Total updates: $totalops\n";

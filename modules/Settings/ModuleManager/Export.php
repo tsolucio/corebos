@@ -27,22 +27,23 @@ if (empty($current_user)) {
 }
 if ($fail) {
 	coreBOS_Session::destroy();
-	header("Location: index.php?action=Login&module=Users");
+	header('Location: index.php?action=Login&module=Users');
 }
-require_once("vtlib/Vtiger/Package.php");
-require_once("vtlib/Vtiger/Module.php");
+require_once 'vtlib/Vtiger/Package.php';
+require_once 'vtlib/Vtiger/Module.php';
 
 $package = new Vtiger_Package();
 $module = Vtiger_Module::getInstance($module_export);
 if ($module) {
-	if (isset($_REQUEST['manifestfs']))
-		Vtiger_Package::packageFromFilesystem($module_export,false,true);
-	else
-	$package->export($module,'',"$module_export.zip",true);
+	if (isset($_REQUEST['manifestfs'])) {
+		Vtiger_Package::packageFromFilesystem($module_export, false, true);
+	} else {
+		$package->export($module, '', "$module_export.zip", true);
+	}
 } else {
 	global $adb,$vtiger_current_version;
-	$lngrs = $adb->pquery('select * from vtiger_language where prefix=?',array($module_export));
-	if ($lngrs and $adb->num_rows($lngrs)==1) { // we have a language file
+	$lngrs = $adb->pquery('select * from vtiger_language where prefix=?', array($module_export));
+	if ($lngrs && $adb->num_rows($lngrs)==1) { // we have a language file
 		$lnginfo = $adb->fetch_array($lngrs);
 		$lngxml = 'include/language/'.$lnginfo['prefix'].'.manifest.xml';
 		if (!file_exists($lngxml)) {
@@ -61,7 +62,7 @@ if ($module) {
 			fwrite($mnf, "</module>\n");
 			fclose($mnf);
 		}
-		$package->languageFromFilesystem($lnginfo['prefix'],$lnginfo['name'],true);
+		$package->languageFromFilesystem($lnginfo['prefix'], $lnginfo['name'], true);
 	}
 }
 exit;

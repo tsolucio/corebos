@@ -18,26 +18,29 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 
-require_once('modules/cbMap/libs/crXml.php');
+require_once 'modules/cbMap/libs/crXml.php';
 
 class cbMapcore {
 	private $Map;
 
-	function __construct($map) {
+	public function __construct($map) {
 		$this->Map = $map;
 	}
 
-	public static function isXML($xml){
+	public static function isXML($xml) {
+		if (empty($xml)) {
+			return 'Empty XML string';
+		}
 		libxml_use_internal_errors(true);
 		$doc = new DOMDocument('1.0', 'utf-8');
 		$doc->loadXML($xml);
 		$errors = libxml_get_errors();
-		if(empty($errors)){
+		if (empty($errors)) {
 			return true;
 		}
 
 		$error = $errors[0];
-		if($error->level < 3){
+		if ($error->level < 3) {
 			return true;
 		}
 
@@ -53,15 +56,12 @@ class cbMapcore {
 	}
 
 	public function getXMLContent() {
-		global $log;
-		$xmlcontent=html_entity_decode($this->Map->column_fields['content']);
-		if(self::isXML($xmlcontent)){
-			$xml=simplexml_load_string($xmlcontent);
-			return $xml;
+		$xmlcontent=html_entity_decode($this->Map->column_fields['content'], ENT_QUOTES, 'UTF-8');
+		if (self::isXML($xmlcontent)) {
+			return simplexml_load_string($xmlcontent, null, LIBXML_NOCDATA);
 		} else {
 			return null;
 		}
 	}
-
 }
 ?>

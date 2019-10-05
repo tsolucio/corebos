@@ -119,56 +119,58 @@ class Calendar_RepeatEvents {
 	}
 
 	/**
-	 * Repeat Activity instance till given limit.
+	 * Repeat Activity instance untill given limit.
 	 */
 	static function repeat($focus, $recurObj) {
 		$frequency = $recurObj->recur_freq;
 		$repeattype= $recurObj->recur_type;
-		
-		$base_focus = new Activity();
+
+		$base_focus = new cbCalendar();
 		$base_focus->column_fields = $focus->column_fields;
 		$base_focus->id = $focus->id;
-
+		$dt = new DateTimeField($focus->column_fields['dtstart']);
+		$userStartTime = ' ' . $dt->getDisplayTime();
+		$dt = new DateTimeField($focus->column_fields['dtend']);
+		$userEndTime = ' ' . $dt->getDisplayTime();
 		$skip_focus_fields = Array ('record_id', 'createdtime', 'modifiedtime', 'recurringtype');
 
 		/** Create instance before and reuse */
-		$new_focus = new Activity();
+		$new_focus = new cbCalendar();
 
-		$eventStartDate = $focus->column_fields['date_start'];
-		$interval = strtotime($focus->column_fields['due_date']) - strtotime($focus->column_fields['date_start']);
-
+		$interval = strtotime($focus->column_fields['dtend']) - strtotime($focus->column_fields['dtstart']);
+		$numberOfRepeats = count($recurObj->recurringdates);
+		unset($_REQUEST['timefmt_dtstart'], $_REQUEST['timefmt_dtend'], $_REQUEST['timefmt_followupdt']);
 		foreach ($recurObj->recurringdates as $index => $startDate) {
-			if($index == 0 && $eventStartDate == $startDate) {
+			if ($index == 0 && $focus->column_fields['date_start'] == $startDate) {
 				continue;
 			}
 			$startDateTimestamp = strtotime($startDate);
 			$endDateTime = $startDateTimestamp + $interval;
 			$endDate = date('Y-m-d', $endDateTime);
-			
+
 			// Reset the new_focus and prepare for reuse
 			if(isset($new_focus->id)) unset($new_focus->id);
 			$new_focus->column_fields = array();
 
 			foreach($base_focus->column_fields as $key=>$value) {
-				if(in_array($key, $skip_focus_fields)) {
+				if (in_array($key, $skip_focus_fields)) {
 					// skip copying few fields
-				} else if($key == 'date_start') {
-					$new_focus->column_fields['date_start'] = $startDate;
-				} else if($key == 'due_date') {
-					$new_focus->column_fields['due_date']   = $endDate;
+				} else if ($key == 'dtstart') {
+					$new_focus->column_fields['dtstart'] = $startDate . $userStartTime;
+				} else if ($key == 'dtend') {
+					$new_focus->column_fields['dtend']   = $endDate . $userEndTime;
 				} else {
-					$new_focus->column_fields[$key]         = $value;
+					$new_focus->column_fields[$key]      = $value;
 				}
 			}
-			if($numberOfRepeats > 10 && $index > 10) {
+			if ($numberOfRepeats > 10 && $index > 10) {
 				unset($new_focus->column_fields['sendnotification']);
 			}
-			$new_focus->save('Calendar');
+			$new_focus->save('cbCalendar');
 		}
 	}
 
 	static function repeatFromRequest($focus) {
-		global $log, $default_charset, $current_user;
 		$recurObj = getrecurringObjValue();
 		self::repeat($focus, $recurObj);
 	}

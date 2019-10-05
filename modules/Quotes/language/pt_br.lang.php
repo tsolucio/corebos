@@ -1,49 +1,30 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
- * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the English language pack for Quotes module.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Cotações',
 'LBL_MODULE_TITLE'=>'Cotações: Principal',
 'LBL_SEARCH_FORM_TITLE'=>'Pesquisar Cotações',
-'LBL_LIST_FORM_TITLE'=>'Lista Cotações',
+'LBL_LIST_FORM_TITLE'=>'Lista de Cotações',
 'LBL_NEW_FORM_TITLE'=>'Nova Cotação',
 'LBL_MEMBER_ORG_FORM_TITLE'=>'Organizações Membro',
 
 'LBL_LIST_ACCOUNT_NAME'=>'Nome Organização',
-'LBL_RELATED_PRODUCTS'=>'Detalhes Produto',
+'LBL_RELATED_PRODUCTS'=>'Detalhes do Produto',
 'LBL_LIST_CITY'=>'Cidade',
 'LBL_LIST_WEBSITE'=>'Website',
 'LBL_LIST_STATE'=>'Estado',
 'LBL_LIST_PHONE'=>'Fone',
 'LBL_LIST_EMAIL_ADDRESS'=>'E-mail',
-'LBL_LIST_CONTACT_NAME'=>'Nome Contato',
-
-//DON'T CONVERT THESE THEY ARE MAPPINGS
-'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-'db_website' => 'LBL_LIST_WEBSITE',
-'db_billing_address_city' => 'LBL_LIST_CITY',
-
-//END DON'T CONVERT
-
+'LBL_LIST_CONTACT_NAME'=>'Nome de Contato',
 'LBL_ACCOUNT'=>'Organização:',
 'LBL_PHONE'=>'Fone:',
 'LBL_WEBSITE'=>'Website:',
@@ -64,9 +45,10 @@ $mod_strings = Array(
 'LBL_ANNUAL_REVENUE'=>'Receita Anual:',
 'LBL_ADDRESS_INFORMATION'=>'Informação Endereço',
 'LBL_Quote_INFORMATION'=>'Informação Organização',
-'LBL_CUSTOM_INFORMATION'=>'Informações Customizadas',
-'LBL_BILLING_ADDRESS'=>'Endereço Faturamento:',
-'LBL_SHIPPING_ADDRESS'=>'Endereço Entrega:',
+'LBL_CUSTOM_INFORMATION'=>'Informações Personalizadas',
+'LBL_Quotes_FINANCIALINFO' => 'Informação financeira',
+'LBL_BILLING_ADDRESS'=>'Endereço de Faturação:',
+'LBL_SHIPPING_ADDRESS'=>'Endereço de Entrega:',
 'LBL_ANY_ADDRESS'=>'Outro Endereço:',
 'LBL_CITY'=>'Cidade:',
 'LBL_STATE'=>'Estado:',
@@ -86,7 +68,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Selecione a Organização',
 'LBL_GENERAL_INFORMATION'=>'Informação Geral',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nova Oportunidade',
 'LBL_POTENTIAL_TITLE'=>'Oportunidades',
 
@@ -101,22 +82,19 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'Novo Contato',
 'LBL_CONTACT_TITLE'=>'Contatos',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'Todos',
 'LBL_PROSPECT'=>'Prospect',
 'LBL_INVESTOR'=>'Investidor',
 'LBL_RESELLER'=>'Revendedor',
 'LBL_PARTNER'=>'Parceiro',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Ferramentas Organização',
-//Added for 4GA
 'Subject'=>'Assunto',
 'Potential Name'=>'Nome Oportunidade',
 'Quote Stage'=>'Estágio Cotação',
 'Valid Till'=>'Válido até',
-'Team'=>'Equipe',
-'Contact Name'=>'Nome Contato',
+'Team'=>'Equipa',
+'Contact Name'=>'Nome de Contacto',
 'Currency'=>'Moeda',
 'Carrier'=>'Transportador',
 'Sub Total'=>'Subtotal',
@@ -125,7 +103,7 @@ $mod_strings = Array(
 'Type'=>'Tipo',
 'Tax'=>'Imposto',
 'Total'=>'Total',
-'Product Name'=>'Nome Produto',
+'Product Name'=>'Nome do Produto',
 'Assigned To'=>'Responsável',
 'Billing Address'=>'Endereço Faturamento',
 'Shipping Address'=>'Endereço Entrega',
@@ -143,13 +121,11 @@ $mod_strings = Array(
 'Modified Time'=>'Data Modificação',
 'Description'=>'Descrição',
 'Account Name'=>'Nome Organização',
-'Terms & Conditions'=>'Prazos & Condições',
-//Quote Info
+'Terms & Conditions'=>'Prazos e Condições',
 'LBL_QUOTE_INFORMATION'=>'Informação Cotação',
-'LBL_TERMS_INFORMATION'=>'Prazos & Condições',
+'LBL_TERMS_INFORMATION'=>'Prazos e Condições',
 'LBL_QUOTE'=>'Cotação:',
 
-//Added during 4.2 release
 'LBL_SUBJECT'=>'Assunto:',
 'LBL_POTENTIAL_NAME'=>'Nome Oportunidade:',
 'LBL_ACCOUNT_NAME'=>'Nome Organização:',
@@ -157,8 +133,6 @@ $mod_strings = Array(
 'LBL_MY_TOP_QUOTE'=>'Principais Cotações Abertas',
 //'Quote ID'=>'ID Cotação',
 'Quote'=>'Cotação',
-
-//Added for existing Picklist Entries
 
 'Created'=>'Criada',
 'Delivered'=>'Entregue',
@@ -171,21 +145,18 @@ $mod_strings = Array(
 'USPS'=>'Variglog',
 'DHL'=>'DHL',
 'BlueDart'=>'BrasPress',
-'Sales Tax'=>'Imposto Vendas',
+'Sales Tax'=>'Imposto de Vendas',
 
-//Added for Reports (5.0.4)
-'Tax Type'=>'Tipo Imposto',
+'Tax Type'=>'Tipo de Imposto',
 'Discount Percent'=>'Percentual Desconto',
 'Discount Amount'=>'Total Desconto',
 'Adjustment'=>'Ajuste',
 'S&H Amount'=>'Total Frete',
 
-//Added after 5.0.4 GA
 'Quote No'=>'No. Cotação',
 
 'SINGLE_Quotes'=>'Cotação',
-'Add Service Contract'=>'Adicionar Contrato Serviço',
+'Add Service Contract'=>'Adicionar Contrato de Serviço',
 'Quotes ID'=>'ID Cotações',
 );
-
 ?>

@@ -17,49 +17,49 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 
-function loadDashBoard(oSelect)
-{
-	jQuery("#dashChart").fadeOut();
+function loadDashBoard(oSelect) {
+	jQuery('#dashChart').fadeOut();
 	var oCombo = document.getElementById('dashboard_combo');
 	var oCombo1 = document.getElementById('dashboard_combo1');
 	oCombo.selectedIndex = oSelect.selectedIndex;
 	oCombo1.selectedIndex = oSelect.selectedIndex;
 	var type = oSelect.options[oSelect.selectedIndex].value;
-	if(type != 'DashboardHome')
+	var url = '';
+	if (type != 'DashboardHome') {
 		url = 'module=Dashboard&action=DashboardAjax&display_view='+gdash_display_type+'&file=loadDashBoard&type='+type;
-	else
+	} else {
 		url = 'module=Dashboard&action=DashboardAjax&file=DashboardHome&display_view='+gdash_display_type;
+	}
 	jQuery.ajax({
-		method:"POST",
+		method:'POST',
 		url:'index.php?'+ url
-	}).done(function(response) {
-		document.getElementById("dashChart").innerHTML=response;
-		vtlib_executeJavascriptInElement(document.getElementById("dashChart"))
-		jQuery("#dashChart").fadeIn(500);
-		document.getElementById("dashTitle_div").innerHTML = oCombo.options[oCombo.selectedIndex].text;
+	}).done(function (response) {
+		document.getElementById('dashChart').innerHTML=response;
+		vtlib_executeJavascriptInElement(document.getElementById('dashChart'));
+		jQuery('#dashChart').fadeIn(500);
+		document.getElementById('dashTitle_div').innerHTML = oCombo.options[oCombo.selectedIndex].text;
 	});
 }
 
-function changeView(displaytype)
-{
+function changeView(displaytype) {
 	gdash_displaytype = displaytype;
 	var oCombo = document.getElementById('dashboard_combo');
 	var type = oCombo.options[oCombo.selectedIndex].value;
 	var currenttime = new Date();
-	var time="&time="+currenttime.getTime();
-	if(type == 'DashboardHome')
-	{
-		if(displaytype == 'MATRIX')
+	var time='&time='+currenttime.getTime();
+	var url = '';
+	if (type == 'DashboardHome') {
+		if (displaytype == 'MATRIX') {
 			url = 'index.php?module=Dashboard&action=index&display_view=MATRIX';
-		else
+		} else {
 			url = 'index.php?module=Dashboard&action=index&display_view=NORMAL';
-	}
-	else
-	{
-		if(displaytype == 'MATRIX')
+		}
+	} else {
+		if (displaytype == 'MATRIX') {
 			url = 'index.php?module=Dashboard&action=index&display_view=MATRIX&type='+type;
-		else
+		} else {
 			url = 'index.php?module=Dashboard&action=index&display_view=NORMAL&type='+type;
+		}
 	}
 	window.document.location.href = url+time;
 }
@@ -75,80 +75,95 @@ function getRandomColor() {
  * DHTML date validation script. Courtesy of SmartWebby.com (http://www.smartwebby.com/dhtml/)
  */
 // Declaring valid date character, minimum year and maximum year
-var dtCh= "-";
+var dtCh= '-';
 var minYear=1900;
 var maxYear=2100;
 
-function isInteger(s){
+function isInteger(s) {
 	var i;
 	for (i = 0; i < s.length; i++) {
 		// Check that current character is number.
 		var c = s.charAt(i);
-		if (((c < "0") || (c > "9"))) return false;
+		if (((c < '0') || (c > '9'))) {
+			return false;
+		}
 	}
 	// All characters are numbers.
 	return true;
 }
 
-function stripCharsInBag(s, bag){
+function stripCharsInBag(s, bag) {
 	var i;
-	var returnString = "";
+	var returnString = '';
 	// Search through string's characters one by one.
 	// If character is not in bag, append to returnString.
-	for (i = 0; i < s.length; i++){
+	for (i = 0; i < s.length; i++) {
 		var c = s.charAt(i);
-		if (bag.indexOf(c) == -1) returnString += c;
+		if (bag.indexOf(c) == -1) {
+			returnString += c;
+		}
 	}
 	return returnString;
 }
 
-function daysInFebruary (year){
+function daysInFebruary(year) {
 	// February has 29 days in any year evenly divisible by four,
 	// EXCEPT for centurial years which are not also divisible by 400.
 	return (((year % 4 == 0) && ( (!(year % 100 == 0)) || (year % 400 == 0))) ? 29 : 28 );
 }
+
 function DaysArray(n) {
 	for (var i = 1; i <= n; i++) {
-		this[i] = 31
-		if (i==4 || i==6 || i==9 || i==11) {this[i] = 30}
-		if (i==2) {this[i] = 29}
+		this[i] = 31;
+		if (i==4 || i==6 || i==9 || i==11) {
+			this[i] = 30;
+		}
+		if (i==2) {
+			this[i] = 29;
+		}
 	}
 	return this;
 }
 
-function isDate(dtStr){
+function isDate(dtStr) {
 	var daysInMonth = DaysArray(12);
 	var pos1=dtStr.indexOf(dtCh);
-	var pos2=dtStr.indexOf(dtCh,pos1+1);
-	var strYear=dtStr.substring(0,pos1);
-	var strMonth=dtStr.substring(pos1+1,pos2);
+	var pos2=dtStr.indexOf(dtCh, pos1+1);
+	var strYear=dtStr.substring(0, pos1);
+	var strMonth=dtStr.substring(pos1+1, pos2);
 	var strDay=dtStr.substring(pos2+1);
-	strYr=strYear;
-	if (strDay.charAt(0)=="0" && strDay.length>1) strDay=strDay.substring(1);
-	if (strMonth.charAt(0)=="0" && strMonth.length>1) strMonth=strMonth.substring(1);
-	for (var i = 1; i <= 3; i++) {
-		if (strYr.charAt(0)=="0" && strYr.length>1) strYr=strYr.substring(1);
+	var strYr=strYear;
+	if (strDay.charAt(0)=='0' && strDay.length>1) {
+		strDay=strDay.substring(1);
 	}
-	month=parseInt(strMonth);
-	day=parseInt(strDay);
-	year=parseInt(strYr);
-	if (pos1==-1 || pos2==-1){
+	if (strMonth.charAt(0)=='0' && strMonth.length>1) {
+		strMonth=strMonth.substring(1);
+	}
+	for (var i = 1; i <= 3; i++) {
+		if (strYr.charAt(0)=='0' && strYr.length>1) {
+			strYr=strYr.substring(1);
+		}
+	}
+	var month=parseInt(strMonth);
+	var day=parseInt(strDay);
+	var year=parseInt(strYr);
+	if (pos1==-1 || pos2==-1) {
 		alert(alert_arr.ERR_INVALID_DATE_FORMAT);
 		return false;
 	}
-	if (strMonth.length<1 || month<1 || month>12){
+	if (strMonth.length<1 || month<1 || month>12) {
 		alert(alert_arr.ERR_INVALID_MONTH);
 		return false;
 	}
-	if (strDay.length<1 || day<1 || day>31 || (month==2 && day>daysInFebruary(year)) || day > daysInMonth[month]){
+	if (strDay.length<1 || day<1 || day>31 || (month==2 && day>daysInFebruary(year)) || day > daysInMonth[month]) {
 		alert(alert_arr.ERR_INVALID_DAY);
 		return false;
 	}
-	if (strYear.length != 4 || year==0 || year<minYear || year>maxYear){
+	if (strYear.length != 4 || year==0 || year<minYear || year>maxYear) {
 		alert(alert_arr.ERR_INVALID_YEAR);
 		return false;
 	}
-	if (dtStr.indexOf(dtCh,pos2+1)!=-1 || isInteger(stripCharsInBag(dtStr, dtCh))==false){
+	if (dtStr.indexOf(dtCh, pos2+1)!=-1 || isInteger(stripCharsInBag(dtStr, dtCh))==false) {
 		alert(alert_arr.ERR_INVALID_DATE);
 		return false;
 	}
@@ -156,31 +171,25 @@ function isDate(dtStr){
 }
 
 function verify_chart_data(form) {
-	var isError = false;
-	var errorMessage = "";
 	if (form.date_start.value == '' && isDate(form.date_start.value)==false) {
 		return false;
-	}
-	else if (form.date_end.value == '' && isDate(form.date_end.value)==false) {
+	} else if (form.date_end.value == '' && isDate(form.date_end.value)==false) {
 		return false;
-	}
-	else
+	} else {
 		return true;
+	}
 }
 
 function chk_form(form) {
 	var a=form.date_start.value.split('-');
-	var sdate=new Date(a[0],a[1],a[2]);
-	var a=form.date_end.value.split('-');
-	var edate=new Date(a[0],a[1],a[2]);
+	var sdate=new Date(a[0], a[1], a[2]);
+	a=form.date_end.value.split('-');
+	var edate=new Date(a[0], a[1], a[2]);
 
-	if(sdate>edate)
-	{
-		alert(alert_arr.STARTDATE+" "+alert_arr.SHOULDBE_LESS+" "+alert_arr.ENDDATE);
+	if (sdate>edate) {
+		alert(alert_arr.STARTDATE+' '+alert_arr.SHOULDBE_LESS+' '+alert_arr.ENDDATE);
 		return false;
-	}
-	else
-	{
+	} else {
 		return verify_chart_data(form);
 	}
 }

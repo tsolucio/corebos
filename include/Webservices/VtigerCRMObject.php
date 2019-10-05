@@ -8,206 +8,189 @@
  * All Rights Reserved.
  *************************************************************************************/
 
-class VtigerCRMObject{
+class VtigerCRMObject {
 
 	private $moduleName;
 	private $moduleId;
 	private $instance;
 
-	function __construct($moduleCredential, $isId=false){
-		if($isId){
+	public function __construct($moduleCredential, $isId = false) {
+		if ($isId) {
 			$this->moduleId = $moduleCredential;
 			$this->moduleName = $this->getObjectTypeName($this->moduleId);
-		}else{
+		} else {
 			$this->moduleName = $moduleCredential;
 			$this->moduleId = $this->getObjectTypeId($this->moduleName);
 		}
 		$this->instance = null;
 		$this->getInstance();
 	}
-	
-	public function getModuleName(){
+
+	public function getModuleName() {
 		return $this->moduleName;
 	}
-	
-	public function getModuleId(){
+
+	public function getModuleId() {
 		return $this->moduleId;
 	}
-	
-	public function getInstance(){
-		if($this->instance == null){
+
+	public function getInstance() {
+		if ($this->instance == null) {
 			$this->instance = $this->getModuleClassInstance($this->moduleName);
 		}
 		return $this->instance;
 	}
-	
-	public function getObjectId(){
-		if($this->instance==null){
+
+	public function getObjectId() {
+		if ($this->instance==null) {
 			$this->getInstance();
 		}
 		return $this->instance->id;
 	}
-	
-	public function setObjectId($id){
-		if($this->instance==null){
+
+	public function setObjectId($id) {
+		if ($this->instance==null) {
 			$this->getInstance();
 		}
 		$this->instance->id = $id;
 	}
-	
-	private function titleCase($str){
+
+	private function titleCase($str) {
 		$first = substr($str, 0, 1);
-		return strtoupper($first).substr($str,1);
+		return strtoupper($first).substr($str, 1);
 	}
-	
-	private function getObjectTypeId($objectName){
-		
+
+	private function getObjectTypeId($objectName) {
 		// Use getTabid API
 		$tid = getTabid($objectName);
 
-		if($tid === false) {
+		if ($tid === false) {
 			global $adb;
-		
-			$sql = "select * from vtiger_tab where name=?;";
+
+			$sql = 'select tabid from vtiger_tab where name=?;';
 			$params = array($objectName);
 			$result = $adb->pquery($sql, $params);
-			$data1 = $adb->fetchByAssoc($result,1,false);
-		
+			$data1 = $adb->fetchByAssoc($result, 1, false);
 			$tid = $data1["tabid"];
 		}
-		// END
-		
 		return $tid;
-		
 	}
-	
-	private function getModuleClassInstance($moduleName){
+
+	private function getModuleClassInstance($moduleName) {
 		return CRMEntity::getInstance($moduleName);
 	}
-	
-	private function getObjectTypeName($moduleId){
-		
+
+	private function getObjectTypeName($moduleId) {
 		return getTabModuleName($moduleId);
-		
 	}
-	
-	private function getTabName(){
-		if($this->moduleName == 'Events'){
+
+	private function getTabName() {
+		if ($this->moduleName == 'Events') {
 			return 'Calendar';
 		}
 		return $this->moduleName;
 	}
-	
-	public function read($id,$deleted=false){
+
+	public function read($id, $deleted = false) {
 		global $adb;
 		$error = false;
 		$adb->startTransaction();
-		$this->instance->retrieve_entity_info($id,$this->moduleName,$deleted);
+		$this->instance->retrieve_entity_info($id, $this->moduleName, $deleted);
 		$error = $adb->hasFailedTransaction();
 		$adb->completeTransaction();
 		return !$error;
 	}
-	
-	public function create($element){
+
+	public function create($element) {
 		global $adb;
-		
+
 		$error = false;
-		foreach($element as $k=>$v){
+		foreach ($element as $k => $v) {
 			$this->instance->column_fields[$k] = $v;
 		}
-		
+
 		$adb->startTransaction();
 		$this->instance->Save($this->getTabName());
 		$error = $adb->hasFailedTransaction();
 		$adb->completeTransaction();
 		return !$error;
 	}
-	
-	public function update($element){
-		
-		global $adb;
-		$error = false;
-		
-		foreach($element as $k=>$v){
-			$this->instance->column_fields[$k] = $v;
-		}
-		
-		$adb->startTransaction();
-		$this->instance->mode = "edit";
-		$this->instance->Save($this->getTabName());
-		$error = $adb->hasFailedTransaction();
-		$adb->completeTransaction();
-		return !$error;
-	}
-	
-	public function revise($element){
+
+	public function update($element) {
 		global $adb;
 		$error = false;
 
-		$error = $this->read($this->getObjectId());
-		if($error == false){
-			return $error;
-		}
-
-		foreach($element as $k=>$v){
+		foreach ($element as $k => $v) {
 			$this->instance->column_fields[$k] = $v;
 		}
 
-		//added to fix the issue of utf8 characters
-		foreach($this->instance->column_fields as $key=>$value){
-			$this->instance->column_fields[$key] = decode_html($value);
-		}
-
-                $adb->startTransaction();
-		$this->instance->mode = "edit";
-		$this->instance->Save($this->getTabName());
+		$adb->startTransaction();
+		$this->instance->mode = 'edit';
+		$this->instance->save($this->getTabName());
 		$error = $adb->hasFailedTransaction();
 		$adb->completeTransaction();
 		return !$error;
 	}
 
-	public function delete($id){
+// 	public function revise($element) {
+// 		global $adb;
+// 		$error = false;
+
+// 		$error = $this->read($this->getObjectId());
+// 		if ($error == false) {
+// 			return $error;
+// 		}
+
+// 		foreach ($element as $k=>$v) {
+// 			$this->instance->column_fields[$k] = $v;
+// 		}
+
+// 		//added to fix the issue of utf8 characters
+// 		foreach ($this->instance->column_fields as $key=>$value) {
+// 			$this->instance->column_fields[$key] = decode_html($value);
+// 		}
+
+// 		$adb->startTransaction();
+// 		$this->instance->mode = "edit";
+// 		$this->instance->Save($this->getTabName());
+// 		$error = $adb->hasFailedTransaction();
+// 		$adb->completeTransaction();
+// 		return !$error;
+// 	}
+
+	public function delete($id) {
 		global $adb;
 		$error = false;
 		$adb->startTransaction();
-		DeleteEntity($this->getTabName(), $this->getTabName(), $this->instance, $id,$returnid);
+		DeleteEntity($this->getTabName(), $this->getTabName(), $this->instance, $id, 0);
 		$error = $adb->hasFailedTransaction();
 		$adb->completeTransaction();
 		return !$error;
 	}
-	
-	public function getFields(){
+
+	public function getFields() {
 		return $this->instance->column_fields;
 	}
-	
-	function exists($id){
+
+	/* this method just checks if a record exists and is not deleted, it does not obligate that it be the same entity type of the object instantiation */
+	public function exists($id) {
 		global $adb;
-		
-		$exists = false;
-		$sql = "select * from vtiger_crmentity where crmid=? and deleted=0";
-		$result = $adb->pquery($sql , array($id));
-		if($result != null && isset($result)){
-			if($adb->num_rows($result)>0){
-				$exists = true;
-			}
-		}
-		return $exists;
+		$result = $adb->pquery('select 1 from vtiger_crmentity where crmid=? and deleted=0 limit 1', array($id));
+		return ($result && $adb->num_rows($result)>0);
 	}
-	
-	function getSEType($id){
+
+	public function getSEType($id) {
 		global $adb;
-		
+
 		$seType = null;
-		$sql = "select * from vtiger_crmentity where crmid=? and deleted=0";
-		$result = $adb->pquery($sql , array($id));
-		if($result != null && isset($result)){
-			if($adb->num_rows($result)>0){
-				$seType = $adb->query_result($result,0,"setype");
+		$sql = 'select setype from vtiger_crmentity where crmid=? and deleted=0';
+		$result = $adb->pquery($sql, array($id));
+		if ($result != null && isset($result)) {
+			if ($adb->num_rows($result)>0) {
+				$seType = $adb->query_result($result, 0, 'setype');
 			}
 		}
 		return $seType;
 	}
-	
 }
-
 ?>

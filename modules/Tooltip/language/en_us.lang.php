@@ -6,10 +6,9 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-* 
  ********************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 'Tooltip' => 'ToolTip',
 'LBL_TOOLTIP_MANAGEMENT'=>'Tooltip Management',
 'LBL_TOOLTIP_MANAGEMENT_DESCRIPTION'=>'Manage the tooltip information from here',
@@ -20,5 +19,4 @@ $mod_strings = Array (
 'TooltipInfo' => 'This extension adds information hover tips on different fields on each module and is accessed in the settings of each module not directly, so you can eliminate it from the menu.',
 'No Fields Selected' => 'No Fields Selected',
 );
-
 ?>

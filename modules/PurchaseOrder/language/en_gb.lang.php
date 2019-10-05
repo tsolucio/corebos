@@ -23,9 +23,6 @@ $mod_strings = array(
 	'LBL_LIST_PHONE' => 'Phone',
 	'LBL_LIST_EMAIL_ADDRESS' => 'Email Address',
 	'LBL_LIST_CONTACT_NAME' => 'Contact Name',
-	'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-	'db_website' => 'LBL_LIST_WEBSITE',
-	'db_billing_address_city' => 'LBL_LIST_CITY',
 	'LBL_ACCOUNT' => 'Organisation:',
 	'LBL_ACCOUNT_NAME' => 'Organisation Name:',
 	'LBL_PHONE' => 'Phone:',
@@ -47,6 +44,7 @@ $mod_strings = array(
 	'LBL_ANNUAL_REVENUE' => 'Annual Revenue:',
 	'LBL_ADDRESS_INFORMATION' => 'Address Information',
 	'LBL_Quote_INFORMATION' => 'Organisation Information',
+	'LBL_PurchaseOrder_FINANCIALINFO' => 'Financial Information',
 	'LBL_CUSTOM_INFORMATION' => 'Custom Information',
 	'LBL_BILLING_ADDRESS' => 'Invoice Address:',
 	'LBL_SHIPPING_ADDRESS' => 'Delivery Address:',
@@ -159,5 +157,9 @@ $mod_strings = array(
 	'PurchaseOrder No' => 'Purchase Order No.',
 	'SINGLE_PurchaseOrder' => 'Purchase Order',
 	'PurchaseOrder ID' => 'Purchase Order ID',
+	'LBL_PARTIAL_PAYMENTS_INFO' => 'Partial Payments Information',
+	'Amount Due'=>'Amount Due',
+	'Amount Paid'=>'Amount Paid',
+	'Total Amount'=>'Total Amount',
 );
 ?>

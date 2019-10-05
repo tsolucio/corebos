@@ -19,16 +19,37 @@
 
 function delMenuBranch($topofbranch) {
 	global $adb;
-	$mnurs = $adb->pquery('select evvtmenuid,mtype from vtiger_evvtmenu where mparent=?',array($topofbranch));
-	if ($mnurs and $adb->num_rows($mnurs)>0) {
+	$mnurs = $adb->pquery('select evvtmenuid,mtype,mseq from vtiger_evvtmenu where mparent=?', array($topofbranch));
+	if ($mnurs && $adb->num_rows($mnurs)>0) {
 		while ($mnu = $adb->fetch_array($mnurs)) {
 			if ($mnu['mtype']=='menu') {
 				delMenuBranch($mnu['evvtmenuid']);
 			}
-			$adb->pquery('delete from vtiger_evvtmenu where evvtmenuid=?',array($mnu['evvtmenuid']));
+			$adb->pquery('delete from vtiger_evvtmenu where evvtmenuid=?', array($mnu['evvtmenuid']));
+			$adb->pquery('update vtiger_evvtmenu set mseq=mseq-1 where mseq>? and mparent=?', array($mnu['mseq'], $topofbranch));
 		}
 	}
-	$adb->pquery('delete from vtiger_evvtmenu where evvtmenuid=?',array($topofbranch));
+	$mnurs = $adb->pquery('select mparent,mseq from vtiger_evvtmenu where evvtmenuid=?', array($topofbranch));
+	if ($mnurs && $adb->num_rows($mnurs)>0) {
+		$mnu = $adb->fetch_array($mnurs);
+		$adb->pquery('update vtiger_evvtmenu set mseq=mseq-1 where mseq>? and mparent=?', array($mnu['mseq'], $mnu['mparent']));
+		$adb->pquery('delete from vtiger_evvtmenu where evvtmenuid=?', array($topofbranch));
+	}
+}
+
+function fixMenuOrder($topofbranch) {
+	global $adb;
+	$menuorder=1;
+	$mnurs = $adb->pquery('select evvtmenuid,mtype from vtiger_evvtmenu where mparent=? order by mseq', array($topofbranch));
+	if ($mnurs && $adb->num_rows($mnurs)>0) {
+		while ($mnu = $adb->fetch_array($mnurs)) {
+			if ($mnu['mtype']=='menu') {
+				fixMenuOrder($mnu['evvtmenuid']);
+			}
+			$adb->pquery('update vtiger_evvtmenu set mseq=? where evvtmenuid=?', array($menuorder, $mnu['evvtmenuid']));
+			$menuorder++;
+		}
+	}
 }
 
 $do = vtlib_purify($_REQUEST['evvtmenudo']);
@@ -40,35 +61,40 @@ switch ($do) {
 		$mvalue = vtlib_purify($_REQUEST['mvalue']);
 		$evvtmenuid = vtlib_purify($_REQUEST['evvtmenuid']);
 		$mparent = vtlib_purify($_REQUEST['mparent']);
+		$mvisible = (isset($_REQUEST['mvisible']) ? 1 : 0);
 		$mpermission = isset($_REQUEST['mpermission']) ? vtlib_purify($_REQUEST['mpermission']) : '';
-		if (empty($mpermission)) $mpermission = array();
-		if($mtype == 'menu') {
-			$pmenuidrs = $adb->query('select max(mseq) from vtiger_evvtmenu where mparent= 0');
-			$mseq = $adb->query_result($pmenuidrs, 0, 0) + 1;
-			$adb->pquery('insert into vtiger_evvtmenu (mtype,mvalue,mlabel,mparent,mseq,mvisible,mpermission) values (?,?,?,?,?,?,?)',
-				array($mtype, $mvalue, $mlabel, 0, $mseq, 1, implode(',', $mpermission)));
-		} else {
-			if($mparent == 0) $mparent = $evvtmenuid;
-			if($mtype=='module') $mvalue = vtlib_purify($_REQUEST['modname']);
-			$pmenuidrs = $adb->pquery('select max(mseq) from vtiger_evvtmenu where mparent=?',array($mparent));
-			$mseq = $adb->query_result($pmenuidrs,0,0) + 1;
-			$adb->pquery('insert into vtiger_evvtmenu (mtype,mvalue,mlabel,mparent,mseq,mvisible,mpermission) values (?,?,?,?,?,?,?)',
-				array($mtype,$mvalue,$mlabel,$mparent,$mseq,1,implode(',',$mpermission)));
+		if (empty($mpermission)) {
+			$mpermission = array();
 		}
+		if ($mparent == 0) {
+			$mparent = $evvtmenuid;
+		}
+		if ($mtype=='module') {
+			$mvalue = vtlib_purify($_REQUEST['modname']);
+		}
+		$pmenuidrs = $adb->pquery('select max(mseq) from vtiger_evvtmenu where mparent=?', array($mparent));
+		$mseq = $adb->query_result($pmenuidrs, 0, 0) + 1;
+		$adb->pquery(
+			'insert into vtiger_evvtmenu (mtype,mvalue,mlabel,mparent,mseq,mvisible,mpermission) values (?,?,?,?,?,?,?)',
+			array($mtype, $mvalue, $mlabel, $mparent, $mseq, $mvisible, implode(',', $mpermission))
+		);
 		break;
 	case 'doUpd':
 		$evvtmenuid = vtlib_purify($_REQUEST['evvtmenuid']);
 		if (is_numeric($evvtmenuid)) {
 			$mtype = vtlib_purify($_REQUEST['mtype']);
-			$mparent = vtlib_purify($_REQUEST['mparent']);
+			$mparent = (isset($_REQUEST['mparent']) ? vtlib_purify($_REQUEST['mparent']) : 0);
 			$mlabel = vtlib_purify($_REQUEST['mlabel']);
 			$mvalue = vtlib_purify($_REQUEST['mvalue']);
+			$mvisible = (isset($_REQUEST['mvisible']) ? 1 : 0);
 			if ($mtype=='module') {
 				$mvalue = vtlib_purify($_REQUEST['modname']);
 			}
-			$mpermission = isset($_REQUEST['mpermission']) ? implode(',',vtlib_purify($_REQUEST['mpermission'])) : '';
-			$updrs = $adb->pquery('update vtiger_evvtmenu set mtype=?,mvalue=?,mlabel=?, mparent=?,mpermission=? where evvtmenuid=?',
-				array($mtype,$mvalue,$mlabel,$mparent, $mpermission,$evvtmenuid));
+			$mpermission = isset($_REQUEST['mpermission']) ? implode(',', vtlib_purify($_REQUEST['mpermission'])) : '';
+			$updrs = $adb->pquery(
+				'update vtiger_evvtmenu set mtype=?,mvalue=?,mlabel=?, mparent=?,mpermission=?,mvisible=? where evvtmenuid=?',
+				array($mtype, $mvalue, $mlabel, $mparent, $mpermission, $mvisible, $evvtmenuid)
+			);
 		}
 		break;
 	case 'doDel':
@@ -77,6 +103,17 @@ switch ($do) {
 			delMenuBranch($evvtmenuid);
 		}
 		break;
+	case 'fixOrphaned':
+		$rsmenu = $adb->query("select evvtmenuid from vtiger_evvtmenu where mtype='menu'");
+		$menus = array();
+		while ($m = $adb->fetch_array($rsmenu)) {
+			$menus[] = $m['evvtmenuid'];
+		}
+		$adb->query('update vtiger_evvtmenu set mparent=0 where mparent not in ('.implode(',', $menus).')');
+		break;
+	case 'fixOrder':
+		fixMenuOrder(0);
+		break;
 	case 'updateTree':
 		$treeIds = vtlib_purify($_REQUEST['treeIds']);
 		$treeParents = vtlib_purify($_REQUEST['treeParents']);
@@ -84,7 +121,7 @@ switch ($do) {
 		$ids = explode(",", $treeIds);
 		$parents = explode(",", $treeParents);
 		$positions = explode(",", $treePositions);
-		for($i=0; $i<count($positions); $i++){
+		for ($i=0; $i<count($positions); $i++) {
 			$id = $ids[$i];
 			$parent = $parents[$i];
 			$position = $positions[$i];

@@ -1,4 +1,16 @@
-<?php // $Id: iCalendar_properties.php,v 1.13 2005/07/21 22:42:13 defacer Exp $
+<?php
+/**
+ *  BENNU - PHP iCalendar library
+ *  (c) 2005-2006 Ioannis Papaioannou (pj@moodle.org). All rights reserved.
+ *
+ *  Released under the LGPL.
+ *
+ *  See http://bennu.sourceforge.net/ for more information and downloads.
+ *
+ * @author Ioannis Papaioannou
+ * @version $Id$
+ * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
+ */
 
 class iCalendar_property {
     // Properties can have parameters, but cannot have other properties or components
@@ -98,8 +110,15 @@ class iCalendar_property {
         $valarray = explode('\\,', $this->value);
 
         // Undo transparent formatting
-        $replace_function = create_function('$a', 'return rfc2445_undo_value_formatting($a, '.$this->val_type.');');
-        $valarray = array_map($replace_function, $valarray);
+        //$replace_function = create_function('$a', 'return rfc2445_undo_value_formatting($a, '.$this->val_type.');');
+        //$valarray = array_map($replace_function, $valarray);
+        $val_type = $this->val_type;
+        $valarray = array_map(
+        	function ($a) use ($val_type) {
+        		return rfc2445_undo_value_formatting($a, $val_type);
+        	},
+        	$valarray
+        );
 
         // Now, if this property cannot have multiple values, don't return as an array
         if(!$this->val_multi) {
@@ -234,7 +253,7 @@ class iCalendar_property_method extends iCalendar_property {
     function is_valid_value($value) {
         // This is case-sensitive
         // Methods from RFC 2446
-        $methods == array('PUBLISH', 'REQUEST', 'REPLY', 'ADD', 'CANCEL', 'REFRESH', 'COUNTER', 'DECLINECOUNTER');
+        $methods = array('PUBLISH', 'REQUEST', 'REPLY', 'ADD', 'CANCEL', 'REFRESH', 'COUNTER', 'DECLINECOUNTER');
         return in_array($value, $methods);
     }
 }
@@ -450,7 +469,7 @@ class iCalendar_property_percent_complete extends iCalendar_property {
         if(!parent::is_valid_value($value)) {
             return false;
         }
-        $value = intval($value);
+        $value = (int)$value;
         return ($value >= 0 && $value <= 100);
     }
 
@@ -1101,7 +1120,7 @@ class iCalendar_property_sequence extends iCalendar_property {
         if(!parent::is_valid_value($value)) {
             return false;
         }
-        $value = intval($value);
+        $value = (int)$value;
         return ($value >= 0);
     }
 }

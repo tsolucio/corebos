@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Settings',
 'LBL_MODULE_TITLE'=>'Settings: Home',
 'LBL_LIST_CONTACT_ROLE'=>'Role',
@@ -30,33 +30,6 @@ $mod_strings = Array(
 'LBL_CURRENCY_TOOL'=>'Tools',
 'LBL_CURRENCY_LIST'=>'Currencies List',
 'NTC_DELETE_CONFIRMATION'=>'Are you sure you want to delete this record?',
-'LEADCUSTOMFIELDS'=>'Lead Custom Fields',
-'ACCOUNTCUSTOMFIELDS'=>'Organization Custom Fields',
-'CONTACTCUSTOMFIELDS'=>'Contact Custom Fields',
-'OPPORTUNITYCUSTOMFIELDS'=>'Opportunity Custom Fields',
-'HELPDESKCUSTOMFIELDS'=>'Helpdesk Custom Fields',
-'PRODUCTCUSTOMFIELDS'=>'Product Custom Fields',
-'VENDORCUSTOMFIELDS'=>'Vendor Custom Fields',
-'PRICEBOOKCUSTOMFIELDS'=>'PriceBook Custom Fields',
-'POCUSTOMFIELDS'=>'Purchase Order Custom Fields',
-'SOCUSTOMFIELDS'=>'Sales Order Custom Fields',
-'QUOTESCUSTOMFIELDS'=>'Quotes Custom Fields',
-'INVOICECUSTOMFIELDS'=>'Invoice Custom Fields',
-'EDITLEADPICKLISTVALUES'=>'Edit Lead Picklist ',
-'EDITACCOUNTPICKLISTVALUES'=>'Edit Organization Picklist ',
-'EDITCONTACTPICKLISTVALUES'=>'Edit Contact Picklist ',
-'EDITOPPORTUNITYPICKLISTVALUES'=>'Edit Opportunity Picklist ',
-'EDITHELPDESKPICKLISTVALUES'=>'Edit HelpDesk Picklist ',
-'EDITPRODUCTPICKLISTVALUES'=>'Edit Product Picklist ',
-'EDITEVENTPICKLISTVALUES'=>'Edit Event Picklist ',
-'EDITTASKPICKLISTVALUES'=>'Edit Task Picklist ',
-'EDITRSSPICKLISTVALUES'=>'Edit Rss Picklist',
-'EDITVENDORPICKLISTVALUES'=>'Edit Vendor Picklist',
-'EDITPBPICKLISTVALUES'=>'Edit PriceBook Picklist',
-'EDITPOPICKLISTVALUES'=>'Edit Purchase Order Picklist',
-'EDITSOPICKLISTVALUES'=>'Edit Sales Order Picklist',
-'EDITQUOTEPICKLISTVALUES'=>'Edit Quote Picklist',
-'EDITINVOICEPICKLISTVALUES'=>'Edit Invoice Picklist',
 
 'LBL_PICKLIST_FIELD_SETTINGS'=>'Picklist Field Settings:',
 
@@ -141,7 +114,6 @@ $mod_strings = Array(
 'LBL_FTP'=>'FTP',
 'LBL_SYSTEM_CONFIG'=>'System Configuration',
 'LBL_SYSTEM_INFO'=>'System Details',
-'LBL_PROXY_SETTINGS'=>'Proxy Server',
 'LBL_AUDIT_TRAIL'=>'Audit Trails',
 'LBL_ENABLE_AUDIT_TRAIL'=>'Enable Audit Trail',
 'AuditTrailEnabled' => 'Audit Trail Enabled',
@@ -202,7 +174,7 @@ $mod_strings = Array(
 'LBL_PICKLIST_SETTINGS'=>'Picklist Settings',
 'LBL_EDIT_PICKLIST_VALUES'=>' - Edit values of Picklist fields',
 'LBL_EDIT'=>'Editing',
-'LBL_COMMUNICATION_TEMPLATES'=>'Communication Templates',
+'LBL_COMMUNICATION_TEMPLATES'=>'Business Process Management',
 'LBL_CREATE_EMAIL_TEMPLATES'=>'New Email Template',
 'LBL_UPLOAD_MSWORD_TEMPLATES'=>' - Upload MS Word Templates for Mail Merge',
 'LBL_SCHEDULE_EMAIL_NOTIFICATION'=>' - Schedule Email Notifications',
@@ -278,6 +250,8 @@ $mod_strings = Array(
 'LBL_QUOTE_STAGE'=>'Quote Stage',
 'LBL_CARRIER'=>'Carrier',
 'LBL_TAXCLASS'=>'Tax Class',
+'LBL_RETENTION'=>'Retention',
+'LBL_PERCENTAGE'=>'Percentage',
 'LBL_MY_DETAILS'=>'My Details',
 'LBL_MY_MAIL_SERVER_DET'=>'My Incoming Mail Server Details',
 'LBL_EMAIL_ID'=>'Email ID',
@@ -326,7 +300,7 @@ $mod_strings = Array(
 'LBL_OTHER_SETTINGS'=>'Other Settings',
 'LBL_SCROLL'=>'[Scroll to Top]',
 
-'LBL_INV_NOT_DESC'=>'The following is the list of notifications that are sent to the product handler regarding the demand and the current quantity in hand during the creation of a Quote, SalesOrder and Invoice.',
+'LBL_INV_NOT_DESC'=>'The following is the list of notifications that are sent to the product handler regarding the demand and the current quantity in hand during the creation of a Quote, Sales Order and Invoice.',
 
 'InvoiceNotification'=>'Product Stock Notification during Invoice Generation',
 'InvoiceNotificationDescription'=>'When the product stock level goes below the re-order level, notification will be sent to the product handler',
@@ -334,10 +308,10 @@ $mod_strings = Array(
 'PriceBook'=>'PriceBook',
 'Quotes'=>'Quote',
 'PurchaseOrder'=>'Purchase Order',
-'SalesOrder'=>'SalesOrder',
+'SalesOrder'=>'Sales Order',
 'Invoice'=>'Invoice',
-'LBL_FRONT_LOGO' => 'Front Logo',  
-'LBL_FAVICON_LOGO' => 'Favicon Logo',  
+'LBL_FRONT_LOGO' => 'Front Logo',
+'LBL_FAVICON_LOGO' => 'Favicon Logo',
 
 //For Custom Fields
 'LBL_LEAD_MAP_CUSTOM_FIELD'=>'Mapping Lead Custom Fields',
@@ -350,12 +324,8 @@ $mod_strings = Array(
 'CUSTOMFIELDMAPPING'=>'Custom Field Mapping',
 'LBL_FIELD_MAPPING'=>'Field Mapping',
 'LBL_LEAD_FIELD'=>'Lead Custom Field',
-//After 4.2 GA
 'LBL_TEXT_AREA'=>'Text Area',
-//for Edit ordering the blocks
-'NOTESCUSTOMFIELDS'=>'Documents Custom Fields',
 
-//Added fields after 4.2 ptach 2
 'LBL_ASSIGN_MODULE_OWNERS'=>'Assign Module Owners',
 'LBL_MODULE_OWNERS'=>'Module Owners',
 'LBL_ASSIGN_MODULE_OWNERS_INFO'=>' - Assign Owners for each modules',
@@ -363,8 +333,6 @@ $mod_strings = Array(
 'LBL_OWNER'=>'Assigned Owner',
 'LBL_MIGRATION'=>'Migration Wizard',
 'LBL_MIGRATION_INFO'=>'Migrate your existing CRM data to latest version',
-
-//Added for 5 GA - Description of Settings UI
 
 'LBL_USER_DESCRIPTION'=>'Manage users who can access the application',
 'LBL_ROLE_DESCRIPTION'=>'Set up hierarchy of roles and assign to the users',
@@ -398,7 +366,6 @@ $mod_strings = Array(
 'LBL_GROUP_DESC'=>'Manage different types of user groups within your organization',
 'LBL_MAIL_MERGE_DESC'=>'Manage Mail Merge templates used in CRM modules',
 
-//Added fields after 5.0 Alpha
 'LBL_REQUIRE_SMTP_AUTHENTICATION'=>'Require SMTP Authentication?',
 'LBL_ANNOUNCEMENT'=>'Announcements',
 'LBL_SETTING_ANNOUNCEMENT'=>'Announcement',
@@ -478,6 +445,7 @@ $mod_strings = Array(
 'LBL_CONTACT_FIELDS'=>'Contact Fields',
 'LBL_LEAD_FIELDS'=>'Lead Fields',
 'LBL_USER_FIELDS'=>'User Fields',
+'LBL_HELPDESK_FIELDS'=>'Ticket Fields',
 'LNK_SAMPLE_EMAIL'=>'View Sample Email',
 //Added while moving Mail Merge templates from Users to Settings
 'LBL_TEMPLATE_FILE'=>'Template File',
@@ -650,7 +618,6 @@ $mod_strings = Array(
 'LBL_MOVE_ROLE'=>'Move Role',
 'LBL_BACKUP_DESC'=>' The CRM system allows you to make a backup of the database to your FTP server. The CRM will take backup of all data whenever an admin user logs out. Make sure you have enough disk space available on your FTP server. The created backup file will be in the following format: "backup_date_time.sql".',
 
-// Added/Updated for vtiger CRM 5.0.4
 'LBL_SUPPORT_NOTICIATION'=>'Support End Notification before a week',
 'LBL_SUPPORT_NOTICIATION_MONTH'=>'Support End Notification before a month' ,
 'LBL_SUPPORT_DESCRIPTION'=>'Notify before one week when support is about to end',
@@ -662,6 +629,8 @@ $mod_strings = Array(
 'ERR_CUSTOM_FIELD_WITH_NAME'=>'Custom Field with the Name ',
 'ERR_ALREADY_EXISTS'=>' already exists.',
 'ERR_SPECIFY_DIFFERENT_LABEL'=>'Please specify a different Label',
+'ROWSIZEERROR' => 'Row size too large. Reached maximum size limit of database table size.',
+'ADDFIELDERROR' => 'Custom field could not be added due to a database error.',
 'LBL_TOOLS_TO_BE_SHOWN'=>'Tools to be shown',
 'LBL_PICKLIST_TRANSFER'=>'Transfering the values Of ',
 'LBL_REPLACE_VALUE_WITH'=>'Replace value with ',
@@ -685,16 +654,16 @@ $mod_strings = Array(
 'LBL_CUSTOMQUOTE_NUMBER'=>'Custom Quote Number',
 'LBL_QUOTE_NUMBER_PREVIEW'=>'Preview',
 'LBL_QUOTE_NUMBER_BUTTON'=>'Update Quote Number',
-'LBL_CUSTOM_SO_NUMBER_VIEW'=>'SalesOrder Number Customization',
-'LBL_CUSTOMSO_STRING'=>'Custom SalesOrder String',
-'LBL_CUSTOMSO_NUMBER'=>'Custom SalesOrder Number',
+'LBL_CUSTOM_SO_NUMBER_VIEW'=>'Sales Order Number Customization',
+'LBL_CUSTOMSO_STRING'=>'Custom Sales Order String',
+'LBL_CUSTOMSO_NUMBER'=>'Custom Sales Order Number',
 'LBL_SO_NUMBER_PREVIEW'=>'Preview',
-'LBL_SO_NUMBER_BUTTON'=>'Update SalesOrder Number',
-'LBL_CUSTOM_PO_NUMBER_VIEW'=>'PurchaseOrder Number Customization',
-'LBL_CUSTOMPO_STRING'=>'Custom PurchaseOrder String',
-'LBL_CUSTOMPO_NUMBER'=>'Custom PurchaseOrder Number',
+'LBL_SO_NUMBER_BUTTON'=>'Update Sales Order Number',
+'LBL_CUSTOM_PO_NUMBER_VIEW'=>'Purchase Order Number Customization',
+'LBL_CUSTOMPO_STRING'=>'Custom Purchase Order String',
+'LBL_CUSTOMPO_NUMBER'=>'Custom Purchase Order Number',
 'LBL_PO_NUMBER_PREVIEW'=>'Preview',
-'LBL_PO_NUMBER_BUTTON'=>'Update PurchaseOrder Number',
+'LBL_PO_NUMBER_BUTTON'=>'Update Purchase Order Number',
 
 // Added for Multi-Currency Support
 'LBL_TRANSFER_CURRENCY'=>'Transfer Currency',
@@ -721,6 +690,7 @@ $mod_strings = Array(
 'LBL_MAIL_SCANNER'=>'Mail Converter',
 'MailScanner' =>'Mail Converter',
 'LBL_MAIL_SCANNER_DESCRIPTION'=>'Configure mailbox for scanning',
+'Recommended frequency for MailScanner is 15 mins' => 'Recommended frequency for Mail Converter is 15 mins',
 'LBL_SCAN_NOW'=>'Scan Now',
 'LBL_RULE'=>'Rule',
 'LBL_SETUP'=>'Setup',
@@ -783,9 +753,10 @@ $mod_strings = Array(
 'LBL_SCANNING'=>'Scanning',
 'LBL_LOOKFOR'=>'Look for',
 'LBL_UNREAD'=>'Unread',
+'LBL_ALLUNREAD'=>'ALL Unread',
 'LBL_READ'=>'Read',
 'LBL_AFTER_SCAN'=>'After scan',
-'LBL_MESSAGES_FROM_LASTSCAN'=>'Messages from lastscan',
+'LBL_MESSAGES_FROM_LASTSCAN'=>'Messages from last scan',
 'LBL_MARK_MESSAGE_AS'=>'Mark message as',
 'LBL_ASSIGN' => 'Assign to',
 
@@ -808,11 +779,14 @@ $mod_strings = Array(
 'LBL_ON_MODIFY' => 'Every time a record is modified',
 'LBL_ON_SCHEDULE' => 'Schedule',
 'LBL_ON_DELETE' => 'When record is deleted',
+'LBL_MANUAL' => 'Manual',
+'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
 'LBL_CONDITIONS'=>'Conditions',
 'LBL_NEW_CONDITION_BUTTON_LABEL'=>'New Condition',
 'LBL_TASKS'=>'Tasks',
 'LBL_NEW_TASK_BUTTON_LABEL'=>'New Task',
 'LBL_TASK'=>'Task',
+'LBL_DELAY' => 'Delay',
 
 'LBL_MANDATORY_FIELDS'=>'Mandatory Fields',
 'LBL_MANDATORY_FIELDS_DESCRIPTION'=>'Manage mandatory fields of all modules',
@@ -902,11 +876,8 @@ $mod_strings = Array(
 'LBL_MAPPED_FIELDS' => 'Mapped Fields',
 'LEADS_CUSTOM_FIELD_MAPPING_DESCRIPTION' => 'Map Your Leads Customfields with Organizations,Contacts and Opportunities',
 'LEADS_CUSTOM_FIELD_MAPPING'=> 'Leads Field Mapping',
-'LBL_CALENDER_CUSTOMFIELDS' => 'Calendar Custom Fields',
-'LBL_CALENDER_CUSTOMFIELDS_DESCRIPTION' => 'You can Create Custom Fields for Calendar',
 'LBL_GO_BACK'=>'Go Back',
 
-//Added fix for: 5418
 'LBL_USE_PREFIX' => 'Use Prefix',
 'LBL_START_SEQ' => 'Start Sequence',
 'LBL_MODULE_NUMBERING' => 'Module Numbering',
@@ -915,7 +886,6 @@ $mod_strings = Array(
 'LBL_IN_USE' => 'IN USE',
 'LBL_MODULE_NUMBERING_FIX_MISSING' => 'Update Missing Record Sequence Now',
 
-//Added for: 5473
 'LBL_SHARING_ACCESS_HELPNOTE' => 'After making modifications, press Recalculate button to apply the changes.',
 
 'LBL_ADD_CUSTOMFIELD' => 'Add Custom Field',
@@ -954,10 +924,7 @@ $mod_strings = Array(
 'ModTracker' => 'ModTracker',
 'LBL_MODTRACKER_DESCRIPTION' => 'Select modules for tracking',
 
-'LBL_MENUS_TO_SHOW'=>'Select modules to be displayed on main menu',
-'LBL_MENU_DESC'=>'Customize Menu Sequence',
 'LBL_MENU_EDITOR'=>'Menu Editor',
-'LBL_MENUS_TO_SHOW_DESCRIPTION' => 'You can use arrows to order the items in the menu. The top 10 items appear on the main menu and the rest are displayed under the <b><i>More</i></b> dropdown',
 'LBL_ALL_MODULES' => 'All Modules',
 'LBL_SELECTED_MODULES' => 'Selected Modules',
 
@@ -983,5 +950,37 @@ $mod_strings = Array(
 // language translation strings
 'SendEmailFrom' => 'Send Email From',
 'LeaveEmptyForUserEmail' => 'Leave empty to use your user email',
+'LBL_OPENSSL_SUPPORT' => 'OpenSSL Support',
+'LBL_IMAP_SUPPORT' => 'IMAP Support',
+'StorageSpaceUsage' => 'Storage Space Usage',
+'Calculate storage disk space usage and save in database.' => 'Calculate storage disk space usage and save in database.',
+'wf_conditions_found' => 'Field found in workflow condtions: ',
+'wf conditions' => 'Field not found in workflow condtions.',
+'wf_tasks' => 'Field not found in workflow tasks.',
+'wf_tasks_found' => 'Field found in workflow ',
+'cv_column' => 'Field found in custom view columns: ',
+'cv_column_nf' => 'Field not found in custom view columns',
+'cv_advfilter' => 'Field found in custom view conditions: ',
+'cv_advfilter_nf' => 'Field not found in custom view conditions',
+'cv_stdfilter' => 'Field found in custom view date conditions: ',
+'cv_stdfilter_nf' => 'Field not found in custom view date conditions',
+'email_templates' => 'Field found in Email Template: ',
+'email_templates_nf' => 'Field not found in Email Templates',
+'select_column' => 'Field found in Report (columns): ',
+'select_column_nf' => 'Field not found in Report Columns',
+'report_dtfilter' => 'Field found in Report (Date Filters): ',
+'report_dtfilter_nf' => 'Field not found in Report Date Filters',
+'report' => 'Field found in Report (Group By): ',
+'report_nf' => 'Field not found in Report Group By',
+'report_sort' => 'Field found in Report (Sort By): ',
+'report_sort_nf' => 'Field not found in Report Sort By',
+'report_summary' => 'Field found in Report (Summary): ',
+'report_summary_nf' => 'Field not found in Report Summary',
+'cl_mapping' => 'Field found in Lead Conversion Mapping',
+'cl_mapping_nf' => 'Field not found in Lead Conversion Mapping',
+'Site Maintenance' => 'Site Maintenance',
+'SM_BeBackSoon' => 'We&rsquo;ll be back soon!',
+'SM_SorryInconvenience' => 'Sorry for the inconvenience but we&rsquo;re performing some maintenance at the moment. We&rsquo;ll be back online shortly!',
+'LBL_CC' => 'CC',
 );
 ?>

@@ -7,81 +7,74 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
+require_once 'include/events/SqlResultIterator.inc';
 
-require_once('include/events/SqlResultIterator.inc');
+class VTEntityType {
 
-class VTEntityType{
-	function __construct($adb, $setype){
+	public function __construct($adb, $setype) {
 		$this->moduleName=$setype;
-		require_once("modules/".$setype."/".$setype.".php"); 
-		$result = $adb->pquery("select tabid from vtiger_tab where name=?", 
-			array($setype));
-		$tabId = $adb->query_result($result,0,"tabid");
+		require_once 'modules/'.$setype.'/'.$setype.'.php';
+		$result = $adb->pquery('select tabid from vtiger_tab where name=?', array($setype));
+		$tabId = $adb->query_result($result, 0, 'tabid');
 		$this->tabId = $tabId;
 		$this->adb = $adb;
 	}
-	
-	function getTabId(){
+
+	public function getTabId() {
 		return $this->tabId;
 	}
-	
-	function getModuleName(){
+
+	public function getModuleName() {
 		return $this->moduleName;
 	}
 
-	function getFieldNames(){
+	public function getFieldNames() {
 		$adb = $this->adb;
 		$arr = array();
-		$result = $adb->pquery("select fieldname from vtiger_field where tabid=? and vtiger_field.presence in (0,2)", 
-			array($this->getTabId()));
+		$result = $adb->pquery('select fieldname from vtiger_field where tabid=? and vtiger_field.presence in (0,2)', array($this->getTabId()));
 		$it = new SQLResultIterator($adb, $result);
-		foreach($it as $row){
+		foreach ($it as $row) {
 			$arr[] = $row->fieldname;
 		}
 		return $arr;
 	}
-	
-	function getFieldType($fieldName){
+
+	public function getFieldType($fieldName) {
 		$adb = $this->adb;
-		$result = $adb->pquery("select * from vtiger_field where fieldname=? and tabid=? and vtiger_field.presence in (0,2)", 
-			array($fieldName, $this->tabId));
-		$uitype = $adb->query_result($result,0,"uitype");
+		$result = $adb->pquery('select uitype from vtiger_field where fieldname=? and tabid=? and vtiger_field.presence in (0,2)', array($fieldName, $this->tabId));
+		$uitype = $adb->query_result($result, 0, 'uitype');
 		$fieldType = new VTFieldType();
-		if(in_array($uitype, array(50, 51, 73))){
-			$fieldType->type = "Related";
-			$fieldType->relatedTo = "Accounts";	
-		}else if($uitype == 71){
-			$fieldType->type = "Number";
-		}else{
-			$fieldType->type = "String";
+		if (in_array($uitype, array(51, 73))) {
+			$fieldType->type = 'Related';
+			$fieldType->relatedTo = 'Accounts';
+		} elseif ($uitype == 71) {
+			$fieldType->type = 'Number';
+		} else {
+			$fieldType->type = 'String';
 		}
 		return $fieldType;
 	}
-	
-	function getFieldTypes(){
-		$adb = $this->adb;
+
+	public function getFieldTypes() {
 		$fieldNames = $this->getFieldNames();
 		$fieldTypes = array();
-		foreach($fieldNames as $fieldName){
+		foreach ($fieldNames as $fieldName) {
 			$fieldTypes[$fieldName]=$this->getFieldType($fieldName);
 		}
 		return $fieldTypes;
 	}
-	
-
 }
 
-class VTFieldType{
-	function toArray(){
+class VTFieldType {
+
+	public function toArray() {
 		$ro = new ReflectionObject($this);
 		$props = $ro->getProperties();
 		$arr = array();
-		foreach($props as $prop){
+		foreach ($props as $prop) {
 			$arr[$prop->getName()]=$prop->getValue($this);
 		}
 		return $arr;
 	}
-	
 }
-
 ?>

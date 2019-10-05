@@ -8,8 +8,8 @@
  * All Rights Reserved.
  ********************************************************************************/
 global $theme;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
+$theme_path='themes/'.$theme.'/';
+$image_path=$theme_path.'images/';
 ?>
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
 <tr>
@@ -26,7 +26,7 @@ $image_path=$theme_path."images/";
 			</td>
 		</tr>
 		<tr>
-			<td height="200"><?php include ("modules/Dashboard/Chart_pipeline_by_sales_stage.php");?></td>
+			<td height="200"><?php include 'modules/Dashboard/Chart_pipeline_by_sales_stage.php';?></td>
 		</tr>
 		</table>
 	</td>
@@ -47,7 +47,7 @@ $image_path=$theme_path."images/";
 			</td>
 		</tr>
 		<tr>
-			<td height="200"><?php include ("modules/Dashboard/Chart_outcome_by_month.php"); ?></td>
+			<td height="200"><?php include 'modules/Dashboard/Chart_outcome_by_month.php'; ?></td>
 		</tr>
 		</table>
 	</td>
@@ -70,7 +70,7 @@ $image_path=$theme_path."images/";
 			</td>
 		</tr>
 		<tr>
-			<td height="200"><?php include ("modules/Dashboard/Chart_lead_source_by_outcome.php");?></td>
+			<td height="200"><?php include 'modules/Dashboard/Chart_lead_source_by_outcome.php';?></td>
 
 		</tr>
 		</table>
@@ -89,7 +89,7 @@ $image_path=$theme_path."images/";
 			</td>
 		</tr>
 		<tr>
-			<td height="200"><?php include ("modules/Dashboard/Chart_pipeline_by_lead_source.php") ?></td>
+			<td height="200"><?php include 'modules/Dashboard/Chart_pipeline_by_lead_source.php'; ?></td>
 		</tr>
 		</table>
 	</td>

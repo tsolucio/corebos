@@ -7,10 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once('vtlib/Vtiger/LanguageImport.php');
+require_once 'vtlib/Vtiger/LanguageImport.php';
 
 /**
- * Language Manager class for vtiger Modules.
+ * Language Manager class for Modules.
  * @package vtlib
  */
 class Vtiger_Language extends Vtiger_LanguageImport {
@@ -18,7 +18,7 @@ class Vtiger_Language extends Vtiger_LanguageImport {
 	/**
 	 * Constructor
 	 */
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 	}
 }

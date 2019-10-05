@@ -1,71 +1,54 @@
 <?php
 /*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License
-Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at
-http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"
-basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
-License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
- * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the English language pack for the Custom View.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Ranieri Slemer/Translate missing termsn to Brazilian Portuguese| 07-apr-2018 |Sao Paulo/SP/Brasil.|www.slemernet.com.br
  ********************************************************************************/
-$mod_strings = Array(
-'LBL_MODULE_NAME'=>'Customizar Visualização',
-'LBL_STEP_1_TITLE'=>'Dados Visualização',
-'LBL_VIEW_NAME'=>'Nome Visualização:',
-'LBL_SETDEFAULT'=>'Definir como Padrão',
-'LBL_LIST_IN_METRICS'=>'Listar em Métricas',
-'LBL_STEP_2_TITLE'=>'Selecionar Coluna',
-'LBL_STEP_3_TITLE'=>'Filtros Padrões',
-'LBL_STEP_4_TITLE'=>'Filtros Avançados',
-'LBL_STEP_5_TITLE'=>'Informação Acesso',
+$mod_strings = array(
+'LBL_MODULE_NAME'=>'Customizar visualização',
+'LBL_STEP_1_TITLE'=>'Dados visualização',
+'LBL_VIEW_NAME'=>'Nome visualização:',
+'LBL_SETDEFAULT'=>'Definir como padrão',
+'LBL_LIST_IN_METRICS'=>'Listar em indicadores ( KPI )',
+'LBL_STEP_2_TITLE'=>'Selecionar coluna',
+'LBL_STEP_3_TITLE'=>'Filtros padronizados',
+'LBL_STEP_4_TITLE'=>'Filtros avançados',
+'LBL_STEP_5_TITLE'=>'Informação de acesso',
 'LBL_SF_COLUMNS'=>'Coluna',
-'LBL_SF_STARTDATE'=>'Data Inicial',
-'LBL_SF_ENDDATE'=>'Data Final',
+'LBL_SF_STARTDATE'=>'Data inicial',
+'LBL_SF_ENDDATE'=>'Data final',
 'LBL_AF_HDR1'=>'Defina as condições da pesquisa para restringir melhor a lista.',
 'LBL_AF_HDR2'=>'Você pode usar filtros &quot;ou&quot; entrar com múltiplos
 itens na terceira coluna.',
 'LBL_AF_HDR3'=>'Você pode entrar com mais de 10 itens, separados por vírgulas. Por
 exemplo: PR, SP, MG, RS para procurar PR ou SP ou MG ou RS.',
-'LBL_AF_HDR4'=>'Se "Tipo Atividade" for selecionado, atribua um dos
+'LBL_AF_HDR4'=>'Se "Tipo atividade" for selecionado, atribua um dos
 seguintes valores "Chamada", "Reunião" ou "Tarefa".',
 
-//strings added for vtiger 5, date format...
 'LBL_NONE'=>'Nada',
-'View_Name'=>'View_Name',
 'LBL_AND'=>'E',
-'LBL_DATE_FORMAT_CUSTOMVIEW'=>'Y-m-d',
 //Strings added for filter
-'Custom'=>'Customizar',
-'Previous FY'=>'Ano Fiscal Anterior',
-'Current FY'=>'Ano Fiscal Atual',
-'Next FY'=>'Próxima Ano Fiscal',
-'Previous FQ'=>'Trimestre Fiscal Anterior',
-'Current FQ'=>'Trimestre Fiscal Atual',
-'Next FQ'=>'Próximo Trimestre Fiscal',
+'Custom'=>'Personalizar',
+'Previous FY'=>'Ano anterior',
+'Current FY'=>'Ano atual',
+'Next FY'=>'Próximo ano',
+'Previous FQ'=>'Trimestre anterior',
+'Current FQ'=>'Trimestre atual',
+'Next FQ'=>'Próximo Trimestre',
 'Yesterday'=>'Ontem',
 'Today'=>'Hoje',
 'Tomorrow'=>'Amanhã',
-'Last Week'=>'Últma Semana',
-'Current Week'=>'Semana Atual',
-'Next Week'=>'Próxima Semana',
-'Last Month'=>'Último Mês',
+'Last Week'=>'Últma semana',
+'Current Week'=>'Semana atual',
+'Next Week'=>'Próxima semana',
+'Last Month'=>'Último mês',
 'Current Month'=>'Mês atual',
-'Next Month'=>'Próximo Mês',
+'Next Month'=>'Próximo mês',
 'Last 7 Days'=>'Últimos 7 Dias',
 'Last 30 Days'=>'Últimos 30 Dias',
 'Last 60 Days'=>'Últimos 60 Dias',
@@ -75,208 +58,198 @@ seguintes valores "Chamada", "Reunião" ou "Tarefa".',
 'Next 60 Days'=>'Próximos 60 Dias',
 'Next 90 Days'=>'Próximos 90 Dias',
 'Next 120 Days'=>'Próximos 120 Dias',
-      
+
 'equals'=>'igual',
-'contains'=>'Contem',
-'does not contain'=>'não contem',
+'contains'=>'Contém',
+'does not contain'=>'não contém',
 'less than'=>'menor que',
 'greater than'=>'maior que',
 'less or equal'=>'menor ou igual',
 'greater or equal'=>'maior ou igual',
-      
-//Strings added to translate field label vtiger_groups
+
+//Strings added to translate field label groups
 'Address'=>'Endereço',
 'Information'=>'Informação',
 'Description'=>'Descrição',
-'Custom Information'=>'Informação Customizada',
-'- Event Information'=>'- Informação Evento',
-'- Event Description'=>'- Descrição Evento',
-'- Task Information'=>'- Informação Tarefa',
-'- Task Description'=>'- Descrição Tarefa',
+'Custom Information'=>'Informação personalizada',
+'- Event Information'=>'- Informação do evento',
+'- Event Description'=>'- Descrição do evento',
+'- Task Information'=>'- Informação da tarefa',
+'- Task Description'=>'- Descrição da tarefa',
 
 //Strings added for helpdesk module fields
-'Title'=>'Título',
+'Title'=>'Função',
 'Assigned To'=>'Responsável',
 'Related to'=>'Relacionado à',
 'Priority'=>'Prioridade',
-'Product Name'=>'Nome Produto',
+'Product Name'=>'Nome do produto',
 'Severity'=>'Gravidade',
 'Status'=>'Status',
 'Category'=>'Categoria',
-'Created Time'=>'Data Criação',
-'Modified Time'=>'Data Modificação',
+'Created Time'=>'Data & hora da criação',
+'Modified Time'=>'Data & hora da modificação',
 'Attachment'=>'Anexo',
 
 //Strings added for Leads module fields
 'First Name'=>'Nome',
-'Phone'=>'Fone',
+'Phone'=>'Telefone',
 'Last Name'=>'Sobrenome',
 'Company'=>'Empresa',
-'Lead Source'=>'Fonte Lead',
+'Lead Source'=>'Fonte lead',
 'Website'=>'Website',
 'Industry'=>'Atividade',
-'Lead Status'=>'Status Lead',
-'Annual Revenue'=>'Receita Anual',
+'Lead Status'=>'Status lead',
+'Annual Revenue'=>'Receita anual',
 'Rating'=>'Avaliação',
-'No Of Employees'=>'No. Empregados',
+'No Of Employees'=>'No. empregados',
 'Street'=>'Rua',
 'Po Box'=>'Cx Postal',
 'Postal Code'=>'CEP',
 'City'=>'Cidade',
 'Country'=>'País',
 'State'=>'Estado',
-      
+
 //Strings added for Accounts module fields
-'Account Name'=>'Nome Organização',
-'Ticker Symbol'=>'Cód. Bolsa',
-'Other Phone'=>'Fone Alternativo',
+'Account Name'=>'Nome de conta',
+'Ticker Symbol'=>'Cód. bolsa',
+'Other Phone'=>'Telefone alternativo',
 'Member Of'=>'Membro de',
 'Employees'=>'Empregados',
-'Other Email'=>'Email Alternativo',
+'Other Email'=>'E-mail alternativo',
 'Ownership'=>'Proprietário',
-'industry'=>'atividade',
+'industry'=>'Atividade',
 'SIC Code'=>'Cod CNAE',
-'Email Opt Out'=>'Recusa Email',
-'Billing Address'=>'Endereço Faturamento',
-'Shipping Address'=>'Endereço Entrega',
-'Shipping Po Box'=>'Cx Postal Entrega',
-'Billing Po Box'=>'Cx Postal Faturamento',
-'Billing City'=>'Cidade Faturamento',
-'Shipping City'=>'Cidade Entrega',
-'Billing State'=>'Estado Faturamento',
-'Shipping State'=>'Estado Faturamento',
-'Billing Code'=>'CEP Faturamento',
-'Shipping Code'=>'CEP Entrega',
-'Shipping Country'=>'País Entrega',
-'Billing Country'=>'País Faturamento',
-      
-      
+'Email Opt Out'=>'Recusa e-mail',
+'Billing Address'=>'Endereço faturamento',
+'Shipping Address'=>'Endereço entrega',
+'Shipping Po Box'=>'Cx Postal entrega',
+'Billing Po Box'=>'Cx Postal faturamento',
+'Billing City'=>'Cidade faturamento',
+'Shipping City'=>'Cidade entrega',
+'Billing State'=>'Estado faturamento',
+'Shipping State'=>'Estado faturamento',
+'Billing Code'=>'CEP faturamento',
+'Shipping Code'=>'CEP entrega',
+'Shipping Country'=>'País entrega',
+'Billing Country'=>'País faturamento',
+
 //Strings added for Contacts module fields
-      
-'Office Phone'=>'Fone Escritório',
-'Home Phone'=>'Fone Residencial',
-'Birthdate'=>'Aniversário',
+'Office Phone'=>'Telefone escritório',
+'Home Phone'=>'Telefone residencial',
+'Birthdate'=>'Data de aniversário',
 'Reports To'=>'Reporta-se à',
-'Assistant Phone'=>'Fone Assistente',
-'Do Not Call'=>'Recusa Chamada',
-'Mailing Street'=>'Endereço Correspondência',
-'Other Street'=>'Endereço Alternativo',
-'Mailing Po Box'=>'Cx Postal Correspondência',
-'Other Po Box'=>'Cx Postal Alternativo',
-'Mailing City'=>'Cidade Correspondência',
-'Other City'=>'Cidade Alternativo',
-'Mailing State'=>'Estado Correspondência',
-'Other State'=>'Estado Alternativo',
-'Mailing Zip'=>'CEP Correspondência',
+'Assistant Phone'=>'Telefone assistente',
+'Do Not Call'=>'Recusa chamada',
+'Mailing Street'=>'Endereço correspondência',
+'Other Street'=>'Endereço alternativo',
+'Mailing Po Box'=>'Cx Postal correspondência',
+'Other Po Box'=>'Cx Postal alternativo',
+'Mailing City'=>'Cidade correspondência',
+'Other City'=>'Cidade alternativo',
+'Mailing State'=>'Estado correspondência',
+'Other State'=>'Estado alternativo',
+'Mailing Zip'=>'CEP correspondência',
 'Other Zip'=>'CEP Alternativo',
-'Mailing Country'=>'País Correspondência',
-'Other Country'=>'País Alternativo',
-      
-      
+'Mailing Country'=>'País correspondência',
+'Other Country'=>'País alternativo',
+
 //Strings added for Potential module fields
-      
-'Potential Name'=>'Nome Oportunidade',
-'Amount'=>'Montante',
-'Expected Close Date'=>'Data Prevista Fechamento',
-'Next Step'=>'Próximo Passo',
-'Sales Stage'=>'Estágio Vendas',
+
+'Potential Name'=>'Nome da oportunidade',
+'Amount'=>'Valor',
+'Expected Close Date'=>'Data prevista p/fechamento',
+'Next Step'=>'Próximo passo',
+'Sales Stage'=>'Estágio da venda',
 'Probability'=>'Probabilidade',
-      
-      
+
 //Strings added for Quotes module fields
 'Subject'=>'Assunto',
-'Quote Stage'=>'Estágio Cotação',
+'Quote Stage'=>'Estágio cotação',
 'Valid Till'=>'Válido até',
 'Team'=>'Equipe',
-'Contact Name'=>'Nome Contato',
+'Contact Name'=>'Nome contato',
 'Carrier'=>'Entregador',
 'Shipping'=>'Entrega',
 'Inventory Manager'=>'Almoxarife',
-      
+
 //Strings added for Sales Orders module fields
 'Customer No'=>'Cód. Cliente',
-'Quote Name'=>'Nome Cotação',
-'Purchase Order'=>'Pedido Compra',
-'Due Date'=>'Data Vencimento',
+'Quote Name'=>'Nome de cotação',
+'Purchase Order'=>'Pedido de compra',
+'Due Date'=>'Data de vencimento',
 'Pending'=>'Pendente',
-'Sales Commission'=>'Comissão Vendas',
-'Excise Duty'=>'IPI',
-      
+'Sales Commission'=>'Comissão de vendas',
+'Excise Duty'=>'ICMS',
+
 //Strings added for Invoices module fields
-'Sales Order'=>'Pedido Vendas',
-'Invoice Date'=>'Data Fatura',
-      
+'Sales Order'=>'Pedido de vendas',
+'Invoice Date'=>'Data da fatura',
+
 //Strings added for Product module fields
-'Product Active'=>'Produto Ativo',
-'Product Category'=>'Categoria Produto',
-'Sales Start Date'=>'Data Início Vendas',
-'Sales End Date'=>'Data Final Vendas',
-'Support Start Date'=>'Data Início Suporte',
-'Support Expiry Date'=>'Data Final Suporte',
-'Vendor Name'=>'Nome Fornecedor',
-'Mfr PartNo'=>'Cód Fabricante',
-'Vendor PartNo'=>'Cód Fornecedor',
-      
-'Serial No'=>'No. Serial',
-'Product Sheet'=>'Ficha Produto',
-'GL Account'=>'Conta Plano Contas',
-      
+'Product Active'=>'Produto ativo',
+'Product Category'=>'Categoria do produto',
+'Sales Start Date'=>'Data início vendas',
+'Sales End Date'=>'Data final vendas',
+'Support Start Date'=>'Data início suporte',
+'Support Expiry Date'=>'Data Final suporte',
+'Vendor Name'=>'Nome do fornecedor',
+'Mfr PartNo'=>'Cód. Fabricante',
+'Vendor PartNo'=>'Cód. Fornecedor',
+
+'Serial No'=>'No. de série',
+'Product Sheet'=>'Ficha do produto',
+'GL Account'=>'Conta plano contas',
+
 //Strings added for Price book module fields
-'Price Book Name'=>'Nome Lista Preço',
+'Price Book Name'=>'Nome lista de preços',
 'Active'=>'Ativo',
-      
+
 //Strings added for tasks & events module fields
-'Start Date & Time'=>'Data & Hora Início',
-      
+'Start Date & Time'=>'Data & hora início',
+
 //error message
-'Missing required fields'=>'Campos requeridos ausentes',
+'Missing required fields'=>'Campos obrigatórios não preenchidos',
 //Strings added for campaigns
-'Campaign Name'=>'Nome Campanha',
-'Campaign Type'=>'Tipo Campanha',
+'Campaign Name'=>'Nome da campanha',
+'Campaign Type'=>'Tipo de campanha',
 'Product'=>'Produto',
-'Campaign Status'=>'Status Campanha',
-'Expected Revenue'=>'Receita Esperada',
-'Budget Cost'=>'Custo Orçado',
-'Actual Cost'=>'Custo Atual',
-'Expected Response'=>'Resposta Esperada',
-'Num Sent'=>'Número Envio',
-'Target Audience'=>'Público Alvo',
-'TargetSize'=>'Tamanho Alvo',
+'Campaign Status'=>'Status campanha',
+'Expected Revenue'=>'Receita esperada',
+'Budget Cost'=>'Custo orçado',
+'Actual Cost'=>'Custo atual',
+'Expected Response'=>'Resposta esperada',
+'Num Sent'=>'Número de envio',
+'Target Audience'=>'Público alvo',
+'TargetSize'=>'Tamanho alvo',
 'Sponsor'=>'Patrocinador',
-'Expected Sales Count'=>'Previsão Vendas',
-'Expected Response Count'=>'Previsão Resposta',
+'Expected Sales Count'=>'Previsão de vendas',
+'Expected Response Count'=>'Previsão da resposta',
 'Expected ROI'=>'Previsão ROI',
-'Actual Sales Count'=>'Vendas Atual',
-'Actual Response Count'=>'Resposta Atual',
-'Actual ROI'=>'ROI Atual',
-      
+'Actual Sales Count'=>'Vendas atual',
+'Actual Response Count'=>'Resposta atual',
+'Actual ROI'=>'ROI atual',
 
-      
 //Added for customview.tpl
-      
-'LBL_Select_a_Column'=>'Selecione uma Coluna',
-'Missing_required_fields'=>'Campos requeridos ausentes',
+'LBL_Select_a_Column'=>'Selecione uma coluna',
+'Missing_required_fields'=>'Campos obrigatórios ausentes',
 'Details'=>'Detalhes',
-'New_Custom_View'=>'Nova Visualização Customizada',
-'Edit_Custom_View'=>'Editar Visualização Customizada',
-'LBL_AF_HDR5'=>'O Filtro Simples de Data permite-lhe selecionar dados baseados na
-<b>Data Criação da Organização</b> ou <b>Data Modificação da Organização</b>',
-'Select_Duration'=>'Selecione Duração',
-'Simple_Time_Filter'=>'Filtro Simples de Data',
-'Start_Date'=>'Data Inicial',
-'End_Date'=>'Data Final',
-'LBL_RULE'=>'REGRA',
+'New_Custom_View'=>'Nova visualização personalizada',
+'Edit_Custom_View'=>'Editar visualização personalizada',
+'LBL_AF_HDR5'=>'O filtro de data simples permite-lhe selecionar dados baseados na
+<b>Data de criação da conta</b> ou <b>data de modificação da conta</b>',
+'Select_Duration'=>'Selecione duração',
+'Simple_Time_Filter'=>'Filtro de data simples',
+'Start_Date'=>'Data de início',
+'End_Date'=>'Data de fim',
+'LBL_RULE'=>'Regra',
 
-// Added/Updated for vtiger CRM 5.0.4
 'not equal to'=>'Diferente de',
-'starts with'=>'Início com',
-'ends with'=>'Final com',
+'starts with'=>'Inícia com',
+'ends with'=>'Termina com',
 //'Product Code'=>'Product Code',
 
-// Added after 5.0.4 GA
-
-//Added for Role based Custom filters 
-'LBL_SET_AS_PUBLIC'=>'Definir como Público',
+//Added for Role based Custom filters
+'LBL_SET_AS_PUBLIC'=>'Definir como público',
 'LBL_NEW'=>'Novo',
 'LBL_EDIT'=>'Editar',
 'LBL_STATUS_PUBLIC_APPROVE'=>'Aprovar',

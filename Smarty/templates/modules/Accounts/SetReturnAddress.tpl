@@ -44,11 +44,11 @@
 					<div style="height:120px;overflow-y:auto;overflow-x:hidden;" align="center">
 						<table border="0" cellpadding="5" cellspacing="0" width="90%">
 							<tr>
-								<td align="center"><input type="checkbox" {if $BillAddressChecked eq 'true'}checked {/if}name="saa_bill" id="saa_bill" /></td>
+								<td align="center"><input type="checkbox" {if $BillAddressChecked eq 1}checked {/if}name="saa_bill" id="saa_bill" /></td>
 								<td align="left"><b><label for="saa_bill">{'Billing Address'|@getTranslatedString}</label></b></td>
 							</tr>
 							<tr>
-								<td align="center"><input type="checkbox" {if $ShipAddressChecked eq 'true'}checked {/if}name="saa_ship" id="saa_ship" /></td>
+								<td align="center"><input type="checkbox" {if $ShipAddressChecked eq 1}checked {/if}name="saa_ship" id="saa_ship" /></td>
 								<td align="left"><b><label for="saa_ship">{'Shipping Address'|@getTranslatedString}</label></b></td>
 							</tr>
 						</table>

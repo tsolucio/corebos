@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
 ********************************************************************************/
-
+include_once 'modules/Migration/migrationutils.php';
 _phpset_memorylimit_MB(32);
 global $php_max_execution_time;
 set_time_limit($php_max_execution_time);
@@ -157,9 +157,8 @@ perform_post_migration_activities();
 //Function used to execute the query and display the success/failure of the query
 function ExecuteQuery($query)
 {
-	global $adb;
+	global $adb, $migrationlog;
 	global $conn, $query_count, $success_query_count, $failure_query_count, $success_query_array, $failure_query_array;
-        global $migrationlog;
 
 	//For third option migration we have to use the $conn object because the queries should be executed in 4.2.3 db
 	if($_REQUEST['migration_option'] == 'alter_db_details')

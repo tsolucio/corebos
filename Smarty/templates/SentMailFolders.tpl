@@ -80,10 +80,15 @@ function ShowFolders(folderid)
 										if(gFolderid == folderid) {ldelim}
 											gselectedrowid = 0;
 											document.getElementById("email_con").innerHTML=result[2];
-											document.getElementById('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top:10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
+											var emaildtl = document.getElementById('EmailDetails');
+											if (emaildtl) {
+												emaildtl.innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top:10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
+											}
 											execJS(document.getElementById('email_con'));
 										{rdelim} else {ldelim}
-											document.getElementById('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top:10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
+											if (emaildtl) {
+												emaildtl.innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top:10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
+											}
 											document.getElementById("email_con").innerHTML=result[2];
 											execJS(document.getElementById('email_con'));
 										{rdelim}
@@ -98,6 +103,7 @@ function ShowFolders(folderid)
 </script>
 
 <!-- Sent mail -->
+{if $SHOW_SENTTO_LINKS}
 <img src="{'sentmail.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;<b class="txtGreen">{'LBL_SENT_MAILS'|@getTranslatedString:$MODULE}</b>
 <ul style="list-style-type:none;margin-left:10px;margin-top:5px;padding:2px">
 	<li><img src="{'folder1.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;&nbsp;
@@ -115,3 +121,4 @@ function ShowFolders(folderid)
 	<a href="javascript:;" onClick="ShowFolders(5)" class="webMnu">{'LBL_TO_USERS'|@getTranslatedString:$MODULE}</a>&nbsp;
 	</li>
 </ul>
+{/if}

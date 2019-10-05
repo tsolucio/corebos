@@ -1,7 +1,15 @@
 <?php
-/** YOUR LICENSE TEXT HERE **/
-$mod_strings = Array (
-'Webforms' => 'Formulario Web',
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
+ ************************************************************************************/
+$mod_strings = array (
+'Webforms' => 'Formularios Web',
+'SINGLE_Webforms' => 'Formulario Web',
 'Allows you to manage Webforms' => 'Crea y administra formularios web para capturar oportunidades de negocio',
 'LBL_SUCCESS' => 'ha sido añadido a la aplicación.',
 'LBL_FAILURE' => 'No se ha podido añadir la entrada en la aplicación.',
@@ -13,8 +21,6 @@ $mod_strings = Array (
 'LBL_RETURNURL'=>'URL retorno',
 'LBL_ACTION'=>'Acción',
 'LBL_ASSIGNED_TO'=>'Asignado a',
-'LBL_EDIT'=>'editar',
-'LBL_DELETE'=>'borrar',
 'LBL_SOURCE'=>'Mostrar Formulario',
 'LBL_MODULE_INFORMATION'=>'Información Formulario',
 'LBL_FIELD_INFORMATION'=>'Información Campos',
@@ -38,6 +44,7 @@ $mod_strings = Array (
 'LBL_SELECT_USER'=>'Selecciona Usuario',
 'LBL_DUPLICATE_NAME' => 'Un formulario con ese nombre ya existe',
 'ERR_CREATE_WEBFORM' => 'No se ha podido crear el formulario',
+'LBL_WEB_DOMAIN' => 'Web Domain',
+'LBL_CREATENEW' => 'Pulsa el siguiente enlace para crear un formulatio web',
 );
-
 ?>

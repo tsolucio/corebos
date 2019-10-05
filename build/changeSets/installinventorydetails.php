@@ -15,16 +15,18 @@
 *************************************************************************************************/
 
 class installinventorydetails extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$toinstall = array('InventoryDetails');
 			foreach ($toinstall as $module) {
 				if ($this->isModuleInstalled($module)) {
-					vtlib_toggleModuleAccess($module,true);
+					vtlib_toggleModuleAccess($module, true);
 					$this->sendMsg("$module activated!");
 				} else {
 					$this->installManifestModule($module);
@@ -35,11 +37,13 @@ class installinventorydetails extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
-			vtlib_toggleModuleAccess('InventoryDetails',false);
+			vtlib_toggleModuleAccess('InventoryDetails', false);
 			$this->sendMsg('InventoryDetails deactivated!');
 			$this->markUndone(false);
 			$this->sendMsg('Changeset '.get_class($this).' undone!');
@@ -48,5 +52,4 @@ class installinventorydetails extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
 }

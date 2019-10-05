@@ -46,15 +46,12 @@
              {assign var="optioncount" value=$optioncount+1}
 				options[{$optioncount}] = new Option('{$detail.0}', '{$detail.1}');
 			{/foreach}      
-			 {assign var="alloptioncount" value=$alloptioncount+1}     
+			 {assign var="alloptioncount" value=$alloptioncount+1}
              allOpts[{$alloptioncount}] = options;
 	    {/foreach}
-        setAllOptions(allOpts);	    
+        setAllOptions(allOpts);
     }
-	
-	
 
-	
 {literal}
 	function cancelForm(frm)
 	{
@@ -85,7 +82,7 @@
 				<input type="hidden" name="templateid" value="{$TEMPLATEID}">
 				<input type="hidden" name="parenttab" value="{$PARENTTAB}">
 				<tr>
-					<td width=50 rowspan=2 valign=top><img src="{'ViewTemplate.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_MODULE_NAME}" width="45" height="60" border=0 title="{$MOD.LBL_MODULE_NAME}"></td>
+					<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'ViewTemplate.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_MODULE_NAME}" width="45" height="60" border=0 title="{$MOD.LBL_MODULE_NAME}"></td>
 				{if $EMODE eq 'edit'}
 					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > <a href="index.php?module=Settings&action=listemailtemplates&parenttab=Settings">{$UMOD.LBL_EMAIL_TEMPLATES}</a> &gt; {$MOD.LBL_EDIT} &quot;{$TEMPLATENAME}&quot; </b></td>
 				{else}
@@ -94,7 +91,7 @@
 					
 				</tr>
 				<tr>
-					<td valign=top class="small">{$UMOD.LBL_EMAIL_TEMPLATE_DESC}</td>
+					<td valign=top class="small cblds-p-v_none">{$UMOD.LBL_EMAIL_TEMPLATE_DESC}</td>
 				</tr>
 				</table>
 				
@@ -110,7 +107,7 @@
 						{else}
 						<td class="big"><strong>{$MOD.LBL_CREATE_EMAIL_TEMPLATES}</strong></td>
 						{/if}
-						<td class="small" align=right>
+						<td class="small cblds-t-align_right" align=right>
 							<input type="submit" value="{$APP.LBL_SAVE_BUTTON_LABEL}" class="crmButton small save" onclick="this.form.action.value='saveemailtemplate'; this.form.parenttab.value='Settings'" >&nbsp;&nbsp;
 			{if $EMODE eq 'edit'}
 				<input type="submit" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmButton small cancel" onclick="cancelForm(this.form)" />
@@ -189,20 +186,20 @@
 				<td>
 					<select style="font-family: Arial, Helvetica, sans-serif;font-size: 11px;color: #000000;border:1px solid #bababa;padding-left:5px;background-color:#ffffff;" id="entityType" ONCHANGE="modifyMergeFieldSelect(this, document.getElementById('mergeFieldSelect'));" tabindex="6">
                                         <OPTION VALUE="0" selected>{$APP.LBL_NONE}
-                                        <OPTION VALUE="1">{$UMOD.LBL_ACCOUNT_FIELDS}                           
+                                        <OPTION VALUE="1">{$UMOD.LBL_ACCOUNT_FIELDS}
                                         <OPTION VALUE="2">{$UMOD.LBL_CONTACT_FIELDS}
                                         <OPTION VALUE="3" >{$UMOD.LBL_LEAD_FIELDS}
                                         <OPTION VALUE="4" >{$UMOD.LBL_USER_FIELDS}
-                                        <OPTION VALUE="5" >{$UMOD.LBL_GENERAL_FIELDS}
+										<OPTION VALUE="5" >{$UMOD.LBL_HELPDESK_FIELDS}
+                                        <OPTION VALUE="6" >{$UMOD.LBL_GENERAL_FIELDS}
                                         </select>
 				<td>
-			
 				<td style="border-left:2px dotted #cccccc;">
 					<select style="font-family: Arial, Helvetica, sans-serif;font-size: 11p
 x;color: #000000;border:1px solid #bababa;padding-left:5px;background-color:#ffffff;" id="mergeFieldSelect" onchange="document.getElementById('mergeFieldValue').value=this.options[this.selectedIndex].value;" tabindex="7"><option value="0" selected>{$APP.LBL_NONE}</select>	
 				<td>
 
-				<td style="border-left:2px dotted #cccccc;">	
+				<td style="border-left:2px dotted #cccccc;">
 
 					<input type="text"  id="mergeFieldValue" name="variable" value="variable" style="font-family: Arial, Helvetica, sans-serif;font-size: 11px;color: #000000;border:1px solid #bababa;padding-left:5px;background-color:#ffffdd;" tabindex="8"/>
 				<td>
@@ -223,7 +220,7 @@ x;color: #000000;border:1px solid #bababa;padding-left:5px;background-color:#fff
 					<br>
 					<table border=0 cellspacing=0 cellpadding=5 width=100% >
 					<tr>
-					  <td class="small" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td>
+					  <td class="small cblds-t-align_right" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td>
 					</tr>
 					</table>
 				</td>

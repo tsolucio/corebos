@@ -2,7 +2,7 @@
 /***********************************************************
 *  Module       : Reports
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
@@ -41,7 +41,6 @@ $mod_strings = array (
 	'LBL_COLUMNS_AVERAGE' => 'Moyenne',
 	'LBL_COLUMNS_LOW_VALUE' => 'Valeur la plus basse',
 	'LBL_COLUMNS_LARGE_VALUE' => 'Valeur la plus élevée',
-	'LBL_NONE' => 'Aucun',
 	'LBL_GROUPING_SORT' => 'Ordre :',
 	'LBL_GROUPING_SUMMARIZE' => 'Grouper par :',
 	'LBL_GROUPING_THEN_BY' => 'puis par :',
@@ -141,6 +140,14 @@ $mod_strings = array (
 	'This Month Activities' => 'Activité du mois en cours',
 	'Campaign Expectations and Actuals' => 'Prévisionnel campagne',
 	'SalesOrder Detailed Report' => 'Rapport détaillé des ventes',
+	'Emails sent to Contacts' => 'Emails sent to Contacts',
+	'Emails sent to Organizations' => 'Emails sent to Organizations',
+	'Emails sent to Leads' => 'Emails sent to Leads',
+	'Emails sent to Vendors' => 'Emails sent to Vendors',
+	'Contacts Email Report' => 'Contacts Email Report',
+	'Accounts Email Report' => 'Accounts Email Report',
+	'Leads Email Report' => 'Leads Email Report',
+	'Vendors Email Report' => 'Vendors Email Report',
 	'LBL_DELETE' => 'Supprimer',
 	'Create_Reports' => 'Créer rapport',
 	'Create_New_Folder' => 'Créer dossier',
@@ -164,6 +171,7 @@ $mod_strings = array (
 	'Next Month' => 'Le mois prochain',
 	'Last 7 Days' => 'Les 7 derniers jours',
 	'Last 30 Days' => 'Les 30 derniers jours',
+	'Last 14 Days' => 'Les 14 derniers jours',
 	'Last 60 Days' => 'Les 60 derniers jours',
 	'Last 90 Days' => 'Les 90 derniers jours',
 	'Last 120 Days' => 'Les 120 derniers jours',
@@ -181,6 +189,7 @@ $mod_strings = array (
 	'AVG' => 'Moyenne',
 	'MAX' => 'Valeur max',
 	'MIN' => 'Valeur min',
+	'COUNT'=>'COUNT',
 	'LBL_CUSTOM_REPORTS' => 'Rapports personnalisés',
 	'ticketid' => 'Ref',
 	'NO_COLUMN' => 'Aucune colonne disponible pour le total',
@@ -207,7 +216,7 @@ $mod_strings = array (
 	'LBL_DELETE_GROUP'=>'Suppresion groupe',
 	'LBL_NEW_CONDITION'=>'Nouvelle condition',
 	'LBL_SHARING_TYPE'=>'Type de partage',
-	'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Choix du type de partage pour définir les accès à ce rapport', 
+	'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Choix du type de partage pour définir les accès à ce rapport',
 	'LBL_ACTION' => 'Action',
 	'LBL ACTION' => 'Action',
 	'ACTION' => 'Action',
@@ -215,7 +224,7 @@ $mod_strings = array (
 	'LBL_SHOW_STANDARD_FILTERS' => 'Afficher les filtres standards',
 	'LBL_YEAR' => 'Année',
 	'LBL_MONTH'=> 'Mois',
-        'LBL_DAY'=> 'Jour',
+		'LBL_DAY'=> 'Jour',
 	'LBL_QUARTER'=> 'Trimestre',
 	'LBL_NONE'=> 'Aucun',
 
@@ -225,6 +234,7 @@ $mod_strings = array (
 	'LBL_SCHEDULE_EMAIL_DESCRIPTION'=>'Les rapports planifiés par email peuvent être envoyés à intervalles réguliers à des destinataires prédéfinis',
 	'LBL_USERS_AVAILABEL'=> 'Destinataires',
 	'LBL_REPORT_FORMAT_PDF'=> 'PDF',
+	'LBL_REPORT_FORMAT_URL'=> 'URL',
 	'LBL_REPORT_FORMAT_EXCEL'=> 'EXCEL',
 	'LBL_REPORT_FORMAT_BOTH'=> 'Les deux',
 	'LBL_REPORT_FORMAT'=> 'Format du rapport',
@@ -237,6 +247,7 @@ $mod_strings = array (
 	'Monthly'=>'Tous les mois',
 	'Annually'=>'Tous les ans',
 	'LBL_SCHEDULE_REPORT'=>'Rapports planifiés',
+	'Recommended frequency for ScheduleReports is 15 mins' => 'Recommended frequency for ScheduleReports is 15 mins',
 	'ScheduleReports'=>'Rapports planifiés',
 	'LBL_SCHEDULE_FREQUENCY'=>'Fréquence',
 	'OPTION_SCHEDULE_EMAIL_CHOOSE'=>'Choisissez ..... ',
@@ -252,7 +263,7 @@ $mod_strings = array (
 	'LBL_RELOAD_REPORT' => 'Recharger le Rapport',
 	'LBL_SAVE_REPORT' => 'Enregistrer',
 	'LBL_SAVE_REPORT_AS' => 'Enregistrer le rapport en tant que...',
-	
+
 	//Report Charts
 	'LBL_VIEW_CHARTS' => 'Afficher les graphiques',
 	'LBL_ADD_CHARTS' => 'Ajouter le graphique en page d\'accueil',
@@ -283,6 +294,6 @@ $mod_strings = array (
 	'LBL_COLUMNS_COUNT'=>'Compter',
 	'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Erreur lors de la suppression du répertoire.',
 	'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Erreur lors de la suppression des rapports du répertoire',
+	'ERR_CREATE_REPORT' => 'Error creating the report.',
 );
-
 ?>

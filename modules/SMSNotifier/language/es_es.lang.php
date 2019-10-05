@@ -14,7 +14,7 @@
 *  Author       : JPL TSolucio, S.L.
 *  License      : MPL 1.1
  ************************************************************************************/
-$mod_strings = Array (
+$mod_strings = array (
 'SMSNotifier'                 => 'Mensajeria SMS',
 'SINGLE_SMSNotifier'          => 'SMS Info',
 'LBL_SMSNOTIFIER_INFORMATION' => 'Información SMS',
@@ -45,6 +45,9 @@ $mod_strings = Array (
 'ServerNotConfigured' => 'El servicio no está configurado',
 'ReviewModuleSettings' => 'Revisa la configuración SMS.',
 'ContactAdmin' => 'Contacta con tu administrador.',
+'SelectPhoneNumbers' => 'Selecciona Teléfono(s)',
+'SelectNumberTypes' => 'Por favor, selecciona los números a los que enviar el SMS',
+'ComposeSMS' => 'Componer SMS',
+'characters' => 'caracteres',
 );
-
 ?>

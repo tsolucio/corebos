@@ -1,27 +1,15 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Payments/language/en_us.lang.php,v 1.18 2005/04/28 14:05:53 ray Exp $
- * Description:  Defines the English language pack for the Account module.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
-$mod_strings = Array(
+ ************************************************************************************/
+$mod_strings = array(
 'CobroPago'=>'Pagamenti',
+'CobroPago ID'=>'Id Pagamento',
 'SINGLE_CobroPago'=>'Pagamento',
 'LBL_MODULE_TITLE'=>'Pagamenti: Home',
 'LBL_SEARCH_FORM_TITLE'=>'Cerca Pagamenti',
@@ -34,57 +22,42 @@ $mod_strings = Array(
 'LBL_LIST_ACCOUNT_NAME'=>'Nome Account',
 'LBL_PRODUCT_NAME'=>'Nome Prodotto',
 'LBL_LIST_AMOUNT'=>'Ammontare',
-
-'LBL_COBROPAGO_NAME'=>'Rif. Pagamento:',
 'LBL_ACCOUNT_NAME'=>'Nome Account:',
 'LBL_AMOUNT'=>'Ammontare:',
 'LBL_TYPE'=>'Tipo:',
-'LBL_PROBABILITY'=>'Probabilit&agrave; (%):',
+'LBL_PROBABILITY'=>'Probabilità (%):',
 'LBL_DESCRIPTION'=>'Descrizione:',
 'LBL_COBROPAGO_INFORMATION'=>'Informazioni Pagamenti:',
 'LBL_DESCRIPTION_INFORMATION'=>'Informazioni Descrizione:',
 'LBL_CUSTOM_INFORMATION'=>'Informazioni Personalizzate',
-
+'SERVER_CONFIGURATION' => 'Configurazione Pagamento',
+'SERVER_CONFIGURATION_DESCRIPTION' => 'Configura Parametri del Modulo Pagamento',
 'LBL_NEW_FORM_TITLE'=>'Nuovo Pagamento',
-
 'ERR_DELETE_RECORD'=>'Necessario specificare un record per cancellare un Pagamento.',
 'LBL_TOP_PAYMENTS'=>'I miei top 10 Pagamenti aperti',
-
 'NTC_NONE_SCHEDULED'=>'Nessuno Programmato.',
-
 'LBL_SELECT_COBROPAGO'=>'Seleziona Pagamento',
 'LBL_GENERAL_INFORMATION'=>'Informazioni Generali',
-
-//for v4 release added
 'LBL_NEW_CobroPago'=>'Nuovo Pagamento',
 'LBL_CobroPago_TITLE'=>'Pagamenti',
-
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Strumenti Pagamenti',
-//Added for 4GA
 'CobroPago Name'=>'Rif Pagamento',
 'Reference'=>'Rif Pagamento',
 'Register'=>'Data Registrazione',
 'Paid'=>'Pagato',
 'Credit'=>'Credito',
 'Amount'=>'Ammontare',
-'Benefit'=>'Benefit',
+'Benefit'=>'Beneficiare',
 'Cost'=>'Costo',
 'Account Name'=>'Nome Account',
 'Parent'=>'Account/Contatto',
 'Currency'=>'Valuta',
-'RelatedTo'=>'Entit&agrave; relazionata',
-'PaymentMode'=>'Modalit&agrave; di Pagamento',
+'RelatedTo'=>'Entita relazionata',
+'PaymentMode'=>'Modalita di Pagamento',
 'Category'=>'Categoria Pagamento',
 'CobroPago Type'=>'Tipo di Pagamento',
 'Type'=>'Tipo',
-'Assigned To'=>'Assegnato A',
-'Probability'=>'Probabilit&agrave; (%)',
-'Description'=>'Descrizione',
-'Created Time'=>'Data Creazione',
-'Modified Time'=>'Data Modifica',
-//Added for 4.2 Release -- CustomView
-'CobroPago ID'=>'Id Pagamento',
+'Probability'=>'Probabilità (%)',
 'cobropagoid'=>'Id Pagamento',
 'DueDate'=>'Da Pagare entro il',
 'Comercial'=>'Utente Relazionato',
@@ -95,35 +68,34 @@ $mod_strings = Array(
 'RecieptOpen'=>'Ricevuta aperta per la stampa da ',
 'CyP No'=>'Pagamento No',
 'PaymentDate'=>'Data di Pagamento',
-
 //Added for Existing Picklist Strings
-
 'Cash'=>'Contanti',
 'Check'=>'Assegno',
 'Credit card'=>'Carta di Credito',
 'Infrastructure'=>'Infrastruttura',
 'Stock'=>'Stock',
 'Sale'=>'Vendita',
-
 'Other'=>'Altro',
-
 '--None--'=>'--Nessuno--',
 'LBLLINKTOACCOUNTS'=>'Azienda relazionata',
-
-'LBL_CARD_INFORMATION' => 'Card Information',
-'CARD_ACCOUNT' => 'Card Number:',
+'LBL_CARD_INFORMATION' => 'Informazione Carta',
+'CARD_ACCOUNT' => 'Numero Carta:',
 'CARD_CVV' => 'CVV2:',
-'CARD_EXPIRY_DATE' => 'Expiry Date (MMYY):',
-'CARD_SUBMIT' => 'Send',
-'ACH_ACCOUNT_TYPE' => 'Account Type:',
-'ACH_ACCOUNT_NUMBER' => 'Account Number:',
-'ACH_ROUTING_NUMBER' => 'Routing Number:',
+'CARD_EXPIRY_DATE' => 'Data di Scadenza (MMYY):',
+'CARD_SUBMIT' => 'Invia',
+'ACH_ACCOUNT_TYPE' => 'Tipo Account:',
+'ACH_ACCOUNT_NUMBER' => 'Numero Account:',
+'ACH_ROUTING_NUMBER' => 'Numero Routing:',
 'ACH_SUBMIT' => 'Send',
-'Receive BluePay Payment'=>'Receive BluePay Payment',
+'Receive BluePay Payment'=>'Ricevi Pagamento BluePay',
+'ERR_ALREADY_PAID' => "Questo pagamento è già stato effettuato",
+'ERR_NO_ACCOUNT' => "Non ci sono account relazionati.",
+'ERR_NO_TOKEN' => "Non esiste un token per questo account.",
 
-'ERR_ALREADY_PAID' => "This payment has been already paid.",
-'ERR_NO_ACCOUNT' => "There's no related account.",
-'ERR_NO_TOKEN' => "No token for this account.",
+'Pay' => 'Pay',
+'Invalid payment.' => 'Invalid payment.',
+'Payment done.' => 'Payment done.',
+'Redirecting to payment gateway...' => 'Redirecting to payment gateway...',
+'Payment error.' => 'Payment error.',
 );
-
 ?>

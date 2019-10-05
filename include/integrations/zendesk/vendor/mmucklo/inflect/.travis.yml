@@ -1,0 +1,10 @@
+language: php
+
+php:
+    - 5.3
+    - 5.4
+
+before_script:
+    - COMPOSER_ROOT_VERSION=dev-master composer --prefer-source --dev install
+
+script: vendor/phpunit/phpunit/composer/bin/phpunit --configuration phpunit.xml-dist

@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Servizi',
 'SINGLE_Services'=>'Servizio',
 'LBL_LIST_SERVICE_NAME'=>'Nome Servizio',
@@ -53,6 +53,7 @@ $mod_strings = Array(
 'Description'=>'Descrizione',
 
 'Price Book Name'=>'Nome Listino',
+'LBL_PRODUCT_PRICES' => 'Service Prices',
 
 'LBL_NO_TAXES_ASSOCIATED'=>'Nessuna tassa associata a questo servizio',
 '--None--'=>'--Nessuno--',
@@ -62,5 +63,4 @@ $mod_strings = Array(
 'Training'=>'Formazione',
 'Divisible'=>'Divisible',
 );
-
 ?>

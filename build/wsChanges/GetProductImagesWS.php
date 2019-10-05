@@ -13,7 +13,7 @@
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  ********************************************************************************/
 
- $operationInfo = array(
+$operationInfo = array(
 	'name'    => 'getProductImages',
 	'include' => 'include/Webservices/getProductImages.php',
 	'handler' => 'cbws_getproductimageinfo',

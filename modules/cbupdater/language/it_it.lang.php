@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 	'cbupdater' => 'Aggiornamento coreBOS',
 	'SINGLE_cbupdater' => 'Aggiornamento coreBOS',
 	'cbupdater ID' => 'coreBOS Aggiorna ID',
@@ -35,12 +35,12 @@ $mod_strings = Array(
 	'UnBlock Changeset' => 'Sbloccare Changeset',
 	'Execute' => 'Esegui',
 	'Undo' => 'Disfare',
-	'ExportXML' => 'Esporti Cambiamenti',
+	'ExportXML' => 'Esportare Cambiamenti',
 	'GetUpdates' => 'Carica Aggiornamenti',
 	'Apply' => 'Applica',
 	'ApplyAll' => 'Applica Tutto',
 	'ChangeSet' => 'Aggiorna',
-	'ImportXML' => 'Import Changes',
+	'ImportXML' => 'Importare Cambiamenti',
 	'Importing' => 'Importing',
 	'Processing' => 'Processing',
 	'CleanUp' => 'Clean Up',

@@ -144,7 +144,7 @@ function setSoftphoneDetails(module){
 	document.getElementById("status").style.display="block";
 	jQuery.ajax({
 		method:"POST",
-		url:'index.php?module=PBXManager&action=PBXManagerAjax&file=UpdatePBXDetails&ajax=true&qserver='+asterisk_server_ip+'&qport='+asterisk_port+'&qusername='+asterisk_username+'&qpassword='+asterisk_password+'&semodule='+module+'&version='+asterisk_version
+		url:'index.php?module=PBXManager&action=PBXManagerAjax&file=UpdatePBXDetails&ajax=true&qserver='+asterisk_server_ip+'&qport='+asterisk_port+'&qusername='+asterisk_username+'&qpassword='+encodeURIComponent(asterisk_password)+'&semodule='+module+'&version='+asterisk_version
 	}).done(function(response) {
 			if((response != '')){
 				alert(response);

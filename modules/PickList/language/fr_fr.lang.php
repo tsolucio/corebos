@@ -2,7 +2,7 @@
 /***********************************************************
 *  Module       : Picklist
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
@@ -24,9 +24,8 @@ $mod_strings = array(
 	'LBL_PICKLIST_VALUES_ASSIGNED_TO'=>'Valeurs assignées pour ',
 	'LBL_ADD_TO_OTHER_ROLES'=>'Ajouter aux autres rôles',
 	'LBL_OK_BUTTON_LABEL'=>'OK',
-	'LBL_SELECT_ROLES'=>'Sélectionner un rôle',
 	'LBL_DISPLAYED_VALUES'=>'Toutes les valeurs disponibles pour ce rôle sont affichées ci-dessous',
-	
+
 	// For Dependency picklist
 	'LBL_PICKLIST_DEPENDENCY_SETUP' => 'Gestion de l\'éditeur de listes dépendantes',
 	'LBL_PICKLIST_DEPENDENCY_DESCRIPTION' => 'Gestion de l\'éditeur de listes dépendantes pour chaque module',
@@ -45,6 +44,12 @@ $mod_strings = array(
 	'LBL_ADD_BUTTON' => 'Ajouter valeur',
 	'LBL_EDIT_BUTTON' => 'Renommer valeur',
 	'LBL_DELETE_BUTTON' => 'Supprimer valeur',
+	'LBL_MOVE_UP' => 'Move Up',
+	'LBL_MOVE_DOWN' => 'Move Down',
+	'LBL_MOVE_LEFT' => 'Move Left',
+	'LBL_MOVE_RIGHT' => 'Move Right',
+	'LBL_REMOVE' => 'Remove',
 	'NTC_DELETE_CONFIRMATION'=>'Êtes vous sûr de vouloir supprimer cette liste dépendante?',
+	'picklisthasdependency' => 'Warning: this list has dependencies configured',
 );
 ?>

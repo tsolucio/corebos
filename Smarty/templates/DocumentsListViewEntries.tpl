@@ -22,7 +22,7 @@
 						<td align="center" style="padding-left:5px;padding-right:5px">
 							<b><font size=2>{$APP.LBL_VIEW}</font></b> <SELECT NAME="viewname" id="viewname" class="small" onchange="showDefaultCustomView(this,'{$MODULE}','{$CATEGORY}')">{$CUSTOMVIEW_OPTION}</SELECT>
 						</td>
-						{if $ALL eq 'All'}
+						{if isset($ALL) && $ALL eq 'All'}
 							<td align="center" style="padding-left:5px;padding-right:5px">
 								<a href="index.php?module={$MODULE}&action=CustomView&parenttab={$CATEGORY}">{$APP.LNK_CV_CREATEVIEW}</a>
 								<span class="small">|</span>
@@ -165,7 +165,7 @@
 																	{if $foldercount eq 1}
 																		<tr>
 																			<td align="center" style="background-color:#efefef;height:340px" colspan="{$header_count+1}">
-																				<div style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 45%; position: relative;">
+																				<div id="no_entries_found" style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 45%; position: relative;">
 																					{assign var=vowel_conf value='LBL_A'}
 																					{assign var=MODULE_CREATE value=$SINGLE_MOD}
 																					{if $CHECK.EditView eq 'yes'}

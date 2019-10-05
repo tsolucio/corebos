@@ -16,7 +16,7 @@ if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
 	$toggle_name = 'Leads';
 }
 
-$mod_strings = Array(
+$mod_strings = array(
 	'LBL_TGL_HISTORICOS' => $toggle_historicos,
 	'LBL_MODULE_NAME'=>$toggle_name,
 	'Leads' => $toggle_name,
@@ -31,7 +31,7 @@ $mod_strings = Array(
 	'LBL_CUSTOM_INFORMATION' => 'Custom Information',
 	'LBL_LIST_NAME' => 'Name',
 	'LBL_LIST_LAST_NAME' => 'Last Name',
-	'LBL_LIST_COMPANY' => 'Company',
+	'LBL_LIST_COMPANY' => 'Organisation',
 	'LBL_LIST_WEBSITE' => 'Website',
 	'LBL_LIST_LEAD_NAME' => 'Lead Name',
 	'LBL_LIST_EMAIL' => 'Email',
@@ -42,7 +42,7 @@ $mod_strings = Array(
 	'LBL_LEAD_INFORMATION' => 'Lead Information',
 	'LBL_FIRST_NAME' => 'First Name:',
 	'LBL_PHONE' => 'Phone:',
-	'LBL_COMPANY' => 'Company:',
+	'LBL_COMPANY' => 'Organisation:',
 	'LBL_DESIGNATION' => 'Designation:',
 	'LBL_LAST_NAME' => 'Last Name:',
 	'LBL_MOBILE' => 'Mobile:',
@@ -108,13 +108,12 @@ $mod_strings = Array(
 	'LBL_HOT' => 'Hot',
 	'LBL_COLD' => 'Cold',
 	'LBL_TOOL_FORM_TITLE' => 'Lead Tools',
-	'LBL_SELECT_TEMPLATE_TO_MAIL_MERGE' => 'Select template to Mail Merge:',
 	'Salutation' => 'Salutation',
 	'First Name' => 'First Name',
 	'Phone' => 'Phone',
 	'Last Name' => 'Last Name',
 	'Mobile' => 'Mobile',
-	'Company' => 'Company',
+	'Company' => 'Organisation',
 	'Fax' => 'Fax',
 	'Email' => 'Email',
 	'Secondary Email'=>'Secondary Email',
@@ -213,7 +212,5 @@ $mod_strings = Array(
 	'LBL_FIELD_SETTINGS' => 'Field Settings',
 	'Leads ID' => 'Leads ID',
 	'LeadAlreadyConverted' => 'Lead cannot be converted. Either it has already been converted or you lack permission on one or more of the destination modules.',
-	'Is Converted From Lead' => 'Is Converted From Lead',
-	'Converted From Lead' => 'Converted From Lead',
 );
 ?>

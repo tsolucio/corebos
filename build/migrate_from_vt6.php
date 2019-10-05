@@ -82,7 +82,38 @@ function deleteWorkflow($wfid) {
 	ExecuteQuery("DELETE FROM com_vtiger_workflows WHERE workflow_id = $wfid");
 }
 
+function installManifestModule($module) {
+	$package = new Vtiger_Package();
+	ob_start();
+	$rdo = $package->importManifest("modules/$module/manifest.xml");
+	$out = ob_get_contents();
+	ob_end_clean();
+	putMsg($out);
+	if ($rdo) putMsg("$module installed!");
+	else putMsg("<span style='color:red'>ERROR installing $module!</span>");
+}
+
 echo "<table width=80% align=center border=1>";
+
+// Some records in VT6x are incorrectly assigned to inexistent users so we fix that before starting by assigning them to the admin user
+ExecuteQuery(
+	'update vtiger_crmentity
+		set smownerid=?
+		where smownerid not in (select id from vtiger_users union select groupid from vtiger_groups);',
+	array($current_user->id)
+);
+ExecuteQuery(
+	'update vtiger_crmentity
+		set smcreatorid=?
+		where smcreatorid not in (select id from vtiger_users union select groupid from vtiger_groups);',
+	array($current_user->id)
+);
+ExecuteQuery(
+	'update vtiger_crmentity
+		set modifiedby=?
+		where modifiedby not in (select id from vtiger_users union select groupid from vtiger_groups);',
+	array($current_user->id)
+);
 
 $result = $adb->pquery('show columns from com_vtiger_workflowtasks like ?', array('executionorder'));
 if (!($adb->num_rows($result))) {
@@ -91,6 +122,12 @@ if (!($adb->num_rows($result))) {
 }
 
 $force = (isset($_REQUEST['force']) ? 1 : 0);
+
+$cver = vtws_getVtigerVersion();
+if ($cver=='6.5.0' or $force) {
+	putMsg('<h2>** Starting Migration from 6.5 **</h2>');
+	include 'build/migrate6/migrate_from_vt65.php';
+}
 
 $cver = vtws_getVtigerVersion();
 if ($cver=='6.4.0' or $force) {
@@ -126,14 +163,6 @@ ExecuteQuery("DELETE FROM vtiger_def_org_share WHERE vtiger_def_org_share.tabid 
 ExecuteQuery("update vtiger_users set theme='softed'");
 ExecuteQuery("update vtiger_version set old_version='5.4.0', current_version='5.5.0' where id=1");
 ExecuteQuery("DELETE FROM vtiger_field WHERE tablename = 'vtiger_inventoryproductrel'");
-$package = new Vtiger_Package();
-ob_start();
-$rdo = $package->importManifest("modules/cbupdater/manifest.xml");
-$out = ob_get_contents();
-ob_end_clean();
-putMsg($out);
-if ($rdo) putMsg("$module installed: <a href='index.php?module=cbupdater&action=getupdates'>proceed to the rest of the updates by clicking here</a>");
-else putMsg("ERROR installing $module!");
 
 // Recalculate permissions  RecalculateSharingRules
 RecalculateSharingRules();
@@ -160,7 +189,7 @@ RecalculateSharingRules();
    </tr>
    <tr>
 	<td align="right">
-		Queries Successed : 
+		Queries Succeeded : 
 	</td>
 	<td align="left">
 		<b style="color:#006600;">
@@ -179,5 +208,33 @@ RecalculateSharingRules();
 	</td>
    </tr>
 </table>
+<?php
+
+require_once('Smarty_setup.php');
+$adb->query("SET sql_mode=''");
+$currentModule = $_REQUEST['module'] = 'cbupdater';
+$_REQUEST['action'] = 'getupdates';
+include 'modules/cbupdater/getupdates.php';
+$_REQUEST['action'] = 'dowork';
+$_REQUEST['idstring'] = 'all';
+
+if (file_exists('modules/cbupdater/cbupdates/coreboscrm.xml')) {
+	// Install and setup new modules
+	define('postINSTALL', 'postINSTALL');
+	require 'install_modules.php';
+}
+
+include 'modules/cbupdater/dowork.php';
+
+if (file_exists('build/addVATFields.php')) {
+	//Add VAT fields & Workflows
+	include ('build/addVATFields.php');
+	// Webservices
+	include 'build/campaign_reg_ws.php';
+}
+
+putMsg("<span style='color:red'>NOW LOG IN AND APPLY ALL THE UPDATES AGAIN</span>");
+
+?>
 </body>
 </html>

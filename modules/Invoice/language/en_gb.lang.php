@@ -26,9 +26,6 @@ $mod_strings = array(
 	'LBL_LIST_PHONE' => 'Phone',
 	'LBL_LIST_EMAIL_ADDRESS' => 'Email Address',
 	'LBL_LIST_CONTACT_NAME' => 'Contact Name',
-	'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-	'db_website' => 'LBL_LIST_WEBSITE',
-	'db_billing_address_city' => 'LBL_LIST_CITY',
 	'LBL_ACCOUNT' => 'Organisation:',
 	'LBL_ACCOUNT_NAME' => 'Organisation Name:',
 	'LBL_PHONE' => 'Phone:',
@@ -59,6 +56,7 @@ $mod_strings = array(
 	'LBL_POSTAL_CODE' => 'Postcode:',
 	'LBL_COUNTRY' => 'Country:',
 	'LBL_DESCRIPTION_INFORMATION' => 'Description Information',
+	'LBL_Invoice_FINANCIALINFO' => 'Financial Information',
 	'LBL_DESCRIPTION' => 'Description:',
 	'LBL_TERMS_INFORMATION' => 'Terms and Conditions',
 	'NTC_COPY_BILLING_ADDRESS' => 'Copy invoice address to delivery address',
@@ -157,5 +155,9 @@ $mod_strings = array(
 	'Date' => 'Date',
 	'Documents' => 'Documents',
 	'SINGLE_Invoice' => 'Invoice',
+	'LBL_PARTIAL_PAYMENTS_INFO' => 'Partial Payments Information',
+	'Amount Due'=>'Amount Due',
+	'Amount Paid'=>'Amount Paid',
+	'Total Amount'=>'Total Amount',
 );
 ?>

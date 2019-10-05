@@ -6,7 +6,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
    *********************************************************************************
-*  Module       : JavaScript General 
+*  Module       : JavaScript General
 *  Language     : HU Magyar
 *  Version      : 5.3.x
 *  Created Date : 9:39 2011.11.11.
@@ -24,6 +24,9 @@ var alert_arr = {
 	'DELETE' : 'Biztos vagy abban, hogy törölni kívánod a kiválasztott ',
 	'RECORDS' : ' rekordo(ka)t?',
 	'SELECT' : 'Válassz ki legalább egy tételt!',
+	'SELECTTEMPLATE':'Please select at least one document Template',
+	'SELECTMERGE':'Please select an entity to merge!',
+	'GENDOCSAVED':'Document saved. Please verify that it has been created correctly.',
 	'DELETE_ACCOUNT' : 'A Cég(ek) törlése el fogja távolítani a kapcsolódó Lehetőségeket és Árajánlatokat is. Biztos vagy abban, hogy törölni kívánod a kiválasztott ',
 	'DELETE_VENDOR' : 'A Szállító(k) törlése el fogja távolítani a kapcsolódó Beszerzés rendeléseket is. Biztos vagy abban, hogy törölni kívánod a kiválasztott ',
 	'SELECT_MAILID' : 'Kérjük, hogy válassz ki egy email azonosítót',
@@ -59,7 +62,6 @@ var alert_arr = {
 	'DISABLE_SHARING_CONFIRMATION' : 'Biztos, hogy tiltani akarod a megosztást a kiválasztottak ',
 	'USERS' : ' felhasználó(k) ?',
 	'ENDTIME_GREATER_THAN_STARTTIME' : 'A befejezés ideje nagyobb kell, hogy legyen, mint a kezdés ideje ',
-	'FOLLOWUPTIME_GREATER_THAN_STARTTIME' : 'Az utánkövetés ideje nagyobb kell, hogy legyen, mint a befejezés ideje ',
 	'MISSING_EVENT_NAME' : 'Hiányzó Esemény név',
 	'EVENT_TYPE_NOT_SELECTED' : 'Az Esemény típusa nincs kiválasztva',
 	'CLOSEDATE_CANNOT_BE_EMPTY' : 'A Lezárás dátuma mező nem lehet üres',
@@ -135,8 +137,6 @@ var alert_arr = {
 	'ENDDATE' : 'Befejező dátum',
 	'START_DATE_TIME' : 'Kezdő dátum és idő',
 	'START_TIME' : 'Kezdő idő',
-	'DATE_SHOULDNOT_PAST' : 'Az aktuális dátum és idő az Aktivitás számára Tervezett státusú',
-	'TIME_SHOULDNOT_PAST' : 'Az aktuális idő az Aktivitás számára Tervezett státusú',
 	'LBL_AND' : 'És',
 	'LBL_OR': 'Vagy',
 	'LBL_ENTER_VALID_PORT' : 'Kérjük, hogy adj meg egy érvényes port számot',
@@ -204,6 +204,7 @@ var alert_arr = {
 	'LBL_PLEASE_CHANGE_REPLACEMENT' : 'Kérjük, hogy cseréld a helyettesítő értéket; ez szintén ki van választva törlésre',
 	'BLOCK_NAME_CANNOT_BE_BLANK' : 'A blokk neve nem lehet üres',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE' : 'Biztos vagy abban, hogy Törölni akarod?',
+	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_EXACT_DUPLICATE': 'Are you sure you want to Delete All Exact record duplicates?',
 	'PLEASE_MOVE_THE_FIELDS_TO_ANOTHER_BLOCK' : 'Mozgasd a mezőt egy másik blokkba',
 	'ARE_YOU_SURE_YOU_WANT_TO_DELETE_BLOCK' : 'Biztos vagy abban, hogy Törölni akarod a blokkot?',
 	'LABEL_CANNOT_NOT_EMPTY' : 'Címke nem lehet üres',
@@ -266,7 +267,8 @@ var alert_arr = {
 	'Default' : 'Alapértelmezett',
 	'Notebook' : 'Jegyzetfüzet',
 	'ReportCharts': 'Jelentés Grafikonok',
-	'SPECIAL_CHARS' : '\ / < > + \' " ',
+	'CustomWidget': 'Aggregate Filter',
+	'SPECIAL_CHARS' : '\\ / < > + \' " ',
 	'BETWEEN' : 'közte',
 	'BEFORE' : 'előtt',
 	'AFTER' : 'utána',
@@ -329,6 +331,7 @@ var alert_arr = {
 	'LBL_ENDS_WITH' : 'ends with',
 	'LBL_HAS_CHANGED' : 'has changed',
 	'LBL_HAS_CHANGED_TO' : 'has changed to',
+	'LBL_WAS' : 'was',
 	'LBL_IS_EMPTY': 'is empty',
 	'LBL_IS_NOT_EMPTY' : 'is not empty',
 	'LBL_EQUAL_TO' : 'equal to',
@@ -341,6 +344,11 @@ var alert_arr = {
 	'LBL_BETWEEN' : 'between',
 	'LBL_BEFORE' : 'before',
 	'LBL_AFTER' : 'after',
+	'LBL_DOES_NOT_START_WITH' : 'does not start with',
+	'LBL_DOES_NOT_END_WITH' : 'does not end with',
+	'DOES_NOT_START_WITH':'does not start with',
+	'DOES_NOT_END_WITH':'does not end with',
+	'Widget_Deleted_Sucessfully':'Widget deleted sucessfully',
 	'LBL_IS_TODAY' : 'is today',
 	'LBL_LESS_THAN_DAYS_AGO' : 'less than days ago',
 	'LBL_MORE_THAN_DAYS_AGO' : 'more than days ago',
@@ -353,7 +361,7 @@ var alert_arr = {
 	'LBL_MORE_THAN_HOURS_BEFORE' : 'more than hours before',
 	'LBL_MORE_THAN_HOURS_LATER' : 'more than hours later',
 	'LBL_EXISTS' : 'exists',
-	'MAXIMUM_OF_TWO_MODULES_PERMITTED' : 'A maximum of two modules is permitted.',
+	'MAXIMUM_OF_MODULES_PERMITTED' : 'You have reached the maximum of modules that are permitted.',
 	'ONLY_ONE_MODULE_PERMITTED_FOR_REPORT' : 'You can select only one related module for this type of report',
 	'MUST_SELECT_ONE_MODULE_FOR_REPORT' : 'You must select one related module for this type of report',
 	'LBL_NEW_CONDITION' : 'Új feltétel',
@@ -374,5 +382,23 @@ var alert_arr = {
 	'ERR_INVALID_TIME' : 'Adj meg létező időt.',
 	'ERR_EMAIL_WITH_NO_SUBJECT' : 'You did not specify a subject for this email. If you would like to provide one, please type it now',
 	'EMAIL_WITH_NO_SUBJECT' : '(no-Subject)',
-        'INTEGERVALS':'Only Integer values are allowed'
+	'INTEGERVALS':'Only Integer values are allowed',
+	'JSLBL_Delete': 'Delete',
+	'JSLBL_Loading': 'Loading',
+	'JSLBL_ATTACHMENT_NOT_DELETED': 'Attachment could not be deleted',
+	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED': 'File Upload Limit exceeded!!',
+	'JSLBL_CANCEL': 'Cancel',
+	'JSLBL_SAVEAS': 'Save as',
+	'JSLBL_SAVE': 'Save',
+	'JSLBL_PREVIOUS': 'Previous',
+	'JSLBL_NEXT': 'Next',
+	'JSLBL_CURRENT': 'current step:',
+	'JSLBL_PAGINATION': 'Pagination',
+	'JSLBL_FINISH': 'Finish',
+	'SHOWING' : 'Showing',
+	'OF' : 'of',
+	'ERR_Massedit' : 'Error on Mass Edit',
+	'ProcessFINISHED' : 'Process Finished',
+	'duplicatednotallowed' : 'Duplicated Modules Not Allowed',
+	'HAS_THIS_AS_NTH_CHILD' : 'Ez még egy másik gyermek'
 };

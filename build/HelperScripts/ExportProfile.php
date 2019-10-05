@@ -16,20 +16,21 @@
 *  Version      : 5.4.0
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
-include_once('vtlib/Vtiger/Module.php');
-include_once('modules/Users/Users.php');
-require_once('include/logging.php');
-require_once('include/utils/UserInfoUtil.php');
-include_once('config.inc.php');
-global $adb,$root_directory;
-if (!empty($_REQUEST['language']))
+include_once 'vtlib/Vtiger/Module.php';
+include_once 'modules/Users/Users.php';
+require_once 'include/logging.php';
+require_once 'include/utils/UserInfoUtil.php';
+include_once 'config.inc.php';
+global $adb;
+if (!empty($_REQUEST['language'])) {
 	$lang = $_REQUEST['language'];
-else
+} else {
 	$lang = 'en';
+}
 
-if (!empty($_REQUEST['profileid']))
+if (!empty($_REQUEST['profileid'])) {
 	$pf2export = vtlib_purify($_REQUEST['profileid']);
-else{
+} else {
 	echo 'Necesito el ID del perfil</br>';
 	echo "<table width=100% border=1>";
 	$pfrs = $adb->query("select * from vtiger_profile");
@@ -42,7 +43,9 @@ else{
 
 $uri = "build/profile.xml";
 $xmlwriter = new XMLWriter();
-if (file_exists($uri)) unlink($uri);
+if (file_exists($uri)) {
+	unlink($uri);
+}
 touch($uri);
 $uri = realpath($uri);
 $xmlwriter->openURI($uri);
@@ -55,11 +58,10 @@ $xmlwriter->startElement('vtcrm_profiles');
 
 $pfrs = $adb->query("select * from vtiger_profile WHERE profileid=$pf2export");
 while ($pf = $adb->fetch_array($pfrs)) {
-
 	$xmlwriter->startElement('vtcrm_profile');
 	// Start the element for profile definition
 	$xmlwriter->startElement('vtcrm_definition');
-	
+
 	// Start the element for name field
 	$xmlwriter->startElement('vtcrm_profilename');
 	$xmlwriter->text($pf['profilename']);
@@ -74,7 +76,7 @@ while ($pf = $adb->fetch_array($pfrs)) {
 
 	// Start the parent profile2glb element
 	$xmlwriter->startElement('vtcrm_profile2glbs');
-	
+
 	$tab_perr_result = $adb->pquery("select * from vtiger_profile2globalpermissions where profileid=?", array($first_prof_id));
 	while ($p2t = $adb->fetch_array($tab_perr_result)) {
 		$xmlwriter->startElement('vtcrm_profile2glb');
@@ -86,7 +88,7 @@ while ($pf = $adb->fetch_array($pfrs)) {
 
 	// Start the parent profile2tab element
 	$xmlwriter->startElement('vtcrm_profile2tabs');
-	
+
 	$tab_perr_result = $adb->pquery("select * from vtiger_profile2tab where profileid=?", array($first_prof_id));
 	while ($p2t = $adb->fetch_array($tab_perr_result)) {
 		$xmlwriter->startElement('vtcrm_profile2tab');
@@ -99,7 +101,7 @@ while ($pf = $adb->fetch_array($pfrs)) {
 
 	// Start the parent profile2std element
 	$xmlwriter->startElement('vtcrm_profile2stds');
-	
+
 	$act_perr_result = $adb->pquery("select * from vtiger_profile2standardpermissions where profileid=?", array($first_prof_id));
 	while ($p2s = $adb->fetch_array($act_perr_result)) {
 		$xmlwriter->startElement('vtcrm_profile2std');
@@ -127,7 +129,7 @@ while ($pf = $adb->fetch_array($pfrs)) {
 
 	// Start the parent profile2field element
 	$xmlwriter->startElement('vtcrm_profile2fields');
-	
+
 	$p2fld_result = $adb->pquery("select * from vtiger_profile2field where profileid=?", array($first_prof_id));
 	while ($p2f = $adb->fetch_array($p2fld_result)) {
 		$xmlwriter->startElement('vtcrm_profile2field');

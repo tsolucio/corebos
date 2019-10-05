@@ -81,8 +81,6 @@ Calendar._C = null;
 Calendar.is_ie = ( /msie/i.test(navigator.userAgent) &&
 		   !/opera/i.test(navigator.userAgent) );
 
-Calendar.is_ie5 = ( Calendar.is_ie && /msie 5\.0/i.test(navigator.userAgent) );
-
 /// detect Opera browser
 Calendar.is_opera = /opera/i.test(navigator.userAgent);
 
@@ -507,7 +505,7 @@ Calendar.dayMouseDown = function(ev) {
 			el._current = el.firstChild.data;
 			addEvent(document, "mousemove", tableMouseOver);
 		} else
-			addEvent(document, Calendar.is_ie5 ? "mousemove" : "mouseover", tableMouseOver);
+			addEvent(document, "mouseover", tableMouseOver);
 		addClass(el, "hilite active");
 		addEvent(document, "mouseup", tableMouseUp);
 	} else if (cal.isPopup) {
@@ -606,9 +604,10 @@ Calendar.cellClick = function(el, ev) {
 		function setMonth(m) {
 			var day = date.getDate();
 			var max = date.getMonthDays(m);
-			if (day > max) {
-				date.setDate(max);
-			}
+			//if (day > max) {
+			//	date.setDate(max);
+			//}
+			date.setDate(1); // always set to first day of next month
 			date.setMonth(m);
 		};
 		switch (el.navtype) {
@@ -889,8 +888,13 @@ Calendar.prototype.create = function (_par) {
 				if (pm && t12) hrs -= 12;
 				H.firstChild.data = (hrs < 10) ? ("0" + hrs) : hrs;
 				M.firstChild.data = (mins < 10) ? ("0" + mins) : mins;
-				if (t12)
-					AP.firstChild.data = pm ? "pm" : "am";
+				if (t12) {
+					if (this.params.inputTimeFormat != undefined) {
+						AP.firstChild.data = this.params.inputTimeFormat.toLowerCase();
+					} else {
+						AP.firstChild.data = pm ? "pm" : "am";
+					}
+				}
 			};
 
 			cal.onUpdateTime = function() {
@@ -1688,22 +1692,8 @@ Date.prototype.print = function (str) {
 	s["%%"] = "%";		// a literal '%' character
 
 	var re = /%./g;
-	if (!Calendar.is_ie5)
 
-		//	return str.replace(re, function (par) { return s[par] || par; });
-		// fix provided by dtnadmin. Many thanks
-		for (var i in s) str=str.replace(i, s[i]);
-		return str;
-
-	var a = str.match(re);
-	for (var i = 0; i < a.length; i++) {
-		var tmp = s[a[i]];
-		if (tmp) {
-			re = new RegExp(a[i], 'g');
-			str = str.replace(re, tmp);
-		}
-	}
-
+	for (var i in s) str=str.replace(i, s[i]);
 	return str;
 };
 

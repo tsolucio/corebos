@@ -1,14 +1,10 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************
 *  Module       : Users
@@ -20,7 +16,7 @@
 *  Author       : Joe Bordes  JPL TSolucio, S.L.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Usuarios',
 'LBL_MODULE_TITLE'=>'Usuarios: Inicio',
 'LBL_SEARCH_FORM_TITLE'=>'Buscar Usuarios',
@@ -49,19 +45,26 @@ $mod_strings = Array(
 'Name'=>'Nombre',
 'Tools'=>'Herramientas',
 
-
-//added for patch2
 'LBL_GROUP'=>'Grupo',
 'LBL_CURRENCY_NAME'=>'Moneda',
 
 'LBL_NEW_USER_BUTTON_TITLE'=>'Nuevo Usuario [Alt+N]',
 'LBL_NEW_USER_BUTTON_LABEL'=>'Nuevo Usuario',
 'LBL_NEW_USER_BUTTON_KEY'=>'N',
+'LBL_EXPORT_USER_BUTTON_TITLE' => 'Exportar Usuarios [Alt+E]',
+'LBL_EXPORT_USER_BUTTON_LABEL' => 'Exportar Usuarios',
+'LBL_EXPORT_USER_BUTTON_KEY' => 'E',
 'LBL_DATE_FORMAT'=>'Formato de Fecha',
 
 'LBL_ERROR'=>'Error:',
+'FORM_TOKEN_EXPIRED'=>'La clave de edición ha expirado. Intentalo de nuevo.',
+'ERR_CANNOTEDITUSER' => 'No permitido. No puedes editar este usuario',
 'LBL_PASSWORD'=>'Contraseña:',
 'LBL_USER_NAME'=>'Usuario:',
+'LBL_2FACODE' => 'Código:',
+'LBL_2FAGETCODE' => 'Obtener otro código',
+'2FA_NEWCODESENT' => 'Se ha enviado un nuevo código.',
+'2FA_ACCESSCODE' => 'El código de inicio de sesion es %s',
 'LBL_CRM_ID'=>'CRM ID',
 'LBL_FIRST_NAME'=>'Nombre:',
 'LBL_LAST_NAME'=>'Apellidos:',
@@ -116,6 +119,8 @@ $mod_strings = Array(
 'ERR_ENTER_CONFIRMATION_PASSWORD'=>'Por favor, confirme su nueva contraseña.',
 'ERR_REENTER_PASSWORDS'=>"Por favor, vuelva a introducir sus contraseñas. Los valores de 'Nueva Contraseña' y 'Confirmar Contraseña' no coinciden.",
 'ERR_INVALID_PASSWORD'=>'Debe especificar un nombre de usuario y contraseña válidos.',
+'ERR_INVALID_2FACODE' => 'Has introducido un código inválido, por favor inténtalo de nuevo.',
+'ERR_INVALIDUSERID' => 'Identificador de usuario inválido.',
 'ERR_INVALID_ADMINIPLOGIN' => 'Administradores deben acceder desde dispositivos autorizados.',
 'ERR_INVALID_USERIPLOGIN' => 'Acceso restringido a personal autorizado.<br> Estás conectando desde una IP inválida.',
 'ERR_PASSWORD_CHANGE_FAILED_1'=>'El Cambio de contraseña ha fallado para ',
@@ -131,9 +136,6 @@ $mod_strings = Array(
 'LBL_FAILED_LOGIN_ATTEMPTS' => 'Intentos Fallidos de Acceso',
 'ERR_DELETE_RECORD'=>'Debe especificar un registro para eliminar la Cuenta.',
 'ERR_MUST_CHANGE_PASSWORD' => 'Tu contraseña ha caducado. Tienes que cambiar la contraseña para poder continuar trabajando.',
-
-// Additional Fields for i18n --- Release vtigerCRM 3.2 Patch 2
-// Users--listroles.php , createrole.php , ListPermissions.php , editpermissions.php
 
 'LBL_ROLES'=>'Roles',
 'LBL_ROLES_SUBORDINATES'=>'Roles y Subordinados',
@@ -153,7 +155,7 @@ $mod_strings = Array(
 'LBL_CONTACTS'=>'Contactos',
 'LBL_OPPURTUNITIES'=>'Oportunidades',
 'LBL_TASKS'=>'Tareas',
-'LBL_CASES'=>'Tickets',
+'LBL_CASES'=>'Incidencias',
 'LBL_EMAILS'=>'Emails',
 'LBL_NOTES'=>'Documentos',
 'LBL_MEETINGS'=>'Reuniones',
@@ -165,7 +167,6 @@ $mod_strings = Array(
 'LBL_IMPORT_OPPURTUNITIES'=>'Importar Oportunidades',
 
 'LBL_ROLE_DETAILS'=>'Detalles de Rol',
-//added for vtigercrm4 rc
 'LBL_FILE'=>'Nombre del Archivo',
 'LBL_FILE_TYPE'=>'Tipo de Archivo',
 'LBL_UPLOAD'=>'Subir archivo',
@@ -214,11 +215,10 @@ $mod_strings = Array(
 'LBL_VIEWING'=>'Mostrando',
 'LBL_PROPERTIES'=>'Propiedades de',
 
-//added to fix the issue #6630
 'LBL_ASTERISKEXTENSIONS_EXIST' => 'Extensión Asterisk ya Existe!',
 'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'El Separador Decimal y de Agrupamiento de Dígitos no puede ser el mismo.',
+'LBL_FORUSER' => ' en el Usuario ',
 
-// Added fields in createnewgroup.php
 'LBL_CREATE_NEW_GROUP'=>'Crear nuevo grupo',
 'LBL_NEW_GROUP'=>'Nuevo Grupo',
 'LBL_EDIT_GROUP'=>'Editar Grupo',
@@ -231,8 +231,6 @@ $mod_strings = Array(
 'LBL_GROUP_MESG2'=>'Para añadir, seleccione los miembros de la entidad de la izquierda y pulse el botón ">>" ',
 'LBL_GROUP_MESG3'=>'Para eliminar, seleccione los miembros del grupo de la derecha y pulse el botón "<<"',
 
-
-// Added fields in detailViewmailtemplate.html,listgroupmembers.php,listgroups.php
 'LBL_DETAIL_VIEW_OF_EMAIL_TEMPLATE'=>'Vista detallada de la plantilla de Email',
 'LBL_DETAIL_VIEW'=>'Vista detallada de',
 'LBL_EDIT_VIEW'=>'Editando detalles del usuario',
@@ -246,7 +244,6 @@ $mod_strings = Array(
 'LBL_EMAIL_TEMPLATE_DESC'=>'Gestionar plantilla de Email usadas para campañas y mailings',
 'LBL_NAME'=>'Nombre',
 
-// Added fields in TabCustomise.php,html and UpdateTab.php,html
 'LBL_CUSTOMISE_TABS'=>'Personalizar Pestañas',
 'LBL_CHOOSE_TABS'=>'Elegir Pestañas',
 'LBL_AVAILABLE_TABS'=>'Pestañas Disponibles',
@@ -255,14 +252,11 @@ $mod_strings = Array(
 'LBL_TAB_MENU_UPDATED'=>'¡Menu de Pestañas Actualizado! vaya a ',
 'LBL_TO_VIEW_CHANGES'=>' para visualizar los cambios',
 
-// Added to change homepage order
 'LBL_CHANGE_HOMEPAGE_LABEL'=>'Organización de la Página de Inicio',
 'LBL_CHANGE_HOMEPAGE_TITLE'=>'Página de Inicio',
 
-// Added fields in binaryfilelist.php
 'LBL_OERATION'=>'Operación',
 
-// Added fields in CreateProfile.php
 'LBL_PROFILE_NAME'=>'Crear Nuevo Perfil:',
 'LBL_NEW_PROFILE'=>'Nuevo Perfil',
 'LBL_NEW_PROFILE_NAME'=>'Nombre del Perfil',
@@ -319,7 +313,6 @@ $mod_strings = Array(
 'LBL_RELATED_MODULE_RIGHTS'=>'Privilegios del Módulo Relacionado',
 'LBL_IN_PERMISSION'=>'con permiso',
 
-//Added fields in createrole.php
 'LBL_HDR_ROLE_NAME'=>'Crear nuevo Rol:',
 'LBL_TITLE_ROLE_NAME'=>'Nuevo Rol',
 'LBL_ROLE_NAME'=>'Nombre de Rol',
@@ -333,8 +326,6 @@ $mod_strings = Array(
 'LBL_ASSOCIATED_PROFILES'=>'Perfiles Asociados:',
 'LBL_ASSOCIATED_USERS'=>'Usuarios Asociados:',
 
-
-//Added fields in OrgSharingDetailsView.php
 'LBL_ORG_SHARING_PRIVILEGES'=>'Privilegios compartidos con la Organización',
 'LBL_EDIT_PERMISSIONS'=>'Editar Permisos',
 'LBL_SAVE_PERMISSIONS'=>'Guardar Permisos',
@@ -343,11 +334,12 @@ $mod_strings = Array(
 'LBL_READ_CREATE_EDIT_DEL'=>'Público: Lectura, Crear/Editar, Eliminar',
 'LBL_PRIVATE'=>'Privado',
 
-//Added fields in listnotificationschedulers.php
 'LBL_HDR_EMAIL_SCHDS'=>'Usuarios: Notificaciones de Email',
 'LBL_EMAIL_SCHDS_DESC'=>'Lo que sigue es la lista de las notificaciones que se activan automáticamente cuando el correspondiente evento ha ocurrido.',
 'LBL_ACTIVE'=>'Activo',
 'LBL_INACTIVE'=>'Inactivo',
+'LBL_ON'=>'Activo',
+'LBL_OFF'=>'Inactivo',
 'LBL_NOTIFICATION'=>'Notificación',
 'LBL_DESCRIPTION'=>'Descripción',
 'LBL_TASK_NOTIFICATION'=>'Notificación de tarea retrasada',
@@ -365,21 +357,16 @@ $mod_strings = Array(
 'LBL_BUTTON_UPDATE'=>'Actualizar',
 'LBL_MODULENAMES'=>'Módulo',
 
-//Added fields in ListFieldPermissions.html
 'LBL_FIELD_PERMISSION_FIELD_NAME'=>'Nombre de Campo',
 'LBL_FIELD_PERMISSION_VISIBLE'=>'Visible',
 'LBL_FIELD_PERMISSIOM_TABLE_HEADER'=>'Campos estandar',
 'LBL_FIELD_LEVEL_ACCESS'=>'Nivel de acceso a campos',
 
-//Added fields after 4.0.1
 'LBL_SIGNATURE'=>'Firma',
 
-//Added for Event Reminder 4.2 Alpha release
 'LBL_ACTIVITY_NOTIFICATION'=>'Notificación de Eventos',
 'LBL_ACTIVITY_REMINDER_DESCRIPTION'=>'Notifica un evento antes de que ocurra',
 'LBL_MESSAGE'=>'Mensaje',
-
-//Added for Global Privileges
 
 'Public: Read Only'=>'Publico: Sólo Lectura',
 'Public: Read, Create/Edit'=>'Publico: Lectura, Crear/Editar',
@@ -405,9 +392,6 @@ $mod_strings = Array(
 'LBL_PRIVILEGES'=>'Privilegios',
 'LBL_OF'=>'de',
 
-
-
-//Added for 4.2GA support for mail server integration
 'LBL_ADD_MAILSERVER_BUTTON_TITLE'=>'Añadir Servidor de Correo',
 'LBL_ADD_MAILSERVER_BUTTON_KEY'=>'M',
 'LBL_ADD_MAILSERVER_BUTTON_LABEL'=>'Añadir Servidor de Correo',
@@ -415,15 +399,12 @@ $mod_strings = Array(
 'LBL_LIST_MAILSERVER_BUTTON_TITLE'=>'Listar Servidores de Correo',
 'LBL_LIST_MAILSERVER_BUTTON_KEY'=>'L',
 'LBL_LIST_MAILSERVER_BUTTON_LABEL'=>'Listar Servidores de Correo',
-//added for inventory terms and conditions
 'INV_TANDC'=>'Condiciones Generales',
 'INV_TERMSANDCONDITIONS'=>'Inventario - Condiciones Generales',
 'LBL_INV_TERMSANDCONDITIONS'=>'Gestión de Inventario',
-
-
 'INVENTORYNOTIFICATION'=>'Notificaciones de Inventario',
 'LBL_INVENTORY_NOTIFICATIONS'=>'Editar Notificaciones de Inventario',
-'LBL_INV_NOT_DESC'=>'Listado de las notificaciones que se envían a los proveedores cuando durante la creación de un presupuesto, orden de venta o factura, no hay cantidad suficiente de producto .',
+'LBL_INV_NOT_DESC'=>'Listado de las notificaciones que se envían a los proveedores cuando, durante la creación de un presupuesto, orden de venta o factura, no hay cantidad suficiente de producto.',
 
 'InvoiceNotification'=>'Notificación de stock de producto bajo durante la generación de una factura',
 'InvoiceNotificationDescription'=>'Si durante la Factura el stock del producto almacenado es menor que la cantidad demandada en la orden de venta, se enviará esta notificación al responsable del producto',
@@ -434,32 +415,19 @@ $mod_strings = Array(
 'SalesOrderNotification'=>'Notificación de stock de producto bajo durante la generación de una orden de venta',
 'SalesOrderNotificationDescription'=>'Si durante la orden de venta el stock del producto almacenado es menor que la cantidad demandada en la orden de venta, se enviará esta notificación al responsable del producto',
 
-//New addition for 4.2 GA
 'LBL_USER_FIELDS'=>'Campos del Usuario',
 'LBL_NOTE_DO_NOT_REMOVE_INFO'=>'Nota:  No quite ni altere los valores dentro de {  }',
 
-//Added for patch2
 'LBL_FILE_INFORMATION'=>'Información',
-
-//Added after pathc2
 'LBL_LEAD_FIELD_ACCESS'=>'Pre-Contactos',
-
 'LBL_ACCOUNT_FIELD_ACCESS'=>'Cuentas',
-
 'LBL_CONTACT_FIELD_ACCESS'=>'Contactos',
-
 'LBL_OPPORTUNITY_FIELD_ACCESS'=>'Acceso a los campos de Oportunidades',
-
 'LBL_HELPDESK_FIELD_ACCESS'=>'Acceso a los campos de Incidencias',
-
 'LBL_PRODUCT_FIELD_ACCESS'=>'Acceso a los campos de Productos',
-
 'LBL_NOTE_FIELD_ACCESS'=>'Acceso a los campos de Documentos',
-
 'LBL_EMAIL_FIELD_ACCESS'=>'Acceso a los campos de Email',
-
 'LBL_TASK_FIELD_ACCESS'=>'Acceso a los campos de Tareas',
-
 'LBL_EVENT_FIELD_ACCESS'=>'Acceso a los campos de Eventos',
 'LBL_VENDOR_FIELD_ACCESS'=>'Acceso a los campos de Proveedores',
 'LBL_PB_FIELD_ACCESS'=>'Acceso a los campos de Tarifas',
@@ -468,11 +436,8 @@ $mod_strings = Array(
 'LBL_SO_FIELD_ACCESS'=>'Acceso a los campos de Ordenes de Venta',
 'LBL_INVOICE_FIELD_ACCESS'=>'Acceso a los campos de Facturas',
 
-//given for calendar color for an user user
 'LBL_COLOR'=>'Color en el Calendario',
-//added for activity view in home page
 'LBL_ACTIVITY_VIEW'=>'Vista de Actividad Predeterminada',
-//Added to change Home page order
 'LBL_HOMEPAGE_ORDER_UPDATE'=>'Actualizar Órden de Bloques en la página de inicio',
 'LBL_HOMEPAGE_ID'=>'Órden de bloques',
 'ERR_INVALID_USER'=>'Acceso Inválido -- Acceder desde Mis Cuentas',
@@ -491,7 +456,6 @@ $mod_strings = Array(
 'UA'=>'Próximas Actividades',
 'PA'=>'Actividades Pendientes',
 
-//Added for 5.0 alpha
 'LBL_GROUP_NAME_ERROR'=>'¡El nombre del grupo ya existe!',
 'MNL'=>'Últimos Pre-contactos',
 'LBL_LEAD_VIEW'=>'Vista por defecto de Pre-contactos',
@@ -515,9 +479,6 @@ $mod_strings = Array(
 'LBL_CHANGE_PHOTO'=>'Cambiar Foto...',
 'LBL_CHANGE'=>'Cambiar',
 
-
-//Added for Access Privileges
-
 'LBL_GLOBAL_FIELDS_MANAGER'=>'Gestor de Privilegios de Acceso Globales',
 'LBL_GLOBAL_ACCESS_PRIVILEGES'=>'Privilegios de Acceso Globales',
 'LBL_CUSTOM_ACCESS_PRIVILEGES'=>'Privilegios de Acceso Personalizados',
@@ -537,7 +498,6 @@ $mod_strings = Array(
 'LBL_USERLOGIN_ROLE'=>'Usuario Login y Rol',
 'LBL_USER_IMAGE_INFORMATION'=>'Información de Imágen de Usuario',
 
-//Added for 5.0 for all fields
 'Role'=>'Rol',
 'Email'=>'Email',
 'Admin'=>'Admin',
@@ -646,49 +606,42 @@ $mod_strings = Array(
 'LBL_3_MIN'=>'3 minutos',
 'LBL_4_MIN'=>'4 minutos',
 'LBL_5_MIN'=>'5 minutos',
+'None' => 'Nunca',
+'1 Minute' => '1 Minuto',
+'5 Minutes' => '5 Minutos',
+'15 Minutes' => '15 Minutos',
+'30 Minutes' => '30 Minutos',
+'45 Minutes' => '45 Minutos',
+'1 Hour' => '1 Hora',
+'1 Day' => '1 Día',
 'LBL_EMAILS_PER_PAGE'=>'Emails por Página',
-// Added for 5.0.3
 
 'LBL_ENTER_PROFILE'=>'Introducir Nombre del Perfil',
 'TITLE_USER_DOCUMENT'=>'Documento sin Nombre',
 'ROLE_DRAG_ERR_MSG'=>'No puedes mover un Nodo Padre bajo un Nodo Hijo',
 
 'LBL_NOTIFICATION_ACTIVITY'=>'Notificación de Actividad',
-'LBL_NOTIFICATION_EMAIL_INFO'=>'Notificación de Información de Email',
 'LBL_GOTO_LISTVIEW_BUTTON'=>'Ir a vista de lista',
 
-// Added/Updated for vtiger CRM 5.0.4
-
 'LBL_SSL' => 'SSL',
-//Added to fix the issue #4081
 'LBL_USERNAME_EXIST' => 'Ya existe un usuario con ese nombre!',
 'LBL_UNAUTHORIZED_ACCESS' => 'No está autorizado a acceder a la administración de usuario',
-//Added to provide User based TagCloud
 'LBL_TAGCLOUD_DISPLAY'=>'Mostrar Nube de Etiquetas',
 'INTERNAL_MAIL_COMPOSER'=>'Cliente de Email Interno',
 
-// Added for 5.0.4 to Support Email notication on User Creation
 'User Login Details'=>'Detalle de Conexión de Usuario',
 'LBL_TO_LOGIN' => 'para Conectarse',
-
-// Added after 5.0.4 GA
 
 'LBL_USER_ADV_OPTIONS'=>'Opciones Avanzadas de Usuario',
 'Reminder Interval'=>'Intervalo de Recordatorio',
 'Webservice Access Key'=>'Clave de acceso',
 
-//user-group fixes
 'LBL_GROUPNAME_EXIST' => 'Ya existe un grupo con ese nombre!',
 'LBL_PROFILENAME_EXIST' => 'Ya existe un perfil con ese nombre!',
 
-//Fixed For Asterisk Configration
 'Asterisk Configuration' => 'Configuración Asterisk',
 'Asterisk Extension' => 'Extensión Asterisk',
 'Receive Incoming Calls' => 'Usar Asterisk',
-
-// Added for Create Custom Fields 
-'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Crear Campos Personalizados para Usuarios ',
-'LBL_USER_CUSTOMFIELDS' => 'Campos Personalizados de Usuarios',
 
 'LBL_CURRENCY_CONFIGURATION'=> 'Configuración Moneda',
 
@@ -819,6 +772,12 @@ $mod_strings = Array(
 'Min. 1 number' => 'Mínimo un número',
 'Min. 1 special character' => 'Mínimo un caracter especial ! ? , ; - @ #',
 'Generate password' => 'Generar contraseña',
+'ERR_USER_LOGGED_IN' => 'El mismo usuario ya ha entrado en el sistema en otro ordenador, para poder acceder, debe salir de la sesión.',
+'ERR_USER_CAN_UNBLOCK' => 'El mismo usuario ya ha entrado en el sistema en otro ordenador pero parece inactivo, puede desbloquear la sesión para acceder.',
+'LBL_USERLOGGEDOUTOK' => 'Se ha cerrado la sesión del usuario.',
+'LBL_USERLOGGEDOUTNOK' => 'No se ha podido cerrar la sesión del usuario.',
+'LBL_UNBLOCK_USR' => 'Desbloquear usuario y permitir la entrada.',
+'LOGGED IN' => 'Dentro',
 // LDAP
 'LBL_QUERY' => 'Consulta',
 'LBL_FORE_LASTNAME' => 'Nombre o Apellido',

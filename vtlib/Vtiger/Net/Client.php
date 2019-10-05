@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-ini_set('include_path',ini_get('include_path'). PATH_SEPARATOR . 'vtlib/thirdparty/network/');
+ini_set('include_path', ini_get('include_path'). PATH_SEPARATOR . 'vtlib/thirdparty/network/');
 include 'vtlib/thirdparty/network/Request2.php';
 
 /**
@@ -15,20 +15,20 @@ include 'vtlib/thirdparty/network/Request2.php';
  * @package vtlib
  */
 class Vtiger_Net_Client {
-	var $client;
-	var $url;
-	var $response;
-	var $request_response;
-	var $error = false;
-	var $errormsg = '';
+	public $client;
+	public $url;
+	public $response;
+	public $request_response;
+	public $error = false;
+	public $errormsg = '';
 
 	/**
 	 * Constructor
 	 * @param String URL of the site
-	 * Example: 
+	 * Example:
 	 * $client = new Vtiger_Net_Client('http://www.vtiger.com');
 	 */
-	function __construct($url) {
+	public function __construct($url) {
 		$this->setURL($url);
 	}
 
@@ -36,7 +36,7 @@ class Vtiger_Net_Client {
 	 * Set another url for this instance
 	 * @param String URL to use go forward
 	 */
-	function setURL($url) {
+	public function setURL($url) {
 		$this->url = $url;
 		$this->client = new HTTP_Request2();
 		$this->response = false;
@@ -46,7 +46,7 @@ class Vtiger_Net_Client {
 	 * Set the body of the request
 	 * $param String body to be sent
 	 */
-	function setBody($body) {
+	public function setBody($body) {
 		$this->client->setBody($body);
 	}
 
@@ -54,8 +54,8 @@ class Vtiger_Net_Client {
 	 * Set custom HTTP Headers
 	 * @param Map HTTP Header and Value Pairs
 	 */
-	function setHeaders($values) {
-		foreach($values as $key=>$value) {
+	public function setHeaders($values) {
+		foreach ($values as $key => $value) {
 			$this->client->setHeader($key, $value);
 		}
 	}
@@ -65,15 +65,17 @@ class Vtiger_Net_Client {
 	 * @param Map key-value pair or false
 	 * @param Integer timeout value
 	 */
-	function doGet($params=false, $timeout=null) {
-		if($timeout) $this->client->setConfig('connect_timeout', $timeout);
+	public function doGet($params = false, $timeout = null) {
+		if ($timeout) {
+			$this->client->setConfig('connect_timeout', $timeout);
+		}
 		$this->client->setConfig('adapter', 'HTTP_Request2_Adapter_Curl');
 		$this->client->setURL($this->url);
 		$this->client->setMethod(HTTP_Request2::METHOD_GET);
 
-		if($params) {
+		if ($params) {
 			$url = $this->client->getUrl();
-			foreach($params as $key=>$value) {
+			foreach ($params as $key => $value) {
 				$url->setQueryVariable($key, $value);
 			}
 		}
@@ -97,17 +99,19 @@ class Vtiger_Net_Client {
 	 * @param Map key-value pair or false
 	 * @param Integer timeout value
 	 */
-	function doPost($params=false, $timeout=null) {
-		if($timeout) $this->client->setConfig('connect_timeout', $timeout);
+	public function doPost($params = false, $timeout = null) {
+		if ($timeout) {
+			$this->client->setConfig('connect_timeout', $timeout);
+		}
 		$this->client->setConfig('adapter', 'HTTP_Request2_Adapter_Curl');
 		$this->client->setURL($this->url);
 		$this->client->setMethod(HTTP_Request2::METHOD_POST);
 
-		if($params) {
-			if(is_string($params)) {
+		if ($params) {
+			if (is_string($params)) {
 				$this->client->setBody($params);
 			} else {
-				foreach($params as $key=>$value) {
+				foreach ($params as $key => $value) {
 					$this->client->addPostParameter($key, $value);
 				}
 			}
@@ -131,21 +135,21 @@ class Vtiger_Net_Client {
 	/**
 	 * Did last request resulted in error?
 	 */
-	function wasError() {
+	public function wasError() {
 		return $this->error;
 	}
 
 	/**
 	 * get last request error message
 	 */
-	function getErrorMessage() {
+	public function getErrorMessage() {
 		return $this->errormsg;
 	}
 
 	/**
 	 * Disconnect this instance
 	 */
-	function disconnect() {
+	public function disconnect() {
 		//$this->client->disconnect();
 	}
 }

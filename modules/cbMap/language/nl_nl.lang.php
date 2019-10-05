@@ -32,6 +32,8 @@ $mod_strings = array(
 	'FieldDependency' => 'Veld afhankelijkheid',
 	'Record Access Control' => 'Record toegang controle',
 	'Record Set Mapping' => 'Record set relatie',
+	'Module Set Mapping' => 'Module Set Mapping',
+	'Field Set Mapping' => 'Field Set Mapping',
 	'ListColumns' => 'Kolomlijst',
 	'DuplicateRelations' => 'Dupliceer relatie',
 	'Assigned To' => 'Toegewezen aan',
@@ -40,5 +42,12 @@ $mod_strings = array(
 	'Description' => 'Beschrijving',
 	'GlobalVariable' => 'Globale Variabele',
 	'Validations' => 'Validations',
+	'Detail View Layout Mapping' => 'Detail View Layout Mapping',
+	'VALIDATE_MAP'=> 'Validate Map',
+	'MAP_NOT_VALID'=> 'Map is not valid!',
+	'MAP_VALID'=> 'Map is valid',
+	'MAP_NOT_IMPLEMENTED_YET'=> 'Validation for this map has not been implemented yet',
+	'DecisionTable' => 'Decision Table',
+	'Webservice Mapping' => 'Webservice Mapping',
 );
 ?>

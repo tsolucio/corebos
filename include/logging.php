@@ -13,28 +13,27 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
-require_once('config.php');
+require_once 'config.inc.php';
 
 // Performance Optimization: Configure the log folder
-@include_once('config.performance.php');
-global $PERFORMANCE_CONFIG;
-if(isset($PERFORMANCE_CONFIG) && isset($PERFORMANCE_CONFIG['LOG4PHP_DEBUG']) && $PERFORMANCE_CONFIG['LOG4PHP_DEBUG']) {
-	define('LOG4PHP_DIR', 'log4php.debug');
-	require_once(LOG4PHP_DIR.'/Logger.php');
+if (!empty($LOG4PHP_DEBUG)) {
+	define('LOG4PHP_DIR', 'include/log4php.debug');
+	require_once LOG4PHP_DIR.'/Logger.php';
 	Logger::configure('log4php.properties');
 	class LoggerManager {
-		static function getlogger($name = 'ROOT') {
+		public static function getlogger($name = 'ROOT') {
 			return Logger::getLogger($name);
 		}
 	}
 } else {
-	define('LOG4PHP_DIR', 'log4php');
-	require_once(LOG4PHP_DIR.'/LoggerManager.php');
-	require_once(LOG4PHP_DIR.'/LoggerPropertyConfigurator.php');
+	define('LOG4PHP_DIR', 'include/log4php');
+	require_once LOG4PHP_DIR.'/LoggerManager.php';
+	require_once LOG4PHP_DIR.'/LoggerPropertyConfigurator.php';
 	$config = new LoggerPropertyConfigurator();
 	$config->configure('log4php.properties');
 }
 global $logbg;
-if (empty($logbg))
+if (empty($logbg)) {
 	$logbg= LoggerManager::getLogger('BACKGROUND');
+}
 ?>

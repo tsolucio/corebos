@@ -39,15 +39,15 @@ function updateModEntityNoSetting(button, form) {
 		return;
 	}
 
-	document.getElementById("status").style.display="inline";
+	document.getElementById('status').style.display='inline';
 	button.disabled = true;
 
 	jQuery.ajax({
-		method:"POST",
+		method:'POST',
 		url:'index.php?module=Settings&action=SettingsAjax&file=CustomModEntityNo&ajax=true' + '&selmodule=' + encodeURIComponent(module) +
 			'&recprefix=' + encodeURIComponent(recprefix) + '&recnumber=' + encodeURIComponent(recnumber) + '&mode=' + encodeURIComponent(mode)
 	}).done(function(response) {
-		document.getElementById("status").style.display="none";
+		document.getElementById('status').style.display='none';
 		var restext = response;
 		document.getElementById('customentity_infodiv').innerHTML = restext;
 	});
@@ -97,11 +97,11 @@ function updateModEntityExisting(button, form) {
 		<!-- DISPLAY -->
 		<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 		<tr>
-			<td width=50 rowspan=2 valign=top><img src="{'settingsInvNumber.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_CUSTOMIZE_MODENT_NUMBER}" width="48" height="48" border=0 title="{$MOD.LBL_CUSTOMIZE_MODENT_NUMBER}"></td>
+			<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'settingsInvNumber.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_CUSTOMIZE_MODENT_NUMBER}" width="48" height="48" border=0 title="{$MOD.LBL_CUSTOMIZE_MODENT_NUMBER}"></td>
 			<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_CUSTOMIZE_MODENT_NUMBER}</b></td>
 		</tr>
 		<tr>
-			<td valign=top class="small">{$MOD.LBL_CUSTOMIZE_MODENT_NUMBER_DESCRIPTION}</td>
+			<td valign=top class="small cblds-p-v_none">{$MOD.LBL_CUSTOMIZE_MODENT_NUMBER_DESCRIPTION}</td>
 		</tr>
 		</table>
 		<br>
@@ -135,7 +135,7 @@ function updateModEntityExisting(button, form) {
 
 			<table border="0" cellpadding="5" cellspacing="0" width="100%">
 			<tr>
-				<td class="small" align="right" nowrap="nowrap"><a href="#top">{$MOD.LBL_SCROLL}</a></td>
+				<td class="small cblds-t-align_right" align="right" nowrap="nowrap"><a href="#top">{$MOD.LBL_SCROLL}</a></td>
 			</tr>
 			</table>
 			</td>

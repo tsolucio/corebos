@@ -1,36 +1,22 @@
 <?php
-/*******************************************************************************
- * The contents of this file are subject to the following licences:
- * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
- * - vtiger CRM Public License Version 1.0 
- * You may not use this file except in compliance with the License
- * Software distributed under the License is distributed on an  "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is: SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
- * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
- * Feel free to use / redistribute these languagefiles under the VPL 1.0.
- * This translations is based on earlier work of: 
- * - IT-Online.nl <www.it-online.nl>
- * - Weltevree.org <www.Weltevree.org>
- ********************************************************************************/
-
-/*******************************************************************************
  * Vicus eBusiness Solutions Version Control
  * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.3.x
+ * Description	Dutch language pack for vtiger CRM version 5.4.x
  * @author	$Author: luuk $
- * @version 	$Revision: 1.2 $ $Date: 2011/11/14 17:07:26 $
- * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/Reports/language/nl_nl.lang.php,v $
+ * @version 	$Revision: 1.3 $ $Date: 2014/02/13 21:42:40 $
+ * @source	$Source: /var/lib/cvs/vtiger540/Dutch/modules/Reports/language/nl_nl.lang.php,v $
  * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
  * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Rapporten',
 'LBL_MODULE_TITLE'=>'Rapporten: Home',
 'LBL_CREATE_REPORT'=>'Maak rapport',
@@ -64,7 +50,6 @@ $mod_strings = Array(
 'LBL_COLUMNS_AVERAGE'=>'Gemiddeld',
 'LBL_COLUMNS_LOW_VALUE'=>'Laagste getal',
 'LBL_COLUMNS_LARGE_VALUE'=>'Hoogste getal',
-'LBL_NONE'=>'Geen',
 'LBL_GROUPING_SORT'=>'Sorteer order:',
 'LBL_GROUPING_SUMMARIZE'=>'Samenvatting informatie door:',
 'LBL_GROUPING_THEN_BY'=>'en toen door:',
@@ -84,10 +69,8 @@ $mod_strings = Array(
 'LBL_GENERATED_Raport'=>'Genereer rapport',
 'LBL_GRAND_TOTAL'=>'Totaal',
 
-//Added for 4.2 Patch I
 'LBL_EXPORTXL_BUTTON'=>'Exporteer naar Excel',
 'LBL_EXPORTCSV'=>'Export To CSV',
-//Added for 5 Beta
 'LBL_NO_PERMISSION'=>'Uw profiel geeft u geen rechten om rapporten en modules te bekijken.',
 'LBL_SELECT_COLUMNS_TO_GENERATE_REPORTS'=>'Selecteer kolommen om rapporten te genereren',
 'LBL_AVAILABLE_FIELDS'=>'Beschikbare velden',
@@ -136,7 +119,7 @@ $mod_strings = Array(
 'PurchaseOrder Reports'=>'Inkooporder rapport',
 'SalesOrder Reports'=>'Verkooporder rapport', //Added for SO
 'Invoice Reports'=>'Factuur rapport',
-'Campaign Reports'=>'Campagne rapport', //Added for Campaigns 
+'Campaign Reports'=>'Campagne rapport', //Added for Campaigns
 'Contacts by Accounts'=>'Contacten bij accounts',
 'Contacts without Accounts'=>'Contacten zonder accounts',
 'Contacts by Potentials'=>'Contacten bij verkoopkansen',
@@ -145,7 +128,7 @@ $mod_strings = Array(
 'Contacts related to Potentials'=>'Contacten gerelateerd aan verkoopkansen',
 'Lead by Source'=>'Lead per bron',
 'Lead Status Report'=>'Lead status rapport',
-'Potential Pipeline'=>'Verkoopkans Pipeline',
+'Potential Pipeline'=>'Verkoopkans Pijplijn',
 'Closed Potentials'=>'Gesloten verkoopkansen',
 'Potential that have Won'=>'Gewonnen verkoopkansen',
 'Tickets by Products'=>'Tickets per Product',
@@ -168,15 +151,23 @@ $mod_strings = Array(
 'This Month Activities'=>'Activiteiten van deze maand',
 'Campaign Expectations and Actuals'=>'Campagne verwachting + actueel', //Added for Campaigns
 'SalesOrder Detailed Report'=>'Gedetailleerd verkooporder rapport', //Added for SO
+'Emails sent to Contacts' => 'Emails sent to Contacts',
+'Emails sent to Organizations' => 'Emails sent to Organizations',
+'Emails sent to Leads' => 'Emails sent to Leads',
+'Emails sent to Vendors' => 'Emails sent to Vendors',
+'Contacts Email Report' => 'Contacts Email Report',
+'Accounts Email Report' => 'Accounts Email Report',
+'Leads Email Report' => 'Leads Email Report',
+'Vendors Email Report' => 'Vendors Email Report',
 
 'LBL_DELETE'=>'Verwijder',
 'Create_Reports'=>'Maak rapport',
 'Create_New_Folder'=>'Maak een nieuwe map',
 'Move_Reports'=>'Verhuis rapport',
-'Delete_Report'=>'Verwijder rapport', 
+'Delete_Report'=>'Verwijder rapport',
 
 'Custom'=>'Op maat',
-'Previous FY'=>'Vorige FY', 
+'Previous FY'=>'Vorige FY',
 'Current FY'=>'Huidig FY',
 'Next FY'=>'Volgende FY',
 'Previous FQ'=>'Vorige FQ',
@@ -192,6 +183,7 @@ $mod_strings = Array(
 'Current Month'=>'Deze maand',
 'Next Month'=>'Volgende maand',
 'Last 7 Days'=>'Laatste 7 dagen',
+'Last 14 Days' => 'Laatste 14 dagen',
 'Last 30 Days'=>'Laatste 30 dagen',
 'Last 60 Days'=>'Laatste 60 dagen',
 'Last 90 Days'=>'Laatste 90 dagen',
@@ -211,15 +203,14 @@ $mod_strings = Array(
 'AVG'=>'Gemiddeld',
 'MAX'=>'MAX',
 'MIN'=>'MIN',
+'COUNT'=>'COUNT',
 'LBL_CUSTOM_REPORTS'=>'Eigen rapport',
 
 'ticketid'=>'Ticket Id',
 'NO_COLUMN'=>'Geen totaal kolommen aanwezig',
 
-// Added/Updated for vtiger CRM 5.0.4
 'LBL_REPORT_DELETED' => 'Het rapport dat u wilt bekijken is verwijderd.',
 
-//Added for Reports
 'LBL_SHARING'=>'Combineren',
 'SELECT_FILTER_TYPE'=>'Selecteer Rapporttype',
 'LBL_USERS'=>'Gebruikers',
@@ -254,6 +245,7 @@ $mod_strings = Array(
 'LBL_SCHEDULE_EMAIL_DESCRIPTION'=>'Plan Rapport in om naar de geselecteerde ontvangers via e-mail te verzenden op regelmatige intervallen.',
 'LBL_USERS_AVAILABEL'=> 'Ontvangers',
 'LBL_REPORT_FORMAT_PDF'=> 'PDF',
+'LBL_REPORT_FORMAT_URL'=> 'URL',
 'LBL_REPORT_FORMAT_EXCEL'=> 'EXCEL',
 'LBL_REPORT_FORMAT_BOTH'=> 'Beiden',
 'LBL_REPORT_FORMAT'=> 'Rapportformaat',
@@ -265,8 +257,9 @@ $mod_strings = Array(
 'BiWeekly'=>'Twee-Wekelijks',
 'Monthly'=>'Maandelijks',
 'Annually'=>'Jaarlijks',
-'LBL_SCHEDULE_REPORT'=>'Plan Report',
-'ScheduleReports'=>'Plan Report',
+'LBL_SCHEDULE_REPORT'=>'Rapportage inplannen',
+'Recommended frequency for ScheduleReports is 15 mins' => 'Recommended frequency for ScheduleReports is 15 mins',
+'ScheduleReports'=>'Rapportage inplannen',
 'LBL_SCHEDULE_FREQUENCY'=>'Frequentie',
 'OPTION_SCHEDULE_EMAIL_CHOOSE'=>'Kies ..... ',
 'LBL_SCHEDULE_EMAIL_TIME'=>'Tijd',
@@ -281,6 +274,19 @@ $mod_strings = Array(
 'LBL_RELOAD_REPORT' => 'Reload Report',
 'LBL_SAVE_REPORT' => 'Opslaan',
 'LBL_SAVE_REPORT_AS' => 'Sla Rapport op als...',
+
+//Report Charts
+'LBL_VIEW_CHARTS' => 'Bekijk grafieken',
+'LBL_ADD_CHARTS' => 'Voeg Grafiek toe aan Homepage',
+'LBL_HOME_REPORT_NAME' => 'Rapportnaam',
+'LBL_HOME_HORIZONTAL_BARCHART' => 'Horizontale Staafgrafiek',
+'LBL_HOME_VERTICAL_BARCHART' => 'Verticale Staafgrafiek',
+'LBL_HOME_PIE_CHART' => 'Taartdiagram',
+'LBL_HOME_REPORT_TYPE' => 'Rapporttype',
+'LBL_HOME_WINDOW_TITLE' => 'Window titel',
+'LBL_GROUPING_TIME' => 'Groepeer op tijd',
+'LBL_WIDGET_ADDED' => 'Widget toevoegen geslaagd.',
+'LBL_UNDEFINED' => 'Niet gedefinieerd',
 'Add ReportCharts' => 'Add Report Charts',
 'Choose Report Type' => 'Choose Report Type',
 'Application Report' => 'Application Report',
@@ -299,6 +305,6 @@ $mod_strings = Array(
 'LBL_COLUMNS_COUNT'=>'Count',
 'LBL_ERROR_WHILE_DELETING_FOLDER' => 'Fout bij het wissen van de map.',
 'LBL_ERROR_WHILE_DELETING_REPORTS_IN_FOLDER' => 'Error while deleting the reports of the folder',
-)
-
+'ERR_CREATE_REPORT' => 'Error creating the report.',
+);
 ?>

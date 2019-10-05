@@ -7,9 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('modules/Reports/Reports.php');
-require_once('include/logging.php');
-require_once('include/database/PearDatabase.php');
+require_once 'modules/Reports/Reports.php';
+require_once 'include/logging.php';
+require_once 'include/database/PearDatabase.php';
 
 global $adb, $default_charset;
 $local_log = LoggerManager::getLogger('index');
@@ -18,45 +18,35 @@ $focus = new Reports();
 $rfid = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : 0;
 $mode = vtlib_purify($_REQUEST['savemode']);
 $foldername = vtlib_purify($_REQUEST["foldername"]);
-$foldername = function_exists('iconv') ? @iconv('UTF-8',$default_charset, $foldername) : $foldername;
+$foldername = function_exists('iconv') ? @iconv('UTF-8', $default_charset, $foldername) : $foldername;
 $folderdesc = vtlib_purify($_REQUEST["folderdesc"]);
-$foldername = str_replace('*amp*','&',$foldername);
-$folderdesc = str_replace('*amp*','&',$folderdesc);
+$foldername = str_replace('*amp*', '&', $foldername);
+$folderdesc = str_replace('*amp*', '&', $folderdesc);
 
-if($mode=="Save")
-{
-	if($rfid=="")
-	{
-		$sql = "INSERT INTO vtiger_reportfolder ";
-		$sql .= "(FOLDERNAME,DESCRIPTION,STATE) VALUES (?,?,?)";
-		$sql_params = array(trim($foldername), $folderdesc,'CUSTOMIZED');
+if ($mode=='Save') {
+	if ($rfid=='') {
+		$sql = 'INSERT INTO vtiger_reportfolder (FOLDERNAME,DESCRIPTION,STATE) VALUES (?,?,?)';
+		$sql_params = array(trim($foldername), $folderdesc, 'CUSTOMIZED');
 		$result = $adb->pquery($sql, $sql_params);
-		if($result!=false)
-		{
-			header("Location: index.php?action=ReportsAjax&file=ListView&mode=ajax&module=Reports");
-		}else
-		{
-			include('modules/Vtiger/header.php');
+		if ($result!=false) {
+			header('Location: index.php?action=ReportsAjax&file=ListView&mode=ajax&module=Reports');
+		} else {
+			include 'modules/Vtiger/header.php';
 			$errormessage = "<font color='red'><B>Error Message<ul>
 			<li><font color='red'>Error while inserting the record</font>
 			</ul></B></font> <br>" ;
 			echo $errormessage;
 		}
 	}
-}elseif($mode=="Edit")
-{
-	if($rfid != "")
-	{
-		$sql = "update vtiger_reportfolder set ";
-		$sql .= "FOLDERNAME=?, DESCRIPTION=? where folderid=?";
+} elseif ($mode=='Edit') {
+	if ($rfid != '') {
+		$sql = 'update vtiger_reportfolder set FOLDERNAME=?, DESCRIPTION=? where folderid=?';
 		$params = array(trim($foldername), $folderdesc, $rfid);
 		$result = $adb->pquery($sql, $params);
-		if($result!=false)
-		{
-			header("Location: index.php?action=ReportsAjax&file=ListView&mode=ajax&module=Reports");
-		}else
-		{
-			include('modules/Vtiger/header.php');
+		if ($result!=false) {
+			header('Location: index.php?action=ReportsAjax&file=ListView&mode=ajax&module=Reports');
+		} else {
+			include 'modules/Vtiger/header.php';
 			$errormessage = "<font color='red'><B>Error Message<ul>
 			<li><font color='red'>Error while updating the record</font>
 			</ul></B></font> <br>" ;
@@ -64,5 +54,4 @@ if($mode=="Save")
 		}
 	}
 }
-
 ?>

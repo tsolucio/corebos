@@ -7,8 +7,17 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$tool_buttons = array("index"=>"yes",);
-$tool_buttons["moduleSettings"] = isModuleSettingPermitted($currentModule);
+$tool_buttons = array(
+	'EditView' => '',
+	'CreateView' => '',
+	'index' => 'yes',
+	'Import' => '',
+	'Export' => '',
+	'Merge' => '',
+	'DuplicatesHandling' => '',
+);
+$tool_buttons['moduleSettings'] = isModuleSettingPermitted($currentModule);
+$tool_buttons['Calendar'] = isPermitted('Calendar', 'index', '');
 
-require_once('modules/Vtiger/ListView.php');
+include_once 'modules/Vtiger/ListView.php';
 ?>

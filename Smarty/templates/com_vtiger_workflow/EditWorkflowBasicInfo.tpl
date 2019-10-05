@@ -14,7 +14,7 @@
 		<td class="big" nowrap="nowrap">
 			<strong>{$MOD.LBL_SUMMARY}</strong>
 		</td>
-		<td align="right">
+		<td class="cblds-t-align_right" align="right">
 			{if $saveType eq "edit"}
 			<input type="button" class="crmButton create small" value="{$MOD.LBL_NEW_TEMPLATE}" id="new_template"/>
 			{/if}
@@ -32,5 +32,9 @@
 	<tr>
 		<td class="dvtCellLabel" align=right width=20%><b>{$APP.LBL_MODULE}</b></td>
 		<td class="dvtCellInfo" align="left">{$workflow->moduleName|@getTranslatedString:$workflow->moduleName}</td>
+	</tr>
+	<tr>
+		<td class="dvtCellLabel" align=right width=20%><b>{'LBL_WFPURPOSE'|@getTranslatedString:'com_vtiger_workflow'}</b></td>
+		<td class="dvtCellInfo" align="left"><textarea id='purpose' name='purpose'>{$workflow->purpose}</textarea></td>
 	</tr>
 </table>

@@ -1,26 +1,20 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************
 *  Module       : Quotes
 *  Language     : Español
 *  Version      : 5.4.0
 *  Created Date : 2007-03-30
-*  Author       : Rafael Soler
-*  Last change  : 2012-02-27
 *  Author       : Joe Bordes JPL TSolucio, S.L.
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'Presupuestos',
 'SINGLE_Quotes'=>'Presupuesto',
 'LBL_MODULE_TITLE'=>'Presupuestos: Inicio',
@@ -37,14 +31,6 @@ $mod_strings = Array(
 'LBL_LIST_PHONE'=>'Teléfono',
 'LBL_LIST_EMAIL_ADDRESS'=>'Dirección de Email',
 'LBL_LIST_CONTACT_NAME'=>'Persona de Contacto',
-
-//DON'T CONVERT THESE THEY ARE MAPPINGS
-'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-'db_website' => 'LBL_LIST_WEBSITE',
-'db_billing_address_city' => 'LBL_LIST_CITY',
-
-//END DON'T CONVERT
-
 'LBL_ACCOUNT'=>'Cuenta:',
 'LBL_PHONE'=>'Teléfono:',
 'LBL_WEBSITE'=>'Página Web:',
@@ -65,6 +51,7 @@ $mod_strings = Array(
 'LBL_ANNUAL_REVENUE'=>'Facturación Anual:',
 'LBL_ADDRESS_INFORMATION'=>'Información de la Dirección',
 'LBL_Quote_INFORMATION'=>'Información del Presupuesto',
+'LBL_Quotes_FINANCIALINFO' => 'Información Financiera',
 'LBL_CUSTOM_INFORMATION'=>'Información Personalizada',
 'LBL_BILLING_ADDRESS'=>'Dirección (Factura):',
 'LBL_SHIPPING_ADDRESS'=>'Dirección (Envío):',
@@ -87,7 +74,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Seleccionar Cuenta',
 'LBL_GENERAL_INFORMATION'=>'Información General',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nueva Oportunidad',
 'LBL_POTENTIAL_TITLE'=>'Oportunidades',
 
@@ -102,16 +88,13 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'Nuevo Contacto',
 'LBL_CONTACT_TITLE'=>'Contactos',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'Todo',
 'LBL_PROSPECT'=>'Investigador',
 'LBL_INVESTOR'=>'Inversor',
 'LBL_RESELLER'=>'Revendedor ',
 'LBL_PARTNER'=>'Socio',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Herramientas de Cuenta',
-//Added for 4GA
 'Subject'=>'Referencia',
 'Potential Name'=>'Oportunidad',
 'Quote Stage'=>'Estado del Presupuesto',
@@ -144,7 +127,6 @@ $mod_strings = Array(
 'Modified Time'=>'Última Modificación',
 'Description'=>'Descripción',
 'Account Name'=>'Nombre de la Cuenta',
-//Quote Info
 'LBL_QUOTE_INFORMATION'=>'Información del Presupuesto',
 'LBL_TERMS_INFORMATION'=>'Condiciones Generales',
 'LBL_QUOTE'=>'Presupuesto:',
@@ -154,10 +136,8 @@ $mod_strings = Array(
 'LBL_ACCOUNT_NAME'=>'Nombre de la Cuenta:',
 'LBL_QUOTE_STAGE'=>'Estado del Presupuesto:',
 'LBL_MY_TOP_QUOTE'=>'Mis Presupuestos Pendientes',
-//'Quote ID'=>'Id Presupuesto',
 'Quote'=>'Presupuesto',
 
-//Added for existing Picklist Entries
 'Created'=>'Creado',
 'Delivered'=>'Enviado',
 'Reviewed'=>'Revisado',
@@ -182,5 +162,4 @@ $mod_strings = Array(
 'Add Service Contract'=>'Añadir Contrato Servicio',
 'Quotes ID'=>'Id Presupuesto',
 );
-
 ?>

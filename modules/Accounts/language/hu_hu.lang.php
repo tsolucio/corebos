@@ -8,7 +8,7 @@
  * All Rights Reserved.
 * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  ********************************************************************************/
- 
+
 $mod_strings = array(
 	'LBL_MODULE_NAME' => 'Cégek',
 	'LBL_MODULE_TITLE' => 'Cégek: Kezdőlap',
@@ -26,9 +26,6 @@ $mod_strings = array(
 	'LBL_LIST_EMAIL_ADDRESS' => 'Email cím',
 	'LBL_LIST_CONTACT_NAME' => 'Kapcsolat neve',
 	'LBL_LIST_AMOUNT' => 'Teljes összeg',
-	'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-	'db_website' => 'LBL_LIST_WEBSITE',
-	'db_billing_address_city' => 'LBL_LIST_CITY',
 	'LBL_ACCOUNT' => 'Cég:',
 	'LBL_ACCOUNT_NAME' => 'Cég neve:',
 	'LBL_PHONE' => 'Telefon:',
@@ -188,6 +185,16 @@ $mod_strings = array(
 	'Accounts ID' => 'Cég AZ',
 	'Send SMS' => 'SMS küldés',
 	'Projects' => 'Projektek',
-	'Service Places' => 'Szolgáltatási helyek'
+	'Service Places' => 'Szolgáltatási helyek',
+	'LBL_ONDEMAND_CONTROL_INFORMATION' => 'On Demand Control',
+	'Start Date OD' => 'On Demand Start',
+	'End Date OD' => 'On Demand End',
+	'OD Service Active' => 'On Demand Active',
+	'OD Sync Module Active' => 'On Demand Sync Active',
+	'OD Sync Modules' => 'On Demand Sync Modules',
+	'Invoice With Tax' => 'Invoice With Tax',
+	'Free Space' => 'Free Space',
+	'Space Consumed' => 'Space Consumed',
+	'Frequency' => 'Invoice Frequency',
 );
 ?>

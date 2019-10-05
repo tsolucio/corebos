@@ -1,26 +1,22 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
- * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the English language pack for FAQ Module
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
+/*************************************************************************************************
+ * Copyright 2017 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+ * file except in compliance with the License. You can redistribute it and/or modify it
+ * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+ * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License. You may obtain a copy of the License
+ * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *************************************************************************************************
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- ********************************************************************************/
+ *************************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_MODULE_NAME'=>'FAQ',
 'LBL_MODULE_TITLE'=>'FAQ: Principal',
 'LBL_SEARCH_FORM_TITLE'=>'Pesquisar FAQ',
@@ -36,14 +32,6 @@ $mod_strings = Array(
 'LBL_LIST_EMAIL_ADDRESS'=>'Endereço Email',
 'LBL_LIST_CONTACT_NAME'=>'Nome Contato',
 'LBL_FAQ_INFORMATION'=>'Informação FAQ',
-      
-//DON'T CONVERT THESE THEY ARE MAPPINGS
-'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-'db_website' => 'LBL_LIST_WEBSITE',
-'db_billing_address_city' => 'LBL_LIST_CITY',
-      
-//END DON'T CONVERT
-      
 'LBL_ACCOUNT'=>'FAQ:',
 'LBL_ACCOUNT_NAME'=>'Nome FAQ:',
 'LBL_PHONE'=>'Fone:',
@@ -66,7 +54,7 @@ $mod_strings = Array(
 'LBL_ADDRESS_INFORMATION'=>'Dados do Endereço',
 'LBL_ACCOUNT_INFORMATION'=>'Dados da FAQ',
 'LBL_BILLING_ADDRESS'=>'Endereço:',
-'LBL_SHIPPING_ADDRESS'=>'Endereço Entrega:',
+'LBL_SHIPPING_ADDRESS'=>'Endereço de Entrega:',
 'LBL_ANY_ADDRESS'=>'Outro Endereço:',
 'LBL_CITY'=>'Cidade:',
 'LBL_STATE'=>'Estado:',
@@ -86,7 +74,6 @@ $mod_strings = Array(
 'LBL_SELECT_ACCOUNT'=>'Selecione FAQ',
 'LBL_GENERAL_INFORMATION'=>'Informação Geral',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nova Oportunidade',
 'LBL_POTENTIAL_TITLE'=>'Oportunidades',
 
@@ -101,7 +88,6 @@ $mod_strings = Array(
 'LBL_NEW_CONTACT'=>'Novo Contato',
 'LBL_CONTACT_TITLE'=>'Contatos',
 
-//Added for 4GA Release
 'Category'=>'Categoria',
 'Related To'=>'Relacionado à',
 'Question'=>'Questão',
@@ -111,33 +97,26 @@ $mod_strings = Array(
 'Created Time'=>'Data Criação',
 'Modified Time'=>'Data Modificação',
 
-//Added vtiger_fields after 4.2 alpha
 'LBL_TICKETS'=>'Tickets',
 'LBL_FAQ'=>'FAQ',
-'Product Name'=>'Nome Produto',
+'Product Name'=>'Nome do Produto',
 'Add Comment'=>'Adicionar Comentário',
 'LBL_ADD_COMMENT'=>'Add Comment',//give the same value given to the above string 'Add Comment'
 'LBL_COMMENT_INFORMATION'=>'Dados do Comentário',
 'Status'=>'Status',
 
-//Added on 10-12-2005
 'LBL_QUESTION'=>'Questão',
 'LBL_CATEGORY'=>'Categoria',
 'LBL_MY_FAQ'=>'FAQs Recentes',
 
 //Added for existing Picklist Entries
-
 'General'=>'Geral',
-
 'Draft'=>'Rascunho',
 'Reviewed'=>'Revisada',
 'Published'=>'Publicada',
 'Obsolete'=>'Obsoleta',
 
-// Module Sequence Numbering
 'Faq No' => 'No. Faq',
-// END
 'Faq ID' => 'ID FAQ',
 );
-
 ?>

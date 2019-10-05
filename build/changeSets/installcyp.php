@@ -15,16 +15,18 @@
 *************************************************************************************************/
 
 class installcyp extends cbupdaterWorker {
-	
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			$toinstall = array('CobroPago');
 			foreach ($toinstall as $module) {
 				if ($this->isModuleInstalled($module)) {
-					vtlib_toggleModuleAccess($module,true);
+					vtlib_toggleModuleAccess($module, true);
 					$this->sendMsg("$module activated!");
 				} else {
 					$this->installManifestModule($module);
@@ -35,11 +37,13 @@ class installcyp extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
+
+	public function undoChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
-			vtlib_toggleModuleAccess('CobroPago',false);
+			vtlib_toggleModuleAccess('CobroPago', false);
 			$this->sendMsg('CobroPago deactivated!');
 			$this->markUndone(false);
 			$this->sendMsg('Changeset '.get_class($this).' undone!');
@@ -48,5 +52,4 @@ class installcyp extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
 }

@@ -8,11 +8,12 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-include_once dirname(__FILE__) . '/../api/ws/Controller.php';
-include_once dirname(__FILE__) . '/../api/ws/Utils.php';
+include_once __DIR__ . '/../api/ws/Controller.php';
+include_once __DIR__ . '/../api/ws/Utils.php';
 
-class crmtogo_UI_Delete extends crmtogo_WS_Controller{
-	function process(crmtogo_API_Request $request) {
+class crmtogo_UI_Delete extends crmtogo_WS_Controller {
+
+	public function process(crmtogo_API_Request $request) {
 		$response = new crmtogo_API_Response();
 		$current_language = $this->sessionGet('language') ;
 		$current_module_strings = return_module_language($current_language, 'Mobile');
@@ -22,7 +23,7 @@ class crmtogo_UI_Delete extends crmtogo_WS_Controller{
 		$viewer->assign('LANGUAGE', $current_language);
 		$viewer->assign('MOD', $current_module_strings);
 		$viewer->assign('_MODULE', $module);
-        $viewer->assign('id', $record);
+		$viewer->assign('id', $record);
 		$response = $viewer->process('deleteConfirmation.tpl');
 		return $response;
 	}

@@ -20,7 +20,7 @@
 
 class Mapping extends generatecbMap {
 
-	function generateMap($arguments) {
+	public function generateMap($arguments) {
 		global $adb, $current_user;
 		$mapping=$this->convertMap2Array();
 		$ofields = $arguments[0];
@@ -38,33 +38,33 @@ class Mapping extends generatecbMap {
 					$value.= $ofields[$fieldname].$delim;
 				}
 			}
-			$value = rtrim($value,$delim);
+			$value = rtrim($value, $delim);
 			$tfields[$targetfield] = $value;
 		}
 		var_dump($tfields);
 	}
 
-	function convertMap2Array() {
+	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
 		$mapping=$target_fields=array();
 		$mapping['origin'] = (String)$xml->originmodule->originname;
 		$mapping['target'] = (String)$xml->targetmodule->targetname;
-		foreach($xml->fields->field as $k=>$v) {
+		foreach ($xml->fields->field as $k => $v) {
 			$fieldname = (String)$v->fieldname;
-			if(!empty($v->value)){
+			if (!empty($v->value)) {
 				$target_fields[$fieldname]['value'] = (String)$v->value;
 			}
 			$allmergeFields=array();
-			foreach($v->Orgfields->Orgfield as $key=>$value) {
+			foreach ($v->Orgfields->Orgfield as $key => $value) {
 				$allmergeFields[]=array((String)$value->OrgfieldID=>(String)$value->OrgfieldName);
 			}
-			if(isset($v->Orgfields->delimiter))
+			if (isset($v->Orgfields->delimiter)) {
 				$target_fields[$fieldname]['delimiter']=(String)$v->Orgfields->delimiter;
+			}
 			$target_fields[$fieldname]['merge']=$allmergeFields;
 		}
 		$mapping['fields'] = $target_fields;
 		return $mapping;
 	}
-
 }
 ?>

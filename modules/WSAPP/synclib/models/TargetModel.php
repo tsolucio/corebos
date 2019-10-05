@@ -10,8 +10,8 @@
 
 require_once 'modules/WSAPP/synclib/models/SyncRecordModel.php';
 
-class WSAPP_TargetModel extends WSAPP_SyncRecordModel{
-	
+class WSAPP_TargetModel extends WSAPP_SyncRecordModel {
+
 }
 
 ?>

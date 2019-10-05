@@ -7,8 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$mod_strings = Array (
-
+$mod_strings = array (
 'ModComments' => 'Commenti',
 'SINGLE_ModComments' => 'Commento',
 
@@ -34,5 +33,4 @@ $mod_strings = Array (
 'LBL_CONFIGURATION_DESCRIPTION' => 'Activate/Deactivate the functionality for each module.',
 'LBL_ModComments_SETTINGS' => 'Activated Modules',
 );
-
 ?>

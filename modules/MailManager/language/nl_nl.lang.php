@@ -1,22 +1,11 @@
 <?php
-/*******************************************************************************
- * The contents of this file are subject to the following licences:
- * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
- * - vtiger CRM Public License Version 1.0 
- * You may not use this file except in compliance with the License
- * Software distributed under the License is distributed on an  "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is: SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
- * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
- * Feel free to use / redistribute these languagefiles under the VPL 1.0.
- * This translations is based on earlier work of: 
- * - IT-Online.nl <www.it-online.nl>
- * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
 
 $mod_strings = array(
@@ -167,5 +156,11 @@ $mod_strings = array(
 	'LBL_MAILMANAGER_ADD_Project' => 'Voeg project toe',
 	'LBL_MAILMANAGER_ADD_ProjectTask' => 'Voeg project taak toe',
 	'LBL_ADD' => 'Toevoegen',
+	'LBL_SENT_MAILS' => 'Verzonden berichten',
+	'LBL_ALLMAILS' => 'Alle berichten',
+	'LBL_TO_CONTACTS' => 'Naar contacten',
+	'LBL_TO_ACCOUNTS' => 'Naar accounts',
+	'LBL_TO_LEADS' => 'Naar leads',
+	'LBL_TO_USERS' => 'Naar gebruikers',
 );
 ?>

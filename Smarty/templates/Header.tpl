@@ -11,14 +11,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset={$APP.LBL_CHARSET}">
+	<meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
+	<meta name="robots" content="noindex">
 	<title>{$USER} - {$MODULE_NAME|@getTranslatedString:$MODULE_NAME} - {$coreBOS_app_name}</title>
-	<link REL="SHORTCUT ICON" HREF="{$FAVICON}">
+	<link REL="SHORTCUT ICON" HREF="{$COMPANY_DETAILS.favicon}">
 	<style type="text/css">@import url("themes/{$THEME}/style.css");</style>
-	{if $PRELOAD_JSCALENDAR neq 'false'}<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">{/if}
+	{if $Application_JSCalendar_Load neq 0}<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">{/if}
 	<link rel="stylesheet" href="include/print.css" type="text/css" media="print" />
 	<link rel="stylesheet" href="include/LD/assets/styles/salesforce-lightning-design-system.css" type="text/css" />
 	<link rel="stylesheet" href="include/LD/assets/styles/mainmenu.css" type="text/css" />
+	<link rel="stylesheet" href="include/LD/assets/styles/override_lds.css" type="text/css" />
+	<link rel="stylesheet" href="include/style.css" type="text/css" />
 {* vtlib customization: Inclusion of custom javascript and css as registered *}
 {if $HEADERCSS}
 	<!-- Custom Header CSS -->
@@ -42,27 +45,22 @@
 	<!-- End -->
 </head>
 {include file='BrowserVariables.tpl'}
-<body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small>
-	<a name="top"></a>
+{include file="Components.tpl"}
+<body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small style="min-width:1100px; width: 100%"> 
 	<!-- header -->
-	<!-- header-vtiger crm name & RSS -->
 	<script type="text/javascript" src="include/sw-precache/service-worker-registration.js"></script>
 	<script type="text/javascript" src="include/jquery/jquery.js"></script>
 	<script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
 	<script type="text/javascript" src="include/js/meld.js"></script>
+	<script type="text/javascript" src="include/js/corebosjshooks.js"></script>
 	<script type="text/javascript" src="include/js/general.js"></script>
-	<!-- vtlib customization: Javascript hook -->
 	<script type="text/javascript" src="include/js/vtlib.js"></script>
-	<!-- END -->
 	<script type="text/javascript" id="_current_language_" src="include/js/{$LANGUAGE}.lang.js"></script>
 	<script type="text/javascript" src="include/js/QuickCreate.js"></script>
-	{if $CALCULATOR_DISPLAY eq 'true'}
-	<script type="text/javascript" src="include/calculator/calc.js"></script>
-	{/if}
 	<script type="text/javascript" src="modules/Calendar/script.js"></script>
 	<script type="text/javascript" src="include/js/notificationPopup.js"></script>
 	<script type="text/javascript" src="modules/Calendar4You/fullcalendar/lib/moment.min.js"></script>
-	{if $PRELOAD_JSCALENDAR neq 'false'}
+	{if $Application_JSCalendar_Load neq 0}
 	<script type="text/javascript" src="jscalendar/calendar.js"></script>
 	<script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
 	<script type="text/javascript" src="jscalendar/lang/calendar-{$APP.LBL_JSCALENDAR_LANG}.js"></script>
@@ -76,8 +74,10 @@
 {/if}
 	<script type="text/javascript">
 	<!-- browser tab identification on ajax calls -->
-	jQuery(document).ajaxSend(function() {ldelim}
-		document.cookie = "corebos_browsertabID="+corebos_browsertabID;
+	jQuery(document).ready(function() {ldelim}
+		jQuery(document).ajaxSend(function() {ldelim}
+			document.cookie = "corebos_browsertabID="+corebos_browsertabID;
+		{rdelim});
 	{rdelim});
 	</script>
 
@@ -92,87 +92,236 @@
 
 	{* PREFECTHING IMAGE FOR BLOCKING SCREEN USING VtigerJS_DialogBox API *}
 	<img src="{'layerPopupBg.gif'|@vtiger_imageurl:$THEME}" style="display: none;"/>
+{if empty($Module_Popup_Edit)}
 
-<TABLE border=0 cellspacing=0 cellpadding=0 width=100% class="small">
-	<tr>
-		<td valign=top align=left><img src="test/logo/{$FRONTLOGO}" alt="{$COMPANY_DETAILS.name}" title="{$COMPANY_DETAILS.name}" border=0 style="width: 15em;height: 4.2em;"></td>
-		<td align="center" valign=bottom>
-			<div align ="center" width ="50%" border='3' style="padding:5px;" class="noprint">
-				<table border=0 cellspacing=0 cellpadding=0 id="search" align="center">
-					<tr>
-						<form name="UnifiedSearch" method="post" action="index.php" style="margin:0px" onsubmit="if (document.getElementById('query_string').value=='') return false; VtigerJS_DialogBox.block();">
-							<td style="background-color:#ffffef;border:1px;border-color:black;vertical-align:middle;" nowrap>
-								<input type="hidden" name="action" value="UnifiedSearch" style="margin:0px">
-								<input type="hidden" name="module" value="Home" style="margin:0px">
-								<input type="hidden" name="parenttab" value="{$CATEGORY}" style="margin:0px">
-								<input type="hidden" name="search_onlyin" value="--USESELECTED--" style="margin:0px">
-								<input type="text" name="query_string" id="query_string" value="{$QUERY_STRING}" class="searchBox" onFocus="this.value=''" >
-							</td>
-							<td align ="right" style="background-color:#FFFFEF; vertical-align:middle;padding:5px;" onclick="UnifiedSearch_SelectModuleForm(this);">
-								<a href='javascript:void(0);' ><img src="{'arrow_down_black.png'|@vtiger_imageurl:$THEME}" align='left' border=0></a>
-							</td>
-							<td style="background-color:#cccccc">
-								<input type="image" class="searchBtn" alt="{$APP.LBL_FIND}" title="{$APP.LBL_FIND}" width="70%" height="70%" src="{'searchicon.PNG'|@vtiger_imageurl:$THEME}" align='left' border=1>
-							</td>
-						</form>
-					</tr>
-				</table>
-			</div>
-		</td>
-		<td class=small nowrap align="right" style="padding-right:10px;">
-			<table border=0 cellspacing=0 cellpadding=0>
-				<tr>
-					<td valign="top" class="genHeaderSmall" style="padding-left:10px;padding-top:3px;">
-						<span class="userName">{$USER}</span>
-					</td>
-					<td class="small" valign="bottom" nowrap style="padding-bottom: 1em;"><a id="headerUser" class="headerlink" href="index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}&modechk=prefview"><img src="{$IMAGEPATH}user.PNG" border=0 style="padding: 0px;padding-left:5px" title="{$APP.LBL_MY_PREFERENCES}" alt="{$APP.LBL_MY_PREFERENCES}"></a></td>
-					{* vtlib customization: Header links on the top panel *}
-					{if $HEADERLINKS}
-						<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap>
-							<a href="javascript:;" onmouseover="fnvshobj(this,'vtlib_headerLinksLay');" onclick="fnvshobj(this,'vtlib_headerLinksLay');"><img src="{'menu_more.png'|@vtiger_imageurl:$THEME}" border=0 style="padding: 0px;padding-left:5px"></a>
-							<div class="drop_mnu_user" style="display: none; width:155px;" id="vtlib_headerLinksLay"
-								 onmouseout="fninvsh('vtlib_headerLinksLay')" onmouseover="fnvshNrm('vtlib_headerLinksLay')">
-								<ul>
-									{foreach key=actionlabel item=HEADERLINK from=$HEADERLINKS}
-										{assign var="headerlink_href" value=$HEADERLINK->linkurl}
-										{assign var="headerlink_label" value=$HEADERLINK->linklabel}
-										{if $headerlink_label eq ''}
-											{assign var="headerlink_label" value=$headerlink_href}
-										{else}
-											{assign var="headerlink_label" value=$headerlink_label|@getTranslatedString:$HEADERLINK->module()}
-										{/if}
-										<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
-											<a href="{$headerlink_href}" class="slds-context-bar__label-action" title="{$headerlink_label}">
-													<span class="slds-truncate">{$headerlink_label}</span>
-											</a>
-										</li>
-									{/foreach}
-								</ul>
+<!-- LDS Global header -->
+
+<header class="slds-global-header_container noprint" id="global-header" style="position:sticky;">
+	<div class="slds-global-header slds-grid slds-grid_align-spread">
+		<div class="slds-global-header__item">
+			<div class="slds-global-header__logo" style="background-image: url('{$COMPANY_DETAILS.applogo}');"></div>
+		</div>
+		{if $Application_Global_Search_Active || (isset($GS_AUTOCOMP) && isset($GS_AUTOCOMP['searchin']))}
+		{if (isset($GS_AUTOCOMP) && isset($GS_AUTOCOMP['searchin']))}{$GLOBAL_AC = true}{else}{$GLOBAL_AC = false}{/if}
+		<div class="slds-global-header__item slds-global-header__item_search">
+			<div class="slds-form-element">
+				<div class="slds-form-element__control">
+					<div class="slds-combobox-group">
+						{if $Application_Global_Search_Active}
+						<div class="slds-combobox_object-switcher slds-combobox-addon_start">
+							<div class="slds-form-element">
+								<label class="slds-form-element__label slds-assistive-text" for="globalsearch-moduleselect">{$APP.LBL_SELECT_MODULES_FOR_SEARCH}</label>
+								<div class="slds-form-element__control">
+									<div class="slds-combobox_container">
+										<div id="globalsearch-moduleselect" class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-controls="globalsearch-moduleselect" aria-expanded="false" aria-haspopup="listbox" role="combobox">
+											<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+												<input type="text" class="slds-input slds-combobox__input slds-combobox__input-value" id="globalsearch-moduleselect-input" aria-controls="UnifiedSearch_moduleformwrapper" autoComplete="off" role="textbox" placeholder="{$APP.LBL_SELECT_MODULES_FOR_SEARCH}" value="" onfocus="UnifiedSearch_GetModules();" />
+												<span class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
+													<svg class="slds-icon slds-icon slds-icon_xx-small slds-icon-text-default" aria-hidden="true">
+														<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+													</svg>
+												</span>
+											</div>
+											<div id="UnifiedSearch_modulelistwrapper" class="slds-dropdown slds-dropdown_length-10 slds-dropdown_x-small" role="listbox">
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
-						</td>
-					{/if}
-				{if $HELP_URL}
-				<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap><a id="headerHelp" class="headerlink" href="{$HELP_URL}" target="_blank"><img src="{$IMAGEPATH}info.PNG" border=0 style="padding: 0px;padding-left:5px" title="{$APP.LNK_HELP}"></a></td>
+						</div>
+						{/if}
+						{if $GLOBAL_AC || $Application_Global_Search_Active}
+						<div class="slds-combobox_container slds-combobox-addon_end">
+							{if $Application_Global_Search_Active}
+							<form name="UnifiedSearch" method="post" action="index.php" style="margin:0px" onsubmit="if (document.getElementById('query_string').value=='') return false; VtigerJS_DialogBox.block();">
+							{else}
+							<form name="UnifiedSearch" style="margin:0px" onsubmit="return false;">
+							{/if}
+								<div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="false" aria-haspopup="listbox" id="primary-search-combobox-id-1" role="combobox">
+									<input type="hidden" name="action" value="UnifiedSearch">
+									<input type="hidden" name="module" value="Utilities">
+									<input type="hidden" name="parenttab" value="{$CATEGORY}">
+									<input type="hidden" name="search_onlyin" value="--USESELECTED--">
+									<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left slds-global-search__form-element" role="none">
+										<span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_left">
+												<svg class="slds-icon slds-icon slds-icon_xx-small slds-icon-text-default" aria-hidden="true">
+													<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+												</svg>
+											</span>
+										<input name="query_string" id="query_string" class="slds-input slds-combobox__input{if $GLOBAL_AC} autocomplete-input{/if}" type="text" role="textbox" placeholder="{$APP.LBL_SEARCH_TITLE}{$coreBOS_app_name}" aria-autocomplete="list" autoComplete="off" data-autocomp='{$GS_AUTOCOMP|@json_encode}' />
+										{if $GLOBAL_AC}
+										<div role="listbox" class="">
+											<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0;display:block;visibility: visible;" role="presentation"></ul>
+										</div>
+										{/if}
+									</div>
+								</div>
+							</form>
+						</div>
+						{/if}
+					</div>
+				</div>
+			</div>
+		</div>
+		{/if}
+		<div class="slds-global-header__item">
+			<ul class="slds-global-actions">
+				<li class="slds-global-actions__item">
+					<div class="slds-global-actions__favorites slds-dropdown-trigger">
+						<div class="slds-button-group">
+							<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border " aria-pressed="false" title="{$APP.LNK_HELP}" onclick="window.open('{$HELP_URL}')">
+									<svg class="slds-button__icon" aria-hidden="true">
+										<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#info"></use>
+									</svg>
+									<span class="slds-assistive-text">{$APP.LNK_HELP}</span>
+							</button>
+							<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-pressed="false" title="{$APP.LBL_LAST_VIEWED}" onclick="document.getElementById('cbds-last-visited').classList.add('cbds-anim-slidein--right');document.getElementById('cbds-last-visited').classList.remove('cbds-anim-slideout--right');">
+								<svg class="slds-button__icon" aria-hidden="true">
+									<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#attach"></use>
+								</svg>
+								<span class="slds-assistive-text">{$APP.LBL_LAST_VIEWED}</span>
+							</button>
+						</div>
+					</div>
+				</li>
+				{if $HEADERLINKS}
+				<li class="slds-global-actions__item">
+					<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
+						<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-haspopup="true" title="{$APP.LBL_MORE}">
+							<svg class="slds-button__icon" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
+							</svg>
+							<span class="slds-assistive-text">{$APP.LBL_MORE}</span>
+						</button>
+						<div class="slds-dropdown slds-dropdown_right">
+							<ul class="slds-dropdown__list" role="menu" aria-label="{$APP.LBL_MORE}">
+								{foreach key=actionlabel item=HEADERLINK from=$HEADERLINKS}
+									{assign var="headerlink_href" value=$HEADERLINK->linkurl}
+									{assign var="headerlink_label" value=$HEADERLINK->linklabel}
+									{if $headerlink_label eq ''}
+										{assign var="headerlink_label" value=$headerlink_href}
+									{else}
+										{assign var="headerlink_label" value=$headerlink_label|@getTranslatedString:$HEADERLINK->module()}
+									{/if}
+									<li class="slds-dropdown__item" role="presentation">
+										<a href="{$headerlink_href}" role="menuitem" title="{$headerlink_label}">
+											<span class="slds-truncate" >{$headerlink_label}</span>
+										</a>
+									</li>
+								{/foreach}
+							</ul>
+						</div>
+					</div> 
+				</li>
 				{/if}
 				{if !empty($ADMIN_LINK)}
-					<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnDropDown(this,'mainsettings');" nowrap><a id="headerSettings" class="headerlink" href="index.php?module=Settings&action=index&parenttab=" id="settingslink"><img src="{$IMAGEPATH}mainSettings.PNG" border=0 style="padding: 0px;padding-left:5px"></a></td>
+				<li class="slds-global-actions__item">
+					<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
+						<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-haspopup="true" title="{$APP.LBL_CRM_SETTINGS}" onclick="window.location.assign('index.php?module=Settings&action=index&parenttab=')">
+							<svg class="slds-button__icon" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#settings"></use>
+							</svg>
+							<span class="slds-assistive-text">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</span>
+						</button>
+						<div class="slds-dropdown slds-dropdown_right">
+							<ul class="slds-dropdown__list" role="menu" aria-label="{$APP.LBL_CRM_SETTINGS}">
+								{foreach key=actionlabel item=actionlink from=$HEADERS}
+									<li class="slds-dropdown__item" role="presentation">
+									<a href="{$actionlink}" role="menuitem" tabindex="0">
+										<span class="slds-truncate" title="{$actionlabel}">{$actionlabel}</span>
+									</a>
+								</li>
+								{/foreach}
+								<li class="slds-has-divider_top-space" role="separator"></li>
+								<li class="slds-dropdown__item" role="presentation">
+									<a href="index.php?module=Settings&action=index&parenttab=" role="menuitem" tabindex="-1">
+										<span class="slds-truncate" title="{$APP.LBL_CRM_SETTINGS}">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</li>
 				{/if}
-				<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap><a id="headerLogout" class="headerlink" href="index.php?module=Users&action=Logout"> <img src="themes/images/logout.png" border=0 style="padding: 0px;padding-left:5px " title="{$APP.LBL_LOGOUT}" alt="{$APP.LBL_LOGOUT}"></a></td>
-			</tr>
-			</table>
-		</td>
-	</tr>
-</TABLE>
-{if $ANNOUNCEMENT}
-	<table width ="100%">
-		<tr colspan="3" width="100%">
-			<td width="90%" align=center>
-				<marquee id="rss" direction="left" scrolldelay="10" scrollamount="3" behavior="scroll" class="marStyle" onMouseOver="javascript:stop();" onMouseOut="javascript:start();">&nbsp;{$ANNOUNCEMENT}</marquee>
-			</td>
-			<td width="10%" align="right" style="padding-right:38px;"><img src="{'Announce.PNG'|@vtiger_imageurl:$THEME}"></td>
-		</tr>
-	</table>
-{/if}
+				<li class="slds-global-actions__item">
+					<div class="slds-dropdown-trigger slds-dropdown-trigger_hover">
+						<button class="slds-button slds-global-actions__avatar slds-global-actions__item-action" title="{$USER}" aria-haspopup="true" onclick="window.location.assign('index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}&modechk=prefview')">
+							<span class="slds-avatar slds-avatar_circle slds-avatar_medium">
+								{if $CURRENT_USER_IMAGE}
+								<img alt="{$USER}" src="{$CURRENT_USER_IMAGE}" />
+								{else}
+								<img alt="{$USER}" src="include/LD/assets/images/avatar2.jpg" />
+								{/if}
+							</span>
+						</button>
+						<div class="slds-dropdown slds-dropdown_right">
+							<ul class="slds-dropdown__list" role="menu" aria-label="Show More">
+								<li class="slds-dropdown__item" role="presentation">
+									<a href="index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}&modechk=prefview" role="menuitem" tabindex="0">
+										<span class="slds-truncate" title="{$USER}"><strong>{$USER}</strong></span>
+									</a>
+								</li>
+								<li class="slds-has-divider_top-space" role="separator"></li>
+								<li class="slds-dropdown__item" role="presentation">
+									<a href="index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}&modechk=prefview" role="menuitem" tabindex="0">
+										<span class="slds-truncate" title="{$APP.LBL_MY_PREFERENCES}">{$APP.LBL_MY_PREFERENCES}</span>
+									</a>
+								</li>
+								<li class="slds-dropdown__item" role="presentation">
+									<a href="index.php?module=Users&action=Logout" role="menuitem" tabindex="-1">
+										<span class="slds-truncate" title="{$APP.LBL_LOGOUT}">{$APP.LBL_LOGOUT}</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</li>
+				{* <li class="slds-global-actions__item">
+					<button class="slds-button slds-button_icon slds-global-actions__favorites-action slds-button_icon slds-button_icon-border" aria-haspopup="true" title="{$APP.LBL_LOGOUT}" onclick="window.location.assign('index.php?module=Users&action=Logout')">
+						<svg class="slds-button__icon" aria-hidden="true">
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#logout"></use>
+						</svg>
+						<span class="slds-assistive-text">{$APP.LBL_LOGOUT}</span>
+					</button>
+				</li> *}
+			</ul>
+		</div>
+	</div>
+	{if $COREBOS_HEADER_PREMENU}
+	<div style="width:100%; background-color:#fff;">
+	{$COREBOS_HEADER_PREMENU}
+	</div>
+	{/if}
+	<div class="noprint">
+		<div class="slds-context-bar">
+			<div class="slds-context-bar__primary slds-context-bar__item_divider-right">
+				<div class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_click slds-no-hover">
+					<div class="slds-context-bar__icon-action">
+						<a href="index.php" class="slds-icon-waffle_container slds-context-bar__button">
+							<div class="slds-icon-waffle">
+								<div class="slds-r1"></div>
+								<div class="slds-r2"></div>
+								<div class="slds-r3"></div>
+								<div class="slds-r4"></div>
+								<div class="slds-r5"></div>
+								<div class="slds-r6"></div>
+								<div class="slds-r7"></div>
+								<div class="slds-r8"></div>
+								<div class="slds-r9"></div>
+							</div>
+						</a>
+					</div>
+					<span class="slds-context-bar__label-action slds-context-bar__app-name">
+						<span class="slds-truncate" title="{$coreBOS_app_name}">{$coreBOS_app_nameHTML}</span>
+					</span>
+				</div>
+			</div>
+		{call cbmenu menu=$MENU}
+		</div>
+	</div>
+</header>
+<!-- END LDS Global header -->
+<a name="top"></a>
 
 <div id='miniCal' style='width:300px; position:absolute; display:none; left:100px; top:100px; z-index:100000'></div>
 
@@ -243,137 +392,78 @@
 		</form>
 	</div>
 {/if}
-{$COREBOS_HEADER_PREMENU}
 <!-- header - master tabs -->
-<div class="noprint">
-<div class="slds-context-bar">
-	<div class="slds-context-bar__primary slds-context-bar__item--divider-right">
-		<div class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--click slds-no-hover">
-			<div class="slds-context-bar__icon-action">
-				<a href="index.php" class="slds-icon-waffle_container slds-context-bar__button">
-					<div class="slds-icon-waffle">
-						<div class="slds-r1"></div>
-						<div class="slds-r2"></div>
-						<div class="slds-r3"></div>
-						<div class="slds-r4"></div>
-						<div class="slds-r5"></div>
-						<div class="slds-r6"></div>
-						<div class="slds-r7"></div>
-						<div class="slds-r8"></div>
-						<div class="slds-r9"></div>
-					</div>
-				</a>
-			</div>
-			<span class="slds-context-bar__label-action slds-context-bar__app-name">
-				<span class="slds-truncate" title="{$coreBOS_app_name}">{$coreBOS_app_name}</span>
-			</span>
-		</div>
-	</div>
-	<nav class="slds-context-bar__secondary" role="navigation">
-		<ul class="slds-grid" id="cbmenu">
-		</ul>
-		<div class="slds-context-bar__tertiary" style="float:left; margin-top:auto; margin-bottom:auto;">
-			<div class="slds-form-element">
-				<div class="slds-form-element__control">
-					<div class="slds-select_container">
-						<select id="qccombo" class="slds-select" onchange="QCreate(this);">
-							<option value="none">{$APP.LBL_QUICK_CREATE}...</option>
-							{foreach item=detail from=$QCMODULE}
-								<option value="{$detail.1}">{$APP.NEW}&nbsp;{$detail.0}</option>
-							{/foreach}
-						</select>
-					</div>
-				</div>
-			</div>
-		</div>
-	</nav>
-</div>
-</div>
-</td>
 
-<div id="calculator_cont" style="position:absolute; z-index:10000" ></div>
 {include file="Clock.tpl"}
 
 <div id="qcform" style="position:absolute;width:700px;top:80px;left:450px;z-index:90000;"></div>
 
-<!-- Unified Search module selection feature -->
-<div id="UnifiedSearch_moduleformwrapper" style="position:absolute;width:417px;z-index:100002;display:none;"></div>
-<script type='text/javascript'>
-{literal}
-	function QCreate(qcoptions){
-		var module = qcoptions.options[qcoptions.options.selectedIndex].value;
-		if(module != 'none'){
-			document.getElementById("status").style.display="inline";
-			if(module == 'Events'){
-				module = 'Calendar';
-				var urlstr = '&activity_mode=Events';
-			}else if(module == 'Calendar'){
-				module = 'Calendar';
-				var urlstr = '&activity_mode=Task';
-			}else{
-				var urlstr = '';
-			}
-			jQuery.ajax({
-				method:"POST",
-				url:'index.php?module='+module+'&action='+module+'Ajax&file=QuickCreate'+urlstr
-			}).done(function(response) {
-				document.getElementById("status").style.display="none";
-				document.getElementById("qcform").style.display="inline";
-				document.getElementById("qcform").innerHTML = response;
-				jQuery("#qcform").draggable();
-				// Evaluate all the script tags in the response text.
-				var scriptTags = document.getElementById("qcform").getElementsByTagName("script");
-				for(var i = 0; i< scriptTags.length; i++){
-					var scriptTag = scriptTags[i];
-					eval(scriptTag.innerHTML);
-				}
-				posLay(qcoptions, "qcform");
-			});
-		}else{
-			hide('qcform');
-		}
-	}
-{/literal}
-</script>
-
-<div id="status" style="position:absolute;display:none;left:850px;top:95px;height:27px;white-space:nowrap;"><img src="{'status.gif'|@vtiger_imageurl:$THEME}"></div>
-
-<div id="tracker" style="display:none;position:absolute;z-index:100000001;" class="layerPopup">
-	<table border="0" cellpadding="5" cellspacing="0" width="200">
-		<tr style="cursor:move;">
-			<td colspan="2" class="mailClientBg small" id="Track_Handle"><strong>{$APP.LBL_LAST_VIEWED}</strong></td>
-			<td align="right" style="padding:5px;" class="mailClientBg small">
-				<a href="javascript:;"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fninvsh('tracker')" hspace="5" align="absmiddle"></a>
-			</td></tr>
-	</table>
-	<table border="0" cellpadding="5" cellspacing="0" width="200" class="hdrNameBg">
-		{foreach name=trackinfo item=trackelements from=$TRACINFO}
-			<tr>
-				<td class="trackerListBullet small" align="center" width="12">{$smarty.foreach.trackinfo.iteration}</td>
-				<td class="trackerList small"> <a href="index.php?module={$trackelements.module_name}&action=DetailView&record={$trackelements.crmid}&parenttab={$CATEGORY}">{$trackelements.item_summary}</a> </td><td class="trackerList small">&nbsp;</td></tr>
-		{/foreach}
-	</table>
+<div id="status" style="position:absolute;display:none;left:65%;top:95px;height:27px;white-space:nowrap;">
+	<div role="status" class="slds-spinner slds-spinner_small slds-spinner_brand">
+		<div class="slds-spinner__dot-a"></div>
+		<div class="slds-spinner__dot-b"></div>
+	</div>
 </div>
+
+<!-- Last visited panel -->
+<div id="cbds-last-visited" class="slds-panel slds-size_medium slds-panel_docked slds-panel_docked-right slds-is-open slds-is-fixed cbds-last-visited" aria-hidden="false">
+<div class="slds-panel__header cbds-bg-blue--gray slds-text-color_default slds-text-color_inverse">
+	<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="{$APP.LBL_LAST_VIEWED}">{$APP.LBL_LAST_VIEWED}
+	</h2>
+	<button class="slds-button slds-button_icon slds-button_icon-small slds-button_icon-inverse slds-panel__close" title="{'Close LAST_VIEWED'|@getTranslatedString}" onclick="document.getElementById('cbds-last-visited').classList.add('cbds-anim-slideout--right');document.getElementById('cbds-last-visited').classList.remove('cbds-anim-slidein--right');">
+		<svg class="slds-button__icon" aria-hidden="true">
+			<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+		</svg>
+		<span class="slds-assistive-text">{'Close LAST_VIEWED'|@getTranslatedString}</span>
+	</button>
+</div>
+<div class="slds-panel__body">
+	{foreach name=trackinfo item=trackelements from=$TRACINFO}
+		<article class="slds-card">
+			<div class="slds-card__header slds-grid">
+				<header class="slds-media slds-media_center slds-has-flexi-truncate">
+					<div class="slds-media__figure">
+						<span class="{$trackelements.__ICONContainerClass}" title="{$trackelements.module_name}">
+							<svg class="{$trackelements.__ICONClass}" aria-hidden="true">
+								<use xlink:href="include/LD/assets/icons/{$trackelements.__ICONLibrary}-sprite/svg/symbols.svg#{$trackelements.__ICONName}"></use> 
+							</svg>
+						<span class="slds-assistive-text">{$trackelements.module_name}</span>
+					</span>
+					</div>
+					<div class="slds-media__body">
+						<h2 class="slds-card__header-title">
+							<a href="index.php?module={$trackelements.module_name}&action=DetailView&record={$trackelements.crmid}&parenttab={$CATEGORY}" class="slds-card__header-link" title="{$trackelements.module_name}">
+								<span>{$trackelements.item_summary}</span>
+							</a>
+						</h2>
+						<span></span>
+					</div>
+				</header>
+			</div>
+		</article>
+	{/foreach}
+</div>
+</div>
+<!-- Last // visited panel -->
 
 <div id="mainsettings" class="drop_mnu_user" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnvshNrm('mainsettings');" style="width:180px;">
 	<ul>
 		{foreach key=actionlabel item=actionlink from=$HEADERS}
-			<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
+			<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_hover" aria-haspopup="true">
 				<a href="{$actionlink}" class="slds-context-bar__label-action" title="{$actionlabel}">
-						<span class="slds-truncate">{$actionlabel}</span>
+					<span class="slds-truncate">{$actionlabel}</span>
 				</a>
 			</li>
 		{/foreach}
-		<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
+		<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger_hover" aria-haspopup="true">
 			<a href="index.php?module=Settings&action=index&parenttab=" class="slds-context-bar__label-action" title="{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}">
-					<span class="slds-truncate">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</span>
+				<span class="slds-truncate">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</span>
 			</a>
 		</li>
 	</ul>
 </div>
 <script type="text/javascript">
 	jQuery('#tracker').draggable({ldelim} handle: "#Track_Handle" {rdelim});
-	var evvtmenu={$MENU};
 </script>
 <script type="text/javascript" src="modules/evvtMenu/evvtMenu.js"></script>
 </div>
@@ -401,3 +491,4 @@
 	</table>
 </div>
 <!-- divs for asterisk integration :: end-->
+{/if}

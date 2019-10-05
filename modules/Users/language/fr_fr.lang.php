@@ -2,7 +2,7 @@
 /***********************************************************
 *  Module       : Users
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
@@ -38,10 +38,19 @@ $mod_strings = array (
 		'LBL_NEW_USER_BUTTON_TITLE' => 'Nouveau collaborateur [Alt+N]',
 		'LBL_NEW_USER_BUTTON_LABEL' => 'Nouveau collaborateur',
 		'LBL_NEW_USER_BUTTON_KEY' => 'N',
+		'LBL_EXPORT_USER_BUTTON_TITLE' => 'Export Utilisateurs [Alt+E]',
+		'LBL_EXPORT_USER_BUTTON_LABEL' => 'Export Utilisateurs',
+		'LBL_EXPORT_USER_BUTTON_KEY' => 'E',
 		'LBL_DATE_FORMAT' => 'Format date',
 		'LBL_ERROR' => 'Erreur :',
+		'FORM_TOKEN_EXPIRED'=>'Edit token has expired. Try again.',
+		'ERR_CANNOTEDITUSER' => 'Not Permitted. You cannot edit this User',
 		'LBL_PASSWORD' => 'Mot de passe :',
 		'LBL_USER_NAME' => 'Nom utilisateur :',
+		'LBL_2FACODE' => 'Code',
+		'LBL_2FAGETCODE' => 'Get another code',
+		'2FA_NEWCODESENT' => 'New code has been sent.',
+		'2FA_ACCESSCODE' => 'Your access code is %s',
 		'LBL_CRM_ID' => 'CRM ID',
 		'LBL_FIRST_NAME' => 'Prénom :',
 		'LBL_LAST_NAME' => 'Nom :',
@@ -94,6 +103,8 @@ $mod_strings = array (
 		'ERR_ENTER_CONFIRMATION_PASSWORD' => 'Veuillez confirmer votre de mot de passe.',
 		'ERR_REENTER_PASSWORDS' => 'Veuillez re-saisir vos mots de passe. Le \"nouveau mot de passe\" et \"confirmation mot de passe\" ne sont pas identiques.',
 		'ERR_INVALID_PASSWORD' => 'Vous devez spécifier un nom utilisateur et mot de passe valide.',
+		'ERR_INVALID_2FACODE' => 'You have introduced an invalid code, please try again.',
+		'ERR_INVALIDUSERID' => 'Invalid user ID given.',
 		'ERR_INVALID_ADMINIPLOGIN' => 'Les Administrators doivent s\'authentifier à partir d\'un dispositif autorisé.',
 		'ERR_INVALID_USERIPLOGIN' => 'Accés restreint au personnel autorisé<br>Vouv vous connectez à partir d\'une adresse IP invalide',
 		'ERR_PASSWORD_CHANGE_FAILED_1' => 'Echec lors du changement de mot de passe pour ',
@@ -186,6 +197,7 @@ $mod_strings = array (
 		'LBL_PROPERTIES' => 'Propriétés de',
 		'LBL_ASTERISKEXTENSIONS_EXIST' => 'L\'Extension Asterisk existe déjà!',
 		'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'Le séparateur de décimales et celui de groupe ne peuvent pas être les même.',
+		'LBL_FORUSER' => ' for User ',
 		'LBL_CREATE_NEW_GROUP' => 'Nouvelle équipe',
 		'LBL_NEW_GROUP' => 'Nouvelle équipe',
 		'LBL_EDIT_GROUP' => 'Editer équipe',
@@ -297,6 +309,8 @@ $mod_strings = array (
 		'LBL_EMAIL_SCHDS_DESC' => 'Vous trouverez ici la liste des alertes activées automatiquement lorsque une activité correspondante se produit.',
 		'LBL_ACTIVE' => 'Actif',
 		'LBL_INACTIVE' => 'Inactif',
+		'LBL_ON'=>'On',
+		'LBL_OFF'=>'Off',
 		'LBL_NOTIFICATION' => 'Alerte',
 		'LBL_DESCRIPTION' => 'Description',
 		'LBL_TASK_NOTIFICATION' => 'Alerte tâche retardée',
@@ -541,12 +555,19 @@ $mod_strings = array (
 		'LBL_3_MIN' => '3 minutes',
 		'LBL_4_MIN' => '4 minutes',
 		'LBL_5_MIN' => '5 minutes',
+		'None' => 'None',
+		'1 Minute' => '1 Minute',
+		'5 Minutes' => '5 Minutes',
+		'15 Minutes' => '15 Minutes',
+		'30 Minutes' => '30 Minutes',
+		'45 Minutes' => '45 Minutes',
+		'1 Hour' => '1 Hour',
+		'1 Day' => '1 Day',
 		'LBL_EMAILS_PER_PAGE' => 'Emails par page',
 		'LBL_ENTER_PROFILE' => 'Saisissez le nom du profil',
 		'TITLE_USER_DOCUMENT' => 'Document sans titre',
 		'ROLE_DRAG_ERR_MSG' => 'Vous ne pouvez pas déplacer un noeud parent dans un noeud enfant',
 		'LBL_NOTIFICATION_ACTIVITY' => 'Notification activité',
-		'LBL_NOTIFICATION_EMAIL_INFO' => 'Information de notification email',
 		'LBL_GOTO_LISTVIEW_BUTTON' => 'Aller à la liste',
 		'LBL_SSL' => 'SSL',
 		'LBL_USERNAME_EXIST' => 'Nom d\'utilisateur déjà existant',
@@ -558,19 +579,16 @@ $mod_strings = array (
 		'LBL_USER_ADV_OPTIONS' => 'Options avancées de l\'utilisateur',
 		'Reminder Interval' => 'Délai de rappel',
 		'Webservice Access Key' => 'Clé d\'accès personnelle au webservice',
-		
+
 		//user-group fixes
 		'LBL_GROUPNAME_EXIST' => 'un groupe avec ce nom existe déjà!',
 		'LBL_PROFILENAME_EXIST' => 'Un profil avec ce nom existe déjà!',
-		
+
 		//Fixed For Asterisk Configration
 		'Asterisk Configuration' => 'Configuration d\'Asterisk',
 		'Asterisk Extension' => 'Extension Asterisk',
 		'Receive Incoming Calls' => 'Utiliser Asterisk',
 
-		// Added for Create Custom Fields 
-		'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Champs personnalisés pour les collaborateurs',
-		'LBL_USER_CUSTOMFIELDS' => 'Champs personnalisés des collaborateurs',
 		'LBL_CURRENCY_CONFIGURATION' => 'Configuration devises',
 		'Digit Grouping Pattern' => 'Format de groupe de chiffre',
 		'Decimal Separator' => 'Séparateur de décimales',
@@ -676,7 +694,7 @@ $mod_strings = array (
 		'Asia/Kamchatka' => '(UTC+12:00) Kamchatka',
 		'Pacific/Auckland' => '(UTC+12:00) Auckland',
 		'Pacific/Tongatapu' => '(UTC+13:00) Nukualofa',
-		
+
 		'Calendar Hour Format' => 'Format heure de Calendrier',
 		'Day ends at' => 'Jour fini à',
 		'Day starts at' => 'Jour commence à',
@@ -684,7 +702,7 @@ $mod_strings = array (
 		'Language'=>'Langue',
 		'Secondary Email' => 'Email secondaire',
 		'Time Zone' => 'Fuseau horaire',
-		
+
 		'flat'=>'Liste',
 		'hring'=>'Anneau Horizontal',
 		'vring'=>'Anneau Vertical',
@@ -700,6 +718,12 @@ $mod_strings = array (
 		'Min. 1 number' => 'Min. 1 caractère numérique',
 		'Min. 1 special character' => 'Min. 1 caractère spécial ! ? , ; - @ #',
 		'Generate password' => 'Générerérateur de mot de passe',
+		'ERR_USER_LOGGED_IN' => 'The User Name is currently in use on another computer. Terminate the session in use or enter a different User Name.',
+		'ERR_USER_CAN_UNBLOCK' => 'An inactive session by the same User Name is blocking your login attempt(s).',
+		'LBL_USERLOGGEDOUTOK' => 'The user has been logged out correctly.',
+		'LBL_USERLOGGEDOUTNOK' => 'The user could not be logged out.',
+		'LBL_UNBLOCK_USR' => 'Unblock the session to login?',
+		'LOGGED IN' => 'Logged In',
 		// LDAP
 		'LBL_QUERY' => 'Requête',
 		'LBL_FORE_LASTNAME' => 'Prénom ou Nom de Famille',

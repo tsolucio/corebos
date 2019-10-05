@@ -9,30 +9,24 @@
   *
  ********************************************************************************/
 -->*}
-<!-- BEGIN: main -->
 <table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
 <tr>
 	<td colwidth=90% align=left class=small>
-		<table border=0 cellspacing=0 cellpadding=5>
-		<tr>
-			<td align=left><a href="#" onclick="fetchContents('data');"><img src="{'webmail_settings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border=0 /></a></td>
-			<td class=small align=left><a href="#" onclick="fetchContents('data');">{$MOD.LBL_MY_SITES}</a></td>
-		</tr>
-		</table>
-			
-	</td>
-	<td align=right width=10%>
-		<table border=0 cellspacing=0 cellpadding=0>
-		<tr><td nowrap class="componentName">{$MOD.LBL_MY_SITES}</td></tr>
-		</table>
+		<a href="#" onclick="fetchContents('data');">
+		<p class="slds-accordion__summary-heading">
+		<span class="slds-icon_container slds-icon-utility-announcement" title="{'SINGLE_Portal'|@getTranslatedString}">
+			<svg class="slds-icon slds-icon-text-default" aria-hidden="true">
+				<use xlink:href="include/LD/assets/icons/action-sprite/svg/symbols.svg#web_link"></use>
+			</svg>
+		</span>
+		<span class="slds-m-left_small">{$MOD.LBL_MY_BOOKMARKS}</span>
+		</p>
+		</a>
 	</td>
 </tr>
 </table>
 
 <table border="0" cellpadding="5" cellspacing="0" width="100%">
-<tr>
-<td colspan="3" class="genHeaderSmall" align="left">{$MOD.LBL_MY_BOOKMARKS} <hr></td>
-</tr>
 <tr>
 <td colspan="3" align="left"><input name="bookmark" value=" {$MOD.LBL_NEW_BOOKMARK} " class="crmbutton small create" onclick="fnvshobj(this,'editportal_cont');fetchAddSite('');" type="button"></td>
 </tr>

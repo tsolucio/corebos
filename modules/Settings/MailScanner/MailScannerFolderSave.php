@@ -6,23 +6,21 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-require_once('modules/Settings/MailScanner/core/MailScannerInfo.php');
-require_once('Smarty_setup.php');
+require_once 'modules/Settings/MailScanner/core/MailScannerInfo.php';
+require_once 'Smarty_setup.php';
 
 $scannername = vtlib_purify($_REQUEST['scannername']);
 $scannerinfo = new Vtiger_MailScannerInfo($scannername);
 
-$folderinfo = Array();
-foreach($_REQUEST as $key=>$value) {
-	$matches = Array();
-	if(preg_match("/folder_([0-9]+)/", vtlib_purify($key), $matches)) {
-		$folderinfo[vtlib_purify($value)] = Array('folderid'=>$matches[1], 'enabled'=>1);
+$folderinfo = array();
+foreach ($_REQUEST as $key => $value) {
+	$matches = array();
+	if (preg_match("/folder_([0-9]+)/", vtlib_purify($key), $matches)) {
+		$folderinfo[vtlib_purify($value)] = array('folderid'=>$matches[1], 'enabled'=>1);
 	}
 }
 $scannerinfo->enableFoldersForScan($folderinfo);
 
-include('modules/Settings/MailScanner/MailScannerInfo.php');
-
+include 'modules/Settings/MailScanner/MailScannerInfo.php';
 ?>

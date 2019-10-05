@@ -16,25 +16,26 @@
 
 class dropzonecssandjs extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			// Add Dropzone only on products and mailmanager
 			$moduleInstance = Vtiger_Module::getInstance('Products');
-			$moduleInstance->addLink('HEADERCSS', 'ProductDropzoneCSS', 'include/dropzone/dropzone.css', 0, '', null, TRUE);
-			$moduleInstance->addLink('HEADERCSS', 'ProductDropzoneCustomCSS', 'include/dropzone/custom.css', 1, '', null, TRUE);
-			$moduleInstance->addLink('HEADERSCRIPT', 'ProductDropzoneJS', 'include/dropzone/dropzone.js', '', 2, null, TRUE);
+			$moduleInstance->addLink('HEADERCSS', 'ProductDropzoneCSS', 'include/dropzone/dropzone.css', 0, '', null, true);
+			$moduleInstance->addLink('HEADERCSS', 'ProductDropzoneCustomCSS', 'include/dropzone/custom.css', 1, '', null, true);
+			$moduleInstance->addLink('HEADERSCRIPT', 'ProductDropzoneJS', 'include/dropzone/dropzone.js', '', 2, null, true);
 			$moduleInstance = Vtiger_Module::getInstance('MailManager');
-			$moduleInstance->addLink('HEADERCSS', 'MailManagerDropzoneCSS', 'include/dropzone/dropzone.css', 0, '', null, TRUE);
-			$moduleInstance->addLink('HEADERCSS', 'MailManagerDropzoneCustomCSS', 'include/dropzone/custom.css', 1, '', null, TRUE);
-			$moduleInstance->addLink('HEADERSCRIPT', 'MailManagerDropzoneJS', 'include/dropzone/dropzone.js', '', 2, null, TRUE);
+			$moduleInstance->addLink('HEADERCSS', 'MailManagerDropzoneCSS', 'include/dropzone/dropzone.css', 0, '', null, true);
+			$moduleInstance->addLink('HEADERCSS', 'MailManagerDropzoneCustomCSS', 'include/dropzone/custom.css', 1, '', null, true);
+			$moduleInstance->addLink('HEADERSCRIPT', 'MailManagerDropzoneJS', 'include/dropzone/dropzone.js', '', 2, null, true);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-
 }

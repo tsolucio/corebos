@@ -19,7 +19,7 @@ class Vtiger_LinkData {
 		$this->link = $link;
 		$this->user = $user;
 		$this->module = $currentModule;
-		if(empty($input)) {
+		if (empty($input)) {
 			$this->input = $_REQUEST;
 		} else {
 			$this->input = $input;
@@ -49,7 +49,5 @@ class Vtiger_LinkData {
 	public function getModule() {
 		return $this->module;
 	}
-
 }
-
 ?>

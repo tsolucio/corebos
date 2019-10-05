@@ -7,8 +7,8 @@
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
 ********************************************************************************/
-if (isPermitted('Webforms','')=='yes') {
-	include_once('modules/Webforms/WebformsListView.php');
+if (isPermitted('Webforms', '')=='yes') {
+	include_once 'modules/Webforms/WebformsListView.php';
 } else {
 	echo '<br><br>';
 	$smarty = new vtigerCRM_Smarty();

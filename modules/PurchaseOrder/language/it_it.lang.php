@@ -1,26 +1,14 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the English language pack for Puchase Order
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
- 
-$mod_strings = array (
+
+$mod_strings = array(
   'LBL_MODULE_NAME' => 'Ordini di Acquisto',
   'LBL_RELATED_PRODUCTS' => 'Dettagli Prodotto',
   'LBL_MODULE_TITLE' => 'Ordini di Acquisto: Home',
@@ -35,9 +23,6 @@ $mod_strings = array (
   'LBL_LIST_PHONE' => 'Telefono',
   'LBL_LIST_EMAIL_ADDRESS' => 'Indirizzo Email',
   'LBL_LIST_CONTACT_NAME' => 'Nome Contatto',
-  'db_name' => 'LBL_LIST_ACCOUNT_NAME',
-  'db_website' => 'LBL_LIST_WEBSITE',
-  'db_billing_address_city' => 'LBL_LIST_CITY',
   'LBL_ACCOUNT' => 'Azienda:',
   'LBL_ACCOUNT_NAME' => 'Nome Azienda:',
   'LBL_PHONE' => 'Telefono:',
@@ -59,6 +44,7 @@ $mod_strings = array (
   'LBL_ANNUAL_REVENUE' => 'Fatturato Annuo:',
   'LBL_ADDRESS_INFORMATION' => 'Informazioni Indirizzo',
   'LBL_Quote_INFORMATION' => 'Informazioni Azienda',
+  'LBL_PurchaseOrder_FINANCIALINFO' => 'Financial Information',
   'LBL_CUSTOM_INFORMATION' => 'Informazioni Personalizzate',
   'LBL_BILLING_ADDRESS' => 'Indirizzo (fatturazione)',
   'LBL_SHIPPING_ADDRESS' => 'Indirizzo (spedizione)',
@@ -171,6 +157,10 @@ $mod_strings = array (
 'PurchaseOrder No' => 'Nr. Ordine di Acquisto',
 'SINGLE_PurchaseOrder'=>'Ordine Acquisto',
 'PurchaseOrder ID'=>'ID Ordine Acquisto',
-);
 
+'LBL_PARTIAL_PAYMENTS_INFO' => 'Partial Payments Information',
+'Amount Due'=>'Amount Due',
+'Amount Paid'=>'Amount Paid',
+'Total Amount'=>'Total Amount',
+);
 ?>

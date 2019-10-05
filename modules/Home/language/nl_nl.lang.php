@@ -1,37 +1,19 @@
 <?php
-
-/*******************************************************************************
- * The contents of this file are subject to the following licences:
- * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
- * - vtiger CRM Public License Version 1.0 
- * You may not use this file except in compliance with the License
- * Software distributed under the License is distributed on an  "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is: SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
  * Feel free to use / redistribute these languagefiles under the VPL 1.0.
- * This translations is based on earlier work of: 
+ * This translations is based on earlier work of:
  * - IT-Online.nl <www.it-online.nl>
  * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
 
-/*******************************************************************************
- * Vicus eBusiness Solutions Version Control
- * @package 	NL-Dutch
- * Description	Dutch language pack for vtiger CRM version 5.3.x
- * @author	$Author: luuk $
- * @version 	$Revision: 1.4 $ $Date: 2012/02/28 23:40:22 $
- * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/Home/language/nl_nl.lang.php,v $
- * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
- * @license	vtiger CRM Public License Version 1.0 (by definition)
- ********************************************************************************/
- 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_NEW_FORM_TITLE'=>'Nieuw contact',
 'LBL_FIRST_NAME'=>'Voornaam:',
 'LBL_LAST_NAME'=>'Achternaam:',
@@ -72,22 +54,21 @@ $mod_strings = Array(
 'Last 2 Days'=>'Afgelopen 2 Dagen',
 'Last Ten Days'=>'Afgelopen 10 Dagen',
 
-// Added/Updated for vtiger CRM 5.0.4 
 'User List'=>'Gebruikerslijst',
 
-// Added after 5.0.4 GA
-
-//ADDED for Home Page Customization
 'LBL_HOME_MODULE' => 'Module',
+'LBL_HOME_CUSTOM_WIDGET' => 'Aggregate Filter',
 'LBL_HOME_RSS' => 'RSS',
 'LBL_HOME_DASHBOARD' => 'Dashboard',
 'LBL_HOME_STUFFTITLE'=>'Venster titel',
 'LBL_HOME_SHOW'=>'Toon',
 'LBL_HOME_FILTERBY'=>'Filter op',
-'LBL_HOME_Fields'=>'Weer te geven velden <br>(selecteer er twee)',
+'LBL_HOME_Fields'=>'Weer te geven velden',
 'LBL_HOME_PRESSCTRL'=>'(Klik "Ctrl" <br> voor meerdere selecties)',
+'LBL_HOME_AGGREGATE'=>'Aggregate',
+'LBL_HOME_AG_FIELDS'=>'On field',
 'LBL_HOME_RSSURL'=>'RSS URL',
-'LBL_HOME_DASHBOARD_NAME'=>'DashBoard Naam', 
+'LBL_HOME_DASHBOARD_NAME'=>'DashBoard Naam',
 'LBL_HOME_DASHBOARD_TYPE'=>'DashBoard Type',
 'LBL_HOME_HORIZONTAL_BARCHART'=>'Horizontale Staafdiagram',
 'LBL_HOME_VERTICAL_BARCHART'=>'Verticale Staafdiagram',
@@ -100,7 +81,6 @@ $mod_strings = Array(
 'LBL_MORE'=>'Meer',
 'LBL_SCROLL'=>'Blader',
 
-//added for home page changes
 'LBL_NOTEBOOK'=>'Aantekeningen',
 'LBL_NOTEBOOK_TITLE'=>'Dubbel-klik om te wijzigen.',
 'LBL_NOTEBOOK_SAVE_TITLE'=>'Klik ergens op het scherm om te bewaren.',
@@ -111,9 +91,7 @@ $mod_strings = Array(
 'LBL_TWO_COLUMN'=>'Twee kolommen',
 'LBL_THREE_COLUMN'=>'Drie kolommen',
 'LBL_FOUR_COLUMN'=>'Vier kolommen',
-// END
 
-// Default home page widget's title
 'Top Accounts'=>'Top Accounts',
 'Top Potentials'=>'Top Verkoopkansen',
 'Top Quotes'=>'Top Offertes',
@@ -133,13 +111,20 @@ $mod_strings = Array(
 'MSG_NO_FILTERS' => 'Geen filters beschikbaar',
 'MSG_NO_FIELDS' => 'Geen Velden Beschikbaar',
 
-//added for Default Widgets
+'LBL_REPORTCHARTS' => 'RapportGrafieken',
+'LBL_HOME_REPORT_NAME'=> 'Rapportnaam',
+'LBL_HOME_REPORT_TYPE' => 'Rapporttype',
+
 'LBL_DEFAULT_WIDGET'=>'Standaard Widgets',
 'LBL_NO_WIDGETS_HIDDEN'=>'Er zijn Geen standaard widgets verborgen',
 'UpdateExchangeRate' => 'Update Exchange Rate',
+'Update currency exchange rates.' => 'Update currency exchange rates.',
 'LBL_HOME_ADDWINDOW' => 'Add Window',
 'LBL_GETTING_STARTED' => 'Getting Started',
 'ExpirePasswordAfterDays' => 'Expire Password After Days',
+'Expire users passwords after Application_ExpirePasswordAfterDays days.' => 'Expire users passwords after Application_ExpirePasswordAfterDays days.',
+'FieldsNotFoundInFilter' => 'Fields not found in Selected Filter',
+'FilterNotFound' => 'Filter You have Selected is Not Found',
+'Permission Denied' => 'Permission Denied',
 );
-
 ?>

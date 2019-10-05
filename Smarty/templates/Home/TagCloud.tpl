@@ -9,13 +9,13 @@
  ********************************************************************************/
 -->*}
 {if $USER_TAG_SHOWAS != 'flat'}
-<div id="tagcloud" style="overflow: auto; width: 100%; padding-left: 2%; padding-right: 3%; min-height: 250px;" >
- <canvas width="300px" height="250px" id="tagcloudCanvas">
+<div id="tagcloud" style="overflow: hidden; width: 100%; padding-left: 2%; padding-right: 3%; min-height: 250px;" >
+ <canvas style="width:290px;height:290px;overflow:hidden;" id="tagcloudCanvas">
   <ul>{$ALL_TAG}</ul>
  </canvas>
 </div>
 {else}
-<div id="tagcloud" style="overflow: auto; width: 100%; padding-left: 2%; padding-right: 3%; min-height: 250px;" >
+<div id="tagcloud" style="overflow: hidden; width: 100%; padding-left: 2%; padding-right: 3%; min-height: 250px;" >
 	<img src='{$IMAGE_PATH}/tagCloudName.gif' style="display: block; width: 100%;"/>
 	<br>
 	<span id="tagfields">{$ALL_TAG}</span>

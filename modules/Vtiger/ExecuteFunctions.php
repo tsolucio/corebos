@@ -16,7 +16,7 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 require_once 'include/utils/utils.php';
-require_once 'include/utils/CommonUtils.php';
+include_once 'vtlib/Vtiger/Link.php';
 global $adb, $log, $current_user;
 
 $functiontocall = vtlib_purify($_REQUEST['functiontocall']);
@@ -59,8 +59,6 @@ switch ($functiontocall) {
 	case 'getReferenceAutocomplete':
 		include_once 'include/Webservices/CustomerPortalWS.php';
 		$searchinmodule = vtlib_purify($_REQUEST['searchinmodule']);
-		$fields = vtlib_purify($_REQUEST['fields']);
-		$returnfields = vtlib_purify($_REQUEST['returnfields']);
 		$limit = vtlib_purify($_REQUEST['limit']);
 		$filter = vtlib_purify($_REQUEST['filter']);
 		if (is_array($filter)) {
@@ -72,20 +70,28 @@ switch ($functiontocall) {
 		}
 		$ret = getReferenceAutocomplete($term, $op, $searchinmodule, $limit, $current_user);
 		break;
+	case 'getProductServiceAutocomplete':
+		include_once 'include/Webservices/CustomerPortalWS.php';
+		$limit =  isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 5;
+		$ret = getProductServiceAutocomplete($_REQUEST['term'], array(), $limit);
+		break;
 	case 'getFieldValuesFromRecord':
+		$ret = array();
 		$crmid = vtlib_purify($_REQUEST['getFieldValuesFrom']);
-		$module = getSalesEntityType($crmid);
-		$fields = vtlib_purify($_REQUEST['getTheseFields']);
-		$fields = explode(',',$fields);
-		$queryGenerator = new QueryGenerator($module, $current_user);
-		$queryGenerator->setFields($fields);
-		$queryGenerator->addCondition('id',$crmid,'e');
-		$query = $queryGenerator->getQuery();
-		$queryres=$adb->pquery($query,array());
-		if ($adb->num_rows($queryres)>0) {
-			$col=0;
-			foreach ($fields as $field) {
-				$ret[$field]=$adb->query_result($queryres,0,$col++);
+		if (!empty($crmid)) {
+			$module = getSalesEntityType($crmid);
+			$fields = vtlib_purify($_REQUEST['getTheseFields']);
+			$fields = explode(',', $fields);
+			$queryGenerator = new QueryGenerator($module, $current_user);
+			$queryGenerator->setFields($fields);
+			$queryGenerator->addCondition('id', $crmid, 'e');
+			$query = $queryGenerator->getQuery();
+			$queryres=$adb->pquery($query, array());
+			if ($adb->num_rows($queryres)>0) {
+				$col=0;
+				foreach ($fields as $field) {
+					$ret[$field]=$adb->query_result($queryres, 0, $col++);
+				}
 			}
 		}
 		break;
@@ -104,16 +110,56 @@ switch ($functiontocall) {
 		if (file_exists("modules/{$valmod}/{$valmod}Validation.php")) {
 			echo 'yes';
 		} else {
-			echo 'no';
+			include_once 'modules/cbMap/processmap/Validations.php';
+			if (Validations::ValidationsExist($valmod)) {
+				echo 'yes';
+			} elseif (recordIsAssignedToInactiveUser(vtlib_purify($_REQUEST['crmid']))) {
+				echo 'yes';
+			} else {
+				$lnks = Vtiger_Link::getAllByType(getTabid($valmod), 'PRESAVE', array('MODULE'=>$valmod, 'ACTION'=>'Save'));
+				if (count($lnks)>0) {
+					echo 'yes';
+				} else {
+					echo 'no';
+				}
+			}
 		}
 		die();
 		break;
+	case 'getWeekendDates':
+		$startDate = vtlib_purify($_REQUEST['startFrom']);
+		$endDate = vtlib_purify($_REQUEST['endFrom']);
+		$format = isset($_REQUEST['dateFormat']) ? vtlib_purify($_REQUEST['dateFormat']) : 'Y-m-d';
+		$ret =  DateTimeField::getWeekendDates($startDate, $endDate, $format);
+		break;
 	case 'ValidationLoad':
 		$valmod = vtlib_purify($_REQUEST['valmodule']);
+		include_once 'modules/cbMap/processmap/Validations.php';
+		if (Validations::recordIsAssignedToInactiveUser()) {
+			echo getTranslatedString('RecordIsAssignedToInactiveUser');
+			die();
+		}
+		if (Validations::ValidationsExist($valmod)) {
+			$validation = Validations::processAllValidationsFor($valmod);
+			if ($validation!==true) {
+				echo Validations::formatValidationErrors($validation, $valmod);
+				die();
+			}
+		}
 		if (file_exists("modules/{$valmod}/{$valmod}Validation.php")) {
 			include "modules/{$valmod}/{$valmod}Validation.php";
 		} else {
-			echo '%%%OK%%%';
+			$lnks = Vtiger_Link::getAllByType(getTabid($valmod), 'PRESAVE', array('MODULE'=>$valmod, 'ACTION'=>'Save'));
+			if (count($lnks)>0) {
+				$screen_values = json_decode($_REQUEST['structure'], true);
+				$rdo = '';
+				foreach ($lnks as $lnk) {
+					$rdo .= vtlib_process_widget($lnk, $screen_values);
+				}
+				echo $rdo;
+			} else {
+				echo '%%%OK%%%';
+			}
 		}
 		die();
 		break;
@@ -125,10 +171,148 @@ switch ($functiontocall) {
 			$ret = '';
 		}
 		break;
+	case 'updateBrowserTabSession':
+		$newssid = vtlib_purify($_REQUEST['newtabssid']);
+		$oldssid = vtlib_purify($_REQUEST['oldtabssid']);
+		foreach ($_SESSION as $key => $value) {
+			if (strpos($key, $oldssid) !== false && strpos($key, $oldssid.'__prev') === false) {
+				$newkey = str_replace($oldssid, $newssid, $key);
+				coreBOS_Session::set($newkey, $value);
+				coreBOS_Session::set($key, (isset($_SESSION[$key.'__prev']) ? $_SESSION[$key.'__prev'] : ''));
+			}
+		}
+		$ret = '';
+		break;
 	case 'getEmailTemplateVariables':
 		$module = vtlib_purify($_REQUEST['module_from']);
 		$allOptions=getEmailTemplateVariables(array($module,'Accounts'));
-		$ret = array_merge($allOptions[0],$allOptions[1],$allOptions[2]);
+		$ret = array_merge($allOptions[0], $allOptions[1], $allOptions[2]);
+		break;
+	case 'downloadfile':
+		include_once 'include/utils/downloadfile.php';
+		die();
+		break;
+	case 'delImage':
+		include_once 'include/utils/DelImage.php';
+		$id = vtlib_purify($_REQUEST['recordid']);
+		$id = preg_replace('/[^0-9]/', '', $id);
+		if (isset($_REQUEST['attachmodule']) && $_REQUEST["attachmodule"]=='Emails') {
+			DelAttachment($id);
+		} else {
+			DelImage($id);
+		}
+		echo 'SUCCESS';
+		die();
+		break;
+	case 'saveAttachment':
+		include_once 'modules/Settings/MailScanner/core/MailAttachmentMIME.php';
+		include_once 'modules/MailManager/src/controllers/UploadController.php';
+		$allowedFileExtension = array();
+		$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize', 3000000, 'Emails');
+		$upload = new MailManager_Uploader($allowedFileExtension, $upload_maxsize);
+		if ($upload) {
+			$filePath = decideFilePath();
+			$ret = $upload->handleUpload($filePath, false);
+		} else {
+			$ret = '';
+		}
+		break;
+	case 'getNumberDisplayValue':
+		$value = vtlib_purify($_REQUEST['val']);
+		if (empty($value)) {
+			$ret = '0';
+		} else {
+			$currencyField = new CurrencyField($value);
+			$decimals = vtlib_purify($_REQUEST['decimals']);
+			$currencyField->initialize($current_user);
+			$currencyField->setNumberofDecimals(min($decimals, $currencyField->getCurrencyDecimalPlaces()));
+			$ret = $currencyField->getDisplayValue(null, true, true);
+		}
+		break;
+	case 'getGloalSearch':
+	case 'getGlobalSearch':
+		include_once 'include/Webservices/CustomerPortalWS.php';
+		$data = json_decode($_REQUEST['data'], true);
+		$searchin = vtlib_purify($data['searchin']);
+		$limit = isset($data['maxresults']) ? vtlib_purify($data['maxresults']) : '';
+		$term = vtlib_purify($data['term']);
+		$retvals = getGlobalSearch($term, $searchin, $limit, $current_user);
+		$ret = array();
+		foreach ($retvals['data'] as $value) {
+			$ret[] = array(
+				'crmid' => $value['crmid'],
+				'crmmodule' => $value['crmmodule'],
+				'query_string' => $value['query_string'],
+				'total' => $retvals['total']
+			) + $value['crmfields'];
+		}
+		break;
+	case 'getRelatedListInfo':
+		$sql = 'SELECT rl.tabid,rl.related_tabid,rl.label,tab.name as name, tabrel.name as relname
+			FROM vtiger_relatedlists rl
+			LEFT JOIN vtiger_tab tab ON rl.tabid=tab.tabid
+			LEFT JOIN vtiger_tab tabrel ON rl.related_tabid=tabrel.tabid
+			WHERE relation_id=?';
+		$res = $adb->pquery($sql, array($_REQUEST['relation_id']));
+		$ret = array();
+		if ($adb->num_rows($res) > 0) {
+			$tabid = $adb->query_result($res, 0, 'tabid');
+			$tabidrel = $adb->query_result($res, 0, 'related_tabid');
+			$label = $adb->query_result($res, 0, 'label');
+			$mod = $adb->query_result($res, 0, 'name');
+			$modrel = $adb->query_result($res, 0, 'relname');
+			$ret = array(
+				'tabid'=>$tabid,
+				'tabidrel'=>$tabidrel,
+				'label'=>$label,
+				'module'=>$mod,
+				'modulerel'=>$modrel,
+			);
+		}
+		break;
+	case 'getSetting':
+		$skey = vtlib_purify($_REQUEST['skey']);
+		if (!empty($_REQUEST['default'])) {
+			$default = vtlib_purify($_REQUEST['default']);
+			$ret = coreBOS_Settings::getSetting($skey, $default);
+		} else {
+			$ret = coreBOS_Settings::getSetting($skey, null);
+		}
+		break;
+	case 'setSetting':
+		$skey = vtlib_purify($_REQUEST['skey']);
+		$svalue = vtlib_purify($_REQUEST['svalue']);
+		$ret = coreBOS_Settings::setSetting($skey, $svalue);
+		break;
+	case 'delSetting':
+		$skey = vtlib_purify($_REQUEST['skey']);
+		$ret = coreBOS_Settings::delSetting($skey);
+		break;
+	case 'getTranslatedStrings':
+		global $currentModule;
+		$i18nm = empty($_REQUEST['i18nmodule']) ? $currentModule : vtlib_purify($_REQUEST['i18nmodule']);
+		$tkeys = vtlib_purify($_REQUEST['tkeys']);
+		$tkeys = explode(';', $tkeys);
+		$ret = array();
+		foreach ($tkeys as $tr) {
+			$ret[$tr] = getTranslatedString($tr, $i18nm);
+		}
+		break;
+	case 'execwf':
+		include_once 'include/Webservices/ExecuteWorkflow.php';
+		$wfid = vtlib_purify($_REQUEST['wfid']);
+		$ids = explode(';', vtlib_purify($_REQUEST['ids']));
+		$id = reset($ids);
+		$wsid = vtws_getEntityId(getSalesEntityType($id)).'x';
+		$crmids = array();
+		foreach ($ids as $crmid) {
+			$crmids[] = $wsid.$crmid;
+		}
+		try {
+			$ret = cbwsExecuteWorkflow($wfid, json_encode($crmids), $current_user);
+		} catch (Exception $e) {
+			$ret = false;
+		}
 		break;
 	case 'ismoduleactive':
 	default:

@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  ********************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 	'Tooltip' => 'Kurzinfo',
 	'LBL_TOOLTIP_MANAGEMENT'=>'Kurzinfo Management',
 	'LBL_TOOLTIP_MANAGEMENT_DESCRIPTION'=>'kontrollieren Sie die Anzeige von Kurzinfos von hier',
@@ -18,5 +18,4 @@ $mod_strings = Array (
 	'TooltipInfo' => 'This extension adds information hover tips on different fields on each module and is accessed in the settings of each module not directly, so you can eliminate it from the menu.',
 	'No Fields Selected' => 'No Fields Selected',
 );
-
 ?>

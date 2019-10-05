@@ -6,18 +6,11 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
-
 require_once 'include/db_backup/StagedBackup.php';
 
-/**
- * Description of BackupSource
- *
- * @author MAK
- */
 abstract class BackupSource extends StagedBackup {
-	abstract function valid();
-	abstract function next();
+	abstract public function valid();
+	abstract public function next();
 }
 ?>

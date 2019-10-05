@@ -10,7 +10,7 @@
  * $Header:  \modules\PickList\language\hu_hu.lang.php - 12:08 2011.11.12. $
  * Description:  Defines the Hungarian language pack for the PickList module vtiger 5.3.x
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
- ********************************************************************************/ 
+ ********************************************************************************/
 $mod_strings = array(
 	'LBL_ASSIGN_BUTTON' => 'Hozzárendel',
 	'ADD_PICKLIST_VALUES' => 'Kiválasztó lista értéket Hozzáad',
@@ -45,6 +45,12 @@ $mod_strings = array(
 	'LBL_ADD_BUTTON' => 'Elem hozzáadása ',
 	'LBL_EDIT_BUTTON' => 'Elem átnevezése',
 	'LBL_DELETE_BUTTON' => 'Elem törlése',
-	'NTC_DELETE_CONFIRMATION' => 'Biztos vagy abban, hogy törölni akarod ezt a kiválasztó lista függőséget?'
+	'LBL_MOVE_UP' => 'Move Up',
+	'LBL_MOVE_DOWN' => 'Move Down',
+	'LBL_MOVE_LEFT' => 'Move Left',
+	'LBL_MOVE_RIGHT' => 'Move Right',
+	'LBL_REMOVE' => 'Remove',
+	'NTC_DELETE_CONFIRMATION' => 'Biztos vagy abban, hogy törölni akarod ezt a kiválasztó lista függőséget?',
+	'picklisthasdependency' => 'Warning: this list has dependencies configured',
 );
 ?>

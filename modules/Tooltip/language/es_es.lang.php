@@ -9,7 +9,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$mod_strings = Array (
+$mod_strings = array (
 'Tooltip' => 'Ayuda rápida',
 'SINGLE_Tooltip' => 'Ayuda rápida',
 'LBL_TOOLTIP_MANAGEMENT'=>'Administración de Ayudas',
@@ -21,5 +21,4 @@ $mod_strings = Array (
 'TooltipInfo' => 'Esta extensión añade información adicional en forma de popup al pasar el ratón por encima de los campos de un módulo. Se accede en la confguración de cada módulo no directamente, así que puedes eliminarlo del menu.',
 'No Fields Selected' => 'No hay ningún campo seleccionado',
 );
-
 ?>

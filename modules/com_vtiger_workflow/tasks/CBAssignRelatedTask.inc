@@ -15,25 +15,24 @@
  *************************************************************************************************
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-require_once('modules/com_vtiger_workflow/VTEntityCache.inc');
-require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
+require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
+require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 
-class CBAssignRelatedTask extends VTTask{
+class CBAssignRelatedTask extends VTTask {
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
-		return array('relmodule','username');
+		return array('relmodule', 'username');
 	}
 
 	public function doTask(&$entity) {
-		global $adb,$default_charset,$log,$current_user;
-		list($cto,$cto_id) = explode('x',$entity->getId());
-		if (!empty($cto_id) and !empty($this->relmodule) and !empty($this->username)) {
+		global $adb, $log, $current_user;
+		list($cto,$cto_id) = explode('x', $entity->getId());
+		if (!empty($cto_id) && !empty($this->relmodule) && !empty($this->username)) {
 			$module = getSalesEntityType($cto_id);
-			$webserviceObject = VtigerWebserviceObject::fromName($adb,$this->relmodule);
-			$handlerPath = $webserviceObject->getHandlerPath();
+			$webserviceObject = VtigerWebserviceObject::fromName($adb, $this->relmodule);
 			$handlerClass = $webserviceObject->getHandlerClass();
-			$handler = new $handlerClass($webserviceObject,$current_user,$adb,$log);
+			$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
 			$meta = $handler->getMeta();
 			$refflds = $meta->getReferenceFieldDetails();
 			$reffield = '';
@@ -43,25 +42,25 @@ class CBAssignRelatedTask extends VTTask{
 					break;
 				}
 			}
-			$queryGenerator = new QueryGenerator($this->relmodule, $current_user);
-			$queryGenerator->setFields(array('id'));
-			$queryGenerator->addReferenceModuleFieldCondition($module, $reffield, 'id', $cto_id, 'e');
-			$query = $queryGenerator->getQuery();
-			if($this->username=="assigneduser") {
-				$usrquery = $adb->pquery("SELECT smownerid FROM vtiger_crmentity WHERE crmid=?", array($cto_id));
-				$usr = $adb->query_result($usrquery, 0, 0);
-			} else {
-				$usr = $this->username;
-			}
-
-			$updquery = 'UPDATE vtiger_crmentity set smownerid=? where crmid=?';
-			$relrecs = $adb->query($query);
-			for ($relrec=0;$relrec<$adb->num_rows($relrecs);$relrec++) {
-				// direct assignment to avoid relaunching workflows > I am not sure this is correct (!)
-				$adb->pquery($updquery, array($usr, $adb->query_result($relrecs, $relrec, 0)));
+			if ($reffield != '') {
+				$queryGenerator = new QueryGenerator($this->relmodule, $current_user);
+				$queryGenerator->setFields(array('id'));
+				$queryGenerator->addReferenceModuleFieldCondition($module, $reffield, 'id', $cto_id, 'e');
+				$query = $queryGenerator->getQuery();
+				if ($this->username=='assigneduser') {
+					$usrquery = $adb->pquery('SELECT smownerid FROM vtiger_crmentity WHERE crmid=?', array($cto_id));
+					$usr = $adb->query_result($usrquery, 0, 0);
+				} else {
+					$usr = $this->username;
+				}
+				$updquery = 'UPDATE vtiger_crmentity set smownerid=? where crmid=?';
+				$relrecs = $adb->query($query);
+				for ($relrec=0; $relrec<$adb->num_rows($relrecs); $relrec++) {
+					// direct assignment to avoid relaunching workflows > I am not sure this is correct (!)
+					$adb->pquery($updquery, array($usr, $adb->query_result($relrecs, $relrec, 0)));
+				}
 			}
 		}
 	}
 }
-
 ?>

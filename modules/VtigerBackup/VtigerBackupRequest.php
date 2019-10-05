@@ -6,19 +6,12 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
-
-/**
- * @author MAK
- */
-
 require_once 'modules/VtigerBackup/VtigerBackup.php';
 
-function vtiger_runBackupJob(){
+function vtiger_runBackupJob() {
 	$backup = new VtigerBackup();
 	$backup->backup();
 }
 vtiger_runBackupJob();
-
 ?>

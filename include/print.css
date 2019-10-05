@@ -29,7 +29,7 @@ img,
 input,
 select,
 span.small,
-.noprint /* <= this class must be added to DetailView.tpl & InventoryDetailView.tpl. Then we can hide "Action links" column in detail views*/
+.noprint /* <= this class must be added to DetailView.tpl. Then we can hide "Action links" column in detail views*/
 {
 	display: none;
 }

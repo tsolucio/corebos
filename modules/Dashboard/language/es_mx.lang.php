@@ -1,17 +1,12 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-
- ********************************************************************************
+ ************************************************************************************/
 /********************************************************************************
 *  Module       : Dashboard
 *  Language     : Español
@@ -21,7 +16,7 @@
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'LBL_SALES_STAGE_FORM_TITLE'=>'Oportunidades por fase de venta',
 'LBL_SALES_STAGE_FORM_DESC'=>'Muestra suma acumulada de oportunidades de negocio por etapa para los usuarios seleccionados con fecha estimada de cierre dentro del tiempo especificado.',
 'LBL_MONTH_BY_OUTCOME'=>'Oportunidades por resultados mensuales',
@@ -51,7 +46,6 @@ $mod_strings = Array(
 'LBL_LEAD_SOURCES'=>'Origen de los Prospectos:',
 'LBL_DATE_START'=>'Fecha de inicio:',
 'LBL_DATE_END'=>'Fecha de fin:',
-//Added for 5.0 
 'LBL_NO_PERMISSION'=>'Su perfil no permite ver la gráfica de este módulo',
 'LBL_NO_PERMISSION_FIELD'=>'Su perfil no permite ver la gráfica de este módulo o campo',
 
@@ -96,7 +90,6 @@ $mod_strings = Array(
 'VIEWCHART'=>'Ver Gráfica',
 'LBL_DASHBOARD'=>'Estadísticas',
 
-// Added/Updated for vtiger CRM 5.0.4
 "Approved"=>"Aprobado",
 "Created"=>"Creado",
 "Cancelled"=>"Cancelado",
@@ -186,7 +179,5 @@ $mod_strings = Array(
 "Negotiation/Review"=>"Negociando/Revisando",
 "Closed Won"=>"Cerrado Ganado",
 "Closed Lost"=>"Cerrado Perdido",
-
 );
-
 ?>

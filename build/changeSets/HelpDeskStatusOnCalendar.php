@@ -16,18 +16,20 @@
 
 class HelpDeskStatusOnCalendar extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			global $adb,$log;
-$its4you_calendar_modulestatus = array(
-  array('module' => 'HelpDesk','status' => 'Planned','field' => 'ticketstatus','value' => 'Closed','operator' => 'n','glue' => ''),
-  array('module' => 'HelpDesk','status' => 'Held','field' => 'ticketstatus','value' => 'Closed','operator' => 'e','glue' => ''),
-  array('module' => 'HelpDesk','status' => 'Not Held','field' => 'ticketstatus','value' => 'Closed','operator' => 'n','glue' => ''),
-);
-$this->ExecuteQuery('CREATE TABLE IF NOT EXISTS `its4you_calendar_modulestatus` (
+			$its4you_calendar_modulestatus = array(
+			array('module' => 'HelpDesk','status' => 'Planned','field' => 'ticketstatus','value' => 'Closed','operator' => 'n','glue' => ''),
+			array('module' => 'HelpDesk','status' => 'Held','field' => 'ticketstatus','value' => 'Closed','operator' => 'e','glue' => ''),
+			array('module' => 'HelpDesk','status' => 'Not Held','field' => 'ticketstatus','value' => 'Closed','operator' => 'n','glue' => ''),
+			);
+			$this->ExecuteQuery('CREATE TABLE IF NOT EXISTS `its4you_calendar_modulestatus` (
   `calmodstatus` int(11) NOT NULL AUTO_INCREMENT,
   `module` varchar(50) NOT NULL,
   `status` varchar(10) NOT NULL,
@@ -39,14 +41,13 @@ $this->ExecuteQuery('CREATE TABLE IF NOT EXISTS `its4you_calendar_modulestatus` 
   index(`module`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8');
 
-$ins = 'insert into its4you_calendar_modulestatus (module,status,field,value,operator,glue) values(?,?,?,?,?,?)';
-foreach ($its4you_calendar_modulestatus as $record) {
-	$this->ExecuteQuery($ins,$record);
-}
+			$ins = 'insert into its4you_calendar_modulestatus (module,status,field,value,operator,glue) values(?,?,?,?,?,?)';
+			foreach ($its4you_calendar_modulestatus as $record) {
+				$this->ExecuteQuery($ins, $record);
+			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-
 }

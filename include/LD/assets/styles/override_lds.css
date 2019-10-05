@@ -1,0 +1,414 @@
+@CHARSET "UTF-8";
+
+hr {
+	margin: 0px;
+}
+
+.total_autocomplete {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  margin-bottom: 0.125rem;
+  margin-right:5px;
+  float:right;
+}
+.dvtCellInfo ul {
+   list-style-type: disc;
+   list-style-position: inside;
+}
+.dvtCellInfo ol {
+   list-style-type: decimal;
+   list-style-position: inside;
+}
+.dvtCellInfo ul ul,.dvtCellInfo  ol ul {
+   list-style-type: circle;
+   list-style-position: inside;
+   margin-left: 15px;
+}
+.dvtCellInfo ol ol,.dvtCellInfo ul ol {
+   list-style-type: lower-latin;
+   list-style-position: inside;
+   margin-left: 15px;
+}
+
+.cbslds-button_icon-more {
+	width: 1.875rem;
+	height: 1.875rem;
+}
+
+@media print {
+	a[href]:after {
+		content: none;
+	}
+}
+
+/* This section can later be removed, it is purely meant for the transition period to LDS */
+
+/* Main header overrides */
+.slds-context-bar {
+border-top: 1px solid #d8dde6;
+}
+.slds-context-bar__dropdown-trigger .slds-dropdown::before {
+  height: 0;
+}
+.slds-context-bar__icon-action .slds-icon-waffle_container {
+  height: auto;
+}
+
+.slds-masseditprogress {
+  z-index:1000000000000000;
+  position:absolute;
+  top:30%;
+  left:60%;
+  width:40%;
+}
+
+.slds-spinner_inline {
+  top: 25%;
+  left: 50%;
+}
+
+#usermenu-headerlinks td {
+  padding-right: 2px;
+  padding-left: 0;
+}
+
+/* Listview overrides */
+#no_entries_found {
+  margin: 0 auto;
+}
+#LB_buttonlist table {
+  width: auto;
+}
+#LB_buttonlist td {
+  padding: 1px;
+}
+table.lvt {
+  border-collapse: separate;
+  border-spacing: 1px;
+}
+table.lvt td,
+td.small {
+  padding: 5px;
+}
+.searchAlph,
+.searchAlphselected {
+  text-align: center;
+}
+.closeX {
+  text-align: right !important;
+}
+#adv_filter_div td {
+  padding: 7px;
+}
+#adv_filter_div > table:first-child td, 
+#adv_filter_div > div:nth-child(3) > table:first-child tr:first-child td,
+.dvtCellLabel {
+  text-align: right;
+}
+#adv_filter_div > div > table tr:last-child td {
+  text-align: left !important;
+}
+#adv_filter_div > div > table tr:last-child td.cblds-t-align_center {
+  text-align: center !important;
+}
+#advSearch .searchUIAdv3 td {
+  text-align: center;
+}
+.actionlink td {
+  padding: 5px 0;
+}
+.rel_mod_table {
+  border-collapse: collapse !important;
+}
+.rel_mod_table .dvInnerHeader {
+  padding: 8px;
+}
+.rel_mod_content_wrapper {
+  padding: 0 !important;
+}
+.rel_mod_data_row td {
+  border: 1px solid #dedede;
+}
+.rel_mod_data_paging tbody tr td:nth-child(4) {
+  text-align: right;
+}
+#tracker > table:first-child tbody tr td:nth-child(2) {
+  text-align: right;
+}
+
+/* Quick create overrides */
+#qcform .qcTransport td:first-child {
+  text-align: right;
+}
+#qcform .qcTransport td:nth-child(2) {
+  text-align: left;
+}
+#qcform .qcTransport td {
+  padding: 5px;
+}
+
+/* Global search */
+#UnifiedSearch_moduleformwrapper form table:nth-child(2) tbody tr td table:first-child tbody tr td:nth-child(2) a:nth-child(3) {
+  float: right;
+}
+#UnifiedSearch_moduleformwrapper form table:nth-child(2) tbody tr td table:nth-child(2) td {
+  padding: 7px;
+  text-align: left !important;
+}
+#UnifiedSearch_moduleformwrapper form table:nth-child(2) tbody tr:nth-child(2) td {
+  padding: 5px;
+  text-align: right !important;
+}
+
+/* Inventory overrides */
+.detailview_inventory_row td {
+  padding: 5px;
+}
+.detailview_inventory_lpricecell td,
+.detailview_inventory_totalscell td,
+.detailview_inventory_npricecell,
+#detailview_inventory_subtotalrow td,
+#detailview_inventory_totaldiscrow td,
+#detailview_inventory_taxtotalrow td,
+#detailview_inventory_shippingrow td,
+#detailview_inventory_shiptaxrow td,
+#detailview_inventory_adjustrow td,
+#detailview_inventory_grandtotrow td {
+  text-align: right !important;
+}
+#proTab > tbody > tr:nth-child(2) td {
+  padding: 5px 0;
+}
+.inv-editview__pricecol td,
+.inv-editview__totalscol td,
+.inv-editview__netpricecol {
+  text-align: right !important;
+}
+.inv-editview__pricecol td,
+.inv-editview__totalscol td {
+  padding: 5px 0;
+}
+
+/* Reports overrides */
+.reportsListTable .lvtColData td,
+.reportsListTable .lvtColDataHover td {
+  padding: 7px;
+}
+.reportsListTable .hdrNameBg table td {
+  text-align: right !important;
+}
+.reportsListTable table tr:first-child td {
+  padding: 5px;
+}
+.reportsListTable tbody tr:nth-child(3) td table tbody tr:first-child td:nth-child(4),
+.reportsListTable tbody tr:nth-child(3) td table tbody tr:first-child td:nth-child(3) {
+  width: auto !important;
+}
+.reportsListTable tbody tr:nth-child(3) td table tbody tr td:nth-child(4) {
+  text-align: right !important;
+}
+.reportGenerateTable tr:nth-child(2) td {
+  text-align: center;
+  padding-bottom: 3px;
+}
+.reportGenHdr td,
+#Generate .mailSubHeader td {
+  text-align: right;
+}
+.reportGenHdr tr td:nth-child(2) {
+  text-align: left;
+}
+
+/* Settings section */
+.settingsIconDisplay td,
+.settingsUI td {
+  padding: 10px;
+}
+#settingsSideMenu td {
+  padding: 2px;
+}
+#vtlib_modulemanager_list > table > tbody > tr:first-child .tableHeading {
+  text-align: right;
+}
+#vtlib_modulemanager_list > table > tbody > tr:nth-child(2) > td:first-child,
+#vtlib_modulemanager_list > table > tbody > tr:nth-child(2) > td:nth-child(3) {
+  width: 50%;
+  padding: 0;
+}
+#vtlib_modulemanager_list > table > tbody > tr:nth-child(2) > td:first-child table td,
+#vtlib_modulemanager_list > table > tbody > tr:nth-child(2) > td:nth-child(3) table td {
+  padding: 5px 1px;
+  min-width: 20px;
+}
+#useredit__homeorder td {
+  padding: 5px 0;
+}
+.user-detailview__table td {
+  padding: 5px;
+}
+.options {
+  margin: 16% auto 0 auto;
+}
+
+/* Workflows section */
+.workflows-list td,
+.workflows-edit td {
+  padding: 3px;
+}
+.workflows-list__item td {
+  padding: 6px 0;
+}
+#new_workflow_popup td {
+  padding: 5px;
+}
+#new_task_popup td {
+  padding: 5px;
+}
+
+/* Popup section */
+.popup-table td {
+  padding: 5px 0 !important;
+  border: 1px solid #dedede;
+}
+
+/* Home section */
+.homePageMatrixHdr {
+  text-align: right !important;
+}
+
+/* Massedit */
+#massedit table:first-child td {
+  padding: 5px;
+}
+#massedit_form > table > tbody > tr:nth-child(2) > td > table td {
+  padding: 8px 20px;
+}
+#massedit_form > table > tbody > tr:nth-child(2) > td > table td:first-child {
+  padding: 5px;
+}
+
+/* Import */
+#import-table {
+  border-collapse: separate;
+  border-spacing: 15px;
+}
+
+/* CustomView / Filters */
+.cvt-tabheaders .dvtSelectedCell,
+.cvt-tabheaders .dvtUnSelectedCell {
+  padding: 6px 15px;
+}
+
+/* Calendar4You */
+#event_setting {
+  padding: 5px;
+}
+#event_setting > .layerHeadingULine > tbody > tr > td:nth-child(2) {
+  text-align: right;
+}
+#event_setting > form > div > table > tbody > tr:first-child td.dvtSelectedCell {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+#event_setting > form > table.layerPopupTransport > tbody > tr > td {
+  text-align: center;
+}
+
+table {
+  border-collapse: initial;
+}
+
+/* Override general classes */
+.cblds-width_auto {
+  width: auto !important;
+}
+.cblds-float_right {
+  float: right !important;
+}
+.cblds-p-top_small {
+  padding-top: 5px !important;
+}
+.cblds-t-align_right {
+  text-align: right !important;
+}
+.cblds-t-align_center {
+  text-align: center !important;
+}
+.cblds-p_none {
+  padding: 0 !important;
+}
+.cblds-p_medium {
+  padding: 5px !important;
+}
+.cblds-p_mediumlarge {
+  padding: 7px !important;
+}
+.cblds-p_large {
+  padding: 10px !important;
+}
+.cblds-p-v_medium {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+.cblds-p-v_mediumsmall {
+  padding-top: 3px !important;
+  padding-bottom: 3px !important;
+}
+.cblds-p-v_small {
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+.cblds-p-v_none {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+.cblds-p-h_none {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.cblds-p_x-large {
+  padding: 15px !important;
+}
+.cblds-p_xx-small {
+  padding: 2px !important;
+}
+.cblds-m_none {
+  margin: 0 !important;
+}
+.cblds-m_medium {
+  margin: 5px !important;
+}
+.cblds-m_large {
+  margin: 10px !important;
+}
+.cblds-m_x-large {
+  margin: 15px !important;
+}
+.cblds-m_xx-small {
+  margin: 2px !important;
+}
+.cblds-m-l_small {
+  margin-left: 5px;
+}
+.cblds-m-r_small {
+  margin-right: 5px;
+}
+.cblds-table-border_sep {
+  border-collapse: separate !important;
+}
+.cblds-table-bordersp_medium {
+  border-spacing: 10px !important;
+}
+.cblds-table-bordersp_small {
+  border-spacing: 4px !important;
+}
+.cblds-table-cellpadding_medium td {
+  padding: 5px !important;
+}
+.cblds-autowidth {
+  width: auto !important;
+  max-width: 100000000px !important;
+}

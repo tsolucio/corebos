@@ -170,12 +170,15 @@
 }
 
 .sep1 {
-	background: #fff;
+	background: #FAFAF9;
 	padding-left: 1px;
 }
 
 .showPanelBg {
-	background:url(images/homePageSeperator.gif) no-repeat;
+	background: #FFF;
+	border-radius:10px;
+	border:1px solid #9E9E9E;
+
 }
 
 a {
@@ -285,12 +288,15 @@ a:hover {
 	border-right:1px solid #e0dddd;
 	padding-left:20px;
 	padding-right:20px;
+	padding-top: 4px;
+	padding-bottom: 4px;
 	/*background-color:#dedede;*/
 	/*background:#d9dde6 url(images/light-bg11.png) bottom repeat-x; */
 	background:#ffffff url(images/tab.gif) top repeat-x;
 	font-weight:bold;
 	color: black;
 	line-height:20px;
+	border-radius: 10px 10px 0px 0px;
 }
 
 .dvtSelectedCellBottom {
@@ -1163,7 +1169,6 @@ ul li{
 }
 
 #locateMap{
-	width:120px;
 	background-color:#CCCCCC;
 	border:1px solid #DDDDDD;
 	padding-top:5px;
@@ -1692,7 +1697,7 @@ datatable stats {
 	overflow: scroll;
 	resize: both;
 	display: none;
-	z-index:10000001;
+	z-index:10000;
 	background-color:#ddd;
 	background-image:url(images/layerPopupBg.gif) ;
 	border:2px solid #000000;
@@ -2346,24 +2351,6 @@ a.drop_downnew_parent{
 	padding-right:10px;
 	padding-top:2px;
 	padding-bottom:2px;
-}
-
-.winmarkModulesusr{
-	background-image:url(../images/windowmarkModulesusr.jpg);
-	background-position:top right;
-	background-repeat:no-repeat;
-}
-
-.winmarkRSS{
-	background-image:url(../images/windowmarkRSS.jpg);
-	background-position:top right;
-	background-repeat:no-repeat;
-}
-
-.winmarkDashboardusr{
-	background-image:url(../images/windowmarkDashboardusr.jpg);
-	background-position:top right;
-	background-repeat:no-repeat;
 }
 
 .groupname{
@@ -3025,6 +3012,8 @@ a.allMnu:Hover{
 
 .listview_row_total, .listview_row_sigma {
 	font-weight: bold;
+	float: right;
+	padding-right:6px;
 }
 
 .listview_row_sigma {

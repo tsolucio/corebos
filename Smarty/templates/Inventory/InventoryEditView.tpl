@@ -8,90 +8,77 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
-<script type="text/javascript" src="jscalendar/calendar.js"></script>
-<script type="text/javascript" src="jscalendar/lang/calendar-{$CALENDAR_LANG}.js"></script>
-<script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
-<script type="text/javascript" src="include/js/Inventory.js"></script>
 <script type="text/javascript" src="modules/Services/Services.js"></script>
+<script type="text/javascript" src="include/js/Inventory.js"></script>
+{if $FIELD_DEPENDENCY_DATASOURCE neq ''}
 <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
-{if $PICKIST_DEPENDENCY_DATASOURCE neq ''}
+<script type="text/javascript" src="include/js/FieldDepFunc.js"></script>
 <script type="text/javascript">
-	jQuery(document).ready(function() {ldelim} (new FieldDependencies({$PICKIST_DEPENDENCY_DATASOURCE})).init() {rdelim});
+	jQuery(document).ready(function() {ldelim} (new FieldDependencies({$FIELD_DEPENDENCY_DATASOURCE})).init() {rdelim});
 	var Inventory_ListPrice_ReadOnly = '{if isset($Inventory_ListPrice_ReadOnly)}{$Inventory_ListPrice_ReadOnly}{/if}';
 </script>
 {/if}
+{if vt_hasRTE()}
+<script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
+{if vt_hasRTESpellcheck()}
+<script type="text/javascript" src="include/ckeditor/config_spellcheck.js"></script>
+{/if}
+{/if}
 
-{include file='Buttons_List.tpl'}
+{include file='Buttons_List.tpl' isEditView=true}
 
 {*<!-- Contents -->*}
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
-   <tr>
+	<tr>
 	<td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 
 	<td class="showPanelBg" valign=top width=100%>
 		{*<!-- PUBLIC CONTENTS STARTS-->*}
 		<div class="small" style="padding:20px">
-			{if $OP_MODE eq 'edit_view'}
-				{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
-				{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
-				<span class="lvtHeaderText"><font color="purple">[ {$USE_ID_VALUE} ] </font>{$NAME} - {$APP.LBL_EDITING} {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span> <br>
-				{$UPDATEINFO}
-			{/if}
-			{if $OP_MODE eq 'create_view'}
-				{if $DUPLICATE neq 'true'}
-					<span class="lvtHeaderText">{$APP.LBL_CREATING} {$SINGLE_MOD|@getTranslatedString:$MODULE}</span> <br>
-				{else}
-					<span class="lvtHeaderText">{$APP.LBL_DUPLICATING} "{$NAME}" </span> <br>
-				{/if}
-			{/if}
-
-			<hr noshade size=1>
-			<br>
 			{include file='EditViewHidden.tpl'}
-			{if $OP_MODE eq 'create_view'}
-				<input type="hidden" name="convert_from" value="{$CONVERT_MODE}">
-				<input type="hidden" name="duplicate_from" value="{if isset($DUPLICATE_FROM)}{$DUPLICATE_FROM}{/if}">
-			{/if}
-			<input name='search_url' id="search_url" type='hidden' value='{$SEARCH}'>
 
 			{*<!-- Account details tabs -->*}
 			<table border=0 cellspacing=0 cellpadding=0 width=95% align=center>
-			   <tr>
+				<tr>
 				<td>
 					<table border=0 cellspacing=0 cellpadding=3 width=100% class="small">
-					   <tr>
+					<tr>
 						<td class="dvtTabCache" style="width:10px" nowrap>&nbsp;</td>
 						<td class="dvtSelectedCell" align=center nowrap> {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</td>
 						<td class="dvtTabCache" style="width:10px">&nbsp;</td>
 						<td class="dvtTabCache" style="width:100%">&nbsp;</td>
-					   </tr>
+					</tr>
 					</table>
 				</td>
-			   </tr>
-			   <tr>
+				</tr>
+				<tr>
 				<td valign=top align=left >
 					<table border=0 cellspacing=0 cellpadding=3 width=100% class="dvtContentSpace">
-					   <tr>
-
-						<td align=left style="padding:10px;border-right:1px #CCCCCC;" width=80%>
+					<tr>
+						<td align=left>
 							{*<!-- content cache -->*}
 							<table border=0 cellspacing=0 cellpadding=0 width=100%>
-							   <tr>
+							<tr>
 								<td style="padding:10px">
-								<!-- General details -->
+									<!-- General details -->
 									<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small createview_table">
-									   <tr>
+										<tr>
 										<td colspan=4 style="padding:5px">
-										   <div align="center">
-											<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save'; displaydeleted(); return validateInventory('{$MODULE}')" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
-											<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="window.history.back()" type="button" name="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}  ">
-										   </div>
+											<div align="center">
+												<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save'; displaydeleted(); return validateInventory('{$MODULE}')" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
+												{if isset($SandRActive) && $SandRActive!=0 && (!isset($MED1x1MODE) || $MED1x1MODE==0)}
+												<input title="{$APP.LBL_SAVEREPEAT_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVEREPEAT_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.saverepeat.value='1';this.form.action.value='Save'; displaydeleted(); return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVEREPEAT_BUTTON_LABEL}  ">
+												{/if}
+												{if isset($MED1x1MODE) && $MED1x1MODE!=0}
+												<input title="{$APP.LBL_SKIP_BUTTON_TITLE}" accessKey="{$APP.LBL_SKIP_BUTTON_KEY}" class="crmbutton small cancel" onclick="this.form.saverepeat.value='skip';this.form.action.value='Save'; displaydeleted();" type="submit" name="button" value="  {$APP.LBL_SKIP_BUTTON_LABEL}  ">
+												{/if}
+												<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="{if isset($smarty.request.Module_Popup_Edit)}window.close(){elseif isset($CANCELGO)}window.location.href='{$CANCELGO}'{else}window.history.back(){/if};" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
+											</div>
 										</td>
-									   </tr>
+										</tr>
 
-									   <!-- included to handle the edit fields based on ui types -->
-									   {foreach key=header item=data from=$BLOCKS}
+										<!-- included to handle the edit fields based on ui types -->
+										{foreach key=header item=data from=$BLOCKS}
 										<tr id="tbl{$header|replace:' ':''}Head">
 										{if isset($MOD.LBL_ADDRESS_INFORMATION) && $header==$MOD.LBL_ADDRESS_INFORMATION && ($MODULE == 'Accounts' || $MODULE == 'Contacts' || $MODULE == 'Quotes' || $MODULE == 'PurchaseOrder' || $MODULE == 'SalesOrder'|| $MODULE == 'Invoice') && $SHOW_COPY_ADDRESS eq 1}
 											<td colspan=2 class="detailedViewHeader">
@@ -116,12 +103,11 @@
 
 										<tr style="height:25px"><td>&nbsp;</td></tr>
 
-									   {/foreach}
+										{/foreach}
 
-
-									   <!-- Added to display the Product Details in Inventory-->
-									   {if $MODULE eq 'PurchaseOrder' || $MODULE eq 'SalesOrder' || $MODULE eq 'Quotes' || $MODULE eq 'Invoice' || $MODULE eq 'Issuecards'}
-									   <tr>
+										<!-- Added to display the Product Details in Inventory-->
+										{if $MODULE eq 'PurchaseOrder' || $MODULE eq 'SalesOrder' || $MODULE eq 'Quotes' || $MODULE eq 'Invoice' || $MODULE eq 'Issuecards' || $MODULE eq 'Receiptcards'}
+										<tr>
 										<td colspan=4>
 										{if $OP_MODE eq 'create_view'}
 											{if isset($AVAILABLE_PRODUCTS) && $AVAILABLE_PRODUCTS eq 'true'}
@@ -133,31 +119,37 @@
 											{include file="Inventory/ProductDetailsEditView.tpl"}
 										{/if}
 										</td>
-									   </tr>
-									   {/if}
+										</tr>
+										{/if}
 
-									   <tr>
-										<td  colspan=4 style="padding:5px">
+										<tr>
+										<td colspan=4 style="padding:5px">
 											<div align="center">
-												<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save';  displaydeleted();return validateInventory('{$MODULE}')" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
-												<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="window.history.back()" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
+												<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save'; displaydeleted(); return validateInventory('{$MODULE}')" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
+												{if isset($SandRActive) && $SandRActive!=0 && (!isset($MED1x1MODE) || $MED1x1MODE==0)}
+												<input title="{$APP.LBL_SAVEREPEAT_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVEREPEAT_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.saverepeat.value='1';this.form.action.value='Save'; displaydeleted(); return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVEREPEAT_BUTTON_LABEL}  ">
+												{/if}
+												{if isset($MED1x1MODE) && $MED1x1MODE!=0}
+												<input title="{$APP.LBL_SKIP_BUTTON_TITLE}" accessKey="{$APP.LBL_SKIP_BUTTON_KEY}" class="crmbutton small cancel" onclick="this.form.saverepeat.value='skip';this.form.action.value='Save'; displaydeleted();" type="submit" name="button" value="  {$APP.LBL_SKIP_BUTTON_LABEL}  ">
+												{/if}
+												<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="{if isset($smarty.request.Module_Popup_Edit)}window.close(){elseif isset($CANCELGO)}window.location.href='{$CANCELGO}'{else}window.history.back(){/if};" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
 											</div>
 										</td>
-									   </tr>
+										</tr>
 									</table>
 								</td>
-							   </tr>
+							</tr>
 							</table>
 						</td>
 						<!-- Inventory Actions - ends -->
-					   </tr>
+					</tr>
 					</table>
 				</td>
-			   </tr>
+				</tr>
 			</table>
 		</div>
 	</td>
-   </tr>
+	</tr>
 </table>
 </form>
 
@@ -165,28 +157,29 @@
 <div id="tax_container" style="display:none; position:absolute; z-index:1px;"></div>
 
 <script>
-	var fieldname = new Array({$VALIDATION_DATA_FIELDNAME})
-	var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL})
-	var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE})
-	var product_labelarr = {ldelim}CLEAR_COMMENT:'{$APP.LBL_CLEAR_COMMENT}',
-				DISCOUNT:'{$APP.LBL_DISCOUNT}',
-				TOTAL_AFTER_DISCOUNT:'{$APP.LBL_TOTAL_AFTER_DISCOUNT}',
-				TAX:'{$APP.LBL_TAX}',
-				ZERO_DISCOUNT:'{$APP.LBL_ZERO_DISCOUNT}',
-				PERCENT_OF_PRICE:'{$APP.LBL_OF_PRICE}',
-				DIRECT_PRICE_REDUCTION:'{$APP.LBL_DIRECT_PRICE_REDUCTION}'{rdelim};
+	var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
+	var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
+	var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
+	var product_labelarr = {ldelim}
+		CLEAR_COMMENT:'{$APP.LBL_CLEAR_COMMENT}',
+		DISCOUNT:'{$APP.LBL_DISCOUNT}',
+		TOTAL_AFTER_DISCOUNT:'{$APP.LBL_TOTAL_AFTER_DISCOUNT}',
+		TAX:'{$APP.LBL_TAX}',
+		ZERO_DISCOUNT:'{$APP.LBL_ZERO_DISCOUNT}',
+		PERCENT_OF_PRICE:'{$APP.LBL_OF_PRICE}',
+		DIRECT_PRICE_REDUCTION:'{$APP.LBL_DIRECT_PRICE_REDUCTION}'
+	{rdelim};
 	var ProductImages=new Array();
 	var count=0;
-	function delRowEmt(imagename)
-	{ldelim}
+	function delRowEmt(imagename) {ldelim}
 		ProductImages[count++]=imagename;
 		multi_selector.current_element.disabled = false;
 		multi_selector.count--;
 	{rdelim}
-	function displaydeleted()
-	{ldelim}
-		if(ProductImages.length > 0)
+	function displaydeleted() {ldelim}
+		if (ProductImages.length > 0) {ldelim}
 			document.EditView.del_file_list.value=ProductImages.join('###');
+		{rdelim}
 	{rdelim}
 </script>
 

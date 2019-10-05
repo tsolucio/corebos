@@ -1,0 +1,6 @@
+echo ======
+echo $1
+echo ======
+phpcs.phar --standard=/var/www/coreBOSwork/build/cbSR --extensions=inc,js,php,service $1
+phpmd.phar $1 text unusedcode 2>/dev/null
+php -l $1

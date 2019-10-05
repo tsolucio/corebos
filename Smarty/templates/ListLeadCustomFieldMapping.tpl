@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/ *}
 <script type="text/javascript" src="include/js/customview.js"></script>
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
@@ -57,11 +56,11 @@
 									<td>{$cfarray.contactlabel}</td>
 									<td>{$cfarray.potentiallabel}</td>
 									<td>{$cfarray.del}</td>
-								</tr>			
+								</tr>
 								{/foreach}
 							</table>
 						</td>
-					</tr>				
+					</tr>
 					<tr>
                                                 <td colspan="2" style="border-bottom: 2px dotted rgb(170, 170, 170); padding: 5px;">&nbsp;</td>
                                         </tr>
@@ -81,17 +80,13 @@
         </td>
 </tr></table>
 <script>
-	function confirmdelete(url)
-	{ldelim}
-        	if(confirm("{$APP.ARE_YOU_SURE}"))
-        	{ldelim}
-                	document.location.href=url;
-	       {rdelim}
+	function confirmdelete(url) {ldelim}
+		if (confirm("{$APP.ARE_YOU_SURE}")) {ldelim}
+			document.location.href=url;
+		{rdelim}
 	{rdelim}
 
-	function gotourl(url)
-	{ldelim}
-                document.location.href=url;
+	function gotourl(url) {ldelim}
+		document.location.href=url;
 	{rdelim}
 </script>
-			

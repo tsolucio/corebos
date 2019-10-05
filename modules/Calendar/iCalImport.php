@@ -99,16 +99,16 @@ if($_REQUEST['step']!='undo'){
 	$smarty->assign("SINGLE_MOD", vtlib_purify($_REQUEST['module']));
 	$smarty->assign("CATEGORY", $parent_tab);
 	//@session_unregister("import_parenttab");
-		$smarty->display("Buttons_List1.tpl");
+	$smarty->display("Buttons_List.tpl");
 
 	$imported_events = $count['Events'] - $skip_count['Events'];
 	$imported_tasks = $count['Calendar'] - $skip_count['Calendar'];
-	 $message= "<b>".$mod_strings['LBL_SUCCESS']."</b>"
-	 			."<br><br>" .$mod_strings['LBL_SUCCESS_EVENTS_1']."  $imported_events"
-	 			."<br><br>" .$mod_strings['LBL_SKIPPED_EVENTS_1'].$skip_count['Events']
-	 			."<br><br>" .$mod_strings['LBL_SUCCESS_CALENDAR_1']."  $imported_tasks"
-	 			."<br><br>" .$mod_strings['LBL_SKIPPED_CALENDAR_1'].$skip_count['Calendar']
-	 			."<br><br>";
+	$message= "<b>".$mod_strings['LBL_SUCCESS']."</b>"
+		."<br><br>" .$mod_strings['LBL_SUCCESS_EVENTS_1']."  $imported_events"
+		."<br><br>" .$mod_strings['LBL_SKIPPED_EVENTS_1'].$skip_count['Events']
+		."<br><br>" .$mod_strings['LBL_SUCCESS_CALENDAR_1']."  $imported_tasks"
+		."<br><br>" .$mod_strings['LBL_SKIPPED_CALENDAR_1'].$skip_count['Calendar']
+		."<br><br>";
 
 	$smarty->assign("MESSAGE", $message);
 	$smarty->assign("RETURN_MODULE", $currentModule);
@@ -134,17 +134,15 @@ if($_REQUEST['step']!='undo'){
 	$smarty->assign("SINGLE_MOD", vtlib_purify($_REQUEST['module']));
 	$smarty->assign("CATEGORY", $parent_tab);
 	//@session_unregister("import_parenttab");
-		$smarty->display("Buttons_List1.tpl");
+	$smarty->display("Buttons_List.tpl");
 
 	$last_import = new iCalLastImport();
 	$ret_value = $last_import->undo('Calendar', $current_user->id);
 
 	if(!empty($ret_value)){
-	 $message= "<b>".$mod_strings['LBL_SUCCESS']."</b>"
-	 			."<br><br>" .$mod_strings['LBL_LAST_IMPORT_UNDONE']." ";
+		$message= "<b>".$mod_strings['LBL_SUCCESS'].'</b><br><br>' .$mod_strings['LBL_LAST_IMPORT_UNDONE']." ";
 	} else {
-	 $message= "<b>".$mod_strings['LBL_FAILURE']."</b>"
-	 			."<br><br>" .$mod_strings['LBL_NO_IMPORT_TO_UNDO']." ";
+		$message= "<b>".$mod_strings['LBL_FAILURE'].'</b><br><br>' .$mod_strings['LBL_NO_IMPORT_TO_UNDO']." ";
 	}
 
 	$smarty->assign("MESSAGE", $message);

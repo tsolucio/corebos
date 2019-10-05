@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
+$mod_strings = array(
 'RecycleBin' => 'Cestino',
 'MSG_EMPTY_RB_CONFIRMATION'=>'Sei sicuro di voler eliminare in modo permanente tutti i records cancellati, dal tuo database?',
 'LBL_SELECT_MODULE'=>'Modulo Selezionato',
@@ -19,5 +19,4 @@ $mod_strings = Array(
 'LNK_RESTORE'=>'Ripristina',
 'LBL_NO_PERMITTED_MODULES'=>'Nessun modulo disponibile consentito',
 );
-
 ?>

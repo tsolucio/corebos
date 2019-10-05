@@ -7,16 +7,14 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
-require_once('install/installAddons.php');
-require_once('config.php');
-require_once('include/logging.php');
-require_once('modules/Users/Users.php');
-require_once('modules/Users/LoginHistory.php');
-require_once('data/Tracker.php');
-require_once('include/utils/utils.php');
-require_once('modules/Users/DefaultDataPopulator.php');
-require_once('modules/Users/CreateUserPrivilegeFile.php');
+require_once 'install/installAddons.php';
+require_once 'config.php';
+require_once 'include/logging.php';
+require_once 'modules/Users/Users.php';
+require_once 'modules/Users/LoginHistory.php';
+require_once 'data/Tracker.php';
+require_once 'include/utils/utils.php';
+require_once 'modules/Users/CreateUserPrivilegeFile.php';
 
 global $php_max_execution_time;
 set_time_limit($php_max_execution_time);
@@ -24,11 +22,11 @@ set_time_limit($php_max_execution_time);
 session_start();
 
 $auth_key = $_REQUEST['auth_key'];
-if($_SESSION['authentication_key'] != $auth_key) {
+if ($_SESSION['authentication_key'] != $auth_key) {
 	die($installationStrings['ERR_NOT_AUTHORIZED_TO_PERFORM_THE_OPERATION']);
 }
 global $selected_optional_modules;
-if(isset($_REQUEST['selected_modules'])) {
+if (isset($_REQUEST['selected_modules'])) {
 	$_SESSION['installation_info']['selected_optional_modules'] = $_REQUEST['selected_modules'] ;
 }
 
@@ -39,7 +37,6 @@ if (isset($_SESSION['installation_info']['currency_code'])) $currency_code = $_S
 if (isset($_SESSION['installation_info']['currency_symbol'])) $currency_symbol = $_SESSION['installation_info']['currency_symbol'];
 if (isset($_SESSION['installation_info']['selected_optional_modules'])) $selected_optional_modules = $_SESSION['installation_info']['selected_optional_modules'];
 
-//require_once('install/CreateTables.inc.php');
 include 'install/InitSchema.php';
 global $adb;
 $adb = PearDatabase::getInstance();
@@ -58,11 +55,11 @@ $_SESSION = array();
 // If it's desired to kill the session, also delete the session cookie.
 // Note: This will destroy the session, and not just the session data!
 if (isset($_COOKIE[session_name()])) {
-   setcookie(session_name(), '', time()-42000, '/');
+	setcookie(session_name(), '', time()-42000, '/');
 }
 
 // Finally, destroy the session.
-session_destroy(); 
+session_destroy();
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -150,7 +147,7 @@ session_destroy();
 </table>
 <table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 	<tr>
-		<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td> | <?php echo $statimage ?>
+		<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
 	</tr>
 </table>
 </body>

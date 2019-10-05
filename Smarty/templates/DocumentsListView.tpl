@@ -13,27 +13,12 @@
 <script type="text/javascript" src="include/js/Merge.js"></script>
 <script type="text/javascript" src="include/js/dtlviewajax.js"></script>
 <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
-<script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
+<script type="text/javascript" src="include/js/FieldDepFunc.js"></script>
 {if !isset($Document_Folder_View)}
 	{assign var=Document_Folder_View value=1}
 {/if}
 <script>var Document_Folder_View={$Document_Folder_View};</script>
-		{include file='Buttons_List.tpl'}
-                                <div id="searchingUI" style="display:none;">
-                                        <table border=0 cellspacing=0 cellpadding=0 width=100%>
-                                        <tr>
-                                                <td align=center>
-                                                <img src="{'searching.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SEARCHING}"  title="{$APP.LBL_SEARCHING}">
-                                                </td>
-                                        </tr>
-                                        </table>
-                                </div>
-                        </td>
-                </tr>
-                </table>
-        </td>
-</tr>
-</table>
+{include file='Buttons_List.tpl'}
 
 {*<!-- Contents -->*}
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
@@ -70,7 +55,7 @@
 		<td class="small" nowrap width=40% >
 			  <input name="submit" type="button" class="crmbutton small create" onClick="callSearch('Basic');document.basicSearch.searchtype.searchlaunched='basic';" value=" {$APP.LBL_SEARCH_NOW_BUTTON} ">&nbsp;
 		</td>
-		<td class="small closeX" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="moveMe('searchAcc');searchshowhide('searchAcc','advSearch');document.basicSearch.searchtype.searchlaunched='';">[x]</td>
+		<td class="small closeX" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="searchshowhide('searchAcc','advSearch');document.basicSearch.searchtype.searchlaunched='';">[x]</td>
 	</tr>
 	<tr>
 		<td colspan="7" align="center" class="small">
@@ -90,7 +75,7 @@
 	<table  cellspacing=0 cellpadding=5 width=100% class="searchUIAdv1 small" align="center" border=0>
 		<tr>
 			<td class="searchUIName small" nowrap align="left"><span class="moduleName">{$APP.LBL_SEARCH}</span><br><span class="small"><a href="#" onClick="show('searchAcc');fnhide('advSearch');document.basicSearch.searchtype.searchlaunched='';">{$APP.LBL_GO_TO} {$APP.LNK_BASIC_SEARCH}</a></span></td>
-			<td class="small closeX" align="right" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="moveMe('searchAcc');searchshowhide('searchAcc','advSearch');document.basicSearch.searchtype.searchlaunched='';">[x]</td>
+			<td class="small closeX" align="right" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="searchshowhide('searchAcc','advSearch');document.basicSearch.searchtype.searchlaunched='';">[x]</td>
 		</tr>
 	</table>
 	<table cellpadding="2" cellspacing="0" width="100%" align="center" class="searchUIAdv2 small" border=0>

@@ -14,11 +14,13 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-class PBXManagerAfterSaveCreateActivity extends cbupdaterWorker {
+class cbupdPBXManagerAfterSaveCreateActivity extends cbupdaterWorker {
 
-	function applyChange() {
+	public function applyChange() {
 		global $adb;
-		if ($this->hasError()) $this->sendError();
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
@@ -29,5 +31,4 @@ class PBXManagerAfterSaveCreateActivity extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-
 }

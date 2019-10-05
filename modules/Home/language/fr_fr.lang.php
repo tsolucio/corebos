@@ -2,7 +2,7 @@
 /***********************************************************
 *  Module       : Home
 *  Language     : French
-*  Version      : 5.4.0 
+*  Version      : 5.4.0
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
@@ -39,19 +39,21 @@ $mod_strings = array (
 	'Last Week' => 'La semaine dernière',
 	'Last 2 Days' => 'Les 2 derniers jours',
 	'Last Ten Days' => 'Les 10 derniers jours',
-	
+
 	'User List' => 'Liste des utilisateurs',
-	
+
 	'LBL_HOME_MODULE' => 'Module',
+	'LBL_HOME_CUSTOM_WIDGET' => 'Aggregate Filter',
 	'LBL_HOME_RSS' => 'RSS',
 	'LBL_HOME_DASHBOARD' => 'Tableau de bord',
 	'LBL_HOME_STUFFTITLE' => 'Nom du bloc',
 	'LBL_HOME_SHOW' => 'Montrer',
 	'LBL_HOME_FILTERBY' => 'Filtrer par',
-	'LBL_HOME_Fields' => 'Champs à afficher<br>
-	(selectionnez-en deux)',
+	'LBL_HOME_Fields' => 'Champs à afficher',
 	'LBL_HOME_PRESSCTRL' => '(Appuyez sur "Ctrl"
 	pour en sélectionner plusieurs)',
+	'LBL_HOME_AGGREGATE'=>'Aggregate',
+	'LBL_HOME_AG_FIELDS'=>'On field',
 	'LBL_HOME_RSSURL' => 'RSS URL',
 	'LBL_HOME_DASHBOARD_NAME' => 'Nom du Tableau de bord',
 	'LBL_HOME_DASHBOARD_TYPE' => 'Type de Tableau de bord',
@@ -105,8 +107,13 @@ $mod_strings = array (
 	'LBL_DEFAULT_WIDGET'=>'Widgets par défaut',
 	'LBL_NO_WIDGETS_HIDDEN'=>'Aucun widget par défaut masqué',
 	'UpdateExchangeRate' => 'Mettre à jour taux de change',
+	'Update currency exchange rates.' => 'Update currency exchange rates.',
 	'LBL_HOME_ADDWINDOW' => 'Ajouter Fenêtre',
 	'LBL_GETTING_STARTED' => 'Démarrage...',
 	'ExpirePasswordAfterDays' => 'Expire Password After Days',
+	'Expire users passwords after Application_ExpirePasswordAfterDays days.' => 'Expire users passwords after Application_ExpirePasswordAfterDays days.',
+	'FieldsNotFoundInFilter' => 'Fields not found in Selected Filter',
+	'FilterNotFound' => 'Filter You have Selected is Not Found',
+	'Permission Denied' => 'Permission Denied',
 );
 ?>

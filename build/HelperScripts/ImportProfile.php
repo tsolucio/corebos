@@ -16,27 +16,27 @@
 *  Version      : 5.4.0
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
-include_once('vtlib/Vtiger/Module.php');
-include_once('modules/Users/Users.php');
-require_once('include/logging.php');
-require_once('include/utils/UserInfoUtil.php');
-require_once('include/utils/utils.php');
-include_once('config.inc.php');
-global $adb,$root_directory;
+include_once 'vtlib/Vtiger/Module.php';
+include_once 'modules/Users/Users.php';
+require_once 'include/logging.php';
+require_once 'include/utils/UserInfoUtil.php';
+require_once 'include/utils/utils.php';
+include_once 'config.inc.php';
+global $adb;
 
 //$xmlstr = file_get_contents("build/data/$lang/profile.xml");
 //$if = getImportDataFileName('profile.xml',$lang);
-$xmlreader = new SimpleXMLElement('build/profile.xml',0,true);
+$xmlreader = new SimpleXMLElement('build/profile.xml', 0, true);
 
 foreach ($xmlreader->vtcrm_profile as $profile) {
-	$prfname = html_entity_decode((string)$profile->vtcrm_definition->vtcrm_profilename,ENT_QUOTES,'UTF-8');
-	$prfdesc = html_entity_decode((string)$profile->vtcrm_definition->vtcrm_profiledescription,ENT_QUOTES,'UTF-8');
+	$prfname = html_entity_decode((string)$profile->vtcrm_definition->vtcrm_profilename, ENT_QUOTES, 'UTF-8');
+	$prfdesc = html_entity_decode((string)$profile->vtcrm_definition->vtcrm_profiledescription, ENT_QUOTES, 'UTF-8');
 
 	//$pfexist = $adb->getone("select count(*) as cnt from vtiger_profile where profilename='".addslashes($prfname)."'");
-	$pfrs = $adb->pquery('select count(*) as cnt from vtiger_profile where profilename=?',array($prfname));
+	$pfrs = $adb->pquery('select count(*) as cnt from vtiger_profile where profilename=?', array($prfname));
 	$pfcnt = $adb->fetch_array($pfrs);
 	if (!empty($pfcnt['cnt'])) {
-		echo("$prfname already exists!");
+		echo "$prfname already exists!";
 		continue;
 	}
 	$profile_id = $adb->getUniqueID("vtiger_profile");
@@ -70,7 +70,7 @@ foreach ($xmlreader->vtcrm_profile as $profile) {
 	$sql4="insert into vtiger_profile2standardpermissions values(?,?,?,?)";
 	$rstab = $adb->query('select tabid from vtiger_tab');
 	while ($tb = $adb->fetch_array($rstab)) {
-		for ($action=0;$action<5;$action++) {  // count 5 actions
+		for ($action=0; $action<5; $action++) {  // count 5 actions
 			$adb->pquery($sql4, array($profile_id, $tb['tabid'], $action, 0));
 		}
 	}
@@ -120,8 +120,8 @@ foreach ($xmlreader->vtcrm_profile as $profile) {
 			$lasttabname=(string)$pf2tab->attributes()->tabname;
 			$tab_id=getTabid($lasttabname);
 		}
-		if ((string)$pf2tab->attributes()->visible!='0' or (string)$pf2tab->attributes()->readonly!='0') {
-			list($fname,$cname) = explode('::::',(string)$pf2tab);
+		if ((string)$pf2tab->attributes()->visible!='0' || (string)$pf2tab->attributes()->readonly!='0') {
+			list($fname,$cname) = explode('::::', (string)$pf2tab);
 			$fieldid = $adb->getone("select fieldid from vtiger_field where fieldname='$fname' and columnname='$cname' and tabid=$tab_id");
 			if (!empty($fieldid)) {
 				$adb->pquery($p2fupd, array((string)$pf2tab->attributes()->visible, (string)$pf2tab->attributes()->readonly, $profile_id, $tab_id, $fieldid));

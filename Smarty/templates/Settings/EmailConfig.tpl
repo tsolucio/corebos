@@ -40,11 +40,11 @@
 								<!-- DISPLAY -->
 								<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 									<tr>
-										<td width=50 rowspan=2 valign=top><img src="{'ogmailserver.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" width="48" height="48" border=0 title="{$MOD.LBL_USERS}"></td>
+										<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'ogmailserver.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" width="48" height="48" border=0 title="{$MOD.LBL_USERS}"></td>
 										<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_MAIL_SERVER_SETTINGS} </b></td>
 									</tr>
 									<tr>
-										<td valign=top class="small">{$MOD.LBL_MAIL_SERVER_DESC} </td>
+										<td valign=top class="small cblds-p-v_none">{$MOD.LBL_MAIL_SERVER_DESC} </td>
 									</tr>
 								</table>
 								<br>
@@ -162,25 +162,23 @@
 </table>
 {literal}
 <script>
-function validate_mail_server(form)
-{
-	if(form.server.value =='')
-	{
-		{/literal}
-		alert("{$APP.SERVERNAME_CANNOT_BE_EMPTY}")
+function validate_mail_server(form) {
+	if (form.server.value == '') {
+		alert("{/literal}{$APP.SERVERNAME_CANNOT_BE_EMPTY}{literal}")
 		return false;
-		{literal}
+	}
+	if (form.from_email_field.value != '') {
+		if (patternValidate('from_email_field','{/literal}{$MOD.LBL_FROM_EMAIL_FIELD}{literal}','EMAIL') == false)
+			return false;
 	}
 	return true;
 }
 
-function setDefaultMailServer()
-{
+function setDefaultMailServer() {
 	var confirmMsg = document.getElementById('confirmMsg').value;
-	if(confirm(confirmMsg)){
+	if (confirm(confirmMsg)) {
 		return true;
-	}
-	else{
+	} else {
 		return false;
 	}
 }

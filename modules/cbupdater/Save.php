@@ -7,6 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-//require_once('modules/Vtiger/Save.php');
+//require_once 'modules/Vtiger/Save.php';
 header('Location: index.php?action=DetailView&module=cbupdater&record='.urlencode(vtlib_purify($_REQUEST['record'])));
 ?>

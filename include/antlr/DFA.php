@@ -42,10 +42,10 @@ class DFA {
 	protected $eot;
 	protected $eof;
 	protected $min;
-    protected $max;
-    protected $accept;
-    protected $special;
-    protected $transition;
+	protected $max;
+	protected $accept;
+	protected $special;
+	protected $transition;
 
 	protected $decisionNumber;
 
@@ -62,7 +62,7 @@ class DFA {
 	//TODO: This is a hackish way of doing a try finally, replace this by bunching up the returns.
 	//Possibly rewrite  predict. There is one more place i might need to fix, where i thought 
 	//try{}catch(ex){[work]; throw ex}; [work]; would be the same as a try finally;
-	
+
 	public function predict($input){
 		if ( $this->debug ) {
 			echo ("Enter DFA.predict for decision ".$this->decisionNumber);
@@ -79,7 +79,7 @@ class DFA {
 		$input->rewind($mark);
 		return $ret;
 	}
-	
+
 	public function _predict($input) {
 		$s = 0; // we always start at s0
 			while ( true ) {
@@ -134,13 +134,13 @@ class DFA {
 					$input->consume();
 					continue;
 				}
-				if ( $eot[$s]>=0 ) {  // EOT Transition?
+				if ( empty($eot[$s]) || $eot[$s]>=0 ) {  // EOT Transition?
 					if ( $this->debug ) println("EOT transition");
 					$s = $this->eot[$s];
 					$input->consume();
 					continue;
 				}
-				if ( $c==Token::$EOF && $eof[$s]>=0 ) {  // EOF Transition to accept state?
+				if ( $c==TokenConst::$EOF && isset($eof[$s]) && $eof[$s]>=0 ) {  // EOF Transition to accept state?
 					if ( $this->debug ) echo ("accept via EOF; predict "+$this->accept[$eof[$s]]+" from "+$eof[$s]);
 					return $this->accept[$eof[$s]];
 				}
@@ -166,11 +166,8 @@ class DFA {
 			$this->recognizer->state->failed=true;
 			return;
 		}
-		$nvae =
-			new NoViableAltException($this->getDescription(),
-									 $decisionNumber,
-									 $s,
-									 $input);
+		$decisionNumber = null;
+		$nvae = new NoViableAltException($this->getDescription(), $decisionNumber, $s, $input);
 		$this->error($nvae);
 		throw $nvae;
 	}

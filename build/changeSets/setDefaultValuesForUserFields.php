@@ -16,27 +16,40 @@
 
 class setDefaultValuesForUserFields extends cbupdaterWorker {
 
-	function applyChange() {
-		if ($this->hasError()) $this->sendError();
+	public function applyChange() {
+		if ($this->hasError()) {
+			$this->sendError();
+		}
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery("UPDATE vtiger_field SET defaultvalue = '' WHERE tablename=? and columnname=?",
-				array('vtiger_asteriskextensions','asterisk_extension'));
-			$this->ExecuteQuery("UPDATE vtiger_field SET defaultvalue = ? WHERE tablename=? and columnname=?",
-				array(1,'vtiger_users','internal_mailer'));
-			$this->ExecuteQuery("UPDATE vtiger_field SET defaultvalue = ? WHERE tablename=? and columnname=?",
-				array(1,'vtiger_users','send_email_to_sender'));
-			$this->ExecuteQuery("UPDATE vtiger_field SET defaultvalue = ? WHERE tablename=? and columnname=?",
-				array('softed','vtiger_users','theme'));
-			$this->ExecuteQuery("UPDATE vtiger_field SET defaultvalue = ? WHERE tablename=? and columnname=?",
-				array('.','vtiger_users','currency_decimal_separator'));
-			$this->ExecuteQuery("UPDATE vtiger_field SET defaultvalue = '' WHERE tablename=? and columnname=?",
-				array('vtiger_users','currency_grouping_separator'));
+			$this->ExecuteQuery(
+				"UPDATE vtiger_field SET defaultvalue = '' WHERE tablename=? and columnname=?",
+				array('vtiger_asteriskextensions','asterisk_extension')
+			);
+			$this->ExecuteQuery(
+				"UPDATE vtiger_field SET defaultvalue = ? WHERE tablename=? and columnname=?",
+				array(1,'vtiger_users','internal_mailer')
+			);
+			$this->ExecuteQuery(
+				"UPDATE vtiger_field SET defaultvalue = ? WHERE tablename=? and columnname=?",
+				array(1,'vtiger_users','send_email_to_sender')
+			);
+			$this->ExecuteQuery(
+				"UPDATE vtiger_field SET defaultvalue = ? WHERE tablename=? and columnname=?",
+				array('softed','vtiger_users','theme')
+			);
+			$this->ExecuteQuery(
+				"UPDATE vtiger_field SET defaultvalue = ? WHERE tablename=? and columnname=?",
+				array('.','vtiger_users','currency_decimal_separator')
+			);
+			$this->ExecuteQuery(
+				"UPDATE vtiger_field SET defaultvalue = '' WHERE tablename=? and columnname=?",
+				array('vtiger_users','currency_grouping_separator')
+			);
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-
 }
