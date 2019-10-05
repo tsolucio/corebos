@@ -178,6 +178,12 @@ function saveFieldInfo(fieldid,module,sub_mode,typeofdata){
 		}
 		urlstring = urlstring + '&defaultvalue=' + encodeURIComponent(defaultvalue);
 	}
+	
+	if (document.getElementById('dependent_list_'+fieldid).length > 0) {
+		let dependentlistselectElement = document.getElementById('dependent_list_'+fieldid);
+		let dependentlistselectedValues = Array.from(dependentlistselectElement.selectedOptions).map(option => option.value);
+		urlstring = urlstring + '&dependentmoduleselected=' + encodeURIComponent(dependentlistselectedValues);
+	}
 
 	VtigerJS_DialogBox.showbusy();
 	jQuery.ajax({
