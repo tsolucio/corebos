@@ -168,6 +168,11 @@ switch ($focus->column_fields['maptype']) {
 	case 'Detail View Layout Mapping':
 			$mapinfo = $focus->DetailViewLayoutMapping();
 		break;
+	case 'Webservice Mapping':
+		$focus2 = CRMEntity::getInstance('Accounts');
+		$focus2->retrieve_entity_info(74, 'Accounts');
+		$mapinfo = $focus->WebserviceMapping($focus2->column_fields, $focus2->column_fields);
+		break;
 	case 'DecisionTable':
 		$context = array(
 			'season' => isset($_REQUEST['season']) ? $_REQUEST['season'] : 'Fall',
