@@ -25,11 +25,33 @@
 			<input type="hidden" name="module" value="Settings">
 			<input type="hidden" name="action" value="CurrencyEditView">
 			<tr>
-				<td width=50 rowspan=2 valign=top class="cblds-p_none"><img src="{'currency.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" width="48" height="48" border=0 title="{$MOD.LBL_USERS}"></td>
-				<td class="heading2" valign="bottom" ><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_CURRENCY_SETTINGS} </b></td>
+				<td rowspan=2 valign=top class="cblds-p_none" style="width:50px"><img src="{'currency.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_CURRENCY_SETTINGS}" style="width:48px;height:48px" border=0 title="{$MOD.LBL_CURRENCY_SETTINGS}"></td>
+				<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_CURRENCY_SETTINGS} </b></td>
 			</tr>
 			<tr>
 				<td valign=top class="small cblds-p-v_none">{$MOD.LBL_CURRENCY_DESCRIPTION}</td>
+				<td align="right" class="small cblds-t-align_right" width='40%'>
+				{if isset($CRON_TASK)}
+				{assign var=MODULE_NAME value="Workflow"}
+					<b>
+					{if $CRON_TASK->isDisabled() }{'LBL_DISABLED'|@getTranslatedString:$MODULE_NAME}{/if}
+					{if $CRON_TASK->isRunning() }{'LBL_RUNNING'|@getTranslatedString:$MODULE_NAME}{/if}
+					{if $CRON_TASK->isEnabled()}
+						{if $CRON_TASK->hadTimedout()}
+							{'LBL_LAST_SCAN_TIMED_OUT'|@getTranslatedString:$MODULE_NAME}.
+						{elseif $CRON_TASK->getLastEndDateTime() neq ''}
+							{'LBL_LAST_SCAN_AT'|@getTranslatedString:$MODULE_NAME}
+							{$CRON_TASK->getLastEndDateTime()}
+							&
+							{'LBL_TIME_TAKEN'|@getTranslatedString:$MODULE_NAME}:
+							{$CRON_TASK->getTimeDiff()}
+							{'LBL_SHORT_SECONDS'|@getTranslatedString:$MODULE_NAME}
+						{else}
+						{/if}
+					{/if}
+					</b>
+				{/if}
+				</td>
 			</tr>
 			</table>
 			<br>
