@@ -147,12 +147,12 @@ class FieldDependency extends processcbMap {
 				$actions['change'][] = array('field'=>(String)$action->field,'value'=>(String)$action->value);
 			}
 			foreach ($v->actions->hide as $key => $action) {
-				foreach($action->field as $fld => $name) {
+				foreach ($action->field as $fld => $name) {
 					$actions['hide'][] = array('field'=>(String)$name);
 				}
 			}
 			foreach ($v->actions->readonly as $key => $action) {
-				foreach($action->field as $fld => $name) {
+				foreach ($action->field as $fld => $name) {
 					$actions['readonly'][] = array('field'=>(String)$name);
 				}
 			}
@@ -171,28 +171,28 @@ class FieldDependency extends processcbMap {
 				$actions['setoptions'][] = array('field'=>(String)$action->field,'options'=>$opt);
 			}
 			foreach ($v->actions->collapse as $key => $action) {
-				foreach($action->block as $blc =>$block) {
+				foreach ($action->block as $blc => $block) {
 					$bname = getTranslatedString((String)$block, $mapping['origin']);
 					$bname = str_replace(' ', '', $bname);
 					$actions['collapse'][] = array('block'=>$bname);
 				}
 			}
 			foreach ($v->actions->open as $key => $action) {
-				foreach($action->block as $blc =>$block) {
+				foreach ($action->block as $blc => $block) {
 					$bname = getTranslatedString((String)$block, $mapping['origin']);
 					$bname = str_replace(' ', '', $bname);
 					$actions['open'][] = array('block'=>$bname);
 				}
 			}
 			foreach ($v->actions->disappear as $key => $action) {
-				foreach($action->block as $blc =>$block) {
+				foreach ($action->block as $blc => $block) {
 					$bname = getTranslatedString((String)$block, $mapping['origin']);
 					 $bname = str_replace(' ', '', $bname);
 					$actions['disappear'][] = array('block'=>$bname);
 				}
 			}
 			foreach ($v->actions->appear as $key => $action) {
-				foreach($action->block as $blc =>$block) {
+				foreach ($action->block as $blc => $block) {
 					$bname = getTranslatedString((String)$block, $mapping['origin']);
 					$bname = str_replace(' ', '', $bname);
 					$actions['appear'][] = array('block'=>$bname);
