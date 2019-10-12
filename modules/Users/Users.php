@@ -595,6 +595,9 @@ class Users extends CRMEntity {
 	}
 
 	public function mustChangePassword() {
+		if (empty($this->id)) {
+			return false;
+		}
 		$cnuser=$this->db->getColumnNames('vtiger_users');
 		if (!in_array('change_password', $cnuser)) {
 			$this->db->query("ALTER TABLE `vtiger_users` ADD `change_password` boolean NOT NULL DEFAULT 0");
