@@ -296,11 +296,23 @@ function csrf_callback($tokens) {
     header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
     include_once 'Smarty_setup.php';
     $smarty = new vtigerCRM_Smarty();
-    global $app_strings;
-    
+    global $app_strings, $current_language, $default_language;
+    if (empty($current_language)) {
+        // if the language is not set yet, then set it to the default language.
+        if (isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] != '') {
+            $current_language = $_SESSION['authenticated_user_language'];
+        } else {
+            if (!empty($current_user->language)) {
+                $current_language = $current_user->language;
+            } else {
+                $current_language = $default_language;
+            }
+        }
+    }
+    $app_strings = return_application_language($current_language);
     $smarty->assign('csrfWarning', $app_strings['csrf_warning']);
     $smarty->assign('csrfReload', $app_strings['csrf_reload']);
-    $smarty->display('csrf-warning.tpl');;
+    $smarty->display('csrf-warning.tpl');
 }
 
 /**

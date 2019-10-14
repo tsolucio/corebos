@@ -394,6 +394,24 @@
 									</td>
 								</tr>
 								<tr>
+									<td colspan='2' valign="top" class="dvtCellInfo" align="left">
+										{if $value.uitype eq 10}
+											&nbsp;<label><b>{$MOD.LBL_SELECT_MODULE}</b></label>
+											<select id="dependent_list_{$value.fieldselect}" name="dependent_list_{$value.fieldselect}" rows="10" class="txtBox" multiple="multiple">
+												{foreach from=$entityrelmods key=outerkey item=outervalue}
+													{assign var='isSelected' value=''}
+													{foreach from=$curmodsinrel key=innerkey item=innervalue}
+														{if ($innervalue eq $value.fieldselect) and ($innerkey eq $outerkey)}
+															{assign var='isSelected' value='selected'}
+														{/if}
+													{/foreach}
+													<option value={$outerkey} {$isSelected}>{$outervalue}</option>
+												{/foreach}
+											</select>
+										{/if}
+									</td>
+								</tr>
+								<tr>
 									<td colspan="3" class="dvtCellInfo" align="center">
 										<input type="button" name="save" value=" &nbsp; {$APP.LBL_SAVE_BUTTON_LABEL} &nbsp; " class="crmButton small save" onclick="saveFieldInfo('{$value.fieldselect}','{$MODULE}','updateFieldProperties','{$value.typeofdata}');" />&nbsp;
 										{if $value.customfieldflag neq 0}

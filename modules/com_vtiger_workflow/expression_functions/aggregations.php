@@ -178,11 +178,17 @@ function __cb_aggregation_queryonsamemodule($conditions, $module, $relfield, $re
 			$v = trim($v, '[');
 			$v = trim($v, ']');
 		});
+		$numconds = count($c);
+		$cnd = 1;
 		foreach ($c as $cond) {
 			$cndparams = explode(',', $cond);
+			if ($cnd == $numconds) {
+				$cndparams[3] = QueryGenerator::$AND;
+			}
 			$ct = new VTSimpleTemplate($cndparams[2]);
 			$value = $ct->render($entityCache, $entityId);
 			$qg->addCondition($cndparams[0], $value, $cndparams[1], $cndparams[3]);
+			$cnd++;
 		}
 	}
 	return $qg->getQuery();
