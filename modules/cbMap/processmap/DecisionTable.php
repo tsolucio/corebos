@@ -141,7 +141,7 @@ class DecisionTable extends processcbMap {
 				if (isset($value->decisionTable->searches)) {
 					foreach ($value->decisionTable->searches->search as $k => $v) {
 						foreach ($v->condition as $k => $v) {
-							if ($context[(String)$v->input]!='__IGNORE__') {
+							if (isset($context[(String)$v->input]) && $context[(String)$v->input]!='__IGNORE__') {
 								$queryGenerator->addCondition((String)$v->field, $context[(String)$v->input], (String)$v->operation, $queryGenerator::$AND);
 							}
 						}
