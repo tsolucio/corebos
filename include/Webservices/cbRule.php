@@ -21,9 +21,13 @@ include_once 'modules/cbMap/cbRule.php';
 /*
  * cbRule
  * conditionid: ID of the map
+ * context: array variables for the rule evaluation
  */
 function cbws_cbRule($conditionid, $context, $user) {
 	global $adb, $log;
+	if (!preg_match('/^[0-9]+x[0-9]+$/', $conditionid)) {
+		$conditionid = vtws_getEntityId('cbMap').'x'.cbMap::getMapIdByName($conditionid);
+	}
 
 	$webserviceObject = VtigerWebserviceObject::fromId($adb, $conditionid);
 	$handlerPath = $webserviceObject->getHandlerPath();
