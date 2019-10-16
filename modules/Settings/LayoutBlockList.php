@@ -140,6 +140,13 @@ while ($rl = $adb->fetch_array($brmrs)) {
 $notBlockRelatedModules = array_diff_key($relmods, $blockrelmods);
 $smarty->assign('NotBlockRelatedModules', $notBlockRelatedModules);
 
+$curmodsinrel_result = $adb->pquery('SELECT fieldid,relmodule FROM vtiger_fieldmodulerel WHERE module=?', array($fld_module));
+$curmodsinrel = array();
+while ($row = $adb->fetch_array($curmodsinrel_result)) {
+	$curmodsinrel[$row['relmodule']] = $row['fieldid'];
+}
+$smarty->assign('curmodsinrel', $curmodsinrel);
+
 if ((isset($_REQUEST['duplicate']) && $_REQUEST['duplicate'] == 'yes') || $duplicate == 'yes') {
 	echo 'ERROR';
 	exit;
@@ -689,6 +696,32 @@ function updateFieldProperties() {
 	$presence_check = vtlib_purify($_REQUEST['isPresent']);
 	$massedit_check = vtlib_purify($_REQUEST['massedit']);
 	$defaultvalue = vtlib_purify($_REQUEST['defaultvalue']);
+	$dependentmodules = vtlib_purify($_REQUEST['dependentmoduleselected']);
+
+	if (!empty($dependentmodules)) {
+		$newdependetmodules = explode(",", $_REQUEST['dependentmoduleselected']);
+		$result = $adb->pquery('SELECT relmodule FROM vtiger_fieldmodulerel WHERE fieldid=? AND module=?', array($fieldid, $fld_module));
+		$olddependetmodules = array();
+		for ($i=0; $i<$adb->num_rows($result); $i++) {
+			$olddependetmodules[] = $adb->query_result($result, $i, 'relmodule');
+		}
+
+		foreach ($newdependetmodules as $module) {
+			if (!in_array($module, $olddependetmodules)) {
+				$parentmodule = Vtiger_Module::getInstance($fld_module);
+				$relationfield = Vtiger_Field::getInstance($fieldname, $parentmodule);
+				$relationfield->setRelatedModules($module);
+			}
+		}
+
+		foreach ($olddependetmodules as $module) {
+			if (!in_array($module, $newdependetmodules)) {
+				$parentmodule = Vtiger_Module::getInstance($fld_module);
+				$relationfield = Vtiger_Field::getInstance($fieldname, $parentmodule);
+				$relationfield->unsetRelatedModules($module);
+			}
+		}
+	}
 
 	if (!empty($defaultvalue)) {
 		if ($uitype == 56) {

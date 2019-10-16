@@ -36,7 +36,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 		$cbMap = cbMap::getMapByID($mapid);
 
 		$cbMapio = cbMap::getMapByID($iomapid);
-		$outputfields = $cbMapio->IOMap()->readOutputFields();
+		//$outputfields = $cbMapio->IOMap()->readOutputFields();
 
 		include_once "modules/$origin_module/$origin_module.php";
 
@@ -54,6 +54,8 @@ class RunWebserviceWorkflowTask extends VTTask {
 		$inputtype = $wsconfig['inputtype'];
 		$outputtype = $wsconfig['outputtype'];
 		$headers = $wsconfig['wsheader'];
+		$wsuser = $wsconfig['wsuser'];
+		$wspass = $wsconfig['wspass'];
 
 		if ($wstype == 'REST') {
 			$arrconv = array();
@@ -161,6 +163,122 @@ class RunWebserviceWorkflowTask extends VTTask {
 					$id = $adb->query_result($q, 0, 'entityidfield');
 					$adb->pquery("update $table set $conditions where $id=$therecid", array());
 				}
+			}
+		}
+
+		if ($wstype == 'SOAP') {
+			$arrconv = array();
+			foreach ($target_fields as $key => $value) {
+				if ($key != 'Response' && $key != 'WSConfig') {
+					$arrconv[$key] = $value;
+					$url = str_replace("$key", "$value", $url);
+				}
+			}
+
+			//write logs for request
+			$logname = 'logs/'.$methodname;
+			$dateofcall = date('l jS \of F Y h:i:s A');
+			$LogContent = "\n*****************\nDate of call $dateofcall";
+			error_log($LogContent, 3, $logname.".log");
+			error_log("\nRecordid: ".$therecid, 3, $logname.".log");
+			error_log("\nMethod Called: $method $url", 3, $logname.".log");
+			error_log("\URL: ".$url, 3, $logname.".log");
+
+			try {
+				if ($wsuser != "" && $wspass != "") {
+					$options = array(
+						'login' => $wsuser,
+						'password' => $wspass,
+					);
+					$soapclient = new SoapClient($url, $options);
+				} else {
+					$soapclient = new SoapClient($url);
+				}
+
+				$response = $soapclient->__soapCall($methodname, array('parameters' => $arrconv));
+				$methodResult = $methodname.'Result';
+				$fields = $response->$methodResult;
+				foreach ($fields as $key => $value) {
+					if ($value != "") {
+						$xml = $value;
+					}
+				}
+
+				$parseXML = json_decode(json_encode(new SimpleXMLElement($xml)), 1);
+
+				if ($outputtype == "JSON") {
+					$response = json_encode($parseXML);
+				} elseif ($outputtype == "ARRAY") {
+					$response = $parseXML;
+				}
+
+				//write response to record fields
+				if (count($target_fields['Response']) > 0) {
+					if ($outputtype == "JSON") {
+						foreach ($target_fields['Response'] as $k => $v) {
+							$fld = $v['field']['fieldname'];
+							$ar = explode(",", $k);
+							if (count($ar) > 1) {
+								if (is_array($response)) {
+									$res = $response;
+									$r1 = json_encode($res);
+									$r1 = json_decode($r1);
+								} else {
+									$r = $response;
+									$r1 = json_encode($r);
+								}
+
+								for ($j = 0; $j < count($ar); $j++) {
+									$r1 = $res == null ? json_decode($r1) : $r1;
+									$r = $r1->$ar[$j];
+								}
+								$r2 = str_replace('"', '', $r);
+							} else {
+								if (is_array($response)) {
+									foreach ($response as $key => $value) {
+										if (is_array($response[$key])) {
+											$r = $value[$ar[0]];
+											if ($r != null) {
+												$r2 = $r;
+											}
+										} else {
+											$r2 = $value;
+										}
+									}
+								} else {
+									$r = json_decode($response);
+									if ($r->$k != null) {
+										$r2 = $r->$k;
+									} else {
+										foreach ($r as $k1 => $v1) {
+											$r2 = $v1->$ar[0];
+										}
+									}
+								}
+							}
+							if ($r2 == 'null') {
+								$r2 = "";
+							}
+							$conds[] = "$fld=\"$r2\"";
+						}
+						$conditions = implode(",", $conds);
+						$q = $adb->query("select * from vtiger_entityname where modulename='$origin_module'");
+						$table = $adb->query_result($q, 0, 'tablename');
+						$id = $adb->query_result($q, 0, 'entityidfield');
+						$adb->pquery("update $table set $conditions where $id=$therecid", array());
+					}
+				}
+
+				//write logs for response
+				$dateofresponse = date('l jS \of F Y h:i:s A');
+				error_log("\n\nResponse header: ".json_encode($options), 3, $logname.".log");
+				error_log("\n\nResponse: ".json_encode($response), 3, $logname.".log");
+				error_log("\n\n".$dateofresponse, 3, $logname.".log");
+			} catch (Exception $e) {
+				echo $e->getMessage();
+				$dateofresponse = date('l jS \of F Y h:i:s A');
+				error_log("\n\Error: ".json_encode($e->getMessage()), 3, $logname.".log");
+				error_log("\n\n".$dateofresponse, 3, $logname.".log");
 			}
 		}
 

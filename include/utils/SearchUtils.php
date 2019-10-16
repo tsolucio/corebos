@@ -774,11 +774,11 @@ function getSearchURL($input) {
 	global $default_charset;
 	$urlString='';
 	if (isset($input['searchtype']) && $input['searchtype']=='advance') {
-		$advft_criteria = vtlib_purify($input['advft_criteria']);
+		$advft_criteria = isset($input['advft_criteria']) ? vtlib_purify($input['advft_criteria']) : '';
 		if (empty($advft_criteria)) {
 			return $urlString;
 		}
-		$advft_criteria_groups = vtlib_purify($input['advft_criteria_groups']);
+		$advft_criteria_groups = isset($input['advft_criteria_groups']) ? vtlib_purify($input['advft_criteria_groups']) : '';
 		$urlString .= '&advft_criteria='.urlencode($advft_criteria).'&advft_criteria_groups='.urlencode($advft_criteria_groups).'&searchtype=advance';
 	} elseif (isset($input['type']) && $input['type']=='dbrd') {
 		if (isset($input['leadsource'])) {

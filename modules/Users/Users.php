@@ -595,6 +595,9 @@ class Users extends CRMEntity {
 	}
 
 	public function mustChangePassword() {
+		if (empty($this->id)) {
+			return false;
+		}
 		$cnuser=$this->db->getColumnNames('vtiger_users');
 		if (!in_array('change_password', $cnuser)) {
 			$this->db->query("ALTER TABLE `vtiger_users` ADD `change_password` boolean NOT NULL DEFAULT 0");
@@ -1588,37 +1591,25 @@ class Users extends CRMEntity {
 	}
 
 	/** Function to export the Users records in CSV Format
-	* @param reference variable - where condition is passed when the query is executed
-	* Returns Export Users Query.
+	* @param string where condition is passed when the query is executed
+	* @return string Users SQL Query.
 	*/
 	public function create_export_query($where = '') {
 		global $log, $current_user;
 		$log->debug('> create_export_query '.$where);
-
 		$query = '';
-
 		if (is_admin($current_user)) {
-			include "include/utils/ExportUtils.php";
-
-			//To get the Permitted fields query and the permitted fields list
+			include_once 'include/utils/ExportUtils.php';
 			$sql = getPermittedFieldsQuery('Users', 'detail_view');
 			$fields_list = getFieldsListFromQuery($sql);
-
 			$query = "SELECT $fields_list
-				FROM vtiger_crmentity
-				INNER JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.crmid
+				FROM vtiger_users
 				INNER JOIN vtiger_user2role ON vtiger_user2role.userid = vtiger_users.id
-				INNER JOIN vtiger_asteriskextensions ON vtiger_asteriskextensions.userid = vtiger_users.id";
-
+				LEFT JOIN vtiger_asteriskextensions ON vtiger_asteriskextensions.userid = vtiger_users.id";
 			$query .= $this->getNonAdminAccessControlQuery('Users', $current_user);
-			$where_auto = ' vtiger_crmentity.deleted = 0 ';
-
 			if ($where != '') {
-				$query .= " WHERE ($where) AND ".$where_auto;
-			} else {
-				$query .= ' WHERE '.$where_auto;
+				$query .= " WHERE ($where)";
 			}
-
 			$log->debug('< create_export_query');
 		}
 		return $query;

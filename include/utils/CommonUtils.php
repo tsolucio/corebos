@@ -1887,6 +1887,14 @@ function QuickCreate($module) {
 
 	$tabid = getTabid($module);
 
+	// Load default values from map
+	$bmapname = $module.'2'.$module;
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	$mapdefaults =array();
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$mapdefaults = $cbMap->Mapping($mapdefaults, $mapdefaults);
+	}
 	//Adding Security Check
 	$userprivs = $current_user->getPrivileges();
 	if ($userprivs->hasGlobalReadPermission()) {
@@ -1918,7 +1926,9 @@ function QuickCreate($module) {
 		$typeofdata = $adb->query_result($result, $i, 'typeofdata');
 		$defaultvalue = $adb->query_result($result, $i, 'defaultvalue');
 		$col_fields[$fieldname] = $defaultvalue;
-
+		if (empty($col_fields[$fieldname]) && !empty($mapdefaults[$fieldname])) {
+			$col_fields[$fieldname] = $mapdefaults[$fieldname];
+		}
 		//to get validationdata
 		$fldLabel_array = array();
 		$fldLabel_array[getTranslatedString($fieldlabel)] = $typeofdata;
