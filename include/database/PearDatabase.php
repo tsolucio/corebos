@@ -689,18 +689,18 @@ class PearDatabase {
 
 	public function sql_quote($data) {
 		if (is_array($data)) {
-			switch ($data{'type'}) {
+			switch ($data['type']) {
 				case 'text':
 				case 'numeric':
 				case 'integer':
 				case 'oid':
-					return $this->quote($data{'value'});
+					return $this->quote($data['value']);
 				break;
 				case 'timestamp':
-					return $this->formatDate($data{'value'});
+					return $this->formatDate($data['value']);
 				break;
 				default:
-					throw new Exception("unhandled type: ".serialize($cur));
+					throw new Exception('unhandled type: '.serialize($cur));
 			}
 		} else {
 			return $this->quote($data);
@@ -729,7 +729,7 @@ class PearDatabase {
 	public function run_insert_data($table, $data) {
 		$query = $this->sql_insert_data($table, $data);
 		$res = $this->query($query);
-		$this->query("commit;");
+		$this->query('commit;');
 	}
 
 	public function run_query_record($query) {
@@ -757,7 +757,7 @@ class PearDatabase {
 	public function run_query_field($query, $field = '') {
 		$rowdata = $this->run_query_record($query);
 		if (isset($field) && $field != '') {
-			return $rowdata{$field};
+			return $rowdata[$field];
 		} else {
 			return array_shift($rowdata);
 		}
@@ -766,7 +766,7 @@ class PearDatabase {
 	public function run_query_list($query, $field) {
 		$records = $this->run_query_allrecords($query);
 		foreach ($records as $walk => $cur) {
-			$list[] = $cur{$field};
+			$list[] = $cur[$field];
 		}
 	}
 
@@ -805,7 +805,7 @@ class PearDatabase {
 			throw new Exception("empty arrays not allowed");
 		}
 		foreach ($a as $walk => $cur) {
-			$l .= ($l?',':'').$this->quote($cur{$field});
+			$l .= ($l?',':'').$this->quote($cur[$field]);
 		}
 		return ' ( '.$l.' ) ';
 	}
