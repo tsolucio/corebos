@@ -631,6 +631,9 @@ class CustomView extends CRMEntity {
 		$stdfilterrow = $adb->fetch_array($result);
 
 		$stdfilterlist = array();
+		if (empty($stdfilterrow)) {
+			return $stdfilterlist;
+		}
 		$stdfilterlist["columnname"] = $stdfilterrow["columnname"];
 		$stdfilterlist["stdfilter"] = $stdfilterrow["stdfilter"];
 
