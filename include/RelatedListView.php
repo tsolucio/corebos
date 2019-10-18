@@ -36,6 +36,11 @@ function GetRelatedListBase($module, $relatedmodule, $focus, $query, $button, $r
 	$log->debug('> GetRelatedList '.$module.','.$relatedmodule.','.get_class($focus).','.$query.','.$button.','.$returnset.','.$edit_val.','.$del_val);
 	global $GetRelatedList_ReturnOnlyQuery;
 	if (isset($GetRelatedList_ReturnOnlyQuery) && $GetRelatedList_ReturnOnlyQuery) {
+		$order_by = $focus->getOrderBy();
+		$sorder = $focus->getSortOrder();
+		if (!empty($order_by)) {
+			$query .= ' ORDER BY '.$order_by.' '.$sorder;
+		}
 		return array('query'=>$query);
 	}
 	require_once 'Smarty_setup.php';
