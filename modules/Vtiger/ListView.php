@@ -255,7 +255,7 @@ if ($sql_error) {
 	//Added to select Multiple records in multiple pages
 		$smarty->assign('SELECTEDIDS', isset($_REQUEST['selobjs']) ? vtlib_purify($_REQUEST['selobjs']) : '');
 		$smarty->assign('ALLSELECTEDIDS', isset($_REQUEST['selobjs']) ? vtlib_purify($_REQUEST['allselobjs']) : '');
-		$smarty->assign('CURRENT_PAGE_BOXES', implode(array_keys($listview_entries), ';'));
+		$smarty->assign('CURRENT_PAGE_BOXES', implode(';', array_keys($listview_entries)));
 		ListViewSession::setSessionQuery($currentModule, $list_query, $viewid);
 
 	// Gather the custom link information to display

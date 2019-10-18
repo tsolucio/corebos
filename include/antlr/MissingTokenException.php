@@ -42,7 +42,7 @@ class MissingTokenException extends MismatchedTokenException {
 
 	public function toString() {
 		if ( $this->inserted!=null && $this->token!=null ) {
-			return "MissingTokenException(inserted ".$this->inserted." at ".$this->token->getText()+")";
+			return "MissingTokenException(inserted ".$this->inserted." at ".$this->token->getText().')';
 		}
 		if ( $this->token!=null ) {
 			return "MissingTokenException(at ".$token->getText().")";
