@@ -32,7 +32,6 @@ $tpls = array();
 while ($t = $adb->fetch_array($templates)) {
 	$tpls[$t['notesid']] = $t['title'];
 }
-asort($tpls);
 $number=$adb->num_rows($templates);
 if ($number==0) {
 	echo getTranslatedString('LBL_NOTEMPLATE', 'evvtgendoc');
@@ -40,8 +39,10 @@ if ($number==0) {
 	echo getTranslatedString('LBL_PERMISSION');
 } else {
 	echo "<select class='small' size=8 style='width:280px;overflow:auto;' id='gendoctemplate' name='gendoctemplate'>";
+	$firsttime = true;
 	foreach ($tpls as $nid => $tname) {
-		echo "<option value='".$nid."' title='".$tname."'>".$tname.'</option>';
+		echo "<option value='".$nid."' title='".$tname."' ". ($firsttime ? 'selected' : '') .">".$tname.'</option>';
+		$firsttime = false;
 	}
 	$gendoc_pdfactive = coreBOS_Settings::getSetting('cbgendoc_active', 0);
 	$gendoc_showpdf = coreBOS_Settings::getSetting('cbgendoc_showpdflinks', 0);
