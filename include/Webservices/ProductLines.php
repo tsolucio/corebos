@@ -24,9 +24,10 @@ if ($elementType != 'PurchaseOrder') {
 } else {
 	$acvid = $element['vendor_id'];
 }
-$taxtype=$element['taxtype'];
-if (empty($taxtype)) {
+if (empty($element['taxtype'])) {
 	$taxtype = 'group'; // Individual
+} else {
+	$taxtype=$element['taxtype'];
 }
 $_REQUEST['taxtype']=$taxtype;
 $subtotal = 0;
@@ -82,16 +83,16 @@ $_REQUEST['totalProductCount']=$i;
 $_REQUEST['subtotal']=round($subtotal + $totalwithtax, 2);
 if ($taxtype == 'individual') {
 	$totaldoc=$subtotal+$totalwithtax;
-	if ($element['discount_type_final']=='amount') {
+	if (!empty($element['discount_type_final']) && $element['discount_type_final']=='amount') {
 		$totaldoc=$totaldoc-$element['hdnDiscountAmount'];
-	} elseif ($element['discount_type_final']=='percentage') {
+	} elseif (!empty($element['discount_type_final']) && $element['discount_type_final']=='percentage') {
 		$totaldoc=$totaldoc-($totaldoc*$element['hdnDiscountPercent']/100);
 	}
 } else {
 	$totaldoc=$subtotal;
-	if ($element['discount_type_final']=='amount') {
+	if (!empty($element['discount_type_final']) && $element['discount_type_final']=='amount') {
 		$totaldoc=$totaldoc-$element['hdnDiscountAmount'];
-	} elseif ($element['discount_type_final']=='percentage') {
+	} elseif (!empty($element['discount_type_final']) && $element['discount_type_final']=='percentage') {
 		$totaldoc=$totaldoc-($totaldoc*$element['hdnDiscountPercent']/100);
 	}
 	$tax_val = 0;
@@ -112,10 +113,10 @@ if (!empty($element['shipping_handling_charge'])) {
 		}
 	}
 }
-if ($element['adjustmentType']=='add') {
+if (!empty($element['adjustmentType']) && $element['adjustmentType']=='add') {
 	$totaldoc=$totaldoc+$element['adjustment'];
 	$_REQUEST['adjustment']=$element['adjustment'];
-} elseif ($element['adjustmentType']=='deduct') {
+} elseif (!empty($element['adjustmentType']) && $element['adjustmentType']=='deduct') {
 	$totaldoc=$totaldoc-$element['adjustment'];
 	$_REQUEST['adjustment']=$element['adjustment'];
 }
