@@ -334,4 +334,11 @@
 	<classname>addCbRuleMissingContextUnblock</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Unblock login users automatically after a few minutes</description>
+	<filename>build/changeSets/2019/cronUnblockLoginUsers.php</filename>
+	<classname>cronUnblockLoginUsers</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
