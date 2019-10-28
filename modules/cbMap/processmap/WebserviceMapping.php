@@ -205,7 +205,9 @@ class WebserviceMapping extends cbMapcore {
 			$userwsid = vtws_getEntityId('Users');
 			$ofields['assigned_user_id'] = vtws_getId($userwsid, $current_user->id);
 		}
-		$tfields = $arguments[1];
+		if (isset($arguments[1])) {
+			$tfields = $arguments[1];
+		}
 		foreach ($mapping['fields'] as $targetfield => $sourcefields) {
 			$value = '';
 			$delim = (isset($sourcefields['delimiter']) ? $sourcefields['delimiter'] : '');
@@ -238,6 +240,7 @@ class WebserviceMapping extends cbMapcore {
 				}
 			}
 
+		if (isset($sourcefields['merge'])) {
 			foreach ($sourcefields['merge'] as $fieldinfo) {
 				$idx = array_keys($fieldinfo);
 				if (strtoupper($idx[0])=='CONST') {
@@ -288,6 +291,7 @@ class WebserviceMapping extends cbMapcore {
 					$value.= (isset($ofields[$fieldname]) ? $ofields[$fieldname] : '').$delim;
 				}
 			}
+		}
 			$value = rtrim($value, $delim);
 			if ($targetfield =='Response' || $targetfield =='WSConfig') {
 				$value = $sourcefields;

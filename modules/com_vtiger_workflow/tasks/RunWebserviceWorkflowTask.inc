@@ -17,7 +17,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
-		return array('bmapioid','bmapioid_display','bmapid', 'bmapid_display');
+		return array('bmapid', 'bmapid_display');
 	}
 
 	public function doTask(&$entity) {
@@ -32,11 +32,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 		$therecid = $recordId[1];
 		$origin_module = $entity->getModuleName();
 		$mapid = $this->bmapid;
-		$iomapid = $this->bmapioid;
 		$cbMap = cbMap::getMapByID($mapid);
-
-		$cbMapio = cbMap::getMapByID($iomapid);
-		//$outputfields = $cbMapio->IOMap()->readOutputFields();
 
 		include_once "modules/$origin_module/$origin_module.php";
 
@@ -197,19 +193,24 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 				$response = $soapclient->__soapCall($methodname, array('parameters' => $arrconv));
 				$methodResult = $methodname.'Result';
-				$fields = $response->$methodResult;
-				foreach ($fields as $key => $value) {
-					if ($value != "") {
-						$xml = $value;
-					}
+				if (isset($response->$methodResult)) {
+					$fields = $response->$methodResult;
+				} else {
+					$fields = $response;
 				}
 
-				$parseXML = json_decode(json_encode(new SimpleXMLElement($xml)), 1);
-
+				if (is_array($fields)) {
+					foreach ($fields as $key => $value) {
+						if ($value != "") {
+							$xml = $value;
+						}
+					}
+					$parseXML = json_decode(json_encode(new SimpleXMLElement($xml)), 1);
+				} else {
+					$parseXML = $fields;
+				}			
 				if ($outputtype == "JSON") {
 					$response = json_encode($parseXML);
-				} elseif ($outputtype == "ARRAY") {
-					$response = $parseXML;
 				}
 
 				//write response to record fields

@@ -43,16 +43,7 @@
 <script src="modules/{$module->name}/resources/fieldexpressionpopup.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/updatemassivefieldstaskscript.js" type="text/javascript" charset="utf-8"></script>
 <div class="slds-form-element">
-	<label class="slds-form-element__label" for="form-element-01">{'Select IO Map'|@getTranslatedString}</label>
-	<div class="slds-form-element__control">
-	<input id="bmapioid" name="bmapioid" type="hidden" value="{$task->bmapioid}">
-	<input id="bmapioid_display" name="bmapioid_display" readonly="" style="border:1px solid #bababa;" type="text" value="{$task->bmapioid_display}">&nbsp;
-	<img src="{'select.gif'|@vtiger_imageurl:$THEME}" tabindex="1" alt="{'LBL_SELECT'|@getTranslatedString}" title="{'LBL_SELECT'|@getTranslatedString}"
-	onclick="return window.open('index.php?module=cbMap&action=Popup&html=Popup_picker&form=new_task&forfield=bmapioid&srcmodule=GlobalVariable'+SpecialSearch,'vtlibui10wf','width=680,height=602,resizable=0,scrollbars=0,top=150,left=200');" style="cursor:hand;cursor:pointer" align="absmiddle">&nbsp;
-	<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}"
-	alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedString}" onClick="this.form.bmapioid.value=''; this.form.bmapioid_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
-	</div>
-        <label class="slds-form-element__label" for="form-element-01">{'Select Config Map'|@getTranslatedString}</label>
+    <label class="slds-form-element__label" for="form-element-01">{'Select Config Map'|@getTranslatedString}</label>
 	<div class="slds-form-element__control">
 	<input id="bmapid" name="bmapid" type="hidden" value="{$task->bmapid}">
 	<input id="bmapid_display" name="bmapid_display" readonly="" style="border:1px solid #bababa;" type="text" value="{$task->bmapid_display}">&nbsp;
