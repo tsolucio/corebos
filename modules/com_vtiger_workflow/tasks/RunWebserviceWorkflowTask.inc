@@ -208,7 +208,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 					$parseXML = json_decode(json_encode(new SimpleXMLElement($xml)), 1);
 				} else {
 					$parseXML = $fields;
-				}			
+				}
 				if ($outputtype == "JSON") {
 					$response = json_encode($parseXML);
 				}
