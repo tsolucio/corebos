@@ -26,6 +26,7 @@ class Google_Service_ServiceControl_CheckResponse extends Google_Collection
   protected $quotaInfoType = 'Google_Service_ServiceControl_QuotaInfo';
   protected $quotaInfoDataType = '';
   public $serviceConfigId;
+  public $serviceRolloutId;
 
   /**
    * @param Google_Service_ServiceControl_CheckError
@@ -84,5 +85,13 @@ class Google_Service_ServiceControl_CheckResponse extends Google_Collection
   public function getServiceConfigId()
   {
     return $this->serviceConfigId;
+  }
+  public function setServiceRolloutId($serviceRolloutId)
+  {
+    $this->serviceRolloutId = $serviceRolloutId;
+  }
+  public function getServiceRolloutId()
+  {
+    return $this->serviceRolloutId;
   }
 }

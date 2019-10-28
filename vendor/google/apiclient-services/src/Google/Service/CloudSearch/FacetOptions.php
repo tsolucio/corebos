@@ -17,10 +17,19 @@
 
 class Google_Service_CloudSearch_FacetOptions extends Google_Model
 {
+  public $numFacetBuckets;
   public $objectType;
   public $operatorName;
   public $sourceName;
 
+  public function setNumFacetBuckets($numFacetBuckets)
+  {
+    $this->numFacetBuckets = $numFacetBuckets;
+  }
+  public function getNumFacetBuckets()
+  {
+    return $this->numFacetBuckets;
+  }
   public function setObjectType($objectType)
   {
     $this->objectType = $objectType;

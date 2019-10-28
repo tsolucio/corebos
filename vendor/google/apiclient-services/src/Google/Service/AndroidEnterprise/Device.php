@@ -22,6 +22,8 @@ class Google_Service_AndroidEnterprise_Device extends Google_Model
   public $managementType;
   protected $policyType = 'Google_Service_AndroidEnterprise_Policy';
   protected $policyDataType = '';
+  protected $reportType = 'Google_Service_AndroidEnterprise_DeviceReport';
+  protected $reportDataType = '';
 
   public function setAndroidId($androidId)
   {
@@ -60,5 +62,19 @@ class Google_Service_AndroidEnterprise_Device extends Google_Model
   public function getPolicy()
   {
     return $this->policy;
+  }
+  /**
+   * @param Google_Service_AndroidEnterprise_DeviceReport
+   */
+  public function setReport(Google_Service_AndroidEnterprise_DeviceReport $report)
+  {
+    $this->report = $report;
+  }
+  /**
+   * @return Google_Service_AndroidEnterprise_DeviceReport
+   */
+  public function getReport()
+  {
+    return $this->report;
   }
 }

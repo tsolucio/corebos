@@ -19,6 +19,8 @@ class Google_Service_Dataflow_WorkItemServiceState extends Google_Collection
 {
   protected $collection_key = 'metricShortId';
   public $harnessData;
+  protected $hotKeyDetectionType = 'Google_Service_Dataflow_HotKeyDetection';
+  protected $hotKeyDetectionDataType = '';
   public $leaseExpireTime;
   protected $metricShortIdType = 'Google_Service_Dataflow_MetricShortId';
   protected $metricShortIdDataType = 'array';
@@ -38,6 +40,20 @@ class Google_Service_Dataflow_WorkItemServiceState extends Google_Collection
   public function getHarnessData()
   {
     return $this->harnessData;
+  }
+  /**
+   * @param Google_Service_Dataflow_HotKeyDetection
+   */
+  public function setHotKeyDetection(Google_Service_Dataflow_HotKeyDetection $hotKeyDetection)
+  {
+    $this->hotKeyDetection = $hotKeyDetection;
+  }
+  /**
+   * @return Google_Service_Dataflow_HotKeyDetection
+   */
+  public function getHotKeyDetection()
+  {
+    return $this->hotKeyDetection;
   }
   public function setLeaseExpireTime($leaseExpireTime)
   {

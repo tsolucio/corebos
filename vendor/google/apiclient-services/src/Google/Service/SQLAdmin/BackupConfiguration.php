@@ -20,6 +20,7 @@ class Google_Service_SQLAdmin_BackupConfiguration extends Google_Model
   public $binaryLogEnabled;
   public $enabled;
   public $kind;
+  public $location;
   public $replicationLogArchivingEnabled;
   public $startTime;
 
@@ -46,6 +47,14 @@ class Google_Service_SQLAdmin_BackupConfiguration extends Google_Model
   public function getKind()
   {
     return $this->kind;
+  }
+  public function setLocation($location)
+  {
+    $this->location = $location;
+  }
+  public function getLocation()
+  {
+    return $this->location;
   }
   public function setReplicationLogArchivingEnabled($replicationLogArchivingEnabled)
   {

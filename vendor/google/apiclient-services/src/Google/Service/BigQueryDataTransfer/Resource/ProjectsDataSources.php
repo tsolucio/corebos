@@ -32,7 +32,7 @@ class Google_Service_BigQueryDataTransfer_Resource_ProjectsDataSources extends G
    * we have OAuth token for the particular user, which is a pre-requisite before
    * user can create a transfer config. (dataSources.checkValidCreds)
    *
-   * @param string $name The data source in the form:
+   * @param string $name Required. The data source in the form:
    * `projects/{project_id}/dataSources/{data_source_id}`
    * @param Google_Service_BigQueryDataTransfer_CheckValidCredsRequest $postBody
    * @param array $optParams Optional parameters.
@@ -48,8 +48,8 @@ class Google_Service_BigQueryDataTransfer_Resource_ProjectsDataSources extends G
    * Retrieves a supported data source and returns its settings, which can be used
    * for UI rendering. (dataSources.get)
    *
-   * @param string $name The field will contain name of the resource requested,
-   * for example: `projects/{project_id}/dataSources/{data_source_id}`
+   * @param string $name Required. The field will contain name of the resource
+   * requested, for example: `projects/{project_id}/dataSources/{data_source_id}`
    * @param array $optParams Optional parameters.
    * @return Google_Service_BigQueryDataTransfer_DataSource
    */
@@ -63,8 +63,8 @@ class Google_Service_BigQueryDataTransfer_Resource_ProjectsDataSources extends G
    * Lists supported data sources and returns their settings, which can be used
    * for UI rendering. (dataSources.listProjectsDataSources)
    *
-   * @param string $parent The BigQuery project id for which data sources should
-   * be returned. Must be in the form: `projects/{project_id}`
+   * @param string $parent Required. The BigQuery project id for which data
+   * sources should be returned. Must be in the form: `projects/{project_id}`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string pageToken Pagination token, which can be used to request a

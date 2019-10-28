@@ -26,7 +26,8 @@
 class Google_Service_Compute_Resource_MachineTypes extends Google_Service_Resource
 {
   /**
-   * Retrieves an aggregated list of machine types. (machineTypes.aggregatedList)
+   * Retrieves an aggregated list of machine types. (== suppress_warning http-
+   * rest-shadowed ==) (machineTypes.aggregatedList)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -79,7 +80,8 @@ class Google_Service_Compute_Resource_MachineTypes extends Google_Service_Resour
   }
   /**
    * Returns the specified machine type. Gets a list of available machine types by
-   * making a list() request. (machineTypes.get)
+   * making a list() request. (== suppress_warning http-rest-shadowed ==)
+   * (machineTypes.get)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -94,8 +96,8 @@ class Google_Service_Compute_Resource_MachineTypes extends Google_Service_Resour
     return $this->call('get', array($params), "Google_Service_Compute_MachineType");
   }
   /**
-   * Retrieves a list of machine types available to the specified project.
-   * (machineTypes.listMachineTypes)
+   * Retrieves a list of machine types available to the specified project. (==
+   * suppress_warning http-rest-shadowed ==) (machineTypes.listMachineTypes)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.

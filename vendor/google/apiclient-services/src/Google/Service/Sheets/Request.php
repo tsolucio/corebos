@@ -59,6 +59,8 @@ class Google_Service_Sheets_Request extends Google_Model
   protected $deleteDimensionDataType = '';
   protected $deleteDimensionGroupType = 'Google_Service_Sheets_DeleteDimensionGroupRequest';
   protected $deleteDimensionGroupDataType = '';
+  protected $deleteDuplicatesType = 'Google_Service_Sheets_DeleteDuplicatesRequest';
+  protected $deleteDuplicatesDataType = '';
   protected $deleteEmbeddedObjectType = 'Google_Service_Sheets_DeleteEmbeddedObjectRequest';
   protected $deleteEmbeddedObjectDataType = '';
   protected $deleteFilterViewType = 'Google_Service_Sheets_DeleteFilterViewRequest';
@@ -99,6 +101,8 @@ class Google_Service_Sheets_Request extends Google_Model
   protected $sortRangeDataType = '';
   protected $textToColumnsType = 'Google_Service_Sheets_TextToColumnsRequest';
   protected $textToColumnsDataType = '';
+  protected $trimWhitespaceType = 'Google_Service_Sheets_TrimWhitespaceRequest';
+  protected $trimWhitespaceDataType = '';
   protected $unmergeCellsType = 'Google_Service_Sheets_UnmergeCellsRequest';
   protected $unmergeCellsDataType = '';
   protected $updateBandingType = 'Google_Service_Sheets_UpdateBandingRequest';
@@ -425,6 +429,20 @@ class Google_Service_Sheets_Request extends Google_Model
     return $this->deleteDimensionGroup;
   }
   /**
+   * @param Google_Service_Sheets_DeleteDuplicatesRequest
+   */
+  public function setDeleteDuplicates(Google_Service_Sheets_DeleteDuplicatesRequest $deleteDuplicates)
+  {
+    $this->deleteDuplicates = $deleteDuplicates;
+  }
+  /**
+   * @return Google_Service_Sheets_DeleteDuplicatesRequest
+   */
+  public function getDeleteDuplicates()
+  {
+    return $this->deleteDuplicates;
+  }
+  /**
    * @param Google_Service_Sheets_DeleteEmbeddedObjectRequest
    */
   public function setDeleteEmbeddedObject(Google_Service_Sheets_DeleteEmbeddedObjectRequest $deleteEmbeddedObject)
@@ -703,6 +721,20 @@ class Google_Service_Sheets_Request extends Google_Model
   public function getTextToColumns()
   {
     return $this->textToColumns;
+  }
+  /**
+   * @param Google_Service_Sheets_TrimWhitespaceRequest
+   */
+  public function setTrimWhitespace(Google_Service_Sheets_TrimWhitespaceRequest $trimWhitespace)
+  {
+    $this->trimWhitespace = $trimWhitespace;
+  }
+  /**
+   * @return Google_Service_Sheets_TrimWhitespaceRequest
+   */
+  public function getTrimWhitespace()
+  {
+    return $this->trimWhitespace;
   }
   /**
    * @param Google_Service_Sheets_UnmergeCellsRequest

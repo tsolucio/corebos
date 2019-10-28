@@ -17,7 +17,7 @@
 
 class Google_Service_Pagespeedonline_LighthouseResultV5 extends Google_Collection
 {
-  protected $collection_key = 'runWarnings';
+  protected $collection_key = 'stackPacks';
   protected $auditsType = 'Google_Service_Pagespeedonline_LighthouseAuditResultV5';
   protected $auditsDataType = 'map';
   protected $categoriesType = 'Google_Service_Pagespeedonline_LighthouseResultV5Categories';
@@ -37,6 +37,8 @@ class Google_Service_Pagespeedonline_LighthouseResultV5 extends Google_Collectio
   public $runWarnings;
   protected $runtimeErrorType = 'Google_Service_Pagespeedonline_LighthouseResultV5RuntimeError';
   protected $runtimeErrorDataType = '';
+  protected $stackPacksType = 'Google_Service_Pagespeedonline_LighthouseResultV5StackPacks';
+  protected $stackPacksDataType = 'array';
   protected $timingType = 'Google_Service_Pagespeedonline_LighthouseResultV5Timing';
   protected $timingDataType = '';
   public $userAgent;
@@ -178,6 +180,20 @@ class Google_Service_Pagespeedonline_LighthouseResultV5 extends Google_Collectio
   public function getRuntimeError()
   {
     return $this->runtimeError;
+  }
+  /**
+   * @param Google_Service_Pagespeedonline_LighthouseResultV5StackPacks
+   */
+  public function setStackPacks($stackPacks)
+  {
+    $this->stackPacks = $stackPacks;
+  }
+  /**
+   * @return Google_Service_Pagespeedonline_LighthouseResultV5StackPacks
+   */
+  public function getStackPacks()
+  {
+    return $this->stackPacks;
   }
   /**
    * @param Google_Service_Pagespeedonline_LighthouseResultV5Timing

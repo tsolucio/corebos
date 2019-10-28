@@ -20,8 +20,8 @@ class Google_Service_BinaryAuthorization_Attestor extends Google_Model
   public $description;
   public $name;
   public $updateTime;
-  protected $userOwnedDrydockNoteType = 'Google_Service_BinaryAuthorization_UserOwnedDrydockNote';
-  protected $userOwnedDrydockNoteDataType = '';
+  protected $userOwnedGrafeasNoteType = 'Google_Service_BinaryAuthorization_UserOwnedGrafeasNote';
+  protected $userOwnedGrafeasNoteDataType = '';
 
   public function setDescription($description)
   {
@@ -48,17 +48,17 @@ class Google_Service_BinaryAuthorization_Attestor extends Google_Model
     return $this->updateTime;
   }
   /**
-   * @param Google_Service_BinaryAuthorization_UserOwnedDrydockNote
+   * @param Google_Service_BinaryAuthorization_UserOwnedGrafeasNote
    */
-  public function setUserOwnedDrydockNote(Google_Service_BinaryAuthorization_UserOwnedDrydockNote $userOwnedDrydockNote)
+  public function setUserOwnedGrafeasNote(Google_Service_BinaryAuthorization_UserOwnedGrafeasNote $userOwnedGrafeasNote)
   {
-    $this->userOwnedDrydockNote = $userOwnedDrydockNote;
+    $this->userOwnedGrafeasNote = $userOwnedGrafeasNote;
   }
   /**
-   * @return Google_Service_BinaryAuthorization_UserOwnedDrydockNote
+   * @return Google_Service_BinaryAuthorization_UserOwnedGrafeasNote
    */
-  public function getUserOwnedDrydockNote()
+  public function getUserOwnedGrafeasNote()
   {
-    return $this->userOwnedDrydockNote;
+    return $this->userOwnedGrafeasNote;
   }
 }

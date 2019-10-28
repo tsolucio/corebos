@@ -41,13 +41,15 @@ class Google_Service_GamesConfiguration extends Google_Service
   /**
    * Constructs the internal representation of the GamesConfiguration service.
    *
-   * @param Google_Client $client
+   * @param Google_Client $client The client used to deliver requests.
+   * @param string $rootUrl The root URL used for requests to the service.
    */
-  public function __construct(Google_Client $client)
+  public function __construct(Google_Client $client, $rootUrl = null)
   {
     parent::__construct($client);
-    $this->rootUrl = 'https://www.googleapis.com/';
+    $this->rootUrl = $rootUrl ?: 'https://www.googleapis.com/';
     $this->servicePath = 'games/v1configuration/';
+    $this->batchPath = 'batch/gamesConfiguration/v1configuration';
     $this->version = 'v1configuration';
     $this->serviceName = 'gamesConfiguration';
 

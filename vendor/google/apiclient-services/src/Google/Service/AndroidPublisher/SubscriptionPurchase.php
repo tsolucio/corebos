@@ -17,6 +17,7 @@
 
 class Google_Service_AndroidPublisher_SubscriptionPurchase extends Google_Model
 {
+  public $acknowledgementState;
   public $autoRenewing;
   public $autoResumeTimeMillis;
   public $cancelReason;
@@ -28,6 +29,8 @@ class Google_Service_AndroidPublisher_SubscriptionPurchase extends Google_Model
   public $expiryTimeMillis;
   public $familyName;
   public $givenName;
+  protected $introductoryPriceInfoType = 'Google_Service_AndroidPublisher_IntroductoryPriceInfo';
+  protected $introductoryPriceInfoDataType = '';
   public $kind;
   public $linkedPurchaseToken;
   public $orderId;
@@ -42,6 +45,14 @@ class Google_Service_AndroidPublisher_SubscriptionPurchase extends Google_Model
   public $startTimeMillis;
   public $userCancellationTimeMillis;
 
+  public function setAcknowledgementState($acknowledgementState)
+  {
+    $this->acknowledgementState = $acknowledgementState;
+  }
+  public function getAcknowledgementState()
+  {
+    return $this->acknowledgementState;
+  }
   public function setAutoRenewing($autoRenewing)
   {
     $this->autoRenewing = $autoRenewing;
@@ -127,6 +138,20 @@ class Google_Service_AndroidPublisher_SubscriptionPurchase extends Google_Model
   public function getGivenName()
   {
     return $this->givenName;
+  }
+  /**
+   * @param Google_Service_AndroidPublisher_IntroductoryPriceInfo
+   */
+  public function setIntroductoryPriceInfo(Google_Service_AndroidPublisher_IntroductoryPriceInfo $introductoryPriceInfo)
+  {
+    $this->introductoryPriceInfo = $introductoryPriceInfo;
+  }
+  /**
+   * @return Google_Service_AndroidPublisher_IntroductoryPriceInfo
+   */
+  public function getIntroductoryPriceInfo()
+  {
+    return $this->introductoryPriceInfo;
   }
   public function setKind($kind)
   {

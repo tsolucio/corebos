@@ -37,6 +37,8 @@ class Google_Service_DLP_Resource_InfoTypes extends Google_Service_Resource
    * available, en-US strings will be returned.
    * @opt_param string filter Optional filter to only return infoTypes supported
    * by certain parts of the API. Defaults to supported_by=INSPECT.
+   * @opt_param string location The geographic location to list info types.
+   * Reserved for future extensions.
    * @return Google_Service_DLP_GooglePrivacyDlpV2ListInfoTypesResponse
    */
   public function listInfoTypes($optParams = array())

@@ -29,7 +29,11 @@ class Google_Service_Dialogflow_Resource_ProjectsAgentSessionsEntityTypes extend
    * Creates a session entity type.
    *
    * If the specified session entity type already exists, overrides the session
-   * entity type. (entityTypes.create)
+   * entity type.
+   *
+   * This method doesn't work with Google Assistant integration. Contact
+   * Dialogflow support if you need to use session entities with Google Assistant
+   * integration. (entityTypes.create)
    *
    * @param string $parent Required. The session to create a session entity type
    * for. Format: `projects//agent/sessions/`.
@@ -44,7 +48,11 @@ class Google_Service_Dialogflow_Resource_ProjectsAgentSessionsEntityTypes extend
     return $this->call('create', array($params), "Google_Service_Dialogflow_GoogleCloudDialogflowV2SessionEntityType");
   }
   /**
-   * Deletes the specified session entity type. (entityTypes.delete)
+   * Deletes the specified session entity type.
+   *
+   * This method doesn't work with Google Assistant integration. Contact
+   * Dialogflow support if you need to use session entities with Google Assistant
+   * integration. (entityTypes.delete)
    *
    * @param string $name Required. The name of the entity type to delete. Format:
    * `projects//agent/sessions//entityTypes/`.
@@ -58,7 +66,11 @@ class Google_Service_Dialogflow_Resource_ProjectsAgentSessionsEntityTypes extend
     return $this->call('delete', array($params), "Google_Service_Dialogflow_GoogleProtobufEmpty");
   }
   /**
-   * Retrieves the specified session entity type. (entityTypes.get)
+   * Retrieves the specified session entity type.
+   *
+   * This method doesn't work with Google Assistant integration. Contact
+   * Dialogflow support if you need to use session entities with Google Assistant
+   * integration. (entityTypes.get)
    *
    * @param string $name Required. The name of the session entity type. Format:
    * `projects//agent/sessions//entityTypes/`.
@@ -73,7 +85,10 @@ class Google_Service_Dialogflow_Resource_ProjectsAgentSessionsEntityTypes extend
   }
   /**
    * Returns the list of all session entity types in the specified session.
-   * (entityTypes.listProjectsAgentSessionsEntityTypes)
+   *
+   * This method doesn't work with Google Assistant integration. Contact
+   * Dialogflow support if you need to use session entities with Google Assistant
+   * integration. (entityTypes.listProjectsAgentSessionsEntityTypes)
    *
    * @param string $parent Required. The session to list all session entity types
    * from. Format: `projects//agent/sessions/`.
@@ -92,7 +107,11 @@ class Google_Service_Dialogflow_Resource_ProjectsAgentSessionsEntityTypes extend
     return $this->call('list', array($params), "Google_Service_Dialogflow_GoogleCloudDialogflowV2ListSessionEntityTypesResponse");
   }
   /**
-   * Updates the specified session entity type. (entityTypes.patch)
+   * Updates the specified session entity type.
+   *
+   * This method doesn't work with Google Assistant integration. Contact
+   * Dialogflow support if you need to use session entities with Google Assistant
+   * integration. (entityTypes.patch)
    *
    * @param string $name Required. The unique identifier of this session entity
    * type. Format: `projects//agent/sessions//entityTypes/`.

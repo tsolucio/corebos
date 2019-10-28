@@ -75,7 +75,8 @@ class Google_Service_Directory_Resource_Groups extends Google_Service_Resource
    * @opt_param string domain Name of the domain. Fill this field to get groups
    * from only this domain. To return all groups in a multi-domain fill customer
    * field instead.
-   * @opt_param int maxResults Maximum number of results to return. Default is 200
+   * @opt_param int maxResults Maximum number of results to return. Max allowed
+   * value is 200.
    * @opt_param string orderBy Column to use for sorting results
    * @opt_param string pageToken Token to specify next page in the list
    * @opt_param string query Query string search. Should be of the form "".
@@ -83,9 +84,9 @@ class Google_Service_Directory_Resource_Groups extends Google_Service_Resource
    * sdk/directory/v1/guides/search-groups
    * @opt_param string sortOrder Whether to return results in ascending or
    * descending order. Only of use when orderBy is also used
-   * @opt_param string userKey Email or immutable Id of the user if only those
-   * groups are to be listed, the given user is a member of. If Id, it should
-   * match with id of user object
+   * @opt_param string userKey Email or immutable ID of the user if only those
+   * groups are to be listed, the given user is a member of. If it's an ID, it
+   * should match with the ID of the user object.
    * @return Google_Service_Directory_Groups
    */
   public function listGroups($optParams = array())

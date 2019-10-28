@@ -24,6 +24,7 @@ class Google_Service_Compute_SslCertificate extends Google_Model
   public $kind;
   public $name;
   public $privateKey;
+  public $region;
   public $selfLink;
 
   public function setCertificate($certificate)
@@ -81,6 +82,14 @@ class Google_Service_Compute_SslCertificate extends Google_Model
   public function getPrivateKey()
   {
     return $this->privateKey;
+  }
+  public function setRegion($region)
+  {
+    $this->region = $region;
+  }
+  public function getRegion()
+  {
+    return $this->region;
   }
   public function setSelfLink($selfLink)
   {

@@ -26,8 +26,8 @@
 class Google_Service_Compute_Resource_NodeTemplates extends Google_Service_Resource
 {
   /**
-   * Retrieves an aggregated list of node templates.
-   * (nodeTemplates.aggregatedList)
+   * Retrieves an aggregated list of node templates. (== suppress_warning http-
+   * rest-shadowed ==) (nodeTemplates.aggregatedList)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -79,7 +79,8 @@ class Google_Service_Compute_Resource_NodeTemplates extends Google_Service_Resou
     return $this->call('aggregatedList', array($params), "Google_Service_Compute_NodeTemplateAggregatedList");
   }
   /**
-   * Deletes the specified NodeTemplate resource. (nodeTemplates.delete)
+   * Deletes the specified NodeTemplate resource. (== suppress_warning http-rest-
+   * shadowed ==) (nodeTemplates.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $region The name of the region for this request.
@@ -108,7 +109,8 @@ class Google_Service_Compute_Resource_NodeTemplates extends Google_Service_Resou
   }
   /**
    * Returns the specified node template. Gets a list of available node templates
-   * by making a list() request. (nodeTemplates.get)
+   * by making a list() request. (== suppress_warning http-rest-shadowed ==)
+   * (nodeTemplates.get)
    *
    * @param string $project Project ID for this request.
    * @param string $region The name of the region for this request.
@@ -124,7 +126,8 @@ class Google_Service_Compute_Resource_NodeTemplates extends Google_Service_Resou
   }
   /**
    * Gets the access control policy for a resource. May be empty if no such policy
-   * or resource exists. (nodeTemplates.getIamPolicy)
+   * or resource exists. (== suppress_warning http-rest-shadowed ==)
+   * (nodeTemplates.getIamPolicy)
    *
    * @param string $project Project ID for this request.
    * @param string $region The name of the region for this request.
@@ -140,7 +143,8 @@ class Google_Service_Compute_Resource_NodeTemplates extends Google_Service_Resou
   }
   /**
    * Creates a NodeTemplate resource in the specified project using the data
-   * included in the request. (nodeTemplates.insert)
+   * included in the request. (== suppress_warning http-rest-shadowed ==)
+   * (nodeTemplates.insert)
    *
    * @param string $project Project ID for this request.
    * @param string $region The name of the region for this request.
@@ -168,8 +172,8 @@ class Google_Service_Compute_Resource_NodeTemplates extends Google_Service_Resou
     return $this->call('insert', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Retrieves a list of node templates available to the specified project.
-   * (nodeTemplates.listNodeTemplates)
+   * Retrieves a list of node templates available to the specified project. (==
+   * suppress_warning http-rest-shadowed ==) (nodeTemplates.listNodeTemplates)
    *
    * @param string $project Project ID for this request.
    * @param string $region The name of the region for this request.
@@ -223,7 +227,8 @@ class Google_Service_Compute_Resource_NodeTemplates extends Google_Service_Resou
   }
   /**
    * Sets the access control policy on the specified resource. Replaces any
-   * existing policy. (nodeTemplates.setIamPolicy)
+   * existing policy. (== suppress_warning http-rest-shadowed ==)
+   * (nodeTemplates.setIamPolicy)
    *
    * @param string $project Project ID for this request.
    * @param string $region The name of the region for this request.
@@ -239,8 +244,8 @@ class Google_Service_Compute_Resource_NodeTemplates extends Google_Service_Resou
     return $this->call('setIamPolicy', array($params), "Google_Service_Compute_Policy");
   }
   /**
-   * Returns permissions that a caller has on the specified resource.
-   * (nodeTemplates.testIamPermissions)
+   * Returns permissions that a caller has on the specified resource. (==
+   * suppress_warning http-rest-shadowed ==) (nodeTemplates.testIamPermissions)
    *
    * @param string $project Project ID for this request.
    * @param string $region The name of the region for this request.

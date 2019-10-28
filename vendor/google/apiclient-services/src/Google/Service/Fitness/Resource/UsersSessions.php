@@ -60,7 +60,7 @@ class Google_Service_Fitness_Resource_UsersSessions extends Google_Service_Resou
    * as a timestamp (in millis since epoch). If specified, the API returns
    * sessions modified since this time. The page token is ignored if either start
    * or end time is specified. If none of start time, end time, and the page token
-   * is specified, sessions modified in the last 7 days are returned.
+   * is specified, sessions modified in the last 30 days are returned.
    * @opt_param string startTime An RFC3339 timestamp. Only sessions ending
    * between the start and end times will be included in the response.
    * @return Google_Service_Fitness_ListSessionsResponse

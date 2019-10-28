@@ -15,15 +15,61 @@
  * the License.
  */
 
-class Google_Service_CloudAsset_Asset extends Google_Model
+class Google_Service_CloudAsset_Asset extends Google_Collection
 {
+  protected $collection_key = 'orgPolicy';
+  protected $accessLevelType = 'Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1AccessLevel';
+  protected $accessLevelDataType = '';
+  protected $accessPolicyType = 'Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1AccessPolicy';
+  protected $accessPolicyDataType = '';
+  public $ancestors;
   public $assetType;
   protected $iamPolicyType = 'Google_Service_CloudAsset_Policy';
   protected $iamPolicyDataType = '';
   public $name;
+  protected $orgPolicyType = 'Google_Service_CloudAsset_GoogleCloudOrgpolicyV1Policy';
+  protected $orgPolicyDataType = 'array';
   protected $resourceType = 'Google_Service_CloudAsset_CloudassetResource';
   protected $resourceDataType = '';
+  protected $servicePerimeterType = 'Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1ServicePerimeter';
+  protected $servicePerimeterDataType = '';
 
+  /**
+   * @param Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1AccessLevel
+   */
+  public function setAccessLevel(Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1AccessLevel $accessLevel)
+  {
+    $this->accessLevel = $accessLevel;
+  }
+  /**
+   * @return Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1AccessLevel
+   */
+  public function getAccessLevel()
+  {
+    return $this->accessLevel;
+  }
+  /**
+   * @param Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1AccessPolicy
+   */
+  public function setAccessPolicy(Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1AccessPolicy $accessPolicy)
+  {
+    $this->accessPolicy = $accessPolicy;
+  }
+  /**
+   * @return Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1AccessPolicy
+   */
+  public function getAccessPolicy()
+  {
+    return $this->accessPolicy;
+  }
+  public function setAncestors($ancestors)
+  {
+    $this->ancestors = $ancestors;
+  }
+  public function getAncestors()
+  {
+    return $this->ancestors;
+  }
   public function setAssetType($assetType)
   {
     $this->assetType = $assetType;
@@ -55,6 +101,20 @@ class Google_Service_CloudAsset_Asset extends Google_Model
     return $this->name;
   }
   /**
+   * @param Google_Service_CloudAsset_GoogleCloudOrgpolicyV1Policy
+   */
+  public function setOrgPolicy($orgPolicy)
+  {
+    $this->orgPolicy = $orgPolicy;
+  }
+  /**
+   * @return Google_Service_CloudAsset_GoogleCloudOrgpolicyV1Policy
+   */
+  public function getOrgPolicy()
+  {
+    return $this->orgPolicy;
+  }
+  /**
    * @param Google_Service_CloudAsset_CloudassetResource
    */
   public function setResource(Google_Service_CloudAsset_CloudassetResource $resource)
@@ -67,5 +127,19 @@ class Google_Service_CloudAsset_Asset extends Google_Model
   public function getResource()
   {
     return $this->resource;
+  }
+  /**
+   * @param Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1ServicePerimeter
+   */
+  public function setServicePerimeter(Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1ServicePerimeter $servicePerimeter)
+  {
+    $this->servicePerimeter = $servicePerimeter;
+  }
+  /**
+   * @return Google_Service_CloudAsset_GoogleIdentityAccesscontextmanagerV1ServicePerimeter
+   */
+  public function getServicePerimeter()
+  {
+    return $this->servicePerimeter;
   }
 }

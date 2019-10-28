@@ -91,7 +91,8 @@ class Google_Service_Directory_Resource_Members extends Google_Service_Resource
    *
    * @opt_param bool includeDerivedMembership Whether to list indirect
    * memberships. Default: false.
-   * @opt_param int maxResults Maximum number of results to return. Default is 200
+   * @opt_param int maxResults Maximum number of results to return. Max allowed
+   * value is 200.
    * @opt_param string pageToken Token to specify next page in the list
    * @opt_param string roles Comma separated role values to filter list results
    * on.

@@ -26,7 +26,8 @@
 class Google_Service_Compute_Resource_Subnetworks extends Google_Service_Resource
 {
   /**
-   * Retrieves an aggregated list of subnetworks. (subnetworks.aggregatedList)
+   * Retrieves an aggregated list of subnetworks. (== suppress_warning http-rest-
+   * shadowed ==) (subnetworks.aggregatedList)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -78,7 +79,8 @@ class Google_Service_Compute_Resource_Subnetworks extends Google_Service_Resourc
     return $this->call('aggregatedList', array($params), "Google_Service_Compute_SubnetworkAggregatedList");
   }
   /**
-   * Deletes the specified subnetwork. (subnetworks.delete)
+   * Deletes the specified subnetwork. (== suppress_warning http-rest-shadowed ==)
+   * (subnetworks.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -106,8 +108,8 @@ class Google_Service_Compute_Resource_Subnetworks extends Google_Service_Resourc
     return $this->call('delete', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Expands the IP CIDR range of the subnetwork to a specified value.
-   * (subnetworks.expandIpCidrRange)
+   * Expands the IP CIDR range of the subnetwork to a specified value. (==
+   * suppress_warning http-rest-shadowed ==) (subnetworks.expandIpCidrRange)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -137,7 +139,7 @@ class Google_Service_Compute_Resource_Subnetworks extends Google_Service_Resourc
   }
   /**
    * Returns the specified subnetwork. Gets a list of available subnetworks list()
-   * request. (subnetworks.get)
+   * request. (== suppress_warning http-rest-shadowed ==) (subnetworks.get)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -153,7 +155,8 @@ class Google_Service_Compute_Resource_Subnetworks extends Google_Service_Resourc
   }
   /**
    * Gets the access control policy for a resource. May be empty if no such policy
-   * or resource exists. (subnetworks.getIamPolicy)
+   * or resource exists. (== suppress_warning http-rest-shadowed ==)
+   * (subnetworks.getIamPolicy)
    *
    * @param string $project Project ID for this request.
    * @param string $region The name of the region for this request.
@@ -169,7 +172,7 @@ class Google_Service_Compute_Resource_Subnetworks extends Google_Service_Resourc
   }
   /**
    * Creates a subnetwork in the specified project using the data included in the
-   * request. (subnetworks.insert)
+   * request. (== suppress_warning http-rest-shadowed ==) (subnetworks.insert)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -197,8 +200,8 @@ class Google_Service_Compute_Resource_Subnetworks extends Google_Service_Resourc
     return $this->call('insert', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Retrieves a list of subnetworks available to the specified project.
-   * (subnetworks.listSubnetworks)
+   * Retrieves a list of subnetworks available to the specified project. (==
+   * suppress_warning http-rest-shadowed ==) (subnetworks.listSubnetworks)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -251,7 +254,10 @@ class Google_Service_Compute_Resource_Subnetworks extends Google_Service_Resourc
     return $this->call('list', array($params), "Google_Service_Compute_SubnetworkList");
   }
   /**
-   * Retrieves an aggregated list of usable subnetworks. (subnetworks.listUsable)
+   * Retrieves an aggregated list of all usable subnetworks in the project. The
+   * list contains all of the subnetworks in the project and the subnetworks that
+   * were shared by a Shared VPC host project. (== suppress_warning http-rest-
+   * shadowed ==) (subnetworks.listUsable)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -306,7 +312,8 @@ class Google_Service_Compute_Resource_Subnetworks extends Google_Service_Resourc
    * Patches the specified subnetwork with the data included in the request. Only
    * certain fields can up updated with a patch request as indicated in the field
    * descriptions. You must specify the current fingeprint of the subnetwork
-   * resource being patched. (subnetworks.patch)
+   * resource being patched. (== suppress_warning http-rest-shadowed ==)
+   * (subnetworks.patch)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -336,7 +343,8 @@ class Google_Service_Compute_Resource_Subnetworks extends Google_Service_Resourc
   }
   /**
    * Sets the access control policy on the specified resource. Replaces any
-   * existing policy. (subnetworks.setIamPolicy)
+   * existing policy. (== suppress_warning http-rest-shadowed ==)
+   * (subnetworks.setIamPolicy)
    *
    * @param string $project Project ID for this request.
    * @param string $region The name of the region for this request.
@@ -353,8 +361,8 @@ class Google_Service_Compute_Resource_Subnetworks extends Google_Service_Resourc
   }
   /**
    * Set whether VMs in this subnet can access Google services without assigning
-   * external IP addresses through Private Google Access.
-   * (subnetworks.setPrivateIpGoogleAccess)
+   * external IP addresses through Private Google Access. (== suppress_warning
+   * http-rest-shadowed ==) (subnetworks.setPrivateIpGoogleAccess)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -383,8 +391,8 @@ class Google_Service_Compute_Resource_Subnetworks extends Google_Service_Resourc
     return $this->call('setPrivateIpGoogleAccess', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Returns permissions that a caller has on the specified resource.
-   * (subnetworks.testIamPermissions)
+   * Returns permissions that a caller has on the specified resource. (==
+   * suppress_warning http-rest-shadowed ==) (subnetworks.testIamPermissions)
    *
    * @param string $project Project ID for this request.
    * @param string $region The name of the region for this request.

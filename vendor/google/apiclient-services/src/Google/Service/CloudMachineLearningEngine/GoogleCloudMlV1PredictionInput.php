@@ -18,8 +18,6 @@
 class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1PredictionInput extends Google_Collection
 {
   protected $collection_key = 'inputPaths';
-  protected $acceleratorType = 'Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1AcceleratorConfig';
-  protected $acceleratorDataType = '';
   public $batchSize;
   public $dataFormat;
   public $inputPaths;
@@ -33,20 +31,6 @@ class Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1PredictionInput e
   public $uri;
   public $versionName;
 
-  /**
-   * @param Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1AcceleratorConfig
-   */
-  public function setAccelerator(Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1AcceleratorConfig $accelerator)
-  {
-    $this->accelerator = $accelerator;
-  }
-  /**
-   * @return Google_Service_CloudMachineLearningEngine_GoogleCloudMlV1AcceleratorConfig
-   */
-  public function getAccelerator()
-  {
-    return $this->accelerator;
-  }
   public function setBatchSize($batchSize)
   {
     $this->batchSize = $batchSize;

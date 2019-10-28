@@ -26,6 +26,8 @@ class Google_Service_Compute_Commitment extends Google_Collection
   public $name;
   public $plan;
   public $region;
+  protected $reservationsType = 'Google_Service_Compute_Reservation';
+  protected $reservationsDataType = 'array';
   protected $resourcesType = 'Google_Service_Compute_ResourceCommitment';
   protected $resourcesDataType = 'array';
   public $selfLink;
@@ -96,6 +98,20 @@ class Google_Service_Compute_Commitment extends Google_Collection
   public function getRegion()
   {
     return $this->region;
+  }
+  /**
+   * @param Google_Service_Compute_Reservation
+   */
+  public function setReservations($reservations)
+  {
+    $this->reservations = $reservations;
+  }
+  /**
+   * @return Google_Service_Compute_Reservation
+   */
+  public function getReservations()
+  {
+    return $this->reservations;
   }
   /**
    * @param Google_Service_Compute_ResourceCommitment

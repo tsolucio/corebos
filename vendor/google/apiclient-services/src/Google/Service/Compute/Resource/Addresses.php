@@ -26,7 +26,8 @@
 class Google_Service_Compute_Resource_Addresses extends Google_Service_Resource
 {
   /**
-   * Retrieves an aggregated list of addresses. (addresses.aggregatedList)
+   * Retrieves an aggregated list of addresses. (== suppress_warning http-rest-
+   * shadowed ==) (addresses.aggregatedList)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -78,7 +79,8 @@ class Google_Service_Compute_Resource_Addresses extends Google_Service_Resource
     return $this->call('aggregatedList', array($params), "Google_Service_Compute_AddressAggregatedList");
   }
   /**
-   * Deletes the specified address resource. (addresses.delete)
+   * Deletes the specified address resource. (== suppress_warning http-rest-
+   * shadowed ==) (addresses.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -106,7 +108,8 @@ class Google_Service_Compute_Resource_Addresses extends Google_Service_Resource
     return $this->call('delete', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Returns the specified address resource. (addresses.get)
+   * Returns the specified address resource. (== suppress_warning http-rest-
+   * shadowed ==) (addresses.get)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -121,8 +124,9 @@ class Google_Service_Compute_Resource_Addresses extends Google_Service_Resource
     return $this->call('get', array($params), "Google_Service_Compute_Address");
   }
   /**
-   * Creates an address resource in the specified project using the data included
-   * in the request. (addresses.insert)
+   * Creates an address resource in the specified project by using the data
+   * included in the request. (== suppress_warning http-rest-shadowed ==)
+   * (addresses.insert)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -150,8 +154,8 @@ class Google_Service_Compute_Resource_Addresses extends Google_Service_Resource
     return $this->call('insert', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Retrieves a list of addresses contained within the specified region.
-   * (addresses.listAddresses)
+   * Retrieves a list of addresses contained within the specified region. (==
+   * suppress_warning http-rest-shadowed ==) (addresses.listAddresses)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.

@@ -26,6 +26,32 @@
 class Google_Service_AlertCenter_Resource_Alerts extends Google_Service_Resource
 {
   /**
+   * Performs batch delete operation on alerts. (alerts.batchDelete)
+   *
+   * @param Google_Service_AlertCenter_BatchDeleteAlertsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_AlertCenter_BatchDeleteAlertsResponse
+   */
+  public function batchDelete(Google_Service_AlertCenter_BatchDeleteAlertsRequest $postBody, $optParams = array())
+  {
+    $params = array('postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('batchDelete', array($params), "Google_Service_AlertCenter_BatchDeleteAlertsResponse");
+  }
+  /**
+   * Performs batch undelete operation on alerts. (alerts.batchUndelete)
+   *
+   * @param Google_Service_AlertCenter_BatchUndeleteAlertsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_AlertCenter_BatchUndeleteAlertsResponse
+   */
+  public function batchUndelete(Google_Service_AlertCenter_BatchUndeleteAlertsRequest $postBody, $optParams = array())
+  {
+    $params = array('postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('batchUndelete', array($params), "Google_Service_AlertCenter_BatchUndeleteAlertsResponse");
+  }
+  /**
    * Marks the specified alert for deletion. An alert that has been marked for
    * deletion is removed from Alert Center after 30 days. Marking an alert for
    * deletion has no effect on an alert which has already been marked for
@@ -47,10 +73,10 @@ class Google_Service_AlertCenter_Resource_Alerts extends Google_Service_Resource
     return $this->call('delete', array($params), "Google_Service_AlertCenter_AlertcenterEmpty");
   }
   /**
-   * Gets the specified alert. (alerts.get)
+   * Gets the specified alert. Attempting to get a nonexistent alert returns
+   * `NOT_FOUND` error. (alerts.get)
    *
    * @param string $alertId Required. The identifier of the alert to retrieve.
-   * Returns a NOT_FOUND error if no such alert.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string customerId Optional. The unique identifier of the G Suite
@@ -65,6 +91,25 @@ class Google_Service_AlertCenter_Resource_Alerts extends Google_Service_Resource
     return $this->call('get', array($params), "Google_Service_AlertCenter_Alert");
   }
   /**
+   * Returns the metadata of an alert. Attempting to get metadata for a non-
+   * existent alert returns `NOT_FOUND` error. (alerts.getMetadata)
+   *
+   * @param string $alertId Required. The identifier of the alert this metadata
+   * belongs to.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string customerId Optional. The unique identifier of the G Suite
+   * organization account of the customer the alert metadata is associated with.
+   * Inferred from the caller identity if not provided.
+   * @return Google_Service_AlertCenter_AlertMetadata
+   */
+  public function getMetadata($alertId, $optParams = array())
+  {
+    $params = array('alertId' => $alertId);
+    $params = array_merge($params, $optParams);
+    return $this->call('getMetadata', array($params), "Google_Service_AlertCenter_AlertMetadata");
+  }
+  /**
    * Lists the alerts. (alerts.listAlerts)
    *
    * @param array $optParams Optional parameters.
@@ -76,8 +121,8 @@ class Google_Service_AlertCenter_Resource_Alerts extends Google_Service_Resource
    * @opt_param string orderBy Optional. The sort order of the list results. If
    * not specified results may be returned in arbitrary order. You can sort the
    * results in descending order based on the creation timestamp using
-   * `order_by="create_time desc"`. Currently, only sorting by `create_time desc`
-   * is supported.
+   * `order_by="create_time desc"`. Currently, supported sorting are `create_time
+   * asc`, `create_time desc`, `update_time desc`
    * @opt_param string customerId Optional. The unique identifier of the G Suite
    * organization account of the customer the alerts are associated with. Inferred
    * from the caller identity if not provided.

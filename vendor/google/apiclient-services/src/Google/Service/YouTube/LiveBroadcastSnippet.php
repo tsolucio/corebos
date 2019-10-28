@@ -19,6 +19,7 @@ class Google_Service_YouTube_LiveBroadcastSnippet extends Google_Model
 {
   public $actualEndTime;
   public $actualStartTime;
+  public $broadcastType;
   public $channelId;
   public $description;
   public $isDefaultBroadcast;
@@ -45,6 +46,14 @@ class Google_Service_YouTube_LiveBroadcastSnippet extends Google_Model
   public function getActualStartTime()
   {
     return $this->actualStartTime;
+  }
+  public function setBroadcastType($broadcastType)
+  {
+    $this->broadcastType = $broadcastType;
+  }
+  public function getBroadcastType()
+  {
+    return $this->broadcastType;
   }
   public function setChannelId($channelId)
   {

@@ -31,7 +31,7 @@ class Google_Service_Script_Resource_Scripts extends Google_Service_Resource
    * share the same Cloud Platform project.
    *
    * This method requires authorization with an OAuth 2.0 token that includes at
-   * least one of the scopes listed in the [Authorization](#authorization)
+   * least one of the scopes listed in the [Authorization](#authorization-scopes)
    * section; script projects that do not require authorization cannot be executed
    * through this API. To find the correct scopes to include in the authentication
    * token, open the project in the script editor, then select **File > Project

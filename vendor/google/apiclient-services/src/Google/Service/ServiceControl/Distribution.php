@@ -17,9 +17,11 @@
 
 class Google_Service_ServiceControl_Distribution extends Google_Collection
 {
-  protected $collection_key = 'bucketCounts';
+  protected $collection_key = 'exemplars';
   public $bucketCounts;
   public $count;
+  protected $exemplarsType = 'Google_Service_ServiceControl_Exemplar';
+  protected $exemplarsDataType = 'array';
   protected $explicitBucketsType = 'Google_Service_ServiceControl_ExplicitBuckets';
   protected $explicitBucketsDataType = '';
   protected $exponentialBucketsType = 'Google_Service_ServiceControl_ExponentialBuckets';
@@ -46,6 +48,20 @@ class Google_Service_ServiceControl_Distribution extends Google_Collection
   public function getCount()
   {
     return $this->count;
+  }
+  /**
+   * @param Google_Service_ServiceControl_Exemplar
+   */
+  public function setExemplars($exemplars)
+  {
+    $this->exemplars = $exemplars;
+  }
+  /**
+   * @return Google_Service_ServiceControl_Exemplar
+   */
+  public function getExemplars()
+  {
+    return $this->exemplars;
   }
   /**
    * @param Google_Service_ServiceControl_ExplicitBuckets

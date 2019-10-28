@@ -19,7 +19,7 @@
  * Service definition for Tasks (v1).
  *
  * <p>
- * Lets you manage your tasks and task lists.</p>
+ * Manages your tasks and task lists.</p>
  *
  * <p>
  * For more information about this service, see the API
@@ -43,13 +43,15 @@ class Google_Service_Tasks extends Google_Service
   /**
    * Constructs the internal representation of the Tasks service.
    *
-   * @param Google_Client $client
+   * @param Google_Client $client The client used to deliver requests.
+   * @param string $rootUrl The root URL used for requests to the service.
    */
-  public function __construct(Google_Client $client)
+  public function __construct(Google_Client $client, $rootUrl = null)
   {
     parent::__construct($client);
-    $this->rootUrl = 'https://www.googleapis.com/';
+    $this->rootUrl = $rootUrl ?: 'https://www.googleapis.com/';
     $this->servicePath = 'tasks/v1/';
+    $this->batchPath = 'batch/tasks/v1';
     $this->version = 'v1';
     $this->serviceName = 'tasks';
 

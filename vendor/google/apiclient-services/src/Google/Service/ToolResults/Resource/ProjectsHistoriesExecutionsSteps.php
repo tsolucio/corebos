@@ -37,15 +37,9 @@ class Google_Service_ToolResults_Resource_ProjectsHistoriesExecutionsSteps exten
    * step is too large (more than 10Mib) - NOT_FOUND - if the containing Execution
    * does not exist (steps.create)
    *
-   * @param string $projectId A Project id.
-   *
-   * Required.
-   * @param string $historyId A History id.
-   *
-   * Required.
-   * @param string $executionId A Execution id.
-   *
-   * Required.
+   * @param string $projectId Required. A Project id.
+   * @param string $historyId Required. A History id.
+   * @param string $executionId Required. An Execution id.
    * @param Google_Service_ToolResults_Step $postBody
    * @param array $optParams Optional parameters.
    *

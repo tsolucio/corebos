@@ -25,6 +25,8 @@ class Google_Service_TagManager_ContainerVersion extends Google_Collection
   protected $containerDataType = '';
   public $containerId;
   public $containerVersionId;
+  protected $customTemplateType = 'Google_Service_TagManager_CustomTemplate';
+  protected $customTemplateDataType = 'array';
   public $deleted;
   public $description;
   public $fingerprint;
@@ -93,6 +95,20 @@ class Google_Service_TagManager_ContainerVersion extends Google_Collection
   public function getContainerVersionId()
   {
     return $this->containerVersionId;
+  }
+  /**
+   * @param Google_Service_TagManager_CustomTemplate
+   */
+  public function setCustomTemplate($customTemplate)
+  {
+    $this->customTemplate = $customTemplate;
+  }
+  /**
+   * @return Google_Service_TagManager_CustomTemplate
+   */
+  public function getCustomTemplate()
+  {
+    return $this->customTemplate;
   }
   public function setDeleted($deleted)
   {

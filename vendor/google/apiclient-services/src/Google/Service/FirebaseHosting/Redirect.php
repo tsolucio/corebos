@@ -19,6 +19,7 @@ class Google_Service_FirebaseHosting_Redirect extends Google_Model
 {
   public $glob;
   public $location;
+  public $regex;
   public $statusCode;
 
   public function setGlob($glob)
@@ -36,6 +37,14 @@ class Google_Service_FirebaseHosting_Redirect extends Google_Model
   public function getLocation()
   {
     return $this->location;
+  }
+  public function setRegex($regex)
+  {
+    $this->regex = $regex;
+  }
+  public function getRegex()
+  {
+    return $this->regex;
   }
   public function setStatusCode($statusCode)
   {

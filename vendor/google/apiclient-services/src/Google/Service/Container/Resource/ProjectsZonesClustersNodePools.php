@@ -26,7 +26,7 @@
 class Google_Service_Container_Resource_ProjectsZonesClustersNodePools extends Google_Service_Resource
 {
   /**
-   * Sets the autoscaling settings for a specific node pool.
+   * Sets the autoscaling settings for the specified node pool.
    * (nodePools.autoscaling)
    *
    * @param string $projectId Deprecated. The Google Developers Console [project
@@ -99,7 +99,7 @@ class Google_Service_Container_Resource_ProjectsZonesClustersNodePools extends G
     return $this->call('delete', array($params), "Google_Service_Container_Operation");
   }
   /**
-   * Retrieves the node pool requested. (nodePools.get)
+   * Retrieves the requested node pool. (nodePools.get)
    *
    * @param string $projectId Deprecated. The Google Developers Console [project
    * ID or project
@@ -152,8 +152,8 @@ class Google_Service_Container_Resource_ProjectsZonesClustersNodePools extends G
     return $this->call('list', array($params), "Google_Service_Container_ListNodePoolsResponse");
   }
   /**
-   * Roll back the previously Aborted or Failed NodePool upgrade. This will be an
-   * no-op if the last upgrade successfully completed. (nodePools.rollback)
+   * Rolls back a previously Aborted or Failed NodePool upgrade. This makes no
+   * changes if the last upgrade successfully completed. (nodePools.rollback)
    *
    * @param string $projectId Deprecated. The Google Developers Console [project
    * ID or project number](https://support.google.com/cloud/answer/6158840). This
@@ -222,7 +222,7 @@ class Google_Service_Container_Resource_ProjectsZonesClustersNodePools extends G
     return $this->call('setSize', array($params), "Google_Service_Container_Operation");
   }
   /**
-   * Updates the version and/or image type for a specific node pool.
+   * Updates the version and/or image type for the specified node pool.
    * (nodePools.update)
    *
    * @param string $projectId Deprecated. The Google Developers Console [project

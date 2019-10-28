@@ -24,6 +24,7 @@ class Google_Service_ShoppingContent_OrderShipment extends Google_Collection
   public $id;
   protected $lineItemsType = 'Google_Service_ShoppingContent_OrderShipmentLineItemShipment';
   protected $lineItemsDataType = 'array';
+  public $shipmentGroupId;
   public $status;
   public $trackingId;
 
@@ -72,6 +73,14 @@ class Google_Service_ShoppingContent_OrderShipment extends Google_Collection
   public function getLineItems()
   {
     return $this->lineItems;
+  }
+  public function setShipmentGroupId($shipmentGroupId)
+  {
+    $this->shipmentGroupId = $shipmentGroupId;
+  }
+  public function getShipmentGroupId()
+  {
+    return $this->shipmentGroupId;
   }
   public function setStatus($status)
   {

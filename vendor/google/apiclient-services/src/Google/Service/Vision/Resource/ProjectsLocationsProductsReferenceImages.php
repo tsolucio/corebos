@@ -46,8 +46,8 @@ class Google_Service_Vision_Resource_ProjectsLocationsProductsReferenceImages ex
    * INVALID_ARGUMENT if bounding_poly contains more than 10 polygons.
    * (referenceImages.create)
    *
-   * @param string $parent Resource name of the product in which to create the
-   * reference image.
+   * @param string $parent Required. Resource name of the product in which to
+   * create the reference image.
    *
    * Format is `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`.
    * @param Google_Service_Vision_ReferenceImage $postBody
@@ -74,13 +74,10 @@ class Google_Service_Vision_Resource_ProjectsLocationsProductsReferenceImages ex
    * refreshed.
    *
    * The actual image files are not deleted from Google Cloud Storage.
-   *
-   * Possible errors:
-   *
-   * * Returns NOT_FOUND if the reference image does not exist.
    * (referenceImages.delete)
    *
-   * @param string $name The resource name of the reference image to delete.
+   * @param string $name Required. The resource name of the reference image to
+   * delete.
    *
    * Format is:
    *
@@ -103,7 +100,7 @@ class Google_Service_Vision_Resource_ProjectsLocationsProductsReferenceImages ex
    * * Returns NOT_FOUND if the specified image does not exist.
    * (referenceImages.get)
    *
-   * @param string $name The resource name of the ReferenceImage to get.
+   * @param string $name Required. The resource name of the ReferenceImage to get.
    *
    * Format is:
    *
@@ -127,8 +124,8 @@ class Google_Service_Vision_Resource_ProjectsLocationsProductsReferenceImages ex
    * INVALID_ARGUMENT if the page_size is greater than 100, or less   than 1.
    * (referenceImages.listProjectsLocationsProductsReferenceImages)
    *
-   * @param string $parent Resource name of the product containing the reference
-   * images.
+   * @param string $parent Required. Resource name of the product containing the
+   * reference images.
    *
    * Format is `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`.
    * @param array $optParams Optional parameters.

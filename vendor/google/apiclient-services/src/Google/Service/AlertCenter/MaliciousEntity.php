@@ -17,8 +17,17 @@
 
 class Google_Service_AlertCenter_MaliciousEntity extends Google_Model
 {
+  public $displayName;
   public $fromHeader;
 
+  public function setDisplayName($displayName)
+  {
+    $this->displayName = $displayName;
+  }
+  public function getDisplayName()
+  {
+    return $this->displayName;
+  }
   public function setFromHeader($fromHeader)
   {
     $this->fromHeader = $fromHeader;

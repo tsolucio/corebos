@@ -26,7 +26,8 @@
 class Google_Service_Compute_Resource_InterconnectAttachments extends Google_Service_Resource
 {
   /**
-   * Retrieves an aggregated list of interconnect attachments.
+   * Retrieves an aggregated list of interconnect attachments. (==
+   * suppress_warning http-rest-shadowed ==)
    * (interconnectAttachments.aggregatedList)
    *
    * @param string $project Project ID for this request.
@@ -79,8 +80,8 @@ class Google_Service_Compute_Resource_InterconnectAttachments extends Google_Ser
     return $this->call('aggregatedList', array($params), "Google_Service_Compute_InterconnectAttachmentAggregatedList");
   }
   /**
-   * Deletes the specified interconnect attachment.
-   * (interconnectAttachments.delete)
+   * Deletes the specified interconnect attachment. (== suppress_warning http-
+   * rest-shadowed ==) (interconnectAttachments.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -109,7 +110,8 @@ class Google_Service_Compute_Resource_InterconnectAttachments extends Google_Ser
     return $this->call('delete', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Returns the specified interconnect attachment. (interconnectAttachments.get)
+   * Returns the specified interconnect attachment. (== suppress_warning http-
+   * rest-shadowed ==) (interconnectAttachments.get)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -126,7 +128,8 @@ class Google_Service_Compute_Resource_InterconnectAttachments extends Google_Ser
   }
   /**
    * Creates an InterconnectAttachment in the specified project using the data
-   * included in the request. (interconnectAttachments.insert)
+   * included in the request. (== suppress_warning http-rest-shadowed ==)
+   * (interconnectAttachments.insert)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -155,7 +158,8 @@ class Google_Service_Compute_Resource_InterconnectAttachments extends Google_Ser
   }
   /**
    * Retrieves the list of interconnect attachments contained within the specified
-   * region. (interconnectAttachments.listInterconnectAttachments)
+   * region. (== suppress_warning http-rest-shadowed ==)
+   * (interconnectAttachments.listInterconnectAttachments)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -210,7 +214,8 @@ class Google_Service_Compute_Resource_InterconnectAttachments extends Google_Ser
   /**
    * Updates the specified interconnect attachment with the data included in the
    * request. This method supports PATCH semantics and uses the JSON merge patch
-   * format and processing rules. (interconnectAttachments.patch)
+   * format and processing rules. (== suppress_warning http-rest-shadowed ==)
+   * (interconnectAttachments.patch)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.

@@ -28,7 +28,10 @@ class Google_Service_Container_NodePool extends Google_Collection
   public $instanceGroupUrls;
   protected $managementType = 'Google_Service_Container_NodeManagement';
   protected $managementDataType = '';
+  protected $maxPodsConstraintType = 'Google_Service_Container_MaxPodsConstraint';
+  protected $maxPodsConstraintDataType = '';
   public $name;
+  public $podIpv4CidrSize;
   public $selfLink;
   public $status;
   public $statusMessage;
@@ -106,6 +109,20 @@ class Google_Service_Container_NodePool extends Google_Collection
   {
     return $this->management;
   }
+  /**
+   * @param Google_Service_Container_MaxPodsConstraint
+   */
+  public function setMaxPodsConstraint(Google_Service_Container_MaxPodsConstraint $maxPodsConstraint)
+  {
+    $this->maxPodsConstraint = $maxPodsConstraint;
+  }
+  /**
+   * @return Google_Service_Container_MaxPodsConstraint
+   */
+  public function getMaxPodsConstraint()
+  {
+    return $this->maxPodsConstraint;
+  }
   public function setName($name)
   {
     $this->name = $name;
@@ -113,6 +130,14 @@ class Google_Service_Container_NodePool extends Google_Collection
   public function getName()
   {
     return $this->name;
+  }
+  public function setPodIpv4CidrSize($podIpv4CidrSize)
+  {
+    $this->podIpv4CidrSize = $podIpv4CidrSize;
+  }
+  public function getPodIpv4CidrSize()
+  {
+    return $this->podIpv4CidrSize;
   }
   public function setSelfLink($selfLink)
   {

@@ -25,6 +25,7 @@ class Google_Service_BinaryAuthorization_Policy extends Google_Collection
   protected $defaultAdmissionRuleType = 'Google_Service_BinaryAuthorization_AdmissionRule';
   protected $defaultAdmissionRuleDataType = '';
   public $description;
+  public $globalPolicyEvaluationMode;
   public $name;
   public $updateTime;
 
@@ -77,6 +78,14 @@ class Google_Service_BinaryAuthorization_Policy extends Google_Collection
   public function getDescription()
   {
     return $this->description;
+  }
+  public function setGlobalPolicyEvaluationMode($globalPolicyEvaluationMode)
+  {
+    $this->globalPolicyEvaluationMode = $globalPolicyEvaluationMode;
+  }
+  public function getGlobalPolicyEvaluationMode()
+  {
+    return $this->globalPolicyEvaluationMode;
   }
   public function setName($name)
   {

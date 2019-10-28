@@ -26,6 +26,8 @@ class Google_Service_ServiceControl_LogEntry extends Google_Model
   protected $operationDataType = '';
   public $protoPayload;
   public $severity;
+  protected $sourceLocationType = 'Google_Service_ServiceControl_LogEntrySourceLocation';
+  protected $sourceLocationDataType = '';
   public $structPayload;
   public $textPayload;
   public $timestamp;
@@ -98,6 +100,20 @@ class Google_Service_ServiceControl_LogEntry extends Google_Model
   public function getSeverity()
   {
     return $this->severity;
+  }
+  /**
+   * @param Google_Service_ServiceControl_LogEntrySourceLocation
+   */
+  public function setSourceLocation(Google_Service_ServiceControl_LogEntrySourceLocation $sourceLocation)
+  {
+    $this->sourceLocation = $sourceLocation;
+  }
+  /**
+   * @return Google_Service_ServiceControl_LogEntrySourceLocation
+   */
+  public function getSourceLocation()
+  {
+    return $this->sourceLocation;
   }
   public function setStructPayload($structPayload)
   {

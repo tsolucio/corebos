@@ -18,6 +18,7 @@
 class Google_Service_CloudSearch_QueryInterpretationOptions extends Google_Model
 {
   public $disableNlInterpretation;
+  public $enableVerbatimMode;
 
   public function setDisableNlInterpretation($disableNlInterpretation)
   {
@@ -26,5 +27,13 @@ class Google_Service_CloudSearch_QueryInterpretationOptions extends Google_Model
   public function getDisableNlInterpretation()
   {
     return $this->disableNlInterpretation;
+  }
+  public function setEnableVerbatimMode($enableVerbatimMode)
+  {
+    $this->enableVerbatimMode = $enableVerbatimMode;
+  }
+  public function getEnableVerbatimMode()
+  {
+    return $this->enableVerbatimMode;
   }
 }

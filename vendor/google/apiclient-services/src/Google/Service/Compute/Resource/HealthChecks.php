@@ -26,7 +26,62 @@
 class Google_Service_Compute_Resource_HealthChecks extends Google_Service_Resource
 {
   /**
-   * Deletes the specified HealthCheck resource. (healthChecks.delete)
+   * Retrieves the list of all HealthCheck resources, regional and global,
+   * available to the specified project. (== suppress_warning http-rest-shadowed
+   * ==) (healthChecks.aggregatedList)
+   *
+   * @param string $project Name of the project scoping this request.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string filter A filter expression that filters resources listed in
+   * the response. The expression must specify the field name, a comparison
+   * operator, and the value that you want to use for filtering. The value must be
+   * a string, a number, or a boolean. The comparison operator must be either =,
+   * !=, >, or <.
+   *
+   * For example, if you are filtering Compute Engine instances, you can exclude
+   * instances named example-instance by specifying name != example-instance.
+   *
+   * You can also filter nested fields. For example, you could specify
+   * scheduling.automaticRestart = false to include instances only if they are not
+   * scheduled for automatic restarts. You can use filtering on nested fields to
+   * filter based on resource labels.
+   *
+   * To filter on multiple expressions, provide each separate expression within
+   * parentheses. For example, (scheduling.automaticRestart = true) (cpuPlatform =
+   * "Intel Skylake"). By default, each expression is an AND expression. However,
+   * you can include AND and OR expressions explicitly. For example, (cpuPlatform
+   * = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND
+   * (scheduling.automaticRestart = true).
+   * @opt_param string maxResults The maximum number of results per page that
+   * should be returned. If the number of available results is larger than
+   * maxResults, Compute Engine returns a nextPageToken that can be used to get
+   * the next page of results in subsequent list requests. Acceptable values are 0
+   * to 500, inclusive. (Default: 500)
+   * @opt_param string orderBy Sorts list results by a certain order. By default,
+   * results are returned in alphanumerical order based on the resource name.
+   *
+   * You can also sort results in descending order based on the creation timestamp
+   * using orderBy="creationTimestamp desc". This sorts results based on the
+   * creationTimestamp field in reverse chronological order (newest result first).
+   * Use this to sort resources like operations so that the newest operation is
+   * returned first.
+   *
+   * Currently, only sorting by name or creationTimestamp desc is supported.
+   * @opt_param string pageToken Specifies a page token to use. Set pageToken to
+   * the nextPageToken returned by a previous list request to get the next page of
+   * results.
+   * @return Google_Service_Compute_HealthChecksAggregatedList
+   */
+  public function aggregatedList($project, $optParams = array())
+  {
+    $params = array('project' => $project);
+    $params = array_merge($params, $optParams);
+    return $this->call('aggregatedList', array($params), "Google_Service_Compute_HealthChecksAggregatedList");
+  }
+  /**
+   * Deletes the specified HealthCheck resource. (== suppress_warning http-rest-
+   * shadowed ==) (healthChecks.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $healthCheck Name of the HealthCheck resource to delete.
@@ -54,7 +109,8 @@ class Google_Service_Compute_Resource_HealthChecks extends Google_Service_Resour
   }
   /**
    * Returns the specified HealthCheck resource. Gets a list of available health
-   * checks by making a list() request. (healthChecks.get)
+   * checks by making a list() request. (== suppress_warning http-rest-shadowed
+   * ==) (healthChecks.get)
    *
    * @param string $project Project ID for this request.
    * @param string $healthCheck Name of the HealthCheck resource to return.
@@ -69,7 +125,8 @@ class Google_Service_Compute_Resource_HealthChecks extends Google_Service_Resour
   }
   /**
    * Creates a HealthCheck resource in the specified project using the data
-   * included in the request. (healthChecks.insert)
+   * included in the request. (== suppress_warning http-rest-shadowed ==)
+   * (healthChecks.insert)
    *
    * @param string $project Project ID for this request.
    * @param Google_Service_Compute_HealthCheck $postBody
@@ -97,7 +154,8 @@ class Google_Service_Compute_Resource_HealthChecks extends Google_Service_Resour
   }
   /**
    * Retrieves the list of HealthCheck resources available to the specified
-   * project. (healthChecks.listHealthChecks)
+   * project. (== suppress_warning http-rest-shadowed ==)
+   * (healthChecks.listHealthChecks)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -151,7 +209,8 @@ class Google_Service_Compute_Resource_HealthChecks extends Google_Service_Resour
   /**
    * Updates a HealthCheck resource in the specified project using the data
    * included in the request. This method supports PATCH semantics and uses the
-   * JSON merge patch format and processing rules. (healthChecks.patch)
+   * JSON merge patch format and processing rules. (== suppress_warning http-rest-
+   * shadowed ==) (healthChecks.patch)
    *
    * @param string $project Project ID for this request.
    * @param string $healthCheck Name of the HealthCheck resource to patch.
@@ -180,7 +239,8 @@ class Google_Service_Compute_Resource_HealthChecks extends Google_Service_Resour
   }
   /**
    * Updates a HealthCheck resource in the specified project using the data
-   * included in the request. (healthChecks.update)
+   * included in the request. (== suppress_warning http-rest-shadowed ==)
+   * (healthChecks.update)
    *
    * @param string $project Project ID for this request.
    * @param string $healthCheck Name of the HealthCheck resource to update.

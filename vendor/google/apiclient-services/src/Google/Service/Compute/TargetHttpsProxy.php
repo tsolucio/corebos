@@ -24,6 +24,7 @@ class Google_Service_Compute_TargetHttpsProxy extends Google_Collection
   public $kind;
   public $name;
   public $quicOverride;
+  public $region;
   public $selfLink;
   public $sslCertificates;
   public $sslPolicy;
@@ -76,6 +77,14 @@ class Google_Service_Compute_TargetHttpsProxy extends Google_Collection
   public function getQuicOverride()
   {
     return $this->quicOverride;
+  }
+  public function setRegion($region)
+  {
+    $this->region = $region;
+  }
+  public function getRegion()
+  {
+    return $this->region;
   }
   public function setSelfLink($selfLink)
   {

@@ -127,19 +127,6 @@ class Google_Service_AndroidEnterprise_Resource_Enterprises extends Google_Servi
     return $this->call('get', array($params), "Google_Service_AndroidEnterprise_Enterprise");
   }
   /**
-   * Deprecated and unused. (enterprises.getAndroidDevicePolicyConfig)
-   *
-   * @param string $enterpriseId The ID of the enterprise.
-   * @param array $optParams Optional parameters.
-   * @return Google_Service_AndroidEnterprise_AndroidDevicePolicyConfig
-   */
-  public function getAndroidDevicePolicyConfig($enterpriseId, $optParams = array())
-  {
-    $params = array('enterpriseId' => $enterpriseId);
-    $params = array_merge($params, $optParams);
-    return $this->call('getAndroidDevicePolicyConfig', array($params), "Google_Service_AndroidEnterprise_AndroidDevicePolicyConfig");
-  }
-  /**
    * Returns a service account and credentials. The service account can be bound
    * to the enterprise by calling setAccount. The service account is unique to
    * this enterprise and EMM, and will be deleted if the enterprise is unbound.
@@ -263,20 +250,6 @@ class Google_Service_AndroidEnterprise_Resource_Enterprises extends Google_Servi
     $params = array('enterpriseId' => $enterpriseId, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('setAccount', array($params), "Google_Service_AndroidEnterprise_EnterpriseAccount");
-  }
-  /**
-   * Deprecated and unused. (enterprises.setAndroidDevicePolicyConfig)
-   *
-   * @param string $enterpriseId The ID of the enterprise.
-   * @param Google_Service_AndroidEnterprise_AndroidDevicePolicyConfig $postBody
-   * @param array $optParams Optional parameters.
-   * @return Google_Service_AndroidEnterprise_AndroidDevicePolicyConfig
-   */
-  public function setAndroidDevicePolicyConfig($enterpriseId, Google_Service_AndroidEnterprise_AndroidDevicePolicyConfig $postBody, $optParams = array())
-  {
-    $params = array('enterpriseId' => $enterpriseId, 'postBody' => $postBody);
-    $params = array_merge($params, $optParams);
-    return $this->call('setAndroidDevicePolicyConfig', array($params), "Google_Service_AndroidEnterprise_AndroidDevicePolicyConfig");
   }
   /**
    * Sets the store layout for the enterprise. By default, storeLayoutType is set

@@ -19,10 +19,13 @@ class Google_Service_FirebaseDynamicLinks_GetIosReopenAttributionResponse extend
 {
   public $deepLink;
   public $invitationId;
+  public $iosMinAppVersion;
   public $resolvedLink;
   public $utmCampaign;
+  public $utmContent;
   public $utmMedium;
   public $utmSource;
+  public $utmTerm;
 
   public function setDeepLink($deepLink)
   {
@@ -40,6 +43,14 @@ class Google_Service_FirebaseDynamicLinks_GetIosReopenAttributionResponse extend
   {
     return $this->invitationId;
   }
+  public function setIosMinAppVersion($iosMinAppVersion)
+  {
+    $this->iosMinAppVersion = $iosMinAppVersion;
+  }
+  public function getIosMinAppVersion()
+  {
+    return $this->iosMinAppVersion;
+  }
   public function setResolvedLink($resolvedLink)
   {
     $this->resolvedLink = $resolvedLink;
@@ -56,6 +67,14 @@ class Google_Service_FirebaseDynamicLinks_GetIosReopenAttributionResponse extend
   {
     return $this->utmCampaign;
   }
+  public function setUtmContent($utmContent)
+  {
+    $this->utmContent = $utmContent;
+  }
+  public function getUtmContent()
+  {
+    return $this->utmContent;
+  }
   public function setUtmMedium($utmMedium)
   {
     $this->utmMedium = $utmMedium;
@@ -71,5 +90,13 @@ class Google_Service_FirebaseDynamicLinks_GetIosReopenAttributionResponse extend
   public function getUtmSource()
   {
     return $this->utmSource;
+  }
+  public function setUtmTerm($utmTerm)
+  {
+    $this->utmTerm = $utmTerm;
+  }
+  public function getUtmTerm()
+  {
+    return $this->utmTerm;
   }
 }

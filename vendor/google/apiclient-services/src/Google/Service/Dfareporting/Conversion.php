@@ -28,6 +28,7 @@ class Google_Service_Dfareporting_Conversion extends Google_Collection
   public $gclid;
   public $kind;
   public $limitAdTracking;
+  public $matchId;
   public $mobileDeviceId;
   public $nonPersonalizedAd;
   public $ordinal;
@@ -113,6 +114,14 @@ class Google_Service_Dfareporting_Conversion extends Google_Collection
   public function getLimitAdTracking()
   {
     return $this->limitAdTracking;
+  }
+  public function setMatchId($matchId)
+  {
+    $this->matchId = $matchId;
+  }
+  public function getMatchId()
+  {
+    return $this->matchId;
   }
   public function setMobileDeviceId($mobileDeviceId)
   {

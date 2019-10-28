@@ -49,13 +49,15 @@ class Google_Service_Blogger extends Google_Service
   /**
    * Constructs the internal representation of the Blogger service.
    *
-   * @param Google_Client $client
+   * @param Google_Client $client The client used to deliver requests.
+   * @param string $rootUrl The root URL used for requests to the service.
    */
-  public function __construct(Google_Client $client)
+  public function __construct(Google_Client $client, $rootUrl = null)
   {
     parent::__construct($client);
-    $this->rootUrl = 'https://www.googleapis.com/';
+    $this->rootUrl = $rootUrl ?: 'https://www.googleapis.com/';
     $this->servicePath = 'blogger/v3/';
+    $this->batchPath = 'batch/blogger/v3';
     $this->version = 'v3';
     $this->serviceName = 'blogger';
 

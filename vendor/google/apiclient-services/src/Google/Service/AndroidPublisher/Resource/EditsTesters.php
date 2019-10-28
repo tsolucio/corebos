@@ -31,8 +31,7 @@ class Google_Service_AndroidPublisher_Resource_EditsTesters extends Google_Servi
    * @param string $packageName Unique identifier for the Android app that is
    * being updated; for example, "com.spiffygame".
    * @param string $editId Unique identifier for this edit.
-   * @param string $track The track to read or modify. Acceptable values are:
-   * "alpha", "beta", "production", "rollout" or "internal".
+   * @param string $track The track to read or modify.
    * @param array $optParams Optional parameters.
    * @return Google_Service_AndroidPublisher_Testers
    */
@@ -48,8 +47,7 @@ class Google_Service_AndroidPublisher_Resource_EditsTesters extends Google_Servi
    * @param string $packageName Unique identifier for the Android app that is
    * being updated; for example, "com.spiffygame".
    * @param string $editId Unique identifier for this edit.
-   * @param string $track The track to read or modify. Acceptable values are:
-   * "alpha", "beta", "production", "rollout" or "internal".
+   * @param string $track The track to read or modify.
    * @param Google_Service_AndroidPublisher_Testers $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_AndroidPublisher_Testers
@@ -66,8 +64,7 @@ class Google_Service_AndroidPublisher_Resource_EditsTesters extends Google_Servi
    * @param string $packageName Unique identifier for the Android app that is
    * being updated; for example, "com.spiffygame".
    * @param string $editId Unique identifier for this edit.
-   * @param string $track The track to read or modify. Acceptable values are:
-   * "alpha", "beta", "production", "rollout" or "internal".
+   * @param string $track The track to read or modify.
    * @param Google_Service_AndroidPublisher_Testers $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_AndroidPublisher_Testers

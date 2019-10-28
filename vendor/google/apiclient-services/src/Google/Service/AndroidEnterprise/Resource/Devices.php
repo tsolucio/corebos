@@ -26,6 +26,22 @@
 class Google_Service_AndroidEnterprise_Resource_Devices extends Google_Service_Resource
 {
   /**
+   * Uploads a report containing any changes in app states on the device since the
+   * last report was generated. You can call this method up to 3 times every 24
+   * hours for a given device. (devices.forceReportUpload)
+   *
+   * @param string $enterpriseId The ID of the enterprise.
+   * @param string $userId The ID of the user.
+   * @param string $deviceId The ID of the device.
+   * @param array $optParams Optional parameters.
+   */
+  public function forceReportUpload($enterpriseId, $userId, $deviceId, $optParams = array())
+  {
+    $params = array('enterpriseId' => $enterpriseId, 'userId' => $userId, 'deviceId' => $deviceId);
+    $params = array_merge($params, $optParams);
+    return $this->call('forceReportUpload', array($params));
+  }
+  /**
    * Retrieves the details of a device. (devices.get)
    *
    * @param string $enterpriseId The ID of the enterprise.

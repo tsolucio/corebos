@@ -26,7 +26,8 @@
 class Google_Service_Compute_Resource_HttpHealthChecks extends Google_Service_Resource
 {
   /**
-   * Deletes the specified HttpHealthCheck resource. (httpHealthChecks.delete)
+   * Deletes the specified HttpHealthCheck resource. (== suppress_warning http-
+   * rest-shadowed ==) (httpHealthChecks.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $httpHealthCheck Name of the HttpHealthCheck resource to
@@ -55,7 +56,8 @@ class Google_Service_Compute_Resource_HttpHealthChecks extends Google_Service_Re
   }
   /**
    * Returns the specified HttpHealthCheck resource. Gets a list of available HTTP
-   * health checks by making a list() request. (httpHealthChecks.get)
+   * health checks by making a list() request. (== suppress_warning http-rest-
+   * shadowed ==) (httpHealthChecks.get)
    *
    * @param string $project Project ID for this request.
    * @param string $httpHealthCheck Name of the HttpHealthCheck resource to
@@ -71,7 +73,8 @@ class Google_Service_Compute_Resource_HttpHealthChecks extends Google_Service_Re
   }
   /**
    * Creates a HttpHealthCheck resource in the specified project using the data
-   * included in the request. (httpHealthChecks.insert)
+   * included in the request. (== suppress_warning http-rest-shadowed ==)
+   * (httpHealthChecks.insert)
    *
    * @param string $project Project ID for this request.
    * @param Google_Service_Compute_HttpHealthCheck $postBody
@@ -99,7 +102,8 @@ class Google_Service_Compute_Resource_HttpHealthChecks extends Google_Service_Re
   }
   /**
    * Retrieves the list of HttpHealthCheck resources available to the specified
-   * project. (httpHealthChecks.listHttpHealthChecks)
+   * project. (== suppress_warning http-rest-shadowed ==)
+   * (httpHealthChecks.listHttpHealthChecks)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -153,7 +157,8 @@ class Google_Service_Compute_Resource_HttpHealthChecks extends Google_Service_Re
   /**
    * Updates a HttpHealthCheck resource in the specified project using the data
    * included in the request. This method supports PATCH semantics and uses the
-   * JSON merge patch format and processing rules. (httpHealthChecks.patch)
+   * JSON merge patch format and processing rules. (== suppress_warning http-rest-
+   * shadowed ==) (httpHealthChecks.patch)
    *
    * @param string $project Project ID for this request.
    * @param string $httpHealthCheck Name of the HttpHealthCheck resource to patch.
@@ -182,7 +187,8 @@ class Google_Service_Compute_Resource_HttpHealthChecks extends Google_Service_Re
   }
   /**
    * Updates a HttpHealthCheck resource in the specified project using the data
-   * included in the request. (httpHealthChecks.update)
+   * included in the request. (== suppress_warning http-rest-shadowed ==)
+   * (httpHealthChecks.update)
    *
    * @param string $project Project ID for this request.
    * @param string $httpHealthCheck Name of the HttpHealthCheck resource to

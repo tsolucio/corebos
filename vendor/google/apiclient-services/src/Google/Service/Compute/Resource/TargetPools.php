@@ -26,7 +26,8 @@
 class Google_Service_Compute_Resource_TargetPools extends Google_Service_Resource
 {
   /**
-   * Adds health check URLs to a target pool. (targetPools.addHealthCheck)
+   * Adds health check URLs to a target pool. (== suppress_warning http-rest-
+   * shadowed ==) (targetPools.addHealthCheck)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -55,7 +56,8 @@ class Google_Service_Compute_Resource_TargetPools extends Google_Service_Resourc
     return $this->call('addHealthCheck', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Adds an instance to a target pool. (targetPools.addInstance)
+   * Adds an instance to a target pool. (== suppress_warning http-rest-shadowed
+   * ==) (targetPools.addInstance)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -85,7 +87,8 @@ class Google_Service_Compute_Resource_TargetPools extends Google_Service_Resourc
     return $this->call('addInstance', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Retrieves an aggregated list of target pools. (targetPools.aggregatedList)
+   * Retrieves an aggregated list of target pools. (== suppress_warning http-rest-
+   * shadowed ==) (targetPools.aggregatedList)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -137,7 +140,8 @@ class Google_Service_Compute_Resource_TargetPools extends Google_Service_Resourc
     return $this->call('aggregatedList', array($params), "Google_Service_Compute_TargetPoolAggregatedList");
   }
   /**
-   * Deletes the specified target pool. (targetPools.delete)
+   * Deletes the specified target pool. (== suppress_warning http-rest-shadowed
+   * ==) (targetPools.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -166,7 +170,8 @@ class Google_Service_Compute_Resource_TargetPools extends Google_Service_Resourc
   }
   /**
    * Returns the specified target pool. Gets a list of available target pools by
-   * making a list() request. (targetPools.get)
+   * making a list() request. (== suppress_warning http-rest-shadowed ==)
+   * (targetPools.get)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -182,7 +187,8 @@ class Google_Service_Compute_Resource_TargetPools extends Google_Service_Resourc
   }
   /**
    * Gets the most recent health check results for each IP for the instance that
-   * is referenced by the given target pool. (targetPools.getHealth)
+   * is referenced by the given target pool. (== suppress_warning http-rest-
+   * shadowed ==) (targetPools.getHealth)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -200,7 +206,8 @@ class Google_Service_Compute_Resource_TargetPools extends Google_Service_Resourc
   }
   /**
    * Creates a target pool in the specified project and region using the data
-   * included in the request. (targetPools.insert)
+   * included in the request. (== suppress_warning http-rest-shadowed ==)
+   * (targetPools.insert)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -229,7 +236,8 @@ class Google_Service_Compute_Resource_TargetPools extends Google_Service_Resourc
   }
   /**
    * Retrieves a list of target pools available to the specified project and
-   * region. (targetPools.listTargetPools)
+   * region. (== suppress_warning http-rest-shadowed ==)
+   * (targetPools.listTargetPools)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -282,7 +290,8 @@ class Google_Service_Compute_Resource_TargetPools extends Google_Service_Resourc
     return $this->call('list', array($params), "Google_Service_Compute_TargetPoolList");
   }
   /**
-   * Removes health check URL from a target pool. (targetPools.removeHealthCheck)
+   * Removes health check URL from a target pool. (== suppress_warning http-rest-
+   * shadowed ==) (targetPools.removeHealthCheck)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -312,7 +321,8 @@ class Google_Service_Compute_Resource_TargetPools extends Google_Service_Resourc
     return $this->call('removeHealthCheck', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Removes instance URL from a target pool. (targetPools.removeInstance)
+   * Removes instance URL from a target pool. (== suppress_warning http-rest-
+   * shadowed ==) (targetPools.removeInstance)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.
@@ -342,7 +352,8 @@ class Google_Service_Compute_Resource_TargetPools extends Google_Service_Resourc
     return $this->call('removeInstance', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Changes a backup target pool's configurations. (targetPools.setBackup)
+   * Changes a backup target pool's configurations. (== suppress_warning http-
+   * rest-shadowed ==) (targetPools.setBackup)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region scoping this request.

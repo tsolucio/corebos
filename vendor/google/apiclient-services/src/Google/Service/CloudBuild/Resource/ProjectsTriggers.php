@@ -81,6 +81,10 @@ class Google_Service_CloudBuild_Resource_ProjectsTriggers extends Google_Service
    *
    * @param string $projectId ID of the project for which to list BuildTriggers.
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string pageToken Token to provide to skip to a particular spot in
+   * the list.
+   * @opt_param int pageSize Number of results to return in the list.
    * @return Google_Service_CloudBuild_ListBuildTriggersResponse
    */
   public function listProjectsTriggers($projectId, $optParams = array())

@@ -93,10 +93,8 @@ class Google_Service_CloudIdentity_Resource_GroupsMemberships extends Google_Ser
    *
    * @opt_param string pageToken The next_page_token value returned from a
    * previous list request, if any.
-   * @opt_param int pageSize Maximum number of Memberships to return.
-   *
-   * View | Default | Maximum -----|---------|-------- BASIC | 200 | 1000 FULL |
-   * 50 | 500
+   * @opt_param int pageSize The default page size is 200 (max 1000) for the BASIC
+   * view, and 50 (max 500) for the FULL view.
    * @opt_param string view Membership resource view to be returned. Defaults to
    * View.BASIC.
    * @return Google_Service_CloudIdentity_ListMembershipsResponse

@@ -38,13 +38,15 @@ class Google_Service_Pagespeedonline extends Google_Service
   /**
    * Constructs the internal representation of the Pagespeedonline service.
    *
-   * @param Google_Client $client
+   * @param Google_Client $client The client used to deliver requests.
+   * @param string $rootUrl The root URL used for requests to the service.
    */
-  public function __construct(Google_Client $client)
+  public function __construct(Google_Client $client, $rootUrl = null)
   {
     parent::__construct($client);
-    $this->rootUrl = 'https://www.googleapis.com/';
+    $this->rootUrl = $rootUrl ?: 'https://www.googleapis.com/';
     $this->servicePath = 'pagespeedonline/v5/';
+    $this->batchPath = 'batch/pagespeedonline/v5';
     $this->version = 'v5';
     $this->serviceName = 'pagespeedonline';
 

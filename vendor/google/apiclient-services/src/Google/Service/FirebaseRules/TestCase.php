@@ -21,6 +21,7 @@ class Google_Service_FirebaseRules_TestCase extends Google_Collection
   public $expectation;
   protected $functionMocksType = 'Google_Service_FirebaseRules_FunctionMock';
   protected $functionMocksDataType = 'array';
+  public $pathEncoding;
   public $request;
   public $resource;
 
@@ -45,6 +46,14 @@ class Google_Service_FirebaseRules_TestCase extends Google_Collection
   public function getFunctionMocks()
   {
     return $this->functionMocks;
+  }
+  public function setPathEncoding($pathEncoding)
+  {
+    $this->pathEncoding = $pathEncoding;
+  }
+  public function getPathEncoding()
+  {
+    return $this->pathEncoding;
   }
   public function setRequest($request)
   {

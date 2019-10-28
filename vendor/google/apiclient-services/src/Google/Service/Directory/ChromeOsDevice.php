@@ -23,6 +23,7 @@ class Google_Service_Directory_ChromeOsDevice extends Google_Collection
   public $annotatedAssetId;
   public $annotatedLocation;
   public $annotatedUser;
+  public $autoUpdateExpiration;
   public $bootMode;
   protected $cpuStatusReportsType = 'Google_Service_Directory_ChromeOsDeviceCpuStatusReports';
   protected $cpuStatusReportsDataType = 'array';
@@ -31,13 +32,16 @@ class Google_Service_Directory_ChromeOsDevice extends Google_Collection
   public $deviceId;
   protected $diskVolumeReportsType = 'Google_Service_Directory_ChromeOsDeviceDiskVolumeReports';
   protected $diskVolumeReportsDataType = 'array';
+  public $dockMacAddress;
   public $etag;
   public $ethernetMacAddress;
+  public $ethernetMacAddress0;
   public $firmwareVersion;
   public $kind;
   public $lastEnrollmentTime;
   public $lastSync;
   public $macAddress;
+  public $manufactureDate;
   public $meid;
   public $model;
   public $notes;
@@ -94,6 +98,14 @@ class Google_Service_Directory_ChromeOsDevice extends Google_Collection
   public function getAnnotatedUser()
   {
     return $this->annotatedUser;
+  }
+  public function setAutoUpdateExpiration($autoUpdateExpiration)
+  {
+    $this->autoUpdateExpiration = $autoUpdateExpiration;
+  }
+  public function getAutoUpdateExpiration()
+  {
+    return $this->autoUpdateExpiration;
   }
   public function setBootMode($bootMode)
   {
@@ -153,6 +165,14 @@ class Google_Service_Directory_ChromeOsDevice extends Google_Collection
   {
     return $this->diskVolumeReports;
   }
+  public function setDockMacAddress($dockMacAddress)
+  {
+    $this->dockMacAddress = $dockMacAddress;
+  }
+  public function getDockMacAddress()
+  {
+    return $this->dockMacAddress;
+  }
   public function setEtag($etag)
   {
     $this->etag = $etag;
@@ -168,6 +188,14 @@ class Google_Service_Directory_ChromeOsDevice extends Google_Collection
   public function getEthernetMacAddress()
   {
     return $this->ethernetMacAddress;
+  }
+  public function setEthernetMacAddress0($ethernetMacAddress0)
+  {
+    $this->ethernetMacAddress0 = $ethernetMacAddress0;
+  }
+  public function getEthernetMacAddress0()
+  {
+    return $this->ethernetMacAddress0;
   }
   public function setFirmwareVersion($firmwareVersion)
   {
@@ -208,6 +236,14 @@ class Google_Service_Directory_ChromeOsDevice extends Google_Collection
   public function getMacAddress()
   {
     return $this->macAddress;
+  }
+  public function setManufactureDate($manufactureDate)
+  {
+    $this->manufactureDate = $manufactureDate;
+  }
+  public function getManufactureDate()
+  {
+    return $this->manufactureDate;
   }
   public function setMeid($meid)
   {

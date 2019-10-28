@@ -26,7 +26,8 @@
 class Google_Service_Compute_Resource_DiskTypes extends Google_Service_Resource
 {
   /**
-   * Retrieves an aggregated list of disk types. (diskTypes.aggregatedList)
+   * Retrieves an aggregated list of disk types. (== suppress_warning http-rest-
+   * shadowed ==) (diskTypes.aggregatedList)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -79,7 +80,8 @@ class Google_Service_Compute_Resource_DiskTypes extends Google_Service_Resource
   }
   /**
    * Returns the specified disk type. Gets a list of available disk types by
-   * making a list() request. (diskTypes.get)
+   * making a list() request. (== suppress_warning http-rest-shadowed ==)
+   * (diskTypes.get)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.
@@ -94,8 +96,8 @@ class Google_Service_Compute_Resource_DiskTypes extends Google_Service_Resource
     return $this->call('get', array($params), "Google_Service_Compute_DiskType");
   }
   /**
-   * Retrieves a list of disk types available to the specified project.
-   * (diskTypes.listDiskTypes)
+   * Retrieves a list of disk types available to the specified project. (==
+   * suppress_warning http-rest-shadowed ==) (diskTypes.listDiskTypes)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone for this request.

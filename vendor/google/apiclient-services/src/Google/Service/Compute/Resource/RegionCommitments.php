@@ -26,8 +26,8 @@
 class Google_Service_Compute_Resource_RegionCommitments extends Google_Service_Resource
 {
   /**
-   * Retrieves an aggregated list of commitments.
-   * (regionCommitments.aggregatedList)
+   * Retrieves an aggregated list of commitments. (== suppress_warning http-rest-
+   * shadowed ==) (regionCommitments.aggregatedList)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -80,7 +80,8 @@ class Google_Service_Compute_Resource_RegionCommitments extends Google_Service_R
   }
   /**
    * Returns the specified commitment resource. Gets a list of available
-   * commitments by making a list() request. (regionCommitments.get)
+   * commitments by making a list() request. (== suppress_warning http-rest-
+   * shadowed ==) (regionCommitments.get)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -96,7 +97,8 @@ class Google_Service_Compute_Resource_RegionCommitments extends Google_Service_R
   }
   /**
    * Creates a commitment in the specified project using the data included in the
-   * request. (regionCommitments.insert)
+   * request. (== suppress_warning http-rest-shadowed ==)
+   * (regionCommitments.insert)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -124,7 +126,8 @@ class Google_Service_Compute_Resource_RegionCommitments extends Google_Service_R
     return $this->call('insert', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Retrieves a list of commitments contained within the specified region.
+   * Retrieves a list of commitments contained within the specified region. (==
+   * suppress_warning http-rest-shadowed ==)
    * (regionCommitments.listRegionCommitments)
    *
    * @param string $project Project ID for this request.

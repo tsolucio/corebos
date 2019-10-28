@@ -28,9 +28,9 @@ class Google_Service_CloudIot_Resource_ProjectsLocationsRegistriesDevices extend
   /**
    * Creates a device in a device registry. (devices.create)
    *
-   * @param string $parent The name of the device registry where this device
-   * should be created. For example, `projects/example-project/locations/us-
-   * central1/registries/my-registry`.
+   * @param string $parent Required. The name of the device registry where this
+   * device should be created. For example, `projects/example-project/locations
+   * /us-central1/registries/my-registry`.
    * @param Google_Service_CloudIot_Device $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_CloudIot_Device
@@ -44,7 +44,7 @@ class Google_Service_CloudIot_Resource_ProjectsLocationsRegistriesDevices extend
   /**
    * Deletes a device. (devices.delete)
    *
-   * @param string $name The name of the device. For example,
+   * @param string $name Required. The name of the device. For example,
    * `projects/p0/locations/us-central1/registries/registry0/devices/device0` or
    * `projects/p0/locations/us-central1/registries/registry0/devices/{num_id}`.
    * @param array $optParams Optional parameters.
@@ -59,7 +59,7 @@ class Google_Service_CloudIot_Resource_ProjectsLocationsRegistriesDevices extend
   /**
    * Gets details about a device. (devices.get)
    *
-   * @param string $name The name of the device. For example,
+   * @param string $name Required. The name of the device. For example,
    * `projects/p0/locations/us-central1/registries/registry0/devices/device0` or
    * `projects/p0/locations/us-central1/registries/registry0/devices/{num_id}`.
    * @param array $optParams Optional parameters.
@@ -79,16 +79,10 @@ class Google_Service_CloudIot_Resource_ProjectsLocationsRegistriesDevices extend
    * List devices in a device registry.
    * (devices.listProjectsLocationsRegistriesDevices)
    *
-   * @param string $parent The device registry path. Required. For example,
-   * `projects/my-project/locations/us-central1/registries/my-registry`.
+   * @param string $parent Required. The device registry path. Required. For
+   * example, `projects/my-project/locations/us-central1/registries/my-registry`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string fieldMask The fields of the `Device` resource to be
-   * returned in the response. The fields `id` and `num_id` are always returned,
-   * along with any other fields specified.
-   * @opt_param string pageToken The value returned by the last
-   * `ListDevicesResponse`; indicates that this is a continuation of a prior
-   * `ListDevices` call and the system should return the next page of data.
    * @opt_param int pageSize The maximum number of devices to return in the
    * response. If this value is zero, the service will select a default size. A
    * call may return fewer objects than requested. A non-empty `next_page_token`
@@ -112,6 +106,12 @@ class Google_Service_CloudIot_Resource_ProjectsLocationsRegistriesDevices extend
    * can be numeric (`num_id`) or the user-defined string (`id`). For example, if
    * `123` is specified, only devices bound to the gateway with `num_id` 123 are
    * returned.
+   * @opt_param string fieldMask The fields of the `Device` resource to be
+   * returned in the response. The fields `id` and `num_id` are always returned,
+   * along with any other fields specified.
+   * @opt_param string pageToken The value returned by the last
+   * `ListDevicesResponse`; indicates that this is a continuation of a prior
+   * `ListDevices` call and the system should return the next page of data.
    * @return Google_Service_CloudIot_ListDevicesResponse
    */
   public function listProjectsLocationsRegistriesDevices($parent, $optParams = array())
@@ -125,7 +125,7 @@ class Google_Service_CloudIot_Resource_ProjectsLocationsRegistriesDevices extend
    * Cloud IoT Core servers. Returns the modified configuration version and its
    * metadata. (devices.modifyCloudToDeviceConfig)
    *
-   * @param string $name The name of the device. For example,
+   * @param string $name Required. The name of the device. For example,
    * `projects/p0/locations/us-central1/registries/registry0/devices/device0` or
    * `projects/p0/locations/us-central1/registries/registry0/devices/{num_id}`.
    * @param Google_Service_CloudIot_ModifyCloudToDeviceConfigRequest $postBody
@@ -149,10 +149,10 @@ class Google_Service_CloudIot_Resource_ProjectsLocationsRegistriesDevices extend
    * @param Google_Service_CloudIot_Device $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string updateMask Only updates the `device` fields indicated by
-   * this mask. The field mask must not be empty, and it must not contain fields
-   * that are immutable or only set by the server. Mutable top-level fields:
-   * `credentials`, `blocked`, and `metadata`
+   * @opt_param string updateMask Required. Only updates the `device` fields
+   * indicated by this mask. The field mask must not be empty, and it must not
+   * contain fields that are immutable or only set by the server. Mutable top-
+   * level fields: `credentials`, `blocked`, and `metadata`
    * @return Google_Service_CloudIot_Device
    */
   public function patch($name, Google_Service_CloudIot_Device $postBody, $optParams = array())
@@ -175,7 +175,7 @@ class Google_Service_CloudIot_Resource_ProjectsLocationsRegistriesDevices extend
    * once delivery will be guaranteed; for QoS 0, no acknowledgment will be
    * expected from the device. (devices.sendCommandToDevice)
    *
-   * @param string $name The name of the device. For example,
+   * @param string $name Required. The name of the device. For example,
    * `projects/p0/locations/us-central1/registries/registry0/devices/device0` or
    * `projects/p0/locations/us-central1/registries/registry0/devices/{num_id}`.
    * @param Google_Service_CloudIot_SendCommandToDeviceRequest $postBody

@@ -17,7 +17,7 @@
 
 class Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1WebhookResponse extends Google_Collection
 {
-  protected $collection_key = 'outputContexts';
+  protected $collection_key = 'sessionEntityTypes';
   public $endInteraction;
   protected $followupEventInputType = 'Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1EventInput';
   protected $followupEventInputDataType = '';
@@ -27,6 +27,8 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1WebhookResponse exte
   protected $outputContextsType = 'Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1Context';
   protected $outputContextsDataType = 'array';
   public $payload;
+  protected $sessionEntityTypesType = 'Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1SessionEntityType';
+  protected $sessionEntityTypesDataType = 'array';
   public $source;
 
   public function setEndInteraction($endInteraction)
@@ -94,6 +96,20 @@ class Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1WebhookResponse exte
   public function getPayload()
   {
     return $this->payload;
+  }
+  /**
+   * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1SessionEntityType
+   */
+  public function setSessionEntityTypes($sessionEntityTypes)
+  {
+    $this->sessionEntityTypes = $sessionEntityTypes;
+  }
+  /**
+   * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2beta1SessionEntityType
+   */
+  public function getSessionEntityTypes()
+  {
+    return $this->sessionEntityTypes;
   }
   public function setSource($source)
   {

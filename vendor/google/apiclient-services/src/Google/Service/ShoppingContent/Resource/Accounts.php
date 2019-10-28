@@ -121,8 +121,8 @@ class Google_Service_ShoppingContent_Resource_Accounts extends Google_Service_Re
     return $this->call('insert', array($params), "Google_Service_ShoppingContent_Account");
   }
   /**
-   * Performs an action on a link between a Merchant Center account and another
-   * account. (accounts.link)
+   * Performs an action on a link between two Merchant Center accounts, namely
+   * accountId and linkedAccountId. (accounts.link)
    *
    * @param string $merchantId The ID of the managing account. If this parameter
    * is not the same as accountId, then this account must be a multi-client

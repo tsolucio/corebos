@@ -24,6 +24,7 @@ class Google_Service_Monitoring_HttpCheck extends Google_Model
   public $path;
   public $port;
   public $useSsl;
+  public $validateSsl;
 
   /**
    * @param Google_Service_Monitoring_BasicAuthentication
@@ -78,5 +79,13 @@ class Google_Service_Monitoring_HttpCheck extends Google_Model
   public function getUseSsl()
   {
     return $this->useSsl;
+  }
+  public function setValidateSsl($validateSsl)
+  {
+    $this->validateSsl = $validateSsl;
+  }
+  public function getValidateSsl()
+  {
+    return $this->validateSsl;
   }
 }

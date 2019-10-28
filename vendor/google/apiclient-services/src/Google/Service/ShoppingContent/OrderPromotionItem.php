@@ -18,6 +18,7 @@
 class Google_Service_ShoppingContent_OrderPromotionItem extends Google_Model
 {
   public $lineItemId;
+  public $offerId;
   public $productId;
   public $quantity;
 
@@ -28,6 +29,14 @@ class Google_Service_ShoppingContent_OrderPromotionItem extends Google_Model
   public function getLineItemId()
   {
     return $this->lineItemId;
+  }
+  public function setOfferId($offerId)
+  {
+    $this->offerId = $offerId;
+  }
+  public function getOfferId()
+  {
+    return $this->offerId;
   }
   public function setProductId($productId)
   {

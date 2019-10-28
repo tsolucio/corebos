@@ -18,6 +18,7 @@
 class Google_Service_Iam_ServiceAccountKey extends Google_Model
 {
   public $keyAlgorithm;
+  public $keyOrigin;
   public $name;
   public $privateKeyData;
   public $privateKeyType;
@@ -32,6 +33,14 @@ class Google_Service_Iam_ServiceAccountKey extends Google_Model
   public function getKeyAlgorithm()
   {
     return $this->keyAlgorithm;
+  }
+  public function setKeyOrigin($keyOrigin)
+  {
+    $this->keyOrigin = $keyOrigin;
+  }
+  public function getKeyOrigin()
+  {
+    return $this->keyOrigin;
   }
   public function setName($name)
   {

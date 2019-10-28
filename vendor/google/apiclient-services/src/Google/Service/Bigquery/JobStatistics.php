@@ -18,6 +18,9 @@
 class Google_Service_Bigquery_JobStatistics extends Google_Collection
 {
   protected $collection_key = 'reservationUsage';
+  protected $internal_gapi_mappings = array(
+        "reservationId" => "reservation_id",
+  );
   public $completionRatio;
   public $creationTime;
   public $endTime;
@@ -25,11 +28,16 @@ class Google_Service_Bigquery_JobStatistics extends Google_Collection
   protected $extractDataType = '';
   protected $loadType = 'Google_Service_Bigquery_JobStatistics3';
   protected $loadDataType = '';
+  public $numChildJobs;
+  public $parentJobId;
   protected $queryType = 'Google_Service_Bigquery_JobStatistics2';
   protected $queryDataType = '';
   public $quotaDeferments;
   protected $reservationUsageType = 'Google_Service_Bigquery_JobStatisticsReservationUsage';
   protected $reservationUsageDataType = 'array';
+  public $reservationId;
+  protected $scriptStatisticsType = 'Google_Service_Bigquery_ScriptStatistics';
+  protected $scriptStatisticsDataType = '';
   public $startTime;
   public $totalBytesProcessed;
   public $totalSlotMs;
@@ -86,6 +94,22 @@ class Google_Service_Bigquery_JobStatistics extends Google_Collection
   {
     return $this->load;
   }
+  public function setNumChildJobs($numChildJobs)
+  {
+    $this->numChildJobs = $numChildJobs;
+  }
+  public function getNumChildJobs()
+  {
+    return $this->numChildJobs;
+  }
+  public function setParentJobId($parentJobId)
+  {
+    $this->parentJobId = $parentJobId;
+  }
+  public function getParentJobId()
+  {
+    return $this->parentJobId;
+  }
   /**
    * @param Google_Service_Bigquery_JobStatistics2
    */
@@ -121,6 +145,28 @@ class Google_Service_Bigquery_JobStatistics extends Google_Collection
   public function getReservationUsage()
   {
     return $this->reservationUsage;
+  }
+  public function setReservationId($reservationId)
+  {
+    $this->reservationId = $reservationId;
+  }
+  public function getReservationId()
+  {
+    return $this->reservationId;
+  }
+  /**
+   * @param Google_Service_Bigquery_ScriptStatistics
+   */
+  public function setScriptStatistics(Google_Service_Bigquery_ScriptStatistics $scriptStatistics)
+  {
+    $this->scriptStatistics = $scriptStatistics;
+  }
+  /**
+   * @return Google_Service_Bigquery_ScriptStatistics
+   */
+  public function getScriptStatistics()
+  {
+    return $this->scriptStatistics;
   }
   public function setStartTime($startTime)
   {

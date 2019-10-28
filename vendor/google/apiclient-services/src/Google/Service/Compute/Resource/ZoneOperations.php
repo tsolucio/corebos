@@ -26,8 +26,8 @@
 class Google_Service_Compute_Resource_ZoneOperations extends Google_Service_Resource
 {
   /**
-   * Deletes the specified zone-specific Operations resource.
-   * (zoneOperations.delete)
+   * Deletes the specified zone-specific Operations resource. (== suppress_warning
+   * http-rest-shadowed ==) (zoneOperations.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $zone Name of the zone for this request.
@@ -41,8 +41,8 @@ class Google_Service_Compute_Resource_ZoneOperations extends Google_Service_Reso
     return $this->call('delete', array($params));
   }
   /**
-   * Retrieves the specified zone-specific Operations resource.
-   * (zoneOperations.get)
+   * Retrieves the specified zone-specific Operations resource. (==
+   * suppress_warning http-rest-shadowed ==) (zoneOperations.get)
    *
    * @param string $project Project ID for this request.
    * @param string $zone Name of the zone for this request.
@@ -58,6 +58,7 @@ class Google_Service_Compute_Resource_ZoneOperations extends Google_Service_Reso
   }
   /**
    * Retrieves a list of Operation resources contained within the specified zone.
+   * (== suppress_warning http-rest-shadowed ==)
    * (zoneOperations.listZoneOperations)
    *
    * @param string $project Project ID for this request.

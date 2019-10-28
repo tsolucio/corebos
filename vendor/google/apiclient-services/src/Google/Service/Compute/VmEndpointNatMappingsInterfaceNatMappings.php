@@ -18,11 +18,21 @@
 class Google_Service_Compute_VmEndpointNatMappingsInterfaceNatMappings extends Google_Collection
 {
   protected $collection_key = 'natIpPortRanges';
+  public $drainNatIpPortRanges;
   public $natIpPortRanges;
+  public $numTotalDrainNatPorts;
   public $numTotalNatPorts;
   public $sourceAliasIpRange;
   public $sourceVirtualIp;
 
+  public function setDrainNatIpPortRanges($drainNatIpPortRanges)
+  {
+    $this->drainNatIpPortRanges = $drainNatIpPortRanges;
+  }
+  public function getDrainNatIpPortRanges()
+  {
+    return $this->drainNatIpPortRanges;
+  }
   public function setNatIpPortRanges($natIpPortRanges)
   {
     $this->natIpPortRanges = $natIpPortRanges;
@@ -30,6 +40,14 @@ class Google_Service_Compute_VmEndpointNatMappingsInterfaceNatMappings extends G
   public function getNatIpPortRanges()
   {
     return $this->natIpPortRanges;
+  }
+  public function setNumTotalDrainNatPorts($numTotalDrainNatPorts)
+  {
+    $this->numTotalDrainNatPorts = $numTotalDrainNatPorts;
+  }
+  public function getNumTotalDrainNatPorts()
+  {
+    return $this->numTotalDrainNatPorts;
   }
   public function setNumTotalNatPorts($numTotalNatPorts)
   {

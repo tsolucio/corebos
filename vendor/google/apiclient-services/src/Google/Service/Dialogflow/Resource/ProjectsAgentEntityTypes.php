@@ -69,9 +69,10 @@ class Google_Service_Dialogflow_Resource_ProjectsAgentEntityTypes extends Google
    *
    * @opt_param string languageCode Optional. The language of entity synonyms
    * defined in `entity_type`. If not specified, the agent's default language is
-   * used. [More than a dozen
-   * languages](https://dialogflow.com/docs/reference/language) are supported.
-   * Note: languages must be enabled in the agent, before they can be used.
+   * used. [Many
+   * languages](https://cloud.google.com/dialogflow/docs/reference/language) are
+   * supported. Note: languages must be enabled in the agent before they can be
+   * used.
    * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityType
    */
   public function create($parent, Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityType $postBody, $optParams = array())
@@ -102,9 +103,9 @@ class Google_Service_Dialogflow_Resource_ProjectsAgentEntityTypes extends Google
    * @param array $optParams Optional parameters.
    *
    * @opt_param string languageCode Optional. The language to retrieve entity
-   * synonyms for. If not specified, the agent's default language is used. [More
-   * than a dozen languages](https://dialogflow.com/docs/reference/language) are
-   * supported. Note: languages must be enabled in the agent, before they can be
+   * synonyms for. If not specified, the agent's default language is used. [Many
+   * languages](https://cloud.google.com/dialogflow/docs/reference/language) are
+   * supported. Note: languages must be enabled in the agent before they can be
    * used.
    * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityType
    */
@@ -122,15 +123,15 @@ class Google_Service_Dialogflow_Resource_ProjectsAgentEntityTypes extends Google
    * Format: `projects//agent`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string languageCode Optional. The language to list entity synonyms
-   * for. If not specified, the agent's default language is used. [More than a
-   * dozen languages](https://dialogflow.com/docs/reference/language) are
-   * supported. Note: languages must be enabled in the agent, before they can be
-   * used.
    * @opt_param string pageToken Optional. The next_page_token value returned from
    * a previous list request.
    * @opt_param int pageSize Optional. The maximum number of items to return in a
    * single page. By default 100 and at most 1000.
+   * @opt_param string languageCode Optional. The language to list entity synonyms
+   * for. If not specified, the agent's default language is used. [Many
+   * languages](https://cloud.google.com/dialogflow/docs/reference/language) are
+   * supported. Note: languages must be enabled in the agent before they can be
+   * used.
    * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2ListEntityTypesResponse
    */
   public function listProjectsAgentEntityTypes($parent, $optParams = array())
@@ -142,17 +143,18 @@ class Google_Service_Dialogflow_Resource_ProjectsAgentEntityTypes extends Google
   /**
    * Updates the specified entity type. (entityTypes.patch)
    *
-   * @param string $name Required for all methods except `create` (`create`
-   * populates the name automatically. The unique identifier of the entity type.
+   * @param string $name The unique identifier of the entity type. Required for
+   * EntityTypes.UpdateEntityType and EntityTypes.BatchUpdateEntityTypes methods.
    * Format: `projects//agent/entityTypes/`.
    * @param Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityType $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string languageCode Optional. The language of entity synonyms
    * defined in `entity_type`. If not specified, the agent's default language is
-   * used. [More than a dozen
-   * languages](https://dialogflow.com/docs/reference/language) are supported.
-   * Note: languages must be enabled in the agent, before they can be used.
+   * used. [Many
+   * languages](https://cloud.google.com/dialogflow/docs/reference/language) are
+   * supported. Note: languages must be enabled in the agent before they can be
+   * used.
    * @opt_param string updateMask Optional. The mask to control which fields get
    * updated.
    * @return Google_Service_Dialogflow_GoogleCloudDialogflowV2EntityType

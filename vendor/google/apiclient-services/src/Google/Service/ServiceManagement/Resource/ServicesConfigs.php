@@ -34,9 +34,9 @@ class Google_Service_ServiceManagement_Resource_ServicesConfigs extends Google_S
    * existing rollouts are kept for each service. The rest will be deleted
    * eventually. (configs.create)
    *
-   * @param string $serviceName The name of the service.  See the [overview
-   * ](/service-management/overview) for naming requirements.  For example:
-   * `example.googleapis.com`.
+   * @param string $serviceName Required. The name of the service.  See the
+   * [overview](/service-management/overview) for naming requirements.  For
+   * example: `example.googleapis.com`.
    * @param Google_Service_ServiceManagement_Service $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_ServiceManagement_Service
@@ -50,10 +50,11 @@ class Google_Service_ServiceManagement_Resource_ServicesConfigs extends Google_S
   /**
    * Gets a service configuration (version) for a managed service. (configs.get)
    *
-   * @param string $serviceName The name of the service.  See the [overview
-   * ](/service-management/overview) for naming requirements.  For example:
-   * `example.googleapis.com`.
-   * @param string $configId The id of the service configuration resource.
+   * @param string $serviceName Required. The name of the service.  See the
+   * [overview](/service-management/overview) for naming requirements.  For
+   * example: `example.googleapis.com`.
+   * @param string $configId Required. The id of the service configuration
+   * resource.
    *
    * This field must be specified for the server to return all fields, including
    * `SourceInfo`.
@@ -73,14 +74,14 @@ class Google_Service_ServiceManagement_Resource_ServicesConfigs extends Google_S
    * Lists the history of the service configuration for a managed service, from
    * the newest to the oldest. (configs.listServicesConfigs)
    *
-   * @param string $serviceName The name of the service.  See the [overview
-   * ](/service-management/overview) for naming requirements.  For example:
-   * `example.googleapis.com`.
+   * @param string $serviceName Required. The name of the service.  See the
+   * [overview](/service-management/overview) for naming requirements.  For
+   * example: `example.googleapis.com`.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string pageToken The token of the page to retrieve.
    * @opt_param int pageSize The max number of items to include in the response
-   * list.
+   * list. Page size is 50 if not specified. Maximum value is 100.
    * @return Google_Service_ServiceManagement_ListServiceConfigsResponse
    */
   public function listServicesConfigs($serviceName, $optParams = array())
@@ -102,9 +103,9 @@ class Google_Service_ServiceManagement_Resource_ServicesConfigs extends Google_S
    *
    * Operation (configs.submit)
    *
-   * @param string $serviceName The name of the service.  See the [overview
-   * ](/service-management/overview) for naming requirements.  For example:
-   * `example.googleapis.com`.
+   * @param string $serviceName Required. The name of the service.  See the
+   * [overview](/service-management/overview) for naming requirements.  For
+   * example: `example.googleapis.com`.
    * @param Google_Service_ServiceManagement_SubmitConfigSourceRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_ServiceManagement_Operation

@@ -127,6 +127,24 @@ class Google_Service_BigtableAdmin_Resource_ProjectsInstancesTables extends Goog
     return $this->call('get', array($params), "Google_Service_BigtableAdmin_Table");
   }
   /**
+   * Gets the access control policy for an instance resource. Returns an empty
+   * policy if an table exists but does not have a policy set.
+   * (tables.getIamPolicy)
+   *
+   * @param string $resource REQUIRED: The resource for which the policy is being
+   * requested. See the operation documentation for the appropriate value for this
+   * field.
+   * @param Google_Service_BigtableAdmin_GetIamPolicyRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_BigtableAdmin_Policy
+   */
+  public function getIamPolicy($resource, Google_Service_BigtableAdmin_GetIamPolicyRequest $postBody, $optParams = array())
+  {
+    $params = array('resource' => $resource, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('getIamPolicy', array($params), "Google_Service_BigtableAdmin_Policy");
+  }
+  /**
    * Lists all tables served from a specified instance.
    * (tables.listProjectsInstancesTables)
    *
@@ -134,12 +152,19 @@ class Google_Service_BigtableAdmin_Resource_ProjectsInstancesTables extends Goog
    * be listed. Values are of the form `projects//instances/`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken The value of `next_page_token` returned by a
-   * previous call.
-   * @opt_param int pageSize Maximum number of results per page. CURRENTLY
-   * UNIMPLEMENTED AND IGNORED.
    * @opt_param string view The view to be applied to the returned tables' fields.
    * Defaults to `NAME_ONLY` if unspecified; no others are currently supported.
+   * @opt_param string pageToken The value of `next_page_token` returned by a
+   * previous call.
+   * @opt_param int pageSize Maximum number of results per page.
+   *
+   * A page_size of zero lets the server choose the number of items to return. A
+   * page_size which is strictly positive will return at most that many items. A
+   * negative page_size will cause an error.
+   *
+   * Following the first request, subsequent paginated calls are not required to
+   * pass a page_size. If a page_size is set in subsequent calls, it must match
+   * the page_size given in the first request.
    * @return Google_Service_BigtableAdmin_ListTablesResponse
    */
   public function listProjectsInstancesTables($parent, $optParams = array())
@@ -165,5 +190,39 @@ class Google_Service_BigtableAdmin_Resource_ProjectsInstancesTables extends Goog
     $params = array('name' => $name, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('modifyColumnFamilies', array($params), "Google_Service_BigtableAdmin_Table");
+  }
+  /**
+   * Sets the access control policy on a table resource. Replaces any existing
+   * policy. (tables.setIamPolicy)
+   *
+   * @param string $resource REQUIRED: The resource for which the policy is being
+   * specified. See the operation documentation for the appropriate value for this
+   * field.
+   * @param Google_Service_BigtableAdmin_SetIamPolicyRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_BigtableAdmin_Policy
+   */
+  public function setIamPolicy($resource, Google_Service_BigtableAdmin_SetIamPolicyRequest $postBody, $optParams = array())
+  {
+    $params = array('resource' => $resource, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('setIamPolicy', array($params), "Google_Service_BigtableAdmin_Policy");
+  }
+  /**
+   * Returns permissions that the caller has on the specified table resource.
+   * (tables.testIamPermissions)
+   *
+   * @param string $resource REQUIRED: The resource for which the policy detail is
+   * being requested. See the operation documentation for the appropriate value
+   * for this field.
+   * @param Google_Service_BigtableAdmin_TestIamPermissionsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_BigtableAdmin_TestIamPermissionsResponse
+   */
+  public function testIamPermissions($resource, Google_Service_BigtableAdmin_TestIamPermissionsRequest $postBody, $optParams = array())
+  {
+    $params = array('resource' => $resource, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('testIamPermissions', array($params), "Google_Service_BigtableAdmin_TestIamPermissionsResponse");
   }
 }

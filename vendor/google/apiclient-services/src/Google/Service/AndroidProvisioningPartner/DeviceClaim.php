@@ -20,6 +20,8 @@ class Google_Service_AndroidProvisioningPartner_DeviceClaim extends Google_Model
   public $ownerCompanyId;
   public $resellerId;
   public $sectionType;
+  public $vacationModeExpireTime;
+  public $vacationModeStartTime;
 
   public function setOwnerCompanyId($ownerCompanyId)
   {
@@ -44,5 +46,21 @@ class Google_Service_AndroidProvisioningPartner_DeviceClaim extends Google_Model
   public function getSectionType()
   {
     return $this->sectionType;
+  }
+  public function setVacationModeExpireTime($vacationModeExpireTime)
+  {
+    $this->vacationModeExpireTime = $vacationModeExpireTime;
+  }
+  public function getVacationModeExpireTime()
+  {
+    return $this->vacationModeExpireTime;
+  }
+  public function setVacationModeStartTime($vacationModeStartTime)
+  {
+    $this->vacationModeStartTime = $vacationModeStartTime;
+  }
+  public function getVacationModeStartTime()
+  {
+    return $this->vacationModeStartTime;
   }
 }

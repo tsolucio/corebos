@@ -28,9 +28,8 @@ class Google_Service_CloudScheduler_Resource_ProjectsLocationsJobs extends Googl
   /**
    * Creates a job. (jobs.create)
    *
-   * @param string $parent Required.
-   *
-   * The location name. For example: `projects/PROJECT_ID/locations/LOCATION_ID`.
+   * @param string $parent Required. The location name. For example:
+   * `projects/PROJECT_ID/locations/LOCATION_ID`.
    * @param Google_Service_CloudScheduler_Job $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_CloudScheduler_Job
@@ -44,9 +43,7 @@ class Google_Service_CloudScheduler_Resource_ProjectsLocationsJobs extends Googl
   /**
    * Deletes a job. (jobs.delete)
    *
-   * @param string $name Required.
-   *
-   * The job name. For example:
+   * @param string $name Required. The job name. For example:
    * `projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_CloudScheduler_CloudschedulerEmpty
@@ -60,9 +57,7 @@ class Google_Service_CloudScheduler_Resource_ProjectsLocationsJobs extends Googl
   /**
    * Gets a job. (jobs.get)
    *
-   * @param string $name Required.
-   *
-   * The job name. For example:
+   * @param string $name Required. The job name. For example:
    * `projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID`.
    * @param array $optParams Optional parameters.
    * @return Google_Service_CloudScheduler_Job
@@ -76,9 +71,8 @@ class Google_Service_CloudScheduler_Resource_ProjectsLocationsJobs extends Googl
   /**
    * Lists jobs. (jobs.listProjectsLocationsJobs)
    *
-   * @param string $parent Required.
-   *
-   * The location name. For example: `projects/PROJECT_ID/locations/LOCATION_ID`.
+   * @param string $parent Required. The location name. For example:
+   * `projects/PROJECT_ID/locations/LOCATION_ID`.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string pageToken A token identifying a page of results the server
@@ -110,7 +104,10 @@ class Google_Service_CloudScheduler_Resource_ProjectsLocationsJobs extends Googl
    * If this happens, retry the UpdateJob request until a successful response is
    * received. (jobs.patch)
    *
-   * @param string $name The job name. For example:
+   * @param string $name Optionally caller-specified in CreateJob, after which it
+   * becomes output only.
+   *
+   * The job name. For example:
    * `projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID`.
    *
    * * `PROJECT_ID` can contain letters ([A-Za-z]), numbers ([0-9]),    hyphens
@@ -143,9 +140,7 @@ class Google_Service_CloudScheduler_Resource_ProjectsLocationsJobs extends Googl
    * it will be set to Job.State.PAUSED. A job must be in Job.State.ENABLED to be
    * paused. (jobs.pause)
    *
-   * @param string $name Required.
-   *
-   * The job name. For example:
+   * @param string $name Required. The job name. For example:
    * `projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID`.
    * @param Google_Service_CloudScheduler_PauseJobRequest $postBody
    * @param array $optParams Optional parameters.
@@ -165,9 +160,7 @@ class Google_Service_CloudScheduler_Resource_ProjectsLocationsJobs extends Googl
    * Job.State.ENABLED. A job must be in Job.State.PAUSED to be resumed.
    * (jobs.resume)
    *
-   * @param string $name Required.
-   *
-   * The job name. For example:
+   * @param string $name Required. The job name. For example:
    * `projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID`.
    * @param Google_Service_CloudScheduler_ResumeJobRequest $postBody
    * @param array $optParams Optional parameters.
@@ -185,9 +178,7 @@ class Google_Service_CloudScheduler_Resource_ProjectsLocationsJobs extends Googl
    * When this method is called, Cloud Scheduler will dispatch the job, even if
    * the job is already running. (jobs.run)
    *
-   * @param string $name Required.
-   *
-   * The job name. For example:
+   * @param string $name Required. The job name. For example:
    * `projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID`.
    * @param Google_Service_CloudScheduler_RunJobRequest $postBody
    * @param array $optParams Optional parameters.

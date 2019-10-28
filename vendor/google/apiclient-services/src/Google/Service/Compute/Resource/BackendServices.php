@@ -27,7 +27,7 @@ class Google_Service_Compute_Resource_BackendServices extends Google_Service_Res
 {
   /**
    * Adds a key for validating requests with signed URLs for this backend service.
-   * (backendServices.addSignedUrlKey)
+   * (== suppress_warning http-rest-shadowed ==) (backendServices.addSignedUrlKey)
    *
    * @param string $project Project ID for this request.
    * @param string $backendService Name of the BackendService resource to which
@@ -57,7 +57,8 @@ class Google_Service_Compute_Resource_BackendServices extends Google_Service_Res
   }
   /**
    * Retrieves the list of all BackendService resources, regional and global,
-   * available to the specified project. (backendServices.aggregatedList)
+   * available to the specified project. (== suppress_warning http-rest-shadowed
+   * ==) (backendServices.aggregatedList)
    *
    * @param string $project Name of the project scoping this request.
    * @param array $optParams Optional parameters.
@@ -109,7 +110,8 @@ class Google_Service_Compute_Resource_BackendServices extends Google_Service_Res
     return $this->call('aggregatedList', array($params), "Google_Service_Compute_BackendServiceAggregatedList");
   }
   /**
-   * Deletes the specified BackendService resource. (backendServices.delete)
+   * Deletes the specified BackendService resource. (== suppress_warning http-
+   * rest-shadowed ==) (backendServices.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $backendService Name of the BackendService resource to delete.
@@ -137,7 +139,8 @@ class Google_Service_Compute_Resource_BackendServices extends Google_Service_Res
   }
   /**
    * Deletes a key for validating requests with signed URLs for this backend
-   * service. (backendServices.deleteSignedUrlKey)
+   * service. (== suppress_warning http-rest-shadowed ==)
+   * (backendServices.deleteSignedUrlKey)
    *
    * @param string $project Project ID for this request.
    * @param string $backendService Name of the BackendService resource to which
@@ -167,7 +170,8 @@ class Google_Service_Compute_Resource_BackendServices extends Google_Service_Res
   }
   /**
    * Returns the specified BackendService resource. Gets a list of available
-   * backend services. (backendServices.get)
+   * backend services. (== suppress_warning http-rest-shadowed ==)
+   * (backendServices.get)
    *
    * @param string $project Project ID for this request.
    * @param string $backendService Name of the BackendService resource to return.
@@ -181,8 +185,8 @@ class Google_Service_Compute_Resource_BackendServices extends Google_Service_Res
     return $this->call('get', array($params), "Google_Service_Compute_BackendService");
   }
   /**
-   * Gets the most recent health check results for this BackendService.
-   * (backendServices.getHealth)
+   * Gets the most recent health check results for this BackendService. (==
+   * suppress_warning http-rest-shadowed ==) (backendServices.getHealth)
    *
    * @param string $project
    * @param string $backendService Name of the BackendService resource to which
@@ -201,7 +205,8 @@ class Google_Service_Compute_Resource_BackendServices extends Google_Service_Res
    * Creates a BackendService resource in the specified project using the data
    * included in the request. There are several restrictions and guidelines to
    * keep in mind when creating a backend service. Read  Restrictions and
-   * Guidelines for more information. (backendServices.insert)
+   * Guidelines for more information. (== suppress_warning http-rest-shadowed ==)
+   * (backendServices.insert)
    *
    * @param string $project Project ID for this request.
    * @param Google_Service_Compute_BackendService $postBody
@@ -229,7 +234,8 @@ class Google_Service_Compute_Resource_BackendServices extends Google_Service_Res
   }
   /**
    * Retrieves the list of BackendService resources available to the specified
-   * project. (backendServices.listBackendServices)
+   * project. (== suppress_warning http-rest-shadowed ==)
+   * (backendServices.listBackendServices)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -285,7 +291,8 @@ class Google_Service_Compute_Resource_BackendServices extends Google_Service_Res
    * request. There are several restrictions and guidelines to keep in mind when
    * updating a backend service. Read  Restrictions and Guidelines for more
    * information. This method supports PATCH semantics and uses the JSON merge
-   * patch format and processing rules. (backendServices.patch)
+   * patch format and processing rules. (== suppress_warning http-rest-shadowed
+   * ==) (backendServices.patch)
    *
    * @param string $project Project ID for this request.
    * @param string $backendService Name of the BackendService resource to patch.
@@ -313,8 +320,8 @@ class Google_Service_Compute_Resource_BackendServices extends Google_Service_Res
     return $this->call('patch', array($params), "Google_Service_Compute_Operation");
   }
   /**
-   * Sets the security policy for the specified backend service.
-   * (backendServices.setSecurityPolicy)
+   * Sets the security policy for the specified backend service. (==
+   * suppress_warning http-rest-shadowed ==) (backendServices.setSecurityPolicy)
    *
    * @param string $project Project ID for this request.
    * @param string $backendService Name of the BackendService resource to which
@@ -346,7 +353,8 @@ class Google_Service_Compute_Resource_BackendServices extends Google_Service_Res
    * Updates the specified BackendService resource with the data included in the
    * request. There are several restrictions and guidelines to keep in mind when
    * updating a backend service. Read  Restrictions and Guidelines for more
-   * information. (backendServices.update)
+   * information. (== suppress_warning http-rest-shadowed ==)
+   * (backendServices.update)
    *
    * @param string $project Project ID for this request.
    * @param string $backendService Name of the BackendService resource to update.

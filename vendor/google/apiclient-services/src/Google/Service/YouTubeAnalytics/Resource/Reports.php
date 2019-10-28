@@ -30,6 +30,30 @@ class Google_Service_YouTubeAnalytics_Resource_Reports extends Google_Service_Re
    *
    * @param array $optParams Optional parameters.
    *
+   * @opt_param int maxResults The maximum number of rows to include in the
+   * response.", minValue: 1
+   * @opt_param string filters A list of filters that should be applied when
+   * retrieving YouTube Analytics data. The [Available
+   * Reports](/youtube/analytics/v2/available_reports) document identifies the
+   * dimensions that can be used to filter each report, and the
+   * [Dimensions](/youtube/analytics/v2/dimsmets/dims)  document defines those
+   * dimensions. If a request uses multiple filters, join them together with a
+   * semicolon (`;`), and the returned result table will satisfy both filters. For
+   * example, a filters parameter value of `video==dMH0bHeiRNg;country==IT`
+   * restricts the result set to include data for the given video in Italy.",
+   * @opt_param string sort A comma-separated list of dimensions or metrics that
+   * determine the sort order for YouTube Analytics data. By default the sort
+   * order is ascending. The '`-`' prefix causes descending sort order.", pattern:
+   * [-0-9a-zA-Z,]+
+   * @opt_param string startDate The start date for fetching YouTube Analytics
+   * data. The value should be in `YYYY-MM-DD` format. required: true, pattern:
+   * "[0-9]{4}-[0-9]{2}-[0-9]{2}
+   * @opt_param string metrics A comma-separated list of YouTube Analytics
+   * metrics, such as `views` or `likes,dislikes`. See the [Available
+   * Reports](/youtube/analytics/v2/available_reports)  document for a list of the
+   * reports that you can retrieve and the metrics available in each report, and
+   * see the [Metrics](/youtube/analytics/v2/dimsmets/mets) document for
+   * definitions of those metrics. required: true, pattern: [0-9a-zA-Z,]+
    * @opt_param bool includeHistoricalChannelData If set to true historical data
    * (i.e. channel data from before the linking of the channel to the content
    * owner) will be retrieved.",
@@ -58,30 +82,6 @@ class Google_Service_YouTubeAnalytics_Resource_Reports extends Google_Service_Re
    * @opt_param string endDate The end date for fetching YouTube Analytics data.
    * The value should be in `YYYY-MM-DD` format. required: true, pattern:
    * [0-9]{4}-[0-9]{2}-[0-9]{2}
-   * @opt_param int maxResults The maximum number of rows to include in the
-   * response.", minValue: 1
-   * @opt_param string filters A list of filters that should be applied when
-   * retrieving YouTube Analytics data. The [Available
-   * Reports](/youtube/analytics/v2/available_reports) document identifies the
-   * dimensions that can be used to filter each report, and the
-   * [Dimensions](/youtube/analytics/v2/dimsmets/dims)  document defines those
-   * dimensions. If a request uses multiple filters, join them together with a
-   * semicolon (`;`), and the returned result table will satisfy both filters. For
-   * example, a filters parameter value of `video==dMH0bHeiRNg;country==IT`
-   * restricts the result set to include data for the given video in Italy.",
-   * @opt_param string sort A comma-separated list of dimensions or metrics that
-   * determine the sort order for YouTube Analytics data. By default the sort
-   * order is ascending. The '`-`' prefix causes descending sort order.", pattern:
-   * [-0-9a-zA-Z,]+
-   * @opt_param string startDate The start date for fetching YouTube Analytics
-   * data. The value should be in `YYYY-MM-DD` format. required: true, pattern:
-   * "[0-9]{4}-[0-9]{2}-[0-9]{2}
-   * @opt_param string metrics A comma-separated list of YouTube Analytics
-   * metrics, such as `views` or `likes,dislikes`. See the [Available
-   * Reports](/youtube/analytics/v2/available_reports)  document for a list of the
-   * reports that you can retrieve and the metrics available in each report, and
-   * see the [Metrics](/youtube/analytics/v2/dimsmets/mets) document for
-   * definitions of those metrics. required: true, pattern: [0-9a-zA-Z,]+
    * @return Google_Service_YouTubeAnalytics_QueryResponse
    */
   public function query($optParams = array())

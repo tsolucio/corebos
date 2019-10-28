@@ -19,8 +19,8 @@
  * The "flags" collection of methods.
  * Typical usage is:
  *  <code>
- *   $sqladminService = new Google_Service_SQLAdmin(...);
- *   $flags = $sqladminService->flags;
+ *   $sqlService = new Google_Service_SQLAdmin(...);
+ *   $flags = $sqlService->flags;
  *  </code>
  */
 class Google_Service_SQLAdmin_Resource_Flags extends Google_Service_Resource

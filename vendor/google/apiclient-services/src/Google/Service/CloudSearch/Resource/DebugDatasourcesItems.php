@@ -34,9 +34,8 @@ class Google_Service_CloudSearch_Resource_DebugDatasourcesItems extends Google_S
    * @param Google_Service_CloudSearch_Principal $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool debugOptions.enableDebugging If set, the request will enable
-   * debugging features of Cloud Search. Only turn on this field, if asked by
-   * Google to help with debugging.
+   * @opt_param bool debugOptions.enableDebugging If you are asked by Google to
+   * help with debugging, set this field. Otherwise, ignore this field.
    * @return Google_Service_CloudSearch_CheckAccessResponse
    */
   public function checkAccess($name, Google_Service_CloudSearch_Principal $postBody, $optParams = array())

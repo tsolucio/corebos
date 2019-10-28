@@ -26,8 +26,8 @@
 class Google_Service_Compute_Resource_TargetVpnGateways extends Google_Service_Resource
 {
   /**
-   * Retrieves an aggregated list of target VPN gateways.
-   * (targetVpnGateways.aggregatedList)
+   * Retrieves an aggregated list of target VPN gateways. (== suppress_warning
+   * http-rest-shadowed ==) (targetVpnGateways.aggregatedList)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -79,7 +79,8 @@ class Google_Service_Compute_Resource_TargetVpnGateways extends Google_Service_R
     return $this->call('aggregatedList', array($params), "Google_Service_Compute_TargetVpnGatewayAggregatedList");
   }
   /**
-   * Deletes the specified target VPN gateway. (targetVpnGateways.delete)
+   * Deletes the specified target VPN gateway. (== suppress_warning http-rest-
+   * shadowed ==) (targetVpnGateways.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -108,7 +109,8 @@ class Google_Service_Compute_Resource_TargetVpnGateways extends Google_Service_R
   }
   /**
    * Returns the specified target VPN gateway. Gets a list of available target VPN
-   * gateways by making a list() request. (targetVpnGateways.get)
+   * gateways by making a list() request. (== suppress_warning http-rest-shadowed
+   * ==) (targetVpnGateways.get)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -124,7 +126,8 @@ class Google_Service_Compute_Resource_TargetVpnGateways extends Google_Service_R
   }
   /**
    * Creates a target VPN gateway in the specified project and region using the
-   * data included in the request. (targetVpnGateways.insert)
+   * data included in the request. (== suppress_warning http-rest-shadowed ==)
+   * (targetVpnGateways.insert)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -153,7 +156,8 @@ class Google_Service_Compute_Resource_TargetVpnGateways extends Google_Service_R
   }
   /**
    * Retrieves a list of target VPN gateways available to the specified project
-   * and region. (targetVpnGateways.listTargetVpnGateways)
+   * and region. (== suppress_warning http-rest-shadowed ==)
+   * (targetVpnGateways.listTargetVpnGateways)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.

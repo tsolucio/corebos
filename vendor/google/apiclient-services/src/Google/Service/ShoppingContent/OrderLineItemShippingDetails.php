@@ -21,6 +21,7 @@ class Google_Service_ShoppingContent_OrderLineItemShippingDetails extends Google
   protected $methodType = 'Google_Service_ShoppingContent_OrderLineItemShippingDetailsMethod';
   protected $methodDataType = '';
   public $shipByDate;
+  public $type;
 
   public function setDeliverByDate($deliverByDate)
   {
@@ -51,5 +52,13 @@ class Google_Service_ShoppingContent_OrderLineItemShippingDetails extends Google
   public function getShipByDate()
   {
     return $this->shipByDate;
+  }
+  public function setType($type)
+  {
+    $this->type = $type;
+  }
+  public function getType()
+  {
+    return $this->type;
   }
 }

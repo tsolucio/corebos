@@ -26,7 +26,7 @@
 class Google_Service_Monitoring_Resource_UptimeCheckIps extends Google_Service_Resource
 {
   /**
-   * Returns the list of IPs that checkers run from
+   * Returns the list of IP addresses that checkers run from
    * (uptimeCheckIps.listUptimeCheckIps)
    *
    * @param array $optParams Optional parameters.

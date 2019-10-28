@@ -17,11 +17,27 @@
 
 class Google_Service_DriveActivity_TargetReference extends Google_Model
 {
+  protected $driveType = 'Google_Service_DriveActivity_DriveReference';
+  protected $driveDataType = '';
   protected $driveItemType = 'Google_Service_DriveActivity_DriveItemReference';
   protected $driveItemDataType = '';
   protected $teamDriveType = 'Google_Service_DriveActivity_TeamDriveReference';
   protected $teamDriveDataType = '';
 
+  /**
+   * @param Google_Service_DriveActivity_DriveReference
+   */
+  public function setDrive(Google_Service_DriveActivity_DriveReference $drive)
+  {
+    $this->drive = $drive;
+  }
+  /**
+   * @return Google_Service_DriveActivity_DriveReference
+   */
+  public function getDrive()
+  {
+    return $this->drive;
+  }
   /**
    * @param Google_Service_DriveActivity_DriveItemReference
    */

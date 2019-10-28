@@ -98,9 +98,11 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
   public $sizes;
   public $source;
   public $targetCountry;
+  public $taxCategory;
   protected $taxesType = 'Google_Service_ShoppingContent_ProductTax';
   protected $taxesDataType = 'array';
   public $title;
+  public $transitTimeLabel;
   protected $unitPricingBaseMeasureType = 'Google_Service_ShoppingContent_ProductUnitPricingBaseMeasure';
   protected $unitPricingBaseMeasureDataType = '';
   protected $unitPricingMeasureType = 'Google_Service_ShoppingContent_ProductUnitPricingMeasure';
@@ -724,6 +726,14 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
   {
     return $this->targetCountry;
   }
+  public function setTaxCategory($taxCategory)
+  {
+    $this->taxCategory = $taxCategory;
+  }
+  public function getTaxCategory()
+  {
+    return $this->taxCategory;
+  }
   /**
    * @param Google_Service_ShoppingContent_ProductTax
    */
@@ -745,6 +755,14 @@ class Google_Service_ShoppingContent_Product extends Google_Collection
   public function getTitle()
   {
     return $this->title;
+  }
+  public function setTransitTimeLabel($transitTimeLabel)
+  {
+    $this->transitTimeLabel = $transitTimeLabel;
+  }
+  public function getTransitTimeLabel()
+  {
+    return $this->transitTimeLabel;
   }
   /**
    * @param Google_Service_ShoppingContent_ProductUnitPricingBaseMeasure

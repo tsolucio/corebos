@@ -38,6 +38,8 @@ class Google_Service_YouTube_LiveChatMessageSnippet extends Google_Model
   public $publishedAt;
   protected $superChatDetailsType = 'Google_Service_YouTube_LiveChatSuperChatDetails';
   protected $superChatDetailsDataType = '';
+  protected $superStickerDetailsType = 'Google_Service_YouTube_LiveChatSuperStickerDetails';
+  protected $superStickerDetailsDataType = '';
   protected $textMessageDetailsType = 'Google_Service_YouTube_LiveChatTextMessageDetails';
   protected $textMessageDetailsDataType = '';
   public $type;
@@ -195,6 +197,20 @@ class Google_Service_YouTube_LiveChatMessageSnippet extends Google_Model
   public function getSuperChatDetails()
   {
     return $this->superChatDetails;
+  }
+  /**
+   * @param Google_Service_YouTube_LiveChatSuperStickerDetails
+   */
+  public function setSuperStickerDetails(Google_Service_YouTube_LiveChatSuperStickerDetails $superStickerDetails)
+  {
+    $this->superStickerDetails = $superStickerDetails;
+  }
+  /**
+   * @return Google_Service_YouTube_LiveChatSuperStickerDetails
+   */
+  public function getSuperStickerDetails()
+  {
+    return $this->superStickerDetails;
   }
   /**
    * @param Google_Service_YouTube_LiveChatTextMessageDetails

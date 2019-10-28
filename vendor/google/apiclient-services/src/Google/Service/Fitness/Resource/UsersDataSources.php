@@ -104,27 +104,6 @@ class Google_Service_Fitness_Resource_UsersDataSources extends Google_Service_Re
    * dataStreamName, and device properties with the exception of version, cannot
    * be modified.
    *
-   * Data sources are identified by their dataStreamId. This method supports patch
-   * semantics. (dataSources.patch)
-   *
-   * @param string $userId Update the data source for the person identified. Use
-   * me to indicate the authenticated user. Only me is supported at this time.
-   * @param string $dataSourceId The data stream ID of the data source to update.
-   * @param Google_Service_Fitness_DataSource $postBody
-   * @param array $optParams Optional parameters.
-   * @return Google_Service_Fitness_DataSource
-   */
-  public function patch($userId, $dataSourceId, Google_Service_Fitness_DataSource $postBody, $optParams = array())
-  {
-    $params = array('userId' => $userId, 'dataSourceId' => $dataSourceId, 'postBody' => $postBody);
-    $params = array_merge($params, $optParams);
-    return $this->call('patch', array($params), "Google_Service_Fitness_DataSource");
-  }
-  /**
-   * Updates the specified data source. The dataStreamId, dataType, type,
-   * dataStreamName, and device properties with the exception of version, cannot
-   * be modified.
-   *
    * Data sources are identified by their dataStreamId. (dataSources.update)
    *
    * @param string $userId Update the data source for the person identified. Use

@@ -58,10 +58,8 @@ class Google_Service_AndroidPublisher_Resource_EditsTracks extends Google_Servic
     return $this->call('list', array($params), "Google_Service_AndroidPublisher_TracksListResponse");
   }
   /**
-   * Updates the track configuration for the specified track type. When halted,
-   * the rollout track cannot be updated without adding new APKs, and adding new
-   * APKs will cause it to resume. This method supports patch semantics.
-   * (tracks.patch)
+   * Updates the track configuration for the specified track type. This method
+   * supports patch semantics. (tracks.patch)
    *
    * @param string $packageName Unique identifier for the Android app that is
    * being updated; for example, "com.spiffygame".
@@ -78,9 +76,7 @@ class Google_Service_AndroidPublisher_Resource_EditsTracks extends Google_Servic
     return $this->call('patch', array($params), "Google_Service_AndroidPublisher_Track");
   }
   /**
-   * Updates the track configuration for the specified track type. When halted,
-   * the rollout track cannot be updated without adding new APKs, and adding new
-   * APKs will cause it to resume. (tracks.update)
+   * Updates the track configuration for the specified track type. (tracks.update)
    *
    * @param string $packageName Unique identifier for the Android app that is
    * being updated; for example, "com.spiffygame".

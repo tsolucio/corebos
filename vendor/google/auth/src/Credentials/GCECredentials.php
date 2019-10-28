@@ -18,7 +18,10 @@
 namespace Google\Auth\Credentials;
 
 use Google\Auth\CredentialsLoader;
+use Google\Auth\HttpHandler\HttpClientCache;
 use Google\Auth\HttpHandler\HttpHandlerFactory;
+use Google\Auth\Iam;
+use Google\Auth\SignBlobInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ServerException;
@@ -48,9 +51,10 @@ use GuzzleHttp\Psr7\Request;
  *
  *   $res = $client->get('myproject/taskqueues/myqueue');
  */
-class GCECredentials extends CredentialsLoader
+class GCECredentials extends CredentialsLoader implements SignBlobInterface
 {
     const cacheKey = 'GOOGLE_AUTH_PHP_GCE';
+
     /**
      * The metadata IP address on appengine instances.
      *
@@ -63,6 +67,11 @@ class GCECredentials extends CredentialsLoader
      * The metadata path of the default token.
      */
     const TOKEN_URI_PATH = 'v1/instance/service-accounts/default/token';
+
+    /**
+     * The metadata path of the client ID.
+     */
+    const CLIENT_ID_URI_PATH = 'v1/instance/service-accounts/default/email';
 
     /**
      * The header whose presence indicates GCE presence.
@@ -102,6 +111,44 @@ class GCECredentials extends CredentialsLoader
     protected $lastReceivedToken;
 
     /**
+     * @var string
+     */
+    private $clientName;
+
+    /**
+     * @var Iam|null
+     */
+    private $iam;
+
+    /**
+     * @var string
+     */
+    private $tokenUri;
+
+    /**
+     * @param Iam $iam [optional] An IAM instance.
+     * @param string|array $scope [optional] the scope of the access request,
+     *        expressed either as an array or as a space-delimited string.
+     */
+    public function __construct(Iam $iam = null, $scope = null)
+    {
+        $this->iam = $iam;
+
+        $tokenUri = self::getTokenUri();
+        if ($scope) {
+            if (is_string($scope)) {
+                $scope = explode(' ', $scope);
+            }
+
+            $scope = implode(',', $scope);
+
+            $tokenUri = $tokenUri . '?scopes='. $scope;
+        }
+
+        $this->tokenUri = $tokenUri;
+    }
+
+    /**
      * The full uri for accessing the default token.
      *
      * @return string
@@ -111,6 +158,18 @@ class GCECredentials extends CredentialsLoader
         $base = 'http://' . self::METADATA_IP . '/computeMetadata/';
 
         return $base . self::TOKEN_URI_PATH;
+    }
+
+    /**
+     * The full uri for accessing the default service account.
+     *
+     * @return string
+     */
+    public static function getClientNameUri()
+    {
+        $base = 'http://' . self::METADATA_IP . '/computeMetadata/';
+
+        return $base . self::CLIENT_ID_URI_PATH;
     }
 
     /**
@@ -135,9 +194,9 @@ class GCECredentials extends CredentialsLoader
      */
     public static function onGce(callable $httpHandler = null)
     {
-        if (is_null($httpHandler)) {
-            $httpHandler = HttpHandlerFactory::build();
-        }
+        $httpHandler = $httpHandler
+            ?: HttpHandlerFactory::build(HttpClientCache::getHttpClient());
+
         $checkUri = 'http://' . self::METADATA_IP;
         for ($i = 1; $i <= self::MAX_COMPUTE_PING_TRIES; $i++) {
             try {
@@ -150,7 +209,11 @@ class GCECredentials extends CredentialsLoader
                 // the metadata resolution was particularly slow. The latter case is
                 // "unlikely".
                 $resp = $httpHandler(
-                    new Request('GET', $checkUri),
+                    new Request(
+                        'GET',
+                        $checkUri,
+                        [self::FLAVOR_HEADER => 'Google']
+                    ),
                     ['timeout' => self::COMPUTE_PING_CONNECTION_TIMEOUT_S]
                 );
 
@@ -159,7 +222,6 @@ class GCECredentials extends CredentialsLoader
             } catch (ServerException $e) {
             } catch (RequestException $e) {
             }
-            $httpHandler = HttpHandlerFactory::build();
         }
         return false;
     }
@@ -172,32 +234,29 @@ class GCECredentials extends CredentialsLoader
      *
      * @param callable $httpHandler callback which delivers psr7 request
      *
-     * @return array the response
+     * @return array A set of auth related metadata, containing the following
+     * keys:
+     *   - access_token (string)
+     *   - expires_in (int)
+     *   - token_type (string)
      *
      * @throws \Exception
      */
     public function fetchAuthToken(callable $httpHandler = null)
     {
-        if (is_null($httpHandler)) {
-            $httpHandler = HttpHandlerFactory::build();
-        }
+        $httpHandler = $httpHandler
+            ?: HttpHandlerFactory::build(HttpClientCache::getHttpClient());
+
         if (!$this->hasCheckedOnGce) {
             $this->isOnGce = self::onGce($httpHandler);
+            $this->hasCheckedOnGce = true;
         }
         if (!$this->isOnGce) {
             return array();  // return an empty array with no access token
         }
-        $resp = $httpHandler(
-            new Request(
-                'GET',
-                self::getTokenUri(),
-                [self::FLAVOR_HEADER => 'Google']
-            )
-        );
-        $body = (string)$resp->getBody();
 
-        // Assume it's JSON; if it's not throw an exception
-        if (null === $json = json_decode($body, true)) {
+        $json = $this->getFromMetadata($httpHandler, $this->tokenUri);
+        if (null === $json = json_decode($json, true)) {
             throw new \Exception('Invalid JSON response');
         }
 
@@ -229,5 +288,86 @@ class GCECredentials extends CredentialsLoader
         }
 
         return null;
+    }
+
+    /**
+     * Get the client name from GCE metadata.
+     *
+     * Subsequent calls will return a cached value.
+     *
+     * @param callable $httpHandler callback which delivers psr7 request
+     * @return string
+     */
+    public function getClientName(callable $httpHandler = null)
+    {
+        if ($this->clientName) {
+            return $this->clientName;
+        }
+
+        $httpHandler = $httpHandler
+            ?: HttpHandlerFactory::build(HttpClientCache::getHttpClient());
+
+        if (!$this->hasCheckedOnGce) {
+            $this->isOnGce = self::onGce($httpHandler);
+            $this->hasCheckedOnGce = true;
+        }
+
+        if (!$this->isOnGce) {
+            return '';
+        }
+
+        $this->clientName = $this->getFromMetadata($httpHandler, self::getClientNameUri());
+
+        return $this->clientName;
+    }
+
+    /**
+     * Sign a string using the default service account private key.
+     *
+     * This implementation uses IAM's signBlob API.
+     *
+     * @see https://cloud.google.com/iam/credentials/reference/rest/v1/projects.serviceAccounts/signBlob SignBlob
+     *
+     * @param string $stringToSign The string to sign.
+     * @param bool $forceOpenSsl [optional] Does not apply to this credentials
+     *        type.
+     * @return string
+     */
+    public function signBlob($stringToSign, $forceOpenSsl = false)
+    {
+        $httpHandler = HttpHandlerFactory::build(HttpClientCache::getHttpClient());
+
+        // Providing a signer is useful for testing, but it's undocumented
+        // because it's not something a user would generally need to do.
+        $signer = $this->iam ?: new Iam($httpHandler);
+
+        $email = $this->getClientName($httpHandler);
+
+        $previousToken = $this->getLastReceivedToken();
+        $accessToken = $previousToken
+            ? $previousToken['access_token']
+            : $this->fetchAuthToken($httpHandler)['access_token'];
+
+        return $signer->signBlob($email, $accessToken, $stringToSign);
+    }
+
+    /**
+     * Fetch the value of a GCE metadata server URI.
+     *
+     * @param callable $httpHandler An HTTP Handler to deliver PSR7 requests.
+     * @param string $uri The metadata URI.
+     * @return string
+     */
+    private function getFromMetadata(callable $httpHandler, $uri)
+    {
+        $resp = $httpHandler(
+            new Request(
+                'GET',
+                $uri,
+                [self::FLAVOR_HEADER => 'Google']
+            )
+        );
+
+        return (string) $resp->getBody();
     }
 }

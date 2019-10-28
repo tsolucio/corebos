@@ -24,6 +24,8 @@ class Google_Service_Testing_AndroidInstrumentationTest extends Google_Collectio
   protected $appBundleDataType = '';
   public $appPackageId;
   public $orchestratorOption;
+  protected $shardingOptionType = 'Google_Service_Testing_ShardingOption';
+  protected $shardingOptionDataType = '';
   protected $testApkType = 'Google_Service_Testing_FileReference';
   protected $testApkDataType = '';
   public $testPackageId;
@@ -73,6 +75,20 @@ class Google_Service_Testing_AndroidInstrumentationTest extends Google_Collectio
   public function getOrchestratorOption()
   {
     return $this->orchestratorOption;
+  }
+  /**
+   * @param Google_Service_Testing_ShardingOption
+   */
+  public function setShardingOption(Google_Service_Testing_ShardingOption $shardingOption)
+  {
+    $this->shardingOption = $shardingOption;
+  }
+  /**
+   * @return Google_Service_Testing_ShardingOption
+   */
+  public function getShardingOption()
+  {
+    return $this->shardingOption;
   }
   /**
    * @param Google_Service_Testing_FileReference

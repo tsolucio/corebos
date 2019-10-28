@@ -117,7 +117,7 @@ class Google_Service_Reseller_Resource_Subscriptions extends Google_Service_Reso
     return $this->call('changeSeats', array($params), "Google_Service_Reseller_Subscription");
   }
   /**
-   * Cancel, suspend or transfer a subscription to direct. (subscriptions.delete)
+   * Cancel, suspend, or transfer a subscription to direct. (subscriptions.delete)
    *
    * @param string $customerId Either the customer's primary domain name or the
    * customer's unique identifier. If using the domain name, we do not recommend

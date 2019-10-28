@@ -26,8 +26,8 @@
 class Google_Service_Compute_Resource_GlobalOperations extends Google_Service_Resource
 {
   /**
-   * Retrieves an aggregated list of all operations.
-   * (globalOperations.aggregatedList)
+   * Retrieves an aggregated list of all operations. (== suppress_warning http-
+   * rest-shadowed ==) (globalOperations.aggregatedList)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
@@ -79,7 +79,8 @@ class Google_Service_Compute_Resource_GlobalOperations extends Google_Service_Re
     return $this->call('aggregatedList', array($params), "Google_Service_Compute_OperationAggregatedList");
   }
   /**
-   * Deletes the specified Operations resource. (globalOperations.delete)
+   * Deletes the specified Operations resource. (== suppress_warning http-rest-
+   * shadowed ==) (globalOperations.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $operation Name of the Operations resource to delete.
@@ -93,7 +94,8 @@ class Google_Service_Compute_Resource_GlobalOperations extends Google_Service_Re
   }
   /**
    * Retrieves the specified Operations resource. Gets a list of operations by
-   * making a list() request. (globalOperations.get)
+   * making a list() request. (== suppress_warning http-rest-shadowed ==)
+   * (globalOperations.get)
    *
    * @param string $project Project ID for this request.
    * @param string $operation Name of the Operations resource to return.
@@ -108,7 +110,8 @@ class Google_Service_Compute_Resource_GlobalOperations extends Google_Service_Re
   }
   /**
    * Retrieves a list of Operation resources contained within the specified
-   * project. (globalOperations.listGlobalOperations)
+   * project. (== suppress_warning http-rest-shadowed ==)
+   * (globalOperations.listGlobalOperations)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.

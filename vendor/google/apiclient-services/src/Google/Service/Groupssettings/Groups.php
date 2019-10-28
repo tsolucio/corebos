@@ -23,9 +23,11 @@ class Google_Service_Groupssettings_Groups extends Google_Model
   public $archiveOnly;
   public $customFooterText;
   public $customReplyTo;
+  public $customRolesEnabledForSettingsToBeMerged;
   public $defaultMessageDenyNotificationText;
   public $description;
   public $email;
+  public $enableCollaborativeInbox;
   public $favoriteRepliesOnTop;
   public $includeCustomFooter;
   public $includeInGlobalAddressList;
@@ -43,17 +45,33 @@ class Google_Service_Groupssettings_Groups extends Google_Model
   public $spamModerationLevel;
   public $whoCanAdd;
   public $whoCanAddReferences;
+  public $whoCanApproveMembers;
+  public $whoCanApproveMessages;
   public $whoCanAssignTopics;
+  public $whoCanAssistContent;
+  public $whoCanBanUsers;
   public $whoCanContactOwner;
+  public $whoCanDeleteAnyPost;
+  public $whoCanDeleteTopics;
+  public $whoCanDiscoverGroup;
   public $whoCanEnterFreeFormTags;
+  public $whoCanHideAbuse;
   public $whoCanInvite;
   public $whoCanJoin;
   public $whoCanLeaveGroup;
+  public $whoCanLockTopics;
+  public $whoCanMakeTopicsSticky;
   public $whoCanMarkDuplicate;
   public $whoCanMarkFavoriteReplyOnAnyTopic;
   public $whoCanMarkFavoriteReplyOnOwnTopic;
   public $whoCanMarkNoResponseNeeded;
+  public $whoCanModerateContent;
+  public $whoCanModerateMembers;
+  public $whoCanModifyMembers;
   public $whoCanModifyTagsAndCategories;
+  public $whoCanMoveTopicsIn;
+  public $whoCanMoveTopicsOut;
+  public $whoCanPostAnnouncements;
   public $whoCanPostMessage;
   public $whoCanTakeTopics;
   public $whoCanUnassignTopic;
@@ -109,6 +127,14 @@ class Google_Service_Groupssettings_Groups extends Google_Model
   {
     return $this->customReplyTo;
   }
+  public function setCustomRolesEnabledForSettingsToBeMerged($customRolesEnabledForSettingsToBeMerged)
+  {
+    $this->customRolesEnabledForSettingsToBeMerged = $customRolesEnabledForSettingsToBeMerged;
+  }
+  public function getCustomRolesEnabledForSettingsToBeMerged()
+  {
+    return $this->customRolesEnabledForSettingsToBeMerged;
+  }
   public function setDefaultMessageDenyNotificationText($defaultMessageDenyNotificationText)
   {
     $this->defaultMessageDenyNotificationText = $defaultMessageDenyNotificationText;
@@ -132,6 +158,14 @@ class Google_Service_Groupssettings_Groups extends Google_Model
   public function getEmail()
   {
     return $this->email;
+  }
+  public function setEnableCollaborativeInbox($enableCollaborativeInbox)
+  {
+    $this->enableCollaborativeInbox = $enableCollaborativeInbox;
+  }
+  public function getEnableCollaborativeInbox()
+  {
+    return $this->enableCollaborativeInbox;
   }
   public function setFavoriteRepliesOnTop($favoriteRepliesOnTop)
   {
@@ -269,6 +303,22 @@ class Google_Service_Groupssettings_Groups extends Google_Model
   {
     return $this->whoCanAddReferences;
   }
+  public function setWhoCanApproveMembers($whoCanApproveMembers)
+  {
+    $this->whoCanApproveMembers = $whoCanApproveMembers;
+  }
+  public function getWhoCanApproveMembers()
+  {
+    return $this->whoCanApproveMembers;
+  }
+  public function setWhoCanApproveMessages($whoCanApproveMessages)
+  {
+    $this->whoCanApproveMessages = $whoCanApproveMessages;
+  }
+  public function getWhoCanApproveMessages()
+  {
+    return $this->whoCanApproveMessages;
+  }
   public function setWhoCanAssignTopics($whoCanAssignTopics)
   {
     $this->whoCanAssignTopics = $whoCanAssignTopics;
@@ -276,6 +326,22 @@ class Google_Service_Groupssettings_Groups extends Google_Model
   public function getWhoCanAssignTopics()
   {
     return $this->whoCanAssignTopics;
+  }
+  public function setWhoCanAssistContent($whoCanAssistContent)
+  {
+    $this->whoCanAssistContent = $whoCanAssistContent;
+  }
+  public function getWhoCanAssistContent()
+  {
+    return $this->whoCanAssistContent;
+  }
+  public function setWhoCanBanUsers($whoCanBanUsers)
+  {
+    $this->whoCanBanUsers = $whoCanBanUsers;
+  }
+  public function getWhoCanBanUsers()
+  {
+    return $this->whoCanBanUsers;
   }
   public function setWhoCanContactOwner($whoCanContactOwner)
   {
@@ -285,6 +351,30 @@ class Google_Service_Groupssettings_Groups extends Google_Model
   {
     return $this->whoCanContactOwner;
   }
+  public function setWhoCanDeleteAnyPost($whoCanDeleteAnyPost)
+  {
+    $this->whoCanDeleteAnyPost = $whoCanDeleteAnyPost;
+  }
+  public function getWhoCanDeleteAnyPost()
+  {
+    return $this->whoCanDeleteAnyPost;
+  }
+  public function setWhoCanDeleteTopics($whoCanDeleteTopics)
+  {
+    $this->whoCanDeleteTopics = $whoCanDeleteTopics;
+  }
+  public function getWhoCanDeleteTopics()
+  {
+    return $this->whoCanDeleteTopics;
+  }
+  public function setWhoCanDiscoverGroup($whoCanDiscoverGroup)
+  {
+    $this->whoCanDiscoverGroup = $whoCanDiscoverGroup;
+  }
+  public function getWhoCanDiscoverGroup()
+  {
+    return $this->whoCanDiscoverGroup;
+  }
   public function setWhoCanEnterFreeFormTags($whoCanEnterFreeFormTags)
   {
     $this->whoCanEnterFreeFormTags = $whoCanEnterFreeFormTags;
@@ -292,6 +382,14 @@ class Google_Service_Groupssettings_Groups extends Google_Model
   public function getWhoCanEnterFreeFormTags()
   {
     return $this->whoCanEnterFreeFormTags;
+  }
+  public function setWhoCanHideAbuse($whoCanHideAbuse)
+  {
+    $this->whoCanHideAbuse = $whoCanHideAbuse;
+  }
+  public function getWhoCanHideAbuse()
+  {
+    return $this->whoCanHideAbuse;
   }
   public function setWhoCanInvite($whoCanInvite)
   {
@@ -316,6 +414,22 @@ class Google_Service_Groupssettings_Groups extends Google_Model
   public function getWhoCanLeaveGroup()
   {
     return $this->whoCanLeaveGroup;
+  }
+  public function setWhoCanLockTopics($whoCanLockTopics)
+  {
+    $this->whoCanLockTopics = $whoCanLockTopics;
+  }
+  public function getWhoCanLockTopics()
+  {
+    return $this->whoCanLockTopics;
+  }
+  public function setWhoCanMakeTopicsSticky($whoCanMakeTopicsSticky)
+  {
+    $this->whoCanMakeTopicsSticky = $whoCanMakeTopicsSticky;
+  }
+  public function getWhoCanMakeTopicsSticky()
+  {
+    return $this->whoCanMakeTopicsSticky;
   }
   public function setWhoCanMarkDuplicate($whoCanMarkDuplicate)
   {
@@ -349,6 +463,30 @@ class Google_Service_Groupssettings_Groups extends Google_Model
   {
     return $this->whoCanMarkNoResponseNeeded;
   }
+  public function setWhoCanModerateContent($whoCanModerateContent)
+  {
+    $this->whoCanModerateContent = $whoCanModerateContent;
+  }
+  public function getWhoCanModerateContent()
+  {
+    return $this->whoCanModerateContent;
+  }
+  public function setWhoCanModerateMembers($whoCanModerateMembers)
+  {
+    $this->whoCanModerateMembers = $whoCanModerateMembers;
+  }
+  public function getWhoCanModerateMembers()
+  {
+    return $this->whoCanModerateMembers;
+  }
+  public function setWhoCanModifyMembers($whoCanModifyMembers)
+  {
+    $this->whoCanModifyMembers = $whoCanModifyMembers;
+  }
+  public function getWhoCanModifyMembers()
+  {
+    return $this->whoCanModifyMembers;
+  }
   public function setWhoCanModifyTagsAndCategories($whoCanModifyTagsAndCategories)
   {
     $this->whoCanModifyTagsAndCategories = $whoCanModifyTagsAndCategories;
@@ -356,6 +494,30 @@ class Google_Service_Groupssettings_Groups extends Google_Model
   public function getWhoCanModifyTagsAndCategories()
   {
     return $this->whoCanModifyTagsAndCategories;
+  }
+  public function setWhoCanMoveTopicsIn($whoCanMoveTopicsIn)
+  {
+    $this->whoCanMoveTopicsIn = $whoCanMoveTopicsIn;
+  }
+  public function getWhoCanMoveTopicsIn()
+  {
+    return $this->whoCanMoveTopicsIn;
+  }
+  public function setWhoCanMoveTopicsOut($whoCanMoveTopicsOut)
+  {
+    $this->whoCanMoveTopicsOut = $whoCanMoveTopicsOut;
+  }
+  public function getWhoCanMoveTopicsOut()
+  {
+    return $this->whoCanMoveTopicsOut;
+  }
+  public function setWhoCanPostAnnouncements($whoCanPostAnnouncements)
+  {
+    $this->whoCanPostAnnouncements = $whoCanPostAnnouncements;
+  }
+  public function getWhoCanPostAnnouncements()
+  {
+    return $this->whoCanPostAnnouncements;
   }
   public function setWhoCanPostMessage($whoCanPostMessage)
   {

@@ -26,8 +26,8 @@
 class Google_Service_Compute_Resource_RegionOperations extends Google_Service_Resource
 {
   /**
-   * Deletes the specified region-specific Operations resource.
-   * (regionOperations.delete)
+   * Deletes the specified region-specific Operations resource. (==
+   * suppress_warning http-rest-shadowed ==) (regionOperations.delete)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -41,8 +41,8 @@ class Google_Service_Compute_Resource_RegionOperations extends Google_Service_Re
     return $this->call('delete', array($params));
   }
   /**
-   * Retrieves the specified region-specific Operations resource.
-   * (regionOperations.get)
+   * Retrieves the specified region-specific Operations resource. (==
+   * suppress_warning http-rest-shadowed ==) (regionOperations.get)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.
@@ -58,7 +58,8 @@ class Google_Service_Compute_Resource_RegionOperations extends Google_Service_Re
   }
   /**
    * Retrieves a list of Operation resources contained within the specified
-   * region. (regionOperations.listRegionOperations)
+   * region. (== suppress_warning http-rest-shadowed ==)
+   * (regionOperations.listRegionOperations)
    *
    * @param string $project Project ID for this request.
    * @param string $region Name of the region for this request.

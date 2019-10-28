@@ -45,7 +45,7 @@ class Google_Service_ShoppingContent_Resource_Productstatuses extends Google_Ser
    *
    * @param string $merchantId The ID of the account that contains the product.
    * This account cannot be a multi-client account.
-   * @param string $productId The REST id of the product.
+   * @param string $productId The REST ID of the product.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string destinations If set, only issues for the specified
