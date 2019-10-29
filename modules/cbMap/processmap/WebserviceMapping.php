@@ -205,9 +205,7 @@ class WebserviceMapping extends cbMapcore {
 			$userwsid = vtws_getEntityId('Users');
 			$ofields['assigned_user_id'] = vtws_getId($userwsid, $current_user->id);
 		}
-		if (isset($arguments[1])) {
-			$tfields = $arguments[1];
-		}
+		$tfields = $arguments[1];
 		foreach ($mapping['fields'] as $targetfield => $sourcefields) {
 			$value = '';
 			$delim = (isset($sourcefields['delimiter']) ? $sourcefields['delimiter'] : '');

@@ -40,7 +40,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 			$focus2 = CRMEntity::getInstance($origin_module);
 			$focus2->retrieve_entity_info($therecid, $origin_module);
 		}
-		$target_fields = $cbMap->WebserviceMapping($focus2->column_fields);
+		$target_fields = $cbMap->WebserviceMapping($focus2->column_fields, $focus2->column_fields);
 
 		$wsconfig = $target_fields["WSConfig"];
 		$url = $wsconfig['wsurl'];
