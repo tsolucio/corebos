@@ -20,7 +20,7 @@ $mod_strings = array(
 	'LBL_DESCRIPTION_INFORMATION'=>'Descrição',
 
 	'Name' => 'Nome',
-	'setpublic' => 'Set Public',
+	'setpublic' => 'Tornar Público',
 	'cvcreate' => 'Criar',
 	'cvretrieve' => 'Ler',
 	'cvupdate' => 'Atualizar',
@@ -29,7 +29,7 @@ $mod_strings = array(
 	'cvapprove' => 'Aprovar',
 	'cvrole' => 'Função',
 	'User' => 'Utilizador',
-	'Mandatory' => 'Obligatório',
+	'Mandatory' => 'Obrigatório',
 	'Blocked' => 'Bloqueada',
 	'Module List' => 'Lista de Módulos',
 	'default_setting' => 'Configuração pré-definida',
