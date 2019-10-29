@@ -238,54 +238,56 @@ class WebserviceMapping extends cbMapcore {
 				}
 			}
 
-			foreach ($sourcefields['merge'] as $fieldinfo) {
-				$idx = array_keys($fieldinfo);
-				if (strtoupper($idx[0])=='CONST') {
-					$const = array_pop($fieldinfo);
-					$value.= $const.$delim;
-				} elseif (strtoupper($idx[0])=='EXPRESSION') {
-					$testexpression = array_pop($fieldinfo);
-					$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($testexpression)));
-					$expression = $parser->expression();
-					$exprEvaluater = new VTFieldExpressionEvaluater($expression);
-					if (empty($ofields['record_id'])) {
-						$exprEvaluation = $exprEvaluater->evaluate(false);
+			if (isset($sourcefields['merge'])) {
+				foreach ($sourcefields['merge'] as $fieldinfo) {
+					$idx = array_keys($fieldinfo);
+					if (strtoupper($idx[0])=='CONST') {
+						$const = array_pop($fieldinfo);
+						$value.= $const.$delim;
+					} elseif (strtoupper($idx[0])=='EXPRESSION') {
+						$testexpression = array_pop($fieldinfo);
+						$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($testexpression)));
+						$expression = $parser->expression();
+						$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+						if (empty($ofields['record_id'])) {
+							$exprEvaluation = $exprEvaluater->evaluate(false);
+						} else {
+							$entity = new VTWorkflowEntity($current_user, $entityId);
+							$exprEvaluation = $exprEvaluater->evaluate($entity);
+						}
+						$value.= $exprEvaluation.$delim;
+					} elseif (!empty($ofields['record_id']) && (strtoupper($idx[0])=='FIELD' || strtoupper($idx[0])=='TEMPLATE')) {
+						$util = new VTWorkflowUtils();
+						$adminUser = $util->adminUser();
+						$entityCache = new VTEntityCache($adminUser);
+						$testexpression = array_pop($fieldinfo);
+						if (strtoupper($idx[0])=='FIELD') {
+							$testexpression = trim($testexpression);
+							if (substr($testexpression, 0, 1) != '$') {
+								$testexpression = '$' . $testexpression;
+							}
+						}
+						$ct = new VTSimpleTemplate($testexpression);
+						$value.= $ct->render($entityCache, $entityId).$delim;
+						$util->revertUser();
+					} elseif (empty($ofields['record_id']) && (strtoupper($idx[0])=='FIELD' || strtoupper($idx[0])=='TEMPLATE')) {
+						$util = new VTWorkflowUtils();
+						$adminUser = $util->adminUser();
+						$entityCache = new VTEntityCache($adminUser);
+						$testexpression = array_pop($fieldinfo);
+						if (strtoupper($idx[0])=='FIELD') {
+							$testexpression = trim($testexpression);
+							if (substr($testexpression, 0, 1) != '$') {
+								$testexpression = '$' . $testexpression;
+							}
+						}
+						$ct = new VTSimpleTemplateOnData($testexpression);
+						$value.= $ct->render($entityCache, $mapping['origin'], $ofields).$delim;
+						$util->revertUser();
 					} else {
-						$entity = new VTWorkflowEntity($current_user, $entityId);
-						$exprEvaluation = $exprEvaluater->evaluate($entity);
+						$fieldname = array_pop($fieldinfo);
+						$value.= (isset($ofields[$fieldname]) ? $ofields[$fieldname] : '').$delim;
 					}
-					$value.= $exprEvaluation.$delim;
-				} elseif (!empty($ofields['record_id']) && (strtoupper($idx[0])=='FIELD' || strtoupper($idx[0])=='TEMPLATE')) {
-					$util = new VTWorkflowUtils();
-					$adminUser = $util->adminUser();
-					$entityCache = new VTEntityCache($adminUser);
-					$testexpression = array_pop($fieldinfo);
-					if (strtoupper($idx[0])=='FIELD') {
-						$testexpression = trim($testexpression);
-						if (substr($testexpression, 0, 1) != '$') {
-							$testexpression = '$' . $testexpression;
-						}
-					}
-					$ct = new VTSimpleTemplate($testexpression);
-					$value.= $ct->render($entityCache, $entityId).$delim;
-					$util->revertUser();
-				} elseif (empty($ofields['record_id']) && (strtoupper($idx[0])=='FIELD' || strtoupper($idx[0])=='TEMPLATE')) {
-					$util = new VTWorkflowUtils();
-					$adminUser = $util->adminUser();
-					$entityCache = new VTEntityCache($adminUser);
-					$testexpression = array_pop($fieldinfo);
-					if (strtoupper($idx[0])=='FIELD') {
-						$testexpression = trim($testexpression);
-						if (substr($testexpression, 0, 1) != '$') {
-							$testexpression = '$' . $testexpression;
-						}
-					}
-					$ct = new VTSimpleTemplateOnData($testexpression);
-					$value.= $ct->render($entityCache, $mapping['origin'], $ofields).$delim;
-					$util->revertUser();
-				} else {
-					$fieldname = array_pop($fieldinfo);
-					$value.= (isset($ofields[$fieldname]) ? $ofields[$fieldname] : '').$delim;
 				}
 			}
 			$value = rtrim($value, $delim);
