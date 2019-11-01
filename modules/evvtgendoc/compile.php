@@ -230,10 +230,11 @@ function eval_expression($marcador, $entityid) {
 	$lenexp = strlen($expressionGD);
 	$compile_expression = substr($marcador, $lenexp);
 	$type = getSalesEntityType($entityid);
-	if (strpos($compile_expression, '~')>0 && strpos($compile_expression, '¬')>0) {
+	if (strpos($compile_expression, '~')!==false && strpos($compile_expression, '¬')!==false) {
 		$compile_expression = str_replace('~', '{', $compile_expression);
 		$compile_expression = str_replace('¬', '}', $compile_expression);
-		$compile_expression = compile($compile_expression, $entityid, $type);
+		OpenDocument::debugmsg('COMPILE EXPRESSION: GenDocWF substitution: '.$compile_expression.' WITH: '.$type.' ('.$entityid.')');
+		$compile_expression = compile($compile_expression, $entityid, $type, false, false);
 	}
 	OpenDocument::debugmsg('COMPILE EXPRESSION: '.$compile_expression.' WITH: '.$type.' ('.$entityid.')');
 	$entityws = $adb->getone("SELECT id FROM vtiger_ws_entity WHERE name='$type'");
