@@ -47,8 +47,9 @@ require_once 'include/utils/CommonUtils.php';
 					wherever you want the logo to appear
  * $replyto    - email address that an automatic "reply to" will be sent
  * $qrScan     - if we should load qrcode images from cache directory   <img src="cid:qrcode{$fname}" />
+ * $brScan     - if we should load barcode images from cache directory   <img src="cid:barcode{$fname}" />
  */
-function send_mail($module, $to_email, $from_name, $from_email, $subject, $contents, $cc = '', $bcc = '', $attachment = '', $emailid = '', $logo = '', $replyto = '', $qrScan = '') {
+function send_mail($module, $to_email, $from_name, $from_email, $subject, $contents, $cc = '', $bcc = '', $attachment = '', $emailid = '', $logo = '', $replyto = '', $qrScan = '', $brScan = '') {
 	global $adb;
 	$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail', 'support@your_support_domain.tld', 'HelpDesk');
 
@@ -142,6 +143,7 @@ function send_mail($module, $to_email, $from_name, $from_email, $subject, $conte
 			$emailid,
 			$logo,
 			$qrScan,
+			$brScan,
 			$replyto,
 			$replyToEmail
 		)
@@ -204,7 +206,7 @@ function addSignature($contents, $fromname) {
   * $attachment	-- see sendmail explanation
   * $emailid	-- id of the email object which will be used to get the vtiger_attachments - optional
   */
-function setMailerProperties($mail, $subject, $contents, $from_email, $from_name, $to_email, $attachment = '', $emailid = '', $logo = '', $qrScan = '') {
+function setMailerProperties($mail, $subject, $contents, $from_email, $from_name, $to_email, $attachment = '', $emailid = '', $logo = '', $qrScan = '', $brScan = '') {
 	global $adb;
 	$adb->println('> setMailerProperties');
 	if ($logo == 1) {
@@ -215,6 +217,12 @@ function setMailerProperties($mail, $subject, $contents, $from_email, $from_name
 		preg_match_all('/<img src="cid:(qrcode.*)"/', $contents, $matches);
 		foreach ($matches[1] as $qrname) {
 			$mail->AddEmbeddedImage('cache/images/'.$qrname.'.png', $qrname, $qrname.'.png', 'base64', 'image/png');
+		}
+	}
+	if ($brScan == 1) {
+		preg_match_all('/<img src="cid:(barcode.*)"/', $contents, $matches);
+		foreach ($matches[1] as $brname) {
+			$mail->AddEmbeddedImage('cache/images/'.$brname.'.png', $brname, $brname.'.png', 'base64', 'image/png');
 		}
 	}
 	$mail->Subject = $subject;

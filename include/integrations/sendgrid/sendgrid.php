@@ -129,7 +129,8 @@ class corebos_sendgrid {
 		$emailid = '',
 		$logo = '',
 		$replyto = '',
-		$qrScan = ''
+		$qrScan = '',
+		$brScan = ''
 	) {
 		global $adb, $log;
 		if (self::useEmailHook()) {
@@ -163,6 +164,17 @@ class corebos_sendgrid {
 						'fpath' => 'cache/images/'.$qrname.'.png',
 						'attachtype' => 'inline',
 						'attachmarker' => $qrname, //'<img src="cid:'.$qrname.'" />',
+					);
+				}
+			}
+			preg_match_all('/<img src="cid:(barcode.*)"/', $contents, $matches);
+			if ($brScan == 1 || count($matches[1])>0) {
+				foreach ($matches[1] as $brname) {
+					$atts[]=array(
+						'fname' => $brname.'.png',
+						'fpath' => 'cache/images/'.$brname.'.png',
+						'attachtype' => 'inline',
+						'attachmarker' => $brname, //'<img src="cid:'.$brname.'" />',
 					);
 				}
 			}
