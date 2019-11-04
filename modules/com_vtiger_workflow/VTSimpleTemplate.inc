@@ -621,8 +621,6 @@ class VTSimpleTemplate {
 					@unlink('cache/images/'.$fname.'.png');
 					file_put_contents('cache/images/'.$fname.'.png', $img);
 					return '<img src="cid:'.$fname.'" />';
-					print_r('<img src="cid:'.$fname.'" />');
-					die();
 				} else {
 					return '';
 				}
