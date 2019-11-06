@@ -23,14 +23,6 @@
 {include file='SetMenu.tpl'}
 <div id="view" class="workflows-list">
 	{include file='com_vtiger_workflow/ModuleTitle.tpl'}
-	<table class="listTableTopButtons" width="100%" border="0" cellspacing="0" cellpadding="5">
-		<tr>
-			<td class="small"> <span id="status_message"></span> </td>
-			<td class="small cblds-t-align_right" align="right">
-				<input type="button" class="crmButton create small" value="{$MOD.LBL_NEW_WORKFLOW}" id='new_workflow'/>
-			</td>
-		</tr>
-	</table>
 	<datatable url="index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getJSON" template="workflowlist_row_template">
 	<header>
 			<div class="slds-grid slds-gutters" style="width: 650px;">
@@ -96,6 +88,11 @@
 								</select>
 							</div>
 						</div>
+					</div>
+				</div>
+				<div class="slds-col">
+					<div class="slds-form-element slds-float_right" style="width: 162px; margin-top: 24px;">
+						<button class="slds-button slds-button_success" id='new_workflow'>{$MOD.LBL_NEW_WORKFLOW}</button>
 					</div>
 				</div>
 			</div>
