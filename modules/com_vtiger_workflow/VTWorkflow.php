@@ -121,7 +121,7 @@ class Workflow {
 		$adb->pquery('INSERT INTO com_vtiger_workflow_activatedonce (entity_id, workflow_id) VALUES (?,?)', array($recordId, $this->id));
 	}
 
-	public function performTasks($entityData, $context = array()) {
+	public function performTasks(&$entityData, $context = array()) {
 		global $adb,$logbg;
 		$logbg->debug('> PerformTasks for Workflow: '.$this->id);
 		$wflaunch = 0;
