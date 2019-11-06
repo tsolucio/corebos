@@ -310,8 +310,13 @@ switch ($functiontocall) {
 		foreach ($ids as $crmid) {
 			$crmids[] = $wsid.$crmid;
 		}
+		if (empty($_REQUEST['ctx'])) {
+			$context = '[]';
+		} else {
+			$context = vtlib_purify($_REQUEST['ctx']);
+		}
 		try {
-			$ret = cbwsExecuteWorkflow($wfid, json_encode($crmids), $current_user);
+			$ret = cbwsExecuteWorkflowWithContext($wfid, json_encode($crmids), $context, $current_user);
 		} catch (Exception $e) {
 			$ret = false;
 		}

@@ -44,6 +44,16 @@ require_once 'modules/com_vtiger_workflow/include.inc';
  * entities: json encoded array of webservice CRMIDs
  */
 function cbwsExecuteWorkflow($workflow, $entities, $user) {
+	return cbwsExecuteWorkflowWithContext($workflow, $entities, '[]', $user);
+}
+
+/*
+ * Execute a workflow against a list of CRMIDs with a given context
+ * workflow: name or ID of the workflow to execute
+ * entities: json encoded array of webservice CRMIDs
+ * context: json encoded array of context variables
+ */
+function cbwsExecuteWorkflowWithContext($workflow, $entities, $context, $user) {
 	global $adb;
 	$result = $adb->pquery('select * from com_vtiger_workflows where workflow_id=? or summary=?', array($workflow, $workflow));
 	if (!$result || $adb->num_rows($result)==0) {
@@ -52,6 +62,10 @@ function cbwsExecuteWorkflow($workflow, $entities, $user) {
 	$crmids = json_decode($entities, true);
 	if (json_last_error() !== JSON_ERROR_NONE) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter: entities');
+	}
+	$ctx = json_decode($context, true);
+	if (json_last_error() !== JSON_ERROR_NONE) {
+		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter: context');
 	}
 	$util = new VTWorkflowUtils();
 	$entityCache = new VTEntityCache($user);
@@ -69,7 +83,7 @@ function cbwsExecuteWorkflow($workflow, $entities, $user) {
 					$entity_id = $entity_id[1];
 					$workflow->markAsCompletedForRecord($entity_id);
 				}
-				$workflow->performTasks($entityData);
+				$workflow->performTasks($entityData, $ctx);
 			}
 		}
 	}
