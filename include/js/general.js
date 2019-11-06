@@ -1295,6 +1295,79 @@ function __addLog(message) {
 	r.scrollTop = r.scrollHeight;
 }
 
+function runBAScript(scripturi) {
+	VtigerJS_DialogBox.block();
+	let SVModule = gVTModule;
+	let cbmod = document.getElementById('module');
+	if (cbmod) {
+		SVModule = cbmod.value;
+	}
+	let SVRecord = 0;
+	let cbrec = document.getElementById('record');
+	if (cbrec) {
+		SVRecord = cbrec.value;
+	}
+	jQuery.ajax({
+		url: scripturi+'&__module='+SVModule+'&__crmid='+SVRecord,
+		type:'get'
+	}).fail(function (jqXHR, textStatus) {
+		document.getElementById('appnotifydiv').innerHTML='</b>'+alert_arr.Error+'</b>';
+		document.getElementById('appnotifydiv').style.display='block';
+		VtigerJS_DialogBox.unblock();
+	}).done(function (msg) {
+		if (msg.search('%%%MSG%%%') > -1) { // Show message in appdiv
+			//message to display
+			var display = msg.split('%%%MSG%%%');
+			document.getElementById('appnotifydiv').outerHTML=display;
+			document.getElementById('appnotifydiv').style.display='block';
+			VtigerJS_DialogBox.unblock();
+		} else if (msg.search('%%%FUNCTION%%%') > -1) { //call user function
+			var callfunc = msg.split('%%%FUNCTION%%%');
+			var params = '';
+			if (callfunc[1].search('%%%PARAMS%%%') > -1) { //function has params string
+				var cfp = callfunc[1].split('%%%PARAMS%%%');
+				callfunc = cfp[0];
+				params = cfp[1];
+			} else {
+				callfunc = callfunc[1];
+			}
+			if (typeof window[callfunc] == 'function') {
+				window[callfunc](params);
+				VtigerJS_DialogBox.unblock();
+			}
+		} else { //Error
+			alert(msg);
+			VtigerJS_DialogBox.unblock();
+		}
+	});
+	return false;
+}
+
+function runBAWorkflow(workflowid, crmids) {
+	VtigerJS_DialogBox.block();
+	if (typeof workflowid == undefined || workflowid == '') {
+		return false;
+	}
+	if (typeof crmids == undefined || crmids == '' || crmids == 'RECORD') {
+		let cbrec = document.getElementById('record');
+		if (cbrec) {
+			crmids = cbrec.value;
+		}
+	}
+	if (typeof crmids == undefined || crmids == '') {
+		return false;
+	}
+	ExecuteFunctions('execwf', 'wfid='+workflowid+'&ids='+crmids).then(function (data) {
+		if (data) {
+			alert('Ok');
+		} else { //Error
+			alert(alert_arr.Error);
+		}
+		VtigerJS_DialogBox.unblock();
+	});
+	return false;
+}
+
 function doModuleValidation(edit_type, editForm, callback) {
 	if (editForm == undefined) {
 		var formName = 'EditView';
