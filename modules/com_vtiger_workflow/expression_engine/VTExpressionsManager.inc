@@ -133,6 +133,8 @@ class VTExpressionsManager {
 			'getGEODistanceFromUser2ContactShipping' => 'getGEODistanceFromUser2ContactShipping(contact,address_specification)',
 			'getGEODistanceFromAssignUser2ContactShipping' => 'getGEODistanceFromAssignUser2ContactShipping(contact,assigned_user,address_specification)',
 			'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})',
+			'getFromContext' => 'getFromContext(variablename)',
+			'setToContext' => 'setToContext(variablename, value)',
 			'getCRUDMode' => 'getCRUDMode()',
 			'isNumeric' => 'isNumeric(fieldname)',
 			'isString' => 'isString(fieldname)',

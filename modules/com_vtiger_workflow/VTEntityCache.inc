@@ -13,6 +13,7 @@ require_once 'modules/com_vtiger_workflow/VTSimpleTemplate.inc';
 class VTWorkflowEntity {
 	private $isDeleted = false;
 	public $WorkflowEvent = 0;
+	public $WorkflowContext = array();
 
 	public function __construct($user, $id, $deleted = false, $queue = false) {
 		$this->moduleName = null;
@@ -101,6 +102,14 @@ class VTWorkflowEntity {
 
 	public function isDeleted() {
 		return $this->isDeleted;
+	}
+
+	public function getContext() {
+		return $this->WorkflowContext;
+	}
+
+	public function setContext($WorkflowContext) {
+		$this->WorkflowContext = $WorkflowContext;
 	}
 }
 

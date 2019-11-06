@@ -86,6 +86,8 @@ class VTFieldExpressionEvaluater {
 			'getGEODistanceFromUser2ContactShipping' => '__cb_getGEODistanceFromUser2ContactShipping',
 			'getGEODistanceFromAssignUser2ContactShipping' => '__cb_getGEODistanceFromAssignUser2ContactShipping',
 			'getGEODistanceFromCoordinates' => '__cb_getGEODistanceFromCoordinates',
+			'getFromContext' => '__cb_getfromcontext',
+			'setToContext' => '__cb_setfromcontext',
 			'getCRUDMode' => '__cb_getcrudmode',
 			'isNumeric' => '__cb_is_numeric',
 			'isString' => '__cb_is_string',
@@ -182,6 +184,8 @@ class VTFieldExpressionEvaluater {
 			'__cb_getGEODistanceFromAssignUser2ContactShipping',
 			'__cbwf_setype',
 			'__cb_getcrudmode',
+			'__cb_getfromcontext',
+			'__cb_setfromcontext',
 		);
 		$this->needscontext = array(
 			'__cb_aggregation',
@@ -190,6 +194,8 @@ class VTFieldExpressionEvaluater {
 			'__cb_aggregate_time',
 			'cbexpsql_aggregation',
 			'__cb_getcrudmode',
+			'__cb_getfromcontext',
+			'__cb_setfromcontext',
 		);
 		$wfexpfuncs = $adb->query('select expname,funcname,rawparams,needscontext from com_vtiger_workflows_expfunctions');
 		while ($func = $adb->fetch_array($wfexpfuncs)) {
