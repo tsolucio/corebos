@@ -80,7 +80,9 @@ function vtRunTaskJob($adb) {
 		) {
 			$logbg->debug('WF Cron:: Task '.$taskId.' will call function doTask with entityId: '.$entityId);
 			try {
+				$task->startTask($entity);
 				$task->doTask($entity);
+				$task->endTask($entity);
 				$logbg->debug('WF Cron:: Task '.$taskId.' executed with success the function doTask with entityId: '.$entityId);
 			} catch (Exception $e) {
 				$logbg->debug('WF Cron:: Task '.$taskId.' executed with FAILURE the function doTask with entityId: '.$entityId);

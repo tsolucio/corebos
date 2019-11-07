@@ -162,7 +162,9 @@ class Workflow {
 					} else {
 						if (empty($task->test) || $task->evaluate($entityCache, $entityData->getId())) {
 							try {
+								$task->startTask($entityData);
 								$task->doTask($entityData);
+								$task->endTask($entityData);
 							} catch (Exception $e) {
 								$errortasks[] = array(
 									'entitydata' => $entityData->data,

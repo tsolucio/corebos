@@ -178,6 +178,14 @@ abstract class VTTask {
 		return array();
 	}
 
+	public function startTask(&$entity) {
+		list($void, $entity) = cbEventHandler::do_filter('corebos.filter.WorkflowTask.start', array($this, $entity));
+	}
+
+	public function endTask($entity) {
+		cbEventHandler::do_action('corebos.action.WorkflowTask.end', array($this, $entity));
+	}
+
 	public function after_retrieve() {
 	}
 
