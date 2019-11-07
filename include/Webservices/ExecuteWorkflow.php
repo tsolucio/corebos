@@ -73,6 +73,7 @@ function cbwsExecuteWorkflowWithContext($workflow, $entities, $context, $user) {
 	$workflows = $wfs->getWorkflowsForResult($result);
 	$workflow = reset($workflows);
 	$workflow_mod = $workflow->moduleName; // it return module from workflow
+	$errortasks = array();
 	foreach ($crmids as $crmid) {
 		$entityData = $entityCache->forId($crmid);
 		$modPrefix = $entityData->getModuleName(); // it return module from webservice
@@ -83,9 +84,16 @@ function cbwsExecuteWorkflowWithContext($workflow, $entities, $context, $user) {
 					$entity_id = $entity_id[1];
 					$workflow->markAsCompletedForRecord($entity_id);
 				}
-				$workflow->performTasks($entityData, $ctx);
+				try {
+					$workflow->performTasks($entityData, $ctx, true);
+				} catch (WebServiceException $e) {
+					$errortasks[$crmid] = $e->getMessage();
+				}
 			}
 		}
+	}
+	if (count($errortasks)>0) {
+		throw new WebServiceException(WebServiceErrorCode::$WORKFLOW_TASK_FAILED, print_r($errortasks, true));
 	}
 	return true;
 }

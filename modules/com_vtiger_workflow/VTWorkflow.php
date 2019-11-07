@@ -121,7 +121,7 @@ class Workflow {
 		$adb->pquery('INSERT INTO com_vtiger_workflow_activatedonce (entity_id, workflow_id) VALUES (?,?)', array($recordId, $this->id));
 	}
 
-	public function performTasks(&$entityData, $context = array()) {
+	public function performTasks(&$entityData, $context = array(), $webservice = false) {
 		global $adb,$logbg;
 		$logbg->debug('> PerformTasks for Workflow: '.$this->id);
 		$wflaunch = 0;
@@ -142,7 +142,7 @@ class Workflow {
 		$tm = new VTTaskManager($adb);
 		$taskQueue = new VTTaskQueue($adb);
 		$tasks = $tm->getTasksForWorkflow($this->id);
-
+		$errortasks = array();
 		foreach ($tasks as $task) {
 			if (is_object($task) && $task->active) {
 				$logbg->debug($task->summary);
@@ -161,12 +161,30 @@ class Workflow {
 						$taskQueue->queueTask($task->id, $entityData->getId(), $delay);
 					} else {
 						if (empty($task->test) || $task->evaluate($entityCache, $entityData->getId())) {
-							$task->doTask($entityData);
+							try {
+								$task->doTask($entityData);
+							} catch (Exception $e) {
+								$errortasks[] = array(
+									'entitydata' => $entityData->data,
+									'entityid' => $entityData->getId(),
+									'taskid' => $task->id,
+									'error' => $e->getMessage(),
+								);
+							}
 						}
 					}
 				} else {
 					$taskQueue->queueTask($task->id, $entityData->getId(), $delay);
 				}
+			}
+		}
+		if (count($errortasks)>0) {
+			$logbg->fatal('> *** Workflow Tasks Errors:');
+			$logbg->fatal($errortasks);
+			$logbg->fatal('> **************************');
+			if ($webservice) {
+				require_once 'include/Webservices/WebServiceError.php';
+				throw new WebServiceException(WebServiceErrorCode::$WORKFLOW_TASK_FAILED, print_r($errortasks, true));
 			}
 		}
 	}
