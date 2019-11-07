@@ -696,7 +696,7 @@ function updateFieldProperties() {
 	$presence_check = vtlib_purify($_REQUEST['isPresent']);
 	$massedit_check = vtlib_purify($_REQUEST['massedit']);
 	$defaultvalue = vtlib_purify($_REQUEST['defaultvalue']);
-	$dependentmodules = vtlib_purify($_REQUEST['dependentmoduleselected']);
+	$dependentmodules = isset($_REQUEST['dependentmoduleselected']) ? vtlib_purify($_REQUEST['dependentmoduleselected']) : null;
 
 	if (!empty($dependentmodules)) {
 		$newdependetmodules = explode(",", $_REQUEST['dependentmoduleselected']);
