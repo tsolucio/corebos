@@ -310,9 +310,7 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 		if ($token_pair[2]=='enletras') {
 			require_once 'modules/cbtranslation/number2string.php';
 			$nuevomarcador = $token_pair[0].'.'.$token_pair[1];
-			$reemplazo = retrieve_from_db($nuevomarcador, $id, $module, $applyformat);
-			$reemplazo = str_replace('.', '', $reemplazo);
-			$reemplazo = str_replace(',', '.', $reemplazo);
+			$reemplazo = retrieve_from_db($nuevomarcador, $id, $module, false);
 			$reemplazo = strtolower(number2string::convert($reemplazo, OpenDocument::$compile_language));
 			return $reemplazo;
 		}
