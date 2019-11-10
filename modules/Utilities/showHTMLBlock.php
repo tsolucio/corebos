@@ -35,6 +35,10 @@ class showHTMLBlock_DetailViewBlock extends DeveloperBlock {
 		global $adb;
 		$this->context = $context;
 		$ex = $this->getFromContext('ex');
+		$strtemplate = new Vtiger_StringTemplate();
+		$strtemplate->assign('RECORD', (empty($context['ID']) ? (empty($context['RECORDID']) ? 0 : $context['RECORDID']) : $context['ID']));
+		$strtemplate->assign('MODULE', (empty($context['MODULE']) ? '' : $context['MODULE']));
+		$ex = $strtemplate->merge($ex);
 		$op = strtolower($this->getFromContext('op'));
 		/*
 		if ($op=='exec') {
