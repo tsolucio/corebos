@@ -15,7 +15,13 @@
 			<strong>{$MOD.LBL_TASKS}</strong>
 		</td>
 		<td class="small cblds-t-align_right" align="right">
-			<input type="button" class="crmButton create small" value="{$MOD.LBL_NEW_TASK_BUTTON_LABEL}" id='new_task' style="display:none;" />
+			<a href="{$module->activatedeactivateTaskUrl($workflow->id,1)}">
+				<input type="button" class="crmButton save small" value="{$MOD.LBL_ACTIVATE_ALL_BUTTON_LABEL}" id='approval'/>
+			</a>
+			<a href="{$module->activatedeactivateTaskUrl($workflow->id,0)}">
+				<input type="button" class="crmButton save small" value="{$MOD.LBL_DIACTIVATE_ALL_BUTTON_LABEL}" id='close' />
+			</a>
+			<input type="button" class="crmButton create small" value="{$MOD.LBL_NEW_TASK_BUTTON_LABEL}" id='new_task' />
 		</td>
 	</tr>
 </table>
