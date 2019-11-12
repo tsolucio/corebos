@@ -150,7 +150,8 @@
 							"searchcondition":"contains",
 							"entityfield":"{$arr.pickdata.fieldname}",
 							"showfields":"{$arr.pickdata.fieldname}",
-							"fillfields":"tks_{$arr.fieldname}={$arr.pickdata.fieldname}"
+							"fillfields":"tks_{$arr.fieldname}={$arr.pickdata.fieldname}",
+							"mincharstosearch" : 1
 						}'
 					/>
 					<div id="listbox-unique-id{$val}" role="listbox" class="">
