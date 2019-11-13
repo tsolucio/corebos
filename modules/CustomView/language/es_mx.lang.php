@@ -252,6 +252,11 @@ $mod_strings = array (
 'not equal to'=>'no igual a',
 'starts with'=>'Empieza con',
 'ends with'=>'Termina en',
+'does not start with' => 'No empieza con',
+'does not end with' => 'No termina en',
+'before' => 'Antes',
+'after' => 'Despues',
+'between' => 'Entre',
 //'Product Code'=>'Código de Producto',
 
 //Added for Role based Custom filters

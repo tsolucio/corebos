@@ -234,7 +234,24 @@ function getStdFilterHTML($module, $selected = '') {
 * 	n => array('value'=>$$tablenamen:$colnamen:$fieldnamen:$fieldlabeln,'text'=>$mod_strings[$field labeln],'selected'=>$selected))
 */
 function getAdvCriteriaHTML($selected = '') {
-	global $adv_filter_options;
+	global $adv_filter_options, $mod_strings;
+	$adv_filter_options = array(
+		'e' => $mod_strings['equals'],
+		'n' => $mod_strings['not equal to'],
+		's' => $mod_strings['starts with'],
+		'ew' => $mod_strings['ends with'],
+		'dnsw' => $mod_strings['does not start with'],
+		'dnew' => $mod_strings['does not end with'],
+		'c' => $mod_strings['contains'],
+		'k' => $mod_strings['does not contain'],
+		'l' => $mod_strings['less than'],
+		'g' => $mod_strings['greater than'],
+		'm' => $mod_strings['less or equal'],
+		'h' => $mod_strings['greater or equal'],
+		'b' => $mod_strings['before'],
+		'a' => $mod_strings['after'],
+		'bw' => $mod_strings['between'],
+	);
 	$shtml = '';
 	foreach ($adv_filter_options as $key => $value) {
 		if ($selected == $key) {
