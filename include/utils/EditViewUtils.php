@@ -39,10 +39,11 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$fldmod_result = $adb->pquery(
 			'SELECT relmodule, status
 			FROM vtiger_fieldmodulerel
-			INNER JOIN vtiger_tab ON vtiger_fieldmodulerel.relmodule=vtiger_tab.name and vtiger_tab.presence=0
 			WHERE fieldid=
 				(SELECT fieldid FROM vtiger_field, vtiger_tab
 				WHERE vtiger_field.tabid=vtiger_tab.tabid AND fieldname=? AND name=? and vtiger_field.presence in (0,2) and vtiger_tab.presence=0)
+				AND vtiger_fieldmodulerel.relmodule IN
+				(select vtiger_tab.name FROM vtiger_tab WHERE vtiger_tab.presence=0 UNION select "com_vtiger_workflow")
 			order by sequence',
 			array($fieldname, $module_name)
 		);

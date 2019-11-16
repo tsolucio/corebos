@@ -5,6 +5,8 @@
  **/
 
 $mod_strings = array(
+'com_vtiger_workflow' => 'Flujos de Trabajo',
+'SINGLE_com_vtiger_workflow' => 'Flujo de Trabajo',
 'VTEmailTask' => 'Enviar Correo',
 'VTEntityMethodTask' => 'Ejecutar Función',
 'VTCreateTodoTask' => 'Crear Tarea',

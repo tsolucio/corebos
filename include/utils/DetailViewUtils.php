@@ -38,10 +38,14 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		if (!empty($parent_id)) {
 			$parent_module = '';
 			$fldrs = $adb->pquery(
-				'select relmodule
-				from vtiger_fieldmodulerel
-				inner join vtiger_field on vtiger_field.fieldid=vtiger_fieldmodulerel.fieldid
-				where vtiger_field.fieldname=? and vtiger_field.tabid=?',
+				'SELECT relmodule
+				FROM vtiger_fieldmodulerel
+				WHERE fieldid=
+					(SELECT fieldid FROM vtiger_field, vtiger_tab
+					WHERE vtiger_field.tabid=vtiger_tab.tabid AND fieldname=? AND vtiger_tab.tabid=? and vtiger_field.presence in (0,2) and vtiger_tab.presence=0)
+					AND vtiger_fieldmodulerel.relmodule IN
+					(select vtiger_tab.name FROM vtiger_tab WHERE vtiger_tab.presence=0 UNION select "com_vtiger_workflow")
+				order by sequence',
 				array($fieldname, $tabid)
 			);
 			if ($adb->num_rows($fldrs)==1) {
@@ -1697,7 +1701,7 @@ function isPresentRelatedLists($module, $activity_mode = '') {
 	$result = $adb->pquery(
 		'select relation_id,vtiger_relatedlists.related_tabid,label,vtiger_tab.presence
 			from vtiger_relatedlists
-			inner join vtiger_tab on vtiger_tab.tabid=vtiger_relatedlists.related_tabid
+			left join vtiger_tab on vtiger_tab.tabid=vtiger_relatedlists.related_tabid
 			where vtiger_relatedlists.tabid=? order by sequence',
 		array($tab_id)
 	);
@@ -1771,13 +1775,13 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 			if (isset($custfld[2]) && $custfld[2]==10) {
 				$fldmod_result = $adb->pquery(
 					'SELECT relmodule, status
-						FROM vtiger_fieldmodulerel
-						INNER JOIN vtiger_tab ON vtiger_fieldmodulerel.relmodule=vtiger_tab.name and vtiger_tab.presence=0
-						WHERE fieldid=
-						(SELECT fieldid
-							FROM vtiger_field, vtiger_tab
-							WHERE vtiger_field.tabid=vtiger_tab.tabid AND fieldname=? AND name=? and vtiger_field.presence in (0,2) and vtiger_tab.presence=0)
-						order by sequence',
+					FROM vtiger_fieldmodulerel
+					WHERE fieldid=
+						(SELECT fieldid FROM vtiger_field, vtiger_tab
+						WHERE vtiger_field.tabid=vtiger_tab.tabid AND fieldname=? AND name=? and vtiger_field.presence in (0,2) and vtiger_tab.presence=0)
+						AND vtiger_fieldmodulerel.relmodule IN
+						(select vtiger_tab.name FROM vtiger_tab WHERE vtiger_tab.presence=0 UNION select "com_vtiger_workflow")
+					order by sequence',
 					array($fieldname, $module)
 				);
 				$entityTypes = array();

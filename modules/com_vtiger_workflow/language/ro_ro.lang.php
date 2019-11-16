@@ -15,6 +15,8 @@
  *************************************************************************************************/
 
 $mod_strings = array(
+	'com_vtiger_workflow' => 'Workflows',
+	'SINGLE_com_vtiger_workflow' => 'Workflow',
 	'VTEmailTask' => 'Trimite Email',
 	'VTEntityMethodTask' => 'Invoke Custom Function',
 	'VTCreateTodoTask' => 'Create Todo',

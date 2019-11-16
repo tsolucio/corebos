@@ -8,6 +8,8 @@
  * All Rights Reserved.
  ************************************************************************************/
 $mod_strings = array(
+'com_vtiger_workflow' => 'Workflows',
+'SINGLE_com_vtiger_workflow' => 'Workflow',
 'VTEmailTask' => 'Verstuur e-mail',
 'VTEntityMethodTask' => 'Start maatwerkfunctie',
 'VTCreateTodoTask' => 'Maak Taak',

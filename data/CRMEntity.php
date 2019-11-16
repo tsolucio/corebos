@@ -2203,6 +2203,61 @@ class CRMEntity {
 	}
 
 	/**
+	 * Generic function to handle the workflow related list for a module.
+	 */
+	public function getWorkflowRelatedList($id, $cur_tab_id, $rel_tab_id, $actions = false) {
+		require_once 'modules/com_vtiger_workflow/VTWorkflow.php';
+		global $currentModule, $singlepane_view;
+
+		$parenttab = getParentTab();
+
+		$related_module = 'com_vtiger_workflow';
+		$other = new Workflow();
+		unset($other->list_fields['Tools'], $other->list_fields_name['Tools']);
+		$button = '';
+		if ($actions) {
+			if (is_string($actions)) {
+				$actions = explode(',', strtoupper($actions));
+			}
+			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
+				$button .= "<input title='" . getTranslatedString('LBL_SELECT') . ' ' . getTranslatedString($related_module, $related_module).
+					"' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule".
+					"&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test',".
+					"'width=640,height=602,resizable=0,scrollbars=0');\" value='" . getTranslatedString('LBL_SELECT') . ' '.
+					getTranslatedString($related_module, $related_module) . "'>&nbsp;";
+			}
+			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
+				$singular_modname = getTranslatedString('SINGLE_' . $related_module, $related_module);
+				$button .= "<input type='hidden' name='createmode' value='link' />" .
+					"<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "' class='crmbutton small create'" .
+					" onclick='this.form.action.value=\"workflowlist\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
+					" value='" . getTranslatedString('LBL_ADD_NEW') . " " . $singular_modname . "'>&nbsp;";
+			}
+		}
+
+		// To make the edit or del link actions to return back to same view.
+		if ($singlepane_view == 'true') {
+			$returnset = "&return_module=$currentModule&return_action=DetailView&return_id=$id";
+		} else {
+			$returnset = "&return_module=$currentModule&return_action=CallRelatedList&return_id=$id";
+		}
+
+		$query = 'SELECT *,workflow_id as crmid ';
+		$query .= ' FROM com_vtiger_workflows';
+		$query .= ' INNER JOIN vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid = workflow_id OR vtiger_crmentityrel.crmid = workflow_id)';
+		$query .= " WHERE (vtiger_crmentityrel.crmid = $id OR vtiger_crmentityrel.relcrmid = $id)";
+
+		$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
+
+		if ($return_value == null) {
+			$return_value = array('header'=>array(),'entries'=>array(),'navigation'=>array('',''));
+		}
+		$return_value['CUSTOM_BUTTON'] = $button;
+
+		return $return_value;
+	}
+
+	/**
 	 * Default (generic) function to handle the related list for the module.
 	 * NOTE: Vtiger_Module::setRelatedList sets reference to this function in vtiger_relatedlists table
 	 * if function name is not explicitly specified.

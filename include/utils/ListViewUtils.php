@@ -12,6 +12,7 @@ require_once 'include/ComboUtil.php';
 require_once 'include/utils/CommonUtils.php';
 require_once 'include/utils/UserInfoUtil.php';
 require_once 'include/CustomFieldUtil.php';
+require_once 'modules/com_vtiger_workflow/VTWorkflow.php';
 
 /** This function is used to get the list view header values in a list view
  * Param $focus - module object
@@ -1085,8 +1086,10 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 		$hasGlobalReadPermission = $userprivs->hasGlobalReadPermission();
 		for ($i = 1; $i <= $noofrows; $i++) {
 			//Getting the entityid
-			if ($module != 'Users') {
+			if ($module != 'Users' && $module != 'com_vtiger_workflow') {
 				$entity_id = $adb->query_result($list_result, $i - 1, 'crmid');
+			} elseif ($module == 'com_vtiger_workflow') {
+				$entity_id = $adb->query_result($list_result, $i - 1, 'workflow_id');
 			} else {
 				$entity_id = $adb->query_result($list_result, $i - 1, 'id');
 			}
@@ -2296,6 +2299,17 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 				$value = textlength_check($value);
 			}
 		} else {
+			if ($module=='com_vtiger_workflow') {
+				switch ($fieldname) {
+					case 'module_name':
+						$temp_val = getTranslatedString($temp_val, $temp_val);
+						break;
+					case 'execution_condition':
+						$triggerlabels = Workflow::geti18nTriggerLabels();
+						$temp_val = getTranslatedString($triggerlabels[$temp_val], 'Settings');
+						break;
+				}
+			}
 			$value = textlength_check($temp_val);
 			if (substr($value, -3) == '...') {
 				$value = '<span title="'.$field_val.'">'.$value.'<span>';

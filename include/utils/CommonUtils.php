@@ -2061,8 +2061,8 @@ function Button_Check($module) {
 function getEntityName($module, $ids_list) {
 	global $log;
 	$log->debug('> getEntityName '.$module);
-	if ($module == 'Events') {
-		$module = 'Calendar';
+	if ($module == 'com_vtiger_workflow') {
+		return getEntityNameWorkflow($ids_list);
 	}
 	if ($module != '') {
 		$ids_list = (array)$ids_list;
@@ -2086,6 +2086,34 @@ function getEntityName($module, $ids_list) {
 		return $entityDisplay;
 	}
 	$log->debug('< getEntityName');
+}
+
+/**
+ * 	Retrieve the display or entity name of a list of Workflow IDs
+ * 	@param string $module -- module name
+ * 	@param array $ids_list -- Record id
+ * 	@return array of display/entity name of records indexed by ID
+ * */
+function getEntityNameWorkflow($ids_list) {
+	global $log;
+	$log->debug('> getEntityNameWorkflow');
+	$ids_list = (array)$ids_list;
+	if (count($ids_list) <= 0) {
+		return array();
+	}
+	$entityDisplay = array();
+	$entity_field_info['tablename'] = 'com_vtiger_workflows';
+	$entity_field_info['fieldname'] = 'summary';
+	$entity_field_info['entityidfield'] = 'workflow_id';
+	$entity_FieldValue = getEntityFieldValues($entity_field_info, $ids_list);
+
+	foreach ($entity_FieldValue as $entityInfo) {
+		foreach ($entityInfo as $key => $entityName) {
+			$entityDisplay[$key] = $entityName[$entity_field_info['fieldname']];
+		}
+	}
+	$log->debug('< getEntityNameWorkflow');
+	return $entityDisplay;
 }
 
 /*

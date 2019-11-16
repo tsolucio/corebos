@@ -9,6 +9,8 @@
  ************************************************************************************/
 
 $mod_strings = array(
+	'com_vtiger_workflow' => 'Workflows',
+	'SINGLE_com_vtiger_workflow' => 'Workflow',
 	'VTEmailTask' => 'Sende E-Mail',
 	'VTEntityMethodTask' => 'benutzerdefinierte Funktion aktivieren',
 	'VTCreateTodoTask' => 'Aufgabe erzeugen',

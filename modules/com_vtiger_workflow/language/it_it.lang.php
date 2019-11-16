@@ -8,6 +8,8 @@
  * All Rights Reserved.
  ************************************************************************************/
 $mod_strings = array(
+'com_vtiger_workflow' => 'Workflows',
+'SINGLE_com_vtiger_workflow' => 'Workflow',
 'VTEmailTask' => 'Invia Email',
 'VTEntityMethodTask' => 'Chiama Funzione Personalizzata',
 'VTCreateTodoTask' => 'Crea Compito',

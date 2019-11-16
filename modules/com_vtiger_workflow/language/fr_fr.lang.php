@@ -8,6 +8,8 @@
 ***********************************************************/
 
 $mod_strings = array(
+	'com_vtiger_workflow' => 'Workflows',
+	'SINGLE_com_vtiger_workflow' => 'Workflow',
 	'VTEmailTask' => 'Envoyer un Email',
 	'VTEntityMethodTask' => 'Utiliser une fonction personnalisée',
 	'VTCreateTodoTask' => 'Créer une tâche',
