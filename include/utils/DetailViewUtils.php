@@ -65,10 +65,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$label_fld = array($fieldlabel,
 				"<a href='index.php?module=$parent_module&action=DetailView&record=$parent_id' title='$valueTitle'>$displayValue</a>$vtlib_metainfo");
 		} else {
-			$moduleSpecificMessage = 'MODULE_NOT_SELECTED';
-			if (!empty($mod_strings[$moduleSpecificMessage])) {
-				$moduleSpecificMessage = $mod_strings[$moduleSpecificMessage];
-			}
+			// 'MODULE_NOT_SELECTED'
 			$label_fld = array($fieldlabel, '');
 			$parent_id = '';
 		}

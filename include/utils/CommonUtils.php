@@ -2053,11 +2053,10 @@ function Button_Check($module) {
 }
 
 /**
- * 	Function to Check whether the User is allowed to delete a particular record from listview of each module using
- * 	mass delete button.
+ * 	Retrieve the display or entity name of a list of CRMIDs
  * 	@param string $module -- module name
  * 	@param array $ids_list -- Record id
- * 	Returns the Record Names of each module that is not permitted to delete
+ * 	@return array of display/entity name of records indexed by ID
  * */
 function getEntityName($module, $ids_list) {
 	global $log;
