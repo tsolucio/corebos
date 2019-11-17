@@ -186,7 +186,7 @@
 					<tr>
 						<td class="small">
 							<select name="op_cond_{$val}" id="op_cond_{$val}" class="repBox" style="width:100px;" onblur="document.getElementById('div_{$arr.fieldname}').style.display='none'">
-								{if $arr.fieldtype eq 'text'}
+								{if $arr.fieldtype eq 'text' || $arr.fieldtype eq 'reference'}
 								<option value="e">{'equals'|@getTranslatedString:'CustomView'}</option>
 								<option value="n">{'not equal to'|@getTranslatedString:'CustomView'}</option>
 								<option value="s">{'starts with'|@getTranslatedString:'CustomView'}</option>
