@@ -301,5 +301,18 @@ class qactions_Action extends CoreBOS_ActionController {
 		$rdo['notify'] = $smarty->fetch('applicationmessage.tpl');
 		echo json_encode($rdo);
 	}
+
+	public function executeScript() {
+		$record = $this->checkQIDParam();
+		$dbUser = isset($_REQUEST['db_user']) ? vtlib_purify($_REQUEST['db_user']) : '';
+		$dbPass = isset($_REQUEST['db_pass']) ? vtlib_purify($_REQUEST['db_pass']) : '';
+		$dbName = isset($_REQUEST['db_name']) ? vtlib_purify($_REQUEST['db_name']) : '';
+		$tablename = isset($_REQUEST['tablename']) ? vtlib_purify($_REQUEST['tablename']) : '';
+		$scriptPath = isset($_REQUEST['script_path']) ? vtlib_purify($_REQUEST['script_path']) : '';
+
+		$command = sprintf("".$scriptPath." %s %s %s %s %s", $dbUser, $dbPass, $dbName, $tablename, $record);
+		$output = shell_exec($command);
+		echo json_encode($output);
+	}
 }
 ?>
