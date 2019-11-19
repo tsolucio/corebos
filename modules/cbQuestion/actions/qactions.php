@@ -312,7 +312,13 @@ class qactions_Action extends CoreBOS_ActionController {
 
 		$command = sprintf("".$scriptPath." %s %s %s %s %s", $dbUser, $dbPass, $dbName, $tablename, $record);
 		$output = shell_exec($command);
-		echo json_encode($output);
+		$rdo = array();
+		$rdo['status'] = 'OK';
+		$rdo['msg'] = $output;
+		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-success');
+		$smarty->assign('ERROR_MESSAGE', $rdo['msg']);
+		$rdo['notify'] = $smarty->fetch('applicationmessage.tpl');
+		echo json_encode($rdo);
 	}
 }
 ?>
