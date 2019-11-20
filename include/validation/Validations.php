@@ -120,16 +120,14 @@ function validate_notDuplicate($field, $fieldval, $params, $fields) {
 /** accept a workflow expression and evaluate it
  * in the context of the new screen values
  */
-function validate_expression($field, $fieldval, $params) {
-	$crmid = $params[0];
+function validate_expression($field, $fieldval, $params, $fields) {
+	$fields['record_id'] = $params[0];
 	$bmap = $params[1];
-
-	if (coreBOS_Rule::evaluate($bmap, $crmid)) {
+	if (coreBOS_Rule::evaluate($bmap, $fields)) {
 		return true;
 	} else {
 		return false;
 	}
-
 	return false;
 }
 ?>
