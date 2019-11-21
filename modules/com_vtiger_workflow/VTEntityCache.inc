@@ -46,6 +46,15 @@ class VTWorkflowEntity {
 	}
 
 	/**
+	 * Set the data of the entity object from an array.
+	 * @param array data to load into object
+	 * @return void
+	 */
+	public function setData($data) {
+		$this->data = $data;
+	}
+
+	/**
 	 * Get the entity id.
 	 *
 	 * @return The entity id.

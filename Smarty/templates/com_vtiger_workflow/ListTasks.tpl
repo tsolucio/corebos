@@ -21,7 +21,7 @@
 			<a href="{$module->activatedeactivateTaskUrl($workflow->id,0)}">
 				<input type="button" class="crmButton save small" value="{$MOD.LBL_DIACTIVATE_ALL_BUTTON_LABEL}" id='close' />
 			</a>
-			<input type="button" class="crmButton create small" value="{$MOD.LBL_NEW_TASK_BUTTON_LABEL}" id='new_task' />
+			<input type="button" class="crmButton create small" value="{$MOD.LBL_NEW_TASK_BUTTON_LABEL}" id='new_task' style="display:none;" />
 		</td>
 	</tr>
 </table>
