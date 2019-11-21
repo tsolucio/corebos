@@ -310,12 +310,19 @@ class qactions_Action extends CoreBOS_ActionController {
 		$tablename = isset($_REQUEST['tablename']) ? vtlib_purify($_REQUEST['tablename']) : '';
 		$script_path = isset($_REQUEST['script_path']) ? vtlib_purify($_REQUEST['script_path']) : '';
 
-		$command = sprintf("".$script_path." %s %s %s %s %s", $db_username, $db_password, $db_name, $tablename, $record);
-		$output = shell_exec($command);
+		$rs = $adb->pquery('select * from authorized_scripts where script_path=?', array($script_path));
 		$rdo = array();
-		$rdo['status'] = 'OK';
-		$rdo['msg'] = $output;
-		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-success');
+		if ($rs) {
+			$command = sprintf("".$script_path." %s %s %s %s %s", $db_username, $db_password, $db_name, $tablename, $record);
+			$output = shell_exec($command);
+			$rdo['status'] = 'OK';
+			$rdo['msg'] = $output;
+			$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-success');
+		} else {
+			$rdo['status'] = 'NOK';
+			$rdo['msg'] = getTranslatedString('EXECUTESCRIPTNOK', 'cbQuestion');
+			$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
+		}
 		$smarty->assign('ERROR_MESSAGE', $rdo['msg']);
 		$rdo['notify'] = $smarty->fetch('applicationmessage.tpl');
 		echo json_encode($rdo);
