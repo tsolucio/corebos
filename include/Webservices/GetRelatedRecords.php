@@ -449,6 +449,12 @@ function __getRLQueryFields($meta, $cols = '*') {
 	$fieldcol = $meta->getFieldColumnMapping();
 	if ($cols!='*') {
 		$fldcol = explode(',', $cols);
+		array_walk(
+			$fldcol,
+			function (&$val, $idx) {
+				$val = trim($val);
+			}
+		);
 		$fldcol = array_combine($fldcol, $fldcol);
 		$fieldcol = array_intersect_key($fieldcol, $fldcol);
 	}
