@@ -304,13 +304,13 @@ class qactions_Action extends CoreBOS_ActionController {
 
 	public function executeScript() {
 		$record = $this->checkQIDParam();
-		$dbUser = isset($_REQUEST['db_user']) ? vtlib_purify($_REQUEST['db_user']) : '';
-		$dbPass = isset($_REQUEST['db_pass']) ? vtlib_purify($_REQUEST['db_pass']) : '';
-		$dbName = isset($_REQUEST['db_name']) ? vtlib_purify($_REQUEST['db_name']) : '';
+		$db_username = $dbconfig['db_username'];
+		$db_password = $dbconfig['db_password'];
+		$db_name = $dbconfig['db_name'];
 		$tablename = isset($_REQUEST['tablename']) ? vtlib_purify($_REQUEST['tablename']) : '';
-		$scriptPath = isset($_REQUEST['script_path']) ? vtlib_purify($_REQUEST['script_path']) : '';
+		$script_path = isset($_REQUEST['script_path']) ? vtlib_purify($_REQUEST['script_path']) : '';
 
-		$command = sprintf("".$scriptPath." %s %s %s %s %s", $dbUser, $dbPass, $dbName, $tablename, $record);
+		$command = sprintf("".$script_path." %s %s %s %s %s", $db_username, $db_password, $db_name, $tablename, $record);
 		$output = shell_exec($command);
 		$rdo = array();
 		$rdo['status'] = 'OK';

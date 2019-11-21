@@ -60,9 +60,8 @@ function cbqdelmviewwf(qid) {
 	cbqdowork('delMViewWF', qid);
 }
 
-function cbqexecutescript(db_user, db_pass, db_name, tablename, qid, script_path) {
-	var params = '&db_user='+db_user+'&db_pass='+db_pass+'&db_name='+db_name+
-		'&tablename='+tablename+'&qid='+qid+'&script_path='+script_path;
+function cbqexecutescript(tablename, qid, script_path) {
+	var params = '&tablename='+tablename+'&qid='+qid+'&script_path='+script_path;
 	fetch(
 		'index.php?module=cbQuestion&action=cbQuestionAjax&actionname=qactions&method=executeScript'+params,
 		{
