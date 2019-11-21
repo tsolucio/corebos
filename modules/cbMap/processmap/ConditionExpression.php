@@ -78,7 +78,7 @@ class ConditionExpression extends processcbMap {
 				return false;
 			}
 			if (is_array($arguments[0])) {
-				$entity->setData($arguments[0]);
+				$entity->setData(array_merge($entity->data, $arguments[0]));
 			}
 		}
 		$current_user = $holduser;
