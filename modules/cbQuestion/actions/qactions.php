@@ -303,6 +303,7 @@ class qactions_Action extends CoreBOS_ActionController {
 	}
 
 	public function executeScript() {
+		global $adb, $dbconfig;
 		$record = $this->checkQIDParam();
 		$db_username = $dbconfig['db_username'];
 		$db_password = $dbconfig['db_password'];
