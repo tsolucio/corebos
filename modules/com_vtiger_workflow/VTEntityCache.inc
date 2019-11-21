@@ -17,6 +17,10 @@ class VTWorkflowEntity {
 
 	public function __construct($user, $id, $deleted = false, $queue = false) {
 		$this->moduleName = null;
+		if (strpos($id, 'x')===false) {
+			$this->moduleName = getSalesEntityType($id);
+			$id = vtws_getEntityId($this->moduleName).'x'.$id;
+		}
 		$this->id = $id;
 		$this->user = $user;
 		$this->isDeleted=$deleted;
