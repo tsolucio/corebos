@@ -154,8 +154,8 @@
 							"mincharstosearch" : {$LVCSearchAcTrigger}
 						}'
 					/>
-					<div id="listbox-unique-id{$val}" role="listbox" class="">
-						<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; list-style-type: none; width: 70%; max-width: none;" role="presentation"></ul>
+					<div id="listbox-unique-id{$val}" role="listbox" class="" style="position: relative;">
+						<ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid relation-autocomplete__target" style="opacity: 0; list-style-type: none; width: 100%; max-width: none;" role="presentation"></ul>
 					</div>
 				</td>
 				<td align="right">
