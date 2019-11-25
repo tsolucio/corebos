@@ -313,7 +313,7 @@ class qactions_Action extends CoreBOS_ActionController {
 
 		$rs = $adb->pquery('select * from authorized_scripts where script_path=?', array($script_path));
 		$rdo = array();
-		if ($rs) {
+		if ($rs && $adb->num_rows($rs) > 0) {
 			$command = sprintf("".$script_path." %s %s %s %s %s", $db_username, $db_password, $db_name, $tablename, $record);
 			$output = shell_exec($command);
 			$rdo['status'] = 'OK';
