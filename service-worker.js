@@ -9343,6 +9343,10 @@ if (workbox) {
     "revision": "17c65e7385c544455d2235531d60c29d"
   },
   {
+    "url": "modules/com_vtiger_workflow/com_vtiger_workflow.js",
+    "revision": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  {
     "url": "modules/com_vtiger_workflow/com_vtiger_workflow.png",
     "revision": "240870f4b7d77ee89301eb4aff5cde47"
   },
@@ -9856,7 +9860,7 @@ if (workbox) {
   },
   {
     "url": "modules/Home/Homestuff.js",
-    "revision": "523be48f77c7f5c871f8334dd8756a67"
+    "revision": "93d9fa4ef0d77c580a19d848f257a19d"
   },
   {
     "url": "modules/Home/js/HelpMeNow.js",
