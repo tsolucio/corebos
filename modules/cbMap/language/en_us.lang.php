@@ -47,5 +47,8 @@ $mod_strings = array(
 	'MAP_NOT_IMPLEMENTED_YET'=> 'Validation for this map has not been implemented yet',
 	'DecisionTable' => 'Decision Table',
 	'Webservice Mapping' => 'Webservice Mapping',
+	'FieldInfo' => 'Field Information',
+	'GlobalSearchAutocomplete' => 'Global Search Autocomplete',
+	'RelatedPanes' => 'Related Panes',
 );
 ?>
