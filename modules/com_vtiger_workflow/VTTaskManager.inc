@@ -179,11 +179,15 @@ abstract class VTTask {
 	}
 
 	public function startTask(&$entity) {
+		global $from_wf;
+		$from_wf = true;
 		list($void, $entity) = cbEventHandler::do_filter('corebos.filter.WorkflowTask.start', array($this, $entity));
 	}
 
 	public function endTask($entity) {
+		global $from_wf;
 		cbEventHandler::do_action('corebos.action.WorkflowTask.end', array($this, $entity));
+		$from_wf = false;
 	}
 
 	public function after_retrieve() {
