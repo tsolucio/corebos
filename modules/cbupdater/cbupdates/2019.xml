@@ -341,4 +341,11 @@
 	<classname>cronUnblockLoginUsers</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Creating table for authorized scripts</description>
+	<filename>build/changeSets/2019/authorizedScriptsTable.php</filename>
+	<classname>authorizedScriptsTable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

@@ -59,3 +59,21 @@ function cbqaddmviewwf(qid) {
 function cbqdelmviewwf(qid) {
 	cbqdowork('delMViewWF', qid);
 }
+
+function cbqexecutescript(tablename, qid, script_path) {
+	var params = '&tablename='+tablename+'&qid='+qid+'&script_path='+script_path;
+	fetch(
+		'index.php?module=cbQuestion&action=cbQuestionAjax&actionname=qactions&method=executeScript'+params,
+		{
+			method: 'post',
+			headers: {
+				'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8'
+			},
+			credentials: 'same-origin',
+			body: '&'+csrfMagicName+'='+csrfMagicToken
+		}
+	).then(response => response.json()).then(response => {
+		document.getElementById('appnotifydiv').outerHTML = response.notify;
+		document.getElementById('appnotifydiv').style.display='block';
+	});
+}
