@@ -9264,7 +9264,7 @@ if (workbox) {
   },
   {
     "url": "include/js/popup.js",
-    "revision": "59c8473aba27363b30e73c68471e15ba"
+    "revision": "5e044cb7f6a56e9b2cdfc3ec8b1e908a"
   },
   {
     "url": "include/js/pt_br.lang.js",
