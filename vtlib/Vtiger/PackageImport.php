@@ -493,6 +493,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	 * Import Tables of the module
 	 */
 	public function import_Tables($modulenode) {
+		global $adb;
 		if (empty($modulenode->tables) || empty($modulenode->tables->table)) {
 			return;
 		}
@@ -524,8 +525,12 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 			if (Vtiger_Utils::IsCreateSql($tablesql)) {
 				if (!Vtiger_Utils::checkTable($tablename)) {
 					self::log("SQL: $tablesql ... ", false);
-					Vtiger_Utils::ExecuteQuery($tablesql);
-					self::log("DONE");
+					$rs = Vtiger_Utils::ExecuteQuery($tablesql);
+					if ($rs) {
+						self::log('DONE');
+					} else {
+						self::log("<span style='color:red'>**ERROR**</span>: ".$adb->getErrorMsg());
+					}
 				}
 			} else {
 				if (Vtiger_Utils::IsDestructiveSql($tablesql)) {
