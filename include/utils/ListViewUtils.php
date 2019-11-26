@@ -3566,6 +3566,7 @@ function getListViewEditLink($module, $entity_id, $relatedlist, $returnset, $res
 	if ($module == 'Emails') {
 		$edit_link = 'javascript:;" onclick="OpenCompose(\'' . $entity_id . '\',\'edit\');';
 	}
+	list($module, $entity_id, $edit_link) = cbEventHandler::do_filter('corebos.relatedlist.editlink', array($module, $entity_id, $edit_link));
 	return $edit_link;
 }
 
@@ -3621,7 +3622,7 @@ function getListViewDeleteLink($module, $entity_id, $relatedlist, $returnset, $l
 		$del_link = "index.php?module=$requestModule&action=updateRelations&parentid=$requestRecord";
 		$del_link .= "&destination_module=$module&idlist=$entity_id&mode=delete";
 	}
-
+	list($module, $entity_id, $del_link) = cbEventHandler::do_filter('corebos.relatedlist.dellink', array($module, $entity_id, $del_link));
 	return $del_link;
 }
 
