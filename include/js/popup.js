@@ -48,11 +48,13 @@ function add_data_to_relatedlist(entity_id, recordid, mod, popupmode, callback) 
 		}
 		return;
 	}
+	var urlstring = 'index.php?module='+return_module+'&destination_module='+mod+'&entityid='+entity_id+'&parentid='+recordid;
+	urlstring = getcbcustominfo(urlstring);
 	if (popupmode == 'ajax') {
 		VtigerJS_DialogBox.block();
 		jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?module='+return_module+'&action='+return_module+'Ajax&file=updateRelations&destination_module='+mod+'&entityid='+entity_id+'&parentid='+recordid+'&mode=Ajax'
+			url: urlstring+'&action='+return_module+'Ajax&file=updateRelations&mode=Ajax'
 		}).done(function (response) {
 			VtigerJS_DialogBox.unblock();
 			var res = JSON.parse(response);
@@ -62,7 +64,7 @@ function add_data_to_relatedlist(entity_id, recordid, mod, popupmode, callback) 
 		});
 		return false;
 	} else {
-		opener.document.location.href='index.php?module='+return_module+'&action=updateRelations&destination_module='+mod+'&entityid='+entity_id+'&parentid='+recordid+'&return_module='+return_module+'&return_action='+gpopupReturnAction;
+		opener.document.location.href=urlstring+'&action=updateRelations&return_module='+return_module+'&return_action='+gpopupReturnAction;
 		if (document.getElementById('closewindow').value=='true') {
 			window.close();
 		}
@@ -183,6 +185,15 @@ function gethiddenelements() {
 	if (document.getElementById('currencyid') != null && document.getElementById('currencyid').value != '') {
 		urlstring +='&currencyid='+document.getElementById('currencyid').value;
 	}
+	urlstring = getcbcustominfo(urlstring);
+	var return_module = document.getElementById('return_module').value;
+	if (return_module != '') {
+		urlstring += '&return_module='+return_module;
+	}
+	return urlstring;
+}
+
+function getcbcustominfo(urlstring) {
 	if (document.getElementById('cbcustompopupinfo') != null && document.getElementById('cbcustompopupinfo').value != '') {
 		var cbcustompopupinfo = document.getElementById('cbcustompopupinfo').value;
 		let arr = cbcustompopupinfo.split(';');
@@ -191,10 +202,6 @@ function gethiddenelements() {
 				urlstring +='&'+value+'='+document.getElementById(value).value;
 			}
 		}
-	}
-	var return_module = document.getElementById('return_module').value;
-	if (return_module != '') {
-		urlstring += '&return_module='+return_module;
 	}
 	return urlstring;
 }
