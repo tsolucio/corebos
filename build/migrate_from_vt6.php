@@ -120,6 +120,14 @@ if (!($adb->num_rows($result))) {
 	ExecuteQuery('ALTER TABLE com_vtiger_workflowtasks ADD executionorder INT(10)', array());
 	ExecuteQuery('ALTER TABLE `com_vtiger_workflowtasks` ADD INDEX(`executionorder`)');
 }
+$cnmsg = $adb->getColumnNames('com_vtiger_workflows');
+if (!in_array('purpose', $cnmsg)) {
+	$adb->query('ALTER TABLE `com_vtiger_workflows` ADD `purpose` TEXT NULL;');
+}
+$cnmsg = $adb->getColumnNames('vtiger_profile2field');
+if (!in_array('summary', $cnmsg)) {
+	$adb->query("ALTER TABLE vtiger_profile2field ADD summary enum('T', 'H','B', 'N') DEFAULT 'B' NOT NULL");
+}
 
 $force = (isset($_REQUEST['force']) ? 1 : 0);
 
