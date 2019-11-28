@@ -410,9 +410,10 @@ class Validations extends processcbMap {
 			}
 		}
 		$record = (isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : (isset($screen_values['record']) ? vtlib_purify($screen_values['record']) : 0));
-		$q = 'select cbmapid from vtiger_cbmap
+		$q = "select cbmapid
+			from vtiger_cbmap
 			inner join vtiger_crmentity on crmid=cbmapid
-			where deleted=0 and maptype=? and targetname=?';
+			where deleted=0 and maptype=? and targetname=? and mapname like '%_Validations'";
 		$rs = $adb->pquery($q, array('Validations', $module));
 		$focus = new cbMap();
 		$focus->mode = '';
