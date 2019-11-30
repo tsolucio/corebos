@@ -11,7 +11,7 @@ require_once 'include/database/PearDatabase.php';
 require_once 'include/utils/VtlibUtils.php';
 require_once 'vtlib/Vtiger/Cron.php';
 global $adb;
-if (is_admin($current_user) && isset($_REQUEST['record']) && $_REQUEST['record']!='') {
+if (isPermitted('CronTask', '', '') && isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 	$cronTask = Vtiger_Cron::getInstanceById($_REQUEST['record']);
 	if (!in_array($cronTask->getName(), $cronTask->fixedTasks) && !(!empty($coreBOSOnDemandActive) && in_array($cronTask->getName(), $cbodFixedCronTasks))) {
 		$cronTask->updateStatus($_REQUEST['status']);
