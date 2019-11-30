@@ -25,7 +25,7 @@
 <td valign=top>
 <table border=0 cellspacing=0 cellpadding=0 width=100%>
 <tr>
-<td class="small settingsSelectedUI" valign=top align=left>
+<td class="small" valign=top align=left>
 <div id="view" class="workflows-list">
 	{include file='com_vtiger_workflow/ModuleTitle.tpl'}
 	<datatable url="index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getJSON" template="workflowlist_row_template">

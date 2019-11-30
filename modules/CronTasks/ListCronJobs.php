@@ -59,6 +59,7 @@ foreach ($cronTasks as $cronTask) {
 $smarty->assign('CRON', $output);
 $smarty->assign('MOD', return_module_language($current_language, 'CronTasks'));
 $smarty->assign('MIN_CRON_FREQUENCY', getMinimumCronFrequency());
+$smarty->assign('ISADMIN', is_admin($current_user));
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', $image_path);
 $smarty->assign('APP', $app_strings);

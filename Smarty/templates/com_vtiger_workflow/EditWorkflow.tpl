@@ -14,7 +14,7 @@
 <td valign=top>
 <table border=0 cellspacing=0 cellpadding=0 width=100%>
 <tr>
-<td class="small settingsSelectedUI" valign=top align=left>
+<td class="small" valign=top align=left>
 <div id="view" class="workflows-edit">
 	{include file='com_vtiger_workflow/ModuleTitle.tpl'}
 	<form name="edit_workflow_form" action="index.php" method="POST" id="edit_workflow_form" onsubmit="VtigerJS_DialogBox.block();">
