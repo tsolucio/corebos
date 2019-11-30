@@ -11,7 +11,7 @@
 				<tr>
 					<td nowrap="nowrap" align="left" class="small">
 						{$APP.LBL_YOU_CAN_CREATE} {$APP.LBL_A} {$module->label}. Click the link below:<br/>  
-						-<a href="index.php?module={$module->name}&action=editworkflow&return_url={$module->currentUrl()|urlencode}{$MODULE_NAME}&parenttab=Settings">
+						-<a href="index.php?module={$module->name}&action=editworkflow&return_url={$module->currentUrl()|urlencode}{$MODULE_NAME}">
 							{$APP.LBL_CREATE} {$APP.LBL_A} {$module->label}.
 						</a><br/>
 					</td>

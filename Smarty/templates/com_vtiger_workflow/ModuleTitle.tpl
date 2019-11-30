@@ -15,8 +15,15 @@
 						<span class="slds-page-header__title slds-truncate" title="{$MODULE_NAME|@getTranslatedString:$MODULE_NAME}">
 							<span class="slds-page-header__title slds-truncate" title="{$MODULE_NAME|@getTranslatedString:$MODULE_NAME}">
 								<b>
-								<a href="index.php?module=Settings&action=index&parenttab=Settings">{'Settings'|@getTranslatedString:$MODULE_NAME}</a> >
-								<a href="index.php?module={$module->name}&action=workflowlist&parenttab=Settings">{$MODULE_NAME|@getTranslatedString:$MODULE_NAME}</a>
+								{if $ISADMIN}
+								<a href="index.php?module=Settings&action=index&parenttab=Settings">
+								{/if}
+								{'Settings'|@getTranslatedString:$MODULE_NAME}
+								{if $ISADMIN}
+								</a>
+								{/if}
+								&nbsp;>&nbsp;
+								<a href="index.php?module={$module->name}&action=workflowlist">{$MODULE_NAME|@getTranslatedString:$MODULE_NAME}</a>
 								</b>
 							</span>
 						</span>

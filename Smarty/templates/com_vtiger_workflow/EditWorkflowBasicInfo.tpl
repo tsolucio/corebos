@@ -20,7 +20,7 @@
 			{/if}
 			<input type="submit" id="save_submit" value="{$APP.LBL_SAVE_LABEL}" class="crmButton small save" style="display:none;">
 			<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmButton small cancel"
-				onclick="window.location.href='index.php?module=com_vtiger_workflow&action=workflowlist&parenttab=Settings'">
+				onclick="window.location.href='index.php?module=com_vtiger_workflow&action=workflowlist'">
 		</td>
 	</tr>
 </table>

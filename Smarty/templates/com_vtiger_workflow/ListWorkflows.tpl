@@ -154,7 +154,7 @@ Template.define('workflowlist_row_template', {
 				document.getElementById('confirm-prompt').style.display = 'none';
 			};
 			document.getElementById('yes_button').onclick = function () {
-				var return_url = encodeURIComponent('index.php?module=com_vtiger_workflow&action=workflowlist&parenttab=Settings');
+				var return_url = encodeURIComponent('index.php?module=com_vtiger_workflow&action=workflowlist');
 				document.getElementById('confirm-prompt').style.display = 'none';
 				var base_url = (window.location.origin + window.location.pathname).replace('index.php', '');
 				var idPart= '&workflow_id='+data.workflow_id;

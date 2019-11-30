@@ -621,7 +621,7 @@ class Workflow {
 			$entries_list['next_page_url'] = 'index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getJSON&page='.($islastpage ? $page : $page+1);
 		}
 		$entries_list['prev_page_url'] = 'index.php?module=com_vtiger_workflow&action=com_vtiger_workflowAjax&file=getJSON&page='.($page == 1 ? 1 : $page-1);
-		$edit_return_url = 'index.php?module=com_vtiger_workflow&action=workflowlist&parenttab=Settings';
+		$edit_return_url = 'index.php?module=com_vtiger_workflow&action=workflowlist';
 		$vtwfappObject= new VTWorkflowApplication('workflowlist', $edit_return_url);
 		while ($lgn = $adb->fetch_array($result)) {
 			$entry = array();
