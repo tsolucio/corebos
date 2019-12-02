@@ -82,7 +82,8 @@ class ConditionExpression extends processcbMap {
 				$entity->setData(array_merge($entity->data, $arguments[0]));
 			}
 		} else {
-			$entity = new cbexpsql_environmentstub($arguments[0]['module'], 0);
+			$inModule = empty($arguments[0]['module']) ? vtlib_purify($_REQUEST['module']) : $arguments[0]['module'];
+			$entity = new cbexpsql_environmentstub($inModule, 0);
 			$entity->setData($arguments[0]);
 		}
 		$current_user = $holduser;
