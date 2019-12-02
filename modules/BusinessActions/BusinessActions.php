@@ -131,7 +131,7 @@ class BusinessActions extends CRMEntity {
 		}
 	}
 
-	private static function convertToObject($tabid, $valuemap) {
+	public static function convertToObject($tabid, $valuemap) {
 		$link_obj = new Vtiger_Link();
 		$link_obj->tabid = (string) $tabid;
 		$link_obj->linkid = $valuemap['businessactionsid'];
