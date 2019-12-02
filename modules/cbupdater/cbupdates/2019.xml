@@ -355,4 +355,11 @@
 	<classname>changeValidationMapNames</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Business Action Web Service Context Parameter</description>
+	<filename>build/changeSets/2019/BActionContextParameter.php</filename>
+	<classname>BActionContextParameter</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
