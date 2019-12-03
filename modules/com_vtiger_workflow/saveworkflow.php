@@ -29,7 +29,7 @@ function vtWorkflowSave($adb, $request) {
 		return;
 	}
 
-	$description = $request['description'];
+	$description = decode_html($request['description']);
 	$purpose = $request['purpose'];
 	$moduleName = $request['module_name'];
 	$conditions = $request['conditions'];

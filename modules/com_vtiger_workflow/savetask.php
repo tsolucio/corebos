@@ -34,7 +34,7 @@ function vtSaveTask($adb, $request) {
 		$workflowId = $request['workflow_id'];
 		$task = $tm->createTask($taskType, $workflowId);
 	}
-	$task->summary = $request['summary'];
+	$task->summary = decode_html($request['summary']);
 
 	if ($request['active']=='true') {
 		$task->active=true;
