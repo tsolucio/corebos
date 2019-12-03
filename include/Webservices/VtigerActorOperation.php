@@ -310,7 +310,7 @@ class VtigerActorOperation extends WebserviceEntityOperation {
 	public function query($q) {
 		$meta = null;
 		$queryRelatedModules = array();
-		$mysql_query = wsVTQL2SQL($q, $meta, $queryRelatedModules);
+		$mysql_query = $this->wsVTQL2SQL($q, $meta, $queryRelatedModules);
 		$this->pearDB->startTransaction();
 		$result = $this->pearDB->pquery($mysql_query, array());
 		$error = $this->pearDB->hasFailedTransaction();
