@@ -84,7 +84,6 @@ function displayCoords(currObj,obj,mode,curr_row)
 	<td colspan="3" class="dvInnerHeader">
 		<b>{$APP.LBL_ITEM_DETAILS}</b>
 	</td>
-
 	<td class="dvInnerHeader" align="center" colspan="2">
 		<input type="hidden" value="{$INV_CURRENCY_ID}" id="prev_selected_currency_id" />
 		<b>{$APP.LBL_CURRENCY}</b>&nbsp;&nbsp;
@@ -408,7 +407,6 @@ so we will get that array, parse that array and fill the details
 	<td id="discountTotal_final" class="crmTableRow small lineOnTop cblds-t-align_right" align="right">{$FINAL.discountTotal_final}</td>
    </tr>
 
-
    <!-- Group Tax - starts -->
    <tr id="group_tax_row" valign="top" class="TaxHide">
 	<td class="crmTableRow small lineOnTop" style="border-right:1px #dadada;">&nbsp;</td>
@@ -514,12 +512,11 @@ so we will get that array, parse that array and fill the details
 
 <!-- Added to calculate the tax and total values when page loads -->
 <script>
- decideTaxDiv();
- {if $TAX_TYPE eq 'group'}
- 	calcGroupTax();
- {/if}
- calcTotal();
- calcSHTax();
+decideTaxDiv();
+{if $TAX_TYPE eq 'group'}
+calcGroupTax();
+{/if}
+calcTotal();
+calcSHTax();
 </script>
 <!-- This above div is added to display the tax informations --> 
-

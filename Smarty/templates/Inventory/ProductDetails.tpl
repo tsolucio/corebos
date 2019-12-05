@@ -81,10 +81,9 @@ function displayCoords(currObj,obj,mode,curr_row)
 
 <table width="100%"  border="0" align="center" cellpadding="5" cellspacing="0" class="crmTable" id="proTab">
 	<tr>
-			<td colspan="3" class="dvInnerHeader">
+	<td colspan="3" class="dvInnerHeader">
 		<b>{$APP.LBL_ITEM_DETAILS}</b>
 	</td>
-	
 	<td class="dvInnerHeader" align="center" colspan="2">
 		<input type="hidden" value="{$INV_CURRENCY_ID}" id="prev_selected_currency_id" />
 		<b>{$APP.LBL_CURRENCY}</b>&nbsp;&nbsp;
@@ -99,7 +98,6 @@ function displayCoords(currObj,obj,mode,curr_row)
 		{/foreach}
 		</select>
 	</td>
-	
 	<td class="dvInnerHeader" align="center" colspan="2">
 		<b>{$APP.LBL_TAX_MODE}</b>&nbsp;&nbsp;
 		<select id="taxtype" name="taxtype" onchange="decideTaxDiv(); calcTotal();">
@@ -271,6 +269,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 
    </tr>
    <!-- Product Details First row - Ends -->
+
 </table>
 
 <table width="100%"  border="0" align="center" cellpadding="5" cellspacing="0" class="crmTable">
@@ -414,16 +413,13 @@ function displayCoords(currObj,obj,mode,curr_row)
 		<input type="hidden" name="total" id="total" value="">
 </td></tr>
 
-
 <!-- Added to calculate the tax and total values when page loads -->
 <script>
- decideTaxDiv();
- {if $TAX_TYPE eq 'group'}
- 	calcGroupTax();
- {/if}
- calcTotal();
- calcSHTax();
+decideTaxDiv();
+{if $TAX_TYPE eq 'group'}
+calcGroupTax();
+{/if}
+calcTotal();
+calcSHTax();
 </script>
 <!-- This above div is added to display the tax informations --> 
-
-

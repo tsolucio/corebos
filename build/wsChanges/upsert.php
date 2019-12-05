@@ -13,12 +13,14 @@
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  ********************************************************************************/
 $operationInfo = array(
-	 'name'    => 'upsert',
-	 'include' => 'include/Webservices/upsert.php',
-	 'handler' => 'vtws_upsert',
-	 'prelogin'=> 0,
-	 'type'    => 'POST',
-	 'parameters' => array(
-		array("name" => "elementType","type" => "String"),array("name" => "element","type" => "Encoded"),array("name" => "searchOn","type" => "String")
-	 )
+	'name'    => 'upsert',
+	'include' => 'include/Webservices/upsert.php',
+	'handler' => 'vtws_upsert',
+	'prelogin'=> 0,
+	'type'    => 'POST',
+	'parameters' => array(
+		array("name" => "elementType","type" => "String"),
+		array("name" => "element","type" => "Encoded"),
+		array("name" => "searchOn","type" => "String")
+	)
 );
