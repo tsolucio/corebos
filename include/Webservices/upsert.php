@@ -15,8 +15,20 @@
  *************************************************************************************************/
 function vtws_upsert($elementType, $element, $searchOn, $updatedfields, $user) {
 	global $adb;
-	$searchFields = explode(",", $searchOn);
-	$fields = explode(",", $updatedfields);
+	$searchFields = explode(',', $searchOn);
+	array_walk(
+		$searchFields,
+		function (&$val, $idx) {
+			$val = trim($val);
+		}
+	);
+	$fields = explode(',', $updatedfields);
+	array_walk(
+		$fields,
+		function (&$val, $idx) {
+			$val = trim($val);
+		}
+	);
 	$searchWithValues = [];
 
 	//remove id field if exists from input
