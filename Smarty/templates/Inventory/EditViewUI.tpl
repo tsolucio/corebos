@@ -122,7 +122,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}
 			</span>
 			<span class="mdCellInfo">
-				<input type="text" name="{$fldname}" tabindex="{$vt_tab}" value="{$fldvalue}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'">
+				<input type="text" name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" value="{$fldvalue}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'">
 			</span>
 		{elseif $uitype eq 3 || $uitype eq 4}<!-- Non Editable field, only configured value will be loaded -->
 			<span class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}"><font color="red">{$mandatory_field}</font>{$usefldlabel}</span>
@@ -143,7 +143,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				{$usefldlabel}
 			</span>
 			<span colspan=3 class="mdCellInfo">
-				<textarea class="detailedViewTextBox" tabindex="{$vt_tab}" onFocus="this.className='detailedViewTextBoxOn'" name="{$fldname}"  onBlur="this.className='detailedViewTextBox'" cols="90" rows="8">{$fldvalue}</textarea>
+				<textarea class="detailedViewTextBox" tabindex="{$vt_tab}" onFocus="this.className='detailedViewTextBoxOn'" name="{$fldname}" id="{$fldname}" onBlur="this.className='detailedViewTextBox'" cols="90" rows="8">{$fldvalue}</textarea>
 				{if $fldlabel eq $MOD.Solution}
 				<input type = "hidden" name="helpdesk_solution" value = '{$fldvalue}'>
 				{/if}
@@ -154,7 +154,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				{$usefldlabel}
 			</span>
 			<span class="mdCellInfo">
-				<textarea value="{$fldvalue}" name="{$fldname}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" rows=2>{$fldvalue}</textarea>
+				<textarea value="{$fldvalue}" name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" rows=2>{$fldvalue}</textarea>
 			</span>
 		{elseif $uitype eq 15 || $uitype eq 16  || $uitype eq '31' || $uitype eq '32' || $uitype eq '1613' || $uitype eq '1614'}
 			<span width="20%" class="mdCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}">
@@ -176,7 +176,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}
 			</span>
 			<span width="30%" class="mdCellInfo">
-				<select MULTIPLE name="{$fldname}[]" size="4" style="width:280px;" tabindex="{$vt_tab}" class="small">
+				<select MULTIPLE name="{$fldname}[]" id="{$fldname}" size="4" style="width:280px;" tabindex="{$vt_tab}" class="small">
 				{foreach item=arr from=$fldvalue}
 					<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
 				{/foreach}
@@ -323,7 +323,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<font color="red">{$mandatory_field}</font>{$usefldlabel}
 			</span>
 			<span width="30%" class="mdCellInfo">
-				<input name="{$fldname}" tabindex="{$vt_tab}" type="text" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'"  value="{$fldvalue}">
+				<input name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" type="text" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" value="{$fldvalue}">
 			</span>
 
 		{elseif $uitype eq 56}
@@ -334,20 +334,20 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			{if $fldname eq 'portal'}
 				<span width="30%" class="mdCellInfo">
 					<input type="hidden" name="existing_portal" value="{$fldvalue}">
-					<input name="{$fldname}" type="checkbox" tabindex="{$vt_tab}" {if $fldvalue eq 1}checked{/if}>
+					<input name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" {if $fldvalue eq 1}checked{/if}>
 				</span>
 			{else}
 				{if $fldvalue eq 1}
 					<span width="30%" class="mdCellInfo">
-						<input name="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
+						<input name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
 					</span>
 				{elseif $fldname eq 'filestatus'&& $MODE eq 'create'}
 					<span width="30%" class="mdCellInfo">
-						<input name="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
+						<input name="{$fldname}" id="{$fldname}" type="checkbox" tabindex="{$vt_tab}" checked>
 					</span>
 				{else}
 					<span width="30%" class="mdCellInfo">
-						<input name="{$fldname}" tabindex="{$vt_tab}" type="checkbox">
+						<input name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" type="checkbox">
 					</span>
 				{/if}
 			{/if}
@@ -709,7 +709,6 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 						vtiger_{$fldname}Init();
 					{rdelim}
 				{rdelim}
-
 			</script>
 		</span>
 		{else}
