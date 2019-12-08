@@ -128,7 +128,6 @@ function displayCoords(currObj,obj,mode,curr_row)
 	<!-- column 1 - delete link - starts -->
 	<td class="crmTableRow small lineOnTop">&nbsp;
 		<input type="hidden" id="deleted1" name="deleted1" value="0">
-		<input type="hidden" id="lineitem_id1" name="lineitem_id1" value="1">
 	</td>
 
 	<!-- column 2 - Product Name - starts -->
@@ -242,7 +241,6 @@ function displayCoords(currObj,obj,mode,curr_row)
 		</table> 
 	</td>
 	<!-- column 5 - List Price with Discount, Total After Discount and Tax as table - ends -->
-
 
 	<!-- column 6 - Product Total - starts -->
 	<td class="crmTableRow small lineOnTop" align="right">
