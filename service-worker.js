@@ -9152,7 +9152,7 @@ if (workbox) {
   },
   {
     "url": "include/js/corebosjshooks.js",
-    "revision": "b21bd8c9efd56f95368fd6f393a8bf6c"
+    "revision": "db0d92e2bce8439f4e3f1c1730f78bce"
   },
   {
     "url": "include/js/customview.js",
@@ -9208,7 +9208,7 @@ if (workbox) {
   },
   {
     "url": "include/js/Inventory.js",
-    "revision": "562e1ad5de7ffa1bd1085a14a2821ccb"
+    "revision": "6dead368343016a16759c677d4478f7f"
   },
   {
     "url": "include/js/it_it.lang.js",
@@ -9788,7 +9788,7 @@ if (workbox) {
   },
   {
     "url": "modules/CronTasks/CronTasks.js",
-    "revision": "c28cdd8d0cd619f7830c25cdb0170d96"
+    "revision": "15c0cddcf8a51fbdba01970fddedb9ad"
   },
   {
     "url": "modules/PBXManager/PBXManager.js",
@@ -9904,7 +9904,7 @@ if (workbox) {
   },
   {
     "url": "modules/Services/Services.js",
-    "revision": "672ddc901d26fba8ea0a11da5af22bdd"
+    "revision": "74287451dfbb75a08787abb5ef195eeb"
   },
   {
     "url": "modules/Vendors/Vendors.js",
