@@ -31,11 +31,6 @@ function vtws_upsert($elementType, $element, $searchOn, $updatedfields, $user) {
 	);
 	$searchWithValues = [];
 
-	//remove id field if exists from input
-	if (isset($element['id'])) {
-		unset($element['id']);
-	}
-
 	//check if all the values that will we be used for comparison exist
 	foreach ($searchFields as $searchField) {
 		$searchField = trim($searchField);
@@ -55,8 +50,11 @@ function vtws_upsert($elementType, $element, $searchOn, $updatedfields, $user) {
 	//get only one record of many possible records
 	$query = $queryGenerator->getQuery(false, 1);
 	$result = $adb->pquery($query, []);
-
 	if ($adb->num_rows($result) == 0) {
+		//remove id field if exists from input
+		if (isset($element['id'])) {
+			unset($element['id']);
+		}
 		$record = vtws_create($elementType, $element, $user);
 	} else {
 		$meta = $queryGenerator->getMeta($elementType);
