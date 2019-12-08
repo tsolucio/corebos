@@ -406,6 +406,9 @@ if ($cbMap!=null && isPermitted('InventoryDetails', 'EditView')=='yes') {
 		$associated_prod = $product_Detail;
 	}
 }
+
+list($v1, $v2, $associated_prod, $customtemplatename) = cbEventHandler::do_filter('corebos.filter.inventory.itemrow.edit', array($currentModule, $focus, $associated_prod, ''));
+$smarty->assign('customtemplaterows', $customtemplatename);
 $smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
 
 if (isset($_REQUEST['return_module'])) {

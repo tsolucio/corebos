@@ -16,3 +16,7 @@
 function corebosjshook_dtlViewAjaxFinishSave_moredata(data) {
 	return data;
 }
+
+function corebosjshook_InventorymoveUpDown_customrow(iTable, fromRowIndex, fromIndex, toRowIndex, toIndex) {
+	return true;
+}

@@ -157,7 +157,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 	{assign var="taxTotal" value="taxTotal"|cat:$row_no}
 	{assign var="netPrice" value="netPrice"|cat:$row_no}
 
-   <tr id="row{$row_no}" valign="top">
+   <tr id="row{$row_no}" valign="top" data-corebosinvrow=1>
 
 	<!-- column 1 - delete link - starts -->
 	<td class="crmTableRow small lineOnTop inv-editview__toolscol">
@@ -345,6 +345,9 @@ function displayCoords(currObj,obj,mode,curr_row)
 
    </tr>
    <!-- Product Details First row - Ends -->
+	{if !empty($customtemplaterows)}
+		{include file=$customtemplaterows ROWNO=$row_no ITEM=$data}
+	{/if}
    {/foreach}
 </table>
 
