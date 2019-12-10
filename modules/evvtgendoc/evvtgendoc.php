@@ -32,6 +32,8 @@ class evvtgendoc extends CRMEntity {
 			$global_variables = array(
 				'GenDoc_Save_Document_Folder',
 				'GenDoc_Default_Compile_Language',
+				'GenDoc_Convert_URL',
+				'GenDoc_CopyLabelToClipboard',
 			);
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
 			$field = Vtiger_Field::getInstance('gvname', $moduleInstance);

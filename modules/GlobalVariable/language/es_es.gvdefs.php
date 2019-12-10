@@ -1358,6 +1358,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'idiomas soportados por GenDoc: en es it pl',
 	'definition' => 'Idioma en el que se crean y compilan las plantillas. Por defecto, se usa el idioma seleccionado del usuario actual.',
 ),
+'GenDoc_Convert_URL' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Cadena',
+	'category' => 'Extensión',
+	'values' => 'URL',
+	'definition' => 'URL al servidor de conversión: https://github.com/sfoxdev/docker-unoconv',
+),
 'BusinessQuestion_TableAnswer_Limit' => array(
 	'status' => 'Implementada',
 	'valuetype' => 'Entero',
