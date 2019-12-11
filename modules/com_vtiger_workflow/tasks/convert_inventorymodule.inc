@@ -87,6 +87,7 @@ class ConvertInventoryModule extends VTTask {
 			}
 			$toEntity = CRMEntity::getInstance($this->convertto);
 			$data = $toEntity->column_fields;
+			$data['relations'] = $entity->getId();
 			$data['assigned_user_id'] = $current_user->id;
 			$data['created_user_id'] = $current_user->id;
 			$data['account_id'] = getRelatedAccountContact($record, 'Accounts');
@@ -147,8 +148,8 @@ class ConvertInventoryModule extends VTTask {
 			for ($i = 1; $i<=count($associated_prod); $i++) {
 				$related['productid'] = $associated_prod[$i]['hdnProductId'.$i];
 				$related['comment'] = '';
-				$related['qty'] = $associated_prod[$i]['qty'.$i];
-				$related['listprice'] = $associated_prod[$i]['listPrice'.$i];
+				$related['qty'] = empty($data['qty'.$i]) ? $associated_prod[$i]['qty'.$i] : $data['qty'.$i];
+				$related['listprice'] = empty($data['listPrice'.$i]) ? $associated_prod[$i]['listPrice'.$i] : $data['listPrice'.$i];
 				$list_price_sum += ($related['qty'] * $related['listprice']);
 				$related['discount'] = 0 ;
 				$related['discount_type'] = 0;
@@ -159,6 +160,7 @@ class ConvertInventoryModule extends VTTask {
 			$data['hdnGrandTotal']= $list_price_sum;
 			$data['hdnSubTotal']= $list_price_sum;
 		}
+		$data['shipping_handling_charge'] = $_REQUEST['shipping_handling_charge'] = 0;
 		$holdaction = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
 		$holdajxaction = isset($_REQUEST['ajxaction']) ? $_REQUEST['ajxaction'] : '';
 		$_REQUEST['action'] = '';
