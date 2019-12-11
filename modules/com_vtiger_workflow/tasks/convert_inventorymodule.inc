@@ -86,7 +86,8 @@ class ConvertInventoryModule extends VTTask {
 				return;
 			}
 			$toEntity = CRMEntity::getInstance($this->convertto);
-			$data = $toEntity->column_fields;
+			$data = array_merge($wsso, $toEntity->column_fields);
+			$data['record_id'] = $record;
 			$data['relations'] = $entity->getId();
 			$data['assigned_user_id'] = $current_user->id;
 			$data['created_user_id'] = $current_user->id;
