@@ -1,6 +1,6 @@
 <?php
 /*********************************************************************************
- * Copyright 2012-2014 JPL TSolucio, S.L.  --  This file is a part of coreBOS.
+ * Copyright 2012-2019 JPL TSolucio, S.L.  --  This file is a part of coreBOS
  * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
  * Vizsage Public License (the "License"). You may not use this file except in compliance with the
  * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
@@ -14,14 +14,14 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'getgendocws',
-	 'include' => 'include/Webservices/Getgendoc.php',
-	 'handler' => 'cbws_getgendoc',
+	 'name'    => 'getmergedtemplate',
+	 'include' => 'include/Webservices/getmergedtemplate.php',
+	 'handler' => 'cbws_getmergedtemplate',
 	 'prelogin'=> 0,
 	 'type'    => 'POST',
 	 'parameters' => array(
          array('name' => 'template','type' => 'String'),
-		 array('name' => 'crmid','type' => 'String'),
+		 array('name' => 'crmids','type' => 'String'),
 		 array('name' => 'format','type' => 'String')
 	 )
 );
