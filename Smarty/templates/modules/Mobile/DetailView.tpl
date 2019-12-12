@@ -83,7 +83,7 @@
 						<div class="ui-block-b">
 							{if $_FIELD->isReferenceType() && $_FIELD->uitype() neq '53' && $_FIELD->uitype() neq '52'}
 								{if $_FIELD->valueLabel() neq ''}
-									<a class="ui-btn  ui-corner-all ui-icon-carat-r ui-btn-icon-right" href="index.php?_operation=fetchRecord&record={$_FIELD->value()}" data-theme="c">
+									<a class="ui-btn  ui-corner-all ui-icon-carat-r ui-btn-icon-right" href="index.php?_operation=fetchRecord&record={$_FIELD->value()}"  rel="external" data-theme="c">
 										<span class="ui-btn-inner">
 											<span class="ui-btn-text">{$_FIELD->valueLabel()}</span>
 										</span>
