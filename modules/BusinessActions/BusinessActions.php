@@ -289,7 +289,6 @@ class BusinessActions extends CRMEntity {
 				$linkData = new Vtiger_LinkData($link, $current_user);
 				$ignore = call_user_func(array($row['handler_class'], $row['handler']), $linkData);
 				if (!$ignore) {
-					self::log("Ignoring Link ... ".var_export($row, true));
 					continue;
 				}
 			}
