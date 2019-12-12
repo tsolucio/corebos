@@ -32,6 +32,11 @@ if (!is_admin($current_user)) {
 		coreBOS_Settings::setSetting('cbgendoc_user', $_REQUEST['user']);
 		coreBOS_Settings::setSetting('cbgendoc_accesskey', $_REQUEST['key']);
 	}
+	if (isset($_REQUEST['pdflinkactive']) && $_REQUEST['pdflinkactive'] == 'on') {
+		coreBOS_Settings::setSetting('cbgendoc_showpdflinks', 1);
+	} else {
+		coreBOS_Settings::delSetting('cbgendoc_showpdflinks');
+	}
 
 	$module = empty($_REQUEST['formodule']) ? 'evvtgendoc' : vtlib_purify($_REQUEST['formodule']);
 

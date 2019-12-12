@@ -53,6 +53,19 @@
 			<table border=0 cellspacing=0 cellpadding=10 width=100% class="tableHeading">
 			<tr>
 				<td class="small">
+					<strong>{'PDF Links'|@getTranslatedString:$MODULE}:&nbsp;</strong>
+					<input type="checkbox" name="pdflinkactive" id="pdflinkactive" {$pdflinkactive}/>&nbsp;
+					{if $pdflinkactive eq 'checked'}
+						{'Active'|@getTranslatedString:$MODULE}
+					{else}
+						{'Inactive'|@getTranslatedString:$MODULE}
+					{/if}
+				</td>
+			</tr>
+			</table>
+			<table border=0 cellspacing=0 cellpadding=10 width=100% class="tableHeading">
+			<tr>
+				<td class="small">
 					<strong>{'GenDoc URL'|@getTranslatedString:$MODULE}:&nbsp;</strong>
 					{if empty($gendocurl)}
 						{'is not set'|@getTranslatedString:$MODULE}
