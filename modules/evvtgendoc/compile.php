@@ -1514,40 +1514,9 @@ function get_plantilla($entid) {
 		default:
 			$camp_plantilla = 'plantillaid';
 	}
-
 	//EntityName
-	switch ($relmodule) {
-		case 'Invoice':
-			$namefield = array('invoice_no');
-			break;
-		case 'SalesOrder':
-			$namefield = array('salesorder_no');
-			break;
-		case 'Quotes':
-			$namefield = array('quote_no');
-			break;
-		case 'Accounts':
-			$namefield = array('accountname');
-			break;
-		case 'Contacts':
-			$namefield = array('firstname','lastname');
-			break;
-		case 'Potentials':
-			$namefield = array('potentialname');
-			break;
-		case 'Products':
-			$namefield = array('productname');
-			break;
-		case 'Vendors':
-			$namefield = array('vendorname');
-			break;
-		case 'Incidencias':
-			$namefield = array('incidencia_no');
-			break;
-		default:
-			$namefield = array('');
-			break;
-	}
+	$namefield = getEntityFieldNames($relmodule);
+	$namefield = (array)$namefield['fieldname'];
 
 	if ($relmodule != 'Documents') {
 		$queryGenerator = new QueryGenerator($relmodule, $current_user);
