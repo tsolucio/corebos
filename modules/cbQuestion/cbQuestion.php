@@ -305,7 +305,7 @@ class cbQuestion extends CRMEntity {
 			$answer = $ans['answer'];
 			$module = $ans['module'];
 			$properties = json_decode($ans['properties']);
-			$columnLabels = $properties->columnlabels;
+			$columnLabels = empty($properties->columnlabels) ? array() : $properties->columnlabels;
 			$limit = GlobalVariable::getVariable('BusinessQuestion_TableAnswer_Limit', 2000);
 			$table .= '<table>';
 			$table .= '<tr>';
