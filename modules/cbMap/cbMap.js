@@ -7,12 +7,12 @@
  * All Rights Reserved.
  ************************************************************************************/
 function showMapWindow(mapid) {
-	var url = 'index.php?module=cbMap&action=cbMapAjax&file=generateMap&mapid='+mapid;
-	window.open(url, 'Create Mapping', 'width=940,height=800,resizable=1,scrollbars=1');
+	var url = 'index.php?module=cbMap&action=cbMapAjax&actionname=mapactions&method=generateMap&mapid='+mapid;
+	window.open(url, 'Create Mapping', 'width=1240,height=800,resizable=1,scrollbars=1');
 }
 
 function validateMap(mapid) {
-	var url = 'index.php?module=cbMap&action=cbMapAjax&file=validateMap';
+	var url = 'index.php?module=cbMap&action=cbMapAjax&actionname=mapactions&method=validateMap';
 	var stringData = 'mapid=' + mapid;
 	jQuery.ajax({
 		type: 'POST',
