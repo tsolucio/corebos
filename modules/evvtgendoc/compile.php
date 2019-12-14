@@ -1480,11 +1480,9 @@ function get_plantilla($entid) {
 	$SQL = 'SELECT setype FROM vtiger_crmentity WHERE crmid=?';
 	$res = $adb->pquery($SQL, array($entid));
 	$relmodule = $adb->query_result($res, 0, 'setype');
-	$search_field_name = '';
 	switch ($relmodule) {
 		case 'Documents':
 			$plantillaid = $entid;
-			$search_field_name = 'tipo_documento';
 			break;
 		case 'Invoice':
 			$fld_no = 'invoice_no';
@@ -1512,7 +1510,6 @@ function get_plantilla($entid) {
 			break;
 		case 'Products':
 			$camp_plantilla = 'plantilla';
-			$search_field_name = 'productcategory';
 			break;
 		default:
 			$camp_plantilla = 'plantillaid';
@@ -1592,11 +1589,6 @@ function get_plantilla($entid) {
 		$plantilla = $adb->query_result($res_att, 0, 'name');
 		$ruta = $adb->query_result($res_att, 0, 'path');
 		$prefix = $adb->query_result($res_att, 0, 'attachmentsid').'_';
-		if (!empty($search_field_name)) {
-			$name = $focus_rel->column_fields[$search_field_name];
-		} else {
-			$name = (!empty($app_strings[$relmodule]) ? $app_strings[$relmodule] : $relmodule);
-		}
 		list($name,$ext) = explode('.', $plantilla);
 	}
 
