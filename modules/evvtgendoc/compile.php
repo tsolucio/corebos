@@ -354,7 +354,7 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 							$cadena = number_format($cadena, 0);
 							break;
 						case 'N':
-							$cadena = number_format($cadena, 2, ',', '.');
+							$cadena = CurrencyField::convertToUserFormat($cadena, null, true);
 							break;
 						//case 'C':
 						//    $cadena = ($cadena == '1' ? 'Yes' : 'No');
@@ -399,10 +399,10 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 				if ($applyformat) {
 					switch ($token_pair[1]) {
 						case 'TaxTotal':
-							$reemplazo = number_format(($totalFra-$sbtotalFra), 2, ',', '.');
+							$reemplazo = CurrencyField::convertToUserFormat(($totalFra-$sbtotalFra), null, true);
 							break;
 						case 'TaxPercent':
-							$reemplazo = number_format((($totalFra-$sbtotalFra)*100/$sbtotalFra), 0, ',', '.');
+							$reemplazo = CurrencyField::convertToUserFormat((($totalFra-$sbtotalFra)*100/$sbtotalFra), null, true);
 							break;
 					}
 				}
@@ -1137,7 +1137,7 @@ function getProductList($module, $id) {
 					$row[$field] = number_format($row[$field], 0);
 					break;
 				case 'D':
-					$row[$field] = number_format($row[$field], 2, ',', '.');
+					$row[$field] = CurrencyField::convertToUserFormat($row[$field], null, true);
 					break;
 			}
 		}
@@ -1194,7 +1194,7 @@ function getServiceList($module, $id) {
 					$row[$field] = number_format($row[$field], 0);
 					break;
 				case 'D':
-					$row[$field] = number_format($row[$field], 2, ',', '.');
+					$row[$field] = CurrencyField::convertToUserFormat($row[$field], null, true);
 					break;
 			}
 		}
