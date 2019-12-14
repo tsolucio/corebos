@@ -24,6 +24,9 @@ class cbMapcore {
 	private $Map;
 
 	public function __construct($map) {
+		if (empty($map->id) && !empty($map->column_fields['record_id'])) {
+			$map->id = $map->column_fields['record_id'];
+		}
 		$this->Map = $map;
 	}
 
