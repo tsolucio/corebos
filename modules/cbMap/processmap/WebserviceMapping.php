@@ -205,7 +205,7 @@ class WebserviceMapping extends cbMapcore {
 			$userwsid = vtws_getEntityId('Users');
 			$ofields['assigned_user_id'] = vtws_getId($userwsid, $current_user->id);
 		}
-		$tfields = $arguments[1];
+		$tfields = array();
 		foreach ($mapping['fields'] as $targetfield => $sourcefields) {
 			$value = '';
 			$delim = (isset($sourcefields['delimiter']) ? $sourcefields['delimiter'] : '');
@@ -309,10 +309,10 @@ class WebserviceMapping extends cbMapcore {
 			if ($targetfield =='Response' || $targetfield =='WSConfig') {
 				$value = $sourcefields;
 			}
-
 			$tfields[$targetfield] = $value;
 		}
-		return $tfields;
+		$mapping['fields'] = $tfields;
+		return $mapping;
 	}
 
 	public function convertMap2Array() {
@@ -355,24 +355,18 @@ class WebserviceMapping extends cbMapcore {
 				$target_fields[$fieldname]['relatedFields'] = $allmergeFields;
 			}
 		}
+		$mapping['fields'] = $target_fields;
 		//response block
 		if (!empty($xml->Response[0]) && isset($xml->Response[0])) {
 			foreach ($xml->Response[0] as $v) {
 				$fieldname1 = (String) $v->fieldname;
-				if (!empty($v->value)) {
-					$target_fields1[$fieldname1] = array('value' => $v->value);
-				} elseif (!empty($v->Orgfields[0]->Orgfield) && isset($v->Orgfields[0]->Orgfield)) {
-					foreach ($v->Orgfields->Orgfield as $value2) {
-						$allmergeresponse = array('fieldname'=>(String)$value2->OrgfieldName);
-					}
-					$target_fields1[$fieldname1]['field'] = $allmergeresponse;
-					if (isset($v->Orgfields->delimiter)) {
-						$target_fields1[$fieldname1]['delimiter'] = (String)$v->Orgfields->delimiter;
-					}
-				}
+				$target_fields1[$fieldname1] = array(
+					'field' => (empty($v->destination->field) ? '' : (String)$v->destination->field),
+					'context' => (empty($v->destination->context) ? 'wsctx_'.$fieldname1 : (String)$v->destination->context),
+				);
 			}
 		}
-		$target_fields['Response'] = $target_fields1;
+		$mapping['Response'] = $target_fields1;
 
 		//ws config block
 		if (!empty($xml->wsconfig[0]) && isset($xml->wsconfig[0])) {
@@ -396,9 +390,7 @@ class WebserviceMapping extends cbMapcore {
 				}
 			}
 		}
-		$target_fields['WSConfig'] = $target_fields2;
-
-		$mapping['fields'] = $target_fields;
+		$mapping['WSConfig'] = $target_fields2;
 		return $mapping;
 	}
 }
