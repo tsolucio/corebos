@@ -21,7 +21,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user, $logbg, $from_wf;
+		global $adb, $logbg, $from_wf;
 		$from_wf = true;
 		$logbg->debug('> RunWebservice');
 		$util = new VTWorkflowUtils();
@@ -34,15 +34,11 @@ class RunWebserviceWorkflowTask extends VTTask {
 		$mapid = $this->bmapid;
 		$cbMap = cbMap::getMapByID($mapid);
 
-		include_once "modules/$origin_module/$origin_module.php";
-
-		if ($therecid != '' && $therecid != null) {
-			$focus2 = CRMEntity::getInstance($origin_module);
-			$focus2->retrieve_entity_info($therecid, $origin_module);
-		}
+		$focus2 = CRMEntity::getInstance($origin_module);
+		$focus2->retrieve_entity_info($therecid, $origin_module);
 		$target_fields = $cbMap->WebserviceMapping($focus2->column_fields, $focus2->column_fields);
 
-		$wsconfig = $target_fields["WSConfig"];
+		$wsconfig = $target_fields['WSConfig'];
 		$url = $wsconfig['wsurl'];
 		$method = $wsconfig['wshttpmethod'];
 		$methodname = $wsconfig['methodname'];
@@ -57,11 +53,11 @@ class RunWebserviceWorkflowTask extends VTTask {
 			$arrconv = array();
 			foreach ($target_fields as $key2 => $value2) {
 				if ($key2 != 'Response' && $key2 != 'WSConfig') {
-					if ($inputtype == "JSON") {
+					if ($inputtype == 'JSON') {
 						$arrconv[$key2] = $value2;
-					} elseif ($inputtype == "URL") {
+					} elseif ($inputtype == 'URL') {
 						$arrconv = "$key2=$value2";
-					} elseif ($inputtype == "URLRESTFUL") {
+					} elseif ($inputtype == 'URLRESTFUL') {
 						$url = str_replace("$$key2", "$value2", $url);
 					}
 				}
@@ -73,24 +69,24 @@ class RunWebserviceWorkflowTask extends VTTask {
 			$logname = 'logs/'.$methodname;
 			$dateofcall = date('l jS \of F Y h:i:s A');
 			$LogContent = "\n*****************\nDate of call $dateofcall";
-			error_log($LogContent, 3, $logname.".log");
-			error_log("\nRecordid: ".$therecid, 3, $logname.".log");
-			error_log("\nMethod Called: $method $url", 3, $logname.".log");
-			error_log("\nParameters: ".json_encode($listreq), 3, $logname.".log");
+			error_log($LogContent, 3, $logname.'.log');
+			error_log("\nRecordid: ".$therecid, 3, $logname.'.log');
+			error_log("\nMethod Called: $method $url", 3, $logname.'.log');
+			error_log("\nParameters: ".json_encode($listreq), 3, $logname.'.log');
 
 			//authorization code replacement
 			$nr = 0;
 			foreach ($headers as $head) {
-				$findauth = explode(":", $head);
-				if ($findauth[0] == "Authorization") {
-					$replace = "Authorization:Bearer:".$focus2->column_fields[$findauth[2]];
+				$findauth = explode(':', $head);
+				if ($findauth[0] == 'Authorization') {
+					$replace = 'Authorization:Bearer:'.$focus2->column_fields[$findauth[2]];
 					$headers[$nr] = $replace;
 				}
 				$nr++;
 			}
 
-			if ($inputtype == "URL") {
-				$url.= "?".$listreq;
+			if ($inputtype == 'URL') {
+				$url.= '?'.$listreq;
 			}
 
 			//call REST Webservice
@@ -102,8 +98,8 @@ class RunWebserviceWorkflowTask extends VTTask {
 			} else {
 				curl_setopt($channel, CURLOPT_CUSTOMREQUEST, "$method");
 			}
-			if ($inputtype != "URL") {
-				if (in_array("Content-type:application/x-www-form-urlencoded", $headers)) {
+			if ($inputtype != 'URL') {
+				if (in_array('Content-type:application/x-www-form-urlencoded', $headers)) {
 					curl_setopt($channel, CURLOPT_POSTFIELDS, http_build_query($listreq));
 				} else {
 					curl_setopt($channel, CURLOPT_POSTFIELDS, json_encode($listreq));
@@ -121,16 +117,16 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 			//write logs for response
 			$dateofresponse = date('l jS \of F Y h:i:s A');
-			error_log("\n\nResponse header: ".json_encode($headers), 3, $logname.".log");
-			error_log("\n\nResponse: ".$respp, 3, $logname.".log");
-			error_log("\n\n".$dateofresponse, 3, $logname.".log");
+			error_log("\n\nResponse header: ".json_encode($headers), 3, $logname.'.log');
+			error_log("\n\nResponse: ".$respp, 3, $logname.'.log');
+			error_log("\n\n".$dateofresponse, 3, $logname.'.log');
 
 			//write response to record fields
 			if (count($target_fields['Response']) > 0) {
-				if ($outputtype == "JSON") {
+				if ($outputtype == 'JSON') {
 					foreach ($target_fields['Response'] as $k => $v) {
 						$fld = $v['field']['fieldname'];
-						$ar = explode(",", $k);
+						$ar = explode(',', $k);
 						if (count($ar) > 1) {
 							if (is_array($response2)) {
 								$r1 = $response2[0];
@@ -149,12 +145,12 @@ class RunWebserviceWorkflowTask extends VTTask {
 							}
 						}
 						if ($r2 == 'null') {
-							$r2 = "";
+							$r2 = '';
 						}
 						$conds[] = "$fld=\"$r2\"";
 					}
-					$conditions = implode(",", $conds);
-					$q = $adb->query("select * from vtiger_entityname where modulename='$origin_module'");
+					$conditions = implode(',', $conds);
+					$q = $adb->pquery('select * from vtiger_entityname where modulename=?', array($origin_module));
 					$table = $adb->query_result($q, 0, 'tablename');
 					$id = $adb->query_result($q, 0, 'entityidfield');
 					$adb->pquery("update $table set $conditions where $id=$therecid", array());
@@ -175,13 +171,13 @@ class RunWebserviceWorkflowTask extends VTTask {
 			$logname = 'logs/'.$methodname;
 			$dateofcall = date('l jS \of F Y h:i:s A');
 			$LogContent = "\n*****************\nDate of call $dateofcall";
-			error_log($LogContent, 3, $logname.".log");
-			error_log("\nRecordid: ".$therecid, 3, $logname.".log");
-			error_log("\nMethod Called: $method $url", 3, $logname.".log");
-			error_log("\URL: ".$url, 3, $logname.".log");
+			error_log($LogContent, 3, $logname.'.log');
+			error_log("\nRecordid: ".$therecid, 3, $logname.'.log');
+			error_log("\nMethod Called: $method $url", 3, $logname.'.log');
+			error_log("\URL: ".$url, 3, $logname.'.log');
 
 			try {
-				if ($wsuser != "" && $wspass != "") {
+				if ($wsuser != '' && $wspass != '') {
 					$options = array(
 						'login' => $wsuser,
 						'password' => $wspass,
@@ -201,7 +197,7 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 				if (is_array($fields)) {
 					foreach ($fields as $key => $value) {
-						if ($value != "") {
+						if ($value != '') {
 							$xml = $value;
 						}
 					}
@@ -209,16 +205,16 @@ class RunWebserviceWorkflowTask extends VTTask {
 				} else {
 					$parseXML = $fields;
 				}
-				if ($outputtype == "JSON") {
+				if ($outputtype == 'JSON') {
 					$response = json_encode($parseXML);
 				}
 
 				//write response to record fields
 				if (count($target_fields['Response']) > 0) {
-					if ($outputtype == "JSON") {
+					if ($outputtype == 'JSON') {
 						foreach ($target_fields['Response'] as $k => $v) {
 							$fld = $v['field']['fieldname'];
-							$ar = explode(",", $k);
+							$ar = explode(',', $k);
 							if (count($ar) > 1) {
 								if (is_array($response)) {
 									$res = $response;
@@ -228,7 +224,6 @@ class RunWebserviceWorkflowTask extends VTTask {
 									$r = $response;
 									$r1 = json_encode($r);
 								}
-
 								for ($j = 0; $j < count($ar); $j++) {
 									$r1 = $res == null ? json_decode($r1) : $r1;
 									$r = $r1->$ar[$j];
@@ -251,19 +246,19 @@ class RunWebserviceWorkflowTask extends VTTask {
 									if ($r->$k != null) {
 										$r2 = $r->$k;
 									} else {
-										foreach ($r as $k1 => $v1) {
+										foreach ($r as $v1) {
 											$r2 = $v1->$ar[0];
 										}
 									}
 								}
 							}
 							if ($r2 == 'null') {
-								$r2 = "";
+								$r2 = '';
 							}
 							$conds[] = "$fld=\"$r2\"";
 						}
-						$conditions = implode(",", $conds);
-						$q = $adb->query("select * from vtiger_entityname where modulename='$origin_module'");
+						$conditions = implode(',', $conds);
+						$q = $adb->query('select * from vtiger_entityname where modulename=?', array($origin_module));
 						$table = $adb->query_result($q, 0, 'tablename');
 						$id = $adb->query_result($q, 0, 'entityidfield');
 						$adb->pquery("update $table set $conditions where $id=$therecid", array());
@@ -272,14 +267,14 @@ class RunWebserviceWorkflowTask extends VTTask {
 
 				//write logs for response
 				$dateofresponse = date('l jS \of F Y h:i:s A');
-				error_log("\n\nResponse header: ".json_encode($options), 3, $logname.".log");
-				error_log("\n\nResponse: ".json_encode($response), 3, $logname.".log");
-				error_log("\n\n".$dateofresponse, 3, $logname.".log");
+				error_log("\n\nResponse header: ".json_encode($options), 3, $logname.'.log');
+				error_log("\n\nResponse: ".json_encode($response), 3, $logname.'.log');
+				error_log("\n\n".$dateofresponse, 3, $logname.'.log');
 			} catch (Exception $e) {
 				echo $e->getMessage();
 				$dateofresponse = date('l jS \of F Y h:i:s A');
-				error_log("\n\Error: ".json_encode($e->getMessage()), 3, $logname.".log");
-				error_log("\n\n".$dateofresponse, 3, $logname.".log");
+				error_log("\n\Error: ".json_encode($e->getMessage()), 3, $logname.'.log');
+				error_log("\n\n".$dateofresponse, 3, $logname.'.log');
 			}
 		}
 
