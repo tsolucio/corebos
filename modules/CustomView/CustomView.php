@@ -824,6 +824,9 @@ class CustomView extends CRMEntity {
 		$sSQL = 'select vtiger_cvstdfilter.* from vtiger_cvstdfilter inner join vtiger_customview on vtiger_customview.cvid = vtiger_cvstdfilter.cvid';
 		$sSQL .= ' where vtiger_cvstdfilter.cvid=?';
 		$result = $adb->pquery($sSQL, array($cvid));
+		if ($result==false || $adb->num_rows($result)==0) {
+			return '';
+		}
 		$stdfilterrow = $adb->fetch_array($result);
 
 		$stdfilterlist = array();
