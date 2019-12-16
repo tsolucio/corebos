@@ -908,8 +908,9 @@ function eval_imagen($entity, $id, $module) {
 				inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
 				where vtiger_crmentity.setype="Products Image" and productid=?';
 			$result = $adb->pquery($sql, array($entid));
-			$att_name = $adb->query_result($result, 0, 0);
-			if (empty($att_name)) {
+			if ($result && $adb->num_rows($result)>0) {
+				$att_name = $adb->query_result($result, 0, 0);
+			} else {
 				return 'modules/evvtgendoc/no_image_entity.jpg';
 			}
 		}
@@ -925,7 +926,11 @@ function eval_imagen($entity, $id, $module) {
 				inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
 				where vtiger_crmentity.setype="Products Image" and productid=?';
 			$result = $adb->pquery($sql, array($entid));
-			$att_name = $adb->query_result($result, 0, 0);
+			if ($result && $adb->num_rows($result)>0) {
+				$att_name = $adb->query_result($result, 0, 0);
+			} else {
+				$att_name = 'modules/evvtgendoc/no_image_entity.jpg';
+			}
 		} else {
 			$att_name = retrieve_from_db($entity, $iter_modules['InventoryDetails'][0], 'InventoryDetails');
 		}
