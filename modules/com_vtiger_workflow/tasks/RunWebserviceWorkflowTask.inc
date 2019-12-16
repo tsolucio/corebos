@@ -94,10 +94,10 @@ class RunWebserviceWorkflowTask extends VTTask {
 			if ($method == 'POST') {
 				curl_setopt($channel, CURLOPT_POST, true);
 			} else {
-				curl_setopt($channel, CURLOPT_CUSTOMREQUEST, "$method");
+				curl_setopt($channel, CURLOPT_CUSTOMREQUEST, $method);
 			}
 			if ($inputtype != 'URL') {
-				if (in_array('Content-type:application/x-www-form-urlencoded', $headers)) {
+				if (in_array('Content-type:application/x-www-form-urlencoded', $headers) || in_array('Content-type:multipart/form-data', $headers)) {
 					curl_setopt($channel, CURLOPT_POSTFIELDS, http_build_query($listreq));
 				} else {
 					curl_setopt($channel, CURLOPT_POSTFIELDS, json_encode($listreq));
@@ -124,9 +124,19 @@ class RunWebserviceWorkflowTask extends VTTask {
 					$conds = array();
 					foreach ($target_fields['Response'] as $fld => $v) {
 						if (is_array($response2)) {
-							$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2[0]->$fld));
+							if (strpos($fld, '.')) {
+								list ($elemresponse, $elemfield) = explode('.', $fld);
+								$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2[0]->$elemresponse->$elemfield));
+							} else {
+								$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2[0]->$fld));
+							}
 						} else {
-							$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$fld));
+							if (strpos($fld, '.')) {
+								list ($elemresponse, $elemfield) = explode('.', $fld);
+								$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$elemresponse->$elemfield));
+							} else {
+								$r2 = str_replace(array('"','/','\\'), array('',' ',' '), json_encode($response2->$fld));
+							}
 						}
 						if ((string)$r2 == 'null' || is_null($r2)) {
 							$r2 = '';
