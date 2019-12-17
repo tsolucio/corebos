@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2019 JPL TSolucio, S.L.  --  This file is a part of vtiger CRM.
+ * Copyright 2019 JPL TSolucio, S.L.  --  This file is a part of vtiger coreBOS
  * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
  * Vizsage Public License (the "License"). You may not use this file except in compliance with the
  * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
@@ -15,15 +15,15 @@
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
 
-function cbws_getmergedtemplate($template, $crmids, $format, $user) {
+function cbws_getmergedtemplate($template, $crmids, $output_format, $user) {
 	global $log,$adb;
 	require_once 'modules/evvtgendoc/OpenDocument.php';
+	include_once 'include/utils/pdfConcat.php';
 
 	if (preg_match('/^[0-9]+x[0-9]+$/', $template)) {
 		$idComponents = vtws_getIdComponents($template);
 		$template = $idComponents[1];
 	}
-	$zipname = null;
 	$orgfile=$adb->pquery(
 		"SELECT CONCAT(a.path,'',a.attachmentsid,'_',a.name) as filepath, n.template_for
 			FROM vtiger_notes n
@@ -32,10 +32,9 @@ function cbws_getmergedtemplate($template, $crmids, $format, $user) {
 			WHERE n.notesid=? or n.title=?",
 		array($template, $template)
 	);
-	if ($orgfile) {
+	if ($orgfile && $adb->num_rows($orgfile) > 0) {
 		$mergeTemplatePath=$adb->query_result($orgfile, 0, 'filepath');
 		$module = $adb->query_result($orgfile, 0, "template_for");
-
 		$zipname = OpenDocument::GENDOCCACHE . '/' . $module . '/gendoc' . $user->id . '.zip';
 		if (file_exists($zipname)) {
 			unlink($zipname);
@@ -58,23 +57,23 @@ function cbws_getmergedtemplate($template, $crmids, $format, $user) {
 				$types = vtws_listtypes(null, $user);
 
 				if (!in_array($entityName, $types['types'])) {
-					throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
+					continue;
 				}
 				if ($meta->hasReadAccess()!==true) {
-					throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read is denied');
+					continue;
 				}
 
 				if ($entityName !== $webserviceObject->getEntityName()) {
-					throw new WebServiceException(WebServiceErrorCode::$INVALIDID, 'Id specified is incorrect');
+					continue;
 				}
 
 				if (!$meta->hasPermission(EntityMeta::$RETRIEVE, $crmid)) {
-					throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to read given object is denied');
+					continue;
 				}
 
 				$idComponents = vtws_getIdComponents($crmid);
 				if (!$meta->exists($idComponents[1])) {
-					throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND, 'Record you are trying to access is not found');
+					continue;
 				}
 
 				$record = preg_replace('/[^0-9]/', '', substr($crmid, strpos($crmid, 'x')));
@@ -83,8 +82,8 @@ function cbws_getmergedtemplate($template, $crmids, $format, $user) {
 				$filename = OpenDocument::GENDOCCACHE . '/' . $module . '/odtout' . $record . '.odt';
 				$pdfname = OpenDocument::GENDOCCACHE . '/' . $module . '/odtout' . $record . '.pdf';
 				$odtout = new OpenDocument;
-				OpenDocument::$debug = $dodebug;
-				OpenDocument::$compile_language = $clang;
+				OpenDocument::$debug = false;
+				OpenDocument::$compile_language = 'en';
 				if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php')) {
 					include 'modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php';
 				} else {
@@ -104,10 +103,10 @@ function cbws_getmergedtemplate($template, $crmids, $format, $user) {
 				ZipWrapper::copyPictures($mergeTemplatePath, $filename, $odtout->changedImages, $odtout->newImages);
 				$odtout->postprocessing($fullfilename);
 				$zipfname = 'odtout'.$record;
-				if ($format=='pdf') {
+				if ($output_format=='pdf') {
 					$odtout->convert($filename, $pdfname);
 					$zip->addFile($pdfname, $zipfname.'pdf');
-				} elseif ($format=='onepdf') {
+				} elseif ($output_format=='onepdf') {
 					$odtout->convert($filename, $pdfname);
 					$file2merge[] = $pdfname;
 				} else {
@@ -115,14 +114,18 @@ function cbws_getmergedtemplate($template, $crmids, $format, $user) {
 				}
 			}
 		}
-		if ($format == 'onepdf') {
+		if ($output_format == 'onepdf') {
 			$pdf = new concat_pdf();
 			$pdf->setFiles($file2merge);
 			$pdf->concat();
-			$pdf->Output($root_directory.OpenDocument::GENDOCCACHE . '/' . $module. '/' . $module . '.pdf', 'F');
+			$filename = $root_directory.OpenDocument::GENDOCCACHE . '/' . $module. '/' . $module . '.pdf';
+			$pdf->Output($filename, 'F');
+			$zip->addFile($filename, 'onepdf.pdf');
 		}
 		$zip->save();
+		return array('message' => 'Report is generated', 'file' => $zipname);
+	} else {
+		return array('message' => 'No template found', 'file' => '');
 	}
-	return array('message' => 'Report is generated', 'file' => $zipname);
 }
 ?>
