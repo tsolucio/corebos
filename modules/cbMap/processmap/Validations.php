@@ -145,7 +145,7 @@ class Validations extends processcbMap {
 		$v = new cbValidator($screen_values);
 		$validations = array();
 		foreach ($mapping['fields'] as $valfield => $vals) {
-			$fl = $adb->pquery('select fieldlabel from vtiger_field where tabid=? and columnname=?', array($tabid,$valfield));
+			$fl = $adb->pquery('select fieldlabel from vtiger_field where tabid=? and (columnname=? or fieldname=?)', array($tabid, $valfield, $valfield));
 			$fieldlabel = $adb->query_result($fl, 0, 0);
 			$i18n = getTranslatedString($fieldlabel, $mapping['origin']);
 			foreach ($vals as $val) {
