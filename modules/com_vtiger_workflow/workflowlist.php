@@ -48,6 +48,7 @@ function vtDisplayWorkflowList($adb, $request, $requestUrl, $app_strings, $curre
 
 	$smarty->assign('MOD', array_merge(return_module_language($current_language, 'Settings'), return_module_language($current_language, $module->name)));
 	$smarty->assign('APP', $app_strings);
+	$smarty->assign('ISADMIN', is_admin($current_user));
 	$smarty->assign('THEME', $theme);
 	$smarty->assign('IMAGE_PATH', $image_path);
 	$smarty->assign('MODULE_NAME', $module->label);

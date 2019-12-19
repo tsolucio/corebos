@@ -13,7 +13,58 @@
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
 *************************************************************************************************/
 
-function executeBusinessAction($businessactionid, $user) {
+function executeBusinessAction($businessactionid, $context, $user) {
+	global $currentModule;
+	$context = json_decode($context, true);
+	if (json_last_error() !== JSON_ERROR_NONE) {
+		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter: context');
+	}
+	$wscrmid = empty($context['ID']) ? (empty($context['RECORDID']) ?  (empty($context['RECORD']) ? 0 : $context['RECORD']) : $context['RECORDID']) : $context['ID'];
+	if ($wscrmid==0) {
+		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter: context (no ID)');
+	}
+	if (strpos($wscrmid, 'x')===false) {
+		if (!is_numeric($wscrmid)) {
+			throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter: context (invalid ID)');
+		}
+		$ctx_MODULE = getSalesEntityType($wscrmid);
+		if (empty($ctx_MODULE)) {
+			throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter: context (invalid ID)');
+		}
+		$wscrmid = vtws_getEntityId($ctx_MODULE).'x'.$wscrmid;
+		if (empty($context['MODULE'])) {
+			$context['MODULE'] = $ctx_MODULE;
+			$context['module'] = $ctx_MODULE;
+		}
+	}
+	list($wsid, $crmid) = explode('x', $wscrmid);
+	$context['ID'] = $context['RECORDID'] = $context['RECORD'] = $crmid;
+	$context['id'] = $context['recordid'] = $context['record'] = $crmid;
+	if (empty($context['MODULE'])) {
+		$context['MODULE'] = getSalesEntityType($crmid);
+		$context['module'] = getSalesEntityType($crmid);
+	}
+	$currentModule = $context['module'];
+	if (empty($context['MODE'])) {
+		$context['MODE'] = 'edit';
+		$context['mode'] = 'edit';
+	}
+	//$context['FIELDS']
 	$businessAction = (object) vtws_retrieve($businessactionid, $user);
-	return vtlib_process_widget($businessAction);
+	$ba = (array) $businessAction;
+	$strtemplate = new Vtiger_StringTemplate();
+	foreach ($context as $key => $value) {
+		$strtemplate->assign($key, $value);
+	}
+	$ba['linkurl'] = $strtemplate->merge($ba['linkurl']);
+	$ba['businessactionsid'] = $businessactionid;
+	$ba['elementtype_action'] = $ba['linktype'];
+	$ba['status'] = $ba['active'];
+	$lnk = BusinessActions::convertToObject(BusinessActions::IGNORE_MODULE, $ba);
+	if (preg_match("/^block:\/\/(.*)/", $ba['linkurl'], $matches)) {
+		return vtlib_process_widget($lnk, $context);
+	} else {
+		throw new WebServiceException(WebServiceErrorCode::$INVALID_PARAMETER, 'Invalid parameter: business action (only block detail view widgets supported)');
+	}
+	return $return;
 }

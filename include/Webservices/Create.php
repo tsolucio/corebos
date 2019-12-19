@@ -10,13 +10,12 @@
 require_once 'include/Webservices/SetRelation.php';
 
 function vtws_create($elementType, $element, $user) {
-
 	static $vtws_create_cache = array();
 
 	global $root_directory;
 	$types = vtws_listtypes(null, $user);
 	if (!in_array($elementType, $types['types'])) {
-		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, "Permission to perform the operation is denied");
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED, 'Permission to perform the operation is denied');
 	}
 
 	global $log, $adb;

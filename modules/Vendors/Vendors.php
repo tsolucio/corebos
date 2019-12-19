@@ -365,7 +365,7 @@ class Vendors extends CRMEntity {
 
 	public function delete_related_module($module, $crmid, $with_module, $with_crmid) {
 		global $adb;
-		if ($with_module == 'Contacts') {
+		if ($with_module == 'Contacts' || $with_module == 'Products') {
 			$with_crmid = (array)$with_crmid;
 			$data = array();
 			$data['sourceModule'] = $module;
@@ -374,10 +374,17 @@ class Vendors extends CRMEntity {
 			foreach ($with_crmid as $relcrmid) {
 				$data['destinationRecordId'] = $relcrmid;
 				cbEventHandler::do_action('corebos.entity.link.delete', $data);
-				$adb->pquery(
-					'DELETE FROM vtiger_vendorcontactrel WHERE vendorid=? AND contactid=?',
-					array($crmid, $relcrmid)
-				);
+				if ($with_module == 'Products') {
+					$adb->pquery(
+						'update vtiger_products set vendor_id=0 where productid=?',
+						array($relcrmid)
+					);
+				} else {
+					$adb->pquery(
+						'DELETE FROM vtiger_vendorcontactrel WHERE vendorid=? AND contactid=?',
+						array($crmid, $relcrmid)
+					);
+				}
 			}
 		} else {
 			parent::delete_related_module($module, $crmid, $with_module, $with_crmid);

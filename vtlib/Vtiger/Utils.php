@@ -241,9 +241,10 @@ class Vtiger_Utils {
 			$adb->dieOnError = false;
 		}
 
-		$adb->pquery($sqlquery, array());
+		$rs = $adb->pquery($sqlquery, array());
 
 		$adb->dieOnError = $old_dieOnError;
+		return $rs;
 	}
 
 	/**

@@ -86,15 +86,11 @@ function copyAddressLeft(form) {
 }
 
 function settotalnoofrows() {
-	var max_row_count = document.getElementById('proTab').rows.length;
-	max_row_count = eval(max_row_count)-2;
-
 	//set the total number of products
-	document.EditView.totalProductCount.value = max_row_count;
+	document.EditView.totalProductCount.value = document.getElementById('proTab').querySelectorAll('[id^="row"]').length;
 }
 
 function productPickList(currObj, module, row_no) {
-	var trObj=currObj.parentNode.parentNode;
 	var rowId = row_no;
 	var currentRowId = parseInt(currObj.id.match(/([0-9]+)$/)[1]);
 
@@ -105,11 +101,11 @@ function productPickList(currObj, module, row_no) {
 
 	var currencyid = document.getElementById('inventory_currency').value;
 	var additionalinfo = getInventoryModuleTaxRelatedInformation();
-	popuptype = 'inventory_prod';
+	var popuptype = 'inventory_prod';
 	if (module == 'PurchaseOrder') {
 		popuptype = 'inventory_prod_po';
-		module_string = '&parent_module=Vendor';
-		parent_id = document.EditView.vendor_id.value;
+		var module_string = '&parent_module=Vendor';
+		var parent_id = document.EditView.vendor_id.value;
 
 		if (parent_id != '') {
 			window.open('index.php?module=Products&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype='+popuptype+'&curr_row='+rowId+'&return_module='+module+'&currencyid='+currencyid+'&relmod_id='+parent_id+module_string+additionalinfo, 'productWin', 'width=640,height=600,resizable=0,scrollbars=0,status=1,top=150,left=200');
@@ -164,11 +160,9 @@ function getInventoryModuleTaxRelatedInformation() {
 }
 
 function priceBookPickList(currObj, row_no) {
-	var trObj=currObj.parentNode.parentNode;
-	var rowId=row_no;//parseInt(trObj.id.substr(trObj.id.indexOf("w")+1,trObj.id.length))
 	var currencyid = document.getElementById('inventory_currency').value;
-	var productId=getObj('hdnProductId'+rowId).value || -1;
-	window.open('index.php?module=PriceBooks&action=Popup&html=Popup_picker&form=EditView&popuptype=inventory_pb&fldname=listPrice'+rowId+'&productid='+productId+'&currencyid='+currencyid, 'priceBookWin', 'width=640,height=565,resizable=0,scrollbars=0,top=150,left=200');
+	var productId=getObj('hdnProductId'+row_no).value || -1;
+	window.open('index.php?module=PriceBooks&action=Popup&html=Popup_picker&form=EditView&popuptype=inventory_pb&fldname=listPrice'+row_no+'&productid='+productId+'&currencyid='+currencyid, 'priceBookWin', 'width=640,height=565,resizable=0,scrollbars=0,top=150,left=200');
 }
 
 function getProdListBody() {
@@ -186,42 +180,45 @@ function getProdListBody() {
 
 function deleteRow(module, i, image_path) {
 	rowCnt--;
-	var tableName = document.getElementById('proTab');
-	var prev = tableName.rows.length;
 
-	//	document.getElementById('proTab').deleteRow(i);
 	document.getElementById('row'+i).style.display = 'none';
-
+	var tblrows = document.getElementById('proTab').rows;
+	for (var iRow=0; iRow<tblrows.length; iRow++) {
+		if (typeof(tblrows[iRow].id)!='undefined' && tblrows[iRow].id=='row'+i) {
+			if (typeof(tblrows[iRow+1])!='undefined' && (typeof(tblrows[iRow+1].id)=='undefined' || tblrows[iRow+1].id!='row'+(i+1))) {
+				tblrows[iRow+1].style.display = 'none';
+				break;
+			}
+		}
+	}
 	// Added For product Reordering starts
 	image_path = document.getElementById('hidImagePath').value;
-	iMax = tableName.rows.length;
-	for (iCount=i; iCount>=1; iCount--) {
+	var iMax = document.getElementById('proTab').querySelectorAll('[id^="row"]').length;
+	for (var iCount=i; iCount>=1; iCount--) {
 		if (document.getElementById('row'+iCount) && document.getElementById('row'+iCount).style.display != 'none') {
-			iPrevRowIndex = iCount;
+			var iPrevRowIndex = iCount;
 			break;
 		}
 	}
-	iPrevCount = iPrevRowIndex;
-	oCurRow = eval(document.getElementById('row'+i));
-	sTemp = oCurRow.cells[0].innerHTML;
-	ibFound = sTemp.indexOf('down_layout.gif');
+	var oPrevRow = '';
+	var iPrevCount = iPrevRowIndex;
+	var oCurRow = document.getElementById('row'+i);
+	var sTemp = oCurRow.cells[0].innerHTML;
+	var ibFound = sTemp.indexOf('down_layout.gif');
 	var prevLineItemId = document.getElementById('lineitem_id'+iPrevCount) == undefined ? '' : document.getElementById('lineitem_id'+iPrevCount).value;
 	if (i != 2 && ibFound == -1 && iPrevCount != 1) {
-		oPrevRow = eval(document.getElementById('row'+iPrevCount));
-
-		iPrevCount = eval(iPrevCount);
+		oPrevRow = document.getElementById('row'+iPrevCount);
 		oPrevRow.cells[0].innerHTML = '<img src="themes/softed/images/delete.gif" border="0" onclick="deleteRow(\''+module+'\','+iPrevCount+')" style="cursor:pointer;" title="'+alert_arr.LBL_DELETE_EMAIL+'"><input id="deleted'+iPrevCount+'" name="deleted'+iPrevCount+'" type="hidden" value="0"><input id="lineitem_id'+iPrevCount+'" name="lineitem_id'+iPrevCount+'" value="'+prevLineItemId+'" type="hidden">&nbsp;<a href="javascript:moveUpDown(\'UP\',\''+module+'\','+iPrevCount+')" title="'+alert_arr.MoveUp+'"><img src="themes/images/up_layout.gif" border="0"></a>';
 	} else if (iPrevCount == 1) {
-		iSwapIndex = i;
-		for (iCount=i; iCount<=iMax-2; iCount++) {
+		var iSwapIndex = i;
+		for (iCount=i; iCount<=iMax; iCount++) {
 			if (document.getElementById('row'+iCount) && document.getElementById('row'+iCount).style.display != 'none') {
 				iSwapIndex = iCount;
 				break;
 			}
 		}
 		if (iSwapIndex == i) {
-			oPrevRow = eval(document.getElementById('row'+iPrevCount));
-			iPrevCount = eval(iPrevCount);
+			oPrevRow = document.getElementById('row'+iPrevCount);
 			oPrevRow.cells[0].innerHTML = '<input type="hidden" id="deleted1" name="deleted1" value="0"><input id="lineitem_id'+iPrevCount+'" name="lineitem_id'+iPrevCount+'" value="'+prevLineItemId+'" type="hidden">&nbsp;';
 		}
 	}
@@ -235,11 +232,9 @@ function deleteRow(module, i, image_path) {
 
 // Function to Calcuate the Inventory total including all products
 function calcTotal() {
-	var max_row_count = document.getElementById('proTab').rows.length;
-	max_row_count = max_row_count-2;//Because the table has two header rows. so we will reduce two from row length
-	for (var i=1; i<=max_row_count; i++) {
-		rowId = i;
-		setDiscount(null, rowId);
+	var max_row_count = document.getElementById('proTab').querySelectorAll('[id^="row"]').length;
+	for (var rownum=1; rownum<=max_row_count; rownum++) {
+		setDiscount(null, rownum);
 	}
 	calcGrandTotal();
 }
@@ -251,7 +246,7 @@ function calcProductTotal(rowId) {
 		if (chknum.indexOf(',')!=-1 || chknum.indexOf("'")!=-1) {
 			document.getElementById('listPrice'+rowId).value = standarizeFormatCurrencyValue(chknum);
 		}
-		var chknum = getObj('qty'+rowId).value;
+		chknum = getObj('qty'+rowId).value;
 		if (chknum.indexOf(',')!=-1 || chknum.indexOf("'")!=-1) {
 			document.getElementById('qty'+rowId).value = standarizeFormatCurrencyValue(chknum);
 		}
@@ -263,6 +258,7 @@ function calcProductTotal(rowId) {
 
 		var tax_type = document.getElementById('taxtype').value;
 		//if the tax type is individual then add the tax with net price
+		var netprice = 0;
 		if (tax_type == 'individual') {
 			callTaxCalc(rowId);
 			netprice = totalAfterDiscount+eval(document.getElementById('taxTotal'+rowId).innerHTML);
@@ -280,20 +276,17 @@ function calcGrandTotal() {
 
 	var taxtype = document.getElementById('taxtype').value;
 
-	var max_row_count = document.getElementById('proTab').rows.length;
-	max_row_count = max_row_count-2;//Because the table has two header rows. so we will reduce two from row length
-
-	for (var i=1; i<=max_row_count; i++) {
-		if (document.getElementById('deleted'+i).value == 0) {
-			if (document.getElementById('netPrice'+i).innerHTML=='') {
-				document.getElementById('netPrice'+i).innerHTML = 0.0;
+	var max_row_count = document.getElementById('proTab').querySelectorAll('[id^="row"]').length;
+	for (var rownum=1; rownum<=max_row_count; rownum++) {
+		if (document.getElementById('deleted'+rownum).value == 0) {
+			if (document.getElementById('netPrice'+rownum).innerHTML=='') {
+				document.getElementById('netPrice'+rownum).innerHTML = 0.0;
 			}
-			if (!isNaN(document.getElementById('netPrice'+i).innerHTML)) {
-				netTotal += parseFloat(document.getElementById('netPrice'+i).innerHTML);
+			if (!isNaN(document.getElementById('netPrice'+rownum).innerHTML)) {
+				netTotal += parseFloat(document.getElementById('netPrice'+rownum).innerHTML);
 			}
 		}
 	}
-	//	alert(netTotal);
 	netTotal = roundValue(netTotal.toString());
 	document.getElementById('netTotal').innerHTML = netTotal;
 	document.getElementById('subtotal').value = netTotal;
@@ -308,7 +301,6 @@ function calcGrandTotal() {
 	discountTotal_final = document.getElementById('discountTotal_final').innerHTML;
 
 	//get the final tax based on the group or individual tax selection
-	var taxtype = document.getElementById('taxtype').value;
 	if (taxtype == 'group') {
 		finalTax = document.getElementById('tax_final').innerHTML;
 	}
@@ -367,8 +359,7 @@ function validateInventoryLines(module) {
 		return true;
 	}
 
-	var max_row_count = document.getElementById('proTab').rows.length;
-	max_row_count = max_row_count-2;//As the table has two header rows, we will reduce two from table row length
+	var max_row_count = document.getElementById('proTab').querySelectorAll('[id^="row"]').length;
 
 	if (!FindDuplicate()) {
 		return false;
@@ -470,8 +461,7 @@ function validateInventoryLines(module) {
 }
 
 function FindDuplicate() {
-	var max_row_count = document.getElementById('proTab').rows.length;
-	max_row_count = max_row_count-2;//As the table has two header rows, we will reduce two from row length
+	var max_row_count = document.getElementById('proTab').querySelectorAll('[id^="row"]').length;
 	var duplicate = false, iposition = '', positions = '', duplicate_products = '';
 	var product_id = new Array(max_row_count-1);
 	var product_name = new Array(max_row_count-1);
@@ -517,7 +507,7 @@ function fnshow_Hide(Lay) {
 }
 
 function ValidateTax(txtObj) {
-	temp= /^\d+(\.\d\d*)*$/.test(document.getElementById(txtObj).value);
+	var temp= /^\d+(\.\d\d*)*$/.test(document.getElementById(txtObj).value);
 	if (temp == false) {
 		alert(alert_arr.ENTER_VALID_TAX);
 	}
@@ -555,12 +545,9 @@ function loadGlobalTaxes_Ajax() {
 
 // Function to retrieve and update all taxes > recalculates the whole record
 function updateAllTaxes() {
-	var max_row_count = document.getElementById('proTab').rows.length;
-	max_row_count = max_row_count-2;//Because the table has two header rows. so we will reduce two from row length
-	var netprice = 0.00;
+	var max_row_count = document.getElementById('proTab').querySelectorAll('[id^="row"]').length;
 	for (var i=1; i<=max_row_count; i++) {
-		rowId = i;
-		loadTaxes_Ajax(rowId);
+		loadTaxes_Ajax(i);
 	}
 	loadGlobalTaxes_Ajax();
 }
@@ -580,8 +567,6 @@ function fnAddTaxConfigRow(sh) {
 		add_tax_flag = 'sh_add_tax_type';
 	}
 	var tableName = document.getElementById(table_id);
-	var prev = tableName.rows.length;
-	var count = rowCnt;
 	var row = tableName.insertRow(0);
 	var colone = row.insertCell(0);
 	var coltwo = row.insertCell(1);
@@ -623,19 +608,19 @@ function validateNewTaxType(fieldname, fieldvalue) {
 }
 
 function validateTaxes(countname) {
-	taxcount = eval(document.getElementById(countname).value)+1;
+	var taxcount = document.getElementById(countname).value+1;
 
 	if (countname == 'tax_count') {
-		taxprefix = 'tax';
-		taxLabelPrefix = 'taxlabel_tax';
+		var taxprefix = 'tax';
+		var taxLabelPrefix = 'taxlabel_tax';
 	} else {
 		taxprefix = 'shtax';
 		taxLabelPrefix = 'taxlabel_shtax';
 	}
 
 	for (var i=1; i<=taxcount; i++) {
-		taxval = document.getElementById(taxprefix+i).value;
-		taxLabelVal = document.getElementById(taxLabelPrefix+i).value;
+		var taxval = document.getElementById(taxprefix+i).value;
+		var taxLabelVal = document.getElementById(taxLabelPrefix+i).value;
 		document.getElementById(taxLabelPrefix+i).value = taxLabelVal.replace(/^\s*|\s*$/g, '').replace(/\s+/g, '');
 
 		if (document.getElementById(taxLabelPrefix+i).value.length == 0) {
@@ -659,7 +644,10 @@ function fnAddProductRow(module, image_path) {
 
 	var tableName = document.getElementById('proTab');
 	var prev = tableName.rows.length;
-	var count = eval(prev)-1;//As the table has two headers, we should reduce the count
+	var pdoRows = document.getElementById('proTab').querySelectorAll('[id^="row"]');
+	var iPrevRowId = pdoRows.length;
+	var iPrevRowIndex = pdoRows[iPrevRowId-1].rowIndex;
+	var count = pdoRows.length+1;
 	var row = tableName.insertRow(prev);
 	row.id = 'row'+count;
 	row.style.verticalAlign = 'top';
@@ -673,20 +661,13 @@ function fnAddProductRow(module, image_path) {
 	var colseven = row.insertCell(6);
 
 	/* Product Re-Ordering Feature Code Addition Starts */
-	iMax = tableName.rows.length;
-	for (iCount=1; iCount<=iMax-3; iCount++) {
-		if (document.getElementById('row'+iCount) && document.getElementById('row'+iCount).style.display != 'none') {
-			iPrevRowIndex = iCount;
-		}
-	}
-	iPrevCount = eval(iPrevRowIndex);
-	var oPrevRow = tableName.rows[iPrevRowIndex+1];
+	var iPrevCount = iPrevRowId;
+	var oPrevRow = tableName.rows[iPrevRowIndex];
 	var delete_row_count=count;
 	/* Product Re-Ordering Feature Code Addition ends */
 
 	//Delete link
 	colone.className = 'crmTableRow small';
-	colone.id = row.id+'_col1';
 	colone.innerHTML='<img src="themes/softed/images/delete.gif" border="0" onclick="deleteRow(\''+module+'\','+count+',\'themes/images/\')" style="cursor:pointer;" title="'+alert_arr.LBL_DELETE_EMAIL+'"><input id="deleted'+count+'" name="deleted'+count+'" type="hidden" value="0"><br/><br/>&nbsp;<a href="javascript:moveUpDown(\'UP\',\''+module+'\','+count+')" title="'+alert_arr.MoveUp+'"><img src="themes/images/up_layout.gif" border="0"></a>';
 	/* Product Re-Ordering Feature Code Addition Starts */
 	var prevLineItemId = document.getElementById('lineitem_id'+iPrevCount) == undefined ? '' : document.getElementById('lineitem_id'+iPrevCount).value;
@@ -725,7 +706,7 @@ function fnAddProductRow(module, image_path) {
 	colfour.innerHTML=temp;
 	//List Price with Discount, Total after Discount and Tax labels
 	colfive.className = 'crmTableRow small';
-	colfive.innerHTML='<table width="100%" cellpadding="0" cellspacing="0"><tr><td align="right"><input id="listPrice'+count+'" name="listPrice'+count+'" value="0.00" type="text" class="small" style="width:70px" onBlur="calcTotal();setDiscount(this,'+count+');callTaxCalc('+count+'); calcTotal();"'+(Inventory_ListPrice_ReadOnly==1 ? ' readonly ' : '')+'/>&nbsp;<img src="themes/images/pricebook.gif" onclick="priceBookPickList(this,'+count+')"></td></tr><tr><td align="right" style="padding:5px;" nowrap>		(-)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,\'discount_div'+count+'\',\'discount\','+count+')" >'+product_labelarr.DISCOUNT+'</a> : </b><div class=\"discountUI\" id=\"discount_div'+count+'"><input type="hidden" id="discount_type'+count+'" name="discount_type'+count+'" value=""><table width="100%" border="0" cellpadding="5" cellspacing="0" class="small"><tr><td id="discount_div_title'+count+'" nowrap align="left" ></td><td align="right"><img src="themes/images/close.gif" border="0" onClick="fnhide(\'discount_div'+count+'\')" style="cursor:pointer;"></td></tr><tr><td align="left" class="lineOnTop"><input type="radio" name="discount'+count+'" checked onclick="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();">&nbsp; '+product_labelarr.ZERO_DISCOUNT+'</td><td class="lineOnTop">&nbsp;</td></tr><tr><td align="left"><input type="radio" name="discount'+count+'" onclick="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();">&nbsp; % '+product_labelarr.PERCENT_OF_PRICE+' </td><td align="right"><input type="text" class="small" size="2" id="discount_percentage'+count+'" name="discount_percentage'+count+'" value="0" style="visibility:hidden" onBlur="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();">&nbsp;%</td></tr><tr><td align="left" nowrap><input type="radio" name="discount'+count+'" onclick="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();">&nbsp; '+product_labelarr.DIRECT_PRICE_REDUCTION+'</td><td align="right"><input type="text" id="discount_amount'+count+'" name="discount_amount'+count+'" size="5" value="0" style="visibility:hidden" onBlur="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();"></td></tr></table></div></td></tr><tr> <td align="right" style="padding:5px;" nowrap><b>'+product_labelarr.TOTAL_AFTER_DISCOUNT+' :</b></td></tr><tr id="individual_tax_row'+count+'" class="TaxShow"><td align="right" style="padding:5px;" nowrap>(+)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,\'tax_div'+count+'\',\'tax\','+count+')" >'+product_labelarr.TAX+' </a> : </b><div class="discountUI" id="tax_div'+count+'"></div></td></tr></table>';
+	colfive.innerHTML='<table width="100%" cellpadding="0" cellspacing="0"><tr><td align="right"><input id="listPrice'+count+'" name="listPrice'+count+'" value="0.00" type="text" class="small" style="width:70px" onBlur="calcTotal();setDiscount(this,'+count+');callTaxCalc('+count+'); calcTotal();"'+(Inventory_ListPrice_ReadOnly==1 ? ' readonly ' : '')+'/>&nbsp;<img src="themes/images/pricebook.gif" onclick="priceBookPickList(this,'+count+')"></td></tr><tr><td align="right" style="padding:5px;" nowrap>		(-)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,\'discount_div'+count+'\',\'discount\','+count+')" >'+product_labelarr.DISCOUNT+'</a> : </b><div class="discountUI" id="discount_div'+count+'"><input type="hidden" id="discount_type'+count+'" name="discount_type'+count+'" value=""><table width="100%" border="0" cellpadding="5" cellspacing="0" class="small"><tr><td id="discount_div_title'+count+'" nowrap align="left" ></td><td align="right"><img src="themes/images/close.gif" border="0" onClick="fnhide(\'discount_div'+count+'\')" style="cursor:pointer;"></td></tr><tr><td align="left" class="lineOnTop"><input type="radio" name="discount'+count+'" checked onclick="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();">&nbsp; '+product_labelarr.ZERO_DISCOUNT+'</td><td class="lineOnTop">&nbsp;</td></tr><tr><td align="left"><input type="radio" name="discount'+count+'" onclick="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();">&nbsp; % '+product_labelarr.PERCENT_OF_PRICE+' </td><td align="right"><input type="text" class="small" size="2" id="discount_percentage'+count+'" name="discount_percentage'+count+'" value="0" style="visibility:hidden" onBlur="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();">&nbsp;%</td></tr><tr><td align="left" nowrap><input type="radio" name="discount'+count+'" onclick="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();">&nbsp; '+product_labelarr.DIRECT_PRICE_REDUCTION+'</td><td align="right"><input type="text" id="discount_amount'+count+'" name="discount_amount'+count+'" size="5" value="0" style="visibility:hidden" onBlur="setDiscount(this,'+count+'); callTaxCalc('+count+');calcTotal();"></td></tr></table></div></td></tr><tr> <td align="right" style="padding:5px;" nowrap><b>'+product_labelarr.TOTAL_AFTER_DISCOUNT+' :</b></td></tr><tr id="individual_tax_row'+count+'" class="TaxShow"><td align="right" style="padding:5px;" nowrap>(+)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,\'tax_div'+count+'\',\'tax\','+count+')" >'+product_labelarr.TAX+' </a> : </b><div class="discountUI" id="tax_div'+count+'"></div></td></tr></table>';
 
 	//Total and Discount, Total after Discount and Tax details
 	colsix.className = 'crmTableRow small';
@@ -759,7 +740,9 @@ function cloneMoreInfoNode(newRowId) {
 	for (var i=0; i<moreInfoFields.length; i++) {
 		moreinfocell.innerHTML = moreinfocell.innerHTML.replace(new RegExp(moreInfoFields[i]+'1', 'g'), moreInfoFields[i]+ newRowId);
 	}
-	tblBody.rows[newRowId+1].cells[2].innerHTML=moreinfocell.innerHTML;
+	var pdoRows = document.getElementById('proTab').querySelectorAll('[id^="row"]');
+	var tblRowIndex = pdoRows[newRowId-1].rowIndex;
+	tblBody.rows[tblRowIndex].cells[2].innerHTML=moreinfocell.innerHTML;
 	vtlib_executeJavascriptInElement(moreinfocell);
 	// empty fields
 	var domflddisp = document.getElementById('qtyInStock'+ newRowId);
@@ -804,23 +787,19 @@ function decideTaxDiv() {
 }
 
 function hideIndividualTaxes() {
-	var max_row_count = document.getElementById('proTab').rows.length;
-	max_row_count = eval(max_row_count)-2;//Because the table has two header rows. so we will reduce two from row length
-
-	for (var i=1; i<=max_row_count; i++) {
-		document.getElementById('individual_tax_row'+i).className = 'TaxHide';
-		document.getElementById('taxTotal'+i).style.display = 'none';
+	var max_row_count = document.getElementById('proTab').querySelectorAll('[id^="row"]').length;
+	for (var rownum=1; rownum<=max_row_count; rownum++) {
+		document.getElementById('individual_tax_row'+rownum).className = 'TaxHide';
+		document.getElementById('taxTotal'+rownum).style.display = 'none';
 	}
 	document.getElementById('group_tax_row').className = 'TaxShow';
 }
 
 function hideGroupTax() {
-	var max_row_count = document.getElementById('proTab').rows.length;
-	max_row_count = eval(max_row_count)-2;//Because the table has two header rows. so we will reduce two from table row length
-
-	for (var i=1; i<=max_row_count; i++) {
-		document.getElementById('individual_tax_row'+i).className = 'TaxShow';
-		document.getElementById('taxTotal'+i).style.display = 'block';
+	var max_row_count = document.getElementById('proTab').querySelectorAll('[id^="row"]').length;
+	for (var rownum=1; rownum<=max_row_count; rownum++) {
+		document.getElementById('individual_tax_row'+rownum).className = 'TaxShow';
+		document.getElementById('taxTotal'+rownum).style.display = 'block';
 	}
 	document.getElementById('group_tax_row').className = 'TaxHide';
 }
@@ -852,7 +831,7 @@ function setDiscount(currObj, curr_row) {
 			if (discount_percentage_final_value == '') {
 				discount_percentage_final_value = 0;
 			}
-			discount_amount = eval(document.getElementById('netTotal').innerHTML)*eval(discount_percentage_final_value)/eval(100);
+			discount_amount = eval(document.getElementById('netTotal').innerHTML)*discount_percentage_final_value/100;
 		} else {
 			// This is to calculate the product discount
 			var discount_percentage_value = document.getElementById('discount_percentage'+curr_row).value;
@@ -863,7 +842,7 @@ function setDiscount(currObj, curr_row) {
 			if (discount_percentage_value == '') {
 				discount_percentage_value = 0;
 			}
-			discount_amount = eval(document.getElementById('qty'+curr_row).value)*eval(document.getElementById('listPrice'+curr_row).value)*eval(discount_percentage_value)/100;
+			discount_amount = document.getElementById('qty'+curr_row).value*document.getElementById('listPrice'+curr_row).value*discount_percentage_value/100;
 		}
 		//Rounded the decimal part of discount amount to two digits
 		document.getElementById('discountTotal'+curr_row).innerHTML = roundValue(discount_amount.toString());
@@ -893,7 +872,7 @@ function setDiscount(currObj, curr_row) {
 function callTaxCalc(curr_row) {
 	//when we change discount or list price, we have to calculate the taxes again before calculate the total
 	if (getObj('tax_table'+curr_row)) {
-		tax_count = document.getElementById('tax_table'+curr_row).rows.length-1;//subtract the title tr length
+		var tax_count = document.getElementById('tax_table'+curr_row).rows.length-1;//subtract the title tr length
 		for (var i=0, j=i+1; i<tax_count; i++, j++) {
 			var tax_hidden_name = 'hidden_tax'+j+'_percentage'+curr_row;
 			var tax_name = document.getElementById(tax_hidden_name).value;
@@ -914,7 +893,7 @@ function calcCurrentTax(tax_name, curr_row, tax_row) {
 	var new_amount_lbl = document.getElementsByName('popup_tax_row'+curr_row);
 
 	//calculate the new tax amount
-	var new_tax_amount = eval(product_total)*eval(new_tax_percent)/eval(100);
+	var new_tax_amount = product_total*new_tax_percent/100;
 
 	//Rounded the decimal part of tax amount to two digits
 	new_tax_amount = roundValue(new_tax_amount.toString());
@@ -924,7 +903,7 @@ function calcCurrentTax(tax_name, curr_row, tax_row) {
 
 	var tax_total = 0.00;
 	for (var i=0; i<new_amount_lbl.length; i++) {
-		tax_total = tax_total + eval(new_amount_lbl[i].value);
+		tax_total = tax_total + (1*new_amount_lbl[i].value);
 	}
 	document.getElementById('taxTotal'+curr_row).innerHTML = roundValue(tax_total);
 }
@@ -942,7 +921,7 @@ function calcGroupTax() {
 		discountTotal_final_value = 0;
 	}
 
-	var net_total_after_discount = eval(netTotal_value)-eval(discountTotal_final_value);
+	var net_total_after_discount = netTotal_value-discountTotal_final_value;
 	var group_tax_total = 0.00, tax_amount=0.00;
 
 	for (var i=1; i<=group_tax_count; i++) {
@@ -950,9 +929,9 @@ function calcGroupTax() {
 		if (group_tax_percentage == '') {
 			group_tax_percentage = '0';
 		}
-		tax_amount = eval(net_total_after_discount)*eval(group_tax_percentage)/eval(100);
+		tax_amount = net_total_after_discount*group_tax_percentage/100;
 		document.getElementById('group_tax_amount'+i).value = tax_amount;
-		group_tax_total = eval(group_tax_total) + eval(tax_amount);
+		group_tax_total = group_tax_total + tax_amount;
 	}
 
 	document.getElementById('tax_final').innerHTML = roundValue(group_tax_total);
@@ -991,9 +970,8 @@ function calcSHTax() {
 }
 
 function validateProductDiscounts() {
-	var max_row_count = document.getElementById('proTab').rows.length;
-	max_row_count = max_row_count-2;//As the table has two header rows, we will reduce two from table row length
-
+	var temp = '';
+	var max_row_count = document.getElementById('proTab').querySelectorAll('[id^="row"]').length;
 	for (var i=1; i<=max_row_count; i++) {
 		//if the row is deleted then avoid validate that row values
 		if (document.getElementById('deleted'+i).value == 1) {
@@ -1025,7 +1003,7 @@ function stock_alert(curr_row) {
 	var stock=getObj('qtyInStock'+curr_row).innerHTML;
 	var qty=getObj('qty'+curr_row).value;
 	if (!isNaN(qty)) {
-		if (eval(qty) > eval(stock)) {
+		if (qty > stock) {
 			getObj('stock_alert'+curr_row).innerHTML='<font color="red" size="1">'+alert_arr.STOCK_IS_NOT_ENOUGH+'</font>';
 		} else {
 			getObj('stock_alert'+curr_row).innerHTML='';
@@ -1045,8 +1023,7 @@ function updatePrices() {
 			return;
 		}
 
-		var max_row_count = productsListElem.rows.length;
-		max_row_count = max_row_count-2;//Because the table has two header rows. so we will reduce two from row length
+		var max_row_count = document.getElementById('proTab').querySelectorAll('[id^="row"]').length;
 
 		var products_list = '';
 		for (var i=1; i<=max_row_count; i++) {
@@ -1094,8 +1071,7 @@ function updatePriceValues(pricesList) {
 		return;
 	}
 
-	var max_row_count = productsListElem.rows.length;
-	max_row_count = eval(max_row_count)-2;//Because the table has two header rows. so we will reduce two from row length
+	var max_row_count = document.getElementById('proTab').querySelectorAll('[id^="row"]').length;
 
 	for (var i=1; i<=max_row_count; i++) {
 		var list_price_elem = document.getElementById('listPrice'+i);
@@ -1139,7 +1115,7 @@ function resetSHandAdjValues() {
 	}
 }
 
-/** Function for Product Re-Ordering Feature Code Addition Starts
+/** Function for Product Re-Ordering Feature
  * It will be responsible for moving record up/down, 1 step at a time
  */
 function moveUpDown(sType, oModule, iIndex) {
@@ -1148,21 +1124,19 @@ function moveUpDown(sType, oModule, iIndex) {
 	var aContentIds = Array('qtyInStock', 'netPrice', 'subprod_names');
 	var aOnClickHandlerIds = Array('searchIcon');
 
-	iIndex = eval(iIndex) + 1;
-	var oTable = document.getElementById('proTab');
-	iMax = oTable.rows.length;
-	iSwapIndex = 1;
+	var iMax = document.getElementById('proTab').querySelectorAll('[id^="row"]').length;
+	var iSwapIndex = 1;
 	if (sType == 'UP') {
-		for (iCount=iIndex-2; iCount>=1; iCount--) {
+		for (var iCount=iIndex-1; iCount>=1; iCount--) {
 			if (document.getElementById('row'+iCount)) {
 				if (document.getElementById('row'+iCount).style.display != 'none' && document.getElementById('deleted'+iCount).value == 0) {
-					iSwapIndex = iCount+1;
+					iSwapIndex = iCount;
 					break;
 				}
 			}
 		}
 	} else {
-		for (iCount=iIndex; iCount<=iMax-2; iCount++) {
+		for (iCount=iIndex; iCount<=iMax; iCount++) {
 			if (document.getElementById('row'+iCount) && document.getElementById('row'+iCount).style.display != 'none' && document.getElementById('deleted'+iCount).value == 0) {
 				iSwapIndex = iCount;
 				break;
@@ -1170,15 +1144,18 @@ function moveUpDown(sType, oModule, iIndex) {
 		}
 		iSwapIndex += 1;
 	}
-
-	var oCurTr = oTable.rows[iIndex];
-	var oSwapRow = oTable.rows[iSwapIndex];
-
-	iMaxCols = oCurTr.cells.length;
-	iIndex -= 1;
-	iSwapIndex -= 1;
-	iCheckIndex = 0;
-	iSwapCheckIndex = 0;
+	var iTableRowIndex = document.getElementById('row'+iIndex).rowIndex;
+	var iTableRowSwapIndex = document.getElementById('row'+iSwapIndex).rowIndex;
+	var oTable = document.getElementById('proTab');
+	if (typeof(oTable.rows[iTableRowIndex+1])=='object' && !oTable.rows[iTableRowIndex+1].id.startsWith('row')) {
+		var holdRow = oTable.rows[iTableRowIndex+1].innerHTML;
+		oTable.rows[iTableRowIndex+1].innerHTML = oTable.rows[iTableRowSwapIndex+1].innerHTML;
+		oTable.rows[iTableRowSwapIndex+1].innerHTML = holdRow;
+		corebosjshook_InventorymoveUpDown_customrow(oTable, iTableRowIndex+1, iIndex, iTableRowSwapIndex+1, iSwapIndex);
+	}
+	var iCheckIndex = 0;
+	var iSwapCheckIndex = 0;
+	var sFormElement = '';
 	for (var j=0; j<=2; j++) {
 		if (eval('document.getElementById(\'frmEditView\').discount'+iIndex+'['+j+']')) {
 			sFormElement = eval('document.getElementById(\'frmEditView\').discount'+iIndex+'['+j+']');
@@ -1199,16 +1176,19 @@ function moveUpDown(sType, oModule, iIndex) {
 		}
 	}
 	if (eval('document.getElementById(\'frmEditView\').discount'+iIndex+'['+iSwapCheckIndex+']')) {
-		oElement = eval('document.getElementById(\'frmEditView\').discount'+iIndex+'['+iSwapCheckIndex+']');
+		var oElement = eval('document.getElementById(\'frmEditView\').discount'+iIndex+'['+iSwapCheckIndex+']');
 		oElement.checked = true;
 	}
 	if (eval('document.getElementById(\'frmEditView\').discount'+iSwapIndex+'['+iCheckIndex+']')) {
-		oSwapElement = eval('document.getElementById(\'frmEditView\').discount'+iSwapIndex+'['+iCheckIndex+']');
+		var oSwapElement = eval('document.getElementById(\'frmEditView\').discount'+iSwapIndex+'['+iCheckIndex+']');
 		oSwapElement.checked = true;
 	}
 
-	iMaxElement = aFieldIds.length;
-	for (iCt=0; iCt<iMaxElement; iCt++) {
+	var sTemp = '';
+	var sId = '';
+	var sSwapId = '';
+	var iMaxElement = aFieldIds.length;
+	for (var iCt=0; iCt<iMaxElement; iCt++) {
 		sId = aFieldIds[iCt] + iIndex;
 		sSwapId = aFieldIds[iCt] + iSwapIndex;
 		if (document.getElementById(sId) && document.getElementById(sSwapId)) {
@@ -1235,7 +1215,6 @@ function moveUpDown(sType, oModule, iIndex) {
 			document.getElementById(sId).value = document.getElementById(sSwapId).value;
 			document.getElementById(sSwapId).value = sTemp;
 		}
-		//oCurTr.cells[iCt].innerHTML;
 	}
 	iMaxElement = aContentIds.length;
 	for (iCt=0; iCt<iMaxElement; iCt++) {
@@ -1274,23 +1253,23 @@ function moveUpDown(sType, oModule, iIndex) {
 	callTaxCalc(iSwapIndex);
 	setDiscount(this, iIndex);
 	setDiscount(this, iSwapIndex);
-	sId = 'tax1_percentage' + iIndex;
-	sTaxRowId = 'hidtax_row_no' + iIndex;
-	if (document.getElementById(sTaxRowId)) {
-		if (!(iTaxVal = document.getElementById(sTaxRowId).value)) {
-			iTaxVal = 0;
-		}
-		//calcCurrentTax(sId,iIndex,iTaxVal);
-	}
+	// sId = 'tax1_percentage' + iIndex;
+	// var sTaxRowId = 'hidtax_row_no' + iIndex;
+	// if (document.getElementById(sTaxRowId)) {
+	// 	if (!(iTaxVal = document.getElementById(sTaxRowId).value)) {
+	// 		iTaxVal = 0;
+	// 	}
+	// 	//calcCurrentTax(sId,iIndex,iTaxVal);
+	// }
 
-	sSwapId = 'tax1_percentage' + iSwapIndex;
-	sSwapTaxRowId = 'hidtax_row_no' + iSwapIndex;
-	if (document.getElementById(sSwapTaxRowId)) {
-		if (!(iSwapTaxVal = document.getElementById(sSwapTaxRowId).value)) {
-			iSwapTaxVal = 0;
-		}
-		//calcCurrentTax(sSwapId,iSwapIndex,iSwapTaxVal);
-	}
+	// sSwapId = 'tax1_percentage' + iSwapIndex;
+	// var sSwapTaxRowId = 'hidtax_row_no' + iSwapIndex;
+	// if (document.getElementById(sSwapTaxRowId)) {
+	// 	if (!(iSwapTaxVal = document.getElementById(sSwapTaxRowId).value)) {
+	// 		iSwapTaxVal = 0;
+	// 	}
+	// 	//calcCurrentTax(sSwapId,iSwapIndex,iSwapTaxVal);
+	// }
 	calcTotal();
 }
 
@@ -1298,7 +1277,8 @@ function InventorySelectAll(mod, image_pth) {
 	if (document.selectall.selected_id != undefined) {
 		var x = document.selectall.selected_id.length;
 		var y=0;
-		idstring = '';
+		var row_id = 0;
+		var idstring = '';
 		var namestr = '';
 		if (x == undefined) {
 			if (document.selectall.selected_id.checked) {
@@ -1310,7 +1290,7 @@ function InventorySelectAll(mod, image_pth) {
 				var unit_price = prod_array['unitprice'];
 				var taxstring = prod_array['taxstring'];
 				var desc = prod_array['desc'];
-				var row_id = prod_array['rowid'];
+				row_id = prod_array['rowid'];
 				var dto = prod_array['dto'];
 				var subprod_ids = prod_array['subprod_ids'];
 				if (mod!='PurchaseOrder') {
@@ -1339,9 +1319,9 @@ function InventorySelectAll(mod, image_pth) {
 					var dto = prod_array['dto'];
 					var subprod_ids = prod_array['subprod_ids'];
 					if (y>0) {
-						var row_id = window.opener.fnAddProductRow(mod, image_pth);
+						row_id = window.opener.fnAddProductRow(mod, image_pth);
 					} else {
-						var row_id = prod_array['rowid'];
+						row_id = prod_array['rowid'];
 					}
 					if (mod!='PurchaseOrder') {
 						var qtyinstk = prod_array['qtyinstk'];
@@ -1885,7 +1865,7 @@ function handleProductAutocompleteSelect(obj) {
 	document.getElementById('productName'+no).value = obj.result.meta.name;
 	document.getElementById('comment'+no).innerHTML = obj.result.meta.comments;
 	var currency = document.getElementById('inventory_currency').value;
-	if (obj.result.pricing.multicurrency[currency] != undefined && gVTModule != "PurchaseOrder") {
+	if (obj.result.pricing.multicurrency[currency] != undefined && gVTModule != 'PurchaseOrder') {
 		document.getElementById('listPrice'+no).value = obj.result.pricing.multicurrency[currency].actual_price;
 	} else {
 		var list_price = obj.result.pricing.unit_price;

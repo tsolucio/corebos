@@ -418,8 +418,16 @@ class cbexpsql_environmentstub {
 		return $this->data;
 	}
 
-	public function get($value) {
-		return $value;
+	public function setData($data) {
+		$this->data = $data;
+	}
+
+	public function get($fieldName) {
+		return (isset($this->data[$fieldName]) ? $this->data[$fieldName] : $fieldName);
+	}
+
+	public function set($fieldName, $value) {
+		$this->data[$fieldName] = $value;
 	}
 }
 ?>

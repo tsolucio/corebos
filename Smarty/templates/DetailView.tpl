@@ -448,7 +448,7 @@ function showHideStatus(sId,anchorImgId, sImagePath) {
 																	<td class="rightMailMergeContent"><div id="detailview_block_{$CUSTOMLINK_NO}"></div></td>
 																</tr>
 																<script type="text/javascript">
-																			vtlib_loadDetailViewWidget("{$customlink_href}", "detailview_block_{$CUSTOMLINK_NO}", "detailview_block_{$CUSTOMLINK_NO}_indicator");
+																	vtlib_loadDetailViewWidget("{$customlink_href}", "detailview_block_{$CUSTOMLINK_NO}", "detailview_block_{$CUSTOMLINK_NO}_indicator");
 																</script>
 															</table>
 														{/if}

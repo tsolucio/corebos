@@ -44,5 +44,7 @@ $mod_strings = array(
 	'LBL_DEBUG' => 'Debug',
 	'LBL_LANG' => 'Limba',
 	'UpdatePrevious' => 'Actualizeaza Merge Anterior',
+	'is set to' => 'Is set to',
+	'is not set' => 'Is NOT set',
 );
 ?>

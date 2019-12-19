@@ -16,7 +16,7 @@ if (!$util->checkAdminAccess()) {
 	return;
 }
 
-$module->setReturnUrl('index.php%3Fmodule%3Dcom_vtiger_workflow%26action%3Dworkflowlist%26parenttab%3DSettings');
+$module->setReturnUrl('index.php%3Fmodule%3Dcom_vtiger_workflow%26action%3Dworkflowlist');
 $returnUrl=$module->editWorkflowUrl(vtlib_purify($_REQUEST['record']));
 ?>
 <script type="text/javascript" charset="utf-8">

@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once 'install/installAddons.php';
-require_once 'config.php';
+require_once 'config.inc.php';
 require_once 'include/logging.php';
 require_once 'modules/Users/Users.php';
 require_once 'modules/Users/LoginHistory.php';

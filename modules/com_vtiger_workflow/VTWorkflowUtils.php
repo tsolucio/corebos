@@ -173,11 +173,10 @@ class VTWorkflowUtils {
 	}
 
 	/**
-	 * Check if the current user is admin
+	 * Check if the current user is admin or has access to workflows
 	 */
 	public static function checkAdminAccess() {
-		global $current_user;
-		return strtolower($current_user->is_admin) === 'on';
+		return isPermitted('CronTasks', '', '')=='yes';
 	}
 
 	/* function to check if the module has workflow

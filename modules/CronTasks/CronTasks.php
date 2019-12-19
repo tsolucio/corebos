@@ -31,7 +31,7 @@ class CronTasks {
 			}
 			$adb->pquery(
 				'INSERT INTO vtiger_settings_field(fieldid, blockid, name, iconpath, description, linkto, sequence) VALUES (?,?,?,?,?,?,?)',
-				array($fieldid, $blockid, 'Scheduler', 'Cron.png', 'Allows you to Configure Cron Task', 'index.php?module=CronTasks&action=ListCronJobs&parenttab=Settings', $seq)
+				array($fieldid, $blockid, 'Scheduler', 'Cron.png', 'Allows you to Configure Cron Task', 'index.php?module=CronTasks&action=ListCronJobs', $seq)
 			);
 		}
 	}

@@ -131,7 +131,7 @@ class BusinessActions extends CRMEntity {
 		}
 	}
 
-	private static function convertToObject($tabid, $valuemap) {
+	public static function convertToObject($tabid, $valuemap) {
 		$link_obj = new Vtiger_Link();
 		$link_obj->tabid = (string) $tabid;
 		$link_obj->linkid = $valuemap['businessactionsid'];
@@ -289,7 +289,6 @@ class BusinessActions extends CRMEntity {
 				$linkData = new Vtiger_LinkData($link, $current_user);
 				$ignore = call_user_func(array($row['handler_class'], $row['handler']), $linkData);
 				if (!$ignore) {
-					self::log("Ignoring Link ... ".var_export($row, true));
 					continue;
 				}
 			}

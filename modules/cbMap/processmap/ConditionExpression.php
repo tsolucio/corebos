@@ -58,6 +58,7 @@ require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once 'modules/com_vtiger_workflow/VTWorkflowUtils.php';
 require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 require_once 'include/Webservices/Retrieve.php';
+require_once 'modules/com_vtiger_workflow/expression_functions/cbexpSQL.php';
 
 class ConditionExpression extends processcbMap {
 
@@ -80,6 +81,10 @@ class ConditionExpression extends processcbMap {
 			if (is_array($arguments[0])) {
 				$entity->setData(array_merge($entity->data, $arguments[0]));
 			}
+		} else {
+			$inModule = empty($arguments[0]['module']) ? vtlib_purify($_REQUEST['module']) : $arguments[0]['module'];
+			$entity = new cbexpsql_environmentstub($inModule, 0);
+			$entity->setData($arguments[0]);
 		}
 		$current_user = $holduser;
 		if (isset($xml->expression)) {

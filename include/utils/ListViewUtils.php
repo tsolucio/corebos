@@ -938,7 +938,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 				if (isPermitted($module, 'EditView', $entity_id) == 'yes') {
 					$racbr = $wfs->getRACRuleForRecord($module, $entity_id);
 					if (!$racbr || $racbr->hasListViewPermissionTo('edit')) {
-						$edit_link = getListViewEditLink($module, $entity_id, $relatedlist, $varreturnset, $list_result, $list_result_count);
+						$edit_link = getListViewEditLink($module, $entity_id, $relatedlist, $varreturnset);
 						$links_info .= "<a href=\"$edit_link$linkstart\">" . $app_strings['LNK_EDIT'] . '</a>';
 					}
 				}
@@ -3533,39 +3533,26 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
  * 		For relatedlists, return_module, return_action and return_id values will be passed like &return_module=Accounts&return_action=CallRelatedList&return_id=10
  * 	return string	$edit_link	- url string which contains the editlink details (module, action, record, etc.,) like index.php?module=Accounts&action=EditView&record=10
  */
-function getListViewEditLink($module, $entity_id, $relatedlist, $returnset, $result, $count) {
+function getListViewEditLink($module, $entity_id, $relatedlist, $returnset) {
 	global $adb;
 	$return_action = 'index';
-	if ($module == 'Calendar') {
-		$edit_link = "index.php?module=Calendar4You&action=EventEditView&record=$entity_id";
-	} else {
-		$edit_link = "index.php?module=$module&action=EditView&record=$entity_id";
-	}
-	$tabname = getParentTab();
+	$edit_link = "index.php?module=$module&action=EditView&record=$entity_id";
 	$url = getBasic_Advance_SearchURL();
 
 	//This is relatedlist listview
 	if ($relatedlist == 'relatedlist') {
 		$edit_link .= $returnset;
 	} else {
-		if ($module == 'Calendar') {
-			$return_action = 'ListView';
-			$actvity_type = $adb->query_result($result, $count, 'type');
-			if ($actvity_type == 'Task') {
-				$edit_link .= '&activity_mode=Task';
-			} else {
-				$edit_link .= '&activity_mode=Events';
-			}
-		}
 		$edit_link .= "&return_module=$module&return_action=$return_action";
 	}
 
-	$edit_link .= '&parenttab=' . $tabname . $url;
+	$edit_link .= $url;
 	//Appending view name while editing from ListView
 	$edit_link .= '&return_viewname=' . (isset($_SESSION['lvs'][$module]['viewname']) ? $_SESSION['lvs'][$module]['viewname'] : '');
 	if ($module == 'Emails') {
 		$edit_link = 'javascript:;" onclick="OpenCompose(\'' . $entity_id . '\',\'edit\');';
 	}
+	list($module, $entity_id, $edit_link) = cbEventHandler::do_filter('corebos.relatedlist.editlink', array($module, $entity_id, $edit_link));
 	return $edit_link;
 }
 
@@ -3578,18 +3565,11 @@ function getListViewEditLink($module, $entity_id, $relatedlist, $returnset, $res
  * 	return string	$del_link	- url string which cotains the editlink details (module, action, record, etc.,) like index.php?module=Accounts&action=Delete&record=10
  */
 function getListViewDeleteLink($module, $entity_id, $relatedlist, $returnset, $linkstart) {
-	$tabname = getParentTab();
 	$current_module = vtlib_purify($_REQUEST['module']);
 	$viewname = isset($_SESSION['lvs'][$current_module]['viewname']) ? $_SESSION['lvs'][$current_module]['viewname'] : '';
 
-	//Added to fix 4600
 	$url = getBasic_Advance_SearchURL();
-
-	if ($module == 'Calendar') {
-		$return_action = 'ListView';
-	} else {
-		$return_action = 'index';
-	}
+	$return_action = 'index';
 
 	//This is added to avoid the del link in Product related list for the following modules
 	$avoid_del_links = array('PurchaseOrder', 'SalesOrder', 'Quotes', 'Invoice');
@@ -3607,7 +3587,7 @@ function getListViewDeleteLink($module, $entity_id, $relatedlist, $returnset, $l
 		$del_link .= "&return_module=$module&return_action=$return_action";
 	}
 
-	$del_link .= '&parenttab=' . $tabname . '&return_viewname=' . $viewname . $url;
+	$del_link .= '&return_viewname=' . $viewname . $url;
 
 	// vtlib customization: override default delete link for custom modules
 	$requestModule = $current_module;
@@ -3621,7 +3601,7 @@ function getListViewDeleteLink($module, $entity_id, $relatedlist, $returnset, $l
 		$del_link = "index.php?module=$requestModule&action=updateRelations&parentid=$requestRecord";
 		$del_link .= "&destination_module=$module&idlist=$entity_id&mode=delete";
 	}
-
+	list($module, $entity_id, $del_link) = cbEventHandler::do_filter('corebos.relatedlist.dellink', array($module, $entity_id, $del_link));
 	return $del_link;
 }
 

@@ -83,6 +83,7 @@ require_once 'OpenDocument/ReferenceMark.php';
 require_once 'OpenDocument/ReferenceRef.php';
 require_once 'OpenDocument/Section.php';
 require_once 'compile.php'; // open document class
+require_once 'vtlib/Vtiger/Net/Client.php';
 
 // Global array para controlar los bloques {siexiste} y {sinoexiste}
 global $siincluir;
@@ -2715,12 +2716,17 @@ class OpenDocument {
 				'content'=>base64_encode(file_get_contents($filename))
 			);
 
-			$data = array('file' => json_encode($model_filename), 'convert_format' => 'pdf');
+			$data = array('file' => json_encode($model_filename), 'convert_format' => $format);
 
 			$response = $wsClient->doInvoke('gendoc_convert', $data);
 			if ($response['result'] == 'success') {
 				file_put_contents($topath, base64_decode($response['file']['content']));
 			}
+		} elseif (GlobalVariable::getVariable('GenDoc_Convert_URL', '', 'evvtgendoc')!='') {
+			$client = new Vtiger_Net_Client(GlobalVariable::getVariable('GenDoc_Convert_URL', '', 'evvtgendoc').'/unoconv/'.$format);
+			$client->setFileUpload('file', $frompath, 'file');
+			$post = $client->doPost(array());
+			file_put_contents($topath, $post);
 		} else {
 			$cmd = 'unoconv -v -f '.escapeshellarg($format) . ' ' . escapeshellarg($frompath) . ' 2>&1';
 			$return = exec($cmd, $out);

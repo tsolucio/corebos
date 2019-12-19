@@ -103,6 +103,9 @@ if ($module_import_step == 'Step2') {
 			$smarty->assign('MODULEIMPORT_DEP_VTVERSION', $moduleimport_dep_vtversion);
 			$smarty->assign('MODULEIMPORT_LICENSE', $moduleimport_license);
 		}
+	} else {
+		$smarty->assign('MODULEIMPORT_FAILED', 'true');
+		$smarty->assign('MODULEIMPORT_FILE_INVALID', 'true');
 	}
 } elseif ($module_import_step == 'Step3') {
 	$uploadfile = basename(vtlib_purify($_REQUEST['module_import_file']));

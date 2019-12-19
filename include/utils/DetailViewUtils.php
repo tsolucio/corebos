@@ -1447,7 +1447,7 @@ function getDetailAssociatedProducts($module, $focus) {
 		$output .= '<td class="crmTableRow small lineOnTop detailview_inventory_npricecell" valign="bottom" align="right">';
 		$output .= CurrencyField::convertToUserFormat($netprice, null, true) . '</td>';
 		$output .= '</tr>';
-
+		list($v1, $v2, $v3, $v4, $output) = cbEventHandler::do_filter('corebos.filter.inventory.itemrow.detail', array($module, $focus, $result, $i, $output));
 		$netTotal = $netTotal + $netprice;
 	}
 

@@ -205,6 +205,13 @@ class cbQuestion extends CRMEntity {
 			}
 			$query .= ';';
 		} else {
+			$chkrs = $adb->pquery(
+				'SELECT 1 FROM (select name from `vtiger_ws_entity` UNION select name from vtiger_tab) as tnames where name=?',
+				array($q->column_fields['qmodule'])
+			);
+			if (!$chkrs || $adb->num_rows($chkrs)==0) {
+				return getTranslatedString('SQLError', 'cbQuestion').': <b>Incorrect module name.</b>';
+			}
 			$query = 'SELECT '.decode_html($q->column_fields['qcolumns']).' FROM '.decode_html($q->column_fields['qmodule']);
 			if (!empty($q->column_fields['qcondition'])) {
 				$conds = decode_html($q->column_fields['qcondition']);
@@ -224,9 +231,12 @@ class cbQuestion extends CRMEntity {
 			}
 			$query .= ';';
 			try {
-				$webserviceObject = VtigerWebserviceObject::fromName($adb, $q->column_fields['qmodule']);
-				$vtModuleOperation = new VtigerModuleOperation($webserviceObject, $current_user, $adb, $log);
-				$query = $vtModuleOperation->wsVTQL2SQL($query, $meta, $queryRelatedModules);
+				$webserviceObject = VtigerWebserviceObject::fromQuery($adb, $query);
+				$handlerPath = $webserviceObject->getHandlerPath();
+				$handlerClass = $webserviceObject->getHandlerClass();
+				require_once $handlerPath;
+				$handler = new $handlerClass($webserviceObject, $current_user, $adb, $log);
+				$query = $handler->wsVTQL2SQL($query, $meta, $queryRelatedModules);
 			} catch (Exception $e) {
 				return getTranslatedString('SQLError', 'cbQuestion').': '.$query;
 			}
@@ -295,7 +305,7 @@ class cbQuestion extends CRMEntity {
 			$answer = $ans['answer'];
 			$module = $ans['module'];
 			$properties = json_decode($ans['properties']);
-			$columnLabels = $properties->columnlabels;
+			$columnLabels = empty($properties->columnlabels) ? array() : $properties->columnlabels;
 			$limit = GlobalVariable::getVariable('BusinessQuestion_TableAnswer_Limit', 2000);
 			$table .= '<table>';
 			$table .= '<tr>';

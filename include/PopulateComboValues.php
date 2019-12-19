@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-include_once 'config.php';
+include_once 'config.inc.php';
 require_once 'include/logging.php';
 require_once 'include/language/en_us.lang.php';
 require_once 'include/database/PearDatabase.php';

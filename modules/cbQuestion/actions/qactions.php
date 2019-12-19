@@ -301,5 +301,32 @@ class qactions_Action extends CoreBOS_ActionController {
 		$rdo['notify'] = $smarty->fetch('applicationmessage.tpl');
 		echo json_encode($rdo);
 	}
+
+	public function executeScript() {
+		global $adb, $dbconfig;
+		$record = $this->checkQIDParam();
+		$db_username = $dbconfig['db_username'];
+		$db_password = $dbconfig['db_password'];
+		$db_name = $dbconfig['db_name'];
+		$tablename = isset($_REQUEST['tablename']) ? vtlib_purify($_REQUEST['tablename']) : '';
+		$script_path = isset($_REQUEST['script_path']) ? vtlib_purify($_REQUEST['script_path']) : '';
+
+		$rs = $adb->pquery('select * from authorized_scripts where script_path=?', array($script_path));
+		$rdo = array();
+		if ($rs && $adb->num_rows($rs) > 0) {
+			$command = sprintf("".$script_path." %s %s %s %s %s", $db_username, $db_password, $db_name, $tablename, $record);
+			$output = shell_exec($command);
+			$rdo['status'] = 'OK';
+			$rdo['msg'] = $output;
+			$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-success');
+		} else {
+			$rdo['status'] = 'NOK';
+			$rdo['msg'] = getTranslatedString('EXECUTESCRIPTNOK', 'cbQuestion');
+			$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
+		}
+		$smarty->assign('ERROR_MESSAGE', $rdo['msg']);
+		$rdo['notify'] = $smarty->fetch('applicationmessage.tpl');
+		echo json_encode($rdo);
+	}
 }
 ?>

@@ -354,7 +354,7 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 							$cadena = number_format($cadena, 0);
 							break;
 						case 'N':
-							$cadena = number_format($cadena, 2, ',', '.');
+							$cadena = CurrencyField::convertToUserFormat($cadena, null, true);
 							break;
 						//case 'C':
 						//    $cadena = ($cadena == '1' ? 'Yes' : 'No');
@@ -399,10 +399,10 @@ function retrieve_from_db($marcador, $id, $module, $applyformat = true) {
 				if ($applyformat) {
 					switch ($token_pair[1]) {
 						case 'TaxTotal':
-							$reemplazo = number_format(($totalFra-$sbtotalFra), 2, ',', '.');
+							$reemplazo = CurrencyField::convertToUserFormat(($totalFra-$sbtotalFra), null, true);
 							break;
 						case 'TaxPercent':
-							$reemplazo = number_format((($totalFra-$sbtotalFra)*100/$sbtotalFra), 0, ',', '.');
+							$reemplazo = CurrencyField::convertToUserFormat((($totalFra-$sbtotalFra)*100/$sbtotalFra), null, true);
 							break;
 					}
 				}
@@ -908,8 +908,9 @@ function eval_imagen($entity, $id, $module) {
 				inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
 				where vtiger_crmentity.setype="Products Image" and productid=?';
 			$result = $adb->pquery($sql, array($entid));
-			$att_name = $adb->query_result($result, 0, 0);
-			if (empty($att_name)) {
+			if ($result && $adb->num_rows($result)>0) {
+				$att_name = $adb->query_result($result, 0, 0);
+			} else {
 				return 'modules/evvtgendoc/no_image_entity.jpg';
 			}
 		}
@@ -925,7 +926,11 @@ function eval_imagen($entity, $id, $module) {
 				inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
 				where vtiger_crmentity.setype="Products Image" and productid=?';
 			$result = $adb->pquery($sql, array($entid));
-			$att_name = $adb->query_result($result, 0, 0);
+			if ($result && $adb->num_rows($result)>0) {
+				$att_name = $adb->query_result($result, 0, 0);
+			} else {
+				$att_name = 'modules/evvtgendoc/no_image_entity.jpg';
+			}
 		} else {
 			$att_name = retrieve_from_db($entity, $iter_modules['InventoryDetails'][0], 'InventoryDetails');
 		}
@@ -1137,7 +1142,7 @@ function getProductList($module, $id) {
 					$row[$field] = number_format($row[$field], 0);
 					break;
 				case 'D':
-					$row[$field] = number_format($row[$field], 2, ',', '.');
+					$row[$field] = CurrencyField::convertToUserFormat($row[$field], null, true);
 					break;
 			}
 		}
@@ -1194,7 +1199,7 @@ function getServiceList($module, $id) {
 					$row[$field] = number_format($row[$field], 0);
 					break;
 				case 'D':
-					$row[$field] = number_format($row[$field], 2, ',', '.');
+					$row[$field] = CurrencyField::convertToUserFormat($row[$field], null, true);
 					break;
 			}
 		}
@@ -1480,11 +1485,9 @@ function get_plantilla($entid) {
 	$SQL = 'SELECT setype FROM vtiger_crmentity WHERE crmid=?';
 	$res = $adb->pquery($SQL, array($entid));
 	$relmodule = $adb->query_result($res, 0, 'setype');
-	$search_field_name = '';
 	switch ($relmodule) {
 		case 'Documents':
 			$plantillaid = $entid;
-			$search_field_name = 'tipo_documento';
 			break;
 		case 'Invoice':
 			$fld_no = 'invoice_no';
@@ -1512,45 +1515,13 @@ function get_plantilla($entid) {
 			break;
 		case 'Products':
 			$camp_plantilla = 'plantilla';
-			$search_field_name = 'productcategory';
 			break;
 		default:
 			$camp_plantilla = 'plantillaid';
 	}
-
 	//EntityName
-	switch ($relmodule) {
-		case 'Invoice':
-			$namefield = array('invoice_no');
-			break;
-		case 'SalesOrder':
-			$namefield = array('salesorder_no');
-			break;
-		case 'Quotes':
-			$namefield = array('quote_no');
-			break;
-		case 'Accounts':
-			$namefield = array('accountname');
-			break;
-		case 'Contacts':
-			$namefield = array('firstname','lastname');
-			break;
-		case 'Potentials':
-			$namefield = array('potentialname');
-			break;
-		case 'Products':
-			$namefield = array('productname');
-			break;
-		case 'Vendors':
-			$namefield = array('vendorname');
-			break;
-		case 'Incidencias':
-			$namefield = array('incidencia_no');
-			break;
-		default:
-			$namefield = array('');
-			break;
-	}
+	$namefield = getEntityFieldNames($relmodule);
+	$namefield = (array)$namefield['fieldname'];
 
 	if ($relmodule != 'Documents') {
 		$queryGenerator = new QueryGenerator($relmodule, $current_user);
@@ -1592,11 +1563,6 @@ function get_plantilla($entid) {
 		$plantilla = $adb->query_result($res_att, 0, 'name');
 		$ruta = $adb->query_result($res_att, 0, 'path');
 		$prefix = $adb->query_result($res_att, 0, 'attachmentsid').'_';
-		if (!empty($search_field_name)) {
-			$name = $focus_rel->column_fields[$search_field_name];
-		} else {
-			$name = (!empty($app_strings[$relmodule]) ? $app_strings[$relmodule] : $relmodule);
-		}
 		list($name,$ext) = explode('.', $plantilla);
 	}
 

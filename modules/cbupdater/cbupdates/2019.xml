@@ -341,4 +341,25 @@
 	<classname>cronUnblockLoginUsers</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>timothyanthony</author>
+	<description>Creating table for authorized scripts</description>
+	<filename>build/changeSets/2019/authorizedScriptsTable.php</filename>
+	<classname>authorizedScriptsTable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>change Validation Map Name to follow the same convention as other business maps (apply by name)</description>
+	<filename>build/changeSets/2019/changeValidationMapNames.php</filename>
+	<classname>changeValidationMapNames</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Business Action Web Service Context Parameter</description>
+	<filename>build/changeSets/2019/BActionContextParameter.php</filename>
+	<classname>BActionContextParameter</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

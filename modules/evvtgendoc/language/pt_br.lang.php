@@ -43,4 +43,6 @@ $mod_strings = array(
 'LBL_DEBUG' => 'Depurar',
 'LBL_LANG' => 'Linguagem',
 'UpdatePrevious' => 'Update Previous Merge',
+'is set to' => 'Is set to',
+'is not set' => 'Is NOT set',
 );

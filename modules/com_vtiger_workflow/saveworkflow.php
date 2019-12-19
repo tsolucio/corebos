@@ -19,7 +19,7 @@ require_once 'modules/com_vtiger_workflow/tasks/VTCreateEventTask.inc';
 function vtWorkflowSave($adb, $request) {
 	global $current_language;
 	$util = new VTWorkflowUtils();
-	$edit_return_url = 'index.php?module=com_vtiger_workflow&action=workflowlist&parenttab=Settings';
+	$edit_return_url = 'index.php?module=com_vtiger_workflow&action=workflowlist';
 	$module = new VTWorkflowApplication('saveworkflow', $edit_return_url);
 	$mod = return_module_language($current_language, $module->name);
 	$request = vtlib_purify($request);  // this cleans all values of the array
@@ -29,7 +29,7 @@ function vtWorkflowSave($adb, $request) {
 		return;
 	}
 
-	$description = $request['description'];
+	$description = decode_html($request['description']);
 	$purpose = $request['purpose'];
 	$moduleName = $request['module_name'];
 	$conditions = $request['conditions'];
