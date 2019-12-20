@@ -40,10 +40,26 @@ class VTTaskManager {
 			$task->id = $taskId;
 			$orderrs = $adb->pquery('select max(executionorder) from com_vtiger_workflowtasks where workflow_id=?', array($task->workflowId));
 			$order = $adb->query_result($orderrs, 0, 0)+1;
-			$adb->pquery(
+			$rdo = $adb->pquery(
 				'insert into com_vtiger_workflowtasks (task_id, workflow_id, summary, task, executionorder) values (?, ?, ?, ?, ?)',
 				array($taskId, $task->workflowId, $task->summary, serialize($task), $order)
 			);
+			if (!$rdo) {
+				include_once 'modules/com_vtiger_workflow/tasks/VTDummyTask.inc';
+				$dummy = new VTDummyTask();
+				$dummy->statement = 'There is an error in the task settings you choose.';
+				$dummy->id = $task->id;
+				$dummy->summary = '**ERROR**';
+				$dummy->workflowId = $task->workflowId;
+				$dummy->trigger = $task->trigger;
+				$dummy->test = $task->test;
+				$dummy->reevaluate = $task->reevaluate;
+				$dummy->active = 0;
+				$adb->pquery(
+					'insert into com_vtiger_workflowtasks (task_id, workflow_id, summary, task, executionorder) values (?, ?, ?, ?, ?)',
+					array($taskId, $task->workflowId, $task->summary, serialize($dummy), $order)
+				);
+			}
 			return $taskId;
 		}
 	}
@@ -151,6 +167,9 @@ class VTTaskManager {
 	private function requireTask($taskType, $taskTypeInstance = '') {
 		if (!empty($taskTypeInstance)) {
 			$taskClassPath = $taskTypeInstance->get('classpath');
+			if (empty($taskClassPath)) {
+				$taskClassPath = 'modules/com_vtiger_workflow/tasks/VTDummyTask.inc';
+			}
 			require_once $taskClassPath;
 		} else {
 			if (!empty($taskType)) {
@@ -165,6 +184,9 @@ class VTTaskManager {
 			return $taskTemplatePath;
 		} else {
 			$taskType = $taskTypeInstance->get('classname');
+			if (empty($taskType)) {
+				$taskType = 'VTDummyTask';
+			}
 			return $moduleName.'/taskforms/'.$taskType.'.tpl';
 		}
 	}
