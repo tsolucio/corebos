@@ -9292,7 +9292,7 @@ if (workbox) {
   },
   {
     "url": "include/js/vtlib.js",
-    "revision": "544f0dbc5a7c8286c4b12c4a72c5352e"
+    "revision": "5225cf265c0cdb19f97381bee69ff3a5"
   },
   {
     "url": "include/chart.js/Chart.bundle.js",
