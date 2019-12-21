@@ -34,11 +34,12 @@ function cbws_getmergedtemplate($template, $crmids, $output_format, $user) {
 	);
 	if ($orgfile && $adb->num_rows($orgfile) > 0) {
 		$mergeTemplatePath=$adb->query_result($orgfile, 0, 'filepath');
-		$module = $adb->query_result($orgfile, 0, "template_for");
+		$module = $adb->query_result($orgfile, 0, 'template_for');
 		$zipname = OpenDocument::GENDOCCACHE . '/' . $module . '/gendoc' . $user->id . '.zip';
 		if (file_exists($zipname)) {
 			unlink($zipname);
 		}
+		$usrlang = substr($user->column_fields['language'], 0, 2);
 		$zip = new Vtiger_Zip($zipname);
 		$file2merge = array();
 
@@ -83,7 +84,7 @@ function cbws_getmergedtemplate($template, $crmids, $output_format, $user) {
 				$pdfname = OpenDocument::GENDOCCACHE . '/' . $module . '/odtout' . $record . '.pdf';
 				$odtout = new OpenDocument;
 				OpenDocument::$debug = false;
-				OpenDocument::$compile_language = 'en';
+				OpenDocument::$compile_language = $usrlang;
 				if (file_exists('modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php')) {
 					include 'modules/evvtgendoc/commands_'. OpenDocument::$compile_language . '.php';
 				} else {

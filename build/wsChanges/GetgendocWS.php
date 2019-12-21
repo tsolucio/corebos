@@ -14,14 +14,14 @@
  ********************************************************************************/
 
 $operationInfo = array(
-	 'name'    => 'getmergedtemplate',
-	 'include' => 'include/Webservices/getmergedtemplate.php',
-	 'handler' => 'cbws_getmergedtemplate',
-	 'prelogin'=> 0,
-	 'type'    => 'GET',
-	 'parameters' => array(
-         array('name' => 'template','type' => 'String'),
-		 array('name' => 'crmids','type' => 'String'),
-		 array('name' => 'output_format','type' => 'String')
-	 )
+	'name'    => 'getmergedtemplate',
+	'include' => 'include/Webservices/getmergedtemplate.php',
+	'handler' => 'cbws_getmergedtemplate',
+	'prelogin'=> 0,
+	'type'    => 'GET',
+	'parameters' => array(
+		array('name' => 'template','type' => 'String'),
+		array('name' => 'crmids','type' => 'String'),
+		array('name' => 'output_format','type' => 'String')
+	)
 );
