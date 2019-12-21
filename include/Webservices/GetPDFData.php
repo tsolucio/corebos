@@ -82,7 +82,7 @@ function get_module_pdf($modulename, $recordid, $user = '') {
 			$_pdf_data = __cbwsget_pdfmaker_pdf($recordid, $modulename, $user);
 			break;
 		case 'GenDoc':
-			//$_pdf_data = GetGenDocPDFData($modulename, $recordid);
+			$_pdf_data = __GetGenDocPDFData($recordid, $modulename, $user);
 			break;
 		case 'Native':
 		default:
@@ -119,10 +119,126 @@ function GetRawPDFData($modulename, $recordid) {
 	return $PDFBuffer;
 }
 
+function __GetGenDocPDFData($recordid, $modulename, $user) {
+	global $__PDFDATA_FAILED_PDF;
+	include_once 'include/Webservices/getmergedtemplate.php';
+	switch ($modulename) {
+		case 'Quotes':
+			$templateid = GlobalVariable::getVariable('CustomerPortal_PDFTemplate_Quote', 0, 'Quotes', $user->id);
+			break;
+		case 'SalesOrder':
+			$templateid = GlobalVariable::getVariable('CustomerPortal_PDFTemplate_SalesOrder', 0, 'SalesOrder', $user->id);
+			break;
+		case 'PurchaseOrder':
+			$templateid = GlobalVariable::getVariable('CustomerPortal_PDFTemplate_PurchaseOrder', 0, 'PurchaseOrder', $user->id);
+			break;
+		case 'Invoice':
+			$templateid = GlobalVariable::getVariable('CustomerPortal_PDFTemplate_Invoice', 0, 'Invoice', $user->id);
+			break;
+		default:
+			$templateid = 0;
+			break;
+	}
+	if (empty($templateid)) {
+		return $__PDFDATA_FAILED_PDF;
+	}
+	$pdfdoc = cbws_getmergedtemplate($templateid, '["'.vtws_getEntityId(getSalesEntityType($recordid)).'x'.$recordid.'"]', 'onepdf', $user);
+	if (empty($pdfdoc['file'])) {
+		return $__PDFDATA_FAILED_PDF;
+	} else {
+		return file_get_contents($pdfdoc['file']);
+	}
+}
+
 function __cbwsget_pdfmaker_pdf($id, $block, $user = '') {
-	global $adb, $current_user, $log, $default_language;
+	global $adb, $current_user, $log, $default_language, $__PDFDATA_FAILED_PDF;
 	global $currentModule, $mod_strings, $app_strings, $app_list_strings;
-	$failure = "%PDF-1.1
+	if (!file_exists('modules/PDFMaker/checkGenerate.php')) {
+		return $__PDFDATA_FAILED_PDF;
+	}
+	if (empty($user)) {
+		$user = $current_user;
+	}
+
+	$log->debug('> get_pdfmaker_pdf');
+
+	require_once 'config.inc.php';
+
+	$currentModule = $block;
+	$current_language = $default_language;
+	$app_strings = return_application_language($current_language);
+	$app_list_strings = return_app_list_strings_language($current_language);
+	$mod_strings = return_module_language($current_language, $currentModule);
+
+	$sql = 'SELECT a.templateid
+		FROM vtiger_pdfmaker AS a
+		INNER JOIN vtiger_pdfmaker_settings AS b USING(templateid)
+		WHERE a.module=?'; // AND is_portal='1'";
+	switch ($currentModule) {
+		case 'Quotes':
+			$templateid = GlobalVariable::getVariable('CustomerPortal_PDFTemplate_Quote', 0, 'Quotes', $user->id);
+			$params = array('Quotes');
+			break;
+		case 'SalesOrder':
+			$templateid = GlobalVariable::getVariable('CustomerPortal_PDFTemplate_SalesOrder', 0, 'SalesOrder', $user->id);
+			$params = array('SalesOrder');
+			break;
+		case 'PurchaseOrder':
+			$templateid = GlobalVariable::getVariable('CustomerPortal_PDFTemplate_PurchaseOrder', 0, 'PurchaseOrder', $user->id);
+			$params = array('PurchaseOrder');
+			break;
+		case 'Invoice':
+			$templateid = GlobalVariable::getVariable('CustomerPortal_PDFTemplate_Invoice', 0, 'Invoice', $user->id);
+			$params = array('Invoice');
+			break;
+		default:
+			$params = array($currentModule);
+			break;
+	}
+	if ($templateid==0) {
+		$result = $adb->pquery($sql, $params);
+		$templateid = $adb->query_result($result, 0, 'templateid');
+	}
+	if ($templateid == '') {
+		return $__PDFDATA_FAILED_PDF;
+	}
+
+	$_REQUEST['relmodule']= $block;
+	$_REQUEST['record']= $id;
+	$_REQUEST['commontemplateid']= $templateid;
+	if (file_exists('modules/'.$block.'/language/'.$current_user->column_fields['language'].'.lang.php')) {
+		$_REQUEST['language'] = $current_user->column_fields['language'];
+	} else {
+		$_REQUEST['language'] = 'en_us';
+	}
+	$xx10 = CRMEntity::getInstance($currentModule);
+	$xx10->retrieve_entity_info($id, $currentModule);
+	$xx10->id = $id;
+	include 'modules/PDFMaker/InventoryPDF.php';
+	include 'modules/PDFMaker/mpdf/mpdf.php';
+	$xx12 = new PDFContent($templateid, $currentModule, $xx10, $_REQUEST['language']);
+	$xx13 = $xx12->getContent();
+	$xx14 = $xx12->getSettings();
+	$xx15 = html_entity_decode($xx13['header'], ENT_COMPAT, 'utf-8');
+	$xx16 = html_entity_decode($xx13['body'], ENT_COMPAT, 'utf-8');
+	$xx17 = html_entity_decode($xx13['footer'], ENT_COMPAT, 'utf-8');
+	if ($xx14['orientation'] == 'landscape') {
+		$xx18 = $xx14['format'] . '-L';
+	} else {
+		$xx18 = $xx14['format'];
+	}
+	$xx19 = new mPDF('', $xx18, '', 'Arial', $xx14['margin_left'], $xx14['margin_right'], 0, 0, $xx14['margin_top'], $xx14['margin_bottom']);
+	@$xx19->SetHTMLHeader($xx15);
+	@$xx19->SetHTMLFooter($xx17);
+	@$xx19->WriteHTML($xx16);
+	$filenamewithpath = 'cache/' . $currentModule . $id . '.pdf';
+	$xx19->Output($filenamewithpath);
+	$filecontents = file_get_contents($filenamewithpath);
+	$log->debug('< get_pdfmaker_pdf');
+	return $filecontents;
+}
+
+$__PDFDATA_FAILED_PDF = "%PDF-1.1
 %¥±ë
 
 1 0 obj
@@ -180,88 +296,4 @@ trailer
 startxref
 565
 %%EOF";
-	if (!file_exists('modules/PDFMaker/checkGenerate.php')) {
-		return $failure;
-	}
-	if (empty($user)) {
-		$user = $current_user;
-	}
-
-	$log->debug('> get_pdfmaker_pdf');
-
-	require_once 'config.inc.php';
-
-	$currentModule = $block;
-	$current_language = $default_language;
-	$app_strings = return_application_language($current_language);
-	$app_list_strings = return_app_list_strings_language($current_language);
-	$mod_strings = return_module_language($current_language, $currentModule);
-
-	$sql = 'SELECT a.templateid
-		FROM vtiger_pdfmaker AS a
-		INNER JOIN vtiger_pdfmaker_settings AS b USING(templateid)
-		WHERE a.module=?'; // AND is_portal='1'";
-	switch ($currentModule) {
-		case 'Quotes':
-			$templateid = GlobalVariable::getVariable('CustomerPortal_PDFTemplate_Quote', 0, 'Quotes', $user->id);
-			$params = array('Quotes');
-			break;
-		case 'SalesOrder':
-			$templateid = GlobalVariable::getVariable('CustomerPortal_PDFTemplate_SalesOrder', 0, 'SalesOrder', $user->id);
-			$params = array('SalesOrder');
-			break;
-		case 'PurchaseOrder':
-			$templateid = GlobalVariable::getVariable('CustomerPortal_PDFTemplate_PurchaseOrder', 0, 'PurchaseOrder', $user->id);
-			$params = array('PurchaseOrder');
-			break;
-		case 'Invoice':
-			$templateid = GlobalVariable::getVariable('CustomerPortal_PDFTemplate_Invoice', 0, 'Invoice', $user->id);
-			$params = array('Invoice');
-			break;
-		default:
-			$params = array($currentModule);
-			break;
-	}
-	if ($templateid==0) {
-		$result = $adb->pquery($sql, $params);
-		$templateid = $adb->query_result($result, 0, 'templateid');
-	}
-	if ($templateid == '') {
-		return $failure;
-	}
-
-	$_REQUEST['relmodule']= $block;
-	$_REQUEST['record']= $id;
-	$_REQUEST['commontemplateid']= $templateid;
-	if (file_exists('modules/'.$block.'/language/'.$current_user->column_fields['language'].'.lang.php')) {
-		$_REQUEST['language'] = $current_user->column_fields['language'];
-	} else {
-		$_REQUEST['language'] = 'en_us';
-	}
-	$xx10 = CRMEntity::getInstance($currentModule);
-	$xx10->retrieve_entity_info($id, $currentModule);
-	$xx10->id = $id;
-	include 'modules/PDFMaker/InventoryPDF.php';
-	include 'modules/PDFMaker/mpdf/mpdf.php';
-	$xx12 = new PDFContent($templateid, $currentModule, $xx10, $_REQUEST['language']);
-	$xx13 = $xx12->getContent();
-	$xx14 = $xx12->getSettings();
-	$xx15 = html_entity_decode($xx13['header'], ENT_COMPAT, 'utf-8');
-	$xx16 = html_entity_decode($xx13['body'], ENT_COMPAT, 'utf-8');
-	$xx17 = html_entity_decode($xx13['footer'], ENT_COMPAT, 'utf-8');
-	if ($xx14['orientation'] == 'landscape') {
-		$xx18 = $xx14['format'] . '-L';
-	} else {
-		$xx18 = $xx14['format'];
-	}
-	$xx19 = new mPDF('', $xx18, '', 'Arial', $xx14['margin_left'], $xx14['margin_right'], 0, 0, $xx14['margin_top'], $xx14['margin_bottom']);
-	@$xx19->SetHTMLHeader($xx15);
-	@$xx19->SetHTMLFooter($xx17);
-	@$xx19->WriteHTML($xx16);
-	$filenamewithpath = 'cache/' . $currentModule . $id . '.pdf';
-	$xx19->Output($filenamewithpath);
-	$filecontents = file_get_contents($filenamewithpath);
-	$log->debug('< get_pdfmaker_pdf');
-	return $filecontents;
-}
 ?>
