@@ -107,7 +107,7 @@ function cbws_getmergedtemplate($template, $crmids, $output_format, $user) {
 				if ($output_format=='pdf') {
 					$odtout->convert($filename, $pdfname);
 					$zip->addFile($pdfname, $zipfname.'pdf');
-				} elseif ($output_format=='onepdf') {
+				} elseif ($output_format=='onepdf' || $output_format=='oneodt') {
 					$odtout->convert($filename, $pdfname);
 					$file2merge[] = $pdfname;
 				} else {
@@ -121,9 +121,12 @@ function cbws_getmergedtemplate($template, $crmids, $output_format, $user) {
 			$pdf->concat();
 			$filename = $root_directory.OpenDocument::GENDOCCACHE . '/' . $module. '/' . $module . '.pdf';
 			$pdf->Output($filename, 'F');
-			$zip->addFile($filename, 'onepdf.pdf');
+			$zipname = $filename;
 		}
 		$zip->save();
+		if ($output_format == 'oneodt') {
+			$zipname = $file2merge[0];
+		}
 		return array('message' => 'Report is generated', 'file' => $zipname);
 	} else {
 		return array('message' => 'No template found', 'file' => '');
