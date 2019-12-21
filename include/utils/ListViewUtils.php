@@ -1565,13 +1565,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		} else {
 			$value = '';
 		}
-	} elseif ($uitype == 78) {
-		if ($temp_val != '') {
-			$quote_name = getQuoteName($temp_val);
-			$value = '<a href=index.php?module=Quotes&action=DetailView&record=' . $temp_val . '>' . textlength_check($quote_name) . '</a>';
-		} else {
-			$value = '';
-		}
 	} elseif ($uitype == 79) {
 		if ($temp_val != '') {
 			$purchaseorder_name = getPoName($temp_val);

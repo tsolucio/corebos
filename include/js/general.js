@@ -2570,7 +2570,7 @@ function selectPotential() {
 }
 
 //to select Quote Popup
-function selectQuote() {
+function selectQuote(fromlink, fldname, MODULE, ID) {
 	// To support both B2B and B2C model
 	var record_id = '';
 	var parent_module = '';

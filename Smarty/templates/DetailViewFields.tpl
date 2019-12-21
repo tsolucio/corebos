@@ -112,7 +112,7 @@
 			</td>
 		{elseif $keyid eq '21'} <!--TextArea/Street-->
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<span id="dtlview_{$label}" style="word-break:break-word;">{$keyval}</span></td>
-		{elseif $keyid eq '73' || $keyid eq '51' || $keyid eq '57' || $keyid eq '78'}
+		{elseif $keyid eq '73' || $keyid eq '51' || $keyid eq '57'}
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="vtlib_listview.trigger('cell.onmouseover', this);" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">&nbsp;<a href="{$keyseclink}">{$keyval}</a></td>
 		{elseif $keyid eq 82} <!--Email Body-->
 			<td colspan="3" width=100% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;{$keyval}</td>

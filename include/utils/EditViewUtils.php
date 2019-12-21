@@ -868,18 +868,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$currencySymbol = $currencyField->getCurrencySymbol();
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name).': ('.$currencySymbol.')';
-	} elseif ($uitype == 78) {
-		if ($value != '') {
-			$quote_name = getQuoteName($value);
-		} elseif (isset($_REQUEST['quote_id']) && $_REQUEST['quote_id'] != '') {
-			$value = $_REQUEST['quote_id'];
-			$quote_name = getQuoteName($value);
-		} else {
-			$quote_name = '';
-		}
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[] = $quote_name;
-		$fieldvalue[] = $value;
 	} elseif ($uitype == 79) {
 		if ($value != '') {
 			$purchaseorder_name = getPoName($value);
