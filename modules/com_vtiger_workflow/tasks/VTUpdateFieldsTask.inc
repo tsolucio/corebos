@@ -72,7 +72,10 @@ class VTUpdateFieldsTask extends VTTask {
 					$setype=getSalesEntityType($relId);
 				}
 				if ($fldrelname!='' && $relId!='' && $relId!=0) {
-					if (!in_array($fieldmodule, $relmodule) && $setype==$fieldmodule) {
+					if ($setype!=$fieldmodule) {
+						continue; // uitype 10 with multiple modules and current value is not this mappings module
+					}
+					if (!in_array($fieldmodule, $relmodule)) {
 						$relmodule[]=$fieldmodule;
 						$focusrel[$fieldmodule] = CRMEntity::getInstance($fieldmodule);
 						$focusrel[$fieldmodule]->id = $relId;
