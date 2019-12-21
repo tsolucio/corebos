@@ -1544,33 +1544,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		} else {
 			$value = '';
 		}
-	} elseif ($uitype == 66) {
-		$parentid = $adb->query_result($list_result, $list_result_count, 'parent_id');
-		$parenttype = $adb->query_result($list_result, $list_result_count, 'parent_type');
-
-		if ($parenttype == 'Leads') {
-			$tablename = 'vtiger_leaddetails';
-			$fieldname = 'lastname';
-			$idname = 'leadid';
-		}
-		if ($parenttype == 'Accounts') {
-			$tablename = 'vtiger_account';
-			$fieldname = 'accountname';
-			$idname = 'accountid';
-		}
-		if ($parenttype == 'HelpDesk') {
-			$tablename = 'vtiger_troubletickets';
-			$fieldname = 'title';
-			$idname = 'ticketid';
-		}
-		if ($parentid != '') {
-			$sql = "SELECT $fieldname FROM $tablename WHERE $idname = ?";
-			$fieldvalue = $adb->query_result($adb->pquery($sql, array($parentid)), 0, $fieldname);
-
-			$value = '<a href=index.php?module=' . $parenttype . '&action=DetailView&record=' . $parentid . '>' . textlength_check($fieldvalue) . '</a>';
-		} else {
-			$value = '';
-		}
 	} elseif ($uitype == 67) {
 		$parentid = $adb->query_result($list_result, $list_result_count, 'parent_id');
 		$parenttype = $adb->query_result($list_result, $list_result_count, 'parent_type');

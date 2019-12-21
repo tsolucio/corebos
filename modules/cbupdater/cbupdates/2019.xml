@@ -362,4 +362,11 @@
 	<classname>BActionContextParameter</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>Elifuraha</author>
+	<description>migrate uitype 66 (Parent_id capture) to uitype 10 (standard capture)</description>
+	<filename>build/changeSets/2019/migrateUIType66to10.php</filename>
+	<classname>migrateUIType66to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
