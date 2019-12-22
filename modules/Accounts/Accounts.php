@@ -1216,10 +1216,10 @@ class Accounts extends CRMEntity {
 		if ($rows_found != 0) {
 			for ($index = 0 , $row = $this->db->fetchByAssoc($result, $index); $row && $index <$rows_found; $index++, $row = $this->db->fetchByAssoc($result, $index)) {
 				$account = array();
-				$account[accountname] = in_array("accountname", $permitted_field_lists) ? $row[accountname] : "";
-				$account[account_no] = in_array("account_no", $permitted_field_lists)? $row[account_no] : "";
-				$account[email1] = in_array("email1", $permitted_field_lists) ? $row[email1] : "";
-				$account[accountid] =  $row[accountid];
+				$account['accountname'] = in_array('accountname', $permitted_field_lists) ? $row['accountname'] : '';
+				$account['account_no'] = in_array('account_no', $permitted_field_lists)? $row['account_no'] : '';
+				$account['email1'] = in_array('email1', $permitted_field_lists) ? $row['email1'] : '';
+				$account['accountid'] =  $row['accountid'];
 				$list[] = $account;
 			}
 		}
