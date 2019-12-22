@@ -648,5 +648,13 @@ class Potentials extends CRMEntity {
 		}
 		return $list_buttons;
 	}
+
+	public function getvtlib_open_popup_window_function($fieldname, $basemodule) {
+		if ($basemodule=='SalesOrder' && $fieldname=='potential_id') {
+			return 'selectPotential';
+		} else {
+			return 'vtlib_open_popup_window';
+		}
+	}
 }
 ?>

@@ -2547,7 +2547,10 @@ function selectContact(check, frmName) {
 }
 
 //to get Select Potential Popup
-function selectPotential() {
+function selectPotential(fromlink, fldname, MODULE, ID) {
+	if (typeof(document.EditView) == 'undefined') {
+		return vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
+	}
 	// To support both B2B and B2C model
 	var record_id = '';
 	var parent_module = '';
@@ -2569,6 +2572,9 @@ function selectPotential() {
 
 //to select Quote Popup
 function selectQuote(fromlink, fldname, MODULE, ID) {
+	if (typeof(document.EditView) == 'undefined') {
+		return vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
+	}
 	// To support both B2B and B2C model
 	var record_id = '';
 	var parent_module = '';
@@ -2589,7 +2595,10 @@ function selectQuote(fromlink, fldname, MODULE, ID) {
 }
 
 //to get select SalesOrder Popup
-function selectSalesOrder() {
+function selectSalesOrder(fromlink, fldname, MODULE, ID) {
+	if (typeof(document.EditView) == 'undefined') {
+		return vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
+	}
 	// To support both B2B and B2C model
 	var record_id = '';
 	var parent_module = '';
