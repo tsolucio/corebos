@@ -270,6 +270,7 @@ if (is_array($listview_header_search)) {
 	$tks_list = getListColumnSearch($listview_header_search, $currentModule);
 	$smarty->assign('TKS_LIST_SEARCH', $tks_list);
 	$smarty->assign('LVCSearchActive', GlobalVariable::getVariable('Application_ListView_SearchColumns', 0));
+	$smarty->assign('LVCSearchAcTrigger', GlobalVariable::getVariable('Application_ListView_SearchColumns_AC_Trigger', 3));
 }
 // Search Panel Status
 $DEFAULT_SEARCH_PANEL_STATUS = GlobalVariable::getVariable('Application_ListView_SearchPanel_Open', 1);

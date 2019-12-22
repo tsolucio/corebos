@@ -51,5 +51,9 @@ $mod_strings = array(
 	'FieldInfo' => 'Field Information',
 	'GlobalSearchAutocomplete' => 'Global Search Autocomplete',
 	'RelatedPanes' => 'Related Panes',
+	'Function' => 'Function',
+	'TypeOfExpression' => 'Type of Expression',
+	'FunctionName' => 'Function Name',
+	'FunctionParams' => 'Function Parameters',
 );
 ?>
