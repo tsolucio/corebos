@@ -1425,7 +1425,7 @@ $GlobalVariableDefinitons = array(
 	'valuetype' => 'Integer',
 	'category' => 'Application',
 	'values' => 'Any integer',
-	'definition' => 'The minimal number of characters needed to trigger an autocomplete-search in the searchboxes on top of the columns (only visible when Application_ListView_SearchColumns is activated). Defaults to 3',
+	'definition' => 'The minimal number of characters needed to trigger an autocomplete-search in the search boxes on top of the columns (only visible when Application_ListView_SearchColumns is activated). Defaults to 3',
 ),
 );
 

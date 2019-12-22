@@ -1415,11 +1415,18 @@ $GlobalVariableDefinitons = array(
 	'definition' => 'En la vista de detalle, mostrará el nombre de la imagen/adjunto como un enlace para descargar el fichero.',
 ),
 'Inventory_Check_Invoiced_Lines' => array(
-	'status' => 'Implemented',
-	'valuetype' => 'Boolean',
-	'category' => 'Application',
+	'status' => 'Implementada',
+	'valuetype' => 'Booleano',
+	'category' => 'Aplicación',
 	'values' => '0|1',
 	'definition' => 'Cuando se activa (1), el sistema chequea la cantidad de producto o servicio facturado desde una Orden de Venta y transfiere a la Factura la máxina cantidad permitida desde la Orden de Venta. Predeterminado es 0 (desactivado)',
+),
+'Application_ListView_SearchColumns_AC_Trigger' => array(
+	'status' => 'Implementada',
+	'valuetype' => 'Entero',
+	'category' => 'Application',
+	'values' => 'Any integer',
+	'definition' => 'El número mínimo de caracteres necesarios para activar una búsqueda de autocompletar en los cuadros de búsqueda en la parte superior de las columnas (solo visible cuando Application_ListView_SearchColumns está activado). El valor predeterminado es 3',
 ),
 );
 

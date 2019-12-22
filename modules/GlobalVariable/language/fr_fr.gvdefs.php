@@ -1420,6 +1420,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '0|1',
 	'definition' => 'When activated (1), system checks quantity of product or service invoiced from a Sales Order and transfer to Invoice the maximum number permitted to invoice from a Sales Order. Defalut is 0 (deactivated)',
 ),
+'Application_ListView_SearchColumns_AC_Trigger' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => 'Any integer',
+	'definition' => 'The minimal number of characters needed to trigger an autocomplete-search in the search boxes on top of the columns (only visible when Application_ListView_SearchColumns is activated). Defaults to 3',
+),
 );
 
 foreach (glob('modules/GlobalVariable/language/fr_fr.gvdefs.*.php', GLOB_BRACE) as $tcode) {
