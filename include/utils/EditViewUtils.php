@@ -344,20 +344,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		$fieldvalue[]=$users_combo;
 		$fieldvalue[] = $groups_combo;
-	} elseif ($uitype == 51 || $uitype == 73) {
-		if (!isset($_REQUEST['convertmode']) || ($_REQUEST['convertmode'] != 'update_quote_val' && $_REQUEST['convertmode'] != 'update_so_val')) {
-			if (isset($_REQUEST['account_id']) && $_REQUEST['account_id'] != '') {
-				$value = vtlib_purify($_REQUEST['account_id']);
-			}
-		}
-		if ($value != '') {
-			$account_name = getAccountName($value);
-		} else {
-			$account_name = '';
-		}
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[] = $account_name;
-		$fieldvalue[] = $value;
 	} elseif ($uitype == 54) {
 		$options = array();
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
@@ -442,33 +428,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$fieldvalue[] = is_admin($current_user);
 	} elseif ($uitype == 56) {
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[] = $value;
-	} elseif ($uitype == 57) {
-		$contact_name = '';
-		if ($value != '') {
-			$displayValueArray = getEntityName('Contacts', $value);
-			if (!empty($displayValueArray)) {
-				foreach ($displayValueArray as $key => $field_value) {
-					$contact_name = $field_value;
-				}
-			}
-		} elseif (isset($_REQUEST['contact_id']) && $_REQUEST['contact_id'] != '') {
-			if ($_REQUEST['module'] == 'Contacts' && $fieldname = 'contact_id') {
-				$contact_name = '';
-			} else {
-				$value = $_REQUEST['contact_id'];
-				$displayValueArray = getEntityName('Contacts', $value);
-				if (!empty($displayValueArray)) {
-					foreach ($displayValueArray as $key => $field_value) {
-						$contact_name = $field_value;
-					}
-				} else {
-					$contact_name='';
-				}
-			}
-		}
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[] = $contact_name;
 		$fieldvalue[] = $value;
 	} elseif ($uitype == 61) {
 		if ($value != '') {

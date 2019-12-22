@@ -2468,13 +2468,32 @@ function AjaxDuplicateValidate(module, fieldname, oform) {
 	});
 }
 
-/**to get SelectContacts Popup
-check->to check select options enable or disable
-*type->to differentiate from task
-*frmName->form name*/
-function selectContact(check, type, frmName) {
+function selectContactvtlib(fromlink, fldname, MODULE, ID) {
+	if (typeof(document.EditView) == 'undefined') {
+		return vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
+	}
+	switch (MODULE) {
+		case 'Contacts':
+		case 'PurchaseOrder':
+		case 'SalesOrder':
+		case 'Invoice':
+		case 'Quotes':
+			selectContact('false', document.EditView);
+			break;
+		default:
+			vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
+			break;
+	}
+}
+
+ /**
+ * get Select Contacts Popup
+ * check boolean select options enable or disable
+ * frmName string form name
+ */
+function selectContact(check, frmName) {
 	var record = document.getElementsByName('record')[0].value;
-	if (document.getElementById('single_accountid')) {
+	if (document.getElementById('account_id_display')) {
 		var potential_id = '';
 		if (document.getElementById('potential_id')) {
 			potential_id = frmName.potential_id.value;
@@ -2500,7 +2519,7 @@ function selectContact(check, type, frmName) {
 		} else {
 			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
 		}
-	} else if ((document.getElementById('parentid')) && type != 'task') {
+	} else if ((document.getElementById('parentid'))) {
 		if (getObj('parent_type')) {
 			rel_parent_module = frmName.parent_type.value;
 			record_id = frmName.parent_id.value;
@@ -2521,27 +2540,6 @@ function selectContact(check, type, frmName) {
 			}
 		} else {
 			window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&return_module=Calendar&select=enable&popuptype=detailview&form=EditView&form_submit=false', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
-		}
-	} else if ((document.getElementById('contact_name')) && type == 'task') {
-		var formName = frmName.name;
-		var task_recordid = '';
-		var popuptype = '';
-		if (formName == 'EditView') {
-			if (document.getElementById('parent_type')) {
-				task_parent_module = frmName.parent_type.value;
-				task_recordid = frmName.parent_id.value;
-				task_module = task_parent_module.split('&');
-				popuptype='&popuptype=specific';
-			}
-		}
-		if (task_recordid != '' && task_module[0] == 'Leads' ) {
-			alert(alert_arr.CANT_SELECT_CONTACTS);
-		} else {
-			if (popuptype != '') {
-				window.open('index.php?module=Contacts&action=Popup&html=Popup_picker'+popuptype+'&form='+formName+'&task_relmod_id='+task_recordid+'&task_parent_module='+task_module[0], 'test', 'width=640,height=602,resizable=0,scrollbars=0');
-			} else {
-				window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form='+formName, 'test', 'width=640,height=602,resizable=0,scrollbars=0');
-			}
 		}
 	} else {
 		window.open('index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&recordid='+record, 'test', 'width=640,height=602,resizable=0,scrollbars=0');
@@ -2608,6 +2606,16 @@ function selectSalesOrder() {
 		window.open('index.php?module=SalesOrder&action=Popup&html=Popup_picker&popuptype=specific&form=EditView&relmod_id='+record_id+'&parent_module='+parent_module, 'test', 'width=640,height=602,resizable=0,scrollbars=0');
 	} else {
 		window.open('index.php?module=SalesOrder&action=Popup&html=Popup_picker&popuptype=specific&form=EditView', 'test', 'width=640,height=602,resizable=0,scrollbars=0');
+	}
+}
+
+function set_return_account_details(fromlink, fldname, MODULE, ID) {
+	if (fldname == 'account_id') {
+		var baseURL = 'index.php?module=Accounts&action=Popup&popuptype=specific_account_address&form=TasksEditView&form_submit=false&fromlink=';
+		var WindowSettings = 'width=680,height=602,resizable=0,scrollbars=0,top=150,left=200';
+		window.open(baseURL, 'vtlibui10', WindowSettings);
+	} else {
+		vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
 	}
 }
 

@@ -1236,6 +1236,10 @@ class Accounts extends CRMEntity {
 	public function getvtlib_open_popup_window_function($fieldname, $basemodule) {
 		if ($basemodule=='Issuecards') {
 			return 'set_return_shipbilladdress';
+		} elseif ($fieldname=='account_id' && ($basemodule=='Accounts' || $basemodule=='Quotes' || $basemodule=='Invoice' || $basemodule=='SalesOrder')) {
+			return 'set_return_account_details';
+		} elseif ($basemodule=='Contacts' && $fieldname=='account_id') {
+			return 'open_contact_account_details';
 		} else {
 			return 'vtlib_open_popup_window';
 		}

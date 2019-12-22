@@ -274,20 +274,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$col_fields[$fieldname] = nl2br($col_fields[$fieldname]);
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = $col_fields[$fieldname];
-	} elseif ($uitype == 51 || $uitype == 73) {
-		$account_id = $col_fields[$fieldname];
-		if ($account_id != '') {
-			$account_name = getAccountName($account_id);
-		}
-		// vtlib customization: For listview javascript triggers
-		$modMetaInfo=getEntityFieldNames('Accounts');
-		$modEName=(is_array($modMetaInfo['fieldname']) ? $modMetaInfo['fieldname'][0] : $modMetaInfo['fieldname']);
-		$vtlib_metainfo = "<span type='vtlib_metainfo' vtrecordid='$account_id' vtfieldname='$modEName' vtmodule='Accounts' style='display:none;'></span>";
-		$label_fld[] = getTranslatedString($fieldlabel, $module);
-		$label_fld[] = $account_name.$vtlib_metainfo;
-		$label_fld['secid'] = $account_id;
-		$label_fld['link'] = 'index.php?module=Accounts&action=DetailView&record=' . $account_id;
-		//Account Name View
 	} elseif ($uitype == 52 || $uitype == 77 || $uitype == 101) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$user_id = $col_fields[$fieldname];
@@ -474,21 +460,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$displayValue = $app_strings['no'];
 		}
 		$label_fld[] = $displayValue;
-	} elseif ($uitype == 57) {
-		$label_fld[] = getTranslatedString($fieldlabel, $module);
-		$contact_id = $col_fields[$fieldname];
-		$contact_name = '';
-		if ($contact_id != '') {
-			$displayValueArray = getEntityName('Contacts', $contact_id);
-			if (!empty($displayValueArray)) {
-				foreach ($displayValueArray as $key => $field_value) {
-					$contact_name = $field_value;
-				}
-			}
-		}
-		$label_fld[] = $contact_name;
-		$label_fld['secid'] = $contact_id;
-		$label_fld['link'] = 'index.php?module=Contacts&action=DetailView&record=' . $contact_id;
 	} elseif ($uitype == 61) {
 		global $adb;
 		$label_fld[] = getTranslatedString($fieldlabel, $module);

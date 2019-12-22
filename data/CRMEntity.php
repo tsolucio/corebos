@@ -1273,11 +1273,6 @@ class CRMEntity {
 	public function get_column_value($columnname, $fldvalue, $fieldname, $uitype, $datatype = '') {
 		global $log;
 		$log->debug("> get_column_value $columnname, $fldvalue, $fieldname, $uitype, $datatype");
-
-		// Added for the fields of uitype '57' which has datatype mismatch in crmentity table and particular entity table
-		if ($uitype == 57 && $fldvalue == '') {
-			return 0;
-		}
 		if (is_uitype($uitype, '_date_') && $fldvalue == '') {
 			return null;
 		}

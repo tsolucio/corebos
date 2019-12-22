@@ -376,4 +376,11 @@
 	<classname>migrateUIType78to10</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mohamed-shibeJR</author>
+	<description>migrate uitypes 51,57,73 (account/contact capture) to uitype 10 (standard capture)</description>
+	<filename>build/changeSets/2019/migrateUIType515773to10.php</filename>
+	<classname>migrateUIType515773to10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
