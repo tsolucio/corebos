@@ -9200,7 +9200,7 @@ if (workbox) {
   },
   {
     "url": "include/js/general.js",
-    "revision": "02dcb728d68884bd1f76e1a5b2a4b085"
+    "revision": "c2d99513c9be76d2b0992369a9da049e"
   },
   {
     "url": "include/js/hu_hu.lang.js",
@@ -9784,7 +9784,7 @@ if (workbox) {
   },
   {
     "url": "modules/Potentials/Potentials.js",
-    "revision": "de1459b79e171a9b5cfa2f584da66549"
+    "revision": "4ebb204b35da3e737622cff83e0de88c"
   },
   {
     "url": "modules/CronTasks/CronTasks.js",
@@ -9828,7 +9828,7 @@ if (workbox) {
   },
   {
     "url": "modules/Accounts/Accounts.js",
-    "revision": "04cb9261dc739144dabd4e3df9eb8466"
+    "revision": "3756bbb7779e531b7866ee82190d46b9"
   },
   {
     "url": "modules/cbMap/cbMap.js",
@@ -9896,7 +9896,7 @@ if (workbox) {
   },
   {
     "url": "modules/Contacts/Contacts.js",
-    "revision": "25530e91e96304253196890027011051"
+    "revision": "9d308c5d71a695c8d5099f7768d14140"
   },
   {
     "url": "modules/Dashboard/Dashboard.js",
@@ -9952,7 +9952,7 @@ if (workbox) {
   },
   {
     "url": "modules/Quotes/Quotes.js",
-    "revision": "ea218806a1ac1a128df0453c43ecee63"
+    "revision": "8f1160d87b3221354d4cf0d5bfde30b5"
   },
   {
     "url": "modules/PurchaseOrder/PurchaseOrder.js",
