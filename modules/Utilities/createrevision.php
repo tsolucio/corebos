@@ -24,8 +24,11 @@ function dq_createRevision($crmid, $module) {
 	include_once "modules/$module/$module.php";
 	$focus = new $module;
 	$entityidfield = $focus->table_index;
-	$table_name  = $focus->table_name;
-	$queryfield = $adb->pquery("select columnname from vtiger_field join vtiger_tab on vtiger_field.tabid=vtiger_tab.tabid where uitype=4 and name=?", array($module));
+	$table_name = $focus->table_name;
+	$queryfield = $adb->pquery(
+		'select columnname from vtiger_field join vtiger_tab on vtiger_field.tabid=vtiger_tab.tabid where uitype=4 and name=?',
+		array($module)
+	);
 	if ($adb->num_rows($queryfield)==0) {
 		$uniquefield = $focus->list_link_field;
 	} else {
@@ -34,9 +37,13 @@ function dq_createRevision($crmid, $module) {
 
 	$seqnors = $adb->pquery("select $uniquefield from $table_name where $entityidfield=?", array($crmid));
 	$seqno = $adb->query_result($seqnors, 0, 0);
-	$revisiones=$adb->pquery("select count($entityidfield) as num_revisiones from $table_name
-                                            INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $table_name.$entityidfield
-                                            where deleted = 0 and $uniquefield=? order by revision", array($seqno));
+	$revisiones=$adb->pquery(
+		"select count($entityidfield) as num_revisiones
+		from $table_name
+		INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $table_name.$entityidfield
+		where deleted=0 and $uniquefield=? order by revision",
+		array($seqno)
+	);
 	$new_num_revision=intval($adb->query_result($revisiones, '0', 'num_revisiones')) + 1;
 	$adb->pquery("update $table_name set revision=?,$uniquefield=?,revisionactiva=1 where $entityidfield=?", array($new_num_revision,$seqno,$new_record_id));
 	$adb->pquery("update $table_name set revisionactiva=0 where $entityidfield!=? and $uniquefield=?", array($new_record_id, $seqno));
@@ -52,7 +59,6 @@ function dq_recoverRevision($currentcrmid, $newcrmid, $module) {
 	$adb->pquery("update $table_name set revisionactiva=0 where $entityidfield=?", array($currentcrmid));
 	$adb->pquery("update $table_name set revisionactiva=1 where $entityidfield=?", array($newcrmid));
 }
-
 
 $function = vtlib_purify($_REQUEST['function']);
 switch ($function) {
@@ -78,5 +84,4 @@ switch ($function) {
 		}
 		break;
 }
-
 ?>

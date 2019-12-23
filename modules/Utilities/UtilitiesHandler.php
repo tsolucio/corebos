@@ -16,7 +16,6 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 class UtilitiesEventsHandler extends VTEventHandler {
-	private $_moduleCache = array();
 
 	/**
 	 * @param $handlerType
@@ -26,15 +25,9 @@ class UtilitiesEventsHandler extends VTEventHandler {
 	}
 
 	public function handleFilter($handlerType, $parameter) {
-		global $currentModule;
-		$activemodule = GlobalVariable::getVariable('RecordVersioningModules', '', $currentModule);
-		if ($activemodule == 1) {
-			switch ($handlerType) {
-				case 'corebos.filter.listview.querygenerator.before':
-					// $parameter is the QueryGenerator Object
-					$parameter->addCondition('revisionactiva', 1, 'e', 'and');
-					break;
-			}
+		if ($handlerType=='corebos.filter.listview.querygenerator.before' && GlobalVariable::getVariable('RecordVersioningModules', '')==1) {
+			// $parameter is the QueryGenerator Object
+			$parameter->addCondition('revisionactiva', 1, 'e', 'and');
 		}
 		return $parameter;
 	}

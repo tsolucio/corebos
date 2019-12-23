@@ -18,7 +18,7 @@
  *************************************************************************************************/
 global $current_user, $adb;
 include_once 'include/Webservices/Create.php';
-include_once "vtlib/Vtiger/Module.php";
+include_once 'vtlib/Vtiger/Module.php';
 require_once 'include/events/include.inc';
 require_once 'modules/com_vtiger_workflow/VTEntityMethodManager.inc';
 
@@ -26,25 +26,37 @@ $smarty = new vtigerCRM_Smarty();
 
 $moduleid = isset($_REQUEST['module_list']) ? vtlib_purify($_REQUEST['module_list']) : '';
 //check for global variable
-$recexists = $adb->pquery("select globalvariableid,module_list
-    from vtiger_globalvariable
-    inner join vtiger_crmentity on crmid=globalvariableid
-    where deleted=0 and gvname=?", array('RecordVersioningModules'));
+$recexists = $adb->pquery(
+	'select globalvariableid,module_list from vtiger_globalvariable inner join vtiger_crmentity on crmid=globalvariableid where deleted=0 and gvname=?',
+	array('RecordVersioningModules')
+);
 $count = $adb->num_rows($recexists);
-$module_list = explode(" |##| ", $adb->query_result($recexists, 0, 1));
-$gvid = $adb->query_result($recexists, 0, 0);
-
+if ($count > 0) {
+	$module_list = explode(' |##| ', $adb->query_result($recexists, 0, 1));
+	$gvid = $adb->query_result($recexists, 0, 0);
+} else {
+	$module_list = array();
+	$gvid = 0;
+}
+$isAppActive = false;
 if (!empty($moduleid) && $_REQUEST['_op']=='setconfigrecordversioning') {
 	$isFormActive = ((empty($_REQUEST['rvactive']) || $_REQUEST['rvactive']!='on') ? '0' : '1');
 	//check for business action
-	$ba = $adb->pquery("select businessactionsid,module_list from vtiger_businessactions join vtiger_crmentity on crmid=businessactionsid where deleted=0 "
-		. "and active='1' and linklabel='Revisiones' and deleted=0");
-	$baid = $adb->query_result($ba, 0, 0);
-	$module_listba = $adb->query_result($ba, 0, 1);
+	$ba = $adb->pquery(
+		'select businessactionsid,module_list from vtiger_businessactions join vtiger_crmentity on crmid=businessactionsid where deleted=0 and active=? and linklabel=?',
+		array('1', 'Revisiones')
+	);
 	$bacount = $adb->num_rows($ba);
+	if ($ba && $bacount>0) {
+		$baid = $adb->query_result($ba, 0, 0);
+		$module_listba = $adb->query_result($ba, 0, 1);
+	} else {
+		$baid = 0;
+		$module_listba = '';
+	}
 	//check for workflow
 	$wfquery = $adb->pquery("select workflow_id from com_vtiger_workflows where module_name=? and summary='updaterevisionwf'", array($moduleid));
-	$wfcount = $adb->query_result($wfquery, 0, 0);
+	$wfcount = $adb->num_rows($wfquery);
 
 	if ($isFormActive=='1') {
 		if ($count > 0 && !in_array($moduleid, $module_list)) {
@@ -56,7 +68,7 @@ if (!empty($moduleid) && $_REQUEST['_op']=='setconfigrecordversioning') {
 				'value' => '1',
 				'mandatory' => '0',
 				'blocked' => '0',
-				'module_list' => "$moduleid",
+				'module_list' => $moduleid,
 				'category' => 'System',
 				'in_module_list' => '1',
 				'assigned_user_id' => vtws_getEntityId('Users').'x'.$current_user->id,
@@ -72,13 +84,13 @@ if (!empty($moduleid) && $_REQUEST['_op']=='setconfigrecordversioning') {
 				'linktype' => 'DETAILVIEWWIDGET',
 				'linkurl' => 'module=Utilities&action=UtilitiesAjax&file=revisionblock&record=$RECORD$&currmodule=$MODULE$',
 				'mandatory' => '1',
-				'module_list' => "$moduleid",
+				'module_list' => $moduleid,
 				'assigned_user_id' => vtws_getEntityId('Users').'x'.$current_user->id,
 			), $current_user);
 		}
 
 		//create fields
-		$blockquery = $adb->pquery("select blockid from vtiger_blocks where visible=0 and tabid=? limit 1", array(getTabid($moduleid)));
+		$blockquery = $adb->pquery('select blockid from vtiger_blocks where visible=0 and tabid=? limit 1', array(getTabid($moduleid)));
 		$blockid = $adb->query_result($blockquery, 0, 0);
 		$block = Vtiger_Block::getInstance($blockid);
 
@@ -116,7 +128,7 @@ if (!empty($moduleid) && $_REQUEST['_op']=='setconfigrecordversioning') {
 			$isactive = $adb->query_result($evhandler, 0, 0);
 			$ehid = $adb->query_result($evhandler, 0, 1);
 			if ($isactive != 1) {
-				$adb->pquery("update vtiger_eventhandlers set is_active=1 where eventhandler_id=?", array($ehid));
+				$adb->pquery('update vtiger_eventhandlers set is_active=1 where eventhandler_id=?', array($ehid));
 			}
 		} else {
 			$em = new VTEventsManager($adb);
@@ -125,26 +137,26 @@ if (!empty($moduleid) && $_REQUEST['_op']=='setconfigrecordversioning') {
 		//create workflow
 		if ($wfcount == 0) {
 			$emm = new VTEntityMethodManager($adb);
-			$emm->addEntityMethod($moduleid, "updaterevisionwf", "modules/Utilities/updaterevisionwf.php", "updaterevisionwf");
-			require_once "modules/com_vtiger_workflow/VTWorkflowManager.inc";
-			require_once "modules/com_vtiger_workflow/VTTaskManager.inc";
-			require_once "modules/com_vtiger_workflow/VTWorkflowApplication.inc";
-			require_once "include/events/SqlResultIterator.inc";
+			$emm->addEntityMethod($moduleid, 'updaterevisionwf', 'modules/Utilities/updaterevisionwf.php', 'updaterevisionwf');
+			require_once 'modules/com_vtiger_workflow/VTWorkflowManager.inc';
+			require_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
+			require_once 'modules/com_vtiger_workflow/VTWorkflowApplication.inc';
+			require_once 'include/events/SqlResultIterator.inc';
 			$wm = new VTWorkflowManager($adb);
-			$wf = $wm->newWorkflow("$moduleid");
-			$wf->description = "updaterevisionwf";
-			$wf->test = "";
-			$wf->executionConditionAsLabel("ON_FIRST_SAVE");
+			$wf = $wm->newWorkflow($moduleid);
+			$wf->description = 'updaterevisionwf';
+			$wf->test = '';
+			$wf->executionConditionAsLabel('ON_FIRST_SAVE');
 			$wm->save($wf);
 
 			$tm = new VTTaskManager($adb);
-			$taskType ="VTEntityMethodTask" ;
+			$taskType ='VTEntityMethodTask' ;
 			$workflowId =$wf->id;
 			$task = $tm->createTask($taskType, $workflowId);
-			$task->summary ="updaterevisionwf";
+			$task->summary ='updaterevisionwf';
 			$task->active=true;
-			$task->methodName ="updaterevisionwf";
-			$task->subject="updaterevisionwf";
+			$task->methodName ='updaterevisionwf';
+			$task->subject='updaterevisionwf';
 			$tm->saveTask($task);
 		}
 		$isAppActive = true;
@@ -156,9 +168,9 @@ if (!empty($moduleid) && $_REQUEST['_op']=='setconfigrecordversioning') {
 		$index = array_search($moduleid, $module_list);
 		unset($module_list[$index]);
 		if (count($module_list)>0) {
-			$module_del = implode(" |##| ", $module_list);
+			$module_del = implode(' |##| ', $module_list);
 		} else {
-			$module_del = "";
+			$module_del = '';
 		}
 		$adb->pquery("update vtiger_globalvariable set module_list='$module_del' where globalvariableid=?", array($gvid));
 		$adb->pquery("update vtiger_businessactions set module_list='$module_del' where businessactionsid=?", array($baid));
@@ -171,13 +183,14 @@ if (!empty($moduleid) && $_REQUEST['_op']=='setconfigrecordversioning') {
 }
 
 $entitymodules = getAllowedPicklistModules(0);
+$opt = '';
 foreach ($entitymodules as $module) {
 	if ($moduleid == $module) {
 		$selected='selected';
 	} else {
 		$selected = '';
 	}
-	$opt.="<option value='$module' $selected>".getTranslatedString($module, $module)."</option>";
+	$opt.="<option value='$module' $selected>".getTranslatedString($module, $module).'</option>';
 }
 
 $smarty->assign('isActive', $isAppActive);

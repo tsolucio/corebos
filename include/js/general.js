@@ -6205,10 +6205,7 @@ function headerOnUpScroll() {
 }
 
 function dqrevCreate(crmid, module) {
-	var dwait = document.getElementById('dlgwait');
-	if (dwait != undefined) {
-		dwait.open('Creando nueva revisión...');
-	}
+	VtigerJS_DialogBox.block();
 	document.getElementById('dqrevisionmsg').style.display='block';
 	var url = 'index.php?module=Utilities&action=UtilitiesAjax&file=createrevision';
 	url = url + '&function=createrevision';
@@ -6219,10 +6216,8 @@ function dqrevCreate(crmid, module) {
 		url: url
 	}).done(function (response) {
 		if (response=='nok') {
+			VtigerJS_DialogBox.unblock();
 			alert(alert_arr.ERROR);
-			if (dwait != undefined) {
-				dwait.close();
-			}
 			document.getElementById('dqrevisionmsg').style.display='none';
 		} else {
 			gotourl('index.php?module='+module+'&action=DetailView&record='+response);
@@ -6232,10 +6227,7 @@ function dqrevCreate(crmid, module) {
 
 function dqrevRecover(crmid, module) {
 	if (checkOneRevisionSelected()) {
-		var dwait = document.getElementById('dlgwait');
-		if (dwait != undefined) {
-			dwait.open('Recuperando revisión...');
-		}
+		VtigerJS_DialogBox.block();
 		document.getElementById('dqrevisionmsg').style.display='block';
 		var newrev = jQuery('#dqrevision').val();
 		var url = 'index.php?module=Utilities&action=UtilitiesAjax&file=createrevision';
@@ -6248,10 +6240,8 @@ function dqrevRecover(crmid, module) {
 			url: url
 		}).done(function (response) {
 			if (response=='nok') {
+				VtigerJS_DialogBox.unblock();
 				alert(alert_arr.ERROR);
-				if (dwait != undefined) {
-					dwait.close();
-				}
 				document.getElementById('dqrevisionmsg').style.display='none';
 			} else {
 				gotourl('index.php?module='+module+'&action=DetailView&record='+newrev);
@@ -6268,6 +6258,5 @@ function checkOneRevisionSelected() {
 		return true;
 	}
 }
-
 
 window.cbOnUpScrollers.push(headerOnUpScroll);

@@ -40,7 +40,10 @@ class REVISIONBLOCK_DetailViewBlock extends DeveloperBlock {
 		$focus = new $currmodule;
 		$entityidfield = $focus->table_index;
 		$table_name  = $focus->table_name;
-		$queryfield = $adb->pquery("select columnname from vtiger_field join vtiger_tab on vtiger_field.tabid=vtiger_tab.tabid where uitype=4 and name=?", array($currmodule));
+		$queryfield = $adb->pquery(
+			'select columnname from vtiger_field join vtiger_tab on vtiger_field.tabid=vtiger_tab.tabid where uitype=4 and name=?',
+			array($currmodule)
+		);
 		if ($adb->num_rows($queryfield)==0) {
 			$uniquefield = $focus->list_link_field;
 		} else {
@@ -48,9 +51,13 @@ class REVISIONBLOCK_DetailViewBlock extends DeveloperBlock {
 		}
 		$seqnors = $adb->pquery("select $uniquefield from $table_name where $entityidfield=?", array($id));
 		$seqno = $adb->query_result($seqnors, 0, 0);
-		$revisiones=$adb->pquery("select $entityidfield,revision,modifiedtime from $table_name
-                                            INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $table_name.$entityidfield
-                                            where deleted = 0 and revisionactiva=0 and $uniquefield=? order by revision", array($seqno));
+		$revisiones=$adb->pquery(
+			"select $entityidfield,revision,modifiedtime
+			from $table_name
+			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $table_name.$entityidfield
+			where deleted = 0 and revisionactiva=0 and $uniquefield=? order by revision",
+			array($seqno)
+		);
 		$number=$adb->num_rows($revisiones);
 		$arr = array();
 		for ($i=0; $i<$number; $i++) {
@@ -63,11 +70,11 @@ class REVISIONBLOCK_DetailViewBlock extends DeveloperBlock {
 			$arr[$i]['revision'] = sprintf("%'06s", $revision);
 			$arr[$i]['modifiedtime'] = $adb->query_result($revisiones, $i, 2);
 		}
-		$smarty->assign("ID", $id);
-		$smarty->assign("MODULE", $currmodule);
-		$smarty->assign("NUMBER", $number);
-		$smarty->assign("REVISIONES", $arr);
-		return $smarty->fetch("modules/Utilities/revisionblock.tpl");
+		$smarty->assign('ID', $id);
+		$smarty->assign('MODULE', $currmodule);
+		$smarty->assign('NUMBER', $number);
+		$smarty->assign('REVISIONES', $arr);
+		return $smarty->fetch('modules/Utilities/revisionblock.tpl');
 	}
 }
 

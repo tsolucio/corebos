@@ -9,13 +9,12 @@
  *************************************************************************************/
 
 function updaterevisionwf($entityData) {
+	global $adb, $currentModule;
 	$wsId = $entityData->getId();
 	$parts = explode('x', $wsId);
 	$entityId = $parts[1];
-	global $adb,$currentModule;
-	include_once "modules/$currentModule/$currentModule.php";
-	$focus = new $currentModule;
+	$focus = CRMEntity::getInstance($currentModule);
 	$entityidfield = $focus->table_index;
-	$table_name  = $focus->table_name;
+	$table_name = $focus->table_name;
 	$adb->pquery("update $table_name set revisionactiva=1,revision=1 where $entityidfield=?", array($entityId));
 }
