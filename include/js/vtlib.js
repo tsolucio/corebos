@@ -372,7 +372,7 @@ function vtlib_toggleModule(module, action, type) {
 	jQuery.ajax({
 		method:'POST',
 		url:URL
-	}).done(function(response) {
+	}).done(function (response) {
 		VtigerJS_DialogBox.unblock();
 		// Reload the page to apply the effect of module setting
 		window.location.href = 'index.php?module=Settings&action=ModuleManager&parenttab=Settings';

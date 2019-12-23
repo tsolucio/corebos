@@ -2473,20 +2473,20 @@ function selectContactvtlib(fromlink, fldname, MODULE, ID) {
 		return vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
 	}
 	switch (MODULE) {
-		case 'Contacts':
-		case 'PurchaseOrder':
-		case 'SalesOrder':
-		case 'Invoice':
-		case 'Quotes':
-			selectContact('false', document.EditView);
-			break;
-		default:
-			vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
-			break;
+	case 'Contacts':
+	case 'PurchaseOrder':
+	case 'SalesOrder':
+	case 'Invoice':
+	case 'Quotes':
+		selectContact('false', document.EditView);
+		break;
+	default:
+		vtlib_open_popup_window(fromlink, fldname, MODULE, ID);
+		break;
 	}
 }
 
- /**
+/**
  * get Select Contacts Popup
  * check boolean select options enable or disable
  * frmName string form name
