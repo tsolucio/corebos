@@ -121,11 +121,11 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 				$this->_attachments = array();
 			}
 			$this->_attachments[$filename] = $data;  // TODO: this is a problem if two files have same name
-		} // embedded images right now are treated as attachments
-		elseif ($p->ifdisposition && $p->disposition == "INLINE" && $p->bytes > 0 && $p->subtype != 'PLAIN' && $p->subtype != 'HTML') {
+		} elseif ($p->ifdisposition && $p->disposition == "INLINE" && $p->bytes > 0 && $p->subtype != 'PLAIN' && $p->subtype != 'HTML') {
+			// embedded images right now are treated as attachments
 			$this->_attachments["noname".$partno. "." .$p->subtype] = $data;
-		} // TEXT
-		elseif ($p->type==0 && $data) {
+		} elseif ($p->type==0 && $data) {
+			// TEXT
 			$this->_charset = $params['charset'];  // assume all parts are same charset
 			$data = self::__convert_encoding($data, 'UTF-8', $this->_charset);
 
@@ -136,12 +136,12 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 			} else {
 				$this->_htmlmessage .= $data ."<br><br>";
 			}
-		} // EMBEDDED MESSAGE
-		// Many bounce notifications embed the original message as type 2,
-		// but AOL uses type 1 (multipart), which is not handled here.
-		// There are no PHP functions to parse embedded messages,
-		// so this just appends the raw source to the main message.
-		elseif ($p->type==2 && $data) {
+		} elseif ($p->type==2 && $data) {
+			// EMBEDDED MESSAGE
+			// Many bounce notifications embed the original message as type 2,
+			// but AOL uses type 1 (multipart), which is not handled here.
+			// There are no PHP functions to parse embedded messages,
+			// so this just appends the raw source to the main message.
 			$this->_plainmessage .= trim($data) ."\n\n";
 		}
 
@@ -202,7 +202,6 @@ class MailManager_Model_Message extends Vtiger_MailRecord {
 	 * @param Integer $uid
 	 * @return Boolean
 	 */
-
 	public function readFromDB($uid) {
 		global $adb, $current_user;
 		$result = $adb->pquery('SELECT * FROM vtiger_mailmanager_mailrecord WHERE userid=? AND muid=?', array($current_user->id, $uid));

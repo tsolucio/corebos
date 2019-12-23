@@ -84,11 +84,11 @@ function vtSaveTask($adb, $request) {
 
 	$module->setReturnUrl('');
 	$returnUrl=$module->editWorkflowUrl($task->workflowId);
-?>
+	?>
 	<script type="text/javascript" charset="utf-8">
 		window.location="<?php echo $returnUrl?>";
 	</script>
-<?php
+	<?php
 }
 vtSaveTask($adb, $_REQUEST);
 ?>

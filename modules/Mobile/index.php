@@ -9,10 +9,10 @@
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
 if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING']=='module=Mobile&action=index') {
-?>
+	?>
 <script type="text/javascript">gotourl('modules/Mobile/index.php');</script>
-<?php
-die();
+	<?php
+	die();
 }
 define('COREBOS_INSIDE_MOBILE', 1);
 header('Content-Type: text/html;charset=utf-8');

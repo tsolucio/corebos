@@ -49,22 +49,22 @@ if (isset($_REQUEST['type']) && $_REQUEST['type'] != '') {
 			<tr>
 <?php
 if (GlobalVariable::getVariable('Application_Display_Mini_Calendar', 1, $currentModule)) {
-?>
+	?>
 	<td style="padding-right:0px;padding-left:10px;">
 		<a href="javascript:;" onClick='fnvshobj(this,"miniCal");getMiniCal("parenttab=My Home Page");'>
 		<img src="<?php echo vtiger_imageurl('btnL3Calendar.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_CALENDAR_ALT']; ?>" title="<?php echo $app_strings['LBL_CALENDAR_TITLE']; ?>" border=0>
 		</a>
 	</td>
-<?php
+	<?php
 }
 if (GlobalVariable::getVariable('Application_Display_World_Clock', 1, $currentModule)) {
-?>
+	?>
 	<td style="padding-right:0px">
 		<a href="javascript:;">
 		<img src="<?php echo vtiger_imageurl('btnL3Clock.gif', $theme); ?>" alt="<?php echo $app_strings['LBL_CLOCK_ALT']; ?>" title="<?php echo $app_strings['LBL_CLOCK_TITLE']; ?>" border=0 onClick="fnvshobj(this,'wclock');">
 		</a>
 	</td>
-<?php
+	<?php
 }
 ?>
 			</tr>
@@ -114,7 +114,7 @@ if (GlobalVariable::getVariable('Application_Display_World_Clock', 1, $currentMo
 										?><option selected value="<?php echo $key;?>"><?php echo $value;?></option><?php
 									} else {
 										?><option value="<?php echo $key;?>"><?php echo $value;?></option>
-									<?php
+										<?php
 									}
 								} ?>
 								</select>
@@ -210,13 +210,14 @@ if (GlobalVariable::getVariable('Application_Display_World_Clock', 1, $currentMo
 									foreach ($graph_array as $key => $value) {
 										if ($dashboard_type == $key) {
 											$dash_board_title = $value;
-										?>
-										<option selected value="<?php echo $key;?>"><?php echo $value;?></option>
-									<?php
+											?>
+											<option selected value="<?php echo $key;?>"><?php echo $value;?></option>
+											<?php
 										} else {
-										?>
-										<option value="<?php echo $key;?>"><?php echo $value;?></option>
-										<?php   }
+											?>
+											<option value="<?php echo $key;?>"><?php echo $value;?></option>
+											<?php
+										}
 									} ?>
 											</select>
 											</td>

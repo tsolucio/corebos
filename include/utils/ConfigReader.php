@@ -13,7 +13,7 @@ class ConfigReader {
 	protected $properties = array();
 	protected $name;
 
-	static private $propertiesCache = array();
+	private static $propertiesCache = array();
 
 	public function __construct($path, $name, $force = false) {
 		$this->load($path, $name, $force);

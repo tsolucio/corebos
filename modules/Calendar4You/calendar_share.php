@@ -79,9 +79,9 @@ $Calendar_Settings = $Calendar4You->getSettings();
 				} else {
 					$selected = '';
 				}
-			?>
+				?>
 				<option <?php echo $selected?> value="<?php echo $value?>"><?php echo $hour?></option>
-			<?php
+				<?php
 			}
 			?>
 			</select>
@@ -221,7 +221,7 @@ $Calendar_Settings = $Calendar4You->getSettings();
 			</div>
 			<br /><br />
 			<div id="google_sync_verifying" style="display:none;">
-			<img src="themes/images/vtbusy.gif" align="absmiddle"><? echo $mod_strings['LBL_GOOGLE_SYNC_CONTROL_ACCESS_DATA']; ?>
+			<img src="themes/images/vtbusy.gif" align="absmiddle"><?php echo $mod_strings['LBL_GOOGLE_SYNC_CONTROL_ACCESS_DATA']; ?>
 			</div>
 			<div id="google_sync_text">
 			<?php

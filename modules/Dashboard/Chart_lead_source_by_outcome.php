@@ -75,7 +75,7 @@ if (isPermitted('Potentials', 'index')=='yes') {
 	echo DashboardCharts::lead_source_by_outcome($datax, $ids, $width, $height);
 	echo "<P><font size='1'><em>".$current_module_strings['LBL_LEAD_SOURCE_BY_OUTCOME_DESC']."</em></font></P>";
 	if (isset($_REQUEST['lsbo_edit']) && $_REQUEST['lsbo_edit'] == 'true') {
-	?>
+		?>
 	<form action="index.php" method="post" >
 	<input type="hidden" name="module" value="<?php echo $currentModule;?>">
 <input type="hidden" name="action" value="<?php echo $action;?>">
@@ -86,24 +86,24 @@ if (isPermitted('Potentials', 'index')=='yes') {
 <td valign='top' nowrap><?php echo $current_module_strings['LBL_LEAD_SOURCES'];?></strong></td>
 <td valign='top'>
 	<select name="lsbo_lead_sources[]" multiple size='3'>
-	<?php echo get_select_options_with_id($comboFieldArray['lead_source_dom'], (isset($_SESSION['lsbo_lead_sources']) ? $_SESSION['lsbo_lead_sources'] : '')); ?>
+		<?php echo get_select_options_with_id($comboFieldArray['lead_source_dom'], (isset($_SESSION['lsbo_lead_sources']) ? $_SESSION['lsbo_lead_sources'] : '')); ?>
 	</select>
 </td>
 </tr><tr>
 <td valign='top' nowrap><?php echo $current_module_strings['LBL_USERS'];?></td>
-<?php
-if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid('Potentials'))) {
-?>
+		<?php
+		if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid('Potentials'))) {
+			?>
 	<td valign='top'><select name="lsbo_ids[]" multiple size='3'><?php
 	$usrarray = get_user_array(false, 'Active', $current_user->id, 'private');
 	echo get_select_options_with_id($usrarray, (isset($_SESSION['lsbo_ids']) ? $_SESSION['lsbo_ids'] : '')); ?>
 	</select></td>
-<?php } else { ?>
+		<?php } else { ?>
 	<td valign='top' ><select name="lsbo_ids[]" multiple size='3'><?php
 	$usrarray = get_user_array(false, 'Active', $current_user->id);
 	echo get_select_options_with_id($usrarray, (isset($_SESSION['lsbo_ids']) ? $_SESSION['lsbo_ids'] : '')); ?>
 	</select></td>
-<?php } ?>
+		<?php } ?>
 	</tr><tr>
 	<td align="right"><br />
 	<input class="button" type="submit" title="<?php echo $app_strings['LBL_SELECT_BUTTON_TITLE']; ?>" accessKey="<?php echo $app_strings['LBL_SELECT_BUTTON_KEY']; ?>" value="<?php echo $app_strings['LBL_SELECT_BUTTON_LABEL']?>" />
@@ -111,7 +111,7 @@ if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharin
 	</tr></table>
 	</form>
 	<?php } else {
-	?>
+		?>
 <div align=right><FONT size='1'>
 [<a href="javascript:;" onClick="changeView('<?php echo isset($_REQUEST['display_view']) ? vtlib_purify($_REQUEST['display_view']) : '';?>');"><?php echo $current_module_strings['LBL_REFRESH'];?></a>]
 [<a href="index.php?module=<?php echo $currentModule;?>&action=index&lsbo_edit=true&display_view=<?php echo isset($_REQUEST['display_view']) ? vtlib_purify($_REQUEST['display_view']) : '';?>"><?php echo $current_module_strings['LBL_EDIT'];?></a>]

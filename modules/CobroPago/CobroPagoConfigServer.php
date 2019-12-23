@@ -38,9 +38,9 @@ if (!is_admin($current_user)) {
 	}
 	$results = $adb->query('select * from vtiger_cobropagoconfig');
 	$ts_bpaid = $adb->query_result($results, 0, 'block_paid');
-?>
+	?>
 	<div style="margin:2em;">
-<?php $smarty->display('SetMenu.tpl'); ?>
+	<?php $smarty->display('SetMenu.tpl'); ?>
 	<h2><?php echo getTranslatedString('SERVER_CONFIGURATION');?></h2>
 	<form name="myform" action="index.php" method="POST">
 	<input type="hidden" name="module" value="CobroPago">
@@ -64,6 +64,6 @@ if (!is_admin($current_user)) {
 	</tr>
 	</table>
 	</form>
-<?php
+	<?php
 }
 ?>

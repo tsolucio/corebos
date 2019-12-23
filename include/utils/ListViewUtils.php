@@ -1135,8 +1135,8 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 							$account_id = $adb->query_result($list_result, $i - 1, 'accountid');
 							$account_name = getAccountName($account_id);
 							$value = textlength_check($account_name);
-						} // vtlib customization: Generic popup handling
-						elseif (isset($focus->popup_fields) && in_array($fieldname, $focus->popup_fields)) {
+						} elseif (isset($focus->popup_fields) && in_array($fieldname, $focus->popup_fields)) {
+							// vtlib customization: Generic popup handling
 							global $default_charset;
 							$forfield = isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '';
 							$forfield = htmlspecialchars($forfield, ENT_QUOTES, $default_charset);
@@ -1324,8 +1324,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		} else {
 			$value = '';
 		}
-	} // END
-	elseif ($uitype == '1025') {
+	} elseif ($uitype == '1025') {
 		$parent_id = $temp_val;
 		if (!empty($parent_id)) {
 			$values=explode(' |##| ', $parent_id);
@@ -1615,9 +1614,8 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		$res = $adb->pquery('select foldername from vtiger_attachmentsfolder where folderid = ?', array($temp_val));
 		$foldername = $adb->query_result($res, 0, 'foldername');
 		$value = $foldername;
-	} //added for asterisk integration
-	elseif ($uitype == 11) {
-		// Fix added for Trac Id: 6139
+	} elseif ($uitype == 11) {
+		//added for asterisk integration
 		if (get_use_asterisk($current_user->id)) {
 			$value = "<a href='javascript:;' onclick='startCall(&quot;$temp_val&quot;, &quot;$entity_id&quot;)'>" . textlength_check($temp_val) . '</a>';
 		} else {

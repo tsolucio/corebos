@@ -19,8 +19,7 @@
 include_once 'include/cbmqtm/cbmqtm_manager.php';
 
 class cbmqtm_dbdistributor extends cbmqtm_manager {
-
-	static protected $db = null;
+	protected static $db = null;
 	protected $version = '1.0';
 
 	public static function getInstance() {

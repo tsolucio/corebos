@@ -31,11 +31,11 @@ function vtDeleteWorkflow($adb, $request) {
 	} else {
 		$returnUrl=$module->listViewUrl();
 	}
-?>
+	?>
 	<script type="text/javascript" charset="utf-8">
 		window.location="<?php echo $returnUrl?>";
 	</script>
-<?php
+	<?php
 }
 vtDeleteWorkflow($adb, $_REQUEST);
 ?>

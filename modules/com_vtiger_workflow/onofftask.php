@@ -26,11 +26,11 @@ function onoffTask($adb, $request) {
 	$tm->saveTask($task);
 	$vtw->setReturnUrl('');
 	$returnUrl = $vtw->editWorkflowUrl($task->workflowId);
-?>
+	?>
 	<script type="text/javascript" charset="utf-8">
 		window.location="<?php echo $returnUrl?>";
 	</script>
-<?php
+	<?php
 }
 onoffTask($adb, $_REQUEST);
 ?>

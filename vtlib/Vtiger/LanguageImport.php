@@ -86,20 +86,20 @@ class Vtiger_LanguageImport extends Vtiger_LanguageExport {
 						if (file_exists("$targetdir/calendar-en.js")) {
 							$dounzip = true;
 						}
-					} // Case handling for phpmailer
-					elseif (stripos($targetdir, 'modules/Emails/language') === 0
+					} elseif (stripos($targetdir, 'modules/Emails/language') === 0
+						// Case handling for phpmailer
 						&& stripos($targetfile, "phpmailer.lang-$prefix.php")===0) {
 						if (file_exists("$targetdir/phpmailer.lang-en_us.php")) {
 							$dounzip = true;
 						}
-					} // Handle javascript language file
-					elseif (preg_match("/$prefix.lang.js/", $targetfile)) {
+					} elseif (preg_match("/$prefix.lang.js/", $targetfile)) {
+						// Handle javascript language file
 						$corelangfile = "$targetdir/en_us.lang.js";
 						if (file_exists($corelangfile)) {
 							$dounzip = true;
 						}
-					} // Handle php language file
-					elseif (preg_match("/$prefix.lang.php/", $targetfile)) {
+					} elseif (preg_match("/$prefix.lang.php/", $targetfile)) {
+						// Handle php language file
 						$corelangfile = "$targetdir/en_us.lang.php";
 						if (file_exists($corelangfile)) {
 							$dounzip = true;

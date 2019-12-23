@@ -52,7 +52,7 @@ if (!is_admin($current_user)) {
 				getTranslatedString('StorageMustIncrement', $currentModule).'</div></div>';
 		}
 	}
-?>
+	?>
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 <tr>
 	<td width=50 rowspan=2 valign=top>
@@ -80,13 +80,13 @@ if (!is_admin($current_user)) {
 		<b><?php echo getTranslatedString('Occupied', 'Documents').':</b>&nbsp;&nbsp;'.$sistoragesize;?> Gb<br>
 		<b><?php echo getTranslatedString('Free', 'Documents').':</b>&nbsp;&nbsp;'.($sistoragesizelimit-$sistoragesize);?> Gb<br>
 		</td>
-<?php if (!empty($coreBOSOnDemandActive)) {?>
+	<?php if (!empty($coreBOSOnDemandActive)) {?>
 		<td valign="bottom">
 		<?php echo getTranslatedString('NewSize', 'Documents');?>: <input type="text" name='storagenewsize' id='storagenewsize' style="width:30px;" maxlength=2 value="<?php echo $sistoragesizelimit; ?>"> <b>Gb</b><br>
 		<p width=90% align=center><input type="checkbox" id="accept_charge"><span style="font-size: 12px;font-weight: bold;"><?php echo getTranslatedString('accept_charge', 'Documents'); ?></span><br/><input title="<?php echo $app_strings['LBL_SAVE_BUTTON_TITLE']; ?>" accessKey="<?php echo $app_strings['LBL_SAVE_BUTTON_KEY']; ?>" class="crmbutton small save" type="submit" name="button" value="  <?php echo trim($app_strings['LBL_SAVE_BUTTON_LABEL']); ?>  " style="width:70px;" align=center onclick="return jQuery('#accept_charge').is(':checked');"></p>
 		<?php include "modules/Documents/language/{$current_language}.showLicense.html";?><br/><br/><br/>
 		</td>
-<?php } ?>
+	<?php } ?>
 	</tr>
 </table>
 </form>
@@ -117,7 +117,7 @@ if (!is_admin($current_user)) {
 	var ctx = document.getElementById("chart-area").getContext("2d");
 	var storagegrph = new Chart(ctx, config);
 </script>
-<?php
+	<?php
 }
 ?>
 </div>

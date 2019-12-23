@@ -193,7 +193,7 @@ class GoogleSync4You {
 				$authUrl = $client->createAuthUrl();
 				echo "<a class='login' href='$authUrl'>".getTranslatedString('LBL_CONNECT', 'Calendar4You').'</a><br>';
 			}
-		} //        else if($this->refresh_token=='' && $this->user_clientsecret != "" && $this->apikey != "" && $this->clientid!="" && $this->keyfile!=""){
+//      } else if($this->refresh_token=='' && $this->user_clientsecret != "" && $this->apikey != "" && $this->clientid!="" && $this->keyfile!=""){
 //             $CLIENT_ID = $this->clientid;
 //             $KEY_FILE = $this->keyfile;
 //             $client = new Google_Client();
@@ -208,7 +208,7 @@ class GoogleSync4You {
 //			if(isset($_REQUEST['type']) && ($_REQUEST['type'] == 'event_settings' || $_REQUEST['type'] == 'settings'))
 //                   echo "<a class='login' href='$authUrl'>".getTranslatedString('LBL_CONNECT', 'Calendar4You')."</a><br>";
 //        }
-		else {
+		} else {
 			$this->status = getTranslatedString('LBL_MISSING_AUTH_DATA', 'Calendar4You');
 		}
 

@@ -86,8 +86,7 @@ if (isPermitted('Potentials', 'index')=='yes') {
 		$cal_lang = "en";
 		$cal_dateformat = parse_calendardate($app_strings['NTC_DATE_FORMAT']);
 		$cal_dateformat = '%Y-%m-%d'; // fix providedd by Jlee for date bug in Dashboard
-
-	?>
+		?>
 	<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
 	<script type="text/javascript" src="jscalendar/calendar.js"></script>
 	<script type="text/javascript" src="jscalendar/lang/calendar-<?php echo $cal_lang ?>.js"></script>
@@ -113,19 +112,19 @@ if (isset($_SESSION['obm_date_end'])) {
 }?>'> <img src="<?php echo vtiger_imageurl('calendar.gif', $theme) ?>" id="date_end_trigger"> </td>
 </tr><tr>
 <td nowrap><?php echo $current_module_strings['LBL_USERS'];?></td>
-<?php
-if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid('Potentials'))) {
-?>
+		<?php
+		if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharing(getTabid('Potentials'))) {
+			?>
 	<td valign='top' ><select name="obm_ids[]" multiple size='3'><?php
 	$usrarray = get_user_array(false, 'Active', $current_user->id, 'private');
 	echo get_select_options_with_id($usrarray, (isset($_SESSION['obm_ids']) ? $_SESSION['obm_ids'] : '')); ?>
 	</select></td>
-<?php } else { ?>
+		<?php } else { ?>
 	<td valign='top' ><select name="obm_ids[]" multiple size='3'><?php
 	$usrarray = get_user_array(false, 'Active', $current_user->id);
 	echo get_select_options_with_id($usrarray, (isset($_SESSION['obm_ids']) ? $_SESSION['obm_ids'] : '')); ?>
 	</select></td>
-<?php } ?>
+		<?php } ?>
 	</tr><tr>
 	<td align="right"><br />
 	<input class="button" onclick="return verify_chart_data(outcome_by_month);" type="submit" title="<?php echo $app_strings['LBL_SELECT_BUTTON_TITLE']; ?>" accessKey="<?php echo $app_strings['LBL_SELECT_BUTTON_KEY']; ?>" value="<?php echo $app_strings['LBL_SELECT_BUTTON_LABEL']?>" />
@@ -142,7 +141,7 @@ if (!$userprivs->hasGlobalWritePermission() && !$userprivs->hasModuleWriteSharin
 	</script>
 
 	<?php } else {
-	?>
+		?>
 <div align=right><FONT size='1'>
 [<a href="javascript:;" onClick="changeView('<?php echo isset($_REQUEST['display_view']) ? vtlib_purify($_REQUEST['display_view']) : '';?>');"><?php echo $current_module_strings['LBL_REFRESH'];?></a>]
 [<a href="index.php?module=<?php echo $currentModule;?>&action=index&obm_edit=true&display_view=<?php echo isset($_REQUEST['display_view']) ? vtlib_purify($_REQUEST['display_view']) : '';?>"><?php echo $current_module_strings['LBL_EDIT'];?></a>]

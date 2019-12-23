@@ -55,12 +55,12 @@ if (isPermitted($_REQUEST['module'], 'Export') == 'no') {
 }
 
 if ($allow_exports=='none' || ( $allow_exports=='admin' && ! is_admin($current_user) )) {
-?>
+	?>
 	<script type='text/javascript'>
 		alert("<?php echo $app_strings['NOT_PERMITTED_TO_EXPORT']?>");
 		window.location="index.php?module=<?php echo vtlib_purify($_REQUEST['module']) ?>&action=index";
 	</script>
-<?php exit;
+	<?php exit;
 }
 
 /**Function convert line breaks to space in description during export
