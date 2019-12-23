@@ -17,6 +17,6 @@ RUN cp /www/docker/phpcs.phar /usr/local/bin
 
 RUN apk add --update nodejs nodejs-npm
 
-RUN npm install -g eslint@4.19.1
+RUN npm install -g eslint
 
 WORKDIR /www
