@@ -55,7 +55,7 @@ if (!empty($moduleid) && $_REQUEST['_op']=='setconfigrecordversioning') {
 		$module_listba = '';
 	}
 	//check for workflow
-	$wfquery = $adb->pquery("select workflow_id from com_vtiger_workflows where module_name=? and summary='updaterevisionwf'", array($moduleid));
+	$wfquery = $adb->pquery("select workflow_id from com_vtiger_workflows where module_name=? and summary='Update Revision Fields'", array($moduleid));
 	$wfcount = $adb->num_rows($wfquery);
 
 	if ($isFormActive=='1') {
@@ -104,9 +104,10 @@ if (!empty($moduleid) && $_REQUEST['_op']=='setconfigrecordversioning') {
 			$field1->columntype = 'VARCHAR(100)';
 			$field1->uitype = 1;
 			$field1->typeofdata = 'V~O';
-			$field1->displaytype = 2;
+			$field1->displaytype = 4;
 			$field1->presence = 0;
 			$block->addField($field1);
+			$adb->query('update '.$mod->basetable.' set revision=?', array('1'));
 		}
 		$fld2 = Vtiger_Field::getInstance('revisionactiva', $mod);
 		if (!$fld2) {
@@ -115,11 +116,12 @@ if (!empty($moduleid) && $_REQUEST['_op']=='setconfigrecordversioning') {
 			$field2->label= 'Active Revision';
 			$field2->column = 'revisionactiva';
 			$field2->columntype = 'VARCHAR(3)';
-			$field2->uitype = 1;
-			$field2->typeofdata = 'V~O';
-			$field2->displaytype = 2;
+			$field2->uitype = 56;
+			$field2->typeofdata = 'C~O';
+			$field2->displaytype = 4;
 			$field2->presence = 0;
 			$block->addField($field2);
+			$adb->query('update '.$mod->basetable.' set revisionactiva=?', array('1'));
 		}
 		//create event handler
 		$evhandler = $adb->pquery("select is_active,eventhandler_id from vtiger_eventhandlers where handler_class='UtilitiesEventsHandler'", array());
@@ -136,27 +138,23 @@ if (!empty($moduleid) && $_REQUEST['_op']=='setconfigrecordversioning') {
 		}
 		//create workflow
 		if ($wfcount == 0) {
-			$emm = new VTEntityMethodManager($adb);
-			$emm->addEntityMethod($moduleid, 'updaterevisionwf', 'modules/Utilities/updaterevisionwf.php', 'updaterevisionwf');
 			require_once 'modules/com_vtiger_workflow/VTWorkflowManager.inc';
 			require_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
 			require_once 'modules/com_vtiger_workflow/VTWorkflowApplication.inc';
 			require_once 'include/events/SqlResultIterator.inc';
 			$wm = new VTWorkflowManager($adb);
 			$wf = $wm->newWorkflow($moduleid);
-			$wf->description = 'updaterevisionwf';
+			$wf->description = 'Update Revision Fields';
+			$wf->purpose = 'Initialize revision fields on first save';
 			$wf->test = '';
 			$wf->executionConditionAsLabel('ON_FIRST_SAVE');
 			$wm->save($wf);
 
 			$tm = new VTTaskManager($adb);
-			$taskType ='VTEntityMethodTask' ;
-			$workflowId =$wf->id;
-			$task = $tm->createTask($taskType, $workflowId);
-			$task->summary ='updaterevisionwf';
+			$task = $tm->createTask('VTUpdateFieldsTask', $wf->id);
+			$task->summary = 'Update Revision Fields';
 			$task->active=true;
-			$task->methodName ='updaterevisionwf';
-			$task->subject='updaterevisionwf';
+			$task->field_value_mapping = '[{"fieldname":"revision","valuetype":"rawtext","value":"1"},{"fieldname":"revisionactiva","valuetype":"rawtext","value":"true:boolean"}]';
 			$tm->saveTask($task);
 		}
 		$isAppActive = true;
