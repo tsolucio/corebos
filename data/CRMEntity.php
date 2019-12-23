@@ -79,7 +79,7 @@ class CRMEntity {
 
 	public function saveentity($module, $fileid = '') {
 		global $current_user, $adb;
-		if (property_exists($module, 'HasDirectImageField') && $this->HasDirectImageField) {
+		if (property_exists($module, 'HasDirectImageField') && $this->HasDirectImageField && !empty($this->id)) {
 			// we have to save these names to delete previous overwritten values in uitype 69 field
 			$sql = 'SELECT tablename,columnname FROM vtiger_field WHERE uitype=69 and vtiger_field.tabid = ?';
 			$tabid = getTabid($module);
