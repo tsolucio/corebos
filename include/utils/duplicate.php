@@ -153,7 +153,7 @@ function dup_related_lists($new_record_id, $currentModule, $related_list, $recor
 	$sqldocs = 'INSERT INTO vtiger_senotesrel (crmid,notesid) SELECT ?,notesid FROM vtiger_senotesrel WHERE crmid=?';
 	foreach ($related_list as $rel_module) {
 		// Get and check condition type
-		$condition = $maped_relations[$rel_module]['condition'];
+		$condition = !empty($maped_relations[$rel_module]['condition']) ? $maped_relations[$rel_module]['condition'] : '';
 
 		if (!empty($condition)) {
 			if (is_numeric($condition)) {
